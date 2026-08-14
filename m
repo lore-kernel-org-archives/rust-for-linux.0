@@ -1,124 +1,153 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787C1453A22
-	for <rust-for-linux@vger.kernel.org>; Fri, 14 Aug 2026 10:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786703447; cv=pass; b=kU2i8b3dugR9D7xzUchD0Nqk68X8+16G/W/Lf8Y6TmA7JHA1SV27H97jwKLcoHZyUPPfa+iZU2G2dlbJ7o7mLsYF9PpeFvzB0UK59bGVSk88UisGt57lJA8fd9+QQPfn+f3IVLoz7nWK2vMRbJAUtkK5+8E+HkZkCcTw1/2RSOc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786703447; c=relaxed/simple;
-	bh=/SEfN4vHBYJRT3QagL0O+k1OF0dddWY7eIJyIDHff3c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ALC2Bvx+SXkcQ6XJc18gvpNr2iwz345FPL1N4+DEdMfVj4XUQimojm8KDe/tKS2f3C3dhVU3vHiWM7Y9DIJtU9Pq0wjoyPqr0Uh/llBjAMpl6OWy8uo118xjuNHx+oAbC76+A0YcA+InEYeNHx1JJsNU6eIeZlHtyAIP/UXFsNE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fagqbA+u; arc=pass smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB7345D5C9
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Aug 2026 11:16:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786706169; cv=none; b=Q9p/Pi2f+r1rDSGDFgu08lfWe5joQA/4nOIuZC6lNR+QhSo2twJ0KPAY/6B4vrJAzP2paohUCXqkYtfgl9otbuU+lchCRK1CQWKxebLK6AiCDziVTGUIlF0LP+t66wTepI1i9tMem27p4j3F1WSYEH4rB4lzeo/SWaEkqFxk6Eo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786706169; c=relaxed/simple;
+	bh=WC68mzM9vVdX5O4PVh43sBf4C00Yw06tw0d+DOenXm8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=caNuOg63lWOKSxXZsplkHiMu2nS26036roEgoynDKHbGEI+0UH58/I76lNymfECdFjJBdZ0FUVb2GgOU7so5etLXDUiha/98ZaO+s2haDyq3am4/TPTJYxd9V0WGzG6psiZI/BYcIjlVr7LfiXpVI6Byq7s7fCiMxoz0yaDaaHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=N1OOPHyS; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fagqbA+u"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cc8311c6ddso1164135ad.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Aug 2026 03:30:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786703435; cv=none;
-        d=google.com; s=arc-20260327;
-        b=a/TeFPV+4jN9F+OA3B249nacSD1vJdzVvDrSeqyhXt5xY8fLpQbn8p5yvIhAs3r1nr
-         XjPtPgCb2dLNYKriJq9eb8BEXbEOxFrbMZAc/dgsYAp7W9NmSYsklVmB6oDprkszZy1u
-         qmngpfGHcsq76ACrtpFcQVm3p0V2DZ+RB6+UBC2Fquty2s0lbQfzI8VrAhY0cpaUfQCi
-         y2s3QYwdhuxIamClRyDZRAWttt+j4CnRlnNBDj1yJYWWuodztI2Eejsy72+3wHIJsQMk
-         ezHBW74OWqbTEp/aqF+ZLjMtI38iPXpiVOzrmMrDjdn1nai4PpHUNa4qAtq7EQZv4Qih
-         v8Og==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3fehzsHa7Sd9X2tq+C9ScVdD8EMn+jQuH5aGR6j+hWU=;
-        fh=UtJm8xCju5aHyW2ayPeOKW1/c0+y8wAZyEIbKDrN0wE=;
-        b=PZ18/3Wiy1Er4A42fYzqZGRfDmssgHBe1Aewn5SVqvPhLVm4IMViQ7MmXeGQVUocau
-         uR0U1VipBc4oLsecLq8a4ZEdb1M1ro7DpYYrgdgBASPximQLpX0yqNWaVwVqbtjW1f9i
-         18Y4wA/98blyeMjYe0LkDRnO2uAXkmoA+JFTw7JU6zW0cSn63A/6X5A6V4PyyCsr33rq
-         O0G8E4O4MGT28qye5GUXJ7Qgv7xp3DqvO6LwQPCLYuoKfRdgJK96/DdtXWBk0IYTHS0i
-         KD780N2kEeSYiBP8MqE5N+sATIbTcl32iAu6OIAFK3Wa8uuBF8HfWtKnxtexm2xccF7p
-         puWw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="N1OOPHyS"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47de0093c42so772237f8f.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Aug 2026 04:16:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786703435; x=1787308235; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3fehzsHa7Sd9X2tq+C9ScVdD8EMn+jQuH5aGR6j+hWU=;
-        b=fagqbA+uwaxycT4UOA3HW0wBgBgITkGVnnAnE6ge/8mMYz8dJOjKAycpX6nnNwmTtQ
-         eFy7C8EqtGnkDWENAxuZw8VlzEawOH5abaSEjDllVxjvZlcY0BD1xKOntvRqav1wNK45
-         64RZx4tln9lX/cc0zcIhRob6VzpAX+yPPy/yV8bvUrrw0NR6R20z6Z6/excqedHa+3oG
-         yjxz9yFF3BxjoDWmNDXtcABzGqOVhYmD7XXvBIyo46l7pwO2kuvb1+S3Rw+fHZVXHbsy
-         s28LbaVGVl22S4Ub2Ej5Ef/PQRhwo+fgNWufWI7ZIINFDXb7f+BRqQPKjrsZaAoH+K7t
-         /Ztg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786703435; x=1787308235;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=suse.com; s=google; t=1786706163; x=1787310963; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3fehzsHa7Sd9X2tq+C9ScVdD8EMn+jQuH5aGR6j+hWU=;
-        b=H7wb3fQP0vC/BtKvDZbkb33eUA1Kw/3cTu7grRDXFNXLNtllaqQDEgUAqu3vpGl3il
-         SUOUJKJkEAR253/xlbirqVaA514RUlIaSInLrJ/MXf18a3MrvyM2rQSZP2118sk2FHR3
-         vJkn03MZ5UEubZ4uuUJu8p65f9QV28fcIozkImnk4+rjNz3FbDs+rpcuntNkqygVe/DY
-         C1R2OMdxxTiRj6zG1n/bED2nyk+V1vFH2jD+DcMak2jXnssWbnBxQjgWDeEUEcrEEzY8
-         oE99FUghb+OKJFP6coX0NE4vsZdUx4KVrO3zNU/HHkaxx97xoHe4+4RCcbXipU8pZhaP
-         sGyA==
-X-Forwarded-Encrypted: i=1; AHgh+RrKFgYKX2j5np0nXS47J7xRljd8Ao6e90+pGx7kvOKkSi40wLi7LXJozvmPhruYqw+oc3WCBpu96oWsJducCQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpT4aKz6h8QqPYX/dQW6AhiF6HFq6YvxbKmEZwxAn0fi31e/VZ
-	ZiFc0nA8wOJHDGG9AfXiPw7Z2KrMgnOK9jxZKAhj2NkJk/uszzBBouqx08gFz/TkXdTy2uF6S7J
-	zRgjgEBJK1mK40uG5lRT/nx65IFH1Ov8=
-X-Gm-Gg: AR+sD13NCkvtPCy+J3Sm1nlNoRvRX6fqKJgAJYsIJLua64ysOpyAmnUjVVAiaw4UEND
-	HiNHFcvCfEN+HpJdz1uDuURX7qSaJvsPSeBsfGbobduOPAJbeCiURpR8LeQSGoitJH9w5BEcm6R
-	xJVQJFHGcgrmIonkbnuqyr6NcjSoA8khK+AHTHDNlJbLuh0eyKjrJOwd/plhLFAsNPuzT8B/Blq
-	MC27OiF3ABboN2TJDDrCE9X1pvxTfxf6ZbZHt4fOnOkIBne+xrdbC+kbNMNegTErOpenPuOofzo
-	KPBcRqmpOGm3COsFpWtuZyANF5x7kfLNcEly2W6LQ//XwqoODHTMdndLmqAaKDzDyFUkwijWSIy
-	rzOwpnt6eKQM7MC9OfJwpaGI/TMh8KQ8z5NzqZk4jn6+weMn+j/uIGehykSyU
-X-Received: by 2002:a17:903:22cb:b0:2cf:7dfa:7f56 with SMTP id
- d9443c01a7336-2d3b0c5dd2amr40185465ad.2.1786703434950; Fri, 14 Aug 2026
- 03:30:34 -0700 (PDT)
+        bh=ufDJ56SqV15sMOIVLhDYx7ZQ9UDhnRuzgS+xzCE8e40=;
+        b=N1OOPHyS45MXH3sccBAv2rnBqRxeeTdLcQ1simpHJDu8KuFsM/QMtbqrycyltEcYqb
+         9OwivpkDmJ0RtQF79WxIyobrV/6hJmlRd9HMf0+a0LrXXBhEMabsy4YcUBs/ZHZSJVZv
+         eaGy3tVg0ISGERycch4cng6STN052ctq+JUSkUpQtddL+0zDtIkbSeXwwcWI+3w3tkWv
+         GI3W6PBycL0xJRfXyRRrBj2T6tLjocDF0tMflPyOXoNffLZb4YovGP4FI3YMBB8Hb4En
+         m+oHCeS9MamwwlKftGAJFH7eghAj6T0ZhpkY+3JYXETrQJ/RGVoOfC7d9auSTD9WPpKt
+         ihUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786706163; x=1787310963;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ufDJ56SqV15sMOIVLhDYx7ZQ9UDhnRuzgS+xzCE8e40=;
+        b=qAxNj4sqe/xGpTQTwze9FYMSFfJQ7qFk2LmZ7qBBKvZ2ETFNAlA9Y6+qJCq37/SSbt
+         R+4fxqtFX/CDO4+Km3wUPORnN+RVm9RKm4MeH9OgmCNQhrPgqfS44Qm7RJXpTEBEUx8c
+         z0KGfNq9/IlB/WnRTps+nSannoRuMVjk6R7eEL+bB+CG3LOgTBOdTte48t87R8jSblZj
+         q+CPpdh0hbyX1s6EGrHcD9staV3pUgrmPJ1IyvBneycsnPIaZKvJJEHG1SNF9cTGOO4j
+         cGC8feT7DZwtbzSkQ3pNY36xFQuWAazbxLB3DgEMnuNGNGelCBfRATSr9S9d/meDpw5a
+         63zw==
+X-Forwarded-Encrypted: i=1; AHgh+RqquY7ByPpnEKZ6Gm6Hyzywv1j5cV8R6TnkK2o4QLA0g+ONJ5+hwKdFjM13WIT7sGBVu8k9rYTfTIBWER2S/Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxO+HrmPN4uBeqxrplRiXRzSm+JlPXkwLYosCOHDR0ReSAhdqLR
+	G5RzP68ExCJ1I4b8ElIovVYcK20L5RzmV9fd8C/vEvi/F0HS4ZbHxbzCIw+m728hrIw=
+X-Gm-Gg: AR+sD12SggSRBZgg5IJ96TnejIkB2kyFMoWpVh2QMRrp7WLNyhv0TGCFiY3uGlsS4f3
+	fxJdl5mRNaZQzJb69KNNG/d+cEV3RsQ7Q+ODsDB7vt9laBYfT0jTGnwe/iu7GGgZanch+L+L3VB
+	48xDqxa0ZR0H7wy6peOi2WBZ1DvqnaOYEcaAZSRTlXm++x8AJBl8HPMkjTMT/KlpYFwfKmW+hNF
+	ZXNJYs1T8jGT2WkdzQ4sZuvWbQjBGjpfFddhJZzY6CkoFS9ZkG4wpBcsbFbBkEhixYOPoPzRKOL
+	uYRjudXx8dH9CpmVArYqj//thDGYObiXpZFC3hPWgj/9hJ0e8LaGe7BL0LulCPtgYtoBh515OB2
+	a8caWTF8016eea0p/Uh/E+QjXpX/6Xi5+iO/MpHrqeeY0Mvw70twcniABShBbMuMfKa5Ls2nfMX
+	sfn9CG2f57ZZj+xe2XyKJeJRHr2GzHvnlrv9ulcIOaRYkyv8hIqJMworFUCgFPUAo17amO16Oji
+	/0+Wbfib0w+P9XflarnJuNuJw==
+X-Received: by 2002:adf:ee84:0:b0:47f:eb37:fb7f with SMTP id ffacd0b85a97d-48160758e05mr5816291f8f.16.1786706163380;
+        Fri, 14 Aug 2026 04:16:03 -0700 (PDT)
+Received: from ?IPV6:2a07:de40:8100:0:fc6c:f9a2:4a0a:6354? ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f20059asm6805179f8f.5.2026.08.14.04.16.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Aug 2026 04:16:02 -0700 (PDT)
+Message-ID: <9044355d-bff2-44fa-a8e2-ee3500aa1af0@suse.com>
+Date: Fri, 14 Aug 2026 13:16:01 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260806-as_casts-v2-0-cb76a4d3a6ef@nvidia.com>
-In-Reply-To: <20260806-as_casts-v2-0-cb76a4d3a6ef@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 14 Aug 2026 12:30:22 +0200
-X-Gm-Features: AUfX_mzbSVhZjPvAzS9iZYtypbsJ35PZ4Nm04Q-zyNGgr6kR87uRIK7yu3xiGYU
-Message-ID: <CANiq72=UbRsAJ2Hyk68HDkHL+TVzg9n992jMSO5Bt2iEDYhnrQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] rust: add functions and traits for lossless
- integer conversions
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, John Hubbard <jhubbard@nvidia.com>, 
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
-	Eliot Courtney <ecourtney@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, nova-gpu@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 0/2] module: Extend module_blacklist parameter to
+ built-in modules
+To: Gary Guo <gary@garyguo.net>, Aaron Tomlin <atomlin@atomlin.com>
+Cc: arnd@arndb.de, mcgrof@kernel.org, da.gomez@kernel.org,
+ samitolvanen@google.com, peterz@infradead.org, ojeda@kernel.org,
+ akpm@linux-foundation.org, mhiramat@kernel.org, boqun@kernel.org,
+ neelx@suse.com, da.anzani@gmail.com, sean@ashe.io, chjohnst@mail.com,
+ steve@abita.co, mproche@mail.com, nick.lane@mail.com,
+ linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260807012601.360452-1-atomlin@atomlin.com>
+ <DKNWEO3BOUOL.9COZBXZIGS6A@garyguo.net>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <DKNWEO3BOUOL.9COZBXZIGS6A@garyguo.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 6, 2026 at 9:36=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.c=
-om> wrote:
->
->       rust: add functions and traits for lossless integer conversions
+On 8/13/26 4:50 PM, Gary Guo wrote:
+> On Fri Aug 7, 2026 at 2:25 AM BST, Aaron Tomlin wrote:
+>> Currently, the "module_blacklist=" command-line parameter only applies to
+>> loadable modules. If a module is built-in, the parameter is silently
+>> ignored. This patch series extends the blacklisting functionality to
+>> built-in modules by intercepting their initialisation routines during early
+>> boot.
+>>
+>> Following review feedback, the implementation has been split into two
+>> separate changes to decouple the introduction of the new feature from the
+>> terminology renaming:
+>>
+>>     1.  The first patch extends the "module_blacklist=" parameter to
+>>         built-in modules using the original blacklist terminology. It
+>>         introduces the ".initcall.modnames" section to map initcall
+>>         function pointers to their associated KBUILD_MODNAME strings
+>>         (restricted only to module_init() invocations to save memory and
+>>         avoid matching core kernel subsystems). It also restricts the check
+>>         to a boot-time __init wrapper to eliminate Use-After-Free (UAF) and
+>>         Spectre v1 vulnerability risks when loading dynamic modules at
+>>         runtime, and adds a fast-path check to eliminate lookup overhead
+>>         when the parameter is not in use
+>>
+>>     2.  The second patch renames the variables and helper functions to
+>>         adopt the preferred "module_denylist=" and module_is_denylisted()
+>>         terminology in the codebase. To preserve the existing user-space
+>>         ABI, "module_blacklist=" is kept as a legacy alias pointing to the
+>>         same module_denylist variable
+>>
+>> Aaron Tomlin (2):
+>>   module: Extend module_blacklist parameter to built-in modules
+>>   module: Rename module_blacklist to module_denylist
+> 
+> I feel with
+> https://lore.kernel.org/driver-core/20260421-acpi_mod_name-v2-0-e73f9310dad3@sony.com/
+> and this we're really making loadable module and builtin modules less different.
+> 
+> I wonder if we should just somewhat unify these completly, so built-in modules
+> just behave identically to loadable modules, just without runtime relocations
+> and ability to unload.
 
-Applied (just this one) to `rust-next` yesterday (next-20260813) --
-thanks everyone!
+I can imagine this being possible and potentially useful. For instance,
+a minimal `struct module` could be used for each built-in and loadable
+module. For the latter, it could be then extended to something like
+`struct loadable_module` containing all the fields currently needed for
+loadable modules.
 
-    [ Added a few more intra-doc links. - Miguel ]
+It could also help improve some C APIs. Functions currently cannot
+determine whether a NULL value passed as a module parameter indicates an
+invalid pointer or a built-in module [1].
 
-The second would have a bunch of conflicts when merging in linux-next
--- if you really want it this cycle, please let me know.
+> 
+> Of course, that's quite a big change... And mostly likely people won't care
+> because almost everything is built as loadable modules in distros anyway.
 
+I agree this looks non-trivial. It would require proper investigation to
+see how it might actually turn out.
+
+[1] https://lore.kernel.org/linux-modules/610fc63b-f3dc-4824-99fd-907fc96f3194@oracle.com/
+
+-- 
 Cheers,
-Miguel
+Petr
