@@ -1,70 +1,75 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022132.outbound.protection.outlook.com [52.101.96.132])
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020080.outbound.protection.outlook.com [52.101.196.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275533C9EE4
-	for <rust-for-linux@vger.kernel.org>; Fri, 14 Aug 2026 14:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C563B3C81AD;
+	Fri, 14 Aug 2026 14:27:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.80
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786717463; cv=fail; b=tYdA+qmZyVY9cumprFCwgKfBEoa8jnWD2rWonuu+aI8jyUiitaRqOlSFeWp3GaDw9O5tpn9dl1qJMAhvQuX2w7km+ajj78IlJQ6tLAMsZnf5i+p3Xjq8YovEErL0iHnJz9INgFvfjRLBSG5FQP+4AYAWsMGjqW5CEWOk2OVUdCk=
+	t=1786717644; cv=fail; b=EwOKkhv9FqvJJ9A4WmEePwOEND7Yzo9vl/vRqN8+R+g9ES2bjVWSzRl7C0rfwnnzgN5WlMqbNsN5QCyRWqwakT1yPgu+/AGed5VCHOOcmINsPQ7PDijKA5zHZRumRyjEyknaEwkQjhm5dKsCcx3aqMrgytfRO83ZwiinQNAOwwA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786717463; c=relaxed/simple;
-	bh=TaFUGt/TcyAgGFbBnB2DDOEXMg5tdiUX33Z2IY53+IE=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=c/x0/uqLumK5vzzkA+NuHiQE8isfp0KJdCN+ru+bv4wn5qDnbX6cGifaCYhXQIqWZ4HzMh7vYoKgDXKB+zIsjS49npmhTkMKe0m13uPBhxHMLCsZv2xNOF32HK5AMho7maapSabIB+arx6UyiSifBEAYZcepgOCLMopWJd4yJrk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=HSGF4Ip7; arc=fail smtp.client-ip=52.101.96.132
+	s=arc-20240116; t=1786717644; c=relaxed/simple;
+	bh=drpzLNcpwbkoCGrYRroGiJlgRVP8N59/jDK/c4XK3/U=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=qIjed+0vyCjqxCsHljZMXsv5GPDmtLRSTxXXMKZuqOgbgjzbH5+TPeldWT0H3KjQGNNUjlLamcY2X5tVW5hLFqezewA398HXMtmSVZhALrimO5QScU3kDbUUu9sNA3RHCD6RPYatwRlRINIT3SQJC2pK1S7jZ/EGAtLAaz5MT30=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Gnidgyaq; arc=fail smtp.client-ip=52.101.196.80
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="HSGF4Ip7"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Gnidgyaq"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e+imyj1+IP5C4UeXPVzokG+l2b8CvXm3kymesBMTjo5rVtNW86vIVtXtQmK46sV3h3bl2tyfbO0fbfWGfwc28aRpUGrvDU1sDecinsCmGk24FZpwXCcQvPNhAfCLjN4oGebrARS+4YNoNDwgIdASV+pzjMHWeme42z98fBcrkz+6riSfUHCGfCCrYNnOUPLOeU+nk6ww+/GGJnqnqGBr5T+wLk99rEZon1sdlfhdy/PvV2zhN4kGDnCujKwkY9sTNTjthIZr6h40B+sMOxdb8O821YmN+v9vfKgTJzCG6qhcveOJLh92MqEu27Qk0RJGviBHRc210octPGOn5SV31Q==
+ b=n6rv3Z7ukkKNWt0U2wYdx9KCUfoTKaN661BVLB1EJCfPBgGaw92b+Osyl3g7kaaqW6hI6DfZdgHuRenb278PcKAzQWGveeFqeMUwVHehzc4LHuqmLbyaAg3cQHRvMesQBdh1rbTqBbUeofrfyCRkDiotSWFZw0jR8oj0n8kYA/i50Xk74us3YIgbeU894d13PlUYjEPGykDkGJqFUvZB7N20WZs5v/Wf99gKaQUaxmEx6cdr/ZmJJ/4s8fPTw8RrBnQxCOLEO98NRqJG1YTFc2KPHDqE1H/SMp/fIrGz0E9eiyxcQH9Yfl8ysumI90+QNDy54KZwmznLfNB2w28wew==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qxCNdM4jMqtOyXKNHkAUrF5IsjGiAdWr8ZKgVLsl0Fs=;
- b=ROr+JLgK1+1X/t/eNU2nvtLOGlExippKoLW9KwSuos1NVLiXmx2ic0j5UOgE5Bfj/rXyqLQYx8xgrTTUhetGTIjO6KpeDNUPCThL3MzeP4KkMDPWiU2TX+1en6ESUwSu07qaOTTfSUDA0+0TdEYdJbN5p3wDmi0Q1PAmxXZX/xRDQkGC2icXdOfLQl/hQiGMrzNPfQHQ+JWT3kEx59mSvGSB6Z/vicOGsW1p5OfL7y+rIovsrJfpbzSwxrUW66ULpWhzsaSDh7Fi4f2/ZkyF2EvxE7m2vRN5rkijuw42FIuLRxrz3siTH7MCtvAJNA//vD7pQFus/0SBpP1rsEVNYQ==
+ bh=c5tXyLKpPRPEcx1FkfPs9f7w/OXnOp835OC/P3kamNU=;
+ b=HWfbgceag7jGEMByrXSbEdBE57YeJ9jcKDb1wqJsXNamP3Qu36BgU5U4fiMGBLMmQnqpYr7j7CXgAEuWqLgFPFbVl+3FSGCZJysefaTkna7l7kGO6DMbX/0UvCE0Qsfh+mSPtPGhCP/DDkYgj19raOQbE4Eq2GfAs19DMNA85odnSDiyexwARNcU5hLzHH+UW9Lv+0Xb4uQaSJk1Krw/zEDtUswTvpKDON9Qwpr9U2Tl14Rpku+DtxoceXu1nfrLoO+PGZpZ/uzYBzbI/Vfpld6gkmTJb2tkTbkIK+XqwStQtBYrTPUA3tjZu7tmRAUQrL5VmqG6R0HOw8ZmXoPEdQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qxCNdM4jMqtOyXKNHkAUrF5IsjGiAdWr8ZKgVLsl0Fs=;
- b=HSGF4Ip7XdBGNnv6L0UIwZjZ4fIOd/gc/u7TEf2UupOeIsJo5rwQuMEW4HODR3nWmAl/Zl+iRl+F7Nepdw8ct3mVX/y0Bfd2DvpnuCJ2KZVc6wgbNqMLBhgZ5Vogw84+L1l8GOvD16UnWNrVyLx0DARXTEncCFF4km5IdxBwoN0=
+ bh=c5tXyLKpPRPEcx1FkfPs9f7w/OXnOp835OC/P3kamNU=;
+ b=GnidgyaqDoDjV7qE5s9VRpZBRljnxPtPiCdxgkJqJ30sVrfH7q5T5R5pMzv5HGvhkEau4Fn6Wh1sTfzbGxW5fvjDZQd7IXaoo6wJZomcKR3f8k9CRkAM/eny6THfw1mTgyRGVjjZd6AQ/mxRf01gcoxo3wgBqlmIcHTsaAm5S78=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by CW1P265MB7894.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:207::9) with
+ by LO6P265MB6507.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2d2::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.15; Fri, 14 Aug
- 2026 14:24:11 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.16; Fri, 14 Aug
+ 2026 14:27:07 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0315.014; Fri, 14 Aug 2026
- 14:24:10 +0000
+ 14:27:07 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 14 Aug 2026 15:24:10 +0100
-Message-Id: <DKOQH5AD00IZ.2UHAO78NDFZZ6@garyguo.net>
-Subject: Re: [PATCH 0/4] Fix forward()/expires() racing with concurrent
- arming
+Date: Fri, 14 Aug 2026 15:27:06 +0100
+Message-Id: <DKOQJEE8N62T.3A9H2AB444179@garyguo.net>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Tamir Duberstein" <tamird@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, <driver-core@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v2 16/16] rust: io: register: unify handling of register
+ with/without bitfields
 From: "Gary Guo" <gary@garyguo.net>
-To: "FUJITA Tomonori" <tomo@flapping.org>, <gary@garyguo.net>
-Cc: <anna-maria@linutronix.de>, <frederic@kernel.org>, <tglx@kernel.org>,
- <a.hindborg@kernel.org>, <ojeda@kernel.org>, <acourbot@nvidia.com>,
- <aliceryhl@google.com>, <bjorn3_gh@protonmail.com>, <boqun@kernel.org>,
- <dakr@kernel.org>, <daniel.almeida@collabora.com>, <jstultz@google.com>,
- <lossin@kernel.org>, <lyude@redhat.com>, <sboyd@kernel.org>,
- <tamird@kernel.org>, <tmgross@umich.edu>, <work@onurozkan.dev>,
- <rust-for-linux@vger.kernel.org>, <fujita.tomonori@gmail.com>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
 X-Mailer: aerc 0.21.0
-References: <DKNVOU9JC15P.3DEBNZ56QK20E@garyguo.net>
- <20260814.084700.1697518597717457311.tomo@flapping.org>
- <DKO995UPAESG.UQNZ5G92HCPQ@garyguo.net>
- <20260814.224838.67768463960169120.tomo@flapping.org>
-In-Reply-To: <20260814.224838.67768463960169120.tomo@flapping.org>
-X-ClientProxiedBy: LO6P123CA0050.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:310::6) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+References: <20260805-typed_register-v2-0-c3ca142220a0@garyguo.net>
+ <20260805-typed_register-v2-16-c3ca142220a0@garyguo.net>
+ <DKOPW4JAQQYY.1FJCI2HTRLIPX@nvidia.com>
+In-Reply-To: <DKOPW4JAQQYY.1FJCI2HTRLIPX@nvidia.com>
+X-ClientProxiedBy: LO4P265CA0306.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:391::11) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -73,150 +78,111 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CW1P265MB7894:EE_
-X-MS-Office365-Filtering-Correlation-Id: bc702e11-90e8-4cd8-6dca-08defa0fb560
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO6P265MB6507:EE_
+X-MS-Office365-Filtering-Correlation-Id: 705707fb-e45f-4273-ce67-08defa101e9a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|23010399003|10067099003|56012099006|4143699003|5023799004|22082099003|18002099003;
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|18002099003|22082099003|56012099006|3023799007|4143699003|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	kAXrvpYzKcFzyUSpkhz4tUGXJ7h0+n9b0/ymVfz9sSlxt8oSlHeJ4Kswc6y7rSO2H6bAX+EgsLpABJPsi7nlnBfjbb/zsMUYkyUgohAmPp1Wxl0rhfA9y59jLjzjMXrLc3xhELmdWV9eiF0wkAnac6OmZoQHFXt+qK+10/77d8wXeQWN8OjV55crnPF7GJJvT2n6UzdrJO9eqsb6cIWKAFUpYoqUBz+1CHhx/Y6JyybP9yU87eMUgzsfp3jj5SZaB17sslddRkf3cbl7zJDf1+8sbU2vqep1p+6mKgzWh9aLFtRXNuRm3X7pPRkQ0lfotESCXvMEcK37UKLz1NUteaxxXslrR4qS8D2SWglirxF/DwKV3WmxQmo20KJGk/fFIweTUD35rJIjzXxnyf976kbug+I/y0SJ67khFEjSvTKVKWoTVD7hI3IQ3hz8LUViItXognSv29cyumf4dXzsKxMidzPZW8rWS4LHaEtSz8GTvO2IAcwjAGnnFSjQpkLObHqd1SvrAXc+DxC2luorfZIxlIOSjXPqRsjHB35A/LEVAGGx9bRcmP9BBSQzMyOOibwG/pVWuJhNWHzHTPNq/gYUE15U7PbNjdCltA+BeowoYA82Qmlv3VRg6E9zTWpFkc7R3af2sS6WUhH6HXl1gruF8PLbDjYxlZJchs2/SVg=
+	+1RKUqHmKrqU85e/5GILBKfFCk7eUP87dAPPkoqvDeUxmg8qZsTdw7AhOtXAp6gsTBjcx1PpriD8lmTxEifbJVCgzzep+WGmMffpV7vKSH9urfxvMAh4rxlQgeGiUJpCoKamlUFyyuGjtdeH7M7lig0g5TPx6L5R5w0mZbxWbKjbULz0R5HdSMyGiDPK4OXjxuwz+kxwwgSKRihKLBldhU2ASnBthEQzCCcQJIT13u/kw9Wyz6abhwzOcu2WNv/dEz6VtkPTKsoFLqLftFXEyw9DLyKP0lE/lOkpTQmaUCwLqfIZTfnjtzO7vL2qoOEV/wUHhh0swu2cAIn+VngKs1yRju2tMJaxCFdoIQ+i5vAfnIofjOtrKUvoNwp8II1OZXEB1UV2i0Bsf5cm0xzUpQScNNytDCM60e6TdLi/KoyoZ1quC22i0UO3nYtgxPho65136y8/gxQLAl3hhfMPhGYe76VWAqfBWJdfNagIHN2iGKlgDU6ifptQY5lfg3EFjdJq1B2P5KhurRDOhTBLU94u+O/vZ6s9Q8WwYWnO558TyqIho+PC5QM0QWHsabZXtdNz1qlZGuph2gT3AiGYKl1al1ohmS8/u8WZRhLjT0rKkPTHVpj7JZX5dRtp70N6j+FuBu6eVG+r+g4fYMsBYFvRUaaBkKhj4Z9HyQNx9vU=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(23010399003)(10067099003)(56012099006)(4143699003)(5023799004)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(18002099003)(22082099003)(56012099006)(3023799007)(4143699003)(10067099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bWNVNU5DaWN5a0dvbGZZQ0pETUF1YkhramNCd3Rwa0pteWt3dWVYRDZTaDAw?=
- =?utf-8?B?c1phc2Z4ZGFxR1dlOTVQWE9zbHpnVnVuamhCdklVb050alVpYXcxM1JXejd6?=
- =?utf-8?B?RllDeGtJUTN6RFlSeTNxa0FXUWVvRGpCSlNoZTlIK1YvaE9FNEU4MnV4elJa?=
- =?utf-8?B?b05Wc0RzNncxdmFKU2Jaem1vamd2WWkxRnNjWTV4b1JmYWJIdWsyS2FkbEY0?=
- =?utf-8?B?ay9vSGZPODJQSVVDQmo1UStGdE5SNG5XVGQ1dFJNL2hwaXVSM3lpTFBGRkIw?=
- =?utf-8?B?VXBQcm5SVlhVcDI0K1ZkT0pYcm4zSU1PdlRXeVh4UWZzVXJ3VkZXeUZxdzIr?=
- =?utf-8?B?bDBxTFFzaXRSS2VPdnMvbmY3YWxyZmprOXh6WjVwRER2ak1uSGFDdCs1NmlR?=
- =?utf-8?B?QkpYcDJWbEZMVFRCZzBCRUIxeFVYdG00NmpMajFPaW55dzd6Vlk1eGo4dlNh?=
- =?utf-8?B?MldoTFVhb21CazZSK3dmTmpOeFdkY1dPRDNxb0NqTU9ibFFIVXpkbDhZTi90?=
- =?utf-8?B?WUNwUUVQbzFBMEFPRWU3c0QxMUtaMGUyc3Vndmo4dkZ4d2hFaUd4VlovYXdm?=
- =?utf-8?B?bmVaY3ViWUUwcVRKYUExbDhVclk4Q1NpQVR4OWIyZFVOd0xoSVFQNnRjNkNZ?=
- =?utf-8?B?a3hDcmtQTTloVTNzdWlpMTNIR2dLZThnRTR1cWFnUkJiOUVhSFNZeTlpRHVU?=
- =?utf-8?B?Q3kwZXhLNmdoai95dmV3bXg2U1l3RjlrVm9WZ1ZqbmwxKzVma0ZzRnBtZVZP?=
- =?utf-8?B?QWNleUd1eGN6UENvSDdyc3Y3MkxzWGFCazZ3c3VvYXpRWmhDV2tXM1h0c0N3?=
- =?utf-8?B?V0IzLzY4ZnEwdHdEZTVnWXdpczZUa21wTVZnQS9tUmtxeVZnV2NxWWdMV0hk?=
- =?utf-8?B?cWpuRHpGT3MrSFJEL2Y3RXBxWm43YzlUVVRRMmVXekI5MnhJUGtrUWFhc1V1?=
- =?utf-8?B?TEVmTEhNS0lyN3ovZ0JseHJOdmNuWWIza2hOMU13cW1HSFBlT0dGd0Rvb0oy?=
- =?utf-8?B?cTRDRlNXb0tyOUhqVW1VNXhPam81alFOT2ZZOWxnODF2YnVxTVd3dW4rZGhv?=
- =?utf-8?B?SFh0T2FzQm1COFVFYktCV01scWE1ZWRlT2xmNmdGbmo0a1RvVzNVNXpjTWp1?=
- =?utf-8?B?STFxTVBCd0NQdWh5UUtEd2d1UzhrU0FwcEt3RmJiOWRVQjhRK1hSN2NZOWtB?=
- =?utf-8?B?UFZ6YnRZYkQ4NUZPQ3hWQXhTNUNXdXE4YjZWOHN5U1Rmd1hZTTN2TlJMeWVi?=
- =?utf-8?B?ZE82MVptQU5JUUVWZndBUXJPYmx3SWhRTk5qOENYZExuanVjOGVGa2lDc1Y3?=
- =?utf-8?B?WDAwY1RPRmNJV0VGYXI5d3JiMUY5NTQ0OVBZV1BZWjlOYmtsVW1zQkNUUUFZ?=
- =?utf-8?B?NGpubklQMjR3OXo2MGZxaVZFY05ZQW5sUnNKRmExUmlCWFRlYnRYYUQxVlkw?=
- =?utf-8?B?d2pFbEtNMFBPTkYxOWNuU1Z5akRtOUprVWRRbWVhOGcxWlpwL3FGczEwc2o2?=
- =?utf-8?B?ZkxXWVZVbkFuSFVBMW44NVFwcmhkVU0zaGtYUTJFa2dPNld4bjFsVXczR3g4?=
- =?utf-8?B?TzJ5ZVNNcXhpZEhSWlh5T3kvTHFBQ3dENHArWW1kbXlCdVZLY05hQWExNjBl?=
- =?utf-8?B?aXVEMng4akE2VStZR2FhUGtwbEZlanpDazFBZnVWZ3Z1MWcvUW1pWkZEcERt?=
- =?utf-8?B?V0w0bUpoMzVWUUdCQThIbW5PbDhYVnBXSWtFcWs2czNFbTZRZWsyRXJMVGk2?=
- =?utf-8?B?d0F4ZEJIUUpycVVzdkxYbGZTTEltN3lJRHlNLzE4NWhYMVAzc0tLQUVRcnhO?=
- =?utf-8?B?cmdrYzl5eFYyaDZtcVdCTTdMT3ZqRHYwakdzaFlaQ2ttK0V0NGtTdTBBU1BI?=
- =?utf-8?B?aVdqcmI4OHhJZEdoTGZRVzRycTJMQk1ndU1MMVhXV1BlWENEbUg1SFVKbTdJ?=
- =?utf-8?B?QUNKd1NaOEdrZlozdXluK3VpcVk2bW04WCtoR2gzOWgvV05od3R5UGJiSDBG?=
- =?utf-8?B?cG1pS092ZDhoYmo0WEN0SGM0RWhTYWw2a0dYRzhlMkl4RUFJWUhYMVhVOTUr?=
- =?utf-8?B?dW96ZFBkM3FHQldzQlU5Z0RnUkhvOEZ2OGpTUzhTTUtOdjBLUEZyL2JBRXQ5?=
- =?utf-8?B?eW9ucmNWdVdyVkU5YU9OekVHMVhKcENzL0p4TEJlUGx1cHppRnZqNTVBZ1Bk?=
- =?utf-8?B?YWkrNnRzcXhKR0Y3UW1kZTNybno4cFZOTjI1QXQ0bGJtQU1UWHNFa3pEUVZi?=
- =?utf-8?B?aThnMTZnUkJvN3FITjhWMnE0LzRtbVVUNUR5bEEwb2tNK3JGQzRBNkhpUmJK?=
- =?utf-8?B?a0R2Nm1JWE11RDRsYXhzZzM5VUhLZnFmWnVnc0pTcitTU0VaMGpEdz09?=
+	=?utf-8?B?c3JEZ1Vad0tUUjdiaDF1R2tMcjdYa0FqNVZzR3hKbTZRWXArVlVuaFVaTVpu?=
+ =?utf-8?B?RDRMZEZCai9JTlVUOE5RM2pjZEtBejI2aVRLNHVFdmlmY2JCTWdlVWFBcCtH?=
+ =?utf-8?B?THRXOGtmRml5c1pDYkliN3lRKzM1eG5zZjdBL0lnQ1dGMEZRN2U4NHZRSlhD?=
+ =?utf-8?B?a3lKY0tOcUhlMlJUZG5EQ25pSWtTU3pTMk4rV3lua3U3eTRKYnhNeno0MW1w?=
+ =?utf-8?B?cFpld2tENlRKU2xqTUs3STNJZWNyZmtrL1NIbi9TS056RTExT1dBMVdoRHN5?=
+ =?utf-8?B?RG0rOThkR2tTSGxuaE1SNHdJYmlra1NpaEdRckVjQlhBY3hyNys4aUpwSS9j?=
+ =?utf-8?B?a0k4ZVpFQlMxeHR3MDloaDZsZm9sMjFBREFObFNoQWVQY21seDFYVGpDY3o5?=
+ =?utf-8?B?RXFlZEplWTR0SG5XSmRGVDZMOW1EZ0VLbS9jT0VFK0UyWWNQQmt3MEVLNzR2?=
+ =?utf-8?B?NHZqN01EOVJiVFpBcHBLOXVzTkQyM3dLRlpJcy9UelpjZjRiK2dOOTJDN2E2?=
+ =?utf-8?B?VzhFdkU2b0s0MEFiNm5NQUI1NE1jQ0ZNYjlCSldnY1lrbWlKSHYvLzRCaGxQ?=
+ =?utf-8?B?Tko3eXdPN245ZUw2RDhWVFNKWVIrSWltaTZoT2xQakZ1NFY4US9kcUNLdk9N?=
+ =?utf-8?B?QVRoalRsQWpHUnBzM1hURldqUXZ4YjYyQTRxZ1BFUXNhc2o0cmppZVkvcTBp?=
+ =?utf-8?B?ZmFGWE1nVkV4cEhpN3Jncm5XczZUS2pJVmtqWHdFaFZlU05aTzdyRjJFRkpo?=
+ =?utf-8?B?eUtlbzB3dG5WTDVCQTRHOGVrK1FqSUZUUlpoK1ZDN3VMdmk3K2g2QnhmYUx5?=
+ =?utf-8?B?S0JVMGo2cncweFdDb2xvci8yZ3ZJUjNCbVBCZm0wMHM0NEkyOWVoQ053TDN3?=
+ =?utf-8?B?WjV3bDA4SVFrdjdYMnU2SkIzakFuZThzU3VXN3B4SEdkc0Qwa3dOZEhSQnJt?=
+ =?utf-8?B?Q2dHRmVDb3VuVzdFUHYzekxKRGIvbXdYOEY2N25PSll5Y09DaXl4Q3ZnQ2Qv?=
+ =?utf-8?B?RFF3eXNUdE45K0NPTTkzeUFWeklMcE9XVUpLVkE1VjR6SWxkclB4Zlgwamc4?=
+ =?utf-8?B?Y1Y2YnZsMGFRcFJsVFd2Wk5PNjlSNXlzRnppNElZSUUvQys0aTNmR05mMFNP?=
+ =?utf-8?B?VkxveWxkOW12ZTRnOWhRT1hnc1lObVhvRk9vdlZwTDhia2JFUnNjVERKNCsr?=
+ =?utf-8?B?QzhrQitTYXRNbE5pVU81dzkrT2h4dTFrdjhjdEZMeGh1cU1HejBHczZmV1ht?=
+ =?utf-8?B?T0IvUnVEcHo3RUljWE1LSzZCTklhM1NsZnFsK00wOHpYZS9lRVFrQ1lwY09Z?=
+ =?utf-8?B?dTNkNnJFVXJ0TFpieGRjZmtkYlRRZmF3NXMraWpyYXo4WjAydlJOWW1SeWlD?=
+ =?utf-8?B?MUJjQU1nUjk1Sm1ZVDVvNVk5dzA2UU1DREx1cm0xZmdxVHNWdGdoQkliNzRh?=
+ =?utf-8?B?NFJWbTlHZU1NbmdQa09Za2tuTjVaYWkvMEowV2J6cGJtdUVrOEJDcDNQby9m?=
+ =?utf-8?B?d01iTzBSdXJoZkRsUGtsWFdLRjFLcGp1eXZtcE1oWkRJVEE4NE5XeS82Qjhk?=
+ =?utf-8?B?L1ZZdnA1STk4N2FJZ211U0t1bll6MTN3a2ZnWjVSUTEydS9JQmNTMCtSWE5J?=
+ =?utf-8?B?VWRnOU9ZUFNuSEVNVzUwb3I4SW52Ym9kYXNhMG52REtZaGtzM2sxK2pydmpv?=
+ =?utf-8?B?RlZEVVIycHh5RTMyRFRhcDU3QzBONjArTVNUYk55K1FLVk8vaGIzMHFlekI5?=
+ =?utf-8?B?d1c5emE2Zm1CRVJyWXI4QjJiYWN0SUtZM3hEbXJXcnR3RXJ5TXRwUVp0YXRG?=
+ =?utf-8?B?bTRCMDdwTitBOHZEdnlzRzYvOFdyUzNNRG05VS9wak5LMkJ4ODVOMm1NMmNu?=
+ =?utf-8?B?SjlxamhRWUh6bnJ0VW1aUm9NSVlOVXM0NFJ3NDdzRDZaNEd2UVJOeitHb3Y3?=
+ =?utf-8?B?K3lRMTYxNE9zZktjZEp2QW8rRks2SzhrcG5Gbzl5c0JVNTZqQ2RuVGZsKzZu?=
+ =?utf-8?B?ZDN5OXdRdnZ1aUFBb2k3SVJReSsxMWw0Wll0SFJQK0VhNFhyak84MnZ2SEpu?=
+ =?utf-8?B?OGtiMEFJTDdkOWxJUXpCSWs5K1NnMTQxVEJpTFpWajJZMWZMV1c2ODJWTSt5?=
+ =?utf-8?B?MjJiblgxQ0syUTB2cWNRS3JwcEt2c2NMYjhUNDQrT1lvZHZZbEduYUtHTkhR?=
+ =?utf-8?B?dnVlcm1JSUZKNUFxNzV1a2dYVHpGRlR5cjlpSE5CajdNeWtWaHh4K0xBVEFr?=
+ =?utf-8?B?NzdBZm84cXVNYlgwS2RHbmJBYnJyUjJ3NVR1dWdsRDFvdk43RndwRkNmUS91?=
+ =?utf-8?B?MkNVZXg2Szl1c1phc1FrYm5ONVptUk1ObW83WDZSd3NWUHlyTE9nUT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: bc702e11-90e8-4cd8-6dca-08defa0fb560
+X-MS-Exchange-CrossTenant-Network-Message-Id: 705707fb-e45f-4273-ce67-08defa101e9a
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2026 14:24:10.8774
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2026 14:27:07.4009
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gBuJM7sczrrSLa7ToEhFHpVU07m48J9UitnBSQtwGzu2Ka/OGpRP2HzLeqEBN/ip8En6CkWU3CJDelfpU/TI2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB7894
+X-MS-Exchange-CrossTenant-UserPrincipalName: igWY6Y2Zry0Z8rXF8UNCmcTGQadCpa8m2QqmlhejEZC2LXsK3BQR9ocq+HCcKk7FEmmTPatX9f4eYVBFpPb2Qw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6507
 
-On Fri Aug 14, 2026 at 2:48 PM BST, FUJITA Tomonori wrote:
-> On Fri, 14 Aug 2026 01:54:25 +0100
-> "Gary Guo" <gary@garyguo.net> wrote:
->> Let's ignore the implementation detail of all various Rust pointers. It =
-is
->> something that I plan to overhaul and doesn't matter to the core issue h=
-ere.
->>=20
->> The change you're making is to remove the ability to concurrently start =
-a timer
->> in Rust. So if you have a timer might be running, you'd need to first ca=
-ncel it
->> before you can arm it again.
->>=20
->> I do think it is conceptually cleaner -- however given this is explicitl=
-y added
->> in
->> https://lore.kernel.org/all/tip-5de2755c8c8b3a6b8414870e2c284914a2b42e4d=
-@git.kernel.org/
->> and the pattern is what perf core uses; so I wouldn't just dismiss the e=
-xistence
->> of this pattern. Perhaps cancelling before restarting is considered too
->> expensive and has to be avoided?
+On Fri Aug 14, 2026 at 2:56 PM BST, Alexandre Courbot wrote:
+> On Thu Aug 6, 2026 at 1:35 AM JST, Gary Guo wrote:
+> <...>
+>> @@ -577,6 +547,9 @@ macro_rules! register {
+>>      (base: $reg_base:ty;) =3D> {};
+>> =20
+>>      // Creates a register at a fixed offset of the MMIO space with prov=
+ided type.
+>> +    //
+>> +    // This handles all of the fixed offset `@ offset`, alias of regist=
+er `=3D> alias` and alias of
+>> +    // register array element `=3D> alias[idx]` cases.
+>>      (
+>>          base: $reg_base:ty;
+>>          // `$ty` cannot be `:ty` due to follow-set restrictions.
+>> @@ -593,10 +566,29 @@ macro_rules! register {
+>>          $crate::register!(base: $reg_base; $($rest)*);
+>>      };
+>> =20
+>> +    // `#[unique]` indicates that this is the only register of this typ=
+e in this given register.
 >
-> The pattern perf core uses is "no arming while armed".
->
-> While perf_mux_hrtimer_handler() returns HRTIMER_RESTART -- while the
-> timer is active -- perf_mux_hrtimer_restart() does nothing. Only once
-> the handler has cleared cpc->hrtimer_active and returned
-> HRTIMER_NORESTART does perf_mux_hrtimer_restart() arm it again.
->
-> That flag was added precisely to implement "no arming while armed", in
-> 4cfafd3082af ("sched,perf: Fix periodic timers"):
->
->     We do not want to race such that the handler has already decided
->     to stop, but the (external) restart sees the timer still active and w=
-e
->     end up with a 'lost' timer.
->
->     The problem with the current code is that the re-start can come befor=
-e
->     the callback does the forward, at which point the forward from the
->     callback will WARN about forwarding an enqueued timer.
->
->
-> With cpc->hrtimer_active in place, neither of the two conditions that
-> 5de2755c8c8b touches is reachable in perf's usage.
+> Sentence doesn't parse (in this given register?).
 
-So are we okay saying that concurrent restart is problematic because appare=
-ntly
-it cannot be used correctly (because you don't have a way to synchronize it=
-)?
-Perhaps we should just revert 5de2755c8c8b or at least do
+Oops, I meant "in the given region" (i.e. base type).
 
-    if (restart !=3D HRTIMER_NORESTART) {
-        WARN_ON(timer->state !=3D HRTIMER_STATE_CALLBACK);
-        if (!(timer->state & HRTIMER_STATE_ENQUEUED))
-            enqueue_hrtimer(timer, base);
-    }
+>
+>> +    // Thus generate a `FixedIoLoc` impl for it as well.
+>> +    (
+>> +        base: $reg_base:ty;
+>> +        $(#[$attr:meta])* $vis:vis $name:ident: #[unique] $ty: ident $(=
+:: $path_frag:ident)*
+>> +            $(@ $offset:literal)?
+>> +            $(=3D> $alias:path $([$alias_idx:expr])? )?;
+>> +        $($rest:tt)*
+>
+> This rule looks like it should be private, or am I mistaken?
 
-?
-
-That said, the perf core's pattern is still different from the API that you=
-'re
-designing. When perf_mux_hrtimer_handler unlocks cpc->hrtimer_lock at that =
-point
-perf_mux_hrtimer_restart can already kick in and restart the timer. From hr=
-timer
-core's perspective, it is starting a timer that is still have running callb=
-ack
--- but that callback shall only return NORESTART.
+The idea is that if you create bitfield yourself you can still use `#[uniqu=
+e]`
+to bring back the `FixedIoLoc` impl so you're not losing any expressiveness
+compared to let `register!()` macro generating it.
 
 Best,
 Gary
-
->
-> v1 is missing the ability to restart a stopped timer: once the
-> callback has returned NoRestart, the handle owns the right to arm and
-> never gives it back. I'll add it in v2, including a non-blocking
-> variant built on hrtimer_try_to_cancel(), so that a caller which
-> cannot sleep can re-arm the way perf does. That makes perf's model
-> expressible in the Rust abstraction.
-
-
