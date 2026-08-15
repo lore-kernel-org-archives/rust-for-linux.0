@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FD1346E6D;
-	Sat, 15 Aug 2026 01:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C70156F45;
+	Sat, 15 Aug 2026 05:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786759121; cv=none; b=Ib28YUUBw7TViQTfhIq5iFTFOUwdhleefBOavgo3XOUNwl2hIbKaOqaYjhFjZd9Cpy3a/B6ZlRgnqh+lk3BgWjGJ/417JTs/8w2pE9Gfe7a2xQmaPh9fgvhrRPT8i8yPSbabY67K72QEWdb2+k7FTy8X2V8USedLBSpvxEotW/k=
+	t=1786770131; cv=none; b=FyovfSw2pTIofWlAl5Xngd0VWdI/VB+XsOtzNvNYJ9A+hHBl4cKJaLTyj10uzklYOuQfou1gMSCXA+hviH2+GOyM0uS7DtikZesNBMyWU1eFwm3St1Key5QYIMH1aqCJnSAhbwm9hQB+na58txfkgoKUIfQpehSEEAiWefrxOWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786759121; c=relaxed/simple;
-	bh=qtPsJMNU7QlQ6OuxcXYUU2STv4bugoDWj89ZvxYousI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cUAgnnXqVBAz7xRWDBvrWzZisgOKS8wtP9ylthfex4kmCZhPqMqUR/IIX/rU1WZV9K0TCdazbEfTut1FAd6CfuIXJLj0/V1rAktDsDLQfBARRKEr6JGq/4xyLNa9pWXwaPUBZ1keSr3gnd+pdcmeRAJnf0Rw6Ts+SyUKTJGw4MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gEv1Y1xS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1786770131; c=relaxed/simple;
+	bh=gKr1C7dvD8KfZzdbeyurTP9rArSW+LY8tX4oYaAXeTo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=sAHRgaG19b8XbVnFDsc0Z6k68GebcgsZqEU7EqhMnOgbZVlW+60QHwC6Iv1SMly7MpHHFgxHRao5seKYnVFr7ui+fK+q7mAXqs6Ad0gECFzJPsgMy3nXPeTXaIhZo4iS+SWTSqt2s+GzLyyi+YZTAKLSW8fQLC+CNNbna9PcaJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e1+4BPuh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gEv1Y1xS"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C78AEC2BCB3;
-	Sat, 15 Aug 2026 01:58:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e1+4BPuh"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2F1CCC19425;
+	Sat, 15 Aug 2026 05:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786759120;
-	bh=qtPsJMNU7QlQ6OuxcXYUU2STv4bugoDWj89ZvxYousI=;
+	s=k20201202; t=1786770131;
+	bh=gKr1C7dvD8KfZzdbeyurTP9rArSW+LY8tX4oYaAXeTo=;
 	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=gEv1Y1xSIfGsSftVVl9jAtSlkituED/FmX/E0/yuIHBoI77BM67b4PGS22DVfN+0A
-	 zP4YJVTaX+MaEz2SVZYipCaf7NaRCeRhamkiSf/Ng//2rR+kFlLOn5PGHVEqbx0NAD
-	 0O/oGjbeURBTBZBM1vYcWiFjuBdcrWwm/pRtrDi+U0/v4xS1F30X92J79aQ9vsJXGh
-	 jauMuW7t4+c92mf9VOKzM9cWtOnSrtkZrKtoRhSGCdm6103n7gTJmddm4KNq1eQ2Js
-	 XRrx7UIES9R3hqE5YWZBNtUkJtiF5tpLp6gk+yAN0fV2G2T1ehFrz7cmPeeZ2FNQof
-	 m1FrSirjaC8ZQ==
+	b=e1+4BPuhbDOkHuBu32CPaZnXoechrL3AXk5eZa4nZYA7Bx1KQArL+YyqePYRzelV5
+	 TBBqVA93Wyrm453BoJ15KZS7oyD4wWhppK84jQwpq3STX+ctmMA7dLCxeFnEbPZpzg
+	 t8pve0lXpt6+HVkT0JTW8FT4l7b2hcuOiadR9/e2aW8/wejsIJ4d6kzQX8DqN9zwCU
+	 KC03vDljeQfZsxS+7RuGcNiFKfczMXH4AkxIc9xhMZrpDj0pBsZVtl5GaPTCKnsW9h
+	 DcOBfwb91daozDqgzHDCO2VW7FOTGduHhM78Iy/fcMkfotkX5L7tchD1WTF71ubZy5
+	 f4ceIpfs5W5fw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1DD7C5CFDB;
-	Sat, 15 Aug 2026 01:58:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 18C99C5CFC1;
+	Sat, 15 Aug 2026 05:02:11 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Sat, 15 Aug 2026 09:57:33 +0800
-Subject: [PATCH rust-next] rust: fmt: rework pointer formatting tests
+Date: Sat, 15 Aug 2026 13:00:31 +0800
+Subject: [PATCH rust-next v2] rust: fmt: rework pointer formatting tests
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -39,10 +39,11 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260815-b4-hashedptr-followup-v1-1-83324702b4c9@kylinos.cn>
-X-B4-Tracking: v=1; b=H4sIAIzHf2oC/x3MQQrDIBBA0auEWXcgMdIpvUrpwtaxCkFlxqSBk
- LtXunyL/w9QlsQK9+EA4S1pKrljugzwji5/GJPvBjOa63ibLL4sRqeRfW2CoSxL+a4VDTnraaY
- wE0Fvq3BI+//7AFm1Yea9wfM8fxEsFqFyAAAA
+Message-Id: <20260815-b4-hashedptr-followup-v2-1-6cf592ad1022@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIAG7yf2oC/3WNyw6CMBREf4XctdfQhxZd+R+GBY9ibyRt0xaEE
+ P7dhrh1eTIzZzaIOpCOcC82CHqmSM5m4KcCOtPYl0bqMwMv+bWsmMRWommi0b1PAQc3ju4zeeS
+ qkb0SahBKQd76oAdaDu8TwhQTWr0kqHNkKCYX1uNxZkfhJ7/8kc8MGVZCcKlK3sru9nivI1kXz
+ 52Fet/3L532JeXGAAAA
 X-Change-ID: 20260814-b4-hashedptr-followup-27a4d737f377
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>, 
@@ -57,11 +58,11 @@ Cc: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Ke Sun <sunke@kylinos.cn>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786759119; l=5711;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786770129; l=6669;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=eAIhBRH7Q3/sEIY/K0BvhST20Ero40p/ar4U8ESK+t4=;
- b=D2DdMA4Qwa8xYmMUTGuUCAwRex/BTrfuMCZkw6l5YNDY4ru2bBAt6OTxxz5NLLOATdpY/RTgG
- GNaGgv/peAAD1edGIM/jUP0kr9owxXkuHQVvU4dgyZt3d719GlLUet7
+ bh=qtnzn0XwheOjLSxI3U7X4nlXPdrx6AGWoWdmY9ulHzs=;
+ b=uimAqKU6ONr2K3w/gu+yItFgjOGOseKjcOuKQccHfe0MxfB1w377WBT7+ptRBPnkrvld3Ss/2
+ LHtVS8bmRT/Djg6s8g8lSI5DOvhN7xyRerlm1isnhcIlPZXFZBJrmCt
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -71,9 +72,10 @@ Reply-To: sunke@kylinos.cn
 
 From: Ke Sun <sunke@kylinos.cn>
 
-Assert formatted variants against the plain `{:p}` output instead of
-exact prefixes, and verify width, alignment and clamping also apply
-when `%p` falls back to the placeholder.
+`test_ptr_formatting` depended on the `no_hash_pointers` setting and
+skipped the remaining checks when the CRNG was not ready. Assert the
+formatted variants against the plain `{:p}` output instead, and cover
+the placeholder path.
 
 Signed-off-by: Ke Sun <sunke@kylinos.cn>
 ---
@@ -81,14 +83,19 @@ This is a follow-up to the applied v15 series "rust: Add safe pointer
 formatting support" (on rust-next), addressing the review feedback on
 the KUnit tests.
 ---
- rust/kernel/fmt.rs | 81 +++++++++++++-----------------------------------------
- 1 file changed, 19 insertions(+), 62 deletions(-)
+Changes in v2:
+- Fix the KUnit failure when the CRNG is not ready: `%p` emits the
+  placeholder at a fixed length, ignoring width and zero-padding.
+- Link to v1: https://lore.kernel.org/r/20260815-b4-hashedptr-followup-v1-1-83324702b4c9@kylinos.cn
+---
+ rust/kernel/fmt.rs | 98 ++++++++++++++++++++----------------------------------
+ 1 file changed, 36 insertions(+), 62 deletions(-)
 
 diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
-index 29582b053ab1f..b3902e02f1c1d 100644
+index 29582b053ab1f..cbdca7183d54b 100644
 --- a/rust/kernel/fmt.rs
 +++ b/rust/kernel/fmt.rs
-@@ -215,83 +215,40 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+@@ -215,83 +215,57 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
  #[macros::kunit_tests(rust_kernel_fmt)]
  mod tests {
      use crate::{
@@ -97,6 +104,7 @@ index 29582b053ab1f..b3902e02f1c1d 100644
          str::CString, //
      };
  
++    // Placeholder used when the CRNG is not ready.
      #[cfg(CONFIG_64BIT)]
 -    mod expected {
 -        pub(super) const PTR_VALUE: usize = 0xffffffffdeadbeef;
@@ -109,7 +117,7 @@ index 29582b053ab1f..b3902e02f1c1d 100644
 -        pub(super) const HASHED_ZERO_PADDED_PREFIX: &str = "0x00000000000000";
 -        pub(super) const CLAMPED: &str = "0x0000000000000ffffffffdeadbeef";
 -    }
-+    const PTR_VALUE: usize = 0xffffffffdeadbeef;
++    const PTR_VAL_NO_CRNG: &str = "(____ptrval____)";
  
      #[cfg(not(CONFIG_64BIT))]
 -    mod expected {
@@ -123,6 +131,12 @@ index 29582b053ab1f..b3902e02f1c1d 100644
 -        pub(super) const HASHED_ZERO_PADDED_PREFIX: &str = "0x00000000000000";
 -        pub(super) const CLAMPED: &str = "0x0000000000000000000000deadbeef";
 -    }
++    const PTR_VAL_NO_CRNG: &str = "(ptrval)";
++
++    #[cfg(CONFIG_64BIT)]
++    const PTR_VALUE: usize = 0xffffffffdeadbeef;
++
++    #[cfg(not(CONFIG_64BIT))]
 +    const PTR_VALUE: usize = 0xdeadbeef;
  
      #[test]
@@ -140,22 +154,32 @@ index 29582b053ab1f..b3902e02f1c1d 100644
 -        if no_hash {
 -            let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
 -            assert_eq!(cstr.to_str()?, expected::RAW_POINTER);
-+        // If the RNG is not ready yet, `%p` falls back to `"(ptrval)"` / `"(____ptrval____)"`.
-+        let base = formatted.strip_prefix("0x").unwrap_or(formatted);
++        // If the CRNG is not ready yet, `%p` emits the placeholder at a fixed
++        // length: `f.pad` still applies, zero-padding does not (see `ptr_to_id()`).
++        let (crng_ready, expected_suffix) = if let Some(suffix) = formatted.strip_prefix("0x") {
++            (true, suffix)
++        } else {
++            (false, formatted)
++        };
++        let (zero_padded_len, clamped_len) = if crng_ready {
++            (24, 31)
++        } else {
++            (PTR_VAL_NO_CRNG.len(), PTR_VAL_NO_CRNG.len())
++        };
  
 -            let cstr = CString::try_from_fmt(fmt!("{:>24p}", ptr))?;
 -            assert_eq!(cstr.to_str()?, expected::PADDED_RIGHT);
 +        let cstr = CString::try_from_fmt(fmt!("{:>24p}", ptr))?;
 +        let padded = cstr.to_str()?;
-+        assert!(padded.ends_with(base));
++        assert!(padded.ends_with(expected_suffix));
 +        assert_eq!(padded.len(), 24);
  
 -            let cstr = CString::try_from_fmt(fmt!("{:024p}", ptr))?;
 -            assert_eq!(cstr.to_str()?, expected::ZERO_PADDED);
 +        let cstr = CString::try_from_fmt(fmt!("{:024p}", ptr))?;
 +        let zero_padded = cstr.to_str()?;
-+        assert!(zero_padded.ends_with(base));
-+        assert_eq!(zero_padded.len(), 24);
++        assert!(zero_padded.ends_with(expected_suffix));
++        assert_eq!(zero_padded.len(), zero_padded_len);
  
 -            let cstr = CString::try_from_fmt(fmt!("{:0100p}", ptr))?;
 -            assert_eq!(cstr.to_str()?, expected::CLAMPED);
@@ -186,8 +210,8 @@ index 29582b053ab1f..b3902e02f1c1d 100644
 -        }
 +        let cstr = CString::try_from_fmt(fmt!("{:0100p}", ptr))?;
 +        let clamped = cstr.to_str()?;
-+        assert!(clamped.ends_with(base));
-+        assert_eq!(clamped.len(), 31);
++        assert!(clamped.ends_with(expected_suffix));
++        assert_eq!(clamped.len(), clamped_len);
  
          Ok(())
      }
