@@ -1,36 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C70156F45;
-	Sat, 15 Aug 2026 05:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DE429898F;
+	Sat, 15 Aug 2026 08:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786770131; cv=none; b=FyovfSw2pTIofWlAl5Xngd0VWdI/VB+XsOtzNvNYJ9A+hHBl4cKJaLTyj10uzklYOuQfou1gMSCXA+hviH2+GOyM0uS7DtikZesNBMyWU1eFwm3St1Key5QYIMH1aqCJnSAhbwm9hQB+na58txfkgoKUIfQpehSEEAiWefrxOWA=
+	t=1786781220; cv=none; b=bDvpjuUEoR8Sas9wry2o2QXwqaZH7k6QmOTQKsISQXzt8zQSSDJI5YEmZiCNvxFSQVeJbty4vdArDJn4ZiWNz4t+/9BtlbH9c3Xu2DrY/R/WQ0x8vom9iPv27xPNngFZ8C1FbR/6MfKayEumYUpeojR1egIqMKU1QGy9QJWo5+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786770131; c=relaxed/simple;
-	bh=gKr1C7dvD8KfZzdbeyurTP9rArSW+LY8tX4oYaAXeTo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=sAHRgaG19b8XbVnFDsc0Z6k68GebcgsZqEU7EqhMnOgbZVlW+60QHwC6Iv1SMly7MpHHFgxHRao5seKYnVFr7ui+fK+q7mAXqs6Ad0gECFzJPsgMy3nXPeTXaIhZo4iS+SWTSqt2s+GzLyyi+YZTAKLSW8fQLC+CNNbna9PcaJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e1+4BPuh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1786781220; c=relaxed/simple;
+	bh=qeY2koXQxCYCzeSXECseCj8h07szuIIp4yg1qgzBmns=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Agpin1b1KCVQrdlbemqvTMLsXN9XzMZfmHZnofH10hGNmSH9eyWVm5EVvdw8Ke9V81MmYCHZn+/OR4vPhAo+Zi3jtKskMLdyPKHcHUMNSo3f4qBf3lKWKzAtr1pgFyxN5dv0ifB91bSqCP6J8S52dgQ7H1jkDMbs2XEIn0caxJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Om9q3m0I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e1+4BPuh"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2F1CCC19425;
-	Sat, 15 Aug 2026 05:02:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Om9q3m0I"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 821B3C19425;
+	Sat, 15 Aug 2026 08:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786770131;
-	bh=gKr1C7dvD8KfZzdbeyurTP9rArSW+LY8tX4oYaAXeTo=;
+	s=k20201202; t=1786781219;
+	bh=qeY2koXQxCYCzeSXECseCj8h07szuIIp4yg1qgzBmns=;
 	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=e1+4BPuhbDOkHuBu32CPaZnXoechrL3AXk5eZa4nZYA7Bx1KQArL+YyqePYRzelV5
-	 TBBqVA93Wyrm453BoJ15KZS7oyD4wWhppK84jQwpq3STX+ctmMA7dLCxeFnEbPZpzg
-	 t8pve0lXpt6+HVkT0JTW8FT4l7b2hcuOiadR9/e2aW8/wejsIJ4d6kzQX8DqN9zwCU
-	 KC03vDljeQfZsxS+7RuGcNiFKfczMXH4AkxIc9xhMZrpDj0pBsZVtl5GaPTCKnsW9h
-	 DcOBfwb91daozDqgzHDCO2VW7FOTGduHhM78Iy/fcMkfotkX5L7tchD1WTF71ubZy5
-	 f4ceIpfs5W5fw==
+	b=Om9q3m0I61mErujFy5tlyRmJ6UyCQuPXoE1Ij73eMI+Sh7AZJknBgrhOBn531lx+t
+	 yjxsivZjl//TFbEI/mpHk6tqurs8tdaYhoMgW4ZqkTU/kFjmATpwiQ5tb5Bn78qlpG
+	 k76ZR0WNZE8w1jz+MPWLtnNruJWZmdZCyfhDGEyg9evtbp1g34vnxWyZwRCjt7p8hg
+	 Uqn6dSzXzDc1eL9ZJZdgslycomrk/RtNy7ucCIMXvx2qliKh4+OaB995F1zdLIzebC
+	 aKZN+nWyFk5Tjfz1O/ATX5MciczkDXC9Ci9dkGPz8wO3UegQVyKFePdTVhKarlDmt9
+	 kPl0Jj8WxTzdw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18C99C5CFC1;
-	Sat, 15 Aug 2026 05:02:11 +0000 (UTC)
-From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Sat, 15 Aug 2026 13:00:31 +0800
-Subject: [PATCH rust-next v2] rust: fmt: rework pointer formatting tests
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C989C5CFC1;
+	Sat, 15 Aug 2026 08:06:59 +0000 (UTC)
+From: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
+Date: Sat, 15 Aug 2026 10:06:42 +0200
+Subject: [PATCH] rust: num: reject bool conversion to signed one-bit
+ Bounded
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -38,190 +39,160 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260815-b4-hashedptr-followup-v2-1-6cf592ad1022@kylinos.cn>
-X-B4-Tracking: v=1; b=H4sIAG7yf2oC/3WNyw6CMBREf4XctdfQhxZd+R+GBY9ibyRt0xaEE
- P7dhrh1eTIzZzaIOpCOcC82CHqmSM5m4KcCOtPYl0bqMwMv+bWsmMRWommi0b1PAQc3ju4zeeS
- qkb0SahBKQd76oAdaDu8TwhQTWr0kqHNkKCYX1uNxZkfhJ7/8kc8MGVZCcKlK3sru9nivI1kXz
- 52Fet/3L532JeXGAAAA
-X-Change-ID: 20260814-b4-hashedptr-followup-27a4d737f377
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>, 
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260815-fix-rust-bounded-from-bool-submit-v1-1-882227bf40ba@younes.io>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWN2w6CMBBEf4Xssxu5RGz8FcNDS7ewRlqzbQ0J4
+ d8t+HgmM3M2iCRMER7VBkJfjhx8geZSwThrPxGyLQxt3fa1am7oeEXJMaEJ2Vuy6CQsBcIbYzY
+ LJ+y0U11vlbs3CsrPR6iMTsdz+HNpvmhMx/HRMDoSGtF+nI8oCE/sr6fF05pg33+AtpQtqAAAA
+ A==
+X-Change-ID: 20260815-fix-rust-bounded-from-bool-submit-3af836d8f718
+To: Alexandre Courbot <acourbot@nvidia.com>, 
+ Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
  Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
  Danilo Krummrich <dakr@kernel.org>, 
  Daniel Almeida <daniel.almeida@collabora.com>, 
  Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Ke Sun <sunke@kylinos.cn>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786770129; l=6669;
- i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=qtnzn0XwheOjLSxI3U7X4nlXPdrx6AGWoWdmY9ulHzs=;
- b=uimAqKU6ONr2K3w/gu+yItFgjOGOseKjcOuKQccHfe0MxfB1w377WBT7+ptRBPnkrvld3Ss/2
- LHtVS8bmRT/Djg6s8g8lSI5DOvhN7xyRerlm1isnhcIlPZXFZBJrmCt
-X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
- pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
-X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
- auth_id=950
-X-Original-From: Ke Sun <sunke@kylinos.cn>
-Reply-To: sunke@kylinos.cn
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, stable@vger.kernel.org, 
+ Younes Akhouayri <git@younes.io>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786781218; l=4446;
+ i=git@younes.io; s=20260712; h=from:subject:message-id;
+ bh=XpIa9KEUmh79aDTOOC/bb1K0iRRekhqcG4MhqMsCDT4=;
+ b=d8wUtrjPLQxRdi8Xk0F441WyLJPxkTsZobYpkNk9eee4bv6pyI5eI0Oyt+dy4t0ir4wB1D9iJ
+ LSTsqUZXUJZCypCXCMm8ny1QLC0AaOE+Mg9JRqSjcqg3q1FAwIVjxMY
+X-Developer-Key: i=git@younes.io; a=ed25519;
+ pk=1DRfzPrQ04RQHHgGK28t+vjIAPv5oISPiAdLMU6J5dE=
+X-Endpoint-Received: by B4 Relay for git@younes.io/20260712 with
+ auth_id=866
+X-Original-From: Younes Akhouayri <git@younes.io>
+Reply-To: git@younes.io
 
-From: Ke Sun <sunke@kylinos.cn>
+From: Younes Akhouayri <git@younes.io>
 
-`test_ptr_formatting` depended on the `no_hash_pointers` setting and
-skipped the remaining checks when the CRNG was not ready. Assert the
-formatted variants against the plain `{:p}` output instead, and cover
-the placeholder path.
+From<bool> turns true into 1. A signed Bounded with N = 1 can hold
+only -1 and 0. From<bool> therefore creates a value that the type does
+not allow. Deref assumes the value is valid and calls
+unreachable_unchecked() when it is not. Safe Rust can therefore reach
+undefined behavior.
 
-Signed-off-by: Ke Sun <sunke@kylinos.cn>
+Rust cannot write N >= 2 directly in this From implementation. Add a
+private BoolFits trait. It accepts every valid unsigned width and signed
+widths from 2 through 128. The current Integer types do not use more
+than 128 bits, so this keeps every valid conversion.
+
+Fixes: 01e345e82ec3 ("rust: num: add Bounded integer wrapping type")
+Closes: https://lore.kernel.org/rust-for-linux/OzuVxu0--J-9@younes.io/
+Cc: stable@vger.kernel.org
+Assisted-by: Codex:gpt-5.6-sol
+Signed-off-by: Younes Akhouayri <git@younes.io>
 ---
-This is a follow-up to the applied v15 series "rust: Add safe pointer
-formatting support" (on rust-next), addressing the review feedback on
-the KUnit tests.
+Do not allow From<bool> for signed Bounded values with N = 1.
+Keep it available for signed Bounded values with N >= 2.
 ---
-Changes in v2:
-- Fix the KUnit failure when the CRNG is not ready: `%p` emits the
-  placeholder at a fixed length, ignoring width and zero-padding.
-- Link to v1: https://lore.kernel.org/r/20260815-b4-hashedptr-followup-v1-1-83324702b4c9@kylinos.cn
----
- rust/kernel/fmt.rs | 98 ++++++++++++++++++++----------------------------------
- 1 file changed, 36 insertions(+), 62 deletions(-)
+ rust/kernel/num/bounded.rs | 50 +++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 45 insertions(+), 5 deletions(-)
 
-diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
-index 29582b053ab1f..cbdca7183d54b 100644
---- a/rust/kernel/fmt.rs
-+++ b/rust/kernel/fmt.rs
-@@ -215,83 +215,57 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
- #[macros::kunit_tests(rust_kernel_fmt)]
- mod tests {
-     use crate::{
--        bindings,
-         prelude::fmt,
-         str::CString, //
-     };
+diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
+index d192610a687d..1856fe6c9865 100644
+--- a/rust/kernel/num/bounded.rs
++++ b/rust/kernel/num/bounded.rs
+@@ -13,7 +13,7 @@
+ };
  
-+    // Placeholder used when the CRNG is not ready.
-     #[cfg(CONFIG_64BIT)]
--    mod expected {
--        pub(super) const PTR_VALUE: usize = 0xffffffffdeadbeef;
--        pub(super) const PTR_VAL_NO_CRNG: &str = "(____ptrval____)";
--        pub(super) const HASHED_PREFIX: &str = "0x00000000";
--        pub(super) const RAW_POINTER: &str = "0xffffffffdeadbeef";
--        pub(super) const PADDED_RIGHT: &str = "      0xffffffffdeadbeef";
--        pub(super) const ZERO_PADDED: &str = "0x000000ffffffffdeadbeef";
--        pub(super) const HASHED_PADDED_RIGHT_PREFIX: &str = "      ";
--        pub(super) const HASHED_ZERO_PADDED_PREFIX: &str = "0x00000000000000";
--        pub(super) const CLAMPED: &str = "0x0000000000000ffffffffdeadbeef";
--    }
-+    const PTR_VAL_NO_CRNG: &str = "(____ptrval____)";
+ use kernel::{
+-    num::Integer,
++    num::{Integer, Signed, Unsigned},
+     prelude::*, //
+ };
  
-     #[cfg(not(CONFIG_64BIT))]
--    mod expected {
--        pub(super) const PTR_VALUE: usize = 0xdeadbeef;
--        pub(super) const PTR_VAL_NO_CRNG: &str = "(ptrval)";
--        pub(super) const HASHED_PREFIX: &str = "0x";
--        pub(super) const RAW_POINTER: &str = "0xdeadbeef";
--        pub(super) const PADDED_RIGHT: &str = "              0xdeadbeef";
--        pub(super) const ZERO_PADDED: &str = "0x00000000000000deadbeef";
--        pub(super) const HASHED_PADDED_RIGHT_PREFIX: &str = "              ";
--        pub(super) const HASHED_ZERO_PADDED_PREFIX: &str = "0x00000000000000";
--        pub(super) const CLAMPED: &str = "0x0000000000000000000000deadbeef";
--    }
-+    const PTR_VAL_NO_CRNG: &str = "(ptrval)";
+@@ -174,13 +174,26 @@ fn fits_within<T: Integer>(value: T, num_bits: u32) -> bool {
+ /// // `u8` (regardless of the passed value).
+ /// // let _ = Bounded::<u32, 6>::from(10u8);
+ ///
+-/// // Booleans can be converted into single-bit `Bounded`s.
++/// // Booleans can be converted into unsigned single-bit `Bounded`s.
+ ///
+ /// let v = Bounded::<u64, 1>::from(false);
+ /// assert_eq!(v.get(), 0);
+ ///
+ /// let v = Bounded::<u64, 1>::from(true);
+ /// assert_eq!(v.get(), 1);
++///
++/// // Signed integers need at least two bits to represent both `0` and `1`.
++/// let v = Bounded::<i8, 2>::from(true);
++/// assert_eq!(v.get(), 1);
++/// ```
++///
++/// A signed single-bit [`Bounded`] cannot represent `1`, so converting a boolean into one does not
++/// build.
++///
++/// ```compile_fail,E0277
++/// use kernel::num::Bounded;
++///
++/// let _: Bounded<i8, 1> = true.into();
+ /// ```
+ ///
+ /// Infallible conversions from a [`Bounded`] to a primitive integer are also supported, and
+@@ -1109,7 +1122,33 @@ fn from(value: Bounded<T, N>) -> $type {
+     i8 i16 i32 i64 isize
+ );
+ 
+-// Single-bit `Bounded`s can be converted from/to a boolean.
++// Conversions between `Bounded`s and booleans.
 +
-+    #[cfg(CONFIG_64BIT)]
-+    const PTR_VALUE: usize = 0xffffffffdeadbeef;
++/// Marker for signedness types for which a valid `N`-bit integer can represent a boolean.
++trait BoolFits<const N: u32> {}
 +
-+    #[cfg(not(CONFIG_64BIT))]
-+    const PTR_VALUE: usize = 0xdeadbeef;
++impl<const N: u32> BoolFits<N> for Unsigned {}
++
++macro_rules! impl_signed_bool_fits {
++    ($($num_bits:literal)*) => {
++        $(
++        impl BoolFits<$num_bits> for Signed {}
++        )*
++    };
++}
++
++// `N >= 2` cannot be expressed as a trait bound without `generic_const_exprs`, so enumerate every
++// width supported by the current `Integer` implementations.
++impl_signed_bool_fits!(
++    2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
++    17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32
++    33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48
++    49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64
++    65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80
++    81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96
++    97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112
++    113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128
++);
  
-     #[test]
-     fn test_ptr_formatting() -> core::result::Result<(), crate::error::Error> {
--        let ptr: *const u8 = core::ptr::without_provenance(expected::PTR_VALUE);
-+        let ptr: *const u8 = core::ptr::without_provenance(PTR_VALUE);
- 
--        // SAFETY: `no_hash_pointers` is a global variable that is never concurrently modified —
--        // KUnit tests may run at boot (before `mark_readonly()`) or manually afterwards (when the
--        // variable is read-only). Reading is always safe.
--        let no_hash = unsafe { bindings::no_hash_pointers };
-+        let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
-+        let formatted = cstr.to_str()?;
- 
--        if no_hash {
--            let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
--            assert_eq!(cstr.to_str()?, expected::RAW_POINTER);
-+        // If the CRNG is not ready yet, `%p` emits the placeholder at a fixed
-+        // length: `f.pad` still applies, zero-padding does not (see `ptr_to_id()`).
-+        let (crng_ready, expected_suffix) = if let Some(suffix) = formatted.strip_prefix("0x") {
-+            (true, suffix)
-+        } else {
-+            (false, formatted)
-+        };
-+        let (zero_padded_len, clamped_len) = if crng_ready {
-+            (24, 31)
-+        } else {
-+            (PTR_VAL_NO_CRNG.len(), PTR_VAL_NO_CRNG.len())
-+        };
- 
--            let cstr = CString::try_from_fmt(fmt!("{:>24p}", ptr))?;
--            assert_eq!(cstr.to_str()?, expected::PADDED_RIGHT);
-+        let cstr = CString::try_from_fmt(fmt!("{:>24p}", ptr))?;
-+        let padded = cstr.to_str()?;
-+        assert!(padded.ends_with(expected_suffix));
-+        assert_eq!(padded.len(), 24);
- 
--            let cstr = CString::try_from_fmt(fmt!("{:024p}", ptr))?;
--            assert_eq!(cstr.to_str()?, expected::ZERO_PADDED);
-+        let cstr = CString::try_from_fmt(fmt!("{:024p}", ptr))?;
-+        let zero_padded = cstr.to_str()?;
-+        assert!(zero_padded.ends_with(expected_suffix));
-+        assert_eq!(zero_padded.len(), zero_padded_len);
- 
--            let cstr = CString::try_from_fmt(fmt!("{:0100p}", ptr))?;
--            assert_eq!(cstr.to_str()?, expected::CLAMPED);
--        } else {
--            let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
--            let formatted = cstr.to_str()?;
--            // If the RNG is not yet ready, `%p` falls back to a placeholder.
--            if formatted == expected::PTR_VAL_NO_CRNG {
--                return Ok(());
--            }
--            assert!(formatted.starts_with(expected::HASHED_PREFIX));
--            assert_ne!(formatted, expected::RAW_POINTER);
--
--            let cstr = CString::try_from_fmt(fmt!("{:>24p}", ptr))?;
--            assert!(cstr
--                .to_str()?
--                .starts_with(expected::HASHED_PADDED_RIGHT_PREFIX));
--
--            let cstr = CString::try_from_fmt(fmt!("{:024p}", ptr))?;
--            assert!(cstr
--                .to_str()?
--                .starts_with(expected::HASHED_ZERO_PADDED_PREFIX));
--
--            let cstr = CString::try_from_fmt(fmt!("{:0100p}", ptr))?;
--            let output = cstr.to_str()?;
--            assert!(output.starts_with("0x"));
--            assert!(!output[2..].chars().all(|c| c == '0'));
--        }
-+        let cstr = CString::try_from_fmt(fmt!("{:0100p}", ptr))?;
-+        let clamped = cstr.to_str()?;
-+        assert!(clamped.ends_with(expected_suffix));
-+        assert_eq!(clamped.len(), clamped_len);
- 
-         Ok(())
+ impl<T> From<Bounded<T, 1>> for bool
+ where
+@@ -1123,10 +1162,11 @@ fn from(value: Bounded<T, 1>) -> Self {
+ impl<T, const N: u32> From<bool> for Bounded<T, N>
+ where
+     T: Integer + From<bool>,
++    T::Signedness: BoolFits<N>,
+ {
+     fn from(value: bool) -> Self {
+-        // SAFETY: A boolean can be represented using a single bit, and thus fits within any
+-        // integer type for any `N` > 0.
++        // SAFETY: `__new` enforces that `N` is a valid width, and the `BoolFits` bound guarantees
++        // that the integer representation of `value` fits within any such `N`.
+         unsafe { Self::__new(T::from(value)) }
      }
+ }
 
 ---
-base-commit: be387b625933ee12ed230b1c2af5e14f946c3040
-change-id: 20260814-b4-hashedptr-followup-27a4d737f377
+base-commit: 47f27155f17498fccb1f222f79089642337498a9
+change-id: 20260815-fix-rust-bounded-from-bool-submit-3af836d8f718
 
 Best regards,
--- 
-Ke Sun <sunke@kylinos.cn>
+--  
+Younes Akhouayri <git@younes.io>
 
 
