@@ -1,198 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DE429898F;
-	Sat, 15 Aug 2026 08:06:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786781220; cv=none; b=bDvpjuUEoR8Sas9wry2o2QXwqaZH7k6QmOTQKsISQXzt8zQSSDJI5YEmZiCNvxFSQVeJbty4vdArDJn4ZiWNz4t+/9BtlbH9c3Xu2DrY/R/WQ0x8vom9iPv27xPNngFZ8C1FbR/6MfKayEumYUpeojR1egIqMKU1QGy9QJWo5+A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786781220; c=relaxed/simple;
-	bh=qeY2koXQxCYCzeSXECseCj8h07szuIIp4yg1qgzBmns=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Agpin1b1KCVQrdlbemqvTMLsXN9XzMZfmHZnofH10hGNmSH9eyWVm5EVvdw8Ke9V81MmYCHZn+/OR4vPhAo+Zi3jtKskMLdyPKHcHUMNSo3f4qBf3lKWKzAtr1pgFyxN5dv0ifB91bSqCP6J8S52dgQ7H1jkDMbs2XEIn0caxJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Om9q3m0I; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4351031A56D
+	for <rust-for-linux@vger.kernel.org>; Sat, 15 Aug 2026 09:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786787259; cv=pass; b=HbFntgF6pf+zOWLivCy4T1USEhpNBMsLqNi8CN4qPH8oqsvYqRpau2+u5VoTf67uaR1nhllVq1xA/cy85FOReiFQ6kAGi64BhrGA0qWgJzJOJHfpbH66SBjDB4DzRXgd8z/quWMI4xGOw2/WaPR7b6eDZeHESadtOpco1nI/74A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786787259; c=relaxed/simple;
+	bh=A10tEUAy0J/eJt/6NCDSD2pQewscaevQo9UVF21SsrE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i80TAFs9kmn2WiM3g9LonmreGnp+/pE2luEYEH01ZYO39Q5OTRbB9FpRBCo4hLceW0RdgrzbFslB9GL1P8AexlAMLQixMK3uKga4Qo42gtigh3zH2eqxfUvPHWwktwvIZ2rae7sqiqBJfpcoJQQdXBFdp+YoQJMPoFhNGuAEpyQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GTtyWapz; arc=pass smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Om9q3m0I"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 821B3C19425;
-	Sat, 15 Aug 2026 08:06:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786781219;
-	bh=qeY2koXQxCYCzeSXECseCj8h07szuIIp4yg1qgzBmns=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=Om9q3m0I61mErujFy5tlyRmJ6UyCQuPXoE1Ij73eMI+Sh7AZJknBgrhOBn531lx+t
-	 yjxsivZjl//TFbEI/mpHk6tqurs8tdaYhoMgW4ZqkTU/kFjmATpwiQ5tb5Bn78qlpG
-	 k76ZR0WNZE8w1jz+MPWLtnNruJWZmdZCyfhDGEyg9evtbp1g34vnxWyZwRCjt7p8hg
-	 Uqn6dSzXzDc1eL9ZJZdgslycomrk/RtNy7ucCIMXvx2qliKh4+OaB995F1zdLIzebC
-	 aKZN+nWyFk5Tjfz1O/ATX5MciczkDXC9Ci9dkGPz8wO3UegQVyKFePdTVhKarlDmt9
-	 kPl0Jj8WxTzdw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C989C5CFC1;
-	Sat, 15 Aug 2026 08:06:59 +0000 (UTC)
-From: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
-Date: Sat, 15 Aug 2026 10:06:42 +0200
-Subject: [PATCH] rust: num: reject bool conversion to signed one-bit
- Bounded
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GTtyWapz"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ceeee8c46bso3993495ad.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 15 Aug 2026 02:47:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786787257; cv=none;
+        d=google.com; s=arc-20260327;
+        b=D2phVTWfZWRuUFXo9IWS8Inx8oo4dWcCjfe95FUbRGhOJ0sIbjohcSEC5yebEP4+pg
+         A2nf+dwZCQUOudRMFanthcOjDFuvuqAIFZttWNpv/zBaXYaI7tOgbKyrtceDCMf00jvE
+         dvugZ6PdEmVZtlEitLMAJ25RYYbMo8LxbX5O7dXLEQqCplNiPCsVoeC6lpEcKlHDM52P
+         96R6jk9jr+41CY70pCr55Gd9cPvNqcigPO2dtVuiwZW+Ke6uRczMdR6QK5q5PqiHkXzu
+         3G2huy0SuxTA3m/QHxwIvgVxnlF9T2nnS0tfMcVO55I2BGaDWBHes0i0kHhytvlCkW3k
+         2utg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cSzW5v6LopkgVYsyHDzCvEaqWdekzkzFKvdIf0+cXAE=;
+        fh=sdzw0owK7BFjwVfeQ5Ab0GQhQNY5/o+7CamakFlu7S4=;
+        b=DH/mSVWEWBVqa1Y8+C3CrkfgMUCMqtlt0692ZCnAT8f9sFHBuqQgEi8TXTTllLFOnK
+         qoZoUfgrhwM8Gf4nXZEv7uw6zc0KqiQVBya3XcTRSKZqbB98ZaI0w1LWnY0HiUIWKjRN
+         JFAmoFcw/zjAPDBLA0l8aXK7Vt+XRFp5C8nrgpDZWkLeGDPBuSX46MtGFVhswUf9LOn6
+         IdafY8sXxO4aRT3XzK5oDKNhiG4zPSN3MxZaN5/PxHpxC1/GXKbB7xGftS0rGC9iIen5
+         kcKOrBPetjYNtOY3lw30bhF02kY22o1PtczdoEEVrYgUJb92FOVRrSW0UfirCPQ6nByA
+         qQRw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786787257; x=1787392057; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cSzW5v6LopkgVYsyHDzCvEaqWdekzkzFKvdIf0+cXAE=;
+        b=GTtyWapz826r+DOw1Xkb8SZ7EUXxgLMju5P6MQNvubBW+gYQOYQtpzXbbDy6LYQzyE
+         U9DiUYypGgG0Pv/afJVmzY44DNCoBQ1IhjljYAmWNOhd/9A1xxQ5wcwDXomrm9y0/bTm
+         I+YZTNvlxPUdNfpWf+D0Fa2Pu+WMF1imEcvdaGgi3yzo9U1cneVf43KoSo2wVYsqjc87
+         xRUnsGFShhLbIs2lGBF0pBnT1IyYqil+hrnBb67Wf86iEo0X5+rGKDiHhnNLy4S+pv3o
+         YOHcdmKSO/vi1im7qI+FCTww2UDG66N5VLmymXimvlV4gLc0bqqgdy/JoIDankeBOaoD
+         gF9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786787257; x=1787392057;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cSzW5v6LopkgVYsyHDzCvEaqWdekzkzFKvdIf0+cXAE=;
+        b=CU9BYgm+6WjJ4HpFCtXl7Idf9ZFUXCHLBaHw+4yuULFmK1nR0u3bnqpStwygZWJ2or
+         PFeVv2lOaJ8U6XpIGbYXIAVTOhiJE5qXyKnDVgVC0O4QIMp3x6atKXGZ9fPRGW9s2DfX
+         fyUoaQV4LpFCBJa45itrv91+GJ1vuzaPABEl58lTp9Tor7AI279T3+TMIcoQ2de2KvDk
+         6DKhIlj+NXZE6lAn8u+scsOIcO3JEpHUlxDHO1wFrX053wdpeHcVL8Oi6xq7YhAEuFMA
+         rUCp7gLidGv+stkThsSO6VTR05oO3plU+0q95VzBcoEVnHPXiL6tMCY8vN2Wwm2H6xF9
+         bTLA==
+X-Forwarded-Encrypted: i=1; AHgh+RqojTcR9qT0wAcd0RiIUd/5cnkiK0a7mpWKFD25KauPKZTSqg3jV3xvKiI54qCMFRILsLXxB0fj1olNlD7DpA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwvCla8lLx//iFp8sxqDKqYFWK8LOPyn2cRcj4GksO2aQzM6uN
+	QY4aqfUWghW567XeaaeU4GxuR1VKF6wv0J8IXzSWLUxsLhjEjzqDZSu0K/I1z9eT3UMJD1QM7I1
+	/6+WxsTLt+/t8S6H2J6q4tw8w+lrP3QM=
+X-Gm-Gg: AR+sD11lPsu62tR94SNfHytHgISI+xcvZR5HM1QoSrgdMsJ2VuAI8TohcjxxVOei2Q7
+	YJ/I1h+7mLJOHUfbeqbs+6KjpDbEUSBI9Hakou2XKDCgTISE7lOFnRrDfoztvE9elk9tUKUWYUO
+	yZqwnJmTO3EPTTANznMrXVAFb0G/4hA8QuWAwvGWh72Vm22fuF62Fdy/l0Ol7DNqZOyhqzk3BCW
+	gyGioGBNpqqExD9GJZmdG43O016xJJlbeSJ7qq+nn7eF2gRZpGS5XBDnExCOSimJur/B7LmPefH
+	GoCu0NGglUP1ZETd099mzwusLCvTj8i2GLesiPnRgs2T/V4dgYtrR8Z+m/7vpmDWbIXIidBxqXg
+	dYB48Jq9X7ToCtLD12fHHGfo1ra7giBWEjplU0dkuVs+Zbzuk0NhA+8n0+uA9fzKfnFSFF0PP
+X-Received: by 2002:a17:903:1b2b:b0:2ca:de3:15eb with SMTP id
+ d9443c01a7336-2d3b0739429mr95810945ad.0.1786787257496; Sat, 15 Aug 2026
+ 02:47:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260815-fix-rust-bounded-from-bool-submit-v1-1-882227bf40ba@younes.io>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWN2w6CMBBEf4Xssxu5RGz8FcNDS7ewRlqzbQ0J4
- d8t+HgmM3M2iCRMER7VBkJfjhx8geZSwThrPxGyLQxt3fa1am7oeEXJMaEJ2Vuy6CQsBcIbYzY
- LJ+y0U11vlbs3CsrPR6iMTsdz+HNpvmhMx/HRMDoSGtF+nI8oCE/sr6fF05pg33+AtpQtqAAAA
- A==
-X-Change-ID: 20260815-fix-rust-bounded-from-bool-submit-3af836d8f718
-To: Alexandre Courbot <acourbot@nvidia.com>, 
- Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, stable@vger.kernel.org, 
- Younes Akhouayri <git@younes.io>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786781218; l=4446;
- i=git@younes.io; s=20260712; h=from:subject:message-id;
- bh=XpIa9KEUmh79aDTOOC/bb1K0iRRekhqcG4MhqMsCDT4=;
- b=d8wUtrjPLQxRdi8Xk0F441WyLJPxkTsZobYpkNk9eee4bv6pyI5eI0Oyt+dy4t0ir4wB1D9iJ
- LSTsqUZXUJZCypCXCMm8ny1QLC0AaOE+Mg9JRqSjcqg3q1FAwIVjxMY
-X-Developer-Key: i=git@younes.io; a=ed25519;
- pk=1DRfzPrQ04RQHHgGK28t+vjIAPv5oISPiAdLMU6J5dE=
-X-Endpoint-Received: by B4 Relay for git@younes.io/20260712 with
- auth_id=866
-X-Original-From: Younes Akhouayri <git@younes.io>
-Reply-To: git@younes.io
+References: <20260815-fix-rust-bounded-from-bool-submit-v1-1-882227bf40ba@younes.io>
+In-Reply-To: <20260815-fix-rust-bounded-from-bool-submit-v1-1-882227bf40ba@younes.io>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 15 Aug 2026 11:47:25 +0200
+X-Gm-Features: AcwNN1Vyzam60v46TuT2IRWTGvdbWAku89D1Z-Sv9_ewh6l1xj9Ps99KHfoQpLc
+Message-ID: <CANiq72kAkDeyqPKHHMT3gRNyC35R+934jNNQOKKytMpmwPwLCg@mail.gmail.com>
+Subject: Re: [PATCH] rust: num: reject bool conversion to signed one-bit Bounded
+To: git@younes.io
+Cc: Alexandre Courbot <acourbot@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Younes Akhouayri <git@younes.io>
+On Sat, Aug 15, 2026 at 10:07=E2=80=AFAM Younes Akhouayri via B4 Relay
+<devnull+git.younes.io@kernel.org> wrote:
+>
+> +// `N >=3D 2` cannot be expressed as a trait bound without `generic_cons=
+t_exprs`, so enumerate every
+> +// width supported by the current `Integer` implementations.
+> +impl_signed_bool_fits!(
+> +    2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+> +    17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32
+> +    33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48
+> +    49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64
+> +    65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80
+> +    81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96
+> +    97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112
+> +    113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128
+> +);
 
-From<bool> turns true into 1. A signed Bounded with N = 1 can hold
-only -1 and 0. From<bool> therefore creates a value that the type does
-not allow. Deref assumes the value is valid and calls
-unreachable_unchecked() when it is not. Safe Rust can therefore reach
-undefined behavior.
+Hmm... Did you see compile time suffer with this?
 
-Rust cannot write N >= 2 directly in this From implementation. Add a
-private BoolFits trait. It accepts every valid unsigned width and signed
-widths from 2 through 128. The current Integer types do not use more
-than 128 bits, so this keeps every valid conversion.
-
-Fixes: 01e345e82ec3 ("rust: num: add Bounded integer wrapping type")
-Closes: https://lore.kernel.org/rust-for-linux/OzuVxu0--J-9@younes.io/
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5.6-sol
-Signed-off-by: Younes Akhouayri <git@younes.io>
----
-Do not allow From<bool> for signed Bounded values with N = 1.
-Keep it available for signed Bounded values with N >= 2.
----
- rust/kernel/num/bounded.rs | 50 +++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 45 insertions(+), 5 deletions(-)
-
-diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
-index d192610a687d..1856fe6c9865 100644
---- a/rust/kernel/num/bounded.rs
-+++ b/rust/kernel/num/bounded.rs
-@@ -13,7 +13,7 @@
- };
- 
- use kernel::{
--    num::Integer,
-+    num::{Integer, Signed, Unsigned},
-     prelude::*, //
- };
- 
-@@ -174,13 +174,26 @@ fn fits_within<T: Integer>(value: T, num_bits: u32) -> bool {
- /// // `u8` (regardless of the passed value).
- /// // let _ = Bounded::<u32, 6>::from(10u8);
- ///
--/// // Booleans can be converted into single-bit `Bounded`s.
-+/// // Booleans can be converted into unsigned single-bit `Bounded`s.
- ///
- /// let v = Bounded::<u64, 1>::from(false);
- /// assert_eq!(v.get(), 0);
- ///
- /// let v = Bounded::<u64, 1>::from(true);
- /// assert_eq!(v.get(), 1);
-+///
-+/// // Signed integers need at least two bits to represent both `0` and `1`.
-+/// let v = Bounded::<i8, 2>::from(true);
-+/// assert_eq!(v.get(), 1);
-+/// ```
-+///
-+/// A signed single-bit [`Bounded`] cannot represent `1`, so converting a boolean into one does not
-+/// build.
-+///
-+/// ```compile_fail,E0277
-+/// use kernel::num::Bounded;
-+///
-+/// let _: Bounded<i8, 1> = true.into();
- /// ```
- ///
- /// Infallible conversions from a [`Bounded`] to a primitive integer are also supported, and
-@@ -1109,7 +1122,33 @@ fn from(value: Bounded<T, N>) -> $type {
-     i8 i16 i32 i64 isize
- );
- 
--// Single-bit `Bounded`s can be converted from/to a boolean.
-+// Conversions between `Bounded`s and booleans.
-+
-+/// Marker for signedness types for which a valid `N`-bit integer can represent a boolean.
-+trait BoolFits<const N: u32> {}
-+
-+impl<const N: u32> BoolFits<N> for Unsigned {}
-+
-+macro_rules! impl_signed_bool_fits {
-+    ($($num_bits:literal)*) => {
-+        $(
-+        impl BoolFits<$num_bits> for Signed {}
-+        )*
-+    };
-+}
-+
-+// `N >= 2` cannot be expressed as a trait bound without `generic_const_exprs`, so enumerate every
-+// width supported by the current `Integer` implementations.
-+impl_signed_bool_fits!(
-+    2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
-+    17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32
-+    33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48
-+    49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64
-+    65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80
-+    81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96
-+    97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112
-+    113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128
-+);
- 
- impl<T> From<Bounded<T, 1>> for bool
- where
-@@ -1123,10 +1162,11 @@ fn from(value: Bounded<T, 1>) -> Self {
- impl<T, const N: u32> From<bool> for Bounded<T, N>
- where
-     T: Integer + From<bool>,
-+    T::Signedness: BoolFits<N>,
- {
-     fn from(value: bool) -> Self {
--        // SAFETY: A boolean can be represented using a single bit, and thus fits within any
--        // integer type for any `N` > 0.
-+        // SAFETY: `__new` enforces that `N` is a valid width, and the `BoolFits` bound guarantees
-+        // that the integer representation of `value` fits within any such `N`.
-         unsafe { Self::__new(T::from(value)) }
-     }
- }
-
----
-base-commit: 47f27155f17498fccb1f222f79089642337498a9
-change-id: 20260815-fix-rust-bounded-from-bool-submit-3af836d8f718
-
-Best regards,
---  
-Younes Akhouayri <git@younes.io>
-
-
+Cheers,
+Miguel
