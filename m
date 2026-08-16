@@ -1,180 +1,421 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022101.outbound.protection.outlook.com [52.101.101.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EE83B0ACB;
-	Sun, 16 Aug 2026 14:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.101
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786889109; cv=fail; b=c90IslgRShQa0ruwASWJ8vDqKK09D9BY+Ssva41SxGe4yKTkZdhyawmB8JKRC8zzIk4XUaMTKS5YCZN6PoJxQ9mSxc4vPCiQEabvBbkiPgCsCID8c6BxOLisVoT+z3W10YH0QVt/sFub8UuqBltWn4+J3bp4DMwQGom0b+UIazk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786889109; c=relaxed/simple;
-	bh=aKuVt+6OftjqHHeNF+XxksYJM3UY3I+BUNU11jJcXw0=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=YWEcJd9QYkMfOwpaI6SwDfw4+pUcvEeBAx+UlAfVfOIWwmh3GZHxM6u55S6DytOtVxWoy4stejQKb8OWkk5Qp8uDvMHq1yZQNownhQkFbT2NDAqq6ry1HpFEM9mhoqUFc1OfNkUDaCbRmhYtTxZiDEWk5rAyJMHv/0OpmN4WGak=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=KsGkbVuS; arc=fail smtp.client-ip=52.101.101.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB8F3BB675;
+	Sun, 16 Aug 2026 19:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786908009; cv=none; b=Ex5k0/9n/DVdr/IAb4FPULOfDQot+88EjL3R70SErkn9+fgQGy4g4j4NaAVKXV+hTQX+VriiUMYbxoxCh86vUNuWGc0MA0HFH8W4seYWeIYmlKRLnjaiC/0zY+ZSPmmfaD6aSQ8foBUKgVh9A5ZvKWi+1F/vdd/p09q0UA4KUcs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786908009; c=relaxed/simple;
+	bh=vB9ox5Hg9RumR7NiZ/y8Jf/aEa0NojkLvI3LVAV0jK8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=c6geRnpm7yn6BdyjmAvq0yXa/BiC8kUV+wYatl1oAx3UwvcRKjWv5tlSoGqcnba037l0XTyH5Acka9EzknO45UHa6kxbtekL40/znyrsUPrDcnwXVEG44algUL57zGMJMTXZhQnJcbqjI324qwDhoERD46uNr2gtXNkyjTZ2bcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J9EExylA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="KsGkbVuS"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OTKnXI6rLnfgCRR0FHRS2UGsMUIs84tddXGHsBE26A15ggm2N15smpe26UgKt7FVoUKLpND8UkltM9+C5pVswaynl4PZSQZbMIaeW6K2FT3IV8zjdkpXyCAS8KdrGV1MYjPps80MADBC/Le6b8qwN3+OnmygCYhyLpnRvjBoJ6OMf7RKTY0RDyPXLJk3fftPqLgoKHpsdyaG0rVkfcOn/gmRdgPb1BHoAT2PVSGPd7iQNCIiSBxiSjY2ro2hSiUxkwN3U72jtjKxv55n0347FTsoKbsCxADBIYVkgxkB5qi9v9mPgtW483gIEywRTh76I6ba2u6wWV7fIHnXZyMGjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jmBS/Xsk8Yk+KhVfcSjYULsidATJy+fvx3untB7uZvM=;
- b=X7uxVp2ZDsl+BMFayUaC47SuSSKTP5PyDaaEdU60j7QGkG7IqxN/27gfJn3cxCgErmQhrQkDVrK65KRxhJyrHAADA+u0Pl+gmpnLZF5onU0q7pKW1dZpAOqFqArN1QT4uDHNkuqphFvUEzpY6+w0wmczCZtFBgkg9Bby5GhnaoIXIuIgNIdEVLKctEaF0K8jphNVKJu9JDMH4xR0lxMM36+VNBmxZuohZ6oYzEc71Yvp5S9AK7DbhkB+OxPwgWS6TsVdSgb06xJK69SuoMSTDRLkwfpgy8JzBPyRJpeT/3wBvO1A2fQdiX/fvmX7m7l43kKcgMMybiFUM8+ob2s1hA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jmBS/Xsk8Yk+KhVfcSjYULsidATJy+fvx3untB7uZvM=;
- b=KsGkbVuST8NpsrbNvywJa4qzsj7QTF3Ema+vx7cV+Ao7A1cVOvSavs7RZvgM/KnG3/bIimFeXMjuLBXAOb1u6NC6vRiN9avBgEAy/Vy8cz0b5taLWVL+s1p5u45cOh8LPnuKq96c0L6bVeYKTJERlHfeUP+RomJKvZoJhodDs+A=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LO8P265MB7753.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3ae::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Sun, 16 Aug
- 2026 14:05:06 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0315.016; Sun, 16 Aug 2026
- 14:05:06 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 16 Aug 2026 15:05:05 +0100
-Message-Id: <DKQFBMI8BAWN.JB20KE3YNAFA@garyguo.net>
-Cc: <linux-kbuild@vger.kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, <rust-for-linux@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH 2/2] kbuild: rust: keep Rust objects out of Clang LTO
- with inline helpers
-From: "Gary Guo" <gary@garyguo.net>
-To: "Miguel Ojeda" <ojeda@kernel.org>, "Nathan Chancellor"
- <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Matthew Maurer"
- <mmaurer@google.com>, "Alice Ryhl" <aliceryhl@google.com>, "Josh Poimboeuf"
- <jpoimboe@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>
-X-Mailer: aerc 0.22.0
-References: <20260816133233.197500-1-ojeda@kernel.org>
- <20260816133233.197500-2-ojeda@kernel.org>
-In-Reply-To: <20260816133233.197500-2-ojeda@kernel.org>
-X-ClientProxiedBy: LO4P265CA0179.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:311::7) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J9EExylA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFDC1F00A3D;
+	Sun, 16 Aug 2026 19:20:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786908007;
+	bh=r+QL06ZTxdNeaZzeAxPQ5uZrDfCSD4JvFgbe60pmbBc=;
+	h=From:To:Cc:Subject:Date;
+	b=J9EExylAttWxAZom6EA+U/VHpO2BpOHEO/eoyCLyQDvhkWZr1dz8qvvuxn8YTZVib
+	 LrOq0YpYgA0q+n3SMDBE3ClgEXlUOptTp3oX3NYuNSJMpP3M5JWZxhAZo4aMUquwCE
+	 529cxLVYGLDH7pIarOxndYR+9A//tp5e8Mlltt+7RshFZ6phGVGNexgPFeRZZYMQu4
+	 LUZXrOh9FK4Ffhl1J0p84K54IWjvufsAsM62/q44oi9Ktp7GIQO13evzpgVmMJLYtr
+	 +9OColrOq3iHkBMMNPL4Gu2bCLTxbibXuQK/T03i/GuiDqIwXyICnVAlbYyIUntOkq
+	 ZndyFLdeciiNg==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust for v7.3
+Date: Sun, 16 Aug 2026 21:19:25 +0200
+Message-ID: <20260816191926.230123-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO8P265MB7753:EE_
-X-MS-Office365-Filtering-Correlation-Id: f80e2136-eb7d-4d02-7739-08defb9f5fdb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|10070799003|1800799024|366016|23010399003|18002099003|22082099003|56012099006|3023799007|6133799003|4143699003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	tewCkhMfsGSmKLVoipsa9GkayeocymKnaay6DKAFEWaH5t0NwVtkcCOywwKDD6FUByERF5yLByT8Ok98bLfshEpgXfarqVuX/n+RqxQGOh+3nod9uzBQOa6th0kGXM/giwI+Nb6Am6Wme/ssUA4w6GTM9UPmPwGNII2k0r6SGLgK/R9fCU64MjeFBJaCM6dWM51DJUgDjUXsrCk4ZDXanL4BirfC/5Bi6TQtQ9P4MAaGXoXHLufDwv5Nv+7JUlVxKE0ARQGevBeMBCSTrUXgw1UNwNIJUxLomLoucd5iFpyD225r5EIIXaoFFlKky40mPxpqPaty1KQoeeW5etIxAhByaK9SwfQDCV9ZEfe16+8d/6jzNCmcjhTJkVykdNkSfTetSGQKL85snqO2IauzcbtvdspaOeMqJX37ot9rYzRBzq/UZE6tSV8fj3XINJuZk/QECofMMU/QkkGjJr50yMBlJXZ6ktJjygo5HI8K0UvXgxdFJiAzxLkTVeYgUe8ko0qatk//QFMy0pf9i2qDQufnTGGMLZQRrTsbcGFJd9Vo7NNVEzE28xfJOjcuVAyTr8/pBHfURI2LozW3SjF7Wr4Qjoid+9Yc2vv0QPfB+MmT9jByz1Jfk7jAoRbZQOCzL8HpecNojzm8SJTuAFfuSg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(1800799024)(366016)(23010399003)(18002099003)(22082099003)(56012099006)(3023799007)(6133799003)(4143699003)(10067099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Mlg0aXFWS0RSaFJaWU8ycXJwZnQrVkorSzRCRytBU3YyZVJpNVhwVGN5ZGVk?=
- =?utf-8?B?MnNpTUJublVOUk5IeEFPeldBdnluTytaY3RiRnlGM1N5dVhCM1h5RmFQZnp5?=
- =?utf-8?B?R05HTzJQVFNmSWNJQlY2cGs0V1R4cFlyWnVmeE4xZUpJdVdiMzJFVi84OVRZ?=
- =?utf-8?B?dkFRL1d3VHdyZHFkOVA5NGo4YWlsVjRSQlR1V0NLc01RQ0p0ZTU3UWs3NjRw?=
- =?utf-8?B?VmF1UHZKNDB3OW9mYTNPZmFUZWd0NkRsR1FTTkxHWmp5aWZuSGN2QXlBZVlT?=
- =?utf-8?B?bDNHL2tMVy9OUEhSR2hrZDBtV2JGUGNUSkQ3ZmEyQVN6Q0FKVVVuUGt6L0R3?=
- =?utf-8?B?dTFXUitFL3hzYVFlMFZsMHlwMHdJNDFHUVl5L0k5aUVvUVBQbHEwTUlRcE5n?=
- =?utf-8?B?VG83VFg0M2IwdmRwNWd5a2Z6cVhCb1hBVWZqaENHOGpEUGY0VFd4cHpzN1l0?=
- =?utf-8?B?NHI0b3UrVUs4eEg2VFZyV0gwZllxOVo5QUdQaG1mUEhRMVhMbGc0eVJvZUNF?=
- =?utf-8?B?Ky94M1d0NnVZU3NZUW5JdUF6NHk1SDhYYzMxejBvZlRGTjdvZEl1ZHJvaktC?=
- =?utf-8?B?T0kzdlpQNWpJTzIrRUlJOW43VzFoOEpiMjgvSlNIY1ZyR3g0NUFLK2p6SVcv?=
- =?utf-8?B?ZTk2ZEIrVlFqMEEvOEdseGFwNlBPcGdzS2Z1U3kzMFpaandseWhGT0JFQldv?=
- =?utf-8?B?cjdEQ1hKQTJlZVpzS3ZvcU0xVVRTaS9Pd3lWOHM2VXg4d2hTWjNRL3dpa3BR?=
- =?utf-8?B?c3crRFdTQkY5WmptKzkxazZQVWpKUklkaHRzdVQzM0FyY0pWdmduWTFZMnEz?=
- =?utf-8?B?VDYyWk1saDNtYk04T2xqczJabXF1UTl6bW9wV2dmdVVBNDlLektmTllnVXFD?=
- =?utf-8?B?aWFDRVV2dU1IaktMUjJSQXZTYkdWUGVIS1VyZTlpTmVDaGhKU0Q3bk1EaHRU?=
- =?utf-8?B?aDgyWGFSU3R6dDlrTGQ1Wng4SEdPUk9hNWFzWmo5MDcrSklIVXNTOWlWcm1y?=
- =?utf-8?B?ZFBhZ0hiSjRTZTRGQUI1WURMbkJJcHZmQTR6QlZmaDQ2ckpwNUs0K2J2Y1o1?=
- =?utf-8?B?ZXg0OVQwYUtRZU9uZC9vUTd3c3pUbDU4T3NTYzdyQWNNTlVhZEVyKzVCTDRy?=
- =?utf-8?B?am1aeGtZSTZLZTRzN3d3Qm1lZG8wY0xTRDQrZ2pFVGxvLzByelJhVTNmczN5?=
- =?utf-8?B?WXltekVqSUJpbmlVMlhzcU14cVQxMUU3cFZhZTJKeHFZZldGRVZsdC9oRExS?=
- =?utf-8?B?UUY1ak4wVjNYR2F0eHAxdWlYcFZCMHZONU4rajJoZ01oN0sxeXRocWlpd2dm?=
- =?utf-8?B?OFpUSVVSM29sL3JKY3hPbUhSQmpWazBkUTRpOHZkZjVHTkp1cnZYQm15MVRx?=
- =?utf-8?B?bXpCZWRDa1haYytxMFNxYnV2ZTJIeFBySU1Wa3lhZjMwMTF1SzZzOFhuR0ZE?=
- =?utf-8?B?bFJ5M0VZaFQvWVd2dExVSFpkOUc5aHY2emZ3alNuRVhNUk9ZQzNPUlMyQktt?=
- =?utf-8?B?ZkFaRlp0am1vWmlqOWorZFhjUy8vU3FGdXczazhJVC9kY1dBMU9OaHBCMGRP?=
- =?utf-8?B?RWlZZlA0YW85UDh6MXNmNzlzd2ZRUGhFdHNoQzZaMEpKWE44WUZsaUNaNGpv?=
- =?utf-8?B?SmZpZTZMUHpjd1oweC9lZi9XZnUyektoRjB1UlJKZTRBdFhqd1NwKzlsOTlO?=
- =?utf-8?B?ZW9iamp2aGx5SnRkYk5NL3FsTTQwSW1sZTZ0VW1XNU5TTVBhT0h1VGg2Z0RI?=
- =?utf-8?B?YWdWMXBaNVZQNWFZV3JYOE00UXkzd0RFaUtXY0d0ejQ0Y2hkL2hubjZjQzg4?=
- =?utf-8?B?UGNwcDNkYWNCNkg5ZzkyWHZBNE5EN2JkZ0kwQTg1dk11eisvK0xybUFWQ1dl?=
- =?utf-8?B?NWhvS1Q5Mnk2bDBGUDFRVGduUEorVTdwRmVrOHU2NzRvUTJoQkJLeFk1RU5t?=
- =?utf-8?B?VWhRNGlVLzJoZXdweTcvQ3VJVG16WGxoTUlscCtJMWsxUDNJTXJwSXhFZkxF?=
- =?utf-8?B?VG1VWlNYWHpERXRyNEF4NkRDaE9lcGpxL0dZUnZKcXpibG5HK1BKMVFUT0wz?=
- =?utf-8?B?MXB2NEV1NE9LNFYxaHZJREROM1ZHc0UrYXJSSHVUVDlnZnRvTE9IcSt6bERq?=
- =?utf-8?B?R08vTEdld0dNckpLVEdXdFVveVFJb1NFeTNkS0dPN0ZlN0lCUExDTzNLSkE5?=
- =?utf-8?B?QTVVczhhdW1hZmk2R2UvSGh5WjVtenpEZm50MDBiSm5rclI1dWQ0b0hTUzBa?=
- =?utf-8?B?eEZjcGl0aHpLd2JkNnR4TFNBV0plK081dk4zK05jVmp2bFI3Z2FNSmpJNmNI?=
- =?utf-8?B?OXdDVVZDTkJNSWJiVVJVVm9HZGQweWN1TEhyQTlKOW44dnBuWDlwQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: f80e2136-eb7d-4d02-7739-08defb9f5fdb
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2026 14:05:06.0263
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ovzW75cmTokVvs3f/1MNdyf2qPMJCJdMvKC7BoI9vHdz4wvAcvDgXFWO74FaablShqfyKRDjW4P7M2K7tC/ppA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO8P265MB7753
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sun Aug 16, 2026 at 2:32 PM BST, Miguel Ojeda wrote:
-> Under `CONFIG_LTO_CLANG` + `CONFIG_RUST_INLINE_HELPERS`, one may hit
-> `objtool` errors such as:
->=20
->     vmlinux.o: error: objtool: _R..._3Gsp4boot+0xd6a:
->     can't find jump dest instruction at .text._R..._3Gsp4boot+0x1dfd
->=20
-> The reason is that in such builds, the Clang invocation that compiles
-> the combined Rust plus helpers bitcode emits LLVM bitcode (again) --
-> the final code generation happens in the linker's LTO step, which the
-> `-mllvm` trap options passed to Clang do not reach.
->=20
-> This, in turn, means that unreachable traps are missing, and the
-> impossible paths do not merely fallthrough to the next symbol, but past
-> the end of their own section, since LTO builds place each function in
-> its own section.
->=20
-> Thus filter `CC_FLAGS_LTO` out of the Clang invocation, so that it always
-> emits machine code directly, with the traps in place.
->=20
-> Assisted-by: LLM
-> Cc: Gary Guo <gary@garyguo.net>
-> Cc: Boqun Feng <boqun@kernel.org>
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: Matthew Maurer <mmaurer@google.com>
-> Cc: stable@vger.kernel.org
-> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Fixes: 3a2486cc1da5 ("kbuild: rust: provide an option to inline C helpers=
- into Rust")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Hi Linus,
 
-Acked-by: Gary Guo <gary@garyguo.net>
+This is the next round of the Rust support.
 
-> ---
->  rust/Makefile          | 2 +-
->  scripts/Makefile.build | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+This one is back to a normal size again. It has a bunch of fixes that I
+was on the fence about submitting as one more fixes PR last cycle. It
+also contains the first fixes for eventually using Rust's GCC backend
+(`rustc_codegen_gcc`), which I sent on behalf of its lead, Antoni.
 
+All commits have been in linux-next for 2 rounds or more.
+
+There will be the following semantic conflicts with other trees --
+linux-next should generally have the right resolutions:
+
+  - driver-core: https://lore.kernel.org/linux-next/20260807074729.108159-1-ojeda@kernel.org/
+
+  - char-misc: https://lore.kernel.org/linux-next/20260813163951.1102583-1-gary@kernel.org/
+
+  - slab/char-misc: https://lore.kernel.org/linux-next/20260805-slab-rust-fix-v1-1-c4d4c1b69de2@kernel.org/
+
+There will also be a couple of straightforward, normal conflicts with:
+
+  - tip: https://lore.kernel.org/linux-next/anoDGk0XqfBjHfUn@sirena.org.uk/
+
+  - char-misc: https://lore.kernel.org/linux-next/CANiq72kXRevcVMWZnJZQ_PTK_iRO4z6iA30xvv6mR1VEdy96ZA@mail.gmail.com/
+    (the diff in that thread is from another conflict somehow, but the
+    actual conflict is very simple anyway)
+
+I also did a test merge with your status from a couple hours ago, and it
+looks good, without conflicts at the moment.
+
+I will need to send a PR with ~4 fixes during the merge window. I will
+send the build system rework next cycle.
+
+Please pull for v7.3 -- thanks!
+
+Cheers,
+Miguel
+
+The following changes since commit 075b74841bd0065a3bda3440873c747938e69b68:
+
+  Linux 7.2-rc6 (2026-08-02 16:24:24 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-7.3
+
+for you to fetch changes up to 47f27155f17498fccb1f222f79089642337498a9:
+
+  rust: add functions and traits for lossless integer conversions (2026-08-13 13:41:28 +0200)
+
+----------------------------------------------------------------
+Rust changes for v7.3
+
+Toolchain and infrastructure:
+
+ - Warn when using 'bindgen' < 0.72.1 with 'libclang' >= 22, since that
+   combination may fail to build. It includes a probe for the bug in
+   case 'bindgen' happens to be patched, and tests.
+
+   In parallel, Nathan updated the instructions for the kernel.org
+   LLVM+Rust toolchains so that the latest version of 'bindgen' is
+   installed, which should avoid some of these situations.
+
+ - Support testing 'rust_is_available.sh' with 'bash' as '/bin/sh'.
+
+ - Fix an objtool warning by adding one more 'noreturn' function for
+   Rust 1.99.0 (expected 2026-10-01).
+
+ - Fix build error in the 'rusttest' target due to ambiguity when the
+   'rustc-dev' component is installed, which was uncovered by the work
+   to support Rust's GCC backend ('rustc_codegen_gcc').
+
+ - Fix future Clang warnings in the upcoming powerpc support due to
+   macro redefinitions in the UAPI helper header by including the
+   arch-aware 'ioctl.h' header.
+
+'kernel' crate:
+
+ - Rework module ownership support:
+
+     - Move the module-related types into a new 'module' module and make
+       the 'THIS_MODULE' pointer a constant of 'ModuleMetadata' so that
+       modules can provide the pointer in const contexts, and add a
+       'this_module' 'const fn' to retrieve it.
+
+       This was enabled by upstream Rust's work on the 'const_mut_refs'
+       and 'const_refs_to_static' features which were stabilized back
+       in Rust 1.83.0.
+
+     - Teach '#[vtable]' to associate implementations with their owning
+       module, defaulting to the local one, including fallbacks for
+       doctests, uses within the 'kernel' crate (like upcoming KUnit
+       '#[test]'s for DRM) and 'rusttest'.
+
+     - Set 'fops.owner' from the module pointer for DRM and miscdevice.
+
+     - Migrate Rust Binder and configfs away from the old 'THIS_MODULE'
+       'static' and finally remove it from the 'module!' macro.
+
+ - 'num' module:
+
+     - Add the new 'casts' module for lossless integer conversions.
+
+       Rust's 'core' library's 'From' implementations do not cover
+       conversions that are not portable or future-proof. However, the
+       kernel supports a narrower set of architectures, which makes it
+       helpful to provide more infallible conversions, instead of having
+       developers use 'as' casts, which carry the risk of silently
+       losing data.
+
+       This goes along with previous work we did to avoid casts in Rust
+       kernel code since they are more powerful than needed.
+
+       Thus, provide safe 'const' conversion functions (e.g.
+       'usize_as_u64' and 'u64_into_u8'), as well as the 'FromSafeCast'
+       and 'IntoSafeCast' extension traits that provide conversions that
+       are known to be lossless in the kernel, and an 'arch' submodule
+       defining conversions that are known to be lossless on particular
+       architectures (e.g. 64-bit platforms). For instance:
+
+           // Conversion in const context.
+           const USIZED_CONST: usize = u8_as_usize(255u8);
+
+           // Non-const conversions.
+           let a = u64::from_safe_cast(4096usize);
+           let b: u64 = 4096usize.into_safe_cast();
+
+     - Add 'Bounded::shr_exact' method in the vein of 'try_shrink' which
+       shifts a bounded right only if it loses no set bits.
+
+     - Fix unsoundness issue in the 'Bounded::shr' method by rejecting,
+       at compile-time, shifts of at least the type's bit width.
+
+ - 'fmt' module:
+
+     - Route '{:p}' raw pointer formatting through the kernel's hashed
+       '%p' format to prevent address leaks, including support for width
+       and padding. Include tests for both 'no_hash_pointers' case and
+       the default (hashed) one.
+
+     - Fix the '{:p}' forwarding implementation, which could print the
+       address of a temporary stack variable.
+
+ - 'time' module:
+
+     - Make 'Delta' generic over its time unit, with a default unit of
+       nanoseconds ('Nsec'), preserving the existing behavior. Then, add
+       a 'Jiffy' time unit.
+
+     - Add the 'Delta::as_millis_ceil()' method.
+
+     - Fix 'as_micros_ceil()' rounding near 'i64::MAX', which could
+       yield a result one microsecond too small.
+
+ - 'sync' module:
+
+     - Implement 'ForeignOwnable' for 'ARef<T>', allowing C code to own
+       an 'ARef<T>'.
+
+     - Add a safe abstraction for 'rcu_barrier()'.
+
+ - 'error' module: add all of the remaining error codes, except the
+   deprecated compatibility aliases.
+
+ - 'bug' module:
+
+     - Fix build error on UML in 'warn_on!' for callers from within
+       the 'kernel' crate.
+
+     - Fix future 'dead_code' warning on arm and loongarch64 and under
+       'CONFIG_BUG=n' in 'warn_on!', which would trigger with the
+       upcoming SRCU abstractions.
+
+     - Fix future build error in 'rusttest' on cross-compilation cases,
+       which would trigger when 'warn_on!' has callers inside the
+       'kernel' crate.
+
+ - 'bitfield' module: fix build error for the upcoming support for
+   Rust's GCC backend ('rustc_codegen_gcc') by always inlining a couple
+   conversions used in tests.
+
+'pin-init' crate:
+
+ - User-visible changes:
+
+     - Merge the '__pinned_init' and '__init' methods and make 'Init'
+       a marker trait.
+
+     - Introduce public APIs 'raw_init' and 'raw_try_init' to prevent
+       users from needing to invoke the internal
+       '__pinned_init'/'__init' methods.
+
+     - Emit errors for duplicate '#[pin]' attributes.
+
+     - Link 'Zeroable::zeroed' and 'pin_init::zeroed' in documentation.
+
+ - Other changes:
+
+     - Fix unwind safety issues.
+
+     - Clean up lint 'allow' and 'expect's.
+
+     - Overhaul '#[cfg]' handling to pave the way for tuple structs and
+       self-referential structs.
+
+     - Mark many functions as '#[inline]' for better codegen with '-C
+       opt-level=s' ('CC_OPTIMIZE_FOR_SIZE').
+
+'MAINTAINERS':
+
+ - Update 'MODULE SUPPORT' to cover the new 'module' module.
+
+And some other fixes, cleanups and improvements.
+
+----------------------------------------------------------------
+Alexandre Courbot (1):
+      rust: add functions and traits for lossless integer conversions
+
+Alvin Sun (11):
+      rust: doctest: use vertical import style
+      rust: module: move module types into `module.rs`
+      rust: module: add `THIS_MODULE` const to `ModuleMetadata` trait
+      rust: doctest: add LocalModule fallback for #[vtable] ThisModule
+      rust: macros: auto-insert OwnerModule in #[vtable]
+      rust: drm: set fops.owner from driver module pointer
+      rust: miscdevice: set fops.owner from driver module pointer
+      rust: configfs: use `LocalModule` for `THIS_MODULE`
+      rust_binder: use `LocalModule` for `THIS_MODULE`
+      rust: macros: remove `THIS_MODULE` static from `module!`
+      rust: module: update MAINTAINERS to cover module.rs
+
+Antoni Boucher (2):
+      rust: kbuild: disambiguate `zerocopy` for `rusttest`
+      rust: bitfield: always inline test conversions
+
+Danilo Krummrich (2):
+      rust: types: implement ForeignOwnable for ARef<T>
+      rust: kernel: add `LocalModule` fallback for `#[vtable]` `impl`s
+
+Eliot Courtney (3):
+      rust: num: use const_assert! in Bounded
+      rust: num: reject Bounded::shr overshifts at build time
+      rust: num: add Bounded::shr_exact
+
+FUJITA Tomonori (7):
+      rust: bug: prevent dead_code warning from warn_on!'s flags constant
+      rust: bug: skip arch-specific asm in `testlib` builds
+      rust: bug: fix warn_on macro build error on UML
+      rust: time: fix as_micros_ceil() rounding near i64::MAX
+      rust: time: make Delta generic over its time unit
+      rust: time: add jiffies time unit for Delta
+      rust: time: add Delta::as_millis_ceil()
+
+Gary Guo (11):
+      rust: pin-init: examples: fix incorrect drop
+      rust: pin-init: remove redundant clippy expects in doc tests
+      rust: pin-init: internal: remove `allow` and `expect`s that don't fire
+      rust: pin-init: internal: generate brace in macro for init code blocks
+      rust: pin-init: internal: rework how `#[pin_data]` handles cfg
+      rust: pin-init: examples: use `Wrapper::pin_init` instead of manual reimplementation
+      rust: pin-init: merge `__pinned_init` and `__init`
+      rust: pin-init: add `raw_init` and `raw_try_init` and recommend over `__init`
+      rust: treewide: replace `__pinned_init` with `raw_[try_]init`
+      rust: pin-init: remove `__pinned_init` method for `cfg(kernel)`
+      rust: pin-init: add `#[inline]` to small functions
+
+Harish C S (1):
+      rust: sync: improve `Arc` documentation links
+
+Ke Sun (2):
+      rust: fmt: fix {:p} printing stack addresses
+      rust: fmt: route {:p} through HashedPtr to prevent address leaks
+
+Kosumi Chan (1):
+      rust: impl_flags: use bit helper in example
+
+Luiz Georg (1):
+      rust: pin-init: internal: error on duplicate `#[pin]` attribute
+
+Miguel Ojeda (5):
+      objtool/rust: add one more `noreturn` Rust function for Rust 1.99.0
+      rust: rust_is_available: support testing with `bash` as `/bin/sh`
+      rust: rust_is_available: warn for `bindgen` < 0.72.1 && libclang >= 22
+      Merge tag 'pin-init-v7.3' of https://github.com/Rust-for-Linux/linux into rust-next
+      docs: rust: quick-start: remove Ubuntu 25.10
+
+Mirko Adzic (2):
+      rust: pin-init: make `[pin_]init_array_from_fn` unwind safe
+      rust: pin-init: make `[pin_]chain` unwind safe
+
+Mukesh Kumar Chaurasiya (IBM) (1):
+      rust: uapi: replace direct asm-generic/ioctl.h include with linux/ioctl.h
+
+Nicolás Antinori (2):
+      rust: pin-init: docs: link `Zeroable::zeroed` and `pin_init::zeroed` in documentation
+      rust: pin-init: mark `pin_init::zeroed` and `Zeroable::zeroed` as `#[inline]`
+
+Philipp Stanner (1):
+      rust: sync: Add abstraction for rcu_barrier()
+
+Timur Tabi (1):
+      rust: error: add remaining error codes
+
+Younes Akhouayri (1):
+      rust: print: fix broken `_printk` Rustdoc link
+
+ Documentation/rust/quick-start.rst              |   2 +-
+ MAINTAINERS                                     |   2 +-
+ drivers/android/binder/rust_binder_main.rs      |   3 +-
+ drivers/block/rnull/configfs.rs                 |   2 +-
+ drivers/gpu/nova-core/gsp/cmdq.rs               |   4 +-
+ rust/Makefile                                   |   2 +-
+ rust/kernel/alloc/kbox.rs                       |   8 +-
+ rust/kernel/auxiliary.rs                        |   2 +-
+ rust/kernel/bitfield.rs                         |   2 +
+ rust/kernel/bug.rs                              |  34 ++-
+ rust/kernel/configfs.rs                         |   9 +-
+ rust/kernel/dma.rs                              |  10 +-
+ rust/kernel/drm/device.rs                       |   5 +-
+ rust/kernel/drm/gem/mod.rs                      |   4 +-
+ rust/kernel/drm/gpuvm/va.rs                     |   2 +-
+ rust/kernel/drm/gpuvm/vm_bo.rs                  |   2 +-
+ rust/kernel/error.rs                            | 102 ++++++++
+ rust/kernel/fmt.rs                              | 195 +++++++++++++-
+ rust/kernel/i2c.rs                              |   2 +-
+ rust/kernel/impl_flags.rs                       |  11 +-
+ rust/kernel/init.rs                             |   6 +-
+ rust/kernel/lib.rs                              |  81 ++----
+ rust/kernel/miscdevice.rs                       |   4 +-
+ rust/kernel/module.rs                           |  80 ++++++
+ rust/kernel/net/phy.rs                          |   6 +-
+ rust/kernel/num.rs                              |   2 +
+ rust/kernel/num/bounded.rs                      |  36 ++-
+ rust/kernel/num/casts.rs                        | 298 +++++++++++++++++++++
+ rust/kernel/pci.rs                              |   2 +-
+ rust/kernel/platform.rs                         |   2 +-
+ rust/kernel/print.rs                            |   2 +-
+ rust/kernel/pwm.rs                              |   2 +-
+ rust/kernel/sync/arc.rs                         |  20 +-
+ rust/kernel/sync/aref.rs                        |  50 ++++
+ rust/kernel/sync/rcu.rs                         |  20 ++
+ rust/kernel/time.rs                             | 141 +++++++---
+ rust/kernel/types.rs                            |   8 +-
+ rust/kernel/usb.rs                              |   2 +-
+ rust/macros/lib.rs                              |  18 ++
+ rust/macros/module.rs                           |  36 +--
+ rust/macros/vtable.rs                           |  41 ++-
+ rust/pin-init/examples/mutex.rs                 |  11 +-
+ rust/pin-init/examples/static_init.rs           |  10 +-
+ rust/pin-init/internal/src/init.rs              |   8 +-
+ rust/pin-init/internal/src/pin_data.rs          |  94 +++++--
+ rust/pin-init/src/__internal.rs                 |  13 +-
+ rust/pin-init/src/alloc.rs                      |  10 +-
+ rust/pin-init/src/lib.rs                        | 333 ++++++++++++++----------
+ rust/uapi/uapi_helper.h                         |   2 +-
+ scripts/rust_is_available.sh                    |  14 +
+ scripts/rust_is_available_bindgen_libclang_22.h |   5 +
+ scripts/rust_is_available_test.py               |  46 +++-
+ scripts/rustdoc_test_gen.rs                     |  29 ++-
+ tools/objtool/check.c                           |   1 +
+ 54 files changed, 1460 insertions(+), 376 deletions(-)
+ create mode 100644 rust/kernel/module.rs
+ create mode 100644 rust/kernel/num/casts.rs
+ create mode 100644 scripts/rust_is_available_bindgen_libclang_22.h
