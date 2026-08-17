@@ -1,196 +1,245 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022073.outbound.protection.outlook.com [52.101.66.73])
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022088.outbound.protection.outlook.com [52.101.101.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9386E420483;
-	Mon, 17 Aug 2026 13:01:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975A441F5EA;
+	Mon, 17 Aug 2026 13:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.88
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786971691; cv=fail; b=NSvuJWCNk9lyRZYmr3vp52boc7mhIrO3lM8ru8DGCzrxtxqFJjTFZV7R8nEgAo95Y3JP0ilZ20uT1Fss7p+wSJ2JuO2LOQCKgY0gCCj39cNT/mmhXvCdnXq0IDr3ryVrNelqhqwCOkznvYrt07rR2dlKJbtTRA8MRDVTWb160fI=
+	t=1786971768; cv=fail; b=H+ccFd1n/ulPtAtj4vqmbUiw+rEK0RFXLV9THoUFzKBjD1K6CzGQrF0M+SO8hmC7R4cbpI8LhMMvk7mBGft7HDIWxOv2RnkiZb0n56NpUCBWLvG/4c0+qxaDi/R8rbrVIosfPjIbhteRL5Z+hKIoEuunUuDzh2t7sV62X1/TRjc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786971691; c=relaxed/simple;
-	bh=gwnbMRX6snLzL7cgrHyKuUZ5Zg89/13UJXJhsu7PnR0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=dWlmiXeyJ3JZpSwkqlpwfpRoHQWoMc4HFA9Q35c5F5XEbyKfxPTRXDxq/L/fc+RHW24NUrBIW8ahIiTc95FVMw4UHI90cYPuSNB6pj7DqXnOZc397j7ZsciicG96fxEBBHkzP28jxbCL8J5HRkpgBYdnPOCEQNdRd2uerr2C9ic=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=studenti.unipi.it; spf=pass smtp.mailfrom=studenti.unipi.it; dkim=pass (1024-bit key) header.d=studenti.unipi.it header.i=@studenti.unipi.it header.b=hdNjrHCj; arc=fail smtp.client-ip=52.101.66.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=studenti.unipi.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=studenti.unipi.it
+	s=arc-20240116; t=1786971768; c=relaxed/simple;
+	bh=3IQqxB9QoU8Y/jNglQuDRaMLLWrzVC/sfqaSpXX70MA=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=g9781a+1V9U6NjMIfv3TYdcIWgwb9TXOSS/ZqIn/gxRCfVaVF07szQ6gPBKzxmqS12UAC56h3KMvsxlLLKhxAGPvM/x/Icf4+lxhh8WG0g9lMZ1sD92aBXD61C6sVWo2oK5ns7xQsRKLqpoDL0LVRJ4zDv7FLr23m0BrjdM0has=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=p3qbMrvU; arc=fail smtp.client-ip=52.101.101.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=studenti.unipi.it header.i=@studenti.unipi.it header.b="hdNjrHCj"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="p3qbMrvU"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r4muf9Pt/1WN1K/SimnAtcPs3iTu9hdKiQeloiEXJuBfEWBBMl5b5q/Rno/pFg19MOCKSi8A5HlCWkeDPX41UXhRnWePGTpeYe/D/oDglPFFgxyag2zVVpcfbZKpGGUKN9IqBfhmjC+5yJC3Z3Q5jTKaBh56nyfAdq5RUS0d5XQnD3CmSVjpV+it1sEXJEbeFlei6CosWytNfieK273RNe0ARbOuKI/m24k4g+HQSul7J672XPz8WYmj7lqEDjL2RNMPXDsibv6sm1qiD6/UCfyT+WCGd6J4Ag3PPITZLCOMskrqqA19fGuXdBJQdg2XZuPe14rsYBxZMQBXuOl7sQ==
+ b=C4zBIshyNEYXIcIlKjq8pMGNvnKogpj/yreGI0ie2wObu6+RLFH8wu07k0Ro2rS14Bpk7RXLIh27uCUB0C0IFQtR15nCcJ2MSWx3VnCTCnPs6jxWwFmsXLVepkd8+YPsLCqlkyu4L3KnM9WAlM/m7bMnbH8lPND83q8BgKmArk7cazzPzNrm4jyf7tuEVu2dlRHvOTAhSj4oRX9iHpcsFu0pvuJjjfDxULaRK93qgIv1OCEqIZk7Lm7Mp8n8zSP/FdyKWPDSaOW/pytbf47Cm63t3v9wQ+2iojzORII8DouM/B4Zyy+pDwQ+EOg6lPxyqsR4Gws+dPDUDXgT8D5T0A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gwnbMRX6snLzL7cgrHyKuUZ5Zg89/13UJXJhsu7PnR0=;
- b=woug/bX02LjaYfyKh6mbKaN58aQFCeGWBvq69Xb2jfCjM8k31IgOeqaF9dpUbGna3gFpV7hy7IY3XQ6HOLSD2Zh/K577Zliu+gFXrAqklCuDXgVcmz+h7p41o742qdbMwQd50elnosSNIU0h+fmFJ3uxVBFxdfqxltZl6p+oc7TLrv/2yEp6avhYjQnXSHY6D5WrPwMWbWd58Glm/ID/oseBJpij0iHVWaS+v9utM2ZHYJz0IaWJcvNz/9LlZXMBh9e467HqKl2tPqqmHJ6E1tvb4IC6x521r1zuR1jQQcXLpNP0dfBs8NCVA1ihX2v6Scw2Fv+b0vqqYVn+QVyN4Q==
+ bh=TjdwkS6XpLb1fGd28nH3/yuua9S8Osv48ncMTOhPMMw=;
+ b=uBChOE6hVGwFaszKpwKH+6cH3ogdxzO9c/yPImQKDCmepp7e+lB8HOW/IOurFFLxKN9VeZgL6vKmA/IlFeJptwjuDmzSsvLNHmS2pbfZ7fSkeaNDDdgkvr33dWCLp4i+tny6dH2BGQZUzGM8JNOKCKDb1WNZMAc7S5tgqz9ghEwOuWdFjoTWggHKzcOuaHOXeit6c2Y09v9ah2U0CFEY7gCkpvs+Wz18ZfMqd94miBaDTYWs2sbP4zXIFi4tdOWT1Z5zxIdraL+aCAPr7EKlnHkhlH3ive+AvkjBiMIE9WHVHIlcGUDQ4agt93xVFCaRPW7o/fI7UfmRdMkt/cpxGg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=studenti.unipi.it; dmarc=pass action=none
- header.from=studenti.unipi.it; dkim=pass header.d=studenti.unipi.it; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=studenti.unipi.it;
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gwnbMRX6snLzL7cgrHyKuUZ5Zg89/13UJXJhsu7PnR0=;
- b=hdNjrHCjmP7c+lYyTjhw5SX33tB8fUkGv8HBLcU7ISwAI8MMgO4WGuMOsZ8kRaBof2oqxQ2ogtgEzOfKFUIvjG3n7zRf5D0fCKW/Q4SUZRvZfCK/Te1XshojHaoVycwHaWdkQhpF/04ANT4pprc46y/N1Z/5bB08E+c+DSUoxog=
-Received: from DB5PR07MB9477.eurprd07.prod.outlook.com (2603:10a6:10:4a8::18)
- by DU0PR07MB8764.eurprd07.prod.outlook.com (2603:10a6:10:310::18) with
+ bh=TjdwkS6XpLb1fGd28nH3/yuua9S8Osv48ncMTOhPMMw=;
+ b=p3qbMrvUgOGVzIcXCtaK4lBFZH3khiLnr7bT4h0MfMHkuVZq+u5EoF6QdhErdYRx5oHUzEjRlJhofanYEuuzpkN+q1SkyxnPPAGm33BprQbHs6L4tQKWTrKMerSYHHVFYsFw/XdmheK0cSHSNzXeDFGBbELl48G529NBFiO9dWQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+ by CWLP265MB6753.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1e9::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Mon, 17 Aug
- 2026 13:01:24 +0000
-Received: from DB5PR07MB9477.eurprd07.prod.outlook.com
- ([fe80::d1be:a299:c9b9:ddf0]) by DB5PR07MB9477.eurprd07.prod.outlook.com
- ([fe80::d1be:a299:c9b9:ddf0%5]) with mapi id 15.21.0339.007; Mon, 17 Aug 2026
- 13:01:24 +0000
-From: Matteo Giugni <m.giugni1@studenti.unipi.it>
-To: Stefano Garzarella <sgarzare@redhat.com>, Manos Pitsidianakis
-	<manos@pitsidianak.is>, German Maglione <gmaglione@redhat.com>, Leonardo
- Giovannoni <leonardo.giovannoni@ing.unipi.it>, Giuseppe Lettieri
-	<giuseppe.lettieri@unipi.it>
-CC: Miguel Ojeda <ojeda@kernel.org>, Manos Pitsidianakis
-	<manos.pitsidianakis@linaro.org>, Peter Hilber
-	<peter.hilber@oss.qualcomm.com>, Stefan Hajnoczi <stefanha@redhat.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>, "Michael S. Tsirkin"
-	<mst@redhat.com>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
-	<lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
-	<aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
-	<dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, Jason Wang
-	<jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?iso-8859-1?Q?Eugenio_P=E9rez?= <eperezma@redhat.com>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: R: [PATCH RFC v3 0/6] Add Rust virtio bindings and sample device
-Thread-Topic: [PATCH RFC v3 0/6] Add Rust virtio bindings and sample device
-Thread-Index: AQHdJnlcNrl6Tzh57UqO2XafG8uVA7aiQv7T
-Date: Mon, 17 Aug 2026 13:01:24 +0000
-Message-ID:
- <DB5PR07MB9477B461B0993275162F08E2E5A72@DB5PR07MB9477.eurprd07.prod.outlook.com>
-References: <20260510-rust-virtio-v3-0-1427f14d67e1@pitsidianak.is>
- <anXnRcX65PnfMe9W@sgarzare-redhat>
-In-Reply-To: <anXnRcX65PnfMe9W@sgarzare-redhat>
-Accept-Language: it-IT, en-US
-Content-Language: it-IT
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=studenti.unipi.it;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DB5PR07MB9477:EE_|DU0PR07MB8764:EE_
-x-ms-office365-filtering-correlation-id: 0b89b2b8-04cf-4a0c-4254-08defc5fa447
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|7416014|376014|786006|1800799024|366016|38070700021|3023799007|56012099006|10067099003|4143699003|11063799006|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- iyH2B9SiE914lUc7u4ZL/xaTCccan7Gg/TM3xRbQrXd4OCltb2LMImVG68DdPb45QFrnbusb435sB+dJ0neAByXFQAGoikoHYa5qPZ2OndyCIMRYdt89kVStcbZ444y9rLy18KttojZuDJWvVtAmAI49V749uW1s2mPGyF90L90n26Dt0REi/ZYq10XIRDSqRp7VnLZijbovldEenNGbKzYTbF+HSVKSN32a0HZydu9cSUQzRSX9FuKblOR947CTD1GvJ+jeiWwR3StpRqYAik3ZKH+mDntToKrqCZzA2A2Ao1Cwq7con+t09hQC8rjIhaU4w1+UkpexI9XAW6UAMWuJ0jzFhQGKzXfYa+mH5fDCzUo5OSgVduaEU+pM6B0HPrP/YtlJrvxCESpymsNr4+afr3JT61u9+GTlpvfR3Y2+CrdC3Wm6S+Qt1NBQuW3J8qhKf5VEI+odwNG81H58SLGVCOoNtlK2fAECGx493JBS+mGXgEz8Rc9UUTezqBaWxQBSTSKuo+6LIwbHqZAS8uIgnnBRcuAXyn29Q0z0QOW+giuvjOKZkaBGZx08XsJo0xG4NfgBFwJ3+ceFoPTwRFLE3IjjTrRCNWe1Rwqznev3DvRC8wJaloCTFW8t1Bsbq+6gm2yxi1Bj2yLeoMsKXY5aPEtzLPnPmHuzq9aoipVl87XcsaErHNWrhwonoIOU2OLLAgYvFcQxGO0FlO59mvarM73GQhXBw4aw7zVFRhI=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB5PR07MB9477.eurprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(786006)(1800799024)(366016)(38070700021)(3023799007)(56012099006)(10067099003)(4143699003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?tivrpoD3pr+SDHhJg9vLGlFpry06brxfltC7nTPzRttShbGw6jloT/6qiI?=
- =?iso-8859-1?Q?lm9AI8tsBn2h/ufvS5cGlUC2gZDqj+s9SbvoD3sdHuobSpm1vPvTL4fOji?=
- =?iso-8859-1?Q?fFpyDAZxNIrCrKE9PoGcaYnB3+UHGZqFDJLL0cKM63q0/lFtqThncXooMq?=
- =?iso-8859-1?Q?4rs8mKk7o6cNNqKoeWqjwWOUHnB838OKuGKb9S2pvHX/T4r+iHOQ4rcE/P?=
- =?iso-8859-1?Q?LAsRDTq8w+XhkptGFPJGQnij0EtXqeS9Sz3GMHDAX55JyLAGtlN8Z8s07B?=
- =?iso-8859-1?Q?fajP+pZcrWD57Vxfd2Vtfrko7pONZ76dIXl5qqVRbllX+Jdb0GTOgmlQbF?=
- =?iso-8859-1?Q?Wx4Bd/RchivNPmpBHw3hMs8f9emal8q3iUvZfxdPfYti0C5LRf/ixKL6Oc?=
- =?iso-8859-1?Q?sXQAwQfPiWQAb49eSjNB9/N0koMijoxgfMWzE9ahL8We1EoX63AnwUgfBi?=
- =?iso-8859-1?Q?c9/RzLRA2Ce8HWyyjzfKrvPXNAeK17g2kULp88T+r4FS2i+Gb8D6FJ9/4Y?=
- =?iso-8859-1?Q?xfGL3QbW2Or6FSQ3BhZpgHpYxjLieHPiJ4wH1olgFqrBFL3RLiOj97ytUb?=
- =?iso-8859-1?Q?INFjNJxVZw2kJfYVbQ2k0duuz/6TQroFxAJ3s02fW3BRMwHsnEHVuLUalk?=
- =?iso-8859-1?Q?vjEOgbLbd0vadAgXulktNEEvporVOnBQ4G9f2sYUPxtLVIbIutQNaUsNBy?=
- =?iso-8859-1?Q?EiqrJ/mqr7e6PvzbEUztL3qWOwSaTnnOzkO4y2GFd7NdHui8MshkSP/5IH?=
- =?iso-8859-1?Q?3nPpNCPXQXUlpth++e/PXKO+fDdDmO4rq5/mk4D41zDv/clk9g4sNFuEKx?=
- =?iso-8859-1?Q?HFIr6Z65NS+2vxA8qUG6YLMvfXe6TmHMBC8RfvpIRj/7kyXinT1Iz2Q5Ke?=
- =?iso-8859-1?Q?kEUMmfspknxon2CgACUtrdVPQZGyBlYZaZtLhvCicvUYf3qiriFAo6ua0y?=
- =?iso-8859-1?Q?oQPPRe0gGRsHyQdysTfVfCo6bIlyb2JNIqplmO1j/8cgmO1BVwskOGFtRV?=
- =?iso-8859-1?Q?5wIAqCb1+7F8OyLSwNSkklfL3CQ0XPMtoHvZX3hTpEM1TzIqUVMSvo/Y0A?=
- =?iso-8859-1?Q?Enbrt+3kWdWVwaNWyxqMVHorkFxXrxQMfnq8KRssEeVSZSJQwAAl3x6PXS?=
- =?iso-8859-1?Q?TMaudNnSJ+jRAKUFQl7k1W5MOYqppSkwyDpCXCFKf80gvmg159lx9dY3cs?=
- =?iso-8859-1?Q?e4G0/bGIQFKiJQFy8x0CHOwRSLdQh+CypW3af5pEwxICpNRCDSbop6J3Bm?=
- =?iso-8859-1?Q?bDG3XZpr1XYme1BElRzgqgA1tINFaP988E2iUNpRq0Y8s16KkJA4jln1Gw?=
- =?iso-8859-1?Q?y3V9JqcQy5c0E6fbGdwdaXfFbX/Cf/9RSQ8N9nMlpZsVCge9YVv6cT2U9X?=
- =?iso-8859-1?Q?yEH1RigY14vZPWsaDNqKHlJuMVmPuD+9ju9kQwF9slgkXVZNh2NiuAHuyz?=
- =?iso-8859-1?Q?hGUk/ybDBa7eEDLQ0/wOuDk25Mv9+4j8/XmmFhvuADpbLkC94O9b82I7sm?=
- =?iso-8859-1?Q?dEX6ii93stD8u4Hcwe7Nc7IHwe0JBupr2YN8PTRHibpEk3Z/BUeS05WVBA?=
- =?iso-8859-1?Q?JJdC6SGytLmq3IgNVuvkMMBJCTi6ZgY2IPP4mLWGt4SZysCCz2E77A5OXy?=
- =?iso-8859-1?Q?aAb5w4BJA1svvrMjh0MCjaNh95StE2Tp0RrwFoS3KMWsH1yeAt4qonCXU5?=
- =?iso-8859-1?Q?VUHqFUIiu4PTbngAPwpU0C0iqAu7V/0gF+pbpADJT5iG7zFUszOScYMtha?=
- =?iso-8859-1?Q?T8aDALiabGhxmP3CZhl9O1HkhxGoR56+D6CLcy/QR8t3qctF5G8O53B2fM?=
- =?iso-8859-1?Q?b4Hl+SIyqw=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
+ 2026 13:02:39 +0000
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 13:02:39 +0000
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 17 Aug 2026 14:02:38 +0100
+Message-Id: <DKR8MCRB76L2.1TV4D7261PVTH@garyguo.net>
+Cc: "Gary Guo" <gary@garyguo.net>, "Yury Norov" <ynorov@nvidia.com>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Burak Emir" <burak.emir@gmail.com>, "Yury
+ Norov" <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>, "dri-devel"
+ <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH v5 5/5] gpu: nova-core: add ChannelIdPool
+From: "Gary Guo" <gary@garyguo.net>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Eliot Courtney"
+ <ecourtney@nvidia.com>
+X-Mailer: aerc 0.22.0
+References: <20260812-chid-v5-0-6c767770b3f4@nvidia.com>
+ <20260812-chid-v5-5-6c767770b3f4@nvidia.com> <anzxKO0X1OrNRD32@yury>
+ <DKNN2LHZXRIH.5LUX95CZ8EA7@nvidia.com> <an4NvQBt3389jP6E@yury>
+ <DKO414SNC0B2.248FUBGJGSPLU@kernel.org> <an4xDp29VX8Am0uR@yury>
+ <DKOAY7J1IFTP.DMKSXK625EW5@nvidia.com>
+ <DKOECWHEEAK1.3N3JXH9MH7Q58@nvidia.com> <an7bG2bEd28AbNRr@yury>
+ <an8r4VECQ8iFP8ze@yury> <DKR0ZNGYW9IT.37N7TEN97GG3N@nvidia.com>
+ <DKR5W5DGAWAJ.38LHLLNPO9R4W@garyguo.net>
+ <DKR6EB8OWPXG.2QYAY81UG1RF3@kernel.org>
+ <DKR724N9V3Z8.1HJP6NJC5A4ZK@nvidia.com>
+ <DKR7N2LLIQZH.25F7VF4CET6PO@kernel.org>
+In-Reply-To: <DKR7N2LLIQZH.25F7VF4CET6PO@kernel.org>
+X-ClientProxiedBy: LO4P265CA0076.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2bd::11) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: studenti.unipi.it
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWLP265MB6753:EE_
+X-MS-Office365-Filtering-Correlation-Id: bbab2404-5035-4d24-ab38-08defc5fd0e2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|10070799003|366016|23010399003|6133799003|3023799007|10067099003|56012099006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	0PHoYO1i0GITt7Yswh9LK6Nz8nti7HT4L5q6a3RpHgLqNnZPzPqvZ4VSbT+LDsEKHndwRdxpeR0iXZ8cQOPa53LHFPmytgZnoa4FJEqXdbUnZTqlqqRnN34Jgyrh4gNJ2PiNBihHhfThtGzTUjirYdXekUKCBupbeB/gTveMCpcbR2YpAK4MIJv9UG4q48bQeFnRwyIYnXZq4IKfdiJa4hLGxqPmeSyNvnvaOM9Ft8Qy5e+H2z7OoGASkZmf9RbgkWQP+waoGvwcQHkA4I8HRw3GB4tox8CSx5BP00oMPeXNrt2BigJgdO0EeX8xC7wt+pkY2q4HAIyxkNhSzPgQsyjMlb1qDhAwara0wEZl14uaYNjaVMmCBq6RnaJKJ+ts4B7zHHUThZltumldHFNAEQdkE4vZXKhZ7VrTa1beG0+gIk2NWil5d1/hc3Od8kpX6rcz2D73zzHJrQ3V/0siLm8jbX+s2pG4bXjgURK6IjicXRhiBQJT+MQjj7fd9c3kd+TCHpb91s1Tn/iB6X7hePJUxc2+z/amoRaoLEHRe+dkBxshbkFa2hBzRudWo1VDL/gS50CKTx0VkxKmKfeuKFQhX60vR/YwkGo5KkD/j0iivMC8m9FwSRvolRxljBi6hwNffakc+mgcFUXZCnG1RpAcU7Z5Z0vIDgSmDpA+8k4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(10070799003)(366016)(23010399003)(6133799003)(3023799007)(10067099003)(56012099006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eG9LdG0yMTdONSttMElLTlJNb2dURzc1SEhpYnk3UURHV1hmSFNjMm8xUmwr?=
+ =?utf-8?B?R0QwM1JaOWlzQ1o5TGxxMmRrb0RaYy9mRmJGbjdweHhoaDBmYW94NUZkTXZa?=
+ =?utf-8?B?ZU5VU2FMeUo3citZdVJ3NjBnd1pPZ2p5UTgrWlBGdHRNM0g2UFJiK3J5ZU5x?=
+ =?utf-8?B?MXIzQStFV3prekJBS0oveXJJZVZBajYrL1JQZVhXMzFMTldGS2J3dFJVSjAv?=
+ =?utf-8?B?ZEx4cWRiZW9HUXhKV2dyc1BGYXB0aXJYQVZiZ3J1NzZmRm5vQ2RkdzA5QWp4?=
+ =?utf-8?B?NWt0VkRtVVAvQllHejRXUHIzTVR2ZGx2ZGVRMGEvZkdsd3M3S1V4Q3BwL2Nk?=
+ =?utf-8?B?Ny9JZXBkYU9TV0FLWkFnMkVDUGh4aWlQRmxaQ2NKNzY2c0U2djBlaFdmeFZu?=
+ =?utf-8?B?S2JxVjRzaGxnZnV1Z2dxRklxSkFqSDlpMkRuTEJJaGxma0xhbENVU0NYNWYx?=
+ =?utf-8?B?R2dGbzZra29MdFJJWnVzTTFCTlVPdWJyb2V2bDJOOGlwcW42SmVwcDk1T1FY?=
+ =?utf-8?B?SmlkbW9oRk9qaVpBZ3hVMzQvY2g3VWovYVNscUprK1psRXR4RmxCYUZLdHNk?=
+ =?utf-8?B?clNFMFh5Ny92ZS9nZ0tLY1h0dTR4SGFMdXhQcTh3c2pJbmdjZ2V2Q0JMWjVT?=
+ =?utf-8?B?UTNzNWVLVDZMVmhKMmZJQ2NzYmxXU0hWWFg3Nk1zL0JEN2VQc2wwdk1sSVp3?=
+ =?utf-8?B?NzhqNEFxaDBTSTFhMzREUWpDRGtuMDZkenIveUJhYUpSSHpCTzVzREJLZU5k?=
+ =?utf-8?B?S1ZtK3BjUFYyVFNtRHFUcnRVdEpERGExMkU5N0kxT0Vja25nOTVJTE5kbnlU?=
+ =?utf-8?B?YVY0aHNXeWZ4TUNOTE1ydmdZUW9ucWxZMzQrVVBuSXlCR085OE5mK0ZET2hm?=
+ =?utf-8?B?WmNBSmsrU2JYUmdhS3BXZVR6Z2F3OTdRODBxVS9KUTNTenNmcFNiY0xQVUJP?=
+ =?utf-8?B?THNzRWFkbHpydmJhQk1Kb045aGovQjAwOGN1cG9YMGVwbHh5eHVxZ2tRL1Jj?=
+ =?utf-8?B?L2EyaldJdXpqVzJqYStJQTVaZDBwT1EzcE1qaU04ZitJRzIvUTJpVTk2SGZj?=
+ =?utf-8?B?Z2ZsMk8zUWFnYjl5VS85OWVZT2FNMXlNdmtpUi9ta09YRFVoVmRWSjk0bUYv?=
+ =?utf-8?B?eDRwZ004ajJNWi92NHJFSUtUOVVWYXkyVmxsSVY5ZE50ZGdvWXhtNVpLNFFL?=
+ =?utf-8?B?OW9uYzRyZEZzd200cCtNelZHWSs0ejAxMERaMisvNFd3NGNrd3hCRGJobDFQ?=
+ =?utf-8?B?QUttSHFNNWY4d1NGeWxtMXB2Qjc3NE54OW15VDVTOVQ4ajVLc25mbWQxK3NC?=
+ =?utf-8?B?ZG0rc2RET3ZrREgwdGt5S0hROCtsQkZDTUVGNW1IWTBNNGhqemI0N2FJanJl?=
+ =?utf-8?B?QjdDTUxRbC9VQ0tUMmlSY1YxeXFhWWhudXZJUWJaWG90RisvRWI5NzN1WFF0?=
+ =?utf-8?B?ZjBNZjMwejNRZkdBMkhCU2JhdFcvOXZsOVBsVWZtb0F4bVpZcllqZEJPNks2?=
+ =?utf-8?B?YUdoNnlrdFMvM2xWRXY3eVNxTC85MnVRTXE3eUZkN1lWMDVnTVBEbk5Sc3o4?=
+ =?utf-8?B?eUsrdzBLNy9NcmswdDlob0luRGtFRStJaEYzSjhCaEZJNk1oam5JeVBGakhM?=
+ =?utf-8?B?TVR3bkljcmtyUmwvNVUxREFUVnlROUhOKy9ySUlVRk9UazRpVmVxUEpma2tR?=
+ =?utf-8?B?L0hpYlVkUjBwVHVjbXhIM0tQUWlHOTltWXpiekRjdUJtTEtmZ25iMWh4bDNs?=
+ =?utf-8?B?YlBnekpBeEk0L24xTkd0ZC9GdmhrZFFPZnp2aWpxaU1oY20wc0R4N1BqbHE0?=
+ =?utf-8?B?YmJPelhBelp5TnR2OEhCTEFHaTM5dWhHMHJRendTeWFSM1J2WHJsQm5wZmhT?=
+ =?utf-8?B?cFFyNCt5RjVoRXI1WWFnTU0wbXRpODg5L1pKRkI5eDM5djJsVnpXcTZ4M2lp?=
+ =?utf-8?B?c0RCWFM3MlJoYm5VU3BZSjVOSW90ZUlVODh1UHZweU8wQWIxaTZXUlpnV0t6?=
+ =?utf-8?B?YWUxQklVWnk3UmoyOE0vMVo0UzROd0RXTjRIdUZiYU5uWjg4S1NsSzNlZXRJ?=
+ =?utf-8?B?UmJTMUgrdjM0cVBEb2lKTXN1SkRxSDZPQ2o0Q0RNYU1sWlNQR01CbVFOQ2po?=
+ =?utf-8?B?dUp5TmJmYXdyOENKQ3FwM0hjb0I4c3BmalpNeHdRNmpKdUt4TnNVTXZQV1Rp?=
+ =?utf-8?B?K3ZqWExaWnkwYTl3OTdMUWpTWEtyQmM2ZGR1MTljQi90MEF1N0RsY0kxdi8z?=
+ =?utf-8?B?eUQwSWVXZWtPWFE3NnNGWEVTZ0ZxQmFnN3dPeVRTUWxibUwreE1RTitSRlhK?=
+ =?utf-8?B?eVRDN0wxQlNWVnErc1lCeEsxaDNXaDFuNnp6dWowelFQbWVsV3FvZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: bbab2404-5035-4d24-ab38-08defc5fd0e2
+X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DB5PR07MB9477.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b89b2b8-04cf-4a0c-4254-08defc5fa447
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Aug 2026 13:01:24.0932
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 13:02:39.0692
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: c7456b31-a220-47f5-be52-473828670aa1
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ci7xaazBm/Gcf9Dd28yZwxyIfOP94r8JqGgU3sEy0I4OBGLJTWxRDgGsC/0NepMSUjdsoej03JAYqrpO6EvIoboz+IhPeVqpliKiZoFPDko=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR07MB8764
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SExQVwTFoC05EY2QJk8AdPNE3vXqBD4Hg7fCByzUTd1xph91XiI1oDGDEfO1bQ9PAcDpVKxLoLr0QvzNvCu9xA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6753
 
-> We are mentoring Matteo who is working on his Master thesis at University=
-=0A=
-> of Pisa. His main effort is to provide crates for virtio drivers (e.g.=A0=
-=0A=
-> virtqueue, driver-specific request/reply processing, etc.) that can be=0A=
-> generic enough to be used in different OSes, providing the right=0A=
-> abstraction.=0A=
-> We pointed out to this series and he would like to collaborate.=0A=
-> Matteo and others can add more on this of course :-)=0A=
-> Feel free to continue in-list or off-list for sync.=0A=
-=0A=
-Hello,=0A=
-=0A=
-As Stefano said, our purpose is to provide generic OS-independent crates fo=
-r virtio drivers.=0A=
-To begin working on it, I started from the VirtIO framework introduced by t=
-his patchset and=0A=
-extended it to support the virtio-rng driver, both to take confidence with =
-the current=0A=
-implementation and also having at disposal a simple driver for tests.=0A=
-This means that I also had to add the HwRandom wrappers.=0A=
-=0A=
-You can find the virtio_rng source code in the following repository:=0A=
-https://github.com/matteogiugni/rust-virtio-rng-driver=0A=
-You can find the HwRandom extension to this patchset in the following repos=
-itory:=0A=
-https://github.com/matteogiugni/linux/tree/virtio-base=0A=
-at rust/kernel/HwRng.rs=0A=
-=0A=
-I have recently seen that you implemented yourself the HwRandom wrapper, wh=
-ich followed=0A=
-a different approach from mine, but did not have the time yet to study it.=
-=0A=
-I used the same pattern as in miscdevice.rs registration instead.=0A=
-=0A=
-The framework was missing a few bindings for my driver and in particular th=
-e scan=A0callback,=0A=
-you can check the modifications in the commits.=0A=
-The driver is a simple baseline that can be optimized and improved.=0A=
-=0A=
-After the driver implementation I moved to the implementation of the generi=
-c Virtqueue crate.=0A=
-I am currently working on it and i will be pushing the current work soon in=
- this branch of the repository:=0A=
-https://github.com/matteogiugni/linux/tree/rust-virtqueue=0A=
-The aim is to make it work with Linux at least, with your implementation of=
- the VirtIO framework=0A=
-and then extract the OS-independent logic.=0A=
-=0A=
-This is just a recap of what i am currently doing to get in sync with you, =
-feel free to look at it and=0A=
-ask whatever question you please or problem you see.=0A=
-=0A=
-Kind Regards,=0A=
-Matteo Giugni.=0A=
+On Mon Aug 17, 2026 at 1:16 PM BST, Danilo Krummrich wrote:
+> On Mon Aug 17, 2026 at 1:49 PM CEST, Eliot Courtney wrote:
+>> On Mon Aug 17, 2026 at 8:18 PM JST, Danilo Krummrich wrote:
+>>> On Mon Aug 17, 2026 at 12:54 PM CEST, Gary Guo wrote:
+>>>> IMO we can just support zero-sized allocation by always succeeding, si=
+milar to
+>>>> how ZST allocation is handled in memory allocation.
+>>>
+>>> Probably, but in contrast to ZST allocations it wouldn't be very useful=
+, so we'd
+>>> silently succeed on something that never was a reasonable argument in t=
+he first
+>>> palce.
+>>
+>> Yeah I agree that supporting a generalised zero sized alloc is in some
+>> ways conceptually nicer, but I also can't see any good reason why you
+>> would want to do it, it sounds like a bug. That's also why in the latest
+>> version I made IdPool also not allow a zero capacity [1] (incidentally
+>> required to not have to change the grow code to avoid trying to double a
+>> zero capacity thing every time).
+>
+> (I assume this is more a reply to Gary?)
+>
+>> Tbh, I feel that NonZero (and Alignment) is hard to use currently
+>> because of these ergonomics issues. But I reckon they're useful, so I
+>> like the idea of trying to making them easier to use. Maybe you can make
+>> an argument to not use NonZero here, but what about all the other times
+>> we will want to use it?
+>
+> Personally, I don't see the argument for not using NonZero (or Alignment)=
+; the
+> invariants required by the API are expressed very well by those types.
+>
+> I also don't see a reason to step back from using those types for this AP=
+I. If
+> we'd do so it would question all the other new types we have over primiti=
+ves
+> carrying certain invariants to a certain extend as well.
+
+I think there is an distinction between semantic differences vs just range
+restrictions. Consider the other cases where we use new types:
+
+* flags: very natural as you don't even need to mention raw literals.
+
+* units: for things that semantically carry a unit, writing things like
+  `Delta::new_jiffies(...)` is quite natural, just like writing "2 seconds"
+
+* addresses: things like dma addresses naturally fit in new types because y=
+ou
+  don't need to write literals for them.
+
+Now, with `NonZero` or `Bounded`, we are doing none of that. The only thing=
+ here
+is that there is a range restriction. Other than the value restriction
+themselves, they carry no other semantic meanings. How you interpret these =
+types
+still fully depend on the API that accepts them. Therefore, it is very comm=
+on
+that you'd be using these with literals, and it becomes an ergnomic pain.
+
+If Rust pattern types become available in the future and you can write
+
+    fn alloc_area(&self, count: usize is 1..)
+
+then I'd fully support adding that annotation to functions. Personally I va=
+lue
+ergnomics higher than possibility of misuse if latter can be easily mitigat=
+ed
+otherwise (in this case, by WARN_ON or just support zero-sized alloc).
+
+Best,
+Gary
+
+>
+> I understand the ergonomics concern, and I also see that for compile time
+> evaluation turbofish syntax is not that popular, but this can be improved=
+.
+>
+> The fundamental value remains that it nicely separates the invariants cal=
+lers
+> need to uphold about certain arguments from the API itself. It makes the =
+code
+> more maintainable (e.g. we don't need 10 different variants of a function
+> depending on whether the value is a compile time, build time or run time =
+value)
+> and it makes the code more readable and robust (e.g. the semantic meaning=
+ of
+> arguments is very obvious and confusing arguments becomes almost impossib=
+le).
+
+
