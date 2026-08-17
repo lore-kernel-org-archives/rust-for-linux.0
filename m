@@ -1,106 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4283DB636;
-	Mon, 17 Aug 2026 14:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B123441041;
+	Mon, 17 Aug 2026 15:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786975697; cv=none; b=hO8qp58CU2n1FsWTSn1rXvoWPbu3NvhuJewn6Auf/g1BziP4ZF3Q19SAV5OpSOKjhCvlzL+MOXyMkX0dKK2Cbi0hraq9i4ZA2+O9lT21O6dIa4iamX5bPGxjCnY0o73DFgZxwyjXKqnFjh4peqRkzpJ83Y9p2ECLJ42lnl6/IhQ=
+	t=1786979899; cv=none; b=E3Z0PEPGHnEx5e1nOjm9sSlKwsXy8ioODDYgstJhqh7TnUs9JatBC4+MpbXaYDWhWQ/PhSq/YmQVhcY4h4yt25gQscFi+ASlZnJlww7Q+Z0bhAefKF9K+vL+Lyx7wNn2qbOXbsqGMVWhD+9cxRLqMOh4oXTws4DHaHL/mgWR7C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786975697; c=relaxed/simple;
-	bh=xxy0gHLKhdxtuUAFYQ8rWUWihf1KnUG6LllOzkRyE90=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=UsWz+SInVghPGvsk3cnB29lYn7uMxCiVpNNN+oLqn2JqKgPWWpQiH1rT9u7MoG1CEt80EAGSeufRTTAzsXm6hJ52K4STX92Rai+v38KmrNU27IG39NKsV8XCtexBMI6MCsca32bWQSMmc2EP8WZAYA9GEn9FNhtz25bV6MhqVCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jtv/Vobn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786979899; c=relaxed/simple;
+	bh=k8uyASQlHNa79v+VL5tW/1TnW9ZTnAMKpHwaaVzbE2o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oU1sh9feYVRY0N+ffPbPvThHC7gWdUf/2GelJlJ3AWKtaLjnMOUfnP0LzJlo+OuT5hTwISLt2P7iwI9H4UdAxS5ScUz7+vVapHJmZhRuy+NOhfSbYyOOsy7CrZCcHqAAEwwMK+2kJhZBjItmKYu9RbdnWbjHICpzFofbW0FNFVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=apMn5jXX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jtv/Vobn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264B91F00A3D;
-	Mon, 17 Aug 2026 14:08:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="apMn5jXX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF001F00A3A;
+	Mon, 17 Aug 2026 15:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786975696;
-	bh=xxy0gHLKhdxtuUAFYQ8rWUWihf1KnUG6LllOzkRyE90=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=Jtv/Vobnmlg6DM04eaz2kLJKTht4m5jYkvnTMmQB+vxstfx4e1GVnc0h6yNLA3BKa
-	 s4JGuQrDe8RlhzVvoNU5J7pqSwVDMrOowrZHRp5YCh+07v4QnMW+vczzROYAXLS9mQ
-	 5Eca6vSJ244zkNpfgGJKiUWRm1xC0mJmXDDmMoAhSBMcp/Yn0O24JSlMDY9NxVvCRY
-	 hW0Rn/iXpQKWJFrFWcmt/N6kDpcDYln5ZB03/t/OnSxaKMzbk3oorl1gA13vm5/qGm
-	 qoj4q5EX+ggSCBPU4PK/xrd1RE8vR2vAoWaO0yTe4q5xfNdt9/z+UyNyWK/SMk+0UD
-	 vaFH80nhpFfqA==
+	s=k20260515; t=1786979898;
+	bh=GlBDrNemJGOZ2p7bCdTXX5Uz/rOAfEi0mhDIUCyeYy0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=apMn5jXX5/5bVQmMmSf8J2E2IyvNObdJ8YR4tYPhgJGp4TA+QX/JFblQLu94OKs3p
+	 xOsq+Y5ozUgeEuq/3jMdc7oaNu1id3OssgoU7k+dHGdKLtMpzt+x5v3fPCZ+LkpXgi
+	 WdoOnA5HV+c93h40qvIlAeKXEAnDR3v3lAe+DOrD/LbzxNqy9byGIz9tzievzTAX8n
+	 7AAy81jwMu5zWiF2ylTA0kUsvTpq7ivAOuMkpYXpvplgeHBbtoj0ChTwobB6r/6A6a
+	 o2Svz3CvLT4bb/AlDEhmHp9PUXvjeFf1m1sTmjkpB70QYMLjWHwYADsVILc8VzZ3bn
+	 KjP/as4ReuMfA==
+Date: Mon, 17 Aug 2026 10:18:15 -0500
+From: Rob Herring <robh@kernel.org>
+To: Albert Esteve <aesteve@redhat.com>
+Cc: Saravana Kannan <saravanak@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	mripard@kernel.org
+Subject: Re: [PATCH 1/5] rust: of: add Node type
+Message-ID: <20260817151815.GA757484-robh@kernel.org>
+References: <20260817-drm_panel_bindings-v1-0-1f974508a31c@redhat.com>
+ <20260817-drm_panel_bindings-v1-1-1f974508a31c@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 17 Aug 2026 16:08:09 +0200
-Message-Id: <DKRA0IU4WVW1.3AOKCY38VHTKZ@kernel.org>
-Cc: "Eliot Courtney" <ecourtney@nvidia.com>, "Yury Norov"
- <ynorov@nvidia.com>, "Alice Ryhl" <aliceryhl@google.com>, "Burak Emir"
- <burak.emir@gmail.com>, "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>
-To: "Gary Guo" <gary@garyguo.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v5 5/5] gpu: nova-core: add ChannelIdPool
-References: <20260812-chid-v5-0-6c767770b3f4@nvidia.com>
- <20260812-chid-v5-5-6c767770b3f4@nvidia.com> <anzxKO0X1OrNRD32@yury>
- <DKNN2LHZXRIH.5LUX95CZ8EA7@nvidia.com> <an4NvQBt3389jP6E@yury>
- <DKO414SNC0B2.248FUBGJGSPLU@kernel.org> <an4xDp29VX8Am0uR@yury>
- <DKOAY7J1IFTP.DMKSXK625EW5@nvidia.com>
- <DKOECWHEEAK1.3N3JXH9MH7Q58@nvidia.com> <an7bG2bEd28AbNRr@yury>
- <an8r4VECQ8iFP8ze@yury> <DKR0ZNGYW9IT.37N7TEN97GG3N@nvidia.com>
- <DKR5W5DGAWAJ.38LHLLNPO9R4W@garyguo.net>
- <DKR6EB8OWPXG.2QYAY81UG1RF3@kernel.org>
- <DKR724N9V3Z8.1HJP6NJC5A4ZK@nvidia.com>
- <DKR7N2LLIQZH.25F7VF4CET6PO@kernel.org>
- <DKR8MCRB76L2.1TV4D7261PVTH@garyguo.net>
-In-Reply-To: <DKR8MCRB76L2.1TV4D7261PVTH@garyguo.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260817-drm_panel_bindings-v1-1-1f974508a31c@redhat.com>
 
-On Mon Aug 17, 2026 at 3:02 PM CEST, Gary Guo wrote:
-> Now, with `NonZero` or `Bounded`, we are doing none of that. The only thi=
-ng here
-> is that there is a range restriction. Other than the value restriction
-> themselves, they carry no other semantic meanings. How you interpret thes=
-e types
-> still fully depend on the API that accepts them. Therefore, it is very co=
-mmon
-> that you'd be using these with literals, and it becomes an ergnomic pain.
+On Mon, Aug 17, 2026 at 01:40:46PM +0200, Albert Esteve wrote:
+> Add a Rust abstraction for `struct device_node`, the device
+> tree node type.
+> 
+> `Node` wraps `device_node` type pointer and implements
+> `AlwaysRefCounted`, allowing owned references to device
+> tree nodes to be held. To do so, add C helpers to make
+> them always accesible from Rust bindings, independently
+> from the configuration.
 
-I agree that NonZero and Bounded are on the weaker end of the argument. But
-there's still the flexibility argument.
+struct device_node being refcounted is a kconfig option 
+(CONFIG_OF_DYNAMIC). What happens when that is disabled?
 
-The API itself, i.e. alloc_area(), does not need to bother with how the val=
-ue is
-checked. I.e. is it a runtime check, compile or build time check, or is it =
-even
-unchecked (or panicking) because we can derive the invariant from another t=
-ype.
+> This abstraction is needed for subsequent patches, in particular
+> for creating drm_panel instances from a `const struct device_node`
+> pointer argument.
 
-> Personally I value ergnomics higher than possibility of misuse if latter =
-can
-> be easily mitigated otherwise (in this case, by WARN_ON or just support
-> zero-sized alloc).
+My intent is to make struct device_node opaque. We may never get there 
+with C code, but please make sure Rust is that way from the start.
 
-Both is not a mitigation IMO.
-
-WARN_ON() is does not prevent misuse of the API in the first place and in c=
-ase
-the value comes from userspace even introduces a vulnerability.
-
-Making zero a valid argument simply ignores the problem or just moves it
-elsewhere, e.g. where the caller has to validate the returned type instead,=
- i.e.
-the ChannelIdArea. IOW, we'd remove the invariant ChannelIdArea carries.
+Rob
