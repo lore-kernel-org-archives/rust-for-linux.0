@@ -1,77 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4753FB074;
-	Mon, 17 Aug 2026 11:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C23240A944
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Aug 2026 11:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786965494; cv=none; b=lzseAl+UQ1ZSMqIWThoOwlkyVgQ0bzNM6mkXa2kh6wI1X0ZjQgkR2UnN/W6D8FbMNpy0/LmLnArhZcghFcYdhs5W+XE38uMxW9dLBCWwXuTH7RP7FsODKvzoxfSbHU5pNxJkiPJa/QK65n9L5tSKxc6G82WezkSyElKcm93pdl0=
+	t=1786966867; cv=none; b=o9OwTHWOpmZCBkCmwkY4F8O2ZGd5DqqfbDTsqtEayZVOGs4WTNJht18pU+CjhOVd2E5XaxfYIYWuDZ+z0ekQ63dnkI/e5DV7GjsZOslApgq8w5juj0JeKd0kWiqxgJ3vyUyWv6dTvW80mya2K9G1z8QzXrlx0NT2Mvb6Ymsg5dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786965494; c=relaxed/simple;
-	bh=JxCvdKqLq/biQ6tW9xgNaXvM25N1Kw2BHbFW0+Jedsc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=Gp5KoBzDkdsmf1cWC9PmAu+9Mzd0Go3NSilDDSB8FUKRMG9f8Iq6iFa56i5dG0wB5RIKjxbGmKVzaiaujVJYb/XcvinSt6RDpD3YeVNHXCVntKeGrrqiZwvByKHcZu8+gdQVACXFNZ/2Qvk2NzbcVlfQW2/m04yQqw/U4c4kX5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XTLG2zvl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786966867; c=relaxed/simple;
+	bh=JSrjBrj5BTLlADlVdzs5WU3IgxBDvOu7+w58WHPWh9s=;
+	h=From:Subject:Date:Message-Id:MIME-Version:To:Cc:Content-Type; b=MJn+d9VfEXGmVgL452USVzsp8LHHehHfX4uIO2C+i9o6z6IVzq+BEbA2St75nRa82oGRORbdi/UfP45ifgG0FV2wLot71G+D79yY1CA1wFDtUV/0Jiuv6CcZnpC9JtMMr1/wI1/vjEwfGi+bc6EnUzpzIZLmewKB9lEQGduxIGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hjm/Gblz; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XTLG2zvl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7687B1F000E9;
-	Mon, 17 Aug 2026 11:18:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786965492;
-	bh=JxCvdKqLq/biQ6tW9xgNaXvM25N1Kw2BHbFW0+Jedsc=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=XTLG2zvlJ/O2/EKlxpZEMn8yOfWKMI7ghhdPKLkrXESGqo4xn38E1zDP8oGbhbWbP
-	 k2FvvnSpIixSijMuICenyn6/JdOW9Wi4RG6JSjxONY3OwmI1bY7B+RotWWMTb+moYk
-	 pCPUnW2JG/C1gYeS3lS8xVbligDL0BKeeVp5aXPO/L1oXn2v0Q3PFPD+lsHlDIT1jW
-	 HOdWjKeiGM7J14WqKN+mufBhLLG7m+3IuiGqHFPzahz7pfAXJxJ/HErNGEQMfohnML
-	 Ewdw1bjmoHhqRMXnPWiBB+L/JcY1tNOEGP2BzQprcZnX3KN0Maw6iQDFGetxwrG1Dy
-	 6U+R3j42le40w==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hjm/Gblz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786966864;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=mY1l25E03ZXeteA83B/irMr+xfrr1Cyvpdg7ez8aiZA=;
+	b=Hjm/GblzJoz5BNhfwER+1JRZTDj3sOBvHYUIp4pyYmSB9kd2OAJlR1FD46td/kFgQNvOj9
+	A+4oeaj1AZyVzIr84qYqhjYbv1OixQyl5ju5M96P4852SNco3CyXoOtQiAjTdLKPB0ZD3Y
+	Ed0mKQit6tbfA4aJBpe94qNnn8HmTJE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-372-modafi1CNrugVqv0LZDfcA-1; Mon,
+ 17 Aug 2026 07:40:59 -0400
+X-MC-Unique: modafi1CNrugVqv0LZDfcA-1
+X-Mimecast-MFC-AGG-ID: modafi1CNrugVqv0LZDfcA_1786966856
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B9B671956095;
+	Mon, 17 Aug 2026 11:40:55 +0000 (UTC)
+Received: from [192.168.1.153] (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 42E9E426;
+	Mon, 17 Aug 2026 11:40:50 +0000 (UTC)
+From: Albert Esteve <aesteve@redhat.com>
+Subject: [PATCH 0/5] rust: drm: add panel bindings
+Date: Mon, 17 Aug 2026 13:40:45 +0200
+Message-Id: <20260817-drm_panel_bindings-v1-0-1f974508a31c@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 17 Aug 2026 13:18:05 +0200
-Message-Id: <DKR6EB8OWPXG.2QYAY81UG1RF3@kernel.org>
-Subject: Re: [PATCH v5 5/5] gpu: nova-core: add ChannelIdPool
-Cc: "Eliot Courtney" <ecourtney@nvidia.com>, "Yury Norov"
- <ynorov@nvidia.com>, "Alice Ryhl" <aliceryhl@google.com>, "Burak Emir"
- <burak.emir@gmail.com>, "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>
-To: "Gary Guo" <gary@garyguo.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260812-chid-v5-0-6c767770b3f4@nvidia.com>
- <20260812-chid-v5-5-6c767770b3f4@nvidia.com> <anzxKO0X1OrNRD32@yury>
- <DKNN2LHZXRIH.5LUX95CZ8EA7@nvidia.com> <an4NvQBt3389jP6E@yury>
- <DKO414SNC0B2.248FUBGJGSPLU@kernel.org> <an4xDp29VX8Am0uR@yury>
- <DKOAY7J1IFTP.DMKSXK625EW5@nvidia.com>
- <DKOECWHEEAK1.3N3JXH9MH7Q58@nvidia.com> <an7bG2bEd28AbNRr@yury>
- <an8r4VECQ8iFP8ze@yury> <DKR0ZNGYW9IT.37N7TEN97GG3N@nvidia.com>
- <DKR5W5DGAWAJ.38LHLLNPO9R4W@garyguo.net>
-In-Reply-To: <DKR5W5DGAWAJ.38LHLLNPO9R4W@garyguo.net>
+MIME-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MSwqAMAwA0atI1hZaf6hXESnRRg1olBZEkN7d4
+ vItZl4I5JkC9NkLnm4OfEqCyTOYN5SVFLtkKHTR6NZUyvnDXii024nFsaxBdQZLRKqd7mZI4eV
+ p4eefDmOMHyHK6E1kAAAA
+X-Change-ID: 20260814-drm_panel_bindings-91a3aae5d09c
+To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ Albert Esteve <aesteve@redhat.com>, mripard@kernel.org
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786966849; l=3774;
+ i=aesteve@redhat.com; s=20260303; h=from:subject:message-id;
+ bh=JSrjBrj5BTLlADlVdzs5WU3IgxBDvOu7+w58WHPWh9s=;
+ b=D3PTPWJDVJra3G0gCMgII6Ru+zOM+IXnQuj4lFWmw/PcW+U/qZ0NJErSw6SZ7cUml9C9LDxru
+ bIkOTCidznpBWwKH8ishi1j3UsHRM3NMdo/o47t33+r+ZQ1JyAWIl2b
+X-Developer-Key: i=aesteve@redhat.com; a=ed25519;
+ pk=YSFz6sOHd2L45+Fr8DIvHTi6lSIjhLZ5T+rkxspJt1s=
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+X-Mimecast-MFC-PROC-ID: 3e4VDvhlDGBR497S__tHnujC9inFG6nPkmpW6yfld2w_1786966856
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Mon Aug 17, 2026 at 12:54 PM CEST, Gary Guo wrote:
-> IMO we can just support zero-sized allocation by always succeeding, simil=
-ar to
-> how ZST allocation is handled in memory allocation.
+This series adds Rust abstractions for the DRM panel subsystem,
+covering both the consumer and producer sides of the API.
+This helps closing the gap so that future panel drivers
+can be written directly in Rust.
 
-Probably, but in contrast to ZST allocations it wouldn't be very useful, so=
- we'd
-silently succeed on something that never was a reasonable argument in the f=
-irst
-palce.
+Background
+----------
+The DRM panel C API has been progressively hardened over the past
+year (see [1], [2], and [3]). All panel drivers were fully migrated
+to kref-based allocation via devm_drm_panel_alloc(). Panel lookup
+functions (i.e., of_drm_find_panel() and find_panel_by_fwnode())
+were also updated to acquire a reference before returning.
+
+Note this series depends on [3] being merged in the base
+tree. Currently it has been only applied to drm-misc-next.
+The other series mentioned above are already part of the
+base for the current version of this series.
+
+As a personal note, part of my motivation for creating this series
+was learning more about Rust in the kernel. I would appreciate
+feedback on Rust-specific idioms or kernel conventions used here
+that I may have missed.
+
+What this series does
+---------------------
+Patch 1 adds of::Node, a Rust wrapper for struct device_node
+implementing AlwaysRefCounted. C helpers are added so that of_node_get()
+and of_node_put() are reachable from Rust independently of CONFIG_OF_DYNAMIC.
+
+Patch 2 adds drm::Connector, a minimal Rust wrapper for
+struct drm_connector. Its sole purpose is to provide a typed reference
+for the get_modes() callback argument; no ownership or refcounting is
+exposed at this stage.
+
+Patch 3 adds the consumer side of the panel abstraction:
+- Panel wraps struct drm_panel and implements AlwaysRefCounted via
+  drm_panel_get/put. Consumer lifecycle methods are exposed as safe wrappers.
+- PanelOrientation wraps enum drm_panel_orientation and provides
+  from_of_node() to read the "rotation" device tree property.
+- Registration manages the panel's presence in the global registry
+  via drm_panel_add/remove, decoupling registry lifetime from
+  reference count lifetime.
+
+Patch 4 adds the producer side:
+- PanelFuncs is a #[vtable] trait that panel drivers implement to
+  provide their callbacks. All but get_modes are optional.
+- Panel::new wraps __devm_drm_panel_alloc, returning an ARef<Panel>.
+  Registration with the global registry is kept separate via
+  Registration::register, following the pattern of drm::Device::new.
+- ConnectorType mirrors the DRM_MODE_CONNECTOR_* defines from
+  include/uapi/drm/drm_mode.h, required by Panel::new to specify the
+  panel's connector type.
+
+Patch 5 adds gated tests, covering data type conversions and layout
+invariants.
+
+[1] https://lore.kernel.org/all/20250331-b4-panel-refcounting-v4-0-dad50c60c6c9@redhat.com/
+[2] https://lore.kernel.org/all/20260508-drm_panel_init_rm-v2-0-0bd4ac429971@redhat.com/
+[3] https://lore.kernel.org/all/20260717-drm_refcount_wiring-v3-0-023900c32e01@redhat.com/
+
+Signed-off-by: Albert Esteve <aesteve@redhat.com>
+---
+Albert Esteve (5):
+      rust: of: add Node type
+      rust: drm: add connector abstraction
+      rust: drm: add panel consumer abstractions
+      rust: drm: add panel producer abstractions
+      rust: drm: add KUnit tests for panel
+
+ rust/bindings/bindings_helper.h |   2 +
+ rust/helpers/drm.c              |  15 +
+ rust/helpers/of.c               |  10 +
+ rust/kernel/Kconfig.test        |  10 +
+ rust/kernel/drm/connector.rs    |  33 ++
+ rust/kernel/drm/mod.rs          |   2 +
+ rust/kernel/drm/panel.rs        | 684 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/of.rs               |  43 +++
+ 8 files changed, 799 insertions(+)
+---
+base-commit: c21bb4193868a8de71fc4693fa741e195fdf5d86
+change-id: 20260814-drm_panel_bindings-91a3aae5d09c
+
+Best regards,
+-- 
+Albert Esteve <aesteve@redhat.com>
+
