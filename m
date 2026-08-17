@@ -1,214 +1,119 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011041.outbound.protection.outlook.com [52.101.62.41])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D17C41BA65;
-	Mon, 17 Aug 2026 12:37:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786970256; cv=fail; b=IEN5yIfb2rsodOHldZdHoexuVsMoFxuaHSNu9RVNQ96GnpoZeNbb7P0xU8J3X4H6s88stP4s8d7fmRdtxyw05wF71YiYFWHMgbHwoDt+R00LBk6miKh7SmC1Nr7eQsOej7HPjAOV4dFJI7yz34DkufORehAtHr7yBJIrsHkn838=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786970256; c=relaxed/simple;
-	bh=q/Q4uk1h2CgpK14SljQ/E+fCGjmd2Y2q2ztjLHMl7mw=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=X0xk46TxgQTUsQa7VwBqj7BYMc4hHo2j6DeG2Q+OkKHqmwzyEtJXPRQfzgfDRCbCh5SUeZpuvPVDNSSnpZre06jgaoqmV8riaHtXhSw0qDI7kLY0c9jGV9PA8miVI84dRfAdpSktCQQFzqvOLl3ji6vlIvR/yoKXBBOVKfVJmR0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=i5ClTi/t; arc=fail smtp.client-ip=52.101.62.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F712416875
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Aug 2026 12:46:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786970797; cv=none; b=QhTUtzASjQkxV+KwMwWZP3YTl2VmN6up6oN3djLKTTA1GydkjJFblSJE3q8UzKyOPn2moW6J5aJq0fUYVWfm5jlBwCTcrXqjO/8cOKg6n6F9gaafIE2mcyi1G8guWUxHbLVe8SWVUU+4QUl+CwdNHsgfyLySrBpoDOVvONQBfY0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786970797; c=relaxed/simple;
+	bh=wAFksMzOto0uzeyXgKXy5O0UUPPgjl24xnnjbVSqgwA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hg0UY6RU217hwwbrD6gfBTTCGA+IDB9Uv93evfjR7JpdyFF7sKHdYQYkPoXF64n/yKWoJ5ntF9+L1kSCkd8MzcVrXYLCjGr23+3HHrKP0+7CYf/OHOipggNxpLAOBoQERW92YrzwXqMUyzP1r3D4hkwcI48KD2pItRg4OpMVHuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Krms+FKg; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="i5ClTi/t"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Cio8FWPihkWS/jJVVNvC9MMw9kI4bE0pMjlTUMbx/B/o9+ig0AovbuyggR9qQsuFMu0MvONk2Gd6kx0ZzFQzBiWfnxs3bQWOZcvK+6nfFtRwZQFbQuJcQw1HCQUHlkDWyCSSExN39ExWGZoCaUhEV4dgiJ5tDx5qZ3vQcdxVd2S9RqYKo4+AI0MTS4UNOVElpV2j4RKNZxFRzan93M3cREY9KGC0VpfGAxEy8+9Knpyr2k804/LnOR9TvoajSWsJBAdUOTztDZ3JFhY5JxEXXQ2m3YCmNB17Am0+y9FDo7tIkF6SMmupXkqoJ8gUvGmZB9jktChSq/9ofLkAIcLzBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q/Q4uk1h2CgpK14SljQ/E+fCGjmd2Y2q2ztjLHMl7mw=;
- b=C+t/MogZAAgtJCkseVrHiBsp4mzUHTI71j93NjUKsS3UTpkA4DZbpjgXNLIV8/hpp/Z4p225q6dYn0GvUieqy1NfKFetoro3PyW2mvFuqw08A+waMTP7zHCFRi5EN+1NnhuERSyT65kuhzxiJAFNHizn3rAfLwTAYNWv7F/GJ3qweJzTvZta4soPb24qY3SnfWnECQZWuWskS8+ry8De5jkzFyIXpu0V8UkzkP1jHbhYBQS6bOtq/TVG+BX/FQOtyOsRFUyqcfglvW7Do86Fz2SzQJYz/AZhZQac5ha+UU5FxGgPTSqnGEmYhweEKIs10vbkf+YMpSId3931MZfkmw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q/Q4uk1h2CgpK14SljQ/E+fCGjmd2Y2q2ztjLHMl7mw=;
- b=i5ClTi/t9b1WvJPzsflBsgtpwmBvTz9pYCfVJ0zfbRpLYHaW/KJSYEw9uASYAYRNjZ7zlxLB9mFpp2FtdpEI71dfGXA44RgjHUFc1QarpzKi6xEYOXhN7CzH7G+s04D9YyQb6z0nl1BdC+fan0PqhI+zx8RE1++aYRyaMIwpBr2Q8ZPywTZ6QDSJ+89H4dK81cY7j0zFXvsHfBlf7Q1mlTXHjfI+fv987L5E153nQEvkO3hRsAHFdrVNyl1r7P3VnQqtns11E1uoMmJNSjgOZezeY/vM2E5Sc03bir5KJQRcUXLhSewMwcvx4X2AsRKiqvQFUnVzMMj9UU93CFLVxg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
- by CYYPR12MB8701.namprd12.prod.outlook.com (2603:10b6:930:bf::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
- 2026 12:37:28 +0000
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
- 12:37:28 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 17 Aug 2026 21:37:24 +0900
-Message-Id: <DKR831I268F0.38IYGHOPEZ9PR@nvidia.com>
-Subject: Re: [PATCH v5 5/5] gpu: nova-core: add ChannelIdPool
-From: "Eliot Courtney" <ecourtney@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Eliot Courtney"
- <ecourtney@nvidia.com>
-Cc: "Gary Guo" <gary@garyguo.net>, "Yury Norov" <ynorov@nvidia.com>, "Alice
- Ryhl" <aliceryhl@google.com>, "Burak Emir" <burak.emir@gmail.com>, "Yury
- Norov" <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260812-chid-v5-0-6c767770b3f4@nvidia.com>
- <20260812-chid-v5-5-6c767770b3f4@nvidia.com> <anzxKO0X1OrNRD32@yury>
- <DKNN2LHZXRIH.5LUX95CZ8EA7@nvidia.com> <an4NvQBt3389jP6E@yury>
- <DKO414SNC0B2.248FUBGJGSPLU@kernel.org> <an4xDp29VX8Am0uR@yury>
- <DKOAY7J1IFTP.DMKSXK625EW5@nvidia.com>
- <DKOECWHEEAK1.3N3JXH9MH7Q58@nvidia.com> <an7bG2bEd28AbNRr@yury>
- <an8r4VECQ8iFP8ze@yury> <DKR0ZNGYW9IT.37N7TEN97GG3N@nvidia.com>
- <DKR5W5DGAWAJ.38LHLLNPO9R4W@garyguo.net>
- <DKR6EB8OWPXG.2QYAY81UG1RF3@kernel.org>
- <DKR724N9V3Z8.1HJP6NJC5A4ZK@nvidia.com>
- <DKR7N2LLIQZH.25F7VF4CET6PO@kernel.org>
-In-Reply-To: <DKR7N2LLIQZH.25F7VF4CET6PO@kernel.org>
-X-ClientProxiedBy: TY4P286CA0115.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:37c::18) To BL0PR12MB2353.namprd12.prod.outlook.com
- (2603:10b6:207:4c::31)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Krms+FKg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786970796; x=1818506796;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wAFksMzOto0uzeyXgKXy5O0UUPPgjl24xnnjbVSqgwA=;
+  b=Krms+FKgX6d4bBIa0B1wEXCIt8w1q9WFrx/c6d0we4UpKmiURp4b17Bn
+   IO9wDxZJ8lFco97R0TtYrcvbeKDG5eNwrrvyqsBR/IECbbSBArUabSd3k
+   DDIo2PL5W+KAWdYOEjiWVm84iN/PzynEsas/tB9xgz+YE21ibFt9VvxsQ
+   PUSn054BWUvQROVPTS2PIto0hJRAXrgtMynrI0KhCf/kkfyqpYLUb/pIH
+   fm+3cbUGrWhW4Uk+PUF+Kz3vR0FpWdZB1kNA/hQuaPppwjSeaaEwhoHX5
+   eBcxgtNAu0onL7lXxo9PvdF2Pk0D5lkgukHf6My2/1rW1Bh6XUONjM2i1
+   w==;
+X-CSE-ConnectionGUID: ZLFZsLJfSlqI70BexviLjA==
+X-CSE-MsgGUID: 05Z1toBBSGy2R6nHMZcwLA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="98598466"
+X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
+   d="scan'208";a="98598466"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 05:46:36 -0700
+X-CSE-ConnectionGUID: 8ZdX1opQRXSRTHpMhl1CHw==
+X-CSE-MsgGUID: niKDf76nSaO7V1qxyIkr3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
+   d="scan'208";a="266888479"
+Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 17 Aug 2026 05:46:33 -0700
+Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wvwjV-00000000dSs-3uy0;
+	Mon, 17 Aug 2026 12:46:29 +0000
+Date: Mon, 17 Aug 2026 20:46:21 +0800
+From: kernel test robot <lkp@intel.com>
+To: Priya Bala Govindasamy <pgovind2@uci.edu>, ojeda@kernel.org,
+	gary@garyguo.net, rust-for-linux@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	peterz@infradead.org, zhiyunq@cs.ucr.edu, ardalan@uci.edu,
+	pgovind2@uci.edu, dzueck@uci.edu, yuantan098@gmail.com
+Subject: Re: [PATCH v2 1/1] Make Guard::lock_ref unavailable if Lock is not
+ Sync
+Message-ID: <202608172043.JxF675RT-lkp@intel.com>
+References: <878cfb22ab185874bc363e2b7910a6978af646ab.1782763889.git.pgovind2@uci.edu>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|CYYPR12MB8701:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ea5313d-a142-4a02-a794-08defc5c4c49
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|10070799003|1800799024|376014|7416014|10067099003|56012099006|11063799006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	4KVSItoW2o90bXJGQCsuoYEED/ZDQ4atBBC+EX+wrf/mpKuh89qVX0WFC9xRbThTINj7K46NZfZZOz6NRWcvX4yEm9+w9xbausRuot973kqlB6gv08VOuvytc3blkq9LVj4wvAcXfsQ8IO3XQRmnBP2fq9Ty9Tas900uRiYeX8CMPMlCjzbtXYXFDqT0NRcaTcd2MtRRX1P5M6vLx2ALRjXISkXRlqOTuxRilYKpg1lsm5N5X7CoRX9aEZPhhct9LH04vFbBvCsVl4v9WFjyUD0M1D51mqqSOQwRxqRfslpyRo0bLlmWyXTSURhCXIQ7hLUNkcPh3l+wXXqT8WN/jyRqtBYL5cSk2gi0aQzCMlHMcorWib6QHBKRx7mfLC21dP4TWXJiDiM80kSFrFg2fgbE0wAGTqJ9FV1iMAJQ4Jw7mhlHdmQgwWoXy5Pn078LEaEN8+djIsNK1BALLDYEeW8RuOIbDfK0usHGNlSHgNXZY7seBCamtJ9y1zy7N2CRMVB0mMTzYPpp1o2Mp3t/AU78l4MouOsVnXcmN4OmD1X8V/kMr0WLFkjvYjCMvk/vlhJbIK/SQeCv+ZMKyS/qgZ9vRJSEvLWnn46yZTuk39sJryQNmcwNIH2W5drIEdTaCmGSNPpAaplqGPvD7Y6bAdTIIdYI0fjIOjDAoR2GC+w=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(10070799003)(1800799024)(376014)(7416014)(10067099003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ekFpTnFHKzIyNzZYdVhzMEQxbXNpa0lsOG9YaEJCci83ZUMxS1JadnA4WE9I?=
- =?utf-8?B?U1Njb0orQm5QUWFEU1FJYUFpd2d5S0JGd0VtR2thY3ZHNW5iOVlMbHcxNDVx?=
- =?utf-8?B?SkdzbWU5U2hwb2R6TzNSWUpvcmExQ3F2YUxtSC93Rm5DWHplaGh2RTZaTjNw?=
- =?utf-8?B?TEtQTHBhVWNQL1JINldtZlRsNmp1TytncG03YjFYODBPODRtaFM2TExXY1BO?=
- =?utf-8?B?b2FjUXY1NVlLZXE5RkIxNk41ZXp1bzRaQlhvSGFIenA5TTBhWElMTDlUMjZK?=
- =?utf-8?B?aTJOblNZK3hTSkJoekNvS0tlMXhXNGozSEMwa3JMV3JBOVBLak9Uc2ZHWnpv?=
- =?utf-8?B?NzVYYmU4QW9kOTF1OVlVSE8reHUzU25JTVhuV2FiOFRXdWl3d2Q0WHpzVDZM?=
- =?utf-8?B?OHNnUHk2YU45Q0NReUdHb0s0R3lOcWorTkZyWXpwSU9GS0RDbklTWmJLLzZ4?=
- =?utf-8?B?cWNReHdmVVdUMWFZSks2MHVCOENPb1ZLWEY4MkpxZUtMcitxRm9KTUR0S1hI?=
- =?utf-8?B?c3h2aExIeUVIVno3U1RYenl0dmJFa0FEN2dJa1AxQVk0bnd6T3dnZklxRHp6?=
- =?utf-8?B?R0FSc0dJRWxra1pzczZib0RiMy9aVmYwVGtYZWtWemVrSnRDQSsrQnZOTVFq?=
- =?utf-8?B?WXF4VzYwclltcTlnNjBmeWorRGN4dHppc3lTYUhpQzBQZzB1VUVZZXZ5WUwy?=
- =?utf-8?B?NlRqWFBsT3E1NFROUHNmQW5PUFYvVk1VTWdIbVpZa0FQWitFK1hIODVhQ3g4?=
- =?utf-8?B?bEQ0OFB2Qyswa3lkdGFkVWhXZVdFc1YvR0l5YWFmNkxMWE9mYVF2aDFNR3o4?=
- =?utf-8?B?YWE2Wk9tbWRGOUd1cStuem1WVndRbDJMYTN0NWJmelBsTWdaa01UV0lmdmpr?=
- =?utf-8?B?d1AxeEdWbG91dWFMSDFITE1zOWZleU1lSThReStVRU5uRWVPWU5YSjBoOGh0?=
- =?utf-8?B?WWp0K3JaYmhScmkyNWdINEMxVDZkT0tmcFBrdWVPMGlkNjJPdXZDY0QydGZs?=
- =?utf-8?B?QlR6UzVkWFI4bmZodEI3ZjRJNTNVbDZrU1A1WS9ZQ1FDN0U3anNpaDFPY3k4?=
- =?utf-8?B?Y0lXbndSSFJQRTFaU1FlSTJNWStXQlpwS3g2a1pUMy8zUUd0Q2dITFhnUnYz?=
- =?utf-8?B?Tm5RMGdzM1JTeThlckpEVHhTZ1lSc1FMNkJabFdQTnJWNUh6NHREWDVBS2hV?=
- =?utf-8?B?ZVVuaDZUK29DbWxXbzlTbkpqbmJVeWZZUSs5SUZGRnA3cXk5L2tKRVJPMHlM?=
- =?utf-8?B?ajZIa05YUml0WC9XVlVXNEVVa3cyVENRZDQyazRVVnpGd3Y3cHRrQXVyY3h2?=
- =?utf-8?B?TWRlbnAwZkw1cEgycDZPWVFvNFZ4eExwTXBKcHN5a0xWcCsrTGJqeDRNRWtn?=
- =?utf-8?B?bFBSWmgzc0dWSGdQeXI0OXhtcldTS3c4SlZtTlcvS1M0ZFFBT0lvSHU5bHdp?=
- =?utf-8?B?cnVkK253ZG5QRHZ1OTM4cnV4cDR0b0FqU3pFaldwU1M5MENyaEJCK1EweWp6?=
- =?utf-8?B?ZWNzaklxcGVMQWZxMmJNbXF6UWxYZ2MxaEZaaEFwRnFCTjJ5NW9ncUhiWWU0?=
- =?utf-8?B?UW5jYldNcUpkb0o5d1pHUTljeWUvMVBBYXZHWnIvaGZtS0F2ME5EK29YTkUv?=
- =?utf-8?B?SVl5aXd3YWZ6TDFjZHRGU1RzVG9RUzhWdUMwVTRnSU02ZUJxVEdzWmxWUURz?=
- =?utf-8?B?UTRPK0c1c3RHYVJaZDI2NzZjU2VCOTZPeWZCWTRLdHZGNjVsRE9RNmdLT0lY?=
- =?utf-8?B?M253cnE5TTEyUUFab29GckhDMXQ2SDBGcG5wd2ZaWGVVNkJNWFhzTy80b0hS?=
- =?utf-8?B?WlZVRE9DVm0wcUFWYUJFYW9jQ3lEYzBEaWRneFZ1aXFOOTd1alIxZFBFUnRk?=
- =?utf-8?B?UDViU092b0U3K20yQUNXSXZxaHJtTkFRZElabXc5bjJYdUNEWXNPbmpSYkt4?=
- =?utf-8?B?UXMzSHRtaUlFNVBmdFdnZjlhR3RKSXpBMW1tSDNSSEEwSkhydEZuOGJ2R2J2?=
- =?utf-8?B?aG01eHNOeG0rUnhubVBOekNEMTB4bDlja1FGUzhaS21LRFpVTEJyWXlDL2h3?=
- =?utf-8?B?aVNiR2krekN2eWFlTWZJSWlkdXVDRVJsWEMxKzFmOG5vR080bGs0emZOZ09k?=
- =?utf-8?B?K043N3RHTVpsSTB0aEZoeUExSkx2V21kTnRDQ0FhaWZ3R0Rjb2Qzb0EwTGo3?=
- =?utf-8?B?d2dQTnhuTTJQRVI5SElWUkxiRi8zMkRWRGw0TEQybXBGbzFWWDZkaGhVckpr?=
- =?utf-8?B?UlRwOHQyV05JV3dhNjk1SmJER3ZCVkROdDMxdk43Z2FSNnZ4TVhsRmlWM1Ay?=
- =?utf-8?B?elZFdGtkajd2VVpzK2NkS2ZPVHY2M3hGSXVuL3NtS0NkaVIyVTMxclRsMjRB?=
- =?utf-8?Q?rNwgZabyP0gdzxXIlQoVPFTxx7XwK4MvB/nNcePeNJ4aY?=
-X-MS-Exchange-AntiSpam-MessageData-1: 4vE0N7Wk7dlicQ==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ea5313d-a142-4a02-a794-08defc5c4c49
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 12:37:28.2124
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ARkRm2xgwRJtSGh43UJdVk+gWpN0pgsaySb0PG6xzkTzb2rZNr1XpXlkoOHKjklJoded79bH9une5CVVSYJzag==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8701
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <878cfb22ab185874bc363e2b7910a6978af646ab.1782763889.git.pgovind2@uci.edu>
 
-On Mon Aug 17, 2026 at 9:16 PM JST, Danilo Krummrich wrote:
-> On Mon Aug 17, 2026 at 1:49 PM CEST, Eliot Courtney wrote:
->> On Mon Aug 17, 2026 at 8:18 PM JST, Danilo Krummrich wrote:
->>> On Mon Aug 17, 2026 at 12:54 PM CEST, Gary Guo wrote:
->>>> IMO we can just support zero-sized allocation by always succeeding, si=
-milar to
->>>> how ZST allocation is handled in memory allocation.
->>>
->>> Probably, but in contrast to ZST allocations it wouldn't be very useful=
-, so we'd
->>> silently succeed on something that never was a reasonable argument in t=
-he first
->>> palce.
->>
->> Yeah I agree that supporting a generalised zero sized alloc is in some
->> ways conceptually nicer, but I also can't see any good reason why you
->> would want to do it, it sounds like a bug. That's also why in the latest
->> version I made IdPool also not allow a zero capacity [1] (incidentally
->> required to not have to change the grow code to avoid trying to double a
->> zero capacity thing every time).
->
-> (I assume this is more a reply to Gary?)
+Hi Priya,
 
-Yes, and so was the below too kinda. Sorry for the confusion.
+kernel test robot noticed the following build errors:
 
->
->> Tbh, I feel that NonZero (and Alignment) is hard to use currently
->> because of these ergonomics issues. But I reckon they're useful, so I
->> like the idea of trying to making them easier to use. Maybe you can make
->> an argument to not use NonZero here, but what about all the other times
->> we will want to use it?
->
-> Personally, I don't see the argument for not using NonZero (or Alignment)=
-; the
-> invariants required by the API are expressed very well by those types.
->
-> I also don't see a reason to step back from using those types for this AP=
-I. If
-> we'd do so it would question all the other new types we have over primiti=
-ves
-> carrying certain invariants to a certain extend as well.
->
-> I understand the ergonomics concern, and I also see that for compile time
-> evaluation turbofish syntax is not that popular, but this can be improved=
-.
->
-> The fundamental value remains that it nicely separates the invariants cal=
-lers
-> need to uphold about certain arguments from the API itself. It makes the =
-code
-> more maintainable (e.g. we don't need 10 different variants of a function
-> depending on whether the value is a compile time, build time or run time =
-value)
-> and it makes the code more readable and robust (e.g. the semantic meaning=
- of
-> arguments is very obvious and confusing arguments becomes almost impossib=
-le).
+[auto build test ERROR on tip/locking/core]
+[also build test ERROR on rust/rust-next linus/master v7.2-rc7 next-20260814]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Priya-Bala-Govindasamy/Make-Guard-lock_ref-unavailable-if-Lock-is-not-Sync/20260814-173656
+base:   tip/locking/core
+patch link:    https://lore.kernel.org/r/878cfb22ab185874bc363e2b7910a6978af646ab.1782763889.git.pgovind2%40uci.edu
+patch subject: [PATCH v2 1/1] Make Guard::lock_ref unavailable if Lock is not Sync
+config: arm64-randconfig-003-20260817 (https://download.01.org/0day-ci/archive/20260817/202608172043.JxF675RT-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260817/202608172043.JxF675RT-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608172043.JxF675RT-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> error[E0277]: `T` cannot be sent between threads safely
+   --> rust/doctests_kernel_generated.rs:20824:33
+   |
+   20824 |     assert!(core::ptr::eq(guard.lock_ref(), lock));
+   |                                 ^^^^^^^^ `T` cannot be sent between threads safely
+   |
+   = note: required for `Lock<T, B>` to implement `Sync`
+   note: required by a bound in `rust_doctest_kernel_alloc_allocator_rs_0::kernel::sync::lock::Guard::<'a, T, B>::lock_ref`
+   --> rust/kernel/sync/lock.rs:239:21
+   |
+   237 |     pub fn lock_ref(&self) -> &'a Lock<T, B>
+   |            -------- required by a bound in this associated function
+   238 |     where
+   239 |         Lock<T, B>: Sync,
+   |                     ^^^^ required by this bound in `Guard::<'a, T, B>::lock_ref`
+   help: consider restricting type parameter `T` with trait `Send`
+   |
+   20822 | fn assert_held<T: core::marker::Send, B: Backend>(guard: &Guard<'_, T, B>, lock: &Lock<T, B>) {
+   |                 ++++++++++++++++++++
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
