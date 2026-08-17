@@ -1,104 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10623B27C9;
-	Mon, 17 Aug 2026 20:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786997523; cv=none; b=asAC9yaPFhF2C8ZEyyKS+ob6/czNdhRajs/WOjkMJpYix/HfZ2Y4Lx8rvGeIyJgE2RcNcuaOSzJL2fYZlUNSxKUrkt5wbqXJr3XuIpIeTfGf+LVqMQrN/gjwVsqFtXw9EHJTOlgIglq/YPSHH/fattyDlL+Rq6Uof8JT9npfuwM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786997523; c=relaxed/simple;
-	bh=DBXtxdN+7uZqKe3C8uP805SgAvhQyLAveUm0WyTJvrs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=XiE23xtDacvnzeS3Gm82O0t5i7AFlYMKcKU4bl89ZgZpAqsBKzXr4opfFsCq60XgL++eB094ve8daApx5T7Vqz4IA+Va3rFlYF1sqnoqsBF4pjexV6sw51/rLtcjOnxh5FnKVsIFIqlZap1gy1TsvbFUh9LIfA79b/ygYwb/9ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XrpHgZVB; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C447470451
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Aug 2026 20:12:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786997574; cv=pass; b=rO1dMMDwvFVrf4dFqI5juNBUQCpRJ5iZMnWQzgz90j9kLEObG/kuusTM4nixzYT9UgwWU8Agq1vOpkh3MnogiU8mGXRSSilcTQ+/k8SPTHusBv5dcp0V9l9zJU9+cP6ngCj4NTSMySyvfBcXlj0QWJBWbaqgAWuEpNqwfHdROD0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786997574; c=relaxed/simple;
+	bh=rmF0p5wb5vrcnie95iYpLQsIO/+hD7X9foCeks4E8TQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SPS9XwKgbVyUg3aAazqZq2VKnW8OOYkQsYnxnwKUEPHeaTlWrM1DTK+gKkgqNMoNs5iEQCJ4s7H5HwBhFeAgxGIM1rTyeNNNwt5yaOLloZnflucEUd/LxkiaqHjyjIRwDI0GZtUZy5p8irbTFr141SOr6aTPMY7F6SzOle5cqgQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lq0QJZSq; arc=pass smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XrpHgZVB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F40C1F000E9;
-	Mon, 17 Aug 2026 20:11:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786997520;
-	bh=bE+WsjXgFpqAMnrpxsyFK4q1Z+whv219PvMXv9ZwExY=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=XrpHgZVBjEmGYqmOLxoJyfD9Ydx12rZYyrvCeNT/g5T2d4HJhrSj8I4im5hOQQffZ
-	 h8rwkhUdIpyYwiWy0tXMmi8zUG//0A8BSMZJh7brsszgnIL5LWmCTMvN8v9HSQ2+KU
-	 nw5yGLLzAPlUXdDY0vdQ0mJsab6W4wSDp4du2CHesi+u3HvYtUDRd8as5A6I/ZGoGD
-	 Lh2zI9SZrOhSISfoG6JiND36cKQ+Cx+SIdgSnxUT6uMZbslah8OOPphM17qgkjzOUH
-	 9Xf3V2vcu4NwPZ9ydyCw0jxXGiN1r1+LclxRrlEjtpvjcO9J5IB7JLqfNOqTMJDErP
-	 4iMJw3xScqbFA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lq0QJZSq"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c9e607d81fcso2398616a12.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Aug 2026 13:12:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786997572; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mFsUla/KamzkZIDuD+2suwfForXqZdOYN3qgHYS+VUMtDGjrJecG+t5veCNI7i92jh
+         ZK1nFWbvYyYx3t2qdcgiXMen4o2rdYrL0p67PheYzBk3odnetIh5gXFuKxOWOk8JUcuj
+         csc7ZSsw7aoB2ca+iwdZymJXYurSRql6s6wM3QnMCOriZoyykyMPVTM77rbIZnaYXIQM
+         xPQ1WgWCbP/07R3ryMFR9VsjZhyVZcc68owQlPBfu3gW94LBqSOZq9gTj1+CQOy0lBb8
+         kmJnRCpLe+gzf7CSb6Z+o0v+qZ73ZvGwszITX0zI3b2z6CYGS31kVrEVKgr8v/cJV9G5
+         T5hw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rmF0p5wb5vrcnie95iYpLQsIO/+hD7X9foCeks4E8TQ=;
+        fh=PknxCUHYLBaS+gRUvWt9QQrHtLGOAua2YdxFSlYky+4=;
+        b=PtW2nvI8HKdhlpZuVzOlj8RvbL825b0VXC/2hZ6RqLFTf5uH6YgYFFvtmWkiykn3Np
+         1USxHf0H7pZzl11r+hl0VtDlnEigvINu6Gczj2pZ3YtGrP5NbZBS7OoS7zfSWZghA21F
+         /c6pG49nFY6fqFMM0S3L0FR8sR+vwTwPSY0rGjDdlUVtFOWmkJs4ZQU3TafHNJduhQaw
+         J2g+OmE8LnIhHlSfU4qmGH9MZboxlYxfFH/rBxo4fAHY/xj9gNwHuMJoGfcDUlfSgrLr
+         3g7cawJNIrPGe9ovk5wiukUa6ZvXvwdvO5JecA8a5Vo38PHUAo88XiqW+gg+kBRdgPHZ
+         w3VA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786997572; x=1787602372; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rmF0p5wb5vrcnie95iYpLQsIO/+hD7X9foCeks4E8TQ=;
+        b=lq0QJZSqPMB6VHxj7mAkioRUiFyD36q2902j+kZRlnZnPAVZaQ58Bpg3P7YCh29dvx
+         PYmVwXaoyvLdC7Dwe5pnCNUXELJ9rBM245DQpxS6IB97YZzKlrAiUSIzwrvU/vsSLdW9
+         7wEe6SELCnkE7nnT7KFBNjBSF+sxQ5kWIai26w0qDou12WXpQ6y/FlGnIcdrvd1o179p
+         0WSZ/z26K7cb214FdZTXuM+KhqucKzuJjyuFc8JdOhgSVuOmnAQEvuTvM0QSnmB7JVuu
+         U69yo5T+AxLV8DSCr4XyCT5rE9gcLatlpdexkG7ONupHJf2e26728GSdtFtLzmo1Kg6Y
+         bBEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786997572; x=1787602372;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rmF0p5wb5vrcnie95iYpLQsIO/+hD7X9foCeks4E8TQ=;
+        b=AbGzb+9E+oxGtDZDjOcRR0Vwaije4b8xKEu9V6gQjLvhy3OVUqrLdhct8snZBUsAPZ
+         vqKlIvO+5B5CzA1tcd4T7nUyiPVhXTnMJlmi2zCWl46YhsWE4BxyoFT90VU7eUM43h3c
+         +XcHBk7TF6rLdtP2XlPz5lQcb8YVhEqqgXHty/nUBFvlxoGgf6q1oLtWZ6Yuz1i3wETI
+         2xxf7578mOGRKpRek6Q1SLJji6bKRhLb52G/o8XnOioXDexiOPN4xFAW2bStZLttWAmT
+         qbHwbgwpGsGQaqNMi/fHxmYt33nPTcK1e5SqPcVkDErVKoIGc4Ibwuv+4qKHOkyKmm1S
+         ucag==
+X-Forwarded-Encrypted: i=1; AHgh+RrLabPBN0XTyWuQcFpYoM9PMqZU3Hjmpgcf5u+HTvUl9GNgUdBfIrYWy2LYKa5O8z0q5J5ezjhVoHucnYH13Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxczaRgnrSQ+/5JNziIFQbJqfXPpfM64a99vlx5B7mfxkv129Y9
+	JdCP6Soc4nM6dB/BhYlv6YOUauQEzoWBNE/tPLRTIXTCwpKQ3Zbe9sS/8RxsI6CJhHjuuCVg2cU
+	PsuMGZuQf8CJL8agUosKKfgyucFH6KaA=
+X-Gm-Gg: AR+sD11sHAktai5C2rv9RzzvPUqPfnM976GAMUk3G8PLOT+9iXCfpISzk9cBrT/ORWV
+	aKpv9v3nyxveijUowM0KymxaXT1ao5v2GgOyz9cLKFhgrXMWYKZ63+6SMq4nJtW7Oxrd3Zwr56g
+	1/F4+AmmYzEQGMoeD6JsAqNbq7Xkyv8/HibZgBDEo9NH2DRv6XtoFq96f203DscpCn3G7Xrjbqs
+	ZHg1J3fNp/XFxijk/zaRcfDWeNi5XG8l2fDfMPqWV92WxGVBi9UP4sxsuqEKqgLiQt30wHDPTr6
+	mSVcLMVPFjbq111clUWFjCfa6FboIqXQ5fn/WRpm6K5nEg+jOED1W03jUNYnkVexvby43hvnLq8
+	aHv9AjGMdpl1nk1blJlbzt+yTQKbRxQ==
+X-Received: by 2002:a05:6a20:cc0b:b0:3b7:807b:3cd3 with SMTP id
+ adf61e73a8af0-3cc71cb2dcamr30661148637.23.1786997572429; Mon, 17 Aug 2026
+ 13:12:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260817-chid-v7-0-a5872e64d8f4@nvidia.com> <20260817-chid-v7-5-a5872e64d8f4@nvidia.com>
+In-Reply-To: <20260817-chid-v7-5-a5872e64d8f4@nvidia.com>
+From: Burak Emir <burak.emir@gmail.com>
+Date: Mon, 17 Aug 2026 22:12:40 +0200
+X-Gm-Features: AcwNN1XodtdSigZSPtT09IgGY6kHgbqKpKTjm9HggxTjtCUIibmVj2ooHM0J-GU
+Message-ID: <CABwQupNAv1bpPF_J9owrHaENx9O2Gt1spaz8HNHyDy+uBXzKng@mail.gmail.com>
+Subject: Re: [PATCH v7 05/10] rust: bitmap: add contiguous area operations
+To: Eliot Courtney <ecourtney@nvidia.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Yury Norov <yury.norov@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, John Hubbard <jhubbard@nvidia.com>, 
+	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 17 Aug 2026 22:11:56 +0200
-Message-Id: <DKRHR24SW3XR.27EE53NSRT1D3@kernel.org>
-Cc: "nova-gpu" <nova-gpu@lists.linux.dev>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Alexandre
- Courbot" <acourbot@nvidia.com>, "Benno Lossin" <lossin@kernel.org>, "Gary
- Guo" <gary@garyguo.net>, "Eliot Courtney" <ecourtney@nvidia.com>, "John
- Hubbard" <jhubbard@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-To: "Alistair Popple" <apopple@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v4 6/7] drm: nova: Use nova-core to read VRAM_BAR_SIZE
- parameter
-References: <20260811050657.646799-1-apopple@nvidia.com>
- <20260811050657.646799-7-apopple@nvidia.com>
-In-Reply-To: <20260811050657.646799-7-apopple@nvidia.com>
 
-On Tue Aug 11, 2026 at 7:06 AM CEST, Alistair Popple wrote:
-> Currently nova-drm reads the VRAM BAR size directly from the PCIe device
-> which requires trying to cast the parent device into a PCIe device. This
-> obviously requires the parent device to actually be a PCIe bus device.
-> Whilst that is true today it may not always be the case, and there
-> is no reason to make this assumption now that NovaCoreApi can hold a
-> reference to the bound PCIe device.
+On Mon, Aug 17, 2026 at 9:04=E2=80=AFAM Eliot Courtney <ecourtney@nvidia.co=
+m> wrote:
 >
-> So convert nova-drm to using nova-core to obtain the VRAM_BAR_SIZE
-> parameter.
+> Add bindings for area operations on bitmaps. Each one is
+> made safe by adding some extra checks compared to the underlying C code
+> (for example, checking bounds) and with additional checks to catch
+> likely erroneous usage if `CONFIG_RUST_BITMAP_HARDENED` is on.
 >
-> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> Add tests demonstrating the edge cases.
+>
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
 
-Suggested-by: Danilo Krummrich <dakr@kernel.org>
-
-> @@ -33,16 +30,13 @@ fn open(_dev: &NovaDevice) -> Result<Pin<KBox<Self>>>=
- {
->  impl File {
->      /// IOCTL: get_param: Query GPU / driver metadata.
->      pub(crate) fn get_param(
-> -        dev: &NovaDevice<Registered>,
-> -        _reg_data: &DrmRegData<'_>,
-> +        _dev: &NovaDevice<Registered>,
-> +        reg_data: &DrmRegData<'_>,
->          getparam: &mut uapi::drm_nova_getparam,
->          _file: &drm::File<File>,
->      ) -> Result<u32> {
-> -        let adev: &auxiliary::Device<Bound> =3D dev.as_ref();
-> -        let pdev: &pci::Device<Bound> =3D adev.parent().try_into()?;
-> -
->          let value =3D match getparam.param as u32 {
-> -            uapi::NOVA_GETPARAM_VRAM_BAR_SIZE =3D> pdev.resource_len(1)?=
-,
-> +            uapi::NOVA_GETPARAM_VRAM_BAR_SIZE =3D> reg_data.api.bar1_siz=
-e()?,
->              _ =3D> return Err(EINVAL),
->          };
-
-That's much cleaner, thanks for adding this patch!
-
-Once this landed we can remove the
-
-	impl<Ctx: device::DeviceContext> TryFrom<&device::Device<Ctx>> for &Device=
-<Ctx>
-
-impl in rust/kernel/pci.rs. (I think platform should have the same impl to =
-get
-rid of independently.)
-
-If your are interested, feel free to send a follow-up patch (or include it =
-in
-this series).
+Reviewed-by: Burak Emir <burak.emir@gmail.com>
