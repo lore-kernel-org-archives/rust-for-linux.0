@@ -1,145 +1,295 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011011.outbound.protection.outlook.com [52.101.52.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED2739D3C0;
-	Mon, 17 Aug 2026 07:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786952674; cv=none; b=ARrpXJIemLBh2uqgnM1jFR81FY9Ga4Clj+mPRPfPwvisLA9Zwum8dFIAzGkpRDvcv/AtUFXXYAkGMJqUG6lIkHy6qo3IyFEVHpACjah4mUVMpRhR5AmC5HJ9idchLe5xwXa7ppPHkh4MAMX7z77gJR+Iw2TLiwjSbH5igTE8Rb0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786952674; c=relaxed/simple;
-	bh=Dnb+XbrtyuqhjHyFkm447UwD9Y/MP2hNGk9Ct+Ds8Po=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nyhq4aEFOfiorC4qdYALqZ1ggBGTlwejkdie84TMxttrBldMxFl3FVnoRkzMb5JV0U+hwHadfFhZgDUK47Tg199p7kBapc+HXWK9eQQFoq218fKG1Sg7w9bLeNC/Gx0kVjbdb8BIXjcPODqnYwGTaKjnspirw9X1lFWU2hSGDq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W00MuY2g; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C2831D730;
+	Mon, 17 Aug 2026 08:20:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786954843; cv=fail; b=bjHlfwX4wvIQbOPZBepdAWu5UcitNxAPZ0v3zUb2xIsxag9L9X8tkYlgSUUl/TpjylQaeEW6VS5YhlosJfT7a8z2gC0w8KsWMfoFBJ3DhY/Y5ycfsX4MHv1QvEzHvCkTrEHLGuMpRO/JUmu3jYvLyo0nPOhNAb/yp07e14i0iwk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786954843; c=relaxed/simple;
+	bh=pK/KFyDPaOD0UZ2oAnxq4JveVrs+roUQ55FnzOPzlTI=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=EradakZ5srLhUUujGH0sVTzrbsWaQjorIH3bVp90qAlnSADg44sBE8EeZJM3FaU7adhSRS/ivJVt6eiP9DB+4Mssuck0+ooKuosuz+27siMzhjJ35ZAf24TtqADhQ2pFqiuPScIMxOz9CFJ6kM6IPvRtA2NLg+YZZfyhr2FUQBY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Fqtkb6qr; arc=fail smtp.client-ip=52.101.52.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W00MuY2g"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786952673; x=1818488673;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Dnb+XbrtyuqhjHyFkm447UwD9Y/MP2hNGk9Ct+Ds8Po=;
-  b=W00MuY2g53S2QTNsAlhNQGSH1KAdazhiVjykIIIC9/g11SltHIfsBGbN
-   pJHvGPgoAN7vcgeYm86Ry8pxpGEy+WE50bBDSmv2oFGLJSLqCWZ0G3Y6y
-   x3iddOb0tDoNKYs1khdBwa2pwHod9O6ueoUr0rd0JwUvy7Yxsk96/iNyo
-   H90C0gy+NydRt6IGGd3HT0WOQ8JDD8yAiWHxUiLjjLF8TfEjO3MtD///3
-   9jfN6lROeYf97iB8AvtBGSD9p9syxm5G6MLJk5a6hejHggk3wR5cUr2aj
-   jSg1DOCiLNEPFOu4AHyGfDbsVZAsXsRQUNhMTWNAzhv4NcBQ5qoE3c5hG
-   A==;
-X-CSE-ConnectionGUID: 5fb3vfG2SN2XGERJCQrpmg==
-X-CSE-MsgGUID: sm4q3516QNuq7mxRcZqj/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="86541854"
-X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
-   d="scan'208";a="86541854"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 00:44:32 -0700
-X-CSE-ConnectionGUID: UNvMBamPScygexSOA1eEbg==
-X-CSE-MsgGUID: VW2ePQYfQpSFQmcWfEPaJA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
-   d="scan'208";a="258628258"
-Received: from igk-lkp-server01.igk.intel.com (HELO 3cba2a188a06) ([10.211.93.152])
-  by fmviesa009.fm.intel.com with ESMTP; 17 Aug 2026 00:44:29 -0700
-Received: from kbuild by 3cba2a188a06 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wvs1D-000000006lV-2hC4;
-	Mon, 17 Aug 2026 07:44:27 +0000
-Date: Mon, 17 Aug 2026 09:43:34 +0200
-From: kernel test robot <lkp@intel.com>
-To: Artem Lytkin <iprintercanon@gmail.com>, linux-watchdog@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	wim@linux-watchdog.org, linux@roeck-us.net, ojeda@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, dakr@kernel.org,
-	aliceryhl@google.com, a.hindborg@kernel.org, lossin@kernel.org
-Subject: Re: [PATCH v2 3/3] watchdog: softdog_rs: add Rust software watchdog
- driver
-Message-ID: <202608170957.oeQwdAP3-lkp@intel.com>
-References: <20260723161529.23759-4-iprintercanon@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Fqtkb6qr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AGFQbr3Twq+QYICYcw2i/LfMbpSyyBgK4cHG/TgyNf49agB75N1SxKRotdAjWBgO50CIPV2jnWNzdegx8VcrD4qQyOMpLXeklWtyZQ263J3Uv6AdHqMMVRSrge1V9KwHPoXD8Ut0Xmm+/O7+x1lDQrnRcPbQiFvrcHSt7OXyaw8M6S8dj0lZK4ARtRCgvewtofi1HtZ2XmGLtACd9it7V6+Yomeu+ooKKwVxLHu7rBbtOytqh6mlXGzOPjKKXMZED0834OZC7tabPSochyrQzJXHvmaINt3M4w0p8e9cvOUddOnyt5QSpzPs2HeDDfaiQ6G50FHMaivFo0T4Thuyyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QjnLP7jK9SR09/DND74jgQIrS87CrHG23HcFp7XIbWM=;
+ b=VW3ube5zbOieQjA52mTIxOAVfOkTngJHG5rdWjfhVyOgY0mfOYJhtfieYR6VufqrQkfsqOttS2fmTiNXPwe0D0/2ci8yTRSKG9anF5bHSfs4zX/01AHG48wGz4ChbFixmWBBlXVqWNOaf62Jpkv1eaNE0C0Oe2h1+FCCqB9ciMxP2NzQH0k8T0PaJ7z6IbG/PZ1NJJQ9FCPKw/AyIiJv+tIKq0Ka1IFQgoH5p+0Y9+k84hAvVENLfxHLgm500TScr76pjNf3kt7nxKVujmVE1t1WI4BkfN8WwtzKDNoixykmaqwXl03J1xQ+bYDz1EdfnnZuMrCwu1UDSyFd+N+Cww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QjnLP7jK9SR09/DND74jgQIrS87CrHG23HcFp7XIbWM=;
+ b=Fqtkb6qrMmfFrZ5HgYRuDkrbYip6i+j/bZNjN8pPT70pvkzp011EzsQQuB/QJ+SbU250viFoPIFnGEui8Wd2FISz4fv+/WLV7yuqONbBqY9/T9uGL/Y6MTNhPfR57mDPKfmiU4EPwlZB9aKv+uZs+/zHCEMQXr7kzwIV7sc3FkdudM8yPTtqps9CpSSvBwEP441U5/zsD39m3ZoVh1L8iiGJGOgc93+Q84m4QDbYB/SvmEB7o2sDPZSo0AN6zJmmYIashbkGF90zo1xZiMsb/2nLFsk2kRUT42Q2AF/4p2aLrHDxrslheWFZY+/aRJH7Hi7+iM8KDe7j14Y+GgPDrw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by IA4PR12MB9810.namprd12.prod.outlook.com (2603:10b6:208:551::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.15; Mon, 17 Aug
+ 2026 08:20:36 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 08:20:36 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 17 Aug 2026 17:20:32 +0900
+Message-Id: <DKR2MD987IX1.11I18NM3UNVQO@nvidia.com>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Yury Norov"
+ <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "Jonathan Corbet"
+ <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-doc@vger.kernel.org>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH v2 04/12] gpu: nova-core: mm: Add VramAddress type
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Alistair Popple" <apopple@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260810-pramin-split-v2-0-65a00b3c7309@nvidia.com>
+ <20260810-pramin-split-v2-4-65a00b3c7309@nvidia.com>
+ <aoKfPchpfmTVguQf@nvdebian.thelocal>
+In-Reply-To: <aoKfPchpfmTVguQf@nvdebian.thelocal>
+X-ClientProxiedBy: TY4PR01CA0105.jpnprd01.prod.outlook.com
+ (2603:1096:405:378::19) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260723161529.23759-4-iprintercanon@gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|IA4PR12MB9810:EE_
+X-MS-Office365-Filtering-Correlation-Id: 87e02104-b5e8-4dcc-83af-08defc3869ed
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|376014|10070799003|7416014|366016|11063799006|6133799003|10067099003|4143699003|56012099006|22082099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	OB7yWHxSdyaBhRWZZGcp07kzx/jgt5UlIVYVuafdwdJ28achiFs3kVNDm/4pIjn25GKtRXHyvMaw7bwQYP+jWREpHP/a6OOrPybR1xz/MJoSXLnN0sQMpy8L7FXLZI4fbxQOlmA1cZ8tpfEG3qMBWKh+1Yv8hJyQJwi9oYEMy+rP6Gp8FPzMzF/noKoQtU+Awytp1W3lFHeMyF6TsbW+mqkjZ1akD+7oOcIx4goWths1SJfFsFwnZc/ZLMcI+WLAMJRQaQBMlGvpA/UvwVoWH8GhwFa2iI3IpJXzzopDN0mthtWakeem8U+ZtbAky3jamxc9S4VQ9HB9abhWaqpKZAnA1ohb9zXp/i+u0O20bKCxmHyiAF1JcIk+FeDV8HQFhPzmCqHnw3Pv3wACvuT9xMV/rracyOzNHbO+ujrw7LyugiAL8R+LWQt/tEq92tGwLB90if1r2wvQDrfnlpux7DcnwaQxgdFyZUG+a+AwTz1hhzyO9O9eoZO2zHm2iBkN8mvGo75K8fGTXDmASzWt+MSJOu+LGxe6qi99uNX2K6oIiO2GYrvGT+Yq+o86+DJvseCoJSkttbCyi8J/UOKUoUa5I/lBnTe4ftq0HpHEPIgJ97HEzVHQ3gSdjlPdDuRvu+OuxnfAWSQItbepAv3jDC7qCSVIOlchnnORpDYFOgs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(10070799003)(7416014)(366016)(11063799006)(6133799003)(10067099003)(4143699003)(56012099006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b1QyM2MrMVE3RUNmM08vMnJFZ2l1UlNqOXY5MHFQUkhjdVppUGs1UStLWEV5?=
+ =?utf-8?B?WjRpMGYrR0kxYnB3MDIwdHhvMEhlNHc0eVVaT3IrdXdBc3pyYTE3YXEraE16?=
+ =?utf-8?B?RnpobnViVFkwclpKTTFURXNJaStJNHFCazBxUlJQeEltSnRrUlBRQ2RwcjFJ?=
+ =?utf-8?B?QmRubk9NOHE5ZkszZjUyOXNlMTVaUjR1NmJQVGFmSGFuTWhpZTBqVW0rNEtE?=
+ =?utf-8?B?KzJVb0pHMmpxRlMyblZqYW1VSmhTQmNVbk1MWFNTN2FWSzFWZ09ucE9VWkdK?=
+ =?utf-8?B?OXFBemhrdEhSRjQ5TTFqb1RmbGdaTG5hUlRXbnJZR3I4MDk0dDJxWFFLeHFp?=
+ =?utf-8?B?TzNCTDFVN3Z1aEtnckFsYWdaeDFSZWt5ZXdHU1BvaXVRMHQxSGNQOWY1RWRs?=
+ =?utf-8?B?dHQ1V1RQYy9TTVlHSXlxaWJGN1hKb3JZVzJxdkx0cC9CYUw4ei9nTk1ReTV3?=
+ =?utf-8?B?K21SZ1hzQkR2Q0F4ZldRMEdVbjhMM0hBbDB6WkxRZDlwRytsVk1KelZzYkVo?=
+ =?utf-8?B?c2xQTjIyRjM4Smx0YkZCYkRlODNqdDNnWXYxWHFpdXpoa3ZIcEtkT2ljS2M2?=
+ =?utf-8?B?ditFbldvc3UyeWJ2Z1BOaEFwQ0VqbC85WnRFQlhWMG9HSEYzRjJ6Y1NWL3Rk?=
+ =?utf-8?B?dXlBMkdsaVI2anlvVEgvd2pWR0JBY1puVTJyU3g4OXptS0k5SWE0ZWlLSWZX?=
+ =?utf-8?B?MnFPZVA3cE1oN3NQeUs1NXRXT3c2V1hmaUZOdjdXaTNGTituSVNSUk9ETFdB?=
+ =?utf-8?B?Z0R6NEdNWWQ2a2NBMFpmVHgrS2hMb1A3dUVJZ2VpVVBLYzVWckZtN0JaY1RQ?=
+ =?utf-8?B?cmJGT2N5VG9RSisvMWxxaXEvNlN2Zm1zdzZUVFMralhIdFJEcUcvYjg2OUxj?=
+ =?utf-8?B?VlMxbDBzcmw0dk5LeDF3cnVNN1oxbWRRbHFDb1RIUjVXbHMvdXdiaGY2aStB?=
+ =?utf-8?B?SW5hVGpHMXcxZm5CdFZnSHh0RWVwM2JjMVdlNXd0UDJoVC9QMGs3MTNFZVc3?=
+ =?utf-8?B?bVpoSWgxWVZNbm0ybWQ5cGdTNUxVeWp5U2dpN3dyMjk3eHRzazBpN1pXeDY5?=
+ =?utf-8?B?NVZQZFVjTXFYb3V4RVhFeWgzQ29SRHExMEdQQTRvMXduNDJMUHYxbTlmSnFZ?=
+ =?utf-8?B?U0ZUeHVwWitkT2VuWm5JNmRtSmVERFRjYnIzQURUbWhSUitoUzdvS0xWNHRv?=
+ =?utf-8?B?S0lhWStjVjdHWXhJWUVmNksvd2Nkays2d1JNYWlhOGNlKzVuRE4rL0NTdFZ2?=
+ =?utf-8?B?UGhESmhQa2NxTjVSUGRCS3crZ1JTRTBtUnQwUEJVOGprSkNVK3hncDZKNnpi?=
+ =?utf-8?B?a242Q0ROdHFBQnR4NHY3VlVDM0tzc2lnL3EwUytGNU5zcUdDMG5RazR2M0NE?=
+ =?utf-8?B?Y0tRQ0VyZ0NCY0ZxWWN2bmNuQndCeU1KelkzM2dWV09RVkNhbThXeWV2OXN4?=
+ =?utf-8?B?M1E4TlFSM2ZEL2NpRkVJSmg2dFdFZWlRa1hyTkhWaTROdnErVDRJamx1eGJS?=
+ =?utf-8?B?MExwcytUN1U4RDZOU0lXaUhNbVpOS1BGWDFpbkF1QTByM0xXV2dKSzVUNnZT?=
+ =?utf-8?B?cmdOM1FuTjg1U1I0MFhGSk84N2Voa2ZnL0JmL01GN3MvS1dHbnNEd3A2ZjVY?=
+ =?utf-8?B?dFRmR01Ja0JSRnlWTGhLT3RrK3dYMDVIL3FNY09BR2VhUWEyTVBmRUJMeDdM?=
+ =?utf-8?B?L1ZReC80NVZ1aklSb1ZLTkFBaFpvQm5uRWMzQWgrQWlnK2lWaXo4cWh4YmJk?=
+ =?utf-8?B?UkVQemZEZ0YrSHhPVkNDYmQwR3BJb0JnUTlCTFNNZWVoN01najVGSjVEUXV0?=
+ =?utf-8?B?U1NaMEFlRk9GV0I2ZENORWxQZGdlb3ZJQ0VqOG1SSHMxUTNQN0hFMGZjMkdu?=
+ =?utf-8?B?VTlPaDR2SnQ0VE9TYTFVeEdFVHhIL0ppb3JNQVMyZEpLS0Jwa3JYNHhISWZ0?=
+ =?utf-8?B?U1MwbU12RXBpRHYwQWdIdmc2UElQNFlFc09obVY3anVzV2hJYlVaQU9yQ1py?=
+ =?utf-8?B?Y3BaSXQwT3l0QkMrUWlzYkxmZ3RBRUdMcUV3cDY2MTJKRWNRYnBTSDloRThS?=
+ =?utf-8?B?T1ppek5sWUJhNjJBemFUc2IwWHplbGRDMFl2QkFpamp2WlhXYXFYeEhJTy82?=
+ =?utf-8?B?TzhWY0NwUzJJT2VLaVM3WHh3SVZtRlJTNDNtb3pVR2U1R1o5emlucVllU0Rj?=
+ =?utf-8?B?K01EQms1RTVzU3dmWWFiUVF6clIyZG9FYloyN01WUC9JcWYzZ3ZWNjVVb1BS?=
+ =?utf-8?B?emZGais2QTJGVlBqUXhRZWlIUUIxZ1JVOVdrSlo4ZngrYTlLc3BoMlhLNkYv?=
+ =?utf-8?B?dzQrT1RFcWI5SEt1NWd0eXE1WmlXekJweDBHQ2NpN21hbzh0NmNlQU1sSGJr?=
+ =?utf-8?Q?bf2la9rjZvjML5ta8YfTxUAgyo0aFVcE1KtXdEMT/wSOw?=
+X-MS-Exchange-AntiSpam-MessageData-1: iMD6vKTITzPIxw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 87e02104-b5e8-4dcc-83af-08defc3869ed
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 08:20:36.0202
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OlEA9zQeB5wT/GHpkztBXFcdA+X8Fb7v1pLNbI0yn81BAUAtQipYUhTbp7EXF3ZSr85V4OZCc+AYC5WFW0imwg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9810
 
-Hi Artem,
+On Mon Aug 17, 2026 at 3:00 PM JST, Alistair Popple wrote:
+> On 2026-08-10 at 23:55 +1000, Eliot Courtney <ecourtney@nvidia.com> wrote=
+...
+>> From: Joel Fernandes <joelagnelf@nvidia.com>
+>>=20
+>> Add the `VramAddress` type representing a physical address in VRAM. Also
+>> add an arithmetic helper, comparison, and operator overloads which are
+>> required in later patches for address arithmetic.
+>>=20
+>> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+>> [ecourtney: create mm.rs here, squashing in the arithmetic patch]
+>> [ecourtney: splice the two commit bodies]
+>> [ecourtney: drop the Pfn fields, open-coding what bitfield! generated]
+>> [ecourtney: drop align_down and the IntoVramOffset/IntoVramRange traits]
+>> [ecourtney: make checked_add() const over a plain u64, derive the orderi=
+ng]
+>> [ecourtney: doc wording, header, import, and signature cleanups]
+>> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+>> ---
+>>  drivers/gpu/nova-core/mm.rs        | 60 +++++++++++++++++++++++++++++++=
++++++++
+>>  drivers/gpu/nova-core/nova_core.rs |  1 +
+>>  2 files changed, 61 insertions(+)
+>>=20
+>> diff --git a/drivers/gpu/nova-core/mm.rs b/drivers/gpu/nova-core/mm.rs
+>> new file mode 100644
+>> index 000000000000..dcd5e5e919bf
+>> --- /dev/null
+>> +++ b/drivers/gpu/nova-core/mm.rs
+>> @@ -0,0 +1,60 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +// SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFI=
+LIATES. All rights reserved.
+>> +
+>> +//! Memory management subsystems.
+>> +
+>> +#![expect(dead_code)]
+>> +
+>> +use core::{
+>> +    fmt::LowerHex,
+>> +    ops, //
+>> +};
+>> +
+>> +use kernel::fmt;
+>> +
+>> +/// Physical VRAM address in GPU video memory.
+>> +#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+>> +#[repr(transparent)]
+>> +pub(crate) struct VramAddress(u64);
+>
+> Is this the best type here, or should this be bounded via runtime checkin=
+g to
+> ensure it refers to a valid address?
+>
+> I was going to ask if it should be bounded to reflect the physical addres=
+sing
+> capabilities of the GPU in question, but that would actually need to be a
+> different type as GPU physical addresses might not even refer to local vi=
+dmem.
+>
+> Although I think that's a concern for future series - AFAIK PRAMIN can on=
+ly
+> access local VRAM.
 
-kernel test robot noticed the following build warnings:
+Yeah good question. I am looking at memory management stuff after this,
+and e.g. how many bits the hardware actually accept for physical
+addresses (e.g. page table structures) is different depending on the
+hardware. So it's not trivial to determine if the address is valid
+without a bunch of extra info.
 
-[auto build test WARNING on rust/rust-next]
-[also build test WARNING on linus/master v7.2 next-20260721]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+So the approach here IMO is just to tag it as a general VRAM address at
+the type level and gradually apply runtime checks to narrow the type
+into code that is more specific. Since our HALs use dynamic dispatch
+based on the chipid we can't avoid some kind of runtime checks here
+anyway.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Artem-Lytkin/rust-watchdog-add-watchdog-device-abstraction/20260813-051424
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/20260723161529.23759-4-iprintercanon%40gmail.com
-patch subject: [PATCH v2 3/3] watchdog: softdog_rs: add Rust software watchdog driver
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260817/202608170957.oeQwdAP3-lkp@intel.com/config)
-compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
-rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260817/202608170957.oeQwdAP3-lkp@intel.com/reproduce)
+I think it makes sense to say VramAddress is a local vidmem address, and
+later we could e.g. add an enum to distinguish local vidmem, sysmem,
+peer memory etc. This appears to be essentially what UVM does
+(uvm_gpu_phys_address_t), AFAICT. What do you think?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608170957.oeQwdAP3-lkp@intel.com/
+And yeah I believe PRAMIN can only access local VRAM and sysmem (on pre
+hopper).
 
-All warnings (new ones prefixed by >>):
+>
+>> +
+>> +impl VramAddress {
+>> +    /// Creates an address from a raw value.
+>> +    pub(crate) const fn from_raw(addr: u64) -> Self {
+>> +        Self(addr)
+>> +    }
+>> +
+>> +    /// Returns the address as a raw value.
+>> +    pub(crate) const fn into_raw(self) -> u64 {
+>> +        self.0
+>> +    }
+>> +
+>> +    /// Adds `rhs` to this address, returning [`None`] on overflow.
+>> +    pub(crate) const fn checked_add(self, rhs: u64) -> Option<Self> {
+>> +        match self.into_raw().checked_add(rhs) {
+>> +            Some(addr) =3D> Some(Self::from_raw(addr)),
+>> +            None =3D> None,
+>> +        }
+>> +    }
+>> +}
+>> +
+>> +impl LowerHex for VramAddress {
+>> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+>> +        LowerHex::fmt(&self.into_raw(), f)
+>> +    }
+>> +}
+>> +
+>> +impl ops::Add<u64> for VramAddress {
+>> +    type Output =3D Self;
+>> +
+>> +    fn add(self, rhs: u64) -> Self::Output {
+>> +        Self::from_raw(self.into_raw() + rhs)
+>> +    }
+>> +}
+>> +
+>> +impl ops::Sub for VramAddress {
+>> +    type Output =3D u64;
+>> +
+>> +    fn sub(self, rhs: Self) -> Self::Output {
+>> +        self.into_raw() - rhs.into_raw()
+>> +    }
+>> +}
+>> diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/=
+nova_core.rs
+>> index 35a8b1214b0e..8f59cfa97017 100644
+>> --- a/drivers/gpu/nova-core/nova_core.rs
+>> +++ b/drivers/gpu/nova-core/nova_core.rs
+>> @@ -18,6 +18,7 @@
+>>  mod gpu;
+>>  mod gsp;
+>>  mod mctp;
+>> +mod mm;
+>>  #[macro_use]
+>>  mod num;
+>>  mod regs;
+>>=20
+>> --=20
+>> 2.55.0
+>>=20
 
->> warning: this `impl` can be derived
-   --> rust/kernel/watchdog.rs:164:1
-   |
-   164 | / impl Default for Options {
-   165 | |     fn default() -> Self {
-   166 | |         Self {
-   167 | |             timeout: 0,
-   ...   |
-   175 | | }
-   | |_^
-   |
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#derivable_impls
-   = note: `-W clippy::derivable-impls` implied by `-W clippy::all`
-   = help: to override `-W clippy::all` add `#[allow(clippy::derivable_impls)]`
-   help: replace the manual implementation with a derive attribute
-   |
-   147 + #[derive(Default)]
-   148 | pub struct Options {
-   |
---
->> warning: unresolved link to `super::Info::new`
-   --> rust/kernel/watchdog.rs:98:7
-   |
-   98 | /// [`super::Info::new`].
-   |       ^^^^^^^^^^^^^^^^ no item named `Info` in module `kernel`
-   |
-   = note: `#[warn(rustdoc::broken_intra_doc_links)]` on by default
---
->> warning: public documentation for `Registration` links to private item `Inner`
-   --> rust/kernel/watchdog.rs:392:34
-   |
-   392 | /// - `inner` points at a live [`Inner`] obtained from [`KBox::into_raw`],
-   |                                  ^^^^^ this item is private
-   |
-   = note: this link will resolve properly if you pass `--document-private-items`
-   = note: `#[warn(rustdoc::private_intra_doc_links)]` on by default
---
->> warning: public documentation for `Registration` links to private item `Inner`
-   --> rust/kernel/watchdog.rs:395:45
-   |
-   395 | ///   the `ops` and `data` fields of that [`Inner`].
-   |                                             ^^^^^ this item is private
-   |
-   = note: this link will resolve properly if you pass `--document-private-items`
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
