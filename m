@@ -1,99 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB3A43F0AF;
-	Tue, 18 Aug 2026 10:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F743C109A;
+	Tue, 18 Aug 2026 10:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787050404; cv=none; b=aL9Qgi/dlhblIMXJ5Cf5285wvOrSak6QufVbn/lmQVELE4WTm2uhwxE5OKIwuz0R1BboNOMlqVJ7xqaHEwozmfom/Fpk5xDma4igKIjdyG0VJgwbVrwdnXpwp+7zSXq/ECInAK/iIGcoGn/pp8J/4to/Er059F9SCdmqJFIvrZk=
+	t=1787050452; cv=none; b=bdlxnFsu4dYsXsdjmX3iqBjl3vMqZxeCWZY/zAcC1r3WcF8UuuPcywP99Ssssl/BNJNwSmvZ5V7a+x4bwFn37g3iIh1c+PiQBqta3YG1cPoaGfv4IW2fbOwNPOgUr2NLhesFsGnMfa25dybrhH28qKA3aGYbQfROP9zJaRNJx90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787050404; c=relaxed/simple;
-	bh=LgZWMo0lcIh0d+/J8fXsKoRbZQTWYBlbBoL6kqAYXzc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=BIryfrxfcGX31otdynnGpiKRx/zJVT6Nf2hcJv7kIrEUSxiv3y+FSHOIumN3eCeWGrI17DZRDvNtOF3VXUeLoEfwGCqmLBND6BN0bxbAQlTDdWmCPVHpWpmCn2ca17zzRJehyi1zSSrnTFgqv/jO+cwlZcZQqunDVbQgmH8iCRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gh0ePYnV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787050452; c=relaxed/simple;
+	bh=yvIdYFdV09mQsIx//BhJrU7E2xu2utdt6v5XH4rqCYA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D8zqYLGGiqOqGv5ioQNN8DaDDFKpd/JabT61C/tePGSbDrctVB6r4bkKPbLoT8dNkMBRaVlMw027Cb2JEVURC7pvJJrReGiGLPBuYjaxHbQHTM7G8uFaZPT8yQb8Ff4UjzeAVkn0sfBkza9Pzx1gQejm/q7D/r4nFKjoPv7b5JE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RKoJ5Y8H; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gh0ePYnV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E22F1F000E9;
-	Tue, 18 Aug 2026 10:53:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RKoJ5Y8H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE731F000E9;
+	Tue, 18 Aug 2026 10:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787050402;
-	bh=2vQVP0fozoasB0mVcGvwTo5tuLzcZJsUdVbtG8xx8oA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=gh0ePYnVcQkcgq/td00gqcCz7aFATfvbVSNqKz5RGyLRGXLuvEKCEdAIuaHPbo6O+
-	 dnlx5tiyXmYBADB25K6ImmT6f6staVZHhx3PyUqA5loIFQ+yRlXu6tSoyB+EYluv7K
-	 v3Wgg1VtrZzn5iwTNeB+wO6i8y+kgJYo45YPCWOVyUrxDEHl+OzevDTA3jG6vN0Ye/
-	 voVrmp02kSO1xgrSQgEmQqfPczn0CvlCOpVcwyAZ9mdm5cRdBc3pGqBVM9wKx8dOMb
-	 YialeicgZmOPXioVONGXdfYC6F1vL2P5XI/oe2GWgEqYEX3NcexoTwaVEuvU0NGSFA
-	 kBVPJV0UgsUjA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, git@younes.io, Breno
- Leitao <leitao@debian.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
- Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
- =?utf-8?Q?n?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir
- Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
- Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: configfs: skip unregister after failed registration
-In-Reply-To: <DKS0EN4DLKW3.IB8Z5VB3B7YG@garyguo.net>
-References: <20260818-fix-rust-configfs-registration-state-v1-v1-1-c929990bc8ef@younes.io>
- <I9rMOFpWPbtlAmMsBCz7tH-ltTS1GDo5t-PVCCUa9X9MdkjjRkiRVlW1LO4wrbypD2fR3D80NozC8OdUxVBQ7A==@protonmail.internalid>
- <DKS0EN4DLKW3.IB8Z5VB3B7YG@garyguo.net>
-Date: Tue, 18 Aug 2026 12:53:13 +0200
-Message-ID: <87tsor8zty.fsf@t14s.mail-host-address-is-not-set>
+	s=k20260515; t=1787050450;
+	bh=NbISsIEzJhcSlB9HuGqIX+LYbp7rKI441yyyPNYbVMs=;
+	h=From:To:Cc:Subject:Date;
+	b=RKoJ5Y8HhCRNnHGPhL9Az5CmNhmyanFWdlQREqerBAP5IuRdrUbCVefoMd81BD8HG
+	 e8hs4t9uSiBWY5mInJuZtxATuuIT6VgmMLoakYzE2I3rtVE65cUBha1Gtv+LE8DbGG
+	 Uu2Io6XvSgiTj4ZO5SN39UGMxstzLqcg/MXXQguQscmqknQfm0kS9FmL3e7m3Oi51d
+	 Y5O/KMH24VQTC4odopiyvFH/H4Q64p4+4b1+4ne2tOcg+KFDmnEBO5O+SyrVuphkvp
+	 Pvu8APUZ0GJGKiONijXcD7HHtOLTZIPs02QRQzxaK7w1hpm07OeZCgDYX61IbZB8Xz
+	 aidx6vKPMucYg==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Mark Brown <broonie@kernel.org>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Zhi Wang <zhiw@nvidia.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: linux-next@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	Boqun Feng <boqun@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH -next] rust: fwctl: replace `__pinned_init` with `raw_try_init`
+Date: Tue, 18 Aug 2026 12:53:50 +0200
+Message-ID: <20260818105350.361218-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-"Gary Guo" <gary@garyguo.net> writes:
+Commit
 
-> On Tue Aug 18, 2026 at 9:11 AM BST, Younes Akhouayri via B4 Relay wrote:
->> From: Younes Akhouayri <git@younes.io>
->>
->> Subsystem::new() calls configfs_register_subsystem() from a fallible
->> pin_chain callback. If registration fails, ChainPinInit drops the
->> already initialized Subsystem. Its PinnedDrop currently calls
->> configfs_unregister_subsystem() unconditionally.
->>
->> configfs_unregister_subsystem() requires registration to have completed
->> and immediately dereferences the subsystem dentry. Registering a
->> duplicate subsystem name returns -EEXIST before installing that dentry,
->> so the cleanup path dereferences NULL and panics the kernel.
->>
->> Track successful registration explicitly and only unregister in that
->> state. Keep mutex destruction unconditional because it is initialized
->> before registration.
->>
->> Fixes: 446cafc295bf ("rust: configfs: introduce rust support for configfs")
->> Signed-off-by: Younes Akhouayri <git@younes.io>
->> ---
->>  rust/kernel/configfs.rs | 14 ++++++++++----
->>  1 file changed, 10 insertions(+), 4 deletions(-)
->>
->> diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
->> index cd082b83e9e7..f358e227ce09 100644
->> --- a/rust/kernel/configfs.rs
->> +++ b/rust/kernel/configfs.rs
->> @@ -130,6 +130,7 @@ pub struct Subsystem<Data> {
->>      subsystem: Opaque<bindings::configfs_subsystem>,
->>      #[pin]
->>      data: Data,
->> +    registered: bool,
->
-> No flag just for destruction. Please change new logic to avoid needing this.
+  ea7da3116015 ("rust: treewide: replace `__pinned_init` with `raw_[try_]init`")
 
-I guess we can have a local `UnregisteredSubsystem` that we can
-cast to a `Subsystem` once registration succeeds. Is that what you have
-in mind?
+from the pin-init tree replaced the method before removing it, but commit
 
+  e052daab94ee ("rust: introduce abstractions for fwctl")
 
-Best regards,
-Andreas Hindborg
+from the fwctl tree added a new use.
 
+Thus replace that one as well to fix this error in next-20260817:
+
+    error[E0599]: no method named `__pinned_init` found for associated type `impl pin_init::PinInit<T, error::Error>` in the current scope
+       --> rust/kernel/fwctl.rs:465:49
+        |
+    465 |                 match T::open(device, reg_data).__pinned_init(uctx_ptr) {
+        |                                                 ^^^^^^^^^^^^^ method not found in `impl pin_init::PinInit<T, error::Error>`
+
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/kernel/fwctl.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/rust/kernel/fwctl.rs b/rust/kernel/fwctl.rs
+index e6a8513a47d0..f29244fb0d1d 100644
+--- a/rust/kernel/fwctl.rs
++++ b/rust/kernel/fwctl.rs
+@@ -462,7 +462,7 @@ impl<T: Operations> VTable<T> {
+         // `uctx_size`.
+         unsafe {
+             device.with_registration_data(|device, reg_data| {
+-                match T::open(device, reg_data).__pinned_init(uctx_ptr) {
++                match pin_init::raw_try_init(uctx_ptr, T::open(device, reg_data)) {
+                     Ok(()) => 0,
+                     Err(e) => e.to_errno(),
+                 }
+
+base-commit: e6664f2b33db9b6811eb4cec109f06cb2b4f458d
+--
+2.55.0
