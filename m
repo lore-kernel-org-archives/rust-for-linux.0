@@ -1,68 +1,69 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647693AB5C7
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 15:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F442836A6
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 15:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787066435; cv=none; b=ZQFlHEtdJQ7mo4NBty3LrpGQGXfLpBUU+WvosBVdfNHNT8uJK26tY01T9TDRSAYaBBdKm/9QtMM5LCSrzN7+IK4iCNZMdDqIw1Ys/6xsk57K6VrtAhMMLmdUefoFCQAuocILQW4gayYWK0fyhjlYQlm6NKw9rQWF5J9Rei75VRs=
+	t=1787066436; cv=none; b=OqdB96YBpSu49O4627bUtldCCqX2NB66mBhSUCd1pJ9FwZaueaa7aV9UVO0Izui5P5Pft0DRwz/E4FIedCxSQKKf2oEw/1I8x0bHGbx5aXbINimPLTtFEYht8SAyeBVprk8gL+pu5vvvjK3cZaABuxucaXwER537Y3bUkNe85Fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787066435; c=relaxed/simple;
-	bh=/J5NsC9HXB9sVlaQvY4ZrGG/HvNODJXACbbshKQdfzI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cV4+6J7nPJVpAcaEBbNfMWsZnjTdiryjenfg49C4+AzbDjJ44M/thIrjx5pO4ijW4SqeQ2mdjzNGG4kK2NLAC2SEykpT+CFKkIH4bOqPyhiLS8FvOXJISfqwQ5aos/EH29Hs5gAEXv48IDt/YKiRxnwZ9BhXww1TJUOqVydpuP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=swg/cDj/; arc=none smtp.client-ip=209.85.218.54
+	s=arc-20240116; t=1787066436; c=relaxed/simple;
+	bh=lVVGyoI0yNkmpTkc1xzUBaTF6I8x9HnW591ib48kPo8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ihAcES+lQK117Rqie9F1cZtyzLPlHYHXMNYIS7heDLykE32rRvYFs7UbqA6JBpaxCbOJ/GbhHRIunPNm3Pz6W8Nr+tcr9+HWH6Q/gGNnrIcqdPb7Kv8yVmcsh7KyVe/yDm3KH5Eoe25piJMppmIbuDouVXqk3N0YZWwZsJTp/+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MnEtkvT6; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="swg/cDj/"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c15e592da74so648762966b.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 08:20:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MnEtkvT6"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c197e7e4e94so813926466b.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 08:20:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787066431; x=1787671231; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=9KM8t8bC061fLb+PbV5Os9mUZaMLxlCrSV1jD3Uk+0o=;
-        b=swg/cDj/vvDIcrYOdrIDMyKfljF4UXws7X/68te4RPzz8Vsn3YU9svpUxMXXJB25jE
-         xv22GtwPawqEMLHBgp2Y02ATidjag7fPQW99qwV/a01bulKSUEvOUVWY9+xnP4JVx0jd
-         0Ld6GoYEqA2mt9xGDMcsJns+lCz06ba3O+ey+WvbWOn5X+aS5Ysy9LWAHwMLOPGOu8Er
-         Fk6p/weSt+6D3gMQceVtfR8eDpNEGtFVPQKYTW+f9EhTr/lP0nBst1HMN2ndqgcLe0JR
-         n/9IMEdxLVf884kuM2DjIRSIOCV4lSoCijg49K74UKsW54e0giQPdGP7lFPK+S7ob3Q3
-         Y54Q==
+        d=gmail.com; s=20251104; t=1787066433; x=1787671233; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=i7/V3zTAw391qLVLvjrhLrPuXnBwusW56ARNxgO7nP0=;
+        b=MnEtkvT6n7mudbx2as2X7eOZhlITcm47M7YOg+ZH+xk4bRgmUU+ovDZWK+QC3Kid+n
+         D8al3fpfnstEzXzhhGjOCNwCSJ9FSAtXQrYspdzpYH+iBF+OhyT2pBIQc7jfOkgP8i+B
+         PXxzpNWENHsLDFW/IhzbedjKWNgFrRkXN/e9k+EWMlqRNONkENXAQUY179tI/geqGfdD
+         wP+20LnDp5Gub8S9r6dN5Y8eGkgP3SgN3Za1dYbl9P6ZcHqKD17R/wvEps6RBi8VimN0
+         TrfsNbhiix4qaPZMe8pltBAuIIGteF1aFLdqZ9abN2AmDL5C4TTq62rzUP5La4h0qK/N
+         K/aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787066431; x=1787671231;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=9KM8t8bC061fLb+PbV5Os9mUZaMLxlCrSV1jD3Uk+0o=;
-        b=XwmSj14/V8Ryl+hztFwqkzwpnBaAeSJvbPKtotpYc0HHaB7OZy2E/od5zLpl597MFs
-         LfIb6BJJywo4yeIK0csSTZPyZZhWD1CwmbA9YHcDHnW/w8nKjx7+456ivzCbp5d+F/Yf
-         7HdZmmflaX/d3qiWb3n+YIDQ75b/8yxYPzcLmJohzwtPWDAZG7jfZyuJPgKbWQsCtPZt
-         McfEcJPe14wXi2Un4tJcIeD/GMr+RJws4OgWiEskfM7uzkHi+tV2Ne2RrkBkwld3Dfqz
-         ZKf1wA1WR2/x3edKtvQa/5oW04DVU0DESnCGSv2AqQGjMK/tFrD2bv9TwpDWvBXBMoNH
-         Z5LQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpFK2PnLXXbuDPuPJdoXZmk+E39zKnWkFpftHTNO7AZDpjy/JpZBFNwxTP5KInmBJLo5kcmHGNTqs9dJKwyoQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLTRxKmSMhzk4VBHQfaAO9qmdZUxAwtZdZuMpv26SDNODqiI1d
-	qsqEKvVDCXcIpji5tDBCfuRO0WNp9gcsvNCqUFLJH5wy/mlmWiXPSNG8
-X-Gm-Gg: AR+sD11uR3N5wNkNWwBJn/Vtdb3AaQcH2yuKl1V+V/wQKpoX7fS+Ou20mbhutaVxVrE
-	wvhtyyg6IgVktEu/iRlLJJLXs7ZgHdtbQ9GSScAZXGQXfsaR/i+Bt+xDoeSQJmmESBgHGcqtcFC
-	1DWaeQ/dI1uPoEiL2YVdQX3ENCtpGLe1gHJG5QV1dEaaaFvkDXKicORsfkLL3GDd7xpyvDTfeCK
-	LYsXMubpAqukH93/HygueKjSP7KwqXLBXKrUne5hrXrH+rcS6GyjX+1FL4NDRAt7VHWYKBeBwKQ
-	g5h+LT71z//fe6+OIp7m46SXjxw2Yy7BvKFVW/cUu+n3ync+mqrhNeVkbkuWqvOFdhMrbjVZzoD
-	y+/QsQDobgW1WfSBzaElQmlnl1v5q35TNRBHKuXFjj86z0/a+9PeSQ15l2f8IXBjvbUYhiUBYBZ
-	G3nG4rg3PYPNECdav4fYHT0/sgdMMrsKPLA9HfV0GDHGFDt2jDZIc598eP3sMu4hCSkMr/EvWOu
-	WBicPPs1Jx3aRgIfrPWMopx
-X-Received: by 2002:a17:907:1c1b:b0:c12:6d25:2c7a with SMTP id a640c23a62f3a-c212a2ab2edmr1569238066b.17.1787066431294;
-        Tue, 18 Aug 2026 08:20:31 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787066433; x=1787671233;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i7/V3zTAw391qLVLvjrhLrPuXnBwusW56ARNxgO7nP0=;
+        b=b7SET85lJy+hGLFWZLtdUoYsMgKJtXVxHhK0Fpt2axEPuycs+ygq35IK9g/ChZq4Ax
+         ASO7azP+bDKAgRJhmIIaVUiimwcJi6w+St/xfdRmtVgiGKqvP3cZPXO6DiFBzw5LgymB
+         Vlr9j8/5OU3h2heZ0JN77LSODcQOCECA2uKjj6F6A0TK9TP8ww4G8gxhzuueM32gCTMX
+         QcSI4nGW2G95+Tfl4MF71qcz0M6g6S450kI75LgPJiaofN/L0fuLdak10HRWZpIhzsuk
+         Gh+3BoZh+MT/NjIw89M+dKohN9xYM3zjY3yfzqhw1Z4nhv6ZC+Af3nezo2bZ0yCtaKA1
+         a2nQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp13tvKcU5/rl93raaYqWmvXZVjYrZsWLOeeG0wTvImNaYKvlMKvKx2NhoqnaWeEPwvrWi7V1t4e6pSRxouxQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMCct7CjoMdXHpDdri6giDVZuSUW3IfcP/bM2XjdD4d0Q1lYMV
+	b40WfBECqHB0xi3o1zVTPsrwUDOhal4UW31nKcroTNHl0Un4pB5mS350
+X-Gm-Gg: AR+sD13ShA08KFfQk0D9cbGaI5o1zjIzAMJBmYXdQ/7IcU9WTsp+TO5w9QgMfUl34rK
+	awl6Wg/vIyyOm5fIaL3dvAJ+rGL8CgQQORG8G5POkdDzBdnMhpajR20jGXXyaW2fb4hX3JaXkSm
+	0qmi+EF/Tha0yRogyG6ABVFQ0etCMRnYGPi33mskW7c0/jp943iDtrOn05ib1iYrHKRU7DEfopO
+	Ca1mGuHbTktOs+10NTFVCMEsni9Lkc3Urhykusxlgh6XbHk3zkI6fnJLlAOT3SaqlibjHTS5see
+	Q+7OZNkdkwxHZ8fRCyE95aomFQ2t1Q2lSw4g2/VZIr+CgQQpXv5cuaY9+t2B8Qsa36W+ZWz0FDr
+	POq7AFfpvrwCiw8vsYS1+eFmUqYAJD0x2wg02tIvn0O6jgEHmJn7jeQWsBacXMsgo1S6+Cke7i+
+	/m5usIMZFd0XzY6JvPcLoWRbHvPPYf6fD0/xrJOFalFrX7LJIjSGPCjQg9lp1Laf214nCbCW/ua
+	gI/xNb6ND/tJ4DWuDSM9C+3
+X-Received: by 2002:a17:907:c78b:b0:c1f:e09d:12 with SMTP id a640c23a62f3a-c212a395aeemr1639036766b.25.1787066433278;
+        Tue, 18 Aug 2026 08:20:33 -0700 (PDT)
 Received: from [127.0.0.2] ([195.100.225.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c217fea1e64sm213893266b.21.2026.08.18.08.20.29
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c217fea1e64sm213893266b.21.2026.08.18.08.20.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 08:20:30 -0700 (PDT)
+        Tue, 18 Aug 2026 08:20:32 -0700 (PDT)
 From: Malte Wechter <maltewechter@gmail.com>
-Subject: [PATCH 0/2] rust: kunit: add optional assertions to catch taint
- and lockdep warnings
-Date: Tue, 18 Aug 2026 17:20:20 +0200
-Message-Id: <20260818-lockdep-kunit-v1-0-66ceb1a272e3@gmail.com>
+Date: Tue, 18 Aug 2026 17:20:21 +0200
+Subject: [PATCH 1/2] rust: kunit: add config to fail kunit tests if a
+ lockdep warning is triggered
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -71,10 +72,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADV4hGoC/yXMQQqAIBBA0avErBNMIrKrRIvSsSbDQi2C6O5ZL
- d/i/wsCesIATXaBx4MCrS6hyDNQU+9GZKSTQXBR8boQbFmV1bgxuzuKTFaiNuWgei05pGbzaOj
- 8fm33O+zDjCq+E7jvB/COjORxAAAA
-X-Change-ID: 20260812-lockdep-kunit-9628f4bcad90
+Message-Id: <20260818-lockdep-kunit-v1-1-66ceb1a272e3@gmail.com>
+References: <20260818-lockdep-kunit-v1-0-66ceb1a272e3@gmail.com>
+In-Reply-To: <20260818-lockdep-kunit-v1-0-66ceb1a272e3@gmail.com>
 To: Brendan Higgins <brendan.higgins@linux.dev>, 
  David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, 
  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -91,32 +91,72 @@ Cc: linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
  linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Malte Wechter <maltewechter@gmail.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787066429; l=731;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787066429; l=2312;
  i=maltewechter@gmail.com; s=20260812; h=from:subject:message-id;
- bh=/J5NsC9HXB9sVlaQvY4ZrGG/HvNODJXACbbshKQdfzI=;
- b=oer8aPeWmFwIx+APE8r2x8FbO7IFOz1Zzo4XvroWDn9Xo9slWJni6vPJh1LcMCBXvIPyujXY6
- 6HbMBdCofeVAL7R6K4t70uT/JcpHZdCJ/dA4LCzqbMdL0dUFNOVur4z
+ bh=lVVGyoI0yNkmpTkc1xzUBaTF6I8x9HnW591ib48kPo8=;
+ b=HGj1MbpngcLllNXMzXP2g3dYt2CDx0pP7ylYtXc5j2qZLhGojjgg1devKpZTqDNF8zhU1MGSr
+ QAC9vK7vhL5D8eocII5w0+NRlmFq8CaiMmzljBtgXGeYDW259aG9FH8
 X-Developer-Key: i=maltewechter@gmail.com; a=ed25519;
  pk=Ta/JQQMOW0Cbxp+yEwWqWFEyKFRyuQeSoYicwD7yvWI=
 
-Add configs that enable extra assertions to be emitted to KUnit test
-cases. This makes a subset of concurrency related warnings fail unit test
-cases, and not stay as silent warnings.
+When running KUnit tests and a lockdep warning is triggered, the test is
+still marked as passed based only on if test assertions are true.
+Thus, add a Kconfig option CONFIG_RUST_LOCKDEP_KUNIT_DEBUG_LOCKS. When
+this option selected, if lockdep triggers during a test, fail the test.
 
 Signed-off-by: Malte Wechter <maltewechter@gmail.com>
 ---
-Malte Wechter (2):
-      rust: kunit: add config to fail kunit tests if a lockdep warning is triggered
-      rust: kunit: add config to fail kunit if TAINT_WARN is set
+ lib/kunit/Kconfig    | 13 +++++++++++++
+ rust/macros/kunit.rs | 10 ++++++++++
+ 2 files changed, 23 insertions(+)
 
- lib/kunit/Kconfig    | 24 ++++++++++++++++++++++++
- rust/macros/kunit.rs | 21 +++++++++++++++++++++
- 2 files changed, 45 insertions(+)
----
-base-commit: 8cdeaa50eae8dad34885515f62559ee83e7e8dda
-change-id: 20260812-lockdep-kunit-9628f4bcad90
+diff --git a/lib/kunit/Kconfig b/lib/kunit/Kconfig
+index 94ff8e4089bfb..30bac00c42ce1 100644
+--- a/lib/kunit/Kconfig
++++ b/lib/kunit/Kconfig
+@@ -142,4 +142,17 @@ config KUNIT_UML_PCI
+ 
+ 	  If unsure, say N.
+ 
++config RUST_LOCKDEP_KUNIT_DEBUG_LOCKS
++	bool "Enable extra debug_locks assertion in Rust KUnit tests"
++	depends on RUST
++	depends on LOCKDEP
++	default n
++	help
++	  Adds an extra assertion to each Rust kunit test case that asserts
++	  that the debug_locks flag from `lockdep` is unchanged. This is useful
++	  when writing unit tests that could potentially trigger a lockdep warning,
++	  this makes it so the KUnit test does not succeed if the test assertions are
++	  true, but a lockdep warning is triggered.
++
++	  If unsure, say N.
+ endif # KUNIT
+diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
+index ae20ed6768f15..d1cd0349f86f0 100644
+--- a/rust/macros/kunit.rs
++++ b/rust/macros/kunit.rs
+@@ -144,9 +144,19 @@ macro_rules! assert_eq {
+                 // here to reduce the length of the assert message.
+                 #(#cfg_attrs)*
+                 {
++                    #[cfg(CONFIG_RUST_LOCKDEP_KUNIT_DEBUG_LOCKS)]
++                    let __debug_locks_snapshot = ::kernel::bindings::debug_locks;
++
+                     (*_test).status = ::kernel::bindings::kunit_status_KUNIT_SUCCESS;
+                     use ::kernel::kunit::is_test_result_ok;
+                     assert!(is_test_result_ok(#test()));
++
++                    #[cfg(CONFIG_RUST_LOCKDEP_KUNIT_DEBUG_LOCKS)]
++                    {
++                        let __debug_locks_ok =
++                            ::kernel::bindings::debug_locks == __debug_locks_snapshot;
++                        assert!(__debug_locks_ok);
++                    }
+                 }
+             }
+         });
 
-Best regards,
---  
-Malte Wechter <maltewechter@gmail.com>
+-- 
+2.51.2
 
