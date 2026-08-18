@@ -1,168 +1,140 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021131.outbound.protection.outlook.com [52.101.100.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB29247ECD6
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 16:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.131
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787071126; cv=fail; b=TEcVPuu4OufWaa5vZNkIeShD9yRmw51R9NTZRkHLrDK7xGZD67Z34P8jNvOdX1ZBI44LAoUp/sYgjjGFjC3CumQOECJoEDhFOT1MBaAmx22ZuXKhqBE2fwRyobE0FQBnyyyWRBkNS3Fk10Rg74wCyMHMTKYkElhMoWdWxmwvby8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787071126; c=relaxed/simple;
-	bh=/qz2RwG4cyiYAOuHMRwGqvtSryLHfNxp3eYoL6nxXKg=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=ZNaQ2TaP5Jxu8x32zaNKnOBZd5jLHK9l/DRf/xirViG9j6FisAfniMBGrUnQzqJHnfTR7U+plC8004wxPoNorKXUgoPcO7Ysfza6vg+eoETJtBmGLtV54nVsF/o47e/erm3WL2z+8DrSCm3flnX0GgSzb5oOLkskbLrqHwQfhHg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Sh2sEolZ; arc=fail smtp.client-ip=52.101.100.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B128391846;
+	Tue, 18 Aug 2026 17:44:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787075054; cv=none; b=UDIHHcMMETxCSQx3j6DY7+W8b6IwwLWZINQ/0SK98ttVBgtBFTe4eEIHPATTl/xKKcNA4sK2+QipIT1nHgg5zKu0GItrgSGbgGAzWGSU/qds1geeYbEfwLhqB+1k4JjfI0XnegSsFckDMlOFAewdmSOwRSP5IELQMr3vM0qSqI8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787075054; c=relaxed/simple;
+	bh=Eh8xg+iFyJUmLu78iGCSA07pw0Ii2oCpTmh2Aus5aTI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gjTPx3jWMyVC25OVjOdW9TF4MrTEvnUmyqtKlXYryYakyp/UoWoGqOAZpuYzXxKx9jbGIFfJizoY6lL1f+sLAWC0SvbRz1IMK7cXNeCgGRm+gId6ty/YPI1XSlqfowNlkG+q2Oef3TjDP7xLI+PBbKzVvDT9uIxABW4upC7joYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N49IBCY5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Sh2sEolZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Lcue8IhxAlWhPGoMd60vLuszBOHq2ApF26M8xQQaap1X55UwcJRjx1ADSI5505ol6M5I5/TQvqEHqK3y1jD4ssZrao71VArL7pPSOt61vuLdjYHDLQ1DGsiQMLLlp0JBklfVJ5Y71eIh/XwXo2N+YKtDK4cPFET1xjLV4308df0VxrPh0MUXWDFpJHu2v0xucZZKvpjhCGwXpJS7EdA0czAKLwCQ/psoRr3ZEErV7tEhcr2ZhdHhAnEUwhpTArI7nOxooY3WWfo2psl9yU2fgf9g0CM5w/HG4COxrFiLsKqMVzQ4ToXuDCfHXfrpGTXS3Zher42p4YmbVdoMH9EuGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/qz2RwG4cyiYAOuHMRwGqvtSryLHfNxp3eYoL6nxXKg=;
- b=tBWgQiH3mDSfdESpqxQvJ1lvxct7EEQhQH5n0kApJrvq0oEmoZxlSIhiEnZd8Urp8aNCVbGzixUb0sYUyTHLXTUOx9Vj1JJNrpIolbHJKWfcKO2FeQwi13gS97BHYrdIjpRhpOrFzuOlr2uI+RWm9BxrrZQzMLGDSCJT4rrnGbk3KC9rjDfc4XL6Di/1eI19Kk/qsIFkT0D1FtoqYCe3snF0d7GBsToOeF7ljwPpBun76YZUFvYe+h1bE7gG6CQ7MGAaC9zW50rnjwA5XKfyo/AtfppTtSUiwg9iCEH+H63D5YO8iAfMWLA3s6WPcmcUZwhgVkUVqMeIUXkNrbMWrw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/qz2RwG4cyiYAOuHMRwGqvtSryLHfNxp3eYoL6nxXKg=;
- b=Sh2sEolZ/HQzUE+rB4snnnnwIWchBuEZw+sSqnM9cF7V1z8TC4ytCaM0znG8XvwnLNINxuVpqgxjsFgtLjaRlBTd2JULwRw3rfGhaXYkKPd+EObEFNoFppGdvZEAAjUnPn9E7EVx61P+wDJaDTcRhwIym200TpWgdA6dMt+o/Ys=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LO0P265MB6454.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2cb::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Tue, 18 Aug
- 2026 16:38:38 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0339.007; Tue, 18 Aug 2026
- 16:38:38 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 18 Aug 2026 17:38:37 +0100
-Message-Id: <DKS7U9UHY6XR.2JC0EBIPCI06Z@garyguo.net>
-Cc: "Josh Poimboeuf" <jpoimboe@kernel.org>, "Peter Zijlstra"
- <peterz@infradead.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- <rust-for-linux@vger.kernel.org>, "Ke Sun" <sunke@kylinos.cn>
-Subject: Re: [PATCH] objtool/rust: add one more `noreturn` Rust function
-From: "Gary Guo" <gary@garyguo.net>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>
-X-Mailer: aerc 0.22.0
-References: <20260805144524.233362-1-ojeda@kernel.org>
- <CANiq72kBrbV827gHUXd4R3AJrMTAVwxA=vGvzJ_AuOcNjVfVtg@mail.gmail.com>
-In-Reply-To: <CANiq72kBrbV827gHUXd4R3AJrMTAVwxA=vGvzJ_AuOcNjVfVtg@mail.gmail.com>
-X-ClientProxiedBy: LO6P123CA0051.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:310::7) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N49IBCY5"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7BA75C2BCF4;
+	Tue, 18 Aug 2026 17:44:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1787075053;
+	bh=Eh8xg+iFyJUmLu78iGCSA07pw0Ii2oCpTmh2Aus5aTI=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=N49IBCY5z1fJ0Q1yF1voPirUBaf69C/za+rfu6YZ+UpB6g2i1QUzoFCssmiOlpFkw
+	 AZs9aPUIXoPjKib2by20c2v6td4RXe4XabpM/Yv+JQXym4nog92PLSJp3O+/1dMS3t
+	 sp6yNJ+7wfWkXR5LoCKi8IuHAcXBTD8Oa/YPoO7Akh/60iU6vgufOmSIeDCTJkAz7W
+	 yBI7/xJBRmlii0745H8DoQbgHaBUr//hEyGWYgHDqL9UN81LYLE/Yw2xdvZ0ZZPVKb
+	 d5qEbvlni+abXclZOvvZ6K3DdIF1wytLt/zxyLuCOs+NHKwlajjcsHJG7VwX6rO5Jq
+	 GUK4JQKQbGHuQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55149C5DF82;
+	Tue, 18 Aug 2026 17:44:13 +0000 (UTC)
+From: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
+Date: Tue, 18 Aug 2026 19:44:03 +0200
+Subject: [PATCH v2] rust: configfs: skip unregister after failed
+ registration
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO0P265MB6454:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd284aca-6965-42ff-ff73-08defd4727b1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024|23010399003|4133799003|4143699003|22082099003|18002099003|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	LpX/JEpxjYXLZ2iP3tIxJ+uT87Q3ZWNyB+q97iqkcFJKHmaXTAtO+Xo2BmaYVTBJvSL7v9pJD4yj64ODkz6i3KAtpMD9LepWnsetuuYfsWDws5pZtOPfAYmacTqF2vrNidaC/il86WDpF6Bdg2CuVGq9iKRxr08xSbIunbPbi0cYCyNIK/EtDZe9dJV9/addc3qXBOXKlKCZiNHqNN5RWoRIHTlouiBUgIZy8zHxi2u0YPq5ayXvM1UnwAJFtUUGRR0B8869p5RkBCDWx0ptse6Oyz+fAIPAG1JngobOZUmswzLElcTqG2sCCjndDAUqzn6iezMIO1QPb1OjgqKvOrcEx7xGdJLmPIsNM9SJLkjNzp1m4Iuiqc9/3LZ4T/CgYATXV2dBkWD1mY5yMmDOJOaI00LKDQDh60JbBF0G0qG/uLcQuQLQCptBKQ6vnW1Y7sF04KVQ/9yZOe93gIN+Nf2KWmxWW3n6fX5KxqmvVny/bL3qnxLdxuawDq3qa7FS+4qKg/WBBUCuqNrwG1fy2CvZ9tnDmBzDBjSCgmL/8x+jZTxierDIyL/Qe/OfHKWBPrjM097SKgh52uZWfgGlDRnOF5aGCkb5EjToGhFgI+HvOZeFSZ/zm3FbFNtEhPoqSI3Rc9x1QCJzoGPohW9VQ8hLJUsILTW4zukgVdwz7A4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024)(23010399003)(4133799003)(4143699003)(22082099003)(18002099003)(56012099006)(10067099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?THk2SElHSElHend6cXV6bDdUQjI1aEg2ZmRhN2E4enFLZWgxV0w1QWgzZDQv?=
- =?utf-8?B?QU8vdlNzS1FxTzJDcTZzSXo4VlYrRUFZaUxxcTd2WUNnUFRaeWJuUmdoLzJo?=
- =?utf-8?B?ZS9qUFpyTndzWU0ySkhneGxUYmZJeGJmaHM2aVQ3TUxXVTM5UDhtWldMbW5u?=
- =?utf-8?B?WEpkSUZ2NFNJQkc2aXJsR3RkUTJzM2ZIVFc1UzV5b1VXc3dHTmx3ZWduVElR?=
- =?utf-8?B?UDExekZsZXd5MUJGWlRZK2ZnRUhpMWQweWFVU1lxRFRIYWFNZXlzeEdnNnBN?=
- =?utf-8?B?c3VwMm01YUpUS00zVW5IYlhzZHVxQ1N3cXQ4MGVzUnVJY2RISHJ2SVJ2bjJ5?=
- =?utf-8?B?QlV6disrMTREbzdmZWt1S3ByRTE3RERjN1RTYjRjZ3ZnRHZpdnVRTXA5M3Ro?=
- =?utf-8?B?Mm5YaVlnOUVBa25QYkF6a2Vtanl2cHpPT1ZXc0dabkNSdW4xMFdVUWVNUWJE?=
- =?utf-8?B?NkxHVDl1eFpSUUF5ZlhLU2ZFaXZwb2lhb1R1b1FNWnUrTFZTem51SWZ3Nmla?=
- =?utf-8?B?eEx2R3dzTmNrTmxwVEk2Y0U0UDBJdlZjeVZyK3ROWm5NNURhcm9XRjFTN0Fq?=
- =?utf-8?B?by9wS3RlcnFkeUxCcENLV3RKbVZIbG1iYS80dVlFN1FHZVB6ZWNKWGlmNmNO?=
- =?utf-8?B?b2tYcERKMEUreVhQMkJqa1BzelV2cHAxZmgybTZhMmlkczBGWjB4WFFwRW9u?=
- =?utf-8?B?SjVCK1NENmV0NklWdFRFN0lNdXVsRTRLbVhSK3hjdHpTTnMwOFNoSjV2ZWFX?=
- =?utf-8?B?RjVZZWprMkZVMVFVNzBEcndrbXRod21TTWZmL3Urb0huZk12YjIzS3grTmxY?=
- =?utf-8?B?YnFydDAzNzdLR293YWZqeHFYTWMxalNZOUtoT25NbVRpMkd2b3dYakdLRTda?=
- =?utf-8?B?bnJwUVNIWHdmN3F6V21kYzdkRWtyWGY2UndGMkdyeVdmTzZvQVBOTGZqcDRK?=
- =?utf-8?B?Q0c2enFCakplUkhyNHYxQlp3MXpyaXdRUVZBQWM4dk41T3ZkeHRpNkxCY3dK?=
- =?utf-8?B?QXlQOUJTWUNDMTgxd08xa21LWGhsUDJpN3pxTWozZmVNWFY4YjdjU053UHBw?=
- =?utf-8?B?RUdpVFBSYjlZRW5UVXU2SktBamthUTZVZy9wWGh2NE1VVWR4S0dRUWM3ZDZH?=
- =?utf-8?B?Z0Q2Y1ZDWk1Xd2lUTWVCYlh3ODN4QUw4OTRiYzdFY3BDUmN1N2NaSG1NNHBI?=
- =?utf-8?B?aDNia2tqU0pQMWJjVTd1dzdYNHVDeU5EdDhVMWhuNTVuTnk1UXdaSmlkQU1r?=
- =?utf-8?B?Z2YvaFl3cWRTYUw2Tjkvcmt3aTZTUTBYWDErMTZMOTBLN1VtWFRCdVc2WkM2?=
- =?utf-8?B?enJXMVVCZXIrcndjRDBlbTd5ajV1SGRrZzZuK1lBOStRaFBtWlF6T3NaRVVq?=
- =?utf-8?B?Vm03ZmFMdmI0TlYxY3ZIc3BDTlNwWVkwdElKMFN0WXp5Z241UERwbVk0OVlh?=
- =?utf-8?B?S3F4aHRtaDBWRnQ0NFJzcG1VL2lhSEUxa25kbUIxbWRqUVE5QzhJcy8xWGYx?=
- =?utf-8?B?TXZ4SjI4N0EzN2dxSUtjNm9uZytBbFVaMnFiMFdUd0Uvd2ZWSjkzVnRocEkw?=
- =?utf-8?B?TFJ5QlhoZHVjbVYwVWhPTXMxZVM3Z2lFaUFZcHpmYmYvZkMvbFBYVWNmS2M2?=
- =?utf-8?B?S3FPWWFtaENmSjNGK3dEUmhpUmEyMFZ4M1ozS2o4Uy9nWnRrbWYzZ29mV01O?=
- =?utf-8?B?V2NSZk9IUDdWU2d2Q2NxMEhjaGwzYTl3TWZBS2lyK1dDTWNpV2FWMndCeXVy?=
- =?utf-8?B?TXBIQ3dRTnlNdy9NOWxyWnY3RFZDdTRPdTNabWUvOVpsVUhWMkExOVd0ekFm?=
- =?utf-8?B?VTBmN1VPOFRzUjl0MU1VN1FDQkN0cHJDTUNMY0lhd3E3dVVsWERBRzBMNjJ6?=
- =?utf-8?B?NTZyZUc0bDZBdGRkUkVDY2o5OUtGTkMxRXhxczBXeGFMRml6eVQwdTJLZHF6?=
- =?utf-8?B?cmdkNEZOK2lUSkpNV2JkRUhiV3NzZ1YxRElRcWRsSjRoK0l6dXQ1OXBodGVB?=
- =?utf-8?B?bG16WWNTR1dMamoxN2xjOFR0N29SMEp5STRvalNoZjliV2ZsbmdmZHhIVlhJ?=
- =?utf-8?B?dGFaTXBOSkxBT21COExFVUNzdm0xdWphU1BEMzhCT2taTFdNZTdiOUtoNGpj?=
- =?utf-8?B?RnI2OE8yTGNkM0FYOVVvUnB0VXNldWg1aE01b3pFWThDSkdvczBSUEVMQi9m?=
- =?utf-8?B?VlpYb051S1F4TGt0OVNnYlA1WFBnbmdQSFRUNjVqY1Vocmh3QXhWVWVSRm1v?=
- =?utf-8?B?b0RjR1BWSm1kMzR6QW9HbS96aWEzYnFDZkpOYWh3RkVTTUpvZXpRbVVzQUtI?=
- =?utf-8?B?V3RaQVJLTy81NElzd0tnNzhScmhZQ09zTG1CdjFwTDNKN3hxR0I3Zz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd284aca-6965-42ff-ff73-08defd4727b1
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2026 16:38:38.5548
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LVBYQlW8WqOE3zQBmxwPDow/gBnaUJ8KY+92bXOK5ByfjvI3zK6lxlF54oIk1Wjr4HYis3dR+eBMLGniQShUCw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6454
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260818-fix-rust-configfs-registration-state-v1-v2-1-9acedd3070f7@younes.io>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42OvQ7CMAyEXwVlxtAfqTRMvAfqkAanNUOC7LRqh
+ fruJEXsSF7Ourvv3kqQCUVdD2/FOJNQ8ElUx4Oyo/EDAj2SVlVRNUVbXsDRAjxJBBu8o8EJMA4
+ kkU1MUZBoIsJcgjN17axtdHOpVWp7MaboTrp3Xy1T/0Qbc3129EYQejbejvkVmAby553lcYnZM
+ iZQ4HVfO5e56jes/XtYuhKsrrTWRW9bdLc1TB7lREF127Z9AKj1f7wTAQAA
+X-Change-ID: 20260817-fix-rust-configfs-registration-state-v1-fa33fcc69673
+To: Andreas Hindborg <a.hindborg@kernel.org>, 
+ Breno Leitao <leitao@debian.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Younes Akhouayri <git@younes.io>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787075052; l=2560;
+ i=git@younes.io; s=20260712; h=from:subject:message-id;
+ bh=XigsFJKQzV5Pl7ZgU85X77cuEEIuQrLc6riQN8BqfPw=;
+ b=x5akoYK46SUGtsHm7ObWCU7My6p3+YJmpPwukjrMVRSzJH9fMgD23KXSkJXEsqBfo3IozKeYI
+ 8FkigleehaFAXGqEFlga9/fGCiZZQNpx2p4cT/+2kbx41WJNCHdZra+
+X-Developer-Key: i=git@younes.io; a=ed25519;
+ pk=1DRfzPrQ04RQHHgGK28t+vjIAPv5oISPiAdLMU6J5dE=
+X-Endpoint-Received: by B4 Relay for git@younes.io/20260712 with
+ auth_id=866
+X-Original-From: Younes Akhouayri <git@younes.io>
+Reply-To: git@younes.io
 
-On Sat Aug 15, 2026 at 3:55 PM BST, Miguel Ojeda wrote:
-> On Wed, Aug 5, 2026 at 4:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
->>
->> When the pointer formatting series [1] is applied and KUnit tests
->> are enabled, `objtool` would report an error with any of our
->> supported Rust versions. For instance, with Rust 1.97.1:
->
-> With the version that I applied of that series, this was not strictly
-> needed anymore.
+From: Younes Akhouayri <git@younes.io>
 
-I am seeing this function causing issue on my 1.85.1 -Os build, although th=
-e
-error message is different this time:
+Subsystem::new() calls configfs_register_subsystem() in pin_chain(). If
+registration returns an error, pin_chain() drops the Subsystem. PinnedDrop
+then calls configfs_unregister_subsystem() even though registration failed.
 
-rust/kernel.o: warning: objtool: _RNvXs2_NtNtCsaNryh1j6xD7_4core3str6traits=
-eINtNtNtB9_3ops5index5IndexINtNtBJ_5range9RangeFromjEE5indexCsldbe0TGTmNx_6=
-kernel+0x1d: stack state mismatch: cfa1=3D4+8 cfa2=3D4+16
+Registering a duplicate name returns -EEXIST before ci_dentry is set.
+configfs_unregister_subsystem() dereferences ci_dentry, causing a NULL
+pointer dereference and kernel panic.
 
-Disassembly shows that the function call before the warning location is a c=
-all
-to _4core3str16slice_error_fail, and objtool thought it can return (which w=
-ill
-end up with a unbalanced stack if it does return).
+Move configfs_register_subsystem() to the end of try_pin_init!. If
+registration fails, destroy su_mutex and return the error. PinnedDrop is
+not called because initialization did not finish. Successful subsystems
+are still unregistered by PinnedDrop.
 
-Applying the patch fixes the issue.
+Fixes: 446cafc295bf ("rust: configfs: introduce rust support for configfs")
+Signed-off-by: Younes Akhouayri <git@younes.io>
+---
+Changes in v2:
+- Register the subsystem at the end of try_pin_init!.
+- Destroy su_mutex when registration fails.
+- Remove the registered flag.
+- Link to v1: https://patch.msgid.link/20260818-fix-rust-configfs-registration-state-v1-v1-1-c929990bc8ef@younes.io
+---
+ rust/kernel/configfs.rs | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-Best,
-Gary
+diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
+index cd082b83e9e7..770e0a022b42 100644
+--- a/rust/kernel/configfs.rs
++++ b/rust/kernel/configfs.rs
+@@ -173,12 +173,19 @@ pub fn new(
+                 }
+             ),
+             data <- data,
+-        })
+-        .pin_chain(|this| {
+-            crate::error::to_result(
+-                // SAFETY: We initialized `this.subsystem` according to C API contract above.
+-                unsafe { bindings::configfs_register_subsystem(this.subsystem.get()) },
+-            )
++            _: {
++                let result = crate::error::to_result(
++                    // SAFETY: We initialized `subsystem` according to the C API contract above.
++                    unsafe { bindings::configfs_register_subsystem(subsystem.get()) },
++                );
++                if result.is_err() {
++                    // SAFETY: The mutex was initialized above and registration failed.
++                    unsafe {
++                        bindings::mutex_destroy(&raw mut (*subsystem.get()).su_mutex)
++                    };
++                }
++                result?
++            }
+         })
+     }
+ }
+
+---
+base-commit: 47f27155f17498fccb1f222f79089642337498a9
+change-id: 20260817-fix-rust-configfs-registration-state-v1-fa33fcc69673
+
+Best regards,
+--  
+Younes Akhouayri <git@younes.io>
+
+
