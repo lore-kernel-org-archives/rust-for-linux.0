@@ -1,69 +1,69 @@
 Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F442836A6
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 15:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625F0474271
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 15:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787066436; cv=none; b=OqdB96YBpSu49O4627bUtldCCqX2NB66mBhSUCd1pJ9FwZaueaa7aV9UVO0Izui5P5Pft0DRwz/E4FIedCxSQKKf2oEw/1I8x0bHGbx5aXbINimPLTtFEYht8SAyeBVprk8gL+pu5vvvjK3cZaABuxucaXwER537Y3bUkNe85Fo=
+	t=1787066439; cv=none; b=b+j9Tgljn/1AzqAiEMLYXrAxZR0lX8xcWYbZEOSPhq1MuYykghtQ+Vo0QqKu9nrzKmhCzCsRaorYHI6HJAkPBoPpXJsh5RAGhkWTg2r7TaLS7hn/hGNx2EKZtUF9hjKIFaWhFdtl7qqTGp5vyLSb2tWAO07f7ByushPYRcomQ9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787066436; c=relaxed/simple;
-	bh=lVVGyoI0yNkmpTkc1xzUBaTF6I8x9HnW591ib48kPo8=;
+	s=arc-20240116; t=1787066439; c=relaxed/simple;
+	bh=6dAacv04h6+fbKsAtNuH1TZu5kOgCxlFp0QG+NiXDjM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ihAcES+lQK117Rqie9F1cZtyzLPlHYHXMNYIS7heDLykE32rRvYFs7UbqA6JBpaxCbOJ/GbhHRIunPNm3Pz6W8Nr+tcr9+HWH6Q/gGNnrIcqdPb7Kv8yVmcsh7KyVe/yDm3KH5Eoe25piJMppmIbuDouVXqk3N0YZWwZsJTp/+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MnEtkvT6; arc=none smtp.client-ip=209.85.218.50
+	 In-Reply-To:To:Cc; b=SwhYsDuOGVgfGCDupBx1PM+mAM/GegdjI2+yzIzuCvbEildQ/0VsCkG3fVdVPB0hhLkvpJsF9RSfBdbF1D2fXP/KJ11OAV0QI9HVi0nVxSGt2pYo9wnPsp+kUwX6tc6smS/Aj3Vm8T0o8I5M989iXbG7AKy/x98MsR9e3GmrTCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p12/inqK; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MnEtkvT6"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c197e7e4e94so813926466b.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 08:20:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p12/inqK"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c15cb6f5c12so863308866b.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 08:20:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787066433; x=1787671233; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787066436; x=1787671236; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=i7/V3zTAw391qLVLvjrhLrPuXnBwusW56ARNxgO7nP0=;
-        b=MnEtkvT6n7mudbx2as2X7eOZhlITcm47M7YOg+ZH+xk4bRgmUU+ovDZWK+QC3Kid+n
-         D8al3fpfnstEzXzhhGjOCNwCSJ9FSAtXQrYspdzpYH+iBF+OhyT2pBIQc7jfOkgP8i+B
-         PXxzpNWENHsLDFW/IhzbedjKWNgFrRkXN/e9k+EWMlqRNONkENXAQUY179tI/geqGfdD
-         wP+20LnDp5Gub8S9r6dN5Y8eGkgP3SgN3Za1dYbl9P6ZcHqKD17R/wvEps6RBi8VimN0
-         TrfsNbhiix4qaPZMe8pltBAuIIGteF1aFLdqZ9abN2AmDL5C4TTq62rzUP5La4h0qK/N
-         K/aQ==
+        bh=06fwIs7Il0udcSLvnfSZmsAN+uvE4gcV1+TENh0/uk0=;
+        b=p12/inqKw7vAnCiaXAPnFW7AF+hL98CmPnRqhT7PjAisREFK8l4QmqJw2mjltobb9s
+         jD866ZMyenag4gsmWs2qVu7EfAD5IbDNpSlNQbDN1bW2lz1pIh9K0B7WM1zuK1tqvzV4
+         Sgp3Gmdn/w3Qz8AnjjpmpnkYMES1HoPUaItIAirG7f0HuH+YZxkqMgH1SZwefv4L+CeX
+         kbFMmKcYOANo0I5CnWGk9QNUE3NtsRaMg9Nu0DtAvCKbnVv7koImMOaTHxYphp33yVzo
+         czLE6nLH0a83GBxMvBoge2tbRnVoMEzXLWW63kkzml0h9ikV6nVXJIPZYnbp92G9NFcg
+         nBJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787066433; x=1787671233;
+        d=1e100.net; s=20251104; t=1787066436; x=1787671236;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=i7/V3zTAw391qLVLvjrhLrPuXnBwusW56ARNxgO7nP0=;
-        b=b7SET85lJy+hGLFWZLtdUoYsMgKJtXVxHhK0Fpt2axEPuycs+ygq35IK9g/ChZq4Ax
-         ASO7azP+bDKAgRJhmIIaVUiimwcJi6w+St/xfdRmtVgiGKqvP3cZPXO6DiFBzw5LgymB
-         Vlr9j8/5OU3h2heZ0JN77LSODcQOCECA2uKjj6F6A0TK9TP8ww4G8gxhzuueM32gCTMX
-         QcSI4nGW2G95+Tfl4MF71qcz0M6g6S450kI75LgPJiaofN/L0fuLdak10HRWZpIhzsuk
-         Gh+3BoZh+MT/NjIw89M+dKohN9xYM3zjY3yfzqhw1Z4nhv6ZC+Af3nezo2bZ0yCtaKA1
-         a2nQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp13tvKcU5/rl93raaYqWmvXZVjYrZsWLOeeG0wTvImNaYKvlMKvKx2NhoqnaWeEPwvrWi7V1t4e6pSRxouxQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMCct7CjoMdXHpDdri6giDVZuSUW3IfcP/bM2XjdD4d0Q1lYMV
-	b40WfBECqHB0xi3o1zVTPsrwUDOhal4UW31nKcroTNHl0Un4pB5mS350
-X-Gm-Gg: AR+sD13ShA08KFfQk0D9cbGaI5o1zjIzAMJBmYXdQ/7IcU9WTsp+TO5w9QgMfUl34rK
-	awl6Wg/vIyyOm5fIaL3dvAJ+rGL8CgQQORG8G5POkdDzBdnMhpajR20jGXXyaW2fb4hX3JaXkSm
-	0qmi+EF/Tha0yRogyG6ABVFQ0etCMRnYGPi33mskW7c0/jp943iDtrOn05ib1iYrHKRU7DEfopO
-	Ca1mGuHbTktOs+10NTFVCMEsni9Lkc3Urhykusxlgh6XbHk3zkI6fnJLlAOT3SaqlibjHTS5see
-	Q+7OZNkdkwxHZ8fRCyE95aomFQ2t1Q2lSw4g2/VZIr+CgQQpXv5cuaY9+t2B8Qsa36W+ZWz0FDr
-	POq7AFfpvrwCiw8vsYS1+eFmUqYAJD0x2wg02tIvn0O6jgEHmJn7jeQWsBacXMsgo1S6+Cke7i+
-	/m5usIMZFd0XzY6JvPcLoWRbHvPPYf6fD0/xrJOFalFrX7LJIjSGPCjQg9lp1Laf214nCbCW/ua
-	gI/xNb6ND/tJ4DWuDSM9C+3
-X-Received: by 2002:a17:907:c78b:b0:c1f:e09d:12 with SMTP id a640c23a62f3a-c212a395aeemr1639036766b.25.1787066433278;
-        Tue, 18 Aug 2026 08:20:33 -0700 (PDT)
+        bh=06fwIs7Il0udcSLvnfSZmsAN+uvE4gcV1+TENh0/uk0=;
+        b=qFNA8D5wuzcp/+zdsQNKitTt7g+wW8ODF6bjbXdTSPJcaNsWz9Y7nGtMu8pzkh4VBh
+         x3cRQQ1Q/bv5+UUFZHYfhnoo/+NjLSYu9HHcYZTu+d2ernTYdCXdOMz53gr9DCllEN0O
+         7bmDAy2StkEoJBCxNLiuuuPlHJHHYEmHAU/AWtZpLbzaUHoA/oAqMYJ+i1phMFt6lmwW
+         Gx1l8khAvMz7XN0HNFB/ysuKnW6SzubiDaWq5fJRlL2NHYJsIHf8SHxbt+2q1eiiBq63
+         IdYW/TB7iMJGIBBNDWHZSJh5tqPsdoouFKCye8N3qLQrGxITVJvOS8NaSZx8rcDnl0TD
+         Iamw==
+X-Forwarded-Encrypted: i=1; AHgh+RrZ9D6v5Hq908zfUmn8lFioeiXVa1SemFpZjHKCkGvo4Zy7H8uYp/P6LiNdQNalxIU7hRX3RTDPtCCr8ft6oA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjYkSWRheoPcAGyPSw0bPZfbpZ0m+o62BujCBxkixGo/9sNYB6
+	a1C+K8kyCjVdPf22bnyrVXdAc1NCDNjvTFrkGsQR557iu+9GTeP6o2Nt
+X-Gm-Gg: AR+sD10cg5TC/XH62asdEvPVjjDPc5AV9q4IduwHmPRhc4xRcnDPaO3Gwgk6Q/GyZde
+	PNv0m/yCLB+W+ctZhIeeel1m7obTXNPfQ9Oq3rFh1kg6t3C99/x5ff5nOp56PjIIZVCL6pAQBUo
+	/44Y258GESpB/GY6VcfyaQrW4QwnxzGp7g+H9rCRt68+iidg7N8tsRuspYQPvybiNRvikRphbp7
+	9l+qFj8MG0YVD7Wh4OfPeS2kJ0doBIE9TYQmu2EJCg6AlhrwTFoXJ0/GzHlyfVTX89BW4tXCAmJ
+	pcdWL4onhFshk1uxje42VVJrA8R3De0QmbU4sP7mH3jLLezKcC584qe7YW1NiW1gSwRRd5JtcXl
+	iO9UumgyHtju8CVjqFe988IS+b7cszC9xpUeQgJYFA95xd5RDh0mKbIimqVEH21C4hmvgVBE88D
+	MwxG9v5iAFNJFY9xY2Lma6pOSiRxRXDt6xCuwOq3RVymupFBZIEDhaNQEmfZ2BSAuLFNaoQuzL9
+	GkJ4FZryEW/5VIf/8yOid5a
+X-Received: by 2002:a17:907:f495:b0:c21:35d0:f435 with SMTP id a640c23a62f3a-c216bba944fmr957126766b.10.1787066435233;
+        Tue, 18 Aug 2026 08:20:35 -0700 (PDT)
 Received: from [127.0.0.2] ([195.100.225.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c217fea1e64sm213893266b.21.2026.08.18.08.20.31
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c217fea1e64sm213893266b.21.2026.08.18.08.20.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 08:20:32 -0700 (PDT)
+        Tue, 18 Aug 2026 08:20:34 -0700 (PDT)
 From: Malte Wechter <maltewechter@gmail.com>
-Date: Tue, 18 Aug 2026 17:20:21 +0200
-Subject: [PATCH 1/2] rust: kunit: add config to fail kunit tests if a
- lockdep warning is triggered
+Date: Tue, 18 Aug 2026 17:20:22 +0200
+Subject: [PATCH 2/2] rust: kunit: add config to fail kunit if TAINT_WARN is
+ set
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -72,7 +72,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260818-lockdep-kunit-v1-1-66ceb1a272e3@gmail.com>
+Message-Id: <20260818-lockdep-kunit-v1-2-66ceb1a272e3@gmail.com>
 References: <20260818-lockdep-kunit-v1-0-66ceb1a272e3@gmail.com>
 In-Reply-To: <20260818-lockdep-kunit-v1-0-66ceb1a272e3@gmail.com>
 To: Brendan Higgins <brendan.higgins@linux.dev>, 
@@ -91,67 +91,70 @@ Cc: linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
  linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Malte Wechter <maltewechter@gmail.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787066429; l=2312;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787066429; l=2506;
  i=maltewechter@gmail.com; s=20260812; h=from:subject:message-id;
- bh=lVVGyoI0yNkmpTkc1xzUBaTF6I8x9HnW591ib48kPo8=;
- b=HGj1MbpngcLllNXMzXP2g3dYt2CDx0pP7ylYtXc5j2qZLhGojjgg1devKpZTqDNF8zhU1MGSr
- QAC9vK7vhL5D8eocII5w0+NRlmFq8CaiMmzljBtgXGeYDW259aG9FH8
+ bh=6dAacv04h6+fbKsAtNuH1TZu5kOgCxlFp0QG+NiXDjM=;
+ b=ahmFApyQ7Dw7FD/RQQuqEAn7g4Be0BUT/tBSNiJh0WjMb7WWzGAEfFksYvNuB0rAxm8slz8Lq
+ wUa/pfQAaRWAK08/nIz373DF2ng1rriUZ6cBZRok1wFIZfcQVFglTCw
 X-Developer-Key: i=maltewechter@gmail.com; a=ed25519;
  pk=Ta/JQQMOW0Cbxp+yEwWqWFEyKFRyuQeSoYicwD7yvWI=
 
-When running KUnit tests and a lockdep warning is triggered, the test is
-still marked as passed based only on if test assertions are true.
-Thus, add a Kconfig option CONFIG_RUST_LOCKDEP_KUNIT_DEBUG_LOCKS. When
-this option selected, if lockdep triggers during a test, fail the test.
+Triggering a `BUG: sleeping function called from invalid context` does
+not mark the unit test as failed. Add a CONFIG_RUST_TAINT_WARN_CHECK to
+enable the assertion of TAINT_WARN being set during a unit test.
 
 Signed-off-by: Malte Wechter <maltewechter@gmail.com>
 ---
- lib/kunit/Kconfig    | 13 +++++++++++++
- rust/macros/kunit.rs | 10 ++++++++++
- 2 files changed, 23 insertions(+)
+ lib/kunit/Kconfig    | 11 +++++++++++
+ rust/macros/kunit.rs | 11 +++++++++++
+ 2 files changed, 22 insertions(+)
 
 diff --git a/lib/kunit/Kconfig b/lib/kunit/Kconfig
-index 94ff8e4089bfb..30bac00c42ce1 100644
+index 30bac00c42ce1..4025b5b305549 100644
 --- a/lib/kunit/Kconfig
 +++ b/lib/kunit/Kconfig
-@@ -142,4 +142,17 @@ config KUNIT_UML_PCI
+@@ -154,5 +154,16 @@ config RUST_LOCKDEP_KUNIT_DEBUG_LOCKS
+ 	  this makes it so the KUnit test does not succeed if the test assertions are
+ 	  true, but a lockdep warning is triggered.
  
- 	  If unsure, say N.
- 
-+config RUST_LOCKDEP_KUNIT_DEBUG_LOCKS
-+	bool "Enable extra debug_locks assertion in Rust KUnit tests"
++	  If unsure, say N.
++
++config RUST_KUNIT_TAINT_WARN_CHECK
++	bool "Enable extra taint assertion in KUnit tests"
 +	depends on RUST
-+	depends on LOCKDEP
 +	default n
 +	help
 +	  Adds an extra assertion to each Rust kunit test case that asserts
-+	  that the debug_locks flag from `lockdep` is unchanged. This is useful
-+	  when writing unit tests that could potentially trigger a lockdep warning,
-+	  this makes it so the KUnit test does not succeed if the test assertions are
-+	  true, but a lockdep warning is triggered.
++	  that the kernel is not tainted. If the kernel becomes tainted with a TAINT_WARN,
++	  Enabling this config marks the test as failed.
 +
-+	  If unsure, say N.
+ 	  If unsure, say N.
  endif # KUNIT
 diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
-index ae20ed6768f15..d1cd0349f86f0 100644
+index d1cd0349f86f0..90264ef54a3a8 100644
 --- a/rust/macros/kunit.rs
 +++ b/rust/macros/kunit.rs
-@@ -144,9 +144,19 @@ macro_rules! assert_eq {
-                 // here to reduce the length of the assert message.
-                 #(#cfg_attrs)*
+@@ -146,6 +146,10 @@ macro_rules! assert_eq {
                  {
-+                    #[cfg(CONFIG_RUST_LOCKDEP_KUNIT_DEBUG_LOCKS)]
-+                    let __debug_locks_snapshot = ::kernel::bindings::debug_locks;
+                     #[cfg(CONFIG_RUST_LOCKDEP_KUNIT_DEBUG_LOCKS)]
+                     let __debug_locks_snapshot = ::kernel::bindings::debug_locks;
++                    #[cfg(CONFIG_RUST_KUNIT_TAINT_WARN_CHECK)]
++                    let __is_tainted_snapshot =
++                        ::kernel::bindings::test_taint(::kernel::bindings::TAINT_WARN);
 +
+ 
                      (*_test).status = ::kernel::bindings::kunit_status_KUNIT_SUCCESS;
                      use ::kernel::kunit::is_test_result_ok;
-                     assert!(is_test_result_ok(#test()));
-+
-+                    #[cfg(CONFIG_RUST_LOCKDEP_KUNIT_DEBUG_LOCKS)]
+@@ -157,6 +161,13 @@ macro_rules! assert_eq {
+                             ::kernel::bindings::debug_locks == __debug_locks_snapshot;
+                         assert!(__debug_locks_ok);
+                     }
++                    #[cfg(CONFIG_RUST_KUNIT_TAINT_WARN_CHECK)]
 +                    {
-+                        let __debug_locks_ok =
-+                            ::kernel::bindings::debug_locks == __debug_locks_snapshot;
-+                        assert!(__debug_locks_ok);
++                        let __is_tainted =
++                            ::kernel::bindings::test_taint(::kernel::bindings::TAINT_WARN)
++                            == __is_tainted_snapshot;
++                        assert!(__is_tainted);
 +                    }
                  }
              }
