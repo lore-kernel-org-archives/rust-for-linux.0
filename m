@@ -1,138 +1,137 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD1B27FB1C
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 07:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787037543; cv=pass; b=NR+LbmZDZvJceRpRRdNrOIDH68cWTGLG8XLrjC6AkE+RVo6FnBjij6twP2v1Re0lCl1ncJvR49makgHfAfAqsZOCvODe2ErEq8QtsUgwMkt//6lryUnKMEsPp/hw/5jX+9yJXPPnEaVSXidjThiKiLnpm2O6yRaiQvJ83r6AZo8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787037543; c=relaxed/simple;
-	bh=WhPSBBPQGGZbolI+iA2pgFPPV7f1s1z0AqjG9jtoWO8=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B08A339396
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 07:20:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787037651; cv=none; b=bJugp8/isD9vF9tYD5xkM7nDHy38AvzyJ7hXAWm4u7DfQfLW8LyHpXqyOvvEWY65n2bye+OwXjpg4VMSEkcBBw/JEmYYuVKczG63I0A40hMQoFQj6Gv6lv7N9+xi3aG8CXTH5kY1NgSV6H/R8LdofB8r1bfEhqJ+i67GCfBbZ+c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787037651; c=relaxed/simple;
+	bh=AH2rzIzO8xOuQwuHw1E2qkQOPI5JqW1bPKl2RlhocFw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EgeBjubDHJmu0Jc92PXUpegnku+jZL9N862YPXg8pOa1wt+y3eYIICo1S1qOFP7xPLo0iqz6kTutml8un0j0jdU2OfP+7RwsZuU+sq5qP4FZ19bxkJHHDVI10zmEZtOTT2QqLe+rAbe9K6WSofVEsUmeZb6L5wGfD2tgubCW8KE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o+pN9sS+; arc=pass smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=NlAkRahqRkSnUQqDU6d8QXxKhLKmWsXGE7me22xmO5M8nXga6lghRuITPAHZBGKzK/qSIyX0eyWoWph4UqAQrA3DwX8tME5y1BxGrjUE1H7ZrqzcWdFPD/kv20zPpDtagnGDvXvV56FNAT8Nc7ovhuUN4+FQvdutOzcwTPOAB6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UNZ20DWu; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o+pN9sS+"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2d01548ac96so571565ad.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 00:19:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787037541; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dATHXhMIJdi/030cg6vYQrmt6xQRTPkK2Qjz3AmNlXcLjSfRtZiPX6qY3PRaEZyRii
-         CayNoWJVxcpHAHxYBd0Lldv0UKTXb/OBbik2UpN+RQ8OszRrYbIuz3NsW9pCThpkRAMq
-         h5TbxujNZuVVlydE9aIP4fq2X7p1LMcawe0Q/sTBrlkfTqUE8WvxX3q/08GBOPKM3I6F
-         0mYNGRMMxreQUd7JCrENZttVHq1FDyl2rKVl5fT5PHBSIfotZFu7gG1WA6v8SexRaia8
-         4GUDFbJP0YHJdS4tQ/ucYuWcwZpfjKZyPyf89wF+No009AGoJFOaZbu3Cy0SL1pmNPH9
-         aI3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WhPSBBPQGGZbolI+iA2pgFPPV7f1s1z0AqjG9jtoWO8=;
-        fh=GcadTzqzT0QI6krSkEh1ygG7VgPPRC0lqRdPwhQNvS0=;
-        b=hhHwLdxaEDJ40/q79qqWCVHMlqdRJ88L+daVLJp+9SXEMKIkEAFjPLMLux6ekLcWUl
-         4ihiqt/DgqzoNRLbP6tEAV0l0zfnGiWMO5GP2wnsMheKE7qCKtO01fplZdFmKFG2ElG5
-         RDB3uaZ7hh1YrJOYyNZ8K3tDPqYRPT6W5XQ72MW8sV64AL1wT/VasfSKXGmGKNvxrH1p
-         H7KzGRYIA12GEiCF4BSzLwdA1ufJwLOIvu7w1qPGRILuuhiTFNfjqT1WEDzQnJxE/APu
-         TWWmIanghO1kK12bqvjCMNdQI1RLe6gpnPOb4h0gaDP/qE1C4QNpdLef3QpWHWDxS5QI
-         twew==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787037541; x=1787642341; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WhPSBBPQGGZbolI+iA2pgFPPV7f1s1z0AqjG9jtoWO8=;
-        b=o+pN9sS+rWew1ZO1SjswR/1N+fxoNPvFwSU6zCB5vC4GfcgNK+35X/Yl9NRk7/8KbT
-         rwh9BONWXjicMtZr6YzL8TUyqn0mWDk/ovmNMMiYxTH2QefWR7Bi+T7Anr6o/F/QCZqg
-         fIPzCmCqm2SZx33lmnvWWUTKxm7doIUfdOiCH/S3mRRjCl2w95ixziSPNgGh1/jM6wgE
-         yNLI3h5VFR3LhbDG8OryClx/yxO2p/uf8Un7IrnvTCi+0f6rXUq7Rk0EWHuLuf2W8D+f
-         NZsumjGaAwjx+dSWYVk3Zn03gIB/sUOBulHv5bcbcFCNkQ9i6Oa6kFNPIHVrJejXORGF
-         J4bg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UNZ20DWu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787037649;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AH2rzIzO8xOuQwuHw1E2qkQOPI5JqW1bPKl2RlhocFw=;
+	b=UNZ20DWuiEwFN+15v4ASYhRe6pRY6hr94OrkE7B6Agw/auVJJYuFASB96BjWJkcRTtWua1
+	moSVtZM+WBqeuV70kT5KiK7UAk1RETa+MjV6cy45f8jcr3OA+BE7ynPof0LNO3d3QwKLAj
+	YuH3qAr0LwfoFKHAzmEkSXFPICDJjZ4=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-638-dFdIJegkMtmc3NNoxPH1Pg-1; Tue, 18 Aug 2026 03:20:47 -0400
+X-MC-Unique: dFdIJegkMtmc3NNoxPH1Pg-1
+X-Mimecast-MFC-AGG-ID: dFdIJegkMtmc3NNoxPH1Pg_1787037647
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-836c9f68dcbso60703147b3.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 00:20:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787037541; x=1787642341;
+        d=1e100.net; s=20251104; t=1787037647; x=1787642447;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=WhPSBBPQGGZbolI+iA2pgFPPV7f1s1z0AqjG9jtoWO8=;
-        b=dWMz7kL0pkulaGe4IygYXCIWCT6gE5ps41fIqXTIFHb0Z6YMsJ/E7/3SZWvfMxqqPg
-         DoUQpUTfoXnr4SZTlhILgjF9sAvoOC0Dg+Laov5edia4Cs3jsRT1h9tXYyYAUlXhLZnm
-         phwXStCkqhac+QdHe/3DTiSIuwzXkBPs13kZ/OT16PCB6TDhmtzYJVIBuh2C6/x8mLzC
-         mbePJpu8hiv6cztIw7MU02RtSDPu07wWqqteomUQj0TH45vyxOZoiPsrKoUy4pK0qXXJ
-         65odLbZ0/YfoF9FL36KyUX8wIE/d87IfdLU6dZF1Q13i+2Y8Y4skr2dkPmMVA9aonzdN
-         50ag==
-X-Forwarded-Encrypted: i=1; AHgh+RohEC094W4xzkkDK58QldhR7q6keuzr8uu5aOZYBvxXvu1i6mpUQNJx8PiMcbEmuHTVPXNre43K7ZohUzIENg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzO5wfgqsddRdQAn/4Lz2+DA8A4EoDRGYNcfBdb6MQ3hUIU7lf+
-	WNCJouUJeuwTQiiQxiv3aKQHPkuSMFzpLWU7yUmUDFYUEPLHSK8Od8hbwobX+jN5JCr7ftqhn0t
-	VcYnB2Dvkxc53kqYgpvh8yMy6xgl9V1k=
-X-Gm-Gg: AR+sD12wiDKnxSgB5O9S9Rf7pRLmkIs9H3qhH2X9m7667SuRen1V8sckIgJxLT1okF5
-	R51F/NpLzQguNBXm7O4ucYHGdX15yaRLhIOI0ZjUFwt/kMznmqngDaPrqcGXAcIh67c+qdiDSUB
-	lEAerd6PoF78A/7BvSL7I5QEetED2BP/MxbN6B4ciKGTE07aOiQXTVQ+BzB6PJgGUPGEIcDTthz
-	VL871FyWPZvqsga8bQYv5LynHuldxPL6nnCQJANthDPsvK7HOvc3qf4SLwS+oPKR+7NYlNsu328
-	MlbBb6BDCDYkvB6V1ZYPM1fV7FqmrZHsD748s7N9vsmVU1MqadoZ5mQ6qlmxW8JjGBwEst0LsBj
-	FNK9wKJXOIur/gyomCZEhBMiHpAP8enbWEOyI/fxkD4Rk3Imht8LShwF9mr3F
-X-Received: by 2002:a17:902:850b:b0:2d5:cbd3:8eb1 with SMTP id
- d9443c01a7336-2d5cbd38f48mr29929495ad.3.1787037540543; Tue, 18 Aug 2026
- 00:19:00 -0700 (PDT)
+        bh=AH2rzIzO8xOuQwuHw1E2qkQOPI5JqW1bPKl2RlhocFw=;
+        b=kecUnZbXkC91JAihmRa0KZyW0MdPPUNioMOuPZmKznYUvZ+BUVtrHhAAjwS2k4SMs0
+         YVVngg89xgTC/Dn6Ws9XKGRa2QzHE9tLs8jH5Sp2Fy56E8ekD6s91ExcvzlJiOs2KJry
+         aSHGexBke6nLTIpYkzCJFjkl2JLwC7UjJEgbW8kmT46N3ywlYIcHFjAktzOpPf0en5m6
+         pVoVhYHkY8OwYOdHsTMeBDERUZgrjXdDUksigXsR4yWLbq0xHAU+BJFhU36h1BkmoALG
+         pmjSlpbaphstjV1/ocgJBVqHyjtxvEsTQj+W/UXKxA/nTaa6v1o3qpyoCIVdQG5vxfB3
+         Dm9w==
+X-Forwarded-Encrypted: i=1; AHgh+RrpHslx0m6Ve79geEA/U3/gVFd53Cw9aMBHeA/2JhBwUWbE3o/4X6uWFPYKA0oG3oPotGQqkV9wEnDZUXjy6w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwczcFdy7Pp8CSBy+Re3MNZ5Ix4yu6mwb+xw90p3hrL6f3JfHLp
+	bSgcdPdU0Wwi64ce7EQQpalwQylRPQRHUshhxKo7mybYx4p+uyO8GNViRY/sy1EfKx/l6fBbapV
+	03At2FK4P0pY0k81/EM+RA8e8asS9g0l2WNvNEBI3yVQnBSfqDIDAB1qlzxEZbS+q3qdd0hj4Q6
+	bz+rRB4lrN+zFiO/zXhYAYcL0e533S8fjE3++EZfNiv9I=
+X-Gm-Gg: AR+sD10a4YJtYkPZWhaVoHo69I60lvY9enlu7YeI/3QekoSyponTW6oBfHCar+gq3KF
+	MrwEjmlsN0vFvHzwlbH2ervYEYMkkCN2cBL6Oa3xSbiBr4sDkcoSv7IYvd7ILxyEtS4SlbBRi5O
+	MqplPwfpmmGx0fUje95YqTVsk8ZvJv1+OFa5ixCy/AzxDsFd2gNII5bbM=
+X-Received: by 2002:a05:690c:e1d5:10b0:81e:6a10:f90f with SMTP id 00721157ae682-8371125d508mr80483427b3.17.1787037647089;
+        Tue, 18 Aug 2026 00:20:47 -0700 (PDT)
+X-Received: by 2002:a05:690c:e1d5:10b0:81e:6a10:f90f with SMTP id
+ 00721157ae682-8371125d508mr80483207b3.17.1787037646635; Tue, 18 Aug 2026
+ 00:20:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260812-chid-v5-0-6c767770b3f4@nvidia.com> <20260812-chid-v5-5-6c767770b3f4@nvidia.com>
- <anzxKO0X1OrNRD32@yury> <DKNN2LHZXRIH.5LUX95CZ8EA7@nvidia.com>
- <an4NvQBt3389jP6E@yury> <DKO414SNC0B2.248FUBGJGSPLU@kernel.org>
- <an4xDp29VX8Am0uR@yury> <DKOAY7J1IFTP.DMKSXK625EW5@nvidia.com>
- <DKOECWHEEAK1.3N3JXH9MH7Q58@nvidia.com> <an7bG2bEd28AbNRr@yury>
- <an8r4VECQ8iFP8ze@yury> <DKR0ZNGYW9IT.37N7TEN97GG3N@nvidia.com>
- <DKR5W5DGAWAJ.38LHLLNPO9R4W@garyguo.net> <DKR6EB8OWPXG.2QYAY81UG1RF3@kernel.org>
- <DKR724N9V3Z8.1HJP6NJC5A4ZK@nvidia.com> <DKR7N2LLIQZH.25F7VF4CET6PO@kernel.org>
- <DKR8MCRB76L2.1TV4D7261PVTH@garyguo.net> <DKRA0IU4WVW1.3AOKCY38VHTKZ@kernel.org>
- <CABwQupNA=NuctKz0FRaJsWowf+=24C_o7u8twFFeUZ+dq6u+Jw@mail.gmail.com>
-In-Reply-To: <CABwQupNA=NuctKz0FRaJsWowf+=24C_o7u8twFFeUZ+dq6u+Jw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 18 Aug 2026 09:18:45 +0200
-X-Gm-Features: AcwNN1URGomC3yROmR3KTAJ4h6I32rNk_7AiTcL10HUoEZg2QkO9YMIizAjUoJk
-Message-ID: <CANiq72m=bbjgMZy-BCsB0hajMJcKb+j=jeMN=e4++B-XSUOzeg@mail.gmail.com>
-Subject: Re: [PATCH v5 5/5] gpu: nova-core: add ChannelIdPool
-To: Burak Emir <burak.emir@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	Eliot Courtney <ecourtney@nvidia.com>, Yury Norov <ynorov@nvidia.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Yury Norov <yury.norov@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+References: <20260817-drm_panel_bindings-v1-0-1f974508a31c@redhat.com>
+ <20260817-drm_panel_bindings-v1-1-1f974508a31c@redhat.com> <20260817151815.GA757484-robh@kernel.org>
+In-Reply-To: <20260817151815.GA757484-robh@kernel.org>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Tue, 18 Aug 2026 09:20:35 +0200
+X-Gm-Features: AcwNN1XPNBWCoPE2Nkai9E-mE_8PW-Et12-aqT9wAxfp7sMMAA08KesO-xwraw8
+Message-ID: <CADSE00Lfh=8CSsadEoiEAd3Ld_0=nphkYGnxNH1v1woNPbF_bw@mail.gmail.com>
+Subject: Re: [PATCH 1/5] rust: of: add Node type
+To: Rob Herring <robh@kernel.org>
+Cc: Saravana Kannan <saravanak@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
 	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
 	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, John Hubbard <jhubbard@nvidia.com>, 
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, devicetree@vger.kernel.org, 
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
-	dri-devel <dri-devel-bounces@lists.freedesktop.org>
+	dri-devel@lists.freedesktop.org, mripard@kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: DHB1c2kHF_Vmnx2VrdkKhLwC2Dyx8dkVUcJj7Zhg73c_1787037647
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 17, 2026 at 11:36=E2=80=AFPM Burak Emir <burak.emir@gmail.com> =
-wrote:
+On Mon, Aug 17, 2026 at 5:18=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
+:
 >
-> To add a minor point to this, if rustc could figure out that a
-> suitable non-zero number literal can be treated as NonZero<usize>,
-> we'd not need a macro and it would all be very ergonomic...
+> On Mon, Aug 17, 2026 at 01:40:46PM +0200, Albert Esteve wrote:
+> > Add a Rust abstraction for `struct device_node`, the device
+> > tree node type.
+> >
+> > `Node` wraps `device_node` type pointer and implements
+> > `AlwaysRefCounted`, allowing owned references to device
+> > tree nodes to be held. To do so, add C helpers to make
+> > them always accesible from Rust bindings, independently
+> > from the configuration.
+>
+> struct device_node being refcounted is a kconfig option
+> (CONFIG_OF_DYNAMIC). What happens when that is disabled?
 
-Yeah, that and/or `1nz` literals could be nice. It may be a bit niche,
-though; and we would like good ergonomics for our own custom types
-too.
+With CONFIG_OF_DYNAMIC=3Dn, both refcount methods (inc_ref and dec_ref)
+become no-ops. Same as with C code.
 
-Nevertheless, I will ask upstream Rust in our next meeting about
-https://github.com/rust-lang/rust/issues/69329.
+Since Bindgen does not generate bindings to inline functions, the
+helper functions ensure that bindings::of_node_get/put are generated.
+Otherwise it would fail to compile when CONFIG_OF_DYNAMIC is disabled.
 
-I added it to https://github.com/Rust-for-Linux/linux/issues/354 as well.
+>
+> > This abstraction is needed for subsequent patches, in particular
+> > for creating drm_panel instances from a `const struct device_node`
+> > pointer argument.
+>
+> My intent is to make struct device_node opaque. We may never get there
+> with C code, but please make sure Rust is that way from the start.
 
-Cheers,
-Miguel
+Got it. I will reduce the visibility of the raw pointer accessors by
+making them pub(crate) for the next version. These are the only
+accessors added in this series. Future methods accessing struct fields
+for 'Node' will have to rely on C accessor functions.
+
+BR,
+Albert.
+
+>
+> Rob
+>
+
