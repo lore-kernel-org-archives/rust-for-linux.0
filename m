@@ -1,212 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012012.outbound.protection.outlook.com [40.107.200.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F2C26296;
-	Tue, 18 Aug 2026 21:50:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787089845; cv=none; b=XyKodsAhp7vvqDLKhjvMw8Jmj0z+6cQfu5UOoVTOOdgy6kgIdzA0WKgw2d1kEH+Jp7B9aXZPWOlmv+Tpw54WW2g5POUP5AOxs0LQyRlEk10dsecjHPIC41dh7LqA9lKNSa8CsZO46/lc3hJMvTZFrZvkiV6x8r6ubnGxYlMu44c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787089845; c=relaxed/simple;
-	bh=BOfIbt7VCfuHhrWRVqLOZ3sRsvjFSCZIALpoCn+FbVQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=N20DCR7AA+lQstT+7s/FnUg91OoKKYW2tbi/MXq2NHXN3Ry9JaMVj/cEYu98dJ8EPIAndijIbGvLjEdxmBwUE+Mos1Oak0lJq0+5L92PW5X24z4jd8CWBNHtGTFAwgr1isPpIzE07wUbthT+MVG3Pp+YzZjIQ1eA71jJ1rtDKGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QvL2agjo; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4D91F63D9;
+	Tue, 18 Aug 2026 22:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787093799; cv=fail; b=Ei0aDDj0BLHEhzwwjNl/LruRgtYenzf30B7gIgG8YFiIoGvKE+N8HKkUNzf8l8oqeNNK9X6iJvguxkTpEDLT1XZoEwBUwme7ebs5E3Y7Gnqe4j+I70EOCWegQq0aCwvErIV+vrT4w/8wOPHyu5EgoTm7bebhsfcBDCjEmFfvSe8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787093799; c=relaxed/simple;
+	bh=8ylO6PbygEnWd3ZvllJJLD442TwmoeI/KhVMrfFwapI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ESh+cP2xGQIyOt4+jCHe8pPPtvwvMbHt7TjZw6uqXgrlsMDIMHGVj/hpXIhHTIW+KxRyW0EdBGcG89S+IfGfrUYfTvMNPVh8t2rGLJFKVg3ND16bt4nmAMkU29p2l4F9VrlkiIAaLTiRJ/AIFHS5t95KbF/Oi4SlX3F32iXeHkc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tCkzfMbu; arc=fail smtp.client-ip=40.107.200.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QvL2agjo"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 614ECC2BCB3;
-	Tue, 18 Aug 2026 21:50:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1787089845;
-	bh=BOfIbt7VCfuHhrWRVqLOZ3sRsvjFSCZIALpoCn+FbVQ=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=QvL2agjoqFQPmYPw6Ram2OQlDpzGvZATXUPa8G4j4VM78G0eeews0HpvYzs50NxfQ
-	 0v3cKEHSq3lrRbsgSJY9XYbjuUisYmQmk7fI56W7vwFWvUbzWb9kOkydVv+L/uLoEv
-	 xhcnECvoxnkoDy39XAxJ5+nTWx2uJtT/rK/Wku4v1CxLOpKMdu7Xw45j/z75iOdYih
-	 eQGA07wB2CwG2HgCVZWXUSn32QHo3KzuEAU1pbaJy8NGMBi3dVrhSJWezM+NOey+4t
-	 wQQqqd5/vix2AmKZbi5TDfxe9eR6YxwUKxfrh33fMjtqC5NUDhPIcso4G/gS9oGGMU
-	 ZQihd9EtsKRBg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A863C5DF86;
-	Tue, 18 Aug 2026 21:50:45 +0000 (UTC)
-From: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
-Date: Tue, 18 Aug 2026 23:50:33 +0200
-Subject: [PATCH v3] rust: configfs: fix object initialization cleanup
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tCkzfMbu"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IYjpKrNj/KcSauL/h9NTz+U1k9JLirDTy5S373C5sKbsv0mPyHrNVowE0DzFfinHvyfTUPAuKUfpAnTQ9H8j03Ae7YmX7+kvOW3UYXCoBEKf4aJPlCA4q/kRjZl8r2Yexw2GFjzKTy83vHUFuauTFiu2BgSKEsHcTsWZK0Xco1/AjRVJBbaNaBU4OsRSk+/fV57Z9c8UK4mYKkVHYKlwaw4fxKqxAwLwGmVrhAu9rlX2Biw7qZU9ZeE5P94nmcfdjjPraFjxYIpyPdRk3l+hEQclkTrD5DCJ0VnPIiN4cxsvHZDoUzvxxy5EmMvphCyJh14h7cBq1v0gD5YLy7VM+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Krw5ZOrf7qasK5c/9szd3FczGf7BCDssAFIiAZ1bn4A=;
+ b=mE8rjPviV7I9BSFtFM8zwIsdm970PW3pOC3F8MDjBL8kQ5HGzSMphbJpPz+rNKe1GDIKkfL+H5p3Hl4iZWkyO+f8GRfkjM9TeuDY9M2cEQvUenzqPKMc2WfobguQadwidAcMgnwxCmwUs2vu+FELhp2TTsuLboNCH4GuBoBEK6CTZWndWV4q4yN11lToOvTe2yE+IMPZIszQmL17JCwW0z3vq0tnZGjeRc7xwaqLvjM3+oDiVA1aePAVZg6JuRTUTmvU5thDw4gm9Usyps0F9f+BYH9UPyxAEakGgvVObz3zp+cwx+VVsCtiYviJhnvjEAjLwk1nBgv7qzOiTlDzMw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Krw5ZOrf7qasK5c/9szd3FczGf7BCDssAFIiAZ1bn4A=;
+ b=tCkzfMbuC3Yu+whpgptXacktHExZvJFs/4oIslwwhORZr16gAhedeA4ZxiS6MXW3sii0feXT4TQuwr3hUeVEVHhvrd0qvyR+6Zzp4DaXQVJz/0zwjIVI1CMnfQX2mQFtxi95sjJXtjdP1eCWA5GJ4tzQoEo/XFLxNGU2/UWo+y1zTLhxj3qjPYHyFfrM6gQ6plUTXIWO8jQJuh5tObhLSE1TMkNo6DNq6nnqzjgEqKF/xSG4Sz07+9tuOlNkFcddi50VRXUJMUnYZjW/6Q9BldfE/Oj4tRiIrjj49n/WJArSC5vZvH+U3Utj93ddvn/iLWtUqFkj7M3rbxowfKaNuw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
+ by CY8PR12MB7099.namprd12.prod.outlook.com (2603:10b6:930:61::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Tue, 18 Aug
+ 2026 22:56:33 +0000
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0315.016; Tue, 18 Aug 2026
+ 22:56:33 +0000
+Date: Tue, 18 Aug 2026 18:56:30 -0400
+From: Yury Norov <ynorov@nvidia.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	David Gow <david@davidgow.net>, Miguel Ojeda <ojeda@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	rust-for-linux@vger.kernel.org, nova-gpu@lists.linux.dev,
+	John Hubbard <jhubbard@nvidia.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Burak Emir <burak.emir@gmail.com>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	Rae Moar <raemoar63@gmail.com>, Yury Norov <yury.norov@gmail.com>,
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] rust: kunit: enforce test configurability
+Message-ID: <aoTjHtiSHJAuDQ7B@yury>
+References: <20260818152324.587932-1-ynorov@nvidia.com>
+ <CANiq72m2M5Csh_9qQYa8MRmJZtciU3d4S3ht5FG-K+YwR4iAwQ@mail.gmail.com>
+ <DKSDWO1NQKF3.25QCXPPUM27J4@garyguo.net>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DKSDWO1NQKF3.25QCXPPUM27J4@garyguo.net>
+X-ClientProxiedBy: SJ0PR13CA0227.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c1::22) To LV3PR12MB9356.namprd12.prod.outlook.com
+ (2603:10b6:408:20c::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260818-fix-rust-configfs-registration-state-v1-v3-1-28b5cbfe0a72@younes.io>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/52OwWrEMAxEf2XxuWodG5K4p/2P0oPjyIl6sIvkh
- F2W/HvtlEKPpaDLiJk381CCTCjq9fJQjDsJ5VSFfbqosPq0INBctTLa9HrsBoh0A96kQMgp0hI
- FGBeSwr7UKEjxBWHvIHprYwi96werKu2TsUbPprf3by3b9IGhNHxzTF4QJvYprO2VmRZKL2dXw
- ltplrUWZb6fa/euoX6GjX8eVq+D4IxzTk9hxHi95y2hPFNWbdhu/sk1let8wHm2etBx+M09juM
- LsQiOzGsBAAA=
-X-Change-ID: 20260817-fix-rust-configfs-registration-state-v1-fa33fcc69673
-To: Andreas Hindborg <a.hindborg@kernel.org>, 
- Breno Leitao <leitao@debian.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Younes Akhouayri <git@younes.io>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787089844; l=5746;
- i=git@younes.io; s=20260712; h=from:subject:message-id;
- bh=5QJkFcGkA+N5L45CLyT0WQfSarA1PWSqeUxnL6ZOWqY=;
- b=qaNLbzbo7A5Rr44+LXvoUG+iKMvpvzHIMBunJfZy9FARZ3TNQ6/gG5oU6El6hy4M1oRUf9xln
- KusGrQCF3llDazytq5sYPZ2AgOiyDjoZ2yN0XKBrJWxk6HBU0XwthJL
-X-Developer-Key: i=git@younes.io; a=ed25519;
- pk=1DRfzPrQ04RQHHgGK28t+vjIAPv5oISPiAdLMU6J5dE=
-X-Endpoint-Received: by B4 Relay for git@younes.io/20260712 with
- auth_id=866
-X-Original-From: Younes Akhouayri <git@younes.io>
-Reply-To: git@younes.io
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|CY8PR12MB7099:EE_
+X-MS-Office365-Filtering-Correlation-Id: 78b6dcb0-d7f7-49ca-4080-08defd7bf306
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|56012099006|10067099003|4143699003|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	wk9hAdEDjRIgmQcE0WAuJSWma4muCLxt2EwBnCpLDgSvzBEKgFuf5msP2wENe7toEB7IcyVTFwXX+VaTNpx7GfTap3gRmGmokqnDT2Q+M+W8PeoYQ8NJbwW5AwpIbdvkKYrQxg0ZLVevn6CvRqxYbO4JEHviYDNEZI7o8lOdD/zNwm4K5EiKMpgjU8Mwehd4PwanU/k4XadwH2a55ksbWi+7+abb3awQLVBCMBiu4LVzEnK5DATpqdheTHukGXlPRpGf2a5tWn9YHkbAHupUM392d7WXotTNFXYlCnGdt4x/Uo9iafdeR2MwlYfgUdX+d2cTtUi3DpuwmLz7t1LjIWHx2TQgb6rxfJr30uZkeXLI39bOmQZrfsgc2Ea5YM2ySQuyM+JNQ0jClIgJIgWFC+mTkshT756mwP/0B5yGfEVPE2KmtaIR9etdZrmLwdznqQNJA727ipQhGfl3+kXv8zmQYrS9iZ6tS39FL6F9C601oMnVfnA3a75eX8f0WNYYlPrX9/nZ1nKzlRwt7Jutm9M8GI2vBYOESp6UlrRC1iWdsLTFjyS5M+DZ2/DCZwW9Zaq9imQb4lCz4JRNbcMOu17MZ0qbilbhF9hSgmJSbG7HBV6o45MNtgiyskMjrllxLZwPrVnEhQYejfo7GU0SDLpaHF1rlePGg4l5OJZN+0A=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(56012099006)(10067099003)(4143699003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YUxEK1A4NlN1TmlURDhsVmlwT2l1TFkyR0ZnOS96VE8ranhlTldYcGZZdnFQ?=
+ =?utf-8?B?Y1FodGxTQTgyNlBnTFJ2RVB4YjMvbHowdTIwU3kvNjIrUzZuS1VocTNSUVF2?=
+ =?utf-8?B?MTArTyttV05jN2tpbWZjQ3JxZlNVTlJaeUV4eVo5alRWY0EwcDI0VjlMM1NC?=
+ =?utf-8?B?OUJmbmlZb0lreUc3Zk9MOEtnYSs5VjJHeVNxaHM5anNTS3h0czZ1ZitlYWlN?=
+ =?utf-8?B?M3ZVUG5ENW5KRnpTblY4TkNOY2xWVFVXNmdQd0t1N1p4WGIyaWFUWkRkSnhh?=
+ =?utf-8?B?ekJ0bDRkdCt3Njh1ek5weTZ1M0dESVVRWGpQckJ4VGl1TWkyRHoySHR6N1M5?=
+ =?utf-8?B?cmhJd0NvRGVEMXpwcGE4ek5meDNnZWJ0TmVsNkZ5dWpUNjNrYWwweWtTZFBQ?=
+ =?utf-8?B?aVMrR0J5ZktKNjNNd1VXQXg2YTRLc0hYemZVanI5L2t1SkJZQzVsV2xneEY2?=
+ =?utf-8?B?OWJLek8vOEdEWGF3TzdkcDdwS0hlQ0Q5Zk9BbFFCVjdrQnpENEFxa2h1UVBG?=
+ =?utf-8?B?ZXJtMWRTTFRMMzdCT3JVdTh6QWRNeG9FbXJpZW5oQzUwR2F0Y01jNldORlZ6?=
+ =?utf-8?B?KzZXQlRhSGM1TkJYWUhxd0RocEpxM1lzYldXODFJcTVCbDZRUlc4ZGtpWkw5?=
+ =?utf-8?B?ODBKbGZia0dvMGlRcWJIQ3Jjb2s0QWZmbWdSbVd0NzhCRWVaaE45VzlpZFZD?=
+ =?utf-8?B?SVF4WmpqRTloVjhzY0hWVGtHTzJITVI3c1JxN1dFcVNTUXR0REh4eHRVM2NZ?=
+ =?utf-8?B?SFJrc0RBZUZFTjM3MGdjbGlGcDhkWTVlb3lheTE4SFNWU3ZhM1kzaXV3b2R4?=
+ =?utf-8?B?WE0vVG9sUVJzU2orUlRXM0RYVE1YeDlFdVR6YlhVKzFmM0lhRHVlclQ4R1Fa?=
+ =?utf-8?B?eEZkQlp1ck5sSjhyVnNSTVNEcjNMcitIMWtabTQzYmUyeGhBU09xN2ZqTHNX?=
+ =?utf-8?B?NXpqRWJLSTZBUjdTdDFaMG5PaUU4RXpBQW1wRVdTcG9JU3lYT1d6ZndLNDlH?=
+ =?utf-8?B?K05VYWpSOXlIOFlqRmdmZjF1OFhlTDFyVWxvVGhhS2hZKy9hOEw3V1I3RWVX?=
+ =?utf-8?B?Zy9ZOWdsVGZPdzE4TTVIekR6VGl5QTVDSmdHeGZSdW5rUzNTY3JRODhPVlZi?=
+ =?utf-8?B?TkNkbUwyZjMya1hMMkJ0dHZtS0p5Qk5vZ0ZtSFBleXZ1UUVIM1Y2aDBtN0pz?=
+ =?utf-8?B?eVl6Sm0rUGdadjRmSHduOG5ITS9Hb0lPRklyb1lwSEVadm0rWGRNTlJzcnc1?=
+ =?utf-8?B?ZDUyd0ZIKytzTW9USVNXQ2o5ZU5RcTRKTysvK3hUQTZPd0xFeW0xa1haam1N?=
+ =?utf-8?B?K001ZFpNNGYzVnZSWml6OG9vNVVWdmMrdTVuQno2clNKdHFZa29zVXpmaFgw?=
+ =?utf-8?B?QUg4dFUvTk5UbWJNTHFlMW1NRUwxVUxJOHVSZk9EUTl4TzZTTXppR0s5UG95?=
+ =?utf-8?B?bFhFSUY4N1F1L01kZTBRWEJpVU5wd1gybWpKcDdqckVrdDNkZG9uV29sejhx?=
+ =?utf-8?B?WVcxMHoyc1ZrWnNINER0Ymp3VklPZWd5c3JhSlptZlhicWl2aVZ5amFqWVFS?=
+ =?utf-8?B?cXZ1aDM2OFU5cm1udFVvRkNWeDhMdTl0NFozTGsxeEk2ZU1iT25MNXh4SFRU?=
+ =?utf-8?B?TVJPN2NsQUMrZXp2T2hjMDloSm9BeUJWbTl4akExQkRCUzFEd0RsWXBuTEFr?=
+ =?utf-8?B?YWhVcmFkQUlMT1RiWmlmZlUvZG5wajE2T0JQTm1HU3NrK0NNTk5ybm8yajdS?=
+ =?utf-8?B?TGhCMCtnc0VZNmpVY3M3OUYybGljUDVoVisrYWpxUTJ4QzVtOXJnZDdpWUwv?=
+ =?utf-8?B?RXgrMktLUmJoSXBQQzVJdVhseW1EaFNaY2ZqeVlKS3Jma0lQTEc0SHoxMDhk?=
+ =?utf-8?B?OTVQZVFTSlBPaFZaNGpzbi84ZFlhNnlVeVZHRWN2OWpNdUtiVWptWGViSmx4?=
+ =?utf-8?B?TVRxLzl3akJFbURMUTZaektBR3RtdVFZUEhaanRTajdZOElQU1pIMDRhVnFR?=
+ =?utf-8?B?Uys1Qk9QUVZoRzVwU1V4bU5oQUVtRlUveDlzK21yc2FiOFhoTDd5WW0zTjdF?=
+ =?utf-8?B?KzdSSGV4MVhuUFNEbXdKU3ZkWGMwbzVNdy9iQ01mbHhZTjRvdXlzay85UVBN?=
+ =?utf-8?B?WUN0VXJWK2JsSmxmVmpvS3RuZjNRaVBhMFYyNnZsdkNqOGFhakZiYlRHQXpT?=
+ =?utf-8?B?c3MvbGUwV1ZsaVBQb1FVSzdPdk5sb3E4TnJHOHg1b3hFMVhhZ1pwRkdKaFZN?=
+ =?utf-8?B?VDJRRm0wdzdlMHRIWC9RekNKOUVvekY4eUtTak5nMU1WTnBaOFY2ZUxTMEc5?=
+ =?utf-8?B?WEtoemZEVHVLekFmYlI1OGlrdS8vbnBJQUVSbzBvWEZVZHhJejNUQT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 78b6dcb0-d7f7-49ca-4080-08defd7bf306
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2026 22:56:33.5185
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hZreN9qHuEw3KZ+YhN/mG1zuBi/a0CFNIi/aSisdKGklced+VbEtcOSAqFKFhYKvFluMqhXnNGm2+Fg6EHrh/A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7099
 
-From: Younes Akhouayri <git@younes.io>
-
-Subsystem::new() calls configfs_register_subsystem() at the end of its
-pin initializer. If registration returns an error, release the config
-item's initial reference and destroy the initialized mutex before
-returning. Otherwise, long subsystem names allocated by
-config_item_set_name() leak.
-
-The initial reference also remains after a successful subsystem is
-unregistered. Release it from PinnedDrop before the Rust container is
-destroyed.
-
-Initialize driver data before the C configfs object in Subsystem::new()
-and Group::new(). Then failure while initializing driver data cannot
-leave an initialized config group, and its allocated name, behind.
-
-Keeping registration inside try_pin_init! also means PinnedDrop is
-installed only after registration succeeds. A duplicate name therefore
-returns -EEXIST without attempting to unregister a subsystem whose
-ci_dentry was never set.
-
-Fixes: 446cafc295bf ("rust: configfs: introduce rust support for configfs")
-Signed-off-by: Younes Akhouayri <git@younes.io>
----
-Changes in v3:
-- Initialize driver data before configfs groups.
-- Release the initial group reference after registration failure and unregister.
-- Link to v2: https://patch.msgid.link/20260818-fix-rust-configfs-registration-state-v1-v2-1-9acedd3070f7@younes.io
-
-Changes in v2:
-- Register the subsystem at the end of try_pin_init!.
-- Destroy su_mutex when registration fails.
-- Remove the registered flag.
-- Link to v1: https://patch.msgid.link/20260818-fix-rust-configfs-registration-state-v1-v1-1-c929990bc8ef@younes.io
-
-To: Andreas Hindborg <a.hindborg@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-To: Boqun Feng <boqun@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-To: Björn Roy Baron <bjorn3_gh@protonmail.com>
-To: Benno Lossin <lossin@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-To: Trevor Gross <tmgross@umich.edu>
-To: Danilo Krummrich <dakr@kernel.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-To: Tamir Duberstein <tamird@kernel.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-To: Onur Özkan <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
----
- rust/kernel/configfs.rs | 35 +++++++++++++++++++++++++----------
- 1 file changed, 25 insertions(+), 10 deletions(-)
-
-diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
-index cd082b83e9e7..d28ac9a648f1 100644
---- a/rust/kernel/configfs.rs
-+++ b/rust/kernel/configfs.rs
-@@ -150,6 +150,7 @@ pub fn new(
-         data: impl PinInit<Data, Error>,
-     ) -> impl PinInit<Self, Error> {
-         try_pin_init!(Self {
-+            data <- data,
-             subsystem <- pin_init::init_zeroed().chain(
-                 |place: &mut Opaque<bindings::configfs_subsystem>| {
-                     // SAFETY: We initialized the required fields of `place.group` above.
-@@ -172,13 +173,23 @@ pub fn new(
-                     Ok(())
-                 }
-             ),
--            data <- data,
--        })
--        .pin_chain(|this| {
--            crate::error::to_result(
--                // SAFETY: We initialized `this.subsystem` according to C API contract above.
--                unsafe { bindings::configfs_register_subsystem(this.subsystem.get()) },
--            )
-+            _: {
-+                let result = crate::error::to_result(
-+                    // SAFETY: We initialized `subsystem` according to the C API contract above.
-+                    unsafe { bindings::configfs_register_subsystem(subsystem.get()) },
-+                );
-+                if result.is_err() {
-+                    // SAFETY: The group and mutex were initialized above, and registration
-+                    // failed, so configfs does not hold references to the group.
-+                    unsafe {
-+                        bindings::config_item_put(
-+                            &raw mut (*subsystem.get()).su_group.cg_item,
-+                        );
-+                        bindings::mutex_destroy(&raw mut (*subsystem.get()).su_mutex);
-+                    }
-+                }
-+                result?
-+            }
-         })
-     }
- }
-@@ -188,8 +199,12 @@ impl<Data> PinnedDrop for Subsystem<Data> {
-     fn drop(self: Pin<&mut Self>) {
-         // SAFETY: We registered `self.subsystem` in the initializer returned by `Self::new`.
-         unsafe { bindings::configfs_unregister_subsystem(self.subsystem.get()) };
--        // SAFETY: We initialized the mutex in `Subsystem::new`.
--        unsafe { bindings::mutex_destroy(&raw mut (*self.subsystem.get()).su_mutex) };
-+        // SAFETY: Unregistering drops configfs's references to the group, so it is safe to drop
-+        // the initial group reference and destroy the initialized mutex.
-+        unsafe {
-+            bindings::config_item_put(&raw mut (*self.subsystem.get()).su_group.cg_item);
-+            bindings::mutex_destroy(&raw mut (*self.subsystem.get()).su_mutex);
-+        }
-     }
- }
+On Tue, Aug 18, 2026 at 10:23:51PM +0100, Gary Guo wrote:
+> On Tue Aug 18, 2026 at 9:44 PM BST, Miguel Ojeda wrote:
+> > On Tue, Aug 18, 2026 at 5:23 PM Yury Norov <ynorov@nvidia.com> wrote:
+> >>
+> >> Make every Rust KUnit test suite require the Kconfig option that controls
+> >> it, and let the `kunit_tests` macro apply the corresponding `#[cfg]`
+> >> attribute.
+> >
+> > If we are sure we always want at least one `cfg` guarding them, then
+> > yeah, this makes sense (we could ask to write the `cfg` bit inside,
+> > for "greppability", and for clarity / less ambiguity later on).
+> >
+> > David: are there cases on KUnit where you would recommend/prefer
+> > something different?
+> >
+> > For instance, I could imagine a Rust `mod` for testing purposes
+> > already gated by a `cfg` that is meant to contain many tests, and then
+> > different suites inside that for control (possibly with extra `cfg`s,
+> > but maybe none too for some).
+> 
+> There might also be cases where we want some other conditional (like combination
+> of cfgs) to gate.
  
-@@ -260,6 +275,7 @@ pub fn new(
-         data: impl PinInit<Data, Error>,
-     ) -> impl PinInit<Self, Error> {
-         try_pin_init!(Self {
-+            data <- data,
-             group <- pin_init::init_zeroed().chain(|v: &mut Opaque<bindings::config_group>| {
-                 let place = v.get();
-                 let name = name.to_bytes_with_nul().as_ptr();
-@@ -269,7 +285,6 @@ pub fn new(
-                 };
-                 Ok(())
-             }),
--            data <- data,
-         })
-     }
- }
+But not a single current case. All the current tests are flat and
+simple: every test has it's unique gate config. Do we need a more
+complicated scheme? I doubt that.
 
----
-base-commit: 47f27155f17498fccb1f222f79089642337498a9
-change-id: 20260817-fix-rust-configfs-registration-state-v1-fa33fcc69673
+If there's a simple case of CONFIG_A && CONFIG_B, one can stack them up:
 
-Best regards,
---  
-Younes Akhouayri <git@younes.io>
+        #[cfg(CONFIG_THIS)]
+        #[kunit_tests(rust_kernel_bitmap, CONFIG_THAT)]
 
+If there's something more complicated... Let's wait for at least one
+real test like that, and not speculate on non-existing cases.
 
+> I am okay with gating existing ones under new cfgs, but requiring one in macro
+> invocation itself sounds bit excessive, and also doesn't look nice :)
+
+This series begins with "enforce", so it's not about being nice. The
+generic kernel tries to save every single bit of memory and nanosecond
+of runtime. That's a secret of Linux success IMO.
+
+In the mother kernel every single test, performance benchmark or even
+extra functionality is configurable, so that non-developer users don't
+pay for the functionality they don't need. In Rust, before e74b7a3f5a
+there was no way to throw the tests out. And even after that, we still
+have such tests.
+
+Let's stop being nice and make this bad habit explicitly impossible.
+
+> If we decide on actually requiring one, a better option might me for me to
+> implement a lint in klint to produce a warning that is suppressable if people
+> actually don't want to use cfgs.
+
+This is not a coding style, it's a factual error. So it should be
+caught at compile time as an explicit error.
+
+Thanks,
+Yury
