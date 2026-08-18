@@ -1,75 +1,75 @@
 Received: from flow-b1-smtp.messagingengine.com (flow-b1-smtp.messagingengine.com [202.12.124.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF702BE7BE
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 00:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1F1353A70
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 01:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787014592; cv=none; b=piIzrImBcIXStTlPDbeguKb8p8ZUzXZzzKX0ET8RpT2ng/T3eiLhplruHzHnwnCyDt192T//W+rAECU+IHLejdKKWEz9BzeuS9UA8x9t4fMmKWJlfoUmg+cguqTxPN2bX/IoD2OYglucEtsOqv+ueS17Z0uDBZkpeekMiwwk76g=
+	t=1787016925; cv=none; b=eCz2XFdLLKnlZWIJOhB0dSxg3w4gqmmqiaOxIYXIPdkHr2vp1ORuDLcZARSmKf87oi3TdibJOiy5xQ3HJ8OvJ5eIeZhhhPElEOWnSJwFWlK9K677+37sfofHVw/AxWOe4itBJwGRKZl3CTd6WGgOXFvhlkzr1x8i2ZnOJoXy4fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787014592; c=relaxed/simple;
-	bh=c9Qbj6l9oEG1ndAkVa3Z4tfcDex9lhjtactohTHG35M=;
+	s=arc-20240116; t=1787016925; c=relaxed/simple;
+	bh=y/P4LblDp61HXe5UQUctWnGhlfp/92SaHPOoWyM5sys=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Uj709g3rsVmVlV2F8xnNG09EPQ7iSB88HXR2Y2Xxa8A/Y/dPvWdMNzKIDmkSmnEUCO7u609JkYQ0TQTPX3Kg2cBrRH6f4dPrZJKzKYRei4iZDXarPQHMXplYExvgJy8FpyW/fjls49qcgv8zBCCS+nRpPU+LlJ1fhUu48PRyQmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=tHrfSjBb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=I9i6NzD2; arc=none smtp.client-ip=202.12.124.136
+	 Mime-Version:Content-Type; b=I1WiCT2G0N8QxgVXSzQ7lcceuXyDvMLMxnHwWfX5eL8D+IkXGTz4whXMZ77an00Bb32tOLeeYQ15k4d2ZxnY/RHoxFZ1jcbMXZmjGFoLlgw9d11fyLF2aCmZ5vAgJHGgeJt4p5cv+eLYidbrMtaoUAGF1CFb959AYtk200QOC4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=KWX2pgxN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=H+AFDf8F; arc=none smtp.client-ip=202.12.124.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="tHrfSjBb";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="I9i6NzD2"
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="KWX2pgxN";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="H+AFDf8F"
 Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id 71CD7130013F;
-	Mon, 17 Aug 2026 20:56:28 -0400 (EDT)
+	by mailflow.stl.internal (Postfix) with ESMTP id A6A3B130062E;
+	Mon, 17 Aug 2026 21:35:20 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Mon, 17 Aug 2026 20:56:29 -0400
+  by phl-compute-06.internal (MEProxy); Mon, 17 Aug 2026 21:35:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1787014588;
-	 x=1787018188; bh=Ct7DsSnE0SAirGkih6kKtMJNFhPjGUKv7tJsINYO240=; b=
-	tHrfSjBbpTd/XPnChG+V2tEzbAXoM+CVTNnlCZfJyuWen+4hMwuHJTeGSPv9khxu
-	x/wP69LuaigcQZczvZZN+vAQy1KMkuJeqejxtWJoyi2HvxO9jk9ZMLHz208F2SEr
-	4xQLsP8ZZvQuDTYUYKG8TLgg6Yp+H1BbfjM6BSrd/KvHEy0t+v1T7HvUusjTDDPp
-	cEhySGlfnvkDL3GEf7YaZUy3jLMR1m0pWBsxvXkXpvt6uEbgVcVp6AJTcGj+MsR8
-	vrR9lecnFAkAtwbsxwYQtvx3XZp6MYwuEhUvflrrbJzr2FuDPahfb5FS+ZQ9MYMY
-	qJPveSX94HIlE8wcUdzWVg==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1787016920;
+	 x=1787020520; bh=2IAVNVAe809Cm7CA4sF9ndKc9xuNRahWZSVN/P63swc=; b=
+	KWX2pgxNJtu4GvSU8Av8j4aJQOUrX9NtPt83ywZkE3jn1Zqg7fbUKaRuP46F3tUo
+	nW6b4n7+93FCZWGykIGdDnpL1AXrB3ITCMtHPPsHm+Jemkywkoj61yT+kDZLE3xT
+	vUaD2l4b765ZzMRtILQ8tcxUM5bijSvlUPf1YyZuVZ4kvMFSmUMOz+yuxXlsT3ab
+	IQ/1y4nUGvRI6rhyMxoknBDwZYlkkEf/QJZ9zPT25psd0yNGbeilN5/dBT/ttLPV
+	xuiqdooEzZdTKXFoq2RQVdPJfxs5w5h538dnasXWrDdYB78X04Grzb8hbzf8AAwR
+	Gn8VGPm3hhQ5YBPKw1+CjQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787014588; x=
-	1787018188; bh=Ct7DsSnE0SAirGkih6kKtMJNFhPjGUKv7tJsINYO240=; b=I
-	9i6NzD2B3wkqGdUlAp2Ivdw2eEcclm91wxeq0AQKGTIdJ+ijlUuMo77a0z8XZE04
-	wpW10XkHnI1nH8sdYvnJEM5IC2XnydZraK7y2hV9qfTpt8eCpmYjMIyF38yhFaQl
-	w5ubZeTnJCoZADhJB/yTasys+vIc059IcB3lYnCo2kX3fG8SPCRDiJJLS7w4IjPY
-	WajvQnskZiLTOb7X0eJvLdMpUCSIK8P0Ms5b0CEZ+ZBCkgUzygDjLowsD8ZVPnCt
-	0NQt+Q6buP2yYbuG2giSSg0WZq3kWZr/pnFsnW14iUcZEyCyKxdAmXNE4D0yMjfa
-	kPSPtR1y73+7S1Ajydb0A==
-X-ME-Sender: <xms:u62Dam-xnCqkLhVGHB1kZHv0f68k_DPAA-F5HHJmvpwWdaCUP39OGQ>
-    <xme:u62DanH6g4oH0okDWhL0xDxsjkeEdydfuGV5wcn2VYF0xMM5Drn4zDQogZwVbLEtN
-    vw3_rvuVXtTTA5lVof1k5nW8mRL4Dq3H_pzvYT7KSZSX9FeQ5Kjd1YB>
-X-ME-Received: <xmr:u62DatI1Geo9LnXWfaMU7u4CYU6GiXYmROyVUb-yOzsXX1FbBCRFveaqRs6pGiBjCrwQyjCKekX--GYzC8x7Qwjs>
-X-ME-Proxy-Cause: dmFkZTEbUpH5hLHbCJ+hpTPZd2W3KRt3vERa5Ddu54ErVVCjmWeLTZPheCZfKx/TkeiFh4
-    q9lMh0X0p6n3r4DFCTqf/mo1qkXpWZHvBKgsHix2JcuIEAvUBs6KYZGVfuyRUKQsjAxUoT
-    Gl1OXLxo67aHSaEUvL2wOsVyuBV2E8Py9u3gkVZQAZJCWWbZwYDJIOZaZIXiZDN0EaH3pK
-    zK8X8X216MsdtkhC2zPGf4EYTuj3F7t8+fR9hANflk4FAcKDXg2SakAqAk35qYsOA6U1/g
-    d8zfCJly1L66r7f4uykbIPZ9K+2xCfoQDYRBI2p7zpzyqpK5hwuoDPQKhLB2ENe4tJNpV9
-    8lDNw2SYuPFuKliz+53XS/y8iyfoUmAADPKI78NYHoguQIYq6C9H1JCG0b1NldJrkEHBL1
-    A0NjWpsyf23hJLtMxj86TvEjAMV3i8CWoPi0hhdFyKAJFJQtddWVwueRv4buAqAiBLGbhM
-    G6PgF/KLylsKnA4MTgywPFX0rt89pQBY46NENPrPwZcSGP4DIr6VI0wZvoBk7qKGHsWEvU
-    PxwgVBk+EfV1qeIJsju0uWsKB1//gxCAu0qBsNUBTKgTwwcX2iSBpiNy83IGxolPA3qlrS
-    myK08O4Sq6YVLVUvujeFazy2y7nXNNryh6oouHWOk4XYctCINn5j+cqM5JYw
-X-ME-Proxy: <xmx:u62DaqdHgKqwxG9znVKJXIySsB0M2dVfmYA8MbAb1izpmxhFycO1mQ>
-    <xmx:u62DaqWQIVRCEyJXBj1ZqoC7HFu6VNgECtXbWflPAPwv19gjKOCO7A>
-    <xmx:u62DahF8FhMuS5GBY01uNNVqQ37NZIOkxAyT8seGuoxpb5pQ7KAeVg>
-    <xmx:u62DarW227eb55w06iabz8pXZYRjABAlNXEqyIzJ4X2GIOSKrtzt6Q>
-    <xmx:vK2DakLbmrWHj1ASGqJFFZW6M8UrbKRy3mA22V-56wq_F_GJzJuvfu07>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787016920; x=
+	1787020520; bh=2IAVNVAe809Cm7CA4sF9ndKc9xuNRahWZSVN/P63swc=; b=H
+	+AFDf8F/F+zY/FnK31yN6KUdyoV3YxPvglsGP3lrtxBzYqk1+/zPKqDVIcFTV13b
+	ecgSc3olT7plC43dmcptFI0nq2SATqW9F9qX0tFwPoepoafzjogmSLuLHBcZpfrR
+	Q0T6mu+/BDI/40qdfBkE+t2WnV6SscLk24EHeViCcWf7m8fQgnqyauXJFaie9XcX
+	qe2g+SzJubLetxDoq9ZNlqi8QsQXFJXdzSLf+1cHfO8zLLowhVWTCjMD02YC3LIS
+	41n2Qmy7040xquCZ7QQfVzImae7CacNZ8JZdUjm6+4MLl/lB3Fphi9Iv/RHoyyxH
+	SqLrRhbW9wrJuCrIPY2rg==
+X-ME-Sender: <xms:17aDauesrJikRqY8-KA4QjFcHGuNL2KBr0IHqonpArWnr81fxIsyFQ>
+    <xme:17aDaonc36UoFmbH7LCsDZ7BGSs3NvOI2czqQNo2Ily1eEYGqG2s3M9M0HtpGt5Ob
+    keGRWw1bTPVhwzo5jY5bHdS2hUH28L1735VS--3R2dnSS4YBJgioO82>
+X-ME-Received: <xmr:17aDagoKelsA6GKzVKQFLgwvfjaPTGNMMedlT_qwtFcpowXcsFuPoSDFUEaoTAFcxtQj3VWmXD-_zOZ1LED-aEoy>
+X-ME-Proxy-Cause: dmFkZTE4Vj1ohbXoJ8aodp37uKSVf9qtj2QcngQj3e/qQQYL+tlIfwkHkNJi2mQc5wndKO
+    SZdLuf3hZZnFSjdDfYCRUIUYD9LTaYizSnMShRh9yNQoHoR6e3TQx7wohlR/+bRbFD/NTU
+    ynJlgN/50he1kaf+cMlGAfWv68ybfuFrMmN9QVutUc21Q8cHxGA+WO/oj4q52bqaZLmEXB
+    69IA+aQ8gc0d0BY39nBEume4IAZ5raiNh+29WP14M3fEnan+hWE5oRFm18+XWErBhbIeAD
+    pWetjh4iV79OAmYMODMwXcPZCC7iy5jyz78yHjIxDhb6Yj+lXWmOTPwZaDjLkTt+uxB2WH
+    qfBGgHFUyyDg+lmfLcHAGNunbIa5393cNZbm6iWf3FQG0ea+EGcqs7YUzXxRhr3Bwnc1jQ
+    ZXhB81zl/pPtfNMQoXuK6fEh4UOPe3zaqRbTXbYfAWBvrzc/tf5Se4kPQ1D+OWiR0YkJcf
+    /RyIa8P7H+MU/YNJ2Aa8pv58gzmsk6izPTyeG80pgBdug320lWVgiqIqwOFx4/OCVsY3pD
+    FfW5JZmFQeDdBg5A3hkdOuhykF5KDqJaIbzp5iMQ8xOM539M8xEJTxlv//M+mP7JvupjCQ
+    KzFMQVW2YcPsHEsaB9EgC8g23WcLUoG4uWIC+YOZfZHbEnUhyIkgp9yByI2Q
+X-ME-Proxy: <xmx:17aDan_zBCPBh8oR3VwOsDUh5pkbj6Sssv9SyEx8TXTl9ECMFQ56AQ>
+    <xmx:17aDap3LIpLSWmW763e3IAHA9JzaylTyZvs-kE3yBnA_iZt7P5Ui2Q>
+    <xmx:17aDaqlnNwHCBdmjRxwtL1WGIBqvlV3C7F8Ufh5d6Ua-7tNbv_YZZg>
+    <xmx:17aDam2Wqq8t46P3U5f2ZXw49HD8a5x_IuZ7PrbMyQMSubzuGi3D8A>
+    <xmx:2LaDahr1Li9v5_4j9ibz4BL1zbI6Dew9DZB-7xH0_FWMOrMVrjfMYvpJ>
 Feedback-ID: i51fe4b43:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 17 Aug 2026 20:56:22 -0400 (EDT)
-Date: Tue, 18 Aug 2026 09:56:19 +0900 (JST)
-Message-Id: <20260818.095619.1068441676765868843.tomo@flapping.org>
+ 17 Aug 2026 21:35:15 -0400 (EDT)
+Date: Tue, 18 Aug 2026 10:35:13 +0900 (JST)
+Message-Id: <20260818.103513.1684801352907009336.tomo@flapping.org>
 To: gary@garyguo.net
 Cc: tomo@flapping.org, anna-maria@linutronix.de, frederic@kernel.org,
  tglx@kernel.org, a.hindborg@kernel.org, ojeda@kernel.org,
@@ -81,10 +81,10 @@ Cc: tomo@flapping.org, anna-maria@linutronix.de, frederic@kernel.org,
 Subject: Re: [PATCH 0/4] Fix forward()/expires() racing with concurrent
  arming
 From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <DKOQH5AD00IZ.2UHAO78NDFZZ6@garyguo.net>
+In-Reply-To: <DKRBZK4LSHUB.1DWO0TH9QXO4R@garyguo.net>
 References: <DKO995UPAESG.UQNZ5G92HCPQ@garyguo.net>
 	<20260814.224838.67768463960169120.tomo@flapping.org>
-	<DKOQH5AD00IZ.2UHAO78NDFZZ6@garyguo.net>
+	<DKRBZK4LSHUB.1DWO0TH9QXO4R@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -94,12 +94,32 @@ Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Fri, 14 Aug 2026 15:24:10 +0100
+On Mon, 17 Aug 2026 16:40:56 +0100
 "Gary Guo" <gary@garyguo.net> wrote:
 
 > On Fri Aug 14, 2026 at 2:48 PM BST, FUJITA Tomonori wrote:
 >> On Fri, 14 Aug 2026 01:54:25 +0100
 >> "Gary Guo" <gary@garyguo.net> wrote:
+>>
+>>>>> But further complicating the type system to prevent concurrent restart sounds
+>>>>> like a bad approach to me.
+>>>>
+>>>> My intent is the opposite: I think this makes the design simpler.
+>>>>
+>>>> All four implementations of start() already take self by value. For
+>>>> Pin<Box<T, A>> and Pin<&mut T> that means what it says -- the box is moved
+>>>> into the handle, the exclusive borrow is consumed -- so "no arming while
+>>>> armed" is already the design there. For Arc<T> and Pin<&T> the same
+>>>> signature meant nothing, because Clone and Copy let you build another
+>>>> pointer and call start() again.
+>>>>
+>>>> So the contract depended on which pointer type you picked, and the module
+>>>> documentation had to spell that out: "When a type implements both
+>>>> HrTimerPointer and Clone, it is possible to issue the start operation
+>>>> while the timer is in the started state." After the series there is one
+>>>> rule for all four types, and that paragraph is gone together with the
+>>>> restart operation it described.
+>>> 
 >>> Let's ignore the implementation detail of all various Rust pointers. It is
 >>> something that I plan to overhaul and doesn't matter to the core issue here.
 >>> 
@@ -135,45 +155,30 @@ On Fri, 14 Aug 2026 15:24:10 +0100
 >>
 >> With cpc->hrtimer_active in place, neither of the two conditions that
 >> 5de2755c8c8b touches is reachable in perf's usage.
+>>
+>> v1 is missing the ability to restart a stopped timer: once the
+>> callback has returned NoRestart, the handle owns the right to arm and
+>> never gives it back. I'll add it in v2, including a non-blocking
+>> variant built on hrtimer_try_to_cancel(), so that a caller which
+>> cannot sleep can re-arm the way perf does. That makes perf's model
+>> expressible in the Rust abstraction.
 > 
-> So are we okay saying that concurrent restart is problematic because apparently
-> it cannot be used correctly (because you don't have a way to synchronize it)?
-> Perhaps we should just revert 5de2755c8c8b or at least do
+> I should also add that cancel and then restart can be problematic from a lock
+> order POV.
 > 
->     if (restart != HRTIMER_NORESTART) {
->         WARN_ON(timer->state != HRTIMER_STATE_CALLBACK);
->         if (!(timer->state & HRTIMER_STATE_ENQUEUED))
->             enqueue_hrtimer(timer, base);
->     }
+> If there is a shared lock between the handler and the restart like the perf
+> core's case, this lock cannot be held when cancelling the hrtimer. Otherwise you
+> can have a deadlock by having
 > 
-> ?
+>     restart (with lock held) --wait--> handler --wait--> lock
+> 
+> which can be quite subtle.
+> 
+> Of course, there is an argument that by cancelling and restart, locks as seen in
+> perf core's use case wouldn't be necessary as the cancellation becomes the
+> synnchronization mechanism.
 
-HRTIMER_STATE_CALLBACK is gone; the state machine was reworked, so
-that WARN is now WARN_ON(timer->is_queued): the timer was armed again
-while the callback was running. And the
-
-if (!(timer->state & HRTIMER_STATE_ENQUEUED))
-
-part is what the tree does already; __run_hrtimer() checks
-!timer->is_queued. So against current mainline the proposal is just
-the WARN.
-
-That is only a diagnostic and does not change behaviour, so I'm not
-sure whether it is worth it.
-
-
-> That said, the perf core's pattern is still different from the API that you're
-> designing. When perf_mux_hrtimer_handler unlocks cpc->hrtimer_lock at that point
-> perf_mux_hrtimer_restart can already kick in and restart the timer. From hrtimer
-> core's perspective, it is starting a timer that is still have running callback
-> -- but that callback shall only return NORESTART.
-
-Yes. The difference is that perf can restart a timer that is stopped, and
-also one that is still in its callback, before the callback returns
-HRTIMER_NORESTART.
-
-The second case is a short window, but if it matters, I think that
-there are two ways to cover it. One is an unsafe restart, where the
-user of the hrtimer synchronizes with a spinlock and a flag as perf
-does. The other is to add a type that does that synchronization.
+Right, hrtimer_try_to_cancel() does not have that restriction but
+hrtimer_cancel() must not be called while holding a lock that the
+callback takes.
 
