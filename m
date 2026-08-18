@@ -1,126 +1,156 @@
-Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90673E833E
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 11:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389E139EF0A;
+	Tue, 18 Aug 2026 11:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787052082; cv=none; b=AxDaokdhLk1qzf0dr4aRMCOGKTT2hjvzzLyKdGFo44cTGZOMdQxiHNjHLqQ/EvfNYSb7lU+0tshFC9RSn0yT/eFY+uOYtKKrSN6Q3x6NEVBxXYSsonPont3tdRVE0t+yHXijR2CgL9donibKa6mb4aMallVTrHzKalXXqbALvko=
+	t=1787053530; cv=none; b=BWxsIEl3JfSmKD7MJxXd8j65Lz0yzTmSQaraY2WPSHp+GIgsSa9/QPs1svsuQpF8wNvrR/K5sAftByInFu4/HaAu34UnXAleoUrpscWI4olUA4m2sEzVYdb4Qj0YzgR4A9JfoA7zx4dX9rFS+K5dy9nJLFpGPU/FRzO5JdYS3Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787052082; c=relaxed/simple;
-	bh=IGrtC1+SNUwrnDBcaKLEQ3S9UYaOvGZ0lK5Q99erTC8=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=tyEe2hgZk6FwM3QtoMsBFcJk+iBBlRDeFtzPZWC2o2/wDMF5xo+HQKp05giBFbmySmLlNIrXqqXUQPdGRFE0FINZ7+1A3NyhkS7n1Fz4VOirCtb9Mny7sNEepCt5R+g6seo9KVASjxZZZh6C96KgkhjJk8NSbwQZ5x6Z7m6Zr9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=V+cUHjcU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=RbZT0mIe; arc=none smtp.client-ip=103.168.172.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	s=arc-20240116; t=1787053530; c=relaxed/simple;
+	bh=s7eyw0DmqA3zUUUGIt7VjNRuHBh9vVVRJeqFiRGMg64=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uoWqadnfkrREMIEwnBTK0FVBg6/0fRkFtnJskeqhYJTqJf81E4NQDtH4k0ArxxmyEKUsyO9lkVq2KeplZycVsaVunWtYTP8dd2EY5pqr2xQ2/xZR/kmfIX41a2Fvh/2dE5VphP/exjnt4phDFgfsYviF84HwHrlZXN6lO+xt/+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QmTvrnp9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="V+cUHjcU";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="RbZT0mIe"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.phl.internal (Postfix) with ESMTP id C582D1380138;
-	Tue, 18 Aug 2026 07:21:19 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Tue, 18 Aug 2026 07:21:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1787052079;
-	 x=1787055679; bh=iQ1KgyRAZpU+6IB/Rs7C4RWvfd8CPGzWcqcDiF2fEow=; b=
-	V+cUHjcUVSj28SfNXSzam6DvtF6gJIzV6f/aQy/YOlXtrjSIZTdOEt9Uo2n7M+9b
-	lw4r5hEOVKcK0I8exv3zhnNxUgOrzou7HhwWwyKTQl4jZ9oPmKlmeZDVu1rN5e/d
-	ojct4yFm0WRL0ydetHvJS7TJZGqB771rECXFYEf9Yga26RC/wKGcv8YH+LPyBV0W
-	yLgcevI4IC6SJrKTw4vhQx3z++E4/m4Rb9+kCALiee7apkDKqlOGBvHs3fH4PYFi
-	/0aekfoxzcMNgbbATx+ReYA/X+tWxapzCYWnEC/CsL18Rz89NKjqraEblWzbfJwz
-	ZqNDFRYtPLy7TEAco7GcqQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787052079; x=
-	1787055679; bh=iQ1KgyRAZpU+6IB/Rs7C4RWvfd8CPGzWcqcDiF2fEow=; b=R
-	bZT0mIe/6pKJa4d3SD68EujNE9chg3AGzfMLL3v574c42FQB7qs3MBAYOR+/AJ34
-	KkpgLViBLHfBAzHOiiXLeDrjA3SUxLI9QOYmLw6AaK5Rtsd1GGs7+y1eGbJxh5CV
-	4bhY/JrJJXFoztkI2K3ImggttUcNT52rsDjr7aigqB2ulCGsiMA6kgIuTTk4Vq6e
-	t1hteWspayU369hC9vhfcX87hZiJTw1lX011mPYHf47iFvfeCOx326ynrks4yM/m
-	dBmEhjRBfCozDJvCUq7tyC3E/VCdxVR+VDjrcWmXK5vA/2LXfJ1juPuxwoMplNUd
-	Q6F6UegFPqE5/fqrSBLHA==
-X-ME-Sender: <xms:L0CEanc7VzhbyXzjy11KirbNR2aB2-1hSXqvR_B3g2zh8pi4zAgWRw>
-    <xme:L0CEamBJ_96RapKGnhmGt1yKJuhJgn4QtrdxlO2Agj3JlU-rs09DJLCNa_dr1x2Hu
-    lyPHfL_yBTD1wgDDGw5L8heyAA-VkezK5chpsJ-cm8yiJ2OOakgrmqn>
-X-ME-Received: <xmr:L0CEah0v8NAY7nVDeQ86dwvUvxUKEC8MvUG5smkjySNcjI0pFW_yxFe8HBb91lNbV2PlNlG_i8_4DIvxuElKU8Vw>
-X-ME-Proxy-Cause: dmFkZTFmsXCuP+kaI08asx+SgNoSzxyRwx0iQwG/7hjkY05jKsy2mDYVE/t0PCCE/yIyPO
-    12661q22yzM9C225MqRyFlBG7lHG/xHebrlfcRK8IYWkmsim3KivbIgQFLSUZFm2zaGkXE
-    ndVEhf4DVr1DxMMiJ4Dayh1qVCcUpTYKFQLeRvYSiUPvZ9gTuXNELqVI6eFyV0URbVuchC
-    ueDPEg3E92fBIimMJx2/llijz8K3k3+UPAKCjP5V1PMUYbK0WVxZU6KaZm/wKMmprTEGkl
-    /2hc6SBT5BRdSt0dwo5KsCA6fKJttvfYjuqDu7M0iOarcUWRPz9SXpR0ggiqpg3fm/u3gF
-    ixZ/UtKDb5lWIVqTdQo9zsWh1xDOM217w9AWSuZe4DRkJ7uQ+6GtJxh+enGuKet55wuzk4
-    VSBU3+9VfweYbcz65Ictcjy3f4lKqvDvlNER/O/vdiIHzEqVjFoQsh8yr/cqvhGAhAsSkl
-    B+HKU3SXpg2y7JiIkpBl7Q7FodSL7M0/Y2Rm4aLN1KnESkAUqLSRocJl+8RnIb07PD96XV
-    tIE7s40x4L/Q2/eAbTViKQBc88IpoU/QsZ0HApIkNTsm6X7006ihfl97VAeuDiweDhe90w
-    S8LulyNG6jdgoW8AqfjhoI0iPk0tr9Yza2NxTJN/8TCY4NBMbG3rnwMkyuIQ
-X-ME-Proxy: <xmx:L0CEauMhg_CZoCZB-6LMm79hKzPkRVYDh9jiZaefeonnobeVu_7lSQ>
-    <xmx:L0CEancHR_pdRZg8k8I885FF2v6iT1CDxVMQn30iTrHPSQcFvBJ6Og>
-    <xmx:L0CEaiO1zLozKOSCWpkuOxQurcbmN801UbsJKkeDdLUkHepRiotchg>
-    <xmx:L0CEahZZl-UahGgprcK1f8xNlLs3rUSh_vqcu7Rj4ruimjBU-OcERw>
-    <xmx:L0CEakUbPpfk91jZUO7-6NzQMdUQEL-Mvd3ixvh7vrmjxjchTf6A069H>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 18 Aug 2026 07:21:14 -0400 (EDT)
-Date: Tue, 18 Aug 2026 20:21:11 +0900 (JST)
-Message-Id: <20260818.202111.221982706607091751.tomo@flapping.org>
-To: a.hindborg@kernel.org
-Cc: tomo@flapping.org, gary@garyguo.net, ojeda@kernel.org,
- acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
- daniel.almeida@collabora.com, frederic@kernel.org, jstultz@google.com,
- lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
- tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
- rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Subject: Re: [PATCH 0/4] Fix forward()/expires() racing with concurrent
- arming
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <8733wbajj0.fsf@t14s.mail-host-address-is-not-set>
-References: <875x18ahu6.fsf@t14s.mail-host-address-is-not-set>
-	<20260818.112656.263099326344775009.tomo@flapping.org>
-	<8733wbajj0.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QmTvrnp9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC4E1F000E9;
+	Tue, 18 Aug 2026 11:45:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787053528;
+	bh=+oxPcNqI3PZAHqM9v3WwprvFy/3gIlcIsJcj85Aon4E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QmTvrnp9fL/D0PyKCZ908Xy5MzGvQyXPXvc1fWjWpjgUk+Y3HTZJlGiassc+VefGB
+	 LUFlYBHvFPPAkkrQdvJIq33GAifd6tTbWliGLaEU2EMwagmB3JIetKbVDm/+UbEhXb
+	 HaCq5yaHaTvv2n2P1NHTUgZPGnB1a2evKi7ZbTrgjqH/h+Lo/PS3cMsoJ5yYYIO6jQ
+	 USBJaG8M5N964hkLMyvHL97YcHVbn9IVODSTPKaI0pBDqMt9dyBehWQb7BKm2eeZ1q
+	 jN2o3oSqmUqifTeKZhKj1P9fV2F+HymGYznIpFcp/vTFvhzN7cJ3v3dFLPd6fm+tbH
+	 v15GyEORQR3rw==
+Date: Tue, 18 Aug 2026 13:45:26 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Albert Esteve <aesteve@redhat.com>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, devicetree@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 0/5] rust: drm: add panel bindings
+Message-ID: <20260818-encouraging-lime-kestrel-d0d819@houat>
+References: <20260817-drm_panel_bindings-v1-0-1f974508a31c@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="ih6zdmnfjowuha6b"
+Content-Disposition: inline
+In-Reply-To: <20260817-drm_panel_bindings-v1-0-1f974508a31c@redhat.com>
 
-On Tue, 18 Aug 2026 11:02:27 +0200
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
 
->> perf and CFS bandwidth have a flag as well as a lock. The flag is "do
->> not arm while armed", which is the same rule the types enforce
->> here. rtc and the softlockup watchdog look like they cancel first and
->> then start instead. None of them arms a timer that is active, so I
->> would rather the abstraction did not allow it either. Does that seem
->> reasonable?
-> 
-> I am fine with preventing starting a timer that is Started or Running,
-> but I am not liking the `UniqueArc` requirement.
-> 
-> I have a use case in `rnull` where I have to start a timer behind an
-> `Arc` with no way to obtain a `UniqueArc`, so I would prefer if that use
-> case keeps on working. Without this, I would have to allocate a box and
-> put it behind a lock, leading to double indirection.
+--ih6zdmnfjowuha6b
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 0/5] rust: drm: add panel bindings
+MIME-Version: 1.0
 
-Before the UniqueArc requirement, I would like to check which timer
-you have in mind? The bandwidth timer, the per-command timer, or
-something else? The two seem to need different things, so I would
-rather not guess.
+Hi,
 
-For the bandwidth timer I do not see where the handle would live, and that
-is independent of UniqueArc. start() returns a handle that cancels the
-timer when it is dropped, so it has to be kept somewhere, and the current
-hrtimer API is the same. queue_rq() only gets a shared borrow of the queue
-data, and the handle owns an Arc<T>, so putting it inside T means T holds a
-refcount on itself and is never freed.
+On Mon, Aug 17, 2026 at 01:40:45PM +0200, Albert Esteve wrote:
+> This series adds Rust abstractions for the DRM panel subsystem,
+> covering both the consumer and producer sides of the API.
+> This helps closing the gap so that future panel drivers
+> can be written directly in Rust.
+>=20
+> Background
+> ----------
+> The DRM panel C API has been progressively hardened over the past
+> year (see [1], [2], and [3]). All panel drivers were fully migrated
+> to kref-based allocation via devm_drm_panel_alloc(). Panel lookup
+> functions (i.e., of_drm_find_panel() and find_panel_by_fwnode())
+> were also updated to acquire a reference before returning.
+>=20
+> Note this series depends on [3] being merged in the base
+> tree. Currently it has been only applied to drm-misc-next.
+> The other series mentioned above are already part of the
+> base for the current version of this series.
+>=20
+> As a personal note, part of my motivation for creating this series
+> was learning more about Rust in the kernel. I would appreciate
+> feedback on Rust-specific idioms or kernel conventions used here
+> that I may have missed.
+>=20
+> What this series does
+> ---------------------
+> Patch 1 adds of::Node, a Rust wrapper for struct device_node
+> implementing AlwaysRefCounted. C helpers are added so that of_node_get()
+> and of_node_put() are reachable from Rust independently of CONFIG_OF_DYNA=
+MIC.
+>=20
+> Patch 2 adds drm::Connector, a minimal Rust wrapper for
+> struct drm_connector. Its sole purpose is to provide a typed reference
+> for the get_modes() callback argument; no ownership or refcounting is
+> exposed at this stage.
+>=20
+> Patch 3 adds the consumer side of the panel abstraction:
+> - Panel wraps struct drm_panel and implements AlwaysRefCounted via
+>   drm_panel_get/put. Consumer lifecycle methods are exposed as safe wrapp=
+ers.
+> - PanelOrientation wraps enum drm_panel_orientation and provides
+>   from_of_node() to read the "rotation" device tree property.
+> - Registration manages the panel's presence in the global registry
+>   via drm_panel_add/remove, decoupling registry lifetime from
+>   reference count lifetime.
+>=20
+> Patch 4 adds the producer side:
+> - PanelFuncs is a #[vtable] trait that panel drivers implement to
+>   provide their callbacks. All but get_modes are optional.
+> - Panel::new wraps __devm_drm_panel_alloc, returning an ARef<Panel>.
+>   Registration with the global registry is kept separate via
+>   Registration::register, following the pattern of drm::Device::new.
+> - ConnectorType mirrors the DRM_MODE_CONNECTOR_* defines from
+>   include/uapi/drm/drm_mode.h, required by Panel::new to specify the
+>   panel's connector type.
+>=20
+> Patch 5 adds gated tests, covering data type conversions and layout
+> invariants.
 
+So while it's definitely welcome on principle, I wonder if panels would
+be a place to invest in at the moment
+
+The series
+https://lore.kernel.org/dri-devel/20260814-drm-bridge-every-panel-v1-0-19cd=
+5277cc8d@bootlin.com/
+is likely to move every consumer to use bridges exclusively.
+
+https://lore.kernel.org/ksummit/0fa2fb42-0714-49f7-ba43-22928e1dd488@linaro=
+=2Eorg/
+raised a discussion that the panel API is very limited at the moment
+(while the bridge API isn't, or could be much more easily extended).
+
+This is supposed to be discussed at plumbers, but I seriously think the
+outcome of that discussion would be to just deprecate panels.
+
+Bridges would be a much more long-term-proof investment.
+
+Maxime
+
+--ih6zdmnfjowuha6b
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaoRFzwAKCRAnX84Zoj2+
+dlGQAYDYIAOqhHx0r6fLK8nL73TpSPjwnj7GDvkvyW8rtyvEnJnwJtKUz3FlzEIu
+QTiiVi0BfjlGkOxjUBXGBY6GrqOPUssitDNX9C7kIp3Sl7Fwv9uKTg40JiFLOHtB
++22qEwBmsQ==
+=txvi
+-----END PGP SIGNATURE-----
+
+--ih6zdmnfjowuha6b--
