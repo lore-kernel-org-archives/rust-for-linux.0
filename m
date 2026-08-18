@@ -1,49 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94971463B98
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Aug 2026 11:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A260746E00B;
+	Tue, 18 Aug 2026 12:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787054382; cv=none; b=WVXNdUh6mKlHwRItlf6KqBpuO2S3FTmgdAyX57gCIRCU+80NqFH2z/YJabP753tN9CvU9Cp8jiFvpVjKtvdK2sPTiymMyliiPWDJX0O8fgl0x12WJS6hTTI9PfvipnP2ch+lIdsSqnoqpWUBT+oVXpgSvm0n8Mgi0eHMI/0Fo+w=
+	t=1787055906; cv=none; b=XDlTob39teDK/jIjfSfSAcSqFs2MfR/1SN08M8j8QgMIskmnKstXJ3xtBP7Q0GVnwPT9ZayGidDOMNtoE6Jwl1gKMWhRNvfJz6KdcssXICEdoBaTDHXzwMnz76PCEZ+EZSP8TSJmJd1Sc7tiwGLZzEVoZEPGzrOtUshiCPkk60g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787054382; c=relaxed/simple;
-	bh=6RFn7eHHXWSv8fOIkxqqzHscgAQgJZqogOCgJkIvgiY=;
+	s=arc-20240116; t=1787055906; c=relaxed/simple;
+	bh=WjQKNQYWeJjNUgod6Frcm/Yb18L9+Sq4jIQzkGAa4V8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=vGWny+b2vSP1dNMOwx0Y43qo37QQCPdjC/5dpWS5myCl+FU6nG7jWj3ro63CxiCtKKYCeSiSRsNaClJhJbq1oZ0OIkIzD5juCMQT+AV0wZq0hQ+iQs22gbI4em1jv6vQCsgy0B2yerc1va3AB9NnUgm6j7coHnpQNY+pv3xBpU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AoI7tLk6; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=j3MZp4Be7RT8vkaV7Vz4PLtJoX+9ars6yKNGeUCdB6eGKvTsCkxp38Yz1wCxRi8Czg0nc8uZrPo67VOCaqhpwl3UCipScA2UNgAHuqOdG7Hj7nqxH5SryNTxpz0kd3E/8sO6d6k2J/BD051u6sYQS4Q64hsbZ85XpL1XNhBLzR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WhuVbyn+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AoI7tLk6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59661F000E9;
-	Tue, 18 Aug 2026 11:59:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WhuVbyn+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6301F000E9;
+	Tue, 18 Aug 2026 12:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787054381;
-	bh=6RFn7eHHXWSv8fOIkxqqzHscgAQgJZqogOCgJkIvgiY=;
+	s=k20260515; t=1787055897;
+	bh=IHXFSLVp4g9rSlWOugyNrAlLV77nVF0ySTm53kW1V7I=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=AoI7tLk6K6/Nif0csbVWVLAYZqLF8VmsgEYanKIRux0G4qCD6B+K/d4M+X3UQy2oi
-	 w6GghztFTwaRBCwJVZKrMm0QjFCjwZ4X0KyWw3Xa37HA0HFokgpV5K5ZqgNEgFS/M4
-	 roe4kzaemguzyEMkdELLJbanV6RofkDrZcR6l4FeZp1wPExGel/xrxXJIGemumxPPN
-	 qK0RO83nEr8bR2+fT6aw9xQFWYd/pkpewEOmoMsQ3NjXEUmvoSixdad5tLi0y4yW8q
-	 g3RZjvb1P8HGuTZen0zsadNJHn80ICseO03y/GZ8KalIIW4rcfpja397c7ZwYM7uYH
-	 ySKx2rs7RghIQ==
+	b=WhuVbyn+7ehfnUbFACA9S8U+OYILhx0hQqW2aM1dj+B/NP+k6rCRjicgxmnlKnWsO
+	 7+3JEvOuZdXZm6+ZdAjTak0KKLjjh3ZVVO65mnJ0JNoPUYPwmUJ3prpUmMkCvTScFJ
+	 ayVobV8AW38g9TO2RXRrAD4hlXWuY8YpYK3syYIMKp+A8iZTScK/60Q/WqaTrWLosb
+	 CP2GKAgYyRkiD50RQFeBSyNPf/ndj50GQyOFnSZcm+ArDl9+pkXukWSrERBIQnqEU/
+	 r4UxwizHzPm81FpfgBeqXbCkGKe0GxT4kFFAV0a0/5hJ5u3D974VMUjy3jzSE8acRE
+	 2Sjxz09gSCMKg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: tomo@flapping.org, gary@garyguo.net, ojeda@kernel.org,
- acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
- daniel.almeida@collabora.com, frederic@kernel.org, jstultz@google.com,
- lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
- tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
- rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Subject: Re: [PATCH 0/4] Fix forward()/expires() racing with concurrent arming
-In-Reply-To: <20260818.202111.221982706607091751.tomo@flapping.org>
-References: <875x18ahu6.fsf@t14s.mail-host-address-is-not-set>
- <20260818.112656.263099326344775009.tomo@flapping.org>
- <8733wbajj0.fsf@t14s.mail-host-address-is-not-set>
- <bAoCglwDHEBnzbZXVYa9FIwZTfbJ_4lMqFz-20jmYhwlUf7y6s8L5ev0Ezf3wc4r9HkvrqfnVY1LotFV6NwWfw==@protonmail.internalid>
- <20260818.202111.221982706607091751.tomo@flapping.org>
-Date: Tue, 18 Aug 2026 13:59:30 +0200
-Message-ID: <87pkzf8wrh.fsf@kernel.org>
+To: Gary Guo <gary@garyguo.net>, Gary Guo <gary@garyguo.net>, git@younes.io,
+ Breno Leitao <leitao@debian.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel
+ Almeida <daniel.almeida@collabora.com>, Tamir Duberstein
+ <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Onur
+ =?utf-8?Q?=C3=96zkan?=
+ <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: configfs: skip unregister after failed registration
+In-Reply-To: <DKS0NGIDGCIT.2N03Y8VZ7Q6B@garyguo.net>
+References: <20260818-fix-rust-configfs-registration-state-v1-v1-1-c929990bc8ef@younes.io>
+ <I9rMOFpWPbtlAmMsBCz7tH-ltTS1GDo5t-PVCCUa9X9MdkjjRkiRVlW1LO4wrbypD2fR3D80NozC8OdUxVBQ7A==@protonmail.internalid>
+ <DKS0EN4DLKW3.IB8Z5VB3B7YG@garyguo.net>
+ <87tsor8zty.fsf@t14s.mail-host-address-is-not-set>
+ <DKS0NGIDGCIT.2N03Y8VZ7Q6B@garyguo.net>
+Date: Tue, 18 Aug 2026 14:24:48 +0200
+Message-ID: <87mruj8vlb.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,58 +55,71 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"FUJITA Tomonori" <tomo@flapping.org> writes:
+"Gary Guo" <gary@garyguo.net> writes:
 
-> On Tue, 18 Aug 2026 11:02:27 +0200
-> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->
->>> perf and CFS bandwidth have a flag as well as a lock. The flag is "do
->>> not arm while armed", which is the same rule the types enforce
->>> here. rtc and the softlockup watchdog look like they cancel first and
->>> then start instead. None of them arms a timer that is active, so I
->>> would rather the abstraction did not allow it either. Does that seem
->>> reasonable?
+> On Tue Aug 18, 2026 at 11:53 AM BST, Andreas Hindborg wrote:
+>> "Gary Guo" <gary@garyguo.net> writes:
 >>
->> I am fine with preventing starting a timer that is Started or Running,
->> but I am not liking the `UniqueArc` requirement.
+>>> On Tue Aug 18, 2026 at 9:11 AM BST, Younes Akhouayri via B4 Relay wrote:
+>>>> From: Younes Akhouayri <git@younes.io>
+>>>>
+>>>> Subsystem::new() calls configfs_register_subsystem() from a fallible
+>>>> pin_chain callback. If registration fails, ChainPinInit drops the
+>>>> already initialized Subsystem. Its PinnedDrop currently calls
+>>>> configfs_unregister_subsystem() unconditionally.
+>>>>
+>>>> configfs_unregister_subsystem() requires registration to have completed
+>>>> and immediately dereferences the subsystem dentry. Registering a
+>>>> duplicate subsystem name returns -EEXIST before installing that dentry,
+>>>> so the cleanup path dereferences NULL and panics the kernel.
+>>>>
+>>>> Track successful registration explicitly and only unregister in that
+>>>> state. Keep mutex destruction unconditional because it is initialized
+>>>> before registration.
+>>>>
+>>>> Fixes: 446cafc295bf ("rust: configfs: introduce rust support for configfs")
+>>>> Signed-off-by: Younes Akhouayri <git@younes.io>
+>>>> ---
+>>>>  rust/kernel/configfs.rs | 14 ++++++++++----
+>>>>  1 file changed, 10 insertions(+), 4 deletions(-)
+>>>>
+>>>> diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
+>>>> index cd082b83e9e7..f358e227ce09 100644
+>>>> --- a/rust/kernel/configfs.rs
+>>>> +++ b/rust/kernel/configfs.rs
+>>>> @@ -130,6 +130,7 @@ pub struct Subsystem<Data> {
+>>>>      subsystem: Opaque<bindings::configfs_subsystem>,
+>>>>      #[pin]
+>>>>      data: Data,
+>>>> +    registered: bool,
+>>>
+>>> No flag just for destruction. Please change new logic to avoid needing this.
 >>
->> I have a use case in `rnull` where I have to start a timer behind an
->> `Arc` with no way to obtain a `UniqueArc`, so I would prefer if that use
->> case keeps on working. Without this, I would have to allocate a box and
->> put it behind a lock, leading to double indirection.
+>> I guess we can have a local `UnregisteredSubsystem` that we can
+>> cast to a `Subsystem` once registration succeeds. Is that what you have
+>> in mind?
 >
-> Before the UniqueArc requirement, I would like to check which timer
-> you have in mind? The bandwidth timer, the per-command timer, or
-> something else? The two seem to need different things, so I would
-> rather not guess.
+> You can use the arbitrary code block feature of pin-init to run code before
+> arming the destructor:
+>
+>     _: {
+>         let result = crate::error::to_result(
+>             unsafe { bindings::configfs_register_subsystem(subsystem.get()) }
+>         );
+>         if let Err(err) = result {
+>             unsafe { bindings::mutex_destroy(&raw mut (*subsystem.get()).su_mutex) };
+>         }
+>         result?
+>     }
 
-The bandwidth timer. It is started from an `Arc<NullBlkDevice>:
-HasHrTimer`. If we make the suggested change to `ArcTimerHandle`, I
-think I would need to change the `NullBlkDevice::bandwidth_timer` from
-an embedded `HrTimer` to a `SpinLock<Box<HrTimer>>` or something like
-that.
-
-Maybe this is fine. I don't think it will affect performance for `rnull`
-- this is already a throttled path. But it gives slightly more
-convoluted code in the caller by reducing the way we can use the API.
+Neat, I did not know about that.
 
 >
-> For the bandwidth timer I do not see where the handle would live, and that
-> is independent of UniqueArc. start() returns a handle that cancels the
-> timer when it is dropped, so it has to be kept somewhere, and the current
-> hrtimer API is the same. queue_rq() only gets a shared borrow of the queue
-> data, and the handle owns an Arc<T>, so putting it inside T means T holds a
-> refcount on itself and is never freed.
+> That said, why is the configfs not initializer the mutex, but rather users do?
 
-The storage of the handle would not change.
-
-Circular references to keep things alive can be fine.
-
-For the completion timer, the change you propose would work fine I
-think. I would just start the timer via the unique request reference
-rather than the shared one. This is probably a better way to do it
-anyway.
-
+That is just the way configfs expects users to use the API. C users can
+initialize statically as well by assigning the mutex at declaration
+time. Try to grep for `init.*su_mutex` at kernel root.
 
 Best regards,
 Andreas Hindborg
