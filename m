@@ -1,127 +1,226 @@
-Received: from chaosmail.tech (chaosmail.tech [77.81.229.115])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020103.outbound.protection.outlook.com [52.101.195.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8700336DA14;
-	Wed, 19 Aug 2026 19:52:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.81.229.115
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787169167; cv=none; b=Hj+SX1KRDqRsvAmuwOpgRJpJtg1eLlOaaDatzLARuHFjJ/NhnLaBjyd2uxFBmTE5+meVfUoPgOTd2cEhvCpHgXhuCsHhRC10uxskZjR1P+Bcr073Tsw7NQFR0KmZaj+OpZlvmxH9iLNvI31md9xIoUydG8exOcwtO5dfjM6UMvg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787169167; c=relaxed/simple;
-	bh=0SiPbcO8RTxkJ2sgrJEH8OIt4uYhOTDri5NzPEOlVGc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AwCOSn21+S7DvxaYceHjmobgWgczso9iVKGpUSnxt7K+7XCjiL9+o6Fl5nPO1bzqWqq2DFm7VQkptwl3YC6Hszw3hiNeYq5MyxOb5g0Wm+p7u5QvSYLW3SlTmPuDP6awrRp8tcKTrVQX8Uk8r4OrNMts5Do4w30ky93fXWQgwFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chaosmail.tech; spf=pass smtp.mailfrom=chaosmail.tech; dkim=pass (1024-bit key) header.d=chaosmail.tech header.i=@chaosmail.tech header.b=oOeQJkV7; arc=none smtp.client-ip=77.81.229.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chaosmail.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chaosmail.tech
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AE8440651;
+	Wed, 19 Aug 2026 20:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.103
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787170051; cv=fail; b=l8WtkmvmAl5rynP+eBd+eMX38sTdHZ4nZg16wXFBYRW1np5ZI7FEyyZq0ug1VcF8nIx+tOacsuIziKndph/x3K+ZvaRI1HgE9/jyz2mHsx8iqc0Q9X6igWtJ8Mj8/5d5tP7P9gLcsL+IxPHtC31CKtUNzGs693o+oI870ZIMaKo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787170051; c=relaxed/simple;
+	bh=SEQP8QCO5iOIU0wWPxmXYJ6KdinSlwRId7DBHGC6+04=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=fKU2NGstKbjx11AkzOzWTxcPSRCAnPPnx8s0xivbv2bDkaP5uGgbwUEreC6Grx3kAYKnbhfEFNcMDQiJL2lPjmalyY2TDN9YSNTZY+7L061bf7cmoW6Ugyn56F6hOu/9J0+WqZnVhDJ4YlBrXmer/AEOxvceuMExj7diNNWBuhU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Zjps0+PR; arc=fail smtp.client-ip=52.101.195.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chaosmail.tech header.i=@chaosmail.tech header.b="oOeQJkV7"
-Received: by chaosmail.tech (Postfix) id 641501C867F;
-	Wed, 19 Aug 2026 19:47:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chaosmail.tech;
-	s=mail; t=1787168825;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=iTrVRI86i7nzPnQemQQuLNohM7hyMo7ba924tYiRDQ0=;
-	b=oOeQJkV75DketDeXBHBhat4BSzyD8jN4/kCZmwqxbzeRULr/UqNXWrO9CdWAnWDIqLLEWL
-	YMtAbr9D60b+LWhQBE/yUu/hOTxt/nc9C0P/cIPrleSJdXWPv1ibYQ1WbjUs4NJaVnUiTl
-	Y2fesbdiKBqWu+L2G2/iNNrIEfoL6kQ=
-From: Sasha Finkelstein <k@chaosmail.tech>
-Date: Wed, 19 Aug 2026 21:47:01 +0200
-Subject: [PATCH RESEND v3] Fail the build on RUST=y and RUST_IS_AVAILABLE=n
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Zjps0+PR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UvNR+dO5xUiyzNhkGxLvgN2GPSB+pVOoJvaTHtCqEBfq4LKU7OvqJhG5zdtzM99FvmAdtd9YuDAqPyNTOlnNSJqaILKc/KaqNHugpD74wyl9EXUuq1uw3Ep+57IDM5DvTAaymZNPBtKUDBXe4MtqhhfCujLFxRSObSX0woPWJiz2wP8JqEA2AM2n4JjenIfaquv/kjcBEP52Scw8JwVBE6kGqhnicYzUzEyaDhL7Y35u3a5hFlYYmuY12eLSCNDUlLfqSPJY6r5Kp+eAeV5oBW4lCpv81yvL8LUcOd0ccUdjKzxeiMwgf4EIKjt1N13MhhMDoZDMehiClb8qUXGqpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CApNQP8UEJUeF0k5/FEQeKuwmPFUQaqP1WeUIuK8rd4=;
+ b=CqBo7/2i/9DVsjRv9YGcAF0wKZBeoNEstfUHw2ihp5RJgMvkvEMdu79mMxv+tgNRwuiKQ2JJnAto7WjIRJg+OmTFaa2QGQb0kwaqSJReQsbC/Uf9tbu6nC8CNB+0CiBjA2MPCKAJqyDThPFBbnM+/AhsuwYh4sN4EhMaZaNBtVhEXw1DPLO9r1YiRKYnFQQ2byCBImEO8JRFFaUidM+/iTOw6D+ZYp0fn7FLHVGMMsNakDXbrD20pQDchZA1lN9aG1Nm6BDmF8QzGfL46OrLnIdqWXPwyET+9T3raMZVyEWdyTPENLGSnuEAolcNQgsFNq8wwP/etQvH4FSIZJNfOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CApNQP8UEJUeF0k5/FEQeKuwmPFUQaqP1WeUIuK8rd4=;
+ b=Zjps0+PRMA742D8u9aUzQoPjrXf5X6uqQlNrljm3+ctTOXKor1aqHGYzWTUeIjYJ0i0J98c5JTT3QY6bx+cWhjzJ35bKOdIqM6RMH2GX9YhYfaU09xTIXzXqfFMvfC1ay5g/k/fhIMgqf8Uf4fyVEw/Qps4ptuSk12Il5JjBWQE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+ by LO4P265MB6951.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:34c::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
+ 2026 20:07:24 +0000
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
+ 20:07:24 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 19 Aug 2026 21:07:23 +0100
+Message-Id: <DKT6WNPI2OA5.3RCBNYHHAFAD9@garyguo.net>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v7 03/10] rust: num: add nz! macro for compile time
+ NonZero values
+From: "Gary Guo" <gary@garyguo.net>
+To: "Eliot Courtney" <ecourtney@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Burak Emir" <burak.emir@gmail.com>, "Yury Norov"
+ <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
+X-Mailer: aerc 0.22.0
+References: <20260817-chid-v7-0-a5872e64d8f4@nvidia.com>
+ <20260817-chid-v7-3-a5872e64d8f4@nvidia.com>
+In-Reply-To: <20260817-chid-v7-3-a5872e64d8f4@nvidia.com>
+X-ClientProxiedBy: LO4P123CA0654.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:296::12) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260819-evolve-to-crab-v3-1-2d8e1b48052e@chaosmail.tech>
-To: Alice Ryhl <aliceryhl@google.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Boqun Feng <boqun@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
- Gary Guo <gary@garyguo.net>, Jonathan Corbet <corbet@lwn.net>, 
- Miguel Ojeda <ojeda@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: Neal Gompa <neal@gompa.dev>, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Sasha Finkelstein <k@chaosmail.tech>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787168824; l=2582;
- i=k@chaosmail.tech; s=20241124; h=from:subject:message-id;
- bh=0SiPbcO8RTxkJ2sgrJEH8OIt4uYhOTDri5NzPEOlVGc=;
- b=ZV1BoG5ylpPkpsLkbn5+2Un+RzMHVh6oncvJKe7JAtOB2wHCMQfEuK50hxSQcLG2vqYsQt7aA
- /LQnpFwHnYDD7WnghHVr9sysTFtuaw/jRbKzQhHNJYbbUTffWBVA+/u
-X-Developer-Key: i=k@chaosmail.tech; a=ed25519;
- pk=aSkp1PdZ+eF4jpMO6oLvz/YfT5XkBUneWwyhQrOgmsU=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO4P265MB6951:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5bb688f7-83ff-43ba-5e9d-08defe2d7c15
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|10070799003|7416014|376014|10067099003|56012099006|18002099003|4143699003|22082099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	XQ3qxmvK1OLcXyBps+JzYom/omn52GDBlKBV4DQKVzkYOrwjwyrw+GBNqN/TgDvWDO9qIsIrziR1IuQ+Mc7hKigdf6u8x+iKcgjQX7G0JcLBSOMRRDsirtq2WvkW6tBebL9Ei1O1IRbLpHaxtDFSKJl4JjRZYQpgl+sNluvOyhVmieOKJJYB5902QHSshEOPOSQoH3ix2vTdkExvqUPE8inAyIhISfy0gxlktzuYviN0QOMYnEAu4rT0/WVChRu2T3bO54aQ90S//3jS30NlSix2MlmgtdwDyJ+NvRVvFNwcwU8S7J39WvXzDXXwqJqS00PNjPo1s3RCcJfzLoJ0QLaDeJ2wjvOEgJ6q7Tt6r6AS2wPN1HjTaNE2s4TpAl43I0E622IFTnBlUw4UmA81kgC8yoV7TNqocRsT34iW0H3P5ZhyJw4e5MkOYXoqDcsIWqa3UspVZQm7NttCb2RjmDzdEk1otYJkVMV4VvidU5kT5PpKHsvGU17emNWN/l/A5A+3GnJMvtzx0kQeufsr/SDBHp6ca1Rlw2/WW38TbnzB2GLZKg7ztnrCC+CEAPpmmIsL2kTMjOQTVKKudlhJvX6LKUPHOTNcwtzNQnBfkPt/l0R+5XFN2IBWB2vYjhVTbCW6+MQcE741A8aH0Gf9vnr0rHdp4bk9vrHmbAEy5xU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(10070799003)(7416014)(376014)(10067099003)(56012099006)(18002099003)(4143699003)(22082099003)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Ri90WHZSVVg0Y3VuS2R6bndnSWRnamRVRzZvNTR5ZGN4d3U4M3ZoamlMclll?=
+ =?utf-8?B?Q1g0aURlSGtEdWk5ZnNtUlo0R3BvZExvVm9sMlBvTFd6eWMxdFFObHhzL3Rl?=
+ =?utf-8?B?dkFMQUJOdDVrVll3SkRCMjVpdXJBTXVTZDZKWDhYR2pPWTRackRTdHpNNzdV?=
+ =?utf-8?B?VnVzV2VOdDlaeUdEbTV0U0l1UWZCN3h1SkFVTzV4SUkwZHNnNkZXNkNJU3c5?=
+ =?utf-8?B?Nms1a1JMVGdkWEpnYktMdjRZNU93QTdPNHNvazBxWVA5SlBUZFp2OGpwUGw0?=
+ =?utf-8?B?eDhDRWJrZUtqaHg5dHhKRHBneFNxTXQvZ3AvOGVNVFRObHhldjUxa25jeDRO?=
+ =?utf-8?B?UzZXS0d1NE0xNTZuRm1KVDFibEhvbE13eGw2VkZ0NDJqSWt4NkR2c1pwSERy?=
+ =?utf-8?B?cEhCVDM5eHNYVm5hVGxwUVdPZkVCb2g5THRYR29ISUQzeG9pNGI4MnVXMmVR?=
+ =?utf-8?B?WEs3THF5M1V1WkxaSTJYT0JXaG05L3dLMDc0WkozYnJxYlg3NmFNdTR1RS9U?=
+ =?utf-8?B?NlpVUFo0R1BhRDFLRGtXQUxJaVlMeTU2NVpNN0pGWGRNbVRnalRiM3JHaW4v?=
+ =?utf-8?B?RXNQTnVOd0tpd0JBdmdGWmVIdjF2SHBNeW5lYjd2aGhaVHh2SGM5UG83Y0Rm?=
+ =?utf-8?B?czlYdjAvOWt3Ym41M2hhSXVUM0xSSWpoajMzNXpYNmk4NlBNS2VXM0h1Nkpi?=
+ =?utf-8?B?Q0JrbHcrZWE5ZlhvSUoxa1p4ZVJudVV0ZTZJS3lBZDVvOUNuL0tpU3hXUFJn?=
+ =?utf-8?B?YnRQSlJoZGIyVSs3ZWwxWnhvZ3hIamF1WVkvZDRiNXJJaFc0YzRObVpsNzlO?=
+ =?utf-8?B?SkUyUXVFeENrMk81U1NidzNXdWFUQk82M0NsUXRQYjBVcjA4Qm1XcHFRRlNz?=
+ =?utf-8?B?ODFPYnV3MWxiQ0RybkNlMmZSdUtJWVl1WHpBRlFCNUdrdFFVUkIyOUIxNlpr?=
+ =?utf-8?B?ZDdNME1YTFpxaFpHdUxqRVFtS00wWklrMmx3d29GeUUzYWNiUGIyYTAzeFBn?=
+ =?utf-8?B?UkxWYW5ES24wcktmMnZESVdYM0dROE82WTNKVkNlUVQ1RmpGeThWZ2dCTE0z?=
+ =?utf-8?B?aVZsSVcwQUo1OS92V0syb1ZsZEhoNXQyUTJKYytsY29YZVJ5aUR6cDZ5VXdh?=
+ =?utf-8?B?ODVhRnJZOHZzdjJGOXBSMldlZ0cvTU5TRmFFN3VYNWxFVFhNbm91a0VHYmNK?=
+ =?utf-8?B?ZTBSMEgzcGpEWnJyZUtVMHJqL0dtbDNNWHM5QXBsM2Eyc3NyV0kyRnhjT2h2?=
+ =?utf-8?B?ZnVWdklWdUhhVFhQTS91TVZOcEQyNndqZ21idTlwK3BuTk5RUStjeXlSRzA1?=
+ =?utf-8?B?RFdOSXdhWmNHblY1djExblVtM1l6SjNJeU50Yy9GQ1V5UjE1d2RlSWdjTW4w?=
+ =?utf-8?B?dzZkRjZxVHVKK0x1VFBDQlBVT0N0UUl1c3BENi9mQkR2cFhnMEJsUElEb3BT?=
+ =?utf-8?B?cXRsL1ZYZWxweXpuSU9ZNSt3OW9La0RSZUF6OXBJZ3VsSWVybG1Ic2ZOeGRr?=
+ =?utf-8?B?ZTF0NXp0c3J1OUQzQWNLR2hwTDd3cTIyNENpQXZsaldXYk1JZXc5aDdicEcz?=
+ =?utf-8?B?cGQ3MUtYRlZ0NTlCT0pPWjFmSFBBN1Q4dDUyenJwTllpMG01Qjh1WjN4eHFn?=
+ =?utf-8?B?djVIbmhwRllWSE1iRTV1dzFRVkVxYTUvNWNNWDIvMUc4WnFWQ0hhSEJTQitN?=
+ =?utf-8?B?RHk3T1lpKzMyTnpKTUxYaXZ1WnZUSC9UMUdESExOaHJ1ZGJNREkwUmtvdDRP?=
+ =?utf-8?B?YXRiZW9ZSExUV3JlWm9tL1hzSkRiV2VHRE9LZXBkekY0clBLYUdSUks1bFY5?=
+ =?utf-8?B?di9IVDhEQklpaUplc1o1RmxucHhhUExSSU1GVkJuUzVuUlQvSHcwUUJxTG5F?=
+ =?utf-8?B?ek1FeU8vUXBVeTg1S0ZQNWxGcnAxaGdBSlZtWG9RRUF0cm9mdU5oZW9TRUl1?=
+ =?utf-8?B?T0FQeVdqb0J2M2drbVZ4enRIMCtHZDhmQWt3eGUvOFpnQnFxRVQvenc5N0Fj?=
+ =?utf-8?B?NTdJOTdpVUtjNjQrSnJZN0FmR2g5UENlYkxGYXF0VlkyaU1nRjJvMjVLOXdK?=
+ =?utf-8?B?RExDWnRlaVVQbG5ZSUo1Yk5hbWVzcEtuRHlCOHlzaSt4eE4rb2NjaFpPSm5G?=
+ =?utf-8?B?SlRPZzkrcHZnUllSVlkyOVA3bEpsRU96eG4vYkNDclR2SEM4VVJkem5TQ2dj?=
+ =?utf-8?B?UE1SZm1IM2dndjh5czZRMm5hR2hmQklwaWZSay9iMEhyS0l3eEE0Ym9aa1Fx?=
+ =?utf-8?B?UnRPbWZJemFQTFBYOVJsT0Z0a3A0bUZZVXpWc25sRWxmMTNwakowcmJLT0Fx?=
+ =?utf-8?B?anJNWi85bjA4YWlQSWt6aUt4SkJzMU5SRUNDWEFMV2VGZUZBRmFOZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5bb688f7-83ff-43ba-5e9d-08defe2d7c15
+X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 20:07:24.3099
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tm4vSryVFN1p1QEeOFsA0uVjDeiOtG31rBD8U6JWhBiNCoMtx8ZiKjOWPL0PnSCVoxaSI/LrraeyMw61zQkEbQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6951
 
-The current approach of silently disabling all rust drivers if the
-toolchain is missing results in users that try to compile their own
-kernels getting a "successful" build and then being confused about where
-did their drivers go. In comparison, missing openssl results in a build
-failure, not a disappearance of everything that depends on it.
+On Mon Aug 17, 2026 at 8:04 AM BST, Eliot Courtney wrote:
+> Currently, using NonZero constants is quite verbose. It's unfortunate
+> because it disincentivizes using it in interface boundaries. Introduce a
+> macro to make it nicer to use.
+>
+> Link: https://lore.kernel.org/DKO414SNC0B2.248FUBGJGSPLU@kernel.org
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> ---
+>  rust/kernel/num.rs | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
+>
+> diff --git a/rust/kernel/num.rs b/rust/kernel/num.rs
+> index 8532b511384c..055d23ca7fd1 100644
+> --- a/rust/kernel/num.rs
+> +++ b/rust/kernel/num.rs
+> @@ -7,6 +7,29 @@
+>  pub mod bounded;
+>  pub use bounded::*;
+> =20
+> +/// Infallibly creates a [`NonZero`] value from a constant expression.
+> +///
+> +/// [`NonZero`]: core::num::NonZero
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// use core::num::NonZero;
+> +/// use kernel::nz;
+> +///
+> +/// let v: NonZero<usize> =3D nz!(8);
+> +/// assert_eq!(v.get(), 8);
+> +///
+> +/// const N: NonZero<u32> =3D nz!(0x10);
+> +/// assert_eq!(N.get(), 0x10);
+> +/// ```
+> +#[macro_export]
+> +macro_rules! nz {
+> +    ($v:expr) =3D> {
+> +        const { ::core::num::NonZero::new($v).unwrap() }
+> +    };
+> +}
 
-This also means that allyesconfig will depend on rust, but since the
-rust experiment concluded with "rust is here to stay", i believe that
-allyesconfig should be building rust drivers too.
+I wonder if if we can have a generic macro for creating types from literals=
+,
+given that this is needed for bounded too. Something like
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Sasha Finkelstein <k@chaosmail.tech>
----
-Changes in v3:
-- Collect r-b tags
-- Rebase on 7.2
-- Link to v2: https://patch.msgid.link/20260521-evolve-to-crab-v2-1-c18e0e98fc54@chaosmail.tech
+    trait FromLiteral {
+        fn from_literal<const N: i64>() -> Self;
+    }
 
-Changes in v2:
-- No longer a RFC, let's make it happen.
-- Update the docs.
-- Link to v1: https://patch.msgid.link/20260510-evolve-to-crab-v1-1-208df84e67be@chaosmail.tech
----
- Documentation/rust/quick-start.rst | 6 +++---
- init/Kconfig                       | 1 -
- 2 files changed, 3 insertions(+), 4 deletions(-)
+    impl FromLiteral for NonZero<u32> {
+        #[inline]
+        fn from_literal<const N: i64>() -> Self {
+            const_assert!(N > 0 && N < u32::MAX as i64);
+            const { NonZero::new(N as u32).unwrap() }
+        }
+    }
 
-diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
-index a6ec3fa94d33..764c81d0dd59 100644
---- a/Documentation/rust/quick-start.rst
-+++ b/Documentation/rust/quick-start.rst
-@@ -321,9 +321,9 @@ Configuration
- -------------
- 
- ``Rust support`` (``CONFIG_RUST``) needs to be enabled in the ``General setup``
--menu. The option is only shown if a suitable Rust toolchain is found (see
--above), as long as the other requirements are met. In turn, this will make
--visible the rest of options that depend on Rust.
-+menu. In turn, this will make visible the rest of options that depend on Rust.
-+You can check the value of ``RUST_IS_AVAILABLE`` to determine if your toolchain
-+is configured correctly.
- 
- Afterwards, go to::
- 
-diff --git a/init/Kconfig b/init/Kconfig
-index 5230d4879b1c..0eca3dfd9349 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -2207,7 +2207,6 @@ config PROFILING
- config RUST
- 	bool "Rust support"
- 	depends on HAVE_RUST
--	depends on RUST_IS_AVAILABLE
- 	select EXTENDED_MODVERSIONS if MODVERSIONS
- 	depends on !MODVERSIONS || GENDWARFKSYMS
- 	depends on !GCC_PLUGIN_RANDSTRUCT
+    macro_rules! lit {
+        ($x:expr) =3D> {
+            FromLiteral::from_literal::<{$x}>()
+        }
+    }
 
----
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
-change-id: 20260510-evolve-to-crab-8cba1768dcd5
+    let nz: NonZero<u32> =3D lit!(1);
+    let bounded: Bounded<..> =3D lit!(1);
 
-Best regards,
---
-Sasha Finkelstein <k@chaosmail.tech>
--- 
-Sasha Finkelstein <k@chaosmail.tech>
+I think the only downside is that this expression isn't const expr anymore.=
+ We
+can change this to be
+
+    const trait FromLiteral {
+        fn from_literal(v: i64) -> Self;
+    }
+
+when const trait impl is stable upstream and we have MSRV bumped high enoug=
+h to
+have an impl of it.
+
+Best,
+Gary
 
