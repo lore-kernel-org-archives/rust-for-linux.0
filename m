@@ -1,382 +1,144 @@
-Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBCF3D6CD5;
-	Wed, 19 Aug 2026 08:57:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.242.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130BA442B35
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Aug 2026 09:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787129876; cv=none; b=EAiJeyHw32bzYBmT6alJ0SU4jnvgTGCAvtKhWvriQVChJjJDjYKZIHg9G33/7bDeNq5BSHuzfcl6WRQBGT9mi566fwlnKJEMu6xETwRm0VkmNxQlSUXlzUnLlLilM94IpuA4VHlkbfMtvlxYxpqwVYIvmrosLdlPFaeAQpD5Em4=
+	t=1787132352; cv=none; b=Uwf7stDtuoTJ4xhsyGQ5AjyQqbvQpRhCVIFcUNofxxU0gX29J0xwomALDkM/3FTpWHAB1F/joJ0iLD0uu39WOOGFWZ6hNzZisGDye7mb0rN3ya0+TQrikj0p1e5FWbgNHA16sZJ/MWi8LdtRtxsSO/j0JTlzQ702UStfWDlWl70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787129876; c=relaxed/simple;
-	bh=qILuqeYNIM4jRzaSeJvcfnKnYQKN6xJztLYlF5v1UgY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gUkxHQ9bZkpiCcdeaZpmvt8pseFd+gZ592tx6mAqjW8wfKCJjX4zyDX0pDFsbHAmH0piQTz8MI5nClzkC/oQaClzzzOtv2Vwp1wskL6K5LSrSSY17D2RcSW5oRHoXuQ0FH7EUZ2cgHAH0k0Iyx2EdIPP8mDkbW/Tq/yxSGY10uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net; spf=pass smtp.mailfrom=davidgow.net; arc=none smtp.client-ip=203.29.242.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
-Received: by sphereful.davidgow.net (Postfix, from userid 119)
-	id 2508D1EA9A8; Wed, 19 Aug 2026 16:57:47 +0800 (AWST)
-X-Spam-Level: 
-Received: from [IPV6:2001:8003:8802:7000::9c4] (unknown [IPv6:2001:8003:8802:7000::9c4])
-	by sphereful.davidgow.net (Postfix) with ESMTPSA id 5CB7A1EA99C;
-	Wed, 19 Aug 2026 16:57:43 +0800 (AWST)
-Message-ID: <3e1be519-32cb-4772-bc15-648f2aa99233@davidgow.net>
-Date: Wed, 19 Aug 2026 16:57:41 +0800
+	s=arc-20240116; t=1787132352; c=relaxed/simple;
+	bh=zlErMMR25SYOsUd3S/0AwpVYnof7u7gBjzWgLBfix9I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AdXuSCPNeQW58cJP4fZ073UW4DYaqE7Kwl6t4TlYt8JGBQcRsUwpIqiFCVHvuvD+lXG8Lje2o/a9cpwRk1lQDLHAwJiml9JmMWXx5S6C+waIgVbSj/poJc/FqSmwpiBcvrzEFz6XURLkCdzKZJHAgSAGwSMvVD0s0/OkgKx4z5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-96944741eaeso261149241.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Aug 2026 02:39:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787132348; x=1787737148;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=dIMgKn9ssmwMdJVgg9MfbDylpozJGdyvq0xNOf3CW1Q=;
+        b=YjGqRwiS2gUBVkCeavbEsmznqkFpTvyJNYUe8Q7kqu6atZehPdQYo6y5zBxPnwO2zM
+         MTKnvDhQ0kcySecGvuvdtx1wz186bX9iE0znN3Uwh9YIsy4MV308IOx+08CuhCxIHssR
+         qzxTrCLcjDYLAODR0NWGrbLvwaFIHwKRyTKhGd4da4bgHTYdKwo2IBB6C0Tz7nF6gqMg
+         7xIR+GNpztNrCNb4F8ADYOWut0YQPSAcgkBMKR2aTrsqrXSsQAw5DNIP6MUiJkWyvFbc
+         I+mYURMCBRKxyGj4Zp2jqoF+kMSiTl394MmoJDtSfnd/wppGyIj78YAwXfxGRgXfuTvK
+         IBNw==
+X-Forwarded-Encrypted: i=1; AHgh+RozmBhS3J5+YqMFHJue38YBhHGvDau/VV90YvPuRpIvsKwgVKS98zjstdPxX0mbFp+8usA0lmLcXiRdobDkgQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxABVlLES9F6A0me1UeK+vGAS2laRIKGNpWxJsw3cDcHquJk5EU
+	EabKBwGCc+Z1N5aMbnT8HZdZdjZUfufSHZg1361XL9KjTr1ORjOVFwgHQX4cONXKqII=
+X-Gm-Gg: AR+sD13eSx8l46TvihGLNdGlEIxNwt6arbU/3GuRfYCZAk6myh7Vd03fR2ReRnZzmtf
+	XDR9awBM9I17yS3m0rch+ACxoUWBSDgCrXkgbgfA5iuicvS2QVducADGcmbImyFNe8VYy3UkZCo
+	e3yWe9n64fBA3Qab2i2AoSQLy1sbuPl4pVpRt8qAVkw/fiHPpZDhy98LxS58y/+nrMtOI3EM4JW
+	vukw8g3BX55NA+xj0EktDPNTGBs0IC7WDbih3mxcNbHWQRCfoTOksm8UgDiuZHfydsdknPhtD+c
+	xzWcMeEK/e20OYdGHS0CRp1BN8hBHNlvy2H3ibe3ahQ5UYD3UjF3jS7MXGxGJj5GFiE6cdDT7eZ
+	9vazIuzXWjElofUN9V1m3IiP/0FAFQ9HueaptXaWi5vcdJ4C5JKpHqn5/XfCvrl/DuwUXZQtciA
+	dNlOfMCmGGxzd1vXly22gy3rs9lNSrFhNu/dVj+I/5U3gasJHZ0coAWeDkMCkqEDQ9dOBWSLkPK
+	OMwxUbUNTgvy6ukWGKaicTn2AU1+iBFEJ2PdZDymKfgv0Vz
+X-Received: by 2002:a05:6102:3585:b0:777:ab3c:b88c with SMTP id ada2fe7eead31-777f9c84dd6mr793037137.8.1787132348033;
+        Wed, 19 Aug 2026 02:39:08 -0700 (PDT)
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com. [209.85.217.53])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-97c4e75fd76sm1574323241.2.2026.08.19.02.39.06
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Aug 2026 02:39:06 -0700 (PDT)
+Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-738bcf9a573so322544137.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Aug 2026 02:39:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rq/J3Q04wgKbeGclZXvhZG6Dq1LQFTCqayNwKbtHoyQllVT1f1x0Z/UdI284LI1izn4lNEyD6rG+SIJjQJ5UA==@vger.kernel.org
+X-Received: by 2002:a67:e04e:0:b0:777:ffe0:a10b with SMTP id
+ ada2fe7eead31-777ffe0a6b7mr539021137.4.1787132346344; Wed, 19 Aug 2026
+ 02:39:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] rust: kunit: move test configuration gating into
- macro
-To: Yury Norov <ynorov@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
- rust-for-linux@vger.kernel.org, nova-gpu@lists.linux.dev
-Cc: Gary Guo <gary@garyguo.net>, John Hubbard <jhubbard@nvidia.com>,
- Alice Ryhl <aliceryhl@google.com>, Burak Emir <burak.emir@gmail.com>,
- Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>,
- Yury Norov <yury.norov@gmail.com>, linux-kselftest@vger.kernel.org,
- kunit-dev@googlegroups.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260818152324.587932-1-ynorov@nvidia.com>
- <20260818152324.587932-3-ynorov@nvidia.com>
-From: David Gow <david@davidgow.net>
-Content-Language: fr
-In-Reply-To: <20260818152324.587932-3-ynorov@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260818125012.468092-1-tzimmermann@suse.de> <20260818125012.468092-2-tzimmermann@suse.de>
+In-Reply-To: <20260818125012.468092-2-tzimmermann@suse.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 19 Aug 2026 11:38:55 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWYVjvGM2pOzWoDq8LUSrkFtzOQwdmosHYQuBLnSn3D-Q@mail.gmail.com>
+X-Gm-Features: AcwNN1Uwr-MWNK1wEAyEr8Z9JNVhxk4jrnSNE7dazUpWIvLo30uHHQJP967oerw
+Message-ID: <CAMuHMdWYVjvGM2pOzWoDq8LUSrkFtzOQwdmosHYQuBLnSn3D-Q@mail.gmail.com>
+Subject: Re: [PATCH 01/12] drm/panic: Allocate QR-code buffers statically
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: jfalempe@redhat.com, javierm@redhat.com, airlied@gmail.com, 
+	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, 
+	amd-gfx@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, nouveau@lists.freedesktop.org, 
+	linux-renesas-soc@vger.kernel.org, virtualization@lists.linux.dev, 
+	sashiko-reviews@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Le 18/08/2026 à 11:23 PM, Yury Norov a écrit :
-> KUnit test modules currently need a separate cfg attribute in addition to
-> the kunit_tests attribute. This makes every test suite repeat the same
-> two-attribute pattern.
-> 
-> Declaring a KUnit test without a preceding `#[cfg]` attribute is also
-> possible, causing it to be built whenever KUnit and its containing code are
-> enabled.
-> 
-> Require the controlling Kconfig symbol as the second kunit_tests argument
-> and have the macro emit the cfg attribute itself. Update all existing users
-> to the new form.
-> 
-> Assisted-by: Codex:gpt-5.6-sol
-> Signed-off-by: Yury Norov <ynorov@nvidia.com>
-> ---
+Hi Thomas,
 
-Thanks.
+On Tue, 18 Aug 2026 at 15:00, Thomas Zimmermann <tzimmermann@suse.de> wrote:
+> Declare qrbuf1 and qrbuf2 as static arrays so that the module loader
+> allocates them for us. Avoids the kmalloc later on. Also allows for
+> using sizeof() to get the number of bytes in each array. Access the
+> arrays once with memset, so that the physical pages are available on
+> a panic.
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-I agree that every test needs to be behind a Kconfig option, though I'm
-not totally convinced that this is the optimal solution, particularly
-for a problem which should only affect test builds.
+Thanks for your patch!
 
-Personally, I lean towards keeping the #[cfg()] attribute separate here,
-for mostly minor stylistic reasons. In particular, in C we already have
-a number of existing tests where multiple suites share a Kconfig symbol.
-While there's no reason we couldn't just pass the same symbol to several
-different kunit_suite() attributes, it would be nicer to group them all
-behind a single #[cfg()] where that makes sense (or even, going forward,
-to support having them live in their own separate module/crate).
+> --- a/drivers/gpu/drm/drm_panic.c
+> +++ b/drivers/gpu/drm/drm_panic.c
+> @@ -628,24 +628,23 @@ MODULE_PARM_DESC(panic_qr_version, "maximum version (size) of the QR code");
+>  #define WINDOW_BITS 12
+>  #define MEM_LEVEL 4
+>
+> -static char *qrbuf1;
+> -static char *qrbuf2;
+> +static u8 qrbuf1[QR_BUFFER1_SIZE];
+> +static u8 qrbuf2[QR_BUFFER2_SIZE];
 
-And personally, I find it a bit clearer: people already understand
-#[cfg()], and having #[kunit_suite()] just accept the suite name better
-matches suite registration in C.
+I am not a big fan of increasing kernel size like this.
+You may run (faster) into boot loader limitations.
 
-That being said: I don't think there's anything fundamentally impossible
-with implementing something like this (be it now, or later): worst-case
-we'd end up with some redundant Kconfig entries and uglier chains of
-attributes. So if this continues to be a problem (or enough people think
-I'm wrong here), we can always change it later.
+>  static struct z_stream_s stream;
+>
+>  static void __init drm_panic_qr_init(void)
+>  {
+> -       qrbuf1 = kmalloc(QR_BUFFER1_SIZE, GFP_KERNEL);
+> -       qrbuf2 = kmalloc(QR_BUFFER2_SIZE, GFP_KERNEL);
+> +       /* best-effort allocation; can be NULL */
+>         stream.workspace = kmalloc(zlib_deflate_workspacesize(WINDOW_BITS, MEM_LEVEL),
+>                                    GFP_KERNEL);
 
-If we want to improve on the current situation, though, something like a
-checkpatch.pl check or a lint would be a good way of making it less
-likely for checks to slip through the cracks. And if we're particularly
-worried about test size (or runtime), there are things we could look at
-to improve things there. Moving tests to separate modules is probably a
-bit harder to do in Rust than in C, but we could possibly have a
-separate set of config options for large tests, and better support
-filtering slow tests in Rust (which is on my to-do list).
+<ironic>Why not use a static array for this, too?</ironic>
 
-(Finally, there are also a few minor issues with the patch below, which
-would need to be fixed if there's a v2.)
-
-Cheers,
--- David
-
->  Documentation/rust/testing.rst                | 11 ++++---
->  .../gpu/nova-core/gsp/cmdq/continuation.rs    |  3 +-
->  rust/kernel/alloc/allocator.rs                |  3 +-
->  rust/kernel/alloc/kvec.rs                     |  3 +-
->  rust/kernel/bitfield.rs                       |  3 +-
->  rust/kernel/bitmap.rs                         |  3 +-
->  rust/kernel/kunit.rs                          |  3 +-
->  rust/kernel/str.rs                            |  3 +-
->  rust/kernel/sync/atomic/predefine.rs          |  3 +-
->  rust/macros/kunit.rs                          | 30 +++++++++++++++++--
->  rust/macros/lib.rs                            |  6 ++--
->  11 files changed, 43 insertions(+), 28 deletions(-)
-> 
-> diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
-> index e3943aceceb9..767b111afd41 100644
-> --- a/Documentation/rust/testing.rst
-> +++ b/Documentation/rust/testing.rst
-> @@ -138,9 +138,10 @@ these are also fairly similar to what you would expect from userspace, and they
->  are also mapped to KUnit.
->  
->  These tests are introduced by the ``kunit_tests`` procedural macro, which takes
-> -the name of the test suite as an argument.
-> +the name of the test suite and its controlling Kconfig option as arguments. The
-> +Kconfig option is required, and the macro uses it to guard the test suite.
->  
-> -Each test suite should be guarded by a Kconfig option in
-> +Each test suite should have a Kconfig option, typically in
->  ``rust/kernel/Kconfig.test``.
->  
->  For instance, assume we want to test the function ``f`` from the documentation
-> @@ -148,8 +149,7 @@ tests section. We could write, in the same file where we have our function:
->  
->  .. code-block:: rust
->  
-> -	#[cfg(CONFIG_RUST_MYMOD_KUNIT_TEST)]
-> -	#[kunit_tests(rust_kernel_mymod)]
-> +	#[kunit_tests(rust_kernel_mymod, CONFIG_RUST_MYMOD_KUNIT_TEST)]
->  	mod tests {
->  	    use super::*;
->  
-> @@ -177,8 +177,7 @@ the unit type ``()``) or ``Result`` (i.e. any ``Result<T, E>``). For instance:
->  
->  .. code-block:: rust
->  
-> -	#[cfg(CONFIG_RUST_MYMOD_KUNIT_TEST)]
-> -	#[kunit_tests(rust_kernel_mymod)]
-> +	#[kunit_tests(rust_kernel_mymod, CONFIG_RUST_MYMOD_KUNIT_TEST)]
->  	mod tests {
->  	    use super::*;
->  
-> diff --git a/drivers/gpu/nova-core/gsp/cmdq/continuation.rs b/drivers/gpu/nova-core/gsp/cmdq/continuation.rs
-> index c0aa16c8fbf4..2e4b21f2002f 100644
-> --- a/drivers/gpu/nova-core/gsp/cmdq/continuation.rs
-> +++ b/drivers/gpu/nova-core/gsp/cmdq/continuation.rs
-> @@ -167,8 +167,7 @@ fn init_variable_payload(
->      }
->  }
->  
-> -#[cfg(CONFIG_NOVA_CORE_KUNIT_TEST)]
-> -#[kunit_tests(nova_core_gsp_continuation)]
-> +#[kunit_tests(nova_core_gsp_continuation, CONFIG_NOVA_CORE_KUNIT_TEST)]
->  mod tests {
->      use super::*;
->  
-> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-> index cd4203f27aed..b2c235801a3f 100644
-> --- a/rust/kernel/alloc/allocator.rs
-> +++ b/rust/kernel/alloc/allocator.rs
-> @@ -265,8 +265,7 @@ unsafe fn realloc(
->      }
->  }
->  
-> -#[cfg(CONFIG_RUST_ALLOCATOR_KUNIT_TEST)]
-> -#[macros::kunit_tests(rust_allocator)]
-> +#[macros::kunit_tests(rust_allocator, CONFIG_RUST_ALLOCATOR_KUNIT_TEST)]
->  mod tests {
->      use super::*;
->      use core::mem::MaybeUninit;
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index f7af62835aa8..4b77425950d3 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -1508,8 +1508,7 @@ fn drop(&mut self) {
->      }
->  }
->  
-> -#[cfg(CONFIG_RUST_KVEC_KUNIT_TEST)]
-> -#[macros::kunit_tests(rust_kvec)]
-> +#[macros::kunit_tests(rust_kvec, CONFIG_RUST_KVEC_KUNIT_TEST)]
->  mod tests {
->      use super::*;
->      use crate::prelude::*;
-> diff --git a/rust/kernel/bitfield.rs b/rust/kernel/bitfield.rs
-> index 35ede53f2b8e..8b329b6e4f8d 100644
-> --- a/rust/kernel/bitfield.rs
-> +++ b/rust/kernel/bitfield.rs
-> @@ -548,8 +548,7 @@ fn fmt(&self, f: &mut ::kernel::fmt::Formatter<'_>) -> ::kernel::fmt::Result {
->      };
->  }
->  
-> -#[cfg(CONFIG_RUST_BITFIELD_KUNIT_TEST)]
-> -#[::kernel::macros::kunit_tests(rust_kernel_bitfield)]
-> +#[::kernel::macros::kunit_tests(rust_kernel_bitfield, CONFIG_RUST_BITFIELD_KUNIT_TEST)]
->  mod tests {
->      use core::convert::TryFrom;
->  
-> diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
-> index b27e0ec80d64..c4195e00d895 100644
-> --- a/rust/kernel/bitmap.rs
-> +++ b/rust/kernel/bitmap.rs
-> @@ -499,8 +499,7 @@ pub fn next_zero_bit(&self, start: usize) -> Option<usize> {
->      }
->  }
->  
-> -#[cfg(CONFIG_RUST_BITMAP_KUNIT_TEST)]
-> -#[macros::kunit_tests(rust_kernel_bitmap)]
-> +#[macros::kunit_tests(rust_kernel_bitmap, CONFIG_RUST_BITMAP_KUNIT_TEST)]
->  mod tests {
->      use super::*;
->      use kernel::alloc::flags::GFP_KERNEL;
-> diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-> index 91eaff8c186a..52f2ccbfba49 100644
-> --- a/rust/kernel/kunit.rs
-> +++ b/rust/kernel/kunit.rs
-> @@ -330,8 +330,7 @@ pub fn in_kunit_test() -> bool {
->      !unsafe { bindings::kunit_get_current_test() }.is_null()
->  }
->  
-> -#[cfg(CONFIG_RUST_KUNIT_SELFTEST)]
-> -#[kunit_tests(rust_kernel_kunit)]
-> +#[kunit_tests(rust_kernel_kunit, CONFIG_RUST_KUNIT_SELFTEST)]
->  mod tests {
->      use super::*;
->  
-> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> index b3caa9a1c898..404418504c13 100644
-> --- a/rust/kernel/str.rs
-> +++ b/rust/kernel/str.rs
-> @@ -428,8 +428,7 @@ macro_rules! c_str {
->      }};
->  }
->  
-> -#[cfg(CONFIG_RUST_STR_KUNIT_TEST)]
-> -#[kunit_tests(rust_kernel_str)]
-> +#[kunit_tests(rust_kernel_str, CONFIG_RUST_STR_KUNIT_TEST)]
->  mod tests {
->      use super::*;
->  
-> diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
-> index 3d63f40791fa..e92194b37de8 100644
-> --- a/rust/kernel/sync/atomic/predefine.rs
-> +++ b/rust/kernel/sync/atomic/predefine.rs
-> @@ -152,8 +152,7 @@ fn rhs_into_delta(rhs: usize) -> isize_atomic_repr {
->      }
->  }
->  
-> -#[cfg(CONFIG_RUST_ATOMICS_KUNIT_TEST)]
-> -#[macros::kunit_tests(rust_atomics)]
-> +#[macros::kunit_tests(rust_atomics, CONFIG_RUST_ATOMICS_KUNIT_TEST)]
->  mod tests {
->      use super::super::*;
->  
-> diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
-> index ae20ed6768f1..7c7ba30f58c0 100644
-> --- a/rust/macros/kunit.rs
-> +++ b/rust/macros/kunit.rs
-> @@ -13,6 +13,10 @@
->      ToTokens, //
->  };
->  use syn::{
-> +    parse::{
-> +        Parse,
-> +        ParseStream, //
-> +    },
->      parse_quote,
->      Error,
->      Ident,
-> @@ -20,9 +24,28 @@
->      ItemMod,
->      LitCStr,
->      Result, //
-> +    Token,
->  };
->  
-> -pub(crate) fn kunit_tests(test_suite: Ident, mut module: ItemMod) -> Result<TokenStream> {
-> +pub(crate) struct KunitTestArgs {
-> +    test_suite: Ident,
-> +    config: Ident,
-
-#[cfg()] accepts more than just an Ident here: if we want to explicitly
-gate things on either multiple config options, or on config options
-being built-in/modules/etc, then we might want to allow something more
-complex.
-
-> +}
 > +
-> +impl Parse for KunitTestArgs {
-> +    fn parse(input: ParseStream<'_>) -> Result<Self> {
-> +        let test_suite = input.parse()?;
-> +        input.parse::<Token![,]>()?;
-> +        let config = input.parse()?;
-> +
-> +        Ok(Self { test_suite, config })
-> +    }
-> +}
-> +
-> +pub(crate) fn kunit_tests(
-> +    KunitTestArgs { test_suite, config }: KunitTestArgs,
-> +    mut module: ItemMod,
-> +) -> Result<TokenStream> {
->      if test_suite.to_string().len() > 255 {
->          return Err(Error::new_spanned(
->              test_suite,
-> @@ -34,7 +57,7 @@ pub(crate) fn kunit_tests(test_suite: Ident, mut module: ItemMod) -> Result<Toke
->      let Some((module_brace, module_items)) = module.content.take() else {
->          Err(Error::new_spanned(
->              module,
-> -            "`#[kunit_tests(test_name)]` attribute should only be applied to inline modules",
-> +            "`#[kunit_tests(test_name, CONFIG_KUNIT_TEST)]` attribute should only be applied to inline modules",
+> +       /* touch memory so that pages are there in the case of a panic */
+> +       memset(qrbuf1, 0, sizeof(qrbuf1));
+> +       memset(qrbuf2, 0, sizeof(qrbuf2));
 
-This is a much uglier message, and CONFIG_KUNIT_TEST is not an ideal
-example to have here. Could we just have a placeholder, e.g.
-#[kunit_tests(...)].
+Please clarify "there"?
+In cache? Not all systems have sufficient data cache, so it may be
+evicted at any time.
+In RAM? AFAIK kernel and module memory is not demand-paged.
+In TLB? Like cache, it may be evicted at any time.
 
->          ))?
->      };
->  
-> @@ -42,6 +65,7 @@ pub(crate) fn kunit_tests(test_suite: Ident, mut module: ItemMod) -> Result<Toke
->      module
->          .attrs
->          .insert(0, parse_quote!(#[cfg(CONFIG_KUNIT="y")]));
-> +    module.attrs.insert(0, parse_quote!(#[cfg(#config)]));
->  
->      let mut processed_items = Vec::new();
->      let mut test_cases = Vec::new();
-> @@ -51,7 +75,7 @@ pub(crate) fn kunit_tests(test_suite: Ident, mut module: ItemMod) -> Result<Toke
->      // The code generated for the following test module:
->      //
->      // ```
-> -    // #[kunit_tests(kunit_test_suit_name)]
-> +    // #[kunit_tests(kunit_test_suite_name, CONFIG_KUNIT_TEST)]
+So IMHO this is futile.
 
-I really would rather these examples not state CONFIG_KUNIT_TEST here:
-it's the config option for tests for KUnit itself, and I'd rather not
-imply that people should add their tests to it.
-CONFIG_KUNIT_EXAMPLE_TEST would be better.
+>  }
 
->      // mod tests {
->      //     #[test]
->      //     fn foo() {
-> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index 4a48fabbc268..a660296d5dbd 100644
-> --- a/rust/macros/lib.rs
-> +++ b/rust/macros/lib.rs
-> @@ -464,14 +464,14 @@ pub fn paste(input: TokenStream) -> TokenStream {
->  
->  /// Registers a KUnit test suite and its test cases using a user-space like syntax.
->  ///
-> -/// This macro should be used on modules. If `CONFIG_KUNIT` (in `.config`) is `n`, the target module
-> -/// is ignored.
-> +/// This macro should be used on modules. The second argument is the Kconfig symbol that controls
-> +/// the test suite. If it or `CONFIG_KUNIT` (in `.config`) is `n`, the target module is ignored.
->  ///
->  /// # Examples
->  ///
->  /// ```ignore
->  /// # use kernel::prelude::*;
-> -/// #[kunit_tests(kunit_test_suit_name)]
-> +/// #[kunit_tests(kunit_test_suite_name, CONFIG_KUNIT_TEST)]
+Gr{oetje,eeting}s,
 
-As above, let's not use CONFIG_KUNIT_TEST in the documentation here.
+                        Geert
 
->  /// mod tests {
->  ///     #[test]
->  ///     fn foo() {
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
