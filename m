@@ -1,215 +1,482 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010020.outbound.protection.outlook.com [52.101.85.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7560F3CC7F8;
-	Wed, 19 Aug 2026 06:17:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787120280; cv=none; b=J0tcBL9/FSOe4apKRCA0u/b6tS2pqpmXwVJDdw5NQsThGqwHyCBZftB9lb5T44ulg4cbnMccyKBY2xy1iKToRrbXqtVqw4jruq9LqBiy/vgSYktE/Wr7kcnC4BTBmNeLWngdBT2tjhT7OfD45HsHTtueUt3tkY4ujYS/kCBUouM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787120280; c=relaxed/simple;
-	bh=3EajQNbjuEt3B0aP/HWXhloydBrWAMv9GoLKHiDXcSw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X8znbBPfBce7LRDU6F8v7BNsDhsueTKLDhysYywGlRj3aSGe4FGhTlIwpapxnrjq/ERKhpTabjp7lv28+1D51SeEY4sv4SoSCTG/bUk8ivm42wxv1G8s+2weO++xTEmyZ6CMnlFbtpm8ndFuJZIpejX1oKaW5ItaoAhcesHWS+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dO720plT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3Q9NN6B3; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=L8HnCUTS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=eaPdP7nU; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64457393DDB;
+	Wed, 19 Aug 2026 07:43:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787125404; cv=fail; b=c/SWs2uah/Mk83Zlf86Q7yMurSV0ENm2MtSDWe87GdVmqA4xn3PwN4+l91SzZdubax5dR15jgZZl26AwTI3l0k00b06DyCfYKd8sb1P5TaX4zEDmw3E/chLBR0dlc0KICGnrmRh0Toj4B49x/gTPw3IIskOhEjnwHvA9t+LUY98=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787125404; c=relaxed/simple;
+	bh=43Br3lVgw3FlfnZOJfVLCnJX5ADBVO4MKvLU9wA3Ob8=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=eBslQi93Drt0Yzz256mGS1Bd8yqGY+KoX7DpieMt1W73NID91FLxMT9BeX3mK6eSVkb1y6DM5cHPtBPXzYCxI9xWTWVCxrTXs+rKqZiOqcYJK8eNwhyqJhuPVFRN9OiXKgx6YubOnAoBh76Sww4HzcoyEOCztteq1v7bPLjzeTQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RDATSt0y; arc=fail smtp.client-ip=52.101.85.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dO720plT";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3Q9NN6B3";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="L8HnCUTS";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="eaPdP7nU"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 168B33E69;
-	Wed, 19 Aug 2026 06:16:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787120204; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=c/AzOS9nYCn1gKcDW+iR9M86QEqFfEOWGqdTZE1/Q8A=;
-	b=dO720plTJcEcHC+arFs6mB/9g8FDyt9rYEInkQG8s2VxFn+S+3tlBdg/z0/AE76kVegV/J
-	po0cwcLIJ0eVH1dO9hOcYHWbGx/nXdmjU0jchzVB/Ap9d4oLj2BeJMXDhXaD1gW3tzAHoa
-	VMq/ekbE9a8qAKfFTXWZ3jSUpCcnGBI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787120204;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=c/AzOS9nYCn1gKcDW+iR9M86QEqFfEOWGqdTZE1/Q8A=;
-	b=3Q9NN6B3P//DA/0r1qISw0CBzYxq34c3kFnAVy/gpQSWIUSsUBzu81MGBqHvUkojiRlIT4
-	IvkPnljiLo7vL3CA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=L8HnCUTS;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eaPdP7nU
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787120200; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=c/AzOS9nYCn1gKcDW+iR9M86QEqFfEOWGqdTZE1/Q8A=;
-	b=L8HnCUTSvXwz89JqoFEUVGXfyBa/oJZAT7BC7J3w1uwidMcKF4OuijNQdTHOe7KdU9uEgh
-	5FjLcKdQXjz0iGVcE0TMronQ79HDZTovL3ne4XDVb7NDRzvZyTBD8D37rgnErtXW0X/CoY
-	vMYe1wsMsZ1pQJYvLMtEzC1qL6dpgqk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787120200;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=c/AzOS9nYCn1gKcDW+iR9M86QEqFfEOWGqdTZE1/Q8A=;
-	b=eaPdP7nUjcgGMN2xiwEPnkNBTlV45RYeLfigA5z8I3ZRnJMisCHgbu0N+Luewac2zV75sO
-	rnXH4UsE7FZEdMAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 960AA2F81;
-	Wed, 19 Aug 2026 06:16:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id B2BRI0dKhWpUcwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 19 Aug 2026 06:16:39 +0000
-Message-ID: <614bdf7b-031d-444b-a30c-132daa55ce3e@suse.de>
-Date: Wed, 19 Aug 2026 08:16:39 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RDATSt0y"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=q5GGDiMIYTwkeA9smXVpSDk978RTy97FGsT3Hd9j6UvmbcMJQbtl2umSp28aWIKUXfhy0Kg26TvIri33in2gm+sfOBvRw2ZFffXah56qCmuNoiJ7DNHqZZktG0cFDN4L8Ss1Nr5SUQi6jolo5pVBAeKQqvCgGRQAZhQfWv3S5ZYX6F8oRAgCPt2WOoNPNhahtzqLjgSUA3FmFnFGBcE1LZkXgPy5Pwvtvd6JM5CNmuOeJ1WqxNCuM2Jnq8isCNzzoyYm8mhW1rvpHVhSKKKHc1/fcjrNAupU4u6mJiHy0KjS764aWXmXQxaA2p+1mC5bMeBRch/y7omsLKpl4hTGVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6cu6K0uSOUJ0leiti2dxAE5xZ8qo/AsLiN35zmyUeio=;
+ b=KPjHr2CAQPXiAbyPJJmLTE8HBDVqKSdCLoAfO0l4ZbeZTuH4mXEhZrT3AbZcwRATW+pFYD1sXMbcCxsZIdvHuQfb+UwP0O+lU5ufmLcFYN8HEvi4Q3CKYmoEV3mU5kW1uSXOQ6mFP3ODqV/3eW2KzFaQo/2s0LFIhXlPnJ03igAr10yG2SM3PH8CKSSemfRsYmJG5HogVwB+S+W9ayB7abIh1c+tS4bOk2iefabf5iCPmgW1kggXmp8/QM50NXvHyW4hVyUqxjNhcGEgto6401tM5KzY3fRWVMjEde9soSPwC5i9xbvbW+sGv1J7B9Gh2vmP34JdoecFAkdYzTsSEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6cu6K0uSOUJ0leiti2dxAE5xZ8qo/AsLiN35zmyUeio=;
+ b=RDATSt0yiYqMqwYa8t7RutboStQ8WFqNRbAsEVYGT2Gs0buuEiUFhixV9B36DuqWu6ypAmTCuqPMCg/xid8fY1UveK6ywW+JsWw0YC34SPOK09FnXC2qP54HRL8INQg38k9oPw4Ddyg3xsjKxyjlycUe/MXpYLKgUiJhjmPmxdxCK5ICfqI5sc4PtfcliU5O/jMleBUU4ORQbC+uMYoW8/WvRxU1HbqwDhzSKOUTwoNJh7HIk4whdGtWKs4kV13Y4JScPAMSty6SNdbFB60NXPSZ1WmG65v1adzX95Fcd5FsZhnSHN/KKbXlOEs6ffdPWIbqPQC+aX7/+0EQIg5rzQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by BN7PPF2E18BD747.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6ca) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.21; Wed, 19 Aug
+ 2026 07:43:18 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%5]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
+ 07:43:18 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 19 Aug 2026 16:43:14 +0900
+Message-Id: <DKSR2WF91FL0.78WHY1E7WIX9@nvidia.com>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>, "dri-devel"
+ <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH 1/6] rust: alloc: add Vec::push_init
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Gary Guo" <gary@garyguo.net>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>,
+ "Vlastimil Babka" <vbabka@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260817-b4-nvkv-v1-0-b84db5e84b67@nvidia.com>
+ <20260817-b4-nvkv-v1-1-b84db5e84b67@nvidia.com>
+ <DKR9WJY3WI0F.1FV4PD1J17ZFD@garyguo.net>
+In-Reply-To: <DKR9WJY3WI0F.1FV4PD1J17ZFD@garyguo.net>
+X-ClientProxiedBy: TY4P301CA0036.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:2be::19) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/12] drm/panic: Move panic display code into helper
- library
-To: Randy Dunlap <rdunlap@infradead.org>, jfalempe@redhat.com,
- javierm@redhat.com, airlied@gmail.com, simona@ffwll.ch,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org
-Cc: dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- linux-hyperv@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, nouveau@lists.freedesktop.org,
- linux-renesas-soc@vger.kernel.org, virtualization@lists.linux.dev,
- sashiko-reviews@lists.linux.dev
-References: <20260818125012.468092-1-tzimmermann@suse.de>
- <20260818125012.468092-12-tzimmermann@suse.de>
- <916c4bd5-c73f-466e-8e9b-aee9d4d7d742@infradead.org>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <916c4bd5-c73f-466e-8e9b-aee9d4d7d742@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.50 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.19)[-0.973];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FREEMAIL_TO(0.00)[infradead.org,redhat.com,gmail.com,ffwll.ch,linux.intel.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:mid,suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Score: -4.50
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 168B33E69
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|BN7PPF2E18BD747:EE_
+X-MS-Office365-Filtering-Correlation-Id: 02929aaf-af54-4383-b239-08defdc58906
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|366016|7416014|23010399003|376014|18002099003|10067099003|22082099003|6133799003|56012099006|4143699003|11063799006|921020;
+X-Microsoft-Antispam-Message-Info:
+	q9HSSbY/QT0Z+VnuT8at/fyTI2HOk3FNZGDsxOLUsndCtgMF52qFvonbNSluwNK/cHUh4G4YKeihpHof5Jm8cAQ/BdGeUdBKKCLvfpbpMQ5K4En6QjHt6Owr8MTyHk6ISr9eAQ1rcUGCoB5sy+O5LZSTChghTkqUT4tzHb+YAV6ZY7R0iS82ACUqe/14FhD+YxRaWlbEFs9sjnIBlOYvayKza3Q+iSLlOAoITSlyo9Bm19EVi3PeEbA5tmY2/JhQ0sXRM5mJx36tCuYWJMs1+Gnw9rnCslnfTTBg3JNQWx3iqsdYccsrQ5CEJQaETjWVKV4AKzIbAp9BJLYsXG1z7kjNwTZzXP9wn1ItN4hDUhlPNSeyfFjK6013DZ3ZyaC/cXe3h7ayAUAztXDAAR6TGM99/XtjKI00AURkGgtG1XH+y7erK2mBdSRJ3FzPcw3DLjLdgyP1fP1wxZx1kv4ZgLldXP+diSGpa8ytc55slrq4av2AB+jfN4MkuDvm+NIldmivYMsmQn8R8UnoNRt6EtjO0THXba5H43UH194qW3+NMakkYrQO+B3azeAcCW/64HEaP7rVP6pFlmRxJI7EEIFs9w2+K7Cb75zvMdhwOp33Ro25Fh/gXealwHjZ3PG1vGnaBSs5HfNGSdQHEqHG5Zc35z/O1JcPv3FEyKtb4wX3fb3fUwAgsiMUqqkAEKTcGjmlDClW9Io7xjYwOQIxng==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(7416014)(23010399003)(376014)(18002099003)(10067099003)(22082099003)(6133799003)(56012099006)(4143699003)(11063799006)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MHdDL3VWaFQ3cTNtYkd1UWpQaFhSOVJKTFFyU21QU0hESGdkL0tDcTAvVFht?=
+ =?utf-8?B?N2N5RklOT1VjS1hGaTV3VGFDZ3lTQXhLOVJiSjhJYXpBeG5NbDBSVGljemVO?=
+ =?utf-8?B?bmFxdXVmSk1mNytNOTFXL3RrTVhDWWJDbWIybHZXYW5xdC9UN2RpNGRsb0Z5?=
+ =?utf-8?B?RWs5V0EzV2dzeHhHcTNQb05GOFgyb2ExU1NTcnlKMjkvOUIrTlBCclhKcnlM?=
+ =?utf-8?B?UFhwS1VUV3QwUTMwajBqZm04ZXVWMnlDbFBScDBRbTZEUGVseXVuQUl3NTk2?=
+ =?utf-8?B?QTNDQXltZHJGekc0VFMwSWVsdmRUTi96ZU9OTkhOUWk0b2tWQ3lwSnI5b09l?=
+ =?utf-8?B?RTlHZ2ZPVTEybTB4SUpsaW1IWTJCTXFXbW5rK0MxSWZ3WEl6dEltMUR3ZXJT?=
+ =?utf-8?B?N0RjRmVSK0dpSW9jNU9rYXZtMndqUWZQZksrUWdKYkc5cUQrWWhFdmtEUGsz?=
+ =?utf-8?B?Ky8zVnNPMFh1WTJ1UDNVaFhVTWtFYmRmM3hrbFdlNURUQ1g0eDZtRWR3QzhY?=
+ =?utf-8?B?VG9XOUlSaTFGbENPVVpMc3NsUGxSbVdsMnFuL1VVa1RRM0lBcVU3MXFoczNa?=
+ =?utf-8?B?NDkxQ1BSWS9OS3hXbVFMM1l5SnRvMi90T2V0ekk1UXBGcHlaL2dmR2wvVklH?=
+ =?utf-8?B?eU9KakNzc05XbkhzZWxJK05Ed25WUTVUSXZ2elVKQnR0OUxyZXkvSVgvejNa?=
+ =?utf-8?B?aHVWblJWVGFtWFJqalgwRHV4dHBXVlB3ZWVnbkZvZjF2NzJjbzh2VDhNTWlO?=
+ =?utf-8?B?VHM2czh6THRhMGY4TWttb211dzF4MzBPSlR4ZnVFa0pXMTVScjRRbjZWRDBm?=
+ =?utf-8?B?VTcrUXlWTHJMcXNTMlV2Nk5xRXo0MDlFTmJRV2d0a3M4UzA5R2ZUQlo2UDlr?=
+ =?utf-8?B?YVZqWm83aGVwY1JWckF4TUJUdTBwaHRaVWlDSlNaQU5JUjY2bkhMakdhY2ow?=
+ =?utf-8?B?Tk1xaFo2MksrTmN3c0xvOVNYOXFaOVp5RXFuL1VJMHhCOTBRTi9Cd2RYS3Vr?=
+ =?utf-8?B?UG91WlJqVnBMY3czbzlpUG5RWnhzSDFzZlVPUGlnVkh0aW1oMmUyREYrSTZl?=
+ =?utf-8?B?dTJZdHRWQlo4dU5QNVhZZUZaWDZsQ1ZtbmlSSkVVTTJTK1Z3dFE3dVhQbUVy?=
+ =?utf-8?B?SmlpWk1UZ0ZQQ3Fta3ZuRWVjQVFiU1Y1RkJoc1Q1QzJETlVqYVcvMFJTZk9C?=
+ =?utf-8?B?dUJiV2ZWcjVGVGthRkhwZnMvdWd0bGVtZ0twUk5iZFUzOEVNanRWdmZZcENF?=
+ =?utf-8?B?Q21EQm0yM0N1TFZnS1Z1RWhOeVk4ZU9jSVNwckhZTkx0T3pRcENRNXJkaEla?=
+ =?utf-8?B?THdtN0xITzdZY3JYd2VqbFcyOEswVFNzUk03NkhJS2FkY0tFZXF1TCsrU3V4?=
+ =?utf-8?B?cW9FZEVTSUtBZytsWGMzWHR6Q0Zia0ZkWHJDanpkaDRZeGFUSkhEbGt5Y21z?=
+ =?utf-8?B?WnBFaHJIWktIZTNpakk2YlVkUnBFcTJkQzBXa3BNUTFTYzBkeW9hZjliQmta?=
+ =?utf-8?B?bWNXdXBINDZKOXZ6Wk1wMjNHczl3Zjh6U1VDd2o0R1NRNzB2Z2JCU3JXaFpL?=
+ =?utf-8?B?OVk3ekJ1Q2FNMmM1bXc5V2pYclVPSGlUWTdmZjU1VXdSeWlnSmlFdERabTdX?=
+ =?utf-8?B?R203eHhMM0Z5UXpMMlN3U2Y1K0pXUFV1S09MQU83dkpJUTNubkVIK2NlYWdx?=
+ =?utf-8?B?Vkt5V0l2Nm1xdEZnOWRVTDZDZEtFRFN6cG5vNFBwWG15eDQ4dlZBRUw3bmN4?=
+ =?utf-8?B?dG9YN244SUNzNlp0NGxsTndNN1NpdXdOd0MxcHdxdkNEWFBMQ01LaE5lNTNR?=
+ =?utf-8?B?aWF1aUtFdXlFL2hMNkhEM1lyNzU0WnlObGJ1V1M1SlhDWVNMSFAvcnZvOSto?=
+ =?utf-8?B?S3Y0M1h5OE91OUZ6czZXQWtrMXlwd1JzZWVSU29oRlVjaG5Db2QwN0JnOEpG?=
+ =?utf-8?B?V3BmWWlEajE1dXVVWW04NjRjME4rc3dPbGloRFZjczkwK0dNdkFIdmRVdk14?=
+ =?utf-8?B?TzJtUWlCMzBlWmNORjJWZUVIQ0RVZ3dsYkJBb1pjUVByT2pXMzVnd1RaeVho?=
+ =?utf-8?B?RzVMaFU4M01TK3NqNGp4TWQrME12Qms5N28yYndtNnlvZmxWaFBCMTdEZ0RB?=
+ =?utf-8?B?Mkt1YzRpbjdzVDJkOTVLQkQ5QkZUd3pYOWVVSUZTc0hoQXZBb2IrSU5HbTJ5?=
+ =?utf-8?B?WkIxQmpDTDFIbGwwMGtjMUQ0ZTJteDdPaGVuWjJWM3pTY2RMYlJsMkJHclFG?=
+ =?utf-8?B?TWpZbHpCMnN0SlpYWjJWVDZ5TklKQnY5OXJDUVNKYlNwYUIyd1dNVU83cFpp?=
+ =?utf-8?B?RmpuWnZpUXR4V0FhRGU5TVNpcTVpVUNqNng3NHo1eE5waEtzSTJhM3NyV0gw?=
+ =?utf-8?Q?4WbF2CUGDyy/tl6hjT+rYvPCaRJko06vWTVZJeUESoGFy?=
+X-MS-Exchange-AntiSpam-MessageData-1: micHkddtNduorg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02929aaf-af54-4383-b239-08defdc58906
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 07:43:18.4522
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: K5XKqdo1nBxjX/U3s7bZfgbhq0uFLxmV+gcBNbQOvmy/V1d/UR9i4L6u1emsVJVq/MogwPv55pADdTgjqmjNAg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF2E18BD747
 
-Hi
-
-Am 18.08.26 um 17:55 schrieb Randy Dunlap:
-> Hi,
+On Mon Aug 17, 2026 at 11:02 PM JST, Gary Guo wrote:
+> On Mon Aug 17, 2026 at 1:56 PM BST, Eliot Courtney wrote:
+>> Add `Vec::push_init` which initializes a new element in place. We can't
+>> modify the existing `Vec::push` signature to take an `impl Init<T, E>`
+>> without changing its Error type.
+>>
+>> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+>> ---
+>>  rust/kernel/alloc/kvec.rs | 42 ++++++++++++++++++++++++++++++++++++++++=
++-
+>>  1 file changed, 41 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+>> index c7546b9da4fa..9f6f25d7e218 100644
+>> --- a/rust/kernel/alloc/kvec.rs
+>> +++ b/rust/kernel/alloc/kvec.rs
+>> @@ -52,7 +52,10 @@
+>>      }, //
+>>  };
+>> =20
+>> -use pin_init::Zeroable;
+>> +use pin_init::{
+>> +    Init,
+>> +    Zeroable, //
+>> +};
+>> =20
+>>  mod errors;
+>>  pub use self::errors::{InsertError, PushError, RemoveError};
+>> @@ -359,6 +362,43 @@ pub fn push(&mut self, v: T, flags: Flags) -> Resul=
+t<(), AllocError> {
+>>          Ok(())
+>>      }
+>> =20
+>> +    /// Appends an element to the back of the [`Vec`] instance by initi=
+alizing it in place.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// struct Element {
+>> +    ///     buf: KVec<u8>,
+>> +    /// }
+>> +    ///
+>> +    /// impl Element {
+>> +    ///     fn new() -> impl Init<Self, Error> {
+>> +    ///         try_init!(Element {
+>> +    ///             buf: KVec::with_capacity(16, GFP_KERNEL)?,
+>> +    ///         }? Error)
+>> +    ///     }
+>> +    /// }
+>> +    ///
+>> +    /// let mut v: KVec<Element> =3D KVec::new();
+>> +    /// v.push_init(Element::new(), GFP_KERNEL)?;
+>> +    /// assert!(v[0].buf.is_empty());
+>> +    /// # Ok::<(), Error>(())
+>> +    /// ```
+>> +    pub fn push_init<E>(&mut self, init: impl Init<T, E>, flags: Flags)=
+ -> Result<(), E>
+>> +    where
+>> +        E: From<AllocError>,
+>> +    {
+>> +        self.reserve(1, flags)?;
+>> +        // SAFETY: The call to `reserve` was successful, so there is at=
+ least one spare slot; the
+>> +        // pointer therefore refers to allocated, aligned memory valid =
+for a write of one `T`.
+>> +        unsafe { init.__init(self.spare_capacity_mut().as_mut_ptr().cas=
+t::<T>())? };
+>> +        // SAFETY: The call to `__init` returned `Ok`, so the first spa=
+re slot now holds an
+>> +        // initialized `T`. The new length does not exceed the capacity=
+ because `reserve` ensured
+>> +        // the capacity is greater than the length by at least one.
+>> +        unsafe { self.inc_len(1) };
+>> +        Ok(())
+>> +    }
 >
-> On 8/18/26 5:28 AM, Thomas Zimmermann wrote:
->>   M:	Hans de Goede <hansg@kernel.org>
->> diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
->> index 323422861e8f..cdfd72d9a9c5 100644
->> --- a/drivers/gpu/drm/Kconfig
->> +++ b/drivers/gpu/drm/Kconfig
->> @@ -45,6 +45,7 @@ config DRM_MIPI_DSI
->>   config DRM_KMS_HELPER
->>   	tristate
->>   	depends on DRM
->> +	select DRM_PANIC_HELPER if DRM_PANIC
-> but DRM_PANIC_HELPER depends on DRM_TTM so
-> DRM_KMS_HELPER should also depend on DRM_TTM. Otherwise:
-
-Oops, how did that creep in?  There's no TTM dependency. This Kconfig 
-change appears to be a copy-paste accident. Thanks for noting.
-
-Best regards
-Thomas
-
+> Thinking about this from a fresh design perspective, I wonder if we can c=
+reate
+> something more composable by splitting the allocation and insertion, like=
+ entry
+> APIs do.
 >
-> WARNING: unmet direct dependencies detected for DRM_PANIC_HELPER
->    Depends on [n]: HAS_IOMEM [=y] && DRM [=y] && DRM_TTM [=n]
->    Selected by [y]:
->    - DRM_KMS_HELPER [=y] && HAS_IOMEM [=y] && DRM [=y] && DRM_PANIC [=y]
+> So
 >
+>     impl<T, A: Allocator> Vec<T, A> {
+>         pub fn reserve(&mut self, additional: usize, flags: Flags) -> Res=
+ult<Reservation<'_, T>, AllocError> {
+>             ...
+>         }
+>     }
 >
->>   	select FB_CORE if DRM_FBDEV_EMULATION
->>   	help
->>   	  CRTC helpers for KMS drivers.
->> @@ -130,6 +131,10 @@ config DRM_PANIC_SCREEN_QR_VERSION
->>   	  Smaller QR code are easier to read, but will contain less debugging
->>   	  data. Default is 40.
->>   
->> +config DRM_PANIC_HELPER
->> +	bool
->> +	depends on DRM_TTM
->> +
->>   config DRM_RAS
->>   	bool "DRM RAS support"
->>   	depends on DRM
+>     /// Type indicating vector with reserved capacity.
+>     pub struct<'a> Reservation<'a, T> {
+>     }
+>
+>     impl<'a, T> Reservation<'a, T> {
+>         pub fn init(&mut self, i: impl Init<T, E>) -> Result<(), E> {
+>             ...
+>         }
+>     }
+>
+> You can imagine even pushing this further, e.g. have a type indicating ju=
+st a
+> single reserved slot. Or perhaps have a type that is `Vec` but with fixed
+> capacity and cannot reallocate (something like `ArrayVec`) that the reser=
+ve
+> method will return.
+>
+> Best,
+> Gary
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
+Yeah that's an interesting idea. FWIW, I think the *_init idea has preceden=
+t
+already (Box::new, Box::init, etc.). I tried implementing something like th=
+is
+idea though, below.
 
+Since we don't have const generic exprs I used Peano-arithmetic like types.=
+ But
+if we only care about empty vs at least one empty capacity, we could use a
+boolean. The idea is to track the minimum extra capacity and provide a
+generalised set of vector operations that would work regardless of the
+underlying storage or allocator (well basically what you said I hope). Sinc=
+e it
+knows how much guaranteed spare capacity it has we can do a bunch of stuff
+infallibly and track the guaranteed spare capacity. If there's no guarantee=
+d
+spare capacity then it will be fallible (but non-allocating). KVec then bec=
+omes
+a wrapper over these vector ops that just ensures it has enough guaranteed =
+spare
+capacity (possibly allocating) before forwarding. Allocation/storage relate=
+d ops
+remain on KVec. Then an ArrayVec and KVec can share most vector operations =
+on a
+VecView.
 
+There's also some locations in other code that could use a VecView directly
+instead of taking a &mut Vec etc. Having a Vec-like thing that's guaranteed=
+ not
+to allocate also sounds potentially useful to me w.r.t. safety for contexts
+where you can't allocate/sleep.
+
+If you think this approach is ok I can send it as a separate series. Codege=
+n
+appears fine practically speaking AFAICT.
+
+Using it looks kinda like:
+```
+let view =3D v.reserved::<Two>(GFP_KERNEL)?;
+let Ok(view) =3D view.push(1);
+view.push(Element::new())?;  // only init can fail, push is guaranteed
+
+let mut view =3D v.view();
+while view.push(0).is_ok() {}  // can still do fallible stuff
+view.pop();
+
+// ArrayVec shares vec-like ops. can add method forwarders if we want
+arrayvec.view().push(1)?;=20
+```
+
+WDYT? (subset of code demonstrating the idea follows):
+```
+mod sealed {
+    pub trait Sealed {}
+    impl Sealed for () {}
+    impl<N: super::Count> Sealed for (N,) {}
+}
+
+/// Peano-like nested tuple type machinery.
+pub trait Count: sealed::Sealed {
+    const COUNT: usize;
+}
+
+impl Count for () {
+    const COUNT: usize =3D 0;
+}
+
+impl<N: Count> Count for (N,) {
+    const COUNT: usize =3D 1 + N::COUNT;
+}
+
+pub type Zero =3D ();
+pub type Succ<N> =3D (N,);
+pub type One =3D Succ<Zero>;
+pub type Two =3D Succ<One>;
+
+/// A view of vector-like storage with `N` slots of guaranteed spare capaci=
+ty.
+#[repr(C)]
+pub struct VecView<'a, T, N: Count =3D Zero> {
+    buf: NonNull<T>,
+    len: &'a mut usize,
+    cap: usize,
+    marker: PhantomData<(&'a mut [T], N)>,  // Invariant to prevent stashin=
+g shorter refs etc.
+}
+
+impl<'a, T, N: Count> VecView<'a, T, N> {
+    pub unsafe fn from_raw_parts(buf: NonNull<T>, len: &'a mut usize, cap: =
+usize) -> Self {
+        Self {
+            buf,
+            len,
+            cap,
+            marker: PhantomData,
+        }
+    }
+}
+
+// Infallible (except for Init) push. `Zero` spare VecView has the fallible=
+ version.
+impl<'a, T, N: Count> VecView<'a, T, Succ<N>> {
+    pub fn push<E>(self, init: impl Init<T, E>) -> Result<VecView<'a, T, N>=
+, E> {
+        unsafe { init.__init(self.buf.as_ptr().add(*self.len))? };
+        *self.len +=3D 1;
+
+        Ok(VecView {
+            buf: self.buf,
+            len: self.len,
+            cap: self.cap,
+            marker: PhantomData,
+        })
+    }
+}
+
+// Fallible but not allocating ops (can run out of space).
+impl<'a, T> VecView<'a, T> {
+    pub fn push<I: Init<T, E>, E>(&mut self, init: I) -> Result<(), PushIni=
+tError<I, E>> {
+        if *self.len =3D=3D self.cap {
+            return Err(PushInitError::Full(init));
+        }
+
+        unsafe { init.__init(self.buf.as_ptr().add(*self.len)) }.map_err(Pu=
+shInitError::Init)?;
+        *self.len +=3D 1;
+
+        Ok(())
+    }
+
+    // Bodies as in the current KVec implementations.
+    pub fn pop(&mut self) -> Option<T> { ... }
+    pub fn insert(&mut self, index: usize, element: T) -> Result<(), Insert=
+Error<T>> { ... }
+    pub fn remove(&mut self, i: usize) -> Result<T, RemoveError> { ... }
+    pub fn truncate(&mut self, len: usize) { ... }
+    pub fn retain(&mut self, f: impl FnMut(&mut T) -> bool) { ... }
+    pub fn drain_all(self) -> DrainAll<'a, T> { ... }
+    pub fn len(&self) -> usize { ... }
+    pub fn as_slice(&self) -> &[T] { ... }
+    pub fn as_mut_slice(&mut self) -> &mut [T] { ... }
+    pub fn spare_capacity(&self) -> usize { ... }
+    pub fn spare_capacity_mut(&mut self) -> &mut [MaybeUninit<T>] { ... }
+    pub unsafe fn commit(&mut self, additional: usize) { ... }
+}
+
+impl<T: Clone> VecView<'_, T> {
+    pub fn extend_with(&mut self, n: usize, value: T) -> Result<(), Error> =
+{ ... }
+    pub fn extend_from_slice(&mut self, other: &[T]) -> Result<(), Error> {=
+ ... }
+}
+
+//  Decay to read only ops.
+impl<'a, T, N: Count> Deref for VecView<'a, T, Succ<N>> {
+    type Target =3D VecView<'a, T>;
+
+    fn deref(&self) -> &Self::Target {
+        unsafe { &*ptr::from_ref(self).cast() }
+    }
+}
+
+pub enum PushInitError<I, E> {
+    Full(I),
+    Init(E),
+}
+
+impl<I, E: Into<Error>> From<PushInitError<I, E>> for Error {
+    fn from(e: PushInitError<I, E>) -> Error {
+        match e {
+            PushInitError::Full(_) =3D> EINVAL,
+            PushInitError::Init(e) =3D> e.into(),
+        }
+    }
+}
+
+// `reserved` gets you the guaranteed capacity VecView.
+impl<T, A: Allocator> Vec<T, A> {
+    pub fn view(&mut self) -> VecView<'_, T> {
+        let buf =3D self.ptr;
+        let cap =3D self.capacity();
+        unsafe { VecView::from_raw_parts(buf, &mut self.len, cap) }
+    }
+
+    pub fn reserved<N: Count>(&mut self, flags: Flags) -> Result<VecView<'_=
+, T, N>, AllocError> {
+        self.reserve(N::COUNT, flags)?;
+
+        let buf =3D self.ptr;
+        let cap =3D self.capacity();
+        Ok(unsafe { VecView::from_raw_parts(buf, &mut self.len, cap) })
+    }
+
+    pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError> {
+        let Ok(_) =3D self.reserved::<One>(flags)?.push(v);
+        Ok(())
+    }
+}
+
+// Non allocating ArrayVec backing.
+pub struct ArrayVec<T, const N: usize> {
+    buf: [MaybeUninit<T>; N],
+    len: usize,
+}
+
+impl<T, const N: usize> ArrayVec<T, N> {
+    pub fn view(&mut self) -> VecView<'_, T> {
+        let buf =3D NonNull::from(&mut self.buf).cast::<T>();
+        unsafe { VecView::from_raw_parts(buf, &mut self.len, N) }
+    }
+
+    pub fn reserved<C: Count>(&mut self) -> Option<VecView<'_, T, C>> {
+        const { assert!(C::COUNT <=3D N) }
+        if C::COUNT > N - self.len {
+            return None;
+        }
+
+        let buf =3D NonNull::from(&mut self.buf).cast::<T>();
+        Some(unsafe { VecView::from_raw_parts(buf, &mut self.len, N) })
+    }
+}
+```
