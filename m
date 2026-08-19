@@ -1,87 +1,447 @@
-Received: from mta0.migadu.com (out-246.mta0.migadu.com [91.218.175.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011024.outbound.protection.outlook.com [52.101.57.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF3E37189B
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Aug 2026 21:28:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.246
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787174899; cv=none; b=rBe0ALTr3TqGlRRGsEfvo1tqE/Uq6xeUB16PkWBd2IBuHY33eJvny+5o2GZRdwwxNTEtBWvjZoomztlTVZT1Hh+jXBlKNvG21KRHklzjJ1WgmSmGIpNUzUo951Kk5ubvFmNxRjynAlS0pwNIKSYnThHiAif2ihoKwKG1lsO8D38=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787174899; c=relaxed/simple;
-	bh=H5a+lF2Of1lJSMP6LcaW5/240bAK30koiCdiuaHbJ20=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=JGgumEiMdU2M/vOgmwIqLYwD7in4UY5imY9mWpR9QvoNQe42XzaAavgWgUIOTXkEjbMwvihgxxWdzZXrPRg7JEPpg11FqbQxN4WdVIUlCtP6Nu9qtNpWkqhBc7yghzy+PFKbAy2MZHYmeVBmSdjFE6PF+y9I2vea7qgatZCpEM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=by6RPhbq; arc=none smtp.client-ip=91.218.175.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088E43630A7;
+	Wed, 19 Aug 2026 23:05:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787180758; cv=fail; b=Q5UNfS2kyDqYqngioLhC8RmCDEjNRaee6esrRCZdUYF3UwbfqBhhez/b5HJDyUTQjgVfQR1GAT0G+6M/1LIjTQPkL8dssh1BD4X6cIczpukAe/hTbdX56VjX0XSYO+ePLt5wma86bYwXLWTUoFOEHuTStJi5hnmQf5TgrBgZVsc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787180758; c=relaxed/simple;
+	bh=LkCJ9CMwRiV6jgoqG6CMRqH6SzUaKjDnhfs+aGkLmVs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ELEiwcoTZF4dLLw7FNIhNGghH5AC+p7iC18KBuZE7Z4GWHEIPgvFtTm2J1xom1gIBugSdbIGGyLZ8xdb64vPrPQdEaDpC/o7nS5DC3kmNriZkw2s6WKVI4Dx+ZFUAynhZrJqmX/XJorQHJxMkb+d30UGg9nZlPFSd1vtKLGGawE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=txaAWEii; arc=fail smtp.client-ip=52.101.57.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="by6RPhbq"
-X-Envelope-To: rust-for-linux@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=H5a+lF2Of1lJSMP6LcaW5/240bAK30koiCdiuaHbJ20=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787174895; v=1; x=1787779695;
- b=by6RPhbqmDXx6CBWPZJ3vXmHuqJC/0xj8AGO4Tm0XlRyURN1iAc3wXA9//kBWa6p5NDzqeNr
- e9AK/3Qnpb84nzKAIDXXUfDAsKTfkBPOesg0jY6wjj0X3/g+m9WdJ8qgkPe4+NqKV9qedBzyW32
- CenrDQfrVKjqAYFv+tN4fhsw=
-X-Envelope-To: rust-for-linux@vger.kernel.org
-Received: from Vasilio. (90.193.199.60)
-	by smtp.migadu.com with ESMTPS id 17abddbf796f79fe;
-	Wed, 19 Aug 2026 21:28:05 +0000
-X-Mizu-Trace-ID: 17abddbf796f79fe
-X-Migadu-Flow: FLOW_OUT
-From: Igor Korotin <igor.korotin@linux.dev>
-To: Andi Shyti <andi.shyti@kernel.org>
-Cc: linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [GIT PULL] rust-i2c-next for 7.3
-Date: Wed, 19 Aug 2026 22:28:03 +0100
-Message-ID: <178717488339.2840.16053648973983973210@linux.dev>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="txaAWEii"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CWcrAiGV8JBk2INpkTTx96e0QZ+lR0heF2CwP2JihP3UIUbYP6IRuEIu8467x15Z6qlfrXMIkA4pUBG/bzs/Pz8ZVJ0bUaFGcgFNw9dah6pRvmUDqQS3+qgmYx1FxrVr/TJqzuccGy+Li3s+FoWue3A3W4+hxXcs74TMsmAxVhonQQ7qq9jkeZxswGfr2DbRMuaByfWj56nVoUj8cwhyHdm8MBrkk2XLiHXpVVDs2Nup33Q68VZJvJQaWF3qWzlB/J8X/eATmqiyJBeTjctvEMS4iJzcfuMaqwK6mtFjIcSmLzIBd8c9KGwieS6t1WKqd5ZwwFPeBimpj1Y26+aWRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=d6SDO2pTFPqB5VXFbYsCcapUY2idjqivnsmRv5waWDQ=;
+ b=vfeOhZEvRjG1M9PxUIBGdpZPnbRKAA8hXGBRr33pATTPbEO5hLcVRlnCosKyKkf0x0V3GEyJEftOf4JcS5e+temJusWvNqdOm991BAg5vBNI8a0a0uw05TybJEbTukhVMAO0nY4gafhgdsRXEO927c056BFobCOMHr7/lQoGvdxbZ72HG8QXR+kdV8eSjE/fmMKKnXPR1MgwR0ZAFqcNDt7bpD4E96UxHnPV+sTza9VvXG35w/NDED/KL37P5oEkdN4wmPNGJk7eodaEoSJTKxQ0qJp0ToNMcle1cbR0rOuvlBhB9vyajMdylgVYZ7nebnNZIyeNGArgk7MyL+GKxw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=d6SDO2pTFPqB5VXFbYsCcapUY2idjqivnsmRv5waWDQ=;
+ b=txaAWEiitsRgloObtG6QGGbgC2HnMeQhLf8SYkxJL566J1pzhcckwsgNrKMNB/q323V0T5xN3grxjiieJ6FzH5U9M/71wFqAeuqPVTGAZCCkvsl+VJYj7dZUjIsaxa+WP7bYUlRgewrcD9E7wJB+1ghjo67OYS4Kp6bzDC3jDFD9hcfASbyWoXIzCEtnWKcRtcELB3SR0Oq29PayXhRiF6L4Wbx/L9yjnx6xbeTJEV9k/HgHvhpO/OGeXLoxQM7iyXzl2ZMqsa52lZ1B+4HYj0Zb5Uctn/5O68Y35kLuPm9ri8XT5otFqsarFt3+WJ2S/VxoAmIouNh5FkrPxW2ujw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ SA1PR12MB6677.namprd12.prod.outlook.com (2603:10b6:806:250::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
+ 2026 23:05:49 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
+ 23:05:49 +0000
+Date: Thu, 20 Aug 2026 09:05:44 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: Eliot Courtney <ecourtney@nvidia.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, 
+	Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, John Hubbard <jhubbard@nvidia.com>, 
+	Timur Tabi <ttabi@nvidia.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, 
+	Joel Fernandes <joelagnelf@nvidia.com>
+Subject: Re: [PATCH v2 08/12] gpu: nova-core: mm: Add support to use PRAMIN
+ windows to write to VRAM
+Message-ID: <aoY1pT_TC1VSKMzQ@nvdebian.thelocal>
+References: <20260810-pramin-split-v2-0-65a00b3c7309@nvidia.com>
+ <20260810-pramin-split-v2-8-65a00b3c7309@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260810-pramin-split-v2-8-65a00b3c7309@nvidia.com>
+X-ClientProxiedBy: SY4P282CA0007.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:a0::17) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|SA1PR12MB6677:EE_
+X-MS-Office365-Filtering-Correlation-Id: e0361a85-aabb-4091-bcc1-08defe466867
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|7416014|376014|366016|22082099003|18002099003|10067099003|56012099006|4143699003|11063799006|3023799007|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	k6Ze98XfvZTDuQA5UszAW7ojFAcYzvnxhDHfphvXp0CByawhG5TVRi77+Pydb4UjgzDg0R59UkY6yIHxwJs1lf15NhBs6T65pnhxeM/lhg7Tu2TrUX2xvUKV6i8BwDxcS9S+ONdb4jralLMgErsUqyfDC8cgn8HMQBbyebuyc0JwLOOeOdVZAnPKpjFQ2mdU6Z05fv4JLs8gHFY6PBym5+F9tfFEiI8ds7HofK8h24Fv1fSSarrxmKI8COafOwoSF+2fHrNvHk2RDYVVpVbihzuE3u5NtlMI1WmfEpNXIoH60UZW5w8BzFMtmAELOzKHkmRuN4CFZWacZOZTt/8/uZoLGu6Lz6bksGkYRiFW/LoySUMwa4YSu3tuoQtYFZb0gp3OsIfNy0KJDNVvS+Dk6kLcLDRxuMr40zG7BSsWGrYCYmHElk2uH3b8CfKoL8KGH7y7R9cVkyzfefU/mxCQw5Wm3PBIkSSzTldlOC2dQAVqdAREOi6THLT64wQqdjgTH8rPBs7RJPM0BrIg3gSWRNJ7UTK3thljt7JSw2ZUCuHgQVPR3JTeiFdE6wkXuChHDxhOSFs1USYbktIwIzLWPWUeMkkLFn58VRuhueY0SNeqvu+0UJDFhUXh24yF4cHGS2NFvWDXvVYSmBWYGnMZ0z+TMTAyOBsD0qTL5s/Qb5Y=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(7416014)(376014)(366016)(22082099003)(18002099003)(10067099003)(56012099006)(4143699003)(11063799006)(3023799007)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?rqmry2fUcdoX6Z13ksUWoiAA1xXMXrY+NjAReGLmPUytHbO+gOe3kZYIDY27?=
+ =?us-ascii?Q?jttp3wQ1vbvs+j68tus2JVeruC/lUJ/qUhJ0yNhMdhPb1V9HvOJXmdjkEkj5?=
+ =?us-ascii?Q?9FxsFnDNZWjwgDn9mvw/EVb6sIJAHh4DspVgC3PcmUjhg3cHJGRrp4IIvUjZ?=
+ =?us-ascii?Q?ToSpzz3SofaqMRCe2iGEKyp1k2v45jSih2epd+PKNG/od7gasvwuj6MnB+fI?=
+ =?us-ascii?Q?J+DPaPD+Ghst6MOwYQJQy7x7Cw7t39kuyIW2QntnE9BasFVHIvh24MLUMtlL?=
+ =?us-ascii?Q?nXgZCi3xSyHoKnDkTh54PIJJpeGkJpyRpOmGOaU1sqT0HGeErBAo9wUvB4om?=
+ =?us-ascii?Q?+7RtW5kiJS6q+ZUgGx8VPWygGrtBGFBuluQaU9GK5V4XbKZXFFms3fkfpn/d?=
+ =?us-ascii?Q?SA7JVtNr2KSExxfC83p10MqIqAZ/S6v3lqrv0e15laQCYYL1SgfqAxG+CGlp?=
+ =?us-ascii?Q?r3uSsFVomeyMXLPXlaMFM7OGoiZHsWOLn7dk59xoJo+GOgrZjRW+UYkIWD2p?=
+ =?us-ascii?Q?sHtsBL+Cz9Nb03S4awRIjZF+FNTBGONmCr4EISSmxfTHyyo6QPxR3vJg9dmb?=
+ =?us-ascii?Q?cYAlNWCKb/lXYy/jmL6bKR7nN1dE9PZMVvrsThmEPAu8Wqwar+fmoWNClf/G?=
+ =?us-ascii?Q?9K6msuuf4XvV7ZGgkK0hypeBrmKqeiEzQCeqdOY7FHww9BkmVzItWKsEyRAP?=
+ =?us-ascii?Q?y1zNLlswclZW875J7irfqwVb9Fb/gSMfMnAqXR8Xd0N7IQyob5h7juckYh6x?=
+ =?us-ascii?Q?dBRBXVMDxOBwPgE7nYO4yehPDDykWdojE4j4PC6yHsT+KR4HS2c4m5r3UYtk?=
+ =?us-ascii?Q?Ma99hZ3NyHdFkwP1oblyLZ14T0FikaMrS9r18+oRF9QYjEWc/7tI4FUOT5d0?=
+ =?us-ascii?Q?tRrfqolWztUpaRH87YuHYV7dyCcU8E2SihI9GYAu5JzEPFwYeqlUEjnpHJnF?=
+ =?us-ascii?Q?0KLoNNTIRWA/7Yqm94gzIkPg7Mx9GRrv/azCgK078s2RyyoITg6Vr5PVTMd3?=
+ =?us-ascii?Q?K+m/RgVKprVvPHPEQ5Jznb3AuLcA6lbpg+opHxlwrBqV5h9m3+3nVA3/2241?=
+ =?us-ascii?Q?NKFxxXTsV/rV7iHerlSgdOktUSTVNaUAKdB8VssQBwbVMMUYBNpwhtCdJiBg?=
+ =?us-ascii?Q?iNuf7hy/CViz+6GIDmu0jjJtUn/jhtimFJuTuQTipAlkLVWIDtX61YvxWnHU?=
+ =?us-ascii?Q?31uUh0qObKIOqWZVQgeKUf33Td3QArfZ1BTl+P4+RIUeseA+9pvN0O7cxkXe?=
+ =?us-ascii?Q?cGSyj5vcFf/qT5YQUAPGU/+b7+Z4JGIlwkKMEYVNPpP5CHSyNq9tiCoe8e4o?=
+ =?us-ascii?Q?6685CCup+8hbl431p/TtEiEWgRang7kp4JCzdShejgoOaW+ouBQpRQJV2zUo?=
+ =?us-ascii?Q?QVyuciqFHjkBxxvVPgWi43RSRDbVmX3QxLpsY61KTZzYtt4uV0qanQuPEWDF?=
+ =?us-ascii?Q?JU1bqEmKHkiyyLJ1c4N4FEQC0qqgXygWphU13raT0wQJr51hWOxxhrTOfpeB?=
+ =?us-ascii?Q?I45jWNCgoUXXYLWt2rjRutkRGfSOpf/u9CZ7oRBF7mp0OY2kx9YdmxaLE3jk?=
+ =?us-ascii?Q?upLgwnTMZ4EoAgyUTcjjql0sGiNHOA4I5tjhu8Z4BJFjdbZ08gMhiCWtBisu?=
+ =?us-ascii?Q?4EftyxmTSuFAKWdccURd5OMHi8bPZ43fN51CNI3nS9zq/APpbiMoQYFBJMCT?=
+ =?us-ascii?Q?Q7zVwLxPx7LESCymJTBUotBvBSf7SO/IbUWAj3+W/9JTsDesFTx+5TrZhVEu?=
+ =?us-ascii?Q?bbcnscy1Tg=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0361a85-aabb-4091-bcc1-08defe466867
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 23:05:48.9361
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: z98FQUwUxmTpOIEetDuWCQUPfEtUfcWy8no12Fu3cmeRIjRgQsZPaydiOwIkXpcxTpyyBBXbDmPyBaXpDhzLDQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6677
 
-Hi Andi,
+On 2026-08-10 at 23:55 +1000, Eliot Courtney <ecourtney@nvidia.com> wrote...
+> From: Joel Fernandes <joelagnelf@nvidia.com>
+> 
+> PRAMIN apertures are a crucial mechanism for direct CPU read/write to
+> VRAM. Add a `Pramin` manager whose `window_at()` returns a typed MMIO
+> view of VRAM through the 1 MiB PRAMIN aperture in BAR0, validating the
+> view against the VRAM region and repositioning the window as needed for
+> the accessed address.
+> 
+> A view borrows `Pramin` mutably, so the window cannot move while
+> the view is in use, and it inserts an ordering point on Drop.
+> 
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+> [ecourtney: split the registers and HAL into the two preceding patches]
+> [ecourtney: rebase w.r.t. Bar0 lifetime changes and register projections]
+> [ecourtney: drop the window guard and mutex, use &mut self]
+> [ecourtney: position at init to avoid reads, reposition in window_offset]
+> [ecourtney: return typed MMIO views instead of read/write accessors]
+> [ecourtney: insert an ordering read when a view drops]
+> [ecourtney: declare the window location, drop the doc examples]
+> [ecourtney: add the copyright header, doc and naming cleanups]
+> [ecourtney: the pramin module is mm-internal]
+> Co-developed-by: Eliot Courtney <ecourtney@nvidia.com>
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/mm.rs        |   1 +
+>  drivers/gpu/nova-core/mm/pramin.rs | 178 +++++++++++++++++++++++++++++++++++++
+>  2 files changed, 179 insertions(+)
+> 
+> diff --git a/drivers/gpu/nova-core/mm.rs b/drivers/gpu/nova-core/mm.rs
+> index 07dce4ce2473..ef5b1cad56c3 100644
+> --- a/drivers/gpu/nova-core/mm.rs
+> +++ b/drivers/gpu/nova-core/mm.rs
+> @@ -20,6 +20,7 @@
+>  };
+>  
+>  mod hal;
+> +mod pramin;
+>  mod regs;
+>  
+>  /// Physical VRAM address in GPU video memory.
+> diff --git a/drivers/gpu/nova-core/mm/pramin.rs b/drivers/gpu/nova-core/mm/pramin.rs
+> new file mode 100644
+> index 000000000000..20be3fc471ba
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/mm/pramin.rs
+> @@ -0,0 +1,178 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+> +
+> +//! Utilities for accessing VRAM through the PRAMIN window.
+> +
+> +use core::ops::Range;
+> +
+> +use kernel::{
+> +    io::{
+> +        io_project,
+> +        register,
+> +        register::OffsetLoc,
+> +        Io,
+> +        Mmio, //
+> +    },
+> +    prelude::*,
+> +    ptr::{
+> +        Alignable,
+> +        Alignment, //
+> +    },
+> +    sizes::{
+> +        SZ_1M,
+> +        SZ_64K, //
+> +    },
+> +};
+> +
+> +use crate::{
+> +    driver::{
+> +        Bar0,
+> +        NovaRegisters, //
+> +    },
+> +    gpu::Chipset,
+> +    mm::{
+> +        hal::{
+> +            self,
+> +            MmHal, //
+> +        },
+> +        VramAddress, //
+> +    },
+> +    num::IntoSafeCast, //
+> +};
+> +
+> +/// Size of the PRAMIN window (1 MiB).
+> +const WINDOW_SIZE: usize = SZ_1M;
+> +
+> +/// The PRAMIN window, which is a 1 MiB window into VRAM at a fixed BAR0 offset.
+> +#[derive(FromBytes, IntoBytes)]
+> +struct PraminWindow([u8; WINDOW_SIZE]);
+> +
+> +register! {
+> +    base: NovaRegisters;
 
-First pull request from the rust-i2c tree for you.
+I tried building this on drm-rust-next against the base commit
+(4c9ba407018e8deb06dbc643112bac8f40404f95) but am getting some build errors:
 
-Thank you.
+error: no rules expected `:`
+   --> /data/source/linux/drivers/gpu/nova-core/mm/pramin.rs:51:9
+    |
+ 51 |     base: NovaRegisters;
+    |         ^ no rules expected this token in macro call
+    |
+note: while trying to match `(`
+   --> /data/source/linux/rust/kernel/io/register.rs:809:52
+    |
+809 |             $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
+    |                                                    ^
 
-Igor
+I'm guessing maybe because this depends on some other series that isn't in
+drm-rust-next or something in drm-rust-next has changed things here.
 
-The following changes since commit 527dd7fb6209857f8ff4426055b3a418e60faa8b:
+There are a couple of others with this series applied as well:
 
-  Merge branch 'i2c/i2c' into i2c/i2c-next (2026-07-29 23:40:39 +0200)
+error: no rules expected `build`
+   --> /data/source/linux/drivers/gpu/nova-core/mm/pramin.rs:115:39
+    |
+115 |         let window = io_project!(bar, build: PRAMIN);
+    |                                       ^^^^^ no rules expected this token in macro call
+    |
+note: while trying to match `,`
+   --> /data/source/linux/rust/kernel/ptr/projection.rs:319:21
+    |
+319 |     (@gen $ptr:ident, ) => {};
+    |                     ^
 
-are available in the Git repository at:
+error: no rules expected reserved keyword `try`
+   --> /data/source/linux/drivers/gpu/nova-core/mm/pramin.rs:174:45
+    |
+174 |         let view = io_project!(self.window, try: OffsetLoc::new(offset));
+    |                                             ^^^ no rules expected this token in macro call
+    |
+note: while trying to match `,`
+   --> /data/source/linux/rust/kernel/ptr/projection.rs:319:21
+    |
+319 |     (@gen $ptr:ident, ) => {};
+    |                     ^
 
-  https://github.com/ikrtn/linux.git tags/rust-i2c-for-7.3
+error: no rules expected `:`
+   --> /data/source/linux/drivers/gpu/nova-core/mm/regs.rs:29:9
+    |
+ 29 |     base: NovaRegisters;
+    |         ^ no rules expected this token in macro call
+    |
+note: while trying to match `(`
+   --> /data/source/linux/rust/kernel/io/register.rs:809:52
+    |
+809 |             $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
+    |                                                    ^
 
-for you to fetch changes up to 61ddec70c9bcc3d4b0471c8683e57d3b03cecf0a:
+error: no rules expected `:`
+   --> /data/source/linux/drivers/gpu/nova-core/mm/regs.rs:46:13
+    |
+ 46 |         base: NovaRegisters;
+    |             ^ no rules expected this token in macro call
+    |
+note: while trying to match `(`
+   --> /data/source/linux/rust/kernel/io/register.rs:809:52
+    |
+809 |             $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
+    |                                                    ^
 
-  i2c: rust: mark I2cAdapter methods as inline (2026-08-09 12:04:34 +0100)
+error: no rules expected `:`
+   --> /data/source/linux/drivers/gpu/nova-core/mm/regs.rs:62:13
+    |
+ 62 |         base: NovaRegisters;
+    |             ^ no rules expected this token in macro call
+    |
+note: while trying to match `(`
+   --> /data/source/linux/rust/kernel/io/register.rs:809:52
+    |
+809 |             $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
+    |                                                    ^
 
-----------------------------------------------------------------
-i2c: rust: mark I2cAdapter methods as inline
+error: aborting due to 6 previous errors
 
-A single cleanup for the Rust I2C abstractions, targeting 7.3.
+ - Alistair
 
-`I2cAdapter::get`, `inc_ref`, and `dec_ref` are trivial wrappers around
-`i2c_get_adapter`/`i2c_put_adapter` and were showing up as their own
-symbols in the build. Mark them `#[inline]` so they get folded into
-their callers instead.
-
-Signed-off-by: Igor Korotin <igor.korotin@linux.dev>
-
-----------------------------------------------------------------
-Nicolás Antinori (1):
-      i2c: rust: mark I2cAdapter methods as inline
-
- rust/kernel/i2c.rs | 3 +++
- 1 file changed, 3 insertions(+)
+> +
+> +    /// Location of the window inside BAR0.
+> +    PRAMIN: PraminWindow @ 0x700000;
+> +}
+> +
+> +/// Owner of the PRAMIN window state.
+> +///
+> +/// [`Pramin::window_at()`] repositions the window as needed and returns a typed MMIO view into
+> +/// it, holding the manager borrowed for the lifetime of the view.
+> +pub(super) struct Pramin<'gpu> {
+> +    bar: Bar0<'gpu>,
+> +    hal: &'static dyn MmHal,
+> +    /// MMIO view of the PRAMIN window in BAR0.
+> +    window: Mmio<'gpu, PraminWindow>,
+> +    /// VRAM range to keep the PRAMIN window inside.
+> +    vram_range: Range<VramAddress>,
+> +    /// Cached window position.
+> +    window_range: Range<VramAddress>,
+> +}
+> +
+> +/// Typed view of VRAM through the PRAMIN window.
+> +///
+> +/// Inserts an ordering point after previous writes through the window on drop. Views returned
+> +/// by [`PraminAccess::view()`] cannot outlive this access, so the ordering point covers every
+> +/// write made through them.
+> +pub(super) struct PraminAccess<'a, T>
+> +where
+> +    T: FromBytes + IntoBytes,
+> +{
+> +    view: Mmio<'a, T>,
+> +}
+> +
+> +impl<T> PraminAccess<'_, T>
+> +where
+> +    T: FromBytes + IntoBytes,
+> +{
+> +    /// Returns the MMIO view of the accessed location.
+> +    pub(super) fn view(&self) -> Mmio<'_, T> {
+> +        self.view
+> +    }
+> +}
+> +
+> +impl<T> Drop for PraminAccess<'_, T>
+> +where
+> +    T: FromBytes + IntoBytes,
+> +{
+> +    fn drop(&mut self) {
+> +        // Insert an ordering point after previous writes through this window.
+> +        self.view.cast::<u8>().read_val();
+> +    }
+> +}
+> +
+> +impl<'gpu> Pramin<'gpu> {
+> +    /// Alignment required by the PRAMIN window.
+> +    const BASE_ALIGN: Alignment = Alignment::new::<SZ_64K>();
+> +
+> +    /// Creates the window manager for the given VRAM region.
+> +    pub(super) fn new(
+> +        bar: Bar0<'gpu>,
+> +        chipset: Chipset,
+> +        vram_range: Range<VramAddress>,
+> +    ) -> Result<Self> {
+> +        let hal = hal::mm_hal(chipset);
+> +        let window = io_project!(bar, build: PRAMIN);
+> +        let base = vram_range.start.align_down(Self::BASE_ALIGN);
+> +        let window_range = Self::window_range(base)?;
+> +        hal.write_pramin_window_base(bar, base)?;
+> +
+> +        Ok(Self {
+> +            bar,
+> +            hal,
+> +            window,
+> +            vram_range,
+> +            window_range,
+> +        })
+> +    }
+> +
+> +    /// Returns the VRAM range a window based at `base` exposes.
+> +    fn window_range(base: VramAddress) -> Result<Range<VramAddress>> {
+> +        let end = base
+> +            .checked_add(WINDOW_SIZE.into_safe_cast())
+> +            .ok_or(EINVAL)?;
+> +        Ok(base..end)
+> +    }
+> +
+> +    /// Check the window covers `len` bytes at `addr`, moving it if needed.
+> +    ///
+> +    /// Returns the window offset at which to perform the access.
+> +    fn window_offset(&mut self, addr: VramAddress, len: usize) -> Result<usize> {
+> +        let end = addr.checked_add(len.into_safe_cast()).ok_or(EINVAL)?;
+> +
+> +        let inside = |r: &Range<VramAddress>| r.contains(&addr) && end <= r.end;
+> +        if !inside(&self.vram_range) {
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        // Reposition the window if the access falls outside it.
+> +        if !inside(&self.window_range) {
+> +            let base = addr.align_down(Self::BASE_ALIGN);
+> +            let window_range = Self::window_range(base)?;
+> +            if !inside(&window_range) {
+> +                return Err(EINVAL);
+> +            }
+> +            self.hal.write_pramin_window_base(self.bar, base)?;
+> +            self.window_range = window_range;
+> +        }
+> +
+> +        Ok((addr - self.window_range.start).into_safe_cast())
+> +    }
+> +
+> +    /// Return a typed MMIO view of a `T` at `vram_addr`.
+> +    ///
+> +    /// Returns an error if `vram_addr` is not aligned to `T`'s alignment, or if
+> +    /// a `T` at `vram_addr` does not fit within the VRAM region.
+> +    pub(super) fn window_at<'a, T>(
+> +        &'a mut self,
+> +        vram_addr: VramAddress,
+> +    ) -> Result<PraminAccess<'a, T>>
+> +    where
+> +        T: FromBytes + IntoBytes,
+> +    {
+> +        let offset = self.window_offset(vram_addr, size_of::<T>())?;
+> +        let view = io_project!(self.window, try: OffsetLoc::new(offset));
+> +
+> +        Ok(PraminAccess { view })
+> +    }
+> +}
+> 
+> -- 
+> 2.55.0
+> 
