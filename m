@@ -1,275 +1,149 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020139.outbound.protection.outlook.com [52.101.195.139])
+Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7BB443E20;
-	Wed, 19 Aug 2026 12:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.139
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787141691; cv=fail; b=W2iID7SCTw0P7r534OTdFDZ5U+r21484X8SLLy+U4aYx7mG7uLNUtSIX3F9y30F/2jfIXpBHRf6zWHRJpSuaQ5mU2XWodBqVUPSj7QnVrtJ46+47NRef/wzrNuqmVY1y8nxD8IQj8len23gJ15sVHbcMq5O5P+tQH7lxJFyAiKs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787141691; c=relaxed/simple;
-	bh=Y0QqxdbX9JpXTQ/5wQ8Co7DQhdnCsqvi23Oe3goqUxQ=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=BgqSnigOyD1gKlKHM4NlOZoBZRODUGbVs4F4A5C7dLDYsytNrmRusSkxWJHC0GKxIP/N1YkqI3acFmAEy7HU6K9/0R/73sKuRU5pR+jf0v76u+nZbxnG6W2VR2m1ybUBd2K3KO1GU8/yDCLdz6GYuPCL4Hmln96DQAxg4hu1OcA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=LLGEE10P; arc=fail smtp.client-ip=52.101.195.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17483451C6
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Aug 2026 13:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.137
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787144478; cv=none; b=Kvna7Yp5jA3BcL+P2C1Smr+m7ZMd2CuzAIjVsV4J5kggEsA6TZTnsnCIr11Q+Bie+8FjissvmqkF7n8JTmlahx/cKFIrmSWw8Rfdtd9bHn3wwEl1A08F4ZtYHciT8BkwfDOgqqF3NukWcZ+5aIiCXjOL+3Rgkgbe/ijkTata0rA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787144478; c=relaxed/simple;
+	bh=QtGbJ04y6+5U+fCifeswP4gFGkJ3Gm62fBvFHAY80ho=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=pvlHPyYIQxnaSNtZU341ZcOKRdzXp1jAZgSX+k0d90xnTacPIz9w/i75xf6x8+ESKjfEKsOaZ1222LnO6qJcW8HGEpyvydSQZxbotRuaacBfdDY8lKyPqH5eUFxEgnIG1dlDSNXEhZ6VYaeQsUWqjV4WnNldlSKL3K9vEj4PL78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=oQHW0dtE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ty86Zl2P; arc=none smtp.client-ip=202.12.124.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="LLGEE10P"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZSTZNi6kscekfN+dv7djpNckU1su1XOSdLaTxqEgkfsBghkoIN7FEq1jGCZiZb2Q8mgyuovQWdhQnaMOWPIVmglYDxOhz77YO/sntppGKL+GrCVxwZrIiEVy2Ox6AYRYjQ8hp/4fgNKMX5wtgkaTl5vAkJqeqEF2q3n24UYj6qleK5b+BdV5wRNUsWWNO9iekDvbEfmUI5/VhK6SxWRGOcMA7HChjGJt2RE8BbTlIM0COc2GTlrqkPCOdryXCC6IqJUtAE2T4+1hQf1GfXosMuO4AG+/dIMVuzl0CIKw3SPuzDOauAxjX7AFKXFnDb2x6VHNYS3t4wkgSmlPr24Frw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vQ4iLpkBuae9Mxy4i/PnPRHeYirc0VuG0g7IO79/TmU=;
- b=NdZiuKtGlwEf5voCRZ2I0sLh4p0keAkmu52FQT3ipb2Uvt4g6R3ETM5eLtEAJy0/Bg1xkZfWy0cF2RrqtIsneXx91bJ+h/lKmsh88Tu0ZMzwvtTxS49cnrbIuWe0Q+QJ24LsSBP7wUlGm97VgXX3626Nwy8CrI3ca5Wy1cyrKzs9u4fLZpLFngFO5tYfLrseliFtCB6Ag0Wi0GX7IeP/FcbBhh+KrRPBzQplQVbr0OPQUG2aIzucP5wr5qcLtYwwIY7J/Dj4R5v7joXqxod5sNhP3b+KUpI+FKwI5vOjofYW7W9FzKLcL3IcT+Mdq62GkS1+WHmyFcqvUHSN28kZLA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vQ4iLpkBuae9Mxy4i/PnPRHeYirc0VuG0g7IO79/TmU=;
- b=LLGEE10PWyY9bxDpC0hO82/vGpoqijt9eQy479QPN6sOwiUZC+XHJ5gmygQT2F978tu+9zJjo/Mg7ctgHrxBab4f/sL/wpD6NM+2VuY6GROjSCzo9KzcErb/nNVOXaVwCrtRs45phzTXNgJbxK8xvfSqApLv3VuL7VqA59NJOXo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LOYP265MB2095.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:11e::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
- 2026 12:14:46 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
- 12:14:46 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 19 Aug 2026 13:14:45 +0100
-Message-Id: <DKSWUS633GRQ.2D3PDBFMZNW87@garyguo.net>
-Subject: Re: [PATCH 1/6] rust: alloc: add Vec::push_init
-From: "Gary Guo" <gary@garyguo.net>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Eliot Courtney"
- <ecourtney@nvidia.com>
-Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil Babka"
- <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Uladzislau
- Rezki" <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>
-X-Mailer: aerc 0.22.0
-References: <20260817-b4-nvkv-v1-0-b84db5e84b67@nvidia.com>
- <20260817-b4-nvkv-v1-1-b84db5e84b67@nvidia.com>
- <DKSVRS7UAL9U.3RUTW74RVSEHQ@kernel.org>
-In-Reply-To: <DKSVRS7UAL9U.3RUTW74RVSEHQ@kernel.org>
-X-ClientProxiedBy: LO4P265CA0015.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ad::18) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="oQHW0dtE";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ty86Zl2P"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id 42E3513000D9;
+	Wed, 19 Aug 2026 09:01:15 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 19 Aug 2026 09:01:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1787144475;
+	 x=1787148075; bh=ko4SXG98a7xqE6B2QdIzELBbHwIyfKkFOxP4U26IyDI=; b=
+	oQHW0dtEGsk7oUzHtrNDZwW2v+e34yojBjHaZ9cDrvpmw3Vl0ju0zJ1H0FidTbLK
+	xKszSdGEokMzXYYlC3ZPFyYaVLckJpRQ6xNpe4zCvLhasz/Pwx1FQWeOc3ksCKnL
+	1VfJm+oo/yFlpFrIxu82WEZ0ytfCHdZdBa1A8Kx9wCUpE8RNF2lSzzaoJBdDWk7n
+	KbrH76dAvhkpsSs2AbtfSKss3hF5p+LjzijuhgjSI4Z2y74siyEJPmjauZkx/r7h
+	Yzeg3nVuWKegtQQMJuL/NPxAsmGegHKzwEm3lj38j87W1BqC88lfX0u8z8RPYLkr
+	/bp2SNjFPkFExcBwDmyMcA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787144475; x=
+	1787148075; bh=ko4SXG98a7xqE6B2QdIzELBbHwIyfKkFOxP4U26IyDI=; b=T
+	y86Zl2PxWW1IyYJ9MfFAOESk25Fbx7HQQEc9l5JxGY1dRdQVKhkh4k+Q4fd/o9+H
+	OS47TsjJ52zV8DpKxKfq18QP6GbVZ3xCt9WcM8XIU+BuUM3AYirtamtEg429m28o
+	b6h9j799SiBVAccnNj8+GeNCA8iDEReky2nggTKoLwxzzk1veup39CyfP8DsakoX
+	SBhbz5ohC4H8D7TxAn8dIqUD/yHeh/lbUQvNVJIwSW87zQEUiRvsnQUymH5uKp0/
+	J1icm3kvqVneRj6U34TWaAMt/4DWMoSvO9KMTrtEp8+6QmngUW+PaheCkvWfEaC1
+	nytks+8IyAEPFz2O0PBdA==
+X-ME-Sender: <xms:GqmFajtUQjDOaaSG579Lxy7kh_L0f6gAmzydUNnc8OYjuGJ2nb7SQg>
+    <xme:GqmFak2TXb486CGIWNRg2LOtaE_V-ubvXO-qQNQ3KuWFazRY-8bAQdknYiSoduhb5
+    -ZEM4FanBGlJ1UwQIG14fdg1QZQWC-Buegq4X8b9cr42J3kLJ4rpZo>
+X-ME-Received: <xmr:GqmFan7z5C-NBOKt0p5awMl1V3BRApXzST7qpmNcPxz5RW3klDRq5sMhKCRkAjE3Ov_YbFyFvqX0sOTo7S0Y8Vfu>
+X-ME-Proxy-Cause: dmFkZTEHbLzbVC/SccI56gbjZJLWcGToDcmFagp/JUK7zdOysBTe8Z7f1Ig9WU3i25XhVL
+    zTC9BW0cxj+N5tCzig8u9uqST/o/Fx25umgrXpEWspefCGOPSYykZR4ZoRs7fAvfHx5Tka
+    OJhgF8FtQSRZ2nwN8s3Mu6crfp8ruGeE3QgI8qTJztg1ei9MKur4Q4HEDOe4Xz5h8Vt4DJ
+    IxmiN/ljGEDOqmA5PWaNcKWtf5AXCjHYulZ8asNLHCOTM50hMrPrWOedxaBizEyuFeKWFD
+    URptI2MiyQ2NmpojVrZqC3ckasnCGMO7LQeQ7gKmE0rtD24Y5eeyddKQ07KR4tHk+XJaNt
+    qWt+wWlmxmxj7hFPBh+/XHrr2RkvflyVI2UIDwweqKLxjyaErk71yawnZyDy0LD4AEeq4u
+    oD80//NXf/Uj7ud+N3Wp0lc0A8xv4zGnyhbOUavfa/isHI9owSu5uT8L7HcAo0+BYQiobQ
+    yd+DTWozEijdeTua99vitDFxIKa32kHWf9CUbH/EVlfscZNAkz8IK7ZsPAxrSjDNzg8EA8
+    lE+SByjhjRaHIQRWVC6FVAzB8xwjz/jzR5TdRIrNHo8/gupr+TaToeVsscaSGsGrtJuk4x
+    FE6t8ntE6eoVVOl12P62WI8Df4lNS5UpMJeNkwEZp2or5zd7D879aVyeWV0Q
+X-ME-Proxy: <xmx:GqmFauOROHElZP3LZklEhLkpkHSpoZqg8SxrQxXwZ9BzbDk4UiwE0w>
+    <xmx:GqmFajEUm_pY9nu_jPoe0m2vPGkHpU55jDg8IEjQ0Or2w30EofrHKA>
+    <xmx:GqmFaq1GE87yTDjmMvqh9FYun-vEv6KkE20IpsCSae6OZHEc6ZA0-A>
+    <xmx:GqmFaiEjVoPn9rpBS_GOWhgHY-Z_iLuWcEkrXAcKf54tjTcm2rwQJw>
+    <xmx:GqmFalYN8kkvC_U-pPFaYgsE3-eCp7SRaPmZEZ6aGggblFQQQkJ0yg5u>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 19 Aug 2026 09:01:10 -0400 (EDT)
+Date: Wed, 19 Aug 2026 22:01:06 +0900 (JST)
+Message-Id: <20260819.220106.1561543001385383760.tomo@flapping.org>
+To: a.hindborg@kernel.org
+Cc: tomo@flapping.org, gary@garyguo.net, ojeda@kernel.org,
+ acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
+ daniel.almeida@collabora.com, frederic@kernel.org, jstultz@google.com,
+ lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
+ tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH 0/4] Fix forward()/expires() racing with concurrent
+ arming
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <87pkzf8wrh.fsf@kernel.org>
+References: <bAoCglwDHEBnzbZXVYa9FIwZTfbJ_4lMqFz-20jmYhwlUf7y6s8L5ev0Ezf3wc4r9HkvrqfnVY1LotFV6NwWfw==@protonmail.internalid>
+	<20260818.202111.221982706607091751.tomo@flapping.org>
+	<87pkzf8wrh.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LOYP265MB2095:EE_
-X-MS-Office365-Filtering-Correlation-Id: 062c7c77-1309-4979-b797-08defdeb7550
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|10070799003|366016|7416014|23010399003|56012099006|10067099003|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	S3CcyRIvCUmwmyUCTVKXNPVRqh0qHZGfDYkhQDKU9IsWcSct+B7IWYxFN8XupaUya9zAdksn4beuv/Z/Rdgo6M9ERPasBZ/4jZaqVpttlOga8vdI5lwD/ta3AGnskVYJIiSEzPeDOOrgrN5qBrqT/78prZ67V/pS4nSrzrJsy7n2uh+LxgOL7UTKe71Z9ow4I6SIdxbbP9xh0zpk4XiDEbsHWVRCPA0QW082LGFcIKqN6VkzdnLwIzB8g5aqnHbw1tGGU8HP+cl1vQ2lD5oawKutl3THj6/eGW/GLa6REqJqKiwiy4GhtIrer3DkI+y7995beP0i2p1w+B8bxG8MoGkvj6f0bs85gqYrMZ8K167v6XYC90kEKA6P3xhL+xRdvUMdwmqdBlIGzckt7D07xbIjj5AkwHLvvP3oicu6KFA1FMuSlaDLthYIFjz9Y4iskXIbjgIw+UvfUEecusHgnvwfeRE7SQbcP/tPfugdRT4IQw1TRhJ+xMxcutX8i6FZNqiTk2Fy8mJ9p8wIPgMql3ituMppeu6pOp0hhmsVLrhEaCwOZXO/bp/82ppYRUvRJQbBZSPDXBVttBpq9M8OLVzsebzZ8uD6kok85RCJXR84sJW1RNM6JxJXF3H5uX/p7ZYB4nnAWSRijHMiBtKca2xZ3VGBIX9iq2EeXTQiUj0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(10070799003)(366016)(7416014)(23010399003)(56012099006)(10067099003)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M0hrci81eUJ6L2puV3VvcUkyYjM2blVERzhJbWRYNUVMVG9hcDI1WmpnL1Zi?=
- =?utf-8?B?NXErRkNPV0RlTzdrV0tqMXVJQVpYTDFJSE50NFMwTXdveXlaT0JJeVBUSTBr?=
- =?utf-8?B?YnByQmVuVCsxZVJGcGk4VGF2SnlvZkdEd2xGL0N0ZGsyMDFHVlFQODBRMndT?=
- =?utf-8?B?alRwZU9TZ21Ld2p6NEg3SFI5WkhXd2owY1VtaXZqME5WMVNBWFJhWk5SZzho?=
- =?utf-8?B?ams5VzNpTWs4N0tFbXJscDZIdjB1M3VncGU1aVpoN0hmLzlLNEZMSExsbDVv?=
- =?utf-8?B?SUtIbnJvYzU4VjUrM1drbHNZM1JVL084eTRBRUJ0dWtEZW5lZXJjckJqUDQx?=
- =?utf-8?B?RmRGZUtpajlKU0xtdnlZMDZlVHlTL2l1Qmp5VktNRDdvbDh6bjN3SlJQRlZn?=
- =?utf-8?B?V1VzaFcwNGhaWEFSUGRHRW5GYklYNkc0Y3UyU1hzdmRIbjRKYlBtL2tUa1ZP?=
- =?utf-8?B?elZjZkdIOVdMUnlNc0pveG93amwwQXRYdkFFMUwrYk1uc0psOGF3QUtZdlJt?=
- =?utf-8?B?aUVuZ1F2WXB2MFhWdjZvc29XRDhQU0d1alFla1RjMktwMFlNM25nMXNrMll1?=
- =?utf-8?B?Mms3dHNVenJQYnhvZmFMUjYwdk1WdmxOL2FBTytDK1pCZjJaTWJEWGNiYThE?=
- =?utf-8?B?bUpRVEd6c0ZHZ2ZlRzljeURWdGc5NTZmNS92ajJ2eVBaTUZYZFJuSnlpZUdp?=
- =?utf-8?B?MVlKMmJRK00rVDhvaVRHelJlUGNUaEp3NThUODBzOERrRzRjRmdXVGcwTnhB?=
- =?utf-8?B?TUZpb0xHamhiaHJEZzUwOEdYa2hkY1IwcHZZcnVhS29MODhxcHJMdU5oUUFv?=
- =?utf-8?B?a2xrRjdkR0l0eURuVHYwcHdWRUlDd3lOR3ExdGNxRGcxWjlzbTVvUTY4OEw1?=
- =?utf-8?B?Tm9lcy9wVTdNdmwzSm9rZzJtMjdDeVEza1FPWXBBT3g2OUJ4eGJ2cFEyVHk5?=
- =?utf-8?B?SUZSb25tYVQyRyszRHNxSFY3OCthY1NPSmVnYXh5ZndQZHZJeExVOW1vYXdV?=
- =?utf-8?B?blFCc0VVazhyQVFsN29qSG9KT2dJZU1sWnhKeVVLTnVYTDl3WVRYNXZWa2hR?=
- =?utf-8?B?ZnUxbEFQNWFoMnRpY2FKYWcwdUdVb2xoZTZNcnB1SGVLVS9BLzIvVHovWXJB?=
- =?utf-8?B?ZUFMUEtQSSs3UmxLN21wWUpJZG94bGlTUUxzYnMycnpNaDkxUkxySlJDWkg4?=
- =?utf-8?B?QmNxdjdXZElUT1lRbmpadFN1aGpsV2kvdzJzbmxWR2VmbS9sWFlBSGMyMGtC?=
- =?utf-8?B?M2pRRFJ5S3ZBM2VUbVVuZGVBaDdERmFRYm1LT2ExM1VEeTVDd2NOZnRsNjht?=
- =?utf-8?B?bW02MUl2d3lkb0dzdFl6YVdIU2JrbzV0Rm5weFZIZloreFd1YTNTNlRRODI2?=
- =?utf-8?B?QjFWcWd6andMdnRQUmhMcURiaDdCaHdDclkzRkl2QUE0WlczOUYzc3MyS1h2?=
- =?utf-8?B?L1BwbTV5MFNsNS9CNzBzYng4SXZkc3VOTmUvd1M5N1lyRk83MXRHcW1zSGJQ?=
- =?utf-8?B?RDV6SXBxUjI1MEdpSWk1L1FmRnlnMytYcjR2OFhYM29zV0pyaXVYWWhNSEIy?=
- =?utf-8?B?Vy9lOGl6cEo4U0wrbkZOS2JVemhhcnoybytvM3V5akxlUWt0QlBLVFI1YStw?=
- =?utf-8?B?d21Yd00yRzlQWk9FanByR3FFSGtvTVhVbUZPT0ttRDlGSGdKeDhRUVdPS3V5?=
- =?utf-8?B?ZDh3QkdabWxZcXhEbnRWZHRLZ2Y5VExONWpsOU1EaUozN04zRW5pOTVzTzFB?=
- =?utf-8?B?WGJyL1NYM2xNd1VRRGJsZlJ3ckdxUUk1QTdDZDhlMEl0ZnMrY2FZVFpQNHhB?=
- =?utf-8?B?ZTdPeDMwU1Nhc2dqa0NLaXhmOTlKYU5wT25wbG1zR0dtREYxRUtvWk1qUHNB?=
- =?utf-8?B?RFRTT2E2a0Q3MXdJTHpoMkRrR2lHQ0I2ZFc1OHBFOHhYQ01zSlQ4NnRMSFpB?=
- =?utf-8?B?T3M5ampPOFVmamo3VXpMVTZaa0ZiNnppR2FMYXVIenN3RTlmUXVDQVZDUVQy?=
- =?utf-8?B?d3lZdkd2M1YrRHJLaG1RZ2x2ZjZMaVJ0QVU0RTluYUxKWTQ2QzNlRFlXVlZi?=
- =?utf-8?B?Nm1ocGdaam5HVXVKTzZjQXhDRW9jZ0ZObHY3UnZ0R0dreG91YW1SNEhYMUdS?=
- =?utf-8?B?a0YwV0dRUDFybkRWeGQ2eGo3Z0dLV3JHQ0JUa1lQaHZCTHp2UUVReWZBWmpK?=
- =?utf-8?B?OVpxQ3VFWFVRQnVyUXFjUTIraWY0Sjl0bExwWk1DdFg5QjUvSGRScnREVVRn?=
- =?utf-8?B?ZG5YdEJaYjRLVnFobVlUUFlYeEl3Rk05SGpRaEdmMmZ0U0VqNGpzVkpCMURv?=
- =?utf-8?B?R2ZSWVNUanNmZjJmQ1BiNzVqY2VzYkJIZUJPUWh5c3JUNUhuelFqdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 062c7c77-1309-4979-b797-08defdeb7550
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 12:14:46.1400
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: leIpNm9e62iKblyOQIHSu0nPqQ4EES5FnY92jc9jNzGYOTP36A66Bpk9AypjpGkb6e17beknf56MgDizMpY9kw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOYP265MB2095
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed Aug 19, 2026 at 12:23 PM BST, Danilo Krummrich wrote:
-> On Mon Aug 17, 2026 at 2:56 PM CEST, Eliot Courtney wrote:
->> +    pub fn push_init<E>(&mut self, init: impl Init<T, E>, flags: Flags)=
- -> Result<(), E>
->> +    where
->> +        E: From<AllocError>,
->
-> This signature rejects impl Init<T, Infallible>, which is the reason why =
-we have
-> e.g. Box::init() and Box::try_init() with different fallible signatures.
->
-> So, if we follow InPlaceInit, it'd be
->
-> 	pub fn push_init<E>(&mut self, init: impl Init<T, E>, flags: Flags) -> R=
-esult<(), Error>
-> 	where
-> 	    Error: From<E>;
->
-> and
->
-> 	pub fn try_push_init<E>(&mut self, init: impl Init<T, E>, flags: Flags) =
--> Result<(), E>
-> 	where
-> 	    E: From<AllocError>;
->
-> In theory we could also simplify it to
->
-> 	pub fn push_init(&mut self, init: impl Init<T>, flags: Flags) -> Result<=
-(), AllocError>
->
-> and
->
-> 	pub fn try_push_init<E>(&mut self, init: impl Init<T, E>, flags: Flags) =
--> Result<(), E>
-> 	where
-> 	    E: From<AllocError>,
->
-> However, InPlaceInit actually achieves more with the init() and try_init(=
-)
-> distinction:
->
->   What init() accepts, but try_init() does not accept:
->     - impl Init<T, Infallible>
->     - impl Init<T, E> where Error: From<E> but NOT E: From<AllocError>
->
->   What try_init() accepts, but init() does not accept:
->     - impl Init<T, E> where E: From<AllocError> but NOT Error: From<E>
->
-> So, with the simplification we'd technically lose out on the
->
-> 	impl Init<T, E> where Error: From<E> but NOT E: From<AllocError>
->
-> case.
->
-> In any case, init() and try_init() seem a bit mixed up on their purpose
-> regarding fallibility and error type strategy, but in order to really cov=
-er all
-> cases I think it is necessary.
+On Tue, 18 Aug 2026 13:59:30 +0200
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
 
-I think this might also be solvable with a new trait? Something like this:
+> "FUJITA Tomonori" <tomo@flapping.org> writes:
+> 
+>> On Tue, 18 Aug 2026 11:02:27 +0200
+>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>
+>>>> perf and CFS bandwidth have a flag as well as a lock. The flag is "do
+>>>> not arm while armed", which is the same rule the types enforce
+>>>> here. rtc and the softlockup watchdog look like they cancel first and
+>>>> then start instead. None of them arms a timer that is active, so I
+>>>> would rather the abstraction did not allow it either. Does that seem
+>>>> reasonable?
+>>>
+>>> I am fine with preventing starting a timer that is Started or Running,
+>>> but I am not liking the `UniqueArc` requirement.
+>>>
+>>> I have a use case in `rnull` where I have to start a timer behind an
+>>> `Arc` with no way to obtain a `UniqueArc`, so I would prefer if that use
+>>> case keeps on working. Without this, I would have to allocate a box and
+>>> put it behind a lock, leading to double indirection.
+>>
+>> Before the UniqueArc requirement, I would like to check which timer
+>> you have in mind? The bandwidth timer, the per-command timer, or
+>> something else? The two seem to need different things, so I would
+>> rather not guess.
+> 
+> The bandwidth timer. It is started from an `Arc<NullBlkDevice>:
+> HasHrTimer`. If we make the suggested change to `ArcTimerHandle`, I
+> think I would need to change the `NullBlkDevice::bandwidth_timer` from
+> an embedded `HrTimer` to a `SpinLock<Box<HrTimer>>` or something like
+> that.
+> 
+> Maybe this is fine. I don't think it will affect performance for `rnull`
+> - this is already a throttled path. But it gives slightly more
+> convoluted code in the caller by reducing the way we can use the API.
 
-    /// Trait indicating how two distinct types should be unified.
-    trait Unify<Other>: Sized {
-        type Unified: From<Other> + From<Self>;
-    }
+I think we can allow creating HrTimerArc<T> from Arc<T>, so that UniqueArc is
+not required. ListArc does the same with AtomicTracker, an atomic bool in the
+object that records whether a ListArc exists:
 
-    /// Types can be unified with themself.
-    impl<T> Unify<T> for T {
-        type Unified =3D T;
-    }
+    HrTimerArc::try_from_arc(Arc<T>) -> Result<HrTimerArc<T>, Arc<T>>
 
-    macro_rules! unify_rule {
-        ($ty:ty; $($o:ty =3D> $u:ty)*) =3D> {
-            impl From<Infallible> for $ty {
-                fn from(v: Infallible) -> Self {
-                    match v {}
-                }
-            }
-           =20
-            impl Unify<Infallible> for $ty {
-                type Unified =3D $ty;
-            }
-           =20
-            impl Unify<$ty> for Infallible {
-                type Unified =3D $ty;
-            }
-           =20
-            $(impl Unify<$o> for $ty {
-                type Unified =3D $u;
-            }
-           =20
-            impl Unify<$ty> for $o {
-                type Unified =3D $u;
-            })*
-        }
-    }
+It fails when there is already another HrTimerArc for the object.
 
-    macro_rules! unify {
-        ($a: ty, $b: ty) =3D> {
-            <$a as Unify<$b>>::Unified
-        }
-    }
+> For the completion timer, the change you propose would work fine I
+> think. I would just start the timer via the unique request reference
+> rather than the shared one. This is probably a better way to do it
+> anyway.
 
-    unify_rule!(Error; );
-    unify_rule!(AllocError; Error =3D> Error);
+Agreed.
 
-and you just need to write
-
-    pub fn push_init<E>(&mut self, init: impl Init<T, E>, flags: Flags) -> =
-Result<(), unify!(E, AllocError)>
-
-This looks like a lot of work to impl, but realistically this is just an
-additional trait impl near where you'd the put the `From` impl.
-
-We can even provide an attribute macro `#[unify]` so you just need to stick=
- it
-on your `From` impl, e.g.
-
-    #[unify]
-    impl From<AllocError> for Error {
-        ...
-    }
-
-would generate
-
-    impl Unify<AllocError> for Error { ... }
-    impl Unify<Error> for AllocError { ... }
-
-Best,
-Gary
