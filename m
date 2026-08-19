@@ -1,116 +1,157 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513A745C713;
-	Wed, 19 Aug 2026 11:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04DB3515D1;
+	Wed, 19 Aug 2026 11:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787138636; cv=none; b=tZmbQlt0TujC0jvjxtdZY+hG5HmXvs9OclxFG2ahSpkamrJsAS+F7prgmGOM9wjaz7eHrV27tX0y6LWp/62/XWgKaHnWBgnTzY4Uj5TdW4K+iQh02whfPDcKlYSPggBKsPJZUJ1OxY8VlgYnbx3cOT20UsSZ1W/v2xFFMUPsPkI=
+	t=1787140253; cv=none; b=nQ6IchOBCuFB/6pJ7V2s4mOv0EofOnR2cMSAqhoHY+QfrlATCHgQgMYjxYM2TkDU86WUGxXxtat5p17MbrA7VKeVuIU+3nLQR+ay4KLG1Aj34nAw4DdbYnN8nDLLkrlWSKyNI54ilSyt0YMAnFQdS+YHWhmQ8gQuqWSj1y0DtwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787138636; c=relaxed/simple;
-	bh=aRdMLh7UP2MhicwcvC1u1hRVnrNju1HDVz0utZU5byU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=laKFwYNgrLMMr6jUnJdbRvznkAo6QjLoL2/kSsojGNqS68K7pJa8RvJ/rbN1DoXIkv1xuqNdk1PYEdp18HIDK03/LHd6/tT72P4CCUoFPWkyVBqXWEl7VYtMrQSuHVpFyEkwyKR4PZrTybBv4WSl6MkIutmwZ7XrSJGJ3dFTj0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PcBjsKaH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787140253; c=relaxed/simple;
+	bh=jAefKOGZSi04nC0I8tcITnjXv9j/gcmjiTA3Wug2Xt8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YrWPNtGBoq3T8AQvvRAJEmlMgPqwdUejioura9Fixp4vP8Nbo2yVUvsvSmfGoAY0hLeWCaoBv4qxshNSnlPqgKA2bkg2rlXPumwdv7QXy/hEOXdbUx6Q9b5RWjZfpsjatNOEbJWZ1vkvBQdXevPwLkHgBNqgeRqQEzm6jMzPoW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LNVICCgH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PcBjsKaH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D2C1F000E9;
-	Wed, 19 Aug 2026 11:23:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LNVICCgH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744891F000E9;
+	Wed, 19 Aug 2026 11:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787138635;
-	bh=QgvazMJHmYfZ8Q1rsg6DrrOav9bRml6UL8M0L4LzXNM=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=PcBjsKaHg0Gfg6eN15Zexqs8qukqL+KSCvY7Uk72YD7wocrIPqWQXPUEdel8lKduT
-	 tSbv5XZheBupNwIp+EPPL4BzLCaAMVlcdxiJ4Io3efcWjUyjXNeYiq+q5JTejqcosf
-	 D2hLfRmXzc0QPHiGXOedg4Nwb9lYxxhV6Xd5eHmVFKrZKRKQSPuGAonx6kAXfUNxs7
-	 AMEqlNvtFbzA6ULNzRabj+v5XvWqMxZpc8mrlyk0QMLSdAuDTFjI+qRDgc1pI4M32V
-	 pI2hBdDAvEGExS8v+hP2aiSVAnH9Qc9hlgfnYtLbhZAL2OGuupIBmUl+5Q4BNqnev/
-	 qKS6qhHIKM2kg==
+	s=k20260515; t=1787140252;
+	bh=PzZQi/+zyv5tISCSrhzpaU2w5pSh1zq3AvPapYtU2N4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LNVICCgHe+pAUQZvzTWDm972iLfklbfwbVcaoSdCB8MxiUZjCBG/6a4PRM1NczvzE
+	 vuq1+vZTyHmI/D/1ZxhbKkj6NYhS0QcLq/rxGhscQpHzRTnmcP8s2fSfZwyZG7rVuN
+	 IVuiabGroKi3jjXib5l7Zqej8ydmEfMBPYs69FrJiFNA80q/ia+BsZoCvmTa0vaYyi
+	 24fTaD7hPfhY0KohdeIT2kkaYH+wxtWU3q/jn5opEGDVOAn6CpBqaHY19x8r65gFjx
+	 Wy9xtLM9ASCA5Y9U9x7dnUng6dWG08KvDHiZwiGTMl22dK720ddr6lSCBPsHyxBig1
+	 CeqbwaNmUZxtw==
+Message-ID: <4c5b2ab5-83f8-4ee7-bb02-3046ed01fd84@kernel.org>
+Date: Wed, 19 Aug 2026 13:50:43 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 19 Aug 2026 13:23:49 +0200
-Message-Id: <DKSVRS7UAL9U.3RUTW74RVSEHQ@kernel.org>
-Subject: Re: [PATCH 1/6] rust: alloc: add Vec::push_init
-Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil Babka"
- <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Uladzislau
- Rezki" <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>
-To: "Eliot Courtney" <ecourtney@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260817-b4-nvkv-v1-0-b84db5e84b67@nvidia.com>
- <20260817-b4-nvkv-v1-1-b84db5e84b67@nvidia.com>
-In-Reply-To: <20260817-b4-nvkv-v1-1-b84db5e84b67@nvidia.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc/bug: Add ARCH_WARN_ASM and refactor
+ _EMIT_BUG_ENTRY for Rust support
+To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
+ maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, pjw@kernel.org,
+ palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, ojeda@kernel.org,
+ boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
+ tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev,
+ thuth@redhat.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+ rust-for-linux@vger.kernel.org
+Cc: FUJITA Tomonori <tomo@flapping.org>
+References: <20260819084825.969116-1-mkchauras@gmail.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260819084825.969116-1-mkchauras@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon Aug 17, 2026 at 2:56 PM CEST, Eliot Courtney wrote:
-> +    pub fn push_init<E>(&mut self, init: impl Init<T, E>, flags: Flags) =
--> Result<(), E>
-> +    where
-> +        E: From<AllocError>,
 
-This signature rejects impl Init<T, Infallible>, which is the reason why we=
- have
-e.g. Box::init() and Box::try_init() with different fallible signatures.
 
-So, if we follow InPlaceInit, it'd be
+Le 19/08/2026 à 10:48, Mukesh Kumar Chaurasiya (IBM) a écrit :
+> The Rust kernel infrastructure generates inline asm for WARN() via
+> ARCH_WARN_ASM(file, line, flags, size), expanding it through a C
+> preprocessor pass (generated_arch_warn_asm.rs.S) to produce an
+> arch-specific asm template string for use in Rust's core::arch macros.
+> 
+> powerpc currently lacks ARCH_WARN_ASM and ARCH_WARN_REACHABLE, causing
+> Rust builds to fail on powerpc.
+> 
+> Refactor _EMIT_BUG_ENTRY to accept explicit (file, line, flags) string
+> arguments rather than relying on positional asm operand references
+> (%0, %1, %2, %3). This allows the macro to be composed as a plain
+> string concatenation, which is required for ARCH_WARN_ASM where no asm
+> operand context exists.
+> 
+> Move the .org and .previous directives out of _EMIT_BUG_ENTRY and into
+> the BUG_ENTRY() call site to preserve existing behaviour while enabling
+> ARCH_WARN_ASM to supply its own size operand independently.
+> 
+> Add ARCH_WARN_REACHABLE as an empty define, matching the arm64
+> convention, indicating that no additional reachability annotation is
+> needed after a WARN on powerpc.
+> 
+> This brings powerpc into line with x86, arm64, s390, and riscv, all of
+> which already define ARCH_WARN_ASM and ARCH_WARN_REACHABLE.
+> 
+> Suggested-by: FUJITA Tomonori <tomo@flapping.org>
+> Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+> ---
+>   arch/powerpc/include/asm/bug.h | 28 ++++++++++++++++------------
+>   1 file changed, 16 insertions(+), 12 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+> index 0db48977c70c..8aba39e0cf26 100644
+> --- a/arch/powerpc/include/asm/bug.h
+> +++ b/arch/powerpc/include/asm/bug.h
+> @@ -32,34 +32,38 @@
+>   #endif /* verbose */
+>   
+>   #else /* !__ASSEMBLER__ */
 
-	pub fn push_init<E>(&mut self, init: impl Init<T, E>, flags: Flags) -> Res=
-ult<(), Error>
-	where
-	    Error: From<E>;
+Sorry, I still don't understand. The only place the new macro is used is 
+a .S file (namely rust/kernel/generated_arch_warn_asm.rs.S), and the 
+change this patch implements is inside a #if !__ASSEMBLER__.
 
-and
+What am I missing ?
 
-	pub fn try_push_init<E>(&mut self, init: impl Init<T, E>, flags: Flags) ->=
- Result<(), E>
-	where
-	    E: From<AllocError>;
+Christophe
 
-In theory we could also simplify it to
 
-	pub fn push_init(&mut self, init: impl Init<T>, flags: Flags) -> Result<()=
-, AllocError>
+> -/* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
+> -   sizeof(struct bug_entry), respectively */
+>   #ifdef CONFIG_DEBUG_BUGVERBOSE
+> -#define _EMIT_BUG_ENTRY				\
+> +#define _EMIT_BUG_ENTRY(file, line, flags)	\
+>   	".section __bug_table,\"aw\"\n"		\
+>   	"2:	.4byte 1b - .\n"		\
+> -	"	.4byte %0 - .\n"		\
+> -	"	.short %1, %2\n"		\
+> -	".org 2b+%3\n"				\
+> -	".previous\n"
+> +	"	.4byte " file " - .\n"		\
+> +	"	.short " line ", " flags "\n"
+>   #else
+> -#define _EMIT_BUG_ENTRY				\
+> +#define _EMIT_BUG_ENTRY(file, line, flags)	\
+>   	".section __bug_table,\"aw\"\n"		\
+>   	"2:	.4byte 1b - .\n"		\
+> -	"	.short %2\n"			\
+> -	".org 2b+%3\n"				\
+> -	".previous\n"
+> +	"	.short " flags "\n"
+>   #endif
+>   
+>   #define BUG_ENTRY(cond_str, insn, flags, ...)		\
+>   	__asm__ __volatile__(				\
+>   		"1:	" insn "\n"			\
+> -		_EMIT_BUG_ENTRY				\
+> +		_EMIT_BUG_ENTRY("%0", "%1", "%2")	\
+> +		".org 2b+%3\n"				\
+> +		".previous\n"				\
+>   		: : "i" (WARN_CONDITION_STR(cond_str) __FILE__), "i" (__LINE__),	\
+>   		  "i" (flags),				\
+>   		  "i" (sizeof(struct bug_entry)),	\
+>   		  ##__VA_ARGS__)
+>   
+> +#define ARCH_WARN_ASM(file, line, flags, size)		\
+> +		"1:	twi 31, 0, 0\n"			\
+> +		_EMIT_BUG_ENTRY(file, line, flags)	\
+> +		".org 2b+" size "\n"			\
+> +		".previous\n"
+> +
+> +#define ARCH_WARN_REACHABLE
+> +
+>   /*
+>    * BUG_ON() and WARN_ON() do their best to cooperate with compile-time
+>    * optimisations. However depending on the complexity of the condition
 
-and
-
-	pub fn try_push_init<E>(&mut self, init: impl Init<T, E>, flags: Flags) ->=
- Result<(), E>
-	where
-	    E: From<AllocError>,
-
-However, InPlaceInit actually achieves more with the init() and try_init()
-distinction:
-
-  What init() accepts, but try_init() does not accept:
-    - impl Init<T, Infallible>
-    - impl Init<T, E> where Error: From<E> but NOT E: From<AllocError>
-
-  What try_init() accepts, but init() does not accept:
-    - impl Init<T, E> where E: From<AllocError> but NOT Error: From<E>
-
-So, with the simplification we'd technically lose out on the
-
-	impl Init<T, E> where Error: From<E> but NOT E: From<AllocError>
-
-case.
-
-In any case, init() and try_init() seem a bit mixed up on their purpose
-regarding fallibility and error type strategy, but in order to really cover=
- all
-cases I think it is necessary.
