@@ -1,609 +1,316 @@
-Received: from mail-106112.protonmail.ch (mail-106112.protonmail.ch [79.135.106.112])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B1F4078C4;
-	Wed, 19 Aug 2026 18:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BC13CF1FD
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Aug 2026 18:58:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787165222; cv=none; b=Ff0HWaGQo+L7+9Wws7vrVcnJ23qanZJqVErHhIMQzjKTrpgkO5P5K2ieCKNZtV1QB889tJhEyPwp+A+VaEpvBh8Ze9cqrkm0TKPzbzrMKp0VBf4GjDa5gdyyBpJsqvC1dlq1/cfxuzpVtewnhw4A5XUzbkwSil/mevIRVODwM5I=
+	t=1787165923; cv=none; b=ZmSwtlRlZiqrkI7NG3ee4vTRoXMZWBePySXCGVPP1WR2M+NIQzprKj1v1ngr3t1RPvgbljNpbaFASHOneRY0jvrWG2iieRG8JSHG1+K4cCsVs1zd8n6SAUYPscfJUIHGNIp26KajBbcAC2N+1g+rAyXIjNJHeq/YdS1UDHjgQ28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787165222; c=relaxed/simple;
-	bh=ptNaVuxVlgzTK2dKenujaQkE4QD01aDYhjkDyOfM+x0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ESMcs9rWIg+q87yTuvs236HTS0ICgIFbP0fGq1TzS5a20vTpOUKY32/kThYJnLY8+/aa/Mh/TBHhcm6PX1GklznV4HJE2FUfGfj8K4v8orYmcdyLuRd332wsdJjrZjmyQGc1StL45YuAwu6fQG2+hFt8rrNVURLlmw6iuah84Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=ZN/0BOpj; arc=none smtp.client-ip=79.135.106.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1787165923; c=relaxed/simple;
+	bh=zGS+pHmcvZFLDW8eeNijg5dlAWoeDvQik7KumTC5XcA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GRjMLAROUVzoiDRRlsgg55wNR+uxHOViXuQgEMXLFbbQAI7YRcBnYKIi//U852AfM+tOF3ubY7uh1vsUqVpSodKv8UNeKW0X6hxHGhxapB3aDEMYmtzp8RTvC7vg1I/OjyrXJ+J6O+aEyMiLCnTka6vyx8di2etlUgR80/9H23M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=WHxjGt1c; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="ZN/0BOpj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1787165215; x=1787424415;
-	bh=DfnWDEuLJ+WYjROdmAaE4+Hwg5bZJ2QU6EBr0/cQ/XI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=ZN/0BOpjt2pyp7TN/wDhVu/KPHL9ADQetHPHJ0KB6ZnsX4OqrlP52EeXg1zTlnZNZ
-	 fI8/KO4jvkqsZBjASzD51Ox0otHpBb5RS07bYPQvqsSZlgvMINMF09rqf1ajEmpMyX
-	 rbZ6aqntcs1BaUMqDfGtWBP1+F6gaGyXAjBGHfXRfvZbuApzHJ7Xx9JzXyi6aeNQ0a
-	 QOAbjklf88vEk1TLV5vvbgqaDw9K4z428tdxTgyjnooSSY9MaZhQlKdPRW4DmhTwSi
-	 2u6uvgGCsmMyKpQOjmekIRVdYKmZehaW4GW6w0C1S5L40cndbQ2d7eVWRJyyt5qRIx
-	 l91bHRh1wE/3w==
-X-Pm-Submission-Id: 4hQFsk55MDz1DDWm
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Cc: dakr@kernel.org,
-	aliceryhl@google.com,
-	daniel.almeida@collabora.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v6 3/3] drm/tyr: put iomem behind the hardware gate
-Date: Wed, 19 Aug 2026 21:45:41 +0300
-Message-ID: <20260819-tyr-reset-impl-v6-3-7b4e1e041fe5@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260819-tyr-reset-impl-v6-0-7b4e1e041fe5@onurozkan.dev>
-References: <20260819-tyr-reset-impl-v6-0-7b4e1e041fe5@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="WHxjGt1c"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id B1B07240029
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Aug 2026 20:58:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
+	s=1984.8680eb; t=1787165919;
+	bh=V14gSTATL+tewlaM/ydQkrqpqksiW3vl4b0e9PJ4iYc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:To:Cc:Autocrypt:OpenPGP:From;
+	b=WHxjGt1c9woAeO/vq1fiRwit61avne8NZkZsbroDXfP6loiRT4rr88+lxsHj8B4gj
+	 uUXs/gSorQ6WVYbQKWFaLasxN1MWea4OYZ6vhqHVA4eEEd1wNNwquXLfkAaoogBrv9
+	 m2krFNmknL92idh2zd4pPNdCVRL37XSbWsqFKOz1sMzf6O/tTXkMChFi1nPhTM9EGl
+	 5QWOgZgfD+r+nXbCD4lle0Jk1UJdS787wedF7ohXwZ0BN63umwI9TAx+kNOHdeMohz
+	 oZb7i5unk7pvsZ3/FA82qNfJBMDhGG+qW1tKvgPFYxE517QMJ1xks/v1kTh4vlGkYn
+	 /yXzFz8htG0bg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4hQG7H0dlqz9rxg;
+	Wed, 19 Aug 2026 20:58:34 +0200 (CEST)
+From: Markus Probst <markus.probst@posteo.de>
+Subject: [PATCH RESEND v23 0/3] rust: leds: add led classdev abstractions
+Date: Wed, 19 Aug 2026 18:58:37 +0000
+Message-Id: <20260819-rust_leds-v23-0-2716a4ef89a4@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Ira Weiny <iweiny@kernel.org>, Boqun Feng <boqun@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+ Markus Probst <markus.probst@posteo.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6897;
+ i=markus.probst@posteo.de; h=from:subject:message-id;
+ bh=zGS+pHmcvZFLDW8eeNijg5dlAWoeDvQik7KumTC5XcA=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqhfza19W+2nc4ct6zm56ICNhu6OhASOorsGu1M
+ 0SQdRpEkeeJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaoX82hsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9KvPBAAlPect2fS+A1sn9LBUT/fjbJy+4PamYR
+ TYNIR/5oCyExlZd2xNusJSnbI06BF6LLkXI+iUp0LMqcTg4zRqEfpVub32wwUS6+wTJ/c4jaz3b
+ 5CASMcZl+nrBATHvUbUPSWzL16CfMOTppcO3ACGTa3TKEyxQOZZ0o6aZNMUgwGimQY4G5GQioCJ
+ sFzdvNTD1bI/xuO0MH2j2EK/KLzgZedRJPnBADOdGjJDezkgJSxKOtMfFMZ1p4fqh4Odn346869
+ BSFJPUyH06PSYAaXPZVZBYzcqvyQRLj6ln8oL2wrou87Sl2Y7t00L6akPUUFiyYbOhlsG5N8Yeu
+ vuZk+dz8hvPopypJJPFRF4aEcTLOFIhacd8Go4GMAf4vHvGAZeQNCpKRMQhefRZFQOyO7ur3oOA
+ VYyWzNrF7JjO57DtRTxOGunN6GLvkvaQjijy10PKmfqV1l1z3jxVlRvkooVHmUxKHTaz8WBjrB7
+ wmThsudArqavMuXm16r62eK3s3iyrhfjm85NwGJ27VD3uIrTyEYfJfGOezHrghslrArHsIHh02N
+ Kotxtra8x57QvRRgLlhMSPdzTIWex3fREEm6b6Db+iFBCs7ropZH4/pKDFu3A2jh7MKrdipcg9c
+ KtHNI1D4RlBZweSEWXCvkcHIld+eqyWcSmPs1UNFoWMlfdHK8uM0=
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
+ fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=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
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-Move iomem mapping into HwGate and pass Arc<HwGate> to components that
-access hardware. Callers obtain HwAccessGuard before accessing the iomem
-so the reset worker waits for ongoing accesses.
+This patch series has previously been contained in
+https://lore.kernel.org/rust-for-linux/20251008181027.662616-1-markus.probst@posteo.de/T/#t
+which added a rust written led driver for a microcontroller via i2c.
 
-Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
+As the reading and writing to the i2c client via the register!
+macro has not been implemented yet [1], the patch series will only
+contain the additional abstractions required.
+
+This series depends on [1].
+
+[1] https://lore.kernel.org/rust-for-linux/20260525202921.124698-1-dakr@kernel.org/
+
+The following changes were made:
+* add basic led classdev abstractions to register and unregister leds
+
+* add basic led classdev abstractions to register and unregister
+  multicolor leds
+
+Changes since v22:
+* readded CStrExt import, because it is imported with `as _` in prelude.
+  A `# CONFIG_RUST is not set` sneaked into my .config while
+  development, so the compile error was unnoticed.
+
+Changes since v21:
+* use 'init for lifetime that is only alive during initialization
+* remove unnecessary CStrExt import
+
+Changes since v20:
+* resolve Sashiko regressions:
+  * fix typo
+  * fix fwnode refcount decremented too early
+
+Changes since v19:
+* rebase on v7.2-rc1:
+  * Add `max_intensity` to `MultiColorSubLed`
+* use safer `KBox::pin_slice` instead of `KVec`
+  (len might not equal capacity)
+* explicitly call `FwNode::dec_ref` instead of dropping a reconstructed
+  `ARef<FwNode>`.
+* remove direct access to `intensity` and `brightness` fields,
+  which may get mutated concurrently by the C side
+* fix safety comments pointing to functions from previous revisions
+
+Changes since v18:
+* add inlines
+* fix invalid documentation
+* improve led color duplicate checking
+
+Changes since v17:
+* use lifetimes instead of Devres
+
+Changes since v16:
+* use for loops for duplicate checking
+
+Changes since v15:
+* fix issues reported by Sashiko bot:
+  * fix returning error not possible on `brightness_get` callback
+
+Changes since v14:
+* fix issues reported by Sashiko bot:
+  * add missing inlines
+  * add missing Sync trait bound
+  * fix vertical import layout for public export of private types
+  * fix potential memory leak, if a multicolor led device with over
+    `u32::MAX` subleds is registered
+* remove default_trigger option
+* fix missing CAST doc
+
+Changes since v13:
+* rebased onto v7.1-rc1
+
+Changes since v12:
+* add `led::DeviceBuilder::name()` and `DeviceBuilderState'
+* add `led::Color::as_c_str`
+
+Changes since v11:
+* use `led::DeviceBuilder` instead of `led::InitData`
+* use static_assert instead of const { assert!(...) }
+* restructured patches to avoid moving `led::Device` from
+  rust/kernel/led.rs to rust/kernel/led/normal.rs in the 2. patch
+
+Changes since v10:
+* allow in-place initialization of `LedOps`
+* run rustfmt for code inside `try_pin_init!`
+
+Changes since v9:
+* add missing periods in documentation
+* duplicate `led::Device` and `led::Adapter` instead of using a complex
+  trait
+* fix imports not using prelude
+* adapt to CStr change
+* documented `led::Color::Multi` and `led::Color::Rgb`
+
+Changes since v8:
+* accept `Option<ARef<Fwnode>>` in `led::InitData::fwnode()`
+* make functions in `MultiColorSubLed` const
+* drop the "rust: Add trait to convert a device reference to a bus
+  device reference" patch, as it has been picked into driver-core
+
+Changes since v7:
+* adjusted import style
+* added classdev parameter to callback functions in `LedOps`
+* implement `led::Color`
+* extend `led::InitData` with
+  - initial_brightness
+  - default_trigger
+  - default_color
+* split generic and normal led classdev abstractions up (see patch 3/4)
+* add multicolor led class device abstractions (see patch 4/4)
+* added MAINTAINERS entry
+
+Changes since v6:
+* fixed typos
+* improved documentation
+
+Changes since v5:
+* rename `IntoBusDevice` trait into `AsBusDevice`
+* fix documentation about `LedOps::BLOCKING`
+* removed dependency on i2c bindings
+* added `AsBusDevice` implementation for `platform::Device`
+* removed `device::Device` fallback implementation
+* document that `AsBusDevice` must not be used by drivers and is
+  intended for bus and class device abstractions only.
+
+Changes since v4:
+* add abstraction to convert a device reference to a bus device
+  reference
+* require the bus device as parent device and provide it in class device
+  callbacks
+* remove Pin<Vec<_>> abstraction (as not relevant for the led
+  abstractions)
+* fixed formatting in `led::Device::new`
+* fixed `LedOps::BLOCKING` did the inverse effect
+
+Changes since v3:
+* fixed kunit tests failing because of example in documentation
+
+Changes since v2:
+* return `Devres` on `led::Device` creation
+* replace KBox<T> with T in struct definition
+* increment and decrement reference-count of fwnode
+* make a device parent mandatory for led classdev creation
+* rename `led::Handler` to `led::LedOps`
+* add optional `brightness_get` function to `led::LedOps`
+* use `#[vtable]` instead of `const BLINK: bool`
+* use `Opaque::cast_from` instead of casting a pointer
+* improve documentation
+* improve support for older rust versions
+* use `&Device<Bound>` for parent
+
+Changes since v1:
+* fixed typos noticed by Onur Özkan
+
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
 ---
- drivers/gpu/drm/tyr/driver.rs            | 35 +++++++++++------------
- drivers/gpu/drm/tyr/fw.rs                | 16 ++++++-----
- drivers/gpu/drm/tyr/mmu.rs               |  9 ++----
- drivers/gpu/drm/tyr/mmu/address_space.rs | 49 ++++++++++++++++----------------
- drivers/gpu/drm/tyr/reset.rs             | 33 +++++++++------------
- drivers/gpu/drm/tyr/reset/hw_gate.rs     | 40 ++++++++++++++++++++------
- 6 files changed, 96 insertions(+), 86 deletions(-)
+Markus Probst (3):
+      rust: leds: add basic led classdev abstractions
+      rust: leds: add Mode trait
+      rust: leds: add multicolor classdev abstractions
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 52b1f16fa405..c326192f8af2 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -76,9 +76,6 @@ pub(crate) struct TyrDrmRegistrationData<'bound> {
-     #[pin]
-     regulators: Mutex<Regulators>,
- 
--    /// GPU MMIO register mapping.
--    pub(crate) iomem: Arc<IoMem<'bound>>,
--
-     /// Some information on the GPU.
-     ///
-     /// This is mainly queried by userspace, i.e.: Mesa.
-@@ -117,12 +114,19 @@ fn probe<'bound>(
- 
-         let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
- 
--        let iomem = Arc::new(request.iomap_sized::<SZ_2M>()?, GFP_KERNEL)?;
-+        let hw = Arc::pin_init(
-+            reset::HwGate::new(request.iomap_sized::<SZ_2M>()?),
-+            GFP_KERNEL,
-+        )?;
- 
--        reset::run_reset(pdev.as_ref(), &iomem)?;
-+        reset::run_reset(pdev.as_ref(), &hw)?;
- 
--        let gpu_info = GpuInfo::new(&iomem);
--        gpu_info.log(pdev.as_ref());
-+        let gpu_info = {
-+            let hw_guard = hw.access();
-+            let gpu_info = GpuInfo::new(hw_guard.iomem());
-+            gpu_info.log(pdev.as_ref());
-+            gpu_info
-+        };
- 
-         let pa_bits = MMU_FEATURES::from_raw(gpu_info.mmu_features)
-             .pa_bits()
-@@ -134,24 +138,18 @@ fn probe<'bound>(
- 
-         let unreg_dev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, Ok(()))?;
- 
--        let mmu = Mmu::new(iomem.as_arc_borrow(), &gpu_info)?;
-+        let mmu = Mmu::new(hw.clone(), &gpu_info)?;
- 
--        let firmware = Firmware::new(
--            pdev,
--            iomem.clone(),
--            &unreg_dev,
--            mmu.as_arc_borrow(),
--            &gpu_info,
--        )?;
-+        let firmware = Firmware::new(pdev, hw.clone(), &unreg_dev, mmu.as_arc_borrow(), &gpu_info)?;
- 
-         firmware.boot()?;
-         firmware.enable_global_interface(&gpu_info, &core_clk)?;
- 
-         let reg_data = try_pin_init!(TyrDrmRegistrationData {
-                 pdev,
--                // SAFETY: `Registration` is stored in the platform driver data and
--                // not leaked, so `ResetHandle` is dropped before borrowed data expires.
--                reset <- unsafe { reset::ResetHandle::new(pdev, iomem.as_arc_borrow())? },
-+                // SAFETY: `ResetHandle` is stored in registration data created with `new_with_lt`
-+                // and is dropped before the borrowed device and MMIO references expire.
-+                reset <- unsafe { reset::ResetHandle::new(pdev, hw.clone())? },
-                 fw: firmware,
-                 clks <- new_mutex!(Clocks {
-                     core: core_clk,
-@@ -162,7 +160,6 @@ fn probe<'bound>(
-                     _mali: mali_regulator,
-                     _sram: sram_regulator,
-                 }),
--                iomem,
-                 gpu_info,
-         });
- 
-diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
-index 651bbe77f10b..e1522ab14e8d 100644
---- a/drivers/gpu/drm/tyr/fw.rs
-+++ b/drivers/gpu/drm/tyr/fw.rs
-@@ -41,7 +41,6 @@
- 
- use crate::{
-     driver::{
--        IoMem,
-         TyrDrmDevice, //
-     },
-     fw::{
-@@ -65,6 +64,7 @@
-         MCU_CONTROL,
-         MCU_STATUS, //
-     },
-+    reset::HwGate,
-     vm::Vm, //
- };
- 
-@@ -148,8 +148,8 @@ pub(crate) struct Firmware<'bound> {
-     /// Platform device reference (needed to access the MCU JOB_IRQ registers).
-     _pdev: ARef<platform::Device>,
- 
--    /// Iomem need to access registers.
--    iomem: Arc<IoMem<'bound>>,
-+    /// Shared gate that coordinates hardware access with GPU reset.
-+    hw: Arc<HwGate<'bound>>,
- 
-     /// MCU VM.
-     vm: Arc<Vm<'bound>>,
-@@ -221,7 +221,7 @@ fn load(
-     /// Load firmware and map sections into MCU VM.
-     pub(crate) fn new(
-         pdev: &'bound platform::Device<Bound>,
--        iomem: Arc<IoMem<'bound>>,
-+        hw: Arc<HwGate<'bound>>,
-         ddev: &TyrDrmDevice<Uninit>,
-         mmu: ArcBorrow<'_, Mmu<'bound>>,
-         gpu_info: &GpuInfo,
-@@ -262,7 +262,7 @@ pub(crate) fn new(
-         let firmware = Arc::pin_init(
-             try_pin_init!(Firmware {
-                 _pdev: pdev.into(),
--                iomem,
-+                hw,
-                 vm,
-                 sections,
-                 global_iface <- new_mutex!(GlobalInterface::new()?),
-@@ -288,7 +288,8 @@ pub(crate) fn shared_section<'a>(&'a self) -> Result<&'a Section<'bound>> {
-     }
- 
-     pub(crate) fn boot(&self) -> Result {
--        let io = &self.iomem;
-+        let hw_guard = self.hw.access();
-+        let io = hw_guard.iomem();
-         io.write_reg(MCU_CONTROL::zeroed().with_req(McuControlMode::Auto));
- 
-         if let Err(e) = poll::read_poll_timeout(
-@@ -307,8 +308,9 @@ pub(crate) fn boot(&self) -> Result {
-     /// Enable the global interface.
-     pub(crate) fn enable_global_interface(&self, gpu_info: &GpuInfo, core_clk: &Clk) -> Result {
-         let shared_section = self.shared_section()?;
-+        let hw_guard = self.hw.access();
-         self.global_iface
-             .lock()
--            .enable(&self.iomem, shared_section, gpu_info, core_clk)
-+            .enable(hw_guard.iomem(), shared_section, gpu_info, core_clk)
-     }
- }
-diff --git a/drivers/gpu/drm/tyr/mmu.rs b/drivers/gpu/drm/tyr/mmu.rs
-index cb5908c80e3d..8df6d2ef3c74 100644
---- a/drivers/gpu/drm/tyr/mmu.rs
-+++ b/drivers/gpu/drm/tyr/mmu.rs
-@@ -26,7 +26,6 @@
- };
- 
- use crate::{
--    driver::IoMem,
-     gpu::GpuInfo,
-     mmu::address_space::{
-         AddressSpaceManager,
-@@ -36,6 +35,7 @@
-         gpu_control::AS_PRESENT,
-         MAX_AS, //
-     },
-+    reset::HwGate,
-     slot::SlotManager, //
- };
- 
-@@ -67,14 +67,11 @@ pub(crate) struct Mmu<'bound> {
- 
- impl<'bound> Mmu<'bound> {
-     /// Create an MMU component for this device.
--    pub(crate) fn new(
--        iomem: ArcBorrow<'_, IoMem<'bound>>,
--        gpu_info: &GpuInfo,
--    ) -> Result<Arc<Mmu<'bound>>> {
-+    pub(crate) fn new(hw: Arc<HwGate<'bound>>, gpu_info: &GpuInfo) -> Result<Arc<Mmu<'bound>>> {
-         let present = AS_PRESENT::from_raw(gpu_info.as_present).present().get();
-         let slot_count = present.count_ones().try_into()?;
- 
--        let as_manager = AddressSpaceManager::new(iomem, present)?;
-+        let as_manager = AddressSpaceManager::new(hw, present)?;
-         let mmu_init = try_pin_init!(Self{
-             as_manager <- new_mutex!(SlotManager::new(as_manager, slot_count)?),
-         });
-diff --git a/drivers/gpu/drm/tyr/mmu/address_space.rs b/drivers/gpu/drm/tyr/mmu/address_space.rs
-index d5274220eb3c..7ce2902e6300 100644
---- a/drivers/gpu/drm/tyr/mmu/address_space.rs
-+++ b/drivers/gpu/drm/tyr/mmu/address_space.rs
-@@ -42,7 +42,6 @@
- };
- 
- use crate::{
--    driver::IoMem,
-     mmu::{
-         AsSlotManager,
-         Mmu, //
-@@ -52,6 +51,7 @@
-         mmu_control::mmu_as_control::*,
-         MAX_AS, //
-     },
-+    reset::HwGate,
-     slot::{
-         Seat,
-         SlotOperations, //
-@@ -201,8 +201,8 @@ fn as_config(&self) -> Result<AddressSpaceConfig> {
- ///
- /// [`SlotOperations`]: crate::slot::SlotOperations
- pub(crate) struct AddressSpaceManager<'bound> {
--    /// Memory-mapped I/O region for GPU register access.
--    iomem: Arc<IoMem<'bound>>,
-+    /// Shared gate that coordinates hardware access with GPU reset.
-+    hw: Arc<HwGate<'bound>>,
- 
-     /// Bitmask of available address space slots from GPU_AS_PRESENT register.
-     as_present: u32,
-@@ -229,16 +229,13 @@ fn evict(&mut self, slot_idx: usize, _slot_data: &Self::SlotData) -> Result {
- impl<'bound> AddressSpaceManager<'bound> {
-     /// Creates a new address space manager.
-     ///
--    /// Initializes the manager with references to the platform device and
--    /// I/O memory region, along with the bitmask of available AS slots.
-+    /// Initializes the manager with the hardware-access gate and the bitmask
-+    /// of available AS slots.
-     pub(super) fn new(
--        iomem: ArcBorrow<'_, IoMem<'bound>>,
-+        hw: Arc<HwGate<'bound>>,
-         as_present: u32,
-     ) -> Result<AddressSpaceManager<'bound>> {
--        Ok(Self {
--            iomem: iomem.into(),
--            as_present,
--        })
-+        Ok(Self { hw, as_present })
-     }
- 
-     /// Validates that an AS slot number is within range and present in hardware.
-@@ -269,7 +266,8 @@ fn validate_as_slot(&self, as_nr: usize) -> Result {
-     ///
-     /// Returns an error if polling times out after 10ms or if register access fails.
-     fn as_wait_ready(&self, as_nr: usize) -> Result {
--        let io = &*self.iomem;
-+        let hw_guard = self.hw.access();
-+        let io = hw_guard.iomem();
-         let op = || {
-             let status_reg = STATUS::try_at(as_nr).ok_or(EINVAL)?;
-             Ok(io.read(status_reg))
-@@ -283,9 +281,10 @@ fn as_wait_ready(&self, as_nr: usize) -> Result {
-     /// Sends a command to an AS slot.
-     ///
-     /// Returns an error if waiting for ready times out or if register write fails.
--    fn as_send_cmd(&mut self, as_nr: usize, cmd: MmuCommand) -> Result {
-+    fn as_send_cmd(&self, as_nr: usize, cmd: MmuCommand) -> Result {
-         self.as_wait_ready(as_nr)?;
--        let io = &*self.iomem;
-+        let hw_guard = self.hw.access();
-+        let io = hw_guard.iomem();
-         let command_reg = COMMAND::try_at(as_nr).ok_or(EINVAL)?;
-         io.write(command_reg, COMMAND::zeroed().with_command(cmd));
-         Ok(())
-@@ -294,7 +293,7 @@ fn as_send_cmd(&mut self, as_nr: usize, cmd: MmuCommand) -> Result {
-     /// Sends a command to an AS slot and waits for completion.
-     ///
-     /// Returns an error if sending the command fails or if waiting for completion times out.
--    fn as_send_cmd_and_wait(&mut self, as_nr: usize, cmd: MmuCommand) -> Result {
-+    fn as_send_cmd_and_wait(&self, as_nr: usize, cmd: MmuCommand) -> Result {
-         self.as_send_cmd(as_nr, cmd)?;
-         self.as_wait_ready(as_nr)?;
-         Ok(())
-@@ -303,10 +302,10 @@ fn as_send_cmd_and_wait(&mut self, as_nr: usize, cmd: MmuCommand) -> Result {
-     /// Enables an AS slot with the provided configuration.
-     ///
-     /// Returns an error if the slot is invalid or if register writes/commands fail.
--    fn as_enable(&mut self, as_nr: usize, as_config: &AddressSpaceConfig) -> Result {
-+    fn as_enable(&self, as_nr: usize, as_config: &AddressSpaceConfig) -> Result {
-         self.validate_as_slot(as_nr)?;
--
--        let io = &*self.iomem;
-+        let hw_guard = self.hw.access();
-+        let io = hw_guard.iomem();
- 
-         let transtab = as_config.transtab;
-         io.write(
-@@ -346,14 +345,14 @@ fn as_enable(&mut self, as_nr: usize, as_config: &AddressSpaceConfig) -> Result
-     /// Disables an AS slot and clears its configuration.
-     ///
-     /// Returns an error if the slot is invalid or if register writes/commands fail.
--    fn as_disable(&mut self, as_nr: usize) -> Result {
-+    fn as_disable(&self, as_nr: usize) -> Result {
-         self.validate_as_slot(as_nr)?;
-+        let hw_guard = self.hw.access();
-+        let io = hw_guard.iomem();
- 
-         // Flush AS before disabling
-         self.as_send_cmd_and_wait(as_nr, MmuCommand::FlushMem)?;
- 
--        let io = &*self.iomem;
--
-         io.write(
-             TRANSTAB_LO::try_at(as_nr).ok_or(EINVAL)?,
-             TRANSTAB_LO::from_raw(0),
-@@ -397,8 +396,10 @@ fn as_disable(&mut self, as_nr: usize) -> Result {
-     /// power-of-two region aligned to its size.
-     ///
-     /// Returns an error if the slot is invalid or if register writes/commands fail.
--    fn as_start_update(&mut self, as_nr: usize, region: &Range<u64>) -> Result {
-+    fn as_start_update(&self, as_nr: usize, region: &Range<u64>) -> Result {
-         self.validate_as_slot(as_nr)?;
-+        let hw_guard = self.hw.access();
-+        let io = hw_guard.iomem();
- 
-         // The lock operates on full 64-byte cache lines of translation table entries.
-         // Since each translation table entry (TTE) is 8 bytes, a cache line has 8 TTEs.
-@@ -436,8 +437,6 @@ fn as_start_update(&mut self, as_nr: usize, region: &Range<u64>) -> Result {
-         // because log2(32 KiB) = 15.
-         let lockaddr_size = lock_region_log2 - 1;
- 
--        let io = &*self.iomem;
--
-         let lockaddr_val = LOCKADDR::zeroed()
-             .try_with_size(lockaddr_size)?
-             .try_with_base(lockaddr_base)?
-@@ -458,7 +457,7 @@ fn as_start_update(&mut self, as_nr: usize, region: &Range<u64>) -> Result {
-     /// Completes an atomic translation table update.
-     ///
-     /// Returns an error if the slot is invalid or if the flush command fails.
--    fn as_end_update(&mut self, as_nr: usize) -> Result {
-+    fn as_end_update(&self, as_nr: usize) -> Result {
-         self.validate_as_slot(as_nr)?;
-         self.as_send_cmd_and_wait(as_nr, MmuCommand::FlushPt)?;
-         Ok(())
-@@ -467,7 +466,7 @@ fn as_end_update(&mut self, as_nr: usize) -> Result {
-     /// Flushes the translation table cache for an AS slot.
-     ///
-     /// Returns an error if the slot is invalid or if the flush command fails.
--    fn as_flush(&mut self, as_nr: usize) -> Result {
-+    fn as_flush(&self, as_nr: usize) -> Result {
-         self.validate_as_slot(as_nr)?;
-         self.as_send_cmd(as_nr, MmuCommand::FlushPt)
-     }
-diff --git a/drivers/gpu/drm/tyr/reset.rs b/drivers/gpu/drm/tyr/reset.rs
-index a41158c7ea21..1abcd25877d3 100644
---- a/drivers/gpu/drm/tyr/reset.rs
-+++ b/drivers/gpu/drm/tyr/reset.rs
-@@ -21,7 +21,7 @@
- 
- mod hw_gate;
- 
--use hw_gate::HwGate;
-+pub(crate) use hw_gate::HwGate;
- 
- use kernel::{
-     device::{
-@@ -41,8 +41,7 @@
-             Full,
-             Release, //
-         },
--        Arc,
--        ArcBorrow, //
-+        Arc, //
-     },
-     time,
-     workqueue::{
-@@ -84,13 +83,10 @@ unsafe impl AtomicType for ResetState {
- struct Controller<'ctrl> {
-     /// Parent platform device.
-     pdev: &'ctrl platform::Device<Bound>,
--    /// Mapped register space needed for reset operations.
--    iomem: Arc<IoMem<'ctrl>>,
-     /// State shared by reset schedulers and the worker.
-     state: Atomic<ResetState>,
--    /// Drains reset-sensitive hardware accesses before a reset.
--    #[pin]
--    hw: HwGate,
-+    /// Shared gate that coordinates hardware access with GPU reset.
-+    hw: Arc<HwGate<'ctrl>>,
- }
- 
- impl<'ctrl> ScopedWorkItem for Controller<'ctrl> {
-@@ -103,13 +99,12 @@ impl<'ctrl> Controller<'ctrl> {
-     /// Creates a reset controller.
-     fn new(
-         pdev: &'ctrl platform::Device<Bound>,
--        iomem: Arc<IoMem<'ctrl>>,
-+        hw: Arc<HwGate<'ctrl>>,
-     ) -> impl PinInit<Self, Error> {
-         try_pin_init!(Self {
-             pdev,
--            iomem,
-             state: Atomic::new(ResetState::Idle),
--            hw <- HwGate::new(),
-+            hw,
-         })
-     }
- 
-@@ -136,10 +131,7 @@ fn reset_work(&self) {
- 
-         dev_dbg!(self.pdev, "Starting GPU reset.\n");
- 
--        // Wait for current hardware accesses to finish before resetting.
--        let reset_guard = self.hw.close();
--        let reset_result = run_reset(self.pdev.as_ref(), &self.iomem);
--        drop(reset_guard);
-+        let reset_result = run_reset(self.pdev.as_ref(), &self.hw);
- 
-         if let Err(e) = reset_result {
-             dev_err!(self.pdev, "GPU reset failed: {:?}\n", e);
-@@ -175,12 +167,10 @@ impl<'reset> ResetHandle<'reset> {
-     /// running [`Drop`], since it owns work that may borrow from `'reset`.
-     pub(crate) unsafe fn new(
-         pdev: &'reset platform::Device<Bound>,
--        iomem: ArcBorrow<'_, IoMem<'reset>>,
-+        hw: Arc<HwGate<'reset>>,
-     ) -> Result<impl PinInit<Self, Error>> {
--        let iomem = iomem.into();
--
-         Ok(try_pin_init!(Self {
--            controller <- kernel::new_scoped_work!("tyr::reset", Controller::new(pdev, iomem)),
-+            controller <- kernel::new_scoped_work!("tyr::reset", Controller::new(pdev, hw)),
-             // SAFETY: The caller guarantees the handle is dropped.
-             wq: unsafe { ScopedQueue::new(c"tyr-reset-wq")? },
-         }))
-@@ -242,7 +232,10 @@ fn issue_soft_reset(dev: &Device<Bound>, io: &IoMem<'_>) -> Result {
- ///   - Trigger a GPU soft reset.
- ///   - Wait for the reset-complete IRQ status.
- ///   - Power L2 back on.
--pub(super) fn run_reset(dev: &Device<Bound>, iomem: &IoMem<'_>) -> Result {
-+pub(super) fn run_reset(dev: &Device<Bound>, hw: &HwGate<'_>) -> Result {
-+    let hw_guard = hw.close();
-+    let iomem = hw_guard.iomem();
-+
-     issue_soft_reset(dev, iomem)?;
-     gpu::l2_power_on(dev, iomem)?;
-     Ok(())
-diff --git a/drivers/gpu/drm/tyr/reset/hw_gate.rs b/drivers/gpu/drm/tyr/reset/hw_gate.rs
-index 54754f9fc05f..b7db2abf47ea 100644
---- a/drivers/gpu/drm/tyr/reset/hw_gate.rs
-+++ b/drivers/gpu/drm/tyr/reset/hw_gate.rs
-@@ -18,9 +18,13 @@
-     },
- };
- 
-+use crate::driver::IoMem;
-+
- /// Synchronizes GPU hardware access with reset.
- #[pin_data]
--pub(super) struct HwGate {
-+pub(crate) struct HwGate<'hw> {
-+    /// GPU MMIO register mapping.
-+    iomem: IoMem<'hw>,
-     /// Admits readers and is held exclusively while the reset worker owns the
-     /// hardware.
-     #[pin]
-@@ -30,30 +34,33 @@ pub(super) struct HwGate {
-     srcu: Srcu,
- }
- 
--impl HwGate {
-+impl<'hw> HwGate<'hw> {
-     /// Creates an open hardware-access gate.
--    pub(super) fn new() -> impl PinInit<Self, Error> {
-+    pub(crate) fn new(iomem: IoMem<'hw>) -> impl PinInit<Self, Error> {
-         try_pin_init!(Self {
-+            iomem,
-             gate_lock <- new_mutex!(()),
-             srcu <- kernel::new_srcu!(),
-         })
-     }
- 
-     /// Enters a reset-sensitive hardware-access section.
--    #[expect(dead_code)]
--    fn access(&self) -> HwAccessGuard<'_> {
-+    pub(crate) fn access(&self) -> HwAccessGuard<'_, 'hw> {
-         let gate_lock = self.gate_lock.lock();
-         let srcu = self.srcu.read_lock();
-         drop(gate_lock);
- 
--        HwAccessGuard { _srcu: srcu }
-+        HwAccessGuard {
-+            gate: self,
-+            _srcu: srcu,
-+        }
-     }
- 
-     /// Stops new readers and drains admitted readers for the reset worker.
-     ///
-     /// Callers must serialize write-side access. The reset controller's state
-     /// machine provides that serialization.
--    pub(super) fn close(&self) -> HwClosedGuard<'_> {
-+    pub(super) fn close(&self) -> HwClosedGuard<'_, 'hw> {
-         let gate_lock = self.gate_lock.lock();
- 
-         // Holding `gate_lock` prevents new readers from entering SRCU. Readers
-@@ -61,6 +68,7 @@ pub(super) fn close(&self) -> HwClosedGuard<'_> {
-         self.srcu.synchronize();
- 
-         HwClosedGuard {
-+            gate: self,
-             _gate_lock: gate_lock,
-         }
-     }
-@@ -68,13 +76,27 @@ pub(super) fn close(&self) -> HwClosedGuard<'_> {
- 
- /// Shared hardware access that blocks reset until dropped.
- #[must_use = "the gate is released when the guard is dropped"]
--struct HwAccessGuard<'a> {
-+pub(crate) struct HwAccessGuard<'a, 'hw> {
-+    gate: &'a HwGate<'hw>,
-     _srcu: srcu::Guard<'a>,
- }
- 
-+impl<'a, 'hw> HwAccessGuard<'a, 'hw> {
-+    pub(crate) fn iomem(&self) -> &IoMem<'hw> {
-+        &self.gate.iomem
-+    }
-+}
-+
- /// Exclusive hardware access for the reset worker that blocks new hardware
- /// accesses until dropped.
- #[must_use = "the gate stays closed until the guard is dropped"]
--pub(super) struct HwClosedGuard<'a> {
-+pub(super) struct HwClosedGuard<'a, 'hw> {
-+    gate: &'a HwGate<'hw>,
-     _gate_lock: MutexGuard<'a, ()>,
- }
-+
-+impl<'a, 'hw> HwClosedGuard<'a, 'hw> {
-+    pub(super) fn iomem(&self) -> &IoMem<'hw> {
-+        &self.gate.iomem
-+    }
-+}
+ MAINTAINERS                     |   8 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/led.rs              | 339 +++++++++++++++++++++++++++++
+ rust/kernel/led/multicolor.rs   | 460 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/led/normal.rs       | 238 +++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ 6 files changed, 1047 insertions(+)
+---
+base-commit: 1137d8b5df06137fb49513cc923b3b24d94cb809
+change-id: 20251114-rust_leds-a959f7c2f7f9
+-----BEGIN PGP SIGNATURE-----
 
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmpZGhcbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSIFkQAIJHfAe6S+v8u4v29fke
+uLDop7Ga9Ujz38DD9iMIdnRhgDeh3eN7boFgMab3XM2JhFEuseCkDwIGdybF+zPx
+EEoXxpXZp8KcTR26ryN4RuFax/q4nwZaXnZt133COFMPSiHswyn0ZjjlZQb5pK4L
+ikKXcCCTWouQkdVD/WB0bTW1Bo065QpCvMP5NTWWQ109EnFTGOofbWv9FV+YzOy0
+/baQI/20IRW8CU4s3FG8/LKc5F7yHCYkX89hmUtK9+xiuoNgZgCyt1kuXASRB1ol
+jVP1TGauphC0WC/DqL0U4OQcJfMF4vSFblAaLiEnp+YkTj/A/e3T+Y8sLGWI876T
+9juYGeGbX8Lupsa3OzFe2csfYJwrMZzL7iOkugJQlVLWxsrTFAZsdStwZDx6mV7k
+g1oeux9d9P+lM3gG6HT2jobC7Y+7hD3Z9qFnxQ4vP2tSpcQb0s9emO26JE7hvh9x
+oK9C3XUa7Yan3umqeqU9Iz3fJ0w2ZFDNTK5P8LtBJnlagqlRWDCDVu+nx9rsaxXf
+S3wh5LktdUB8Xi+qigybTwqjV1SMocfBciVmYJrP4xjhkz8z32WCZdLHY8rpFZ1h
+kcVy33DBzv8wPK+fCntQVm9rDC5qmrVpfNOYrg1ZYDCG3Yd/ilL/7VxnR0boQ/5W
+qvNRlYVg/i4TsPhwgFacMPzv
+=wKUV
+-----END PGP SIGNATURE-----
 -- 
-2.51.2
+Markus Probst <markus.probst@posteo.de>
+
