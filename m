@@ -1,482 +1,583 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010020.outbound.protection.outlook.com [52.101.85.20])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012051.outbound.protection.outlook.com [40.107.209.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64457393DDB;
-	Wed, 19 Aug 2026 07:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4192635677E;
+	Wed, 19 Aug 2026 08:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787125404; cv=fail; b=c/SWs2uah/Mk83Zlf86Q7yMurSV0ENm2MtSDWe87GdVmqA4xn3PwN4+l91SzZdubax5dR15jgZZl26AwTI3l0k00b06DyCfYKd8sb1P5TaX4zEDmw3E/chLBR0dlc0KICGnrmRh0Toj4B49x/gTPw3IIskOhEjnwHvA9t+LUY98=
+	t=1787128551; cv=fail; b=XjC4ylhY/AfRRPJDsnHU4cnQPMIKeff95gOvBBJGdb+Bx7KcpJbG5f9G9Z/SlBrEVDiil7HVdsEQyS8m4tWq96xytCDZdFHJp4u0ltP3AaoQJG9OR2ET7L4StLD0No/NGHqfqTqxZVPiLgu1s/fCdAJHADZgwJV5u5bQz+n06DM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787125404; c=relaxed/simple;
-	bh=43Br3lVgw3FlfnZOJfVLCnJX5ADBVO4MKvLU9wA3Ob8=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=eBslQi93Drt0Yzz256mGS1Bd8yqGY+KoX7DpieMt1W73NID91FLxMT9BeX3mK6eSVkb1y6DM5cHPtBPXzYCxI9xWTWVCxrTXs+rKqZiOqcYJK8eNwhyqJhuPVFRN9OiXKgx6YubOnAoBh76Sww4HzcoyEOCztteq1v7bPLjzeTQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RDATSt0y; arc=fail smtp.client-ip=52.101.85.20
+	s=arc-20240116; t=1787128551; c=relaxed/simple;
+	bh=HR/7UCtMoy7oIFROjIQQySj9R/piLZyAM7RvIYQzisQ=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VfOQKbnz47ChLXWqna7CIHbs8ZpScRxbXU0qqOSOF+TQis/D1tSigHSyRIjZuS6D26xqEnq3eSsP8TSXccj3/I6HDyHQk05eqwjOWGz2T/7wqGz3j80+C1myULBDWrkHlvhL02kKDmfVNYQxxNuD1/tkdQ3Z4sojuRRisyHO+qU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VyUM9Moo; arc=fail smtp.client-ip=40.107.209.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RDATSt0y"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VyUM9Moo"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q5GGDiMIYTwkeA9smXVpSDk978RTy97FGsT3Hd9j6UvmbcMJQbtl2umSp28aWIKUXfhy0Kg26TvIri33in2gm+sfOBvRw2ZFffXah56qCmuNoiJ7DNHqZZktG0cFDN4L8Ss1Nr5SUQi6jolo5pVBAeKQqvCgGRQAZhQfWv3S5ZYX6F8oRAgCPt2WOoNPNhahtzqLjgSUA3FmFnFGBcE1LZkXgPy5Pwvtvd6JM5CNmuOeJ1WqxNCuM2Jnq8isCNzzoyYm8mhW1rvpHVhSKKKHc1/fcjrNAupU4u6mJiHy0KjS764aWXmXQxaA2p+1mC5bMeBRch/y7omsLKpl4hTGVg==
+ b=LvTqyulxfPo4xaRLFyaBk9macpniXHrbCbmKmvOHTcfhcStbF7UR0sTStV6zzo6sQkba9dt+A86eN2cMS8I1OYafmO9ddWx6nsCunvkry1KRIXy6rlrhHy9dbDAvaO3b14m2VC1gazRYCvq1FC3P9pBHD2HHNJPpSyzO4aha5JsYWt7jL2UqQilZGTBgey0EFDpicPBQgLmXBHB5x1ciPzGkp8F1FrbfwxHnjrqgON0cCwOPOP25QeCWaCFj2XoDm0TcI6kAtx00rOVgBRfmAAgHLFPtNiAyPR6Lo8hNgSvE2Kejo3sFKYICxCrf0KvG6cF0Qxz6DFt4EIOmXuZvgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6cu6K0uSOUJ0leiti2dxAE5xZ8qo/AsLiN35zmyUeio=;
- b=KPjHr2CAQPXiAbyPJJmLTE8HBDVqKSdCLoAfO0l4ZbeZTuH4mXEhZrT3AbZcwRATW+pFYD1sXMbcCxsZIdvHuQfb+UwP0O+lU5ufmLcFYN8HEvi4Q3CKYmoEV3mU5kW1uSXOQ6mFP3ODqV/3eW2KzFaQo/2s0LFIhXlPnJ03igAr10yG2SM3PH8CKSSemfRsYmJG5HogVwB+S+W9ayB7abIh1c+tS4bOk2iefabf5iCPmgW1kggXmp8/QM50NXvHyW4hVyUqxjNhcGEgto6401tM5KzY3fRWVMjEde9soSPwC5i9xbvbW+sGv1J7B9Gh2vmP34JdoecFAkdYzTsSEw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
+ bh=xaqFVYiQCiZZnN9dM/UKUzVsuNXzar6+gS+evgh/cbs=;
+ b=qgmHk+rmogCmo4hdJStKG1ySUzXT4TZe4WhJedIUC0RlFwHIj7DOoR7uKIz1NoYeOj+wr+wg0bHrvIgdloYF7tQj87h1GqKyCxhlgu2K9nBFHoxLdoULBFN2n1r84P5DBLfsv13WE3aVRDoEpf52L4+IavmIi9tvN2l8NRFjHaC9/EErjWqIZGYTgCKMj61x0/beGFkk3KR9oUtUqC7DF/DvrozbEiMgOnp/OraZQpe3QOmDOp/pQROO/LIyYDH5xYVoYn7q0EROcKS13tvdR9lw2EAWttTxtKv2oWYELIa1vLmUAGxPVvHpqWylI9gp8ZgFSd4ApIvu2wHZ93RQKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=garyguo.net smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6cu6K0uSOUJ0leiti2dxAE5xZ8qo/AsLiN35zmyUeio=;
- b=RDATSt0yiYqMqwYa8t7RutboStQ8WFqNRbAsEVYGT2Gs0buuEiUFhixV9B36DuqWu6ypAmTCuqPMCg/xid8fY1UveK6ywW+JsWw0YC34SPOK09FnXC2qP54HRL8INQg38k9oPw4Ddyg3xsjKxyjlycUe/MXpYLKgUiJhjmPmxdxCK5ICfqI5sc4PtfcliU5O/jMleBUU4ORQbC+uMYoW8/WvRxU1HbqwDhzSKOUTwoNJh7HIk4whdGtWKs4kV13Y4JScPAMSty6SNdbFB60NXPSZ1WmG65v1adzX95Fcd5FsZhnSHN/KKbXlOEs6ffdPWIbqPQC+aX7/+0EQIg5rzQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
- by BN7PPF2E18BD747.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6ca) with
+ bh=xaqFVYiQCiZZnN9dM/UKUzVsuNXzar6+gS+evgh/cbs=;
+ b=VyUM9MoohjW9FojhCbsL7/2Hy3x9GbfMjgEDexlgUoLFjqp4QSLyCFHpiQdrXzJjBMLGKRssxcWWfd7Cw2JA2bNuu1TDlLSJINpOx0+6hIcHYj+525vGVRlNWn7CKSPcphKGlGRX9eSiwkY8TL64vUfSWC7F0uVm9tJ3c06hJ+4Ucfvzrrn2BPgV7GVI40HAwotZTfTIc6xbpWbhNYK0xVsWO1i7SVNb5pZSC+ahR4ITGL2CuVESleZwKhPGRd8XOA15NpqbEPiG33doEfgKRSTPwI4R4R5ZwcZYL1bktpKqsYfZFxCiIRex71ihs5XW5goFW2+jOuNT1mKGHiSMRA==
+Received: from BN0PR04CA0019.namprd04.prod.outlook.com (2603:10b6:408:ee::24)
+ by SA1PR12MB6870.namprd12.prod.outlook.com (2603:10b6:806:25e::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.21; Wed, 19 Aug
- 2026 07:43:18 +0000
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0%5]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
- 07:43:18 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 19 Aug 2026 16:43:14 +0900
-Message-Id: <DKSR2WF91FL0.78WHY1E7WIX9@nvidia.com>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH 1/6] rust: alloc: add Vec::push_init
-From: "Eliot Courtney" <ecourtney@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Danilo Krummrich" <dakr@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>,
- "Vlastimil Babka" <vbabka@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260817-b4-nvkv-v1-0-b84db5e84b67@nvidia.com>
- <20260817-b4-nvkv-v1-1-b84db5e84b67@nvidia.com>
- <DKR9WJY3WI0F.1FV4PD1J17ZFD@garyguo.net>
-In-Reply-To: <DKR9WJY3WI0F.1FV4PD1J17ZFD@garyguo.net>
-X-ClientProxiedBy: TY4P301CA0036.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:2be::19) To BL0PR12MB2353.namprd12.prod.outlook.com
- (2603:10b6:207:4c::31)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.12; Wed, 19 Aug
+ 2026 08:35:40 +0000
+Received: from BN1PEPF00005FFD.namprd05.prod.outlook.com
+ (2603:10b6:408:ee:cafe::ab) by BN0PR04CA0019.outlook.office365.com
+ (2603:10b6:408:ee::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.8 via Frontend Transport; Wed, 19
+ Aug 2026 08:35:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ BN1PEPF00005FFD.mail.protection.outlook.com (10.167.243.229) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.339.3 via Frontend Transport; Wed, 19 Aug 2026 08:35:39 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Wed, 19 Aug
+ 2026 01:35:24 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 19 Aug 2026 01:35:24 -0700
+Received: from inno-dell (10.127.8.11) by mail.nvidia.com (10.126.190.182)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46 via Frontend
+ Transport; Wed, 19 Aug 2026 01:35:17 -0700
+Date: Wed, 19 Aug 2026 11:35:15 +0300
+From: Zhi Wang <zhiw@nvidia.com>
+To: Gary Guo <gary@garyguo.net>
+CC: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <dakr@kernel.org>, <aliceryhl@google.com>,
+	<bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
+	<boqun@kernel.org>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+	<a.hindborg@kernel.org>, <tmgross@umich.edu>, <markus.probst@posteo.de>,
+	<cjia@nvidia.com>, <smitra@nvidia.com>, <ankita@nvidia.com>,
+	<aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+	<kjaju@nvidia.com>, <alkumar@nvidia.com>, <acourbot@nvidia.com>,
+	<joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>,
+	<daniel.almeida@collabora.com>, <tamird@kernel.org>, <work@onurozkan.dev>
+Subject: Re: [PATCH v7 1/1] rust: pci: add extended capability and SR-IOV
+ support
+Message-ID: <20260819113515.55bc1132@inno-dell>
+In-Reply-To: <DKNU588R9B98.2UEHK3YLII989@garyguo.net>
+References: <20260804161612.776752-1-zhiw@nvidia.com>
+	<20260804161612.776752-2-zhiw@nvidia.com>
+	<DKNU588R9B98.2UEHK3YLII989@garyguo.net>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|BN7PPF2E18BD747:EE_
-X-MS-Office365-Filtering-Correlation-Id: 02929aaf-af54-4383-b239-08defdc58906
+X-MS-TrafficTypeDiagnostic: BN1PEPF00005FFD:EE_|SA1PR12MB6870:EE_
+X-MS-Office365-Filtering-Correlation-Id: f618c520-1939-4fa3-0352-08defdccd9a1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|366016|7416014|23010399003|376014|18002099003|10067099003|22082099003|6133799003|56012099006|4143699003|11063799006|921020;
+	BCL:0;ARA:13230040|1800799024|36860700016|7416014|376014|23010399003|82310400026|56012099006|11063799006|10067099003|6133799003|4143699003|22082099003|18002099003|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	q9HSSbY/QT0Z+VnuT8at/fyTI2HOk3FNZGDsxOLUsndCtgMF52qFvonbNSluwNK/cHUh4G4YKeihpHof5Jm8cAQ/BdGeUdBKKCLvfpbpMQ5K4En6QjHt6Owr8MTyHk6ISr9eAQ1rcUGCoB5sy+O5LZSTChghTkqUT4tzHb+YAV6ZY7R0iS82ACUqe/14FhD+YxRaWlbEFs9sjnIBlOYvayKza3Q+iSLlOAoITSlyo9Bm19EVi3PeEbA5tmY2/JhQ0sXRM5mJx36tCuYWJMs1+Gnw9rnCslnfTTBg3JNQWx3iqsdYccsrQ5CEJQaETjWVKV4AKzIbAp9BJLYsXG1z7kjNwTZzXP9wn1ItN4hDUhlPNSeyfFjK6013DZ3ZyaC/cXe3h7ayAUAztXDAAR6TGM99/XtjKI00AURkGgtG1XH+y7erK2mBdSRJ3FzPcw3DLjLdgyP1fP1wxZx1kv4ZgLldXP+diSGpa8ytc55slrq4av2AB+jfN4MkuDvm+NIldmivYMsmQn8R8UnoNRt6EtjO0THXba5H43UH194qW3+NMakkYrQO+B3azeAcCW/64HEaP7rVP6pFlmRxJI7EEIFs9w2+K7Cb75zvMdhwOp33Ro25Fh/gXealwHjZ3PG1vGnaBSs5HfNGSdQHEqHG5Zc35z/O1JcPv3FEyKtb4wX3fb3fUwAgsiMUqqkAEKTcGjmlDClW9Io7xjYwOQIxng==
+	tMZtdlJRg/iw5NuOlvIh+LN0HkReHCwTI2my1Xsb8zi6L41PglZwAExBhsXJmEK+r3O+YZi25wInBRL9sIu9yWy7bwGUlXMuK9KVxir0AXvowD/mHKCaXFGu2kZMRIDq3LO3Ge8fORs1dzwYNvOTR+5Jq4XTFk55aW5wxbTJ8OKWPQOuCtPuMeQdp0IYJLewt/lAsHfQPX/IoSEToTV5q8kSI3+cU+U6QOPBrahkjp6n1k3RjwNvUb6zYrLGQq8kzLOxqsYOJnJFELq63YXCmRgS6O87Gha0cR2w3wpb0rCUqNt437+ZqJT6ejmQmsMzM9nyGRrGFQIdkLN/+2Tc9pfytHNhYmpCDXY5ex3BP4fsQ1wu8zxI4CrLPlSI+1nZI5xAvv4x6X55rtI/KJYEJo6C6pDfya2/470VVSFqcZNkakoxlDCOcDwFqjfhGK74VwEZEC7OnRqCn/7DdK42GOsK5j75l01+1nHUM8TlXqoZImVSsGJ9Zq+0BfO9FCqXgQ26gV8FWIVttmUp/+Wbv5FCM5AMwzTWBIyQvYXVf9QJ27ypSeDgmcNtGYmFBysRg/hMdap+NJZtfAgFyunhWp4duiDhatVHbOWPc1LSUCxb/GLIEvG6h/+6W0G60VaTQhg6+EaZLgQSvvODY5AE9gzsUbQ6MKkTrAFMU+4b6xQGgUrYUb8nwaXp2A5LUlsi80F7cXPIcAFUvBQI9p7PgA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(7416014)(23010399003)(376014)(18002099003)(10067099003)(22082099003)(6133799003)(56012099006)(4143699003)(11063799006)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(7416014)(376014)(23010399003)(82310400026)(56012099006)(11063799006)(10067099003)(6133799003)(4143699003)(22082099003)(18002099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MHdDL3VWaFQ3cTNtYkd1UWpQaFhSOVJKTFFyU21QU0hESGdkL0tDcTAvVFht?=
- =?utf-8?B?N2N5RklOT1VjS1hGaTV3VGFDZ3lTQXhLOVJiSjhJYXpBeG5NbDBSVGljemVO?=
- =?utf-8?B?bmFxdXVmSk1mNytNOTFXL3RrTVhDWWJDbWIybHZXYW5xdC9UN2RpNGRsb0Z5?=
- =?utf-8?B?RWs5V0EzV2dzeHhHcTNQb05GOFgyb2ExU1NTcnlKMjkvOUIrTlBCclhKcnlM?=
- =?utf-8?B?UFhwS1VUV3QwUTMwajBqZm04ZXVWMnlDbFBScDBRbTZEUGVseXVuQUl3NTk2?=
- =?utf-8?B?QTNDQXltZHJGekc0VFMwSWVsdmRUTi96ZU9OTkhOUWk0b2tWQ3lwSnI5b09l?=
- =?utf-8?B?RTlHZ2ZPVTEybTB4SUpsaW1IWTJCTXFXbW5rK0MxSWZ3WEl6dEltMUR3ZXJT?=
- =?utf-8?B?N0RjRmVSK0dpSW9jNU9rYXZtMndqUWZQZksrUWdKYkc5cUQrWWhFdmtEUGsz?=
- =?utf-8?B?Ky8zVnNPMFh1WTJ1UDNVaFhVTWtFYmRmM3hrbFdlNURUQ1g0eDZtRWR3QzhY?=
- =?utf-8?B?VG9XOUlSaTFGbENPVVpMc3NsUGxSbVdsMnFuL1VVa1RRM0lBcVU3MXFoczNa?=
- =?utf-8?B?NDkxQ1BSWS9OS3hXbVFMM1l5SnRvMi90T2V0ekk1UXBGcHlaL2dmR2wvVklH?=
- =?utf-8?B?eU9KakNzc05XbkhzZWxJK05Ed25WUTVUSXZ2elVKQnR0OUxyZXkvSVgvejNa?=
- =?utf-8?B?aHVWblJWVGFtWFJqalgwRHV4dHBXVlB3ZWVnbkZvZjF2NzJjbzh2VDhNTWlO?=
- =?utf-8?B?VHM2czh6THRhMGY4TWttb211dzF4MzBPSlR4ZnVFa0pXMTVScjRRbjZWRDBm?=
- =?utf-8?B?VTcrUXlWTHJMcXNTMlV2Nk5xRXo0MDlFTmJRV2d0a3M4UzA5R2ZUQlo2UDlr?=
- =?utf-8?B?YVZqWm83aGVwY1JWckF4TUJUdTBwaHRaVWlDSlNaQU5JUjY2bkhMakdhY2ow?=
- =?utf-8?B?Tk1xaFo2MksrTmN3c0xvOVNYOXFaOVp5RXFuL1VJMHhCOTBRTi9Cd2RYS3Vr?=
- =?utf-8?B?UG91WlJqVnBMY3czbzlpUG5RWnhzSDFzZlVPUGlnVkh0aW1oMmUyREYrSTZl?=
- =?utf-8?B?dTJZdHRWQlo4dU5QNVhZZUZaWDZsQ1ZtbmlSSkVVTTJTK1Z3dFE3dVhQbUVy?=
- =?utf-8?B?SmlpWk1UZ0ZQQ3Fta3ZuRWVjQVFiU1Y1RkJoc1Q1QzJETlVqYVcvMFJTZk9C?=
- =?utf-8?B?dUJiV2ZWcjVGVGthRkhwZnMvdWd0bGVtZ0twUk5iZFUzOEVNanRWdmZZcENF?=
- =?utf-8?B?Q21EQm0yM0N1TFZnS1Z1RWhOeVk4ZU9jSVNwckhZTkx0T3pRcENRNXJkaEla?=
- =?utf-8?B?THdtN0xITzdZY3JYd2VqbFcyOEswVFNzUk03NkhJS2FkY0tFZXF1TCsrU3V4?=
- =?utf-8?B?cW9FZEVTSUtBZytsWGMzWHR6Q0Zia0ZkWHJDanpkaDRZeGFUSkhEbGt5Y21z?=
- =?utf-8?B?WnBFaHJIWktIZTNpakk2YlVkUnBFcTJkQzBXa3BNUTFTYzBkeW9hZjliQmta?=
- =?utf-8?B?bWNXdXBINDZKOXZ6Wk1wMjNHczl3Zjh6U1VDd2o0R1NRNzB2Z2JCU3JXaFpL?=
- =?utf-8?B?OVk3ekJ1Q2FNMmM1bXc5V2pYclVPSGlUWTdmZjU1VXdSeWlnSmlFdERabTdX?=
- =?utf-8?B?R203eHhMM0Z5UXpMMlN3U2Y1K0pXUFV1S09MQU83dkpJUTNubkVIK2NlYWdx?=
- =?utf-8?B?Vkt5V0l2Nm1xdEZnOWRVTDZDZEtFRFN6cG5vNFBwWG15eDQ4dlZBRUw3bmN4?=
- =?utf-8?B?dG9YN244SUNzNlp0NGxsTndNN1NpdXdOd0MxcHdxdkNEWFBMQ01LaE5lNTNR?=
- =?utf-8?B?aWF1aUtFdXlFL2hMNkhEM1lyNzU0WnlObGJ1V1M1SlhDWVNMSFAvcnZvOSto?=
- =?utf-8?B?S3Y0M1h5OE91OUZ6czZXQWtrMXlwd1JzZWVSU29oRlVjaG5Db2QwN0JnOEpG?=
- =?utf-8?B?V3BmWWlEajE1dXVVWW04NjRjME4rc3dPbGloRFZjczkwK0dNdkFIdmRVdk14?=
- =?utf-8?B?TzJtUWlCMzBlWmNORjJWZUVIQ0RVZ3dsYkJBb1pjUVByT2pXMzVnd1RaeVho?=
- =?utf-8?B?RzVMaFU4M01TK3NqNGp4TWQrME12Qms5N28yYndtNnlvZmxWaFBCMTdEZ0RB?=
- =?utf-8?B?Mkt1YzRpbjdzVDJkOTVLQkQ5QkZUd3pYOWVVSUZTc0hoQXZBb2IrSU5HbTJ5?=
- =?utf-8?B?WkIxQmpDTDFIbGwwMGtjMUQ0ZTJteDdPaGVuWjJWM3pTY2RMYlJsMkJHclFG?=
- =?utf-8?B?TWpZbHpCMnN0SlpYWjJWVDZ5TklKQnY5OXJDUVNKYlNwYUIyd1dNVU83cFpp?=
- =?utf-8?B?RmpuWnZpUXR4V0FhRGU5TVNpcTVpVUNqNng3NHo1eE5waEtzSTJhM3NyV0gw?=
- =?utf-8?Q?4WbF2CUGDyy/tl6hjT+rYvPCaRJko06vWTVZJeUESoGFy?=
-X-MS-Exchange-AntiSpam-MessageData-1: micHkddtNduorg==
+	UEI1JurU9JtlEbn0HxPl7/lEKOW0ULMFKemi15P2v4xuD7R+RSEkrpx/nHD+hH6B8Owxd1c2DMqWu9vEEN2M+2oZnTkszRghiTsJfHvnJSnFPu2IW0vAxhl6j48pG9CK+LFl+T8RQU3P4jiyG/UUKl5CQtki+KAeVHGd38JrknkpMWDPyfXw3EQtQMFtJMEg5BcRTf4kpRFOYVk+Hlq87K0LqNiY02k0HZAE4gi1nTT0eTnItJGc+UPb/1U/7Di5Sluy7eG6wQG4snhOomWEqrlfQ8jeD3h6v0HzkC2lbHrgmhz1JHOp5dE4SKRhpSpibNFZlobQDF2bWUrViqJJqaPV6FpETv7NQdmjC0vn2ZPalDCB79XNvSNPA5B/kBshR99J9dYPtUxFHm7DMnuwXiI5Jqbzus2WDKwJMEjKiVgv8LixY0RHB3KYjE7HxJgt
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02929aaf-af54-4383-b239-08defdc58906
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 07:43:18.4522
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 08:35:39.7583
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: f618c520-1939-4fa3-0352-08defdccd9a1
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K5XKqdo1nBxjX/U3s7bZfgbhq0uFLxmV+gcBNbQOvmy/V1d/UR9i4L6u1emsVJVq/MogwPv55pADdTgjqmjNAg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF2E18BD747
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00005FFD.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6870
 
-On Mon Aug 17, 2026 at 11:02 PM JST, Gary Guo wrote:
-> On Mon Aug 17, 2026 at 1:56 PM BST, Eliot Courtney wrote:
->> Add `Vec::push_init` which initializes a new element in place. We can't
->> modify the existing `Vec::push` signature to take an `impl Init<T, E>`
->> without changing its Error type.
->>
->> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
->> ---
->>  rust/kernel/alloc/kvec.rs | 42 ++++++++++++++++++++++++++++++++++++++++=
-+-
->>  1 file changed, 41 insertions(+), 1 deletion(-)
->>
->> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
->> index c7546b9da4fa..9f6f25d7e218 100644
->> --- a/rust/kernel/alloc/kvec.rs
->> +++ b/rust/kernel/alloc/kvec.rs
->> @@ -52,7 +52,10 @@
->>      }, //
->>  };
->> =20
->> -use pin_init::Zeroable;
->> +use pin_init::{
->> +    Init,
->> +    Zeroable, //
->> +};
->> =20
->>  mod errors;
->>  pub use self::errors::{InsertError, PushError, RemoveError};
->> @@ -359,6 +362,43 @@ pub fn push(&mut self, v: T, flags: Flags) -> Resul=
-t<(), AllocError> {
->>          Ok(())
->>      }
->> =20
->> +    /// Appends an element to the back of the [`Vec`] instance by initi=
-alizing it in place.
->> +    ///
->> +    /// # Examples
->> +    ///
->> +    /// ```
->> +    /// struct Element {
->> +    ///     buf: KVec<u8>,
->> +    /// }
->> +    ///
->> +    /// impl Element {
->> +    ///     fn new() -> impl Init<Self, Error> {
->> +    ///         try_init!(Element {
->> +    ///             buf: KVec::with_capacity(16, GFP_KERNEL)?,
->> +    ///         }? Error)
->> +    ///     }
->> +    /// }
->> +    ///
->> +    /// let mut v: KVec<Element> =3D KVec::new();
->> +    /// v.push_init(Element::new(), GFP_KERNEL)?;
->> +    /// assert!(v[0].buf.is_empty());
->> +    /// # Ok::<(), Error>(())
->> +    /// ```
->> +    pub fn push_init<E>(&mut self, init: impl Init<T, E>, flags: Flags)=
- -> Result<(), E>
->> +    where
->> +        E: From<AllocError>,
->> +    {
->> +        self.reserve(1, flags)?;
->> +        // SAFETY: The call to `reserve` was successful, so there is at=
- least one spare slot; the
->> +        // pointer therefore refers to allocated, aligned memory valid =
-for a write of one `T`.
->> +        unsafe { init.__init(self.spare_capacity_mut().as_mut_ptr().cas=
-t::<T>())? };
->> +        // SAFETY: The call to `__init` returned `Ok`, so the first spa=
-re slot now holds an
->> +        // initialized `T`. The new length does not exceed the capacity=
- because `reserve` ensured
->> +        // the capacity is greater than the length by at least one.
->> +        unsafe { self.inc_len(1) };
->> +        Ok(())
->> +    }
->
-> Thinking about this from a fresh design perspective, I wonder if we can c=
-reate
-> something more composable by splitting the allocation and insertion, like=
- entry
-> APIs do.
->
-> So
->
->     impl<T, A: Allocator> Vec<T, A> {
->         pub fn reserve(&mut self, additional: usize, flags: Flags) -> Res=
-ult<Reservation<'_, T>, AllocError> {
->             ...
->         }
->     }
->
->     /// Type indicating vector with reserved capacity.
->     pub struct<'a> Reservation<'a, T> {
->     }
->
->     impl<'a, T> Reservation<'a, T> {
->         pub fn init(&mut self, i: impl Init<T, E>) -> Result<(), E> {
->             ...
->         }
->     }
->
-> You can imagine even pushing this further, e.g. have a type indicating ju=
-st a
-> single reserved slot. Or perhaps have a type that is `Vec` but with fixed
-> capacity and cannot reallocate (something like `ArrayVec`) that the reser=
-ve
-> method will return.
->
+On Thu, 13 Aug 2026 14:04:00 +0100
+"Gary Guo" <gary@garyguo.net> wrote:
+
+Hi Gary:
+
+Thanks for the review. I have already addressed all of them in v8.
+
+Z.
+
+> On Tue Aug 4, 2026 at 5:16 PM BST, Zhi Wang wrote:
+> > Rust PCI drivers have no typed interface for locating and accessing
+> > PCIe extended capabilities.
+> >
+> > The SR-IOV extended capability describes VF topology and VF BARs.
+> > Expose this information through the Rust PCI abstraction so drivers
+> > can use the existing typed configuration-space accessors instead of
+> > raw bindings.
+> >
+> > Define ExtCapability to associate a capability ID with a register
+> > layout, and add ConfigSpace::find_ext_capability() to locate and
+> > project that layout. Bound the view at the next capability or the
+> > end of extended configuration space. Add ExtSriovRegs and a decoded
+> > VF BAR iterator that reads and validates all six VF BAR register
+> > slots up front, yields decoded BAR addresses and widths in logical
+> > order, and keeps the raw configuration-space slot advancement
+> > internal. Since PCI_EXT_CAP_NEXT() is a function-like macro, expose
+> > it through a Rust helper.
+> >
+> > Link:
+> > https://lore.kernel.org/rust-for-linux/20260730182954.783568-1-zhiw@nvi=
+dia.com/
+> > Cc: Alexandre Courbot <acourbot@nvidia.com> Cc: Gary Guo
+> > <gary@garyguo.net> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+> > ---
+> >  rust/helpers/pci.c     |   5 +
+> >  rust/kernel/pci.rs     |   8 ++
+> >  rust/kernel/pci/cap.rs | 317
+> > +++++++++++++++++++++++++++++++++++++++++ 3 files changed, 330
+> > insertions(+) create mode 100644 rust/kernel/pci/cap.rs
+> >
+> > diff --git a/rust/helpers/pci.c b/rust/helpers/pci.c
+> > index 4ebf256dff23..b946b14d79e4 100644
+> > --- a/rust/helpers/pci.c
+> > +++ b/rust/helpers/pci.c
+> > @@ -24,6 +24,11 @@ __rust_helper bool rust_helper_dev_is_pci(const
+> > struct device *dev) return dev_is_pci(dev);
+> >  }
+> > =20
+> > +__rust_helper u32 rust_helper_pci_ext_cap_next(u32 header)
+> > +{
+> > +	return PCI_EXT_CAP_NEXT(header);
+> > +}
+> > +
+> >  #ifndef CONFIG_PCI_IOV
+> >  __rust_helper unsigned int
+> >  rust_helper_pci_sriov_get_totalvfs(struct pci_dev *pdev)
+> > diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> > index 9f19ccd5905c..008c2770a3f3 100644
+> > --- a/rust/kernel/pci.rs
+> > +++ b/rust/kernel/pci.rs
+> > @@ -32,10 +32,18 @@
+> >      },
+> >  };
+> > =20
+> > +mod cap;
+> >  mod id;
+> >  mod io;
+> >  mod irq;
+> > =20
+> > +pub use self::cap::{
+> > +    ExtCapId,
+> > +    ExtCapability,
+> > +    ExtSriovCapability,
+> > +    ExtSriovRegs,
+> > +    ExtSriovVfBar, //
+> > +};
+> >  pub use self::id::{
+> >      Class,
+> >      ClassMask,
+> > diff --git a/rust/kernel/pci/cap.rs b/rust/kernel/pci/cap.rs
+> > new file mode 100644
+> > index 000000000000..c49de8682f6d
+> > --- /dev/null
+> > +++ b/rust/kernel/pci/cap.rs
+> > @@ -0,0 +1,317 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! PCI extended capability support.
+> > +
+> > +use super::{
+> > +    io::ConfigSpaceBackend,
+> > +    ConfigSpace,
+> > +    Extended, //
+> > +};
+> > +use crate::{
+> > +    bindings,
+> > +    io::{
+> > +        Io,
+> > +        IoBackend,
+> > +        Region, //
+> > +    },
+> > +    num::Bounded,
+> > +    prelude::*,
+> > +};
+> > +
+> > +/// Number of VF BAR register slots in an SR-IOV capability.
+> > +// CAST: `PCI_SRIOV_NUM_BARS` is 6, which fits in `usize`.
+> > +const NUM_VF_BARS: usize =3D bindings::PCI_SRIOV_NUM_BARS as usize;
+> > +
+> > +/// PCI extended capability IDs.
+> > +#[repr(u16)]
+> > +#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+> > +pub enum ExtCapId {
+> > +    /// Single Root I/O Virtualization.
+> > +    // CAST: `PCI_EXT_CAP_ID_SRIOV` is `0x10`, which fits in `u16`.
+> > +    Sriov =3D bindings::PCI_EXT_CAP_ID_SRIOV as u16,
+> > +}
+>=20
+> This might also make sense as a `struct` with assoc constants, so it
+> can accept unknown values.
+>=20
+>     #[repr(transparent)]
+>     #[derive(...)]
+>     pub struct ExtCapId(u16);
+>=20
+>     impl ExtCapId {
+>         pub const SRIOV: Self =3D Self(bindings::PCI_EXT_CAP_ID_SRIOV
+> as u16); }
+>=20
+> > +
+> > +impl ExtCapId {
+> > +    #[inline]
+> > +    fn as_raw(self) -> u16 {
+> > +        self as u16
+> > +    }
+> > +}
+> > +
+> > +/// A typed PCI extended capability register layout.
+> > +///
+> > +/// Implementors describe the register layout of one extended
+> > capability. The layout must start at +/// the extended capability
+> > header, and [`Self::ID`] must identify that layout. +pub trait
+> > ExtCapability: FromBytes + IntoBytes {
+> > +    /// PCI extended capability ID for this register layout.
+> > +    const ID: ExtCapId;
+> > +}
+> > +
+> > +impl<'a> ConfigSpace<'a, Extended> {
+> > +    /// Finds and projects an extended capability into its typed
+> > register layout.
+> > +    ///
+> > +    /// Returns [`None`] if the device does not implement the
+> > capability.
+> > +    ///
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```no_run
+> > +    /// use kernel::pci;
+> > +    ///
+> > +    /// fn probe_sriov(
+> > +    ///     pdev: &pci::Device<kernel::device::Bound>,
+> > +    /// ) -> Result<(), kernel::error::Error> {
+> > +    ///     let Some(sriov) =3D pdev
+> > +    ///         .config_space_extended()?
+> > +    ///         .find_ext_capability::<pci::ExtSriovRegs>()?
+> > +    ///     else {
+> > +    ///         return Ok(());
+> > +    ///     };
+> > +    ///
+> > +    ///     let total_vfs =3D kernel::io_read!(sriov, .total_vfs);
+> > +    ///     let vf_offset =3D kernel::io_read!(sriov, .vf_offset);
+> > +    ///     let mut vf_bars =3D sriov.vf_bars()?;
+> > +    ///     let bar0 =3D
+> > vf_bars.next().ok_or(kernel::error::code::EINVAL)?;
+>=20
+> Error codes are in the prelude.
+>=20
+> > +    ///     let bar1 =3D
+> > vf_bars.next().ok_or(kernel::error::code::EINVAL)?;
+> > +    ///     let bar2 =3D
+> > vf_bars.next().ok_or(kernel::error::code::EINVAL)?;
+> > +    ///
+> > +    ///     Ok(())
+> > +    /// }
+> > +    /// ```
+> > +    pub fn find_ext_capability<C: ExtCapability>(&self) ->
+> > Result<Option<ConfigSpace<'a, C>>> {
+> > +        let offset =3D usize::from(
+> > +            // SAFETY: `self.pdev` is valid by the type invariant
+> > of `ConfigSpace`.
+> > +            unsafe {
+> > +
+> > bindings::pci_find_ext_capability(self.pdev.as_raw(),
+> > i32::from(C::ID.as_raw()))
+> > +            },
+> > +        );
+> > +
+> > +        if offset =3D=3D 0 {
+> > +            return Ok(None);
+> > +        }
+> > +
+> > +        let size =3D self.calculate_ext_cap_size(offset)?;
+> > +
+> > +        let base =3D ConfigSpaceBackend::as_ptr(*self)
+> > +            .cast::<u8>()
+> > +            .wrapping_add(offset);
+> > +        let ptr =3D Region::<0>::ptr_try_from_raw_parts_mut(base,
+> > size)?; +
+> > +        // SAFETY: `offset` was returned by
+> > `pci_find_ext_capability`, and
+> > +        // `calculate_ext_cap_size` bounds `ptr` at the next
+> > capability or the end of the extended
+> > +        // configuration space. `ptr_try_from_raw_parts_mut`
+> > verified the region layout.
+> > +        let capability =3D unsafe {
+> > ConfigSpaceBackend::project_view(*self, ptr) }; +
+> > +        capability.try_cast::<C>().map(Some)
+>=20
+> Is this cast failure is supposed to be error condition?
+>=20
+> > +    }
+> > +
+> > +    /// Calculates the size of the extended capability at `offset`.
+> > +    ///
+> > +    /// The capability extends to the next extended capability, or
+> > to the end of the extended
+> > +    /// configuration space if it is the last one. `offset` must
+> > be a DWORD-aligned offset within
+> > +    /// the extended configuration space returned by
+> > `pci_find_ext_capability`. Returns an error if
+> > +    /// the capability header is outside the extended
+> > configuration space.
+> > +    fn calculate_ext_cap_size(&self, offset: usize) ->
+> > Result<usize> {
+> > +        let header =3D self.try_read32(offset)?;
+> > +        // SAFETY: Pure bit manipulation, no preconditions.
+> > +        // CAST: The next-cap pointer is a 12-bit field (max
+> > 0xFFC), always fits in `usize`.
+> > +        let next =3D unsafe { bindings::pci_ext_cap_next(header) }
+> > as usize; +
+> > +        Ok(if next > offset {
+> > +            next - offset
+> > +        } else {
+> > +            self.size() - offset
+> > +        })
+> > +    }
+> > +}
+> > +
+> > +/// SR-IOV register layout per PCIe spec (64 bytes starting at cap
+> > offset). +#[repr(C)]
+> > +#[derive(FromBytes, IntoBytes)]
+> > +pub struct ExtSriovRegs {
+> > +    /// Extended capability header.
+> > +    pub header: u32,
+>=20
+> I think this shouldn't be public.
+>=20
+> > +    /// SR-IOV capabilities.
+> > +    pub cap: u32,
+> > +    /// SR-IOV control.
+> > +    pub ctrl: u16,
+> > +    /// SR-IOV status.
+> > +    pub status: u16,
+> > +    /// Initial VFs.
+> > +    pub initial_vfs: u16,
+> > +    /// Total VFs.
+> > +    pub total_vfs: u16,
+> > +    /// Number of VFs.
+> > +    pub num_vfs: u16,
+> > +    /// Function dependency link.
+> > +    pub func_dep_link: u8,
+> > +    _reserved_0: u8,
+> > +    /// First VF offset.
+> > +    pub vf_offset: u16,
+> > +    /// VF stride.
+> > +    pub vf_stride: u16,
+> > +    _reserved_1: u16,
+> > +    /// VF device ID.
+> > +    pub vf_device_id: u16,
+> > +    /// Supported page sizes.
+> > +    pub supported_page_sizes: u32,
+> > +    /// System page size.
+> > +    pub system_page_size: u32,
+> > +    /// VF BARs (BAR0=E2=80=93BAR5).
+> > +    pub vf_bar: [u32; NUM_VF_BARS],
+> > +    /// VF migration state array offset.
+> > +    pub migration_state: u32,
+> > +}
+> > +
+> > +impl ExtCapability for ExtSriovRegs {
+> > +    const ID: ExtCapId =3D ExtCapId::Sriov;
+> > +}
+> > +
+> > +/// A typed view of an SR-IOV extended capability.
+> > +pub type ExtSriovCapability<'a> =3D ConfigSpace<'a, ExtSriovRegs>;
+> > +
+> > +#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+> > +enum VfBarMemoryType {
+> > +    Bits32,
+> > +    Bits64,
+> > +}
+> > +
+> > +impl TryFrom<Bounded<u32, 2>> for VfBarMemoryType {
+> > +    type Error =3D Error;
+> > +
+> > +    fn try_from(value: Bounded<u32, 2>) -> Result<Self> {
+> > +        match value.get() {
+> > +            0b00 =3D> Ok(Self::Bits32),
+> > +            0b10 =3D> Ok(Self::Bits64),
+> > +            _ =3D> Err(EINVAL),
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +impl From<VfBarMemoryType> for Bounded<u32, 2> {
+> > +    fn from(value: VfBarMemoryType) -> Self {
+> > +        match value {
+> > +            VfBarMemoryType::Bits32 =3D> Self::new::<0b00>(),
+> > +            VfBarMemoryType::Bits64 =3D> Self::new::<0b10>(),
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +crate::bitfield! {
+> > +    /// Low DWORD of an SR-IOV VF BAR.
+> > +    struct VfBarLow(u32) {
+> > +        /// Base address bits 31:4.
+> > +        31:4 address;
+> > +        /// Whether the address range is prefetchable.
+> > +        3:3 prefetchable =3D> bool;
+> > +        /// Memory BAR type.
+> > +        2:1 memory_type ?=3D> VfBarMemoryType;
+> > +        /// Whether this is an I/O-space BAR.
+> > +        0:0 io_space =3D> bool;
+> > +    }
+> > +}
+> > +
+> > +/// A decoded VF BAR register encoding.
+> > +#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+> > +pub struct ExtSriovVfBar {
+> > +    /// The BAR address without PCI attribute bits.
+> > +    pub address: u64,
+> > +
+> > +    /// Whether the BAR is 64-bit.
+> > +    pub is_64bit: bool,
+> > +}
+> > +
+> > +/// Iterator over decoded VF BAR register encodings.
+> > +///
+> > +/// `slots` contains the six consecutive 32-bit registers VF BAR0
+> > through VF BAR5. A 32-bit +/// memory BAR encoding uses one
+> > register. A 64-bit memory BAR encoding uses that register for +///
+> > bits 31:0 and the immediately following register for bits 63:32.
+> > +/// +/// # Invariants
+> > +///
+> > +/// - `config_slot <=3D NUM_VF_BARS`.
+> > +/// - If `config_slot < NUM_VF_BARS`, it identifies the next
+> > register to interpret as a BAR low +///   DWORD. Its address-space
+> > encoding is memory and its type encoding is either 32-bit or
+> > 64-bit. +/// - If that low DWORD encodes a 64-bit BAR, `config_slot
+> > + 1 < NUM_VF_BARS`, and the register at +///   `config_slot + 1` is
+> > its upper DWORD. +struct ExtSriovVfBars {
+> > +    slots: [u32; NUM_VF_BARS],
+> > +    config_slot: usize,
+> > +}
+> > +
+> > +impl ExtSriovVfBars {
+> > +    fn new(slots: [u32; NUM_VF_BARS]) -> Result<Self> {
+> > +        let mut config_slot =3D 0;
+> > +
+> > +        while config_slot < NUM_VF_BARS {
+> > +            let low =3D VfBarLow::from(slots[config_slot]);
+> > +
+> > +            if low.io_space() {
+> > +                return Err(EINVAL);
+> > +            }
+> > +
+> > +            let is_64bit =3D low.memory_type()? =3D=3D
+> > VfBarMemoryType::Bits64; +
+> > +            if is_64bit {
+> > +                if config_slot + 1 >=3D NUM_VF_BARS {
+> > +                    return Err(EINVAL);
+> > +                }
+> > +
+> > +                config_slot +=3D 2;
+> > +            } else {
+> > +                config_slot +=3D 1;
+> > +            }
+>=20
+> So you're already decoding the vf bars here, but the `next` does an
+> additional decoding. I think you should just decode them in one place.
+>=20
 > Best,
 > Gary
+>=20
+> > +        }
+> > +
+> > +        Ok(Self {
+> > +            slots,
+> > +            config_slot: 0,
+> > +        })
+> > +    }
+> > +}
+> > +
+> > +impl Iterator for ExtSriovVfBars {
+> > +    type Item =3D ExtSriovVfBar;
+> > +
+> > +    fn next(&mut self) -> Option<Self::Item> {
+> > +        if self.config_slot >=3D NUM_VF_BARS {
+> > +            return None;
+> > +        }
+> > +
+> > +        let config_slot =3D self.config_slot;
+> > +        let low =3D VfBarLow::from(self.slots[config_slot]);
+> > +        let is_64bit =3D matches!(low.memory_type(),
+> > Ok(VfBarMemoryType::Bits64));
+> > +        let low_address =3D u64::from(low.address()) <<
+> > VfBarLow::ADDRESS_SHIFT; +
+> > +        let address =3D if is_64bit {
+> > +            let high =3D self.slots[config_slot + 1];
+> > +            self.config_slot +=3D 2;
+> > +            (u64::from(high) << 32) | low_address
+> > +        } else {
+> > +            self.config_slot +=3D 1;
+> > +            low_address
+> > +        };
+> > +
+> > +        Some(ExtSriovVfBar { address, is_64bit })
+> > +    }
+> > +}
+> > +
+> > +impl ExtSriovCapability<'_> {
+> > +    /// Returns an iterator over decoded VF BAR register encodings.
+> > +    ///
+> > +    /// The iterator tracks the six raw VF BAR register slots
+> > internally. A 32-bit encoding yields
+> > +    /// one entry and advances by one slot; a 64-bit encoding
+> > combines two slots into one entry.
+> > +    ///
+> > +    /// A zero-valued low DWORD is yielded as a 32-bit BAR at
+> > address zero; this method does not
+> > +    /// probe whether a BAR is implemented.
+> > +    ///
+> > +    /// Returns [`EINVAL`] and logs an error if a BAR low DWORD
+> > does not encode a 32-bit or 64-bit
+> > +    /// memory BAR, or if a 64-bit encoding has no upper DWORD.
+> > +    pub fn vf_bars(&self) -> Result<impl Iterator<Item =3D
+> > ExtSriovVfBar>> {
+> > +        let slots: [u32; NUM_VF_BARS] =3D
+> > +            core::array::from_fn(|slot| crate::io_read!(*self,
+> > .vf_bar[panic: slot])); +
+> > +        ExtSriovVfBars::new(slots).inspect_err(|_| {
+> > +            dev_err!(self.pdev, "invalid VF BAR encoding in SR-IOV
+> > capability\n");
+> > +        })
+> > +    }
+> > +}
+>=20
+>=20
 
-Yeah that's an interesting idea. FWIW, I think the *_init idea has preceden=
-t
-already (Box::new, Box::init, etc.). I tried implementing something like th=
-is
-idea though, below.
-
-Since we don't have const generic exprs I used Peano-arithmetic like types.=
- But
-if we only care about empty vs at least one empty capacity, we could use a
-boolean. The idea is to track the minimum extra capacity and provide a
-generalised set of vector operations that would work regardless of the
-underlying storage or allocator (well basically what you said I hope). Sinc=
-e it
-knows how much guaranteed spare capacity it has we can do a bunch of stuff
-infallibly and track the guaranteed spare capacity. If there's no guarantee=
-d
-spare capacity then it will be fallible (but non-allocating). KVec then bec=
-omes
-a wrapper over these vector ops that just ensures it has enough guaranteed =
-spare
-capacity (possibly allocating) before forwarding. Allocation/storage relate=
-d ops
-remain on KVec. Then an ArrayVec and KVec can share most vector operations =
-on a
-VecView.
-
-There's also some locations in other code that could use a VecView directly
-instead of taking a &mut Vec etc. Having a Vec-like thing that's guaranteed=
- not
-to allocate also sounds potentially useful to me w.r.t. safety for contexts
-where you can't allocate/sleep.
-
-If you think this approach is ok I can send it as a separate series. Codege=
-n
-appears fine practically speaking AFAICT.
-
-Using it looks kinda like:
-```
-let view =3D v.reserved::<Two>(GFP_KERNEL)?;
-let Ok(view) =3D view.push(1);
-view.push(Element::new())?;  // only init can fail, push is guaranteed
-
-let mut view =3D v.view();
-while view.push(0).is_ok() {}  // can still do fallible stuff
-view.pop();
-
-// ArrayVec shares vec-like ops. can add method forwarders if we want
-arrayvec.view().push(1)?;=20
-```
-
-WDYT? (subset of code demonstrating the idea follows):
-```
-mod sealed {
-    pub trait Sealed {}
-    impl Sealed for () {}
-    impl<N: super::Count> Sealed for (N,) {}
-}
-
-/// Peano-like nested tuple type machinery.
-pub trait Count: sealed::Sealed {
-    const COUNT: usize;
-}
-
-impl Count for () {
-    const COUNT: usize =3D 0;
-}
-
-impl<N: Count> Count for (N,) {
-    const COUNT: usize =3D 1 + N::COUNT;
-}
-
-pub type Zero =3D ();
-pub type Succ<N> =3D (N,);
-pub type One =3D Succ<Zero>;
-pub type Two =3D Succ<One>;
-
-/// A view of vector-like storage with `N` slots of guaranteed spare capaci=
-ty.
-#[repr(C)]
-pub struct VecView<'a, T, N: Count =3D Zero> {
-    buf: NonNull<T>,
-    len: &'a mut usize,
-    cap: usize,
-    marker: PhantomData<(&'a mut [T], N)>,  // Invariant to prevent stashin=
-g shorter refs etc.
-}
-
-impl<'a, T, N: Count> VecView<'a, T, N> {
-    pub unsafe fn from_raw_parts(buf: NonNull<T>, len: &'a mut usize, cap: =
-usize) -> Self {
-        Self {
-            buf,
-            len,
-            cap,
-            marker: PhantomData,
-        }
-    }
-}
-
-// Infallible (except for Init) push. `Zero` spare VecView has the fallible=
- version.
-impl<'a, T, N: Count> VecView<'a, T, Succ<N>> {
-    pub fn push<E>(self, init: impl Init<T, E>) -> Result<VecView<'a, T, N>=
-, E> {
-        unsafe { init.__init(self.buf.as_ptr().add(*self.len))? };
-        *self.len +=3D 1;
-
-        Ok(VecView {
-            buf: self.buf,
-            len: self.len,
-            cap: self.cap,
-            marker: PhantomData,
-        })
-    }
-}
-
-// Fallible but not allocating ops (can run out of space).
-impl<'a, T> VecView<'a, T> {
-    pub fn push<I: Init<T, E>, E>(&mut self, init: I) -> Result<(), PushIni=
-tError<I, E>> {
-        if *self.len =3D=3D self.cap {
-            return Err(PushInitError::Full(init));
-        }
-
-        unsafe { init.__init(self.buf.as_ptr().add(*self.len)) }.map_err(Pu=
-shInitError::Init)?;
-        *self.len +=3D 1;
-
-        Ok(())
-    }
-
-    // Bodies as in the current KVec implementations.
-    pub fn pop(&mut self) -> Option<T> { ... }
-    pub fn insert(&mut self, index: usize, element: T) -> Result<(), Insert=
-Error<T>> { ... }
-    pub fn remove(&mut self, i: usize) -> Result<T, RemoveError> { ... }
-    pub fn truncate(&mut self, len: usize) { ... }
-    pub fn retain(&mut self, f: impl FnMut(&mut T) -> bool) { ... }
-    pub fn drain_all(self) -> DrainAll<'a, T> { ... }
-    pub fn len(&self) -> usize { ... }
-    pub fn as_slice(&self) -> &[T] { ... }
-    pub fn as_mut_slice(&mut self) -> &mut [T] { ... }
-    pub fn spare_capacity(&self) -> usize { ... }
-    pub fn spare_capacity_mut(&mut self) -> &mut [MaybeUninit<T>] { ... }
-    pub unsafe fn commit(&mut self, additional: usize) { ... }
-}
-
-impl<T: Clone> VecView<'_, T> {
-    pub fn extend_with(&mut self, n: usize, value: T) -> Result<(), Error> =
-{ ... }
-    pub fn extend_from_slice(&mut self, other: &[T]) -> Result<(), Error> {=
- ... }
-}
-
-//  Decay to read only ops.
-impl<'a, T, N: Count> Deref for VecView<'a, T, Succ<N>> {
-    type Target =3D VecView<'a, T>;
-
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*ptr::from_ref(self).cast() }
-    }
-}
-
-pub enum PushInitError<I, E> {
-    Full(I),
-    Init(E),
-}
-
-impl<I, E: Into<Error>> From<PushInitError<I, E>> for Error {
-    fn from(e: PushInitError<I, E>) -> Error {
-        match e {
-            PushInitError::Full(_) =3D> EINVAL,
-            PushInitError::Init(e) =3D> e.into(),
-        }
-    }
-}
-
-// `reserved` gets you the guaranteed capacity VecView.
-impl<T, A: Allocator> Vec<T, A> {
-    pub fn view(&mut self) -> VecView<'_, T> {
-        let buf =3D self.ptr;
-        let cap =3D self.capacity();
-        unsafe { VecView::from_raw_parts(buf, &mut self.len, cap) }
-    }
-
-    pub fn reserved<N: Count>(&mut self, flags: Flags) -> Result<VecView<'_=
-, T, N>, AllocError> {
-        self.reserve(N::COUNT, flags)?;
-
-        let buf =3D self.ptr;
-        let cap =3D self.capacity();
-        Ok(unsafe { VecView::from_raw_parts(buf, &mut self.len, cap) })
-    }
-
-    pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError> {
-        let Ok(_) =3D self.reserved::<One>(flags)?.push(v);
-        Ok(())
-    }
-}
-
-// Non allocating ArrayVec backing.
-pub struct ArrayVec<T, const N: usize> {
-    buf: [MaybeUninit<T>; N],
-    len: usize,
-}
-
-impl<T, const N: usize> ArrayVec<T, N> {
-    pub fn view(&mut self) -> VecView<'_, T> {
-        let buf =3D NonNull::from(&mut self.buf).cast::<T>();
-        unsafe { VecView::from_raw_parts(buf, &mut self.len, N) }
-    }
-
-    pub fn reserved<C: Count>(&mut self) -> Option<VecView<'_, T, C>> {
-        const { assert!(C::COUNT <=3D N) }
-        if C::COUNT > N - self.len {
-            return None;
-        }
-
-        let buf =3D NonNull::from(&mut self.buf).cast::<T>();
-        Some(unsafe { VecView::from_raw_parts(buf, &mut self.len, N) })
-    }
-}
-```
