@@ -1,144 +1,126 @@
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130BA442B35
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Aug 2026 09:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787132352; cv=none; b=Uwf7stDtuoTJ4xhsyGQ5AjyQqbvQpRhCVIFcUNofxxU0gX29J0xwomALDkM/3FTpWHAB1F/joJ0iLD0uu39WOOGFWZ6hNzZisGDye7mb0rN3ya0+TQrikj0p1e5FWbgNHA16sZJ/MWi8LdtRtxsSO/j0JTlzQ702UStfWDlWl70=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787132352; c=relaxed/simple;
-	bh=zlErMMR25SYOsUd3S/0AwpVYnof7u7gBjzWgLBfix9I=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56BB3F329A
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Aug 2026 10:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787133743; cv=pass; b=T4vA043g3OEJ2VYOBqIrPe6aQpL9ucJCc3EsBgFhbabDX4aVq83+rgu7Cza7zxEarx1fvQapeKKDuDr/rp/bYreyYKROZou0cPjvUgRjs78gKgtFjRRrSKfmpx0p1IEDyZATmzZuxkJFzfFdmlbctWCXAX8H9LO80+HROq5ccvc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787133743; c=relaxed/simple;
+	bh=e/ykeQ5QUSsTkkdxsh/CxYBDe9VSjwD6RqDbgwXYXlM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AdXuSCPNeQW58cJP4fZ073UW4DYaqE7Kwl6t4TlYt8JGBQcRsUwpIqiFCVHvuvD+lXG8Lje2o/a9cpwRk1lQDLHAwJiml9JmMWXx5S6C+waIgVbSj/poJc/FqSmwpiBcvrzEFz6XURLkCdzKZJHAgSAGwSMvVD0s0/OkgKx4z5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	 To:Cc:Content-Type; b=cR3gykcY7+tKKPHY5ENa8jklEhFTRKk7hC32VnnvsbNFjoxqTLdSugGex/0wcxK1UcCgnHM8KJZwxBKvLEqWCeo1p1cVyHlTbqmAmmsye60ARPbidrHjJcOM+itaeyIoJ6oiXQfyyZm+umPplM9VhfqbyVredXstltDFNpfQ3GQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GlkAlRmf; arc=pass smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-96944741eaeso261149241.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Aug 2026 02:39:09 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GlkAlRmf"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5b2af9beee4so127843e87.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Aug 2026 03:02:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787133740; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RNxfP8QRmr4ABsTlmaj2LNXzG7fIiRCqXg1RDMj8ndU6mYqeoxtUW81Igh7y0JrxUO
+         GyCcQv7dEFL00QEiKAZCc1NnvhFlpK9ITC6iy1WBCgGq1sL/TFWQ7X+gtmNLQzKakCrt
+         eDM5icorwY/Z9t41RtOCcwpWQNu7P1WGMyro0HQJfpmf0hW/V5g4AjCW4BXEp+EbueZo
+         jxiloE0XhWZ7BMNXqTzlnptjC9lDiomRiUdAhndEtu+On7c2zQYXmNLBMY/Tv564bNW6
+         KyXPm7VUWUI50XYWerruASrSZUvRWk2eh4Gbta99XeBCT6eCeIivU59abjGNSoDNz736
+         QPCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=e/ykeQ5QUSsTkkdxsh/CxYBDe9VSjwD6RqDbgwXYXlM=;
+        fh=YNOgwN4ES3qs+AeiIpCQ/4ONlG8e1ekflYswyB3BcG8=;
+        b=Qd7sMEPdie3Eylpjc0nqhETD4t+8lTpgsVIDQIMqV8+saewe1FacLdh6988ehGZAQC
+         xvB4Edir018pvLqSQmLt7BByulJzQ2Jay0dcAuPE3oWI3mLSraeAGA/kyYzPwwDxsUA4
+         Gd+hm4j2CJ5NOp2AMnvUc1LfNey8L+rFyufIuLw/pbHLcv7/0TolapgpHkfn/7aaIqMQ
+         TWKucRGOmI6MVlrpbBPg8zu6NORl71WdoVVqZX1E3Y4uszuR0E3ZiWsir66Nz5LRoWSI
+         QHZyOKXOnnp69d2y0SperU12dSk9KTZYCPTFKuiW7eozJk/iyzlHep+dG4CE2ZmwbHdR
+         f/PQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787133740; x=1787738540; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=e/ykeQ5QUSsTkkdxsh/CxYBDe9VSjwD6RqDbgwXYXlM=;
+        b=GlkAlRmfIxmI9f0aG+0emylS0wIs657AK6xb81YI79pWmKat9VK7icm5yegfmfM3R/
+         HxmFwKomCg+qya0gCisZ3LHyIKxUWLHt6iGivuWSISO6ZHeNIkXjRJ6BG60E98z7+T2E
+         Ni0qrMbBf6pdHxhMv0acyZpcXTS/fksYQeM6tLl9v5iL2gTE88vE+ePEFoOmS1pT7lNj
+         buATUbQeKKTJTh9bT137nx6oNyO5iX7mvo6hfaDsr+LuCYX23rp3GpKHOLXcnWxBqco2
+         fmVk4tOKmcAydU31F9NUK7n7O94YKx6wtRclYFlEU8oJLbFi7aLjFzdmwyBjW2ZtJx8r
+         ryVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787132348; x=1787737148;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=dIMgKn9ssmwMdJVgg9MfbDylpozJGdyvq0xNOf3CW1Q=;
-        b=YjGqRwiS2gUBVkCeavbEsmznqkFpTvyJNYUe8Q7kqu6atZehPdQYo6y5zBxPnwO2zM
-         MTKnvDhQ0kcySecGvuvdtx1wz186bX9iE0znN3Uwh9YIsy4MV308IOx+08CuhCxIHssR
-         qzxTrCLcjDYLAODR0NWGrbLvwaFIHwKRyTKhGd4da4bgHTYdKwo2IBB6C0Tz7nF6gqMg
-         7xIR+GNpztNrCNb4F8ADYOWut0YQPSAcgkBMKR2aTrsqrXSsQAw5DNIP6MUiJkWyvFbc
-         I+mYURMCBRKxyGj4Zp2jqoF+kMSiTl394MmoJDtSfnd/wppGyIj78YAwXfxGRgXfuTvK
-         IBNw==
-X-Forwarded-Encrypted: i=1; AHgh+RozmBhS3J5+YqMFHJue38YBhHGvDau/VV90YvPuRpIvsKwgVKS98zjstdPxX0mbFp+8usA0lmLcXiRdobDkgQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxABVlLES9F6A0me1UeK+vGAS2laRIKGNpWxJsw3cDcHquJk5EU
-	EabKBwGCc+Z1N5aMbnT8HZdZdjZUfufSHZg1361XL9KjTr1ORjOVFwgHQX4cONXKqII=
-X-Gm-Gg: AR+sD13eSx8l46TvihGLNdGlEIxNwt6arbU/3GuRfYCZAk6myh7Vd03fR2ReRnZzmtf
-	XDR9awBM9I17yS3m0rch+ACxoUWBSDgCrXkgbgfA5iuicvS2QVducADGcmbImyFNe8VYy3UkZCo
-	e3yWe9n64fBA3Qab2i2AoSQLy1sbuPl4pVpRt8qAVkw/fiHPpZDhy98LxS58y/+nrMtOI3EM4JW
-	vukw8g3BX55NA+xj0EktDPNTGBs0IC7WDbih3mxcNbHWQRCfoTOksm8UgDiuZHfydsdknPhtD+c
-	xzWcMeEK/e20OYdGHS0CRp1BN8hBHNlvy2H3ibe3ahQ5UYD3UjF3jS7MXGxGJj5GFiE6cdDT7eZ
-	9vazIuzXWjElofUN9V1m3IiP/0FAFQ9HueaptXaWi5vcdJ4C5JKpHqn5/XfCvrl/DuwUXZQtciA
-	dNlOfMCmGGxzd1vXly22gy3rs9lNSrFhNu/dVj+I/5U3gasJHZ0coAWeDkMCkqEDQ9dOBWSLkPK
-	OMwxUbUNTgvy6ukWGKaicTn2AU1+iBFEJ2PdZDymKfgv0Vz
-X-Received: by 2002:a05:6102:3585:b0:777:ab3c:b88c with SMTP id ada2fe7eead31-777f9c84dd6mr793037137.8.1787132348033;
-        Wed, 19 Aug 2026 02:39:08 -0700 (PDT)
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com. [209.85.217.53])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-97c4e75fd76sm1574323241.2.2026.08.19.02.39.06
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Aug 2026 02:39:06 -0700 (PDT)
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-738bcf9a573so322544137.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Aug 2026 02:39:06 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rq/J3Q04wgKbeGclZXvhZG6Dq1LQFTCqayNwKbtHoyQllVT1f1x0Z/UdI284LI1izn4lNEyD6rG+SIJjQJ5UA==@vger.kernel.org
-X-Received: by 2002:a67:e04e:0:b0:777:ffe0:a10b with SMTP id
- ada2fe7eead31-777ffe0a6b7mr539021137.4.1787132346344; Wed, 19 Aug 2026
- 02:39:06 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787133740; x=1787738540;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=e/ykeQ5QUSsTkkdxsh/CxYBDe9VSjwD6RqDbgwXYXlM=;
+        b=Lg8Q7/7LDVlA8l7TiP5yBa3sbCO2WVXrhdbiCZ2PXUygU3Py6E1YoPjB98pxmhrJb4
+         5WEl7ofcIUIKAKolbzSPWtT1G+4YjjnZv+O0UqXPme6uSFm4S3rfJ+wCpUdKEtGwIJY6
+         Urv2AuITn2PH3IgrWgQBqomgiPaeei+mykqHqJK1TSL1Uw5p3wb96K1yJNT59iKZmkpV
+         4JEJb50pmFB4NOZXy0KGHZy7DiN8Ts8UoSEY3pOCEw+BG8iTTlv/TMZ0/kRGbMIXVW6D
+         q0Mv46yS1RzAmQx4OyDS307ovTmHjdJbU2llkODm2sNjdCqzuLzmZCQaMsBraTRR0bLA
+         Wd1g==
+X-Forwarded-Encrypted: i=1; AHgh+RqOD7caW/+3DMyBI9TKDiPVa4g0lvW+zzlNTqll/W2aUkpEL/KUfKf64icgNHj/vEe7gLMREbVXHjrxSZKZhw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeZBtt3PUiWwj2XcotftY/OU+P/ORYtEKJQvHUi8/A0enPIqbF
+	GDJzT7Svuv5SUUjgM6S/el0iTJxcVbZ+p8z/kdq+ggadDIUmkeK5CBpKQGdk02niS+PqkoAu3ny
+	0Obj5JlpFqFnj8OwjP3HayqS8VxAIRJk=
+X-Gm-Gg: AR+sD11ZfxyRDEp3WBdjlqLR8mDXahmN4AxI3x44wYo0lkmvi2w+w+3VQMOSxltTl+F
+	6VfemnYnPO6WdxpzDr3BFy4RgXZpOugkDOqcJVYVRpT+G0MH2efwKSyP1H/budlA/3zUgZoGTyf
+	DMfptrFvbYxk4Wg10ozSfu9B06v0ymicOOv0gR21t+w/eaWRtRqMw3CEL7y2MLcAQ7t1/JQPwAu
+	6IeTAZFPWzoHtYk45AtwP5WDX8cv2bnTm5OMYjYx0CBp1Iw1QbEO10OiZ8KxNyMVDqPdwfUrSRb
+	kC9BPFzNM/LRh5/EHfqgu9D0Avg11Dz1g9+pH9zCxxZVQ4UE5W40FkIAsb9oeDPuE8Lym6Yjw/N
+	9NetMs0Y2PL6u++AKauh5hp5Ediw8rwjjTYawK/WABFFbb23flmobgWZ50+Py2SyIOA==
+X-Received: by 2002:ac2:51c6:0:b0:5b1:5e89:30f6 with SMTP id
+ 2adb3069b0e04-5b478bcb669mr579903e87.3.1787133739473; Wed, 19 Aug 2026
+ 03:02:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260818125012.468092-1-tzimmermann@suse.de> <20260818125012.468092-2-tzimmermann@suse.de>
-In-Reply-To: <20260818125012.468092-2-tzimmermann@suse.de>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 19 Aug 2026 11:38:55 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWYVjvGM2pOzWoDq8LUSrkFtzOQwdmosHYQuBLnSn3D-Q@mail.gmail.com>
-X-Gm-Features: AcwNN1Uwr-MWNK1wEAyEr8Z9JNVhxk4jrnSNE7dazUpWIvLo30uHHQJP967oerw
-Message-ID: <CAMuHMdWYVjvGM2pOzWoDq8LUSrkFtzOQwdmosHYQuBLnSn3D-Q@mail.gmail.com>
-Subject: Re: [PATCH 01/12] drm/panic: Allocate QR-code buffers statically
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: jfalempe@redhat.com, javierm@redhat.com, airlied@gmail.com, 
-	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, 
-	amd-gfx@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, nouveau@lists.freedesktop.org, 
-	linux-renesas-soc@vger.kernel.org, virtualization@lists.linux.dev, 
-	sashiko-reviews@lists.linux.dev
+References: <20260819084825.969116-1-mkchauras@gmail.com>
+In-Reply-To: <20260819084825.969116-1-mkchauras@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 19 Aug 2026 12:02:01 +0200
+X-Gm-Features: AcwNN1Vu-RuAbNdoDEw2XNogoKXdWs1AZbTUBC5VtWKX5E0dSCywjtrmuOtTyPU
+Message-ID: <CANiq72n=C68iaxuLVR5dbuBpf2FLMGwH8wtB+d5sNgOTv4BQ7A@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/bug: Add ARCH_WARN_ASM and refactor
+ _EMIT_BUG_ENTRY for Rust support
+To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	alex@ghiti.fr, ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
+	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, 
+	work@onurozkan.dev, thuth@redhat.com, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, FUJITA Tomonori <tomo@flapping.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Thomas,
-
-On Tue, 18 Aug 2026 at 15:00, Thomas Zimmermann <tzimmermann@suse.de> wrote:
-> Declare qrbuf1 and qrbuf2 as static arrays so that the module loader
-> allocates them for us. Avoids the kmalloc later on. Also allows for
-> using sizeof() to get the number of bytes in each array. Access the
-> arrays once with memset, so that the physical pages are available on
-> a panic.
+On Wed, Aug 19, 2026 at 10:48=E2=80=AFAM Mukesh Kumar Chaurasiya (IBM)
+<mkchauras@gmail.com> wrote:
 >
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-Thanks for your patch!
-
-> --- a/drivers/gpu/drm/drm_panic.c
-> +++ b/drivers/gpu/drm/drm_panic.c
-> @@ -628,24 +628,23 @@ MODULE_PARM_DESC(panic_qr_version, "maximum version (size) of the QR code");
->  #define WINDOW_BITS 12
->  #define MEM_LEVEL 4
+> This brings powerpc into line with x86, arm64, s390, and riscv, all of
+> which already define ARCH_WARN_ASM and ARCH_WARN_REACHABLE.
 >
-> -static char *qrbuf1;
-> -static char *qrbuf2;
-> +static u8 qrbuf1[QR_BUFFER1_SIZE];
-> +static u8 qrbuf2[QR_BUFFER2_SIZE];
+> Suggested-by: FUJITA Tomonori <tomo@flapping.org>
 
-I am not a big fan of increasing kernel size like this.
-You may run (faster) into boot loader limitations.
+Should this be Reported-by?
 
->  static struct z_stream_s stream;
->
->  static void __init drm_panic_qr_init(void)
->  {
-> -       qrbuf1 = kmalloc(QR_BUFFER1_SIZE, GFP_KERNEL);
-> -       qrbuf2 = kmalloc(QR_BUFFER2_SIZE, GFP_KERNEL);
-> +       /* best-effort allocation; can be NULL */
->         stream.workspace = kmalloc(zlib_deflate_workspacesize(WINDOW_BITS, MEM_LEVEL),
->                                    GFP_KERNEL);
+In addition, probably we want a Link to the original report, and a Fixes ta=
+g.
 
-<ironic>Why not use a static array for this, too?</ironic>
+Ideally, please include the error message in the commit message -- it
+helps to triaging and also to search it later on etc.
 
-> +
-> +       /* touch memory so that pages are there in the case of a panic */
-> +       memset(qrbuf1, 0, sizeof(qrbuf1));
-> +       memset(qrbuf2, 0, sizeof(qrbuf2));
+Thanks!
 
-Please clarify "there"?
-In cache? Not all systems have sufficient data cache, so it may be
-evicted at any time.
-In RAM? AFAIK kernel and module memory is not demand-paged.
-In TLB? Like cache, it may be evicted at any time.
-
-So IMHO this is futile.
-
->  }
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Cheers,
+Miguel
