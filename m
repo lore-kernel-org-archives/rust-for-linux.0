@@ -1,149 +1,366 @@
-Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17483451C6
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Aug 2026 13:01:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BBB48A8B3;
+	Wed, 19 Aug 2026 16:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787144478; cv=none; b=Kvna7Yp5jA3BcL+P2C1Smr+m7ZMd2CuzAIjVsV4J5kggEsA6TZTnsnCIr11Q+Bie+8FjissvmqkF7n8JTmlahx/cKFIrmSWw8Rfdtd9bHn3wwEl1A08F4ZtYHciT8BkwfDOgqqF3NukWcZ+5aIiCXjOL+3Rgkgbe/ijkTata0rA=
+	t=1787157169; cv=none; b=L+9Q34lmsxvdxz0cQYkSYITkSGMplROIwBRnnsJljElxMPdQb3axhhz29KO2j9Rflc7SPxwbTb7mNYPGjKWlSCLjartNQMnLXouofpPTrrnsHDv3L7R1jDgfRFebD/rH1LoY+KnzdazjCOqXVy98CwGo4KGGIRsdqrbp+b/zWRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787144478; c=relaxed/simple;
-	bh=QtGbJ04y6+5U+fCifeswP4gFGkJ3Gm62fBvFHAY80ho=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=pvlHPyYIQxnaSNtZU341ZcOKRdzXp1jAZgSX+k0d90xnTacPIz9w/i75xf6x8+ESKjfEKsOaZ1222LnO6qJcW8HGEpyvydSQZxbotRuaacBfdDY8lKyPqH5eUFxEgnIG1dlDSNXEhZ6VYaeQsUWqjV4WnNldlSKL3K9vEj4PL78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=oQHW0dtE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ty86Zl2P; arc=none smtp.client-ip=202.12.124.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	s=arc-20240116; t=1787157169; c=relaxed/simple;
+	bh=ok7NfxEHRpKFQHW3vKWZhkoqSmco1CAty3i9vk7V+YI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=qRySu0X+kJqnNSUVlaGAOCc1ibR8bK1/lafm21IdcGLzTdodfwJLBotO0ZSF8cO5/5a/Z8whMwnkuyLznKKOQFI8Jf8DOjPE/jZnkJC+RMmUO03P3eqCZ/pYKUeETVSNr7/XR/lsrXQ+3NeA88e2KXQRkQD8vM/BESKQagW/S54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PiVjJnit; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="oQHW0dtE";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ty86Zl2P"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.stl.internal (Postfix) with ESMTP id 42E3513000D9;
-	Wed, 19 Aug 2026 09:01:15 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 19 Aug 2026 09:01:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1787144475;
-	 x=1787148075; bh=ko4SXG98a7xqE6B2QdIzELBbHwIyfKkFOxP4U26IyDI=; b=
-	oQHW0dtEGsk7oUzHtrNDZwW2v+e34yojBjHaZ9cDrvpmw3Vl0ju0zJ1H0FidTbLK
-	xKszSdGEokMzXYYlC3ZPFyYaVLckJpRQ6xNpe4zCvLhasz/Pwx1FQWeOc3ksCKnL
-	1VfJm+oo/yFlpFrIxu82WEZ0ytfCHdZdBa1A8Kx9wCUpE8RNF2lSzzaoJBdDWk7n
-	KbrH76dAvhkpsSs2AbtfSKss3hF5p+LjzijuhgjSI4Z2y74siyEJPmjauZkx/r7h
-	Yzeg3nVuWKegtQQMJuL/NPxAsmGegHKzwEm3lj38j87W1BqC88lfX0u8z8RPYLkr
-	/bp2SNjFPkFExcBwDmyMcA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787144475; x=
-	1787148075; bh=ko4SXG98a7xqE6B2QdIzELBbHwIyfKkFOxP4U26IyDI=; b=T
-	y86Zl2PxWW1IyYJ9MfFAOESk25Fbx7HQQEc9l5JxGY1dRdQVKhkh4k+Q4fd/o9+H
-	OS47TsjJ52zV8DpKxKfq18QP6GbVZ3xCt9WcM8XIU+BuUM3AYirtamtEg429m28o
-	b6h9j799SiBVAccnNj8+GeNCA8iDEReky2nggTKoLwxzzk1veup39CyfP8DsakoX
-	SBhbz5ohC4H8D7TxAn8dIqUD/yHeh/lbUQvNVJIwSW87zQEUiRvsnQUymH5uKp0/
-	J1icm3kvqVneRj6U34TWaAMt/4DWMoSvO9KMTrtEp8+6QmngUW+PaheCkvWfEaC1
-	nytks+8IyAEPFz2O0PBdA==
-X-ME-Sender: <xms:GqmFajtUQjDOaaSG579Lxy7kh_L0f6gAmzydUNnc8OYjuGJ2nb7SQg>
-    <xme:GqmFak2TXb486CGIWNRg2LOtaE_V-ubvXO-qQNQ3KuWFazRY-8bAQdknYiSoduhb5
-    -ZEM4FanBGlJ1UwQIG14fdg1QZQWC-Buegq4X8b9cr42J3kLJ4rpZo>
-X-ME-Received: <xmr:GqmFan7z5C-NBOKt0p5awMl1V3BRApXzST7qpmNcPxz5RW3klDRq5sMhKCRkAjE3Ov_YbFyFvqX0sOTo7S0Y8Vfu>
-X-ME-Proxy-Cause: dmFkZTEHbLzbVC/SccI56gbjZJLWcGToDcmFagp/JUK7zdOysBTe8Z7f1Ig9WU3i25XhVL
-    zTC9BW0cxj+N5tCzig8u9uqST/o/Fx25umgrXpEWspefCGOPSYykZR4ZoRs7fAvfHx5Tka
-    OJhgF8FtQSRZ2nwN8s3Mu6crfp8ruGeE3QgI8qTJztg1ei9MKur4Q4HEDOe4Xz5h8Vt4DJ
-    IxmiN/ljGEDOqmA5PWaNcKWtf5AXCjHYulZ8asNLHCOTM50hMrPrWOedxaBizEyuFeKWFD
-    URptI2MiyQ2NmpojVrZqC3ckasnCGMO7LQeQ7gKmE0rtD24Y5eeyddKQ07KR4tHk+XJaNt
-    qWt+wWlmxmxj7hFPBh+/XHrr2RkvflyVI2UIDwweqKLxjyaErk71yawnZyDy0LD4AEeq4u
-    oD80//NXf/Uj7ud+N3Wp0lc0A8xv4zGnyhbOUavfa/isHI9owSu5uT8L7HcAo0+BYQiobQ
-    yd+DTWozEijdeTua99vitDFxIKa32kHWf9CUbH/EVlfscZNAkz8IK7ZsPAxrSjDNzg8EA8
-    lE+SByjhjRaHIQRWVC6FVAzB8xwjz/jzR5TdRIrNHo8/gupr+TaToeVsscaSGsGrtJuk4x
-    FE6t8ntE6eoVVOl12P62WI8Df4lNS5UpMJeNkwEZp2or5zd7D879aVyeWV0Q
-X-ME-Proxy: <xmx:GqmFauOROHElZP3LZklEhLkpkHSpoZqg8SxrQxXwZ9BzbDk4UiwE0w>
-    <xmx:GqmFajEUm_pY9nu_jPoe0m2vPGkHpU55jDg8IEjQ0Or2w30EofrHKA>
-    <xmx:GqmFaq1GE87yTDjmMvqh9FYun-vEv6KkE20IpsCSae6OZHEc6ZA0-A>
-    <xmx:GqmFaiEjVoPn9rpBS_GOWhgHY-Z_iLuWcEkrXAcKf54tjTcm2rwQJw>
-    <xmx:GqmFalYN8kkvC_U-pPFaYgsE3-eCp7SRaPmZEZ6aGggblFQQQkJ0yg5u>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 19 Aug 2026 09:01:10 -0400 (EDT)
-Date: Wed, 19 Aug 2026 22:01:06 +0900 (JST)
-Message-Id: <20260819.220106.1561543001385383760.tomo@flapping.org>
-To: a.hindborg@kernel.org
-Cc: tomo@flapping.org, gary@garyguo.net, ojeda@kernel.org,
- acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
- daniel.almeida@collabora.com, frederic@kernel.org, jstultz@google.com,
- lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
- tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
- rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Subject: Re: [PATCH 0/4] Fix forward()/expires() racing with concurrent
- arming
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <87pkzf8wrh.fsf@kernel.org>
-References: <bAoCglwDHEBnzbZXVYa9FIwZTfbJ_4lMqFz-20jmYhwlUf7y6s8L5ev0Ezf3wc4r9HkvrqfnVY1LotFV6NwWfw==@protonmail.internalid>
-	<20260818.202111.221982706607091751.tomo@flapping.org>
-	<87pkzf8wrh.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PiVjJnit"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657071F00A3A;
+	Wed, 19 Aug 2026 16:32:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787157167;
+	bh=06b5Z3LkJLMqHIiwOWKcjdPL9grUVe/yZBFhJxRVI5g=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=PiVjJnitJkvcur9AK8GPKU+AyUjUJ92tH/KxdoISESsl/GowiMShm6nwex1keVLsZ
+	 FvzGCwLWr2A7kexyRrlVdBWV/DLHkvP1uvsgcvm+6CuqFe0wTY4M1p1Uci8U6oYJZG
+	 RyVbTK85wwrr15O9woleCGgfVW5l6YDPD9kivJr6p9NDnqQBjQ9blFSL6mLlAOhDG9
+	 C59ota9jFS0XPfDDORw0i7fDlnTLKdOeSQx5/cjHSlVFs9SBeBnEL7AjGIwhOtFDEZ
+	 K+HK+batNiWxmDntZERyOazTctjzFCfxgILgQLZyVcfXG5DC2GivwYd4DXG5nXGIWy
+	 U3Xv4h3l3x+Aw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 19 Aug 2026 18:32:40 +0200
+Message-Id: <DKT2C9FT6IBW.3L5PJN1J8IVLD@kernel.org>
+Subject: Re: [PATCH 2/6] gpu: nova-core: add NVKV encoder
+Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil Babka"
+ <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Uladzislau
+ Rezki" <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>
+To: "Eliot Courtney" <ecourtney@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260817-b4-nvkv-v1-0-b84db5e84b67@nvidia.com>
+ <20260817-b4-nvkv-v1-2-b84db5e84b67@nvidia.com>
+In-Reply-To: <20260817-b4-nvkv-v1-2-b84db5e84b67@nvidia.com>
 
-On Tue, 18 Aug 2026 13:59:30 +0200
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
+On Mon Aug 17, 2026 at 2:56 PM CEST, Eliot Courtney wrote:
+> +    fn push_bytes_with_padding(&mut self, bytes: &[u8]) -> Result {
+> +        let num_entries =3D bytes.len().div_ceil(size_of::<u64>());
+> +        self.backing.reserve(num_entries, GFP_KERNEL)?;
+> +
+> +        let spare =3D self.backing.spare_capacity_mut();
+> +        let dst =3D spare.as_mut_ptr().cast::<u8>();
+> +
+> +        // SAFETY: At least `bytes.len()` bytes of space are guaranteed =
+since `num_entries`
+> +        // worth of space was just reserved.
+> +        unsafe { core::ptr::copy_nonoverlapping(bytes.as_ptr(), dst, byt=
+es.len()) };
+> +
+> +        let padding =3D num_entries * size_of::<u64>() - bytes.len();
+> +        if padding > 0 {
+> +            // SAFETY: At least `num_entries * size_of::<u64>()` bytes o=
+f space are guaranteed.
+> +            unsafe { core::ptr::write_bytes(dst.add(bytes.len()), 0, pad=
+ding) };
+> +        }
+> +
+> +        // SAFETY: These bytes were just initialized and every bit patte=
+rn is valid for `u64`.
+> +        unsafe { self.backing.inc_len(num_entries) };
+> +
+> +        Ok(())
+> +    }
 
-> "FUJITA Tomonori" <tomo@flapping.org> writes:
-> 
->> On Tue, 18 Aug 2026 11:02:27 +0200
->> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->>
->>>> perf and CFS bandwidth have a flag as well as a lock. The flag is "do
->>>> not arm while armed", which is the same rule the types enforce
->>>> here. rtc and the softlockup watchdog look like they cancel first and
->>>> then start instead. None of them arms a timer that is active, so I
->>>> would rather the abstraction did not allow it either. Does that seem
->>>> reasonable?
->>>
->>> I am fine with preventing starting a timer that is Started or Running,
->>> but I am not liking the `UniqueArc` requirement.
->>>
->>> I have a use case in `rnull` where I have to start a timer behind an
->>> `Arc` with no way to obtain a `UniqueArc`, so I would prefer if that use
->>> case keeps on working. Without this, I would have to allocate a box and
->>> put it behind a lock, leading to double indirection.
->>
->> Before the UniqueArc requirement, I would like to check which timer
->> you have in mind? The bandwidth timer, the per-command timer, or
->> something else? The two seem to need different things, so I would
->> rather not guess.
-> 
-> The bandwidth timer. It is started from an `Arc<NullBlkDevice>:
-> HasHrTimer`. If we make the suggested change to `ArcTimerHandle`, I
-> think I would need to change the `NullBlkDevice::bandwidth_timer` from
-> an embedded `HrTimer` to a `SpinLock<Box<HrTimer>>` or something like
-> that.
-> 
-> Maybe this is fine. I don't think it will affect performance for `rnull`
-> - this is already a throttled path. But it gives slightly more
-> convoluted code in the caller by reducing the way we can use the API.
+Ick! That's a lot of unsafe code. I think we can avoid this by using KVVec<=
+u8>
+instead of KVVec<u64>, ideally in a new type that upholds the padding invar=
+iant.
 
-I think we can allow creating HrTimerArc<T> from Arc<T>, so that UniqueArc is
-not required. ListArc does the same with AtomicTracker, an atomic bool in the
-object that records whether a ListArc exists:
+Here's a diff of what I came up with; note that it also gets us rid of the
+unsafe in take_u32s() in the decoder by using zerocopy.
 
-    HrTimerArc::try_from_arc(Arc<T>) -> Result<HrTimerArc<T>, Arc<T>>
+(Technically it would also be possible to make Cursor operate on a byte str=
+eam
+and let zerocopy to the rest, as all the take methods are fallible already.=
+ But
+I think the invariant on EncodedStream makes sense.)
 
-It fails when there is already another HrTimerArc for the object.
+diff --git a/drivers/gpu/nova-core/gsp/nvkv.rs b/drivers/gpu/nova-core/gsp/=
+nvkv.rs
+index 0afd6d5c48bd..564a9a93f7cd 100644
+--- a/drivers/gpu/nova-core/gsp/nvkv.rs
++++ b/drivers/gpu/nova-core/gsp/nvkv.rs
+@@ -27,6 +27,43 @@
+ mod decode;
+ pub(crate) use decode::*;
 
-> For the completion timer, the change you propose would work fine I
-> think. I would just start the timer via the unique request reference
-> rather than the shared one. This is probably a better way to do it
-> anyway.
++/// An encoded NVKV byte stream.
++///
++/// # Invariants
++///
++/// The byte length is always a multiple of `size_of::<u64>()`.
++pub(crate) struct EncodedStream(KVVec<u8>);
++
++impl EncodedStream {
++    /// Creates an empty stream.
++    fn new() -> Self {
++        Self(KVVec::new())
++    }
++
++    /// Appends a single `u64` to the stream.
++    fn push_u64(&mut self, value: u64) -> Result {
++        Ok(self.0.extend_from_slice(&value.to_ne_bytes(), GFP_KERNEL)?)
++    }
++
++    /// Appends `bytes` to the stream, zero-padded to a `u64` boundary.
++    fn extend_with_padding(&mut self, bytes: &[u8]) -> Result {
++        self.0.extend_from_slice(bytes, GFP_KERNEL)?;
++        let padding =3D bytes.len().next_multiple_of(size_of::<u64>()) - b=
+ytes.len();
++        // INVARIANT: The padding ensures the total length remains a multi=
+ple of `size_of::<u64>()`.
++        Ok(self.0.extend_with(padding, 0u8, GFP_KERNEL)?)
++    }
++}
++
++impl Deref for EncodedStream {
++    type Target =3D [u64];
++
++    fn deref(&self) -> &[u64] {
++        let count =3D self.0.len() / size_of::<u64>();
++        <[u64]>::ref_from_bytes_with_elems(&self.0, count)
++            .expect("EncodedStream invariant violated: not u64-aligned")
++    }
++}
++
+ /// The identifier of an NVKV key.
+ pub(crate) type KeyId =3D u16;
 
-Agreed.
+diff --git a/drivers/gpu/nova-core/gsp/nvkv/decode.rs b/drivers/gpu/nova-co=
+re/gsp/nvkv/decode.rs
+index 9112dcf1aaca..d1271917c62e 100644
+--- a/drivers/gpu/nova-core/gsp/nvkv/decode.rs
++++ b/drivers/gpu/nova-core/gsp/nvkv/decode.rs
+@@ -381,9 +381,9 @@ fn take_u8s(&mut self, count: usize) -> Result<&[u8]> {
 
+     fn take_u32s(&mut self, count: usize) -> Result<&[u32]> {
+         let values =3D self.take_u64s(count.div_ceil(2))?;
+-        // SAFETY: `values` is 8 byte aligned and only 4 byte alignment is=
+ required. All bit
+-        // patterns are valid for `u32`.
+-        Ok(unsafe { core::slice::from_raw_parts(values.as_ptr().cast::<u32=
+>(), count) })
++        let bytes =3D values.as_bytes();
++        <[u32]>::ref_from_bytes_with_elems(&bytes[..count * size_of::<u32>=
+()], count)
++            .map_err(|_| EINVAL)
+     }
+
+     fn take_u64s(&mut self, count: usize) -> Result<&[u64]> {
+@@ -401,8 +401,11 @@ pub(crate) struct Decoder<'a> {
+
+ impl<'a> Decoder<'a> {
+     /// Creates a decoder for `data` that handles unknown keys per `policy=
+`.
+-    pub(crate) fn new(data: &'a [u64], policy: UnknownKeyPolicy) -> Self {
+-        Self { data, policy }
++    pub(crate) fn new(data: &'a super::EncodedStream, policy: UnknownKeyPo=
+licy) -> Self {
++        Self {
++            data: &**data,
++            policy,
++        }
+     }
+
+     fn visit<S: Schema>(
+diff --git a/drivers/gpu/nova-core/gsp/nvkv/encode.rs b/drivers/gpu/nova-co=
+re/gsp/nvkv/encode.rs
+index 31ea5788e772..88f2a03a593f 100644
+--- a/drivers/gpu/nova-core/gsp/nvkv/encode.rs
++++ b/drivers/gpu/nova-core/gsp/nvkv/encode.rs
+@@ -156,51 +156,26 @@ fn encode(&self, encoder: &mut Encoder) -> Result {
+
+ /// An encoder for an NVKV stream.
+ pub(crate) struct Encoder {
+-    backing: KVVec<u64>,
++    stream: super::EncodedStream,
+ }
+
+ impl Encoder {
+     /// Creates an empty encoder.
+     pub(crate) fn new() -> Self {
+         Self {
+-            backing: KVVec::new(),
++            stream: super::EncodedStream::new(),
+         }
+     }
+
+-    /// Appends `bytes` to the stream, padded to a multiple of 8 bytes.
+-    fn push_bytes_with_padding(&mut self, bytes: &[u8]) -> Result {
+-        let num_entries =3D bytes.len().div_ceil(size_of::<u64>());
+-        self.backing.reserve(num_entries, GFP_KERNEL)?;
+-
+-        let spare =3D self.backing.spare_capacity_mut();
+-        let dst =3D spare.as_mut_ptr().cast::<u8>();
+-
+-        // SAFETY: At least `bytes.len()` bytes of space are guaranteed si=
+nce `num_entries`
+-        // worth of space was just reserved.
+-        unsafe { core::ptr::copy_nonoverlapping(bytes.as_ptr(), dst, bytes=
+.len()) };
+-
+-        let padding =3D num_entries * size_of::<u64>() - bytes.len();
+-        if padding > 0 {
+-            // SAFETY: At least `num_entries * size_of::<u64>()` bytes of =
+space are guaranteed.
+-            unsafe { core::ptr::write_bytes(dst.add(bytes.len()), 0, paddi=
+ng) };
+-        }
+-
+-        // SAFETY: These bytes were just initialized and every bit pattern=
+ is valid for `u64`.
+-        unsafe { self.backing.inc_len(num_entries) };
+-
+-        Ok(())
+-    }
+-
+     /// Returns the encoded data.
+     #[must_use =3D "encoded data must be consumed"]
+-    pub(crate) fn finish(self) -> KVVec<u64> {
+-        self.backing
++    pub(crate) fn finish(self) -> super::EncodedStream {
++        self.stream
+     }
+
+     #[inline(always)]
+     fn encode_op(&mut self, op: Op) -> Result {
+-        self.backing.push(op.into_raw(), GFP_KERNEL)?;
+-        Ok(())
++        self.stream.push_u64(op.into_raw())
+     }
+
+     /// Encodes a 32-bit value as an IMM32 pair, with the value in the op =
+word.
+@@ -213,8 +188,7 @@ pub(crate) fn encode_u32(&mut self, key: KeyId, index: =
+Index, value: u32) -> Res
+                 .with_index(index)
+                 .with_opcode(Opcode::Imm32)
+                 .with_value(value),
+-        )?;
+-        Ok(())
++        )
+     }
+
+     /// Encodes a 64-bit value as a single-element SEQ64 pair.
+@@ -222,7 +196,6 @@ pub(crate) fn encode_u32(&mut self, key: KeyId, index: =
+Index, value: u32) -> Res
+     pub(crate) fn encode_u64(&mut self, key: KeyId, index: Index, value: u=
+64) -> Result {
+         // TODO: Consider automatically merging sequential keys.
+         const KEY_COUNT: u32 =3D 1;
+-        self.backing.reserve(2, GFP_KERNEL)?;
+         self.encode_op(
+             Op::zeroed()
+                 .with_key(key)
+@@ -230,16 +203,13 @@ pub(crate) fn encode_u64(&mut self, key: KeyId, index=
+: Index, value: u64) -> Res
+                 .with_opcode(Opcode::Seq64)
+                 .with_value(KEY_COUNT),
+         )?;
+-        self.backing.push_within_capacity(value)?;
+-        Ok(())
++        self.stream.push_u64(value)
+     }
+
+     /// Encodes a byte array as an ARRAY8 pair, zero-padded to a multiple =
+of 8 bytes.
+     #[inline(always)]
+     pub(crate) fn encode_array8(&mut self, key: KeyId, index: Index, array=
+: &[u8]) -> Result {
+         let value_count =3D u32::try_from(array.len()).map_err(|_| EMSGSIZ=
+E)?;
+-        let num_entries =3D array.len().div_ceil(size_of::<u64>());
+-        self.backing.reserve(num_entries + 1, GFP_KERNEL)?;
+         self.encode_op(
+             Op::zeroed()
+                 .with_key(key)
+@@ -247,16 +217,13 @@ pub(crate) fn encode_array8(&mut self, key: KeyId, in=
+dex: Index, array: &[u8]) -
+                 .with_opcode(Opcode::Array8)
+                 .with_value(value_count),
+         )?;
+-        self.push_bytes_with_padding(array.as_bytes())?;
+-        Ok(())
++        self.stream.extend_with_padding(array.as_bytes())
+     }
+
+     /// Encodes a 32-bit array as an ARRAY32 pair, zero-padded to a multip=
+le of 8 bytes.
+     #[inline(always)]
+     pub(crate) fn encode_array32(&mut self, key: KeyId, index: Index, arra=
+y: &[u32]) -> Result {
+         let value_count =3D u32::try_from(array.len()).map_err(|_| EMSGSIZ=
+E)?;
+-        let num_entries =3D array.len().div_ceil(2);
+-        self.backing.reserve(num_entries + 1, GFP_KERNEL)?;
+         self.encode_op(
+             Op::zeroed()
+                 .with_key(key)
+@@ -264,15 +231,13 @@ pub(crate) fn encode_array32(&mut self, key: KeyId, i=
+ndex: Index, array: &[u32])
+                 .with_opcode(Opcode::Array32)
+                 .with_value(value_count),
+         )?;
+-        self.push_bytes_with_padding(array.as_bytes())?;
+-        Ok(())
++        self.stream.extend_with_padding(array.as_bytes())
+     }
+
+     /// Encodes a 64-bit array as an ARRAY64 pair.
+     #[inline(always)]
+     pub(crate) fn encode_array64(&mut self, key: KeyId, index: Index, arra=
+y: &[u64]) -> Result {
+         let value_count =3D u32::try_from(array.len()).map_err(|_| EMSGSIZ=
+E)?;
+-        self.backing.reserve(array.len() + 1, GFP_KERNEL)?;
+         self.encode_op(
+             Op::zeroed()
+                 .with_key(key)
+@@ -280,8 +245,7 @@ pub(crate) fn encode_array64(&mut self, key: KeyId, ind=
+ex: Index, array: &[u64])
+                 .with_opcode(Opcode::Array64)
+                 .with_value(value_count),
+         )?;
+-        self.push_bytes_with_padding(array.as_bytes())?;
+-        Ok(())
++        self.stream.extend_with_padding(array.as_bytes())
+     }
+ }
+
+@@ -292,8 +256,6 @@ mod tests {
+     // Tests that each kind of value is encoded to NVKV wire format proper=
+ly.
+     #[test]
+     fn encode_all_value_kinds() -> Result {
+-        // All keys, indexes, and values are distinct but arbitrary values=
+ to make it easier for the
+-        // test to catch bugs in the encoded output.
+         const U32_KEY: KeyId =3D 0x1001;
+         const U64_KEY: KeyId =3D 0x1002;
+         const ARRAY8_KEY: KeyId =3D 0x1003;
