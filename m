@@ -1,176 +1,150 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33883F0744
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Aug 2026 09:27:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A2A43E067
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Aug 2026 12:34:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787218025; cv=none; b=EQHOXw5CwGW2UUy1If0zWj/M5D3USWtyFLJg9T1QhTboD/4P8DafEwP9SLvVTEg4Wjt2dLYUvs0s3r94C3t4QcUXv2XuawhJPriDv01YNVgTGxzlPoH/gbDzkpIgo4FXQYJxLymYMaufs9cs6nSUYe1RY8kXLnbdxVYgB3ZmwUA=
+	t=1787229272; cv=none; b=XvUTZfYRdHKQpnPUTu7dKW/Lzj/O4Gx0Uu9HuDt7l1igYMq87ZLHMWTdO+IYDByFuqHqYNBmowAcp6Ra40IHbAoMS7uqMpR+gDnMDCdnGIJ0C8mN+tZX1qIUCiEw2/rwArdZBqes2QGUSOCfaF+9JGWM23zBsvnDu9bto0A8UWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787218025; c=relaxed/simple;
-	bh=w79yUOdI2hQLJL4IbCf3z4kqwz8B5oITUq/IrpAqPBg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=i3i2nl+ZkoFk0GV/h4VaEnGoe+YyxUQSxAmufRhoKlnM1a+TTVEgbxm2d8vgZS3fti4CC7EOhg7NaBXO7P3KwLZvvFvxUROEjm2NwOG/q0PN+6elNQxie7Dz1ptKmuW23I+gqp+u4iIbjpBpCSZAG/uXZnFuNzu+deEVubeLvcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20251104.gappssmtp.com header.i=@beagleboard-org.20251104.gappssmtp.com header.b=vazgPwZ1; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
+	s=arc-20240116; t=1787229272; c=relaxed/simple;
+	bh=JnNsIZ1Gqu0FixG9eDvmakWd9Xx0X5u8x7SaDi67hdM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=j3tNXwXvqTat4QhjRpV/MwtVHo9jJHRwwMHLjSSyKiNUiqYRoar53nTAtY1KGsm/+/zSbilt0njtji+Y2UHH3fTiCGkflbKWZZVjVXOoaDH7NZipQCvqsTtnZyCEM3TbVKaXYfDnbVWhF5b0eOQL19QPjSRRn6HOLTds6Wljon0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G7mAn6H7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20251104.gappssmtp.com header.i=@beagleboard-org.20251104.gappssmtp.com header.b="vazgPwZ1"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cbeea240819so980761a12.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 20 Aug 2026 02:27:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20251104.gappssmtp.com; s=20251104; t=1787218017; x=1787822817; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=R1AhOQzF6qMwl/x9fl17N+mSr6gwpeCsEPQzUK1y+w4=;
-        b=vazgPwZ1tR7UJPV5aWqeYb+rMt4DTIeMonvazbNChyGUIHfJMthoJMtSPZTXZxaHIh
-         t3NcD2LWZLMLdJl970JNAbz/yr1nYDvuTKKBi8bGmUqrUtYMGhQTic2eadIxlcghvyNc
-         KDF3T9kqiyAwDYOV1g+CPbMz2DDLmcAjgXL4pYx04oR/f+RptKed90ZkV4bf53mcZfDc
-         4DF0EIgwIzNi4L0zpATJB7dfFLfr/X16dKuGEB/9ThRgFaq4/r8ZyOJQN/vbhLQ02BIP
-         sCoCCoJ6la+8ouBZsUqIU1mOQdPP4XXDpiYum6W0IuPNi3AIgeyYOnjECiZtDoPr3sUS
-         Y2OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787218017; x=1787822817;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=R1AhOQzF6qMwl/x9fl17N+mSr6gwpeCsEPQzUK1y+w4=;
-        b=nOlPj1dpVNAH85cgOcD/PMTZNkGq8gB9/iQnwvl29ENVTnHYYoPijBo6rtqMjU2mQ3
-         0pOtQz7jWx4TpiNEnzSRkQ+el37/WSocLMJ/yYqy0KyaGS1vhm8om1h5DgtzRego22sC
-         57pfYlvdxi4RzE9VHqWDxBNwxI9dxw7aplTVzApXHQ97i9F3L617PY3ndqBtDJ8bTFdU
-         7h4+xfqATthH7P/+WpFkip+72cBkqyA0zskFGa0dB6dajJ+8NdFd7vvgLrU+Cv8xDGYq
-         8zb59U4pVVSa6g/t6J7ne0kgbOq18DhET8Lbh97xsHXR9BCY8jJ2eP+cfdt7XuuqgXqP
-         hTrQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrAyEJcKq7ajL1JrBX/VwVrP3UQXw+45RGbkZOK2/wzHmLQakWrfu9wcwKfXJl1F3QNxxWFUOodcdf8u7eUCw==@vger.kernel.org
-X-Gm-Message-State: AFuF++lePktBMmzvmhSd9H/WdsYJiDSSFsa2+uJq0hfGvaEQY63RzGxC
-	RDDhBnMZqDzr1M2jg4c3AKh7CfgnEnFzwyUgdmK11TuV5naYJBzRD0aEKI4qixK1hA==
-X-Gm-Gg: AR+sD11uosqKWpOhO8AitYLyHmOpoLFl8+L9aFkv4Wdo3bEowD54UMKKqFp7YRNA3Jf
-	wKjnE04rxt5a0OoD/vuKBbbIyDERe9HV5rXZGXiR5Pmh9CzLBRw6zdUvE5cohJevmEgT5FFuY0x
-	YFgsWdtHw7zTR3HItu3sa8v17bOLDg9Wpu3toUsw1UeBLYe7qll76DmZyElrlTYsHav9UZAw5ZC
-	LZpBXKvJi+EyRfZSPKg8aM67xf6pmtwi8Itwj6jbnT0OM8EMcuhpbuu6GM+b1uR4aHupyeoguIG
-	pF5QCeCnhN4o1nvoCOXYrnlDEYdQxhltWvI+7qJ3ydMMyOYllLMjlIIx8OCB5DA+FEJXAOFRZ+H
-	ihmA+9AnjYdXa9zJZxQETOhzwfCGYggbARgbNAA5/yInRngU1YU5tQhotUNVebJS3hv4URusrJP
-	MlGxJ+clWfZRH7IVN9p0ls6yV4Y6C/s66PK8qUVOIy3RbN1GfssYC3YLjt4xse5GZ5oCaCK1U=
-X-Received: by 2002:a17:90a:f94f:b0:37f:fdc8:71b4 with SMTP id 98e67ed59e1d1-39580840397mr21463129a91.2.1787218016816;
-        Thu, 20 Aug 2026 02:26:56 -0700 (PDT)
-Received: from [192.168.29.54] ([2405:201:4019:32fc:3c55:6b24:5147:322b])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1416ad6060asm25903254c88.6.2026.08.20.02.26.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 02:26:56 -0700 (PDT)
-From: Ayush Singh <ayush@beagleboard.org>
-Date: Thu, 20 Aug 2026 14:55:49 +0530
-Subject: [PATCH 7/7] dt-bindings: beagle: Add BeagleConnect Freedom
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G7mAn6H7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5052B1F00A3A;
+	Thu, 20 Aug 2026 12:34:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787229271;
+	bh=q9Ej7H2F39PfgeWeOyap8sUbX04PjKCTBGqmWazxFlY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=G7mAn6H7zuoy8wpkO9mQqvDpu5CtEAwsSLbXDoEH2Lb6RjqTC60PIdigc1G6Sp2Vp
+	 Ixsj/bz8uzbut5e97aCk52RMgNHaaWWfJPb85c3WimuTxaO9UaxewGqss6vbFDythn
+	 cYTgF4ULw33hwSguBGxaCS6ZbFnaKF8umCmCtu4B1TPQBtLUp7ltIYfGTWaGmIjkdU
+	 dpyQQmqqdamnUOvu8mhuv7+rDDtr1Th65YI4Mzd9XbCBAUroSZ9s4t2AcY1IRx/rsy
+	 fdf232VrtrljGxMmpYHkT3iwX2mAS8Hkqm+nMzO/Q1SDHxo/8r9BpzvBT0pMExzuPc
+	 p6ur9mxOd67+Q==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: FUJITA Tomonori <tomo@flapping.org>
+Cc: tomo@flapping.org, gary@garyguo.net, ojeda@kernel.org,
+ acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
+ daniel.almeida@collabora.com, frederic@kernel.org, jstultz@google.com,
+ lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
+ tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH 0/4] Fix forward()/expires() racing with concurrent arming
+In-Reply-To: <20260820.182114.956582163653669626.tomo@flapping.org>
+References: <87pkzf8wrh.fsf@kernel.org>
+ <20260819.220106.1561543001385383760.tomo@flapping.org>
+ <87h5kp88uy.fsf@kernel.org>
+ <20260820.182114.956582163653669626.tomo@flapping.org>
+Date: Thu, 20 Aug 2026 14:34:16 +0200
+Message-ID: <87ecft7yyf.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260820-gb-uart-transport-v1-7-282da14ab7b7@beagleboard.org>
-References: <20260820-gb-uart-transport-v1-0-282da14ab7b7@beagleboard.org>
-In-Reply-To: <20260820-gb-uart-transport-v1-0-282da14ab7b7@beagleboard.org>
-To: Jason Kridner <jkridner@beagleboard.org>, robertcnelson@gmail.com, 
- Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
- Ayush Singh <ayush@beagleboard.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: greybus-dev@lists.linaro.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-crypto@vger.kernel.org, 
- devicetree@vger.kernel.org, Ayush Singh <ayush@beagleboard.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1989; i=ayush@beagleboard.org;
- h=from:subject:message-id; bh=w79yUOdI2hQLJL4IbCf3z4kqwz8B5oITUq/IrpAqPBg=;
- b=owEBbQKS/ZANAwAKAQXO9ceJ5Vp0AcsmYgBqhsgdk+2/YoCnAykJc4VseJbyp9e2JuEppqzLM
- dOwze3SfKaJAjMEAAEKAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCaobIHQAKCRAFzvXHieVa
- dIydEACs+TOA7byKJIBq0ZJy9AhQD9KKPx8TPCq3IFCyu+RhFza/NuLVOW/hlxGBt872nBLOmGE
- g29SbEJ+IZPUE2kylIK0T2c42AwlEVuqFcGo3avVQFnuoytZZiLP/pualcCBE0ARsiFsLfTdYLV
- IV34kfl/Xq0hZLPPbjZrfE0VRrNCbZ8MhqHnoC+N4oyyop99U3KVOm6AMAEg3f/x59S0n06wFS5
- R2d+tV0YtGmnlL8mNYdKmFTlkdpN3CHbuSJbiq31XuxD1kAKJ8FqoIOMdWVbsKHP0FkFL7e6iYY
- DHeUcsYgBGrsrJhSbC+pncFA96kf+YxK8+KJN1co9oakx5K6BuX6X0ynOyzVIHY+IKLjHjIn8gI
- i2fOBiqjmH08Om+QiLzT+33bY+MvHpghAie8h19jrJvmkOYzxJNjccqUB2iKXiPUb4MqkLJYuZE
- pmi4CvQ/rY7bLZq3H+HirrPuQNY1I6VE1QNQscJ4vsNjQyJg8DaIJ5mxENKxrIZp2MG3dILDgm7
- Znyzz1+quLi8SmIy0Hc3kOvqCHTNJ5WTNjltYE9ZHdeN9mtue231kIhlz3pBtuclduahHIfa86t
- e23ZAvsQqM3gFUiDR/0m6moQhTPNJx5r6rK5mb4N8JDqAJgtGo2tG0qAhgvZdFC+ZhJ0zfRYOMK
- N68ke+r7bFWexAA==
-X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
- fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
+Content-Type: text/plain
 
-Add devicetree bindings for the BeagleBoard.org BeagleConnect Freedom,
-a wireless-enabled board based on the TI CC1352P7. The board exposes an
-MCU that can be attached to a host over USB, UART, SPI or I2C, and is
-described as a child node of the corresponding bus.
+FUJITA Tomonori <tomo@flapping.org> writes:
 
-Signed-off-by: Ayush Singh <ayush@beagleboard.org>
----
- .../beagle/beagle,beagleconnect-freedom.yaml       | 30 ++++++++++++++++++++++
- MAINTAINERS                                        |  1 +
- 2 files changed, 31 insertions(+)
+> On Thu, 20 Aug 2026 11:00:21 +0200
+> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>
+>> FUJITA Tomonori <tomo@flapping.org> writes:
+>> 
+>>> On Tue, 18 Aug 2026 13:59:30 +0200
+>>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>>
+>>>> "FUJITA Tomonori" <tomo@flapping.org> writes:
+>>>> 
+>>>>> On Tue, 18 Aug 2026 11:02:27 +0200
+>>>>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>>>>
+>>>>>>> perf and CFS bandwidth have a flag as well as a lock. The flag is "do
+>>>>>>> not arm while armed", which is the same rule the types enforce
+>>>>>>> here. rtc and the softlockup watchdog look like they cancel first and
+>>>>>>> then start instead. None of them arms a timer that is active, so I
+>>>>>>> would rather the abstraction did not allow it either. Does that seem
+>>>>>>> reasonable?
+>>>>>>
+>>>>>> I am fine with preventing starting a timer that is Started or Running,
+>>>>>> but I am not liking the `UniqueArc` requirement.
+>>>>>>
+>>>>>> I have a use case in `rnull` where I have to start a timer behind an
+>>>>>> `Arc` with no way to obtain a `UniqueArc`, so I would prefer if that use
+>>>>>> case keeps on working. Without this, I would have to allocate a box and
+>>>>>> put it behind a lock, leading to double indirection.
+>>>>>
+>>>>> Before the UniqueArc requirement, I would like to check which timer
+>>>>> you have in mind? The bandwidth timer, the per-command timer, or
+>>>>> something else? The two seem to need different things, so I would
+>>>>> rather not guess.
+>>>> 
+>>>> The bandwidth timer. It is started from an `Arc<NullBlkDevice>:
+>>>> HasHrTimer`. If we make the suggested change to `ArcTimerHandle`, I
+>>>> think I would need to change the `NullBlkDevice::bandwidth_timer` from
+>>>> an embedded `HrTimer` to a `SpinLock<Box<HrTimer>>` or something like
+>>>> that.
+>>>> 
+>>>> Maybe this is fine. I don't think it will affect performance for `rnull`
+>>>> - this is already a throttled path. But it gives slightly more
+>>>> convoluted code in the caller by reducing the way we can use the API.
+>>>
+>>> I think we can allow creating HrTimerArc<T> from Arc<T>, so that UniqueArc is
+>>> not required. ListArc does the same with AtomicTracker, an atomic bool in the
+>>> object that records whether a ListArc exists:
+>>>
+>>>     HrTimerArc::try_from_arc(Arc<T>) -> Result<HrTimerArc<T>, Arc<T>>
+>>>
+>>> It fails when there is already another HrTimerArc for the object.
+>>>
+>>>> For the completion timer, the change you propose would work fine I
+>>>> think. I would just start the timer via the unique request reference
+>>>> rather than the shared one. This is probably a better way to do it
+>>>> anyway.
+>>>
+>>> Agreed.
+>> 
+>> We discussed this at the call last night. We came to the conclusion that
+>> we would like to experiment with the solution outlined by Gary, where we
+>> inject `expires` into the callback handler, and the callback handler
+>> returns a forward duration in addition to a restart value. Because with
+>> that approach, we can avoid adding complexity to the Arc end of the API.
+>> 
+>> For the best implementation of this scheme, we probably need to change
+>> some bits in the C code, add an additional path. Down the line, we could
+>> also see how man callers of the C code can be changed to use this
+>> pattern.
+>> 
+>> Do you want to send a patch based on this solution Tomo?
+>
+> https://lore.kernel.org/rust-for-linux/20260814.084700.1697518597717457311.tomo@flapping.org/
+>
+> The solution that we discussed before, right? It changes how the
+> hrtimer core calls the callback. If the C maintainers take that, I
+> will do the Rust side for it.
 
-diff --git a/Documentation/devicetree/bindings/beagle/beagle,beagleconnect-freedom.yaml b/Documentation/devicetree/bindings/beagle/beagle,beagleconnect-freedom.yaml
-new file mode 100644
-index 000000000000..5a246f81261e
---- /dev/null
-+++ b/Documentation/devicetree/bindings/beagle/beagle,beagleconnect-freedom.yaml
-@@ -0,0 +1,30 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/beagle/beagle,beagleconnect-freedom.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: BeagleBoard.org BeagleConnect Freedom
-+
-+description:
-+  The BeagleBoard.org BeagleConnect Freedom board connected over USB, UART, SPI or I2C.
-+
-+maintainers:
-+  - Ayush Singh <ayush@beagleboard.org>
-+
-+properties:
-+  compatible:
-+    const: beagle,beagleconnect-freedom
-+
-+required:
-+  - compatible
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    serial {
-+      mcu {
-+        compatible = "beagle,beagleconnect-freedom";
-+      };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 037a87b74800..49c6dac72748 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11338,6 +11338,7 @@ GREYBUS UART NODE DRIVERS
- M:	Ayush Singh <ayush@beagleboard.com>
- L:	greybus-dev@lists.linaro.org (moderated for non-subscribers)
- S:	Maintained
-+F:	Documentation/devicetree/bindings/beagle/beagle,beagleconnect-freedom.yaml
- F:	drivers/greybus/gb_uart_node.rs
- 
- GREYBUS SUBSYSTEM
+Yes this one. We don't know if C maintainers will like it. We were
+discussing having a separate path on the C side just for just,
+alternatively converting C side callers.
 
--- 
-2.55.0
+I think we should be able to reach some kind of agreement with C
+timekeeping. But if not, we can solve it on rust side only, but less
+efficient. We can grab the base lock again, read expires, then drop the
+lock. But better to do it in the C code.
+
+> So we leave this race as it is until we know whether the solution is
+> accepted?
+
+I guess so. There are no in-tree users that trigger this anyway.
+
+Best regards,
+Andreas Hindborg
+
 
