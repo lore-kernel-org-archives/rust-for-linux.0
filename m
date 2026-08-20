@@ -1,263 +1,145 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012033.outbound.protection.outlook.com [52.101.43.33])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E734145B27;
-	Thu, 20 Aug 2026 00:35:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.33
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787186104; cv=fail; b=JlHQLoAgTd5b2z/L/dNXon59Tq+k+WckCFHaOZuGzZGFJJQt+Zi3nMVwJMIHnnmNXi+ZiR4WTTo+myYOPJAa/J4dXmfoyhICNAlLS0Fs+azuabTyaM0397a+noI95GjfSwOrYDDeqvyHgsxHF4shSCGNqTu8r0BMNH+P2PmjGDY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787186104; c=relaxed/simple;
-	bh=EH5Hb8ZEh2G3WQudWWbfPPfyfgFgbPdQlrvJg/Uv+i0=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=LQYErD+xhA7uM775czT6BK2KccWcKOueJbN66GeL0MlCsJ0mneWIqggcODTYN2tCANaNH2xZcDLNSGbNa2fpRaTGL0qpbnSQnU7dkHN0dVp+gvan0Dac1L5ouhMTL1fRpaxB2YazC+vX2NeqS0z1WSWPJ3ahGITYszlyVPG81hI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ubmcy6GP; arc=fail smtp.client-ip=52.101.43.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1753821256C;
+	Thu, 20 Aug 2026 03:16:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787195812; cv=none; b=PLgYmpHdsQ+czDtZhQ8lYVQLHTZqrSiPPT47neOiR0vcWWJw/pX+0MuQsGP4eMmRhi/w7HMVAwNRM7ArVC1ck3DpUvBtKq5eu6CXMm6WfFkPJJuG4WTI8d6aghgUFgNTAagx36DK2ciWSxL+bz2rSHmLV2JdKeC9PfxdupRDiBs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787195812; c=relaxed/simple;
+	bh=JlpUUVqukRo9okl42yoO6/1+ut70cvfi6YdxVqN1KIU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Q8UtVg86mZ/9mIQ0jtSzSvcz4W/jhs/PUAOhQ2xw2UYuc0gGK9RNjqJcmHYGIIHQ2ILUj0tdMglyo7lUvrSP4ldJVMAOBj3vyrRQnaey2nLoYCMTjbH/FMeb53TSWKs/sfBw5Xur15wmnE8sjedC4R8OD+uByEK4V8TE4g2Lx18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U6OR2BwX; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ubmcy6GP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lxImAcEb2onqulEQx4Tjcb0L0omr5XUKn3bYbK/mvd64KzDVpusiT3z7HmloKEI07V6c2NVt+yrDGclwFIEql2tDOuQorN+yRnej7toea99YF4q6fomW1ub4t5XAqf//5s0aTc+pCuwmv0lXDkYxrUkXtIrzQsWjuAo/aH4pg4KxSIGwAjOG4GLjMRfYwxw62/+eI8uzjsORzBmCPUl4s/RRkddxq/1s/BP2hrrfzyW0e0XRCegUimz2B7OMOOq0t+GWNiib9YHTtfNEMBG4DJDvMG2YCpPiSCDGammV+f9RzN6ozSfyAIWumIIKjTQS4OWYQctHNcsIvfUN78hfZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V/V5oh+gy5HuYuQ7f0Oom8C9HBPWLYejpmcTOwHfROc=;
- b=i2ZtOp7+ehE2XRDrRyPAVUkI5oeQdBQEvtmtD8beT/oI/8yvOnyf7YrE2+9R6ZZnFBcq2JOLGi8cD4H6z5iqTH4YD6blGsOyFVm2RdGhIgtfB3tIYufeSyXufSShsD5t/1g7zVMalcQMLO1sDDdmZvpG13aBKgzj2OsgqFmZUbx6x7+kxSejJ9BMmPxmCJvHocFsJA5d8UnNoCDxfGgjxGQToP4Ux7smjMgSRBDdT+QwY51tAoxWcFWLe+j4GHAGRYkmKsXM8BpfCYiJ8yxNgp5HJcTphChfQfC+Mw0H4uMmLrCDyRYEYzgibZ2b/m8QehVkMAuHGMZ/6K+Kkj9nig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V/V5oh+gy5HuYuQ7f0Oom8C9HBPWLYejpmcTOwHfROc=;
- b=ubmcy6GPQL/OnAhx/JH9mRYa/fppq8L+kTkcLRqmK/MOcW10ixhxSXjfHxk2+eXeFPhsBZGHYjKHUa6Vwp5oTNxsl/bDOUdn6qfUHM19IX50mY81s5SagQZNegaFkX7JV8Y8bLrLgslIxHRc4GEpMQ4vbePa2LsVWu+Onlo3jHYToU3ee13PBo5Se3QytJk60wxUxHTF+RVtlkqy2ouPYLGbESDUm82jITZzu/Mr1ji9x897zaTlNjRYsYLZtZj2N6M5yiRvfVjD084I5vGv03l2FSNT5Sm9Y9AhwHp7erI/3la4uGgYGY1kOonZix7XfKiabytIWZWddZMKjbjLPA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SA1PR12MB7199.namprd12.prod.outlook.com (2603:10b6:806:2bc::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.13; Thu, 20 Aug
- 2026 00:34:56 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0339.007; Thu, 20 Aug 2026
- 00:34:55 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 20 Aug 2026 09:34:52 +0900
-Message-Id: <DKTCLGI8RHLG.17R4H0FFO4N6A@nvidia.com>
-Subject: Re: [PATCH v2 08/12] gpu: nova-core: mm: Add support to use PRAMIN
- windows to write to VRAM
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Alistair Popple" <apopple@nvidia.com>
-Cc: "Eliot Courtney" <ecourtney@nvidia.com>, "Yury Norov"
- <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "Jonathan Corbet"
- <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "John Hubbard"
- <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-doc@vger.kernel.org>, "Joel Fernandes" <joelagnelf@nvidia.com>
-References: <20260810-pramin-split-v2-0-65a00b3c7309@nvidia.com>
- <20260810-pramin-split-v2-8-65a00b3c7309@nvidia.com>
- <aoY1pT_TC1VSKMzQ@nvdebian.thelocal>
-In-Reply-To: <aoY1pT_TC1VSKMzQ@nvdebian.thelocal>
-X-ClientProxiedBy: TY4P301CA0037.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:2be::6) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U6OR2BwX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787195810; x=1818731810;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=JlpUUVqukRo9okl42yoO6/1+ut70cvfi6YdxVqN1KIU=;
+  b=U6OR2BwXKaVRx+SAs/vQWTuUj8ZvQe6Ag4Dl//UI/ci7ityxmlo0vKQ9
+   s5dX1bDCK4SG+TaztgUOTu6J6EpR1GLya3setDuw470BckS61wURw0oBT
+   rOND0gpQ03DYjRHwaUH6MrgyUH/YXlFFYdQmdJ0hMAgPWAaEcg49bVwMg
+   aT2SbRMeMDPsmFsuNADas5nGkJSuloXsEdTTpKlXp8ICihyOR9pPVggQ7
+   yVWMRcMdDoZwK4xMFhCCEhpu6NF6qCADJZDl4mEvVMBpYfLQm7aXRdO57
+   mUkuhp+mKoIK6Y1YdAZ85Rb8zdnmA1MCxZd3vO6jAzIKdH7h6e6Wknlag
+   Q==;
+X-CSE-ConnectionGUID: TLInvv1gTuKojgZqbN/rCQ==
+X-CSE-MsgGUID: /dclAhRGRfqlu3XoGMG7lw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="87929063"
+X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
+   d="scan'208";a="87929063"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 20:16:50 -0700
+X-CSE-ConnectionGUID: coXhzAqRQnuPaSLFusNuIQ==
+X-CSE-MsgGUID: lImGOZeARryT1x2D2VVMoA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
+   d="scan'208";a="259630954"
+Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 20:16:47 -0700
+Date: Thu, 20 Aug 2026 11:16:44 +0800
+From: kernel test robot <yi1.lai@intel.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>, Yury Norov <ynorov@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	yi1.lai@intel.com
+Subject: [linus:master] [rust]  b7b8b4ccda: CFI_failure_at_do_one_initcall
+Message-ID: <202608201017.100a4511-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA1PR12MB7199:EE_
-X-MS-Office365-Filtering-Correlation-Id: ff7f3c5e-ddb8-4fd5-8082-08defe52db60
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|366016|10070799003|7416014|376014|56012099006|10067099003|11063799006|4143699003|18002099003|3023799007|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	YJUWLCBU7BAkeS2YqQ/G+jqnNW9hd+xoY1lo/MV5pmNpUsEzg1gT5wp9vGeTknuG8whbAs3FXWEtd/9uLc5W6vocpsFLaBrZPen0V9nA2CaVip0fGv2pfoAACqt4b7SfW7rSo369utZ87t3ADMOaO61ERmMbqlWI+hlg6wImd0qm4z9chyD6sFdjrnZNtcsJgJxB6/VfziA8RtPUlwLitRCBO3OJyb/B8N/ZUGkcj+wupehb7/rHtfMNSacq9MDNEo8K8hrVmTphAGGfblom1TEE6CgY7t6jPhBeZSlp/Z6U0CF9mfRqytmNaOV4gTaFypV4SoQH8bDe45tkoia6/2qrXAmiRiiaJPcQ7tjmbgiP9N5Ph1W/C1k0DFGONxuJSW+5DSVnDKG0J/frz1G9A3thq4o4e4d19dAvwJyx6Dty7C9z+y1OT2x3V4x0lN0PEmTaQSTYqzfuz7Bfm3ZzpUPgA57edf9okIOgbe8ka0eNnx2bXGPxN32J4xTnouciaoC3e52JTrBotNOwI7vDtI685kPQHYRGhfpxBs2+jnnI5xoTiNklS0GVqUIcJcYrEyXQO4i4k6PLJPY4pSzk6goXkkbeTIs9NYwnhpIF1yfO2bSBbDHHahx8YXjV+OPGRld5POJAeq10nr2j/q+9PbJEeD5l9nyTNN3cRw1rZmg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(10070799003)(7416014)(376014)(56012099006)(10067099003)(11063799006)(4143699003)(18002099003)(3023799007)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MFFPRkx0aE1kQitnalMxOGJvZGJWWHhWOG9Md0kyYWRnd3E3bU8zUmpiUnZw?=
- =?utf-8?B?Y2NJNVc2NjVPYlJlZk4xRy9MblJuLzkvNnZjQS9yZWRDdUdFSVBGVk5yS1pE?=
- =?utf-8?B?a3UzbUN4RjF6QUtvam4xbUJ1ZWUyL3QxM3I3Z1F6Mm01VG11WXZGK3A1RUtj?=
- =?utf-8?B?VUpkL2RmNVh5NkkwMkZraWxRVWVUUzN0U21lWjVLYnEwS1BjV0docGljcjF2?=
- =?utf-8?B?WjZsMU5EN2V1emhIa0N2NGxYaVJoNyt6SmVhaUZHVmlQcjNPKzlMTENSSzJi?=
- =?utf-8?B?SExkYWxiYUhCWWpDaHk4N0JhQU1NdUNWU2phRU8xN0FuOFc4Z21FZFIzZHV0?=
- =?utf-8?B?TG5qUFBSZzA2Y0NBSU9MTkZPVDNhem5YcXlUdW92YjdDcG52dWtPTXMyeDdQ?=
- =?utf-8?B?dFNobXQ0aHdDNEJSa2F5TWRHN005YS9lS3hFYlNOaWNxWUM3ZmpGL2NmenRq?=
- =?utf-8?B?OUplU3RlZ3VxWERlZ0lWeUZGa0JBWGZ2OWI4ZkhYbFZDRU5pdS9aalpQRU9k?=
- =?utf-8?B?eTZiQVJHNGQrclFMMTNTaE9od3NwQWF0ZEdDQ1RrVmJkSGJFWVA4ZlRsUXU3?=
- =?utf-8?B?V0xVUnFsdXc3cjNHcndDR0FiSElva2o1emlxTW54UTBCczhONjNBdjRJR1BQ?=
- =?utf-8?B?cVJyUDFpL0I0TjJEVUY4VDJYbUI4VDdsKy9uZmd0dmZKSXZSZGtGMjdWVm5j?=
- =?utf-8?B?Y2R5L1dNcHNjdWlsYStRR01QU1pMMnZ2TFRDTjQwMzBmYmE0eEVWcXdjVkQ1?=
- =?utf-8?B?TGsrNHdPeXZPVkpMK0FsNERzeXNXUm1xRnhMcytCelZRTVh3WXlSeGNDc3dP?=
- =?utf-8?B?anMxQ1RJbTFzSXZrY0tNeDZFY1lHcEhEVlhJc1JJejRLckhxaWs5TUNjSUFq?=
- =?utf-8?B?OWVLSUVkZ3BHL1UwYWJyWXMzZ1lpQ01CQkllR0pOKzh2aGRDZzQxYVBRZS9a?=
- =?utf-8?B?LzBHSlpXUHlsaWo4Rit3bzhXVERBM2ZmOTQxalBDdDdRY1dvT0pTdmRSUmFu?=
- =?utf-8?B?NVdDZHMvMHlsUkhoMnBKOVNnVHhPTVZyc2lPYlE5WVhBTUpvVXhibWYwS0VJ?=
- =?utf-8?B?Tyt1WW1odnQzdXZ2ZC9YbmtpK1BVVVJVaXl1S2lwWFpNWGc5UWVReHJhSzN5?=
- =?utf-8?B?ek5UMktvMVdkZ3ZCVlZuWnd5M204MjhuVWl4dWplRjU1NnZHNzRONGlFVjBu?=
- =?utf-8?B?QUo0K29sUUN2dnRGNVJXNXQ0SldJcDhWVHgzdkxPMlRuRGEwMFlSMGRvN0Nx?=
- =?utf-8?B?d09zb3E1S3pMTlUrY2xVNVB4MHY0OEMrak04aG1SWVhjSXdHS1M2SGt1bGNl?=
- =?utf-8?B?VzZpSmtSMFNBZjlENXRNRW9yNEFwdnJtYVFXbldMckUrNEZJSWg2QkRGa3Ew?=
- =?utf-8?B?OGpCQ1liaDJMeEtBV2ZkbEx3d2MyWlZpSzhKMVU0NXVoYkg5RzNSUXhFY2VO?=
- =?utf-8?B?UDNOb0gvK2ZzTVAvUlBGTDNCZHZoNWp6SzNFeExEeW5OM0NuWFEzL0o1N2tB?=
- =?utf-8?B?Q0tmSnZoUmYweGppL2VBcmE2ODFzazlRak1iQnVScmQ4YnRyMGo2c0tUa1RK?=
- =?utf-8?B?VXpBQVRDaHBZQTlscDFxaXVDQ2FMRmRxWXljVHNpR1NpWkdmSFFHSVBvRzQ3?=
- =?utf-8?B?eDB4VU5rd1k5RUlBeWVHY0NmcG9sd3lFTWk4cGU0YndESit2Q2FaMWlyY1dt?=
- =?utf-8?B?SUp3cUx2SkdrN1VTL3NTdzRIdHFJMkVIb2l4YUJSdkxKTFhaWFUvTjNDY3NT?=
- =?utf-8?B?NjVGSXQwbnBSOHBlNG1tZWxIYktHWjVuUThvZU1YbzNmdTJmTjVlckdObmZX?=
- =?utf-8?B?SWIrVkxiZlJEQ2w4dlB5SEJnTlNrU0JwckpReGtOeml3UENyeitlbTE5ZERY?=
- =?utf-8?B?dGRUZ1dyMUt6Nkh4QWhkN3hLb01aSEF4VnB4d3l0LzNUVHZVRGJMUjYwQVlO?=
- =?utf-8?B?RTZBeUw2VGdvR01CL1NtaDFxR1h0YVFneE1lRWFSZUhKckhsVmxZc0FTM0dl?=
- =?utf-8?B?Q1JIaWJPS2VUaVpBeUdPVUorVTlHMkZNMDRPMHZUZmx5dFhtMUVRaWVmaHhV?=
- =?utf-8?B?L0FXOXUrdnZMZGhRQ1dPcjc3dG5sVUkvNVBHdWIyRUppWGJPdlpXS1Y3VE1D?=
- =?utf-8?B?TGtZMk9LclgxTCtQT2ZVazUwR0wxWTVVZ0lxbSs2eVowcjNTTzVhU3ZyTkJB?=
- =?utf-8?B?WXZodEl6eVdGZ1hGeDJVRTNQaWtZdzEvYnpkdlZob0gxcHFaU2hLSkJ6bXN0?=
- =?utf-8?B?cW9JdVdyL0hrNWp0SWNZdklsLzFLb0I5emNMaXk2L0NxN0hUWXMrY04vU3NH?=
- =?utf-8?B?cXdrQmZBSGJwWTBCU2FoRHJzajVNQkdvdWlhUFcyM05meHFiNjdzTmFwWWFt?=
- =?utf-8?Q?VEe85uvureSo/mNcFG6toR6sb7JNOTydTR3MP8JsrHIMN?=
-X-MS-Exchange-AntiSpam-MessageData-1: 9fENqNePCTZvZw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff7f3c5e-ddb8-4fd5-8082-08defe52db60
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2026 00:34:55.7842
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MOSHtz22mEAQap2NnCc72uCcpXLmBh3RkowYJ3djX2Ihg41Czi3GQu01RfPM0z5TeMdw3SiRkOQpwtO+l4SFMw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7199
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Thu Aug 20, 2026 at 8:05 AM JST, Alistair Popple wrote:
-> On 2026-08-10 at 23:55 +1000, Eliot Courtney <ecourtney@nvidia.com> wrote=
-...
->> From: Joel Fernandes <joelagnelf@nvidia.com>
->>=20
->> PRAMIN apertures are a crucial mechanism for direct CPU read/write to
->> VRAM. Add a `Pramin` manager whose `window_at()` returns a typed MMIO
->> view of VRAM through the 1 MiB PRAMIN aperture in BAR0, validating the
->> view against the VRAM region and repositioning the window as needed for
->> the accessed address.
->>=20
->> A view borrows `Pramin` mutably, so the window cannot move while
->> the view is in use, and it inserts an ordering point on Drop.
->>=20
->> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
->> [ecourtney: split the registers and HAL into the two preceding patches]
->> [ecourtney: rebase w.r.t. Bar0 lifetime changes and register projections=
-]
->> [ecourtney: drop the window guard and mutex, use &mut self]
->> [ecourtney: position at init to avoid reads, reposition in window_offset=
-]
->> [ecourtney: return typed MMIO views instead of read/write accessors]
->> [ecourtney: insert an ordering read when a view drops]
->> [ecourtney: declare the window location, drop the doc examples]
->> [ecourtney: add the copyright header, doc and naming cleanups]
->> [ecourtney: the pramin module is mm-internal]
->> Co-developed-by: Eliot Courtney <ecourtney@nvidia.com>
->> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
->> ---
->>  drivers/gpu/nova-core/mm.rs        |   1 +
->>  drivers/gpu/nova-core/mm/pramin.rs | 178 ++++++++++++++++++++++++++++++=
-+++++++
->>  2 files changed, 179 insertions(+)
->>=20
->> diff --git a/drivers/gpu/nova-core/mm.rs b/drivers/gpu/nova-core/mm.rs
->> index 07dce4ce2473..ef5b1cad56c3 100644
->> --- a/drivers/gpu/nova-core/mm.rs
->> +++ b/drivers/gpu/nova-core/mm.rs
->> @@ -20,6 +20,7 @@
->>  };
->> =20
->>  mod hal;
->> +mod pramin;
->>  mod regs;
->> =20
->>  /// Physical VRAM address in GPU video memory.
->> diff --git a/drivers/gpu/nova-core/mm/pramin.rs b/drivers/gpu/nova-core/=
-mm/pramin.rs
->> new file mode 100644
->> index 000000000000..20be3fc471ba
->> --- /dev/null
->> +++ b/drivers/gpu/nova-core/mm/pramin.rs
->> @@ -0,0 +1,178 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +// SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFI=
-LIATES. All rights reserved.
->> +
->> +//! Utilities for accessing VRAM through the PRAMIN window.
->> +
->> +use core::ops::Range;
->> +
->> +use kernel::{
->> +    io::{
->> +        io_project,
->> +        register,
->> +        register::OffsetLoc,
->> +        Io,
->> +        Mmio, //
->> +    },
->> +    prelude::*,
->> +    ptr::{
->> +        Alignable,
->> +        Alignment, //
->> +    },
->> +    sizes::{
->> +        SZ_1M,
->> +        SZ_64K, //
->> +    },
->> +};
->> +
->> +use crate::{
->> +    driver::{
->> +        Bar0,
->> +        NovaRegisters, //
->> +    },
->> +    gpu::Chipset,
->> +    mm::{
->> +        hal::{
->> +            self,
->> +            MmHal, //
->> +        },
->> +        VramAddress, //
->> +    },
->> +    num::IntoSafeCast, //
->> +};
->> +
->> +/// Size of the PRAMIN window (1 MiB).
->> +const WINDOW_SIZE: usize =3D SZ_1M;
->> +
->> +/// The PRAMIN window, which is a 1 MiB window into VRAM at a fixed BAR=
-0 offset.
->> +#[derive(FromBytes, IntoBytes)]
->> +struct PraminWindow([u8; WINDOW_SIZE]);
->> +
->> +register! {
->> +    base: NovaRegisters;
->
-> I tried building this on drm-rust-next against the base commit
-> (4c9ba407018e8deb06dbc643112bac8f40404f95) but am getting some build erro=
-rs:
 
-I think you also need [1] (the v3 might also work, but not tested yet).
 
-[1] https://patch.msgid.link/20260805-typed_register-v2-0-c3ca142220a0@gary=
-guo.net
+Hello,
+
+kernel test robot noticed "CFI_failure_at_do_one_initcall" on:
+
+commit: b7b8b4ccdad45a59aafa5cfc32a51fe1ee5cb680 ("rust: extract `bitfield!` macro from `register!`") https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+
+[test still failed on linus/master 8d3ae59288f1e7d58d76558a6ee96d533bc5019]
+
+in testcase: rcutorture
+with following parameters:
+
+    runtime: 300s
+    test: cpuhotplug
+    torture_type: tasks-tracing
+
+
+
+config: x86_64-randconfig-015-20260715
+compiler: clang-22
+test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 32G
+
+(please refer to attached dmesg/kmsg for entire log/backtrace)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <yi1.lai@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202608201017.100a4511-lkp@intel.com
+
+
+[   16.811904][    T1] CFI failure at do_one_initcall+0x12e/0x478 (target: _RINvCsdamrQDJyPhn_8pin_init6zeroedNtNvNvNvCsdPKRummocL6_25doctests_kernel_generated33rust_doctest_kernel_bitfield_rs_04main43__doctest_main_rust_kernel_bitfield_rs_118_05FlagsEBE_+0x0/0x4; expected type: 0x6fbb3035)
+[   16.820524][    T1] WARNING: at do_one_initcall+0x12e/0x478, CPU#0: swapper/0/1
+[   16.823875][    T1] Modules linked in:
+[   16.825674][    T1] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 7.1.0-rc4-00055-gb7b8b4ccdad4 #1 PREEMPT  79da7d58e576708b28b47c0dd4cca3fe34a229fd
+[   16.831720][    T1] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   16.836267][    T1] RIP: 0010:do_one_initcall+0x12e/0x478
+[   16.838287][    T1] Code: d2 31 c9 e8 74 04 49 00 45 84 f6 75 0c 48 8d 3d 90 03 a1 0c 67 48 0f b9 3a 4c 8b 5c 24 08 41 ba cb cf 44 90 45 03 53 fc 74 02 <0f> 0b 2e e8 42 96 f8 06 41 89 c6 0f 1f 44 00 00 41 81 e5 ff ff ff
+[   16.843506][    T1] RSP: 0018:ffffc9000001fb80 EFLAGS: 00010a13
+[   16.845121][    T1] RAX: 0000000000000000 RBX: dffffc0000000000 RCX: 0000000000000000
+[   16.847279][    T1] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[   16.849427][    T1] RBP: ffffc9000001fe70 R08: 0000000000000000 R09: 0000000b8a3be5a2
+[   16.851619][    T1] R10: 000000006c292bb6 R11: ffffffff81407458 R12: ffffffff8f899850
+[   16.853771][    T1] R13: 0000000080000000 R14: 0000000000000001 R15: 1ffffffff1edab41
+[   16.855915][    T1] FS:  0000000000000000(0000) GS:0000000000000000(0000) knlGS:0000000000000000
+[   16.858307][    T1] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   16.860091][    T1] CR2: 00007fd1104620ac CR3: 000000000ba86000 CR4: 00000000000406b0
+[   16.862236][    T1] Call Trace:
+[   16.863144][    T1]  <TASK>
+[   16.863961][    T1]  ? __cfi__RINvCsdamrQDJyPhn_8pin_init6zeroedNtNvNvNvCsdPKRummocL6_25doctests_kernel_generated33rust_doctest_kernel_bitfield_rs_04main43__doctest_main_rust_kernel_bitfield_rs_118_05FlagsEBE_+0x8/0x8
+[   16.869044][    T1]  ? stack_depot_save_flags+0x40f/0xab8
+[   16.870574][    T1]  ? irqentry_exit+0x1b8/0x638
+[   16.871878][    T1]  ? trace_irq_disable+0x25/0x100
+[   16.873243][    T1]  ? __cfi_ignore_unknown_bootoption+0x8/0x8
+[   16.874861][    T1]  ? strlen+0x32/0x78
+[   16.875952][    T1]  ? parameq+0x1a/0xf8
+[   16.877070][    T1]  ? __cfi_ignore_unknown_bootoption+0x8/0x8
+[   16.878666][    T1]  ? parse_args+0x17e/0x538
+[   16.879902][    T1]  do_initcall_level+0x10e/0x1c0
+[   16.881314][    T1]  do_initcalls+0x59/0xc0
+[   16.882501][    T1]  kernel_init_freeable+0x11e/0x1c0
+[   16.883889][    T1]  ? __cfi_kernel_init+0x8/0x8
+[   16.885175][    T1]  kernel_init+0x16/0x138
+[   16.886357][    T1]  ret_from_fork+0x266/0x5f8
+[   16.887598][    T1]  ? __cfi_kernel_init+0x8/0x8
+[   16.888884][    T1]  ret_from_fork_asm+0x11/0x20
+[   16.890220][    T1]  </TASK>
+[   16.891058][    T1] irq event stamp: 306141
+[   16.892233][    T1] hardirqs last  enabled at (306157): [<ffffffff81749821>] __console_unlock+0x61/0xc0
+[   16.894765][    T1] hardirqs last disabled at (306170): [<ffffffff81749806>] __console_unlock+0x46/0xc0
+[   16.897303][    T1] softirqs last  enabled at (305714): [<ffffffff81618b94>] handle_softirqs+0x614/0x780
+[   16.899859][    T1] softirqs last disabled at (305705): [<ffffffff81618ec5>] __irq_exit_rcu+0x45/0x140
+[   16.902401][    T1] ---[ end trace 0000000000000000 ]---
+
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20260820/202608201017.100a4511-lkp@intel.com
+
+
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
