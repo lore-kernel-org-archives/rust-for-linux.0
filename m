@@ -1,227 +1,180 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED0047ECF2
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Aug 2026 17:49:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193574772A7;
+	Thu, 20 Aug 2026 17:51:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787248186; cv=none; b=QbZDK1yVmq1oVGLvPcWV8mhJoGvZjzw24JaFMylL1g+WkdB4anRgTwIfCgKIrywpUcl69nLp7hOlYrk8vq0r2F50dsuNHQSqHTtaKFszOujRVCBJRuM5yzsD9Cp676+hKkGFkAhjRPop90hNbVoCCe+zimHWDgs/0UtMWa65+tU=
+	t=1787248299; cv=none; b=KOJ5vifLwDLliH3ebZdtjdF5krTj4MPz/rCFyrWWm4+ka5c9SLM2bwW2u/EMro9feBy6QFdDq3gGgTpimcVmPBKbP5Q8WgKgv2b53AkdKR+9fWsvj52wzub3EmnAkquEkW9xs3v0bEQSapTuKmBBvUE8xL8s8UoHHYmy4a1MG18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787248186; c=relaxed/simple;
-	bh=sJiCG9GMt+8ts/wSdpjtZKthk4D4iZFfORrDzQ4jEXE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rhFOv4z+x/k41/wurk6u5933Xmz1Nhx2AFowLx4lM4QgPBJV2ACe7U7C7s0df5T2saVfrPij+jInmkxlyS66KehiohsspbiPizKXRkMY8HvxEvm/6OzTAgzG9zfOAvJU3st93PF4ZPVH8uHcfaFfJIAucKmhggqFJXOUn6yK6R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qa2N9n89; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787248299; c=relaxed/simple;
+	bh=chts6MzIHj/bJVBkghPzRmsWqaknd18UrkOwhvE4I/s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sEYd10Tfnm/vspxErgLmgi6kgoceHQsDKq8LDsIfm7y6/kZcforDTAlriHHK1PoCTWzqW34Gfx5CL4ti2aDLlChSOWJmUQMAhnhA6AUe05L2IyuEebLH1UAbj87fybBo2un2lM/8IzcbcI/bUI54pK7k0pYvfnZwR0tCwn1DLv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=rTRFHt4F; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qa2N9n89"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787248183;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6+qiRA0Rr68w6luARuut3h/5z5IL9+5qPOnuZ1Bth1E=;
-	b=Qa2N9n89qzL7LHK1UmEu5L0TouYM7HY9V/YhR2cDJC5yWPXSFcAGiF5BRPJH43wThkwFq1
-	uCRaQR4D1FX0ZmaKzUWqT/aSevBu8DyW9s3fm3pUm5yMHM0XUTjHQxpE3e/o7UhTDAMNs/
-	7+pX/5Pd+yBVaAEerh/G077lLZWBblg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-401-ruODuvWuPw2OM6j8Om2lKA-1; Thu, 20 Aug 2026 13:49:41 -0400
-X-MC-Unique: ruODuvWuPw2OM6j8Om2lKA-1
-X-Mimecast-MFC-AGG-ID: ruODuvWuPw2OM6j8Om2lKA_1787248181
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-481558a96e2so90019f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 20 Aug 2026 10:49:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787248180; x=1787852980;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6+qiRA0Rr68w6luARuut3h/5z5IL9+5qPOnuZ1Bth1E=;
-        b=JzRcUm6PXriN6vqoFel1Ny49m1PPH28TzP+tqNMPsue9GqloK30plpKeovRGyMdGPz
-         aJcchZHE2DwGbed3+g3Ayo0cRNGvedwMpFzz+49m2p31zJBDNCtPHR9d1Ck+D4sUom1P
-         5SrNFxIYSgHF1dnfHTZT7jmy2B9E6o3o0lO5dhJyjq+g2NZp/Ni4hZSJByQbJgK1u9El
-         dLj7obLCltOem5QI1sZrY8uWYndLiF3Ui86ELX9aWlaZYPd9sirD8Nt++605nPKFh29F
-         dypi51+jHUApr/tibRoSkwegnLkwRs0n7Ooa469HWhWdYuNqBj/xA1qFZ0E7GcWzQe1d
-         pHNg==
-X-Forwarded-Encrypted: i=1; AHgh+RqtnXjkcUPchsH5jba5uAyCou5+QIeJ0jdeyjwsCL7TdoNSaGGg/jQv9/iKCa8w1mUpvdk9UpbtJYWyJvE7sA==@vger.kernel.org
-X-Gm-Message-State: AFuF++lI195VMbLZucd1/a/7k607khFaVeV4DkMTeKuhgGOxi2vvGs5M
-	zmMBe63gWv4jAsDt8rSHnHJMflwhX29365Nr/hMXT+UmuvoJy84Ovd/JCET9428kREJNVyhQBVM
-	+rQDCfqFIQbusYAWG3QxSoZlIcrLkyZD4H4RreR737t2qir/hJVXmV/3HdJrC6j9kNK5a
-X-Gm-Gg: AR+sD132rNVmqT/gVNrJw5ndjL8mxN4sXrRqM8h3/mXi8rmD7/S5mwion4bTnpCJYB7
-	JI71adZ6f/JE64h7uytm781L3ZLLhBUAnkN4+Z1WI0w42NVUPL225G9+TyWi7ervkS2nYBcxkxM
-	TWgEHrPsiIvntbWHr7UHnlqbbyf6/OEp2GHCvSB8uQJKsABp9E186ikfw/ocD+DjgEJbeY1Ld6o
-	kLtCXQUI8KEc2atmtkhpmfGQA6MwHBnNGLdHK/fRkX1Naiq0hF8cLhFKT7/VXb9EFY+h+4czEUs
-	kI4IEeGEVTCTqJKVjQvRE6nivO2yTOeunE5++f4AdirwCrJN7w2B+3/NdnMZqi9tVQ3jxlFhAIU
-	gOj9fowKG0hkxhlTAcu9IUN+xOYkgR1dUL/09BSDAlz44Ag==
-X-Received: by 2002:a05:6000:184e:b0:47f:f339:556c with SMTP id ffacd0b85a97d-482c0b4a40dmr705161f8f.2.1787248180694;
-        Thu, 20 Aug 2026 10:49:40 -0700 (PDT)
-X-Received: by 2002:a05:6000:184e:b0:47f:f339:556c with SMTP id ffacd0b85a97d-482c0b4a40dmr705081f8f.2.1787248180291;
-        Thu, 20 Aug 2026 10:49:40 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:11aa:87f0:935:4f8e:b423:64eb? ([2a01:e0a:11aa:87f0:935:4f8e:b423:64eb])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482b145d31bsm13853815f8f.16.2026.08.20.10.49.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Aug 2026 10:49:39 -0700 (PDT)
-Message-ID: <e4da5ba4-9a02-4080-9a83-19d401017910@redhat.com>
-Date: Thu, 20 Aug 2026 19:49:36 +0200
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="rTRFHt4F"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=/nTZ7s1goF+GPCz6EL3sBTg9gNDkE+Bk0F4MEDCId3U=; b=rTRFHt4F8LNezy/fzAgoJCTaEn
+	Hu0D4RqGfIK9MUZUy7y5Vba3MurgAp9pBMd9z6PEiUlWaCso04QtHq/uQ4n17N1VQ2wPu6RajSIxt
+	5VjB0H2feVYd3mqUp5gCxaMbrQOO+i6lj9uOvypef8Qk/ac19GC7w3Hfcyxj83iTd9QOFZIzV0iBp
+	/SGM/O64CQwL9ZlzHX0Ox5TCul40K5Mnq+2KwcSaH/1h0KS1/qNKeUME6lYFYtYCfh4F7sNx59RpD
+	pLEI6i3LHvbHNk4ESUjf0GkAf6n+DO9ur6QkErSHO05zM44QUpEFH+mMqGSk1hMk5dNHlM0YQq3eB
+	Pzxk6gcA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wx6uy-0000000G2y1-3Dxp;
+	Thu, 20 Aug 2026 17:51:08 +0000
+Date: Thu, 20 Aug 2026 18:51:08 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Byungchul Park <byungchul@sk.com>, linux-kernel@vger.kernel.org,
+	max.byungchul.park@gmail.com, kernel_team@skhynix.com,
+	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+	tytso@mit.edu, david@fromorbit.com, amir73il@gmail.com,
+	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
+	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
+	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
+	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	boqun.feng@gmail.com, longman@redhat.com, yunseong.kim@ericsson.com,
+	ysk@kzalloc.com, yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+	gustavo@padovan.org, christian.koenig@amd.com,
+	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
+	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
+	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+	josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
+	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
+	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
+Message-ID: <aoc-jJ10op62jXFK@casper.infradead.org>
+References: <20260706061928.66713-1-byungchul@sk.com>
+ <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/12] drm/panic: Split into core and helpers
-To: Thomas Zimmermann <tzimmermann@suse.de>, javierm@redhat.com,
- airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org
-Cc: dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- linux-hyperv@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, nouveau@lists.freedesktop.org,
- linux-renesas-soc@vger.kernel.org, virtualization@lists.linux.dev,
- sashiko-reviews@lists.linux.dev
-References: <20260818125012.468092-1-tzimmermann@suse.de>
-From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <20260818125012.468092-1-tzimmermann@suse.de>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 4HNVhfHmwTPuhs0RudFkZjH0B9WDysRAdOMyEDFey8M_1787248181
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, fr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
 
-On 18/08/2026 14:27, Thomas Zimmermann wrote:
-> Split DRM's current panic handling into a core and a helper module.
-> The core is still part of DRM's core library. The panic helpers are
-> part of DRM's KMS helper module (for now).
+On Thu, Aug 20, 2026 at 07:16:05PM +0200, David Hildenbrand (Arm) wrote:
+> > Consider this real deadlock pattern that lockdep cannot detect:
+> > 
+> >    context X              context Y              context Z
+> > 
+> >                           mutex_lock A
+> >    folio_lock B
+> >                           folio_lock B <- DEADLOCK
+> >                                                  mutex_lock A <- DEADLOCK
+> >                                                  folio_unlock B
+> >                           folio_unlock B
+> >                           mutex_unlock A
+> >                                                  mutex_unlock A
 > 
-> The motivation behind this series is to get panic handling's drawing
-> code out of the DRM core. At some point it should share a single
-> module with DRM's other drawing and format conversion.
+> But that really just boils down to folio lock being implemented as a PG_lock +
+> some advanced wait mechanism. And we must do that because of lack of bits in
+> struct page.
 > 
-> With the series applied, panic hanlding follows DRM's established
-> design pattern of having a DRM core interface with an dedicated
-> implementation in each driver. Drivers share common code in helper
-> modules. For panic handling, the DRM core still contains the panic
-> entry points, the parameters and the debugfs interface. All drawing
-> is now located in the panic helpers.
+> Willy mentioned in a previous version [1]: "I don't think it makes sense to
+> track lock state in the page (nor folio).  Partly because there's just so many
+> of them, but also because the locking rules don't really apply to individual
+> folios so much as they do to the mappings (or anon_vmas) that contain folios."
 > 
-> Patches 1 to 4 improve several issues in the current panic code. It
-> makes sense to fix them before moving the core around.
+> Given that lockdep is a debug feature, and we will at some point allocate struct
+> folio separately, I assume we could just squeeze a "struct lockdep_map" in there
+> in such debug configs and the world would not collapse.
 > 
-> Patches 5 to 8 put handling of all panic state and locking into a
-> single place, drm_panic_display_panic_screen(). It is maintained by
-> panic handling's DRM core code. This also enables the test cases to
-> work more independently from the kernel's configuration.
+> Doing that today (one "struct lockdep_map" in each "struct page") wouldn't work
+> as mm_zero_struct_page() would not expect such large "struct page". But
+> conceptually, for a debug kernel with a special CONFIG_LOCKDEP_PAGE_LOCK, maybe
+> that would already be ok and we could just do that (and optimize it as we
+> allocate folios separately).
 > 
-> Patches 9 to 11 split the panic-handling code into the core and panic
-> helpers. The former maintain all state, locking and public interfaces.
-> The latter handles drawing and details of the involved framebuffers.
+> Not that it's ideal, but for a debug feature to at least check PG_lock, probably
+> an easier way to achieve it than some completely new infrastructure.
 > 
-> DRM devices that offer panic handling provide a single callback, struct
-> drm_plane_funcs.display_panic_screen. A new initializer macro makes it
-> point to the existing panic-drawing implementation. Hence there's no
-> change in features or functionality. If panic handling is configured
-> off, it all clears out to NULL.
+> Now, Willy said "locking rules don't really apply to individual folios", I
+> wonder if that could just help to also let lockdep check PG_lock with less
+> metadata? (didn't fully wrap my head around the implications)
 > 
-> Patch 12 reworks the test cases slighly, so that they can be build as
-> a separate module. Do 'modprobe drm_panic_helper_test' to run them.
-> 
-> Tested under bochs with debugfs and test cases.
+> [1]
+> https://lore.kernel.org/all/aR3WHf9QZ_dizNun@casper.infradead.org/?utm_source=chatgpt.com
 
-Overall the series looks good to me, and I like the split between the 
-helper and the core.
-I would just drop the first two patches, as I don't see much difference 
-between static allocation or kmalloc() at init, and I think that 
-memset() the buffers to 0 is not useful in this case.
+There are a few things going on that make PG_lock special.  Let me try
+to explain again, only better this time.
 
-Best regards,
+1. The current lifetime of a struct page is the lifetime of the system.
+But the semantics of its PG_lock bit change each time it is freed and
+allocated.
 
--- 
+2. The position of PG_lock in the locking hierarchy only depend on
+what the folio is currently being used for.  That is, all folios in
+a given xfs inode behave exactly the same from a locking perspective.
+There's no need to build up state about how each PG_lock is used;
+they can all share.  Arguably all xfs file inodes are the same as
+each other (directory inodes might be different from file inodes),
+so we might want to go further than telling DEPT that "this folio
+belongs to this inode" and go to "this folio belongs to this xfs file
+inode".
 
-Jocelyn
-> 
-> Future directions:
-> 
-> - Panic handling shares some drawing code with format conversion and
-> clients. There's even more drawing code in vkms. Later series' can
-> attempt to unify and harmonize all these implementations in a single
-> draw module.
-> 
-> - The drawing helper drm_plane_helper_display_panic_screen() still
-> implements various access schemes (map, set_pixel, memcpy) in a single
-> function. It could be split up into specifialized helpers.
-> 
-> - If we ever need a driver-specific helper, it is now possible to
-> implement a custom version of display_panic_screen.
-> 
-> Thomas Zimmermann (12):
->    drm/panic: Allocate QR-code buffers statically
->    drm/panic: Make allocation of zlib workspace more robust
->    drm/panic: Return -EINVAL if font is not available
->    drm/panic: Return errno codes if panic output fails
->    drm/panic: Pass colors to draw_panic_dispatch()
->    drm/panic: Pass global module parameters to drm_panic_dispatch()
->    drm/panic: Retry in dispatch function if panic output fails
->    drm/panic: Split draw_panic_plane()
->    drm/panic: Display panic screen via per-plane callback
->    drm/panic: Internalize panic locking in DRM core and helpers
->    drm/panic: Move panic display code into helper library
->    drm/panic: Compile KUnit tests as module
-> 
->   Documentation/gpu/drm-kms-helpers.rst         |  11 +-
->   Documentation/gpu/drm-kms.rst                 |   3 +
->   MAINTAINERS                                   |  11 +-
->   drivers/gpu/drm/Kconfig                       |   5 +
->   drivers/gpu/drm/Kconfig.debug                 |   1 +
->   drivers/gpu/drm/Makefile                      |   3 +-
->   .../amd/display/amdgpu_dm/amdgpu_dm_plane.c   |   2 +
->   drivers/gpu/drm/ast/ast_mode.c                |   2 +
->   drivers/gpu/drm/drm_atomic_helper.c           |   2 +-
->   drivers/gpu/drm/drm_crtc_internal.h           |   2 -
->   drivers/gpu/drm/drm_drv.c                     |   3 +-
->   drivers/gpu/drm/drm_kms_helper_common.c       |  14 +
->   drivers/gpu/drm/drm_panic.c                   | 914 +----------------
->   drivers/gpu/drm/drm_panic_helper.c            | 915 ++++++++++++++++++
->   ...drm_panic_qr.rs => drm_panic_helper_qr.rs} |   4 +-
->   drivers/gpu/drm/drm_panic_internal.h          |  59 ++
->   drivers/gpu/drm/hyperv/hyperv_drm_modeset.c   |   2 +
->   drivers/gpu/drm/i915/display/i9xx_plane.c     |   3 +
->   .../drm/i915/display/skl_universal_plane.c    |   4 +
->   drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c       |   2 +
->   drivers/gpu/drm/mgag200/mgag200_drv.h         |   4 +-
->   drivers/gpu/drm/nouveau/dispnv50/wndw.c       |   2 +
->   .../gpu/drm/renesas/rcar-du/rcar_du_plane.c   |   2 +
->   .../drm/renesas/shmobile/shmob_drm_plane.c    |   2 +
->   drivers/gpu/drm/sysfb/drm_sysfb_helper.h      |   4 +-
->   drivers/gpu/drm/sysfb/vesadrm.c               |   1 +
->   drivers/gpu/drm/tests/Makefile                |   1 +
->   ...m_panic_test.c => drm_panic_helper_test.c} |  65 +-
->   drivers/gpu/drm/tidss/tidss_plane.c           |   2 +
->   drivers/gpu/drm/tiny/bochs.c                  |   4 +-
->   drivers/gpu/drm/virtio/virtgpu_plane.c        |   2 +
->   include/drm/drm_mode_config.h                 |   4 +-
->   include/drm/drm_modeset_helper_vtables.h      |  11 +-
->   include/drm/drm_panic.h                       | 117 +--
->   include/drm/drm_panic_helper.h                |  40 +
->   include/drm/drm_plane.h                       |  57 ++
->   rust/bindings/bindings_helper.h               |   4 +-
->   37 files changed, 1253 insertions(+), 1031 deletions(-)
->   create mode 100644 drivers/gpu/drm/drm_panic_helper.c
->   rename drivers/gpu/drm/{drm_panic_qr.rs => drm_panic_helper_qr.rs} (99%)
->   create mode 100644 drivers/gpu/drm/drm_panic_internal.h
->   rename drivers/gpu/drm/tests/{drm_panic_test.c => drm_panic_helper_test.c} (80%)
->   create mode 100644 include/drm/drm_panic_helper.h
-> 
-> 
-> base-commit: dc462ab791b686c48545c160ecc81be64f77a846
-> prerequisite-patch-id: c67e5d886a47b7d0266d81100837557fda34cb24
-> prerequisite-patch-id: a5a973e527c88a5b47053d7a72aefe0b550197cb
-> prerequisite-patch-id: b9adc9622920a3e70168e672c2c92795b3e3a106
-> prerequisite-patch-id: 5030de433a01c2e99056cadb676a8e2ba35f055a
-
+3. PG_lock can be taken in task context then released in interrupt
+context.  For full points, we need to mark the exact point at which
+we submit the folio for read.  Otherwise we can get into the situation
+alluded to by f2c817bed58d and better discussed at
+https://lore.kernel.org/linux-mm/20200127150024.GN1183@dhcp22.suse.cz/
+where we have the folio locked but haven't yet submitted it for I/O
+so it doesn't matter how long we wait, it will never come unlocked.
