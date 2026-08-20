@@ -1,145 +1,176 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1753821256C;
-	Thu, 20 Aug 2026 03:16:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC051DF736
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Aug 2026 06:49:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787195812; cv=none; b=PLgYmpHdsQ+czDtZhQ8lYVQLHTZqrSiPPT47neOiR0vcWWJw/pX+0MuQsGP4eMmRhi/w7HMVAwNRM7ArVC1ck3DpUvBtKq5eu6CXMm6WfFkPJJuG4WTI8d6aghgUFgNTAagx36DK2ciWSxL+bz2rSHmLV2JdKeC9PfxdupRDiBs=
+	t=1787208586; cv=none; b=ip8zlp1E6RbDrQJYp8uR2uEDglH99CYDXE+lxtY0USiQoEg8XbUCgJ1BZUJsW620e0Y183Zs9yCu8J1rgPaMKZ6H+jZ29BXK5x6tO554r4KxyDOU+kp/gsCxQtUYlNvAYFdPj8uVzelfM2DvxidG8devtIDVKV3HD11wfFr8vw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787195812; c=relaxed/simple;
-	bh=JlpUUVqukRo9okl42yoO6/1+ut70cvfi6YdxVqN1KIU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Q8UtVg86mZ/9mIQ0jtSzSvcz4W/jhs/PUAOhQ2xw2UYuc0gGK9RNjqJcmHYGIIHQ2ILUj0tdMglyo7lUvrSP4ldJVMAOBj3vyrRQnaey2nLoYCMTjbH/FMeb53TSWKs/sfBw5Xur15wmnE8sjedC4R8OD+uByEK4V8TE4g2Lx18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U6OR2BwX; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1787208586; c=relaxed/simple;
+	bh=67QlTCNqHAMiKhenPiXBZCQN30712Re984lC/sJZm4M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nzJb6AOhRVsHzqu1ISDHuPC94tpAeADlYY4GNvNeh5xj08T7iQhk6y+BhOWE1463dA6zQkILnyegznoG7Wr1EXnIbnC8tOv8iD/6nkJC7HGsb348VRBQ4IAzkx8lQ6Vxxb6XduHXeT9ELcjsc3520IkQGSsQ2vA2tN+hFOAzj5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XtDWe30Q; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U6OR2BwX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787195810; x=1818731810;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=JlpUUVqukRo9okl42yoO6/1+ut70cvfi6YdxVqN1KIU=;
-  b=U6OR2BwXKaVRx+SAs/vQWTuUj8ZvQe6Ag4Dl//UI/ci7ityxmlo0vKQ9
-   s5dX1bDCK4SG+TaztgUOTu6J6EpR1GLya3setDuw470BckS61wURw0oBT
-   rOND0gpQ03DYjRHwaUH6MrgyUH/YXlFFYdQmdJ0hMAgPWAaEcg49bVwMg
-   aT2SbRMeMDPsmFsuNADas5nGkJSuloXsEdTTpKlXp8ICihyOR9pPVggQ7
-   yVWMRcMdDoZwK4xMFhCCEhpu6NF6qCADJZDl4mEvVMBpYfLQm7aXRdO57
-   mUkuhp+mKoIK6Y1YdAZ85Rb8zdnmA1MCxZd3vO6jAzIKdH7h6e6Wknlag
-   Q==;
-X-CSE-ConnectionGUID: TLInvv1gTuKojgZqbN/rCQ==
-X-CSE-MsgGUID: /dclAhRGRfqlu3XoGMG7lw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="87929063"
-X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
-   d="scan'208";a="87929063"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 20:16:50 -0700
-X-CSE-ConnectionGUID: coXhzAqRQnuPaSLFusNuIQ==
-X-CSE-MsgGUID: lImGOZeARryT1x2D2VVMoA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
-   d="scan'208";a="259630954"
-Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 20:16:47 -0700
-Date: Thu, 20 Aug 2026 11:16:44 +0800
-From: kernel test robot <yi1.lai@intel.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>, Yury Norov <ynorov@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	yi1.lai@intel.com
-Subject: [linus:master] [rust]  b7b8b4ccda: CFI_failure_at_do_one_initcall
-Message-ID: <202608201017.100a4511-lkp@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XtDWe30Q"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38deea72eebso1952021a91.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Aug 2026 23:49:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787208584; x=1787813384; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kRc1eSHVwu1q1qbvgzDIPRU3EZV0cBSELC6VRfYKDj0=;
+        b=XtDWe30Qr7XwHeuWO+9938QNU0sPNrpd9T0rTHco856W2bxsdI50WFOuptr0m9eUoZ
+         rRbSgEMCoROadZNftnseIJyN/MnPA7vQ+htX53aQ1bW3D1D05uKASgRe5VvbZP0yX6Qz
+         w2BMUA3UfbLSrycr7aWfd2eiAxQFKMcBRwAKmuWaxLFo/KurLg/mor2KoB35ozkqC1pp
+         C0tHyhNAiA/GkFAplcHRc7SV9QaTkd3Pqltmmb7k2xHRQta4A5M2Sh3SdAbpbb1Yt5WE
+         Zf3oAngjV/Dq4zayCbgLqGkX7rKmcAIfMa3DVZDwJmGgDFZXQid1cRnxIQPNqCUAXfL3
+         L8Gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787208584; x=1787813384;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=kRc1eSHVwu1q1qbvgzDIPRU3EZV0cBSELC6VRfYKDj0=;
+        b=YNSz4vm89In3lMCOHZ+xTcQ157iUpzwt1trvNfrxjIKXi/48JsuMww4PusuXZNGfVA
+         qR4b3iE0jy4wwXwN2koSkkuhX3VLrtaKTEh/cmBDd4hlpGVSWXcGTtUJAVpC/wJzu+qs
+         Im3ErvxrycuhvwjzSd7BsHFJH8CfYW2mqHI/0STN8CX3DDwmUZ/LVBjy3EU6vxZ+cin8
+         /OnHz++4AzIKxFNzoFAoAD4MzohI8FrtWcGvaIVzBLVygf/RY3AHhatcnNJxJGuaBbxy
+         dCznixhzRVJNf2ANrt+1mbmELr9M+jFuEJk/cstlcSrAXyvZ0stb7Gl9a3WGHq7EJn85
+         A7hg==
+X-Forwarded-Encrypted: i=1; AHgh+Roptx3iNCEJQAGI/IGJdQcxBkAKS2523mWwJRZyBog+FF/a5KGmf7efvATR9dXxi50QSEhPuLvlRd5HQSM6lA==@vger.kernel.org
+X-Gm-Message-State: AFuF++kpjzRdi7dAaNptOuBzEkos9vUc/RhUI8NOTpeYWRI0flNk3RP0
+	OqPXW50ft52tT/S29m0YI/unhjyEf1rzP0RrxNqwI06+AELpcpGqx8Eo
+X-Gm-Gg: AR+sD13jGcVWMRl7ZDCA/635X1tHFKs/bCoBci/mnUVewH51pds7otv0UI9ytow5IP0
+	DURecNuCvb1V2KxdN3rdw3f2JMRaQJCYqtmsR1cC3Z7SAGJJOFKan4tcU4HS6PFnde0YIKxxctP
+	GSNQLb7eUw8lRF4fwTF5tyFHkKhySinp5oykl2QEpv/MgAmaDmzvZv17IS+/xDvWhdRJZ/B7Br+
+	jq5IJMwJt+GIXbPm9gGG5VvXEqGhuJZM1z+GlNbrNdGYVr869EqEHKdCdZFEAlmUyb6tagyo1O+
+	zwgkcXAkiZBIIyEqZeOpFx9fA8PlxRRBt0cvi1vf6JMHHYo902wktz2ZFZ9EDAUczxo30qPn/H4
+	kx10Yc0ZfJSAnM90VfryTvKeUeLx7Ex2BlAf5yWawRZVpxHskNTfsI9gdYjXkaY7K4HTBAuLT97
+	4H2uCw+Ll7SfnEu1Huc4keAkdHSmlcqeCLy4c2rrquW9r5fOGBhiXzl6jwVneUQDm1aYmfrzkYj
+	0Pj9DmmuTSvfgcwLamzTlICQtZ7X3uY
+X-Received: by 2002:a17:90b:4e8f:b0:38e:bfe:81e9 with SMTP id 98e67ed59e1d1-39580a80a58mr18755677a91.1.1787208584359;
+        Wed, 19 Aug 2026 23:49:44 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3957fb3069csm6696864a91.15.2026.08.19.23.49.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2026 23:49:43 -0700 (PDT)
+Date: Thu, 20 Aug 2026 12:19:33 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
+	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org, 
+	acourbot@nvidia.com, work@onurozkan.dev, thuth@redhat.com, 
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, FUJITA Tomonori <tomo@flapping.org>
+Subject: Re: [PATCH] powerpc/bug: Add ARCH_WARN_ASM and refactor
+ _EMIT_BUG_ENTRY for Rust support
+Message-ID: <aoahpef37-7EaTrY@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+References: <20260819084825.969116-1-mkchauras@gmail.com>
+ <4c5b2ab5-83f8-4ee7-bb02-3046ed01fd84@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4c5b2ab5-83f8-4ee7-bb02-3046ed01fd84@kernel.org>
+
+On Wed, Aug 19, 2026 at 01:50:43PM +0200, Christophe Leroy (CS GROUP) wrote:
+> 
+> 
+> Le 19/08/2026 à 10:48, Mukesh Kumar Chaurasiya (IBM) a écrit :
+> > The Rust kernel infrastructure generates inline asm for WARN() via
+> > ARCH_WARN_ASM(file, line, flags, size), expanding it through a C
+> > preprocessor pass (generated_arch_warn_asm.rs.S) to produce an
+> > arch-specific asm template string for use in Rust's core::arch macros.
+> > 
+> > powerpc currently lacks ARCH_WARN_ASM and ARCH_WARN_REACHABLE, causing
+> > Rust builds to fail on powerpc.
+> > 
+> > Refactor _EMIT_BUG_ENTRY to accept explicit (file, line, flags) string
+> > arguments rather than relying on positional asm operand references
+> > (%0, %1, %2, %3). This allows the macro to be composed as a plain
+> > string concatenation, which is required for ARCH_WARN_ASM where no asm
+> > operand context exists.
+> > 
+> > Move the .org and .previous directives out of _EMIT_BUG_ENTRY and into
+> > the BUG_ENTRY() call site to preserve existing behaviour while enabling
+> > ARCH_WARN_ASM to supply its own size operand independently.
+> > 
+> > Add ARCH_WARN_REACHABLE as an empty define, matching the arm64
+> > convention, indicating that no additional reachability annotation is
+> > needed after a WARN on powerpc.
+> > 
+> > This brings powerpc into line with x86, arm64, s390, and riscv, all of
+> > which already define ARCH_WARN_ASM and ARCH_WARN_REACHABLE.
+> > 
+> > Suggested-by: FUJITA Tomonori <tomo@flapping.org>
+> > Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+> > ---
+> >   arch/powerpc/include/asm/bug.h | 28 ++++++++++++++++------------
+> >   1 file changed, 16 insertions(+), 12 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+> > index 0db48977c70c..8aba39e0cf26 100644
+> > --- a/arch/powerpc/include/asm/bug.h
+> > +++ b/arch/powerpc/include/asm/bug.h
+> > @@ -32,34 +32,38 @@
+> >   #endif /* verbose */
+> >   #else /* !__ASSEMBLER__ */
+> 
+> Sorry, I still don't understand. The only place the new macro is used is a
+> .S file (namely rust/kernel/generated_arch_warn_asm.rs.S), and the change
+> this patch implements is inside a #if !__ASSEMBLER__.
+> 
+> What am I missing ?
+> 
+> Christophe
+
+Hey Christophe,
+
+The code calling ARCH_WARN_ASM is a .rs.S file that goes through the C
+preprocessor as part of the Rust build machinery.
+
+The intended mechanism is essentially
+
+generated_arch_warn_asm.rs.S
+          |
+          v
+         CPP
+          |
+          | includes <linux/bug.h>
+          |
+          v
+ARCH_WARN_ASM(...) gets expanded
+          |
+          v
+Rust source containing the generated assembly string
+
+The patch therefore needs ARCH_WARN_ASM in the non-__ASSEMBLER__ section,
+because that section is where the macros intended for C preprocessing
+are defined.
+
+The thing is .rs.S is not using ARCH_WARN_ASM as an assembler-time macro,
+it is using the C preprocessor to expand ARCH_WARN_ASM before the
+Rust/assembly processing stage.
+
+This is my understanding of things, if i am wrong somewhere maybe
+someone can clarify.
+
+Regards,
+Mukesh
 
 
-
-Hello,
-
-kernel test robot noticed "CFI_failure_at_do_one_initcall" on:
-
-commit: b7b8b4ccdad45a59aafa5cfc32a51fe1ee5cb680 ("rust: extract `bitfield!` macro from `register!`") https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
-
-[test still failed on linus/master 8d3ae59288f1e7d58d76558a6ee96d533bc5019]
-
-in testcase: rcutorture
-with following parameters:
-
-    runtime: 300s
-    test: cpuhotplug
-    torture_type: tasks-tracing
-
-
-
-config: x86_64-randconfig-015-20260715
-compiler: clang-22
-test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 32G
-
-(please refer to attached dmesg/kmsg for entire log/backtrace)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <yi1.lai@intel.com>
-| Closes: https://lore.kernel.org/oe-lkp/202608201017.100a4511-lkp@intel.com
-
-
-[   16.811904][    T1] CFI failure at do_one_initcall+0x12e/0x478 (target: _RINvCsdamrQDJyPhn_8pin_init6zeroedNtNvNvNvCsdPKRummocL6_25doctests_kernel_generated33rust_doctest_kernel_bitfield_rs_04main43__doctest_main_rust_kernel_bitfield_rs_118_05FlagsEBE_+0x0/0x4; expected type: 0x6fbb3035)
-[   16.820524][    T1] WARNING: at do_one_initcall+0x12e/0x478, CPU#0: swapper/0/1
-[   16.823875][    T1] Modules linked in:
-[   16.825674][    T1] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 7.1.0-rc4-00055-gb7b8b4ccdad4 #1 PREEMPT  79da7d58e576708b28b47c0dd4cca3fe34a229fd
-[   16.831720][    T1] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   16.836267][    T1] RIP: 0010:do_one_initcall+0x12e/0x478
-[   16.838287][    T1] Code: d2 31 c9 e8 74 04 49 00 45 84 f6 75 0c 48 8d 3d 90 03 a1 0c 67 48 0f b9 3a 4c 8b 5c 24 08 41 ba cb cf 44 90 45 03 53 fc 74 02 <0f> 0b 2e e8 42 96 f8 06 41 89 c6 0f 1f 44 00 00 41 81 e5 ff ff ff
-[   16.843506][    T1] RSP: 0018:ffffc9000001fb80 EFLAGS: 00010a13
-[   16.845121][    T1] RAX: 0000000000000000 RBX: dffffc0000000000 RCX: 0000000000000000
-[   16.847279][    T1] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-[   16.849427][    T1] RBP: ffffc9000001fe70 R08: 0000000000000000 R09: 0000000b8a3be5a2
-[   16.851619][    T1] R10: 000000006c292bb6 R11: ffffffff81407458 R12: ffffffff8f899850
-[   16.853771][    T1] R13: 0000000080000000 R14: 0000000000000001 R15: 1ffffffff1edab41
-[   16.855915][    T1] FS:  0000000000000000(0000) GS:0000000000000000(0000) knlGS:0000000000000000
-[   16.858307][    T1] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   16.860091][    T1] CR2: 00007fd1104620ac CR3: 000000000ba86000 CR4: 00000000000406b0
-[   16.862236][    T1] Call Trace:
-[   16.863144][    T1]  <TASK>
-[   16.863961][    T1]  ? __cfi__RINvCsdamrQDJyPhn_8pin_init6zeroedNtNvNvNvCsdPKRummocL6_25doctests_kernel_generated33rust_doctest_kernel_bitfield_rs_04main43__doctest_main_rust_kernel_bitfield_rs_118_05FlagsEBE_+0x8/0x8
-[   16.869044][    T1]  ? stack_depot_save_flags+0x40f/0xab8
-[   16.870574][    T1]  ? irqentry_exit+0x1b8/0x638
-[   16.871878][    T1]  ? trace_irq_disable+0x25/0x100
-[   16.873243][    T1]  ? __cfi_ignore_unknown_bootoption+0x8/0x8
-[   16.874861][    T1]  ? strlen+0x32/0x78
-[   16.875952][    T1]  ? parameq+0x1a/0xf8
-[   16.877070][    T1]  ? __cfi_ignore_unknown_bootoption+0x8/0x8
-[   16.878666][    T1]  ? parse_args+0x17e/0x538
-[   16.879902][    T1]  do_initcall_level+0x10e/0x1c0
-[   16.881314][    T1]  do_initcalls+0x59/0xc0
-[   16.882501][    T1]  kernel_init_freeable+0x11e/0x1c0
-[   16.883889][    T1]  ? __cfi_kernel_init+0x8/0x8
-[   16.885175][    T1]  kernel_init+0x16/0x138
-[   16.886357][    T1]  ret_from_fork+0x266/0x5f8
-[   16.887598][    T1]  ? __cfi_kernel_init+0x8/0x8
-[   16.888884][    T1]  ret_from_fork_asm+0x11/0x20
-[   16.890220][    T1]  </TASK>
-[   16.891058][    T1] irq event stamp: 306141
-[   16.892233][    T1] hardirqs last  enabled at (306157): [<ffffffff81749821>] __console_unlock+0x61/0xc0
-[   16.894765][    T1] hardirqs last disabled at (306170): [<ffffffff81749806>] __console_unlock+0x46/0xc0
-[   16.897303][    T1] softirqs last  enabled at (305714): [<ffffffff81618b94>] handle_softirqs+0x614/0x780
-[   16.899859][    T1] softirqs last disabled at (305705): [<ffffffff81618ec5>] __irq_exit_rcu+0x45/0x140
-[   16.902401][    T1] ---[ end trace 0000000000000000 ]---
-
-
-The kernel config and materials to reproduce are available at:
-https://download.01.org/0day-ci/archive/20260820/202608201017.100a4511-lkp@intel.com
-
-
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+[...]
