@@ -1,162 +1,260 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010016.outbound.protection.outlook.com [52.101.85.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A78A3AC0ED;
-	Fri, 21 Aug 2026 07:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787297862; cv=fail; b=XU3G055nbd37SG0wtgrk2PAT2UA1M9JF6ZgTTJkvo404M/e8pRNTBLSfg2pxREpaF0qV00CtlDMcQiIkgHAaELh0okQnqUzF6gyqy4o1gCp+ybo++7cgg61f574L+l6CRvkmeX8rdJ76DIhSWIzfMvL71JSbv65+I0R/8x6rWDc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787297862; c=relaxed/simple;
-	bh=YYytIcZ4ySPIwsj+iUpU5j70zhpuV6xXJBAGstKnvVI=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=JxkCOzb3/Bgxz99LYlo2xCpqy+VHpCU6fLCLHGqtN1Rufynw8c5OW5BC5LzBfpsj9F/DgytpgbzjpYh8mQqMyKfnoeTkP1aRU0V+p+fb0AkyEKISN6uUfZ4oyVRaHKNOyNHUKWt5DHl+8rcnUfutcjPGbllhWF0S6YAEDSpj+rs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gntfjTev; arc=fail smtp.client-ip=52.101.85.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F173ADBA7;
+	Fri, 21 Aug 2026 07:37:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787297898; cv=none; b=PcgTZImPPcN20aVDR+zubiKEzgbe/HPyTN136m/oxdENgaa96qyXQ74gHlAob2DYLbQqy/3e9Pyjct9JwLgjN+1+jhuBMcZRkI0TOi1JupjD0AQOlKxh+WKUwocRAyx2BWilUWJkaYI3wj1GGnubZB0hxLxRJPJYSRyivsVqtzY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787297898; c=relaxed/simple;
+	bh=rKCnKYEcumWl3JyfMbSEhreXXJgGzptLv9nA+mGVflE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ElRpY1GYtJlaHlx7wipfMsdXrL+3EKShO4BoCY3UhUK881X6Y1I2rY83eh04EVEyYes7nawch5mZJywg43SxfRE/F5iwMLQsMU4q1eX4nenxleeVcwDA2TlMryY2hh7Dk3+G0jzhzS9sBvu4Ur75z+/2F8+ZN9/L246cvppvryU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QQYZoZy5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gntfjTev"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Lab2WSczG+JbDb+MZ0N8CoU5x5/cK03xC5/8RkIkNEJMPLJkROOazDB29w3f/JjnEBQ0fGLnzdxT1ka7MnrF5HVuU9tLh2Lmm70o7pRqkdvSbqSfkNMiHH3c+fBydbVz5l5Lk/o2tEren6ybNSFD8Yx2rzl50Kk97sEIpjrOzQOv1yZBZCr/24PW7F3VYRnZkblU7hhp6Ewv3Wd/Hau1QYjHot7wvZfZlQ3LCk9J4+Cyf3knXDlkGRgOcECVgKc7Lsl61+oPoR9xoO7ACUQfB7ztjQY1wKk4wazWykbIKyWbliO00SalaR24HuLOhgISb1MqZVbYpq/tiRkJQGlFhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YYytIcZ4ySPIwsj+iUpU5j70zhpuV6xXJBAGstKnvVI=;
- b=e4j36QwaH+xK8Sb/+V0gFhC4VulTXA6Bc+rdp4bMPeQU1tiaDKV1K6lPYg5b3chww5vQPMA0SaUDT6k4eVyuxdZyKPmURQ96yMqejKUn7XsmBF5HYokvWn6fZ5d8cCKeMjfFvlaoWOJxmz3eu1zyhgWhxlD4lUKXJIbVkzW1J+jIHIysWxYsd4u5cQBTCbxLZsmVRkEDxOVyKgAf8RCXT0r7Wr5Yzm+o5Yqfu/S6nFPGtA20D+c8rToSYJL+MazBMnhN8cUhh+F9swihR/uF6lYHJ6x29s7PHxzuR3pUC3BWjZoZ6kMEBDEmpQXRoEo0Aya69jLZEcqgiYMyXTqjRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YYytIcZ4ySPIwsj+iUpU5j70zhpuV6xXJBAGstKnvVI=;
- b=gntfjTevS+xd3R9TiF7HG/UiGV/9tbB7btAcrist5uyCUSM4g6RoCviAGPaca7yzS1ChnjEQ411rQbI/gqajx69M4vMPp/82gy70rFmzubIKHT74xYvC9azfn2CoEf8ZgbQThPC+UgpJtNKtd9Npy05/9BhvwxL2InMncxo6EIPu4auv7sc/nqMiTaBzFhoJkWRt51CjsbzFnT9Ky9BWxbLpyDN+Eu/z9p0DtDEKy2JktFUhlpUgksFIuGmeC3wypQB2x2ymCBeJm2tKZ+HXQuHLWjO+o3S3T9GkxnYj53LtwqRTDxutzzL4YyESpFnmVHvAn1sRcJyLWttcrfW+PA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by PH7PR12MB7843.namprd12.prod.outlook.com (2603:10b6:510:27e::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Fri, 21 Aug
- 2026 07:37:31 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0339.007; Fri, 21 Aug 2026
- 07:37:31 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 21 Aug 2026 16:37:27 +0900
-Message-Id: <DKUG7JW3I90C.3F2JEQLEIV54O@nvidia.com>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Burak Emir"
- <burak.emir@gmail.com>, "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>, "Yury Norov"
- <ynorov@nvidia.com>
-Subject: Re: [PATCH v7 02/10] rust: bitmap: restrict bitmap length to at
- most i32::MAX
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Eliot Courtney" <ecourtney@nvidia.com>
-References: <20260817-chid-v7-0-a5872e64d8f4@nvidia.com>
- <20260817-chid-v7-2-a5872e64d8f4@nvidia.com>
-In-Reply-To: <20260817-chid-v7-2-a5872e64d8f4@nvidia.com>
-X-ClientProxiedBy: TYCP286CA0051.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:2b5::14) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QQYZoZy5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BAA1F000E9;
+	Fri, 21 Aug 2026 07:37:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787297876;
+	bh=e3HgVd1cxxmEjUBaLU/HIwYldnlIEKneQD/S3mbdmAw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=QQYZoZy5XMUKRQ3cf2goz46XPoxmh58JVe2AGU+uh+MsIS4aHUXgKrB28hB092zbx
+	 I1Ca30A5zDO/BM6vXHOwQr9Ww+LL2RajKvWcmCnVxBdi5Gue+9kqdTMQfxbiSjaghv
+	 FlXE3DPbsU4C4c4alIYfBNXD5GCpd5K3spxKD8BU/W7WlILO5UQIX/mzPRGw7GHy1i
+	 HVEm3LZABnXfB2zRPj1WhiKoiTgjggZtcyGdvsaw9cJOtpDlfQFKCMMO8gqzkTIZWE
+	 w1z4aX4nM829Ub+PIjqaHJkXXyX6P6qyBaXSExMMdUL1TIHWJHe7y1cy7p1NSvUYFi
+	 ARYZ2gTtTrMPw==
+Message-ID: <f1657724-e7a9-45f6-9aef-af69d3c64a7d@kernel.org>
+Date: Fri, 21 Aug 2026 09:37:07 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH7PR12MB7843:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3c3e94a1-9b00-4e03-c7eb-08deff570e88
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|10070799003|366016|7416014|6133799003|10067099003|4143699003|11063799006|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	T2lQq/CY1jzSCIG/gEPxCmXF41HZUae253ygB97eSOOISmJadjadcEZ5eLDKMj/qrksZyZuO7lK0HXpNA+dXHWAMIMm3E1evrxbeYKXBNEa11VN2GKATyNg8LTX35kxG+WqT+k2cTFHSnSlB8lUOkzyoDTbAZTou8kPwchzbitopRrGBiOI3uMpuTaqzz9sxX26b2OSj7sJA9zaLGTpUoe9bEjDMBXEKdemAfN3llw8cjxuOQcCIeTqlaYlovnY7yrswHyiWm8hqQ80lUdV1ftcueVFjvyr9nvHcjlcq4jlfMBrr7LrY1YNRi61LTfemnkZPY2ShawmWdnMTTRbldvsu8y7okiohQQGF2Ragsw9y6q8qXLdQtlE3Ge2xc6Pigk42kpgwIbe8gxKtFBT11aEcz0Mp63mLZUAvdyjzAQjzLkNf8dr4Ni0/bYYCfmnMx1DJzd2X4f9uto9eJCjmFBH7+SmXpdw9tB3NuNqNrhnTgdT6YY3fm/KCIMH1hXVnF+8DOMSpcXQ7aqX92BNl5cDZmpFMIJH+vd3NzwaMX+w5XdKRr+r8NKbWFxNaexnkV+bws7Bl/w1+9577JFqqWu4gNXqAs9KXTxi4+A2+KT8XJCu5+vWrQr1QgQvq/Dg/MFW09MZcLoiRxPkuqV8WzJgsCq6JBdSBEJ4R146IcmU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(10070799003)(366016)(7416014)(6133799003)(10067099003)(4143699003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?enZIMEgzUkxhTStMWWdNeUliekdjRDk4VTQ5ZlpwbUsvU3BtNm5LSGtuWUh5?=
- =?utf-8?B?YTRyTjA1bURvT09UY29OOE8yaGNmTE1DYTdXU3VkYkJzVFNWWE5jb0RVL0lt?=
- =?utf-8?B?aVB6b3FIQW9xNkw3OHkyRHNRMUxuSzArdlg0cmxTOGplTGQ3WGZSSkFwTVN3?=
- =?utf-8?B?Z3BLZ1E4Si9iTDRiWkVOYU0reEZLL00yY0tONlUzNHRJRU51ODE2WUZLc25h?=
- =?utf-8?B?dVZwWk4wMkZuRGFEVldIZDJEdTZTYUxJamlTZ0d6MHdZSFAyK2pxT3Y0akNO?=
- =?utf-8?B?RzZWYXVPblZ1dmZxdm9wYnRKSHIrSnB5cUprNzFKblBFYnlaMjZUWGRnRUYz?=
- =?utf-8?B?azJUK1g5UURTeU9WY1Z5K1M3Z3d5ekdWQzJxbE0yYTVDdGpLb29rVWpBZjc0?=
- =?utf-8?B?ZmJGazgrYzgxNE00NU5IazY1YXdVSFNNaml4NTBwLzdtdzVYNjZsWHh1Ym9q?=
- =?utf-8?B?b3NCY2llaUh3ajBaVm9UNVhMdDVpTCtUYldLVEVub1JmcDllcUdad1NiNnJi?=
- =?utf-8?B?SzFFR05WbFE0YWJ2Q1NjUys3R3pyRG9hUFg4QmRYRnFRUThiREkxYWJSY3FT?=
- =?utf-8?B?UkhFZVQrdHBzL1lpRXp2ZGxlczc0cU16SHNOUTBpNHZFMVgyNXZYRHptYWVa?=
- =?utf-8?B?TjFoYWV1Ty9YUi9SbHpOdkZGSFZHZmJZTDBjQzVGdURwMSsySk9YbW1Ga3Rl?=
- =?utf-8?B?VGd4N1M5VXNYVzRhNzBxUDNrSWd5SlJ3eUNQd1Z4VFNsWWFNNUZFYXpRTnQx?=
- =?utf-8?B?T2NUZVVjbG8yaHJkWnlVVFN4YlhPRExxTnp4NTV0bWlsOHkwQWppQmo0Zit4?=
- =?utf-8?B?TXdoM29ORDN4dXBmNDhtbmxiOE9PM1diNFlkZkJiR1ZFZTNJQXpnTEVZWFdm?=
- =?utf-8?B?TUZMc1pzT0lpR2dYUldWQXZmd3V2QnJRalVpdE8yQmJEYzBCd2htTGdYMmRJ?=
- =?utf-8?B?YVhaUEo4dCtuZlZ4cm9WdVFWaGxqZ3J6SU5WaGZJbjR3SW5RN1NyckZ2dXFz?=
- =?utf-8?B?dk5ENmV1VTJQNUZBek5vVFExYW5DSkhwTkdpd1lnUXZLWUVzd0tOWnRzNUlQ?=
- =?utf-8?B?Sm9ibUM1TFhwMVFtTE9TR09wNXVuajEwY0JLbnBHbjFzRENRTGNieFpsL3Zq?=
- =?utf-8?B?UGZwS2hmRkxSUXVObGJwRmM1TytLUENDZjJndE13WVBmallPVEJwdkd1RWwr?=
- =?utf-8?B?bmRiWmdBenQzdTRmSXRiaWZtRnhJSjZ2clhaSmxiQVQ3RmZhM29tZ1lzNHZl?=
- =?utf-8?B?MGpHK04zMEtTeExXc0psa01PM3EvZmpPaEZWODRORXh4T1NkcE96KzVsYTdD?=
- =?utf-8?B?Z252emd5MldEbWJMMENkVVVMTkhVM25FQ1NqSWQzMndyaXRvemlxQ21FcHZk?=
- =?utf-8?B?bytMSkRmSy8xUmt6b1hDWWZxaVJSSHo5TUxzMS9jc1UvVCtpNHZ3WWxFTUo3?=
- =?utf-8?B?cnlpNUhsdWVFL1lOZDFBbmhrMzE2blNuaGVmVTgxaGRNdXV3dHJ4bzEyUEJ1?=
- =?utf-8?B?dk9UUnMrWGhLRExQcjZXRjBzSFlST1QzazI5TVRZTG0xbjRwbUZLNEdXdnV2?=
- =?utf-8?B?K3BrdFNOVXIzNTJEUWdyTmxraHdsc0cwTWtTQzNDNGpYZzZsNHowb2ppR2VY?=
- =?utf-8?B?TDFUVnBGWHFta01aSndKVkdsWHB6NmE0Z2V5NU42Y1ZaYldhUk5XTmRlOUtS?=
- =?utf-8?B?clJ6ZjhuTWRUZ2tWMlFpaUVxSXdON2ZoMDJ6TmphUVI5YUdRRHJWT3JIQ2xD?=
- =?utf-8?B?SXhOQU5KbFdQV2FpREE3MUlqTjR5ZG5CSzdDVzNEY0pMQlZ6MGgvS2FNOXF4?=
- =?utf-8?B?S2RoVFNiQ3JJTXQ3Qk0wY0VabDYzNTRqZGZVd2hlbW9CdzJ3RzgzVDE3SFNz?=
- =?utf-8?B?Z2wvOWNFWEdoQmtXdHl1R2sxcXN4clNscERXZXRxYWx6bTYxRXZFOER6ZXRD?=
- =?utf-8?B?WG5pOHNGa2xVcFlzM2FiSGQ2bkJGT3ZRaFh4a2hKTTVJMWtTSzViNStmVjdZ?=
- =?utf-8?B?ZllzTGNRYmhEb09VWjRNdjhSbHF3bkl3TFpkTU9KTG1ueWNYcUhmY0hGck5G?=
- =?utf-8?B?WXU2cW55TkhIWVJoSmJyVHRWaDhMYTMrRHBBb01yVWxoMDJBUU1KbmpZYXNr?=
- =?utf-8?B?U0FpVlBLZlkzQk04Q25zOGswY1crcFBxS1pPK0U5MVdyTDFCejR4VDY4bEdx?=
- =?utf-8?B?N2QzT0VyaEowNFFlYmhZeVJpa3NwMTh0K1dSdFQ5VGtSWFMyK2dvWjNWa01a?=
- =?utf-8?B?dytSS3VIVGQyTDhhZEVqN3FoeG54amJDQjIvcW4xNW1qOGEvMDdPdFpFTVU3?=
- =?utf-8?B?eUJ1RUVOSHpDMVgxMXNGQzBUcHNneWluUkxyT0NtSC9RWG1oNitHVllsaTBK?=
- =?utf-8?Q?DCb3g7zrwIfN6Mg7XKKJbFLV9KXsHXA4fpQ+WO1vzmBVL?=
-X-MS-Exchange-AntiSpam-MessageData-1: Mj1Xbn6wmFWaEg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c3e94a1-9b00-4e03-c7eb-08deff570e88
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 07:37:31.0943
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5P4+R0J/VQ5ck5628EcRw0o9uTsidbCQYzFjG1EJMEMtiQ446tH46Yd88pUWSx3FuLaJoqwYoMHa05uXLQK2bg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7843
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Byungchul Park <byungchul@sk.com>, linux-kernel@vger.kernel.org,
+ max.byungchul.park@gmail.com, kernel_team@skhynix.com,
+ torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+ linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+ linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+ will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+ joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+ duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
+ david@fromorbit.com, amir73il@gmail.com, gregkh@linuxfoundation.org,
+ kernel-team@lge.com, linux-mm@kvack.org, akpm@linux-foundation.org,
+ mhocko@kernel.org, minchan@kernel.org, hannes@cmpxchg.org,
+ vdavydov.dev@gmail.com, sj@kernel.org, jglisse@redhat.com,
+ dennis@kernel.org, cl@linux.com, penberg@kernel.org, rientjes@google.com,
+ vbabka@suse.cz, ngupta@vflare.org, linux-block@vger.kernel.org,
+ josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+ jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+ djwong@kernel.org, dri-devel@lists.freedesktop.org,
+ rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+ hamohammed.sa@gmail.com, harry.yoo@oracle.com, chris.p.wilson@intel.com,
+ gwan-gyeong.mun@intel.com, boqun.feng@gmail.com, longman@redhat.com,
+ yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
+ netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
+ corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+ gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
+ arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
+ da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
+ frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+ josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com,
+ jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com,
+ neil@brown.name, okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
+ trondmy@kernel.org, anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+ clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+ kristina.martsenko@arm.com, wangkefeng.wang@huawei.com, broonie@kernel.org,
+ kevin.brodsky@arm.com, dwmw@amazon.co.uk, shakeel.butt@linux.dev,
+ ast@kernel.org, ziy@nvidia.com, yuzhao@google.com,
+ baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
+ joel.granados@kernel.org, richard.weiyang@gmail.com,
+ geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
+ alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+ chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
+ link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
+ brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
+ mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
+ linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-modules@vger.kernel.org, rcu@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
+ neilb@ownmail.net, bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+ dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, rust-for-linux@vger.kernel.org
+References: <20260706061928.66713-1-byungchul@sk.com>
+ <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
+ <aoc-jJ10op62jXFK@casper.infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aoc-jJ10op62jXFK@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon Aug 17, 2026 at 4:04 PM JST, Eliot Courtney wrote:
-> It is currently possible to construct a non-`BitmapVec` backed
-> `Bitmap` using `Bitmap::from_raw` that is larger than `i32::MAX`, and
-> it is not part of the unsafe requirements. Restricting all bitmaps
-> (even non-`BitmapVec` backed ones) to a maximum size of `i32::MAX`
-> simplifies a few things and matches `BitmapVec::MAX_LEN`.
+On 8/20/26 19:51, Matthew Wilcox wrote:
+> On Thu, Aug 20, 2026 at 07:16:05PM +0200, David Hildenbrand (Arm) wrote:
+>>> Consider this real deadlock pattern that lockdep cannot detect:
+>>>
+>>>    context X              context Y              context Z
+>>>
+>>>                           mutex_lock A
+>>>    folio_lock B
+>>>                           folio_lock B <- DEADLOCK
+>>>                                                  mutex_lock A <- DEADLOCK
+>>>                                                  folio_unlock B
+>>>                           folio_unlock B
+>>>                           mutex_unlock A
+>>>                                                  mutex_unlock A
+>>
+>> But that really just boils down to folio lock being implemented as a PG_lock +
+>> some advanced wait mechanism. And we must do that because of lack of bits in
+>> struct page.
+>>
+>> Willy mentioned in a previous version [1]: "I don't think it makes sense to
+>> track lock state in the page (nor folio).  Partly because there's just so many
+>> of them, but also because the locking rules don't really apply to individual
+>> folios so much as they do to the mappings (or anon_vmas) that contain folios."
+>>
+>> Given that lockdep is a debug feature, and we will at some point allocate struct
+>> folio separately, I assume we could just squeeze a "struct lockdep_map" in there
+>> in such debug configs and the world would not collapse.
+>>
+>> Doing that today (one "struct lockdep_map" in each "struct page") wouldn't work
+>> as mm_zero_struct_page() would not expect such large "struct page". But
+>> conceptually, for a debug kernel with a special CONFIG_LOCKDEP_PAGE_LOCK, maybe
+>> that would already be ok and we could just do that (and optimize it as we
+>> allocate folios separately).
+>>
+>> Not that it's ideal, but for a debug feature to at least check PG_lock, probably
+>> an easier way to achieve it than some completely new infrastructure.
+>>
+>> Now, Willy said "locking rules don't really apply to individual folios", I
+>> wonder if that could just help to also let lockdep check PG_lock with less
+>> metadata? (didn't fully wrap my head around the implications)
+>>
+>> [1]
+>> https://lore.kernel.org/all/aR3WHf9QZ_dizNun@casper.infradead.org/?utm_source=chatgpt.com
+> 
+> There are a few things going on that make PG_lock special.  Let me try
+> to explain again, only better this time.
+> 
 
-Can we be more explicit (if possible in the doccomments as well) about
-what "a few things" is? IIUC we are doing this because some of the C
-APIs take an `int`, so we can just state that much.
+Thanks for that information :)
 
-Note also (as a point to consider, not a review ask) that we could
-enforce this requirement in the type system if we made `nbits` a
-`Bounded<usize, 31>`. Currently `from_raw` and `from_raw_mut` are
-unsafe, so this becomes one more invariant for the caller to uphold, but
-would we have made them unsafe just for this if they weren't already?
+> 1. The current lifetime of a struct page is the lifetime of the system.
+> But the semantics of its PG_lock bit change each time it is freed and
+> allocated.
+
+Well, yeah, but that will effectively change once we dynamically allocate struct
+folio.
+
+Until then, don't we have the following two events:
+
+(a) Allocator handing out a page
+(b) Page getting returned to page allocator
+
+And while in the allocator, the PG_locked is essentially unused/unusable (and so
+would be lockdep data)?
+
+I'd argue there is a well defined lifetime for PG_locked and any additional
+lockdep metadata. At least theoretically ;)
+
+> 
+> 2. The position of PG_lock in the locking hierarchy only depend on
+> what the folio is currently being used for.  That is, all folios in
+> a given xfs inode behave exactly the same from a locking perspective.
+> There's no need to build up state about how each PG_lock is used;
+> they can all share.  Arguably all xfs file inodes are the same as
+> each other (directory inodes might be different from file inodes),
+> so we might want to go further than telling DEPT that "this folio
+> belongs to this inode" and go to "this folio belongs to this xfs file
+> inode".
+
+"There is no need", I am not entirely sure when it comes to anonymous folios.
+
+Even if there is actually no need, given that we are talking about debugging
+mechanisms, I am not sure if optimizing for less memory consumption is our
+highest priority. Debug kernels already consume plenty of memory on other things
+(page_ext, for example), so consuming some more to support the folio lock with
+lockdep does not sound too crazy for me.
+
+(maybe lockdep data could even life in page_ext)
+
+I understand that Dept applies to more things than just PG_locked, though.
+
+> 
+> 3. PG_lock can be taken in task context then released in interrupt
+> context.  For full points, we need to mark the exact point at which
+> we submit the folio for read.  Otherwise we can get into the situation
+> alluded to by f2c817bed58d and better discussed at
+> https://lore.kernel.org/linux-mm/20200127150024.GN1183@dhcp22.suse.cz/
+> where we have the folio locked but haven't yet submitted it for I/O
+> so it doesn't matter how long we wait, it will never come unlocked.
+
+Yeah, it seems hard to squeeze different locking contexts into existing lockdep.
+I cannot tell whether lockdep could be adjusted to allow for that, or how much
+work it would involve.
+
+So yeah, Dept might be a more natural fit for this scenario.
+
+-- 
+Cheers,
+
+David
