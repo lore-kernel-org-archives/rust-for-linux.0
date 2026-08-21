@@ -1,176 +1,173 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012061.outbound.protection.outlook.com [52.101.48.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AE535F180;
-	Fri, 21 Aug 2026 05:13:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787289214; cv=fail; b=sx08gD+WjGR6BAMcu75B7bxJ7tfHMkCWOD2wc5IniSokVxZs1rynYjLogqpKUPzxeiuXPw7lXiR4wgOAeqlX45+8MrAO7YyEQVFXXphhn/RefuHoAeoLSG0QJAc2mYTNFxJOBDLPRAGs3JwVQu3hOZwWriHgCgs71L1CdUGkZbc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787289214; c=relaxed/simple;
-	bh=nIk8zTWQnra7Z85nRSSzQK1tEpvBPnnspvHDDWTT6OI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=GRRXMDhqzqSaoqzoP1vvQp5du+zzelCcyis19klURm9fib/xBrZttvASy3qTwKIAsj1e5ConYAiDSI6sWwCecdf0gRROTUTaOwA/EBqHsvGIMigPgyYXK1SnV8tK+feO7+W44uBy5ygLVqgKZ3Y9tJMcKhffGbLLLcr3h1X4fNY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=R/Y7YP5H; arc=fail smtp.client-ip=52.101.48.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3684230F927
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Aug 2026 05:25:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787289952; cv=none; b=tuzWFZ8Mc7uC4twXDb4JPasiLSgY5/eMjNYnSvVT29rW+PAfCqaPXxehBF3Lqsu99hVpP7Z1051hDb/5+HI7d0Q5QkIYV7hKXwhT3Ku8tsMjr9DM3tO5PId9ILvsMC2Dtf95j6YxKQJTXe+a1n/RI3h3Afl3n/mX70qm81HAb/s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787289952; c=relaxed/simple;
+	bh=B+4n+MJXTXrb4ce62EyeAqbun4UtjYSKdWJfVRNW0b0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hV94GH26WwUivwZuOb+0UJ+N2eTr/Mhb1Enl4Iq38AEBrSu/ZsM0BJgNoLMimiRWf/m1LTcZ2I4nYyu8fz7gXbPUhH1oQVu6DIXzd3/A4k82pH0L9F4AB5YqEoV775Li9CKNuJbCDpbiFVV6UnSEXZFWt3OV3uZTj1VNMQPimCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20251104.gappssmtp.com header.i=@beagleboard-org.20251104.gappssmtp.com header.b=kQ29p482; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="R/Y7YP5H"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=c2NP5W68i0bFRNB7L8TICW98DxL9+6iPnKFz9OCH0/QXVELSgx7fwzSXgyHHcU8eqq2oW3lJgsB4EsKPDrOTpS0CKpPxBp0J752c7u5X52TjdpZ+z+t6gSDEnFLiKnq5LGGh9b2LbhEVtqp6kFunSUoj8aJ927deb9yCS6MQBxr9bxI80WtXoBLBrLR7CnRR8I7o894bAOu53OjdVemTLWhQpbGSJi0oNMPTRgXrMEi4gqomWb1LgRHnI7nTCbPUpGezTy9igPytpSMhVQbXx/7q8Q6NLKBgdt73JcnAYCrbbPpwwXGakcBrEWzit+gxpuZ+1pxYgxujxNcRvPZglQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rX1naT6CsFZw+jiYSPXYq5IRQOQ+RtuTdpx7Ec1bmec=;
- b=FrXBi7j5ACVGSroP+yHcFEJkifb+gO2CTR7PDnZBnG/EFKfgQJhb/h5eyZzTuRB3TwCemqmWYENLXr3JTR1GyANBmoW7Uz0YmmPmKbhmzBeTVHXZTmxtKKpZDB+xtjtSvOcyFjBPhT2mi9+EotXWbjCg1RsdhEql1RvgO92kWsmc5Ug/gETffgB17NXxy1tKUVu8tCPagcBSiCMjuQn+cpSxMAnW7M6RyOEzXW3AI3sy3qY5iLiYLkaG+nl1hQ1I3MLJ+exyaJNC8Yq8rD9Shf7/okDNvJu1G5kNc1V32osHZiPeq5aCSdra17NdAmYa+UDYJLwhhPeWXCAXJo3hFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rX1naT6CsFZw+jiYSPXYq5IRQOQ+RtuTdpx7Ec1bmec=;
- b=R/Y7YP5HZCwWrX8B9ACpqcAnhOTWS0MkzzSqgiXLIYv6iC+kjhC50coAbtiwycu3GJiwFE3gnqCHmYRdZjG41p9gOa1fZ9gr0jq91fcDwb01ZrV3qy8KcHQ4rvLr7aC7Qsjl4XaCE4I2p6+w8L7xPHFAOWZR1VXEBbBs5SFKcneehIPk/wbE/hRiHZ9YYfaIHfOAox2+Un/s0gfjV84ookJV7z0jQp++rTHJivHyYXf8cMoXdvsS4VwoXF039CcvNqomc69uu/Ycf4a9CxjeyECOsP5zkXSa9mad1mDwzvORgAXpwLHWUOz2xlYw/eCKWKpvHQ5KH2eIog7gPzWrfA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- IA1PR12MB6580.namprd12.prod.outlook.com (2603:10b6:208:3a0::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.339.10; Fri, 21 Aug 2026 05:13:29 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0339.008; Fri, 21 Aug 2026
- 05:13:28 +0000
-Date: Fri, 21 Aug 2026 15:13:24 +1000
-From: Alistair Popple <apopple@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: nova-gpu <nova-gpu@lists.linux.dev>, Alice Ryhl <aliceryhl@google.com>, 
-	David Airlie <airlied@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	Eliot Courtney <ecourtney@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 6/7] drm: nova: Use nova-core to read VRAM_BAR_SIZE
- parameter
-Message-ID: <aofd84GR1HA2H7xS@nvdebian.thelocal>
-References: <20260811050657.646799-1-apopple@nvidia.com>
- <20260811050657.646799-7-apopple@nvidia.com>
- <DKRHR24SW3XR.27EE53NSRT1D3@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DKRHR24SW3XR.27EE53NSRT1D3@kernel.org>
-X-ClientProxiedBy: SY5P282CA0017.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:202::6) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20251104.gappssmtp.com header.i=@beagleboard-org.20251104.gappssmtp.com header.b="kQ29p482"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38125cebfdaso754153a91.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Aug 2026 22:25:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20251104.gappssmtp.com; s=20251104; t=1787289950; x=1787894750; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MMTRiO2LCvL4OaL8CgkP71Q4mqWNH5wDDAfdSGoco2E=;
+        b=kQ29p482uXFbslEWitBKKXKS1ov7Q9qG9vcRkcHqNYPXbbgo+DVM1zSTTbXVkUvzbE
+         5lHdcairSl9hcwpIuwNo4yxnYr+S7k7c6G9r6Kdi46xtD8feOKaMXvtB8SiGsvQZD8c3
+         oYPX4LMQ0MqCJbbuEj0SPcRwyt0c+8fPlTmXv4FJIEUmgHASoeaew/8KgDBPIu2O+TJR
+         X91OuMxEFb22wtK4OL8NixXGpIbgfJ2BElHn+uGD1C2TAXJO3uLuXgZ6AEOUsyEXq+OS
+         9wesmWGxwfNOkTWqc2jFnpvbOllFZIetSCYBQOEJ4IWXml5zWLgZDYGY+5PHTtrwTiCb
+         EFvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787289950; x=1787894750;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MMTRiO2LCvL4OaL8CgkP71Q4mqWNH5wDDAfdSGoco2E=;
+        b=Y7ys1RrCZeOZ/N1XXjeVZ6zy6QgPbQNJqavO4S6MgMGL/hXSB+FvNZGK1v1MArSNyk
+         tan8y36tax/N90xhxfyx+gkkmdK4FVZ0c5Vljyf0M42GiI/2tZwrzgjBDqVwkr4ZHh1H
+         ENqr0Fj2MpWINkL+xBpiaYJrf7W04R5mbs1sdZk/1bRLDx7odC3JNwibEA7SHqThj3rc
+         w3WDfhXsQ3Ws41DjuGq5Q+aVcOn5VN7c4Hk0qSee3WNYGTnYwotJCYdRYUcy7ltXYZbr
+         caI5KfOpSex5sjDoc9Gcnn0H5tBWm+AyWQ5vBtxDI4C8QKqKw9ExXy+HQxiSFZGADNYH
+         Dk9Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrV8biBO30bQ/+tUTnNZxj8g8IVDOg/cVRjAby67F3vUAFJTqXm0//QJ3RrNmGqG3+g4wDgT26NYgmsT4j72A==@vger.kernel.org
+X-Gm-Message-State: AFuF++n7/5frTEyc6z6hAwVE/B8PDExUga0ZHyZbY75mYJ7e804I/5xz
+	0c8q6pukfbI0SB4khF+eCnlQ0RfEktrw3DVduiIun3X3/HOcrTwkYitVqzpGTNcc1w==
+X-Gm-Gg: AR+sD13KnRUv+QFbIc5zkLEvLC0W4bYPOdtus834loa2/h6LWz+/wQnGvPreXoil8cI
+	kasVu35EWYZzhLfuvUlgP2MxfrrgnxzvI8x37N1TRNkfOP3TmYYBcCqc/Wo4rWN1gX+dI4O8xuQ
+	XFxbMqQhANLLY8HMKVFDCxiZligfCExtuIv5egsOjdZGi8cf6Zuzc2PG3m3nD5XMC3becYIgoKw
+	oipxXn9GNSQZMmP5uxIdPIHTFbjSd4G3mHPflrWSr8Y1MeEv2MD7gRTuMqOWOnow7l6IBiC96dI
+	XlV3lo5GnBaYc3gqySeZOHoWFPa3AKEm02+11a/bsUQkarRBnpSidGhF/UPHlhG2QNKLsXvr69/
+	xXRrm/HQb/ugJ+ms4TQO1aMfXI0vlrHBa4HTrFpestGV69hSMYpuJWXRhPhaRSZW6J1KcpOMN0P
+	l8Hf4hOad8dRvsv26mToIscFxP6DfUhalWHaRHKQAfNHpTe9+2A8G4jAte883q48ylBQJhlXTkW
+	kXzsvraZ3319gV01HoYZ7ETsEOg1f4aj+IxT9o=
+X-Received: by 2002:a17:90b:3b4d:b0:38d:ef48:b04 with SMTP id 98e67ed59e1d1-395c39b1750mr6047224a91.10.1787289950564;
+        Thu, 20 Aug 2026 22:25:50 -0700 (PDT)
+Received: from ?IPV6:2405:201:4019:32fc:3c55:6b24:5147:322b? ([2405:201:4019:32fc:3c55:6b24:5147:322b])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1416ae5f1ffsm35061553c88.13.2026.08.20.22.25.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Aug 2026 22:25:50 -0700 (PDT)
+Message-ID: <93977935-ea60-48de-9d13-23454e038c18@beagleboard.org>
+Date: Fri, 21 Aug 2026 10:55:41 +0530
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|IA1PR12MB6580:EE_
-X-MS-Office365-Filtering-Correlation-Id: 09bee09f-ac8d-432b-e4a1-08deff42efad
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|22082099003|18002099003|4143699003|56012099006|10067099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	9g1FVnHy8E5fWVyeMqrXtC49cZgMv6ew7RbkBk1cPVKUeYDKzsh+IjylW7jdv99xYxXzHgIgv19jbX4OMQbih/NoqBzROcUGdEeIO112rVaCAS82ETZ3Dc9c6XwRMkNZB02RbIIEP3XCe6QzhXngX08RYL0SWhg6uSa8ABtTE+ULuzMN/iCYFKHTrun8p23dZbM4wpgpJBtDlt5B8WOeuWpzKW2527S86pQOPqIysJpPouXzHViEgF0dQZK6AEA2ISIIj8Q12654O+fNYMccza3JHRIoA+VXsIds0owz0UeGkKfyk+DJ7V5ALSTIyRGQZLRv+bWOr4LRc1C6QZ4EuhVKaQq/b9jxKT6KkRtVBve5yhVzSPWSsd4Vu1totV58NVgfP6gR1ntbTTpx5U15NK7jdTk071r1ZC1uCWzfKNgF3S07TWrMODVYjK0bJeqOrFOZWqM2eBDwmtUKhc7pprLvtTC509C+V9AaSsnOgAh6/gGXLAONB279L5SwW5HS3qUYlqjdz2A7gQ0iznzWlqhcXBKAHiolejYAv4y9gDtDBDG54tXNBYmCgf4g3304NR9tqXPHoW7fn//iGGR4C5DYgaz6W8YC7xu3cCAe+nhOwCHRovTDItXGTVwQ/9oMCD5EmSKHcfjYmVJLrEb1ud+mE+eToRqALzuVQ/s7DAU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(22082099003)(18002099003)(4143699003)(56012099006)(10067099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HoZOE2R+uEvAQIJgoyWDaFA9Y7SG/mlDZ0nfP9DLa1XB4YWYi/glr91v1jaP?=
- =?us-ascii?Q?zzIW9hTutOf53LZ37gfLYpA/hPn1SsPPGzSwL+83cbkKLElPKO+h5Hq9A4mG?=
- =?us-ascii?Q?yCtqx3kU9oyYQrJOa1PhTSDwuc8KBkTj6PjuHMYM40HHeyQ+3lgqfLO1uSgm?=
- =?us-ascii?Q?uWrVa/GqgqDK0uCxYyum4Su52yP3h29abUoDWl8oh6381s+e8//cdC2qOrok?=
- =?us-ascii?Q?VLzzAOsqynuf0qmFO+I8ca4vs1+Ctf6ean35WGxZzDpLMO6vYVxGDGjbEHUk?=
- =?us-ascii?Q?0G+34ag+/DkYy5+Og3wZLn54Pv4BksTnW1bxOCjXy9ipnrFxuWk2m+Y/wbsr?=
- =?us-ascii?Q?34AhRPOZOgHB1dBarXQXgY2ayVylDdkvSVoVsHsbRPZeFf3QWBft8H3LqB7K?=
- =?us-ascii?Q?c0KUbmEr4/bfpjjoZm2qrbqBig3NZitpAnLkC7fwRQnpFwkKPe7CH8LZTnAn?=
- =?us-ascii?Q?sGAHChrNfgHd1XQx2MBHrAYiUHfPBb+QZRNc+pqMKeVuIU6g1IAvRUIq2++O?=
- =?us-ascii?Q?hWNHKZJd0qxP2i9SDoZ6Uu68EVoC/SwwWeIJdx3xwii1wcW04ygACIo45icv?=
- =?us-ascii?Q?5enz9klaMc8ttlcxhJ+f5Yl7eBRr4T1S3+Y0avFdzX3BLgVAg6qPEeu2a1ZD?=
- =?us-ascii?Q?Fe9Z+jDlzJbqlBK1KFY8V64G050T/oqXOJ6+4QF3mk7xPUHYLhCybFul4KiQ?=
- =?us-ascii?Q?3a1HLFKbdwvQuPPSds311vajefB4sJ2TNViTdlDbVZESx6f9TD2sITtEahLl?=
- =?us-ascii?Q?0D0HM3R7Slwd6iJqVPsCFS9KzK1LkrD7AWwGbrMCYHtwv7nPbUyFNyfQDmpF?=
- =?us-ascii?Q?Qp5W794IFGpyVIJsY0x1AzW+gsQX86F8itbMzET5Mk5SL/uAre4K1dXExFKg?=
- =?us-ascii?Q?q7NNttRzh/0sAG1vK04Y4JW6hRZH/FmcPyjjhUau1kZlOHQdKXshr13QVkya?=
- =?us-ascii?Q?tR/VmJ21VNI35ViqVwIhnxgVk2gFSbmEdusLIpi6aIMYk2CpQ3Jn9NU5TpF7?=
- =?us-ascii?Q?1WPhC/QvXSB4cL8E+OnflOo8RJ35C7YXDoKrG2eEHaIFekWnKJHkzxobn97G?=
- =?us-ascii?Q?ACrrNbRjoTn1LOrCTpDdyYXE2Y1e9DBikK7To0WGxq8cEasIImPERcZtWFWg?=
- =?us-ascii?Q?JW4XJ4WRFlK1pDppfJnbw9LMd/BmSz5KugnCyzWQzK353emN7Q4Wi/OMsfaY?=
- =?us-ascii?Q?Wd0I46VOhRETTPoFXeFALnb0uqCWHEioGdLugbVFZH3xtXTj+XtIS3xrA1BA?=
- =?us-ascii?Q?uNplAQ5L/V3UUEUY0iYskQ94mB92wzV0yTTtSTbQQLoRdOlVx4mLj0xmzWQ4?=
- =?us-ascii?Q?a7bR2dlWvghuABlL8PtOIzRddAToGvYN2G+gUwgSEE7CvgdnUdOP9gU8dpVH?=
- =?us-ascii?Q?Fyfg1b1HDz0cw6BtPhyhjueF0mCvZJ4+WAaCx1wpNJYlGJqtiIMc9jyPYm13?=
- =?us-ascii?Q?qzcMKsNePW0mi5JdnJ1DsC5uoBsyMcu8jTHKA7PO7bSx/7YLcv4c8606tOrw?=
- =?us-ascii?Q?orivINRmsi1oilBJcpT1ZaCjE4GP7OvylVWEZ8o/p5DcBm3oAH77sqveEA1O?=
- =?us-ascii?Q?ra+4qya8dM5DBgvMSdr3DgdA1ZRz4WyaCktu/MLBkkghFJyvpG1i3pEUVlu2?=
- =?us-ascii?Q?9x0jkLENaoe4+Bkacod0qVCGly1WarwouO64/HIXTw3DXvPmcTsYc+qBSljO?=
- =?us-ascii?Q?hOXfTJVIlOJllj+UJD2kDFzyJSxlUiWgUrgR3SLrzT9cZjBcpPiF16Cjq8Mu?=
- =?us-ascii?Q?5bb3RtcVIA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 09bee09f-ac8d-432b-e4a1-08deff42efad
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 05:13:28.8830
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: InShA0FbZKOJLgOP1ftrHEh2Ku/CB+ZKXacadIVnNXeU176broeYh/Vpz8yzL/O6AIZC7YhZT72Tmn4dIXFvag==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6580
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/7] rust: crc_ccitt: add CRC-CCITT abstraction
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Jason Kridner <jkridner@beagleboard.org>, robertcnelson@gmail.com,
+ Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Ard Biesheuvel <ardb@kernel.org>, Ayush Singh <ayush@beagleboard.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, greybus-dev@lists.linaro.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-crypto@vger.kernel.org, devicetree@vger.kernel.org
+References: <20260820-gb-uart-transport-v1-0-282da14ab7b7@beagleboard.org>
+ <20260820-gb-uart-transport-v1-3-282da14ab7b7@beagleboard.org>
+ <20260821030018.GA1961@sol>
+Content-Language: en-US
+From: Ayush Singh <ayush@beagleboard.org>
+In-Reply-To: <20260821030018.GA1961@sol>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 2026-08-18 at 06:11 +1000, Danilo Krummrich <dakr@kernel.org> wrote...
-> On Tue Aug 11, 2026 at 7:06 AM CEST, Alistair Popple wrote:
-> > Currently nova-drm reads the VRAM BAR size directly from the PCIe device
-> > which requires trying to cast the parent device into a PCIe device. This
-> > obviously requires the parent device to actually be a PCIe bus device.
-> > Whilst that is true today it may not always be the case, and there
-> > is no reason to make this assumption now that NovaCoreApi can hold a
-> > reference to the bound PCIe device.
-> >
-> > So convert nova-drm to using nova-core to obtain the VRAM_BAR_SIZE
-> > parameter.
-> >
-> > Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> 
-> Suggested-by: Danilo Krummrich <dakr@kernel.org>
-> 
-> > @@ -33,16 +30,13 @@ fn open(_dev: &NovaDevice) -> Result<Pin<KBox<Self>>> {
-> >  impl File {
-> >      /// IOCTL: get_param: Query GPU / driver metadata.
-> >      pub(crate) fn get_param(
-> > -        dev: &NovaDevice<Registered>,
-> > -        _reg_data: &DrmRegData<'_>,
-> > +        _dev: &NovaDevice<Registered>,
-> > +        reg_data: &DrmRegData<'_>,
-> >          getparam: &mut uapi::drm_nova_getparam,
-> >          _file: &drm::File<File>,
-> >      ) -> Result<u32> {
-> > -        let adev: &auxiliary::Device<Bound> = dev.as_ref();
-> > -        let pdev: &pci::Device<Bound> = adev.parent().try_into()?;
-> > -
-> >          let value = match getparam.param as u32 {
-> > -            uapi::NOVA_GETPARAM_VRAM_BAR_SIZE => pdev.resource_len(1)?,
-> > +            uapi::NOVA_GETPARAM_VRAM_BAR_SIZE => reg_data.api.bar1_size()?,
-> >              _ => return Err(EINVAL),
-> >          };
-> 
-> That's much cleaner, thanks for adding this patch!
+On 8/21/26 8:30 AM, Eric Biggers wrote:
 
-No problem! Agree it's much nicer.
+> On Thu, Aug 20, 2026 at 02:55:45PM +0530, Ayush Singh wrote:
+>> The module is gated behind the new RUST_CRC_CCITT_ABSTRACTIONS Kconfig
+>> symbol, which selects CRC_CCITT, so the C library is only built when a
+>> Rust user actually needs it.
+>>
+>> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+>> ---
+>>   MAINTAINERS                     |  1 +
+>>   lib/crc/Kconfig                 |  7 +++++++
+>>   rust/bindings/bindings_helper.h |  1 +
+>>   rust/kernel/crc_ccitt.rs        | 26 ++++++++++++++++++++++++++
+>>   rust/kernel/lib.rs              |  2 ++
+>>   5 files changed, 37 insertions(+)
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 6008f16ae2ca..1e3b42eff741 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -6921,6 +6921,7 @@ T:	git https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git crc-ne
+>>   F:	Documentation/staging/crc*
+>>   F:	include/linux/crc*
+>>   F:	lib/crc/
+>> +F:	rust/kernel/crc*
+>>   F:	scripts/gen-crc-consts.py
+>>   
+>>   CREATIVE SB0540
+>> diff --git a/lib/crc/Kconfig b/lib/crc/Kconfig
+>> index 927fc6a6b2b9..aceb8fe8f0ed 100644
+>> --- a/lib/crc/Kconfig
+>> +++ b/lib/crc/Kconfig
+>> @@ -32,6 +32,13 @@ config CRC_CCITT
+>>   	  The CRC-CCITT library functions.  Select this if your module uses any
+>>   	  of the functions from <linux/crc-ccitt.h>.
+>>   
+>> +config RUST_CRC_CCITT_ABSTRACTIONS
+>> +	bool "Rust CRC-CCITT abstractions"
+>> +	depends on RUST
+>> +	select CRC_CCITT
+>> +	help
+>> +	  This enables the Rust abstraction for the CRC-CCITT API.
+> Like the other library kconfig symbols, this shouldn't have a prompt.
+> It should just be selected by the other symbols that need it.
 
-> Once this landed we can remove the
-> 
-> 	impl<Ctx: device::DeviceContext> TryFrom<&device::Device<Ctx>> for &Device<Ctx>
-> 
-> impl in rust/kernel/pci.rs. (I think platform should have the same impl to get
-> rid of independently.)
-> 
-> If your are interested, feel free to send a follow-up patch (or include it in
-> this series).
+I was copying `RUST_SERIAL_DEV_BUS_ABSTRACTIONS`, which seems to have a 
+prompt. Will remove in next revision.
 
-Happy to do either. Seems like it might be easiest just to add it to this
-series so will add it to v5.
+
+>> diff --git a/rust/kernel/crc_ccitt.rs b/rust/kernel/crc_ccitt.rs
+>> new file mode 100644
+>> index 000000000000..6042ada16967
+>> --- /dev/null
+>> +++ b/rust/kernel/crc_ccitt.rs
+> Is there a reason why the kconfig symbol is being put in lib/crc/ but
+> the actual code is being put in rust/kernel/?  It seems inconsistent.
+>
+> - Eric
+
+
+Was copying `RUST_SERIAL_DEV_BUS_ABSTRACTIONS`. It is also in 
+`drivers/tty/serdev/Kconfig`.
+
+
+The reason for introducing this symbol is that normally, crc_ccitt can 
+be built as either builtin, a module, or just left out. However, for use 
+from Rust abstractions, it can either be builtin, or left out. The 
+module state is not supported. Is there a better way to deal with it?
+
+
+Best Regards,
+
+Ayush Singh
+
