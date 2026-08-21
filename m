@@ -1,88 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14229386C20;
-	Fri, 21 Aug 2026 17:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B76A2F0C74;
+	Fri, 21 Aug 2026 18:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787333792; cv=none; b=SU4dcohCzmn9tyoVz+/LC7fHp0e2LoUnhT2C4x9hjgUioxGVZ4U1E6QFJyQgcS6Adk2F7O312rvc2zU2CuM+1ZP35XAn6lMrDYI6DZ9LrCobFDdm9Fx47/66ZzSm2FdroIFLfoTQkp0E03ZSrIpd0scltf7ewBhAmCjVeuypQFc=
+	t=1787338427; cv=none; b=EOMKEpNTJ+Gwt1VTjqRPzVVl0BOotZyMLCG1riZxI70MWv1GV5P0CL4TSvtHSNZ6CujpRXS7T/BTafIhP71VRfCU5pCn2bsI0cThVeF82hvr5liMqsbOnbN5I5j+7Go57kH68/yujVYFY4FwKlfqYl9v9LqXgy6V0Xu1XwNgpPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787333792; c=relaxed/simple;
-	bh=1s5Jvd2vpIrg2KCIOxp4Zkk2A5/e5F1FEm3QZkl+uyo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pMS2V6IMTmTe7qLuyf0fkeu8xskptFE8WWCWhSn5SKOwiqpQmvQef9bhyYpG/xEnBlLzmBTt7lFoFrApUytKeHu3+73HvpTcV7ZDAfddMw4shDNxCGC5JPT7k5BvjvrYJLjoint/IgRKGkX9D3t4yKw7IsOEv7t0cR1qLz2SzlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EnyOxKbf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787338427; c=relaxed/simple;
+	bh=faklYvsUYtiYNNAww6C21n15COVHm0WVD3nEOm9HrwQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=tlRnEenARbjL57/PYAkPpvtjeJeCja+U02RHFtqAIk6AwL4KoPXzqO29zD/m410uTmNKYIOToE8WP4KVgrH1dLsMbgyDa8996YIEDR2jX6TNCSnYimtTf8wtTriqXUoTS2v0pxdZNGN3W62z5JEN9wltAj56iNmhxjl5cSLnnyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lbB/+F33; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EnyOxKbf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675511F000E9;
-	Fri, 21 Aug 2026 17:36:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lbB/+F33"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AF91F000E9;
+	Fri, 21 Aug 2026 18:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787333788;
-	bh=kihQpqI0hRDJZ04eWiK3cUfr22dglVdWa3/uAWQZsSE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EnyOxKbfPv8c21WYuD/L8mDA2ImzrTeZ4Z2iJ6zh1b3JObeVnTMUFnL9Yo6ppgGk9
-	 yxLIOLW0BH3rsarSbqhMJWogxChu6+++TlfRnjHyGbolj8BK1vSquIJad52r/xo37c
-	 A2tzSflfZtFuugJh409B8PoD0WNKrlDMOl3QKtsFi4mXFcdLfONi9Q0wOEWenzlnlh
-	 uT3H5e3oGunmCBfXwO4q2EZS+sygfczIJpGDIcAVyTD+tFnEZrBEzZP3DMVjkmSUav
-	 sTOD6/66inhbPaq2cN/AYzshwWFnNovs2Ig77WSEc5dBKyVWMncKaQsK+WSfbXiOJG
-	 C7nRGlkgSJGQQ==
-From: Kees Cook <kees@kernel.org>
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Cc: Kees Cook <kees@kernel.org>,
-	linux-hardening@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH RESEND v3] hardening: Default randstruct off with rust for better allmodconfig support
-Date: Fri, 21 Aug 2026 10:36:25 -0700
-Message-Id: <178733378275.2181196.3186172911325132761.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260805-rust-reverse-randstruct-dep-v3-1-7b8b2c761d6e@kernel.org>
-References: <20260805-rust-reverse-randstruct-dep-v3-1-7b8b2c761d6e@kernel.org>
+	s=k20260515; t=1787338426;
+	bh=faklYvsUYtiYNNAww6C21n15COVHm0WVD3nEOm9HrwQ=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=lbB/+F33FXPdKhFo7wLNDZV+cRNrJLVb1ITPCDj5ZrMC2b04VPYS+9Py8bpFQoMxa
+	 BsqZ/WJSb4dW/VLXpT97AlInBg2zawb2DKSdS1n0HYhj/E4yq3s9E4jTZTa4SOn7Jl
+	 6wZvJ8aRvONnYU5F37+uN/haA2ycDLxJtNWpU9dbFsBFL4j6dtEd9KaszZuKz6oCF6
+	 UMM8KyknLrSutiuhBIuL5Maix5lrrX4iihMmqIco6Wjt/v7n+9Lcebjpy6wgXsqwIX
+	 KxGXVyaW/V7rUHcvSEC1GY0KqfEJhv3YG3N9htzJ/oOzE7DWJ1M2pgfGCtu3kISuY0
+	 llODWXnsDV2AQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 21 Aug 2026 20:53:41 +0200
+Message-Id: <DKUULBNAMK8L.F52N7AN3QB5M@kernel.org>
+Subject: Re: [PATCH v6 2/3] drm/tyr: add GPU reset infrastructure
+Cc: =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <aliceryhl@google.com>,
+ <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
+ <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260819-tyr-reset-impl-v6-0-7b4e1e041fe5@onurozkan.dev>
+ <20260819-tyr-reset-impl-v6-2-7b4e1e041fe5@onurozkan.dev>
+ <653D47F5-0AF3-44B5-9896-F0AA81F67B61@collabora.com>
+ <20260821155814.980146-1-work@onurozkan.dev>
+ <2AD43D0D-2B01-47E3-AACB-32032B3358C9@collabora.com>
+ <DKUS768JV9RM.36WFW7QI27WKK@kernel.org>
+ <74217098-8793-4701-8292-FBE0DB31FD48@collabora.com>
+In-Reply-To: <74217098-8793-4701-8292-FBE0DB31FD48@collabora.com>
 
-On Wed, 05 Aug 2026 18:02:43 +0100, Mark Brown wrote:
-> Currently randstruct does not support rust so we have Kconfig dependencies
-> which prevent rust being enabled when randstruct is. Unfortunately this
-> prevents rust being enabled in allmodconfig, our standard coverage build.
-> randstruct gets turned on by default, then the dependency on !RANDSTRUCT
-> causes rust to get disabled.
-> 
-> Work around this by disabling randstruct by default if we have a usable
-> rust toolchain and rust support for the architecture, circular
-> dependencies prevent us directly depending on !RUST. This means we might
-> end up with a configuration that disables both rust and randstruct but
-> hopefully it's more likely go give the expected result.
-> 
-> [...]
+On Fri Aug 21, 2026 at 7:23 PM CEST, Daniel Almeida wrote:
+> I agree, no argument from me there. The problem is, when the GPU is reset=
+ting,
+> things are far from "working". In fact, things went so bad somewhere that=
+ it
+> brought the device down for everybody, and the system is taking steps to =
+(try
+> to) bring it up again.
+>
+> As a user, I very much appreciated this when games went down, it made me =
+think
+> that the problem was important enough to report, and also likely explaine=
+d why,
+> in that particular hardware, things didn't really work 100% well afterwar=
+ds,
+> which prompted me to reboot the machine.
+>
+> Two outcomes could have come from that, a) filing a bug on the game itsel=
+f, and
+> b) telling the kernel guys that their reset code wasn't really working 10=
+0%
+> well either.
+>
+> I do agree that "Starting GPU reset" is frivolous, but at least a message
+> saying that a reset took place, either sucessfully or not, is better than
+> silence.
 
-Applied to for-next/hardening, thanks!
+I had a brief look at panthor, and it seems to me that this reset only ever
+happens when the hardware is truely malfunctioning. I.e. it never runs unde=
+r
+"normal" error conditions, right?
 
-[1/1] hardening: Default randstruct off with rust for better allmodconfig support
-      https://git.kernel.org/kees/c/3844a38c9c4a
+In that case, I think it's fine. But I'd still rather print where the error
+occurs and about the error / recovery condition. The "Starting GPU reset" o=
+ne
+still doesn't seem overly useful to me.
 
-Take care,
-
--- 
-Kees Cook
-
+In general, the reset prints should still hint some additional information =
+that
+helps to understand the root cause.
