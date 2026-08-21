@@ -1,96 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B76A2F0C74;
-	Fri, 21 Aug 2026 18:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787338427; cv=none; b=EOMKEpNTJ+Gwt1VTjqRPzVVl0BOotZyMLCG1riZxI70MWv1GV5P0CL4TSvtHSNZ6CujpRXS7T/BTafIhP71VRfCU5pCn2bsI0cThVeF82hvr5liMqsbOnbN5I5j+7Go57kH68/yujVYFY4FwKlfqYl9v9LqXgy6V0Xu1XwNgpPU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787338427; c=relaxed/simple;
-	bh=faklYvsUYtiYNNAww6C21n15COVHm0WVD3nEOm9HrwQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=tlRnEenARbjL57/PYAkPpvtjeJeCja+U02RHFtqAIk6AwL4KoPXzqO29zD/m410uTmNKYIOToE8WP4KVgrH1dLsMbgyDa8996YIEDR2jX6TNCSnYimtTf8wtTriqXUoTS2v0pxdZNGN3W62z5JEN9wltAj56iNmhxjl5cSLnnyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lbB/+F33; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B320409E12
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Aug 2026 19:35:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787340946; cv=pass; b=baa6IGB2NAY0oWC+4NSdFIU6YUxovwElrbIOtZ48xgv+hbWo4t+qH5wgs3Tg0U7SCba8uBW/TQu/FGBW5GKSNiz4qj7hiUcC+/80UUSAqNt7Tf1whCQMG2aj7QBIJKdGB/N3v/xUCJSLpNGKNNOmHJnaUFtfRoYHK5YL73Umi7k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787340946; c=relaxed/simple;
+	bh=1/9pitlXb84t05mrk2KlDSeIz4lgs1R8Q2Yf+2RoA4U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NSPjamf5XZ84st3vwkWbcNHJgV0+r0TxcitgllFHFPpSzTOIfKKwW3CB480oOmaEjM40p6WiZr/UnDb8Zz7a5OBALDn2Gp0sL5zTle1mMosW2kr17F/ctP8bO3dMjGhJXb239MD8kD4SUwEoV/2IB/oYc+be9P7mr1C6argis90=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DcPaHuz3; arc=pass smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lbB/+F33"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AF91F000E9;
-	Fri, 21 Aug 2026 18:53:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787338426;
-	bh=faklYvsUYtiYNNAww6C21n15COVHm0WVD3nEOm9HrwQ=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=lbB/+F33FXPdKhFo7wLNDZV+cRNrJLVb1ITPCDj5ZrMC2b04VPYS+9Py8bpFQoMxa
-	 BsqZ/WJSb4dW/VLXpT97AlInBg2zawb2DKSdS1n0HYhj/E4yq3s9E4jTZTa4SOn7Jl
-	 6wZvJ8aRvONnYU5F37+uN/haA2ycDLxJtNWpU9dbFsBFL4j6dtEd9KaszZuKz6oCF6
-	 UMM8KyknLrSutiuhBIuL5Maix5lrrX4iihMmqIco6Wjt/v7n+9Lcebjpy6wgXsqwIX
-	 KxGXVyaW/V7rUHcvSEC1GY0KqfEJhv3YG3N9htzJ/oOzE7DWJ1M2pgfGCtu3kISuY0
-	 llODWXnsDV2AQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DcPaHuz3"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c8612812170so166042a12.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Aug 2026 12:35:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787340944; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YT53lcrxw0Ltk5McIoE00csn+q5z7Y5A5ix6vCuV/nKfx80/fX50ulNOe+UI48Oab6
+         s24h6u+9A0dnDWG++FNrjToaXsySvJZBcZvkzy1WoFwjhbtW5xA3g1XISB6fsyk6SB9e
+         qT+epGztIe5IkmrgXZNuC5UTjxs31TVRYypq/yRu2IFJuaovjYEdqeFQHsgH752Lc2b6
+         nkBqQYbmuXQ7OndBCqf4/XVAUOGzFgneIGrvt99C/iqNPOajOl1qxy5Lb47zltgBJIEY
+         TxGM/fmCBGhtal0sC1RpXrJYaOR1Uruqv1+LnRJx7Nq7lkRgpChEYyaDchAjfUF07mnp
+         +rgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5nG/DZhGK8Y7YLUZZ+pZCC7PZWOsMHI2qlWWbSO6I+w=;
+        fh=59RkeOi4hik4Bu+FIaAqju2NsmGNxJGxAPlEUJPJsaw=;
+        b=szVQ4r/Wq9BLsQ/K2Y7K6a7E6Ou7QYMR3RjpAMFN65z2wu8NZOu97fsOyIJf89DC4l
+         81o23aSKARzVyGquun3nv4kPzSSR0dEwiX70DfLoAGjRCA7LI7ORgIwdtYnmzwFI4W56
+         VuOktLwSyBV1fIFDrH29ZO7SwbQgmQmlONB+i8kslUInyLPYYaoqbTghUQWBiL/sgLeF
+         jMUBNdbmqwTE4db2JfBfGu8WtkUYbjaAvvLnk7lXwUsZIxb3vET/wYQaBQdQc9JFFay9
+         3RHD2q1SrDQnWmzaUjeD+JDHSGBv1QWFtNdAXYvzXK5k+AaxQXdCBZ6yFBXzZuQ07upo
+         tJIQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787340944; x=1787945744; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5nG/DZhGK8Y7YLUZZ+pZCC7PZWOsMHI2qlWWbSO6I+w=;
+        b=DcPaHuz392I8rbWZ/2LRjn2p+qg+vPHLI8G19uFF9+Zb1i8NdvTJBenHw3qfBBa7Gz
+         LQY7I5La6k0Km9JzYGnru+CnWgJApmIUYE7s6C9SazxxbabNc0T9JTmJdC65NAJnv3C0
+         H10uy5qhirXt54cC/umOhGjpQRajtoH+9bIFoHCaqSMwDbqtt0RoMDNy41+9/qWyyhFh
+         omS+eTzA2tDt9UlDcbpXPKu6vllddmB6wxriI7fuEdQ6gb0ZfkI0EYlzCPyceCCwzHhq
+         T7RC7oL+dCi+Qd1Hkr8dP7B3HU7lO5qo8hxmuM8TvY2OQxGa/8bGJM7J3ZJfg8Wfr5ZN
+         ZD1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787340944; x=1787945744;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5nG/DZhGK8Y7YLUZZ+pZCC7PZWOsMHI2qlWWbSO6I+w=;
+        b=eAfv/cyVFtNlDw6m3WqLOZw99a4a7AXj+Ba3nlNFRUUO5GozpzaNVVg7Q0HBHOnpjG
+         pUQ/jqxx2mpALGLH4vvYhPU45RDmeMSr3rMwDCGgTRDij2K4DXLbrWJvH1wWlKWoWgJk
+         9yJjLxu5ikSPXNq9Nw9uDGJxKk6r/Vx4SWE28hgONhvY7SG6m0rr1vzZhD8aXHu4rZsi
+         46RuLbNykDksjev6QNNwiLym8UKaYHuSXHZbckzSjCAc5xAjDHggER2H7B1YH8+330dQ
+         Bsehcqeugk15iiM9EPstSDG0M7NW/M/LsUBMLY3sAKEMKFHGY7vMvjPc4svu/VJaMsq2
+         mlRw==
+X-Forwarded-Encrypted: i=1; AHgh+RocJnqs55D5VG5usf6GJUy4uheQHDFLxBlcaBFB9tjsvBM9ljmJzooHe/javNd2IbO0x1qCnfcXqLpsGvMyFA==@vger.kernel.org
+X-Gm-Message-State: AFuF++nBsq24yLwGHnFnzFnH5ZpAIrHris9gG5qgL72L+yoWqtWeJDiy
+	JPMh68Ivk7v6MW1znoQfJI86QHq2V5DbwfXfWriKjuylpzWlzry5/x+BHvC0HjSc11o6ediwbSY
+	3rxbw+Wcga9wmNq4uO1iVujFYVZDTQ3c=
+X-Gm-Gg: AR+sD13Hs7Mrya0m8k/URXr2uIKsOcIKADAFfia17Ew6dcPbRyrIjujmwpi/1YGqpH3
+	oMxnHDqethlkJmCtttkPt/ANo0AsmWprqQwEsxpTu8o+WILIt1IfCToVuqv3qXC2g2fAXovFQAj
+	IPYG5o/9oUhFSeYUiu8TFJ1tn3wAing5iImw5yhdGAdlw5Ov68fJ9C1QHtI4oa3SFkR5Bmqlf5k
+	w0VhQs+/m2250LhZf9ZGuUNevGLKWaT7o+lCuzjShdp2E13PEVlinPmyLm3JIXyh+J4PFMEhKom
+	+VoTIni8jU1VctkGi8bwV9EhnGIr0U5/jbNGJ8QI2SB0IZW89/Oi0AUuoSZsz8s1EgLT4MKSkFx
+	Z765okFODiibArtdmVmupzGbEoVyTXPsHzg8PbXr4xs4ZOH6fLKXI4WNs4dkL
+X-Received: by 2002:a17:902:ef01:b0:2cf:7dfa:7f56 with SMTP id
+ d9443c01a7336-2d64aff2aa4mr82872185ad.2.1787340944584; Fri, 21 Aug 2026
+ 12:35:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260817-chid-v7-0-a5872e64d8f4@nvidia.com> <20260817-chid-v7-5-a5872e64d8f4@nvidia.com>
+ <DKUGXCFA0Q77.36Q64A1AN6FX5@nvidia.com> <CANiq72=ot1SVQRxzX5NmyTspzf-eMKca7DQMdUMSHtThn+kfpg@mail.gmail.com>
+ <DKUKM1RPFDA7.1MBU5EY40OJ4J@nvidia.com>
+In-Reply-To: <DKUKM1RPFDA7.1MBU5EY40OJ4J@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 21 Aug 2026 21:35:31 +0200
+X-Gm-Features: AcwNN1XAwQYarkYaZO96R1zQNSWSUsItJpmCPtqUwSLujolMS-yXhhZvmEccbTM
+Message-ID: <CANiq72=sti1OfTHzGWGE+EJxqBf_k73QFy=G5HwowSF=xCwtmw@mail.gmail.com>
+Subject: Re: [PATCH v7 05/10] rust: bitmap: add contiguous area operations
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Eliot Courtney <ecourtney@nvidia.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Burak Emir <burak.emir@gmail.com>, Yury Norov <yury.norov@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, John Hubbard <jhubbard@nvidia.com>, 
+	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 21 Aug 2026 20:53:41 +0200
-Message-Id: <DKUULBNAMK8L.F52N7AN3QB5M@kernel.org>
-Subject: Re: [PATCH v6 2/3] drm/tyr: add GPU reset infrastructure
-Cc: =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <aliceryhl@google.com>,
- <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
- <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260819-tyr-reset-impl-v6-0-7b4e1e041fe5@onurozkan.dev>
- <20260819-tyr-reset-impl-v6-2-7b4e1e041fe5@onurozkan.dev>
- <653D47F5-0AF3-44B5-9896-F0AA81F67B61@collabora.com>
- <20260821155814.980146-1-work@onurozkan.dev>
- <2AD43D0D-2B01-47E3-AACB-32032B3358C9@collabora.com>
- <DKUS768JV9RM.36WFW7QI27WKK@kernel.org>
- <74217098-8793-4701-8292-FBE0DB31FD48@collabora.com>
-In-Reply-To: <74217098-8793-4701-8292-FBE0DB31FD48@collabora.com>
 
-On Fri Aug 21, 2026 at 7:23 PM CEST, Daniel Almeida wrote:
-> I agree, no argument from me there. The problem is, when the GPU is reset=
-ting,
-> things are far from "working". In fact, things went so bad somewhere that=
- it
-> brought the device down for everybody, and the system is taking steps to =
-(try
-> to) bring it up again.
+On Fri, Aug 21, 2026 at 1:04=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
+com> wrote:
 >
-> As a user, I very much appreciated this when games went down, it made me =
-think
-> that the problem was important enough to report, and also likely explaine=
-d why,
-> in that particular hardware, things didn't really work 100% well afterwar=
-ds,
-> which prompted me to reboot the machine.
->
-> Two outcomes could have come from that, a) filing a bug on the game itsel=
-f, and
-> b) telling the kernel guys that their reset code wasn't really working 10=
-0%
-> well either.
->
-> I do agree that "Starting GPU reset" is frivolous, but at least a message
-> saying that a reset took place, either sucessfully or not, is better than
-> silence.
+> I'm not super fond of the different behavior introduced by
+> CONFIG_RUST_BITMAP_HARDENED.
 
-I had a brief look at panthor, and it seems to me that this reset only ever
-happens when the hardware is truely malfunctioning. I.e. it never runs unde=
-r
-"normal" error conditions, right?
+Yeah, me neither, although for a slightly different reason: I am not
+sure why debug assertions and/or EB cannot be used for bitmap like
+elsewhere, plus why having a custom config option is needed just for
+bitmaps. See e.g.
 
-In that case, I think it's fine. But I'd still rather print where the error
-occurs and about the error / recovery condition. The "Starting GPU reset" o=
-ne
-still doesn't seem overly useful to me.
+  https://lore.kernel.org/rust-for-linux/CANiq72=3DtKVD13GD2Bzmt_LnC4SiOX1n=
+kHQPcz2BS=3DP=3Db23e0Yw@mail.gmail.com/
 
-In general, the reset prints should still hint some additional information =
-that
-helps to understand the root cause.
+I think consistency is important to help maintenance and to reduce
+mental overhead for both contributors and maintainers.
+
+Cheers,
+Miguel
