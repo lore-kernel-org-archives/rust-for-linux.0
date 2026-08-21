@@ -1,161 +1,88 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8CF317173;
-	Fri, 21 Aug 2026 17:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787333043; cv=pass; b=RDcXfICjl4XtqtPk+30DzcA8yxskeHJVHghMSIFYteT1vabUKl6OmH7Q+O7pU9W/MUesVEo+/7zH6r3wdyLrVPxmWaj2dZHbL5g0zpk/cwuUKiOcWe+XUg78CN4Vy2D/z0bpUU9SLG1M9d9fqxyDk1g3Gi0xK/Lr9+CR9+AFh6k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787333043; c=relaxed/simple;
-	bh=s2U7DZDY9tfPJYgvMgpJ0UGRMetPtwyd+1Mwri0MT9I=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=n00CHZAFpDo8Z1OwHBzhCycr98KKxZYj/xhJkBL3QrU/9/dRvq7Te4G1OxEL5tBOUrIErGksB8Z99lHkwgPYqrToB3ZRq2tbAhbwoJAldsiyN0au79eYfQGE/5YpmsP80BIf2UdkWlfwOMncwWSyVLpjqFDHNxxIl2AXotBt0E8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=GTXAOfd2; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14229386C20;
+	Fri, 21 Aug 2026 17:36:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787333792; cv=none; b=SU4dcohCzmn9tyoVz+/LC7fHp0e2LoUnhT2C4x9hjgUioxGVZ4U1E6QFJyQgcS6Adk2F7O312rvc2zU2CuM+1ZP35XAn6lMrDYI6DZ9LrCobFDdm9Fx47/66ZzSm2FdroIFLfoTQkp0E03ZSrIpd0scltf7ewBhAmCjVeuypQFc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787333792; c=relaxed/simple;
+	bh=1s5Jvd2vpIrg2KCIOxp4Zkk2A5/e5F1FEm3QZkl+uyo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pMS2V6IMTmTe7qLuyf0fkeu8xskptFE8WWCWhSn5SKOwiqpQmvQef9bhyYpG/xEnBlLzmBTt7lFoFrApUytKeHu3+73HvpTcV7ZDAfddMw4shDNxCGC5JPT7k5BvjvrYJLjoint/IgRKGkX9D3t4yKw7IsOEv7t0cR1qLz2SzlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EnyOxKbf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="GTXAOfd2"
-ARC-Seal: i=1; a=rsa-sha256; t=1787333013; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=MGrEfaEkbyY0rx0nwMDBxXJVIhIlJtq2nMuOqHq5Bxs8+N3r0gi7Tl0jIVH3E4etyE8cKrwiUvMk9dNPBfuMU6TyEjhMA1iyhkFEc7xOZ/Er65KcLgpo9BEf1OzriOwHyZ7M42gd5JCqygkbdkxiyuKtOYatMgN5db7j/oyILtw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1787333013; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=s2U7DZDY9tfPJYgvMgpJ0UGRMetPtwyd+1Mwri0MT9I=; 
-	b=SHzJHTZaNIx9Jhigiqn+b9nHweHTuD0dqXgfTinSDdFmsknr4CY3gx2ulo53fzWExSWoQNZyG9Sl+gDRTGq6LhRRGedh6hUx+3USsjgf8ZS19Rt7jOWTnL5tYI0oQMsoXjH9NmQqcvq8N8O+NRPVlAivMUyQXV1CKC3Vq12Uaz0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1787333013;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=s2U7DZDY9tfPJYgvMgpJ0UGRMetPtwyd+1Mwri0MT9I=;
-	b=GTXAOfd2BtFrtj/n7wWEE83keAOdzX7PTxcWVPOaU40Mpm8KoxaiqRqAoho0h7qe
-	1mIJBHvgBPrXGLqOxJGjXFLbVbqYwIh8pgRdeXz6xqk/jw2EoOXIFRdRujXHjEEXKfd
-	1YEwcG6HvnmpoAy/I3fJ7etglykhrtVxKhwqGK4g=
-Received: by mx.zohomail.com with SMTPS id 1787333010663388.90751470786734;
-	Fri, 21 Aug 2026 10:23:30 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EnyOxKbf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675511F000E9;
+	Fri, 21 Aug 2026 17:36:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787333788;
+	bh=kihQpqI0hRDJZ04eWiK3cUfr22dglVdWa3/uAWQZsSE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=EnyOxKbfPv8c21WYuD/L8mDA2ImzrTeZ4Z2iJ6zh1b3JObeVnTMUFnL9Yo6ppgGk9
+	 yxLIOLW0BH3rsarSbqhMJWogxChu6+++TlfRnjHyGbolj8BK1vSquIJad52r/xo37c
+	 A2tzSflfZtFuugJh409B8PoD0WNKrlDMOl3QKtsFi4mXFcdLfONi9Q0wOEWenzlnlh
+	 uT3H5e3oGunmCBfXwO4q2EZS+sygfczIJpGDIcAVyTD+tFnEZrBEzZP3DMVjkmSUav
+	 sTOD6/66inhbPaq2cN/AYzshwWFnNovs2Ig77WSEc5dBKyVWMncKaQsK+WSfbXiOJG
+	 C7nRGlkgSJGQQ==
+From: Kees Cook <kees@kernel.org>
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	linux-hardening@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH RESEND v3] hardening: Default randstruct off with rust for better allmodconfig support
+Date: Fri, 21 Aug 2026 10:36:25 -0700
+Message-Id: <178733378275.2181196.3186172911325132761.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260805-rust-reverse-randstruct-dep-v3-1-7b8b2c761d6e@kernel.org>
+References: <20260805-rust-reverse-randstruct-dep-v3-1-7b8b2c761d6e@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v6 2/3] drm/tyr: add GPU reset infrastructure
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <DKUS768JV9RM.36WFW7QI27WKK@kernel.org>
-Date: Fri, 21 Aug 2026 14:23:12 -0300
-Cc: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- aliceryhl@google.com,
- airlied@gmail.com,
- simona@ffwll.ch,
- ojeda@kernel.org,
- boqun@kernel.org,
- gary@garyguo.net,
- bjorn3_gh@protonmail.com,
- lossin@kernel.org,
- a.hindborg@kernel.org,
- tmgross@umich.edu
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <74217098-8793-4701-8292-FBE0DB31FD48@collabora.com>
-References: <20260819-tyr-reset-impl-v6-0-7b4e1e041fe5@onurozkan.dev>
- <20260819-tyr-reset-impl-v6-2-7b4e1e041fe5@onurozkan.dev>
- <653D47F5-0AF3-44B5-9896-F0AA81F67B61@collabora.com>
- <20260821155814.980146-1-work@onurozkan.dev>
- <2AD43D0D-2B01-47E3-AACB-32032B3358C9@collabora.com>
- <DKUS768JV9RM.36WFW7QI27WKK@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
+On Wed, 05 Aug 2026 18:02:43 +0100, Mark Brown wrote:
+> Currently randstruct does not support rust so we have Kconfig dependencies
+> which prevent rust being enabled when randstruct is. Unfortunately this
+> prevents rust being enabled in allmodconfig, our standard coverage build.
+> randstruct gets turned on by default, then the dependency on !RANDSTRUCT
+> causes rust to get disabled.
+> 
+> Work around this by disabling randstruct by default if we have a usable
+> rust toolchain and rust support for the architecture, circular
+> dependencies prevent us directly depending on !RUST. This means we might
+> end up with a configuration that disables both rust and randstruct but
+> hopefully it's more likely go give the expected result.
+> 
+> [...]
 
+Applied to for-next/hardening, thanks!
 
-> Why do you think it is useful to print "Starting GPU reset." and "GPU =
-reset
-> completed." with dev_info()? How does this help users or help with =
-debugging?
->=20
-> In general, if drivers work properly they should remain silent. A =
-successful
-> reset means it worked properly. What you rather want to print, likely =
-with
-> dev_warn() or dev_err(), is what caused the GPU reset to be performed =
-in the
-> first place.
+[1/1] hardening: Default randstruct off with rust for better allmodconfig support
+      https://git.kernel.org/kees/c/3844a38c9c4a
 
-I agree, no argument from me there. The problem is, when the GPU is =
-resetting,
-things are far from "working". In fact, things went so bad somewhere =
-that it
-brought the device down for everybody, and the system is taking steps to =
-(try
-to) bring it up again.
+Take care,
 
-As a user, I very much appreciated this when games went down, it made me =
-think
-that the problem was important enough to report, and also likely =
-explained why,
-in that particular hardware, things didn't really work 100% well =
-afterwards,
-which prompted me to reboot the machine.
-
-Two outcomes could have come from that, a) filing a bug on the game =
-itself, and
-b) telling the kernel guys that their reset code wasn't really working =
-100%
-well either.
-
-I do agree that "Starting GPU reset" is frivolous, but at least a =
-message
-saying that a reset took place, either sucessfully or not, is better =
-than
-silence. In fact, isn't this exactly what AMDGPU does? [2].
-
-[2]: =
-https://elixir.bootlin.com/linux/v7.2/source/drivers/gpu/drm/amd/amdgpu/am=
-dgpu_device.c#L5094
-
-> On 21 Aug 2026, at 14:01, Danilo Krummrich <dakr@kernel.org> wrote:
->=20
-> On Fri Aug 21, 2026 at 6:39 PM CEST, Daniel Almeida wrote:
->> My point is that resetting the GPU should not be a =E2=80=9Cdebug=E2=80=
-=9D trace, but rather
->> something that should hit dmesg unconditionally. Of all things that =
-are
->> printed on a driver, a =E2=80=9Chey the GPU is being reset because =
-something crashed=E2=80=9D
->> is something that should always show up IMHO.
->=20
-> Please see my reply in [1]. If something crashed, please feel free to =
-add a
-> dev_warn() or dev_err() print about the exact error condition. But =
-please do not
-> add dev_info() prints about things that were successful and just bloat =
-dmesg.
->=20
-> In this specific case you want the caller of ResetHandle::schedule() =
-to print
-> about *why* the reset work was scheduled. You also already have a =
-dev_err()
-> print when the GPU reset failed. So, at this point you're good =
-already.
-
-I guess that also works, so long as it says that the GPU is resetting? =
-i.e.:
-it=E2=80=99s not only a fault or something, but also a message saying =
-=E2=80=9Cthis fault=E2=80=9D (or
-whatever it was) is causing a reset.
-
->=20
-> Additional prints about when exactly the reset work starts and when it =
-completes
-> is stuff for dev_dbg().
->=20
-> [1] https://lore.kernel.org/all/DKUR5TGKTJT1.3VR0LSG4WWXJJ@kernel.org/
+-- 
+Kees Cook
 
