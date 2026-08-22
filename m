@@ -1,357 +1,231 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96EE35E1B8
-	for <rust-for-linux@vger.kernel.org>; Sat, 22 Aug 2026 06:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A2E3932FC;
+	Sat, 22 Aug 2026 08:45:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787380109; cv=none; b=CCgOH3ayL6kiRNIj0DCRAQAxr3zzd6Ul+10MZ/bmIbv1/uTltBGLNWOmNS8UfLAfx2cIsGylkjd1rD/17nYAxVsDqy2zrGYPh/vV1Yz3gjWSs0zscOucRsEdMbTwrpDEXc+4O4z3++VRmyMbEn1KaHj+Rc5ihjSLIZgpCfLhabY=
+	t=1787388302; cv=none; b=oKI9RNuDWmJoZoE0rV9vG9kaeKRzq3UC41XNQkTsQdRmbKU5JnpRkmcI4xfFRxwXSrXXVbJAwI1LNehLmIyyUh//wnt3Ugb89qkRddpEl3drzJD1n8gRF5IUA4ulJVnPDOauRwzxvKtz9gADtO6qwFCvuEYZ4I2rFDGl05bYcUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787380109; c=relaxed/simple;
-	bh=uAwhE2kHU9mqidDO2nmljYr7WfPvu+fcYAQliNjCrVI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oznwAalfki6XN/gAarqO62dL2jaz+d5INdRgxU2bM8q07ALpr0bQxB9hgSwPHLWU3Nvj0e9gdbeb9gupfrkEU8gy9KDQ1FTttsqNyvlYbmm2hiB+USzMeAUfF4E4TD7tynD6dyDSaXHymwFfNmUqbpJ83J+2ZqqYKJ1eG4WJ7Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LLu2HBcf; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787388302; c=relaxed/simple;
+	bh=S8kVlWKPgITuTrHMuHgp1CJyp2XZIpgjnPgN20FRxNg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gi/hJzwybFDcvQaSGoQuDPYcmYKvrwyT19p3cUY4tbu0D58/NoYTdexGzRRmMyRDAdpDiw29/RkH+MAzOrYrecNwJH8/4lK2wQ0fxdZ1+u1EoDvxcIKkGConQv2ZMMdSCLYknv0Eb+u+7wYTpF/Zqv6bB4TW1IrnTiu6mFZ1U60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z3x7TeKh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LLu2HBcf"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38dfe7eb825so1538020a91.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Aug 2026 23:28:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787380107; x=1787984907; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Tag2M6Utu+miagcXfcnjHgNWD2M3eOPe/bDAJrnpofs=;
-        b=LLu2HBcfTONpKF0U/j/TXldTT3zAAQ9YNHx7z3SI9+fiYQNIdREQW58kQ+HjQ+cTO8
-         RDshN2FAwnmTagyxN+6jF0HKt6rwgKfxd3QokkCMi6l1k+c+GGomUdoOXtEXIIhZ4okL
-         A1VlbtquYPKwDHRppkvPTDZVzFLvAuDlML8n0XmA1XtdEfeAGVixjHgFwvmjYeUdTV8n
-         KBB7rBwmM/eoFbvwh0Hn1B/SNVNbrcvDioDnuQtgxnN/by6rgc787BL6ARh5wTL5elRI
-         BVH9i1tYpscLZdEGq3EE1c9ubBfiTpYMx/xD0J6psJXkJrpCFLG4MZhCZEMD95RXU2bN
-         w71g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787380107; x=1787984907;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Tag2M6Utu+miagcXfcnjHgNWD2M3eOPe/bDAJrnpofs=;
-        b=OocDNZ/9dq49gB5VhkKHGpaWJJmb3LtVl11GWBgvEmW4lnwBKrYViRXldqz8ehxKCU
-         Qo+6HWYF73ZDF1UUn2Ux1BkTND3kQ8TaJ7LDGo9IZZnzWS1PTQMXUvNfL/TkDwLV69oQ
-         jyDFd4W8z0sVkPhXyGvaW2vo1IhBUtQCoqebF59+tU47R4V+h0RMVxyuV3jiFOpX9eoT
-         OAuajYbr/6fHRQXR/WFPySmm08FHzHLDk5lZ44aupMYw+H6sppeaM77MdJper4kUQIeq
-         8J7sO+9UUc2YuLqZf3Mk+oILEfT/GnRfgcPJFJNFaIMpUY+neEVf39nUpxNK+hRtcUfn
-         Mr6Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoWLzSCNTnS1sFQuhyUFEH019y2D2XZ+BnzYbe5TtwgVFFyHONDZ+UjpJygoeln1VQ8l8I6WD6dNyWX54UR2Q==@vger.kernel.org
-X-Gm-Message-State: AFuF++n3cUdpglRYYTaA/6If4kDjXW5/CHzcMvwWIxhs2gqlf1N8XE8m
-	1JsKAJ4T8hEdYSqMp3hlOxRkH+95Izsq0ZuMfB61+BD7e4Hp28z0x3mGvkP+cA==
-X-Gm-Gg: AR+sD10JPQkmSq3o/0LXp2G/05IATB4EP8W25koHY+FdPwIlSRsLzKWp1wvBa2zF2bV
-	VyrjEGmk7SWNaBFIbi5OiLNoR1itaaXurYV1YYhLE9NqI+Pr10h4cbJTZAs1J7/rIuQvK3MVlNi
-	DnSABNK/a+7QyIaW7YYnNea7n01SY0Qa3FkYJK3j81I2oqqk20Bwx37bLRCkyA44KHa7WHSUKOk
-	HkYIA4DuaALdy8cGB/bOcfD2GqlTzZ214N31MJOFMs9F24PYQPhCJchpcefYoLDQGUmiNFm3r8A
-	cUQZzsh6BlKsAHK3abfh3DNZ61zK94xs01C9A2qniQ+znzYBgukDQpAoitqd6VUFxjyX3aO/XEz
-	/Y0z1r1AIGSyJcDjoJsruQviAQhS8Gdj5Im/WzPCS8o0xxN2Dhmyc3kaIGNxCQtOe+/v2vP+HsW
-	ipJUQvhqib1wJUwMpRfwsPE1LHxJwfMMVnNa8jRlUf9c/NrOo2jUrQwPADEWcK1f/xjuHGOBJHU
-	7zYgLd1yf6vJyk0txR6YpFl3k5i8GUDoSghqg==
-X-Received: by 2002:a17:90b:528f:b0:380:f85c:94b4 with SMTP id 98e67ed59e1d1-395c35636acmr21996808a91.7.1787380106743;
-        Fri, 21 Aug 2026 23:28:26 -0700 (PDT)
-Received: from 192.168.1.20 ([2402:8780:104c:d93:50df:47ce:56b8:7bd1])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395c9128498sm1788519a91.2.2026.08.21.23.28.22
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 21 Aug 2026 23:28:26 -0700 (PDT)
-From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-To: jic23@kernel.org,
-	lars@metafoo.de
-Cc: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	andi.shyti@kernel.org,
-	wsa+renesas@sang-engineering.com,
-	ojeda@kernel.org,
-	dakr@kernel.org,
-	igor.korotin@linux.dev,
-	branstj@gmail.com,
-	brucer42@gmail.com,
-	Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Subject: [RFC PATCH v5 3/3] iio: position: add Rust driver for ams AS5600
-Date: Sat, 22 Aug 2026 14:26:58 +0800
-Message-ID: <20260822062725.60519-4-muchamadcoirulanwar@gmail.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20260822062725.60519-1-muchamadcoirulanwar@gmail.com>
-References: <20260822062725.60519-1-muchamadcoirulanwar@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z3x7TeKh"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3585AC2BCB8;
+	Sat, 22 Aug 2026 08:45:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1787388301;
+	bh=S8kVlWKPgITuTrHMuHgp1CJyp2XZIpgjnPgN20FRxNg=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=Z3x7TeKhWhHXS+Em8a/TWslB+f+7GpGFOmbo9CNU6aH08aip+FcSSeOeUUZoRrsip
+	 cACkMYD6sani7XjGnSEzYIEH4PpsTJPWsKiC+9PZp+FAUkaNk0UMh4UOvTo9UHEpVv
+	 8I41DpYFQM0xfNgpv4iJMKlHBF51XxjHESFCSxGXl+0fyxyfN7LTE8Sbt4kp0O7g9c
+	 mjr5Ysi6gk9pp3L3x34ImFYD0Ag8IWqX2Pb7UGyeJsZutEDqVvyeEyZfDnFqlYw6kZ
+	 dcqDY4tKC36+5YFQl/z/+bKmlhuE5f7obbhDMn+ofG41VW0AeUh+IaRnyJmgPSiTrd
+	 612/DGFurMtYA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 072C1C5B572;
+	Sat, 22 Aug 2026 08:45:01 +0000 (UTC)
+From: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
+Date: Sat, 22 Aug 2026 10:44:47 +0200
+Subject: [PATCH v4] rust: num: restrict bool conversion to unsigned Bounded
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20260822-fix-rust-bounded-from-bool-submit-v4-1-aa780bfe7f30@younes.io>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/5XOTW7DIBAF4KtErEsLQxKTrnKPqAt+hniqBirAV
+ qLIdy+4m6o7Lx96fPOerGAmLOx992QZZyqUYgv7lx1zo4lX5ORbZiDgKLQ88EB3nqdSuU1T9Oh
+ 5yOnWQvriZbI3qlyZoNXR6zBIzZrznbF9Wm9cPn5za36iqx3uDWsKcptNdGN/SpmuFN/WKxHvt
+ VdGKjXlx7pzlp3aMmmWXHKtAWCwYS+sOT9aFcsrJdYnzbBZhCYaow7WggPw8r+oNouqicE7A0o
+ IrU7DX3FZlh8ttU81qwEAAA==
+X-Change-ID: 20260815-fix-rust-bounded-from-bool-submit-3af836d8f718
+To: Alexandre Courbot <acourbot@nvidia.com>, 
+ Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, stable@vger.kernel.org, 
+ Younes Akhouayri <git@younes.io>, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787388300; l=5566;
+ i=git@younes.io; s=20260712; h=from:subject:message-id;
+ bh=uVHW1vRI40wncU+HxWBGCohHG+09Mqux9cJ0Hc6a/WI=;
+ b=IPbUgMeiLVJyxLAr06nVZQ5UqIc20DQ5JzKifJlZWm6zjy3cPAbkufN/xxQyyDUDpV6yfsmYI
+ iM1xmrxdwGzBqKVReaowq+ZdA1kdUROa6cOBgNoHMlFY8iPoVUZOxw8
+X-Developer-Key: i=git@younes.io; a=ed25519;
+ pk=1DRfzPrQ04RQHHgGK28t+vjIAPv5oISPiAdLMU6J5dE=
+X-Endpoint-Received: by B4 Relay for git@younes.io/20260712 with
+ auth_id=866
+X-Original-From: Younes Akhouayri <git@younes.io>
+Reply-To: git@younes.io
 
-Add a Rust driver for the ams AS5600 12-bit magnetic rotary position
-sensor. The driver exposes in_angl_raw and in_angl_scale via the IIO
-sysfs interface.
+From: Younes Akhouayri <git@younes.io>
 
-Features:
-- ARef<I2cClient<Bound>> for safe refcounted I2C client access
-- Mutex-serialized status + angle read sequence
-- Static channel spec (module-level const)
-- No magnet validation at probe (deferred to read_raw per IIO convention)
-- Error propagation via ? operator (no recovery state machine)
-- Type-safe IioChanInfo enum dispatch in read_raw
+From<bool> turns true into 1. A signed Bounded with N = 1 can hold
+only -1 and 0. The current implementation can therefore create a value
+that breaks Bounded's invariant. Deref relies on that invariant and
+calls unreachable_unchecked() when it is broken, so safe Rust can reach
+undefined behavior.
 
-The AS5600 stores the 12-bit raw angle big-endian across registers
-0x0C-0x0D. smbus_read_word_swapped() handles the byte swap: SMBus
-always transmits the low byte first (little-endian wire), so an
-unconditional byte swap recovers the correct value regardless of CPU
-endianness. The long-term solution is regmap-rs where endianness is
-configured once at the transport level.
+The other primitive conversions require the source and destination to
+have the same signedness. Treat bool as an unsigned one-bit value and
+allow conversions between bool and Bounded only when the backing integer
+type is unsigned.
 
-This driver uses INDIO_DIRECT_MODE without buffer or trigger support.
-All userspace access is through sysfs attributes, which ensures safe
-cleanup via kernfs_drain() synchronization in the IIO abstraction's
-PinnedDrop. See the module-level doc comment for details.
-
-Tested on BeagleBone Black (AM335x) with AS5600 on i2c-2 (0x36).
-
-Signed-off-by: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+Fixes: 01e345e82ec3 ("rust: num: add Bounded integer wrapping type")
+Closes: https://lore.kernel.org/rust-for-linux/OzuVxu0--J-9@younes.io/
+Cc: stable@vger.kernel.org
+Suggested-by: Alexandre Courbot <acourbot@nvidia.com>
+Assisted-by: Codex:gpt-5.6-sol
+Signed-off-by: Younes Akhouayri <git@younes.io>
 ---
- drivers/iio/position/Kconfig   |  11 ++
- drivers/iio/position/Makefile  |   1 +
- drivers/iio/position/as5600.rs | 189 +++++++++++++++++++++++++++++++++
- 3 files changed, 201 insertions(+)
- create mode 100644 drivers/iio/position/as5600.rs
+Only allow conversions between bool and unsigned Bounded types.
+---
+Changes in v4:
+- Restrict Bounded-to-bool conversion and into_bool() to unsigned types.
+- Link to v3: https://patch.msgid.link/20260815-fix-rust-bounded-from-bool-submit-v3-1-fdca23008397@younes.io
 
-diff --git a/drivers/iio/position/Kconfig b/drivers/iio/position/Kconfig
-index 1576a6380b53..ac4f19d61ff6 100644
---- a/drivers/iio/position/Kconfig
-+++ b/drivers/iio/position/Kconfig
-@@ -6,6 +6,17 @@
+Changes in v3:
+- Restrict From<bool> to unsigned Bounded types, matching the other
+  primitive conversions.
+- Remove the BoolFits helper and signed-width list.
+- Link to v2: https://lore.kernel.org/rust-for-linux/20260815-fix-rust-bounded-from-bool-submit-v2-1-aa35bb2c22d1@younes.io/
+
+Changes in v2:
+- Use vertical formatting for the nested `num` import.
+- Link to v1: https://lore.kernel.org/rust-for-linux/20260815-fix-rust-bounded-from-bool-submit-v1-1-882227bf40ba@younes.io/
+
+To: Alexandre Courbot <acourbot@nvidia.com>
+To: Yury Norov <yury.norov@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+To: Boqun Feng <boqun@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+To: Björn Roy Baron <bjorn3_gh@protonmail.com>
+To: Benno Lossin <lossin@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+To: Trevor Gross <tmgross@umich.edu>
+To: Danilo Krummrich <dakr@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+To: Tamir Duberstein <tamird@kernel.org>
+To: Onur Özkan <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+ rust/kernel/num/bounded.rs | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
+
+diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
+index d192610a687d..2a2b0a4bca5e 100644
+--- a/rust/kernel/num/bounded.rs
++++ b/rust/kernel/num/bounded.rs
+@@ -13,7 +13,10 @@
+ };
  
- menu "Linear and angular position sensors"
+ use kernel::{
+-    num::Integer,
++    num::{
++        Integer,
++        Unsigned, //
++    },
+     prelude::*, //
+ };
  
-+config AS5600
-+	tristate "ams AS5600 magnetic rotary position sensor"
-+	depends on I2C && RUST
-+	help
-+	  Support for the ams OSRAM AS5600 12-bit magnetic rotary
-+	  position sensor. Provides in_angl_raw (0-4095) and
-+	  in_angl_scale (radians per LSB) via sysfs.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called as5600.
-+
- config IQS624_POS
- 	tristate "Azoteq IQS624/625 angular position sensors"
- 	depends on MFD_IQS62X || COMPILE_TEST
-diff --git a/drivers/iio/position/Makefile b/drivers/iio/position/Makefile
-index d70902f2979d..2d26f6d6ace3 100644
---- a/drivers/iio/position/Makefile
-+++ b/drivers/iio/position/Makefile
-@@ -4,5 +4,6 @@
+@@ -174,13 +177,16 @@ fn fits_within<T: Integer>(value: T, num_bits: u32) -> bool {
+ /// // `u8` (regardless of the passed value).
+ /// // let _ = Bounded::<u32, 6>::from(10u8);
+ ///
+-/// // Booleans can be converted into single-bit `Bounded`s.
++/// // Booleans can be converted into unsigned `Bounded`s.
+ ///
+ /// let v = Bounded::<u64, 1>::from(false);
+ /// assert_eq!(v.get(), 0);
+ ///
+ /// let v = Bounded::<u64, 1>::from(true);
+ /// assert_eq!(v.get(), 1);
++///
++/// // This does not build because `i8` is signed.
++/// // let _ = Bounded::<i8, 2>::from(true);
+ /// ```
+ ///
+ /// Infallible conversions from a [`Bounded`] to a primitive integer are also supported, and
+@@ -203,12 +209,16 @@ fn fits_within<T: Integer>(value: T, num_bits: u32) -> bool {
+ /// let _v = Bounded::<u32, 10>::new::<10>();
+ /// // assert_eq!(u8::from(_v), 10);
+ ///
+-/// // Single-bit `Bounded`s can be converted into a boolean.
++/// // Unsigned single-bit `Bounded`s can be converted into a boolean.
+ /// let v = Bounded::<u8, 1>::new::<1>();
+ /// assert_eq!(bool::from(v), true);
+ ///
+ /// let v = Bounded::<u8, 1>::new::<0>();
+ /// assert_eq!(bool::from(v), false);
++///
++/// // This does not build because `i8` is signed.
++/// // let v = Bounded::<i8, 1>::new::<-1>();
++/// // let _ = bool::from(v);
+ /// ```
+ ///
+ /// Fallible conversions from any primitive integer to any [`Bounded`] are also supported using the
+@@ -1109,31 +1119,33 @@ fn from(value: Bounded<T, N>) -> $type {
+     i8 i16 i32 i64 isize
+ );
  
- # When adding new entries keep the list in alphabetical order
+-// Single-bit `Bounded`s can be converted from/to a boolean.
++// Unsigned single-bit `Bounded`s can be converted to a boolean.
  
-+obj-$(CONFIG_AS5600) += as5600.o
- obj-$(CONFIG_HID_SENSOR_CUSTOM_INTEL_HINGE) += hid-sensor-custom-intel-hinge.o
- obj-$(CONFIG_IQS624_POS)	+= iqs624-pos.o
-diff --git a/drivers/iio/position/as5600.rs b/drivers/iio/position/as5600.rs
-new file mode 100644
-index 000000000000..8f2ea20a0645
---- /dev/null
-+++ b/drivers/iio/position/as5600.rs
-@@ -0,0 +1,189 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// Copyright (C) 2026 Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-+//! Driver for ams AS5600 12-bit magnetic rotary position sensor.
-+//!
-+//! This driver uses `INDIO_DIRECT_MODE` without buffer or trigger support.
-+//! All userspace access is through sysfs attributes (`in_angl_raw`,
-+//! `in_angl_scale`), which ensures safe cleanup via `kernfs_drain()`
-+//! synchronization in the IIO abstraction's `PinnedDrop`.
-+//!
-+//! Datasheet: https://look.ams-osram.com/m/7059eac7531a86fd/original/AS5600-DS000365.pdf
+ impl<T> From<Bounded<T, 1>> for bool
+ where
+-    T: Integer + Zeroable,
++    T: Integer<Signedness = Unsigned> + Zeroable,
+ {
+     fn from(value: Bounded<T, 1>) -> Self {
+         value.get() != Zeroable::zeroed()
+     }
+ }
+ 
++// Booleans can be converted to unsigned `Bounded`s.
 +
-+use kernel::{
-+    bindings::{
-+        iio_chan_info_enum_IIO_CHAN_INFO_RAW,
-+        iio_chan_info_enum_IIO_CHAN_INFO_SCALE,
-+        iio_chan_spec,
-+        iio_chan_type_IIO_ANGL,
-+        INDIO_DIRECT_MODE, //
-+    },
-+    bits::{
-+        bit_u8,
-+        bit_usize,
-+        genmask_u16, //
-+    },
-+    device::{
-+        Bound,
-+        Core, //
-+    },
-+    error::code::ENODATA,
-+    i2c::{
-+        DeviceId,
-+        Driver,
-+        I2cClient,
-+        IdTable, //
-+    },
-+    i2c_device_table,
-+    iio::{
-+        Device,
-+        IioChanInfo,
-+        IioDriver,
-+        IioVal,
-+        Registered, //
-+    },
-+    io::Io,
-+    module_i2c_driver,
-+    of,
-+    of_device_table,
-+    prelude::*,
-+    sync::{
-+        aref::ARef,
-+        new_mutex,
-+        Mutex, //
-+    }, //
-+};
-+
-+const AS5600_REG_STATUS: u8 = 0x0B;
-+const AS5600_REG_RAW_ANGLE_H: u8 = 0x0C;
-+
-+const AS5600_STATUS_MD: u8 = bit_u8(5);
-+const AS5600_RAW_ANGLE_MASK: u16 = genmask_u16(0..=11);
-+
-+module_i2c_driver! {
-+    type: As5600,
-+    name: "as5600",
-+    authors: ["Muchamad Coirul Anwar"],
-+    description: "I2C Driver for ams OSRAM AS5600 Magnetic Rotary Position Sensor",
-+    license: "GPL",
-+}
-+
-+i2c_device_table!(
-+    I2C_TABLE,
-+    MODULE_I2C_TABLE,
-+    <As5600 as Driver>::IdInfo,
-+    [(DeviceId::new(c"as5600"), ())]
-+);
-+
-+of_device_table!(
-+    OF_TABLE,
-+    MODULE_OF_TABLE,
-+    <As5600 as Driver>::IdInfo,
-+    [(of::DeviceId::new(c"ams,as5600"), ())]
-+);
-+
-+struct As5600Channels([iio_chan_spec; 1]);
-+
-+// SAFETY: `iio_chan_spec` is a plain C struct with no interior mutability.
-+// All pointer fields (`event_spec`, `ext_info`, `extend_name`, etc.) are
-+// NULL — set via `zeroed()` and never reassigned — so no shared mutable
-+// state exists behind them. The static is a compile-time constant with no
-+// `&mut` access path, making concurrent shared access safe.
-+unsafe impl Sync for As5600Channels {}
-+
-+static AS5600_CHANNELS: As5600Channels = As5600Channels({
-+    // SAFETY: `iio_chan_spec` is a repr(C) struct where all-zeroes is valid
-+    // (integers default to 0, pointers to NULL).
-+    let mut chan: iio_chan_spec = unsafe { core::mem::zeroed() };
-+    chan.type_ = iio_chan_type_IIO_ANGL;
-+    chan.info_mask_separate = bit_usize(iio_chan_info_enum_IIO_CHAN_INFO_RAW)
-+        | bit_usize(iio_chan_info_enum_IIO_CHAN_INFO_SCALE);
-+    [chan]
-+});
-+
-+#[pin_data]
-+struct As5600Priv {
-+    #[pin]
-+    io_lock: Mutex<As5600HwState>,
-+}
-+
-+struct As5600HwState {
-+    client: ARef<I2cClient<Bound>>,
-+}
-+
-+impl IioDriver for As5600Priv {
-+    fn read_raw(&self, _chan: *const iio_chan_spec, info: IioChanInfo) -> Result<IioVal> {
-+        match info {
-+            IioChanInfo::Raw => {
-+                let hw = self.io_lock.lock();
-+                let io = hw.client.smbus_io();
-+                // Read status register to verify magnet presence before
-+                // reading the angle.
-+                let status = io.try_read8(AS5600_REG_STATUS as usize)?;
-+
-+                // Check magnet presence (MD bit). Without a magnet the angle
-+                // register contains stale/invalid data.
-+                if (status & AS5600_STATUS_MD) == 0 {
-+                    return Err(ENODATA);
-+                }
-+
-+                // Word read at register 0x0C returns big-endian data.
-+                // smbus_read_word_swapped() handles the byte swap.
-+                // Mutex ensures status + angle read is atomic.
-+                let raw = hw.client.smbus_read_word_swapped(AS5600_REG_RAW_ANGLE_H)?;
-+                let angle = raw & AS5600_RAW_ANGLE_MASK;
-+                Ok(IioVal::Int(angle as i32))
-+            }
-+            // Scale factor: radians per LSB = 2*pi / 4096 ~= 0.001533981
-+            IioChanInfo::Scale => Ok(IioVal::IntPlusNano(0, 1533981)),
-+        }
-+    }
-+
-+    fn channels(&self) -> &'static [iio_chan_spec] {
-+        &AS5600_CHANNELS.0
-+    }
-+}
-+
-+#[pin_data]
-+struct As5600 {
-+    #[pin]
-+    _iio_dev: Device<As5600Priv, Registered>,
-+}
-+
-+impl Driver for As5600 {
-+    type IdInfo = ();
-+    type Data<'bound> = As5600;
-+
-+    const I2C_ID_TABLE: Option<IdTable<Self::IdInfo>> = Some(&I2C_TABLE);
-+    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+
-+    // `try_pin_init!` returns a concrete anonymous type that may expose more
-+    // bounds than the trait signature declares (e.g. auto-traits like `Send`).
-+    // This refinement of the RPITIT return type is intentional.
-+    #[allow(refining_impl_trait)]
-+    fn probe<'bound>(
-+        dev: &'bound I2cClient<Core<'_>>,
-+        _id_info: Option<&'bound Self::IdInfo>,
-+    ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
-+        try_pin_init!(As5600 {
-+            _iio_dev: {
-+                // Deref coercion: I2cClient<Core<'_>> -> I2cClient<Bound>.
-+                // We capture the Bound context to call smbus_read_word_swapped()
-+                // and try_read8(), which require Bound.
-+                let bound: &I2cClient<Bound> = dev;
-+                let client: ARef<I2cClient<Bound>> = ARef::from(bound);
-+
-+                let priv_init = pin_init!(As5600Priv {
-+                    io_lock <- new_mutex!(As5600HwState {
-+                       client
-+                    }),
-+                });
-+
-+                let iio_dev =
-+                    Device::build_device(dev.as_ref(), c"as5600", INDIO_DIRECT_MODE, priv_init)?;
-+                let registered = iio_dev.register(&crate::THIS_MODULE)?;
-+                dev_dbg!(dev.as_ref(), "AS5600 magnetic position sensor ready\n");
-+                registered
-+            }
-+        })
-+    }
-+}
--- 
-2.50.0
+ impl<T, const N: u32> From<bool> for Bounded<T, N>
+ where
+-    T: Integer + From<bool>,
++    T: Integer<Signedness = Unsigned> + From<bool>,
+ {
+     fn from(value: bool) -> Self {
+-        // SAFETY: A boolean can be represented using a single bit, and thus fits within any
+-        // integer type for any `N` > 0.
++        // SAFETY: A boolean is represented by `0` or `1`, so it fits within any valid unsigned
++        // `Bounded` width.
+         unsafe { Self::__new(T::from(value)) }
+     }
+ }
+ 
+ impl<T> Bounded<T, 1>
+ where
+-    T: Integer + Zeroable,
++    T: Integer<Signedness = Unsigned> + Zeroable,
+ {
+     /// Converts this [`Bounded`] into a [`bool`].
+     ///
+
+---
+base-commit: 47f27155f17498fccb1f222f79089642337498a9
+change-id: 20260815-fix-rust-bounded-from-bool-submit-3af836d8f718
+
+Best regards,
+--  
+Younes Akhouayri <git@younes.io>
+
 
