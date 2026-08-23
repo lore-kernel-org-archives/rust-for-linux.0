@@ -1,111 +1,106 @@
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174EA30E0D5;
-	Sun, 23 Aug 2026 15:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFA8392C2A;
+	Sun, 23 Aug 2026 19:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787500296; cv=none; b=IfkhINnDopZ31pz/x7bxxJ7yU2DpXUsyvVQow7jutTYFNz24+9sXLDS0MXjCt5k2Ja+XBzjPRrM0t5yAPKK1mY0y55596SlFmoO7pZnFDArO6SHdg2he/y2GwutVfAyj/R1+/al6Dxa6fGl1CFAty1ksS6CkwIPhM6tQ/6ZUmAI=
+	t=1787513757; cv=none; b=BnECSMULYWHhxgMEnZBFooKokfH/swystKld98EWEIeTjmeJsmZOrDgHv86alojK5Ym2cWMnzpNwtbdx1PMBQyBMqTN5fvCzv0msvBNWzXdF/j9MzscESAIlShN6H1ZZdbwSIFC25IUKZxh3EJg63OUkaS5cQKopHSLHbUIWlc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787500296; c=relaxed/simple;
-	bh=30WvttQoB3i0gpuy7qAvCWivBdocv6gHBzg58zOrcdk=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=QIN2tga6S/xzLtn2bg+dTQ2X742i0jTfD7KcG9Wm3zXgqHSimP8IsCIv+AcITAh4HE0zCoSbTc+4c1iHzFD0IoOoIK+MaXn3zgK2q5BZHHswobdxaSnIYm1Pk2Wt9sU36CFeA00JhY56mgn29C52JNZayBHy8HcBB2fLNdEb2BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn; spf=pass smtp.mailfrom=stu.pku.edu.cn; dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b=e43ZwEfR; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.pku.edu.cn
+	s=arc-20240116; t=1787513757; c=relaxed/simple;
+	bh=B0EHy5luBwpbyVkzNvJNHLHYVgfhcpDnZmTQmLL3YP4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uJHpoJrHwMUnYqJplCFXzZx9MKWNbVsCFza0gsQZ1XiAQpv7fi/nwNONTeza89zJL2nH3vS5Rk0+wE55ClPolw8nczTup5uA6E9Vcv6WDAVkh08+O2t7Nwf2C5oOoYxiIJEwNp6kSM+mOtUk+5RxI9PxXFIplHKVjGfOHM3YYqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nmPHkESJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b="e43ZwEfR"
-Received: from Breeze (unknown [106.120.124.108])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4afcc06b3;
-	Sun, 23 Aug 2026 23:51:17 +0800 (GMT+08:00)
-From: <springbreeze@stu.pku.edu.cn>
-To: "'Andrew Lunn'" <andrew@lunn.ch>
-Cc: "'Miguel Ojeda'" <miguel.ojeda.sandonis@gmail.com>,
-	<rust-for-linux@vger.kernel.org>,
-	<netdev@vger.kernel.org>,
-	"'FUJITA Tomonori'" <fujita.tomonori@gmail.com>,
-	"'Miguel Ojeda'" <ojeda@kernel.org>,
-	"'Boqun Feng'" <boqun@kernel.org>
-References: <20260823103644.342849-1-springbreeze@stu.pku.edu.cn> <CANiq72mUbkEcvffQV-mNLfCxGkgTqwq1qQLuWpENsUCCBAHOqw@mail.gmail.com> <AOUA5wCUK5sso-ea1NbU-4rk.2.1787484007018.Hmail.2401213299@stu.pku.edu.cn> <CANiq72mQ8bfEw-NM4phjgp-QxEP5RpqNTkXrjjGqkX+VukqkaQ@mail.gmail.com> <AHMAhwDwKw6suFf01VEIOqo9.2.1787486213219.Hmail.2401213299@stu.pku.edu.cn> <f4e5000a-8468-4172-b454-ac97f9ce759e@lunn.ch>
-In-Reply-To: <f4e5000a-8468-4172-b454-ac97f9ce759e@lunn.ch>
-Subject: RE: [PATCH] rust: net: phy: fix off-by-one bit positions in device status accessors
-Date: Sun, 23 Aug 2026 23:51:16 +0800
-Message-ID: <000d01dd3317$3d212670$b7637350$@stu.pku.edu.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nmPHkESJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4112A1F000E9;
+	Sun, 23 Aug 2026 19:35:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787513755;
+	bh=GyaiaqYBOLAIDvcsIPioUD4VrBP8Th+NKRAqNY6Pp3o=;
+	h=From:To:Cc:Subject:Date;
+	b=nmPHkESJSxbNFBvzH/Tdk5p7a431mlLs9C60STZAfwyo+p94T6D/DyPLyqPRhzl/e
+	 QU/NfvGanAFLhFFX3t9MeWoGvJRyVjA6z0oKEFGqDqEd5xIjcN9gWSdLBxeNdWIwlX
+	 e7Nsg9NIlpWpvDbvVDFtvk3JLp8WB7ZJUf4zjC9wHumjMkaAc1mNa4RV0eUwkQWlnm
+	 RYJPmjoZnlQ5aSgcPMqViNgVDcHPx4wxKisXoFWMK9mfivA6dkjlv9Z289gXcqdYDD
+	 kzZQ9syfGR3LiLG63LQJpHak6gkYpG1pXwbGaxz7rtQUcRYaVTFRmILPU6RIOM8McH
+	 F/HJY621U5wAQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	Antoni Boucher <bouanto@zoho.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] rust: kbuild: disambiguate `zerocopy_derive` for `rusttest`
+Date: Sun, 23 Aug 2026 21:35:29 +0200
+Message-ID: <20260823193529.156066-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQIj/MDoIzTklO+86dNHIO3dUcwGOQHg++cYAvJ2YLECMz5T/QIxbouWAnskybu1wJl1cA==
-Content-Language: zh-cn
-X-HM-Tid: 0aa02f51affb03a1kunm0b6cbcf61fd304
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCQ0lDVhpCTUlJGUIdSUlJQlYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlKS01VSklLVUpJT1VKS0NZV1kWGg8SFR0UWUFZT0tIVUJCSU
-	5LVUpLS1VKQktCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=e43ZwEfRONG0OpltaciRYryiL2M+QiAiSin/RUoKgfBNUjX0Xg5gq4y5vahHdt212xS9LFs1m8M1xvPVY02EyFYWVmEtWqWZqGvPkNqXpIMgOF56TMdVLAgEDe+q2FzSSurpdvWJRMbdVYeOjgQEKAramX9svxG5fKsBpkw+KzA=; c=relaxed/relaxed; s=default; d=stu.pku.edu.cn; v=1;
-	bh=5cG/09CVGS06qoiFKwNKmeS3mwdE8B2Aw+fDgOfexUQ=;
-	h=date:mime-version:subject:message-id:from;
+Content-Transfer-Encoding: 8bit
 
-I checked the history: it was the latter.=20
+The `rustc-dev` components for Rust 1.82.0 through 1.87.0 include a
+precompiled `zerocopy_derive` procedural macro in the sysroot. This
+range includes Rust 1.85.0, our minimum supported version.
 
-When the abstraction was merged (v6.8), autoneg, link, and =
-autoneg_complete
-were at bits 13, 14, and 15, and the hand-written numbers were correct.=20
+This makes `rusttest` fail because the compiler finds both the sysroot
+copy and the copy built in `rust/test`:
 
-Commit 2796ff1e3dca ("net: phy: add flag is_genphy_driven to struct
-phy_device", merged in v6.17) inserted is_genphy_driven just before =
-autoneg,
-shifting the three fields up by one, and the Rust accessors were not
-updated.
+    error[E0464]: multiple candidates for `dylib` dependency `zerocopy_derive` found
+      --> rust/kernel/prelude.rs:70:9
+       |
+    70 | pub use zerocopy_derive::{
+       |         ^^^^^^^^^^^^^^^
+       |
+       = note: candidate #1: .../lib/rustlib/x86_64-unknown-linux-gnu/lib/libzerocopy_derive-54d2b38896fa6bc5.so
+       = note: candidate #2: .../rust/test/libzerocopy_derive.so
 
-The v2 will use the bindgen-generated accessors (link(), autoneg(),
-autoneg_complete()) instead of the hard-coded numbers, which also =
-removes
-the TODO comment that marked them as a stopgap.
+Commit fe39a233ea52 ("rust: kbuild: disambiguate `zerocopy` for
+`rusttest`") fixed the equivalent ambiguity for `zerocopy`.
 
-I'll send it once the 24-hour resend window for v1 has passed.
+Thus point to the dependency explicitly in this case too.
 
-	Thanks,
-	Chunfeng
+Cc: Antoni Boucher <bouanto@zoho.com>
+Cc: stable@vger.kernel.org
+Fixes: 506054980429 ("rust: zerocopy-derive: enable support in kbuild")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
------Original Message-----
-From: Andrew Lunn <andrew@lunn.ch>=20
-Sent: 2026=C4=EA8=D4=C223=C8=D5 23:27
-To: springbreeze <springbreeze@stu.pku.edu.cn>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>;
-rust-for-linux@vger.kernel.org; netdev@vger.kernel.org; FUJITA Tomonori
-<fujita.tomonori@gmail.com>; Miguel Ojeda <ojeda@kernel.org>; Boqun Feng
-<boqun@kernel.org>
-Subject: Re: [PATCH] rust: net: phy: fix off-by-one bit positions in =
-device
-status accessors
+diff --git a/rust/Makefile b/rust/Makefile
+index fbe0accc51a3..a346a01bb3eb 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -350,7 +350,8 @@ rusttestlib-pin_init: $(src)/pin-init/src/lib.rs rusttestlib-macros \
+ rusttestlib-kernel: private rustc_target_flags = --extern ffi \
+     --extern build_error --extern macros --extern pin_init \
+     --extern bindings --extern uapi \
+-    --extern zerocopy=$(objtree)/$(obj)/test/libzerocopy.rlib --extern zerocopy_derive
++    --extern zerocopy=$(objtree)/$(obj)/test/libzerocopy.rlib \
++    --extern zerocopy_derive=$(objtree)/$(obj)/test/libzerocopy_derive.so
+ rusttestlib-kernel: $(src)/kernel/lib.rs rusttestlib-bindings rusttestlib-uapi \
+     rusttestlib-build_error rusttestlib-pin_init $(obj)/$(libmacros_name) \
+     $(obj)/bindings.o rusttestlib-zerocopy rusttestlib-zerocopy_derive FORCE
 
-On Sun, Aug 23, 2026 at 07:56:53PM +0800, springbreeze wrote:
-> Thanks, that makes sense. I will keep v2 to the minimal bit-number fix =
-
-> (with
-> Cc: stable) and send the switch to the bindgen-generated accessors as=20
-> a separate follow-up patch once the fix lands.
-
-Did you look at the history. Was this always wrong? Or was a new bit =
-added
-at some point, moving them by one?
-
-If it was always wrong, updating the hard coding is not so bad. But if a =
-new
-bit has been added, using bindgen would be a better fix, since it will
-always be correct.
-
-   Andrew
-
-
+base-commit: d24f5cdbeff8b6a063fca92d0a1f94122a799b59
+-- 
+2.55.0
 
