@@ -1,233 +1,221 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012034.outbound.protection.outlook.com [52.101.43.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEEC411FAA;
-	Mon, 24 Aug 2026 12:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787576300; cv=none; b=XgjKm0LeP0wsdXRbGx0kajl24rw58qqCc3Wh3J1sDLvJ2+deFWSubrcXYCo4XkPipoiR5TAcuaW5xhdBQrWfLrOmUJIOEig/LXylNZU0ojEMj9EPc9pZ8geUAQS7QVQIMnQLNWpFgAEPuowIL/5Ws5sO3oUEF2sFgDX1xeB4OWM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787576300; c=relaxed/simple;
-	bh=wuiNDeTaZ9WS37AYGX8mRBDfvx7JrD0bX2TZ4g9VpMI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ozl8R4u2vhe3LbQsC882HwpX0BDP10ScmkAvHF63VRHDqig+gea2yfeW8QUHNjXLwaR+L3dXrZ2Hen9jcXR1laz8jwMCZWPQgZ1tssDlTIXo6uB5yiWUwWSJ493EllEGntJcq1GjO7FhdgfCvtDFaAu7UZ0ge4E4Yj+kAxbXmTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=JF9q9IFM; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Mew956bj; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=SDXzwoeS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PYmSypWY; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903BC410D19;
+	Mon, 24 Aug 2026 12:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787576328; cv=fail; b=IhkkJ9aeTRXW/vB9pVjqexOla6R2G3SifWaAv0urlb2MSjkPcaOT6uJtUDJDDb5a+X20UTQ41Rrl/LSOo8OO9eYQex5OGO9eS7R+HV8D/ouy0snGKaoI5IK6+zasR110AzTEvO4tHmPtollUAaK588GGRQsmmyRIY0mQVBT+vQk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787576328; c=relaxed/simple;
+	bh=rSbj8c6lPR0vl5VXhD4YUOOta9YQzMsFWrCOnBZnwP4=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=aXwr3FHCk9u6j6ALQL50OPAuyVA6T8F/JJ/OPMBIGXENW22p2i8UZNX0VjMO1+hPohPeM/3JlalWDNSIS198thfPq8D0+pqS425xx5rISD/bMW/YTO9g3giFMd1HT6M3r8u48S6XjBc50uysgPwMe4xRNy/7gI/4SGr79r/bLpI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=OJstSGwb; arc=fail smtp.client-ip=52.101.43.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="JF9q9IFM";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Mew956bj";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="SDXzwoeS";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PYmSypWY"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8968E1F794;
-	Mon, 24 Aug 2026 12:52:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787575935; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zBllh5can9W5YA89sy1f8T8AcT26iEoRNQ/HwHVjaKw=;
-	b=JF9q9IFMUsb3KVqD0m8ibeDTLKv2fDw+SXYglKFr6C42+Fy47y1c131nUPAW474AUAAKM2
-	ZHfni8BF4gmTWNWuCYetC5VcykBP47dtB9Qyz37le3sQH94LcywM+mb9VOtv2RSAnrlUI4
-	jyr1kiZ3YOP9tFxslEDbn/kfQyIle/M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787575935;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zBllh5can9W5YA89sy1f8T8AcT26iEoRNQ/HwHVjaKw=;
-	b=Mew956bjmCx1q2kgdKrAJhIZLb5KGMxJVDQQ7oXI9bsH+Et9XCIy8lQHztU8E2aSPbTruP
-	izq0P6zruT7g7dAQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787575931; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zBllh5can9W5YA89sy1f8T8AcT26iEoRNQ/HwHVjaKw=;
-	b=SDXzwoeS7N38EGhv/iGYCJ8JFjJ9P1qM8AfRH3HojySA3Q6AliR6txJGBGzgDTsgXWRObY
-	va8eWIiq0ffVtN8wCw10nsX+K7fySxLsAaxFi1v0KDjbWtT5BP1Xe82/XKIx3HLinSwxEM
-	W7PFFpB/hIOM324U+rv39RZ4h0fJ3vY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787575931;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zBllh5can9W5YA89sy1f8T8AcT26iEoRNQ/HwHVjaKw=;
-	b=PYmSypWYR+brgRVFbn0UjQnrLMnUl2/8U4C2NknCn+HAbvMB9jlOImuLmptUVAcFGaPbNf
-	+nduWeArj2X9RGAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6822913408;
-	Mon, 24 Aug 2026 12:52:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id UBkzGHk+jGpyNwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 24 Aug 2026 12:52:09 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: jfalempe@redhat.com,
-	javierm@redhat.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	geert@linux-m68k.org,
-	rdunlap@infradead.org
-Cc: dri-devel@lists.freedesktop.org,
-	linux-doc@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	nouveau@lists.freedesktop.org,
-	linux-renesas-soc@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	sashiko-reviews@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 07/13] drm/panic: Retry in dispatch function if panic output fails
-Date: Mon, 24 Aug 2026 14:43:38 +0200
-Message-ID: <20260824125201.218863-8-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260824125201.218863-1-tzimmermann@suse.de>
-References: <20260824125201.218863-1-tzimmermann@suse.de>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="OJstSGwb"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=a0dzIY4jjIIM0pX6UBxPnIzhteLLsvUvr564jMBEyXVog3ojVAMUe/Kh+6Ectp720HP31MsbBXfehgyQNEHDK3LbMihKRKInBIxSINWHIaM/7lZWapJrdkTY3uJZTE1wdUrMvg3IYoZuhyaaj5fODJA94gU9zZzPzEymI5rN3MXTN0HoXXHam+1TOWLnCXciActkMvH7+xuH3lBH3raBZkx1/ZUhKD3gN173+Dp6nf1avoyCJrNUa0aLKEYba7ma3vDS3yq1wYelpN/mPotFeNBEJJzyuWtmFa1Ng/D5gmjwCaMZjZolEU1QROAHPKjOM5KwzesPms1A9szd7SrGUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nn0O7TirUvvcmwAPb1tfspqguGhKuqT1OFGccybACQ8=;
+ b=WYWnPXZ5YEi5hYb7uAV+b7onK8DBrTZD2wboIegD1DK7yDiFUtF5HFRKvjPyd7VTqgso7fjgT7eFoOjTDegqE51U1rn+gbGYJphGdee4idMsGFcQPqv6xMtgTYh35dZ3HW7QHmP51UsR/1OizoFVUrJeeNLKfFIcZ/n8nGJ/IX17nulwB8WR6/c/8tsQsMf0p5hucYpNTYsjYL4hB4tBxxJy4iDeuOeYZwwvcHwjegVm/fbnvEhkIn+YuN3GfxOCtddEvHiutCL/tn0euwecw/fTE1jCUx6O7Q5xye9N4N6168eCAyC+d5HC1GjDf0S2Qy3/Srp9mKanV9+tVCj9Kg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nn0O7TirUvvcmwAPb1tfspqguGhKuqT1OFGccybACQ8=;
+ b=OJstSGwbU+x/ZW2/2U/wHsUMNYR7PWpdAIRXTHmP1TDvZHZommZd6jW9MM8ETm/pgJxJPz3S81rIbfVMhZSrXoqY3zvpT2pZcV7VbfAro8Tn9lzSQlMkLmjoMN0ceKWQNmLURlduKj8B8KraT+4+iXiW8uhinkTqio8Tx6OAATW19ZsJvWXx2cHWogd2UEEBrYn4bBkZrM0oKekuNWVGhXALS6Ys/mHwmZCia4Y05azPREWzRifwv6jPb9mrg2CBVhOFJ5THBeqld2+soarkm+mao43zRxGZOB4bOKkQxAE/7jDLDxMDT1QvwMl2FEpdR/uVgSicloH39dBZUdpQng==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
+ MW3PR12MB4457.namprd12.prod.outlook.com (2603:10b6:303:2e::20) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.339.11; Mon, 24 Aug 2026 12:58:41 +0000
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa%6]) with mapi id 15.21.0339.012; Mon, 24 Aug 2026
+ 12:58:41 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 24 Aug 2026 21:58:35 +0900
+Message-Id: <DKX6X2D5IG2J.13NU7YFATONH4@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Eliot Courtney"
+ <ecourtney@nvidia.com>
+Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil Babka"
+ <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Uladzislau
+ Rezki" <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, "dri-devel"
+ <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH 2/6] gpu: nova-core: add NVKV encoder
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260817-b4-nvkv-v1-0-b84db5e84b67@nvidia.com>
+ <20260817-b4-nvkv-v1-2-b84db5e84b67@nvidia.com>
+ <DKT2C9FT6IBW.3L5PJN1J8IVLD@kernel.org>
+ <DKT2NSDRJXYX.1S0H8K3Z75QVK@kernel.org>
+In-Reply-To: <DKT2NSDRJXYX.1S0H8K3Z75QVK@kernel.org>
+X-ClientProxiedBy: DU7P189CA0029.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:10:552::29) To DS0PR12MB6413.namprd12.prod.outlook.com
+ (2603:10b6:8:ce::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -6.80
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-6.80 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_HAS_DN(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_TO(0.00)[redhat.com,gmail.com,ffwll.ch,linux.intel.com,kernel.org,linux-m68k.org,infradead.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo];
-	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLqirfcw6gnbcr9a9yhi49fhi6)];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|MW3PR12MB4457:EE_
+X-MS-Office365-Filtering-Correlation-Id: da924a15-8c69-4b53-ce8e-08df01df6bc6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|10070799003|366016|23010399003|1800799024|56012099006|10067099003|6133799003|3023799007|22082099003|18002099003|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	5fp/NvWB8rRRQ7LJgZ4gY4sg1Tka/oegGPNLba+t7OAX3cWKuD9MBiYnyJSfZ6J53042PY+I0GEMpTGqc0dBLL4WENB5sDtAZdpUbneYGKsb8KM/kJQQxXam0nWbW/ETEKiuYI1G8C/CJQBTMjhc5o8uTpFYbd9NdFmx7dHmA1s9y4ABDRkY1px3waQIKcM2L/zpiA2dY2NFIOLoN3QMuz6SMaJ3JY8ovDOy9Y+/4vfjlz+IGTQbBfVl1ED4k5QjZTalorr3k9K5AUAHCYBHaxSDOYfv0reD73xV2Q7MFd/3poQvlRvN2Dt7CufU5dJUnSeIQ4A0WvAZ/yOX7l4unELMjMd34s4P+Dglmd4iKdmJvxzZE7ogmi8CosXOF8EqaTxXSVKxw5goTZEl1+uvhp6J/gVxFZQT73eCexT5TgxtUgz8fyuAoi9KvKqGI72WJEQbT7YleHuiMLdkMAO+V/EhoPT2qUNmwWuj2UY4VpOvCdzQerMd1xsg1gcaQu2wk/n+1/jVZsKdwptbilAGDOj97x9SPAwOuwx31VWDponIQATxeomSpKkugcxDXPA6WIOssRjM3++hptMzGUzd6YkguY8Qd8rod8aKxzaUn43NGWjw0+yzTeLlXOSCXxxFTPxx04ke2bRowfEnj9ZZ2Rcz2brfhmOW9yyabuxQUfM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(10070799003)(366016)(23010399003)(1800799024)(56012099006)(10067099003)(6133799003)(3023799007)(22082099003)(18002099003)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cGw5RzUvZGloZ1pTYU4zSm9ISm9JOTZ6Tml2dTdWL1pGU05kV3lRQi9lWEFF?=
+ =?utf-8?B?K0hjN0tUZ0pHZEluR204bDFRYk0rSHM5T3Rad2RMbTZxRzJ2aXppb1NxUnlB?=
+ =?utf-8?B?RkZOZHJ5S0JrUkdxNzUyeXpkcnNlSUxqSG1Ia1NSU1Q5ZWRxamk4ZjdGa3E2?=
+ =?utf-8?B?UnRSMGR3YTJ0dUpGRUNMazQ3SWhrVy9GUHBWdHBKS21mdDBQMG9RS3FtNjA0?=
+ =?utf-8?B?bWtHd29SdWtFOGI1eC95QldPUjBZTFZQTzVwUjJuS2JxSUZGRjZ2d21BKzNx?=
+ =?utf-8?B?QnRNMHpXVWtPWHloL1FvQXJzOHZPYXdnaXh1S1Z1aU55SmkxeHBZQ0Ewa1I0?=
+ =?utf-8?B?bnpycGhoWjhtUUVSSStXWFl5Q21HNmxXVllaYlVSMkk1Z0tlYVo5QVp3ajNT?=
+ =?utf-8?B?blN4c2JQcTZaalkweExJWnFZck5iS2IxMGhQN284TmN6LysxOFk1ZkNhYVFP?=
+ =?utf-8?B?bVpleDRhTGRTOTRFZ3EwcWRaWEh5UEpRQnY0SG1qY3RpVTM0VExJNjhyVUlV?=
+ =?utf-8?B?TEs3R2taTDFxOFQ1eVRSVWpLWllpcnZoSzZMS0VlNW9paEZNMEhHSGh0ZHRO?=
+ =?utf-8?B?ZDNzUkI2c0s0R0FHbVdIRGVPR2J4Sm1wbjdOLzVEZ3psdkdxeE1Md21yUWtH?=
+ =?utf-8?B?US9aTlVCRUdDbVZCaGtoNFNvb3IrRi9YSHlYRTJKN2hpb3ZORUgwbzBXZmlK?=
+ =?utf-8?B?Qmlodkt5cVVDTUE0MklRdEoxTG0xZERkcFFTM283TDUzSTcwbzU4OHJrdDhr?=
+ =?utf-8?B?U3R6SDdmUDhXaWtYbU00V29FRnBQTWdzcWZIRHQzelRtOFhmWDFGaU92VGkz?=
+ =?utf-8?B?Ykx1azR0YlpWZzdFM2l5OWNlTzcraUJRTElzd0NEQ1RBNWJMZkEyMTVSbTl5?=
+ =?utf-8?B?OXFYQ2lLVkdwQWNzMXJadDZ2UDgzQ2c2MFYxN1dESGIvcnNmR3pQZzhWVlg5?=
+ =?utf-8?B?N2JXWk1EUi9sQ0RIL3BseGVhSEg3TjU4NVdjR3FZc3B2NWp0NUpjTDlPRWFr?=
+ =?utf-8?B?bE5ObVFSZFZMV2xVT3BqWUh3MmJMdnN4UndlYUVLcUJ6WHFkRmkxOENPdGlX?=
+ =?utf-8?B?aDNJZVVVR0dWTU9ZT3lEU1BLaWhTRTVwanJCR3hRMCt5ZGhQb2M1YTZEbzF4?=
+ =?utf-8?B?WHB3UldMSW1KTUw3ZkZJUnVvaXFUUitnaXE5WWtaS3NiUlM2L2JBQStHT0Vn?=
+ =?utf-8?B?RExrcTRFQllTQUpoOEdPdU9uOWtXS1JLemR3NnNDYURPYlhzd0ZiZkxMNjd6?=
+ =?utf-8?B?bklJUGV1eTJSaGpWWGFYZ0RLdTlhNk5OZTkwazdQT1paUXBEa1ovd1NvcWNT?=
+ =?utf-8?B?OW9zd3ZLNnM0aVlqZFBkd0hzQ1c0aHI3endQMXJVVzI5QmNQN2pDa3NzcHlB?=
+ =?utf-8?B?Y3orNmVGY1hsamFWMWVBWUswNU9TQUFFOXZGQ2MvQ0dWTnJBL1BITWF5Uitt?=
+ =?utf-8?B?bXBGTlkvT2xLZ1FqOUo1Yk9GYjJKOGQzeXFLZ1M5VkFRaUZ5aUZVTDlTTVNq?=
+ =?utf-8?B?M2lsUktEdjh4YVl1cTZLZjVkOVQrcVRWSVhRRThCaWZYMCtuRnlNdktyWlJW?=
+ =?utf-8?B?VVFhQ3lNbi9aekMyRjNvRzN2NjBPekxIZmxmbXh0OXRzY3g1c2ptd3hkVzZi?=
+ =?utf-8?B?QzlsMzNnbTYzY3dNajFWN0lUaFNrY3lGTHN3N05tbDJTejZCMndqTy9ZWE9H?=
+ =?utf-8?B?Z2cwblJaRUtpUXhIWEdSbWJtQjJQRHhKL1ZDV3o5MnR0TGFJMnM4eHd3Y1lQ?=
+ =?utf-8?B?d0FXQk02ak9zV3RTSHZCMndvUTZGQkZlU3JwNG1xWWZySWJLMUxNTmJRem5C?=
+ =?utf-8?B?cUhoeXV2WCtmRVR3c2lLUnFpM1Q5QlFFTlZrN2RRWHFlVVBxdk5JeTR4Y0VM?=
+ =?utf-8?B?R2QyVndka3BPV2RmSUxoV1R0OUo2b3kxQ2JZT0Q5SU5yWWJwdUQxNVBQL2ll?=
+ =?utf-8?B?TDRMekR5R012ZDNhcUxZZFNQZXlVOXY1RzdFZVJvZTlIWHZ4Q3VmbVBleDA5?=
+ =?utf-8?B?K3BLRnlpeW40Y3RLV0c2QUtKMm1NQnpVb3d1RUE3NjZZcDJ0U2VxdFZzQmJr?=
+ =?utf-8?B?cG5nMjJuSkVObFg1WlVlTno2QnBvQ2hVdDA3aGt5OTB4ekFTVmV6eXlxbHB2?=
+ =?utf-8?B?eUJVM0VzMDI1SEdhdUxsR2c4VkViWjVlMmViUGJuQUl6MzAwdU5oSW9tUGFQ?=
+ =?utf-8?B?NmI1V01KQldKNHpJcGRVNTNZblJvaFJ0cUk5OUdaazRuVVdaZkNkbSt3OUk5?=
+ =?utf-8?B?ODFBZi9mMkZhSWVwdllxdEZFQUZWbG5Sdm9tbVlmVVBoRFVIa3YrZWdtMWVy?=
+ =?utf-8?B?K21WYWNKTWVHSmc2SkFUR1U4ZW83ZEJxWk9MWTJ3UHdkOVpteDgzK1RWN29T?=
+ =?utf-8?Q?qChv0vRpe1UBklA+ybpURcQqnEUkheGBQ1jm7iAr8jz+V?=
+X-MS-Exchange-AntiSpam-MessageData-1: DRY338GiqGO8Dw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: da924a15-8c69-4b53-ce8e-08df01df6bc6
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2026 12:58:40.9206
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Xy0blcwe+bltnKW+1J0ZIXMhFQqHfk+nocd2e/Qft/JtV7artkngHOGIQA2fz/JKdypm0ogFfeEGN4fWAIqqcw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4457
 
-On failed output of QR codes and kmsg buffers, fall back to a user
-message. QR-code output already did this internally, but now formally
-support it in drm_panic_dispatch(). Streamlines the existing logic.
+On Thu Aug 20, 2026 at 1:47 AM JST, Danilo Krummrich wrote:
+> On Wed Aug 19, 2026 at 6:32 PM CEST, Danilo Krummrich wrote:
+>> On Mon Aug 17, 2026 at 2:56 PM CEST, Eliot Courtney wrote:
+>>> +    fn push_bytes_with_padding(&mut self, bytes: &[u8]) -> Result {
+>>> +        let num_entries =3D bytes.len().div_ceil(size_of::<u64>());
+>>> +        self.backing.reserve(num_entries, GFP_KERNEL)?;
+>>> +
+>>> +        let spare =3D self.backing.spare_capacity_mut();
+>>> +        let dst =3D spare.as_mut_ptr().cast::<u8>();
+>>> +
+>>> +        // SAFETY: At least `bytes.len()` bytes of space are guarantee=
+d since `num_entries`
+>>> +        // worth of space was just reserved.
+>>> +        unsafe { core::ptr::copy_nonoverlapping(bytes.as_ptr(), dst, b=
+ytes.len()) };
+>>> +
+>>> +        let padding =3D num_entries * size_of::<u64>() - bytes.len();
+>>> +        if padding > 0 {
+>>> +            // SAFETY: At least `num_entries * size_of::<u64>()` bytes=
+ of space are guaranteed.
+>>> +            unsafe { core::ptr::write_bytes(dst.add(bytes.len()), 0, p=
+adding) };
+>>> +        }
+>>> +
+>>> +        // SAFETY: These bytes were just initialized and every bit pat=
+tern is valid for `u64`.
+>>> +        unsafe { self.backing.inc_len(num_entries) };
+>>> +
+>>> +        Ok(())
+>>> +    }
+>>
+>> Ick! That's a lot of unsafe code. I think we can avoid this by using KVV=
+ec<u8>
+>> instead of KVVec<u64>, ideally in a new type that upholds the padding in=
+variant.
+>>
+>> Here's a diff of what I came up with; note that it also gets us rid of t=
+he
+>> unsafe in take_u32s() in the decoder by using zerocopy.
+>>
+>> (Technically it would also be possible to make Cursor operate on a byte =
+stream
+>> and let zerocopy to the rest, as all the take methods are fallible alrea=
+dy. But
+>> I think the invariant on EncodedStream makes sense.)
+>
+> Actually, I forgot to add the optimization you made back in, here's the p=
+roper
+> diff:
+>
+> (Also used T: IntoBytes as argument for extend_with_padding().)
 
-Also pass module parameter drm_panic_type as a parameter to
-drm_panic_dispatch(). This simpifies the implementation. It will later
-allow for moving the function into a helper library.
+I think the `EncodedStream` newtype enforcing the padding stuff is a
+good idea. IMO it's simpler if we keep that type private to encode.rs
+though. Currently I suppose you didn't because we need some way of
+owning the KVVec<u8> that can safely+nicely transform it to &[u64].
 
-With the implicit fallback removed from QR-code support, the tests
-cases fail for thr smallest output size (300x200). This is because the
-QR code requires a minimal output size. Increase the size to 494x494,
-which is the minimum supported size for QR output.
+I was thinking what if we added a conversion on Vec based on
+FromBytes/IntoBytes, mirroring cast/try_cast for io projections. Then we
+could just cast to KVVec<u64> and return that. But one thing I'm not
+sure about is the layout guarantee here though, w.r.t. casting a Vec
+then freeing it as a different thing (ofc for things that have no custom
+drop impl). I saw that the wording is "`self.layout` matches
+the `ArrayLayout` of the preceding allocation.". The strictest
+interpretation of this is that you can't change the alignment (even
+increasing it by multiplying it) or length (capacity). I assume that's
+what "match" means, which would prevent any implementation of `try_cast`
+here, although AFAICT the current allocator implementations don't
+necessarily preclude it.
 
-v2:
-- fix minimum test size (Sashiko)
+So, if the above can't be done I will use your EncodedStream diff.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
----
- drivers/gpu/drm/drm_panic.c            | 24 ++++++++++++------------
- drivers/gpu/drm/tests/drm_panic_test.c |  2 +-
- 2 files changed, 13 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
-index f597ef04c5bc..bc7c096c4236 100644
---- a/drivers/gpu/drm/drm_panic.c
-+++ b/drivers/gpu/drm/drm_panic.c
-@@ -740,9 +740,9 @@ static int drm_panic_get_qr_code(u8 **qr_image, unsigned int qr_version)
- /*
-  * Draw the panic message at the center of the screen, with a QR Code
-  */
--static int _draw_panic_screen_qr_code(struct drm_scanout_buffer *sb,
--				      u32 fg_color, u32 bg_color,
--				      unsigned int qr_version)
-+static int draw_panic_screen_qr_code(struct drm_scanout_buffer *sb,
-+				     u32 fg_color, u32 bg_color,
-+				     unsigned int qr_version)
- {
- 	const struct font_desc *font = get_default_font(sb->width, sb->height, NULL, NULL);
- 	struct drm_rect r_screen, r_logo, r_msg, r_qr, r_qr_canvas;
-@@ -812,15 +812,6 @@ static int _draw_panic_screen_qr_code(struct drm_scanout_buffer *sb,
- 	drm_panic_blit(sb, &r_qr, qr_image, qr_pitch, scale, fg_color);
- 	return 0;
- }
--
--static int draw_panic_screen_qr_code(struct drm_scanout_buffer *sb,
--				     u32 fg_color, u32 bg_color,
--				     unsigned int qr_version)
--{
--	if (_draw_panic_screen_qr_code(sb, fg_color, bg_color, qr_version))
--		return draw_panic_screen_user(sb, fg_color, bg_color);
--	return 0;
--}
- #else
- static void drm_panic_qr_init(void) {};
- static void drm_panic_qr_exit(void) {};
-@@ -895,13 +886,22 @@ static int draw_panic_dispatch(struct drm_scanout_buffer *sb, enum drm_panic_typ
- {
- 	int ret;
- 
-+retry:
- 	switch (panic_type) {
- 	case DRM_PANIC_TYPE_KMSG:
- 		ret = draw_panic_screen_kmsg(sb, fg_color, bg_color);
-+		if (ret) {
-+			panic_type = DRM_PANIC_TYPE_USER;
-+			goto retry;
-+		}
- 		break;
- #if IS_ENABLED(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
- 	case DRM_PANIC_TYPE_QR:
- 		ret = draw_panic_screen_qr_code(sb, fg_color, bg_color, qr_version);
-+		if (ret) {
-+			panic_type = DRM_PANIC_TYPE_USER;
-+			goto retry;
-+		}
- 		break;
- #endif
- 	case DRM_PANIC_TYPE_USER:
-diff --git a/drivers/gpu/drm/tests/drm_panic_test.c b/drivers/gpu/drm/tests/drm_panic_test.c
-index 196496238d23..55d77bc203df 100644
---- a/drivers/gpu/drm/tests/drm_panic_test.c
-+++ b/drivers/gpu/drm/tests/drm_panic_test.c
-@@ -32,7 +32,7 @@ struct drm_test_mode {
-  */
- #define DRM_TEST_MODE_LIST(func) \
- 	DRM_PANIC_TEST_MODE(1024, 768, DRM_FORMAT_XRGB8888, func) \
--	DRM_PANIC_TEST_MODE(300, 200, DRM_FORMAT_XRGB8888, func) \
-+	DRM_PANIC_TEST_MODE(494, 494, DRM_FORMAT_XRGB8888, func) \
- 	DRM_PANIC_TEST_MODE(1920, 1080, DRM_FORMAT_XRGB8888, func) \
- 	DRM_PANIC_TEST_MODE(1024, 768, DRM_FORMAT_RGB565, func) \
- 	DRM_PANIC_TEST_MODE(1024, 768, DRM_FORMAT_RGB888, func) \
--- 
-2.55.0
-
+thanks~
