@@ -1,51 +1,51 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021072.outbound.protection.outlook.com [52.101.100.72])
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020076.outbound.protection.outlook.com [52.101.196.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16920361958;
-	Mon, 24 Aug 2026 15:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3565945A2A0;
+	Mon, 24 Aug 2026 16:25:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.76
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787586404; cv=fail; b=Tj5Gff4S8OpKyvxCPBWq93CXnTWq71armeZNfCytbheMTLYQFgg9CDZbeWpGfs25Z4gzCup+REhEQ/f2cSyztPF0zTrZGwC5lDo10YP21JYE85nnfM9FsIhkAsczJ3Y4/lPqnLDh1OgnIFYwbx2zVIwtctwzf4BKLU1JHBni96s=
+	t=1787588711; cv=fail; b=KaTKVAU/i8xlfoHfxr3xEmwBN4kkeu/x6brcCyU/2LnHv6r4T8bIUgHhpbNFxCfWZv9M3NfR2P1DgL4VQTmjseFZE37fwFI7zqgD1exPjxJwcLwgIgN6cxZc+Mbs2rWc5RzTFZlJoiU0y/CF716kOcfCw1isy9bYx+7wAl2J1NM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787586404; c=relaxed/simple;
-	bh=oXxx0G4oWc4O7e0y9abqssuFPb8McnyuLuczlj4SOLY=;
+	s=arc-20240116; t=1787588711; c=relaxed/simple;
+	bh=TebHr+V40ERWo1vbaVhgkTkRsWjmqCRveud7mgu0BNw=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=orZ+/7C5Bqq/QOajoWGhVe0cvvESRKuXyI+lA5azr5UzEkhmjJZNAW044Uztr8h7nEnayUzrTamGwbEhd2oX2hTyatQ821Vww4Si243fzsCU3FuPf20bTCof+skx5ESjn43QCRXrWY/2D0NZxL8YfcSQsyEbrJu14XbKN1saM2g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=wpVWDrL+; arc=fail smtp.client-ip=52.101.100.72
+	 In-Reply-To:MIME-Version; b=jb8xo88EfoYP1PynWN2VnBQL4tyqgABg8OFg/JzJjLNbkcu5vbmUUPADPPeFnL4eSLo6pwHRtHhMbAyC8W8EsMvtdamg0hG3tAbEgoT9daG0ATsYPrxXKKOolAjHspqZateNHdsHE7lqWFu69HwGxKlfwMTRJxmIpOGNO4aVYos=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=KQkWxeby; arc=fail smtp.client-ip=52.101.196.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="wpVWDrL+"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="KQkWxeby"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rChByGcS6qnVhyKEr6Ya640uWLruhcdLbwDO5Hn+i45j7+D8VV29AQWdv1okCu0nn2s8NM8warHnO96m7e9CesaDOU0YXE5MwR9wAwsZktlkitWjcVSioujgK70uAS3q6AMzx5k2iL3SlYCIXuGgSzqZPESYO+89zw94YGLNxHaCJYVINh34+CpcgEaXeXHGgbgPnmq7I6H7A8rKiTdpTo81Z+NmYHdCHeb/92RrL5PvBm/d3SOcrGE8unuE+hY/hn2KX5Wgg8JfP353ZRIR7j3iFRvTgCJvkf4Sk1r6JFAsZiUmd6vXU8mPXw9ZH5WvWmzT6WXQHpGNdWZuGghlwA==
+ b=CmPi53/uYYLtORbwVMLBDKldHvr1l+AoD+jTgLq/uwFrpAe0IfXgQE6a1i0hC67kyyQN2RXgi5pIPTBMfPYM8z57iecUqz0a6WZazqlYlug8dnGM1178GjU/Z90YYsUofo/5J1Y/jm1QRbBjMceQR7xla/0DEIo8P8g9bBXi+o7j2ajI+64GL9VSwZzDAbR7vi4k2kFgLcHOw1rz+HR9DMCVgcxrxNr9S4oycS4KxUvvQv25qZfk3u8YwTBwzoWOdGO4aoOtsb5xgyNSq7rFV7XB88Bq15Rh05UmMLV7mAJnfkjfw6tp62BBL2avEVI/a8e19h/AJgelrS2i5G3afw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wW2fNgT2MexgH8NGz4sqZzEUC0OUZyB2w1d3n9I5vV8=;
- b=o6WI8yadUjq1vmtLO75EnRdeTBsQGdOnaFVapkVTeR6OpXxF0ZszPUxWt2T9+ZntHSizBaI/cxwF+NxCsehP9vPIuVT4yvv1syNX7PtcC1BNzYCDUYxvtBULfZnWzy82kW3B3SLe3mkpPeGJlYop8YzZslcbPU47AvfXA0XJAgDT2Yp9RhYyQIyCWfSgFkTmLXyeSYf24zDxrHVcJJIKgV/de0onaiDipggZgsaJMMiciMIcXJQRGG4YCs4OfeSbe/OK8OxN8oMiVS4o+bOOQzHHawJGvW4XYMWf4+gtbAva29e55OuQnpnL8Ax4fV3HPc2eiuUoGtSFjjSO6zhJSg==
+ bh=TebHr+V40ERWo1vbaVhgkTkRsWjmqCRveud7mgu0BNw=;
+ b=XNbgJNMkzxj8o6eb2dj4AzAIVsEY7vvuTseQnDKjnlrb2eCbKl44LbCfNdFxQ/O85LVA39dS2xNNWK3Ctc/ZWEwQPBiUTogWR/awxuZ8cRfvMEtU4eZpezGuMWIhS0vi20lrG1D+bkGBAT5qiSnZfi1RWJKAlA5Gtg3v4+/HzbTFihugGZfvLnp7JogwslDoQqq5yEPiK3/o0bkO+0vWIQD5lumuKqB/8rD7aREmr7SOykg1NkAGT6RDth1h6TkRyQ595Qefgy6LdA2TlOM88NNFiwMQP5dzSdJ9kHfFB4xLdINEy0t0r+QX5zmDyRwIpEzvs1xTADg9j55oJVVnxQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wW2fNgT2MexgH8NGz4sqZzEUC0OUZyB2w1d3n9I5vV8=;
- b=wpVWDrL+rdsTkxpursIL1EePOfqJIBIf3uPburcmO9SxXDl59HqRV+WRUuiM27/E8sjKZWBp6Mi1rzLEUeAat9uzZTWe3ePMFxKl/uN4zliIBxZv1jemmyLb3N+V/mvS13OqimVCSj2LFBY0GY7nAgFifWrve3V1300E2ygdN9s=
+ bh=TebHr+V40ERWo1vbaVhgkTkRsWjmqCRveud7mgu0BNw=;
+ b=KQkWxebymEP3xB21dLqkD0auLGswYE7M2NGjjyAoh/w4W1KjgckV3R57rY4KYUnPSwZiYJ3waYPXYJSCtythb3/khKmoQb12omf2/yh5j+opONzsSOzu3psWDpSRVfPALntLgmLWCVm3eoKEfeHrEhluBqEVX+YwiivrieXM1Ls=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by CWLP265MB2785.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:a0::12) with
+ by CWLP265MB2148.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:60::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Mon, 24 Aug
- 2026 15:46:30 +0000
+ 2026 16:25:05 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0339.012; Mon, 24 Aug 2026
- 15:46:30 +0000
+ 16:25:05 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 24 Aug 2026 16:46:29 +0100
-Message-Id: <DKXAHMEKAJPI.316SW0ICNRS0A@garyguo.net>
+Date: Mon, 24 Aug 2026 17:25:04 +0100
+Message-Id: <DKXBB60UMR11.2K7YBARWX33Y8@garyguo.net>
 Cc: "Zhi Wang" <zhiw@nvidia.com>, <rust-for-linux@vger.kernel.org>,
  <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
  <dakr@kernel.org>, <aliceryhl@google.com>, <bhelgaas@google.com>,
@@ -60,7 +60,7 @@ Cc: "Zhi Wang" <zhiw@nvidia.com>, <rust-for-linux@vger.kernel.org>,
 Subject: Re: [PATCH v8 1/1] rust: pci: add extended capability and SR-IOV
  support
 From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
+To: "Gary Guo" <gary@garyguo.net>, "Alexandre Courbot" <acourbot@nvidia.com>
 X-Mailer: aerc 0.22.0
 References: <20260818084633.1673214-1-zhiw@nvidia.com>
  <20260818084633.1673214-2-zhiw@nvidia.com>
@@ -69,9 +69,10 @@ References: <20260818084633.1673214-1-zhiw@nvidia.com>
  <DKX4P05VHT0E.2O8M39SOVBVP2@nvidia.com>
  <DKX5NPH3DNJR.2MADBU37NMZB4@garyguo.net>
  <DKX9YTDJLJMI.1RKDZ3S28MVQ0@nvidia.com>
-In-Reply-To: <DKX9YTDJLJMI.1RKDZ3S28MVQ0@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0678.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:351::18) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ <DKXAHMEKAJPI.316SW0ICNRS0A@garyguo.net>
+In-Reply-To: <DKXAHMEKAJPI.316SW0ICNRS0A@garyguo.net>
+X-ClientProxiedBy: LO0P123CA0013.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:354::6) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -80,283 +81,138 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWLP265MB2785:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8de03de6-7601-4551-cf8c-08df01f6dd9b
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWLP265MB2148:EE_
+X-MS-Office365-Filtering-Correlation-Id: 42b2d697-5666-482d-9e91-08df01fc41ae
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|376014|7416014|1800799024|23010399003|366016|6133799003|56012099006|10067099003|4143699003|5023799004|18002099003|22082099003;
+	BCL:0;ARA:13230040|366016|1800799024|10070799003|7416014|376014|23010399003|18002099003|22082099003|5023799004|56012099006|3023799007|6133799003|4143699003|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	aXw2pyfLdYic50GdCXTf5U+Ic+P6DVGuiVSAo0UHF/EyWiNfRDsooF9YZHe8BpMwJ9UUqAwlOrURBLOogo+SseskdPfEoFbPuwbvHzJmQjjCw/WTvrNH8hQDgKatjeLkS4PROrfOwBLn/VHBBp5xkdpnNh0oUYWI0u7l7Nj76RuHuMekZmQ6tCNIQaBz4dX1OOTgBeL3PhK95O5NLqYqfbk3mPOZHszrAplC+sIw7Lmb0sjo5tsPbyAr1I8xIaPSESZx3vS4z3kBbzXZdwxPF+S9HqA3oWSpDVvKGuiEDe5q859Osa6/eKM4wnKwJ5cKrGa181QHlxCNYXnwKlXiJt/4hj76DDRiPqEXjjUa6kLf6TKfx+7aHpdQY7R8iRArwgAIOkqZVn2nbZvlrupHDJnEctICeDMSkW9j3Eu9wQPi3NohowyO3pf9vwoD6s8aXjy7iSRhcKZgVgyTxrB9PcSoPgohwcdXplvXIqChnAqEAk2KvNSYCm4rjltEm3iKaVNmyUdn8/U3CKFWm4npmRAVgMNKC279/Z5BTA13fBhiLWgGwef3AB3s9yTKwW20KgSjU0HDuJ4t2FIKtwM7chgcyXPWKOZA0vB/Qj9QRnBgZ8Vsr4kUbIqR4mwOdQKXumgc6aP5/w2yeHSBRf3eSbdO56zH7YMCGTABXv9VBfA=
+	hT7CB8VoeUr03Gu5uWdfnSuqqN0fW0AtKXStssuuWdbqN0JSqLAYzUHZd8Gf3GqsfQzdis+t7EOPvI0MeTNY4WRF/s5hQeW7uVJQquhnYhxl+CqquCm+8X2DoHq8Fi9R7hbfPBYlqpMT9mlH+FEqyuSxZuOdmWeoGGSMa0rtFERPonkYicYDnfn8dzM0YM8gA9BBzbkf44k/IQtmvasPx4JrZQg0fqyA5NxX9m/skuy+oIl0NaR1ucmgdflX1EDnrGbQOXsWBuznKDYCwRMiQkNjShBBZNU8INIIdR8JPFqf7MZc2fQOHroD3GXtwtOMGiYPV2kcIjiwnkgGv4eX4FnaiBALb0Tse2tHDmm/kI8xDgVbXwpbuTvLLc1FGG6eg6GXz2UU+GB4pVyvL1Brt5CvB/wnC5OXzITE75I7O5puPzxtE9miFSQdCzP9KJ3KfvLmQZ7ErjJu9L013Sbhj2DNVML/x9ismAeEA7DKmRAUawNpYE4nNUcjtrCsRjduwLoWZE2iO75C0fWI9Es/65jYsTePs+ewhEWxky2hztT0Ied7zUzkS60OlyHzNpQkkliFhCq0I1+KG4bYlEW+etFx9xNiow2/0NRmjMQj0IOGBT2WttL/1J0xnTx3ot86FY30nWy1h+Mn96VaWPZmd+haZ/n/zyNwJAcbI77ZFHg=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(1800799024)(23010399003)(366016)(6133799003)(56012099006)(10067099003)(4143699003)(5023799004)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(7416014)(376014)(23010399003)(18002099003)(22082099003)(5023799004)(56012099006)(3023799007)(6133799003)(4143699003)(10067099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cTUzcDVWMEFERFhmZ3pwSFM4WVNCcWh3US9VdDNBUkFJTlFMWnVOdE41ajRj?=
- =?utf-8?B?UkprVjdmeU8wenJOc3YydEk0TkdMVnEvRnh4dlRMTVA3ckVGNmR0L29OQkda?=
- =?utf-8?B?VkVqRkhLLzJvb0RZZzlzZWdnbk13SC9MQ2QzR3NNU3ZROGsvSTlOSm04aDRE?=
- =?utf-8?B?cWZydkdWZWtjSUxoNEZXNDJUcDRGeVNqdytCYjJzYVFIRDgxdmJqY1dVUTBi?=
- =?utf-8?B?ZEpRU3FoTWRzblZWZXJGNnNQamlhNjNPWmdndmJPRC8wWkswa1dudGR0bUsv?=
- =?utf-8?B?NHVaeUtkWlRocmZ3c0VGZXVsTG5VMzgvME5lSktQU3JkVi9Zc0hOdGFhRGk5?=
- =?utf-8?B?MUhRMnlrcVAyeHRHUU9jV09GM2x4VVFXTHhEVmMvVnpoYU1aVTlmc0ZLOHUr?=
- =?utf-8?B?L0dheVNxRFdldFJpSlY0NFNuS3piemx5WDBLMVZheCtVVkZKaGxhbDVPZ3Zj?=
- =?utf-8?B?K1FPVzFqYnZMY2h6eUZOZm5pMmo5WDhndndkeTBFR1NOeDMyeEt5d0ZvNzN4?=
- =?utf-8?B?cVRpVG84UUtVZXhQT3piNWZXUTdjMlpPNkU2TlZNTmQraE11UkU2cVVQTy9a?=
- =?utf-8?B?Ui96dE9iOGcrN2V4WDBEL3p6cUxIVUU2cXpxOU9uUXorM0hKTFlVL0lNT21Z?=
- =?utf-8?B?RnlSL1ZsY1IwdzZVZGhEbk15TGozNTRLQk45d25qbG5aa3Y3amRzZnBTTzNM?=
- =?utf-8?B?MHlybFA0cVllZkhVN0krNHh6WDAwRXkrME1BL1NvdlpLVnVKWjNIczFWaC9n?=
- =?utf-8?B?emJFSHFEdEF2MXFNOVFnSVlLTS9WVEFOWEhFOHBuKzV3eHRZeU1COUljNVNz?=
- =?utf-8?B?YXdlSHBYeWNJanIwVmtQbzRpNDBMNmhNNk5zeHp0dlNMalJNNHR1Znp1M3pz?=
- =?utf-8?B?WFY5YXJEeXZ4VHNUaE9kVWlhdzQwRk1XOUFsRUVPTVNFT1had3hCdDVzNGIw?=
- =?utf-8?B?alhEY1lLNzdJT3FrUHMvV1hRT2dCaGxNMXp6NENiaVRnTVc1dnlJMzlUcC84?=
- =?utf-8?B?Y0ZQS1JGRndEMmVGT2FPZ0dHWFBSS3ZRdnMxL1lFNGt4RVd5dEVrRWhud050?=
- =?utf-8?B?ZkVDRW5BeTVlRGNnQS9SWXRqSmdDVFpzMlhKM1VmNXltcDg2TnNtWlV1aFdO?=
- =?utf-8?B?bzRDSHBCNnB6c3JBVmhHMThRUC9zVFJ5SFptWW9uME5VeWV4Mm5YSG1IR2tS?=
- =?utf-8?B?dEhLekd6d3dUV2ZMQmlqSmF5M1B6SVlubVNuTkFRK1I1NDNvMmVPaW9DYTF1?=
- =?utf-8?B?VkFqejM5YkRIUXE4WnhuYmNyeUtLaVZnUCtBaXhiWVUvWHZqRjZTYUhRekNF?=
- =?utf-8?B?SFZ4cE9zcDBsQzhsN3BEVWxWWXJyVVJBNmxXRVN0ZEczOWFnYUtTbHYwaUxm?=
- =?utf-8?B?TE0xbjd1eGJoNHFmb1UxNWFEQ3N0K3JUaHd3NDlEM3cwTk8vanc1dUpudldw?=
- =?utf-8?B?WlBpS2gxUEVXb3p2U3ZyM0k5OC9SWS90dldjL1NyRy9Dd0s1M1o4NE9iNC92?=
- =?utf-8?B?VGNkZkduWklYejZVWXNJUXA4ZkR1Y29zRjZOZDN4ODFaVlVIWWhYVWwxamRB?=
- =?utf-8?B?Syt6L3dlWWYvODlaS2k2ZWhqbFdQV21RY2M5NVFSYndzYTgvY09BV045cWhr?=
- =?utf-8?B?SnJDNjJZVjRJUk1HMkh2dzV4dVk2WHR6cFFCY2tqREpuTEN1NnR4Um51ekx4?=
- =?utf-8?B?Z1pzMFZlcHVpUjJGQWx3R0dYQ28yUnZFamNwNUJSOFB5MXcwcWhJR3BqZDBR?=
- =?utf-8?B?UUV1em0vZlBYa1UwWUZ6dzlMVWhlUHBKaitUZXNmbmFGYTdBMEhJc3MwZDBm?=
- =?utf-8?B?a1VOQTY4amZ4dUxGd3lpQWR1OVBld0hLVjFUcjBZUEVwOXlHa3F3RzBkdXBU?=
- =?utf-8?B?QzdPSDRXanRhMC83Q2UrWDZlcEpwUWJFZ2FWdGQ0WklJK2VpVzh1UnhnMzhp?=
- =?utf-8?B?QzhlMU42aGdMb0NFTnZTZFZjZko5SXoybUpaNThvUk9oUldSZDZ6dW4zQkVQ?=
- =?utf-8?B?TzNKMGtrL1p5T2ZRRU9LaDJLdXd1UWNzTU9rZWNMVEpqQit1dS9qYW5vSUEr?=
- =?utf-8?B?dExrRlY4SG82YzlpcUJsTjhKUDJ6cGlpK3NKbTVSbEZ5SC9OekZZMDhWOHFG?=
- =?utf-8?B?YTB3MDl2Qys1UzlGR2ZUSjVpc24vanVnTGpCendSZDhXSkx1SFV2cWVtOGJ6?=
- =?utf-8?B?T2FYWjdIT0xpbWdjU0JVckVQblQza3drS1BGZWE0bGo3aitUVDRKSFBXaWs1?=
- =?utf-8?B?ZVNyZjk1TUo5OTVGcDFyZU5mYUZvWFJBcFFXTmx1VmVDQU1HQlB2NzJKWXd1?=
- =?utf-8?B?Smd4ckI4aFBYVElHdjFGSnFSNFF0dVJFa1pZVnZaYThCdTBaR1lrdz09?=
+	=?utf-8?B?QVdhQVRiSHpmeTZ3c2tMeE5rK3g1OHhpZTM3eDBuQmhkcDlIVzdoZlNQSXBr?=
+ =?utf-8?B?aGs3SEhZamh5VzI4azdLZmt6Q1UzcEpnRllhcEZrY0ltNzJ5WnRJaHBBWDQ4?=
+ =?utf-8?B?YmZ5TnJZaDFkRFJyWU5iQkFlamk3bzUrekZuTWNPR0E1cE1hajJYbW81QTZD?=
+ =?utf-8?B?ajJ5U05BeGNCZHY3R1ZLdnY3Nm0zN1JjZ1MyMlp3WUZkWFkxNlFEU0pIOG01?=
+ =?utf-8?B?WExyRVdhaW9CN1Y2Uk1iYnBMQUdrbExnNUx1Zi9PTFlvNVhua1BUczRyN3hn?=
+ =?utf-8?B?c1hTMklNNzdYREhyRkgvTGN0MXZna2RJUVlLcnN2czRCYUgwUnFhVDlSWitt?=
+ =?utf-8?B?V0RIVG5XQ3JkVU5mQlk1NWx2a1NraGY3OEdzRkZORGdXMUdTYVRBZDZwT3gv?=
+ =?utf-8?B?THZBM0RqNytiVTJMMnd6QXNzRkg0ZjhuWXNpWWN1VC9Ga2tPYWR4dFVKY2M2?=
+ =?utf-8?B?a0FaWkhSRmczZTlLbkNTRUh6UmxybUlHNzBwYVlMR3F6NVZPdzlOR2VDOGp4?=
+ =?utf-8?B?TWJUdnVXa3JaUEQ1OHl3djdjRzAxOTJUdGpMc0Z3S01VSFBsVmFiek4zc3RR?=
+ =?utf-8?B?VVFNRy96ZEl5SFdNTFB4aTQwdG1FZWxKb2ErWm5LZjNDNXBuREthcVpVcktk?=
+ =?utf-8?B?Tjhhb0wxQW9EUkVub3oyNzhxdU1Xd3FwUXhrWURpQ3o0MTZvaDVTR0dLWEpa?=
+ =?utf-8?B?RTRlblZEUTl5WDJ6U3pURTFWb28xbjc3QjB3amkvSjliMk53dVRHWTVSRkZP?=
+ =?utf-8?B?WGtLUS8veGZSSUpEck5KNzRSZ0tiYUpSb1RmWXJZNkh5citJVmJpWnhwVTN3?=
+ =?utf-8?B?eklCcndDd3Z3aEw1a1J4UWVQczNWZ2VKTnc3MmgzSWZHeUlONHYwSjBQWml2?=
+ =?utf-8?B?WnlPKzNxb0lXZGMyVXQ1YlBoS0hnMWlKSmUxMElCUk9za1NGMVZmS3F5MTND?=
+ =?utf-8?B?U1B4S2dlUVRTcy94VmZIeXJWMUNCZHRhaVZUVlMrR2ptczJEcGVKOWN1ZmFx?=
+ =?utf-8?B?em10cDZ2WTZGMVhQV0NjYzVCZGtYVTRkcm1PUTQyYXBrK3lKVmRJekNiNDRG?=
+ =?utf-8?B?bm5BT2hDbUlMN2xtMVEzbVViemRxSnQyS3JhamQwaXdUODlmMDJraTBJWC9h?=
+ =?utf-8?B?Mnp3NjE3Rm9jSFlCZDN4YUJZU2E3MjA5WmFQR25QQWkyWm52czdOSzYwYm5i?=
+ =?utf-8?B?U1JFUEN1QXlTMWlLSlk1aUl5cmJ5bURZZERENTkvN3BYRDkvdllSeEpRU3kw?=
+ =?utf-8?B?Zm0wTStxaktXTVZxQjRkaGVuaDEvY2Rhd3dXQ1FNWVpLdUxLSlVCQ25zQUNP?=
+ =?utf-8?B?VzF3L0pmTEF5M29vb1p2eVZuN2hoL2g5NVJnWVhyVkpFdEFoOWtCb0VnVVlT?=
+ =?utf-8?B?azhMUUdaOTR5MDFJWlJsS0NmOUI3U21iS0szdS8yNEhlL0VRR0JZNEs2WE5J?=
+ =?utf-8?B?R1EvNDZYN2x4aytXN0lMWjhKblMrU3IzMzFNWkd1ZDZoMy9OcnBmMWVVMDdM?=
+ =?utf-8?B?ZjhhWUpubG9rY3pyUzhrbXcwNzVIWmNQT0phdm5NOGd6SXRaSWQzanNHNnpO?=
+ =?utf-8?B?Q2t0dDNsSjRrTjZVMnhmV2ZiVXVMUUptNlcvVXpZNG1TZjJUQXBZOTB0UGRs?=
+ =?utf-8?B?RW5DOVNUMVFyZlNnakdjSE1MZDRubGFrZ2RRSTVRemM5UThOeVdRSXVteGd2?=
+ =?utf-8?B?ODRneEo0dnYrMjNkWmRiWHNmMjNrSzV0MXJra2NTWHV5WEMwelo4K0lTZUFV?=
+ =?utf-8?B?N250SWFxVkF3OVI0eXJQL3dYekQ5MTlXYVRNYkJDenFlajNhQjZXUHpEbmJL?=
+ =?utf-8?B?RkREWjBlQXR6dzk4VWtJMWJyTW5TUnBIbmpmSDNkZGN5ZkRuNzB5L1VlbnFE?=
+ =?utf-8?B?SGpwWGlmNkJqRXU2UFAyWFhxWEJTRHVCN1JjUTB5S0NJMkNBSXJGYWptbU5H?=
+ =?utf-8?B?Tmc4N0c2VU9UQnRwZ2xQcGtnT0x0bGtnQTV2Wi9aM3luc1pjQisza2JMUVhR?=
+ =?utf-8?B?eWQ2MTRXOWtMa0thUDR0dmt4NkRtQk9McFFNVU1RaXFvenpvZmFQK2QrZlhX?=
+ =?utf-8?B?MzJrOHNndzBWZ01DK2ljODJycUZLbWI4NExYSjRmRFZnckRlRDk1Tm94bC9a?=
+ =?utf-8?B?UHc0K1ZDa3FEaWp4UDFWTlo2MjZCY2NPN0NjeUZkVEJldEdsY1NKTlNGeXlM?=
+ =?utf-8?B?V3BQeTZHU1NDM0lEb09NMkZyT3ZrVGxXaUxQZGlTL2dqQUN2VlR3MWhtUGZU?=
+ =?utf-8?B?c0h1NGRJOUdBYmZSZFJxWDdHUE5PUjNCZm01Q0VnQ2lab2F4cnhOSHc5K1Mw?=
+ =?utf-8?B?bjVrTUlkaW1CNGhvNzIzUHRjbUF4Y3JNM1IxUjhyUXIvdDJBbjZydz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8de03de6-7601-4551-cf8c-08df01f6dd9b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 42b2d697-5666-482d-9e91-08df01fc41ae
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2026 15:46:30.2414
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2026 16:25:05.6571
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LyA0eV0pUbPtcfAe63lzckn5ozaA8ZRb+Lv84rjzm7oVBlUWECkg900WYCabHTiuuyQOXnd1/i6e5ZMrTnhtWw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB2785
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2UZYJei75lMh52z1KBhbNGeazFKy3zMUaw8ZKeixNFqkfs+wtm0c/lFdMq2X4SO3Fon7FafXwXgPbXt7k/yhAQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB2148
 
-On Mon Aug 24, 2026 at 4:21 PM BST, Alexandre Courbot wrote:
-> On Mon Aug 24, 2026 at 8:59 PM JST, Gary Guo wrote:
->> On Mon Aug 24, 2026 at 12:14 PM BST, Alexandre Courbot wrote:
->>> On Mon Aug 24, 2026 at 7:48 PM JST, Gary Guo wrote:
->>>> On Mon Aug 24, 2026 at 9:12 AM BST, Alexandre Courbot wrote:
->>>>> On Tue Aug 18, 2026 at 5:46 PM JST, Zhi Wang wrote:
->>>>>> Rust PCI drivers have no typed interface for locating and accessing =
-PCIe
->>>>>> extended capabilities.
->>>>>>
->>>>>> The SR-IOV extended capability describes VF topology and VF BARs. Ex=
-pose
->>>>>> this information through the Rust PCI abstraction so drivers can use=
- the
->>>>>> existing typed configuration-space accessors instead of raw bindings=
-.
->>>>>>
->>>>>> Define ExtCapability to associate a capability ID with a register la=
-yout,
->>>>>> and add ConfigSpace::find_ext_capability() to locate and project tha=
-t
->>>>>> layout. Bound the view at the next capability or the end of extended
->>>>>> configuration space. Add ExtSriovRegs and a decoded VF BAR iterator =
-that
->>>>>> reads and validates all six VF BAR register slots up front, yields d=
-ecoded
->>>>>> BAR addresses and widths in logical order, and keeps the raw
->>>>>> configuration-space slot advancement internal. Since PCI_EXT_CAP_NEX=
-T() is
->>>>>> a function-like macro, expose it through a Rust helper.
->>>>>>
->>>>>> Link: https://lore.kernel.org/rust-for-linux/20260804161612.776752-1=
--zhiw@nvidia.com/
->>>>>> Cc: Alexandre Courbot <acourbot@nvidia.com>
->>>>>> Cc: Gary Guo <gary@garyguo.net>
->>>>>> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
->>>>>> ---
->>>>>>  rust/helpers/pci.c     |   5 +
->>>>>>  rust/kernel/pci.rs     |   8 +
->>>>>>  rust/kernel/pci/cap.rs | 329 ++++++++++++++++++++++++++++++++++++++=
-+++
->>>>>>  3 files changed, 342 insertions(+)
->>>>>>  create mode 100644 rust/kernel/pci/cap.rs
->>>>>>
->>>>>> diff --git a/rust/helpers/pci.c b/rust/helpers/pci.c
->>>>>> index 4ebf256dff23..b946b14d79e4 100644
->>>>>> --- a/rust/helpers/pci.c
->>>>>> +++ b/rust/helpers/pci.c
->>>>>> @@ -24,6 +24,11 @@ __rust_helper bool rust_helper_dev_is_pci(const s=
-truct device *dev)
->>>>>>  	return dev_is_pci(dev);
->>>>>>  }
->>>>>> =20
->>>>>> +__rust_helper u32 rust_helper_pci_ext_cap_next(u32 header)
->>>>>> +{
->>>>>> +	return PCI_EXT_CAP_NEXT(header);
->>>>>> +}
->>>>>> +
->>>>>>  #ifndef CONFIG_PCI_IOV
->>>>>>  __rust_helper unsigned int
->>>>>>  rust_helper_pci_sriov_get_totalvfs(struct pci_dev *pdev)
->>>>>> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
->>>>>> index 9f19ccd5905c..008c2770a3f3 100644
->>>>>> --- a/rust/kernel/pci.rs
->>>>>> +++ b/rust/kernel/pci.rs
->>>>>> @@ -32,10 +32,18 @@
->>>>>>      },
->>>>>>  };
->>>>>> =20
->>>>>> +mod cap;
->>>>>>  mod id;
->>>>>>  mod io;
->>>>>>  mod irq;
->>>>>> =20
->>>>>> +pub use self::cap::{
->>>>>> +    ExtCapId,
->>>>>> +    ExtCapability,
->>>>>> +    ExtSriovCapability,
->>>>>> +    ExtSriovRegs,
->>>>>> +    ExtSriovVfBar, //
->>>>>> +};
->>>>>>  pub use self::id::{
->>>>>>      Class,
->>>>>>      ClassMask,
->>>>>> diff --git a/rust/kernel/pci/cap.rs b/rust/kernel/pci/cap.rs
->>>>>> new file mode 100644
->>>>>> index 000000000000..ddb3fd73e195
->>>>>> --- /dev/null
->>>>>> +++ b/rust/kernel/pci/cap.rs
->>>>>> @@ -0,0 +1,329 @@
->>>>>> +// SPDX-License-Identifier: GPL-2.0
->>>>>> +
->>>>>> +//! PCI extended capability support.
->>>>>> +
->>>>>> +use super::{
->>>>>> +    io::ConfigSpaceBackend,
->>>>>> +    ConfigSpace,
->>>>>> +    Extended, //
->>>>>> +};
->>>>>
->>>>> Let's merge this block with the one below, i.e. using `crate::pci`?
->>>>>
->>>>>> +use crate::{
->>>>>> +    bindings,
->>>>>> +    io::{
->>>>>> +        Io,
->>>>>> +        IoBackend,
->>>>>> +        Region, //
->>>>>> +    },
->>>>>> +    num::Bounded,
->>>>>> +    prelude::*,
->>>>>> +};
->>>>>> +
->>>>>> +/// Number of VF BAR register slots in an SR-IOV capability.
->>>>>> +// CAST: `PCI_SRIOV_NUM_BARS` is the PCIe-specified number of VF BA=
-R register slots and fits in
->>>>>> +// `usize`.
->>>>>> +const NUM_VF_BARS: usize =3D bindings::PCI_SRIOV_NUM_BARS as usize;
->>>>>
->>>>> The infallible casts module is now available in `master`. If you impo=
-rt
->>>>> `crate::num::casts` you can now turn this into
->>>>>
->>>>>     const NUM_VF_BARS: usize =3D casts::u32_as_usize(bindings::PCI_SR=
-IOV_NUM_BARS);
->>>>>
->>>>> and remove the `CAST` comment.
->>>>>
->>>>>> +
->>>>>> +/// PCI extended capability IDs.
->>>>>> +#[repr(transparent)]
->>>>>> +#[derive(Debug, Clone, Copy, PartialEq, Eq)]
->>>>>> +pub struct ExtCapId(u16);
->>>>>> +
->>>>>> +impl ExtCapId {
->>>>>> +    /// Single Root I/O Virtualization.
->>>>>> +    // CAST: PCI extended capability IDs are 16-bit values defined =
-by the PCIe specification.
->>>>>> +    pub const SRIOV: Self =3D Self(bindings::PCI_EXT_CAP_ID_SRIOV a=
-s u16);
->>>>>
->>>>> Same here, the `CAST` comment can be removed if you turn this line in=
-to
->>>>>
->>>>>     pub const SRIOV: Self =3D Self(casts::u32_into_u16::<{ bindings::=
-PCI_EXT_CAP_ID_SRIOV }>());
->>>>
->>>> This looks horrible. I'd prefer `as`.
+On Mon Aug 24, 2026 at 4:46 PM BST, Gary Guo wrote:
+> On Mon Aug 24, 2026 at 4:21 PM BST, Alexandre Courbot wrote:
+>> On Mon Aug 24, 2026 at 8:59 PM JST, Gary Guo wrote:
 >>>
->>> Looks are subjective (or so I like to tell myself), so let's focus on
->>> what isn't.
+>>> Aesthetic and ergnomics is a big part of code, and is what make people =
+like
+>>> Rust. In a world where less code is produced by human, I think it's esp=
+ecially
+>>> important that code remains easily human readable.
 >>>
->>> What is not subjective is that you don't lose a single bit as long as
->>> you use these functions, and can do your conversions without a `CAST`
->>> comment.
+>>> You can probably already tell that I have very strong opinion about thi=
+s.
 >>
->> Aesthetic and ergnomics is a big part of code, and is what make people l=
-ike
->> Rust. In a world where less code is produced by human, I think it's espe=
-cially
->> important that code remains easily human readable.
+>> So do I, and the fact we both have opinions on the matter is irrelevant.
+>> "It looks horrible" is not an argument.
+>
+> Ergnomics is a perfectly valid argument and often a key factor in design
+> decisions. Otherwise we'd make all functions carry extra argument indicat=
+ing the
+> context they're in and would require sleeping functions to carry such tok=
+en
+> types. We rejected that approach because it'll infect all functions and m=
+ake
+> Rust code look horrible.
+>
+> Everything is a trade-off. Whether to perform extra validation vs better
+> ergnomics is a genuine thing that needs deliberation. A outright dismissa=
+l of
+> the argument is itself a non-constructive argument.
+>
 >>
->> You can probably already tell that I have very strong opinion about this=
-.
+>> Safety and correctness are the very reason for using Rust, not that it
+>> looks better or is more ergonomic. It often does, it sometimes doesn't
+>> (see the hoops we have to jump through to cast a pointer for instance),
+>> and when it does, that is usually to improve correctness, not to
+>> compromise it. The reason we go through these lengths is to remove
+>> issues and footguns at build-time, and this is exactly what these
+>> helpers do because `as` is one of the footguns.
 >
-> So do I, and the fact we both have opinions on the matter is irrelevant.
-> "It looks horrible" is not an argument.
-
-Ergnomics is a perfectly valid argument and often a key factor in design
-decisions. Otherwise we'd make all functions carry extra argument indicatin=
-g the
-context they're in and would require sleeping functions to carry such token
-types. We rejected that approach because it'll infect all functions and mak=
-e
-Rust code look horrible.
-
-Everything is a trade-off. Whether to perform extra validation vs better
-ergnomics is a genuine thing that needs deliberation. A outright dismissal =
-of
-the argument is itself a non-constructive argument.
-
+> There's nothing unsafe or incorrect in using `as`. Your suggested code is=
+ no
+> more correct than Zhi's current version. You just added some extra check =
+to some
+> constant that will never change, and we know will not produce error. My a=
+rgument
+> is that that makes the syntax horrible and it's not a trade-off worth mak=
+ing.
 >
-> Safety and correctness are the very reason for using Rust, not that it
-> looks better or is more ergonomic. It often does, it sometimes doesn't
-> (see the hoops we have to jump through to cast a pointer for instance),
-> and when it does, that is usually to improve correctness, not to
-> compromise it. The reason we go through these lengths is to remove
-> issues and footguns at build-time, and this is exactly what these
-> helpers do because `as` is one of the footguns.
+> When we create new abstractions, we try to make thing has minimal overhea=
+d.
+> Otherwise we'd be using a GC language and that'd solve memory safety issu=
+es.
+> Your abstraction is not zero-cost -- it sacrifices compilation-time, bina=
+ry size
+> (for debug info) and it adds a significant cognitive overhead for writing=
+ code.
 
-There's nothing unsafe or incorrect in using `as`. Your suggested code is n=
-o
-more correct than Zhi's current version. You just added some extra check to=
- some
-constant that will never change, and we know will not produce error. My arg=
-ument
-is that that makes the syntax horrible and it's not a trade-off worth makin=
-g.
+The code here is const eval, so debug info doesn't apply. And for the speci=
+fic
+cases of functions containing only a single cast, as all instructions are g=
+oing
+to be optimized out debug info should (hopefully) not be left too. However,
+metadata sizes would still be larger because rustc record all inlined funct=
+ions
+within its MIR.
 
-When we create new abstractions, we try to make thing has minimal overhead.
-Otherwise we'd be using a GC language and that'd solve memory safety issues=
-.
-Your abstraction is not zero-cost -- it sacrifices compilation-time, binary=
- size
-(for debug info) and it adds a significant cognitive overhead for writing c=
-ode.
-
->
-> They are just a temporary band-aid and won't be there forever anyway:
-> once we have const `TryFrom`, we can make a bonfire with them, and I'll
-> be happy to light the match myself.
-
-Well, I'm happy converting the code once we have `const TryFrom`, and until
-then, I'd rather keep `as`.
+Anyway, this is really more an auxiliary point, my main focus is on the
+cognitive complexity.
 
 Best,
 Gary
+
