@@ -1,167 +1,143 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B002472A2
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Aug 2026 01:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC9923EAB3
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Aug 2026 01:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787534074; cv=pass; b=VC2npNF5FA3UKYEFyFPidqxHWGUlU9cvjB0mb9vuNw5wAr+XdFaLEPcpz8Px0obtZDDFkLvF25kcyImV98EimgowFrsGCi6qkX4qD9ASVTWbHJzl5u+b/TLyeEcD04iAuf2xEd/HskbquZ77gM1i9GAP30LHot39DBeo3lU7Wc4=
+	t=1787534101; cv=pass; b=b5otv99zTTiAVM28Jz2DqlA/rT6EZMeeOchqVxUurwtjMOJkARgMToy9M+NnlE7C9QhzE47zc23J9u3jZi4hNLV5vrXe8Avy1Vy/0Iu5FClJurYFjOpvzrni2LQxoMys4BhnA6LwKmsflgtMW2cikW1U3ITNZguQhXmfby8RmTI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787534074; c=relaxed/simple;
-	bh=QuRBX0eFyBGt4cQabAJz2rUNSA0fxyQ1i6M/8wXJOoE=;
+	s=arc-20240116; t=1787534101; c=relaxed/simple;
+	bh=EFMqYNienst6Zt3Hwl5vzay/rXw+23moFADZxVJtEwU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=D7lL7T+TS1sPe3Ur3IP9Vh0YdKXD9/ftO08khyW+arHgGbKWFTBbU+lmTXCTHudmMMWVZopONVnNJ/lLlDuRyxWHjDOr4j4rvITLt0hoqEcEijq6edY3vunPwlYdOU7Sfc88npNcqem3kVRVnbHa6Um5QzQKuNWrjyyVOxhzM+A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nehtDamk; arc=pass smtp.client-ip=209.85.216.47
+	 To:Cc:Content-Type; b=eaznk9gB/tG7iaRQ+EJhzsibenbk9km+wTq2nB3HLNpRN/Y5u9VDVFiJf2qds9PMUmSEId6GIm+kThEQkPSGLjCOx/rAaMtcnyCyqWdu6G7AXsUi8ubOqn8ztT02ECmVgIk+mP5bcWRSVfOW0YyvcAmRwyz2ed4WKjSrOOD+RLs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eE5fJVpd; arc=pass smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nehtDamk"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-381f03d7be0so356728a91.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 23 Aug 2026 18:14:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787534073; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eE5fJVpd"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38dd1cc8dc8so301476a91.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 23 Aug 2026 18:14:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787534098; cv=none;
         d=google.com; s=arc-20260327;
-        b=PJD2tcqVDK+1ptNzBDGjU2D0uv6wD0u4L4POBZDAQM7D3bvOTwB3sbLI14rn31zfj3
-         3mgNxz9//8peDsvo+p6EFaDHb/tH91LVlVumjHTL4+2cfs1LmdHlwSg94FpUsgBXxrH2
-         tdz1MUJgGf3FCUVyKdqadCZ3tYYs+DCgXKHga2VvwFtZpvqhL2SgMniIeb2rbEG6hxJi
-         7Qs+KWT7U/JGZN+Jnt5KbO6B4r6+T2qqAeWWmWTIraFh148N1vJP6DXll513W+q7vbeO
-         Vsg93D9CSX9kgIF6ZKW7Jh8/QekQtrfyZpxWpk4gUqlMSmv1Ph2xnzkFstjFfL10YQLH
-         fnbA==
+        b=m/9S/hO7fQGtgu6AHOkYTghsN0i/i6AVoKre5pJCHiKh0Tr6Uu7Tqg1WPQWf0fz3yb
+         M92v/DGeqCnvEBA1OSNJOYmE2RTITlVGXrlD+0ZwvnyjH1SOHqwN3vsVGf9eBlh7i4Me
+         NbqmgRtCvTFVwjsJZDlwX76c5CV3myQ5biYnSzIQzn2D/ioLpZ1zQeoynd0HNw4ktDAF
+         YtWH0jL1avnb+dSGvsoiAJd8J6gdiaDGyoozU05we+twmjjvqdmfXPmn3tY9Ez7QHZX3
+         HaKHEuX9cJlGBpDLeGn3OkWBoBSkeOfzqJ1BI1PM3o7wReWm51DHOB1VuS+sXwqn+/tE
+         eZJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=oCRc/Cq+CsgcFe7Tf+86ThZGP1IriKinmdWR+KKqTqs=;
-        fh=OBwEEOQRwlQu8NvN7771UhKr3ElqPpNcDfFa/aZUkMU=;
-        b=W5+hcZf695QKW0DBeE1G6QzpASye1Ho3uCAfhtS4Urf3BGB2K41+teHQi8I/Ig++7K
-         SM2VvKCGR7TESOYJ1ivzT+nw7W//x0nzU52ELg0c2YszvKhhSljFbLjtOgvC+RZkdvL1
-         qMeaqgoFBanIrOKkOxuQjyyuT5gGbABUIrzDdAS75IDeATeX0PRfSbvnXABlPffdWfoF
-         qSmRYWV0SYEwS/1RgxaR7AEW2JQewz5INdRsSmwex/NXgIf5IQCMKBYzRI5RKbKtsVzN
-         gmVMd0rL5WlEubokDGT+uxfsu5lsV5weHJioJ/NDt7kyaE/oIp0qoZDNtOkD+nbEnwnQ
-         dQJQ==;
+        bh=O4fZgybci2D+e8o1oc3AoV029q9BxrtCFu+neJFYznQ=;
+        fh=Brc/vi8hZf/fj2gU0viL56oOHhZ5DDYzm68NqS3J1bk=;
+        b=QcoRFt/oo/q8osRuYJujlw7eHLTwosjB3qhhVIUHJdXgppV3GjkVafkG5H/NQZqMoO
+         e8vYHE1n288Baa1neaWrJHTvEmdvXxCk1gtEGQGKf+KYPlJZMlR8SkXBq+qjI4nLxpSp
+         pFw+W9cQysp1Bq7aIfp3St0L4Y88CcmKcmM1lNl4osrXAV+C9NfGm+ymYlerv+Cgpy6v
+         OA/n/EyRRdasLaMeLT4FxkDBnWxsqcjM2xD3oiMpxZao76Opf615yI5HPikQxuuBnxJD
+         s9CkaovBIPvzVQI6TbIHGrw1UV1/usCbKUTch0OyiE4SZaIVmWm2VApsblh7z0vM2RJe
+         Gorg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787534073; x=1788138873; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787534098; x=1788138898; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=oCRc/Cq+CsgcFe7Tf+86ThZGP1IriKinmdWR+KKqTqs=;
-        b=nehtDamk+n5Gtj78pWgu9WygAtwWuMOtPvlc1BO+G9EUUt0p3v5VUw7FM1qTejvXNL
-         jwzuuQl2E5M8IBEDvmWdnCeq8sROcPzc6MmB8DmIsCJdFVUFaGRTgJQt6MOnkYMA+3WY
-         sHU84hPh4iRi9ZkNcNqk4VGg6BZnwWBg+0Zdk6pOAsZnwh8n5ZvPAYEirnUeUzQStSFm
-         V7B1ciAQ1MYigRmYn4gAgKzw9x4+vejFN79+2lJFlPRsbibTBtSvjpufLu7pZ4x28ZIR
-         +4GZp2MeOCQwCDTvTha7vsBZWDb2DVqGksH/LZ225v8DPNjq4rFtbUts4qbPzv6o8Kfl
-         wB6Q==
+        bh=O4fZgybci2D+e8o1oc3AoV029q9BxrtCFu+neJFYznQ=;
+        b=eE5fJVpdpBszDc5uJ3PDyQ9D6rlt9JBJhOozAv6SttsabZrHgI9b2IT1pCfxCuNfK3
+         sezXBkFeiaV7HiA6Z0ivdWUipnziRaVzb5fPyoOtA/f+q5qw/yHluXJVRTrF8xQXlajG
+         0kIAblafiK29rhXXTKXRm7w4T6h1PM0Ql/yEkwh6Agkm5HiMWyZwG3uqE6bWo/yvXYN9
+         u/sqMTSr8ED8CFkySzfzZTeQQNOwyjy/C8YPHcV4Uf4jdxDK+iagEfRvO7WxTBWRc9fO
+         UBwldfPD/L7jgyGPjAJIcSb3TOTiVYtwlnlqjGpSeeEDFtCCfoYITqKlta48uly/tTRY
+         jDwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787534073; x=1788138873;
+        d=1e100.net; s=20251104; t=1787534098; x=1788138898;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oCRc/Cq+CsgcFe7Tf+86ThZGP1IriKinmdWR+KKqTqs=;
-        b=g7ZoGN6rFkdYavJvwZcELjfe1J0/pkkyNVgWU00d5M+ff/ACnUXA3rV3ZZNDTRUHJf
-         iKi5C6/NPRicCcdgKpI9oyb/EDYh7ZV4yh7GEZCX2eBpw0e0bp75OG8z/IvSWg7OWlUi
-         yd5r2LDn28510q/VnqtyiusYu48O4h6AOVudte5IsBk7cnDeksZQnd1Zn57PZc5f1ACV
-         tdwbsQ45bDNRDAOd3jf9VRHljGC7Mhxjvq++HVHUPTl2kArl44jXmyWNNYuPsgKI295n
-         lmuMZgyBzda0xCw6duZzYr32l8yUFmXcFGmVe8fUpv3rrkMrV8a9ObToC9iYtFpqG/VG
-         iR6g==
-X-Forwarded-Encrypted: i=1; AHgh+Rp/rc1E4++ogfBnaSzWprZW4emY+eD9TZ/KjUKIoCfm0TgVKN9ElauZVpaCc4K7f6BtvZiI354kZ6LrfBo7Hw==@vger.kernel.org
-X-Gm-Message-State: AFuF++lY2ioVIVGlUzEHLloefBYxJ+jW3MeJQQ5HNaq+PPjuaEOAiAUh
-	dhzeZbWO28JmfcCSBhfAXK9K3NqfWdHlfMfzKltRa9M/sIx5yHgGdofNbHQkOzvYJjkH7L0+teU
-	1TqcUYIN86/99M4Lp+Pjo32K5FIEwGbU=
-X-Gm-Gg: AR+sD10wB39xj8X3HbfMo7BWAA4bkHN5nOG76vRwyJlH6oMIp52nRB73t+9oOiPJvH/
-	RNyKkGuz6STVAhV+A6UPy80JHbZZsIvYD5IYKiPNlOqY1ExSblylpyZygKdyYqzUUwqDS3VyX0A
-	asNXBcirXByP7c68PlH2MkKjjCITBGaY3IShkV4o5qwywMu4w+Qu6cVlwNyK0dLA40lI6SMYWvd
-	DFZeiqAQeWJ7PFwopm2fEX9qR0ygeY1X49WmhHmYQxdQA9e7kryUKiq9WG5EkPZWPAYhhLk/U6Y
-	qnSVgWvg+Qd6BHkpvV8VeEb3xbYKh7rM0/K54yUHH1o3yqOUARQLoq97n69ghQe20c57uM9JoaK
-	o7U8tT9KFRkX2lLSMEopBq1NazCci9tpzwu8ao54ZD2Qc1DLVM03iWqQztJeL
-X-Received: by 2002:a17:903:4685:b0:2cf:9e90:8be with SMTP id
- d9443c01a7336-2d64b0b66e5mr185891325ad.4.1787534072630; Sun, 23 Aug 2026
- 18:14:32 -0700 (PDT)
+        bh=O4fZgybci2D+e8o1oc3AoV029q9BxrtCFu+neJFYznQ=;
+        b=ERMaev0s3XxC1eLiv1uXMAX11bf8O9DT/nk7AIMyNJAOvH+FUT6GMNd5pHx8QMIODI
+         i6vJDrE3/t91ezDiwgYRhgSJcdklh+bwCrm1pprGp9vwKweJpxCAcsmgNOSD9Amjb3Vc
+         ANqal/+leR1D4irJTO2rDzZb+M8E2XJYOuA/tXU/HPs+CJGVeEnavnBN0HFUI6ZE5GIj
+         jy2x+iENjf0NA/fFvvXRrzvu+jQX8QeZ1ka6P7uCOvXc0NFcElP4H5t5ZldKx4Rgu8MC
+         g4U4HyP4Pk1K5icYgK9575fuxCtmsHLe0JRxdg4eutu24QVz/AdDg/aQ8gSqMPYxHT6d
+         DUIQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrlcsrX+ingVE9VQzLRB0EHoNh22Tl/aInWodGPWQSd5vmLzzRTs0i5/VIcEo0qBev0DKzusYVpPvdtfH4M0g==@vger.kernel.org
+X-Gm-Message-State: AFuF++lxbZgx3ImNIYOCw7iWmQsYT8lu2HsMTpLEGIwPL1UBlCxY6pVg
+	YvfgGTECdnljiYzCQKyZm/k+z4NUN583Z1vPzSbpzhu6fwaFMcaMTe1YBaQAnwuXcMNJy/HvPvr
+	m+jVlDLK3znUzUZxC/3QXhpSpCICTxec=
+X-Gm-Gg: AR+sD13V04120NNMycRW30hNxFiZoJKFay6p4iRahKqpW8Y4+Ce7w+vgjEcPLdCZReT
+	SIrr4zl+LqDVuhJFyjq59gC4a2XaZ4ZClG9L9DRBh5gtY6zNMJS4l5PmoRbX303keFA3LNBsUo7
+	c1mGeD+8f1xWqJIEZjhDA2uGvRfmWq7MpMG3QykiZfctchTpq6BG6rQfvhY9bNZsDJqvU2BOU1s
+	tK2042w+o3dZn5ht/AGgTPBkVCKT7okXZEt/5VNfIK9dqa7aM5EjK7tIsVex+UetTwIis1UZjTE
+	Ml/vnJv9KUw6Qs3ItyBTvaKN2oAhwWPzeh6pECQ4BCkPq4rxeGTAs3lEiCMVXghPII59OlA0FDZ
+	8FT5b7OjB5gLbayj0i5TOco8mbriVElxQOzm8w+z+iflInJksVO0fiOTyyfUz
+X-Received: by 2002:a17:903:46ce:b0:2d3:71af:782a with SMTP id
+ d9443c01a7336-2d64aa278f3mr194994615ad.0.1787534098002; Sun, 23 Aug 2026
+ 18:14:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260805144524.233362-1-ojeda@kernel.org>
-In-Reply-To: <20260805144524.233362-1-ojeda@kernel.org>
+References: <20260809134858.1219036-1-tomo@flapping.org>
+In-Reply-To: <20260809134858.1219036-1-tomo@flapping.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 24 Aug 2026 03:14:19 +0200
-X-Gm-Features: AcwNN1VJsAcR0VmKuQhmyek7VZ9j2tJREaQwMXG3cOc8ecN9I7kvYkm8YsTnM-Y
-Message-ID: <CANiq72n-=GaJyFG3sAkqUaky_Eva-A=deB05J7OoPAZNJp7b4Q@mail.gmail.com>
-Subject: Re: [PATCH] objtool/rust: add one more `noreturn` Rust function
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org, Ke Sun <sunke@kylinos.cn>
+Date: Mon, 24 Aug 2026 03:14:45 +0200
+X-Gm-Features: AcwNN1WA2KT1xTl2y2oKoLxQJqXMPAnjNVX7w0njs7htyItMoiyvHIPHCFAqP8E
+Message-ID: <CANiq72kwncSLRAY09p3DL_f03Bcjpjf5e91v2d6QxmfEeY2ehg@mail.gmail.com>
+Subject: Re: [PATCH v1] rust: jump_label: skip arch-specific asm in `testlib` builds
+To: FUJITA Tomonori <tomo@flapping.org>
+Cc: aliceryhl@google.com, jbaron@akamai.com, jpoimboe@kernel.org, 
+	ojeda@kernel.org, peterz@infradead.org, a.hindborg@kernel.org, 
+	acourbot@nvidia.com, ardb@kernel.org, bjorn3_gh@protonmail.com, 
+	boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com, 
+	gary@garyguo.net, lossin@kernel.org, rostedt@goodmis.org, tamird@kernel.org, 
+	tmgross@umich.edu, work@onurozkan.dev, rust-for-linux@vger.kernel.org, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 5, 2026 at 4:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
-e:
+On Sun, Aug 9, 2026 at 3:49=E2=80=AFPM FUJITA Tomonori <tomo@flapping.org> =
+wrote:
 >
-> When the pointer formatting series [1] is applied and KUnit tests
-> are enabled, `objtool` would report an error with any of our
-> supported Rust versions. For instance, with Rust 1.97.1:
+> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 >
->     rust/kernel.o: error: objtool: _R..._4core3fmt7Pointer3fmtB7_()
->     falls through to next function _R..._4core7convert5AsRefNtB5_4BStrE6a=
-s_ref()
+> Running `make rusttest` with `ARCH=3D` set to an architecture other than
+> the host's fails, e.g. `ARCH=3Darm64` on an x86_64 host:
 >
-> Or, with Rust 1.85.0:
+> error: alignment must be a power of 2
+>   --> rust/kernel/jump_label.rs:51:13
+>    |
+> 51 |     include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_s=
+tatic_branch_asm.rs"));
+>    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^^
+>    |
+> note: instantiated into assembly here
+>   --> <inline asm>:3:10
+>    |
+>  3 |     .align        3
+>    |                   ^
 >
->     rust/kernel.o: error: objtool: _R..._4core3fmt7Pointer3fmtB7_()
->     falls through to next function _R..._4core3ffi5c_str4CStrENtNtBS_3fmt=
-7Display3fmtB7_()
+> The reason is that `rusttest` builds the kernel crate as a host
+> library: it passes the `CONFIG_*` cfgs of the configured architecture,
+> but not `--target`, so code generation happens for the
+> host. `arch_static_branch!` then selects the arch-specific inline asm
+> arm based on CONFIG_*, and the host assembler rejects it.
 >
-> This happens due to calls to the `noreturn` symbol:
+> This does not happen with the current master because
+> `arch_static_branch!` has no user inside the kernel crate itself yet,
+> but fix it now to avoid surprises later.
 >
->     core::str::slice_error_fail
->
-> Thus add the mangled one to the list so that `objtool` knows it is
-> actually `noreturn`.
->
-> See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-> for more details.
->
-> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Reported-by: Alice Ryhl <aliceryhl@google.com>
-> Link: https://lore.kernel.org/rust-for-linux/anLxXvCKBcAVf91_@google.com/
-> Link: https://lore.kernel.org/rust-for-linux/20260706-hashedptr-v13-0-377=
-a07f2f78d@kylinos.cn/ [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
 Applied to `rust-fixes` -- thanks!
 
-    [ While the series [1] mentioned above was not applied in a way
-      that triggered this, Gary found another case [2]:
-
-        I am seeing this function causing issue on my 1.85.1 -Os
-build, although the
-        error message is different this time:
-
-            rust/kernel.o: warning: objtool:
-_R..._5range9RangeFromjEE5indexCsldbe0TGTmNx_6kernel+0x1d:
-            stack state mismatch: cfa1=3D4+8 cfa2=3D4+16
-
-        Disassembly shows that the function call before the warning locatio=
-n
-        is a call to _4core3str16slice_error_fail, and objtool thought it c=
-an
-        return (which will end up with a unbalanced stack if it does return=
-).
-
-      Thus apply it. - Miguel ]
-
-    Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is
-pinned in older LTSs).
+    [ Reworded slightly to clarify it "may fail in the future". - Miguel ]
 
 Cheers,
 Miguel
