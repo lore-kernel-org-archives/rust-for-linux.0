@@ -1,101 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2F721CA03;
-	Mon, 24 Aug 2026 00:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787530674; cv=none; b=I5ZFCOerIvoJ6jzxD0jYUpFllpYdPVM3lhZhOZKv/BrLVbuWchmcy+uT5dZ4cZdn232gooDGGeoZi2Ip7C4TC3uFeYM3raFcuqDIz8cOzhUe26it55AW6Bg+3GN/FURmJg0CsbOYqTEUgKOnKza2DESJEyZF91IKcFYjPKuLUxk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787530674; c=relaxed/simple;
-	bh=GQ/Cl6IBlTtkHxcDgOn05oMpY1hDHABpsVyFfA/jkkE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pRQOoqf0592nFjbJecf8xuSrcB1KWIYPJUGuG517IgC2utL0fiZ1ghky6ZjYUm/tajYdBHe3L8poz8fzw7DDRBmc92WMExPBaT+ndzYr0pRSN39RaQlGYDRXtEr3xVDf0TfbfRPzu/buKZnZqQnI03xOEq2vgwLkfXLlUIz2L+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h3bpeFJr; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0329822D4C3
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Aug 2026 01:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787534050; cv=pass; b=Gl60vAGNi0tq4MiIH2lVb2bqqmm4hlqyMtvNSI60GvuRwQBQ1w9UjMyP7P625BFA+hkhZB2LmN98ddhnLEBR74/kH1vqPjsF9k1DTHoSei9QcAyI9jF7LEMXeajBSbBv5je7odGRipD7Rc98/HONyVP1Ce69lrqYAJJq66ejwaI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787534050; c=relaxed/simple;
+	bh=hvFYsBZoqw8WCD3IQaLdxSawAjBpcqetDrRE8izjGGQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TnNbW7irRUlD244x2RLquzf5F7tm36fx5BtPvM5xXyh7GPS67em5aUkpgKSFSiyOOOXzEMDl2Ru3ROGznglJgWK+K+AKQav+9o+kua4cdT2PNtRAZ7ASc/4CxYZHTkJa4SjwRv/bBh7mDIcj7gD/YgVFjXwEAYdc98LqYbtKBgM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NX9btblI; arc=pass smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h3bpeFJr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E691F000E9;
-	Mon, 24 Aug 2026 00:17:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787530673;
-	bh=79Id32beVBFTfnSqgBdCDwS1o60x2rHoMa+yIKNYwZM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=h3bpeFJr+VeUlDBbd5qnky8b0jyblcZrcn6GJXWME8WjuzMbDQ6KHu9FeCNTWxAa5
-	 jDW+rtP5w1Wd1XbC6TucY5KVBDuSrEM2Or7fy5mRmPZmW4zSRdQeCpCfkX0pRo2Wtx
-	 V2iJig4Yyo3wy+DVMNU1aqU+fbsoJwhwTALtYxzCfJduCXJKEdQrYHwVizlbSdBBmt
-	 If6JY8ftQyBP1t8N/Hp8F6yDOt41qdTvslQN4YgvvKQNVm5gpsnewehExcd7Na8YpW
-	 brd9U5TVlymqv3MGNYLEmIELcXLAB+bJbWQAqiHdplPrFffeqQxoTVN2f1pFd14GNe
-	 P/lUCeXm8t+Pg==
-Date: Mon, 24 Aug 2026 01:17:49 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andi.shyti@kernel.org,
- wsa+renesas@sang-engineering.com, ojeda@kernel.org, dakr@kernel.org,
- igor.korotin@linux.dev, branstj@gmail.com, brucer42@gmail.com
-Subject: Re: [RFC PATCH v5 3/3] iio: position: add Rust driver for ams
- AS5600
-Message-ID: <20260824011749.62322d99@jic23-huawei>
-In-Reply-To: <20260822062725.60519-4-muchamadcoirulanwar@gmail.com>
-References: <20260822062725.60519-1-muchamadcoirulanwar@gmail.com>
-	<20260822062725.60519-4-muchamadcoirulanwar@gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NX9btblI"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-384caf7b168so252728a91.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 23 Aug 2026 18:14:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787534048; cv=none;
+        d=google.com; s=arc-20260327;
+        b=k8SwnioLSlD0zRRo1+NO9VHY7vn8NvifiHwCOh4boK2P+1iMcuRBS38SEuQnou3Z7f
+         GEqD10qa7ia/wjnBUv4b4aCl49VDtoay4OUQARDHLyrJ8eOZdBsiJKidB9svFSnBv/eK
+         ALe+XzakjchJTPIqI60ChyPByE4xPwnDrNtB1fwg3duHhBxMVvnTCSkFn/u50EU1IUsA
+         IeP52QnsNirKlqVCoTCSWQuuW1+RfeVLlgZl8D78r2M/cAotQz9MStTltNJvXlGx56kd
+         SofNV5f3IGaqGIFisZAkPHLRbtYgmG04qhQ9bNenzErob08bFZGwYBGMKv2YjQwpz+lk
+         2zug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tpBdpK7zcgEaHgt4RPqI57dxMXTLylwwECoiYOoLVDM=;
+        fh=5prsYnXOznpwZvkypWgQ8hUaxeD0aez/hmBu4ykAiw8=;
+        b=nPzJS1j8tlPLbNf2km4+VNepQ/jwQXtA9rL6NZZk+XT2IBfG130wxhtTdZ155TNdFu
+         URNMYdJWL+Q8M5eXGaSb/g/3u1/T4ffEgYx5cZEYbBDVXMO8TGqu76iryvUlVDClSfo0
+         iGoJJIRc7erb6PNOffqZb9Vndr0ZxcpKvEiSNqlhxNu/wc04RvRzCkZeXgTm9SKItDVM
+         hEr+O/h/r1Tq1L2mygHaGYLuljw9LDpmOOJeoMnbKgZICoTk16RpgUGXBIfDm7Lvqd15
+         Vs6OFpVXrvH1oWT9s6qYzB67xBc2xWtGG1MwTzDy4CHGNsEKN9GQ2hZH41ZymCHiwcv+
+         bLFg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787534048; x=1788138848; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tpBdpK7zcgEaHgt4RPqI57dxMXTLylwwECoiYOoLVDM=;
+        b=NX9btblI0hqpoLocYPZGwoz/01b8kkGUKr0Vk5ntFh2Hl2qyrBBRo+vqOU+LTcpSB8
+         XGmTokzUvnWzGEOyCiYnBJYMn7Rkpq3XW6S5BGQckGMMQUBZbdAkqF6ArX0qiBX/aT5y
+         uaIKU1iSIeLAkK2v3mp6sHcEYD9WNSR3s4SxOA6wuTblATi+rvgj1FvNQPUJMsfFGKLa
+         0FPfougrliIZQ0411N9PIYs6bnhpd/XbxzRHHU/QK1zcWhRON3fLkbROgiTVc3oIKAdd
+         H5KwVatrtDfOOz9N0AzSOQICwYj4hhUubg7cpJe2/XLD+IjR+hCoQelWiyRWIk8+kBvP
+         eedQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787534048; x=1788138848;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tpBdpK7zcgEaHgt4RPqI57dxMXTLylwwECoiYOoLVDM=;
+        b=GFyUxbZ3oL6QmvozJrqAK17641yIKRZxDBXYITOIIsMgffJAFa1C1R0lqxTK39Ipkm
+         lhRrOlX0ZI5tJ3Am1ux5O25IecIHIYm7uS+uJDE5Ig7yEOOF0q6+mMdldlB4eWsi48Bf
+         BPHqB/+60EzLcPevSZiehBxuNiOU8eRFT4+T4XLU0OcA/oOKcPTIUBws5d7zY16KT+8T
+         ScHluYCO5LJpl/pzDamzM/Tjj9iSGsNhe7sfePHjsy8yuCoz0ZrY85EoRRYgntGoXXre
+         EaP/NvhuyEJoc9OoBz1jO2mpYeLjMSBqsN7CmbRlHrGvRdNLfrF/JCBGZN3s1EmqTZ/r
+         U0Ig==
+X-Forwarded-Encrypted: i=1; AHgh+RpLxFgqZLNI+NIS53qGIudpOXpPY+umNKr/RZ2/8Zu9OXY1K3fEEeLE85dayXfJwbbsuBphoHHtxJ2jfta1kg==@vger.kernel.org
+X-Gm-Message-State: AFuF++nqFf1/rn6Lb8u56jPn6rFWIFM5GYbSeIK5afd1LwqfAlkZoDtq
+	h9C96ZwhqJDyIYkvrq++MjXejfdyWO1QI0Fy8HdE5Ki/Nv60TdEZbsaHylajEbgWnW61Nzk4mQ0
+	uG1XFMZUdvbFr2WX50LKwsH7qtGsyOPY=
+X-Gm-Gg: AR+sD13ZPH319wTrgpWkaeSnKZVswPJuL+mWBby84ue4oHZE1ujBqDfmpW6rv6nAIlU
+	1g+NUgnGa1iGVi3254pS7Hp2xTaiIp/oyDpCcy1kDga3be+f3BhYH1KUGfG9YGHyFiR3GWulqHc
+	Ue7X5pqSGoxMouEC6lYEgs7NNJfo9/gw/rIDCqYKbQIHZMSzr9JtxEF+RkHq4DsvOdETp5bdpOX
+	8GI2bmrOzhi2r23KyZNHZle80dW1lE/B+SzsEd3Cw4vd7LumZFDEPX7tqWUdtIDfJ/fr1UtAAHD
+	HJq/dgmeIkUTes8prQdbsRxJPk1A0sw8Xxs/QewrLhM9lZ/gZCJD1GCzCVfGmfTqHBw8S39KyTP
+	CfgWTLc+Z6USC3+s9NMz/3ZQSZevjbSUHySnwP6/RJi7HXoBfD8jCb6a6QdWR
+X-Received: by 2002:a17:903:b43:b0:2d2:a952:2628 with SMTP id
+ d9443c01a7336-2d64b0d7b26mr197324495ad.2.1787534048213; Sun, 23 Aug 2026
+ 18:14:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260810150322.61809-1-nikolai@nikolaigrlica.dev>
+In-Reply-To: <20260810150322.61809-1-nikolai@nikolaigrlica.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 24 Aug 2026 03:13:55 +0200
+X-Gm-Features: AcwNN1WFPzPgInRIP7BJcsyL7bSsfhSPCDf9OnGD0fa7wbhkj_D5VY-xMGcaVQA
+Message-ID: <CANiq72mgtM1F4z+9EfjvPFY0ZuaD5L7SedffKq5FgGTNo5qhPA@mail.gmail.com>
+Subject: Re: [PATCH] rust: kernel: list: fix incorrect pop_back example comment
+To: Nikolai Grlica <nikolai@nikolaigrlica.dev>
+Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, 22 Aug 2026 14:26:58 +0800
-Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com> wrote:
+On Mon, Aug 10, 2026 at 5:03=E2=80=AFPM Nikolai Grlica
+<nikolai@nikolaigrlica.dev> wrote:
+>
+> The example uses pop_back(), but the accompanying comment says
+> pop_front(). Update the comment to match the example.
+>
+> Signed-off-by: Nikolai Grlica <nikolai@nikolaigrlica.dev>
 
-> Add a Rust driver for the ams AS5600 12-bit magnetic rotary position
-> sensor. The driver exposes in_angl_raw and in_angl_scale via the IIO
-> sysfs interface.
-> 
-> Features:
-> - ARef<I2cClient<Bound>> for safe refcounted I2C client access
-> - Mutex-serialized status + angle read sequence
-> - Static channel spec (module-level const)
-> - No magnet validation at probe (deferred to read_raw per IIO convention)
-> - Error propagation via ? operator (no recovery state machine)
-> - Type-safe IioChanInfo enum dispatch in read_raw
-> 
-> The AS5600 stores the 12-bit raw angle big-endian across registers
-> 0x0C-0x0D. smbus_read_word_swapped() handles the byte swap: SMBus
-> always transmits the low byte first (little-endian wire), so an
-> unconditional byte swap recovers the correct value regardless of CPU
-> endianness. The long-term solution is regmap-rs where endianness is
-> configured once at the transport level.
-> 
-> This driver uses INDIO_DIRECT_MODE without buffer or trigger support.
+Applied to `rust-fixes` -- thanks!
 
-I'd only talk about what you do support.  There are always many things
-that aren't in an initial driver so listing that bit doesn't provide much
-value.
+    Cc: stable@vger.kernel.org
+    Fixes: bf87a41b85d6 ("rust: list: Add an example for
+`ListLinksSelfPtr` usage")
 
-> All userspace access is through sysfs attributes, which ensures safe
-> cleanup via kernfs_drain() synchronization in the IIO abstraction's
-> PinnedDrop. See the module-level doc comment for details.
-
-
-> 
-> Tested on BeagleBone Black (AM335x) with AS5600 on i2c-2 (0x36).
-
-Generally put things like testing info in the cover letter or below
-the ---
-
-> 
-> Signed-off-by: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-
-
-The code itself looks fine to me - but as with earlier I'm looking
-for rust expert review.
-
-Thanks
-
-Jonathan
+Cheers,
+Miguel
