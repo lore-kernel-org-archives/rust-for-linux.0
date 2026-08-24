@@ -1,150 +1,215 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6981E40DB29;
-	Mon, 24 Aug 2026 12:26:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CC2416854;
+	Mon, 24 Aug 2026 12:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787574375; cv=none; b=t6sLYmHu4nzQC2xLXANzZMM1ZBsKrBiKdtOzSPxfE83sna1WwI6SUfo7cs/+BQiP5HzuGKhRBYIK9ChBkY36H9jv00nmOICQwqvMBxfTjy16L8HLxaf4UasGLCIkZREjRMTGJeNZgATBZbCT+3cousKUIw74hP2DpyNt3+dwQTk=
+	t=1787575943; cv=none; b=DIHWu43hCD1281cnVIQG4bYg3cI1vPEw+RbaLTbCQ9Eml4NPbhFd3uOqgVCug0EsAU27/2XWCitr6z/SvshTfT4PDknCDARfWQ1zXk/bYf9T7IY73RphGN+sxOA1RlJMg64E2qrsVWBJAczBvbi1WZ8X7Fe357AtaRuunMU7PvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787574375; c=relaxed/simple;
-	bh=XprHHe3lQdZ/bHHkrfW5U843BNmtX6D0fOYV/cPGdkQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UDxfDluJo72vt3/Ah1pOS94Sy6vol7MntYGOfrfLq9WGSPKpE0Zf58aTXliSd+oByGc/9NdUxIPmOxIKmhPfOvJJQHf4h7l+xuWHvRe9i4XkzHv0S0D2BRblIIxLTIEQHUjuLhRwnHM0ejVbwoc2N6QDqLkzfI/cpq9eclev2JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PwNPX2NR; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PwNPX2NR"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 874ED1F000E9;
-	Mon, 24 Aug 2026 12:26:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787574374;
-	bh=upukaXZkr84gwak4ggRO0ndAK9t7zaBT3owzkfM3Fdk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PwNPX2NRFVN0Bz+S6KhhJDxiLSSZueaI23ct1PXVX8KFblpux4F/bG76u6TxrwCtv
-	 UBlSiGxKVvBTRYKxoEml8G+yJNr5LUcxCVHAJkkApNdp1pLMOe/M1VjBTgCXwU7U6V
-	 5IgTBRfAEyOLQqvyJJiMl62FQy0LIfHZ1uydX9Y4AhNiRmTr2057vOspY1cC7nY6+Q
-	 qZ3KAqtRYMVxL80qEDUwO6SUdJGBXEpXuEZNK6b9Z8cRlU4tajvzt2DKIM8cr4Vboc
-	 q/Ct4jN9XMSxR0SxukEoUtbJdV8txAyM9aXphiu3NaGi6TMPM5g8mGMXa0XMTMt2gj
-	 F9NjqiDJeK5BA==
-Date: Mon, 24 Aug 2026 14:26:11 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Lyude Paul <lyude@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Igor Korotin <igor.korotin@linux.dev>, 
-	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
-	Ira Weiny <iweiny@kernel.org>, Philipp Stanner <phasta@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	driver-core@lists.linux.dev, linux-block@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org, 
-	linux-usb@vger.kernel.org, Oliver Mangold <oliver.mangold@pm.me>, 
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: Re: [PATCH v20 5/8] rust: rename `AlwaysRefCounted` to `RefCounted`.
-Message-ID: <aow36NjRc5Ig0hG8@monoceros>
-References: <20260824-unique-ref-v20-0-490735672187@kernel.org>
- <20260824-unique-ref-v20-5-490735672187@kernel.org>
+	s=arc-20240116; t=1787575943; c=relaxed/simple;
+	bh=QrXHiKn/YNwE3eIQ/G+kOb8ZqCwb1hJURx/ock1NuwQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jWTgJIMv/+CvE7r9EkkFU8GJOp6Sxgnhq0aYYpYhHzgostNBW19A/OKr2+QruF0pHFbc9VDwV6O1m48CO1Eo4t03+jfCVjzEsa7redX3pBw03zAflGFAtWsmNyvuOneScZZCd4WVht8KTp26i5HeYglCKpFZ08CE9J/SX340V+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8E22F867B3;
+	Mon, 24 Aug 2026 12:52:11 +0000 (UTC)
+Authentication-Results: smtp-out1.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E7F8A1340C;
+	Mon, 24 Aug 2026 12:52:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id CD1vN3k+jGpyNwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 24 Aug 2026 12:52:09 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: jfalempe@redhat.com,
+	javierm@redhat.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	geert@linux-m68k.org,
+	rdunlap@infradead.org
+Cc: dri-devel@lists.freedesktop.org,
+	linux-doc@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	nouveau@lists.freedesktop.org,
+	linux-renesas-soc@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	sashiko-reviews@lists.linux.dev,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v2 08/13] drm/panic: Split draw_panic_plane()
+Date: Mon, 24 Aug 2026 14:43:39 +0200
+Message-ID: <20260824125201.218863-9-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260824125201.218863-1-tzimmermann@suse.de>
+References: <20260824125201.218863-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nwuv4cl3v42iarkt"
-Content-Disposition: inline
-In-Reply-To: <20260824-unique-ref-v20-5-490735672187@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Flag: NO
+X-Spam-Score: -4.00
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 8E22F867B3
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[]
+X-Rspamd-Action: no action
 
+Move locking and parameters from draw_panic_plane() into the new
+helper drm_panic_display_panic_screen(). Call draw_panic_plane() from
+there.
 
---nwuv4cl3v42iarkt
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v20 5/8] rust: rename `AlwaysRefCounted` to `RefCounted`.
-MIME-Version: 1.0
+The new helper drm_panic_display_panic_screen() is now the DRM core's
+interface for displaying a panic screen. The code remaining in
+draw_panic_plane() still does all the heavy lifting. It will become a
+plane helper for DRM drivers.
 
-Hello,
+v2:
+- use panic_type argument in draw_panic_plane() (Sashiko)
 
-On Mon, Aug 24, 2026 at 01:17:57PM +0200, Andreas Hindborg wrote:
-> diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
-> index 6c9d667009ef7..2d1cd74dd98e1 100644
-> --- a/rust/kernel/pwm.rs
-> +++ b/rust/kernel/pwm.rs
-> @@ -13,7 +13,11 @@
->      devres,
->      error::{self, to_result},
->      prelude::*,
-> -    sync::aref::{ARef, AlwaysRefCounted},
-> +    sync::aref::{
-> +        ARef,
-> +        AlwaysRefCounted,
-> +        RefCounted, //
-> +    },
->      types::Opaque, //
->  };
->  use core::{
-> @@ -629,7 +633,7 @@ pub fn new<'a>(
->  }
-> =20
->  // SAFETY: Implements refcounting for `Chip` using the embedded `struct =
-device`.
-> -unsafe impl<T: PwmOps> AlwaysRefCounted for Chip<T> {
-> +unsafe impl<T: PwmOps> RefCounted for Chip<T> {
->      #[inline]
->      fn inc_ref(&self) {
->          // SAFETY: `self.0.get()` points to a valid `pwm_chip` because `=
-self` exists.
-> @@ -647,6 +651,10 @@ unsafe fn dec_ref(obj: NonNull<Chip<T>>) {
->      }
->  }
-> =20
-> +// SAFETY: We do not implement `Ownable`, thus it is okay to obtain an `=
-ARef<Chip<T>>` from a
-> +// `&Chip<T>`.
-> +unsafe impl<T: PwmOps> AlwaysRefCounted for Chip<T> {}
-> +
->  // SAFETY: `Chip` is a wrapper around `*mut bindings::pwm_chip`. The und=
-erlying C
->  // structure's state is managed and synchronized by the kernel's device =
-model
->  // and PWM core locking mechanisms. Therefore, it is safe to move the `C=
-hip`
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+---
+ drivers/gpu/drm/drm_panic.c | 62 ++++++++++++++++++++-----------------
+ 1 file changed, 34 insertions(+), 28 deletions(-)
 
-I don't understand that, but if this is considered ok by the Rust folks,
-I'm fine with merging it via their tree.
+diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+index bc7c096c4236..2048a3bf736f 100644
+--- a/drivers/gpu/drm/drm_panic.c
++++ b/drivers/gpu/drm/drm_panic.c
+@@ -936,42 +936,25 @@ static void drm_panic_clear_description(void)
+ 	desc_line->txt = NULL;
+ }
+ 
+-static void draw_panic_plane(struct drm_plane *plane, const char *description)
++static void draw_panic_plane(struct drm_plane *plane, const char *description,
++			     enum drm_panic_type panic_type, u32 fg_color, u32 bg_color,
++			     unsigned int qr_version)
+ {
+ 	struct drm_scanout_buffer sb = { };
+ 	int ret;
+-	unsigned long flags;
+-#if defined(CONFIG_DRM_PANIC_FOREGROUND_COLOR)
+-	u32 fg_color = CONFIG_DRM_PANIC_FOREGROUND_COLOR;
+-#else
+-	u32 fg_color = 0x00ffffff;
+-#endif
+-#if defined(CONFIG_DRM_PANIC_BACKGROUND_COLOR)
+-	u32 bg_color = CONFIG_DRM_PANIC_BACKGROUND_COLOR;
+-#else
+-	u32 bg_color = 0x00000000;
+-#endif
+-#if IS_ENABLED(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
+-	unsigned int qr_version = panic_qr_version;
+-#else
+-	unsigned int qr_version = 0;
+-#endif
+-
+-	if (!drm_panic_trylock(plane->dev, flags))
+-		return;
+ 
+ 	ret = plane->helper_private->get_scanout_buffer(plane, &sb);
+ 
+ 	if (ret || !drm_panic_is_format_supported(sb.format))
+-		goto unlock;
++		return;
+ 
+ 	/* One of these should be set, or it can't draw pixels */
+ 	if (!sb.set_pixel && !sb.pages && iosys_map_is_null(&sb.map[0]))
+-		goto unlock;
++		return;
+ 
+ 	drm_panic_set_description(description);
+ 
+-	ret = draw_panic_dispatch(&sb, drm_panic_type, fg_color, bg_color, qr_version);
++	ret = draw_panic_dispatch(&sb, panic_type, fg_color, bg_color, qr_version);
+ 	if (!ret) {
+ 		/*
+ 		 * Only flush if we have a panic screen to display. Otherwise
+@@ -982,9 +965,33 @@ static void draw_panic_plane(struct drm_plane *plane, const char *description)
+ 	}
+ 
+ 	drm_panic_clear_description();
++}
+ 
+-unlock:
+-	drm_panic_unlock(plane->dev, flags);
++static void drm_panic_display_panic_screen(struct drm_plane *plane, const char *description)
++{
++#if defined(CONFIG_DRM_PANIC_FOREGROUND_COLOR)
++	u32 fg_color = CONFIG_DRM_PANIC_FOREGROUND_COLOR;
++#else
++	u32 fg_color = 0x00ffffff;
++#endif
++#if defined(CONFIG_DRM_PANIC_BACKGROUND_COLOR)
++	u32 bg_color = CONFIG_DRM_PANIC_BACKGROUND_COLOR;
++#else
++	u32 bg_color = 0x00000000;
++#endif
++#if IS_ENABLED(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
++	unsigned int qr_version = panic_qr_version;
++#else
++	unsigned int qr_version = 0;
++#endif
++	struct drm_device *dev = plane->dev;
++	unsigned long flags;
++
++	if (drm_panic_trylock(dev, flags)) {
++		draw_panic_plane(plane, description, drm_panic_type,
++				 fg_color, bg_color, qr_version);
++		drm_panic_unlock(dev, flags);
++	}
+ }
+ 
+ static struct drm_plane *to_drm_plane(struct kmsg_dumper *kd)
+@@ -997,10 +1004,9 @@ static void drm_panic(struct kmsg_dumper *dumper, struct kmsg_dump_detail *detai
+ 	struct drm_plane *plane = to_drm_plane(dumper);
+ 
+ 	if (detail->reason == KMSG_DUMP_PANIC)
+-		draw_panic_plane(plane, detail->description);
++		drm_panic_display_panic_screen(plane, detail->description);
+ }
+ 
+-
+ /*
+  * DEBUG FS, This is currently unsafe.
+  * Create one file per plane, so it's possible to debug one plane at a time.
+@@ -1017,7 +1023,7 @@ static ssize_t debugfs_trigger_write(struct file *file, const char __user *user_
+ 	if (kstrtobool_from_user(user_buf, count, &run) == 0 && run) {
+ 		struct drm_plane *plane = file->private_data;
+ 
+-		draw_panic_plane(plane, "Test from debugfs");
++		drm_panic_display_panic_screen(plane, "Test from debugfs");
+ 	}
+ 	return count;
+ }
+-- 
+2.55.0
 
-Acked-by: Uwe Kleine-K=F6nig <ukleinek@kernel.org> # for pwm.rs
-
-Best regards
-Uwe
-
---nwuv4cl3v42iarkt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmqMOGEACgkQj4D7WH0S
-/k7Eqwf+MmntLyABjsJ6u3n0tfvFXtT43FkhKWBYTvfrSkkGSwvZSD/ZY5rm4TJa
-bXNvGj/meY+tjoiL+lqEl91gKDUE91djmvVcfXDoceliQzIKh2cKRqYubSng7etR
-4cjqGN+2sGoPMqw/DE4AHSt6FjN7PW9atWXCHSqgj1X59q+Il9zzPvJoUf5LoJGl
-M03B0IF/eZP8vEHvwBR+bKlVqdJnU8LD7vn7fYKS9w8EcXVmRNet0ARjs8XnIUhd
-mRyFbmkqewycYxQaQdFwYsqkvc+ZdQfjXofOkRIorYXk2OXiZy3oqy94wwwiGntm
-xaLKESdeyy1mp9Q0CzYXHqcQr8nU5Q==
-=h9TM
------END PGP SIGNATURE-----
-
---nwuv4cl3v42iarkt--
