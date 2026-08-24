@@ -1,137 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A02B408602;
-	Mon, 24 Aug 2026 11:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787570425; cv=none; b=kUy5bsi/qQ9Pz4E6C8ShwTWl4htNd4qve1NdwgAfesRYRO0n2VzB+YwM3Sw7xdNZoulkqBO0qFC6hlLfDbCX4vAOEMPCrNf1DXQ1Irs5+ASqDwh/sJOYa6sjcetqVykePfWLmhM3DiPmz9/cQlxWSvBrXRub6r2ZiJinO5+2rS0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787570425; c=relaxed/simple;
-	bh=vSOqJFayRfX2VpqkoQBcpBdLMfaWMqIb6v/l01/Pb14=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AC82DknoJ3d9xUDmSBz4qsBqhQkBJxLNxkePwBwIY158adW+dNfDYSk3qUAJuhfy0Y3V176q7Ui93wb54ZbXAoSnktC8dDCACeuzxqyo+O202NjbMmuuzLOCP4rQrJQqp3qZNArRKEy7EXkS/nsNWXAbvITgijtZp9CQ4yMmEc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T9EW113i; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521F740DB53
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Aug 2026 11:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787571186; cv=pass; b=sLBF/lAffiQL+grs2BrpEMQ9ZBuJy7Cz9ZCwilu3GdxIPX4q3hG6Spp+5dEVTgKax/Djnh0RN1L9tVciebfe9JXHSGn4J2sT4gLjCJaIu5WcodApqCjIR9XmcOIiFp6cBJ1DBS/6gLAag+62RDSQ+sPQSuZzO4GPc9JqNX8oIVE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787571186; c=relaxed/simple;
+	bh=tG8n7vBiTj9wavffVvqRGON3z89WPyyp3NtwIl6XIng=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=E1OBuCveJXwbNzEFA90oz+yiy0JBvMfSb7rsA8MDI/w5wxYtivRTpUWb8uucLTEf1mG+zdYLZ+POk+wXp5/zUj83Zo7sNMqIc/HS+I3cRU2EXrxWavytUnJ0QGsYkvIx3DJ4il8ECTYsWKVKbahyEA+MUl3nHdz6hyVWalS+y5I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TxT/hj+u; arc=pass smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T9EW113i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B1E1F000E9;
-	Mon, 24 Aug 2026 11:20:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787570424;
-	bh=gsf4C31WIGEdvjURLO6bh8+KS225jhHsASFOIqCjPTM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=T9EW113i0F7o9cpyn0NKMrr4qzmRV5ZF8U/NZoyuc8hneKIS+m7cpuDvzSVgPWLv3
-	 UZ/T59ijq/leurmQCv1iHl0cmEuk1NIzbIWD6fJx8EeAGt6U1JI1XyOxMxA5DDGolk
-	 cgOQmWmEn9qSTztT73EmE54JnIvSFMBXxz1qP+EiXrnNjG8t7VS3q0HgSuto+OVHb5
-	 K1G1+3cT4C6dI3/1VVHMRa7YVVcSo8rBEa8pYN4f07pLSh1dQdd8A+63hq+JoW803b
-	 2R0aVMMZrfm+rKheifoo5O0r8MXv+DayvLLCFDSDOnBonW+N25ZJmtopKH8uu/+ZSn
-	 N3LkyVXe2gdQA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 24 Aug 2026 13:18:00 +0200
-Subject: [PATCH v20 8/8] rust: page: add `from_raw()`
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TxT/hj+u"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-ca53979f8e8so180739a12.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 24 Aug 2026 04:33:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787571185; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rTUvq0365a7sXdpahlyNZ+aJ1cIc8ToC6YgEczfDA64FK7YEBCTqEJUi/aybKg3KEN
+         7+TrT+AoQWBLBVMgyiK6wdiJk2MItEusHfPMReMekQKDI8/fdBOhcjTH1sWNuiBwmJXT
+         2B0Xo62CTc6n/gsMY8W0vNZWvgLX+lWla5ekVXuttZhjVHEMNP2S+2AbIrrYhC5dhlye
+         pYEwo73dyj4H7AYT+s3Wo4mUoIQ/3VdlVi2UGxVi1bWcTEhtB6WviEhHN6Ugnf8OPk/0
+         SQ4+oYNp5AyHU7lshHkwBcuA9j3PqepFJwzIalJjtsNgGc5VlIFx33d4NRz7OYo0FIvO
+         Vcvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tG8n7vBiTj9wavffVvqRGON3z89WPyyp3NtwIl6XIng=;
+        fh=w29F8p/CLCPYPoeA8zO0HIZi9hBDBGSAWX974CwIMC0=;
+        b=fhqzEuVTcsgHavoOmaayAxjDQEAaAXrxQOvVq/c/SFrtYbyIIYB4P5wLHnc4baPbhB
+         jkGu+WprvLOx4mNuAJxV73I7ulHsytvX15wpo/2oJyNkT//bZpo0i7gcLjEOHID9XCs1
+         R43KB/qAe6Vqy/MCOXFe+hIl0fQM9xqxw54TtwaL3X+vZWwzVXXL9eOCWP8+y1mLS8ck
+         IlyLrN8gjfNOcj9f8QmMlYSDQus88JyKti0yQCey5ZUqntSJMxmPLreFbcGhiMnQOOhO
+         Leh/dytdrPnEHAOMCtmVaD/WwuOqwxcoN5TuiPM9ACmrOhoQtGeHpxgSwk4D+s6d/NQr
+         Tmwg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787571185; x=1788175985; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tG8n7vBiTj9wavffVvqRGON3z89WPyyp3NtwIl6XIng=;
+        b=TxT/hj+u0YL+X+7sOKBqlsGxhEs9+MMgT3H2TtGpW/bhHmLG484BfgVKRcjQR8QTmy
+         8QBc6IpIz4QuqLRJPsd58pcTf/EDtiGtJv8Ldci+q0H6VmiH2vcWU4AnrW4bWpc4tUvL
+         clBT5vInSLy5erIuWXC5AGG8V4sQZrFdE6s84sAf7ltasO3STkGmKiFrRmhfcmke3Ec4
+         S3YpIu0plNCLWqmaW6lCYCjPBPyU7QtxTW7SCnWPwFnDzbvN3kyc3KiBAyOq4TqQ0ccg
+         VvgpWnE8KkylAiTfRmbk8hjaPlhiGz5uyW0EwFkXjjmfke5tyZVtdsokt7bnz/JD+ZpZ
+         enUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787571185; x=1788175985;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tG8n7vBiTj9wavffVvqRGON3z89WPyyp3NtwIl6XIng=;
+        b=FTBaLRX1de54fAGlx0KK4jcscEPOv7Fv1m6CP6dnPHlhyBS22e2nqYkeGWBvFMgn0Y
+         3KLCESyWQT+l0GGOGXSoV9izQWmU7/O7eaneNnNsg/ImPni5lhGQ5x2R/+feMFWaCJOj
+         CAEl9IvzrKieTlVkxqWgg7CffOuntm6MZk/vcejRvTRmZhIzE0BPn42KxeKWidX5saUN
+         skCFzFHG0zmnxoQa+6klEmJ28tm0gPvSV2xXO31XXucew2uQHn3rsUwYJMV84qmWS5L0
+         zktfOoRO0jTYJEseMNuufJchsgLr8JqAE94qXpHG42qyELbq8vMgyb5HswoJL4ZxoULR
+         ft1g==
+X-Forwarded-Encrypted: i=1; AHgh+RrAi/Ze6f10uH9HYXybiIGUmDo5HEFeJoMQceut46m7hpbdN8kHkVKXSBnhzigA6df1TGDa7qtCM5eDgx/UQA==@vger.kernel.org
+X-Gm-Message-State: AFuF++nPnvz4a8i2Qgs0DiqN5Q3/gF2z3UHtKbg6wnnD0XkRRSlOvrLB
+	ifigYxPZGiz+9ScvN/oceCehFGGWbK6PBIbHPyg6b7Nnn6wSHdI6g0sZBSSsKFT1mmBBySgXvqx
+	qmdaNLOqJXwRl7oTo/+9yA5bbH3Z2EYc=
+X-Gm-Gg: AR+sD11xNgDG1XWuQpqZSx2vDYQm8VjyABUZ8gVUDIu2OaTcIVibz3Kh05jJ9etTNaW
+	QhDZdphjq/ctTdKCLWKievzAALKkA3dqpblx1UJUKkbWCPq/25/kDxQEXnk2aUHRqnnNgRd4LlL
+	pxByDzpeYgG8evSNYnUXkACo7+sYNrACQ+uLJ8VvqDgzAQlzUsHI/7JZ2l4xWQEpGWRSEnF7Cw8
+	pbfK1+H5wYyaj5Y314FgXsrdW94QuXrN+Y1SDNMX5XYIAESgiOB1ZSvnIT1YIhzyLYwQO7NEAcH
+	VZbs6AauJ631upZ9uZ3+78eXNGbb7gcY4hH6IvzMWAubHoI6R8AdL+TBeS8NeOyThduq+53wszi
+	Neucpro9cOjEP7/hj9MEuHZ066DJ7KJtB+P8stFTSAtXnRWXtPPtd09pv8QN5
+X-Received: by 2002:a17:903:3c30:b0:2ca:de3:15eb with SMTP id
+ d9443c01a7336-2d64a9d1a92mr213585835ad.0.1787571184660; Mon, 24 Aug 2026
+ 04:33:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260824-unique-ref-v20-8-490735672187@kernel.org>
-References: <20260824-unique-ref-v20-0-490735672187@kernel.org>
-In-Reply-To: <20260824-unique-ref-v20-0-490735672187@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Lyude Paul <lyude@redhat.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
- Carlos Llamas <cmllamas@google.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
- Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
- Igor Korotin <igor.korotin@linux.dev>, Viresh Kumar <vireshk@kernel.org>, 
- Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, 
- Michal Wilczynski <m.wilczynski@samsung.com>, Ira Weiny <iweiny@kernel.org>, 
- Ira Weiny <iweiny@kernel.org>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, 
- Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- driver-core@lists.linux.dev, linux-block@vger.kernel.org, 
- linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-fsdevel@vger.kernel.org, linux-pm@vger.kernel.org, 
- linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org, 
- linux-usb@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1324; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=wkOYacmcCbns70mMJJNOqXe3g11b+kHYA0S0dbdXM7c=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqjCiGqEXZYrPpUe2ITj4yrNHK12u5/qghuV8op
- wHiEF9/CzyJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaowohgAKCRD6UCkIqsW9
- 0FasEACY3/FKckvX+qb6nS6iG9Xov+RkCghkBwWrcp/pKjcC9tE3uc6u5dni0Jlv0phoXM9ZRCq
- 4Oiskvu/fzDYM3OpBsN5yPrYo5z4pHMgQ1iyZ/E4PT2Qt3U5csMyACtNOfzK20rc5GW+JFzxdSm
- GIwUm1bZmMmmNMMZRB+8ErW6F9CbksrWSHSDwxAJMAQE9ePY1NSP3y5e06cyaZzR5dJmIbd8Qhr
- iaKt2yKFZKa4w9XJTygaZ1X1ufWNpW0NaoqexhZ0Gw1ms6cMuvFEjI4/N/xLlD5YPdiEhExs0NT
- qqL2XTiWvEQ6MqT3NkIe0DeoXtWwmA/KXc72ctatlG4NwhOrqjPanKOBFztt2qMEGDM8l4FIZlL
- DpzZe+X6qPhXJBkNVuMQxBhztKCpOjbSfd32N6Lj/sZX6MIrzjOvvAX/lkZodnyZAqNctVA6OEx
- cEtPjNHNN86XW5r6RbLvk/5f2Xz9Ma85CmnI7b9PMULgpQ4y9DKOXgxQqXwyqph6gf4Hpz0DZ5N
- 3Vci9dlrdolAiJLda0B0TkW4nnyv76G3i538Khhkr6C/u8tAJfA7Bb6K/GM3QJew6tJBXduGUdx
- YYs+T2vtUZz9CkjJrbvnHCPMJFQMH9cbMvEkos3w8s+D6i03ispYF0phnZ+cSWLIoLItRLQxpFZ
- cqeuQ7JvqxT38Fg==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+References: <20260822-fix-rust-bounded-from-bool-submit-v4-1-aa780bfe7f30@younes.io>
+In-Reply-To: <20260822-fix-rust-bounded-from-bool-submit-v4-1-aa780bfe7f30@younes.io>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 24 Aug 2026 13:32:50 +0200
+X-Gm-Features: AcwNN1XIFhMoyEK4a3W7pWYnrtK64GCMIjUMwZkmGmILvFq91xYUPrm7yvCJg4k
+Message-ID: <CANiq72mOfR33s4y+Ueivd5NrC5yre+Pcp57ZOBz0msw9A4AP1Q@mail.gmail.com>
+Subject: Re: [PATCH v4] rust: num: restrict bool conversion to unsigned Bounded
+To: git@younes.io
+Cc: Alexandre Courbot <acourbot@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Andreas Hindborg <a.hindborg@samsung.com>
+On Sat, Aug 22, 2026 at 10:45=E2=80=AFAM Younes Akhouayri via B4 Relay
+<devnull+git.younes.io@kernel.org> wrote:
+>
+> From: Younes Akhouayri <git@younes.io>
+>
+> From<bool> turns true into 1. A signed Bounded with N =3D 1 can hold
+> only -1 and 0. The current implementation can therefore create a value
+> that breaks Bounded's invariant. Deref relies on that invariant and
+> calls unreachable_unchecked() when it is broken, so safe Rust can reach
+> undefined behavior.
+>
+> The other primitive conversions require the source and destination to
+> have the same signedness. Treat bool as an unsigned one-bit value and
+> allow conversions between bool and Bounded only when the backing integer
+> type is unsigned.
+>
+> Fixes: 01e345e82ec3 ("rust: num: add Bounded integer wrapping type")
+> Closes: https://lore.kernel.org/rust-for-linux/OzuVxu0--J-9@younes.io/
+> Cc: stable@vger.kernel.org
+> Suggested-by: Alexandre Courbot <acourbot@nvidia.com>
+> Assisted-by: Codex:gpt-5.6-sol
+> Signed-off-by: Younes Akhouayri <git@younes.io>
 
-Add a method to `Page` that allows construction of an instance from `struct
-page` pointer.
+Applied to `rust-fixes` -- thanks everyone!
 
-Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-Reviewed-by: Onur Özkan <work@onurozkan.dev>
----
- rust/kernel/page.rs | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Reviewing this with an LLM made me notice that we should probably seal
+`Integer` or make it `unsafe`, because currently someone can
+buggily/maliciously implement it to still trigger UB regardless of
+this fix.
 
-diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-index e807ffe3cfef..32dd030c8315 100644
---- a/rust/kernel/page.rs
-+++ b/rust/kernel/page.rs
-@@ -144,6 +144,20 @@ pub fn nid(&self) -> i32 {
-         unsafe { bindings::page_to_nid(self.as_ptr()) }
-     }
- 
-+    /// Create a `&Page` from a raw `struct page` pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `ptr` must be convertible to a shared reference with a lifetime of `'a`.
-+    #[inline]
-+    pub unsafe fn from_raw<'a>(ptr: *const bindings::page) -> &'a Self {
-+        // INVARIANT: By the function safety requirements, `ptr` refers to a valid `struct page`, so
-+        // the returned reference upholds the type invariant of `Page`.
-+        // SAFETY: By function safety requirements, `ptr` is not null and is convertible to a shared
-+        // reference.
-+        unsafe { &*ptr.cast() }
-+    }
-+
-     /// Runs a piece of code with this page mapped to an address.
-     ///
-     /// The page is unmapped when this call returns.
-
--- 
-2.51.2
-
-
+Cheers,
+Miguel
