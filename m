@@ -1,149 +1,113 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832F13ED3BA
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Aug 2026 10:39:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787567973; cv=pass; b=d/+7y/wM8grSFclIzdRbur5CZ0/N4f10hz4zEpJb5z8VbP/Ket8dTkvSKTkt0Tz1nMrRlb2tMUlo8bVt7EpaumyEjrOz4nOzCd8xRGbmCQad6dxyk2nLcLx33lQKvIA5MNaxXQkgQlPVSKWXRwDGBRNels+jCImswtoJso3HHe8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787567973; c=relaxed/simple;
-	bh=hgryzcWBh81J+fqav+2BlfgO1BmbWhuhmWVgVs11gQg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ui3QUB8laRd2Wris7pgZlRKJsoJNWWfT1i7JGbyqpjFx1vEon7b7ssQMe8kCQUlsVHWgW05JARqj7CnDmJgtn/2P44lWyqA2/5oR78KPzJjmEilH3NDtZI+Qn7baWuGAj3R6IMDM+ccCCIwttBKJPh3E5VhNQhHOPNvvKvy0y0U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BmBc/UZ0; arc=pass smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C780407590
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Aug 2026 10:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787568295; cv=none; b=VfRPThXLuNhMPFVhJZZ0/Zh9jFoHX6hyJBCD1LMEBulZyOuivRcL69RFH6aVzbgIZEqh3Ba/N1SLtgJrrTo1AvmRGwM7RIrq0q3trMgrtXVkIwrAM1bZ9ai+AkNoIoOnMTFDsmoqfb5FZfg9XHFco3mih15l2iUsF7mMN6MiPzg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787568295; c=relaxed/simple;
+	bh=VbaUHbv+vjP/XTf6bKB8wgeLyDHy5UXB+0YCSI0Oars=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=RN0rRay/d09bKJ2LmsXkeWzONxOOdY9Xn8oeE4LMtOUHhcDiLMiBYcoHIrjJAlKk0LAFghrzUP4FtdmXtoOR5Xl1YriPMMDOiQ2wPKjGsJywoxliyGPIyXppBGAY3gnyA+ybuenMOhIJpcBQUIwc/zLjcypSlGwU+eLkNYNhy+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/1UN/jh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BmBc/UZ0"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2d03fcd26a6so3305295ad.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 24 Aug 2026 03:39:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787567972; cv=none;
-        d=google.com; s=arc-20260327;
-        b=NYLwrfJeK+C28wS3VYhGKF/+MHmcJOcqiDBdPgJO74/tyJiNJCDe22B8LEzBysksDT
-         QozNnJv4Iu6vfuBAtXy1QSIgY45GM9Dr1xC9/1FStVl4S7ae2O87w4xLpkAUryNGIjVH
-         rzJhnn+NZ7EZ+ZbA6LQ80Ul99fZYepHPNgA/AQrwf+CCHuethXP+aP3wmXSq8r/3Ky4U
-         kTsBIOAsYN7quP4iDNZU7rl1k3NJN4rAA5lVZriR3BVImKN//Lbep2TTNfNdpLEYkFoO
-         jDpBN7lbpPhuM0d00g3pU28AR4+UY6OgMh9mwK7nDIEOxAUTR/rt4J9Ol+599Om6Wer7
-         iNFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dm+SxIlEY/yR4zyZCKc0UXwl4nlxVLA5fi42KRK5dYw=;
-        fh=tR2NAGYhMqkAEhcTy/5iGDgLr/7dZtAnJIDRvbIWqUQ=;
-        b=WIBL67GHt3aFya87mpWuyppI64tmLSf4DibjNrJT5dFyXhafd7bAnh+EnnOMV3psJc
-         uasmOPhZ4l/ID5/XHsO/WWo6p8F7pcKyqJJtkdoarzQ7+SMBsphxwhSbjg5zGg59lM6B
-         uPbA3CdKESHQ570gW3jeh065MptymlKcNbdjL7vclf3Ru7NZGPLm80svVohVcbrJiRt6
-         mxaBdMQ95f9Pbgsxd2YdD9MzEFMsAmziXFukK7pjNv8tLl9PpKdHq/W5rMOK5l0u7kax
-         iUorWz6zr71J/wD76soVOPQJQFcNCY/0AZVn7PJrfXtt3yAZTI4Z0XAmy8eGtHC/zzVv
-         IZMg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787567972; x=1788172772; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dm+SxIlEY/yR4zyZCKc0UXwl4nlxVLA5fi42KRK5dYw=;
-        b=BmBc/UZ01fjCpGXrD5VaGU5g6PyvEsT+EoLVXxUJHydR8l0vT+LAtRR+8zhQgZtuw0
-         I397lelTLyOYJpxfO3te6aVPtPY6wiZKPak4/zwmuDQLt1M3L7XW9sXtDhLrOm24GZkD
-         hWxohSbC1GqPfocKIrpouJP21ss6AIsJUGMhAruWaqdnZK9oNWF9fvK4LjFR8+RtXaVc
-         KIxlKgWDPs2aoCTYXEDIMFFXT99hFpPo8bwrRFNJ5wpfbewTh5iLIitzA0Dkz57FA2sY
-         BX1auQ11LfyNa5WZsA646pIcZ8EV/EcZHy7ijYByeTADvrssIJtWZkKwp6F/d+HoG8Gr
-         RQgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787567972; x=1788172772;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dm+SxIlEY/yR4zyZCKc0UXwl4nlxVLA5fi42KRK5dYw=;
-        b=LcwR6Xc4u904ra+LXetjfN0XXb0DfcXLH71ezUv8e8Me7BcXoO/NzygTo/Vrh4XRPM
-         lo0I3oYwnUCy6RLaJYre8hXbQCxdV8a2F8xC007YAVrt7f2MgpwnA6qcFlmYCAFCWQCT
-         xKHlUKr8SY2oeiFyBvVrMPvTXC7LIvixh92iHS/Qxn3eTKuewsXtFpUQSPwsMeyIHRa7
-         csb2QtkL5Boj5NO2rYGM5lyCPWkC9TacOl2ciGP/QwOlNhIVSTuelSsiczf0gC7s63C7
-         5FPWh+U3d0YCK838JnMbsZPhvXwLskl6m2ksqsonJJImj2YLuX0lA0/BC5DDtwogrgmn
-         5B/Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rp3etPhB4OgWUkhIQEBf2ygiBvMHq+bo+Hc//Ik+3Ge8malxIQ3rFQ9Jdy/+8LZxSzMc1IYLawenWwFhx0O4g==@vger.kernel.org
-X-Gm-Message-State: AFuF++nEns+xykgBLVLU8uz2v+3fMcwH0q0kJz2NsbPus15DXhnTcC+F
-	o/3/yPQ+3bqAU7GZToE7diyh1uZayOBwmMGvh6UZp07cETvUwauVAEtgiIvVGGdT7og0qH0RnTj
-	4zdgtyOe1LKZhKO1VaMqAkH45QBg2/Ew=
-X-Gm-Gg: AR+sD127nQ3Zds0bRt2gex7JyaYd+TGd+lkldywXEpfx8hVXbe/fspSrjMFIXR+vMgS
-	7oXpTkK7PFO9K1KFQJ9TILj81D//2H6TomXn4wka9Kyes3XdjM1aNml6NwiuGXaW06Xtgiu8+gj
-	Kz3N7L35ZGLTTPePWGYYojXUnVWwSW+qYoWOExApG7++YStxTJAMxEb/6AAupEqyfkVMb/t2vMl
-	GUemnZRnvYJy3JUUz+RC6y+oAn/q2Xmj0Wf8GYa1Ad8jIEIOwCLhNWqe5DkVTG68XFarGEVsOhD
-	uI/fKoYPG8FhhMbFs2MUwFUA9zMCtej9VPOgGDtua30ytOMkpTGwN88z1gOvxgAYmDxl3ovDzgK
-	P7I+avFfWdaHMgnXlEho0F0H/+BcMDIcUH3G8bHK+ZYouvpk0LM7I47n8p96/
-X-Received: by 2002:a17:902:e544:b0:2c9:ed4a:c3a4 with SMTP id
- d9443c01a7336-2d64a9ae35dmr206138235ad.0.1787567971710; Mon, 24 Aug 2026
- 03:39:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B/1UN/jh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5859E1F000E9;
+	Mon, 24 Aug 2026 10:44:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787568293;
+	bh=3UPLtdxHr80ZGlygfImGy1qUmYpBkNsDVOUeburvoH8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=B/1UN/jhL6eTzfDuTPcYCxBPu5GGKokVnVgHWBKb3MBBTXwhJnkiRZFjxTS9+EHTf
+	 o0V2tz1zwRFs3YgLsht0cSNbmDwov+jHSPpWuYn4cX5LTmZd8OPGDM9VLSWS0A2Y4Z
+	 0vxrnNbHUhHbg6oOwwaH9bSCzA2J7ZXrC/r65DSgISN18F0p4hz9jCxkBR3JP++xlg
+	 I6GUk3O/tKyK6Mogcs+Nrs41wG+baefDtfaQtqDU9n8bQnnd2btba1BSW8FMMyny9Y
+	 +LajDNJ+JoFcBkvr0OlDURcjz06hkGIsOQXnVxvxc8xEascDtVo1cyiaXoMACv1WVk
+	 3xyHGHBAuI6Zg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: FUJITA Tomonori <tomo@flapping.org>
+Cc: tomo@flapping.org, gary@garyguo.net, ojeda@kernel.org,
+ acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
+ daniel.almeida@collabora.com, frederic@kernel.org, jstultz@google.com,
+ lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
+ tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH 0/4] Fix forward()/expires() racing with concurrent arming
+In-Reply-To: <20260821.185308.614720109603525569.tomo@flapping.org>
+References: <87ecft7yyf.fsf@kernel.org>
+ <20260820.215332.1257209020327006274.tomo@flapping.org>
+ <87bjaw7xqa.fsf@kernel.org>
+ <20260821.185308.614720109603525569.tomo@flapping.org>
+Date: Mon, 24 Aug 2026 12:44:44 +0200
+Message-ID: <87se437q77.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260816133233.197500-1-ojeda@kernel.org>
-In-Reply-To: <20260816133233.197500-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 24 Aug 2026 12:39:16 +0200
-X-Gm-Features: AcwNN1XqG3kZZP3a32PBSrKWeajLatO9hp7-Kfpxa1ILeXqg5p650B05C8OP7O8
-Message-ID: <CANiq72k2A4UCLakuKZ3V=N-FHONk26npA55J+gkFT197XAOMfA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] kbuild: rust: preserve unreachable traps with inline helpers
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, Matthew Maurer <mmaurer@google.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, linux-kbuild@vger.kernel.org, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Sun, Aug 16, 2026 at 3:33=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> When `CONFIG_RUST_INLINE_HELPERS` is enabled, it is possible to hit
-> `objtool` warnings like:
->
->     vmlinux.o: warning: objtool: _R..._4cmdq12CommandToGsp4init()
->     falls through to next function _R..._4core5array4iter8IntoIterRShKj3_=
-EEEBa_()
->
-> `rustc` normally emits traps for unreachable paths. However, under
-> `CONFIG_RUST_INLINE_HELPERS=3Dy`, `rustc` emits LLVM bitcode and Clang
-> performs final code generation after the helper bitcode is linked,
-> but Clang does not trap unreachable IR by default.
->
-> In turn, this means `objtool` follows compiler-generated impossible Rust
-> `enum` paths through alignment padding into the next function, resulting
-> in fallthrough warnings.
->
-> Thus pass the LLVM `trap-unreachable` option to the final Clang invocatio=
-n
-> and suppress traps immediately after `noreturn` calls, which `objtool`
-> already recognizes as dead ends. The combination of both flags makes it
-> match `rustc`'s behavior.
->
-> Rust 1.85.0 (the minimum supported one) supports LLVM >=3D 18, and both
-> flags are available in LLVM 18.
->
-> Assisted-by: LLM
-> Cc: Gary Guo <gary@garyguo.net>
-> Cc: Boqun Feng <boqun@kernel.org>
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: Matthew Maurer <mmaurer@google.com>
-> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: stable@vger.kernel.org
-> Fixes: 3a2486cc1da5 ("kbuild: rust: provide an option to inline C helpers=
- into Rust")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+FUJITA Tomonori <tomo@flapping.org> writes:
 
-Applied series to `rust-fixes` -- thanks everyone!
+> On Fri, 21 Aug 2026 09:13:01 +0200
+> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>
+>> FUJITA Tomonori <tomo@flapping.org> writes:
+>> 
+>>> On Thu, 20 Aug 2026 14:34:16 +0200
+>>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>>
+>>>>>> We discussed this at the call last night. We came to the conclusion that
+>>>>>> we would like to experiment with the solution outlined by Gary, where we
+>>>>>> inject `expires` into the callback handler, and the callback handler
+>>>>>> returns a forward duration in addition to a restart value. Because with
+>>>>>> that approach, we can avoid adding complexity to the Arc end of the API.
+>>>>>> 
+>>>>>> For the best implementation of this scheme, we probably need to change
+>>>>>> some bits in the C code, add an additional path. Down the line, we could
+>>>>>> also see how man callers of the C code can be changed to use this
+>>>>>> pattern.
+>>>>>> 
+>>>>>> Do you want to send a patch based on this solution Tomo?
+>>>>>
+>>>>> https://lore.kernel.org/rust-for-linux/20260814.084700.1697518597717457311.tomo@flapping.org/
+>>>>>
+>>>>> The solution that we discussed before, right? It changes how the
+>>>>> hrtimer core calls the callback. If the C maintainers take that, I
+>>>>> will do the Rust side for it.
+>>>> 
+>>>> Yes this one. We don't know if C maintainers will like it. We were
+>>>> discussing having a separate path on the C side just for just,
+>>>> alternatively converting C side callers.
+>>>> 
+>>>> I think we should be able to reach some kind of agreement with C
+>>>> timekeeping. But if not, we can solve it on rust side only, but less
+>>>> efficient. We can grab the base lock again, read expires, then drop the
+>>>> lock. But better to do it in the C code.
+>>>
+>>> The Rust side cannot take the base lock: lock_hrtimer_base() is static
+>>> in kernel/time/hrtimer.c, internal to the core. So that way needs some
+>>> agreement with the C maintainers as well.
+>> 
+>> Right, we would have to export the symbol, or a function for this
+>> purpose. But it is a smaller change to C code. I would prefer we solve
+>> it properly though, not with hacks.
+>
+> Could you propose the solution to the C maintainers? I will do the
+> Rust side, whichever way it goes.
 
-Cheers,
-Miguel
+Not sure what you are asking. C people are CC in this thread. I think
+the best way to discuss is to write a patch that can be the basis of
+discussion. Do you want me to draft up something, or do you want to do
+that?
+
+After we submit the patch, if they do not respond, I can see if I can
+find one of them in person at LPC. But I think they usually respond.
+
+Best regards,
+Andreas Hindborg
+
