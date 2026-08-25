@@ -1,176 +1,204 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013020.outbound.protection.outlook.com [40.93.201.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F0925A640;
-	Tue, 25 Aug 2026 02:40:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787625641; cv=none; b=Xm6mkBjRJ6tuuHOTva0Lqw+k1HWKjkRaZSkos067FCuNl1ZofVFhQbQAdIKREzhqvPZv65Rn7rU1cZRIF2+vYzb309xXXfFiw9cZ2bU17NZo6mAXnCEnu5O0NzzXUfYLk77WDuEddqB6r8IxR+brS3lNhPGIiicXxXXvKWcbWFI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787625641; c=relaxed/simple;
-	bh=grmr8ShzbmokeeZM8GJP7va3jRxjvHZ4u/qI8TrYDQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r0GvZ4K+sWj+29sHFYdaDzrHKzkBQB/Hwvl+qDGQA2gA5zfwWU+Vq2VmlLsVB/g1b+JKSQITlE80D1sdjAyOmHi+SeG5lUIbzMw7LcRskG6WvPSvYlBdOzTBYdA+/lpE3zLpahIkiwtviCBx1ZwyQefUSuZ+VyWj+UmtE9+fO5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=hzGqzCFd; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4634B1F3BAC;
+	Tue, 25 Aug 2026 02:45:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787625903; cv=fail; b=Xrd8sT7Oy4TXUEss7gx9gzGktZiJ2EL4UeiMsFCX9h/Q0PGNLDo3EnYHAEKDCxd02FLY9ocj96kIpTEk25uvlTnZPo5ZsoCPYtJ8TcHynaYcvbIWO34D5SIXhSuKWxahsxBzsbyvt4lSOoEOzSusT/LliVgjbQsOdObzmxHLMKE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787625903; c=relaxed/simple;
+	bh=gK8UGkF6SFQ2Kvwh9hYw1rzwquARB3fwHfMlrAdgYqo=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=uGiznhm4+wISgnBNfHs7ddztE1pWIC9hHnEGA2YM54ZoBP3IXBjcerMVqhxGr+iyrHufqfDbrFTK7tRBYkOfclaaY0uTop+nbimhW9/GIQMZinZccdyR6mxTbSp8s4XLYhBEp1xnrTKISeeKqRFrxivSW2/tB5DKjjZoWrrWy3g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=AL+FLDJz; arc=fail smtp.client-ip=40.93.201.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="hzGqzCFd"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=cMhE1zLIBEfW8ce0tgca2Z8WQ504QioXQyvOVgDlw9s=; b=hzGqzCFd/Zil7siDD7txgS0PkI
-	0btYf2KcGF4Jt5LTpvtm3rcvqgdEJSmZrUdBF9aqMpMYUh9Wx2DIzUj8xdR3ux2f0ydIJjgu6/GP/
-	GCGCI2Cu8TlWQosSPGxvlQtgSVvTwAmUUZIpR/2u1oLk4ZJts6jT8AMgHc7WKf4EmDelDxaZNwldB
-	bwuBAzBiHPtS2yBO9dgBLMH1854Fm9Yq579Rygv7X8gtmLlRanmAfRNHAJH+8I1bkHkoV2E7aBA/w
-	Rmforme87QTE7Bp3x5xKUtL/ppwt4PjCQFG+iz4NzVNJh7Q9S88tpLt+noBixClVZE+hH5oiywcdZ
-	NRPAIH+Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyh57-00000008BRG-20Ss;
-	Tue, 25 Aug 2026 02:40:09 +0000
-Date: Tue, 25 Aug 2026 03:40:09 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: NeilBrown <neil@brown.name>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Byungchul Park <byungchul@sk.com>, linux-kernel@vger.kernel.org,
-	max.byungchul.park@gmail.com, kernel_team@skhynix.com,
-	torvalds@linux-foundation.org, linux-ide@vger.kernel.org,
-	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
-	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
-	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
-	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
-	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
-	david@fromorbit.com, amir73il@gmail.com, gregkh@linuxfoundation.org,
-	kernel-team@lge.com, linux-mm@kvack.org, akpm@linux-foundation.org,
-	mhocko@kernel.org, minchan@kernel.org, hannes@cmpxchg.org,
-	vdavydov.dev@gmail.com, sj@kernel.org, jglisse@redhat.com,
-	dennis@kernel.org, cl@linux.com, penberg@kernel.org,
-	rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
-	linux-block@vger.kernel.org, josef@toxicpanda.com,
-	linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
-	hch@infradead.org, djwong@kernel.org,
-	dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
-	melissa.srw@gmail.com, hamohammed.sa@gmail.com,
-	harry.yoo@oracle.com, chris.p.wilson@intel.com,
-	gwan-gyeong.mun@intel.com, boqun.feng@gmail.com, longman@redhat.com,
-	yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
-	netdev@vger.kernel.org, matthew.brost@intel.com,
-	her0gyugyu@gmail.com, corbet@lwn.net, catalin.marinas@arm.com,
-	bp@alien8.de, x86@kernel.org, hpa@zytor.com, luto@kernel.org,
-	sumit.semwal@linaro.org, gustavo@padovan.org,
-	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
-	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
-	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, okorniev@redhat.com, Dai.Ngo@oracle.com,
-	tom@talpey.com, trondmy@kernel.org, anna@kernel.org,
-	kees@kernel.org, bigeasy@linutronix.de, clrkwllms@kernel.org,
-	mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, bagasdotme@gmail.com,
-	wsa+renesas@sang-engineering.com, dave.hansen@intel.com,
-	geert@linux-m68k.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
-Message-ID: <ao0AieB7zg5FKD39@casper.infradead.org>
-References: <20260706061928.66713-1-byungchul@sk.com>
- <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
- <20260821042143.GA40890@system.software.com>
- <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
- <178730572084.2852630.7732425311008244683@noble.neil.brown.name>
- <3d58eb3c-7a9d-4183-907b-46172664631c@kernel.org>
- <178761465493.3510150.12380729360578969391@noble.neil.brown.name>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="AL+FLDJz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pOulC/uxUgnww7JTrDBprSYhhtWkWdNu6PAHwkz8pDU55gaMdHCJELUJbRQNfeuZlqL4OxFqBlfKP1XzDLh9GtL59F2oC32vHkK0jG+eOu04l0iJP/bVUonm4OwlvJS/KUEUAZG3ZVt1JkokNMwwWimH1ACC/pZqdBFbPvgjkjuKsR7qAvLoVDeypQV7RmI8rgjbjES0S5qs76rnWqnp40Ml+o3qGMjtx6BhBjC+Bc0JgmKpn2ydJnmyJAepPlYWU4QQVwjOVWM3HUx9Wshhr100/dBEIf6q0aqJuBk4vAX5FRyt5hdV/wll13IV/8SzF5UlTlfEUY+lQxe/wHxR1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9GKec/VhY+cCm2srrdYe8HFpv4lmvL+vwGDk+GPCqdE=;
+ b=k2phc9Ogk8a65UL3R6rwnuILOIH7+0eeH1jPpwXhF5ch0qkXvN4VDo5nKfWKxb+2pJbMgd0mPD5/3s/HekIUkRvfBDGd9k6UPefFXGbRGFwDs4BWFZgxhVEFILHxJ5La1O592R/9uJ6m5rnp0iPQI3wOEsmzXq/xHvfkc36UNSfMBxbvO3kjTNZk59fPvzKbYfeyPXqRMBXSYlAEv5BvwlGh6JXCX8Ggqk3HvSXqXlw5s3EWojBSWZpHnREcZO8eLH6q5qSbsgEGj3rqnxEJXWcWYBg8UyGhk9IasYlgLigsceB/nolXBy9D68CsyJ1LCGCR9k6eAR0kFTSk8I+I7A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9GKec/VhY+cCm2srrdYe8HFpv4lmvL+vwGDk+GPCqdE=;
+ b=AL+FLDJzv/ucdRHukMpgcevLsn7kkWDGMYyYVWuwcyhOnA7XvC6zR/hERpEkQCvQpsXmurC1pLK601KwzQpFzxPEAt7hhAg5LjM6PwF2myOv5RDY2rqYR7PmfRdLda//zjP251UvB4Bc8bW9fK+AH/S/pOwfdSgixIjy69eBUpBqZgSRhEHjohH6a/EaP48ZBU8ZDLR4MYv18WRS7iR/oiJaU8SUEtxl+u1QjzhmYVvgXZOiVWa0zXGPOrSfdDGRlBRMe1FbI6CtJ1HOkmPPTYaUnG9Qmrubn53mciwVVeTucWPZdNogkVbSUGtPpT72Oq27/dyJpO3m9gk4+WB3sg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by DS7PR12MB6094.namprd12.prod.outlook.com (2603:10b6:8:9d::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Tue, 25 Aug
+ 2026 02:44:54 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0315.014; Tue, 25 Aug 2026
+ 02:44:54 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+Subject: [PATCH 0/2] rust: num: casts: replace const type narrowing methods
+ with a macro
+Date: Tue, 25 Aug 2026 11:44:46 +0900
+Message-Id: <20260825-const_as-v1-0-1ce712225fe2@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDCyNT3eT8vOKS+MRi3URzS6OUxBRjS0sTYyWg8oKi1LTMCrBR0bEQfnF
+ pUlZqcglIv1JtLQBuqXKCbAAAAA==
+X-Change-ID: 20260825-const_as-a792dad39943
+To: Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: John Hubbard <jhubbard@nvidia.com>, 
+ Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+ Eliot Courtney <ecourtney@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ nova-gpu@lists.linux.dev, Alexandre Courbot <acourbot@nvidia.com>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: TYCP301CA0064.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:7d::16) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <178761465493.3510150.12380729360578969391@noble.neil.brown.name>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|DS7PR12MB6094:EE_
+X-MS-Office365-Filtering-Correlation-Id: 06adb3e2-66c1-4995-92cb-08df0252d78c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|376014|23010399003|7416014|1800799024|366016|921020|6133799003|3023799007|56012099006|10067099003|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	WApxvQXfQJO6LkGFrW6fDD8uKA1VQK6RtqNcFS1nPHcrKPQ+qHDOtZeeGboN/kwNqWRnpw9bz9ho0QY2L5aqSiS50WIuilmfFtD9dxWZIAasNEaMe+hZt2oeYeNgevBkbVr6+i/zigb3G6JHg4OLMQVJC6SE/Gyyudcngi7pSGEas95naiP+I0e8y76PvAKuuvfT8+HlTF9zU2prBAocZLkVcNwVQvyYCmBApE83lXCsqzPAYyEAn2HVLLEc5+CTQ+dFEHES4bD08bWZLmuLALGCI46SbinLvRdEHUi6GbS65oBzo3olWbrfSSlAuTAvQAXuWpa4jBC/+jtElgqFwjV6x/mhn2S8+7F3wwKoh7asDBlMLlluQ4JgXqAMD+fkS/pWO0SuwIbtnTqC3M+G93o3el2gzW7l0scn9dx0kUK4jhh0gANAECNhQ2aqMgnQcJMQ2Hw1kdQJkrCKy7YOj35MaCwNMTb1UkBoDjtvrDYvuvsEzbx8eVAzhMf3XKUHF6HpuxHkC5iFUDtqKT5WIuJTEQz+XhMVOt/gt5D6VvuiRxgfrHdSIna7KtTG6C7xarbcvW2T+hiezA4qgVWa/pyWzoBENWJZKwH+IRqlGFcH5d5IQ8XXH7rcyzS/LFjlWLg7pQu1tSqZ6NWJtRfJRQCEytPngdotAlYUFbtjO6r+aafUsfTy20v8hvbkDOxBuwmCeoXSlrTjLL3PXarO8w==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(23010399003)(7416014)(1800799024)(366016)(921020)(6133799003)(3023799007)(56012099006)(10067099003)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZlBpcVhmRzROUm5keHYrT1FSZXErb3dkeUVFL3cwcXB1SXhOeThkRVBINlQv?=
+ =?utf-8?B?emFoUmprWDQ2cFdGSUMxcWMzSXFEcUF2SVkyb09YUDF1NUF1dDkyK051TW9B?=
+ =?utf-8?B?bzZjYnJPNjlWVm04NHNBRXYzLzRObkZHVHJWb3hsV1A1enJ2MVViWEY4SDJs?=
+ =?utf-8?B?ZFhqTFRoRklmbDkwRytreU1COWw5R3ZjNlBEQU9NdmJVS2Rta2NHSER0cUhJ?=
+ =?utf-8?B?ZTN0L2xvTGtSc1YrZGt3SDBkRjQ1UnF5cVo0a1R4enFDL0F3cEVZam1QcG5m?=
+ =?utf-8?B?UTdWajFrcmF2SmpiMitRNjVzNDhFUSs5RkpYaEhjOHU2STdPallWMnhSWHN2?=
+ =?utf-8?B?Z0loMjFCT1ZiZGxvT25aaDhjSU1HUlQrQWlDZEp4Q3FnZ1AvalUwa0FFTEVJ?=
+ =?utf-8?B?SlIyTGl0SE1haVBpdnhpamZsMHQ1OVVJTDkySzB1WGJvdFpMd1lZZHNFK1My?=
+ =?utf-8?B?TnAwd3RzSVVHYXhiRllFSkdzaHlFVzBwcjhkdWFoM2ZOV2dOZ2NVdGJTUExB?=
+ =?utf-8?B?MEprZDM2WU9MNHZmZGlDQkw1TldqSnA1MmRXR2pnSVo5Z29aTnc0UVY1ZkRH?=
+ =?utf-8?B?Yk9ualIvNE5VS0I3aW9ZQVZDeitIQmFJZjRkbXN0RkNrSlR0K1RrUmNBS1d0?=
+ =?utf-8?B?VndNaUlQV08zTzdsbHRITHFmNmkyb2xYZ0xpeVpPWXpOQy9WWEkrYzFQK3p3?=
+ =?utf-8?B?NVQ5SGFWNWhxY0dWSG12ZFY5NTJoZmFKdTBXNDl2MEpLc0ZURHRRdzlXbUk3?=
+ =?utf-8?B?YWNGbGt1c2NNZUs2SGhGK2V2bEFaM0tUVVkweFU0S3plRlNFNG15bnVMQ1Qw?=
+ =?utf-8?B?RlFvMTF2VzRtVDlKR1AyL216dG10NERxS1l3S01GVDhsSy9MbU4rWXZzVW93?=
+ =?utf-8?B?aUQrK29qcm5ReWhMelFOSGtQMTNXc1cxemFTTjVUemJldVpHdFpuMXFkY2RE?=
+ =?utf-8?B?SnVUci9SY05zTFNCZlNDaFIyOWdSS1dYaWEydGRGWnhmV2l1bi81ZG41dS9U?=
+ =?utf-8?B?b0ZYRFl5M3R6QnE0NmIvWThwYWpwVk00SkVKQXpGVlJzWGlaejhOYUtRLzBR?=
+ =?utf-8?B?NU5UMlkwK2ZOQzd1dVRCMDl3ZW92ZGM4Y3R0UVJ2MmdYQVNiQTRUZXh3NFJ2?=
+ =?utf-8?B?WVFGSmFjZTJETDZRbEtNbDMwckl0QlhkaVB0MnFiM1E2TlRGK2U3L0VHQXh1?=
+ =?utf-8?B?OU9kNXRnWldoUDBxSWFXMjBSbEpDd0JKZmROL2NxVFp5citIcEgrLzRDQmJ6?=
+ =?utf-8?B?L1pjSHg1RityUnFGTDYyWWVEdG5GS1RFdDZTa3dwVEVWR1MwVVJscVZtWFdj?=
+ =?utf-8?B?U2NjaHdGM0prRjJWMTFaWTNacmluK2N1ZE9uRVZnZGpzTW9KeVUvT0FBbW1V?=
+ =?utf-8?B?aTdLM09ldHZXT1NKWDAwbFkzeGhndmNFYjAwSWdDMmxXbXV2dmdtcWpKcGQy?=
+ =?utf-8?B?dkEraithYXJvZkNoejhZcjdUZWhDMUlMZk1RSjNzYlV4cE5FTTN0U2FMdHRp?=
+ =?utf-8?B?Tnh4VmRQcVljMFM0R0NTU09RMTl1NVZtTjlVM0E4NUhucFFFZVp3MGFkV1pk?=
+ =?utf-8?B?dG1TbDA4ZVZOVFJ3UFZGbktCN2kxckU2eWlsdzJjRllTWG4zL1lxOFBrN096?=
+ =?utf-8?B?eEtjckY1bWFLeG9KNHE0bG05RzcvTHlCdEppR1orM2U1NEU1L3BsNEMya1VU?=
+ =?utf-8?B?WGpHOVR6bHVDTlV6N0s0Q08vLzh5ZUhDL0VKR1pOZFhzWWpjUFZiZkpUaUNh?=
+ =?utf-8?B?M1pQeDRFUHdNYkNLZCtjNjQxZVp3NXZQY0Q4b3RNbFpXYWo5WndTVmNGOWVB?=
+ =?utf-8?B?aFA0OG1aQVREZnhXZEhwWXVTMVMxUWIyWkRDemRPTndSK2ZvaDBDVmlIQzlj?=
+ =?utf-8?B?eWpTaGpQcENMb1NuTGozWEZ4V0hiRktzNWR1alZEMFlXUFR1dXh4SFR5MDhO?=
+ =?utf-8?B?MzVJNFNYdE9qalZsZkN5VjdoRE5QOFdIdThNdTd6T25CeU94QXZ2NzNtK2lT?=
+ =?utf-8?B?R3QzZ3hRcUROV3QxcWsyeUliU1hTOUk4dXFMNFFqZnloM1FJRFJsY3cvUVNu?=
+ =?utf-8?B?cHZiZmFvL2E3S2dJQ0xVTitSK1ZCdGE0TWw5cVJxMDhQWEh6VWNBdXR3Wk43?=
+ =?utf-8?B?L0FaZTVETk9yL29IMzBlR3p0STFxZGpGUWVSQ2V3MzZnSUxqeTdZOUtRNGFK?=
+ =?utf-8?B?Q3ViU3huZ2VvaDN0U3ZlY1Z4NDNmRGZLM0tEaGlwckN6RGc3SmlhOFhGWnZL?=
+ =?utf-8?B?VE5JVTRjWTg3Y2JMeDNONnN1OHVHcDkwbEFubGR1bG9uL3BTT1FqVzhSMUVT?=
+ =?utf-8?B?M2Y1MGNLL0MwQmo0b1kweXUvV0c3LzJ4Mkx4bHNib0tDYnJYajVWdVdIR1p1?=
+ =?utf-8?Q?M4xNtgeViUetHCFfkev6YTb1fPWOMARo9LH96Us1X1sLR?=
+X-MS-Exchange-AntiSpam-MessageData-1: OEe6r13MMAy0Zg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 06adb3e2-66c1-4995-92cb-08df0252d78c
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2026 02:44:54.0969
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yf3G/ndc5zVaA4UUsjyoVNSb1a2Zw/w+u7eAVIE0lmO1sHSfDYyOrlVbC36lrNw17Om0Vn2ZIUgHbEYVJeFspw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6094
 
-On Tue, Aug 25, 2026 at 09:37:34AM +1000, NeilBrown wrote:
-> > For readahead, I think that queues / lru are not involved. We submit the I/O,
-> > and once the I/O is done, we unlock the folio from interrupt context.
-> 
-> "submit the I/O" means "attach the page to a "struct bio" (or similar)
-> and attach the struct bio to a transmit queue for the device (or
-> similar).  So there really is a queue.
-> 
-> > 
-> > end_buffer_async_read() / iomap_finish_folio_read() end up calling
-> > folio_end_read(), where we do the magic
-> > 
-> > 	folio_wake_bit(folio, PG_locked);
-> 
-> Exactly where the lock ownership should be reclaimed is not immediately
-> clear to me.  bio_endio() might be early enough but there are probably
-> better points.
-> 
-> A small difficulty here is that a bio has multiple folios and they are
-> all locked.  I cannot see that lockdep has a concept of holding an
-> arbitrarily large set of related locks.
-> We could just tell lockdep 
->   "I have some folios locked" 
-> or maybe enhance lockdep to allow
->   "I have N folios locked"
-> or even
->   "I have N folios in address-space A with the highest offset being O".
-> 
-> This would allow lockdep to check the validity of locking another folio
-> - only allowed if the address space is the same and the offset is larger
-> than the previous largest.
+The `casts` module includes lossless const converter functions, as it is
+sometimes necessary to cast a bindgen-generated constant into a narrower
+type. Such conversions are known to be lossless at compile-time, but
+using `as` for them still requires a `CAST` comment and carries the risk
+of the conversion becoming lossy should the value of the constant
+change.
 
-It's more complex than that; see my other emails on the subject.
+Since these functions need to be evaluated at compile-time, they take
+the expression to narrow as a generic const argument, requiring the use
+of the turbofish syntax by callers. Also, a dedicated function is needed
+per type conversion, resulting in 9 functions generated by a single
+macro. All these factors make them hard to discover and a bit cumbersome
+to use.
 
-I think we need the ability for lockdep to call a function which says "I
-hold this lock, is that lock OK to acquire".  But the devil is in the
-details.
+This series replaces these functions with a single `const_as` macro that
+ensures an `as` conversion is lossless at build-time. Since it is unique
+and not generated, it is easy to discover, and its syntax also looks
+more accessible than the turbofish one.
 
-> > 
-> > It's interesting, that for writeback we never unlock the folio on the I/O path,
-> > but instead have the dedicated page flag to tell us when writeback is complete.
-> 
-> PG_locked and PG_writeback are two different lock-bits with two
-> different meanings.
-> When a folio is PG_locked the content is invalid and shouldn't be accessed.
-> When a folio is in PG_writeback its data is not safe even though
-> PG_dirty has been cleared (if I remember correctly).
-> 
-> So these are two separate, though related, lock bits that would both
-> need to be tracked.  lockdep would detect how they are related.
+Patch 2 then performs the conversion of nova-core to use these
+conversion helpers in the process of removing its own superseded `num`
+module.
 
-Some history ... before we had PG_writeback, we held PG_locked
-throughout the writeback process.  People argued convincingly that it
-was fine to map a page into a process's address space (which requires
-PG_locked) while it was being written back.  And so PG_locked was
-split.  Now we take PG_locked at the beginning of the writeback process
-and downgrade to PG_writeback at some point.
+This series is based on today's `master`.
+
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+---
+Alexandre Courbot (2):
+      rust: num: casts: replace const type narrowing methods with a macro
+      gpu: nova-core: use kernel lossless integer conversion module
+
+ drivers/gpu/nova-core/falcon.rs                    |  12 +-
+ drivers/gpu/nova-core/falcon/fsp.rs                |   4 +-
+ drivers/gpu/nova-core/fb.rs                        |   2 +-
+ drivers/gpu/nova-core/fb/hal/gb100.rs              |   9 +-
+ drivers/gpu/nova-core/firmware.rs                  |   4 +-
+ drivers/gpu/nova-core/firmware/booter.rs           |   4 +-
+ drivers/gpu/nova-core/firmware/fwsec.rs            |   2 +-
+ drivers/gpu/nova-core/firmware/fwsec/bootloader.rs |   4 +-
+ drivers/gpu/nova-core/firmware/gsp.rs              |   9 +-
+ drivers/gpu/nova-core/firmware/tlv.rs              |  11 +-
+ drivers/gpu/nova-core/fsp.rs                       |   8 +-
+ drivers/gpu/nova-core/gsp.rs                       |   4 +-
+ drivers/gpu/nova-core/gsp/cmdq.rs                  |  22 +--
+ drivers/gpu/nova-core/gsp/fw.rs                    |  50 ++---
+ drivers/gpu/nova-core/gsp/fw/commands.rs           |   4 +-
+ drivers/gpu/nova-core/gsp/sequencer.rs             |   2 +-
+ drivers/gpu/nova-core/mctp.rs                      |   8 +-
+ drivers/gpu/nova-core/num.rs                       | 211 ---------------------
+ drivers/gpu/nova-core/vbios.rs                     |   2 +-
+ rust/kernel/num/casts.rs                           | 129 ++++++++-----
+ 20 files changed, 163 insertions(+), 338 deletions(-)
+---
+base-commit: 66498c75b4f8017f62d720d9b59675bdf3abce91
+change-id: 20260825-const_as-a792dad39943
+
+Best regards,
+--  
+Alexandre Courbot <acourbot@nvidia.com>
 
