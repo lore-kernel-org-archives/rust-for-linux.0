@@ -1,256 +1,146 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010044.outbound.protection.outlook.com [52.101.46.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D69B35AC00;
-	Tue, 25 Aug 2026 07:32:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DB23DDAE2
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Aug 2026 08:25:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.171
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787643162; cv=fail; b=d4GbqKpze+mKg4HtZZXNVpzBNxZYF0BqfVF5s+weIEffgeVcuJoLjmymeApvNTu5mlOBMUGcelyYS9smwhjXrxQwmWiehx9a6Os0FKhgwFGdZqMVKgocixH79CzpfCqW1zwak3igD9/+7YGSq/kabzvQnYMMN3O9D83ozPKPmv0=
+	t=1787646316; cv=pass; b=qwkrb7Mbfn7uyapNKu/bbYsXxIxt0lRr9Fn2tcv9migz3TFcuKeJEtDfWFMhN37UYYBdwzIP6DVhHYcPCdIWi1igv8GOc2YdSo6kaM3HtcNS2zI4R9Au8HMNbO/uw3MK0n2gt1oPBrHeoLmj11pw7bEf1vwlq6G6zg3TnWqfETg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787643162; c=relaxed/simple;
-	bh=pjZhiMC+JpbIWLBcUjI8CgXM0+aIfaZQk35N42CcmZw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=cAgI/PLt4U15qKca5uNBj0pqzJ0KTU6dk5r2EresleKWOh2Fr+dooBql8s/q4t5nr0UuRNbTT2ptLBDgT1k2kNrnNtaTlO34lHoGlO3mNSdswq4VGd4f6AygI5457RuQd+jiCwCX6dHzhv+Ki1e9WoOU6Mq3XWhIU4SEVIPbOk4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=opijN+NI; arc=fail smtp.client-ip=52.101.46.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1787646316; c=relaxed/simple;
+	bh=vN+lqQ1cw8Q+rzycmYP3JO5Z+XAODVd6qviDwRWW+fw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LTuIHUzcAgF2DS0pJAnkF5CTgiWxWpv6hmUXmP9PckX16faVWZ3z46Yfmj4TJgDaaKKQNeV/GsvwLjM7Vm7osgCX2jkVL/EyEEYmEaa7+WwGIMCzwPuTx97w2e9GZhuQv00glF/a67zq3hbBTC/SnQfj8Q0ud3O4kqJFdUNTLoA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mHA5hSUg; arc=pass smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="opijN+NI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XwsSexVbfIcUqTOzelTl9RkEY+UiJAbYjGeBbJvEbFgougBTuBOAQSAv1mQvLLor9aiJQG9dOWd5r4y7lwQbooIZ5He0x0/Y9nBiFufSQO5kOI03+06Pdlcmx2rnLMdUNMnUlA1KGZ14I2GKprUO4kJuCVGq1/dklhP4Y1jn9V75OBpYNzNuhj41XFwncYMGEQqm8jUyD9bUQI1cVxKy2z+T4YYuTZLY+pVYtDUbFrHToFElfyaQOGyLKeyyiW0JbTT3r8tON5CghvNVg7ojP8ymlWGJvikXy7+5XHmt+9KneNq2dB274W0SmqwxjMx6IKQ/46L2r074rcR6uW7cMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GqsvJI/D8FYD0TDFOKMkhwpUGzLvzVLj6DCcjhSH2JE=;
- b=Naz8/vRMFl8zGA/lHtDMVqzNT8BjYTtBW3t/3Yfsf9Qdg3Usf241rc7/cmpFhkVJ/P+CnEYZF1jhDEyWHMH0ZbQ0nQqCOrlJ7A0WS/RqKkgn50lAGkqLLoqbjCr0G2TqhUOX+HhLKeEQIPQP1W1Fi2ZV7GiVui0VVjuMf5mQkJyJCoiTfRKehYaQFZTt6p0tKDmg86BDGPeCEzNkSKSJbBH9pNbfXDvFjLSv0/lIHYo0z7B/v325oYXvHi70tAHcbLf0LNGG7LvaQBeDzT4Xvlm+dG6M8dAXpZaVv1HdRfO1ApmW6xvmvxh8EkKGsER/r/Gjy4zQukTWXuf/GqbFfQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GqsvJI/D8FYD0TDFOKMkhwpUGzLvzVLj6DCcjhSH2JE=;
- b=opijN+NI2AnaS15KBzi6Z4jXIPAST9L+1jr8G7ct9xfDPpW/OZhuvYpU3F6kNgTbic0X55+MfwGJsKKoR/obW1pHd7Qfxt43ZYsF/iU6jkQXKHngK2a85RrR6QJKQorP/3VrIC/9bhhjY1kL5cNbsFTLeXeOT45S8bu8NgJ9ZbtQN9hTrjKOTyglrqLuvGZwVUuovGB+I8UGKVCAdapMxAfofw1KeB31kCXFpIdhWtYGqYA+aCT1UgxqaxOBG/6nNykt6lrOMTMtSrw5dCn7i6N5fKLSR9qM8Dubl7Snj0yBKBnoPJ5O+1aUvifPNRfjfQzikBRbit0pNKxYfLUDGw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MN0PR12MB5977.namprd12.prod.outlook.com (2603:10b6:208:37c::22)
- by DM4PR12MB8557.namprd12.prod.outlook.com (2603:10b6:8:18b::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.6; Tue, 25 Aug
- 2026 07:32:37 +0000
-Received: from MN0PR12MB5977.namprd12.prod.outlook.com
- ([fe80::d8:f725:258:2f28]) by MN0PR12MB5977.namprd12.prod.outlook.com
- ([fe80::d8:f725:258:2f28%4]) with mapi id 15.21.0360.005; Tue, 25 Aug 2026
- 07:32:37 +0000
-Date: Tue, 25 Aug 2026 17:32:32 +1000
-From: Alistair Popple <apopple@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: nova-gpu <nova-gpu@lists.linux.dev>, Alice Ryhl <aliceryhl@google.com>, 
-	David Airlie <airlied@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	Eliot Courtney <ecourtney@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 4/7] drm: nova: Add a GPU info ioctl
-Message-ID: <ao1AnG7fUhJ8a1U-@nvdebian.thelocal>
-References: <20260811050657.646799-1-apopple@nvidia.com>
- <20260811050657.646799-5-apopple@nvidia.com>
- <DKRHW6G6P4K5.15H1A4DGR6672@kernel.org>
- <aofWfMSZtV-bNYrr@nvdebian.thelocal>
- <DKXETHVKYVV4.1P8RNJ6AXV3X8@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DKXETHVKYVV4.1P8RNJ6AXV3X8@kernel.org>
-X-ClientProxiedBy: SY5P282CA0175.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:249::26) To MN0PR12MB5977.namprd12.prod.outlook.com
- (2603:10b6:208:37c::22)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mHA5hSUg"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2d319b84213so5572205ad.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Aug 2026 01:25:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787646314; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PDvxLOo+wDM0TwMEl5tzjbXzLSU/PLs+0qymygl+MmOiNlBBg2IAOHKBCBm4SVIUGm
+         EfIPZo6RCKH76/fhBC9mkYkQEIxhZNYm7Swfobz8YVFRQ150nh/9RBwE1AwrvuNm4nv0
+         UYXeXDkeNk72evf3hxgTTwzRwoD6p8wEzpdlznPuT0DSGCq2aKDi/whrDbkYM9Sf002K
+         93lUwyeLTgqsHuqrH14VSdpV8q3LX3lo7IiKCXw+fEPcMznTV92+metzbQY1xRVSB2eb
+         P+/k/7nxPYDSN6tphW4KDpGyHpnAxwQAURVOsLEVvjKpZA2HyIIeXr97RZsgBT/QwH76
+         G/LA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=g+1YIeAgohPrZe/McJ1EJLwlBrZGsBgi02RJu4vUZyM=;
+        fh=z6L+zF6XoERmKsS9Mx7t/F7sTA4COL75D8Ob7HAutQ8=;
+        b=fB+L0BoE5jqWCOBnSrLOHJ3ZAxtMbFeJSbgfNvpfs7YMSBcV73Cl3kDMFaMpZe1JBG
+         +8X14JoFURa7sULg47sTZt0xc95YhdKYGpPq0ipeLu/hAXZzm7Q/FZ+TNMqZhlNNR7Ft
+         XO2KoJg6NdJCPbEMLxK7tbDebbF9oqQ/ra/SC+hl9/TKMuz4VihpoT1YjWxQkx+GlABR
+         g1jAgEUjFfU4QwwiXwIgtbgSPb3FpNaMWJVCK/dqOzaAueGQrkaJvwvW2I6x8ISBhdPb
+         Cnty/A6xH6FyJDjiTF5PFjzmC62xL3CUDf+zEEEheSvMLy+PHwYSiSnOKU5dpkHq6cuL
+         0nAg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787646314; x=1788251114; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=g+1YIeAgohPrZe/McJ1EJLwlBrZGsBgi02RJu4vUZyM=;
+        b=mHA5hSUg7j2SMrmYbaEuiLCHgU1Iw1fAAgn7lygGXelFm4i4IjsegL3SwC6a3DgXwm
+         RXqzhre0lV48Eo2H1RxyzikwNw/Hjruqt/z2IS1hdoV9KA9s6Uyk4VUVFXkGzpIQA9L3
+         /HT/Lbwg7RCoGzJODwX1GPuS57AE7GHAyvzM3r/+qhP/5Ewrzxwdv28yoGq21wSkyorv
+         cltNuIx4ewITuRgnQwtwQgIy5+gmedAQk8j/cNs6PBxtOWrLOnCF52l9vbMfVuxMoYEi
+         yWYqSX5QTai6/DkgaxWSDvqM35r/3kFPCOpE5CHblxhj0gMASAEeoCc/GdMlUUTkzqya
+         +HCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787646314; x=1788251114;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=g+1YIeAgohPrZe/McJ1EJLwlBrZGsBgi02RJu4vUZyM=;
+        b=pnukp5UFz6m6sKomvB0z/BBQXIp70UiFX2OPcP7K4i9BlPxRbC5eq7YtycTyeKqGYP
+         pqoKHXN8tQmU9j7rG9L5+TSf1fkUwRO1LiF5xvcguipUvugZSej3EUNtxDVywWHAtRiE
+         ancRT2+SIgPAEfTvPObMLLsa9ToESWhUjYHngtYh5aUp+Xso2Q4M416kbQT1av32CSdz
+         VO4IVf2UUmO9is/gc3LDjJOMvOxxbJygKJfevQ4E8NEnYjdDW+b2AiBqIKUBQ/E3Y5jT
+         eJM+QIphTD/evLJajBS+uveo6jGw0MJxaAiVSXsEHLICkfOwLJKWD7GF8IaR4Np+1GsQ
+         Dqvw==
+X-Forwarded-Encrypted: i=1; AHgh+RqBnsu1JUZ0pU53PJ4oEC5wJA0S0o0WXBJ/X2JaoAZnXQ0mf+F8mJdHP87+PyZGh+7iJdqWc72nlWgCLOghHw==@vger.kernel.org
+X-Gm-Message-State: AFuF++nhq29rdtjYV3SPvXWJSUDIQE+9ZdCqAZYa+oFretrq2mRJVReg
+	OCStMrrzOSNP+2Eid3lHYsOlQxbv67mDlWG0BANTZQWdX76vSkKocP6BiAtUBMhR38bfdY0wt5p
+	A7E9fYEeDqvMsDZ9k6VTvJPewffwrWwQ=
+X-Gm-Gg: AR+sD10yhW8cnsLGCTSAqxEv4aHvVIR5NTXmsnTeoY0sixrxEJLzTmtzod4ASjlEABh
+	j476BnnqmQd15M1ZJJJXGC1scUJHNf4z+RAlo1jvFSDzcj83mMsxIL9LsvyMu1T/FDaVj419NS2
+	bKkYcgWEhu7hnn3oIXithvCKDtic8wNdZsvScrE5YFQIosXa2No8KNRkIRxEBAIJy5ZuxeFfV77
+	NEof8MoLRCpdJi7WFs+z4/92QRBSxYGZrY3Psl/wkUCW4pGWRC/RXIjONo01rngR2j7ZgyfZvCp
+	7OFOC4/AWUazg0cNkwksNbEFs66VRHvgGsxEaUxcRxdP/NvZZEbrFQXz0Qm87JWxoTN8minxaXR
+	LihNP25Ab9kdw9plNnsKoniHJW58rADMcFS/uQtTxWUU4dGOgD1aFL1kRHmcV
+X-Received: by 2002:a17:903:234a:b0:2d6:3c1a:85ef with SMTP id
+ d9443c01a7336-2d6e3711667mr34626415ad.4.1787646314097; Tue, 25 Aug 2026
+ 01:25:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB5977:EE_|DM4PR12MB8557:EE_
-X-MS-Office365-Filtering-Correlation-Id: ff8ee324-31bb-4110-6e44-08df027b0955
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|10067099003|18002099003|22082099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	2HiipbtmGicAKzGOg4Zme9Hk7eoRK6Xe2BYjvn4HVPXNNIkhuZjL56sft1Q/l/XqwGSiMqS+n9ZQ5lKwS0fCPOy+Gx1+5Eu4DtoJMOTPKOy/jmxXBOMmRY9vGtOnbsXiaV1ieHG+lA3BIDUsbXBpIvcSX3vuteX45fYpBQroMT3pPDvqhcUPSxshiWca5atrJl1AhjuWUKQnLy6x9vCMau+dHwn/AKXGD5DOxiZK9ePD2pFi2EFbDMOMGnD8+eEhL0mGaO5865WwnKT//DxKsI7XcvUZQ9oKYEL5J2+y+9GsGfWXiP/0Vu2dAZVVjfvCEcmq10ZJ3/yiF+sueTjmpCvw1qOMuFyoIRF0xFlG/0a7Ri7ZiCpB+JqHQPMZzGPdAU/xfxWcCW5y+JS9oLXOVPArIrU4cSYNYUnvs5YDNOMfDjC4QCpeiMIG+3vX6GbN16aiRPmlXBxZSEgfF77GfiToK6zU2QlRQj33C9LNLXoRAYfwbes1wnTkI/iL4ar/ufuf9g/smN1bxWGOjmDSP9jIFfrvk8YjrpbhKEIili064Gk7LuZCDg70MxEiewNWk5JVgypsgLob3K9HxKsSQ658L3Aj89pPg1/xT/z6yGK/GoaTvDxKEiUXIgEi5iarZVSejpvX/Cdpw4lqID3U6uF5t8a7p+hAb3maRBI6q+E=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB5977.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(10067099003)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?QBR1Oe3VBxou6q1N75xgkjiZR5mHrc+6bLXCEMCSOuls20CZ3FBD0LRhheEn?=
- =?us-ascii?Q?JgVivE+E0sfGUGsJuX5CJ7vEN2aDt+4AfJQiMMUx30N6v+MEhS8rjtrEWYwB?=
- =?us-ascii?Q?1UTkdx7WVrXX6VPvVGK5AWkZy7GuXJp/fKLV2wJeygsD6OGEudEklXV/Iu+T?=
- =?us-ascii?Q?013meM99NvpKyePiZHEqKdcuBC9wY5HczfQ7Z9Nrck/ZQVsr2yy4P3cbsiTr?=
- =?us-ascii?Q?XRnvNFax8Q4cDPdjefNUSqmAusZNvC5Rj2U+9O5OTm8fOCMZyXVzVM8cZXjx?=
- =?us-ascii?Q?eD38LhIq0kEuWYkLRoq86xPLIGhAOwCZIWNWbY7IHcizd3etnaznOlvy++IB?=
- =?us-ascii?Q?WCvLvG5qrK8jJRwJCj2jfPthvLxAYgy0Csz9+qfeeHFTI4l/nrGpVotIjeGl?=
- =?us-ascii?Q?33uQXa50H3DuS244cDWWaQxLYi6bQYITAQSx/u0Za+aeCk7hCRp8RgG5nVnP?=
- =?us-ascii?Q?n6GMig0264G0dHv+Ob00WSq5xWaeIndLnUE5U47nxrffDyH7f2lxi3LC5dZJ?=
- =?us-ascii?Q?6RZbL3gNeJj/4wawOt0NWCjU4XsevIeSwRWTHs6IqDUpo5WRj1IZK+BoGcEm?=
- =?us-ascii?Q?rvCantGcVoqdHd2Qc/Gf7fNTS3QDe0lxGreq1hKGbr2rp3JWvcqLAesfX+40?=
- =?us-ascii?Q?D01Ld6kgaL5KlNhVHe8sO/P4mOXRlV+oLpmbK7GB0YbmQv0s+QFloxTk21Tx?=
- =?us-ascii?Q?KPjr3JNrnswhjIr+y3nlXsAfajwW7u5ScqYI0RP21wo90rOvnK1blJAGX1Mn?=
- =?us-ascii?Q?WD2ZwtMRmEVVtPLvZNCgZjtPm27bRVb0pHRYAVtDUnG7Hq8wGVwroE0so3v6?=
- =?us-ascii?Q?+XnAuVCYZJozrcqPDhg4DtfsjQ9xdUr2uNynfpRgd3UCPGu+zjplaF1yqj0g?=
- =?us-ascii?Q?y1f2jEkBd3IPSmHqudqpfASsFp/oRPonVu2XxDB9L+KFy0/E5egtAwi/H1R6?=
- =?us-ascii?Q?4NqtVr1HDnyOf1uwJfgFpDunxmlw0uCLc3On+B/Dke6FCB4ls7xxPtjuFTHg?=
- =?us-ascii?Q?KAhS5InbQOt+nj9/BCr9hLNtwvQDP4325ifSGZcfFtWwkTxT3shiX9j0Lr1N?=
- =?us-ascii?Q?ATYHDGGQvePIy87xYzSbK+pe9ON+3kOgJCW91F5ODZ6pFViTDvzxnDvTzJfG?=
- =?us-ascii?Q?qSOh75HaFnLIFLMM8dgkxd3K9LNM+3VTEf86EhL079tWrf+De8eZ0a+HalDx?=
- =?us-ascii?Q?l0OkkoSOP8jl46hwFbW+nxz5bdlGP7gwvqwRpOxve5/GyfH32n4lqcWVLwUk?=
- =?us-ascii?Q?e7PrGtYJA/CniVYdqZgtFjjHgA8qcmCuBN08mND1An7/rDUbwRAnaIKYggzl?=
- =?us-ascii?Q?6nIkVlLqyJ2ocC/96UqROo3loBGAKAjgAqmI8X6P+wgrH/mNulW/Y7Ar3oSj?=
- =?us-ascii?Q?RzPhJVibK0oNgvlSlkqL9B93GS1DL3rwrdZjxPznZ7vegcTavs7Z7Ez2FBCx?=
- =?us-ascii?Q?k7z2XBOd1FdyN0sAzIzn/fmKi6hAbhU6vPout/eJNoJoWGduVG6WFWzf0BgL?=
- =?us-ascii?Q?h/Mq+l8Qrb3MXNQhlsOQJx+R0xyy9rcFKR1Prrqb1OywCvB19iGMS+7DcwBM?=
- =?us-ascii?Q?9X2hmK8kOAa+nZ7/FZX+jmBFVHXvXDlkWxEtOiaqlZlaBrh3ZZpnE0KPKGxa?=
- =?us-ascii?Q?M97tJRLb4TTPuSrs/lY8cCsEE6GnTDTAzVXl1FLF0yZuWL9EOVEn9muNbh9k?=
- =?us-ascii?Q?iAaz66pKsI0X4tW0iSa1/h+PDIGIZwFId6pJ2sr5GOrNaISUbRV/V0iqKKzP?=
- =?us-ascii?Q?f32JOQEPbA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff8ee324-31bb-4110-6e44-08df027b0955
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5977.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2026 07:32:37.3721
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NZyOdOJP0jvx9V03iaxD8+XtoVhQUl2P+HXqcJVwlrG9xqTqL0U8nB0fd7pEexHChXP6ToE6hHiF2xqogzzYEQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8557
+References: <20260825-const_as-v1-0-1ce712225fe2@nvidia.com> <20260825-const_as-v1-1-1ce712225fe2@nvidia.com>
+In-Reply-To: <20260825-const_as-v1-1-1ce712225fe2@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 25 Aug 2026 10:25:00 +0200
+X-Gm-Features: AcwNN1WiqBK6DPw3KNUBUFoCCm95GG9T8sdCr01st0jWIRGTbY2d4Hbg3YnemNM
+Message-ID: <CANiq72mYW0wQGzWRBvGqnatjysi4BnXBFLUpLPvrS0Q=JB2A0w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: num: casts: replace const type narrowing
+ methods with a macro
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+	Eliot Courtney <ecourtney@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-08-25 at 05:10 +1000, Danilo Krummrich <dakr@kernel.org> wrote...
-> On Fri Aug 21, 2026 at 7:10 AM CEST, Alistair Popple wrote:
-> > On 2026-08-18 at 06:18 +1000, Danilo Krummrich <dakr@kernel.org> wrote...
-> >> On Tue Aug 11, 2026 at 7:06 AM CEST, Alistair Popple wrote:
-> >> > diff --git a/include/uapi/drm/nova_drm.h b/include/uapi/drm/nova_drm.h
-> >> > index ea7665383644..2604e4d2698b 100644
-> >> > --- a/include/uapi/drm/nova_drm.h
-> >> > +++ b/include/uapi/drm/nova_drm.h
-> >> > @@ -118,9 +118,34 @@ struct drm_nova_gem_info {
-> >> >  	__u64 size;
-> >> >  };
-> >> >  
-> >> > +/**
-> >> > + * struct drm_nova_gpu_info - query DRM GPU info.
-> >> > + */
-> >> > +struct drm_nova_gpu_info {
-> >> > +	/**
-> >> > +	 * @size: The amount of space allocated by userspace for this structure.
-> >> > +	 * The kernel will return the amount of data it did/could actually write.
-> >> > +	 * User space can use this to determine how much of the struct is valid
-> >> > +	 * when running against an older kernel.
-> >> > +	 */
-> >> > +	__u64 size;
-> >> > +
-> >> > +	/**
-> >> > +	 * @chipid: GPU chip identifier. See &enum drm_nova_chipid for currently
-> >> > +	 * known chip identifiers.
-> >> > +	 */
-> >> > +	__u32 chipid;
-> 
-> I think we now also want to add a field for the architecture now that chipid is
-> considered opaque.
+On Tue, Aug 25, 2026 at 4:45=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.=
+com> wrote:
+>
+>     const DMA_LEN: u32 =3D casts::usize_into_u32::<{ MEM_BLOCK_ALIGNMENT =
+}>();
+>
+> into
+>
+>     const DMA_LEN: u32 =3D casts::const_as!(MEM_BLOCK_ALIGNMENT =3D> u32)=
+;
 
-I don't think so - see my response to patch 3 but I think the architecture
-decoding needs to stay in user-space.
+Hmm... I have been following the discussion and listening to both
+sides of the argument.
 
-> >> > +
-> >> > +	/**
-> >> > +	 * @pad: 32 bit padding, must be 0.
-> >> > +	 */
-> >> > +	__u32 pad;
-> >> > +};
-> >> 
-> >> I think we should add the indirection we discussed in [1], i.e. have an
-> >> indirection via
-> >> 
-> >> 	struct drm_nova_info {
-> >> 		__u32 id;
-> >> 		__u32 size;
-> >> 		__u64 info;
-> >> 		/* Revserved fields, just in case? */
-> >> 	};
-> >> 
-> >> so we can easily add new info structures, or extend an existing one with a v2
-> >> without having to create new ioctls for this purpose.
-> >
-> > Sorry, I should have called this difference out more explicitly.
-> >
-> > Basically I ended up doing it this way because it didn't make much sense to me
-> > putting an ioctl interface within an ioctl interface when DRM ioctl handling
-> > can already deal with matching numbers and truncating/extending the struct as
-> > required. It just leads to more code comparing ID's, etc and I'm not really sure
-> > what the advantage is. Are we concerned about running out of ioctls if we have
-> > to add other types of info struct?
-> >
-> > Doing this as top-level ioctl makes the strace decoders simpler and means we can
-> > just rely on the existing DRM ioctl handling to get everything right rather than
-> > duplicating that in nova-drm. Or is there some other advantage to [1] that I've
-> > missed that isn't solved here?
-> 
-> I don't think we are really concerned about running out of ioctls, but it seems
-> cleaner and more self-contained than having N ioctls for different info structs
-> and in the worst case having v2...vN info ioctls.
+The macro interface looks obvious enough, and we could consider adding
+it to the prelude.
 
-But isn't v2...vN info ioctls dealt with in the usual way by extending the
-existing struct and bumping the size? That seems like a pretty clean and
-self-contained API to me.
+Having said that, macros have a cost too when they introduce new
+"syntax", so since the beginning we have tried to minimize their use
+to where we feel is worth it.
 
-> It also allows us to define a new info type struct whenever we think something
-> is a new logical info group. Making it per ioctl will always raise the question
-> of "do we really need a new ioctl for this, can't we just fit it in X", which
-> over time tends to get messy.
+The former line above is not perfect by any means, but it is
+nevertheless syntax that one needs to already know. Personally
+speaking, I don't care if I have to write the former or the latter, to
+be honest, so I am OK with both ways. But I worked with C++ TMP in the
+past, so my eyes may be desensitized. :)
 
-Doesn't that question also apply to adding GETPARAM N+1 though? If we're not
-worried about running out of top-level ioctls I don't understand why they
-are considered special enough to warrant the extra complexity of creating and
-decoding a hiearchy of sub-ioctls.
+Apart from readability concerns, we are saving here a few characters;
+getting possibly different codegen (forced textual inline), and maybe
+having better or worse compiler-side time/memory/disk numbers. Is that
+about it? It would be good to measure any actual difference.
 
-> I think eventually we will have a bunch of different info categories. OpenRM
-> seems to have quite some as well (not too many categories, but with lots of
-> fields), Xe and amdgpu have even more categories.
+What I wouldn't want is a raw `as`, because the point of the saga we
+started a long time ago is to introduce better tools that allow us to
+get rid of the almighty `as` into weaker (i.e. safer) options, even if
+some uses of `as` may be "obviously right".
 
-Sure, we could just reserve a block of top-level ioctls for info though if we
-really cared about them being grouped together numerically. I'm not sure why
-keeping them group numerically really matters though, it's nice to have but I
-don't think it warrants any extra code.
-
-But perhaps seeing an actual user of this API would be helpful for this
-discussion, I will aim to do a pull request to drm-test this week to
-demonstrate.
-
- - Alistair
-
-> > Thanks for looking.
-> >
-> >  - Alistair
-> >
-> >> 
-> >> [1] https://lore.kernel.org/nova-gpu/DKC6T1DQX2L3.HTHPB2L167TC@kernel.org/
-> >> 
-> >> >  #define DRM_NOVA_GETPARAM		0x00
-> >> >  #define DRM_NOVA_GEM_CREATE		0x01
-> >> >  #define DRM_NOVA_GEM_INFO		0x02
-> >> > +#define DRM_NOVA_GPU_INFO		0x03
-> >> >  
-> >> >  /* Note: this is an enum so that it can be resolved by Rust bindgen. */
-> >> >  enum {
-> >> > @@ -130,6 +155,8 @@ enum {
-> >> >  						   struct drm_nova_gem_create),
-> >> >  	DRM_IOCTL_NOVA_GEM_INFO		= DRM_IOWR(DRM_COMMAND_BASE + DRM_NOVA_GEM_INFO,
-> >> >  						   struct drm_nova_gem_info),
-> >> > +	DRM_IOCTL_NOVA_GPU_INFO		= DRM_IOWR(DRM_COMMAND_BASE + DRM_NOVA_GPU_INFO,
-> >> > +						   struct drm_nova_gpu_info),
-> >> >  };
-> >> >  
-> >> >  #if defined(__cplusplus)
-> >> > -- 
-> >> > 2.54.0
-> >> 
-> 
+Cheers,
+Miguel
