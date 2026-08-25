@@ -1,223 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010060.outbound.protection.outlook.com [52.101.56.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EF9284B37
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Aug 2026 11:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787656145; cv=none; b=GlKN4cQvR6NwH2d+YMBjHPZy/2fgOtpIzq5eqo0jXH3eOLH8GUNg9usU+1VsatO/A9C7rf7Ib6fhg2Uh3yLjHfBIk89fokXrBGX/dOXtZctfy4Sf3MLqzbZPOc0pqEeLFRqOocy/BJs+bZY8/mAB5y1spCLWx+FTWr5epDT9WaA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787656145; c=relaxed/simple;
-	bh=0ciZa7SraEvE+4oulKgD9LnvfBVa+xK2+fvNvLgXDoY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WVjUl1TVP3xXMocJrq7R65CIsfTXnHZCXxSZhGWIAan+89j3VS7OuulLerc3wSCEF6KbEofQJxPjNyC9Z5QvejMWHf2qHb2qCO1c4zxZHCCR2Rt/McZ+BNOSL6xLTjDlccCTGywPv1L+Qkn0cwj7JDOZqP6JD5eZYNHfecf2GwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/29TpN6; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6253AC00;
+	Tue, 25 Aug 2026 11:09:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787656166; cv=fail; b=TmA3ekFb6Wnq36w9d+pFmdHDKhYhU3ddbvebWC5MQg79ac6ujm+ZdULNA6uJV7DUgXhQJ6SIhoxHp1juAntauNaKTNOiomwSz7jvdi48tbvUJ3JKeSI8PJ1c96qQIQBmgAYrrbxs70CAhScVBBdBVnlf1nQOeht6+wUUEwGDaqw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787656166; c=relaxed/simple;
+	bh=q0VJGh9MTtMMiSTkmXeCYxH/jaZYENX3KwUki0F+BJc=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=LvshMNeOOKT7LJnN+mVHBXhhXpW5V4kWoEoMoOYrAStICBN5q4DCP9ZfOPcUqBde86eLrH7gK6BWcQsf9gwAcTWuNny1UDjBQcizAknDzPdmx2TNwC2B9bw+daJVNDULZfFocNQMPT7GmIJUKA4GYLYMVnsLrntzbSuhgmO4bwA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pMJv0V/H; arc=fail smtp.client-ip=52.101.56.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/29TpN6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325441F00A3A;
-	Tue, 25 Aug 2026 11:08:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1787656141;
-	bh=bnmb0aePC2tHNSUsnpnWsxsGfEY0uUaaLGYqa9DfC4Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=H/29TpN6u2Hr02xBZz1Dvl7+9zSCbd8zdCTcBnTdJVVUiDdMk2d+JaTNU/g9gYc/8
-	 zVJkXRb7ksdIZZKr89GLHHxGJiiwVZiru4eFSQIGqGuKMO4/CtKyKsJpRrTak2Y7Z7
-	 C1ujJgaNh33OHd2jLuaiRmwnUhYjCshPIV7exj4w=
-Date: Tue, 25 Aug 2026 13:08:55 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
-	Gary Guo <gary@garyguo.net>, Alvin Sun <alvin.sun@linux.dev>
-Subject: Re: merge problems with char-misc-next and Linus's branch right now
-Message-ID: <2026082514-such-version-4236@gregkh>
-References: <2026082516-slapstick-nearly-8986@gregkh>
- <1d80b800-8216-4731-830b-bbf055ab6e6f@linux.dev>
- <CANiq72krVngy9cC1X9q55THEC=5Od_Bbo5=V5ax8jZovW6ENtg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pMJv0V/H"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Yj/IUsAd85Cb6b9fuQ2iunDWmfKG8cmb7zYGtb+6q0mE+gIYjo9YTjYMGoAtdgONV33EpqXaUrV4gCBuLBYPwqJUn1/xJpbmpsCHyYsXdc5brPcyX0a6/o2o1RsSXkYUfx4jhz+8vcJnB2MtWp00+Y1KlKGx8Wfx7mmkLapWzy0ZfhZA6nK00xJJzFE8idFHvO0W4MvAHFkjgk/L/t8p7UY8nKTtNfxjkl7abUkArJpTgCPCx5LGIKQKJBhuX9Ng0bDSLb/ljaQIXg8qqiibLcOietcWzLiMXIEs1+uewy0RMjBYEqCQAOh7qbgp5ef+7nZicqQqBR2Z/FRBtGIBcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=q0VJGh9MTtMMiSTkmXeCYxH/jaZYENX3KwUki0F+BJc=;
+ b=STntJsQVmksQTQ8uYgo/HJInPNoDamKnaQUv2MUEDshdgW2ATPne2M3uOnQqZlwUSoKmjZlXmZGaYdzjzpcq8IrluRrMpK+I+asQrs5wlv+HfcwWmnBq912VngWgCEpsniFFdqsd3xXU/rKBTADP5cnAqW2UgWSnN8ccj0P3cImomViYAB4tSvF40iu6OLb3jPiEs+NGCUTHV84J6JDWInfWkkQ43Q7j35t8ZNAWGc1rPqjULgIr4NK35M5m8JfH24kELdVqigXcEoUFdl/WsYYCmK9gkgpDeFARbMsgjCDUS4fQ+Li4j0nDS2YiYQOSSv3zB23XBea//foEBxRhtw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=q0VJGh9MTtMMiSTkmXeCYxH/jaZYENX3KwUki0F+BJc=;
+ b=pMJv0V/Hswc4RRO2qqvo1wCymt34j5FO4vjSiiGiY2om5kMb0Injgu+2R3gVKpH7SCxMXx/NaI5CfvX2kVJwABTN2rPhuh5kKfXyXqL8B7utPa+xPmo2muoJv9qL5WLAQmGhm2svbUw++gol5JzjrzPD/3S7QDCoU4HvobUjvNk/Y+R4EYRDIZlESW1hypMvhcUCUj26GNp03po65gtzwRiFY8mSD4ZHqv2dnZuCLvhtMgwqqliZgIXtGyl1y4YWP+DkS+30yUl7KvyopThswZ860Q08s+L7G41HaIp8aVlrQYZyhojLDE6MWzKOHoQKhTr6IbCeQcSTkI1j21K2Wg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from IA1PR12MB6411.namprd12.prod.outlook.com (2603:10b6:208:388::18)
+ by SA0PR12MB4352.namprd12.prod.outlook.com (2603:10b6:806:9c::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.11; Tue, 25 Aug
+ 2026 11:09:17 +0000
+Received: from IA1PR12MB6411.namprd12.prod.outlook.com
+ ([fe80::b29f:6f15:4ece:5b5e]) by IA1PR12MB6411.namprd12.prod.outlook.com
+ ([fe80::b29f:6f15:4ece:5b5e%4]) with mapi id 15.21.0360.005; Tue, 25 Aug 2026
+ 11:09:17 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 25 Aug 2026 20:09:13 +0900
+Message-Id: <DKXZ7VHUCLWL.C6IPHWPTEJW4@nvidia.com>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Burak Emir"
+ <burak.emir@gmail.com>, "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>, "dri-devel"
+ <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH v7 06/10] rust: id_pool: take a NonZero capacity in
+ with_capacity
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260817-chid-v7-0-a5872e64d8f4@nvidia.com>
+ <20260817-chid-v7-6-a5872e64d8f4@nvidia.com>
+ <DKUHJF1YTTY6.1XXC1L2SYXEMF@nvidia.com>
+In-Reply-To: <DKUHJF1YTTY6.1XXC1L2SYXEMF@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0350.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:7c::16) To IA1PR12MB6411.namprd12.prod.outlook.com
+ (2603:10b6:208:388::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72krVngy9cC1X9q55THEC=5Od_Bbo5=V5ax8jZovW6ENtg@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR12MB6411:EE_|SA0PR12MB4352:EE_
+X-MS-Office365-Filtering-Correlation-Id: b37c6321-8ac0-4c5c-9069-08df02994daf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|10070799003|1800799024|7416014|376014|10067099003|18002099003|22082099003|4143699003|5023799004|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	qH35Mnmsc70AIclDXt5sjfkOOQAm/ikSoJ+vAM+LV446KLeNIOWW9Y4ZZQWTGgfQvAYzAK3j2A4kn+MYqO3+cPFBt729A9U0e/qoIwtitlI3yiZRePGcvuwqbjsK/n18vRR/N9KXzfUTeFJaVI1x9RPHLNgQE1Ww5rwfOnhe+OTlAWXiFY8w5k1+5qZ2hPttVXBWrtopqUEQV6R2JQ5cKVmcUOgRSLUW+nLixRsRYO/2X1AoAQsLL9h/ehoVYGpI1oKdD9GdCQMMVXmjOsHdNMVtFFWAXFbmxl5+PBa2aFYSE879QDFs4lswpQL1TEfz8HsJzeNp7On142MV+DmehhxLRYMoPaBLq+/xzCOBkc309iplqWva5SwmKz3SuIl0xnuCncv0/kzwSnNj//r67hLw77tR7LUZha2MfngiKD6+W0Z30LrTRi00WmDOgW+Ta5D457uK9yhwmhRylQUNLNd9ZnTYcLCe4gVO2ZUvtpd4Qvg9SlR93vqZD9gb7afiwx05viMbucTjOux4hlEY8n7eDPGRF/aIKtQYgBiXG+w0GCl8oTSkq2WPKBrn78tZ2WRYqHStlqHOfpoy9vufAW7ovIqZsUEIROAOZYo+h+OaxlRD56IXDvpZpCP0fNXTpX+wEajXYNO7jkGXEbvT5NakaruPjPZ33cYfwfApJmY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB6411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(10070799003)(1800799024)(7416014)(376014)(10067099003)(18002099003)(22082099003)(4143699003)(5023799004)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NCtUTlZYVnhDc2M5RlNITEgwY1dLOGl4cXFwcUlqZWdBTUxjQzJMVTQ0c09Z?=
+ =?utf-8?B?V3Yyc0ZkRHFQOUdjRlI4a2syMWpCTUJhaUdRSDgwT2hTZldNQnlTbkVoYlMr?=
+ =?utf-8?B?czVkbjZqamtUN3BsSnU4ZlAveHNXWGYyUkpldGM5TlBxbGR4MTJ6bFFvbm9t?=
+ =?utf-8?B?VVV6MXRlV3QreFk2RFBPeTVFLzVLUEhERFp3Y2RNQk0wTTNvYTF3OTNEVzIv?=
+ =?utf-8?B?Zit2MWVESUE5RzMxRWsxcDlKcXRFN0tQSmxUZkFRQWlGcDNzN1c3ekMvUkpS?=
+ =?utf-8?B?bzBRdlZRUzhEak5nTmtFaHJ0T2g3OTZuRDAvUEpvWEhaWVNiRTBlbEM4RzQ1?=
+ =?utf-8?B?MEhIRGl3ZjZNZTN3V0lWRmg5STc3MXAxYi90ZDhTWldaaDQ5WmdtN1FmRExQ?=
+ =?utf-8?B?c2p1WitNRk9uSnlkeTFLeVQzRitNVGNLVlRLcG5yNjQ5RCtZUGlTRzdUOVhs?=
+ =?utf-8?B?UG1iVnpPTCtBMmJWc0NEVkk0V3g3V2NUNkkreDdOY05ZNWlnNGZ1QVRsNGdG?=
+ =?utf-8?B?alo4dXdUOHg4MS83bHNSbUhsSHBlZVpnVFhqWGNGMGhtNHJURzdXOU1LNnNh?=
+ =?utf-8?B?Q0RUemhIOGtkWlBKVzBRcE9pOE41SUJieTFFRm1UNnFPbEE0S2pxeWEwZDlV?=
+ =?utf-8?B?bHVMZDYxQUxFVmhNajFhUWxGNlBxQ1VTb08vTXpRQ25XNXN0czRmK2IyMWtz?=
+ =?utf-8?B?N2pkUGhIL3FMVXpOdFo3Yi9WQTdaNDk0VXp2QVExeGpBS2lWMEtZaWtPVU4z?=
+ =?utf-8?B?NWNNTlhkSmxjWmoybVBYUzhnTVdaM0pYRDFZc25IL0tQTjFSU1lXODliNDJm?=
+ =?utf-8?B?N0ErZHY0amJPTkZlT25nSnpaU0ZaYWJNRTZlVW5UcXVIUk43K1NLdWMxU1Jk?=
+ =?utf-8?B?bmdUTnowU3MwZWx0cVdIRDd2UytaVGhONzl5T0Y2N1NMalBiRzNQY08yeWdU?=
+ =?utf-8?B?WnMwMytjYUdpNXlsZ3JRb0lpS25obTgxcy9vY1pUclkrZzBOQzMxQjJVWTkv?=
+ =?utf-8?B?SGN1TjNYVzkyMnEwNEZ1RDA2WnYrdVMvYmlGWFFJQjdZRmlNbnF3cU56SENq?=
+ =?utf-8?B?VHM0N2lTdHJTMzJaa251MkxzdnM3MkNuZ1JzVXQ3WVBEWVhXSDVKRVk3Mlhv?=
+ =?utf-8?B?RGNkRUZ0SFZ6dVY5eE1nRXlodm8xR3BqRll0ZzJFY1RvbjJTK2FQdDMwWWNY?=
+ =?utf-8?B?ZjlQcC92L2htdVlQci94T29BRkFkQ0k4Y0gzb09lMml6cm5PZEhJcW45YURT?=
+ =?utf-8?B?QjNmOHRZbEgwZERqU2VNN0RwUFhRcTYxS0xPdFNjckp4blkrUDhFakExaUc4?=
+ =?utf-8?B?NWt2V3doVjNqRjk5VXZMekVjMDJZU0krU3FDbWtzdnB2Qm1rVG5CcUk3dndU?=
+ =?utf-8?B?SURNTWx2SnRJL1dzMHp0bzdvdWVWQ2J3Vjk3eDlGeGFwbzJPQ2NISXJ5UzlW?=
+ =?utf-8?B?Q1Q1TmFxNTlmR1JiL1JaWjgxYk5aMnFUSXZ0LzNxZzVGTTFYRHpXdmNmY0V6?=
+ =?utf-8?B?NHlnRlV3bXBzTzg1SkhEU2hYdkpNdTNRRGFoMW9UdjkzWDNjNXVLcUFLZjBY?=
+ =?utf-8?B?ZGhpVVRoQzV5YmltRDR5MTdES3BrdGNSK3NNTi9yM0I5K3ArRXJ2UWJtTG9N?=
+ =?utf-8?B?MFBhQXBwbDJGTjFtUVBsU3J3cVNHcitSQXpiNU13ZWVxQzI5NUVtWXdRVjU3?=
+ =?utf-8?B?UXBKdDJ4YTlQanZSUHZQNUZJU2g5clN5T3p6WmxnZG1tQjlTdGJJdXBVZlBm?=
+ =?utf-8?B?WGFobE0zU1dVNkUrNmRmZHhsNUZPaTByTTJJVTFMUENVdHRZbFhSNXpHU0ht?=
+ =?utf-8?B?UGVTZjVubUQ2cUMyeDZMRzJQbk9CQ1lNUk1aVGpQengzNWc0dXIyTG5SUjQ1?=
+ =?utf-8?B?RTllOFpZS3ZuZTd1ZDNzZ2sxUC9SOUg4eDQwVnRHeVNYSXdydjEwWjJabUJt?=
+ =?utf-8?B?Y0RlTGVLOHBrQUFhaUw5ZU1zVWdJZ3lLcHQ1YWZKN3UzV3VRU2R6WFBEYkxa?=
+ =?utf-8?B?WnhuQmE0R1IzYWRYN2dJSUswWFJNS212aTVjdzZkTnIyMDBWbHBYSEx5cnp6?=
+ =?utf-8?B?WlZsN1VKdmtpVmZQMDl4YzR3bEZCVjVBSmZObG5LTnphbGZFd05xM1I4MTN3?=
+ =?utf-8?B?VnY5aitPTXp0VUExa3BFN0NRYWg2L2lmRElZSzVaaHJHZFJ0UFFPNjdMMHkv?=
+ =?utf-8?B?R05TNXNwLy9VL0FxUk5qT0VDTFZxWmNnTFJlMFE3VFo2UStRSnByTitJSGRi?=
+ =?utf-8?B?UE43L0c4aWQxN0JQTEhGSWY4U2cvR2MrdU0vZmJoTkYxYlNFejJYc1lMTWZp?=
+ =?utf-8?B?c014OWJoSjZFUHN4Y2h2RHd1MytNamZEditjSk82eDhvNGNCRFNDNTYrTkxC?=
+ =?utf-8?Q?JvO0MP7Pzepc9EycqXetkx1TJZDfy/BH1LwR1xacwc7Y4?=
+X-MS-Exchange-AntiSpam-MessageData-1: pzi64V2PFTxVZw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b37c6321-8ac0-4c5c-9069-08df02994daf
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB6411.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2026 11:09:17.0145
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZNwqsDg1YLIMkG/dKa1EDKFDeQXI4DJnmZ5zsqfVW2GrLlHO/ORf+quhyAHb+ChOuA60jXatIuQ12gvRAd6Krw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4352
 
-On Tue, Aug 25, 2026 at 12:49:54PM +0200, Miguel Ojeda wrote:
-> On Tue, Aug 25, 2026 at 12:05 PM Alvin Sun <alvin.sun@linux.dev> wrote:
-> >
-> > Gary has already posted a fix:
-> > https://lore.kernel.org/rust-for-linux/20260813163951.1102583-1-gary@kernel.org/
-> 
-> Yeah, please see as well the other conflicts related to char-misc this cycle:
-> 
->   https://lore.kernel.org/linux-next/20260805-slab-rust-fix-v1-1-c4d4c1b69de2@kernel.org/
-> 
->   https://lore.kernel.org/linux-next/ans8lsGbkro4pO6N@sirena.org.uk/
->     (the diff in that thread is from another conflict somehow, but the
->     actual conflict is very simple anyway)
-> 
-> The resolutions in linux-next should be fine.
-> 
-> My overall list of conflicts for Linus is at:
-> 
->   https://lore.kernel.org/rust-for-linux/20260816191926.230123-1-ojeda@kernel.org/
+On Fri Aug 21, 2026 at 5:39 PM JST, Alexandre Courbot wrote:
+> On Mon Aug 17, 2026 at 4:04 PM JST, Eliot Courtney wrote:
+>> There is no good reason to allocate an IdPool with zero capacity.
+>> Reflect this in IdPool::with_capacity.
+>>
+>> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+>
+> I am not sure this one is justifiable; `KVec::with_capacity(0)` is
+> doable, so why not here? As long as it doesn't introduce soundness
+> issues I'd say this is the caller's business; a driver with a legitimate
+> empty IdPool use-case would now need to special-case it.
+>
+> Now we do have an actual soundness issue with zero-sized IdPools, which
+> is that `find_unused_id` would panic with `CONFIG_RUST_BITMAP_HARDENED`,
+> but as I said on patch 5 I don't think it should anyway. Another
+> potential issue is that `grow_request` would not grow anything; but that
+> should be fixed there by handling the `capacity =3D=3D 0` case. Actually
+> that would give justification for empty IdPools to exist: just like a
+> vector can start empty and grow, so can an IdPool.
 
-Yeah, it's messy.
+I don't have a very strong opinion here but I can't really think of a
+use case for a zero capacity IdPool. Unlike an empty vector, since
+IdPool doesn't automatically grow (there is a notion of a fixed ID
+space), the only thing you can do with a zero capacity IdPool is grow it
+to non-zero. All the other operations don't do anything useful.
 
-Below is my resolution, seems to work here for me and I'll send it along
-to Linus as well.
+If such a use case exists, maybe it'd have to be something like you are
+using the capacity to identify your ID space size (and the ID space size
+is important otherwise you would just use IdPool::new() with the
+MAX_INLINE_LEN capacity) but then the only way you can grow it is via
+grow_request() which doesn't grow the ID space in caller controllable
+way.
 
-thanks,
-
-greg k-h
-
-
-diff --cc rust/kernel/sync/poll.rs
-index 5aa0ce9ba01b,684dfa242b1a..000000000000
---- a/rust/kernel/sync/poll.rs
-+++ b/rust/kernel/sync/poll.rs
-@@@ -8,13 -9,14 +9,18 @@@ use crate::
-      bindings,
-      fs::File,
-      prelude::*,
- -    sync::{CondVar, LockClassKey},
- +    sync::{
- +        rcu::synchronize_rcu,
- +        CondVar,
- +        LockClassKey, //
- +    }, //
-+     types::Opaque, //
-+ };
-+ use core::{
-+     marker::PhantomData,
-+     mem::ManuallyDrop,
-+     ops::Deref, //
-  };
-- use core::{marker::PhantomData, ops::Deref};
-  
-  /// Creates a [`PollCondVar`] initialiser with the given name and a newly-created lock class.
-  #[macro_export]
-@@@ -103,6 -106,72 +110,70 @@@ impl PinnedDrop for PollCondVar 
-          unsafe { bindings::__wake_up_pollfree(self.inner.wait_queue_head.get()) };
-  
-          // Wait for epoll items to be properly removed.
- -        //
- -        // SAFETY: Just an FFI call.
- -        unsafe { bindings::synchronize_rcu() };
- +        synchronize_rcu();
-      }
-  }
-+ 
-+ /// A [`KBox<PollCondVar>`] that uses `kfree_rcu`.
-+ ///
-+ /// [`KBox<PollCondVar>`]: PollCondVar
-+ pub struct PollCondVarBox {
-+     inner: ManuallyDrop<Pin<KBox<PollCondVarBoxInner>>>,
-+ }
-+ 
-+ #[pin_data]
-+ #[repr(C)]
-+ struct PollCondVarBoxInner {
-+     #[pin]
-+     inner: PollCondVar,
- -    rcu: Opaque<bindings::callback_head>,
-++    rcu: Opaque<bindings::kvfree_rcu_head>,
-+ }
-+ 
-+ // SAFETY: PollCondVar is Send
-+ unsafe impl Send for PollCondVarBoxInner {}
-+ // SAFETY: PollCondVar is Sync
-+ unsafe impl Sync for PollCondVarBoxInner {}
-+ 
-+ impl PollCondVarBox {
-+     /// Constructs a new boxed [`PollCondVar`].
-+     pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> Result<Self, AllocError> {
-+         let b = KBox::pin_init(
-+             pin_init!(PollCondVarBoxInner {
-+                 inner <- PollCondVar::new(name, key),
-+                 rcu: Opaque::uninit(),
-+             }),
-+             GFP_KERNEL,
-+         )
-+         .map_err(|_| AllocError)?;
-+ 
-+         Ok(PollCondVarBox {
-+             inner: ManuallyDrop::new(b),
-+         })
-+     }
-+ }
-+ 
-+ impl Deref for PollCondVarBox {
-+     type Target = PollCondVar;
-+     fn deref(&self) -> &PollCondVar {
-+         &self.inner.inner
-+     }
-+ }
-+ 
-+ impl Drop for PollCondVarBox {
-+     #[inline]
-+     fn drop(&mut self) {
-+         // SAFETY: ManuallyDrop::take ok because not already taken.
-+         let boxed = unsafe { ManuallyDrop::take(&mut self.inner) };
-+ 
-+         // SAFETY: The code below frees the box without calling the actual destructor of the type,
-+         // but it's okay because it re-implements the destructor using `kfree_rcu()` in place of
-+         // `synchronize_rcu()`.
-+         let ptr = KBox::into_raw(unsafe { Pin::into_inner_unchecked(boxed) });
-+ 
-+         // SAFETY: The pointer points at a valid `wait_queue_head`.
-+         unsafe { bindings::__wake_up_pollfree((*ptr).inner.inner.wait_queue_head.get()) };
-+ 
-+         // SAFETY: This was allocated using `KBox::pin_init`, so it can be freed with `kvfree`.
-+         unsafe { bindings::kvfree_call_rcu((*ptr).rcu.get(), ptr.cast::<ffi::c_void>()) };
-+     }
-+ }
-diff --cc rust/kernel/task.rs
-index c2b3457b700c,1b290c61714d..000000000000
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@@ -210,7 -210,14 +210,14 @@@ impl Task 
-          unsafe { *ptr::addr_of!((*self.as_ptr()).pid) }
-      }
-  
-+     /// Returns the TGID (Thread Group ID / Process ID) of the given task.
-+     pub fn tgid(&self) -> Pid {
-+         // SAFETY: The tgid of a task never changes after initialization, so reading this field is
-+         // not a data race.
-+         unsafe { *ptr::addr_of!((*self.as_ptr()).tgid) }
-+     }
-+ 
- -    /// Returns the UID of the given task.
- +    /// Returns the objective real UID of the given task.
-      #[inline]
-      pub fn uid(&self) -> Kuid {
-          // SAFETY: It's always safe to call `task_uid` on a valid task.
-diff --cc rust/uapi/uapi_helper.h
-index 1c4aa4292dce,86c7b6b284b0..000000000000
---- a/rust/uapi/uapi_helper.h
-+++ b/rust/uapi/uapi_helper.h
-@@@ -10,7 -11,7 +10,8 @@@
-  #include <uapi/drm/nova_drm.h>
-  #include <uapi/drm/panthor_drm.h>
-  #include <uapi/linux/android/binder.h>
-+ #include <uapi/linux/android/binder_netlink.h>
- +#include <uapi/linux/ioctl.h>
-  #include <uapi/linux/mdio.h>
-  #include <uapi/linux/mii.h>
-  #include <uapi/linux/ethtool.h>
-diff --git a/drivers/android/binder/netlink.rs b/drivers/android/binder/netlink.rs
-index beb7ea2edaff..f34e1009432c 100644
---- a/drivers/android/binder/netlink.rs
-+++ b/drivers/android/binder/netlink.rs
-@@ -13,7 +13,7 @@
- };
- 
- pub static BINDER_NL_FAMILY: Family = Family::const_new(
--    &crate::THIS_MODULE,
-+    kernel::module::this_module::<crate::LocalModule>(),
-     kernel::uapi::BINDER_FAMILY_NAME,
-     kernel::uapi::BINDER_FAMILY_VERSION,
-     &BINDER_NL_FAMILY_MCGRPS,
-* Unmerged path drivers/misc/sgi-xp/xpc_uv.c
+Anyway, let me know if you feel strongly about this one. FWIW, previous
+to this patch series you couldn't construct a 0 capacity IdPool either.
