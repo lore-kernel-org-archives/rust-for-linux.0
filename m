@@ -1,143 +1,156 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BDFA1F427C;
-	Tue, 25 Aug 2026 04:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787630713; cv=none; b=In8Ql3vT4/l5Af3ShzKCQu8BQYxpcs3QmItdDVI5jnp/rX7iFIKlx/qrgU8N4Ppe4D/unYM0lH3gQIcykB1+tdUZ0WE2rGNS+0YwiFwtKAPxsWmoTmPYVIoeAAnqlmXKUgwjNHwm4K26584MPHGnIC+L89Z9aTMfvY3whOXvw5g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787630713; c=relaxed/simple;
-	bh=K5pJtA9m3VT7Dbor0BVe//qicpcj5PRYGqkXUyPmMDw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KYJ5Rf334qNXUN5GYGUR2SaLyHBqWesZLUeAaqkNQiYJFJVdIjqBGW4Enlj5wgLbqXgCEut58KpxCi1wcJS2E7UB5ylD8SRU/Faf9NreHTXl3HciFOXvizBSUtCfbBibob3uAY3EzNgMWhT+KaJovMjZg/BC5kC7IGhAqrTHmU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=LQlqMa2S; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011057.outbound.protection.outlook.com [52.101.62.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0C42ED843;
+	Tue, 25 Aug 2026 05:27:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787635659; cv=fail; b=NMpLLM2tLokAhm3PbiY4Xjx7CmS2QNtJ0u+lSXWbEx0bwHzS9Caiq30K3gwqGyATDrcXybTvR+PuAhLUnhbcmip/m4OwvRkJ8VXSYxqyWMr5sq/t5TLUjzZuNlzyNpOaetVg6D0w7q1REldzGDHcujE9vOOxptmcnZCxmj87k0A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787635659; c=relaxed/simple;
+	bh=Ft1vJrrMvwlp2GJzMgDA+lw8v9ECZya5yjjA0mkeFCc=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=p7PGkV09iEwoqBPqomvq00LjlQyvhX0DovZacK/4W9PZESrLJSN9OnLVKNo68cFMUcN2mtM/Q205GyAweuSIviqXrhgKP63qsps9Wd/89An4tzTWi83/lsbRVeOXjmYbfF3GuAK1olKnULfplRX/J4yEYTyn/e12YC7zbqJxUXg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GRrVS9J9; arc=fail smtp.client-ip=52.101.62.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="LQlqMa2S"
-Received: from weh-cvm-dev-vm.y50bckvjo0hefgfnzfztsfttff.phxx.internal.cloudapp.net (unknown [20.169.55.37])
-	by linux.microsoft.com (Postfix) with ESMTPSA id C830820B7166;
-	Mon, 24 Aug 2026 21:04:38 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C830820B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1787630679;
-	bh=Re7/ImR4UTsF3GT2YTwiBGBIxmsfWYv7sG2SmlEvUNE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=LQlqMa2S8p77WDCEJiRoSVyRH2b5UjgyAxKvPmEXGpZDsc47iPcqYAM988g3pG43Z
-	 HyogW1aXSowlCd9HeFHXQD4SLIs9YyK8SwPYR2aejQtneNHRaQFPpIOwHkU8MEe8IJ
-	 Xn5IIxG5fAOxn6hBOUNS3M8ZLw+XoxawOO0Grr90=
-From: Wei Hu <weh@linux.microsoft.com>
-To: linux-hyperv@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v3 0/7] mshv: add SEV-SNP support for MSHV root partitions
-Date: Tue, 25 Aug 2026 04:04:32 +0000
-Message-ID: <20260825040505.826600-1-weh@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GRrVS9J9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VfJnlqf81Ce5RKKQCvxk8zkeL4QF1mUZvB+CNHWC3hjpeYf9fioBAjKddPprqHo7D5dRSha05R98hGqD41gsuj+38Y5JE/2Rf1XV5UY4VxLAq/XbH5LIjMa5/4KCptdSNTpzSZQTnwImuVcvDXIpsNXogq+lSAh2tEOmaAwT/jzvUxrRbp2Utr0fNjxf5TMyKe5WaBzIgGzfbrD2xOZdP04lxx2cockPcjJHo4e+hKwQ82dHRszbFhjoAklFcVGMkZnqowmF874xGWUD+mkWlpmdLS8mXuDfclYVEfaYp7N5LuizdO6SqRgT2ZabA9vapK4MV3ww1NVVP4fSiFw5HA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ft1vJrrMvwlp2GJzMgDA+lw8v9ECZya5yjjA0mkeFCc=;
+ b=rYoUUv8ULb9+8XDtrGpp3nNE4m38BdsIoDlchtBtlyV/oA4NJvGEGkIc2nK4m869OUVCLysaNENBlGwisXq3g8LGia3hafYSFRr98++LEblJtufPZc3n4Gl+D5yFj4zxB4Ss/o7G62h0woiOOqMk9E+juBI/HluYzlP9n/kP//Zih6zvwVnOZ3V68vAKr7dNdj7fcfuxCC47PiQBhaM1kTH2FZjgVszGu5KlmFeh/PDPvbpKYWdng+Ek80KsOCgdv4De5LK6Jds0LRI1Qr+eOirL8g+5RF9CUyBcuNqPdxwmtiIMmHLB+S26uXFGkmW+X1jlq6DF9yLbm9yTF1v7Xg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ft1vJrrMvwlp2GJzMgDA+lw8v9ECZya5yjjA0mkeFCc=;
+ b=GRrVS9J9ZeiM8B2nFhgs89Q2WW94MmttddcTWrx+jxbwh4mAZO8XS/yWol9VrxKVQ54JMQAD4bDQEnx7gA+fvEnDYe1EnoYFqRAi9AspLF+XZpPH68dnW8YqAdfbXZIftjlgUrXF5MpdSss0i1sw1Bm7OmmLMlO5sSsMVpOS2RRF2ovAZ9XxwPsMdinZP+oH5Ok3jpntaqmiL/0jbddqiBExynLcyhhJoQmm89xI1FkP4kebjlOaRdL1AMTbFcgXz8az/shzWXu+bYHLvPHMIPVfaCUnHHdsdfsxZEGPN7M19QVz5rSZW6plAe+kJDIsOy/TEuTTNTaRpfXOAWAJjQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
+ MN0PR12MB5955.namprd12.prod.outlook.com (2603:10b6:208:37e::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Tue, 25 Aug
+ 2026 05:27:33 +0000
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa%6]) with mapi id 15.21.0339.012; Tue, 25 Aug 2026
+ 05:27:33 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 25 Aug 2026 14:27:29 +0900
+Message-Id: <DKXRY82YPHIB.13IUNRJSOYH4B@nvidia.com>
+Subject: Re: [PATCH 2/2] gpu: nova-core: use kernel lossless integer
+ conversion module
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Yury Norov"
+ <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260825-const_as-v1-0-1ce712225fe2@nvidia.com>
+ <20260825-const_as-v1-2-1ce712225fe2@nvidia.com>
+In-Reply-To: <20260825-const_as-v1-2-1ce712225fe2@nvidia.com>
+X-ClientProxiedBy: TYCPR01CA0195.jpnprd01.prod.outlook.com
+ (2603:1096:400:2b0::17) To DS0PR12MB6413.namprd12.prod.outlook.com
+ (2603:10b6:8:ce::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|MN0PR12MB5955:EE_
+X-MS-Office365-Filtering-Correlation-Id: a9ad16a1-fdd1-4049-916a-08df02699075
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|1800799024|23010399003|7416014|376014|921020|10067099003|56012099006|11063799006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	B5zhvXLfHeFiz3J0EGBBxEQGI/O68xTTGpvHH58cm7KL5+xpxc6XoXct2TWkVRON2BoTWdZxoU3t9guBSepbVresm0x/jx/k4ztXzDGqoLam/KLSmVhBAekDRQ0Lvb0dKOWk9XTJAQC98YNyjC0o74/rMhPRXl6Tqt+s1k3wtfcwr2/HQm6KoFfd0lvkiVAs83SGi+prlfCLs4d97WL/KOq8TumB19tTVpCdt0xyL4A1mb2dyGdAaJEqt9R/lDO2P3ifjXYUE4HOoorwx9joHhXuBKqEXhfdzEsNM3NsIx8vM9Zlux/ME1u6kQeKZtFBA+k7ec2flWedQ2C/i+FxXSzVRg8wfImL4LncnSTRNVWbSd2Twcd0kAYUXit20nm1GAgKqgzsTdbW5wrmtsBAKhm8iKE8Eev3Au4L3vX5X72VUtCMQ4cKMnAcfwAl5vdoZZGt11AZ2LODIJfx3gi0uewVojVBp00wauBunBbD3RhlbcCzywkzgYH1pMPCapRb44zHSIteD5vhes2LOVQntv8eYmWDrExujatvMYaxKt/lsy/U6VgD82y6Z+thTgYZfTzaNzqn27+hF3IwXSr3F3ON/kPrvP/CVzSSdcaSQ59Q7aQpvZ8qnYk4kfvnMBawlXMaVLGyR6wV/ojC7AbZCuCFwNQzTrnsqemUQjo3dIQSiP+jrAGEhR5Q6qKNz+Ain/JVJkHLaNO2sPYoxq8EBg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(23010399003)(7416014)(376014)(921020)(10067099003)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b1I0eEZxVU1zWmRRVEpjeDUwOUpBVnd2Qm5YdVViVzYxZkw0a1p2Q2VxZytB?=
+ =?utf-8?B?OStWL29aUGw1bTRKbVo5ZDFFUjRqNnA1bkt0ZWQvNE5PTk5KMlgyeWhJZ3JV?=
+ =?utf-8?B?YkVLcFh4RXlCZXFsMzZNMkRSVklnYjlBamR0Tk5nc2Y3aUNUZmlpZlVzdVZv?=
+ =?utf-8?B?a25qVU9EK2hWdU5ZWmVuRXhEQ0lmUE84VzlzVFIzcHNlK05YYUdJbGVCWTNV?=
+ =?utf-8?B?bDVVNGxUVFJpTkowNVdhYXpNS3Y0MHFDcFlFb2VZaTNtZHZNSVNBR1YvRHVU?=
+ =?utf-8?B?NThzQTd3UWRuR2FVbm1vRFFxRU42TTFWTDNiSWZwL2h0TUNIb0FKQlRyelNJ?=
+ =?utf-8?B?OVFiTzUxbnNEc0syb0RjckJtVXV5bmlPNEIzM21qZk5yaDRGRkcyNitiSkw5?=
+ =?utf-8?B?eThrKzZFaXhpVVExT05kS2pzSU1OaUZsaS9kYWdjQW93R0s3RHZtUFExbjVO?=
+ =?utf-8?B?c01FWGNUN2VWTTlOUVVZclVaNm9xTytVeXhnWmVFZDVWQUhYQlRzajZWYjBB?=
+ =?utf-8?B?VE0rbkZVYUUzN2xVYnl3aEREa1pCdWJ4c0x0RzdmRGpFQ29xcDQwUE1nQTlS?=
+ =?utf-8?B?VHFvcXhRdS8rd3RaUjgxZmcxODVXWlVJMUJSSjY5a0J0Zks2MjlZcE1zS0Jj?=
+ =?utf-8?B?WjlUSVd5dStOMzYzdGkyd3dzZVNPd05nQU01dDFqQXFNUlZ6VkpheXFOQlVh?=
+ =?utf-8?B?dmsvWTZTWVNxeU1FV1YrOGxYaHIvUENpRW1scEtSN2ZTUkRMYTVidDAzWDRB?=
+ =?utf-8?B?eUVMNE13c2IzMS90ZEhMcURlczJiNkVkUVJGZi9kdGhDV0piSDRBN3h3RW9V?=
+ =?utf-8?B?dlpVOHI1SjBSV00yNlV4ZEg5UjBkOEZJUENsQjdiMzRjd05mOTRxaW5IRmdR?=
+ =?utf-8?B?RGNtUjJxVjh5QzNaN25CUERLSGQ3N2YrVXdHYTNaQ21PNldld0p1cmhCWGhY?=
+ =?utf-8?B?NlJscDNCR1c1a1M1anAybWxXRWx6bWxXTUdiaXo0blA4VnVwWDc2VXRJNkQx?=
+ =?utf-8?B?SkltR1krOGxUU1oyVFZjVTFIaExFcXhEQmNxTHNlb2RHOUZqZ2RiaFEzaUxN?=
+ =?utf-8?B?RmpPWU1tdmc4bFI0Qm9JNEhpN1Zya2lWU002eFhJY2lTTm9oZDdvTDB0Ri9y?=
+ =?utf-8?B?UEZrNUtCa1BraVQ4WjZJN2tONy9abHFRbFRsbFY1QVkvamhKdDZUNVBJOTVK?=
+ =?utf-8?B?cExwSTZ1ZzZWYTcwUDNHdWFWckNIQVRMU1NQMkxrTWNWTE12ZnNLRGtoZWhl?=
+ =?utf-8?B?WkxYa1AyQVJYcDcvQmY3RCt3M2M4YjRma0V3dUxob0NpaDVpTUV2SFl0aFJn?=
+ =?utf-8?B?ZW56a2ludW5JK0JZODVWUmRkNVZQaFJ5cFhHWVQ0ckxncWYvS0FQVE9WNkZ4?=
+ =?utf-8?B?MXU4WjR5UWtseU5RcUZ0VHpjQUw1OUhYZEFvR1FsTHlUVzEzTFhGMUtONnQ4?=
+ =?utf-8?B?NmVUeG4zY3lFcFQxSHk4Vy9udmN2R0lpVEhXcnF2Y2o5Rk1NaXk4RjlhL1hq?=
+ =?utf-8?B?RVhCWVc1UWI2d3J1YzZSbUZJSmNSTE5RL3dxU1B3WkFYK0drVWdSODEzclI0?=
+ =?utf-8?B?d2lMVGlUMWsvZ1dESFh2T1ZOaHdOZlFlSHA3ZUZnUzZIdVdpTkF5a1ZBeXFh?=
+ =?utf-8?B?UWI4VnF1SXU2N0ZBdUs2U2JSS25UandDZUcxM0pVamVrbElCb0svTXdIZDM1?=
+ =?utf-8?B?U0NpalZzNncyOGUzZm9iRGJQNFltTWZaNUxadUdHcDUrdVBycGd3eEZCUXY1?=
+ =?utf-8?B?UkRjSXJCRzNsbStMODBFZzZsZVR5MWVMcXJvc0F2NW10dDY3eVJycVd0djJZ?=
+ =?utf-8?B?ZGJVWDdybjZKdm16NlNqRkZacGlJQWlBVGxnbk4ySjJYajBpNjBQa2xFMWRz?=
+ =?utf-8?B?VmZPMFlnWk8vTithendUbFdNcjlDcW52bS9DT3Y4b1k3WG9YNHdOb3dwVG9J?=
+ =?utf-8?B?SzdKd3gxU0xoZUpoU1ZiSlhsOUtEN2NqOUw0Q09FZ2NxUHZLY2pRTXZvbnlJ?=
+ =?utf-8?B?RkRnWDdXdWdQT0ptVnoxSitvSjlBc2NWODVWWmRZc1JnTDBLaXlEaHY1M09y?=
+ =?utf-8?B?Mmx1dDZENzVkZ0ZCVFRva1Q3UU5HZ1BoZU43cUw1ZHMyNUVSQURQQUE0K2Rn?=
+ =?utf-8?B?OFI3RDZpWVlqS1k5eHBocUJjREt4cDVxaEpobUxvYzg3RkU0RnFsQ0xCL1d4?=
+ =?utf-8?B?NWVYMGZ1cDFGZGU4eXltRDYzcTRaR1Z3Vk9FdlFFbEhwTFZBZ3pxNVdnck1r?=
+ =?utf-8?B?cGtBOFE4TXBWQmN4NWZUL1VMRnFGeHZQTkY1c1lEa1dhRTVpaDJmdmxDK0F6?=
+ =?utf-8?B?ZVdRS2FDN21iY2lUMTlETUl6NmFKaDRPdUVDT2tLMGdzQSsrSStZbXRZSDVl?=
+ =?utf-8?Q?eMpfxiQSj+PqYwjY1DFko1NRqn9I41Ol6PLSuF8rkDaTc?=
+X-MS-Exchange-AntiSpam-MessageData-1: +OgCUI8Hi2kB5w==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9ad16a1-fdd1-4049-916a-08df02699075
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2026 05:27:33.2553
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FNacKmDAui49uU/SEzHDKCUcDsd5baiMaQ3g+sJKQ8jzoobG9pa9/MlDdFX2/+Cgf6/snGAQTXWHxPdTQzvXNw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5955
 
-This series adds support for creating and managing AMD SEV-SNP
-confidential virtual machines through the Microsoft Hypervisor root
-partition driver.
+On Tue Aug 25, 2026 at 11:44 AM JST, Alexandre Courbot wrote:
+> The `kernel` crate now features a replacement for our lossless integer
+> conversion routines. Switch to the kernel version and remove our own.
+>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
 
-The series adds fixed-size MSHV UAPI definitions, the required Microsoft
-Hypervisor ABI definitions and hypercall helpers, partition ioctls,
-capability discovery, processor-feature handling, ordered encrypted-memory
-teardown, and nested-root SynIC handling.
+nit: casts:: prefix feels noisy to me in actual usages - just import
+const_as!, etc and use them directly?
 
-The patches are based on the current hyperv-next branch.
+Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
 
-Testing:
-
-  - Built the complete seven-patch series on x86_64.
-  - Verified the installed UAPI in 64-bit and 32-bit userspace builds.
-  - Generated rust-vmm MSHV bindings from the kernel headers.
-  - Booted Linux as an MSHV root partition with SEV-SNP available.
-  - Passed Cloud Hypervisor's common_cvm::test_focal_simple_launch.
-  - Booted a four-vCPU SEV-SNP guest to login.
-
-The development host needs two additional local patches to boot as a
-nested MSHV root partition: the EFI HvLoader enablement and the
-non-upstreamable nested-VMBus interrupt-vector workaround. Neither patch
-is part of this series.
-
-Changes since v2:
-
-  - Rebase onto current hyperv-next.
-  - Drop the system-property structure fix, which is already upstream as
-    commit d6f0248f04a9 ("mshv: fix hv_input_get_system_property struct").
-  - Drop the EFI HvLoader patch as requested; alternative root-partition
-    boot mechanisms will be explored separately.
-  - Drop the panic-notifier SNP unlock patch. A panic notifier is not a
-    guaranteed pre-crash-kexec hook and cannot safely traverse mutable
-    memory-region state in all contexts.
-  - Redesign variable-length ioctls to use fixed-size headers and aligned
-    userspace pointers. Name GPA and PFN inputs explicitly and add the
-    isolated-page size to the UAPI.
-  - Replace public bitfields and the large by-value launch payload with a
-    naturally aligned pointer-based ABI and field-by-field kernel
-    translation.
-  - Process userspace page arrays in bounded batches, yield between
-    batches, validate large-page alignment and contiguity, and improve
-    partial-progress diagnostics.
-  - Keep encrypted pages pinned until mappings are removed, the SNP
-    partition state is destroyed, and host access is restored. Quarantine
-    the partition and retain the module if a safety-critical phase fails.
-  - Remove the unbounded delayed-work teardown retry.
-  - Treat rejected SNP capability queries (including L1VH) as non-fatal,
-    and copy per-CPU results before restoring interrupts.
-  - Preserve nested virtualization in the legacy safe feature defaults.
-  - Reject device opens until parent-partition initialization completes.
-  - Remove redundant SNP operations from the generic passthrough
-    hypercall interface.
-
-Link: https://lore.kernel.org/linux-hyperv/20260810124527.1409634-1-weh@linux.microsoft.com/
-
-Wei Hu (1):
-  mshv: set up own SynIC registers on a nested root partition
-
-Wei Liu (6):
-  mshv: add SEV-SNP UAPI definitions
-  mshv: add SEV-SNP PSP request hypercall
-  mshv: add SEV-SNP isolated page hypercalls
-  mshv: wire SEV-SNP partition ioctls
-  mshv: detect and report SEV-SNP support at init
-  mshv: use safe partition CPU feature defaults
-
- drivers/hv/mshv_regions.c      |  10 +-
- drivers/hv/mshv_root.h         |  29 ++
- drivers/hv/mshv_root_hv_call.c | 190 +++++++-
- drivers/hv/mshv_root_main.c    | 854 +++++++++++++++++++++++++++++++--
- drivers/hv/mshv_synic.c        |  16 +-
- include/hyperv/hvgdk_mini.h    |  31 ++
- include/hyperv/hvhdk.h         | 124 ++++-
- include/hyperv/hvhdk_mini.h    |  53 ++
- include/uapi/linux/mshv.h      |  99 +++-
- 9 files changed, 1365 insertions(+), 41 deletions(-)
-
-
-base-commit: be0cfab740e58b70047ef6e7e3d578f00ed5d258
--- 
-2.43.0
