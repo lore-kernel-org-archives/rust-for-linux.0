@@ -1,312 +1,245 @@
-Received: from flow-b1-smtp.messagingengine.com (flow-b1-smtp.messagingengine.com [202.12.124.136])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010043.outbound.protection.outlook.com [52.101.193.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D266230BE9;
-	Mon, 24 Aug 2026 23:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.136
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787614713; cv=none; b=f81l4PuBLf1DTWM6S/1jLrYyr2/KQEWz9PJ5natbKwMmf7D2d5MmIqpOfKOIlPKv95Gzb12MDqzEg3cZsNd69/q51m9cCZXV8eAbllPUEpVMmivGHOx/ziZN6DdY8tCB5PLK44MWqDnlBrsKj1LMmjpgFx/uQ7r23ghMGp4iw8E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787614713; c=relaxed/simple;
-	bh=zNXZSfRmtwpy/a/iBRxK6ZOuQXHjxvf/jrS/UpDVoZE=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=njbh5i0VGCqizvFVGDDzCpIq/E4hgLzSyWm/tWvgvV0kL/PHx/KyhaNxop+Gpp+F2Dun3faTfehE1hZntGIqzxFg9P0KHiUsJIciBJgnkSuw1O2d/erGVV4/2ba5JThegASeQspcwHBb6Je2Kr/FRvoCyDTkyRerdmKtvFFj7TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=XBhGMGf0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IlzNSJWi; arc=none smtp.client-ip=202.12.124.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D572DC79B;
+	Tue, 25 Aug 2026 01:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787622767; cv=fail; b=e5ej/z9d5CAmb+NJg8TnKIue+8A2pSbFu9P1GxmuJ7enlzfaQQs0Oxw8xQJ9eXXvnaqKRemV6MtKy/dLGzPofSTYcXJ3rR632UJHTcJY8WKBV3wRpF6l5FPyQ/wBYJcQXfRNvTySpmQ0x0+8xvePv7kZUU3TyKpUx/EX32DTET8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787622767; c=relaxed/simple;
+	bh=w0HruZqIkIyfxACAOp4DgHkAQUkMhTN6k0VSx5qQZQs=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=rGii2iZ5EWbRN4yElfzsCNuYNRE0xuOZt52gcD+7s9fEzYkGLdaed/a3f0qrQtjKAkAnYIVAhuxe2OF68BcLkmOU1hjmiZAYcIJDQemXLF5KpEVd1eESTN5Yb3R6BZ2mydTtXtjFJTrWs09uuDtdzN0A4l83jrF22Djo7TIIZ3U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BmFK3RJg; arc=fail smtp.client-ip=52.101.193.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="XBhGMGf0";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IlzNSJWi"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id 2D1D01300083;
-	Mon, 24 Aug 2026 19:38:26 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 24 Aug 2026 19:38:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
-	1787614706; x=1787621906; bh=1ks+pZPsMFw/dX/SaAC+B9uhzl7GasUHVZ9
-	HfOG6GYI=; b=XBhGMGf07QdE2qp575VTBn2lqjfeSn8rsfkfLCsM/Oyww79wzpr
-	ApE3lQnrKoKXPaR0AbukURBDsEpzjpZweEngjZwwjsdH9qRwACpaeJanhQMFIhCr
-	dL3/dlnRNmyY2j2u+W+CipVxCIJb6vhNXP2C4CkNEGyZlipst9/MLs7k5gSRn+SN
-	0quDrwjC2k2VRQGqs+zwgB/delGuW8VyU+zGtcxaHB1sn6ywd60as4c7iW0EPzSE
-	92xvuUYOrQEshiIW/INtUWY7tI7Bwmm7colbKFqt8Q5QGdrch76Fr7Plgw62Rqyr
-	Jv6QgWDRLEDm/DeYpdwqJ+h+XUAg+043sSw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787614706; x=
-	1787621906; bh=1ks+pZPsMFw/dX/SaAC+B9uhzl7GasUHVZ9HfOG6GYI=; b=I
-	lzNSJWico+svMdus2gBAc3HIZDjiFr3cckIgnsASVB4TdasKY3A7/axRo3a8Dlu8
-	UmIPoTkwXXQFiIUQavHV3nTdGVcPGawQ+n+YgCa1oiUwsu1VUziOY7oMW0Lvfa2T
-	wmasGsZCKt9ahl1HWHHWhZYKGUMx+a1Fpq8mWL4iBSbnzjAYIsyb/btw0r2MoUh7
-	zvLeWL3H2dn7Kz2xakvXBkOQaQ4rZWbWkpTFHaOEJ6bUsKCCuNX2HfvNCC/w40AJ
-	kMFcNkAPwwJjPvtCGWrAft+YK2E7UoCvGd1cQjqbOm4YgcGP1sXFBqNBvmEIKRgJ
-	cVTPKjQmGCi0BcJWxcFKQ==
-X-ME-Sender: <xms:6tWMao3MGXfEgZ2hm2rhJ71A-6ZVub-9zpOsoFZN2tiw6iThTBuwzQ>
-    <xme:6tWMaj7LeLQe0L41ggA0tcRjTkl9-GpsxTnxiTGYyYN5yIAzniuLbkD6EQECYCsEK
-    7Mzb2xbWmZiJbLOhwCmDXxyCQmmc8ItDh28Twvl1zl3UUIbdA>
-X-ME-Received: <xmr:6tWMaq0AmSmgSL256G9_XnlUhr7KJ5Y6VaebmpSrnHeHBRVqGKgfoc5ceuuKsFRFQtRz2tJPuSvfafSrKm5R8VcBJIxJ-dg>
-X-ME-Proxy-Cause: dmFkZTFrEmQssS56tdgzvy9yebBt5E0gIk2nhGFkQJdPkBb8h8m7nM4ZqL1LHvw+mehMwh
-    SuskV2FjoEkeI+MG8HTwFAriu5Q6OkP/hQVA5ynEUh3wAYbRSBZIsgskB8Fx4Wcz8GJ310
-    UDJQteufz/bw/Bw4Zubkj9pGGvYWCVB2usE09lF2iKKwZ51xN7XwzuON1GjKoLgtSooAPS
-    Z8k0+xsDpc6+7r0zmKuwWWaa04PYjqkjOaRrvBIcWl6EZWvN462VRhzf4aa4qLvSyuJgiX
-    IxiZbGoL6xvgKgowADVQoe0bCo/iQpSX/L/ODuY4BqB3a5cgRS/Pv/It4YpoMEFrrnb4S4
-    xaHdANv5XmZhj5jUtQUM+tbBd3v3vyobnvGmKS8r6iIefPGgdZ6m7FkjfOkUwwxardZIBF
-    ov3rXrrjWY4LqAMHQGxdQF0tf9e2+LhvSHn4O0tUUhDCb7/X1NX7HV0RpQR4HyUwIb2hST
-    /fLf3kKA3KLnmOzPSg1CrvY3neXXPTpIeB4LH2wU8TpCHMiW/VGkYoQvDHsb1+g6V5qAzm
-    w2khMNxTKBB0iEhJ5JIuexGlH+74WbRFJbR2/Yo2fV83CG5jiE1w5XKkTwMMd3XsHCynVm
-    mj24vQMvXowNJqDWzd2Bq4Pbj4dLEIMXsFcPpSxJimaXGcg56pIfSKtLhp/w
-X-ME-Proxy: <xmx:6tWMaufjzla0ip1qs-FrtSacwDRI3EAzO1bOezUmuRVGRnFnBS7RMA>
-    <xmx:6tWMaoU519ST5ee1SE38PMgk1GORN1rpC2xttFjtO_OI0yK7o9XM1A>
-    <xmx:6tWMaglJLrawf2a_NkBTlQ5UlrLCBmgEBzrfq0Yg3tigyBrWdxQ-eg>
-    <xmx:6tWMapZO_qV_XfrR3y1XelcvL6bR7AlBBrT5_bVrVIjnPfrWBW0m0A>
-    <xmx:8tWManlmlHzgk4wctTycNwj4xlJ5R-159qG6IeaQBCmxaIJGdyiqoABK>
-Feedback-ID: i9d664b8f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 24 Aug 2026 19:37:38 -0400 (EDT)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BmFK3RJg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jXmPo95yDSV9OaQ7iHEdzqLXY/i23up6/8L/3n5FTZXFNGfTHC+Hz41BpmIOaM36wCcTJE2rQbOsRGhmw/0fbPulebXB5l6cwuZM32Um9y/Eb8Fa/mAl8KouTFWQwC5tX+hAEBCAMX0zcok567nKQMT+mIBZd2aNykeOVSZqNr8HJSqLW3jt2lAhSscjDotxBBJNA+RebgxSOD41rRRzn/JQlbN5LNH4+XTVX1tSTVdlmWiQ9UAf7xXtahKP1VXNR+ZbJrfJdeKIqP29MTrXkzT0H1BViw/9Pbn0RGBPRKAVJcZlWz9Eud48nENX3Q32RKltrTrFcdWam+dE94O5dw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=spi0pkUb3KmuYwLn3H/WqX2b72vc4/APcqRZ1othxUI=;
+ b=nVU2ipi6viAh0ehSGzM1Uslx3iYks+3QkVPYd9/YzAc2Mpi2J9c10nNXHn8bTzoFMj9sIOSk6ziWq+BTgeJbthFM0Tbj6TdTZy6vxgplhK43etmd+Im61aLEM9ZvYCQkR1Vd0B0K1X3LNGpGEDSogVp+4IfYWJ/6KWWRF3nzqcUcHOPzjk41YrACfx5YfWUMPUn/0ucsYo0Da+5QPuPkoGWDMHSsuV9VoTuR5PZk3vU6LX7tZjbRjbldAN6G9d5hG4JfXDcqJunpx0KuIuut2b7fs34hIFKKXEGZcYV0cvr7Ch4p2kFpNMBM1VofrqL2z8E5xeAPYjAdDseeUOqK1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=spi0pkUb3KmuYwLn3H/WqX2b72vc4/APcqRZ1othxUI=;
+ b=BmFK3RJgDFZLWQrnxCHwnWH7UcUnOv6+MZTE+h/b9hbUWB5fjJG4xHSas/zwC+zHnuGliLVGKrZNRv95FY/HPa4ZyX4jWVJnruwJ4JV5XiBmOved8CEE0zGoiU39Em8AMo6iJdBRv+LkEFGRjvk7N1Bwq/WYTFS981WQT7MG+TTcnOjLLHxWwdD6JQFCHfqtHM/F2GeaJOTMM4N1tubCqjrYUVXkeoE6c4q9hukvNssvmThsjEOWamXC+qtSoq6VHzbMv6L2LTIPf4N20xezgUdWOLeGjBl/u/6wnB0WTt8HIH45CZmvLapccQbFqFrSscMia4MpUPlQffzysGJ6BA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
+ BL3PR12MB6451.namprd12.prod.outlook.com (2603:10b6:208:3ba::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.339.12; Tue, 25 Aug 2026 01:52:40 +0000
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa%6]) with mapi id 15.21.0339.012; Tue, 25 Aug 2026
+ 01:52:39 +0000
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 25 Aug 2026 10:52:36 +0900
+Message-Id: <DKXNDP39VOFP.1W7GDGA2TXSW2@nvidia.com>
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Eliot Courtney"
+ <ecourtney@nvidia.com>
+Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil Babka"
+ <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Uladzislau
+ Rezki" <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, "dri-devel"
+ <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH 1/6] rust: alloc: add Vec::push_init
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260817-b4-nvkv-v1-0-b84db5e84b67@nvidia.com>
+ <20260817-b4-nvkv-v1-1-b84db5e84b67@nvidia.com>
+ <DKSVRS7UAL9U.3RUTW74RVSEHQ@kernel.org>
+In-Reply-To: <DKSVRS7UAL9U.3RUTW74RVSEHQ@kernel.org>
+X-ClientProxiedBy: TYCP286CA0362.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:79::16) To DS0PR12MB6413.namprd12.prod.outlook.com
+ (2603:10b6:8:ce::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Byungchul Park" <byungchul@sk.com>, linux-kernel@vger.kernel.org,
- max.byungchul.park@gmail.com, kernel_team@skhynix.com,
- torvalds@linux-foundation.org, linux-ide@vger.kernel.org,
- adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
- peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
- rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
- daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
- tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
- amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
- linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
- minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
- sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
- penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
- ngupta@vflare.org, linux-block@vger.kernel.org, josef@toxicpanda.com,
- linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
- hch@infradead.org, djwong@kernel.org, dri-devel@lists.freedesktop.org,
- rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
- hamohammed.sa@gmail.com, harry.yoo@oracle.com, chris.p.wilson@intel.com,
- gwan-gyeong.mun@intel.com, boqun.feng@gmail.com, longman@redhat.com,
- yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
- netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
- corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
- gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
- arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
- petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
- paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
- joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
- mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
- qiang.zhang@linux.dev, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
- vschneid@redhat.com, chuck.lever@oracle.com, okorniev@redhat.com,
- Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org, anna@kernel.org,
- kees@kernel.org, bigeasy@linutronix.de, clrkwllms@kernel.org,
- mark.rutland@arm.com, ada.coupriediaz@arm.com,
- kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
- broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
- shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
- yuzhao@google.com, baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
- joel.granados@kernel.org, richard.weiyang@gmail.com,
- geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
- alexander.shishkin@linux.intel.com, lillian@star-ark.net,
- chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
- link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
- brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
- mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
- linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-modules@vger.kernel.org, rcu@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
- bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
- dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
-In-reply-to: <3d58eb3c-7a9d-4183-907b-46172664631c@kernel.org>
-References: <20260706061928.66713-1-byungchul@sk.com>
-  <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
-  <20260821042143.GA40890@system.software.com>
-  <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
-  <178730572084.2852630.7732425311008244683@noble.neil.brown.name>
-  <3d58eb3c-7a9d-4183-907b-46172664631c@kernel.org>
-Date: Tue, 25 Aug 2026 09:37:34 +1000
-Message-id: <178761465493.3510150.12380729360578969391@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|BL3PR12MB6451:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4b15384a-0546-48aa-dee6-08df024b8b52
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|1800799024|10070799003|7416014|376014|56012099006|10067099003|6133799003|11063799006|22082099003|4143699003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	QaQwYGIpT6wt0cxTLDmiB1+mHpW94+dspJYWHzwmf6Q0n7hIar5taCa7C3oJj0Lrj4FEdZUP7CN3ldmr1kUSbLeU2HOee/CpejSymj0wIeN25/gGg5eI/w+N6gLNF+awp9ssVgAsad+fGhQ7/zNwVzIiA1DmvMttHSFwItGpqLOKkHNKyKSceC0ylVt1G7u4ypYr0k+L7WrRdmujG3jRyGKHSvLexrjICDgsVBsOg52ZL/F0CgzbvL1nnniDYiU1HKjLm8N8jCrz6HDABEAIWFbpfV2PQFb4oaXpDFmyw4pd1isIpBlmnQ5bV7+qxL3dQYyM2epAivlI1fjvxeE0kUWTBZ8+GB9xCvbbirKeebsJ6MYaOobgs1KL+97y7r8/V0HURVWk8qry/Eg7MPQ0+lP2IQUlHaybNAjwpS1w6lswdlUkFpcWcmJQ2LxW1vvO0erL1Ib9sDN4WfPCUZA0qMU1zJt8mPSyvnf6KjQykbjfcb5HwwCQ8wU0RFPCxnF7ckUaUnqHKOzC5NM1FcRm37BkZQVPEBg4md6WDY+qgE5udpoe8fQfct8oOYJDDky4HBgl5X3Kcm2v7YeKdOU8G/9tJYMLZyLCoxgU8cx5+dikjiZGEIbyAnV4JmvtCAc5+kMhZ+YhSa4g/t1EyzeIID6Qzl6k+sk4RShpZdl3bog=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(10070799003)(7416014)(376014)(56012099006)(10067099003)(6133799003)(11063799006)(22082099003)(4143699003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cFc0Z2s5Mmh2R25EaC8yaTB4RVpoQzBNM1ZFTXBnQjhYaXNyU0JWMTJkckFV?=
+ =?utf-8?B?ZCtNTFFXRVFPejBCQ0M0aUtjbytMOFB0NlpOVXU1Z3MvL2MrSWZRRzVObVlR?=
+ =?utf-8?B?RXVrWmZmbWVDSnArTmZZVHJ6YVQ4bGpqcGlwSnkwRi9PZVZMV2o4VmNMMUFl?=
+ =?utf-8?B?eDlpVkVBK0ZSOVJTcmZDaHAxWXZPUTBNVGhYZy9YVmdncE5RS1VXY3dHbjRO?=
+ =?utf-8?B?RHpqdWl3bDlKWVN6eHFONUdpbVB4NzBJdHBpc1ZQTjZKS21rOU5rUXZwTlJi?=
+ =?utf-8?B?Q3ZlY3Zmd1B0UTJpLy9lVEtNZGJvMUZ2TkVQN2NuUU9hYnoxUm9GdE9oTmIy?=
+ =?utf-8?B?UVJIdUFuS0pzSzBpWkRldVQrcGowcXZXY2RKTjFQRlUyQllUcVZJQzAzSkZi?=
+ =?utf-8?B?TTJHbDlwY2d0WndLbllQZ0pJQXRZNTNEZHpSZzRHYVFKOGZCY0o3NjZ5aWc5?=
+ =?utf-8?B?Q3c3ZVZHenA2ZG1vUEN0cnA4citqRjBKcFdsOFRJWlhKYXE1akRoaUpBZkg2?=
+ =?utf-8?B?KzBiVFJzQUhXM0FWSlNNOTdxUm1xMnA4bE56bkloa29OWmJkdERxSXJYMHp0?=
+ =?utf-8?B?YTAyby96Z2NyNE1JQ1c3ZWhMajBLTGhGSDk5ODV0Ry9qd1ZSRW5KWnFnNU9r?=
+ =?utf-8?B?ZmppRFRUd1lEZytIazdLL09lbHRub0N5UE9paTZRUTFhb0lDeVh0T2RnQzl2?=
+ =?utf-8?B?SkRPT3czT2czeFZlVEUwYlptM3pwUnpsd3hObE1YQ09pditWTlM4RWVOa0tx?=
+ =?utf-8?B?aURFNk0vdVMwSkx4SXhLQlpRbWdTSnNmc1kvclR5ajB1Tnd6dUc4UUhqRVVJ?=
+ =?utf-8?B?bGgyRXUvNXdUQ1MrTU02SkVDc3BFS1orL21SU3cyQmhqVG9SNGFJbTdyVFBv?=
+ =?utf-8?B?YUhCcFBZZUh4S0V0TzFhYnNCNHFLMkw5eUJOanF2L3lTdFpZODBqd1JyVFQ4?=
+ =?utf-8?B?NHBvRll2Vy9uK2Rod1B2RkV2YmkxSXpXNUo0bmw3NHFOMjFkTDl5S2NOdlFh?=
+ =?utf-8?B?NkV1YVVDSCs4NFB2NHczcGJsV3FlSUMwdjJnZHhBY1d5SmZIbHpweGtLWkl6?=
+ =?utf-8?B?ZHNzSWxtMkplc0NyaFJEWUtUMERqUWQ5aW5ucEdvVXErN3o3TE51TnFtVFJr?=
+ =?utf-8?B?MnE3L0FuYzgwQlJkUHh3aEhvaWIrNjRFWGUreGZIbGhjTlY0YU9BQzQ0Mlp4?=
+ =?utf-8?B?Q0s3YkFIdzd4RG5Qd2hpZUtHelI0SUJCMmQ3aUYyMFNOSDZyLzQ3V0tNMnR6?=
+ =?utf-8?B?anZ2dlJDV1JBd3RtOFUxV0c0NHRhMENLK1ZIRHhlZzlKcGZlLzdpS2ZqeFFl?=
+ =?utf-8?B?aFpwSFJVSDkxeE94NTFXYWFXeFQ2U3h6RFExU3lrUHBUeTBuZEhvckUrZER5?=
+ =?utf-8?B?Um9wS3JrNUwwOVRKQU4vNzZabkpHZjBRckJMU3FKNlhNdTFmZjUwVVZ2Qmp1?=
+ =?utf-8?B?UUZMSmI2Qk1NY0JvdDFVWExUY3JZV0N2QWhrR09haTJFVGM5VThRbVpBb3Yx?=
+ =?utf-8?B?UWtIWi90VGs1aVNJQmZmZ0ZzUmptYTJoWW53cVFIU3l2Ukd2Y2E1Tm1TRFY0?=
+ =?utf-8?B?Mm5oZzVJa1NzbHpsV1U3WGRJNWE4VnpQL05qSGgrbVU4L2VmY3BGV1g1ZEJH?=
+ =?utf-8?B?Vzgrc3VVbDlhMXFTeFpjbldHdVRVKzVUODhUbUF1QUVqTElwTDJ2NHpoYklp?=
+ =?utf-8?B?QVVKZEs4RDdTSmF5elNXOGxMWmlxc2lISmZjSWNGUEVWbngrMUpVM3FPMGVG?=
+ =?utf-8?B?RUdualI3OVA3eHlXUEpDTDdPUDRuTDYxK2NoR3pzdFpBZUtMTlpvdlh5RGVi?=
+ =?utf-8?B?SHFtVHF5R3FKTkVLOXp2emlBWWhydzM5V0c3Mk9JQ0lyYnczYmpIR3VIeTNC?=
+ =?utf-8?B?Yk9XbWErRnRvcVRKdHZZSHdqU2wzN2pDdjdnQWJFbkJ1RmVNcExvRUFtcUZs?=
+ =?utf-8?B?eHBiVHl4VnVZcjI3dzl2TVlPVm13eVNDd0hFS2VlazNTR1RrNmFYL3dZY2V2?=
+ =?utf-8?B?d3g0MFp3RUNZU0UwUC9iaG1Pd2ZwZFh2bTNnMmZ5cXByckNabi94YzJHL3JE?=
+ =?utf-8?B?U2VXdmlEamM3cHlCV1VWT0dWUHBoZU9vWnNpeDdFVmsyL0h0OXJNSGVSQ0VU?=
+ =?utf-8?B?SFNPSHBEUkpYbU12T2RRTFZYUCt2bm5UL1dJMnRaT29zbGxxZ3Q2OGRhK21o?=
+ =?utf-8?B?SEM3N3BhbXJHeXJYeWgwZGlmOUFmMUtmekl6RnZmd2tqQmRCOU5NOWQ1OWdE?=
+ =?utf-8?B?cW9DbTRvUXRlY2NydHVnQUI2T3FNOEVrQnBOVGtTM1YwcFg0WmtvZEY4TVhI?=
+ =?utf-8?B?bnRWVnNPdDVKRlpWN3BxM2VWaVF2b2FleCt1anJ3a3RveWRUZXg0c1JHWkVL?=
+ =?utf-8?Q?Sdyk/pk+Ud1W25Ts3QCzC5MLOZKgc+XMGZa1K1RVDozZs?=
+X-MS-Exchange-AntiSpam-MessageData-1: P9LgIZECSB8XFg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b15384a-0546-48aa-dee6-08df024b8b52
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2026 01:52:39.7662
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Dz/xZqei4ey8u//PCcmdq0PNaYMzhsafmw8G1jgAYDtOqsgU+HE3T6yGmQuQSGRXZsKg7fz6qDvJSjkXxl03jQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6451
 
-On Tue, 25 Aug 2026, David Hildenbrand (Arm) wrote:
-> Hi!
->=20
-> >>>
-> >>> That's a good news for lockdep.  (And even for DEPT :)
-> >>
-> >> He :) Where do you currently store the additional per-page information?
-> >=20
-> > lockdep doesn't need to store per-page information.  Possibly DEPT
-> > doesn't either.
->=20
-> That would be even better.
+On Wed Aug 19, 2026 at 8:23 PM JST, Danilo Krummrich wrote:
+> On Mon Aug 17, 2026 at 2:56 PM CEST, Eliot Courtney wrote:
+>> +    pub fn push_init<E>(&mut self, init: impl Init<T, E>, flags: Flags)=
+ -> Result<(), E>
+>> +    where
+>> +        E: From<AllocError>,
+>
+> This signature rejects impl Init<T, Infallible>, which is the reason why =
+we have
+> e.g. Box::init() and Box::try_init() with different fallible signatures.
+>
+> So, if we follow InPlaceInit, it'd be
+>
+> 	pub fn push_init<E>(&mut self, init: impl Init<T, E>, flags: Flags) -> R=
+esult<(), Error>
+> 	where
+> 	    Error: From<E>;
+>
+> and
+>
+> 	pub fn try_push_init<E>(&mut self, init: impl Init<T, E>, flags: Flags) =
+-> Result<(), E>
+> 	where
+> 	    E: From<AllocError>;
+>
+> In theory we could also simplify it to
+>
+> 	pub fn push_init(&mut self, init: impl Init<T>, flags: Flags) -> Result<=
+(), AllocError>
+>
+> and
+>
+> 	pub fn try_push_init<E>(&mut self, init: impl Init<T, E>, flags: Flags) =
+-> Result<(), E>
+> 	where
+> 	    E: From<AllocError>,
+>
+> However, InPlaceInit actually achieves more with the init() and try_init(=
+)
+> distinction:
+>
+>   What init() accepts, but try_init() does not accept:
+>     - impl Init<T, Infallible>
+>     - impl Init<T, E> where Error: From<E> but NOT E: From<AllocError>
+>
+>   What try_init() accepts, but init() does not accept:
+>     - impl Init<T, E> where E: From<AllocError> but NOT Error: From<E>
+>
+> So, with the simplification we'd technically lose out on the
+>
+> 	impl Init<T, E> where Error: From<E> but NOT E: From<AllocError>
+>
+> case.
+>
+> In any case, init() and try_init() seem a bit mixed up on their purpose
+> regarding fallibility and error type strategy, but in order to really cov=
+er all
+> cases I think it is necessary.
 
-A little bit more on this:
- lockdep *does* store per-lock information - a "struct lockdep_map".
- I don't fully understand how it is used, but it seems to be mostly
- for convenience and performance.
- When you lock something, lockdep need to know what class the lock
- belongs to.  The lockdep_map maps from the lock to the class so the
- caller doesn't have to explicitly identify the class every time.
- The lockdep_map also contains a "name" and some wait_types which I
- *think* are only used for more descriptive error messages.
- There is also a "class_cache" which makes it easier (faster) for lockdep to
- find the target class for different subclasses.
+Wow this is quite confusing hey. `push_init` meaning unify all the
+errors to Error ("we don't care so much about the exact error type"),
+`try_push_init` meaning unify all the errors to Init's E ("we care about
+the error from our Init")?
 
- rhashtables "bucket_table" is an existence proof there there doesn't
- need to be a lockdep_map for each lock.  Every bucket has its own
- bit-spin-lock, but there is only one lockdep_map that they all shared.
+We haven't considered the case where we actually care about both errors,
+in which case we'd want to define an enum. Like PushInitError<I, E>
+{AllocError(I), InitError(E)}. We can conditionally impl the conversion
+to Error. Then we only need push_init(I: Init<T, E>)->PushInitError<I,
+E>.
 
- You could conceivably put a lockdep_map in each "struct address_space"
- for folio locks (assuming all lockable folios still belong to some
- address_space).
+Compared to Gary's unify! proposal which chooses one unified type per
+unordered pair (extensible to N types, but the operation isn't
+guaranteed to be associative so needs some care) of types, this means we
+need to define the error type manually. But it also means callers can do
+different things based on the underlying error types and also get the
+initializer back if they want.
 
->=20
-> [...]
->=20
-> >=20
-> > maybe you put the folio which is locked on a queue or an lru or
-> > whatever.
->=20
-> For readahead, I think that queues / lru are not involved. We submit the I/=
-O,
-> and once the I/O is done, we unlock the folio from interrupt context.
+On a more general note has there been any discussion on error handling
+in general? It looks like we often just use Error and collapse things to
+errno values. In userspace, per call errors are kinda solved, by e.g.
+`thiserror` and `anyhow`. The distinction here feels a bit similar to me
+- let callers of kernel APIs (like Vec) get a sum type error
+(thiserror-like) and let them decide what to do which is usually
+collapse to Error (anyhow-like).
 
-"submit the I/O" means "attach the page to a "struct bio" (or similar)
-and attach the struct bio to a transmit queue for the device (or
-similar).  So there really is a queue.
+I think it's worth changing push() to take an Init<T> as well. That's a
+third signature push(Init<T>)->AllocError? that isn't representable
+using push_init(Init<T,E>)->Error? or try_push_init(Init<T,E>)->E?. I
+think we'd then just have try_push(I: Init<T, E>)->PushInitError<I, E>
+then (ArrayVec can also have this push / try_push pair). I feel this
+distinction is a bit easier to understand than push, push_init,
+try_push_init.
 
->=20
-> end_buffer_async_read() / iomap_finish_folio_read() end up calling
-> folio_end_read(), where we do the magic
->=20
-> 	folio_wake_bit(folio, PG_locked);
-
-Exactly where the lock ownership should be reclaimed is not immediately
-clear to me.  bio_endio() might be early enough but there are probably
-better points.
-
-A small difficulty here is that a bio has multiple folios and they are
-all locked.  I cannot see that lockdep has a concept of holding an
-arbitrarily large set of related locks.
-We could just tell lockdep=20
-  "I have some folios locked"=20
-or maybe enhance lockdep to allow
-  "I have N folios locked"
-or even
-  "I have N folios in address-space A with the highest offset being O".
-
-This would allow lockdep to check the validity of locking another folio
-- only allowed if the address space is the same and the offset is larger
-than the previous largest.
-
->=20
-> It's interesting, that for writeback we never unlock the folio on the I/O p=
-ath,
-> but instead have the dedicated page flag to tell us when writeback is compl=
-ete.
-
-PG_locked and PG_writeback are two different lock-bits with two
-different meanings.
-When a folio is PG_locked the content is invalid and shouldn't be accessed.
-When a folio is in PG_writeback its data is not safe even though
-PG_dirty has been cleared (if I remember correctly).
-
-So these are two separate, though related, lock bits that would both
-need to be tracked.  lockdep would detect how they are related.
-
->=20
-> >=20
-> > There is no way to say "that queue owns this lock".  Maybe that could
-> > usefully be added - assuming coherent semantics can be designed.
-> >=20
-> > Somewhere else some other task takes responsibility for that folio and
-> > the lock.  maybe it dequeues a page, or maybe an lru callback gives the
-> > locked page to some code.
-> > That code then calls
-> >    lock_map_acquire_try(&the_lock_map)
->=20
-> I'd assume that's what the unlock path would do from interrupt context.
-
-exactly.
-
->=20
-> >=20
-> > This says "this task is now holding this lock" (or more accurately "now
-> > holding a lock of this class").
-> > Note the "_try" - that says that the task didn't have to wait for the
-> > lock, it just got it for free, which in fact it did.
-> >=20
-> > Now if that task takes some other lock, lockdep will see a dependency
-> > between the page lock and the new lock, and will accept or reject it as
-> > you would expect.
->=20
-> I guess on the interrupt path, we primarily unlock the folio lock only. But=
- we
-> might take some other spinlocks temporarily indeed, like
-> iomap_finish_folio_read() does.
-
-Yes.  It is hard to see there being locking problems in interrupt
-handlers as the folio locks are sleeping locks and an interrupt handler
-can only take atomic locks, so getting the ordering wrong is likely
-impossible.
-
-You would be more likely to see problems in a workqueue which takes the
-completely IO and does something with it, maybe verify a checksum or
-whatever (it is a long time since I've worked in the block layer).
-
->=20
->=20
-> >  But I'd like to see a coherent
-> > explanation of how the functionality offered by DEPT is clearly better.
->=20
-> Yes, that's also what I am missing.
->=20
-> Stating that lockdep is stable and should not be destabilized is not really=
- a
-> good argument.
-
-No it is not.  We change "stable" things all the time.  Replacing one
-big thing with another big thing is almost always rejected.
-Incremental development is the preferred approach.
-So developing something like DEPT to explore and learn and demonstrate
-a cool idea is great.  Making it completely separate can give a
-developer freedom to innovate.
-But the path from there to upstream acceptance is to take the lessons
-learned and to apply them one by one to the existing tools.
-Yes, that takes longer.  Yes it can be frustrating.  Yes you need to
-be able to work with people - not just code - to bring the community
-along with you.
-But the result is generally much better.
-
-Thanks,
-NeilBrown
-
-
->=20
-> --=20
-> Cheers,
->=20
-> David
->=20
-
+So concretely, what about just:
+- push(&mut self, init: impl Init<T>, flags: Flags) ->
+    Result<(), AllocError>
+- try_push<I: Init<T, E>, E>(&mut self, init: I, flags: Flags) ->
+    Result<(), PushInitError<I, E>>
