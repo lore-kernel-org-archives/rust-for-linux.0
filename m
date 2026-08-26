@@ -1,80 +1,73 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0440449B3E
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57CF41F379
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:29:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787761747; cv=none; b=TYJKk3G4Aji0FENe7GrybswSQLRjX55Dj6AEq3ns/LPnixXZUBOj7V/NJTFwnYCV+61RInBvJR3b4pqk9IKmykXA4w87c28gDNZFIPGXKkHVMeSeHsdM0fih5taAKTk0lRtDaTDZ7g1/tRK7iL8Ta/GsYagW0bG3ic87lNOofZ8=
+	t=1787761751; cv=none; b=iff7DHeBDYJdcu0ofhKmt9kUPHNK5xCpOAC3Ano8ATsbZRy2iBMGSI865PxmqRIbxxQQtiQ4Q2YxrhVXRf6OF28eRUy6nXLM7x8dQ9oyRCPKtydVGjjQjQzmb2cu+3bBmY4z40EDdSE4rS6SITMpGzdSk3oy3tMegh57FE5KKoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787761747; c=relaxed/simple;
-	bh=fTVvVk81ynAffc0k/k5/DCkE6DkwKY1g6XnSaPq0lz0=;
+	s=arc-20240116; t=1787761751; c=relaxed/simple;
+	bh=gAXcjVW7NrAqYcpxRGJoD+JQMGHOCFdxAf/E7+s5skE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPhtItgY52fg5wzrK5SwDdig26WZZjtyFFoMd1OL1HA08i2d++1V0zMDiLM5zXkJmHglf7Cwj6g8UHzGRTPXthjDa6jqv01PnxRY6kE93Qmd4ZIWAzsu3ZFHgPlbYvEZVkri7spxpuZ20oNFOU07AapHwSud5FEXv2fTMs327kE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=ON3iKcO7; arc=none smtp.client-ip=209.85.128.52
+	 MIME-Version; b=eHKlNzpavKYC+SaI5I3UqVak9Yq7xm8TTT8jzyJgHYgNCNqZljV8jgnxyGSk1J4I1LhsucY+L5LPdMlPjXq9z4lhMl0jdKRX0Ee05h+so7G0zyNR8ksL9MGBZgEYJ9x3tI/7psEcka1FSRtTTZwSzyLtXMrsDn1hyb6kEPgRVbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=ozyt+/cG; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="ON3iKcO7"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4957eefd361so7060175e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:29:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="ozyt+/cG"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47f3b39f2a1so906905f8f.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:29:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787761744; x=1788366544; darn=vger.kernel.org;
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787761748; x=1788366548; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=cNOKwZXAn5eEkB9XwdUz0WDi3fVIP35Kd00N6vEi/ws=;
-        b=ON3iKcO73vVJf3FZmxfvDx3M4A3t8DrzzF7hAktPLuhuxKddP22nnVRPfTizAx29je
-         rdx8QthsfSx3xeaQ846UxRhvoCKteqKQxptRY+K5eqO44GpaqlpIpyHX1soP3mkbI028
-         xgq6/nrooGZcONY2Y1/Kf5cWSEFK5tBwoCm0zkR055ljNV0TADEXl6+uVFhadwkJNi00
-         6BRD5iRfbk/+TdWIVxQhRXB1dGpROsL+2uztX23FovxwsM4sAvBsCkIlfhEW23VdFl5l
-         VO30x+hZkAYKtSMW7DwTo9oOk4OsEstt9F70RqIdkjcB5oFjZiD0+2PBYcF8GFBt/J/I
-         qrTQ==
+        bh=MveUnfVN08Qze7xHpn7EUTFT1HRfb1h/riwWy8sicu0=;
+        b=ozyt+/cG81l5KdUVt8f10fdAMSrBSpQ3c0rXZ05fHMLGabU8tSQTFE6VKj5QlC+DEk
+         hg4B3a8412qKOP5VHLHhF30cvXJmzQD7Ac6oKDWlqI0fb1FJsZLvMB6TfLdlLPJ7a5LI
+         vsvhCkFthln56zCYl4xVn222+2n/7V1MA7gFql0/FYpwqZNOcdKxqjg9q1G8apHTsJxm
+         HKHdiN48kTa2YTdwkotgjUHfmokhzj22wnoBEx2+JWlQiFeNayj9duNHXI1H7EXTYryL
+         U9NyesOYSFgYu6A3lLSHEnF9Y1+P7CoJvBzWKOJLIDM+tzx+WtffQOe8KkDN1XL5fH/O
+         TB+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787761744; x=1788366544;
+        d=1e100.net; s=20251104; t=1787761748; x=1788366548;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cNOKwZXAn5eEkB9XwdUz0WDi3fVIP35Kd00N6vEi/ws=;
-        b=QyhebHH8i781pFi0uoU106fJ0Y5WKNZFgntiLPVe3cnsC7AzQe62P+43w/TZwnEEur
-         hHgkATAGdqT1x9WLRsc+IvwDDpuy9i5O+fDyFLMBPBd+8hyo+y7OLeXCIrK3k8t4/rI0
-         db66PvhxBJrGjZXNPdcdmAC22+p5TGftEhlT1TEhuKVJR7vg2tGo3AWAOOwwYFZaMZBl
-         nWiFiu4N5972Edrv6CF/wf6JGLP150fiMx0CUBPvaKD9ea73T/mtXRg9LnXtgepELVY+
-         elphiW2JIB68WxaTNLLmC94LYQusIc+sOdOvQay0fEsa7yMzLibShv/GtKgC/o9pHuhj
-         vPlg==
-X-Gm-Message-State: AFuF++kOZhbzkgFJut8fTPkNbsimb6zjPSYKrFQxzEfCmby25ixBbmAe
-	qHoOnQkitV4VvSf8i1OGjBHJP4S91+PJZH7Z9rzTbJpihEQQ9C7d+oYTnfvGwC07q7uSDscy5F0
-	jQdijOpHP
-X-Gm-Gg: AR+sD11XFPSuZCGn3YE57sCvBCSVRkfpQPbRJ0Fq4DEdILHOeMtBDOZGbT9FTeZioYA
-	vs/izHP8YTuX97Lshjqs/gLV2TEynVBolZQXPCyM27Bfki6zpOg6naBi7BuKg1Yu4q4NMleiH7X
-	KZ+c7T9nIUiRWBXonL3SoIaWXExC+HAwqsW3hTEkBOhj2PYeTJSRoHahNnXF48ZHs9LRAyvJeLK
-	vQgNdvpjXnPDHYbx/UlkynclE93+IwOksSyZrvCOQ/Bu05/Z8mYyrtyzFlwA8M27GfxotYo7whX
-	DpqflDBPk6qneNI74WhNKhm+/fFLmAiE52hd2Q+UmnhW4xcV6JWCCdcGs3A0piZ0HI8tUsmhwnr
-	G+KfEAZlwtiO4KVCg4m/cLA5qu/6gIN04Sb8LhqEh8AZ8pe8jhH1ZhU0JL2GDxijfkcAeebjQMp
-	Lk17m3t1OfZ54D6uNiTIJZQmmqlI6H7OJ5ttueGof/N/9S3XUsl7vDcU5LGlvb8uo2VsWkK6xBC
-	trtxqDOzxVx7Lgcjg/eOAi0iCfNRjiJV4Uj
-X-Received: by 2002:a05:600d:6401:10b0:499:9069:c2c9 with SMTP id 5b1f17b1804b1-499dc81cd82mr59940625e9.11.1787761743811;
-        Wed, 26 Aug 2026 09:29:03 -0700 (PDT)
+        bh=MveUnfVN08Qze7xHpn7EUTFT1HRfb1h/riwWy8sicu0=;
+        b=ox2sDPOtpwxgdHDT1CKamYHyTP3C0i6xdZX0aXUgr1vIb/zWjA0MzhMbQXGnWZXm9Q
+         s/PI6WSZu+SNY8MlQyvrpGLCv+CJv4hcAdCSGruHB9aBCRwKCKilaKdYZ81+AALvwJiN
+         24urQY7ihZQ1/keAjt90zTvHq0bOtPF0jKsSesRxRLAzOly4LBjLpP6edpevNyyNrgqe
+         0Tc1lEYfKWGw55i6jyLtiZmfUWI4dYFZuvXf2BogTX08C+38/p1djnQ1ag+Oplr544YJ
+         KyyDJnYidr3Y/MaozfIe6bcJn+lkuPMZ+ge0BniFnIpj2EnJ61p/oTOehzzoOTGQWNAZ
+         aDgg==
+X-Gm-Message-State: AFuF++madNT0xYWsdazo+fcoBSACIEtnUDGjtLgk3EQOSPMpAwZcsBzm
+	l64XBm9NoiJT6GtQ11V6fa5/Y03ZJJTTnySzu2FPN+pUTxyNH53G0bAbxR7QZ2RnH77hT7rAT37
+	dYgY1nyu8
+X-Gm-Gg: AR+sD11sQpE8hAtU3ngbBh31sENylJKFV1MWY9uXUo2w28ezYH7aLXH2vQNY51gTBDH
+	c+lNrafTPz3VFprlQmkqotic7cduesHnaYuPAy1wBGbMk6e3WD9Wa3J55tHluStqA3hEtOlTGZX
+	oA/U3Y/redOQB0/08VuZy1rYNPep35lT/ktqvQV/6LJ30ilEjoLm72/p4/dIYAKIGtqLwKDJQuU
+	+PPlpumh3myeE+r3rrnYuL2Ljn5SvVM99TVetPk2Efdq/1H4g8pZHqeqEPm5SV1akxuAAbx4Jc5
+	3egimQoM0gzCNOX/FuBeDXqTlyGLbMaEvSjBMedRRgG9FnnSmPjkzRe0CkVOb0HwKGksS4YqZNi
+	fstYaqR2eLHC2m2lK5GVjptYxtKetT8flgMbfiZ5aGyBXK8kYihDVlmIJH3WBiONS0p/dDQSfoO
+	PIM6LD9wGlbj5BH2hRJ5teVrm8I17rVS54To09/6KRWE6hPEBR1NPu1L4PXXAljVM00oDYtz6TB
+	5x9ePySERrkicxIb/PFxDgGLiWdrE06gvRY
+X-Received: by 2002:a05:6000:4541:b0:47f:e770:13e0 with SMTP id ffacd0b85a97d-482e26a6a63mr6662154f8f.7.1787761747741;
+        Wed, 26 Aug 2026 09:29:07 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([2a01:4b00:d309:1c00:caf1:6b20:8531:818c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e27ab574sm3232342f8f.14.2026.08.26.09.29.02
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e27ab574sm3232342f8f.14.2026.08.26.09.29.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 09:29:03 -0700 (PDT)
+        Wed, 26 Aug 2026 09:29:06 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
 To: rust-for-linux@vger.kernel.org
 Cc: Mike Lothian <mike@fireburn.co.uk>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Lyude Paul <lyude@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	John Stultz <jstultz@google.com>,
-	Stephen Boyd <sboyd@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
@@ -82,10 +75,11 @@ Cc: Mike Lothian <mike@fireburn.co.uk>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/9] rust: hrtimer: add ArcHrTimerHandle::restart
-Date: Wed, 26 Aug 2026 17:28:36 +0100
-Message-ID: <20260826162851.2497-3-mike@fireburn.co.uk>
+Subject: [PATCH 3/9] rust: random: add a safe get_random_bytes wrapper
+Date: Wed, 26 Aug 2026 17:28:37 +0100
+Message-ID: <20260826162851.2497-4-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826162851.2497-1-mike@fireburn.co.uk>
 References: <20260826162851.2497-1-mike@fireburn.co.uk>
@@ -97,56 +91,67 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Restarting an already-started timer through the safe API means dropping
-its handle and calling `HrTimerPointer::start()` again. Dropping the
-handle cancels, and cancelling blocks until a running callback returns,
-so this is unavailable to any caller that cannot sleep -- a driver
-re-arming its timer from a callback invoked with interrupts disabled,
-say. Such drivers fall back to the unsafe `HasHrTimer::start()`
-on a raw pointer.
-
-Add `restart()` on the handle. It re-queues the timer in place without
-cancelling first. It is safe because the handle already owns the
-`Arc` that keeps the timer alive and still cancels it on drop, which
-is exactly what `HasHrTimer::start()` requires of its caller.
+Expose a slice-based wrapper around get_random_bytes() so Rust callers
+can fill key, nonce, and other random buffers without touching raw
+pointers.
 
 Assisted-by: Claude:claude-opus-5
 Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
 ---
- rust/kernel/time/hrtimer/arc.rs | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ rust/kernel/lib.rs    |  1 +
+ rust/kernel/random.rs | 34 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+)
+ create mode 100644 rust/kernel/random.rs
 
-diff --git a/rust/kernel/time/hrtimer/arc.rs b/rust/kernel/time/hrtimer/arc.rs
-index 7be82bcb352a..f7cd46dbd3d3 100644
---- a/rust/kernel/time/hrtimer/arc.rs
-+++ b/rust/kernel/time/hrtimer/arc.rs
-@@ -39,6 +39,29 @@ fn cancel(&mut self) -> bool {
-     }
- }
- 
-+impl<T> ArcHrTimerHandle<T>
-+where
-+    T: HasHrTimer<T>,
-+{
-+    /// Restart the timer with a new expiry time, without cancelling it first.
-+    ///
-+    /// If the timer is queued it is removed and re-inserted at the new expiry; if it has already
-+    /// expired it is queued again. Unlike dropping the handle and calling
-+    /// [`HrTimerPointer::start`] again, this never blocks waiting for a running callback, so it
-+    /// can be used from contexts that cannot sleep -- re-arming a timer from a driver callback
-+    /// invoked with interrupts disabled, for instance.
-+    ///
-+    /// This handle keeps its timer alive and still cancels it on drop, so the timer cannot outlive
-+    /// the restart.
-+    pub fn restart(&self, expires: <<T as HasHrTimer<T>>::TimerMode as HrTimerMode>::Expires) {
-+        // SAFETY:
-+        // - `self.inner` is a live `Arc<T>` held by this handle, so the pointer is valid.
-+        // - The caller cannot leak past the timer's death: this handle owns the `Arc` and cancels
-+        //   the timer when dropped, which is the requirement `HasHrTimer::start` places on us.
-+        unsafe { T::start(Arc::as_ptr(&self.inner), expires) };
-+    }
-+}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 08e5730753eb..f39648246271 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -116,6 +116,7 @@
+ pub mod ptr;
+ #[cfg(CONFIG_RUST_PWM_ABSTRACTIONS)]
+ pub mod pwm;
++pub mod random;
+ pub mod rbtree;
+ pub mod regulator;
+ pub mod revocable;
+diff --git a/rust/kernel/random.rs b/rust/kernel/random.rs
+new file mode 100644
+index 000000000000..5f2288969dbf
+--- /dev/null
++++ b/rust/kernel/random.rs
+@@ -0,0 +1,34 @@
++// SPDX-License-Identifier: GPL-2.0
 +
- impl<T> Drop for ArcHrTimerHandle<T>
- where
-     T: HasHrTimer<T>,
++//! Random number generation.
++//!
++//! C header: [`include/linux/random.h`](srctree/include/linux/random.h)
++
++use crate::bindings;
++
++/// Fills `buf` with cryptographically secure random bytes from the kernel's CSPRNG.
++///
++/// This is the in-kernel equivalent of reading from `/dev/urandom`, and is suitable for generating
++/// keys, nonces and other secrets. It never blocks: once the CSPRNG has been seeded during boot it
++/// stays seeded, and callers running that early should use
++/// [`wait_for_random_bytes()`] instead of assuming otherwise.
++///
++/// [`wait_for_random_bytes()`]: srctree/include/linux/random.h
++///
++/// # Examples
++///
++/// ```
++/// use kernel::random;
++///
++/// let mut key = [0u8; 16];
++/// random::fill_bytes(&mut key);
++///
++/// // A zero-length request is valid and does nothing.
++/// random::fill_bytes(&mut []);
++/// ```
++#[inline]
++pub fn fill_bytes(buf: &mut [u8]) {
++    // SAFETY: `buf` is a valid slice, so its pointer is valid for writes of `buf.len()` bytes, and
++    // `get_random_bytes()` writes exactly that many.
++    unsafe { bindings::get_random_bytes(buf.as_mut_ptr().cast(), buf.len()) };
++}
