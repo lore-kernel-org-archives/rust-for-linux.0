@@ -1,159 +1,118 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012058.outbound.protection.outlook.com [40.107.200.58])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE54C43D502;
-	Wed, 26 Aug 2026 14:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787753755; cv=fail; b=jQdsOMyGQUhSEynymZUayjlvm9ZCXR33XowSauZa4QK3AduRuwOadR2uGdrXzoxh4Nx95NRakG3Zf6T8MXob53cWlIVL7dNK4cs8e00GE+UZywvvbJHfppjtWzUd+OdT3G67ZtcXGJ4p+lLYv/cdhOo25OZwBzzwAfrP/tRM1O4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787753755; c=relaxed/simple;
-	bh=/vfy4UHD1HfsBGT+UkLfuYyqoWsCqWyBUEaUCBtcDn0=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=p3QVG8ASn2RQ8nY/5N+4Rx4AGM5v4tMmWtb+tkL8+TZ8j6WaWBXqxxyBbqhYu5mTa3H8Jbm2l+TdV5FyxMlTKXEzIG/gBLaoXZiE/Dh+po+X1KyoQ3pmt1PFH8RdRXwXodzNinXEEinnU9ciJRXCX77BUGgcISXRq3lFAPTljTE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uAsbP5R9; arc=fail smtp.client-ip=40.107.200.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D38C448B8A;
+	Wed, 26 Aug 2026 14:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787756215; cv=none; b=aFYlQD7BQN7iwMJza93oMEvqIUjgnomemGJQqIxeysrYB6Gz9M/uqv2DkvJgB3SviTqKH6na8f4yuy/z1BSmvcgpe/FCZIBCPHUrWBH1gNj/MGYhDzPzflVleFnJFeqRpWeN7A6obB6PJFLI/+6be9WW5Oi0PKw0rl11e694ZwI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787756215; c=relaxed/simple;
+	bh=MT26pk9Zk0/h5vg6FjDJ4/fHEItjljvrNP9VqUDN6IQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XxfbCJPgQXc8ggf7S8/yh0QAvCVSXfxIkEFgOU4smSW06dyfyOoSHTYjH2W6u6/MYlMaxo1vX8v2ZYxc8HNZwvj9dIOFVqg4WIttSWUrjjQ3LwxHLl1VZVvvCDoTkFMyo90/ManwKrowFsgYsP+jmS0/NOZA0YjagEAHOO/WliE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AjykGl2d; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uAsbP5R9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hayDoKlR8dZtYvyuhFu1KZtZ3g3GjtVSIL/DwdNe5UZiuofK9zn4LfBmmJBZLlBeqrqRcJUvxisSHElqTVI2WfJm+jeCpIL33qMq38r4oNZMgP6uIM3tcH3/R1AZdZjJs5IJnG1xdOi86O703KsNkt1vEjWWJ2LYxai5gs4E2z8w4ujlvyDmgEPYEPyPJ5h7HpuOfgIn3jgeAqhMmfYi1xu9UNGLBCTFxXbQoxnTfJ53pcDaBMdG9mU9AbhkSbdTpeexQf90HJa/ZiqFJFiQGNOtwV1sZEVzWcgLQZI4sFSeFO0Xn1TLbc8rCYcVJmh61po7cvvzi+tHB85BpBebcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5BGHKeQaYhzC60YfeY2GH1PqRioZ0ezKfz3uzc5RFC4=;
- b=J2FyXmHeNGuvn1qG2fLOgHKgCk/W/CnD0cws15zR6IQQY6iGqxn/Lw4rC4sV5SLdqySMnNZoN0cmM3eB7oqCDSzCVor/RAODj3mwOSzXJ9HoElFPdyL8rc545g5tQ37cPhQmGWLBXaAmx6MFKzmqq+LPYmNSxgrdESu+ySAVemDhqI0VSzoP3Ezqhh+xwBdWot6tFHs9XaU5btv4OKmIGyV675EC817y2WJEPEe6B7mDQqnHgVbELHSyBvq75in1SWHnxKj1HPvaIReQs9XmjZ77hWlJfAkpehXqIokGZsx1AoprdMhSpxLNAQv/kxBA5IWjBR0V9GWnGjpx8LvrkQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5BGHKeQaYhzC60YfeY2GH1PqRioZ0ezKfz3uzc5RFC4=;
- b=uAsbP5R9emUsj2OAMHBEni+xd1YNPJFQYlnnkFEwJmWGyYCdHdeoqYmV06+ugUsQgCOFSmMRaiisQGmbZ2f2TA2IhKz5y7CLYsouTr97moCJXqf83aca3LQO7Pm1nYjpiXTUJFAozfC7fK6zrALb8OFfFS6F3PK7bfofqlsWPl+Yt5IaQJRhuMQDmm8Di1RAPgWIUbstSYS++hMQLuN8DwQ5Se11mLnLJ7dO/4p4/kSB59DmOo0M4YHbISJ0OtgtFHDz2S3EiIuicFqgCoa6ShCxFm19yzBy3NotD3xhDsapVu8AQm+KPjPO7Bl/f/8putatCs81EwzfVUN5TxBs+g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
- CYYPR12MB8991.namprd12.prod.outlook.com (2603:10b6:930:b9::15) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.7; Wed, 26 Aug 2026 14:15:33 +0000
-Received: from DS0PR12MB6413.namprd12.prod.outlook.com
- ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
- ([fe80::e82a:6673:4142:37fa%5]) with mapi id 15.21.0360.006; Wed, 26 Aug 2026
- 14:15:33 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 26 Aug 2026 23:15:29 +0900
-Message-Id: <DKYXT1CZB5UU.3EUO3FE5TK9RW@nvidia.com>
-To: "Eliot Courtney" <ecourtney@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>
-Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil Babka"
- <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Uladzislau
- Rezki" <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH 1/6] rust: alloc: add Vec::push_init
-From: "Eliot Courtney" <ecourtney@nvidia.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260817-b4-nvkv-v1-0-b84db5e84b67@nvidia.com>
- <20260817-b4-nvkv-v1-1-b84db5e84b67@nvidia.com>
- <DKSVRS7UAL9U.3RUTW74RVSEHQ@kernel.org>
- <DKXNDP39VOFP.1W7GDGA2TXSW2@nvidia.com>
-In-Reply-To: <DKXNDP39VOFP.1W7GDGA2TXSW2@nvidia.com>
-X-ClientProxiedBy: TYCP286CA0063.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:31a::12) To DS0PR12MB6413.namprd12.prod.outlook.com
- (2603:10b6:8:ce::10)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AjykGl2d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0851F000E9;
+	Wed, 26 Aug 2026 14:56:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787756214;
+	bh=Lqj3WyT4uUSyg5vPTud/NlBT/9oGUsXf3w6yMFvssHk=;
+	h=From:To:Cc:Subject:Date;
+	b=AjykGl2d0NtadVh1HDftsuRFQVDNwr7fprTrNgVyOS38MibtI+mqw9ib00+W2F1qc
+	 b6mxzPeBVB4DGNlNu7Q4Wigqad605YQNYt1jJHrtz3XbVRZQ5XjYxGKr7GknQzwOGz
+	 +gKGJrJjb3pdqRtJOx7M0WJUoaobJoj293QNGl6oUjLWMpoIrIX1WmGBuBPrMoNydC
+	 T/3PfEq4gNfFLUU/4NUFKOgLuUN8aBNk1SWjm2RK4JkvhYsrSRxKobEQ6nRJ7fdkJ3
+	 Q+qsM4CLu83UdxBORErr3Pyk+G62haCIxFIXvDE+EEvrE6gPsJQXP8P7H6msJJc6Oe
+	 6S3GR5crvE3jw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Jocelyn Falempe <jfalempe@redhat.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/panic: clean new `clippy::needless_range_loop` lint for Rust 1.100.0
+Date: Wed, 26 Aug 2026 16:56:42 +0200
+Message-ID: <20260826145642.43807-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|CYYPR12MB8991:EE_
-X-MS-Office365-Filtering-Correlation-Id: 17a36ab2-7c06-4a5f-ec87-08df037c7dd1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|10070799003|7416014|376014|23010399003|22082099003|18002099003|10067099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	IuWUdPe0TPfa3Bfy+OAOqJnNc8M+07UqEh0HoY/Mft/oyGvVP2UPzO/Cb+g5xfEtdN/UD540IPzxT7lkV6k6SV6/9CZ0HA7tYdEGPTagiqm47BbAIkxzQCWW4YNB12skvWZ+Rgu80d2QRPvcAXOcJoEAtReLR4CCycdggAK/qCEO8K0qFxuQclq8hOOn9mGg/uGK6r4KQbWiRP909WiHHPi/UHe4ioSWDSpGQ4jNEIIkG4nIih4JGSDj/TVxzJ0txFV+N8C/Qav5lbdgqK80V0nVuyWcn73u0Vh+eDGzPkagCKa01i+cFhTunRWj1fHS3iQrVL4FFOR5rDBbMUmxeP4N69C+hLPQgC18XajS6xrJaHLkMn0t1jJOaCfTTD5q6wlZvfNtFEohV84rrl3nySO5bvTHlArhNL9CcmBoYKk8b7iNnwDI+JRnAuG9DUZAB6aHRHAFo0bGbuA1KRP/dp945g4esEm4TqibOHIS9J5MvPU0D14uUWX2q1KeC6kqy/PyqFrf3viKLZUEQ/UrtI6zf/BDcZkvSVliXDGY7y2KjJlqs1wzw4UOTdX77P0HbD/KimcSnzwcllM1tSnk3M4RENu5Ey/JUFoGVj5Z9Z+1HBIFUeDptJveh450mpVk4POnLRNVhJBgpSup7DNopb/7P8Geg2t62Mjs7xpLJvQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(7416014)(376014)(23010399003)(22082099003)(18002099003)(10067099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MjJlU2xUMEZVb05VOTM1S3NnZ3FmZWpPRHBoWjltMTRwNyttQUpVakh4dkJ2?=
- =?utf-8?B?VWZYNWNIbS9ONTNueGt1U3FjOGVVVWxnSnpPNG4vWCs5Q2RIeThhcVNVR0No?=
- =?utf-8?B?OVlMcGgrMTdRTDhuWVArVDZZMldzV0FlN2wvYUVXbTcrSVJySnNQWGhYWGNL?=
- =?utf-8?B?NytBVFZLVjRGRFJQTkJNWkIxQ2cxNUFXTk8wNFlIVzYxeCtDZnZJUFZQM2NO?=
- =?utf-8?B?VzBSY1ppVjR0ckdqbUJmcndJSys4RnhqeUt0RVFmRnZsVVZ1MEJkK3g2MnIz?=
- =?utf-8?B?Rno0MGkvUkFsOWFUUDZxNHJWZnBHTnBJYk4zZjlXTVlYU2doU2t1TmtqbHFX?=
- =?utf-8?B?K3AxVkRlKzJIWm5NWFV2NzhBSmszVHlTb0lrRy9TcjRFZ1FuaVRWVXo2Mklz?=
- =?utf-8?B?aVpmV0UrbTJMM25hdkI1dHU0SkoyT2tVa0hPdlMwTWU5MEpUUU9RZm5uLy9P?=
- =?utf-8?B?ZTBFSERTMHVRUzhwUmlMNGl6RHhrNlRkRUhOYS83WEIvYkcxdkt3OEtHdXBl?=
- =?utf-8?B?QUJ5RnhtNTdaZW9sQUZXY3BzdGpzOGQzREhMZURsdys2eXZPRVFzclBlMHp3?=
- =?utf-8?B?L1hjdUptcEpUWW1wUTJqSE1ISnBKY1VUN0F6YlptUHRTRUoyc2Q3NTFHS3gv?=
- =?utf-8?B?VWg4bTFTOWY5aHFGMHJMZkxHYVcvK0t5MGY1UDhkRjM3L1B2ajJ0TmlwY3Mz?=
- =?utf-8?B?aGh6bjk2R1E2VWR0NmkyaWZGMmxYNFpHOHFndEZlT1dHUDNQcFgzWFVpRjVz?=
- =?utf-8?B?VzJuQ1N3U3VZQ3k3R0p3YXhHeFMrUkt2dzVmWmNydGMzYXgxRjE4SUdoUE5t?=
- =?utf-8?B?SVppSzltVjJXMXpxZDFXcmFaOXljLzhUeFg2MldtbUpraEU4aFlPZEx1ODFu?=
- =?utf-8?B?QldXUlBSakRlOEZKTlZEZ3NXc3VUeFc3ekdpRVk0RlkxY0xYcnFnNkV1a3lx?=
- =?utf-8?B?ZVVUL0dQbUkzdzhNUmgybndRWk5TNzc5V1BkK2ZQLzVLMUtLR2d5ZW9HeFJz?=
- =?utf-8?B?Smk5SHVtbVZuMHJ5bjNEWnQ5SDZLckJzeG0wRkdrWFpqSmlmU3RBVHVZaUZa?=
- =?utf-8?B?ci95VEsxcE85aFRmYzJnSUpuZmszcGdMdFhBSTBFTnlrOUgyUGxVVkljVzBp?=
- =?utf-8?B?UWlEbHpNenBDRnlzaUVoMHdib2UwSWtaemVQNkpyUElsVTdmSEVXaENxKzZS?=
- =?utf-8?B?V0VmaE9LUUJia2VZVUM3MnNiUHRMa1EvSG5kTUVhTFZVTkhITzlUMGFVOGxa?=
- =?utf-8?B?ZHdtVzM0U0thZXVoUEtrbGRIZ3JFZGxGU2xpbUdqR1pyVjB6V2E0OGNTNDdK?=
- =?utf-8?B?WW4yQmorak5RSWQzWllsd0k3UlhUU08yWGp4akpRVFl6M3hXSHp4YUpocmNE?=
- =?utf-8?B?Vm9vTWRoRytJci8yZFpZYUpSa0NyNDZHa0lmeUtnR1E2dy9kSmdXdW1jczBS?=
- =?utf-8?B?TGpmRnkzUmdNOEMrYVZtYzZuYW5Cbk1hVGJ2UzFkSXdnTktUS2xuQk11ZnhJ?=
- =?utf-8?B?aG52eStwVWRTUmRlOUFzLzNPOXFxNG02c2VDcnpPVjU5ZS9vcW5IeDVTN1FK?=
- =?utf-8?B?L0RLa3RFQVhkcE9xSktxUUNqYjI4Z0ErZ1JlNjlZNXdLTytYTHU5NGh2R1Ir?=
- =?utf-8?B?cTJ2ZjYvdkp4ZDhjNWQyK2NXM053czljTWpxbjRnbW1EbE8zbTBONWhtSG1o?=
- =?utf-8?B?VC8zZXY1SnlaWHhyN3BmWWlhR2FGaVdJT0Q3a0JEKzdMQVc0N3J5S1dmUklZ?=
- =?utf-8?B?dHNZa2lhaWJiM2Frd2hKWVZGNUFKcHA3bFRFRDQ5eVdtbEtSSHVUYVlKbW5x?=
- =?utf-8?B?ak81cEVjcmhOeHBPdVBlVVJNbjdieWpsY1dVRXdsOGQxZU8wellCdXl4ZU1Z?=
- =?utf-8?B?TjFEajBrQzlLdkFsOUt2UGhkbTh1ZHpyMWUzUy9wbkM3R092VVlCalhrdnd6?=
- =?utf-8?B?MlVsY1VZd2pLeGwrbUJwWHhrcGgzWUQxQWtLNDh5REZiZ3ZPWWszMlV3Tysx?=
- =?utf-8?B?cVRPa1FtaDRSTnQxODhkR1Z3TitEVlQyRTlmWTBmNTMwbUgzeldIQS8zQ2Qy?=
- =?utf-8?B?TlNnUVZ5T05nZXhzeGNYblZYQTBFbC9lVGEybC9RaXpjQ2NDNERJckR4dkhh?=
- =?utf-8?B?UHBKS3FYWGRGTGU3VnpSWi9UNTRqY0t3ZWw5N05SNlJuenJUaGhpeXpIbU1Z?=
- =?utf-8?B?dStCK1p5eHJUN2tWMTNBTlh1di9Vbzh4b3hqRnk2UnFnT3Y0K3NJRWgvR3kr?=
- =?utf-8?B?cDVMN2pYaGIwbE01NjlBRCs1V09nVVUyOTh5QlQvNG15aU42YVRJZFhicHht?=
- =?utf-8?B?N3dyTk51U1Y2TWE4S0ZYQlBPSlZSMVZLL0pIRDlOZFdtTVZxZmZhd1Q1TW9W?=
- =?utf-8?Q?n0ydtn1hE1vd/bvLyacMtnRQ1lDICopKtaxA8894fABxw?=
-X-MS-Exchange-AntiSpam-MessageData-1: yFC0+AZ/YCplhw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 17a36ab2-7c06-4a5f-ec87-08df037c7dd1
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 14:15:33.3408
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5kR9DLr0ZKeW2jtL9OAGQIMyBDay+4EtguofHKlSjm0HOQ9GbAEwsGgulTjCR1u6xdcvbRxjmqoTbOUFcs/gLw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8991
+Content-Transfer-Encoding: 8bit
 
-> So concretely, what about just:
-> - push(&mut self, init: impl Init<T>, flags: Flags) ->
->     Result<(), AllocError>
-> - try_push<I: Init<T, E>, E>(&mut self, init: I, flags: Flags) ->
->     Result<(), PushInitError<I, E>>
+Starting with Rust 1.100.0 (expected 2026-11-12), Clippy warns:
 
-I realised that changing push(v: T) to push(init: impl Init<T>) can
-weaken the type inference, although there doesn't appear to be any uses
-in tree that are affected currently. Anyone have any thoughts on this?
-Otherwise I guess it's push, push_init, try_push_init (but with the
-error types I suggested).
+    warning: the loop variable `i` is only used to index `self.decimals`
+       --> drivers/gpu/drm/drm_panic_qr.rs:410:18
+        |
+    410 |         for i in 0..len {
+        |                  ^^^^^^
+        |
+    note: for this index operation
+       --> drivers/gpu/drm/drm_panic_qr.rs:411:13
+        |
+    411 |             self.decimals[i] = (chunk % 10) as u8;
+        |             ^^^^^^^^^^^^^^^^
+        = help: for further information visit https://rust-lang.github.io/rust-clippy/main/index.html#needless_range_loop
+        = note: `-W clippy::needless-range-loop` implied by `-W clippy::all`
+        = help: to override `-W clippy::all` add `#[allow(clippy::needless_range_loop)]`
+    help: consider using an iterator
+        |
+    410 -         for i in 0..len {
+    410 +         for <item> in self.decimals.iter_mut().take(len) {
+        |
+
+The lint did not trigger here before because it could not handle arrays
+behind a field access such as `self.decimals` -- Clippy was improved to
+catch those cases [1][2].
+
+Thus clean the warning by iterating over a slice rather than using
+`take()` so that an out-of-range `len` still triggers the same bounds
+check as the indexed loop.
+
+Cc: stable@vger.kernel.org # Needed in 6.18.y and later.
+Link: https://github.com/rust-lang/rust-clippy/issues/16631 [1]
+Link: https://github.com/rust-lang/rust-clippy/pull/16634 [2]
+Assisted-by: LLM
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+One may want to keep the loop in a shape similar to e.g. the one above,
+though.
+
+ drivers/gpu/drm/drm_panic_qr.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
+index ac27e86c601c..4d7eb75a3afc 100644
+--- a/drivers/gpu/drm/drm_panic_qr.rs
++++ b/drivers/gpu/drm/drm_panic_qr.rs
+@@ -407,8 +407,8 @@ fn push(&mut self, data: u64, len: usize) {
+         for i in (0..self.len).rev() {
+             self.decimals[i + len] = self.decimals[i];
+         }
+-        for i in 0..len {
+-            self.decimals[i] = (chunk % 10) as u8;
++        for decimal in &mut self.decimals[..len] {
++            *decimal = (chunk % 10) as u8;
+             chunk = div10(chunk);
+         }
+         self.len += len;
+
+base-commit: 45c13f3f9e3bb15fd89ff2864c6f627a3b4b4229
+--
+2.55.0
