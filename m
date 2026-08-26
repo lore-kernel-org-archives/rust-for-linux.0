@@ -1,65 +1,64 @@
 Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA6C46984A
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364C03C13EC
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787761900; cv=none; b=K78GJ3fMXESvdanV5ZV0eF9nHErORbx4/Qyj9sbDXhZv0jkX34Ets5a7p5eFcTkj68IhJUk0R2DsdkL/d56PySwyPg95RVL/AtAbmwcnQQnxS8uHTozLCH3CoE3w/UlCMEulzUkmaDIDTk+e1KfeSk1aZJ9bwxG1zd28gawQBBU=
+	t=1787761905; cv=none; b=JHUmRASs6Kqp1CyRKugRx37GE8G9oiHZ2FTdAwyVgUylrDz4uJkIQhF68lFHHOfnYYTxMg6NGr8R+1zjkhc+dx0rEU9EFINW6TWaLZLwS/XrQUHtRpKCUKpoofs8eOI3lEMQz4uCxgGhjY05vg4PyXvtTP3LeLQS1zlditGJGqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787761900; c=relaxed/simple;
-	bh=WZlq9OZ7FAFZLaxFJSphucTd66QV1xZKbxhmcyg3C7s=;
+	s=arc-20240116; t=1787761905; c=relaxed/simple;
+	bh=5JUivoyhL/eFA3z1wzR8eXGOYWpIX0QOjpm+5X1M89U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FET5cFQGBiMpwT723HddIE9wJXCWcY787iCBh66qt442+WPat60skkIV7Yz18iq8z5sUmTtVfD/yIp8mSXHAkOMlMbxYi9vCwsMPbew5KJSqLVoOP1kI2atIh2iAZLKkREUXh4pv+Pd9xmgndFDSf5Il3N8hB6KHpqOtppkwfsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=NVWM8oEJ; arc=none smtp.client-ip=209.85.128.47
+	 MIME-Version; b=IrTiQeVCwl+aRLZzkdASjgCo88MdjqISjU/DYVcw8CROSRmlJCBaFQtGhtshIF4Vvey4dxhLRLrcHxD25dROObI7vgQSdH5Vab4I9dyKgL8KM6oDPbiS3lKuiN2Q06yjirs3M9FaYOWHFDaltx4Vcf2wSaBKUIoRDCid0pXxFv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=l62fSSEv; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="NVWM8oEJ"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-499cb997b8fso6962075e9.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:31:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="l62fSSEv"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-490cf322ed0so10242575e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:31:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787761897; x=1788366697; darn=vger.kernel.org;
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787761902; x=1788366702; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=HdtsQq66n/qz7GbF8KHrVG0ry8nV9A0BZm16SycNCKs=;
-        b=NVWM8oEJyWZqqyfJN5aZpNWDonSmlCSDNqgEJ0enNF+vSwfkXLSz+W6gFC/NTLCwx8
-         Pyx4y7Oiy1byWQEtsecQE+d6CctwEUNhWE2vHtr25sTU6XRGS7n4r229+RGnfmIeBfit
-         r7zIvY6JU4aCd+3l97TGmcpbj9pE4uxg3c+xoLczQk8nIfoUm2oFaaC6EgQXYXvjMi1G
-         44usWAc/F9OWabG5f4/aUuqhHWhw2jrXGrbtkvyCozZ5HB/bxZEhTOED3U9kZN4R+rvM
-         ZDsfbUYj76q/RhR14c3KzPEq/wL/wX7VqpznkvJhvhh0pbIdC51dVSAe+6pITtb7K9Oe
-         124Q==
+        bh=zNZLQEVLi7AF6T2ecrRF6uxN2Gce7/nJnEoP7xr5640=;
+        b=l62fSSEvzQydR0K2XmNXurF14Z1QDh6NOUaQb6k3XHtpC5Mc2i0ftZr9eCFQz3LGqJ
+         35qLKyJcYAtBTstIB+MZ5AhR93Oy4Jkgc210QFpZyDEbxib6BagpUANnmNTf+S0SuaA6
+         HQs+Gp0GoRidk5qsHihxZPjY4LGBS/I43nLC0GbQC3aJ+06vP+fpOraiJn3b9+pvJA+m
+         oWTkDDAF3fd7DKzP3N83GogJHZYCpCoialvtR2hP1PtUg4IK41ZOKKD6jYXfliNbS9g9
+         61g2q2AJiwnWVla3Hf5TjoaEcVMdaCqpyt2w+IxFngIXttgDZgkbJiBe7ILaV41xETUO
+         olxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787761897; x=1788366697;
+        d=1e100.net; s=20251104; t=1787761902; x=1788366702;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HdtsQq66n/qz7GbF8KHrVG0ry8nV9A0BZm16SycNCKs=;
-        b=Xl6iW+F0knxl3/80ly/Z4AW5KeJ/ZQF/y7DNtuXKKJV54nTSLeqS9DBBRlodCs8oFG
-         OMEzhNjZAg0UhuvSLdbKBPN8chbYW5xKP7BjCGeF5uEiy7jMbZfhz7A3qAooJMICzzmN
-         WIrbTGtH0L5WzOEyqWOikBjve8j3ee6kY+23OyyRqd1Iu1d/G0X2UPL51ozf8IoSCvce
-         WRDfTWKVIEoXhN3XsQPQ9D8Y9uT9DcTxZP9bj1DuWXbAAyogmKQyHhpReHcq5K4HrovO
-         eivch50miUR7I3S847ru25ney1GFX8KzVhuMwaZ2WP+IQEzeybURRvUKe4fMUemxNSV+
-         MvpA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq4pH9LJc0RVtu7/V0kfkmo30geA6gs9TtmSEbiX0IHEmkICtGnNZJtSWY9/GBaA8JHeZ2xliA0JEyARBQW2w==@vger.kernel.org
-X-Gm-Message-State: AFuF++l4zyAym4o1DyXupNWsVwkqKGqgBi1jH6MaJPnOp8i+CkrSs6tz
-	r9o6ha4ucfncvljt4wP/MOZR0xOVj9yCOUIpq0L/II6Dnniddeaf8qMpuLZsB5s2U8gjjJQJX1x
-	5SxxGCy0V
-X-Gm-Gg: AR+sD10nCVsIEBQbjdZEPYqhRpalx87HZgeMk7er49z45ldjFvjGfw4rVkTPA247Jmh
-	gepsG63yBon9XpKTl1qzZfbA2pC6IvpeUOjTc7MsaywR+vh+l3QzX0f+Sw/MJAk3GHBuyWrTszt
-	D2nzBogS2p1c9JcfVatfJD9rvAaNSOCFfzQPX7KzzzpfF84ZsbC9N57L6FxdkiC8Wi/fuXEfFuO
-	YGo4BV393AKZR0bLaEcYS41u1dK91lukq5eJkfm3CxJ6CjrV0BY4Pj+f34E10hs3G/3UaweEvzM
-	DzOZKW8X5xfUwm4HfikUPFqDAvIvZr0OkOuh+96NlnX7zFN9ghzhcCuOpLhQZgAK4isP11Toos0
-	lBrHnnUqqqgV57F2GgxLr5KLwGbXa2DYJJwGaAtIfK+SivOIrQWTKT9oKaDqYSd9kxjV3X/oY0g
-	8aYSjMYqbvRxt+XvvroQakY9trnhUEpL+49n4rDFNLza7vOR3FYxgj6zZYh2aaxVoAx3C62Mj7L
-	Bl0pgEZAx+/U8XxWR7zTN2py0vUp6CPEEN9
-X-Received: by 2002:a05:600c:8b55:b0:499:d366:f572 with SMTP id 5b1f17b1804b1-499dc81cccamr81292205e9.10.1787761897397;
-        Wed, 26 Aug 2026 09:31:37 -0700 (PDT)
+        bh=zNZLQEVLi7AF6T2ecrRF6uxN2Gce7/nJnEoP7xr5640=;
+        b=Fkh4HUD4LtQtixxknSThbUDwjjil7jvI3/IYOC7BO7ng9qtcGqntfCIXhttjNWKWm0
+         dJkU+Cb3EH145SDewnaINRpXraP87MosfTn6bRGsBZGDfseS6V2RWlboLqhAaesbYLCi
+         qFElRCVvXxAid99h+FhwpScn9l/Z/jdEvuc/d59w4BKI21PsE6oyn0wccGYtgMlh53U8
+         /M2Ndwkb3yg6FQmNhGsay+f3Irszfo+O146+T0V2x0cgOaNdkY48+LFbH4UxYAvoGsL/
+         DVX2SA46FCoU1h3C/xY+3E84FeH2MOWHqsyizDbsJNEABdgmrjldcad6/N8U9NUE/hJm
+         qBaw==
+X-Forwarded-Encrypted: i=1; AHgh+RrwLczUIN5avp5g/B+CAkJilMjtQwIyJ2pFeSI73qWvx0PftLlWcDI+P4I+bzf6G6eBxBQy2mTJdM9Fl3+rJQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++lt2Y4ViJbLuB1I5+Wbj/++xtFTYKuJLs7+SrSOIHg0iM1M/i/3
+	5L9RNu+ZK4rbTSRi3qpWWwSr3EOxOc8BSa9faq49Fha3eSaTyVrJhJeqqQ3zGoXL4Q==
+X-Gm-Gg: AR+sD10ZtP2p/J09xSHVPijqXu9nipRlCyTUGR4R4QVhc3Mm4pJ0TLas+yGFCYVvuuT
+	sNVcgbwe2G/WUdtqMcLcrXn1AGWufY2qrkuMiBf2xY2OhBBA8VclgPcIWseQ9faRV5InwJqInmR
+	b3T7KfDREQa2grmobcswvFV2gvgisPQUDFvZRXrKbp0IGAuK6KJD6UCL3YiJzh5swOFhGScY4cJ
+	LLzaWVSBy2gxXjPcudScGtnub/a0XFZaCZW7US++O577V/IUti0zlWkGNOrRvU70KL7B5mUa/ZA
+	ZZn2SWls1n9oO3KocMxgLwHAyC7Xr3T+TPUFvUbKEI8KtKYaeH5zG1+5qaWMJHH3JazvOuugkYK
+	pWQPtmPahsuDhzWOO1itUA5/TaEj5rFEKlFiwgPZXT4VWqbXEr75T4q67SYraGq/AC5tVoMaqpc
+	MClK+nghlbZfrUnr67RjZJxpFdA9aynu2BP8fTjmmV2mUFZXrPVEaNKKoRKO6SquHfe3aCI5/3J
+	I2gXLN2V0NP6xLoKOl2UFNAnrzUpzBL8J99
+X-Received: by 2002:a05:600c:860b:b0:499:726a:a017 with SMTP id 5b1f17b1804b1-499dc6e0040mr88950875e9.1.1787761902407;
+        Wed, 26 Aug 2026 09:31:42 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([2a01:4b00:d309:1c00:caf1:6b20:8531:818c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499dc9b83aesm31202705e9.12.2026.08.26.09.31.35
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499dc9b83aesm31202705e9.12.2026.08.26.09.31.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 09:31:36 -0700 (PDT)
+        Wed, 26 Aug 2026 09:31:41 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
 To: linux-usb@vger.kernel.org
 Cc: Mike Lothian <mike@fireburn.co.uk>,
@@ -80,9 +79,9 @@ Cc: Mike Lothian <mike@fireburn.co.uk>,
 	Colin Braun <colinbrauncl@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 4/5] rust: usb: add a vendor-and-interface-info device id constructor
-Date: Wed, 26 Aug 2026 17:30:40 +0100
-Message-ID: <20260826163101.4168-5-mike@fireburn.co.uk>
+Subject: [PATCH v3 5/5] rust: usb: let a driver keep its interface usable while unbinding
+Date: Wed, 26 Aug 2026 17:30:41 +0100
+Message-ID: <20260826163101.4168-6-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826163101.4168-1-mike@fireburn.co.uk>
 References: <20260826163101.4168-1-mike@fireburn.co.uk>
@@ -94,54 +93,54 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-`USB_VENDOR_AND_INTERFACE_INFO` is the C macro a driver uses to bind to
-a function rather than to a list of product IDs: one vendor, plus an
-interface class, subclass and protocol, matching every product that
-exposes it.
+The USB core kills every outstanding URB and disables an interface's
+endpoints before it calls any driver callback. A driver with something
+left to say to the device on the way out therefore cannot say it: the
+transfer names an endpoint that no longer exists and is refused.
 
-The existing constructors cover `USB_DEVICE_INFO` and
-`USB_INTERFACE_INFO`, which between them can express "any device of this
-class" or "any interface of this class from any vendor", but not the
-combination -- and the combination is what a vendor-specific function
-needs, because class `0xff` means nothing without the vendor beside it.
+Expose the core's soft-unbind flag as a driver constant. Setting it
+defers that teardown until the callbacks return, which makes cancelling
+outstanding transfers the driver's own responsibility.
+
+This matters to a driver that leaves the device in a state a user can
+see. A display bridge that simply stops sending pixels leaves the
+monitor lit on whatever it decoded last.
 
 Assisted-by: Claude:claude-opus-5
 Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
 ---
- rust/kernel/usb.rs | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ rust/kernel/usb.rs | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
-index 782bae53584d..b2a0fb104ddf 100644
+index b2a0fb104ddf..1d8f5bc8a545 100644
 --- a/rust/kernel/usb.rs
 +++ b/rust/kernel/usb.rs
-@@ -307,6 +307,29 @@ pub const fn from_interface_info(class: u8, subclass: u8, protocol: u8) -> Self
-         })
-     }
+@@ -107,6 +107,7 @@ unsafe fn register(
+             (*udrv.get()).pre_reset = Some(Self::pre_reset_callback);
+             (*udrv.get()).post_reset = Some(Self::post_reset_callback);
+             (*udrv.get()).id_table = T::ID_TABLE.as_ptr();
++            (*udrv.get()).set_soft_unbind(T::SOFT_UNBIND as core::ffi::c_uint);
+         }
  
-+    /// Equivalent to C's `USB_VENDOR_AND_INTERFACE_INFO` macro.
+         // SAFETY: `udrv` is guaranteed to be a valid `DriverType`.
+@@ -474,6 +475,19 @@ pub trait Driver {
+     /// The table of device ids supported by the driver.
+     const ID_TABLE: IdTable<Self::IdInfo>;
+ 
++    /// Whether the USB core must leave this interface usable until the driver has let go of it.
 +    ///
-+    /// Matches every device from one vendor that exposes an interface of the given class,
-+    /// subclass and protocol, whatever its product ID. This is how a driver binds to a *function*
-+    /// rather than to a list of the products someone happened to test.
-+    pub const fn from_vendor_and_interface_info(
-+        vendor: u16,
-+        class: u8,
-+        subclass: u8,
-+        protocol: u8,
-+    ) -> Self {
-+        Self(bindings::usb_device_id {
-+            match_flags: (bindings::USB_DEVICE_ID_MATCH_VENDOR
-+                | bindings::USB_DEVICE_ID_MATCH_INT_INFO) as u16,
-+            idVendor: vendor,
-+            bInterfaceClass: class,
-+            bInterfaceSubClass: subclass,
-+            bInterfaceProtocol: protocol,
-+            // SAFETY: It is safe to use all zeroes for the other fields of `usb_device_id`.
-+            ..unsafe { MaybeUninit::zeroed().assume_init() }
-+        })
-+    }
++    /// By default the core kills every outstanding URB and disables the interface's endpoints
++    /// *before* it calls any driver callback, so a driver that has something to say to the device
++    /// on the way out cannot say it: the transfer is refused with [`ENOENT`] because the endpoint
++    /// it names no longer exists. Setting this defers that teardown until after the callbacks
++    /// return, which makes cancelling outstanding transfers the driver's own responsibility.
++    ///
++    /// Only useful to a driver that leaves the device in a state a user can see -- a display that
++    /// otherwise goes on scanning out its last frame, an interface that must be told to power
++    /// down.
++    const SOFT_UNBIND: bool = false;
 +
-     /// Equivalent to C's `USB_DEVICE_INTERFACE_CLASS` macro.
-     pub const fn from_device_interface_class(vendor: u16, product: u16, class: u8) -> Self {
-         Self(bindings::usb_device_id {
+     /// USB driver probe.
+     ///
+     /// Called when a new USB interface is bound to this driver.
