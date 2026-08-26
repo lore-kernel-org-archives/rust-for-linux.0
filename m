@@ -1,83 +1,77 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E57048165C;
-	Wed, 26 Aug 2026 21:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787780645; cv=pass; b=JC7aoRhXqFrP1jyrSZryur0Awuc4PnmMOX7aBUIxYxRO47/HD1ai3gKIEDb3A9w4g6MhaefLAx1Aen0BJp4TmysMx/GbunPz3vcpzYIhvp9kEgzx0bozbrEl6SEkXXZJlpgiuw7961THkgO65yK+M2o+/IthLKfTZvYSoE66SbM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787780645; c=relaxed/simple;
-	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=ZeU97FK8GKZd1/cDAic9ULS6s7bxJQTDdSchIT8ftS17XKkB0FrRaqIj9TVdW9nT/O9pOmyZjRs62egDP24n7I8XRm1MXqV8lDi7wQNXMN/4l7+AzJi/+e9lzoJHbRP31PthnJjdwQ1nM27VBnp/DecVu/+zMhrnmeKUBQCXTFA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=S4k+Uqxq; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B3848BD35;
+	Wed, 26 Aug 2026 22:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787782163; cv=none; b=JvC6cIFwrE10XIbfGEIgm4YshKFCxIuRFUwweT1MlKbCCVPvqolgle62LhAM0D/vzqzwjP9NdP/9ifLQrVPVuOfUQfDShtRIzmU7QZMcubbDy88v3rv0NJD620lGKEZHSuP27N4ZwUj9VjVJZ2kJXwW0rx3EtyAISZR98/DiMLo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787782163; c=relaxed/simple;
+	bh=iTKpZVVyrvHn2/PCIjerZLBtqXbA9duX7JUWfnO/5NE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rtDm7elu+E9WEw/tU/lD/su0A215azU4GMZThpZzq3jb0YIB/+Zk7jU3Yu2JG4/9ST4uchXLFnj1ajUaD8kbC68pBlZuD7SJJ1sQcpNfi/e6y4nr8RcUIlNJM0ZcXGdnwn88hKsncvs0DyY8eiAvXdmr8HPtTb0MoPeiElmN1nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GBvqK8f7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="S4k+Uqxq"
-ARC-Seal: i=1; a=rsa-sha256; t=1787780612; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ImLF6WJxhHCEKi6DC3cgYoFwZ3htXW2z8+AwftB0gi9uyvy3jN5JjCjSv0DOnNa2G1BHgzkGlqoYuLkh+TjSVNcK3bJl5Kh2ojx3Hc54RzUoFNDEsblpqYJj1MTLGNCNghETp1NOFx/bCv4grh7eC8Ba2hhlcbziXBhizTICeCQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1787780612; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=; 
-	b=Wg7yr/Uc8G2+qqaZlduUCSdiXFNCiBUi+bC68K/qmPOHo8zh1EEne9PYdiAcIOUUTCY+xUmk34QeHp1XDb9oScfZBGvTgsBb8pg5XAMXRTVha9hHTTEd2EZgq4P4sNjK2OAOKwq1VdsFq+P7TsFfJSH7Iq/068Ek4FRL2rBLjDw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1787780612;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=;
-	b=S4k+UqxqIE38lJBWtOe3BkHacuLzdAD4MGUvl9SOtl986XKi+he8Iodm2japEnEQ
-	uvL7wSFSqGhdPPvTLWxKCtRdMvzkzjFFwa8lC5fbQ7j+F6huKI+B3/YpqQewHLakbl9
-	8knYZO0mPliW9VllLQHYD7J5nT3zy2Ho8gnTiCwA=
-Received: by mx.zohomail.com with SMTPS id 1787780610742503.2520550080949;
-	Wed, 26 Aug 2026 14:43:30 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GBvqK8f7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2B21F00A3A;
+	Wed, 26 Aug 2026 22:09:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787782161;
+	bh=iTKpZVVyrvHn2/PCIjerZLBtqXbA9duX7JUWfnO/5NE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GBvqK8f7dmrEM3THcISrY5CFpwfXtdnbipD8dTJfvVdDzqi20tOgSMQdvz/DJdClv
+	 ws1N9lD8PnzoRzjeIctFqjbLxC21dT52HibPghILC/tqnr7+ENb1lJgeYJziR+1Mol
+	 OurMhexqppTX+v7OwZdkweKsBzZqrjmiMyazkm9dR8A8oSeR3roSmVwRyJYCscsNzR
+	 t9WqgduXFUoS8cH/X1Y+YFGUFe3H4Zb84oTEOGDgmOKJvBXv9BQ//MYD8PSesVo1aX
+	 s6nUcf2AUpZiSMg+46EvNPzx8EBRzIwC86T9kkCd10tvxWfcFtC+DWqtxpQ55Clh1K
+	 BjI80kTzyfgkA==
+Date: Wed, 26 Aug 2026 22:09:18 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: Mike Lothian <mike@fireburn.co.uk>
+Cc: linux-crypto@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Lyude Paul <lyude@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Matthew Maurer <mmaurer@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>, Burak Emir <bqe@google.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] rust: crypto: add AES-128, AES-CMAC, SHA-256, and
+ HMAC bindings
+Message-ID: <20260826220918.GB3382628@google.com>
+References: <20260826163004.3365-1-mike@fireburn.co.uk>
+ <20260826163004.3365-2-mike@fireburn.co.uk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v4 02/11] rust: xarray: add debug format for `StoreError`
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260604-xarray-entry-send-v4-2-965f6028790e@kernel.org>
-Date: Wed, 26 Aug 2026 18:43:07 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Tamir Duberstein <tamird@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Harry Yoo <harry@kernel.org>,
- Hao Li <hao.li@linux.dev>,
- Daniel Gomez <da.gomez@kernel.org>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- Daniel Gomez <da.gomez@samsung.com>
-Content-Transfer-Encoding: 7bit
-Message-Id: <FC83565E-5574-43F9-AB5A-BA1C34191DEB@collabora.com>
-References: <20260604-xarray-entry-send-v4-0-965f6028790e@kernel.org>
- <20260604-xarray-entry-send-v4-2-965f6028790e@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260826163004.3365-2-mike@fireburn.co.uk>
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+On Wed, Aug 26, 2026 at 05:29:48PM +0100, Mike Lothian wrote:
+> +//! Safe wrappers over the kernel's synchronous library crypto.
+> +//!
+> +//! Exposes the one-shot `lib/crypto` primitives — AES-128 (an [`Aes128`] key
+> +//! prepared once for single-block encryption, the building block for modes the
+> +//! library does not yet provide such as AES-CTR)
+
+There's an aes_ctr() function now.
+
+With that, is bare AES still needed?
+
+- Eric
