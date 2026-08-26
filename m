@@ -1,72 +1,65 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5E3282F17
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:30:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C57C342538
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787761839; cv=none; b=FY05ft/KKJ1R9oSlNBUe2WYM5TBZ0Zyk6Ys8R7BQcUeqtAZrBzsfmGPJtQBedOZTZKM41NmpOwPbCfUMJO/lZh2CmcjSrnqo6wHJQpD/WdEs1OT4AUx126ilUHV5ffb737IubJupcxPonfS89h4vn/gma7nh325F+P+gpx2hPNQ=
+	t=1787761874; cv=none; b=VLqEhGXdyvmNLTBIpG78rtGJBrF/98Wbl5KGppvN5XYme71/WCDvM7GfZEZV6Slroz21xVL/t5EHuLyRfGmyprucL/U7lv/BodaQ2KvxVlpcsPoCnvDqqSDs0AKpXwpE2bpizM6XmO9fUdv7CMrgyfgrhEP8j7krJPg7eU8UNQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787761839; c=relaxed/simple;
-	bh=GIoAORWt9IybsRqPS1GJj9HG3FLaEgU1sXlbwWBRAII=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HEvl/kGuOwMke/+1Z8RfprbgH82c4C3VYgjSp3Yp+/1okw+9PCGgaDGL1LJSTcLMb6P26n9jKDdo7+d/8852h85IuX/TuBBQi96WPFQsGAxrIXvO+jLQBYovHCrq3CzJDcfq5qZrvp+khShXqN8OWV6zV+kaaBy0aBzqs7dEbi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=vZWIvEc2; arc=none smtp.client-ip=209.85.128.49
+	s=arc-20240116; t=1787761874; c=relaxed/simple;
+	bh=js22L9kkegNeyF2N6EUzZPmTxGqw6C/kJ930hsuHuFY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mbIu5XsY27uhNKM/iCvXezZ8VgSiu65IL0WEl6fNsnM3XklFWiO/UgCqUn5GyOOB5FU4K4DwG5f0wn4IN83WVfL0O+KKxlHAjhx82qEdTL5BVhQIWsYDYucDBEI+Drm/Dp9utM14rni2vnCmoYTUvbqIrD2gxTtxOtlOfRiTA0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=BwfrhT+0; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="vZWIvEc2"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49554ebb87dso9906055e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:30:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="BwfrhT+0"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-495437bb891so301505e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:31:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787761835; x=1788366635; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZGTnLkqhLuxg5PJ2xJQMDnvv9zoYk3OzTHOb4mq4+aw=;
-        b=vZWIvEc2H+ffCCrb7sDJEcqwggS6cE2ZdssZewNVhpLQ9cVnDc/EZN61zSXa8YfWMb
-         IM+k8dvaAnkcDiHDkMvv/8GtNVBn7myuoLC9v2EgMMy8H1CoqZTrIabwGnaAM9XtpBAl
-         WLGkRSnIIDN1mrQajHZOrCXoWkSUZUGk2sR2fdpmm1El6DZUnyXXfqB/5y9yRLlVL+e4
-         jfJWbbLBa1/fYe/omsl50xLxTLkPQgsRM/EVIQ4zkDW748v9PcbyPIvmjRSKjfugKbpg
-         S1uICPjvsHPcvMQZpDRS4iDIMGExin3AXlBgItfzgj3c4yfW/ZoceRX9O3Dr3DRjBNpf
-         yoXA==
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787761871; x=1788366671; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=r1p4Ix1lIWqwmdxGTuB/bpTq19/XoCgreFlH2DPS6K4=;
+        b=BwfrhT+0k3ds5CnU0txQ9qEHl3LGOUuao5dlAUjr2G4WsIlXiPRPsbqaJ8ATQ/+6kx
+         Sb3DbLVYRpnlniDYr3VvoDJx9V+zC1QqzRqrppkRREdI6XiVhLfK+Mrxx8IrKnj8mIy4
+         CzsJULSA9l0i4l3KS4W91XY0+ULaowstLwJvAMklD8HBknv+CzXVZBnhBuPG/CvNA5MC
+         NtkTE7vgW0++s7Np7vXK5vEaWhuvazHqgohsgz0gbr5Mq8me0DtlYCNoBRNRa4vDVQT7
+         9llD8JOPLNEeV9FyHhxt4BolSBuhj91T8UoPZqVJ9mFzZBloUkixSh85dHNfr1QNfby1
+         LfNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787761835; x=1788366635;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZGTnLkqhLuxg5PJ2xJQMDnvv9zoYk3OzTHOb4mq4+aw=;
-        b=A3RaVrs/RgVjspCQxl4TIOdBgOb/t1EMjFjlC0b1uWGt8DDYUegb/O2X88Pk5X/GWV
-         ufjt7SgZANiGVmJg8j/TLW3vAG5IVIe4FVTv5SeUHwcCLAIDXBCftDGF26iEJJntWBQV
-         2PWoB3roeHPWB5HQfcAgW3MDNGb8Y1FJOEl43xwKj9mlmzLjGumOz2qW4JHumTZAg9ny
-         TO4RO2WOg0d9Qt3LCcBLthaj92Jhm/VWHJf4U2ZDdnmlzTW6b/armPK8zBqPsXjJVV7L
-         NinVF2NXA/w6E122mcnn5kPxgXD1dXIuvc29Fl+MSeU0C92y2ZuQ/vBmkU8Fwxow/zMV
-         tMRA==
-X-Forwarded-Encrypted: i=1; AHgh+RqWK2bkMH//Ttamd5BCoceeaCEY3apE8G0VakLL9JdtIUwwWpI2xqtzhbSJt9AriqtAbG27hMngeFrhONOiBg==@vger.kernel.org
-X-Gm-Message-State: AFuF++kTd0tk1KNsq3sbfpqpDu4NWKAReTPkf/A+M48lwms/nLjHP43t
-	0ealNWCiFf1FPyFD77REliCAkhm/YjAPAqqXWpuQIAHR9DsOD6VJN9J+TMysnM0mZw==
-X-Gm-Gg: AR+sD13f0R5ptPHdMCtjduyCyr/KqrQI4JhiJZtRR7yuQG/U4KWXFgEwhLfuXPMUYc5
-	maADsTVUvc3lwT8oQ5fuSBzG70k0JlBQ2yxE7H11u3sLH3QD+AewJwbl7HaJqG5k8ZhDDeK1vBu
-	YL8Dl9jH5jkYbIiHPgtZtR8p92N0wJ+gDwwWXvXk4+F/oZR0idJR+67ydakuvmta0A54uBdjX/y
-	JjZXgIU+Gs1BVwfIX7mcPjwZ4bX984wAbLxeucHGOXTJIfNh2MQNPYr7lAvxKPJ6WCBx1PYXnSQ
-	+Bu7vn67RQTrAMgx+NeJmtTrUnIVWXroFvnLWa+0eWFmuPqC/E1imDm2lh+FHZpYGajCxNOQrrD
-	xLsH/99SI03ILCt5kRyZSQiEVbDUQYkCibU+fxRfWTOlJ9frkNKIn2RVKfyYUNhtGJl44xssQBI
-	/ZcMaucR9V7UNabyAv/FCf8vfOMOuBMFPCM933gGg35v4g4T32cpRHfNNnERaIp42BzRFCDsUrS
-	9XGkNgm/ZsdAHmeJFbjf1ksJnkwSICShFsq
-X-Received: by 2002:a05:600c:698c:b0:493:cefc:d113 with SMTP id 5b1f17b1804b1-499dc6f5dcdmr85482585e9.5.1787761835321;
-        Wed, 26 Aug 2026 09:30:35 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787761871; x=1788366671;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=r1p4Ix1lIWqwmdxGTuB/bpTq19/XoCgreFlH2DPS6K4=;
+        b=r5eQIKx10Ap1QGRVHexeLZ+OXtwwrvXSRd7noElO/B0zhb4KY4w3bcSY3t1hliraEw
+         YGTa2pRGna4pwMiJZGo46JNtzqbhsF4RX8Pt2mI8Q1769FAL3FFA6ShqstotPqkXUibr
+         WoyKHorrAd83vKl4HvO1PlYuGtbGf3rhp2ZdoAj3N0y71OWdAzH/MEGv30qcZ9lQxLua
+         I8V0dRwvmVdagHGgb66TFYXOzzOj58fs315zLCa/VEQdVRqJJeGCTwKhegoYXPRJw25d
+         pEh30xuQgn7jDfDr8xQ4BA9onvyga7NjVSSvfA7fYGupfDnSXd2THGW4Pk9pzFs3U36G
+         pjDw==
+X-Forwarded-Encrypted: i=1; AHgh+RqdfpJYvGCf8CdHoq8sBpKWqL0MG1me7FE5tMokWrJpBFsqTTYyscfVMjt4V0O/y2+60Zga+HA7Qq8u/LkMBw==@vger.kernel.org
+X-Gm-Message-State: AFuF++nmfVlbK+Q2Bz+tw3fn8mApvTve/WFMMoqZWvnX1jq2LuNtoPkA
+	Amg7lj4Zj4505DVtdZtUHr3rbEU8Yq9lKF+rGH73SbNSmrKEfdlpYePadRJD3qK7kw==
+X-Gm-Gg: AR+sD11Dp06H48amFOCFEpvU0cyzQTznv2FFZ+gZQ56NeUpH9kRLGJY2io3Gfq1mFHv
+	z8o7CIaFwBJ5BH8Ax+fLqMNEsN31vVeX2KBS8uzZQs3kvthXcF9+9dtKXNBN9RRHVxiKJp7Fhlq
+	hPltZxfRoB/Bi30jlG4jGUIuXZ1BEK4BmTbDLmiJAiRgDlZ7mzcnRLUQRJxZWX0lacxHx812BpJ
+	1XeR6oKM/0kbRuiFD4wQNmeqQl4SOVfzamf9NCV8W+4bUUFLgdvj6cmOBi2umIatqsrfXCp1o8+
+	+9+6DiGry4Z7ATEwpOog+hIZ5Po+EVZz8qAW0vjjyvdhs17JcoWfQ4jx+SFWihPm1PlSNU6/ucF
+	CLNhMEI8bXcBd5xyZe47tw84DuXeus+liBncieswpMSH1GGZj43RmN/66TaLoFlK1n4F/iyIXh3
+	gSRCR368LBM/8gxj4ZVQAJtTA5sN2nmuBV1YkvBQDNk/zWOFNGWfcsdll8Qdt6YPkkbK/iF66wU
+	o/g9Uad0FJMj88cofx2kb973gMcBzGuTM5i
+X-Received: by 2002:a05:600c:3151:b0:499:a5cb:b7c0 with SMTP id 5b1f17b1804b1-49b0deb14d0mr4628125e9.3.1787761870622;
+        Wed, 26 Aug 2026 09:31:10 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([2a01:4b00:d309:1c00:caf1:6b20:8531:818c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499dc981bf3sm32323615e9.8.2026.08.26.09.30.32
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499dc9b83aesm31202705e9.12.2026.08.26.09.31.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 09:30:33 -0700 (PDT)
+        Wed, 26 Aug 2026 09:31:09 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
-To: linux-crypto@vger.kernel.org
+To: linux-usb@vger.kernel.org
 Cc: Mike Lothian <mike@fireburn.co.uk>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Biggers <ebiggers@kernel.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
@@ -80,22 +73,16 @@ Cc: Mike Lothian <mike@fireburn.co.uk>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Lyude Paul <lyude@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Burak Emir <bqe@google.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Yury Norov <ynorov@nvidia.com>,
-	David Gow <david@davidgow.net>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v3 2/2] rust: crypto: add synchronous RSA akcipher support
-Date: Wed, 26 Aug 2026 17:29:49 +0100
-Message-ID: <20260826163004.3365-3-mike@fireburn.co.uk>
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v3 0/5] rust: usb: host-side abstractions for a bulk-endpoint driver
+Date: Wed, 26 Aug 2026 17:30:36 +0100
+Message-ID: <20260826163101.4168-1-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260826163004.3365-1-mike@fireburn.co.uk>
-References: <20260826163004.3365-1-mike@fireburn.co.uk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -104,603 +91,109 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add an RAII Rust wrapper for RSA public keys backed by the kernel
-crypto_akcipher implementation. Encode modulus and exponent components
-in the PKCS#1 DER form accepted by the existing RSA transform and
-expose synchronous public-key encryption.
+Host-side USB abstractions for a driver whose device is a bulk-endpoint pipe
+rather than a class device
 
-Provide RSAES-OAEP with SHA-256 for consumers which need that standard
-encoding, while keeping the OAEP seed explicit for use with the kernel
-CSPRNG and deterministic known-answer tests. Wipe encoded messages,
-expanded AES keys, and Secret byte strings with memzero_explicit().
+  Revocable typed interface I/O, so an interface cannot be used after the core
+    has taken it back
+  Reusable URBs and persistent bulk queues, which is what keeps a video stream
+    in flight without allocating per transfer
+  The device descriptor fields a driver needs to identify hardware before it
+    decides to drive it, and a queue-readiness check
+  A device id constructor matching on vendor together with interface class,
+    subclass and protocol, for a composite device whose function is not
+    identified by the product id alone
+  Letting a driver keep its interface usable while unbinding, so teardown can
+    still talk to the device it is releasing
 
-Gate the AES, SHA-256, and akcipher bindings with dedicated Rust
-Kconfig symbols. Cover the DER encoder and OAEP path with a published
-Wycheproof vector.
+Changes since v2:
 
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
----
- crypto/Kconfig                  |  10 ++
- lib/crypto/Kconfig              |  19 ++
- rust/bindings/bindings_helper.h |   1 +
- rust/helpers/crypto.c           |  27 +++
- rust/kernel/Kconfig.test        |  14 ++
- rust/kernel/crypto.rs           |  72 +++++++-
- rust/kernel/crypto/akcipher.rs  | 298 ++++++++++++++++++++++++++++++++
- 7 files changed, 435 insertions(+), 6 deletions(-)
- create mode 100644 rust/kernel/crypto/akcipher.rs
+  v2 10/11, "keep usb::Device private and gate ...", is dropped entirely.
+    Oliver Neukum was right that it was conceptually wrong: USB does device
+    level operations, and hiding that behind an interface is a layering
+    violation. Device stays public
+  as_bound() is gone from both the binding and the driver. Danilo Krummrich's
+    point stands: needing an unsafe as_bound() means the design or the
+    infrastructure is wrong, not that the escape hatch is needed
+  reset_configuration() is gone, and set_interface() now exists in two
+    correctly scoped forms, one on Interface<Bound> taking an altsetting and
+    one on Device taking interface plus altsetting
+  What replaces the concealment is lifecycle gating: an adapter-owned,
+    revocable I/O window that is valid across probe, suspend, reset, resume and
+    disconnect and invalid outside them. That is the interval in which I/O is
+    legal, which is narrower than "the interface is bound"
+  There is no private URB implementation. Colin Braun's URB RFC is carried
+    unchanged as the foundation and this builds on it
+  A topology walk and a device-removal notifier were written after v2 and are
+    not here. They existed for a second consumer that is not part of this
+    posting, so nothing in what is sent would call them
 
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index f1e372195273..9b7cfdbef7c4 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -116,6 +116,16 @@ config CRYPTO_AKCIPHER
- 	select CRYPTO_AKCIPHER2
- 	select CRYPTO_ALGAPI
- 
-+config RUST_CRYPTO_AKCIPHER
-+	bool
-+	depends on RUST
-+	select CRYPTO_AKCIPHER
-+	help
-+	  Enable safe Rust abstractions for the public-key cipher API. The
-+	  crypto API core is built into the kernel because Rust abstractions
-+	  are part of the built-in kernel crate; individual algorithms may
-+	  remain modules.
-+
- config CRYPTO_KPP2
- 	tristate
- 	select CRYPTO_ALGAPI2
-diff --git a/lib/crypto/Kconfig b/lib/crypto/Kconfig
-index 591c1c2a7fb3..9d47fce62f54 100644
---- a/lib/crypto/Kconfig
-+++ b/lib/crypto/Kconfig
-@@ -36,6 +36,16 @@ config CRYPTO_LIB_AES_CBC_MACS
- 	  this if your module uses any of the functions from
- 	  <crypto/aes-cbc-macs.h>.
- 
-+config RUST_CRYPTO_LIB_AES
-+	bool
-+	depends on RUST
-+	select CRYPTO_LIB_AES
-+	select CRYPTO_LIB_AES_CBC_MACS
-+	help
-+	  Enable the Rust bindings for the synchronous AES library functions.
-+	  The selected C libraries are built into the kernel because Rust
-+	  abstractions are part of the built-in kernel crate.
-+
- config CRYPTO_LIB_AESGCM
- 	tristate
- 	select CRYPTO_LIB_AES
-@@ -216,6 +226,15 @@ config CRYPTO_LIB_SHA256
- 	  Select this if your module uses any of these functions from
- 	  <crypto/sha2.h>.
- 
-+config RUST_CRYPTO_LIB_SHA256
-+	bool
-+	depends on RUST
-+	select CRYPTO_LIB_SHA256
-+	help
-+	  Enable the Rust bindings for the synchronous SHA-256 and HMAC-SHA256
-+	  library functions. The selected C library is built into the kernel
-+	  because Rust abstractions are part of the built-in kernel crate.
-+
- config CRYPTO_LIB_SHA256_ARCH
- 	bool
- 	depends on CRYPTO_LIB_SHA256 && !UML
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 8d7489b8cce8..bb46317898c1 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -28,6 +28,7 @@
-  */
- #include <linux/hrtimer_types.h>
- 
-+#include <crypto/akcipher.h>
- #include <crypto/aes.h>
- #include <crypto/sha2.h>
- 
-diff --git a/rust/helpers/crypto.c b/rust/helpers/crypto.c
-index a18780231ce0..f0cdf7fa8a76 100644
---- a/rust/helpers/crypto.c
-+++ b/rust/helpers/crypto.c
-@@ -1,9 +1,30 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+#include <crypto/akcipher.h>
- #include <crypto/aes.h>
- #include <crypto/aes-cbc-macs.h>
- #include <linux/string.h>
- 
-+__rust_helper void rust_helper_memzero_explicit(void *s, size_t count)
-+{
-+	memzero_explicit(s, count);
-+}
-+
-+#ifdef CONFIG_RUST_CRYPTO_AKCIPHER
-+__rust_helper void rust_helper_crypto_free_akcipher(struct crypto_akcipher *tfm)
-+{
-+	crypto_free_akcipher(tfm);
-+}
-+
-+__rust_helper int
-+rust_helper_crypto_akcipher_set_pub_key(struct crypto_akcipher *tfm,
-+					const void *key, unsigned int key_len)
-+{
-+	return crypto_akcipher_set_pub_key(tfm, key, key_len);
-+}
-+#endif
-+
-+#ifdef CONFIG_RUST_CRYPTO_LIB_AES
- /*
-  * aes_encrypt() takes a transparent union (aes_encrypt_arg) that bindgen cannot
-  * express, so the single-block encrypt step is wrapped here. The key schedule
-@@ -19,6 +40,11 @@ rust_helper_aes_enckey_encrypt_block(const struct aes_enckey *key, u8 *out,
- 	aes_encrypt(key, out, in);
- }
- 
-+__rust_helper void rust_helper_aes_enckey_zero(struct aes_enckey *key)
-+{
-+	memzero_explicit(key, sizeof(*key));
-+}
-+
- /*
-  * AES-CMAC one-shot over the in-tree library (crypto/aes-cbc-macs.h): prepares
-  * the 128-bit key, MACs @data and writes the 16-byte tag to @out. A helper
-@@ -35,3 +61,4 @@ rust_helper_aes_cmac(const u8 *key, const u8 *data, size_t data_len, u8 *out)
- 	aes_cmac(&cmac_key, data, data_len, out);
- 	memzero_explicit(&cmac_key, sizeof(cmac_key));
- }
-+#endif
-diff --git a/rust/kernel/Kconfig.test b/rust/kernel/Kconfig.test
-index e6a5c7a795f0..32e1a0c17d08 100644
---- a/rust/kernel/Kconfig.test
-+++ b/rust/kernel/Kconfig.test
-@@ -83,4 +83,18 @@ config RUST_BITFIELD_KUNIT_TEST
- 
- 	  If unsure, say N.
- 
-+config RUST_CRYPTO_KUNIT_TEST
-+	bool "KUnit tests for Rust crypto APIs" if !KUNIT_ALL_TESTS
-+	default KUNIT_ALL_TESTS
-+	select CRYPTO_RSA
-+	select RUST_CRYPTO_AKCIPHER
-+	select RUST_CRYPTO_LIB_SHA256
-+	help
-+	  This option enables KUnit tests for the safe Rust crypto APIs,
-+	  including public-key encoding and encryption. The tests include
-+	  published known-answer vectors and are intended for development and
-+	  testing rather than regular kernel use cases.
-+
-+	  If unsure, say N.
-+
- endif
-diff --git a/rust/kernel/crypto.rs b/rust/kernel/crypto.rs
-index 5f7c301b2bb8..0cf38541c8d1 100644
---- a/rust/kernel/crypto.rs
-+++ b/rust/kernel/crypto.rs
-@@ -9,18 +9,75 @@
- //! synchronously in the calling context with no allocation; the hashes and the
- //! MAC are infallible.
- //!
--//! C headers: [`include/crypto/aes.h`](srctree/include/crypto/aes.h),
-+//! Public-key ciphers are available through [`akcipher`] when
-+//! `CONFIG_RUST_CRYPTO_AKCIPHER` is enabled.
-+//!
-+//! C headers: [`include/crypto/akcipher.h`](srctree/include/crypto/akcipher.h),
-+//! [`include/crypto/aes.h`](srctree/include/crypto/aes.h),
- //! [`include/crypto/aes-cbc-macs.h`](srctree/include/crypto/aes-cbc-macs.h),
- //! [`include/crypto/sha2.h`](srctree/include/crypto/sha2.h).
- 
--use crate::{bindings, error::to_result, prelude::*};
-+use core::ops::{Deref, DerefMut};
-+
-+use crate::bindings;
-+#[cfg(any(
-+    CONFIG_RUST_CRYPTO_AKCIPHER,
-+    CONFIG_RUST_CRYPTO_LIB_AES,
-+    CONFIG_RUST_CRYPTO_LIB_SHA256
-+))]
-+use crate::{error::to_result, prelude::*};
-+
-+#[cfg(CONFIG_RUST_CRYPTO_AKCIPHER)]
-+pub mod akcipher;
- 
- /// Size of a SHA-256 / HMAC-SHA256 digest, in bytes.
- pub const SHA256_DIGEST_SIZE: usize = 32;
- /// AES-128 block and key size, in bytes.
- pub const AES128_BLOCK_SIZE: usize = 16;
- 
-+/// A fixed-size byte string which is wiped when dropped.
-+///
-+/// This is intended for cryptographic keys and other sensitive intermediate
-+/// values. Borrowing the contained bytes can still create copies which this
-+/// type cannot track; callers should avoid copying them unnecessarily.
-+pub struct Secret<const N: usize>([u8; N]);
-+
-+impl<const N: usize> Secret<N> {
-+    /// Wraps bytes which should be wiped when their owner is dropped.
-+    pub const fn new(bytes: [u8; N]) -> Self {
-+        Self(bytes)
-+    }
-+
-+    /// Creates an all-zero byte string.
-+    pub const fn zeroed() -> Self {
-+        Self([0; N])
-+    }
-+}
-+
-+impl<const N: usize> Deref for Secret<N> {
-+    type Target = [u8; N];
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.0
-+    }
-+}
-+
-+impl<const N: usize> DerefMut for Secret<N> {
-+    fn deref_mut(&mut self) -> &mut Self::Target {
-+        &mut self.0
-+    }
-+}
-+
-+impl<const N: usize> Drop for Secret<N> {
-+    fn drop(&mut self) {
-+        // SAFETY: `self.0` is valid for exactly `N` writable bytes. The helper
-+        // uses `memzero_explicit()`, so the wipe is not optimised away.
-+        unsafe { bindings::memzero_explicit(self.0.as_mut_ptr().cast(), N) };
-+    }
-+}
-+
- /// Returns the SHA-256 digest of `data`.
-+#[cfg(CONFIG_RUST_CRYPTO_LIB_SHA256)]
- pub fn sha256(data: &[u8]) -> [u8; SHA256_DIGEST_SIZE] {
-     let mut out = [0u8; SHA256_DIGEST_SIZE];
-     // SAFETY: `data` is valid for `data.len()` reads and `out` is a valid
-@@ -30,6 +87,7 @@
- }
- 
- /// Returns `HMAC-SHA256(key, data)`.
-+#[cfg(CONFIG_RUST_CRYPTO_LIB_SHA256)]
- pub fn hmac_sha256(key: &[u8], data: &[u8]) -> [u8; SHA256_DIGEST_SIZE] {
-     let mut out = [0u8; SHA256_DIGEST_SIZE];
-     // SAFETY: `key` and `data` are valid for their respective lengths and `out`
-@@ -51,6 +109,7 @@
- /// prepared and wiped internally; the call is infallible.
- ///
- /// [`include/crypto/aes-cbc-macs.h`]: srctree/include/crypto/aes-cbc-macs.h
-+#[cfg(CONFIG_RUST_CRYPTO_LIB_AES)]
- pub fn aes_cmac(key: &[u8; AES128_BLOCK_SIZE], data: &[u8]) -> [u8; AES128_BLOCK_SIZE] {
-     let mut out = [0u8; AES128_BLOCK_SIZE];
-     // SAFETY: `key` is a valid 16-byte key, `data` is valid for `data.len()`
-@@ -77,8 +136,10 @@
- /// let _ct = cipher.encrypt_block(&[0u8; 16]);
- /// # Ok::<(), Error>(())
- /// ```
-+#[cfg(CONFIG_RUST_CRYPTO_LIB_AES)]
- pub struct Aes128(bindings::aes_enckey);
- 
-+#[cfg(CONFIG_RUST_CRYPTO_LIB_AES)]
- impl Aes128 {
-     /// Expands an AES-128 key from 16 raw key bytes.
-     pub fn new(key: &[u8; AES128_BLOCK_SIZE]) -> Result<Self> {
-@@ -105,11 +166,10 @@ impl Aes128 {
-     }
- }
- 
-+#[cfg(CONFIG_RUST_CRYPTO_LIB_AES)]
- impl Drop for Aes128 {
-     fn drop(&mut self) {
--        // SAFETY: `self.0` is a valid, owned `aes_enckey`; overwriting it with
--        // an all-zero `aes_enckey` clears the expanded key schedule.
--        // `write_volatile` keeps the store from being optimised away.
--        unsafe { core::ptr::write_volatile(&mut self.0, core::mem::zeroed()) };
-+        // SAFETY: `self.0` is a valid, owned `aes_enckey`.
-+        unsafe { bindings::aes_enckey_zero(&mut self.0) };
-     }
- }
-diff --git a/rust/kernel/crypto/akcipher.rs b/rust/kernel/crypto/akcipher.rs
-new file mode 100644
-index 000000000000..c5fc2ca0cfbe
---- /dev/null
-+++ b/rust/kernel/crypto/akcipher.rs
-@@ -0,0 +1,298 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Safe wrappers for the kernel public-key cipher API.
-+//!
-+//! C header: [`include/crypto/akcipher.h`](srctree/include/crypto/akcipher.h)
-+
-+use core::ptr::NonNull;
-+
-+use crate::{
-+    alloc::{Flags, KVec},
-+    bindings, c_str,
-+    crypto::{sha256, SHA256_DIGEST_SIZE},
-+    error::{from_err_ptr, to_result},
-+    prelude::*,
-+};
-+
-+/// A configured RSA public key.
-+///
-+/// The key is backed by the existing kernel `"rsa"` akcipher implementation.
-+/// Creating it converts unsigned big-endian modulus and exponent components
-+/// into the PKCS#1 DER form consumed by the crypto API.
-+pub struct RsaPublicKey {
-+    tfm: NonNull<bindings::crypto_akcipher>,
-+    size: usize,
-+}
-+
-+impl RsaPublicKey {
-+    /// Create an RSA public key from unsigned big-endian components.
-+    pub fn new(modulus: &[u8], exponent: &[u8], flags: Flags) -> Result<Self> {
-+        let modulus = trim_unsigned(modulus).ok_or(EINVAL)?;
-+        let exponent = trim_unsigned(exponent).ok_or(EINVAL)?;
-+        let der = encode_rsa_public_key(modulus, exponent, flags)?;
-+
-+        // SAFETY: The name is NUL-terminated and remains live for the call.
-+        let tfm = from_err_ptr(unsafe {
-+            bindings::crypto_alloc_akcipher(c_str!("rsa").as_char_ptr(), 0, 0)
-+        })?;
-+        let tfm = NonNull::new(tfm).ok_or(ENOMEM)?;
-+
-+        // SAFETY: `tfm` is a live akcipher transform and `der` contains
-+        // `der.len()` initialized bytes.
-+        let result = to_result(unsafe {
-+            bindings::crypto_akcipher_set_pub_key(
-+                tfm.as_ptr(),
-+                der.as_ptr().cast(),
-+                der.len().try_into()?,
-+            )
-+        });
-+        if let Err(err) = result {
-+            // SAFETY: `tfm` was returned by `crypto_alloc_akcipher()` and has
-+            // not been freed.
-+            unsafe { bindings::crypto_free_akcipher(tfm.as_ptr()) };
-+            return Err(err);
-+        }
-+
-+        Ok(Self {
-+            tfm,
-+            size: modulus.len(),
-+        })
-+    }
-+
-+    /// Return the RSA modulus size in bytes.
-+    pub fn size(&self) -> usize {
-+        self.size
-+    }
-+
-+    /// Apply the raw RSA public-key operation to one already-encoded message.
-+    ///
-+    /// Both buffers must have the modulus size. The output is fixed-width,
-+    /// unsigned, and big-endian. Prefer a padded scheme such as
-+    /// [`oaep_sha256_encrypt`](Self::oaep_sha256_encrypt).
-+    pub fn encrypt(&mut self, encoded: &[u8], out: &mut [u8]) -> Result {
-+        if encoded.len() != self.size || out.len() != self.size {
-+            return Err(EINVAL);
-+        }
-+
-+        out.fill(0);
-+        // SAFETY: `self.tfm` remains live and exclusively borrowed for the
-+        // synchronous operation; both buffers are valid for their lengths.
-+        to_result(unsafe {
-+            bindings::crypto_akcipher_sync_encrypt(
-+                self.tfm.as_ptr(),
-+                encoded.as_ptr().cast(),
-+                encoded.len().try_into()?,
-+                out.as_mut_ptr().cast(),
-+                out.len().try_into()?,
-+            )
-+        })
-+    }
-+
-+    /// Encrypt a message using RSAES-OAEP with SHA-256 and an empty label.
-+    ///
-+    /// `seed` is a caller-provided random OAEP seed. It is explicit so callers
-+    /// can use the kernel CSPRNG while tests can use published deterministic
-+    /// vectors.
-+    #[cfg(CONFIG_RUST_CRYPTO_LIB_SHA256)]
-+    pub fn oaep_sha256_encrypt(
-+        &mut self,
-+        message: &[u8],
-+        seed: &[u8; SHA256_DIGEST_SIZE],
-+        out: &mut [u8],
-+        flags: Flags,
-+    ) -> Result {
-+        let overhead = 2 * SHA256_DIGEST_SIZE + 2;
-+        if out.len() != self.size || self.size < overhead || message.len() > self.size - overhead {
-+            return Err(EINVAL);
-+        }
-+
-+        let mut encoded = KVec::from_elem(0u8, self.size, flags)?;
-+        let result = (|| {
-+            encoded[1..1 + SHA256_DIGEST_SIZE].copy_from_slice(seed);
-+            let db = &mut encoded[1 + SHA256_DIGEST_SIZE..];
-+            db[..SHA256_DIGEST_SIZE].copy_from_slice(&sha256(&[]));
-+            let separator = db.len() - message.len() - 1;
-+            db[separator] = 1;
-+            db[separator + 1..].copy_from_slice(message);
-+
-+            mgf1_sha256_xor(seed, db, flags)?;
-+            let (seed_block, masked_db) = encoded[1..].split_at_mut(SHA256_DIGEST_SIZE);
-+            mgf1_sha256_xor(masked_db, seed_block, flags)?;
-+
-+            self.encrypt(&encoded, out)
-+        })();
-+        encoded.fill(0);
-+        result
-+    }
-+}
-+
-+impl Drop for RsaPublicKey {
-+    fn drop(&mut self) {
-+        // SAFETY: `self.tfm` was returned by `crypto_alloc_akcipher()` and is
-+        // owned by this object.
-+        unsafe { bindings::crypto_free_akcipher(self.tfm.as_ptr()) };
-+    }
-+}
-+
-+#[cfg(CONFIG_RUST_CRYPTO_LIB_SHA256)]
-+fn mgf1_sha256_xor(seed: &[u8], output: &mut [u8], flags: Flags) -> Result {
-+    let mut input = KVec::with_capacity(seed.len().checked_add(4).ok_or(EOVERFLOW)?, flags)?;
-+    let result = (|| {
-+        let mut counter = 0u32;
-+        for chunk in output.chunks_mut(SHA256_DIGEST_SIZE) {
-+            input.clear();
-+            input.extend_from_slice(seed, flags)?;
-+            input.extend_from_slice(&counter.to_be_bytes(), flags)?;
-+            let digest = sha256(&input);
-+            for (byte, mask) in chunk.iter_mut().zip(digest) {
-+                *byte ^= mask;
-+            }
-+            counter = counter.checked_add(1).ok_or(EOVERFLOW)?;
-+        }
-+        Ok(())
-+    })();
-+    input.fill(0);
-+    result
-+}
-+
-+fn trim_unsigned(value: &[u8]) -> Option<&[u8]> {
-+    let value = value
-+        .iter()
-+        .position(|byte| *byte != 0)
-+        .map(|i| &value[i..])?;
-+    Some(value)
-+}
-+
-+fn der_length_size(length: usize) -> Result<usize> {
-+    if length < 128 {
-+        return Ok(1);
-+    }
-+
-+    let bytes = (usize::BITS - length.leading_zeros()).div_ceil(8) as usize;
-+    if bytes > 126 {
-+        return Err(EOVERFLOW);
-+    }
-+    Ok(1 + bytes)
-+}
-+
-+fn push_der_length(out: &mut KVec<u8>, length: usize, flags: Flags) -> Result {
-+    if length < 128 {
-+        out.push(length as u8, flags)?;
-+        return Ok(());
-+    }
-+
-+    let bytes = der_length_size(length)? - 1;
-+    out.push(0x80 | bytes as u8, flags)?;
-+    for shift in (0..bytes).rev() {
-+        out.push((length >> (shift * 8)) as u8, flags)?;
-+    }
-+    Ok(())
-+}
-+
-+fn der_integer_size(value: &[u8]) -> Result<usize> {
-+    let leading_zero = usize::from(value[0] & 0x80 != 0);
-+    1usize
-+        .checked_add(der_length_size(value.len() + leading_zero)?)
-+        .and_then(|size| size.checked_add(value.len() + leading_zero))
-+        .ok_or(EOVERFLOW)
-+}
-+
-+fn push_der_integer(out: &mut KVec<u8>, value: &[u8], flags: Flags) -> Result {
-+    let leading_zero = value[0] & 0x80 != 0;
-+    out.push(0x02, flags)?;
-+    push_der_length(out, value.len() + usize::from(leading_zero), flags)?;
-+    if leading_zero {
-+        out.push(0, flags)?;
-+    }
-+    out.extend_from_slice(value, flags)?;
-+    Ok(())
-+}
-+
-+fn encode_rsa_public_key(modulus: &[u8], exponent: &[u8], flags: Flags) -> Result<KVec<u8>> {
-+    let content_len = der_integer_size(modulus)?
-+        .checked_add(der_integer_size(exponent)?)
-+        .ok_or(EOVERFLOW)?;
-+    let total_len = 1usize
-+        .checked_add(der_length_size(content_len)?)
-+        .and_then(|size| size.checked_add(content_len))
-+        .ok_or(EOVERFLOW)?;
-+    let mut der = KVec::with_capacity(total_len, flags)?;
-+    der.push(0x30, flags)?;
-+    push_der_length(&mut der, content_len, flags)?;
-+    push_der_integer(&mut der, modulus, flags)?;
-+    push_der_integer(&mut der, exponent, flags)?;
-+    Ok(der)
-+}
-+
-+#[cfg(CONFIG_RUST_CRYPTO_KUNIT_TEST)]
-+#[crate::macros::kunit_tests(rust_kernel_crypto_akcipher)]
-+mod tests {
-+    use super::*;
-+    use crate::alloc::flags::GFP_KERNEL;
-+
-+    // Wycheproof rsa_oaep_2048_sha256_mgf1sha256_test.json, test case 3.
-+    const OAEP_MODULUS: [u8; 256] = [
-+        0xa2, 0xb4, 0x51, 0xa0, 0x7d, 0x0a, 0xa5, 0xf9, 0x6e, 0x45, 0x56, 0x71, 0x51, 0x35, 0x50,
-+        0x51, 0x4a, 0x8a, 0x5b, 0x46, 0x2e, 0xbe, 0xf7, 0x17, 0x09, 0x4f, 0xa1, 0xfe, 0xe8, 0x22,
-+        0x24, 0xe6, 0x37, 0xf9, 0x74, 0x6d, 0x3f, 0x7c, 0xaf, 0xd3, 0x18, 0x78, 0xd8, 0x03, 0x25,
-+        0xb6, 0xef, 0x5a, 0x17, 0x00, 0xf6, 0x59, 0x03, 0xb4, 0x69, 0x42, 0x9e, 0x89, 0xd6, 0xea,
-+        0xc8, 0x84, 0x50, 0x97, 0xb5, 0xab, 0x39, 0x31, 0x89, 0xdb, 0x92, 0x51, 0x2e, 0xd8, 0xa7,
-+        0x71, 0x1a, 0x12, 0x53, 0xfa, 0xcd, 0x20, 0xf7, 0x9c, 0x15, 0xe8, 0x24, 0x7f, 0x3d, 0x3e,
-+        0x42, 0xe4, 0x6e, 0x48, 0xc9, 0x8e, 0x25, 0x4a, 0x2f, 0xe9, 0x76, 0x53, 0x13, 0xa0, 0x3e,
-+        0xff, 0x8f, 0x17, 0xe1, 0xa0, 0x29, 0x39, 0x7a, 0x1f, 0xa2, 0x6a, 0x8d, 0xce, 0x26, 0xf4,
-+        0x90, 0xed, 0x81, 0x29, 0x96, 0x15, 0xd9, 0x81, 0x4c, 0x22, 0xda, 0x61, 0x04, 0x28, 0xe0,
-+        0x9c, 0x7d, 0x96, 0x58, 0x59, 0x42, 0x66, 0xf5, 0xc0, 0x21, 0xd0, 0xfc, 0xec, 0xa0, 0x8d,
-+        0x94, 0x5a, 0x12, 0xbe, 0x82, 0xde, 0x4d, 0x1e, 0xce, 0x6b, 0x4c, 0x03, 0x14, 0x5b, 0x5d,
-+        0x34, 0x95, 0xd4, 0xed, 0x54, 0x11, 0xeb, 0x87, 0x8d, 0xaf, 0x05, 0xfd, 0x7a, 0xfc, 0x3e,
-+        0x09, 0xad, 0xa0, 0xf1, 0x12, 0x64, 0x22, 0xf5, 0x90, 0x97, 0x5a, 0x19, 0x69, 0x81, 0x6f,
-+        0x48, 0x69, 0x8b, 0xcb, 0xba, 0x1b, 0x4d, 0x9c, 0xae, 0x79, 0xd4, 0x60, 0xd8, 0xf9, 0xf8,
-+        0x5e, 0x79, 0x75, 0x00, 0x5d, 0x9b, 0xc2, 0x2c, 0x4e, 0x5a, 0xc0, 0xf7, 0xc1, 0xa4, 0x5d,
-+        0x12, 0x56, 0x9a, 0x62, 0x80, 0x7d, 0x3b, 0x9a, 0x02, 0xe5, 0xa5, 0x30, 0xe7, 0x73, 0x06,
-+        0x6f, 0x45, 0x3d, 0x1f, 0x5b, 0x4c, 0x2e, 0x9c, 0xf7, 0x82, 0x02, 0x83, 0xf7, 0x42, 0xb9,
-+        0xd5,
-+    ];
-+    const OAEP_SEED: [u8; 32] = [
-+        0x70, 0x97, 0x14, 0xb0, 0x48, 0xc3, 0x69, 0x73, 0x22, 0x69, 0xa3, 0xd8, 0xf9, 0x23, 0x02,
-+        0x50, 0x87, 0x70, 0xa4, 0x43, 0x68, 0x01, 0x4b, 0x3a, 0x5c, 0xb1, 0x85, 0xc0, 0xc9, 0x1d,
-+        0x97, 0x2c,
-+    ];
-+    const OAEP_CIPHERTEXT: [u8; 256] = [
-+        0x5e, 0xab, 0x3f, 0x07, 0x41, 0xe6, 0x39, 0x86, 0xed, 0x64, 0x7d, 0x53, 0xe1, 0xcd, 0x71,
-+        0xdf, 0x04, 0x19, 0x86, 0x90, 0x08, 0x03, 0xd0, 0xf9, 0x9c, 0x68, 0x35, 0x5d, 0x24, 0x9a,
-+        0x15, 0xa4, 0x7d, 0xc5, 0xb4, 0xf7, 0x0a, 0x19, 0x14, 0x77, 0x65, 0x42, 0x99, 0xe5, 0xa2,
-+        0x73, 0x1f, 0x3b, 0x4e, 0xec, 0x76, 0xde, 0xa1, 0x82, 0x62, 0xfc, 0x69, 0x6a, 0xc7, 0x94,
-+        0xe5, 0xf6, 0x6c, 0xbf, 0xcd, 0xda, 0xc4, 0x47, 0x2c, 0x57, 0x8e, 0x24, 0x6c, 0x26, 0x70,
-+        0x75, 0x98, 0x05, 0x55, 0x84, 0x54, 0x0b, 0x83, 0x98, 0x36, 0xb1, 0x40, 0x4c, 0x56, 0x11,
-+        0xae, 0x55, 0x8a, 0x98, 0x4c, 0xee, 0x8f, 0xd0, 0x36, 0xce, 0xa9, 0x24, 0xe0, 0xbe, 0x24,
-+        0x74, 0xa9, 0x40, 0xf6, 0x1e, 0x0a, 0xcc, 0x14, 0xfc, 0xae, 0x95, 0xeb, 0xdc, 0x59, 0x94,
-+        0x2a, 0x9c, 0xe9, 0xaf, 0x9a, 0x9c, 0x81, 0x99, 0x9f, 0x7f, 0x68, 0x15, 0xf0, 0x57, 0xff,
-+        0xdc, 0x25, 0x33, 0xcb, 0x15, 0xd6, 0x39, 0x1d, 0x1e, 0x2d, 0x95, 0xf1, 0x6f, 0x9c, 0x04,
-+        0x20, 0x9c, 0x88, 0x9a, 0x4c, 0x35, 0x9c, 0x7d, 0x29, 0x26, 0xd2, 0x8a, 0x66, 0xe2, 0xb0,
-+        0x30, 0xa4, 0x16, 0xb9, 0x28, 0xd2, 0x82, 0x56, 0x27, 0x99, 0x8e, 0x51, 0x91, 0xfb, 0x49,
-+        0x83, 0xa6, 0xe6, 0x50, 0x24, 0x26, 0x2d, 0x94, 0xfc, 0x09, 0x18, 0x7a, 0x2d, 0x78, 0x16,
-+        0x21, 0x22, 0x43, 0x32, 0x51, 0xd1, 0xbf, 0xcc, 0x8e, 0x50, 0x7d, 0x06, 0xeb, 0xa2, 0xd2,
-+        0x29, 0xc1, 0x00, 0x31, 0x26, 0x1d, 0xa3, 0x2a, 0xb8, 0xcc, 0xd1, 0x5f, 0x1c, 0x5f, 0x9f,
-+        0xbf, 0x07, 0xed, 0x15, 0x84, 0x83, 0xd7, 0x36, 0xa1, 0x10, 0xaf, 0x4b, 0x44, 0xd6, 0xa4,
-+        0xda, 0x60, 0xd6, 0xcb, 0x51, 0x9b, 0x44, 0x54, 0x21, 0x3c, 0xf9, 0xf0, 0xdc, 0x56, 0x0f,
-+        0x2b,
-+    ];
-+
-+    #[test]
-+    fn rsa_der_encoding() -> Result {
-+        let der = encode_rsa_public_key(&[0x80, 0x01], &[0x01, 0x00, 0x01], GFP_KERNEL)?;
-+        assert_eq!(
-+            der.as_slice(),
-+            &[0x30, 0x0a, 0x02, 0x03, 0x00, 0x80, 0x01, 0x02, 0x03, 0x01, 0x00, 0x01]
-+        );
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn rsa_oaep_sha256_wycheproof() -> Result {
-+        let mut key = RsaPublicKey::new(&OAEP_MODULUS, &[0x01, 0x00, 0x01], GFP_KERNEL)?;
-+        let mut out = [0u8; 256];
-+        key.oaep_sha256_encrypt(b"Test", &OAEP_SEED, &mut out, GFP_KERNEL)?;
-+        assert_eq!(out, OAEP_CIPHERTEXT);
-+        Ok(())
-+    }
-+}
+Alan Stern's lifecycle point is what makes device access from an interface
+sound, and is worth restating because the whole shape depends on it: an
+unconfigured device has no interfaces, so an interface that exists implies a
+configured device
+
+v2: https://lore.kernel.org/r/20260703030020.2694-1-mike@fireburn.co.uk
+
+The rest of the posting, which is one series per subsystem:
+
+  rust-core, 9 patches, rust-for-linux and linux-kernel
+  https://lore.kernel.org/r/20260826162851.2497-1-mike@fireburn.co.uk
+  rust-crypto, 2 patches, linux-crypto and rust-for-linux
+  https://lore.kernel.org/r/20260826163004.3365-1-mike@fireburn.co.uk
+  rust-usb, 5 patches, this one
+  rust-drm, 23 patches, to dri-devel and rust-for-linux, not sent yet
+  rust-firmware, 1 patch, to linux-kernel and rust-for-linux, not sent yet
+  drm-vino, 13 patches, to dri-devel, not sent yet
+
+Vino is the user for all of them. The abstractions themselves are generic and
+carry no knowledge of DisplayLink
+
+The whole thing is one branch, base and prerequisites included, which is the
+quickest way to read it:
+
+  git clone -b vino-v3 https://github.com/FireBurn/linux
+  cd linux
+  make LLVM=1 rustavailable
+  make LLVM=1 -j$(nproc)
+  make LLVM=1 -j$(nproc) modules
+
+CONFIG_RUST=y and CONFIG_DRM_VINO=m are the two to set; DRM_VINO selects the
+rest of what it needs
+
+It is the exact tree these patches were generated from, at 4c9ba407018e, the
+drm-rust-next tip of 2026-08-06. drm-next has moved on since, and this follows
+drm-rust-next deliberately: the KMS layer underneath this work lives only there,
+and that tree picks up drm-next on its own schedule
+
+Two commits on the branch are not in any of the series above, because they
+enable no part of Vino: a scheduler call site that stops compiling under the
+locking-guard series, and the Kms associated type Tyr needs once the KMS
+registration trait requires one
+
+It applies to the base above plus this, and nothing else:
+
+  Colin Braun, rust: usb: add usb request block abstractions
+  https://lore.kernel.org/r/20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com
+
+The reference branch also carries Boqun Feng's counted interrupt disabling
+series, which SpinLockIrq needs. One patch of it is already in tip locking/core
+as e901c1510e24
+
+These patches were written with the assistance of Claude (Anthropic), used
+through Claude Code as an interactive coding assistant, across the design, the
+implementation and the tests. Every patch it contributed to carries an
+Assisted-by trailer. The Signed-off-by is mine: I have reviewed and tested what
+is here and I stand behind it
+
+Mike Lothian (5):
+  rust: usb: add revocable typed interface I/O
+  rust: usb: add reusable URBs and persistent bulk queues
+  rust: usb: expose device descriptor fields and queue readiness
+  rust: usb: add a vendor-and-interface-info device id constructor
+  rust: usb: let a driver keep its interface usable while unbinding
+
+ 3 files changed, 1553 insertions(+), 26 deletions(-)
+
+base-commit: 4c9ba407018e8deb06dbc643112bac8f40404f95
+prerequisite-message-id: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
