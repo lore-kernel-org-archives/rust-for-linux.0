@@ -1,118 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7B63B4EA2;
-	Wed, 26 Aug 2026 14:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787752810; cv=none; b=Z7XgENZikkfB4X2jCk0zl+PVxVKkQZsZAEdAZFppUdUbYevPtm3puZYPgrP5WaT0eEz3HtJQqIecVCOy96dXSsA1AfJweIfzOsmxm3oE2JDxuHZKq+y07j8IRLefQ9dUZRWKW+LEW1mS9RQBe22lce0QsgMAqLDmJR4OWbnett0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787752810; c=relaxed/simple;
-	bh=bLxfwkeFxrw5PU/8QkzWwLqnBTJiVEPNX+tTwJ7opp0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ORgM+OnR4lc0nU171TzGfI8vg7IfLjwQw7c+SP5fWpJE/14LTkRbNKKJLAJv2llhRb6k90f/XnOxOqBsziI1Qm4z+puJl9hW9Rt1s2YY0OUsQO8wLXnFRfliu+6/tcTB0OhtIQahCf/p9bJfZNdup36STIdMg+tJA0c5Kx75FOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RoxegmDX; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AA73998A6;
+	Wed, 26 Aug 2026 14:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787753193; cv=pass; b=l5hbFtK09p6Z5egmQyqvygqjPK2d2fPD87bCqxe/2ux7ohxUZlwd7YrQFEZKKPH16YtnHPfceG0/WHKw+nQ4Zj9DXZQK3rS5RKu1D6tp6GRJKbUDzpyvHYzgVOGgb7ExIfT7ONqNYctnZZHV3ssncVygVjMPLSMZgTj3sokbJtI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787753193; c=relaxed/simple;
+	bh=lcsqwwXhWVmoSbPbE7DPyh9awywoWMTp35RFoFX1es0=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=PFunjfZeaV4oBFcho+fsL4+LwQmq1rqr7KclIfBDWnKSMo4XD/Cwb8PVs0xgjQqnJd5HwW64YhbtjXNmxPISmh7re0lnvYFg2h9Le4qnBhcYjKmrLXkb7rtnRCedI5F/bxW0A/Vy4tcgRQqQS1UTRwxiGGSKzD3uEtJ0sRivQ7U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ALrcouVf; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RoxegmDX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411481F000E9;
-	Wed, 26 Aug 2026 14:00:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787752804;
-	bh=19tcek4HrcS7UOd5IyTT7qc0S0ouGBiyalEvCRLgbSk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RoxegmDX7J80G3Ar4UcOhvYd01fs8k+Iw2xWda7B2Kk1VZAIZxiI4wr1ZWWzjrNnY
-	 grUVhB/RBZsWbiSIfVqzu4UH6bDgTbk2+NH/bp0VXJWpeEdTiDDJFNmAacUwYpTK6R
-	 4rmhvvt+Cx+zsLc6CiSt9a+/GTpdMLNwqiYuHvS4cbK9kiFdeBpurTxeZaIP3giDY0
-	 TXP51n6p6KRLnoXPp48irgNs0HuwUY7z2PEUjcJ0AEFsLRSMYRYN/ZixpLKwvcpcsg
-	 DrOJar2fK8AKSPQIDgZPhS4jDn/OWC0AaxMfpJVJPHY2nt5mRgnRFvSxEfxbTTq80b
-	 egMfgg+3djuLw==
-Message-ID: <b13c5ad3-ef9b-48f1-a538-64dfd958d5fb@kernel.org>
-Date: Wed, 26 Aug 2026 15:59:58 +0200
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ALrcouVf"
+ARC-Seal: i=1; a=rsa-sha256; t=1787753161; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=B2fi+Xa182dFXeCL1l7EKIx8ojZfN6k/hsq5NrN5JKcE6djMXGHMVfLNtu0qvR3cHH+taNBOoFHwwzjXCxQ7klyFYOWz8BLoy4k/b12KZNnG/hzY9DUsJnkPommXuVsj51NFjLy3MYE8FEtZAJU2i4saAvVD5KKlD2BN1a28x2g=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1787753161; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=lcsqwwXhWVmoSbPbE7DPyh9awywoWMTp35RFoFX1es0=; 
+	b=mhUfz2ezI5sNwXlxo+/AYr58YZQHEgv+TGohOl09iF2i7NvsN405H6ESn533GFQhQzm8fzsBxaUr+J7mbm3wTswE1+Tpsl3v36VUAntWOos1V3YyqKMRGAiMcdzsyAFXj5QyCxMu5lFHqsYKgEdS4VX2cjYI4PeDvFWLneXUCQE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1787753161;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
+	bh=lcsqwwXhWVmoSbPbE7DPyh9awywoWMTp35RFoFX1es0=;
+	b=ALrcouVfprpB4OgpWdWQIbBm+ZVKR4WrMeaZTaE2o1dvrXt6tKjgMBsJaV81iM4k
+	/FnpsVW46+xiuY/FbP3dMOQ/Gx8mV9WqR1FK6OTbTDZXyu66Fa7sFDmyXJXr8cZyCvw
+	koOeA401LAjzNvzgn2H2sB9YZFl6wLdbzQmsoXdQ=
+Received: by mx.zohomail.com with SMTPS id 1787753158261687.4971270678526;
+	Wed, 26 Aug 2026 07:05:58 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: add Alice Ryhl as co-maintainer for Rust
- [ALLOC]
-Content-Language: en-US
-To: Danilo Krummrich <dakr@kernel.org>, aliceryhl@google.com, ljs@kernel.org,
- liam@infradead.org, urezki@gmail.com, ojeda@kernel.org
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260826132729.3281308-1-dakr@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260826132729.3281308-1-dakr@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 2/2] drm/tyr: unplug the GPU when reset fails
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260823-tyr-gpu-unplug-b4-v1-2-e99c07d4c785@onurozkan.dev>
+Date: Wed, 26 Aug 2026 11:05:39 -0300
+Cc: linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ dakr@kernel.org,
+ aliceryhl@google.com,
+ airlied@gmail.com,
+ simona@ffwll.ch,
+ ojeda@kernel.org,
+ boqun@kernel.org,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ lossin@kernel.org,
+ a.hindborg@kernel.org,
+ tmgross@umich.edu
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <62D24E3D-0956-402E-8451-24FADC8D357D@collabora.com>
+References: <20260823-tyr-gpu-unplug-b4-v1-0-e99c07d4c785@onurozkan.dev>
+ <20260823-tyr-gpu-unplug-b4-v1-2-e99c07d4c785@onurozkan.dev>
+To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On 8/26/26 15:27, Danilo Krummrich wrote:
-> Add Alice as co-maintainer for the Rust alloc module to share
-> maintenance responsibility. This is also a natural fit, as some of the
-> alloc code overlaps with the mm subsystem.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Hi Onur,
 
-Great!
+I have nothing against this patch, but as with anything touching =
+Revocable, I'd
+rather get Danilo's opinion here regarding revoke() and the Arc in the =
+registration.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Otherwise LGTM.
 
-> ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 24ca91ce5d86..7daacfd70197 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -23945,6 +23945,7 @@ K:	\b(?i:rust)\b
->  
->  RUST [ALLOC]
->  M:	Danilo Krummrich <dakr@kernel.org>
-> +M:	Alice Ryhl <aliceryhl@google.com>
->  R:	Lorenzo Stoakes <ljs@kernel.org>
->  R:	Vlastimil Babka <vbabka@kernel.org>
->  R:	Liam R. Howlett <liam@infradead.org>
-> 
-> base-commit: 45c13f3f9e3bb15fd89ff2864c6f627a3b4b4229
-
+-- Daniel=
