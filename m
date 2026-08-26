@@ -1,135 +1,190 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E9E45199D
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 15:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787756769; cv=pass; b=OuL7rreuYEz81IJngC/m2MgzluXOaVzoI5uYVcanDXTTlsG4SyeSYQhyHZ8stnKu/PNtcuhtHvCbR16+ED/h+YSeqW3Qy9H+5t+CVVXeG0N3MmDU5CkLx43CPRl/TPM2ecibE2SJmwuE81DPIU4vmVaYylo56gymJGgmUOL3IzY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787756769; c=relaxed/simple;
-	bh=fKABmemTLhVq3rnCUFgsOz983VtCKrNjV3YZ5ISgLrs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F8DOqncdAuoQiIDjr155DUcfe5Y4z5FWVDZehoZZJhVI3dYqoaMIH7nh921l0ZE+jOwAgoVpdNuW7kWMN4QZGHmCXOy9eIcueaamUvRvM8sAs8vY0BmUEcS7qcoMoo956fOFtFSM2Bds8xequV264dIHGnGjPSWYDBKfhQrsaso=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GJ+dM1hg; arc=pass smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5483C3AB27F
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:29:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787761744; cv=none; b=COyGcpiuuZ00GuXrq8nhsyc/qc5yuduae9PHIIweMGVT9XzUuBu1MbyowZDu6J6y2YTnX98mxnTabiagUP8hdLh0aeBe0yHgt5ZHkxobQuRIdUpxTyL5qtpgKWuYdR+8l4HFJG5bSGm7S5RNiCvMWS7qkWdBwRwm9tVXwIYgjRA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787761744; c=relaxed/simple;
+	bh=ArTrpRRy1Jj6m7cEYvnr2wlDFxncs2BPtRXDvhuQqkY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=reWQpwBhsOWwJg2TKDsHXHoWzoeqw3Tnl8UuioxFAGM3mG+LYDuK+QHZ1PxVXuXJXUPliJx1MPh2p5KGxFr4cY0Zmr+JzYWIoLeXOd+X9KmKeOeSpkVUelr3racSeCdw3ujwqSMVysthEgH+rv0//mupCMrfps07g7iMF+gjMKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=BbdbQAKZ; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GJ+dM1hg"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2d5862bc921so2725005ad.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 08:06:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787756768; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kQsW+QgOFIs1pXS+wC0YKz1LaHmUKdy9L+bHTOzAhvL9HzxALDB+pYHYlBDYvkcDI/
-         vVnotvQETdUKswnRB8Yv+G2aovx/WTyrnZc9dLkCKq/G139T2S9yna7dUI/pQj93hxC5
-         TFbm9nnznC9dLljAB+hpf9SgN9HVppG6VSua0yCq1UBtgrXpBgXV7gyYWYIcVpK8FgWr
-         yEglG/anu8WQzSp8USasnSmuvzFQYpgc067jqEb8TgQLH2qJgOWsY8VC7ECgo56Jo0uz
-         wUp89h69iapRlN+eWzuJcPPY5ARgfcL4B0+VSraShi1vpl5Xhx/Vox/F9HDlGDbhLbtW
-         9DbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mM06737N3KEocOk1ZcR67skwuuKDg90XAA91OQOAsGQ=;
-        fh=OwLw3OMzgETJfyqfQ00/27bLUPv3gygAiqkUNAD4np4=;
-        b=fuVrxComTf3qWR46zel8T+HZUaZK73Zvgp9DZu6xgIvgVebzgwrDgMfVPEBqTuztOx
-         EUzs51sR7UlOyjrCIGeenTgfYviTpEavrBxujHFE+h1X78e11BcIGaoI6+SEZbCLb5aB
-         TJOZKopdvhaTjkTqRcQUupDFyJosAqFb3TkEkkOEAbDlc/iUUS7ac8WYHw1qUNcCIhU5
-         CseUhxqn3MGeBn0UL3xxTEkxQHSSL1Dcnv8JCLsUx8M1ZUGllirStDtEGMe+blWODcqb
-         OCHYdYwliyDty7GS3Hls1Cxt2326jSbcnc/TZWEjByIMD4QcV/RM0RzEheuMmosGFEmk
-         kKBw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="BbdbQAKZ"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-495590dde14so8665355e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:29:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787756768; x=1788361568; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mM06737N3KEocOk1ZcR67skwuuKDg90XAA91OQOAsGQ=;
-        b=GJ+dM1hgX/58wDJHXDa8UEzDZ3xWVgjBUiCLxGppVS3JOpVjsKDBNmebGxgZgk8LM4
-         4/iUMHhvvQAHKegI1iaHUCJFzihjGUESm6hqrfpgJT4sMyYJL6nkBTKSbvz+K4qDLkFn
-         /OdriwOnRFamPQspxCKOQwWPc3tptgxsba5v9eT6zNtXYgDj4WFyF/7u+ojcmqsQ7VPy
-         7t5DthcAf2FU+W8EtKg70eant02XvERd0uaees1VVfJn9yiMKP2vFDmyA1VcQJc3eg0X
-         D0sgDvoqcEq6uIFRdDXRpFN29I2oYnsKoSLsMU25qLUo1OFJlxjo6SQGfYTkCphsaKZh
-         MqRQ==
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787761740; x=1788366540; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dmMPed7R6Cs7sHpgzIBI1b+r7mX9EAuKIVs5oZFmXYo=;
+        b=BbdbQAKZS7ihAvrF5vg8qLLd3h5fkaFcojbJAjUsR0NZmdmmKqIbI/nlEfoIKIvRwv
+         r+tX9qC0jZycSyp9WjrSNkuHB1fiJOKmyDwFQ8JPZg/Ivz+y3l4P0S7u9lCFGUQvxRhZ
+         PEK/Oq9fWgFBkPtwhWfnJYdWHs0N3hkgQTZgm82DFITCdoLUVkf7coRu2KeMVInOzC+h
+         d89HEFrkOL6fxAS1AAtLmEJBSMEYIhZz/AES2eTas9tnKOT7eHNUQG5ox4CURX0DH2JR
+         +LeNwnfJbFpNs6b5374iq1OtkBD1AujzuX0Lk7gXPS/gEY+FdU6idBtEfrp+63lvmsob
+         V9jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787756768; x=1788361568;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mM06737N3KEocOk1ZcR67skwuuKDg90XAA91OQOAsGQ=;
-        b=Vsb1JNRYsflod7nEiCnpo6SeJ5s4xzvQG0jLUNgk1zFU4BBLvUSr1gCGKdJF6I4/9n
-         MqpPRfApuZQ+LE4pzVZ/CvWBmL5iPHB6qjMzHqr4MVMGNxSfNY4iVLdjxQpcJLGtAhcX
-         5s78Ga2cCmGRA91XIta0cS1drRdETYrsZO74jryQLI/Jgt9Asc09v974uT8D609wFs5I
-         DlJA4ZQe5XNoiRGlkNyBJSIFVvajo4sklXaU2FYxmRekxrI36fwnPGwDzNEy/YDTNEaJ
-         vGsjZOgOuhZQhqU/xt1RLluMX6fnzcRjd2P+t/qYKdWY/soVXkRBRqKTz+6EwMLhrM+P
-         vGvQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr5tGifrKiQ1VSxIFbXsWxHOo1fhCq2AzAcbWvL613M8Wt3li1zopE522R9MWsYIxmJSygAPmFpz+z+HJ0cWQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++mUSUSxLGeYK3qumTegc25aR7ZC68RMmFdDViNLGiiaLbxEyf0d
-	6kLuhrLN1q7Lkl9bY5PWHB7C3j0txIa9mdxAIHJE91nIseEERIRyIy+v+yTpPYMEyYYBjQAJSFK
-	NaHt1CBwVl37kJ/tbpJmIb9SVLXoNinM=
-X-Gm-Gg: AR+sD126Spu+Z/NG1k/vNOvGklfZrGSG6IHjTQohihf4cPa7KftkAoO93yzQfLXwEvg
-	wBUQTXsw747hiZiBGuzApcsl/uZjVDRioIsIisehRkPQ4aMMX/+CYdocEMnZOCYal0RepQyuJMG
-	m2daRPkELkS2YLXvnSe/FhW/rAFZOkLO+XoVWzburbIPnWjFojlBMsQ4QgxqJV2QPE1WxSHz5P5
-	+IO+p48OasdGe3yai+s8qas47sNKqRXcz7GDK3UoajfEazCcB1WrxOqDBCT5HQrBmIGuq9ItJG+
-	jp1wMpMN6zkNoeKmcWenbvMtajuGaqzLG+oEijwZPid/8GBgj7h4fr4ND6bVAGX/ZBLeDcpHvni
-	NfWGqScuefPCH2C9Yfg3hpg8TnQyo+NPDAZBT8pVnyYzBYky+xjiAqCCOlrPD
-X-Received: by 2002:a17:903:4b2b:b0:2d3:a50c:5e19 with SMTP id
- d9443c01a7336-2d71e2c078cmr10095615ad.1.1787756767876; Wed, 26 Aug 2026
- 08:06:07 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787761740; x=1788366540;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dmMPed7R6Cs7sHpgzIBI1b+r7mX9EAuKIVs5oZFmXYo=;
+        b=bj3jWxUGBF9qj4Xk1oDh03MkgVAjqG1hsOhfB/wALtoN/wunBt9Mmh2mcbJObQ4mY0
+         7hFQufD1G5KVnY2qqLzby8qtfSeSayZ6wFxNbCFOnSu090PiO+ulUYdIaLRgJTTi8LM6
+         wbj4bPpWl+UpeaQkVdnSnekoGzJQIiHB0gv8wbqQ1Q9mdaUKrSz+I/AOAQGSACPVGMT3
+         QPmLINGZfGDKbOzcFxqGvH+8YPnjGPNWziAClLZHv8Q3NneXHExbfDVCmD/EEMKcPZyj
+         3+Pv9yykc/qGd+vRQog9vtE8Z8YILRl6ig6V85X3MiKBaBOjuwn1beAYS8Bk/VWkFhtF
+         ABog==
+X-Gm-Message-State: AFuF++nGHyCGajJcrJ+GYTbDyt/sDqZbumX5nKsyyfrll5InY4DJUIaV
+	FDilstTDG2bdqMh99Jl7P4q4bJbOlcxBqPujOQqdtyzH+EdWtixl3u31i0bcSHoNqHXsS7yRcQ6
+	Tfohfq028
+X-Gm-Gg: AR+sD11/qLpNv+sDYJgZFhZgIJuvEw+pPexL/qJcfGFE+g4klO2MAT2tUgQ+vEfBxx3
+	uQS82t+T0vTNpLy3Y8L9QIO+6OK45h5x3SZ3bTHqc+klJbntJUEIac057ohW/qThGBEYC9CbVX4
+	295YqnT+7e2hbKc8SsgEacTP8U4F7VXlQKv0uskNVfkCMlBevtV0RUqoJGytgr+bon8vIBCN3kK
+	HVyZGnfY/22WoCKxLQhA1MCVrOpVrE4qIuogXXxwXGczyX7QwiFZSt5pwLZamx/wOrl8ZjuHb8D
+	L5uhuAVcmNsHzGcDsZgSL/nZMT3KPLLjjFO9C97oEqD0HZWzaAlhBYPyvnnjcyA87iMjjkqczd0
+	hvAkgBVdWXI1Ucrd15I5puLHuB3CVu4k+gNhU90QYTAOAXlBc5u11LlG0WVaTdh13YWTM0XW8FG
+	W+a/zPEs6ch55ojWpe0IN7OhNg/7RJCuPIhXOnVMrdyZ7xM7ZHZFela1PsLsHd+q2hR+ZDX2C3I
+	24zIcbccPqv5iXg0NYnfey6J+upYqTeOh5JOQ==
+X-Received: by 2002:a05:600c:3e83:b0:493:e365:7630 with SMTP id 5b1f17b1804b1-499dc823a01mr79538685e9.14.1787761740102;
+        Wed, 26 Aug 2026 09:29:00 -0700 (PDT)
+Received: from axion.fireburn.co.uk ([2a01:4b00:d309:1c00:caf1:6b20:8531:818c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e27ab574sm3232342f8f.14.2026.08.26.09.28.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2026 09:28:58 -0700 (PDT)
+From: Mike Lothian <mike@fireburn.co.uk>
+To: rust-for-linux@vger.kernel.org
+Cc: Mike Lothian <mike@fireburn.co.uk>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	llvm@lists.linux.dev
+Subject: [PATCH 0/9] rust: core abstractions for a USB display driver
+Date: Wed, 26 Aug 2026 17:28:34 +0100
+Message-ID: <20260826162851.2497-1-mike@fireburn.co.uk>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260826145832.42387-1-elouandacostapeixoto@gmail.com> <CANiq72=NtS=YHkCbB3ui1vVkHoVpHh2S12XAC=0vqHcurJFX+Q@mail.gmail.com>
-In-Reply-To: <CANiq72=NtS=YHkCbB3ui1vVkHoVpHh2S12XAC=0vqHcurJFX+Q@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 26 Aug 2026 17:05:52 +0200
-X-Gm-Features: AcwNN1UsGpHEz0OUQTEfI_QDht3IcZH63XGHNlppQWaLF0Cq9K4L96CS48RPuPE
-Message-ID: <CANiq72m_XpF=ROywGCdz4vqu3TYPeN9uzvHG1NMyepWOZq7FEQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: zerocopy-derive: Remove the BoolExt trait
-To: Elouan Da Costa Peixoto <elouandacostapeixoto@gmail.com>, 
-	Joshua Liebow-Feeser <joshlf@google.com>, Jack Wrenn <jswrenn@google.com>
-Cc: ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 26, 2026 at 5:02=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Wed, Aug 26, 2026 at 4:58=E2=80=AFPM Elouan Da Costa Peixoto
-> <elouandacostapeixoto@gmail.com> wrote:
-> >
-> > FIXME comment was saying that this needed to
-> > be removed once the MSRV >=3D 1.62.
-> > The current MSRV is 1.85.0 obtained by using:
-> > `scripts/min-tool-version.sh rustc` command.
-> >
-> > Signed-off-by: Elouan Da Costa Peixoto <elouandacostapeixoto@gmail.com>
->
-> Thanks for the patch!
->
-> This code comes from upstream, i.e. it is intended to be vendored
-> as-is, so if this were to be taken, then it should be submitted
-> upstream instead.
->
-> Having said that, their MSRV is different than ours:
->
->   https://github.com/google/zerocopy/blob/main/zerocopy/POLICIES.md#msrv
+Core Rust abstractions a USB display driver needs. They are separated from the
+driver because none of them are display specific: each one covers a kernel
+facility that has C callers today and no Rust binding
 
-Cc'ing Joshua and Jack for completeness -- the full thread in case you
-are curious is at:
+  sync: single-shot and timed completions
+  hrtimer: restart an ArcHrTimerHandle, and read the interrupt state inside a
+    hard callback
+  random, xxhash, time: safe wrappers over get_random_bytes(), xxh64() and
+    ktime_get_real_seconds()
+  workqueue: make OwnedQueue thread safe
+  io: offset copy helpers that check the bounds they are given
+  error: expose EPROTO
 
-  https://lore.kernel.org/rust-for-linux/20260826145832.42387-1-elouandacos=
-tapeixoto@gmail.com/
+None of these nine has been posted before, so this goes out unversioned even
+though the drivers it feeds are on their third round. A runtime platform-device
+creator and a root-device attribute group went out inside the rust: drm v2
+series, where they did not belong, and they are not here either, because the
+consumer that needed them is not part of this posting
 
-And I see Sashiko doesn't know about our vendoring -- we could add a
-hint to the prompt.
+It is small on purpose. Every patch has a caller in the driver at the end of the
+chain, and nothing is here on the argument that it might be useful to somebody
+later
 
-Cheers,
-Miguel
+The rest of the posting, which is one series per subsystem:
+
+  rust-core, 9 patches, this one
+  rust-crypto, 2 patches, to linux-crypto and rust-for-linux, not sent yet
+  rust-usb, 5 patches, to linux-usb and rust-for-linux, not sent yet
+  rust-drm, 23 patches, to dri-devel and rust-for-linux, not sent yet
+  rust-firmware, 1 patch, to linux-kernel and rust-for-linux, not sent yet
+  drm-vino, 13 patches, to dri-devel, not sent yet
+
+Vino is the user for all of them. The abstractions themselves are generic and
+carry no knowledge of DisplayLink
+
+The whole thing is one branch, base and prerequisites included, which is the
+quickest way to read it:
+
+  git clone -b vino-v3 https://github.com/FireBurn/linux
+  cd linux
+  make LLVM=1 rustavailable
+  make LLVM=1 -j$(nproc)
+  make LLVM=1 -j$(nproc) modules
+
+CONFIG_RUST=y and CONFIG_DRM_VINO=m are the two to set; DRM_VINO selects the
+rest of what it needs
+
+It is the exact tree these patches were generated from, at 4c9ba407018e, the
+drm-rust-next tip of 2026-08-06. drm-next has moved on since, and this follows
+drm-rust-next deliberately: the KMS layer underneath this work lives only there,
+and that tree picks up drm-next on its own schedule
+
+Two commits on the branch are not in any of the series above, because they
+enable no part of Vino: a scheduler call site that stops compiling under the
+locking-guard series, and the Kms associated type Tyr needs once the KMS
+registration trait requires one
+
+It applies to the base above plus this, and nothing else:
+
+  Alice Ryhl, Creation of workqueues in Rust, plus Onur Ozkan's cancel_sync
+  https://lore.kernel.org/r/20260312-create-workqueue-v4-0-ea39c351c38f@google.com
+
+The reference branch also carries Boqun Feng's counted interrupt disabling
+series, which SpinLockIrq needs. One patch of it is already in tip locking/core
+as e901c1510e24
+
+Danilo Krummrich's OwnedQueue, ScopedQueue and ScopedWork series supersedes part
+of the workqueue work carried here, and is the better answer: Vino calls
+Work::cancel_sync() in seven places to make teardown wait for its own work
+items, and ScopedWork cancels on drop, which is that idiom done properly
+
+  https://lore.kernel.org/r/20260807165252.3849875-1-dakr@kernel.org
+
+It was still moving when this was cut, so this uses what is available today.
+When it lands the swap goes in as one commit moving the prerequisites and the
+call sites together, since either half alone leaves the tree not building
+
+These patches were written with the assistance of Claude (Anthropic), used
+through Claude Code as an interactive coding assistant, across the design, the
+implementation and the tests. Every patch it contributed to carries an
+Assisted-by trailer. The Signed-off-by is mine: I have reviewed and tested what
+is here and I stand behind it
+
+Mike Lothian (9):
+  rust: sync: completion: add single-shot and timed operations
+  rust: hrtimer: add ArcHrTimerHandle::restart
+  rust: random: add a safe get_random_bytes wrapper
+  rust: xxhash: add a safe xxh64 wrapper
+  rust: workqueue: make OwnedQueue thread-safe
+  rust: io: add checked offset copy helpers
+  rust: hrtimer: expose interrupt state in hard callbacks
+  rust: error: expose EPROTO
+  rust: time: add ktime_get_real_seconds
+
+ 11 files changed, 243 insertions(+), 2 deletions(-)
+
+base-commit: 4c9ba407018e8deb06dbc643112bac8f40404f95
+prerequisite-message-id: <20260312-create-workqueue-v4-0-ea39c351c38f@google.com>
