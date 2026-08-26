@@ -1,66 +1,64 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364C03C13EC
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:31:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8959F468C38
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787761905; cv=none; b=JHUmRASs6Kqp1CyRKugRx37GE8G9oiHZ2FTdAwyVgUylrDz4uJkIQhF68lFHHOfnYYTxMg6NGr8R+1zjkhc+dx0rEU9EFINW6TWaLZLwS/XrQUHtRpKCUKpoofs8eOI3lEMQz4uCxgGhjY05vg4PyXvtTP3LeLQS1zlditGJGqE=
+	t=1787762055; cv=none; b=uzduD+M2B5OWFXpC4CXcXTCjVK9bPQsLIfU+CdKWA6HmAtGAaSwzqnaW08tlufG6aq03Aid49WF/gDykEqutpLxppgMsBIBkCclwbRzVuoX0Sc/yGPPUFiSOsTcFZ243tDceTfjawER+uggXXvpTCr8BL6Pv66jA9pk6pMIQ7dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787761905; c=relaxed/simple;
-	bh=5JUivoyhL/eFA3z1wzR8eXGOYWpIX0QOjpm+5X1M89U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IrTiQeVCwl+aRLZzkdASjgCo88MdjqISjU/DYVcw8CROSRmlJCBaFQtGhtshIF4Vvey4dxhLRLrcHxD25dROObI7vgQSdH5Vab4I9dyKgL8KM6oDPbiS3lKuiN2Q06yjirs3M9FaYOWHFDaltx4Vcf2wSaBKUIoRDCid0pXxFv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=l62fSSEv; arc=none smtp.client-ip=209.85.128.47
+	s=arc-20240116; t=1787762055; c=relaxed/simple;
+	bh=s9SXFkDKJWYemu64oqEap57yuOxkINYTmbpVqR1nemE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M+dgMZyFXxU2jlHuA56tnUc20ywTTwjDEWEVrRJVXXnR8DUaMRPDBBLtavS/GIfsR1otcCnyIim463QVUSLn90jR510UHbFp9aqqpfbRTystmwG7MNKKjM3LmetFBo7VZWOkdn12p7+TqAFyXiBDfwsA917EsSJEtjI7Y51jalk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=XwY6+xNl; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="l62fSSEv"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-490cf322ed0so10242575e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:31:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="XwY6+xNl"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-482dbc9a00bso40592f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:34:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787761902; x=1788366702; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zNZLQEVLi7AF6T2ecrRF6uxN2Gce7/nJnEoP7xr5640=;
-        b=l62fSSEvzQydR0K2XmNXurF14Z1QDh6NOUaQb6k3XHtpC5Mc2i0ftZr9eCFQz3LGqJ
-         35qLKyJcYAtBTstIB+MZ5AhR93Oy4Jkgc210QFpZyDEbxib6BagpUANnmNTf+S0SuaA6
-         HQs+Gp0GoRidk5qsHihxZPjY4LGBS/I43nLC0GbQC3aJ+06vP+fpOraiJn3b9+pvJA+m
-         oWTkDDAF3fd7DKzP3N83GogJHZYCpCoialvtR2hP1PtUg4IK41ZOKKD6jYXfliNbS9g9
-         61g2q2AJiwnWVla3Hf5TjoaEcVMdaCqpyt2w+IxFngIXttgDZgkbJiBe7ILaV41xETUO
-         olxQ==
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787762048; x=1788366848; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BNp6aViZcz4to/Cdqsuhox+93lABRwOcAkdzqvBJ+0U=;
+        b=XwY6+xNlZiSzsvqB1WTFXCISkir9yrIthwJTE0SU2+IwCBiwtR9SbH6cg2axbnOLsf
+         WE5zYrm3gIOHdxNUTozzWQ8naQM1Z8oburJP+xk1EqCNiN61pyUDVHih9ezySqP6DmO5
+         8dBnOO+YzJEk1QLaWpVCTFPNR3WYN8P5j6BPv3Y4DhKAAJeP/LaMLY4puSmpIn1bymP5
+         EaIJort049tVHdnsGAV70Hou6IDtySil1NMcJjpGklRDeDfW3rLeNmmC8/waEaO4e+tv
+         5IOxUoYiexRvXQ4tOMRWDYqZ4JebGPSDo+47xjkWvuGRg2Ysgy7nDpEEK159Vhtw2/fj
+         SU2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787761902; x=1788366702;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zNZLQEVLi7AF6T2ecrRF6uxN2Gce7/nJnEoP7xr5640=;
-        b=Fkh4HUD4LtQtixxknSThbUDwjjil7jvI3/IYOC7BO7ng9qtcGqntfCIXhttjNWKWm0
-         dJkU+Cb3EH145SDewnaINRpXraP87MosfTn6bRGsBZGDfseS6V2RWlboLqhAaesbYLCi
-         qFElRCVvXxAid99h+FhwpScn9l/Z/jdEvuc/d59w4BKI21PsE6oyn0wccGYtgMlh53U8
-         /M2Ndwkb3yg6FQmNhGsay+f3Irszfo+O146+T0V2x0cgOaNdkY48+LFbH4UxYAvoGsL/
-         DVX2SA46FCoU1h3C/xY+3E84FeH2MOWHqsyizDbsJNEABdgmrjldcad6/N8U9NUE/hJm
-         qBaw==
-X-Forwarded-Encrypted: i=1; AHgh+RrwLczUIN5avp5g/B+CAkJilMjtQwIyJ2pFeSI73qWvx0PftLlWcDI+P4I+bzf6G6eBxBQy2mTJdM9Fl3+rJQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++lt2Y4ViJbLuB1I5+Wbj/++xtFTYKuJLs7+SrSOIHg0iM1M/i/3
-	5L9RNu+ZK4rbTSRi3qpWWwSr3EOxOc8BSa9faq49Fha3eSaTyVrJhJeqqQ3zGoXL4Q==
-X-Gm-Gg: AR+sD10ZtP2p/J09xSHVPijqXu9nipRlCyTUGR4R4QVhc3Mm4pJ0TLas+yGFCYVvuuT
-	sNVcgbwe2G/WUdtqMcLcrXn1AGWufY2qrkuMiBf2xY2OhBBA8VclgPcIWseQ9faRV5InwJqInmR
-	b3T7KfDREQa2grmobcswvFV2gvgisPQUDFvZRXrKbp0IGAuK6KJD6UCL3YiJzh5swOFhGScY4cJ
-	LLzaWVSBy2gxXjPcudScGtnub/a0XFZaCZW7US++O577V/IUti0zlWkGNOrRvU70KL7B5mUa/ZA
-	ZZn2SWls1n9oO3KocMxgLwHAyC7Xr3T+TPUFvUbKEI8KtKYaeH5zG1+5qaWMJHH3JazvOuugkYK
-	pWQPtmPahsuDhzWOO1itUA5/TaEj5rFEKlFiwgPZXT4VWqbXEr75T4q67SYraGq/AC5tVoMaqpc
-	MClK+nghlbZfrUnr67RjZJxpFdA9aynu2BP8fTjmmV2mUFZXrPVEaNKKoRKO6SquHfe3aCI5/3J
-	I2gXLN2V0NP6xLoKOl2UFNAnrzUpzBL8J99
-X-Received: by 2002:a05:600c:860b:b0:499:726a:a017 with SMTP id 5b1f17b1804b1-499dc6e0040mr88950875e9.1.1787761902407;
-        Wed, 26 Aug 2026 09:31:42 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787762048; x=1788366848;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=BNp6aViZcz4to/Cdqsuhox+93lABRwOcAkdzqvBJ+0U=;
+        b=AdyJz/phVFm5jSo7ay6PXpVnBz4kPAuPl6T0j+/a+8L1vHtC/Tfoq0Iz64stEU7TAb
+         sl0rj/ucGib/xgOqkLmtmfps0n+8vI4+QhLuERXmbTMCPrVIv0+lc3RYV2/Z+iVcE2zn
+         THnNnsnimGRMmn1nYOi1nbYqUgsBq1XnnITEetlBhR8UxOQiJqKCV6kyPkVYY/v4vIlf
+         MFD2J6PimGSNGjzaL3Y5woz0iOJReTxNZyGyyIzUJQnQJNQOmD7XLRgG9V90/GvjsyDM
+         1etXqwE/Jjv2XdsA171LJU/f298Fa5PwetRsjYOSQ0x6cXJuHMyPKlbr/zgUUuITMO/y
+         nfrQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rrw19k+xBnQ2TGtjkXbdEdvWJvSW3DX2xgLWa8IHO+9H/EF+f4mVwLQ6ZxYgE4M4mmlKk+IEXSbuf8/IN8jMw==@vger.kernel.org
+X-Gm-Message-State: AFuF++lZfmPQS62Qr0dS0Ua/nkE4eG3y9hzOpS7+0lxg/5BLPK/CC+6Y
+	mKGpaBAJkMA3TR62WkJ0tEJBy956RJ601KzPE5eREfS5CjFnLquGFw52KSgZRSCNPQ==
+X-Gm-Gg: AR+sD13QcMXVDsf43NoCr7XaG1A4SQWsmmsetxW8ILR/JaCkJoMWeChpAqNZOPd1mvk
+	85uok5apcYnW2+gxzQsBOCcrznOGhIt5sqXJWVhsMGXT+BSHm2s3lcBGSurefa0ypqumaTNkuMZ
+	ZOR0QHyczYkzihmBXA5rJmo7jfAo73CWLzJm2F9Wg4heodBoYh/mIXSFaQLQc0SLCrP8WobvPKb
+	iKpZAqKfyI4F/8rR5OLwex85m4UquELLPGECMMVeVbtVzLcEq+osXSv372rHPfKaP3LEkDuTvHs
+	SRnC/8LUwclnO2JPBNKCrFcKdErzOJQs7VGlraZHzDIG4PPRL5YkBTH8obvXL8B/GZs2kGHU6gZ
+	0Oo1OsMQpE7/BKsXZVDtFtFzossyQirU3VA1qlxejTa8M0G23NsexDUzVC94LKCCXhFdm3QW6q9
+	oCNy9DpUAqXumfBMqW581sB3nBQFwHCbRUnmpIpq21OAuyAS7mlMsea515kc6l7Fc1U24OQY8gA
+	OwSuzz3ALEJhbimwKxDH1cPdSvjEFdzaWNm
+X-Received: by 2002:a05:600c:46d0:b0:495:5d6d:9cc1 with SMTP id 5b1f17b1804b1-49b0dd5821cmr5708995e9.0.1787762048114;
+        Wed, 26 Aug 2026 09:34:08 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([2a01:4b00:d309:1c00:caf1:6b20:8531:818c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499dc9b83aesm31202705e9.12.2026.08.26.09.31.40
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499dca8c75csm31227535e9.2.2026.08.26.09.34.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 09:31:41 -0700 (PDT)
+        Wed, 26 Aug 2026 09:34:07 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
-To: linux-usb@vger.kernel.org
+To: dri-devel@lists.freedesktop.org
 Cc: Mike Lothian <mike@fireburn.co.uk>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
@@ -75,16 +73,16 @@ Cc: Mike Lothian <mike@fireburn.co.uk>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Colin Braun <colinbrauncl@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 5/5] rust: usb: let a driver keep its interface usable while unbinding
-Date: Wed, 26 Aug 2026 17:30:41 +0100
-Message-ID: <20260826163101.4168-6-mike@fireburn.co.uk>
+	llvm@lists.linux.dev
+Subject: [PATCH v3 0/23] rust: drm: KMS abstractions for a Rust display driver
+Date: Wed, 26 Aug 2026 17:31:31 +0100
+Message-ID: <20260826163359.4998-1-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260826163101.4168-1-mike@fireburn.co.uk>
-References: <20260826163101.4168-1-mike@fireburn.co.uk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -93,54 +91,137 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The USB core kills every outstanding URB and disables an interface's
-endpoints before it calls any driver callback. A driver with something
-left to say to the device on the way out therefore cannot say it: the
-transfer names an endpoint that no longer exists and is refused.
+KMS abstractions for a Rust display driver, continuing Lyude Paul's KMS series
+rather than replacing it. The first patch adapts that work to the DRM APIs as
+they stand today, and the rest add what a real driver turned out to need
 
-Expose the core's soft-unbind flag as a driver constant. Setting it
-defers that teardown until the callbacks return, which makes cancelling
-outstanding transfers the driver's own responsibility.
+Broadly they fall into four groups:
 
-This matters to a driver that leaves the device in a state a user can
-see. A display bridge that simply stops sending pixels leaves the
-monitor lit on whatever it decoded last.
+  Lifetime and ownership: mode-object references tied to their owners, owned
+    CRTC and vblank references, a safe constructor for owned registration data,
+    pinning the owner while DRM files remain open, and rejecting cross-device
+    GEM handle creation
+  Properties a driver must read or publish: typed colour and rotation, plane
+    blend mode, FB_DAMAGE_CLIPS, connector colorimetry and HDR metadata, and a
+    connector's requested link depth
+  Callbacks and state: connector detect() and mode_valid(), common state and
+    connector helpers, checked plane geometry, walking the CRTCs an atomic
+    commit carries, and CRTC mode changes
+  Modes and framebuffers: an owned display mode constructor, mode flags and CTA
+    VIC matching, synthesized CVT connector modes, and validated shmem scanout
+    views
 
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
----
- rust/kernel/usb.rs | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Also here are the HDCP 2.2 message identifiers, which are DRM UAPI rather than
+driver constants
 
-diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
-index b2a0fb104ddf..1d8f5bc8a545 100644
---- a/rust/kernel/usb.rs
-+++ b/rust/kernel/usb.rs
-@@ -107,6 +107,7 @@ unsafe fn register(
-             (*udrv.get()).pre_reset = Some(Self::pre_reset_callback);
-             (*udrv.get()).post_reset = Some(Self::post_reset_callback);
-             (*udrv.get()).id_table = T::ID_TABLE.as_ptr();
-+            (*udrv.get()).set_soft_unbind(T::SOFT_UNBIND as core::ffi::c_uint);
-         }
- 
-         // SAFETY: `udrv` is guaranteed to be a valid `DriverType`.
-@@ -474,6 +475,19 @@ pub trait Driver {
-     /// The table of device ids supported by the driver.
-     const ID_TABLE: IdTable<Self::IdInfo>;
- 
-+    /// Whether the USB core must leave this interface usable until the driver has let go of it.
-+    ///
-+    /// By default the core kills every outstanding URB and disables the interface's endpoints
-+    /// *before* it calls any driver callback, so a driver that has something to say to the device
-+    /// on the way out cannot say it: the transfer is refused with [`ENOENT`] because the endpoint
-+    /// it names no longer exists. Setting this defers that teardown until after the callbacks
-+    /// return, which makes cancelling outstanding transfers the driver's own responsibility.
-+    ///
-+    /// Only useful to a driver that leaves the device in a state a user can see -- a display that
-+    /// otherwise goes on scanning out its last frame, an interface that must be told to power
-+    /// down.
-+    const SOFT_UNBIND: bool = false;
-+
-     /// USB driver probe.
-     ///
-     /// Called when a new USB interface is bound to this driver.
+Changes since v2:
+
+  Lyude's 43 commits are carried in order and patch-identical to the imported
+    source, with her messages and tags untouched and no trailer of mine on any
+    of them. v2 mixed her work with adaptations of mine and obscured the
+    attribution, which was the fair complaint
+  Everything of mine on top is a separate commit, and it is either an
+    adaptation to a DRM API that has moved or a safety extension a driver
+    needed
+  The i2c adapter-provider patch is dropped. Igor Korotin's work is active and
+    its provider-lifetime question is not one to answer privately in a driver,
+    so the kernel driver registers no downstream I2C adapter this round
+  The typed event channels and the private ioctl compat translations are
+    dropped. Both existed for a second consumer that is not part of this
+    posting, so neither has a user in what is sent
+  The hardware-cursor support that was a separate v2 patch is folded into the
+    plane work it belongs to
+
+Two overlaps worth naming. Alvin Sun's
+"Fix missing fops.owner in Rust DRM/misc abstractions" fixes the same bug as
+"rust: drm: pin the owner while DRM files remain open", from the other end,
+through ModuleMetadata rather than by threading an owning module through
+UnregisteredDevice::new(). Theirs is the better shape and mine should be dropped
+the moment it lands; it is still load-bearing today because upstream
+UnregisteredDevice::new() takes no module. And where an early patch here fixes a
+commit of Lyude's that is itself unmerged, that fix would be better folded into
+her next revision than carried separately, and I am happy to do it that way
+
+v2: https://lore.kernel.org/r/20260703030123.2814-1-mike@fireburn.co.uk
+
+The rest of the posting, which is one series per subsystem:
+
+  rust-core, 9 patches, rust-for-linux and linux-kernel
+  https://lore.kernel.org/r/20260826162851.2497-1-mike@fireburn.co.uk
+  rust-crypto, 2 patches, linux-crypto and rust-for-linux
+  https://lore.kernel.org/r/20260826163004.3365-1-mike@fireburn.co.uk
+  rust-usb, 5 patches, linux-usb and rust-for-linux
+  https://lore.kernel.org/r/20260826163101.4168-1-mike@fireburn.co.uk
+  rust-drm, 23 patches, this one
+  rust-firmware, 1 patch, to linux-kernel and rust-for-linux, not sent yet
+  drm-vino, 13 patches, to dri-devel, not sent yet
+
+Vino is the user for all of them. The abstractions themselves are generic and
+carry no knowledge of DisplayLink
+
+The whole thing is one branch, base and prerequisites included, which is the
+quickest way to read it:
+
+  git clone -b vino-v3 https://github.com/FireBurn/linux
+  cd linux
+  make LLVM=1 rustavailable
+  make LLVM=1 -j$(nproc)
+  make LLVM=1 -j$(nproc) modules
+
+CONFIG_RUST=y and CONFIG_DRM_VINO=m are the two to set; DRM_VINO selects the
+rest of what it needs
+
+It is the exact tree these patches were generated from, at 4c9ba407018e, the
+drm-rust-next tip of 2026-08-06. drm-next has moved on since, and this follows
+drm-rust-next deliberately: the KMS layer underneath this work lives only there,
+and that tree picks up drm-next on its own schedule
+
+Two commits on the branch are not in any of the series above, because they
+enable no part of Vino: a scheduler call site that stops compiling under the
+locking-guard series, and the Kms associated type Tyr needs once the KMS
+registration trait requires one
+
+It applies to the base above plus this, and nothing else:
+
+  Lyude Paul, Rust bindings for KMS + RVKMS
+  https://lore.kernel.org/r/20250305230406.567126-1-lyude@redhat.com
+
+The reference branch also carries Boqun Feng's counted interrupt disabling
+series, which SpinLockIrq needs. One patch of it is already in tip locking/core
+as e901c1510e24
+
+These patches were written with the assistance of Claude (Anthropic), used
+through Claude Code as an interactive coding assistant, across the design, the
+implementation and the tests. Every patch it contributed to carries an
+Assisted-by trailer. The Signed-off-by is mine: I have reviewed and tested what
+is here and I stand behind it
+
+Mike Lothian (23):
+  rust: drm: kms: adapt Lyude's KMS series to current DRM APIs
+  rust: drm: kms: tie mode-object references to their owners
+  rust: drm: kms: constrain connector encoder attachment
+  rust: drm: reject cross-device GEM handle creation
+  rust: drm: kms: add common state and connector helpers
+  rust: drm: expose HDCP 2.2 message identifiers
+  rust: drm: kms: add typed color and rotation properties
+  rust: drm: kms: add connector detect() and mode_valid() hooks
+  rust: drm: kms: add plane damage-clip accessors
+  rust: drm: framebuffer: add validated shmem scanout views
+  rust: drm: kms: expose checked plane geometry
+  rust: drm: kms: add owned CRTC and vblank references
+  rust: drm: kms: plane: add FB_DAMAGE_CLIPS property support
+  rust: drm: add a safe constructor for owned registration data
+  rust: drm: pin the owner while DRM files remain open
+  rust: drm: kms: add the plane blend-mode property
+  rust: drm: add an owned display mode constructor
+  rust: drm: expose mode flags and CTA VIC matching
+  rust: drm: expose CRTC mode changes
+  rust: drm: kms: add synthesized CVT connector modes
+  rust: drm: kms: read a connector's colorimetry and HDR metadata
+  rust: drm: kms: walk the CRTCs an atomic commit carries
+  rust: drm: kms: expose a connector's requested link depth
+
+ 22 files changed, 2062 insertions(+), 99 deletions(-)
+
+base-commit: 4c9ba407018e8deb06dbc643112bac8f40404f95
+prerequisite-message-id: <20250305230406.567126-1-lyude@redhat.com>
