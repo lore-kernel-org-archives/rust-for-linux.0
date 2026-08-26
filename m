@@ -1,80 +1,71 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432B03AB27F
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:29:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74F6447817
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787761767; cv=none; b=BAYESQMz7LvTgwBy9a1NB15l6gtWcI8cFElcefUKrO5mYLJKEuOj9X0QbBtFgHLC09HuVMkIdEVA5J/6vFqi+nwtvaqStERzqQrvaei+N8LonEUyTo2ZGV0pF8wVeU+7WGIGG5wQR3C3XMCi9NklCnDiN03bd+2wN/zmjmvkdAg=
+	t=1787761818; cv=none; b=mcgfGoW5+qqylQMlpu/gCxHltxE5d17a2ZgT80dMwJKZqmZ8pakmHYDLWGDzjnvXGxtu8Xxc8DHmhL7OnLLEcp9kBbzYOVGhMpugFhOKiP+7MqO0SzdkjUDuj15Uq2k/nXHGYnp4L7qvgiglbmcvXxYT9V8mZjhlpkxZ4sLKD3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787761767; c=relaxed/simple;
-	bh=umWQcDWL+vKkAg6SI7BxeZrCQcDKXpYAG37pQ+lD/To=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oup4HduK/ZKnoTjGFzmJv7fRYcDhbIH8xslAPZzB8co2CXiOsNwsMB46MX/vfubV8TRRMWl2CY7zP/gYmrRkl+lInRsx3zX5CgKgiHezHRtN44w9LGKEaf8m2xGycEyY3oCnPnfHvoe1C+lrV1iANFtk3q2quUXsqedF1dQ374U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=AC8kRLfE; arc=none smtp.client-ip=209.85.221.47
+	s=arc-20240116; t=1787761818; c=relaxed/simple;
+	bh=gwIfm3sCQyiILWZQ7xFw6yNp7td9RDcFDuU2pI//xdw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a8/skg8WPnJ6Y2mVFOg8B/n+EHfBCO5f1IdQ9LFKOd2LxNI6aaP9HPjsuocIuRdfKMlV3xs7+xNB+xZrZfqKwn2MY/myb9H5y0p+DCn3B/FNOhMhw6y+Sr7BgjeJbSQsY86HcRXiTr9MQao9xaLSKxWIROqaaBfB69biAnbGez4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=LsqMpOMs; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="AC8kRLfE"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-482e1bfcc63so50377f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:29:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="LsqMpOMs"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-498028b3d5eso10748205e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:30:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787761758; x=1788366558; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RC90Kt3yL2qKSR4SdatW3E2dscmtZrN96AZ/Od58+hU=;
-        b=AC8kRLfEnooy0wTnEumuPOhP/qPoe+q5XgGGt3ETWWbhmn0ChK4BmzIWR1sPtU8/E/
-         +1fIQn+32Xjwj/VLLsWBh3y2a+AdUxhNpjBLcsd/SiyX097awa/9JWo6H39/RrHaE2fg
-         p8ELFMagJASeTeH44iFmaindmwMNMXlxKLPHVFbb3JgVu5/oVhEV0GjQWi0VM3J7ioOK
-         +GE5MAb2AiA08zv+21+wD2KIYJOErRs96QQJBR0KzU+Y/KjBihvwwi/Vugx/Sk/EPVu5
-         16bShvOAHUjNGnrgynNxgfsdDqKOFegTflxrOjnDLy3Vuw2qLO/y+la97nxdlQIF7bnd
-         KZTQ==
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787761814; x=1788366614; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=G5JqemKnba64Z3g/kh1rqnazfKcGKeW7SjV07q49wE8=;
+        b=LsqMpOMsFvgMA5daSnkrAZT2lljVUtu6hRgd7fpAwNuPB13J1mENslhUBn/+xYYqqL
+         2dB/b8TiT6Dw1bw65FYI9jYuXQEgPBycpsIMg6pEwyqg/FbYiCieJC+lPkRMEJWlLdHD
+         Rz51CXECI7MLIZnNKByUc+R7azX1gW0Rso9z1GawcD/4NyiaqgNU2rlOazfghGVwNE9z
+         KAG1RX7oPXjBrDe4w737qGRyqulEMIjegBUMg9JP2CR6zuaSxugOd/ZZ/aOL4wbkWXE6
+         8rZKEU33MiptizNe+gtg82wzNb06F4f4m1G+zRthNmw+qY5zXfEE/SQRInU4tiLfb0zc
+         o5fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787761758; x=1788366558;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RC90Kt3yL2qKSR4SdatW3E2dscmtZrN96AZ/Od58+hU=;
-        b=K4DmTSvJXJni7l+hXYIIW0R7WUX6h5kyFA3X98o3idWWBvGGiB8UNixrxwqgsNmSev
-         ruycw6MTmpC1JGEMYnT5a13WdqNvhsp7QXM8oiXHBGgy5TJRDOFOknL+OPMBndaUSht9
-         qXd+0X9ZMxZB8JCd3JtDecHQEzIsWoZMW6cqhBJynhT5URJVTI0P6aCysoHTHJUPdgZ8
-         1TJWU7qRDScs90m72fLzjpz7xX/RXiWLL1aY40SezcARp6OEqipEvVt60tuCtYpXuDXt
-         OgOgM3zgtjfgaHOMhT/L6tQxnajOnhybk8eLgw8bdzjVMrGd64eGpnCazI9LzYJCD/O8
-         e/AA==
-X-Gm-Message-State: AFuF++kKqkERnwaFceNHpTucudE5wKepEpzBm2Jh5MbtEki1uDu59U4E
-	M03x3OxU30wNuFtGxhToiC+NcdtZhNAmPlubEpbaSINN14pQmsHyFjp41vXIGrlpJywepGkLlSX
-	qPdJxfULS
-X-Gm-Gg: AR+sD12dyWMOY3F/nPJMtL6x5GB3tpQ5Adqg9RFyFTr4DRTKAGEHXjLk+AI+OZeN+I4
-	zufRbztLzN3AyVMtTQIvSNq1jOLcNOAEgJVjaHeGZGO9JRrPHt/EsibmQWwn+RF+mIKy5/nofIW
-	Bt9tP4UZaSXoI299K4dy6J7TdGoNLyKalbWlMxhsgfnY9GZEu5Kf0sDGzE43U8mHIjBsQa9vv+K
-	Ot5M7kELFRLO3CMbF3SKhQFrcccTWCdbfmr9tlm2+SrNKU0uDCZmNqM204P8c9AHw1rzT+21CUc
-	ZHnf2wltlg3XSFOUkBz7KRf/VB/Pj6uvJZiByGPFjHx+fp2XHnSPB9KbKWygSIaO2UhccQHGvFe
-	qPmDNsSzBDt4vTruS0O0yByCZAi7UTgI74uMP928ahSWBX+S3ZSUHM5p2fUSVVEgmmTEA1F05Q+
-	SRBcre2dgdXLfavPnQFS/Mhc5cH1q3O+mknenZlSpFW+RvGPR2RbwUGBFvawTMCDM5kZhnJUXF/
-	5N6JDM8TdXtR0cmgRO2jGnLmt02NJYPkMc2
-X-Received: by 2002:a05:6000:25ee:b0:482:ea3e:882a with SMTP id ffacd0b85a97d-482eab75e7dmr419934f8f.6.1787761758366;
-        Wed, 26 Aug 2026 09:29:18 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787761814; x=1788366614;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=G5JqemKnba64Z3g/kh1rqnazfKcGKeW7SjV07q49wE8=;
+        b=WnPSyPRiz7vtbV0Qyz32ZiyBGj01k2tHyaj2HVpAenJQF5O384fx4JT+J5KTrxw4qd
+         EO6ms1KQhnP64xFlqmo676gob0idSol88RCadohVH6YI/3h+jNkOZAfrBrVsO5/Pk5rP
+         rOoLRYZGnq9eO2vwe5NaeMMHP0uVinvvHak4lJ7WTYRw+xjk83aloZnkTy+by8cSp7BY
+         2VEXf3ZBbEFMUY0wxIGgTNFAoREQQFHBn4DDaOh4a/oU9ThETf+xlfchM03zK85fdgAF
+         R5pMxVzA9Dd8IPpegGeu6bLFTKdA7tiVI3C7gKOF6Dc2qbHCUX4oC7ZRcnyiDOLXpFle
+         ELcQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrQ96IhUjS9en88pvSlh4lNrPMPh+Ey/dNlXA5wT+qqfEA69QgUnSaxyDJe7f/IOMtGjDHb6NT3RUk4NowGWw==@vger.kernel.org
+X-Gm-Message-State: AFuF++lUIEtYNqkr9vwenuYiq32qvsGFWoudS3eSKGosCzb3LlFdToJz
+	VDbr7KR76ZWr8LmH29RzDajIvglAZIx6x6SLuJUJYPCxx3gYfSrbDWYj0MMpFk3iOg==
+X-Gm-Gg: AR+sD10SHkH9KaiMEvFjBSdr8fs+HsBO17Mgmq6WU5s0xReAMxeMbokeYz7/USLXEm+
+	l3YEo2HNGJCbAzzvmXqueQQHFiblVPD6qNDf0OqmB31D4pjuSAydJaD9ZELjN6PH1i0pWJNYCZ3
+	+Oc2u5BFj9xE1MCQZ6EyknItj4ZyMhzG4mDhHkRkRrGOcG51uawXyjwn1HNGXWGYWoui2VhRYwt
+	/R/PlR3XZfhtWxPz27OarPm0uN3DeMYkEL6CdpPtgGfcxtDRXPHUGvzorZA5iYqY1Fw4vWRga63
+	910RCAiPaTcxUIPLlGpAN/oU3L39gOnaus9qpjJXYLts2yzQRXo3fwRskqZ9DLKPC6gUJgJsRYA
+	O7EO8DYBlAXi3aEeLYqGw5Ez+SIznYVjRf2LMIPdo8fAhzpkm6skBAVg4SoNnGL5diQ7RgULYM5
+	DHRPvBgT6yR4vogxDMVhbSn/oR/EHcVUZ4TKiUCrbnedB3GbYtl3NGxSeffMArDfjiFz/aTpOpH
+	f292bj3d6kMdnSRmK1yMKWsrTH1mp7EZ9T5
+X-Received: by 2002:a05:600c:c178:b0:499:621a:2ec2 with SMTP id 5b1f17b1804b1-499dc6efe07mr77963895e9.3.1787761814121;
+        Wed, 26 Aug 2026 09:30:14 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([2a01:4b00:d309:1c00:caf1:6b20:8531:818c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e27ab574sm3232342f8f.14.2026.08.26.09.29.16
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499dc981bf3sm32323615e9.8.2026.08.26.09.30.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 09:29:17 -0700 (PDT)
+        Wed, 26 Aug 2026 09:30:12 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
-To: rust-for-linux@vger.kernel.org
+To: linux-crypto@vger.kernel.org
 Cc: Mike Lothian <mike@fireburn.co.uk>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Lyude Paul <lyude@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	John Stultz <jstultz@google.com>,
-	Stephen Boyd <sboyd@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
@@ -82,13 +73,16 @@ Cc: Mike Lothian <mike@fireburn.co.uk>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 7/9] rust: hrtimer: expose interrupt state in hard callbacks
-Date: Wed, 26 Aug 2026 17:28:41 +0100
-Message-ID: <20260826162851.2497-8-mike@fireburn.co.uk>
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v3 0/2] rust: crypto: AES, CMAC, SHA-256, HMAC and RSA bindings
+Date: Wed, 26 Aug 2026 17:29:47 +0100
+Message-ID: <20260826163004.3365-1-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260826162851.2497-1-mike@fireburn.co.uk>
-References: <20260826162851.2497-1-mike@fireburn.co.uk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -97,88 +91,82 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hard hrtimer modes guarantee that their callbacks run with local
-interrupts disabled. Carry that guarantee through HrTimerCallbackContext
-so users of IRQ-aware locks do not need to assert the callback
-context themselves.
+Synchronous crypto bindings for a driver that has to authenticate a device
+before it is allowed to drive it
 
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
----
- rust/kernel/time/hrtimer.rs | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+The first patch covers AES-128, AES-CMAC, SHA-256 and HMAC over the existing
+synchronous crypto API. The second adds RSA through akcipher, which HDCP 2.2
+needs to verify a device certificate and wrap a session key
 
-diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index 2d7f1131a813..a55b3ce53735 100644
---- a/rust/kernel/time/hrtimer.rs
-+++ b/rust/kernel/time/hrtimer.rs
-@@ -404,7 +404,7 @@
- //! [`Arc`]: kernel::sync::Arc
- 
- use super::{ClockSource, Delta, Instant};
--use crate::{prelude::*, types::Opaque};
-+use crate::{interrupt::LocalInterruptDisabled, prelude::*, types::Opaque};
- use core::{marker::PhantomData, ptr::NonNull};
- use pin_init::PinInit;
- 
-@@ -900,6 +900,11 @@ pub trait HrTimerMode: private::Sealed {
-     type Expires: HrTimerExpires;
- }
- 
-+/// A timer mode whose callback runs with local interrupts disabled.
-+///
-+/// This trait is sealed by [`HrTimerMode`].
-+pub trait HardHrTimerMode: HrTimerMode {}
-+
- /// Timer that expires at a fixed point in time.
- pub struct AbsoluteMode<C: ClockSource>(PhantomData<C>);
- 
-@@ -982,6 +987,7 @@ impl<C: ClockSource> HrTimerMode for AbsoluteHardMode<C> {
-     type Clock = C;
-     type Expires = Instant<C>;
- }
-+impl<C: ClockSource> HardHrTimerMode for AbsoluteHardMode<C> {}
- 
- /// Timer with relative expiration, handled in hard irq context.
- pub struct RelativeHardMode<C: ClockSource>(PhantomData<C>);
-@@ -991,6 +997,7 @@ impl<C: ClockSource> HrTimerMode for RelativeHardMode<C> {
-     type Clock = C;
-     type Expires = Delta;
- }
-+impl<C: ClockSource> HardHrTimerMode for RelativeHardMode<C> {}
- 
- /// Timer with absolute expiration, pinned to CPU and handled in hard irq context.
- pub struct AbsolutePinnedHardMode<C: ClockSource>(PhantomData<C>);
-@@ -1000,6 +1007,7 @@ impl<C: ClockSource> HrTimerMode for AbsolutePinnedHardMode<C> {
-     type Clock = C;
-     type Expires = Instant<C>;
- }
-+impl<C: ClockSource> HardHrTimerMode for AbsolutePinnedHardMode<C> {}
- 
- /// Timer with relative expiration, pinned to CPU and handled in hard irq context.
- pub struct RelativePinnedHardMode<C: ClockSource>(PhantomData<C>);
-@@ -1009,6 +1017,7 @@ impl<C: ClockSource> HrTimerMode for RelativePinnedHardMode<C> {
-     type Clock = C;
-     type Expires = Delta;
- }
-+impl<C: ClockSource> HardHrTimerMode for RelativePinnedHardMode<C> {}
- 
- /// Privileged smart-pointer for a [`HrTimer`] callback context.
- ///
-@@ -1065,6 +1074,16 @@ pub fn forward(&mut self, now: HrTimerInstant<T>, interval: Delta) -> u64 {
-     pub fn forward_now(&mut self, duration: Delta) -> u64 {
-         self.forward(HrTimerInstant::<T>::now(), duration)
-     }
-+
-+    /// Returns proof that local interrupts are disabled for a hard timer callback.
-+    pub fn local_interrupt_disabled(&self) -> &LocalInterruptDisabled
-+    where
-+        T::TimerMode: HardHrTimerMode,
-+    {
-+        // SAFETY: `Self` can only be constructed while running this timer's callback, and the
-+        // `HardHrTimerMode` bound guarantees that the callback runs in hard interrupt context.
-+        unsafe { LocalInterruptDisabled::assume_disabled() }
-+    }
- }
- 
- /// Use to implement the [`HasHrTimer<T>`] trait.
+Changes since v2:
+
+  The hand-rolled AES-CMAC is gone, along with its own dbl() subkey
+    derivation. It delegates to the in-tree aes_cmac library through
+    include/crypto/aes-cbc-macs.h, which is what Eric Biggers asked for
+  There is no private RSA primitive either. Modexp goes through
+    crypto_alloc_akcipher("rsa"), and OAEP padding and the HDCP key material
+    are held in a memory-wiping secret type
+  v2's separate CMAC fix is folded into the commit that introduces the CMAC,
+    so this is two patches rather than three
+
+Nothing here knows what HDCP is. The consumer is the DisplayLink driver at the
+end of the chain, whose control plane is sealed with AES-CTR and keyed by an
+HDCP 2.2 exchange
+
+v2: https://lore.kernel.org/r/20260703030056.2763-1-mike@fireburn.co.uk
+
+The rest of the posting, which is one series per subsystem:
+
+  rust-core, 9 patches, rust-for-linux and linux-kernel
+  https://lore.kernel.org/r/20260826162851.2497-1-mike@fireburn.co.uk
+  rust-crypto, 2 patches, this one
+  rust-usb, 5 patches, to linux-usb and rust-for-linux, not sent yet
+  rust-drm, 23 patches, to dri-devel and rust-for-linux, not sent yet
+  rust-firmware, 1 patch, to linux-kernel and rust-for-linux, not sent yet
+  drm-vino, 13 patches, to dri-devel, not sent yet
+
+Vino is the user for all of them. The abstractions themselves are generic and
+carry no knowledge of DisplayLink
+
+The whole thing is one branch, base and prerequisites included, which is the
+quickest way to read it:
+
+  git clone -b vino-v3 https://github.com/FireBurn/linux
+  cd linux
+  make LLVM=1 rustavailable
+  make LLVM=1 -j$(nproc)
+  make LLVM=1 -j$(nproc) modules
+
+CONFIG_RUST=y and CONFIG_DRM_VINO=m are the two to set; DRM_VINO selects the
+rest of what it needs
+
+It is the exact tree these patches were generated from, at 4c9ba407018e, the
+drm-rust-next tip of 2026-08-06. drm-next has moved on since, and this follows
+drm-rust-next deliberately: the KMS layer underneath this work lives only there,
+and that tree picks up drm-next on its own schedule
+
+Two commits on the branch are not in any of the series above, because they
+enable no part of Vino: a scheduler call site that stops compiling under the
+locking-guard series, and the Kms associated type Tyr needs once the KMS
+registration trait requires one
+
+It applies to the base above on its own, with no unmerged work under it, so it
+can be taken without waiting for anything else here
+
+The reference branch also carries Boqun Feng's counted interrupt disabling
+series, which SpinLockIrq needs. One patch of it is already in tip locking/core
+as e901c1510e24
+
+These patches were written with the assistance of Claude (Anthropic), used
+through Claude Code as an interactive coding assistant, across the design, the
+implementation and the tests. Every patch it contributed to carries an
+Assisted-by trailer. The Signed-off-by is mine: I have reviewed and tested what
+is here and I stand behind it
+
+Mike Lothian (2):
+  rust: crypto: add AES-128, AES-CMAC, SHA-256, and HMAC bindings
+  rust: crypto: add synchronous RSA akcipher support
+
+ 9 files changed, 592 insertions(+), 6 deletions(-)
+
+base-commit: 4c9ba407018e8deb06dbc643112bac8f40404f95
