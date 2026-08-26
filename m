@@ -1,546 +1,217 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010010.outbound.protection.outlook.com [40.93.198.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E179233924;
-	Wed, 26 Aug 2026 10:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787741921; cv=none; b=Lg34tvGwLFsaY1C5IbL3Hf9an/ZpZvKQSZr3sZ0OsDBWsOlycs4MXyTmV7z9HeU4PaSBdr6EPzFCbOyCZAq9c+tvwazP5CfMmE69/slgTjKX+rAorohuK1BZwWHY2W8leTLbGD7Mlojy9tN4luRljq9O673me2YsaGPEHO5OyYg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787741921; c=relaxed/simple;
-	bh=bCjKk9GL9I+a2wTeaG1Husm8Pk2878118aM0kH2LQw8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j0EER673/ElGjzzNjE4yppfNMgRm1iMo7fVn5+U062fdx9W0As6ERdDw6pjBSscaTqEZG8qa5gYffyWQ+5eATy41NEH8cElYir+/sMzw0wqzzaRCd/NHMhsAGd5ScReT94wrSu6488frQR/03gZLvAL8jVoHwYis3aY6ekrRwis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=gMV5y/Os; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DD23E9F9D;
+	Wed, 26 Aug 2026 11:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787742075; cv=fail; b=D3P+2kfmUd4PK2OBImPeZgPsT204t5ZNvQKhv1EM9ZXIL/foah3AWYpPqgZ377GKt+7XhUcHvP9iNbGJVGdBsvVcTfCyfAqdYhoRB7PEIuTki9fUzDiTKjILufeU3cZ864ISeFShbe4vXmcwZANhhnCn+X5snGYmQH86+656w20=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787742075; c=relaxed/simple;
+	bh=jogvURyRTHI7c6x/f3zHFS9pAfm8WeTNWR9OFYrDreU=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=jqNZTSg48LJ8YArp7epCsSeStW/Fm8/LVo+ke/B/mxWXQSOpkCQfh6CvPQXATWfMVNfXqGogFlTDqmw29pQueCETkSzZ6lQUIuzfLKQKHdyQ/EA784vR4ElJBVNYttRl+v26QqIP169922SYNcaZ2c2S5IgM1hSqZsGdnj63U6g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=sJnh85pe; arc=fail smtp.client-ip=40.93.198.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="gMV5y/Os"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1787741895;
-	bh=bCjKk9GL9I+a2wTeaG1Husm8Pk2878118aM0kH2LQw8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gMV5y/Osay+SfN9cIGq+QjajtfkFgYTNLEEQyNa9g1zA4WOGlqQwjUHdhVkwrZ/e3
-	 m8iiT9cpRoM1LNTBFbIoEvEJMCP7W4FqLRK6sACLcYSbQVjdBjaDed3oRgrPxQpYbm
-	 1vwqVCfhmA+GFgrQr9BXtkA18Jfaw7/nGmgQYOFmn6zrlKzLHwv0DDWuS2tUC3ygyb
-	 a48BjF/zHU6H6fH4zvzVqBDa9KzaCaxk2lyMa2nuecAgTzgRI5/XeRmtEPIm5FH6Qa
-	 2KUtuZGtwuO+UA7ZE8lQqdw6jL5hhpkfoJvkFfN/BS1Vqr/hQnoSI2hnJzxhcrM7de
-	 w7SD+BZbYkmzQ==
-Received: from laura.lan (unknown [100.64.0.215])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 6DA8917E07B5;
-	Wed, 26 Aug 2026 12:58:14 +0200 (CEST)
-From: Laura Nao <laura.nao@collabora.com>
-To: daniel.almeida@collabora.com
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	airlied@gmail.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	deborah.brouwer@collabora.com,
-	dri-devel@lists.freedesktop.org,
-	gary@garyguo.net,
-	kernel@collabora.com,
-	laura.nao@collabora.com,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	simona@ffwll.ch,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev
-Subject: Re: [PATCH v5] drm/tyr: add Job IRQ handling
-Date: Wed, 26 Aug 2026 12:58:03 +0200
-Message-Id: <20260826105803.449376-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <05F30B5D-B353-4AE3-933C-B42FBD35CA4A@collabora.com>
-References: <05F30B5D-B353-4AE3-933C-B42FBD35CA4A@collabora.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="sJnh85pe"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yYu+VK8NxLYVs7lZCQ5cKA9gbgYAZV2OuUPNZOETJd1Pqi6sO4oHBJ8k87Z0Mtgr4gn2rWhbTJU2AHeYal/ZCtw0hSyRCcvb1Iznw3qfTesX6Lt2eTXBBij8ytUPUmMfNh1b8xzUTPqVl2L+N+xWEL1bE2rSWLEofIoCeJ0owg5DVsC4C7YRD7EAl+vHa+1qVE5m9R/zNr9sCDUmIbbCCa3e7HzJFeKHP9+B01Cb+JvPDoNa6udz6ARGwA8Qs1yg1F+v7GOaUhdgPU787w8af2Y/yXbZXfXnV6aKzwCdPyeoTf1zMV29Z4SmndE7T6prnelKJxYaFHLAkZTlwZ0m9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=X94mMFvX1/O0icrK2AnoUFVBrBmL58b/NmJSnb0QB5Y=;
+ b=VS6+R+yfIK0N5KZl008HSvKiiAGpcNk3EzvkWVsxzr9e9S4ncO0HMtoBq7G6vUgNi7EagsVgtwqmFYnHBxKXcC1aNSPyExlgiEEc1Zwzx2RKrZJdISkiJoK7ubINYziUT6VejQoOPsf26VMpTsY17gQzm6JQ/x+xWFhBmFh8K4ERBbf2LLU/1+q34UEMp0y2Vv/tldV/yec00Li29gM28ycXUQigYkPSCjbxXarqhffenJeXfPGhFAl3fK6+rVQCttWQ3heuC++Rrk3+OCKTgC3N2FVY5c4gFBeJUZRnMaXGZ28mozOtJ6+e7yfciTxMLkSX8W5+YhmhS1vqWqkMKw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=X94mMFvX1/O0icrK2AnoUFVBrBmL58b/NmJSnb0QB5Y=;
+ b=sJnh85pe/a5XEDt6lsBt1gYVJfUyK/JwkEx/VzWWrzPOjlEeuFrIdjdRBGpl+h4NZNqdnhAJVuI2z2dudryJ+vQohKyCgpRjkPfZyP3VNoP3KgAS6uXvIZ5M1JZV9m2QzTjEQy/3viVSmxe7L2NRZLimg5TON5HaH72eSyvGOjQ7AqRJPZrmSeFzZr9I2aAKZTCczpGJi7MwIuD4Rpm1fkI2UcFi62iZVnV+tKfaDsoX98TOLxr/NZBlFcwqez2PQFTi2fYMb1zfFRh3Y4k5PS2HRhH979JPoTPTMiWgVoYOpwQ2YqPBp0mdrpn+V7gXBzqE1BWV9tr49U7Wz4mqWQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by SJ2PR12MB7896.namprd12.prod.outlook.com (2603:10b6:a03:4c6::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.7; Wed, 26 Aug
+ 2026 11:00:54 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0315.014; Wed, 26 Aug 2026
+ 11:00:53 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 26 Aug 2026 20:00:45 +0900
+Message-Id: <DKYTNXT3VX96.1L07CIR9SASUX@nvidia.com>
+Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Yury Norov"
+ <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>
+Subject: Re: [PATCH 1/2] rust: num: casts: replace const type narrowing
+ methods with a macro
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Gary Guo" <gary@garyguo.net>
+Content-Transfer-Encoding: quoted-printable
+References: <20260825-const_as-v1-0-1ce712225fe2@nvidia.com>
+ <20260825-const_as-v1-1-1ce712225fe2@nvidia.com>
+ <CANiq72mYW0wQGzWRBvGqnatjysi4BnXBFLUpLPvrS0Q=JB2A0w@mail.gmail.com>
+ <DKY0C2ABKO0S.1DWFMCOBI7A25@garyguo.net>
+ <DKY3F6MT327X.2BYD1IDZP8F81@nvidia.com>
+ <DKY3P0L34CTV.10MQOAMUR38SO@garyguo.net>
+In-Reply-To: <DKY3P0L34CTV.10MQOAMUR38SO@garyguo.net>
+X-ClientProxiedBy: TYCP286CA0112.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:29c::7) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|SJ2PR12MB7896:EE_
+X-MS-Office365-Filtering-Correlation-Id: ffab7440-57e5-47d5-34e3-08df03614c0f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|10070799003|1800799024|7416014|376014|6133799003|10067099003|5023799004|11063799006|4143699003|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	3Uk+CvLDqa5LmwJKG70Oh3vCgdTfLxbVZWI+FR715GKGMqg9wIh7YuXuRTSyQxh/TXqbAjgw0Diq+EgW1my5Rs3/VgzxPq0LAbfKiHZr2UolyAwfpzRxMPZ0QpkpFNpH7goKiuK8B2Aj473u3+m+WgqnHkAF89l4r1Wa40VLP0sOlyltEdrm4j4P7sqeR7Rh0ype+kum5fxsJqJTbemjgEIM/xNu0QcSPM9ry7nAd0qBwlkYW57hk9GIPGFDiNkGeySUa4V7Nbg/9epm8JwrZOS0QkNXOWDJxFutO46dEaOG0/JpCtrCva+heKRuf2m+34NPTzhY4eLw4+bJ3lEnkNKPbIUDno6F5bqTyvmWMqdpSCtYK6/QUTDxmYmbauRg+nZOlQXMilwCaNrOOC2cATNqNs03tsYLaGPK2x1dl7BDf8owmyWX4MLI/2NCoKG37UmsUXy9/zmmd0fPJPjl+umHd/wApRWpj+5YGdHadt3+LalphmP5V+BlldXdXAHrBVtqFIKqsWU+wlPTHe5rdcepplhqHa4A8FPIVp1YdV1ey5YKOjYNyzm7iywH4ArVmub19Tnj0ZbM7GdPSDUv2BwVLI07eDiOraXOscuuLSwCu3D7S+kFL6JIGdVk6FaatllUcBs3Nxzu2CRVVpK5S9A6CCANQ/a+X7Vpbe6yFEc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(10070799003)(1800799024)(7416014)(376014)(6133799003)(10067099003)(5023799004)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YTNhcjNNZjFzdjU0eDNWejg4Si82R3crVUs3QldxUjc4dXVzUXQ3S3JIZDg0?=
+ =?utf-8?B?MEdJUkNuVEMxYUFrMWZVang3SzBkTHViTHFzc2x5bXFpaXVxRTU3TytHclRI?=
+ =?utf-8?B?WHpKZzljTFdGWmNRY2NWSTVpckJBTmJidHBSL2Yvc050ZWE0UGFhcnNVNE9k?=
+ =?utf-8?B?NU0rbXp2K3NwcHdDejh4dGNZempRYTJRRjNIc082cXRUTkdhS0xpMTZBZTdi?=
+ =?utf-8?B?Mm45MkpTTnZGWEJZWWQ2c2R4NS9aTGhYMURZcGt2OUZ3NStWcnZ5THBoOG5M?=
+ =?utf-8?B?cnhiUUsrSE00NXlyR25SUko4WW9xcVQxK0FDZFU3WC9renB1SWlHU09QMGc0?=
+ =?utf-8?B?ejJmWlpBNDBWd05PUHJtL09UUHJhbjhxQUZWNkFORHJmcXhVdjZVQStkRDBK?=
+ =?utf-8?B?UFhKQ0R0Mkk4N1M4aTVSMVdTOTlKc0hmVStsaUkyZEtuSWh1OGJ4ckVzY245?=
+ =?utf-8?B?TC9ES3FDd24xRGFSbVVEbE9JcC9qdFpWRzdzK1ZicG1VOE9pV1R4aFd4T0lS?=
+ =?utf-8?B?UVNYS1JBWGFqcVVBb0hJdnJiSWpTTCswdVZ3bVo3RUJWSngyKzhEang1VWFq?=
+ =?utf-8?B?bW5PK3JnU2xHejNqMU0zU2pYQU9zUE43aDRDQmNpVFc3dFFTcW5WK04yNnJC?=
+ =?utf-8?B?VFNOK2lPR2JUMHZoTWdNTUxvNEtqdlA5NzVWNyszWUJEQTVPVmpyRlBuSFI4?=
+ =?utf-8?B?WEl5STIwNDlPTURIRjBxbnk4UGRzM1N1RkplTDNRdmdKR3dsRElHamNwNkNl?=
+ =?utf-8?B?UkJjVFArenJqd3FZWUxKeEtrQS9JQzBaYzg0aFVuMUZLNlNNYVRISzZjOWZK?=
+ =?utf-8?B?WGdMOE1QRkpPOXN2UUl0dEJTdFZrOHJMMklRWS9aSjhjZFl6NUgxNndwMFMx?=
+ =?utf-8?B?ZFhSRitaQzBJM2JVR283eHhzY05ZU2l3RFE3TTdOREQrakN1U0M2NWJ0YkMv?=
+ =?utf-8?B?c3hxRkloMnVtdUFYT2NOU2dHT05FUUJRRnNqQjA4UksvMWtSdXgzYUdKbUdG?=
+ =?utf-8?B?eGJ2Sy9tSTFTbjd0WXB3MXlTV05zNmtrUElTemkrRThNay9UNHJDNWp1Rmtq?=
+ =?utf-8?B?dEZYWGM2YzRkU0ZTMHI2Vk8ySm4xbFhwWGtiL2M0WUg3STd3d3hsWG5JQkNZ?=
+ =?utf-8?B?WHE0SmhpOTZWZkxBTXV5bkM0MlhvOXo5MXVLVHdUVGpEL3BOd0FFcEJES2NY?=
+ =?utf-8?B?Yys3NmV5VGZSNlpvZ0dacGQvQXI4T09UeXROcFlSUHFQK2VNQVQ5amlGdVZ2?=
+ =?utf-8?B?aVB3UmJ6K0NHa3VBdThvRnp1KzFOM1NjU3oyRjBsOW5IQkFFcVdCZ3JUb3k4?=
+ =?utf-8?B?YzgxRVczUWs4WkhIQml4NTBtazZBTHljaEdGQ0hhWWNRdzkwbWNpRDVnOGNi?=
+ =?utf-8?B?OXMvZ1NKQ3ZocW1Tb2YvOHF5VGpJZWFQaGZuaHBoTzBrMng2R2w1NEJ3Z1lE?=
+ =?utf-8?B?c05EcnFod0JuM0U3ZWdZTzN3WEg3UFV0bnUxempXRElObVBVMERIYzMwVWR0?=
+ =?utf-8?B?VVc2M2NOMVVoZ0gwSGtMcVZFTSsxM3B0K0g2ZTZFN085TVRSMmFNSEl5N2Y1?=
+ =?utf-8?B?TWtxTEJrTW1mczEySXZYUFJhMWNSd1FvRnBpeG15SjUxRHJBOTE0TGhxUlA0?=
+ =?utf-8?B?VWpha2RuOWZmakJXaDY0YUlyUXdtYVhlL3ZWTTk3MjRFSUJQZGpyY0gwSFY0?=
+ =?utf-8?B?TVpGNDc2YVByQTMvRWZsVGV1TlZldDNaaUhGcHNuKzNqSUdYQ0lIbkRkbExW?=
+ =?utf-8?B?M1Urc092WnpIVWZlejdCcjJuUFV5elhCSFRMbGo4eXVVVWxITXV2YmZVV0Fk?=
+ =?utf-8?B?R1RISTVQQUFuQ2xUSnF3TG9laDJ3OVFXUGh0cWQ3clFrUEtYM2J2czZqQlFw?=
+ =?utf-8?B?MmdMem9oUFp6M09pQlFxbVVYSmc3djJkaFNON01jM0IzZHdvWXExSTFVTUFn?=
+ =?utf-8?B?TVlGVkJWNW1LY0Yxek5LYkZZZnQyMnFjdmY3RGk3clBJcHJ1QmJ4Q1JtN24z?=
+ =?utf-8?B?TFIwOVFNOFNWdUI3c1RWVlRKY1BoOFA0WGNiN01pT3FHbjdzbkVsZHBXd0xY?=
+ =?utf-8?B?ME83YU52anRoVkYya3VKQ0NObE1wOWR6S1l6b3N0czl1UTkxS290MFZsamRJ?=
+ =?utf-8?B?MlFHeUt3MHc5T0ZjdXBSWnF3dUp0a0NoVk16RzhQaEJxQUZ4aVVrN0U4MGZy?=
+ =?utf-8?B?NEp5ZW1FbGV1cVBKeEFCRUhWMFZaRTZWZUlGNzRiK2dZYi82MEVGRDZwY0Ux?=
+ =?utf-8?B?YWEwRGpOcFhJMHQ0ZHdrS0greXNJV3FTRzVSMTFoOUIvWFdSNkQvL0JOeFVm?=
+ =?utf-8?B?SlY0aEtReEt0ZkgwYmJDa2R5bUxjejd0b2lFNDhNT0pwWTBpY2JWNGlsZmQ4?=
+ =?utf-8?Q?I7zlfs7j0IYN2OoXV9pL6hqvify0X7dj7MTeE35W0NpdX?=
+X-MS-Exchange-AntiSpam-MessageData-1: UGUB4qmYxVlXvA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ffab7440-57e5-47d5-34e3-08df03614c0f
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 11:00:53.4622
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: t4ojtO9fGTckaT4d2Dh6eLlPsAA9K1CQKKo+n0O9RnVvX+pUfrsFOl3HjXzM9uyMpGyWTV/UrgreqwpL6g/U3A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7896
 
-Hi Daniel,
+On Tue Aug 25, 2026 at 11:39 PM JST, Gary Guo wrote:
+> On Tue Aug 25, 2026 at 3:26 PM BST, Alexandre Courbot wrote:
+>> On Tue Aug 25, 2026 at 9:01 PM JST, Gary Guo wrote:
+>>> On Tue Aug 25, 2026 at 9:25 AM BST, Miguel Ojeda wrote:
+>>>> What I wouldn't want is a raw `as`, because the point of the saga we
+>>>> started a long time ago is to introduce better tools that allow us to
+>>>> get rid of the almighty `as` into weaker (i.e. safer) options, even if
+>>>> some uses of `as` may be "obviously right".
+>>>
+>>> I think that is rather a linting issue, not something that warrants ext=
+ra code
+>>> in kernel. We have been requesting some extra clippy features and I thi=
+nk that
+>>> is the correct way to go, not add a ton of methods and macros. Yes, it =
+wasn't
+>>> moving on clippy end, but I could add a feature to klint instead?
+>>>
+>>> Do you think we still need all these extra function and macros if we
+>>> can get clippy (or klint) to enforce CAST comments?
+>>>
+>>> I can imagine the following rules that would practically solve all the =
+footgun
+>>> of `as` numerical casts without having to use awkward syntax:
+>>>
+>>> * widening casts are allowed
+>>> * narrowing casts is disallowed unless CAST comment exists, except wher=
+e its
+>>>   value is constant and truncation does not happen.
+>>
+>> These rules classify casts by width, but the footguns really are about
+>> which values are actually being converted.
+>>
+>> In particular for value narrowing we still end up with CAST comments,
+>> whose existence a lint can check, but not their correctness (for
+>> instance, a bindgen-provided constant that changes in a breaking way).
+>> `const_as!` lets us drop them altogether.
+>
+> The rule says "except where its value is constant and truncation does not
+> happen".
+>
+> So I'd imagine just writing
+>
+>     bindings::FOO as u32
+>
+> and *NOT* have CAST comment, and a warning being generated if truncation
+> happens.
 
-On 8/13/26 03:22, Daniel Almeida wrote:
-> Hi Laura, thanks for working on this! :)
->
->> On 10 Aug 2026, at 05:11, Laura Nao <laura.nao@collabora.com> wrote:
->>
->> Add a threaded IRQ wrapper for Tyr interrupt sources and use it to
->> handle the firmware Job IRQ.
->>
->> The Job IRQ reports requests from the CSF firmware, including global
->> interface requests and CSG attention bits. Only the GLB bit is currently
->> handled, as it will be used to check firmware readiness. CSG bits
->> handling will be added at a later stage. Add a Job IRQ handler that
->> masks the interrupt in the primary IRQ handler, processes pending raw
->> status in the threaded handler, clears the handled bit, and reenables
->> the mask before returning.
->> Add a wait queue and a bool flag so the handler can signal firmware
->> readiness when the GLB bit is set.
->>
->> Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
->> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
->> Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
->> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
->> Signed-off-by: Laura Nao <laura.nao@collabora.com>
->> ---
->> Changes in v5:
->> - Implement PinnedDrop on TyrIrq to clear the interrupt mask on teardown 
->> - Link to v4: https://lore.kernel.org/r/20260805-tyr-irq-v2-v4-1-81a4701611c0@collabora.com
->>
->> Changes in v4:
->> - Replaced c_str! with C-String in irq.rs
->> - Moved clear_status() before handle() in handle_threaded(), to avoid 
->>  losing events if hw re-asserts the bit while handle() is running.
->> - Only unmask interrupt sources in job_irq_init() when the handler is 
->>  correctly registered.
->> - Link to v3: https://lore.kernel.org/r/20260728-tyr-irq-v2-v3-1-9c9bc5c029c5@collabora.com
->>
->> Changes in v3:
->> - Propagated request_threaded_irq_by_name safety requirement up the
->>  call chain, made TyrIrq::request() and job_irq_init() unsafe
->> - Dropped CSG bits masking, added TODO comment to note this will be
->>  handled at a later stage. Reworded commit message to reflect the
->>  change.
->> - Added documentation for TyrIrqTrait, TyrIrq, JobIrq and job_irq_init()
->> - Link to v2: https://lore.kernel.org/r/20260729-tyr-irq-v2-v2-1-c2750fc11d59@collabora.com
->>
->> Changes in v2:
->> - Dropped Wait custom type in favor of WaitQueue
->> - Renamed JobIrq lifetime to generic 'a
->
-> Why?
->
+I can see a use for a lint that warns about `as` expressions without a
+CAST comment, yes. But the warning should be unconditional imho -
+otherwise an `as` without a CAST comment could be intended as
+non-truncating, or it could just be an omission from the author of the
+code, and there is no good way to tell.
 
-As pointed by Danilo, I understand 'bound should only be used for the 
-bus device private data.
+`const_as!` basically provides everything we need to document intent and
+verify the behavior of non-truncating casts, and I think it is useful to
+keep as much as possible at the compiler level. KLint is not part of a
+regular build, and enabling it involves some effort that not everybody
+will go through. `const_as!` emits an error exactly when we need it to,
+without any extra tool, and is both simple in its implementation and its
+use.
 
->>
->> This patch follows up to [1], which adds support for firmware loading
->> and MCU booting to the Tyr driver. The changes included here were
->> originally introduced in its v4[2], then dropped to reduce the scope of
->> the series, and have been adjusted to work with the HRT (Higher-Ranked
->> Lifetime Types) driver architecture recently introduced.
->>
->> The patch adds a threaded IRQ wrapper for the firmware Job interrupts,
->> used to signal events from the global CSF (GLB) and Command Stream Group
->> (CSG) interfaces.
->>
->> These changes will be later used to wait for global CSF interface
->> readiness after firmware boot, as part of the CSF firmware interfaces
->> support that will be submitted as a separate series.
->>
->> This patch is based on drm-rust-next and depends on:
->> - [PATCH v2] rust: irq: make Registration compatible with lifetime-bound drivers[3]
->> - [PATCH 0/5] rust: sync: add WaitQueue infrastructure[4]
->>
->> Note: [4] doesn't apply cleanly on drm-rust-next at the moment, due to
->> missing changes in rust/kernel/sync/lock/spinlock.rs[5]. I've applied
->> all dependencies and fixed conflicts for the purpose of testing this
->> patch on top of drm-rust-next, a branch with these changes is available
->> here: https://gitlab.freedesktop.org/laura.nao/linux/-/commits/b4/tyr-irq-v5
->>
->> [1] https://lore.kernel.org/all/20260728-fw-boot-b4-v10-0-9187aefa3f2f@collabora.com/ 
->> [2] https://lore.kernel.org/rust-for-linux/20260424-b4-fw-boot-v4-v4-15-a5d91050789d@collabora.com/
->> [3] https://lore.kernel.org/rust-for-linux/20260719153631.559341-1-dakr@kernel.org/
->> [4] https://lore.kernel.org/rust-for-linux/20260726223613.1242940-1-dakr@kernel.org/
->> [5] https://lore.kernel.org/all/20260302232154.861916-1-lyude@redhat.com/
->> ---
->> drivers/gpu/drm/tyr/driver.rs | 108 ++++++++++++++++++++++++++++++++++++++++
->> drivers/gpu/drm/tyr/fw.rs     |   1 +
->> drivers/gpu/drm/tyr/fw/irq.rs | 112 ++++++++++++++++++++++++++++++++++++++++++
->> 3 files changed, 221 insertions(+)
->>
->> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
->> index d78ad9d292ff..495cc3baa98c 100644
->> --- a/drivers/gpu/drm/tyr/driver.rs
->> +++ b/drivers/gpu/drm/tyr/driver.rs
->> @@ -1,5 +1,7 @@
->> // SPDX-License-Identifier: GPL-2.0 or MIT
->>
->> +use core::marker::PhantomPinned;
->> +
->> use kernel::{
->>     clk::{
->>         Clk,
->> @@ -21,6 +23,13 @@
->>         poll,
->>         Io, //
->>     },
->> +    irq::{
->> +        Flags,
->> +        IrqReturn,
->> +        ThreadedHandler,
->> +        ThreadedIrqReturn,
->> +        ThreadedRegistration, //
->> +    },
->>     new_mutex,
->>     of,
->>     platform,
->> @@ -236,3 +245,102 @@ struct Regulators {
->>     _mali: Regulator<regulator::Enabled>,
->>     _sram: Regulator<regulator::Enabled>,
->> }
->> +
->> +/// Trait describing the operations required to service a Tyr interrupt source.
->> +pub(crate) trait TyrIrqTrait: Sync {
->
-> Can we move this and friends to its own irq.rs file? 
->
-> driver.rs is more of platform/device/initialization glue. I think it would be
-> more tidy if we split this. Additionally, I think TyrIrq, TyrIrqTrait and etc
-> can be their own patch, separate from the patch that adds support to FW IRQs
-> specifically. You can use #[expect(dead_code)] in patch 1.
->
->> +    /// Returns the masked interrupt status.
->> +    fn read_status(&self) -> u32;
->> +
->> +    /// Clears all bits in the mask register, disabling the interrupt sources.
->> +    fn clear_mask(&self);
->> +
->> +    /// Sets the mask register to re-enable the interrupt sources.
->> +    fn reenable_mask(&self);
->> +
->> +    /// Returns the raw interrupt status, regardless of the current mask.
->> +    fn read_raw_status(&self) -> u32;
->> +
->> +    /// Clears the given bits in the interrupt status register.
->> +    fn clear_status(&self, status: u32);
->> +
->> +    /// Returns the bitmask of interrupt sources handled by this instance.
->> +    fn mask(&self) -> u32;
->> +
->> +    /// Handles the given pending, unmasked interrupt bits.
->> +    fn handle(&self, status: u32);
->> +}
->> +
->> +/// A threaded IRQ wrapper shared by all Tyr interrupt sources.
->> +#[pin_data(PinnedDrop)]
->> +pub(crate) struct TyrIrq<T: TyrIrqTrait> {
->> +    /// The interrupt source.
->> +    irq: T,
->> +    #[pin]
->> +    _pin: PhantomPinned,
->> +}
->> +
->> +impl<T: TyrIrqTrait> TyrIrq<T> {
->> +    /// Requests a threaded IRQ registration for `irq`, using `name` to look up the interrupt.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// Callers must not `mem::forget()` the resulting registration or otherwise prevent its
->> +    /// [`Drop`] implementation from running.
->> +    pub(crate) unsafe fn request<'a>(
->> +        pdev: &'a platform::Device<Bound>,
->> +        name: &'static CStr,
->> +        irq: T,
->> +    ) -> Result<impl PinInit<ThreadedRegistration<'a, Self>, Error> + 'a>
->> +    where
->> +        T: 'a,
->> +    {
->
-> Instead of 'a, I think we should converge on the 'bound nomenclature. Is there
-> a reason why we are using 'a here instead? Same for JobIrq<‘a> and job_irq_init.
->
->
->> +        let handler = try_pin_init!(Self {
->> +            irq,
->> +            _pin: PhantomPinned,
->> +        });
->> +
->> +        // SAFETY: The caller guarantees the resulting registration will not be leaked.
->> +        Ok(unsafe { pdev.request_threaded_irq_by_name(Flags::SHARED, name, name, handler) })
->> +    }
->> +
->> +    /// Returns a reference to the wrapped interrupt source.
->> +    pub(crate) fn irq(&self) -> &T {
->> +        &self.irq
->> +    }
->
-> The only caller seems to be pin_chain in job_irq_init()? I think we can remove
-> this accessor and just access the field directly in request().
->
->> +}
->> +
->> +impl<T: TyrIrqTrait> ThreadedHandler for TyrIrq<T> {
->> +    fn handle(&self) -> ThreadedIrqReturn {
->> +        let masked_status = self.irq.read_status();
->> +
->> +        if masked_status == 0 {
->> +            return ThreadedIrqReturn::None;
->> +        }
->> +        self.irq.clear_mask();
->> +        ThreadedIrqReturn::WakeThread
->> +    }
->> +
->> +    fn handle_threaded(&self) -> IrqReturn {
->> +        let mut ret = IrqReturn::None;
->> +
->> +        loop {
->> +            let raw_status = self.irq.read_raw_status() & self.irq.mask();
->> +            if raw_status == 0 {
->> +                break;
->> +            }
->> +            self.irq.clear_status(raw_status);
->> +            self.irq.handle(raw_status);
->> +            ret = IrqReturn::Handled;
->> +        }
->> +
->> +        self.irq.reenable_mask();
->> +        ret
->> +    }
->> +}
->> +
->> +#[pinned_drop]
->> +impl<T: TyrIrqTrait> PinnedDrop for TyrIrq<T> {
->> +    fn drop(self: Pin<&mut Self>) {
->> +        self.irq.clear_mask();
->> +    }
->
-> In Rust, the drop order is first a struct then its fields, and handler is a
-> field of ThreadedRegistration. By the time this drop runs, free_irq() has
-> already run. Ideally we'd write this in the opposite order.
->
-> Perhaps what would work is moving this drop into a separate type:
->
-> _job_irq_mask: JobIrqMaskGuard<'bound>,
-> job_irq: Pin<KBox<ThreadedRegistration<...>>>
->
-> Because within a struct, fields drop in their declaration order, so first all
-> firmware interrupts are masked, then free_irq() waits for the in-flight
-> interrupts before deregistering.
->
->> +}
->> diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
->> index 47d25c901bd0..8162b9806c97 100644
->> --- a/drivers/gpu/drm/tyr/fw.rs
->> +++ b/drivers/gpu/drm/tyr/fw.rs
->> @@ -69,6 +69,7 @@
->>     vm::Vm, //
->> };
->>
->> +pub(crate) mod irq;
->> mod parser;
->>
->> pub(super) const CSF_MCU_SHARED_REGION_START: u32 = 0x04000000;
->> diff --git a/drivers/gpu/drm/tyr/fw/irq.rs b/drivers/gpu/drm/tyr/fw/irq.rs
->> new file mode 100644
->> index 000000000000..fcdc0097f2dd
->> --- /dev/null
->> +++ b/drivers/gpu/drm/tyr/fw/irq.rs
->> @@ -0,0 +1,112 @@
->> +// SPDX-License-Identifier: GPL-2.0 or MIT
->> +
->> +//! IRQ handling for the Job IRQ.
->> +//!
->> +//! The Job IRQ signals events from the MCU, including global interface acknowledgements.
->> +#![allow(dead_code)]
->> +
->> +use core::sync::atomic::{
->> +    AtomicBool,
->
-> kernel::sync::atomic::Atomic<bool>
->
->> +    Ordering, //
->> +};
->> +
->> +use kernel::{
->> +    device::Bound, //
->> +    io::Io,
->> +    irq::ThreadedRegistration,
->> +    platform,
->> +    prelude::*,
->> +    sync::{
->> +        Arc,
->> +        WaitQueue, //
->> +    },
->> +};
->> +
->> +use crate::{
->> +    driver::{
->> +        IoMem,
->> +        TyrIrq,
->> +        TyrIrqTrait, //
->> +    },
->> +    regs::job_control::{
->> +        JOB_IRQ_CLEAR,
->> +        JOB_IRQ_MASK,
->> +        JOB_IRQ_RAWSTAT,
->> +        JOB_IRQ_STATUS, //
->> +    }, //
->> +};
->> +
->> +// The Job IRQ, signalling requests or notification from the MCU.
->> +pub(crate) struct JobIrq<'a> {
->> +    /// GPU MMIO register mapping.
->> +    iomem: Arc<IoMem<'a>>,
->> +    /// Flag to signal firmware readiness.
->> +    fw_ready: Arc<AtomicBool>,
->
-> kernel::sync::atomic::Atomic<bool>
->
->> +    /// Wait queue used to signal firmware events to waiters.
->> +    job_irq_wait: Arc<WaitQueue>,
->> +}
->
->
-> I think I'd rather have a single type and a single Arc here, e.g.:
->
->     /// The firmware events published by the Job IRQ handler, and the queue used
->     /// to announce them.
->     #[pin_data]
->     pub(crate) struct JobIrqEvents {
->         #[pin]
->         wait: WaitQueue,
->         /// Set once the firmware has signalled that the global interface is ready.
->         ready: Atomic<bool>
->     }
->
->     impl JobIrqEvents {
->         pub(crate) fn new() -> Result<Arc<Self>> {
->             Arc::pin_init(
->                 pin_init!(JobIrqEvents {
->                     wait <- new_waitqueue!(),
->                     ready: AtomicBool::new(false),
->                 }),
->                 GFP_KERNEL,
->             )
->         }
->
->         pub(crate) fn clear_ready(&self) {
->             self.ready.store(false, Ordering::Relaxed);
->         }
->
->         pub(crate) fn wait_ready(&self, timeout_ms: Msecs) -> Result {
->             self.wait.wait_event_timeout(
->                 || self.ready.load(Ordering::Acquire),
->                 msecs_to_jiffies(timeout_ms),
->             )?;
->
->             Ok(())
->         }
->
->         fn signal(&self, status: u32) { ... }
->     }
->
->> +
->> +/// Requests a threaded IRQ registration for the Job IRQ.
->> +///
->> +/// # Safety
->> +///
->> +/// Callers must not `mem::forget()` the resulting registration or otherwise prevent its
->> +/// [`Drop`] implementation from running.
->> +pub(crate) unsafe fn job_irq_init<'a>(
->> +    pdev: &'a platform::Device<Bound>,
->> +    iomem: Arc<IoMem<'a>>,
->> +    fw_ready: Arc<AtomicBool>,
->> +    job_irq_wait: Arc<WaitQueue>,
->> +) -> Result<impl PinInit<ThreadedRegistration<'a, TyrIrq<JobIrq<'a>>>, Error> + 'a> {
->> +    let job_irq = JobIrq {
->> +        iomem,
->> +        fw_ready,
->> +        job_irq_wait,
->> +    };
->> +    // Ensure interrupt sources are disabled until the handler is registered.
->> +    job_irq.clear_mask();
->
-> IIRC panthor also clears the status here?
+I am also not sure whether KLint could cover something like this, that
+requires post-monomorphization analysis:
 
-Afaics the status is cleared in _irq_resume() (along with re-enabling
-the mask), and only the mask is cleared at registration time. I'll make
-sure to clear the status once the handler is successfully registered.
+    fn f<const N: usize>() -> u16 {
+        N as u16
+    }
 
->
->> +
->> +    // SAFETY: The caller guarantees the resulting registration will not be leaked.
->> +    let registration = unsafe { TyrIrq::request(pdev, c"job", job_irq) };
->> +
->> +    // Unmask once the handler has been successfully registered.
->> +    Ok(registration?.pin_chain(|reg| {
->> +        reg.handler().irq().reenable_mask();
->> +        Ok(())
->> +    }))
->> +}
->> +
->> +impl TyrIrqTrait for JobIrq<'_> {
->> +    fn read_status(&self) -> u32 {
->> +        self.iomem.read(JOB_IRQ_STATUS).into_raw()
->> +    }
->> +
->> +    fn clear_mask(&self) {
->> +        self.iomem.write_reg(JOB_IRQ_MASK::zeroed());
->> +    }
->> +
->> +    fn reenable_mask(&self) {
->> +        self.iomem.write_reg(JOB_IRQ_MASK::zeroed().with_glb(true));
->> +    }
->
-> Can this use mask() internally, please? :)
->
->> +
->> +    fn read_raw_status(&self) -> u32 {
->> +        self.iomem.read(JOB_IRQ_RAWSTAT).into_raw()
->> +    }
->> +
->> +    fn clear_status(&self, status: u32) {
->> +        self.iomem.write_reg(JOB_IRQ_CLEAR::from_raw(status));
->> +    }
->> +
->> +    fn mask(&self) -> u32 {
->> +        JOB_IRQ_MASK::zeroed().with_glb(true).into_raw()
->> +    }
->> +
->> +    fn handle(&self, status: u32) {
->> +        // TODO: handle other Job IRQ events (e.g. CSG attention bits) here once
->> +        // support for them is added.
->> +        if JOB_IRQ_RAWSTAT::from_raw(status).glb() {
->> +            self.fw_ready.store(true, Ordering::Release);
->
-> We only need to store this once. In fact, the “firmware is now ready”
-> meaning only applies during power up from the hardware’s perspective.
->
->
->> +            self.job_irq_wait.wake_up_all();
->
-> We need to wake up waiters unconditionally. Not a problem now,
-> but this will be a problem in the future.
->
->> +        }
->> +    }
->> +}
->>
->> ---
->> base-commit: 0710742e26a06c2c3167e77a8ea82b59632d9f7a
->> change-id: 20260728-tyr-irq-v2-0b3c5022be33
->>
->> Best regards,
->> -- 
->> Laura Nao <laura.nao@collabora.com>
->>
->>
->
-> Currently, the firmware booting code will poll for “fw_ready”. Can you
-> replace that with the JobIrqEvents logic you are introducing above?
->
-> — Daniel
->
-
-Thanks for the review!
-
-I'll send out a v6 with the changes.
-
-Best,
-
-Laura
+Generally speaking, I believe a sane policy is to delegate tasks to the
+lowest layer that can do the job. Here the compiler is clearly capable.
