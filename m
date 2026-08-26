@@ -1,227 +1,121 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8959F468C38
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:34:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787762055; cv=none; b=uzduD+M2B5OWFXpC4CXcXTCjVK9bPQsLIfU+CdKWA6HmAtGAaSwzqnaW08tlufG6aq03Aid49WF/gDykEqutpLxppgMsBIBkCclwbRzVuoX0Sc/yGPPUFiSOsTcFZ243tDceTfjawER+uggXXvpTCr8BL6Pv66jA9pk6pMIQ7dU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787762055; c=relaxed/simple;
-	bh=s9SXFkDKJWYemu64oqEap57yuOxkINYTmbpVqR1nemE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M+dgMZyFXxU2jlHuA56tnUc20ywTTwjDEWEVrRJVXXnR8DUaMRPDBBLtavS/GIfsR1otcCnyIim463QVUSLn90jR510UHbFp9aqqpfbRTystmwG7MNKKjM3LmetFBo7VZWOkdn12p7+TqAFyXiBDfwsA917EsSJEtjI7Y51jalk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=XwY6+xNl; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8264E46A60A
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:34:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787762064; cv=pass; b=Y8gO+EokygmayRHz4n8vqYulCeMgTMi0tHmrCQrOnD7dtPtzIIt5KuM0dGJvv2yjCzmIrip1J1Y142KPwhM8qKPMTtBk2Zn/Zz4fyv4Yi+t+TVOBgH9AUAVy1Xl3F+hb6oDVW9Q7AFBEVY7okeWx+atvhhVYkPLpPFIAy2AO+8g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787762064; c=relaxed/simple;
+	bh=KG8W2VB8Y5BWld7Tj4eJg8MWZrNXZgw/t+C+8e4ulI8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CnWToqA/d/0BzCDBKsCkHK+E/C1QCt15IgClfNZ1nk/ydhFQelZs+fxUMAR5kh4KurHVw1qgtbfxiZKQ8xM99Hyf8JWLMyHk3BGcQIXG+nFB9BevMi3nNjKRbccI7USbeBMdZ5ugATdLRilGDaXXxP9W+IX5KutfwEPzLRo2t5U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N2ao0fUl; arc=pass smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="XwY6+xNl"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-482dbc9a00bso40592f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:34:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N2ao0fUl"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5b4afeb6800so16058e87.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:34:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787762058; cv=none;
+        d=google.com; s=arc-20260327;
+        b=R0Gt+LjCCggTASGrO6TLghbyaru/Udox+P/4aCW5pph+dngInZM4DgPOD3zOdbfUef
+         hHTHg49lSu/C+eWcSD2weVtjhTqkxMkqjq4/M3H6so8eW03SbdomZEQYu8SPi9/7fMe/
+         3vDO/qFOVq0Pdk6D4xPO2u8tl7SQzYjqFZqm6f5qhJPC/zeCoz3ewCiaeFrWbxjBSUiH
+         M0ZNbRLhsPiDMQ0pcwZ2p+oOVVaHLHIs+bD9maeRDm5gpHvR1WIksx5TndLnQFodefj4
+         tzkmsrMDBdb2VQDwtGVtxOUZpnopK1Z5UTjoKY0BqU1f0a5iCCAZqJ1NKolD1yYNoClp
+         +rlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KG8W2VB8Y5BWld7Tj4eJg8MWZrNXZgw/t+C+8e4ulI8=;
+        fh=X3bzFzHNUKlW7HONqGn8aH78aZrLXufUH8kHYI0lf8Y=;
+        b=QqRTMzbYtZxurVE4olCsvW+V8ddbFhirJLtFj9Za/dMXODkzMQ9OtV1S+NPX1HpxZi
+         0YbjFmdEcDKwKbgvL0GZcHPF1Bugfo/FDthhC7/g3d54T1KNl7rWT3Q8hxNXYsLH3J8E
+         P4T/CzTYP8bh9R6YaiFHCMEqTFanSkJvetKt6nsI19oAWSpG1++K/R0rIyyP4U2cfIfw
+         q+JAXtsHswypqO8wTE9A10At1ZnUKrIwB6wHX82jYKLyU68qZUc6zGENc5HloJVxQEUj
+         ddLKMNlXM+lifR6PF759xT6eyninJ6alglClzvuzohOJAFf7j3m+MaqYDtffs8yH73MY
+         QD3Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787762048; x=1788366848; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BNp6aViZcz4to/Cdqsuhox+93lABRwOcAkdzqvBJ+0U=;
-        b=XwY6+xNlZiSzsvqB1WTFXCISkir9yrIthwJTE0SU2+IwCBiwtR9SbH6cg2axbnOLsf
-         WE5zYrm3gIOHdxNUTozzWQ8naQM1Z8oburJP+xk1EqCNiN61pyUDVHih9ezySqP6DmO5
-         8dBnOO+YzJEk1QLaWpVCTFPNR3WYN8P5j6BPv3Y4DhKAAJeP/LaMLY4puSmpIn1bymP5
-         EaIJort049tVHdnsGAV70Hou6IDtySil1NMcJjpGklRDeDfW3rLeNmmC8/waEaO4e+tv
-         5IOxUoYiexRvXQ4tOMRWDYqZ4JebGPSDo+47xjkWvuGRg2Ysgy7nDpEEK159Vhtw2/fj
-         SU2w==
+        d=gmail.com; s=20251104; t=1787762058; x=1788366858; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KG8W2VB8Y5BWld7Tj4eJg8MWZrNXZgw/t+C+8e4ulI8=;
+        b=N2ao0fUlEblUNCxal32bPRYmU5H6Tiop9OuwrSH6WT/MactSHauX3tPg6hBbgpdrai
+         X5uaHWC1YVaCSJJeZMvzkTwCdssFWhCqvUS5CGK6jQSrenyyuXafSH5h9b+TACqqrny3
+         zXheJgUi1EmP18l9gGZ9PbC1qCpVnGUNCkNWap1wn/NpqDaCsS5NywiHfS5Etmr3Yeyb
+         0JVxgvaQpKPn/oKtXIsz9nZdqpMRv9nWt8sTOyb5dG/eGFGJB/NuhHBVCDL+10cU009v
+         lXpVe2O/gtL9tGf6nH/J6wLbCxx0jv13dwuzkOyf0KXawx+vb99Bfs2Gw656Zu+47lGR
+         TucQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787762048; x=1788366848;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BNp6aViZcz4to/Cdqsuhox+93lABRwOcAkdzqvBJ+0U=;
-        b=AdyJz/phVFm5jSo7ay6PXpVnBz4kPAuPl6T0j+/a+8L1vHtC/Tfoq0Iz64stEU7TAb
-         sl0rj/ucGib/xgOqkLmtmfps0n+8vI4+QhLuERXmbTMCPrVIv0+lc3RYV2/Z+iVcE2zn
-         THnNnsnimGRMmn1nYOi1nbYqUgsBq1XnnITEetlBhR8UxOQiJqKCV6kyPkVYY/v4vIlf
-         MFD2J6PimGSNGjzaL3Y5woz0iOJReTxNZyGyyIzUJQnQJNQOmD7XLRgG9V90/GvjsyDM
-         1etXqwE/Jjv2XdsA171LJU/f298Fa5PwetRsjYOSQ0x6cXJuHMyPKlbr/zgUUuITMO/y
-         nfrQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rrw19k+xBnQ2TGtjkXbdEdvWJvSW3DX2xgLWa8IHO+9H/EF+f4mVwLQ6ZxYgE4M4mmlKk+IEXSbuf8/IN8jMw==@vger.kernel.org
-X-Gm-Message-State: AFuF++lZfmPQS62Qr0dS0Ua/nkE4eG3y9hzOpS7+0lxg/5BLPK/CC+6Y
-	mKGpaBAJkMA3TR62WkJ0tEJBy956RJ601KzPE5eREfS5CjFnLquGFw52KSgZRSCNPQ==
-X-Gm-Gg: AR+sD13QcMXVDsf43NoCr7XaG1A4SQWsmmsetxW8ILR/JaCkJoMWeChpAqNZOPd1mvk
-	85uok5apcYnW2+gxzQsBOCcrznOGhIt5sqXJWVhsMGXT+BSHm2s3lcBGSurefa0ypqumaTNkuMZ
-	ZOR0QHyczYkzihmBXA5rJmo7jfAo73CWLzJm2F9Wg4heodBoYh/mIXSFaQLQc0SLCrP8WobvPKb
-	iKpZAqKfyI4F/8rR5OLwex85m4UquELLPGECMMVeVbtVzLcEq+osXSv372rHPfKaP3LEkDuTvHs
-	SRnC/8LUwclnO2JPBNKCrFcKdErzOJQs7VGlraZHzDIG4PPRL5YkBTH8obvXL8B/GZs2kGHU6gZ
-	0Oo1OsMQpE7/BKsXZVDtFtFzossyQirU3VA1qlxejTa8M0G23NsexDUzVC94LKCCXhFdm3QW6q9
-	oCNy9DpUAqXumfBMqW581sB3nBQFwHCbRUnmpIpq21OAuyAS7mlMsea515kc6l7Fc1U24OQY8gA
-	OwSuzz3ALEJhbimwKxDH1cPdSvjEFdzaWNm
-X-Received: by 2002:a05:600c:46d0:b0:495:5d6d:9cc1 with SMTP id 5b1f17b1804b1-49b0dd5821cmr5708995e9.0.1787762048114;
-        Wed, 26 Aug 2026 09:34:08 -0700 (PDT)
-Received: from axion.fireburn.co.uk ([2a01:4b00:d309:1c00:caf1:6b20:8531:818c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499dca8c75csm31227535e9.2.2026.08.26.09.34.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 09:34:07 -0700 (PDT)
-From: Mike Lothian <mike@fireburn.co.uk>
-To: dri-devel@lists.freedesktop.org
-Cc: Mike Lothian <mike@fireburn.co.uk>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	rust-for-linux@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH v3 0/23] rust: drm: KMS abstractions for a Rust display driver
-Date: Wed, 26 Aug 2026 17:31:31 +0100
-Message-ID: <20260826163359.4998-1-mike@fireburn.co.uk>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20251104; t=1787762058; x=1788366858;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KG8W2VB8Y5BWld7Tj4eJg8MWZrNXZgw/t+C+8e4ulI8=;
+        b=VVDl3aVoK1/QXn3TKrs2DtgzBJ9RzE1MRRU5p2CN5KFiud3fJH6lYli2oDUx4wGLrX
+         wfgB5tmaFIRNi0q0G32VHEG51etzCfWUthnazxnaMrKvdSuVc+gFet4auUvWObLM/yeh
+         CjLPIu6D8ADWIskQaj7xjJhVatTn3iSLJd3mnTTBE5ObOq6zrCE/ZWhn5m/XotFBUxjE
+         /YRtoS4VKne3qTDCAcCVLQNkYZewqJJUOHE8LGQoUX21COU9s2+JKSNAt9TqpCg2r5eP
+         i3v2pu32ZaFT8ZlYF3+sNgY9nStl+9SZ6HVlId3Htb6dKWNn4Lg4+RZ1i3s0Tp1k7gRd
+         NbkA==
+X-Gm-Message-State: AFuF++kY1e6DXkWFIZbJEikT2oJP0JAgecXCyi1y9rOHtvONcvnfaBfC
+	Dx4aX+4HjfNAabwaDuwolAmgqItQpqwJd92+I2WiWMIVRnNbZ8sz/aGXZmIZYDt6ygo+kpfJy9n
+	NYa4cbgBsnRXmxhEA0mN4t5VIfAtuvWQ=
+X-Gm-Gg: AR+sD10rjPzqRlU6kukeJfX0pvIuOuQJmVCARBskPpAlEerxxl0MISAr+NQUkBxTfGx
+	VrPcSLOmmV+txDgwB3wudLAIr2oxviD17n08VG7JoQx1i9QSIDgRZFhfGz9hjLY3Lt6CzO1oofs
+	N4bs/Df6kI/wfV33To3kcqtmTt9GinjA438TXaEI1JKUGktToTwlwecZTSe+GyZYR4ZsmnDKKnl
+	dbMN0XDHUos/pil0IQXngqry6sMMJexznTZCELct9N6+bBbWjvzqeVZidoaIQEMBa2YR52dtleJ
+	thSaRsunBlGsotfOVm46t/X6QAwTYvlAyQh0U1oWjYtgkTTymXRn/bir7knvPR/fHsD3L8LFph5
+	niHayvrKFLwu5NkwJcopeRC93W266729clUoR7lurFsoz6m1G7il0Au91pVOr
+X-Received: by 2002:a05:6512:3a91:b0:5ae:b2df:c11a with SMTP id
+ 2adb3069b0e04-5b4af75f04cmr371598e87.0.1787762057780; Wed, 26 Aug 2026
+ 09:34:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260826162851.2497-1-mike@fireburn.co.uk> <20260826162851.2497-9-mike@fireburn.co.uk>
+In-Reply-To: <20260826162851.2497-9-mike@fireburn.co.uk>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 26 Aug 2026 18:34:03 +0200
+X-Gm-Features: AcwNN1WtTQ_Rpj4PyUuNofpBE-QZJpt6zOpr7AELyOTFGtFlcqIP1G90kKDxBeQ
+Message-ID: <CANiq72kTzdT3_jP+A5nD1+vvSHAptRDNvxkP23YiEKwBRjy55w@mail.gmail.com>
+Subject: Re: [PATCH 8/9] rust: error: expose EPROTO
+To: Mike Lothian <mike@fireburn.co.uk>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Mirko Adzic <adzicmirko97@gmail.com>, Eliot Courtney <ecourtney@nvidia.com>, 
+	Daniel del Castillo <delcastillodelarosadaniel@gmail.com>, 
+	Alistair Francis <alistair.francis@wdc.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-KMS abstractions for a Rust display driver, continuing Lyude Paul's KMS series
-rather than replacing it. The first patch adapts that work to the DRM APIs as
-they stand today, and the rest add what a real driver turned out to need
+On Wed, Aug 26, 2026 at 6:29=E2=80=AFPM Mike Lothian <mike@fireburn.co.uk> =
+wrote:
+>
+> Add the named protocol-error constant so Rust protocol drivers
+> can return the same specific errno as their C counterparts without
+> constructing it from a raw integer.
+>
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
 
-Broadly they fall into four groups:
+This is already in mainline, please see commit b93fb6e76ec1 ("rust:
+error: add remaining error codes").
 
-  Lifetime and ownership: mode-object references tied to their owners, owned
-    CRTC and vblank references, a safe constructor for owned registration data,
-    pinning the owner while DRM files remain open, and rejecting cross-device
-    GEM handle creation
-  Properties a driver must read or publish: typed colour and rotation, plane
-    blend mode, FB_DAMAGE_CLIPS, connector colorimetry and HDR metadata, and a
-    connector's requested link depth
-  Callbacks and state: connector detect() and mode_valid(), common state and
-    connector helpers, checked plane geometry, walking the CRTCs an atomic
-    commit carries, and CRTC mode changes
-  Modes and framebuffers: an owned display mode constructor, mode flags and CTA
-    VIC matching, synthesized CVT connector modes, and validated shmem scanout
-    views
-
-Also here are the HDCP 2.2 message identifiers, which are DRM UAPI rather than
-driver constants
-
-Changes since v2:
-
-  Lyude's 43 commits are carried in order and patch-identical to the imported
-    source, with her messages and tags untouched and no trailer of mine on any
-    of them. v2 mixed her work with adaptations of mine and obscured the
-    attribution, which was the fair complaint
-  Everything of mine on top is a separate commit, and it is either an
-    adaptation to a DRM API that has moved or a safety extension a driver
-    needed
-  The i2c adapter-provider patch is dropped. Igor Korotin's work is active and
-    its provider-lifetime question is not one to answer privately in a driver,
-    so the kernel driver registers no downstream I2C adapter this round
-  The typed event channels and the private ioctl compat translations are
-    dropped. Both existed for a second consumer that is not part of this
-    posting, so neither has a user in what is sent
-  The hardware-cursor support that was a separate v2 patch is folded into the
-    plane work it belongs to
-
-Two overlaps worth naming. Alvin Sun's
-"Fix missing fops.owner in Rust DRM/misc abstractions" fixes the same bug as
-"rust: drm: pin the owner while DRM files remain open", from the other end,
-through ModuleMetadata rather than by threading an owning module through
-UnregisteredDevice::new(). Theirs is the better shape and mine should be dropped
-the moment it lands; it is still load-bearing today because upstream
-UnregisteredDevice::new() takes no module. And where an early patch here fixes a
-commit of Lyude's that is itself unmerged, that fix would be better folded into
-her next revision than carried separately, and I am happy to do it that way
-
-v2: https://lore.kernel.org/r/20260703030123.2814-1-mike@fireburn.co.uk
-
-The rest of the posting, which is one series per subsystem:
-
-  rust-core, 9 patches, rust-for-linux and linux-kernel
-  https://lore.kernel.org/r/20260826162851.2497-1-mike@fireburn.co.uk
-  rust-crypto, 2 patches, linux-crypto and rust-for-linux
-  https://lore.kernel.org/r/20260826163004.3365-1-mike@fireburn.co.uk
-  rust-usb, 5 patches, linux-usb and rust-for-linux
-  https://lore.kernel.org/r/20260826163101.4168-1-mike@fireburn.co.uk
-  rust-drm, 23 patches, this one
-  rust-firmware, 1 patch, to linux-kernel and rust-for-linux, not sent yet
-  drm-vino, 13 patches, to dri-devel, not sent yet
-
-Vino is the user for all of them. The abstractions themselves are generic and
-carry no knowledge of DisplayLink
-
-The whole thing is one branch, base and prerequisites included, which is the
-quickest way to read it:
-
-  git clone -b vino-v3 https://github.com/FireBurn/linux
-  cd linux
-  make LLVM=1 rustavailable
-  make LLVM=1 -j$(nproc)
-  make LLVM=1 -j$(nproc) modules
-
-CONFIG_RUST=y and CONFIG_DRM_VINO=m are the two to set; DRM_VINO selects the
-rest of what it needs
-
-It is the exact tree these patches were generated from, at 4c9ba407018e, the
-drm-rust-next tip of 2026-08-06. drm-next has moved on since, and this follows
-drm-rust-next deliberately: the KMS layer underneath this work lives only there,
-and that tree picks up drm-next on its own schedule
-
-Two commits on the branch are not in any of the series above, because they
-enable no part of Vino: a scheduler call site that stops compiling under the
-locking-guard series, and the Kms associated type Tyr needs once the KMS
-registration trait requires one
-
-It applies to the base above plus this, and nothing else:
-
-  Lyude Paul, Rust bindings for KMS + RVKMS
-  https://lore.kernel.org/r/20250305230406.567126-1-lyude@redhat.com
-
-The reference branch also carries Boqun Feng's counted interrupt disabling
-series, which SpinLockIrq needs. One patch of it is already in tip locking/core
-as e901c1510e24
-
-These patches were written with the assistance of Claude (Anthropic), used
-through Claude Code as an interactive coding assistant, across the design, the
-implementation and the tests. Every patch it contributed to carries an
-Assisted-by trailer. The Signed-off-by is mine: I have reviewed and tested what
-is here and I stand behind it
-
-Mike Lothian (23):
-  rust: drm: kms: adapt Lyude's KMS series to current DRM APIs
-  rust: drm: kms: tie mode-object references to their owners
-  rust: drm: kms: constrain connector encoder attachment
-  rust: drm: reject cross-device GEM handle creation
-  rust: drm: kms: add common state and connector helpers
-  rust: drm: expose HDCP 2.2 message identifiers
-  rust: drm: kms: add typed color and rotation properties
-  rust: drm: kms: add connector detect() and mode_valid() hooks
-  rust: drm: kms: add plane damage-clip accessors
-  rust: drm: framebuffer: add validated shmem scanout views
-  rust: drm: kms: expose checked plane geometry
-  rust: drm: kms: add owned CRTC and vblank references
-  rust: drm: kms: plane: add FB_DAMAGE_CLIPS property support
-  rust: drm: add a safe constructor for owned registration data
-  rust: drm: pin the owner while DRM files remain open
-  rust: drm: kms: add the plane blend-mode property
-  rust: drm: add an owned display mode constructor
-  rust: drm: expose mode flags and CTA VIC matching
-  rust: drm: expose CRTC mode changes
-  rust: drm: kms: add synthesized CVT connector modes
-  rust: drm: kms: read a connector's colorimetry and HDR metadata
-  rust: drm: kms: walk the CRTCs an atomic commit carries
-  rust: drm: kms: expose a connector's requested link depth
-
- 22 files changed, 2062 insertions(+), 99 deletions(-)
-
-base-commit: 4c9ba407018e8deb06dbc643112bac8f40404f95
-prerequisite-message-id: <20250305230406.567126-1-lyude@redhat.com>
+Cheers,
+Miguel
