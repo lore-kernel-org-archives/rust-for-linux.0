@@ -1,64 +1,64 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD4B4570CD
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:29:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432B03AB27F
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787761766; cv=none; b=WY/Sk4mppaeznKghcJzpuxCOticSWDgoOLnCZ2BaM/kkCCbx+pIz8VaFB0JEaNXp0P15nCgXN0cDgv5BWLbCP778Plgoqg2P6WgcF8TywS9IyL0h9ocB2hHG3WgOktfzz1vCmBf4B8DmCsj8dEY/jhVWTel0fUNZhC8UoAbFKjI=
+	t=1787761767; cv=none; b=BAYESQMz7LvTgwBy9a1NB15l6gtWcI8cFElcefUKrO5mYLJKEuOj9X0QbBtFgHLC09HuVMkIdEVA5J/6vFqi+nwtvaqStERzqQrvaei+N8LonEUyTo2ZGV0pF8wVeU+7WGIGG5wQR3C3XMCi9NklCnDiN03bd+2wN/zmjmvkdAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787761766; c=relaxed/simple;
-	bh=2a+l/bg9QWyBOLHkCZHI8Pi4V2rYdgego3Z3LFFslgo=;
+	s=arc-20240116; t=1787761767; c=relaxed/simple;
+	bh=umWQcDWL+vKkAg6SI7BxeZrCQcDKXpYAG37pQ+lD/To=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSTjBVFbpCHdNb6RvAMy2aO3k7ueqsInDuterrLpvkuaz2SCyLLrmwA2jEnbRfYQ6EzpRO0oSYSExabFG41Rd8vU4FB3LYtBLkWmZVM1gC0Kv9/lvc01J7wm+lm2aFQAIg86FWgL9usrUGhTTZ9wq2OtW2uIqDEAGyzXUzDUOCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=hDE7w/Oy; arc=none smtp.client-ip=209.85.128.43
+	 MIME-Version; b=oup4HduK/ZKnoTjGFzmJv7fRYcDhbIH8xslAPZzB8co2CXiOsNwsMB46MX/vfubV8TRRMWl2CY7zP/gYmrRkl+lInRsx3zX5CgKgiHezHRtN44w9LGKEaf8m2xGycEyY3oCnPnfHvoe1C+lrV1iANFtk3q2quUXsqedF1dQ374U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=AC8kRLfE; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="hDE7w/Oy"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-498028b3d5eso10738565e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:29:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="AC8kRLfE"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-482e1bfcc63so50377f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:29:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787761763; x=1788366563; darn=vger.kernel.org;
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787761758; x=1788366558; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=SB5XLaLKiqlALpfDcolT7jV5kFgT3pCfwpT2pD5qrYI=;
-        b=hDE7w/Oy748jFnpZB8jevvX5zs7/EAmRAesOecFx/7UTNbfFN/i1gii+dBwemzWzDW
-         FZ4ytyCPLL+Lvn7LjN6na8RQbbuGsWUu1nHvhBm731S2a94cpsRagU2V0i2p2c11fmFj
-         IH0J/VmqWQCmV5fEURVGTP81ofNjvVtudaFEp9vzHbsPX6SCZxrs8pSl4+bsPNNww23z
-         cS+Ege2zQdHMTpUbZMAmt0WEknWW4TPDSr4PRLsFx4Jr3mSGa/er4HrbBj8xxmQInVw5
-         flSrCULrVQ9/mPuVUblj7IFgLO+q5VDsv1h5EhY4nF21iHUdpggFK9tygTVismlmYkSy
-         Scjg==
+        bh=RC90Kt3yL2qKSR4SdatW3E2dscmtZrN96AZ/Od58+hU=;
+        b=AC8kRLfEnooy0wTnEumuPOhP/qPoe+q5XgGGt3ETWWbhmn0ChK4BmzIWR1sPtU8/E/
+         +1fIQn+32Xjwj/VLLsWBh3y2a+AdUxhNpjBLcsd/SiyX097awa/9JWo6H39/RrHaE2fg
+         p8ELFMagJASeTeH44iFmaindmwMNMXlxKLPHVFbb3JgVu5/oVhEV0GjQWi0VM3J7ioOK
+         +GE5MAb2AiA08zv+21+wD2KIYJOErRs96QQJBR0KzU+Y/KjBihvwwi/Vugx/Sk/EPVu5
+         16bShvOAHUjNGnrgynNxgfsdDqKOFegTflxrOjnDLy3Vuw2qLO/y+la97nxdlQIF7bnd
+         KZTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787761763; x=1788366563;
+        d=1e100.net; s=20251104; t=1787761758; x=1788366558;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SB5XLaLKiqlALpfDcolT7jV5kFgT3pCfwpT2pD5qrYI=;
-        b=DqFyK5e9QEf1xZFci16iB5TPKFMwP2UIG8GOSrnPwBwaBTYXEzJANsWTM3gmGJXDlt
-         f2tSOnlwAUaxTnW7Gg+WFriJ/aQMtX++LRPO3uSLAbtP0U4PD3yX1peskxHEUd0iVuc8
-         yUpjx9awZVbdTwqPG4mmG48AQpLg5kzM30rT5+LfFxuwIxbLndXE/SWC/vymQo5mHgvw
-         8jTEnCm5zH/+TYCvHleSCm9KUp3/6yEeG/4i3XExHYep6C7+3A7mHf4JffQ6w3KLF4Nf
-         xZZaIrgVxfe6ASf8Va5Uo+7vmDvLBxaIiiluphsmRBx/WNO4M6fbcIIX9gV0QIUWAOjy
-         MqLA==
-X-Gm-Message-State: AFuF++lyTmtCbR7IG2Kkiu9yW1YXGxkqi4hRZVr2slVOw70FJhip2ySU
-	uwRirN91PrNCo/ah13DyN7qncwKs7EEoqdTpOHEieV30258IkvpYn0o6qipwn9i5p00Fw+aS2xv
-	vMNk4KgwD
-X-Gm-Gg: AR+sD13N5vAMqXr7TAcj4Ix+c+eEElBPSu2ZQ1HOg6NPQKc3Duj1UQV9mH/aZqvR7aF
-	x56YcG4GFvjbtHzemG7abeMjgl1iP8l2hGZPlvky4FS7HR4x7FxGCyt0aQnmR6IlpXM5XjVyJLC
-	uuxc0H82sBDJbKx/eRot73AsIyhSRTfwmxZtdcJqraQ5qxi/ORrtUmAhrSl/b2yVsdLXt8eQv/D
-	2oasBUWMzJSLT2Zcc7apn0KW9l3npxTGRifC50QpPLr2IBHe5uw3zzkK2aoENsa1g6H6jq7qolT
-	kiHBuYRi1KsgL7FWy5JrzPDTFS/Bhe6AZ87xHueoNA72n6KAzsHu/sHmroLVeKiUZ7ZleJ1o77B
-	HFxeq+aiQ+NysQ7t59JrPbk/uLh7qwl0YRE4ENIk/GuUvTDU2bp5/8fhC7/Fnw8FM9ilMh9Y1Vu
-	7Ab3P9XwiO34XwEGjj4vJqNHHuhzxC1FCMtbE7toBx3iQFLIO1GCsBZ9ytrwxrgpD2VuU1Zu2ie
-	xzadUWs5XldoLbDcWfxl96dihENuhP0lGLH
-X-Received: by 2002:a05:600c:470a:b0:495:4689:1e98 with SMTP id 5b1f17b1804b1-499dc72266fmr75165625e9.10.1787761763371;
-        Wed, 26 Aug 2026 09:29:23 -0700 (PDT)
+        bh=RC90Kt3yL2qKSR4SdatW3E2dscmtZrN96AZ/Od58+hU=;
+        b=K4DmTSvJXJni7l+hXYIIW0R7WUX6h5kyFA3X98o3idWWBvGGiB8UNixrxwqgsNmSev
+         ruycw6MTmpC1JGEMYnT5a13WdqNvhsp7QXM8oiXHBGgy5TJRDOFOknL+OPMBndaUSht9
+         qXd+0X9ZMxZB8JCd3JtDecHQEzIsWoZMW6cqhBJynhT5URJVTI0P6aCysoHTHJUPdgZ8
+         1TJWU7qRDScs90m72fLzjpz7xX/RXiWLL1aY40SezcARp6OEqipEvVt60tuCtYpXuDXt
+         OgOgM3zgtjfgaHOMhT/L6tQxnajOnhybk8eLgw8bdzjVMrGd64eGpnCazI9LzYJCD/O8
+         e/AA==
+X-Gm-Message-State: AFuF++kKqkERnwaFceNHpTucudE5wKepEpzBm2Jh5MbtEki1uDu59U4E
+	M03x3OxU30wNuFtGxhToiC+NcdtZhNAmPlubEpbaSINN14pQmsHyFjp41vXIGrlpJywepGkLlSX
+	qPdJxfULS
+X-Gm-Gg: AR+sD12dyWMOY3F/nPJMtL6x5GB3tpQ5Adqg9RFyFTr4DRTKAGEHXjLk+AI+OZeN+I4
+	zufRbztLzN3AyVMtTQIvSNq1jOLcNOAEgJVjaHeGZGO9JRrPHt/EsibmQWwn+RF+mIKy5/nofIW
+	Bt9tP4UZaSXoI299K4dy6J7TdGoNLyKalbWlMxhsgfnY9GZEu5Kf0sDGzE43U8mHIjBsQa9vv+K
+	Ot5M7kELFRLO3CMbF3SKhQFrcccTWCdbfmr9tlm2+SrNKU0uDCZmNqM204P8c9AHw1rzT+21CUc
+	ZHnf2wltlg3XSFOUkBz7KRf/VB/Pj6uvJZiByGPFjHx+fp2XHnSPB9KbKWygSIaO2UhccQHGvFe
+	qPmDNsSzBDt4vTruS0O0yByCZAi7UTgI74uMP928ahSWBX+S3ZSUHM5p2fUSVVEgmmTEA1F05Q+
+	SRBcre2dgdXLfavPnQFS/Mhc5cH1q3O+mknenZlSpFW+RvGPR2RbwUGBFvawTMCDM5kZhnJUXF/
+	5N6JDM8TdXtR0cmgRO2jGnLmt02NJYPkMc2
+X-Received: by 2002:a05:6000:25ee:b0:482:ea3e:882a with SMTP id ffacd0b85a97d-482eab75e7dmr419934f8f.6.1787761758366;
+        Wed, 26 Aug 2026 09:29:18 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([2a01:4b00:d309:1c00:caf1:6b20:8531:818c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e27ab574sm3232342f8f.14.2026.08.26.09.29.21
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e27ab574sm3232342f8f.14.2026.08.26.09.29.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 09:29:21 -0700 (PDT)
+        Wed, 26 Aug 2026 09:29:17 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
 To: rust-for-linux@vger.kernel.org
 Cc: Mike Lothian <mike@fireburn.co.uk>,
@@ -83,9 +83,9 @@ Cc: Mike Lothian <mike@fireburn.co.uk>,
 	Alexandre Courbot <acourbot@nvidia.com>,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 9/9] rust: time: add ktime_get_real_seconds
-Date: Wed, 26 Aug 2026 17:28:43 +0100
-Message-ID: <20260826162851.2497-10-mike@fireburn.co.uk>
+Subject: [PATCH 7/9] rust: hrtimer: expose interrupt state in hard callbacks
+Date: Wed, 26 Aug 2026 17:28:41 +0100
+Message-ID: <20260826162851.2497-8-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260826162851.2497-1-mike@fireburn.co.uk>
 References: <20260826162851.2497-1-mike@fireburn.co.uk>
@@ -97,44 +97,88 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Reading an `Instant<RealTime>` is the wrong tool for a caller that only
-wants a calendar time in seconds: it takes a full nanosecond timestamp and
-then needs a 64-bit division to get back to what the timekeeping core
-already maintains as a plain seconds field.
-
-Wrap `ktime_get_real_seconds()`, which is that field. Document the property
-that matters at the call site and that the type cannot express: the value
-follows CLOCK_REALTIME, so it is not monotonic and can move in either
-direction.
+Hard hrtimer modes guarantee that their callbacks run with local
+interrupts disabled. Carry that guarantee through HrTimerCallbackContext
+so users of IRQ-aware locks do not need to assert the callback
+context themselves.
 
 Assisted-by: Claude:claude-opus-5
 Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
 ---
- rust/kernel/time.rs | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ rust/kernel/time/hrtimer.rs | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index 363e93cbb139..a9922f1b493d 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -129,6 +129,20 @@ fn ktime_get() -> bindings::ktime_t {
-     }
+diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+index 2d7f1131a813..a55b3ce53735 100644
+--- a/rust/kernel/time/hrtimer.rs
++++ b/rust/kernel/time/hrtimer.rs
+@@ -404,7 +404,7 @@
+ //! [`Arc`]: kernel::sync::Arc
+ 
+ use super::{ClockSource, Delta, Instant};
+-use crate::{prelude::*, types::Opaque};
++use crate::{interrupt::LocalInterruptDisabled, prelude::*, types::Opaque};
+ use core::{marker::PhantomData, ptr::NonNull};
+ use pin_init::PinInit;
+ 
+@@ -900,6 +900,11 @@ pub trait HrTimerMode: private::Sealed {
+     type Expires: HrTimerExpires;
  }
  
-+/// Returns the coarse wall-clock time in whole seconds since the Unix epoch.
++/// A timer mode whose callback runs with local interrupts disabled.
 +///
-+/// This is the cheap counterpart to reading an [`Instant<RealTime>`]: it reads the seconds field
-+/// the timekeeping core maintains, with no 64-bit division, and is what a caller that only needs a
-+/// calendar time should use.
-+///
-+/// The value follows CLOCK_REALTIME, so it is not monotonic: settimeofday(2), NTP steps and leap
-+/// second handling can move it in either direction.
-+pub fn ktime_get_real_seconds() -> i64 {
-+    // SAFETY: reading the timekeeping core's seconds field has no preconditions and is safe from
-+    // any context.
-+    unsafe { bindings::ktime_get_real_seconds() }
-+}
++/// This trait is sealed by [`HrTimerMode`].
++pub trait HardHrTimerMode: HrTimerMode {}
 +
- /// A monotonic that ticks while system is suspended.
+ /// Timer that expires at a fixed point in time.
+ pub struct AbsoluteMode<C: ClockSource>(PhantomData<C>);
+ 
+@@ -982,6 +987,7 @@ impl<C: ClockSource> HrTimerMode for AbsoluteHardMode<C> {
+     type Clock = C;
+     type Expires = Instant<C>;
+ }
++impl<C: ClockSource> HardHrTimerMode for AbsoluteHardMode<C> {}
+ 
+ /// Timer with relative expiration, handled in hard irq context.
+ pub struct RelativeHardMode<C: ClockSource>(PhantomData<C>);
+@@ -991,6 +997,7 @@ impl<C: ClockSource> HrTimerMode for RelativeHardMode<C> {
+     type Clock = C;
+     type Expires = Delta;
+ }
++impl<C: ClockSource> HardHrTimerMode for RelativeHardMode<C> {}
+ 
+ /// Timer with absolute expiration, pinned to CPU and handled in hard irq context.
+ pub struct AbsolutePinnedHardMode<C: ClockSource>(PhantomData<C>);
+@@ -1000,6 +1007,7 @@ impl<C: ClockSource> HrTimerMode for AbsolutePinnedHardMode<C> {
+     type Clock = C;
+     type Expires = Instant<C>;
+ }
++impl<C: ClockSource> HardHrTimerMode for AbsolutePinnedHardMode<C> {}
+ 
+ /// Timer with relative expiration, pinned to CPU and handled in hard irq context.
+ pub struct RelativePinnedHardMode<C: ClockSource>(PhantomData<C>);
+@@ -1009,6 +1017,7 @@ impl<C: ClockSource> HrTimerMode for RelativePinnedHardMode<C> {
+     type Clock = C;
+     type Expires = Delta;
+ }
++impl<C: ClockSource> HardHrTimerMode for RelativePinnedHardMode<C> {}
+ 
+ /// Privileged smart-pointer for a [`HrTimer`] callback context.
  ///
- /// A nonsettable system-wide clock that is identical to CLOCK_MONOTONIC,
+@@ -1065,6 +1074,16 @@ pub fn forward(&mut self, now: HrTimerInstant<T>, interval: Delta) -> u64 {
+     pub fn forward_now(&mut self, duration: Delta) -> u64 {
+         self.forward(HrTimerInstant::<T>::now(), duration)
+     }
++
++    /// Returns proof that local interrupts are disabled for a hard timer callback.
++    pub fn local_interrupt_disabled(&self) -> &LocalInterruptDisabled
++    where
++        T::TimerMode: HardHrTimerMode,
++    {
++        // SAFETY: `Self` can only be constructed while running this timer's callback, and the
++        // `HardHrTimerMode` bound guarantees that the callback runs in hard interrupt context.
++        unsafe { LocalInterruptDisabled::assume_disabled() }
++    }
+ }
+ 
+ /// Use to implement the [`HasHrTimer<T>`] trait.
