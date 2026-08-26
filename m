@@ -1,86 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC95C3BFAF7;
-	Wed, 26 Aug 2026 13:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7B63B4EA2;
+	Wed, 26 Aug 2026 14:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787751408; cv=none; b=hh/xXgmUF2q+6S2V0Fhy8hSsQWgnc9op2ajh2rLJBCFko7D4AoUUsy171Rv3koxeKfcshN8Ql3H+DT/6G30NeS3tlIEccgi93OttWWnY5P1CJl/7PKC+pm1ucM8HTcRrcZD2dZdpEUUHe2JW7x89GS9zJB6DoTTUW91iLnGcswg=
+	t=1787752810; cv=none; b=Z7XgENZikkfB4X2jCk0zl+PVxVKkQZsZAEdAZFppUdUbYevPtm3puZYPgrP5WaT0eEz3HtJQqIecVCOy96dXSsA1AfJweIfzOsmxm3oE2JDxuHZKq+y07j8IRLefQ9dUZRWKW+LEW1mS9RQBe22lce0QsgMAqLDmJR4OWbnett0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787751408; c=relaxed/simple;
-	bh=LGdQE3w3Su+6AhS4rSsO6oxAfJaCNxLcbs1v56edTSo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T72CqJ/vkSrQfRA43S0bfwbrjh9juOdJcX3UHlu6ssAIXHpzaoQCRHN91LE2uvSyF9LXCL0fnUK6ndsNOoWQgRB2B254l8tok5jLzRTQME/x7sdSd4Ys8e+A3czqKilSiGdOz3qjKih0ziRj+uCGvetUNuOCNEShvO9j5v3Wg3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ji6pQOIq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787752810; c=relaxed/simple;
+	bh=bLxfwkeFxrw5PU/8QkzWwLqnBTJiVEPNX+tTwJ7opp0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ORgM+OnR4lc0nU171TzGfI8vg7IfLjwQw7c+SP5fWpJE/14LTkRbNKKJLAJv2llhRb6k90f/XnOxOqBsziI1Qm4z+puJl9hW9Rt1s2YY0OUsQO8wLXnFRfliu+6/tcTB0OhtIQahCf/p9bJfZNdup36STIdMg+tJA0c5Kx75FOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RoxegmDX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ji6pQOIq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925071F00A3A;
-	Wed, 26 Aug 2026 13:36:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RoxegmDX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411481F000E9;
+	Wed, 26 Aug 2026 14:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787751407;
-	bh=GoivgHWl0nAbJ8Rd3khgmMTPfBfs8SBJuAsY8mZ9MN8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ji6pQOIqfxmCeXxJTETds3U/3MCqho89sJGdk6guNc7ZGv31EB/EJKhW2rzwHEBlE
-	 gbXYMZt2UCX89mD5WLS3AHuLwzjV4DYNAZxlHT7j0d9AgVWmX98+XXRQay/RfKLwiH
-	 csFli6OMEM0vR/36dZF1Q8USeoDVhhAWSOpT5IQDHHf4aB6TJMHj+seTppHNdmA0vf
-	 E/UKZOoCsmXaPFt9MGIyX9zIDT4/XA5modAyUK+MWB3LJYXkJ1sq/91gByGKAARlSp
-	 S5NIx3ro5G+l2GmepXHeCH69UXs1eyF9/K3ezO5IpqrP4cHy78/jfyCU7dtjf+4q5v
-	 Nca8eyziR+7Yg==
-Date: Wed, 26 Aug 2026 14:36:41 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: aliceryhl@google.com, vbabka@kernel.org, liam@infradead.org, 
-	urezki@gmail.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: add Alice Ryhl as co-maintainer for Rust
- [ALLOC]
-Message-ID: <ao7rwdeDRaFTC0cv@gremlin>
-References: <20260826132729.3281308-1-dakr@kernel.org>
+	s=k20260515; t=1787752804;
+	bh=19tcek4HrcS7UOd5IyTT7qc0S0ouGBiyalEvCRLgbSk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RoxegmDX7J80G3Ar4UcOhvYd01fs8k+Iw2xWda7B2Kk1VZAIZxiI4wr1ZWWzjrNnY
+	 grUVhB/RBZsWbiSIfVqzu4UH6bDgTbk2+NH/bp0VXJWpeEdTiDDJFNmAacUwYpTK6R
+	 4rmhvvt+Cx+zsLc6CiSt9a+/GTpdMLNwqiYuHvS4cbK9kiFdeBpurTxeZaIP3giDY0
+	 TXP51n6p6KRLnoXPp48irgNs0HuwUY7z2PEUjcJ0AEFsLRSMYRYN/ZixpLKwvcpcsg
+	 DrOJar2fK8AKSPQIDgZPhS4jDn/OWC0AaxMfpJVJPHY2nt5mRgnRFvSxEfxbTTq80b
+	 egMfgg+3djuLw==
+Message-ID: <b13c5ad3-ef9b-48f1-a538-64dfd958d5fb@kernel.org>
+Date: Wed, 26 Aug 2026 15:59:58 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: add Alice Ryhl as co-maintainer for Rust
+ [ALLOC]
+Content-Language: en-US
+To: Danilo Krummrich <dakr@kernel.org>, aliceryhl@google.com, ljs@kernel.org,
+ liam@infradead.org, urezki@gmail.com, ojeda@kernel.org
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260826132729.3281308-1-dakr@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
 In-Reply-To: <20260826132729.3281308-1-dakr@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 26, 2026 at 03:27:18PM +0200, Danilo Krummrich wrote:
+On 8/26/26 15:27, Danilo Krummrich wrote:
 > Add Alice as co-maintainer for the Rust alloc module to share
 > maintenance responsibility. This is also a natural fit, as some of the
 > alloc code overlaps with the mm subsystem.
->
+> 
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Alice is very smart and has always been great to work with, so I'm sure
-she'll do a fantastic job :)
+Great!
 
-Obviously:
-
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 > ---
 >  MAINTAINERS | 1 +
 >  1 file changed, 1 insertion(+)
->
+> 
 > diff --git a/MAINTAINERS b/MAINTAINERS
 > index 24ca91ce5d86..7daacfd70197 100644
 > --- a/MAINTAINERS
 > +++ b/MAINTAINERS
 > @@ -23945,6 +23945,7 @@ K:	\b(?i:rust)\b
->
+>  
 >  RUST [ALLOC]
 >  M:	Danilo Krummrich <dakr@kernel.org>
 > +M:	Alice Ryhl <aliceryhl@google.com>
 >  R:	Lorenzo Stoakes <ljs@kernel.org>
 >  R:	Vlastimil Babka <vbabka@kernel.org>
 >  R:	Liam R. Howlett <liam@infradead.org>
->
+> 
 > base-commit: 45c13f3f9e3bb15fd89ff2864c6f627a3b4b4229
-> --
-> 2.55.0
->
 
---
-Cheers, Lorenzo
