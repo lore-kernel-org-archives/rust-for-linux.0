@@ -1,70 +1,66 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AFA400963
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:37:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D1A4756CB
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 16:39:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787762275; cv=none; b=BZRu/7i3kjfuCmdl+iz/oE4NLn20Wz3H4cmlT3Ber5YYqhpXeJPkcyhSH1pANb+fg/7WzpB5b4KOvFILX7ixSW4MizPUA6qYT3AiG0Wyw+gYSbaXUmv3noZMrjXuIZn6OgG5kAsg3CxEmmSfxiiiccLzhOWewRPw4+ByTTdCPcg=
+	t=1787762386; cv=none; b=OAN6gKFsbvkYkxg/ZHVodnTmitkXUkBZhg3l3MbdwdyQI97Tm7ibyWvjxnXd04j4dJFHSxdHpDSqXkCHpeMzygEoIwi5A3JJ8921oIW2tYaU3YZ1Iz3+7SHm1TV4PKWY7MUh2xctn7M04Ji9NmhijL4gRFXOavcSbrhf2boEzLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787762275; c=relaxed/simple;
-	bh=qIcM5y3Hb6kSUN2B7nsjh8Y4Ancfrv4Lu71gNXejc54=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SmH/MDezGP7+sSXqC7ZOktGDi1+3MT8erR1LXkW/KUA9/S37MC4qGAt2hsvnZJlOzPYCFvmxeJtxIiggMVLczCnvf/oXOnPBqdP3gGSJbQvaYaVz5V2yPXoj+9TO9Xu0GOJKKb23xnR48fKK6kq9JDG2y6l9d6zz0W1v3+NJ3o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=ynKI5xRl; arc=none smtp.client-ip=209.85.128.42
+	s=arc-20240116; t=1787762386; c=relaxed/simple;
+	bh=GnhSFpP2ZZVA6lnDAFu2MoLrDY2uFPIJJMSWayAph9I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=It//gpCAbobaQO0Vt+cLrPXvkW/+77IP1Tk2BaIE5PzKBdXTUDwOUR4EM8LPiKWynlQAwa35plEEvgLJKvtLkf8b/7NfLqSGI2tCuOsDW2E/ljJfWdnAZOv6+uSlDcZZw8TiAwVV2S+Xk4qCbL3XW3ta7+LOonnEPXDJqlRr+yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=KC6LCcOz; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="ynKI5xRl"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49b0d78a801so1167065e9.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:37:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="KC6LCcOz"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49557167508so9289085e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 26 Aug 2026 09:39:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787762248; x=1788367048; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=A1HpPd4ylLTuKYL4oCpnHBVRKXPxKbcynFiK+teZyII=;
-        b=ynKI5xRlcNR7pmyDAv8VTP7Wg0eWJwJa336tr03j1EPUxIYrurhlkUM3LT6VKTC6sk
-         37oFUKEnetaRU65SXjrcia5F5SrNPoh/rQLaNDP8W33QmDJn/Cp7Y0zf6882NRt3beV1
-         Xdq5xa0EpfLW9zaH9GC5BKpdNPtnBEJXF8FNPnolDc4O00JTpWtrY+3NKyNFDypYVSoc
-         gjupH8UtBAclbksCiKlq0u4K0MkASsWLf7RfPo3PzhvUAD5nfk8dpV4PayXV/ESSCZYq
-         Vc1rTXbpX4U00eKnASBXcoCvnMnQY2UaAof/nEYaWvREVxf2bQp4s1zjXvuEgTYbixVj
-         HmUw==
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1787762362; x=1788367162; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1IBfOn3czZ5EpdI1ZgvwhTEN3bFG5oFHkL0oK7UJwww=;
+        b=KC6LCcOzTp+H3R16ro1MM796R4DIX/UK0tsTOtWG+cWbbGu8aA5OZPFBQPZqh4Ldi6
+         jEJhbsGGMHnijeWXLbktBl5BW3EYPMCp1WRp1adOafrYdXJZ9ogX9+Q5AYfFV4iaq3Bo
+         xruylxJ2OoZdPKmaVTNg/idXwkhnC8EXGnz4Aap8wShxWyeYfRMt2E5mxoKQiVM8NJoH
+         jTo9QGQK37P7L2KF64y8GQHOZCeaFyBQ51e0/C5c5h/jz8cVJFQFGf8ctUUsWl0f7ZUS
+         hw+YLaM7wzRacq70+DFNsKO6s0xJRG08ij9nbvl9IgU0PcMQasypozRbV4Ktlzyl7BTR
+         L6fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787762248; x=1788367048;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=A1HpPd4ylLTuKYL4oCpnHBVRKXPxKbcynFiK+teZyII=;
-        b=m9ooDVI2t804QuC1pihPUceDr7CXj93LuKZ3TDT9uVBRi7dAoT22eVEtwKsRmsA4nT
-         Cwmn97WZD6SNY4Mz3oocMLvipW5UAYb8jntN03jDXMHf/m34OJq//eZ/YFdi5/zBNOvB
-         EARwH2iEzS45HyhD8+pAjVWU/tlB4Q+aHiC64bAj600f0VFN02GhMC+5laYX/hCrAc6Y
-         e4ioBr7XgcZsVkNjmYlQTLBNSJkwOtVCOUC76Xi4u30sIe9RUF5N+Ris+ARJHwPDF0eQ
-         8Q94W0imfyt4QTEXMk06hj8UBMpb8YitNCYBG6q1B/K3QlTjAjjILBW/Wfd56yI4tS2n
-         juVg==
-X-Forwarded-Encrypted: i=1; AHgh+Rrxcvzz4ApJ3R3vazICYVk1C9hEvUVBArITk+/t5Zw6TFghOzxJiH00ZclxBpDxBRBmol1zipU2ZXWng3bKvg==@vger.kernel.org
-X-Gm-Message-State: AFuF++mP4PEi8kGu/8+NUA6sy/Y4+T2p3b6jP+AX/4ucjtxVQsi25z72
-	lf2p4OdDhdRmacRcTX8+crG0cqTkfF/AmxNw6d/6XqrFO7oFF6t92ZDWogcMgdPm9Q==
-X-Gm-Gg: AR+sD137CKtEIcl8ZGrGidfS89u+vTZfZ6XpCp0QzGIjxr7QVNcYazB6t5UeeXb0+4o
-	S2Sqidy7LHZ/RG3NZwjPJtPAGe19BaXyAU1JACAcrQEwb2E+fE6qvTjWSuAfnpCd7BMvN7pyJrx
-	40z3yBnNVfl5G7uqCOBR5IqjPnUlAZF9TnyE9EghoSmdw8+3QmMsOGazKlvAc1jI7p7QmuBh4Mk
-	A8r1nB+Pl/NhLEqBO8UzwbuDaHn1cMkTIVUPDKjFjeLAeXYtRmhBUeO4wFf8qpoDV+ZMjyHyEMF
-	fVkigv7XDbEf20kNYLdN4vs2LwcF+FC5ynSvPx0O1JlGxYToFbipN2wAp/fFh86k6leL+rDyeni
-	KHC+EY599cQtm7lCJA4PEOMk8m0cWZnQ5QMNrF2EnZST6doT03S00gDMjbfK1KEQ+0/9JNGl9Kc
-	Bo4djaXT6nXAey6LkhqRaLyCpxT5QAuxbT7A+pbWQzIvQLJlHmvH3CYYtwXBEOhaDWM2JFAWvmu
-	HP7rKw0XTMZjO9xYw0MjMHV7/i/SB9HHGzbwGny4CDwFro=
-X-Received: by 2002:a05:600c:5491:b0:499:a4d1:d7d9 with SMTP id 5b1f17b1804b1-499dc717e32mr74023185e9.9.1787762247721;
-        Wed, 26 Aug 2026 09:37:27 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787762362; x=1788367162;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1IBfOn3czZ5EpdI1ZgvwhTEN3bFG5oFHkL0oK7UJwww=;
+        b=mUXJUmEBfSXBQXK3HNClIOllsXJuVI2PRY6Xye/g1lg4weP9xD2cAZxEHJ9S7G3AhX
+         jVR0O2nzHzYopb4eZTFhx1KkhViQN/5RW7ivllEm1lPPxzQ9rpTqNfM6/AYxTMlJ+AWb
+         bpl2sZOxPAcEV/jgVayLK/xJqTba4Lo7KH3zMzv06ycFTyG82tIg3ArW6GzNKnjGVukS
+         3oXxbSLa/IG4j/9gRWjjRttA+rIXCEoi14MLkEQTjik0UkLtUEwQynZJTp3TypOsqubt
+         CKKpLwdCPY052IxfH9Ax9kfS4opxQvlpdxyoXdSf/PKhx7iKllYvNSUse4qPdSzCkYta
+         d2rg==
+X-Forwarded-Encrypted: i=1; AHgh+Ro5UGfAGWfpxwh20kbuscMI17KB0kUxFVhAs4GBxIMT2LkJ+uE9y3+tGNQ/s/FQSdPQeyB4duxk1DDfGkbq1A==@vger.kernel.org
+X-Gm-Message-State: AFuF++kLCSMdV+v10bJv4xSgBv+1VS4N89pNvQY7spN7AwiHaoCDPyrT
+	x3OXKVjYi8Ys3VqXnQux4d3K4YLlcgZsSAD2J7QY+pjOUaK1RG97/9/Ij4V1pfdEKrSQ8nbtHk7
+	Z0K00AsUK
+X-Gm-Gg: AR+sD10xS5DuvtKvnebqyzsCHqaRdZnwq17WbuIETVsXqZY/wxZF/WVbcyFxQVcRTG1
+	J2GVI8FW6PfRXHhIDkH2sXNhc2QQsX3kdMuCep5gLoI4KU0kJMTWkeatXOQ5nAEVibUXCPcjNLI
+	pWIQ7HCKWf9pFCzX1Z6I+5oBCuWtJaLyC7JJVem3rOO8R1+FERQ+sGJEYVTeAL94dz8e0kw70mC
+	pwZjKlGtQZbzOsiqwWUqnjTiwRzJzp9SDyGw976mDttRJjfJ3P77p/J8ck3ezLruM1emzviXX4P
+	sn26l6sXULLk//LquMQjqSEg5oKUOMxYMe8l7sOxdIrbImotgcChtg7az9kmriT8Sj8/IyZlpqP
+	nWvWZmIxRd2aQeQcPP4jnGyshdOpuh2a0sJBar1gjCUIWIakOyUP1Chy/KlrPRz/OGDMYMBNWuA
+	XbFRadCpk3N9BhMUYY/8Hon4IxVAFp/3hWbMNLYR4Oa5RVb/iNKldmkMF3iUzqQM/VjZN1rzjd4
+	5muURSqZ1xBFpCQrOg/exjHf62nkK9TfDhL
+X-Received: by 2002:a05:600c:a418:b0:495:52a5:8829 with SMTP id 5b1f17b1804b1-499dc82073fmr78646645e9.11.1787762361624;
+        Wed, 26 Aug 2026 09:39:21 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([2a01:4b00:d309:1c00:caf1:6b20:8531:818c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482e279eb11sm3350111f8f.8.2026.08.26.09.37.25
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499dd5721a0sm21769715e9.4.2026.08.26.09.39.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 09:37:26 -0700 (PDT)
+        Wed, 26 Aug 2026 09:39:20 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
-To: linux-kernel@vger.kernel.org
+To: dri-devel@lists.freedesktop.org
 Cc: Mike Lothian <mike@fireburn.co.uk>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Russ Weight <russ.weight@linux.dev>,
-	Danilo Krummrich <dakr@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
@@ -73,18 +69,21 @@ Cc: Mike Lothian <mike@fireburn.co.uk>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH 1/1] rust: firmware: add the firmware upload abstraction
-Date: Wed, 26 Aug 2026 17:37:15 +0100
-Message-ID: <20260826163716.6274-2-mike@fireburn.co.uk>
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v3 0/13] drm/vino: a Rust driver for DisplayLink DL3 docks
+Date: Wed, 26 Aug 2026 17:37:25 +0100
+Message-ID: <20260826163913.7052-1-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260826163716.6274-1-mike@fireburn.co.uk>
-References: <20260826163716.6274-1-mike@fireburn.co.uk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -93,265 +92,199 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-request_firmware() covers "pull an image from /lib/firmware"; the other
-half of the firmware loader, firmware_upload_register(), covers "userspace
-hands the driver an image to write". It publishes
-/sys/class/firmware/<name>/ with the loading/data handshake plus status,
-error, remaining_size and cancel, and is what a driver uses when an image
-has to be written on demand rather than only when a newer one appears.
+Vino is a DRM/KMS driver for DisplayLink DL3 docks. These devices carry no
+standard display protocol: the host encodes each frame with a vendor codec and
+ships it over bulk USB, inside a control plane sealed with AES-CTR and keyed by
+an HDCP 2.2 authentication exchange. Until now the only way to drive one on
+Linux was an out-of-tree kernel module paired with a closed source userspace
+daemon
 
-Add an Upload trait mirroring struct fw_upload_ops, a Registration that
-unregisters on drop, and an Error enum whose values are the fw_upload_err
-codes userspace already reads back out of the error attribute.
+The headline change since v2 is not a refactor. v1 and v2 never lit a panel.
+This one does, on three generations of dock, driving a real desktop, from a cold
+boot with nothing of the vendor's loaded
 
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
----
- rust/kernel/firmware.rs | 237 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 237 insertions(+)
+Three generations are supported, and they differ in more than identifiers:
 
-diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-index 6a6b392ffc4e..a6fa565421d7 100644
---- a/rust/kernel/firmware.rs
-+++ b/rust/kernel/firmware.rs
-@@ -385,3 +385,240 @@ pub const fn build_length(self) -> usize {
-         self.n + 1
-     }
- }
-+
-+/// Firmware upload: let userspace hand a driver an image to write to its device.
-+///
-+/// Registering creates `/sys/class/firmware/<name>/` with the `loading`/`data` handshake plus
-+/// `status`, `error`, `remaining_size` and `cancel`, which is the counterpart to [`Firmware`]:
-+/// the same image works either way, but this one is pushed by userspace rather than pulled from
-+/// `/lib/firmware`. Drivers use it when an image has to be written on demand -- a re-flash, or a
-+/// deliberate downgrade -- rather than only when a newer version appears.
-+pub mod upload {
-+    use super::*;
-+    use crate::types::ForeignOwnable;
-+
-+    /// Why an upload step failed. `None` means success.
-+    ///
-+    /// The values are the `enum fw_upload_err` the core reports back through `sysfs`, so a driver
-+    /// says what went wrong in the vocabulary userspace already reads out of `error`.
-+    #[derive(Clone, Copy, PartialEq, Eq)]
-+    #[repr(u32)]
-+    pub enum Error {
-+        /// The device reported a failure; see the kernel log.
-+        Hardware = bindings::fw_upload_err_FW_UPLOAD_ERR_HW_ERROR,
-+        /// A handshake with the device timed out.
-+        Timeout = bindings::fw_upload_err_FW_UPLOAD_ERR_TIMEOUT,
-+        /// Userspace wrote `cancel`.
-+        Canceled = bindings::fw_upload_err_FW_UPLOAD_ERR_CANCELED,
-+        /// Another upload is already running.
-+        Busy = bindings::fw_upload_err_FW_UPLOAD_ERR_BUSY,
-+        /// The image is not a size this device can take.
-+        InvalidSize = bindings::fw_upload_err_FW_UPLOAD_ERR_INVALID_SIZE,
-+        /// A read or write to the device failed; see the kernel log.
-+        ReadWrite = bindings::fw_upload_err_FW_UPLOAD_ERR_RW_ERROR,
-+        /// The flash is wearing out; wait and retry.
-+        WearOut = bindings::fw_upload_err_FW_UPLOAD_ERR_WEAROUT,
-+        /// The image is not one this device accepts.
-+        InvalidFirmware = bindings::fw_upload_err_FW_UPLOAD_ERR_FW_INVALID,
-+    }
-+
-+    /// A driver's side of an upload.
-+    ///
-+    /// `prepare` runs once with the whole image, which is where a driver rejects one that is not
-+    /// for this device; `write` is then called repeatedly until every byte is written.
-+    pub trait Upload: Sized {
-+        /// Shared driver state, handed back to every callback.
-+        type Data: ForeignOwnable + Send + Sync;
-+
-+        /// Validate the image and get the device ready. Runs before any write.
-+        fn prepare(
-+            data: <Self::Data as ForeignOwnable>::Borrowed<'_>,
-+            image: &[u8],
-+        ) -> Result<(), Error>;
-+
-+        /// Write `chunk`, which starts at `offset` in the image, returning how much was written.
-+        ///
-+        /// Called repeatedly until the image is consumed, so a driver may write less than it was
-+        /// offered and be called again with the remainder.
-+        fn write(
-+            data: <Self::Data as ForeignOwnable>::Borrowed<'_>,
-+            image: &[u8],
-+            offset: u32,
-+            chunk: &[u8],
-+        ) -> Result<u32, Error>;
-+
-+        /// Report whether the device has finished programming what it was sent.
-+        fn poll_complete(data: <Self::Data as ForeignOwnable>::Borrowed<'_>) -> Result<(), Error>;
-+
-+        /// Asked to stop, from another thread: set a flag the other callbacks observe.
-+        fn cancel(data: <Self::Data as ForeignOwnable>::Borrowed<'_>);
-+
-+        /// Undo whatever `prepare` set up. Runs on success and on failure alike.
-+        fn cleanup(_data: <Self::Data as ForeignOwnable>::Borrowed<'_>) {}
-+    }
-+
-+    /// The C vtable for `U`, built once at compile time.
-+    struct Vtable<U: Upload>(core::marker::PhantomData<U>);
-+
-+    impl<U: Upload> Vtable<U> {
-+        /// Turn a driver result into the `enum fw_upload_err` the core expects.
-+        fn err(r: Result<(), Error>) -> bindings::fw_upload_err {
-+            match r {
-+                Ok(()) => bindings::fw_upload_err_FW_UPLOAD_ERR_NONE,
-+                Err(e) => e as bindings::fw_upload_err,
-+            }
-+        }
-+
-+        /// # Safety
-+        ///
-+        /// Called by the firmware core with a valid `fw_upload` whose `dd_handle` is the pointer
-+        /// [`Registration::new`] passed it, and `data` valid for `size` bytes.
-+        unsafe extern "C" fn prepare(
-+            fw: *mut bindings::fw_upload,
-+            data: *const u8,
-+            size: u32,
-+        ) -> bindings::fw_upload_err {
-+            // SAFETY: the core owns `fw` for the duration of the call.
-+            let handle = unsafe { (*fw).dd_handle };
-+            // SAFETY: `handle` came from `into_foreign()` in `Registration::new` and outlives the
-+            // registration; `data`/`size` describe the image the core is holding.
-+            let (d, image) = unsafe {
-+                (
-+                    <U::Data as ForeignOwnable>::borrow(handle.cast()),
-+                    core::slice::from_raw_parts(data, size as usize),
-+                )
-+            };
-+            Self::err(U::prepare(d, image))
-+        }
-+
-+        /// # Safety
-+        ///
-+        /// As [`Self::prepare`]; `written` is a valid out-parameter.
-+        unsafe extern "C" fn write(
-+            fw: *mut bindings::fw_upload,
-+            data: *const u8,
-+            offset: u32,
-+            size: u32,
-+            written: *mut u32,
-+        ) -> bindings::fw_upload_err {
-+            // SAFETY: as above.
-+            let handle = unsafe { (*fw).dd_handle };
-+            // SAFETY: as above; `data + offset` is within the image the core holds.
-+            let (d, image, chunk) = unsafe {
-+                (
-+                    <U::Data as ForeignOwnable>::borrow(handle.cast()),
-+                    core::slice::from_raw_parts(data, (offset + size) as usize),
-+                    core::slice::from_raw_parts(data.add(offset as usize), size as usize),
-+                )
-+            };
-+            match U::write(d, image, offset, chunk) {
-+                Ok(n) => {
-+                    // SAFETY: the core passes a valid pointer for the result.
-+                    unsafe { *written = n };
-+                    bindings::fw_upload_err_FW_UPLOAD_ERR_NONE
-+                }
-+                Err(e) => e as bindings::fw_upload_err,
-+            }
-+        }
-+
-+        /// # Safety
-+        ///
-+        /// As [`Self::prepare`].
-+        unsafe extern "C" fn poll_complete(
-+            fw: *mut bindings::fw_upload,
-+        ) -> bindings::fw_upload_err {
-+            // SAFETY: as above.
-+            let handle = unsafe { (*fw).dd_handle };
-+            // SAFETY: as above.
-+            let d = unsafe { <U::Data as ForeignOwnable>::borrow(handle.cast()) };
-+            Self::err(U::poll_complete(d))
-+        }
-+
-+        /// # Safety
-+        ///
-+        /// As [`Self::prepare`]. Runs on a different thread from the rest.
-+        unsafe extern "C" fn cancel(fw: *mut bindings::fw_upload) {
-+            // SAFETY: as above.
-+            let handle = unsafe { (*fw).dd_handle };
-+            // SAFETY: as above.
-+            let d = unsafe { <U::Data as ForeignOwnable>::borrow(handle.cast()) };
-+            U::cancel(d)
-+        }
-+
-+        /// # Safety
-+        ///
-+        /// As [`Self::prepare`].
-+        unsafe extern "C" fn cleanup(fw: *mut bindings::fw_upload) {
-+            // SAFETY: as above.
-+            let handle = unsafe { (*fw).dd_handle };
-+            // SAFETY: as above.
-+            let d = unsafe { <U::Data as ForeignOwnable>::borrow(handle.cast()) };
-+            U::cleanup(d)
-+        }
-+
-+        const VTABLE: bindings::fw_upload_ops = bindings::fw_upload_ops {
-+            prepare: Some(Self::prepare),
-+            write: Some(Self::write),
-+            poll_complete: Some(Self::poll_complete),
-+            cancel: Some(Self::cancel),
-+            cleanup: Some(Self::cleanup),
-+        };
-+    }
-+
-+    /// A live `/sys/class/firmware/<name>/` upload interface, unregistered when dropped.
-+    pub struct Registration<U: Upload> {
-+        fw: *mut bindings::fw_upload,
-+        data: *mut core::ffi::c_void,
-+        _p: core::marker::PhantomData<U>,
-+    }
-+
-+    // SAFETY: the C side is internally locked, and `U::Data` is `Send + Sync`.
-+    unsafe impl<U: Upload> Send for Registration<U> {}
-+    // SAFETY: as above.
-+    unsafe impl<U: Upload> Sync for Registration<U> {}
-+
-+    impl<U: Upload> Registration<U> {
-+        /// Publish an upload interface named `name` under `parent`.
-+        pub fn new(
-+            module: &'static crate::ThisModule,
-+            parent: &Device,
-+            name: &CStr,
-+            data: U::Data,
-+        ) -> Result<Self> {
-+            let handle = data.into_foreign();
-+            // SAFETY: `parent` and `name` are valid for the call; the vtable is 'static; `handle`
-+            // is kept alive by this registration and released in `drop`.
-+            let fw = unsafe {
-+                bindings::firmware_upload_register(
-+                    module.as_ptr(),
-+                    parent.as_raw(),
-+                    name.as_char_ptr(),
-+                    &Vtable::<U>::VTABLE,
-+                    handle.cast(),
-+                )
-+            };
-+            let fw = match crate::error::from_err_ptr(fw) {
-+                Ok(fw) => fw,
-+                Err(e) => {
-+                    // SAFETY: registration failed, so nothing else observes `handle`.
-+                    drop(unsafe { <U::Data as ForeignOwnable>::from_foreign(handle) });
-+                    return Err(e);
-+                }
-+            };
-+            Ok(Self {
-+                fw,
-+                data: handle.cast(),
-+                _p: core::marker::PhantomData,
-+            })
-+        }
-+    }
-+
-+    impl<U: Upload> Drop for Registration<U> {
-+        fn drop(&mut self) {
-+            // SAFETY: `self.fw` came from `firmware_upload_register` and is unregistered once.
-+            unsafe { bindings::firmware_upload_unregister(self.fw) };
-+            // SAFETY: the core no longer holds `dd_handle` after unregistering.
-+            drop(unsafe { <U::Data as ForeignOwnable>::from_foreign(self.data.cast()) });
-+        }
-+    }
-+}
+  DL-3x00 (Ella), which shares one pipe between control and video, states its
+    decoder tables in a narrow form, and must never be blanked by painting
+    black, because its shared pipe halts and the session dies with the panel
+    still lit
+  DL-6xxx (Ridge), including the Dell D6000, which serves both connectors from
+    a single EDID handler, so a fetch on an empty connector returns the other
+    one's monitor
+  DL-7400 (Navarro), four connectors over two video endpoints, 10 Gbps
+
+The differences are data. A dock is placed by family into a DockProfile carrying
+its endpoints, codec geometry, allocation rules and quirks, and there is one code
+path through the driver for all three. No per-device branches, and no module
+parameter selects a profile or a code path
+
+On DL-7400 the driver drives 30 bpp in PQ: 2560x1440p120 on two connectors, with
+the sink reporting 10 bit. Depth is not a flag on the wire but a set of
+agreements, the DMA format, the colour-depth word, the framebuffer allocation,
+and the entropy coder's escape ceilings, each of which is stated to the dock by
+its own decoder code table. Getting one of them wrong is not a clean failure: a
+DC ceiling the dock was not told about desynchronises the bitstream mid-record,
+and an AC one stays in step while reconstructing every sharp edge from a
+truncated magnitude
+
+Firmware. A dock carries its running version in a vendor descriptor rather than
+in bcdDevice, which does not move across an update, so the driver reads that,
+compares it against the packaged image and writes a newer one over DFU. This is
+how a dock too old to enumerate its connectors is brought forward. With nothing
+installed the dock stays on whatever it shipped with, probe says so and carries
+on, so the update path is opt-in by putting the file there
+
+The images are DisplayLink's own, out of their Linux driver bundle, which
+installs them to /opt/displaylink. Copy the ones you want into /lib/firmware/vino
+under the names they already have:
+
+  ella-dock-release.spkg      DL-3x00
+  ridge-dock-release.spkg     DL-6xxx, the D6000
+  navarro-dock-release.spkg   DL-7400
+
+From the 6.8.1 bundle those carry 12.2.15, 12.2.25 and 12.2.26, and that is what
+the three docks here are running. Each was written by this driver, from 11.4.47,
+11.5.28 and 11.5.29 respectively, so the DFU path is exercised rather than only
+read. A manual write is also there through /sys/class/firmware/vino-<dock>/,
+which is the direction the firmware upload API is designed around
+
+Tested on:
+
+  HP 3005pr port replicator, DL-3900, two connectors at 1920x1080p60
+  Dell Universal Dock D6000, 17e9:6006, two connectors at 2560x1440p120
+  WAVLINK DL7400 quad dock, 17e9:7000, four connectors, two of them driven at
+    2560x1440p120 in 30 bpp PQ
+
+All three bind concurrently on the same host, with monitors attached, driving a
+KDE desktop. 97 KUnit tests across 19 suites run at module load under
+CONFIG_DRM_VINO_KUNIT_TEST
+
+Changes since v2:
+
+  It works, which v2 did not. The gate was one byte: the EDID engage message
+    carries its connector selector in two places and the second was being filled
+    with the message's random tail, so the dock acked it and then never enabled
+    the downstream sink
+  No raw C KMS anywhere. The driver is built on the safe KMS mode-object layer,
+    which is what Danilo Krummrich asked for on v1, and git grep bindings::drm_
+    over the driver returns nothing
+  No unsafe block and no direct bindings:: call in the driver at all
+  Three generations rather than one, and the second and third arrived without
+    adding a branch, which is the test of whether the profile split was real
+  The development history is folded away. This was 33 commits carrying a revert
+    pair, a module parameter added and later deleted, and fixes to patches
+    earlier in the same series. It is now 13 that introduce the driver in the
+    order it is understood, and a fix to a commit this series adds is folded
+    into that commit
+  select DRM_GEM_SHMEM_HELPER is gone, since RUST_DRM_GEM_SHMEM_HELPER pulls it
+    in, which Julian Braha pointed out
+  The related series are linked and Vino is named as the user for all of them,
+    which Miguel Ojeda asked for
+
+The trace_crypto module parameter, default off, deliberately logs one session's
+keys so that a USB capture of that session can be decrypted. Every constant in
+this driver came from such a capture, and it is the only way somebody holding a
+DisplayLink dock nobody here owns can produce one that says anything. It is
+flagged here rather than left to be found, because a kernel option that
+discloses key material is a fair thing to argue about
+
+The protocol was reverse engineered from captured wire traffic and from the
+vendor binaries. There is no vendor documentation for any of it, every constant
+here came from a measurement, and the assistance noted below covers that work as
+well as the implementation
+
+v2: https://lore.kernel.org/r/20260703030217.2886-1-mike@fireburn.co.uk
+
+The rest of the posting, which is one series per subsystem:
+
+  rust-core, 9 patches, rust-for-linux and linux-kernel
+  https://lore.kernel.org/r/20260826162851.2497-1-mike@fireburn.co.uk
+  rust-crypto, 2 patches, linux-crypto and rust-for-linux
+  https://lore.kernel.org/r/20260826163004.3365-1-mike@fireburn.co.uk
+  rust-usb, 5 patches, linux-usb and rust-for-linux
+  https://lore.kernel.org/r/20260826163101.4168-1-mike@fireburn.co.uk
+  rust-drm, 23 patches, dri-devel and rust-for-linux
+  https://lore.kernel.org/r/20260826163359.4998-1-mike@fireburn.co.uk
+  rust-firmware, 1 patch, linux-kernel and rust-for-linux
+  https://lore.kernel.org/r/20260826163716.6274-1-mike@fireburn.co.uk
+  drm-vino, 13 patches, this one
+
+Vino is the user for all of them. The abstractions themselves are generic and
+carry no knowledge of DisplayLink
+
+The whole thing is one branch, base and prerequisites included, which is the
+quickest way to read it:
+
+  git clone -b vino-v3 https://github.com/FireBurn/linux
+  cd linux
+  make LLVM=1 rustavailable
+  make LLVM=1 -j$(nproc)
+  make LLVM=1 -j$(nproc) modules
+
+CONFIG_RUST=y and CONFIG_DRM_VINO=m are the two to set; DRM_VINO selects the
+rest of what it needs
+
+It is the exact tree these patches were generated from, at 4c9ba407018e, the
+drm-rust-next tip of 2026-08-06. drm-next has moved on since, and this follows
+drm-rust-next deliberately: the KMS layer underneath this work lives only there,
+and that tree picks up drm-next on its own schedule
+
+Two commits on the branch are not in any of the series above, because they
+enable no part of Vino: a scheduler call site that stops compiling under the
+locking-guard series, and the Kms associated type Tyr needs once the KMS
+registration trait requires one
+
+It applies to the base above plus this, and nothing else:
+
+  Lyude Paul, Rust bindings for KMS + RVKMS
+  https://lore.kernel.org/r/20250305230406.567126-1-lyude@redhat.com
+
+  Colin Braun, rust: usb: add usb request block abstractions
+  https://lore.kernel.org/r/20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com
+
+  Alice Ryhl, Creation of workqueues in Rust, plus Onur Ozkan's cancel_sync
+  https://lore.kernel.org/r/20260312-create-workqueue-v4-0-ea39c351c38f@google.com
+
+The reference branch also carries Boqun Feng's counted interrupt disabling
+series, which SpinLockIrq needs. One patch of it is already in tip locking/core
+as e901c1510e24
+
+Danilo Krummrich's OwnedQueue, ScopedQueue and ScopedWork series supersedes part
+of the workqueue work carried here, and is the better answer: Vino calls
+Work::cancel_sync() in seven places to make teardown wait for its own work
+items, and ScopedWork cancels on drop, which is that idiom done properly
+
+  https://lore.kernel.org/r/20260807165252.3849875-1-dakr@kernel.org
+
+It was still moving when this was cut, so this uses what is available today.
+When it lands the swap goes in as one commit moving the prerequisites and the
+call sites together, since either half alone leaves the tree not building
+
+These patches were written with the assistance of Claude (Anthropic), used
+through Claude Code as an interactive coding assistant, across the design, the
+implementation and the tests. Every patch it contributed to carries an
+Assisted-by trailer. The Signed-off-by is mine: I have reviewed and tested what
+is here and I stand behind it
+
+Mike Lothian (13):
+  drm/vino: add the DL3 wire framing
+  drm/vino: add the USB transport
+  drm/vino: add the crypto primitives and the HDCP 2.2 AKE
+  drm/vino: add the encrypted control plane
+  drm/vino: add the dock profiles
+  drm/vino: add the video codec
+  drm/vino: add control-session bring-up
+  drm/vino: add the KMS device and the atomic path
+  drm/vino: add the dock activation and scanout path
+  drm/vino: read the dock's firmware version, and update it over DFU
+  drm/vino: add the USB driver frontend
+  drm/vino: allow the driver to be built
+  Documentation/gpu: document the Vino driver
+
+ 43 files changed, 24047 insertions(+), 4 deletions(-)
+
+base-commit: 4c9ba407018e8deb06dbc643112bac8f40404f95
+prerequisite-message-id: <20250305230406.567126-1-lyude@redhat.com>
+prerequisite-message-id: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
+prerequisite-message-id: <20260312-create-workqueue-v4-0-ea39c351c38f@google.com>
