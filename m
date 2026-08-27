@@ -1,388 +1,273 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012018.outbound.protection.outlook.com [52.101.48.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FCF36923F;
-	Thu, 27 Aug 2026 07:31:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787815874; cv=fail; b=c2TVPIjbVbmqmbb2/F4iDNUPYFUToyRY5z5uk1DKOm/n/vONdGlIpp3UgMJZ0mw1WlOfTnlQ5v/RqvfqIqGFcBGeiG686h9nFtOnC5TZ92OHjMFYBcuvXL6mZqViJFZ7tzyr3uBzC+qRnFDfy6jzo6DFJz5WamsRVKG4pIg49iE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787815874; c=relaxed/simple;
-	bh=Bp5mwHDnn+WV6nQRHsp4K1fCYmAedud2MnDmHMjZ1SQ=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=uFi3KF2kAW525kF6YD83JZDFeqXOaBU5oSoWf1OfnM3J2RIDaFDvUdhDxHyz7pmknQ9f4pFaTWt9GnVZY5tKedFLT56q7AB1PDVBhkG0niEwgPIQZoj32ZZ27YOKXyYNQTlwuJemQnPgkGUAODk5ABHzvrVPI+QTwTFVVnF4Iso=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=N7E69igB; arc=fail smtp.client-ip=52.101.48.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DDD31AABC
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Aug 2026 07:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787817295; cv=none; b=MOugFcIrGEanjEdtKcY9SH3NrlXSZEHf89Zc8ZQbBBZ7YG98vDKpOZLBnM55pa6wDZfMUshPHfnYGKrBAS7qIzP5b0BXWqREpUNYfVundE6zCZfHmVuol/5tIZ0Y2Rf/apszcK7CAZg3k0WY6YMk6mZmYEO7jge6XslvCQlXJUk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787817295; c=relaxed/simple;
+	bh=O07296HIjH3sXW22U+nMby2Sc/yzcqX5nvs3bBNIq0w=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BEPl6OVHOh89XgydGO68n2Qm2bAMTgxU0hE3BU2xQdbWIJjvohdw/n+0nFadFDm+9d9K+qzuxN2/nYvVZWeqqBlkV27UzKozXwu7GF+qZcKNk2R8FpDMcJ7T6ytOMPpTs8lBZ3q6Yq/sMaxZhW8wE0LfZWVcHCEhoSa+p58qPok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard.org header.i=@beagleboard.org header.b=E+He/nfO; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=beagleboard.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="N7E69igB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tQg9FsxuehNkC3uWKAUYgnFl+7DbPQ0lTgv6KVSc/qC7ftaTDLSWcA8XcCsCpQC8mIbEClYh91MX5cjAbOOk2URBD8alPbnK/97mkWabjdUbqd3DzepVbD3/7/aPBcTmFaRXWCx43ZAaiEZuwwLFpQO4vzlqyqGUMPYoVt1pYbO1MjMO1ZHHpHN+5H8OPiH9ZjxFIx08pE71+6uzzK8WGtdkdGAHQ2VQo66xm8rhSgZT88WEbphqY0287oi6sFerxr8aWG1iPUfTDwL3fzF0U2AOaK5Dzz6FelFe8sdhShWOLSjaEu/0bZ9F301OK37gXxu46U5su3C77R3cdw0jdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mOL9E1SWgCT5IO15duXo33pD+7Q1p3nml0jkmG8nymM=;
- b=KL1jwgoN0Awm0k9WK2jRiwDWsCGP2X2bNTzx/Ec2HqMOfhQTN/W7bS+AD/xbDNLStbz2HbhkRfWsxHPjPg8+5XcBNLWTCiE1XIOsPDDYStqAzpVDWlfE55KmtLICO4A4ODqyxLiwjgbujwnea4bHuE/xwa3LIpoRMGc2S9Gh3dV4CkZmlu0JyPIbyOjbrQeJ5aYyh11bEiS/cEANoeve3Arp4g46R18cr4ATDa7QgGTHCk8KNNeaS7t24n4NQ5cHozM0UazYGbqUkLsdLtlXQ30LA001niAlVUmKj+y8dbX44XARpP7kncj62dJamYYHSNM6QeinxHOKE7aS8d9Pig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mOL9E1SWgCT5IO15duXo33pD+7Q1p3nml0jkmG8nymM=;
- b=N7E69igBd6E9hnv9aT6d6aTgSQJeADPz35yAiw23XoK6Fsy0y9TMcY0g+MpA46RNdJleevxMDW7nzuSBAL10gok4D+Q9tZiTXgqNNt/2ZYg/DANeMb+EicI7qBeh4IQlF0awPdrflEpXUHVY7q9sFd6mhkD0SFRkw/akcRryQdQN61NwH6VYt7U/548aYyrhW0LRpyjUr4ye0HCK5rPPxDEAA7OItClTW8TeDE0vRX09VW1cnA8gKed8xGXr+3ah0ma604woOwUWsj4FKGwm5HFHaeIIvOPHgaq1prbrvKHKvYKewPvrd8vucODy21xe196YNs+GBN2EhEth799Pdg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
- CH3PR12MB9342.namprd12.prod.outlook.com (2603:10b6:610:1cb::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.7; Thu, 27 Aug
- 2026 07:31:05 +0000
-Received: from DS0PR12MB6413.namprd12.prod.outlook.com
- ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
- ([fe80::e82a:6673:4142:37fa%5]) with mapi id 15.21.0360.008; Thu, 27 Aug 2026
- 07:31:05 +0000
-From: Eliot Courtney <ecourtney@nvidia.com>
-Date: Thu, 27 Aug 2026 16:28:40 +0900
-Subject: [PATCH v8 12/12] gpu: nova-core: add ChannelIdPool
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260827-chid-v8-12-bc74c77d0214@nvidia.com>
-References: <20260827-chid-v8-0-bc74c77d0214@nvidia.com>
-In-Reply-To: <20260827-chid-v8-0-bc74c77d0214@nvidia.com>
-To: Alice Ryhl <aliceryhl@google.com>, Burak Emir <burak.emir@gmail.com>, 
- Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>, 
- Timur Tabi <ttabi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
- Eliot Courtney <ecourtney@nvidia.com>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: TYCP286CA0357.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:7c::15) To DS0PR12MB6413.namprd12.prod.outlook.com
- (2603:10b6:8:ce::10)
+	dkim=pass (2048-bit key) header.d=beagleboard.org header.i=@beagleboard.org header.b="E+He/nfO"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-39647aa9d52so870767a91.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 27 Aug 2026 00:54:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard.org; s=google; t=1787817293; x=1788422093; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=RVJCcBAuS3izuvlvZhdPsxJ3W7iR8P4cqbeVqoSeh+Q=;
+        b=E+He/nfOyc+FYMfO8KTuXBVuOgH80tcM2eFsKs01FvEx4kX+MOQhEQ5OownVKsL+CD
+         W0FwL0OVmYi0xdE4ElRn7bE21kBTOiVG3dCqK5NFAk8VoQ2JAt0i92f0vCKifzdE4jlT
+         XBFwwMAEQWzNwDDkMKR54R9JMAUGTo5JKcBIN1OeOKZnBPJ0OoNZpRWOxXfz5oGOMMFc
+         S4XJEwdiSb9WNxhvZzIm130yXmh7v4d26eEd3m461Cb3Y96hlrGGop0Nu+jpBDLDaHaX
+         e/4xrsl2BBwtTfiFT8nBRrQ16xc5VRI0WDNwGq4OBUYEw4d1uG/DZdhl2Swx6r5UQbrk
+         vKEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787817293; x=1788422093;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=RVJCcBAuS3izuvlvZhdPsxJ3W7iR8P4cqbeVqoSeh+Q=;
+        b=S3vk9I+Itn1SVdyEcKGHfOQU4Jxc+xyHWCe8uUIptFDsmWxZvUKIpgYEBCTdn/OPj5
+         NvDKcTCZbAQqq6e8wR0p5S1DbG/Iv55/FUGG4KD4+egwKJ+tFmv6fadX8EY40+4duEYx
+         2wjaBpDc+LRUCAe0n0OkGkXBc8x/VxX4hs2jSnrgNSwKpPU5n3mrzp7tQbhscBVgYWy/
+         IMFDITIQMQb2IFN9ipK/0K4RQoZglmt/kXPIDAVZuHWpp8M9d6vgNG3ZFlzI6rA6Hynx
+         wmjDT6Nge4F1XQDN6y4dA2TNjdeHhMlVK1Q94DgdQhjA5ozGCWYK4aTGTjhobrM48S2e
+         VW/g==
+X-Forwarded-Encrypted: i=1; AHgh+Ro4CQApvUs0aSB2hABn/k8CqqFNQJFFot6SJkQ5SufpnXU1PWD8ve1m8cPkxw3dEwx2QI0XMO2xJun0Axr34A==@vger.kernel.org
+X-Gm-Message-State: AFuF++lQCIbUhZtMrJm9CnDHcsmOvDgWEINe1CshG0ssrhTboFtQHcJF
+	l3plvTvnH2hcdRJVw9KtEYfg1cH0/hyxICtQ+8vpaN8r2PfcaLpvgFGYUFJOVJutjA==
+X-Gm-Gg: AR+sD119BR4fRTFk7wqoSwNiE+iEOVhf8Gziik+HegozQ5kRGpOKigzpUZs9S40nf4I
+	VZTDdToGFw7GBFognX4HCPSSaxtgmaArl2ryy1B4FN/ti6cH83DYNOLupad2usMn/SbNHJhwJpJ
+	wBcgR8KSiKwGXe17Ovt0qzWfjqyqLATNgH+v9D5IBdnVYmFhwABOFIHSO8xBsLIlmzY5JR9j80b
+	gIb0alnbF/a45n5JzSXZWxyzuLgvPSq80RA8dpC0KjmS6VOVatHAAmV1oaHui448/MJeQhsSqKN
+	V8qyiZhuS26WAEt3dE1yAmSpI773YqMB3uEz90KvfBI58I9gY7rekECTUFRnvPg2YJWUUnR96qe
+	Lpb9U9Qu1Lo1f+1ZSLsWkAfXxodWAoE4D97fMMt/jr/rOQZTrSN+Lx45O7qE057RTPeXqiQmx5a
+	xjHYmd6tLxVcSUqU13iaHGdzdzlbIicaKgAcnc6F4y5rNZyOFFUfBRN02eueR7aTbOTqEPqnI=
+X-Received: by 2002:a17:90b:35d1:b0:396:65b3:c05e with SMTP id 98e67ed59e1d1-3969bb1e82bmr6537161a91.9.1787817292922;
+        Thu, 27 Aug 2026 00:54:52 -0700 (PDT)
+Received: from [192.168.29.54] ([2405:201:4019:32fc:3c55:6b24:5147:322b])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3283d60c2b4sm24641685eec.5.2026.08.27.00.54.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Aug 2026 00:54:52 -0700 (PDT)
+From: Ayush Singh <ayush@beagleboard.org>
+Subject: [PATCH v2 0/7] Add Greybus Sotfsvc and UART Node drivers
+Date: Thu, 27 Aug 2026 13:24:36 +0530
+Message-Id: <20260827-gb-uart-transport-v2-0-a03bb1f5fbd1@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|CH3PR12MB9342:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3a99f2a5-ea69-433d-208a-08df040d2735
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|10070799003|23010399003|921020|56012099006|10067099003|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	iz2g8aEgNzT+AAU0xH4wKybug45UosGlz0XeO/0Kg0HKroX1FuDJ2WVSCvYc4lzBDhpdMtXIYbsUb4CS+dEoWSy5DSrwp2GwY297zpWTNkbIIeu5dCuVdkIToj5W9vD+lyVvS8eMHKl6cz6US1P7Wjp1Lr9dhMSfvFMjX4nkRSdXKXDpZZH2nGma+fTOD1LUfZWNSUqDz149rjW3om1GKV3oGYTAlvpD5BU+5vKvSfOlCRkDQRaCI0OopeMVJPEaX7p7M4G6u1DB92S+JttDnuESZ9quSI2I0nSD11/hXPkFWJUsJylrB1hRYzk3kyhveCb+owPeynsmOXZWHtxFVCtCRTkncTyryDJS+h8NYLSvQaUt5dpg762BeLKAZ9OaExoXXxkeFvg88sdqykIXgc7E2/yA3GP93dBZLCtOrRjOsllUYCs9kYKW+BciDX4yhunwwC1DtKMM0PwfX7posusjmZ9kHwjki5hZFOZN5GrX4EqukvL26B8WcSbYXwSW1K+SCoBXvhpJ9vBODon0LCjDdhVObDDhyuUiTsiVcMto19klYM05XR48hOl9SoGjLuT76mtxLkknIWh/n7ycyOuTlAb3TapbnMHvBw4K1LaupVIvhpKQbF0Ftc70VWyNYIE0Ot57Me/G+dnphzrGLCnJ0fT7uIb5kUM2YdRhZL3ZkG3mh6B1Wa9IY6V8rQhU69H+34yCXkREJgyVX3sNsg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(10070799003)(23010399003)(921020)(56012099006)(10067099003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SnBGK1hsY1ZNd0JaTi9HSy9xV0NnNXVmT1FCbWkra2p6UVR6MjZ2a2tzWEVC?=
- =?utf-8?B?eURPenhlcS9TMGQwVFlsNWgzRTByMmFqckg2LzZtY1dwMVZoeisxa0VlM2xt?=
- =?utf-8?B?eXNNOU1vT0NMTE53YWhSRitWeTZ0d2N2MUN1SXJ0WVZzcDBXOURyd0VBdjRX?=
- =?utf-8?B?TUVMTkNadWMwZEVON3pwcEI2SDJ3SkJWTDZkQWhIMEpiYW9qV1BOSllEZWN1?=
- =?utf-8?B?UCt6Y3h5VGNxN1FkTGxLN1RybEFjWWwvOVJRTnJKQzB3U29vOXczWDJuSUNW?=
- =?utf-8?B?bWtnTVU5VzF2NlNmWkllM0dPZnRtQndtaUIycjE2VkZZNWhJYjBhL0E2dFVX?=
- =?utf-8?B?VE5LeXduOXl2SFRQcXBHeHZSRVNtU1dpTy81eldWVzIyNmxmTUJWbURoOGJZ?=
- =?utf-8?B?TXgzem1tN29aenhmeVRYOXFCOWVaLy82VDdvZmpqZmJjYU1hOUFLOG1Vc1dQ?=
- =?utf-8?B?OTluNENtKzY3cHBSZGJuekJWTE5XdFkzbjM1RGt1UWZadG1VYjRLYXNnYjY2?=
- =?utf-8?B?Z2RJRnhkQXlmRFNneXh5N0VXSmwvTFdQSXVVMWd4b1NTNTZzZW1OMlEvZmdD?=
- =?utf-8?B?dWxaL091NTF1UHZvN0FmM2l2bmVHcFQ4UUxIYm1TSVlUTWdMTk04MkRoOWh4?=
- =?utf-8?B?V1QxUVRHN2Y3MmNLOCt5bW13UE9rM3N4dkIyME0xNkNTY2xCZWxxRUVnbURP?=
- =?utf-8?B?WWpGaVl5U01lNy95Mi9SV3k5Zi9ETG5LZXN5RGFNZDlSdnB0b0JPaEwyd1Nu?=
- =?utf-8?B?d3RRSHJrbnhtVDl1eXB3T3RoOC9sQWVyalBMaDRCWHZiSFIxMit2a0JLM1hm?=
- =?utf-8?B?LzJ2c1ljVnlKMFppYm1mamNobkxXU1VYRjRwbWJEYVNLanE5RkhpV3oyUVZB?=
- =?utf-8?B?aVIxUWU3NWhYYldkZ2NKaGpnU2NPU2FxREJ2eThZbGYwVWwyazhPOXB0TEFW?=
- =?utf-8?B?Nkd3TDdJdHdERitzc2dYUTFVdEdUeThpWnRpeVQ2WU92K3FkR3ExRittSldv?=
- =?utf-8?B?S2hkWXo4eHFkelFuVEluZS82VVRoZmptdW9YNzQ1MUlDb3A2NG1hbFBETklt?=
- =?utf-8?B?a2hBeFpXQXpOeUZlaC8zc2ZaWmFyYjlrQlBEMktnbjVCbkg1RmhGNVNMQ1NB?=
- =?utf-8?B?T3ljdWs5MWkxcmR3Ty80L0hUalc0djQrMHJkeEpDQU5iUWJaeXVJODJEczVM?=
- =?utf-8?B?TWRXL0VlaGk5aWVERGxhZ05vWEZvRVd5d09VVXE5a3pISTY5MjZuZEs4S3E1?=
- =?utf-8?B?blZ4Z1pIR2NlN1JUd285Q0gvYTFuSEpCRE4yUitUT1o4NDNQRXBGanlrMzJI?=
- =?utf-8?B?OTZza0puZDJNclhxYUZWM2k2WTcrdDlqMG9LTnJoNXUvT0g3YmlyV0oxdGdC?=
- =?utf-8?B?Z2FwQ2VQSWEzbjdBRkZLajR4RnBiM0N6Z1lDQnV4Wm5rYWhZY051Q0NWcnRG?=
- =?utf-8?B?dWt6bG4yY0lHdHM2bGpRWitnS0ZydFEvSzlrVUROQStHVVpKYmtmTkVRdmRQ?=
- =?utf-8?B?bHR3VU4yS3RTWmFHb1B3VHh5bHI1dXZudUd1eGpZaWd6d0VrM1JPWmFOckZv?=
- =?utf-8?B?ZnRpMjZKa2QxZDJLT3JvUFUxM1NYQ1RYVTBQTDU2MjNqeWFTM3IwK3l3VjE3?=
- =?utf-8?B?NE5rMTBpQ0w3dTlJTHVGbGM3TlY4Q3AveEl1VDcwdDl3Z3VybTlrV2V6dTVh?=
- =?utf-8?B?aW1lUVRocmI0YVZTODlPWUw3eXJETzdIV3duVzdFR05NdEluU0NXRmM2RGVL?=
- =?utf-8?B?MzREL2w5d21sTmI3V2wxTVVLR3hhTTZyVnpHQzJySE80ZHByMkdGemNWcnJG?=
- =?utf-8?B?SEJ3dG9DeHYrTThUSDBnT3FuYXhNMWhJVmlqN0ROeWMyWWFsWitDN0hVS1lU?=
- =?utf-8?B?MktGUm9RYlkwY2JwSEM5dCsvS1BNVkNaSUw0Y3NudFRaeE1BK1kvdU1UNXR5?=
- =?utf-8?B?UHA4SHFiYUdnOWcvRHRubjZSdDF1TWRaSWRxZTdvVlZLc1JKWnlKVFRZNHp2?=
- =?utf-8?B?OVNmYXl2L2RPaWJvTGJwcVNRZTM5MkNydlBjclF2a1RLRDVuZTM2V3hXblln?=
- =?utf-8?B?SW5ZQUlYYXo0ZkhNV1p0RFRxVjVrSENSZHoreGtHTGdLdEZpY2cyRkpRR0tx?=
- =?utf-8?B?dUt4VTVITEQ3UzRnWHRxSjBhZTh1bzl4STRPNU1vR1Noa2RMSUlRazBUNDdK?=
- =?utf-8?B?dXprc0VsS05HM015Z1J1NW9XVjlOd1c1RnFwOVloaUkyQzdaMTB1eW1CalY2?=
- =?utf-8?B?QkFmKzN2dE9WSEZqc3JKdTFFS2U5aUtGeVpXUU10L0pnWTJXRTE1WU9mZ3RL?=
- =?utf-8?B?NUdUakRNVXo4dEg0Uzd2cGdWRTA2T0RrODZ2REx5ZWpBMUdNWWNOWGpwbnJG?=
- =?utf-8?Q?bJisJ/MaNMYrQYSPrME4ZHNS/j5vCwU1eeg6uXxzwq0rs?=
-X-MS-Exchange-AntiSpam-MessageData-1: PAMNC3piAteBwg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a99f2a5-ea69-433d-208a-08df040d2735
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 07:31:05.0245
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: i54WwGmfm+bW8hk7Re046983AnCQHIjtGPldHlQ57tN+yOqP/MtFVvxCuu8BupULblK9BH23R4KPdaVF1SlZ/A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9342
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NwQrCMBBEf6Xs2UiyNG315H9ID5tmTQPSyKYWp
+ fTfjcWjt3kD82aFzBI5w7laQXiJOaapAB4qGEaaAqvoCwNqbHRntApOPUlmNQtN+ZFKOqG1vrG
+ 2HeoByu4hfIuv3XntC48xz0ne+8Vivu3Phv9si1FaYYeeTE2ude3FMYU7u0Tij0kC9Nu2fQBq4
+ iBWuAAAAA==
+X-Change-ID: 20260810-gb-uart-transport-9255d6557c4c
+To: Jason Kridner <jkridner@beagleboard.org>, robertcnelson@gmail.com, 
+ Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
+ Ayush Singh <ayush@beagleboard.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Uladzislau Rezki <urezki@gmail.com>
+Cc: greybus-dev@lists.linaro.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, linux-crypto@vger.kernel.org, 
+ devicetree@vger.kernel.org, Ayush Singh <ayush@beagleboard.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8005; i=ayush@beagleboard.org;
+ h=from:subject:message-id; bh=O07296HIjH3sXW22U+nMby2Sc/yzcqX5nvs3bBNIq0w=;
+ b=owEBbQKS/ZANAwAKAQXO9ceJ5Vp0AcsmYgBqj+1Cc6huTwI+9sLozSbo/yQUuyB4CH+Y+POwV
+ /Rliv0OTdKJAjMEAAEKAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCao/tQgAKCRAFzvXHieVa
+ dBQlD/4iQuLDaYSy2Gi4Nqd6vbpyJrRFxtM5rQV53gnnPPTc9C//rc6uZe5sSqr5fDP0Sgx9VPa
+ it2YlMxbuMlItKYUG3DeN52ddmZZHy+MX9xv/N720oJCE10hkDXtVqGJmsx8r5eKkrNmdGwHkQV
+ YyP46EDliEeLzLTnM2AmXXGRwHEziNJPI2ckHjcaAC3c3gHqdncj8LjmWnPswISsYL3hoj9xrk3
+ vHdD4S42JcUL5khXp7bdBymoRDDzTbmE0UNpZhC9va0n5elBh5qnkmlKwLgNkt1KeMvoRQoey/l
+ f/twbtyraYgy1W8xgCW+L4FeF5sO01CWRJMjSASpj8mL9v9RLDg7lihVjh6BVdLwI8ULj3yW+nG
+ sRPQ3y4vwHh7WsTV048vbTptoAA5mMZxRLL8OocRvz0GImg7CcV0AQoX/GRQL/hwk1q7TGWmnyb
+ 0PeialWIe12vUZyH+fqa+lcTBvfhES3Lu58TBWGw5I1/xUF9WT1cYndvEoxBwMbhljdIYa8QVRQ
+ 8qRbiPblfYwbo6ItfOojrQB7bQHEGA38ItJEU/N9KGRv98a8hagwrx1ZgcwgCLCV95G2aQuVGfS
+ Y1unhTGky6mWTNiCmnsoNcLIGZM8tO9ehj1x/Fqrl2lW+kGlunhgIpYsdrQj+HbyjE+m/FD40l6
+ +eR35ZZFVPkkJqg==
+X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
+ fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
 
-Add `ChannelIdPool` which adds automatic tracking and releasing of
-channel IDs on top of `IdPool`. This is necessary for apportioning
-ranges of channel IDs to be used in e.g. vGPU.
+A Greybus network needs an SVC (Supervisory Controller) to bring
+interfaces up, assign device IDs and connect CPorts to the AP. On a
+UniPro network the SVC is a real entity on the bus. On transports that
+merely carry Greybus messages - a UART, an I2C bus, a network link -
+nothing on the wire plays that role, so the SVC has to be emulated
+somewhere: in a user-space bridge (gbridge), in coprocessor firmware
+(cc1352p7 in gb-beagleplay), or open-coded inside the host driver itself.
 
-Channel IDs are allocated as a contiguous sequence with a specific
-length and sometimes a specific alignment [1] for vGPU. The ID space is
-small (limited to 2048) and allocation is not on a hot path, so a
-bitmap-backed `IdPool` is a better fit than IDA/xarray (which allocate a
-single ID within a range, not a contiguous sequence) or a maple tree
-(where aligned allocation needs an alloc_range()+erase() retry loop that
-essentially reimplements bitmap_find_next_zero_area()) [2]. It is
-also faster than maple tree [3].
+This series moves the emulation into the kernel and makes it shared.
+This was discussed in a prior RFC as well [2], but to keep things short,
+removing the need for an external SVC greatly simplifies the greybus
+network setup when nodes are directly connected over common transports
+such as UART, I2C etc.
+ 
+    gb-uart-node          gb-softsvc              greybus core
+   (transport, serdev) <-> (SVC + host device) <-> (bundles, protocols)
+        NodeOps            module_insert()
+     submit_message()      module_remove()
 
-Link: https://lore.kernel.org/all/84bc8bd2-e292-4b84-9580-a1b5df4c5bdc@nvidia.com/ # [1]
-Link: https://lore.kernel.org/all/20260710-chid-maple-v1-1-4ee869055268@nvidia.com/ # [2]
-Link: https://lore.kernel.org/all/20260717053241.916441-1-ynorov@nvidia.com/ # [3]
-Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+gb-softsvc registers itself as a Greybus host device and answers the
+SVC-side operations the core expects during interface bring-up and
+teardown. A host driver implements the NodeOps trait to push data
+towards its node, calls module_insert() to announce a new node,
+submit_message() to hand incoming Greybus messages back to the core,
+and module_remove() on disconnect.
+
+The first user is gb-uart-node, a driver for Greybus nodes attached over
+a plain serial port. Framing is HDLC, with a one-byte address (0x01 for
+Greybus) and control byte, followed by the 16-bit CPort ID and the
+Greybus message. No SVC firmware is required on the far end, so the node
+can be a bare microcontroller speaking Greybus - a BeagleConnect Freedom
+over its serial link, in this case. The testing is performed with
+greybus-zephyr [0] implementation.
+
+Both drivers are written in Rust, which is why the middle of the series
+is abstractions rather than drivers. Only the APIs these two drivers
+need are covered: protocols.rs abstracts the SVC-facing parts of
+greybus_protocols.h, and types such as Greybus Interface do not
+implement AlwaysRefCounted yet. The intent is to grow this as more Rust
+host drivers appear rather than to abstract the whole subsystem up
+front.
+
+Patches 1 and 2 are small C-side preparations to the Greybus core:
+exporting gb_connection_get()/gb_connection_put() and adding
+gb_connection_hd_find_by_intf(), a lookup by remote interface and CPort
+id for callers that only know the far end of a connection. Patch 3 adds
+a CRC-CCITT abstraction, needed for HDLC frame checks. Patch 4 adds the
+Greybus abstractions, patches 5 and 6 the two drivers, and patch 7 the
+device tree binding for BeagleConnect Freedom.
+
+Open questions 
+***************
+
+- gb-uart-node imports types from gb-softsvc, so the series carries the
+  Rust-to-Rust cross-module calling setup from nova-core [1]:
+  gb_softsvc_exports.c plus the Makefile plumbing that emits crate
+  metadata and generates the export list. This is a workaround for the
+  build system not supporting Rust cross-module dependencies natively,
+  and it should go away once that lands.
+
+- Connection create/destroy and interface activate/resume in gb-softsvc
+  currently just acknowledge the request. Callbacks into NodeOps can be
+  added when a transport actually needs to act on them; I did not want
+  to invent an interface without a user.
+
+- Zerocopy is currently not being used in grebeybus/protocols.rs. They
+  cannot be derived yet since types generated by bindgen do not have
+  them, and it seems explicitly forbindden to manually impl the traits.
+  So using old traits from transmute.
+
+- The bindings are supposed to be created for actual device, but any MCU
+  that supports Zephyr, can run the greybus-zephyr firmware with UART
+  transport. So not sure if adding a beagle,beagleconnect-freedom
+  compatible is the correct choice here.
+
+- The individual patches can be spun off into independent patch series
+  if required. The reason for this single patch series is to provide a
+  complete picture of usage.
+
+- Since gb-softsvc currently is not being used from a C driver, no C API
+  is provided. However, if required, it can be added.
+
+- Writing to UART from gb-uart-node is currently a bit broken. I am not
+  quite sure what the safe way is to go from a non-bound device to a
+  bound device. Any suggestions on this front are welcome.
+
+- I am not sure if Rust abstractions should have a seperate entry in
+  MAINTAINERS with me as the maintainer, or if they should just be added
+  to the respective subsystem entries.
+
+[0]: https://github.com/beagleboard/greybus-zephyr
+[1]: https://lore.kernel.org/all/20260622-nova-exports-v5-0-6191773fc977@nvidia.com/
+[2]: https://lore.kernel.org/all/ecca8eb2-8e5a-4770-bcf6-3fb49773088b@beagleboard.org/
+
+Signed-off-by: Ayush Singh <ayush@beagleboard.org>
 ---
- drivers/gpu/nova-core/gpu.rs         |   2 +
- drivers/gpu/nova-core/gpu/channel.rs | 198 +++++++++++++++++++++++++++++++++++
- 2 files changed, 200 insertions(+)
+Changes in v2:
+- Fix possible null pointer dereference in
+  gb_connection_hd_find_by_intf. Flagged by sashiko-bot.
+- Remove prompt CONFIG_RUST_CRC_CCITT_ABSTRACTIONS Kconfig symbol.
+- Add CONFIG_RUST_GREYBUS_ABSTRACTIONS to ensure that greybus is
+  built-in for rust abstractions to work.
+- Use gfp_mask in message_send callback.
+- Only provide a Message reference in message_cancel callback.
+- Add invariant comment for Registration.
+- Call Registration->add directly in new, before constructing
+  Registration.
+- Add Send and Sync bounds to T in Registration<T>
+- Set endo_id as 0. Is not used anywhere.
+- Fix module_insert intf_count. Was hardcoded to 1 by mistake. Flagged by
+  sashiko-bot.
+- Check for empty intfs slice in Module::new.
+- Remove module in serdev::Driver::unbind instead of on drop.
+- Make gb_uart_node write atomic. Using temp buffer to build frame.
+- Fix import style.
+- Reorder beagleconnect-freedom dtbinding patch to be before gb_uart_node.
+- Add vbat-supply and reg properties to beagleconnect-freedom dtbinding.
+- Reference spi-peripheral-props in beagleconnect-freedom dtbinding.
+- Link to v1: https://lore.kernel.org/r/20260820-gb-uart-transport-v1-0-282da14ab7b7@beagleboard.org
 
-diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-index 42a4cd7971fa..66ea697a89f8 100644
---- a/drivers/gpu/nova-core/gpu.rs
-+++ b/drivers/gpu/nova-core/gpu.rs
-@@ -33,6 +33,8 @@
-     vgpu::VgpuManager, //
- };
- 
-+#[cfg_attr(not(CONFIG_KUNIT = "y"), expect(dead_code))]
-+mod channel;
- mod hal;
- 
- macro_rules! define_chipset {
-diff --git a/drivers/gpu/nova-core/gpu/channel.rs b/drivers/gpu/nova-core/gpu/channel.rs
-new file mode 100644
-index 000000000000..485efaba059d
---- /dev/null
-+++ b/drivers/gpu/nova-core/gpu/channel.rs
-@@ -0,0 +1,198 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
-+
-+//! Channel ID allocation.
-+
-+use core::{
-+    num::NonZero,
-+    ops::{
-+        Deref,
-+        Range, //
-+    }, //
-+};
-+
-+use kernel::{
-+    id_pool::IdPool,
-+    prelude::*,
-+    ptr::Alignment,
-+    sync::{
-+        new_mutex,
-+        Mutex, //
-+    }, //
-+};
-+
-+/// Pool for tracking reservations of channel IDs.
-+#[pin_data]
-+pub(crate) struct ChannelIdPool {
-+    #[pin]
-+    inner: Mutex<IdPool>,
-+}
-+
-+impl ChannelIdPool {
-+    /// Creates a pool managing `num_chids` channel IDs.
-+    pub(crate) fn new(num_chids: NonZero<usize>) -> impl PinInit<Self, Error> {
-+        try_pin_init!(Self {
-+            inner <- new_mutex!(IdPool::with_capacity(num_chids.get(), GFP_KERNEL)?),
-+        })
-+    }
-+
-+    /// Reserves a contiguous area of `count` channel IDs starting at a multiple of `align`,
-+    /// returning a guard that releases the area on drop.
-+    pub(crate) fn reserve_ids(
-+        &self,
-+        count: NonZero<usize>,
-+        align: Alignment,
-+    ) -> Result<ChannelIdReservation<'_>> {
-+        let mut ids = self.inner.lock();
-+        let range = ids.reserve_ids(0, count, align).ok_or(ENOSPC)?;
-+        Ok(ChannelIdReservation { pool: self, range })
-+    }
-+}
-+
-+/// A reserved contiguous area of channel IDs.
-+///
-+/// Releases the whole area back to its [`ChannelIdPool`] when dropped. Releasing locks a
-+/// sleeping [`Mutex`], so the area must be dropped in a context that is allowed to sleep.
-+#[must_use = "the channel ID reservation is released immediately when unused"]
-+pub(crate) struct ChannelIdReservation<'a> {
-+    pool: &'a ChannelIdPool,
-+    range: Range<usize>,
-+}
-+
-+impl Drop for ChannelIdReservation<'_> {
-+    fn drop(&mut self) {
-+        self.pool.inner.lock().release_ids(&self.range);
-+    }
-+}
-+
-+impl Deref for ChannelIdReservation<'_> {
-+    type Target = Range<usize>;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.range
-+    }
-+}
-+
-+#[kunit_tests(nova_core_channel)]
-+mod tests {
-+    use super::*;
-+    use kernel::sizes::SizeConstants;
-+
-+    #[test]
-+    fn chid_reservation() -> Result {
-+        let pool = KBox::pin_init(ChannelIdPool::new(cv!(2048)), GFP_KERNEL)?;
-+
-+        let first = pool.reserve_ids(cv!(48), Alignment::SZ_1)?;
-+        assert_eq!(0, first.start);
-+        assert_eq!(48, first.len());
-+        assert_eq!(48, first.end);
-+
-+        let second = pool.reserve_ids(cv!(48), Alignment::SZ_1)?;
-+        assert!(first.end <= second.start || second.end <= first.start);
-+
-+        let first_start = first.start;
-+        drop(first);
-+        assert_eq!(
-+            first_start,
-+            pool.reserve_ids(cv!(48), Alignment::SZ_1)?.start
-+        );
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn chid_reservation_drop() -> Result {
-+        let pool = KBox::pin_init(ChannelIdPool::new(cv!(8)), GFP_KERNEL)?;
-+
-+        let a = pool.reserve_ids(cv!(3), Alignment::SZ_1)?;
-+        let b = pool.reserve_ids(cv!(3), Alignment::SZ_1)?;
-+        let c = pool.reserve_ids(cv!(2), Alignment::SZ_1)?;
-+        assert_eq!(0, a.start);
-+        assert_eq!(3, b.start);
-+        assert_eq!(6, c.start);
-+
-+        drop(b);
-+
-+        // Only have space for 3 IDs right now.
-+        assert_eq!(
-+            Err(ENOSPC),
-+            pool.reserve_ids(cv!(4), Alignment::SZ_1).map(|_| ())
-+        );
-+        let b = pool.reserve_ids(cv!(3), Alignment::SZ_1)?;
-+        assert_eq!(3, b.start);
-+
-+        drop(a);
-+        drop(c);
-+        drop(b);
-+
-+        // Everything was dropped so the pool should be empty.
-+        assert_eq!(0, pool.reserve_ids(cv!(8), Alignment::SZ_1)?.start);
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn chid_bounded_by_num_chids() -> Result {
-+        let pool = KBox::pin_init(ChannelIdPool::new(cv!(4)), GFP_KERNEL)?;
-+
-+        {
-+            let a = pool.reserve_ids(cv!(1), Alignment::SZ_1)?;
-+            let b = pool.reserve_ids(cv!(1), Alignment::SZ_1)?;
-+            let c = pool.reserve_ids(cv!(1), Alignment::SZ_1)?;
-+            let d = pool.reserve_ids(cv!(1), Alignment::SZ_1)?;
-+            assert_eq!(0, a.start);
-+            assert_eq!(1, b.start);
-+            assert_eq!(2, c.start);
-+            assert_eq!(3, d.start);
-+            assert_eq!(
-+                Err(ENOSPC),
-+                pool.reserve_ids(cv!(1), Alignment::SZ_1).map(|_| ())
-+            );
-+        }
-+
-+        assert_eq!(0, pool.reserve_ids(cv!(4), Alignment::SZ_1)?.start);
-+        assert_eq!(
-+            Err(ENOSPC),
-+            pool.reserve_ids(cv!(5), Alignment::SZ_1).map(|_| ())
-+        );
-+
-+        let head = pool.reserve_ids(cv!(3), Alignment::SZ_1)?;
-+        assert_eq!(0, head.start);
-+        assert_eq!(
-+            Err(ENOSPC),
-+            pool.reserve_ids(cv!(2), Alignment::SZ_1).map(|_| ())
-+        );
-+        assert_eq!(3, pool.reserve_ids(cv!(1), Alignment::SZ_1)?.start);
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn chid_reservation_aligned() -> Result {
-+        let pool = KBox::pin_init(ChannelIdPool::new(cv!(16)), GFP_KERNEL)?;
-+
-+        // Alloc 0 so the first fit for the next area is unaligned.
-+        let pad = pool.reserve_ids(cv!(1), Alignment::SZ_1)?;
-+        assert_eq!(0, pad.start);
-+
-+        let a = pool.reserve_ids(cv!(4), Alignment::SZ_4)?;
-+        assert_eq!(4, a.start);
-+
-+        // The area skipped over by the aligned allocation should still be available.
-+        let b = pool.reserve_ids(cv!(1), Alignment::SZ_1)?;
-+        assert_eq!(1, b.start);
-+
-+        let c = pool.reserve_ids(cv!(8), Alignment::SZ_8)?;
-+        assert_eq!(8, c.start);
-+
-+        // Only 2 IDs left.
-+        assert_eq!(
-+            Err(ENOSPC),
-+            pool.reserve_ids(cv!(4), Alignment::SZ_4).map(|_| ())
-+        );
-+        assert_eq!(
-+            Err(ENOSPC),
-+            pool.reserve_ids(cv!(1), Alignment::SZ_32).map(|_| ())
-+        );
-+
-+        assert_eq!(2, pool.reserve_ids(cv!(2), Alignment::SZ_1)?.start);
-+        Ok(())
-+    }
-+}
+---
+Ayush Singh (7):
+      greybus: connection: Export gb_connection_get() and gb_connection_put()
+      greybus: connection: Add gb_connection_hd_find_by_intf()
+      rust: crc_ccitt: add CRC-CCITT abstraction
+      rust: kernel: Add greybus abstractions
+      drivers: greybus: Add software SVC implementation
+      dt-bindings: beagle: Add BeagleConnect Freedom
+      greybus: Add Rust UART node driver
 
+ .../beagle/beagle,beagleconnect-freedom.yaml       |  39 ++
+ MAINTAINERS                                        |  15 +
+ drivers/greybus/.gitignore                         |   1 +
+ drivers/greybus/Kconfig                            |  34 ++
+ drivers/greybus/Makefile                           |  50 ++
+ drivers/greybus/connection.c                       |  29 +-
+ drivers/greybus/gb_softsvc.rs                      | 504 +++++++++++++++++++++
+ drivers/greybus/gb_softsvc_exports.c               |  15 +
+ drivers/greybus/gb_uart_node.rs                    | 245 ++++++++++
+ include/linux/greybus/connection.h                 |   6 +
+ lib/crc/Kconfig                                    |   7 +
+ rust/bindings/bindings_helper.h                    |   2 +
+ rust/kernel/alloc.rs                               |   5 +
+ rust/kernel/crc_ccitt.rs                           |  26 ++
+ rust/kernel/greybus/hd.rs                          | 333 ++++++++++++++
+ rust/kernel/greybus/mod.rs                         | 232 ++++++++++
+ rust/kernel/greybus/protocols.rs                   | 392 ++++++++++++++++
+ rust/kernel/lib.rs                                 |   4 +
+ 18 files changed, 1937 insertions(+), 2 deletions(-)
+---
+base-commit: 6b8c8af514d739d0335f5579b585e02babe8a727
+change-id: 20260810-gb-uart-transport-9255d6557c4c
+
+Best regards,
 -- 
-2.55.0
+Ayush Singh <ayush@beagleboard.org>
 
