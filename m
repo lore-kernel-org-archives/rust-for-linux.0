@@ -1,135 +1,137 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A643D668B
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Aug 2026 23:00:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC8E33D4E4;
+	Thu, 27 Aug 2026 23:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787871653; cv=pass; b=u8mSv7iIMc5hbW2CZezoTBU+SPiQjrqKwkGq0yB0OPtyul72+3D7kK2pGG/NEgjEVE6ovLOewTpVTLbs8Fjg6YFUtDCBgn2IpUaRXb4eJWHrV1oQgNrGW1bBKSalMCSvsjeMOU6kiNV1iSYxsw0kDg4hUeSGOtVbvs4u6X9Jw4Y=
+	t=1787872083; cv=pass; b=VzZlxztktM2rVTDKW5DiKCbp3HRXUYcUZ1lkD8QN/+++D0RX2tzIm0Dx6IQMe+3oLzLcudO1JEkVWObEFfJ3EOySTJqMl0+EI7gB9lbqZZLmNG2UCsF+t6GubmXtzPIcjDmN/jJdYDrj6fk3mAD3SWDHU6eEmcVaCsCUK1CMGwk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787871653; c=relaxed/simple;
-	bh=PtOQ1ctrt5ChIryejtRZPvf9ci4aQrCJNC6i+HqoyYo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ikcAOvtS452fUi1Iyl9r0vT0K7Bp8w4nYULTCMcLut7lOYbwaSyXGIW1LPTGcGSb6hYE3FmAWVApRz9BBrQg2a9MCoVmD49/2JITqpkYY8YYdfZBRjKuoBkp0i5tznu3G6hS7epPcyp54WL859o1MfRzcnTNa7OdAUZVYdq+tOs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p9+covru; arc=pass smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787872083; c=relaxed/simple;
+	bh=JN3rSnKGqqfDq/eQLtVOB8blkZVlaaGIGUYSZdLukz0=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=BKYzIqdprR0dt6WjjAakFQkkG38lFvtIGkpYQnwfA7vm0HyvMWmDRAI3LEH5ZUzTYxWiU0Vb5BP4nLAB+4XqBphSdF1CqB8+/m3y38Gcp8JGU4h2aOnfWBdwzUNgMt4yqKwMMHLau7JHx0xrLDibEv7oCse2phrLVr2MqCqws8Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=a5WONbZ9; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p9+covru"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2d5862bc921so908815ad.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 27 Aug 2026 16:00:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787871650; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mJW/QUEbvddWELQ5mL5ENINinUMwic37vpeAO2P0xB3/j8Uee2UX+dbfWd4Lm22FWe
-         P1RFKOOdY6A/rBhdUuEsGnkjazO9ZSqCnZDr7ux7we3coz0LTWwpoY/75iU9WxOdwUDu
-         nZJXxmuGxJ4LLueUqtslTi0lt6EQPx9s4uLREHK2RUgbRvTtGQR1m9oh7aJNLkYsC2Ta
-         s57e4H/1aSGx4LzChVW9bTe8DHhaf3WXBOtkqn1lCGCJ62iQoTU9rYVk5r0dNh2YTBtd
-         YYoTPbkt6ZxOhj8gZEBYauwu/hZlYmWZjKW7fU8aFeacQsZADx4vQYqGXNrWcqyF2uoz
-         9MXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=PtOQ1ctrt5ChIryejtRZPvf9ci4aQrCJNC6i+HqoyYo=;
-        fh=WGyABnBSm8MlYyQwDN2KzGbWukLO6kSpsXLDfdJnpYs=;
-        b=JM4wfGN5cmZlEVfT7CCdYfvT7K6GqF2Teo3f5m8Cr9nLgUZHKEpdf9LPeagREQKECO
-         epZZCWuWFJg3yh5bfFaWOKLCPBYJJlV43ssH/qojPzEIneYeliyuS+i8DzczPrpInJgB
-         /S3T8I0U8F+tjSjX7cvVCO4sn0ToQ2ozbhV3c7z/f0EyzVK0BSZY9j2pnKiT60dK0+ER
-         ChG3OMP8Wc1NwXWXRcaZAPldyb0RAcMqU60Wbh1VmMfN99x2WnSaSrl9kGyuvIzI6gzd
-         x0v9TFZctOt5PbmVCzFR0IDfa2IAP0hE9V/7EzqgMNo81LRgOZQG5iD7kqFpiZb1ZYw2
-         cV1Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787871650; x=1788476450; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PtOQ1ctrt5ChIryejtRZPvf9ci4aQrCJNC6i+HqoyYo=;
-        b=p9+covru2Hp5BxxPX+gS4B4kj8l3iQMWtHIkbuwbH++g0b4ZFXpIwAUUa06uTwE4Qe
-         Ie/QHJVFJmxZNI+YrdT6rxNByYEAqaFDnzMtvmtLvIumADy9Uja0h1eCjX6/8APpCb/F
-         v+pb/A/Kh//celSSa/C8KiuFfGDDWvoCJYzbMIiabWsZHjuO49l0uydKOyuJ8JDeFqSE
-         SISdkJV/TWoRYIUVtm0Mz7LSC/TTuZETu/PceOtahPw5m+rQCDuO/8qrF925bpxEYOvs
-         W3ZqyBT82TUFs5+Cnv55Nt2v3gtqfBcf5hG63gG8kAr0nfVYDDA2euCgXHBfQJSCWibK
-         WjYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787871650; x=1788476450;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PtOQ1ctrt5ChIryejtRZPvf9ci4aQrCJNC6i+HqoyYo=;
-        b=gdCWpyHxDHSIquH7tS9S/gFhff/IyYH/aJLU3aVF/4d3z9bbU27TSFqXFyi3RAWRmG
-         EcuQP1jjwyv1fbarRq0anX3qhNlAJzeWftbuLU7iNNWjFoC8/2urpaH1RUVst6prih+W
-         7ulXqqCCVYyRQjWb71KsT2WZHVlMRnHhO1ai7mRZCA6qvVvY/doDE9V07WP7qmWFms4s
-         W5kxmMaeYnCg1Nu5WXzN/IKDzVpjxNaaePefNK31LoZGM0QsvaEmAwJuXdsyrY2bwLZ7
-         40OzzKDkmEMYmnre7AgC0SiLEFKNOLpTYlFlbCc79IAw+xI82yfmZ28cCJYLz02zP4tT
-         /i5Q==
-X-Forwarded-Encrypted: i=1; AHgh+RqxyDHvxJxPy3o3M6kL0fHWH1x72bx8yUVmAGYa8ARGN6AguU96wl86tqjk418J3Thsg22n4Ey7N6+uwgFIzQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++lU5eXtmHcsSxOg0Q0sp7CoJ8EcxKxhg3LLkJAAROnyg6ztswSs
-	VrG+sO1JiHMO9SbwMF9gHJAOj58EEGEmhEViwJfF6+/i7Nfgzrp7jUmWh/KIfy20/OOj8Fa7jgx
-	RnuGM0kmx9obqaDpkrfR3tthSzY71yYg=
-X-Gm-Gg: AR+sD12YYqMhmnMF+JLG2RKGsS7JnH1rHcEwfpuo9j6IRbOgpZaPB81V4kdKusRraYu
-	C5wW2Bcaw9h1zrNxbFKSvcK2AbuKL5SuBKKKSbPP87G2mo3wnYjxGJOAnMU4yuVJxAA3u5q57fB
-	HXH9+tefm/IF4NQ4Y24rmJzQ7mU6AZqvx7Iy6m4oaNEBTpmnJrXawWUe86Ruo0g4GqhyoWFS/NP
-	xEY3lcU2G3yuLF52jVSUXkMrH0e3ACe8ZzbsSZfcfWYHqNjZbufz2vJLCuKUugqyAlB+Kx5EQAL
-	HJfzw8w9a4lgcWBbOlBFyeqKMimGTikfDh9QwlO2vMYKh74oP1Vtcx1wo0X/hCCbebKJ7xGDBVB
-	RgfObkQxP9iVde5WctY5CfLNzngFERjtqXdLjYXhW+rHzexcAYRf5v74I3JQ7
-X-Received: by 2002:a17:902:d2c7:b0:2c9:ed4a:c3a4 with SMTP id
- d9443c01a7336-2d74ce38075mr21203935ad.0.1787871649744; Thu, 27 Aug 2026
- 16:00:49 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="a5WONbZ9"
+ARC-Seal: i=1; a=rsa-sha256; t=1787872055; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=UB0UsIC6SHTKqP5ChI+TmVTJV7ZOcBxq239G2/ARTA0WIUuCaU4GVOyR6HlUJXNz9a02Qagqkol8ndI2ZnmR3nTMuO8k60vtSE/N/1d8nUPITWkbwPtDg3PgtLBOgGQrflbNZRhb+IuhpxLB/64MKKqgO9fxCH76kAOV09+Q1Ns=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1787872055; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=iLWnyVnmxOQ+B7kTcDs1wmKhTGpUrtmBx77S2Imtshc=; 
+	b=dhVlQAYSvC6TfRk1EXpzr4dhlUs0AlwmXVQ3MtHhwVaCHw3UHjXYaYqTCrHuhXqdWo3kwd6Bg65RT8JwcByjxv097+O6XWDCoJwNArUNcTJNv81gx2pC8SRgLZjLigzsq0NOi1iYwdYzClK/cUVjgJ4Kt+n2f0JViS2brmcWFsk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1787872055;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
+	bh=iLWnyVnmxOQ+B7kTcDs1wmKhTGpUrtmBx77S2Imtshc=;
+	b=a5WONbZ93sBitwOhLCJyJmHS6qGMS29PFxJ6lNjDP65y2zWGXICSEtJq4eBosL8S
+	TAqO83vJNgY5qfmCArwCiggttp0f/XBdwMDwz6I1X9uvEhB0OIaTIkiHuB58aLRAZEi
+	h8Nxjd7ySHpFMPlXu+13CniTxjwhyt2o/XiyeiBg=
+Received: by mx.zohomail.com with SMTPS id 1787872053915579.0836722582136;
+	Thu, 27 Aug 2026 16:07:33 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260826163004.3365-1-mike@fireburn.co.uk> <20260826163004.3365-3-mike@fireburn.co.uk>
- <20260827030352.GB2327@sol> <CANiq72k3COcjo1s1MXdh=K7qRcOMMSq7-3_JCMtNKN3J0zQmjg@mail.gmail.com>
- <20260827182907.GA2137493@google.com>
-In-Reply-To: <20260827182907.GA2137493@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 28 Aug 2026 01:00:35 +0200
-X-Gm-Features: AcwNN1XMEcBfhQK81kPdbiieX1lImw4sydc4Mu3cJx6g3SD17OlDU5gWr95b-jw
-Message-ID: <CANiq72n5swSHaTsDi3TYdneyCiePHF-gEAHuFk3ZWj4v0meR+w@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] rust: crypto: add synchronous RSA akcipher support
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Mike Lothian <mike@fireburn.co.uk>, linux-crypto@vger.kernel.org, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	"Jason A. Donenfeld" <Jason@zx2c4.com>, Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Lyude Paul <lyude@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Asahi Lina <lina+kernel@asahilina.net>, Burak Emir <bqe@google.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Yury Norov <ynorov@nvidia.com>, 
-	David Gow <david@davidgow.net>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 6/6] rust: workqueue: add ScopedWork for non-'static
+ work items
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260807165252.3849875-7-dakr@kernel.org>
+Date: Thu, 27 Aug 2026 20:07:16 -0300
+Cc: tj@kernel.org,
+ jiangshanlai@gmail.com,
+ aliceryhl@google.com,
+ ojeda@kernel.org,
+ boqun@kernel.org,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ lossin@kernel.org,
+ a.hindborg@kernel.org,
+ tmgross@umich.edu,
+ tamird@kernel.org,
+ acourbot@nvidia.com,
+ work@onurozkan.dev,
+ jhubbard@nvidia.com,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ driver-core@lists.linux.dev
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <62F91620-6211-46BD-8095-4655726D52A2@collabora.com>
+References: <20260807165252.3849875-1-dakr@kernel.org>
+ <20260807165252.3849875-7-dakr@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Thu, Aug 27, 2026 at 8:29=E2=80=AFPM Eric Biggers <ebiggers@kernel.org> =
-wrote:
->
-> Yes, it doesn't explain why they need to be inconsistent though.
+>=20
+> /// Creates a [`Work`] initialiser with the given name and a =
+newly-created lock class.
+> #[macro_export]
+> @@ -283,23 +289,39 @@ pub unsafe fn from_raw<'a>(ptr: *const =
+bindings::workqueue_struct) -> &'a Queue
+>     /// This may fail if the work item is already enqueued in a =
+workqueue.
+>     ///
+>     /// The work item will be submitted using `WORK_CPU_UNBOUND`.
+> +    #[inline]
+>     pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::EnqueueOutput
+>     where
+>         W: RawWorkItem<ID> + Send + 'static,
+> +    {
+> +        // SAFETY: `W: 'static` guarantees the work item remains =
+valid indefinitely,
+> +        // so the `enqueue_scoped` requirement that the work item =
+stays valid until
+> +        // the work function runs (or is cancelled) is trivially =
+satisfied.
+> +        unsafe { self.enqueue_scoped(w) }
+> +    }
+> +
+> +    /// Enqueues a work item that may not be `'static`.
+> +    ///
+> +    /// Unlike [`Queue::enqueue`], this does not require the work =
+item to be `'static`.
+> +    ///
+> +    /// The work item will be submitted using `WORK_CPU_UNBOUND`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that the work item's destructor runs =
+before any
+> +    /// lifetime it captures expires (i.e., the work item must not be =
+forgotten).
 
-It is simply because it is the end state that we want, i.e. both
-Kconfig and source code to be in the usual folder (so less things to
-move later), plus one normally wants the Kconfig options to show in
-the right place in the menus.
+It seems like this requirement is due to cancel_work_sync(). But what =
+happens
+if the item is enqueued with enqueue_scoped() on two work queues
+simultaneously? Would cancel_work_sync() wait for both queues?
 
-> And if the code is "conceptually part of the subsystem", why is the
-> MAINTAINERS entry for "CRYPTO LIBRARY" not being updated to include it?
+Docs seem to warn against it, IIUC?
 
-I don't know, but it should be, indeed. That is what we have been
-asking subsystems to do since the beginning (modulo exceptional
-cases). Some take direct ownership, some request to have a maintainer
-dedicated to that in the entry, some add a new sub-subsystem, etc.
+"Cancel work and wait for its execution to finish. This function can be =
+used
+even if the work re-queues itself or migrates to another workqueue. On =
+return
+from this function, work is guaranteed to be not pending or executing on =
+any
+CPU =E2=80=94> as long as there aren=E2=80=99t racing enqueues. <=E2=80=94=
+"
 
-I hope that clarifies.
+> +    #[inline]
+> +    pub unsafe fn enqueue_scoped<W, const ID: u64>(&self, w: W) -> =
+W::EnqueueOutput
+> +    where
+> +        W: RawWorkItem<ID> + Send,
+>     {
 
-Cheers,
-Miguel
