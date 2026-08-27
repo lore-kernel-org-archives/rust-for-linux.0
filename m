@@ -1,148 +1,90 @@
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E7547B425
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Aug 2026 15:07:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A30485518;
+	Thu, 27 Aug 2026 16:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787843254; cv=none; b=GJrqLo14Vh01sJUUEHSrmbmOqFSzIgAV2hBSYmC2+KbGO+qeXcoGVsQcSa5E0/UNGz5uCPrR0WBJIX747VFftOhIoVuW2CF+ttTwZJyezgT9MEayvu0ESOk+r6gUYrjeM334n4e4ZHtsc9IFKI0Oa62VkFIjp0wwHE4ON++SNbI=
+	t=1787846796; cv=none; b=WV2FJZ8oKZ5geT+Wm0mDZSw4vsBRIZbZD2o0x9vGNT5ufHxBBYgrYYbf/6rq2HKT7gj8quVjcg5cAjXNPqfcC1cWnuDgf2D0jrNDaKevn631hSeNGNLaVmRECu3MNnL9n4vODDmUMXzoop4FXLwwTGpCJp9ZF/So+gPkZ1MUMz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787843254; c=relaxed/simple;
-	bh=+EfZIk8UyxWw+/QmIoE1JYEi6QngEVZyASlJwP//w6A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UGsmPghjW5kIerrUrG7AmV+/+/E8NGMTrTss9edLJoegrGEy6IAPObtPoxqNmKNqTnYHBvdsOOYaFP+h1Kxj4l9/A6D82BkgACNqpeuk8caZB4Hvx6RkiaNFMqnIBeSDNvefK71St3ai6QEvhsWzEy0WGTjnw6dRqZ1uq0Me/EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IMl7v1gC; arc=none smtp.client-ip=209.85.160.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787846796; c=relaxed/simple;
+	bh=DAHujIzV37ZHDxmmcIBsQ1XmNaztmImRFCcDYEJcmio=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VAWOnwxdXuARovRpSazlF1kpOnqvwlnfPRnRSOoUYYzL8EvvcsR8EuzP5V98O7rtnKJME9UdpnOW/z3JVDFpTDhj4dtPc3WkPScLPeU06NmeYdVAxdLiWvI34OEjAdHQcOdqHEjSr0wMinng7dzmahiPAKF0ZQentVkz8JCxJyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WR4YrNU6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IMl7v1gC"
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-4634d881742so10735fac.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 27 Aug 2026 08:07:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787843252; x=1788448052; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jZAtu4jfJrkcL5si1ce/uQmymWR46x3S6FScFRqvh3U=;
-        b=IMl7v1gCcuFJgA8iacy35QKyNuXBIks+FCuCc+RfSQLE1JwrDbDe1tT4n4Jas0tCHs
-         UMWOlLtsUFzST0a7yWY+vMbircoUVGQJG4952FhpcCo0tgq6w9x0q8X1l6tWdidA4DNI
-         muZBkhyENNEj4K1plHtoJdJl3IRtEYrqFwwLYppCrLURLeTWCA/1wfnWoms885KZzXMN
-         RDOsHUshcvQKpuU1fFVIhDa21QcTR5358Dw4PzUoxGO0PJsJa6ZLdx7kf7fnb4hX3Kw9
-         2Sr+XTIKAJ8F0kDRCafmI67KlZWIuulPQknSEFBYHJt5WACsGz5o/9h4hQL43vUnFBdk
-         6arQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787843252; x=1788448052;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jZAtu4jfJrkcL5si1ce/uQmymWR46x3S6FScFRqvh3U=;
-        b=avf1S69u97/0B/vHHA5K6cvr3cFVN/m6jnOYZN4Mr4cN0Nt08gs+iFAVpEzE0jJ+dl
-         P6IYWUryBJFpHmRsk9w/P59cSoRMFd+Ng1HzoVnb4z2STbC6ViKFhIOzFiXKOfOth5+K
-         ZbHSXN27bpG/yNaFUkfSM+OrnI5PON/2sCqe5/3DA+KgODOPmrb092R2X+07bh8QBZCr
-         90bsWPuscP87MKFfEtVe8BbMRvYfKYg8mUdLBVwK6jeDaqrcdOVcfIFK8Nx0BKcI9xvf
-         SG4Z4lR/7hkjn9F3VKQpQByr3Om1EeNuLizbnlMtziDYrb5HwThzmheY/9VvIfZ9fpSE
-         PrWQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoKyHD+z4PAt/EXqbP6iFvdUEdGbrSwIvklwdkMMLEkkgUowRbhQCbqC/9JPq6n2vk9cze0eIfEqtke7VJgBQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++kGwPYlLSs5M8nVQr+fsZ3ZZWTYQcDC+sNqVtEfsUcb1/t1wkVe
-	r5ZDoJUr1iAcEjOjsR1/qTydeR7VHm51OAdGCjXCnfmQxXcZeFsSSCYH
-X-Gm-Gg: AR+sD10TyRYluUj5TRi8gMvxGB8XVZK++QCFtn4lOraJEpuxpBImw7Kjdd++nU+CNvg
-	DKjTQCSW06LotfnE/yh72Z6/C1AdcIJt5O8f7NynJvxgBtMdYZstk8YhpFFpZpzzj2x20F9R4TD
-	e/SXuOVB5j6bProhZ3XB289njUTR0BBhoRMXlzi5OTT1tTqxnI3kJYgXZuAzefYeP4WyLPUOyBp
-	OSVbviHUZVUANkGIXcKoBNEIY5oEuiNLgCIayESuLc9VKUt22WZYGC1jbo/rdN9gbXc5DrD7DDl
-	0rLKIJYFA6sfxDaYf+9msEUu80iojjzeLmE3BatNTose5AojyajGvG7NqXlzRGhEaAe+z+A7/ff
-	79sshCz/tyP08ZB5dk+4N++eZiGEgS+UHlI3HRF8Xh9/SuHX/3Ec9Gft0eYNkGKigQ/FHzpuMDG
-	t3VWJGubvZAPx28Yg0a2/mOiJLg3jufgkYnc8fmm8Ghr1LfVE9mdMGHq0ym58=
-X-Received: by 2002:a05:6820:1504:b0:6b1:ba66:6998 with SMTP id 006d021491bc7-6b1ba667ec1mr3109057eaf.14.1787843252159;
-        Thu, 27 Aug 2026 08:07:32 -0700 (PDT)
-Received: from tofu.. ([128.210.0.165])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141a907c682sm17009944c88.15.2026.08.27.08.07.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 08:07:31 -0700 (PDT)
-From: Georgios Androutsopoulos <georgeandrout13@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>,
-	Burak Emir <burak.emir@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Yury Norov <yury.norov@gmail.com>
-Cc: Boqun Feng <boqun@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WR4YrNU6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC831F000E9;
+	Thu, 27 Aug 2026 16:06:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787846795;
+	bh=DAHujIzV37ZHDxmmcIBsQ1XmNaztmImRFCcDYEJcmio=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WR4YrNU60FLWSF2MQXmeYlq7HFScS5YmcJuJYyhl/9rkLZG9MqrKsjcMITzdu+FX3
+	 Pp9jp+W5Gvd6hqaoSSP+z+aSWROhwncm7pQewKk26z2I2xaekd6waBdS0pp06GzxbO
+	 4PQrecc7B34Juhpf8+54jzeH9rcLQJkozIqESVR+PhSGM+t3Z0cn1jtmHqU8znktHo
+	 8sr9M2YnsrsSW2DmbD1zd77ON0CvvAX1yu49HUESBlTee2DPagQxOPimF3f4RlvlDm
+	 hc8qOJhJbspKKtWfI7x+BnNj9Fl9yVh+PiDeVwnyHTWSiEKzW3HhzhceYzktMAGHJT
+	 6jRBdsXnVxWzw==
+Date: Thu, 27 Aug 2026 17:06:26 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Ayush Singh <ayush@beagleboard.org>
+Cc: Jason Kridner <jkridner@beagleboard.org>, robertcnelson@gmail.com,
+	Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Subject: [PATCH] rust: bitmap: document panics in `next_bit` and `next_zero_bit`
-Date: Thu, 27 Aug 2026 11:07:19 -0400
-Message-ID: <20260827150719.109145-1-georgeandrout13@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ayush Singh <ayush@beagleboard.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Uladzislau Rezki <urezki@gmail.com>, greybus-dev@lists.linaro.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-crypto@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 6/7] dt-bindings: beagle: Add BeagleConnect Freedom
+Message-ID: <20260827-rash-silly-774a09d80173@spud>
+References: <20260827-gb-uart-transport-v2-0-a03bb1f5fbd1@beagleboard.org>
+ <20260827-gb-uart-transport-v2-6-a03bb1f5fbd1@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="eVfLZDbhjLXC16Fn"
+Content-Disposition: inline
+In-Reply-To: <20260827-gb-uart-transport-v2-6-a03bb1f5fbd1@beagleboard.org>
 
-`next_bit()` and `next_zero_bit()` use `bitmap_assert!()` to check
-that `start` is less than `self.len()`, which panics when
-`CONFIG_RUST_BITMAP_HARDENED` is enabled. However, neither function
-has a `# Panics` section, and both document that `None` is returned
-for exactly the input that triggers the panic.
+--eVfLZDbhjLXC16Fn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Add the missing `# Panics` sections and condition the `None` case on
-`CONFIG_RUST_BITMAP_HARDENED` being disabled, matching the style used
-by `set_bit()`, `clear_bit()` and their atomic versions in the same
-file. Also add the missing blank doc comment line before `Returns` in
-`next_zero_bit()`.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1252
+--eVfLZDbhjLXC16Fn
+Content-Type: application/pgp-signature; name=signature.asc
 
-Signed-off-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
----
- rust/kernel/bitmap.rs | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
-index b27e0ec80..b33f7ce5c 100644
---- a/rust/kernel/bitmap.rs
-+++ b/rust/kernel/bitmap.rs
-@@ -459,7 +459,13 @@ pub fn last_bit(&self) -> Option<usize> {
- 
-     /// Finds next set bit, starting from `start`.
-     ///
--    /// Returns `None` if `start` is greater or equal to `self.nbits`.
-+    /// If `CONFIG_RUST_BITMAP_HARDENED` is not enabled and `start` is greater
-+    /// than or equal to `self.len()`, returns `None`.
-+    ///
-+    /// # Panics
-+    ///
-+    /// Panics if `CONFIG_RUST_BITMAP_HARDENED` is enabled and `start` is
-+    /// greater than or equal to `self.len()`.
-     #[inline]
-     pub fn next_bit(&self, start: usize) -> Option<usize> {
-         bitmap_assert!(
-@@ -479,7 +485,14 @@ pub fn next_bit(&self, start: usize) -> Option<usize> {
-     }
- 
-     /// Finds next zero bit, starting from `start`.
--    /// Returns `None` if `start` is greater than or equal to `self.len()`.
-+    ///
-+    /// If `CONFIG_RUST_BITMAP_HARDENED` is not enabled and `start` is greater
-+    /// than or equal to `self.len()`, returns `None`.
-+    ///
-+    /// # Panics
-+    ///
-+    /// Panics if `CONFIG_RUST_BITMAP_HARDENED` is enabled and `start` is
-+    /// greater than or equal to `self.len()`.
-     #[inline]
-     pub fn next_zero_bit(&self, start: usize) -> Option<usize> {
-         bitmap_assert!(
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCapBgggAKCRB4tDGHoIJi
+0opuAP95HhqDi7oB+VTtA6pvzXoa9BTm/hQXuDieDgIu6invMQD/fiuPdgWrwMLy
+m5xmjxTqXKTSQdT0qLzXZQGKIySFSgM=
+=CkDT
+-----END PGP SIGNATURE-----
 
-base-commit: 73e3f0710014fe6d4ed98cfc02292f6121db7558
--- 
-2.47.3
-
+--eVfLZDbhjLXC16Fn--
