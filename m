@@ -1,90 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A30485518;
-	Thu, 27 Aug 2026 16:06:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787846796; cv=none; b=WV2FJZ8oKZ5geT+Wm0mDZSw4vsBRIZbZD2o0x9vGNT5ufHxBBYgrYYbf/6rq2HKT7gj8quVjcg5cAjXNPqfcC1cWnuDgf2D0jrNDaKevn631hSeNGNLaVmRECu3MNnL9n4vODDmUMXzoop4FXLwwTGpCJp9ZF/So+gPkZ1MUMz8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787846796; c=relaxed/simple;
-	bh=DAHujIzV37ZHDxmmcIBsQ1XmNaztmImRFCcDYEJcmio=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VAWOnwxdXuARovRpSazlF1kpOnqvwlnfPRnRSOoUYYzL8EvvcsR8EuzP5V98O7rtnKJME9UdpnOW/z3JVDFpTDhj4dtPc3WkPScLPeU06NmeYdVAxdLiWvI34OEjAdHQcOdqHEjSr0wMinng7dzmahiPAKF0ZQentVkz8JCxJyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WR4YrNU6; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA043F9277;
+	Thu, 27 Aug 2026 17:13:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787850794; cv=pass; b=QMGdm/s1DEajmMtoBYceCTTzx+l1wTAYXvnIjiega5RymcBuqx2pCy1b+uOqEXwBhGNlrODQQr8sKWMXhT2YWem01m0PUP3lrT4/f2rV+ffdQn+zxbCxIlz/YFvxgobYkbC0p/Orq2h14EfYfKwdTvevTCT2Vdxu8kaTpdv6FMc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787850794; c=relaxed/simple;
+	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=E5ewML21Aieo1F8WQm9iAvB0J3AeN+e9LsQVUaTjuGh95u6s4cQqJSmYSFPaxVIHCap7gy9Tl18kiie5StXHSGM/Ur+hLzRuvQOtozkhuOVnni5DZPrdbjD36voyFg48CAXkB/spYKqVAzd1468s/CLupfE/QZS+a6MLAY7H2UY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=P+EpakXE; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WR4YrNU6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC831F000E9;
-	Thu, 27 Aug 2026 16:06:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787846795;
-	bh=DAHujIzV37ZHDxmmcIBsQ1XmNaztmImRFCcDYEJcmio=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WR4YrNU60FLWSF2MQXmeYlq7HFScS5YmcJuJYyhl/9rkLZG9MqrKsjcMITzdu+FX3
-	 Pp9jp+W5Gvd6hqaoSSP+z+aSWROhwncm7pQewKk26z2I2xaekd6waBdS0pp06GzxbO
-	 4PQrecc7B34Juhpf8+54jzeH9rcLQJkozIqESVR+PhSGM+t3Z0cn1jtmHqU8znktHo
-	 8sr9M2YnsrsSW2DmbD1zd77ON0CvvAX1yu49HUESBlTee2DPagQxOPimF3f4RlvlDm
-	 hc8qOJhJbspKKtWfI7x+BnNj9Fl9yVh+PiDeVwnyHTWSiEKzW3HhzhceYzktMAGHJT
-	 6jRBdsXnVxWzw==
-Date: Thu, 27 Aug 2026 17:06:26 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Ayush Singh <ayush@beagleboard.org>
-Cc: Jason Kridner <jkridner@beagleboard.org>, robertcnelson@gmail.com,
-	Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ayush Singh <ayush@beagleboard.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Uladzislau Rezki <urezki@gmail.com>, greybus-dev@lists.linaro.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-crypto@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 6/7] dt-bindings: beagle: Add BeagleConnect Freedom
-Message-ID: <20260827-rash-silly-774a09d80173@spud>
-References: <20260827-gb-uart-transport-v2-0-a03bb1f5fbd1@beagleboard.org>
- <20260827-gb-uart-transport-v2-6-a03bb1f5fbd1@beagleboard.org>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="P+EpakXE"
+ARC-Seal: i=1; a=rsa-sha256; t=1787850768; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=HcycDi3hJljK3APOIwayi5O48+vSg0AwaFBepVZtTYgbyGOlZw8oL3Ac2p2lW1pLC7baoWMPZbJhSUuhQ/k2wfqPj1dtuj20ryXFqX/56Nu+gvRJukEbl1LzG3hHnZFRsS7wz/yc3i5DmLC1ME3N1kadUsdirqfr93pcAKEqnlw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1787850768; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=; 
+	b=d7K40dlDkkzlkaGx+CCCpQgmPeUu9mVzKZT6JYP4iVPT4mfYtC1V86s4JhxKuY19PzKwh8j1o2/zhlIzjh0c9jQCGE6IZ8uwm2AIu49gOkQcq1pc2M5w2IfNjNAH4FrWthncVwUGzkhxvmu4x155y5o+Lf9Refkpxii1ds+BF+A=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1787850768;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
+	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=;
+	b=P+EpakXE3+UTjPk/sC44yEcVMIDM5xqcK6ZhyGL7iOgX4y1C59iLQbwGCANB3VF3
+	5OwdRO+pB2co6oLoVIwNL08sr1SWBg/2hh/ZhA63tkhiyY+GbvKllyPCpEje7cWjrRM
+	yKvgmGQAXC9CTdPhBkYyAZVX115X9ODND4qb8CeA=
+Received: by mx.zohomail.com with SMTPS id 1787850765413595.017308004113;
+	Thu, 27 Aug 2026 10:12:45 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="eVfLZDbhjLXC16Fn"
-Content-Disposition: inline
-In-Reply-To: <20260827-gb-uart-transport-v2-6-a03bb1f5fbd1@beagleboard.org>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 1/6] rust: workqueue: replace deprecated system_wq with
+ system_{percpu,dfl}_wq
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260807165252.3849875-2-dakr@kernel.org>
+Date: Thu, 27 Aug 2026 14:12:23 -0300
+Cc: tj@kernel.org,
+ jiangshanlai@gmail.com,
+ aliceryhl@google.com,
+ ojeda@kernel.org,
+ boqun@kernel.org,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ lossin@kernel.org,
+ a.hindborg@kernel.org,
+ tmgross@umich.edu,
+ tamird@kernel.org,
+ acourbot@nvidia.com,
+ work@onurozkan.dev,
+ jhubbard@nvidia.com,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ driver-core@lists.linux.dev
+Content-Transfer-Encoding: 7bit
+Message-Id: <A0943F65-71A6-4E49-A586-A3387D09B5EC@collabora.com>
+References: <20260807165252.3849875-1-dakr@kernel.org>
+ <20260807165252.3849875-2-dakr@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
---eVfLZDbhjLXC16Fn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
-
---eVfLZDbhjLXC16Fn
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCapBgggAKCRB4tDGHoIJi
-0opuAP95HhqDi7oB+VTtA6pvzXoa9BTm/hQXuDieDgIu6invMQD/fiuPdgWrwMLy
-m5xmjxTqXKTSQdT0qLzXZQGKIySFSgM=
-=CkDT
------END PGP SIGNATURE-----
-
---eVfLZDbhjLXC16Fn--
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
