@@ -1,67 +1,41 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571673A3826
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Aug 2026 07:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D342937C109;
+	Thu, 27 Aug 2026 08:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787817362; cv=none; b=lO5a4B4aqBh75vEfcAdbVGNK5UcSrqF3AOUtqQJXFF1JYEcHfdeDRZ+YMiE73Poa7M5DLEMLSnM7RldL1SuotksTGSQlX9b08WUTXIhxhQlxB2PksjZ1DT1i87YPeiP2MKeC1eCKn6sdTHBa6mHXHFI/z3+PGywijoFGtFONvvo=
+	t=1787817701; cv=none; b=sI+UKUhbaYLjM92lJfhaV0ej5OQvA3gb5mU+G8LXj9J4CPI02QDfKfpZ+INqF5MVPpQrUgNXmHlT+4S2Jw3hHivoUxm+OBkVcvaaFLgOwMNlQ6jek7wb03yGhkOtK3uxSDmghMwnBolN/CrzjKZMc5qqki//xtTIeexuoewOZc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787817362; c=relaxed/simple;
-	bh=woP4oknrV4W1iL3OCn7b6REW+reH59r7peTdThZwqZM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UyyYmNy/sUIySr5uDhY6tgqgcyqtHpiC+QalWv1uYZtmitNtiNy5eEGEC0nsYUN+4OzyrwskCCCe1vCGQC6goEPrHI3v7Ml4UuQjENqnvVsfK7lUKYj2t8nik1iKb6dJu9LWUFPbucssxG/PN0obp1EP3BohibRVf9i8IBYRLiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard.org header.i=@beagleboard.org header.b=I0FMnEjg; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
+	s=arc-20240116; t=1787817701; c=relaxed/simple;
+	bh=Wmdr0hoqNBZwZfY4RPaKUuFoMfMYXlwXpLbrI6oTzqI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sDDfBiZt2x71BmB20iPBKnJBfqxBICFDZU6JlLA4uHrdl8JjltENrVaSqf/KHx7O7Iyp409pQKhYlBbAxuzd+LNzTZ5xOJdDFkgSD2cvqVdstCJN9ctdhb9ShvIL7wVYpXEOeNw42/r2iJg3wCvm5rQJ+f3KsFdcaYDEuEkV9DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=RS0nKWei; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard.org header.i=@beagleboard.org header.b="I0FMnEjg"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-84eb992a881so1620535b3a.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 27 Aug 2026 00:56:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard.org; s=google; t=1787817359; x=1788422159; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JpdW8dGYYPpvIZ3wUmof7nEJxVPBrHgTt9c2tEi6VgY=;
-        b=I0FMnEjgPWha98m1uLU3Ft5aCB90BLzRlIU93dJ8ZC+czyqest1A0Ej4dA4vHNY4bj
-         bOSviM7fEVlsyRO1gQxpjQ1kAEDHBopyGkr685tS4rVxdtVbse7Yys9g8jaZD0DyKpV4
-         cUqEqmxMQVOXhX1rQojMsdgVZao132PODNw/Cz7uFRyTnS4dM7ghC/BxYNmifXo6escD
-         Zduf5xsDEdRoXzIOp6kUUXG8Jg4Fgm9TU72ACf/Cmk1nJdJ0u2FICBW+um4yuXOnwFfx
-         CtoEar5pQwfTfHiMqAOA4suG2baFmLc9rT8YF6sKnFfZmoG4Zg/hP3HDvd+hkmhNeWO1
-         Ellg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787817359; x=1788422159;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JpdW8dGYYPpvIZ3wUmof7nEJxVPBrHgTt9c2tEi6VgY=;
-        b=LAEHC4wwTrsNTSFVcnrHchRTjSkL5G64OVztG8nZASKwzofUP1tYS0sgTFklOuJz9V
-         xttg3n1Fxjs+jf6zPjn5Quv0EfNlsxYmo990qtBwdzw5IAdCeE0z7rrnfXGFuBA7VcsG
-         2pYjlBExsmQxicqF/Ge/X2vNgqhN4HyjV+4i75GPqQ9RpQcmOA0EK+6LutiHwpLKM1Pp
-         FkAAEv2ysOd24HjxcvWSjisAiH+a7WeDqZdMiOSGfbaUQUiswdJwYIt5AzPnK2CzDj05
-         AP7gVJjsqOL2qepu8N7Il98heT6/sDO8tEBXZhsu2vpDrLeu0q0+16Ok08EeoF13gabV
-         qNMg==
-X-Forwarded-Encrypted: i=1; AHgh+RrwwfU5PMrZkS0B3zpILR3o7gnd5NJ8qf5cLhTkXDAl7HAXvYQ7NyD3sHbBvBzZSfpcJr4A4l+HA/4ORm595w==@vger.kernel.org
-X-Gm-Message-State: AFuF++lpiKjBam9o4Z4uNw2xmesXZHdYab3rExXivKlclw9g2xArPp+8
-	+lqgBOwYNM4XhFO8SHJIE1tcHYb+KVWPD8/qhU1PflgDJ31QjFITxynpgCw6tddG1Q==
-X-Gm-Gg: AR+sD13mhpeOMnNBRcqTsgZluwMsoeW5BvLAqXc5M157mdXRkVlpzBdlp2ATV6UyvmO
-	4lfnJi3BPRDNuHSKQsJv/Nx2hiH9rU1fVwQHIQ+7IKGwiyVwmtcwpUFNF0b99/dHV05XqUf9IYI
-	Fej3qoSmv/5G/hNXPhOgC8JbltBq8F5/P4lH/goS3chXKi3XsXMWYIjVtardXhnL7KePCO25TsJ
-	ub6raEJPyWXG2/FgTPLyMmK5HlGtnopfijmqrPx+An6H9NYsFsTGs0+9b6N2xeYfrXYbgKzr/WD
-	krQklmVYWoWuWPua7ZhDlb1ZZpyu/lxukLyRoIWxLI+VfiJm2rOFuv7/+KOhFpvc+Eb//+hOvYi
-	GOarV0BwaHki+pnyJqK5ByM0wiVG9b/LCbU3CS3fsK03BNqElXP+FKLziVbaOf7MLIFUw9BGzv1
-	gp0HX9pZ624P6NPI7DaKWUSRqfz3EC/R9/OvCRnmeT5VBBqVrg7K2b7juVT9Vx679z0Vecs5k=
-X-Received: by 2002:a05:6a21:4593:b0:3bf:9b61:f7ae with SMTP id adf61e73a8af0-3cf8413dffdmr29525954637.14.1787817359500;
-        Thu, 27 Aug 2026 00:55:59 -0700 (PDT)
-Received: from [192.168.29.54] ([2405:201:4019:32fc:3c55:6b24:5147:322b])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3283d60c2b4sm24641685eec.5.2026.08.27.00.55.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2026 00:55:59 -0700 (PDT)
-From: Ayush Singh <ayush@beagleboard.org>
-Date: Thu, 27 Aug 2026 13:24:43 +0530
-Subject: [PATCH v2 7/7] greybus: Add Rust UART node driver
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="RS0nKWei"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1787817697;
+	bh=Wmdr0hoqNBZwZfY4RPaKUuFoMfMYXlwXpLbrI6oTzqI=;
+	h=From:Subject:Date:To:Cc:From;
+	b=RS0nKWeiWBR8rQquaaVLxnS6KWk0r3UNq0fGrQEJ+IXhhVqlbILCNKzyGYwVTgkPk
+	 mkhhgHKUBYwcjmnzhODeCYILa5UXgghSkClU5yn3WA2/aZ7GTnGOWlCljcdT5XpCzt
+	 Rsl4mNV8JrTkNu4+/gA6rXhy8rwquNBMs3UgqGrqDu7K6UO8rs/G2/v2S39SCjKxUy
+	 7jFf56ZIphkUsXfECvuwjzgcNxDo0noD4ScgRry6NFAbnRD8IMnnxSzmxNZNWTyNCv
+	 dLV1x26GQ453tOLdV8HPY3JP7bGIn3xkOyURUnKm70pS5iJSh5+RD9qkFJ3P4IJOIW
+	 n1yxGrtA3rilw==
+Received: from laura.lan (unknown [100.64.0.215])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laura.nao)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0BC9117E0467;
+	Thu, 27 Aug 2026 10:01:37 +0200 (CEST)
+From: Laura Nao <laura.nao@collabora.com>
+Subject: [PATCH v6 0/2] drm/tyr: add Job IRQ handling
+Date: Thu, 27 Aug 2026 10:01:09 +0200
+Message-Id: <20260728-tyr-irq-v2-v6-0-15c90baed949@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -69,429 +43,115 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260827-gb-uart-transport-v2-7-a03bb1f5fbd1@beagleboard.org>
-References: <20260827-gb-uart-transport-v2-0-a03bb1f5fbd1@beagleboard.org>
-In-Reply-To: <20260827-gb-uart-transport-v2-0-a03bb1f5fbd1@beagleboard.org>
-To: Jason Kridner <jkridner@beagleboard.org>, robertcnelson@gmail.com, 
- Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAMXuj2oC/3XO3wrCIBTH8VcJrzOOx51tdtV7RBfuzJVQWS6kG
+ Hv3XBD9ocCbn/D56iB6F73rxXI2iOiS73045lHOZ4J39rh10rd5CwQsocJaXm5R+niWCSU0mgk
+ QG6e1yOAUXeevj9h6k/fO95cQb492wun2mTHvmXyUZKwIOlaqJbPisN/bJkS74HAQUyrpd/7xi
+ 6QzN2waJgY0TL948eI10AcvMq+VLSpQpVIMvzj9f50yJ9O1pnXWENpvPo7jHe1rc4BlAQAA
+To: Daniel Almeida <daniel.almeida@collabora.com>, 
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
  Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
- Ayush Singh <ayush@beagleboard.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Uladzislau Rezki <urezki@gmail.com>
-Cc: greybus-dev@lists.linaro.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-crypto@vger.kernel.org, 
- devicetree@vger.kernel.org, Ayush Singh <ayush@beagleboard.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12372;
- i=ayush@beagleboard.org; h=from:subject:message-id;
- bh=woP4oknrV4W1iL3OCn7b6REW+reH59r7peTdThZwqZM=;
- b=owEBbQKS/ZANAwAKAQXO9ceJ5Vp0AcsmYgBqj+1DHhMiSIIYl82UcYte5S2h2+PWFqg5USgDK
- FvjTfvXr6qJAjMEAAEKAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCao/tQwAKCRAFzvXHieVa
- dGPEEACt4vEA02o6w4DZrtBUPxYp9v36RhwEvIb8aKp8HZOwXi9lK4OvAxSRzRzIvhwGrcm+uul
- duNy2HaEyBdO/TfVgZUJrguaHpEfrxlC/I2P3vaooDOvxhG0yVEWmp0qzI5ehHtx0H1vzV4j+cF
- sDYyH5c3SIaFvc2GeGnkSjBHCFWdZzm37CoWNVnRvJdaiTb5rZEzPjf9anj8KWfcelySFDt5pyW
- JfRWLJIwBc5dDalyz0mkTio6EFuUYY0ZTiOv18OfVCQW14B3+gI2576DdEVuYIMtnFd4/wA2jJs
- C2NDO+6T70K7VvPAzJQAX6BuFg+a1jUDxONiLnJsa3m2RBYH+asmEpTVFpF2TOOZi90GxXcWnvx
- x8UFGF6o/omIYlLLB//pkwYiFDQi0XMWjDJxxt8zlLAGRHPO0T6tzzs3pP9sUcDkSzxkrBE9wS5
- gCTWwl95IptjAbOm0bO5oO4b0b457CMumGB8NfxO4oyN7kyh2xZiqqTXFkZXqPlF15BNNBk0CWR
- 2IWNC0y0RjPxdbR2t3BRRfko03ejupGyNp/e2dgjFoTXU2vebwkOwNDdOnqJYOkbT13xzl0QOOX
- y7B/Geurl/J/oGJd8549H2AgHojtQhWcIk+XfrFNs/l7Mmixa+wqlMQIHdm7gZyHw1aECuLLOMb
- YxzlAsjoxTHlGpw==
-X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
- fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ rust-for-linux@vger.kernel.org, kernel@collabora.com, 
+ Laura Nao <laura.nao@collabora.com>, 
+ Deborah Brouwer <deborah.brouwer@collabora.com>
+X-Mailer: b4 0.12.0
 
-Add a driver for Greybus nodes attached over a plain serial port. The
-node is registered with the software SVC (gb-softsvc), which handles the
-SVC protocol on behalf of the AP, so no dedicated coprocessor running
-SVC firmware is needed.
+Changes in v6:
+- Split changes into two separate commits: the first one creates a new 
+  file with TyrIrq/TyrIrqTrait and their related impls, the second 
+  commit imports and uses TyrIrq/TyrIrqTrait from crate::irq instead of
+  crate::driver
+- Removed irq() accessor, unmasking the interrupts in TyrIrq::request() 
+  by accessing the private irq field directly instead
+- Add JobIrqMaskGuard to mask the Job IRQ before free_irq() runs, fixing 
+  incorrect drop order in the IRQ teardown path 
+- Combined fw_ready/job_irq_wait into a separate JobIrqEvents type
+- Store firmware-ready state only once and always wake waiters 
+  unconditionally
+- Clear the status once the handler has been successfully registered
+- Use mask() in reenable_mask() to reduce code duplication
+- Reworded commit messages to reflect the changes
+- Link to v5: https://lore.kernel.org/r/20260728-tyr-irq-v2-v5-1-59fd9dea952a@collabora.com
 
-Greybus messages are carried over HDLC framing on the wire. Each frame
-carries a one-byte address (0x01 for Greybus) and control byte, followed
-by the 16-bit CPort ID and the Greybus message itself.
+Changes in v5:
+- Implement PinnedDrop on TyrIrq to clear the interrupt mask on teardown 
+- Link to v4: https://lore.kernel.org/r/20260805-tyr-irq-v2-v4-1-81a4701611c0@collabora.com
 
-Port parameters are taken from the firmware node: "baudrate" if
-present, otherwise 115200, with flow control and parity disabled.
+Changes in v4:
+- Replaced c_str! with C-String in irq.rs
+- Moved clear_status() before handle() in handle_threaded(), to avoid 
+  losing events if hw re-asserts the bit while handle() is running.
+- Only unmask interrupt sources in job_irq_init() when the handler is 
+  correctly registered.
+- Link to v3: https://lore.kernel.org/r/20260728-tyr-irq-v2-v3-1-9c9bc5c029c5@collabora.com
 
-Since gb-uart-node imports types from gb-softsvc, Rust to Rust calling
-setup from nova-core [0] is being used.
+Changes in v3:
+- Propagated request_threaded_irq_by_name safety requirement up the
+  call chain, made TyrIrq::request() and job_irq_init() unsafe
+- Dropped CSG bits masking, added TODO comment to note this will be
+  handled at a later stage. Reworded commit message to reflect the
+  change.
+- Added documentation for TyrIrqTrait, TyrIrq, JobIrq and job_irq_init()
+- Link to v2: https://lore.kernel.org/r/20260729-tyr-irq-v2-v2-1-c2750fc11d59@collabora.com
 
-[0]: https://lore.kernel.org/all/20260622-nova-exports-v5-0-6191773fc977@nvidia.com/
+Changes in v2:
+- Dropped Wait custom type in favor of WaitQueue
+- Renamed JobIrq lifetime to generic 'a
 
-Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+This series follows up to [1], which adds support for firmware loading
+and MCU booting to the Tyr driver. The changes included here were
+originally introduced in its v4[2], then dropped to reduce the scope of
+the series, and have been adjusted to work with the HRT (Higher-Ranked
+Lifetime Types) driver architecture recently introduced.
+
+The series adds a threaded IRQ wrapper for the firmware Job interrupts,
+used to signal events from the global CSF (GLB) and Command Stream Group
+(CSG) interfaces.
+
+These changes will be later used to wait for global CSF interface
+readiness after firmware boot, as part of the CSF firmware interfaces
+support that will be submitted as a separate series.
+
+This series is based on drm-rust-next and depends on:
+- [PATCH v2] rust: irq: make Registration compatible with lifetime-bound drivers[3]
+- [PATCH 0/5] rust: sync: add WaitQueue infrastructure[4]
+
+Note: [4] doesn't apply cleanly on drm-rust-next at the moment, due to
+missing changes in rust/kernel/sync/lock/spinlock.rs[5]. I've applied
+all dependencies and fixed conflicts for the purpose of testing this
+patch on top of drm-rust-next, a branch with these changes is available
+here: https://gitlab.freedesktop.org/laura.nao/linux/-/commits/b4/tyr-irq-v6
+
+[1] https://lore.kernel.org/all/20260728-fw-boot-b4-v10-0-9187aefa3f2f@collabora.com/ 
+[2] https://lore.kernel.org/rust-for-linux/20260424-b4-fw-boot-v4-v4-15-a5d91050789d@collabora.com/
+[3] https://lore.kernel.org/rust-for-linux/20260719153631.559341-1-dakr@kernel.org/
+[4] https://lore.kernel.org/rust-for-linux/20260726223613.1242940-1-dakr@kernel.org/
+[5] https://lore.kernel.org/all/20260302232154.861916-1-lyude@redhat.com/
+
+Signed-off-by: Laura Nao <laura.nao@collabora.com>
 ---
- MAINTAINERS                     |   1 +
- drivers/greybus/.gitignore      |   1 +
- drivers/greybus/Kconfig         |  15 +++
- drivers/greybus/Makefile        |  48 ++++++++
- drivers/greybus/gb_uart_node.rs | 245 ++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 310 insertions(+)
+Laura Nao (2):
+      drm/tyr: add TyrIrq threaded IRQ wrapper
+      drm/tyr: add Job IRQ handling
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d047090be5f4..49c6dac72748 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11339,6 +11339,7 @@ M:	Ayush Singh <ayush@beagleboard.com>
- L:	greybus-dev@lists.linaro.org (moderated for non-subscribers)
- S:	Maintained
- F:	Documentation/devicetree/bindings/beagle/beagle,beagleconnect-freedom.yaml
-+F:	drivers/greybus/gb_uart_node.rs
- 
- GREYBUS SUBSYSTEM
- M:	Johan Hovold <johan@kernel.org>
-diff --git a/drivers/greybus/.gitignore b/drivers/greybus/.gitignore
-new file mode 100644
-index 000000000000..ff9c4a3539b4
---- /dev/null
-+++ b/drivers/greybus/.gitignore
-@@ -0,0 +1 @@
-+exports_gb_softsvc_generated.h
-diff --git a/drivers/greybus/Kconfig b/drivers/greybus/Kconfig
-index 381d1a6ee135..34de913af287 100644
---- a/drivers/greybus/Kconfig
-+++ b/drivers/greybus/Kconfig
-@@ -60,5 +60,20 @@ config GREYBUS_SOFTSVC
- 	  To compile this code as a module, choose M here: the module
- 	  will be called gb-softsvc.ko
- 
-+config GREYBUS_UART_NODE
-+	tristate "Greybus UART node transport"
-+	depends on RUST
-+	depends on GREYBUS_SOFTSVC
-+	depends on RUST_SERIAL_DEV_BUS_ABSTRACTIONS
-+	select RUST_CRC_CCITT_ABSTRACTIONS
-+	help
-+	  Select this option if you have a Greybus node connected over a
-+	  serial port. The node is registered with the software SVC, which
-+	  handles the SVC protocol on behalf of the AP, so no dedicated
-+	  coprocessor running SVC firmware is required.
-+
-+	  To compile this code as a module, choose M here: the module
-+	  will be called gb-uart-node.ko
-+
- endif	# GREYBUS
- 
-diff --git a/drivers/greybus/Makefile b/drivers/greybus/Makefile
-index e6f594128802..81151963c01e 100644
---- a/drivers/greybus/Makefile
-+++ b/drivers/greybus/Makefile
-@@ -28,3 +28,51 @@ obj-$(CONFIG_GREYBUS_ES2)	+= gb-es2.o
- obj-$(CONFIG_GREYBUS_SOFTSVC)	+= gb-softsvc.o
- gb-softsvc-y			+= gb_softsvc.o gb_softsvc_exports.o
- 
-+obj-$(CONFIG_GREYBUS_UART_NODE)	+= gb-uart-node.o
-+gb-uart-node-y			+= gb_uart_node.o
-+
-+# Export Rust symbols from gb-softsvc only if gb-uart-node actually references them.
-+gb-softsvc-export-deps := $(if $(CONFIG_GREYBUS_UART_NODE),$(obj)/gb_uart_node.o)
-+
-+rust_needed_exports = \
-+	{ $(if $(strip $(2)),$(NM) -u $(2);,) echo "__DEFINED_RUST_SYMBOLS__"; \
-+	  $(NM) -p --defined-only $(1); } | \
-+	awk -v fmt='$(3)' ' \
-+		/^__DEFINED_RUST_SYMBOLS__$$/ { defs = 1; next } \
-+		!defs { if ($$NF ~ /^_R/) needed[$$NF] = 1; next } \
-+		defs && $$2 ~ /(T|R|D|B)/ && $$3 ~ /^_R/ && \
-+			$$3 !~ /_(init|cleanup)_module$$/ && \
-+			$$3 !~ /__(pfx|cfi|odr_asan)/ && \
-+			$$3 in needed { printf fmt, $$3 } \
-+	'
-+
-+quiet_cmd_exports = EXPORTS $@
-+      cmd_exports = \
-+	$(call rust_needed_exports,$<,$(gb-softsvc-export-deps),EXPORT_SYMBOL_RUST_GPL(%s);\n) > $@
-+
-+$(obj)/exports_gb_softsvc_generated.h: $(obj)/gb_softsvc.o $(gb-softsvc-export-deps) FORCE
-+	$(call if_changed,exports)
-+
-+targets += exports_gb_softsvc_generated.h
-+
-+$(obj)/gb_softsvc_exports.o: $(obj)/exports_gb_softsvc_generated.h
-+CFLAGS_gb_softsvc_exports.o := -I $(objtree)/$(obj)
-+
-+ifdef CONFIG_MODVERSIONS
-+# The C export shim declares Rust symbols as `extern int`, so reuse its export
-+# list but generate symbol CRCs from the Rust object instead of the shim's DWARF.
-+$(obj)/gb_softsvc_exports.o: private cmd_gensymtypes_c = \
-+	$(call getexportsymbols,\1) | \
-+	$(objtree)/scripts/gendwarfksyms/gendwarfksyms \
-+		$(if $(KBUILD_GENDWARFKSYMS_STABLE), --stable) \
-+		$(if $(KBUILD_SYMTYPES), --symtypes $(@:.o=.symtypes),) \
-+		$(obj)/gb_softsvc.o
-+endif
-+
-+# Output nova-core's crate metadata for use by nova-drm at compile time.
-+RUSTFLAGS_gb_softsvc.o += \
-+	--emit=metadata=$(objtree)/$(obj)/libgb_softsvc.rmeta
-+
-+# Allow nova-drm to import nova-core's types.
-+$(obj)/gb_uart_node.o: $(obj)/gb_softsvc.o
-+RUSTFLAGS_gb_uart_node.o := -L $(objtree)/$(obj) --extern gb_softsvc
-diff --git a/drivers/greybus/gb_uart_node.rs b/drivers/greybus/gb_uart_node.rs
-new file mode 100644
-index 000000000000..3eb4f8ab3655
---- /dev/null
-+++ b/drivers/greybus/gb_uart_node.rs
-@@ -0,0 +1,245 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Greybus UART Node driver
-+
-+use kernel::{
-+    alloc::Flags,
-+    crc_ccitt::crc_ccitt,
-+    device::{
-+        AsBusDevice,
-+        Bound,
-+        Core, //
-+    },
-+    error::code,
-+    new_spinlock, of,
-+    prelude::*,
-+    serdev,
-+    sync::{
-+        aref::ARef,
-+        Arc,
-+        SpinLock, //
-+    },
-+};
-+
-+use zerocopy::little_endian;
-+use zerocopy_derive::{FromBytes, Immutable, KnownLayout};
-+
-+const HDLC_MAX_FRAME_LEN: usize = 256;
-+
-+const HDLC_FRAME: u8 = 0x7E;
-+const HDLC_ESC: u8 = 0x7D;
-+const HDLC_XOR: u8 = 0x20;
-+const HDLC_EXPECTED_CRC: u16 = 0xf0b8;
-+
-+const ADDRESS_GREYBUS: u8 = 0x01;
-+
-+#[repr(C, packed)]
-+#[derive(FromBytes, Immutable, KnownLayout)]
-+struct GreybusFrame {
-+    cport: little_endian::U16,
-+    msg: [u8],
-+}
-+
-+struct HdlcRx {
-+    rx_buf: KVec<u8>,
-+    rx_in_esc: bool,
-+    sdev: ARef<serdev::Device>,
-+    node: gb_softsvc::Module,
-+}
-+
-+impl HdlcRx {
-+    fn new(sdev: ARef<serdev::Device>, node: gb_softsvc::Module) -> Result<Self> {
-+        Ok(Self {
-+            node,
-+            sdev,
-+            rx_buf: KVec::with_capacity(HDLC_MAX_FRAME_LEN, GFP_KERNEL)?,
-+            rx_in_esc: false,
-+        })
-+    }
-+
-+    fn frame_finish(&self) -> Result<()> {
-+        if self.rx_buf.len() < 4 {
-+            return Err(code::EFAULT);
-+        }
-+
-+        let crc = crc_ccitt(0xffff, &self.rx_buf);
-+        if crc != HDLC_EXPECTED_CRC {
-+            dev_warn!(self.sdev.as_ref(), "CRC failed {}", crc);
-+            return Ok(());
-+        }
-+
-+        let addr = self.rx_buf[0];
-+        let _ctrl = self.rx_buf[1];
-+        let payload = &self.rx_buf[2..self.rx_buf.len() - size_of::<u16>()];
-+
-+        match addr {
-+            ADDRESS_GREYBUS => {
-+                let frame = GreybusFrame::ref_from_bytes(payload).map_err(|_| code::EINVAL)?;
-+                self.node.submit_message(0, frame.cport.into(), &frame.msg)
-+            }
-+            _ => Err(code::EINVAL),
-+        }
-+    }
-+
-+    fn rx(&mut self, data: &[u8]) -> usize {
-+        for i in data.iter() {
-+            match *i {
-+                HDLC_FRAME => {
-+                    if !self.rx_buf.is_empty() {
-+                        if let Err(e) = self.frame_finish() {
-+                            dev_warn!(self.sdev.as_ref(), "bad frame: {e:?}\n");
-+                        }
-+                    }
-+
-+                    self.rx_buf.clear();
-+                    self.rx_in_esc = false;
-+                }
-+                HDLC_ESC => self.rx_in_esc = true,
-+                _ => {
-+                    let c = if self.rx_in_esc { *i ^ HDLC_XOR } else { *i };
-+                    self.rx_in_esc = false;
-+
-+                    if self.rx_buf.push_within_capacity(c).is_err() {
-+                        dev_warn!(self.sdev.as_ref(), "buffer overflow. Dropping frame");
-+
-+                        self.rx_buf.clear();
-+                        self.rx_in_esc = false;
-+                    }
-+                }
-+            }
-+        }
-+
-+        data.len()
-+    }
-+}
-+
-+struct GbNode {
-+    sdev: ARef<serdev::Device>,
-+}
-+
-+impl GbNode {
-+    const fn new(sdev: ARef<serdev::Device>) -> Self {
-+        Self { sdev }
-+    }
-+
-+    fn fill_buf(mut crc: u16, data: &[u8], buf: &mut KVec<u8>) -> Result<u16> {
-+        for i in data {
-+            crc = crc_ccitt(crc, &[*i]);
-+            if *i == HDLC_ESC || *i == HDLC_FRAME {
-+                buf.push_within_capacity(HDLC_ESC)?;
-+                buf.push_within_capacity(i ^ HDLC_XOR)?;
-+            } else {
-+                buf.push_within_capacity(*i)?;
-+            }
-+        }
-+
-+        Ok(crc)
-+    }
-+}
-+
-+impl gb_softsvc::InterfaceOps for GbNode {
-+    fn write(&self, data: &[u8], cport: u16, gfp_mask: Flags) -> Result<()> {
-+        // SAFETY: `GbNode` only exists while its serdev driver is bound, so the device is in the
-+        // `Bound` state for the duration of this call.
-+        let bound: &serdev::Device<Bound> =
-+            unsafe { serdev::Device::from_device(self.sdev.as_ref().as_bound()) };
-+
-+        let mut buf = KVec::with_capacity(HDLC_MAX_FRAME_LEN, gfp_mask)?;
-+
-+        let mut crc = 0xffff;
-+
-+        buf.push_within_capacity(HDLC_FRAME)?;
-+
-+        crc = Self::fill_buf(crc, &[ADDRESS_GREYBUS, 0x03], &mut buf)?;
-+        crc = Self::fill_buf(crc, &cport.to_le_bytes(), &mut buf)?;
-+        crc = Self::fill_buf(crc, data, &mut buf)?;
-+
-+        crc ^= 0xffff;
-+        Self::fill_buf(crc, &crc.to_le_bytes(), &mut buf)?;
-+
-+        buf.push_within_capacity(HDLC_FRAME)?;
-+
-+        bound.write_all(&buf, 0)?;
-+
-+        Ok(())
-+    }
-+}
-+
-+#[pin_data]
-+struct GbUartNode {
-+    #[pin]
-+    rx: SpinLock<Option<HdlcRx>>,
-+}
-+
-+impl GbUartNode {
-+    fn init(sdev: &serdev::Device<Core<'_>>) -> Result<HdlcRx> {
-+        if sdev
-+            .set_baudrate(
-+                sdev.as_ref()
-+                    .fwnode()
-+                    .and_then(|fwnode| fwnode.property_read(c"baudrate").optional())
-+                    .unwrap_or(115200),
-+            )
-+            .is_err()
-+        {
-+            return Err(EINVAL);
-+        }
-+        sdev.set_flow_control(false);
-+        sdev.set_parity(serdev::Parity::None)?;
-+
-+        let node = gb_softsvc::Module::new(&[Arc::new(GbNode::new(sdev.into()), GFP_KERNEL)?])?;
-+
-+        HdlcRx::new(sdev.into(), node)
-+    }
-+}
-+
-+kernel::of_device_table!(
-+    OF_TABLE,
-+    <GbUartNode as serdev::Driver>::IdInfo,
-+    [(of::DeviceId::new(c"beagle,beagleconnect-freedom"), ())]
-+);
-+
-+#[vtable]
-+impl serdev::Driver for GbUartNode {
-+    type IdInfo = ();
-+    type Data<'bound> = Self;
-+    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+
-+    fn probe<'bound>(
-+        sdev: &'bound serdev::Device<Core<'_>>,
-+        _info: Option<&'bound Self::IdInfo>,
-+    ) -> impl PinInit<Self, Error> + 'bound {
-+        dev_dbg!(sdev.as_ref(), "Probe gb_uart_node.\n");
-+
-+        try_pin_init!(Self {
-+            rx <- new_spinlock!(Some(Self::init(sdev)?), "gb_uart_node::rx"),
-+        }? Error)
-+    }
-+
-+    fn receive<'bound>(
-+        _sdev: &'bound serdev::Device<Bound>,
-+        this: Pin<&Self>,
-+        data: &[u8],
-+    ) -> usize {
-+        if let Some(mut guard) = this.rx.try_lock() {
-+            if let Some(ref mut hdlc_rx) = *guard {
-+                return hdlc_rx.rx(data);
-+            }
-+        }
-+
-+        0
-+    }
-+
-+    fn unbind<'bound>(_: &'bound serdev::Device<Core<'_>>, this: Pin<&Self::Data<'bound>>) {
-+        // Getting a bound device is not possible after this point. So drop HdlcRx.
-+        let _ = this.rx.lock().take();
-+    }
-+}
-+
-+kernel::module_serdev_device_driver! {
-+    type: GbUartNode,
-+    name: "gb_uart_node",
-+    authors: ["Ayush Singh <ayush@beagleboard.org>"],
-+    description: "Greybus node connected over UART",
-+    license: "GPL v2",
-+}
+ drivers/gpu/drm/tyr/fw.rs     |   1 +
+ drivers/gpu/drm/tyr/fw/irq.rs | 174 ++++++++++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/tyr/irq.rs    | 114 +++++++++++++++++++++++++++
+ drivers/gpu/drm/tyr/tyr.rs    |   1 +
+ 4 files changed, 290 insertions(+)
+---
+base-commit: d7962d990307dc28dfded8cf6ba96d7498af7631
+change-id: 20260728-tyr-irq-v2-0b3c5022be33
 
+Best regards,
 -- 
-2.55.0
+Laura Nao <laura.nao@collabora.com>
 
