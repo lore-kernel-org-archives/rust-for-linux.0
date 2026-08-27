@@ -1,82 +1,111 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C9E3BB9F4;
-	Thu, 27 Aug 2026 12:48:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787834914; cv=none; b=dzOO6lj1WseY+CKnItYNOqZQhC/kIfu5K4r7F4mrk/dnP6K2dqNMts24i+fvHk1hRxlCEMUshra65SW6nn03yp7szQMNz0DvhdNLJQFwCcOn+z5iQ27PWyGCX3CGepVDpY9HpRWzmW+Co+lAsdUnELoiw0ARhUSl4EDi2fCGnSQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787834914; c=relaxed/simple;
-	bh=1Bhx/Raco5H/c+FE1c0VCLFACqcMQjx4hIqxzcdgWDA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sLtZJeLDCNCakmKX/UTJ5AhYqDQdQgytzESzfyoge8RXLZznsbHN9yh1pa0Ey9Ahu/wprzdkyqsN7GKSMvPQH+N7aUB4t3Ivc2H3VDVBdNPh0/ZCIM52orNK2SnA+YJYqMnhbWzU5Yh1Flc496gWwzJVA1TdadWRsUBsxHsGJ0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=aQL//VmA; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541423E51C6
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Aug 2026 13:04:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787835866; cv=pass; b=s7dOMPwaOhKZAAJITJGF+fI7/mPVra+APg533VU4/Tijzy/AFnu7xRsE07y6h+WEgu+F9Knmq0Kq55UAt8OlMFXumq2wi8uP0in4w4cTxxF4PNP+ISQeDSjVjbQuXVd3kqqqB5on3M6KsSlOOoL0nSq2CCDN2ITHvoI+8P1slbs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787835866; c=relaxed/simple;
+	bh=vknyyVbgIXnt4i0FpUHU48h5wAnKScSuFas7HDAsAoM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=t7xeF+Z07sjucm6oRCEEwG8iWvEa7go+Efoiiq58KMw+xLtfFgCnbmisA1XBIXd9jLa8R7VNozTTOCHlfrNWO/EJamwXJZATJb2EmHWd3fYGBm58XVEgshrL7orh64ZiXrN5/3z3Qhs1GR2cDrVW2vNDeFK9KPw/sV9slpidpTI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YwQWyzqE; arc=pass smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="aQL//VmA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=HXw8p/Z8u7hwdpy2r92uaPSgWCw/J8UMZgsokUSz8Wg=; b=aQL//VmAcmGxqxEe77GBQWXmPw
-	PDUexRf/tWtfO2GsJB70nNP01ZJG4nZZwjAsdBmyMEoZ2s3x9qtlOQaX0+osDEsZPenlnhXNWxJmx
-	XQHmT5xv6lkpZP1JxSfIibKF1G0Znpd2nn9ykdI0i+5FcndOhBjheNEWV6XPyVqMko0C4fXvgcylZ
-	kRQlOJi062D9vCUQxrNGWEFstD0l2aau2Q9pRWm+IENoEVPJhGoRX0v6/G2c5VsYjWLKTly650sO4
-	f+GerBI1mMroc0OiADTzk+Vgc7F8QBhXjwe/B6ErpRiDfQXK5U0spb/q/2JfLLauvO4ceBKRa+KZh
-	J/wzLbCw==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzZWM-00000003zUW-2O1B;
-	Thu, 27 Aug 2026 12:47:54 +0000
-Date: Thu, 27 Aug 2026 08:47:51 -0400
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: aliceryhl@google.com, ljs@kernel.org, vbabka@kernel.org, 
-	urezki@gmail.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: add Alice Ryhl as co-maintainer for Rust
- [ALLOC]
-Message-ID: <qvmn5p7kb4rrk6dmehtipmlxzjtiorflayyy2gakzn3qtexpv6@doqcxo7nujd3>
-References: <20260826132729.3281308-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YwQWyzqE"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-482f2ee53e7so365955f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 27 Aug 2026 06:04:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787835852; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fwRvn6v24mIEoLBABkhU66GRkz98vPQt4KPw5JB4l2O+6TJ9CC3n3Hs6pXqxzJDe4i
+         BOB0KvrNmFeIEnYFj5DQ8ADRxlqGa1Ky/1zpcOBxNfbb2v4saO0poBuDsfyfiV7wLH9E
+         E7Aeg789xetFognJTVpx2kEcH5ERMorVcxlLaw314f7C3vnt1u3rv/16jBlsVJPqjO0R
+         hvWhH+4MATv5P+5X9iQruMFiiZoQOxakUYIsAOySrylHGKAJc5E5Q+Mpw0pgp0dmT3Nz
+         x5V8zKMf+FZX3DR7w8q+8Gs0sNAyE93PImcQjivE8QUjTovG6898D8OaQwY8KcLyv8Wt
+         PtPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vknyyVbgIXnt4i0FpUHU48h5wAnKScSuFas7HDAsAoM=;
+        fh=8gbGOCfRPIJIpxKJofJLUcyXQwd0X7M3rWu3K9efBpM=;
+        b=UIptjjcorloz31wt2ntFXLxLXtFgT297SslJBD+3DAvlsWQJLGcn2hWHB3gyiqNmN9
+         syGLP29gQCvthrnZGwDtYe9mwE70IHhRdX6aU8TpxYBxxDlcn3R5fozbFcQIWHcKtJls
+         9z1vQ+NYUhWEXDwTFXMgaJ8ICmde5KR/n0guL6+bS4vaZVPPppUMTfzBFlnNRWGxMTxJ
+         1qkyuaO3nhqQE6dTV0PnTAVkoEIGQESZTOZNGdvECbCRHKjLgqO3KMkgmmfH/4DTE4Ds
+         YLNu7NCtlRzeiiUAsDWqaCxDRR9MPJ0C8jCZdhluu3gel71363ib2pfTLGMYhzf13dDR
+         RmCQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787835852; x=1788440652; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vknyyVbgIXnt4i0FpUHU48h5wAnKScSuFas7HDAsAoM=;
+        b=YwQWyzqEPbscGfC2UtHHRRoGnzpZgdNkQuxPVsBiPU8n8wmSoPO2hUdvDLJQY6vx/r
+         61qAQGcGzBz8mnzOBMAEm1taHwgPW9S5/cd0I1dj9yYukEzXQ+qnijXVpKb/mwYVsAnY
+         g6uT0OCVEj2wyz/bMGz5kkdZIw8NpAGcYDkb01qi9hLhJArO1ayXE/vh8aSF2eyKiZIZ
+         /8+y7b6FagecIt4W80w36AijAcd94WhAs9ObGI97Eirsky20jkG6YWsspCUFwqw37ELn
+         PQhSVj7u1Q1M3j/GxbuGdMG0ogx5yAPNGVm2BqdJI6mRyVtCX7j5s3I4FZemLYUYIUgk
+         D7ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787835852; x=1788440652;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vknyyVbgIXnt4i0FpUHU48h5wAnKScSuFas7HDAsAoM=;
+        b=bSbPJ9IaSpSI5/S9gYD5xr+YUXeA74adZOXtkcuTZTb+4TTMYBWNHMHOXu8qKoLVTv
+         WjdDt2VR2cXk4mCqewYaiYfX0czZSlvjwh0ZmIQqsdiOgG0tx35XULbNKsztsS5Z+ByZ
+         JE4RAa5Cogez5UekPO/vKvqxyLPHC5P6+1Dc41vbtSu4qiWhdiFiOguMrs6JkY8qkCBA
+         5/RY5FuARco+0G8Xu6hi8E78pbw9NTXfsuM3WRAv96b/8+xRX3MJ4i172MwXXlrH3u+o
+         gd0jR7Jzq0WEQH80CKC34cfqCtDGxR9LXTyJ9lI1cxUYtni+nNSTrykmCU7oc25D1A4C
+         1RZw==
+X-Forwarded-Encrypted: i=1; AHgh+RqTj+wWkw2LeibXspNSBVixiPanMFi2n41dahSzMNHzaAHvwEJAQT4dXAVXyqSVMl+iducAznXKRUrTeLP4gw==@vger.kernel.org
+X-Gm-Message-State: AFuF++nprcOOpCC+iwMj0rq3hcW4aRf+Alb39AWPcFkPUr+6uZ1Scw83
+	qUmEbj73OAxHxUVTZbhcDwaTCK4zFOKJTpemRZd9LaHbdJKRSUSY3wJaxvB+z7YthxLUXp4mkRs
+	mdneQ+k9gdeyGf9RDJBXO7U7PhRibQ5wYSPsNd27x
+X-Gm-Gg: AR+sD11OPLgWhh4m7cWsRHqCy06DDEImpdF+A8OIsSbwp3Bdo7/odmGuvMdbx0lQnwf
+	C0VZNLSb//HR0EM6xr3RM7KpQ1gr31up1dYcVUA225RVOJdoXHWPRcnRx8Tqa56s3GQ7UKQWFls
+	JFCPNZY4JP2296jhgdzanQxLcNIp3H2u1xkegV1RdW8jrgEXZtuDuZF/vpE91MU1jFG12axv0iJ
+	NapBPS1t/lho+Koz5wjhQG/CAjFgr2segVCESwl0ql/DRdVDwul9GLPb+Z/EwLVI+trP5TfJi9A
+	CPEUVm+uvrqWPHkFdsVpS1x2TvCLMEQTKVp04MV42c42AI1UctEex6j6vP2yQuQOVHI/gIAOOZ+
+	9E4a7el0fy8lOEbo8U4VfiVcdeRiFims=
+X-Received: by 2002:a05:6000:382:b0:481:5167:abda with SMTP id
+ ffacd0b85a97d-482e26c844fmr20467651f8f.9.1787835850895; Thu, 27 Aug 2026
+ 06:04:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260826132729.3281308-1-dakr@kernel.org>
 In-Reply-To: <20260826132729.3281308-1-dakr@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 27 Aug 2026 15:03:58 +0200
+X-Gm-Features: AcwNN1UcN2vg8RVpmOZyLR4-8awrlzpmXi8yWI9hVIjWmlnx2_hDjuyNvwryYNc
+Message-ID: <CAH5fLgg9j8k8fsZWyT-_traR5YVSsLa2x2YcmmGK0vU1eqGKdg@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: add Alice Ryhl as co-maintainer for Rust [ALLOC]
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: ljs@kernel.org, vbabka@kernel.org, liam@infradead.org, urezki@gmail.com, 
+	ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 26/08/26 03:27PM, Danilo Krummrich wrote:
+On Wed, Aug 26, 2026 at 3:28=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
 > Add Alice as co-maintainer for the Rust alloc module to share
 > maintenance responsibility. This is also a natural fit, as some of the
 > alloc code overlaps with the mm subsystem.
-> 
+>
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Acked-by: Liam R. Howlett (Oracle) <liam@infradead.org>
+Thanks Danilo!
 
-> ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 24ca91ce5d86..7daacfd70197 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -23945,6 +23945,7 @@ K:	\b(?i:rust)\b
->  
->  RUST [ALLOC]
->  M:	Danilo Krummrich <dakr@kernel.org>
-> +M:	Alice Ryhl <aliceryhl@google.com>
->  R:	Lorenzo Stoakes <ljs@kernel.org>
->  R:	Vlastimil Babka <vbabka@kernel.org>
->  R:	Liam R. Howlett <liam@infradead.org>
-> 
-> base-commit: 45c13f3f9e3bb15fd89ff2864c6f627a3b4b4229
-> -- 
-> 2.55.0
-> 
+Acked-by: Alice Ryhl <aliceryhl@google.com>
