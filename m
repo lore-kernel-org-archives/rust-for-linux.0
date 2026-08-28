@@ -1,227 +1,505 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010067.outbound.protection.outlook.com [52.101.56.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4275439FCB5;
-	Fri, 28 Aug 2026 06:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3007389443
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Aug 2026 06:10:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787897109; cv=fail; b=Di1buBkcNrqN/ChzNL4l38+Yv13XzpbeD8Lnu1FfBjhbdsndeopRBvrkKPBb7nLpO+y38Ka3CCzwpF81+5R9Vq6pizzt1HJBcNxeYtnW6sly09ZhCqPuD57DdarE/YPVsuLTF8fEKL+WRlWLDG0JTih0aH1QwCVn/PPR8AhiX5o=
+	t=1787897436; cv=pass; b=mWWtv6cz0lqF/8c3VUKy7iFrDmAtNr/va3raQ8vbrKjbbGdScXtqN+TWYuXdEuV+pU4X6dVvv55vxurfFtInH4oS7P+oS1QYEmxrMwlqHyQM0B4mKeA8H+8V7qxTwXI/8KCGNsTGOVtv/hQCljZkJEdjjw5W0O5J5CKaa8E4Zt8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787897109; c=relaxed/simple;
-	bh=CcGF1fKvyANMYe/bSbrkk9/h6LnmFDax//vwqfQcM3k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=RQ7A65aGvM0ggWiBVWxB3cYQZIw5M0myCCU4Q1mAcEkSk8yVydjU/7yp5eu5izeJtHTqHBczwLVs82sG1SnjLC2R1MXoIybNc1cPqwICN0Bi1erbtlhKeUKzbjAmMm+emgWx33Ipye81fdpZ5vx/7BRWZcSlgZlXhMKQhNG+4Jg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=iYk38xhu; arc=fail smtp.client-ip=52.101.56.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1787897436; c=relaxed/simple;
+	bh=Ue0T1iUVz3epLV1GAr355iUH4SyixiHlgovA41xr+ps=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b5/T+06Qy34k9f9G/SCEzxRhNs17X0habMym4wb5ljFheKndqZebTZG+vDm/wtBkEwobxwzCB6s7ypQ6H9220zaQ86cu0tGKH8EmfCjkPSpKb/Zcq4Rgqz9M3xdB+kSAVnGFp/Z1vDLH6h55fsdhAoMK4gMPdBDecA4tdXlojSw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NKAK2Cq2; arc=pass smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="iYk38xhu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mJrVasVf6tN+Sno9vEbct7F+NJh9xztQzLiy1ndbRHwi4/kLhoHFsgoNPVMnZPbbt8woa+zEydt3GUXKjdfHS0YDChdzX63PmC3QBoamK+jaX8M74v+q+xoMHL1MNWzj880NmGK5rwellEaaegi56B9GSbf4mDwNalPBh4uZdwF4rAVVduOnUTkDlAIZ/AOe7RGN3XGaPNr2ks4rI3Tjks6m8U/0iIewcr6+Gi7fjksYEvvqj8+1kF87dAgIh1bn+euV5PImEsXfhe4+SYvUlbtfII0WPXLEoSG2qENcEngacgQPCq3y0d9zs+3JBKMMOcAXMTROKcSs4pVeQ0F5gg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Pf9TBbMpDPoCNKk50D4fxAvBba/tTM18WV0JG7NA7o0=;
- b=NiRmW5oD1ww5Mfgo4cM8lcPD7f5lTnWKzdfjlStFDUL/5DgBZbQ/O0YrqWeMP87cp9VAso8CWUbrJIYro7CiGunGK7mOvRy2yeZLlWFfQEybFCdBCwX1Pl9VHsry4H7EOtwPGISmNlz78qRVd0eOdlcsfH47fBN5B1aw0czz5BtJ3zeWWqXWeg2TyZBkp5kKVAzPVYdBSeMF1DT8ArVm6sdi1Yn2upP7c5QzPE0wEKmUAdsOVM2SafK2C18ZE2J9ynna6E43kSBgBAyj4oY52a0hTKNCOE4j1PvW4A44mLEWOqZa/HbdyKPiC38Kx7HWBujp30xM9IBwcsrgTxIOOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Pf9TBbMpDPoCNKk50D4fxAvBba/tTM18WV0JG7NA7o0=;
- b=iYk38xhuqFCJlRWesruKd/IybA6aWglwzcf5hPeZhD6u8nl6D3Q1ma0hXCGWPfwTS0SI9QkFlfxJWdx1o/rpJuI+ojL8Dv/VUfsjneB8cipGGl2jVrS6aYNVbMtqmfmZRZTzLOlO5ZQ9alqz2D50CcxkduPZ1AU5u8DhI51I182c3e77Eh5WVqQEjIiSQy9T6fya2/Yn42wY+SZadO+xD+spioO59shInECaIFub0I9DXi4NjzuKl0bpn2JSZtW0XVlmSa+yO7cRpdazC2Lc6r1HMsM3JuyRwKdHJ/9brTDzcAUHKWUVM3UTn9F8hURbcbZsWgZGB3POBVUPbA07uw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MN0PR12MB5977.namprd12.prod.outlook.com (2603:10b6:208:37c::22)
- by PH7PR12MB5709.namprd12.prod.outlook.com (2603:10b6:510:1e0::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Fri, 28 Aug
- 2026 06:05:04 +0000
-Received: from MN0PR12MB5977.namprd12.prod.outlook.com
- ([fe80::d8:f725:258:2f28]) by MN0PR12MB5977.namprd12.prod.outlook.com
- ([fe80::d8:f725:258:2f28%4]) with mapi id 15.21.0360.008; Fri, 28 Aug 2026
- 06:05:03 +0000
-Date: Fri, 28 Aug 2026 16:04:58 +1000
-From: Alistair Popple <apopple@nvidia.com>
-To: nova-gpu <nova-gpu@lists.linux.dev>
-Cc: M Henning <mhenning@darkrefraction.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	David Airlie <airlied@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	Eliot Courtney <ecourtney@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 00/11] gpu: nova: Export parameters from nova-core to
- nova-drm
-Message-ID: <apEk5I-63o8QM4gJ@nvdebian.thelocal>
-References: <20260828033531.1117754-1-apopple@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260828033531.1117754-1-apopple@nvidia.com>
-X-ClientProxiedBy: SY6PR01CA0020.ausprd01.prod.outlook.com
- (2603:10c6:10:eb::7) To MN0PR12MB5977.namprd12.prod.outlook.com
- (2603:10b6:208:37c::22)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NKAK2Cq2"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-39da69c5ba3so3976551fa.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 27 Aug 2026 23:10:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787897432; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sM7zQ5GyTxxab42TRDIefVMdi7lOP5h0JHasmW0jeGRDgWpJKbOlOAYc1fHH6VC58I
+         C5BFC80uqzSdHcya+p1wziHq6Ci4IZ1yDw0IZlCJvN+RHE/yLhpvYfjjM3RMTEiYqbiT
+         +gScmjP3JMesJk1Ej4GDA6E4fB+jkTGxGWhpyKBtbyt1XWP2IfjQ0522DtNmev2i+MXV
+         1y/7iyBJwfj/Aks84+J2/W++6ZFuUrXum+tKnrDFXvjafVM2VA77hvtIHV9KUzIo8DyP
+         ZRXrGt8Iw8xhobp/8Cx2xoVtx/xiEsOFepFZohPMnj6IvtK1BRcI/BV6JFJeqwtxDiBQ
+         GESA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=j/crMht1+yXjpzwQZ3OMn5JiyeMwenvsHnVlTSZgTfE=;
+        fh=HWHmQm1+o5A5dv1ELGoiOgyJ0Zk7Ldb8hQAJojIOrfg=;
+        b=Y/lTA0XGsWoyg4vxpN4y/OfrxUqS66KzBCPc01RBspbngjP3Vwess2YwiZokA0bJ9i
+         u8t81q39CCOLS2zCdhSgJiyxA+lTbKyTRLIEqBBZfXjstFR9MOuS769EkB6EvBIbIxyI
+         u3+v4yGm9e+pSpMbZVkOc95bX/jXyZZVYTV+kwh0zmK8X3YIoKu0oPmfV/L/Sz9PlmtX
+         idbLnONciwfL2VtPgvSXgeAHGu09oeBzoRmcQPAQwuOcccwFuhnnMxWy+lNwNaZFxP9f
+         mYiEKP7KVCDgcVIxgeY8SpBqeOt9CLLL48X34MJCKGPo6UdRJJdIoxgiSiXrTTWE4nMx
+         ohdg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787897432; x=1788502232; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=j/crMht1+yXjpzwQZ3OMn5JiyeMwenvsHnVlTSZgTfE=;
+        b=NKAK2Cq2DYFivXO0yww7+3C9Z6P+uoM0KGZ3DKLFhugbnP11ZSAB3qh194Nx5rThpS
+         XQPYwvnOv2g7DyVGy6xAUdFGwinC51IeOX8fuMZifT4T3OeVoyAT3G2/u34aafp2vZBm
+         ygTBrjlX6z+lFIAff7k3etpikcuLRWg5k40n0yc/oYvtDoenJ3GrugBvtYRXHsFsKzER
+         9V9kW+kmSURknCdozZ8jow23SEWH9/u1t+vSkwvWU+ChFXE8iKqjF5k8QUNXaMeBAXVN
+         25JQ7vzO5kgIQTYyvtQRB9jxYiLX269pwCxCavGKaCjMU5v1oizKpTmMygAMVdu5GE/R
+         hF1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787897432; x=1788502232;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=j/crMht1+yXjpzwQZ3OMn5JiyeMwenvsHnVlTSZgTfE=;
+        b=emrBVBNDzEfaO91/6/P6K6UI+sCgTBZo/bN8gruz5vDbzqMgFksf13MQxaUbRSwc52
+         V35L4M/XjzP51X057hudOh2C37SV2C9qLuo+gvNasU1xiwLypysFEhj867FXBzRZZtG9
+         epKpAbTPXlsWkS4+giTo47uLB/KDL/Ukh8weKaiUALuKjxRYDN1sbwKQc46trnmyujAE
+         0wQEW+QyunMRyGzuabM2GamqN091DHp5Ytuyj8sgXjclwVexv/fAfsj/Hx3bAMallzUx
+         s60H6Z5tQf3XoWGNIQF0+SH1FVKlWUPTjsbqhDw4Hj64j/9Ps+igs5aA2u8ohpubKk4l
+         B2ZA==
+X-Forwarded-Encrypted: i=1; AHgh+RoF44ed5oV54zXYpcjGHY1INvCNu5hewm/+qSz785Efa8BOxQIOoYx2MraFsK4qIqyN/VLexmzjS8QO5HT53A==@vger.kernel.org
+X-Gm-Message-State: AFuF++kUh/hjP2/e2DMrqA4ssWL2ETS1YusRgXlD5oUlZSuYJzfbMccy
+	cAh1nFIJwTNT9oIdCpfd3zQPU/masZsVpAME6boIrXKdkFXxGRgHG9QNomDVzTUJnSMgbQmIYPj
+	HWPHo2F8CYVJ7aiM2dZnKCc7VsfVkfMw=
+X-Gm-Gg: AR+sD110wLkOKKc4yWcGq7Lfq1RbGl3tj67h7PhdRxNs/c1Pz1CQ/5qFhXKCT4NxxlB
+	m2ymqrpi0hLAgbtYbPe4tyOO85grZpkkVHqJ/ExN2gZldPZTsfrbzAzTVSp6bToPojG6RolMfUQ
+	ydi7D2qfcSrdfs4rVrlnuY5oWwlPtWr/75skwyhXNjQgex6M7Tk6aeKCprMZfdnKh2QBK3RdOvn
+	hMqg47nPU1KAYtYk6iA+uvRoztMkPsBM3Jsf4fGuLve+Y9O1on3I3lmgA8pzFucO8B59IdXuT35
+	z7/1EvyLrdxciUa0I/1ROyPOoyfqSfBrp8ZcS5oA0youAEWXA9KsQxyyQg==
+X-Received: by 2002:a05:651c:b0e:b0:39c:93ff:3672 with SMTP id
+ 38308e7fff4ca-3a301cba101mr5891681fa.9.1787897431442; Thu, 27 Aug 2026
+ 23:10:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB5977:EE_|PH7PR12MB5709:EE_
-X-MS-Office365-Filtering-Correlation-Id: 960839f3-18bb-441c-892c-08df04ca4d1e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|6133799003|3023799007|10067099003|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	rFwei1ejsyLmNJbeH8BOGi9a5wZZYZkHyGvm/E6iT4pxL0cxOv7a/XWLQm8xCk+rnmVmRm+zj9COBAv5bjoX8Y3lpHe0RmULlDHNOLoBpKQbX4pnDCJuiSA4UV91XLrgjF+vAhMw76ACTbhzDnp15VUrnO7XpYAXTvKWWCeinfuDXbckisDqZbat1Uez8khkJgPmWpEwVbDiXhXBm00J98zWhP1mIBNGocQBcvUuYgW6MaRAciuaRy5c2UH5h96Hbjl7sBGMz6ra9Ofh5ztnGUdtwGXpyLfn/OF9txkahdcyw4rKugF7zC2eMM4NukiD+ZDLQZlaOB6VdzdL+fxabkWVxT7GXp+GmNGXk3qYuUG0WUk2WeUHKwDel+mJE841v5CZeX8SCmApl/9OP6qtTouku07lxeGGETsqqY8qY7dU3IdwuUnQQF0r1LUhchKCCdHubTp1MJoCRqqlfA5FsViq/FxRvbFs9yGAMVjgSqgJVLcGETHBsBhWz6o8+HZ+VmfxsJ1+DIw/353ZhVHMFBRH3+PdvWZJx/yHeHHwye5Zao4zzQsNvYbKQJvQNT6vTjfGPn8lbdobkSz2Jc6CBw7KkYJBwUjur+fgdJ5Bouij0kAqE3I63FQtugx0ZNXsVYLbguZHoUllIFRNZpDkz5okR8F2+0Tu4WzyUtJvwzA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB5977.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(6133799003)(3023799007)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8pbeu+lhzMkrF7mhCJ9fcp3cXo7GUw/87nnOGM+6+LjzOR5Jt+ZJcnB0moq1?=
- =?us-ascii?Q?2U2blgoX3kg+y3kKf9Z3JiT763VfmEBOaQz3V2SUbZUU7Y8KpaSYKuAzouqS?=
- =?us-ascii?Q?8JrS7Ir2QZOlhmm1dsWtM+1h6R/7GdcC+MYi8n4LPmIXAhAzjK2Mj3uZYuUH?=
- =?us-ascii?Q?3bMh1MrnsszXRw2mbi/zpmmry0iBfaYmoswrkhVn8lcVs/DgJJnk+G0UXPwG?=
- =?us-ascii?Q?l5/GQvwVshhQBf5yoQZSL7P4Ln/LogDPzcJYJAQRDjLkDyjINJCBtXRSMeKd?=
- =?us-ascii?Q?3ND7RVEjOVXU26AzDH4/GSb+OZWg74MT1eEnfBe2YkV5t2vICIh9U554T0b7?=
- =?us-ascii?Q?0xdBx3PsHzjvfd/X0ISvAfKu8ncIVfvKIntA4sW40V200hPiesogq9igwHvv?=
- =?us-ascii?Q?ZLGviVBd0/QlXlDEuReuwVvN9k8ZLwUWZRnUdJzMywviG9GHWADxGB0tqk4j?=
- =?us-ascii?Q?St+mSAw9HQve3ZCY9TPdZWXCpIPSaM/I7AapWqhPFpOzRXVqYqhAkQhq1gTW?=
- =?us-ascii?Q?eZOVlLxNZ8Y9yJKqqMWPaScPj+GXOfiWOodjQaTGe2lk8vb8PuD+Hgkw9gYu?=
- =?us-ascii?Q?PowjSjqYM12ylxdV5tUZv6URRaXC2jVPJ6VSDv04v0NOuwea7VbkOqBd2pmK?=
- =?us-ascii?Q?kpPkopI6j1M/KzM/QeNwdk6bXx19goiuZhEn6MuiLOfs8ykGe1WSF5kM/xmj?=
- =?us-ascii?Q?AgrA0dph33jB5M5bwNak/y2t/JBpq2D1g0Ag9k5M6B60YgVCmR3pM9C4NnsW?=
- =?us-ascii?Q?pMvoQewGqljM7GfCLecRuIQCOzDddJht+/hGhgPrA9IyKK8I+tZIjemrID3Q?=
- =?us-ascii?Q?3T+bknHFfCtZYILXHreAJNHjn7cCQO0wejb98tM1Gv0T8YMtayMsO5UmIyjK?=
- =?us-ascii?Q?qDJPqqcx3tmQSbyui0lsBb8IMiijUe5CfxQHNAoZCOw+mdv7vuOi6DFRnQbU?=
- =?us-ascii?Q?HcdRuK0JeT4ttKqjd04YttbwCCZRseBtOMM6dcgsIwQxs2/rSAhWIZ7ovhc1?=
- =?us-ascii?Q?9Fxvmea0IdCpSWtwPzwbEwt1BahtQLTQM5nmRSbgxt8SlX8gjTL0Rt1mjdhq?=
- =?us-ascii?Q?XpErB60HgVORVX+Wd5TdeELUpmjW69idg8UwBHZlaLGRY4XHUMHvrb+/F/c7?=
- =?us-ascii?Q?lgO1iaDR1sNAHABklVBNlkse3b+XjsiH8pk4f44MWhKuBQrSfS0v3SljpIb2?=
- =?us-ascii?Q?xevIndGr5BvfAuTv3IwHmRwE82TP4bfLKi7qgvxhRuvjYopbKeXGCcuCVXsL?=
- =?us-ascii?Q?bOzOvbCRMeLIMJgfv8rcgv8dVDAG5skugSBxGCIA5mZN59T0f3RUrnEcv/qC?=
- =?us-ascii?Q?maL4QyaIiJsCnSlsTKda73dQhX8uyQG6oOdJQg4pBFcHAaJG4bdu4hNaqLWv?=
- =?us-ascii?Q?SAvZa/f/VmYx+kmAKXlOZInWjmZ6AZ3Y9jtfp/XW6ZVnm9HIcmUEWdPa+8qV?=
- =?us-ascii?Q?ci+hbPapZeEkUgd2jeaPxcUqnMS15xsgsX3DKMZIettBt11sUNECW81Tq2u+?=
- =?us-ascii?Q?CzJVpp8BhoZwyTI9WU2R93PvuTlGLlAjpLVKlwUFx2nfNSq2Ah8URiICW9Fr?=
- =?us-ascii?Q?866vBAC5l8ItpD+Zv5X9HiGk9+99SFf+1C3xdhLFFnWklQ3s3npCg+ur5OCc?=
- =?us-ascii?Q?3qAV2F1m0nbaiq6erdzZcs3c88F0xM+MGMV70H2XR+oIBo5/2/8jHV28yBEW?=
- =?us-ascii?Q?DY8Q6N4fW7njFaTrJwf+1yuUQYsxeg8x50PcBAd3YltfFSEjM6MCcPyhDDw7?=
- =?us-ascii?Q?6WApzeO+ZA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 960839f3-18bb-441c-892c-08df04ca4d1e
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5977.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2026 06:05:03.4839
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UyQS0L8oN1XjVHzjkP8/Tu/E7KWx7oX62n6NQojZBLfhzKlh1BaDzAoQvXiT4iTy+oUCvj+aSuXk4HfPnmTPYA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5709
+References: <20260822062725.60519-1-muchamadcoirulanwar@gmail.com>
+ <20260822062725.60519-2-muchamadcoirulanwar@gmail.com> <20260824004103.54eb2f7b@jic23-huawei>
+In-Reply-To: <20260824004103.54eb2f7b@jic23-huawei>
+From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+Date: Fri, 28 Aug 2026 13:10:18 +0700
+X-Gm-Features: AcwNN1VV1s3tyuVu3cfKHp_QLidwwjT9lqnRfpLo9WEnVspfAOn8t2Jxrz9UaO0
+Message-ID: <CAO26r3QwUZ1QeO3PYNPoYQrbKpzfhttYAi0kNNB+QumAN=vZkQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v5 1/3] i2c: rust: implement SMBus access via
+ IoBackend and FallibleIoCapable
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, lars@metafoo.de, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, andi.shyti@kernel.org, 
+	wsa+renesas@sang-engineering.com, ojeda@kernel.org, dakr@kernel.org, 
+	igor.korotin@linux.dev, branstj@gmail.com, brucer42@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-08-28 at 13:35 +1000, Alistair Popple <apopple@nvidia.com> wrote...
-> This patch series adds some basic GPU properties via a new GPU info
-> ioctl. It builds on top of the "drm: Higher-Ranked Lifetime private data"
-> series[1] to correctly manage lifetimes of registration data shared between
-> DRM, auxbus and nova-core. It's also based on top of "ForLt/CovariantForLt
-> split, auxiliary closure API and DevresLt"[2]
-> 
-> A tree with this series applied on top of all pre-requisites is available
-> at [3].
-> 
-> Properties are exported via a new NovaCoreApi type which implements methods
-> to read data from the GPU. This has been implemented in a separate module
-> to make the public API implementations obvious and to keep them in one
-> place. Auxiliary bus drivers can obtain a handle to this type using
-> NovaCoreApi::of().
-> 
-> This handle can then be stored as part of the DRM registration data and
-> used to interact with the GPU via the nova-core driver.
-> 
-> A new info ioctl is introduced which provides an info type field and a
-> method for reading extendable structs containing GPU information. This
-> series can be tested using the drm-test[4]. A pull request containing
-> updated tests will be raised once this has been posted.
+Hi Jonathan,
 
-Pull request is here:
+Thanks for the detailed review and for CC-ing Mark.
 
-https://gitlab.freedesktop.org/dakr/drm-test/-/merge_requests/1
+On Mon, 24 Aug 2026 at 06:41, Jonathan Cameron <jic23@kernel.org> wrote:
 
-> A pull request for
-> Mesa has also been raised but is out of date. That will be updated once
-> this series has been merged.
-> 
-> Changes since v4:
-> 
->  - No longer export chip-id, instead export architecture and implementation
->  - Add a separate info ioctl with types to read GPU info as suggested by
->    Danilo
-> 
-> Changes since v3:
-> 
->  - Use an ioctl to return all parameters rather than multiple key/value
->    queries
-> 
-> Changes since v2:
-> 
->  - Addressed review Danilo and Alex
->  - Minor renames to better align with HW based on internal feedback
-> 
-> Changes since v1:
-> 
->  - Address review comments from Danilo
->  - Add an API call to read VRAM PCI BAR size using nova-core
->  
-> [1] - https://lore.kernel.org/rust-for-linux/20260628145406.2107056-1-dakr@kernel.org/
-> [2] - https://lore.kernel.org/driver-core/20260626183630.2585057-1-dakr@kernel.org/
-> [3] - https://github.com/apopple-nvidia/linux/tree/nova-drm
-> [4] - https://gitlab.freedesktop.org/dakr/drm-test
-> 
-> Cc: M Henning <mhenning@darkrefraction.com>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Alexandre Courbot <acourbot@nvidia.com>
-> Cc: Benno Lossin <lossin@kernel.org>
-> Cc: Gary Guo <gary@garyguo.net>
-> Cc: Eliot Courtney <ecourtney@nvidia.com>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: linux-kernel@vger.kernel.org
-> Cc: nova-gpu@lists.linux.dev
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: rust-for-linux@vger.kernel.org
-> 
-> Alistair Popple (11):
->   gpu: nova-core: Add public driver API to nova-core
->   drm: nova: Add DRM registration data
->   drm: nova: Add GPU architecture enum to nova-drm UAPI
->   rust: uaccess: add UserSliceWriter::write_truncated()
->   drm: nova: Add an info ioctl
->   drm: nova: Add usable VRAM size to GPU info
->   drm: nova: Use nova-core to read VRAM_BAR_SIZE parameter
->   drm: nova: Expose a render node
->   drm: nova: Report GPU name in GPU info
->   drm: nova: Report GPU short name in GPU info
->   drm: nova: Report GPU GID in GPU info
-> 
->  drivers/gpu/drm/nova/driver.rs           | 18 ++++-
->  drivers/gpu/drm/nova/file.rs             | 83 ++++++++++++++++++++----
->  drivers/gpu/nova-core/api.rs             | 68 +++++++++++++++++++
->  drivers/gpu/nova-core/driver.rs          | 46 +++++++++----
->  drivers/gpu/nova-core/gpu.rs             | 43 +++++++-----
->  drivers/gpu/nova-core/gsp/commands.rs    | 27 ++++++++
->  drivers/gpu/nova-core/gsp/fw/commands.rs | 12 ++++
->  drivers/gpu/nova-core/gsp/hal.rs         |  2 +-
->  drivers/gpu/nova-core/nova_core.rs       |  1 +
->  drivers/gpu/nova-core/num.rs             |  2 +-
->  include/uapi/drm/nova_drm.h              | 82 +++++++++++++++++++++++
->  rust/kernel/uaccess.rs                   | 14 ++++
->  12 files changed, 352 insertions(+), 46 deletions(-)
->  create mode 100644 drivers/gpu/nova-core/api.rs
-> 
-> -- 
-> 2.54.0
-> 
+> > I2cClient<Bound>::smbus_io() returns an I2cView handle for use with the
+> > generic try_read8/try_read16 methods. Two standalone methods are also
+> > provided for odd-offset word access that bypasses the alignment check
+> > in the Io trait:
+>
+> Given some devices implement auto address increment and others decrement
+> even in aligned byte pairs it seems you will see things that 'smell' like
+> they are unaligned.
+>
+> I'd forgotten this fun corner of smbus like i2c devices!
+
+The standalone smbus_read_word() and smbus_read_word_swapped()
+methods exist for odd-offset access, but I didn't document that
+try_read16 and try_write16 reject odd offsets and that auto-increment
+devices may need to use them. I'll add that to smbus_io()'s doc comment
+in v6.
+
+
+> Just to repeat myself (and I appreciate the challenges that exist for
+> rust support in general and that it may be easier to look at the
+> i2c layer) I think that if it we are looking at bindings that are
+> register like then regmap is the way to go.  The space of what you can
+> build that is register based and uses these i2c_smbus commands is a lot
+> richer than you might think.  Either you end up reinventing all the
+> infrastructure regmap has to handle these, or you just use regmap.
+
+Agreed. regmap-rs is the correct long-term path. This series uses the
+IoBackend/SMBus route because regmap-rs does not yet exist, and the
+scope is intentionally minimal: byte and word reads only. I should have
+stated this in the cover letter from the start. I'll fix that in v6.
+
+Mark, if you have a view on whether this stepping-stone approach is
+acceptable or the series should wait, I'd appreciate your view.
+
+
+> There are mixed devices where register stuff is used alongside other acce=
+sses,
+> however for those I'm not sure it is worth doing anything other than
+> wrapping the raw bus access functions.
+>
+> A few more references to the real variations we have to cope with inline.
+
+Agreed. smbus_read_word() and smbus_read_word_swapped() on
+I2cClient<Bound> are exactly that: thin wrappers over the raw bus
+functions. For mixed devices that don't fit the register model, those
+standalone methods are the intended path, not the IoBackend machinery.
+
+
+> p.s. One day the rust driver in IIO won't be the bottom of my 'to review'
+> list :(
+>
+
+> > +impl FallibleIoCapable<u16> for I2cBackend {
+> > +    #[inline]
+> > +    fn io_try_read<'a>(view: I2cView<'a, u16>) -> Result<u16> {
+> > +        // `io_view()` ensures `offset + 2 <=3D 256`, so `addr()` is a=
+t most 254;
+> > +        // the `as u8` cast below is therefore lossless.
+> > +        let reg =3D Self::as_ptr(view).addr() as u8;
+> > +        // SAFETY: `view.client.as_raw()` returns a valid `*mut struct=
+ i2c_client`
+> > +        // pointer as guaranteed by the type invariant of `I2cClient`.
+> > +        // `i2c_smbus_read_word_data` is safe to call with any valid c=
+lient pointer
+> > +        // and any u8 command byte.
+> > +        let ret =3D unsafe { bindings::i2c_smbus_read_word_data(view.c=
+lient.as_raw(), reg) };
+> > +        if ret < 0 {
+> > +            Err(Error::from_errno(ret))
+> > +        } else {
+> > +            Ok(ret as u16)
+> > +        }
+> > +    }
+> > +
+> > +    #[inline]
+> > +    fn io_try_write<'a>(view: I2cView<'a, u16>, value: u16) -> Result =
+{
+> > +        // `io_view()` ensures `offset + 2 <=3D 256`, so `addr()` is a=
+t most 254;
+>
+> There are smbus devices that have fully 2 byte registers.  For those you'=
+d
+> need to divide this by 2 and the range would go up to 510
+> E.g. drivers/light/cm32181.c (though that doesn't have that many register=
+s).
+
+Understood. The current maxsize=3D256 works for AS5600 but doesn't cover
+devices where all 256 command bytes address 16-bit registers; for those
+the range would need to go up to 510. I'll note this as a limitation
+in v6.
+
+
+> > +impl I2cClient<device::Bound> {
+> > +    /// Returns an I/O handle for SMBus register access on this I2C cl=
+ient.
+> > +    ///
+> > +    /// The returned handle provides fallible read/write methods for t=
+he
+> > +    /// 256-byte SMBus command address space (0x00=E2=80=930xFF). This=
+ is the SMBus
+> > +    /// command byte range, NOT the 7-bit device address, which is han=
+dled
+> > +    /// by the I2C core at the adapter level.
+>
+> That rather feels like you are correcting my confusion in the earlier ver=
+sion!
+> I'd assume people are more awake than me and skip the NOT part ;)
+
+Sorry for the tone. I didn't mean to correct you. I'll drop that line.
+
+
+> > +    /// Reads a 16-bit word from an SMBus register in CPU-native byte =
+order.
+> > +    ///
+> > +    /// Wraps `i2c_smbus_read_word_data`. The `reg` parameter is the S=
+MBus
+> > +    /// command byte (0x00=E2=80=930xFF) =E2=80=94 an instruction sent=
+ to the device over the
+> > +    /// serial bus, not a memory address. There is no alignment requir=
+ement:
+> > +    /// any command byte value is valid regardless of whether it is od=
+d or even.
+>
+> It might be a memory address, could be almost anything.  Maybe 'not neces=
+sarily'
+> a memory address.
+> The kernel docs have it as:
+> "Command byte, a data byte which often selects a register on the device"
+
+I'll use the kernel-standard phrasing
+
+
+> > +    /// Reads a 16-bit word from an SMBus register with bytes uncondit=
+ionally
+> > +    /// swapped.
+> > +    ///
+> > +    /// Wraps `i2c_smbus_read_word_data` and applies [`u16::swap_bytes=
+`] to the
+> > +    /// result. Use this for devices that store multi-byte registers i=
+n
+> > +    /// big-endian (MSB-first) format, which is common among I2C senso=
+rs whose
+> > +    /// datasheets do not reference the SMBus specification.
+>
+> This last bit feels like cover letter, patch description material.
+> I wouldn't normally expect function documentation to justify how useful
+> a function is!
+
+Fair point. I'll remove it.
+
+> > +    ///
+> > +    /// The swap is **unconditional** =E2=80=94 it is not equivalent t=
+o `be16_to_cpu`.
+> > +    /// On a big-endian CPU, `be16_to_cpu` would be a no-op, but this =
+method
+> > +    /// still swaps. The reason: SMBus always transmits the low byte f=
+irst, so
+> > +    /// the driver always receives data in little-endian wire order re=
+gardless
+> > +    /// of CPU endianness. The swap corrects for the device's wire-lev=
+el byte
+> > +    /// order, not the CPU's native order.
+>
+> This feels like we are justifying why it isn't a different implementation=
+.
+> Can we rewrite to not need that reference to what else it isn't.
+
+Agreed. I was over-explaining in the doc. I'll rewrite to describe
+only what the function does.
+
+> > +    ///
+> > +    /// The `reg` parameter is the SMBus command byte (0x00=E2=80=930x=
+FF). There is no
+> > +    /// alignment requirement; any command byte value is valid.
+>
+> What would an alignment requirement mean here?
+
+Right, it doesn't apply here. I'll drop that sentence.
+
+> > +    ///
+> > +    /// Returns `Err` if the bus transaction fails (e.g. NACK, arbitra=
+tion loss,
+> > +    /// or timeout).
+> > +    ///
+> > +    /// # Example
+> > +    ///
+> > +    /// ```ignore
+> > +    /// // AS5600 stores the 12-bit raw angle big-endian at register 0=
+x0C.
+> > +    /// let raw =3D client.smbus_read_word_swapped(0x0C)?;
+> > +    /// let angle =3D raw & 0x0FFF;
+> > +    /// ```
+> > +    #[inline]
+> > +    pub fn smbus_read_word_swapped(&self, reg: u8) -> Result<u16> {
+> > +        // SAFETY: `self.as_raw()` returns a valid `*mut struct i2c_cl=
+ient`
+> > +        // pointer as guaranteed by the type invariant of `I2cClient`.
+> > +        let ret =3D unsafe { bindings::i2c_smbus_read_word_data(self.a=
+s_raw(), reg) };
+> > +        if ret < 0 {
+> > +            Err(Error::from_errno(ret))
+> > +        } else {
+> > +            Ok((ret as u16).swap_bytes())
+> > +        }
+> > +    }
+> > +}
+> > diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> > index 95f46bb75f9e..516895ca2082 100644
+> > --- a/rust/kernel/io.rs
+> > +++ b/rust/kernel/io.rs
+> > @@ -276,6 +276,36 @@ pub trait IoCapable<T>: IoBackend {
+> >      fn io_write<'a>(view: Self::View<'a, T>, value: T);
+> >  }
+> >
+> > +/// Fallible counterpart of [`IoCapable`] for I/O backends where opera=
+tions can fail at the
+> > +/// transport level (e.g. I2C, SPI).
+> > +///
+>
+> Why is this part in the patch adding the i2c specific use case?
+> I'd expect it to be a precursor patch.
+
+I'll move FallibleIoCapable to a separate prerequisite patch in v6.
+
+> > +/// Infallible backends ([`IoCapable`] implementors) get this for free=
+ via blanket implementation.
+> > +/// Fallible-only backends implement this trait directly without imple=
+menting [`IoCapable`]; the
+> > +/// infallible [`Io::read`], [`Io::write`], and [`Io::update`] methods=
+ will then be unavailable,
+> > +/// enforcing that callers use the `try_*` variants instead.
+> > +pub trait FallibleIoCapable<T>: IoBackend {
+> > +    /// Performs an I/O read of type `T` at `view` and returns the res=
+ult, or an error if the
+> > +    /// transport-level operation fails.
+> > +    fn io_try_read<'a>(view: Self::View<'a, T>) -> Result<T>;
+> > +
+> > +    /// Performs an I/O write of `value` at `view`, or returns an erro=
+r if the transport-level
+> > +    /// operation fails.
+> > +    fn io_try_write<'a>(view: Self::View<'a, T>, value: T) -> Result;
+> > +}
+> > +
+> > +impl<B: IoCapable<T>, T> FallibleIoCapable<T> for B {
+> > +    #[inline(always)]
+> > +    fn io_try_read<'a>(view: Self::View<'a, T>) -> Result<T> {
+> > +        Ok(Self::io_read(view))
+> > +    }
+> > +
+> > +    #[inline(always)]
+> > +    fn io_try_write<'a>(view: Self::View<'a, T>, value: T) -> Result {
+> > +        Self::io_write(view, value);
+> > +        Ok(())
+> > +    }
+> > +}
+> > +
+> >  /// Trait indicating that an I/O backend supports memory copy operatio=
+ns.
+> >  pub trait IoCopyable: IoBackend {
+> >      /// Copy contents of `view` to `buffer`.
+> > @@ -645,7 +675,7 @@ fn copy_to_slice(self, data: &mut [u8])
+> >      fn try_read8(self, offset: usize) -> Result<u8>
+> >      where
+> >          usize: IoLoc<Self::Target, u8, IoType =3D u8>,
+> > -        Self::Backend: IoCapable<u8>,
+> > +        Self::Backend: FallibleIoCapable<u8>,
+> >      {
+> >          self.try_read(offset)
+> >      }
+> > @@ -655,7 +685,7 @@ fn try_read8(self, offset: usize) -> Result<u8>
+> >      fn try_read16(self, offset: usize) -> Result<u16>
+> >      where
+> >          usize: IoLoc<Self::Target, u16, IoType =3D u16>,
+> > -        Self::Backend: IoCapable<u16>,
+> > +        Self::Backend: FallibleIoCapable<u16>,
+> >      {
+> >          self.try_read(offset)
+> >      }
+> > @@ -665,7 +695,7 @@ fn try_read16(self, offset: usize) -> Result<u16>
+> >      fn try_read32(self, offset: usize) -> Result<u32>
+> >      where
+> >          usize: IoLoc<Self::Target, u32, IoType =3D u32>,
+> > -        Self::Backend: IoCapable<u32>,
+> > +        Self::Backend: FallibleIoCapable<u32>,
+> >      {
+> >          self.try_read(offset)
+> >      }
+> > @@ -675,7 +705,7 @@ fn try_read32(self, offset: usize) -> Result<u32>
+> >      fn try_read64(self, offset: usize) -> Result<u64>
+> >      where
+> >          usize: IoLoc<Self::Target, u64, IoType =3D u64>,
+> > -        Self::Backend: IoCapable<u64>,
+> > +        Self::Backend: FallibleIoCapable<u64>,
+> >      {
+> >          self.try_read(offset)
+> >      }
+> > @@ -685,7 +715,7 @@ fn try_read64(self, offset: usize) -> Result<u64>
+> >      fn try_write8(self, value: u8, offset: usize) -> Result
+> >      where
+> >          usize: IoLoc<Self::Target, u8, IoType =3D u8>,
+> > -        Self::Backend: IoCapable<u8>,
+> > +        Self::Backend: FallibleIoCapable<u8>,
+> >      {
+> >          self.try_write(offset, value)
+> >      }
+> > @@ -695,7 +725,7 @@ fn try_write8(self, value: u8, offset: usize) -> Re=
+sult
+> >      fn try_write16(self, value: u16, offset: usize) -> Result
+> >      where
+> >          usize: IoLoc<Self::Target, u16, IoType =3D u16>,
+> > -        Self::Backend: IoCapable<u16>,
+> > +        Self::Backend: FallibleIoCapable<u16>,
+> >      {
+> >          self.try_write(offset, value)
+> >      }
+> > @@ -705,7 +735,7 @@ fn try_write16(self, value: u16, offset: usize) -> =
+Result
+> >      fn try_write32(self, value: u32, offset: usize) -> Result
+> >      where
+> >          usize: IoLoc<Self::Target, u32, IoType =3D u32>,
+> > -        Self::Backend: IoCapable<u32>,
+> > +        Self::Backend: FallibleIoCapable<u32>,
+> >      {
+> >          self.try_write(offset, value)
+> >      }
+> > @@ -715,7 +745,7 @@ fn try_write32(self, value: u32, offset: usize) -> =
+Result
+> >      fn try_write64(self, value: u64, offset: usize) -> Result
+> >      where
+> >          usize: IoLoc<Self::Target, u64, IoType =3D u64>,
+> > -        Self::Backend: IoCapable<u64>,
+> > +        Self::Backend: FallibleIoCapable<u64>,
+> >      {
+> >          self.try_write(offset, value)
+> >      }
+> > @@ -827,10 +857,10 @@ fn write64(self, value: u64, offset: usize)
+> >      fn try_read<T, L>(self, location: L) -> Result<T>
+> >      where
+> >          L: IoLoc<Self::Target, T>,
+> > -        Self::Backend: IoCapable<L::IoType>,
+> > +        Self::Backend: FallibleIoCapable<L::IoType>,
+> >      {
+> >          let view =3D io_view::<Self, L::IoType>(self, location.offset(=
+))?;
+> > -        Ok(Self::Backend::io_read(view).into())
+> > +        Ok(Self::Backend::io_try_read(view)?.into())
+> >      }
+> >
+> >      /// Generic fallible write with runtime bounds check.
+> > @@ -860,12 +890,11 @@ fn try_read<T, L>(self, location: L) -> Result<T>
+> >      fn try_write<T, L>(self, location: L, value: T) -> Result
+> >      where
+> >          L: IoLoc<Self::Target, T>,
+> > -        Self::Backend: IoCapable<L::IoType>,
+> > +        Self::Backend: FallibleIoCapable<L::IoType>,
+> >      {
+> >          let view =3D io_view::<Self, L::IoType>(self, location.offset(=
+))?;
+> >          let io_value =3D value.into();
+> > -        Self::Backend::io_write(view, io_value);
+> > -        Ok(())
+> > +        Self::Backend::io_try_write(view, io_value)
+> >      }
+> >
+> >      /// Generic fallible write of a fully-located register value.
+> > @@ -905,7 +934,7 @@ fn try_write_reg<T, L, V>(self, value: V) -> Result
+> >      where
+> >          L: IoLoc<Self::Target, T>,
+> >          V: LocatedRegister<Self::Target, Location =3D L, Value =3D T>,
+> > -        Self::Backend: IoCapable<L::IoType>,
+> > +        Self::Backend: FallibleIoCapable<L::IoType>,
+> >      {
+> >          let (location, value) =3D value.into_io_op();
+> >
+> > @@ -938,16 +967,13 @@ fn try_write_reg<T, L, V>(self, value: V) -> Resu=
+lt
+> >      fn try_update<T, L, F>(self, location: L, f: F) -> Result
+> >      where
+> >          L: IoLoc<Self::Target, T>,
+> > -        Self::Backend: IoCapable<L::IoType>,
+> > +        Self::Backend: FallibleIoCapable<L::IoType>,
+> >          F: FnOnce(T) -> T,
+> >      {
+> >          let view =3D io_view::<Self, L::IoType>(self, location.offset(=
+))?;
+> > -
+> > -        let value: T =3D Self::Backend::io_read(view).into();
+> > +        let value: T =3D Self::Backend::io_try_read(view)?.into();
+> >          let io_value =3D f(value).into();
+> > -        Self::Backend::io_write(view, io_value);
+> > -
+> > -        Ok(())
+> > +        Self::Backend::io_try_write(view, io_value)
+> >      }
+> >
+> >      /// Generic infallible read with compile-time bounds check.
+>
