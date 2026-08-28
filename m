@@ -1,100 +1,224 @@
-Received: from mail-106120.protonmail.ch (mail-106120.protonmail.ch [79.135.106.120])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010056.outbound.protection.outlook.com [40.93.198.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED175B21A
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Aug 2026 02:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.120
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787885092; cv=none; b=eK7BwSCL7H+Erzb/DFVY6uLmxSh371ELrXZaI5povsxyN7pggmzmmy9sPjd42rMIfRgCuq9qYWi9rEtQIYUVXWd4KwErwVdFNcfixpkQxGjzlO/7DHiKDq+iEyvMO5Sl7MHc/VujhbybGJ5C7a0+WQBxoJMwyyeDPSu5OERJPsE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787885092; c=relaxed/simple;
-	bh=Wa6+2lHvpXA5kOwx/K/W5g8loVWc1BnA7I82cueJWPo=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=aNZEBJi3x/9VM6xEN14stTlUDu/B57C/fNevcgayRWRVEQNMnhiQgYzgZQzafRxPjwtyhKeDgGHH0/uW6KQ4Zx+KayW10OH46Z2cTPoor0JbEf7aMAk+paSivbFB/oHAKz/y3Ag1QAhCZk3UNWQR5k2q95mjspDMVkYNNQQFVOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Xo/Br8p4; arc=none smtp.client-ip=79.135.106.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325A02CCB9;
+	Fri, 28 Aug 2026 03:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787888157; cv=fail; b=r+xgnVZjWTJ2LS1Uw/+XkTOha0BlslG2eb2GeuOj2w/ogsW1JPeKoF4JYNdn5wH64frnUKpSnyE/2y4BI5MvKALgQB9hR/2/ZNpLU52xtIVnFgB/WadQ0Nnif+pyGE59Mb6GDawqHafHMtaDdaHWEnyKvkWP2tnt6uO/WlYIaN8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787888157; c=relaxed/simple;
+	bh=nNS56KkCHYFFKHNwK4nlBbaHbNwF6EFZvb9R874D/j8=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=jCOM+uz8xj7azflCV5/+EFFFri7Db2fITR0OEt+YPy3Mgjfn3nsXo08QVaI2Xsa45U2xXg13nsCEOvM5+4G1enNdQlShABLppJQ+rA9wmTFvv4gFElPTwTEkkHpSYylL79O9u7XezdoIseju3q8TyDvD5ZnE2pPQM5YOy1Pnf1I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=I3ZUdy6x; arc=fail smtp.client-ip=40.93.198.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Xo/Br8p4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1787885078; x=1788144278;
-	bh=d2vbG8I8C2vZ3aknTtpETgBaDvg9qhoe2w1vweQf45k=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=Xo/Br8p4XrN1wazdEsBYcFzLyj3wX+AKcHTyrKeIy65LBAlvmEqUoowoA47FzJxPE
-	 OM1pdHC1D9fmJjpS93T1P4sWk+pbH+wD4TOda5ezCBHnQFflVbAHayBafHU/495Ge/
-	 MT2L+c2YXpYuzQJlTZig4yqYxiBm2AaDTJaEioI+qBOceBpvlmQVFspfkKtUHE1kT8
-	 kSqb1fHVSP0u3YGRpfBtWo//cwSgWa26lfBgCkAD7A2zxFv1ZgPcdbnx7Ldb1NvTiK
-	 ZONc+uKuYGedKcqWZkdfNXlegvCVUS3+sqp5luRW9xUszrAdFhqgxuxDWuQ4OEfo8O
-	 4qYu+glpKRS+g==
-Date: Fri, 28 Aug 2026 02:44:30 +0000
-To: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E . Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>
-From: Nils Lehnen <nils.lehnen@proton.me>
-Cc: Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Onur Ozkan <work@onurozkan.dev>, Atharv Dubey <atharvd440@gmail.com>, Ke Sun <sunke@kylinos.cn>, linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Nils Lehnen <nils.lehnen@proton.me>
-Subject: [PATCH] rust: security: replace `core::mem::zeroed` with `pin_init::zeroed`
-Message-ID: <20260828024335.946-1-nils.lehnen@proton.me>
-Feedback-ID: 188354734:user:proton
-X-Pm-Message-ID: 03d30c8e9b9b95cd199dd517e73934594f333461
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="I3ZUdy6x"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JSz+GCYupJhg5FPCEs3gwXzv/PmYPkJ/n9IEgI6/C3DLVVAYGP2cNt75g61r2AOGio3MGeWfeXfzJGuJHLQqYzNTq3FtjR+d6tBKCYvN2mDrrObH5PWXI0rJHTyPE5D3KaDHYJ5Ba+JNygrCnz/ELTXNlburhLhcHGmML4kv0iqrtYevKhSG6FQEjmdmhjHa6nmTfsSnK6dkw0vPg+vZAwLXR6gMMK5A2XvwWKomXwLPXZNpOxg9FtE4ABhBnzpkKT53K9E7YF8WCFTRRWv5OorLii+z7jDCeFZ7xgK7iHbdQXbDlxJklzhbdjRIirXoFVwyE6QgCbWRd5a/G3lbDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e5hbgfoPiaowYbGcTvbp1fmNrP8V9wd+Yh/LxIsRPa8=;
+ b=tURa/LHDtd5v1ep/ro82nxPiCeueYfjaf+JE7pbS+WHk12/GTIAC4YVE3JWej9T13lHHhgJOJuGTqzMteIYyP5YXXb3sAOoHpOJIo15AtydcEVt4Btpd8F3lfGG1nh813Oo4Yuj0YstEWDNeligb3S3lpnsVynaS/n5bsBlv7Q1aBr0PVYFBbPaLloDzCw1l+iA2g1XIbdcVUJU9w0OVKgJUMH9zc4ivjnFqUiwbftSh9xV/uT5M5KVLXbaVtAvXoDIBziqKA5tfj/pPu5WY4mLZpyCxInow9bOQV0sEnWBNxX6bXRLX5fc/WuS49Gy2Z9W9Gzvyi0zqCJdCt1Tplg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e5hbgfoPiaowYbGcTvbp1fmNrP8V9wd+Yh/LxIsRPa8=;
+ b=I3ZUdy6xOb1Ni7fRn7N7oKpPI28sQDyhB9hINbfq3t25Xe12jj+O/YDtHipjHWEpd3GXaCwABqGrg31kHqS8qbnBj8o17LaqUnytf7XMswF5eB3E7rGMbl+EDTAZ3vF+lv66RT+ZYIZDtbytVTGMmLfeqp1pkq6Mbk/00/+INAHpTLfBhGyOppNDyiOqEC136Oiv5ylJ8uAQ8Ylfv1FkmwtvnTe3aeqqiuoV523ApYzFwtnCHl55HjjShnQJK1RZJtVM4eUoDBxVEeaolpkUBz25iqzHqQfhQZHw8MD6HA6dBiht/UAH6+f4VbPFwRI53E2ct8ANgllecCnlnwiQdw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN0PR12MB5977.namprd12.prod.outlook.com (2603:10b6:208:37c::22)
+ by SA1PR12MB6919.namprd12.prod.outlook.com (2603:10b6:806:24e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.14; Fri, 28 Aug
+ 2026 03:35:49 +0000
+Received: from MN0PR12MB5977.namprd12.prod.outlook.com
+ ([fe80::d8:f725:258:2f28]) by MN0PR12MB5977.namprd12.prod.outlook.com
+ ([fe80::d8:f725:258:2f28%4]) with mapi id 15.21.0360.008; Fri, 28 Aug 2026
+ 03:35:49 +0000
+From: Alistair Popple <apopple@nvidia.com>
+To: nova-gpu <nova-gpu@lists.linux.dev>
+Cc: Alistair Popple <apopple@nvidia.com>,
+	M Henning <mhenning@darkrefraction.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	David Airlie <airlied@gmail.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v5 00/11] gpu: nova: Export parameters from nova-core to nova-drm
+Date: Fri, 28 Aug 2026 13:35:20 +1000
+Message-ID: <20260828033531.1117754-1-apopple@nvidia.com>
+X-Mailer: git-send-email 2.54.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SY5P282CA0029.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:202::11) To MN0PR12MB5977.namprd12.prod.outlook.com
+ (2603:10b6:208:37c::22)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB5977:EE_|SA1PR12MB6919:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7a2445f2-0b42-471e-ec1f-08df04b57400
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|376014|366016|23010399003|3023799007|6133799003|11063799006|56012099006|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	dSHIU2cAvcul0c31IhdAlfDtbIQCWTK7GL2niossEbHekB35wa/Ov0n8zyMJxDMBlgiBsDqXG4fDI5BuCFBb3KRjHdLgFjlRvz6a2rTmoedBn65tqo4WlEkF8KqYVp4/3x44PBNOLO9cxPxxtJUvzetK6ZikE46ybz8Hqxjwbr2sBX2dmXY4WdsbBBHHiv0CJOptywRkOVfcyOxZRnUjpq3yUbXvm+zBlT1VQNZ6pn0EQPBpFStfnhKzRo94lWJ4fA9pCbEl2593Couq4gNp14V4/XQBywDYCjRsJJanuAgH+AwZzdex7KsCo+52bcqCQpF7MwZM/zLWwO2TWLFISqOq1ykl4DbHmL5u4gcLCNjh8zV+lywbfOCYLAuKcWnyMfLDEEbqw31LHx1Ie5w6d3qnklMcVsV2q7A3AzxhUyQKZZs3atqSRJh8NwXsBR7jqYgyOs716jLN9t8DYGjAfP0ldKnGONXnxoZStmaXflXxUy+zcAFj75aPVy/am+KM1X9FT+HFSgdOZXdpEaM2l21cxRygxUn8MeTnCIkpTf4EzfN4GQsqJltElJQ0rPoi+ago7yZ6kv+lNcZYrcYMbj/Xk5MLSlcB3MmpNFJg+bZ10+b9KzRI19X4I6i+Q6Zy8H5smMGM51BF0mZB7MUCMRY+WOgNPOrJYzj4771fZHs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB5977.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(23010399003)(3023799007)(6133799003)(11063799006)(56012099006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?BsPGP8eNnWzViZ3qfc6LrlNaXTD0c3MlNszMOOEUbtpKMDPuzyq0ucUQsr9x?=
+ =?us-ascii?Q?MUxX+cJmN/wbTDpnVrMqyTfvvkqSuQzlEzExAlxwR0vJM9QTiLGCX2kc8UV1?=
+ =?us-ascii?Q?iImca597hy7K/Ob4Z0tXbUFi0NlEDsNYjtp3rBLuC8OLQn3QnPNGvpldsrJH?=
+ =?us-ascii?Q?fTw2MuoZk/Jxd1I6hTmRGr7ymxZWyk/bsNy77o6cUkiyM1jSQy8pEvPp/P+U?=
+ =?us-ascii?Q?liJ9P2cF5gawKG0AXV11xruKH60TslJF7bixt9H7EtTp+3WXFAZ1R4vEM7NM?=
+ =?us-ascii?Q?OVpBzixc0XTMk0Ujr3CaHjcgK4mS35RprShOF023rp0CEvk8C/Mcme1ShWpI?=
+ =?us-ascii?Q?qaY+ga+AGUtSkhXD1Prv9yX+frhTDzFBngoCdgXuzJZsfC5FRIFOuy1rRuCj?=
+ =?us-ascii?Q?wN+N+FSpzk9SPCAgbgiqHbnwBHxTsjpgV+f8vKPdTeXLjhRZaHOp+qDCeCJV?=
+ =?us-ascii?Q?ulEOKiawQJLsQemWNdyPjDWjtgz9Ktljn/sJLxNCAvRfJfwbYz2yK7Q66iLV?=
+ =?us-ascii?Q?zixomnwl3pvRnQSQjw/KCedhefle94XThSK7f1LbB9ixHMHBWBF1lf5ySXZF?=
+ =?us-ascii?Q?Cb7H10KpimnOgl0KmaikY9q8a2Axs5dzfysdO08PjKJtXC8tcFR7UC114f9h?=
+ =?us-ascii?Q?zrH2vIdudvcOAnlHSmzLJOgkzPAkTG4BIL7jBbP6HwNhaxxCIBphGG6zvJ5/?=
+ =?us-ascii?Q?zuDuHeOkaCKIOa9tANoLRoMj2F7UudsVOeIdwNVASJwlAyF+kxZF0GpsYXTM?=
+ =?us-ascii?Q?SK1FE5Xo3NlxC+U2ml4BC+BDwPQyOjMWiIrC0GrPYtGRCiytz7R/QRjrymqC?=
+ =?us-ascii?Q?5HznzwmLXNZa+ReXRt4fpWW6AEiHsepNPy8VLrgvk3sYgPQCD1/nOtseQnpq?=
+ =?us-ascii?Q?xhEoA5mrsP3TiUx6yLiVo7q1Ams4xXCyfkJeee9CE2uLThPCdpnmgxO3dK7E?=
+ =?us-ascii?Q?gE7otQUzAu8WJYtvatzmZxFyZ2dHnwfBvzAcJTqh7lZjLLJGQEFYUq96SGlb?=
+ =?us-ascii?Q?pbP6/CX/sW9m0zT82H54lNu7i21ifRY07Id5EYiS6HDKpjcfzk1HanL2ri2M?=
+ =?us-ascii?Q?o8nt5qUZEMherYiF+XjddyEV2ZrZ4M3JfYr4jdHUIOEivd1zvd2wAh+IwJ0/?=
+ =?us-ascii?Q?4+12kiZd9E8bYhfxXZGHnkMdxaBrUFtQp19o3LaYoqXhXQcQL0m7nPJvxWen?=
+ =?us-ascii?Q?yYYLvwseFjlk3djnM3SuFP2HjRJP/C/iA61cc2szECcgKoVyBhqpsRv/qQle?=
+ =?us-ascii?Q?7EP2vbkpqPA6JhU4ukpt2F0aN1kD4F0GbXgRYUTfdjZ3h2ubngnmmwj6Q8Ce?=
+ =?us-ascii?Q?XWZujnT9wdxTAjRtKdBE5eKxuiE3XpEk/754GGbJrP4VdaXfOggRTZ1M12Vf?=
+ =?us-ascii?Q?m7LhZX/RUbnUeAGeAg7+uOyH9S/K1WrfrW8Oam+KxAIIRpFWJYG5LTvq8Feu?=
+ =?us-ascii?Q?P/wiABWgXMUP5f08a4kDlikYmnJDQFumg7nmXRUcRA+toeZIgHQDUd59KhSI?=
+ =?us-ascii?Q?NI8TgnTHFD53dGPbri6hntMbbbMPJsVjlQoAjZLfw+Ku/o8Rx56eVz40WpkX?=
+ =?us-ascii?Q?g7hm9XY8rGjywVts815VdOwIRHUXCKrfjclRIsadVgLzZ4+FtUUvFsCd30XF?=
+ =?us-ascii?Q?nbgbx6Z4LwrPz8O02p5ooT3Yv4D/7JTNwZ7nd7Pvyy6Tz+xZ8wSYKFhJG+h0?=
+ =?us-ascii?Q?vTiOKC0V2Jm2g+zNxgF+67cpUTW9+4VoJAAsOKNI5iBgorV5r5g8cxja44GK?=
+ =?us-ascii?Q?Sx1qkchSRQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7a2445f2-0b42-471e-ec1f-08df04b57400
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5977.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2026 03:35:49.4605
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4zQVuRtanoBDTXHCwAPjH3mUuBX2vxf/d2yMrfSoQoieU2KWOMtfZjciHBvoHCqPkZLfbmw4HVpgXzK0KXnVUQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6919
 
-From: Benno Lossin <lossin@kernel.org>
+This patch series adds some basic GPU properties via a new GPU info
+ioctl. It builds on top of the "drm: Higher-Ranked Lifetime private data"
+series[1] to correctly manage lifetimes of registration data shared between
+DRM, auxbus and nova-core. It's also based on top of "ForLt/CovariantForLt
+split, auxiliary closure API and DevresLt"[2]
 
-All types in `bindings` implement `Zeroable` if they can, so use
-`pin_init::zeroed` instead of relying on `unsafe` code.
+A tree with this series applied on top of all pre-requisites is available
+at [3].
 
-If this ends up not compiling in the future, something in bindgen or on
-the C side changed and is most likely incorrect.
+Properties are exported via a new NovaCoreApi type which implements methods
+to read data from the GPU. This has been implemented in a separate module
+to make the public API implementations obvious and to keep them in one
+place. Auxiliary bus drivers can obtain a handle to this type using
+NovaCoreApi::of().
 
-Link: https://lore.kernel.org/r/20250814093046.2071971-8-lossin@kernel.org
-Link: https://github.com/Rust-for-Linux/linux/issues/1189
-Signed-off-by: Benno Lossin <lossin@kernel.org>
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-Signed-off-by: Nils Lehnen <nils.lehnen@proton.me>
----
-Resend of Benno's patch from the Zeroable series [1]: only patches 1, 2
-and 11 of that series were applied, and the issue [2] asks for the rest
-to be re-sent. Rebased onto rust-next; it applied cleanly, and a
-defconfig build with CONFIG_RUST=3Dy and CONFIG_SECURITY=3Dy passes.
+This handle can then be stored as part of the DRM registration data and
+used to interact with the GPU via the nova-core driver.
 
-Two equivalent one-off patches were posted earlier [3][4]; Miguel asked
-in [5] for a resend that keeps Benno's authorship, which this is.
-Cc'ing the LSM list per Paul's request on the original thread.
+A new info ioctl is introduced which provides an info type field and a
+method for reading extendable structs containing GPU information. This
+series can be tested using the drm-test[4]. A pull request containing
+updated tests will be raised once this has been posted. A pull request for
+Mesa has also been raised but is out of date. That will be updated once
+this series has been merged.
 
-[1] https://lore.kernel.org/r/20250814093046.2071971-1-lossin@kernel.org
-[2] https://github.com/Rust-for-Linux/linux/issues/1189
-[3] https://lore.kernel.org/r/20251129135657.36144-1-atharvd440@gmail.com
-[4] https://lore.kernel.org/r/20260120083824.477339-8-sunke@kylinos.cn
-[5] https://lore.kernel.org/r/CANiq72nJqFOR9vhPBfZUNrxU+M1HMV6wN9bN6i8e9rf_=
-oOD2qw@mail.gmail.com
+Changes since v4:
 
- rust/kernel/security.rs | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ - No longer export chip-id, instead export architecture and implementation
+ - Add a separate info ioctl with types to read GPU info as suggested by
+   Danilo
 
-diff --git a/rust/kernel/security.rs b/rust/kernel/security.rs
-index 9d271695265f..4dc3eba6ce84 100644
---- a/rust/kernel/security.rs
-+++ b/rust/kernel/security.rs
-@@ -62,8 +62,7 @@ impl SecurityCtx {
-     /// Get the security context given its id.
-     #[inline]
-     pub fn from_secid(secid: u32) -> Result<Self> {
--        // SAFETY: `struct lsm_context` can be initialized to all zeros.
--        let mut ctx: bindings::lsm_context =3D unsafe { core::mem::zeroed(=
-) };
-+        let mut ctx: bindings::lsm_context =3D pin_init::zeroed();
-=20
-         // SAFETY: Just a C FFI call. The pointer is valid for writes.
-         to_result(unsafe { bindings::security_secid_to_secctx(secid, &mut =
-ctx) })?;
+Changes since v3:
 
-base-commit: 73e3f0710014fe6d4ed98cfc02292f6121db7558
---=20
-2.43.0
+ - Use an ioctl to return all parameters rather than multiple key/value
+   queries
 
+Changes since v2:
+
+ - Addressed review Danilo and Alex
+ - Minor renames to better align with HW based on internal feedback
+
+Changes since v1:
+
+ - Address review comments from Danilo
+ - Add an API call to read VRAM PCI BAR size using nova-core
+ 
+[1] - https://lore.kernel.org/rust-for-linux/20260628145406.2107056-1-dakr@kernel.org/
+[2] - https://lore.kernel.org/driver-core/20260626183630.2585057-1-dakr@kernel.org/
+[3] - https://github.com/apopple-nvidia/linux/tree/nova-drm
+[4] - https://gitlab.freedesktop.org/dakr/drm-test
+
+Cc: M Henning <mhenning@darkrefraction.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Benno Lossin <lossin@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>
+Cc: Eliot Courtney <ecourtney@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: nova-gpu@lists.linux.dev
+Cc: dri-devel@lists.freedesktop.org
+Cc: rust-for-linux@vger.kernel.org
+
+Alistair Popple (11):
+  gpu: nova-core: Add public driver API to nova-core
+  drm: nova: Add DRM registration data
+  drm: nova: Add GPU architecture enum to nova-drm UAPI
+  rust: uaccess: add UserSliceWriter::write_truncated()
+  drm: nova: Add an info ioctl
+  drm: nova: Add usable VRAM size to GPU info
+  drm: nova: Use nova-core to read VRAM_BAR_SIZE parameter
+  drm: nova: Expose a render node
+  drm: nova: Report GPU name in GPU info
+  drm: nova: Report GPU short name in GPU info
+  drm: nova: Report GPU GID in GPU info
+
+ drivers/gpu/drm/nova/driver.rs           | 18 ++++-
+ drivers/gpu/drm/nova/file.rs             | 83 ++++++++++++++++++++----
+ drivers/gpu/nova-core/api.rs             | 68 +++++++++++++++++++
+ drivers/gpu/nova-core/driver.rs          | 46 +++++++++----
+ drivers/gpu/nova-core/gpu.rs             | 43 +++++++-----
+ drivers/gpu/nova-core/gsp/commands.rs    | 27 ++++++++
+ drivers/gpu/nova-core/gsp/fw/commands.rs | 12 ++++
+ drivers/gpu/nova-core/gsp/hal.rs         |  2 +-
+ drivers/gpu/nova-core/nova_core.rs       |  1 +
+ drivers/gpu/nova-core/num.rs             |  2 +-
+ include/uapi/drm/nova_drm.h              | 82 +++++++++++++++++++++++
+ rust/kernel/uaccess.rs                   | 14 ++++
+ 12 files changed, 352 insertions(+), 46 deletions(-)
+ create mode 100644 drivers/gpu/nova-core/api.rs
+
+-- 
+2.54.0
 
