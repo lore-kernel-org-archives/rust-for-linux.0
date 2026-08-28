@@ -1,75 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D5125B08D;
-	Fri, 28 Aug 2026 18:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE9B377558;
+	Fri, 28 Aug 2026 18:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787940723; cv=none; b=E95G8FkWfPmtAPKiKcEFKUeqfAL+aFncCWc/f0yLfj7wIsERndrP8HzMiUxKFULPXB0J/hSXEZXLTKj0ZAG7i6Duu5MAUsIwQ75S02Bq8oPoPO255IaMYQTKWAkW1ZfTNHP9Z/YYx3v6Jn3GocMJT0EjGrq9To+Wdp6NwwrPzfs=
+	t=1787941196; cv=none; b=em0TXin9RRvdft5Hdg7cRLf4EoEi4DAL48hTdrEdJzb6XpPzyR93MaCb4C0z1mzsTX2mbpudpRxtSNR87KpNO4HmDjuIJhuo8+R1lTInK9S+1OtkpIIeAM4Ev2/agMHJTBVmqhZW8hISNTELIkTw6Ab4uvx866GolF7CWm9SvN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787940723; c=relaxed/simple;
-	bh=enYrTIiUDgLZ6qrNsLyru4eCF8JD5x+/rIFCtu+nnmc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=c3pDiECER4Xdr5DsA75GVUKeTZBPlqjdqM2x1CdQqyUsUvHG7JZ+/1VevkQ77YjOQOpXDsU/QwEv1uaCU+z0p0rJuGkKiw6xV2kMVo+YZk5OaogrLTiPmPhZgANwMmBcK0zbmlbVSuzrCZxvt02tNIxCVFL4Qg1jFlGVSd5By88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHlxmVsx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787941196; c=relaxed/simple;
+	bh=Gmkm1CKKvuwG0nOx21V442fHYD2q07JwmEiVxD9s6cE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U+udNDOJh4hV0LulxzT2wnkzeAtuy0zSkQ2bOWFNxld4x9YrqZmsRkSKn8TIW3SKBt6O1DLZe/2CdJeLbJrXQnoLifnsc0hgNjIaTHOMuo5pZ/dxHBU2ew2/uBdm3SS8BpeGs8dl7YJnSYpqIGdKXthyRawtt8cnWEyR9O9/lFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oMpISOQV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHlxmVsx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929A61F000E9;
-	Fri, 28 Aug 2026 18:11:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oMpISOQV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C0E1F000E9;
+	Fri, 28 Aug 2026 18:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787940722;
-	bh=enYrTIiUDgLZ6qrNsLyru4eCF8JD5x+/rIFCtu+nnmc=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=ZHlxmVsxGRgrs0bL2wgqPL1SSlXehSQyaRk6Ooy1l1d8UwLm8hydyBYafnj8GxqnD
-	 ksW9e9MB39mMsez0Q8xGMqY7PPM0H56VNXh+yexDQclRzDaeuimbAn0vyLnuWr5aas
-	 44cYWTZFiIA/6QBOUYKrBU6JdFl7dfh1yLpjEqXFHdf7LiMqQjms6cWmztOCsFj1wH
-	 5SZwf7i07eU9s0FYrtiJPNxO5tG98fb8H6D2QmfVsxfmYlA2O2n6DJDultTNtGTHjU
-	 rMMOCUO4FyVGLpzA8daSZpGHXLqF0wnNBysjqDTadRfTUDf2RTnJ+KX/AMDpqoyAB6
-	 PzDu6VSrhDgsg==
+	s=k20260515; t=1787941194;
+	bh=IrxB68grrNfgpTQDQloS6vgIUBD2TBdi7EM0BXy+OBQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oMpISOQVcpZfl7r4F6OU32/y3INZkf86fZ/SBBbREZ4ogqwLV5mznex9B6gJOQUM9
+	 P+DfwvrO6mlv8wFFr/suiRWX4kQEz4wYWN3CyuSQItbeUvZyeqpzkOoG0LSLnqB4kM
+	 pgILwcsVe/3WdxL5ab5ZAQNtUgpLDl0XfBLFoxNypfD7pE+RIuwtfXLtbUhItCpIP2
+	 vXznXmJFQzHYnvYGWCLqbKQUv6DgIkoNnKOgdPKJQPKC0EMJeFjPtVTxdgXGX4uug7
+	 cjs+R5pq6OApqLZWSb+DM0KM8+iikMnIZXVVAzOx1SEpfFT5PGmM0I8/PTKRmyYIAW
+	 bT946EzcHw/qA==
+Date: Fri, 28 Aug 2026 11:19:52 -0700
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, 
+	Peter Zijlstra <peterz@infradead.org>, Gary Guo <gary@garyguo.net>, rust-for-linux@vger.kernel.org, 
+	Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	linux-kbuild@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>
+Subject: Re: [PATCH 12/27] kbuild: Defer running objtool to link time for all
+ CFG features
+Message-ID: <apHOMecu7SAWR2zG@jpoimboe>
+References: <cover.1787890035.git.jpoimboe@kernel.org>
+ <1447f9f8dc6e7e02e4a8a33ce7ae92ba49d70eb3.1787890035.git.jpoimboe@kernel.org>
+ <20260828175708.GA3403925@ax162>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 28 Aug 2026 20:11:56 +0200
-Message-Id: <DL0S35VSVSX0.3KQH490YEZUR0@kernel.org>
-Subject: Re: [PATCH 2/6] gpu: nova-core: add NVKV encoder
-Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil Babka"
- <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Uladzislau
- Rezki" <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>
-To: "Eliot Courtney" <ecourtney@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260817-b4-nvkv-v1-0-b84db5e84b67@nvidia.com>
- <20260817-b4-nvkv-v1-2-b84db5e84b67@nvidia.com>
- <DKT2C9FT6IBW.3L5PJN1J8IVLD@kernel.org>
- <DKT2NSDRJXYX.1S0H8K3Z75QVK@kernel.org>
- <DKZSNG5J5UA8.12HFHO9KURG0G@nvidia.com>
-In-Reply-To: <DKZSNG5J5UA8.12HFHO9KURG0G@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260828175708.GA3403925@ax162>
 
-On Thu Aug 27, 2026 at 4:25 PM CEST, Eliot Courtney wrote:
-> I sent the respin of this series using your EncodedStream idea but I
-> think I should add you as Co-developed-by. If that makes sense I will
-> add it plus your Signed-off-by (I think that's the right process?).
+On Fri, Aug 28, 2026 at 10:57:08AM -0700, Nathan Chancellor wrote:
+> On Thu, Aug 27, 2026 at 09:51:41PM -0700, Josh Poimboeuf wrote:
+> > diff --git a/scripts/Makefile.vmlinux_o b/scripts/Makefile.vmlinux_o
+> > index 9bac917e8b819..df1e3584883e6 100644
+> > --- a/scripts/Makefile.vmlinux_o
+> > +++ b/scripts/Makefile.vmlinux_o
+> > @@ -30,20 +30,12 @@ endif
+> >  # objtool for vmlinux.o
+> >  # ---------------------------------------------------------------------------
+> >  #
+> > -# For CONFIG_OBJTOOL_DEFERRED (IBT or LTO), objtool doesn't run on individual
+> > -# translation units.  Instead it runs on vmlinux.o.
+> > -#
+> > -# For !CONFIG_OBJTOOL_DEFERRED + CONFIG_NOINSTR_VALIDATION, it runs on both
+> > -# translation units and vmlinux.o, with the latter only used for noinstr/unret
+> > -# validation.
+> > +# For CONFIG_OBJTOOL_DEFERRED, objtool doesn't run on individual translation
+> > +# units.  Instead it runs on vmlinux.o.
+> >  
+> > -objtool-enabled := $(or $(CONFIG_OBJTOOL_DEFERRED),$(CONFIG_NOINSTR_VALIDATION))
+> > +objtool-enabled := $(CONFIG_OBJTOOL_DEFERRED)
+> >  
+> > -ifeq ($(CONFIG_OBJTOOL_DEFERRED),y)
+> >  vmlinux-objtool-args-y					+= $(objtool-args-y)
+> > -else
+> > -vmlinux-objtool-args-$(CONFIG_OBJTOOL_WERROR)		+= --werror
+> 
+> Did you mean to drop this line or did it accidentally get culled in
+> cleaning up the conditional statements?
 
-Sure, if you think it is justified, please feel free to add those tags. Wil=
-l dig
-into v2 soon!
+That was actually on purpose.
 
-Thanks,
-Danilo
+Before this patch, NOINSTR_VALIDATION was a weird special case, where
+objtool ran on individual TUs (with all the objtool-args-y), and then
+ran again on vmlinux.o (without objtool-args-y except for --werror).
+
+This patch makes NOINSTR_VALIDATION just another OBJTOOL_DEFERRED
+feature which runs deferred, and *not* on TUs, so now it gets all the
+args like the others.
+
+That was indeed non-obvious, I'll add it to the commit log for v2.
+
+> > -endif
+> >  
+> >  vmlinux-objtool-args-$(CONFIG_NOINSTR_VALIDATION)	+= --noinstr \
+> >  							   $(if $(or $(CONFIG_MITIGATION_UNRET_ENTRY),$(CONFIG_MITIGATION_SRSO)), --unret)
+
+-- 
+Josh
