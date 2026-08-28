@@ -1,81 +1,80 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB3F3DA7F8
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Aug 2026 06:53:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479E73DCD80
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Aug 2026 07:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787900007; cv=pass; b=o+04C3etdp1R5XbFGXxSPx9YKlRqbJLguWSx9v7L/MxMnrE3XYGFsoWl9TogKDg+HYa+JsLIH5AyQ06zq3Xx68XkPnMhhshWaqMdulMaLL4Dc/MrLi7QF1PdvsD/Pgn/5Lrt8mN15LBHgYt6MAPVZmkaituvu5rghr7OEYaAkDk=
+	t=1787900523; cv=pass; b=dUMxnr9JYvichqejOaqrx4Hxyg2QllAaLJbDehp5N/bjFyNjQDCLVkkpN7lq9wgr+FotJ2RDp0GUtwVwp0C+zddQLri/1MkT6xOvB/RiPP0KVtdHTrVWM8YFCDMJ/CeumpDxs20eWRgzfpoc7mmLI78oxp9ihgBX93C1wpQyHVM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787900007; c=relaxed/simple;
-	bh=VDp1Ho4MwZv4EbvgCMmKUxapUtWx6PKpAmWR7S3IHPo=;
+	s=arc-20240116; t=1787900523; c=relaxed/simple;
+	bh=WUMZC5zmbWFHHM9fj/b0WVfBxUhBF81uS3y69nJEc54=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FesOiA7CKHh2qjN71MWkUEPaliZehpNKl4kOWZgsuQHpvjywgb54/hB6kPTsnKFoTAzaBQkYvNXkshQJvx2xi2M0U8ESW/HhcOJGax1wyhc1kqEUlUBKUntzHxjGV22mGOYNEh54uvtSP+PY6WcDzBQWMGX/iyLI+PdhugoW9VU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qfZBbiNs; arc=pass smtp.client-ip=209.85.208.175
+	 To:Cc:Content-Type; b=IDjWt16l1NDdYXa+2ykCY4prWykep1N8z0RGVxIIdlhvlwEYvwpy62g77GL4DWSoRqfNXMQHi5Y93zVwOs3WMvC0BVbHpnWMXPIRkjZSJ1Fw+maOSoFuu3Z1KbsfqKvt7IEY8BSEbm9VhwM8Wyh7+ZCXIxyQggZ/l3lQrEe89Kk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gn9xNuvR; arc=pass smtp.client-ip=209.85.208.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qfZBbiNs"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-39c9a3acd40so4437751fa.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 27 Aug 2026 23:53:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787900003; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gn9xNuvR"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3a20f06cce6so6402711fa.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 28 Aug 2026 00:02:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787900519; cv=none;
         d=google.com; s=arc-20260327;
-        b=MG3uXJVUI97kIKFu1MAKv3iw8EwuIRdJAb2bzcjlErLTzcHEVW9Bqk7Uj75lYAy2Ug
-         Ow8Q2t1lDsC+zufKD+Ol2JDlLlxWx7USlNU3MyGKQ1+cdsOezCpmI5LOuqejMMywrMrt
-         t2/yxCtoUrB9Vc+U7cyI+UGtJ/QPFZjf5hvTM6LwShbYBZben3E4gxR48uYnzRwgfmx4
-         GHwYItlhnkHVzaNLTZ4wi5katavMRoDbpJfeb+SLrBpa2qadZWVcmucc8Zj08LnM81cC
-         0mwkKcHspfkg6Xqk+6uNH5YZMxqsoFbq1B4v+P0DGpO+nl7o1hJy2FC0PUaJA4c+6DFe
-         +PQA==
+        b=qwKRh4znBDiFov8M1gMjyhyrqY/0acG29NVMFdr8DxOf1bGXkoFEO3pok41m6b7sb6
+         HFYeZQiecjfBHgC+mD9kXGBfrEJ+65crNz/6YQRVopd2DJ4PXbZRMUuBgiqeDExlhpDY
+         u8nwaX113R70dLHQgbXMb+D6MhY19eOPywpa1mbV0lTz0h6xSKmew9EwwmAG8Zgb2P3y
+         1V+usKc3uVHGLWIkzAuXMqUQLUzMPr234gvWWPFPcaK3KGRBXKXkiqSSW9AcxCW+CLRw
+         bezxKDBNyRlkFB7R/2P6O0exPdUP3tdK/Ds7e1Hr5HV9JWbjcCahqiscZHdUKcz89gt2
+         4z1w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8/mQdiOJey4oznV7AyJvIvyzEleWgdqTQVT4AekpJIE=;
-        fh=mMqvnExUJJCfX5MXAmEQ3eZ2hMfHmBUtG6NOANVDutw=;
-        b=KfGr1KK4hJiCSC4pJbRgSw+mOt85CSF9cu+RfNzr1xN3dny+3/2CkTZSkYohF1Qw+A
-         5sAJilHn2/YoTVao8ILdK7ciZ10GhHuyX1f8Q0eyiwzfOWcVzVfRvoMCTValqIf3OrAS
-         BH+9RZuUI4DhCVOLaESLHPupPJPnDKs+ePAzxEwjbHlA79E2nXCuoWGJHZY8JO1a3qcr
-         p0G/CaBywn0u3J3hHayQDgeV7TlgBInuOgLoJoVxJ0cNSzpeMx7QjZIsSuj1pOUMVEOX
-         6ZdNf6ZcOSRw1Y9NOJc4ST/DDWf/UtMCW0XHZjHKBa64ZVJrv1Idu2mvBssjPt0XhkpG
-         6osw==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=H4YdnU69bw2loweZcyhECkKVgGdkyMQpoAxdxOphCTE=;
+        fh=pyFKLeEMvDF8B7BO53FKmGIdwelkCBxV8LpQaDVHWFo=;
+        b=aOpf1f+35baSjPlM/z553MUe2PicJe+vJV2yjqXo3okwtkaIigYWqndjxPEVkZZeZA
+         7fUg2x199qL7xUbl8cqJS1R6kNeqvuvkDEgfFdYxoLkPM4AXfI6og6KHipA0P1/i5l5y
+         K0WQy03RGXob6VQt+Uu97BaCW/KmZiRH4g3C28GtWKqI61HzBkzIosYorLO1E9XfOTgy
+         ugOoZ3k4lggLHjGzBQr1tVrZSrFUfXVdXMlgZJNkVHGSiMWwOEeXaNagsEcDRMLqR7c4
+         d6o+rQb7R5CmgrP2y87WUWlHrzUPtHh1qAWg4Fm5x1yCLP8k7LduYf+jj8okMiyFHKHR
+         W9Ng==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787900003; x=1788504803; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8/mQdiOJey4oznV7AyJvIvyzEleWgdqTQVT4AekpJIE=;
-        b=qfZBbiNsWdbGSjKFpkTy4AtEGvG5q21Ik7XP4RjKVgvCSg8VRTr2R0ncSTvR0Exw6E
-         7EXKSQV7TH89d9rzHxQLqI2EMH5Y3d69mOUErV+/XFmTLe8Em6FwGGSIVfvEPRN6IFre
-         7x0mfarLD/vuz+mkFbjJrSuuZp8Oszy/ek3sMVQJNRMgBFWNj3b/wQnM7k+N9GEvHRSu
-         jQLgk567CzaP6HQGWeDZjW3wWJdlUnRJHLXoMya/RrVsr8z/nReyYLbPbB0ZWOn55FFP
-         UKv2/bj+sfKGg0KuDhx/8wTReHLOxbYfi7ckchTR1MlelC4pmXApJba2OgvnMtWLhXG0
-         C6rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787900003; x=1788504803;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1787900519; x=1788505319; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8/mQdiOJey4oznV7AyJvIvyzEleWgdqTQVT4AekpJIE=;
-        b=mGQorYRuXrAZ8wa1PKNgWcv3Qr3z/VcHytkcFngs4/UWUJe1DhmjcOor+4y4pwYAJO
-         pg6DnZYeqg6GFEVVEBa9cgWOc+BA9l8QV5IlonLvDl0AtekVRA0yy8uVb2prLdOhyNzW
-         5dNd+TRjZFpDYOFQaHkDY76E+Kqg5MV6R3glaoWmef1Nqu4vDX+hs3/GxfCsZHYMtzZj
-         rpYRI8UheTadCJipPLLQ95f6rzx7UgLTk6jkpc3fhFyXFjayvuXhHhzcIiUcH0h5RQir
-         dyLJJVVSngrDAZMLMHlmIOw3rquxtUwgX69c6hwEXJE1hLrkHuVve9qFC2dmC/u/8Cq1
-         kWYg==
-X-Forwarded-Encrypted: i=1; AHgh+RqG77u1UTmk1lwpaWJbMzUi/dXk0PFx7R/oX/UV4GY1sOGzuJVkGDQSJ5OzZqSuJVw5wN/EzviTyDCDb9LtlA==@vger.kernel.org
-X-Gm-Message-State: AFuF++nGXR1q/5Soope7QGbx9cuiJYZ5KZprFT0L8hGPJ/ROLrAdOaCJ
-	ZReRgiV4PaQQ21BRKuTElPJZpEogXoSmRlvkAXffiqJBUa0RYESIkJ02ddEtom/yJ/yxK1C/0jY
-	vOSZxedFLtyzv8orWsmVItuMQ40NpDps=
-X-Gm-Gg: AR+sD10oEfsv7xQdXiZxIObyEkCBX74a1QBDDGMZ2vPzKM4PWQXPMQqCSHw22urJDg8
-	RPVxM+/LhlYx+69dsKpber4jE3hGTimjGJHdFh2NHW25p4mu/eGpLPYxojIgBUnyGvmfrjpU+Sw
-	Utygs8vIJDW8enO7QuS+irc+temZMSweiPv+Ac84gPmLVrBXs3cLSuGTHmslChzIB4HHBQT5tK/
-	9ONph5lTeB9n3UqZtCEvV3oXRhJs4Ybo/O2qufXZrZdkFItSQqxPZc9PINPXKNd+zbUq5WHz2Rr
-	FnQVWZwH185BTy8vlARIT32Ci1VXaLtk2KincxPtJP0O6aU=
-X-Received: by 2002:a05:651c:31c8:b0:3a1:9562:73b with SMTP id
- 38308e7fff4ca-3a301b16d7amr7296801fa.11.1787900003015; Thu, 27 Aug 2026
- 23:53:23 -0700 (PDT)
+        bh=H4YdnU69bw2loweZcyhECkKVgGdkyMQpoAxdxOphCTE=;
+        b=Gn9xNuvRxtRTpKHKpxXJTDHjvMhBlWvtemhqnqf+pNCkWzHReockOnLz89X/aMZMNB
+         b0T9mcl8KTBDtX3wRQo9V7jauZUj9eJnei+uTby40CK61tqSqlMLLXpA8sTwgHmsUkL4
+         wd64VqvNKeKvexLyvHDVj32uNkcH+Z3zW1WDrbk2qNGuUcYEKs1EZKvq8eyQmRRo01Dm
+         eHOtYQQnfZomgt73Rrs0yl9Imhz95QRU/6jXqMmJG39yf8XOdoKO5OcVznsKjaYB08mP
+         iJDNSQHwTEImS+wUQAmh+6NeL5Gs0h6/buMLxjkmr4XPfcLZjvlg9c7MqSUh4SFNR2PU
+         WzIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787900519; x=1788505319;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=H4YdnU69bw2loweZcyhECkKVgGdkyMQpoAxdxOphCTE=;
+        b=jO1msSU2Tg+HbpW4o+pLNgNNCCQGMC98YWNXcJ7mF3kALd4D9auA2v04/F8eLuXHPK
+         xtD/RObGD4fieoSYfTfHeBm6XpASXCqNgi7ydaNMSTIIBB3Tew9CAK7ypbQwvoZhCcXq
+         XCDRSvBH8i2yTdmK8Qmdpm8r53AlBzGJm0nuUFQRUQcYvEBVfzOqKDNBk5Y/Neq2PNoP
+         5ojuXBH5PF43fRbvf6Y9p3uyylINABSSUs22saOoPefocoRcKb3k3LsBl9ZtS7luuyz1
+         UqRkxfk9LEVCT1p1Xy4aN0exr+CkBkSJExJzEwrGakfdJcaiBPRdJyWS/02nNrzSrB8N
+         nDdQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rqw2H2yB4In7x8rAefa7m8JU3XfS2x22KQT8G188BW5FoncTTJYEveHSSt6C3UywlgVNm11QtMvTaREAln+UA==@vger.kernel.org
+X-Gm-Message-State: AFuF++lPdb7bzJ24WAkbhjWoOArHFrKLnOW5ZtcuQEqySHApzpeHUhj1
+	vKjMvJQJa+ZL6vs+/uRG/uYBfXUyEdAJraO09wEPrJ2pD44MMm7vTCE4srP/lHQcuiC05+CmkhE
+	oVz/3taKoiCCuOOcFSP0MfXoGsQIL+jQ=
+X-Gm-Gg: AR+sD118af+bB5vLZcrOqcJixQu3QzkW1vHtsBMrue1LHkMekc6F9x8JqiWNRNMc9f2
+	7lvHZmjP2vagx7bxZNyZiuvbwr2ZdhJnNDW0GeUQoxOvXNuSIL6AvvnKFSu+ATOPRPuUG4i+w3E
+	Kd0mGPBD8JeNyOyOYX07u9kmT+sm6ZGONaB8/J/J0pYeD/pfteOtRTloWS1UEa+peiMAR1wbjBc
+	n5Z4laQwVMOXMXooRS5KSSVPpLqnM0n6sl6ll5I8TDApluKLHmzMqEYkWC8Ke92GJ8N52I4nTo1
+	q/R9NYy7z0pINu25bKHeO6fHMq+t5i2B8Y4i5RgRcyKkcDjPIETZQkwBRw==
+X-Received: by 2002:a2e:a909:0:b0:3a3:364:f783 with SMTP id
+ 38308e7fff4ca-3a303650017mr4458281fa.11.1787900519048; Fri, 28 Aug 2026
+ 00:01:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -83,13 +82,13 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20260822062725.60519-1-muchamadcoirulanwar@gmail.com>
- <20260822062725.60519-3-muchamadcoirulanwar@gmail.com> <20260824010726.2849f3d8@jic23-huawei>
-In-Reply-To: <20260824010726.2849f3d8@jic23-huawei>
+ <20260822062725.60519-4-muchamadcoirulanwar@gmail.com> <20260824011749.62322d99@jic23-huawei>
+In-Reply-To: <20260824011749.62322d99@jic23-huawei>
 From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Date: Fri, 28 Aug 2026 13:53:11 +0700
-X-Gm-Features: AcwNN1WSQYP0-fvQo2t11ibIgmSEw8WyeXQCvmMnxHqFizPZCb4cCawVOvt7eDQ
-Message-ID: <CAO26r3RLnX4HXrKDF6akmG722Q2CvDU-uJ40Yfuu_wwJdGgA9g@mail.gmail.com>
-Subject: Re: [RFC PATCH v5 2/3] rust: add minimal IIO subsystem abstractions
+Date: Fri, 28 Aug 2026 14:01:47 +0700
+X-Gm-Features: AcwNN1WZvS_vxAPD9ztThL80CtQKEFkx81WWXxaTUCllRl2U0Sxi7MBLeV2GPXs
+Message-ID: <CAO26r3QMzTuGnHN3if8N82DEHdWo4TS5upEWgUz88gy54rXj8g@mail.gmail.com>
+Subject: Re: [RFC PATCH v5 3/3] iio: position: add Rust driver for ams AS5600
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: lars@metafoo.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-i2c@vger.kernel.org, rust-for-linux@vger.kernel.org, 
@@ -97,141 +96,43 @@ Cc: lars@metafoo.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
 	dakr@kernel.org, igor.korotin@linux.dev, branstj@gmail.com, 
 	brucer42@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
 Hi Jonathan,
 
-On Mon, 24 Aug 2026 at 07:07, Jonathan Cameron <jic23@kernel.org> wrote:
-> This looks fine to me subject to a few little things - see inline.
->
-> However I didn't take the time to decode every line of rust today so ther=
-e were bits
-> I simply didn't understand yet.  So for this to be able to move forward I=
-'m going
-> to need reviews from rust experts!
+Thanks.
 
-Thanks for the review. I'll add an explicit review request to Danilo
-and Igor in the v6 cover
-letter.
+On Mon, 24 Aug 2026 at 07:17, Jonathan Cameron <jic23@kernel.org> wrote:
 
-Brandon Saint-John has been CC'd since v2 and reviewed the series at
-v3. If he has time to look at it again, a Reviewed-by from him on the
-Rust abstractions would be welcome.
-
->
-> > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> > index a56ba6309594..5dc917d92151 100644
-> > --- a/rust/kernel/error.rs
-> > +++ b/rust/kernel/error.rs
-> > @@ -86,6 +86,7 @@ macro_rules! declare_err {
-> >      declare_err!(EIOCBQUEUED, "iocb queued, will get completion event.=
-");
-> >      declare_err!(ERECALLCONFLICT, "Conflict with recalled state.");
-> >      declare_err!(ENOGRACE, "NFS file lock reclaim refused.");
-> > +    declare_err!(ENODATA, "No data available.");
->
-> Do we have something says there must be a user in the same patch?
-> A really generic thing like this in C would definitely be a patch on its
-> own so that folk who care about maintaining a given file can easily see
-> it without reviewing the rest of the series.
->
-> So unless you can't do otherwise, break this out as a precursor patch.
-
-I'll break it out as its own patch. The patch will note that the first
-user is the AS5600 driver, which returns ENODATA when the magnet is
-absent.
-
-
-> >  }
+> > The AS5600 stores the 12-bit raw angle big-endian across registers
+> > 0x0C-0x0D. smbus_read_word_swapped() handles the byte swap: SMBus
+> > always transmits the low byte first (little-endian wire), so an
+> > unconditional byte swap recovers the correct value regardless of CPU
+> > endianness. The long-term solution is regmap-rs where endianness is
+> > configured once at the transport level.
 > >
-> >  /// Generic integer kernel error.
-> > diff --git a/rust/kernel/iio.rs b/rust/kernel/iio.rs
-> > new file mode 100644
-> > index 000000000000..f1638160fed1
-> > --- /dev/null
-> > +++ b/rust/kernel/iio.rs
-> ...
+> > This driver uses INDIO_DIRECT_MODE without buffer or trigger support.
 >
-> > +
-> > +build_iio_enum! {
-> > +    /// Raw unprocessed value from the channel (`IIO_CHAN_INFO_RAW`).
-> > +    ///
-> > +    /// For sensors, this is typically the ADC reading or register val=
-ue
-> > +    /// before any scaling or offset correction.
-> > +    Raw =3D iio_chan_info_enum_IIO_CHAN_INFO_RAW,
+> I'd only talk about what you do support.  There are always many things
+> that aren't in an initial driver so listing that bit doesn't provide much
+> value.
+
+Yes, I'll remove that sentence.
+
+> >
+> > Tested on BeagleBone Black (AM335x) with AS5600 on i2c-2 (0x36).
 >
-> I guess there may be a rust convention for this but from a human trying t=
-o
-> read the code point of view this need a blank line here and in similar pl=
-aces
-> where you have docs / thing documented repeated back to back.
+> Generally put things like testing info in the cover letter or below
+> the ---
 
-Fair point. I'll add blank lines between the variant doc blocks and
-audit the rest of iio.rs for the same pattern.
+I'll move it below the --- separator.
 
-
-> > +    /// Scale factor to convert raw values to SI units (`IIO_CHAN_INFO=
-_SCALE`).
-> > +    ///
-> > +    /// The processed value is `raw * scale`. The unit depends on the =
-channel
-> > +    /// type (e.g. V for voltage, m/s=C2=B2 for acceleration, rad for =
-angle).
-> > +    Scale =3D iio_chan_info_enum_IIO_CHAN_INFO_SCALE,
-> > +}
->
->
-> > +
-> > +/// C-compatible trampoline for the `iio_info.read_raw` callback.
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// This function is only called by the IIO core via the `read_raw` fu=
-nction
-> > +/// pointer in `iio_info`. The IIO core guarantees:
-> > +/// - `indio_dev` is a valid `iio_dev` allocated by `iio_device_alloc`=
-.
-> > +/// - `chan` points to a valid channel spec from the device's channel =
-array.
-> > +/// - `val` is a valid non-null pointer to a writable `int`.
-> > +/// - `val2` is a valid non-null pointer to a writable `int`. The IIO =
-core
-> > +///   always passes stack-allocated storage for both, regardless of wh=
-ether
-> > +///   the driver uses `val2` (e.g. `IIO_VAL_INT` only writes `val`; `v=
-al2`
->
-> That val2 is always a valid pointer smells a bit like the c interface lea=
-king
-> into the rust.  I'm not necessarily against that being a constraint we ta=
-ke
-> on but I'm not sure how we document that. Probably add something to the C=
- docs.
-> Any C driver relying on this today is probably buggy for other reasons.
-
-As you suggested, I'll add a note to the C-side iio_info.read_raw
-documentation in include/linux/iio/iio.h. The IIO core always passes
-stack-allocated storage for both val and val2 regardless of which
-IIO_VAL_* type the driver returns, so the assumption holds, it just
-isn't written down anywhere. I'll also note it in the SAFETY block of
-read_raw_callback.
+> The code itself looks fine to me - but as with earlier I'm looking
+> for rust expert review.
 
 
-> > +        Ok(IioVal::Fractional(v, v2)) =3D> {
-> > +            // SAFETY: both `val` and `val2` are valid per the Safety =
-contract.
-> > +            unsafe {
-> > +                *val =3D v;
-> > +                *val2 =3D v2.get();
->
-> Why get in some places and not others?  May well be a gap in my really li=
-mited
-> rust knowledge.
+I'll add an explicit review request to Danilo, Igor, and Brandon in
+the v6 cover letter.
 
-This came up in v3 and I answered it then but forgot to add the comment
-as I said I would. IioVal::Fractional holds a NonZeroI32 denominator to
-prevent division-by-zero in iio_format_value(). NonZeroI32 is a newtype
-wrapper over i32, so .get() is needed to extract the inner i32. The
-other variants hold plain i32 and don't need it. I'll add an inline
-comment in v6.
+Thanks again for making time to review.
+
+Coirul
