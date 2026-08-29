@@ -1,138 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-43171.protonmail.ch (mail-43171.protonmail.ch [185.70.43.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B513ACEE9;
-	Sat, 29 Aug 2026 19:14:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2DA353A7F;
+	Sat, 29 Aug 2026 19:53:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788030880; cv=none; b=MUIjtrGf/u62CqNi+FiZGcoDRrl3lCpGlXCy4LndJHhTqote8F7lPgbonl9lVtD1AZmeTelGU52grIbYHJDAg+6cNTRpqGTe4FO4mh2xgDQSbNuUWkdi8gcSPYA1x7jA89M82e9jzUfsetgFK8JzVbbtMwZVjDfRynRowb/G9iY=
+	t=1788033191; cv=none; b=PCkjy7Rm7cCP5mhNz3mYZFPBJOVEkGUVBrGglPrRE+/Ie5aH2X3NEJS0MznhaUdzgpmbkCqljlNmrM34Ns4w0joG2D5V37QOJpaJFbAtgkevhlQd7vdEZ5YLUFKJajwzH2wMvM1QgmHA+eg4XnNukiuwzRg0lMVYlqrVEqFTqE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788030880; c=relaxed/simple;
-	bh=rm6Zra25rFQi1Uy2T+X5ylmOKh5Y+pThpZean8unTrE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=EUAnORy4phJQ0kWrFd0ipuCnuitMpN8GWC87V2KARb/ijN/I1yVtA5FJ+gwfgxgWGM5EzLNm1CdCPj5JUu9uZ/c9nbOmJ0L8hg/COreW7MU7CcHw2Rje/sHDyw3QYnnj3HYJZQMxVOrIzi3LMH0/xdr2grLxVlGT4kbOkq8/EWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SbQWb2JE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788033191; c=relaxed/simple;
+	bh=UrzGbiUpmLrHNiKTBB99Yi6K10TIVUQB17wqWsBIXaA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YviY51hXHhqmUBDBdL0+LlSziQ4WSaRFfr6KDtwL7rsLcSGk43KWLV51Q5bUw0RWISVuSOjI1O6Xzns2TrjbkhcX4W97LfAI8c/aWcyxmQweDkd9peq6PcYUr5b8c6qZPvXNP7kTqo8Ok2MOvzqBLDKjfl6ONgmQT+nZ1j7FMbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Ji0kb+hz; arc=none smtp.client-ip=185.70.43.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SbQWb2JE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B351F000E9;
-	Sat, 29 Aug 2026 19:14:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788030877;
-	bh=uFSAQBNlSCr6Z8wJaIeKFDqKOuLHcGqGVoKW4G1mPFw=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=SbQWb2JESZH/tzjTxWL774/1DKvZZXGetGKyDmxevJZglvxS4g+ild9AXHt1vHdaG
-	 KUYitJYwdwqBUzhHWiPpt0pnkWIdikUjMkPjHnsZHUXqwm3M236MEhmKNxNqZjS455
-	 k842ghknIyIKBqB5rSWaHPXkXquykkgtq+6xiHpKNoZTM1I22NcPGnQCjQsGJUYt0i
-	 MUAi2a+f5/WSfi1bmKK/5AP1ugbGnPTTR/nPU/bpJ7efQNzmhe4As0zPZvoi/ltws0
-	 95uznd6dVM0DqZinWDlA/rl2Qg5G0lhrNwLt3R2tv+p6WGt/zp5bNDMK/zVAL9rKAh
-	 WUJ2+tKZSD72w==
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Ji0kb+hz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1788033176; x=1788292376;
+	bh=/dEiKOIuv+SZQFcpv7PhRYypxPlBSUlnYBm5pdQOQRY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=Ji0kb+hzhZttPBszUxW85mbpMZST7a8OFyDAne2OXLUNDN4uB4hI8Me5kFUKmuDz6
+	 BvPX21StRW6wcqSjcPxvpD/kF52A7bLU9gy64VytZM5UWxSsCVFKcVis+DGXkiDXM3
+	 UwztLIUkdegaJI5hE4zArsDwIttVzbIXMvyI7JG9iE8jG5QIil96HhYj3zWdFb2dR4
+	 vfrshmHDCWVElUjT48DyTdUxGzQqSMb9bpOBiFa5xFKW7vfiy1lRQMrB8+B6xY8fxB
+	 /WSDk+4r4wPKWuya3Be/+BIOhhIdV1U6KfOTx5clPpPuTCM0WMPpcnRGFAKgVtzGpG
+	 rXMkXhpV+pfOw==
+X-Pm-Submission-Id: 4hXQsH4xqyz1DFFg
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Mehmet Koseoglu <mehmet.mkoseoglu@gmail.com>
+Cc: rafael@kernel.org,
+	viresh.kumar@linaro.org,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	tamird@kernel.org,
+	acourbot@nvidia.com,
+	linux-pm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: Re: [PATCH v3] rust: cpufreq: reject NULL from cpufreq_cpu_get()
+Date: Sat, 29 Aug 2026 22:52:45 +0300
+Message-ID: <20260829195250.24625-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260829161013.102967-1-mehmet.mkoseoglu@gmail.com>
+References: <20260829161013.102967-1-mehmet.mkoseoglu@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 29 Aug 2026 21:14:33 +0200
-Message-Id: <DL1O1NFXUX6N.1LFASWF425I4Y@kernel.org>
-Cc: <ojeda@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 1/2] gpu: nova-core: use kernel lossless integer
- conversion module
-References: <20260828-nova_num-v1-0-e21f17ba4127@nvidia.com>
- <20260828-nova_num-v1-1-e21f17ba4127@nvidia.com>
- <DL0KDAXUZOXD.I8FBZZ51EIIF@kernel.org>
- <DL142442KXHA.3VFWP2DHD7H2E@nvidia.com>
-In-Reply-To: <DL142442KXHA.3VFWP2DHD7H2E@nvidia.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Sat Aug 29, 2026 at 5:34 AM CEST, Alexandre Courbot wrote:
-> On Fri Aug 28, 2026 at 9:09 PM JST, Danilo Krummrich wrote:
->> (Cc: Miguel)
->>
->> On Fri Aug 28, 2026 at 7:33 AM CEST, Alexandre Courbot wrote:
->>> The `kernel` crate now features a replacement for our lossless integer
->>> conversion routines. Switch to the kernel version and remove our own.
->>>
->>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->>> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
->>> Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
->>> ---
->>>  drivers/gpu/nova-core/falcon.rs                    |  12 +-
->>>  drivers/gpu/nova-core/falcon/fsp.rs                |   4 +-
->>>  drivers/gpu/nova-core/fb.rs                        |   2 +-
->>>  drivers/gpu/nova-core/fb/hal/gb100.rs              |   6 +-
->>>  drivers/gpu/nova-core/firmware.rs                  |   4 +-
->>>  drivers/gpu/nova-core/firmware/booter.rs           |   4 +-
->>>  drivers/gpu/nova-core/firmware/fwsec.rs            |   2 +-
->>>  drivers/gpu/nova-core/firmware/fwsec/bootloader.rs |   4 +-
->>>  drivers/gpu/nova-core/firmware/gsp.rs              |   9 +-
->>>  drivers/gpu/nova-core/firmware/tlv.rs              |  11 +-
->>>  drivers/gpu/nova-core/fsp.rs                       |   8 +-
->>>  drivers/gpu/nova-core/gsp.rs                       |   4 +-
->>>  drivers/gpu/nova-core/gsp/cmdq.rs                  |  22 +--
->>>  drivers/gpu/nova-core/gsp/fw.rs                    |  42 ++--
->>>  drivers/gpu/nova-core/gsp/fw/commands.rs           |   4 +-
->>>  drivers/gpu/nova-core/gsp/sequencer.rs             |   2 +-
->>>  drivers/gpu/nova-core/mctp.rs                      |   8 +-
->>>  drivers/gpu/nova-core/num.rs                       | 211 -------------=
---------
->>>  drivers/gpu/nova-core/vbios.rs                     |   2 +-
->>>  19 files changed, 78 insertions(+), 283 deletions(-)
->>
->> Please see the discussion in [1].
->>
->> If we make this change, then the subsequent conversion to const_as!() wo=
-uld need
->> to go through the Rust tree next cycle, which could be a bit of a mess, =
-as I'd
->> expect a bunch of conflicts.
->>
->> Alternatively, we could the the full three cycle dance, or have a signed=
- tag for
->> const_as!() and use it right away.
->>
->> But honestly, the former would just be unnecessary noise. If we don't do=
- the
->> latter, let's just keep the nova-core num module until the dust has been
->> settled.
->>
->> [1] https://lore.kernel.org/all/CANiq72k+-fNWZCwGuQ=3DFTchxgm-X-f6WR=3Dt=
-G=3DErcn19ic1edQg@mail.gmail.com/
->
-> Maybe I am missing something, but wouldn't the following work?
->
-> - rc1 gets tagged, `drm-rust-next` gets the `num::casts` module,
-> - This series gets applied to `drm-rust-next`, then `cv!` (without the
->   nova-core conversion patch) in `rust-next`,
-> - We wait one cycle for `cv!` to trickle down to `drm-rust-next` before
->   converting nova-core to use `cv!`.
->
-> Would that work? This series doesn't overlap with the const conversions
-> that `cv!` covers on purpose, and it would have the benefit of getting
-> rid of the local `num` module in nova-core quickly.
-
-Take casts::usize_into_u32() for instance, drm-rust-next replaces the usage=
- of
-it next cycle, but rust-next wants to remove the API from
-rust/kernel/num/casts.rs.
-
-In this case rust-next would need to get rid of the users (including nova-c=
-ore),
-but drm-rust-next will likely do different changes, so we'd get unnecessary
-merge conflicts.
-
-You can resolve this either by keeping casts::usize_into_u32 and friends ar=
-ound
-for one additional cycle, so that all users we introduce now are gone. Or, =
-since
-there's no rush anyways, we just wait one cycle and use the real thing righ=
-t
-away.
+On Sat, 29 Aug 2026 19:10:13 +0300=0D
+Mehmet Koseoglu <mehmet.mkoseoglu@gmail.com> wrote:=0D
+=0D
+> cpufreq_cpu_get() returns either a referenced policy or NULL.=0D
+> PolicyCpu::from_cpu() passed its return value to from_err_ptr(), which=0D
+> rejects ERR_PTR values but accepts NULL.=0D
+> =0D
+> If the lookup fails, Policy::from_raw_mut() therefore constructs a mutabl=
+e=0D
+> reference from NULL. Dropping the resulting PolicyCpu then passes the=0D
+> invalid pointer to cpufreq_cpu_put(), causing an oops in kobject_put().=0D
+> =0D
+> Reject NULL with NonNull before constructing the Policy reference. Return=
+=0D
+> ENODEV instead.=0D
+> =0D
+> A KUnit negative-control run reproduced the oops with the original=0D
+> conversion. The same test passed with this change. The reproducer is=0D
+> available on request.=0D
+> =0D
+> Fixes: 6ebdd7c93177 ("rust: cpufreq: Extend abstractions for policy and d=
+river ops")=0D
+> Cc: stable@vger.kernel.org=0D
+> Assisted-by: LLM=0D
+> Signed-off-by: Mehmet Koseoglu <mehmet.mkoseoglu@gmail.com>=0D
+=0D
+Reviewed-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
+=0D
+> ---=0D
+> Changes in v3:=0D
+> - Add Cc: stable@vger.kernel.org.=0D
+> =0D
+> Changes in v2:=0D
+> - Format modified imports using the kernel's vertical import style.=0D
+> =0D
+> v2: https://lore.kernel.org/r/20260828161834.29539-1-mehmet.mkoseoglu@gma=
+il.com=0D
+> =0D
+>  rust/kernel/cpufreq.rs | 18 ++++++++++++++----=0D
+>  1 file changed, 14 insertions(+), 4 deletions(-)=0D
+> =0D
+> diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs=0D
+> index affa2b9490ef..4b992ea9a0f0 100644=0D
+> --- a/rust/kernel/cpufreq.rs=0D
+> +++ b/rust/kernel/cpufreq.rs=0D
+> @@ -14,7 +14,13 @@=0D
+>      cpumask,=0D
+>      device::{Bound, Device},=0D
+>      devres,=0D
+> -    error::{code::*, from_err_ptr, from_result, to_result, Result, VTABL=
+E_DEFAULT_ERROR},=0D
+> +    error::{=0D
+> +        code::*,=0D
+> +        from_result,=0D
+> +        to_result,=0D
+> +        Result,=0D
+> +        VTABLE_DEFAULT_ERROR, //=0D
+> +    },=0D
+>      ffi::{c_char, c_ulong},=0D
+>      prelude::*,=0D
+>      types::ForeignOwnable,=0D
+> @@ -29,7 +35,10 @@=0D
+>      marker::PhantomData,=0D
+>      ops::{Deref, DerefMut},=0D
+>      pin::Pin,=0D
+> -    ptr,=0D
+> +    ptr::{=0D
+> +        self,=0D
+> +        NonNull, //=0D
+> +    },=0D
+>  };=0D
+>  =0D
+>  use macros::vtable;=0D
+> @@ -687,12 +696,13 @@ fn clear_data<T: ForeignOwnable>(&mut self) -> Opti=
+on<T> {=0D
+>  impl<'a> PolicyCpu<'a> {=0D
+>      fn from_cpu(cpu: CpuId) -> Result<Self> {=0D
+>          // SAFETY: It is safe to call `cpufreq_cpu_get` for any valid CP=
+U.=0D
+> -        let ptr =3D from_err_ptr(unsafe { bindings::cpufreq_cpu_get(u32:=
+:from(cpu)) })?;=0D
+> +        let ptr =3D=0D
+> +            NonNull::new(unsafe { bindings::cpufreq_cpu_get(u32::from(cp=
+u)) }).ok_or(ENODEV)?;=0D
+>  =0D
+>          Ok(Self(=0D
+>              // SAFETY: The `ptr` is guaranteed to be valid and remains v=
+alid for the lifetime of=0D
+>              // the returned reference.=0D
+> -            unsafe { Policy::from_raw_mut(ptr) },=0D
+> +            unsafe { Policy::from_raw_mut(ptr.as_ptr()) },=0D
+>          ))=0D
+>      }=0D
+>  }=0D
+> -- =0D
+> 2.55.0=0D
