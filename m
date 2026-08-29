@@ -1,265 +1,202 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010008.outbound.protection.outlook.com [52.101.193.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807461DED4C
-	for <rust-for-linux@vger.kernel.org>; Sat, 29 Aug 2026 00:37:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787963848; cv=none; b=C+3TNu+W55tdrKzv68h/Gm7A9pgVKeUgT6ADD5RKBOK9wY+L0CpnvZvHVS0QjgW4Kc7wB8iptZJxip/9WFcGXtB9mp+lYlTPYs/pPPJIR8oelEzs6t7FbRo4v8cqQEC/rrcPAuK3zWcKgvkret2wo45V6cj0B3ehU15IS+fBdCo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787963848; c=relaxed/simple;
-	bh=OtxXdRbEIGEUvC22NlhP7/3e6oEXzFZ8KbdBRC4HXds=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LuDbLBSeVqh2alVp2GUT2PaFJZ4f6BmP4y5ESGDGIdN+pUNXvLn25TMcOssy2Hc/+Y9TxiLCslCKBenkzotl+JOvGi3hzKaRagvlbaAlv6IWnd1+0mEhSu+7BkawPbfNv7gNaHPHlAIQ8IQg8gcp8sIqp4y4hhnjk6muoZt2yA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pDmMrTlS; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C643446B0;
+	Sat, 29 Aug 2026 03:34:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787974498; cv=fail; b=R3LzlPb8lM/r/wj/CTRnzf0AUd9OS6dWfG9NPOK6f2L0Gh3Lq9S714wasWFokOvybOIMSimm2WEHy2kfzYF4y6M+aLv9GLGHJUqUrWhlVFf+lpgCmXGIv3hiMmwEj7+1OL6kV8Do6+cR4H45A20z915sFJyxGN+VPZujUONwKsk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787974498; c=relaxed/simple;
+	bh=AwU2pGLoonXItbwHtSZiJmUQKSFgfohg6G7U3RbF1E0=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=KrMnPAcfBWNqtvR2BWbinPI7QEBvINX7KEIXZ7y/astJylS1wy4WkR4qG309F/c7qE2Ek7Y7kcQTNIqxqKGVTeXCBlQ+tt9T+W5W+ZScaC1jJecEKZG4qw4rtFIYy2yKSnIjTekBIrwt5lluzBdocoAF1ETV8dH1+eVAxpz4VjQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RRATvRLl; arc=fail smtp.client-ip=52.101.193.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pDmMrTlS"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ccdf36f63dso39575ad.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 28 Aug 2026 17:37:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787963846; x=1788568646; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9wbpSofY68EGnEexQqy0QFzqyttXM3qSmfFpYwxrkcA=;
-        b=pDmMrTlScrDby58rUTwtKnYdPsuM5DDZdq8bxgP2zL9ZC/q46uc5nFl7AAtXc1GlEI
-         +2IooUHEgA0fyp5P+1WdJQvofq0qsA/NvLXK+nuBhEpoNQZrN9U5wo7nFaZq5xkGDzZp
-         7NUjv6Pma/L0/2nntZvYo3Iqos3S7NhaFJ8RtkfBptLR2ILyl3RXFgmnJtxtrCN9LrOk
-         eHxn1nWEae43DhN+EDGh887nLLG+BpZGjF7Uq0mstdrJ84+EGpLWgsji3cUPrPdsnTsB
-         9zlu+/p0ySdmVd2dtFZe0RIFZapoWmOKGa+GlDgyq0BsgWwERm26FXrOMBGGDnFfinmg
-         WicA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787963846; x=1788568646;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9wbpSofY68EGnEexQqy0QFzqyttXM3qSmfFpYwxrkcA=;
-        b=iCoDhWzjLkNnyYiDG2uIz1sKm7qs0VJlUCx4JMoo0psdETikqpJNcfH+BUOHmBDzPH
-         csG0U7Ut9MxP4Z/a01+nCSE/Ue+9ZtM++d0BfnYGNZvN/I1bJ/oq8TOlyxuSue01obrD
-         j81r2gslGxpih+nPCrKyezHo9HXcTakV0ax6JhQSFAfCkxy3dJK90INAeBmxcNhAK69Z
-         D7BXo8nFaD0X8uQBDT+icJrkvuFHdYiSVtBBTQLW5YPIhqXxnHrXxUoLDzyxxQzxeVgN
-         sbkl1ljZ/qeyeHXhb7KfEf0vekxXLwXmddhXkKZoaRfSUZCTP3N/sJShKzrRtwBH7wNQ
-         iGBA==
-X-Forwarded-Encrypted: i=1; AKwUvBzAz/osD4lbVu6M2weL65ie11Ijrb5fQOH53P1Rr1XIDzmweYLanfbnlv03jbN3ffjw49RjaT5dm2jLhgs+vQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++l0+U3bIU0AUfejNDXrPKWdhMW53x9pM8gOKEwIFGFXaJPSR8yc
-	j8C7GiypaHz7au3uhdMI26FhUOUhgowQPkObah2DEkefZONfWGplgjss2lNBNo1y5w==
-X-Gm-Gg: AYBFou3ZFT5MpJG4sDzdCDZTtQeEKsuGOLsJUVx20NuL04dhHaI6hmXOGiLIrABWj9r
-	ktFEkB3O+sbP6z/w80tPTPiFMNwL9Hv+3T2nV9fb9atrTFPf7va7DA8U1lzTobTszdaeqtAcmMj
-	kqef9V3+g9WpSStumO+oQ6iqg/lbVpEUyE1guG4xkBgKgp8t1gfiXdj9c/p68jkirsN6eU8sc/W
-	K+mpgfZ9ojc13rzedFICBPVUzoYtcAxCZFI8Wgl+PfFtJCHswxVLvGDKVGGrsadiBBpZq3KyNQy
-	lI09OLhtFckc1wiBGM33bh2KXdpFd0e5v94JinFPFa3AmUI6hQbMp12jm+jwo62zxiQZqCTIVit
-	5Q3naSh+QDuQZR316gGl0asxbviQSj7qXfDzmPdgrgesCN+WnnR/C55AhRjXnz6HykP+ViWFgHV
-	TK75B2Ak9eFiqEIM1DQ357ixaUX7KIOJp+6BEWaZPSXS14Kgf+j8khMofCXkzePgW923zZJnhER
-	AQjPq338sd7fL8W1Rn4VNVT0DSEDRQ=
-X-Received: by 2002:a17:902:f642:b0:2d5:db38:800f with SMTP id d9443c01a7336-2d8df554483mr2980505ad.14.1787963845250;
-        Fri, 28 Aug 2026 17:37:25 -0700 (PDT)
-Received: from google.com (89.163.16.34.bc.googleusercontent.com. [34.16.163.89])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-398a2f5187fsm545730a91.1.2026.08.28.17.37.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Aug 2026 17:37:24 -0700 (PDT)
-Date: Sat, 29 Aug 2026 00:37:19 +0000
-From: Sami Tolvanen <samitolvanen@google.com>
-To: Beata Michalska <beata.michalska@arm.com>
-Cc: ojeda@kernel.org, dakr@kernel.org, gregkh@linuxfoundation.org,
-	rafael@kernel.org, boqun@kernel.org, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu,
-	daniel.almeida@collabora.com, boris.brezillon@collabora.com,
-	work@onurozkan.dev, acourbot@nvidia.com,
-	rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] rust: add runtime PM support
-Message-ID: <20260829003719.GA552219@google.com>
-References: <20260826131213.1820408-1-beata.michalska@arm.com>
- <20260826131213.1820408-2-beata.michalska@arm.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RRATvRLl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WS7I9LlJDanqVAZ5312BBzzQ0JXK2wGDEY/g1GRKf9oEWEKz3x85K5KmIk5dlEcnTih8TqL0KyEeC2KTyZ/HnYPowLmx9Hyvq7i/0WxRCKfl9iZExqOD3TxL1e+pjdVdV7GAgQrgimYUjurROcCxKrf7AUa+xqkXdHN8N7UFIzmnuCnSfZSlMhTqBw9F628zIXWV+Xw0s+eUqPHytM2sFPuUEkP35Bws+jvem++FOBGc2oGDxumHuNLG95rwlia5lu2/I+zqpDQn1YM8RPAkk97AVW7hC26m4yKKdv7pN2hIyj82EbSLvFIdrPbm+HlR55Qz6AsreYSkv04sIg4q2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jlsj3brzOGcABthXz4CA4aRqU4ZEQ/55Gbl+/NkBZ0w=;
+ b=CC8OwIKxrbJgOkq6HIIryXHnssL/ju31lryWsX4ajtl6x2oFBUU8O9CJBpKf1LL0l2KNtsqWbTCOQjFN2CJwv5bvSCyb5AnGie0/gV9+lduzUxcmlVi9e+rPq6KZogAcbm7gvAUdKC5aCxefoAuV22PSFEiUGmLZBnPhJUi3abcrw217NA9svcAVrbuXfAMUe8UNkou9p1FqlxY4mFYvX23MyAGf6TNQaAu87DT7G8WL8Eo1e3IfqzOVeiEWQF0gzwiOi1sad87chYaJ+vSDDwruZ8hazlMZBkC+6oGpV9i5tnEbKGmFZD8lyIFl5SphhdUUMA1IeoE2M7z4/7WDlg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jlsj3brzOGcABthXz4CA4aRqU4ZEQ/55Gbl+/NkBZ0w=;
+ b=RRATvRLlynA6sLr+X1iHrH2ysNcWO8x4O2ix6j7ZtRRi6PRInZuC3c1jT+gsgl3107arvEwgRhcN8tYM7LeQHTU+9oTNjS3yVVsR8ws2KdVEyiO5rUNIQtTIZbYFCS4LVAcxJCqeTdNbiZxGGKsU8DmosXZbatWyBIqPlVULBo/xckor71hpgJM3jZrwsk7H4zUNwECXJkMk3vIMQXWyvlHJKQcc/RR3BNWcRtTO6Nt5arO/1OSn/Gaj2IDAW1uyOKqRioJIIin5BFJKLuKN7cZrwHg6BmXYDC2E7OPOwAIMSE+bSjYJN0wilIMPT/+O/6GAEisib0KLuUgyYh+37A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by SA1PR12MB9246.namprd12.prod.outlook.com (2603:10b6:806:3ac::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.11; Sat, 29 Aug
+ 2026 03:34:51 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0315.014; Sat, 29 Aug 2026
+ 03:34:50 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 29 Aug 2026 12:34:47 +0900
+Message-Id: <DL142442KXHA.3VFWP2DHD7H2E@nvidia.com>
+Cc: <ojeda@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] gpu: nova-core: use kernel lossless integer
+ conversion module
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+References: <20260828-nova_num-v1-0-e21f17ba4127@nvidia.com>
+ <20260828-nova_num-v1-1-e21f17ba4127@nvidia.com>
+ <DL0KDAXUZOXD.I8FBZZ51EIIF@kernel.org>
+In-Reply-To: <DL0KDAXUZOXD.I8FBZZ51EIIF@kernel.org>
+X-ClientProxiedBy: TY6PR01CA0006.jpnprd01.prod.outlook.com
+ (2603:1096:405:3bc::10) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260826131213.1820408-2-beata.michalska@arm.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|SA1PR12MB9246:EE_
+X-MS-Office365-Filtering-Correlation-Id: d374c011-b56c-4dc5-cd37-08df057e7b16
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|10070799003|1800799024|23010399003|3023799007|10067099003|56012099006|4143699003|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	qcv5lwPB5kvGMWQoGbFcSZxKmKOBTyVIG3FlY5qGA+Yfx2AjybOTkgCNVQToSUuSk9iXgPJMqNCgkj2K5/dOzF0fgAWDUWffcGdj30N9A4ApYsrKNzm5tzY5trGRz6wVZNk+JGf844qyn7lg7c56qI01cEmI7m8nzTwS0g3yr38bs6Uwg4It4MugEj0KB2tvW6w7pF7swoxiuMbi9AfBIDZqYvykIGGJc02Cha3SCHOxK0bhPoU0NdfniB/GnlltlRDWLQO0hys3KF9SxJ63fKkyLXWxD7IwyK1GcwanWGEhbkz6cG1aC0Vm5zplJum111fw94n8rTXl4lfa0NOffAYJCgKYbqB2zYsT547e+Rv3alMCGuNGjjTMQBJk65PhtYYvJGlpbybToRHBRZDZ0ynim3ASSZIwOwi+whUFh0wtl7BvQWDhn7P7PpvlYzGUjyIBwrMRZkC0O2gD2VlfUST67pG7bCeClc2+BHKM0ey3YDFtZkEhnQFL7sZK46dUjS5Jm71frJTOembXjjpCgqc7s70WNzHGIB3oBBsULfHrOb0JfmUvUgUcRPxGvlyfpLMqktjrdg4+XZ6o033Wq06k2II2Btk4f08rZoB7a18ltKZeZEslRujXss+b+KoUeWdYbdvqay6RRgwQsDtOWOC4IBCRpPoKCtsLufwUpD4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(10070799003)(1800799024)(23010399003)(3023799007)(10067099003)(56012099006)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bTJoN2FnMHlGN0pBWXpDM0E5T3QyekRuTUNwNW4vc1UzWVU3YkovZ2RXZitn?=
+ =?utf-8?B?SGcyTXlTT2ZDaW5RUk1IWGhSSG5tL2dPYXJHanora0ZiSFlwVGZMNndTTGJo?=
+ =?utf-8?B?Wmx4R3lnbC81NVV6cTNDMWZrUmtCMWJDLzNDWnM0M0FMK1h1aHN5UEVSc3NC?=
+ =?utf-8?B?dUloeEQ0UEdGRE1OY0FTRWZRNWowMnQ1WlBOTG5HcFdvNDkydUhCbmE4eERa?=
+ =?utf-8?B?cVpoTTFXb09hcDBidVowdm9NMUhXZjFCaHlseGFrZ1lrTzlBSXFLV08xZ0JN?=
+ =?utf-8?B?cTk3SzNQTEpHYUcwcFRiSnhUUEl0YlRPMTMvRHNPYk9GUTFHWCtKM0s0ckVO?=
+ =?utf-8?B?SzF4VTlMdVFmVS9DVnRIZ09acGd5L1J3cU5zWXJDbjhmMGc4MFd6OTdsVmdl?=
+ =?utf-8?B?emdFWlJmaWFFRkI2VFJvbFRJenIzbDB0eGtKR3dTZWN6alBaVkZMUE9JT0Vk?=
+ =?utf-8?B?dmRQaVB2OHZ0NlpWSmQ1ODJOLzhocnYxMzZhRm5UUXhmM25LTWx2bHdVa09B?=
+ =?utf-8?B?eDJSNWUrOVBVd0docUZiTEgvZDNwYk9pUlFPNGI0c2NOL2hTc25MWEVFbGFX?=
+ =?utf-8?B?Um1PWDE5WUl0bTNjRlBzRjJSU1grN3J6Q0hWd2ZlZVFJN0t6TGIvNk4wRkhD?=
+ =?utf-8?B?MHBUWGM3TXVtdHpvVFdmK3RFalNENkhsTmJLWTFBNzFHZHpKWTJNQTRRZ1Nz?=
+ =?utf-8?B?VGcycyt6MTd5WmhRSnlEZy9Sc0t1T01HUFM5RXlPcWZ2Tkg4UzJmVWg3UTdp?=
+ =?utf-8?B?aEFQa20xOXhiS040RnhGZXR5WUNkL2pyQnQ1V3oyVjBzTC9qTS93RTZVcXM5?=
+ =?utf-8?B?UzBRNlYyOVZ3aGFEejU4S3ZDQzZETE5iZTRtSVR2aUFuWGJXaVhZeWx0aGhq?=
+ =?utf-8?B?RVphMjJMZ2xCK1JYUWxMT0g0MzBrZ0R4MFZBZ3REUE5VWG15aVpxR0IwTDJ3?=
+ =?utf-8?B?VVQzYW91UDdlb3RTRCs0OE1ncG1IazExdDFvcU9leTVjZmJmZGx6d2tLSGEz?=
+ =?utf-8?B?akdRY0c5bzVJaldwUHBmNnVqa095SGVoN0lOdks0Mk0vZ2I2VjVjNllneWRL?=
+ =?utf-8?B?NDNJMHhmTlNGOUwzSUo1MEdSaFA3NmNpZ3VvMmZSYTl4L3NkUUQrVU9mQkda?=
+ =?utf-8?B?c0lxdFcyamgrZ2NJUjZ6SklOK0xRRnhqbGRlSGhPOWNERXBlS2FlRlN2Q01J?=
+ =?utf-8?B?V1hGb004Qms4QUx6U2x6TkdOTmdqVkJGMVdiNjFsdWcrN3k2MVd1UHlZQ21M?=
+ =?utf-8?B?WXliTVJweHNoSW5ZaktkMzBoVTF2L3ZNQWYvSFI5RVB3YkJpa3RuSmdqWk1u?=
+ =?utf-8?B?aG1mVGdrUlVlNm5mTWNPczBhalVISjNaZFJhNGpZWVlDZEJKUWdNaGlZb0Zq?=
+ =?utf-8?B?QVFncU43VVdrNHptK05TaDhRK2J3K2NlSlp1OUdXNTlvUm8zSStLT2JpVDdx?=
+ =?utf-8?B?N1J2Z0dwcWVTM0p0UzJwaG5pMXR4WTVXdDZBcHVTM1NxdXdmSnBEZkgyUzk5?=
+ =?utf-8?B?Zy8wVU5jWFpiOUI4anlhWmJzbXQxMXErbXdXcHRFSXhEa3VDWkhCMDhCWWg4?=
+ =?utf-8?B?WUhWaFVjV00wTml6bU03SzhxMnNtejI3c1cyOUN4Y09pckw3eHgxN3JvV0pq?=
+ =?utf-8?B?dU9ick82anMxZ1prTHJoazR6MlNCNGZoYnpjc0duZnFlOXNHaG95NzdwOVVW?=
+ =?utf-8?B?em15WXE2ejMwVHNCV2JyVmpGS0JMdXRPZGVHUHB4UXc0UUNlUU5LSFkyNFRo?=
+ =?utf-8?B?Z0NHVkxNdjRodGdaWGVGM0M0cTB3VXY1aTl0VzlWdkl3VWl4SUFocHFKQk5R?=
+ =?utf-8?B?ekorWDBXUzhnaThBd2N5SmFFaUNwYkFEY3YyOVVGc1hYWGlGSHdQVUp1M3dt?=
+ =?utf-8?B?OEYwdktrTTl3WEFkZnJ5czJzYW51Y3g1N0hTcmd4RG5oQlJ0ekpFa1VzMWRI?=
+ =?utf-8?B?cXFJVklBM25iZ2RQczdTdHFmdzREWlZJb09xTXZMWFAvYWdZeExBeGpjWlJX?=
+ =?utf-8?B?OTNjWmI0aGxPZnFxMHVERHh6UFEvVmdTdmp1d3NDY0NFV0lLR0luYVc1QlR5?=
+ =?utf-8?B?MzNHYjJZNVFMbDFGQU5PN0l6cm1FUjNyc255SGFvcXovQVMxalBuNXhSb1Rs?=
+ =?utf-8?B?Z2p5SG1LQzJ4d2NEZ1BSNC9WWTdFMHBpY01yajdlQXNEMy93WVBocUhJN2Zp?=
+ =?utf-8?B?MkUxZ2dpOEdndzdFWkljTzNiUXRrcytQWE9BcHdUVERyOFJGMnRheVNUT2sz?=
+ =?utf-8?B?bzAyU29DeE1SMzZsNWJmUXRXR1E3MEJiS09lRkRVSTJOaW52dG16ZDgya25w?=
+ =?utf-8?B?YjdzWG5SWWNQZ1lHTW55WnlOZnoyNmhmeXg4ZVM5clJTdDRPU3JXWk1FZ0lo?=
+ =?utf-8?Q?5QLRGOGqUFnG139ntUbRA9oJpCAZQTNXzCNFl2D1WiAP/?=
+X-MS-Exchange-AntiSpam-MessageData-1: GWZZvH3Lt5MSvQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d374c011-b56c-4dc5-cd37-08df057e7b16
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2026 03:34:50.0737
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RBtoa/bTZggN+STcYe0O2gewHDrsMPpypwC+lBbNajuAZmzdmF9Z2+SJIXucTlN5kVHM5clozAKmMGPv/Etnog==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9246
 
-Hi Beata,
+On Fri Aug 28, 2026 at 9:09 PM JST, Danilo Krummrich wrote:
+> (Cc: Miguel)
+>
+> On Fri Aug 28, 2026 at 7:33 AM CEST, Alexandre Courbot wrote:
+>> The `kernel` crate now features a replacement for our lossless integer
+>> conversion routines. Switch to the kernel version and remove our own.
+>>
+>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+>> Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
+>> ---
+>>  drivers/gpu/nova-core/falcon.rs                    |  12 +-
+>>  drivers/gpu/nova-core/falcon/fsp.rs                |   4 +-
+>>  drivers/gpu/nova-core/fb.rs                        |   2 +-
+>>  drivers/gpu/nova-core/fb/hal/gb100.rs              |   6 +-
+>>  drivers/gpu/nova-core/firmware.rs                  |   4 +-
+>>  drivers/gpu/nova-core/firmware/booter.rs           |   4 +-
+>>  drivers/gpu/nova-core/firmware/fwsec.rs            |   2 +-
+>>  drivers/gpu/nova-core/firmware/fwsec/bootloader.rs |   4 +-
+>>  drivers/gpu/nova-core/firmware/gsp.rs              |   9 +-
+>>  drivers/gpu/nova-core/firmware/tlv.rs              |  11 +-
+>>  drivers/gpu/nova-core/fsp.rs                       |   8 +-
+>>  drivers/gpu/nova-core/gsp.rs                       |   4 +-
+>>  drivers/gpu/nova-core/gsp/cmdq.rs                  |  22 +--
+>>  drivers/gpu/nova-core/gsp/fw.rs                    |  42 ++--
+>>  drivers/gpu/nova-core/gsp/fw/commands.rs           |   4 +-
+>>  drivers/gpu/nova-core/gsp/sequencer.rs             |   2 +-
+>>  drivers/gpu/nova-core/mctp.rs                      |   8 +-
+>>  drivers/gpu/nova-core/num.rs                       | 211 --------------=
+-------
+>>  drivers/gpu/nova-core/vbios.rs                     |   2 +-
+>>  19 files changed, 78 insertions(+), 283 deletions(-)
+>
+> Please see the discussion in [1].
+>
+> If we make this change, then the subsequent conversion to const_as!() wou=
+ld need
+> to go through the Rust tree next cycle, which could be a bit of a mess, a=
+s I'd
+> expect a bunch of conflicts.
+>
+> Alternatively, we could the the full three cycle dance, or have a signed =
+tag for
+> const_as!() and use it right away.
+>
+> But honestly, the former would just be unnecessary noise. If we don't do =
+the
+> latter, let's just keep the nova-core num module until the dust has been
+> settled.
+>
+> [1] https://lore.kernel.org/all/CANiq72k+-fNWZCwGuQ=3DFTchxgm-X-f6WR=3DtG=
+=3DErcn19ic1edQg@mail.gmail.com/
 
-On Wed, Aug 26, 2026 at 03:10:55PM +0200, Beata Michalska wrote:
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index a56ba6309594..43bbf4bce993 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -67,6 +67,7 @@ macro_rules! declare_err {
->      declare_err!(EOVERFLOW, "Value too large for defined data type.");
->      declare_err!(EMSGSIZE, "Message too long.");
->      declare_err!(ETIMEDOUT, "Connection timed out.");
-> +    declare_err!(EINPROGRESS, "Operation now in progress.");
+Maybe I am missing something, but wouldn't the following work?
 
-Looks like this is already upstream since commit b93fb6e76ec1.
+- rc1 gets tagged, `drm-rust-next` gets the `num::casts` module,
+- This series gets applied to `drm-rust-next`, then `cv!` (without the
+  nova-core conversion patch) in `rust-next`,
+- We wait one cycle for `cv!` to trickle down to `drm-rust-next` before
+  converting nova-core to use `cv!`.
 
-> +/// Device's runtime power management status
-> +#[repr(i32)]
-> +pub enum RuntimePMState {
-> +    /// Runtime PM has not been initialized for this device yet.
-> +    UNKNOWN = bindings::rpm_status_RPM_INVALID,
-> +    /// The device is expected to be runtime active and in it's normal operating state
-
-Nit: it's -> its.
-
-> +    RESUMED = bindings::rpm_status_RPM_ACTIVE,
-> +    /// The device is expected to be suspended, unavailable for normal operations
-> +    SUSPENDED = bindings::rpm_status_RPM_SUSPENDED,
-
-Should the enum variant names use CamelCase?
-
-> +impl<'a> ResumeScope<'a> {
-> +    fn new(dev: &'a device::Device<device::Bound>, mode: Mode) -> Result<Self> {
-> +        if mode.contains(ModeFlag::Acquire) {
-> +            // ModeFlag::Acquire is intended to be used with Awake scope
-> +            // Avoid mixing the modes.
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        // ModeFlag::Idle is internal so strip it of before passing further
-
-Nit: of -> off. Also in the identical comment below.
-
-> +impl<'a> AwakeScope<'a> {
-> +    fn new(dev: &'a device::Device<device::Bound>, mode: Mode) -> Result<Self> {
-> +        if !mode.contains(ModeFlag::Acquire) {
-> +            return Err(EINVAL);
-> +        }
-> +        // ModeFlag::Idle is internal so strip it of before passing further
-> +        match Request::resume(dev, mode & !ModeFlag::Idle) {
-> +            Ok(()) => {}
-> +            // For async/nowait requests, `EINPROGRESS` means the resume is in
-> +            // flight and the usage reference already keeps the device active.
-> +            Err(e) if e == EINPROGRESS && mode.contains_any(ModeFlag::Async | ModeFlag::Nowait) => {
-> +            }
-> +            Err(e) => {
-> +                Request::put_noidle(dev);
-> +                return Err(e);
-> +            }
-> +        }
-> +
-> +        Ok(Self(Scope::<Awake> {
-> +            dev,
-> +            mode,
-> +            _tag: PhantomData,
-> +        }))
-> +    }
-> +
-> +    fn release_inner(&self) -> Result {
-> +        let scope_mode = self.0.mode & !ModeFlag::Idle;
-> +        match self.0.mode {
-> +            mode if mode.contains(ModeFlag::Idle) => Request::idle(self.0.dev, scope_mode),
-> +            mode if mode.contains(ModeFlag::Auto) => {
-> +                Request::mark_last_busy(self.0.dev);
-> +                Request::suspend(self.0.dev, scope_mode)
-> +            }
-> +            _ => Request::suspend(self.0.dev, scope_mode),
-
-In v2 you had Request::idle in the default arm. I didn't see a note
-about this in the changelog. Was the change in behavior intentional?
-
-> +impl<'a> RetainScope<'a> {
-> +    fn new(dev: &'a device::Device<device::Bound>) -> Result<Self> {
-> +        Request::get_noresume(dev);
-> +        Ok(Self(Scope::<Retain> {
-> +            dev,
-> +            mode: Mode(ModeFlag::Sync as u32),
-> +            _tag: PhantomData,
-> +        }))
-> +    }
-> +
-> +    fn try_new(dev: &'a device::Device<device::Bound>) -> Result<Self> {
-> +        Request::get_if_active(dev)?;
-> +        Ok(Self(Scope::<Retain> {
-> +            dev,
-> +            mode: Mode(ModeFlag::Sync as u32),
-> +            _tag: PhantomData,
-> +        }))
-> +    }
-> +
-> +    fn release_inner(&self) {
-> +        Request::put_noidle(self.0.dev);
-
-What's the reason for using put_noidle here? It doesn't queue
-autosuspend, so wouldn't the try_hold_active pattern (i.e. grab if
-active, do something, drop) leave the device active until something
-else triggers a suspend?
-
-> +/// SAFETY:
-> +/// bindings::dev_pm_ops is #[repr(C)], implements Default
-> +/// and the struct itself is all nullable function pointers.
-> +/// There is no padding and all zero bit-pattern is valid
-> +///
-> +pub const PMOPS_NONE: bindings::dev_pm_ops =
-> +    unsafe { core::mem::MaybeUninit::<bindings::dev_pm_ops>::zeroed().assume_init() };
-
-The safety comment shouldn't be a doc comment.
-
-> +/// Runtime PM context tied to a device.
-> +pub struct PMContext<'a, D: driver::DriverLayout, T: PMOps<D>> {
-> +    // Preferably, PMContext could be shared via borrowed reference over
-> +    // a pm Registration's lifetime but that bares complications on its own
-> +    // when the context needs to be shared across different Registration types.
-
-Nit: bares -> bears. Also in the identical comment below.
-
-> +impl<'a, D: driver::DriverLayout, T: PMOps<D>> PMContext<'a, D, T> {
-> +    /// Driver-provided runtime PM operations.
-> +    ///
-> +    /// A driver implements this trait to handle runtime PM
-> +    /// transitions for its device type.
-> +    ///
-> +    /// Each callback receives the device and the current payload.
-> +    /// On success, it returns the payload to keep for the next
-> +    /// transition. On failure, it returns the payload together
-> +    /// with the error so the previous, or otherwise sane state
-> +    /// can be preserved.
-> +    pub const PM_OPS: bindings::dev_pm_ops = bindings::dev_pm_ops {
-> +        runtime_resume: if T::HAS_RUNTIME_RESUME {
-> +            Some(runtime_resume_callback::<D, T>)
-> +        } else {
-> +            None
-> +        },
-> +        runtime_suspend: if T::HAS_RUNTIME_SUSPEND {
-> +            Some(runtime_suspend_callback::<D, T>)
-> +        } else {
-> +            None
-> +        },
-> +        ..PMOPS_NONE
-> +    };
-> +
-> +    /// Enable runtime PM
-> +    pub fn enable(&self, state: RuntimePMState) -> Result {
-> +        if self.inner.enabled.cmpxchg(false, true, ordering::Full).is_err() {
-> +            return Err(EBUSY);
-> +        }
-> +        Self::apply_config(self.inner.dev, &self.inner.configs);
-> +        match state {
-> +            RuntimePMState::RESUMED => Request::mark_active(self.inner.dev),
-> +            RuntimePMState::SUSPENDED => Request::mark_suspended(self.inner.dev),
-> +            _ => Err(EINVAL),
-> +        }.inspect_err(|_| self.inner.enabled.store(false, ordering::Release))?;
-
-This always applies the config even if state is invalid. Should we
-validate the state before making changes?
-
-> +    /// Runs a closure while holding an `AwakeScope`.
-> +    pub fn with_get<R>(&self, profile: PMProfile, f: impl FnOnce() -> Result<R>) -> Result<R> {
-> +        if profile.0.contains(ModeFlag::Async) {
-> +            return Err(EINVAL);
-> +        }
-> +        let _scope = self.get(profile)?;
-> +        f()
-> +    }
-
-Shouldn't this reject NoWait too to make sure the device will actually
-be powered when the closure is executed?
-
-Sami
+Would that work? This series doesn't overlap with the const conversions
+that `cv!` covers on purpose, and it would have the benefit of getting
+rid of the local `num` module in nova-core quickly.
