@@ -1,85 +1,84 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA203B47E5
-	for <rust-for-linux@vger.kernel.org>; Sat, 29 Aug 2026 15:34:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFEE34CDD
+	for <rust-for-linux@vger.kernel.org>; Sat, 29 Aug 2026 16:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788017690; cv=none; b=UfxxYP57Uvw9Cd8X4A4QCFGKqvUJxCv/reoCQxcT4J/fNIcB1WBqEjKyOsTJaCYA2BxE3bcpOooNCKdaDChscHjB4v2qNUhqNaqcfcL4iTpvuXBPNhAd2rLijBMra/f29YGWEWenNfL5/nSyft8g6cj/GDyQS3ZUz5BQT8MD/Xw=
+	t=1788019833; cv=none; b=FhniDPnCBkFQYiq8zaHPJ5Any4XcMC5rMMtuxJCI16T1I06zZ6sIz05efV222jx7mFudLYv01FDMrQCATqs5Tm3yMQ0fZs6dbLTX78zJ28VfKl4/xR0DReYi0BR9K4ZNdTwkeZei++J+riPw1AmIPUX6WPCi+SFoEQW0k++rPdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788017690; c=relaxed/simple;
-	bh=dQpS8bcH8CRgltsTPv9YRYGMfmW0Rpoj3u9jqx8e+y4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gc+qAhjUFZQUJoVbE2xEX8fCb5M8ksuZliAJFjl+LcLw7J7N37tb9Q9ZkrrVj72/4/JO85ooQQsoaHviZBeXcKTISNC745TsHCumYyzFe0r7r2J2U/btvxKo81b5R3ZLvmwobF78/NDhmn6qZu139OtKTf2fLW5jCgr4bWXHoy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oG4VbsvF; arc=none smtp.client-ip=209.85.215.178
+	s=arc-20240116; t=1788019833; c=relaxed/simple;
+	bh=tz0jWWQTpodY19HeFvg6WNoeFkXiXO6opCc4a24Hdz8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rGWU1spI5q2wDS2+xRyAliNQntthO5EgXNta68pdxjzJH2bu76WW3GEqo8E4J9g2wKblxsI1ouWYDnBEJDbV+qRojIM72eVWiuI5I6gDynU75ss2uJD8yad3Y/lioRrGhCcZmCvslAFK2dqeJvAnVoIJZs+8Z78oPHV9UcV4JyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mFBvJ++J; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oG4VbsvF"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ca12086c06eso1551400a12.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 29 Aug 2026 08:34:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mFBvJ++J"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-482f2ee53e7so846123f8f.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 29 Aug 2026 09:10:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788017688; x=1788622488; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788019830; x=1788624630; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HHs8vnCpPDwNyoRpbGWeEHXuEK7fQBuD11JiWHnaukw=;
-        b=oG4VbsvFLzvpYlgJZLrPSK4KQxoTkqcIboM63iY/NojCoLVM8lhX2kg0TtSZoOPDNm
-         +P5Gl3HOl8SlJS/ZAyCPrCOWQpBes1K6Wlohp/AbEwIjtvx8ZlJqUI16N5Yv2ast6Y3N
-         8nD7sOQzhYNJVUnyl5a8XodUFYcKPX+low2Ov8kUgnJPwr/tNyGGVsXCQkJLe1Pzuj4v
-         qpEW7ksWRGQ3fSAmuJAkOmaMyB/c+dQgZdmqm8+YUjavL1yFDCYkaiT///mvK9if9Eno
-         k+AS2NBOgUYGtt0YKOYbgbQ4ynLXpHakDCo13tj0pySYCppbcli8+Rf9VDPugtzW+7na
-         OQtQ==
+        bh=QgJ9jtAoeYlks4PDRyS9bvaYSTRudzDH89X7ZOwziXY=;
+        b=mFBvJ++JJwu1tx/dcGd2i8HJ9jTIGzCwcd+Si2UTfe7azta4QhcqV6wO4CjdV/XjH4
+         TcznmIdYWhuv7jYd+uc7jEgQO6Y68SxkN84DCatWS+T77zfHkx4k5MBY+yRP1rWY+roF
+         u+OqkgJYnyXXrcwvpcfHClKxZa2DZvtYzSqptLs3lmipsbKop4ngmt2H8SvoajO9BR7X
+         McH7gB6HcUdjXrMtCa/Vdn4kZhA91gRHVRoUZyJOt/9CraacYR03k6lu7NPYwi3mdCzZ
+         JIgWP+54PCli/5ER6gmzLqk7PU9rPqkeM0Fqqhn77i77CklOe8bpngfwEiCKxyO+rfIR
+         YeTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788017688; x=1788622488;
+        d=1e100.net; s=20251104; t=1788019830; x=1788624630;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=HHs8vnCpPDwNyoRpbGWeEHXuEK7fQBuD11JiWHnaukw=;
-        b=cBAlTvULnCHUj+A4owbrlrfSWmwQbCIEjfNC3oUtGCxrplwG8Kt4gex3QX9tRc4F7e
-         XgNhI/ihAtNw+7UWcdVSKec11/uPZ55fO1OrOIYEx9iWun/1L4FfY1jNJ8zIPXeDkktK
-         tlmCAzmZg5MbSseqXx8tPJHGZQb03xXyE2CHys6bzY3Ozi310I3SXbuvSClazfGaV7HI
-         SPTQtw1ugbVkQCtV6ox89APr/MTUGJkHjw7vya+LUYvwc1aJB9JvdkRwVZSGUiT/QvDF
-         NcYUIzVsCp3DGcNc+qp45aDjdeMFg15ByS2VNXAMiCrqYDesK/kUXR1Je+uG2RR2A0yW
-         wlJA==
-X-Forwarded-Encrypted: i=1; AKwUvBxVD7MFRDG80ahdHbGpJiFTfDUdMRpsw8mp8zeEEVq1TvLHvkzOrDl8pwzPja/g1kFbPvAVgbg2VXZwIreSNw==@vger.kernel.org
-X-Gm-Message-State: AFuF++nUNpb8+ZE0Odnc/iFx4f87A9eOKdICBu+qBl+tRyGdZxYITV6k
-	71XaoJcftLPf6CYS5o3Ylgyp661l6BgXqQKsCWUrspGjbqa8LqwVwwAf
-X-Gm-Gg: AYBFou1cyU08EfZ3veaODcEDCO5Uvsv0hYYlP9ew4UvAYDxJXumZmIFQsxXsGc54QLb
-	oNH2ktXPi3VczmGEu4z8Wni0zmHP4GnyFiRMJJdACf9TSaO6+JYez6OmTmIARC3170TNRU/qmpO
-	bpxv/HJ9LQFxuVhQUmwJm39kLLms9j5+E2BBUAcFReqJJJq0MKIH/ozU+kEM5Cri84a5Vgz79C0
-	j/VJ2+bzcYNfUeoZf3pWm1MaPcfvbfF2xT+/MZp6JWxM81jkH+6r71PCF4nCsuQT8d3WMyhXgEd
-	gGfEBKyafpsvjt2O4he7DafUz5brmC4wwnGG6Neh5z7/lB9ACWOhUZflg8oGaup85XkDuZD/Znv
-	7HTwAR1iPLZoT/Aw+6YMzPmdev+AU/D3YaVRSzWISRXogA4zDfl4nT6w2hEqeydfjgbLlEZ28wW
-	6rODvYFQoac5x0meLw/6Ta8m9zxaseONYUOPe8Xkf0JHJIM2L7pIvKJddu3os=
-X-Received: by 2002:a17:90b:1d05:b0:396:65dd:4093 with SMTP id 98e67ed59e1d1-396d0ff519cmr25415299a91.14.1788017688155;
-        Sat, 29 Aug 2026 08:34:48 -0700 (PDT)
-Received: from tofu.. ([128.210.0.165])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-142e41837c6sm13145472c88.11.2026.08.29.08.34.46
+        bh=QgJ9jtAoeYlks4PDRyS9bvaYSTRudzDH89X7ZOwziXY=;
+        b=EDAQN8zhjA7BfA2yLvuWFbcAeI8rztfIvzHR/yMho4p7EXCPnjeJI1Zstvxztp10V2
+         Elow+xrJ4/5qRG+gMn+4cI+7znrBzNqU62EcTgxAYeFRIpZCEFLAITPbssvnPSsWCyj9
+         WpArGWIr2dI6CSjiy3U6cm8dYTJnIimfOy24dgQzC3gatqZeLJt2GfpC/S4U2G99BHuu
+         weO47WPV0NjqYy32HFOMoDsf+bMHYbr/9eBk//CV6PzcBcn47YRkeg6qILrZ0751r6XY
+         JnFwtQGOIwU93LCCwEo+uqB3PO+0ws8RYWr0Ec9PcZVgm8psFJlKXsPNvIzfKbz70FWE
+         0IDQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwnYVbUtJi9S9V8trGa8llbBr3cKjsOGWeSKxQbiqbQILY1N9UqrKfsir2mgngiAEaQUyehZTXkvqGmg4Z7bA==@vger.kernel.org
+X-Gm-Message-State: AFuF++mKrFIOP3fAGwLE+P1qcJXsW9ro0O+YGmrT1c4v0KAQe1y3Z+MT
+	C5No5UsZgjr9wMB92lFictsb/ohCxjsH8J7wzoZo/mtMr/bw7H7kJmbm
+X-Gm-Gg: AYBFou3Nv6ttCDZE+yJEPE+Ay4Elru4rc0abJwoostRwu0be2EUl+5ze1wfCPbgXlUK
+	1cvrBWVOlr7mFxMdGSkFWcMLaduEvBGc5/giIhjOcjMlg1O4WHWx9wYwi4ZxPtlI7NcGSA7MjoQ
+	QQHeTwPel1f4JPF60P4zrRWsgxzf94JGkljYubILWB8VjjA2ZWPCu9DIPOYwHsADJC714UM1vPG
+	Qrxav71Xd9uUSjA0abNLjx2gPp1tlZEI+0UkRdrOTUYNZnjBZlie/pFPN5zi6MaO6O6m/rlAv9L
+	zC/New49T7s0zRiIkirplIz/uVcQzowN+mo49Lz9avc223d8C4Ca4Ix0A9ZTJPjDpOlrcAB1XyL
+	clqDsFqtoSdGrH3CHGXf2fRY9i5wMuuVi1cVJ/5OL2dKQXYQNHbdRBYPq7K1nFV7QWpJ9aozYc5
+	MlcYJSRf2yht8znKCf/DSGy0gWEff4fPMvVYbRsts3mxYo43qJ6hBo+s+Z7rFIfg==
+X-Received: by 2002:a05:6000:38f:b0:484:3317:a1a with SMTP id ffacd0b85a97d-48433170bb5mr5978519f8f.27.1788019829637;
+        Sat, 29 Aug 2026 09:10:29 -0700 (PDT)
+Received: from main ([176.237.234.133])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4843310ab41sm3581883f8f.7.2026.08.29.09.10.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Aug 2026 08:34:47 -0700 (PDT)
-From: Georgios Androutsopoulos <georgeandrout13@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>,
-	Burak Emir <burak.emir@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Yury Norov <yury.norov@gmail.com>
-Cc: Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Eliot Courtney <ecourtney@nvidia.com>,
+        Sat, 29 Aug 2026 09:10:28 -0700 (PDT)
+From: Mehmet Koseoglu <mehmet.mkoseoglu@gmail.com>
+To: rafael@kernel.org,
+	viresh.kumar@linaro.org,
+	ojeda@kernel.org
+Cc: boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	tamird@kernel.org,
+	acourbot@nvidia.com,
+	work@onurozkan.dev,
+	linux-pm@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Subject: [PATCH] rust: id_pool: document panics in `find_unused_id` and `release_id`
-Date: Sat, 29 Aug 2026 11:34:42 -0400
-Message-ID: <20260829153442.20799-1-georgeandrout13@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] rust: cpufreq: reject NULL from cpufreq_cpu_get()
+Date: Sat, 29 Aug 2026 19:10:13 +0300
+Message-ID: <20260829161013.102967-1-mehmet.mkoseoglu@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -88,54 +87,83 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-`find_unused_id()` calls `Bitmap::next_zero_bit()` and `release_id()`
-calls `Bitmap::clear_bit()`, both of which panic when
-`CONFIG_RUST_BITMAP_HARDENED` is enabled and the index is out of
-bounds. Neither `IdPool` method documents this.
+cpufreq_cpu_get() returns either a referenced policy or NULL.
+PolicyCpu::from_cpu() passed its return value to from_err_ptr(), which
+rejects ERR_PTR values but accepts NULL.
 
-Add the missing `# Panics` sections and state the bounds requirement
-on `offset` and `id`.
+If the lookup fails, Policy::from_raw_mut() therefore constructs a mutable
+reference from NULL. Dropping the resulting PolicyCpu then passes the
+invalid pointer to cpufreq_cpu_put(), causing an oops in kobject_put().
 
-Signed-off-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+Reject NULL with NonNull before constructing the Policy reference. Return
+ENODEV instead.
+
+A KUnit negative-control run reproduced the oops with the original
+conversion. The same test passed with this change. The reproducer is
+available on request.
+
+Fixes: 6ebdd7c93177 ("rust: cpufreq: Extend abstractions for policy and driver ops")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Mehmet Koseoglu <mehmet.mkoseoglu@gmail.com>
 ---
- rust/kernel/id_pool.rs | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+Changes in v3:
+- Add Cc: stable@vger.kernel.org.
 
-diff --git a/rust/kernel/id_pool.rs b/rust/kernel/id_pool.rs
-index 384753fe0..ae6960d7f 100644
---- a/rust/kernel/id_pool.rs
-+++ b/rust/kernel/id_pool.rs
-@@ -224,7 +224,13 @@ pub fn grow(&mut self, mut resizer: PoolResizer) {
-     /// Finds an unused ID in the bitmap.
-     ///
-     /// Upon success, returns its index. Otherwise, returns [`None`]
--    /// to indicate that a [`Self::grow_request`] is needed.
-+    /// to indicate that a [`Self::grow_request`] is needed. `offset` must be
-+    /// in bounds.
-+    ///
-+    /// # Panics
-+    ///
-+    /// Panics if `CONFIG_RUST_BITMAP_HARDENED` is enabled and `offset` is out
-+    /// of bounds.
-     #[inline]
-     #[must_use]
-     pub fn find_unused_id(&mut self, offset: usize) -> Option<UnusedId<'_>> {
-@@ -236,6 +242,13 @@ pub fn find_unused_id(&mut self, offset: usize) -> Option<UnusedId<'_>> {
-     }
+Changes in v2:
+- Format modified imports using the kernel's vertical import style.
+
+v2: https://lore.kernel.org/r/20260828161834.29539-1-mehmet.mkoseoglu@gmail.com
+
+ rust/kernel/cpufreq.rs | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+index affa2b9490ef..4b992ea9a0f0 100644
+--- a/rust/kernel/cpufreq.rs
++++ b/rust/kernel/cpufreq.rs
+@@ -14,7 +14,13 @@
+     cpumask,
+     device::{Bound, Device},
+     devres,
+-    error::{code::*, from_err_ptr, from_result, to_result, Result, VTABLE_DEFAULT_ERROR},
++    error::{
++        code::*,
++        from_result,
++        to_result,
++        Result,
++        VTABLE_DEFAULT_ERROR, //
++    },
+     ffi::{c_char, c_ulong},
+     prelude::*,
+     types::ForeignOwnable,
+@@ -29,7 +35,10 @@
+     marker::PhantomData,
+     ops::{Deref, DerefMut},
+     pin::Pin,
+-    ptr,
++    ptr::{
++        self,
++        NonNull, //
++    },
+ };
  
-     /// Releases an ID.
-+    ///
-+    /// The `id` must be in bounds.
-+    ///
-+    /// # Panics
-+    ///
-+    /// Panics if `CONFIG_RUST_BITMAP_HARDENED` is enabled and `id` is out of
-+    /// bounds.
-     #[inline]
-     pub fn release_id(&mut self, id: usize) {
-         self.map.clear_bit(id);
-
-base-commit: 73e3f0710014fe6d4ed98cfc02292f6121db7558
+ use macros::vtable;
+@@ -687,12 +696,13 @@ fn clear_data<T: ForeignOwnable>(&mut self) -> Option<T> {
+ impl<'a> PolicyCpu<'a> {
+     fn from_cpu(cpu: CpuId) -> Result<Self> {
+         // SAFETY: It is safe to call `cpufreq_cpu_get` for any valid CPU.
+-        let ptr = from_err_ptr(unsafe { bindings::cpufreq_cpu_get(u32::from(cpu)) })?;
++        let ptr =
++            NonNull::new(unsafe { bindings::cpufreq_cpu_get(u32::from(cpu)) }).ok_or(ENODEV)?;
+ 
+         Ok(Self(
+             // SAFETY: The `ptr` is guaranteed to be valid and remains valid for the lifetime of
+             // the returned reference.
+-            unsafe { Policy::from_raw_mut(ptr) },
++            unsafe { Policy::from_raw_mut(ptr.as_ptr()) },
+         ))
+     }
+ }
 -- 
-2.47.3
-
+2.55.0
