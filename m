@@ -1,63 +1,109 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8993BB9E0;
-	Sun, 30 Aug 2026 17:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AC61429D;
+	Sun, 30 Aug 2026 19:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788110699; cv=none; b=ghYBFhxX2Ih3jx/xwK5fR1t3cPax96ciX5BH92yLHy+T4aShCCVFqf6CJR87lvhsxnFM9sflkwDQ1MJEfnARlzqTGL2QSxbH/lnz2D5fayC67ClcMFUQiSzPU8kEtD3/W5ZUer7btvzBk3RYlCvVsVq3zK+PY5dpjI3KoyAmosY=
+	t=1788118751; cv=none; b=gzCn12Toc5vM4eM4A3njZxL8hEjDj/tSziO8MR8CW7w/6qMRTOxt7vKb4p+h9LykSGWYLsSWOEyWQR5sjbxfTOgq3kHC+oS9ejmnlaLCQpuQIc31Ga444TH4tUDn2XqxocKKxpYfrmslzQOsJiL6/tgT84Hf5RqIZBpMJMH3ShA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788110699; c=relaxed/simple;
-	bh=O2Vnk2qjhYyqfxaGjvBO+PM1H0FImeglHtfdJBgJsFA=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=VswYmnOnAz4n+47HneTvvc7sxsbchPnyYexMToBfw86+4ScihV2rhXv1YVTnQWxUEk37qQ1MTujRFcvsnt9p1wom6HI4alm2vS907e1ViqNBNTNTgfcrKhZePPdi0kmwcA9lVSBQTQ0PeXZMdcpzxdpIbb59jnrzKiJcOCKJd3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AgWAhvbj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788118751; c=relaxed/simple;
+	bh=aKCL1L/l4Hob6dllE1zyMCEDUs+iEKCi98QzuCRPWZs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VHq7BktADbFN2MFv6nq6igeuip9A3raYlvt8XPZwHpybmMCQcITKq4YPRVSYDT6nF6vD6kELvESAlTRi8YK7xo4OpGPhNy5EI3OKzTGXBFWgMYNdva403M/N0flBRUyEa1insSSrV0bJf7FB2seC7L4iniNQuno7DLaJrRRLSf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LIAcc3TV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AgWAhvbj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF6D1F000E9;
-	Sun, 30 Aug 2026 17:24:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LIAcc3TV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E011F000E9;
+	Sun, 30 Aug 2026 19:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788110698;
-	bh=YKmXdjK1KeHYr+zeu1FUbIDP7pObpMZymZ6cqhTZhDg=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=AgWAhvbjDx4WQyy6FCoeaoUZ4iimd7nJ8fqKExa2NobNcev8BRTs3KjoJTwiHFrKS
-	 lLMIjY+LYiCcfFnCTJQjwTYBrMpb80N/5LyRc0qBtshwdo/PgDDwyNkHZcaps79xOo
-	 Md/do/nf2O45diKqv5OaKggRzBz9xWfyjQgrVWKQL8vPBteQ+npGIh3YUJjGRosN/e
-	 Z/NEKm9A8kv7Cey2O58B2xsbn8Kj+hjr5sHrLzWnVs97Gnnd4VRL/fOngbChQbS9Oy
-	 iIRCU88li66uvW2o3WgL6ETR/er1uEn6c/H1NUtwmFwYoX752CUvzp9vxpt0+zDXkA
-	 bLmOMKXzGA0NA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93983380CEE3;
-	Sun, 30 Aug 2026 17:24:03 +0000 (UTC)
-Subject: Re: [GIT PULL] Rust fixes for 7.3
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20260830093834.275112-1-ojeda@kernel.org>
-References: <20260830093834.275112-1-ojeda@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20260830093834.275112-1-ojeda@kernel.org>
-X-PR-Tracked-Remote: ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.3
-X-PR-Tracked-Commit-Id: 1b0bab4a873f1034c27573cfc613394cff7e0a5b
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: f59c074e76a6a9ea55818373decdf56c6fddca30
-Message-Id: <178811064211.3405738.11767800521301953379.pr-tracker-bot@kernel.org>
-Date: Sun, 30 Aug 2026 17:24:02 +0000
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	s=k20260515; t=1788118748;
+	bh=fLNwrpkdSyF5CJbc3fw4p3nVMnS/vZaro/92PCXSWU4=;
+	h=From:To:Cc:Subject:Date;
+	b=LIAcc3TVFroExdYUUvX+jRTjeKMNzyPvmNR3+0H7p+5ENDGGJAqfdKkJgId1MadCo
+	 f8wf8dZFDiM5A6nFSkr0LyRiDQi3QJp3KCzV9rjZyzRbI+WyWxYvSsot6+9urDmXHI
+	 rGA+PiIAYIfsTfiZ9h2yd17IGYXG0/Tvpc8RB2pFi82zUxkjhk80dQl+JgFTCleIj2
+	 PYTBvUsEYaUnThCBsSJ4eCiImsopS7RCT4yM5Wg/EysJa1zGNEcWnxpGS9Bz7IMhjt
+	 6fBFlgANTpY5KRlI6D0Aq+uesJ7VEw4ahmVPbjz6dgbSohAz+uh4aOkC/GQC005/kX
+	 3YewMWB0voZEg==
+From: Danilo Krummrich <dakr@kernel.org>
+To: dakr@kernel.org,
+	abdiel.janulgue@gmail.com,
+	daniel.almeida@collabora.com,
+	robin.murphy@arm.com,
+	a.hindborg@kernel.org,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	aliceryhl@google.com,
+	acourbot@nvidia.com,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	tmgross@umich.edu,
+	tamird@kernel.org,
+	work@onurozkan.dev,
+	mmaurer@google.com
+Cc: driver-core@lists.linux.dev,
+	nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH 0/4] rust: dma: tie DMA allocations to the device's bound lifetime
+Date: Sun, 30 Aug 2026 21:37:12 +0200
+Message-ID: <20260830193824.471089-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-The pull request you sent on Sun, 30 Aug 2026 11:38:34 +0200:
+DMA allocations carry device resources (e.g. IOMMU mappings) that must not
+outlive the device's bound lifetime. Add lifetime parameters to the DMA
+allocation types (Coherent, CoherentBox, CoherentHandle) to enforce at compile
+time that they are freed before the device is unbound.
 
-> ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.3
+Since DMA types with lifetime parameters are exposed through debugfs in the
+nova-core driver, first drop the unnecessary T: 'static bound from the debugfs
+ScopedDir file creation methods by formalizing a type invariant on FileOps.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/f59c074e76a6a9ea55818373decdf56c6fddca30
+Danilo Krummrich (4):
+  rust: debugfs: drop 'static bound from ScopedDir file creation methods
+  rust: dma: tie CoherentHandle to the device's bound lifetime
+  samples: rust_dma: separate driver type from driver data
+  rust: dma: tie Coherent and CoherentBox to the device's bound lifetime
 
-Thank you!
+ drivers/gpu/nova-core/falcon.rs               |   2 +-
+ drivers/gpu/nova-core/fb.rs                   |   4 +-
+ drivers/gpu/nova-core/firmware/booter.rs      |   2 +-
+ drivers/gpu/nova-core/firmware/fsp.rs         |   8 +-
+ .../nova-core/firmware/fwsec/bootloader.rs    |  12 +-
+ drivers/gpu/nova-core/firmware/gsp.rs         |  14 +-
+ drivers/gpu/nova-core/firmware/riscv.rs       |   8 +-
+ drivers/gpu/nova-core/fsp.rs                  |  20 +--
+ drivers/gpu/nova-core/gpu.rs                  |   4 +-
+ drivers/gpu/nova-core/gsp.rs                  |  30 ++--
+ drivers/gpu/nova-core/gsp/boot.rs             |  10 +-
+ drivers/gpu/nova-core/gsp/cmdq.rs             |  35 +++--
+ drivers/gpu/nova-core/gsp/commands.rs         |   2 +-
+ drivers/gpu/nova-core/gsp/fw.rs               |  12 +-
+ drivers/gpu/nova-core/gsp/hal.rs              |  14 +-
+ drivers/gpu/nova-core/gsp/hal/gh100.rs        |  16 +-
+ drivers/gpu/nova-core/gsp/hal/tu102.rs        |  34 ++---
+ drivers/gpu/nova-core/gsp/sequencer.rs        |   6 +-
+ rust/kernel/debugfs.rs                        |  26 +---
+ rust/kernel/debugfs/entry.rs                  |   4 +-
+ rust/kernel/debugfs/file_ops.rs               |  52 ++++---
+ rust/kernel/dma.rs                            | 141 +++++++++---------
+ rust/kernel/uaccess.rs                        |   4 +-
+ samples/rust/rust_dma.rs                      |  30 ++--
+ 24 files changed, 241 insertions(+), 249 deletions(-)
 
+
+base-commit: 45c13f3f9e3bb15fd89ff2864c6f627a3b4b4229
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.55.0
+
