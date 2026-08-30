@@ -1,161 +1,140 @@
-Received: from mail-43171.protonmail.ch (mail-43171.protonmail.ch [185.70.43.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2DA353A7F;
-	Sat, 29 Aug 2026 19:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B0425B0B6;
+	Sun, 30 Aug 2026 09:38:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788033191; cv=none; b=PCkjy7Rm7cCP5mhNz3mYZFPBJOVEkGUVBrGglPrRE+/Ie5aH2X3NEJS0MznhaUdzgpmbkCqljlNmrM34Ns4w0joG2D5V37QOJpaJFbAtgkevhlQd7vdEZ5YLUFKJajwzH2wMvM1QgmHA+eg4XnNukiuwzRg0lMVYlqrVEqFTqE4=
+	t=1788082741; cv=none; b=BjLYQQgi04foyQXvfSR+HJMtqgghdj9/JbdDva+FDmCSiVpabFH1LFZgQLK8f30Px3IvUZOdfWz9QTPTE7tItIuviC0CJsT1dXv1CCuM3y+aXsIb/k512KTK2nXBigi7PBUo+POHz8AkDRzOVtrrgrgSwRLV4P7GUf6Z50EJrIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788033191; c=relaxed/simple;
-	bh=UrzGbiUpmLrHNiKTBB99Yi6K10TIVUQB17wqWsBIXaA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YviY51hXHhqmUBDBdL0+LlSziQ4WSaRFfr6KDtwL7rsLcSGk43KWLV51Q5bUw0RWISVuSOjI1O6Xzns2TrjbkhcX4W97LfAI8c/aWcyxmQweDkd9peq6PcYUr5b8c6qZPvXNP7kTqo8Ok2MOvzqBLDKjfl6ONgmQT+nZ1j7FMbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Ji0kb+hz; arc=none smtp.client-ip=185.70.43.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1788082741; c=relaxed/simple;
+	bh=DYEGJThvxD3EI8tPBUw/f6YQmYdrmiC3fayS5oSThp8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k+fQKHJB1PgOEz4N7uMSvxgUcg8c9umP8V1zLmE6uNoAmnUdP/R/pEW536jw56BSZH4iFbL08XeZyEfu8puw0Ur0FnJih5vtcf97QrnKEEI3kE3KIuGifTIzxjeG7+ETMhHycA09iPPEIYCMXyrB9hrMMKwC4vGSU3L3/ecTG1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mMIndOHI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Ji0kb+hz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1788033176; x=1788292376;
-	bh=/dEiKOIuv+SZQFcpv7PhRYypxPlBSUlnYBm5pdQOQRY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=Ji0kb+hzhZttPBszUxW85mbpMZST7a8OFyDAne2OXLUNDN4uB4hI8Me5kFUKmuDz6
-	 BvPX21StRW6wcqSjcPxvpD/kF52A7bLU9gy64VytZM5UWxSsCVFKcVis+DGXkiDXM3
-	 UwztLIUkdegaJI5hE4zArsDwIttVzbIXMvyI7JG9iE8jG5QIil96HhYj3zWdFb2dR4
-	 vfrshmHDCWVElUjT48DyTdUxGzQqSMb9bpOBiFa5xFKW7vfiy1lRQMrB8+B6xY8fxB
-	 /WSDk+4r4wPKWuya3Be/+BIOhhIdV1U6KfOTx5clPpPuTCM0WMPpcnRGFAKgVtzGpG
-	 rXMkXhpV+pfOw==
-X-Pm-Submission-Id: 4hXQsH4xqyz1DFFg
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Mehmet Koseoglu <mehmet.mkoseoglu@gmail.com>
-Cc: rafael@kernel.org,
-	viresh.kumar@linaro.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	linux-pm@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mMIndOHI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479041F000E9;
+	Sun, 30 Aug 2026 09:38:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788082739;
+	bh=c5wbSvMfE0pJzRIujez5O2qKEvAya60BbFimcnSfaYo=;
+	h=From:To:Cc:Subject:Date;
+	b=mMIndOHIQIh2ztgyw/k2toN7mzUq+Z0gU6czKpMHBMUki8MUTvBU4JahoNXT4Mikv
+	 pP+t1aIohR5ZimAHO0TnaNO13vh8zXQCZ+zH3noQ0au/e8Q0gm83ZEnQjHjlmvHAhu
+	 Az/S9BlvGFv2JJbOAFbGPB2i10GwF4bP03Q9zMOr5pjSUDiUoT+dXUwZtB6wHCwq5p
+	 QKpVFvsAHuHixR7Rz8ymosbNk0pKN/L90kPdRpG9SvrFg2o9BzXVacRtyT1NjQ4Pi2
+	 PaowHRdNMYn5rS+TzjI+rXDtoTwe/VDoMdjhdjGo1RRoR9VrkBzKa0eqhd0UpxH0JW
+	 usnPUuB4Z5tJA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: Re: [PATCH v3] rust: cpufreq: reject NULL from cpufreq_cpu_get()
-Date: Sat, 29 Aug 2026 22:52:45 +0300
-Message-ID: <20260829195250.24625-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260829161013.102967-1-mehmet.mkoseoglu@gmail.com>
-References: <20260829161013.102967-1-mehmet.mkoseoglu@gmail.com>
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 7.3
+Date: Sun, 30 Aug 2026 11:38:34 +0200
+Message-ID: <20260830093834.275112-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, 29 Aug 2026 19:10:13 +0300=0D
-Mehmet Koseoglu <mehmet.mkoseoglu@gmail.com> wrote:=0D
-=0D
-> cpufreq_cpu_get() returns either a referenced policy or NULL.=0D
-> PolicyCpu::from_cpu() passed its return value to from_err_ptr(), which=0D
-> rejects ERR_PTR values but accepts NULL.=0D
-> =0D
-> If the lookup fails, Policy::from_raw_mut() therefore constructs a mutabl=
-e=0D
-> reference from NULL. Dropping the resulting PolicyCpu then passes the=0D
-> invalid pointer to cpufreq_cpu_put(), causing an oops in kobject_put().=0D
-> =0D
-> Reject NULL with NonNull before constructing the Policy reference. Return=
-=0D
-> ENODEV instead.=0D
-> =0D
-> A KUnit negative-control run reproduced the oops with the original=0D
-> conversion. The same test passed with this change. The reproducer is=0D
-> available on request.=0D
-> =0D
-> Fixes: 6ebdd7c93177 ("rust: cpufreq: Extend abstractions for policy and d=
-river ops")=0D
-> Cc: stable@vger.kernel.org=0D
-> Assisted-by: LLM=0D
-> Signed-off-by: Mehmet Koseoglu <mehmet.mkoseoglu@gmail.com>=0D
-=0D
-Reviewed-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
-=0D
-> ---=0D
-> Changes in v3:=0D
-> - Add Cc: stable@vger.kernel.org.=0D
-> =0D
-> Changes in v2:=0D
-> - Format modified imports using the kernel's vertical import style.=0D
-> =0D
-> v2: https://lore.kernel.org/r/20260828161834.29539-1-mehmet.mkoseoglu@gma=
-il.com=0D
-> =0D
->  rust/kernel/cpufreq.rs | 18 ++++++++++++++----=0D
->  1 file changed, 14 insertions(+), 4 deletions(-)=0D
-> =0D
-> diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs=0D
-> index affa2b9490ef..4b992ea9a0f0 100644=0D
-> --- a/rust/kernel/cpufreq.rs=0D
-> +++ b/rust/kernel/cpufreq.rs=0D
-> @@ -14,7 +14,13 @@=0D
->      cpumask,=0D
->      device::{Bound, Device},=0D
->      devres,=0D
-> -    error::{code::*, from_err_ptr, from_result, to_result, Result, VTABL=
-E_DEFAULT_ERROR},=0D
-> +    error::{=0D
-> +        code::*,=0D
-> +        from_result,=0D
-> +        to_result,=0D
-> +        Result,=0D
-> +        VTABLE_DEFAULT_ERROR, //=0D
-> +    },=0D
->      ffi::{c_char, c_ulong},=0D
->      prelude::*,=0D
->      types::ForeignOwnable,=0D
-> @@ -29,7 +35,10 @@=0D
->      marker::PhantomData,=0D
->      ops::{Deref, DerefMut},=0D
->      pin::Pin,=0D
-> -    ptr,=0D
-> +    ptr::{=0D
-> +        self,=0D
-> +        NonNull, //=0D
-> +    },=0D
->  };=0D
->  =0D
->  use macros::vtable;=0D
-> @@ -687,12 +696,13 @@ fn clear_data<T: ForeignOwnable>(&mut self) -> Opti=
-on<T> {=0D
->  impl<'a> PolicyCpu<'a> {=0D
->      fn from_cpu(cpu: CpuId) -> Result<Self> {=0D
->          // SAFETY: It is safe to call `cpufreq_cpu_get` for any valid CP=
-U.=0D
-> -        let ptr =3D from_err_ptr(unsafe { bindings::cpufreq_cpu_get(u32:=
-:from(cpu)) })?;=0D
-> +        let ptr =3D=0D
-> +            NonNull::new(unsafe { bindings::cpufreq_cpu_get(u32::from(cp=
-u)) }).ok_or(ENODEV)?;=0D
->  =0D
->          Ok(Self(=0D
->              // SAFETY: The `ptr` is guaranteed to be valid and remains v=
-alid for the lifetime of=0D
->              // the returned reference.=0D
-> -            unsafe { Policy::from_raw_mut(ptr) },=0D
-> +            unsafe { Policy::from_raw_mut(ptr.as_ptr()) },=0D
->          ))=0D
->      }=0D
->  }=0D
-> -- =0D
-> 2.55.0=0D
+Hi Linus,
+
+Please pull these fixes for Rust.
+
+They have been in linux-next for at least 3 rounds (most for a week).
+
+No conflicts expected.
+
+Thanks!
+
+Cheers,
+Miguel
+
+The following changes since commit d24f5cdbeff8b6a063fca92d0a1f94122a799b59:
+
+  Merge tag 'rust-7.3' of git://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux (2026-08-18 11:25:09 -0700)
+
+are available in the Git repository at:
+
+  ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.3
+
+for you to fetch changes up to 1b0bab4a873f1034c27573cfc613394cff7e0a5b:
+
+  rust: kbuild: disambiguate `zerocopy_derive` for `rusttest` (2026-08-25 22:19:27 +0200)
+
+----------------------------------------------------------------
+Rust fixes for v7.3
+
+Toolchain and infrastructure:
+
+ - Fix KCFI failures, such as in Rust doctests, by disabling function
+   merging when CFI is enabled. Gary reported the LLVM bug to upstream
+   and it is now fixed in their mainline.
+
+ - Fix 'objtool' fallthrough warnings under the experimental
+   'CONFIG_RUST_INLINE_HELPERS' by passing (for the combined Rust and
+   helpers code) the LLVM options needed to preserve the unreachable
+   traps that 'rustc' normally emits.
+
+   In addition, fix 'objtool' errors when LTO is enabled on top, by
+   also filtering out the LTO flags (for the combined Rust and helpers
+   code) so that the traps are kept in place.
+
+ - Fix 'objtool' warnings by adding one more 'noreturn' function.
+
+ - Fix 'make rusttest' target when the 'rustc-dev' component is
+   installed and Rust >= 1.82.0, <= 1.87.0 is used.
+
+'kernel' crate:
+
+ - 'num' module: fix soundness issue in the 'Bounded' conversion from
+   'bool' by restricting the conversions to unsigned 'Bounded'.
+
+ - 'jump_label' module: fix future 'make rusttest' target failures when
+   'ARCH=' is set to an arch different than the host's.
+
+ - 'list' module: fix incorrect 'pop_back()' comment.
+
+----------------------------------------------------------------
+FUJITA Tomonori (1):
+      rust: jump_label: skip arch-specific asm in `testlib` builds
+
+Gary Guo (1):
+      rust: cfi: disable function merging if CFI is enabled
+
+Miguel Ojeda (4):
+      objtool/rust: add one more `noreturn` Rust function
+      kbuild: rust: preserve unreachable traps with inline helpers
+      kbuild: rust: keep Rust objects out of Clang LTO with inline helpers
+      rust: kbuild: disambiguate `zerocopy_derive` for `rusttest`
+
+Nikolai Grlica (1):
+      rust: kernel: list: fix incorrect pop_back example comment
+
+Younes Akhouayri (1):
+      rust: num: restrict bool conversion to unsigned Bounded
+
+ Makefile                   | 13 ++++++++++++-
+ rust/Makefile              |  6 ++++--
+ rust/kernel/jump_label.rs  | 12 ++++++++++++
+ rust/kernel/list.rs        |  2 +-
+ rust/kernel/num/bounded.rs | 30 +++++++++++++++++++++---------
+ scripts/Makefile.build     |  3 ++-
+ tools/objtool/check.c      |  1 +
+ 7 files changed, 53 insertions(+), 14 deletions(-)
