@@ -1,140 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B0425B0B6;
-	Sun, 30 Aug 2026 09:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8993BB9E0;
+	Sun, 30 Aug 2026 17:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788082741; cv=none; b=BjLYQQgi04foyQXvfSR+HJMtqgghdj9/JbdDva+FDmCSiVpabFH1LFZgQLK8f30Px3IvUZOdfWz9QTPTE7tItIuviC0CJsT1dXv1CCuM3y+aXsIb/k512KTK2nXBigi7PBUo+POHz8AkDRzOVtrrgrgSwRLV4P7GUf6Z50EJrIw=
+	t=1788110699; cv=none; b=ghYBFhxX2Ih3jx/xwK5fR1t3cPax96ciX5BH92yLHy+T4aShCCVFqf6CJR87lvhsxnFM9sflkwDQ1MJEfnARlzqTGL2QSxbH/lnz2D5fayC67ClcMFUQiSzPU8kEtD3/W5ZUer7btvzBk3RYlCvVsVq3zK+PY5dpjI3KoyAmosY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788082741; c=relaxed/simple;
-	bh=DYEGJThvxD3EI8tPBUw/f6YQmYdrmiC3fayS5oSThp8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k+fQKHJB1PgOEz4N7uMSvxgUcg8c9umP8V1zLmE6uNoAmnUdP/R/pEW536jw56BSZH4iFbL08XeZyEfu8puw0Ur0FnJih5vtcf97QrnKEEI3kE3KIuGifTIzxjeG7+ETMhHycA09iPPEIYCMXyrB9hrMMKwC4vGSU3L3/ecTG1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mMIndOHI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788110699; c=relaxed/simple;
+	bh=O2Vnk2qjhYyqfxaGjvBO+PM1H0FImeglHtfdJBgJsFA=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=VswYmnOnAz4n+47HneTvvc7sxsbchPnyYexMToBfw86+4ScihV2rhXv1YVTnQWxUEk37qQ1MTujRFcvsnt9p1wom6HI4alm2vS907e1ViqNBNTNTgfcrKhZePPdi0kmwcA9lVSBQTQ0PeXZMdcpzxdpIbb59jnrzKiJcOCKJd3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AgWAhvbj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mMIndOHI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479041F000E9;
-	Sun, 30 Aug 2026 09:38:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AgWAhvbj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF6D1F000E9;
+	Sun, 30 Aug 2026 17:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788082739;
-	bh=c5wbSvMfE0pJzRIujez5O2qKEvAya60BbFimcnSfaYo=;
-	h=From:To:Cc:Subject:Date;
-	b=mMIndOHIQIh2ztgyw/k2toN7mzUq+Z0gU6czKpMHBMUki8MUTvBU4JahoNXT4Mikv
-	 pP+t1aIohR5ZimAHO0TnaNO13vh8zXQCZ+zH3noQ0au/e8Q0gm83ZEnQjHjlmvHAhu
-	 Az/S9BlvGFv2JJbOAFbGPB2i10GwF4bP03Q9zMOr5pjSUDiUoT+dXUwZtB6wHCwq5p
-	 QKpVFvsAHuHixR7Rz8ymosbNk0pKN/L90kPdRpG9SvrFg2o9BzXVacRtyT1NjQ4Pi2
-	 PaowHRdNMYn5rS+TzjI+rXDtoTwe/VDoMdjhdjGo1RRoR9VrkBzKa0eqhd0UpxH0JW
-	 usnPUuB4Z5tJA==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust fixes for 7.3
-Date: Sun, 30 Aug 2026 11:38:34 +0200
-Message-ID: <20260830093834.275112-1-ojeda@kernel.org>
+	s=k20260515; t=1788110698;
+	bh=YKmXdjK1KeHYr+zeu1FUbIDP7pObpMZymZ6cqhTZhDg=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=AgWAhvbjDx4WQyy6FCoeaoUZ4iimd7nJ8fqKExa2NobNcev8BRTs3KjoJTwiHFrKS
+	 lLMIjY+LYiCcfFnCTJQjwTYBrMpb80N/5LyRc0qBtshwdo/PgDDwyNkHZcaps79xOo
+	 Md/do/nf2O45diKqv5OaKggRzBz9xWfyjQgrVWKQL8vPBteQ+npGIh3YUJjGRosN/e
+	 Z/NEKm9A8kv7Cey2O58B2xsbn8Kj+hjr5sHrLzWnVs97Gnnd4VRL/fOngbChQbS9Oy
+	 iIRCU88li66uvW2o3WgL6ETR/er1uEn6c/H1NUtwmFwYoX752CUvzp9vxpt0+zDXkA
+	 bLmOMKXzGA0NA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93983380CEE3;
+	Sun, 30 Aug 2026 17:24:03 +0000 (UTC)
+Subject: Re: [GIT PULL] Rust fixes for 7.3
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260830093834.275112-1-ojeda@kernel.org>
+References: <20260830093834.275112-1-ojeda@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260830093834.275112-1-ojeda@kernel.org>
+X-PR-Tracked-Remote: ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.3
+X-PR-Tracked-Commit-Id: 1b0bab4a873f1034c27573cfc613394cff7e0a5b
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: f59c074e76a6a9ea55818373decdf56c6fddca30
+Message-Id: <178811064211.3405738.11767800521301953379.pr-tracker-bot@kernel.org>
+Date: Sun, 30 Aug 2026 17:24:02 +0000
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Hi Linus,
+The pull request you sent on Sun, 30 Aug 2026 11:38:34 +0200:
 
-Please pull these fixes for Rust.
+> ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.3
 
-They have been in linux-next for at least 3 rounds (most for a week).
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/f59c074e76a6a9ea55818373decdf56c6fddca30
 
-No conflicts expected.
+Thank you!
 
-Thanks!
-
-Cheers,
-Miguel
-
-The following changes since commit d24f5cdbeff8b6a063fca92d0a1f94122a799b59:
-
-  Merge tag 'rust-7.3' of git://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux (2026-08-18 11:25:09 -0700)
-
-are available in the Git repository at:
-
-  ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.3
-
-for you to fetch changes up to 1b0bab4a873f1034c27573cfc613394cff7e0a5b:
-
-  rust: kbuild: disambiguate `zerocopy_derive` for `rusttest` (2026-08-25 22:19:27 +0200)
-
-----------------------------------------------------------------
-Rust fixes for v7.3
-
-Toolchain and infrastructure:
-
- - Fix KCFI failures, such as in Rust doctests, by disabling function
-   merging when CFI is enabled. Gary reported the LLVM bug to upstream
-   and it is now fixed in their mainline.
-
- - Fix 'objtool' fallthrough warnings under the experimental
-   'CONFIG_RUST_INLINE_HELPERS' by passing (for the combined Rust and
-   helpers code) the LLVM options needed to preserve the unreachable
-   traps that 'rustc' normally emits.
-
-   In addition, fix 'objtool' errors when LTO is enabled on top, by
-   also filtering out the LTO flags (for the combined Rust and helpers
-   code) so that the traps are kept in place.
-
- - Fix 'objtool' warnings by adding one more 'noreturn' function.
-
- - Fix 'make rusttest' target when the 'rustc-dev' component is
-   installed and Rust >= 1.82.0, <= 1.87.0 is used.
-
-'kernel' crate:
-
- - 'num' module: fix soundness issue in the 'Bounded' conversion from
-   'bool' by restricting the conversions to unsigned 'Bounded'.
-
- - 'jump_label' module: fix future 'make rusttest' target failures when
-   'ARCH=' is set to an arch different than the host's.
-
- - 'list' module: fix incorrect 'pop_back()' comment.
-
-----------------------------------------------------------------
-FUJITA Tomonori (1):
-      rust: jump_label: skip arch-specific asm in `testlib` builds
-
-Gary Guo (1):
-      rust: cfi: disable function merging if CFI is enabled
-
-Miguel Ojeda (4):
-      objtool/rust: add one more `noreturn` Rust function
-      kbuild: rust: preserve unreachable traps with inline helpers
-      kbuild: rust: keep Rust objects out of Clang LTO with inline helpers
-      rust: kbuild: disambiguate `zerocopy_derive` for `rusttest`
-
-Nikolai Grlica (1):
-      rust: kernel: list: fix incorrect pop_back example comment
-
-Younes Akhouayri (1):
-      rust: num: restrict bool conversion to unsigned Bounded
-
- Makefile                   | 13 ++++++++++++-
- rust/Makefile              |  6 ++++--
- rust/kernel/jump_label.rs  | 12 ++++++++++++
- rust/kernel/list.rs        |  2 +-
- rust/kernel/num/bounded.rs | 30 +++++++++++++++++++++---------
- scripts/Makefile.build     |  3 ++-
- tools/objtool/check.c      |  1 +
- 7 files changed, 53 insertions(+), 14 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
