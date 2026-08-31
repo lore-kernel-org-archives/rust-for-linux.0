@@ -1,140 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA91033B97D;
-	Mon, 31 Aug 2026 17:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788196552; cv=none; b=WviWVx9t47cQICOI9H/yA/f1QAegYrT7tyuwt3i2XllvFHmSvG9DyXjpa8PXa/YaBPveDy6RQneUPweXjAD20TcTaBPTZchXfRhsAX9LpQgH2Zu3+c8N+rB6IIdilECwEf5VD1Qcc/jL3rBimcwr6Vd57J1ddJoDD6jfvTmAEH4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788196552; c=relaxed/simple;
-	bh=qhps3i/s6KKq+LUWs2P9LFVcYQc2rWPelFcUqOtIChA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QgQTn5HYRBo10f2q6f4eLAAikkkEhTnt8ptY/tMcpFtsQL6bvGAIMdXwbB3GyE2wm5ZMd/aYbIRSzAd8hWXcL+Vr6DYuf3lLsoEXajnMqWFbzIkbSrd8sk2NSeNwcvQ3lyB9LEIJQhkBRhotzqYN1Wc0FoEG36Hl4rmQ0aByKsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mdZ1In+j; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A9D49E5CB
+	for <rust-for-linux@vger.kernel.org>; Mon, 31 Aug 2026 17:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788198905; cv=pass; b=FZadkCCFjH7WAA6Iffh0ZKSHa62ncalqWDh1rCxtnQ39TQ15bxWxlUo5zknpSkc4xb317YiwE3Zv6uZHb7OD+sYHc+kQc8DkZOAxXqkhSRyWgSvChOfOwmzhscF2apve1dEK/eveDqxjWVcriZbr6iL7IHbZW1MexFGiVhNnTPQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788198905; c=relaxed/simple;
+	bh=1kCMgVeNQvSiwIL3h/DRjr4qSjOvxImZtZcvTmwnYcs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rrrb5hkp5NkDlf+m0ULxDYUBpvrZoZ1FmDRvwMSABUvgJqSc0Iq0bkOXlX9GaRIH9xGzx5V2job+7n8ARklSUekJftrGjcetJgsx368JukYWFVMEbY4IcASc6xfcopm2poRBfzv8gIvUPxJvdJRPL0cL11W4B0u7i6n9dyrNoNg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JyxmnPxN; arc=pass smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mdZ1In+j"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 64911C2BCB8;
-	Mon, 31 Aug 2026 17:15:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788196552;
-	bh=qhps3i/s6KKq+LUWs2P9LFVcYQc2rWPelFcUqOtIChA=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=mdZ1In+j1Tbsx2leubMe4rl5fv94iDQglSmFwMzbd9Dv2mfjIOHX+tyBPPPLscBdT
-	 ATG/MZwJbl40bEsZ5b01E4jj2i5BRMqZRggsOu4LmxFS76UTEHcp6yFyQmmYw/i/Dt
-	 FJRSDGJDSpIcGuW4Gcp+2ZH1z3PwFf0IdHQ4G6aIynP63vSCePV/cRDvhab36KNrfv
-	 wsF8ZUyzZyAk/ZkFQTxRWE5lQ5IAjexNhagNc16JWTc/jECsB9FG40l7Qj/dCVBtwX
-	 VxpQKx2O+/lnW1Fl5dUAVQT4SFrF9sAybLliLPVBOwuR6rFkM2c2wQSAwva+DZzIXM
-	 tBCpM+9ZQfDSg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3EB2AC624C6;
-	Mon, 31 Aug 2026 17:15:52 +0000 (UTC)
-From: Sophon Zhang via B4 Relay <devnull+aiqubits.hotmail.com@kernel.org>
-Date: Tue, 01 Sep 2026 01:09:53 +0800
-Subject: [PATCH v4] rust: pci: reject IRQ vector indices that do not fit in
- u32
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JyxmnPxN"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38eca09faa2so296002a91.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 31 Aug 2026 10:55:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788198903; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HkPJvlposQKEytZ6WxQQWLFmhUP9L+GQW0qy/LO3xIfQT5Ngs70O04UtXF/NVbBMMt
+         cFjsXjNP28HYcZvGIPj7o4R1klDHwah6U2/Lk2+ossbH/0asGwpUJJKzfCRtDKHkpkwt
+         RfLEv7LMYMeltGUyxYOh6O3wiIomXA6qghbxbpfKGTL4RxI8mIHYx2cwy5Xj+Jl28aLV
+         Omfqku6cJ9ylLJrw0AVEW3u+afyeqM42cCObLr5BVcTh8pSLnr7DzBf4ms2bYSERo9WF
+         FSR+wNrNyoTKXvpZyk4+00RadHp+zKQgfquwP3svy5mC62bqBl8GeQGCU24t2Z4A21V9
+         HH4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=N/RETsztnDkAzUQrwJYe3M9VfKmr+8nyYXoQh9ATtTg=;
+        fh=g4fsr6Q8yQYqi6DSZAmKspcKPOD8bXTbUf7nvlqB/ww=;
+        b=bLyrUHlpJp5Shvdm4HhKOHlCmp5qQp9Rd0Bk/1QvzvON/5nY1IWSuT15G7irAxU3Zn
+         PAucacB5EtUgWtTg1uP45E0jSo/zF/caS9V1MyyFdLSmZNxQ6kYNeeSu/n/nWD1q05jr
+         zzn1wBv2pcEKJsWi6KQRv3Et0r1Y+SwPuyrNmryLsLFdPlDjU9dqTeVCTmfFcRZ4gluR
+         IeO3xiX0S5pjmoNAxIE70LbLj0ZkxLCJnCPiTvlKoqr98CjwzgehuPmxziRTsf0dzWrs
+         jsPTIx4Teq7M9bhiQ3yBxZ8XZRboWxLaAnI3+m+d3zuWJpQgf7cJ3PMH1iwTap03X7pa
+         +PvA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788198903; x=1788803703; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=N/RETsztnDkAzUQrwJYe3M9VfKmr+8nyYXoQh9ATtTg=;
+        b=JyxmnPxN5h0vHaOvJhC5P6t8cXq+Wj0BtKDjm03KguwSvzW10EF6OmeMOflX7srlPA
+         1S2OSYclK92wXtzQv+mVFjdhn1oSC77IY4Z7ThcPSoCZMVY24w3Jkx7oOW2do0CZqsRN
+         INt3+vTKLAudaBycDwRJb4Gc1osw6zOyBrg2YRBdz74UlodTh2dN7pkO+d3V0caaGLE9
+         o6h81epwGhDwWtk0KUKOWN7RZxPUHnI995fwxBqlwCqMyBDtXgrWFF15ea2gVdedGXqG
+         C8xH8lzg3YsOXilevrGcyTYPGVkMk8kkh2y9I4HoMlFI2dIY+6Tn1T9Fr0MK8C9IsDvc
+         Lsgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788198903; x=1788803703;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=N/RETsztnDkAzUQrwJYe3M9VfKmr+8nyYXoQh9ATtTg=;
+        b=Xqmnzn1KhfHxWtirbCJP1hrAcvO1kSFxIRLqGyj3Sj9yGP9T1aKoZi3rIch8P090Pi
+         tUfV/82f56BsqQGT73AMxpi7x5Z2kbP7l2qFRbPKfWOleJMScXRgR5jg0E1QOKqS7Ciw
+         W37kyyJteAR58XLGsOWbPjviNgzbpOPu1sZb55NLN0/AhLNQfTqeTnkvP3so8AA/RpGJ
+         WgzTYDSccf1HjnhNZ6r7ISDsMmu/fMRdbmd9KuZoaOvs3FI3Df5nC6JIqZnLI5Tnn+Y6
+         OkH9payqyfehyxePDB03lWhaGLf3ij8VSTVoyvf/5nRd8llkj8e/NwaFFdR3cSp9ORv0
+         1vNg==
+X-Forwarded-Encrypted: i=1; AKwUvBzcUhMyLnTAViM1Y6dBG3JIvJLXjiqy04nbYAiOLax0FxZufkJaww6DrnK1V74dYNSGnBgbjfwzGHVxleGi8A==@vger.kernel.org
+X-Gm-Message-State: AFuF++kXmk7XdL9lCDZGYX+6yDdK8qUSvrSpZkbJ8bP34x3TFV01JDap
+	pIrfH80RhHbzP4qjVokPrXSn55ozun4SUnxFM+z+/arGxDs78EeM5sP/bw2Vzuik0uZ7tHASygW
+	8vZpSWDf8q4popV9+3enj5yAJ514NrmE=
+X-Gm-Gg: AYBFou2+lV05sO1r3wlalYQUlxn57DBG91alg0vxYK4m9A91XMeadhnZcj35AOel6kH
+	/5TJrnOjLys0hi7AczEm035XH1L0qZUZlEaVG5Vmge/hgdsFx+8byBNYr64uPJ6RE5B621lUWeD
+	0MW89Bc0bEqKkrk1BTT9i63vItbZ8BevANeZiGiEWcm5+E8xj18vsRglIcBo8F/tq6DKipa+ClV
+	0n1bMtoSm2cP87JIMq1aLaLdf3u+lWYs8JQ86IPf39LtmLRx7d5wiHDGJR2BInlO8Qh1Myorx8H
+	mw3smPa358tocHM2+FnnsnQJFbJbuxrfgx+/FPEznHeQs769bjUuvGZd/vs8ngIkxaBWHc/VNIY
+	hJ9+mhkGSqpmrd+r36+1lioGmMRJm6sTRpGxlT5TBlwvNt65Crg957ALG00c1
+X-Received: by 2002:a17:90b:4b87:b0:396:463e:2eeb with SMTP id
+ 98e67ed59e1d1-398ba6dc4f0mr13662063a91.0.1788198902732; Mon, 31 Aug 2026
+ 10:55:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260901-fix-pci-irq-vector-index-truncation-v4-1-f94aa6932fd9@hotmail.com>
-X-B4-Tracking: v=1; b=H4sIAGC1lWoC/53OPQ7CMAwF4KugzBjlpySUiXsghpAYagQtJCUCo
- d4dFybEBOOT/L7nh8iYCLNYTh4iYaFMXcuhmk5EaHy7R6DIWWiprVwYBTu6wTkQULpAwdB3Cai
- NeIM+Xdvge+6DdXO9M26uvIyCpXNCrr1W1pt3ztftgdsjPV40lFm6v94oarz7bbEoUBCt0crFu
- t5at2q6/uTpOAvdSYybRf+halYraSR65yrr62/V/KEaVr1W7C6qqCV+qsMwPAH8zWrBlgEAAA=
- =
-X-Change-ID: 20260831-fix-pci-irq-vector-index-truncation-6752f3751a0d
-To: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Sophon Zhang <aiqubits@hotmail.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788196549; l=2550;
- i=aiqubits@hotmail.com; s=20260831; h=from:subject:message-id;
- bh=aDpWwnCHJqNDAl+iMV/Pt6CcKak8JY7tJ57zkb1ld5w=;
- b=NHZdgqGpnU8lETGIZIzu3ZLXvJ5MUb7qp3HPbYOF5EZ6zD3TUOvdD19e2lx9OaKdyoL8P9bx0
- oXZbGHZhaj/BBqC18cpsZ4tDH2lJz928e3nN1ux9aBvnlhVV2c3sNI9
-X-Developer-Key: i=aiqubits@hotmail.com; a=ed25519;
- pk=+mrkwQAyCCkZdVPpu+CBQr1VZQlkXa7/1WizfeSF/yg=
-X-Endpoint-Received: by B4 Relay for aiqubits@hotmail.com/20260831 with
- auth_id=992
-X-Original-From: Sophon Zhang <aiqubits@hotmail.com>
-Reply-To: aiqubits@hotmail.com
+References: <20260826145642.43807-1-ojeda@kernel.org>
+In-Reply-To: <20260826145642.43807-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 31 Aug 2026 19:54:48 +0200
+X-Gm-Features: AcwNN1UHVFX8Gn5Pcu2VxHXdKlDsBxvZVLchmQDGmj0obMMvoJmQt1OhITRIZ9g
+Message-ID: <CANiq72=TjVOxDj631gCFMKAeXYbjycmZe74ChXL=rw4H53pQzA@mail.gmail.com>
+Subject: Re: [PATCH] drm/panic: clean new `clippy::needless_range_loop` lint
+ for Rust 1.100.0
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>, Javier Martinez Canillas <javierm@redhat.com>, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Sophon Zhang <aiqubits@hotmail.com>
+On Wed, Aug 26, 2026 at 4:56=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+>
+> Starting with Rust 1.100.0 (expected 2026-11-12), Clippy warns:
+>
+>     warning: the loop variable `i` is only used to index `self.decimals`
+>        --> drivers/gpu/drm/drm_panic_qr.rs:410:18
+>         |
+>     410 |         for i in 0..len {
+>         |                  ^^^^^^
+>         |
+>     note: for this index operation
+>        --> drivers/gpu/drm/drm_panic_qr.rs:411:13
+>         |
+>     411 |             self.decimals[i] =3D (chunk % 10) as u8;
+>         |             ^^^^^^^^^^^^^^^^
+>         =3D help: for further information visit https://rust-lang.github.=
+io/rust-clippy/main/index.html#needless_range_loop
+>         =3D note: `-W clippy::needless-range-loop` implied by `-W clippy:=
+:all`
+>         =3D help: to override `-W clippy::all` add `#[allow(clippy::needl=
+ess_range_loop)]`
+>     help: consider using an iterator
+>         |
+>     410 -         for i in 0..len {
+>     410 +         for <item> in self.decimals.iter_mut().take(len) {
+>         |
+>
+> The lint did not trigger here before because it could not handle arrays
+> behind a field access such as `self.decimals` -- Clippy was improved to
+> catch those cases [1][2].
+>
+> Thus clean the warning by iterating over a slice rather than using
+> `take()` so that an out-of-range `len` still triggers the same bounds
+> check as the indexed loop.
+>
+> Cc: stable@vger.kernel.org # Needed in 6.18.y and later.
+> Link: https://github.com/rust-lang/rust-clippy/issues/16631 [1]
+> Link: https://github.com/rust-lang/rust-clippy/pull/16634 [2]
+> Assisted-by: LLM
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+> One may want to keep the loop in a shape similar to e.g. the one above,
+> though.
 
-IrqVectorRegistration::index() accepts a usize, but pci_irq_vector()
-takes an unsigned int. On 64-bit architectures, casting an index larger
-than u32::MAX wraps it before the PCI core can validate it. In
-particular, u32::MAX + 1 becomes zero and can resolve to the first
-allocated vector.
+Jocelyn: I will likely send another rust-fixes PR during this cycle,
+so I can put this one there if you agree with it.
 
-Use a checked conversion and return EINVAL when the index cannot be
-represented by the C API.
+Thanks!
 
-Fixes: 2fb7755b0a7e ("rust: pci: resolve IRQ in index() and embed IrqRequest in IrqVector")
-Signed-off-by: Sophon Zhang <aiqubits@hotmail.com>
----
-Prevent 64-bit Rust IRQ vector indices from wrapping when they cross the
-PCI C API boundary.
----
-Changes in v4:
-- Drop the explicit length check in favor of PCI core range validation.
-- Use the existing TryFromIntError-to-Error conversion directly.
-- Keep commit trailers adjacent and narrow the description to truncation.
-- Link to v3: https://patch.msgid.link/20260831-fix-pci-irq-vector-index-truncation-v3-1-a2103084d20e@hotmail.com
-
-Changes in v3:
-- Check the index against the allocated vector count before entering the C API.
-- Keep the checked usize-to-u32 conversion and document the C-side warning.
-- Link to v2: https://patch.msgid.link/20260831-fix-pci-irq-vector-index-truncation-v2-1-4030ea7746a9@hotmail.com
-
-Changes in v2:
-- No code changes.
-- Link to v1: https://patch.msgid.link/20260831-fix-pci-irq-vector-index-truncation-v1-1-d63217d99b67@hotmail.com
-
-Testing:
-- make rustfmtcheck
-- Not build- or hardware-tested; bindgen is unavailable in the test environment.
----
- rust/kernel/pci/irq.rs | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/rust/kernel/pci/irq.rs b/rust/kernel/pci/irq.rs
-index 6741046ec1c0..22e2cdf82a21 100644
---- a/rust/kernel/pci/irq.rs
-+++ b/rust/kernel/pci/irq.rs
-@@ -151,8 +151,10 @@ pub fn irq_type(&self) -> IrqType {
-     /// [`Self::len()`].
-     #[inline]
-     pub fn index(&self, index: usize) -> Result<IrqVector<'_>> {
-+        let index = u32::try_from(index)?;
-+
-         // SAFETY: `self.dev.as_raw()` is a valid pointer to a `struct pci_dev`.
--        let irq = unsafe { bindings::pci_irq_vector(self.dev.as_raw(), index as u32) };
-+        let irq = unsafe { bindings::pci_irq_vector(self.dev.as_raw(), index) };
-         if irq < 0 {
-             return Err(Error::from_errno(irq));
-         }
-
----
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-change-id: 20260831-fix-pci-irq-vector-index-truncation-6752f3751a0d
-
-Best regards,
---  
-Sophon Zhang <aiqubits@hotmail.com>
-
-
+Cheers,
+Miguel
