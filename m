@@ -1,48 +1,54 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx1.mail-out.lima-city.de (mx1.mail-out.lima-city.de [91.216.248.203])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68613391E59;
-	Mon, 31 Aug 2026 23:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A834078E6;
+	Mon, 31 Aug 2026 23:41:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.248.203
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788217718; cv=none; b=r6qBpSsWVe3KK1EfrpuPnllW5//znec4QDwzYEHBLAx4VnBU7/pc9JlGP8gXZ7aqAOocS7auJO8imhc4+Kib3RX1KyM0qB6LajWgt4tb9xIzYvlnWCQi1Lv/EbjTsUHvSX0cPZrtHa8H+LlafpAOBBLVU3QxzLeHaoQ61jRSLlM=
+	t=1788219662; cv=none; b=LUtQWv8Yk6jy0mXIAqb2XD+iL6Ppal5/e9/iN4K9RBQ9ecseedOv8jsktuW5/gNgp+0c87Otw2upH8FW+FJ2Zwbyu9IVGmSxJ4ea2vUuGH7Q0wqF4u/kmZcTbdkHCnZVJz5kzINPEG5SddnHdILEl+vGO9HGivu+wnxDoCV4i34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788217718; c=relaxed/simple;
-	bh=si4nfzQKobwAWhCHXycCi+aHA+aJpvaIwHyzrOKQLUo=;
+	s=arc-20240116; t=1788219662; c=relaxed/simple;
+	bh=Pd+xuj/awkQjzclpiwBAlCOaUDbx6XwHn6PW/HGWlGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NRnK+LUvBx8ftQmQHYIn1uc7xYaQKSk2q4nNphhf/l30aZWw5Zk2ymqrRLOlVDEcU3/yE5Q1rGugXZ+14RbRX+we64e4traEgYZyyDhaArnAJDXQ1Vp4qjBySXcC9xtf3Pll3xCsLapHtzGyM/Q47tCIUlc/a+ty8GXTqahQbkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zg0Z/wH8; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=MSuuEp8YgjMAkm1VpmEs1odzpjmyMdnwTq3i+gE7zAREh7tB8YgzytFsOkvUv2QqNUW9opS1tMpXS8PAN4hAWGpNWRFrzIfSfVXPnIa4XxOBE04NsrMiIpXLGRXahvj2sjCjnZ8QPN380oem0mlttEZoApx2jCFxKKGfd00v4Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matt3o12.de; spf=pass smtp.mailfrom=matt3o12.de; dkim=pass (2048-bit key) header.d=matt3o12.de header.i=@matt3o12.de header.b=NpCoRxf9; arc=none smtp.client-ip=91.216.248.203
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matt3o12.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matt3o12.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zg0Z/wH8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BF91F000E9;
-	Mon, 31 Aug 2026 23:08:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788217717;
-	bh=GtfBHxTIDD1ugdSqWBTJa3a6H0kN/BtZTPNQKhcmieY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Zg0Z/wH8uVkGp+KS1iMUzY2mCcH4Pr4RMMw0hyFTFeeDsL26hHrVIdLBjxfRFy3b6
-	 rY5j6pJSKl3MvssWqGHl4U4YrYiK85Y4SW1sfQhE2zMf2AHPTW0t5rUZVC5C1q08vf
-	 pBoSNn3Bd8BierxA2uIii7sjfNryVDFfq2OOm0xAUD6qSsxOF20g/rjGd9536OKGKE
-	 sam11ICa2awX+MSFMsT2PM/1XzLeU8OInqZhF6n1deLuVZunrW5Xc5LDGqLIcNzu88
-	 d5jkOWiNH0SHh/EbHpMjnSgxfoU4NSISmGGnBHHmiOLMLjBIckPdaUMTs6bvpDINQK
-	 OMkZ1oVulmZGQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: springbreeze@stu.pku.edu.cn
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	netdev@vger.kernel.org,
-	fujita.tomonori@gmail.com,
+	dkim=pass (2048-bit key) header.d=matt3o12.de header.i=@matt3o12.de header.b="NpCoRxf9"
+From: Matteo Kloiber <kernel@matt3o12.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=matt3o12.de;
+	s=securedbylima-20230709; t=1788219153;
+	bh=Pd+xuj/awkQjzclpiwBAlCOaUDbx6XwHn6PW/HGWlGA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NpCoRxf92FZv9ezg56i3s4eaV+rg3wSalMNrQ1ifw0PSoniBKhdKXfDqF7zK0a1WF
+	 hVqXw0Lfgz426mJuqN3i7DpJ7YtWVvFX/WtiMPuNOiLQfclMPFHFd3OBPUqkWWyC9Z
+	 eiX880QoRoI8IeYSOlfSH8ubn8oOLzhHRGIGPYPq0mpT9rex1hriMIP7fu17UzmBUB
+	 a6yspNk+lj0DuCdkzcA8MI0rSHOhE2xRlNvHhXSD+bsTWFRzHHf2X3G+iHkclS8Lb0
+	 fUcJbckd8IDf2Dz32Vm/oQHBqFhiUIbocQgWvi5/JXvAu+Lg4AiQrzcyfSB+a3Y6b+
+	 0U9JupAyf3PGg==
+To: dakr@kernel.org,
+	acourbot@nvidia.com
+Cc: aliceryhl@google.com,
 	ojeda@kernel.org,
-	boqun@kernel.org,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v3] rust: net: phy: fix off-by-one bit positions in device status accessors
-Date: Mon, 31 Aug 2026 16:08:35 -0700
-Message-ID: <20260831230835.1436976-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260825111334.795732-1-springbreeze@stu.pku.edu.cn>
-References: <20260825111334.795732-1-springbreeze@stu.pku.edu.cn>
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	abdiel.janulgue@gmail.com,
+	daniel.almeida@collabora.com,
+	robin.murphy@arm.com,
+	a.hindborg@kernel.org,
+	nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	driver-core@lists.linux.dev,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Matteo Kloiber <kernel@matt3o12.de>
+Subject: [PATCH 1/2] gpu: nova-core: declare unlimited DMA max segment size
+Date: Tue,  1 Sep 2026 01:32:14 +0200
+Message-ID: <20260831233215.287881-2-kernel@matt3o12.de>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260831233215.287881-1-kernel@matt3o12.de>
+References: <20260831233215.287881-1-kernel@matt3o12.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,123 +57,40 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+The PCI default max_seg_size is 64 KiB. nova-core never raises it, so
+mapping the GSP firmware image (~60 MiB) as a scatter-gather table
+triggers a DMA-API debug warning when contiguous pages coalesce into
+segments that exceed the default:
+
+  DMA-API: nova-core 0000:00:03.0: mapping sg segment longer than
+  device claims to support [len=62914560] [max=65536]
+
+CONFIG_DMA_API_DEBUG=y is required to see this warning.
+
+Signed-off-by: Matteo Kloiber <kernel@matt3o12.de>
+Assisted-by: Claude:claude-opus-4-8
 ---
-rust: net: phy: fix off-by-one bit positions in device status accessors
+ drivers/gpu/nova-core/gpu.rs | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-This replaces the hand-written bitfield offsets in is_link_up(),
-is_autoneg_enabled() and is_autoneg_completed() with the bindgen-generated
-link(), autoneg() and autoneg_complete() accessors, so the Rust side no
-longer depends on hard-coded bit numbers for struct phy_device.
-
-> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> index 956cda573ddba..14dd1e6cb3802 100644
-> --- a/rust/kernel/net/phy.rs
-> +++ b/rust/kernel/net/phy.rs
-> @@ -124,38 +124,30 @@ pub fn state(&self) -> DeviceState {
->      ///
->      /// It returns true if the link is up.
->      pub fn is_link_up(&self) -> bool {
-> -        const LINK_IS_UP: u64 = 1;
-> -        // TODO: the code to access to the bit field will be replaced with automatically
-> -        // generated code by bindgen when it becomes possible.
-> +        let phydev = self.0.get();
->          // SAFETY: The struct invariant ensures that we may access
->          // this field without additional synchronization.
-> -        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
-> -        bit_field.get(14, 1) == LINK_IS_UP
-> +        unsafe { (*phydev).link() == 1 }
->      }
-
-[Severity: Medium]
-Bindgen emits the bitfield getters with the signature
-
-  pub fn link(&self) -> ::core::ffi::c_uint
-
-so writing (*phydev).link() auto-refs the receiver and materializes a
-&bindings::phy_device covering the whole C struct, not just the bitfield
-storage unit that the previous code projected with
-&(*self.0.get())._bitfield_1.
-
-Is forming that whole-struct shared reference allowed here? The pointer
-comes from an Opaque, whose documented contract in rust/kernel/types.rs
-says:
-
-  /// * The value is allowed to be mutated, when a `&Opaque<T>` exists on
-  ///   the Rust side.
-
-and the Opaque example reads fields through the raw pointer
-(unsafe { (*ptr).val }) instead of taking a reference.
-
-Concurrent C-side writes into the same allocation look possible while a
-PHY driver callback runs, none of them covered by phydev->lock:
-
-drivers/net/phy/phy.c:phy_interrupt() {
-	...
-		phydev->irq_rerun = 1;
-		disable_irq_nosync(irq);
-	...
-}
-
-That is a hard IRQ context write to a bitfield member without taking
-phydev->lock. In addition, the embedded state_queue delayed_work is written
-by the timer softirq and workqueue core, the embedded mdio.dev kref is
-bumped by get_device()/put_device() in phy_device.c, and the internals of
-phydev->lock itself (wait_lock, wait_list) are written by contending
-threads.
-
-Would reading the bits through a C __rust_helper accessor in rust/helpers/,
-or projecting to the bitfield unit via a raw-pointer path, keep the goal of
-dropping the hand-written offsets without forming a reference to the whole
-struct?
-
-Also, the retained SAFETY comments still say "we may access this field",
-which no longer matches what the code does. Should they be updated to
-describe the reference that is actually created?
-
->  
->      /// Gets the current auto-negotiation configuration.
->      ///
->      /// It returns true if auto-negotiation is enabled.
->      pub fn is_autoneg_enabled(&self) -> bool {
-> -        // TODO: the code to access to the bit field will be replaced with automatically
-> -        // generated code by bindgen when it becomes possible.
-> +        let phydev = self.0.get();
->          // SAFETY: The struct invariant ensures that we may access
->          // this field without additional synchronization.
-> -        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
-> -        bit_field.get(13, 1) == u64::from(bindings::AUTONEG_ENABLE)
-> +        unsafe { (*phydev).autoneg() == bindings::AUTONEG_ENABLE }
->      }
->  
->      /// Gets the current auto-negotiation state.
->      ///
->      /// It returns true if auto-negotiation is completed.
->      pub fn is_autoneg_completed(&self) -> bool {
-> -        const AUTONEG_COMPLETED: u64 = 1;
-> -        // TODO: the code to access to the bit field will be replaced with automatically
-> -        // generated code by bindgen when it becomes possible.
-> +        let phydev = self.0.get();
->          // SAFETY: The struct invariant ensures that we may access
->          // this field without additional synchronization.
-> -        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
-> -        bit_field.get(15, 1) == AUTONEG_COMPLETED
-> +        unsafe { (*phydev).autoneg_complete() == 1 }
->      }
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but after the rewrite
-is_link_up(), is_autoneg_enabled() and is_autoneg_completed() are one-line
-forwarders to a binding call, and none of them carries #[inline].
-rust/kernel is an abstraction crate rather than a leaf driver, so the
-coding guidelines ask for #[inline] on small functions that just forward to
-a binding call.
-
-The neighbouring accessors in the same file (phy_id(), state(),
-set_speed(), set_duplex()) are equally unannotated, so this is the existing
-style of the file rather than something the patch changes. Would it be
-worth adding the annotation to the three touched functions here, or
-handling all of them in a separate cleanup?
+diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+index fd1414004dd0..233ef2dc9688 100644
+--- a/drivers/gpu/nova-core/gpu.rs
++++ b/drivers/gpu/nova-core/gpu.rs
+@@ -343,6 +343,13 @@ pub(crate) fn new<'a>(
+                 // still constructing it, so no concurrent DMA allocations can exist.
+                 unsafe { pdev.dma_set_mask_and_coherent(dma_mask)? };
+ 
++                // Nova re-decomposes SG segments into 4 KiB page-table entries, so it
++                // has no upper bound on segment length; declare that to the DMA layer.
++                //
++                // SAFETY: same invariant as above -- still constructing, no concurrent
++                // DMA mapping can exist.
++                unsafe { pdev.dma_set_max_seg_size(u32::MAX) };
++
+                 hal.wait_gfw_boot_completion(bar)
+                     .inspect_err(|_| dev_err!(dev, "GFW boot did not complete\n"))?;
+             },
 -- 
-pw-bot: cr
+2.51.2
+
