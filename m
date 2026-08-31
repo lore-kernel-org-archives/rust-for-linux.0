@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFDB49EC5A;
-	Mon, 31 Aug 2026 14:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B918441DE01;
+	Mon, 31 Aug 2026 14:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788186192; cv=none; b=cz82yqMdk+UV/agllWjDlFaiKUQptpskV67VB/muDpfgern4lJ3hS3frFpsG8jJCEmtkn+IrSjztIVZOkmrLNgbVwFPnrlBcH4SaPKglFhT2DdCf7jUQkgZQDOFy5lbYEik91f0+JdbUnfXGFGRaLPKMTCEM7eyTuwI7xBXnJjg=
+	t=1788186825; cv=none; b=imGJgtfoGQILhJaoTR6u/4WcBSjB3BAgid/qIrKboQiOw1rp6Z25IfiqwYxA4JvlEsCGeIcg0qSjRfv6Eq//XJjSBsGMm/3LUMUY50ZA3WZHSD/shLd94Yntdbpvj+kTnToTP3Ieugh9iqQv9lUL5wWNzEP1aldFEy6fk9oP+D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788186192; c=relaxed/simple;
-	bh=ERs2tMdWbAT8+KZwRD7EcKoycyB3va8nMspS75hqNsM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=LeCFo8ObjaDTSrBd5zo0sGFHOexXaOoG3VqWbuc6p3RKwppXjl+YDP7esKeRo7bLBKdy76T8WJ5eXzS5gWsjNJjnoSVB3ILFi09e5aV58HrY51lBAv7sqdtyqR7FGCyMc0tKDQFzdDjzZ+U7Opfq1nKKRD8BTBS5qrMoL2P0JlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M4f0BJfA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788186825; c=relaxed/simple;
+	bh=xu25haCIVd579iAiCSmqBW6uo3BT2Zy8ttRINTKNUYc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=LYye5hlrfBiA7OPgvmKsci27PFJQU0HCbO/R/4YXirKUkpsX397DHL89yBxFcp4fKBsb/VwYoiMAskQu3bYojqOGqa1B0l7boqorC/iMIYdlhrtY/JEPukt4pVtyeFknl/b7wwJev+aQO5n0Y3uQ7W69VJNCCAqmrbF3u/B7AFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bMoStvfv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M4f0BJfA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D0C1F000E9;
-	Mon, 31 Aug 2026 14:23:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bMoStvfv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B011C1F000E9;
+	Mon, 31 Aug 2026 14:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788186186;
-	bh=ZfhCnlNwaOt0kHN3M0pPLUZxE3ygK6m+vGelvT+G1+0=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=M4f0BJfA/Apjjv5W54jmYEjD2CgRVcStQsuC4B5ShDTGdj3m1zpbb0XeTo0GCQhmO
-	 sv/oTnGIzML+mcXQR/H/QH5SKjgvrUarpyqsiDnJOx9xQ/6XdEFrLNAesdWRNhAD0M
-	 dUVv4dsgcOXoidnB1VrNe7zY5qkc7M57vJJPC0Qq8EG2dwSpE4oxGFm5C80a+lJdcm
-	 7puoA12SfC+OAQl7C+ytIjwGP1MUS5v4mM5l4/XLFEi/rZBRh1aDf7YdUBJPuttO3X
-	 2n3O4INPUmYVrsBdnUbSETvVeVFYUY0Fhfj5Ke9HYsqe9fJjmnKoXaajdIMCsPnHjT
-	 RduguPWE1vl8A==
+	s=k20260515; t=1788186824;
+	bh=ZL5bFu7CsTNzqvus3MEa0m6EG4X7lg8HsHo2/a5DEMQ=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To;
+	b=bMoStvfvvwN006vdgROgnRCHVv5olC01N//krxZXlxBtjZ7hc7zAOU0H96VgzAYhu
+	 Obh0HeH6W2ufSd2LuhWYA7aJU0JL4OYJeFOiWPCYnYUP8blGdS0fJ5rIu0H+YFf5dc
+	 aXAgoGsZYrEA3r4o+QnuZ/1MpcDijZd+UzhaKTFtZ/wUlFP61NzunD3pjPyzIZwALj
+	 qqzAEVKLn/WQh+qwM8vn4vD5k954/rlJx1uxjeDFFqwJN9LR5wp8yumC+mNO1JBAEe
+	 BchC3FAatMdskNmzumUMnYcKRo7tS6FW2sSQRju/pNkYMRc9gJRtr7s91Qlq6gfXfD
+	 wDqolbfbwZLog==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,8 +34,11 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 31 Aug 2026 16:23:01 +0200
-Message-Id: <DL373JA1ZANX.21L51RTEUQ2UG@kernel.org>
+Date: Mon, 31 Aug 2026 16:33:40 +0200
+Message-Id: <DL37BOJC2I73.1BK0RELPBUPY2@kernel.org>
+To: "Alistair Popple" <apopple@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v5 09/11] drm: nova: Report GPU name in GPU info
 Cc: "nova-gpu" <nova-gpu@lists.linux.dev>, "M Henning"
  <mhenning@darkrefraction.com>, "Alice Ryhl" <aliceryhl@google.com>, "David
  Airlie" <airlied@gmail.com>, "Alexandre Courbot" <acourbot@nvidia.com>,
@@ -43,151 +46,57 @@ Cc: "nova-gpu" <nova-gpu@lists.linux.dev>, "M Henning"
  Courtney" <ecourtney@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>,
  <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
  <rust-for-linux@vger.kernel.org>
-To: "Alistair Popple" <apopple@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v5 05/11] drm: nova: Add an info ioctl
 References: <20260828033531.1117754-1-apopple@nvidia.com>
- <20260828033531.1117754-6-apopple@nvidia.com>
-In-Reply-To: <20260828033531.1117754-6-apopple@nvidia.com>
+ <20260828033531.1117754-10-apopple@nvidia.com>
+In-Reply-To: <20260828033531.1117754-10-apopple@nvidia.com>
 
 On Fri Aug 28, 2026 at 5:35 AM CEST, Alistair Popple wrote:
-> +/// GPU information returned to userspace.
-> +///
-> +/// # Invariants
-> +///
-> +/// - The layout of this type is identical to `struct drm_nova_gpu_info`=
-.
-> +/// - All bytes in the value are initialized.
+>  impl NovaCoreApi<'_> {
+> +    /// Returns the NUL-terminated full GPU name supplied by GSP-RM.
+> +    pub fn gpu_name(&self) -> [u8; 64] {
 
-I don't think we need those invariants. The first one is covered by
-#[repr(transparent)] and the second invariant is trivally satisfied by the =
-fact
-that we create a value of that type.
+I don't really like that we have two separate accessors for this, can't we =
+just
+use the one we already have, which also does all the validation already?
 
-Maybe you meant to say that we explicitly initialized everything despite
-uapi::drm_nova_gpu_info being FromBytes (i.e. no "random" values)? But I th=
-ink
-even that wouldn't need an invariant.
+The constructor of GpuInfo could look like this:
 
-> +#[repr(transparent)]
-> +struct GpuInfo(uapi::drm_nova_gpu_info);
-> +
-> +impl GpuInfo {
-> +    fn new(reg_data: &DrmRegData<'_>) -> Self {
-> +        Self(uapi::drm_nova_gpu_info {
-> +            architecture: reg_data.api.architecture(),
-> +            implementation: reg_data.api.implementation(),
-> +        })
-> +    }
-> +}
-> +
-> +// SAFETY: `GpuInfo` has no implicit padding, kernel pointers, or interi=
-or
-> +// mutability, and all of its fields are initialized before it is writte=
-n to
-> +// userspace.
-> +unsafe impl AsBytes for GpuInfo {}
-> +
-> +fn write_info<T: AsBytes>(info: &mut uapi::drm_nova_info, value: &T) -> =
-Result {
-
-We could take T by value I guess? We don't need it anymore after it has bee=
-n
-written to the user buffer.
-
-> +    let mut writer =3D
-> +        UserSlice::new(UserPtr::from_addr(info.data as usize), info.size=
- as usize).writer();
-> +
-> +    info.size =3D writer.write_truncated(value)? as u32;
-> +
-> +    Ok(())
-> +}
-> +
->  impl drm::file::DriverFile for File {
->      type Driver =3D NovaDriver;
-> =20
-> @@ -78,4 +112,27 @@ pub(crate) fn gem_info(
-> =20
->          Ok(0)
->      }
-> +
-> +    /// IOCTL: info: Query device information.
-> +    pub(crate) fn info(
-> +        _dev: &NovaDevice<Registered>,
-> +        reg_data: &DrmRegData<'_>,
-> +        info: &mut uapi::drm_nova_info,
-> +        _file: &drm::File<File>,
-> +    ) -> Result<u32> {
-> +        if info.data =3D=3D 0 {
-> +            info.size =3D match info.id {
-> +                uapi::DRM_NOVA_INFO_GPU =3D> size_of::<GpuInfo>() as u32=
-,
-> +                _ =3D> return Err(EINVAL),
-> +            };
-> +            return Ok(0);
-> +        }
-
-I think this check can go into write_info(), so we don't have to repeat thi=
-s for
-every info. I.e. we can just add
-
-	if info.data =3D=3D 0 {
-	    info.size =3D size_of::<T>() as u32;
-	    return Ok(());
+	fn new(reg_data: &DrmRegData<'_>) -> Result<Self> {
+	    let mut info =3D uapi::drm_nova_gpu_info {
+	        architecture: reg_data.api.architecture(),
+	        implementation: reg_data.api.implementation(),
+	        ..Default::default()
+	    };
+	    let bytes =3D reg_data.api.gpu_name()?.as_bytes();
+	    info.gpu_name[..bytes.len()].copy_from_slice(bytes);
+	    Ok(Self(info))
 	}
 
-at the beginning of write_info(). It may construct the value even if
-info.data =3D=3D 0, but I don't think we care. :)
+Could also be infallible if we want to go with a fallback name, given that =
+we
+consider the firmware not providing something useful as non-fatal so far.
 
-> +
-> +        match info.id {
-> +            uapi::DRM_NOVA_INFO_GPU =3D> write_info(info, &GpuInfo::new(=
-reg_data))?,
-> +            _ =3D> return Err(EINVAL),
-> +        }
-> +
-> +        Ok(0)
+> +        *self.gpu.gsp_static_info.gpu_name_bytes()
 > +    }
->  }
-> diff --git a/drivers/gpu/nova-core/api.rs b/drivers/gpu/nova-core/api.rs
-> index 610cfc01111e..cff730a38c1d 100644
-> --- a/drivers/gpu/nova-core/api.rs
-> +++ b/drivers/gpu/nova-core/api.rs
-> @@ -12,11 +12,12 @@
->      types::CovariantForLt, //
->  };
-> =20
-> -use crate::gpu::Gpu;
-> +use crate::gpu::{
-> +    Gpu, //
-> +};
-> =20
->  /// API handle for the auxiliary bus child drivers to interact with nova=
--core.
->  pub struct NovaCoreApi<'bound> {
-> -    #[expect(unused)]
->      pub(crate) gpu: Pin<&'bound Gpu<'bound>>,
->  }
-> =20
-> @@ -26,4 +27,14 @@ impl NovaCoreApi<'_> {
+> +
+>      /// Obtain a [`NovaCoreApi`] handle from an auxiliary device registe=
+red
+>      /// by nova-core.
 >      pub fn of(adev: &auxiliary::Device<Bound>) -> Result<Pin<&NovaCoreAp=
 i<'_>>> {
->          adev.registration_data::<CovariantForLt!(NovaCoreApi<'_>)>()
->      }
-> +
-> +    /// Returns the architecture identifier of this GPU.
-> +    pub fn architecture(&self) -> u32 {
-> +        self.gpu.spec.chipset.arch() as u32
-> +    }
-> +
-> +    /// Returns the implementation identifier of this GPU.
-> +    pub fn implementation(&self) -> u32 {
-> +        self.gpu.spec.chipset.implementation()
+> diff --git a/drivers/gpu/nova-core/gsp/commands.rs b/drivers/gpu/nova-cor=
+e/gsp/commands.rs
+> index 6453184af55b..b8dc64808620 100644
+> --- a/drivers/gpu/nova-core/gsp/commands.rs
+> +++ b/drivers/gpu/nova-core/gsp/commands.rs
+> @@ -251,6 +251,11 @@ pub(crate) enum GpuNameError {
+>  }
+> =20
+>  impl GetGspStaticInfoReply {
+> +    /// Returns the full GPU name as a NUL-terminated byte string.
+> +    pub(crate) fn gpu_name_bytes(&self) -> &[u8; 64] {
+> +        &self.gpu_name
 > +    }
 
-We should make the NovaCoreApi just provide an accessor for &Spec and make =
-every
-subsequent method we need public. Otherwise we end up with endless forwardi=
-ng
-methods. We can also add as_raw() methods to the specific types as needed.
+AFAICS there's nothing ensuring that this is actually NULL terminated? The
+existing gpu_name() method already does this.
