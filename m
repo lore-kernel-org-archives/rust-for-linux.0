@@ -1,126 +1,173 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E0F3C0637
-	for <rust-for-linux@vger.kernel.org>; Mon, 31 Aug 2026 22:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68613391E59;
+	Mon, 31 Aug 2026 23:08:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788216115; cv=none; b=Bk1ToqZahmYh82GPTrIA85jDijOrLDwxOo7OEoBkwi0xxDVrG65eWz/QDDX/97Lk9wVkmloKP3aLz3BN0qOgQPwip+mtdvilyVOQvYpBSZZxtRCBhFN7P0WACjY/m4nLs3YsH9+GKn2+Wljfyo/Hyt6Qj05mu0uARStErchmrcs=
+	t=1788217718; cv=none; b=r6qBpSsWVe3KK1EfrpuPnllW5//znec4QDwzYEHBLAx4VnBU7/pc9JlGP8gXZ7aqAOocS7auJO8imhc4+Kib3RX1KyM0qB6LajWgt4tb9xIzYvlnWCQi1Lv/EbjTsUHvSX0cPZrtHa8H+LlafpAOBBLVU3QxzLeHaoQ61jRSLlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788216115; c=relaxed/simple;
-	bh=8KcSgffxAkB1OeS3/kdkp5OoiPWVBES6SdR64YQAb54=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oet7+NKxtGHYmhtld85SE8YMOHfP3jFzhFf6QGiYtdmy31Mnd06lADBdOvHJkS1K6/rNvX1LOGRjPDk8ibu1av9oEeGhefE3mZnRvePYhsIjQi2OWK1ts9hQlfeH7SUKcOX7mNPzA3mk3UKG6iLFJKtIrPvfV0BqkcOdA1nMulQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jiyY/yvL; arc=none smtp.client-ip=209.85.216.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
+	s=arc-20240116; t=1788217718; c=relaxed/simple;
+	bh=si4nfzQKobwAWhCHXycCi+aHA+aJpvaIwHyzrOKQLUo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NRnK+LUvBx8ftQmQHYIn1uc7xYaQKSk2q4nNphhf/l30aZWw5Zk2ymqrRLOlVDEcU3/yE5Q1rGugXZ+14RbRX+we64e4traEgYZyyDhaArnAJDXQ1Vp4qjBySXcC9xtf3Pll3xCsLapHtzGyM/Q47tCIUlc/a+ty8GXTqahQbkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zg0Z/wH8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jiyY/yvL"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-398d292eac1so3822055a91.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 31 Aug 2026 15:41:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788216114; x=1788820914; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wgNVfGlbCEyq8MC5JaRKbxi7I9+N7W9TiHIhv9t8nRg=;
-        b=jiyY/yvLq8zk3oUJC3zOdbHSqm+FdrxR+ukT4OdfNd4xjG2FVzB9p+g8DlkulPIlHS
-         1wWWSJrIVCtWjVx7aCU5SXaR7Kf/7fTFuUpd2oL5/uf4ZDlAN2zoa51mxfcLoK89YcKF
-         s5dRicloBc8VOfGf18dofHObNKoN/1F4vAijTWQXvIsw2UpD1kBGEfCEH8QB/qW62mt/
-         ywhWb46RhSkUQDFHl6mpHYJ0rBmFhMULbpo46T4i7rzc8Bm66bLha2ZWUn+pvccsl6Mv
-         pHFf5zWtEqKiyeHtYMSm/hd2RPxkkFmBAyiT6/C1n1f+ho0VBTL40k+7MRQ9B/VVpNG7
-         1+sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788216114; x=1788820914;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wgNVfGlbCEyq8MC5JaRKbxi7I9+N7W9TiHIhv9t8nRg=;
-        b=riogn3HzJpvPtiQ3iNA4nZgMiEmwdgL/yltF/u7XJxJUlhSPuLHWFBN1tNdH1+uOvf
-         NW/L3N1qmsI26DYE3Zrwrqma2KdQte+MALfDWh+4MHe9t5S6+j9Jr2PAFZTF8h38O15t
-         dbzltnq/GsnCVHef0jM2kNsrzxGpGY6Jm+Qv+2vfVTMsRRXV2KOfxoiIHpv//R6gOyl4
-         KiEKiCYadb2VLr5JdWwPZCQcKfnBDAlhAT0PHFSg1WXTDt/PE2ewS0ko/mrAAdyRw6gu
-         r2hr/mE1cxL6hq/WDjjNK6umrPMObL+zL/7yBtg5kwcHDYWa0wKiX6VxUpTImV/4UrqK
-         34DQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy7qExdBx0YierLq+SKZTBZVADIumNl2ZVCDij28HGSAFH6Ul8piDtjhQRLbht6dSpHir1cxOnzWqj8c6NxBQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++m96bH5gEY3ac+go7bHkXUx2W+yFZEtg9WDzsng6XgxgAGdwuq5
-	5AUrFBAH2QPq5mF78/f0wh+3RMojURcuPv9oJ2rpl35fYZyUKX1lZSZl9+LSM0eGKJQsRnHsy6d
-	5hP9qzJ+mWFR0aw==
-X-Received: from dybgt40.prod.google.com ([2002:a05:7301:2228:b0:327:adfa:8682])
- (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4cd2:b0:38d:fda6:4873 with SMTP id 98e67ed59e1d1-39907d0970fmr5248962a91.10.1788216113543;
- Mon, 31 Aug 2026 15:41:53 -0700 (PDT)
-Date: Mon, 31 Aug 2026 22:41:43 +0000
-In-Reply-To: <20260831224145.169403-1-cmllamas@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zg0Z/wH8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BF91F000E9;
+	Mon, 31 Aug 2026 23:08:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788217717;
+	bh=GtfBHxTIDD1ugdSqWBTJa3a6H0kN/BtZTPNQKhcmieY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Zg0Z/wH8uVkGp+KS1iMUzY2mCcH4Pr4RMMw0hyFTFeeDsL26hHrVIdLBjxfRFy3b6
+	 rY5j6pJSKl3MvssWqGHl4U4YrYiK85Y4SW1sfQhE2zMf2AHPTW0t5rUZVC5C1q08vf
+	 pBoSNn3Bd8BierxA2uIii7sjfNryVDFfq2OOm0xAUD6qSsxOF20g/rjGd9536OKGKE
+	 sam11ICa2awX+MSFMsT2PM/1XzLeU8OInqZhF6n1deLuVZunrW5Xc5LDGqLIcNzu88
+	 d5jkOWiNH0SHh/EbHpMjnSgxfoU4NSISmGGnBHHmiOLMLjBIckPdaUMTs6bvpDINQK
+	 OMkZ1oVulmZGQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: springbreeze@stu.pku.edu.cn
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	netdev@vger.kernel.org,
+	fujita.tomonori@gmail.com,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v3] rust: net: phy: fix off-by-one bit positions in device status accessors
+Date: Mon, 31 Aug 2026 16:08:35 -0700
+Message-ID: <20260831230835.1436976-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260825111334.795732-1-springbreeze@stu.pku.edu.cn>
+References: <20260825111334.795732-1-springbreeze@stu.pku.edu.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260831224145.169403-1-cmllamas@google.com>
-X-Mailer: git-send-email 2.55.0.897.gb25b4bd76c-goog
-Message-ID: <20260831224145.169403-2-cmllamas@google.com>
-Subject: [PATCH 2/2] rust_binder: reject mremap()
-From: Carlos Llamas <cmllamas@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>
-Cc: kernel-team@android.com, linux-kernel@vger.kernel.org, 
-	Suren Baghdasaryan <surenb@google.com>, stable@vger.kernel.org, 
-	Sashiko <sashiko-bot@kernel.org>, 
-	"open list:RUST [PIN-INIT]:Keyword:bpin-initb|pin_initb|PinInit" <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Binder does not support mremap() as it caches the mapping address in
-Inner::vma_addr. Moving the mapping breaks the IPC communication for the
-process and can temporarily leak pages during a shrinker reclaim.
-
-Fix this by explicitly rejecting the .mremap() operation.
-
-Cc: stable@vger.kernel.org
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260813193433.3318288-1-surenb%40google.com?part=2
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 ---
- drivers/android/binder/page_range.rs | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+rust: net: phy: fix off-by-one bit positions in device status accessors
 
-diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
-index 52ffbf3504e7..411efcc2116f 100644
---- a/drivers/android/binder/page_range.rs
-+++ b/drivers/android/binder/page_range.rs
-@@ -24,7 +24,7 @@
- use kernel::{
-     bindings,
-     error::Result,
--    ffi::{c_ulong, c_void},
-+    ffi::{c_int, c_ulong, c_void},
-     mm::{virt, Mm, MmWithUser},
-     new_mutex, new_spinlock,
-     page::{Page, PAGE_SHIFT, PAGE_SIZE},
-@@ -144,8 +144,17 @@ pub(crate) struct ShrinkablePageRange {
-     _pin: PhantomPinned,
- }
- 
--// We do not define any ops. For now, used only to check identity of vmas.
--static BINDER_VM_OPS: AssertSync<bindings::vm_operations_struct> = AssertSync(pin_init::zeroed());
-+unsafe extern "C" fn binder_mremap(_: *mut bindings::vm_area_struct) -> c_int {
-+    EINVAL.to_errno()
-+}
-+
-+static BINDER_VM_OPS: AssertSync<bindings::vm_operations_struct> = {
-+    let ops = bindings::vm_operations_struct {
-+        mremap: Some(binder_mremap),
-+        ..pin_init::zeroed()
-+    };
-+    AssertSync(ops)
-+};
- 
- // To ensure that we do not accidentally install pages into or zap pages from the wrong vma, we
- // check its vm_ops and private data before using it.
+This replaces the hand-written bitfield offsets in is_link_up(),
+is_autoneg_enabled() and is_autoneg_completed() with the bindgen-generated
+link(), autoneg() and autoneg_complete() accessors, so the Rust side no
+longer depends on hard-coded bit numbers for struct phy_device.
+
+> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+> index 956cda573ddba..14dd1e6cb3802 100644
+> --- a/rust/kernel/net/phy.rs
+> +++ b/rust/kernel/net/phy.rs
+> @@ -124,38 +124,30 @@ pub fn state(&self) -> DeviceState {
+>      ///
+>      /// It returns true if the link is up.
+>      pub fn is_link_up(&self) -> bool {
+> -        const LINK_IS_UP: u64 = 1;
+> -        // TODO: the code to access to the bit field will be replaced with automatically
+> -        // generated code by bindgen when it becomes possible.
+> +        let phydev = self.0.get();
+>          // SAFETY: The struct invariant ensures that we may access
+>          // this field without additional synchronization.
+> -        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
+> -        bit_field.get(14, 1) == LINK_IS_UP
+> +        unsafe { (*phydev).link() == 1 }
+>      }
+
+[Severity: Medium]
+Bindgen emits the bitfield getters with the signature
+
+  pub fn link(&self) -> ::core::ffi::c_uint
+
+so writing (*phydev).link() auto-refs the receiver and materializes a
+&bindings::phy_device covering the whole C struct, not just the bitfield
+storage unit that the previous code projected with
+&(*self.0.get())._bitfield_1.
+
+Is forming that whole-struct shared reference allowed here? The pointer
+comes from an Opaque, whose documented contract in rust/kernel/types.rs
+says:
+
+  /// * The value is allowed to be mutated, when a `&Opaque<T>` exists on
+  ///   the Rust side.
+
+and the Opaque example reads fields through the raw pointer
+(unsafe { (*ptr).val }) instead of taking a reference.
+
+Concurrent C-side writes into the same allocation look possible while a
+PHY driver callback runs, none of them covered by phydev->lock:
+
+drivers/net/phy/phy.c:phy_interrupt() {
+	...
+		phydev->irq_rerun = 1;
+		disable_irq_nosync(irq);
+	...
+}
+
+That is a hard IRQ context write to a bitfield member without taking
+phydev->lock. In addition, the embedded state_queue delayed_work is written
+by the timer softirq and workqueue core, the embedded mdio.dev kref is
+bumped by get_device()/put_device() in phy_device.c, and the internals of
+phydev->lock itself (wait_lock, wait_list) are written by contending
+threads.
+
+Would reading the bits through a C __rust_helper accessor in rust/helpers/,
+or projecting to the bitfield unit via a raw-pointer path, keep the goal of
+dropping the hand-written offsets without forming a reference to the whole
+struct?
+
+Also, the retained SAFETY comments still say "we may access this field",
+which no longer matches what the code does. Should they be updated to
+describe the reference that is actually created?
+
+>  
+>      /// Gets the current auto-negotiation configuration.
+>      ///
+>      /// It returns true if auto-negotiation is enabled.
+>      pub fn is_autoneg_enabled(&self) -> bool {
+> -        // TODO: the code to access to the bit field will be replaced with automatically
+> -        // generated code by bindgen when it becomes possible.
+> +        let phydev = self.0.get();
+>          // SAFETY: The struct invariant ensures that we may access
+>          // this field without additional synchronization.
+> -        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
+> -        bit_field.get(13, 1) == u64::from(bindings::AUTONEG_ENABLE)
+> +        unsafe { (*phydev).autoneg() == bindings::AUTONEG_ENABLE }
+>      }
+>  
+>      /// Gets the current auto-negotiation state.
+>      ///
+>      /// It returns true if auto-negotiation is completed.
+>      pub fn is_autoneg_completed(&self) -> bool {
+> -        const AUTONEG_COMPLETED: u64 = 1;
+> -        // TODO: the code to access to the bit field will be replaced with automatically
+> -        // generated code by bindgen when it becomes possible.
+> +        let phydev = self.0.get();
+>          // SAFETY: The struct invariant ensures that we may access
+>          // this field without additional synchronization.
+> -        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
+> -        bit_field.get(15, 1) == AUTONEG_COMPLETED
+> +        unsafe { (*phydev).autoneg_complete() == 1 }
+>      }
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but after the rewrite
+is_link_up(), is_autoneg_enabled() and is_autoneg_completed() are one-line
+forwarders to a binding call, and none of them carries #[inline].
+rust/kernel is an abstraction crate rather than a leaf driver, so the
+coding guidelines ask for #[inline] on small functions that just forward to
+a binding call.
+
+The neighbouring accessors in the same file (phy_id(), state(),
+set_speed(), set_duplex()) are equally unannotated, so this is the existing
+style of the file rather than something the patch changes. Would it be
+worth adding the annotation to the three touched functions here, or
+handling all of them in a separate cleanup?
 -- 
-2.55.0.897.gb25b4bd76c-goog
-
+pw-bot: cr
