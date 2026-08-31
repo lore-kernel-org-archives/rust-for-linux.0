@@ -1,174 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCBA63EC838;
-	Mon, 31 Aug 2026 12:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E4E3DDDB3;
+	Mon, 31 Aug 2026 12:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788180657; cv=none; b=HD//Uk9sHKWh4lKwMkMkFQRbcWEBfuufkhk7mhmq6K1dR9M3Hbil0ZBQo2Cmm5VbN/wVOcE/j5ysUg/DO2dRSUTCds3iTO1EWw5LQepA5U0CfL3IhYZ7I3SOkBjoEXh17mnAGmSL0vevXtEaxTbPAYsoXz2cdGpOTGlAj7cINLA=
+	t=1788180922; cv=none; b=WCeQ8wTqB4muRzIK2D+N5dL+6InAi/QSbZ/V0ZyBxDnZsZ/orI3nB4bVBUYq2iyQW7Xs6xfGfvKpB1ZSlDmxtm9B8iRk67NGaH5bJgtNV09wgXHXeBYVd+D3CwcbRdQtdNTZWUq8b8Fn9y/8bghgnF+Iof4hkagZ1HKfV193RRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788180657; c=relaxed/simple;
-	bh=BblqXBZ8zmDnJ0nRJmy0EgosyQytJp6t1yn1JGAMCaE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=gBCYE6Y6Y657B5iPawo5YA//e3h4464WOE3SLpXgGNqu2RPlBOYm+6HdVLV6jEtjig1KpVa8J7z9GqtFARQZOlEbpasYKgry24z1EPSE7XwUUqFTd6GiGAS7ngUfEG9VFIA7I8icF0tz6Bqhe/uH/vv0n/o2hD+M91Xtd5pvxIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TCxO4Hou; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788180922; c=relaxed/simple;
+	bh=zRK6O495q3PpP5FvYeC9SvBghHM7l483OnCCPdL0B+s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lcdHulSOOv74qVGQVXOwKeatjx4FM6MvMVc+q1S41HYvCZYlbZ1a7d/Hs34GRJHU3p+GjKlCnsTTfarHN0G8LgNVAgTLqR22g2sqqRFTM83iXrFFE2G3gOs7JhXLhydyVIZM/HyOGvfu/GO0IMn071S5Uoyc+fPFCiCw/7/udZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ofQYh7CM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TCxO4Hou"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6941F000E9;
-	Mon, 31 Aug 2026 12:50:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ofQYh7CM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6021F00A3E;
+	Mon, 31 Aug 2026 12:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788180650;
-	bh=Inovtz74UVnffXMRGGA0BiEeub/zuwAj1xL70AVyNwc=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=TCxO4Hou9hJTqG87TXYEr1lJiPlzZSAmr9LLrTd+Yiddslbj2o0tFIjyOWiODscB/
-	 qlKeI39pvn09PqSPfkdpHt4ddH5O9kTDX9KZuBgT+Rr6vJYZ8eZra8L5YSlbVTxQIr
-	 OApRT0qVWPkJ49b/OUhTeMD4J7TgsG5PaZ3Nd0gvDzEp3YqK5Ms/f67D+7v1Y17U8h
-	 RJ3ZYd5Cqu9s7YCKymJBovk1SO9xC5tCNIOpQSa+CZ6zkNlJYtEOMhqyVbBg3KVgZN
-	 bZfucOFUwURuB5gYJc0OEuqhC+PuK1jKL9DIbL9jlsFzc1HHMFFjD9xkekD6I2Ave9
-	 r+tySRyoXP2uA==
+	s=k20260515; t=1788180919;
+	bh=zRK6O495q3PpP5FvYeC9SvBghHM7l483OnCCPdL0B+s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=ofQYh7CMzOBIXNCTTwQyZ/35PAqw9Mg8diW2dQ08o/eSxh4P99jfZhthHiSDOQsXf
+	 E0DRG9bBlZQZoKC3+Zg1k9EQsGA7wLkNVjWcR9WV+tOKurPOZf0Rhy2qJ2pcv9yoTW
+	 khMA5Ln9j78uh2pr3w+LX4ZZPI5kXbY2p8sz6tWRhncEJ9A9qB6d7tisEW8p8l/Loj
+	 cnJFShpDKcltSkKXQ1sICavyHLoKQgxCtogU5MOqlEVufA6dR6AI5Vk+11/dq8h2RM
+	 K+tKIYKR+D4gpckffFleRvDORXBq8Hdt5+/0cQodV3M1Tk1+AzsauiGRwBoJSH8CMD
+	 OcdSOIJ/MS6bQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Sophon Z via B4 Relay <devnull+aiqubits.hotmail.com@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Sophon Z <aiqubits@hotmail.com>
+Subject: Re: [PATCH] rust: block: Fix GenDiskBuilder block size documentation
+In-Reply-To: <20260831-fix-gendisk-block-size-docs-v1-1-900546005799@hotmail.com>
+References: <eqzS1cYG2bYJ10oFrfX_D7UVNqb_NuK3wsMUUEXpdBj7yCtzD24WOzI8zIKg2FlD04VFp_R9xt65fGmEqpt6QA==@protonmail.internalid>
+ <20260831-fix-gendisk-block-size-docs-v1-1-900546005799@hotmail.com>
+Date: Mon, 31 Aug 2026 14:55:07 +0200
+Message-ID: <87ld9mxxec.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 31 Aug 2026 14:50:45 +0200
-Message-Id: <DL354W1TVE2X.CVZ3GXX2O2JQ@kernel.org>
-Subject: Re: [PATCH 1/2] gpu: nova-core: use kernel lossless integer
- conversion module
-Cc: <ojeda@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260828-nova_num-v1-0-e21f17ba4127@nvidia.com>
- <20260828-nova_num-v1-1-e21f17ba4127@nvidia.com>
- <DL0KDAXUZOXD.I8FBZZ51EIIF@kernel.org>
- <DL142442KXHA.3VFWP2DHD7H2E@nvidia.com>
- <DL1O1NFXUX6N.1LFASWF425I4Y@kernel.org>
- <DL2Q6ZZ1EK68.2SARDMRGQ19X6@nvidia.com>
-In-Reply-To: <DL2Q6ZZ1EK68.2SARDMRGQ19X6@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Mon Aug 31, 2026 at 3:08 AM CEST, Alexandre Courbot wrote:
-> On Sun Aug 30, 2026 at 4:14 AM JST, Danilo Krummrich wrote:
->> On Sat Aug 29, 2026 at 5:34 AM CEST, Alexandre Courbot wrote:
->>> On Fri Aug 28, 2026 at 9:09 PM JST, Danilo Krummrich wrote:
->>>> (Cc: Miguel)
->>>>
->>>> On Fri Aug 28, 2026 at 7:33 AM CEST, Alexandre Courbot wrote:
->>>>> The `kernel` crate now features a replacement for our lossless intege=
-r
->>>>> conversion routines. Switch to the kernel version and remove our own.
->>>>>
->>>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->>>>> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
->>>>> Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
->>>>> ---
->>>>>  drivers/gpu/nova-core/falcon.rs                    |  12 +-
->>>>>  drivers/gpu/nova-core/falcon/fsp.rs                |   4 +-
->>>>>  drivers/gpu/nova-core/fb.rs                        |   2 +-
->>>>>  drivers/gpu/nova-core/fb/hal/gb100.rs              |   6 +-
->>>>>  drivers/gpu/nova-core/firmware.rs                  |   4 +-
->>>>>  drivers/gpu/nova-core/firmware/booter.rs           |   4 +-
->>>>>  drivers/gpu/nova-core/firmware/fwsec.rs            |   2 +-
->>>>>  drivers/gpu/nova-core/firmware/fwsec/bootloader.rs |   4 +-
->>>>>  drivers/gpu/nova-core/firmware/gsp.rs              |   9 +-
->>>>>  drivers/gpu/nova-core/firmware/tlv.rs              |  11 +-
->>>>>  drivers/gpu/nova-core/fsp.rs                       |   8 +-
->>>>>  drivers/gpu/nova-core/gsp.rs                       |   4 +-
->>>>>  drivers/gpu/nova-core/gsp/cmdq.rs                  |  22 +--
->>>>>  drivers/gpu/nova-core/gsp/fw.rs                    |  42 ++--
->>>>>  drivers/gpu/nova-core/gsp/fw/commands.rs           |   4 +-
->>>>>  drivers/gpu/nova-core/gsp/sequencer.rs             |   2 +-
->>>>>  drivers/gpu/nova-core/mctp.rs                      |   8 +-
->>>>>  drivers/gpu/nova-core/num.rs                       | 211 -----------=
-----------
->>>>>  drivers/gpu/nova-core/vbios.rs                     |   2 +-
->>>>>  19 files changed, 78 insertions(+), 283 deletions(-)
->>>>
->>>> Please see the discussion in [1].
->>>>
->>>> If we make this change, then the subsequent conversion to const_as!() =
-would need
->>>> to go through the Rust tree next cycle, which could be a bit of a mess=
-, as I'd
->>>> expect a bunch of conflicts.
->>>>
->>>> Alternatively, we could the the full three cycle dance, or have a sign=
-ed tag for
->>>> const_as!() and use it right away.
->>>>
->>>> But honestly, the former would just be unnecessary noise. If we don't =
-do the
->>>> latter, let's just keep the nova-core num module until the dust has be=
-en
->>>> settled.
->>>>
->>>> [1] https://lore.kernel.org/all/CANiq72k+-fNWZCwGuQ=3DFTchxgm-X-f6WR=
-=3DtG=3DErcn19ic1edQg@mail.gmail.com/
->>>
->>> Maybe I am missing something, but wouldn't the following work?
->>>
->>> - rc1 gets tagged, `drm-rust-next` gets the `num::casts` module,
->>> - This series gets applied to `drm-rust-next`, then `cv!` (without the
->>>   nova-core conversion patch) in `rust-next`,
->>> - We wait one cycle for `cv!` to trickle down to `drm-rust-next` before
->>>   converting nova-core to use `cv!`.
->>>
->>> Would that work? This series doesn't overlap with the const conversions
->>> that `cv!` covers on purpose, and it would have the benefit of getting
->>> rid of the local `num` module in nova-core quickly.
->>
->> Take casts::usize_into_u32() for instance, drm-rust-next replaces the us=
-age of
->> it next cycle, but rust-next wants to remove the API from
->> rust/kernel/num/casts.rs.
->>
->> In this case rust-next would need to get rid of the users (including nov=
-a-core),
->> but drm-rust-next will likely do different changes, so we'd get unnecess=
-ary
->> merge conflicts.
->>
->> You can resolve this either by keeping casts::usize_into_u32 and friends=
- around
->> for one additional cycle, so that all users we introduce now are gone. O=
-r, since
->> there's no rush anyways, we just wait one cycle and use the real thing r=
-ight
->> away.
+"Sophon Z via B4 Relay" <devnull+aiqubits.hotmail.com@kernel.org>
+writes:
+
+> From: Sophon Z <aiqubits@hotmail.com>
 >
-> Sorry, I should have explicitly mentioned that `*_into_*` would remain
-> alongside `cv!` for the next cycle.
+> GenDiskBuilder::validate_block_size() accepts powers of two from 512
+> through PAGE_SIZE, but the documentation for logical_block_size() and
+> physical_block_size() states that the maximum is 4096.
+>
+> Use PAGE_SIZE for both documented upper bounds so that the documentation
+> matches validation on architectures with larger page sizes.
+>
+> Signed-off-by: Sophon Z <aiqubits@hotmail.com>
 
-Maybe we have a different understanding of what "next cycle" means. As of t=
-oday
-we are in the v7.4 cycle, so I call this the current cycle.
+Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-In the next cycle, as discussed in [1], rust-next will drop casts::*_into_*=
-(),
-and so would drm-rust-next, if we start using casts::*_into_*() in nova-cor=
-e
-this cycle.
+@Jens, please pick this one.
 
-I don't want this situation, so we can either keep casts::*_into_*() around=
- for
-even longer, or just never start using it.
+@Sophon I'd like to call the C static inline `blk_validate_block_size`
+here instead reproducing the check. Feel free to add a patch. You need
+to add a helper in rust/helpers/blk.c to be able to call the function.
 
-> The reason why I think it's preferable to use `casts` in nova-core
-> sooner is that some of the series currently under review (and that will
-> likely be merged next cycle) add more uses of the local `num` methods,
-> making the eentual conversion more painful. If we move to use `casts`
-> early we can at least avoid the churn on those cases that do not use
-> `cv!`.
+You would also need to update the documentation again, as the C function
+has special handling when transparent huge pages are enabled. I would
+suggest to just saying "check that the block size is valid".
 
-It would come at the price of adding cross tree dependencies and converting=
- the
-cv! parts twice, which is much worse than one clean and independent convers=
-ion.
+Best regards,
+Andreas Hindborg
+
+
+
