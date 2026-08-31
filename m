@@ -1,60 +1,55 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA6E46D550;
-	Mon, 31 Aug 2026 15:25:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE69046D559;
+	Mon, 31 Aug 2026 15:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788189904; cv=none; b=mUXRB7ypjk7c0DuXPN9ghZq0VHOW/zepKghhq7jaWUvhX0LmcKAz+WzIElvcS1n1L+1YbElr4z27sSF/PLvfsydPUpN50zHCiUb8CkQdn6hwHXVn5ofCFJXg/eTt/Bz9OK/fZuXCF4d+LY9gDUz9D5aYPW6utPl3Ul6j79i38cI=
+	t=1788189957; cv=none; b=fBQ/jTp/zJXZoA7ndpQPwmibsZUTFoKKb1ZTozFoFIwtuqzSsWKG4q5y6wWHxt7sPvkA+kLm1HgiQOXpYgojK/ercXBRLGcQ45Qcq60Xf1o1tHPKZUjn/CKcVZrCOCnRzMfVDcQwHYM8u7xAC34Tp2lI1aJseJ/jhL9LSRX3MMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788189904; c=relaxed/simple;
-	bh=TA/Vs2qwTMKDnOjhQFwNGPnYNC7GKSpHdlgjySdJQJc=;
+	s=arc-20240116; t=1788189957; c=relaxed/simple;
+	bh=6n96KrwdCy1R3cw3knruAQ0UKZlgvvVlvt3iShTbow0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o//Fp0gppnFee0uRBE7YQDRtFkgsGS4F6aOZDhpgUFr0SK9N8m/6nbmvcQXAzIUfqxhQRVi8jhRvbz2R8RYSwsZt8MIpItbTDIE+3J7Z91hevzkRIx3zRwTztRfgsUIDh+hZY+3nhuW14Z5/yymdgGL4YJ7mufTJrdn02p4AsbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=iuXapIgr; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=k5uRqxJK; arc=none smtp.client-ip=80.241.56.161
+	 MIME-Version; b=smQvhzJlmXpPtr1VsO2nwlWWd7x/BKyeHY2NBMj55pgHoSfwBuY2er4gKZZApuG03onVweV/kK3qeunq7wObDO5TWxueSyzU7JOeXnuga5W8C3aDa2xkwlqI8je1cyNjrqEFPB57ZlqumjSHUW5AhTy+luULGL3oTvFbgDqDDqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=e7oCxPWF; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=lyUUATlF; arc=none smtp.client-ip=80.241.56.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="iuXapIgr";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="k5uRqxJK"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="e7oCxPWF";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="lyUUATlF"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4hYXq94hg9zKmVC;
-	Mon, 31 Aug 2026 17:24:53 +0200 (CEST)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4hYXrB3KRlzMlL2;
+	Mon, 31 Aug 2026 17:25:46 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1788189893;
+	t=1788189946;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UfjuG2qAthtCnMVYrxj8mz2Mw3+wfSa/hH4/tb7lqGI=;
-	b=iuXapIgr0MvYWukPl1WMYY9FzkynGjuz876MY7mDrMH9WRffR8kxl1ZlW03/6DB/EZm3d3
-	MKmeOxS7HPbYbii6faBrV9Az3vG/QQJq4Gv28HKMueCjew/t5Bv+CAjZQn4WmST8/IUKyc
-	4tgyposF2guFNolB9mw/XaD3+ZnfGjFDrasYo09st+XaHBplMQpfWaJKW/agccqBzPxwRp
-	rebqGyGoFzUxMsXTRqr4iAY1xthxAoZLOS7FzRNJRK1EhHaCS7t7kQp4sArOaUXUtRkd0j
-	Wg/tnH6nK0r3Kz90NIe7Zju4K27PJbLL7W+uL10W82bhzFPwU/IDKeFnjxfVxA==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=k5uRqxJK;
-	spf=pass (outgoing_mbo_mout: domain of manuelebnerli@mailbox.org designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org
+	bh=yJ8wDwLUHHM5alMinMFlBdo6Q2IkABX6kyUMOvTWkHA=;
+	b=e7oCxPWF3NTVpnQ2bA+aeknMUr64ME2cPO1jwtXEKA3FSl2Oeq6vwJreR80fGEz1LX6Ulk
+	pJdVvcwFiMa9XjFQaZKPq8pewrbk60t7nmKmCpHggGnON/Rb3Kli2kCIARpKgou4n4dEWk
+	J2ogLq+fPgUh9VvbCEcVA3oeERl4Uio2lOf3uq4ZCwL2H7//Xw0vowX+8s0BzVKTIkJzIM
+	aM+MTgnTGHdaqmg+2M3NoEdFNVvUGRcOUngSxi8assCtcLd2bE9H4gA70wQxcEtPJU6uxw
+	rxYfFHJy6paw2cNOc5BJF8ruZAswEq8evAmu1mv4Jw95KgJKBMRGGCGQXZRBKw==
 From: Manuel Ebner <manuelebnerli@mailbox.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1788189891;
+	t=1788189944;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UfjuG2qAthtCnMVYrxj8mz2Mw3+wfSa/hH4/tb7lqGI=;
-	b=k5uRqxJKfJt+oWff1REnSvwqOwhbPnD9c1GCysc9+WiuGFjNxyO3JHLJkhSyPEoot/hVzl
-	eS1/9M2SrHKx9+QlbhuKgKKRje2/M7j+X7k/B9JC3xKnRglDSykw83HUSSyxnmVrIY+gyx
-	HlsWDOQMK2KIFfnJp+XnPNBb9Aa2yRTWUsJcGVNXu4/VoQF1HyY6oV7M8ZCy+IaRelHbbj
-	CXuQlL0eISbfwU5nEEaWRHtkjd47aQZhZEm8V6ctUvniiGy9LhPw+lTSaqIjdl6J8QjFbZ
-	CE56HWC2drfVAzZF6tWbFX/5G/jD8AUrWI3/WmiSgq/OFmT7Pl93q9nl4LkUIg==
-To: Federico Vaga <federico.vaga@vaga.pv.it>,
-	Jonathan Corbet <corbet@lwn.net>,
+	bh=yJ8wDwLUHHM5alMinMFlBdo6Q2IkABX6kyUMOvTWkHA=;
+	b=lyUUATlF2stKxxDrIEWF2LTvNqGPKVzKZPNR6aYIf9hJJaSiAa1iLK4gecZfmNA/C7h5Zp
+	X/Vl3IXKMg1MeS9ci0MRgvuYziRKZoJ8Zipr9XMdZEaOPNWeKQcJ1eOfaX67Z/s6NFnOM0
+	36uZDjUeJCLezmj3Rc/dxgvT3mdQu4QIr7y7bAcB3bCFaYl4ZbMHqIOntH22GImM0eW4Lb
+	6vrKQQwz17ZVMk5S//bIBOtxgxYWlGlOxTTEmGY6H/8l3Kf83UfNEnw06qQyxW8y577qMC
+	1XEY0BRGJEybF1lEcIOqoi6QPRNvjPMGoxFbkIgQMyAG411ceE/bCr3MzcXKAw==
+To: Jonathan Corbet <corbet@lwn.net>,
 	Shuah Khan <skhan@linuxfoundation.org>,
-	Daniel Pereira <danielmaraboo@gmail.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
@@ -73,13 +68,14 @@ To: Federico Vaga <federico.vaga@vaga.pv.it>,
 	Bill Wendling <morbo@google.com>,
 	Justin Stitt <justinstitt@google.com>
 Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
+	workflows@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	llvm@lists.linux.dev
-Subject: [PATCH 3/4] Docs: pt_BR, it_IT: changes.rst: copy table from english source
-Date: Mon, 31 Aug 2026 17:24:01 +0200
-Message-ID: <20260831152405.638749-2-manuelebnerli@mailbox.org>
+Subject: [PATCH] v2 Docs: changes.rst: introduce optional column
+Date: Mon, 31 Aug 2026 17:25:22 +0200
+Message-ID: <20260831152523.638881-1-manuelebnerli@mailbox.org>
 In-Reply-To: <20260831151605.638172-2-manuelebnerli@mailbox.org>
 References: <20260831151605.638172-2-manuelebnerli@mailbox.org>
 Precedence: bulk
@@ -88,185 +84,113 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: noco9e75nyu3qusk3abs9zjd718purs3
-X-MBO-RS-ID: 6025d342924a42287be
-X-Rspamd-Queue-Id: 4hYXq94hg9zKmVC
+X-MBO-RS-META: oc546a5fwr1qnkcp7tk1jgc3muciipkx
+X-MBO-RS-ID: a45539c2849ffa04d06
 
-Copy the list from Documentation/process/changes.rst to /it_IT/
-and /pt_BR/ with the purpose to update and sort the lists in the translations.
+The optional tag isn't obvious nor defined. Therefore replace with column.
 
 Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
 ---
- .../translations/it_IT/process/changes.rst    | 75 ++++++++++---------
- .../translations/pt_BR/process/changes.rst    | 58 +++++++-------
- 2 files changed, 73 insertions(+), 60 deletions(-)
+ Documentation/process/changes.rst | 84 +++++++++++++++----------------
+ 1 file changed, 42 insertions(+), 42 deletions(-)
 
-diff --git a/Documentation/translations/it_IT/process/changes.rst b/Documentation/translations/it_IT/process/changes.rst
-index 7ee54c972418..2f813bfebde8 100644
---- a/Documentation/translations/it_IT/process/changes.rst
-+++ b/Documentation/translations/it_IT/process/changes.rst
-@@ -32,40 +32,47 @@ PC Card, per esempio, probabilmente non dovreste preoccuparvi di pcmciautils.
- ====================== =================  ========================================
-         Programma       Versione minima       Comando per verificare la versione
- ====================== =================  ========================================
--GNU C                  8.1                gcc --version
--Clang/LLVM (optional)  17.0.1             clang --version
--Rust (opzionale)       1.78.0             rustc --version
--bindgen (opzionale)    0.65.1             bindgen --version
--GNU make               4.0                make --version
--bash                   4.2                bash --version
--binutils               2.30               ld -v
--flex                   2.5.35             flex --version
--bison                  2.0                bison --version
--pahole                 1.16               pahole --version
--util-linux             2.10o              mount --version
--kmod                   13                 depmod -V
--e2fsprogs              1.41.4             e2fsck -V
--jfsutils               1.1.3              fsck.jfs -V
--xfsprogs               2.6.0              xfs_db -V
--squashfs-tools         4.0                mksquashfs -version
--btrfs-progs            0.18               btrfsck
--pcmciautils            004                pccardctl -V
--quota-tools            3.09               quota -V
--PPP                    2.4.0              pppd --version
--nfs-utils              1.0.5              showmount --version
--procps                 3.2.0              ps --version
--udev                   081                udevd --version
--grub                   0.93               grub --version || grub-install --version
--mcelog                 0.6                mcelog --version
--iptables               1.4.2              iptables -V
--openssl & libcrypto    1.0.0              openssl version
--bc                     1.06.95            bc --version
--Sphinx\ [#f1]_         2.4.4              sphinx-build --version
--cpio                   any                cpio --version
--GNU tar                1.28               tar --version
--gtags (opzionale)      6.6.5              gtags --version
--mkimage (opzionale)    2017.01            mkimage --version
--Python (opzionale)     3.5.x              python3 --version
-+bash                   4.2              bash --version
-+bc                     1.06.95          bc --version
-+bindgen (optional)     0.71.1           bindgen --version
-+binutils               2.30             ld -v
-+bison                  2.0              bison --version
-+btrfs-progs            0.18             btrfs --version
-+Clang/LLVM (optional)  17.0.1           clang --version
-+e2fsprogs              1.41.4           e2fsck -V
-+flex                   2.5.35           flex --version
-+gdb                    7.2              gdb --version
-+genisoimage            1.1.11           genisoimage --version
-+GNU awk (optional)     5.1.0            gawk --version
-+GNU C                  8.1              gcc --version
-+GNU make               4.0              make --version
-+GNU tar                1.28             tar --version
-+GRUB                   0.93             grub --version || grub-install --version
-+gtags (optional)       6.6.5            gtags --version
-+iproute2               6.14.0           ip -V
-+iptables               1.4.2            iptables -V
-+jfsutils               1.1.3            fsck.jfs -V
-+kmod                   13               kmod -V
-+liblzma                5.8.1            lzma -V
-+lzop                   1.04             lzop -V
-+mcelog                 0.6              mcelog --version
-+mkimage (optional)     2017.01          mkimage --version
-+mtools                 4.0.49           mtools -V
-+nfs-utils              1.0.5            showmount --version
-+openssl & libcrypto    1.0.0            openssl version
-+pahole                 1.26             pahole --version
-+pcmciautils            004              pccardctl -V
-+PPP                    2.4.0            pppd --version
-+procps                 3.2.0            ps --version
-+Python                 3.9.x            python3 --version
-+quota-tools            3.09             quota -V
-+Rust (optional)        1.85.0           rustc --version
-+Sphinx\ [#f1]_         3.4.3            sphinx-build --version
-+squashfs-tools         4.0              mksquashfs -version
-+syslinux               6.04             syslinux --version
-+udev                   081              udevadm --version
-+util-linux             2.10o            mount --version
-+xfsprogs               2.6.0            xfs_db -V
- ====================== =================  ========================================
+diff --git a/Documentation/process/changes.rst b/Documentation/process/changes.rst
+index b3fa980b63e3..905ac0f6cdc5 100644
+--- a/Documentation/process/changes.rst
++++ b/Documentation/process/changes.rst
+@@ -29,49 +29,49 @@ systems; obviously, if you don't have any PC Card hardware, for example,
+ you probably do not need to concern yourself with pcmciautils.
  
- .. [#f1] Sphinx è necessario solo per produrre la documentazione del Kernel
-diff --git a/Documentation/translations/pt_BR/process/changes.rst b/Documentation/translations/pt_BR/process/changes.rst
-index 51c7fe41663e..86eb7375abe2 100644
---- a/Documentation/translations/pt_BR/process/changes.rst
-+++ b/Documentation/translations/pt_BR/process/changes.rst
-@@ -31,41 +31,47 @@ PC Card por exemplo, provavelmente não precisará se preocupar com o pcmciautil
  ====================== ===============  ========================================
- Programa               Versão mínima    Comando para verificar a versão
+-        Program        Minimal version       Command to check the version
++        Program        Minimal version  Required for 
  ====================== ===============  ========================================
--GNU C                  8.1              gcc --version
--Clang/LLVM (optional)  17.0.1           clang --version
--Rust (optional)        1.85.0           rustc --version
+-bash                   4.2              bash --version
+-bc                     1.06.95          bc --version
 -bindgen (optional)     0.71.1           bindgen --version
--GNU make               4.0              make --version
- bash                   4.2              bash --version
-+bc                     1.06.95          bc --version
-+bindgen (optional)     0.71.1           bindgen --version
- binutils               2.30             ld -v
+-binutils               2.30             ld -v
+-bison                  2.0              bison --version
+-btrfs-progs            0.18             btrfs --version
+-Clang/LLVM (optional)  17.0.1           clang --version
+-e2fsprogs              1.41.4           e2fsck -V
 -flex                   2.5.35           flex --version
 -gdb                    7.2              gdb --version
- bison                  2.0              bison --version
--pahole                 1.22             pahole --version
--util-linux             2.10o            mount --version
--kmod                   13               kmod -V
-+btrfs-progs            0.18             btrfs --version
-+Clang/LLVM (optional)  17.0.1           clang --version
- e2fsprogs              1.41.4           e2fsck -V
-+flex                   2.5.35           flex --version
-+gdb                    7.2              gdb --version
-+genisoimage            1.1.11           genisoimage --version
-+GNU awk (optional)     5.1.0            gawk --version
-+GNU C                  8.1              gcc --version
-+GNU make               4.0              make --version
-+GNU tar                1.28             tar --version
-+GRUB                   0.93             grub --version || grub-install --version
-+gtags (optional)       6.6.5            gtags --version
-+iproute2               6.14.0           ip -V
-+iptables               1.4.2            iptables -V
- jfsutils               1.1.3            fsck.jfs -V
--xfsprogs               2.6.0            xfs_db -V
--squashfs-tools         4.0              mksquashfs -version
--btrfs-progs            0.18             btrfs --version
-+kmod                   13               kmod -V
-+liblzma                5.8.1            lzma -V
-+lzop                   1.04             lzop -V
-+mcelog                 0.6              mcelog --version
-+mkimage (optional)     2017.01          mkimage --version
-+mtools                 4.0.49           mtools -V
-+nfs-utils              1.0.5            showmount --version
-+openssl & libcrypto    1.0.0            openssl version
-+pahole                 1.26             pahole --version
- pcmciautils            004              pccardctl -V
--quota-tools            3.09             quota -V
- PPP                    2.4.0            pppd --version
--nfs-utils              1.0.5            showmount --version
- procps                 3.2.0            ps --version
--udev                   081              udevadm --version
--grub                   0.93             grub --version || grub-install --version
--mcelog                 0.6              mcelog --version
--iptables               1.4.2            iptables -V
--openssl & libcrypto    1.0.0            openssl version
--bc                     1.06.95          bc --version
--Sphinx [#f1]_          3.4.3            sphinx-build --version
+-genisoimage            1.1.11           genisoimage --version
+-GNU awk (optional)     5.1.0            gawk --version
+-GNU C                  8.1              gcc --version
+-GNU make               4.0              make --version
 -GNU tar                1.28             tar --version
--gtags (opcional)       6.6.5            gtags --version
--mkimage (opcional)     2017.01          mkimage --version
- Python                 3.9.x            python3 --version
--GNU AWK (opcional)     5.1.0            gawk --version
-+quota-tools            3.09             quota -V
-+Rust (optional)        1.85.0           rustc --version
-+Sphinx\ [#f1]_         3.4.3            sphinx-build --version
-+squashfs-tools         4.0              mksquashfs -version
-+syslinux               6.04             syslinux --version
-+udev                   081              udevadm --version
-+util-linux             2.10o            mount --version
-+xfsprogs               2.6.0            xfs_db -V
+-GRUB                   0.93             grub --version || grub-install --version
+-gtags (optional)       6.6.5            gtags --version
+-iproute2               6.14.0           ip -V
+-iptables               1.4.2            iptables -V
+-jfsutils               1.1.3            fsck.jfs -V
+-kmod                   13               kmod -V
+-liblzma                5.8.1            lzma -V
+-lzop                   1.04             lzop -V
+-mcelog                 0.6              mcelog --version
+-mkimage (optional)     2017.01          mkimage --version
+-mtools                 4.0.49           mtools -V
+-nfs-utils              1.0.5            showmount --version
+-openssl & libcrypto    1.0.0            openssl version
+-pahole                 1.26             pahole --version
+-pcmciautils            004              pccardctl -V
+-PPP                    2.4.0            pppd --version
+-procps                 3.2.0            ps --version
+-Python                 3.9.x            python3 --version
+-quota-tools            3.09             quota -V
+-Rust (optional)        1.85.0           rustc --version
+-Sphinx\ [#f1]_         3.4.3            sphinx-build --version
+-squashfs-tools         4.0              mksquashfs -version
+-syslinux               6.04             syslinux --version
+-udev                   081              udevadm --version
+-util-linux             2.10o            mount --version
+-xfsprogs               2.6.0            xfs_db -V
++bash                   4.2              
++bc                     1.06.95          
++bindgen                0.71.1           generate Rust bindings
++binutils               2.30             
++bison                  2.0              
++btrfs-progs            0.18             
++Clang/LLVM             17.0.1           alternative to GNU C (gcc)
++e2fsprogs              1.41.4           ext4
++flex                   2.5.35           
++gdb                    7.2              
++genisoimage            1.1.11           
++GNU awk                5.1.0            objtool
++GNU C                  8.1              
++GNU make               4.0              
++GNU tar                1.28             
++GRUB                   0.93             
++gtags (optional)       6.6.5            
++iproute2               6.14.0           
++iptables               1.4.2            
++jfsutils               1.1.3            
++kmod                   13               
++liblzma                5.8.1            
++lzop                   1.04             
++mcelog                 0.6              
++mkimage                2017.01          ARCH=arc, arm, or powerpc
++mtools                 4.0.49           
++nfs-utils              1.0.5            
++openssl & libcrypto    1.0.0            
++pahole                 1.26             
++pcmciautils            004              
++PPP                    2.4.0            
++procps                 3.2.0            
++Python                 3.9.x            
++quota-tools            3.09             
++Rust                   1.85.0           CONFIG_RUST=y
++Sphinx\ [#f1]_         3.4.3            
++squashfs-tools         4.0              
++syslinux               6.04             
++udev                   081              
++util-linux             2.10o            
++xfsprogs               2.6.0            
  ====================== ===============  ========================================
  
- .. [#f1] O Sphinx é necessário apenas para gerar a documentação do Kernel.
+ .. [#f1] Sphinx is needed only to build the Kernel documentation
 -- 
 2.54.0
 
