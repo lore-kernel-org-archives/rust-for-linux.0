@@ -1,279 +1,514 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021074.outbound.protection.outlook.com [52.101.95.74])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7CE31F9A8;
-	Mon, 31 Aug 2026 13:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.74
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788181746; cv=fail; b=mcyRG4QfMtizYhMSvXEQ2FNN/ROlDiE8w3hpTK05H9ZPCvvPXPU18KwFLqpeNzBP1cHgo+WlA5Bzaj0icwS7Z/kIIwuhrFMMVwU1v5ecswZxJhuMTagwrq4W+9KPBeY4CfyChfYr+Ygrdmz2ggDcuhELZT5WKxmwsv/dvTQ8Uy4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788181746; c=relaxed/simple;
-	bh=JZHY7wWBFb6f5qp87Gc51Phw7OKTxzAvQ03MxcLhEbU=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=qZO39/l19gYy3q36lO3EAjjIFjH9AIBwgpRxUEjUHPp9MhvM9Ip1M0qRRSgSAyScc10Zor/Pwmr0cGLsbabGNBA0zCD4HIdO3b/Oc+ghEEiyEkBzPKXqnPwl9A6CucLicDjpZHWvEneSlFTNaGMDLRce1LFnu7bGQL366xSNNyc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=eQvXr7eY; arc=fail smtp.client-ip=52.101.95.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F55D332610;
+	Mon, 31 Aug 2026 13:21:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788182491; cv=none; b=iqFU8TNH1ZrjO49zK3mJQb4q8/A9rw5rqL7wQ6wJRgOSIIdmuh1hu1eJhz8rAULfcu2PpccE41nPWVOVTePMDk3uC+ZcmDYP+XiqzXeiB05H0eu+WvBJBpuSg4twq3+GAO4ELKjLac8T56GwFaVcRdkmJPxrpe/DWjFAf+yPASQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788182491; c=relaxed/simple;
+	bh=MTJsfP84omTtnEOLgcR0IdbVLvf4/ahW4JR9iVxSa4I=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=oSMWtp5+tVafWZbz0vMp58PBNXRSNHu7FDAX553RZzbnPVy5OLSj9X2XjU8z2G+H+FRk7J4bhYwB85+sitRiHLdqFJEU/pdNrU06dOLE76oZXSzdd4sXXvA4eCT/gdOTurG0I4c7kos/XhzYipFkvoNJPubuAc+4FCMw3BRPWHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=foYrpNs7; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="eQvXr7eY"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fKvRpSgZkLTkQ7jJJorlMEU0yJn9eSF8d4HDMVgiYLZl68URC4+TRxbWCDldnwQQYszxIEMDbb29NVgo9uWEOSW0r5SgZiXOQx/hs8g96LtvYGzaOkMcubBI/yA0drrCB6ITQk9U9g8n+rGhnREKXs9MR9Ucqx2dYqLWhsljhmLpDpgz11YN3uNWS3gwHkTXg1zLoZUSNtIEmABw4BqaaUi4SEBvuOnr2wdgKNR4j9uy5/+qNAv02oCp0lLpEr/ZNS5ZWqyDcNSuSSvZK5VsMYWzZzoEly/iqxk2tfqt0Ju9918EnHaERlqJM7KgsjSMZPMBbKOr2bGkNe1BrEJuxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z7zKRfO9FRcyC3laWo5HJ5ZEwYakbRMKRPd1Vf5AKJs=;
- b=bG/O0fxAk1swpFKExTu7d8vQBoAV2qqNSDccnEzlqvbT28HbrF3yst/TM2A4kTl2RecvWDz+nYS56g23xMd/EOQystHgbJod7bKBAh2LHgZdYtLai1QD0+Tv50ZChIulT0i+8Bb6GxD/7haehgrVK9F0dWHB962Z5loufrewWQyf5HKkKhrPt9GRIYzdE3JhsJqgnbjsv6ITo6AP5HZdPA7O07+ecdkr+TCkvbgN822QEySFggwI6i+6/cQ4qvSkqFYbhDZOEFn3kjInZGDKGx1Opxak43ZNXOhAomdOwP8JpfcwGTLgnzKx+XQCf8irIWK6V3+AaYFAFwUSHnBg5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z7zKRfO9FRcyC3laWo5HJ5ZEwYakbRMKRPd1Vf5AKJs=;
- b=eQvXr7eYcjkagNPjxVC2+SW8Ltabp4bRya2saE7px3N1DhMXat+1g0DNBv0iXr59sdGHDQ8vzoKp6IPj4M/xSWfKg9iiuMib70IgzDx+lI/9VdlhtXRUNHj2qCrLr6K78m9czBJNdbhbjKJ2QhAtj+KHMk0rTcrRKrmJ3KVco5w=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by CWLP265MB1793.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:49::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
- 2026 13:09:01 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
- 13:09:01 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 31 Aug 2026 14:09:00 +0100
-Message-Id: <DL35IUVMYHSV.2V6I635PLQC9K@garyguo.net>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 2/2] rust: num: add `cv!` macro to create values from
- constant expressions
-From: "Gary Guo" <gary@garyguo.net>
-To: "Eliot Courtney" <ecourtney@nvidia.com>, "Gary Guo" <gary@garyguo.net>,
- "Alexandre Courbot" <acourbot@nvidia.com>, "Yury Norov"
- <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: aerc 0.22.0
-References: <20260828-cv-v1-0-694a695ff17f@garyguo.net>
- <20260828-cv-v1-2-694a695ff17f@garyguo.net>
- <DL2Y3TBTXYA0.25GP7MGS9UN31@nvidia.com>
-In-Reply-To: <DL2Y3TBTXYA0.25GP7MGS9UN31@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0563.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:33b::11) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="foYrpNs7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788182490; x=1819718490;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=MTJsfP84omTtnEOLgcR0IdbVLvf4/ahW4JR9iVxSa4I=;
+  b=foYrpNs7SjkFJxTX9NyBMGEz1FDuZUQ3AEwHVNJFjw1guD1ltyoDrbBq
+   pIefHNHBjcNBKI9Iw40xwswX5LKXrsHyZDBqLG8AdBVglMKvk2jeewv8A
+   t9HemTIKpNfXw9+G4yw1OuDhX+7bftLdGUqZ79EfzTjCjgW5HIwiKY9IT
+   9fu8FcVFY2kwEb5L65QCPpWk/UHq6t/2vQ/Dk4V5eN6g6Ewfadokkh8l9
+   dHfg4RxEl+j+nuOLgJ9bHSdu5gWYDLcFl74wYkJ2HPlia0TPbvPxG90et
+   pFmxEtAAx0ECSEIZXawJ0xSwbRhbJRV0PGb/RhXoDgyNzYhvcritxHKya
+   Q==;
+X-CSE-ConnectionGUID: RPwFvHB2RrmjDHiR75J39A==
+X-CSE-MsgGUID: SzlTma2rQ9m2IqlflS6eOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="88641535"
+X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; 
+   d="scan'208";a="88641535"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 06:21:28 -0700
+X-CSE-ConnectionGUID: 8M44MqfHRYKxzIzs311jWQ==
+X-CSE-MsgGUID: svFFmfNPT8SY8BAZKO07FQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; 
+   d="scan'208";a="265554830"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.121])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 06:21:17 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 31 Aug 2026 16:21:14 +0300 (EEST)
+To: Zhi Wang <zhiw@nvidia.com>
+cc: rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org, 
+    LKML <linux-kernel@vger.kernel.org>, dakr@kernel.org, aliceryhl@google.com, 
+    bhelgaas@google.com, kwilczynski@kernel.org, ojeda@kernel.org, 
+    boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+    lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+    markus.probst@posteo.de, cjia@nvidia.com, smitra@nvidia.com, 
+    ankita@nvidia.com, aniketa@nvidia.com, kwankhede@nvidia.com, 
+    targupta@nvidia.com, kjaju@nvidia.com, alkumar@nvidia.com, 
+    acourbot@nvidia.com, jhubbard@nvidia.com, zhiwang@kernel.org, 
+    joelagnelf@nvidia.com, daniel.almeida@collabora.com, tamird@kernel.org, 
+    work@onurozkan.dev
+Subject: Re: [PATCH v9 1/1] rust: pci: add extended capability and SR-IOV
+ support
+In-Reply-To: <2e9d992509299c2f13de48109c4c933f53817acb.1787830828.git.zhiw@nvidia.com>
+Message-ID: <d04e5913-3f22-e574-e123-775cc1246566@linux.intel.com>
+References: <cover.1787830828.git.zhiw@nvidia.com> <2e9d992509299c2f13de48109c4c933f53817acb.1787830828.git.zhiw@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWLP265MB1793:EE_
-X-MS-Office365-Filtering-Correlation-Id: f48cd6ff-6134-44f5-776a-08df07610651
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|10070799003|7416014|376014|10067099003|3023799007|5023799004|6133799003|4143699003|56012099006|22082099003|18002099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	Zb8ymQQk9U3rwqi97XUa+59l4/FDHSNYkye32i74X5d+IyRdFnWMvXV+idkC/Cx7Gbdv/3UV5VZ3vMlDTcJVukT+v+wk3zqP3LBgV6pzMxFKYSjIy2UUgNMZ2q+2+GBpqFbPkG3E/B+9PO86e5zi4w8rhPoK+eBdy1dmyjxWazseZWj1lbhVegX3fPbH9mYyDI7uy4vXihd2GbUPc0U1NQyj/vGQH/XVSo5+ZjP9GrqBhMohSrdD/oYT9JH6HSq6DcsEBfwbb16fckNNGSIp7pPWZ81TGqjpy5fiaPLQr2OneD8pIf0hq3Hl3d80MoxorJCyEk6RPuRK/obdNJmoBFTYPQ4mfv20S9sGmxHsVCUY1vqBJni8KwqIM2h3frxapC+T2swZUbTz9Z2LXG0Tvp3RRJZUfWNQz4Z3YUhVdKTYG/NnS3Z7/2nqmBVrcqy6xpxEIO6kA8dzCpnPTw3JYD1/dzu/bdSP0ho7kqWXjxwxJt5jYdE++8KfGObpXPvx0gmorYijxzgFJkyODGZ5G5c8rAbpOHrUZGxH/H55skcVa4a/ZTqloCFa6k9/Dhz6BlUVOGekQx+sbJ8J1yrROQgM6m/Jng4t3siVTntMYqon0CZBdoJjX58OoT7AAYfDH8o76ERg7fZac8Pvppi5AaxoplyM2SF3Q3ePpF/ny2TW5SgRZEXCQiz6kRQnBL//MGJwVLhrHThtxpa4LKDB3g==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(10070799003)(7416014)(376014)(10067099003)(3023799007)(5023799004)(6133799003)(4143699003)(56012099006)(22082099003)(18002099003)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZStjcFhSTXJpNHJVWEN4cmV3S0tmKy8zWHp3QnBuaDhSVnFGMDdQdGdEQUNk?=
- =?utf-8?B?cUtSdTRsWVFJdGNNVU1zVE45Y1hQOXl0NTBLUE9RNHZ3V0VpV1FlZEtDTm1o?=
- =?utf-8?B?ZVUwTDd6eDZYNENWWU9wbE9CVjR0cDR5RmkwYi9nYUhaOVpVajJzTENtdTlM?=
- =?utf-8?B?Y3haeEYvcExqdklTK08zVHVzUkpzN1FiT1NSUFhhTktCTXVNOTFiQXRUTlZG?=
- =?utf-8?B?TC9TN3VJS0UzVUFlaFU2KzVlbEt1Wi95YzA1V3JOc3ZrUkRrdnpEcW0zMkZr?=
- =?utf-8?B?Y2FHTEJJU0tmT0l5TWdpcVdyNTc1L0xWdnA5bjl6OHdJTDVWMjZzT1MxQkJ0?=
- =?utf-8?B?WldpZWRxaVorbHg5WFdTRGhvdUtvTURUcGpFcFBObks2VWtwL3l1OU1od3RQ?=
- =?utf-8?B?RkJzdW9MQWRpTHA4UFRMRW84NXRHQ2IzVVBCNHZ0UUdyM0FHaDYvRkJUVDhZ?=
- =?utf-8?B?Zm52enBkMENaWjVCL3FCaWRoYXpkQzljeHR2dW1iSlczVWt0NHN2Z1BZQzRt?=
- =?utf-8?B?d1BMN0ZDekJUSGdyUDF5cU0rditSL2w0dVQ0VDBBVHNKU2hxdnZyT0tUZHFq?=
- =?utf-8?B?TDkwQjgxRmNvamp5d0FyWnFJUzhRSE5ESFk5WnFWSmFIRWNSUDZYRkg4Qmln?=
- =?utf-8?B?L1lyUm1yUE03L2UvS0Exd0QxdmZVZjYrdk1wR3k2U042K3VJZklUYSszUGI5?=
- =?utf-8?B?TFJWcC8wNWtIVW14TnlKMzBYa09TNWpEVDJMblV3RnR2Mk5ReS8rVjllSHVE?=
- =?utf-8?B?K0ZvbkVCQStnU2xrelZ4a2tJUmpPTjd5Q2RNRXBrM05jM2JYR2FhRGhNa1gv?=
- =?utf-8?B?dW43ZW5nMk5NNWlpTjVYaUhKbmtTTWN3VDdmU0xTNWFqb1dFRUFDakdacndU?=
- =?utf-8?B?YmRkdmIxZ3hQbnorTzlLcXM3ZFNsTHpVTWE1Z3QyTit5S0EwMHFwZDR2SW1M?=
- =?utf-8?B?NW9kVnlvVGVmenMxYUNvUFRVY0hqSEFsaHFpbUZmOFB5VytOUTRmUVNBR2Nx?=
- =?utf-8?B?Smw5bGN1ZWwyNEJsRUl6cHJpeWxyZnN0eDQ2azEvZWp0cnJMcUNOL3cvKzRj?=
- =?utf-8?B?RXVnelM4VkZtazB6ZzRjdmh2Wmo1QmNQc0RLdCtsQ2Q2elR0WEpBUkNqcTZ2?=
- =?utf-8?B?TGl2am9FenFWODMwMXhNZlNsY3RhYVhvODRKQzlzekVIckE5bENOdXR3T0FS?=
- =?utf-8?B?YVNOa2VDWkI4SWxnMlFSVFRGOVJvTDFrSnFxVVQrMDVuTFA5MUdmTFcvWWZz?=
- =?utf-8?B?akF5bjJKRGZlVkF4K0d6ZDBQNjNveE00OXh1RGthb3pnZktGY0VkTnAreXdB?=
- =?utf-8?B?MjVVOHFYUXpLM0RvbWM0THgwRlM1bXN6TERyeFc4MEw1REVwbU9DTWJHWEEw?=
- =?utf-8?B?VXhtWG9kZzF2TGtSWStwazl1MGVUVW12ZGt4RlVaT25pUmQyOEpvaHF6Q3Yz?=
- =?utf-8?B?ZEJXM1RWSzZabVVYbFhwcHdOM21JS3BLMTNtQzFRUDNSK3d0ckMrdkNObFdx?=
- =?utf-8?B?Q3NTdnJPdGpMVHFrMkJTUTlrNW5LVm96b2M3cDBQNkVsY2JESnhKWEw2czA2?=
- =?utf-8?B?Y3F0di91ckNyUU5pd09taExMVjdoaXJYY0Vab1czd1phYjZqaTRUS3ZHRzQ3?=
- =?utf-8?B?b1RzSEEzMlp1NHRON0JleEF3Vm9FVHZYTGllZi9aZEs2WXBGL2VjWG9icUli?=
- =?utf-8?B?M3B4cTZTN1dUWWsyem5sbGRma3JYU294dE43MkpEOElSK25KYW9rZE5WL3ZL?=
- =?utf-8?B?Z2hIQ21XMzYyeGk1T1FaaEEzQ3hVZ08vRkppSmNuOGJ4UDVNOUdXRGRuTTlE?=
- =?utf-8?B?cE1tc2RadTFwKytURDVsT1UzRU0yUEF5UFJlT2pNVFBQQzUwZUZoR1Y0aERj?=
- =?utf-8?B?UmFpZ1gxTjIvMk5ZNzMrcXRsYmx1WkdEU2dLRkdVV25JdTNRY0gzV3lRVzlO?=
- =?utf-8?B?NWJiY3BQMk1lbXo2SmlyZ3dRNzByQ3N3QlNhZ2FHYk5ZZWJwTXVpOFcrbGZr?=
- =?utf-8?B?aFdGLzFHQ09uZ2Fld1ozOHFyNllMd2hZcTVUa3pHeldBVG1uYUFPVnRUbE1p?=
- =?utf-8?B?MDFlL0FUQ1pnS3IxdlN0clNXM1NXbmJUR2t4S2t6MUVqblhGNlZLZ3dQUjJL?=
- =?utf-8?B?cmEzQk5NTFAvekZWWFRKS1FISkc1cXhpUnY4RTlSTGF2U0pnNnpWcUVNY2h3?=
- =?utf-8?B?OXZ6UVRnYmNJS1JzcE9TdU5iK3FDZjh2QktnOUZzRUh3ajlLSnZ3bXZ3TGlT?=
- =?utf-8?B?czB0UzNJdjQ2S3NvV1dqbDVySEV0YW5wVjZkbmk4UUJaMlJTc1U4aDJGY0Yv?=
- =?utf-8?B?TVlnT2VBOUlqU0JrS3loMzNaQmxCMUtsa2hQbjE4cjlhTEhqV1JMdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: f48cd6ff-6134-44f5-776a-08df07610651
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 13:09:01.0056
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WK+5f4YXcCCQT4ay7RT103Wcc0Yxr0A4jUcZ7ThtXEDL4QzWlUMKfMqZYQLEc7iauSRy/g1/fOk2Ob41vKDgYg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB1793
+Content-Type: multipart/mixed; boundary="8323328-433454475-1788182474=:2637"
 
-On Mon Aug 31, 2026 at 8:20 AM BST, Eliot Courtney wrote:
-> On Fri Aug 28, 2026 at 9:03 PM JST, Gary Guo wrote:
->> Currently, constructing a `NonZero` or `Bounded` from a constant is
->> verbose. The former would require `const { NonZero::new(...).unwrap() }`
->> and the latter require turbofish. Similarly, the `num::casts` exposes
->> methods that cast numbers using turbofish syntax, which is unergonomic a=
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--8323328-433454475-1788182474=:2637
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+
+On Thu, 27 Aug 2026, Zhi Wang wrote:
+
+> Rust PCI drivers have no typed interface for locating and accessing PCIe
+> extended capabilities.
+>=20
+> The SR-IOV extended capability describes VF topology and VF BARs. Expose
+> this information through the Rust PCI abstraction so drivers can use the
+> existing typed configuration-space accessors instead of raw bindings.
+>=20
+> Define ExtCapability to associate a capability ID with a register layout,
+> and add ConfigSpace::find_ext_capability() to locate and project that
+> layout. Bound the view at the next capability or the end of extended
+> configuration space. Add ExtSriovRegs and a decoded VF BAR iterator that
+> reads and validates all six VF BAR register slots up front, yields decode=
+d
+> BAR addresses and widths in logical order, and keeps the raw
+> configuration-space slot advancement internal. Since PCI_EXT_CAP_NEXT() i=
+s
+> a function-like macro, expose it through a Rust helper.
+>=20
+> Keep raw SR-IOV registers private because PCI core owns their state. Expo=
+se
+> the current First VF Offset through a read-only accessor because the Nova
+> GSP ABI needs the raw 16-bit First VF Offset in Routing ID space. The
+> pci_iov_virtfn_devfn() helper instead returns the low eight bits of a
+> calculated VF Routing ID.
+>=20
+> Link: https://lore.kernel.org/rust-for-linux/20260818084633.1673214-2-zhi=
+w@nvidia.com/
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+> ---
+>  rust/helpers/pci.c     |   5 +
+>  rust/kernel/pci.rs     |   8 ++
+>  rust/kernel/pci/cap.rs | 290 +++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 303 insertions(+)
+>  create mode 100644 rust/kernel/pci/cap.rs
+>=20
+> diff --git a/rust/helpers/pci.c b/rust/helpers/pci.c
+> index a714cc2bfb7a..502f56e02fcc 100644
+> --- a/rust/helpers/pci.c
+> +++ b/rust/helpers/pci.c
+> @@ -29,6 +29,11 @@ __rust_helper unsigned int rust_helper_pci_irq_type(st=
+ruct pci_dev *pdev)
+>  =09return pci_irq_type(pdev);
+>  }
+> =20
+> +__rust_helper u32 rust_helper_pci_ext_cap_next(u32 header)
+> +{
+> +=09return PCI_EXT_CAP_NEXT(header);
+> +}
+> +
+>  #ifndef CONFIG_PCI_IOV
+>  __rust_helper unsigned int
+>  rust_helper_pci_sriov_get_totalvfs(struct pci_dev *pdev)
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index 3ec897709e89..77c52fe59551 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -32,10 +32,18 @@
+>      },
+>  };
+> =20
+> +mod cap;
+>  mod id;
+>  mod io;
+>  mod irq;
+> =20
+> +pub use self::cap::{
+> +    ExtCapId,
+> +    ExtCapability,
+> +    ExtSriovCapability,
+> +    ExtSriovRegs,
+> +    ExtSriovVfBar, //
+> +};
+>  pub use self::id::{
+>      Class,
+>      ClassMask,
+> diff --git a/rust/kernel/pci/cap.rs b/rust/kernel/pci/cap.rs
+> new file mode 100644
+> index 000000000000..74cd9e50e919
+> --- /dev/null
+> +++ b/rust/kernel/pci/cap.rs
+> @@ -0,0 +1,290 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! PCI extended capability support.
+> +
+> +use super::{
+> +    io::ConfigSpaceBackend,
+> +    ConfigSpace,
+> +    Extended, //
+> +};
+> +use crate::{
+> +    bindings,
+> +    io::{
+> +        Io,
+> +        IoBackend,
+> +        Region, //
+> +    },
+> +    num::{casts, Bounded},
+> +    prelude::*,
+> +};
+> +
+> +/// Number of VF BAR register slots in an SR-IOV capability.
+> +const NUM_VF_BARS: usize =3D casts::u32_as_usize(bindings::PCI_SRIOV_NUM=
+_BARS);
+> +
+> +/// PCI extended capability IDs.
+> +#[repr(transparent)]
+> +#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+> +pub struct ExtCapId(u16);
+> +
+> +impl ExtCapId {
+> +    /// Single Root I/O Virtualization.
+> +    pub const SRIOV: Self =3D Self(casts::u32_into_u16::<{ bindings::PCI=
+_EXT_CAP_ID_SRIOV }>());
+> +
+> +    /// Returns the raw PCIe extended capability ID.
+> +    #[inline]
+> +    const fn as_raw(self) -> u16 {
+> +        self.0
+> +    }
+> +}
+> +
+> +/// A typed PCI extended capability register layout.
+> +///
+> +/// Implementors describe the register layout of one extended capability=
+=2E The layout must start at
+> +/// the extended capability header, and [`Self::ID`] must identify that =
+layout.
+> +pub trait ExtCapability: FromBytes + IntoBytes {
+> +    /// PCI extended capability ID for this register layout.
+> +    const ID: ExtCapId;
+> +}
+> +
+> +impl<'a> ConfigSpace<'a, Extended> {
+> +    /// Finds and projects an extended capability into its typed registe=
+r layout.
+> +    ///
+> +    /// Returns [`None`] if the device does not implement the capability=
+=2E
+> +    ///
+> +    /// Returns an error if the capability is present but its register s=
+pan is too small or
+> +    /// insufficiently aligned for `C`.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```no_run
+> +    /// use kernel::{
+> +    ///     device::Bound,
+> +    ///     pci,
+> +    ///     prelude::*,
+> +    /// };
+> +    ///
+> +    /// fn probe_sriov(pdev: &pci::Device<Bound>) -> Result {
+> +    ///     let Some(sriov) =3D pdev
+> +    ///         .config_space_extended()?
+> +    ///         .find_ext_capability::<pci::ExtSriovRegs>()?
+> +    ///     else {
+> +    ///         return Ok(());
+> +    ///     };
+> +    ///
+> +    ///     let first_vf_offset =3D sriov.first_vf_offset();
+> +    ///     let mut vf_bars =3D sriov.vf_bars()?;
+> +    ///     let bar0 =3D vf_bars.next().ok_or(EINVAL)?;
+> +    ///     let bar1 =3D vf_bars.next().ok_or(EINVAL)?;
+> +    ///     let bar2 =3D vf_bars.next().ok_or(EINVAL)?;
+> +    ///
+> +    ///     Ok(())
+> +    /// }
+> +    /// ```
+> +    pub fn find_ext_capability<C: ExtCapability>(&self) -> Result<Option=
+<ConfigSpace<'a, C>>> {
+> +        let offset =3D usize::from(
+> +            // SAFETY: `self.pdev` is valid by the type invariant of `Co=
+nfigSpace`.
+> +            unsafe {
+> +                bindings::pci_find_ext_capability(self.pdev.as_raw(), i3=
+2::from(C::ID.as_raw()))
+> +            },
+> +        );
+> +
+> +        if offset =3D=3D 0 {
+> +            return Ok(None);
+> +        }
+> +
+> +        let size =3D self.calculate_ext_cap_size(offset)?;
+> +
+> +        let base =3D ConfigSpaceBackend::as_ptr(*self)
+> +            .cast::<u8>()
+> +            .wrapping_add(offset);
+> +        let ptr =3D Region::<0>::ptr_try_from_raw_parts_mut(base, size)?=
+;
+> +
+> +        // SAFETY: `offset` was returned by `pci_find_ext_capability`, a=
 nd
->> unnecessarily causes the value to flow into the type system, which is ve=
-ry
->> restrictive without `generic_const_exprs`.
->>
->> Implement a macro `cv!` (short for constant value) which converts a cons=
-t
->> integer to types that implements `FromConst` trait and validate them dur=
-ing
->> const evaluation.
->>
->> The usage is of form
->>
->>     cv!(<expression>)
->>
->> for inferred type and
->>
->>     cv!(<expression> =3D> <type>)
->>
->> for explicit type specification.
->>
->> As we do not have const trait implementation yet, dark magic is used. Th=
-e
->> dark magic is documented in the code, but in essence it defines inherent
->> `__from_const` impls on types, which can be marked const, and rely on
->> Rust's method resolution algorithm to pick the correct function. Multipl=
-e
->> helpers are defined to aid type inference to work properly.
->>
->> As a result, this allows construction of primitive integers, `NonZero`,
->> `Bounded`, `Alignment` using a single `cv!` macro. This macro does not h=
-ave
->> `generic_const_exprs` restrictions (e.g. in a function with `const N: u3=
-2`
->> generic parameter, you may use `cv!(N + 1)`), it supports full type
->> inference and it has nice error messages in some common error scenario:
->>
->>     error[E0080]: evaluation panicked: constant is zero
->>        --> example.rs:22:25
->>         |
->>      22 | const X: NonZero<u32> =3D cv!(0);
->>         |                         ^^^^^^ evaluation of `X::{constant#0}`=
- failed inside this call
->>
->>     error[E0277]: `kernel::page::Page` cannot be converted from constant
->>        --> example.rs:22:17
->>         |
->>      22 | const X: Page =3D cv!(0);
->>         |                 ^^^^^^ the trait `kernel::num::FromConst` is n=
-ot implemented for `kernel::page::Page`
->>
->> Of course, this trick is not full const trait impl. So the following cod=
-e cannot work properly:
->>
->>     fn generic<T: FromConst>() -> T {
->>         cv!(0)
->>     }
->>
->> That said, useful error message is still produced in this context.
->>
->>     error[E0080]: evaluation panicked: `cv!()` cannot be used with gener=
-ic types yet
->>        --> example.rs:23:5
->>         |
->>      22 |     cv!(0)
->>         |     ^^^^^^ evaluation of `generic::<u32>::{constant#0}` failed=
- inside this call
->>
->> Co-developed-by: Eliot Courtney <ecourtney@nvidia.com>
->> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
->> Signed-off-by: Gary Guo <gary@garyguo.net>
->> ---
->> I used part of
->> https://lore.kernel.org/rust-for-linux/20260827-chid-v8-3-bc74c77d0214@n=
-vidia.com
->> so I added Co-developed-by tags of Eliot. Eliot, please let me know if t=
-his
->> is okay.
->> ---
->
-> Yes, co-developed-by/signed-off-by lgtm, no worries.
->
-> I had also considered using auto deref method resolution to solve this,
-> but I think it's a little overcomplicated, so I just posted the
-> associated const version instead. AFAICT this gives us the ability to
-> use const generic expressions on non-primitive types and type aliases of
-> primitive types, over associated const cv!. Currently there are no
-> (prospective) users for that ability.
->
-> I think also that this version is not a strict superset of the
-> functionality of the associated const based cv!. For example, associated
-> const cv! has better errors in some cases and can do things like this,
-> in the T: Trait case you noted (plus some edge cases around i128/u128
-> handling):
->
-> ```fn zero<T: FromConst<0>>() -> T { cv!(0) }```
+> +        // `calculate_ext_cap_size` bounds `ptr` at the next capability =
+or the end of the extended
+> +        // configuration space. `ptr_try_from_raw_parts_mut` verified th=
+e region layout.
+> +        let capability =3D unsafe { ConfigSpaceBackend::project_view(*se=
+lf, ptr) };
+> +
+> +        capability.try_cast::<C>().map(Some)
+> +    }
+> +
+> +    /// Calculates the size of the extended capability at `offset`.
+> +    ///
+> +    /// The capability extends to the next extended capability, or to th=
+e end of the extended
+> +    /// configuration space if it is the last one. `offset` must be a DW=
+ORD-aligned offset within
+> +    /// the extended configuration space returned by `pci_find_ext_capab=
+ility`. Returns an error if
+> +    /// the capability header is outside the extended configuration spac=
+e.
+> +    fn calculate_ext_cap_size(&self, offset: usize) -> Result<usize> {
+> +        let header =3D self.try_read32(offset)?;
+> +        // SAFETY: Pure bit manipulation, no preconditions.
+> +        let next =3D casts::u32_as_usize(unsafe { bindings::pci_ext_cap_=
+next(header) });
+> +
+> +        Ok(if next > offset {
+> +            next - offset
+> +        } else {
+> +            self.size() - offset
+> +        })
+> +    }
+> +}
+> +
+> +/// SR-IOV register layout per PCIe spec (64 bytes starting at cap offse=
+t).
+> +///
+> +/// The raw registers are private because PCI core owns SR-IOV state man=
+agement. Drivers should use
+> +/// PCI core APIs for operations such as enabling VFs and querying their=
+ topology.
+> +#[repr(C)]
+> +#[derive(FromBytes, IntoBytes)]
+> +pub struct ExtSriovRegs {
+> +    /// Extended capability header.
+> +    _header: u32,
+> +    /// SR-IOV capabilities.
+> +    _cap: u32,
+> +    /// SR-IOV control.
+> +    _ctrl: u16,
+> +    /// SR-IOV status.
+> +    _status: u16,
+> +    /// Initial VFs.
+> +    _initial_vfs: u16,
+> +    /// Total VFs.
+> +    _total_vfs: u16,
+> +    /// Number of VFs.
+> +    _num_vfs: u16,
+> +    /// Function dependency link.
+> +    _func_dep_link: u8,
+> +    _reserved_0: u8,
+> +    /// First VF offset.
+> +    vf_offset: u16,
+> +    /// VF stride.
+> +    _vf_stride: u16,
+> +    _reserved_1: u16,
+> +    /// VF device ID.
+> +    _vf_device_id: u16,
+> +    /// Supported page sizes.
+> +    _supported_page_sizes: u32,
+> +    /// System page size.
+> +    _system_page_size: u32,
+> +    /// VF BARs (BAR0=E2=80=93BAR5).
+> +    vf_bar: [u32; NUM_VF_BARS],
+> +    /// VF migration state array offset.
+> +    _migration_state: u32,
+> +}
+> +
+> +impl ExtCapability for ExtSriovRegs {
+> +    const ID: ExtCapId =3D ExtCapId::SRIOV;
+> +}
+> +
+> +/// A typed view of an SR-IOV extended capability.
+> +pub type ExtSriovCapability<'a> =3D ConfigSpace<'a, ExtSriovRegs>;
+> +
+> +#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+> +enum VfBarMemoryType {
+> +    Bits32,
+> +    Bits64,
+> +}
+> +
+> +impl TryFrom<Bounded<u32, 2>> for VfBarMemoryType {
+> +    type Error =3D Error;
+> +
+> +    fn try_from(value: Bounded<u32, 2>) -> Result<Self> {
+> +        match value.get() {
+> +            0b00 =3D> Ok(Self::Bits32),
+> +            0b10 =3D> Ok(Self::Bits64),
+> +            _ =3D> Err(EINVAL),
+> +        }
+> +    }
+> +}
+> +
+> +impl From<VfBarMemoryType> for Bounded<u32, 2> {
+> +    fn from(value: VfBarMemoryType) -> Self {
+> +        match value {
+> +            VfBarMemoryType::Bits32 =3D> Self::new::<0b00>(),
+> +            VfBarMemoryType::Bits64 =3D> Self::new::<0b10>(),
+> +        }
+> +    }
+> +}
+> +
+> +crate::bitfield! {
+> +    /// Low DWORD of an SR-IOV VF BAR.
+> +    struct VfBarLow(u32) {
 
-True, although I think we should also not encourage users doing this for no=
-w, as
-we don't want to make this signature of `FromConst` being the long term ver=
-sion
-and it'd be good if we can swap the impl at any time.
+I admit not knowing that much about Rust but this caught my eye...
 
-I do wonder if we should have the `FromConst` trait being aspirational cons=
-t
-trait so it has the signature (and documentation) that looks like what is i=
-n
-this series, and perhaps have the `FromConst<const N: i128>` being a hidden=
-,
-differently named trait, e.g. `FromConstImpl`. Might need some work to ensu=
-re
-diagnostics will stay good, though.
+The PCIe spec says:
 
->
-> For the above reasons, plus what Alex mentioned, I prefer the simpler
-> associated const version for now, particularly since we could
-> transparently switch them later.
+"These fields must define the VF=E2=80=99s Base Address Registers (BARs). T=
+hese=20
+fields behave as normal PCI BARs, as described in =C2=A7 Section 7.5.1 ."=
+=20
 
-Yes, I think it's better to have assoc const version for now, unless we got=
- a
-user that actually need the extended capability of using it with const gene=
-ric
-expression, then we can make the switch. The good thing is that we know how=
- to
-achieve it nicely now.
+So why doesn't Rust just define this as "normal" BARs (given your naming=20
+above, I'd expect simply "BarLow") but names it after "VF" specifically?
+Or does Rust require duplicating things in cases like this for namespacing=
+=20
+reasons?
 
-That said, there are a few tweaks in this version that improve diagnostics =
-(e.g.
-having explicit panic messages in places, diagnostics attributes) which mig=
-ht
-worth incorporating into your next version.=20
+"BarLow" doesn't seem to exist under mainline's rust/, maybe that hasn't=20
+been needed so far as C side code will likely be responsible for parsing=20
+them.
 
-Best,
-Gary
+> +        /// Base address bits 31:4.
+> +        31:4 address;
+> +        /// Whether the address range is prefetchable.
+> +        3:3 prefetchable =3D> bool;
+> +        /// Memory BAR type.
+> +        2:1 memory_type ?=3D> VfBarMemoryType;
+> +        /// Whether this is an I/O-space BAR.
+> +        0:0 io_space =3D> bool;
+> +    }
+> +}
+> +
+> +/// A decoded VF BAR register encoding.
+> +#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+> +pub struct ExtSriovVfBar {
+> +    /// The PCI bus address encoded by the BAR, without PCI attribute bi=
+ts.
+> +    ///
+> +    /// This is not necessarily the CPU resource address.
+> +    pub address: u64,
+> +
+> +    /// Whether the BAR is 64-bit.
+> +    pub is_64bit: bool,
+> +}
+
+--=20
+ i.
+
+> +impl ExtSriovCapability<'_> {
+> +    /// Returns the current PCIe First VF Offset in Routing ID space.
+> +    ///
+> +    /// This value may change when NumVFs changes. Drivers should use PC=
+I core helpers when they
+> +    /// need to calculate a VF BDF; this accessor is intended for interf=
+aces that require the First
+> +    /// VF Offset itself.
+> +    #[inline]
+> +    pub fn first_vf_offset(&self) -> u16 {
+> +        crate::io_read!(*self, .vf_offset)
+> +    }
+> +
+> +    /// Returns an iterator over decoded VF BAR register encodings.
+> +    ///
+> +    /// All six raw VF BAR register slots are read and decoded up front.=
+ A 32-bit encoding yields
+> +    /// one entry; a 64-bit encoding combines two slots into one entry.
+> +    ///
+> +    /// A zero-valued low DWORD is yielded as a 32-bit BAR at address ze=
+ro; this method does not
+> +    /// probe whether a BAR is implemented.
+> +    ///
+> +    /// Returns [`EINVAL`] and logs an error if a BAR low DWORD does not=
+ encode a 32-bit or 64-bit
+> +    /// memory BAR, or if a 64-bit encoding has no upper DWORD.
+> +    pub fn vf_bars(&self) -> Result<impl Iterator<Item =3D ExtSriovVfBar=
+>> {
+> +        let slots: [u32; NUM_VF_BARS] =3D
+> +            core::array::from_fn(|slot| crate::io_read!(*self, .vf_bar[p=
+anic: slot]));
+> +        let mut slots =3D slots.into_iter();
+> +        let mut bars =3D [None; NUM_VF_BARS];
+> +        let mut count =3D 0;
+> +
+> +        let mut decode =3D || {
+> +            while let Some(low) =3D slots.next().map(VfBarLow::from) {
+> +                // SR-IOV VF BARs describe memory-space apertures; an I/=
+O-space encoding is not
+> +                // valid for these registers.
+> +                if low.io_space() {
+> +                    return Err(EINVAL);
+> +                }
+> +
+> +                let low_address =3D u64::from(low.address()) << VfBarLow=
+::ADDRESS_SHIFT;
+> +                let bar =3D match low.memory_type()? {
+> +                    VfBarMemoryType::Bits64 =3D> ExtSriovVfBar {
+> +                        address: (u64::from(slots.next().ok_or(EINVAL)?)=
+ << 32) | low_address,
+> +                        is_64bit: true,
+> +                    },
+> +                    VfBarMemoryType::Bits32 =3D> ExtSriovVfBar {
+> +                        address: low_address,
+> +                        is_64bit: false,
+> +                    },
+> +                };
+> +
+> +                bars[count] =3D Some(bar);
+> +                count +=3D 1;
+> +            }
+> +
+> +            Ok(())
+> +        };
+> +
+> +        decode().inspect_err(|_| {
+> +            dev_err!(self.pdev, "invalid VF BAR encoding in SR-IOV capab=
+ility\n");
+> +        })?;
+> +        Ok(bars.into_iter().flatten())
+> +    }
+> +}
+>=20
+--8323328-433454475-1788182474=:2637--
