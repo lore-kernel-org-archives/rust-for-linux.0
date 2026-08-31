@@ -1,132 +1,91 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652E23E00B6
-	for <rust-for-linux@vger.kernel.org>; Mon, 31 Aug 2026 09:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788169856; cv=pass; b=I8GIHOnAjilbyufe5FlWmobiiTbJuBkkjKYQi1X9qQnZKRkzws2/6Vx0EdaslsmJVJBO/BS2x4KwzyD+roZlYzSjYnkzlTCv2Cs+nnTGX8sxVi9WV6WMQgskGsnhi4Uu5q01VHMVNjKLUUCJMVeRyrU51O3yYQTJ3FlTclatsF4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788169856; c=relaxed/simple;
-	bh=RbuKONLY0/S+AJmxjQgwpW5xe4SNlSbwc6Tzv4DTTPI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ji5hOknhEad8TJleICWerYOaUGxNz41+OO/DvWUir16xZJjPso/+7yg6ulHHpM1tLIWTQalZyNgv4EqcQaiM9cP5X5lnxkBc/xCBtMan0NdJCE+iRIiqBaJs5lijdWM1cUeoKe0FT4UikzYvwzdjU0y5bCWC3eGcMdj9C6AVYDs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NU2Z1aF5; arc=pass smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1D93FF88D
+	for <rust-for-linux@vger.kernel.org>; Mon, 31 Aug 2026 12:30:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788179416; cv=none; b=fwXj6DKSPjV/NxQQa0ogPBBR52zHLk2nBLMsIlbF2zKITbhEuexj5NhjQd8d1wfEq1f+yco0zZQnrwHYFil9mLTeLPX2DZR9IdwJlL91oaEleelM7isRAOKfQ4jXVhxJC8Xr+SgT+po2UXPXzyXdW8O2QWn3LGKLnLHj9Y+UGjE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788179416; c=relaxed/simple;
+	bh=+h8gWFCkmjX1wvvaiU1/0ONginGv3uAdCI3Wd1mXI0A=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=l+hPEE+77HmIpzqBh+B5cltyQL5YDeAQ/emYcvxS1ynzCCgaTpbj4LGhYW76ZLQj4iGVTI01w5F3ozhom1+HhKKjHoyX0XW05pG6xioINoWQKrV2OZIs8vSd3hVr67S57tkgK3r2jU+J8qg4rkneEmUTByGzBZwie0T1pxS6qrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k+bEYLpw; arc=none smtp.client-ip=209.85.218.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NU2Z1aF5"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-398b21b02f3so219311a91.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 31 Aug 2026 02:50:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788169849; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QBDVduvnJrXufW37uFJ6oI/8pQ2Azhd2yWC1JvZAWgv5k36QZzv89J0oGuiAFvWTIn
-         HkTM+ZvaIFUPguvUu6m4XK9I/XFHuiC04y/CV+wiiiHus/jwxojr9u6bpQGNyrie9HSQ
-         N3Dpc5G+NYdAWOaiK9Lms/PTd5B2hcsrJ9+GRKH72cdH+SL0XxVC7t1RRYp9ll+MmNrE
-         59rkCQDkUGPQMFTT7HZgIZCLp717cxn2mBWtlBCSXaQm5q5KNIfaiCqicurg3lmfUUqj
-         yVRJYx2uoxHzFklpRCrXPr4K17aUpWPRXDht0IEmrt+Don0ynAPenqFskHK3jNvcpkeM
-         02PA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FoMofcxx656wkcjtt08BKv2Pi44P6R9nDoS9NYe5W5M=;
-        fh=LOzFl2JJlJ+4tVJ4BAWsuuIj26+0Bz9XJZGwvlDePDA=;
-        b=aJtPczP/bHniFKBbt0POozjTzLt7vBBRpyMdJQ2qH4CJrO/9ibtHmXnhsziVXi681E
-         J/r54AGZnDoUCicdGGjdFAl6nJNJTf67g+WVek/31jgKpG07OHmWc2ZBKOvgQC58I7LL
-         mZccHolH362m+tJ8bhZo/KituLDBv/JX2RcS7rxLgIFL3ZeTIJB0YQgPr5rSEEedpxzR
-         sDlaXuBK3NsLiNtU4I7/r9AmYWQ7MAffqW2t+23M8vajL+IJedleLdZhL0q8bCfTPoiu
-         KZW96USW7d8mzlxfpqnQ/ZLDNwx68m0dvioooXEpiB9doeLV9ysWMmUkjgzT+KMQyXci
-         N1PQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k+bEYLpw"
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c1f548718d0so376645066b.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 31 Aug 2026 05:30:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788169849; x=1788774649; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FoMofcxx656wkcjtt08BKv2Pi44P6R9nDoS9NYe5W5M=;
-        b=NU2Z1aF5O2lfgwnc45eA/Drx5frvK5AQLzWrlmtFEvAvAyWjXiRVpHAeRZu/hWJiNy
-         RMu+JqR13htB0X/e9aLNdMO9U1+8vwV24lZL9bx4At8zi2C3s3AGJ85ZuqQ4/9k3Y+Qb
-         sXZRAWBX95JFFl46wQOkj1noKhBKomvfV5cpH3HIz4gUjS/n1YWI5J6Ww+UwgxT+8RFk
-         lOB65F0iVVdf4e7YzbZIgnu5w4Ri9sYUUl8COaEfhpA9DEW/kZRE7KvGR8ve0gLNgA0+
-         I/sw45EQZDZvV7bKHDvq7MRXzaLMj4GkK2SkvR6U0bk8B+obd0j0RFEwk99TvCRUsaE0
-         pbJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788169849; x=1788774649;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1788179413; x=1788784213; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FoMofcxx656wkcjtt08BKv2Pi44P6R9nDoS9NYe5W5M=;
-        b=MPnrneXruqPoj2+nKQCaaaXa1ArYy+Sua9dhKQgUOIOFLfZOi7z9NKwIzX3bZxpLMU
-         P5Gg9mcSCWNWLs/ykKdeZbybKg+/ZWlG9KBwtxbTpmMn9aTmwPdbP3A4yiOeWcbwzU4A
-         sFRim0bikxTwgeUBUV+dq6reI2hfWkCko3zJcUZH8xYvrWl72bKXAIfPX7OueZ/cuKtx
-         5CeWei4pL89jrfi1Nx/88wJkpV0+nAcXb5ay1eogNLP6Eqk2KHaHkAwm550OW2KPMDIx
-         to/66iAw3xA9dSpQPBL1Y/EUjT4d9XNvqXzjD7D72/eDnVl+kSBeE83xu+glGQInbmVt
-         jiMg==
-X-Forwarded-Encrypted: i=1; AKwUvBxZIvwTo2zFQSKV8z/yhMj5gBIzByliHYB2hdQ7nmOBrUWXCJVg59khPRmVpFBJI5o4+LbJhuOd2cKjX6HLpQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++nT19imzb74Fgl6keJsmh1uT9UZdQOF/2uFwoRdxJr2MhgCe3xD
-	L5ee53EnP4xWP3Bws10muVMSj6CXQqPuBzZZ64OJi5m1HFspTdIM1NjSLVN5TjWn2kiFkrmL06J
-	Fz5roZU9OvofpDRwBoZBIGMlZvYVNvpo=
-X-Gm-Gg: AYBFou3bP7AzLrxio4KEEUqpMF6u0Q05lerEvauWhqjJf9AcXPLNUeIFlCl+2WarCfD
-	wEoBdsThhnP1mfd0+DLoSzuCK/cnTbeT2OSbNv559tU7bWhdHyg2ExFg5prp1ymjOM18/qcyBvw
-	OiM33zGufV8/H9yU4Xv+Y/2ozIDPGu1Z0CTEqkYj+SfGggpwXOCl+szrcudJqrZD0SdK0DvvFst
-	+541c00TGpSnbTSK1tMKQODxV3aTBWy3+iLTW/199/2yN9jHGqrLhbe5OPkZ4PDa6gOozYJSDZe
-	goWc9oBU5SCl7AZj6vXUDcCWed6qOMWKrkpkGKNHpVmFJA+/MJRvnj69SnXVvJQA2/nJReC2XS8
-	Y2I/EPWJh1sD2FocYR3adnJVF5o+VKQE1CHbSs0dwP5uGln+LguTF0yMrS1U/
-X-Received: by 2002:a17:90b:4ad1:b0:38e:76f8:fcbb with SMTP id
- 98e67ed59e1d1-398bac28133mr11638970a91.4.1788169849364; Mon, 31 Aug 2026
- 02:50:49 -0700 (PDT)
+        bh=WoUOaDHWtX81/DV/3Bz9tJZGph8DpiKqGhnhSMcw4pM=;
+        b=k+bEYLpwOKYZqKdEWCxnPJ40CERjZ0YdOeDT9jnCdWOaqDm/BmPqp0GZlPabSsNxZY
+         LCfv8eePPLW0ykpCddH6tMLAgx5wAz1u1DAlPeOUaVfbuNESw+OPkcOsIXRLmF+tlNp3
+         tqyLiAi2U9n2iNm9PgunJ9YC2YP7fzUpPFUZD7h05FmWGxIyQN08b6dWhjSXOinutkol
+         ewEFP9RbOyMEIpQteU9qpy3b810UfTShH7TURY5KUbhalMI/VawA5ha7eA/DaPXKRTyh
+         FJNSLMJy3b9JhDAx06Sp22nMLS8dalsAZyCGjD7Zbs2MEo3i7cL1C+U5ARptQxgxGyZB
+         zj5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788179413; x=1788784213;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WoUOaDHWtX81/DV/3Bz9tJZGph8DpiKqGhnhSMcw4pM=;
+        b=RB6PJcvHLiyahQxoTMqcuSK08yJlluicHtuKt5YZ7cs944kgbu5cfkgVQVPJ19gSjS
+         hHSkeakGheYjdIavVg/24aago5Pb3ZzgQ7tN4YLgzHKSY35wndQAnBK8NJCLOMgwsLOg
+         rWoWpE+MVnP8QFGXoNZoGj+iQJv4t2PC4ESHlHmcKlnhfxgUTR68mtTfczXYxshYFb09
+         +4UOzRLCAQWm3rhahsf9ftCmFr5FKK7MbIQ1nWIPrSUg41V789bhkaZs6ajZcXQDWtWK
+         GhgACN+f26F1bWdo+5XI5wykUAc977OrUgvgc/Rt1uMFTgZsz4vSm02V+E3urZFhJNF9
+         Z3+w==
+X-Gm-Message-State: AFuF++kkeD3Z9MLS4KMTjJyo5QTmkZaTKhHkNmf8n8He5Qt8jy6jbeZO
+	8uUPdbs67uuOJ4HG7+IyFL9vm+RQksVkn5uX33wYdSEmwv4GqBXMsJUz8BEz3fpfUjl0q2ZJmGT
+	ijAPl92pmvUqRvyXWxA==
+X-Received: from edi22-n1.prod.google.com ([2002:a05:6402:3056:10b0:6a6:42ef:3e5f])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:4041:10b0:6a6:432a:e439 with SMTP id 4fb4d7f45d1cf-6a6432ae561mr4418498a12.6.1788179412692;
+ Mon, 31 Aug 2026 05:30:12 -0700 (PDT)
+Date: Mon, 31 Aug 2026 12:30:09 +0000
+In-Reply-To: <20260831052635.42417-1-nenkov2004@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260831-fix-pci-irq-vector-index-truncation-v3-1-a2103084d20e@hotmail.com>
-In-Reply-To: <20260831-fix-pci-irq-vector-index-truncation-v3-1-a2103084d20e@hotmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 31 Aug 2026 11:50:34 +0200
-X-Gm-Features: AcwNN1ViyddrDBit2qWlifkamMcobcRAYSEK9R5OBBJcArZIlXo8eUmjUf62r78
-Message-ID: <CANiq72=8JgETrNHmoy0gHxPmfipUmVGq14EhjkU6JWYFE+7xhg@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: pci: reject out-of-bounds IRQ vector indices
-To: aiqubits@hotmail.com
-Cc: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+Mime-Version: 1.0
+References: <20260831052635.42417-1-nenkov2004@gmail.com>
+Message-ID: <apVz0SFGOLbhUc2O@google.com>
+Subject: Re: [PATCH] rust: binder: Use lower bound for node debug lookup
+From: Alice Ryhl <aliceryhl@google.com>
+To: nenkov2004@gmail.com
+Cc: rust-for-linux@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
 	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, Aug 31, 2026 at 9:17=E2=80=AFAM Sophon Z via B4 Relay
-<devnull+aiqubits.hotmail.com@kernel.org> wrote:
->
-> Fixes: 2fb7755b0a7e ("rust: pci: resolve IRQ in index() and embed IrqRequ=
-est in IrqVector")
+On Mon, Aug 31, 2026 at 07:26:35AM +0200, nenkov2004@gmail.com wrote:
+> From: ChrisX101010 <nenkov2004@gmail.com>
+> 
+> The Binder node debug lookup currently walks the process node RBTree
+> from the beginning until it finds the first node pointer greater than
+> the requested pointer.
+> 
+> Use RBTree::cursor_lower_bound() to start the lookup at the relevant
+> tree position instead. When the lower-bound key is equal to the
+> requested pointer, inspect the next node to preserve the existing
+> strictly-greater-than semantics.
+> 
+> This changes the tree lookup from a linear scan to an O(log n) search
+> without changing the returned node semantics.
+> 
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1249
+> Signed-off-by: ChrisX101010 <nenkov2004@gmail.com>
 
-The tag looks good, and there is no need for Cc: stable since this is
-from yesterday's -rc1, so that is good.
+This is a duplicate:
 
-Nit: we usually don't do newlines between tags.
-
-> Signed-off-by: Sophon Z <aiqubits@hotmail.com>
-
-Is this a known identity? Please see:
-
-  https://docs.kernel.org/process/submitting-patches.html#sign-your-work-th=
-e-developer-s-certificate-of-origin
-
-> +        let index =3D u32::try_from(index).map_err(|_| EINVAL)?;
-
-Do we need the `.map_err()`?
-
-Thanks!
-
-Cheers,
-Miguel
+https://lore.kernel.org/all/20260814215145.2050599-1-rafael@rcpassos.me/
