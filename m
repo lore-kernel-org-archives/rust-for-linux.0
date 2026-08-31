@@ -1,180 +1,140 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020093.outbound.protection.outlook.com [52.101.196.93])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB2F4582CA;
-	Mon, 31 Aug 2026 17:10:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.93
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788196260; cv=fail; b=VxDbWzrbe03s+G1Cod+WwJUezRB0il3WO+H9OQcJOyI5//52lO3ZNkHt4Je6hdNirusnFNAPH0crfMfCMVJmRGPvqZuyLSSDZNG/bRZLsYMGIu5yZa+Hm7MpH1c9p7tmqi255KVvrlzmABKtto7VBmY9I2wbNhm5PEUf9OE1jqE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788196260; c=relaxed/simple;
-	bh=szLd1FcbeT5AXkDSyVqEidfOYV5Hgx/N2de3p5GRMZY=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=D53BbiCOPG6CJeINGF5sQxrDx9nwKeCx5XsiKo0B1DztAAhWjqQlJ0wlVxdlbIrDfonypDUEouarblG1uXmpsjnRi+ciQ5UKTzlCo39XFntCt//cjsCfJHIO0Thaotb5l8FmF/5YE0jogOCX3Ih2U5D7rCgPP/hayn5Reb9lHgI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=aqoC4EE/; arc=fail smtp.client-ip=52.101.196.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA91033B97D;
+	Mon, 31 Aug 2026 17:15:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788196552; cv=none; b=WviWVx9t47cQICOI9H/yA/f1QAegYrT7tyuwt3i2XllvFHmSvG9DyXjpa8PXa/YaBPveDy6RQneUPweXjAD20TcTaBPTZchXfRhsAX9LpQgH2Zu3+c8N+rB6IIdilECwEf5VD1Qcc/jL3rBimcwr6Vd57J1ddJoDD6jfvTmAEH4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788196552; c=relaxed/simple;
+	bh=qhps3i/s6KKq+LUWs2P9LFVcYQc2rWPelFcUqOtIChA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QgQTn5HYRBo10f2q6f4eLAAikkkEhTnt8ptY/tMcpFtsQL6bvGAIMdXwbB3GyE2wm5ZMd/aYbIRSzAd8hWXcL+Vr6DYuf3lLsoEXajnMqWFbzIkbSrd8sk2NSeNwcvQ3lyB9LEIJQhkBRhotzqYN1Wc0FoEG36Hl4rmQ0aByKsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mdZ1In+j; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="aqoC4EE/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mEmgLQ4kLlMRwu4ZUSbVno8cApQ6+PxjKs49zTi8ZYisr8SOd4XArp4fsx6U2yTafDTO2JCkK1Tx2W3J+NjD9BN30wGbx82DQNgMkMVCbfJJ4DR4B41nKSBWB1i0J3cUEUytvyn9o30MXGEz4JPMLcVCJ6FpMMKeMqs+IQ8STQmkwsFZbnmKBXbTaJk2NXPbjtVbB9fNddqoSDVZGJhvxWctmiXULBr/mgv1rtiHQYIriwtDiS5n2rlYdna4xQY+0p9pAsUaumjik7BNWVy6zdXbGPWgu1dMAt8IInYgPpmYgEqMNrao9ohsYspandNJZsArfnAvjrRi1mR9B2YE5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=szLd1FcbeT5AXkDSyVqEidfOYV5Hgx/N2de3p5GRMZY=;
- b=DgEo5we7HAbNz7p0iOYzjJlWoBkjUHGeMT4p761GQzzGUBpICYg8HX4vyZbkmpVkWEAh+sKifQhUhvs+JbXU+u31Bk9L+eOTkLoaUlDWuZAQYFVd4KvTCPL2LWFeXRFg7wU0UNmGDsBOF+oDQ06pCtXU2Qst3+Xf1qVkKmQRXi8tiBnY6UuHCqi4BcPxQbo9A43Vlb04u2T25qvH34bx1qwv9ZyN2r1kpSdwaBol5Tj6TFudduc8aApayCld66wUkfE5MaqgUfmSUwhP75pg8rcN+IRsV6rsF1JbFUxJ7SbVDIjCq4tsDNQQFF4voLbnQ+hoQuuhZFs28E10JvUKhw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=szLd1FcbeT5AXkDSyVqEidfOYV5Hgx/N2de3p5GRMZY=;
- b=aqoC4EE/FWP5tTznbBNq2cFZpnt2tAKOxygusM6ne7hnGbMGQCGxwCq08uF6J32InpvIao/Nl9Ay/XhobD6rf7U6IH+F8OI67AjZtc6CNZAxU4H2PpMPxXUAokGwjPDHx6X3BIHNk5e0TQicIEp27SWm29ykHBqU/BT5hJ3sU+s=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LO0P265MB9145.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4a2::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
- 2026 17:10:55 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
- 17:10:55 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 31 Aug 2026 18:10:54 +0100
-Message-Id: <DL3AO2K8IS07.3QB2IM7YJL8WT@garyguo.net>
-Cc: <ojeda@kernel.org>, <boqun@kernel.org>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>,
- <daniel.almeida@collabora.com>, <tamird@kernel.org>, <acourbot@nvidia.com>,
- <work@onurozkan.dev>, <gregkh@linuxfoundation.org>,
- <colinbrauncl@gmail.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 1/5] rust: usb: add revocable typed interface I/O
-From: "Gary Guo" <gary@garyguo.net>
-To: "Mike Lothian" <mike@fireburn.co.uk>, <dakr@kernel.org>,
- <linux-usb@vger.kernel.org>
-X-Mailer: aerc 0.22.0
-References: <20260826163101.4168-1-mike@fireburn.co.uk>
- <20260826163101.4168-2-mike@fireburn.co.uk>
- <DKZ3UPVXL5C5.37DDI6DQKS3MS@kernel.org>
- <CAHbf0-EzHGuQ720V1g84U8Ys8HS+Lpdfdu22zZmB42G8yU=dqQ@mail.gmail.com>
-In-Reply-To: <CAHbf0-EzHGuQ720V1g84U8Ys8HS+Lpdfdu22zZmB42G8yU=dqQ@mail.gmail.com>
-X-ClientProxiedBy: LO4P123CA0406.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:189::15) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mdZ1In+j"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 64911C2BCB8;
+	Mon, 31 Aug 2026 17:15:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788196552;
+	bh=qhps3i/s6KKq+LUWs2P9LFVcYQc2rWPelFcUqOtIChA=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=mdZ1In+j1Tbsx2leubMe4rl5fv94iDQglSmFwMzbd9Dv2mfjIOHX+tyBPPPLscBdT
+	 ATG/MZwJbl40bEsZ5b01E4jj2i5BRMqZRggsOu4LmxFS76UTEHcp6yFyQmmYw/i/Dt
+	 FJRSDGJDSpIcGuW4Gcp+2ZH1z3PwFf0IdHQ4G6aIynP63vSCePV/cRDvhab36KNrfv
+	 wsF8ZUyzZyAk/ZkFQTxRWE5lQ5IAjexNhagNc16JWTc/jECsB9FG40l7Qj/dCVBtwX
+	 VxpQKx2O+/lnW1Fl5dUAVQT4SFrF9sAybLliLPVBOwuR6rFkM2c2wQSAwva+DZzIXM
+	 tBCpM+9ZQfDSg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3EB2AC624C6;
+	Mon, 31 Aug 2026 17:15:52 +0000 (UTC)
+From: Sophon Zhang via B4 Relay <devnull+aiqubits.hotmail.com@kernel.org>
+Date: Tue, 01 Sep 2026 01:09:53 +0800
+Subject: [PATCH v4] rust: pci: reject IRQ vector indices that do not fit in
+ u32
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO0P265MB9145:EE_
-X-MS-Office365-Filtering-Correlation-Id: ac9f169c-06a3-49ab-11a8-08df0782d156
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|23010399003|10070799003|366016|5023799004|4143699003|10067099003|22082099003|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	oCfPA5gx/WJvEci7HO0qZuIoyo0T+ljDXdYKf5GlswunqeXcdkuyArdTUWVuvndKO3rPNKTawHXx5NyJ09r8iniZoVGyz5cR4IIHZ76yvmy0jMRI3x8pgE1wFVNYCJcoch/zEqtH8S/awlx2wQAyl0+spYxdWCFC3Ezm8BROWoWZvAWOY/hFl6R/Pp/KFnGrbq0J+pVRQvIKL9y9hzuYETxMNSuLu2Pq2FDkOLuCI1EtWOR8lnLZL8blEghpG+6ZLsgdGnwoIedvjlKfL9mVeLvItx9NcVsUx1gEmnGJ0Yz5JKa3lS8tUZ7Ej3jkPAsNAS3Y4iCjMdjX6u/xHOSl6LGi9mYzOiG5vTsBWTBR071tBiTdn0OlWHISDku9wSxAJUtop+b9UjVyGdAOTPFQuma7iH2PfyFD6hGp4Vm2ycnRfDrhGauOOi0uYukJ0IMqu/xPov6wfucAdX23xatksoB1Zc9uYbdBHUxejwmBoF3S1OI+OoSE8QwSjaTPRRkbc0oSktCwGKOkMfUIpZzmi3AtlamQMlb/RusPGQAqyeRVLCvrpeNcWDdGin5deHprnfp0gcSKCQLfZFwjFSfGNjH6wSlndqK0Xtye7E6imK4XcD0QgW9DdVZ2MNCAfqQa2CNCXwZp2XQXOEbJX2k12MDD8uBDjXYrkECDe4YOFWs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(23010399003)(10070799003)(366016)(5023799004)(4143699003)(10067099003)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UkhucldYc285YTZuWmpOaGo3c1hNUUVoSitVMmdCKzNBdk5xOG1Fa0NJM0JD?=
- =?utf-8?B?NExJdmFlb1pKTnFYZlgrSnJQdTJUOVhKMVVKUUZ6bHQvNk9mUk1aVU4yMWV0?=
- =?utf-8?B?Q01UcEh0NTM4dk5WeFNra21mNzZLdmVRNWJ1ZjlWKzUvSktnVDVXRXJLZkF4?=
- =?utf-8?B?QzhNVCtOZVo0WEZ4WklXSFQ1d2pxQkk4NlFxWUkyOURCdkJ4QWdBbEVnY0dq?=
- =?utf-8?B?dXFrUFowK2RJdjM2c2FyVGZlZ3J3ZnBoSXFQT2ZlcmtQRFJDZTdhMkI3Y1Ez?=
- =?utf-8?B?R1ZQdnlSNmVyWTNHdFlvRlB6cXl5ZUVHRWtEd3d3RUl5K2ZpRlV4QnFXQkZV?=
- =?utf-8?B?WjZmNWtPY2FZa2ZUbGpYQkJ4eFowNkRRZnl5QzBlSUxEaDN4OGNkMkNKK2hp?=
- =?utf-8?B?MmR1R2pQZHNSaVhIYldsZnlOa2RvZFRkRTNuQlpLZVNKRVBBalNLcEZnbEpw?=
- =?utf-8?B?eFhnRFJHaktxOGpJa1RlRm9nb0gxbFVpbzZpOXk2WTl1RjYwWnpTWXBrZEFY?=
- =?utf-8?B?SlpodjhTdUFobTVsSEhQTmZ6Sk10NGJmSFR6UUY5QTRIOVhaSFBqRUd0aGth?=
- =?utf-8?B?ZnZkVmtWOUxUTzVSS0xqTGY4YWNmOVQxSkhpTjhRVURqRGw5UWhWaWNHR2RQ?=
- =?utf-8?B?MEJISkhvOXh6cFhpSzdUYzNPS0pOWnU2ckc3WHZia0lGNnZ2aDBjQUxRN2U1?=
- =?utf-8?B?UXNFa2tQeitpcmxnMmJ5SFV6YTV2SkxaN0svRXdETW1rbWcvdEZtMFIxRzJR?=
- =?utf-8?B?dmVkY2E2UzhDZXI0bDBJbWpLSmV4Ny9SNStyWkRNNVZ3K1lSa05jWFVqZFQ4?=
- =?utf-8?B?Q3p5YllLVnMwQ1I2NHNyVWNDRXkva3l4ZGYwUTczbVhCZWw4NlBNYXBHb0Vo?=
- =?utf-8?B?RkFtSzZvZ2pZb1hJclNvUXhuSWxhMC9rcStHWDdWSlJlQTByOXpKSk1OMFZh?=
- =?utf-8?B?L3Qxdmpma3MzNEF4RWUzZGRJdk9WSEdCb0dDN05PK1B6VjhEbXlBc09HeWIy?=
- =?utf-8?B?bTdOZFJTOHFCMytuRVhmMFVpdnQyOGRCaGFRcjFyUjdTdU0ycVcxdnFBZVhk?=
- =?utf-8?B?aE5ESXgvd3pKdllyVjUzQko5d0FUN3l6N0hVTlk4MnlCWGs1QnlmdmpkT0wv?=
- =?utf-8?B?UXd4L01sWmZBaXpRdVVrcFBKbTBPR2YrRVY5YUF0Q0ZoWkNaaDUvSndSa0dG?=
- =?utf-8?B?djB0azFWNVovVEVvZVNCREhOeXlUNlhvdnJoR0g0eUxqRzFydFREd244OGZX?=
- =?utf-8?B?cmNrL2hEek1wbjUvaDNiSnZmUnQ0VHV6NFdSYnhtempKU1FHTHZoL0tQM2hG?=
- =?utf-8?B?MVUvOWVvWXh0V3NEK3ZXWnFwSEVXSTFjQkNWU3VScjNGSmdndUlCSDR1U1BG?=
- =?utf-8?B?UnpLWkVnVmljUzBqRERoUzFML01IaE9EL0hxVTdNYkV0MVlXUGtqVXg0SnlM?=
- =?utf-8?B?KzRsRGQwV1ZFNHpJamFmU3AyaTRnbld4dEpPeTFaMGRVUk11TndYVUY2Wkxs?=
- =?utf-8?B?THRNRjc3STUzMG54YTBUYlhzYktjY0svMjdoS3hWNWhZMWdvbkZETFZJanhC?=
- =?utf-8?B?SnVQcG1IRVh2OUlLcWUrbnV3NFh4Z3ZPeGtEU2ZqUlN5MVhmUTRra0ZkaDRn?=
- =?utf-8?B?RytHL3ZEOEpCZFdIK0UxTm1GT0N1aGZTc2xMdC9IRWVOZkNVTEhxTjhuNlJv?=
- =?utf-8?B?VCtrLy9mT0tvem9YQWw5UG1oeElwbWh4QTliTlppVTFEQXAraC95bTQ3V1Nw?=
- =?utf-8?B?anlkTzFHOG1uNytmQTZsOHA1eXhmb0VQTklFN3Q1Y1RueDdRdHFnMkNWOWoy?=
- =?utf-8?B?bWRobzFZNEVLeUZURjBPNVdtQjFSR2hHTkJRbmtYenFPeVlIKys4cUh3OTBl?=
- =?utf-8?B?NnJYeDc3Y3Y2ZjZITlZ0TlRxTHhtTTMrcDZJR045cTBYZ1Z5Q2oya1RnSVhU?=
- =?utf-8?B?SjdXeENUNG9WdmVSOG1OVlBoQzdQYXliZXdvZG1CQ1d4M2Y3bSt2Nzlob0dx?=
- =?utf-8?B?Q3I4SDRjNSszT1hhTFhBSWE2cFV2MWlMSHZBdDFlRVp1bXVPMFJwRmVkdmZq?=
- =?utf-8?B?NTBTZThFbGxZQUIrTEp0eXkxWFRDNzdkNXZ2bWoxeUlGd2oweTl0ZEhmYmJF?=
- =?utf-8?B?UEZtaVZDZzh0ZWlNRUdYT1lYZTlSS3VxVG4wRHR4NUltbjZpUlF3ckN5RHNW?=
- =?utf-8?B?U2NIb0RYZHA0blIzaEM0QVFMeUdNcFh2ODRJbTl5ZExvWXFlb2VLTkFIMGJp?=
- =?utf-8?B?TDRsMjU5RkxISlg3ZWRCWjJoNmxyTENPYytxVTNsVVRGNXE2RGh1SzFIWE5G?=
- =?utf-8?B?a3RWYnl3SFNnOGZ3OHQ5MTIwM0tEOEFYd0hLcGtCUzNQSmNnQ1lHZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: ac9f169c-06a3-49ab-11a8-08df0782d156
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 17:10:54.9946
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rzJh9oan4AfBgjYuVOAoMcEVR/MGH6PBnnSEqxSAhabCBe4qEhe3iUACAvbKaUFP0V+m1R+6t1RPAmQqNYThWg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB9145
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260901-fix-pci-irq-vector-index-truncation-v4-1-f94aa6932fd9@hotmail.com>
+X-B4-Tracking: v=1; b=H4sIAGC1lWoC/53OPQ7CMAwF4KugzBjlpySUiXsghpAYagQtJCUCo
+ d4dFybEBOOT/L7nh8iYCLNYTh4iYaFMXcuhmk5EaHy7R6DIWWiprVwYBTu6wTkQULpAwdB3Cai
+ NeIM+Xdvge+6DdXO9M26uvIyCpXNCrr1W1pt3ztftgdsjPV40lFm6v94oarz7bbEoUBCt0crFu
+ t5at2q6/uTpOAvdSYybRf+halYraSR65yrr62/V/KEaVr1W7C6qqCV+qsMwPAH8zWrBlgEAAA=
+ =
+X-Change-ID: 20260831-fix-pci-irq-vector-index-truncation-6752f3751a0d
+To: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Sophon Zhang <aiqubits@hotmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788196549; l=2550;
+ i=aiqubits@hotmail.com; s=20260831; h=from:subject:message-id;
+ bh=aDpWwnCHJqNDAl+iMV/Pt6CcKak8JY7tJ57zkb1ld5w=;
+ b=NHZdgqGpnU8lETGIZIzu3ZLXvJ5MUb7qp3HPbYOF5EZ6zD3TUOvdD19e2lx9OaKdyoL8P9bx0
+ oXZbGHZhaj/BBqC18cpsZ4tDH2lJz928e3nN1ux9aBvnlhVV2c3sNI9
+X-Developer-Key: i=aiqubits@hotmail.com; a=ed25519;
+ pk=+mrkwQAyCCkZdVPpu+CBQr1VZQlkXa7/1WizfeSF/yg=
+X-Endpoint-Received: by B4 Relay for aiqubits@hotmail.com/20260831 with
+ auth_id=992
+X-Original-From: Sophon Zhang <aiqubits@hotmail.com>
+Reply-To: aiqubits@hotmail.com
 
-On Mon Aug 31, 2026 at 6:04 PM BST, Mike Lothian wrote:
-> On Wed, 26 Aug 2026, Danilo Krummrich wrote:
->> > + /// Asks the driver core to unbind whatever driver is currently boun=
-d to this interface.
->>
->> What is this needed for? Where do you use it?
->
-> Nothing in this posting uses it. It's a leftover from something I
-> removed, and I'm not sure it should have stayed removed.
->
-> It backed a write-only sysfs file, /sys/devices/vino/remove_all, which
-> walked the driver's list of held interfaces and called
-> device_release_driver() on each. evdi has had the same file since 2015
-> as /sys/devices/evdi/remove_all, so it's a name people with DisplayLink
-> hardware already know.
->
-> I added it because unloading the module used to be unsafe. disconnect()
-> could deadlock against usb_hub_wq, DRM references were held past unbind
-> so every replug leaked a card minor, and one unload took the machine
-> down. Having one write that unbound everything from process context,
-> with each disconnect running somewhere I could watch it, made those a
-> lot easier to find.
->
-> They're all fixed now, modprobe -r is reliable, and the sysfs file got
-> cut from the series along with the rest of the development scaffolding.
-> The binding method survived the cut without its caller.
->
-> I'll drop it for v4 either way. The bit I'd like your opinion on is
-> whether it should come back later with the user attached. Against:
-> /sys/bus/usb/drivers/vino/unbind already does this, and all remove_all
-> saves you is knowing which interfaces the driver kept. For: a dock is
-> the kind of device where someone wants to hand the hardware back without
-> knowing that, and evdi has shipped the file for ten years.
+From: Sophon Zhang <aiqubits@hotmail.com>
 
-EVDI is not an upstream driver, so the fact that it supports something isn'=
-t
-really a justification of adding a new API interface that is already covere=
-d by
-sysfs unbind.
+IrqVectorRegistration::index() accepts a usize, but pci_irq_vector()
+takes an unsigned int. On 64-bit architectures, casting an index larger
+than u32::MAX wraps it before the PCI core can validate it. In
+particular, u32::MAX + 1 becomes zero and can resolve to the first
+allocated vector.
 
-Best,
-Gary
+Use a checked conversion and return EINVAL when the index cannot be
+represented by the C API.
+
+Fixes: 2fb7755b0a7e ("rust: pci: resolve IRQ in index() and embed IrqRequest in IrqVector")
+Signed-off-by: Sophon Zhang <aiqubits@hotmail.com>
+---
+Prevent 64-bit Rust IRQ vector indices from wrapping when they cross the
+PCI C API boundary.
+---
+Changes in v4:
+- Drop the explicit length check in favor of PCI core range validation.
+- Use the existing TryFromIntError-to-Error conversion directly.
+- Keep commit trailers adjacent and narrow the description to truncation.
+- Link to v3: https://patch.msgid.link/20260831-fix-pci-irq-vector-index-truncation-v3-1-a2103084d20e@hotmail.com
+
+Changes in v3:
+- Check the index against the allocated vector count before entering the C API.
+- Keep the checked usize-to-u32 conversion and document the C-side warning.
+- Link to v2: https://patch.msgid.link/20260831-fix-pci-irq-vector-index-truncation-v2-1-4030ea7746a9@hotmail.com
+
+Changes in v2:
+- No code changes.
+- Link to v1: https://patch.msgid.link/20260831-fix-pci-irq-vector-index-truncation-v1-1-d63217d99b67@hotmail.com
+
+Testing:
+- make rustfmtcheck
+- Not build- or hardware-tested; bindgen is unavailable in the test environment.
+---
+ rust/kernel/pci/irq.rs | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/rust/kernel/pci/irq.rs b/rust/kernel/pci/irq.rs
+index 6741046ec1c0..22e2cdf82a21 100644
+--- a/rust/kernel/pci/irq.rs
++++ b/rust/kernel/pci/irq.rs
+@@ -151,8 +151,10 @@ pub fn irq_type(&self) -> IrqType {
+     /// [`Self::len()`].
+     #[inline]
+     pub fn index(&self, index: usize) -> Result<IrqVector<'_>> {
++        let index = u32::try_from(index)?;
++
+         // SAFETY: `self.dev.as_raw()` is a valid pointer to a `struct pci_dev`.
+-        let irq = unsafe { bindings::pci_irq_vector(self.dev.as_raw(), index as u32) };
++        let irq = unsafe { bindings::pci_irq_vector(self.dev.as_raw(), index) };
+         if irq < 0 {
+             return Err(Error::from_errno(irq));
+         }
+
+---
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+change-id: 20260831-fix-pci-irq-vector-index-truncation-6752f3751a0d
+
+Best regards,
+--  
+Sophon Zhang <aiqubits@hotmail.com>
+
+
