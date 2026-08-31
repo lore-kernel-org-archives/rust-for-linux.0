@@ -1,347 +1,236 @@
-Received: from flow-b5-smtp.messagingengine.com (flow-b5-smtp.messagingengine.com [202.12.124.140])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011003.outbound.protection.outlook.com [52.101.62.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435E730EF89;
-	Sun, 30 Aug 2026 23:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788131422; cv=none; b=DlSpe2/hSBv2/iDsx5PUP/uHvyac5slQpDC8zxlLERIIP71lJv2dv+wWz1xm4MFl9e5d196ii8YwRIRQiqw3ZxtzLy70GPofdimYQ64Q0HukMBQRHsvANz5+mMgNfgeW8s2qjXE5hJkJZbJm3+9QmpCFdtiIbcm580J7SCOI1+w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788131422; c=relaxed/simple;
-	bh=Ntb372e/rWIeBr1J4NjUE3vuIDUZz1AUEM6kRXEBLvA=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=DNxN6ZRXTSRF6BSj5LSnd/NMQIHjoi8xch+9yUq/o0n2KyPhvW5M8k6q16VvuFcd+ifjHo6+ol92jEd2yWs+UJKRQAxbmWjw4YyyTLEY6Gjg2VykBeihmk/VuvU+n2LwW1+Qg5XLk7YufASniVqzEaQ8O4H6wJlp41yQpJ6hHGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=Qo6ieQvu; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VPm/7Fhe; arc=none smtp.client-ip=202.12.124.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454FF3438BF;
+	Mon, 31 Aug 2026 01:08:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.3
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788138508; cv=fail; b=bwVMR+DSo4aRgsPnnKGhPb2VJZYlsKIyjMaxkEaywIewfiPTxyjW82umozmx+eU6JDi+Nz7kpyVpiev+qCrOcQ4/7YkQIITEtThGhQSuv+DpDnfeaNQlPnyw8KD2uB9JG6pmc2pUcYKkHljJXnGWZgwD/kuhGtwp5bJq26C5wMA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788138508; c=relaxed/simple;
+	bh=mW+PmE4bKnHbRM5x5ZLHL9Zjy9YNQsAMfjgSBrPLEX8=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=JNse6IESRI6y2Oy+5bppaFPKM/N7L2H0Xwo1qJu85gYbjCDRA35fDuuVXThSh1nLUYmAt9WsDLmxoP1haGUR1j9RDUUAXn4sBpFVEF2dsKLo1I9PtRCtalah8Td5gMbDJf2leWnK1HpsXZaXMG3d3wiT8ghCUv+kQ+chxk42IyA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Pcx4EyAR; arc=fail smtp.client-ip=52.101.62.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="Qo6ieQvu";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VPm/7Fhe"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id E9FB813001B0;
-	Sun, 30 Aug 2026 19:10:14 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Sun, 30 Aug 2026 19:10:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
-	1788131414; x=1788138614; bh=zEc5hZJIk8YRnx+J+eo4+Y3sVspDxogbjvE
-	EZwuJ7rQ=; b=Qo6ieQvuNCpEAFNGUhEaIGd1tM2qenglCvyZhQAtLYcKgEz5uZv
-	VBkmAHxWVjh7GITNYGQRuizAhYS66fu/QSC2e7UCmgPz4kXTk5AkzcfuRQnlVFRP
-	obCI4MlwXEShM2SHCHkmDlPo5XISgTzwCrpLP/3SjKxujKlWi9nqvG6db9p/iXJV
-	OpWFgdf4BeBSzTD8k+jOmUwdbzP/2FzRQ2JsA+NRYO/Wb8e+aEbOrBj5DJeqKV4F
-	mo0lR8bF74G8iO9YI3oa5e0UEi/LrPdRcv9f2BM5MbieoQLkdq9lj0/U9rjqixab
-	TWu+hSlLYlUN95axFhjHuP3dfSYVVt6XzGA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1788131414; x=
-	1788138614; bh=zEc5hZJIk8YRnx+J+eo4+Y3sVspDxogbjvEEZwuJ7rQ=; b=V
-	Pm/7FheSQWTuf0BTxlWwZtt+3pYz2nhduLw4e4y8za/QfTSzRWzNLT9xWYuPmAIc
-	u2iScyJLSttTa87WeCPnCZXn/Gl2gPZabiNI/TusdTrg2rxoLAc/VMFiqpkhoR6S
-	LQ0iKTcxz3hk+DwmEohzGehsn/5Wh1AzucxvOgw+WnDShRgf/uBTnxZEvQeejUv4
-	uiy25ACTvijKoXphHgt82oizR4gYVdqyJePgq/uKO/Q8l7aBEXKtFaecz0P2KuDW
-	NPFfEanh10Tr4PIAw9/Ttp6lzVA7Tw5SgfgV5/JqbWCARVUi3EaZbxN01GMjB+kI
-	lCRwskirVvl7AMPYTRbWw==
-X-ME-Sender: <xms:UbiUap_MtTSeFpMNORlr4wTWDVh0aA6ScnON58j3rpFyccMpDXHIBQ>
-    <xme:UbiUahH2TNeUk63s7BMkgYDKvmxeqjrvmkBoHgCp0p_iRIhMT_WV7fRvdL5DfgV9Z
-    xV8KqlrCQaK0hplET15otnZI5BE2coA-O7f7PR3q4bp8VG_>
-X-ME-Received: <xmr:UbiUagJhhsp10jRM39PBdQWH_D435G2njFRNXy8dKyREtIAZmuZC2LqatWjo_-5YIsgSO4CAuvUBwdlLl9RmrRBi5dPRqwg>
-X-ME-Proxy-Cause: dmFkZTFOIUHJLQqborIagOgmNN+pPcupbVotrH4sXk/9BxNtfHYUJG+jOdd9lP23wPqSUQ
-    AUFqozauDGsFj2Fcxtj3sABYHvl0ph+0UXejznX6q1Xr1Xg/U0V2IT+Tk94c9p2xCxdGcm
-    a9fTqsnIiGGjKyH3aovg7Hbw39SYODzd4xSmoty3roVPn9gC8PR9IGrItxoJJkl5Z9SeqL
-    qN1gQzMRLAf1DVi5pqAy+RVGbsxy3biNw6Ht0LFpwq7yHA4P1bo1DCXcT6AbluvZMKn1Ad
-    6oUtTqY8wpxkXvPNqdcZVzXrArQI+dyTirjeQU9xaq2PAci/BLvZmkKdn6HOgCF/wiNDR5
-    9ypjS27kIioFVXtCK3cYVV4EX87YiMJFRv1YmG81V/CBOpPEVGlHijee21VZbsDPuWUWT2
-    eIkpdBbOecXlENZwKR/2eekW+LLYVEGcUat3eiQbHa7r5NCiXFUSvoh9n0m66Cfn6MPY8F
-    nn+/UAVo+bSz0lZ0FMnWAjcbwosDDLMUFcjHtb2oWyUdokurmOw1uyWf9PuZC23xX1bhno
-    M6fmT9hcOCYeC8ptuK39TgThobX4Z06It4CZvTdsheRb100K9ulRUQKwJiTqPv3ZqMrr5g
-    wtS1gF+w0PemKcSEjYqBuy5LHyuHib4TgEnaucnWv4jXuwuB92nJE5Nsi6mg
-X-ME-Proxy: <xmx:UbiUah47CBbO19kbrhNmEsPxHAHgpefoYPnpR5z-_ohOrh1cCgC-Dg>
-    <xmx:UbiUalPzSFg1nYeOw2R5sG3wTQxx6Y0zUwyNG3X2kHwPHQNKUtVYuw>
-    <xmx:UbiUaprYVwmp1o7kh4B5Ol26B9junaQQXQMqO5xX3y2ZMifwxkjWAA>
-    <xmx:UbiUaseNryne3JEtbfGoTy-pA0krO1YyMhJ9fCu36NsZC9i9Dd6f2g>
-    <xmx:VriUatkHi2UuWhglcFHVNe1ttc7HDvYZlla8FaR0rvxatg4WTOf727px>
-Feedback-ID: i9d664b8f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 30 Aug 2026 19:09:27 -0400 (EDT)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Pcx4EyAR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KmnRIzfGgnu7mEvsP1ccOwunO6wkluwymBHdHOm4Wk5iYL6v/f8jn8FsU5W4cq0xQFk6D75G88y3u9M+ksCNcdRKEyQR6YGUDAfvRNaK63B2+NeQ/gcH2Rbx9h/TdrcR1+T1sfCx35ikWITp1ULZKSXDy6SubPHxwW/yP0uioZr9R1D+XoQZmaPACQB6fw86gsZW3xK1DbJQJYtYt73JwR0wRrbBlbSHkrAeSyGLHrz/Egh2NMLBs/HvFJkg2EZ4OwI2frV9X5Z28DWwEcfmiWK5Q52N6T3WrBsy3z/6ez9hcoxHniL47TC7MdNUTZrpHBNw3OWhKxAro/W1B8Jk3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=v2XIAXJnvcYaT0jkBKD/SlIp+WPnLFNrOktE9Rz6lxI=;
+ b=Qi2Qw7Xa4RctBjDW2PffQKAGihFuQe1SnyG9ojjsGtSXaVlGfzEf154K3uGxEvBhFM52duHGhntKdlIUcX8vQjmFsvIm7jF0u+zjJ6IU3vMCgLo892KmgTGWW93BWuFl3g1k8IkfKpR4eCDoiGmWJybi8+uBtOUfHCv7m/ni3jn7ByQIIW06WWFm30CaIkqtPNH6CLp8ZNXsLLmVjn45qm9HF87s39fH+F3xrR9NagTveRYI5iYf4er/4I5GJ0O1LkWx8tpglIiM8vEYuY7uE/uZWyaxqrtFi37RPIxPiVo0yfnK7My1zm3APt964W0DgBwFrpKbEkjx80wwsY7ItA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=v2XIAXJnvcYaT0jkBKD/SlIp+WPnLFNrOktE9Rz6lxI=;
+ b=Pcx4EyARUmAaA18RZ6O1gLpM+DmH8iWMqbVJZqHHEUw8KHu4eIn2qlESuRBps+2e4ysDE2eF2RGH+CtkW6H1APnO01gEFRpXDT74ml2O5ognoHWHBDLfSj8VscCMJd/mTK2Yr+PwFnVZxeEl8ykXH/67V5ISMSC8VJ9OhL8IA5KmfDN2NzHQNXx47B+oF/Fru1aSgEUV/V2uSMXyJYyGrloTwsS3Df/8yPCvx1kIbv1MIaKWTX+L5WApGnqLtfKCvUpaeak31csbJC2X9JVyM3jr1F1TokCru/fNdgCQmM6r9EXZD5K+GHykliOzCRb5lvLBXHs/N4k5eMTpSwcGag==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by SA1PR12MB8119.namprd12.prod.outlook.com (2603:10b6:806:337::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.11; Mon, 31 Aug
+ 2026 01:08:21 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
+ 01:08:17 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 31 Aug 2026 10:08:14 +0900
+Message-Id: <DL2Q6ZZ1EK68.2SARDMRGQ19X6@nvidia.com>
+Cc: <ojeda@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] gpu: nova-core: use kernel lossless integer
+ conversion module
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
 Content-Transfer-Encoding: quoted-printable
+References: <20260828-nova_num-v1-0-e21f17ba4127@nvidia.com>
+ <20260828-nova_num-v1-1-e21f17ba4127@nvidia.com>
+ <DL0KDAXUZOXD.I8FBZZ51EIIF@kernel.org>
+ <DL142442KXHA.3VFWP2DHD7H2E@nvidia.com>
+ <DL1O1NFXUX6N.1LFASWF425I4Y@kernel.org>
+In-Reply-To: <DL1O1NFXUX6N.1LFASWF425I4Y@kernel.org>
+X-ClientProxiedBy: TY4P301CA0008.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:26f::7) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "Byungchul Park" <byungchul@sk.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
- linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
- kernel_team@skhynix.com, torvalds@linux-foundation.org,
- damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
- adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
- peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
- rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
- daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
- tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
- amir73il@gmail.com, gregkh@linuxfoundation.org, linux-mm@kvack.org,
- akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
- hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
- jglisse@redhat.com, dennis@kernel.org, cl@linux.com, penberg@kernel.org,
- rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
- linux-block@vger.kernel.org, josef@toxicpanda.com,
- linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
- dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
- dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
- melissa.srw@gmail.com, hamohammed.sa@gmail.com, chris.p.wilson@intel.com,
- gwan-gyeong.mun@intel.com, boqun.feng@gmail.com, longman@redhat.com,
- yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
- netdev@vger.kernel.org, matthew.brost@intel.com, her0gyugyu@gmail.com,
- corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
- gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
- arnd@arndb.de,  Liam.Howlett@oracle.com, rppt@kernel.org,
- surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
- da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
- frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
- josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com,
- jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com,
- okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
- trondmy@kernel.org, anna@kernel.org, kees@kernel.org,
- bigeasy@linutronix.de, clrkwllms@kernel.org, mark.rutland@arm.com,
- ada.coupriediaz@arm.com, kristina.martsenko@arm.com,
- wangkefeng.wang@huawei.com, broonie@kernel.org, kevin.brodsky@arm.com,
- dwmw@amazon.co.uk, shakeel.butt@linux.dev, ast@kernel.org,
- ziy@nvidia.com, yuzhao@google.com, baolin.wang@linux.alibaba.com,
- usamaarif642@gmail.com, joel.granados@kernel.org,
- richard.weiyang@gmail.com, geert+renesas@glider.be,
- tim.c.chen@linux.intel.com, linux@treblig.org,
- alexander.shishkin@linux.intel.com, lillian@star-ark.net,
- chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
- link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
- brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
- mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
- linux-doc@vger.kernel.org, linux-media@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-modules@vger.kernel.org, rcu@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
- bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
- dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
-In-reply-to: <20260825130843.GB23086@system.software.com>
-References: <20260706061928.66713-1-byungchul@sk.com>
-  <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
-  <20260821042143.GA40890@system.software.com>
-  <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
-  <178730572084.2852630.7732425311008244683@noble.neil.brown.name>
-  <20260825130843.GB23086@system.software.com>
-Date: Mon, 31 Aug 2026 09:09:23 +1000
-Message-id: <178813136354.3510150.4730256876703029797@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|SA1PR12MB8119:EE_
+X-MS-Office365-Filtering-Correlation-Id: cb2232ca-bf2a-4639-1890-08df06fc570c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|10070799003|23010399003|11063799006|22082099003|18002099003|56012099006|3023799007|4143699003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	rr+xtwnNBCZJKRlCWzMf2xx1L5rLITYiVMJHTNw/0ivpgEuCaY8J9SUxz7U80xN1RUR03Hs7/QPSjUobzkV2pWqOYRBClnokR6rVwpyLsiiuJcIB4uOqi4Z50xyNi3hJxEU+LsjSPVPpDVCzvyfcuJV3wrFYjYcSFWu0A9YBJn6fscN3rEPoLUkJHIhpVS8x7uarHYm3FPoZYSXnYWrRqvTtgIHXsmLrMfe+cMnKECqxCfxjNyaJLyQNCWMyw56UsA7kWGc0ry8hK7LSnrkaKJvCaEpTGnc3Tx3gw16U1VhqaIJ7xX/wFB7blCH+mHxRJRYnJPrpvE7NEfTK+CONhxP001jsg+whKt3DlXv+1YxxMy09pGIv1NRYlEb1dqRhaQAs5xU6ilEIQXmiPLvY1YBccg5SDqzuyKSxF9rCZSBTqxu2h6Y67CpVyl49Hur9n/pbGEGJUIrs1o8pQn9heMZFo459H+RM0hlXk/Hr1Vsov0I8Cfc555Npuc5rLkZJ6uJ8B7ZvR3SKhba4dp5g5S3wO+Gc46K5lHG+DAo0HJkSVuUhoidgKEEWqT3wQ0JpdEyBtZl3fYcf4K2fNMX0hHygg7JraIccxydWobXtZi8/a5dS6OC4qXVkaydL0AbRQdSOmcfLt1m+d5mu3vJX0H08qYzfll01QRlmmP0Kbf4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(10070799003)(23010399003)(11063799006)(22082099003)(18002099003)(56012099006)(3023799007)(4143699003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cmJqZ21Sb2YzU2ZoZGF4UDNFcFRCa3NpUGJET24zT3NRUUxnNHpzelVzV2xn?=
+ =?utf-8?B?aXJCU2o3VFFZWllLZU1udURrWFk2cnNpRHM0QWNNZEF4b2pOZWViY2IyS1NK?=
+ =?utf-8?B?OEJYUzkwYWFwYStYNkFtUWRpVGUxWWpmekVNaFN3cXJ0bUZJRllZMjZoVDBm?=
+ =?utf-8?B?UFloekpSYXNTM1VKd1NERzE1amlDV3VXbmdwSFFJOXhPbDB2YndjMFhpMmlu?=
+ =?utf-8?B?VTNLOWswVmY1bDhicEFQNURKNVJhUFRlOWJHTGpVd1FvYWJ4SjFXUWdwazkz?=
+ =?utf-8?B?NEhNU0t1cm5LTjNjdG9nZDVkb1VEaHpQS255aUtpRFVRMGFCbXIxRlRXSU9B?=
+ =?utf-8?B?WkFrNVl6UGdaRVNnOS94S09wVDU1UVFUN1B0VmcrSnRFb2V5TzV5ZzJwTUpi?=
+ =?utf-8?B?dVdzQnlBQnpmUkRoM0hMZHcvaFZlYW5OUVRkZlRaR3RoSGdMRUxYSHQvMWxm?=
+ =?utf-8?B?L0JhOXVwWjlvZ1c2UXIzSjlHM3JqVFVxVlZ0aHdESUxFT3A0WFVod296T1F2?=
+ =?utf-8?B?TTNSeVlsbG5lUUVyU3FwYy9SQ05HRFVybVZ2QXZuSmRVNis2b1JZL0FOOXNo?=
+ =?utf-8?B?VlNtWlRCaWRJY1ZQVjN2c0pmZkRzdWM4NzJudXJidWhmMTNCRGVtZXJYTkhN?=
+ =?utf-8?B?TWFzdlgyR2dQOTFKQTNNY3FJNVZKcEtNOGRQTjJtVHdwQzFHc2ZQa2FHVEdE?=
+ =?utf-8?B?OFp0ZWp6L05ONTNwS2pWeGwrN3V6SWluK2NGWldLTDhJMmQ5NFl4elA0N2pU?=
+ =?utf-8?B?U2tsT21rUVZPUUttMTUvTEt3OUJxK1pvSnR4R1JZNlVGbXFBRUQyNEM2emoy?=
+ =?utf-8?B?TTYrV1BjOTNiUFdQTjNRSHh3T3o4N2RpSGlLTVpsdFdhc0dqeWhlSFo5U1g2?=
+ =?utf-8?B?RGVLQW9MeFdBSS9XY2VlM2tQT1JOb3RudEszWmtQWU8xKzROWHlIend2S2lI?=
+ =?utf-8?B?V1RoRUZDWm5Bc0h6dXJ4YWQ3bHRmdU9VUXJjTG01b1M4dFh4TTNJQW9nb1VB?=
+ =?utf-8?B?VGNLZVBRcjRrWmI1bSs2UVZPQ2xGVEhocUc4UGZwVzVtTGs2b0ZybGlFMkxy?=
+ =?utf-8?B?Q0wzUTRvN3R0RTlWdC9iWkFWejdXTDhOUk1TNWRRRkRCNFBtcEdiR2U2UllJ?=
+ =?utf-8?B?VFdQRlpLT2tQd2VKM2JlWE92eUMrclZFeVN1Z0pGUGpMK1NZTjJnNENiZ3pJ?=
+ =?utf-8?B?OHBqS3QvNDMwQUtsVkc4cVZsUHhPSGVZTFZabmN5YXRNZG8zT0JSeG1ZUWxC?=
+ =?utf-8?B?Zks3SEUyQlN4Qkt6R21yZkNNa05PRnlSRlNESTRNZVh4UlFuYTVHTUFqWWZl?=
+ =?utf-8?B?UC8wR0pQbW44NWFJQVR3b3NJOEdoNTZlTnZFVWNhR28yMEM0SUFxK01peXA2?=
+ =?utf-8?B?TUtRMUJlZEMwZmFmKzZ1bmhiam40ckhiRnU2cGJTQ2dHT29aczBhQlJ0OGwv?=
+ =?utf-8?B?RHVvTzlKcGVKczB6Sjlic1QydVVRSzdwMk1rNWk1WDZFN3hPTXF5cERoZDlo?=
+ =?utf-8?B?OGpXSHRLWmlwajM5aytIMXJpbTM0Yk9GRlpBcXFzYktUOFZtR05IL2xDdTBR?=
+ =?utf-8?B?ekRyWTNYQXJmZFM5ZGwyNzdWZ3VFRXBvY1BUcFpmSlBRaFVsbjNhY0IwRVVJ?=
+ =?utf-8?B?TWlYTDg2TnZrU3IyVGY5WUpIbS9vTU5hcXFqVDNiVTdEL2doK1p6OExuYXpn?=
+ =?utf-8?B?Yy9oTUl5K05raXR4SjhCZFZMdnR0RmpIY1ZOMEsrRjBOMEE3SkpSUWpKdWZK?=
+ =?utf-8?B?MnYxRmJBNHFRMStibVVvQTlzOVkyZkhYejVyOHd1a0s1MU9IdjkxOExVOWU1?=
+ =?utf-8?B?N1Q2ZDRadXhOb0pVRDhLeFRNWndnQ09IQVhyQUlQZFZRaUp5ZzYwWVhvWU9R?=
+ =?utf-8?B?ZHhOMGxGemhQMlpiM3E3aG5mTFdFVHl4RmgzVVJUd002dG80ZFpRRkRoeURJ?=
+ =?utf-8?B?Q1crNnVOZW9ha3diK2dYVnBEOVlNd0tIaFdPV3hxTzJBTG1PTnZPTXJkemZu?=
+ =?utf-8?B?OWhLVjZZbXRlRitHa2ZnaitRRC9PN2Q0MGxUREJDSkJZRjFWWDBrVk8wN0dW?=
+ =?utf-8?B?dVl3M1hDLzVkMFEvdGJXS05FbzlHcXdWZFBqY0NQNHlYMktKWjRHSmU2T0pZ?=
+ =?utf-8?B?OXQrZWV3b2xCSmNnRWU3UEhYdlJ5UjVCczBScHJRZjhxU0duL0lPUkEvbWx3?=
+ =?utf-8?B?R2FuVVp3N3F0WUhBZU9BeEU0RXI3OHJ4RlB4QVRBR0E0RENPTzQyY1c4TlRv?=
+ =?utf-8?B?M09WNDFDMSsxNXBDOTgzOUtMeU5jbFlGUng2R3c3SVEwUThMZDVFVk5weWhX?=
+ =?utf-8?B?Rk5mblk5N1ZvOUkrTk5RZE1iaE5NMjhBZHhXUnoybEg0N09KalJWV2F5TFdJ?=
+ =?utf-8?Q?3BgA7pe9nk9xhC3FyqixV9UfCtYPvxfNrVpbV7Q6Kymli?=
+X-MS-Exchange-AntiSpam-MessageData-1: PLRV/vgBWqOkOA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb2232ca-bf2a-4639-1890-08df06fc570c
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 01:08:17.7538
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fOwhoWiipb29X3Rz0/94YKFl8yBbr/p/8IXU5++Hpq6AKZScQaMwldCtAMmsI59sBVduM69gjDDi3oA4G7S3Tw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8119
 
-On Tue, 25 Aug 2026, Byungchul Park wrote:
-> On Fri, Aug 21, 2026 at 07:48:40PM +1000, NeilBrown wrote:
-> > On Fri, 21 Aug 2026, David Hildenbrand (Arm) wrote:
-> > > [...]
-> > >
-> > > > Exactly.  That's why we use classification e.g. lock class - DEPT also
-> > > > makes use of the concept.
-> > > >
-> > > > DEPT doesn't use a full map in each page but uses a minimum space for=
- a
-> > > > timestamp in each to track when each starts to wait so as to use the
-> > > > recorded timestamp when the event occurs e.g. folio_unlock().
-> > >
-> > > Thanks for that information!
-> > >
-> > > >
-> > > >> Given that lockdep is a debug feature, and we will at some point all=
-ocate struct
-> > > >> folio separately, I assume we could just squeeze a "struct lockdep_m=
-ap" in there
-> > > >> in such debug configs and the world would not collapse.
-> > > >
-> > > > That's a good news for lockdep.  (And even for DEPT :)
-> > >
-> > > He :) Where do you currently store the additional per-page information?
-> >=20
-> > lockdep doesn't need to store per-page information.  Possibly DEPT
-> > doesn't either.
->=20
-> Class can be stored in global map, but DEPT needs to keep a timestamp
-> in each page to track when a potential-wait e.g. folio_lock() has been
-> started and to refer to the information on its event e.g. folio_unlock().
+On Sun Aug 30, 2026 at 4:14 AM JST, Danilo Krummrich wrote:
+> On Sat Aug 29, 2026 at 5:34 AM CEST, Alexandre Courbot wrote:
+>> On Fri Aug 28, 2026 at 9:09 PM JST, Danilo Krummrich wrote:
+>>> (Cc: Miguel)
+>>>
+>>> On Fri Aug 28, 2026 at 7:33 AM CEST, Alexandre Courbot wrote:
+>>>> The `kernel` crate now features a replacement for our lossless integer
+>>>> conversion routines. Switch to the kernel version and remove our own.
+>>>>
+>>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>>>> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+>>>> Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
+>>>> ---
+>>>>  drivers/gpu/nova-core/falcon.rs                    |  12 +-
+>>>>  drivers/gpu/nova-core/falcon/fsp.rs                |   4 +-
+>>>>  drivers/gpu/nova-core/fb.rs                        |   2 +-
+>>>>  drivers/gpu/nova-core/fb/hal/gb100.rs              |   6 +-
+>>>>  drivers/gpu/nova-core/firmware.rs                  |   4 +-
+>>>>  drivers/gpu/nova-core/firmware/booter.rs           |   4 +-
+>>>>  drivers/gpu/nova-core/firmware/fwsec.rs            |   2 +-
+>>>>  drivers/gpu/nova-core/firmware/fwsec/bootloader.rs |   4 +-
+>>>>  drivers/gpu/nova-core/firmware/gsp.rs              |   9 +-
+>>>>  drivers/gpu/nova-core/firmware/tlv.rs              |  11 +-
+>>>>  drivers/gpu/nova-core/fsp.rs                       |   8 +-
+>>>>  drivers/gpu/nova-core/gsp.rs                       |   4 +-
+>>>>  drivers/gpu/nova-core/gsp/cmdq.rs                  |  22 +--
+>>>>  drivers/gpu/nova-core/gsp/fw.rs                    |  42 ++--
+>>>>  drivers/gpu/nova-core/gsp/fw/commands.rs           |   4 +-
+>>>>  drivers/gpu/nova-core/gsp/sequencer.rs             |   2 +-
+>>>>  drivers/gpu/nova-core/mctp.rs                      |   8 +-
+>>>>  drivers/gpu/nova-core/num.rs                       | 211 ------------=
+---------
+>>>>  drivers/gpu/nova-core/vbios.rs                     |   2 +-
+>>>>  19 files changed, 78 insertions(+), 283 deletions(-)
+>>>
+>>> Please see the discussion in [1].
+>>>
+>>> If we make this change, then the subsequent conversion to const_as!() w=
+ould need
+>>> to go through the Rust tree next cycle, which could be a bit of a mess,=
+ as I'd
+>>> expect a bunch of conflicts.
+>>>
+>>> Alternatively, we could the the full three cycle dance, or have a signe=
+d tag for
+>>> const_as!() and use it right away.
+>>>
+>>> But honestly, the former would just be unnecessary noise. If we don't d=
+o the
+>>> latter, let's just keep the nova-core num module until the dust has bee=
+n
+>>> settled.
+>>>
+>>> [1] https://lore.kernel.org/all/CANiq72k+-fNWZCwGuQ=3DFTchxgm-X-f6WR=3D=
+tG=3DErcn19ic1edQg@mail.gmail.com/
+>>
+>> Maybe I am missing something, but wouldn't the following work?
+>>
+>> - rc1 gets tagged, `drm-rust-next` gets the `num::casts` module,
+>> - This series gets applied to `drm-rust-next`, then `cv!` (without the
+>>   nova-core conversion patch) in `rust-next`,
+>> - We wait one cycle for `cv!` to trickle down to `drm-rust-next` before
+>>   converting nova-core to use `cv!`.
+>>
+>> Would that work? This series doesn't overlap with the const conversions
+>> that `cv!` covers on purpose, and it would have the benefit of getting
+>> rid of the local `num` module in nova-core quickly.
+>
+> Take casts::usize_into_u32() for instance, drm-rust-next replaces the usa=
+ge of
+> it next cycle, but rust-next wants to remove the API from
+> rust/kernel/num/casts.rs.
+>
+> In this case rust-next would need to get rid of the users (including nova=
+-core),
+> but drm-rust-next will likely do different changes, so we'd get unnecessa=
+ry
+> merge conflicts.
+>
+> You can resolve this either by keeping casts::usize_into_u32 and friends =
+around
+> for one additional cycle, so that all users we introduce now are gone. Or=
+, since
+> there's no rush anyways, we just wait one cycle and use the real thing ri=
+ght
+> away.
 
-A timestamp?  What does that do?
-There is a lot of detail in your cover letter, but I think there is a
-lot missing too.  I would like to understand how DEPT works, but I don't
-want to dig too hard.  The document in patch 25/40 helps a bit, but it
-is still a bit vague.
-Where is the document which would explain at a level that would help me
-understand this timestamp?
+Sorry, I should have explicitly mentioned that `*_into_*` would remain
+alongside `cv!` for the next cycle.
 
->=20
-> > lockdep needs one lockdep_map for each lock class.  It would make sense
-> > for all folio locks to use the same global lockdep_map.
->=20
-> Exactly.  Only considering classes, you are right.
->=20
-> > Each specific lock is known to lockdep as a task which holds the lock, a
-> > lockdep_map which represents the class of locks, and subclass number
-> > which allows a given task to hold multiple locks of the same class
-> > providing it declare (e.g. with spin_lock_nested() etc).
->=20
-> Right, lockdep works that way.
->=20
-> > > >> Doing that today (one "struct lockdep_map" in each "struct page") wo=
-uldn't work
-> > > >> as mm_zero_struct_page() would not expect such large "struct page". =
-But
-> > > >> conceptually, for a debug kernel with a special CONFIG_LOCKDEP_PAGE_=
-LOCK, maybe
-> > > >> that would already be ok and we could just do that (and optimize it =
-as we
-> > > >> allocate folios separately).
-> > > >
-> > > > Sounds great.
-> > > >
-> > > >> Not that it's ideal, but for a debug feature to at least check PG_lo=
-ck, probably
-> > > >> an easier way to achieve it than some completely new infrastructure.
-> > > >
-> > > > I understand what you are going to tell.
-> > > >
-> > > > However, it's worth noting that lockdep tracks dependencies basically
-> > > > based on **lock acqusition orders** in the system.  To make it track
-> > > > even rwlock and general synchronization mechanism as well, lockdep has
-> > > > no choice but to get more complicated.
-> > >
-> > > Well, yes, sure :)
-> > >
-> > > >
-> > > > Focusing on only the dependency checking, the most parts of lockdep a=
-re
-> > > > for the tricky things, so the reusable parts are not that big.
-> > > >
-> > > >> Now, Willy said "locking rules don't really apply to individual foli=
-os", I
-> > > >> wonder if that could just help to also let lockdep check PG_lock wit=
-h less
-> > > >> metadata? (didn't fully wrap my head around the implications)
-> > > >
-> > > > That's what DEPT did and what brought external wgen introduced in DEP=
-T.
-> > > > I was considering the exactly same thing :)
-> > > >
-> > > > Again, lockdep that tracks lock acquisition orders can't do that.
-> > > >
-> > > >> [1]
-> > > >> https://lore.kernel.org/all/aR3WHf9QZ_dizNun@casper.infradead.org/?u=
-tm_source=3Dchatgpt.com
-> > > >>
-> > > >>
-> > > >> It's your guiding example, that's why I mention it. You do mention o=
-ther wait
-> > > >> cases here, I don't know anything about them, but for folios it's re=
-ally just
-> > > >> "we used a single bit so far" AFAIKs.
-> > > >
-> > > > It doesn't matter whether it's implemented using bit or not.  folio l=
-ock
-> > > > is quite special since it's allowed to be released other than the
-> > > > acquisition context that makes lockdep impossible to track them.
-> > >
-> > > Does that really make lockdep *impossible* to track them? IOW, there is=
- no way
-> > > to extend lockdep to support lock release in different context?
-> >=20
-> > Yes and no....
-> >=20
-> > lockdep has no knowledge of control flows moving across threads in the
-> > way that I assume DEPT does.  But it should be possible to tell it.
-> >=20
-> > If you have some code that takes a lock and then hands it off to
-> > another thread, at the hand-off point you call
-> >    lock_map_release(&the_lock_map)
-> >=20
-> > This says "no task owns this lock any more".
-> >=20
-> > maybe you put the folio which is locked on a queue or an lru or
-> > whatever.
-> >=20
-> > There is no way to say "that queue owns this lock".  Maybe that could
-> > usefully be added - assuming coherent semantics can be designed.
->=20
-> It's certainly useful to track who owns the lock, but the essence, when
-> it comes to deadlock detection, lies elsewhere.  DEPT is based on the
-> essence, that is, a deadlock comes from waits that are never awakened.
-
-I disagree.
-The "essence" of deadlock detection involves the interplay of ownership
-and waiting.
-In your cover letter "THE DEPT APPROACH" talks about [S] where and
-event context begins, and [E] where the even occurs.  This S-E section
-is exactly ownership.  During that time something "owns" the event.
-Maybe the terminology is different, but the concept is the same.
-
->=20
-> > Somewhere else some other task takes responsibility for that folio and
-> > the lock.  maybe it dequeues a page, or maybe an lru callback gives the
-> > locked page to some code.
-> > That code then calls
-> >    lock_map_acquire_try(&the_lock_map)
-> >=20
-> > This says "this task is now holding this lock" (or more accurately "now
-> > holding a lock of this class").
-> > Note the "_try" - that says that the task didn't have to wait for the
-> > lock, it just got it for free, which in fact it did.
-> >=20
-> > Now if that task takes some other lock, lockdep will see a dependency
-> > between the page lock and the new lock, and will accept or reject it as
-> > you would expect.
->=20
-> It's an interesting approach if your goal is to track the owenership,
-> but if the goal is for tracking dependencies.. well.. I'm not sure.
-
-I am sure.  Dependencies are between waiters and owners.
-
-A strong theme in your cover letter is the need to add comprehensive
-annotation for DEPT to work.
-My position is that most of what we need for LOCKDEP to be able to
-detect exactly the same things is appropriate annotation.
-We need to annotate when ownership is handed off to another thread, and
-when the other thread takes on ownership.
-
-So what does your scheme provide that is clearly better?  Is the
-annotation easier?  Is some of it automatic?  Does if give better error
-reports?=20
-
-I had a look through dept.rst and it seems that if a lock is released by
-a different thread than the one which took the lock, then DEPT can
-detect that and do something useful.  That might be interesting.
-But how does it know when it first took ownership of that lock?  Or you
-use your terminology: how does it know when that lock first entered the
-context in that thread?
-
-Maybe when you see an "unlock", you assume the lock has been owned since
-the last time the context didn't hold hold any locks.  Would that be
-right?=20
-Surely it wouldn't the too hard to teach lockdep about that.
-i.e.  when a lock, which is allowed to migrate across threads, is
-released though it wasn't held - insert this lock at the top of the
-current context and re-assess all the wait points.
-
-How do you decide that a lock that was taken is no longer part of the
-current context?
-
-
-NeilBrown
+The reason why I think it's preferable to use `casts` in nova-core
+sooner is that some of the series currently under review (and that will
+likely be merged next cycle) add more uses of the local `num` methods,
+making the eentual conversion more painful. If we move to use `casts`
+early we can at least avoid the churn on those cases that do not use
+`cv!`.
