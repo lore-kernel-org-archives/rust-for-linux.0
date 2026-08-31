@@ -1,299 +1,433 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021116.outbound.protection.outlook.com [52.101.95.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AEC391E74;
-	Mon, 31 Aug 2026 20:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.116
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788208983; cv=fail; b=m+YSDL5ocvkICSBC+xpzJPlFM69907OKVxmXJNR2MONGOAuzhA0axNZgTEjvGqMz3TWmJ+PSqnbYWX3y2VSh98QNiJGcdaxPG/SgHip0K5DPGBEv8bTAoVL8KeZ2fdxbo0qYGb6FI2xt5+b/qs1LHDTCLBY9DIQYREtbCoBALCc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788208983; c=relaxed/simple;
-	bh=eAjgFI9gMNS9f5hjkbbhOETCERIGUagMyrNwYg9Xn30=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=E6gUk1t1OGkaj25ti3nFMfEcpBliYk2Dt/+U07WkBlDYCZT57Rle0nKu7l416EdipbLWehovBxuB4UpNHyPjOKoJsUwwPtQmvzJY5deYpYP/UV3u+nGziMSEU3gad1hZz9ONlsAYeFtEpSa3Bu2vjWTcbs/A+I8K37HgMkOmxkY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=WIKveXy2; arc=fail smtp.client-ip=52.101.95.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1595439A061
+	for <rust-for-linux@vger.kernel.org>; Mon, 31 Aug 2026 22:29:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788215353; cv=none; b=tWCn3GPQc5VPcDtpeKLt7blciW/XwkmEGz8lxyC6Mliy7Fqbsyqa6W+630nXutAnywIiZJdARgYhb9/9W8cGN5Yn9MaUBGP47s3DYpFIKaBw2PUy2dBIRv2Qi2VYEubdieeH+Rt54TN/xWLaabDjFFre6e5DBH/02GAOtjhOHCw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788215353; c=relaxed/simple;
+	bh=o9QPZGSAc+R9OGC6IuZRWp/Ch4425nWI9BIe6fWHVxQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=t0JZariZF0l5MZuqlz9e7jbeSCyVIEA/P1fDe0S7tNq43gYeoYdCiY4eYfEF25/IvlHTMvsnY6JNuDPSXvS2+mpoGKHE6VRCLuspCI5ZXv0gaagQwjHZBI+2iDJDMmmEU1O1gBV6C5ZSg4D6VfTgl9hRahVlhGrqwEogXEZJEto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gxlWyZOA; arc=none smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="WIKveXy2"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iq//gNpz4Lkri25Ks+J9fhUxaXCdS+j80m0B7ncH+khHynMIXGhk8wH9UsV7a4VFPXyy2YNXFahniNcR0CSStb9J2Av7Bt8kPzzSl0mEeS0dpr07EoDEbyjFtwotsijHkX4jBl3Nz3qHr0C+bHkGAFS1+dnkZfh9A82ku4/vkZtyoEcl7r9X59/aXcucQ03DbZLqnRUbNX5P+KgYJBPLSzYvhvKSABZy0BWBima1xFpDZA3PmSlJVQ6j079raMyH1qtyOD0s7ZTsRPGi6Yh9xeihPTPwQ8aiiWUIXMqjcmTNbGB1F55iD54NuH4KxNKgWsZntBkTlG5B3PlfvSGUMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tBNOR9CJeplUUoxRXX3rH3i5YybGZO83lhDr3z6Auu4=;
- b=m2EkWlkHRZTkFnHNq0+erZ7jMLfHfCqZ7xWkDCRXjGu4LkmGBITCJPiSv+TmJetDVsYB40CsYEOsqNS1gp0qboRm/bueH6t9fkWUoUTRt3u7FH+yBHNfAwSU61rqpOZe8BFZJ4y0Lns95EP7ACfsmq2xB2FnMqO7p9SW2URUVtc0tsrIp2pE8X6g91VHcsqQqoNy0s4Ujo52oPwmdEAwprFKeRZ8NI3EOm+7aWMGfX+jZUB/hP0pf48WUcyikA3KRt1To+ZkpX4+kq4RnI4LjYQ3wl04Pi3mXQVIUw3dB5iNH5UTCBHACsXmqAgNpL8o6Uextvl7OsmfS49ojITTIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tBNOR9CJeplUUoxRXX3rH3i5YybGZO83lhDr3z6Auu4=;
- b=WIKveXy2VZjvKI+PlYWdcUpOF6gl9CQJ1I6YpRbyGw6JJzFCNdw9YanWovzYqO24WurwbneGOjhr2V3IVgROSFZbw91wlpa90R6ofxtaRkB4NSP8d6HKQr9TwjLZFHtgWInGswbnwde0V7w6es9cY5vuc+rHgt9Vg3mzHlhkYxc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LO0P265MB6961.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2ea::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
- 2026 20:42:56 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
- 20:42:56 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 31 Aug 2026 21:42:55 +0100
-Message-Id: <DL3F6EKL2F6Z.2DRXPQLYLE7FM@garyguo.net>
-Subject: Re: [PATCH v5 01/11] gpu: nova-core: Add public driver API to
- nova-core
-From: "Gary Guo" <gary@garyguo.net>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Alistair Popple"
- <apopple@nvidia.com>
-Cc: "nova-gpu" <nova-gpu@lists.linux.dev>, "M Henning"
- <mhenning@darkrefraction.com>, "Alice Ryhl" <aliceryhl@google.com>, "David
- Airlie" <airlied@gmail.com>, "Alexandre Courbot" <acourbot@nvidia.com>,
- "Benno Lossin" <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Eliot
- Courtney" <ecourtney@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>
-X-Mailer: aerc 0.22.0
-References: <20260828033531.1117754-1-apopple@nvidia.com>
- <20260828033531.1117754-2-apopple@nvidia.com>
- <DL3EGE1IY4FL.3X49WKCS67UT@kernel.org>
-In-Reply-To: <DL3EGE1IY4FL.3X49WKCS67UT@kernel.org>
-X-ClientProxiedBy: LO4P123CA0557.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:33b::13) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gxlWyZOA"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-8615bb9d857so2411267b3.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 31 Aug 2026 15:29:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788215349; x=1788820149; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KBH1mR8xlaHE++naXpqrsrQoRhbZMi3+JpUgsYGfEdc=;
+        b=gxlWyZOAB1wRpD2qq9CokYHMtWrTdYwOmHdAA5kwrG9uUTgI8GSqN1diQm7A7FwGiB
+         hHvBh1150srLJLEcZV9R/tel7mrdkoWHr5n73l2oAQQD53lYvmOKlsoeUBC4jxXUpN+S
+         aDa/CAsC3mPxz0AZytvsSS/Of25u2oUPS4qw5WS4hDFlvJHfDYj7jnTLvSEtxJ5E5CNF
+         I0B1HYnShiEmX1GZDCVXgLQYyRxa27meLLbQkNHykRwMfhCjvWcdx8iy+r+zeiFfAggY
+         VPAcvEmoHBtMhd7hm85g1MBQhzab+oGHR9EgF+4TpdCtpWiTgR1FbEIBLeXFzWokLfsF
+         9WNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788215349; x=1788820149;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KBH1mR8xlaHE++naXpqrsrQoRhbZMi3+JpUgsYGfEdc=;
+        b=PUb49NNZ75K/XhFnnMtzOXkhWKBH2GyWFDdgOuo26de+Ql3qXs/62k6/PXTP0qP0JR
+         BLHq/7ne6ickYPmheQTEbpsFCOUKogLjcniG+aShPwYL2GpYXWkbbRx6u6DGU1JPpTaS
+         PDTTpbp/O7QwfKUDcrrX/4plnDEPxIvZjDtc6tpwwQKIr1VUzm1UREpGWgBeJzqjkQNe
+         mUOCszYCHF7KLxmH45lsGfeJ/+s9uv6wnk9jQwr/PzwNYTMxI+8D3QdXgRblrhdnkUHO
+         MdtFGd4a/p7icSvYf6RFQU7CtN8NmbeisgRoDsnT6rJBlaKpB+iZzBW4QtiFygKW4VGY
+         JlrA==
+X-Forwarded-Encrypted: i=1; AKwUvBxJOdX0vSxgKSTL9FImUVAAVU25hS6TSsEU4pAdPMxZQEVyA1lMk78fOqVLYRc78k2zB7CAAh2ZELv30iajcA==@vger.kernel.org
+X-Gm-Message-State: AFuF++ngnGssS8/VlndzLwUwyToyycPjDyBkFym9K+yFPmKrXe/Wb6Ai
+	RSoRBexm8xkS5QLNohYlR0Y8jFGq8ImduU7rmob4m39q43NgvftL9ds=
+X-Gm-Gg: AYBFou0l4CK1cq7sV9M4LydVXS4oVs5LscmuLMu7rwDZZBgbiofAcYhrzAzYwkYBcBh
+	gR4m4lgKCj/hVIOE+sz3qWRL8o+fZvNNyczxKTDMXPVavV+HKiwemfRKAhjCTPwHkGRn+gpZaFh
+	wUskA2+RrelL57tv2lKrxC7xLzPOZeTDyXro6xAgX9157kniiRvd6bjIlrbu6vdAUZfAxgbH7wc
+	oYGBAvjvOkxxk6/2PkXMpKfEBOP9CMfWSGEhR0OI/9CtXEI8e379+spv9aIXybcRqxH5SXr8J18
+	uoyeEu5Bv+QwoGQn6gbnalb0ufYI4fqsZ2bFwzGo0S61Endr4tw8UFETPZHxXGEnqC1nZij1VsS
+	LB+rgMYi1BsUW7b0iLFZb9FDCPaCEi4GWuJdNUrOIfvLo47XO2TQ28W0Xw9k8PZvOUxCo6pCH/i
+	GTNYoePB24GDKhLORcTaNsRxYZ3dk6Nz2v5sE+Tm/bEv2r0sxX79bEuSfuV5WfTxUKxApAzWF1B
+	fI/5scBvPQ3U8WO7wB/EDuCRciWoAiPODuVRT8=
+X-Received: by 2002:a05:690c:288:b0:867:fb81:7d23 with SMTP id 00721157ae682-867fb818e6cmr24032427b3.3.1788215348842;
+        Mon, 31 Aug 2026 15:29:08 -0700 (PDT)
+Received: from localhost.localdomain ([186.158.238.108])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-85e58666e15sm62255577b3.0.2026.08.31.15.29.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2026 15:29:08 -0700 (PDT)
+From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Christian Brauner <christian@brauner.io>,
+	Carlos Llamas <cmllamas@google.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
+	Brigham Campbell <me@brighamcampbell.com>,
+	Jori Koolstra <jkoolstra@xs4all.nl>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev
+Subject: [PATCH] rust_binder: simplify Result<()> uses
+Date: Mon, 31 Aug 2026 19:27:10 -0300
+Message-ID: <20260831222857.1402608-1-nico.antinori.7@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO0P265MB6961:EE_
-X-MS-Office365-Filtering-Correlation-Id: d159f670-1640-4e92-9555-08df07a06fbc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|366016|7416014|376014|10070799003|4143699003|5023799004|10067099003|56012099006|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	jJjbJJvQkZjksYulZAaMe/6wUsTwneM3rjmTgLNaeDZvWsFsOgKeezO5pgwUgCcr/eb9ipRU30zeOjbtQluZ8ExV4OY4sczUPqFOuEZynymVKV3qchn9NyCgC7DrdZHoLhPKtBPHaXl26UzpxbsaysK0w7Zc3BTrmR2XQfheWKxXNCo/RklgtIs/aAnHpD2jKKZhEE6bQ2BmunK8QuF/t9eXUYwXnIxl1vFjNNNrhTx6hwYvv5OQazf860UWVho/Z1ZdXTCqqQ47WbwLuqBarojW3y7meY/6O5iitURox7VZtRebjNTcsIMV3S5lXZmNduAqnjghHajx7rjGBnP7nJarhqSSUHMHaD+sEgdETPt+DaTPwFetWCQQYNg3ZGp8n6A0FYaZlgOEUSNRopDh7eyGzZDbpYnY5F/jclE3UkAdzbsJGRVAV7OTVE0Ks/corMQKxm7oE0C/ZMIVJ+ElDsCtxE2eMt73g/8FVyfNrWkaQg2JfM31vfSF+fzXCBImMjkY5aevY6V92SDmdOqO2fcqLBAR1RBprO5WgpkCtSoLizNHAn4SiS7QvnSq3KihFbLaPDqZn63co6m4aFSe/qdtQ364SPU4NtjHmXAUxl9MRwHjdhXrNIXbyEjinO3iqZ3xgd+L6Ug9A9Gab7/s9X8NQ1efPnFPb3n87EKvoLQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(7416014)(376014)(10070799003)(4143699003)(5023799004)(10067099003)(56012099006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SDJVMFJGcG8xZmN4M2tGR2VvNWQ0eGlBN1QzU1RFY3o3b2ErSUhzSmJmTlVP?=
- =?utf-8?B?azc2UzhMZ3dLZWNDSkt3RTA5QS9ONnFyUEFGblBiTXJBYzZwTTlUbHlkSFdS?=
- =?utf-8?B?aSsrZTZUY085M002SVFUckg3aGV0SUZ3MlNXanVUTHZXR3F3d2w5OUZZZTJC?=
- =?utf-8?B?S0Z2RmdMYm1iRzZmT0xHVnFPV3NVUC9VZXBQOVNUdUNWN1ZpQTV4cE52V0hn?=
- =?utf-8?B?bklYNENPZHJJQ2R1dGxvZVhuSmp5WWNuemRXcjJKWnlackdKYUFiSWc0YmFq?=
- =?utf-8?B?b1JDWDhkTmxxS2dob1FtRFI1S0tDU2I0Y0c5ZEt6Mmh3RWtsSnUzcEZyUTF4?=
- =?utf-8?B?cTU4YTNHL3E3T29UMUhhMkVOaW5KQWtPQ1FEaVFkdFlYMGxTaHpzSjd2WUJw?=
- =?utf-8?B?eDV5R2ZlaWRJY20xb1hGVURDcEticElrdU10UG5kNlhjNi8wRHU2OStiSHhu?=
- =?utf-8?B?U0lORE9INTVRMzNEcmZ4bXh6Q1daM0N0Z09KcldxY1NlVG9WWEtvd2lrTS9p?=
- =?utf-8?B?bldQRkRGVUJLTklxSWZSV0F2UDBqY1hLVU9SQzlsM1lnSnVFb0ErZitxR0tr?=
- =?utf-8?B?N0o4TU83bEpBZGdiZ2xYenJ5eFNJS1kzdUhZc2xvT0RpNE1yTU5uQWZEM2lr?=
- =?utf-8?B?enFKK210S2xJenZzeVdkK0g0dlBNY2FoN1dMVGZEd1JXc1dOcVNzR2FabWNo?=
- =?utf-8?B?a3dZVEU2Qmdtb1RlSWg3K3RRZDlMN2ovZ0Z5SFRzVjFFRS9lYVpLdXMzdk5R?=
- =?utf-8?B?QzUybkIrdGNxWUM2T2pvYmpmNCtGRWxBaWtkbGp3K2ZNeUt3WUdZTkVkdXdy?=
- =?utf-8?B?Rm1QTnVadytiVzNwc0tJZDJZeGlIWWxRRmlZMmpTWWc5aVFwVnNwUVpyWnYz?=
- =?utf-8?B?UUF2VHJaSit3TDlBcmlzSXN5TlArRUNMdWtTbXR5QzhSTnJLU2NKanIvMzYv?=
- =?utf-8?B?UTY4T0VNbE9TOUxkWU1ISkY4ZHM5NjNjQmhOdFEraXBWeUNzdWhjNEZuay9h?=
- =?utf-8?B?TFRpYlRCQy9iVlMySHAvTE1FVFByZmNRUjR6b3hiN1d3VjVEQXNVeUc4dlVj?=
- =?utf-8?B?ZmxXZVpLN0h6NkliR3U1M3VVb2xMVFAxZlJwOUVKY3ovbFNodXBIaWdmakFL?=
- =?utf-8?B?SFY0M2w3YkMrTThqcXdqSGNhNHRVVytnSmxySVY2VnRPM3ljNzhQN0tzM3Fw?=
- =?utf-8?B?UFdLVkc5UVp6YWtVUXRsbXE0TWRnVjRYaGxUYmYrcGU3UG5YVnZyL0FjZzFM?=
- =?utf-8?B?MWFFVjZFQm42cXZTanBhMzI1UXhtYXYvcHIwWUZXVDB5ck8wWFErN0lMY0Mz?=
- =?utf-8?B?UTVHelYxZDRENnNDMWF4ZXk1OXZmVFFiR25WT2praDJHWHkzbVpaTkxhTitw?=
- =?utf-8?B?dUwzd2YwUm5GMUFJRERzMXBNaXc2U214SThEOEg1b0hXKzg5enBDYVBPZXl2?=
- =?utf-8?B?MUdxYjRFUnJ1dEI0ampwaEpnNzN5TktWVU4zWnJIZWkzMnlJTU9hb2NBRDY2?=
- =?utf-8?B?R3RHMmJEeW9VdFMyL1A0MUFJaEQ4aVhiUU5xVzMxMFN2bmhVYVdwK1lXZzN0?=
- =?utf-8?B?UjF2Z3lXaENBQ29KMTltM0piUU9RT0p6YmxNbXNNUXVqQ3JRRmdlZ0pYN2Zw?=
- =?utf-8?B?R3F2aHdMekNVWE9yKzFYc0lMNGtqK2xJSGJoNG1nZnFUVnRVRGo2SEJjU1BR?=
- =?utf-8?B?Y295RkxBaCt0SHNQVWFmOE1Cb2tvdFpQMjFLbHJ3WDBrSFk5Z2RTc0YwVEJj?=
- =?utf-8?B?cStnSUZ3Nm9VQmFTT1dHdTA2bkk0ZTZKZXdXK252S3hmOVoxWEdSQUlncHRE?=
- =?utf-8?B?WGR6MmxhbGRvbWtlTExKdmFvaUZJc09KMmF1dEQvZEpra3h4a3ZyeXM3aEtn?=
- =?utf-8?B?cUdHZjFEVStuS3l6TXlLWmduWkxKbWtzZUd5WFFRaDZCRU5PUnBSbmxaTTAy?=
- =?utf-8?B?dTR3Zy95akJVRXFsakNuQVMrbE5SVzluM21xckNteDZJem5FL2QvU0k4RDBC?=
- =?utf-8?B?Y2FjK0hVd1V2bjhOb0w5N3dTL0hUY0VTUlRwRFhHVm9ScEloUmFWUU4rT29Y?=
- =?utf-8?B?bStWRkZLeGJDandtUVFTTTNMTUJYU2RmREsyNGtsZTh6VzhNRVRSWFZKYkpw?=
- =?utf-8?B?UWppSC8wWnhTSDVMTW4xL3RjRXZ1VDI3Zk42SDNFM3lkN0txZHZBQVlTc3M4?=
- =?utf-8?B?c1YyTUNTOHQvamMvWWxWczdBTzVZcnVnTlIyNnNKZ1R6OGZRRlFzVlNuc05p?=
- =?utf-8?B?SDdUYi81WGFUb1hJNHpnYmRNbnMzdGtidkVxM21oRC80Z2ZjRXU0ZWw5L20y?=
- =?utf-8?B?RSs0VGMyY0tSRVRUd2s0UlFocktmejhEY0xrYmpmUzhqNDJMNUt6UT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: d159f670-1640-4e92-9555-08df07a06fbc
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 20:42:56.1583
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DCdZJ91oQ8B7X4NyNKxg4WkUY7RYdnDAiNa99UdyPRTWKZrIsJ65iyByLmSlTk0zR8ys8PTZA+wxezcqlkoYmQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6961
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon Aug 31, 2026 at 9:08 PM BST, Danilo Krummrich wrote:
-> On Fri Aug 28, 2026 at 5:35 AM CEST, Alistair Popple wrote:
->> +/// API handle for the auxiliary bus child drivers to interact with nov=
-a-core.
->> +pub struct NovaCoreApi<'bound> {
->> +    #[expect(unused)]
->> +    pub(crate) gpu: Pin<&'bound Gpu<'bound>>,
->> +}
->> +
->> +impl NovaCoreApi<'_> {
->> +    /// Obtain a [`NovaCoreApi`] handle from an auxiliary device regist=
-ered
->> +    /// by nova-core.
->> +    pub fn of(adev: &auxiliary::Device<Bound>) -> Result<Pin<&NovaCoreA=
-pi<'_>>> {
->> +        adev.registration_data::<CovariantForLt!(NovaCoreApi<'_>)>()
->> +    }
->> +}
->
-> CovariantForLt does not hold anymore on latest drm-rust-next, as Cmdq has=
- a
-> Mutex. So, this needs ForLt now and therefore the approach that I shared =
-in [1]
-> a while ago. I applied the changes in [2] to fix it up.
->
-> I think the closure access through api.with(|api| ...) is fine in most ca=
-ses,
-> but there are a few options if we run into cases where we consider it a b=
-it
-> inconvinient.
->
-> I think it should be possible to support projections into T: 'static and
-> covariant fields. The reason I differentiate them is because T: 'static i=
-s very
-> convinient, but non-'static covariant types need an annoying turbofish.
->
-> For T: 'static types it would turn out like this
->
-> 	let spec =3D reg_data.api.project(|api| api.spec());
->
-> such that everything that needs spec does not need to be in the closure a=
-nymore.
->
-> For non-'static covariant fields we could have
->
-> 	let foo =3D reg_data.api.project_lt::<CovariantForLt!(Foo<'_>)>(|api| ap=
-i.foo());
->
-> but as mentioned it unfortunately needs the turbofish. Of course we could=
- invent
-> a macro around it to get rid of the turbofish, but we'd still need to exp=
-licitly
-> mention the type Foo<'_>, so it doesn't buy us a lot.
->
-> This is the implementation I came up with in nova-core
->
-> 	/// Projects a `'static` sub-field out of the registration data.
-> 	///
-> 	/// `T` is fully inferred from the closure. For projected types with a l=
-ifetime parameter,
-> 	/// use [`Self::project_lt`].
-> 	pub fn project<T: 'static>(
-> 	    &self,
-> 	    f: impl for<'b> FnOnce(Pin<&'b NovaCoreApi<'b>>) -> &'b T,
-> 	) -> &'a T {
-> 	    self.adev
-> 	        .registration_data_field::<ForLt!(NovaCoreApi<'_>), T>(f)
-> 	        .expect("TypeId was validated in NovaCoreApiHandle::of()")
-> 	}
-> =09
-> 	/// Projects a covariant sub-field out of the registration data.
-> 	///
-> 	/// Supports projected types with a lifetime parameter via a
-> 	/// [`CovariantForLt`](trait@CovariantForLt) encoding. Unlike [`Self::pr=
-oject`], `G` cannot
-> 	/// be inferred and must be specified explicitly.
-> 	pub fn project_lt<G: CovariantForLt + 'static>(
-> 	    &self,
-> 	    f: impl for<'b> FnOnce(Pin<&'b NovaCoreApi<'b>>) -> &'b G::Of<'b>,
-> 	) -> &'a G::Of<'a> {
-> 	    self.adev
-> 	        .registration_data_project::<ForLt!(NovaCoreApi<'_>), G>(f)
-> 	        .expect("TypeId was validated in NovaCoreApiHandle::of()")
-> 	}
->
-> and this is what we'd need in the auxiliary bus
->
-> 	/// Projects a covariant sub-field out of potentially invariant registra=
-tion data.
-> 	///
-> 	/// `F` is the [`ForLt`](trait@ForLt) encoding of the registration data =
-type. `G` is the
-> 	/// [`CovariantForLt`](trait@CovariantForLt) encoding of the projected s=
-ub-field type.
-> 	///
-> 	/// For projected types that are `'static`, prefer [`Self::registration_=
-data_field`] which
-> 	/// does not require a [`CovariantForLt`](trait@CovariantForLt) encoding=
- and fully infers `T`.
-> 	///
-> 	/// Returns [`EINVAL`] if `F` does not match the type used by the parent=
- driver when calling
-> 	/// [`Registration::new()`]. Returns [`ENOENT`] if no registration data =
-has been set.
-> 	#[inline]
-> 	pub fn registration_data_project<F, G>(
-> 	    &self,
-> 	    project: impl for<'a> FnOnce(Pin<&'a F::Of<'a>>) -> &'a G::Of<'a>,
-> 	) -> Result<&G::Of<'_>>
-> 	where
-> 	    F: ForLt + 'static,
-> 	    G: CovariantForLt + 'static,
-> 	{
-> 	    let ptr =3D self.registration_data_with::<F, *const ()>(|data| {
-> 	        core::ptr::from_ref::<G::Of<'_>>(project(data)).cast::<()>()
-> 	    })?;
-> =09
-> 	    // SAFETY:
-> 	    // - The HRTB bound on `project` ensures the returned pointer is der=
-ived from the
-> 	    //   registration data (nothing else lives for universally quantifie=
-d `'a`).
-> 	    // - `G: CovariantForLt` guarantees that shortening the lifetime of =
-`G::Of` is sound.
-> 	    // - The registration data is heap-allocated and outlives the device=
-'s bound state.
-> 	    Ok(unsafe { &*ptr.cast::<G::Of<'_>>() })
-> 	}
+`kernel::error::Result<T = (), E = Error>` is a type alias for
+`core::result::Result<T, E>` with `()` as the default type argument
+for T. Explicitly specifying `Result<()>` is redundant.
 
-I think this is a bit complex, you should be able to let Rust figure out th=
-e
-relation between two lifetimes.
+This change makes all usages of `Result` consistent across the driver.
 
-I think if you change the signatue of `registration_data_with` slightly:
+Link: https://github.com/Rust-for-Linux/linux/issues/1128
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
+---
+ drivers/android/binder/allocation.rs        |  2 +-
+ drivers/android/binder/freeze.rs            | 11 ++++-------
+ drivers/android/binder/node.rs              | 10 +++-------
+ drivers/android/binder/node/wrapper.rs      |  2 +-
+ drivers/android/binder/page_range.rs        |  6 +++---
+ drivers/android/binder/process.rs           |  4 ++--
+ drivers/android/binder/range_alloc/array.rs |  2 +-
+ drivers/android/binder/range_alloc/mod.rs   |  2 +-
+ drivers/android/binder/range_alloc/tree.rs  |  2 +-
+ drivers/android/binder/rust_binder_main.rs  | 12 ++++++------
+ drivers/android/binder/thread.rs            |  8 ++++----
+ drivers/android/binder/transaction.rs       |  2 +-
+ 12 files changed, 28 insertions(+), 35 deletions(-)
 
-    pub fn registration_data_with<'this, F: ForLt + 'static, R>(
-        &'this self,
-        f: impl for<'a> FnOnce(Pin<&'this F::Of<'a>>) -> R,
-                                    ^ note this is changed from 'a to 'this
-    ) -> Result<R>;
+diff --git a/drivers/android/binder/allocation.rs b/drivers/android/binder/allocation.rs
+index 165cb797eb1e..4896ba4b444c 100644
+--- a/drivers/android/binder/allocation.rs
++++ b/drivers/android/binder/allocation.rs
+@@ -503,7 +503,7 @@ pub(crate) fn read_from(reader: &mut UserSliceReader) -> Result<BinderObject> {
+     /// The closure should write the bytes for the object into the provided slice.
+     pub(crate) fn read_from_inner<R>(reader: R) -> Result<BinderObject>
+     where
+-        R: FnOnce(&mut [u8; size_of::<BinderObject>()]) -> Result<()>,
++        R: FnOnce(&mut [u8; size_of::<BinderObject>()]) -> Result,
+     {
+         let mut obj = MaybeUninit::<BinderObject>::zeroed();
 
-then there will be an implied bound available inside the callback where 'a
-outlives 'this, and thus the function callback is able to perform coercion =
-of
-any T<'a> to T<'this> provided that `T` is covariant over lifetime `'a`.
+diff --git a/drivers/android/binder/freeze.rs b/drivers/android/binder/freeze.rs
+index 66912b4cb527..ea2450f3f16f 100644
+--- a/drivers/android/binder/freeze.rs
++++ b/drivers/android/binder/freeze.rs
+@@ -155,7 +155,7 @@ fn should_sync_wakeup(&self) -> bool {
+     }
 
-[ The coercion won't work when doing abstract `F::Of` on the bus abstractio=
-n
-side, but for any user it is dealing with concrete types so the compiler se=
-es
-specific types and thus can check variance ]
+     #[inline(never)]
+-    fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result<()> {
++    fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result {
+         seq_print!(m, "{}has frozen binder\n", prefix);
+         Ok(())
+     }
+@@ -177,10 +177,7 @@ pub(crate) fn on_process_cleanup(&self, proc: &Process) -> KVVec<Arc<Process>> {
+ }
 
-Then your projection can just be
+ impl Process {
+-    pub(crate) fn request_freeze_notif(
+-        self: &Arc<Self>,
+-        reader: &mut UserSliceReader,
+-    ) -> Result<()> {
++    pub(crate) fn request_freeze_notif(self: &Arc<Self>, reader: &mut UserSliceReader) -> Result {
+         let hc = reader.read::<BinderHandleCookie>()?;
+         let handle = hc.handle;
+         let cookie = FreezeCookie(hc.cookie);
+@@ -272,7 +269,7 @@ pub(crate) fn request_freeze_notif(
+         Ok(())
+     }
 
-    aux.registration_data_project(|x| &x.field)
+-    pub(crate) fn freeze_notif_done(self: &Arc<Self>, reader: &mut UserSliceReader) -> Result<()> {
++    pub(crate) fn freeze_notif_done(self: &Arc<Self>, reader: &mut UserSliceReader) -> Result {
+         let cookie = FreezeCookie(reader.read()?);
+         let alloc = FreezeMessage::new(GFP_KERNEL)?;
+         let mut node_refs_guard = self.node_refs.lock();
+@@ -313,7 +310,7 @@ pub(crate) fn freeze_notif_done(self: &Arc<Self>, reader: &mut UserSliceReader)
+         Ok(())
+     }
 
-I haven't tried it out but I think it should work.
+-    pub(crate) fn clear_freeze_notif(self: &Arc<Self>, reader: &mut UserSliceReader) -> Result<()> {
++    pub(crate) fn clear_freeze_notif(self: &Arc<Self>, reader: &mut UserSliceReader) -> Result {
+         let hc = reader.read::<BinderHandleCookie>()?;
+         let handle = hc.handle;
+         let cookie = FreezeCookie(hc.cookie);
+diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
+index 0a82af14cda3..b71b423c56bd 100644
+--- a/drivers/android/binder/node.rs
++++ b/drivers/android/binder/node.rs
+@@ -255,11 +255,7 @@ pub(crate) fn has_oneway_transaction(&self, owner_inner: &mut ProcessInner) -> b
+     }
 
-Best,
-Gary
+     #[inline(never)]
+-    pub(crate) fn full_debug_print(
+-        &self,
+-        m: &SeqFile,
+-        owner_inner: &mut ProcessInner,
+-    ) -> Result<()> {
++    pub(crate) fn full_debug_print(&self, m: &SeqFile, owner_inner: &mut ProcessInner) -> Result {
+         let inner = self.inner.access_mut(owner_inner);
+         seq_print!(
+             m,
+@@ -745,7 +741,7 @@ fn should_sync_wakeup(&self) -> bool {
+     }
+
+     #[inline(never)]
+-    fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result<()> {
++    fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result {
+         seq_print!(
+             m,
+             "{}node work {}: u{:016x} c{:016x}\n",
+@@ -1140,7 +1136,7 @@ fn should_sync_wakeup(&self) -> bool {
+     }
+
+     #[inline(never)]
+-    fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result<()> {
++    fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result {
+         let inner = self.inner.lock();
+
+         let dead_binder = inner.dead && !inner.notification_done;
+diff --git a/drivers/android/binder/node/wrapper.rs b/drivers/android/binder/node/wrapper.rs
+index 6e4ca01c941a..828a331f5d99 100644
+--- a/drivers/android/binder/node/wrapper.rs
++++ b/drivers/android/binder/node/wrapper.rs
+@@ -64,7 +64,7 @@ fn should_sync_wakeup(&self) -> bool {
+     }
+
+     #[inline(never)]
+-    fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result<()> {
++    fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result {
+         seq_print!(
+             m,
+             "{}node work {}: u{:016x} c{:016x}\n",
+diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+index 52ffbf3504e7..047cdf1722cf 100644
+--- a/drivers/android/binder/page_range.rs
++++ b/drivers/android/binder/page_range.rs
+@@ -66,7 +66,7 @@ impl Shrinker {
+     }
+
+     /// Register this shrinker with the kernel.
+-    pub(crate) fn register(&'static self, name: &CStr) -> Result<()> {
++    pub(crate) fn register(&'static self, name: &CStr) -> Result {
+         // SAFETY: These fields are not yet used, so it's okay to zero them.
+         unsafe {
+             self.inner.get().write(ptr::null_mut());
+@@ -352,7 +352,7 @@ pub(crate) fn register_with_vma(&self, vma: &virt::VmaNew) -> Result<usize> {
+     /// Make sure that the given pages are allocated and mapped.
+     ///
+     /// Must not be called from an atomic context.
+-    pub(crate) fn use_range(&self, start: usize, end: usize) -> Result<()> {
++    pub(crate) fn use_range(&self, start: usize, end: usize) -> Result {
+         if start >= end {
+             return Ok(());
+         }
+@@ -398,7 +398,7 @@ pub(crate) fn use_range(&self, start: usize, end: usize) -> Result<()> {
+     ///
+     /// Assumes that `i` is in bounds.
+     #[cold]
+-    unsafe fn use_page_slow(&self, i: usize) -> Result<()> {
++    unsafe fn use_page_slow(&self, i: usize) -> Result {
+         let new_page = Page::alloc_page(GFP_KERNEL | __GFP_HIGHMEM | __GFP_ZERO)?;
+
+         let mm_mutex = self.mm_lock.lock();
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 5372bfbd93b3..124ac221d27a 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -548,7 +548,7 @@ pub(crate) fn pid_in_current_ns(&self) -> kernel::task::Pid {
+     }
+
+     #[inline(never)]
+-    pub(crate) fn debug_print_stats(&self, m: &SeqFile, ctx: &Context) -> Result<()> {
++    pub(crate) fn debug_print_stats(&self, m: &SeqFile, ctx: &Context) -> Result {
+         seq_print!(m, "proc {}\n", self.pid_in_current_ns());
+         seq_print!(m, "context {}\n", &*ctx.name);
+
+@@ -596,7 +596,7 @@ pub(crate) fn debug_print_stats(&self, m: &SeqFile, ctx: &Context) -> Result<()>
+     }
+
+     #[inline(never)]
+-    pub(crate) fn debug_print(&self, m: &SeqFile, ctx: &Context, print_all: bool) -> Result<()> {
++    pub(crate) fn debug_print(&self, m: &SeqFile, ctx: &Context, print_all: bool) -> Result {
+         seq_print!(m, "proc {}\n", self.pid_in_current_ns());
+         seq_print!(m, "context {}\n", &*ctx.name);
+
+diff --git a/drivers/android/binder/range_alloc/array.rs b/drivers/android/binder/range_alloc/array.rs
+index 081d19b09d4b..71bf49f9db0d 100644
+--- a/drivers/android/binder/range_alloc/array.rs
++++ b/drivers/android/binder/range_alloc/array.rs
+@@ -61,7 +61,7 @@ pub(crate) fn is_full(&self) -> bool {
+         self.ranges.len() == self.ranges.capacity()
+     }
+
+-    pub(crate) fn debug_print(&self, m: &SeqFile) -> Result<()> {
++    pub(crate) fn debug_print(&self, m: &SeqFile) -> Result {
+         for range in &self.ranges {
+             seq_print!(
+                 m,
+diff --git a/drivers/android/binder/range_alloc/mod.rs b/drivers/android/binder/range_alloc/mod.rs
+index 1f4734468ff1..bb6e0ec9650e 100644
+--- a/drivers/android/binder/range_alloc/mod.rs
++++ b/drivers/android/binder/range_alloc/mod.rs
+@@ -141,7 +141,7 @@ pub(crate) fn count_buffers(&self) -> usize {
+         }
+     }
+
+-    pub(crate) fn debug_print(&self, m: &SeqFile) -> Result<()> {
++    pub(crate) fn debug_print(&self, m: &SeqFile) -> Result {
+         match &self.inner {
+             Impl::Empty(_size) => Ok(()),
+             Impl::Array(array) => array.debug_print(m),
+diff --git a/drivers/android/binder/range_alloc/tree.rs b/drivers/android/binder/range_alloc/tree.rs
+index 48796fcdb362..058ff7498fa5 100644
+--- a/drivers/android/binder/range_alloc/tree.rs
++++ b/drivers/android/binder/range_alloc/tree.rs
+@@ -111,7 +111,7 @@ pub(crate) fn count_buffers(&self) -> usize {
+             .count()
+     }
+
+-    pub(crate) fn debug_print(&self, m: &SeqFile) -> Result<()> {
++    pub(crate) fn debug_print(&self, m: &SeqFile) -> Result {
+         for desc in self.tree.values() {
+             let state = match &desc.state {
+                 Some(state) => &state.0,
+diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
+index 955c4c348f73..aa109663caae 100644
+--- a/drivers/android/binder/rust_binder_main.rs
++++ b/drivers/android/binder/rust_binder_main.rs
+@@ -158,7 +158,7 @@ fn do_work(
+     /// Generally only set to true for non-oneway transactions.
+     fn should_sync_wakeup(&self) -> bool;
+
+-    fn debug_print(&self, m: &SeqFile, prefix: &str, transaction_prefix: &str) -> Result<()>;
++    fn debug_print(&self, m: &SeqFile, prefix: &str, transaction_prefix: &str) -> Result;
+ }
+
+ // Wrapper around a `DeliverToRead` with linked list links.
+@@ -274,7 +274,7 @@ fn should_sync_wakeup(&self) -> bool {
+         false
+     }
+
+-    fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result<()> {
++    fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result {
+         seq_print!(m, "{}", prefix);
+         if self.skip.load(Relaxed) {
+             seq_print!(m, "(skipped) ");
+@@ -545,7 +545,7 @@ unsafe impl<T> Sync for AssertSync<T> {}
+     0
+ }
+
+-fn rust_binder_transactions_show_impl(m: &SeqFile) -> Result<()> {
++fn rust_binder_transactions_show_impl(m: &SeqFile) -> Result {
+     seq_print!(m, "binder transactions:\n");
+     let contexts = context::get_all_contexts()?;
+     for ctx in contexts {
+@@ -558,7 +558,7 @@ fn rust_binder_transactions_show_impl(m: &SeqFile) -> Result<()> {
+     Ok(())
+ }
+
+-fn rust_binder_stats_show_impl(m: &SeqFile) -> Result<()> {
++fn rust_binder_stats_show_impl(m: &SeqFile) -> Result {
+     seq_print!(m, "binder stats:\n");
+     stats::GLOBAL_STATS.debug_print("", m);
+     let contexts = context::get_all_contexts()?;
+@@ -572,7 +572,7 @@ fn rust_binder_stats_show_impl(m: &SeqFile) -> Result<()> {
+     Ok(())
+ }
+
+-fn rust_binder_state_show_impl(m: &SeqFile) -> Result<()> {
++fn rust_binder_state_show_impl(m: &SeqFile) -> Result {
+     seq_print!(m, "binder state:\n");
+     let contexts = context::get_all_contexts()?;
+     for ctx in contexts {
+@@ -585,7 +585,7 @@ fn rust_binder_state_show_impl(m: &SeqFile) -> Result<()> {
+     Ok(())
+ }
+
+-fn rust_binder_proc_show_impl(m: &SeqFile, pid: Pid) -> Result<()> {
++fn rust_binder_proc_show_impl(m: &SeqFile, pid: Pid) -> Result {
+     seq_print!(m, "binder proc state:\n");
+     let contexts = context::get_all_contexts()?;
+     for ctx in contexts {
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index 18a14aa8a835..3e898be5ac31 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -481,7 +481,7 @@ pub(crate) fn new(id: i32, process: Arc<Process>) -> Result<Arc<Self>> {
+     }
+
+     #[inline(never)]
+-    pub(crate) fn debug_print(self: &Arc<Self>, m: &SeqFile, print_all: bool) -> Result<()> {
++    pub(crate) fn debug_print(self: &Arc<Self>, m: &SeqFile, print_all: bool) -> Result {
+         let inner = self.inner.lock();
+
+         if print_all || inner.current_transaction.is_some() || !inner.work_list.is_empty() {
+@@ -1250,7 +1250,7 @@ fn read_transaction_info(
+         cmd: u32,
+         reader: &mut UserSliceReader,
+         info: &mut TransactionInfo,
+-    ) -> Result<()> {
++    ) -> Result {
+         let td = match cmd {
+             BC_TRANSACTION | BC_REPLY => {
+                 reader.read::<BinderTransactionData>()?.with_buffers_size(0)
+@@ -1281,7 +1281,7 @@ fn read_transaction_info(
+     }
+
+     #[inline(never)]
+-    fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Result<()> {
++    fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Result {
+         let mut info = TransactionInfo::zeroed();
+         self.read_transaction_info(cmd, reader, &mut info)?;
+
+@@ -1738,7 +1738,7 @@ fn should_sync_wakeup(&self) -> bool {
+         false
+     }
+
+-    fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result<()> {
++    fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result {
+         seq_print!(
+             m,
+             "{}transaction error: {}\n",
+diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
+index 245f1556b5db..f6a0707bb4b3 100644
+--- a/drivers/android/binder/transaction.rs
++++ b/drivers/android/binder/transaction.rs
+@@ -576,7 +576,7 @@ fn should_sync_wakeup(&self) -> bool {
+         !self.flags.is_oneway()
+     }
+
+-    fn debug_print(&self, m: &SeqFile, _prefix: &str, tprefix: &str) -> Result<()> {
++    fn debug_print(&self, m: &SeqFile, _prefix: &str, tprefix: &str) -> Result {
+         self.debug_print_inner(m, tprefix);
+         Ok(())
+     }
+--
+2.47.3
 
