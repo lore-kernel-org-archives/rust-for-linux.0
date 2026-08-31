@@ -1,128 +1,117 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F973AC0E4
-	for <rust-for-linux@vger.kernel.org>; Mon, 31 Aug 2026 05:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0373AC0D9;
+	Mon, 31 Aug 2026 06:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788155397; cv=none; b=P4hv78RmIZHPNYTjFAb6zhWaQeKKGY7PkzGabiE6CifMUZjm1iqnQOt2zt294RnAsk6JarPycaaVoV+l4q2dopUnQ+i7qVb0gpQkvaducAYwckoSUu8RVMKWKl2iDQoj7vIkJJlAkKJ3ZT3A65P0oNccXSmfcTvL07CIaCx9A6c=
+	t=1788156281; cv=none; b=Dax1zYHgG9FxOT3tpCLmib5mza7sCjz3OlRGhH2ZzAlxg+k7+XX6MIuhFWXI5Nv1zclXl6ZnWp14XKBxeXjgsgtW87ZHW1P44BkkwkLS+k3TAI7Uex7r1tEXTe1D9hCppmVp0/Va81iEDcnqOyUkqvJqEVAuhC3073N49bhkPj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788155397; c=relaxed/simple;
-	bh=MUkgAux14xDdRdEbHCqY3xhMBjSgdm6CfZUlSD4YZgo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQvS5n7nC3z+tO+AiJo29Ms9h630YNwE6hFgOFApICyEvb4IYeHwHR88ddWa4pMUpTUTGeqxrJ1AgeWx6ijmlGgdANxu1Cm5SubMgLzI3rjWIB1f3m78vHaN+Us3gJq9c9+0M85TKvCvRqbHMzMNEvBAEe6pNYxMB+MAHmwl5fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ptxu0t1A; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788156281; c=relaxed/simple;
+	bh=r+78EeOd3F73//qZlzI+jvIQhC/Dn89tSZ9iXsA/rMY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=dkfyAICAf5ufYCEqbCj18RCDHXgQFCeX4Ex6tQBVc0BXp4nqvSyb/2QsI20Ozt0Yq7rMXuZPVbYYP5RsGipLiE/7+uh9BBmSz8wFGwdl0tKj5e3bSod0as13dCeryDs6hjPiuzFQsHn/OmfkANHqgyb/4RxRvxkIDHGr1Q6Hpg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HCLfHjJv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ptxu0t1A"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-499b2981a7bso33229725e9.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 30 Aug 2026 22:49:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788155395; x=1788760195; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QPxIjq0s+Nq97Wec2MiBtymMp8nx1ssSvVChht0+Jc0=;
-        b=Ptxu0t1A2LU3JKtcJkb4/SMNhRg0IKoTQ+eVafbDteyNgUvZbZzvOEe/kLjBSHeY7C
-         cRnwe0ocLWBGUq50/rtEvgCpWJzwPkKTakVOhfLkJy9BlYCc8W1QrFo/swwoALOGvMa8
-         PzRQY8GtgzVzudJwQa/bem7uNAiO0PPTq1b73rA1euCKkvQS9eUqn2GxDSHqM87pmYHr
-         MWdFYHLXvS3gCfTLB5mDzKoDx0y+Y6n4RAaPlhFUgg3BiMKYeElU0eRjQVrIOxCi1lf2
-         pJGfmont1tWb0GD40wkqzuiZH6qU8t0YK7UxeEryBDsYkJ08GxSCr+VGFAS3+jSBNKJC
-         smhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788155395; x=1788760195;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QPxIjq0s+Nq97Wec2MiBtymMp8nx1ssSvVChht0+Jc0=;
-        b=G6LF9jRpAIIkLQlqSDsveiOUT3ji56N3CQMY/PTJLWJG4e65ZXo6ohuK2aB9S1sjY/
-         cCCvAZicAjsy8FM+q10cPY/axcP/VVpVnNqgYl4t9Dst7MXv7E4wqHz7YY4/d6mYQAMr
-         waCR3738PJLIzBpySBIoXBSZ0AhbCOLl2j+iFUlArMXUNdaaH2n/KaqfZDWLt5newIAI
-         AwNF1DJiylZrx8MJk4b2IEO3s5JDKgtrkk5WHBb/RpED+2pl38AiEYGOlUDB0gPMqTeW
-         HaQbfUYZUaZrzYXUEA0kLbS2EznpuOHCxspAxETMSJlC/MYwsO0B8xbUrA0quAxP6vYa
-         sRnQ==
-X-Gm-Message-State: AFuF++ll5C2qcMn2ON+iKazLE/8uWiAorpezsxzR1gbwNsNAudsWmZcE
-	hfiqohMirbRgLF6DpYGRDlRme4TfQzcscbcnrXtJwDr5Rl3FvzogAnGe6Nt51tiWK20=
-X-Gm-Gg: AR+sD10dv4au3SJe8e7F8ZYz3Qty6xFcZk1M+o/MYQY1vzOjG38VwdacAl5pGF72Bch
-	CVoP+DsvPYfe48auqIjfDZt0fqZXQFwfhK2fU67e8NY8H370mdfUTGoBL5cUPKffwnaNJ5NMg+X
-	hpKAhAyPh+U5WoXF6CGImNuQSHPwuG8cuHhwlIijInwzUL3rczLTUcqcGuAcDvJk2x4mD4oG4ie
-	6hrD5IQG+BASonz9vtqLSr6hYEDLac9yCQ9gH0XFXpe9qRmyHrwwZ2nnHkKd6dG5DxHGBIDtYRL
-	jWHwsFOTu8shVgMLRLFJ6ERnytJ0ejXgjxX8VXVdPY1L/nwKrhU4z/+SEzBTbBMyC9LR0Pbi45K
-	rX7zd5cX42ldxYj16wXepwC4Mov2lyWJ5sDrzEWjv6OmAsqCWLp3PJpWNucDSWrTdp+XR6TRYyr
-	bIHo6XuPeYXggBJjeDZWrazlXbZS+httge7KIRCoSIgdPmVSw5ZrXKz8KKpbrbWNnIhj2ncjMNy
-	W7NBnZMXQ==
-X-Received: by 2002:a05:600c:c172:b0:499:dbba:9859 with SMTP id 5b1f17b1804b1-49cd948532emr13747205e9.5.1788155394504;
-        Sun, 30 Aug 2026 22:49:54 -0700 (PDT)
-Received: from DESKTOP-OL07BOP.localdomain ([87.116.179.22])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b926874fdsm258647025e9.4.2026.08.30.22.49.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 22:49:54 -0700 (PDT)
-From: nenkov2004@gmail.com
-To: rust-for-linux@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Hristos Nenkov <nenkov2004@gmail.com>
-Subject: [PATCH v2] rust: binder: Use lower bound for node debug lookup
-Date: Mon, 31 Aug 2026 07:49:20 +0200
-Message-ID: <20260831054920.42550-1-nenkov2004@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260831052635.42417-1-nenkov2004@gmail.com>
-References: <20260831052635.42417-1-nenkov2004@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HCLfHjJv"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 609F3C2BCB8;
+	Mon, 31 Aug 2026 06:04:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788156280;
+	bh=r+78EeOd3F73//qZlzI+jvIQhC/Dn89tSZ9iXsA/rMY=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=HCLfHjJvo3yJVL9GFXakaL0uCdDcxF9B51oS+132bXyFFydh7r6cd7vbm+sJSF5bm
+	 WvDdWo2IPZrPCTiIIeDhbthGfcswiV4ped5N0wreSsanx8r9FaJtQbUM+VsYlCJHNt
+	 LSeHJRAMDxykMWQ2fnkNgFFn5wgMmUVyHk30OI4FVOSyASqIcjKO2I7bD7ynorBhay
+	 9fsG2/N6Rc5jLWigSyomiSTX/O7mzrx4ssRJVuigqXUv/FH8MgMcbmkbqLv66xyrP9
+	 keMQBj7Iz4OBYlikxuEyAlBnachypLVjz9ZvmlNY8JfawH/r1XtXL+R0WuIVxewgn2
+	 q7+J2OqgOmfng==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48C40C61DE2;
+	Mon, 31 Aug 2026 06:04:40 +0000 (UTC)
+From: Sophon Z via B4 Relay <devnull+aiqubits.hotmail.com@kernel.org>
+Date: Mon, 31 Aug 2026 14:04:37 +0800
+Subject: [PATCH] rust: pci: Reject IRQ vector indices that do not fit in
+ u32
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260831-fix-pci-irq-vector-index-truncation-v1-1-d63217d99b67@hotmail.com>
+X-B4-Tracking: v=1; b=H4sIAHQZlWoC/yWNMQ6DMAwAv4I811ISBFT9CuqQJgbcIYATEBLi7
+ 3Xb8Ya7OyGTMGV4VCcI7Zx5Tgr2VkGYfBoJOSqDM64199riwAcugZFlxZ1CmQU5RTqwyJaCL+p
+ j2zVuqLvGehNBS4uQar9L//xz3l5vtb9puK4PLIBAx4cAAAA=
+X-Change-ID: 20260831-fix-pci-irq-vector-index-truncation-6752f3751a0d
+To: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Sophon Z <aiqubits@hotmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788156278; l=1555;
+ i=aiqubits@hotmail.com; s=20260831; h=from:subject:message-id;
+ bh=rcVDRPrSPnO1Ee98t164DOTONn63WizVtKhr1VeOh7E=;
+ b=LgZKS9pMGXvpbAQyZ5Hry/cE3R8kl1Bl5vL+AIH8R4F7C5szyNioSICnCSc6RthNm2KJeSkLx
+ CsOlwGpNTz9CfotyhIy50EhtQoOy0oJodwRebOr2/Sz9bYyplCx6cES
+X-Developer-Key: i=aiqubits@hotmail.com; a=ed25519;
+ pk=+mrkwQAyCCkZdVPpu+CBQr1VZQlkXa7/1WizfeSF/yg=
+X-Endpoint-Received: by B4 Relay for aiqubits@hotmail.com/20260831 with
+ auth_id=992
+X-Original-From: Sophon Z <aiqubits@hotmail.com>
+Reply-To: aiqubits@hotmail.com
 
-From: Hristos Nenkov <nenkov2004@gmail.com>
+From: Sophon Z <aiqubits@hotmail.com>
 
-The Binder node debug lookup currently walks the process node RBTree
-from the beginning until it finds the first node pointer greater than
-the requested pointer.
+IrqVectorRegistration::index() accepts a usize, but pci_irq_vector()
+takes an unsigned int. On 64-bit architectures, casting an index
+larger than u32::MAX wraps it before the PCI core can validate it.
+In particular, u32::MAX + 1 becomes zero and can resolve to the first
+allocated vector.
 
-Use RBTree::cursor_lower_bound() to start the lookup at the relevant
-tree position instead. When the lower-bound key is equal to the
-requested pointer, inspect the next node to preserve the existing
-strictly-greater-than semantics.
+Use a checked conversion and return EINVAL when the index cannot be
+represented by the C API.
 
-This changes the tree lookup from a linear scan to an O(log n) search
-without changing the returned node semantics.
+Fixes: 2fb7755b0a7e ("rust: pci: resolve IRQ in index() and embed IrqRequest in IrqVector")
 
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://github.com/Rust-for-Linux/linux/issues/1249
-Signed-off-by: Hristos Nenkov <nenkov2004@gmail.com>
+Signed-off-by: Sophon Z <aiqubits@hotmail.com>
 ---
- drivers/android/binder/process.rs | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ rust/kernel/pci/irq.rs | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 5372bfbd9..8e7218ee0 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -1208,10 +1208,14 @@ fn get_node_debug_info(&self, data: UserSlice) -> Result {
- 
-         {
-             let inner = self.inner.lock();
--            for (node_ptr, node) in &inner.nodes {
+diff --git a/rust/kernel/pci/irq.rs b/rust/kernel/pci/irq.rs
+index 6741046ec1c0..1bf91973cb1f 100644
+--- a/rust/kernel/pci/irq.rs
++++ b/rust/kernel/pci/irq.rs
+@@ -151,8 +151,10 @@ pub fn irq_type(&self) -> IrqType {
+     /// [`Self::len()`].
+     #[inline]
+     pub fn index(&self, index: usize) -> Result<IrqVector<'_>> {
++        let index = u32::try_from(index).map_err(|_| EINVAL)?;
 +
-+            if let Some(cursor) = inner.nodes.cursor_lower_bound(&ptr) {
-+                let (node_ptr, node) = cursor.current();
-+
-                 if *node_ptr > ptr {
-                     node.populate_debug_info(&mut out, &inner);
--                    break;
-+                } else if let Some((_, node)) = cursor.peek_next() {
-+                    node.populate_debug_info(&mut out, &inner);
-                 }
-             }
+         // SAFETY: `self.dev.as_raw()` is a valid pointer to a `struct pci_dev`.
+-        let irq = unsafe { bindings::pci_irq_vector(self.dev.as_raw(), index as u32) };
++        let irq = unsafe { bindings::pci_irq_vector(self.dev.as_raw(), index) };
+         if irq < 0 {
+             return Err(Error::from_errno(irq));
          }
 
+---
 base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
--- 
-2.43.0
+change-id: 20260831-fix-pci-irq-vector-index-truncation-6752f3751a0d
+
+Best regards,
+--  
+Sophon Z <aiqubits@hotmail.com>
+
 
