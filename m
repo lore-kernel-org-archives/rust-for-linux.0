@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20513DAC13;
-	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160EF43F8D9;
+	Tue,  1 Sep 2026 16:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788278956; cv=none; b=bjdYshfKH19UdemjL3pBlF2i7QxckoBlgKkLTdnI4oj/XqdqnDQmqOqqrdPOTaPhzpZEqLjEH8TzPp6RTK9t3QZP8809v9qQBMSYqP5iS1wU9SOtziBGMrhsgwIMexfEFGLC0S/se/K9jodQQkygrt0HySGDR0WstrbS+luS5Xk=
+	t=1788278957; cv=none; b=bOGxfpXGDSVJ1uS7faYSsadw/pAW9x8JWPnK0+LMbnmTz/43VhVTInVv2NapsbmuU552PzBOc6GSGOsS6cEQcxYwXwAMI01yVlclO86Ef5PGxhDR4SlP0Z/n2/HIOrEz88P2u9tVJfJzEvmGsEzY8SXBMSyj1yJretQT6HH07cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788278956; c=relaxed/simple;
-	bh=vVRTAJM2qAJtjzVNw7AfiDMOZQ6QUxUlTdr6404pWUc=;
+	s=arc-20240116; t=1788278957; c=relaxed/simple;
+	bh=2rDFcVDpVSOb7E7Q6WZ1n2yT0y1382pLRES1c4DMPSY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fzB/O9JkLXAUkto7GWWnxRQqE/uTIsf+L1W2ICS316+oroRikGb15ZTyxMiMaYVvExFlH4se36FPcviXCrUYzW38+uF0PpAXhVctjeLT0WwIji4TYjA7hJp9dBfnBoDkswyLGYHjIvOLbk9cQuH/scseomIYqLzplxcc/mRRCwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RtNnEY7h; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=sCz3Rb/4q38/Xjkr/N77CMzW8DC6xhVa+kVU5Nt9UfFrBWeMeu05yvCuupnkWWlsaYvamPx/EXwjBdpY+15bFCVYmdx01D306Z0q6LkWvQRj9hyKl9y7m2t0RIc9gzGfPNbfcL+WNmOvT9vwxQBFVUwRKR8xUK4FFG/o2LMpDYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rox7nyIJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RtNnEY7h"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7C349C32782;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rox7nyIJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CDFBEC4AF0D;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788278956;
-	bh=vVRTAJM2qAJtjzVNw7AfiDMOZQ6QUxUlTdr6404pWUc=;
+	bh=2rDFcVDpVSOb7E7Q6WZ1n2yT0y1382pLRES1c4DMPSY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=RtNnEY7hoph2NGV04fm7KqnQgfxO8XyXwmiTGUGtI3nVJfe16N40RwZkDYLT+ksZO
-	 2YY+rS0wl+a+/TsgI1fmeUZgiWHI+idrSNb+jMfzJSc+f7p5rqYHt+gtS1nGBEt+IQ
-	 dRR3YQt/Hkm0k0lq+vc9whkbty2GyDmdKXMhfr+Hcreqfr/NlHeuETdjUGbqFSo39e
-	 SNoFvcFY8ssqH8I5/kD0XGsv8IgmE43VcBeYNH6Mw5uGP91kgbiGcsWCMkvivJ5157
-	 W5XF6Y7c/8MUnW/r6hyHIp1Bo/d4MA3WA5xjWPleDxXUVo51o6H1b21u9574RPh0Oq
-	 8D6lZfwiTb+eA==
+	b=Rox7nyIJz4XYUKSbtGWvHgHM43zJWFsnI5A216rQQkesWjf+9JviSQjRNYUoy4Dlt
+	 ZJXTqE2isLzWICxOQqtkaBCGlz+GbFVgDL18u8VpYRUqeNvFDMSW8w4mqmuco+vBTr
+	 9++A3jT/Orx2icuW+LOZ6Q8MqYYZW2LKmDiXwbln3EH5lH8rR64tgY1HzL7J+HlSVJ
+	 A1i2dVGlUgQB8cR/aKPN7eyYpcKHd3UlQURhbBU/B6IsSC1fWvUm9Cssjt/RzU7zSA
+	 uCWFLVjocFcvu6JnlZhqbGR2RhRMwXwlcQ//Kc28P//55lt7a6Uw/v9QfUfj64klry
+	 sh0UtKR46IHHQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 63CD2C624D7;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9F5FC624D3;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Wed, 02 Sep 2026 00:09:03 +0800
-Subject: [PATCH 4/9] drm/tyr: add per-file VM pool
+Date: Wed, 02 Sep 2026 00:09:08 +0800
+Subject: [PATCH 9/9] drm/tyr: add BO-related ioctls
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-tyr-ioctls-v1-4-e0fdbf8bd108@kylinos.cn>
+Message-Id: <20260902-tyr-ioctls-v1-9-e0fdbf8bd108@kylinos.cn>
 References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
 In-Reply-To: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
 To: rust-for-linux@vger.kernel.org
@@ -60,11 +60,11 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
  linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=3857;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=4674;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=GYNt5fASDjvzxxgWZLDWPIxhdkvjI20iaVSTTPTfRwI=;
- b=zNDRrCK4SuOMnUEDGOcfEfklYsW34X7DcrbeHuulWK+S9BJ2TEp/jQ1FknCrKMDLdreWsyCD/
- nGswWYrR5lrDce2bdKmuXNKhOd67JYC7lkzIJftaHcELHGgPGNrZ0Jc
+ bh=GB09PX+9tSC0xXDoB/KYTwCpkupIwMi/t6ujGhWMHCY=;
+ b=3u5QXxhXzE8PTncHj0Olzvwbk36Gnj+5vmGi8iSqdmGh8w7HtluwATOet3QKkFSy3LnDcQ8F/
+ ROMIFgAhZvfDBDlBA2bDnpKNn+XvzEDEHkHdnZeJP4HolUp8mxXyTEf
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -74,135 +74,132 @@ Reply-To: sunke@kylinos.cn
 
 From: Alvin Sun <alvin.sun@linux.dev>
 
-Add a per-file VM pool using the IdPool for ID allocation
-and an XArray for VM storage.
+Expose buffer creation and BO mmap offset retrieval.
+
+- BO_CREATE page-aligns the size and returns a handle with
+  write-combined mapping.
+- BO_MMAP_OFFSET provides the offset for the DRM generic mmap
+  path, rejecting NO_MMAP objects and non-zero pad.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- drivers/gpu/drm/tyr/pool.rs | 102 ++++++++++++++++++++++++++++++++++++++++++++
- drivers/gpu/drm/tyr/tyr.rs  |   1 +
- 2 files changed, 103 insertions(+)
+ drivers/gpu/drm/tyr/driver.rs |  2 ++
+ drivers/gpu/drm/tyr/file.rs   | 70 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/tyr/gem.rs    |  7 +++++
+ 3 files changed, 79 insertions(+)
 
-diff --git a/drivers/gpu/drm/tyr/pool.rs b/drivers/gpu/drm/tyr/pool.rs
-new file mode 100644
-index 0000000000000..1745116930c3e
---- /dev/null
-+++ b/drivers/gpu/drm/tyr/pool.rs
-@@ -0,0 +1,102 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index b3145526ada06..fc8d11c9ba1ca 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -224,6 +224,8 @@ impl drm::Driver for TyrDrmDriver {
+         (PANTHOR_VM_DESTROY, drm_panthor_vm_destroy, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_destroy),
+         (PANTHOR_VM_BIND, drm_panthor_vm_bind, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_bind),
+         (PANTHOR_VM_GET_STATE, drm_panthor_vm_get_state, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_get_state),
++        (PANTHOR_BO_CREATE, drm_panthor_bo_create, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_create),
++        (PANTHOR_BO_MMAP_OFFSET, drm_panthor_bo_mmap_offset, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_mmap_offset),
+     }
+ }
+ 
+diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+index 157bc40e1cac4..16abf2968299c 100644
+--- a/drivers/gpu/drm/tyr/file.rs
++++ b/drivers/gpu/drm/tyr/file.rs
+@@ -252,6 +252,76 @@ pub(crate) fn vm_get_state(
+             Ok(0)
+         })
+     }
 +
-+//! Per-drm-file VM id pool.
++    pub(crate) fn bo_create(
++        ddev: &TyrDrmDevice<Registered>,
++        _reg_data: &TyrDrmRegistrationData<'_>,
++        bocreate: &mut uapi::drm_panthor_bo_create,
++        file: &TyrDrmFile,
++    ) -> Result<u32> {
++        if bocreate.size == 0
++            || bocreate.pad != 0
++            || bocreate.flags & !uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0
++            || bocreate.exclusive_vm_id != 0
++        {
++            dev_err!(
++                ddev.as_ref(),
++                "Invalid BO_CREATE params: size={}, pad={}, flags={:#x}, exclusive_vm_id={}\n",
++                bocreate.size,
++                bocreate.pad,
++                bocreate.flags,
++                bocreate.exclusive_vm_id
++            );
++            return Err(EINVAL);
++        }
 +
-+use kernel::{
-+    id_pool::IdPool,
-+    new_mutex,
-+    prelude::*,
-+    sync::{
-+        Arc,
-+        ArcBorrow,
-+        Mutex, //
-+    },
-+    xarray::{
-+        AllocKind,
-+        XArray, //
-+    }, //
-+};
++        let size = usize::try_from(bocreate.size).map_err(|_| {
++            dev_err!(
++                ddev.as_ref(),
++                "BO_CREATE size {:#x} too large\n",
++                bocreate.size
++            );
++            EINVAL
++        })?;
++        let bo = crate::gem::new_object(ddev, size, bocreate.flags)?;
++        bocreate.handle = bo.create_handle(file)?;
++        bocreate.size = bo.size() as u64;
 +
-+use crate::vm::Vm;
++        Ok(0)
++    }
 +
-+/// Maximum number of VMs per open file. Matches panthor's
-+/// `PANTHOR_MAX_VMS_PER_FILE`.
-+pub(crate) const PANTHOR_MAX_VMS_PER_FILE: u32 = 32;
++    pub(crate) fn bo_mmap_offset(
++        ddev: &TyrDrmDevice<Registered>,
++        _reg_data: &TyrDrmRegistrationData<'_>,
++        bommap: &mut uapi::drm_panthor_bo_mmap_offset,
++        file: &TyrDrmFile,
++    ) -> Result<u32> {
++        if bommap.pad != 0 {
++            dev_err!(
++                ddev.as_ref(),
++                "BO mmap offset pad not zero: {}\n",
++                bommap.pad
++            );
++            return Err(EINVAL);
++        }
 +
-+/// Per-open-file pool of VMs.
-+#[pin_data]
-+pub(crate) struct VmPool<'drm> {
-+    #[pin]
-+    ids: Mutex<IdPool>,
-+    #[pin]
-+    vms: XArray<Arc<Vm<'drm>>>,
++        let bo = crate::gem::lookup_handle(file, bommap.handle).inspect_err(|_| {
++            dev_err!(ddev.as_ref(), "Invalid BO mmap handle: {}\n", bommap.handle);
++        })?;
++        if bo.create_flags() & uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0 {
++            dev_err!(ddev.as_ref(), "BO mmap offset on NO_MMAP object\n");
++            return Err(EPERM);
++        }
++        bommap.offset = bo.create_mmap_offset().inspect_err(|_| {
++            dev_err!(
++                ddev.as_ref(),
++                "Failed to create mmap offset for handle {}\n",
++                bommap.handle
++            );
++        })?;
++
++        Ok(0)
++    }
+ }
+ 
+ fn vm_bind_exec_op(vm: &Vm<'_>, file: &TyrDrmFile, op: &VmBindOp) -> Result {
+diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+index d9ddcb287f52b..f404139f54f32 100644
+--- a/drivers/gpu/drm/tyr/gem.rs
++++ b/drivers/gpu/drm/tyr/gem.rs
+@@ -38,6 +38,13 @@ pub(crate) struct BoData {
+     flags: u32,
+ }
+ 
++impl BoData {
++    /// Returns the flags the BO was created with.
++    pub(crate) fn create_flags(&self) -> u32 {
++        self.flags
++    }
 +}
 +
-+impl<'drm> VmPool<'drm> {
-+    /// Creates a new [`VmPool`] with capacity for [`PANTHOR_MAX_VMS_PER_FILE`] VMs.
-+    pub(crate) fn new() -> Result<impl PinInit<Self>> {
-+        let ids = IdPool::with_capacity(PANTHOR_MAX_VMS_PER_FILE as usize, GFP_KERNEL)?;
-+        Ok(pin_init!(Self {
-+            ids <- new_mutex!(ids),
-+            vms <- XArray::new(AllocKind::Alloc),
-+        }))
-+    }
-+
-+    /// Inserts a VM into the pool, returning the allocated ID.
-+    pub(crate) fn add(&self, vm: ArcBorrow<'_, Vm<'drm>>) -> Result<u32> {
-+        let id = {
-+            let mut ids = self.ids.lock();
-+            ids.find_unused_id(1).ok_or(ENOSPC)?.acquire()
-+        };
-+
-+        let vm: Arc<Vm<'drm>> = vm.into();
-+        let mut vms = self.vms.lock();
-+        match vms.store(id, vm, GFP_KERNEL) {
-+            Ok(previous) => {
-+                // Drop the previous entry (expected `None`).
-+                drop(previous);
-+                Ok(id as u32)
-+            }
-+            Err(err) => {
-+                // Drop the XArray spinlock before acquiring the `ids` mutex.
-+                drop(vms);
-+                // Release the stored entry and the pooled id.
-+                drop(err.value);
-+                let mut ids = self.ids.lock();
-+                ids.release_id(id);
-+                Err(err.error)
-+            }
-+        }
-+    }
-+
-+    /// Removes the VM with the given ID.
-+    pub(crate) fn remove(&self, id: u32) -> Result<Arc<Vm<'drm>>> {
-+        let mut vms = self.vms.lock();
-+        match vms.remove(id as usize) {
-+            Some(vm) => {
-+                drop(vms);
-+                let mut ids = self.ids.lock();
-+                ids.release_id(id as usize);
-+                Ok(vm)
-+            }
-+            None => Err(EINVAL),
-+        }
-+    }
-+
-+    /// Gets the VM with the given ID.
-+    pub(crate) fn get(&self, id: u32) -> Option<Arc<Vm<'drm>>> {
-+        let vms = self.vms.lock();
-+        let borrow = vms.get(id as usize)?;
-+        Some(Arc::from(borrow))
-+    }
-+
-+    /// Removes and returns the first VM in the pool.
-+    pub(crate) fn pop_first(&self) -> Option<Arc<Vm<'drm>>> {
-+        for id in 0..PANTHOR_MAX_VMS_PER_FILE {
-+            if let Ok(vm) = self.remove(id) {
-+                return Some(vm);
-+            }
-+        }
-+        None
-+    }
-+}
-diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-index e7ec450bdc9c0..8c0c18c1a970b 100644
---- a/drivers/gpu/drm/tyr/tyr.rs
-+++ b/drivers/gpu/drm/tyr/tyr.rs
-@@ -13,6 +13,7 @@
- mod gem;
- mod gpu;
- mod mmu;
-+mod pool;
- mod regs;
- mod slot;
- mod vm;
+ /// Provides a way to pass arguments when creating BoData
+ /// as required by the gem::DriverObject trait.
+ pub(crate) struct BoCreateArgs {
 
 -- 
 2.43.0
