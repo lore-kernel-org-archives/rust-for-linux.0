@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C6443F4A6;
-	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2521844063C;
+	Tue,  1 Sep 2026 16:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788278957; cv=none; b=DiIwB7OyY2iYJ6cVuIBY6Rc9CkOUUPxaci27ijoC0+xf+9TxrFIZQLG3/jcA/GyiXPq+cb0kw/x4TirFuHKXwtL5ArVJyB+yxIqGkgV+7R9ht1ppzaLGroneiTBu6xzJQfsTRc+QOOiIkPyc8x82pHBS3ppGXBpQ/f/BvkfQxzc=
+	t=1788278957; cv=none; b=ZhZsBEzDg8nVrIkVkSA0nqHTuJxXnso5YNg4+/IVz/bUqzhRyDE+jAx4JrUi8P+Hl1wDO64ve0NnobJXCcx/D29eo7EMf/8Wnbq3o48vOp58k+mzwSmZHAOAdOIk7YAN2onJxeKfQI1Y+xYI2YeLDEsri21wvI/+yuoN/sWDINU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788278957; c=relaxed/simple;
-	bh=tGulbdEu3dRFWulYij37FRo+LIbl4tpCnnrPz5XH21w=;
+	bh=HasbAbiscgkB/JlAaddXUmrmL9X8xBNF+D/Mcih0n8o=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hAUkHNhW9mtexd/hKjfRJW7hS6XLo/a7kVAaSYYt+E7d3WcSkaDvXHPB49ab508d6Pd+OYhjORcAYhQigGHPoNMWhTQUIH1SDIx/uusyv7+ERo5TB+U7rKt1Oq7OAT64jWAnD4GN6KrcMgANH8aUwLrmYMxQjhO5Hs2NNEJHSPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uskcNA54; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Cdl/Ptiv5WtaGvFYE5W6/X4RGYR6/uPoT6RIPKjib551b/piyelO77ja/7FhI6E6CFXRDYOh/qyjCTPUwseiA/895eL5l3b92js5IY8+s4gmNklUsV8N+z8+VI09O9xHCZMi4G5l3vniVTKM9WJueM8gVvkrdmjd+IJ1fl08e7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IDvXcKZF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uskcNA54"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A9130C2BCFD;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IDvXcKZF"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 98C79C2BD01;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788278956;
-	bh=tGulbdEu3dRFWulYij37FRo+LIbl4tpCnnrPz5XH21w=;
+	bh=HasbAbiscgkB/JlAaddXUmrmL9X8xBNF+D/Mcih0n8o=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=uskcNA54RBdpVd3VvbmnwJbbOtPvcMgEFDpY+U8yPaqk6VL9D35lb95YcI7duvTl1
-	 XrLvSmxZ4znTOKl85rwaB7ZCu766PJvjMm/2iUpUZzgZk4lE0cL6HVVSoOWlfyuIwH
-	 8ox6RK4+ktlE+2el2EjE8p6SoauF+nh1V29Hg4QWE/qecJdf7IW+slxHFOKCrGOF/g
-	 mNTzW7UNmTGOQLejvZoZ8VzUiD6lJhomXgBFdX44df4JJ1OOgk6lI55017I4Rnca03
-	 sWCgTmVGtNSWZUl2Vl1Vehgsi/RqyyCU1B/9YjBPUGLJbuUmXkF6GtHX8fHiF0Wayi
-	 o34vIcilV2igg==
+	b=IDvXcKZFF+vOqq/a8se+Fwjyyj4ZeLXSgNdmjkYAZwbXFaXOraDptqSv4a4vAnn3f
+	 6o3MM8H5Kdg+mlZngaSM1nNzpdcngSqgPVlwMqSELFnSZORwGJOvo1a1w1BlScVFUg
+	 G2hyzPoEVIUzT0rvy8C2RDxDERdaoWADKxXLpue1dsc6X9AJXwKn9uTy3CJxGONBj1
+	 vLKkgsdNQ5xhbCrJ0jN6sc/m0AaNtoDyMbZt3/aRqRwDYwWqzV/umUQz9B2ZkdxkfB
+	 NDaXnsHJxweTIqJ99ckAyMiOmmLT4vNWKPc+bHaa+0mHQZfWejQSFPcWB3zxC2FUyZ
+	 6V8mPS1T2fpFg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 962C2C61DD3;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85208C624D8;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Wed, 02 Sep 2026 00:09:06 +0800
-Subject: [PATCH 7/9] drm/tyr: refactor new_dummy_object to use new_object
+Date: Wed, 02 Sep 2026 00:09:05 +0800
+Subject: [PATCH 6/9] drm/tyr: add BO creation and lookup helpers
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-tyr-ioctls-v1-7-e0fdbf8bd108@kylinos.cn>
+Message-Id: <20260902-tyr-ioctls-v1-6-e0fdbf8bd108@kylinos.cn>
 References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
 In-Reply-To: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
 To: rust-for-linux@vger.kernel.org
@@ -60,11 +60,11 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
  linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=1139;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=1841;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=Ej92qQwFTpPtrIg4SAbvIlKuALoNm6gS9q8GLNp1YDQ=;
- b=+rvDr8eIgCszYK0KN0VFmkfXWahqtsVwtgx8CXqR+iJjCYkPEJsiRv5hYWJIDWEiIAxxnCCeq
- Wc/8K2eTe6EDzkVKNm6yRvYo252RjG/JDEoeTp/q173HXGhHdq/SF6K
+ bh=abNwTjK9PrYCz2ItiXXIoKFGbxiH33YuD8UYsvPqLiI=;
+ b=Uex/3W0EyxB0gcIL8eWYA/sjQXzaCiLpc+HrvugLg0hsDIo+bbu6Hon1FX9UroXbEfvMh/VHJ
+ pQSLU4FgRc6BySPUkPs/8YHeEOfNFFzyRJi0GtpBOWJGbhyaWeskyvR
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -74,38 +74,69 @@ Reply-To: sunke@kylinos.cn
 
 From: Alvin Sun <alvin.sun@linux.dev>
 
-new_dummy_object() duplicated the BO creation code that new_object()
-now provides; call new_object() instead.
+Add the new_object() and lookup_handle() helpers.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- drivers/gpu/drm/tyr/gem.rs | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/tyr/gem.rs | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index be1affe80db1a..d9ddcb287f52b 100644
+index 3bf3787f5c3fd..be1affe80db1a 100644
 --- a/drivers/gpu/drm/tyr/gem.rs
 +++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -82,17 +82,8 @@ pub(crate) fn lookup_handle(file: &TyrDrmFile, handle: u32) -> Result<ARef<Bo>>
+@@ -9,9 +9,11 @@
+ use kernel::{
+     drm::gem::{
+         self,
+-        shmem, //
++        shmem,
++        BaseObject, //
+     },
+     prelude::*,
++    sizes::SZ_4K,
+     sync::{
+         aref::ARef,
+         Arc, //
+@@ -23,6 +25,7 @@
+         TyrDrmDevice,
+         TyrDrmDriver, //
+     },
++    file::TyrDrmFile,
+     vm::{
+         Vm,
+         VmMapFlags, //
+@@ -53,6 +56,30 @@ fn new(_dev: &TyrDrmDevice, _size: usize, args: BoCreateArgs) -> impl PinInit<Se
+ /// Type alias for Tyr GEM buffer objects.
+ pub(crate) type Bo = gem::shmem::Object<BoData>;
  
++/// Create a new GEM buffer object.
++pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result<ARef<Bo>> {
++    if size == 0 {
++        return Err(EINVAL);
++    }
++
++    let aligned_size = size.checked_next_multiple_of(SZ_4K).ok_or(EINVAL)?;
++
++    Bo::new(
++        ddev,
++        aligned_size,
++        shmem::ObjectConfig {
++            map_wc: true,
++            parent_resv_obj: None,
++        },
++        BoCreateArgs { flags },
++    )
++}
++
++/// Look up a GEM object by handle for a DRM file.
++pub(crate) fn lookup_handle(file: &TyrDrmFile, handle: u32) -> Result<ARef<Bo>> {
++    Bo::lookup_handle(file, handle)
++}
++
  /// Creates a dummy GEM object to serve as the root of a GPUVM.
  pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> Result<ARef<Bo>> {
--    let bo = Bo::new(
--        ddev,
--        4096,
--        shmem::ObjectConfig {
--            map_wc: true,
--            parent_resv_obj: None,
--        },
--        BoCreateArgs { flags: 0 },
--    )?;
--
--    Ok(bo)
-+    // FIXME: use a Rust resv-object abstraction once available, rather than a real BO.
-+    new_object(ddev, 4096, 0)
- }
- 
- /// Specifies how to choose a GPU virtual address for a [`KernelBo`].
+     let bo = Bo::new(
 
 -- 
 2.43.0
