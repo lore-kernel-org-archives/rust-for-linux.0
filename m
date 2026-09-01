@@ -1,64 +1,64 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F58245012
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Sep 2026 01:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E1039891E
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Sep 2026 01:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788224732; cv=none; b=GKuABXE6NFtBkBoMESWj1UfVSzJcjoxMT5ovEQGkJ8kWIQyS++Vw7cQKlhFqd20ALPnaGGnQ054kJZc8MVU4Y5I/epKDxKrHvNAIao3df9JQQAVDZw/1KDUyey3Q6Ho87UHatvf6brugqdw/kzG6tGxf8soPmlgC2CrPSswB0M8=
+	t=1788224740; cv=none; b=e99VPv27u1IcEXJ+LO8lHQ8bdia7tqvTkT8oTJB164/Of6HrpHe7xTsE2K+vP5zwXJxoRjN/jWQfrifokntUYK1sqhbzLEF53p+N9whUFky+CoCMfPySH6WKXXYhkBXNqjrbGc40LuErUeH01VFtoKU35Hg71q132asdPG0rsiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788224732; c=relaxed/simple;
-	bh=AFZVSiROnXQsP5Ur1LhhZLtsCD7jPaFWVWhrWRXhmE0=;
+	s=arc-20240116; t=1788224740; c=relaxed/simple;
+	bh=rgSGcz893ueiGfuyqqAZO9aqjoYjmJCcUYsDt8Smdf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cHU2mIwEGekxIHT48wr3fiy+CNaCcprZWSvHghCORvqFXq9SH4LNCwLmqHb5u9xHM8+XySWDDLtdGrGafix7JHO/0PqKa+BEnKwskqDvNsitUe57i4REwAEifolQoQsNRgT/nGH3e36B4RTKH0Zg3JtJ+FDuVOtzykN0DSTn0Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GpI5bSNN; arc=none smtp.client-ip=209.85.216.48
+	 MIME-Version; b=cqrCoMg/yZUmQepM/bQ2LvspxxfF7WlFvz0TXoY/IHgkTwPKQOmp51Erip0gW7jNC7NdI9heTXtsC/c9/bqQXLxaNtZKRZ6tHjuU3Uu/NC6VF5czfuWRF7OLR8lmcVvc8NWHjAY+YsPh599icGE5Oj31xIHYKxM7nuNtTtR+GJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L8glTBsD; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GpI5bSNN"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38dc4553f62so5782568a91.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 31 Aug 2026 18:05:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L8glTBsD"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3964dfb5b9aso4526391a91.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 31 Aug 2026 18:05:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788224728; x=1788829528; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788224738; x=1788829538; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=eISXSD8r6vmZx+yib4Boijj6gpPPSZicamRzRPecgOk=;
-        b=GpI5bSNNj3sI7UbLT3dZwI56PhUnXoyq9m8a3wdcba8uD5mh7yzXbs3E0RaDyao82e
-         8Nsf/F1dKLdb9WmCoIyyEiciGU3yw0fzbqHrObo2goNiJAy20Ff4qmoclZmXEmFiIGkn
-         yWTRhgUlLBCD9/jKORY+nsE8k7Zn4VZvRDdyrnP+0H1Fhx/vLl0aZDBytm8B+Lkw2vjO
-         5ZFFvXwhXIs3OA5Su/pPdc1z0y5HOJRr2eo6VhezXAwphWGf/KZnCgpkQnKqyZy1+kEI
-         8/c0+EBTjDuhOIEzMf/WeEA/qAJzOd/dsu6ciV778SAijqIPFYIAfmrpigGP570Kfzch
-         a5nQ==
+        bh=2ff32pYrLV2ye5SVxDkfabWfzjV5v7+4FFXbfOmJ02c=;
+        b=L8glTBsD2eZPsa9Bsqm/7U6mmZLOULwyxhxwu27MzKsFaw4L11SYnTN8z1lkANN297
+         n9X00+e56uyVYOA8e/kuwOA8xuyddIFmiBaUF4nbYBHYQQETG09i2QxveAPAABrFPLIX
+         IqcClt9/tCP8Wg7MvYJGq2VKC/ilt2i6TWV0z3qX/Aq/+GGCQog8MR61sjGChm0x6oMD
+         AbcH5lrUyLxFUmm8f1/H/QSXltH7x4NG3Y5nPIajoIztg8NcDzTNxA3d7eYTUfYU+rLU
+         URLGe+EZSBX1WTJcbpIE6+mnisB6fvaMJW4QvrlJjoINEwknM3RDswdIUwsB/sfgsgvm
+         zO1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788224728; x=1788829528;
+        d=1e100.net; s=20251104; t=1788224738; x=1788829538;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eISXSD8r6vmZx+yib4Boijj6gpPPSZicamRzRPecgOk=;
-        b=UAqF9J+wz6Ab83Pl6MXQUQtJMOCHYrtk/jgxTy4bjIJE68bC662TbU/bG5zcwDuOT0
-         olIMRPS8uR63I10lsDavphGFYyPIAFnyMpiv/FG0RbVdRSZBwMDsU7zAm/nABXdNyQZ5
-         DKRtFDeeyHwcI/Hp9bGakVYrDnJTsN5tmWoKCoV4C9/cV5fN5cFCfLvpzuluUqGhLrkX
-         uqvXb3rXBMAgmRbPltJ/F0ZbJcHdnqLtGK7AyELY3ZK4DeAldcc8kdBzgBuWMh62z6Lt
-         4pZ0hYyDlBOC1MXHFSMfRHfLQl7WHbl22KFXFgqDKdzBjpZ2Ey7nR/0RGD2I1PjMMPCp
-         cVhQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy90AuLWrSf3N7x0b1og5waE56447qKc4fgbOTDj3TN0boxi+fUde2bibKZa/of+7g8d7325Y0FbxOT2t2fmQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++k15HQNCGlcHOG/8YY+c5ACyqm8MzD3PLaex4XoP7yXhXxR/yIb
-	IqvEIxkQaHnbgQvcWsljcnsnwP6Xu4V4ZUM+Rbot8e7GLEuaxlJAJIzf
-X-Gm-Gg: AYBFou07wafeoGnXRvlCIsCzx4b3hZXXz+DgLtf1Hkh3Iqb1bDfoZ2SnyfM8JALEmKR
-	+U2kTerEJmcVHYKYaopf9WabhOhn1qFPHWDu30GaQ1ClCcfgNMyXU4NUnE4P6b+0jbgJEiZz4lK
-	YPFOaiT+nbEvEV8fk1YeZ+RuATBt1w1XckjWNQt3d+b090t8lceG8jAhfqfEJmen3po9ptulSkR
-	QnjF9CHjiCvSJWrFom/oeUIOkOV+SvtlwnNXfPuqcebzXhqzy9eLgUKk1Ql1N4V27qcKEVfHVxs
-	cZ6KKBr2Ldku9GAn4XkidNtBg2bWSzR7jgywtbo7Hv4vuVdo5nA4Gau684CxpYVsnfG3EcHOMyv
-	cdR+JjXFtiwqmVe+2SWPU2Aob+Afaax0Ws6pfnREC8JY3V8z7OMlpdh92cfGtIC8vN0Q2TfbkCz
-	srEfPKwfgL/tZvkboKgYoK8f4PTdUhCP0gcGjHCDldDFpy8Qt/L2gN4m/KnMj4G0SFCAXy45Y39
-	9LkLw==
-X-Received: by 2002:a17:90b:394c:b0:398:9bd4:d12 with SMTP id 98e67ed59e1d1-39907e4ada0mr6637914a91.17.1788224728281;
-        Mon, 31 Aug 2026 18:05:28 -0700 (PDT)
+        bh=2ff32pYrLV2ye5SVxDkfabWfzjV5v7+4FFXbfOmJ02c=;
+        b=F7x5jlytjtNQgr9BkDg+Y8LSj2KKFcUdUmVqV5dToiH+hjH2QsAs7hjH5AgSKVWt3J
+         HmpFRnJUqukZTTa3kqE4u23EQVMAcuMDBkAuCDxEQLQ5qsbpCmdpxYOdoqsVjy7JOsOQ
+         PL/4bezdbR/3AAbfAYhZpcCsnxh+P2Ba8UKnH1Ga/IxaweHC9WxGpCaDdXbprjiMjYXJ
+         jZZA4uiYflZa+JwqZmYR00ScJFIcA7hV8FR8RysdyDN1zebWyxoVCEynX4VFsVZeIXmH
+         YweMo3/kbbIf8Cvn+5W4n43ed6MRshD5jgCVKgiS7+gOvE6euD8biWoHj2I+26mUCvKK
+         9qzg==
+X-Forwarded-Encrypted: i=1; AKwUvBwwvb4nMlimy6t9kMb92E8kGXR4ioTNmAZHcPlYWRAN8ndQ3clx8XjVs6S6itcfFQTNWusc5aMM+O674SYsAQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++mLpXzVTEMoGV6Wz8ipTrSp7asFU0PzKNo7QMDlEJBT23nNhn6u
+	d8PO6nF2AZm36W2o2rmpH441UqC3b2BI81FfcGV8wy6bsHPed3xgkH1a
+X-Gm-Gg: AYBFou22TCJo4/OKhvTDo6b943aKcqgVyfdqg5RTh2kHhPxJr+x9hcqqWY+1pxZDIgp
+	jTugn79Ux07hgMH4HtgVkIHycS1NKE3CBo78/qiiJ5hoy8w/m+r7k9ocH535ALrDV3dHq4h/GSt
+	4F24TnqdCQYNM2zt2n5GrnjUZaXtFSxKRN2Ux95Yty3vvMzrNQBARzctZhayKgN1mEl5A6S6pwA
+	scIAzUHaN6vWcjGe34KCB3MhvrTiaV9yBXiqtcullRvh7Pk7NSJ6uP+kEaUwSrjKcsx34GY1CO2
+	Zt2g6l9+yaqQRMAAhDR9jNGhLvhphbuxNX4RAP9UUHIcgse+UB1kUSZ2fFdTOrsNcLFmUkqgKgh
+	qrw8uS7awaOCmWe7rh+JG/EJW0BVSJWVksmiQuXj1nx72y0hU30NL4H/Bqmb9GmwIHY60GAxbdI
+	4shJ3s+dKS9loR2YfVaHsV5ANpUi9E0O9AvR3QyYA44NWYyGp1Z8CXc4ttAkjoXP8+8hZ1fDwHK
+	qZ+hznh25ArPOQk
+X-Received: by 2002:a17:90a:e7cf:b0:38f:dec8:f7e9 with SMTP id 98e67ed59e1d1-396d0fccec0mr43056859a91.12.1788224738038;
+        Mon, 31 Aug 2026 18:05:38 -0700 (PDT)
 Received: from toolbx.alistair23.me ([2403:581e:fdf9:0:13b2:851f:d9cb:44c5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3990d49e9e0sm2372024a91.11.2026.08.31.18.05.19
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3990d49e9e0sm2372024a91.11.2026.08.31.18.05.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 18:05:27 -0700 (PDT)
+        Mon, 31 Aug 2026 18:05:36 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: linux-pci@vger.kernel.org,
@@ -84,9 +84,9 @@ Cc: gary@garyguo.net,
 	alex.gaynor@gmail.com,
 	aliceryhl@google.com,
 	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v3 10/21] PCI/TSM: Rename pf0 to host
-Date: Tue,  1 Sep 2026 11:03:36 +1000
-Message-ID: <20260901010347.2614656-11-alistair.francis@wdc.com>
+Subject: [PATCH v3 11/21] PCI/TSM: Support connecting to PCIe CMA devices
+Date: Tue,  1 Sep 2026 11:03:37 +1000
+Message-ID: <20260901010347.2614656-12-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260901010347.2614656-1-alistair.francis@wdc.com>
 References: <20260901010347.2614656-1-alistair.francis@wdc.com>
@@ -100,413 +100,170 @@ Content-Transfer-Encoding: 8bit
 
 From: Alistair Francis <alistair.francis@wdc.com>
 
-Rename pci_tsm_pf0 to pci_tsm_host (and rename variables and function
-names from pf0 to host) as part of converting pci_tsm_host
-to be any device that knows how to speak any of CMA, IDE, or
-TDISP.
+In the next patch we are going to add a PCIe CMA TSM driver, as such we
+need to ensure that is_pci_tsm_host() will allow us to connect to CMA
+capable devices. These devices don't necessarily has DEVCAP_TEE or IDE
+support.
 
-This commit just renames the functions and provides no functional
-change. That will happen in the next commit.
+To avoid calling pci_find_doe_mailbox() everytime is_pci_tsm_host() is
+called we can cache the CMA support in struct pci_dev and just check
+against that.
 
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- drivers/crypto/ccp/sev-dev-tio.h |  4 +-
- drivers/crypto/ccp/sev-dev-tsm.c | 12 ++---
- drivers/pci/tsm.c                | 84 ++++++++++++++++----------------
- include/linux/pci-tsm.h          | 18 ++++---
- 4 files changed, 61 insertions(+), 57 deletions(-)
+ drivers/pci/doe.c       |  3 +++
+ drivers/pci/tsm.c       | 31 +++++++++++++++++++++++++------
+ include/linux/pci-tsm.h | 12 +++++++++++-
+ include/linux/pci.h     |  1 +
+ 4 files changed, 40 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/crypto/ccp/sev-dev-tio.h b/drivers/crypto/ccp/sev-dev-tio.h
-index 67512b3dbc53..78d598686487 100644
---- a/drivers/crypto/ccp/sev-dev-tio.h
-+++ b/drivers/crypto/ccp/sev-dev-tio.h
-@@ -53,9 +53,9 @@ struct tsm_dsm_tio {
- 	struct pci_ide *ide[TIO_IDE_MAX_TC];
- };
- 
--/* Describes TSM structure for PF0 pointed by pci_dev->tsm */
-+/* Describes TSM structure for the link host pointed by pci_dev->tsm */
- struct tio_dsm {
--	struct pci_tsm_pf0 tsm;
-+	struct pci_tsm_host tsm;
- 	struct tsm_dsm_tio data;
- 	struct sev_device *sev;
- };
-diff --git a/drivers/crypto/ccp/sev-dev-tsm.c b/drivers/crypto/ccp/sev-dev-tsm.c
-index 46f2539d2d5a..a900fd22eac9 100644
---- a/drivers/crypto/ccp/sev-dev-tsm.c
-+++ b/drivers/crypto/ccp/sev-dev-tsm.c
-@@ -205,7 +205,7 @@ static int stream_alloc(struct pci_dev *pdev, struct pci_ide **ide,
- 	return 0;
- }
- 
--static struct pci_tsm *tio_pf0_probe(struct pci_dev *pdev, struct sev_device *sev)
-+static struct pci_tsm *tio_host_probe(struct pci_dev *pdev, struct sev_device *sev)
- {
- 	struct tio_dsm *dsm __free(kfree) = kzalloc_obj(*dsm);
- 	int rc;
-@@ -213,7 +213,7 @@ static struct pci_tsm *tio_pf0_probe(struct pci_dev *pdev, struct sev_device *se
- 	if (!dsm)
- 		return NULL;
- 
--	rc = pci_tsm_pf0_constructor(pdev, &dsm->tsm, sev->tsmdev);
-+	rc = pci_tsm_host_constructor(pdev, &dsm->tsm, sev->tsmdev);
- 	if (rc)
- 		return NULL;
- 
-@@ -226,8 +226,8 @@ static struct pci_tsm *dsm_probe(struct tsm_dev *tsmdev, struct pci_dev *pdev)
- {
- 	struct sev_device *sev = tsm_dev_to_sev(tsmdev);
- 
--	if (is_pci_tsm_pf0(pdev))
--		return tio_pf0_probe(pdev, sev);
-+	if (is_pci_tsm_host(pdev))
-+		return tio_host_probe(pdev, sev);
- 	return NULL;
- }
- 
-@@ -237,10 +237,10 @@ static void dsm_remove(struct pci_tsm *tsm)
- 
- 	pci_dbg(pdev, "TSM disabled\n");
- 
--	if (is_pci_tsm_pf0(pdev)) {
-+	if (is_pci_tsm_host(pdev)) {
- 		struct tio_dsm *dsm = container_of(tsm, struct tio_dsm, tsm.base_tsm);
- 
--		pci_tsm_pf0_destructor(&dsm->tsm);
-+		pci_tsm_host_destructor(&dsm->tsm);
- 		kfree(dsm);
+diff --git a/drivers/pci/doe.c b/drivers/pci/doe.c
+index ac95b1d2d999..6a59969bd52f 100644
+--- a/drivers/pci/doe.c
++++ b/drivers/pci/doe.c
+@@ -870,6 +870,9 @@ void pci_doe_init(struct pci_dev *pdev)
+ 			pci_doe_destroy_mb(doe_mb);
+ 		}
  	}
++
++	pdev->doe_cma = pci_find_doe_mailbox(pdev, PCI_VENDOR_ID_PCI_SIG,
++					     PCI_DOE_FEATURE_CMA);
  }
+ 
+ void pci_doe_destroy(struct pci_dev *pdev)
 diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
-index 5fdcd7f2e820..10c9c6696624 100644
+index 10c9c6696624..440f818ac569 100644
 --- a/drivers/pci/tsm.c
 +++ b/drivers/pci/tsm.c
-@@ -45,22 +45,22 @@ static inline bool has_tee(struct pci_dev *pdev)
- 	return pdev->devcap & PCI_EXP_DEVCAP_TEE;
- }
+@@ -88,8 +88,8 @@ static void pci_tsm_walk_fns(struct pci_dev *pdev,
+ 		if (!pf)
+ 			continue;
  
--/* 'struct pci_tsm_pf0' wraps 'struct pci_tsm' when ->dsm_dev == ->pdev (self) */
--static struct pci_tsm_pf0 *to_pci_tsm_pf0(struct pci_tsm *tsm)
-+/* 'struct pci_tsm_host' wraps 'struct pci_tsm' when ->dsm_dev == ->pdev (self) */
-+static struct pci_tsm_host *to_pci_tsm_host(struct pci_tsm *tsm)
- {
- 	/*
- 	 * All "link" TSM contexts reference the device that hosts the DSM
- 	 * interface for a set of devices. Walk to the DSM device and cast its
--	 * ->tsm context to a 'struct pci_tsm_pf0 *'.
-+	 * ->tsm context to a 'struct pci_tsm_host *'.
- 	 */
--	struct pci_dev *pf0 = tsm->dsm_dev;
-+	struct pci_dev *host = tsm->dsm_dev;
+-		/* on entry function 0 has already run @cb */
+-		if (i > 0)
++		/* the caller is responsible for running @cb on the host itself */
++		if (pf != pdev)
+ 			cb(pf, data);
  
--	if (!is_pci_tsm_pf0(pf0) || !is_dsm(pf0)) {
-+	if (!is_pci_tsm_host(host) || !is_dsm(host)) {
- 		pci_WARN_ONCE(tsm->pdev, 1, "invalid context object\n");
- 		return NULL;
+ 		/* walk virtual functions of each pf */
+@@ -145,8 +145,8 @@ static void pci_tsm_walk_fns_reverse(struct pci_dev *pdev,
+ 			cb(vf, data);
+ 		}
+ 
+-		/* on exit, caller will run @cb on function 0 */
+-		if (i > 0)
++		/* the caller is responsible for running @cb on the host itself */
++		if (pf != pdev)
+ 			cb(pf, data);
  	}
- 
--	return container_of(pf0->tsm, struct pci_tsm_pf0, base_tsm);
-+	return container_of(host->tsm, struct pci_tsm_host, base_tsm);
  }
+@@ -287,6 +287,16 @@ static DEVICE_ATTR_RW(connect);
  
- static void tsm_remove(struct pci_tsm *tsm)
-@@ -186,7 +186,7 @@ static int probe_fn(struct pci_dev *pdev, void *dsm)
- static int pci_tsm_connect(struct pci_dev *pdev, struct tsm_dev *tsm_dev)
+ static int remove_fn(struct pci_dev *pdev, void *data)
  {
- 	int rc;
--	struct pci_tsm_pf0 *tsm_pf0;
-+	struct pci_tsm_host *tsm_host;
- 	const struct pci_tsm_ops *ops = tsm_dev->pci_ops;
- 	struct pci_tsm *pci_tsm __free(tsm_remove) = ops->probe(tsm_dev, pdev);
- 
-@@ -197,10 +197,10 @@ static int pci_tsm_connect(struct pci_dev *pdev, struct tsm_dev *tsm_dev)
- 		return -ENXIO;
- 
- 	pdev->tsm = pci_tsm;
--	tsm_pf0 = to_pci_tsm_pf0(pdev->tsm);
-+	tsm_host = to_pci_tsm_host(pdev->tsm);
- 
- 	/* mutex_intr assumes connect() is always sysfs/user driven */
--	ACQUIRE(mutex_intr, lock)(&tsm_pf0->lock);
-+	ACQUIRE(mutex_intr, lock)(&tsm_host->lock);
- 	if ((rc = ACQUIRE_ERR(mutex_intr, &lock)))
- 		return rc;
- 
-@@ -300,15 +300,15 @@ static int remove_fn(struct pci_dev *pdev, void *data)
++	struct pci_dev *host = data;
++
++	/*
++	 * Only teardown the security context of functions that belong to the
++	 * DSM being disconnected, leaving any sibling DSM in the same slot
++	 * untouched.
++	 */
++	if (!pdev->tsm || pdev->tsm->dsm_dev != host)
++		return 0;
++
+ 	tsm_remove(pdev->tsm);
+ 	link_sysfs_disable(pdev);
+ 	return 0;
+@@ -299,6 +309,7 @@ static int remove_fn(struct pci_dev *pdev, void *data)
+  */
  static int __pci_tsm_unbind(struct pci_dev *pdev, void *data)
  {
++	struct pci_dev *host = data;
  	struct pci_tdi *tdi;
--	struct pci_tsm_pf0 *tsm_pf0;
-+	struct pci_tsm_host *tsm_host;
+ 	struct pci_tsm_host *tsm_host;
  
- 	lockdep_assert_held(&pci_tsm_rwsem);
- 
+@@ -307,6 +318,14 @@ static int __pci_tsm_unbind(struct pci_dev *pdev, void *data)
  	if (!pdev->tsm)
  		return 0;
  
--	tsm_pf0 = to_pci_tsm_pf0(pdev->tsm);
--	guard(mutex)(&tsm_pf0->lock);
-+	tsm_host = to_pci_tsm_host(pdev->tsm);
-+	guard(mutex)(&tsm_host->lock);
++	/*
++	 * When walking a DSM's dependent functions skip any that belong to a
++	 * different DSM in the same slot. A NULL @host is a direct unbind of
++	 * @pdev itself.
++	 */
++	if (host && pdev->tsm->dsm_dev != host)
++		return 0;
++
+ 	tsm_host = to_pci_tsm_host(pdev->tsm);
+ 	guard(mutex)(&tsm_host->lock);
  
- 	tdi = pdev->tsm->tdi;
- 	if (!tdi)
-@@ -341,7 +341,7 @@ EXPORT_SYMBOL_GPL(pci_tsm_unbind);
-  */
- int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u32 tdi_id)
+@@ -437,7 +456,7 @@ EXPORT_SYMBOL_GPL(pci_tsm_guest_req);
+ 
+ static void pci_tsm_unbind_all(struct pci_dev *pdev)
  {
--	struct pci_tsm_pf0 *tsm_pf0;
-+	struct pci_tsm_host *tsm_host;
- 	struct pci_tdi *tdi;
+-	pci_tsm_walk_fns_reverse(pdev, __pci_tsm_unbind, NULL);
++	pci_tsm_walk_fns_reverse(pdev, __pci_tsm_unbind, pdev);
+ 	__pci_tsm_unbind(pdev, NULL);
+ }
  
- 	if (!kvm)
-@@ -355,8 +355,8 @@ int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u32 tdi_id)
- 	if (!is_link_tsm(pdev->tsm->tsm_dev))
- 		return -ENXIO;
- 
--	tsm_pf0 = to_pci_tsm_pf0(pdev->tsm);
--	guard(mutex)(&tsm_pf0->lock);
-+	tsm_host = to_pci_tsm_host(pdev->tsm);
-+	guard(mutex)(&tsm_host->lock);
- 
- 	/* Resolve races to bind a TDI */
- 	if (pdev->tsm->tdi) {
-@@ -404,7 +404,7 @@ ssize_t pci_tsm_guest_req(struct pci_dev *pdev, enum pci_tsm_req_scope scope,
- 			  sockptr_t req_in, size_t in_len, sockptr_t req_out,
- 			  size_t out_len, u64 *tsm_code)
- {
--	struct pci_tsm_pf0 *tsm_pf0;
-+	struct pci_tsm_host *tsm_host;
- 	struct pci_tdi *tdi;
- 	int rc;
- 
-@@ -422,8 +422,8 @@ ssize_t pci_tsm_guest_req(struct pci_dev *pdev, enum pci_tsm_req_scope scope,
- 	if (!is_link_tsm(pdev->tsm->tsm_dev))
- 		return -ENXIO;
- 
--	tsm_pf0 = to_pci_tsm_pf0(pdev->tsm);
--	ACQUIRE(mutex_intr, ops_lock)(&tsm_pf0->lock);
-+	tsm_host = to_pci_tsm_host(pdev->tsm);
-+	ACQUIRE(mutex_intr, ops_lock)(&tsm_host->lock);
- 	if ((rc = ACQUIRE_ERR(mutex_intr, &ops_lock)))
- 		return rc;
- 
-@@ -443,7 +443,7 @@ static void pci_tsm_unbind_all(struct pci_dev *pdev)
- 
- static void __pci_tsm_disconnect(struct pci_dev *pdev)
- {
--	struct pci_tsm_pf0 *tsm_pf0 = to_pci_tsm_pf0(pdev->tsm);
-+	struct pci_tsm_host *tsm_host = to_pci_tsm_host(pdev->tsm);
- 	const struct pci_tsm_ops *ops = to_pci_tsm_ops(pdev->tsm);
- 
- 	/* disconnect() mutually exclusive with subfunction pci_tsm_init() */
-@@ -455,7 +455,7 @@ static void __pci_tsm_disconnect(struct pci_dev *pdev)
- 	 * disconnect() is uninterruptible as it may be called for device
+@@ -456,7 +475,7 @@ static void __pci_tsm_disconnect(struct pci_dev *pdev)
  	 * teardown
  	 */
--	guard(mutex)(&tsm_pf0->lock);
-+	guard(mutex)(&tsm_host->lock);
- 	pci_tsm_walk_fns_reverse(pdev, remove_fn, NULL);
+ 	guard(mutex)(&tsm_host->lock);
+-	pci_tsm_walk_fns_reverse(pdev, remove_fn, NULL);
++	pci_tsm_walk_fns_reverse(pdev, remove_fn, pdev);
  	ops->disconnect(pdev);
  }
-@@ -494,7 +494,7 @@ static ssize_t bound_show(struct device *dev,
- 			  struct device_attribute *attr, char *buf)
- {
- 	struct pci_dev *pdev = to_pci_dev(dev);
--	struct pci_tsm_pf0 *tsm_pf0;
-+	struct pci_tsm_host *tsm_host;
- 	struct pci_tsm *tsm;
- 	int rc;
- 
-@@ -505,9 +505,9 @@ static ssize_t bound_show(struct device *dev,
- 	tsm = pdev->tsm;
- 	if (!tsm)
- 		return sysfs_emit(buf, "\n");
--	tsm_pf0 = to_pci_tsm_pf0(tsm);
-+	tsm_host = to_pci_tsm_host(tsm);
- 
--	ACQUIRE(mutex_intr, ops_lock)(&tsm_pf0->lock);
-+	ACQUIRE(mutex_intr, ops_lock)(&tsm_host->lock);
- 	if ((rc = ACQUIRE_ERR(mutex_intr, &ops_lock)))
- 		return rc;
- 
-@@ -547,7 +547,7 @@ static bool pci_tsm_link_group_visible(struct kobject *kobj)
- 	if (!pci_is_pcie(pdev))
- 		return false;
- 
--	if (is_pci_tsm_pf0(pdev))
-+	if (is_pci_tsm_host(pdev))
- 		return true;
- 
- 	/*
-@@ -572,14 +572,14 @@ static umode_t pci_tsm_attr_visible(struct kobject *kobj,
- 		struct pci_dev *pdev = to_pci_dev(kobj_to_dev(kobj));
- 
- 		if (attr == &dev_attr_bound.attr) {
--			if (is_pci_tsm_pf0(pdev) && has_tee(pdev))
-+			if (is_pci_tsm_host(pdev) && has_tee(pdev))
- 				return attr->mode;
- 			if (pdev->tsm && has_tee(pdev->tsm->dsm_dev))
- 				return attr->mode;
- 		}
- 
- 		if (attr == &dev_attr_dsm.attr) {
--			if (is_pci_tsm_pf0(pdev))
-+			if (is_pci_tsm_host(pdev))
- 				return attr->mode;
- 			if (pdev->tsm && has_tee(pdev->tsm->dsm_dev))
- 				return attr->mode;
-@@ -587,7 +587,7 @@ static umode_t pci_tsm_attr_visible(struct kobject *kobj,
- 
- 		if (attr == &dev_attr_connect.attr ||
- 		    attr == &dev_attr_disconnect.attr) {
--			if (is_pci_tsm_pf0(pdev))
-+			if (is_pci_tsm_host(pdev))
- 				return attr->mode;
- 		}
- 	}
-@@ -662,7 +662,7 @@ static struct pci_dev *find_dsm_dev(struct pci_dev *pdev)
- 	struct device *grandparent;
- 	struct pci_dev *uport;
- 
--	if (is_pci_tsm_pf0(pdev))
-+	if (is_pci_tsm_host(pdev))
- 		return pdev;
- 
- 	struct pci_dev *pf0 __free(pci_dev_put) = pf0_dev_get(pdev);
-@@ -735,13 +735,13 @@ int pci_tsm_link_constructor(struct pci_dev *pdev, struct pci_tsm *tsm,
- EXPORT_SYMBOL_GPL(pci_tsm_link_constructor);
- 
- /**
-- * pci_tsm_pf0_constructor() - common 'struct pci_tsm_pf0' (DSM) initialization
-- * @pdev: Physical Function 0 PCI device (as indicated by is_pci_tsm_pf0())
-+ * pci_tsm_host_constructor() - common 'struct pci_tsm_host' (DSM) initialization
-+ * @pdev: TSM host PCI device (as indicated by is_pci_tsm_host())
-  * @tsm: context to initialize
-  * @tsm_dev: Platform TEE Security Manager, initiator of security operations
-  */
--int pci_tsm_pf0_constructor(struct pci_dev *pdev, struct pci_tsm_pf0 *tsm,
--			    struct tsm_dev *tsm_dev)
-+int pci_tsm_host_constructor(struct pci_dev *pdev, struct pci_tsm_host *tsm,
-+			     struct tsm_dev *tsm_dev)
- {
- 	mutex_init(&tsm->lock);
- 	tsm->doe_mb = pci_find_doe_mailbox(pdev, PCI_VENDOR_ID_PCI_SIG,
-@@ -753,13 +753,13 @@ int pci_tsm_pf0_constructor(struct pci_dev *pdev, struct pci_tsm_pf0 *tsm,
- 
- 	return pci_tsm_link_constructor(pdev, &tsm->base_tsm, tsm_dev);
- }
--EXPORT_SYMBOL_GPL(pci_tsm_pf0_constructor);
-+EXPORT_SYMBOL_GPL(pci_tsm_host_constructor);
- 
--void pci_tsm_pf0_destructor(struct pci_tsm_pf0 *pf0_tsm)
-+void pci_tsm_host_destructor(struct pci_tsm_host *host_tsm)
- {
--	mutex_destroy(&pf0_tsm->lock);
-+	mutex_destroy(&host_tsm->lock);
- }
--EXPORT_SYMBOL_GPL(pci_tsm_pf0_destructor);
-+EXPORT_SYMBOL_GPL(pci_tsm_host_destructor);
- 
- int pci_tsm_register(struct tsm_dev *tsm_dev)
- {
-@@ -780,7 +780,7 @@ int pci_tsm_register(struct tsm_dev *tsm_dev)
- 	/* On first enable, update sysfs groups */
- 	if (is_link_tsm(tsm_dev) && pci_tsm_link_count++ == 0) {
- 		for_each_pci_dev(pdev)
--			if (is_pci_tsm_pf0(pdev))
-+			if (is_pci_tsm_host(pdev))
- 				link_sysfs_enable(pdev);
- 	} else if (is_devsec_tsm(tsm_dev)) {
- 		pci_tsm_devsec_count++;
-@@ -815,7 +815,7 @@ static void __pci_tsm_destroy(struct pci_dev *pdev, struct tsm_dev *tsm_dev)
- 	 * skipped if the device itself is being removed since sysfs goes away
- 	 * naturally at that point
- 	 */
--	if (is_link_tsm(tsm_dev) && is_pci_tsm_pf0(pdev) && !pci_tsm_link_count)
-+	if (is_link_tsm(tsm_dev) && is_pci_tsm_host(pdev) && !pci_tsm_link_count)
- 		link_sysfs_disable(pdev);
- 
- 	/* Nothing else to do if this device never attached to the departing TSM */
-@@ -828,7 +828,7 @@ static void __pci_tsm_destroy(struct pci_dev *pdev, struct tsm_dev *tsm_dev)
- 	else if (tsm_dev != tsm->tsm_dev)
- 		return;
- 
--	if (is_link_tsm(tsm_dev) && is_pci_tsm_pf0(pdev))
-+	if (is_link_tsm(tsm_dev) && is_pci_tsm_host(pdev))
- 		pci_tsm_disconnect(pdev);
- 	else
- 		pci_tsm_fn_exit(pdev);
-@@ -885,12 +885,12 @@ void pci_tsm_unregister(struct tsm_dev *tsm_dev)
- int pci_tsm_doe_transfer(struct pci_dev *pdev, u8 type, const void *req,
- 			 size_t req_sz, void *resp, size_t resp_sz)
- {
--	struct pci_tsm_pf0 *tsm;
-+	struct pci_tsm_host *tsm;
- 
--	if (!pdev->tsm || !is_pci_tsm_pf0(pdev))
-+	if (!pdev->tsm || !is_pci_tsm_host(pdev))
- 		return -ENXIO;
- 
--	tsm = to_pci_tsm_pf0(pdev->tsm);
-+	tsm = to_pci_tsm_host(pdev->tsm);
- 	if (!tsm->doe_mb)
- 		return -ENXIO;
  
 diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
-index a6435aba03f9..950e2c36a4ca 100644
+index 950e2c36a4ca..f504fa680315 100644
 --- a/include/linux/pci-tsm.h
 +++ b/include/linux/pci-tsm.h
-@@ -40,7 +40,7 @@ struct pci_tsm_ops {
- 	 * pci_tsm_rwsem held for write to sync with TSM unregistration and
- 	 * mutual exclusion of @connect and @disconnect. @connect and
- 	 * @disconnect additionally run under the DSM lock (struct
--	 * pci_tsm_pf0::lock) as well as @probe and @remove of the subfunctions.
-+	 * pci_tsm_host::lock) as well as @probe and @remove of the subfunctions.
- 	 * @bind, @unbind, and @guest_req run under pci_tsm_rwsem held for read
- 	 * and the DSM lock.
- 	 */
-@@ -115,19 +115,23 @@ struct pci_tsm {
- };
+@@ -3,6 +3,7 @@
+ #define __PCI_TSM_H
+ #include <linux/mutex.h>
+ #include <linux/pci.h>
++#include <linux/pci-doe.h>
+ #include <linux/sockptr.h>
  
- /**
-- * struct pci_tsm_pf0 - Physical Function 0 TDISP link context
-+ * struct pci_tsm_host - TSM host link context (CMA, IDE, or TDISP)
-  * @base_tsm: generic core "tsm" context
-  * @lock: mutual exclustion for pci_tsm_ops invocation
-  * @doe_mb: PCIe Data Object Exchange mailbox
-+ *
-+ * The host of a TSM link is the device that knows how to speak
-+ * CMA, IDE, or TDISP. For TDISP / IDE that is a Physical Function 0.
-+ * For CMA-only it is a CMA DOE mailbox.
-  */
--struct pci_tsm_pf0 {
-+struct pci_tsm_host {
- 	struct pci_tsm base_tsm;
- 	struct mutex lock;
+ struct pci_tsm;
+@@ -130,7 +131,7 @@ struct pci_tsm_host {
  	struct pci_doe_mb *doe_mb;
  };
  
- /* physical function0 and capable of 'connect' */
--static inline bool is_pci_tsm_pf0(struct pci_dev *pdev)
-+static inline bool is_pci_tsm_host(struct pci_dev *pdev)
+-/* physical function0 and capable of 'connect' */
++/* device is a TSM host and capable of 'connect' */
+ static inline bool is_pci_tsm_host(struct pci_dev *pdev)
  {
  	if (!pdev)
+@@ -142,6 +143,15 @@ static inline bool is_pci_tsm_host(struct pci_dev *pdev)
+ 	if (pdev->is_virtfn)
  		return false;
-@@ -204,9 +208,9 @@ int pci_tsm_register(struct tsm_dev *tsm_dev);
- void pci_tsm_unregister(struct tsm_dev *tsm_dev);
- int pci_tsm_link_constructor(struct pci_dev *pdev, struct pci_tsm *tsm,
- 			     struct tsm_dev *tsm_dev);
--int pci_tsm_pf0_constructor(struct pci_dev *pdev, struct pci_tsm_pf0 *tsm,
--			    struct tsm_dev *tsm_dev);
--void pci_tsm_pf0_destructor(struct pci_tsm_pf0 *tsm);
-+int pci_tsm_host_constructor(struct pci_dev *pdev, struct pci_tsm_host *tsm,
-+			     struct tsm_dev *tsm_dev);
-+void pci_tsm_host_destructor(struct pci_tsm_host *tsm);
- int pci_tsm_doe_transfer(struct pci_dev *pdev, u8 type, const void *req,
- 			 size_t req_sz, void *resp, size_t resp_sz);
- int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u32 tdi_id);
+ 
++	/*
++	 * Report capable if CMA is supported, which can be supported on any PCIe
++	 * device.
++	 */
++#ifdef CONFIG_PCI_DOE
++	if (pdev->doe_cma)
++		return true;
++#endif
++
+ 	/*
+ 	 * Allow for a Device Security Manager (DSM) associated with function0
+ 	 * of an Endpoint to coordinate TDISP requests for other functions
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index d31a8d107b1e..cb13b40952b4 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -565,6 +565,7 @@ struct pci_dev {
+ #endif
+ #ifdef CONFIG_PCI_DOE
+ 	struct xarray	doe_mbs;	/* Data Object Exchange mailboxes */
++	bool		doe_cma;	/* A CMA/SPDM DOE mailbox is present */
+ #endif
+ #ifdef CONFIG_PCI_NPEM
+ 	struct npem	*npem;		/* Native PCIe Enclosure Management */
 -- 
 2.55.0
 
