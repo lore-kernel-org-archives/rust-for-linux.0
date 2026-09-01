@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE8964;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFCF43CEED;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788278956; cv=none; b=j2kcYCJIQ25/sAH4D8omsUHT2HlHE2o3uJ7lHavPsN+t4zQ7xWtAJwVtjVpUKGfCmNy9S/ghT+fRZ2EIzYA9fDhXBoj6qShQprlbFHtyTBHZENIxWveGhPXA2wIQAyAiWnwL8ixEyDkD/SBhp9a8E5/37amoTxlVzaHO578a6vs=
+	t=1788278956; cv=none; b=ghSKAax1YHSAOwL6gRI2+ZED00RGyXqzIjGCHoOpSJ4kPUQf6OH2hav5jZ+GSrwzJeBZYVWFL18JKFHHqemJ+VqpZk6vRL9k4OJgwx682QyeAm5hJOHfejUxB/YOJcYF4M7KMDTCexmGwMqed0SqlsdnHyLEVQzpgAc0fzgyOv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788278956; c=relaxed/simple;
-	bh=zA9tgWKf4SBtTBAhJRzDALR4sj2TbJPjvzc1j0kLi+0=;
+	bh=HCzDlkK0nf8Z76dEe91GoDU2vHhNj6rRuUesVWHafOw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dBGLTJGu4jmSqPQsEr+Ak8ClfnAFbL1SmPanY8eCpB0qGNRp46PKXZ96ELrPeF5jUziWUeAaiaU6TD901N3ErZEi7aKTUlNa1snKApUgF4SsgF8ckh90KKoXz4KGzEAKzn0TJdXKGUEkFvKKlYSNdyoew3RqMQFx1iWGdKhQBfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cU3Cnl1/; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=VByoBTFPY3ZqZf/6vk3g4uyccrBrGIIFEre8ocArfI4OguVsLaocVlwKFUJ+2SwElwBsCzGffb22JXJVtTfHAsXbhgIlbFtPMJR3+C13o/TrNCXqyq64QGAhYYIwd8BNFh1c49K95g0NJejuEBuWH2XOItv/TwslzvIJd4KR7oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jX33c9XY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cU3Cnl1/"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 72EBDC2BD04;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jX33c9XY"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 522E6C2BCFB;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788278956;
-	bh=zA9tgWKf4SBtTBAhJRzDALR4sj2TbJPjvzc1j0kLi+0=;
+	bh=HCzDlkK0nf8Z76dEe91GoDU2vHhNj6rRuUesVWHafOw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=cU3Cnl1/XCHcPDdhbKsQkf8GKY7v5T2PGtfYkY15wwAgVlsUwjuwf8UHtvcLZoGrG
-	 do4N21kgV/k8mi+Wj6+GuNQC/oCEsDZjBoW12KcptuskpQ5kTzPXWwgFffzF4DQNIO
-	 thGQFCK6baOliEawFl1G8wR2yZ+SUkAW/dL1tKw0sdF5+nYuLyeKxCfRLPSwk3RoNP
-	 RMJHZtU26V2LljAZTejFiCmkQAoReIlgEmMylujcu+gxJuwScyZQbTmrsiUDjJCkw7
-	 ZpuunTc9CAL/2h7eQyXEN+MURonSafxnbjjoAK9ToK9cnnW06rnSY2S/SkaZpKixSm
-	 6/QXbxuc54kiA==
+	b=jX33c9XY5g4KGOiSmG2AnOP383Z/xJUqQrbv1Wkj61BWYTJHfz9wmsSFslCWuBrKQ
+	 7tk8Jgn796rG3a5yBrMbnXcq5MzA32kq7dyo3MyczCnzIjMB8hXbLcK7kdEQhFO0YO
+	 vt/t0dLjZ6DqGXJu29XVtu9hQX4BFkmK9CPFh2grBP9L0DJODRfkx+NO3pzdQYau7P
+	 Qwx+uhtrEmbO3LZvbdxa3eTsNcSjHehgYj/WmlgIa8D+G2n4JX9voc1VdsZc4i7Rkr
+	 ms8gN8lfztRTF9Cle9nzY6x9UN0ZTYYCTUgS0dtc/h2QZhNzpnlY86lyq7ZS2lXjZv
+	 0L/+RmXsLn0ag==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 545D1C624D3;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34902C61DD6;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Wed, 02 Sep 2026 00:09:02 +0800
-Subject: [PATCH 3/9] rust: sync: arc: relax `ForeignOwnable` for `Arc<T>`
+Date: Wed, 02 Sep 2026 00:09:00 +0800
+Subject: [PATCH 1/9] rust: sizes: add SZ_4G constant
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -39,8 +39,8 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-tyr-ioctls-v1-3-e0fdbf8bd108@kylinos.cn>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260902-tyr-ioctls-v1-1-e0fdbf8bd108@kylinos.cn>
 References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
 In-Reply-To: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
 To: rust-for-linux@vger.kernel.org
@@ -60,11 +60,11 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
  linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=1287;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=1486;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=VpFApDEE0ShMOm5bITUkvBMmnsmsJS6eNADKklXNSp4=;
- b=uHDTxFGNUx1spLlyFI1jfXtWSsQ4Kct+pqNbd2CyQ94I8hDhvntBrOhaGdYAsbGexhRYLJ6WZ
- 8/XubxirktGCH9ARwXTL8UZSFEUKMVeukuaBmnBA2/hj0TMY6/ZHIWS
+ bh=dYFc5/veCaNNg8MQU+9cuPLHHyO8FGpKl5rFntX1WcU=;
+ b=665RQwJmoeo0nrNVmNip20fm5N4zGkoBukodL5WY0TTyTfeVY/eNtHvU8BWWPfC/6vzciEs6k
+ 9wfe94ky53RBThFvDgMjbDYxxCtTUb/RhJlfk4M+oPk0Kzj7p0de1UC
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -74,40 +74,47 @@ Reply-To: sunke@kylinos.cn
 
 From: Alvin Sun <alvin.sun@linux.dev>
 
-Drop the `'static` bound so that refcounted values borrowing from a
-driver registration scope can be foreign-owned by the XArray
-abstraction.
+SZ_4G is used by the Tyr driver when splitting the GPU VA range into
+user and kernel regions.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- rust/kernel/sync/arc.rs | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ rust/bindings/bindings_helper.h |  1 +
+ rust/kernel/sizes.rs            | 12 ++++++++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index 5ac4961b7cd20..cd6faba84ffcb 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -363,11 +363,17 @@ pub fn into_unique_or_drop(this: Self) -> Option<Pin<UniqueArc<T>>> {
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 1124785e210b3..3c37993991b1e 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -110,6 +110,7 @@
+ const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
+ const size_t RUST_CONST_HELPER_ARCH_KMALLOC_MINALIGN = ARCH_KMALLOC_MINALIGN;
+ const size_t RUST_CONST_HELPER_PAGE_SIZE = PAGE_SIZE;
++const unsigned long long RUST_CONST_HELPER_SZ_4G = SZ_4G;
+ const gfp_t RUST_CONST_HELPER_GFP_ATOMIC = GFP_ATOMIC;
+ const gfp_t RUST_CONST_HELPER_GFP_KERNEL = GFP_KERNEL;
+ const gfp_t RUST_CONST_HELPER_GFP_KERNEL_ACCOUNT = GFP_KERNEL_ACCOUNT;
+diff --git a/rust/kernel/sizes.rs b/rust/kernel/sizes.rs
+index 521b2b38bfe77..b236573f0792e 100644
+--- a/rust/kernel/sizes.rs
++++ b/rust/kernel/sizes.rs
+@@ -132,3 +132,15 @@ impl SizeConstants for $first {
+ }
  
- // SAFETY: The pointer returned by `into_foreign` was originally allocated as an
- // `KBox<ArcInner<T>>`, so that type is what determines the alignment.
--unsafe impl<T: 'static> ForeignOwnable for Arc<T> {
-+unsafe impl<T> ForeignOwnable for Arc<T> {
-     const FOREIGN_ALIGN: usize = <KBox<ArcInner<T>> as ForeignOwnable>::FOREIGN_ALIGN;
- 
--    type Borrowed<'a> = ArcBorrow<'a, T>;
--    type BorrowedMut<'a> = Self::Borrowed<'a>;
-+    type Borrowed<'a>
-+        = ArcBorrow<'a, T>
-+    where
-+        T: 'a;
-+    type BorrowedMut<'a>
-+        = Self::Borrowed<'a>
-+    where
-+        T: 'a;
- 
-     fn into_foreign(self) -> *mut c_void {
-         ManuallyDrop::new(self).ptr.as_ptr().cast()
+ define_sizes!(u32, u64, usize);
++
++/// Large size constants (≥ 4 GiB).
++///
++/// Only implemented for `u64`.
++pub trait LargeSizeConstants {
++    /// `0x1_0000_0000`.
++    const SZ_4G: Self;
++}
++
++impl LargeSizeConstants for u64 {
++    const SZ_4G: Self = bindings::SZ_4G;
++}
 
 -- 
 2.43.0
