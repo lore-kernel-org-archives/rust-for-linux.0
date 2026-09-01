@@ -1,63 +1,74 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020079.outbound.protection.outlook.com [52.101.195.79])
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020141.outbound.protection.outlook.com [52.101.196.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE8735A39F;
-	Tue,  1 Sep 2026 12:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9A536B91D;
+	Tue,  1 Sep 2026 12:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.141
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788264221; cv=fail; b=rZTAqP5l6scTDJ6eQqtXu34KLSny26QtZlLoY0sTjupDcYOaOWi4rocq3hC7FvZJcGfcFFxdTINxzAiDcNeiA97QWSa3M4vCdyUvCPB2oC04OCGH7psz5es3sfJLFKxPxSvl/gQX3Eq58VXiIQdnjXqURyzqgNXoonSAaERDDGc=
+	t=1788264424; cv=fail; b=XFNjsyjaMZwi407VjgkIClzXVIUtrsSoZxq68lnF3Ju+aDLJSQ8ChJ4+72PgDzqizQxZMT3Jy6CRpp9jq45M3cAiOsqQWBIGIqdn3r2DrFhGH7bV0t0aVEdDFj1jWniEsjXkI4mwoejCpNLs1yyAdb/Ja7a6eYYN5QosdypyvXY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788264221; c=relaxed/simple;
-	bh=o9wHjhFXACmjo/oKndTYxFkXGyQeNmd6Ad9TkHLucCU=;
+	s=arc-20240116; t=1788264424; c=relaxed/simple;
+	bh=sQOyoXtL9UOXyb9JYJQEIBOLAXvk+HA9gBTul0QXczE=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=qSsAJx89RXyZ6temu/wGW299B4QqGyYmzCBOYct3SS+E4xMDWgsmnwB8mJvvCubxUdZzW9UTvL/4LKLUcAJ1+LxVbT381D9G3SmVlITEkCGuj5+TfrVo8/auOwiuAfGlJ+cZXW3JYoMZogQm4PqJbVE4fCATQ1UZ+XO7APR7JKk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=gS7+5iEO; arc=fail smtp.client-ip=52.101.195.79
+	 In-Reply-To:MIME-Version; b=biYMPfVBczusxquoKBV6Tmki5HnPizNV3yie2NpFXPt1vRDhAmYMkjRLA8K5bQKV9FLB4TwmZhyvhjgKP8eCVsudGdZWYgKpFPAdELO3zB9GRmQfrojCGvgifqAvo7QB/PxNElGWKW+VQvVoz1RG54tqXHm3D2cKRkn4tR4Pe68=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=mhYVdWHU; arc=fail smtp.client-ip=52.101.196.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="gS7+5iEO"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="mhYVdWHU"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mTgbA5YStuiI+Q91Pelp51pcbKLkhr9/wry+b/fNzMyR6tmTk1AE2HKNOQ3Z7WL6ENcJL1AeL0wjloQm1RoRDxCqcjvutcDW3Py82LmLK6vXNZ8cb1ywccco0CqhsxZ69PgJ3AV8fQQoVAsqZqw+DOMpS2ykCCdGrnfL50yU9RSC97gbtoY6niz0e9DMqUfhkewJuyzaDKOhlsx+vG5k+NDWdzqJJpEbbGDg0qOQvNXCbFZNxblOXoo6y5uUDf6RL8SXQgCHkZE44sLUXN5Pwl4id893+X0IVZurVQtzg1u1Q980mRTVOABzq4ng4+kjpKQx3zx0rxSukLoDUHCYjg==
+ b=tzN9GUsDcsESbVj9iEOQ+EPs6txXoQZE4L849HL/uiX3dxm/LmPpnte+Bvd3AD2tKE171DwbOwyODM+GtRdhzMtr3iXCdUVUrEe1oA/I4xHNTAqTHLTFh4P4kYjiiv6h8S8gS1p+i1uNve/qoxGs5R8UMKoMourbZXaGdPXn6XOpjN235/II4dbSW5FLmMWUfCGZIvtqSXCtXNxFD+RZF2TiuS5jwmWPL2oHmVjLmEuWKiFDnSbtbImuoHrDshoXiVx2m8mxV9GqwPYz/6QG4bXnoVsI3++ycT7WTbkGSnDp+zevIgUdcg0rO8PrYcgSyZjxwky/HN0mh41c3OKJnw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kpn0DL54X+jIfBYWSwjY60MUoANYYJmRrAJBq4tX9O0=;
- b=E2gZ3VsEOOHKtk1LNRkagf2IQeWJXKOp+NxIQbAOL8GdAy7dG5G05AJDDXX37J+Lfq6TvNkOoIlFNWqK6vS/GDOlZ1TA3Ro2LJAiy5MozVN+yZJcLR/R4IYUPy8AYyzmXdFCJUr7js4Ef3dAy1aOs5HQoEVswqQxBnNSmeLhqno3Ac6PWQgvyOCXXYsZ3sP4ZH4lDnnRKV/6W+YSAWNdaRd31SFEedZXe5l9AxEyln/EQa3t4LgPlBSq18PwUrdhUVkBABQtYbAFhqtl7yRE46IhIVDchQrbBxtxH5GJIjxLCaIBZcaR6PSvYpu6TqgGdUxCkSu7CoV9PUnmg7r85g==
+ bh=sQOyoXtL9UOXyb9JYJQEIBOLAXvk+HA9gBTul0QXczE=;
+ b=J0V4EOym2De7UjyYOt0kPJErlsm7icqxSKcrx9K1egi+2Rw+AerW+lgl7s2qVY9RF5jxk0artOKsOcWAQV8fBZ7YjxWml89wsfOTTLzJGeurzU8CUgG6BtDMgrOET8J3DRKe9xT2g6XL803diu+W0Bqy9XTJn17zZb9nn/5uZCwsaUpHctm29mCroql3ImpbP/42MR0qtVMNIj6eU+zk7Z8W6BIvQdZh37cO/+qVcqShJBm6yBlWQucemEJxvAordXcaaaW4Bd+JYUzuzxNCv44M/kdMrvuppnVnpOSDJcKNPdxRTo5/bgIc0fo9yT1hnfBXNehcuPvfZDYlI//LhA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kpn0DL54X+jIfBYWSwjY60MUoANYYJmRrAJBq4tX9O0=;
- b=gS7+5iEOuu8Q+OrbPSy3U3lM56XPeUdErCow81N4H3+L8/mFeBHsQP0QHOut/evCDciPWVnLp3PxqzPvF8CjlADqKxb0424Nxta9dpSMSaBqMEsDpiGkX4UDPUyJNTcuPkVGY1xuwT+ov9uxKo7enTXeTKs/en7zZIpSZliwAwU=
+ bh=sQOyoXtL9UOXyb9JYJQEIBOLAXvk+HA9gBTul0QXczE=;
+ b=mhYVdWHUmTixHuVtVUWxgcozz9eMGBnSLDHj4mF2PSWZkK04gvIeA0XvxV3I9nbRmwIKdmQjhq/8KAZ6/m+dLBha+d75H/AfiPD1G19L1yjY0MDclhnQ6gStv1hpDuHSGydo3A3nV0g/RCiA7nBkWk2tuKIF15IvfyK6l1T+scw=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
  by LO2P265MB5086.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:251::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
- 2026 12:03:35 +0000
+ 2026 12:06:56 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0360.008; Tue, 1 Sep 2026
- 12:03:35 +0000
+ 12:06:56 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 01 Sep 2026 13:03:34 +0100
-Message-Id: <DL3YRAXKKEEI.GOGNVOO3AV02@garyguo.net>
-Cc: <rust-for-linux@vger.kernel.org>, <fujita.tomonori@gmail.com>,
- <kuba@kernel.org>, <ojeda@kernel.org>, <boqun@kernel.org>,
- <andrew@lunn.ch>, <hkallweit1@gmail.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH net v4] rust: net: phy: fix off-by-one bit positions in
- device status accessors
+Date: Tue, 01 Sep 2026 13:06:54 +0100
+Message-Id: <DL3YTUU7W86I.29BD41EC3XI9V@garyguo.net>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: =?utf-8?q?Re:_=E5=9B=9E=E5=A4=8D:_[PATCH_v4]_rust:_pci:_reject_IRQ_vector?= =?utf-8?q?_indices_that_do_not_fit_in_u32?=
 From: "Gary Guo" <gary@garyguo.net>
-To: "Chunfeng Song" <springbreeze@stu.pku.edu.cn>, <netdev@vger.kernel.org>
+To: "ai qubits" <aiqubits@hotmail.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "Sophon Zhang via B4 Relay"
+ <devnull+aiqubits.hotmail.com@kernel.org>
 X-Mailer: aerc 0.22.0
-References: <20260901031824.1377498-1-springbreeze@stu.pku.edu.cn>
-In-Reply-To: <20260901031824.1377498-1-springbreeze@stu.pku.edu.cn>
-X-ClientProxiedBy: CPAP307CA0010.DNKP307.PROD.OUTLOOK.COM (2603:10a6:380:3::9)
- To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+References: <20260901-fix-pci-irq-vector-index-truncation-v4-1-f94aa6932fd9@hotmail.com> <DL3XDBBHXKKV.G9P6KRSSX1DN@nvidia.com> <SN7PR07MB9708B6C36F40362265511D2ECFA82@SN7PR07MB9708.namprd07.prod.outlook.com>
+In-Reply-To: <SN7PR07MB9708B6C36F40362265511D2ECFA82@SN7PR07MB9708.namprd07.prod.outlook.com>
+X-ClientProxiedBy: OL1P279CA0045.NORP279.PROD.OUTLOOK.COM
+ (2603:10a6:e10:14::14) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -66,236 +77,96 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO2P265MB5086:EE_
-X-MS-Office365-Filtering-Correlation-Id: 827f19d6-f883-4085-d2b2-08df08210d22
+X-MS-Office365-Filtering-Correlation-Id: b4c10270-cd32-41a9-320f-08df082184e7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|23010399003|366016|1800799024|376014|7416014|6133799003|56012099006|10067099003|5023799004|22082099003|18002099003;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|10070799003|23010399003|366016|56012099006|10067099003|4143699003|6133799003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	qVB2X61t5gbZh2O0LX4C4l5FAnsHtyl5qWLCh1nqU8S47kQdjt3iI7TatzX1MGEusPSywsB+td4wJa/eNXJyIuTBZ+d6dljW90pzEoUTmZiTYsW91VSlEhlelWvjNSF5R48QNVml6Xm1CiKac9ro21Wf/xURGN6i8yvHamTjKTgHLtY0k7q1UOc3/9ifnUFgLqPGIGsxOzajcakb2TiNmrn0JI0AsgIxo66vXev9x+bSw24baObsZNeDeUDvgYnU9BzRyE4woO4yNyvhrHaa4Vd445znvJCNJC6sFmNiu/e/ivMp2QE3qr3gOlHBRKdbfQ2Wp9HUJ0Cj2RPr1SypwqqtenUn9Qm+OIoSol781s9SKqqTSh3fFsnjkAEm6YcJ030cXY4C22zQy0cDycQ2aTLucXsFX8pP8ciX2ojtEYIGYLmHdMpEvCrRTlhTx/kDToNcGOasV2D5CfhEm8VGr1WM5hHqw48N+kpxR0TY0fyz6nCfocrqL0JAPBWIWcJOBNbuFKy1fKA+KRdQL8ZOZY+QwKfvxPCd299l+zSYmCzNMS33cp5XnA3YAJlhyxIeFYwUR8B1eSvzlAt6qzNytH9SxuaYsutKWQneIT5b6+8=
+	2DXNjnrCfrhieqzRd4w9BOLAJBbKLX0q+P06UNeET3U2IMQRXZkNGRTf8F+HRCsKxC2/+cwPkoXFnbQk+cvtFSD8fg7D0U39nD3O8s/qKIjsSMLyvfN2Lpw9AXmZsB9dtre1tjBeVD0xkg+IYT5Qg9YY/JGajQwDE429Wcr1ceNRylgNnG563xggcHYypPHwo3W9vlBAsqGkJBImn3UCz43GYDB2g2yWt+VszR9FL1LNZ8wIVr2iefjMOweOiGPRnEpEeIdLwB7csIkYUQCmhK3U+OL8fYnlODKxHX+91EVxMGzdWj67L5aSn33SzED2jvLeVfDfz05bQeSEjywre+yBoyfna6WsXhkoaWR39VxutK7O2pNtHLGvIKv/a1Q9vdeqQzDhHOCz7c4KciR+c2zb7Ry8hTYa3iu7tJUxF4B8wfEBpUDClzubIGPZn++lV6hBeG6+WrRMAnJOrpk+tpzKonl1/T3ft8aGrrKQ2npSMHyYZbapbBBBssf+txuj79I49XRnfTTFlfiHiQ+JeXL8BCR7gyp5WzkT4Wcn/+v+lDLZwjQU+uSHWKzo1u48cKGymci+oScYwWXEBfU9f9NKwNiBqp2guWkfH84ZOG0=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(23010399003)(366016)(1800799024)(376014)(7416014)(6133799003)(56012099006)(10067099003)(5023799004)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(10070799003)(23010399003)(366016)(56012099006)(10067099003)(4143699003)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Z0s4ekdRVjdhdmZEcjc0L1didDJSeFhxUllweGQxNFZMUzhIQ1h6TlkwRGdN?=
- =?utf-8?B?ckRDKytjMTB3aDI5dXVONllaQWQ1MnF4Zm9YdmVkdGxpRmtsdUJxaVgzZmRi?=
- =?utf-8?B?L1ZjYUY3cEJHaHRLR1k4ZTMyZzBGNlc0QzhTU2Y2OW5XOU5CTkYwT0ZWb2Jx?=
- =?utf-8?B?WkdJOStSV2JZbTN1MGxaTE9DcElVUFR1RmdYV2x2L0ZTak5NZ05VOFJSNUlB?=
- =?utf-8?B?Tm1qRU1kUVRReTNwSmJYVEd6US9zcjlQcnJvc0U3cS9BSzJhQ1VZN2FNWG5O?=
- =?utf-8?B?SU5rUjVEcWNSU0hHWEx0RE9TdG5mWXRRbVNYS0RRSUVCRTQrOFVPdU15Tk5O?=
- =?utf-8?B?T1dQMkdUaC9wNS9XUFF1VENWWWtFam15N2Y4ZnZxTnUyRnNOUzhWejc2RlYy?=
- =?utf-8?B?dkw4RHRFVFpQK2NyeVNYbUVyME54Zml0UWRsUGdKZS9QZGhJMzVNU3V4SStM?=
- =?utf-8?B?VWVrTzltblllQm9vZ2w5b1VpWGtsSHdXbGkrODZQWkxldGR1Q25oOG5YOGFq?=
- =?utf-8?B?WlorR1MxRjJCZW1MV08vek5LdXBlUSthaitHZE15YTJxMW5GRDAyT3JkcUtB?=
- =?utf-8?B?ME5iNmhYbytqekt3d250N0t5UWFhT2h2ck1WWDducnhjbVg2bEloenFVQ0Nk?=
- =?utf-8?B?K1loT2k5Mmd2V0dINFk5QzdOSng1L0J4T2V3dUNCTWJzcjZiZ1dTSWNycHpt?=
- =?utf-8?B?NXo1aTFvcFc4eCtBVEV5MHBEUktpOUhoQjZjM0M0YjhEVmNlcTU5UUxyQ1JQ?=
- =?utf-8?B?Vm8yMHhWaGRwc0NtVjdKUk01aTZBaDNuUDQ2MDR4OExabWxsd1k1N3UzWFlL?=
- =?utf-8?B?cDhSRFNyTktCOW83QVY5TlBkTEZCU20zdFdzV25vU3Q3YXVGYkNYZElFV3U4?=
- =?utf-8?B?Q2ZkOHNkWnNJNjJMNzlKdzUraGd3WkRoclcxa1Zoeks2ZzlDVk9JbkRHOWRv?=
- =?utf-8?B?UXMvdXJHL2JVVk1WUHBsNXIzU1puK3RjYkRTZ24wUVJzRnVXcmlJUUMwcGFW?=
- =?utf-8?B?QnBDdWloRGlRcE5nRlE1VjVZUFFDZllDRURUcmE1bWdDZytXZ3VxeVdaMGdV?=
- =?utf-8?B?TDZtbkJBR01Zc0pmU3VIODZIUmxlSTJHSW1mOCtKNU1Ec3NoQTJ0VTFIbG0y?=
- =?utf-8?B?VXpXeWIxaTlCT2E5WHJDQm82bU5BemVDb1c5MXNQLzJjUFUrYlZWY0NVRnRj?=
- =?utf-8?B?aDQ5UUlPWE5RcU40cFlUWWxlTWoybE9ZMkowUlJyaUxLMkcrbG1kRDE1a0Jw?=
- =?utf-8?B?VEMzY1EvOEpBbXpvbkJPT1lvcENzWnYvbkVXbHpWbFRWUzExSTNhUHFUbDg1?=
- =?utf-8?B?alYySHpueXVFQ0syb3F0elVyV1pkRDhNdlp4S0dYT3pnQ2Zzb2dhUjZDK0Ew?=
- =?utf-8?B?ZEtXbjFaT3dNbWs3eGpEZks5dlBzTWVIam1ndjdQRG5nUjVBWVRuSDFDSEpr?=
- =?utf-8?B?SEdHZ1FrU2c0TUlQL1ZTLzV3bmE0a2gwUXY0YXJmWGUyVEl5SXg1WkZaSzhK?=
- =?utf-8?B?ZlZPeklqSUtCMGNjVFFxbkVManhZOEFvUU5oK2N3QUFOOTJwUkI2SEl4UmVX?=
- =?utf-8?B?WlBGcFBwYzVqMm9IZWNsTTZhUmFiUUk4SXJ4bnJUVVR1UXN4THpOYlNNMm9a?=
- =?utf-8?B?NVlKWFJESmdmelZNUmpVNEtKOTdwS3JGOW1rdDNlZ2NsdmZpUzVFdm5mNFpm?=
- =?utf-8?B?RTN6RHg1bTQ0SWZ3UDdkY08zaWtreDRhRHk3Y3U5WkExU1VaMHAyNEhmSnNj?=
- =?utf-8?B?TkNCcThuaTBpaEdYUk94ODZ0NnNqUUxYYzJtcUg1aGFtd2hwUGl5ang0Q041?=
- =?utf-8?B?OU51TU1od2pmZmRuR09uKysyeVI2MU1TVno4cEdzN3E2RHl5U3RzSFV2RGZo?=
- =?utf-8?B?cHdRT09vNUxIMjNSWmlQbmdaSys1Ymd3V3V1M1NET1Z0RUNoall5OGNDWTFr?=
- =?utf-8?B?VDlYY0Zaa1lsQi9NbkNBc1pyL2JzekVRd3I2NjhSS016QmllRzRTZE1GYVAy?=
- =?utf-8?B?SVI4WnBkaEdYVjNXcExyRjRPRXpUaExjTElRbXA3dmJRdVRJemdrRnR6dktM?=
- =?utf-8?B?RSs0RTZjem9HSmpOVDY0RlZkT2Q4amtBYVd6b0ZSMW9iaFkxL1UyUktYWUVo?=
- =?utf-8?B?OVliRkJmdlJ5RjFQMnd4U2RqSDVaOW1Jd29KYmdocHQvTUpYMWNGWTBCSVIr?=
- =?utf-8?B?b3Nwd1ZuNHdTOGJXNHZ6ZWQrMlVoTlFjajkwWjNud2d6MHlXRlhJV2ZsQnJK?=
- =?utf-8?B?cEM2eGpQcGJxbEM3VDV4Q0tqc0FON2RYTk5YdE5EcWtQT3cwODBmUGhXbEpv?=
- =?utf-8?B?UFBvR1lhRmZCd3lrbWVxMmZycVY3bXZQbmhVZXlqKzh0SXp6NGtKZz09?=
+	=?utf-8?B?Nmd2Z05KMmdlRkMwcWI0QVo2M0xZTjNvaEJCdlg3R1RPYllFMXE2VWFtRHFw?=
+ =?utf-8?B?RlYwSEVLdllXWE9IQTNValZWaXZNR0x6OEFXOHJLcFVXTDBhZVQ4VnNpVHdD?=
+ =?utf-8?B?aU1rSXhueVA5VC9IdHZwR3paaFdOb3UyMk5zS1lGN0YxWEgzM1B1bHJReEhL?=
+ =?utf-8?B?OTJjQk9PK2xxNm1pVnBzK3BmY1NuMkpOZFlqYXY4WHVUOVROdllwK0FOMjJv?=
+ =?utf-8?B?cW5uc05MM0VxZ3hRa0RjQUh6WDRHaTJqc1BRdFphOUxlUDUzd2t2RWVJc2cr?=
+ =?utf-8?B?NWJDemprZGxJNGtFNGJZbExUUDk4d0o0MkNVWERXTkVoamhVY0ZXcEhLK1V4?=
+ =?utf-8?B?VXVnQTFsR3A1bW9taHF1TW50d2dVT2V4TmUwOENST3BjZlpSRUFTMG11T0RU?=
+ =?utf-8?B?WThrUytRb2dDcHNIWmZhanl3NDhVbjUreEg3QjkvZzNGQlJ1bmlUNm1sZ2JX?=
+ =?utf-8?B?c21LeGYzVGI5ZVY1SkV2eVdWOGJQQ1lLdE4rTWJlNTFHSlZWbGlYMWJSMGxr?=
+ =?utf-8?B?K1JocjRyZTc2dUZQS1dXZGZFL1NDSzRuQWdxakxXQ202TDgwSWRvWjZocEJm?=
+ =?utf-8?B?aUZNQVFnemE1bjg3Z1NEemE1NHlSYnJUQlY1K1dzelh6WGRHc1NOOExITkZ2?=
+ =?utf-8?B?UXJZY1cveVpxMjhUdGdMdjZQTzcvWHdCVzd6Q2NUOGRHNlBrVFMxWXlySzRu?=
+ =?utf-8?B?YlRHaUVaYmhZdUtCSmJmeVZoM2hwS1dkeUpDTDdxVnk0Um5FTUxEMjVqS0Zn?=
+ =?utf-8?B?YmJ5STRycXRQVzhHNk9tTU00ZDhGRHc3TWRwUVJ6dXVxTzBKekxZc3ZZZ29u?=
+ =?utf-8?B?YjNsOE9LcVZZOFhSeVZUYWJpcXA3QWZ1NmlvTDlkNHJPN0Q0YU9uTzNMa0JO?=
+ =?utf-8?B?c2tUczF4bDNHMWt4ZUIrTTdCSXdvcmNYWkoyUjRNZE9hYkN0dUhBVGRHMVhK?=
+ =?utf-8?B?Nk1Kd3BPYmI4YWpiK2dldUx5RUZFY0g1QktPS25TbzZDdmN3czlXY05FZU90?=
+ =?utf-8?B?LzU4UjF0ZEloTjBkcm5zTUQ5eGZsNXZINStsSXhwV0NMUURXV3hhcjZzY0Er?=
+ =?utf-8?B?dURsUmowcEpxY05yTmlLdHYybE9TK0hpd3hlZkNkZHJTUEFlVHJEaURXWDg2?=
+ =?utf-8?B?T1BKTmlRYlo3MWpkcHpCUTM1ekZzY1BDM1haVVhnRndQY1IwQjFxbW5IUTVr?=
+ =?utf-8?B?Q1ZhOWU4Ry9qMjN1Yk13S3NTakRJUklGUWpHWGdvSWEzN3h0eFd1M0JQbGpi?=
+ =?utf-8?B?bkl0T1FlNHZFbFhLRlcvL0d4WGdVQ3dTeWEwT045TjJxYThTNkRiUTIrWHdW?=
+ =?utf-8?B?WU81R2tRVFVUS2h6b0twdkNndEluUVZDT1dlK0dNbFhXcTRkUFBpYWFqQldR?=
+ =?utf-8?B?dzZBMm4zNG1rSUwxOE91bGs0dFl1ZkNTdU44NXlUMG02Y0hHc3MvQzJZR2NF?=
+ =?utf-8?B?SnZsZ1Q1eU1kcWJjclAyNk1EOE9abXpZdGM0cCtxZGpjQVdTZFFPTnMrdUsz?=
+ =?utf-8?B?YXpxZTZEUjZ1MFdqWmY0cWEwdjBneGcwQVdrWDZ3SXFTc0hGMllHTTdmNGxM?=
+ =?utf-8?B?eGRnbUZ1UGdNV0k0V1NFT2Q0TWx0TVhXcFlPcUovM3BQK1RhZDJTQWs4OFlv?=
+ =?utf-8?B?ODdBckpXc1NsaWZhVHg3WVFxbk9WZm1iZVNLZjl6cG9Hb1VCRG9ZOUF3cG5o?=
+ =?utf-8?B?L2Jhekx3R0xZYUhnaWpJaVplRG9qaThiSjRCdXN4SWJYV2xuNzllMzFpb1Fh?=
+ =?utf-8?B?aDBoeEphQVE1WlFYbWNaZzc2cXV3OWJ2cVdBeTk2eXA0c2FxU0VpenVieHc0?=
+ =?utf-8?B?VkorZEsvaCt3aUVLWWozQ29uNGNhT0hwU2FlWGd6cUR6M2xIaGx4NnAzSnlh?=
+ =?utf-8?B?QWVKUXZLRTQwL2c4L0cwaGJpSXRIRXZtdjlYNnZGYnZoMnlRbW9NNGl1VEZC?=
+ =?utf-8?B?SUs5ajlNTnE4Z3dxWVJHV1Vqbm9mekhINENsTlQ2NkZDWG15dUM2cnlyT1A2?=
+ =?utf-8?B?MElpRko2Ym96eXpjeHpmZE81dWhQZk9oL3RJUGNjWXdlSzU4RFRsMTM1VFpk?=
+ =?utf-8?B?Tkk0ZzgyS3JWMW1ZUHhKYlNSSmtXWDFjRmJ0cVRPNkEwNnVMSVVmZmtkSmVm?=
+ =?utf-8?B?NXkzL2pqRko3cUhLZG9jUGJ2Tm5La29kaUE2amJlZzlnK2hxb3lVVjlVdVI1?=
+ =?utf-8?B?ZnluQkRNVENLK1VLenEwWjBjZGVqdEFGZmw5YUJXeFVRdzZxSm0vOHVGT2pD?=
+ =?utf-8?B?MXhjd2p3bHRjbDc3SWlxcXdqeVhJcHovdDdSdVZnODNmUVNoV0c5RkRHaXdu?=
+ =?utf-8?B?bU16WS96KzFHclpIRTlTb2Q1UDVKa1hrYmgxNjUvMGhxTCtPYkl1dz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 827f19d6-f883-4085-d2b2-08df08210d22
+X-MS-Exchange-CrossTenant-Network-Message-Id: b4c10270-cd32-41a9-320f-08df082184e7
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 12:03:35.8274
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 12:06:56.7468
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KFpAokcCygZgOHjHUQhEvlwUkC0NDaH9knmyXqV3m/pEqtkP9f4wCnpx9uLnXAkayEGx6H0Vf1nvbF2Z1pM/qQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: FUcFwl6ghLfd1fok9It2unzrjJoVnIRo2aRmXivJX474Fifqw3XWucSEEFXSV2S9YHZnt7oci8GCiLVzvCrOXA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5086
 
-On Tue Sep 1, 2026 at 4:18 AM BST, Chunfeng Song wrote:
-> The hand-written bitfield offsets in is_link_up(), is_autoneg_enabled()
-> and is_autoneg_completed() were correct when the abstraction was
-> merged: at that time autoneg, link, and autoneg_complete were at bits
-> 13, 14, and 15 of struct phy_device's first bitfield unit. Commit
-> 2796ff1e3dca ("net: phy: add flag is_genphy_driven to struct phy_device")
-> later inserted is_genphy_driven just before autoneg, shifting the three
-> fields up by one, so the accessors now read:
->
->   is_link_up()           reads bit 14 =3D autoneg
->   is_autoneg_enabled()   reads bit 13 =3D is_genphy_driven
->   is_autoneg_completed() reads bit 15 =3D link
->
-> The official ax88796b Rust driver uses all three accessors in its
-> link-change handling, so it inherits the bug. On genphy-driven devices
-> is_genphy_driven is always 1, which masks the broken
-> is_autoneg_enabled() check.
->
-> The ordinary bindgen accessors take &self. Calling them through
-> (*phydev).link() would create a shared reference to the complete
-> bindings::phy_device, which is not appropriate for an object wrapped in
-> Opaque.
->
-> Use the bindgen-generated raw accessors (link_raw(), autoneg_raw(),
-> and autoneg_complete_raw()) instead. They retain the bit positions and
-> endianness handling generated from the C layout without creating a Rust
-> reference to the complete phy_device. Drop the hand-written numbers
-> together with the TODO comment that marked them as a stopgap.
->
-> Found by a static equivalence audit (C2RustDrv, a C-to-Rust driver
-> migration tool) that compares hand-written bitfield offsets against
-> the bindgen layout of struct phy_device. Verified by building the
-> bindings and checking the generated accessors; no runtime testing was
-> possible without PHY hardware.
+On Tue Sep 1, 2026 at 12:47 PM BST, ai qubits wrote:
+> Thanks for the question, Alexandre, and for the clarification, Danilo.
+> =EF=BB=BF
+> I agree that usize is the more appropriate type for an index-oriented
+> Rust API. Callers are likely to obtain indices from ranges, iterators, or
+> other Rust indexing operations, which naturally use usize.
+> =EF=BB=BF
+> The unsigned int expected by pci_irq_vector() is an implementation detail
+> of the C interface, so the necessary validation and conversion should
+> remain inside the Rust abstraction rather than being exposed to callers.
+> =EF=BB=BF
+> I will therefore keep IrqVectorRegistration::index() accepting usize and
+> handle the C API boundary internally.
+> =EF=BB=BF
+> Best regards,
+> Sophon
 
-Might be worth mentioning that this is change is only possible since this
-April's bindgen version bump.
+Hi Sophon,
 
-This is a bindgen version that we requested
-https://github.com/rust-lang/rust-bindgen/issues/2674 and available since
-bindgen 0.71.
+Please avoid top-posting. See
+https://subspace.kernel.org/etiquette.html#do-not-top-post-when-replying (a=
+nd
+rest of that page, too).
 
-This will affect backports.
+Also, your email contains byte order marks (FEFF). Not sure what clients ar=
+e you
+using, but please pick a proper one for plain text mails.
 
->
-> Fixes: 2796ff1e3dca ("net: phy: add flag is_genphy_driven to struct phy_d=
-evice")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chunfeng Song <springbreeze@stu.pku.edu.cn>
-> ---
-> v4:
->   - Use the bindgen-generated raw accessors to avoid creating a shared
->     reference to the complete C `phy_device`, as suggested by Jakub Kicin=
-ski.
->   - Update the SAFETY comments to describe pointer validity and the
->     callback-context preconditions.
->   - Add `#[inline]` to the three small forwarding methods.
->
-> v3: https://lore.kernel.org/r/20260825111334.795732-1-springbreeze@stu.pk=
-u.edu.cn/
->   - Use the bindgen-generated accessors instead of hard-coded bit numbers=
-.
->   - Update the Fixes tag and add the net tree subject prefix.
->
-> v2: https://lore.kernel.org/r/20260824111227.742645-1-springbreeze@stu.pk=
-u.edu.cn/
->   - Use bindgen-generated accessors as suggested by Andrew Lunn.
->   - Explain that the offsets drifted after `is_genphy_driven` was added.
->
-> v1: https://lore.kernel.org/r/20260823103644.342849-1-springbreeze@stu.pk=
-u.edu.cn/
->  rust/kernel/net/phy.rs | 43 ++++++++++++++++++++++--------------------
->  1 file changed, 23 insertions(+), 20 deletions(-)
->
-> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> index 956cda573ddb..3f1c1637f027 100644
-> --- a/rust/kernel/net/phy.rs
-> +++ b/rust/kernel/net/phy.rs
-> @@ -123,39 +123,42 @@ pub fn state(&self) -> DeviceState {
->      /// Gets the current link state.
->      ///
->      /// It returns true if the link is up.
-> +    #[inline]
->      pub fn is_link_up(&self) -> bool {
-> -        const LINK_IS_UP: u64 =3D 1;
-> -        // TODO: the code to access to the bit field will be replaced wi=
-th automatically
-> -        // generated code by bindgen when it becomes possible.
-> -        // SAFETY: The struct invariant ensures that we may access
-> -        // this field without additional synchronization.
-> -        let bit_field =3D unsafe { &(*self.0.get())._bitfield_1 };
-> -        bit_field.get(14, 1) =3D=3D LINK_IS_UP
-> +        let phydev =3D self.0.get().cast_const();
-> +        // SAFETY: By the type invariant of `Device`, `phydev` points to=
- a valid
-> +        // `struct phy_device`, and the caller is in a context where thi=
-s access
-> +        // is safe. The bindgen raw accessor does not create a Rust refe=
-rence to
-> +        // the C struct.
-> +        unsafe { bindings::phy_device::link_raw(phydev) =3D=3D 1 }
->      }
-> =20
->      /// Gets the current auto-negotiation configuration.
->      ///
->      /// It returns true if auto-negotiation is enabled.
-> +    #[inline]
->      pub fn is_autoneg_enabled(&self) -> bool {
-> -        // TODO: the code to access to the bit field will be replaced wi=
-th automatically
-> -        // generated code by bindgen when it becomes possible.
-> -        // SAFETY: The struct invariant ensures that we may access
-> -        // this field without additional synchronization.
-> -        let bit_field =3D unsafe { &(*self.0.get())._bitfield_1 };
-> -        bit_field.get(13, 1) =3D=3D u64::from(bindings::AUTONEG_ENABLE)
-> +        let phydev =3D self.0.get().cast_const();
-> +        // SAFETY: By the type invariant of `Device`, `phydev` points to=
- a valid
-> +        // `struct phy_device`, and the caller is in a context where thi=
-s access
-> +        // is safe. The bindgen raw accessor does not create a Rust refe=
-rence to
-> +        // the C struct.
-> +        unsafe {
-> +            bindings::phy_device::autoneg_raw(phydev) =3D=3D bindings::A=
-UTONEG_ENABLE
-
-IMO it's little bit awkward to have the comparision be inside unsafe block.
-Perhaps
-
-    let autoneg =3D unsafe { bindings::phy_device::autoneg_raw(phydev) };
-    autoneg =3D=3D bindings::AUTONEG_ENABLE
-
-?
-
-Best,
+Thanks,
 Gary
-
-> +        }
->      }
-> =20
->      /// Gets the current auto-negotiation state.
->      ///
->      /// It returns true if auto-negotiation is completed.
-> +    #[inline]
->      pub fn is_autoneg_completed(&self) -> bool {
-> -        const AUTONEG_COMPLETED: u64 =3D 1;
-> -        // TODO: the code to access to the bit field will be replaced wi=
-th automatically
-> -        // generated code by bindgen when it becomes possible.
-> -        // SAFETY: The struct invariant ensures that we may access
-> -        // this field without additional synchronization.
-> -        let bit_field =3D unsafe { &(*self.0.get())._bitfield_1 };
-> -        bit_field.get(15, 1) =3D=3D AUTONEG_COMPLETED
-> +        let phydev =3D self.0.get().cast_const();
-> +        // SAFETY: By the type invariant of `Device`, `phydev` points to=
- a valid
-> +        // `struct phy_device`, and the caller is in a context where thi=
-s access
-> +        // is safe. The bindgen raw accessor does not create a Rust refe=
-rence to
-> +        // the C struct.
-> +        unsafe { bindings::phy_device::autoneg_complete_raw(phydev) =3D=
-=3D 1 }
->      }
-> =20
->      /// Sets the speed of the PHY.
->
-> base-commit: 2709dd5ae32f0828f386327c76bba9f39f63a1c6
-
 
