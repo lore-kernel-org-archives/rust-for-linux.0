@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF3443CE70;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB07043E078;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788278956; cv=none; b=SS4BHsRMJY1vvnv+wPuau3xjy91n6oGL/DQ8Flg8whYhzYvZcz//YDIAFWYdFFuBVdNonwDm/F0P7lIuy3YCENZHxJFX2uyl5mTbSN4vAonPiH9kLNTyoHNDg8kvww0gxMrKT7olMX1ORWEveSggnw5uH0EeU6P2v4EZprP9EIw=
+	t=1788278956; cv=none; b=e/rih2UNb9vS+/nGEqFp9EBcKGyVm8/eguwFTVCQGKq2Qt0w8tdTjvmQF5GYMiXDvdT40Rvc0uZyTGFiBGnuffbaptscBeZbjCTPeKIJggtw5TcN5pdUcApQrzfvZyl7eeIVjjV60sKqdD8a3Cv88OKZSTJ3NL9NGCf6gySjTIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788278956; c=relaxed/simple;
-	bh=lhvqr0YNmYNoIT3ggMS891E1w+CGEgfi2rFuaQKH4aU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=o2lYDgWHR18bKJDeFjV9a2Lzojj3U1POmnuIyLsUoOYU12glbwiBusVbYV7RbNhrRpAGXDRbalSuOnC4Zm7EGMRKzEcfKmaXdyJNiV5YuzqrqUdKcn6N1NQktbVvWbkTXDdL9pRHGvTHZF9oT9Lpg1Rx7kPSuwQSJy1dHchNHuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gyPkn1JE; arc=none smtp.client-ip=10.30.226.201
+	bh=Wt41fk7XzYRzVaO2AD9iXe5dEZ1C2sk1KBdtD95Axko=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Bi8iDTmq7jUhhtjO2voBzJKDBub/9HLB7j4rsgmrWTJJY1ckGj+8xAgsbXLd4IhyGOhSoIHeiUdnm3BSWDZXkDltqs+eRMd3pAdoVY/teS0gS+7WEVUsShLnlYnX1892WJ33eqC67kXnvXsnbdc+20TFYo3GR3U4IEk2hsR7kCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PoHyfItD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gyPkn1JE"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 48A8BC2BCF4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PoHyfItD"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 62C3CC2BCFA;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788278956;
-	bh=lhvqr0YNmYNoIT3ggMS891E1w+CGEgfi2rFuaQKH4aU=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=gyPkn1JEXJo3QyH8+uUaNRC6R6dXTKXcIUspzLl0VHEW7YygleQ6UX0DGAB/bx61B
-	 JLyzMV8V9w8dKES37a4+yxaasZLkzYFzbUvSou8aayMhGBqmKTKGRBnjyhjP+UAVdu
-	 2dxy/2FYEBi7DPaP7oEVVkjRp3AFZxLI7A1Bw+Nh2D9jnNOuWZ0OTDfoJrxJe7hKme
-	 ciL56OWimbUF3s+71pz/JIECOn5DXAeudMofPf6FMhldVPNZ02ySufe6G5OB2KWP7u
-	 bsXEqlgYwtBCbkG9ud9q12ZqM/ytT5AfLJfQ8Tgfo+LSt6n3cze3uL9xztnY4xJ6JV
-	 oerAI9G3/mvDg==
+	bh=Wt41fk7XzYRzVaO2AD9iXe5dEZ1C2sk1KBdtD95Axko=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=PoHyfItDv/cQMIf8jK0VhNkZYeFYGxny7MAWnM8rUzJjgoaRjj2fQtON9uWac2CBj
+	 PWYHpv37no8yuoRQ1eLjxPlaYw6MYUtaKTBzoT/Ftq2Tx2JYCpnaXWaHO5RbUcyXHk
+	 9tDk/aVmGdTf0kXSQ0xfh56ywP+yODcNuPWQ77Y3UXo0TM69gcA90JEKisNdG0PpYc
+	 OgexZXVp+JLqfIWXY86cvSX6fEhGixJOnKCWa8uOpVlV4NH+JpIONdNDnZDOmgIJoz
+	 UBmZlqPigqzooGA5gmlVY/Hq5TYh/ED2NIA1OKxG+EPFyUDxEYQ3CyoJZ0WRi9aiAH
+	 Rcv1BWNqOSEoQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2281CC61DD3;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44897C624D5;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Subject: [PATCH 0/9] drm/tyr: add VM and BO ioctl support
-Date: Wed, 02 Sep 2026 00:08:59 +0800
-Message-Id: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
+Date: Wed, 02 Sep 2026 00:09:01 +0800
+Subject: [PATCH 2/9] rust: mm: add `task_size` helper
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,10 +40,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJv4lmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDSwND3ZLKIt3M/OSSnGLdNEOD1DSDlOSktEQzJaCGgqLUtMwKsGHRsbW
- 1AO+8sJJcAAAA
-X-Change-ID: 20260901-tyr-ioctls-f10ef0dcbfa6
+Message-Id: <20260902-tyr-ioctls-v1-2-e0fdbf8bd108@kylinos.cn>
+References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
+In-Reply-To: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
 To: rust-for-linux@vger.kernel.org
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
@@ -61,11 +60,11 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
  linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=1522;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=891;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=lhvqr0YNmYNoIT3ggMS891E1w+CGEgfi2rFuaQKH4aU=;
- b=GbkfXIDW39GboxU034l9GzN9Tiqr6XulAfvPJh7sfrXyDINKCLMkm70knCQ9US4+CJvXzLMtP
- 0dBNuorJ9UVDYn9ZADuaLj9cY/ophtfF2gmKfXQBW1qNlmPyVMCSMp/
+ bh=qqWFYnkUdOvaxzK249OpGaOu6UGHYSzktFTqj4uM+pI=;
+ b=oHWDNasF+q42cZjuP7Vyzw0DKfYfsrBz1qiLDguWG+DGqzqQ2c8I3XwHLkj5Nv7tFARXpDbIw
+ aU+eSOJuPDQDe41AF9ZIFWnYyr5WukFdVIFMSsNJps+nQQeVcfZydmr
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -73,44 +72,36 @@ X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
 
-Add the VM and BO ioctls to the Tyr driver, aligning its userspace
-interface with panthor. The series is based on Danilo's `drm-file`
-series on `drm-rust-next`, and uses the existing IdPool and xarray
-abstractions for per-file VM management.
+From: Alvin Sun <alvin.sun@linux.dev>
 
-The panthor IGT tests pass on an RK3588S device.
+Expose the task's address space size. It is used by the Tyr driver
+for splitting a VM's GPU address space into user and kernel regions.
 
-Signed-off-by: Ke Sun <sunke@kylinos.cn>
+Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
-Alvin Sun (9):
-      rust: sizes: add SZ_4G constant
-      rust: mm: add `task_size` helper
-      rust: sync: arc: relax `ForeignOwnable` for `Arc<T>`
-      drm/tyr: add per-file VM pool
-      drm/tyr: add user and MCU VM specifications
-      drm/tyr: add BO creation and lookup helpers
-      drm/tyr: refactor new_dummy_object to use new_object
-      drm/tyr: add VM-related ioctls
-      drm/tyr: add BO-related ioctls
+ rust/kernel/mm.rs | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
- drivers/gpu/drm/tyr/driver.rs   |  14 +-
- drivers/gpu/drm/tyr/file.rs     | 394 ++++++++++++++++++++++++++++++++++++++--
- drivers/gpu/drm/tyr/fw.rs       |   8 +-
- drivers/gpu/drm/tyr/gem.rs      |  41 ++++-
- drivers/gpu/drm/tyr/pool.rs     | 102 +++++++++++
- drivers/gpu/drm/tyr/tyr.rs      |   1 +
- drivers/gpu/drm/tyr/vm.rs       | 158 +++++++++++++++-
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/mm.rs               |   7 +
- rust/kernel/sizes.rs            |  12 ++
- rust/kernel/sync/arc.rs         |  12 +-
- 11 files changed, 714 insertions(+), 36 deletions(-)
----
-base-commit: 0b0aa9dcf17b6cffa9e325ff641e843b20d40c31
-change-id: 20260901-tyr-ioctls-f10ef0dcbfa6
+diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+index 4764d7b68f2a7..d2dfbb7d43972 100644
+--- a/rust/kernel/mm.rs
++++ b/rust/kernel/mm.rs
+@@ -149,6 +149,13 @@ pub fn mmget_not_zero(&self) -> Option<ARef<MmWithUser>> {
+             None
+         }
+     }
++
++    /// The size of the process virtual address space.
++    #[inline]
++    pub fn task_size(&self) -> usize {
++        // SAFETY: `self.as_raw()` is a valid pointer to an `mm_struct` per the type invariants.
++        unsafe { (*self.as_raw()).__bindgen_anon_1.task_size }
++    }
+ }
+ 
+ // These methods require `mm_users` to be non-zero.
 
-Best regards,
 -- 
-Ke Sun <sunke@kylinos.cn>
+2.43.0
 
 
