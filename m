@@ -1,74 +1,63 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021137.outbound.protection.outlook.com [52.101.95.137])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020079.outbound.protection.outlook.com [52.101.195.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13C137E2E5;
-	Tue,  1 Sep 2026 11:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE8735A39F;
+	Tue,  1 Sep 2026 12:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.79
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788263528; cv=fail; b=OGeoZp4c86mm0cc4gHewmd7UXFx55INkWeW/GUJmn6mFILjy8iMm04D9GNHSgFxsukio97MxwliyzAa2o9eEQLIemHLB/2b2IsUTvp+qniFACfGK+8qbp6EsA2mzGsSV7Wwrij3Gqc3/NhBEwXLanK1D9F8ErBiwheHKLC0Qs9k=
+	t=1788264221; cv=fail; b=rZTAqP5l6scTDJ6eQqtXu34KLSny26QtZlLoY0sTjupDcYOaOWi4rocq3hC7FvZJcGfcFFxdTINxzAiDcNeiA97QWSa3M4vCdyUvCPB2oC04OCGH7psz5es3sfJLFKxPxSvl/gQX3Eq58VXiIQdnjXqURyzqgNXoonSAaERDDGc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788263528; c=relaxed/simple;
-	bh=QOzBcAuAy4nhjXkvk47OJrOXdwNoth41+iMLLlY6jE8=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=B+Q0xzP5ks1Emf8T4LmaqcvR6gy1TsMmzGvjAbcCsx9yRWo9dNz7PELOZ9F3c8xqHMOQRhl0Cfu9VvyL4hqMdsLJsRTvpIZ2RtGcriakmlzfEC2veOyYtV0MieluLuyn9Y+a0QicsdVnPL2ACWdkW4YantXgL567sexJMTuIlyE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=TVSavzNg; arc=fail smtp.client-ip=52.101.95.137
+	s=arc-20240116; t=1788264221; c=relaxed/simple;
+	bh=o9wHjhFXACmjo/oKndTYxFkXGyQeNmd6Ad9TkHLucCU=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=qSsAJx89RXyZ6temu/wGW299B4QqGyYmzCBOYct3SS+E4xMDWgsmnwB8mJvvCubxUdZzW9UTvL/4LKLUcAJ1+LxVbT381D9G3SmVlITEkCGuj5+TfrVo8/auOwiuAfGlJ+cZXW3JYoMZogQm4PqJbVE4fCATQ1UZ+XO7APR7JKk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=gS7+5iEO; arc=fail smtp.client-ip=52.101.195.79
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="TVSavzNg"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="gS7+5iEO"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n4LVjXZyxeITpLXbJvsPh141fee/gJUdEKATT5ErybnTUi9zJTjNj+v+BCQHr4kO7mDv8F3DY+XIBzZsE+aL6KR654vdvlQXQ5XFd8tkEUEHHA9pHFDNZElz5vZI3/WkBPOe2edl3Z5tYzEUo1Bv1SdLPFe63/3NgHB7LGaFws5341NKhzm84blRPP0uWnu4SnO3EAnQKNOoy/bWy0zV7NSi+2EkGjSt/PnYATBzkXfE1TAtiextbnR+xx5QluS467VUo1WO7t4ZxyKeeHo/WLPIyfJi438MvxEIENSbcLpPTuqCXWx393SAtJRFPO3FRE0fQ0rJWpcM9bZrTm6Pcw==
+ b=mTgbA5YStuiI+Q91Pelp51pcbKLkhr9/wry+b/fNzMyR6tmTk1AE2HKNOQ3Z7WL6ENcJL1AeL0wjloQm1RoRDxCqcjvutcDW3Py82LmLK6vXNZ8cb1ywccco0CqhsxZ69PgJ3AV8fQQoVAsqZqw+DOMpS2ykCCdGrnfL50yU9RSC97gbtoY6niz0e9DMqUfhkewJuyzaDKOhlsx+vG5k+NDWdzqJJpEbbGDg0qOQvNXCbFZNxblOXoo6y5uUDf6RL8SXQgCHkZE44sLUXN5Pwl4id893+X0IVZurVQtzg1u1Q980mRTVOABzq4ng4+kjpKQx3zx0rxSukLoDUHCYjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5ztF0zSa9dC2UqKQZa8N5PpBHZRq+EwRSNRpRXqbdTg=;
- b=Zsl3AIBmO4VcTOdv+U2AyuPnRl4qMnkuXpMAZ0VDYLaNrmtpeFtVVGdxVvLBf36Y8LcHEpyFYKAnjGAhP40ijqXzFtdA+9v8wC4JFBjcGYwnaDpe78iplADBo8yjChY3+Fe3YSoS5/wh98nYGHQUTUrOvV7KV+CyQYLmDJTrUK1G3Q/exeD8p59r3oDUOahMkMDud2T7vjIQN8SZvrtF3U7b2vmljM+8DJkfIGDb/JoVsVKsqiscljbAzUJ4iyeCwJdBjBZX3g2OqIZj+qi2uEbD1QClh3rmC9FaNGeCZ2Us9MKWRgriJ51vc25O3DLYc8/nMc5Xo52LszeHdiBecg==
+ bh=kpn0DL54X+jIfBYWSwjY60MUoANYYJmRrAJBq4tX9O0=;
+ b=E2gZ3VsEOOHKtk1LNRkagf2IQeWJXKOp+NxIQbAOL8GdAy7dG5G05AJDDXX37J+Lfq6TvNkOoIlFNWqK6vS/GDOlZ1TA3Ro2LJAiy5MozVN+yZJcLR/R4IYUPy8AYyzmXdFCJUr7js4Ef3dAy1aOs5HQoEVswqQxBnNSmeLhqno3Ac6PWQgvyOCXXYsZ3sP4ZH4lDnnRKV/6W+YSAWNdaRd31SFEedZXe5l9AxEyln/EQa3t4LgPlBSq18PwUrdhUVkBABQtYbAFhqtl7yRE46IhIVDchQrbBxtxH5GJIjxLCaIBZcaR6PSvYpu6TqgGdUxCkSu7CoV9PUnmg7r85g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5ztF0zSa9dC2UqKQZa8N5PpBHZRq+EwRSNRpRXqbdTg=;
- b=TVSavzNgKU54yKtbrD5JA9uvfuZzbWoLQysxfmustv6x2ZRmfA6AhOKZla0oNoLixS+xHFdvANFtJEBAswbNW00hqvcq1XFQfoLMRC85uYeOr/ZxnkFDYLSJbdxeOfrDBmcsLbRLLhpvd88iVsmOHVoAyR8HpVFlwVuCPOBXzm4=
+ bh=kpn0DL54X+jIfBYWSwjY60MUoANYYJmRrAJBq4tX9O0=;
+ b=gS7+5iEOuu8Q+OrbPSy3U3lM56XPeUdErCow81N4H3+L8/mFeBHsQP0QHOut/evCDciPWVnLp3PxqzPvF8CjlADqKxb0424Nxta9dpSMSaBqMEsDpiGkX4UDPUyJNTcuPkVGY1xuwT+ov9uxKo7enTXeTKs/en7zZIpSZliwAwU=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LO4P265MB6296.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:27d::8) with
+ by LO2P265MB5086.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:251::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
- 2026 11:52:01 +0000
+ 2026 12:03:35 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0360.008; Tue, 1 Sep 2026
- 11:52:01 +0000
+ 12:03:35 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 01 Sep 2026 12:52:00 +0100
-Message-Id: <DL3YIG34IP1Y.1G32YQU0JYUTE@garyguo.net>
+Date: Tue, 01 Sep 2026 13:03:34 +0100
+Message-Id: <DL3YRAXKKEEI.GOGNVOO3AV02@garyguo.net>
+Cc: <rust-for-linux@vger.kernel.org>, <fujita.tomonori@gmail.com>,
+ <kuba@kernel.org>, <ojeda@kernel.org>, <boqun@kernel.org>,
+ <andrew@lunn.ch>, <hkallweit1@gmail.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH net v4] rust: net: phy: fix off-by-one bit positions in
+ device status accessors
 From: "Gary Guo" <gary@garyguo.net>
-To: "Eliot Courtney" <ecourtney@nvidia.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v2 3/3] gpu: nova-core: use cv! for constant casts
+To: "Chunfeng Song" <springbreeze@stu.pku.edu.cn>, <netdev@vger.kernel.org>
 X-Mailer: aerc 0.22.0
-References: <20260901-cv-v2-0-446bc69d2ade@nvidia.com>
- <20260901-cv-v2-3-446bc69d2ade@nvidia.com>
-In-Reply-To: <20260901-cv-v2-3-446bc69d2ade@nvidia.com>
-X-ClientProxiedBy: LO4P265CA0216.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:33a::8) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+References: <20260901031824.1377498-1-springbreeze@stu.pku.edu.cn>
+In-Reply-To: <20260901031824.1377498-1-springbreeze@stu.pku.edu.cn>
+X-ClientProxiedBy: CPAP307CA0010.DNKP307.PROD.OUTLOOK.COM (2603:10a6:380:3::9)
+ To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -76,88 +65,237 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO4P265MB6296:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0bdbcf90-5648-4331-e6a1-08df081f6f11
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO2P265MB5086:EE_
+X-MS-Office365-Filtering-Correlation-Id: 827f19d6-f883-4085-d2b2-08df08210d22
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|10070799003|7416014|376014|10067099003|3023799007|22082099003|18002099003|4143699003|56012099006|921020;
+	BCL:0;ARA:13230040|10070799003|23010399003|366016|1800799024|376014|7416014|6133799003|56012099006|10067099003|5023799004|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	xlkYg6xQ0bBft8u/cntKZOL0Sq9wRsaozyq740dnXWFeKENJkz7oqowffemjg6vrGg38+eH/qdsnBvN/zywmuyu9fronNzYkfOkYk3T9GBBu4PValFpKT9axwh+MpHKLJftrgw6B0POfJ9535eYyP4OsIZkH/5qIwTLKm79sXRbXKZWJgEoTd7s9wtkdfybPgxaSvol3Z8un9uO4inH2IWgSk/5LNpqCoQzAXvL+HG1hIjL0dM5jMEODrxsE5+E3nNrDYXYLHqHIqox9mY5zdxXtCerKFZY8Jv5TtE5+8dRX2yvEOwSdFnLIZHbeo2rp0PHY29XmC08uUIQ7sSl0k3mdtwzvUvX/fBiCkjQTk2Cu0gzHUsDAkQDpjCQFLokwyfaiT5CuDfGcvANsmlTFQ+RuIkpy6sikfMDE2C+4x0mYaMCDDVmAx399rdEKSxHA9JuBppndmtIq8yJK1qfOGv00sLfRLjb/bxYDBLLdK/BtxHG4D3zOl/DQ4z3xIKBUW7FTkl6uazxSX34xHDpChiz7DQsveN3BfUUh7hmAW7CSDc4/Y2A3i4Jhp2jM3WYcaNsg7f0yRhy/pOf41owKhePk3yopGYCYWCzm/Nef5eA6qEWtjeDhs8IaTV0LaJYVc5GMzFKm7WWtCNSiDpceK+f9krgXWO3peXYvjXKD5YpuWh8iDBZ9sh+EcgmXVKbog+DsRa9wjnQgcWuhl1ggLA==
+	qVB2X61t5gbZh2O0LX4C4l5FAnsHtyl5qWLCh1nqU8S47kQdjt3iI7TatzX1MGEusPSywsB+td4wJa/eNXJyIuTBZ+d6dljW90pzEoUTmZiTYsW91VSlEhlelWvjNSF5R48QNVml6Xm1CiKac9ro21Wf/xURGN6i8yvHamTjKTgHLtY0k7q1UOc3/9ifnUFgLqPGIGsxOzajcakb2TiNmrn0JI0AsgIxo66vXev9x+bSw24baObsZNeDeUDvgYnU9BzRyE4woO4yNyvhrHaa4Vd445znvJCNJC6sFmNiu/e/ivMp2QE3qr3gOlHBRKdbfQ2Wp9HUJ0Cj2RPr1SypwqqtenUn9Qm+OIoSol781s9SKqqTSh3fFsnjkAEm6YcJ030cXY4C22zQy0cDycQ2aTLucXsFX8pP8ciX2ojtEYIGYLmHdMpEvCrRTlhTx/kDToNcGOasV2D5CfhEm8VGr1WM5hHqw48N+kpxR0TY0fyz6nCfocrqL0JAPBWIWcJOBNbuFKy1fKA+KRdQL8ZOZY+QwKfvxPCd299l+zSYmCzNMS33cp5XnA3YAJlhyxIeFYwUR8B1eSvzlAt6qzNytH9SxuaYsutKWQneIT5b6+8=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(10070799003)(7416014)(376014)(10067099003)(3023799007)(22082099003)(18002099003)(4143699003)(56012099006)(921020);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(23010399003)(366016)(1800799024)(376014)(7416014)(6133799003)(56012099006)(10067099003)(5023799004)(22082099003)(18002099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Smc0WWYrdDhqMktqbFNYNWp6MEdEL01SQVE0TFl3LzR1MmdsV0pHUXBPY2gz?=
- =?utf-8?B?QW1tdTlDZStibUxML3NFYXNybjRXdFo4Rjk4VUllOU1WelJ4NGRkajBOWE1U?=
- =?utf-8?B?cEl5WXRUSENqOWhrV0hTdkxpcU1sNnp4WGdiZy9KdlpncmlZTG1IendkY1BT?=
- =?utf-8?B?T0l5eFozWXhKV2UyOUJQZVd1THFkdjl6S3BYS3lzME0rSzNoK2VpNkpJUXRK?=
- =?utf-8?B?TVV1b2YyRzdobUFycDRDWnpQa1pJeXFZY1BUNXJXbUlUQjdDR3BYYlZqZUhY?=
- =?utf-8?B?YjFHSEJGSjhVbCtEbXhEdEUxeTIybFpRcXBSbDBGeWRYWVgycFJSbEU3R2pr?=
- =?utf-8?B?TnExdVNPZzNuUlIrRDBUemliT0hJUnJaOHN0K2phVnc4TlJWYjU5amJ3dmFk?=
- =?utf-8?B?dElCWGk1bVBWaTVpdzl0SGRBRGJOU1BaaFNHdmZVUlJkUklQQlBTUmNxTFY5?=
- =?utf-8?B?NFdhWFYxUmhDQlFXZ21IYjVQK2IvT2NiUkJ3NzVzWFdmK1E1RlZtcGs4c3ZR?=
- =?utf-8?B?VmZGL2txcnMvUC9lUmlLaHVQWWYwbHczdFhYVkJWNWdkT2ZqaCtKaGd4ZlZr?=
- =?utf-8?B?WVJpekRYSTVsdkJNUVFuek81bzFydm1uRXRmdkJiK0x3ZG00NFptNm5DY0w2?=
- =?utf-8?B?LzNOZ2NtZXB6U05FcGJudE03cFhBYlBZb2RDNENFS0xiUDJyUWZJOGdKK1V3?=
- =?utf-8?B?cjE3WGZzd2lUWjNSaU9JTW1hU3dQNTJ1QlVERzg0Z2MzRkdxNlNQMllkME9V?=
- =?utf-8?B?eXRSZFNWUEE4Q285RWFTZXJZNWNKNkNTU3FPM1RqUHF4NDA2Mko3bUhCRzRt?=
- =?utf-8?B?SUtweTRLSi8wVGtqRUZCQ0w4MFA4eWJES0RwRXB1S3FrcVo2RDZlcXlLMEZW?=
- =?utf-8?B?dXF2MmZhTFRUS09BWnUvV3hFckpTNU1pdkZDZ2FSUkJiQURNMldHT3B0dXBi?=
- =?utf-8?B?VHB3YVFzbkc1SitXTnoyRTJhYnBReENBQlJKUG5IcHE3VUVFT3RNTVZ5VWpC?=
- =?utf-8?B?YzlWckFYeEJuNnpuUXhPWHNhSE90WHJOY2J1TmdvYkN4d01Yd3RVZlY5SUZ2?=
- =?utf-8?B?aEpGM2ZIWGFzOEhPSXNxWC9rdVZPTGplcVAvZHJNNWxXelpPYzgxMU81N3VL?=
- =?utf-8?B?QllCNGZlU01HYm44WVhRalhUeWJGcWxPN2FZdnhBY2sxcWk2eUVYSkhEU0Zn?=
- =?utf-8?B?ZnRMSUNnWXFVZVRsZGYydU9FS3k4QkJMaWtoazg3a3pQRVBDRlMvRk5WRVNt?=
- =?utf-8?B?OThLRUlTL2s1VXZ6TDg3VW1oQUh5ZEZUSXZKVk51SVpPL3hLMFR3SGpQVGE3?=
- =?utf-8?B?L3pDZFVJdEpUOWdNc0s1dExIVm1XVHRJYTJXRzF4L3FLMmw2REVxKzZqN1hC?=
- =?utf-8?B?QWZjVU9SQlZ2TWp6dW8yNGp2eEVmSFduV2tnNURPbFhFZVo2ZkxRRXhrTU9D?=
- =?utf-8?B?WTI2YWtpRWRrWENnY2U2U1JmeUo5SHFxbXFFbnk2b0ZrL0Q5aTlteUphVUlI?=
- =?utf-8?B?a1BKeG80Q1BDVFJIVGEzRXBGUG1KK3duWVJWSEd4c29qYWNDcmVFNlhCV0I4?=
- =?utf-8?B?RzhVNUhTTWhVSDFIMHcxd0lHOUV2aHFWeHpKNU1VOFR0N1EvNXZYWFR4eWoz?=
- =?utf-8?B?TVZBcERXSHJJc2c3b3pKTjJFb3NPeGRONDBFUSs4eDRQc0kzUVZTQm92YThn?=
- =?utf-8?B?YXJvT01yWmt0cWZEMTh0YWpPeFVMYmlRODlFNDhzYnNnaHpqMFNOTnhJYzla?=
- =?utf-8?B?VmhaTTNpREtXaTRjaGgrSlNWN242bTc3T2N0S21aS3JKeXNGdDRseFd3UDg2?=
- =?utf-8?B?WER2M0NkcDlmYU9jakJyOGkyT3Vzb0NwMDRTcUZKUm0rK1lVd3AyRExXVWYz?=
- =?utf-8?B?RFA2ejNQUmlUbCtDeGUzbkw1UUpTeGRLeEIvR3ZleWNpcDBhWXlsTjdhaEtC?=
- =?utf-8?B?Y1Q3T2RkNVVkZEF0UlhHN0RRa2lQSWZEUFRqYWJyVFFLRGNOYWZ2cEM1aVAr?=
- =?utf-8?B?bFNTbE1zRFBqd0lyaEREb1FFT2poa1F1R0FNOC9mV3pFRXJwS3JXQXNXSkEx?=
- =?utf-8?B?clBMLzRibmN0b1YrUXhmOTBRQ2puUFpRb0l6RUVBYXB2NDZCcUZ1TGNNakcy?=
- =?utf-8?B?TnROY1IrSE9BK0dGdzlDOHgrWEZCbUNOSituMWxXL25qS0tkZGV4U0RDeEl6?=
- =?utf-8?B?aVNkNU85MjZVekpEY3QzckIxdFYvL2l3WmovQm9RdnB5eHR4K2NKVVVzYWlZ?=
- =?utf-8?B?Y1JpazZ4YjVXQ0dDWkM0bFlVRDBsMG0yT01keXFORlBYT1l6RnJVTVcwQ05i?=
- =?utf-8?B?TW9JNTUyeVRvMkUvak5ZN0pGZVg2OEFYWFRGZ1A0N3FMZ0k4cFFKUT09?=
+	=?utf-8?B?Z0s4ekdRVjdhdmZEcjc0L1didDJSeFhxUllweGQxNFZMUzhIQ1h6TlkwRGdN?=
+ =?utf-8?B?ckRDKytjMTB3aDI5dXVONllaQWQ1MnF4Zm9YdmVkdGxpRmtsdUJxaVgzZmRi?=
+ =?utf-8?B?L1ZjYUY3cEJHaHRLR1k4ZTMyZzBGNlc0QzhTU2Y2OW5XOU5CTkYwT0ZWb2Jx?=
+ =?utf-8?B?WkdJOStSV2JZbTN1MGxaTE9DcElVUFR1RmdYV2x2L0ZTak5NZ05VOFJSNUlB?=
+ =?utf-8?B?Tm1qRU1kUVRReTNwSmJYVEd6US9zcjlQcnJvc0U3cS9BSzJhQ1VZN2FNWG5O?=
+ =?utf-8?B?SU5rUjVEcWNSU0hHWEx0RE9TdG5mWXRRbVNYS0RRSUVCRTQrOFVPdU15Tk5O?=
+ =?utf-8?B?T1dQMkdUaC9wNS9XUFF1VENWWWtFam15N2Y4ZnZxTnUyRnNOUzhWejc2RlYy?=
+ =?utf-8?B?dkw4RHRFVFpQK2NyeVNYbUVyME54Zml0UWRsUGdKZS9QZGhJMzVNU3V4SStM?=
+ =?utf-8?B?VWVrTzltblllQm9vZ2w5b1VpWGtsSHdXbGkrODZQWkxldGR1Q25oOG5YOGFq?=
+ =?utf-8?B?WlorR1MxRjJCZW1MV08vek5LdXBlUSthaitHZE15YTJxMW5GRDAyT3JkcUtB?=
+ =?utf-8?B?ME5iNmhYbytqekt3d250N0t5UWFhT2h2ck1WWDducnhjbVg2bEloenFVQ0Nk?=
+ =?utf-8?B?K1loT2k5Mmd2V0dINFk5QzdOSng1L0J4T2V3dUNCTWJzcjZiZ1dTSWNycHpt?=
+ =?utf-8?B?NXo1aTFvcFc4eCtBVEV5MHBEUktpOUhoQjZjM0M0YjhEVmNlcTU5UUxyQ1JQ?=
+ =?utf-8?B?Vm8yMHhWaGRwc0NtVjdKUk01aTZBaDNuUDQ2MDR4OExabWxsd1k1N3UzWFlL?=
+ =?utf-8?B?cDhSRFNyTktCOW83QVY5TlBkTEZCU20zdFdzV25vU3Q3YXVGYkNYZElFV3U4?=
+ =?utf-8?B?Q2ZkOHNkWnNJNjJMNzlKdzUraGd3WkRoclcxa1Zoeks2ZzlDVk9JbkRHOWRv?=
+ =?utf-8?B?UXMvdXJHL2JVVk1WUHBsNXIzU1puK3RjYkRTZ24wUVJzRnVXcmlJUUMwcGFW?=
+ =?utf-8?B?QnBDdWloRGlRcE5nRlE1VjVZUFFDZllDRURUcmE1bWdDZytXZ3VxeVdaMGdV?=
+ =?utf-8?B?TDZtbkJBR01Zc0pmU3VIODZIUmxlSTJHSW1mOCtKNU1Ec3NoQTJ0VTFIbG0y?=
+ =?utf-8?B?VXpXeWIxaTlCT2E5WHJDQm82bU5BemVDb1c5MXNQLzJjUFUrYlZWY0NVRnRj?=
+ =?utf-8?B?aDQ5UUlPWE5RcU40cFlUWWxlTWoybE9ZMkowUlJyaUxLMkcrbG1kRDE1a0Jw?=
+ =?utf-8?B?VEMzY1EvOEpBbXpvbkJPT1lvcENzWnYvbkVXbHpWbFRWUzExSTNhUHFUbDg1?=
+ =?utf-8?B?alYySHpueXVFQ0syb3F0elVyV1pkRDhNdlp4S0dYT3pnQ2Zzb2dhUjZDK0Ew?=
+ =?utf-8?B?ZEtXbjFaT3dNbWs3eGpEZks5dlBzTWVIam1ndjdQRG5nUjVBWVRuSDFDSEpr?=
+ =?utf-8?B?SEdHZ1FrU2c0TUlQL1ZTLzV3bmE0a2gwUXY0YXJmWGUyVEl5SXg1WkZaSzhK?=
+ =?utf-8?B?ZlZPeklqSUtCMGNjVFFxbkVManhZOEFvUU5oK2N3QUFOOTJwUkI2SEl4UmVX?=
+ =?utf-8?B?WlBGcFBwYzVqMm9IZWNsTTZhUmFiUUk4SXJ4bnJUVVR1UXN4THpOYlNNMm9a?=
+ =?utf-8?B?NVlKWFJESmdmelZNUmpVNEtKOTdwS3JGOW1rdDNlZ2NsdmZpUzVFdm5mNFpm?=
+ =?utf-8?B?RTN6RHg1bTQ0SWZ3UDdkY08zaWtreDRhRHk3Y3U5WkExU1VaMHAyNEhmSnNj?=
+ =?utf-8?B?TkNCcThuaTBpaEdYUk94ODZ0NnNqUUxYYzJtcUg1aGFtd2hwUGl5ang0Q041?=
+ =?utf-8?B?OU51TU1od2pmZmRuR09uKysyeVI2MU1TVno4cEdzN3E2RHl5U3RzSFV2RGZo?=
+ =?utf-8?B?cHdRT09vNUxIMjNSWmlQbmdaSys1Ymd3V3V1M1NET1Z0RUNoall5OGNDWTFr?=
+ =?utf-8?B?VDlYY0Zaa1lsQi9NbkNBc1pyL2JzekVRd3I2NjhSS016QmllRzRTZE1GYVAy?=
+ =?utf-8?B?SVI4WnBkaEdYVjNXcExyRjRPRXpUaExjTElRbXA3dmJRdVRJemdrRnR6dktM?=
+ =?utf-8?B?RSs0RTZjem9HSmpOVDY0RlZkT2Q4amtBYVd6b0ZSMW9iaFkxL1UyUktYWUVo?=
+ =?utf-8?B?OVliRkJmdlJ5RjFQMnd4U2RqSDVaOW1Jd29KYmdocHQvTUpYMWNGWTBCSVIr?=
+ =?utf-8?B?b3Nwd1ZuNHdTOGJXNHZ6ZWQrMlVoTlFjajkwWjNud2d6MHlXRlhJV2ZsQnJK?=
+ =?utf-8?B?cEM2eGpQcGJxbEM3VDV4Q0tqc0FON2RYTk5YdE5EcWtQT3cwODBmUGhXbEpv?=
+ =?utf-8?B?UFBvR1lhRmZCd3lrbWVxMmZycVY3bXZQbmhVZXlqKzh0SXp6NGtKZz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0bdbcf90-5648-4331-e6a1-08df081f6f11
+X-MS-Exchange-CrossTenant-Network-Message-Id: 827f19d6-f883-4085-d2b2-08df08210d22
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 11:52:01.1455
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 12:03:35.8274
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9W8UHsD7Q6dQ8zqWiSN/DgYcLANQgTjA/HhsSQnU74PnCEl0hlSEb50KlKL6U+8L52uzuRIF2WAYNg2qkVnOdg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6296
+X-MS-Exchange-CrossTenant-UserPrincipalName: KFpAokcCygZgOHjHUQhEvlwUkC0NDaH9knmyXqV3m/pEqtkP9f4wCnpx9uLnXAkayEGx6H0Vf1nvbF2Z1pM/qQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5086
 
-On Tue Sep 1, 2026 at 6:06 AM BST, Eliot Courtney wrote:
-> The new `cv!` macro allows safe casting of constant expressions in a
-> const context. Update code in nova-core to use it.
->=20
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+On Tue Sep 1, 2026 at 4:18 AM BST, Chunfeng Song wrote:
+> The hand-written bitfield offsets in is_link_up(), is_autoneg_enabled()
+> and is_autoneg_completed() were correct when the abstraction was
+> merged: at that time autoneg, link, and autoneg_complete were at bits
+> 13, 14, and 15 of struct phy_device's first bitfield unit. Commit
+> 2796ff1e3dca ("net: phy: add flag is_genphy_driven to struct phy_device")
+> later inserted is_genphy_driven just before autoneg, shifting the three
+> fields up by one, so the accessors now read:
+>
+>   is_link_up()           reads bit 14 =3D autoneg
+>   is_autoneg_enabled()   reads bit 13 =3D is_genphy_driven
+>   is_autoneg_completed() reads bit 15 =3D link
+>
+> The official ax88796b Rust driver uses all three accessors in its
+> link-change handling, so it inherits the bug. On genphy-driven devices
+> is_genphy_driven is always 1, which masks the broken
+> is_autoneg_enabled() check.
+>
+> The ordinary bindgen accessors take &self. Calling them through
+> (*phydev).link() would create a shared reference to the complete
+> bindings::phy_device, which is not appropriate for an object wrapped in
+> Opaque.
+>
+> Use the bindgen-generated raw accessors (link_raw(), autoneg_raw(),
+> and autoneg_complete_raw()) instead. They retain the bit positions and
+> endianness handling generated from the C layout without creating a Rust
+> reference to the complete phy_device. Drop the hand-written numbers
+> together with the TODO comment that marked them as a stopgap.
+>
+> Found by a static equivalence audit (C2RustDrv, a C-to-Rust driver
+> migration tool) that compares hand-written bitfield offsets against
+> the bindgen layout of struct phy_device. Verified by building the
+> bindings and checking the generated accessors; no runtime testing was
+> possible without PHY hardware.
 
-I like the ergnomics improvement :)
+Might be worth mentioning that this is change is only possible since this
+April's bindgen version bump.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+This is a bindgen version that we requested
+https://github.com/rust-lang/rust-bindgen/issues/2674 and available since
+bindgen 0.71.
 
+This will affect backports.
+
+>
+> Fixes: 2796ff1e3dca ("net: phy: add flag is_genphy_driven to struct phy_d=
+evice")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chunfeng Song <springbreeze@stu.pku.edu.cn>
 > ---
->  drivers/gpu/nova-core/falcon.rs                    |  9 ++--
->  drivers/gpu/nova-core/fb/hal/gb100.rs              |  4 +-
->  drivers/gpu/nova-core/firmware/fwsec/bootloader.rs |  7 +--
->  drivers/gpu/nova-core/fsp.rs                       |  3 +-
->  drivers/gpu/nova-core/gsp/cmdq.rs                  |  6 +--
->  drivers/gpu/nova-core/gsp/fw.rs                    | 38 +++++++--------
->  drivers/gpu/nova-core/gsp/fw/commands.rs           |  2 +-
->  drivers/gpu/nova-core/num.rs                       | 55 +---------------=
-------
->  8 files changed, 28 insertions(+), 96 deletions(-)
+> v4:
+>   - Use the bindgen-generated raw accessors to avoid creating a shared
+>     reference to the complete C `phy_device`, as suggested by Jakub Kicin=
+ski.
+>   - Update the SAFETY comments to describe pointer validity and the
+>     callback-context preconditions.
+>   - Add `#[inline]` to the three small forwarding methods.
+>
+> v3: https://lore.kernel.org/r/20260825111334.795732-1-springbreeze@stu.pk=
+u.edu.cn/
+>   - Use the bindgen-generated accessors instead of hard-coded bit numbers=
+.
+>   - Update the Fixes tag and add the net tree subject prefix.
+>
+> v2: https://lore.kernel.org/r/20260824111227.742645-1-springbreeze@stu.pk=
+u.edu.cn/
+>   - Use bindgen-generated accessors as suggested by Andrew Lunn.
+>   - Explain that the offsets drifted after `is_genphy_driven` was added.
+>
+> v1: https://lore.kernel.org/r/20260823103644.342849-1-springbreeze@stu.pk=
+u.edu.cn/
+>  rust/kernel/net/phy.rs | 43 ++++++++++++++++++++++--------------------
+>  1 file changed, 23 insertions(+), 20 deletions(-)
+>
+> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+> index 956cda573ddb..3f1c1637f027 100644
+> --- a/rust/kernel/net/phy.rs
+> +++ b/rust/kernel/net/phy.rs
+> @@ -123,39 +123,42 @@ pub fn state(&self) -> DeviceState {
+>      /// Gets the current link state.
+>      ///
+>      /// It returns true if the link is up.
+> +    #[inline]
+>      pub fn is_link_up(&self) -> bool {
+> -        const LINK_IS_UP: u64 =3D 1;
+> -        // TODO: the code to access to the bit field will be replaced wi=
+th automatically
+> -        // generated code by bindgen when it becomes possible.
+> -        // SAFETY: The struct invariant ensures that we may access
+> -        // this field without additional synchronization.
+> -        let bit_field =3D unsafe { &(*self.0.get())._bitfield_1 };
+> -        bit_field.get(14, 1) =3D=3D LINK_IS_UP
+> +        let phydev =3D self.0.get().cast_const();
+> +        // SAFETY: By the type invariant of `Device`, `phydev` points to=
+ a valid
+> +        // `struct phy_device`, and the caller is in a context where thi=
+s access
+> +        // is safe. The bindgen raw accessor does not create a Rust refe=
+rence to
+> +        // the C struct.
+> +        unsafe { bindings::phy_device::link_raw(phydev) =3D=3D 1 }
+>      }
+> =20
+>      /// Gets the current auto-negotiation configuration.
+>      ///
+>      /// It returns true if auto-negotiation is enabled.
+> +    #[inline]
+>      pub fn is_autoneg_enabled(&self) -> bool {
+> -        // TODO: the code to access to the bit field will be replaced wi=
+th automatically
+> -        // generated code by bindgen when it becomes possible.
+> -        // SAFETY: The struct invariant ensures that we may access
+> -        // this field without additional synchronization.
+> -        let bit_field =3D unsafe { &(*self.0.get())._bitfield_1 };
+> -        bit_field.get(13, 1) =3D=3D u64::from(bindings::AUTONEG_ENABLE)
+> +        let phydev =3D self.0.get().cast_const();
+> +        // SAFETY: By the type invariant of `Device`, `phydev` points to=
+ a valid
+> +        // `struct phy_device`, and the caller is in a context where thi=
+s access
+> +        // is safe. The bindgen raw accessor does not create a Rust refe=
+rence to
+> +        // the C struct.
+> +        unsafe {
+> +            bindings::phy_device::autoneg_raw(phydev) =3D=3D bindings::A=
+UTONEG_ENABLE
+
+IMO it's little bit awkward to have the comparision be inside unsafe block.
+Perhaps
+
+    let autoneg =3D unsafe { bindings::phy_device::autoneg_raw(phydev) };
+    autoneg =3D=3D bindings::AUTONEG_ENABLE
+
+?
+
+Best,
+Gary
+
+> +        }
+>      }
+> =20
+>      /// Gets the current auto-negotiation state.
+>      ///
+>      /// It returns true if auto-negotiation is completed.
+> +    #[inline]
+>      pub fn is_autoneg_completed(&self) -> bool {
+> -        const AUTONEG_COMPLETED: u64 =3D 1;
+> -        // TODO: the code to access to the bit field will be replaced wi=
+th automatically
+> -        // generated code by bindgen when it becomes possible.
+> -        // SAFETY: The struct invariant ensures that we may access
+> -        // this field without additional synchronization.
+> -        let bit_field =3D unsafe { &(*self.0.get())._bitfield_1 };
+> -        bit_field.get(15, 1) =3D=3D AUTONEG_COMPLETED
+> +        let phydev =3D self.0.get().cast_const();
+> +        // SAFETY: By the type invariant of `Device`, `phydev` points to=
+ a valid
+> +        // `struct phy_device`, and the caller is in a context where thi=
+s access
+> +        // is safe. The bindgen raw accessor does not create a Rust refe=
+rence to
+> +        // the C struct.
+> +        unsafe { bindings::phy_device::autoneg_complete_raw(phydev) =3D=
+=3D 1 }
+>      }
+> =20
+>      /// Sets the speed of the PHY.
+>
+> base-commit: 2709dd5ae32f0828f386327c76bba9f39f63a1c6
+
 
