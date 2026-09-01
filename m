@@ -1,237 +1,425 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazolkn19012073.outbound.protection.outlook.com [52.103.11.73])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021106.outbound.protection.outlook.com [52.101.100.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1328F322C6D;
-	Tue,  1 Sep 2026 11:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.11.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F299363C46;
+	Tue,  1 Sep 2026 11:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.106
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788263281; cv=fail; b=s76uqSb0SzdgugIb/siANXIC6a6QsXEdcA2ELSddjcn977GROp6HEk/eDkYf11/Huz9phL/H54Vo6S0haMH2D4xy90XJksM7atG+ERLGvvn6TOZjdrXXCJwSeohcBGXa0iwZ9j3mUHGYzQb9j9PUhy8SgWwhfwzoZecnMkwI4nk=
+	t=1788263437; cv=fail; b=IqHdpOdFeD2uHDmu7Kp+Y2ZKwLel5LkLYVjxNptmSVyLblD0tOrglc8D3IiLma3lo5tVSjr006ixEygOrTHuAw9n4nfVlPQgJ5crXpUI34MFkVcuaNVRE2VSoY/VSWEyTwuH8u6A98NHzkbwrdvyLuLfsCw2+NXKg/Twvoq6ok0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788263281; c=relaxed/simple;
-	bh=hcFl1ppmdHB6ZipwOr+JUePQBKn6lxbSChOBlR/7yXk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=GjzglCvxqji0XeUvrv/vqz7qPNgB8KWYDkK0dhW7K18/0mDM/736Te1pByMhXwGXEyPqWp8sLtIghPxZOeJ3mJuCFNRwWg2OSccFLi2ZwlPY7KH4/5OhOfX91Z/YmRs/PQAVhLNrvyzHpJJlMJYOofwLHU/dRBOhvaBPuizJYvA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=CFPy3ahq; arc=fail smtp.client-ip=52.103.11.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
+	s=arc-20240116; t=1788263437; c=relaxed/simple;
+	bh=rDELFkucckRYqrkgtM+cvIHOFek2PEt29qjLB9BnSQg=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=QT9THf20+Ce7JUFLa3nzoXE6ZF1V0cbjY77Wrmc7UDmQtpdNU0DLsyRbHoH7r0brQ+eUai7Dl+BWpbrCMivfu8+VojDcgJ0s8XOawKl8eEF8sbfPjbOtrlPRiuu6bzeLNCi+KtWdQQaugSsgBxMomczPFBg9Uz82inIP1ql8qm0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ZYt2gO9o; arc=fail smtp.client-ip=52.101.100.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="CFPy3ahq"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ZYt2gO9o"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nphMP4rLo70p3T/t2bCF8boTIMzODA0Vxn11dJmnpkUkC6DZ047+2G5pg9H2f/1O+H+PNBaqfJZ1vye2UeTms/z5r3pVtwTwS010l4qzb7Kps95sgmbIvMIi4ldoV4SYs0y8XIN2rHjYM78skjyQrgxH1b6A7kHPXHyoM2WXrrZ+jwz++Ed4OZwHgKxvopoJ/y7cCbpGq6W0Hfr6QBVk+sdLidwf6a5jkFQ4tyrQrwpZTvomWQdQpaUP0TaofOLqHs6fC4JCupBXFWP6P+1rNln+PQ4PtKpDCFSkkjM+K4Emq+xi69pCuMwvaJmd/jdI+KbHy1z6Ftpimn3VNMpXvA==
+ b=iCmFYqyLaH/KzJh7aEfH8yzO7KGYXWd46LDmbSnxwd8Ges0a1Mc0PjR4MyKbTG3b1eZ+DjI7uN7dhousfWYiVnPRlAzwHtMDz119WYcPia8p3xp24R78nbp8Ge10Z39SBwGwaqB8Bqk74eESWvxhDwxSK7aHvEk2rZ8W9fSOBxsbzuYd3lgmLF9BhR72rrJnA/2HqY6oWgC0yGxwXQ6VUWtCacjgvrjDfS2poMfNmWI2AmK0ID8eIkdXjUj62D2juNCbDt8BcsseGc9fAjZI1FOCjpKZ+5CZ3KYqg375hLde92dOqL4B56smKufUReDKrijwD5LjYAksNe5F+TNDCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hcFl1ppmdHB6ZipwOr+JUePQBKn6lxbSChOBlR/7yXk=;
- b=NO9fPcAiVFwzTFr6EVL+xhn1Qj+7lGI0c9k9JPFzov+1bpXW10EnitpaBLyUVaoxMQN110HMvyXjdDxVmnB7dwWBR0AmCfrZuFIOV2k8y6QbURi+gCnR1Mv44cXBM2XPwLCOLprDJh3Ld/RXk2/3l0PgWgD5D+aXvHIh+Ce1Ty/c057r7/hHQlV732tiUVHKTqDy5nh/Ck723/rwggkkJJv9NKLCokscyFN2hI0wgJcEnrZAHiOpwG2soN6F88nsHCqpVe8OvGqryQd7ObA+2ol/u6sHvQvy74awuL+6vzPiZlkQNFoikduuylOaCoEsx2RRF4vheMmpkwpeD6oMfw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ bh=kOq5Ujrtc3U2slahBtE/TYAwHJWrOE1Omqae1qLnqcY=;
+ b=B6EUgOk/oDcgBfeKqcrAS9VIUE1Tx2sQ5ydYvkjKLwjcRbqO67qEfvIcmGKGwrr0VkmtiS7Lz+HqEY+02TNBl9n00D5U1uF48eBBi2sYY3YYNtMu1i7PtfJKTspkFf7EzUbBmXO5K6xO+2Kn7szK+CVvVhHJWcUd7p/l7rO9X+JFESNgWqXWKWtUKNmFfVahe9ZlV3aRy+o4GjuddUfYbTlzNjFBs/oITddoTjboYHAHQoabqD7XnVIvamfxiPQv+aLfbWfty9tUCqSd6Mqxb/L6IhCRGB9iXI09Q0lmwP8X0FNB0aHnmf4b2AiCyy0aPTJApxYpIEZmuXwoPrWqKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hcFl1ppmdHB6ZipwOr+JUePQBKn6lxbSChOBlR/7yXk=;
- b=CFPy3ahqv1OKhHbu09RxyAsAcW2oUwz7W4ewwMq3XGjHCDklK/Cr5Izj75rOKz8S2486AlIaUUXaPYUthpH4nhZshea5mN9NcI/9Gdfo6hi7DSM6tLPHRxJrDi69duHJdk0I4gZl70GKIOoAM8nsPlr4tY6+f3ointUA2g5IVHe935BjkwSMFEh/e+Mt0W8b4j35bEA2FUl1iDVI5vK+phIVEy8cBvwOVTqjxhCzfELcDvKVvqsAG9zqSOPtvibpT6s7r6o9ncBkU+1x9m5UKWLAuwb1Bb+49Uwbd8+0Tfh8ATvKg5xbAA7ArmU4eW/udUAviS8gHfg5tmgREswdCA==
-Received: from SN7PR07MB9708.namprd07.prod.outlook.com (2603:10b6:806:32d::7)
- by MN2PR07MB7069.namprd07.prod.outlook.com (2603:10b6:208:1af::17) with
+ bh=kOq5Ujrtc3U2slahBtE/TYAwHJWrOE1Omqae1qLnqcY=;
+ b=ZYt2gO9oEL2gaAR9Y82vFZjIHwWi2ck5eO8TGB1CnZXPdNAA1bmFRqlZrtkPdt5Yn1wucZlnIr34ImQRcCHAJQrygwH61t/CYt1o/TI22jpnmgjb8YF7ERaC+GhJnSkAAE5ZxhxbDrcE5B6t8MJBT+EHSzhot35twNavZPaMmhs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+ by LO2P265MB2525.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:12f::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
- 2026 11:47:57 +0000
-Received: from SN7PR07MB9708.namprd07.prod.outlook.com
- ([fe80::b852:966d:a1c6:78c]) by SN7PR07MB9708.namprd07.prod.outlook.com
- ([fe80::b852:966d:a1c6:78c%4]) with mapi id 15.21.0360.008; Tue, 1 Sep 2026
- 11:47:57 +0000
-From: ai qubits <aiqubits@hotmail.com>
-To: Alexandre Courbot <acourbot@nvidia.com>, Sophon Zhang via B4 Relay
-	<devnull+aiqubits.hotmail.com@kernel.org>
-CC: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	=?utf-8?B?S3J6eXN6dG9mIFdpbGN6ecWEc2tp?= <kwilczynski@kernel.org>, Miguel
- Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
-	<gary@garyguo.net>, =?utf-8?B?QmrDtnJuIFJveSBCYXJvbg==?=
-	<bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>, =?utf-8?B?T251ciDDlnprYW4=?=
-	<work@onurozkan.dev>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>, "rust-for-linux@vger.kernel.org"
-	<rust-for-linux@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject:
- =?utf-8?B?5Zue5aSNOiBbUEFUQ0ggdjRdIHJ1c3Q6IHBjaTogcmVqZWN0IElSUSB2ZWN0?=
- =?utf-8?Q?or_indices_that_do_not_fit_in_u32?=
-Thread-Topic: [PATCH v4] rust: pci: reject IRQ vector indices that do not fit
- in u32
-Thread-Index: AQHdOWxhfi2vd45HaEGtwvA0/upoIra5jr2AgAANj/k=
-Date: Tue, 1 Sep 2026 11:47:56 +0000
-Message-ID:
- <SN7PR07MB9708B6C36F40362265511D2ECFA82@SN7PR07MB9708.namprd07.prod.outlook.com>
-References:
- <20260901-fix-pci-irq-vector-index-truncation-v4-1-f94aa6932fd9@hotmail.com>
- <DL3XDBBHXKKV.G9P6KRSSX1DN@nvidia.com>
-In-Reply-To: <DL3XDBBHXKKV.G9P6KRSSX1DN@nvidia.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN7PR07MB9708:EE_|MN2PR07MB7069:EE_
-x-ms-office365-filtering-correlation-id: 99d7bd69-98a9-4111-82e3-08df081edd93
-x-ms-exchange-slblob-mailprops:
- P1EfU6pZOd/ur0QDa6YmBjuOVf78JKoncpvHpeg6ddB7YluQqTyG6/MnfgJ0YXByIbxp83UCzOE17dU52CAcWOQdTfP2i8zGuSoq+6ON+Z4zW62x5sGW+wi9FlLAnq9PxvKUp0FMlXwl3IWqrQgzyMNGDeuE3WgwCN75jD07KKQjYx++HXYsk0l1HkP9x8HEpdSNsgzVKQMC9ybIXw8ylH5T7vGGlEBHjP1lGZUypsxBU0PEWbY/Dt6PxWDIWtwpGzwo4QHh1/tbGN+M1jormeBVp5YuJR33AN66ZqF37EuQetHGG6wf5ET4OyhwdDxwR4GU2C2JYc1zSDkLC7aM2kcLNIyKz/AHJupo8snfGjxjpSaF/1ekbR3J343BemziOMw/WqXOYFgas0k5ppW0U5ttaqxBdC9IL1ze5M6ukBcYZXCkpJGW6NhiyqsEyHgeEOyocfe9gDg1065HL5H0WB04vWfpqjSriF30LQ7SI5gNgd1+7b8QGPtIYMR6sf0AvMP5h/p0+26Ej+ggCDBRppbGmP2mmgGv5fW/Mx2cb3TV1NV6qmJxFfqUOMIQrClR5Nt5i5gXV/z5ZeiZHG1748MemT17nBHJ/VkhPQHtii9GWqgQ141/wvaIjEmw+kzEc2EYZFNSVaxCAXoqdfbgALJCljdQly+CXmtU6ukdvnU6MMq0VbpwSh/k8XWhOte2Z//b3E/yXBvBRKuyswXNAQFoWD83Wmo40tB4XI+zFqoV1KPsTtl/9oku1PAPIWGKgrziFaNnNL3q05Q1RPXrglGt+mC59jGkHBFAjxaUBgvjChkxkhpE3A==
-x-microsoft-antispam:
- BCL:0;ARA:14566002|41001999006|24121999003|45011099003|22091999003|12121999013|7042599007|8062599012|15030799006|6072599003|8060799015|19110799012|51005399006|15080799012|31061999003|6140399003|40105399003|10035399007|26121999007|1602099012|2607281247196008|3430499035|102099032|4302099013|3412199025|440099028;
-x-microsoft-antispam-message-info:
- =?utf-8?B?VHFNWlo0dVdrNjk3aU5iTlhkV1JtdlJkTHV3RUtlRVBhSTExYkJ0OStuRFAy?=
- =?utf-8?B?dU5ydDREdysyRmVHS2JhYUU4V1I0WkY0dGRRYWZlcW1SQ2VwQVo0Y013UmxO?=
- =?utf-8?B?M1ZRT0RaY2g1dXhuUWRpdVp1R2dsRlZaVDg0VUt4WExsV2NtTkg0WEJWWXdJ?=
- =?utf-8?B?TU1UVmZIMGxvZVA3Zm5RWTVXTWc5ZVJVaG02OEx1K2FFeU1iMFRnNnJ6RkJL?=
- =?utf-8?B?VEVvUWVzZ2hObjYvTUZUelRLTU9JbW5jd3kwbG0wc0hwWkR4cmFFSmw2MWkz?=
- =?utf-8?B?d0ExaDdQNThpZllaWFdTTUNzZ3BLTlVPTzJkT3VtNU5PWlc1MUpBZ3J2OEc0?=
- =?utf-8?B?WmNOWjc4NGk2NCthQ0c4U1lUMy9GUHNLMHd1OFJpVWFPenZIUDhLZEhIRXFT?=
- =?utf-8?B?SXovdnZOUUdsSkIwam9mbkRJRDhBU3hmbmp6ZWZybjJidnFSTUMzTTZacWNx?=
- =?utf-8?B?ZEVBVUgyRGZ5ZTJCeDhJZTRnWVRtcDVCY1JMclVoMG5ISlgwZnUwdElaeXBl?=
- =?utf-8?B?dkU4UUNtUG1TMVNYSFM2SHVPUjk2ZGJZT1VoRFppVlZLUnBJRHRIempiWU5X?=
- =?utf-8?B?bVNkbG9HbDRRMmZ6dks0N1BmTmp2SjJtcktHa3d6NzJJaVFWSlRTdE50S2cx?=
- =?utf-8?B?cVJMS2ViUkpTN2Q5Zy84aE5ONVg2ZVRzNHkzVy9MZmxpOStrRVV6NW5McmNF?=
- =?utf-8?B?bXBqdVVmL0V2VXhZWTkzUVJNYnhwblIrMG5pem1ZOGFSdUpwLzNCVnZCTHM5?=
- =?utf-8?B?V0JWUDlQRGhwY3FQUTRtM212TXBrRmlXN213akFCbysyK1U3V0hxSHBFVHJI?=
- =?utf-8?B?dVJxMXVYRjRHcmN2cXY3WkhISlBjY09FK1VidlBtQVlJMjBoc21aQy9uSExB?=
- =?utf-8?B?cWJTL24vTGo2NVE4ZGtlZUJkVEl4UVVOaHV1Z0xUdG5NYVd0d1UyUmVqYUV6?=
- =?utf-8?B?VVdyR0tucHZuNWV2MXhCdUxlalZFTG5reWE2VzJDbFVKemZmc0tzL3ZaN3py?=
- =?utf-8?B?bmd5K1VmL21GN2RkZzR0WTNlU1pvV0RaWHhWYm1XOUU2MnZmdzZFZVRwNGFr?=
- =?utf-8?B?Qi9SN0dPNGVVQWU5L3V1UmhRMzFuK3FsUXZjL3J5ZXFmQmdZTTh3KzBML1Bu?=
- =?utf-8?B?di9EWnZQd3ZZV0kzbjJRUDRhMTVKM2J6V2xpUU9SbEg3Z3orVGFDNnhJUUhr?=
- =?utf-8?B?SDBSVEJzclpWYmxpbHdRVjFhYUVTR3d2RklwaUlUY3B3cERyZjhFWjhIMTZ2?=
- =?utf-8?B?bkxyWVZXUXhYYW1hRk5HYzYrTHBNcmRsWU5lL2trM3dyWldYdE0yQXAxNXJt?=
- =?utf-8?B?d0d0WW9YOE1zU3ZVUGRsdmVtRUdKNmFBV2piUHNCVTdBVXNwZjRiOHMrQXE5?=
- =?utf-8?B?M3NnQzJjcjg1dkZublVyTVUzN2xZb1ZvaWNscm5vV1ZWdWQrdEJ0ZmpTS2Jv?=
- =?utf-8?B?TndQVDlCWHNYUTF4cHR2azNqT0lLcG8rUUJ2YTRaQTJoV1RwUDVNeExCWmtX?=
- =?utf-8?B?eDBEMjRnMEpQNHk2aXNzY2FzN29JTjJBUU9BbFNiZ0ttUXZ0Tys4dXhHNUQ1?=
- =?utf-8?B?SWJwWmgwRzVsTVJGUTFudmNPZDlPdDkzVlZxclhodlRFaW9Rb3lra2JnaTg1?=
- =?utf-8?Q?f5bFZgrJpBf6fFe9Z5UfumSYKjxnINc1mapT37BdWRVI=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?VHUzbDI2ZU9MVlU1MGtrc1A1RzRyd1FLTWh4VlFMbTNCSTVXczRpb0NXWDRG?=
- =?utf-8?B?bXhFbnRUSWNNYWo0enVuby9YditYYStGdUtCcUt6TGs4d3dUQ3RtQ21wVGl2?=
- =?utf-8?B?eHpxb1BoWTRNa0YvSVkxN2FwZ1MwcG5WckU2ZzJ4WE1ueWNqRWhGcHdiZDI0?=
- =?utf-8?B?bnNQVDFpc0JvU1JGMWlQMEF6L1kvR0Y2OVd2M2d6cE0va1hxU1lyaFVrL1l6?=
- =?utf-8?B?RWdudmpoK0t1cUs4UDF2SUpJa1Z3SFZ1UU9PbjdHZmR6WGNFSC9nMkRsU25C?=
- =?utf-8?B?bG90THdpaDBuWFdCTGlGZk1GWkdpdkVMdkkrbHBkcjcvN1p6S2hKSDZpbzBY?=
- =?utf-8?B?WkU4SkdBbE5oSlBLK0pwSDRoTEtZVWVaVjh5WTJYa20wUU1HVStVb0xnOTBG?=
- =?utf-8?B?b2hFb3pqSUtCd3VodjFsSUl5eUFUcU03QXFuWHk5dk1jdVpUc3prV3RGOGNN?=
- =?utf-8?B?ajlzeUJjazlicXFMQndsbWFQYVlyTVpWVGVXNUlNZWRpQjF6bUVQR1NIdFNm?=
- =?utf-8?B?U1RwaGdQTnA3eUs0N3dmVE5ISzFaU2k2NlRKUUpRZHVxQkVCWGU5MVV1Sk9k?=
- =?utf-8?B?Q010REltVUF3KzZ0ZElLNjNyNDM1L2VDQ2F3NitjclNlR1NmUkp0Qk9UZXJ6?=
- =?utf-8?B?cjlZV0t6dG5tMnlEYzNTa0ZlWExtUmhKTkFLNWZLNjV3eXQ2OXZQdTBkMFI1?=
- =?utf-8?B?S0l6TnI3S2VLSE5MSFdyaWdjR2dEUXE4K0dDRGYvS2JqU0RzQkMwLzdub2ti?=
- =?utf-8?B?UmVEQkR4Z2NjcFA1eDhWVUJSaWtxSGZCRGYxWmVzWU02ZU1jbE42dG1Cam5i?=
- =?utf-8?B?cm5ma1RreUtsQmp1a3JmdndIbjhlY3JxTmUvcDVzNTFvaGVQRGw5M3pQM0ZF?=
- =?utf-8?B?UzhpQXF1bjZWR1ZWYllORjBDQTFlcVhRVUtwOHJNb1lpVERZZXJDNjVIOGFG?=
- =?utf-8?B?RFZFbDcrdS9XU1IzSnRNL0RjZDlCK0lRQlFhMFJJR1hySTBxSUdyQi84OGx5?=
- =?utf-8?B?N0JRdE5ta2tsbkg1bjVMWXd6M29oaE8vKzFjVkZVZCthb2FEKzd5MHJpaGJy?=
- =?utf-8?B?L051VytaNWxGNnIzZzZ3QW9mVzFINHRhYnZnTWcremNJeXAzQzJIR2pZSjEw?=
- =?utf-8?B?ZDF5clpNUlE0enN3TFBFeGxtTGpCbWROdGpmNzJoU3RKVHFQWGxFc01LNnB1?=
- =?utf-8?B?SFhlalk2M2NVQlh0YzhlSS9TN3RnblR3SzhseE9ueElzemNXdTQzN2FHTDhh?=
- =?utf-8?B?V0IvMzNuejk3aWZqTkl6VGhCYWtjbXY5a0ZNQzJZNXNha1d2azhlMitkYTl1?=
- =?utf-8?B?OFlQcUlnQ2FMNVJXcWdoYnlUUnBpeFNjcU4zL2c3MmxNQzdMQ2owZFdPamJs?=
- =?utf-8?B?U3ZxblNST2g3WnlTWDFvZVdnOElOSlZrTjR0VlFnZlpTY1g0UkVialFROHpV?=
- =?utf-8?B?N2s5Qm9BaHV3cmllSzZmYTc5QnhGYVpLWE9RUGFyelBwdktsU2hzcGU4ZUJC?=
- =?utf-8?B?NGdwTXNJTUROSUQvMG8zMTc0Z1BHQmpCeGFDRDg3YVpxVk1zMjZDYk0vUElt?=
- =?utf-8?B?eUVWQkN4L1h3c2kvL3NOOGUzWUE3MTRHRXk0MTJtSUEyckdYSzVhUUgrNHJV?=
- =?utf-8?B?MFl2anlqZVJYakFaN3JVNXZLVDVNMkFPbkYwY2k4UHM0UzdEZ3hJbUI0RlpM?=
- =?utf-8?B?VGM1RU1zSHplVDBmTVpiNklTTldCMTlRZ1M1VGhhaUN0ejl0WExQMzdlVlhk?=
- =?utf-8?B?Z0tNSXlWQkhMTFl2TWRXaEdPNHFmR1NjWkxsaXdqUEMzUUVhMXpxZm41NlNP?=
- =?utf-8?B?RXl0SytUdTErN1lYWm5zdWFQaVZaWWc0V3RuMW5VcVZpWWNHNWdxemZlbHNK?=
- =?utf-8?B?SEFlTzgvTFhGczVtcHQyWkR6MjFuOFRsY1FKQ0N1QklrZUE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ 2026 11:50:31 +0000
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0360.008; Tue, 1 Sep 2026
+ 11:50:31 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 01 Sep 2026 12:50:30 +0100
+Message-Id: <DL3YHAWZ9368.2E395SXR3CTEV@garyguo.net>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v2 1/3] rust: num: add cv! macro to create values from
+ constant expressions
+From: "Gary Guo" <gary@garyguo.net>
+To: "Eliot Courtney" <ecourtney@nvidia.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
+X-Mailer: aerc 0.22.0
+References: <20260901-cv-v2-0-446bc69d2ade@nvidia.com>
+ <20260901-cv-v2-1-446bc69d2ade@nvidia.com>
+In-Reply-To: <20260901-cv-v2-1-446bc69d2ade@nvidia.com>
+X-ClientProxiedBy: LO2P123CA0085.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:138::18) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-13ed7.templateTenant
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO2P265MB2525:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1f28e04d-f040-4cf8-159d-08df081f39a4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|366016|23010399003|376014|7416014|22082099003|18002099003|3023799007|56012099006|6133799003|4143699003|5023799004|10067099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	S3eEDFHhEy8kYGrspvSaqKh9G0qzk7xsLz/4jXzLjPxTGpehOzJ7TANqNJKWD56rd4KGuckT+pSY86jVccYfeyzRYTw1K7L5WKOVDzx6EBt8jqB21oIfIScSk2Aeu3KqEbRhPlvUQZ3ngYSu1HXHUHD5imskR1JeeW1ERLrkWaEP8drorUvigGfxgqSv1SuVI0OT99S6hRwbmOApp4zpk2VtS4tUH+aDdExkwMSs7KgttTuxNiXQ/G5iErKuaan7kLHVYofrNTTA/rI9aFQ5g37NH40PHbGlc7faIb3qLrGj0EtwiaTPbqFxCTlt6evNvBhfcFR74aIP4s7iNWD59/pixai3mQoLzQJmTCJJQeVMP3A70Lud3twm3BeEutYQ7AXzgNIfOLvbpp50BnqYmcWG/8FTJyQD02dw3zLPPtPQDsUTnPjxbqFARAXyW9MYwdxNN7fWj4wffgkrczllIRIH6192rwjUg8bv2q3pXL+rMTSBoykkEfpYq6XioOxuWNeVJrfp6zk/yDimE7u+0zvsqqrK1BjhpX4RvzGR5jn4DcdpctAva0WtDh6B0mOarC1QEtu/QDkexSLyyMfXmTxUxBdbsi3qNwTYU3o/Vgvqux8DG33tRdBfTk7N/K2R1EDmPHOJVHK7w0hexQ/fJkuQp0yMbKhKfjMaP6dCGls5URU3KOGB429aJZBv5FiNl81qnckra0yGWrpxpFzwDw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(23010399003)(376014)(7416014)(22082099003)(18002099003)(3023799007)(56012099006)(6133799003)(4143699003)(5023799004)(10067099003)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NlpDRnlYTWRFWmdMOWVjSWcva3lXb1NpSDB3TnhzVm9oZnIvR3h2aTAvcWlT?=
+ =?utf-8?B?WWRoZ2ZYVmpaeUFXNnpTVWxMcjBhRmRtTVhuVjNxZWlaWEpkdGU5MyszRnU5?=
+ =?utf-8?B?enJFWGU2bU9NdzRCaXorbm9ldEFFYzN5VE9ncjlFY3E0MFpxQjhWMHllcG1X?=
+ =?utf-8?B?S0g2alU3SmdGNEM0aGxvaE41and6bU8rY1hrU0hMQ3VEMG9XWldUUmNlUWpr?=
+ =?utf-8?B?WWJxQThVUkx1Um9hSEFPbDVFaGpEQ1BHMHZhY1pHLzYzOUdFUDRhN3E5cElX?=
+ =?utf-8?B?Z2pTbDJPRUVrcXYzaUJmUUd0bHY2S0hLZExaMDBORVdOWVBhMWNOOG5CeUZn?=
+ =?utf-8?B?cVFETUZPMHlVRTViNmtZbjZJRVoxSnNRaWtVSmMzVnRkZkFTZ3JiK3pxdUhv?=
+ =?utf-8?B?S1V6Y3VrRyswVUw3R3BQZ1paMkpvK2g5UEVhNVpWallQYzFmZEFmUUZXQWlH?=
+ =?utf-8?B?QlBlaFNkbU1HQlQ3WXA0VUVNUU5XNFBmdmRTc3VVR3pVSHZMc2cxQXM3ZVZQ?=
+ =?utf-8?B?aTcvZnc0MmNVUGJDQmgyTnBKMHZoc1A1eHJYeVBqMFpTbjZQcXRkYXJITFNG?=
+ =?utf-8?B?Wjl5K0tsZjhDZzd3NWE3cjJUbEtIbkNYU0huUmQ3aHU0Q0ExR3hrMk81M0x2?=
+ =?utf-8?B?OExRamFuMDB2cG5lWTFhZzcwWmlZLzE4MU10WDlPT2l6Z3lQZkF1R0ZuT0dn?=
+ =?utf-8?B?QVdFYmx2ak5lL1o2SmM3dVpDbTJQV2EyOFBWQnkyaGhjYUlWb0ZSQWVEOHFI?=
+ =?utf-8?B?RzFlNzRzRFJNVGFnOHlqQ2pXQW9INDhwejRVR3plc2VYZHh2V1l2RE14M1RZ?=
+ =?utf-8?B?Q2ltTmJIaGRraUx4b1g3WlV6dDRXb2NIL3Q2enViTVZpbWs0VnhMRjFFaUZ3?=
+ =?utf-8?B?YWtkcXVlVHZEWVZkTmdsdURZSndROXJiRzEwSlZsb2dBQ1hUT2hhbEdjb05h?=
+ =?utf-8?B?TjVGL0FQSEZyRXN5S3pPYlV3TnpscmNRRUpVWk9DZ1lrUXR1aU04TVp0ZUl1?=
+ =?utf-8?B?L3EyeE0vWFpxZlJaNGdwZnpiZVV5QlJaL1Jicm9nSTRwOUdRbC9TUmZJUnNn?=
+ =?utf-8?B?dkZydFUrLytYSFhwRWxMZW5RRElaVFMvcXdHeno2UFg2MTZIb21ycXVJNC96?=
+ =?utf-8?B?cU96ZVYrQU9WZWFMNWVuSGNHZlJPUVE5SVF3WjN6WDdGc2syajR5UmhzVmsy?=
+ =?utf-8?B?M214MTArODV1WWhEd0kvSTdLeGNUa0Z3MUI2bkJIQytiVSs4M1JReEpDSnV1?=
+ =?utf-8?B?c2J5STF6ejMreGplSjV2dS9ZRkJiYURxREFBcllIa25BcXpRVlluT2g4WWVp?=
+ =?utf-8?B?Qkk0TEFkbWxSb0FoUFBTa1NnMDZrd1prcGRMM0dvbTljY2Nwb091cG9JeFdx?=
+ =?utf-8?B?WlhGOWJwY1RLMGMxS09vUG02Qzd2THBqWWVvZTFlVzlmZlJiNUtraEowQVZ6?=
+ =?utf-8?B?a1FhR3F1NXhmNmE1aFBQSUxBYWNYcm5yQkxCZS9Bdk5kZVlVdVphMFBIdHBF?=
+ =?utf-8?B?dktvcUREa0FycUdrakZuZnRrbjVxUSs1RmpheHR6S2s3WGlCb1EzcSt1VXNy?=
+ =?utf-8?B?WEhjNjEwOS9BejNSSVE4eE9iYm1PcGg2UXIwYlFZWU5HL1dJU25aQ0ZqbXZV?=
+ =?utf-8?B?TmJJNTZWbkU3K3lkTmduMlpDZ2dDZWZLS0ZaK2N6OFBiZHQ2bFlqc3A4U1cy?=
+ =?utf-8?B?RzBxTnVLTzJLa2lsMGdBTnA4QjMxbXNEa0lLU25mSVpxK2tIVHpXZ2k3Y2VW?=
+ =?utf-8?B?QWswWmpKTkRqd3V6UTJPZkMzSHZ6UDZUUGNENEovaHRDZ09pQW0zNkxqOW1C?=
+ =?utf-8?B?VUxYQ256SkQ3bGpQaVh0NzkzaUtzeThteTFKNGxMcEQyVWswdnErazlZVjA1?=
+ =?utf-8?B?Si91Y2orcTRaL05rRTFkRnNzdU8wZGpjRmtPOVErbStPNWxtSlRXTHVjaTdR?=
+ =?utf-8?B?d2JhRmJOSG5RcEdETHpOaXlUbGJoQzJ3UEVyTmVnM2tvYlh3ZHJUZTVadW45?=
+ =?utf-8?B?ZEE1S3QxTGpTTTg4Qm5OSWdYdktTY1ZtL1U0bWZmM01vczVDdnFVN2FxSVlX?=
+ =?utf-8?B?Y3k3WDlaRGNDS0VySnpvTDhXVU4vK2l3R2dkek94RVVpL2RnWjlwU3dORnZ0?=
+ =?utf-8?B?QXNSNjArUmtZa2tjdnJlelA5bGRQYWM4RU5LNmlHN3RxS3RBckZ1UGVpNndH?=
+ =?utf-8?B?aWJCMWtNZWhGdlVxcDRTb2IwSTlmMkUvbUhMb09FR0R1WHh1eHBCeVQ1Snhi?=
+ =?utf-8?B?TUp2d0JDTG8yYThNWjdBdlVkVjhzd281N1Q3SXJURE5IY1RUNEZkWHRXK3Nt?=
+ =?utf-8?B?R1JzNEJNbnNaa1BSZ2VycTkrUS82ZmErU1B5cDQzNGJiemN4WlJzQT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f28e04d-f040-4cf8-159d-08df081f39a4
+X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR07MB9708.namprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 99d7bd69-98a9-4111-82e3-08df081edd93
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Sep 2026 11:47:56.9329
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 11:50:31.4885
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR07MB7069
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BRNtP+IuwgHIG1Uf2r9aGMu3L1+VR529x8PN7nR+UvIlcZ3Xgsh0OTZd6RLbyM7wa5zL5erH2w9sGHufWvoO3Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB2525
 
-VGhhbmtzIGZvciB0aGUgcXVlc3Rpb24sIEFsZXhhbmRyZSwgYW5kIGZvciB0aGUgY2xhcmlmaWNh
-dGlvbiwgRGFuaWxvLg0K77u/DQpJIGFncmVlIHRoYXQgdXNpemUgaXMgdGhlIG1vcmUgYXBwcm9w
-cmlhdGUgdHlwZSBmb3IgYW4gaW5kZXgtb3JpZW50ZWQNClJ1c3QgQVBJLiBDYWxsZXJzIGFyZSBs
-aWtlbHkgdG8gb2J0YWluIGluZGljZXMgZnJvbSByYW5nZXMsIGl0ZXJhdG9ycywgb3INCm90aGVy
-IFJ1c3QgaW5kZXhpbmcgb3BlcmF0aW9ucywgd2hpY2ggbmF0dXJhbGx5IHVzZSB1c2l6ZS4NCu+7
-vw0KVGhlIHVuc2lnbmVkIGludCBleHBlY3RlZCBieSBwY2lfaXJxX3ZlY3RvcigpIGlzIGFuIGlt
-cGxlbWVudGF0aW9uIGRldGFpbA0Kb2YgdGhlIEMgaW50ZXJmYWNlLCBzbyB0aGUgbmVjZXNzYXJ5
-IHZhbGlkYXRpb24gYW5kIGNvbnZlcnNpb24gc2hvdWxkDQpyZW1haW4gaW5zaWRlIHRoZSBSdXN0
-IGFic3RyYWN0aW9uIHJhdGhlciB0aGFuIGJlaW5nIGV4cG9zZWQgdG8gY2FsbGVycy4NCu+7vw0K
-SSB3aWxsIHRoZXJlZm9yZSBrZWVwIElycVZlY3RvclJlZ2lzdHJhdGlvbjo6aW5kZXgoKSBhY2Nl
-cHRpbmcgdXNpemUgYW5kDQpoYW5kbGUgdGhlIEMgQVBJIGJvdW5kYXJ5IGludGVybmFsbHkuDQrv
-u78NCkJlc3QgcmVnYXJkcywNClNvcGhvbg0KDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fDQrlj5Hku7bkuro6IEFsZXhhbmRyZSBDb3VyYm90IDxhY291cmJvdEBudmlk
-aWEuY29tPg0K5Y+R6YCB5pe26Ze0OiAyMDI25bm0OeaciDHml6UgMTg6NTgNCuaUtuS7tuS6ujog
-U29waG9uIFpoYW5nIHZpYSBCNCBSZWxheQ0K5oqE6YCBOiBhaXF1Yml0c0Bob3RtYWlsLmNvbTsg
-RGFuaWxvIEtydW1tcmljaDsgQmpvcm4gSGVsZ2FhczsgS3J6eXN6dG9mIFdpbGN6ecWEc2tpOyBN
-aWd1ZWwgT2plZGE7IEJvcXVuIEZlbmc7IEdhcnkgR3VvOyBCasO2cm4gUm95IEJhcm9uOyBCZW5u
-byBMb3NzaW47IEFuZHJlYXMgSGluZGJvcmc7IEFsaWNlIFJ5aGw7IFRyZXZvciBHcm9zczsgRGFu
-aWVsIEFsbWVpZGE7IFRhbWlyIER1YmVyc3RlaW47IE9udXIgw5Z6a2FuOyBsaW51eC1wY2lAdmdl
-ci5rZXJuZWwub3JnOyBydXN0LWZvci1saW51eEB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5l
-bEB2Z2VyLmtlcm5lbC5vcmcNCuS4u+mimDogUmU6IFtQQVRDSCB2NF0gcnVzdDogcGNpOiByZWpl
-Y3QgSVJRIHZlY3RvciBpbmRpY2VzIHRoYXQgZG8gbm90IGZpdCBpbiB1MzINCg0KT24gVHVlIFNl
-cCAxLCAyMDI2IGF0IDI6MDkgQU0gSlNULCBTb3Bob24gWmhhbmcgdmlhIEI0IFJlbGF5IHdyb3Rl
-Og0KPiBGcm9tOiBTb3Bob24gWmhhbmcgPGFpcXViaXRzQGhvdG1haWwuY29tPg0KPg0KPiBJcnFW
-ZWN0b3JSZWdpc3RyYXRpb246OmluZGV4KCkgYWNjZXB0cyBhIHVzaXplLCBidXQgcGNpX2lycV92
-ZWN0b3IoKQ0KPiB0YWtlcyBhbiB1bnNpZ25lZCBpbnQuIE9uIDY0LWJpdCBhcmNoaXRlY3R1cmVz
-LCBjYXN0aW5nIGFuIGluZGV4IGxhcmdlcg0KPiB0aGFuIHUzMjo6TUFYIHdyYXBzIGl0IGJlZm9y
-ZSB0aGUgUENJIGNvcmUgY2FuIHZhbGlkYXRlIGl0LiBJbg0KPiBwYXJ0aWN1bGFyLCB1MzI6Ok1B
-WCArIDEgYmVjb21lcyB6ZXJvIGFuZCBjYW4gcmVzb2x2ZSB0byB0aGUgZmlyc3QNCj4gYWxsb2Nh
-dGVkIHZlY3Rvci4NCj4NCj4gVXNlIGEgY2hlY2tlZCBjb252ZXJzaW9uIGFuZCByZXR1cm4gRUlO
-VkFMIHdoZW4gdGhlIGluZGV4IGNhbm5vdCBiZQ0KPiByZXByZXNlbnRlZCBieSB0aGUgQyBBUEku
-DQo+DQo+IEZpeGVzOiAyZmI3NzU1YjBhN2UgKCJydXN0OiBwY2k6IHJlc29sdmUgSVJRIGluIGlu
-ZGV4KCkgYW5kIGVtYmVkIElycVJlcXVlc3QgaW4gSXJxVmVjdG9yIikNCj4gU2lnbmVkLW9mZi1i
-eTogU29waG9uIFpoYW5nIDxhaXF1Yml0c0Bob3RtYWlsLmNvbT4NCj4gLS0tDQo+IFByZXZlbnQg
-NjQtYml0IFJ1c3QgSVJRIHZlY3RvciBpbmRpY2VzIGZyb20gd3JhcHBpbmcgd2hlbiB0aGV5IGNy
-b3NzIHRoZQ0KPiBQQ0kgQyBBUEkgYm91bmRhcnkuDQo+IC0tLQ0KPiBDaGFuZ2VzIGluIHY0Og0K
-PiAtIERyb3AgdGhlIGV4cGxpY2l0IGxlbmd0aCBjaGVjayBpbiBmYXZvciBvZiBQQ0kgY29yZSBy
-YW5nZSB2YWxpZGF0aW9uLg0KPiAtIFVzZSB0aGUgZXhpc3RpbmcgVHJ5RnJvbUludEVycm9yLXRv
-LUVycm9yIGNvbnZlcnNpb24gZGlyZWN0bHkuDQo+IC0gS2VlcCBjb21taXQgdHJhaWxlcnMgYWRq
-YWNlbnQgYW5kIG5hcnJvdyB0aGUgZGVzY3JpcHRpb24gdG8gdHJ1bmNhdGlvbi4NCj4gLSBMaW5r
-IHRvIHYzOiBodHRwczovL3BhdGNoLm1zZ2lkLmxpbmsvMjAyNjA4MzEtZml4LXBjaS1pcnEtdmVj
-dG9yLWluZGV4LXRydW5jYXRpb24tdjMtMS1hMjEwMzA4NGQyMGVAaG90bWFpbC5jb20NCj4NCj4g
-Q2hhbmdlcyBpbiB2MzoNCj4gLSBDaGVjayB0aGUgaW5kZXggYWdhaW5zdCB0aGUgYWxsb2NhdGVk
-IHZlY3RvciBjb3VudCBiZWZvcmUgZW50ZXJpbmcgdGhlIEMgQVBJLg0KPiAtIEtlZXAgdGhlIGNo
-ZWNrZWQgdXNpemUtdG8tdTMyIGNvbnZlcnNpb24gYW5kIGRvY3VtZW50IHRoZSBDLXNpZGUgd2Fy
-bmluZy4NCj4gLSBMaW5rIHRvIHYyOiBodHRwczovL3BhdGNoLm1zZ2lkLmxpbmsvMjAyNjA4MzEt
-Zml4LXBjaS1pcnEtdmVjdG9yLWluZGV4LXRydW5jYXRpb24tdjItMS00MDMwZWE3NzQ2YTlAaG90
-bWFpbC5jb20NCj4NCj4gQ2hhbmdlcyBpbiB2MjoNCj4gLSBObyBjb2RlIGNoYW5nZXMuDQo+IC0g
-TGluayB0byB2MTogaHR0cHM6Ly9wYXRjaC5tc2dpZC5saW5rLzIwMjYwODMxLWZpeC1wY2ktaXJx
-LXZlY3Rvci1pbmRleC10cnVuY2F0aW9uLXYxLTEtZDYzMjE3ZDk5YjY3QGhvdG1haWwuY29tDQo+
-DQo+IFRlc3Rpbmc6DQo+IC0gbWFrZSBydXN0Zm10Y2hlY2sNCj4gLSBOb3QgYnVpbGQtIG9yIGhh
-cmR3YXJlLXRlc3RlZDsgYmluZGdlbiBpcyB1bmF2YWlsYWJsZSBpbiB0aGUgdGVzdCBlbnZpcm9u
-bWVudC4NCj4gLS0tDQo+ICBydXN0L2tlcm5lbC9wY2kvaXJxLnJzIHwgNCArKystDQo+ICAxIGZp
-bGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+DQo+IGRpZmYgLS1n
-aXQgYS9ydXN0L2tlcm5lbC9wY2kvaXJxLnJzIGIvcnVzdC9rZXJuZWwvcGNpL2lycS5ycw0KPiBp
-bmRleCA2NzQxMDQ2ZWMxYzAuLjIyZTJjZGY4MmEyMSAxMDA2NDQNCj4gLS0tIGEvcnVzdC9rZXJu
-ZWwvcGNpL2lycS5ycw0KPiArKysgYi9ydXN0L2tlcm5lbC9wY2kvaXJxLnJzDQo+IEBAIC0xNTEs
-OCArMTUxLDEwIEBAIHB1YiBmbiBpcnFfdHlwZSgmc2VsZikgLT4gSXJxVHlwZSB7DQo+ICAgICAg
-Ly8vIFtgU2VsZjo6bGVuKClgXS4NCj4gICAgICAjW2lubGluZV0NCj4gICAgICBwdWIgZm4gaW5k
-ZXgoJnNlbGYsIGluZGV4OiB1c2l6ZSkgLT4gUmVzdWx0PElycVZlY3RvcjwnXz4+IHsNCj4gKyAg
-ICAgICAgbGV0IGluZGV4ID0gdTMyOjp0cnlfZnJvbShpbmRleCk/Ow0KPiArDQo+ICAgICAgICAg
-IC8vIFNBRkVUWTogYHNlbGYuZGV2LmFzX3JhdygpYCBpcyBhIHZhbGlkIHBvaW50ZXIgdG8gYSBg
-c3RydWN0IHBjaV9kZXZgLg0KPiAtICAgICAgICBsZXQgaXJxID0gdW5zYWZlIHsgYmluZGluZ3M6
-OnBjaV9pcnFfdmVjdG9yKHNlbGYuZGV2LmFzX3JhdygpLCBpbmRleCBhcyB1MzIpIH07DQo+ICsg
-ICAgICAgIGxldCBpcnEgPSB1bnNhZmUgeyBiaW5kaW5nczo6cGNpX2lycV92ZWN0b3Ioc2VsZi5k
-ZXYuYXNfcmF3KCksIGluZGV4KSB9Ow0KPiAgICAgICAgICBpZiBpcnEgPCAwIHsNCj4gICAgICAg
-ICAgICAgIHJldHVybiBFcnIoRXJyb3I6OmZyb21fZXJybm8oaXJxKSk7DQo+ICAgICAgICAgIH0N
-Cg0KVGhhdCBtYWtlcyBtZSB3b25kZXIsIHNob3VsZG4ndCB3ZSBtYWtlIGBpbmRleGAgdGFrZSBh
-IGB1MzJgIGRpcmVjdGx5Pw0KSWYgdGhhdCdzIHdoYXQgdGhlIEMgQVBJIGV4cGVjdHMsIGl0IGRv
-ZXMgbWFrZSBzZW5zZSB0byBhbGlnbiB0byBpdA0KaW5zdGVhZCBvZiBmb3JjaW5nIHVzZXJzIHRv
-IG1ha2UgYSBwb3RlbnRpYWwgdW5uZWVkZWQgY29udmVyc2lvbiBpZiB0aGV5DQphbHJlYWR5IGhh
-dmUgYSB1MzIuDQo=
+On Tue Sep 1, 2026 at 6:06 AM BST, Eliot Courtney wrote:
+> Currently, using NonZero/Bounded constants is quite verbose. It's
+> unfortunate because it disincentivizes using it in interface boundaries.
+> Introduce a macro to make it nicer to use. The macro `cv!` (for constant
+> value) takes a const integer expression and widens it to i128 (at build
+> time only) before passing it as a const generic value to a new trait
+> `FromConst`. The value is then converted and appears in the
+> associated constant `FromConst::VALUE`. The trait is implemented by
+> NonZero, Bounded, and Alignment and lets values of each be constructed
+> from constants without a verbose turbofish syntax.
+> For example, `const { NonZero::new(1).unwrap() }` can be written as
+> `cv!(1)`.
+>
+> Suggested-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> ---
+>  rust/kernel/num.rs         | 133 +++++++++++++++++++++++++++++++++++++++=
+++++++
+>  rust/kernel/num/bounded.rs |  19 +++++++
+>  rust/kernel/ptr.rs         |  14 +++++
+>  3 files changed, 166 insertions(+)
+>
+> diff --git a/rust/kernel/num.rs b/rust/kernel/num.rs
+> index dbe848e30efe..01ae2538b3e4 100644
+> --- a/rust/kernel/num.rs
+> +++ b/rust/kernel/num.rs
+> @@ -2,6 +2,7 @@
+> =20
+>  //! Additional numerical features for the kernel.
+> =20
+> +use crate::const_assert;
+>  use core::ops;
+> =20
+>  pub mod bounded;
+> @@ -9,6 +10,138 @@
+> =20
+>  pub use bounded::*;
+> =20
+> +/// Creates a value from an integer constant expression, with validity c=
+hecked at build time.
+> +///
+> +/// This works for any type that implements [`FromConst`], with the targ=
+et type inferred from
+> +/// the context, or named explicitly with `cv!(value =3D> Type)`.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// use core::num::NonZero;
+> +/// use kernel::num::Bounded;
+> +/// use kernel::num::cv;
+> +/// use kernel::ptr::Alignment;
+> +///
+> +/// let v: NonZero<usize> =3D cv!(8);
+> +/// assert_eq!(v.get(), 8);
+> +///
+> +/// // Any integer constant expression works, not only literals.
+> +/// let m: NonZero<usize> =3D cv!(usize::MAX);
+> +/// assert_eq!(m.get(), usize::MAX);
+> +///
+> +/// let b: Bounded<u32, 4> =3D cv!(15);
+> +/// assert_eq!(b.get(), 15);
+> +///
+> +/// let a: Alignment =3D cv!(4096);
+> +/// assert_eq!(a.as_usize(), 4096);
+> +///
+> +/// // Checked narrowing of integer constants, including in `const` item=
+s.
+> +/// const SMALL: u8 =3D cv!(200u32);
+> +/// assert_eq!(SMALL, 200);
+> +///
+> +/// const N: NonZero<u8> =3D cv!(5);
+> +/// assert_eq!(N.get(), 5);
+> +///
+> +/// // The target type can be given explicitly.
+> +/// let e =3D cv!(200u32 =3D> u8);
+> +/// assert_eq!(e, 200);
+> +///
+> +/// // With an explicit primitive target, the expression can use generic=
+ parameters.
+> +/// const fn as_u64<const KEY: u16>() -> u64 {
+> +///     cv!(KEY =3D> u64)
+> +/// }
+> +/// assert_eq!(as_u64::<0x40>(), 0x40);
+> +/// ```
+> +#[macro_export]
+> +#[doc(hidden)]
+> +macro_rules! cv {
+> +    (@cast $v:expr =3D> $t:ty) =3D> {
+> +        const {
+> +            #[allow(unused_comparisons, unused_assignments, clippy::as_u=
+nderscore)]
+> +            {
+> +                let v =3D $v;
+> +                let r =3D v as $t;
+> +                // Pin `back` to `v`'s type so `as _` casts back to the =
+source type.
+> +                let mut back =3D v;
+> +                back =3D r as _;
+> +
+> +                ::core::assert!(
+> +                    back =3D=3D v && (v < 0) =3D=3D (r < 0),
+> +                    "value does not fit into the target type"
+> +                );
+> +
+> +                r
+> +            }
+> +        }
+> +    };
+> +    ($v:expr =3D> u8) =3D> { $crate::cv!(@cast $v =3D> u8) };
+> +    ($v:expr =3D> u16) =3D> { $crate::cv!(@cast $v =3D> u16) };
+> +    ($v:expr =3D> u32) =3D> { $crate::cv!(@cast $v =3D> u32) };
+> +    ($v:expr =3D> u64) =3D> { $crate::cv!(@cast $v =3D> u64) };
+> +    ($v:expr =3D> u128) =3D> { $crate::cv!(@cast $v =3D> u128) };
+> +    ($v:expr =3D> usize) =3D> { $crate::cv!(@cast $v =3D> usize) };
+> +    ($v:expr =3D> i8) =3D> { $crate::cv!(@cast $v =3D> i8) };
+> +    ($v:expr =3D> i16) =3D> { $crate::cv!(@cast $v =3D> i16) };
+> +    ($v:expr =3D> i32) =3D> { $crate::cv!(@cast $v =3D> i32) };
+> +    ($v:expr =3D> i64) =3D> { $crate::cv!(@cast $v =3D> i64) };
+> +    ($v:expr =3D> i128) =3D> { $crate::cv!(@cast $v =3D> i128) };
+> +    ($v:expr =3D> isize) =3D> { $crate::cv!(@cast $v =3D> isize) };
+> +    ($v:expr =3D> $t:ty) =3D> {
+> +        <$t as $crate::num::FromConst<{ $crate::cv!(@cast $v =3D> i128) =
+}>>::VALUE
+> +    };
+> +    ($v:expr) =3D> {
+> +        <_ as $crate::num::FromConst<{ $crate::cv!(@cast $v =3D> i128) }=
+>>::VALUE
+> +    };
+> +}
+> +#[doc(inline)]
+> +pub use cv;
+> +
+> +/// Types that can be created from an integer constant expression valida=
+ted at build time.
+
+Can you add a comment referencing the `cv!` macro and advice against using =
+this
+directly?
+
+> +#[diagnostic::on_unimplemented(message =3D "`{Self}` cannot be converted=
+ from a constant")]
+> +pub trait FromConst<const V: i128>: Sized {
+> +    /// The value that corresponds to the constant `V`.
+> +    ///
+> +    /// Fails the build if `V` is not a valid value for `Self`.
+> +    const VALUE: Self;
+> +}
+> +
+> +/// Implements [`FromConst`] for primitive integer types and their [`Non=
+Zero`](core::num::NonZero)
+> +/// versions.
+> +macro_rules! impl_from_const {
+> +    ($($type:ty)*) =3D> {
+> +        $(
+> +        impl<const V: i128> FromConst<V> for $type {
+> +            const VALUE: Self =3D {
+> +                const_assert!(
+> +                    V >=3D <$type>::MIN as i128 && V <=3D <$type>::MAX a=
+s i128,
+> +                    "Constant cannot be represented by the target type."
+> +                );
+
+nit: as this forms part of compiler error message, this should start with l=
+ower case and
+not have ending with period, to be consistent with other Rust error message=
+s. I
+probably should have mentioned why I made the change in my alt version.
+
+Also, `const_assert!` would have an additional `const {}` wrapping which wo=
+n't
+be necessary because we're already in a definitively const context. Probabl=
+y not
+matter though.
+
+> +
+> +                V as $type
+> +            };
+> +        }
+> +
+> +        impl<const V: i128> FromConst<V> for core::num::NonZero<$type> {
+> +            const VALUE: Self =3D {
+> +                const_assert!(V !=3D 0, "Constant cannot be zero.");
+> +                const_assert!(
+> +                    V >=3D <$type>::MIN as i128 && V <=3D <$type>::MAX a=
+s i128,
+> +                    "Constant cannot be represented by the underlying ty=
+pe."
+> +                );
+> +
+> +                core::num::NonZero::new(V as $type).unwrap()
+
+This unwrap duplicates the zero check, which is why my alt version does a m=
+atch
+here instead.
+
+Best,
+Gary
+
+> +            };
+> +        }
+> +        )*
+> +    };
+> +}
+> +
+> +impl_from_const!(
+> +    u8 u16 u32 u64 usize
+> +    i8 i16 i32 i64 isize
+> +);
+> +
+>  /// Designates unsigned primitive types.
+>  pub enum Unsigned {}
+> =20
+> diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
+> index 2a2b0a4bca5e..0cfb3ef16a6d 100644
+> --- a/rust/kernel/num/bounded.rs
+> +++ b/rust/kernel/num/bounded.rs
+> @@ -14,6 +14,7 @@
+> =20
+>  use kernel::{
+>      num::{
+> +        FromConst,
+>          Integer,
+>          Unsigned, //
+>      },
+> @@ -272,6 +273,24 @@ pub const fn new<const VALUE: $type>() -> Self {
+>                  unsafe { Self::__new(VALUE) }
+>              }
+>          }
+> +
+> +        impl<const N: u32, const V: i128> FromConst<V> for Bounded<$type=
+, N> {
+> +            const VALUE: Self =3D {
+> +                const_assert!(
+> +                    V >=3D <$type>::MIN as i128 && V <=3D <$type>::MAX a=
+s i128,
+> +                    "Constant cannot be represented by the underlying ty=
+pe."
+> +                );
+> +                // Statically assert that `V` fits within the set number=
+ of bits.
+> +                const_assert!(
+> +                    fits_within!(V as $type, $type, N),
+> +                    "Constant cannot be represented within the given num=
+ber of bits."
+> +                );
+> +
+> +                // SAFETY: the asserts above confirmed that `V` can be r=
+epresented within `N`
+> +                // bits.
+> +                unsafe { Self::__new(V as $type) }
+> +            };
+> +        }
+>          )*
+>      };
+>  }
+> diff --git a/rust/kernel/ptr.rs b/rust/kernel/ptr.rs
+> index 82acb531b17b..ecb73bdb0c5f 100644
+> --- a/rust/kernel/ptr.rs
+> +++ b/rust/kernel/ptr.rs
+> @@ -166,6 +166,20 @@ pub const fn mask(self) -> usize {
+>      }
+>  }
+> =20
+> +impl<const V: i128> crate::num::FromConst<V> for Alignment {
+> +    const VALUE: Self =3D {
+> +        const_assert!(
+> +            V > 0 && V <=3D usize::MAX as i128,
+> +            "Constant cannot be represented as an Alignment."
+> +        );
+> +
+> +        match Alignment::new_checked(V as usize) {
+> +            Some(alignment) =3D> alignment,
+> +            None =3D> panic!("Constant is not a power of two."),
+> +        }
+> +    };
+> +}
+> +
+>  /// Trait for items that can be aligned against an [`Alignment`].
+>  pub trait Alignable: Sized {
+>      /// Aligns `self` down to `alignment`.
+
+
