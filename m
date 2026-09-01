@@ -1,250 +1,277 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DF930F924;
-	Tue,  1 Sep 2026 09:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788254278; cv=none; b=H36bsUhvPtYi0Ejg8yLOHEmmbobKD0ToarlNXWYibOWxe6kgxSpbzwKY74QU52fkBmqVnCekOZCU+SESQUdQLY6ifrpPJfwbJIIytnzrb4HE46RUoI9MaIKf8SSZKHuRW7fBIjn0ZKeI16NMeIaxsVAQZCvsg+0OneqaT4jmcls=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788254278; c=relaxed/simple;
-	bh=ks9WM3PRQRqUGON47//b1Pmkqw5lx8iK3dx6XqExqyM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oeql6AB5d+qJEvqwjOpdNaPpiZhCMvkJKT6HhZaGZfVSd2USQIDYUb5tAqmZelyIF6QzszvFk5L9oCpOnKOP7zBPPb9kqEsHIPYRd3KrNODcr8xHPx+8oIrzHGxzQHqDKAlfgHKBzb5miioyR/OKN60iYW1XRcHIzl7K9uTpFhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=nMv/UW7j; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0623F478865
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Sep 2026 09:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788254409; cv=pass; b=HCyNJn/vHSXWvajFqnw58PqCr/KiuadfaJiIYktQGbo2WSxUNs0AVOrbHB/asXehD+duqe+9REsMODCvh4zyT2VCU/MohKTWuiI7/tCx6QZXqRJxOH4Fm7l8Q1mhHZMama9Hc1INwuuouObwYYQcpf1wZkpTMVwBeGchZ9uFTUg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788254409; c=relaxed/simple;
+	bh=nmI/77SFGyfm3GM8Abio9q9oeCxIRFo7FM6gskJPvDU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cQyDBgF38eK2Ulu7uGfbkhJW/hDUg3G0PGz2IGRvGl9ND9GC10Ur2CayFMFNGDzIGiSqBYe3py6wYlnmiQYhcEdT++iWBCabsZ6vdHsucB8mJGnNpPKPNOoyYlTwc8S3ji8vwJR6EV3obhxGZeQxSVkd1ciDnYVTCdE77GUekXk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sdMe6Trj; arc=pass smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="nMv/UW7j"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2267F1692;
-	Tue,  1 Sep 2026 02:17:51 -0700 (PDT)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5FC703F882;
-	Tue,  1 Sep 2026 02:17:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788254274; bh=ks9WM3PRQRqUGON47//b1Pmkqw5lx8iK3dx6XqExqyM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nMv/UW7jL/CfUFZIEOAX4wlPj4g0NKuCatmZAvfp2d6bdCOlYsCtkffE4uiDCzs2l
-	 /naRgpKXeGcCK3cvxTyNVtdYyomrbKmz1fjilV0kkhrtAWHOGasOngKobacWxAZ0yp
-	 QFD+shJ6Kb3ze8xiBhYbpRbur/Mj0g9wlCEU4Xdo=
-Date: Tue, 1 Sep 2026 11:17:42 +0200
-From: Beata Michalska <beata.michalska@arm.com>
-To: Sami Tolvanen <samitolvanen@google.com>
-Cc: ojeda@kernel.org, dakr@kernel.org, gregkh@linuxfoundation.org,
-	rafael@kernel.org, boqun@kernel.org, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu,
-	daniel.almeida@collabora.com, boris.brezillon@collabora.com,
-	work@onurozkan.dev, acourbot@nvidia.com,
-	rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] rust: add runtime PM support
-Message-ID: <apaYNvQSSUCkMTjn@arm.com>
-References: <20260826131213.1820408-1-beata.michalska@arm.com>
- <20260826131213.1820408-2-beata.michalska@arm.com>
- <20260829003719.GA552219@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sdMe6Trj"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cace91f112so37159685ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 01 Sep 2026 02:20:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788254407; cv=none;
+        d=google.com; s=arc-20260327;
+        b=e164uxM3EDhtpFTRg2BI8XYH5QO/NYYugh9PwxUWULc2SzutXw2Ffm3hCEICwe5C3f
+         KO4ogehoBfUH7UUb9NOQJdHdOK2IICui54NhS5z1tYBq4yc5SF5NuoKwmObtmuIDzkm6
+         4VW5ZP8YJIqmKxfDeiMmtB0UYPvkT3kinBElST/KX+p3EOUPlaFr6FDfiH+H6QiZaPvR
+         yDwUkwbljkWHVYRDHFGMNo8Lcx6qiIEsQqz5P1dFPX1CDY2QcEbLQ0ww8uaGg7RYsKgc
+         tJYbawCeg+n2fOyZk8M2RGECf5Nb4OzwPTtm4qB1E70weHH0OxyLkDuhrM7b4q+nyCGx
+         xBHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sI/CANl7QmNb+mh7kgzc5dRDC2wdwbiqEX9BJ0kTKjU=;
+        fh=My5JD/AMawH4uiWo9lkbylTC2vMpoIlkAzqEDC9eDtc=;
+        b=UwWBAA+1l5nUrcYFw8tjqA/QicyGyXSS5Z21g99rOgYIY7lGFwaBWYoVh8z5CGSWIL
+         BxzcioapzrlSxBCHoiPlSZrnEAA90oCzxG6FHNLZw6HZIL0mxkn1gAZl+J+HlkSI3fgk
+         KH2sVg6Pkxdkag9VSD8Ef4E2sktFd0BxV9jVtHO8nhtDycCkB/kOE+dbv6AhnOPQ9g3/
+         Q7DqQORPO4O8UUZN62Jxvc3sW4vU5nly1t5jEefhijiob/v10x6xKbtpezcFxHneW+i7
+         k5Pw0COAQrPNj6l1+yYkvCnxsiHgnuIagWxbadrfWPpwlaqyW7ulVskok38AxDOob2sg
+         Xnyg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788254407; x=1788859207; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sI/CANl7QmNb+mh7kgzc5dRDC2wdwbiqEX9BJ0kTKjU=;
+        b=sdMe6TrjrWI+BIdgVbLRLLLhHyGyV3QjzKHRCRTb0LDfM2ZxgmkKWLfGZPoKkr0D4Q
+         sx9GS9JSrZPsE+SdbGEEMtdKRHnJ1b3QESU7wXtTdpKq9KyFmlhORZUNUia7IMm5hBmi
+         T86hoy8k7TqOj2/g5Ge2igqxii+ZdtFULhHybp5mcw8lWKofjQVNUVgKAe/ZAjO9vu8O
+         7MH7RX5ysbwSbslI8aMgSwQ5N8mNfVqQbTgE0RaQBhnW5FWpxDufixU252mijRGjNkFu
+         aIB2nSB1/Yy6eq7aqjOZkBRPMkEpOj9VJU+oI6gG6XeKa0Z3i3Tw7++moPmKeeywh1oA
+         cI8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788254407; x=1788859207;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sI/CANl7QmNb+mh7kgzc5dRDC2wdwbiqEX9BJ0kTKjU=;
+        b=CLHmvYXJxWABfGcD9QnFnUD3LkfSK6ZCrL9WZDB+IeBEXSZJcH5SyV5+ec6N/BBrnM
+         xsNAmuOdJa3BP4Q4aKpRFOuubY7SHQeMUbmRrld38qA9GpnoiRFss6d8DjBnUefIWXrE
+         mBD1B+zAHckz/8pvDoCbFNwHK2U9IWSlDJmR/RVDaw/8ZdsbcSAGY29nMeMwoQWxxWOe
+         bS6XFkiVBWWgazsbx4M4mxIdqy6rRDCKv8nqfmKuPf6AbNHn0kfMdN6oS6R5gr18FI7V
+         iIevPi6O3RSR/+gsdZbun0K2isG5JJfZw4Dye48lYBl+i6eqbjlvQ7w//BEF4fAcRaht
+         bomA==
+X-Forwarded-Encrypted: i=1; AKwUvBwF42WHz5Xult2zJu7bCHljvcScplUcftd7HpVpCNaCRF3jDJ/U5jRPzCsyO3UavBzcGe/Pl9PMLzKT8T5oYg==@vger.kernel.org
+X-Gm-Message-State: AFuF++l1FqdgKEUrCMzxqPFrJL6SODgkMmpLZXEnT2fDfZQE+Q3BlWYT
+	KxVwYVMpekoStkCZrdFMuAfsOL+dc2XyBxxhqZ5yalmr7nfnq5snmp/3czkX9uD1MT6bhtPXRIQ
+	vz3W1vjwST/NxFiv2sGJs3I9gfrK5BgE=
+X-Gm-Gg: AYBFou02VAtR2kp79FqNWj0NWDbAu/GaRf39kkotcRWx+VVxx5cpAIRPwTjOwbBSYZi
+	pYcGzuhsdcyYvCtUN4yvUJuYrcSH07THeoaD1jkEnG56qE6Vk+wZTZ4Hap4FiVnrUXeisCb/dS4
+	z+oH53yRA6dJufE2gMV7Tr/oFLLJbh4beuNvnR73PqlduO9JicDApFRUYAw4rfTlUt9JrhNM0Lh
+	yQt6xoi0gYE83z2Wl97SKYosoYKyzh9EIDW/KYSTZxnK2eNI9IgMMWPVUlUmNibo21b/r2dwCVX
+	qD25dONSBk+1cv9oybQSHT38QkA5DB0aWIK4VCWkIFPCtoWsUAu5Uo61jRPyKUPLgmZE97sWZfc
+	Ej/k=
+X-Received: by 2002:a17:903:1590:b0:2d8:d4dd:24c1 with SMTP id
+ d9443c01a7336-2d8d4dd25e1mr339218155ad.22.1788254406482; Tue, 01 Sep 2026
+ 02:20:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260829003719.GA552219@google.com>
+References: <20260824-lockdep-kunit-v2-0-36a6fec9f72e@gmail.com>
+ <20260824-lockdep-kunit-v2-1-36a6fec9f72e@gmail.com> <6fd0143c-4afb-4de8-b65e-3ab9a8042f1a@davidgow.net>
+In-Reply-To: <6fd0143c-4afb-4de8-b65e-3ab9a8042f1a@davidgow.net>
+From: Malte Wechter <maltewechter@gmail.com>
+Date: Tue, 1 Sep 2026 11:19:55 +0200
+X-Gm-Features: AcwNN1WZNqnOudoYVq_CHOmMGoqbPS_Z0rdDZaQuD7N8OP5JO0tNvYMsFDnvdrQ
+Message-ID: <CAPB1Bzc4Pf4jp27=JzfWquEVbTxK9Cv+31-rfkwtHHBDQ4Ymzw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] kunit: add extra assertions to KUnit test cases
+To: David Gow <david@davidgow.net>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Sami,
-
-On Sat, Aug 29, 2026 at 12:37:19AM +0000, Sami Tolvanen wrote:
-> Hi Beata,
-> 
-> On Wed, Aug 26, 2026 at 03:10:55PM +0200, Beata Michalska wrote:
-> > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> > index a56ba6309594..43bbf4bce993 100644
-> > --- a/rust/kernel/error.rs
-> > +++ b/rust/kernel/error.rs
-> > @@ -67,6 +67,7 @@ macro_rules! declare_err {
-> >      declare_err!(EOVERFLOW, "Value too large for defined data type.");
-> >      declare_err!(EMSGSIZE, "Message too long.");
-> >      declare_err!(ETIMEDOUT, "Connection timed out.");
-> > +    declare_err!(EINPROGRESS, "Operation now in progress.");
-> 
-> Looks like this is already upstream since commit b93fb6e76ec1.
-Missed that.
-> 
-> > +/// Device's runtime power management status
-> > +#[repr(i32)]
-> > +pub enum RuntimePMState {
-> > +    /// Runtime PM has not been initialized for this device yet.
-> > +    UNKNOWN = bindings::rpm_status_RPM_INVALID,
-> > +    /// The device is expected to be runtime active and in it's normal operating state
-> 
-> Nit: it's -> its.
-Fixed for v4 (across all style-related comments: spelling, documentation
-formatting, naming/CamelCase, etc.).
-> 
-> > +    RESUMED = bindings::rpm_status_RPM_ACTIVE,
-> > +    /// The device is expected to be suspended, unavailable for normal operations
-> > +    SUSPENDED = bindings::rpm_status_RPM_SUSPENDED,
-> 
-> Should the enum variant names use CamelCase?
-> 
-> > +impl<'a> ResumeScope<'a> {
-> > +    fn new(dev: &'a device::Device<device::Bound>, mode: Mode) -> Result<Self> {
-> > +        if mode.contains(ModeFlag::Acquire) {
-> > +            // ModeFlag::Acquire is intended to be used with Awake scope
-> > +            // Avoid mixing the modes.
-> > +            return Err(EINVAL);
-> > +        }
+Den tirs. 25. aug. 2026 kl. 13.00 skrev David Gow <david@davidgow.net>:
+>
+> Le 24/08/2026 =C3=A0 21:32, Malte Wechter a =C3=A9crit :
+> > add extra assertions for each individual test case, that checks that
+> > both `debug_locks` and `TAINT_WARN` are intact after the test is run.
+> > The assertions are optional behind CONFIG_KUNIT_EXTRA_ASSERTS.
+> >
+> > Signed-off-by: Malte Wechter <maltewechter@gmail.com>
+> > ---
+>
+> Thanks for this.
+>
+> I'd prefer to split this up into two separate changes, one to check for
+> warnings, and one for lockdep issues.
+I agree that this would be better.
+>
+> There's already a patch series to handle lockdep failures here:
+> https://lore.kernel.org/all/20200814205527.1833459-1-urielguajardojr@gmai=
+l.com/
+>
+> It's pretty similar to this, but may have some good ideas in it.
+>
+> As for WARN, we have a new feature which allows individual WARN calls to
+> be expected and ignored. This works by having the WARN() macro directly
+> check if a test is failing. The difference there is that the code only
+> runs if the current thread is part of the test (so it wouldn't be
+> affected by a WARN() in another, non-test thread). There are advantages
+> and disadvantages to this, but it's probably sensible to be consistent he=
+re.
+>
+> Take a look at this for more details on how it works:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
+/?id=3D85347718ab0dd7ede9c3e1dcff2d604c7073df05
+>
+> (That being said, the current implementation does seem to work pretty
+> well even with the backtrace suppression, so continuing to use this
+> implementation is not necessarily a dealbreaker.)
+>
+> Finally, I'd appreciate there being some more documentation of this, if
+> possible. In particular, it'd be nice to extend the KUnit documentation
+> in Documentation/dev-tools/kunit to mention this and provide some
+> examples of how to enable it. In particular, it'd be good to have an
+> example kunit.py invocation which enables lockdep, e.g.
+> ./tools/testing/kunit/kunit.py run --kconfig_add
+> CONFIG_KUNIT_EXTRA_ASSERTS=3Dy --kconfig_add CONFIG_PROVE_LOCKING=3Dy
+> --kconfig_add CONFIG_DEBUG_KERNEL=3Dy
+Will do!
+>
+> Thanks again for looking into this!
+>
+> Cheers,
+> -- David
+>
+>
+> >   lib/kunit/Kconfig     | 12 ++++++++++++
+> >   lib/kunit/try-catch.c | 23 ++++++++++++++++++++++-
+> >   2 files changed, 34 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/lib/kunit/Kconfig b/lib/kunit/Kconfig
+> > index 94ff8e4089bfb..38801f7493669 100644
+> > --- a/lib/kunit/Kconfig
+> > +++ b/lib/kunit/Kconfig
+> > @@ -142,4 +142,16 @@ config KUNIT_UML_PCI
+> >
+> >         If unsure, say N.
+> >
+> > +config KUNIT_EXTRA_ASSERTS
+> > +     bool "Enable extra assertions in KUnit tests"
+> > +     depends on LOCKDEP
+> > +     default n
+> > +     help
+> > +             Enables all extra assertions for KUnit which includes ass=
+erting `TAINT_WARN` and
+> > +             `debug_locks` from lockdep. A KUnit test suite (and test =
+case) is inserted
+> > +             at the start of all KUnit test suites. This makes asserti=
+ons prior to running any
+> > +             tests, as a pre-test integrity check. Assertions are made=
+ after each test case which
+> > +             asserts that each test case did not trigger either `TAINT=
+_WARN` or `debug_locks`.
 > > +
-> > +        // ModeFlag::Idle is internal so strip it of before passing further
-> 
-> Nit: of -> off. Also in the identical comment below.
-> 
-> > +impl<'a> AwakeScope<'a> {
-> > +    fn new(dev: &'a device::Device<device::Bound>, mode: Mode) -> Result<Self> {
-> > +        if !mode.contains(ModeFlag::Acquire) {
-> > +            return Err(EINVAL);
-> > +        }
-> > +        // ModeFlag::Idle is internal so strip it of before passing further
-> > +        match Request::resume(dev, mode & !ModeFlag::Idle) {
-> > +            Ok(()) => {}
-> > +            // For async/nowait requests, `EINPROGRESS` means the resume is in
-> > +            // flight and the usage reference already keeps the device active.
-> > +            Err(e) if e == EINPROGRESS && mode.contains_any(ModeFlag::Async | ModeFlag::Nowait) => {
-> > +            }
-> > +            Err(e) => {
-> > +                Request::put_noidle(dev);
-> > +                return Err(e);
-> > +            }
-> > +        }
+> > +             If unsure, say N.
+>
+> A few notes here:
+> - I'd rather have the taint/warn and lockdep assertions separate here.
+> - A more descriptive name than "EXTRA_ASSERTS" would be nice. Perhaps
+> something like KUNIT_FAIL_TEST_ON_WARN / KUNIT_FAIL_ON_LOCKDEP or similar=
+?
+>
+> >   endif # KUNIT
+> > diff --git a/lib/kunit/try-catch.c b/lib/kunit/try-catch.c
+> > index d84a879f0a789..7eea3af4c9671 100644
+> > --- a/lib/kunit/try-catch.c
+> > +++ b/lib/kunit/try-catch.c
+> > @@ -41,6 +41,11 @@ void kunit_try_catch_run(struct kunit_try_catch *try=
+_catch, void *context)
+> >       struct completion *task_done;
+> >       int exit_code, time_remaining;
+> >
+> > +     #ifdef CONFIG_KUNIT_EXTRA_ASSERTS
+> > +     int debug_locks_snapshot =3D debug_locks;
+> > +     int tainted_warn_snapshot =3D test_taint(TAINT_WARN);
+> > +     #endif
+>
+> Nit: Let's keep the preprocessor #ifdef/#endif lines un-indented here.
+>
 > > +
-> > +        Ok(Self(Scope::<Awake> {
-> > +            dev,
-> > +            mode,
-> > +            _tag: PhantomData,
-> > +        }))
-> > +    }
+> >       try_catch->context =3D context;
+> >       try_catch->try_result =3D 0;
+> >       task_struct =3D kthread_create(kunit_generic_run_threadfn_adapter=
+,
+> > @@ -70,7 +75,23 @@ void kunit_try_catch_run(struct kunit_try_catch *try=
+_catch, void *context)
+> >       put_task_struct(task_struct);
+> >       exit_code =3D try_catch->try_result;
+> >
+> > -     if (!exit_code)
+> > +     #ifdef CONFIG_KUNIT_EXTRA_ASSERTS
+> > +     bool extra_assert =3D false;
+>
+> Please define all variables at the top of the function / scope.
+>
+> That being said, we don't need this extra_assert variable at all if you
+> move the setting of try_result above moving it to exit_code above?
+>
 > > +
-> > +    fn release_inner(&self) -> Result {
-> > +        let scope_mode = self.0.mode & !ModeFlag::Idle;
-> > +        match self.0.mode {
-> > +            mode if mode.contains(ModeFlag::Idle) => Request::idle(self.0.dev, scope_mode),
-> > +            mode if mode.contains(ModeFlag::Auto) => {
-> > +                Request::mark_last_busy(self.0.dev);
-> > +                Request::suspend(self.0.dev, scope_mode)
-> > +            }
-> > +            _ => Request::suspend(self.0.dev, scope_mode),
-> 
-> In v2 you had Request::idle in the default arm. I didn't see a note
-> about this in the changelog. Was the change in behavior intentional?
-This is intentional to match the resume request. Idle has a separate case.
-Missed that from the changelog.
-> 
-> > +impl<'a> RetainScope<'a> {
-> > +    fn new(dev: &'a device::Device<device::Bound>) -> Result<Self> {
-> > +        Request::get_noresume(dev);
-> > +        Ok(Self(Scope::<Retain> {
-> > +            dev,
-> > +            mode: Mode(ModeFlag::Sync as u32),
-> > +            _tag: PhantomData,
-> > +        }))
-> > +    }
+> > +     if (debug_locks_snapshot !=3D debug_locks && !exit_code) {
+> > +             extra_assert =3D true;
+> > +             try_catch->try_result =3D -EDEADLK;
+>
+> Why are we setting this, and then never handling it?
+>
+> > +             kunit_err(test, "Test triggered lockdep\n");
+> > +     } else if (tainted_warn_snapshot !=3D test_taint(TAINT_WARN) && !=
+exit_code) {
+> > +             extra_assert =3D true;
+> > +             try_catch->try_result =3D -EDEADLK;
+>
+> -EDEADLK made sense for the lockdep implementation, but makes less sense
+> for WARN(). If you really want to keep it, please document it.
+>
+> That being said, it should be possible to do this outside of the
+> try/catch scope, as both lockdep and taints are global. And if you fail
+> the test using the hook mechanism (like the warning suppression does),
+> you won't need a separate check afterwards.
+I believe that installing two additional hooks (one for lockdep and
+one for warn, possibly a third for the initial suite check) is a
+cleaner approach. I
+will move the assertion logic into KUnit hooks instead of having it
+inside of the try_catch_run.
+>
+> > +             kunit_err(test, "Test tainted kernel with TAINT_WARN\n");
+> > +     }
+> > +     #else
+> > +     bool extra_assert =3D false;
+>
+> If we declare this unconditionally at the top of the function, there's
+> no need to have it in an #ifdef.
+>
+> > +     #endif
 > > +
-> > +    fn try_new(dev: &'a device::Device<device::Bound>) -> Result<Self> {
-> > +        Request::get_if_active(dev)?;
-> > +        Ok(Self(Scope::<Retain> {
-> > +            dev,
-> > +            mode: Mode(ModeFlag::Sync as u32),
-> > +            _tag: PhantomData,
-> > +        }))
-> > +    }
-> > +
-> > +    fn release_inner(&self) {
-> > +        Request::put_noidle(self.0.dev);
-> 
-> What's the reason for using put_noidle here? It doesn't queue
-> autosuspend, so wouldn't the try_hold_active pattern (i.e. grab if
-> active, do something, drop) leave the device active until something
-> else triggers a suspend?
-You are right. This should call put.
-> 
-> > +/// SAFETY:
-> > +/// bindings::dev_pm_ops is #[repr(C)], implements Default
-> > +/// and the struct itself is all nullable function pointers.
-> > +/// There is no padding and all zero bit-pattern is valid
-> > +///
-> > +pub const PMOPS_NONE: bindings::dev_pm_ops =
-> > +    unsafe { core::mem::MaybeUninit::<bindings::dev_pm_ops>::zeroed().assume_init() };
-> 
-> The safety comment shouldn't be a doc comment.
-> 
-> > +/// Runtime PM context tied to a device.
-> > +pub struct PMContext<'a, D: driver::DriverLayout, T: PMOps<D>> {
-> > +    // Preferably, PMContext could be shared via borrowed reference over
-> > +    // a pm Registration's lifetime but that bares complications on its own
-> > +    // when the context needs to be shared across different Registration types.
-> 
-> Nit: bares -> bears. Also in the identical comment below.
-> 
-> > +impl<'a, D: driver::DriverLayout, T: PMOps<D>> PMContext<'a, D, T> {
-> > +    /// Driver-provided runtime PM operations.
-> > +    ///
-> > +    /// A driver implements this trait to handle runtime PM
-> > +    /// transitions for its device type.
-> > +    ///
-> > +    /// Each callback receives the device and the current payload.
-> > +    /// On success, it returns the payload to keep for the next
-> > +    /// transition. On failure, it returns the payload together
-> > +    /// with the error so the previous, or otherwise sane state
-> > +    /// can be preserved.
-> > +    pub const PM_OPS: bindings::dev_pm_ops = bindings::dev_pm_ops {
-> > +        runtime_resume: if T::HAS_RUNTIME_RESUME {
-> > +            Some(runtime_resume_callback::<D, T>)
-> > +        } else {
-> > +            None
-> > +        },
-> > +        runtime_suspend: if T::HAS_RUNTIME_SUSPEND {
-> > +            Some(runtime_suspend_callback::<D, T>)
-> > +        } else {
-> > +            None
-> > +        },
-> > +        ..PMOPS_NONE
-> > +    };
-> > +
-> > +    /// Enable runtime PM
-> > +    pub fn enable(&self, state: RuntimePMState) -> Result {
-> > +        if self.inner.enabled.cmpxchg(false, true, ordering::Full).is_err() {
-> > +            return Err(EBUSY);
-> > +        }
-> > +        Self::apply_config(self.inner.dev, &self.inner.configs);
-> > +        match state {
-> > +            RuntimePMState::RESUMED => Request::mark_active(self.inner.dev),
-> > +            RuntimePMState::SUSPENDED => Request::mark_suspended(self.inner.dev),
-> > +            _ => Err(EINVAL),
-> > +        }.inspect_err(|_| self.inner.enabled.store(false, ordering::Release))?;
-> 
-> This always applies the config even if state is invalid. Should we
-> validate the state before making changes?
-We could but that should not be strictly necessary.
-Those should not have any effect when rpm is not enabled.
-> 
-> > +    /// Runs a closure while holding an `AwakeScope`.
-> > +    pub fn with_get<R>(&self, profile: PMProfile, f: impl FnOnce() -> Result<R>) -> Result<R> {
-> > +        if profile.0.contains(ModeFlag::Async) {
-> > +            return Err(EINVAL);
-> > +        }
-> > +        let _scope = self.get(profile)?;
-> > +        f()
-> > +    }
-> 
-> Shouldn't this reject NoWait too to make sure the device will actually
-> be powered when the closure is executed?
-We should. Thanks for catching this.
-
-Thank you for your feedback.\
-
----
-BR
-Beata
-> 
-> Sami
+> > +     if (!exit_code && !extra_assert)
+> >               return;
+> >
+> >       if (exit_code =3D=3D -EFAULT)
+> >
+>
+Best regards,
+Malte :)
