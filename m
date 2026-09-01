@@ -1,106 +1,126 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F15429005
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Sep 2026 02:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEF4411A1B
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Sep 2026 03:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788230265; cv=none; b=VYWxhb+0VWr8gi9mK7IO2Y7ryYNW2EcwAgZAMtgE4LvQ5t+8GFOqzYt3r63oA0sd9HMC2Ha0Ev2MPcrLZIkR+doxdYbKntp4jIbOF1YoiBOJbYmPGSkHj6SG7qKyULUros++YkmctrxBjZhTIdyxDGAutFAmnuSi638eBAHrOA0=
+	t=1788231874; cv=none; b=b1oypoMVUnvP4ZfhUXhpF4MdrhpbzWKqP5IcEdVZtsd0OPoz4+uh8hEgH/stVw6hx3qI/+4ME+ffXYSFdOV9mdUAK3Gpds8qpUHn5YLSFY2/pnC2rieDzan73ewrlcq/MlZQ8Se+RqpyyRfve0Hql8q2CQp14gdy/g1a852vcDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788230265; c=relaxed/simple;
-	bh=qM0/Sa/akYpAFTQhfHlvfVOQIqgdK93DDZ+kOkezo0Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kFoKI0Q8Y65xyEku5vSEVWe2q2E40izuRsxpSkpvPUIrjzAw810Wr0uvltBCqg7PipNGU99h1vXz5tRvf+ujxPZxpss2o4sfZLpHIpSR5VFHZXDmuVjWcxz+6YY19+J82sBMqyKhj5097tqTTJieWFE2caDPm5gnnte14jeQF3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gwxjez4w; arc=none smtp.client-ip=209.85.214.181
+	s=arc-20240116; t=1788231874; c=relaxed/simple;
+	bh=8KcSgffxAkB1OeS3/kdkp5OoiPWVBES6SdR64YQAb54=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=CaN5iKbI/30Y0i5myncVKlVAwe9y0PCkkOGTiKiWCVFhyktf2k23jj+1nb+yHQR+mLIgQfV52HZMrrm83cE0akzPkA7ySX6rIC3gffuRqEQputAZ9Jw48FyQB9jP3yAXO54tzlCOV95Fe6+0q52tk3qzzrIv5ZwgnA1Zol6rpog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s8Y436D5; arc=none smtp.client-ip=209.85.216.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gwxjez4w"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cede6375caso60235ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 31 Aug 2026 19:37:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s8Y436D5"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39533bb224cso5999788a91.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 31 Aug 2026 20:04:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788230258; x=1788835058; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TigSYxFnxWq9gKiGhMz2MZvb5kxbBnb0kPL72Ch9E78=;
-        b=Gwxjez4wozRmwFvloTmovlsYIytqq9jXkqC+EFyGWiCF1PAZ1L49JqdxePWzmBPuCq
-         baUrOP/m5+lUatVrFqWmG8/iRqwpRd8wjR7/YyxCDupUuvdmzOlgHPk90eapuoX6gVkM
-         DtK6F2zw2ob7pNklmRoIqGqBWSbg6OGKBLmaVBlCZRkwjgUHzpw/WUviJ3WQldOxaTMt
-         zrijCaEzFaN2aNtM1GnbkRPF4sRW2s8rn/Ea4wuWX1oCljRcVdroPpfKFw26LUd9c+UP
-         nwKTLNXuPKrX6XVnD5RhotkgVCwWUBllcASVJiRcl/TGzZy+uzwnlrZWq31Rhqx6wKtj
-         JlKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788230258; x=1788835058;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1788231869; x=1788836669; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TigSYxFnxWq9gKiGhMz2MZvb5kxbBnb0kPL72Ch9E78=;
-        b=OdZRD+BevLqIRW3MMcMy99gsPKmi1xiyTREbukn24X7F1++MXhFKGwNG1US7wMNQPe
-         YtXjEGiYGJZa+ADYfDV1xZavnjoP7u4EmATSeJJ5Lc6Z+K/ed08hwtcn2Cm4sjdD70yd
-         peiIWRiFjhUzEXN9mNbceIq0lMJsr3QJKzjMeFWeryk1WQl+LL8V3eesnGPeDjVwYeIu
-         OS6Zxs502FFscTE+xoUeR5MktMlmFXuSDbMZR5aRLOGncySiSelLS9QsEpgD8Di75DzE
-         cU9EljnpSmPEUSBSwnY34e0sA3YcO6QhamvJfJiN2z8qLujVXW/AJj139qWahE/wX29i
-         5xig==
-X-Forwarded-Encrypted: i=1; AKwUvBwKNmUQjOH1oN58U4W+0icaCQ3nVBAae7ktinkj+RmMPW+dWcaLXstJMN141SGTX/jy9gOYfWkH/0Iq9ivfMg==@vger.kernel.org
-X-Gm-Message-State: AFuF++lFCRy10fImiTAoghb651U+hjYdMWXTWGm3Eeyr2Rp/7s/LynLf
-	6Ak1Q6DIOBImsvl20pUWcr4NztL/RIoeRH52e762mVe/Jco4rJF46ZPnUQ2ynakWOg==
-X-Gm-Gg: AYBFou3X9L4owWJw0B3CwD6jGW/v77y3aC+TLDT7LV3/cWPfbzk5DjsZshOXMYWMBiV
-	5as/PCCaBk9bQZsejqAhleXaOKy5R2RVXaNWohkFKwFUVqQFXc5jlsMYu/IVlTjDKQLD/BSSVRR
-	wdNfLdYQg8qEAzg7QXFUFfxwpGxdfl6N3qwOr3EM/YR/2j1ul9Cx5i+6azSKBBFUYyLGlrP4eVK
-	KCgTLMRNaGSMgRZ4aAiAbsw+uPCwqT4h5fhQLrqh1nwcTuqAVEb2kw6uHFyvC1mKvPX5spY/PDq
-	U4d63VTDrdJm964Cp/ERHjfJxlm7Iwe0boWcbLPmfKg2R6wD8VAVZ06MsYldZwsq7IxEkh78JfO
-	HRJMTaa+SreqN+i9T+7mASUsoJZxbJTWwmoS1ROQa9BL7DdVZW5jPnYDc/ZdTTsfxTNay+PKLQq
-	/bJsYY6yLg1qVmucYEaapxUW8IfyNhYpaQo2LWe1Nq3WMV6XNdwCDMC2Bwc9PTlN7QFakWYQDTI
-	yYJpKJyVTwTQcIcMec1H0+MQ9lDU7TGMdsKWDNrAyKpdIRaL9RqMH/ZWNaCutQ0/z12KuJMqPY7
-	oL8vTwlXwDAQi8EjzQ==
-X-Received: by 2002:a17:903:19c6:b0:2c6:a078:bfb7 with SMTP id d9443c01a7336-2d959b82c4dmr2821605ad.7.1788230257133;
-        Mon, 31 Aug 2026 19:37:37 -0700 (PDT)
-Received: from google.com (193.67.125.34.bc.googleusercontent.com. [34.125.67.193])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc1f32f727bsm5288561a12.7.2026.08.31.19.37.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 19:37:36 -0700 (PDT)
-Date: Tue, 1 Sep 2026 02:37:32 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>
-Cc: kernel-team@android.com, linux-kernel@vger.kernel.org,
-	Suren Baghdasaryan <surenb@google.com>, stable@vger.kernel.org,
-	Sashiko <sashiko-bot@kernel.org>,
-	"open list:RUST [PIN-INIT]:Keyword:bpin-initb|pin_initb|PinInit" <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 2/2] rust_binder: reject mremap()
-Message-ID: <apY6bAKxms37Xdt1@google.com>
-References: <20260831224145.169403-1-cmllamas@google.com>
- <20260831224145.169403-2-cmllamas@google.com>
+        bh=wgNVfGlbCEyq8MC5JaRKbxi7I9+N7W9TiHIhv9t8nRg=;
+        b=s8Y436D5DrAn6S4iama2Vq3ITv2A86+qPIGZlFc6tQf/O3fyDbdYNTNd6O0w0hi5nk
+         +mY+04o4xQM/PFjhF2KusvPSmPdi2rlwnA2l7AGPLnGKK00955RuN7pZT0zFZSZu4iG0
+         JY4gmE+j7Q/oSypTYXKqWBNebBMM5LorMjmHaxqXZT3NHFw356CJl9K3W6Iq/SQ2NkIh
+         TQSjVoT1vBy9+0XGCre3QVVGm+3hTZN7X/o3e87nVg4eghfLqIDmNBxWsH7+tYQ9RYbF
+         2kQQImkBTxdcUIrUZEEVAd2AMhF7+RNBdZYfNDPl8krUUooCAObn5FpEtmxmdez2QBKb
+         3Ukg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788231869; x=1788836669;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wgNVfGlbCEyq8MC5JaRKbxi7I9+N7W9TiHIhv9t8nRg=;
+        b=dKNjvzzf2hbIWS08YwBD0chOBfZMeWitNLDz53OGBQK84GqcWvTy3WZ11GIuAn7S1b
+         uT5/IoyIwDTG7cGu/1aYxyVJoSsUU/oD+wVpIzKkk4z/JPI+cmGIsiue6X9l9lwHypJ/
+         sU4Py8NY/KwmdYb5NWEDRsRmGnjvzYoo5xi491G0V6bzZkmm3jUAg+Pf8i5MuPV9OhKl
+         TyCY1qE5Dpu6dvOgdNTd7m/eTRrsCB0NIQha3NYN0UkFD0u568W00EQ6oMFkMGHoxx4Y
+         RorbGYr3EGq0aTyBJ07jfcTQNN7aL9WVGTrGozuuuDJEWoZbSgmcum+VmEcKVaXGOPyG
+         kgMg==
+X-Forwarded-Encrypted: i=1; AKwUvBxuONzJn+sn1/8FJaRProiTylb1RR0imNGOzM3+NEx4FbETzEE8+Ltc5In+ZJ2NOhtrqeasQqt79RxJVJu4pA==@vger.kernel.org
+X-Gm-Message-State: AFuF++lPQOfL+dz/LOA3g5zikYYxlkqJTJn3Gqiby9t0qiht9FLv3DYP
+	1R4cUtf7Fnt3ZA5ssFXwaNwob+xAtBFd7kjbhG5QGpVnk1mTRM2na9eQUJq9tj4fhr982FCIGpg
+	kQghCW3X4ioC5gQ==
+X-Received: from dycev8.prod.google.com ([2002:a05:7301:d588:b0:328:5a01:ea69])
+ (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90a:d887:b0:398:9c0c:7c71 with SMTP id 98e67ed59e1d1-3989c0c7fdcmr33560585a91.24.1788231868274;
+ Mon, 31 Aug 2026 20:04:28 -0700 (PDT)
+Date: Tue,  1 Sep 2026 03:04:16 +0000
+In-Reply-To: <20260901030419.470246-1-cmllamas@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260831224145.169403-2-cmllamas@google.com>
+Mime-Version: 1.0
+References: <20260901030419.470246-1-cmllamas@google.com>
+X-Mailer: git-send-email 2.55.0.897.gb25b4bd76c-goog
+Message-ID: <20260901030419.470246-6-cmllamas@google.com>
+Subject: [PATCH v2 5/5] rust_binder: reject mremap()
+From: Carlos Llamas <cmllamas@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>
+Cc: kernel-team@android.com, linux-kernel@vger.kernel.org, 
+	Suren Baghdasaryan <surenb@google.com>, stable@vger.kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>, 
+	"open list:RUST [PIN-INIT]:Keyword:bpin-initb|pin_initb|PinInit" <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Aug 31, 2026 at 10:41:43PM +0000, Carlos Llamas wrote:
-> Binder does not support mremap() as it caches the mapping address in
-> Inner::vma_addr. Moving the mapping breaks the IPC communication for the
-> process and can temporarily leak pages during a shrinker reclaim.
-> 
-> Fix this by explicitly rejecting the .mremap() operation.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260813193433.3318288-1-surenb%40google.com?part=2
-> Signed-off-by: Carlos Llamas <cmllamas@google.com>
-> ---
+Binder does not support mremap() as it caches the mapping address in
+Inner::vma_addr. Moving the mapping breaks the IPC communication for the
+process and can temporarily leak pages during a shrinker reclaim.
 
-Sashiko had a couple of good points that I'll be addressing in v2.
---
-Carlos Llamas
+Fix this by explicitly rejecting the .mremap() operation.
+
+Cc: stable@vger.kernel.org
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260813193433.3318288-1-surenb%40google.com?part=2
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+---
+ drivers/android/binder/page_range.rs | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+index 52ffbf3504e7..411efcc2116f 100644
+--- a/drivers/android/binder/page_range.rs
++++ b/drivers/android/binder/page_range.rs
+@@ -24,7 +24,7 @@
+ use kernel::{
+     bindings,
+     error::Result,
+-    ffi::{c_ulong, c_void},
++    ffi::{c_int, c_ulong, c_void},
+     mm::{virt, Mm, MmWithUser},
+     new_mutex, new_spinlock,
+     page::{Page, PAGE_SHIFT, PAGE_SIZE},
+@@ -144,8 +144,17 @@ pub(crate) struct ShrinkablePageRange {
+     _pin: PhantomPinned,
+ }
+ 
+-// We do not define any ops. For now, used only to check identity of vmas.
+-static BINDER_VM_OPS: AssertSync<bindings::vm_operations_struct> = AssertSync(pin_init::zeroed());
++unsafe extern "C" fn binder_mremap(_: *mut bindings::vm_area_struct) -> c_int {
++    EINVAL.to_errno()
++}
++
++static BINDER_VM_OPS: AssertSync<bindings::vm_operations_struct> = {
++    let ops = bindings::vm_operations_struct {
++        mremap: Some(binder_mremap),
++        ..pin_init::zeroed()
++    };
++    AssertSync(ops)
++};
+ 
+ // To ensure that we do not accidentally install pages into or zap pages from the wrong vma, we
+ // check its vm_ops and private data before using it.
+-- 
+2.55.0.897.gb25b4bd76c-goog
+
