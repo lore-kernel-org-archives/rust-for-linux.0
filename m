@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160EF43F8D9;
-	Tue,  1 Sep 2026 16:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C6443F4A6;
+	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788278957; cv=none; b=bOGxfpXGDSVJ1uS7faYSsadw/pAW9x8JWPnK0+LMbnmTz/43VhVTInVv2NapsbmuU552PzBOc6GSGOsS6cEQcxYwXwAMI01yVlclO86Ef5PGxhDR4SlP0Z/n2/HIOrEz88P2u9tVJfJzEvmGsEzY8SXBMSyj1yJretQT6HH07cA=
+	t=1788278957; cv=none; b=DiIwB7OyY2iYJ6cVuIBY6Rc9CkOUUPxaci27ijoC0+xf+9TxrFIZQLG3/jcA/GyiXPq+cb0kw/x4TirFuHKXwtL5ArVJyB+yxIqGkgV+7R9ht1ppzaLGroneiTBu6xzJQfsTRc+QOOiIkPyc8x82pHBS3ppGXBpQ/f/BvkfQxzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788278957; c=relaxed/simple;
-	bh=2rDFcVDpVSOb7E7Q6WZ1n2yT0y1382pLRES1c4DMPSY=;
+	bh=tGulbdEu3dRFWulYij37FRo+LIbl4tpCnnrPz5XH21w=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sCz3Rb/4q38/Xjkr/N77CMzW8DC6xhVa+kVU5Nt9UfFrBWeMeu05yvCuupnkWWlsaYvamPx/EXwjBdpY+15bFCVYmdx01D306Z0q6LkWvQRj9hyKl9y7m2t0RIc9gzGfPNbfcL+WNmOvT9vwxQBFVUwRKR8xUK4FFG/o2LMpDYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rox7nyIJ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=hAUkHNhW9mtexd/hKjfRJW7hS6XLo/a7kVAaSYYt+E7d3WcSkaDvXHPB49ab508d6Pd+OYhjORcAYhQigGHPoNMWhTQUIH1SDIx/uusyv7+ERo5TB+U7rKt1Oq7OAT64jWAnD4GN6KrcMgANH8aUwLrmYMxQjhO5Hs2NNEJHSPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uskcNA54; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rox7nyIJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CDFBEC4AF0D;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uskcNA54"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A9130C2BCFD;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788278956;
-	bh=2rDFcVDpVSOb7E7Q6WZ1n2yT0y1382pLRES1c4DMPSY=;
+	bh=tGulbdEu3dRFWulYij37FRo+LIbl4tpCnnrPz5XH21w=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Rox7nyIJz4XYUKSbtGWvHgHM43zJWFsnI5A216rQQkesWjf+9JviSQjRNYUoy4Dlt
-	 ZJXTqE2isLzWICxOQqtkaBCGlz+GbFVgDL18u8VpYRUqeNvFDMSW8w4mqmuco+vBTr
-	 9++A3jT/Orx2icuW+LOZ6Q8MqYYZW2LKmDiXwbln3EH5lH8rR64tgY1HzL7J+HlSVJ
-	 A1i2dVGlUgQB8cR/aKPN7eyYpcKHd3UlQURhbBU/B6IsSC1fWvUm9Cssjt/RzU7zSA
-	 uCWFLVjocFcvu6JnlZhqbGR2RhRMwXwlcQ//Kc28P//55lt7a6Uw/v9QfUfj64klry
-	 sh0UtKR46IHHQ==
+	b=uskcNA54RBdpVd3VvbmnwJbbOtPvcMgEFDpY+U8yPaqk6VL9D35lb95YcI7duvTl1
+	 XrLvSmxZ4znTOKl85rwaB7ZCu766PJvjMm/2iUpUZzgZk4lE0cL6HVVSoOWlfyuIwH
+	 8ox6RK4+ktlE+2el2EjE8p6SoauF+nh1V29Hg4QWE/qecJdf7IW+slxHFOKCrGOF/g
+	 mNTzW7UNmTGOQLejvZoZ8VzUiD6lJhomXgBFdX44df4JJ1OOgk6lI55017I4Rnca03
+	 sWCgTmVGtNSWZUl2Vl1Vehgsi/RqyyCU1B/9YjBPUGLJbuUmXkF6GtHX8fHiF0Wayi
+	 o34vIcilV2igg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B9F5FC624D3;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 962C2C61DD3;
 	Tue,  1 Sep 2026 16:09:16 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Wed, 02 Sep 2026 00:09:08 +0800
-Subject: [PATCH 9/9] drm/tyr: add BO-related ioctls
+Date: Wed, 02 Sep 2026 00:09:06 +0800
+Subject: [PATCH 7/9] drm/tyr: refactor new_dummy_object to use new_object
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-tyr-ioctls-v1-9-e0fdbf8bd108@kylinos.cn>
+Message-Id: <20260902-tyr-ioctls-v1-7-e0fdbf8bd108@kylinos.cn>
 References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
 In-Reply-To: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
 To: rust-for-linux@vger.kernel.org
@@ -60,11 +60,11 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
  linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=4674;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788278954; l=1139;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=GB09PX+9tSC0xXDoB/KYTwCpkupIwMi/t6ujGhWMHCY=;
- b=3u5QXxhXzE8PTncHj0Olzvwbk36Gnj+5vmGi8iSqdmGh8w7HtluwATOet3QKkFSy3LnDcQ8F/
- ROMIFgAhZvfDBDlBA2bDnpKNn+XvzEDEHkHdnZeJP4HolUp8mxXyTEf
+ bh=Ej92qQwFTpPtrIg4SAbvIlKuALoNm6gS9q8GLNp1YDQ=;
+ b=+rvDr8eIgCszYK0KN0VFmkfXWahqtsVwtgx8CXqR+iJjCYkPEJsiRv5hYWJIDWEiIAxxnCCeq
+ Wc/8K2eTe6EDzkVKNm6yRvYo252RjG/JDEoeTp/q173HXGhHdq/SF6K
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -74,132 +74,38 @@ Reply-To: sunke@kylinos.cn
 
 From: Alvin Sun <alvin.sun@linux.dev>
 
-Expose buffer creation and BO mmap offset retrieval.
-
-- BO_CREATE page-aligns the size and returns a handle with
-  write-combined mapping.
-- BO_MMAP_OFFSET provides the offset for the DRM generic mmap
-  path, rejecting NO_MMAP objects and non-zero pad.
+new_dummy_object() duplicated the BO creation code that new_object()
+now provides; call new_object() instead.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- drivers/gpu/drm/tyr/driver.rs |  2 ++
- drivers/gpu/drm/tyr/file.rs   | 70 +++++++++++++++++++++++++++++++++++++++++++
- drivers/gpu/drm/tyr/gem.rs    |  7 +++++
- 3 files changed, 79 insertions(+)
+ drivers/gpu/drm/tyr/gem.rs | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index b3145526ada06..fc8d11c9ba1ca 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -224,6 +224,8 @@ impl drm::Driver for TyrDrmDriver {
-         (PANTHOR_VM_DESTROY, drm_panthor_vm_destroy, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_destroy),
-         (PANTHOR_VM_BIND, drm_panthor_vm_bind, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_bind),
-         (PANTHOR_VM_GET_STATE, drm_panthor_vm_get_state, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_get_state),
-+        (PANTHOR_BO_CREATE, drm_panthor_bo_create, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_create),
-+        (PANTHOR_BO_MMAP_OFFSET, drm_panthor_bo_mmap_offset, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_mmap_offset),
-     }
- }
- 
-diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-index 157bc40e1cac4..16abf2968299c 100644
---- a/drivers/gpu/drm/tyr/file.rs
-+++ b/drivers/gpu/drm/tyr/file.rs
-@@ -252,6 +252,76 @@ pub(crate) fn vm_get_state(
-             Ok(0)
-         })
-     }
-+
-+    pub(crate) fn bo_create(
-+        ddev: &TyrDrmDevice<Registered>,
-+        _reg_data: &TyrDrmRegistrationData<'_>,
-+        bocreate: &mut uapi::drm_panthor_bo_create,
-+        file: &TyrDrmFile,
-+    ) -> Result<u32> {
-+        if bocreate.size == 0
-+            || bocreate.pad != 0
-+            || bocreate.flags & !uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0
-+            || bocreate.exclusive_vm_id != 0
-+        {
-+            dev_err!(
-+                ddev.as_ref(),
-+                "Invalid BO_CREATE params: size={}, pad={}, flags={:#x}, exclusive_vm_id={}\n",
-+                bocreate.size,
-+                bocreate.pad,
-+                bocreate.flags,
-+                bocreate.exclusive_vm_id
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let size = usize::try_from(bocreate.size).map_err(|_| {
-+            dev_err!(
-+                ddev.as_ref(),
-+                "BO_CREATE size {:#x} too large\n",
-+                bocreate.size
-+            );
-+            EINVAL
-+        })?;
-+        let bo = crate::gem::new_object(ddev, size, bocreate.flags)?;
-+        bocreate.handle = bo.create_handle(file)?;
-+        bocreate.size = bo.size() as u64;
-+
-+        Ok(0)
-+    }
-+
-+    pub(crate) fn bo_mmap_offset(
-+        ddev: &TyrDrmDevice<Registered>,
-+        _reg_data: &TyrDrmRegistrationData<'_>,
-+        bommap: &mut uapi::drm_panthor_bo_mmap_offset,
-+        file: &TyrDrmFile,
-+    ) -> Result<u32> {
-+        if bommap.pad != 0 {
-+            dev_err!(
-+                ddev.as_ref(),
-+                "BO mmap offset pad not zero: {}\n",
-+                bommap.pad
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let bo = crate::gem::lookup_handle(file, bommap.handle).inspect_err(|_| {
-+            dev_err!(ddev.as_ref(), "Invalid BO mmap handle: {}\n", bommap.handle);
-+        })?;
-+        if bo.create_flags() & uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0 {
-+            dev_err!(ddev.as_ref(), "BO mmap offset on NO_MMAP object\n");
-+            return Err(EPERM);
-+        }
-+        bommap.offset = bo.create_mmap_offset().inspect_err(|_| {
-+            dev_err!(
-+                ddev.as_ref(),
-+                "Failed to create mmap offset for handle {}\n",
-+                bommap.handle
-+            );
-+        })?;
-+
-+        Ok(0)
-+    }
- }
- 
- fn vm_bind_exec_op(vm: &Vm<'_>, file: &TyrDrmFile, op: &VmBindOp) -> Result {
 diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index d9ddcb287f52b..f404139f54f32 100644
+index be1affe80db1a..d9ddcb287f52b 100644
 --- a/drivers/gpu/drm/tyr/gem.rs
 +++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -38,6 +38,13 @@ pub(crate) struct BoData {
-     flags: u32,
+@@ -82,17 +82,8 @@ pub(crate) fn lookup_handle(file: &TyrDrmFile, handle: u32) -> Result<ARef<Bo>>
+ 
+ /// Creates a dummy GEM object to serve as the root of a GPUVM.
+ pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> Result<ARef<Bo>> {
+-    let bo = Bo::new(
+-        ddev,
+-        4096,
+-        shmem::ObjectConfig {
+-            map_wc: true,
+-            parent_resv_obj: None,
+-        },
+-        BoCreateArgs { flags: 0 },
+-    )?;
+-
+-    Ok(bo)
++    // FIXME: use a Rust resv-object abstraction once available, rather than a real BO.
++    new_object(ddev, 4096, 0)
  }
  
-+impl BoData {
-+    /// Returns the flags the BO was created with.
-+    pub(crate) fn create_flags(&self) -> u32 {
-+        self.flags
-+    }
-+}
-+
- /// Provides a way to pass arguments when creating BoData
- /// as required by the gem::DriverObject trait.
- pub(crate) struct BoCreateArgs {
+ /// Specifies how to choose a GPU virtual address for a [`KernelBo`].
 
 -- 
 2.43.0
