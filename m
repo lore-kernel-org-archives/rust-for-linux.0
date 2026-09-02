@@ -1,137 +1,149 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F118A3845DC
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Sep 2026 23:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6EDA2853F3;
+	Wed,  2 Sep 2026 00:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788304762; cv=pass; b=FFNAVHEfuGQDs5D6cFYYkf0GknwZ+fh0pFONT4ZdbWmESVu66Ib+/GsRLHD473Tmv3M6EV95f2VYcbd5kqLXwdd71x6vA2rOZrEc2v97Jd4VvpWwzl7rnHrCVFem7p6oXBfDFXRoXmn839MsblFIWBvVugXjicuTWfeimqQF9s0=
+	t=1788308130; cv=pass; b=V5N5WyIzvyVwE+I7AASPtMoHloVGuKFmSSduYt6ZgPWuUR+Hy8kfx7TOHtbqJnSD9OYmu3T+NNegF3MgTdu6xf6+LuquGJLoYtTjN/prGXcIrvsC5IE45Xwx2UGrM1Gf66oq6jpuIt7ctQimIVXmGd5/izkaDbl1jYwT7j5LgP4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788304762; c=relaxed/simple;
-	bh=e3eIoE3QbpFgDPEvZO1d9sR5o5XokHbUYC1b4+KVcrI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mdMrjaIX/zJkRbyT78LnqeFhQjQk2f3pjtMdxbaEtZL116vZAIzHe4QgaSpxrhMMcNFUnn+ax9yQMH4O6nkgpUyCNVB+yYFV0ZjkbMgX3CuUV9KsERDfa9+410YGejrfggtzjCIbbqiwPeFsyb1LYm5yvoNSgIDBwsK3peEb5iU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NHU8qZJJ; arc=pass smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788308130; c=relaxed/simple;
+	bh=d6DQ2uQ0kFbGdjs5pr9qPOg6eBztZxzWavBedhKYFNY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cu5ly/QIBjuTemOZb+6JZioJKyCkakEWiXnq82mGDlh340ckkGWcJQTTaIaUdK8zrkWDzv1j+I52Da/MBb+ZK7CqRACwMP+qt3DPTmANVIM700wF6uq6g4XV35p+dZR7m6xwvC3nsZJWQQFYkn74LYUJsGBm9eRzb+q1rFYRly8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=hDRPL60R; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NHU8qZJJ"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c9d290216d0so31087a12.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 01 Sep 2026 16:19:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788304760; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Vqz3TLHSBNk/9EDciINX+yIfARxJMRDKXvnHhkcUCrWIvLJAJeigpyIg52sswXJgjC
-         3UG7d++OVb1EeaosPU7vPv33kbEIf0IY3Es5TTvXKYlRMbh4EvIXDOVnCjuJ4y3BZJUk
-         C3pHlDRhbtzfq9Y4ajEoIfCrhjHIpg2+vGejoJs87iHVPnBzTzXDrp742KQiurLG566O
-         kqYKChkhv25fuauzcM56P5v1bDuas7pZNZNe+UiraKZX/jUIXJ6DBfuX7LJIKFN/xCeY
-         Iw88R5QggsStf9U3RJ+jypw3b0KzMCNU48MjuYHsy9cHYchvzuw7ee48+pC7uXr6xSgJ
-         sPIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=iTO9Bl1A4M4zo0TJ+YJltBWqZ51NBQa7Q62ZAYSv+dA=;
-        fh=HVIbcwujVba07UNMU2GsjRcEDtVncGYYP/UiwBwlyxU=;
-        b=LAGIUd+km/E9bmTkJFyMTBQqGcBw8Fi37JQ6WCJsfbaFXPan4oqVwkPkuVo2qpLdkQ
-         C4SqlCeYElJ0h5u39pYRNniISbsc8GC5NV1QCJxjZDEcs8yJaeYwg0yoObKHBsx4P4p0
-         TPTGxOzKbkbsf3R5VEYWdytjbahbj+DlAl9qvzVGHsyPBxr8pT3bIC+eEk/jleGJs8C9
-         Nds6PZzwmOovt/LVLQkluVGXo3s+VLvjx8/1h02lKl6imYV4KkakWIbcFFBMxk6LXbfp
-         aIVKDwCrl89FStt4/fPi1CjQS+AAZYyf42meZDfeVaX4I00dUb1fjpXirLps2Wtty9fv
-         e+Mg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788304760; x=1788909560; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=iTO9Bl1A4M4zo0TJ+YJltBWqZ51NBQa7Q62ZAYSv+dA=;
-        b=NHU8qZJJsbIovzacun6W6j60DPY7qC/RXd0032SvchbEznI/C25s/BGi6LVhNSPHVw
-         pCNbirXlyYGTAsW+KiVzX8gg6gUXkxFX85/qBwQEG+ASUOKBK2Z6epFKEcK/A87eQYwm
-         ELH1MLG0twhagHxVRbSC2Ezbl6JD289wSpY2lqvAQUyqxbAtlVaWBvqPHvOszed7lfUj
-         /FpgPOfIRvo6qgbGwXGleOvFWRd+Qc8r9FbFhDYqClumx4BwCWSjUtJiqWL2MOHbZa2A
-         /j6Nqd3tbwmFJDg53ApOFI50wz1yP2vYrmrn+r7MSHcXFVf5ALI/O0xElePXWeF0HBSr
-         OcHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788304760; x=1788909560;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iTO9Bl1A4M4zo0TJ+YJltBWqZ51NBQa7Q62ZAYSv+dA=;
-        b=renjvO88N500Eayht4SFGl3tH49SdJ9Xzvff8fdMNzF8coL6o/TfdsEltSh8hvkrAI
-         YSFp0rgQOEtNrLIAUC22ZvYFCtdOIjIKUSL1q3BUy3KSUWNM2r7mzqa7X18+6NyVxVc1
-         +MF+K9yWiEPwsKx1kh5bb842TrEgvwkXpbOWkEoxI1Hgib85KX1xZO+P564iWg+uXLzs
-         suA5fPzlFpOChY/PO211hKq/PUGRLuoL3LCoGp/Db2CYRWPjrO3V4Ieuh+cM2Slpdl8q
-         JQthiVOVIfoX2ahIVYJsgSICLQJ1naHOf6ZYprOfUjYEVsdszRBuofqOJXy9hoHrRYSq
-         k07A==
-X-Forwarded-Encrypted: i=1; AKwUvBzlZ9nug3dh4J+5ZjiQAztBQQ30QbtYVO4LNn+8/7oowG1FsDiMrYp4b2Wr/yBPIjbRVpxNTWH0DGci0b51cA==@vger.kernel.org
-X-Gm-Message-State: AFuF++m/NSTpDWh7Reib9M0ugno6aWvLT3L+CwhSsKHG5UPGMoQDRQ38
-	+Bb/R/Td7D+6GRDGv5uBEGYLJ8qQiu9oXsAiPFUNXzTFoVMmB1HO39sDUJj0J+BkAVgWgWvn2Qp
-	aC33vhqzouzq5b0X8FXHwmCs+0kqZYUY=
-X-Gm-Gg: AYBFou2NEyEcePodPmzTC15poUAS1zDXXPduOhDm/fmOnpkf/peGCLpCCJa8Om6nKgu
-	p05iV4qBf9vSm6EbQlvjFWQJqS+6JAYirZpuRFmr9mtIvi3wFqHqbdsnZBCmPu+Qe0xG/x7Uy/E
-	yx4FuGItMl8jHudNegRlEe/4GOLkEfntwiBBNWNce5uTATEGDV5zNzyT/qKgcjt7ixP2G8yecDp
-	lB56lqqQDulC9yrpsNXyDL+r/KrcoUZQRuaj/KGTI04WouF5K5ykYRoehl36Kz+G+EpVvvMqxpk
-	RW/bGJs/bedBOz4mCboKZESJgxZnQQ/hqB84d6F8bM1081X1TH3NjsPKItgo4DNUJVjabaJW5zT
-	SGYGUrXvqfg2EwxDOfe7kTupzkKP1IwiS7oEMAQQ7lUQocOchrVe5/i9HHWvk
-X-Received: by 2002:a17:90b:4486:b0:398:cee0:67dc with SMTP id
- 98e67ed59e1d1-39aee22219amr330724a91.5.1788304760234; Tue, 01 Sep 2026
- 16:19:20 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="hDRPL60R"
+ARC-Seal: i=1; a=rsa-sha256; t=1788308059; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Sud1lIN0877KOQr2c4mj7GP84xRNZJf2RvgvS6jdjTcZXgaKFt8oMqfFXMDs0IpBVrgqhqOgSVY27KaRpKHuDt6JrfcAM+lWogZNaln0RMlSQwXCylZP+6VwMhzmLL3qhPz0K/tF67tIBZWIyg+jr9hfg8lWaxwoXMvMNWBg7Tg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1788308059; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=9v9K7xAFlRpojhSRY8CZl+bL11FYUJs3WgBmJ4SVq6A=; 
+	b=EkDloI2yC25Mr8Hpq1WUQaqYBERoRZa3yN9vaWASDogZY5OmpqqwT+e6axzTXGGPEHsPXEmMP9xXI/LT/IY7XIsHWMjqnAi9X3+V5igxoaOpGIz5oBNAY9QLgp1ATcKUfyCGI+8RiTV9EL3sYScoS8PHVXReasbbIwdxJ2BbLNE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788308059;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:Message-Id:Reply-To;
+	bh=9v9K7xAFlRpojhSRY8CZl+bL11FYUJs3WgBmJ4SVq6A=;
+	b=hDRPL60R407Og0rshUwaKg4xQlSMKK0NIlBlrIjuMCP+Ea9rjisMeis1Byk91wAr
+	BgASNV/zMDnwJN8JgvlOeTwnfSCP7FwxOgLz/MBRQddVYirwuBNyP1MiIdlRwlFE8Zb
+	G0RUGNOICvI2KidCTmglHvjqPcdKkaSWGx22Ce8U=
+Received: by mx.zohomail.com with SMTPS id 1788308056394418.9753833639205;
+	Tue, 1 Sep 2026 17:14:16 -0700 (PDT)
+Date: Tue, 1 Sep 2026 17:14:14 -0700
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Ke Sun <sunke@kylinos.cn>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
+	Alvin Sun <alvin.sun@linux.dev>
+Subject: Re: [PATCH 0/9] drm/tyr: add VM and BO ioctl support
+Message-ID: <apdqVvvsWvzfNmiL@um790>
+References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260901-cv-v2-0-446bc69d2ade@nvidia.com> <20260901-cv-v2-1-446bc69d2ade@nvidia.com>
- <a796c716-4db0-4bd4-b69a-accfe0d382d5@nvidia.com>
-In-Reply-To: <a796c716-4db0-4bd4-b69a-accfe0d382d5@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 2 Sep 2026 01:19:07 +0200
-X-Gm-Features: AcwNN1XNkEF1AhN8yU_Q6na6OP_zes3C1-Rjq21wcY7gsKXPtUmdPm79OvrMDS0
-Message-ID: <CANiq72=k3O03vh+2EbTamAZHOZebOZ1-X8=qiyHWX+YhGsocfA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] rust: num: add cv! macro to create values from
- constant expressions
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Eliot Courtney <ecourtney@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/288.303.58
 
-On Tue, Sep 1, 2026 at 10:19=E2=80=AFPM John Hubbard <jhubbard@nvidia.com> =
-wrote:
->
-> Remarkable, in the sense that it seems like an oversight at the Rust
-> language level.
->
-> Alex, Miguel, is this worth mentioning at Kangrejos?
+On Wed, Sep 02, 2026 at 12:08:59AM +0800, Ke Sun wrote:
+> Add the VM and BO ioctls to the Tyr driver, aligning its userspace
+> interface with panthor. The series is based on Danilo's `drm-file`
+> series on `drm-rust-next`, and uses the existing IdPool and xarray
+> abstractions for per-file VM management.
+> 
+> The panthor IGT tests pass on an RK3588S device.
 
-Yeah, it wouldn't hurt to discuss it if we have time, since we will
-want an improvement here one way or another.
+Hi Alvin,
 
-I raised it to upstream Rust in our last meeting last week (we also
-discussed integer casts), i.e. they are aware and they agree some of
-this can definitely be improved. It is of course not a new thing for
-them, e.g. this issue:
+Thanks for sending this series, I am still reviewing it but this is what I
+noticed today:
 
-  https://github.com/rust-lang/rust/issues/69329
+1. Do we still need a separate pool module, since this is just for VmPool,
+could we put it in vm.rs?
 
-I also have it in our usual lists ("Better `NonZero` ergonomics
-(`f(1)` integer literal coercion, `1nz` literals or other
-solutions)"):
+2. We might have a problem matching panthor’s 32 VMs per file, since the
+minimum capacity of IdPool is MAX_INLINE_LEN. But maybe it will be ok to
+extend this to 64 VMs per file. But then when we drop the vm pool we
+better not rely on that PANTHOR_MAX_VMS_PER_FILE constant.
 
-  https://github.com/Rust-for-Linux/linux/issues/354
+3. Also, I am not sure, but do we need to call vm.kill() when we drop the
+vm_pool? Does it depend on the vms being activated? And if they have been
+activated, should this go in Vm::drop() instead? 
 
-I hope that helps!
+4. Could you use dev_err! instead of pr_err! please, we tried to convert
+over to that in the booting series.
 
-Cheers,
-Miguel
+5. We should be able to compile each patch in your series separately (to
+help with future bisecting) so use the annotation #[expect(dead_code)] for
+patches early in the series and then remove it in patches later in the
+series when you actually use the code.
+
+6. It would be nice if you could give a link to a repo where you have
+applied all the prerequisite series and fixed conflicts. Could you still
+update the branch from:
+https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/64
+
+Thanks,
+Deborah
+
+> 
+> Signed-off-by: Ke Sun <sunke@kylinos.cn>
+> ---
+> Alvin Sun (9):
+>       rust: sizes: add SZ_4G constant
+>       rust: mm: add `task_size` helper
+>       rust: sync: arc: relax `ForeignOwnable` for `Arc<T>`
+>       drm/tyr: add per-file VM pool
+>       drm/tyr: add user and MCU VM specifications
+>       drm/tyr: add BO creation and lookup helpers
+>       drm/tyr: refactor new_dummy_object to use new_object
+>       drm/tyr: add VM-related ioctls
+>       drm/tyr: add BO-related ioctls
+> 
+>  drivers/gpu/drm/tyr/driver.rs   |  14 +-
+>  drivers/gpu/drm/tyr/file.rs     | 394 ++++++++++++++++++++++++++++++++++++++--
+>  drivers/gpu/drm/tyr/fw.rs       |   8 +-
+>  drivers/gpu/drm/tyr/gem.rs      |  41 ++++-
+>  drivers/gpu/drm/tyr/pool.rs     | 102 +++++++++++
+>  drivers/gpu/drm/tyr/tyr.rs      |   1 +
+>  drivers/gpu/drm/tyr/vm.rs       | 158 +++++++++++++++-
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/kernel/mm.rs               |   7 +
+>  rust/kernel/sizes.rs            |  12 ++
+>  rust/kernel/sync/arc.rs         |  12 +-
+>  11 files changed, 714 insertions(+), 36 deletions(-)
+> ---
+> base-commit: 0b0aa9dcf17b6cffa9e325ff641e843b20d40c31
+> change-id: 20260901-tyr-ioctls-f10ef0dcbfa6
+> 
+> Best regards,
+> -- 
+> Ke Sun <sunke@kylinos.cn>
+> 
