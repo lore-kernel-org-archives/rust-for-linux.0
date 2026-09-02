@@ -1,115 +1,126 @@
 Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D96456E15
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Sep 2026 12:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BA149483A
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Sep 2026 12:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788353371; cv=pass; b=qmiwX3kAzuJisR9wdPXS0BGJaAjvqJjNT6s00IsOyY2dMki/805VfX2jLFW+kDquqcQrKCPsjhD98faDnaXkGp8qJD43hMHqRWJgcugu/t9ete4//Nvkd0+P6FUIUmi/Wnw2wgXSbL4hWJJvj3eDCd5BdvYEWPGs5Jh4W5APm1A=
+	t=1788353485; cv=pass; b=KpHAxrXQ/CVSwB63UaENtw5pbHZjtNQ5AnB4SSkOryLWNrND+cAbMsjAjIK0CGnMqoDwCPzS0b+tSpYD4raGfb855SZ6iU4hNEUjQk98fqlmvtk2PUHli2zxz7pMvgoQ5R7B7fBZK1mcMoj82Hg6eBKpyl+MgGJ6QSrk5Avtzzg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788353371; c=relaxed/simple;
-	bh=rsoW3X76HTtoLNHsJ97uKw51igWW8KQkOgOnpYBVO9Y=;
+	s=arc-20240116; t=1788353485; c=relaxed/simple;
+	bh=K+swk/Ji08AFq0DopEKTbabw+5YxSqNaLFc8HIYssWA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JEw+Iu7tZt9b4M1OwADsUIm90XJDtjls3Kmqz6VtrEgbX+syWnZ/Xm0Yf6GoHHiZvHoDv4ub6//xK3swEWit24EtgvSrfdKNUeNmoouNHyTTHn34zpCgSI9GQJqPhW/zv18pTfyLXLaLGmMeOJk9pCWDfFq3+fvF1f6cLyXBbbU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=SorqoUXC; arc=pass smtp.client-ip=74.125.224.52
+	 To:Cc:Content-Type; b=Z1d5Rz6QHx06Jr9ABVsnYjBaXttA+JT18gqr0Cbv5O7zKPuF0KyXw0qOKp8SHK08msLC7M+Cqc87kRSLcWwXpdU5IE7BJ5V+yEHSdfbnyC6tRiQGudUkZFcNtiYnlCtd/EsAMk0v0t7v6c290HzZ59SbJDvmx+P4MMwgcZ1luyQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=LIbh+SCH; arc=pass smtp.client-ip=74.125.224.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="SorqoUXC"
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-66e63afda8fso974746d50.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 02 Sep 2026 05:49:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788353369; cv=none;
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="LIbh+SCH"
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-66dee7a0c09so977235d50.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 02 Sep 2026 05:51:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788353483; cv=none;
         d=google.com; s=arc-20260327;
-        b=gdghGHQKBZWcQvVdV0aoEV8uB5oTXU8gglj8MKKyQVEHoT534KscviEzs5veD2A8lg
-         lwAFWlCXCZmNTKa9J8vHTZtlRZJN9YzmJoswLizpkbNWhxRj4GB3mz6LdCTGpg/9foba
-         oMqtDhD3e0vlHYpdAKEQELj3Pb7DGifzRylhJ3klFQP1s+Y/Zmrg7V4QaXYxZdvOB0KT
-         USe6bq95yZbxoF/szwIKfxBA8eDg66NLrk0nA/9v3wuEqbt9i3rkUhRYKwae0SBk5kJs
-         dZKjMMabV71B3ykzg35lKSESK5GOmBcc9Z2UsWT7NFblfF4bSbsvBC6t/UbPotvuRAQ0
-         w91g==
+        b=Wn92KIizJFSPGs6JjOSAbhJOc/xKiuEyzJ9Qc1wFbie0GAaHZ6SKsKTsJMDV++qQpn
+         8F1AlSWARM6CO1ZCQ6irrK1af4kg1dw4znttDfF65d8lGrh6f74rcpSIa/Uis7AjpqvJ
+         8U3lN37TPlLraanM9o0p43poKaLI36Draws7AWWv7hGggGzp2JJRB8H2zR0uaTCE2ZG9
+         ywj53hxvjJ4liFfl6PnPiLwGBtU7BW5GpVUqGPDS7eHOqV2OGreJLnsfzwZgaEKIWcJo
+         wmEqywowp6y+Fc8+80RJpJGjva20VHYv/qtsT3TFyXlbJemFGkprPuQH/GU3U3lRtmc3
+         V37Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=ch2p+1ygk+wnRbKJXKKgzdmKdBItYnqirGmE6Tp7Np4=;
-        fh=xed3piQbfNETWI1dkVw6cVXBk2fbI5HRKp+VWxcQ8m8=;
-        b=DLGxkXrHwlKB3PlBtv9fVD998q3dI2af3NCPKXrVEvDZoOX2HrAPyUZiprZUd1X3/y
-         TP2XSfHQVLDkVnIsvuiwh2BGe/Ys/DiDJKDLPOnUpImgaU7E3T9pD1XuAU6w0BfuGlIe
-         14nNS4s/TujH61DQJaJjDaOeupc20Qne61dT43FYVpkhuXBgNC2TPfooMeXG2WJfZuFU
-         O00iCibBql0P+vGdhBcpamOmJk1491eNj4CyvbU/Ef7ulBXAKISKvCnTqTkgGPZLYUxx
-         yi8NqbPDTq/2s2hTM2Kn07FR+8twkQiwZpAGook8Yhu+9YJ70rGCXHQAdSnik+fYSdRv
-         BaSw==;
+        bh=aoJYi83K5jDu2HW69kc7UQzbMHQ0VncPovaw06vhQ9Q=;
+        fh=oTVU51C0pl8x9Exs0EZK1MHTGsWYmvF7NsyIsO+DMpo=;
+        b=Oor+RoYYZGUwZAZRNvy+UD2lAxpNrmiefqDNMMFgDE2Kruyau6Ot9isklr8tRgTv3D
+         8izTYDe20fUSVVrg3YDb9AcFx61xOQTbbtNeYFAaTa/zPgVmBRsErb/6dVDnresXczP7
+         9qt5J4nChR2dNodIzw6ijVuxujQPUu8z3xrSTl+lfUm4IEXiQLW8VYw2/EplhQAd3DUW
+         adcFUtmvT+VAwCtlY+bsH7gdHnIzPl2+AHDGStVmkfjarw5j/qgDinOomtSQA8jnecRz
+         6eHJMLZaNahN5aELGJww/XcP2fj1JT2XjJ+JuG69h25y4LOcoxzm1bRCzUJOSdW1VFej
+         38ww==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1788353369; x=1788958169; darn=vger.kernel.org;
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1788353483; x=1788958283; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ch2p+1ygk+wnRbKJXKKgzdmKdBItYnqirGmE6Tp7Np4=;
-        b=SorqoUXCCN3ZqsjJ67mgDjGHciXx+CHsCd7qV3ePmWxhXH+0pV1kR+6jaBzDp9LBl6
-         /YgGi2UXzUpJ8+3Np9qqmQbSA0/koCB6evmfga5c3YrBXwHyUr5nfAIvIlH7UxrMDEQz
-         FlKonWXeHski95s8/U6FJzNnz8U8OKwVsaSZNiuH99RlDhgJiYQXMMMpvLED7KrywClp
-         vAqkEPw85ox2n74HhSlDywHNid5q+7K7Up2OXAlIS89c48oOjLHEvP4KJV2SROhP3D3/
-         ncrVUXq1MzbYv261jnPgjaDWYy3wSxTwzyD2K6gPkj9Yt+d0x+R0bb7li+kLa9N/cCWe
-         5hqg==
+        bh=aoJYi83K5jDu2HW69kc7UQzbMHQ0VncPovaw06vhQ9Q=;
+        b=LIbh+SCHe7Kztt3Gfwy6XNZRmIF5lVKD4PG+iataVenLJfPDr5z03HhSI04Wr/bCJc
+         0t3oxvLMaIZz7StbZVoROXT8P5QTA3rwm2GBXopaD1kSBeMGO8U17Aoy9uyPoTwKkCAf
+         B4TBje2UUyztxGNpX6C/Zqp0tNxZ75sQdk/uoC3w6GEf/5ASeSuhypVYMKlAvx1nOwsc
+         lE3EQ5kYgnBYsxv6TQpTaH9T5LqSE9Ul+iF2ULn83JDY4S9hdJZ9lRaYRX8me7Q4cvp+
+         1j7uTyDSFs6tJs9F+gFRm8p6WGpiuUZm8VNbeiGPHnvA9xfDKnvJ1CvKtUzhTES6r3OP
+         /Htg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788353369; x=1788958169;
+        d=1e100.net; s=20251104; t=1788353483; x=1788958283;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=ch2p+1ygk+wnRbKJXKKgzdmKdBItYnqirGmE6Tp7Np4=;
-        b=WPiYWMV62nm3FvedF70NZ5kfVmyV4Ul549m8J1jz29SudC4GsMWnsGCpR2kOnd4IXm
-         q7lVlfZajMPcAyW7jVgYUYsw3uypeCBYUsWGHEBuzHq18SM124K55otMB3bV9enkIVDf
-         c/UoJKbf6LcEX+mPG1NCrVsoII4azHgvsO6cmlmIbGC8M4c5/L2RHnxYbhoowA4jruQq
-         +Yk0wJ/81/6cVrotFoikQiKlTHa1C3y9V8+mWUKWeLp4c0gqtHQRfVzSlS1pr/TsNJqE
-         UUyeZiiy2Gb+2YJS4Z9w2+3HSmQ7vrjG4tLOVWjmJeTnQq5272DmgrqCkEHdTMi3VQ7T
-         JJWQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzKE23+uNEq3SOvj1x8+Aqd0NRMq4+kUgscLgtzhymtLj1kAjBrYuQglbefeXZJg91SF/+Srh3IRSTaBaX1qw==@vger.kernel.org
-X-Gm-Message-State: AFuF++ngyVDHnM+QhI1awkqq4f8jlz+xyE1UYw1u9eAuuN2vmY0okzea
-	EamUrbGs3CKrPH6uBVfO7S4Ed9DOThT2sUXtLsYcWynMA8Rz9myZXpxYVAzBEwRgVV/BDh+U3rU
-	7d0ZGtasvv4D/dbolLA856pgnBm4db7aDYZFsX3xb
-X-Gm-Gg: AYBFou2AJsomLo7Kh5irO7+5EvLK7uhYCB+t9qelFId/CLvcEYBwMPxfewT7Qcu+oKU
-	VhXnUar6sBBXhqKU0jLIbn6F8vRTPmoMlxpyKoLssnQh7ai54dcCLTN7Yg4mXUnerAdCZC8XWpG
-	S4/vMLIGuX1qnRPdh329z7lvneZTngOEI1PAR8sUqYZXDE1wj50L67+HxedKI3EgHtoHkPmPdDk
-	hUghNe639ws7v311usHhR4CsQvLGAtD4Y257Xm4Sjd157AlnbT9TXQgXslaVlJ0mWqP8MF2B0u/
-	X4rA+FldrFcO8VXhLC4KwaVrNYud4n+VnZSSSZ4wb+x123Ya6RegFiQ98OaOfBGpzQg5HdTqSyK
-	SeCkaiFeoHkXtecV+rNK/t5ZDDbVnjBOdNQg=
-X-Received: by 2002:a05:690e:4183:b0:66e:641b:f977 with SMTP id
- 956f58d0204a3-66f9bd432c7mr1311760d50.43.1788353369031; Wed, 02 Sep 2026
- 05:49:29 -0700 (PDT)
+        bh=aoJYi83K5jDu2HW69kc7UQzbMHQ0VncPovaw06vhQ9Q=;
+        b=pni1qO8LpDpYtP/Z/UWYtamM8RHLZR1+7UWZdILbsv+DqZ7wHleLSTDwqftFt2Nfns
+         uHuxfEOLuaKp7t8UISZiVD129eGdyufmAORR+T4MQ1l9IDHLlx2H+VZN/zxciAzsMg2l
+         02NAWoLuFztnTzXlnee4E85GoKP12y6q35MMfmBTfid2sHlyfSLg4BRG13fG5t6+E3t9
+         QSBBlcq96CMzDdrZPUDhAqPzTkoiITKP2bJXVNNAW+UDkc6smBdSQNdvB0beUH9+rSE0
+         8tXy/E6OuQsEu9vDGJVx9OKT5iR5nwYMJ9ydWMXdnX7/osxad5q9gzS+F0y9S6kVa+O5
+         iGrg==
+X-Forwarded-Encrypted: i=1; AKwUvBwPpeGLFQm+nZoVEJ+RjChXl1DyYV9Hl0sxr1tf9pxUk4yg4jXWuAql8x0UxqCgpruMX0Ba7lOhxlTI0hmH4w==@vger.kernel.org
+X-Gm-Message-State: AFuF++k6+L9jWkiKu+1cwosHdUv4Ff/UzXGt/j0p1HifTeFOKUstISCQ
+	tJFXmrNp+EbikPs5013BnB93umANNQZ4qLRRfTxNXMQl67EfRUqQvHTFlqmXfhCad2LRHkRFgq2
+	4baTdBEmHJZ3WRU4UHhtwIdX6AYVy2To1aeKzrunr
+X-Gm-Gg: AYBFou0ZB+tkk1l2uDUkdjo6fzGAuosEozOsJngeosKv3nd73nB9MHyF2f69Xy0LIpa
+	HgFph82SoAbvl2NQuZpuSZoTc7CZd3G9e2QvwhMkKrpT3bQmm+nf5VgMKV7poXsqpDjtTl7RNKt
+	X5heq20o11k4nvXmyMvwtGwjSJrTDdWYtLy8zDT+6rtb0/kzihGR4YyKrFd8urjNpG+WiHQtCix
+	FZJSgCBR6CzMvHaQ2wbyszkorjVvK/yo2OcAIcTK6WNvryQfKM9WgKgjnA2LMs6X7G7nxhZwCU9
+	ZSO0AeF3xwOjGgvDiM3akFV5rAmf4VnVm+J+QuK1RdVWDvWbtK6WXyLLdmf1p2JgxsIZi4e0WMG
+	NpUbHyjTD3hxy34gw3Ew+7Uleyt4nh1MMJic=
+X-Received: by 2002:a53:ad4e:0:b0:66c:c638:8e88 with SMTP id
+ 956f58d0204a3-66f9b8b0f42mr1278753d50.2.1788353482983; Wed, 02 Sep 2026
+ 05:51:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260826162851.2497-1-mike@fireburn.co.uk> <PTgvpjjPiVHpV5cb5AFpiGEjRsWtsYwuSeJJ8jwp3nn0KknPmUp9oGo1V-8erfbr4OQrH0c_RPZYYJWi6yV9FA==@protonmail.internalid>
- <20260826162851.2497-3-mike@fireburn.co.uk> <87cxv31yns.fsf@kernel.org>
- <3-IkUMhanJhClxwXLNvuF1-ncsHt6uM6GRmW78t81tKgo_5IO80fRJ9HZROE5RwlmxZhufdPXswcExj5j65ejw==@protonmail.internalid>
- <CAHbf0-F-KNQu5NrFcUw1JOwaVQJq5hS+d9OHTmV3J2Pi+hfOqA@mail.gmail.com> <87ik4qxmbe.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <87ik4qxmbe.fsf@t14s.mail-host-address-is-not-set>
+References: <20260826163004.3365-1-mike@fireburn.co.uk> <20260826163004.3365-2-mike@fireburn.co.uk>
+ <20260826220918.GB3382628@google.com> <CAHbf0-H-nZzg=kGkN-yrUdfUUrruyN0x2inQjhXxOy4RAauDOg@mail.gmail.com>
+ <20260831170546.GA239479@google.com>
+In-Reply-To: <20260831170546.GA239479@google.com>
 From: Mike Lothian <mike@fireburn.co.uk>
-Date: Wed, 2 Sep 2026 13:49:16 +0100
-X-Gm-Features: AcwNN1UMeKIwYlojNsoDIGEbdPCP3y4LKI8D7SqcrgpBy0NLocWYKVa4ZgbLPrA
-Message-ID: <CAHbf0-GfEjax+n0H5FdCdsOUBRWhqpn=SvTL1BtNysDhvgZdSw@mail.gmail.com>
-Subject: Re: [PATCH 2/9] rust: hrtimer: add ArcHrTimerHandle::restart
-To: a.hindborg@kernel.org, rust-for-linux@vger.kernel.org
-Cc: boqun@kernel.org, fujita.tomonori@gmail.com, frederic@kernel.org, 
-	lyude@redhat.com, tglx@kernel.org, anna-maria@linutronix.de, 
-	jstultz@google.com, sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com, 
-	tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com, 
-	tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, 
-	linux-kernel@vger.kernel.org
+Date: Wed, 2 Sep 2026 13:51:11 +0100
+X-Gm-Features: AcwNN1UyIQqRoEjaX8v-C9V9M526WfqSWSvyF5UWK9e5ESZpZjZxqm_sdht5to4
+Message-ID: <CAHbf0-H5pVMz=Vk55K2mNHiA+cYL5Sg3i8aqmqtPR5tYOMjsCA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] rust: crypto: add AES-128, AES-CMAC, SHA-256, and
+ HMAC bindings
+To: ebiggers@kernel.org, linux-crypto@vger.kernel.org
+Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
+	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, 
+	work@onurozkan.dev, lyude@redhat.com, gregkh@linuxfoundation.org, 
+	lina+kernel@asahilina.net, mmaurer@google.com, ljs@kernel.org, 
+	joelagnelf@nvidia.com, bqe@google.com, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Sorry, I take that back - it does have a caller, I grepped for
-".restart()", vino calls it in enable_vblank:
+On Mon, 31 Aug 2026, Eric Biggers wrote:
+> I'm not currently planning to make the crypto library expose AES
+> functions that take raw keys, since computing the AES round keys is
+> fairly slow and most users use their AES keys multiple times.  So in
+> this case I guess keep planning to use the sequence that is already
+> supported: aes_prepareenckey() + aes_encrypt() + memzero_explicit().
+> For CTR mode, use aes_prepareenckey() + aes_ctr() + memzero_explicit().
 
-    h.restart(Delta::from_nanos(interval));
+I'll drop the rest of the AES from this patch and leave the one
+remaining caller, the HDCP 2.2 dKey derivation, a single ECB block on
+aes_prepareenckey() + aes_encrypt() + memzero_explicit()
 
-I'd like to keep it for v4 or does expires-v2 change it? If the
-concurrent-start race is fixed there I'd rather rebase onto that than
-carry something that races
+> But if you're using either key multiple times you should call
+> aes_prepareenckey() just once and cache the result, as that is what it
+> is for.
+
+
+Thanks for the review.
 
 
 Mike
