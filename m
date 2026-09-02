@@ -1,41 +1,42 @@
 Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA801429000
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Sep 2026 23:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91E5443A88
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Sep 2026 23:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788390133; cv=none; b=K5amh2uAd3QpmdfvuJHmihFzMoRLCQB4CUr84TBlILyD6Pnn75tPdU5XVVmuE1UFDXPA95Bgzs1sQk8TmrAePSN0gTXi9WjiddpqBNpKSOZptQA23Uqt157L7XugXBmmVATHpCQ4Vo+P4Mh6pbQIqgKDPBL8vkW7V/lvo5Hp98s=
+	t=1788390133; cv=none; b=Y/ag4Jwme4wPZ0NyaSv9PtbI5Pc8ST7TTUXrG40dO2zTw+r/uq43yyDPDCHzpKPHp7+rkG6UiMzNGT1IR9F7B+vvNcH7j8QqG1soctB16tT8n/0mz55eZLkAfKesAK4OUlVSTk/XsabR2ORajzNu6wpgkSoSn9ZP9kCw1E/BOfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788390133; c=relaxed/simple;
-	bh=nc2dY/Fz8fnYk1jCgiVliPMUCfhD5G60Nz9Ipye79EA=;
+	bh=7SkLQeSCrqJzmRUe8v/fTPLmBIbKJHPGhvW+Q+UyxTw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=p8m7Nev3ms3soCvO6ojJxZRhxX5+jpCIKBAPo4ED+0Sm5vgv2rKtrqV20bsfwA48anFOiAKGiZlmgIyhT6li+YMRw0VpHAtAaxecccHgkIZT1U1DmjeNYEUIYYfOx25+82bN6zPJbcYnhXyEdrB06E5HHYSyco8JGk/ECSgGSvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=RV3vYDnz; arc=none smtp.client-ip=185.67.36.66
+	 In-Reply-To:To:Cc; b=ecyy0UuuVVyDJwxGxNxFeF3/G80fqGBy+p0leLzRq2NkbI+tptx+pMSERQ3IUxL9jUaRa+6FISeQPYhuaB4SVJbLn8XpdI+Ggpjir5cbWKhqi0DHASwFjyDsawy0vymD+/0xkDYQM6ZtJygSh1n8oiBbiw73BiQJp4dg0GDnlRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=UEdzpjt6; arc=none smtp.client-ip=185.67.36.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="RV3vYDnz"
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="UEdzpjt6"
 Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 126F9240101
-	for <rust-for-linux@vger.kernel.org>; Thu,  3 Sep 2026 01:01:50 +0200 (CEST)
+	by mout02.posteo.de (Postfix) with ESMTPS id C3B5124010B
+	for <rust-for-linux@vger.kernel.org>; Thu,  3 Sep 2026 01:01:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1788390110;
-	bh=dliiXrxPdZaqEWSPrjnqzj5G7PTnfa8DoW08sOCl2Wg=;
+	s=1984.8680eb; t=1788390114;
+	bh=DS6qpgDX8qco42mjPefdLfeYY7FJeETuxBnMcp6BSmw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=RV3vYDnzkv9BmE0OHYPBdiV1Yow+MFbVw4hQYYJiSMY8mKbpbgPuGavQsNU15iS90
-	 6F2t+bUds+25VbmfDk9dcOz2OPUhLl1VuCZ886bw6H5QTu3ZsFs7XFC0wgIJn9dcKj
-	 bKLGP+8mMTCDJUH7MKqkUGVS1cOgIK7O5GciHzNVePBEAdqkTlwf30KrscT3MngiHf
-	 U+ny9RUsDWtZC1Xecp5F1SkU9CgChpOG9R0hlCG76QUEs641BXanKkgtKi943yZZJW
-	 a92y5LWeRacmR1nP2FVamsIDOk7pYJq7zKatzRW3facnbNlLPiPf4ZRI8y7V8RqeBi
-	 AuvNg4Ngm+xiQ==
+	b=UEdzpjt6py60EOE5rxC4G4BBmbk+VSNNMKUDUbJmccorRD2HJIMZOFUBK58+RWNLu
+	 qv7Ke3JPNiAXLdU4Mu1bx5fKMzUz92iEub1aRaCyX6FN1uWOTi8SOO6j1BCJiOphU9
+	 7Dy/hu4wy6YeUDS4dvL4c/rYYBzh/rRSVXAC//5KswVc9oc62cG0om4rNVD6H2CO3R
+	 FlD2XE+PQMcgG3jKie+8/XEPXQVhTBwBSb3vKnVM0EbX47/Tie7r+zNjy4I+Xp1Ber
+	 78u5W6Uk3iD5hKsGvo3kJ5ZegsfNZ9pZXkgFpeKYlEbObo63U37F3dLK31/596bCVG
+	 vAfHSWZEA/lbA==
 Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4hZysQ5DH9z6v14;
-	Thu,  3 Sep 2026 01:01:46 +0200 (CEST)
+	by submission (posteo.de) with ESMTPSA id 4hZysW2PN3z6v27;
+	Thu,  3 Sep 2026 01:01:51 +0200 (CEST)
 From: Markus Probst <markus.probst@posteo.de>
-Date: Wed, 02 Sep 2026 23:01:48 +0000
-Subject: [PATCH v24 2/4] rust: leds: add Mode trait
+Date: Wed, 02 Sep 2026 23:01:53 +0000
+Subject: [PATCH v24 4/4] MAINTAINERS: rust: leds: Add rust abstraction
+ entry
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,7 +45,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260903-rust_leds-v24-2-8d9e4c04db69@posteo.de>
+Message-Id: <20260903-rust_leds-v24-4-8d9e4c04db69@posteo.de>
 References: <20260903-rust_leds-v24-0-8d9e4c04db69@posteo.de>
 In-Reply-To: <20260903-rust_leds-v24-0-8d9e4c04db69@posteo.de>
 To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
@@ -67,21 +68,21 @@ To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
  Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5626;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=669;
  i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=nc2dY/Fz8fnYk1jCgiVliPMUCfhD5G60Nz9Ipye79EA=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqmKrUUIyzFnksKSeq2H+vbI8EEfFrk+x/t4DAf
- 9wuePY1qYqJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCapiq1BsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9Kx+Q//ZCsdlEmf751hQpQoe3p9yL9laymOpCi
- og+VoY/K9iYbf0jTZcYmGcquPWLV/Mffu9bon8KP0PbSmvXD3VSnf2OMAsY7P/SQC/Ds+UXEx/y
- Z3ElpyzmPLpqhiVICu23pPWMD9GUmgDsBE8hj6Sp4hw8NbXDCk8JEpGbmfEzErcVfOBylJFAynH
- VvUcKe726jpf/DVl1FIsWrhxMk5BkaBLbwiZRiZXCJThUHaCx9HyzZ30w3TyjlAlvjiNloOc+hv
- V4qzSQPwXFBAgtvnPKo2MOUlnKlmQKCh9wQAya4JI2jHKyeyNyB81G8Ab7v8IspT/ngx5V37CWr
- 0goo5e1GAU3a/Hg0dVaFQqvi/lKgNCFkEwZCfs4dazAwp6br9VCbz5VKiExrHpMToIrz0q5HU+3
- EEMioMKvOCnKO9CMCvq//YfwBkOKKmwNnk8Ff/fLsBtW+lzg5UMIKwSBOL2/tb8efPiKT5ueLzg
- /rESf1plWc/EEtzrtYX0iWI5AJ41TfYw7e3MP2Ok0sqQj6hWPjR5f4XT7sKqN1YxhWh48Rtn0PU
- N1ZTPDRLogwWrQiapxZCUMv9A3mSmCSOAkgh7mkK3XP7X9EhcuGJwObep6uh8s850Zjp3xogpzJ
- p0X0fqwaYDlBdr/xRgyoreBpSKqoOrnGXTUZe9fnLJhgCbM0/IP4=
+ bh=7SkLQeSCrqJzmRUe8v/fTPLmBIbKJHPGhvW+Q+UyxTw=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqmKrVFNUTKBO+qqxCHOS345xh461nuIx3G/L91
+ 9odmbmAXqOJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCapiq1RsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9LpJw/+JYgaAGOh/Fyz0fyHjMHC0EMxfyx2Ozq
+ IsMSz8vhJWDg+2LTjNfWMQnEFGoWIY9xnJzZiD2/3qQioEAvNqVykdN2AygrntbD/7j7+VM28He
+ EyphFG0KFwcpvGGkvtasdSGhzWxsz4D27Vi5nXi7068NvAz/YlNd/ytMRShOGuyFnilGHuHmtvg
+ wuzrZuMsZLhVT8TQ41vK5xe+q4ACL995hkl/nItsqjChSXnhblPitUb9glrhj59ybMj19Tw+KTt
+ 0bpHnlBm9X59Y2z0s23PTe9QJMfgdaqd8wMeyP/ZEayIAdBfRPYIo/qYuMqgNpvSYIiCnZ9vW5M
+ YChHrFAYlVEbA5gUex+V1wyOciqnw/Sn71uos4duHRIuhP6e5Sxw15oQ5WlBY5zDH4TXjub6t2h
+ ziUdls/tRB9RAZGi5coFA241/8HEdPwND3HvKj36x81lVckvGa5q7cDRl9DVSOcilLLnM+G4YJc
+ co0AHGnpg7YBJA1wj2kMtsH1iqVuZh+BCJFZON/DUhpZIN7OMdye3gyGFbUzjsI4cQMl3C+ehLn
+ 1GdaGz0U6S7vKosOrnKJ3lx0r0SVZIxH9maWqt+4lpERC8nndmshkPLraHkD4LkHHphBxaVSHnF
+ xNXwYwvJ0JyQKyilL+O1IsiCCBmvKZn/zUYw2ijTsXf01nPBR6VA=
 X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
  fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
 Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
@@ -127,168 +128,32 @@ Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
   aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
 OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-Add the `led::Mode` trait to allow for other types of led class devices
-in `led::LedOps`.
+Add self as maintainer.
 
 Signed-off-by: Markus Probst <markus.probst@posteo.de>
 ---
- rust/kernel/led.rs        | 27 +++++++++++++++++++++++----
- rust/kernel/led/normal.rs | 22 +++++++++++++++-------
- 2 files changed, 38 insertions(+), 11 deletions(-)
+ MAINTAINERS | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/rust/kernel/led.rs b/rust/kernel/led.rs
-index 596975e103b8..5d7e6d08ad2a 100644
---- a/rust/kernel/led.rs
-+++ b/rust/kernel/led.rs
-@@ -32,7 +32,10 @@
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3a19da74d00c..54931e850570 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14795,6 +14795,14 @@ F:	drivers/leds/
+ F:	include/dt-bindings/leds/
+ F:	include/linux/leds.h
  
- mod normal;
- 
--pub use normal::Device;
-+pub use normal::{
-+    Device,
-+    Normal, //
-+};
- 
- /// The name of the led is determined by the driver.
- pub enum Named {}
-@@ -161,6 +164,7 @@ pub fn name(self, name: &'init CStr) -> Self {
- /// #[vtable]
- /// impl led::LedOps for MyLedOps {
- ///     type Bus = platform::Device<device::Bound>;
-+///     type Mode = led::Normal;
- ///     const BLOCKING: bool = false;
- ///     const MAX_BRIGHTNESS: u32 = 255;
- ///
-@@ -182,6 +186,11 @@ pub trait LedOps: Send + Sync + Sized {
-     #[allow(private_bounds)]
-     type Bus: AsBusDevice<Bound>;
- 
-+    /// The led mode to use.
-+    ///
-+    /// See [`Mode`].
-+    type Mode: Mode;
++LED SUBSYSTEM [RUST]
++M:	Markus Probst <markus.probst@posteo.de>
++L:	linux-leds@vger.kernel.org
++L:	rust-for-linux@vger.kernel.org
++S:	Maintained
++F:	rust/kernel/led.rs
++F:	rust/kernel/led/
 +
-     /// If set true, [`LedOps::brightness_set`] and [`LedOps::blink_set`] must perform the
-     /// operation immediately. If set false, they must not sleep.
-     const BLOCKING: bool;
-@@ -194,7 +203,7 @@ pub trait LedOps: Send + Sync + Sized {
-     fn brightness_set<'bound>(
-         &self,
-         dev: &'bound Self::Bus,
--        classdev: &Device<'bound, Self>,
-+        classdev: &<Self::Mode as Mode>::Device<'bound, Self>,
-         brightness: u32,
-     ) -> Result<()>;
- 
-@@ -202,7 +211,7 @@ fn brightness_set<'bound>(
-     fn brightness_get<'bound>(
-         &self,
-         dev: &'bound Self::Bus,
--        classdev: &Device<'bound, Self>,
-+        classdev: &<Self::Mode as Mode>::Device<'bound, Self>,
-     ) -> Result<u32> {
-         let _ = (dev, classdev);
-         build_error!(VTABLE_DEFAULT_ERROR)
-@@ -219,7 +228,7 @@ fn brightness_get<'bound>(
-     fn blink_set<'bound>(
-         &self,
-         dev: &'bound Self::Bus,
--        classdev: &Device<'bound, Self>,
-+        classdev: &<Self::Mode as Mode>::Device<'bound, Self>,
-         delay_on: &mut usize,
-         delay_off: &mut usize,
-     ) -> Result<()> {
-@@ -283,6 +292,16 @@ fn try_from(value: u32) -> core::result::Result<Self, Self::Error> {
-     }
- }
- 
-+/// The led mode.
-+///
-+/// Each led mode has its own led class device type with different capabilities.
-+///
-+/// See [`Normal`].
-+pub trait Mode: private::Sealed {
-+    /// The class device for the led mode.
-+    type Device<'bound, T: LedOps<Mode = Self> + 'bound>;
-+}
-+
- mod private {
-     pub trait Sealed {}
- }
-diff --git a/rust/kernel/led/normal.rs b/rust/kernel/led/normal.rs
-index 816db7c57689..25190486a62d 100644
---- a/rust/kernel/led/normal.rs
-+++ b/rust/kernel/led/normal.rs
-@@ -6,11 +6,19 @@
- 
- use super::*;
- 
-+/// The led mode for the `struct led_classdev`. Leds with this mode can only have a fixed color.
-+pub enum Normal {}
-+
-+impl Mode for Normal {
-+    type Device<'bound, T: LedOps<Mode = Self> + 'bound> = Device<'bound, T>;
-+}
-+impl private::Sealed for Normal {}
-+
- /// The led class device representation.
- ///
- /// This structure represents the Rust abstraction for a led class device.
- #[pin_data(PinnedDrop)]
--pub struct Device<'bound, T: LedOps + 'bound> {
-+pub struct Device<'bound, T: LedOps<Mode = Normal> + 'bound> {
-     #[pin]
-     ops: T,
-     #[pin]
-@@ -20,7 +28,7 @@ pub struct Device<'bound, T: LedOps + 'bound> {
- 
- impl<'init, S: DeviceBuilderState> DeviceBuilder<'init, S> {
-     /// Registers a new [`Device`].
--    pub fn build<'bound: 'init, T: LedOps + 'bound>(
-+    pub fn build<'bound: 'init, T: LedOps<Mode = Normal> + 'bound>(
-         self,
-         parent: &'bound T::Bus,
-         ops: impl PinInit<T, Error> + 'init,
-@@ -87,7 +95,7 @@ pub fn build<'bound: 'init, T: LedOps + 'bound>(
-     }
- }
- 
--impl<'bound, T: LedOps + 'bound> Device<'bound, T> {
-+impl<'bound, T: LedOps<Mode = Normal> + 'bound> Device<'bound, T> {
-     /// # Safety
-     /// `led_cdev` must be a valid pointer to a `led_classdev` embedded within a
-     /// `led::Device`.
-@@ -107,17 +115,17 @@ fn parent(&self) -> &'bound device::Device<Bound> {
- }
- 
- // SAFETY: A `led::Device` can be unregistered from any thread.
--unsafe impl<'bound, T: LedOps + 'bound + Send> Send for Device<'bound, T> {}
-+unsafe impl<'bound, T: LedOps<Mode = Normal> + 'bound + Send> Send for Device<'bound, T> {}
- 
- // SAFETY: `led::Device` can be shared among threads because all methods of `led::Device`
- // are thread safe.
--unsafe impl<'bound, T: LedOps + 'bound + Sync> Sync for Device<'bound, T> {}
-+unsafe impl<'bound, T: LedOps<Mode = Normal> + 'bound + Sync> Sync for Device<'bound, T> {}
- 
- struct Adapter<T: LedOps> {
-     _p: PhantomData<T>,
- }
- 
--impl<T: LedOps> Adapter<T> {
-+impl<T: LedOps<Mode = Normal>> Adapter<T> {
-     /// # Safety
-     /// `led_cdev` must be a valid pointer to a `led_classdev` embedded within a
-     /// `led::Device`.
-@@ -210,7 +218,7 @@ impl<T: LedOps> Adapter<T> {
- }
- 
- #[pinned_drop]
--impl<'bound, T: LedOps + 'bound> PinnedDrop for Device<'bound, T> {
-+impl<'bound, T: LedOps<Mode = Normal> + 'bound> PinnedDrop for Device<'bound, T> {
-     fn drop(self: Pin<&mut Self>) {
-         let raw = self.classdev.get();
-         // SAFETY: The existence of `self` guarantees that `self.classdev.get()` is a pointer to a
+ LEGO MINDSTORMS EV3
+ R:	David Lechner <david@lechnology.com>
+ S:	Maintained
 
 -- 
 2.54.0
