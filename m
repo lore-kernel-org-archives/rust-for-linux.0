@@ -1,149 +1,261 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013025.outbound.protection.outlook.com [40.93.201.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6EDA2853F3;
-	Wed,  2 Sep 2026 00:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326B27080D;
+	Wed,  2 Sep 2026 02:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.25
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788308130; cv=pass; b=V5N5WyIzvyVwE+I7AASPtMoHloVGuKFmSSduYt6ZgPWuUR+Hy8kfx7TOHtbqJnSD9OYmu3T+NNegF3MgTdu6xf6+LuquGJLoYtTjN/prGXcIrvsC5IE45Xwx2UGrM1Gf66oq6jpuIt7ctQimIVXmGd5/izkaDbl1jYwT7j5LgP4=
+	t=1788316739; cv=fail; b=KqblfMEU2zwh9qTBtijbliOY0RTt6GohTMy6X1J/P0usokbG7eb/e6SpwtIAtPn05crVlvbkDfGEQ+SH6/JHkeM6bsMDqP8vxZ/bc91ux0LSgcgms7BT+r1oQknpmCpWnllg708QZnolBREws5D7QW8WzCmzQ7O8VbpcZylRgu8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788308130; c=relaxed/simple;
-	bh=d6DQ2uQ0kFbGdjs5pr9qPOg6eBztZxzWavBedhKYFNY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cu5ly/QIBjuTemOZb+6JZioJKyCkakEWiXnq82mGDlh340ckkGWcJQTTaIaUdK8zrkWDzv1j+I52Da/MBb+ZK7CqRACwMP+qt3DPTmANVIM700wF6uq6g4XV35p+dZR7m6xwvC3nsZJWQQFYkn74LYUJsGBm9eRzb+q1rFYRly8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=hDRPL60R; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1788316739; c=relaxed/simple;
+	bh=yo13ZpNFlFA+G1oQ65posS+8dRSx1FbZXrnKHuzI7LI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tQbuza26HfrVukH1fSg56UeotSmjmPo4kIYKY0ZnNq9xsLq2i9BO02jPnmTsI9+2mSwcuDProIEPogEYRkOKS5xcVWNjJEGD2xGoPpa9UMggOZ257azLf6IU+IE5DG0vVsIZ+7HmNbl3sB0JIxMQElgga2taIOitx/58Ntsn8wI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gCLDlhGS; arc=fail smtp.client-ip=40.93.201.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="hDRPL60R"
-ARC-Seal: i=1; a=rsa-sha256; t=1788308059; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Sud1lIN0877KOQr2c4mj7GP84xRNZJf2RvgvS6jdjTcZXgaKFt8oMqfFXMDs0IpBVrgqhqOgSVY27KaRpKHuDt6JrfcAM+lWogZNaln0RMlSQwXCylZP+6VwMhzmLL3qhPz0K/tF67tIBZWIyg+jr9hfg8lWaxwoXMvMNWBg7Tg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1788308059; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=9v9K7xAFlRpojhSRY8CZl+bL11FYUJs3WgBmJ4SVq6A=; 
-	b=EkDloI2yC25Mr8Hpq1WUQaqYBERoRZa3yN9vaWASDogZY5OmpqqwT+e6axzTXGGPEHsPXEmMP9xXI/LT/IY7XIsHWMjqnAi9X3+V5igxoaOpGIz5oBNAY9QLgp1ATcKUfyCGI+8RiTV9EL3sYScoS8PHVXReasbbIwdxJ2BbLNE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788308059;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:Message-Id:Reply-To;
-	bh=9v9K7xAFlRpojhSRY8CZl+bL11FYUJs3WgBmJ4SVq6A=;
-	b=hDRPL60R407Og0rshUwaKg4xQlSMKK0NIlBlrIjuMCP+Ea9rjisMeis1Byk91wAr
-	BgASNV/zMDnwJN8JgvlOeTwnfSCP7FwxOgLz/MBRQddVYirwuBNyP1MiIdlRwlFE8Zb
-	G0RUGNOICvI2KidCTmglHvjqPcdKkaSWGx22Ce8U=
-Received: by mx.zohomail.com with SMTPS id 1788308056394418.9753833639205;
-	Tue, 1 Sep 2026 17:14:16 -0700 (PDT)
-Date: Tue, 1 Sep 2026 17:14:14 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Ke Sun <sunke@kylinos.cn>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
-	Alvin Sun <alvin.sun@linux.dev>
-Subject: Re: [PATCH 0/9] drm/tyr: add VM and BO ioctl support
-Message-ID: <apdqVvvsWvzfNmiL@um790>
-References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gCLDlhGS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OdbHR7n8UeEhHUYMesHw24mdRPUDpezqckYeJlzEO6gGzaU1siXfKH6l++l8ZvdQHjoH3n5XfdU8E5azDdSRDeMdA9EoV/aOAk8rAavOeIJ/xih1nS9GJR1Daptx+0GNGvUO2OqeD9UMtiy3cuW5ww2A0q3JpxAs4mJ67Je9t0PrMZkuqDFAOdzG5c3GFwfNh5kwY5Y3rHVKY4M5z0z4J02cNMp/t1Z/jpWTF7a5mNvQYBoU9H7BbK3XtInpJnpOkUos8G222P+ySno6Qxs2wzxxIyW0ZkrzQfPyzyel1L5VP89gSugEG2VvEoUK7wjHeufD3TMFFWFF1gxnKE6SHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=25QNHZrDoAwmN6v6bzfIpEyt0NU2IMviome29s5E9TU=;
+ b=PkeWh+GzoM0NVPup60kNcomtU/g7wbDtWzT5P0JKwOAHYagFWK8WoIUCcAYZzW4ptWIMByIGBr9SeciM5gRjttZsPe+5YKc2lQENcx7PMi2QnW4O+p3nV6Fv6ucGWCRQbgfBbhbd+oQqExTBuwW8JIaAgQAr/yDpQJXG9AeabCtBwRPY9W0A43mwHnuBd9A9Pxt+zvL+PNFX0krmspArbUjAWKStzAvuqKqf5D7W1sr0DVXWHtbC+VTaq7Ea6r/7VQkb756Pdk8FN4mm3x+fFWBrOafadR1pLeC1nrs+GpzPxIwkVychJqYBzmBBXvVMw8uHUACtZeRNwk+1kvhWBA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=25QNHZrDoAwmN6v6bzfIpEyt0NU2IMviome29s5E9TU=;
+ b=gCLDlhGSmAc05AaZCUh88CrgXCAILhlt5PqvAxLEqasyTSUh46VTufLMWIkZXo3b9iKKP66LvD6s0VZOytzwJxjJ4K8YeArcC2l01by+I6DApelnkrmY+Isy/mYx6PJ8wvlANT2Uy1ez5xfOUscAvLvKg5os/1kzS6uvm1/+qr4q/6PoFsOoCI9ZUkjoSEB+3TCHF4xli3g2WtmLc4j+JhIUM2+Fybizwp0hBbKr6kzX/0pFVNeXWQ5JU0qQGu6jhQ3+KpMcLCU4DMZ+GGxU1UEw0fVuQX0TqhcclvU814b0par1lGFmVV/MytXdN8tMBiSEx7q+MAfXbr1jtuCAkw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN0PR12MB5977.namprd12.prod.outlook.com (2603:10b6:208:37c::22)
+ by MN0PR12MB5762.namprd12.prod.outlook.com (2603:10b6:208:375::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.12; Wed, 2 Sep
+ 2026 02:38:50 +0000
+Received: from MN0PR12MB5977.namprd12.prod.outlook.com
+ ([fe80::d8:f725:258:2f28]) by MN0PR12MB5977.namprd12.prod.outlook.com
+ ([fe80::d8:f725:258:2f28%4]) with mapi id 15.21.0360.008; Wed, 2 Sep 2026
+ 02:38:50 +0000
+Date: Wed, 2 Sep 2026 12:38:44 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: nova-gpu <nova-gpu@lists.linux.dev>, 
+	M Henning <mhenning@darkrefraction.com>, Alice Ryhl <aliceryhl@google.com>, 
+	David Airlie <airlied@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	Eliot Courtney <ecourtney@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 05/11] drm: nova: Add an info ioctl
+Message-ID: <apdvTgAp5eGezO5t@nvdebian.thelocal>
+References: <20260828033531.1117754-1-apopple@nvidia.com>
+ <20260828033531.1117754-6-apopple@nvidia.com>
+ <DL3WXUPD5JKE.2GZ1CNJH539ID@kernel.org>
+ <DL453EFS03T6.2VGI5TJEQ52QO@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DL453EFS03T6.2VGI5TJEQ52QO@kernel.org>
+X-ClientProxiedBy: SY5PR01CA0095.ausprd01.prod.outlook.com
+ (2603:10c6:10:207::20) To MN0PR12MB5977.namprd12.prod.outlook.com
+ (2603:10b6:208:37c::22)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/288.303.58
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB5977:EE_|MN0PR12MB5762:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9001ef2-e3a8-47ba-260a-08df089b5200
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|4143699003|5023799004|11063799006|10067099003|3023799007|6133799003|18002099003|22082099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	YYsAymm4rU9H8gKDZX8321nvb7KA1/xEqIM/rM9z1h9m1Y7vgZodxeAxitQO4iC+MFa3uDkzWEj0a7Dh866jLZUYic5suoLBa24NpqYazR5EHXuwo4axo6GOeAEYuN4ONf7MMLqXiQilmJskO1kKqRufYL2+9r+FV5QYICJxKxJAC+hJgu4SS5gz0w/zNLh+9kuLmHd51p3YKdLdDX32UsIucgQtv8Z/vsxXZtrlSBF6ELZN2FNEok8WiBVJybp/IymFE+ZzC/lSCk5WJiQl5XLG612wUGLNKOx5EdpAukpR/Z5qGfWueDunTNhZfPwZyWXDvwC2rqr2m3+fUBuJsW4YWA5P367jTNbl2f1gxRuEYGqoh6e11YhqAF/nnq5NebvIuzLzbHKUAPoECK9Fl3PDEWZapKRveTh3XidrCH9ZOEygTzR8Z4tfrirXnjkCAy+G2tRGWPHDv8HfysCx2b9Tvban17fSkuLtQhQ8C6G8AML11qTX/z9JXdxJQUKfYoo/RRKAS0oo0UeSzCOCrmmNV8v50pHwUiomilSvR/EEjcb6jPwWZ50vmsYVad9YbXsZRaB+D2CKhH9FmLzMPMvs6Slka9qcj941/nEDNLUveNkhJYk8QEyKXvhuUHHr36xtfe3bPiQP29HHBFjEbp0dPhTu8l4L7i7aice2pGo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB5977.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(4143699003)(5023799004)(11063799006)(10067099003)(3023799007)(6133799003)(18002099003)(22082099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?mP9A/UZlVwpHo2PBUEUQJkuqHCF0Hnr40Lnb2Jp5r1spBQvk78eElheLQzDw?=
+ =?us-ascii?Q?Kl6Llls7IrPbfAac4Y08ItjAp0n2OauokhhPrAdJNHF8Pfl/xZ8wwVNFBZNu?=
+ =?us-ascii?Q?HZ4PLH7A2mAMYrxGvg/ADkVtKJZhetrflEO49MmE9gS8YHS/C9atBMoZDelG?=
+ =?us-ascii?Q?Q38sJxOfkIABlxuSzV2K75tOCgR3kbBxqR94Qb24uN6yZPBxeagth5t3m/LB?=
+ =?us-ascii?Q?jwRL347UJULJ71wSu1e1wzvaFq/I585j6DyNOQuP0FkA5cw5aiZLNW4yNeO5?=
+ =?us-ascii?Q?BCNL+Z/mlSxyUsbhpp48KRL/rlFv9ygpONaSBrIE/dPDAw5qHw0QQSVSshsE?=
+ =?us-ascii?Q?KdsvUOdC1423MH30UEUHmmq85JTz7PXJCJot364QqM2xv9O6G+GFQ+2b/z0F?=
+ =?us-ascii?Q?yl1aFygPsxHJCBz+uISTXFw6XSORwrUAP/i2JZc301W6C1p0Nmte2XPY2ngs?=
+ =?us-ascii?Q?O4TAu/EPD4PBtTYxePRn5FD3MY5ztFn6C9TKLaYu4OdMGtH7mx2GpmTdeNTy?=
+ =?us-ascii?Q?Zb/QgxJlFL6WUa4V3gVc9uOGrKJ/Zv55XFMyOtPPh2OnFJVXNiVwFZOd/XY6?=
+ =?us-ascii?Q?4uq+x2XuFbhlcdvm0eU4XXgoUWiATGLWX+kueozXEgOnlvSfTCMIDxie/4iw?=
+ =?us-ascii?Q?k4vL9vAKnHWEMVIsctpqbu6vfoHskxWiyEO5bkuuqOE5XQnFz6Jw/1MP83x2?=
+ =?us-ascii?Q?cRXl69oyog3A4jrLyf10v/nYWK/FxkEm7BhBcBOF25qkyrE0uDBv8EzMbks7?=
+ =?us-ascii?Q?1SjnXJHmDHl2J+YoCaewKhY5iN6S6rOLojW97RhmviZk+8S8hNJugSbB/7Jv?=
+ =?us-ascii?Q?YQR++o3WwjEGfbkkRx/Ruu9nO56hofyi6UOa4zROTAmm6Txv3CU3BZmC3jMS?=
+ =?us-ascii?Q?xG5h1vB5mEpo48F0c9c64SpEiBC92YD9ciALFsK8lzz7EJPoYqrlObVKNFDe?=
+ =?us-ascii?Q?W8jNM37ZILxElThZfW8FNVJjgYMoBjzQ8RyYkNGKcrUDHdqA0ndCDfgeckZE?=
+ =?us-ascii?Q?jXuNg1UrooEAw0/oj4pfonyYhxV6MnK1MmDOPUpxbwouVUILKY33/yyWtoZX?=
+ =?us-ascii?Q?kZ5XD57VDyYOFevG5I1ibzRGsI2DwHTMo3NpttJbjIbOnKl2smTsVe+M2Cfi?=
+ =?us-ascii?Q?+1d7o1TvwIcgUeV9mjF03hhfeF+wDfsyWMG+LKX0zu97uAwA5R/U2QdJmB6H?=
+ =?us-ascii?Q?NPJXmQlvT6p9l8HFlx9jwybF7Fm+W71c9ISLg9rA7oGet+jiD7YpI8uGH4t1?=
+ =?us-ascii?Q?VXlxC/PNq19Q2g87jaT2wQ+b/I5+P6LnWmqOq+YVcWQiSGovtAVdYSjcpEbe?=
+ =?us-ascii?Q?lZR+zVIUuJKqgqcOHeJ4N17LtHCC5uq97/MjvRWwFcbYZ0skoC0GAKdzl/9f?=
+ =?us-ascii?Q?MXlwTpwwDehra8CIutBuMLFki2FLliQY204+9a6PQ1/aFlVz4Wcgzreg6U8K?=
+ =?us-ascii?Q?C4K+wFWzqSa8Bu5Fq1vo/phjfdGPsDf+hkYZS6MEIx53/un/hHAZWQdsD0Mo?=
+ =?us-ascii?Q?gWoOSbJE2B9y2PNIEDGolvtmuCGFwyA3r1gKqWY4y1qJ/BjhyinYTvJqf1Yz?=
+ =?us-ascii?Q?6XQNdWzCM4Lssxl6IGotidcqsxe9yJv5tXFuOEfp4fDsAn4O1tOQ3Qe09sKf?=
+ =?us-ascii?Q?RVNMotNSvJ7pyrG1VbJbaH1/KFTyoCjDWuOxeU8GtarP13MWGpUQkF8EIq0Y?=
+ =?us-ascii?Q?aSTakMmLq7eA+tg6hXz5qFZeanSv8hk8ArUIuKspa+wS9duLA/+Y0idUFvYM?=
+ =?us-ascii?Q?B++uf7HI+g=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9001ef2-e3a8-47ba-260a-08df089b5200
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5977.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2026 02:38:50.0170
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pMwra0QDOGiEalRwWowkgImNLIL/zTJsMcwzjYoxA85KrInD1whq5MhPgeHbLXorFLXtV3Lj1/e4NoeRzAX0XQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5762
 
-On Wed, Sep 02, 2026 at 12:08:59AM +0800, Ke Sun wrote:
-> Add the VM and BO ioctls to the Tyr driver, aligning its userspace
-> interface with panthor. The series is based on Danilo's `drm-file`
-> series on `drm-rust-next`, and uses the existing IdPool and xarray
-> abstractions for per-file VM management.
-> 
-> The panthor IGT tests pass on an RK3588S device.
+On 2026-09-02 at 03:01 +1000, Danilo Krummrich <dakr@kernel.org> wrote...
+> On Tue Sep 1, 2026 at 12:38 PM CEST, Danilo Krummrich wrote:
+> > On Fri Aug 28, 2026 at 5:35 AM CEST, Alistair Popple wrote:
+> >> diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+> >> index 0c12ef145981..740466af268d 100644
+> >> --- a/drivers/gpu/nova-core/gpu.rs
+> >> +++ b/drivers/gpu/nova-core/gpu.rs
+> >> @@ -138,6 +138,11 @@ pub(crate) const fn arch(self) -> Architecture {
+> >>          }
+> >>      }
+> >>  
+> >> +    /// Returns the implementation identifier of this chipset.
+> >> +    pub(crate) const fn implementation(self) -> u32 {
+> >> +        self as u32 & 0xf
+> >> +    }
+> >
+> > I missed this part in my previous reply. Besides being a bit unfortunate that we
+> > have to reimplement what boot42.implementation() already gives us, I think the
+> > value is not overly useful anyway.
+> >
+> > I get the intent, architecture and implementation complement each other, but in
+> > practice we are not interested in the implementation bits, but either in a
+> > unique chip identifier or the architecture.
+> >
+> > If you look at the nova-core code you will find exactly that, we either check
+> > for a specific chip or an architecture and I think userspace will be intersted
+> > in the same.
+> >
+> > So, I think the uAPI should provide the architecture and a unique chip
+> > identifier.
+> >
+> > Before we circle back, I know that the unique chip identifier in nova-core
+> > technically contains the architecture for obvious reasons, but my point has
+> > always been that we can give the decoded architecture to userspace and not
+> > require it to know about and extract it from the chip identifier we consider
+> > opaque in the uAPI.
 
-Hi Alvin,
+This is why I removed the opaque chip-id. If it's opaque, and the kernel
+provides the architecture what information is user-space allowed to derive
+about a GPU from the chip-id? Nothing? Everything? Or everything except the
+chip architecture?
 
-Thanks for sending this series, I am still reviewing it but this is what I
-noticed today:
+Nothing seemed like the only reasonable answer, as it's always best to have a
+single source of truth and deriving everything except arch seemed odd. But then
+architecture alone, as currently defined, isn't sufficient for user-space - it
+needs the implementation in some form to derive the compute capabilities of the
+GPU amoung other things.
 
-1. Do we still need a separate pool module, since this is just for VmPool,
-could we put it in vm.rs?
+> IOW, we should not think of this in terms of the numbers/values exposed by some
+> register. All the users (including nova-core itself) don't really care about the
+> values behind the enum, how it composes and how it is related to other values,
+> that's just an implementation detail.
 
-2. We might have a problem matching panthor’s 32 VMs per file, since the
-minimum capacity of IdPool is MAX_INLINE_LEN. But maybe it will be ok to
-extend this to 64 VMs per file. But then when we drop the vm pool we
-better not rely on that PANTHOR_MAX_VMS_PER_FILE constant.
+Right, the question isn't how this information is encoded but what gurantees
+the kernel provide to user-space when it returns a particular architecture,
+implementation or chip-id and what assumptions is user-space allowed to make
+based on the results.
 
-3. Also, I am not sure, but do we need to call vm.kill() when we drop the
-vm_pool? Does it depend on the vms being activated? And if they have been
-activated, should this go in Vm::drop() instead? 
+> All users care about is that they have an architecture and chip identifier to
+> compare against. I.e. there's no value letting userspace think of the chip
+> identifier as architecture/implementation tuple, since the implementation value
+> by itself is rather useless.
 
-4. Could you use dev_err! instead of pr_err! please, we tried to convert
-over to that in the booting series.
+Except the architecture/implementation tuple is exaclty what user-space needs to
+eg. figure out what SM to compile for.
 
-5. We should be able to compile each patch in your series separately (to
-help with future bisecting) so use the annotation #[expect(dead_code)] for
-patches early in the series and then remove it in patches later in the
-series when you actually use the code.
+So yes, the implementation value by itself is rather useless, but so is
+the architecture. That doesn't imply that providing it as a seperate value
+is useless. I've done some research into our current SW stack to see how
+implementation is used today and it's basically used to subclass each GPU.
 
-6. It would be nice if you could give a link to a repo where you have
-applied all the prerequisite series and fixed conflicts. Could you still
-update the branch from:
-https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/64
+For example the base arch value is used to fill in a *lot* of static information
+about the GPU based on architecture, and then the specific implementation is
+used to over-ride or fill in yet more static device information. In fact in
+userspace it seems we very rarely look at the architecture in isolation from the
+implementation, so in many senses providing an arch value on it's own is also
+rather useless.
 
-Thanks,
-Deborah
+As a concrete example the way this is currently used, in both CUDA and Mesa, is
+a lookup table for arch+impl to figure out eg. what SM version a chip supports.
+So having architecture seperately decoded but a chip-id instead of a seperately
+decoded implementation would mean user-space just has to look at chip-id for
+most things and ignore the architecture anyway.
 
-> 
-> Signed-off-by: Ke Sun <sunke@kylinos.cn>
-> ---
-> Alvin Sun (9):
->       rust: sizes: add SZ_4G constant
->       rust: mm: add `task_size` helper
->       rust: sync: arc: relax `ForeignOwnable` for `Arc<T>`
->       drm/tyr: add per-file VM pool
->       drm/tyr: add user and MCU VM specifications
->       drm/tyr: add BO creation and lookup helpers
->       drm/tyr: refactor new_dummy_object to use new_object
->       drm/tyr: add VM-related ioctls
->       drm/tyr: add BO-related ioctls
-> 
->  drivers/gpu/drm/tyr/driver.rs   |  14 +-
->  drivers/gpu/drm/tyr/file.rs     | 394 ++++++++++++++++++++++++++++++++++++++--
->  drivers/gpu/drm/tyr/fw.rs       |   8 +-
->  drivers/gpu/drm/tyr/gem.rs      |  41 ++++-
->  drivers/gpu/drm/tyr/pool.rs     | 102 +++++++++++
->  drivers/gpu/drm/tyr/tyr.rs      |   1 +
->  drivers/gpu/drm/tyr/vm.rs       | 158 +++++++++++++++-
->  rust/bindings/bindings_helper.h |   1 +
->  rust/kernel/mm.rs               |   7 +
->  rust/kernel/sizes.rs            |  12 ++
->  rust/kernel/sync/arc.rs         |  12 +-
->  11 files changed, 714 insertions(+), 36 deletions(-)
-> ---
-> base-commit: 0b0aa9dcf17b6cffa9e325ff641e843b20d40c31
-> change-id: 20260901-tyr-ioctls-f10ef0dcbfa6
-> 
-> Best regards,
-> -- 
-> Ke Sun <sunke@kylinos.cn>
-> 
+For example Mesa currently has this to figure out SM version:
+
+static uint8_t
+sm_for_chipset(uint16_t chipset)
+{
+	if (chipset >= 0x1b0)
+		return 120;
+	else if (chipset >= 0x1a0)
+		return 100;
+	else if (chipset >= 0x190)
+		return 89;
+	// GH100 is older than AD10X, but is SM90
+	else if (chipset >= 0x180)
+		return 90;
+	else if (chipset == 0x17b)
+		return 87;
+	else if (chipset >= 0x172)
+		return 86;
+	else if (chipset >= 0x170)
+		return 80;
+	...
+}
+
+And to be clear we don't care about the specific encodings in this example. The
+point is the SM version can't be looked up from architecture alone, it needs the
+implementation as well and if the only way to get that is from opaque chip-id
+that's all user-space will look at. Eg:
+
+static uint8_t
+sm_for_chipset(enum chip_id chip)
+{
+	switch (chip) {
+		case NOVA_GPU_CHIP_GA100:
+			return 80;
+		case NOVA_GPU_CHIP_GA101:
+			return 86;
+		case NOVA_GPU_CHIP_GA102:
+			return 86;
+		case NOVA_GPU_CHIP_GA10B:
+			return 87;
+		...
+	}
+}
+
+So I'm ok with providing either a decoded architecture and implementation
+xor an opaque chip-id. Or alternatively maybe architecture includes the
+implementation (ie. we rename the opaque chip_id to architecture). But treating
+the implementation and architecture values differently and only providing one
+directly doesn't make much sense IMHO.
+
+- Alistair
