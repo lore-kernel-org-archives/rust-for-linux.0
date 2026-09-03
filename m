@@ -1,175 +1,254 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011003.outbound.protection.outlook.com [40.93.194.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CEE4334CA
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Sep 2026 23:35:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788392138; cv=none; b=Em3WGcvpKyy3q4qMf8Wpy1sZuj9HIC4M0K3S272NMdPs+zhUlX7q6eR8+B792E4QBmQnMZ3ELaop9tWyaI5nkgxPosQToIqvqJuLNQlbpE0OcPTAMClg5XEfjLGdKthSGVwi2BJ5YIRXFPwP1w4j7ROlvv+bExHjUCP3bjj1pW4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788392138; c=relaxed/simple;
-	bh=k7GfVBlRb5bcgQ9UooQpUkhXfI+GUfPy4e0VTkhwWbc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dzdhqTqXMST/rpban5F4eL3YqPHUohDYGDKeo/OY+R/0oB+Dtp+Q7QnMmY96tiD3RCGVRDP2CRpKtquqwV07SVW9GWvLtb0zdLDZApLFdR+10+lxCAiaos/oNETZTbgBtfcwRNwGE+6anukonD3/5r1hI+16R0zTc8E7GVrGDHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=YXEiw460; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE131F0E29;
+	Thu,  3 Sep 2026 01:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.3
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788397988; cv=fail; b=QVKAknNc04yVRg5sVrANrGs28vd1UVzmF19RRCFgibtDSW6xqWheSPVuXYDcrtUegV/ODOUhKgHYMZANw1yRjK0kTPCxKsGAlj2U+cH+URQQOeqG0CAYaMA7E3ayy932kZRoRy0GhxWjihdAgm6yE+zRAGT+HW/heshLUMMYIX0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788397988; c=relaxed/simple;
+	bh=L0ya/b0KNF+8uk3Hh3bdW5t/6m9LdZBZDSc/kZBDG5c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=p02BC83Q37iHudvZwwIEXnYk/JrjeQuOWRy0PeuHdPyGZoGaVhIsFPw5Gj8uxnYluYEo2T8btSG0PHUrCau2dgg/CRrYxAv9uDHXE8UMXnlZzTn+q+rlvqPmaTHNfwtgMf7nqIT2hiSBNRzvYzB9DduYxclGHvB9Hl9KvlhI57I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ZzaGofF7; arc=fail smtp.client-ip=40.93.194.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="YXEiw460"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 56F0C24002B
-	for <rust-for-linux@vger.kernel.org>; Thu,  3 Sep 2026 01:35:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1788392130;
-	bh=k7GfVBlRb5bcgQ9UooQpUkhXfI+GUfPy4e0VTkhwWbc=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=YXEiw460Aoed4qTIiS0ck9JTaICCtHZWSAULPOgNLnRiiyifMxrSIs1PFKEBi1Wgv
-	 e64LLAC9WTLa5RtDbuYMOxHhAR5MkH/WrYoO2erdkgNxjkTmDhjMNql4e2q/GBgPC3
-	 C3jaS0jl97iANrw4y0UeUDk3Ti6c71vkltnYi9FYO+/jT7K2QT17MCmM/rLMy4o05w
-	 jkau0Vlbj6x+3+PPVwpYcwfijOWn3WpUK2Ioi0Qpm8uvA0ZaHgn2kUMjHeg8XTzs+3
-	 5FpPGpYifo5ma8Cn0Bp+Ktlvji29Wghke8l2Bhsk3lwLAse6k2dFvP7aONa4a7mjpo
-	 FRG0SE7FnUypw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4hZzcG5WPSz6tsb;
-	Thu,  3 Sep 2026 01:35:26 +0200 (CEST)
-Message-ID: <6c57e08a5f4aa9096711d14d82ece19fb68c893f.camel@posteo.de>
-Subject: Re: [PATCH v24 0/4] rust: leds: add led classdev abstractions
-From: Markus Probst <markus.probst@posteo.de>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman	
- <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, Miguel Ojeda
-	 <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo	
- <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- "Rafael J. Wysocki"	 <rafael@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?=	
- <kwilczynski@kernel.org>, Boqun Feng <boqun@kernel.org>, Daniel Almeida	
- <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=
- <work@onurozkan.dev>, Ira Weiny	 <iweiny@kernel.org>,
- rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Date: Wed, 02 Sep 2026 23:35:29 +0000
-In-Reply-To: <20260903-rust_leds-v24-0-8d9e4c04db69@posteo.de>
-References: <20260903-rust_leds-v24-0-8d9e4c04db69@posteo.de>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-t8sgIOQhMX0s1O7FUGUm"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZzaGofF7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=A/GZnve6ORx4L5TlvLa0ZBuOdijsuru71bRlp32u0Er59PmpGGAYsaewSVrl4jiNZwT2kD6VNTsCeKk9dDKgxxwOeu3stQ00ZXZzbc+4xbNy+eU9PCv7Wz0eNcIvpRReabt9XqIVY7914xh6txYIyS3Ou8TqGoaOByMxbL6Gpm5xpdKg5Z6uR+5f3cssKYyvgf545GWSH2i2wj5oC6FQOy8UP41FLWWl+hm7bzMgtcV9wmpqo7Q/k2ZCUe+MQdK2PHtb3WsNZjNx4j02Lgh6IihPM9im1u+1a+HEMbUmvelUYkvIciuA/OJ3LFggyGRdUyKC0+DKPX15D/ADULs4Mw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2EFveCLKy5rjMBBS6tdQVl0f1jLMnbLouzK/GyaM09w=;
+ b=JT5UBYTIlX7PAPjzGi1exUUomO3cz5ooWU/WdZ55avt0qP/7l0BjhaaqIjQO2Epr1yWfL9H7gA6sUy+vmUQBD5WO5O14rIiRauMT6yd9ZcNx4TvRFMkgLOI+TWp5SlA4+bCE5i+I758imQyupVEQmY/cNQ5m1h3ZIiw1HbLIjyIaB3pyaspxEnsr32JFiacnbS4rwmCCTxQM1+2d8ipTa+/AYoyd9GW9YsuKNolC18/4XmJKrqoWEvdC9rUeuzOESopM9GOa1gPfC7/8Y/OcjV6sm/9JhXhYwM9VMc7kdagHoSu/Qq06GfS15MkgOGRk50hZZT1EeaTU4P7E1S8xBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2EFveCLKy5rjMBBS6tdQVl0f1jLMnbLouzK/GyaM09w=;
+ b=ZzaGofF7tFq3uEFcQEJamEVRnaCZP7zb8PRQU4FpmlB29KcG3nJUguAzJ7qQCjLD1H3/JIg1l0bYu65ONqvgO/qRhjjQEGnw1Khbu3qLX3J/sB+7kzJTBuseaNO67sMBepdT35Js5jDXICRKtVg6Wq8yRrNJpwyRUIlQplQouut96ZCmpGNgbGGhoL/uITWtq4hjFEa6nW8lO0oYNxqrHGjvTpm40nB/B4TPuYBXk7Pt5YDKonJNRNuPoOpaXF8npWHnI/GpKJ9Y9I+Gj8MSUiFO3su/EvmavFn+9ASF3wRUPL/63ySNkNGUkDuLHwLwZuTyDUxeMGQ5qB4ZRwaflQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN0PR12MB5977.namprd12.prod.outlook.com (2603:10b6:208:37c::22)
+ by CH3PR12MB8259.namprd12.prod.outlook.com (2603:10b6:610:124::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
+ 2026 01:12:57 +0000
+Received: from MN0PR12MB5977.namprd12.prod.outlook.com
+ ([fe80::d8:f725:258:2f28]) by MN0PR12MB5977.namprd12.prod.outlook.com
+ ([fe80::d8:f725:258:2f28%4]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
+ 01:12:57 +0000
+Date: Thu, 3 Sep 2026 11:12:51 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: nova-gpu <nova-gpu@lists.linux.dev>, 
+	M Henning <mhenning@darkrefraction.com>, Alice Ryhl <aliceryhl@google.com>, 
+	David Airlie <airlied@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	Eliot Courtney <ecourtney@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 05/11] drm: nova: Add an info ioctl
+Message-ID: <apioGUDamrCur_oR@nvdebian.thelocal>
+References: <20260828033531.1117754-1-apopple@nvidia.com>
+ <20260828033531.1117754-6-apopple@nvidia.com>
+ <DL3WXUPD5JKE.2GZ1CNJH539ID@kernel.org>
+ <DL453EFS03T6.2VGI5TJEQ52QO@kernel.org>
+ <apdvTgAp5eGezO5t@nvdebian.thelocal>
+ <DL4QCAZXM8EU.2K8MLAM00VNTX@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DL4QCAZXM8EU.2K8MLAM00VNTX@kernel.org>
+X-ClientProxiedBy: SY5P282CA0187.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:249::8) To MN0PR12MB5977.namprd12.prod.outlook.com
+ (2603:10b6:208:37c::22)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB5977:EE_|CH3PR12MB8259:EE_
+X-MS-Office365-Filtering-Correlation-Id: d993d339-382e-4197-e59a-08df09587d35
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|376014|7416014|1800799024|6133799003|4143699003|56012099006|10067099003|11063799006|3023799007|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	lNfCda2McWfe5O/zBCvx6HeZJ1OKNXLrq7bRJgeokjabJhyJ03WfFY/MCeXe7d5t3EcAL+Crf8KPmIF4OHT6ee3bQdOTqVPe8IuRx6Ok80zzo7d4p+I/larcMMUdnWuMS1so3polyZtjrHkFoTRkfZuIc+UDfj+LSEmzjZJHTW1JZwsG7JNTFbglwdFHH+ZXZgFV7kDPrKpIKBnvDBD9gziq3XgOdhjwji0hCipl0aKN5IWmpH1N7XIwrSfMf8+mbiKEw2DmLYknQhtkWMz9AzPTEtceqD5y397vxKpH8L9aORfV7Ct0RAamXBVamt+WicxY9twK4PfmtBgHJ9DR5kMhC6Vl/Z+8Ogdhc13DJh2iTYeP8iizCgdiDmb1CUjBqxiLbZ4m5y2i+AeP9b7o+xCab8NPi0pXqf041K1NSg8Eq1xy9zUxaLLDLxeGaAiULF1AF7KARZaP7KlY/MsgCAAujBHrdfKvM6cExyywWOhUM1dCifDAh1CbI/T5Dffa5qWcOw4R8q7rTm+jfaLTCl8xdDM6vfBh0c+BYn+FDQNHlmXPD5lJ15jPKtEbAlX6/ShWMMbgtVeA81eEDnKq/31BsHZ4Cjiq8z5ABmqNVVcYyQuQbuMlfmZzkYlC/c5KBy8iY+2zazqDLYmBc372Br/CoIQpnz1bJr7n+pgI8kI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB5977.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(7416014)(1800799024)(6133799003)(4143699003)(56012099006)(10067099003)(11063799006)(3023799007)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/J/8RJfc9Oktv5S1P475ndgLBZaaSgXRIJpz++dk8oOueBXqQLACfpmngDga?=
+ =?us-ascii?Q?m/ju20lsIm02ycdnWWYCWWDI6vEV6EkGtckXQzqSEtI4HoZblHaX0GfPanlb?=
+ =?us-ascii?Q?9sFbDscTMCKC6er0Eim91NVm5z+g/4V3UVbzaZDMD1GI1e7A/e9eLbyyqCHI?=
+ =?us-ascii?Q?jttGBEnDTHh7RNvUmWNBIDbH42Ei0Z9rkQ+dFbVGHZPkvaU8hwximjBjlE+3?=
+ =?us-ascii?Q?buMqSo6elxJzUzdN33ef5HNaApsX7F1kN2aKmmCG2d8Ss9kdKEHGJVOS3Pt9?=
+ =?us-ascii?Q?0zuOxcQNPvAfbJuTL7NNp0JuVOCHVVUiJRf3WN2OHWpfh7ERHeZd+/uHSutj?=
+ =?us-ascii?Q?hb7KpNHYecSYPhQO4PRJDZm26lSLFLosu9KgqY6x+GkAkTeC3MJ9XR9cV1vh?=
+ =?us-ascii?Q?HYIPjEdY3Dv8qG1tR0fYoPY8wDX4r3UfFrWDwwF7BPVOrHZ+2Y/I3b0E58hU?=
+ =?us-ascii?Q?s6aHPqBkaNi2+9oTFrtx13mXqeoMZPSW6xH2op477emYIFoxr09HtwP6DrQ7?=
+ =?us-ascii?Q?5FaOw0FnYjoBwL1HF+n8ePVyQ+npAeqs5kjARlcx+5+J3rApzxDi33lCmH4a?=
+ =?us-ascii?Q?g7nC9qHV7QPadSZA2JP1717XDod2T6fTPew4g6kZELx9JdlSbUeeonPt6U9A?=
+ =?us-ascii?Q?BNOA5zHtbU7Y2dRu40kL0jV3jb+vsgAZynRBFs1IXEdKscA56FB1KQ8pvz5R?=
+ =?us-ascii?Q?PIlVQrIPjdtBuxLFZYWSyOsvV3kQy0h+OHQ5aQgvtVqr+FL5CNTIDnjKIcKZ?=
+ =?us-ascii?Q?nYoTdU4iJf9sNcHFEvTA4ENLhfrKYrpaMHr2yBdY8jGFfubacJqTNnnHISrl?=
+ =?us-ascii?Q?OHTPeollW1oHZAR/lkDyxkLkt53J7JhQ5NaH1aw8nUoa3yIc/GJt7Jvgh9i7?=
+ =?us-ascii?Q?vSgh7rItPW0tHBsHQRBcs9t4UO0yksQQScCsdXWCjoRyk4vJVZPsJUjQBQRz?=
+ =?us-ascii?Q?4oLU1N4GQexpcquQovztB7Bj1RBgXppXl/KYLDl9Ycg/e9c0Hl3S9sd14Irq?=
+ =?us-ascii?Q?i68R/VGN/Uq09f/NxFdQEIJtgYGlGSmUBgeXeEDlVCB35pvH07pZKWl8VZAa?=
+ =?us-ascii?Q?y7hH3x+C4/ItG3dnJrWn3h/PNYFzlJhLhTLwRykScBU+BfTMuu/2ypSr8VkA?=
+ =?us-ascii?Q?IZmhqO5WCv9Y+32k+az+VfR8K+eYJJxm+2Ne55VLEI7l5neRsFaNYIu1UYEY?=
+ =?us-ascii?Q?E8XYuYlqOfeVTS9kOJeuFvCFiT/EE0ZyMCQD38fd5lrbo1yrMHXT7d2VvKSw?=
+ =?us-ascii?Q?tg/Q0NN/5d57rm7CYNzXA4X2VQulC1MpjsdJcDvxxRaHCwFVSg/XUV/XjPNS?=
+ =?us-ascii?Q?+iNUPnxFNAcF8ufGaGzqS5wabYibt2d9+hK+HYAvr8F5cj/okoL0Q1IuO5O6?=
+ =?us-ascii?Q?IrIHpIPeBtqF3GqopKM9fBa1l5UhCirsl22RebtfHbDgaebtuCo6mtLjeNxY?=
+ =?us-ascii?Q?qpi2OVP27qBAUF6wafxSU8UiJ2QPBEr2EdSOPanm2JBS+l/Gb2jWxQH+gcyv?=
+ =?us-ascii?Q?b3TIzFwZoQQV6rzM7JCtnI6hkvOtJRmgCt4inaqJ9gbB4BeR6aoi1v3RFfgW?=
+ =?us-ascii?Q?VcEukNyPhIayfXkE1XXdJkNo1JYLADO2r/MJs/h+GNffKOm8wKaTfTMDxqgK?=
+ =?us-ascii?Q?bJSjl3PJ+lGmWuvdgZ/oM2YBQJ+k3YZWDgTqBrsnrZMbukzV2h4O82MLSHw+?=
+ =?us-ascii?Q?6uI/Uan1q6jIoYxkDxganq4x6eyu0w5C6pOnWSMnCcHwVw/YjFwToxOO8+xi?=
+ =?us-ascii?Q?6XjsxcymSw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d993d339-382e-4197-e59a-08df09587d35
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5977.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 01:12:57.4001
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wQe/UNqHF0pbgwM4j8vaMo9iH/7VhmGhXD2V3Fo+3bYLD2HtF0ITgau9jxgiYhGKLxfIs30hE/3Q9QHpKSxEgw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8259
 
+On 2026-09-02 at 19:40 +1000, Danilo Krummrich <dakr@kernel.org> wrote...
+> On Wed Sep 2, 2026 at 4:38 AM CEST, Alistair Popple wrote:
+> > So I'm ok with providing either a decoded architecture and implementation
+> > xor an opaque chip-id. Or alternatively maybe architecture includes the
+> > implementation (ie. we rename the opaque chip_id to architecture). But treating
+> > the implementation and architecture values differently and only providing one
+> > directly doesn't make much sense IMHO.
+> 
+> I think this is you still thinking about this in terms of register encoding.
 
---=-t8sgIOQhMX0s1O7FUGUm
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+No, this is just me trying to figure out what user-space would use the
+architecture value for, as on it's own it's a pretty a useless value from a
+user-space perspective. For user-space to do anything useful it needs to know
+the implementation as well regardless of how that's encoded. It can't for
+example run anything reliably knowing only the arch AFAICT.
 
+Originally I thought the point of providing the decoded arch rather than
+chip-id might have been to allow a kernel to support chips with a known arch
+but unknown implementation, because as you rightfully point out the kernel
+doesn't (currently at least) care much about the implementation, so an updated
+user-space could maybe run fine on the same arch, different implementation.
 
-@Lee, @Pavel:
+But we agreed that wasn't desirable, so now I'm still left figuring out why we
+need to provide an arch value? The chip-id already entirely encapsulates the
+concept, so what can/should user-space use the arch value for?
 
-Hi,
+> > Except the architecture/implementation tuple is exaclty what user-space needs to
+> > eg. figure out what SM to compile for.
+>
+> It doesn't need an architecture/implementation tuple, it needs a chipid for this
+> lookup. (Although it might be questionable whether userspace should have this
+> lookup table in the first place; see below.)
 
-Regarding the leds rust abstraction patch series.
+Maybe I could've been clearer here - what I meant is that userspace needs the
+architecture *and* implementation. Whether or not that comes via opaque chip-id
+or some other means doesn't matter to me, what matters is that user-space needs
+both bits of information - the architecture on it's own is not very helpful.
 
-Lee already mentioned he will take Rust patches into his tree if
-"quality Rust-specific Reviewed-by" trailers are present [1].
-Will this also apply for any subsequent patches (e.g. bug fixes)?
+> Both the KMD and the UMD only ever care about the architecture or the chipid.
+> The fact that the chipid is defined by an architecture/implementation tuple is
+> an irrelevant implementation detail not even the kernel cares about.
+>
+> > And to be clear we don't care about the specific encodings in this example. The
+> > point is the SM version can't be looked up from architecture alone, it needs the
+> > implementation as well and if the only way to get that is from opaque chip-id
+> > that's all user-space will look at. Eg:
+> 
+> Again, it doesn't need the implementation, it needs the chipid. Which also your
+> code below correctly considers.
 
-Secondly, there hasn't been a comment on me taking the maintainer role
-for the Rust abstraction yet. If thats fine with you, I kindly ask you
-to ACK the patch adding the MAINTAINERS file entry [2].
+Right. This is what we had agreed on previously - provide an opaque chip-id
+userspace can use to lookup whatever chip info it needs. You asked for the arch
+value to be provided separately, but I can't figure out what the use-case for it
+is and I don't think we should be adding things to the uAPI that we can't even
+imagine use-cases for. We can always add it to the uAPI later if we do find a
+need, but it's much harder to remove stuff and right now I can't see any reason
+to provide it.
 
-I was told there have been cases in the past of maintainers leaving the
-kernel directly after code has been merged. To take away any fears that
-might exist, I can assure you I will take care of the Rust code.
+Also for a bit of background on this series, which I should have put in the
+cover-letter and will next time, the goal is to get a basic deviceQuery sample
+running. That's why I started with these properties first, as they're what CUDA
+or Mesa need to fully populate their device properties.
 
-If there is a patch with breaking API changes on the C side, simply add
-me to Cc and I will fix the Rust side.
+> That said, if we know that userspace will never need to do an architecture based
+> check, but always a chipid specific check, it is obviously pointless to expose
+> it in the first place. But otherwise it should just be chipid and architecture.
 
-The missing ACK on the patch adding the MAINTAINERS file entry [2] and
-the missing Reviewed-By Rust trailers should be the only blockers of
-this patch series.
+That is where I ended and what I had originally - lets just provide the opaque
+chip-id. If we provide the chipid why would user-space ever need the arch? What
+can it do with an architecture value that it can't do with the chipid? Again I
+don't think we should be adding things to the UAPI that userspace has no known
+use for.
 
-Thanks
-- Markus Probst
+But it sounds like you might actually be ok with us just providing chip-id?
 
-[1]
-https://lore.kernel.org/linux-leds/20251110134058.GC1949330@google.com/
+We already know the full chip-id is needed, so it makes sense to expose that
+now.
 
-[2]
-https://lore.kernel.org/linux-leds/20260903-rust_leds-v24-4-8d9e4c04db69@po=
-steo.de/
+> > static uint8_t
+> > sm_for_chipset(enum chip_id chip)
+> > {
+> > 	switch (chip) {
+> > 		case NOVA_GPU_CHIP_GA100:
+> > 			return 80;
+> > 		case NOVA_GPU_CHIP_GA101:
+> > 			return 86;
+> > 		case NOVA_GPU_CHIP_GA102:
+> > 			return 86;
+> > 		case NOVA_GPU_CHIP_GA10B:
+> > 			return 87;
+> > 		...
+> > 	}
+> > }
+> 
+> That looks reasonable and much better than what mesa has, but if we'd ever care
+> about the SM value in the kernel, then the kernel should be the single source of
+> truth for this value and expose it to userspace.
 
---=-t8sgIOQhMX0s1O7FUGUm
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+Yes, no problem with this.
 
------BEGIN PGP SIGNATURE-----
+> Now, in this case I don't think the kernel really needs the value, but I think
+> the value is provided by GSP through GR_INFO_INDEX_SM_VERSION?
 
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmqYsqUbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSqHkP/j1kDahD+bNy7zGi5bmk
-SwUCP3ax+M+wDLyPKgwJzttQDnoG4SRRAJ1/A4oXODqgU4xWJmo6NrzvW892+uwC
-hjqySEvrFtHiDK2HmjmkomEqm3dsvbACt8pN2mjKo3GT/6Oemr2Ty2TahpYxyU0x
-hcUdGYsJXXIErP9PDVZVqaBUuP9YlqnI2e7qZzOfMvVk2bTa7A1mm+JprpRgA1fZ
-bgmu3Gfnnv93snsYM7fCs/bfT8eFkRDJxk6FGLX86Wb2dNPV3h7lvfY/nmdBD4Lh
-6a/XbhoQbAU6JPbaES62NymOr/pBR/CF5BOOuJub+t8cphxVOlUgv5XVuT3pxDcJ
-PxmY5mLgDNfzJpB6U5ig0N8m1lg07TYbk568EbVmf0qfznmAdsshiFD0Wlay9mv1
-y0VxgzAreKx05v4gGTIyAMSXfLMouCVWUoQ6Q3S3vjGmoJiCe720ZfE/iEFYrK7k
-1ttAKeCCoEA1yII6EeMTpo2ML8dfyk7TOn5b1R3IJOM2woPsdjOzZGsAsTQ2dPtw
-8wtMPIZQujXLwdpBSoOLo1nHYdX97HgeVhHoCksW6DHx1SIjj3xMJY6wRY8Y5uY6
-mDAwb6tWsgC589yCFCn/seDy29JxjokKurmCf3eSff4JUqCWkqVTx9ob7WKNQbLk
-G1lLV7NUD+0ilfz0PXXsyyKD
-=qODc
------END PGP SIGNATURE-----
+Argh. There is, shall we say, some nuance here :-) HW have not made our lives
+easy and actually figuring out what the version that matters to user-space is
+is not as straight forward as one might like, and may well not match what the
+kernel would want (if it ever needs it).
 
---=-t8sgIOQhMX0s1O7FUGUm--
+> Given that, the kernel should query it and provide it via its GPU info structure
+> rather than having userspace invent another lookup table?
+
+It really boils down to how much static config info we want to encode into
+kernel lookup tables vs. user-space lookup tables. I don't this we should be
+filling the kernel with a bunch of static struct lookups just to ship those
+struct definitions to user-space. It seems more reasonable to put that in
+user-space, unless of course the kernel needs it.
+
+So I think your "does the kernel need this" is a reasonable benchmark for
+deciding this.
+
+As I think you're hinting at it would be ideal if GSP or some other firmware
+table could just provide everything in some nice static config table, but I
+don't think that's currently possible and looking at other user-space drivers
+we're certainly not alone there.
+
+ - Alistair
