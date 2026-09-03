@@ -1,138 +1,129 @@
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045E137DEBA
-	for <rust-for-linux@vger.kernel.org>; Thu,  3 Sep 2026 09:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9DE39E6EB;
+	Thu,  3 Sep 2026 10:09:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788427388; cv=none; b=YBD27sGL3qiZaOFPvMD5n07PdOEw5P34U/FXYO9b2addJt/D8Jv+JdmN/V7TAltYZLf8HZC/8ixwa0h/s0W4HbLpmGHqfBqmVYDUKTLTGdqWGAOMuaNnkY46kP4R9F5lrkChJnGpqzGeNj9ouLubl3TwEvepFa1uWBEq4qDNu4A=
+	t=1788430170; cv=none; b=bEZxuhh6W6GwbmSCMMcUgJQidZH7R+E3NucXooX8VpzVYreJPpSpESbFNdsCFXvIqqkmL/yoKu3bihFA5O3aszSY8dS1o99R5ziNVyfRRWxqzN9nYfSXLE2HrZMgvjeMHUVOqoHaMJuoydA/6662GYSdkA10kMF1COUHrxljGpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788427388; c=relaxed/simple;
-	bh=AjTasbakC0emVDyGI93cXu30+73h1hI9fBwV3t0u2zQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=p8PkadW9m5V1ZwrAT93X1bSFIFaRbVK+lcQODwCiWRpnuCuqIyOCscTtZBME+c5oa459BjEFLbVO59bCe3RmdtSsBIpU01s85jVoMIO3nUIKR5YIJY2byn4t/Qa73WQFUDRXwvis6WSwI4mpBKIeWc6b55hn49RuA8CJMqL7Fgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A7Y/7m9+; arc=none smtp.client-ip=209.85.128.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1788430170; c=relaxed/simple;
+	bh=ttN0vFwitDuSEU75+GbOKngPaDGgUCuptVbHGQ09HjM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I4l+yKTH5Qr7ED25ED+SaeGRCheGqbsC0M360psFQLwuuer80Xi4SAtX6QEjDEtkh9dC/obR98iogsm/uI99joqn0CONv1DPgRNYxrbphiiqhBERQdS4JH92/CY9zpgEdbM4eLnugKtqDKSjXaoH4iep/rOQ4KdxoQTqbBjHN3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LWQUiP1o; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A7Y/7m9+"
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49b0e6638e3so14703835e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 03 Sep 2026 02:23:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788427381; x=1789032181; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2V4M6o7aI0aIbt2wQz8c6XIdX3uY+/4vuQ30/skoPyQ=;
-        b=A7Y/7m9+KVG5c0xDJaqGLNjV2utZHzBFGxTEdtz16YLOuajXxJCkxO2CC/MbaHQpxk
-         nCM5qTOnEJZTIXJyh6RRPR6s4FHqSkaK+t2ohW05dlX5xQYcGQlOo6SgDQNPcDexefg4
-         weKAvFVueAy1xMlHbAMXsU4Ct/iYQY2phUXA/AAIbT0Ym6Dircv8AOCuuU6P9Jrr3XOJ
-         IAUMkEOGUQyItjuwMcqhStT57ls8L+DLONs40l5cLatMVQgL22DFOalp2UblCKJ23Jwf
-         Le0kWtU1dVwk3TsnIA3wLXZoumaLPF6CQV5rQvijTz5eKOIR2+wMF/xyOvZpgOy9e0Wx
-         +cHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788427381; x=1789032181;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2V4M6o7aI0aIbt2wQz8c6XIdX3uY+/4vuQ30/skoPyQ=;
-        b=hZmqWF/2v9qseg5ZiaCRGxilLNhInMgLWIEWinLESmg6Pt+ToaycKO3dopSpc39qaa
-         KBzl/X1WsbkTBJTWpthZaOxJnEvrF/c0ytE/NuslpAKJ0O15mUJWLlPX7sAqtLLOQDs0
-         XCdepbEfYW/QXmtbOcy08RUPraNvLrMSCVYP4ItNJjNT//KDhvEF7Wi88T7j40eCwwln
-         uG9G5/8X5Grz0MGnI6/Vox56K5FqwZ5TXoiCQqtxYa0DLwEQtMr2X7M3MF9VqdIePXAc
-         1gdtB0baJa1wy2zGndto9NLtLMzW54FIkT4flVdOGZbP05oiVFdFhzzVNwW07JpQj3td
-         G+TQ==
-X-Forwarded-Encrypted: i=1; AKwUvByfsSah5SLQo0WbZvBG6Z15WHhCWRkwNIhe75KOzr0pqiWszaeRstCM5+CystMf5/arxve5KRmBA9p1EAKGwg==@vger.kernel.org
-X-Gm-Message-State: AFuF++kvCRdrzw5LOjysPr6/UBZsyz7pEudF0keSbgD9WDfW/xc/Ed+3
-	DFC1RcaK0Z9TrCq3p3k6t0EHZ0bgPSWhjMLpwd5Qs/2slaFwUKTDRlNWFdGK+NlllZv3Ej7dK0c
-	pNVA6wWtn+lkFNwl3Xg==
-X-Received: from wmsk27-n1.prod.google.com ([2002:a05:600d:849b:10b0:49c:f0fa:d2a2])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:470d:b0:499:9240:9a1c with SMTP id 5b1f17b1804b1-49ce58363f8mr156305415e9.15.1788427380263;
- Thu, 03 Sep 2026 02:23:00 -0700 (PDT)
-Date: Thu, 03 Sep 2026 09:22:52 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LWQUiP1o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FF11F000E9;
+	Thu,  3 Sep 2026 10:09:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788430163;
+	bh=5kdCJbwtYjwdwpiipUS39ooVAOG5yIhe/eZjFNLrhWw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LWQUiP1oDc+eiSZLGgpmxHE3o0lgmGDPD6pRBrIEybso4LD+iiD7oVPSZybfQqn+N
+	 e+pXcMxx5xEbYpf67YbwHxpTwZAiunjHBdLE6XwEDjOu21gwI13462hMLlD7KpoXu1
+	 QWRUYN/6v0rGEnohmMPUkmr9WhTTqDF+ssDO4uo78F0xcMUWhcZ5IjBqTTc5Smn84h
+	 5hQn78UWMGO49s2DR4NTu5g+yo/jFVcpmyGWE4hu9r4k6lFYGrMnuaqUWqKUOaBYkQ
+	 Cgee9cf8BCGHqX8IbGo7fq9ainGRzpHhoJY1L2lMe1bbHsOVxqdbsIBTY29RrS0iEq
+	 Ozc+uYBVvmEZg==
+Message-ID: <8a73da1c-0167-4aa5-a62c-4190327685cd@kernel.org>
+Date: Thu, 3 Sep 2026 12:09:16 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAGs8mWoC/x3MQQqDMBBG4avIrB0Yo1Xaq4iLav7oUIhlIlYQ7
- 27o8lu8d1KCKRK9ipMMuyZdY0ZVFjQt7ziD1WeTE9fKU2oeNXoY49CNZ2z8W+3DXeWaUVxoBQ/ K6dcQ9Phv++G6br3rkMRmAAAA
-X-Change-Id: 20260903-binder-exit-get-work-7124b02f60e5
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1701; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=AjTasbakC0emVDyGI93cXu30+73h1hI9fBwV3t0u2zQ=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqmTxupemevviPsCLFMT6CcnH2LH8E8iUsrockM
- DwiA3zO+96JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCapk8bgAKCRAEWL7uWMY5
- RjCND/9vR7ChED/4hBm4q5t2TfodomhRsx4zcVQN0JneKFk9zWTaYYfNetZelolLb33thCYeP31
- 4J0DE13AnCh2LOOHtQBYjaucNYf3LkmFNnMx4C1B8q59zWNNXB60B6YylC9HZeonzFPOxunZVzh
- QOCbi8kIW9uPE5z/K1t7A56na0V1fas4/IbQiyw6/WJuaVg8dO9nGKkRG7deKYkDXK8jO+693bf
- TiunYOZPhNa0qdeVkmX/x9oYwCYjKtXNDQSXMTC5vSagObVkW5oeBS6n/ldcCZSl05VV4m9LNJc
- a8Ij0jfuisQX7bDYuc/0hmBnosHzPy2FycjqBbeo+1gif1XR8izhKlmMI1QLqcosre9TmjdCqG+
- JuDgHs7DmSv4f3qaepOgFQTg1f64zzae43U37IKm2u4SWoPxWY7HcT40u0RGt8JbTQRq157YwaF
- aNk4ir+IQEZm9BycjMmBuZPl4DcK5r4WDharV1Piwgk6heNpP0laqv8ElnUr5Atbd+c2ngqH9BC
- uYu4jhlcZto4p0MaGydCv81OP6ii2k7dC0jdX2tYQkxe+j0DpsoeeG72tiKw2neIZwFj4soMVam
- 5yKmgFncmm2E8O/TFXMwc/UdXprwJvZym/0yPOsPe0uXEYLlXECMrsmZQOq2GbJxNmjE48KY21O Yu7vzdxZTeTBfcA==
-X-Mailer: b4 0.14.3
-Message-ID: <20260903-binder-exit-get-work-v1-1-2d6129a238df@google.com>
-Subject: [PATCH] rust_binder: cancel deferred work items in thread exit
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 08/12] rust: mm: add abstractions for allocating from a
+ `sheaf`
+Content-Language: en-US
+To: Andreas Hindborg <a.hindborg@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, Matthew Wilcox <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Harry Yoo <harry@kernel.org>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <20260902-xarray-entry-send-v5-0-d18adae40708@kernel.org>
+ <20260902-xarray-entry-send-v5-8-d18adae40708@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260902-xarray-entry-send-v5-8-d18adae40708@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-If there are deferred work items on the thread todo list, then they are
-not cleaned up in the Thread::release() method. Thus, update the code to
-clean up the work items even if they are deferred.
+On 9/2/26 15:26, Andreas Hindborg wrote:
+> Add Rust APIs for allocating objects from a `sheaf`.
+> 
+> Introduce a reduced abstraction `KMemCacheInit` for `struct kmem_cache` to
+> support management of the `Sheaf`s.
+> 
+> Initialize objects using in-place initialization when objects are allocated
+> from a `Sheaf`. This is different from C which tends to do some
+> initialization when the cache is filled. This approach is chosen because
+> there is no destructor/drop capability in `struct kmem_cache` that can be
+> invoked when the cache is dropped.
+> 
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: linux-mm@kvack.org
+> Assisted-by: LLM
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-This can happen if the thread dies while it has an active outgoing
-transaction.
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Cc: stable@vger.kernel.org
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/thread.rs | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 18a14aa8a835..24f7b5be1b0e 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -686,6 +686,12 @@ pub(crate) fn push_return_work(&self, reply: u32) {
-         self.inner.lock().push_return_work(reply);
-     }
- 
-+    pub(crate) fn pop_work_even_if_deferred(&self) -> Option<DLArc<dyn DeliverToRead>> {
-+        let mut thread_inner = self.inner.lock();
-+        thread_inner.process_work_list = true;
-+        thread_inner.pop_work()
-+    }
-+
-     fn translate_object(
-         &self,
-         obj_index: usize,
-@@ -1678,7 +1684,7 @@ pub(crate) fn release(self: &Arc<Self>) {
-         self.unwind_transaction_stack();
- 
-         // Cancel all pending work items.
--        while let Ok(Some(work)) = self.get_work_local(false) {
-+        while let Some(work) = self.pop_work_even_if_deferred() {
-             work.into_arc().cancel();
-         }
-     }
-
----
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-change-id: 20260903-binder-exit-get-work-7124b02f60e5
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+Note that currently all caches have sheaves (except CONFIG_SLUB_TINY or
+slab_debug enabled), and sheaf_capacity on creation is treated as a minimum,
+which the automated sizing calculation can make larger - in case you want to
+reflect this detail in some of the description comments.
 
