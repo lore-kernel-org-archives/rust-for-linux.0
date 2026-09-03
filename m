@@ -1,54 +1,54 @@
 Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021099.outbound.protection.outlook.com [52.101.95.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB804D90B0;
-	Thu,  3 Sep 2026 15:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3FA4DB57D;
+	Thu,  3 Sep 2026 15:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.99
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788448923; cv=fail; b=fxzjTgCcBoAg3jh2lI989vLbJNhU0PbLqxvE+pGYqFYN/EOd78ajs+mZK00L/3WvICCZL6Hp8L+2aZEH2N0bUhfWKm5C8qkvW+huKzavm8KsOIN1cr7I5KEoADOYsJgzbhJmNXVg2z4fM6WVizH0gXEWy3ALuCgvx0JLYAEQNoU=
+	t=1788448926; cv=fail; b=at33WUNmbFmQet88imdLVoOGDplGXfnXTSoRqCzkMGjgHo/wnUuge3qPtZ80jpz/XKX+ktainONGFT1vICv3RJ99MHLtmw6AflOM+9rZ8HPn0lsNr24Bm6J3DuHBDJDEs0eaf0rHt6QZvaO/xDn9LhsoJRF7ETpwD+umJQQduyY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788448923; c=relaxed/simple;
-	bh=IEau3PB1AzziebJR9htwnouuuLIIK8ZRMhRD8RotZvk=;
+	s=arc-20240116; t=1788448926; c=relaxed/simple;
+	bh=ld88+TwEzz6ifrptJbLdLm+gCvGBdOfcOKGiUojmDVg=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=VTIRgJjee9M+UONL1ES/QPW5fP1UPQ8FX0KcwjHcbTRoa0sFI/UHvSTHbx+u/faGCozOWRl96xgWjPyluUWRK9j3GYgxtipUs+NKmnkpJPqr0Jvw1LvtgltqCsCu6hxsJgwVc74EvDazdepLEcfIlVr2qA3QhaSKfERc2YEvDO8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=N9thQmet; arc=fail smtp.client-ip=52.101.95.99
+	 To:Cc:MIME-Version; b=Gz4KYyGnvLeKAcettdDP5GqEHDRQ8wvYTeyjBYjTzVykVb3aaQVD4C9Yt7UwAnAUMpEmpgd3GMvpJqxTiQN+lbBVrbXONh+VFQjxWPXXBtRTrUyIUtAuPg8tIu/Q2XRVZdjKR8EkBhTAVlDbbbwWaGij+y/oLB+FIGfmxP4izN0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=eNt5OpR5; arc=fail smtp.client-ip=52.101.95.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="N9thQmet"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="eNt5OpR5"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=epILXPHmOtc13dYGSTJGEA8lRePS6GQR+vmM9ggXvCcMGKQ/q4D6mmo5QDYkUMZerZtYp61z3ygcoCSP4kGjYpwdaA07Q3lw+R+D0NlGvz6W+rzGKnw3G3HqZ4QaWV2dGIljUw6rLWAVa+9Yed8gJzQ8qLSi6pincbh0/fVGdhP0poJY3V8Rl68oUJwiT1eeWu03zB98r6k91tUqgBRCTcNfyEg5h7U3zP9nDDNPhOJa5E8b2xv/E+QZFzBm2fbxEusBgNsh0zT6abbh0u8IUtwyVuloupKIhZ2WapFYwYVB371pncKKFnvfLad8a3HjrII5jjGyPi+rSG4QLdYtsA==
+ b=al7XEnJjxtY4EsOOYJQ6rO3PYyTTmfwLjgCgBmPfyRJScQ/nT2+1xuB2VVa8UpL+p5uIwGPQ6f4Py6fNar08soOzR1C4ApnzlhOMgmDOf7+GZgfkb3IiHw0KlKSZgj+rnvnL1I7WbRYSmOoFtev4EUMeXkcPGcJUambyS6yvZ+ZHv3lTsPSyZ6iFHRLuYFfzYUNIrn9q6RR3BhECv/g9KEAxKeo4TsQq6/SIigRFC/0K2eIJ/pk/Q/iy0LgmXsFghozsFtv1a/3xxUHRcO3qCoG9pWwHDzuVwjyMqgu7mLgM+wYo40+RUO0ykkxWnov1A2A9047lMvb14cynaePY5Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Zsru1u+eV11/IlCxkNqrzyeQiy3X3b3BhXjXAOf4RZU=;
- b=A1ter/dkInhX7bpPaTXW4M1aOvOquaMgaoYpW4d2jAvgN8Myj58SqRqvHA9JZwRJTjZsmk8Mu8AEbsn8Z7A0z5tAvLddJExCgv/KlPKjPLL7LYSSDy+CF73jYVHA0rFrMOrU/kcaeigT+KUIXuj8QxsT0UQPqXm8rooCDImtkdYQh4YDRkijejMoe4RVuLd/U3yBznWTR6MlU6J+/yd7mtwNxNT2+whT5EvLjO5f7Z1WuN2NZgSK01ox2TUu+UHg1lEaS93WE339VBfrenVGFYoX7/IPvKhwSN5hTjGZWGU6CcC5plo7L5vEbRTzpxTynsbJOZo3eLlVBKneUHEu/w==
+ bh=BEeAo9V8mMUe682uUKY9CKyUoIiqcDQxjgJ5pvO5T8Q=;
+ b=Ay05MYOgq0646KGxr9YRdwkd8TOj6eHil2JxQVXVQvpnO7C2omuc0iAMxgARrFqDP+mgoKiUYrvu5UEkX4lHKjsJHcjaP2LuNeAgOYPOxbDuSv8h3m75e9OHp9cwOmk+tDd5sP5BuhR5A+A/SQvqY5qDqQrha+GVt0I3jRBc9pwbIxuQ5wttSGcS/18osjumC6gUGobs08oylTQ6mwG26fKN0oU2atBEP2jh8DBmCAIPCw/8EsMldFKSEauQU1lehq+l4NJfB9/USMOruTjSh/AcHWzT5zvvhEN7/kD6dtY7HYk0kVvV9bvFbtIncamVRURwWc4RY7QwF3HFwMJsHw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Zsru1u+eV11/IlCxkNqrzyeQiy3X3b3BhXjXAOf4RZU=;
- b=N9thQmetDfA/eS5jPTnWdBZwAtZ6bG33pWpsAaDve6L+x09GIXRpKgvs2Lam8YxedNJGTY2vJDeGM1kljUAd45DFwJkQXozhNxs6NPb7CCFTHQn9A1vkODQ14E2CFWCnYACY5y+A0nm1Tbmv9wBcS9LDAGzWyjjG5eXfsl/XHbA=
+ bh=BEeAo9V8mMUe682uUKY9CKyUoIiqcDQxjgJ5pvO5T8Q=;
+ b=eNt5OpR55iZPKVDhlcwiiir2mXSpLizgPVzE9MjtFJIITTxSTZi97d0WniOpxHizox23mcl8K6GVAq5rORiEkfbe4tNcl2exGPEV/fci2CjnnY8GLE8Jb4N3TIhmSpXpvGwYzlfrptu86chKcGcL+qAe+fQ0lHp5bvnx5GJhj/I=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
  by LOYP265MB2223.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:11d::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
- 2026 15:21:55 +0000
+ 2026 15:21:56 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
- 15:21:55 +0000
+ 15:21:56 +0000
 From: Gary Guo <gary@garyguo.net>
-Date: Thu, 03 Sep 2026 16:21:45 +0100
-Subject: [PATCH v2 2/3] rust: const_eval: allow const trait method
- invocation in some contexts
+Date: Thu, 03 Sep 2026 16:21:46 +0100
+Subject: [PATCH v2 3/3] rust: str: convert `as_char_ptr` to work with
+ `const_call!`
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260903-cv-v2-2-e93b1613e40c@garyguo.net>
+Message-Id: <20260903-cv-v2-3-e93b1613e40c@garyguo.net>
 References: <20260903-cv-v2-0-e93b1613e40c@garyguo.net>
 In-Reply-To: <20260903-cv-v2-0-e93b1613e40c@garyguo.net>
 To: Eliot Courtney <ecourtney@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -64,11 +64,11 @@ To: Eliot Courtney <ecourtney@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Gary Guo <gary@garyguo.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788448914; l=6701;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788448914; l=8213;
  i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=IEau3PB1AzziebJR9htwnouuuLIIK8ZRMhRD8RotZvk=;
- b=+HbUGP/he15nUZ5lPHJGvyETo8dE7KMT9aToRUkg4fT/UOqjcu7MuCZcaAUC53COC+cQN2E6h
- rdXkn+GIQ/VAZgq670rEvbTqlxhuCIcPkSKsznoMSgeDG+2ECzes44k
+ bh=ld88+TwEzz6ifrptJbLdLm+gCvGBdOfcOKGiUojmDVg=;
+ b=O4aFFvwKiG1c87iLgoKW2O2106Tye/J5I1a6LB07OMVuNtVdEZr/G1EkFLeFdQ2/u8Pmk9Vg8
+ PdnQ+PH7PoRBoT5K+9p8/417DggKPwcmAtNd+XYvBFCzL+rBW0HRS4d
 X-Developer-Key: i=gary@garyguo.net; a=ed25519;
  pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
 X-ClientProxiedBy: LO4P123CA0012.GBRP123.PROD.OUTLOOK.COM
@@ -82,289 +82,251 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LOYP265MB2223:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0ebc8baa-68d0-4cd5-8d6c-08df09cf16da
+X-MS-Office365-Filtering-Correlation-Id: ca15efcf-63d4-45f5-4b07-08df09cf1723
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|7416014|376014|23010399003|366016|921020|10067099003|56012099006|5023799004|6133799003|20052099010|18002099003|22082099003;
+	BCL:0;ARA:13230040|1800799024|10070799003|7416014|376014|23010399003|366016|921020|10067099003|56012099006|6133799003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	ki4FdnBfmX9G/mqVE6S+TSbB3ZHswaK78wA11SRR8uhU/+90R4p9ANLsoHqEoxleSsV6PMkanJAYw09DlNSzTYZGkwAIDub6v5m8fu2oTamQ8MeKh7BABzoGL/GvyyM9XRe5FWYOGBaYGixED8uOj2k7HaLq94yG6FmP0yvgRE6Kh0NoI9s0fjmIDe2jZhi4Y/M9HR1Ge/HPa/Fy+NZlf18Af9cS0yzzR8Aug+8FNWpQOlSQJQdPLG8Gcf8nXOsQEDXMBh4+U1ZDnciaIk4dTA48hlEg6eoYuueRJdAwnfYGJvdj+tFNFkdoU0VouBXtF4ZTV5Wp0O6FALzC/fE4Yx2wmkGr2g9Uw6wdEvZgJee5GhEhCXNjo1mbw/UeluMvmVchyL37Y8Pqh7sC4DNftFcmT88ITxHjLfYLRWKKYJs0jVDcP973SqYst1F6SH1Ke1dfg5sg6JBTFgsWLIp+QAL7/sJ4FLJvfxvQ79bPLHDKsT1ek+0PKm5y3AZ+nQMyTaJlArCOCne2b8Qoa8RtRHMIoUP1ky6c7Lthx1i021iyMp2yqQW+UynOL3fzfX2HqHVFLfQlp8kmfKyXEuyAmR8WAXuQ5qtjhihsUeN9DFAWf8y8EBl6n3wRignnyMfRhqsR5+uOwy+eEt8EqvWU1vn90mCTHA2NefVBFLyS+4WPZ7D7EJKgPEDpoI1NYiSQLh+xfAedsCUye8mrtPAozQ==
+	nr4VR529miLAyUrUo5l1XXfWK9HEx1X4U9EsahcA5thqfHOfAfHkK+kFZ/jb2MsjtWDurddJWJm2cV/5sgmJYz676iXi77aQWDeo7OWiTFFN6Gfeq4k9t1k8ZTVAGhEpnJ2cj4HqAyXi41OQ6B5vpIBPXVorJ2omEFXmUiDhXs57s3H31XId2VVHFsacUCo0KFrVzR8F55kfHEMa8MKhr0HQ4WTRCvFQES+MqGQ8OeAL5olO01OKntBXVAQ6BnBfeiHHBv98lUHDT96u4YobpJU//7eGF7Ko6j2AM7LnBCcXUkHkP+GiQ+OUN8UiBb14JKIF5TYUtnFLnhVYX9gOTX28LXasrHv+2Ytl/JiiYddnkBrOlsn0fXVxw5rcZCu9R9XKMgZjgpZmnE/U+ZqBCDn+uaxYk8d/5iLg3e+gJmxZ4HzSQ5ezhsZDtI1j0D9LR08hO+hvjitRnOuopm8sp6d6TFl5Er2Egsjupk9ylo94K91io8fUZTHYHBJaIVwmwrl181LgxIiD6WFNPJRTy7ELylNsEu8T2hxLhoMHjraGt78Qgp1heNeXa5+XkLQ+36jT8kte4dwsrl5UZOIKwgJuY7lJPJ8L16t+7IhImkCjca+LJa3Kot/SQwaOTsMEbai9km0wQacZ2XSRnmGIWeH0GY7dKIee2EoD+LtkNz7PyiWSbpqbepMO3ZtdkJbPoS+SKag4qnD7twIjF20WRw==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(7416014)(376014)(23010399003)(366016)(921020)(10067099003)(56012099006)(5023799004)(6133799003)(20052099010)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(7416014)(376014)(23010399003)(366016)(921020)(10067099003)(56012099006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VDVTaUhpYWZ1S0R1K1NrWFY4ZENjWDlycDB0TGJadGtuVlF1aFpTZmRpejRK?=
- =?utf-8?B?VmNyNjJ0R2NGcDFFOUw2dUVFdkVMczcyY003MWYraUduSTd6b0xyQ0JSaEVY?=
- =?utf-8?B?Ym5Tbnp3SW1TNEEyN3JnL2xrYTNyalo1ZE9RakNLV295NnNCOVliVUxndkRN?=
- =?utf-8?B?aU1oaWpuelNVdTBrUmZSN3B5REtjMXp3V3BhekkyVlRJT3dGbjBhdytSMldZ?=
- =?utf-8?B?aTRtVDRtdmVyR3lDRm5ldi9oaWxmM0Z3R2JjVkxLMTA2T2EzSGhxWFozRCtK?=
- =?utf-8?B?V3YwMTN4QlB3TG4rYTFORlJOaC8vVmF5SnIxRGp6Sng3d1NWSEFIWXFZMWVD?=
- =?utf-8?B?S0tUVFZlVTF0RElTbWo0VSt0Z1plcUVTb1J2eUpwWHVxd1dnb29ZekpuZVVq?=
- =?utf-8?B?cUlZdC91Zmk5b2RxdThtalNXWDJhNnAxdkFKU2JHN3lqTDZaZ3l3N0RlQlFJ?=
- =?utf-8?B?QzN6OEU2VFpIYzVFaHd1ZUlEL3AzM2lDUmd5V1pYQ3BKNU94aVFONFQvVWQx?=
- =?utf-8?B?d09yWTBtRUJ2TXJ0eEkxZ1JwdGY0L0lnRW9qZGZBZ0FNT0xHMnhDMGJBTUlJ?=
- =?utf-8?B?cTJQblNVcGpTbERZU2hKbE1CVTlmczNDM3dRYzNOQWJNU3VJemRmRUdpaStx?=
- =?utf-8?B?R2taem5UZ3FOU1pZRWdYU1p3NzFqT2dEeEhVTzNjMmlLKzl1eUk4ODdRWWhZ?=
- =?utf-8?B?ZG51Q0VRNlIwSExxT0hXc0NRRkcwZDdaZy9EWCtlR0tneUI1eDdsVnRtd0FZ?=
- =?utf-8?B?TkNzdlZHNEpXS1VGVHBVQTB2eDA3V2krQ1JIdzR6SVlweHUwbkY1WUI3UjhT?=
- =?utf-8?B?U1UxS3NWaWZoSW9UU0puZFRqQzFId01kRDNxWk9zbEpJMEpSbWd1OHFScmo3?=
- =?utf-8?B?S2tkWlZiOE80dXpwOVpQYkxFMkJ3dHZzaStabWRZQzNIZzk5OW5qaGVkeEtu?=
- =?utf-8?B?Z3p2aVdzOHNOaFVSVS9nTUIwQjRVUjBSc3RncFFGcGI4bk0rcGk0NFdEdCtq?=
- =?utf-8?B?cFlhY25naVVwM3pVR1doTGVBOGN4MjROc0hmVytaeDdOdjV4Z2FtdUF2R0FW?=
- =?utf-8?B?eUEweThva2tBYnBzdjU5RnpuWTBpQTI2THA4SGttUWRaZWhZNkNwclp3cTVF?=
- =?utf-8?B?QkdDS3pSVHV6VHdMMGEvZzgvWWJMdUF3TlQ5dFVMRkdwbU9jeldxY2lTaTVz?=
- =?utf-8?B?YTdRNWNzWE92aEg4M0RCWSsyYXYraEN3OVRTTjcveG1pZ3B2ZmJFRkVkWHVh?=
- =?utf-8?B?cWN2SVY2SEk4cHFYZUsxOFRTbGIzQWNocll2T0NydEFGS3AybjJzMG1HWDF3?=
- =?utf-8?B?aVVJVmdFZU9Oc0toNFIxNWVlZ003SHlLMnZvL0p5elBrU1hlY2svazZ5OEQw?=
- =?utf-8?B?T1NGVTFwckhqRzFqK3FXVjl4dytWL05SZGM0S1VMUVhPWmJnVzE2bmFPSjdH?=
- =?utf-8?B?L25Tbjk3WDNBTVJhb2hadW5jR3d2OUxhckIyZ243MGJRcWhqbTlNdnZNZndl?=
- =?utf-8?B?bUtzT0hrbGlYRTVnVkN0dTFtTFhwZ0ZsR055bGhXUVpacys5emt0OVZNZ0lu?=
- =?utf-8?B?aExsbmpQK0hLNzNtSHltTFRPMTZ5MVZFRVR3ckE0Y3BMTVBoVE14emNYRExB?=
- =?utf-8?B?NlhqU2NocWtTNnpWb0IwYlFITEdYSDZpQ1VKOFEwYzV1MzNLNkFTMGNaUUVp?=
- =?utf-8?B?aldVeHJFdCs4WTROd2gvK3Uyb1FvK0ZGNFM1bjJUMENsWVFtenJJSVlaaktR?=
- =?utf-8?B?bzVDNHAyak0vdHJjMU93RWFZbVByT2JNa3Z2QTkzZGdEbG9GN2x3bWZZUUNF?=
- =?utf-8?B?dmdIc0JBV2NLS0ZKMzJBV3pqYkg0dWpsYjlzeFFSNXcyT2ZkZUhFczluOUFE?=
- =?utf-8?B?Q2Q2bEJqdzNJbFo3MXFybXNBZVUyc2tKK0ljME9nUmhxSUlrS28ybGpYUlE2?=
- =?utf-8?B?L2VIK1MvbFZiQnhvakdzWE5yNlQ1bmMrNGxtNzUvc1hTTVJuQzVRSEpnNkJO?=
- =?utf-8?B?bndpb3R1K0k0blNoN21UdERRMGt1Qm9jT2ozNjF6NXhVVEpEYWlOUHI2Rm45?=
- =?utf-8?B?S09SMndPa3lHRWhwdVVhNWVuM1ZBM1JKbkxHSUFJUkZmV1E2bFkrZW9tRGEv?=
- =?utf-8?B?RG9XSmh4Tk5na3lBOG5KRTBBb2xSUUhHLzJnSW5JUmE5YXJJVXVYUGpjTEpa?=
- =?utf-8?B?T2RiVml1VXJFN2hYUCt2QmEzL1B5QmEyRGFOYitnOWZRMzJPbXl5elorajhK?=
- =?utf-8?B?ZWZUaGdDdFMxM0M5SFhWOGZFKy9KSks0ZElhTW1uSVdJMjduMlRUSjFOYzQw?=
- =?utf-8?B?L0RFTkRMQlQ5b2tVOTNQQWRwTTU4SDA2MG5iQlFITk5zZUg3bXhDdz09?=
+	=?utf-8?B?N2tHaHF3YTB2TU51Vktra085MjBxVmhrZTUzUURXMnRTQUtqNGI1NWxIMWVD?=
+ =?utf-8?B?eWUrS1pHZ1JUdWlHN2dBdDd0WEFIeGlwL0E4MHhnZFQzSmRFKytXNmNvM0or?=
+ =?utf-8?B?dG96c29VejhWWTkvM2FYUEplcXh3d0wzL2V1WWNhTHZFanlRcnBwczlDVEp1?=
+ =?utf-8?B?L3lSL1RmcmU3aXRVMFVjQU13TXp0N0s3bWk2RENIdUZRV29hTHJCSlgwclRh?=
+ =?utf-8?B?NEVHcndpUnBBTEF2Y3gwQzdGRzZQS2xkV0xYYUN6VCt3dlJ6UFV5ZlJ5OVB3?=
+ =?utf-8?B?YjI4R2Z2YzQxS2tPRFJGRGJ0bVZIVlV2a2pkRmZoOHdySG1SMStOTWRqOVN3?=
+ =?utf-8?B?VjNtYnlSVm9YOElKakladWRvVWhSdVpqN2k4cHBNQUpvcnpFbk1IR09qTmZp?=
+ =?utf-8?B?UjIwZHY2NkcwdzdRdFVDL2EzaTBRTE8xWWt4OW5ocG9TcUg1YjFHZS9BVUU1?=
+ =?utf-8?B?aCtiMmFwNDc5bG5JdDBONGxMMUVROGZGVFkraGJJVnBKMTFqZFJKYnNDUkly?=
+ =?utf-8?B?RjZsNG8xRkx6VlhSNFlabjhrV0E3MWJxZW5NQkFzN2EzMUVYekJpUm92VEdm?=
+ =?utf-8?B?cnVDS1RzdXFQTlN1NWZ2SDFMQStncDRobk5nZWtDbnc3WUE0WmVwQUJrVWVr?=
+ =?utf-8?B?MkR6TThKOVR0RmZScnYrMEJmbUM1SDdrVGp1TGJjdHFyK08vZW1JYk5TNzJX?=
+ =?utf-8?B?MEg5aDhPTHg2MEU1dnJSeUJwMHBENzNMeFF4djVmcWJUaTBuZjdDRzlmZ1I1?=
+ =?utf-8?B?MFVseTVST1RkWUM4S2U4S1JCZWNVV2t3aEw0TzFuYm5Zc0dyTXpkRGtHZ3NW?=
+ =?utf-8?B?WmFNVTN3Y1lVTi82QURTN3I3bkYvR1Jab0V6WFd5Tk80cTNJR0RlWkZXVzU0?=
+ =?utf-8?B?R1I0QVpUbmNlbkVOVzNjVm1kZlFiMzh1UXB0dEJISVhOMWpRdzFKQTJ3elp1?=
+ =?utf-8?B?ajZNV1Q5VENTZWxQZ0JZZTZ0TGs4c0xKaFlpYnllSTRWT0ZmNkRRN1MyVjhD?=
+ =?utf-8?B?L1g0QjFtS2RtQWtSSE8yQ3R6d2dqU1B1ZFJLODk1K2wxcUxnSG53VmxCcXp2?=
+ =?utf-8?B?d1Nib3hIcndYbjZpQm1HUXB5SG9DbC92YjZDTi9Yei9uVUxYa1FyZGl1M0xG?=
+ =?utf-8?B?Y3JDcVhLYTZabGdjRlpieHdoQUppRnRUM1hXejZma3BvNHVLS3JWY3BjSExP?=
+ =?utf-8?B?QzAyYSszcW9OWUs1TkR1L0NIc215b0thWkZ5bTFVY1NUTUc2ZGVJNG9kWTBH?=
+ =?utf-8?B?YjkvRmFYN1M0WUQ1eUtzMkRuc2d3UmQvVWNCdXhyS0l1WW16OHp6QldhbVVp?=
+ =?utf-8?B?SzhpbTczejBMTjFlOEdoMkg3ck51OEYwQU5SblQvOVF1Sk53UnBZTGRvZVJq?=
+ =?utf-8?B?MWpZRU40eFFYbEJVM0RNaDNoR3B4MmdpZ09QeDRLL3RVMDhJU1R6TFJwbE9o?=
+ =?utf-8?B?MEFkOVpzOE5IcU9pckFaYlhhUWpiVE0zUXRmdmJtUXV0Y3RJbmlwNjFmdXpV?=
+ =?utf-8?B?MzByNFBWNVBrS1Q1S2ZIS1FScmJvL1AyazF4U3ZxSGExaEJHelUzc3RpZHpI?=
+ =?utf-8?B?V2xtc3V4bWpuWEFKaklsYTh1Yi9zOGl3RUkyTFRCbUt6dW0vZWN5bmw1c0o5?=
+ =?utf-8?B?QTJhRFgydEpkSDJscmNkU3pTWlRpZnljNUhBSUhpS2Znelp6SnFIM1JHNDNk?=
+ =?utf-8?B?WHUvNUZwY0ZodTRpUFhaNXJSenhTUVVPQUQ3TGNka08zTUFqOVRSdzlEMVRp?=
+ =?utf-8?B?RzBydzFNTURaeFg4amRKbDVDcHNtOEZDOFRUWGRTVW8rd0ducWVxcytEQ1JE?=
+ =?utf-8?B?RWVnQ0J6T2t5NkJRMk1pOXFkZ1VuVUY0YW9Ga2RDWmVrS2pLMDNYOEpIZ2lL?=
+ =?utf-8?B?cFZTcmN6NzltdWdMNjd2aC95ZFNpWnNtMjM3OGpDYyttV0JndjJRdmVoLzRT?=
+ =?utf-8?B?aEMxMWhyVHNDbmtjaGV1NmhQSVJYVjlCMVhqUHdMSHlYQVBUQXZSbzFFeVcw?=
+ =?utf-8?B?UlI4SnVFa3djejEzeDViS2ZsNVUrWCs0WENGS3VxMkNHSC94R2gzdDA1WWFM?=
+ =?utf-8?B?bjVEYmdDYUFIOTFldEpOZHlEUGJ4SDdqRks3dTdPcUhLYzVEWEpjcTNCYTNG?=
+ =?utf-8?B?QWJObUFGTVY4Wlg5OG5oNGlMblhvYWc2Wkk5WmRwbWhRYmtGNmJidEhtR1Yy?=
+ =?utf-8?B?c0FlK1RscG5CR2pIRnRhQ2RhMS9OQS9MczN4ZWY2Zk01bXFyU0lFV1VJYzBs?=
+ =?utf-8?B?djVwbjJWZVlMWENwa3AxRXMyakZoZlZUMTJVSmlka2x6VGpnVURkdEJpVVlL?=
+ =?utf-8?B?TW03eEFrWXJNZmkwWlhxeGdSYkpQdzdQSHJ2SmU5eGFJT1pnWis0Zz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ebc8baa-68d0-4cd5-8d6c-08df09cf16da
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca15efcf-63d4-45f5-4b07-08df09cf1723
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 15:21:55.6909
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 15:21:56.2140
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tuFDzAOMkk0bsZIyvHZr0ZQnMKMstK/qahhYkY08awSrgYErFY3O9v+1E1MtPQn2g7Z/4T+Pm5687HelNdZs6g==
+X-MS-Exchange-CrossTenant-UserPrincipalName: KwwWbXzxP9sTlqfU2UoYC/uAVpt62Q5mDD6v/MQhpCqVmfXvhHONSpACbh98oQqMBgGQysSgrDIMGWxFced89g==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOYP265MB2223
 
-Rust does not yet (as of 1.98) have stable const trait impl support; on
-1.85 it does not have unstable support either. This leaves us having many
-free functions that do the exact same as trait methods.
+This allows `const_call!(foo.as_char_ptr())` to be used instead of
+`kernel::str::as_char_ptr_in_const_context`.
 
-Create a `Const` wrapper type as the central place to put const trait
-methods on as inherent methods, and a `const_call!` macro that dispatches
-to these inherent methods as opposed to trait methods.
-
-`const_call!` would check that the signature actually matches, and provides
-some additional inference help. Once const trait impl is available, we can
-also easily just convert the macro without having to touching all users at
-once. Implement it as a proc macro, so it can accept the normal method
-call syntax.
+`Const(foo).as_char_ptr()` is used directly in macros to avoid having to
+import `CStrExt`.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/kernel/const_eval.rs | 108 +++++++++++++++++++++++++++++++++++++++++++++-
- rust/kernel/prelude.rs    |   1 +
- rust/macros/const_eval.rs |  31 ++++++++++++-
- rust/macros/lib.rs        |   9 ++++
- 4 files changed, 146 insertions(+), 3 deletions(-)
+ rust/kernel/configfs.rs   |  2 +-
+ rust/kernel/drm/device.rs |  4 ++--
+ rust/kernel/drm/ioctl.rs  |  4 ++--
+ rust/kernel/kunit.rs      |  6 +++---
+ rust/kernel/miscdevice.rs |  2 +-
+ rust/kernel/net/phy.rs    |  2 +-
+ rust/kernel/str.rs        | 15 +++++++--------
+ rust/macros/lib.rs        |  9 +++++++++
+ rust/macros/module.rs     |  4 ++--
+ 9 files changed, 28 insertions(+), 20 deletions(-)
 
-diff --git a/rust/kernel/const_eval.rs b/rust/kernel/const_eval.rs
-index f1b79d82549d..2a6ea3f7b693 100644
---- a/rust/kernel/const_eval.rs
-+++ b/rust/kernel/const_eval.rs
-@@ -2,8 +2,114 @@
+diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
+index cd082b83e9e7..ece6cb31609f 100644
+--- a/rust/kernel/configfs.rs
++++ b/rust/kernel/configfs.rs
+@@ -612,7 +612,7 @@ impl<const ID: u64, O, Data> Attribute<ID, O, Data>
+     pub const fn new(name: &'static CStr) -> Self {
+         Self {
+             attribute: Opaque::new(bindings::configfs_attribute {
+-                ca_name: crate::str::as_char_ptr_in_const_context(name),
++                ca_name: const_call!(name.as_char_ptr()),
+                 ca_owner: core::ptr::null_mut(),
+                 ca_mode: 0o660,
+                 show: Some(Self::show),
+diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
+index 6b88ade28e24..536a0e958c8b 100644
+--- a/rust/kernel/drm/device.rs
++++ b/rust/kernel/drm/device.rs
+@@ -186,8 +186,8 @@ const fn compute_features() -> u32 {
+         major: T::INFO.major,
+         minor: T::INFO.minor,
+         patchlevel: T::INFO.patchlevel,
+-        name: crate::str::as_char_ptr_in_const_context(T::INFO.name).cast_mut(),
+-        desc: crate::str::as_char_ptr_in_const_context(T::INFO.desc).cast_mut(),
++        name: const_call!(T::INFO.name.as_char_ptr()).cast_mut(),
++        desc: const_call!(T::INFO.desc.as_char_ptr()).cast_mut(),
  
- //! Utilities for const evaluation.
+         driver_features: Self::compute_features(),
+         ioctls: T::IOCTLS.as_ptr(),
+diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
+index 64af9eacc306..5bba960504d6 100644
+--- a/rust/kernel/drm/ioctl.rs
++++ b/rust/kernel/drm/ioctl.rs
+@@ -206,9 +206,9 @@ macro_rules! declare_drm_ioctls {
+                         Some($cmd)
+                     },
+                     flags: $flags,
+-                    name: $crate::str::as_char_ptr_in_const_context(
++                    name: $crate::const_eval::Const(
+                         $crate::c_str!(::core::stringify!($cmd)),
+-                    ),
++                    ).as_char_ptr(),
+                 }
+             ),*];
+             ioctls
+diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+index 91eaff8c186a..034df521b195 100644
+--- a/rust/kernel/kunit.rs
++++ b/rust/kernel/kunit.rs
+@@ -107,12 +107,12 @@ unsafe impl Sync for Location {}
+             unsafe impl Sync for UnaryAssert {}
  
-+use core::{
-+    ops::Deref, //
-+};
-+
- #[doc(inline)]
- pub use build_error::assert_in_const_eval;
+             static LOCATION: Location = Location($crate::bindings::kunit_loc {
+-                file: $crate::str::as_char_ptr_in_const_context(FILE),
++                file: $crate::const_eval::Const(FILE).as_char_ptr(),
+                 line: LINE,
+             });
+             static ASSERTION: UnaryAssert = UnaryAssert($crate::bindings::kunit_unary_assert {
+                 assert: $crate::bindings::kunit_assert {},
+-                condition: $crate::str::as_char_ptr_in_const_context(CONDITION),
++                condition: $crate::const_eval::Const(CONDITION).as_char_ptr(),
+                 expected_true: true,
+             });
  
- #[doc(inline)]
--pub use macros::const_eval_only;
-+pub use macros::{
-+    const_call,
-+    const_eval_only, //
-+};
-+
-+/// Constant wrapper type.
-+///
-+/// Rust does not yet (as of 1.98) have stable const trait impl support; on 1.85 it does not have
-+/// unstable support either. Only inherent functions can be marked as const. There are a few const
-+/// methods that we want to add on core types; and this mean that we cannot use extension trait on
-+/// them.
-+///
-+/// This type serves as a middle layer. This type is local to the `kernel` crate, and thus we can
-+/// define inherent methods on it. For core types, we will define it for `Const<Type>`. Other kernel
-+/// crate types or even downstream types can also utilize it by defining inherent methods that
-+/// *receive* `Const<Self>`.
-+///
-+/// Caller should use the `const_call!()` macro so it also checks that the type signature matches
-+/// the trait.
+@@ -204,7 +204,7 @@ pub const fn kunit_case(
+ ) -> kernel::bindings::kunit_case {
+     kernel::bindings::kunit_case {
+         run_case: Some(run_case),
+-        name: kernel::str::as_char_ptr_in_const_context(name),
++        name: const_call!(name.as_char_ptr()),
+         attr: kernel::bindings::kunit_attributes {
+             speed: kernel::bindings::kunit_speed_KUNIT_SPEED_NORMAL,
+         },
+diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+index 8d4b719bd83f..02e115ec045d 100644
+--- a/rust/kernel/miscdevice.rs
++++ b/rust/kernel/miscdevice.rs
+@@ -46,7 +46,7 @@ impl MiscDeviceOptions {
+     pub const fn into_raw<T: MiscDevice>(self) -> bindings::miscdevice {
+         let mut result: bindings::miscdevice = pin_init::zeroed();
+         result.minor = bindings::MISC_DYNAMIC_MINOR as ffi::c_int;
+-        result.name = crate::str::as_char_ptr_in_const_context(self.name);
++        result.name = const_call!(self.name.as_char_ptr());
+         result.fops = MiscdeviceVTable::<T>::build();
+         result
+     }
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+index 956cda573ddb..28047fc3a876 100644
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -494,7 +494,7 @@ unsafe impl Sync for DriverVTable {}
+ pub const fn create_phy_driver<T: Driver>() -> DriverVTable {
+     // INVARIANT: All the fields of `struct phy_driver` are initialized properly.
+     DriverVTable(Opaque::new(bindings::phy_driver {
+-        name: crate::str::as_char_ptr_in_const_context(T::NAME).cast_mut(),
++        name: const_call!(T::NAME.as_char_ptr()).cast_mut(),
+         flags: T::FLAGS,
+         phy_id: T::PHY_DEVICE_ID.id(),
+         phy_id_mask: T::PHY_DEVICE_ID.mask_as_int(),
+diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+index b3caa9a1c898..93ae32b42e18 100644
+--- a/rust/kernel/str.rs
++++ b/rust/kernel/str.rs
+@@ -197,14 +197,13 @@ macro_rules! b_str {
+     }};
+ }
+ 
+-/// Returns a C pointer to the string.
+-// It is a free function rather than a method on an extension trait because:
+-//
+-// - error[E0379]: functions in trait impls cannot be declared const
+-#[inline]
+-#[expect(clippy::disallowed_methods, reason = "internal implementation")]
+-pub const fn as_char_ptr_in_const_context(c_str: &CStr) -> *const c_char {
+-    c_str.as_ptr().cast()
++impl crate::const_eval::Const<&CStr> {
++    /// Returns a C pointer to the string.
++    #[inline]
++    #[expect(clippy::disallowed_methods, reason = "internal implementation")]
++    pub const fn as_char_ptr(self) -> *const c_char {
++        self.0.as_ptr().cast()
++    }
+ }
+ 
+ mod private {
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index 262539cccf38..f5d8d0706e46 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -343,6 +343,15 @@ pub fn concat_idents(input: TokenStream) -> TokenStream {
+ ///
+ /// This is a polyfill for Rust's const trait impl feature. Only work for specific methods that have
+ /// dedicated const implementation.
 +///
 +/// # Examples
 +///
-+/// Say we want to define a extension method on u32. We can do
-+/// ```no_run
-+/// trait MyTrait {
-+///     fn trait_method(self);
-+/// }
-+///
-+/// impl MyTrait for u32 {
-+///     fn trait_method(self) {
-+///         /* impl */
-+///     }
++/// ```
++/// const fn use_cstr(c: &CStr) {
++///     // This is an extension trait method that is not otherwise callable in const context.
++///     let char_ptr = const_call!((c).as_char_ptr());
 +/// }
 +/// ```
-+/// but we cannot mark it const.
-+///
-+/// Instead, we can do this
-+/// ```ignore (doctest is outside kernel crate)
-+/// trait MyTrait {
-+///     fn trait_method(self);
-+/// }
-+///
-+/// impl MyTrait for u32 {
-+///     #[inline]
-+///     fn trait_method(self) {
-+///         // Forwarding impl
-+///         Const(self).trait_method()
-+///     }
-+/// }
-+///
-+/// impl Const<u32> {
-+///     pub const fn trait_method(self) {
-+///         let Const(this) = self;
-+///         /* impl */
-+///     }
-+/// }
-+/// ```
-+///
-+/// For local or downstream types, implement it directly on the type with a different receiver:
-+/// ```no_run
-+/// # use kernel::const_eval::Const;
-+/// trait MyTrait {
-+///     fn trait_method(self);
-+/// }
-+///
-+/// struct Foo;
-+///
-+/// impl MyTrait for Foo {
-+///     #[inline]
-+///     fn trait_method(self) {
-+///         // Forwarding impl
-+///         Const(self).trait_method()
-+///     }
-+/// }
-+///
-+/// impl Foo {
-+///     pub const fn trait_method(self: Const<Self>) {
-+///         let Const(this) = self;
-+///         /* impl */
-+///     }
-+/// }
-+/// ```
-+///
-+/// For caller of the method, one would simply replace `expr.method()` with `Const(expr).method()`;
-+/// although the auto-ref coercion will be lost, so it a method expects `&self`, the caller would
-+/// need to explicitly use the `Const(&expr).method()` syntax to call it.
-+pub struct Const<T>(pub T);
-+
-+impl<T> Deref for Const<T> {
-+    type Target = T;
-+
-+    #[inline]
-+    fn deref(&self) -> &T {
-+        &self.0
-+    }
-+}
-+
-+// Provide inference help only. Should never be code-generated.
-+#[doc(hidden)]
-+#[const_eval_only]
-+pub const fn would_call<T, U, F: FnOnce(T) -> U>(_: T, _: F) -> U {
-+    todo!()
-+}
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index ca396f1f78a6..8f4c8cd2d8a2 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -91,6 +91,7 @@
-         const_assert,
-         static_assert, //
-     },
-+    const_eval::const_call,
-     current,
-     dev_alert,
-     dev_crit,
-diff --git a/rust/macros/const_eval.rs b/rust/macros/const_eval.rs
-index 0664888d3b38..10a4a93f905a 100644
---- a/rust/macros/const_eval.rs
-+++ b/rust/macros/const_eval.rs
-@@ -1,9 +1,17 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use proc_macro2::TokenStream;
--use quote::ToTokens;
-+use proc_macro2::{
-+    Span,
-+    TokenStream, //
-+};
-+use quote::{
-+    format_ident,
-+    quote,
-+    ToTokens, //
-+};
- use syn::{
-     parse_quote,
-+    ExprMethodCall,
-     ItemFn, //
- };
- 
-@@ -22,3 +30,22 @@ pub(crate) fn const_eval_only(mut input: ItemFn) -> TokenStream {
- 
-     input.into_token_stream()
- }
-+
-+pub(crate) fn const_call(mut input: ExprMethodCall) -> TokenStream {
-+    let expr = input.receiver;
-+
-+    let expr_ident = format_ident!("expr", span = Span::mixed_site());
-+    input.receiver = parse_quote!(#expr_ident);
-+
-+    let would_call = quote!(#input);
-+    input.receiver = parse_quote!(::kernel::const_eval::Const(#expr_ident));
-+
-+    quote!({
-+        let #expr_ident = #expr;
-+        if false {
-+            ::kernel::const_eval::would_call(#expr_ident, |#expr_ident| #would_call)
-+        } else {
-+            #input
-+        }
-+    })
-+}
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index e47a8c35ccff..262539cccf38 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -339,6 +339,15 @@ pub fn concat_idents(input: TokenStream) -> TokenStream {
-     concat_idents::concat_idents(parse_macro_input!(input)).into()
- }
- 
-+/// Call a trait method in const context.
-+///
-+/// This is a polyfill for Rust's const trait impl feature. Only work for specific methods that have
-+/// dedicated const implementation.
-+#[proc_macro]
-+pub fn const_call(input: TokenStream) -> TokenStream {
-+    const_eval::const_call(parse_macro_input!(input)).into()
-+}
-+
- /// Mark a function as usable from const evaluation only.
- ///
- /// Build will fail if the function is used for runtime code.
+ #[proc_macro]
+ pub fn const_call(input: TokenStream) -> TokenStream {
+     const_eval::const_call(parse_macro_input!(input)).into()
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index bc7027f8dbb2..b2c1f118c7e1 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -149,13 +149,13 @@ fn emit_params(&mut self, info: &ModuleInfo) {
+                         ::kernel::module_param::KernelParam =
+                         ::kernel::module_param::KernelParam::new(
+                             ::kernel::bindings::kernel_param {
+-                                name: kernel::str::as_char_ptr_in_const_context(
++                                name: ::kernel::const_eval::Const(
+                                     if ::core::cfg!(MODULE) {
+                                         #param_name_cstr
+                                     } else {
+                                         #param_name_cstr_with_module
+                                     }
+-                                ),
++                                ).as_char_ptr(),
+                                 // SAFETY: `__this_module` is constructed by the kernel at load
+                                 // time and will not be freed until the module is unloaded.
+                                 #[cfg(MODULE)]
 
 -- 
 2.54.0
