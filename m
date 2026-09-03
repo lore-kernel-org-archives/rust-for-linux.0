@@ -1,284 +1,164 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC98219E97B
-	for <rust-for-linux@vger.kernel.org>; Thu,  3 Sep 2026 22:03:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788473025; cv=none; b=lgLi5g7+izcefzZuqvKxZqUG52rFQM4WgXz+YALajk2O0o2TbsxpafWUvN6kbsShD6CPVFdX1tt2kxBiANcC0OmmS3cmkRvuY7Bzmscpw50NmgsRs2km7JgQwiVFU6Eru5ZUmOP/pEfWCZ2TQqItcGbJAZuuhki/a6eifYZBMWg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788473025; c=relaxed/simple;
-	bh=GBcmJnaMQpbIfjUTpYg/eaQYX68BPiVFso1vleOF5JQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aQwnj6bxnz3Edujt80Xyd/JBICWUyTIUtooUUT+q3xyUmbS8BMaI+ox2LS96abAkAE4Naoit7ccaQ0MlNo3AMRTJUoq3+1cBxbJ/TL5+zwVCVlaZeDN2JpHxP6jOa+GrvKvOHpyQWhw36Z2yr2iGeL4Uu4/yI+pgwZ3wj126adc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=mtvrc02C; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55704EE849;
+	Thu,  3 Sep 2026 22:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788473262; cv=pass; b=q7EEDj7mW/x0RKaG630/pCvjtyIofMO88eYhG3XDs7Yyig+HAhz2OdoGQg6hVerbMWiNBFdL0Yh7PFiHMjHIlDRe+J7s2qW2nW2aMiV5YsQR4CJn6GH8fvcShxd6/3NSoL2EdYxBvu8tKERSjAleYP0I1igXhJdKO6sAZYNkY4g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788473262; c=relaxed/simple;
+	bh=tC09nplv4RU1dR18MCiMlbWJptdYmcrFJ5one10NiXs=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=aGWqufaGM6ijoLgaxQVBbJ+3G5I7E4SzP7CzLBveTS/0jNbd00L1vzBefH4LFeOKp0TQ6FunND5Ee0AT3qTzHWzU8/k133VOo/VNw/sc/VuknXe3x4t6iy69NXkOYFsVXRkySdXc4Vx8jwZY+gTksx7coxGj3HBrmMAaNa9crNA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=C8AufTuH; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="mtvrc02C"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 7EC91240027
-	for <rust-for-linux@vger.kernel.org>; Fri,  4 Sep 2026 00:03:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1788473020;
-	bh=t950fm6K9o0wlrR7qcQVGGcoXGuaXBIxlX9nhhQ5wF4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=mtvrc02C85jC4poA5pa8BYa+3yGc6lVN3Qiv1YxYCf4fyHgm1aSW7rtqFozp3a+to
-	 /C/E10apcOmVApzF/8gjnudexctFIKZMQX7WNa710utup6XMx0mfOys4OqfFYAaaIA
-	 BxDBcuEM/1keUsORnTKAzYMo4fv1Swbmd9NFDp5KLOquqCft+WjdAZidbi4XpjyTvc
-	 WnAmlau4oLQHWy3XLJfH2unuQSPjDqhT0ZF5BTVfmhpBrjdKGblzzFQFDFBiV9JnnY
-	 KfJC0K0veh7jfZpy+suwqjNMK5WSNGJLBDjhV9wijL2UjY9kdDnABx8DN8uMkNqEqN
-	 HX2/67jYbPLyQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4hbYWq6p5Tz9rxB;
-	Fri,  4 Sep 2026 00:03:35 +0200 (CEST)
-From: Markus Probst <markus.probst@posteo.de>
-Date: Thu, 03 Sep 2026 22:03:39 +0000
-Subject: [PATCH] rust: serdev: Synchronize receive callback before calling
- unbind
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="C8AufTuH"
+ARC-Seal: i=1; a=rsa-sha256; t=1788473213; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=R6bG7hdiDiKlEIgrX3xMgWzJwRMGsftITsN+MI8KcXwvHksT/f6eZ+8jr2s7TAvHdrVVzR4+Urpo34vxL5TpFw24bUjI2Fnb73NQkOZW1mJFCkfeR1DZlR56k0zx81GJLzDmeIEyhFUMgqTY/n6v2cJhMphmq8IsVeDuKiywRKI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1788473213; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=afA3ax7f9QXcCedQi5bAM/QoI2EIiapIQDf4xdId4Ug=; 
+	b=e03QYNDF1BzCbkp3Z6v8qmmYuONMENPFbUos06vuaYO4Cp8ZtKipFRSSeig4Xav2jk55S4104gDYbDjWBGOB09QyaFmGQT4pEEIuhqqXjHSQKLM9aVNqgvFuMffT7PR1hHX9djHM6jN+3njkRLqsNklXYmGBMTQRfqjNL8ZJqwc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788473213;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
+	bh=afA3ax7f9QXcCedQi5bAM/QoI2EIiapIQDf4xdId4Ug=;
+	b=C8AufTuHLPwUljbA54/aDdNTZQpkZb0OFLwnFnvPnt6ZW8E2u8au1DNCLZpbqCnD
+	Mvh34mx5FVS9mgjYUsToU957PGF05WKA5kM6/zX5+Vrwtz8W1xjBVTxT3dBIF8ukHy/
+	sthFIRJyiU6knD+o6DPFAt+UbTn/LzVzeHZlJKMQ=
+Received: by mx.zohomail.com with SMTPS id 1788473212203626.0025116376753;
+	Thu, 3 Sep 2026 15:06:52 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260904-rust_serdev_ref_mut-v1-1-245db7eb09af@posteo.de>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2N2wrCMBBEfyXss5E0aqP9FSkhTVaNkLbmhlD67
- 67Wx8PMmVkgYfSYoGMLRKw++WkkaHYM7MOMd+TeEYMUshUXceCxpKxJclh1xJsOJfOjk/J8Uqo
- 12ACZMwX+/Vu99hunMjzR5u/UvxHxVegubzUYTEJupxB87lhVe3qyDfTr+gGS3FeTowAAAA==
-X-Change-ID: 20260903-rust_serdev_ref_mut-4d2285776ae1
-To: Ayush Singh <ayush@beagleboard.org>, Johan Hovold <johan@kernel.org>, 
- Alex Elder <elder@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>
-Cc: greybus-dev@lists.linaro.org, linux-serial@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7396;
- i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=GBcmJnaMQpbIfjUTpYg/eaQYX68BPiVFso1vleOF5JQ=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqme63DlBXFmgI+F3sVeW8gzAxj3Flb6wujjIqg
- 4buAtnIEVqJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCapnutxsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9KUexAAhh9NIP08wIeNAfAdQ2c02DyYjOULpzi
- TRk4yQeGHRixDw8uscIAy+Luw6aglvsJz/vs+aorjHNpyckbJKI9myfF48v4Z3C4GPUq5WnqT9/
- UNGzlFXWGSXi0oKsQTjd+/2WZzrepieYxnv/wTGnvFHBSRfjjcqe1YAlqj+/cu6mxPigbHgQwXH
- +KzO6Tk+Pji6QF7Q5TN/ye+No6Qp9TMtGE5twbVGBKSZZzc3EdH0pIb742CuLCoszHRvgh+QGqT
- 4Z7C+Bo5diP79hyBppnz6tK1DgHg2dmkX1Gu6fokZ7eGeFm/j6s+ZrFPnlPib2PjqHhjoFiJfaf
- BZ5N3132rihYAB9AmrJYp7CjOjO2IRr+urcvOu5cnwi6R6cPN7BT8w0+yBTnHuZY73ryzZK42go
- oSMZXg7+QJOp4Qcyu1NM5s4gJ4/DZPH3GB4aSSaRnQO1StwaZrG8aFP9it6jlRTJAjzw93WH5pG
- FXttWmKLaWUBdHpNWaUHDBtBta/f6GxhNkE+kSoIkz057Yl6DqD7qSneWHXmYsoe3MWahSHJyo4
- IqXE3dQxAvyXfIJL2Th3J8pEZDwzmK/qf8PYhPInj4yVC1l8MMn7wr4uDTByzMboy4CkLEcarZf
- fqMggP++5BY92GTB4lhAoKhp62G+eN2LjMl/oujcqi5n0IFFec10=
-X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
- fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
-  keydata=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
-  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 6/9] drm/tyr: add BO creation and lookup helpers
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260902-tyr-ioctls-v1-6-e0fdbf8bd108@kylinos.cn>
+Date: Thu, 3 Sep 2026 19:06:31 -0300
+Cc: rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Lyude Paul <lyude@redhat.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org,
+ dri-devel@lists.freedesktop.org,
+ Alvin Sun <alvin.sun@linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B6966555-4532-4369-B519-56AD72307553@collabora.com>
+References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
+ <20260902-tyr-ioctls-v1-6-e0fdbf8bd108@kylinos.cn>
+To: sunke@kylinos.cn
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-The receive callback and unbind callback now have exclusive access to
-the drivers private data. Provide mutable references in callbacks to
-avoid the need for locks in the private data. Remove the Sync
-requirement.
 
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
----
-This patch avoids the need for a SpinLock in the patch series
-https://lore.kernel.org/rust-for-linux/20260827-gb-uart-transport-v2-7-a03bb1f5fbd1@beagleboard.org/
-.
----
- rust/kernel/serdev.rs              | 51 ++++++++++++++++++++++----------------
- samples/rust/rust_driver_serdev.rs |  2 +-
- 2 files changed, 31 insertions(+), 22 deletions(-)
 
-diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
-index 17ca504b7f8d..44f029ed93fd 100644
---- a/rust/kernel/serdev.rs
-+++ b/rust/kernel/serdev.rs
-@@ -106,7 +106,7 @@ pub struct PrivateData<'bound, T: Driver> {
-     /// Whether `receive_buf_callback` is allowed to call `Driver::receive`.
-     ///
-     /// If locked, the receive_buf_callback will be blocked on data reception.
--    /// This is the case while the driver is being probed or while [`PrivateData`] is being dropped.
-+    /// This is the case while the driver is being probed or removed.
-     /// This is necessary, because we need to open the serdev device before the driver has been
-     /// probed in order to allow it to be configured, which allows `receive_buf_callback` to be
-     /// called. Thus we need to block data until probe completes and the driver data becomes
-@@ -127,16 +127,6 @@ pub struct PrivateData<'bound, T: Driver> {
- #[pinned_drop]
- impl<T: Driver> PinnedDrop for PrivateData<'_, T> {
-     fn drop(self: Pin<&mut Self>) {
--        let mut active = self.active.lock();
--        if *active {
--            // SAFETY:
--            // - We have exclusive access to `self.driver`.
--            // - `self.driver` is guaranteed to be initialized.
--            unsafe { (*self.driver.get()).assume_init_drop() };
--            *active = false;
--        }
--        drop(active);
--
-         // SAFETY: We have exclusive access to `self.open`.
-         if unsafe { *self.open.get() } {
-             // SAFETY: `self.sdev.as_raw()` is guaranteed to be a pointer to a valid
-@@ -176,7 +166,20 @@ extern "C" fn probe_callback(sdev: *mut bindings::serdev_device) -> kernel::ffi:
-             let private_data = unsafe { sdev.as_ref().drvdata_borrow::<PrivateData<'_, T>>() };
-             let private_data = ScopeGuard::new_with_data(private_data, |_| {
-                 // SAFETY: We just set drvdata to `PrivateData<'_, T>`.
--                drop(unsafe { sdev.as_ref().drvdata_obtain::<PrivateData<'_, T>>() });
-+                let private_data = unsafe {
-+                    sdev.as_ref()
-+                        .drvdata_obtain::<PrivateData<'_, T>>()
-+                        .unwrap_unchecked()
-+                };
-+
-+                let mut active = private_data.active.lock();
-+                if *active {
-+                    // SAFETY:
-+                    // - We have exclusive access to `private_data.driver`.
-+                    // - `private_data.driver` is guaranteed to be initialized.
-+                    unsafe { (*private_data.driver.get()).assume_init_drop() };
-+                    *active = false;
-+                }
-             });
-             let mut active = private_data.active.lock();
- 
-@@ -222,15 +225,21 @@ extern "C" fn remove_callback(sdev: *mut bindings::serdev_device) {
-         // and stored a `Pin<KBox<PrivateData<'_, T>>>`.
-         let private_data = unsafe { sdev.as_ref().drvdata_borrow::<PrivateData<'_, T>>() };
- 
--        // SAFETY: No one has exclusive access to `private_data.driver`.
--        let data = unsafe { &*private_data.driver.get() };
-+        let mut active = private_data.active.lock();
-+
-+        // SAFETY: We have exclusive access to `private_data.driver`.
-+        let data = unsafe { &mut *private_data.driver.get() };
-         // SAFETY:
-         // - `private_data.driver` is pinned.
-         // - `remove_callback` is only ever called after a successful call to `probe_callback`,
-         //   hence it's guaranteed that `private_data.driver` was initialized.
--        let data_pinned = unsafe { Pin::new_unchecked(data.assume_init_ref()) };
-+        let data_pinned = unsafe { Pin::new_unchecked(data.assume_init_mut()) };
- 
-         T::unbind(sdev, data_pinned);
-+
-+        // SAFETY: We already established that `data` is guaranteed to be initialized.
-+        unsafe { data.assume_init_drop() };
-+        *active = false;
-     }
- 
-     extern "C" fn receive_buf_callback(
-@@ -254,13 +263,13 @@ extern "C" fn receive_buf_callback(
-             return length;
-         }
- 
--        // SAFETY: No one has exclusive access to `private_data.driver`.
--        let data = unsafe { &*private_data.driver.get() };
-+        // SAFETY: We have exclusive access to `private_data.driver`.
-+        let data = unsafe { &mut *private_data.driver.get() };
-         // SAFETY:
-         // - `private_data.driver` is pinned.
-         // - `receive_buf_callback` is only ever called after a successful call to `probe_callback`,
-         //   hence it's guaranteed that `private_data.driver` was initialized.
--        let data_pinned = unsafe { Pin::new_unchecked(data.assume_init_ref()) };
-+        let data_pinned = unsafe { Pin::new_unchecked(data.assume_init_mut()) };
- 
-         // SAFETY: `buf` is guaranteed to be non-null and has the size of `length`.
-         let buf = unsafe { core::slice::from_raw_parts(buf, length) };
-@@ -365,7 +374,7 @@ pub trait Driver {
-     type IdInfo: 'static;
- 
-     /// The type of the driver's bus device private data.
--    type Data<'bound>: Send + Sync + 'bound;
-+    type Data<'bound>: Send + 'bound;
- 
-     /// The table of OF device ids supported by the driver.
-     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
-@@ -391,7 +400,7 @@ fn probe<'bound>(
-     /// `&Device<Core>` or `&Device<Bound>` reference. For instance.
-     ///
-     /// Otherwise, release operations for driver resources should be performed in `Drop`.
--    fn unbind<'bound>(sdev: &'bound Device<device::Core<'_>>, this: Pin<&Self::Data<'bound>>) {
-+    fn unbind<'bound>(sdev: &'bound Device<device::Core<'_>>, this: Pin<&mut Self::Data<'bound>>) {
-         let _ = (sdev, this);
-     }
- 
-@@ -402,7 +411,7 @@ fn unbind<'bound>(sdev: &'bound Device<device::Core<'_>>, this: Pin<&Self::Data<
-     /// Returns the number of bytes accepted.
-     fn receive<'bound>(
-         sdev: &'bound Device<device::Bound>,
--        this: Pin<&Self::Data<'bound>>,
-+        this: Pin<&mut Self::Data<'bound>>,
-         data: &[u8],
-     ) -> usize {
-         let _ = (sdev, this, data);
-diff --git a/samples/rust/rust_driver_serdev.rs b/samples/rust/rust_driver_serdev.rs
-index 51b4898cd855..d00d547234c8 100644
---- a/samples/rust/rust_driver_serdev.rs
-+++ b/samples/rust/rust_driver_serdev.rs
-@@ -63,7 +63,7 @@ fn probe<'bound>(
- 
-     fn receive<'bound>(
-         sdev: &'bound serdev::Device<Bound>,
--        _this: Pin<&Self>,
-+        _this: Pin<&mut Self>,
-         data: &[u8],
-     ) -> usize {
-         sdev.write(data).unwrap_or_default() as usize
+> On 1 Sep 2026, at 13:09, Ke Sun via B4 Relay =
+<devnull+sunke.kylinos.cn@kernel.org> wrote:
+>=20
+> From: Alvin Sun <alvin.sun@linux.dev>
+>=20
+> Add the new_object() and lookup_handle() helpers.
+>=20
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+> ---
+> drivers/gpu/drm/tyr/gem.rs | 29 ++++++++++++++++++++++++++++-
+> 1 file changed, 28 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+> index 3bf3787f5c3fd..be1affe80db1a 100644
+> --- a/drivers/gpu/drm/tyr/gem.rs
+> +++ b/drivers/gpu/drm/tyr/gem.rs
+> @@ -9,9 +9,11 @@
+> use kernel::{
+>     drm::gem::{
+>         self,
+> -        shmem, //
+> +        shmem,
+> +        BaseObject, //
+>     },
+>     prelude::*,
+> +    sizes::SZ_4K,
+>     sync::{
+>         aref::ARef,
+>         Arc, //
+> @@ -23,6 +25,7 @@
+>         TyrDrmDevice,
+>         TyrDrmDriver, //
+>     },
+> +    file::TyrDrmFile,
+>     vm::{
+>         Vm,
+>         VmMapFlags, //
+> @@ -53,6 +56,30 @@ fn new(_dev: &TyrDrmDevice, _size: usize, args: =
+BoCreateArgs) -> impl PinInit<Se
+> /// Type alias for Tyr GEM buffer objects.
+> pub(crate) type Bo =3D gem::shmem::Object<BoData>;
+>=20
+> +/// Create a new GEM buffer object.
+> +pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: =
+u32) -> Result<ARef<Bo>> {
+> +    if size =3D=3D 0 {
+> +        return Err(EINVAL);
+> +    }
+> +
+> +    let aligned_size =3D =
+size.checked_next_multiple_of(SZ_4K).ok_or(EINVAL)?;
 
----
-base-commit: e5e04726cdd043e309677071ab1b65a4b18f422b
-change-id: 20260903-rust_serdev_ref_mut-4d2285776ae1
+I think this needs to be PAGE_SIZE instead of SZ_4K.
+
+> +
+> +    Bo::new(
+> +        ddev,
+> +        aligned_size,
+> +        shmem::ObjectConfig {
+> +            map_wc: true,
+> +            parent_resv_obj: None,
+> +        },
+> +        BoCreateArgs { flags },
+> +    )
+> +}
+> +
+> +/// Look up a GEM object by handle for a DRM file.
+> +pub(crate) fn lookup_handle(file: &TyrDrmFile, handle: u32) -> =
+Result<ARef<Bo>> {
+> +    Bo::lookup_handle(file, handle)
+> +}
+> +
+> /// Creates a dummy GEM object to serve as the root of a GPUVM.
+> pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> =
+Result<ARef<Bo>> {
+>     let bo =3D Bo::new(
+>=20
+> --=20
+> 2.43.0
+>=20
+>=20
 
