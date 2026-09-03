@@ -1,284 +1,129 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022141.outbound.protection.outlook.com [52.101.101.141])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE164F55C9;
-	Thu,  3 Sep 2026 19:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.141
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788463332; cv=fail; b=DLfVbmUQjmngxXBNSlyW0nhbE5MhP7MFlrWr/5p6/ZBs8SZPX0WlVThA2k9pnqo2djLAZzEjGhH0UuwOEo67AGKmJ1ge5KoihN4G0Tk6OK4F4HnPjTOUKUfQH85u7gpDSFIeWvsFT7AWLt2B2wdGUYFZaWVJ416sMNQrBuD4+B8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788463332; c=relaxed/simple;
-	bh=BwI8boB+nWUV0iiqRW6iyDy+82Auv6kwY0ttC1RnTxI=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=Pjaw8spmL+2Geqz/fyBMrBwwchqBGuEkK65+rhhH4zohA87yxbs9MYJem6pygVWpeUKGjRiRkfNxn3jL811X78fGbqnkbMH1durt8dO51dgZKaKS4JSxRtzbYJR/dLHsBOowghoZ8PLKyR7yB2xRnSsJBWdzeqD8muSjdwRgcc4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ftSphIFB; arc=fail smtp.client-ip=52.101.101.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECCB4FECC1;
+	Thu,  3 Sep 2026 19:23:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788463400; cv=none; b=t9H/IPxtVM6EHjmccA/zEuTS48W2Se3IxJ/vNbLjfHTJ0DfW9rbgoZYTsd7Z1HFXhpv8JkPvSmYrXnymF5Zfa2xl9mQDKAeYf12dtOZnXNCzRSYSXWG9aq8lj0pLuHYyhUsYuHTygCb8z8LHtvxVMDSFJrs+RhwyIIvu8/JqLT8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788463400; c=relaxed/simple;
+	bh=SC12UwwV5la5+z9xpG2T1lhISLeO3GCXp9Z+NUbIUV4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=davlOM/B4kVAGy/AFumyin4n68cmulqCbVU4cB3jvkeZSJ4FTjW8U2cN/QL8kIaSs14OPt8Q0SRELYK9Db66iZNTxUXwd3JZotBBQ3/xaNbwzXtftLo1QJ3hHj+xXs3Y9Y1hpdDEQrX2CeuMHtIm03+NIDBRMGInlLj5eEK8+Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IUVHrE1N; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ftSphIFB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AJC3MGst4UbHP9K54+vzG73khcJYQvYBRG9TBFZdYwEG8NErAlf6XJZZvv58/DKhthIVyqp4pNP1Zec3gRREeXokrv4SVNVZ1PLmSmIbOyi71UE5DyFSxbGQT1Ep2jn7r4ZI04jaEhz8YiQ8dreRQh+HFvG76CL32h2HyZlsavBN2qvaxi+2slWmrWmVDDIMvxdDPqywAnc1mkq3TKrq/afbGAVSrQe9E1Q8wG4J2t5mw+ZKwbajf8YZhoudlGQ1zQVZY742qPwnXCe2O835U7IHFqTa7UfEwd5UekyNg18glRIBUZNJcHQSsDVapVzdCAlXM/xXcdYs2zPMfmV1Jw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b7EqUwOMuyEeou55AjjA91uClN5whdb5PeAAmb2eMng=;
- b=yY/RJiWi9NwWthdcFbOSd/fJhMR7SglnntvNHvibStl6J3EqrNgvYGKlSo2yCysfMsoB8n12ocvcAVBXs6vYbmz36BfXZLE94RJ37UgORWAObbjgNcaG+8yoCVHXoG9svcmAgE4pQ44HHUPoVZ+IFo32bgs6fhkHlpJBvj3DTKtTlBk91OoIWUoZRZagHEZrSuXr98QV4QDEJexklhLlNsnId74wUcPzucksnL6QuxcyaZcys+WMt6GRxhdbIp0pM64yiE99vIoXk7/jrYu4VnKYPKYDVO1QO86WD4WQQ1pVa0CNsSazw8lGirVNlsfsFKRT2tcZqs7Ka0Rk7BZgtw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b7EqUwOMuyEeou55AjjA91uClN5whdb5PeAAmb2eMng=;
- b=ftSphIFBAkRszkcgqysZ3b+sITHGMrdMS/gvEjZ+fewm17+4eZ/9paqjEJ3dPNlrW7fxSsVEv6sWlYvUvLVRPK0HoYiRf7A3f++maiU5vAdNFIRaCbdXOleLJxq39c1oCMn7KzeCzTU10fdfJ64GxRRjLrJ9nZxKexiCAu9GYKk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LO6P265MB6265.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2b0::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
- 2026 19:21:56 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
- 19:21:56 +0000
-From: Gary Guo <gary@garyguo.net>
-Date: Thu, 03 Sep 2026 20:21:44 +0100
-Subject: [PATCH v2] rust: doctest: add source map script
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260903-rustdoc-sourcemap-v2-1-d5b1abf3dc83@garyguo.net>
-X-B4-Tracking: v=1; b=H4sIAMfImWoC/yWOyw6CMBBFf4V0bbEU5eHK/zAuShmgCq2ZaQ2G8
- O9SWJ7JvWfuwgjQALFbsjCEryHj7AbylDA9KNsDN+3GTApZiFrkHAP51mlOLqCGSX14VoiuFpc
- OyqpjW++D0Jl5dz6eB1NoXqB9FMVEowh4g8rqIZ5GY8PMLcz+PCnygDEzGPIOf/uwbxZdx4Yik
- 9vDq8zTXFR5WUue8V7h7/4GtDCmDnv2XNf1D+iJtGHaAAAA
-X-Change-ID: 20260903-rustdoc-sourcemap-160f904fe78f
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, 
- Rae Moar <raemoar63@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788463314; l=4613;
- i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=BwI8boB+nWUV0iiqRW6iyDy+82Auv6kwY0ttC1RnTxI=;
- b=bJUwPPe9tNDJP7jcsHWvIOxa66Eej3bClEvISlW1xN2HP4DWEwqKZ1pjGr6WeTJwO4p/qL96g
- JVhYkLcfFT5DSI9W0vU4hzOWWPkMKXaZC+oQvjmSscHkF8GkluM0HvA
-X-Developer-Key: i=gary@garyguo.net; a=ed25519;
- pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
-X-ClientProxiedBy: OL1P279CA0021.NORP279.PROD.OUTLOOK.COM
- (2603:10a6:e10:13::8) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IUVHrE1N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81151F000E9;
+	Thu,  3 Sep 2026 19:23:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788463390;
+	bh=M//v4OlN6lA74lYfatdtwp/pjR6qLsg6V+uG4pDwqbs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=IUVHrE1Nu8l8phRUdBa7pS6Vop9cvMyvheupOvgqzSdmM7Q6iK42Y9rjOvwNZnxum
+	 YbrkOhKwCTh8iIsQm9KBckb13pEN2GUQAHuffDsopuP6KUu3Qk/zbPJQF/YIsHBwO3
+	 +eNnAGS+xPWHudkGGDjK835IluKjBMbP+qW3e4niEqeVkLRTXzq4/dxVZHfXwnsJwq
+	 7ZBp2NqODTvwKYmLHa3GiyuL1fdUEvD+CdM3j75ptc04mLKQSfD26rWh9XfacoGOvz
+	 gRkJzUlcZ2GKhTM7WwN+FKlX6hRhOViqDwQrL+RBl6MXcbMXSc4yFDABiwyDSaU3SB
+	 VGu3zxKId5rBQ==
+From: Danilo Krummrich <dakr@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	driver-core@lists.linux.dev,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v4 00/16] rust: io: support register projections and remove relative registers
+Date: Thu,  3 Sep 2026 21:22:48 +0200
+Message-ID: <20260903192248.2248560-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260901-typed_register-v4-0-5552b1d59525@garyguo.net>
+References: <20260901-typed_register-v4-0-5552b1d59525@garyguo.net>
+X-Patch-Reply: applied
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO6P265MB6265:EE_
-X-MS-Office365-Filtering-Correlation-Id: 791199b6-f77d-4196-56f5-08df09f09e48
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|10070799003|366016|921020|6133799003|10067099003|3023799007|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	4kfX/V2pGbW4iW06Ul1D/FBEA5kCMQ3vT/JxotTyGKnYppwQBeviU5HwimGNk8BiEdirEJ29RvzJtm5cTDgONE3M1+MCX1EvyAFyJJWCpGzrxHbfC6xJprzrWi/IRx4u+HuS9hZpWTbiFrVh66xAVTIGd1gAiBcsTt7CrKJhDR1d0jdWjBekxMoivczGx7FRuEoNTCG85KUdN4fVOKtg8dSblzpcD5dTWf6yKaJT87fBwp8TrQEQF//zWJcOySMjPXxHF6wSIytE/4wZwapoQcbGfDwYO7ikZL0DQ6QKUcr2g1PijoBgBbLfCol++P7cAq34DnGJFI0NM8+7jEf7C3eL+uJ+oFNf90168fqGuuZ25+iTDJsjznwupVuR8cECUpWNfLeV3x1gE0uwGsLfC4x19A922/dxC3yDKv5iaT2C+2lfrtiEKIvSYAcA1RVtAbB5vS5pFgcbuhopuvDPvKEiSI0bKHCnTTNgMeLjkjqIpnc7US2GiTAlUnv6q2+Raco9+ddB4cTWo7q1puYYodlc5tpPaHad+bsMmeXvk6sBdjvX0SjBEM0hkRtipvnlVKiu28oCmLur4exTIFriSRRr6Tli3SzYnMsUs0DU8fTElNJ0TOM+JTXinCp3Kpr6zK4Zgo6JhIsd34cbKnnJeMNe8V3vaMP3S4SIowqrR+I=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(10070799003)(366016)(921020)(6133799003)(10067099003)(3023799007)(18002099003)(56012099006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MkErZUhZOG5GNEdLaStDdUprTEJsOXJUeU91OHFFbUZtQzd4VS9tRVhWK0hl?=
- =?utf-8?B?NjRObUNqdGtpekxUQzZQZExYeUtQVUprZlZBRDhwU255aFB5N3d1ckRhZXhq?=
- =?utf-8?B?WUVUNjhpYzlWOVAxWmxsVU9wMVFXZ1BibytUSldZQUFjZ0JPNHloUW9Ka3A4?=
- =?utf-8?B?cTdrWlBLU2UrN1RYU1c2bjJhbDJicG03UzFmcDZHLzdNM0Izd3lYdnYrRmlj?=
- =?utf-8?B?MHdPT3BiNDVyb3FaVXczbjlPSm1STldkVDV0VlM3MkFtM3ZRQWdLMi9iZ21i?=
- =?utf-8?B?ZWRsVS9WRXhRMGZLMmk1REZxbWJ3aloyL2ZYQzYwMGhqQmpuWTZaS2FlNFpk?=
- =?utf-8?B?N1dXeG5HUm1UcC8vUklwanMrZk9oWHpnSHpOMnE5NE1RRjBWQUd4OHdNaGNx?=
- =?utf-8?B?NkJGV3prVHBMNmlXNk01R2JpRGVLTVNHT3F1ejluOXk0RkpPUi9JcHpnd3dW?=
- =?utf-8?B?aDhINDFaTHdrS1lHZk5jSlhiNnR1MWM3RFRnKzR4SS9ydGc1Z2hwMDAzdkw0?=
- =?utf-8?B?K2ZaWTZPaEZTcXpKRlRxLzdiTjZnQThHVFBXK3N4R1BZcGswY1gxNjdyT2pB?=
- =?utf-8?B?ZWlrQk55RGhFNHRDMGNObTE3aWExVjdPQjFZUUpHWm5qckRSaGF6QnBsbTFj?=
- =?utf-8?B?VjJnT2s0dTdFWnMzazVZZHlkWEg1QjRObm1GV2pjWTFNQ3dqT2RDZ0xNcEVI?=
- =?utf-8?B?YVlBblAzTHI3eWZjTjRpd01OTnJTeTVLM2Y3SEtOa1RkWFdyL3U5MjFWamdu?=
- =?utf-8?B?RUZIbFJyS1hHRm1LdWhLYWVyQWZOYmloRFBrR0hkMlhmejRIc0tucFYxTUZX?=
- =?utf-8?B?K09GOUp6TFNHNmlCSEJGYi94S0N4akZNcEp1MDdhT3hMRjVlN000TWxRcjl6?=
- =?utf-8?B?a0FwTmtjQktKMm1rS2d0ejVIaDFuVmNERTJUbFBvVGg0RGFKN0VzaENYZEF5?=
- =?utf-8?B?Tnl6V3duTzgzcGhLb1Bva3gwMDJYaEg3c0dheVhYSjh0UGthaXpOM1RzYVZC?=
- =?utf-8?B?NExZaGJzZGJMek5UOE9UMkJpRU00bmtXeTE4MGUxaFRhQk9iUmhpOWcxWVdv?=
- =?utf-8?B?RFZSOTQ4U1QzYWI5Z3pyZ3QrTHNBN21FUkppUk43bEhwWjRxeVNRNUY1VDdJ?=
- =?utf-8?B?RHNxbGNTTHNZc2I1QzY4ZXQwL3RYNEVxcUhJUTJJb2owRVl5RDdtbk05aHhj?=
- =?utf-8?B?RmY3V3hBM2hhOUF6cFVDRGR1K1RMYVpnNTU5dGd5M2R5b3RpWkRGYWtKNWty?=
- =?utf-8?B?NHhMSm9ONml1OERudVI0NDVBdFZjUUtLTWI5OUVPeEVKdnQyOWZxZTFrMG81?=
- =?utf-8?B?T3luSGdiUXhaVzVxdVNFTnREMXpYQm9uZDhERldnVEREbG9wREMzS2pHRVFT?=
- =?utf-8?B?amdSd1gzc3ZCV1llMTdRZTZKTDc0VkRZN3JMb0kyc1F4ZC9BNFMwZzhTd3RM?=
- =?utf-8?B?bk9WYW9JNkFqb1lWOGR3UmVORW1RUjJjOElvRTJSa3dFQUpQbVdYVk9tWGJ3?=
- =?utf-8?B?eDUzUFk4S0ErVnNRSi93ZEt2VmJ6ZU9HYXBFVnhSMFF4eTQrMy9YTWFOTEVo?=
- =?utf-8?B?WHlVcVZrQk1kTi9aWTNNQ29xUUdwWEZkTTRqVFZxbzlVelhFQTRwcHJ4OVRP?=
- =?utf-8?B?ZVVpZ0JEWlZQVzZrRzVqUlRnakJqRnIxWWFVa3BNZXUrT1dPdU5vUlU2aDVZ?=
- =?utf-8?B?RHZYa2JUWkIyL3lqVHZ5VGt5bXJ0RnVyUGttUzlmdThUYnArZ1I5THRwem9V?=
- =?utf-8?B?bXBwZ1pneTZkZzRQT3REbDZxZjE5eGZMazNwSkhFNkF6UTVBcFdRRk5IaWd5?=
- =?utf-8?B?QzJTMWJRRHNVQ3F5R1VoVktIN2RuV2dTZCtSTjkxdXdma3ZaaVpwWTUrQzVH?=
- =?utf-8?B?b1E0S04xeUxEZkFsYk5mQ2NqM05BMStsbFd4UjkzZmJ1S1AxZ1lrYUxLVXNv?=
- =?utf-8?B?N0lXaGFPdUhLdjBUTFFEeFZpS0tSRC95UFBDYXFZYzF1Z1grTnNybTNaWStr?=
- =?utf-8?B?ZTlSa01qMGhnQUlYdnNXT2U2U3krZ3F4L2VRSnBZbERXUFk3OUhtb0ZlOHh2?=
- =?utf-8?B?RklzWHorMVJFMGRBZFBMWGdZdjVyTDhhSzJGcTRBODJFTW5BMm1EZmtNc2ZG?=
- =?utf-8?B?RDFaSld1T3g5UklNekFBSndqNWhMY3pRSE9FT2R4MUZLZjRUbTRINnBEUGZa?=
- =?utf-8?B?RzRSWmR2eVJYem9UcVI1dlh0MmY2WVBaSERMNkt5MXEvUjMzbzBUUzFtSUh3?=
- =?utf-8?B?QnEvR2cxdDVEWkhDbjN4RHdJeWJwcmg1YitRNXcvNzFPR3VPWFBFT0RFWGhQ?=
- =?utf-8?B?bjBha3NtUC8yYnZlY3BtYnU3aTdON0Juem9CSVRXRDVoWlF1WlJMQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 791199b6-f77d-4196-56f5-08df09f09e48
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 19:21:56.3388
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QbWjfxeZ2BecoZxo8daf4gjD+Yc+lwAx5bTVmJZnBkvH/awgU5DQOTq8rnzEdNdQH1loPKAMaOT+YN9AlxIJWg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6265
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Quite often when updating abstractions there will be some documentation
-that needs updating, but the build process is not very developer friendly
-as it just gives out something like
-"rust/doctests_kernel_generated.rs:12345:42" and it is a hassle to find
-where the documentation actually is.
+On Tue, 01 Sep 2026 17:50:24 +0100, Gary Guo wrote:
+> [PATCH v4 00/16] rust: io: support register projections and remove relative registers
 
-Add a script as rustc wrapper, which translates the error message by
-appending a "(generated from original_file:original_line:col)" message to
-the original source info emitted by rustc.
+Applied, thanks!
 
-This is the result of an example diagnostics:
+  Branch: topic/rust-io
+  Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
 
-    error: test
-        --> rust/doctests_kernel_generated.rs:4490:1 (generated from rust/kernel/build_assert.rs:96:1)
-         |
-    4490 | compile_error!("test");
-         | ^^^^^^^^^^^^^^^^^^^^^^
+[1/16] rust: io: register: reimplement as proc macro
+      commit: 63b2578517df
 
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
-Changes in v2:
-- Fixed SPDX header.
-- Detect tty with stderr instead of stdout.
-- Match doctest anchors more loosely without hardcoding i32.
-- Link to v1: https://patch.msgid.link/20260612160523.3083792-1-gary@kernel.org
----
- rust/Makefile                      |  6 ++++
- scripts/rustdoc_test_map_source.py | 73 ++++++++++++++++++++++++++++++++++++++
- 2 files changed, 79 insertions(+)
+      [ Fix typo in module-level doc comment and fix ArrayDef syntax
+        description to match the actual macro syntax. - Danilo ]
 
-diff --git a/rust/Makefile b/rust/Makefile
-index da1a7409d984..23f603d1356e 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -406,6 +406,12 @@ quiet_cmd_rustdoc_test_kernel = RUSTDOC TK $<
-     $(objtree)/scripts/rustdoc_test_gen FORCE
- 	+$(call if_changed,rustdoc_test_kernel)
- 
-+# When building rustdoc tests, instead of using the actual RUSTC_OR_CLIPPY, use a wrapper to build
-+# so we can convert line number in diagnostics.
-+ACTUAL_RUSTC := $(RUSTC_OR_CLIPPY)
-+%/doctests_kernel_generated.o: private RUSTC_OR_CLIPPY = \
-+	PYTHONDONTWRITEBYTECODE=1 ACTUAL_RUSTC=$(ACTUAL_RUSTC) $(PYTHON3) $(srctree)/scripts/rustdoc_test_map_source.py
-+
- # We cannot use `-Zpanic-abort-tests` because some tests are dynamic,
- # so for the moment we skip `-Cpanic=abort`.
- quiet_cmd_rustc_test = $(RUSTC_OR_CLIPPY_QUIET) T  $<
-diff --git a/scripts/rustdoc_test_map_source.py b/scripts/rustdoc_test_map_source.py
-new file mode 100644
-index 000000000000..673021bedf4c
---- /dev/null
-+++ b/scripts/rustdoc_test_map_source.py
-@@ -0,0 +1,73 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+import sys
-+import re
-+import os
-+import subprocess
-+
-+LOCATION_REGEX = re.compile(r"\.location: (.*):(\d+)")
-+ANCHOR_REGEX = re.compile(r"static __DOCTEST_ANCHOR: .+ = .* \+ (\d+) \+ (\d+);")
-+SOURCE_INFO_REGEX = re.compile(r"(rust/[\w/.-]+\.rs):(\d+):(\d+)")
-+
-+
-+def transform(file, line):
-+    with open(file, "r") as f:
-+        lines = f.readlines()
-+
-+    line_idx = line - 1
-+
-+    # Find the last location and anchor before the erroring line
-+    real_path = None
-+    orig_line = None
-+    anchor_line = None
-+
-+    for i in range(line_idx, -1, -1):
-+        if real_path is None:
-+            match = LOCATION_REGEX.search(lines[i])
-+            if match:
-+                real_path = match.group(1)
-+                orig_line = int(match.group(2))
-+
-+        if anchor_line is None:
-+            match = ANCHOR_REGEX.search(lines[i])
-+            if match:
-+                anchor_line = i + int(match.group(1)) + int(match.group(2))
-+
-+        if real_path is not None and anchor_line is not None:
-+            break
-+
-+    new_line = orig_line + (line_idx - anchor_line)
-+    return real_path, new_line
-+
-+
-+def main():
-+    actual_rustc = os.environ.get("ACTUAL_RUSTC")
-+    args = sys.argv[1:]
-+
-+    # We redirected Rust output so it is not TTY anymore.
-+    # Add `--color=always` back to preserve the color behaviour.
-+    if sys.stderr.isatty() and not any(arg.startswith("--color") for arg in args):
-+        args.append("--color=always")
-+
-+    result = subprocess.run([actual_rustc] + args, stderr=subprocess.PIPE, text=True)
-+
-+    def replacer(match):
-+        orig = match.group(0)
-+        file = match.group(1)
-+        line = int(match.group(2))
-+        col = int(match.group(3))
-+
-+        if file != "rust/doctests_kernel_generated.rs":
-+            return orig
-+
-+        new_file, new_line = transform(file, line)
-+        return f"{orig} (generated from {new_file}:{new_line}:{col})"
-+
-+    if result.stderr:
-+        sys.stderr.write(SOURCE_INFO_REGEX.sub(replacer, result.stderr))
-+
-+    sys.exit(result.returncode)
-+
-+
-+if __name__ == "__main__":
-+    main()
+[2/16] rust: mem: add `transmute` with deferred size check
+      commit: 82591c20bcb3
 
----
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-change-id: 20260903-rustdoc-sourcemap-160f904fe78f
+      [ Fix doc heading to use plural "Examples" and add missing closing code
+        block delimiter. - Danilo ]
 
-Best regards,
---  
-Gary Guo <gary@garyguo.net>
+[3/16] rust: mem: add `AsRepr` and `AsReprMut`
+      commit: 968f30ade612
 
+      [ Fix grammar in from_repr_unchecked() documentation and rephrase
+        confusing safety comment. - Danilo ]
+
+[4/16] rust: io: perform conversions using `AsRepr`
+      commit: 1e707b76716a
+[5/16] rust: io: support register projections
+      commit: 34b6dc471749
+[6/16] rust: io: register: allow explicit base type specification
+      commit: 70a122d5a342
+
+      [ Remove unnecessary #[allow(unused)] from the 'base' field. - Danilo ]
+
+[7/16] gpu: nova-core: specify base type for registers
+      commit: a07fa2c979c1
+[8/16] drm/tyr: specify base type for registers
+      commit: 573228e75c33
+[9/16] samples: rust: pci: specify base type for registers
+      commit: 54b04b9fc0ea
+[10/16] rust: io: register: make register have a typed base
+      commit: 35c21468c294
+[11/16] rust: io: register: support fixed offset register without bitfield
+      commit: ddeaaa3a0fbb
+[12/16] gpu: nova-core: use projection for PFALCON and PFALCON2 registers
+      commit: 6d5f14077811
+[13/16] gpu: nova-core: convert hshub0 from relative register to projection
+      commit: 4a7a27bd1947
+
+      [ Split nested import into kernel vertical style. - Danilo ]
+
+[14/16] rust: io: register: remove relative registers
+      commit: b6af037d9499
+[15/16] rust: io: register: remove `Register` trait and cleanup macro
+      commit: dfec6f41d053
+[16/16] rust: io: register: unify handling of register with/without bitfields
+      commit: 35423e8fd718
+
+The patches are in the topic/rust-io topic branch and will be merged into the
+corresponding target branch soon.
