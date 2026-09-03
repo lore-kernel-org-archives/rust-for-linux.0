@@ -1,104 +1,123 @@
-Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99F94A5C55;
-	Thu,  3 Sep 2026 12:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.242.92
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788439850; cv=none; b=pN4e+77hf8zezsiiW4TRw9qeIUiHqVy4E+he4O9FT7zG/qoQt0j4sjUlKAd/RKPMrT2D3Pr7mcYihDM1V5PC7mdc+Dn6fMstpNC+tmeSZ3VKsIFZnWNdcUCFeW848RnJ90Hqp+0SEPbzM1pg8KIADn9EqOzznZME4Z5UjuCD4do=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788439850; c=relaxed/simple;
-	bh=Q9Ag8UhZfFIg30b0p1hfLWvvAOk537smwoJLAfBKCPg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HDC59EMUsRn7IDqKQXiUxOJGc27h4Yza6D8zPahWj1ks24oI/uA1Cc6vuRFFcd8UJzDESlVraJTG/Clb+QvRQAqXp5aTg0PHspJLWDafJFWLuipjuAI657pxcHK/urdNtjX2ZpFaEXtmay6DAG0FRd5KdYuk1oELcupNusn+cY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net; spf=pass smtp.mailfrom=davidgow.net; arc=none smtp.client-ip=203.29.242.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
-Received: by sphereful.davidgow.net (Postfix, from userid 119)
-	id 5435420012E; Thu,  3 Sep 2026 20:50:46 +0800 (AWST)
-X-Spam-Level: 
-Received: from [IPV6:2001:8003:8802:7000::9c4] (unknown [IPv6:2001:8003:8802:7000::9c4])
-	by sphereful.davidgow.net (Postfix) with ESMTPSA id EFA30200113;
-	Thu,  3 Sep 2026 20:50:41 +0800 (AWST)
-Message-ID: <c724e706-ef52-4a77-b31d-03d2bd137d4b@davidgow.net>
-Date: Thu, 3 Sep 2026 20:50:39 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3FB4A6CF3;
+	Thu,  3 Sep 2026 13:11:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.182.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788441072; cv=pass; b=lYjQUQmXfofqEGMIzoXcAMvH2qWm8XVZIGQzHOT5F+C8361iO6xe02AUyCgl69tDOekDUsXs3qvZm9RHGSpcSSXBwxV8qS8a7p3rOmVv5NEq5dRqcFEWYYFaq5kBCXCqH/JreyRhdJ45AYPJmcM/Xh6roGKkDGxwN/GpNgfi+4g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788441072; c=relaxed/simple;
+	bh=0pjjA4DZdsvZ1F6GbPmSRh4Ktd2FVnk3lLk3dtHnCPY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=aklZU2Cjvdg0Lxd0AhI/VGxTsMkUTL0cuYAOhvaRyBcFFknGjyCNSypYWksgdNaVJgqYWxe6sueMzsFbClK2Kpv3FoB+CxycV0L42+diaNjUyEjyVYBq9hVqCoXJUoBAUM3t2ptlzbf/7iNrGUomoKie3o2EbETdhThYDe5lvVM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ZiQX6yMA; arc=pass smtp.client-ip=165.173.182.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ZiQX6yMA"
+ARC-Seal: i=1; a=rsa-sha256; t=1788440987; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=fuKgUs9b7JuOO7CEi3lcRc5gF6oqDW0UIPI4gapgwybnAgyJZia5P1bWcOitvwlihCpvmOYU/zxyOepuKq7jw/BpU9Wkj7NI3j+b7MrWtoCHX9GD72fwsWEvR3hLmwZ2xe3kn4x9YNFep4/8Q2jC83BXykndAIFKhKDkQhHGSwI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1788440987; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=20L8H017f+X+nMpU/Ghy+Mvvvk1JGSQ75hVtn1pe7RI=; 
+	b=blRLJLlkqMO9bRBVDrRu3eQhuoqGkilCKfYkRSPyoK9zPCDfbik0Sg7z0k+Vu+EFc9tfLZkRSd/q+Owd+fakraBfrWmlaU2TjPutjKcXvLz7hWCS04StbSHVm1tT+JB7CoTfkg673ORXJgUeTHIxnVPkZWPMsAJnIKpaKwbTtBw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788440987;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
+	bh=20L8H017f+X+nMpU/Ghy+Mvvvk1JGSQ75hVtn1pe7RI=;
+	b=ZiQX6yMACMu5Ymav6Tus7unvzhLHvJrc+PvXBSEeomEdR7IwoWypoXlaENBHUCYs
+	QuvvoqfWauBzNFhWj4NoosOPHQ5/0Zefk0YLOZpIbeyfmqaYDn0cmmYhN9CTWW1abD1
+	I917eV/xaDVUIxBBvh8GxIsGd6YpB7KPt5lkJuSQ=
+Received: by mx.zohomail.com with SMTPS id 1788440984549371.17029183808177;
+	Thu, 3 Sep 2026 06:09:44 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] rust: doctest: unify with other kunit tests
-To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
-References: <20260902-kunit-v2-0-eda3ed6c00c5@garyguo.net>
-From: David Gow <david@davidgow.net>
-Content-Language: fr
-In-Reply-To: <20260902-kunit-v2-0-eda3ed6c00c5@garyguo.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 2/9] rust: mm: add `task_size` helper
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260902-tyr-ioctls-v1-2-e0fdbf8bd108@kylinos.cn>
+Date: Thu, 3 Sep 2026 10:09:26 -0300
+Cc: rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Lyude Paul <lyude@redhat.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org,
+ dri-devel@lists.freedesktop.org,
+ Alvin Sun <alvin.sun@linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <E115BCEF-121E-4947-AB17-090C474E15FE@collabora.com>
+References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
+ <20260902-tyr-ioctls-v1-2-e0fdbf8bd108@kylinos.cn>
+To: sunke@kylinos.cn
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-Le 03/09/2026 à 5:59 AM, Gary Guo a écrit :
-> Currently in Rust, kunit tests are handled with `kunit_tests`, while the
-> doctests generate a lot `extern "C"` functions and invoke them through a
-> generated C wrapper.
-> 
-> This is currently needed because of the special treatment of file name and
-> line numbers from doctests. Convert them to override `file!()` and
-> `line!()` macro instead, and use them inside `kunit_assert!`.
-> 
-> With this it is possible to just generate `#[kunit_tests]` and `#[test]`
-> for doctests.
-> 
-> David mentioned in [1] that this should route via the Rust tree.
-> 
-> Link: https://lore.kernel.org/rust-for-linux/e30d16ec-f5a3-4cd8-9b25-96e0dfa8b9d2@davidgow.net/ [1]
-> 
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+
+
+> On 1 Sep 2026, at 13:09, Ke Sun via B4 Relay =
+<devnull+sunke.kylinos.cn@kernel.org> wrote:
+>=20
+> From: Alvin Sun <alvin.sun@linux.dev>
+>=20
+> Expose the task's address space size. It is used by the Tyr driver
+> for splitting a VM's GPU address space into user and kernel regions.
+>=20
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 > ---
-> Changes in v2:
-> - Rebased on v7.3-rc1
-> - Picked up tags
-> - Link to v1: https://patch.msgid.link/20260616-kunit-v1-0-b191604a8d6b@garyguo.net
-> 
-> ---
+> rust/kernel/mm.rs | 7 +++++++
+> 1 file changed, 7 insertions(+)
+>=20
+> diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+> index 4764d7b68f2a7..d2dfbb7d43972 100644
+> --- a/rust/kernel/mm.rs
+> +++ b/rust/kernel/mm.rs
+> @@ -149,6 +149,13 @@ pub fn mmget_not_zero(&self) -> =
+Option<ARef<MmWithUser>> {
+>             None
+>         }
+>     }
+> +
+> +    /// The size of the process virtual address space.
+> +    #[inline]
+> +    pub fn task_size(&self) -> usize {
+> +        // SAFETY: `self.as_raw()` is a valid pointer to an =
+`mm_struct` per the type invariants.
+> +        unsafe { (*self.as_raw()).__bindgen_anon_1.task_size }
+> +    }
+> }
+>=20
+> // These methods require `mm_users` to be non-zero.
+>=20
+> --=20
+> 2.43.0
+>=20
+>=20
 
-Thanks again. This still looks good to me.
 
-Cheers,
--- David
-
-> Gary Guo (3):
->       rust: kunit: use `file!()` inside `kunit_assert!`
->       rust: kunit: use `line!()` inside `kunit_assert!`
->       rust: doctest: generate Rust kunit test suites
-> 
->  Documentation/rust/general-information.rst |  4 +-
->  init/Kconfig                               |  3 --
->  rust/Makefile                              |  4 +-
->  rust/kernel/kunit.rs                       | 11 +++--
->  rust/kernel/str.rs                         |  2 +-
->  rust/macros/helpers.rs                     | 16 -------
->  rust/macros/kunit.rs                       |  5 +-
->  rust/macros/lib.rs                         |  5 --
->  scripts/rustdoc_test_gen.rs                | 73 ++++++++----------------------
->  9 files changed, 30 insertions(+), 93 deletions(-)
-> ---
-> base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-> change-id: 20260616-kunit-348f2c029b1e
-> 
-> Best regards,
-> --  
-> Gary Guo <gary@garyguo.net>
-> 
-
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
