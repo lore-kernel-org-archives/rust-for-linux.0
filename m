@@ -1,205 +1,207 @@
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010021.outbound.protection.outlook.com [52.101.56.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA3845D5FA
-	for <rust-for-linux@vger.kernel.org>; Thu,  3 Sep 2026 11:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.69
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788435382; cv=none; b=HArvGZDoCbDM0U9/cAz1xpjJyuUSOBJH1V3D54eDxgzGzGdO4kvTsGxsMDo/FhDCrFcsUZf8YjHI08PeWdpmf3stv8uqPwjoarAvw36BDcPlau7JvPr1f0uSwhli5un0XtzaZzntTQC8SozXCUqv1y6wEixL1Uw3p4I+ibjUuow=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788435382; c=relaxed/simple;
-	bh=UFsZXVipqlvfpx450PhI4oHqd1cKHwae0vZq/h7tgvg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Wq5mpsnlvkV0zymTDiQuk/Cv1PRqa29VgNWHZXDQ+xUKKGHR3Nntg6v2C3y65MgEw6hqwMu1MtIcWqK2I6BgYGF7qopt5f/fFhbpowk3/zEgsHEu6WDlmfN+cQdzsR0jg1jE7Dh6cqji+To+/1VUsOKwgZAdzFep4G9eLqf1D3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XQgRczGI; arc=none smtp.client-ip=209.85.221.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDA6446825;
+	Thu,  3 Sep 2026 11:46:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788436021; cv=fail; b=Ck0yf2WRun9WmM6BF1bZfZk8n5/o7R370mIePZoQbSJeDdE5ZIXceq14dp3rV4gVYjVTk9JiUM4py+MfbfzcuZ6BG01TDFXOyLVSeIqR4vKcQZwVedeUyhbgEiXPRRUzsHPzrfqLt7G9Qh/L687IPjfOS1yzloAu/4aWHHDJKfo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788436021; c=relaxed/simple;
+	bh=O9wpAcdwR7cMGAwGYghKdCwmMBPwbKnKMvqpK1tWQ1s=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=hGthX+xELcLJqCfCZi4E+FUOm+MaRRoB8V+N8RNLVe4tFXI8mGeHLcBzM+pl6fQ+qDUb7HEBU42Rc4+aBVYdhf0cC7SNnfyiiEAB7J7WIPJ5xabYmKM1HLg28ZiqQ6FMzU1IgfHcdBD6jK5/IOWSiAr5F0VaL6aXXxHVqjVT2H8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=l5+DiYlt; arc=fail smtp.client-ip=52.101.56.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XQgRczGI"
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47f6d70223dso1597423f8f.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 03 Sep 2026 04:36:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788435373; x=1789040173; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tZ4bhp8LPRdPf3uVYkffJK0IPibPFHXYOnRk0Sytprk=;
-        b=XQgRczGIwNPAwsso9w8BMMnffq4kRt3V5+TFKRdaE3AYw1o7Wu9HU6Mbmq1bEDe2EZ
-         rkMPLGHy08wlCB+HUndOOMw3USyFxgEcqT8gKOlbLLcHHgV+r0BbaXtHtGfl9cuWGAO9
-         cnSrV8gxdK/slx5bCWYFaezmAs3cwlhSH83VC1QjDAG1RcVqGzAQvlCHKIT+Gyq3hTUt
-         AzWEhR0UkKkOngy1hbn7k/7PPZ8Ht/1CcrRvMhcR/lPGlUSdCGynYMsjgA5/XnYuQqjr
-         kMmu01SC9Ue7myOfGCRduLDygvsa7nTbWipnhdYn27cMC+bYTegl5wKlfiwBDkrbJb27
-         IZig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788435373; x=1789040173;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tZ4bhp8LPRdPf3uVYkffJK0IPibPFHXYOnRk0Sytprk=;
-        b=aQDEYPA0k6l0Uqku+Y7YPbq1j6h+MtVMsDYqcfYdZwGJ3dWIVGzBpEUO2JrZlgYqiH
-         eUzGEYR/uaX1j6fgMiGOsEAiJDRwOkJqt1OPmgpritx0Z7cayZNiJM2mPiH24WPGzeoQ
-         PxiFpr5uC2GfmhsRVaXHBXu43c+vN9VG0QkYbvhgCl/gNT4tJSPq+9vYUytsLpcPq+RX
-         mThyDgr9Uchk4zU2yTWXT0rML9uwD2brL1VfBFR9Sjh1UZHfRS+4iebAyWkF/K5pMRFq
-         aFyhcwuCji7owd49sdM5Qx38mGWBVPocnW4FnzDTZlIUab6/D7V/PNgUqV7x504vcH4J
-         7WUA==
-X-Forwarded-Encrypted: i=1; AKwUvBzGc8hwaIcJyBugL+aqSpNtalOAm8wZ42/6F0UHgxUbDDfcAZcbkxnQSaEiKRarGYgwC6Z8ScmDuXhibKbljQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++nHe8hF/P17fBwGLJSa8zrx+buP62aPczbwmmOKYEGK7IrDgITg
-	aIQaKc1TrLtnBzjAW2bVfN32R1eYGEUKetPQqxMpzdduaoA0zKTv9fY9KugIkGEfI250oPggPZ7
-	+Q/6Gl7xQmmaAgWBfeQ==
-X-Received: from wmoo1.prod.google.com ([2002:a05:600d:101:b0:499:dd7e:7848])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1e0a:b0:49c:f518:252d with SMTP id 5b1f17b1804b1-49cf5182689mr18521135e9.14.1788435372573;
- Thu, 03 Sep 2026 04:36:12 -0700 (PDT)
-Date: Thu, 03 Sep 2026 11:36:03 +0000
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="l5+DiYlt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Nj0du++BlVG9PF08pHREegVafh1se15Bq3e36tRxGxr0Ygr1UDEhLzUzFEThQFBD/3pyLbpD8QqMRtCqGxesX+cD8+07NZi7AOIXI3t/k8eOzSULodEskvOTPbK5qGbHF/s65L7oRgE0/HJ5m9omEHavfuogufODPBeaIFaCUmHBxax4VN7RWLm5Mis7xvvKuFwRnnaD44Bckovfah2VxO7a+cn1qItz3u4LGJbSbHDiHsj6KemSf39u83mrdyXDZHcOPDluXGZiDNoOkGUxafKOTjKW6CteCQErLgmVq0MzTOrqyd2hr5rxBE7+fX62JjRhxW639R8Imylj13zoTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rFi1iUMh3e9QxGt8uTsnhuavQgn5q+R4DOVTBTcZrmU=;
+ b=TsMbjIwJkj6UDgd2p5XyueCdm3pO8f8QI9b/jUqfPBAMKOaNfwOK/qPt64/SVkDyvyZJdNKhcONdHz29ZyxxKU0SisLRjksxYgjzszK8Qz3dbrMjFv9k9mgpnrip8JnlU4pSzDN7gglSKyT27Eqo+mYJMUt4Tzu6p25fLtISudmcBUbaTK1zS/cuDcBzKF/8YUt34CGm0VuexaGOzaRsURA1fRGPoBfv4EVfbChzVTOAByYHnbmGwTKVukbxTp2IWDHPy6MBgtwCa05V7bMDqp26kx5BUGmq4Qvw4OdKXynwSs+/r0WdvxzPpnzvAA6lNKhlkaH6WtIUycoFElF5xA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rFi1iUMh3e9QxGt8uTsnhuavQgn5q+R4DOVTBTcZrmU=;
+ b=l5+DiYltDnrwL/udXcLr3EIKtRNfxBUYQ0pX67pthFcRoLacIAJgMaKYNiNuB2TM7Bjhj9RIVO4i3ZBsGO1HWqHh8O0h6MKUODQXalDC4v9Cqjf3jPlzobsEDxP9ORJdMMTlOnp/rP+WzXWp27g0CcVxzJSYfEZxDHrn4rlRP+NeXmzKln9IPdvSWZSPT2ecVITVzSItH2vUaQIk+z+4MEs5ErzONKkML+MOtAG5yfhfhUy6SbQ4ZyeT5NVIwgQ08w3SNGmkr4U+wEPIZm4x9RBxwroy8xLybpPg2Wq77aAjn8c2aIA1FiD/cKVUnIRGn2UvgdYqTulO+injEihlrg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by PH7PR12MB9150.namprd12.prod.outlook.com (2603:10b6:510:2eb::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
+ 2026 11:46:48 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0382.007; Thu, 3 Sep 2026
+ 11:46:47 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 03 Sep 2026 20:46:44 +0900
+Message-Id: <DL5NNIC77DYS.2BS3GZ701XIY5@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Tamir Duberstein" <tamird@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, <driver-core@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v4 01/16] rust: io: register: reimplement as proc macro
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Gary Guo" <gary@garyguo.net>
+Content-Transfer-Encoding: quoted-printable
+References: <20260901-typed_register-v4-0-5552b1d59525@garyguo.net>
+ <20260901-typed_register-v4-1-5552b1d59525@garyguo.net>
+In-Reply-To: <20260901-typed_register-v4-1-5552b1d59525@garyguo.net>
+X-ClientProxiedBy: TY4P286CA0025.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:2b0::7) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAKJbmWoC/x3MQQqDQAxG4atI1gamExTaq5QuRvOr2YwlIyKId
- 3dw+S3eO6nADYU+zUmO3YqtueLVNjQuKc9g02qKIfbhHYQHywrnbXEkZRy2cV4VrNKJ6ChDiol q/XdMdjzn7++6btxVjC5pAAAA
-X-Change-Id: 20260903-binder-thread-exit-node-d3533dc3ba2a
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4861; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=UFsZXVipqlvfpx450PhI4oHqd1cKHwae0vZq/h7tgvg=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqmVumOdC5zbeu0NqQvVL+RXhOyXWae9RJ43i6/
- Iqk9k938RaJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaplbpgAKCRAEWL7uWMY5
- RiQVD/9ofPBPixot/tPTNbLyXvza5QF9N/ks8lPVTsS141zvuZXnBPa5Q8XL7WQDVyy76fRneGh
- 7laXZr21OuKXg8dF3SvGwpVYNZ5TWXdvOizYBF9rkyWSkOzN/nC8qZW8YFrVfaf2H4hiG3kZE7S
- 4LlJKky7m+hw1kfnkmT4ibTioYXkzHbW5lvnchiRmDt5/QnM0Mgu7Im1K+QqMGcnOqxToCcaMr5
- CheJH9PfqUcKVz/sv/mH2WzOXJLKGHXWpTHGf3ehlN95JNm5HATFhx7IAbdLmuAAgqMQxLMOfTq
- WKCEkQ1N+4ZDrVKPvRx9fmAi85LDzsnBtMwg69Y6UpxEKQECv8RWQxVB7iaR7EWmAICixiJ2AM2
- d08PRX1DoNFy8VwGOxm7202wUsgDUdj8CuZiUiLoPdx2coszmIXwgiqYP2IHbx5UtJXWfc95E4I
- GzySEli/OsbZPlhmf7vquHVD9mRcdSv5/Eek44brrq/RFIpjt8iPAXQ2gFLp88Kil3qxg6HlagT
- 4yH1En69qGeBF6flhkVKEXMadjBuJGc7OPbPXLqQuyP3RqLAOioj3CyH2Gq3YVNABBgT6ZMQZBN
- roRb1id4HE8VCDjY7KN15FZCPZ9Ft/XR52AhJRgPAfjIfz6JVObLxWLoYi1HlmFp747BPG4GOjU BZYxjlQX2HKvEbg==
-X-Mailer: b4 0.14.3
-Message-ID: <20260903-binder-thread-exit-node-v1-1-be09ff14f6a4@google.com>
-Subject: [PATCH] rust_binder: reschedule node refcount update on thread exit
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|PH7PR12MB9150:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7812706c-891d-4341-2e72-08df09b108d3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|10070799003|366016|11063799006|10067099003|4143699003|22082099003|18002099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	X4aeJ108YhpdIG+fNxQYVI7pnSATEnnlWMie4ER1pV94cD62G4o1xMjNrqAtVgKl6Bpfn2e5z/6qmjle0do+U7i90WLBWT8Nrrs+QOAHK+AfKORgvMHPPsg2vQKq6U1zihnSShq+MhdlsSBRkFpU/t73fZsAVzeMhTOt99Hf2YzLf9WVI7AK0Rnd7WtVSj1Q9cw64HgJ9iZpLbXDfSKXAqIcFj4cvh7Cf8+g3DwXO1HtY7XMC5kQIhXq028nw7AG59L5w+gHJodJyCjbE9IzZ7m/2dNip9UmFNB7lCVIxUVzdGyfedtasrOfYVZlkEwKiFCqcWtHg379LOpw1ubuNOYvwrj4YBhX0sWM6XkHR+lt8xw2VeKkBTwJADSeDY3FPxPhmwRzhx21Rihv1w+j4+r5H+g8LKz/+U23EF3EHgqrt7iruAnt1JlHRd5vt6fGgcKKKeWwQp1GDGuizh3P24hMsTIqIOvlPSbT8viJZd/eXQK9wH5PMRBXRFMUQ51tBcQb0nxiqe1g6CMI5afwiDHhEIO01S5olvTjD2RIlRLNs9U62RqC55oQIjmHYtmMfyX7THHAdIy8UWlmdBMo7xDKW3f4pD7caMSdCdNvbQ79+YinCMHSw+aSd7B2enqMJ0l0BFzuvQ1S5HY3UiY3Cm14lzWvR+XmzlmCgLtC0Wg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(10070799003)(366016)(11063799006)(10067099003)(4143699003)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eU1HT095Sk1FalNQaC9FRElDVEhYbkVXbTBWbExUUFlrSFVRL3FJdkY4ek9B?=
+ =?utf-8?B?Y0d4cjQwRUs0YmZZaXJjTlpoS0JlTmtzREViOXo0aEcweDQ4NW5SUTFNS0JY?=
+ =?utf-8?B?SFhlZlJlOFdtU2lkWS9OQTl3NDgzLzExQmgxdmNFR0pJSVFtQnk4cytKeXY2?=
+ =?utf-8?B?MGI1OUU2QkNTZzdDNlJFVklrY1BFVm04WUJEQlhQdXIyVWc1VXNoRGRqZE54?=
+ =?utf-8?B?TEdnemd1OUxwekxpZ0VacFJUcEIzbG0rd3pOck85ZUJTODQ4L0JOVmlqK1hj?=
+ =?utf-8?B?VnV3Vm1vQ2VVdk92MGZRc0hsUEF2NktINGtHS3cwc2RkZUUrREVFYTkyeGRs?=
+ =?utf-8?B?WEN6SC80ZzBpSk4xSjd1THN3cHphUnBtamRzY01zM0M5Uk5mYmdLLzFUdTVq?=
+ =?utf-8?B?U3kyZUV6MFRHNVdNYUVyTEJjNWlRVXBId2NhbzVzNktZdmVEZmtMU1p5a3VB?=
+ =?utf-8?B?OEZvcXRmTXZ4MFluN2dPNnRHNmFYYnAwb0pwbVo4RG5MampxZHVSaVNCYkhn?=
+ =?utf-8?B?NTdhbFhRM214RFE1V3Exakx0QllDdFh2NVpOUUUrWlh2R1V3TENQeDZ0eGNV?=
+ =?utf-8?B?eWV4STdNeFNhVmI3UmpxdDFvNTV5UHRzcGd4WE9qUmF0aFROa3BkL0RXYkM1?=
+ =?utf-8?B?dlVUR2hWN09qM2kvUCtpcE9QY3dxcVhsRjJybDZ0UUQyWTRsZ0JUckVmclkz?=
+ =?utf-8?B?UXR3UWFEVHZzZ0J1cGpIdWFKS3ZoaTlOU0tIUkxsUEdKazlqT2VoaGRCWlg0?=
+ =?utf-8?B?djh6UmkxOUVxdXRTZklKTmZLVHFWN281bVU1eGRQSWUwY2hYQ2FHUUM1aE9R?=
+ =?utf-8?B?OTJEa1JocUNyNFBOcHd3cW1HSzR4MEV3RDNoc3d1dWErelJnYSs0b3BQVVha?=
+ =?utf-8?B?UklTQS9sU1g0N0g2Q1dmcHBzdFVIU1p3RGF2NTlWRmFiakwyVlQxV3dGMFpa?=
+ =?utf-8?B?OUkvRnNSVWVWR1V2ZllTZkQ1MWlVelFpcE5ZWWlHWkNWWi9jcVYvTm1rbysx?=
+ =?utf-8?B?SWJ6Z1B3NzRSZFdOOS9jTXB4WWwvR0xvYmljQ0xVUWRhbHg3Z0JMK0ltVDNW?=
+ =?utf-8?B?SEcxdk1PQmNxZzF4UkFuaTVwUkw5RitFdHhmYXBaVnVKTHh0UG5LTTJ3Q3N6?=
+ =?utf-8?B?UkpiQ3diYlNtUGZMRy9EVmg0bE1Td2NjbVE4ZUhNRVlzZE00R1lTOXlMSFlY?=
+ =?utf-8?B?Nk1EZmJXNFJqaFVSR2xhdEdJYmlOSVBlUm9kbzVDZjFrTnpSc2FzVkM3NkZR?=
+ =?utf-8?B?QWswTU1TekozN0ZQSkxLS3lMSHRaVG40QVBCdUdsQjcwc0NwbGpGQ3Z2ZVJu?=
+ =?utf-8?B?NENndDVWdk9Qc0xYM3lWZ21mN2lxUEdOZjVxYk1jYjA5eUJtVXFlTU1sZ0NJ?=
+ =?utf-8?B?ZDUwSm83Ly9lSnpJeGhHSGlxZS9VUmV3SC9VTi9yTHAyQ0hFaG5DbVN5eHcx?=
+ =?utf-8?B?YXYwQkUwWkFtUmhkR0UvYzE5UUNteDI0S211d3JIT1IxcnF6OE5peG1YN0Vn?=
+ =?utf-8?B?a010bW9CRlZTaFR0bDMrWVhTcTlJbE5BUVhHdWtabjhFN1NwL1U1M3J4dTB6?=
+ =?utf-8?B?bzliUTE5N1pDNnVaOFR1RjRaNzNKZTFLd25EejVkMlN0bHRZVVJuOUxHNnBn?=
+ =?utf-8?B?Q0h5a1ZUU016OXJnVk1MNHB2YU9mQkZLQXFIWjlkVk0xYkFaaWJhMFY0Uy9Z?=
+ =?utf-8?B?YTBIUTN5M2pJM1RkbzJtVlowc2ZRbStIWldvVHpuYmcrVEtTaGxrRlVQL1Nw?=
+ =?utf-8?B?MVRtOXliM2JBVHAzallaVHcvU1NQQ1U4M2hDZStZZGV2dWRTNHd5Q2syZXoz?=
+ =?utf-8?B?SmEyV1J5ZHJTQXVBZkZxMk5YOXFHTHlqNU9JS0Q3N0YrcmdVdWhEUXZmQzNU?=
+ =?utf-8?B?Z1lhZ3ZOMUFIL3RHcTdhaVFtNXdVb0E2SmZ3Y2ZuRjJXbDdjS1BCMUhpcGZO?=
+ =?utf-8?B?bmlGbXFnRnJpbEtNQXArVU91K3JHSUdsaEc0RWU5Ukhza3dQbURQTFhhN1c4?=
+ =?utf-8?B?dVA2YS9QZFpqeG4rbCtBRlRtb1MrdUdOZzFEckdNRWZISWc1YitDSEp6MTAx?=
+ =?utf-8?B?NFpWWXd1Wm5pNGQ3NDBBeWdGZERDcnFoU3VlNWV2elBLMWFOZElxQWJtWVpJ?=
+ =?utf-8?B?K2VaaktWU3d5ZURJblFCbHNVZE9SbERLVENGR1JkNnd5T2Y1UEFSV01XSTJ2?=
+ =?utf-8?B?d1Z6TTFiaEVQWXQ3ZTgvYXBHTm9sYVMvVVNFc2RDdE5GTFdPbW91L1YyODJh?=
+ =?utf-8?B?SnovTWh4WExCYndPc2dKN3REL3FWNGJPSDA4MDVmZ0xJcmxQcnRyUmJBTU9x?=
+ =?utf-8?B?cWxoSnNMdCtFS25VdTk2L2FmWG5Lcmw4VlRIeC9KeXU1RG9TclBTSGxMZStY?=
+ =?utf-8?Q?YrW2B+xVvGqgTQYoO6k8zI8VflI6uCUd46FCyoazic7Z+?=
+X-MS-Exchange-AntiSpam-MessageData-1: MuLGsAjcRVkzKA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7812706c-891d-4341-2e72-08df09b108d3
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 11:46:47.3144
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0X26DnXJit+oGMG/6QhUQ66mDVKuSWqYmcEIMyjA2RwPVTDZ4Lp2oB97JpKUyQzoAyEw7kAByoBReU8w9pcFJQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9150
 
-When a thread exits via BINDER_THREAD_EXIT, its pending work items are
-cancelled. If a thread exits while holding a pending node refcount
-increment (e.g. pushed as deferred work to that thread), the refcount
-increment was previously dropped because Node::cancel() and
-NodeWrapper::cancel() were no-ops.
+On Wed Sep 2, 2026 at 1:50 AM JST, Gary Guo wrote:
+<...>
+> diff --git a/rust/macros/io/mod.rs b/rust/macros/io/mod.rs
+> new file mode 100644
+> index 000000000000..87f7742f4619
+> --- /dev/null
+> +++ b/rust/macros/io/mod.rs
+> @@ -0,0 +1,3 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +pub(crate) mod register;
+> diff --git a/rust/macros/io/register.rs b/rust/macros/io/register.rs
+> new file mode 100644
+> index 000000000000..83ba4dd75ab3
+> --- /dev/null
+> +++ b/rust/macros/io/register.rs
+> @@ -0,0 +1,276 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Documention and usage example of the macro can be found at `rust/ker=
+nel/io/register.rs`.
 
-Dropping the refcount update leaves the node's delivery state and count
-state desynchronized, and userspace will not receive the notification,
-which can cause the node to never be freed from the process's nodes tree
-when all external references are dropped.
+s/Documention/Documentation
 
-Fix this by implementing DeliverToRead::cancel() for Node and NodeWrapper
-to move the pending refcount update to the process's work queue on thread
-exit so another thread can deliver it to userspace.
+> +
+> +use proc_macro2::{
+> +    Group,
+> +    Literal,
+> +    Span,
+> +    TokenStream, //
+> +};
+> +use quote::{
+> +    quote,
+> +    quote_spanned, //
+> +};
+> +use syn::{
+> +    bracketed,
+> +    parenthesized,
+> +    parse::Parse,
+> +    spanned::Spanned,
+> +    token,
+> +    Attribute,
+> +    Expr,
+> +    Ident,
+> +    Path,
+> +    Result,
+> +    Token,
+> +    Type,
+> +    Visibility, //
+> +};
+> +
+> +mod kw {
+> +    syn::custom_keyword!(stride);
+> +}
+> +
+> +/// Definition of a register array.
+> +///
+> +/// Specify a size, and optionally a stride. Syntax is of form `[size: E=
+XPR, $(stride =3D EXPR)?]`.
 
-Cc: stable@vger.kernel.org
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/node.rs         | 20 +++++++++++++++++---
- drivers/android/binder/node/wrapper.rs | 34 +++++++++++++++++++++++++++++++++-
- 2 files changed, 50 insertions(+), 4 deletions(-)
+IIUC the syntax is actually `[EXPR $(, stride =3D EXPR)?]`.
 
-diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
-index 0a82af14cda3..8dc3e3f2b834 100644
---- a/drivers/android/binder/node.rs
-+++ b/drivers/android/binder/node.rs
-@@ -51,9 +51,9 @@
- ///   about to drop the weak reference, then the strong increment could be processed after the
- ///   other thread has already exited, which would be too late.
- ///
--/// Note that trying to create a `ListArc` to the node can succeed even if `has_normal_push` is
-+/// Note that trying to create a `ListArc` to the node can succeed even if `has_pushed_node` is
- /// set. This is because another thread might just have popped the node from a todo list, but not
--/// yet called `do_work`. However, if `has_normal_push` is false, then creating a `ListArc` should
-+/// yet called `do_work`. However, if `has_pushed_node` is false, then creating a `ListArc` should
- /// always succeed.
- ///
- /// Like the other fields in `NodeInner`, the delivery state is protected by the process lock.
-@@ -738,7 +738,21 @@ fn do_work(
-         self.do_work_locked(writer, owner_inner)
-     }
- 
--    fn cancel(self: DArc<Self>) {}
-+    fn cancel(self: DArc<Self>) {
-+        let _drop_outside_lock;
-+        let mut owner_inner = self.owner.inner.lock();
-+
-+        // We only do something on BINDER_THREAD_EXIT, not process exit.
-+        if owner_inner.is_dead {
-+            return;
-+        }
-+
-+        // If BINDER_THREAD_EXIT is invoked on a thread with a pending node refcount update, we
-+        // should move ourselves to ensure the refcount update is still delivered.
-+        if let Some(node) = ListArc::try_from_arc_borrow(self.as_arc_borrow()) {
-+            _drop_outside_lock = owner_inner.push_work(&self.owner, node);
-+        }
-+    }
- 
-     fn should_sync_wakeup(&self) -> bool {
-         false
-diff --git a/drivers/android/binder/node/wrapper.rs b/drivers/android/binder/node/wrapper.rs
-index 6e4ca01c941a..886626ca0d42 100644
---- a/drivers/android/binder/node/wrapper.rs
-+++ b/drivers/android/binder/node/wrapper.rs
-@@ -57,7 +57,39 @@ fn do_work(
-         node.do_work_locked(writer, owner_inner)
-     }
- 
--    fn cancel(self: DArc<Self>) {}
-+    fn cancel(self: DArc<Self>) {
-+        let _drop_outside_lock;
-+        let node = &self.node;
-+        let mut owner_inner = node.owner.inner.lock();
-+
-+        // We only do something on BINDER_THREAD_EXIT, not process exit.
-+        if owner_inner.is_dead {
-+            return;
-+        }
-+
-+        // We transfer the responsibility of the node refcount update to the scheduled Node because
-+        // NodeWrapper has no way to re-create the ListArc.
-+        let inner = node.inner.access_mut(&mut owner_inner);
-+
-+        let ds = &mut inner.delivery_state;
-+        assert!(ds.has_pushed_wrapper);
-+        assert!(ds.has_strong_zero2one);
-+        ds.has_pushed_wrapper = false;
-+
-+        // We are changing the state to one where the Node is the strong zero2one update instead of
-+        // the wrapper.
-+        ds.has_weak_zero2one = false;
-+
-+        if !ds.has_pushed_node {
-+            if let Some(node2) = ListArc::try_from_arc_borrow(node.as_arc_borrow()) {
-+                ds.has_pushed_node = true;
-+                _drop_outside_lock = owner_inner.push_work(&node.owner, node2);
-+            } else {
-+                // This can't actually happen.
-+                ds.has_strong_zero2one = false;
-+            }
-+        }
-+    }
- 
-     fn should_sync_wakeup(&self) -> bool {
-         false
+With these fixed,
 
----
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-change-id: 20260903-binder-thread-exit-node-d3533dc3ba2a
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
-
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
