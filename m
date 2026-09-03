@@ -1,385 +1,367 @@
-Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020115.outbound.protection.outlook.com [52.101.195.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165BB4499AA;
-	Thu,  3 Sep 2026 18:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F2F3CF1E1;
+	Thu,  3 Sep 2026 18:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.115
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788459068; cv=pass; b=TGJYjHQZW0wh1YQA9q26O0DYxIRHuSLIXtNCnqflBLYPPqlAcjGYiDfpNsp9G5DOTb1dTiia/iIYAg4hoLO6uv141hyVcRyTITsngGGOWMfCN/zh2DYawRgcqLAmbCzLkGSKI79HfcKeTq4xvjaijm+NODh/8Y9phsQtpeHK108=
+	t=1788461776; cv=fail; b=VhHeGLoOojRU0ZHrIqtN0Jdlm0q0L4MQ+hmO8UsJCl6qvbi64npGn+vwbSG9W113uU5/4DfpSDerdJEJiJto+6ySptb1bH0OPyvBmSvz+Olbz/zUJch9cmsCE/yqbrHaAixrlGmlSyZsXR+oRdMIpD716+kXlgC9VnEn/fkLJcs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788459068; c=relaxed/simple;
-	bh=ET6vhej3cz6TXzvaJNu81u1h+2+4VyYnbAejarU2CGE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=qqkTt3mcfRFCeuNZiUJb/MS9fVuU4Iic+ei56b3xJty3IXsb95XofqBdTDrkj7YhTxxImawFHx22bxF4nCmjyruPXy/rpSAdfNCKhReyUOv4/VFxRfOZmRx0Z3+uRgep0eSmCqe8/dHqS1QdIb9V97z8ACbZlJLMYkBbSKmLjHw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Zfb0i+vc; arc=pass smtp.client-ip=165.173.180.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Zfb0i+vc"
-ARC-Seal: i=1; a=rsa-sha256; t=1788459025; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=fa1cdIREy4hSIlYRXtNFVHHhpVk9er2or51ag2f7EvDWHBPoAHq1Pq0X6G5xkDr3IpMfMGzTMv/8XKW18aeH/kK0nWfcZlozHylMSHj2SX7tsfJLB2CHmrT+IZUxA3PuEO1oORKPypMTBJ5sJHnW5FPC+yKNW2Da17w95UwghZA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1788459025; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=pvOUkOdgY7w3bkmqjiShZYzv6GBc2rD4vaEVe45u4tw=; 
-	b=fWNn6CPqQEHr0ZeYjb26S2TVncd02ILGOulyhaxsJ8AbrP9Ba7Q9wQt9TfTtVOB8mUI2E2tOYr0SSUj8LlUSXpP4YVGX+Y8ZWJBgIPprSqQluy6NRGXGdCT82GuIlHn3GOOC6jS0i0LwNGXnnRAzQCnDEvu8g3F4jkwkGyTxBLE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788459025;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=pvOUkOdgY7w3bkmqjiShZYzv6GBc2rD4vaEVe45u4tw=;
-	b=Zfb0i+vcr/TOvnzv8VNZ+H7jxcMDqooC+pu3DhHAraHdwjP9+DECE3OeL9XqYPkC
-	pylPOuiUehUUqlFioVlrL0qNkQMc7O3olT2kFZ9SIaRwDooV6L/L0HcDt8J4zPII8LO
-	PNv4vIOcoDdD/a93MA2eMHBAxnJ10qK2tTUTHJOo=
-Received: by mx.zohomail.com with SMTPS id 1788459023242789.6849040267263;
-	Thu, 3 Sep 2026 11:10:23 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	s=arc-20240116; t=1788461776; c=relaxed/simple;
+	bh=5yI/NMi3wC196t5GSrerXtSP6OAHOJDpxeTUWCZDcOA=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=aVF/11H15/PsGT8i7EBsiSFRAGEvoBw0CM9oOQ0c1xPfUM0jFi9deaLtBO3nDj75JqNvO6FUjsfY1QO3c0vqvH8Kh8Oz+GoKffcfSh/kGfrsqNbC0o81onGQntSDb5VfywtTWff/JBJ48NBMb+tpiZP5Ci7mYxuKAlPmSexaqn8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomlin.com; spf=pass smtp.mailfrom=atomlin.com; arc=fail smtp.client-ip=52.101.195.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atomlin.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UwbtCqE7gasW5rhVlXo9d19aVtFOJsiHqkVrPK5TFTd/xnQ/0AuJsWrJb8lBt/by1mc3kZC/Pm9P0qCaRQ2UNsZUDu+jvzsgSzdj090OaAhFfauc4CqnnyczmO5JEq96vTn/TbG+CC3SBzOJFyOMUg5/SjZXNu+v9942OGsPZ2+4Kn/hSvsU7o0iOP2twO3Mmos2iwF3I6+JrLLC7xfOufuECoQuX8wybWsxwWOW3iZzAAIb5wlHnWld3t5rLI046eOhCsg3MNrFymhv83giVmD1bTCLFbeGiRQC3YkVNjhK0V/LqDRfPflgw0AwW/SrgGz//MfcaYnsz3tZDi/m5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
+ bh=+0to+0zcIwNiaUx1usqB7wh33opGB3PLR4e76ujhjr0=;
+ b=j6Vat78jZmGWrMk5wZXMzgk4OsDP0ANLt4wgVpzIVtnccNPnt9KC/x+PttxBKI+LLIH0m5JXVlLJwEPTt/5RL+L29NgyOaCatl1iwpNG+a6tbEmC4WvvKjtq5yzXhzy4pDkpFbFnoKUs4DHIsa/TihW3epegQhv3waACSRLk72o250x6mZQL/5UBQCRJWBRbDC5dJ1fy2nJ0riPE7pPSHkNx/9vwVSema0OrdaKA+DSdOzAgbly1lJp4ScwLkuo9WSxHs7xMUY8LzQmYzSnSHA+e1IWoptmr2H8ED2QhF0+qdd0UkE1aSpnyySko4gs9QgUzoK6MqWrGtK7qGySgLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=atomlin.com; dmarc=pass action=none header.from=atomlin.com;
+ dkim=pass header.d=atomlin.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=atomlin.com;
+Received: from CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:183::5)
+ by CWXP123MB3048.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:38::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
+ 2026 18:56:01 +0000
+Received: from CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
+ ([fe80::cec4:77ab:262e:d230]) by CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
+ ([fe80::cec4:77ab:262e:d230%4]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
+ 18:56:01 +0000
+From: Aaron Tomlin <atomlin@atomlin.com>
+To: arnd@arndb.de,
+	mcgrof@kernel.org,
+	petr.pavlu@suse.com,
+	da.gomez@kernel.org,
+	samitolvanen@google.com,
+	peterz@infradead.org,
+	ojeda@kernel.org
+Cc: akpm@linux-foundation.org,
+	mhiramat@kernel.org,
+	boqun@kernel.org,
+	atomlin@atomlin.com,
+	neelx@suse.com,
+	da.anzani@gmail.com,
+	sean@ashe.io,
+	chjohnst@mail.com,
+	steve@abita.co,
+	mproche@mail.com,
+	nick.lane@mail.com,
+	linux-arch@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v10 0/2] module: Extend module_blacklist parameter to built-in modules
+Date: Thu,  3 Sep 2026 14:55:55 -0400
+Message-ID: <20260903185557.183224-1-atomlin@atomlin.com>
+X-Mailer: git-send-email 2.55.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CH0PR03CA0076.namprd03.prod.outlook.com
+ (2603:10b6:610:cc::21) To CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:400:183::5)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH 5/9] drm/tyr: add user and MCU VM specifications
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260902-tyr-ioctls-v1-5-e0fdbf8bd108@kylinos.cn>
-Date: Thu, 3 Sep 2026 15:10:05 -0300
-Cc: rust-for-linux@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Lyude Paul <lyude@redhat.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org,
- Alvin Sun <alvin.sun@linux.dev>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6112DB77-73A9-444F-B98B-4EEE9B69E393@collabora.com>
-References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
- <20260902-tyr-ioctls-v1-5-e0fdbf8bd108@kylinos.cn>
-To: sunke@kylinos.cn
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CWLP123MB6607:EE_|CWXP123MB3048:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7a9ca71c-754f-4faa-13dd-08df09ecff75
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|10067099003|3023799007|6133799003|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	0KridSh2SYz0wNgdz94gmKiu5Fd4vrwtbWG+lCsf8C6KtEpTEIp4g4HizNiv0Vtf0L/qMjIrIBvBU1BI6KMF/ugI3WUt53U7+xNjAKo6cDyguK0TMarG6ZRgoxq3jmypHVdMLv6N16a7nvwVjBpNReGPKSNKxrdpuPAxVVyQtkQLfnxsMi0Cd+FsbSJvxu8+/27mtQfNpXhWFzAfpuTCokr33OkA8O9tGCzCJI3q/tOO0i+ltlAZ9QuczHrqSgEXy2ABTot08oNnskqgoqU9DtD3kuIJJTaWefGActE4KLPfVyZj8ZGDAlnxuMdWp7ZQKZxFB8dfWCo1zmnjD8EMAw1f8e+gTjJV5I/+Dl5Tu9fOelHxQxQi3oUnH4Yd8ZWUUKG/GvTjeJEDiA6VQvjP+u/rpu0PnyMEU2z6tlhIu/tgIJUAeLn9jzoxB+v3/P1949RrgqEDLEnyMSbzCLShnXmW7Crnma6U37dPeIamkRzQtR2wWPgYqQPKOl+Z1s2DM6PcZbAYtpvY5/7H50JnjmVnuEAcdK8VnrXopnZvzlqbWGsVjNfWSVCdbtHEgRGWFa0YURVEhc5xzt40E8o7SMa+hLP+rQCxtfdmWWP4Og9mXiYduP7OXi9LTaEQoWZLyaaLll+CXzrxbd9Y1mKABH8bJbolgg7M/7iG/v1oKdk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(10067099003)(3023799007)(6133799003)(56012099006)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Tr3fjiPSrkW5IFMhWNj6JdZbF7EfDu4juNZy6u2GsLpFnLAdO5ngePmHyBpB?=
+ =?us-ascii?Q?53PP46pQg506y4wQRCnul5Px84xGCL3jHG3w8Co9N+/B0x+S3rLRaEnZ2PFR?=
+ =?us-ascii?Q?wtMMHWLnzCLwg0K/HzZCkb5HG7CRS1nwsqterFd3XFTXBqgx9LeQmTAUoHoQ?=
+ =?us-ascii?Q?Z4wYKtawK7MpP6Yhz4uUP0VBmR58l0hNemV9X4uSkoC00P3jpR1s7yfdCaiK?=
+ =?us-ascii?Q?ozxkI/3uXWFzCHN+giAJ1bpXrWiD/YShZVYse0q9nJIP3tbtbWMMJx0+mHpS?=
+ =?us-ascii?Q?NGJIlCyRMkz+lfqpTUD6+TV75+O5YWP6u5UbT5RmhdA4Jyd5XU9Pfp1ASy14?=
+ =?us-ascii?Q?tiX1h5AmCgIiU4tzs/P6qzeGRU4Cn6/jBktfd7k/uxAOb6Cm1q5esrY7Pslk?=
+ =?us-ascii?Q?+/iUQIIx3pfRJfCr6QISBN4vO5Rxi8Xz7pdk/cE/uMZBIfnNpka/qwlYXJVv?=
+ =?us-ascii?Q?whaCK1xGoQpEwqnxmNOwhbWi744YTOGH/oa+Nden/mP56WjTSr11x7o585Hl?=
+ =?us-ascii?Q?ZtV6OaJ/tyJSIclQg0m9spfP/6UkpvwIE0wVqW+30E27ylVZIEQwMV/gGUV4?=
+ =?us-ascii?Q?ACwCBAFU2NhM5p1cF9KRBOxcB5cOMriuqIFLfutcDOzcYyDuNNcfd/PyCXMT?=
+ =?us-ascii?Q?1RHVPjoGer9JlQTZx4i9E8mIF/eWLFobqgHB/OhQVrCzWUkj2qnvYLD9pPvy?=
+ =?us-ascii?Q?4TBil3kxDSrFnAvPboiQbQxOOfB68WAsU0PFlXzuW1OytoPXkKAGNiQttuRa?=
+ =?us-ascii?Q?1/pS24MW+UxEz7nhD9ACKS5Z078L/SUc/7JwwP1PgpZ23cgn3rLJA6/DSHKH?=
+ =?us-ascii?Q?ojd+zaRj/fHQlME9HY72sEqOn7j44TUnk5ZctjFJf3UeKmeDN5UCq7x5wGTT?=
+ =?us-ascii?Q?klTJY5u/aW9H8H0cQ4nMSz8TZDBEtzPfIHQw3naymZDuHzAsHOiN85lt/L2C?=
+ =?us-ascii?Q?VLCUeZ1R9fZQUlUv1ZRMiO0sSmoWkU8xhP6SL6kaLIg8TWKWktxYmAGgPExn?=
+ =?us-ascii?Q?2atsHij9YHuMMLvCFlOOKJt5mUfaB6xWHg6w7afKdW8TL4nCLz3LFitPOxPu?=
+ =?us-ascii?Q?sJ/uxcycWXsOVfWOnspbaDtpQrPmdqgerKhmtTTQINYWoFE36HpgdnpQ63Ff?=
+ =?us-ascii?Q?cmDiU25Fxdc/33foKTubVWrSdQt2Oqp70P441VNbQevk/MDRWbJLDRY9HNt0?=
+ =?us-ascii?Q?Z3ciDb+P++Hb/s17xVAJ4TCdUA/WNR27M82S54JXyMdso1rmLCNvpKxhb95X?=
+ =?us-ascii?Q?F6KdBd9iz9RHZ1bzWCh4CV6S3v/eidcyqn731z8AjNUDe0KS1kzYmeRvDLGJ?=
+ =?us-ascii?Q?gMBDz2Th77o/JmFO2lMwbIG4eLgMx4gnwSafDGpVBxpolCQRV6oK2hJENidJ?=
+ =?us-ascii?Q?qoQTB3oMMGiBkonRM6+1SfcOiix1y4TJyOW/ZildQ1OI+68rap+C9M8i/57u?=
+ =?us-ascii?Q?yFO4i78/Y5CKH0XymBD34TlW3ZYERcVS0vdPfkQj2mMXtKqIhWXCJe8WhXSq?=
+ =?us-ascii?Q?R5EgswwP1P1IEvfeOK8QGW94CRjSPHmKI6ynqDxOXI73ITPG2GiU+imVrZ59?=
+ =?us-ascii?Q?9utod6EjbEP1o+DMtxcrrMrpsXvNVW03d96eN6ILDByRMj/jYzKaup0mPUbj?=
+ =?us-ascii?Q?vRYak9BCO/8igweO7DMoeTKKJr3oRYSlzjCzUNFt4hOY0QYnK+CM5ExLewDP?=
+ =?us-ascii?Q?8SIlExm/FdglvolTQXcMxBYQbCZMtHxhUofVzdzNxftAdkieMtShLk2rwHs0?=
+ =?us-ascii?Q?t57I4bjvig=3D=3D?=
+X-OriginatorOrg: atomlin.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7a9ca71c-754f-4faa-13dd-08df09ecff75
+X-MS-Exchange-CrossTenant-AuthSource: CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 18:56:01.5292
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: e6a32402-7d7b-4830-9a2b-76945bbbcb57
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gwbzlItjeOq+2NFluRZ7pDbBwdPB29wibIFZDTV8oAa+M6tsTpSuynKkmmKgohd8mXq/hwMDufqM+bJImU5JJA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP123MB3048
 
+Currently, the "module_blacklist=" command-line parameter only applies to
+loadable modules. If a module is built-in, the parameter is silently
+ignored. This patch series extends the blacklisting functionality to
+built-in modules by intercepting their initialisation routines during early
+boot.
 
+Following review feedback, the implementation has been split into two
+separate changes to decouple the introduction of the new feature from the
+terminology renaming:
 
-> On 1 Sep 2026, at 13:09, Ke Sun via B4 Relay =
-<devnull+sunke.kylinos.cn@kernel.org> wrote:
->=20
-> From: Alvin Sun <alvin.sun@linux.dev>
->=20
-> Distinguish MCU VMs from user VMs, and compute the user/kernel
-> GPU VA split for user VMs.
+    1.  The first patch extends the "module_blacklist=" parameter to
+        built-in modules using the original blacklist terminology. It
+        introduces the ".initcall.modnames" section to map initcall
+        function pointers to their associated KBUILD_MODNAME strings
+        (restricted only to module_init() invocations to save memory and
+        avoid matching core kernel subsystems). It also restricts the check
+        to a boot-time __init wrapper to eliminate Use-After-Free (UAF) and
+        Spectre v1 vulnerability risks when loading dynamic modules at
+        runtime, and adds a fast-path check to eliminate lookup overhead
+        when the parameter is not in use
 
-Same comment as the previous commit: please write a few
-more words here if possible :)
+    2.  The second patch renames the variables and helper functions to
+        adopt the preferred "module_denylist=" and module_is_denylisted()
+        terminology in the codebase. To preserve the existing user-space
+        ABI, "module_blacklist=" is kept as a legacy alias pointing to the
+        same module_denylist variable
 
->=20
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-> ---
-> drivers/gpu/drm/tyr/fw.rs |   8 +--
-> drivers/gpu/drm/tyr/vm.rs | 134 =
-+++++++++++++++++++++++++++++++++++++++++++---
-> 2 files changed, 131 insertions(+), 11 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
-> index 47d25c901bd01..9b4b488521b85 100644
-> --- a/drivers/gpu/drm/tyr/fw.rs
-> +++ b/drivers/gpu/drm/tyr/fw.rs
-> @@ -51,7 +51,6 @@
->         KernelBoVaAlloc, //
->     },
->     gpu::GpuInfo,
-> -
->     mmu::Mmu,
->     regs::{
->         gpu_control::{
-> @@ -66,7 +65,10 @@
->             JOB_IRQ_RAWSTAT, //
->         }, //
->     },
-> -    vm::Vm, //
-> +    vm::{
-> +        Vm,
-> +        VmSpec, //
-> +    }, //
-> };
->=20
-> mod parser;
-> @@ -220,7 +222,7 @@ pub(crate) fn new(
->         mmu: ArcBorrow<'_, Mmu<'drm>>,
->         gpu_info: &GpuInfo,
->     ) -> Result<Firmware<'drm>> {
-> -        let vm =3D Vm::new(dev, ddev, mmu, gpu_info)?;
-> +        let vm =3D Vm::new(dev, ddev, mmu, gpu_info, VmSpec::Mcu)?;
->         vm.activate()?;
->=20
->         let result =3D (|| {
-> diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-> index c5e307b1e2416..76c3d60bb2fe2 100644
-> --- a/drivers/gpu/drm/tyr/vm.rs
-> +++ b/drivers/gpu/drm/tyr/vm.rs
-> @@ -8,6 +8,7 @@
-> //! mapped into hardware address space (AS) slots for GPU execution.
->=20
-> use core::marker::PhantomData;
-> +use core::num::NonZeroU64;
-> use core::ops::Range;
->=20
-> use kernel::{
-> @@ -43,6 +44,8 @@
->     new_mutex,
->     prelude::*,
->     sizes::{
-> +        LargeSizeConstants,
-> +        SizeConstants,
->         SZ_1G,
->         SZ_2M,
->         SZ_4K, //
-> @@ -154,6 +157,109 @@ fn try_from(value: u32) -> Result<Self, =
-Self::Error> {
->     }
-> }
->=20
-> +/// User VA size request for a user VM.
-> +pub(crate) enum UserVaRequest {
-> +    /// Split based on `task_size()` and the GPU VA range.
-> +    Auto,
-> +    /// Caller-specified size; construction guarantees `> 0`.
-> +    Fixed(NonZeroU64),
-> +}
-> +
-> +impl UserVaRequest {
-> +    /// UAPI boundary normalization: `0` -> [`Auto`](Self::Auto).
-> +    pub(crate) fn from_uapi(v: u64) -> Self {
-> +        match NonZeroU64::new(v) {
-> +            Some(size) =3D> Self::Fixed(size),
-> +            None =3D> Self::Auto,
-> +        }
-> +    }
-> +}
-> +
-> +pub(crate) enum VmSpec {
+Changes since v9:
 
-Instead of having an enum, I think we could go with the current
-tyr-dev design, i.e.:
+ - Enforced natural structure alignment on struct initcall_modname in
+   include/linux/init.h via __aligned(__alignof__(struct initcall_modname))
+   to prevent compiler over-alignment and inter-element linker padding
+   (Petr Pavlu)
 
-- new_fw() (or, perhaps even better, new_for_fw())
-- new_for_user()
+ - Removed STRUCT_ALIGN() before BOUNDED_SECTION_BY(.initcall.modnames,
+   _initcall_modnames) to eliminate unnecessary alignment (Petr Pavlu)
 
-> +    /// MCU/firmware VM, entirely kernel-managed.
-> +    Mcu,
-> +    /// User VM: full GPU VA range, split into user/kernel per =
-`user_va`.
-> +    User { user_va: UserVaRequest },
-> +}
-> +
-> +/// Final user/kernel VA layout for a VM.
-> +pub(crate) struct VmLayout {
-> +    /// Full GPU VA range covered by this VM.
-> +    pub(crate) full: Range<u64>,
-> +    /// User-accessible VA range. Empty for MCU VMs.
-> +    pub(crate) user: Range<u64>,
-> +}
-> +
-> +impl VmLayout {
-> +    /// Kernel VA range, reserved for future kernel object =
-allocation.
-> +    #[expect(dead_code)]
-> +    pub(crate) fn kernel(&self) -> Range<u64> {
-> +        self.user.end..self.full.end
-> +    }
-> +
-> +    /// Compute a user/kernel split for a user VM from the full GPU =
-VA range and
-> +    /// a user request.
-> +    pub(crate) fn compute(full: Range<u64>, req: UserVaRequest) -> =
-Result<Self> {
-> +        /// Minimum VA space reserved for kernel objects (heaps, ring =
-buffers, ...).
-> +        const MIN_KERNEL_VA: u64 =3D u64::SZ_256M;
-> +
-> +        if full.end <=3D MIN_KERNEL_VA {
-> +            pr_err!(
-> +                "Invalid VA range {:#x}..{:#x}, kernel VA min =
-required: >{:#x}\n",
-> +                full.start,
-> +                full.end,
-> +                MIN_KERNEL_VA
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let user_max =3D full.end - MIN_KERNEL_VA;
-> +
-> +        let user_end =3D match req {
-> +            UserVaRequest::Fixed(v) =3D> {
-> +                let user_size =3D v.get();
-> +                if user_size > user_max {
-> +                    pr_err!(
-> +                        "Requested user VA range {:#x} exceeds =
-maximum {:#x}\n",
-> +                        user_size,
-> +                        user_max
-> +                    );
-> +                    return Err(EINVAL);
-> +                }
-> +                user_size
-> +            }
-> +            UserVaRequest::Auto =3D> {
-> +                let task_size =3D current!().mm().map(|mm| =
-mm.task_size());
-> +                let candidate =3D match task_size {
-> +                    // `task_size()` returns usize; widen to u64 for =
-the comparison.
-> +                    Some(t) if (t as u64) < full.end =3D> t as u64,
-> +                    None | Some(_) =3D> {
-> +                        // If the range exceeds 4G, split it in two =
-so CPU and
-> +                        // GPU share the same addresses (SVM).
-> +                        if full.end > u64::SZ_4G {
-> +                            full.end / 2
-> +                        } else {
-> +                            user_max
-> +                        }
-> +                    }
-> +                };
-> +                candidate.min(user_max)
-> +            }
-> +        };
-> +
-> +        let delta =3D full.end - user_end;
-> +        // Pick a kernel VA range that's a power of two, to have a =
-clear split.
-> +        let kernel_va_range =3D 1u64 << delta.ilog2();
-> +        let kernel_va_start =3D full.end - kernel_va_range;
-> +        let full_start =3D full.start;
-> +
-> +        Ok(Self {
-> +            full,
-> +            user: full_start..kernel_va_start,
-> +        })
-> +    }
-> +}
-> +
-> /// Arguments for a virtual memory map operation.
-> struct VmMapArgs<'drm> {
->     /// Access permissions and caching behavior for the mapping.
-> @@ -329,8 +435,8 @@ pub(crate) struct Vm<'drm> {
->     /// Non-core part of the GPUVM. Can be used for stuff that doesn't =
-modify the
->     /// internal mapping tree, like GpuVm::obtain()
->     gpuvm: ARef<GpuVm<GpuVmData<'drm>>>,
-> -    /// VA range for this VM.
-> -    va_range: Range<u64>,
-> +    /// VA layout for this VM.
-> +    pub(crate) layout: VmLayout,
-> }
->=20
-> impl<'drm> Vm<'drm> {
-> @@ -343,6 +449,7 @@ pub(crate) fn new(
->         ddev: &TyrDrmDevice,
->         mmu: ArcBorrow<'_, Mmu<'drm>>,
->         gpu_info: &GpuInfo,
-> +        spec: VmSpec,
->     ) -> Result<Arc<Vm<'drm>>> {
->         let mmu_features =3D =
-MMU_FEATURES::from_raw(gpu_info.mmu_features);
->         let va_bits =3D mmu_features.va_bits().get();
-> @@ -351,6 +458,14 @@ pub(crate) fn new(
->         let range =3D 0..(1u64 << va_bits);
->         let reserve_range =3D 0..0u64;
->=20
-> +        let layout =3D match spec {
-> +            VmSpec::Mcu =3D> VmLayout {
-> +                full: range.clone(),
-> +                user: 0..0u64,
-> +            },
-> +            VmSpec::User { user_va } =3D> =
-VmLayout::compute(range.clone(), user_va)?,
-> +        };
-> +
->         // dummy_obj is used to initialize the GPUVM tree.
->         let dummy_obj =3D gem::new_dummy_object(ddev).inspect_err(|e| =
-{
->             dev_err!(dev, "Failed to create dummy GEM object: {:?}", =
-e);
-> @@ -380,7 +495,7 @@ pub(crate) fn new(
->                 mmu: mmu.into(),
->                 gpuvm,
->                 gpuvm_unique <- new_mutex!(gpuvm_unique),
-> -                va_range: range,
-> +                layout,
->             }),
->             GFP_KERNEL,
->         )?;
-> @@ -414,7 +529,10 @@ pub(crate) fn kill(&self) {
->         // TODO: Turn the VM into a state where it can't be used.
->         let _ =3D self.deactivate();
->         let _ =3D self
-> -            .unmap_range(self.va_range.start, self.va_range.end - =
-self.va_range.start)
-> +            .unmap_range(
-> +                self.layout.full.start,
-> +                self.layout.full.end - self.layout.full.start,
-> +            )
->             .inspect_err(|e| {
->                 dev_err!(self.dev, "Failed to unmap range during =
-deactivate: {:?}", e);
->             });
-> @@ -551,14 +669,14 @@ pub(crate) fn unmap_range(&self, va: u64, size: =
-u64) -> Result {
->=20
->         let end =3D va.checked_add(size).ok_or(EINVAL)?;
->=20
-> -        if va < self.va_range.start || end > self.va_range.end {
-> +        if va < self.layout.full.start || end > self.layout.full.end =
-{
->             dev_err!(
->                 self.dev,
->                 "Unmap range {:#x}..{:#x} exceeds VM range =
-{:#x}..{:#x}",
->                 va,
->                 end,
-> -                self.va_range.start,
-> -                self.va_range.end
-> +                self.layout.full.start,
-> +                self.layout.full.end
->             );
->             return Err(EINVAL);
->         }
-> @@ -568,7 +686,7 @@ pub(crate) fn unmap_range(&self, va: u64, size: =
-u64) -> Result {
->             region: va..end,
->         };
->=20
-> -        let full_vm =3D va =3D=3D self.va_range.start && end =3D=3D =
-self.va_range.end;
-> +        let full_vm =3D va =3D=3D self.layout.full.start && end =3D=3D =
-self.layout.full.end;
->=20
->         let mut resources =3D VmOpResources {
->             preallocated_gpuvas: if full_vm {
->=20
-> --=20
-> 2.43.0
->=20
->=20
+ - Added <linux/init.h> to rust/bindings/bindings_helper.h and updated
+   rust/macros/module.rs to use the generated
+   ::kernel::bindings::initcall_modname struct rather than a locally
+   defined type (Gary Guo and Petr Pavlu)
+
+ - Placed the Rust module name string explicitly in .init.rodata within
+   rust/macros/module.rs (#[link_section = ".init.rodata"]) so that the
+   string memory is reclaimed alongside the initcall table after boot,
+   matching the C implementation (Petr Pavlu)
+
+ - Link to v9: https://lore.kernel.org/lkml/20260807012601.360452-1-atomlin@atomlin.com/
+
+Changes since v8:
+
+ - Extended Rust procedural macro support in rust/macros/module.rs to
+   generate .initcall.modnames metadata for built-in Rust modules,
+   maintaining feature parity with C built-in modules when evaluating
+   "module_blacklist=" and "module_denylist=" (Petr Pavlu)
+
+ - Merged the intermediate ___define_initcall_modname macro directly into
+   __define_initcall_modname in include/linux/init.h to clean up macro
+   expansion (Petr Pavlu)
+
+ - Reverted the parameter name in module_init(x) back to 'x' in
+   include/linux/module.h to remain consistent with surrounding comments
+   (Petr Pavlu)
+
+ - Cleaned up whitespace formatting in kernel/module/main.c (Petr Pavlu)
+
+ - Link to v8: https://lore.kernel.org/lkml/20260724024744.616286-1-atomlin@atomlin.com/
+
+Changes since v7:
+
+ - Fixed a double evaluation of __initcall_id(fn) in the built-in module
+   initcall macro expansion
+
+ - Link to v7: https://lore.kernel.org/lkml/20260724014345.589326-1-atomlin@atomlin.com/
+
+Changes since v6:
+
+ - Grouped the __initcall_fn_ptr() macro definition inside the existing
+   CONFIG_HAVE_ARCH_PREL32_RELOCATIONS block in include/linux/init.h
+   (Petr Pavlu)
+
+ - Localised the built-in module initcall level and section naming strictly
+   to include/linux/init.h by introducing the macros
+   __define_initcall_modname() and __builtin_module_initcall(), keeping
+   include/linux/module.h clean (Petr Pavlu)
+
+ - Removed the unnecessary dereference_function_descriptor() lookup wrapper
+   in get_builtin_modname() in favour of a direct pointer comparison
+   (Petr Pavlu)
+
+ - Cleaned up whitespace formatting in kernel/module/main.c (Petr Pavlu)
+
+ - Link to v6: https://lore.kernel.org/lkml/20260718190121.378314-1-atomlin@atomlin.com/
+
+Changes since v5:
+
+ - Resolved a modpost cross-section mismatch warning by introducing
+   do_one_initcall_builtin() as a strict __init wrapper function, rather
+   than performing the built-in module checks inside the __init_or_module
+   do_one_initcall() function
+
+ - Addressed a UAF race condition with concurrent dynamic module loading by
+   strictly bounding the blacklist evaluation to early boot via the new
+   __init wrapper, removing temporal check
+
+ - Mitigated a potential Spectre v1 speculative execution vulnerability by
+   ensuring get_builtin_modname() is exclusively called by __init code,
+   preventing unprivileged runtime module loading from speculatively
+   jumping into reclaimed ".init.text" instructions
+
+ - Updated Documentation/admin-guide/kernel-parameters.txt to explicitly
+   mark "module_blacklist=" as deprecated and document "module_denylist="
+
+ - Link to v5: https://lore.kernel.org/lkml/20260718051350.344772-1-atomlin@atomlin.com/
+
+Changes since v4:
+
+ - Split the monolithic patch into two distinct commits. One to extend the
+   functionality to built-in modules, and a second to safely transition the
+   internal terminology to "denylist" (Arnd Bergmann)
+
+ - Preserved "module_blacklist=" as a legacy core_param alias in the second
+   commit to ensure backwards compatibility with existing userspace
+   configurations
+
+ - Restricted the population of the ".initcall.modnames" section strictly
+   to module_init() rather than all ___define_initcall() invocations. This
+   prevents non-module core initcalls from being redundantly mapped, saving
+   memory and avoiding false-positive matches (Petr Pavlu)
+
+ - Introduced a fast-path evaluation to check if the blacklist/denylist is
+   actually populated before invoking get_builtin_modname(), avoiding
+   unnecessary lookups during boot (Petr Pavlu)
+
+ - Link to v4: https://lore.kernel.org/lkml/20260708020007.55728-1-atomlin@atomlin.com/
+
+Changes since v3:
+
+ - Renamed the external function prototype and internal helper to
+   module_is_denylisted(), while updating the backing variable in
+   main.c to module_denylist. To preserve user-space compatibility
+   while adopting modern terminology, separate core_param entries have
+   been introduced, allowing both the preferred module_denylist=
+   parameter and the legacy module_blacklist= parameter to resolve to
+   the same underlying variable (Andrew Morton)
+
+ - I introduced the __initcall_fn_ptr() macro helper to dynamically
+   resolve the initcall pointer configuration:
+    - For architectures with relative 32-bit relocations
+      (CONFIG_HAVE_ARCH_PREL32_RELOCATIONS=y), it resolves to the
+      relocation stub pointer  __initcall_stub(fn, __iid, id)
+    - For architectures without PREL32 relocations, it resolves
+      directly to the function pointer fn
+
+ - Decoupled the module_denylist parameter parsing and the
+   module_is_denylisted() function from CONFIG_MODULES, moving the
+   logic to init/main.c. This ensures the denylist works for built-in
+   modules even on monolithic kernels built without loadable module
+   support (CONFIG_MODULES=n)
+
+ - Removed the conditional stub implementation of
+   module_is_denylisted() in module.h and replaced it with a single,
+   unconditional declaration outside of the #ifdef CONFIG_MODULES block.
+   This prevents compiler warnings about missing prototypes and ensures
+   visibility under a monolithic configuration
+
+ - Replaced the initmem_freed state variable and its synchronisation
+   logic in kernel_init() with race-free spatial boundary checks using
+   is_kernel_text() and is_kernel_inittext() in initcall_get_modname()
+
+ - Aligned the .initcall_modnames table with relocations by assigning
+   .initcall_fn using the __initcall_stub() helper in
+   ___define_initcall(). This ensures the lookup matches the actual stub
+   pointer passed to do_one_initcall() when
+   CONFIG_HAVE_ARCH_PREL32_RELOCATIONS is enabled. Passed the preprocessor
+   __iid argument to ____define_initcall_modname once to avoid double
+   evaluation of __COUNTER__ (which caused build failures with LTO)
+
+ - Updated initcall_get_modname() in main.c to resolve the function
+   pointer fn using dereference_function_descriptor(fn) prior to
+   checking the .text and .init.text boundaries, and dereference both
+   fn and p->initcall_fn in the comparison loop to support descriptor-based
+   architectures (e.g., PPC64)
+
+ - Link to v3: https://lore.kernel.org/lkml/20260706050337.7613-1-atomlin@atomlin.com/
+
+Changes since v2:
+
+ - Avoided relative 32-bit offsets (PREL32) with inline assembly, opting
+   instead for standard C structures with absolute pointers. This fixes LTO
+   and CFI compatibility issues (e.g., under Clang) where raw inline assembly
+   fails to track compiler-generated symbols and CFI stubs
+
+ - Placed module name strings into the ".init.rodata" section via a dedicated
+   static array to ensure they are freed from memory after boot
+
+ - Avoided Use-After-Free (UAF) bugs post-boot when loading dynamic modules:
+   - Added an 'initmem_freed' flag, marked as '__ro_after_init', set after
+     free_initmem() to skip table lookups for dynamically loaded modules
+   - Added a blacklist check in do_init_module() for dynamic modules
+
+ - Simplified the linker script using the BOUNDED_SECTION_PRE_LABEL() macro
+   to define the ".initcall.modnames" section boundary
+
+ - Added a dummy/stub implementation of module_is_blacklisted() when
+   CONFIG_MODULES is disabled to avoid build errors
+
+ - Link to v2: https://lore.kernel.org/lkml/20260622140259.2974-1-atomlin@atomlin.com/
+
+Changes since v1:
+
+ - Pivoted entirely from exposing built-in initcalls and their blacklist
+   status via a debugfs interface to directly extending the existing
+   "module_blacklist=" and new "module_blacklist=" to intercept built-in
+   modules at boot (Petr Pavlu)
+
+ - Implemented 32-bit relative offsets (CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)
+   to store the mappings, preventing binary bloat and preserving KASLR
+   efficacy
+
+ - Link to v1: https://lore.kernel.org/lkml/20260510061301.41341-1-atomlin@atomlin.com/
+
+Aaron Tomlin (2):
+  module: Extend module_blacklist parameter to built-in modules
+  module: Rename module_blacklist to module_denylist
+
+ .../admin-guide/kernel-parameters.txt         |  6 +-
+ include/asm-generic/vmlinux.lds.h             |  3 +-
+ include/linux/init.h                          | 25 ++++++++-
+ include/linux/module.h                        |  4 +-
+ init/main.c                                   | 55 ++++++++++++++++++-
+ kernel/module/main.c                          | 25 +--------
+ rust/bindings/bindings_helper.h               |  1 +
+ rust/macros/module.rs                         | 17 ++++++
+ 8 files changed, 107 insertions(+), 29 deletions(-)
+
+-- 
+2.55.0
 
