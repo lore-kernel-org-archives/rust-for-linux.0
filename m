@@ -1,189 +1,250 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021083.outbound.protection.outlook.com [52.101.95.83])
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E6C4E3ED5;
-	Thu,  3 Sep 2026 15:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602D1476CD2;
+	Thu,  3 Sep 2026 17:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788450387; cv=fail; b=JWV5UZYDDLO7YT6fotn746l4lwRd37iUFxCAflnBvspU5lTvVXbuS55lcMfBPPR7vgQVfSTTSG4aPpfE4SixyHraXPCCwyWiKzMMEcQcGo+Hd+q6ItQrcRLNb9IdRM2X5XCin9i7rAPXgINm92/6g4RVwOUeK+j3lmi4PAiBHgw=
+	t=1788457967; cv=pass; b=nA/Zfs7vT5Ucpf2cyLlU4IICLdLMPNF07Uuoxr0BPst2uWyl3dDk1O/8pNj0qBi74aD3pIUh5/r4VitbQ89HW8WnwND/SqsCoqH8WeggBc9gL2Xx/YmBdgCS1QmzjOWVZOiRIaknVpFKrLp28f4CIOQ56sBvs6OOvcAV3CZWq04=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788450387; c=relaxed/simple;
-	bh=Y46nf3SOMX2fuyUk3AOAj3Fha8dOHJXq+NGE+b96oUo=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=a+H+xESVCwlH719w6ceRhkWZZ81nfcRpZhIzMpBp4bdlceUNsCXorxKujDmwFeXt0IEqca5LosDVLVrpfrjpLHmi2AUWzEOXH5+YduZIbyPpSMJdebO40iMlf381TMCDMGbgvlvtz/NpdJ74UEAFToYFz6YosmCXmG+GnvmUosw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=blcC/QLq; arc=fail smtp.client-ip=52.101.95.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1788457967; c=relaxed/simple;
+	bh=esqzufMCtCu7FT0kKHAt7jkzPkWw77uagzYtMvajc0k=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=YfZ528qmSQFDwR+/oJKN2lCXCr+yxXWa3uj8W3wg/pobFyiNu9VTXlzudttiJwr6yzL4sEre305hvNVvW36OMomo6cA/Qt0AT8XhXB143mQAi+GDMBjz+7JPWgzTMCsHkjsfYEElugCIUf0zgofq4D9Eha1oVbzio7dzA/47pSA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Mj6Cp+V5; arc=pass smtp.client-ip=165.173.180.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="blcC/QLq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UGzsDW3U3HAIOTrL5WhgQqOdg94IfplNP2/TczaIU7SM97vAn1fB1Csbt90T6oYPBJmSoRTDfJibGuiK9YD5KKd51r0A+EPS5boerTpl7gtXRl2NHyRuz0Cx6o5ZLfY/tvg2kYecqddPJKnvya37zcQdfnuA37r7G0yv5YFuXjca+ndRZNycvEnbQqEsJUog7OcmQAbRtG8hZOj/1SHdr/u3OmgQ3cOdD/nwMJI+3KjdzXLuIiG/Jh3woXUKYfi7j9zlzhz4A63jAJA2/sz8qHJbm98Ym4zhy/XX+xxrokcG0OSrKHtDhp89Tv083oVNNtylcTh9MgsTGcidDf0nmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ttue9hZ2BckoFpSSWVH0yM8wqWB7X3/2w6D8L9c+SLs=;
- b=xfiOIhtikK82EJfbBPiT5TxtqSPxrUCzbEtt1zo9IwWFgdRLMLKLpMycMN6iTUnlc3a6QM3Gzs6sYKKf74v+4jzNT8u2oocO/qZi3GjQ4j5eIzrKlCN2orwgGstKEE19myQeXLuCErlMBdoU2ROwlgdevk8BKykwcKLF4DDQJjz8Q7XoHY5ZrcpOYbJkJEtP9rwMcLyazMS90k/7T75iHpAhY+avSDZeTkqR9TI02H38RtjSfz9K9CCO3ThGcY/YPb/0WnMk61MXOIjv8/HKBrkPR2+CgZPaJL46IHGl4IFLCLpERuRzJ7uGGfW3nCowH+MWwWL673G5bAvjmSIXpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ttue9hZ2BckoFpSSWVH0yM8wqWB7X3/2w6D8L9c+SLs=;
- b=blcC/QLqDPC0qFlcZkkz9ldLy4qw2cffYGzpw+aIvsqtZfmVL8OutDBs9Sd8epdAt6/w04gNFj3eRSLgLrC6LuYMkJU/nDHJcrcKgmcYhp1PydaIJMbkBKbawIcozk0jlvnQbiyJd5KQSbH5r0qDhB0Ia9j8YzRLQAf3zK5qru0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by CW1P265MB7408.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:21a::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
- 2026 15:46:17 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
- 15:46:17 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 03 Sep 2026 16:46:17 +0100
-Message-Id: <DL5SQWU5QH9S.1F1V38FAA5Y4Q@garyguo.net>
-Subject: Re: [PATCH v2 0/3] rust: const_eval: add a mechanism to do const
- trait calls
-From: "Gary Guo" <gary@garyguo.net>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Gary Guo"
- <gary@garyguo.net>
-Cc: "Eliot Courtney" <ecourtney@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-X-Mailer: aerc 0.22.0
-References: <20260903-cv-v2-0-e93b1613e40c@garyguo.net>
- <CANiq72mgqhjAYR-a5gSnMjK++TVc1n6RFpj=Go6QqXtQRX3=9g@mail.gmail.com>
-In-Reply-To: <CANiq72mgqhjAYR-a5gSnMjK++TVc1n6RFpj=Go6QqXtQRX3=9g@mail.gmail.com>
-X-ClientProxiedBy: LO4P123CA0666.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:316::17) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Mj6Cp+V5"
+ARC-Seal: i=1; a=rsa-sha256; t=1788457926; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=WvqhDW8vLrQTi/1zVi+ANIXOdEP89reRwMqVrgEaCZai0kMUS+IuQHbV2TOAYLMBYZSBnjMYFl/BeuS0B3pWmGtDqt5nNP3Lg2sodGASkSKJic5AhtGdE+7Mbmo/rowjprfZJRi33WRuGftC2pykNUlWHeCR7Xjs/J4/k9fmBRw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1788457926; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=QGLdaPIPtIV6poVR9G2Ip8+hPdKw2Q5nu6oGk++2sp4=; 
+	b=IaKIDYgszPMfg3l9RpwCj/PcPF/NvBc/04vLIuUoD0B+n0aPbIx2VKpBlp68iEgE06tUN4FrW4aFZpYQudg3BsHYknvObaYHdJLkajTlk/6sZyeDacBqV3MfqTM/RrCW95idTNQY/33BWMSV9ZOfeLdJWOjysgqLYSPBOILqkSU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788457926;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
+	bh=QGLdaPIPtIV6poVR9G2Ip8+hPdKw2Q5nu6oGk++2sp4=;
+	b=Mj6Cp+V5uwGRJQelXLn1Ix2yBczSbA0BTl9vsX4GRBGcGjx9ZJF6X6Fzw2M6CAHb
+	dEoYi9ddBmm8cKG/Xgre2fGKq3jmSPs9Ai/fnfx9ItIleRm5M7H+n0UJMzBUC2iRzmB
+	TmdvlisIU0UAK240k9PM8FW7OfXvONafdWk8V5HY=
+Received: by mx.zohomail.com with SMTPS id 1788457924738374.8144591285119;
+	Thu, 3 Sep 2026 10:52:04 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CW1P265MB7408:EE_
-X-MS-Office365-Filtering-Correlation-Id: 81b35f34-a92c-4d10-2b5a-08df09d27e43
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|366016|7416014|376014|10070799003|4143699003|10067099003|6133799003|22082099003|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	OeeU2t+byxE+VEaZXApoLoKCQTNsKm8g8KyGaSRRs1lUURGUeeX/9mSow8RD865zJVXUUsyOrUH2hSKMJaVU2iOLTZzGwEtTUCYkUK+fZtPKdl3p3dwRocQHEvLESukGrgVOsmyAN6L044dHcwakNoiLOB16egTbv1ZP7zmxmisHbp4Q7MgxV01Bj65kM+KUArwpffcLMNdhPcdSBEtuGlwvdMgbMljbKupoXQzHg3CbDdNXauU7Yw6yMp39yJGKynepNHDrbaaNScZqvoA25hD+dNfTMeCnOuExFeeX1OLxwlpNbxfqxVD44gQxROFMKPBVnfgBDCUyWXtFN89IiFKqi4+eH82pSDvEB4v8wdiDASnnyFLqXQJEtp5gCCjymxcpoZzyxxLkDclT+RxvFAY5zNO2mYr0CiTvTErQfLjNsJ1NoL4VfggWqSe95FMyBXLQybb5TggG0T9BK3gxLkGxtlLML+keue5kc1BqAPFXqLuWA78XVxlVBCydDIahOI+FAk9FuOmefIWVJjrk5rRRvL2aLlGmqw2Y7AKpGvAHZ/t3kpGiBXPmziTX9s/9FVP7Jr2xrCaEVnXd1yxYGsr0WhjuS22IooL6LmsioQf6AsQm7IAQ33M3piHZLfKUkGwLtsFgNqji9tswF4LpbG6YxvBDGJqj7m/VtsRSZ9A=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(7416014)(376014)(10070799003)(4143699003)(10067099003)(6133799003)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c3JTbDM4SGYvNlFJay9wRldWakhEdzBYV1grbzdWdCtETWgwSWRhYllhWlQy?=
- =?utf-8?B?ZTJDVFR6VDhha29FNUdTU3lndmRsemovSEZMeHMyREwwUlN4c1EzMytiMFl6?=
- =?utf-8?B?QkJyU3JJOHNQbkNHejhHY09iNHQ3OXJXZmtKVUhsdm1LdDA4MlJzUm1UK3Ra?=
- =?utf-8?B?VHc4TzE4Qm02RHFLd2grN0tXaEdMa1JMcG5xcHZEWFUvWWlEczZkbEhCcERP?=
- =?utf-8?B?K2hhcUFSU2R5UndIRitWSjJoeUFTKzlnV2wwQ29OM21YQy9LTGJtRE9wdG9i?=
- =?utf-8?B?aEwxemRjcW1vN1MzcUNFTnQrRGdZK0JrZzdpMG1aa0x4bk1LdlI3dmdCdWww?=
- =?utf-8?B?dGFEUkQvUTdyWGZoQVViaXgrTVkrMEhqeEovSGIwK043OWJCeGFXaWdkTmlL?=
- =?utf-8?B?ZTB4Uy9ad3NZbUVBTVFpL204S3hTcjRkMnl4b0hIQ1pydkZWaTlzVmlMYkM3?=
- =?utf-8?B?bkdBMXJhOS9JTktPMDBXUlFUVjlCQWRYTlNDZHNLUlVyM2RvRCtSUm50Q2ky?=
- =?utf-8?B?emk5bjdnSVVKdmIvb0YzREF2UHBZQS8vYllkeUM4SUxZTDVtQU91NlpWZ3hM?=
- =?utf-8?B?cHNMbVh6K0hYUDhRSnJ3V2Z2SnhCVVcrRllWN1VYcU52QVJ3RFdxdG5qejI2?=
- =?utf-8?B?SDNwNnJ4QkV0L3Y1b25lWElSWC9xV3BlUU9TNU5xYjQ4SWNmYXJpUmJhTlFW?=
- =?utf-8?B?TW9neGx1UXZ4OFBORHZ1VjJyWHZHLys1L09rNHhSOHRpSDlwMXR6bGFOZktt?=
- =?utf-8?B?OElGWmkyOFBuQjNORlZhalBVSnptM1k3TGJQSVl4cFdoNmlwQTBoSVU3elp3?=
- =?utf-8?B?WEJiUmV2OXhJSHIyYTFJaFZER0JnVEdxU2FLNHZoZ3QzcVZFS3N2bHBTR0dv?=
- =?utf-8?B?REJ3NGZMTXJuSlIxRVhDZXpQQzhYQVIydWRQanJPUVdFcFFuTEtNc3ZpbzRw?=
- =?utf-8?B?aUw5a3lhNjlVNTgyNXJ1TU42aGowWk55N3YvaHpEMDhFQ3Z4eGpNM1BDNTBj?=
- =?utf-8?B?RzNxLzJkTzJVeG5MTU1yM3R4QS83TU1TR1ZjWlZ2QzNWTHc1d2NFN3g5TzVE?=
- =?utf-8?B?MSt4NUhFWmd1dmFVKys2d3QvMkhLbTZLZ0I5MDdvTjdaaHFUZDR4c1VlR0sy?=
- =?utf-8?B?am1JOXE5MWZNSUVMU2haSko2bVo0dUpOTVowQjRMUWFrbWMxUFRwamtjRFJL?=
- =?utf-8?B?K1VRRDh2UGpZbEYyd2l2Y01MRHhzWHU5ZE0zVjNGRHBobEM4OVVFL2tmSlVO?=
- =?utf-8?B?U0xHU0w5VXRIS1AwTmtsekN2b2c3RFZ5enA2UkQ5NnBVYzNmb29FaDZvZU9r?=
- =?utf-8?B?QTBOUDhOb3FVTnN1ai9CSXpna2tlWkZHc2FOODNaT00rY0VZcmo1OE0yZHVT?=
- =?utf-8?B?cy9rWGlPaU1ITUtUV0diR0xzSDBtWXgwSDRRVXBKU3BKaDJpeXh0MjdtSllp?=
- =?utf-8?B?MzA1SytmNjhsMHJlclVEcmtYY3I1Y3VCWXdMR0tTOU9KdzlxR2xaNkZ5RENE?=
- =?utf-8?B?V1VJcE5lcjVlNkNTUkVMbXlzWFM1QXRTNG1kdzlBbkt0VmNCVTdrYlNtdUtM?=
- =?utf-8?B?OXAxaXBYSXZIVG9pYytKQ2tnY29EMytRYzlmNk5EVk8xSGRhSkpVQVRCNlpp?=
- =?utf-8?B?U05UUytxbm05UWJlbEZOeVc1bk1tS2FJdHBJM0JsaUJ3dkRRZGUwQzVIclIv?=
- =?utf-8?B?ZENHRG9vZ0ZIUGlGbklsd0JVZDVsQmtiMmRPTE1QZW16Z1Qvdi9zall3SW9a?=
- =?utf-8?B?a0c1MkhtSzhQSVlZdElieElnVlo5Nm91ck5hb2IvSHNWVURWeTZUaUM4SGZj?=
- =?utf-8?B?VjhkQWZsQ25qY0ZyWVpTK2hDdGo5OUN5ZDlNalJkYmQ0V2FTTGVSSkU2OGp3?=
- =?utf-8?B?c1R5YWdKeXltcDZBS1JyQmNoSjRBbVpBMUo2Y3c2ejZSKy9rbm1WaTRiNkxm?=
- =?utf-8?B?Q2dnYWtKN1RrL2dSdUJmK3l2OEY2MGdxc29GRGFzSEM3Smh5VkdwTVFuemUw?=
- =?utf-8?B?aFk0ajYvZmxtK05aZExYTU5XRVJKY0pyVDBPOC9odWR1WTU3bnl1TVdCVXBi?=
- =?utf-8?B?aHZiaFkxNUs2TlNNMk1QMXhxYWdjUVE3V3JYR3YxeGNSdG51M2FPbEIwSjhR?=
- =?utf-8?B?NUZmYktnT25xZzBIelBkMDYyTHV6NkUwZmVwSkpMNFFJY0swYTZKZEl1dlBs?=
- =?utf-8?B?dnptQTI0VVhMdXRoOWdZLzJZcWk4OFR1eCt3cFoyeVZLbWM5TzN5S0VZeFFu?=
- =?utf-8?B?VE9NQnVhZEpoZU5SQlNKN2tvTVczQXBpdTJZS0NHZHN6V3dRTHRGeVJ3VUFj?=
- =?utf-8?B?L3dRbm81Uzhrc2VkczNmcTJUVmxaY3NCVWdIUWZ4OFZxekt0d0w3Zz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81b35f34-a92c-4d10-2b5a-08df09d27e43
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 15:46:17.7127
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T//7s9aJbfUMU1KGHq11mHVVbQYlX4vHKI/rx+w64Gpr9GK9i0Bow9oLhY9vjasSrnE725trpDbIEp7aNRqE/A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB7408
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 4/9] drm/tyr: add per-file VM pool
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260902-tyr-ioctls-v1-4-e0fdbf8bd108@kylinos.cn>
+Date: Thu, 3 Sep 2026 14:51:44 -0300
+Cc: rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Lyude Paul <lyude@redhat.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org,
+ dri-devel@lists.freedesktop.org,
+ Alvin Sun <alvin.sun@linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4277C681-AD91-4809-9212-012C8A6FDCBF@collabora.com>
+References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
+ <20260902-tyr-ioctls-v1-4-e0fdbf8bd108@kylinos.cn>
+To: sunke@kylinos.cn
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Thu Sep 3, 2026 at 4:34 PM BST, Miguel Ojeda wrote:
-> On Thu, Sep 3, 2026 at 5:21=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->>
->> Add a mechanism to perform const trait method calls, with the same type
->> inference capabilities. This would only work for concrete types (not ins=
-ide
->> generic functions).
->>
->> As an example, convert `as_char_ptr_in_const_context`, so instead of
->>
->>     kernel::str::as_char_ptr_in_const_context(c_str)
->>
->> one may write
->>
->>     const_call!(c_str.as_char_ptr())
->>
->> instead.
->>
->> Signed-off-by: Gary Guo <gary@garyguo.net>
->
-> Thanks for resending this!
->
-> So I definitely like having `#[const_eval_only]`, because we do want
-> to limit those calls sometimes and it is nice to have C++'s equivalent
-> to `consteval` (perhaps this could be called just `#[consteval]` to
-> match?); i.e. what we talked about in the call.
->
-> On `Const` and `const_call!`, i.e. the other two patches: I am not
-> sure if we care that much to introduce a macro for it, but it doesn't
-> look bad either. I guess perhaps it helps to have a consistent way to
-> do it and to easily remove it later when the actual feature lands in
-> Rust. I would like to hear some thoughts on it from others.
 
-I think it's good to have such macro compared to our current approach; it c=
-an be
-made into a identity macro once we have const trait impl.
 
-FWIW, I even considered an extra macro that allow you to write
+> On 1 Sep 2026, at 13:09, Ke Sun via B4 Relay =
+<devnull+sunke.kylinos.cn@kernel.org> wrote:
+>=20
+> From: Alvin Sun <alvin.sun@linux.dev>
+>=20
+> Add a per-file VM pool using the IdPool for ID allocation
+> and an XArray for VM storage.
 
-    #[const_trait_impl] // #[const_trait_impl(foreign)] for core types
-    impl MyTrait for MyType {}
+Can you say a few more words here? You don=E2=80=99t need to =
+over-explain, but I
+don=E2=80=99t think this alone says _why_ your change is needed for the =
+community
+at large.
 
-and generate the `impl Const` part too (and also add a line to the document=
-ation
-that the method is const-callable with `const_call!()`).
+>=20
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+> ---
+> drivers/gpu/drm/tyr/pool.rs | 102 =
+++++++++++++++++++++++++++++++++++++++++++++
+> drivers/gpu/drm/tyr/tyr.rs  |   1 +
+> 2 files changed, 103 insertions(+)
+>=20
+> diff --git a/drivers/gpu/drm/tyr/pool.rs b/drivers/gpu/drm/tyr/pool.rs
+> new file mode 100644
+> index 0000000000000..1745116930c3e
+> --- /dev/null
+> +++ b/drivers/gpu/drm/tyr/pool.rs
+> @@ -0,0 +1,102 @@
+> +// SPDX-License-Identifier: GPL-2.0 or MIT
+> +
+> +//! Per-drm-file VM id pool.
+> +
+> +use kernel::{
+> +    id_pool::IdPool,
+> +    new_mutex,
+> +    prelude::*,
+> +    sync::{
+> +        Arc,
+> +        ArcBorrow,
+> +        Mutex, //
+> +    },
+> +    xarray::{
+> +        AllocKind,
+> +        XArray, //
+> +    }, //
+> +};
+> +
+> +use crate::vm::Vm;
+> +
+> +/// Maximum number of VMs per open file. Matches panthor's
+> +/// `PANTHOR_MAX_VMS_PER_FILE`.
+> +pub(crate) const PANTHOR_MAX_VMS_PER_FILE: u32 =3D 32;
+> +
+> +/// Per-open-file pool of VMs.
+> +#[pin_data]
+> +pub(crate) struct VmPool<'drm> {
 
-Best,
-Gary
+I agree with Deborah that this should be in vm.rs itself.
+
+> +    #[pin]
+> +    ids: Mutex<IdPool>,
+
+Can you add a todo here so we use the XArray directly in the future?
+
+> +    #[pin]
+> +    vms: XArray<Arc<Vm<'drm>>>,
+> +}
+> +
+> +impl<'drm> VmPool<'drm> {
+> +    /// Creates a new [`VmPool`] with capacity for =
+[`PANTHOR_MAX_VMS_PER_FILE`] VMs.
+> +    pub(crate) fn new() -> Result<impl PinInit<Self>> {
+> +        let ids =3D IdPool::with_capacity(PANTHOR_MAX_VMS_PER_FILE as =
+usize, GFP_KERNEL)?;
+> +        Ok(pin_init!(Self {
+> +            ids <- new_mutex!(ids),
+> +            vms <- XArray::new(AllocKind::Alloc),
+> +        }))
+> +    }
+> +
+> +    /// Inserts a VM into the pool, returning the allocated ID.
+> +    pub(crate) fn add(&self, vm: ArcBorrow<'_, Vm<'drm>>) -> =
+Result<u32> {
+> +        let id =3D {
+> +            let mut ids =3D self.ids.lock();
+> +            ids.find_unused_id(1).ok_or(ENOSPC)?.acquire()
+> +        };
+> +
+> +        let vm: Arc<Vm<'drm>> =3D vm.into();
+> +        let mut vms =3D self.vms.lock();
+> +        match vms.store(id, vm, GFP_KERNEL) {
+> +            Ok(previous) =3D> {
+> +                // Drop the previous entry (expected `None`).
+> +                drop(previous);
+> +                Ok(id as u32)
+> +            }
+> +            Err(err) =3D> {
+> +                // Drop the XArray spinlock before acquiring the =
+`ids` mutex.
+> +                drop(vms);
+> +                // Release the stored entry and the pooled id.
+> +                drop(err.value);
+> +                let mut ids =3D self.ids.lock();
+> +                ids.release_id(id);
+> +                Err(err.error)
+> +            }
+> +        }
+> +    }
+> +
+> +    /// Removes the VM with the given ID.
+> +    pub(crate) fn remove(&self, id: u32) -> Result<Arc<Vm<'drm>>> {
+> +        let mut vms =3D self.vms.lock();
+> +        match vms.remove(id as usize) {
+> +            Some(vm) =3D> {
+> +                drop(vms);
+> +                let mut ids =3D self.ids.lock();
+> +                ids.release_id(id as usize);
+> +                Ok(vm)
+> +            }
+> +            None =3D> Err(EINVAL),
+> +        }
+> +    }
+> +
+> +    /// Gets the VM with the given ID.
+> +    pub(crate) fn get(&self, id: u32) -> Option<Arc<Vm<'drm>>> {
+> +        let vms =3D self.vms.lock();
+> +        let borrow =3D vms.get(id as usize)?;
+> +        Some(Arc::from(borrow))
+> +    }
+> +
+> +    /// Removes and returns the first VM in the pool.
+> +    pub(crate) fn pop_first(&self) -> Option<Arc<Vm<'drm>>> {
+> +        for id in 0..PANTHOR_MAX_VMS_PER_FILE {
+
+This should be inclusive, i.e. =E2=80=9C..=3D=E2=80=9C instead of =
+=E2=80=9C..=E2=80=9D. But a
+better solution is to do:
+
+for id in 0..self.ids.lock().capacity() {
+  ..
+}
+
+
+> +            if let Ok(vm) =3D self.remove(id) {
+> +                return Some(vm);
+> +            }
+> +        }
+> +        None
+> +    }
+> +}
+> diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+> index e7ec450bdc9c0..8c0c18c1a970b 100644
+> --- a/drivers/gpu/drm/tyr/tyr.rs
+> +++ b/drivers/gpu/drm/tyr/tyr.rs
+> @@ -13,6 +13,7 @@
+> mod gem;
+> mod gpu;
+> mod mmu;
+> +mod pool;
+> mod regs;
+> mod slot;
+> mod vm;
+>=20
+> --=20
+> 2.43.0
+>=20
+>=20
 
