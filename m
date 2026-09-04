@@ -1,310 +1,243 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.avm.de (mail.avm.de [212.42.244.119])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D145470EB9
-	for <rust-for-linux@vger.kernel.org>; Fri,  4 Sep 2026 15:34:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEBD3BB13B;
+	Fri,  4 Sep 2026 16:11:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788536047; cv=none; b=hLg3gGKQhQ9VKyLZj+FUGtQbKa4vi9ebYpHHdH9J7jRes6FCsmvCM5Uo6uCW/U/6iMxoaNhBBUhskZaJdmtFkS88Qfqrw2vkdDFin8ggL5P6JOV9mybpEmylwSDikaV4MigdON7XXL8XFx+SXv4YafwlS09AD9P9Pq3cWxkLafg=
+	t=1788538278; cv=none; b=H4eLdiB+lj2SrKZE70k9pmLr0k4kKilg3tt/x3z7ilX+nciKCkx6IduhONZesw0P/ZQ3jOMRHsNA/gClRW+pikv9Om2ep5d++Mw7TJquESSI3ZzYENaYo9nYznBuXWwDLKQdijAfHEnTpyuRvbFv9HqDZZ5+hhF9GhYnGfDm4M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788536047; c=relaxed/simple;
-	bh=2FtE8DQedmfSEt+ExqfAsX53GFxT4/LHQnzs7NaN+GM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cGwmi3ib2UOdCmb+pgmPHkrm6EYj9ias7/eU237PvxLnIC87KDcdQoerINevSArN/MQWLSU09/ixt0NIz1A4wwv4oAaQ08qZkzkYOUjPXChgMX8VWpT0IjeRAibaSbfhdH/7ITc1D7krJEIS0UevHd0osNiBMHx2opxePdYHgPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mBT3UM1a; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788538278; c=relaxed/simple;
+	bh=nnYs7e/Qa7TDSZX25IfmO66KGD1Y+331y3LUTS2+Uf8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pjp4+94RTHvdWmaCPqpj4Q6pCgXNrfa8/rTNbneeBm5nLNgvRhArSpIKBTyumCcUdHuWZtbbAcNSyyY1jG9xDBKfl0HdogNDl/ZiD1S4vv2Wj37qMBg8Nv8m3O+t8qdytqgEulhxVwcLXBb2JFVQ5fRk5BmaMfQNAk2okzlf9J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b=iwDQcXKk; arc=none smtp.client-ip=212.42.244.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mBT3UM1a"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47de0093c42so986603f8f.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 04 Sep 2026 08:34:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788536043; x=1789140843; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cDrNkNZOsYIEv5m23OY025bR9+PFxupCgVct6AM3Fmc=;
-        b=mBT3UM1aAjS6LsRwzU0VNGHJTdSjqpB4mvAwW7ISuqEE39qAXpZg9Kt3AVxqhEoLGw
-         Cr3HR6I+kXMPLPr+PBBjTr+o7QI3ems4F0ZfxsVDqCSgY4/vcvUrVJc2OHcPtQn37EKg
-         Y1NPUiPaNEaQc/cWD2tzWVuFO+gYAnsk0kGh4PUtT1iyT1Z1DFB2jFUZuxz3oDoVIvka
-         HLU9JURZBXh3TX24Uw4ImuYFEUbLwm+34zp5tfxHXoZ2BwISns6rFBmv0p1YZmBWZz4c
-         7IPbKlivQms3FKfrbQl0dxd45dLM0O4v83F787I1r96HtRsWvkOE5mjTFN0oEG1gmwNd
-         tnnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788536043; x=1789140843;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cDrNkNZOsYIEv5m23OY025bR9+PFxupCgVct6AM3Fmc=;
-        b=rbklap0QYXw6v1pTmpHfRdwDCHYdLklkNCkwm33zg35txR5Nh2xjpcRhhET3VZ00p7
-         M5y6L5TemoUYSVfVSQxjbgQRnqihY+pSTsOS5GAjQ+tY9KPkj8EP+dzpm18NVGWWCxWF
-         3SsNGKS5L8EDmnMxvPJBdGFMmXbGR9JoaLQKFusXBXvwDlsuFhaDn5k1/UwHUnuLFGaT
-         CAF1LWskdSGxZtsgjCYpxrLXs/Ao9DV//7taseaYWLAdZEk48ImUngX4TXMTP3IIh9H+
-         nyckAydvqVegDzPOpamZr8WcJzZdlX/H+IuYP9NGjxVaOJNRbAzX4Lz9EjV+s65BCBWN
-         Ub0w==
-X-Forwarded-Encrypted: i=1; AKwUvBzFsNl8G1x53422x2gvkcdU5CDcZAGNdnYI8OBzkAnKV/I/5eG9AjvcAqL4PXYtuOhAvnG8V75lraQID8PNQg==@vger.kernel.org
-X-Gm-Message-State: AFuF++krs0dbB7RlCI+WMxnKpm2crLR7ybk2gyNredY3agl5cfS/jt5D
-	YZGsuootlSpdEeMLVuC/1mb4No2pyXvjfDkStgXYuyqD4UqH4SEzHx6O
-X-Gm-Gg: AYBFou2s7m/H6gWjoWElp6dMlJFTcThp3KMAfcTMqtYC8j9FpU/0cSDwyxHVWk56ds3
-	M/Ye0AVguUldwnfZCJWBDCn3A5O6zmzqn5UFEAile07QkLBNQLw5ntvvtKt+NMkILntSv1Y7S8j
-	aSAt8HM6Uq1KdXeufRcYrd1+ZLRzmixLqs3N9v6SivGrUBJwQoRoCkRP22y6ILZISYiPZvb0ETW
-	Gl5gA01oDkO5Fm1LzNB2HBZD9J1N+M3ZrGkoDVsTumXrU+97fKX9F/s0XEQZ9OqLWI2vhJus5YB
-	5Rx1KB39YA2LKSBjiVaqK5mohrkC5Cw+4eikDP4NRszsITXkuAKcmHslWfy9E0QqL2dzhG7Y3fC
-	VxG4dRnwGNpbRgcwwdhhDQ3shpPPnKKYWqIA/LyUUqUBvwbq+QvTC4Rl9NUntzDkBlcYO/MqIlO
-	hKBhs2E5F4lib2xABLr7qJXSozY+AEPbiy3koskYNFtwiW2jLQuS8tCI3s4Y08Ig==
-X-Received: by 2002:a05:6000:4812:b0:485:8c16:5ee6 with SMTP id ffacd0b85a97d-4858c16606amr4195449f8f.32.1788536043347;
-        Fri, 04 Sep 2026 08:34:03 -0700 (PDT)
-Received: from jack-pc ([88.97.221.38])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485883c5bc5sm7350559f8f.24.2026.09.04.08.33.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 08:34:00 -0700 (PDT)
-From: Jack Whitehorn <jackwh.whitehorn@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun@kernel.org>,
+	dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b="iwDQcXKk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fritz.com; s=mail;
+	t=1788538264; bh=nnYs7e/Qa7TDSZX25IfmO66KGD1Y+331y3LUTS2+Uf8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iwDQcXKkIzBA62Kc3FhTrk8ibEggseUPiDD43/WYiDcK8AwUiq0ioXSUG7YR3c2CP
+	 eu2B/uxRQk7Tlvz7YnF6wo6X8uiqkE8ZOPNlHINKHdgcdJY007eUMBn5a8zzK178nL
+	 DbE7D5FuOIdb0xIpNJYs4NFsQV6UQEe50HqTl9ZFH8MBdh8JbeDjx1csW5w4MpzDVh
+	 +OTenYd9j+iKOaQssLW/G1NVq/0kl92MXnrZyDmm+oixae9njnC2AhoPuhMhiGahLP
+	 oni3hOVQYtbMq1jOSroMH31TZgGn+NGv/t9Jt4qI0dU5ym58oLk2CxkOzizJxf2Pyv
+	 4b/cuy25tl8AA==
+Received: from [212.42.244.78] (helo=mail.avm.de)
+	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
+	(envelope-from <n.schier@fritz.com>)
+	id 6a9aed98-c6f5-7f0000032729-7f00000184b0-1
+	for <multiple-recipients>; Fri, 04 Sep 2026 18:11:04 +0200
+Received: from mail-auth.fritz.com (unknown [212.42.244.78])
+	by mail.avm.de (Postfix) with ESMTPS;
+	Fri,  4 Sep 2026 18:11:04 +0200 (CEST)
+Date: Fri, 4 Sep 2026 18:11:03 +0200
+From: Nicolas Schier <n.schier@fritz.com>
+To: Manuel Ebner <manuelebnerli@mailbox.org>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jack Whitehorn <jackwh.whitehorn@gmail.com>
-Subject: [PATCH] rust: rewrite fmt! macro to use syn
-Date: Fri,  4 Sep 2026 16:32:28 +0100
-Message-ID: <20260904153226.40210-3-jackwh.whitehorn@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, workflows@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH] v2 Docs: changes.rst: introduce optional column
+Message-ID: <20260904-stirring-zircon-frog-ea6949@l-nschier-aarch64>
+References: <20260831151605.638172-2-manuelebnerli@mailbox.org>
+ <20260831152523.638881-1-manuelebnerli@mailbox.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="3LI1LwzTwlfX5+ls"
+Content-Disposition: inline
+In-Reply-To: <20260831152523.638881-1-manuelebnerli@mailbox.org>
+Organization: FRITZ! Technology GmbH
+x-ms-reactions: disallow
+X-purgate-ID: 149429::1788538264-00C33ADA-3F2AC763/0/0
+X-purgate-type: clean
+X-purgate-size: 7767
+X-Notice: Whitelisted
+X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
+X-purgate: clean
+X-pfmilter: host: postfix-mx-02  mail-id: 65769A026E  external: no
 
-Rewrites the fmt! macro to use `syn` for parsing, also adds support for
-trailing commas in fmt! and related macros.
 
-I've checked that a range of rust modules (android binder, nova core,
-samples) still compile and tested the behaviour is still correct using
-a modified rust_print module.
+--3LI1LwzTwlfX5+ls
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Jack Whitehorn <jackwh.whitehorn@gmail.com>
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1227
-Link: https://github.com/Rust-for-Linux/linux/issues/1172
----
- rust/macros/fmt.rs | 161 ++++++++++++++++++++++++---------------------
- rust/macros/lib.rs |   4 +-
- 2 files changed, 90 insertions(+), 75 deletions(-)
+On Mon, Aug 31, 2026 at 05:25:22PM +0200, Manuel Ebner wrote:
+> The optional tag isn't obvious nor defined. Therefore replace with column.
 
-diff --git a/rust/macros/fmt.rs b/rust/macros/fmt.rs
-index ce6c7249305a..994a2924e6fb 100644
---- a/rust/macros/fmt.rs
-+++ b/rust/macros/fmt.rs
-@@ -1,96 +1,109 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use std::collections::BTreeSet;
-+use std::collections::HashMap;
- 
--use proc_macro2::{Ident, TokenStream, TokenTree};
-+use proc_macro2::{Ident, TokenStream};
- use quote::quote_spanned;
-+use syn::{
-+    ext::IdentExt,
-+    parse::{Parse, ParseStream},
-+    parse_quote, Expr, LitStr, Result, Token,
-+};
- 
--/// Please see [`crate::fmt`] for documentation.
--pub(crate) fn fmt(input: TokenStream) -> TokenStream {
--    let mut input = input.into_iter();
--
--    let first_opt = input.next();
--    let first_owned_str;
--    let mut names = BTreeSet::new();
--    let first_span = {
--        let Some((mut first_str, first_span)) = (match first_opt.as_ref() {
--            Some(TokenTree::Literal(first_lit)) => {
--                first_owned_str = first_lit.to_string();
--                Some(first_owned_str.as_str()).and_then(|first| {
--                    let first = first.strip_prefix('"')?;
--                    let first = first.strip_suffix('"')?;
--                    Some((first, first_lit.span()))
--                })
--            }
--            _ => None,
--        }) else {
--            return first_opt.into_iter().chain(input).collect();
-+pub(crate) struct FormatArgs {
-+    format_string: LitStr,
-+    positional_args: Vec<Expr>,
-+    named_args: HashMap<Ident, Expr>,
-+}
-+
-+impl Parse for FormatArgs {
-+    fn parse(input: ParseStream<'_>) -> Result<Self> {
-+        let format_string: LitStr = input.parse()?;
-+
-+        let mut args = FormatArgs {
-+            format_string,
-+            positional_args: Vec::new(),
-+            named_args: HashMap::new(),
-         };
- 
--        // Parse `identifier`s from the format string.
--        //
--        // See https://doc.rust-lang.org/std/fmt/index.html#syntax.
--        while let Some((_, rest)) = first_str.split_once('{') {
--            first_str = rest;
--            if let Some(rest) = first_str.strip_prefix('{') {
--                first_str = rest;
--                continue;
-+        if input.is_empty() {
-+            return Ok(args);
-+        }
-+        input.parse::<Token![,]>()?;
-+
-+        while !input.is_empty() && !input.peek2(Token![=]) {
-+            args.positional_args.push(input.parse()?);
-+            if input.is_empty() {
-+                return Ok(args);
-             }
--            if let Some((name, rest)) = first_str.split_once('}') {
--                first_str = rest;
--                let name = name.split_once(':').map_or(name, |(name, _)| name);
--                if !name.is_empty() && !name.chars().all(|c| c.is_ascii_digit()) {
--                    names.insert(name);
--                }
-+            input.parse::<Token![,]>()?;
-+        }
-+
-+        while !input.is_empty() {
-+            let name: Ident = input.call(Ident::parse_any)?;
-+            input.parse::<Token![=]>()?;
-+            let value: Expr = input.parse()?;
-+            args.named_args.insert(name, value);
-+
-+            if input.is_empty() {
-+                return Ok(args);
-             }
-+            input.parse::<Token![,]>()?;
-         }
--        first_span
--    };
- 
--    let adapter = quote_spanned!(first_span => ::kernel::fmt::Adapter);
-+        return Ok(args);
-+    }
-+}
- 
--    let mut args = TokenStream::from_iter(first_opt);
-+/// Please see [`crate::fmt`] for documentation.
-+pub(crate) fn fmt(args: FormatArgs) -> Result<TokenStream> {
-+    let FormatArgs {
-+        format_string,
-+        positional_args,
-+        mut named_args,
-+    } = args;
-+
-+    let span = format_string.span();
-+
-+    // Add inline parameters as named arguments, so they are adapted appropriately
-+    // Input: fmt!("{name}")
-+    // Output: fmt!("{name}", name = ::kernel::fmt::Adapter(&(name)))
-     {
--        let mut flush = |args: &mut TokenStream, current: &mut TokenStream| {
--            let current = std::mem::take(current);
--            if !current.is_empty() {
--                let (lhs, rhs) = (|| {
--                    let mut current = current.into_iter();
--                    let mut acc = TokenStream::new();
--                    while let Some(tt) = current.next() {
--                        // Split on `=` only once to handle cases like `a = b = c`.
--                        if matches!(&tt, TokenTree::Punct(p) if p.as_char() == '=') {
--                            names.remove(acc.to_string().as_str());
--                            // Include the `=` itself to keep the handling below uniform.
--                            acc.extend([tt]);
--                            return (Some(acc), current.collect::<TokenStream>());
--                        }
--                        acc.extend([tt]);
--                    }
--                    (None, acc)
--                })();
--                args.extend(quote_spanned!(first_span => #lhs #adapter(&(#rhs))));
-+        let format_string = format_string.value();
-+        let mut format_string = format_string.as_str();
-+        while let Some((_, rest)) = format_string.split_once('{') {
-+            format_string = rest;
-+
-+            if let Some(rest) = format_string.strip_prefix('{') {
-+                format_string = rest;
-+                continue;
-             }
--        };
- 
--        let mut current = TokenStream::new();
--        for tt in input {
--            match &tt {
--                TokenTree::Punct(p) if p.as_char() == ',' => {
--                    flush(&mut args, &mut current);
--                    &mut args
-+            if let Some((name, rest)) = format_string.split_once('}') {
-+                format_string = rest;
-+                let name = name.split_once(':').map_or(name, |(name, _)| name);
-+                if !name.is_empty() && !name.chars().all(|c| c.is_ascii_digit()) {
-+                    let ident = Ident::new(name, span);
-+                    let expr = parse_quote!(#ident);
-+                    named_args.entry(ident).or_insert(expr);
-                 }
--                _ => &mut current,
-             }
--            .extend([tt]);
-         }
--        flush(&mut args, &mut current);
-     }
- 
--    for name in names {
--        let name = Ident::new(name, first_span);
--        args.extend(quote_spanned!(first_span => , #name = #adapter(&#name)));
--    }
-+    // Wrap positional and named arguments with `kernel::fmt::Adapter`
-+    let adapter = quote_spanned!(span => ::kernel::fmt::Adapter);
-+    let positional_args = positional_args
-+        .into_iter()
-+        .map(|value| quote_spanned!(span => #adapter(&(#value))));
-+    let named_args = named_args
-+        .into_iter()
-+        .map(|(name, value)| quote_spanned!(span => #name = #adapter(&(#value))));
-+
-+    let args = [quote_spanned!(span => #format_string)]
-+        .into_iter()
-+        .chain(positional_args)
-+        .chain(named_args);
- 
--    quote_spanned!(first_span => ::core::format_args!(#args))
-+    Ok(quote_spanned!(span => ::core::format_args!(#(#args),*)))
- }
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index 24f96feaeb34..730607775a70 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -277,7 +277,9 @@ pub fn export(attr: TokenStream, input: TokenStream) -> TokenStream {
- /// [`pr_info!`]: ../kernel/macro.pr_info.html
- #[proc_macro]
- pub fn fmt(input: TokenStream) -> TokenStream {
--    fmt::fmt(input.into()).into()
-+    fmt::fmt(parse_macro_input!(input))
-+        .unwrap_or_else(|e| e.into_compile_error())
-+        .into()
- }
- 
- /// Concatenate two identifiers.
--- 
-2.55.0
+Why do you throw away the 'Command to check the version' column?  At=20
+work, we have a script that uses these commands to check the actual=20
+tooling versions.
 
+If there is a reason for change, please document it in the commit=20
+message.
+
+>=20
+> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+> ---
+>  Documentation/process/changes.rst | 84 +++++++++++++++----------------
+>  1 file changed, 42 insertions(+), 42 deletions(-)
+>=20
+> diff --git a/Documentation/process/changes.rst b/Documentation/process/ch=
+anges.rst
+> index b3fa980b63e3..905ac0f6cdc5 100644
+> --- a/Documentation/process/changes.rst
+> +++ b/Documentation/process/changes.rst
+> @@ -29,49 +29,49 @@ systems; obviously, if you don't have any PC Card har=
+dware, for example,
+>  you probably do not need to concern yourself with pcmciautils.
+> =20
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+> -        Program        Minimal version       Command to check the version
+> +        Program        Minimal version  Required for=20
+
+Do you want to align the column headers to the left or center them?
+
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+> -bash                   4.2              bash --version
+> -bc                     1.06.95          bc --version
+> -bindgen (optional)     0.71.1           bindgen --version
+> -binutils               2.30             ld -v
+> -bison                  2.0              bison --version
+> -btrfs-progs            0.18             btrfs --version
+> -Clang/LLVM (optional)  17.0.1           clang --version
+> -e2fsprogs              1.41.4           e2fsck -V
+> -flex                   2.5.35           flex --version
+> -gdb                    7.2              gdb --version
+> -genisoimage            1.1.11           genisoimage --version
+> -GNU awk (optional)     5.1.0            gawk --version
+> -GNU C                  8.1              gcc --version
+> -GNU make               4.0              make --version
+> -GNU tar                1.28             tar --version
+> -GRUB                   0.93             grub --version || grub-install -=
+-version
+> -gtags (optional)       6.6.5            gtags --version
+> -iproute2               6.14.0           ip -V
+> -iptables               1.4.2            iptables -V
+> -jfsutils               1.1.3            fsck.jfs -V
+> -kmod                   13               kmod -V
+> -liblzma                5.8.1            lzma -V
+> -lzop                   1.04             lzop -V
+> -mcelog                 0.6              mcelog --version
+> -mkimage (optional)     2017.01          mkimage --version
+> -mtools                 4.0.49           mtools -V
+> -nfs-utils              1.0.5            showmount --version
+> -openssl & libcrypto    1.0.0            openssl version
+> -pahole                 1.26             pahole --version
+> -pcmciautils            004              pccardctl -V
+> -PPP                    2.4.0            pppd --version
+> -procps                 3.2.0            ps --version
+> -Python                 3.9.x            python3 --version
+> -quota-tools            3.09             quota -V
+> -Rust (optional)        1.85.0           rustc --version
+> -Sphinx\ [#f1]_         3.4.3            sphinx-build --version
+> -squashfs-tools         4.0              mksquashfs -version
+> -syslinux               6.04             syslinux --version
+> -udev                   081              udevadm --version
+> -util-linux             2.10o            mount --version
+> -xfsprogs               2.6.0            xfs_db -V
+> +bash                   4.2             =20
+> +bc                     1.06.95         =20
+> +bindgen                0.71.1           generate Rust bindings
+> +binutils               2.30            =20
+> +bison                  2.0             =20
+> +btrfs-progs            0.18            =20
+> +Clang/LLVM             17.0.1           alternative to GNU C (gcc)
+> +e2fsprogs              1.41.4           ext4
+> +flex                   2.5.35          =20
+> +gdb                    7.2             =20
+> +genisoimage            1.1.11          =20
+> +GNU awk                5.1.0            objtool
+> +GNU C                  8.1             =20
+> +GNU make               4.0             =20
+> +GNU tar                1.28            =20
+> +GRUB                   0.93            =20
+> +gtags (optional)       6.6.5           =20
+> +iproute2               6.14.0          =20
+> +iptables               1.4.2           =20
+> +jfsutils               1.1.3           =20
+> +kmod                   13              =20
+> +liblzma                5.8.1           =20
+> +lzop                   1.04            =20
+> +mcelog                 0.6             =20
+> +mkimage                2017.01          ARCH=3Darc, arm, or powerpc
+> +mtools                 4.0.49          =20
+> +nfs-utils              1.0.5           =20
+> +openssl & libcrypto    1.0.0           =20
+> +pahole                 1.26            =20
+> +pcmciautils            004             =20
+> +PPP                    2.4.0           =20
+> +procps                 3.2.0           =20
+> +Python                 3.9.x           =20
+> +quota-tools            3.09            =20
+> +Rust                   1.85.0           CONFIG_RUST=3Dy
+> +Sphinx\ [#f1]_         3.4.3           =20
+> +squashfs-tools         4.0             =20
+> +syslinux               6.04            =20
+> +udev                   081             =20
+> +util-linux             2.10o           =20
+> +xfsprogs               2.6.0           =20
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+> =20
+>  .. [#f1] Sphinx is needed only to build the Kernel documentation
+
+I kind of like the "Required for" column w/ naming=20
+concrete Kconfig symbols or envs like ARCH.  I think it would be good to=20
+get this a bit more complete, where possible.
+
+Kind regards,
+Nicolas
+
+--3LI1LwzTwlfX5+ls
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEDv+Fiet06YHnC6RpiMa8nIiabbgFAmqa7ZAACgkQiMa8nIia
+bbhLsxAAhafUzIFNr+ETq/XHjzw3SB44iaAWSzBjCmdDYU/w20d/EBrWySxiS27A
+4IY8XpSGUVdGbmgY1vC3PDVyLZ9xwMpYv65wkevFZM9D5FzJla9K9Mh5W6B6dUhy
+VNSFqfZ1vDHxRGW25ArjF5jwWFlGzHbbaMWtXuTDFSKPKB6o899aTU9TgY8G/G0p
+1R0YFo8Ldlv1bRw3MQyPbgL64TntjXxBrylKkmLa9rg9Qz34B9PzsR2O7QWvIN1w
+GCm5SewGQ7If43ELa9+p29RGH7ZivMod9IDdlTbAqQM73rdFVj/84vC/udWGCWrF
+k+HM/ml1LtxlgkDMschDnyb6+r+NVAPGeq+N5qmwPZyiLNkPWNoDa5gKhdSfriXA
+305AzMpiS7R1Q4IKYFz/VG9GLE7tnzCkIjzK13BYpqs5a+MCpvtx6CmDNywZxMkv
+2mw8XSM/nFBROLXwIFAlSb8KIC9336efMjzuBXR8QiuVuoajeaBWhfLDWBPKKPLZ
+OkxMiZ+bDjllesbpwEZWaMechDA926OXKK24zfZRLpp6IVJtz+WOrb0aHMY6KnCa
+PQIEDflE3sfS8E8tscPvKsYoIkJt5F+UqYa8IVJTUVgNkZcwZhd74vJd1/FVcCWJ
+jPYC4hteW1DkD3HX5TMBvaoFhTvnGGqVe//L4aJ4W0RJxOuf1Nw=
+=ALpV
+-----END PGP SIGNATURE-----
+
+--3LI1LwzTwlfX5+ls--
