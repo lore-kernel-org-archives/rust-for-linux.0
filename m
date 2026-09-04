@@ -1,228 +1,286 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD684A3D57
-	for <rust-for-linux@vger.kernel.org>; Fri,  4 Sep 2026 13:46:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EA34A4823
+	for <rust-for-linux@vger.kernel.org>; Fri,  4 Sep 2026 14:04:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788529596; cv=none; b=j8F4GsIfA7DJeRq1esDz9jlyDF5I+0WxgpXfBR7PGAzp6UsPeVLPJ3qLOQbTWPG1pEysi98RLwhojvT8lLe2bpL1cfMoAtgnNHBSvS8aYwRWH4ygAtuNj/WsMtszCuh0kBQHwNYQtl2I2UZBymRp/sCzXat520PtkdDOJgHLxjs=
+	t=1788530695; cv=none; b=BQmpksjI7oia3dcJmyk/LQ+xpQRQX9/lfpEzyrzjXBjNxrJHR1ic5ELMeR+xu77j56ioCzwG3AER3ZyfaHbsebXMkaURccWXM92RFMMf6Ppsp+uS83irTrBN5W7w/XLEfyet6buKPDfm7ECBWFlrpj0YjpGzFV2eBBN3bEa4Wxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788529596; c=relaxed/simple;
-	bh=m6CAE/76TRzV3kyyElyOiCVIZXdgvxUs4/XakeqgH64=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JFFnMIlzlI1NPqyYLZ4ocLepufxUMXwy3GbQUBIx3tnvhay/hcWJTuOgfvPRUVt0m14g6Bko/9rgkA+xbhZky9r98RMkU7Q15/07RvIVloQFxnka7q1sTsyOhs8aczDtvfjIMavyKWL+CkJprqeXtx44z3Q3mWgI4LoBjt2Be4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ldS1tPDa; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788530695; c=relaxed/simple;
+	bh=DeOOdRPNYib8Gy/FmsNEsDfL4q8uVU7RNFgmKXriwHw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=M9sQqk5JvCyX+wRXkcGJGe/yRtbyNJDJxNKwJf/mr+t/UVeS34qxp9CCfWlQycxtZ3QgLV6SLmCOm+vuxytZaCSWzY/PLG4C308hgEKOXEYYwJHPTZsZhu/r35Zr1oOEXgI03pF09nVuwxSdkZBqr8xPMy4TQE4n3iFuvg6s9vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=V2b8ddpE; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ldS1tPDa"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-8706dfdcd4fso12762177b3.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 04 Sep 2026 06:46:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788529592; x=1789134392; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=h5E1eI2EQTTOSHZEjahKUxEQTbKv1V9kJEXVEsMI2UI=;
-        b=ldS1tPDaSUR3H0wZCPYZeYk8PrRNxy8JRpGeFx9UtEk8fF63F3jUiY0KcmfpiDtoHP
-         dgvH1VA094ABO95ZFXcl5fnyH393lY8/73SUwVbjjRHzHBK6x1r1sk5uiI5PBzwXE96u
-         R3vDbIR8Ap1hIirp61wJJ5heP72zX+T/CT/MThMDV+GDXi0w+Z8t1wpJ7iWHx0aqdMzx
-         9kFTFdJBXLTQY2Hs7S1/AXmJh5Ax+mZGufy9ywQByD5neD1ZooK+a7bqlIWBucreSAxw
-         riQDh+sOnRcRmRqpU4SzrdIBmrpk2sai9ZwxRCxpTZnNpHju+ciovQUqLlxqzLQKNT5i
-         VHVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788529592; x=1789134392;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=h5E1eI2EQTTOSHZEjahKUxEQTbKv1V9kJEXVEsMI2UI=;
-        b=O3n6dIGZzKJyBi0b8DyoLQnPpJY6tOdjk1i24Uh+afYGxoi3JJ8TWFx1G5EWzpvVQl
-         fiGlggBx4PlVisJ5JUpw1YwURztZE8+jSamphyGB8TZC7FuBIdLhv4BbXxa1yEkCiUqX
-         9Km35hQF4oil1qjzIeaxTiBkPc8A8ZND/tdaLBcdTXdadVsI6VSXsIut4TPI7hPffIdX
-         qldpf8xXOeYwVSQ2YdCTbjlFuqHYlpumWA7Gg/0s45HzdcBO3J6Wj6rLBSIRzkk5g+3g
-         ZF5jEd9s32qeRtcZMY0oRkp7QzQai09Ju7zgQwOSJlNbXwt56KbFlrgNIdeH7cpFlzF7
-         0i8w==
-X-Forwarded-Encrypted: i=1; AKwUvBwdQUVcoRm46dNBQ/GJrh9hN0hethZiRZrS/PEtFGRH2lGo5SyKJb2EExEvsr1CtmnGaHrgEms26oVgx1dvgg==@vger.kernel.org
-X-Gm-Message-State: AFuF++lmPCwSGUd8gLRGRg6K644igE96iMoUu7ABpYdc7ApJKc4Bn1HX
-	vnM61CBU6x1qfUPehKFXofRDx7l2GVyCa3tM3X8Fs8K41bLtWMzdN9s=
-X-Gm-Gg: AYBFou2/cLBL1kguE0+eFPZuiTWdYAOeXwoMSc1iY8OzSQ+oIcKUWMnRxg5UyiqCnx5
-	OueNrZ5oL39w3p10YFdflGy9TsRo6iGXkqZMOTU+g92j+/76h8yHOriHDRnIh2rxazYyLvqFgmC
-	miYamXPboL1q9MVklAoZZBNkCgcYTgT1LqS++hdM1IjBvwnbCY+MYlxAwqvOaQNO2/dGnvTfKPi
-	IHOrW7olUN/naSVY9G6JcpDFZuz7mTMB0OH3v+pawdXm8nwau+fJmxNxtznGpLVUyfSb3XHCUds
-	jOUWHZv35u0JD6XAL0j4hcFPRmfyAWwSs+7/4B+7RxDb2UpvvXOmrQTYkuGvVyFfojbqaZbDRnV
-	SYHbSjMXyPPBz6229b7T8YXwm1mh/d4pr2MgpTJ1oYu40Np67fNoH5c1EBxGc8cIbdKa4JXH/Ku
-	PmQ80BJEkP+LgssSodLzVvnMk2dZx/438mA7eMTZZI+czo+lJ2gpPAV287JpTtkZB7lfAW1Dkuw
-	vIeHaixn7OMtHbr1RunTPnKwaFBP3GB17xShcQ=
-X-Received: by 2002:a05:690c:e646:b0:873:5bb2:6c29 with SMTP id 00721157ae682-8735bb26efdmr2810627b3.48.1788529591777;
-        Fri, 04 Sep 2026 06:46:31 -0700 (PDT)
-Received: from localhost.localdomain ([186.158.238.108])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8714a49a660sm18067947b3.27.2026.09.04.06.46.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 06:46:30 -0700 (PDT)
-From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
-To: Andi Shyti <andi.shyti@kernel.org>,
-	Igor Korotin <igor.korotin@linux.dev>
-Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Brigham Campbell <me@brighamcampbell.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Jori Koolstra <jkoolstra@xs4all.nl>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH v2] i2c: rust: avoid locking when performing I2cAdapter::inc_ref
-Date: Fri,  4 Sep 2026 10:44:43 -0300
-Message-ID: <20260904134600.340991-1-nico.antinori.7@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="V2b8ddpE"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id BDE42240027
+	for <rust-for-linux@vger.kernel.org>; Fri,  4 Sep 2026 16:04:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
+	s=1984.8680eb; t=1788530691;
+	bh=kFwO9zRZBkjZfmI3N600UZ+vSlLPXJi/vAD3urZPNJs=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=V2b8ddpE0NUQm0m97FGcHqbssTVS6285sXO/ka2BF7T8kG5ZnlNj6QA1sTONiQSo5
+	 UK+EnwLv97fN2NhXaC02l/A38x/P+HH5xfV8XwtX7mr1B4Y8qd+r3bpLEb7rSzamSP
+	 g/k071n1SxD+M6k0bvFvhJ6SxO/upbvuczaz0Qj+FBNA+0jTfEquriSsHNS5U20ehq
+	 Fyjq6U6FyQUTjSfBxkNr8OD7z0yhcZdayYbHfLuPRZbmEaxMf/+UgzOOXwT3H8Dnbz
+	 wmS5y6dqJ6UF545tOnJNryXhNs4dD1rRCEaYNn0fXlw7zhxf0xkZ3SXrD+yJ3pJyt9
+	 Y8cgns2JLanMg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4hbyrv6XhMz6tvk;
+	Fri,  4 Sep 2026 16:04:47 +0200 (CEST)
+Message-ID: <4a3101718c7071009c9155d3819da2112277b04a.camel@posteo.de>
+Subject: Re: [PATCH v24 1/4] rust: leds: add basic led classdev abstractions
+From: Markus Probst <markus.probst@posteo.de>
+To: Gary Guo <gary@garyguo.net>, Lee Jones <lee@kernel.org>, Pavel Machek	
+ <pavel@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave
+ Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>,
+ Miguel Ojeda	 <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	 <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki"	
+ <rafael@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Krzysztof
+ =?UTF-8?Q?Wilczy=C5=84ski?=	 <kwilczynski@kernel.org>, Boqun Feng
+ <boqun@kernel.org>, Daniel Almeida	 <daniel.almeida@collabora.com>, Tamir
+ Duberstein <tamird@kernel.org>,  Alexandre Courbot <acourbot@nvidia.com>,
+ Onur =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>, Ira Weiny	
+ <iweiny@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Date: Fri, 04 Sep 2026 14:04:50 +0000
+In-Reply-To: <DL6KIVBHB08P.1LH0WPGN5FFVN@garyguo.net>
+References: <20260903-rust_leds-v24-0-8d9e4c04db69@posteo.de>
+	 <20260903-rust_leds-v24-1-8d9e4c04db69@posteo.de>
+	 <DL6JWHOEG91Y.1BKBUP653Z5D@garyguo.net>
+	 <612e01853459f0eb87fe78b7f5fdb73e22cd1776.camel@posteo.de>
+	 <DL6KIVBHB08P.1LH0WPGN5FFVN@garyguo.net>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-7EqmRrjDvDHZjW/E3w9a"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-The current implementation of `<I2cAdapter as
-AlwaysRefCounted>::inc_ref` relies on the C function `i2c_get_adapter`
-to increment module and device counters. This function acquires a lock,
-looks for the adapter in the IDR table, and, if found, increments the
-named counters before returning the adapter.
 
-In the Rust API, the `I2cAdapter::get` method returns an
-`ARef<I2cAdapter>` upon success. Incrementing this reference count in an
-atomic context (for example, via `ARef::clone`, which relies on
-`AlwaysRefCounted::inc_ref`) could trigger a sleep-in-atomic bug due to
-the mutex locking inside `i2c_get_adapter`.
+--=-7EqmRrjDvDHZjW/E3w9a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Since cloning an `ARef` implies we already hold a valid reference to the
-adapter, the IDR table lookup and its associated lock are unnecessary.
+On Fri, 2026-09-04 at 14:32 +0100, Gary Guo wrote:
+> On Fri Sep 4, 2026 at 2:15 PM BST, Markus Probst wrote:
+> > On Fri, 2026-09-04 at 14:03 +0100, Gary Guo wrote:
+> > > On Thu Sep 3, 2026 at 12:01 AM BST, Markus Probst wrote:
+> > > > Implement the core abstractions needed for led class devices, inclu=
+ding:
+> > > >=20
+> > > > * `led::LedOps` - the trait for handling leds, including
+> > > >   `brightness_set`, `brightness_get` and `blink_set`
+> > > >=20
+> > > > * `led::DeviceBuilder` - the builder for the led class device
+> > > >=20
+> > > > * `led::Device` - a safe wrapper around `led_classdev`
+> > > >=20
+> > > > Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> > > > ---
+> > > >  rust/kernel/led.rs        | 288 ++++++++++++++++++++++++++++++++++=
+++++++++++++
+> > > >  rust/kernel/led/normal.rs | 230 ++++++++++++++++++++++++++++++++++=
+++
+> > > >  rust/kernel/lib.rs        |   1 +
+> > > >  3 files changed, 519 insertions(+)
+> > > >=20
+> > > > [snip]
+> > > >=20
+> > > > +/// Trait defining the operations for a LED driver.
+> > > > +///
+> > > > +/// # Examples
+> > > > +/// ```
+> > > > +/// use kernel::{
+> > > > +///      device,
+> > > > +///      devres::Devres,
+> > > > +///      led,
+> > > > +///      macros::vtable,
+> > > > +///      platform,
+> > > > +///      prelude::*, //
+> > > > +///  };
+> > > > +///
+> > > > +/// struct MyLedOps;
+> > > > +///
+> > > > +///
+> > > > +/// #[vtable]
+> > > > +/// impl led::LedOps for MyLedOps {
+> > > > +///     type Bus =3D platform::Device<device::Bound>;
+> > > > +///     const BLOCKING: bool =3D false;
+> > > > +///     const MAX_BRIGHTNESS: u32 =3D 255;
+> > > > +///
+> > > > +///     fn brightness_set<'bound>(
+> > > > +///         &self,
+> > > > +///         _dev: &'bound platform::Device<device::Bound>,
+> > > > +///         _classdev: &led::Device<'bound, Self>,
+> > > > +///         _brightness: u32
+> > > > +///     ) -> Result<()> {
+> > > > +///         // Set the brightness for the led here
+> > > > +///         Ok(())
+> > > > +///     }
+> > > > +/// }
+> > > > +/// ```
+> > > > +/// Led drivers must implement this trait in order to register and=
+ handle a [`Device`].
+> > > > +#[vtable]
+> > > > +pub trait LedOps: Send + Sync + Sized {
+> > > > +    /// The bus device required by the implementation.
+> > > > +    #[allow(private_bounds)]
+> > > > +    type Bus: AsBusDevice<Bound>;
+> > >=20
+> > > Does LED class device has no private data that driver can use? This c=
+an be
+> > > either a private pointer or extra allocation living at the end of the=
+ classdev
+> > > struct.
+> > On every callback `&self` is passed to the LedOps, which could be
+> > considered the leds private data. It is currently stored in front of
+> > the `led_classdev` struct.
+>=20
+> Right, I missed that. In that case I think you can just remove `Bus` comp=
+letely
+> from the callback?
+Yes.
 
-The fix consists of bypassing `i2c_get_adapter` and instead calling
-`__i2c_adapter_get` directly to increment the counters.
+>=20
+> Do you have a user that needs this info? BTW, it would also help to inclu=
+de a
+> link to a potential user in the cover letter so people can see how the AP=
+I is
+> supposed to be used. This is especially useful for API design reviews.
+Primarily
+https://lore.kernel.org/rust-for-linux/20260724-synology_microp_initial-v18=
+-0-fb2f49f10e77@posteo.de/
 
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260524181151.24988-1-nico.antinori.7@gmail.com
-Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
----
-Note: There's Trevor Chan's patch [2] (make `AlwaysRefCounted::inc_ref`
-associated function) in review. If this patch lands first it may cause
-conflicts with that one. Please let me know if it is better to make this
-patch dependant on Trevor's one or wait until it merges.
+.
+But I also have another rust i2c driver, which would use the led
+abstraction:
 
-Changelog:
-- v2:
-  - Implemented suggestion by Gary and Igor to add a C API and call it
-    directly from Rust.
-- v1: [1]
+https://codeberg.org/0xIO32/linux/src/branch/synology_disk_leds
 
-v1 Note:
+Still needs changes before it can be submitted.
 
-Citing the second part of Sashiko's report:
 
-> Furthermore, if the adapter is unregistered and removed from the IDR,
-> bindings::i2c_get_adapter() will return NULL and fail to increment the
-> reference count. Since inc_ref() ignores the return value, wouldn't
-> dropping that cloned ARef unconditionally call dec_ref()
-> (i2c_put_adapter)?
->
-> Could this lead to an underflow, double-put, and a use-after-free of
-> the adapter and its module? Or if the IDR index was reused, might it
-> increment the new adapter's refcount while decrementing the old one
-> twice?
+>=20
+> > >=20
+> > > It's usually a antipattern to get the bus device directly, especially=
+ that in
+> > > Rust we do not allow anything other than callbacks to access data on =
+bus
+> > > devices.
+> > >=20
+> > > Instead, the class device registration should provide a data initiali=
+zer, and
+> > > the callbacks would receive a pointer to the data instead. In cases t=
+hat a
+> > > device resource has to be referenced, it should be kept inside the pr=
+ivate data
+> > > by the driver themselves.
+> > It should be possible to store a pointer to the bus device directly on
+> > this data, thus I can remove it.
+> >=20
+> > If I think about it, I could add a `led::Device::drvdata` function, so
+> > it could be accessed from the drivers private data. Sync is a
+> > requirement anyway.
+>=20
+> An option is to provide `Deref`. Then you could even have
+> `self: &Device<'bound, Self>` in callbacks.
+Didn't know we had `feature(arbitrary_self_types)` enabled.
+I like this idea.
 
-I don't believe this situation is possible. When `i2c_del_adapter` is
-executed in `i2c-core-base.c`, the kernel waits for all references to be
-dropped prior to removing the device from the IDR. This guarantees that
-no `ARef` is still alive when the IDR removal happens, effectively
-eliminating the risk of an underflow, double-put, or calling `dec_ref`
-on an invalid reference.
+>=20
+> That said, you might want to eventually support type-erased `Device` type=
+s to
+> support consumer of LED class devices. So I'm unsure if we want to provid=
+e data
+> accessors on class devices (maybe eventually device'll be split into two =
+types?)
+Sounds good, but I won't implement any consumer functions until they
+are needed.
 
-[1] https://lore.kernel.org/all/20260615201141.8920-1-nico.antinori.7@gmail.com/
-[2] https://lore.kernel.org/rust-for-linux/20260628100731.64885-1-trev@trevrosa.dev/T/#u
+Thanks
+- Markus Probst
 
- drivers/i2c/i2c-core-base.c | 17 +++++++++++------
- include/linux/i2c.h         |  1 +
- rust/kernel/i2c.rs          |  4 +++-
- 3 files changed, 15 insertions(+), 7 deletions(-)
+>=20
+> Best,
+> Gary
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index ddaacf876dad..03ad1bb539e9 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -2632,21 +2632,26 @@ i2c_new_scanned_device(struct i2c_adapter *adap,
- }
- EXPORT_SYMBOL_GPL(i2c_new_scanned_device);
+--=-7EqmRrjDvDHZjW/E3w9a
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-+bool __i2c_adapter_get(struct i2c_adapter *adapter)
-+{
-+	if (try_module_get(adapter->owner)) {
-+		get_device(&adapter->dev);
-+		return true;
-+	}
-+	return false;
-+}
-+EXPORT_SYMBOL(__i2c_adapter_get);
-+
- struct i2c_adapter *i2c_get_adapter(int nr)
- {
- 	struct i2c_adapter *adapter;
+-----BEGIN PGP SIGNATURE-----
 
- 	mutex_lock(&core_lock);
- 	adapter = idr_find(&i2c_adapter_idr, nr);
--	if (!adapter)
--		goto exit;
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmqaz/YbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSeD8QAK4BrJc8X+YS+/oq7z3L
+Xgyx0J9RAEoEoDOiou1vis66J/aRY01qEHfoICR1DSi9atV+DmHnHt/ydLCi/KPM
+HX7bO+ZADGQrVUW1OKElwnbx2VjucPy8aKavMunRMuZpb1HCAhSJQUIGt2rH23Lw
+3E2KWBRN5/47Y7KXR5QAdWb8PhdfeLcGhkJv7pyymZK1OqPkXG7BaVSB/RwV34g1
+EhGnX1pHdZilqfbgSR2+Rnm287aSzwyz6spHNo5knlNob1lIAxo4hixt3llAU5+O
+R4GrPGTkHuiVs8HKPP4qIeX2MSq8LqWC6cCED0jbGtrhjTrZWYmwRD838sXl1Zjj
+BgZm7Oc3QAOzAgVS5ygxPlBVTr8dACUjOwT+qTspf4JaIP1eEMHe+/aHKZ6vpmOT
+GEJ1tRtSfPmeEuZYSCTmppbUvuwZ9oLcjSjts4hqX8nNelgG+TEU6hd1klyOP15O
+Jxa4Wf3mpBcd0DDANvmJl8LcSFObAGo9q0YfSCbE89wPse4yrGMal57EVGydoRzc
+h4D/kXUlbTKU2YFuzTD1Bg+nMCPKPf2X87Xn9jP2XZ/hwrHp6TphjVqA3XOIU8o8
+4+XarSuTw88hJnq5cmcTgpDk9uwDr0cGn3nzyMZ93V3HbKgsyMlzhsxEifp/XG7X
+3zD7O6b7lqLG+5DKwl20ShqV
+=Ff70
+-----END PGP SIGNATURE-----
 
--	if (try_module_get(adapter->owner))
--		get_device(&adapter->dev);
--	else
-+	if (adapter && !__i2c_adapter_get(adapter))
- 		adapter = NULL;
-
-- exit:
- 	mutex_unlock(&core_lock);
- 	return adapter;
- }
-diff --git a/include/linux/i2c.h b/include/linux/i2c.h
-index 14ab4d3055af..56832c8e58f5 100644
---- a/include/linux/i2c.h
-+++ b/include/linux/i2c.h
-@@ -907,6 +907,7 @@ static inline bool i2c_client_has_driver(struct i2c_client *client)
- void i2c_clients_command(struct i2c_adapter *adap,
- 			 unsigned int cmd, void *arg);
-
-+bool __i2c_adapter_get(struct i2c_adapter *adapter);
- struct i2c_adapter *i2c_get_adapter(int nr);
- void i2c_put_adapter(struct i2c_adapter *adap);
- unsigned int i2c_adapter_depth(struct i2c_adapter *adapter);
-diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
-index 0487bae811fb..2fc818da80cf 100644
---- a/rust/kernel/i2c.rs
-+++ b/rust/kernel/i2c.rs
-@@ -419,7 +419,9 @@ unsafe impl AlwaysRefCounted for I2cAdapter {
-     #[inline]
-     fn inc_ref(&self) {
-         // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
--        unsafe { bindings::i2c_get_adapter(self.index()) };
-+        unsafe {
-+            bindings::__i2c_adapter_get(&raw mut (*self.as_raw()));
-+        }
-     }
-
-     #[inline]
---
-2.47.3
-
+--=-7EqmRrjDvDHZjW/E3w9a--
