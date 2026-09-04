@@ -1,305 +1,724 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.120])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC38D514766;
-	Fri,  4 Sep 2026 18:37:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.120
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788547076; cv=none; b=L2u8JUVrVjYt3UI6q+J+zM+zDoiBUmkAmS7cElWSB71P0YtxGRRUYzbfpn6OrLC+8r1mt80FZ30toX2ccDkLrU3TNJvlHlp7+GGfrzPz7GLkuHwRdJ411K/DIW28sce1rs3Vm7gx6HTKfQKnoztJK7lhGj7V253qP1XctnzHIu0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788547076; c=relaxed/simple;
-	bh=hRB+5JPY9hk5BGC57tDEZlTbRmMl4gg3JciFljNtjas=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hTCB2MqhcIALoU3N9fI7AGPOS9RKmNg7kNb4EvvOpnrs0fOnDX16I7EDXsOBEexUnzlOw1fvjZIJaqQbgHKnixqytP4ofddzYuN0Xp+sx++KH09xtrpNHbk7UwvWvr8h7ObwQGjyReG9orGocsVetUAMhJlFFMFhqdBhMqNvtjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b=K4Xk6Gq5; arc=none smtp.client-ip=212.42.244.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9601D51FCB8;
+	Fri,  4 Sep 2026 18:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788547549; cv=pass; b=gBCajtgoKZjmaGWZ8Q501BBJRV51R8E70/IbzlVMnDZ0nkNCiHIIAv27qe7iVHuUGzc572qqLhnlnaPC8gycXXQ2FUn9YbKGstcEcP5HcJBZj43wrN2rBP44Du00e7YIHnut6FDOBldcGq9/qdqzonGCMbL+0HJXWaXybttti54=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788547549; c=relaxed/simple;
+	bh=kFsfjyBJ9bvkhpavAYKKPWOIc+M43WRDYBR11RvWXzE=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=jAmHhVuZbt0zS3xbVBaQqEiCXu8R+gfIDCMm4nyv43IDSeyYtphtMFlYfWtnAZa8uguMT0FQGHmTdDJB2WKZLPBGck+BwMeAdN/QGWdB5FS0e5q/9meag+ZlyoQ52SVVaKMDHvH4HA94YGy7GL5HODhzLU+ybzyxi7hEqSdmIAU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=U4So7Wg1; arc=pass smtp.client-ip=165.173.180.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b="K4Xk6Gq5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fritz.com; s=mail;
-	t=1788547067; bh=hRB+5JPY9hk5BGC57tDEZlTbRmMl4gg3JciFljNtjas=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K4Xk6Gq5gKz/FQIb5ZctqQ6xGSIZbxIr7S9R0ecHW/WUclbwAAeFBVboRYQeR8nm1
-	 Ix5kT1swq8rjMmp+Y6mKQThWQy8Y6ZBB4u2/6rvHnLFU5bSQSTewRILBltpuxltpWh
-	 9VS3tGm1VKOaJWdbu5WqzWwuEW5n/sfHVgHOWGxSbd1gqGFh+lMwYKXtwoPl+ICo4S
-	 VETIVKp9ZXmV7dy5+jzZWEEShgQaBNPOrz3RqL9o08Rh/abLSCwhTBufhwAyOU1fkj
-	 CnIZaJTUiFgh5vHdszWCsSfWb9DT8swbFyddX5h68QErMt2IhKlOhGVsndZL0rPOuE
-	 xzEZ99toTNHQQ==
-Received: from [2001:bf0:244:244::78] (helo=mail.avm.de)
-	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
-	(envelope-from <n.schier@fritz.com>)
-	id 6a9b0ffb-2a57-7f0000032729-7f000001894a-1
-	for <multiple-recipients>; Fri, 04 Sep 2026 20:37:47 +0200
-Received: from mail-auth.fritz.com (unknown [IPv6:2001:bf0:244:244::78])
-	by mail.avm.de (Postfix) with ESMTPS;
-	Fri,  4 Sep 2026 20:37:47 +0200 (CEST)
-Date: Fri, 4 Sep 2026 20:37:47 +0200
-From: Nicolas Schier <n.schier@fritz.com>
-To: Julian Braha <julianbraha@gmail.com>
-Cc: nathan@kernel.org, ojeda@kernel.org, akpm@linux-foundation.org,
-	jani.nikula@linux.intel.com, gary@garyguo.net,
-	gregkh@linuxfoundation.org, arnd@arndb.de, ljs@kernel.org,
-	andrew.jones@linux.dev, masahiroy@kernel.org, corbet@lwn.net,
-	qingfang.deng@linux.dev, demiobenour@gmail.com, ej@inai.de,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH v4 0/5] add kconfirm
-Message-ID: <20260904-fine-ethereal-bee-ef5ad9@l-nschier-aarch64>
-References: <20260727001623.2794156-1-julianbraha@gmail.com>
- <51ade68e-7a0c-454e-a48a-4c72f7a730ac@gmail.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="U4So7Wg1"
+ARC-Seal: i=1; a=rsa-sha256; t=1788547481; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=QWXMic1L7w2NkX1noOXqUfSBOAcpOuqV28IBoXLNHEHdMXAqp9dmfcl5n6J3AExPN4kS8wn4nCyQWLlwJ0Xi+EJxwKe0NO7+v3JeTuyJASOMLD/7Lxb6TaDt8jxr9I+VwmSmqdqK4noP0rIhahz0PD0r4O49knzY6kAxWPOdfCU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1788547481; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=dE7pREUfzev8uemGZUZt9V+KKsWE0wgVX3zi6MBDmlo=; 
+	b=oBvcvyZTGF2T+5LI9fIMSwsg4DgknbLQq4r5Dd0jqqSDybpiNW0VcyKuZDecZ6RQsCJpoVO3MDephYhC+MjTn4f9bYPV2Qi2bCONq+3zpB9daHPmrTZvdXLhaJgLzbjgC/f00VDBxQbxLoHzcYenboxbHcKMFuxiBdz+/e6vWXA=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788547481;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
+	bh=dE7pREUfzev8uemGZUZt9V+KKsWE0wgVX3zi6MBDmlo=;
+	b=U4So7Wg1xSvd/Gqn9qxvXdAN8b48po41jwXUv1CG2dj6j4CkK3jznf7h33zDwEoM
+	v+HUztwpD6SReO7vSkXkBgl3evB3eLilAxwA9gvqd5HGBGZgdciKIOpvnzA2OBx5Z6C
+	SpikAeWptczBA69dGqqJRDVoi9cy/AVSKVEd8mq4=
+Received: by mx.zohomail.com with SMTPS id 178854747883791.00347300645615;
+	Fri, 4 Sep 2026 11:44:38 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <51ade68e-7a0c-454e-a48a-4c72f7a730ac@gmail.com>
-Organization: FRITZ! Technology GmbH
-x-ms-reactions: disallow
-X-purgate-ID: 149429::1788547067-61CAB64C-D0948B84/0/0
-X-purgate-type: clean
-X-purgate-size: 12629
-X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
-X-purgate: clean
-X-pfmilter: host: postfix-mx-01  mail-id: 30354A0379  external: no
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 8/9] drm/tyr: add VM-related ioctls
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260902-tyr-ioctls-v1-8-e0fdbf8bd108@kylinos.cn>
+Date: Fri, 4 Sep 2026 15:44:18 -0300
+Cc: rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Lyude Paul <lyude@redhat.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org,
+ dri-devel@lists.freedesktop.org,
+ Alvin Sun <alvin.sun@linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C59E65EF-33E6-449A-B109-307231B49057@collabora.com>
+References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
+ <20260902-tyr-ioctls-v1-8-e0fdbf8bd108@kylinos.cn>
+To: sunke@kylinos.cn
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Fri, Sep 04, 2026 at 01:29:16PM +0100, Julian Braha wrote:
-> On 7/27/26 01:16, Julian Braha wrote:
-> > kconfirm now uses the in-tree parser. Making this migration required a
-> > modification to the parser that allows us to observe the parse tree before
-> > its final simplification step, thus allowing us to detect dead code.
-> > 
-> > Since no external crates are now necessary, I’ve removed the Cargo requirement,
-> > too.
-> > 
-> > I believe these changes should resolve the major questions, so I’ve
-> > removed the RFC tag.
-> > 
-> > Now, onto the existing patch-set description since the RFCs:
-> > 
-> > ===
-> > 
-> > kconfirm is a tool to detect misusage of Kconfig. It detects dead code,
-> > constant conditions, and invalid (reverse) ranges. There are also optional
-> > checks to detect config options that select visible config options, and to
-> > check for dead links in the help texts.
-> > 
-> > See also kconfirm's original introduction to the mailing list:
-> > https://lore.kernel.org/all/6ec4df6d-1445-48ca-8f54-1d1a83c4716d@gmail.com/
-> > 
-> > False Alarms:
-> > kconfirm aims for zero false-positives, though this is not completely
-> > feasible due to macro evaluation from the host environment, primarily
-> > affecting host compiler-related options. There will also be some false
-> > positives for dead link checks, as this depends on an internet connection,
-> > and we do not attempt to bypass bot blocks. For this reason, dead link
-> > checking is disabled by default, but I've provided an example below of how
-> > to enable it. Additionally, you can view my previous message to the
-> > mailing list with hand-verified dead links here:
-> > https://lore.kernel.org/all/6732bf08-41ee-40c4-83b2-4ae8bc0da7cf@gmail.com/
-> > 
-> > Additionally, there is an optional check to detect config options that
-> > select visible config options, as requested by Jani during the review of
-> > the first RFC:
-> > https://lore.kernel.org/all/dcb7439832f0bb35598fba653d922b5f6a4d0058@intel.com/
-> > 
-> > Even after deduplicating across architectures, there are well over 1,000
-> > instances of these select-visible cases, and I suspect that, despite the
-> > Kconfig documentation saying select-visible should be avoided, some
-> > exceptions will be made. So, I have left this check disabled by default,
-> > keeping in line with the goal of having a low-noise checker. If interested
-> > in using it, I have included an example below of how to enable this check.
-> > 
-> > Current State of Alarms:
-> > With x86-64 on Linux v7.2-rc4 (which this RFC is based), there are 1282
-> > alarms coming from the default set of checks, and an additional 976 alarms
-> > if enabling the optional select-visible check. The last time I checked
-> > linux-next (next-20260427), there were 81 unique dead links.
-> > 
-> > The most critical check is the dead default statements, which has surfaced
-> > a few misconfiguration bugs (fortunately, just for kunit tests), see
-> > examples:
-> > https://lore.kernel.org/all/20260323124118.1414913-1-julianbraha@gmail.com/
-> > and:
-> > https://lore.kernel.org/all/20260323123536.1413732-1-julianbraha@gmail.com/
-> > 
-> > But hopefully kconfirm can ease maintenance and we can prevent more of
-> > these from making it into the tree in the future.
-> > 
-> > Use it:
-> > You can test out kconfirm with this patch series by compiling and running
-> > kconfirm like this:
-> > 
-> > `make kconfirm`
-> > 
-> > To enable the select-visible check:
-> > `KCONFIRM_ARGS="--enable-check select_visible" make kconfirm`
-> > 
-> > And to enable dead link checks in the help texts:
-> > `KCONFIRM_ARGS="--enable-check dead_link" make kconfirm`
-> > 
-> > kconfirm by default runs on the same architecture as the kernel build
-> > would. To run kconfirm on another architecture (for example, ARM with an
-> > X86 host):
-> > `ARCH=arm make kconfirm`
-> > 
-> > Thanks,
-> > Julian Braha
-> > ---
-> > Changes since RFC v3:
-> > - Modify kconfig parser to make raw parse tree viewable to enable analysis
-> > - Switch from external parser to in-tree kconfig parser (Demi)
-> > - Add Rust bindings for kconfig
-> > - Remove Cargo and external crates
-> > - Make curl an optional dependency for optional dead link check (Arnd)
-> > - Switch from libcurl to curl CLI for dead link checks (Miguel)
-> > - Adhere to Rust-for-Linux style (Miguel)
-> > - Add tests (Miguel)
-> > - Move kconfirm under scripts/kconfig/ to resolve broken tab autocompletion (Nathan)
-> > - Remove ungrouped attributes style check
-> > - Add support for checking liveness of ftp and git URIs in help texts
-> > - Dropped RFC tag
-> > 
-> > Link to RFC v3:
-> > https://lore.kernel.org/all/20260516215354.449807-1-julianbraha@gmail.com/
-> > 
-> > Changes since RFC v2:
-> > - Reduce Rust dependencies significantly (follows Demi's suggestions):
-> >   - from 6 direct dependencies to 1
-> >   - from 107 indirect dependencies to 4
-> >   - Replace ureq crate with usage of system libcurl (thanks Demi)
-> >   - Replace clap crate with FFI bindings to libc's getopt_long (also Demi)
-> >   - Remove crates env_logger, regex
-> > - Switch from vendoring dependencies to requiring users to first download
-> >   outside of Make (as suggested by Miguel)
-> > - Various makefile improvements (as pointed out by Nicolas):
-> >   - Fix out-of-tree builds
-> >   - Only delete kconfirm artifacts with 'distclean' and 'mrproper'
-> > - Add myself as maintainer of kconfirm (as discussed with Nicolas)
-> > - Remove dedicated code license file (pointed out by Jani)
-> > - Update documentation to explain tool setup
-> > - Add hint to users to check documentation and download tool dependencies
-> > - Address sashiko's many code-level and documentation suggestions:
-> >   - Follow the kernel's rust import style
-> >   - Fix a dead_range/duplicate_range alarm mixup
-> >   - Fix potential duplicates in default value style check
-> >   - Avoid panicking on errors
-> >   - Clarify parse failure check usage in documentation 
-> >   - Fix typo in documentation
-> > - Can now enable architectures and disable the default (host) architecture in the CLI
-> > 
-> > Link to RFC v2:
-> > https://lore.kernel.org/all/20260509203808.1142311-1-julianbraha@gmail.com/
-> > 
-> > Changes since RFC v1:
-> > - vendored dependencies instead of requiring an internet connection
-> > - removed Cargo.lock
-> > - replaced reqwest dependency with smaller ureq
-> > - removed rustls, expect user to have openssl instead
-> > - added select-visible check based on Jani's feature request
-> > - added invalid (reverse) range check
-> > - deduplicating alarms that appear for multiple architectures
-> > - `make clean` no longer deletes kconfirm's build artifacts
-> > - typo fixes in documentation
-> > - added patch description for the main "add kconfirm" patch (patch 1/2)
-> > 
-> > Link to RFC v1:
-> > https://lore.kernel.org/all/20260427174429.779474-1-julianbraha@gmail.com/
-> > ---
-> > 
-> > Julian Braha (5):
-> >   kconfig: add add another callback to the parser to view raw parse tree
-> >   kconfig: add kconfirm
-> >   kconfirm: add tests
-> >   Documentation: add kconfirm
-> >   MAINTAINERS: add entry for kconfirm
-> > 
-> >  Documentation/dev-tools/index.rst             |   1 +
-> >  Documentation/dev-tools/kconfirm.rst          | 229 ++++++
-> >  MAINTAINERS                                   |   7 +
-> >  Makefile                                      |  17 +-
-> >  scripts/kconfig/.gitignore                    |   1 +
-> >  scripts/kconfig/Makefile                      |  54 ++
-> >  scripts/kconfig/kconfig.rs                    | 445 +++++++++++
-> >  scripts/kconfig/kconfirm/.gitignore           |   2 +
-> >  scripts/kconfig/kconfirm/analyze.rs           | 340 ++++++++
-> >  scripts/kconfig/kconfirm/arch.rs              |  53 ++
-> >  scripts/kconfig/kconfirm/checks.rs            | 748 ++++++++++++++++++
-> >  scripts/kconfig/kconfirm/dead_links.rs        | 230 ++++++
-> >  scripts/kconfig/kconfirm/kconfirm-cfg.sh      |  57 ++
-> >  scripts/kconfig/kconfirm/kconfirm.rs          | 278 +++++++
-> >  scripts/kconfig/kconfirm/output.rs            |  87 ++
-> >  scripts/kconfig/kconfirm/symbol_table.rs      | 105 +++
-> >  .../kconfig/kconfirm/tests/arch/arm/Kconfig   |   9 +
-> >  .../kconfirm/tests/arch/powerpc/Kconfig       |   4 +
-> >  .../kconfig/kconfirm/tests/arch/riscv/Kconfig |   9 +
-> >  .../kconfig/kconfirm/tests/arch/sh/Kconfig    |   4 +
-> >  .../kconfirm/tests/arch/testarch/Kconfig      |   4 +
-> >  .../kconfig/kconfirm/tests/arch/um/Kconfig    |   4 +
-> >  .../kconfig/kconfirm/tests/arch/x86/Kconfig   |   4 +
-> >  .../kconfirm/tests/architecture.Kconfig       |   4 +
-> >  .../tests/architecture_common.Kconfig         |  19 +
-> >  .../kconfirm/tests/conditional_prompt.Kconfig |  17 +
-> >  scripts/kconfig/kconfirm/tests/conftest.py    |  93 +++
-> >  ...nt_condition_negative_expression_1.Kconfig |  13 +
-> >  ...nt_condition_negative_expression_2.Kconfig |  13 +
-> >  ...nstant_condition_negative_symbol_1.Kconfig |  13 +
-> >  ...nstant_condition_negative_symbol_2.Kconfig |  13 +
-> >  .../kconfig/kconfirm/tests/dead_link.Kconfig  |  12 +
-> >  .../tests/default_categorization.Kconfig      |  20 +
-> >  scripts/kconfig/kconfirm/tests/pytest.ini     |   2 +
-> >  scripts/kconfig/kconfirm/tests/ranges.Kconfig |  39 +
-> >  .../kconfirm/tests/select_imply.Kconfig       |  28 +
-> >  .../kconfig/kconfirm/tests/test_kconfirm.py   | 358 +++++++++
-> >  scripts/kconfig/lkc_proto.h                   |   2 +
-> >  scripts/kconfig/parser.y                      |  21 +
-> >  39 files changed, 3357 insertions(+), 2 deletions(-)
-> >  create mode 100644 Documentation/dev-tools/kconfirm.rst
-> >  create mode 100644 scripts/kconfig/kconfig.rs
-> >  create mode 100644 scripts/kconfig/kconfirm/.gitignore
-> >  create mode 100644 scripts/kconfig/kconfirm/analyze.rs
-> >  create mode 100644 scripts/kconfig/kconfirm/arch.rs
-> >  create mode 100644 scripts/kconfig/kconfirm/checks.rs
-> >  create mode 100644 scripts/kconfig/kconfirm/dead_links.rs
-> >  create mode 100755 scripts/kconfig/kconfirm/kconfirm-cfg.sh
-> >  create mode 100644 scripts/kconfig/kconfirm/kconfirm.rs
-> >  create mode 100644 scripts/kconfig/kconfirm/output.rs
-> >  create mode 100644 scripts/kconfig/kconfirm/symbol_table.rs
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/arch/arm/Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/arch/powerpc/Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/arch/riscv/Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/arch/sh/Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/arch/testarch/Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/arch/um/Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/arch/x86/Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/architecture.Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/architecture_common.Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/conditional_prompt.Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/conftest.py
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/constant_condition/default_constant_condition_negative_expression_1.Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/constant_condition/default_constant_condition_negative_expression_2.Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/constant_condition/default_constant_condition_negative_symbol_1.Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/constant_condition/default_constant_condition_negative_symbol_2.Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/dead_link.Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/default_categorization.Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/pytest.ini
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/ranges.Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/select_imply.Kconfig
-> >  create mode 100644 scripts/kconfig/kconfirm/tests/test_kconfirm.py
-> > 
-> 
-> As I've been getting more comfortable with the in-tree Kconfig
-> interpreter, I've been wondering if the community might prefer the
-> gradual integration of lints directly into Kconfig, instead of as a
-> standalone tool. Similar to a comment by Jani on another patch [1].
 
-Yes, I'd prefer if in-tree Kconfig is improved to find more mistakes in 
-Kconfig files itself.
 
-Thanks for keeping up!
+> On 1 Sep 2026, at 13:09, Ke Sun via B4 Relay =
+<devnull+sunke.kylinos.cn@kernel.org> wrote:
+>=20
+> From: Alvin Sun <alvin.sun@linux.dev>
+>=20
+> Manage per-file user VMs.
+>=20
+> - VM_CREATE creates a user VM and returns its ID.
+> - VM_DESTROY destroys the VM identified by the given ID.
+> - VM_BIND maps or unmaps BO ranges in the VM's user VA space.
+> - VM_GET_STATE reports whether the VM is usable or unusable.
 
-Kind regards,
-Nicolas
+Same comment as the previous patches
+
+>=20
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+> ---
+> drivers/gpu/drm/tyr/driver.rs |  12 +-
+> drivers/gpu/drm/tyr/file.rs   | 324 =
+++++++++++++++++++++++++++++++++++++++++--
+> drivers/gpu/drm/tyr/vm.rs     |  24 +++-
+> 3 files changed, 346 insertions(+), 14 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/tyr/driver.rs =
+b/drivers/gpu/drm/tyr/driver.rs
+> index 94bc85635725e..b3145526ada06 100644
+> --- a/drivers/gpu/drm/tyr/driver.rs
+> +++ b/drivers/gpu/drm/tyr/driver.rs
+> @@ -33,7 +33,7 @@
+>         Mutex, //
+>     },
+>     time,
+> -    types::CovariantForLt, //
+> +    types::ForLt, //
+> };
+>=20
+> use crate::{
+> @@ -72,6 +72,9 @@ pub(crate) struct TyrDrmRegistrationData<'drm> {
+>     /// Firmware sections.
+>     pub(crate) fw: Firmware<'drm>,
+>=20
+> +    /// Memory management unit for address space slots.
+> +    pub(crate) mmu: Arc<Mmu<'drm>>,
+> +
+>     #[pin]
+>     clks: Mutex<Clocks>,
+>=20
+> @@ -164,6 +167,7 @@ fn probe<'bound>(
+>         let reg_data =3D pin_init!(TyrDrmRegistrationData {
+>                 pdev,
+>                 fw: firmware,
+> +                mmu,
+>                 clks <- new_mutex!(Clocks {
+>                     core: core_clk,
+>                     stacks: stacks_clk,
+> @@ -207,7 +211,7 @@ fn drop(self: Pin<&mut Self>) {}
+> impl drm::Driver for TyrDrmDriver {
+>     type Data =3D ();
+>     type RegistrationData<'drm> =3D TyrDrmRegistrationData<'drm>;
+> -    type File =3D CovariantForLt!(TyrDrmFileData);
+> +    type File =3D ForLt!(TyrDrmFileData<'_>);
+>     type Object =3D Bo;
+>     type ParentDevice<Ctx: DeviceContext> =3D platform::Device<Ctx>;
+>=20
+> @@ -216,6 +220,10 @@ impl drm::Driver for TyrDrmDriver {
+>=20
+>     kernel::declare_drm_ioctls! {
+>         (PANTHOR_DEV_QUERY, drm_panthor_dev_query, =
+ioctl::RENDER_ALLOW, TyrDrmFileData::dev_query),
+> +        (PANTHOR_VM_CREATE, drm_panthor_vm_create, =
+ioctl::RENDER_ALLOW, TyrDrmFileData::vm_create),
+> +        (PANTHOR_VM_DESTROY, drm_panthor_vm_destroy, =
+ioctl::RENDER_ALLOW, TyrDrmFileData::vm_destroy),
+> +        (PANTHOR_VM_BIND, drm_panthor_vm_bind, ioctl::RENDER_ALLOW, =
+TyrDrmFileData::vm_bind),
+> +        (PANTHOR_VM_GET_STATE, drm_panthor_vm_get_state, =
+ioctl::RENDER_ALLOW, TyrDrmFileData::vm_get_state),
+>     }
+> }
+>=20
+> diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+> index 933a365cb016e..157bc40e1cac4 100644
+> --- a/drivers/gpu/drm/tyr/file.rs
+> +++ b/drivers/gpu/drm/tyr/file.rs
+> @@ -3,37 +3,70 @@
+> use kernel::{
+>     drm::{
+>         self,
+> +        gem::BaseObject,
+>         Registered, //
+>     },
+>     prelude::*,
+> -    uaccess::UserSlice,
+> +    sizes::SizeConstants,
+> +    transmute::FromBytes,
+> +    uaccess::{
+> +        UserSlice,
+> +        UserSliceReader, //
+> +    },
+>     uapi, //
+> };
+>=20
+> -use crate::driver::{
+> -    TyrDrmDevice,
+> -    TyrDrmDriver,
+> -    TyrDrmRegistrationData, //
+> +use crate::{
+> +    driver::{
+> +        TyrDrmDevice,
+> +        TyrDrmDriver,
+> +        TyrDrmRegistrationData, //
+> +    },
+> +    pool::VmPool,
+> +    vm::{
+> +        UserVaRequest,
+> +        Vm,
+> +        VmMapFlags,
+> +        VmSpec, //
+> +    }, //
+> };
+>=20
+> -#[pin_data]
+> -pub(crate) struct TyrDrmFileData {}
+> +#[pin_data(PinnedDrop)]
+> +pub(crate) struct TyrDrmFileData<'a> {
+> +    reg: &'a TyrDrmRegistrationData<'a>,
+> +
+> +    #[pin]
+> +    vm_pool: VmPool<'a>,
+> +}
+>=20
+> /// Convenience type alias for our DRM `File` type.
+> pub(crate) type TyrDrmFile =3D drm::file::File<TyrDrmDriver>;
+>=20
+> -impl drm::file::DriverFile<'_> for TyrDrmFileData {
+> +impl<'a> drm::file::DriverFile<'a> for TyrDrmFileData<'a> {
+>     type Driver =3D TyrDrmDriver;
+>=20
+>     fn open(
+>         _device: &TyrDrmDevice<Registered>,
+> -        _reg_data: &TyrDrmRegistrationData<'_>,
+> +        reg_data: &'a TyrDrmRegistrationData<'a>,
+>     ) -> impl PinInit<Self, Error> {
+> -        Ok(Self {})
+> +        try_pin_init!(Self {
+> +            reg: reg_data,
+> +            vm_pool <- VmPool::new()?,
+> +        })
+>     }
+> }
+>=20
+> -impl TyrDrmFileData {
+> +#[pinned_drop]
+> +impl PinnedDrop for TyrDrmFileData<'_> {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        let proj =3D self.project();
+> +        while let Some(vm) =3D proj.vm_pool.pop_first() {
+> +            vm.kill();
+> +        }
+> +    }
+> +}
+> +
+> +impl TyrDrmFileData<'_> {
+>     pub(crate) fn dev_query(
+>         _ddev: &TyrDrmDevice<Registered>,
+>         reg_data: &TyrDrmRegistrationData<'_>,
+> @@ -65,4 +98,273 @@ pub(crate) fn dev_query(
+>             }
+>         }
+>     }
+> +
+> +    pub(crate) fn vm_create(
+> +        ddev: &TyrDrmDevice<Registered>,
+> +        _reg_data: &TyrDrmRegistrationData<'_>,
+> +        vmcreate: &mut uapi::drm_panthor_vm_create,
+> +        file: &TyrDrmFile,
+> +    ) -> Result<u32> {
+> +        if vmcreate.flags !=3D 0 {
+> +            dev_err!(
+> +                ddev.as_ref(),
+> +                "Invalid VM create flags: {:#x}\n",
+> +                vmcreate.flags
+> +            );
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        let ret: Result<u32, Error> =3D file.inner_with(|fd| {
+> +            let vm =3D Vm::new(
+> +                fd.reg.pdev.as_ref(),
+> +                ddev,
+> +                fd.reg.mmu.as_arc_borrow(),
+> +                &fd.reg.gpu_info,
+> +                VmSpec::User {
+> +                    user_va: =
+UserVaRequest::from_uapi(vmcreate.user_va_range),
+> +                },
+> +            )?;
+> +            vmcreate.user_va_range =3D vm.layout.user.end;
+> +
+> +            let id =3D =
+fd.vm_pool.add(vm.as_arc_borrow()).inspect_err(|_| {
+> +                vm.kill();
+> +            })?;
+
+I think we can improve this, because currently we depend on kill() to =
+not leak
+resources. I propose the following:
+
+/// The unique right to tear a VM down.
+///
+/// `Vm::new()` hands one of these back, so a VM is owned from the =
+moment it
+/// exists and any early return tears it down. Whoever ends up holding =
+it (the
+/// per-file pool) owns the teardown; everyone else takes an `Arc<Vm>` =
+via
+/// `VmOwner::get()`, which keeps the object alive but carries no such =
+duty.
+pub(crate) struct VmOwner<'drm>(Arc<Vm<'drm>>);
+
+impl<'drm> VmOwner<'drm> {
+    /// A reference for callers that want to use the VM, not own it.
+    pub(crate) fn get(&self) -> Arc<Vm<'drm>> {
+        self.0.clone()
+    }
+}
+
+impl<'drm> core::ops::Deref for VmOwner<'drm> {
+    type Target =3D Vm<'drm>;
+    fn deref(&self) -> &Vm<'drm> { &self.0 }
+}
+
+impl Drop for VmOwner<'_> {
+    fn drop(&mut self) {
+        self.0.kill();
+    }
+}
+
+Where Vm::new() would be adapted to return VmOwner, instead of Arc<Vm>, =
+so this
+API cannot be circumvented. Also, kill() would be changed to private, =
+such that
+only VmOwner would be able to call it (since it will live in vm.rs).
+
+
+
+> +            vmcreate.id =3D id;
+> +
+> +            Ok(0)
+> +        });
+> +        ret
+> +    }
+> +
+> +    pub(crate) fn vm_destroy(
+> +        ddev: &TyrDrmDevice<Registered>,
+> +        _reg_data: &TyrDrmRegistrationData<'_>,
+> +        vmdestroy: &mut uapi::drm_panthor_vm_destroy,
+> +        file: &TyrDrmFile,
+> +    ) -> Result<u32> {
+> +        if vmdestroy.pad !=3D 0 {
+> +            dev_err!(
+> +                ddev.as_ref(),
+> +                "Invalid VM destroy pad: {:#x}\n",
+> +                vmdestroy.pad
+> +            );
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        let ret: Result<u32, Error> =3D file.inner_with(|fd| {
+> +            let vm =3D fd.vm_pool.remove(vmdestroy.id)?;
+> +            vm.kill();
+> +            Ok(0)
+> +        });
+> +        ret
+> +    }
+> +
+> +    pub(crate) fn vm_bind(
+> +        ddev: &TyrDrmDevice<Registered>,
+> +        _reg_data: &TyrDrmRegistrationData<'_>,
+> +        vmbind: &mut uapi::drm_panthor_vm_bind,
+> +        file: &TyrDrmFile,
+> +    ) -> Result<u32> {
+> +        let async_flag =3D =
+uapi::drm_panthor_vm_bind_flags_DRM_PANTHOR_VM_BIND_ASYNC;
+> +
+> +        if vmbind.flags & !async_flag !=3D 0 {
+> +            dev_err!(
+> +                ddev.as_ref(),
+> +                "Invalid VM_BIND flags: {:#x}\n",
+> +                vmbind.flags
+> +            );
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        if vmbind.flags & async_flag !=3D 0 {
+> +            dev_err!(ddev.as_ref(), "Async VM_BIND not supported\n");
+> +            return Err(ENOTSUPP);
+> +        }
+> +
+> +        let count =3D vmbind.ops.count as usize;
+> +        if count =3D=3D 0 {
+> +            return Ok(0);
+> +        }
+> +
+> +        let size_of_op =3D size_of::<VmBindOp>();
+> +        // Stride versions the UAPI struct: reject only undersized =
+strides.
+> +        if size_of_op > vmbind.ops.stride as usize {
+> +            dev_err!(
+> +                ddev.as_ref(),
+> +                "Invalid VM_BIND op stride {}\n",
+> +                vmbind.ops.stride
+> +            );
+> +            return Err(EINVAL);
+> +        }
+> +        let stride =3D vmbind.ops.stride as usize;
+> +
+> +        let total_len =3D stride.checked_mul(count).ok_or_else(|| {
+> +            dev_err!(ddev.as_ref(), "VM_BIND ops length overflow\n");
+> +            EINVAL
+> +        })?;
+> +        let mut reader =3D
+> +            UserSlice::new(UserPtr::from_addr(vmbind.ops.array as =
+usize), total_len).reader();
+> +        let mut ops =3D KVec::new();
+> +        for _ in 0..count {
+> +            ops.push(reader.read::<VmBindOp>()?, GFP_KERNEL)?;
+> +            read_padding_zero(&mut reader, stride - size_of_op)?;
+> +        }
+> +
+> +        let ret: Result<u32, Error> =3D file.inner_with(|fd| {
+> +            let vm =3D fd.vm_pool.get(vmbind.vm_id).ok_or_else(|| {
+> +                dev_err!(ddev.as_ref(), "Invalid VM_BIND vm_id: =
+{}\n", vmbind.vm_id);
+> +                EINVAL
+> +            })?;
+> +
+> +            for (i, op) in ops.iter().enumerate() {
+> +                if let Err(e) =3D vm_bind_exec_op(&vm, file, op) {
+> +                    dev_dbg!(ddev.as_ref(), "VM_BIND op {} failed: =
+{:?}\n", i, e);
+> +                    vmbind.ops.count =3D i as u32;
+> +                    return Err(e);
+> +                }
+> +            }
+> +
+> +            Ok(0)
+> +        });
+> +        ret
+> +    }
+> +
+> +    pub(crate) fn vm_get_state(
+> +        ddev: &TyrDrmDevice<Registered>,
+> +        _reg_data: &TyrDrmRegistrationData<'_>,
+> +        vmgetstate: &mut uapi::drm_panthor_vm_get_state,
+> +        file: &TyrDrmFile,
+> +    ) -> Result<u32> {
+> +        file.inner_with(|fd| {
+> +            let vm =3D fd.vm_pool.get(vmgetstate.vm_id).ok_or_else(|| =
+{
+> +                dev_err!(
+> +                    ddev.as_ref(),
+> +                    "Invalid VM_GET_STATE vm_id: {}\n",
+> +                    vmgetstate.vm_id
+> +                );
+> +                EINVAL
+> +            })?;
+> +            vmgetstate.state =3D if vm.is_unusable() {
+> +                =
+uapi::drm_panthor_vm_state_DRM_PANTHOR_VM_STATE_UNUSABLE
+> +            } else {
+> +                =
+uapi::drm_panthor_vm_state_DRM_PANTHOR_VM_STATE_USABLE
+> +            };
+> +            Ok(0)
+> +        })
+> +    }
+> +}
+> +
+> +fn vm_bind_exec_op(vm: &Vm<'_>, file: &TyrDrmFile, op: &VmBindOp) -> =
+Result {
+> +    if vm.is_unusable() {
+> +        dev_err!(vm.dev(), "VM_BIND on destroyed VM\n");
+> +        return Err(EINVAL);
+> +    }
+> +
+> +    if op.size =3D=3D 0 {
+> +        return Ok(());
+> +    }
+> +
+> +    if op.syncs.count !=3D 0 {
+> +        dev_err!(vm.dev(), "VM_BIND op syncs not supported\n");
+> +        return Err(EINVAL);
+> +    }
+> +
+> +    let end =3D match op.va.checked_add(op.size) {
+> +        Some(end) =3D> end,
+> +        None =3D> {
+> +            dev_err!(vm.dev(), "VM_BIND op VA range overflow\n");
+> +            return Err(EINVAL);
+> +        }
+> +    };
+> +    if op.va < vm.layout.user.start || end > vm.layout.user.end {
+> +        dev_err!(
+> +            vm.dev(),
+> +            "VM_BIND op VA range {:#x}..{:#x} outside user range\n",
+> +            op.va,
+> +            end
+> +        );
+> +        return Err(EINVAL);
+> +    }
+> +
+> +    if (op.va | op.size | op.bo_offset) & (u64::SZ_4K - 1) !=3D 0 {
+> +        dev_err!(vm.dev(), "VM_BIND op not GPU-page-aligned\n");
+> +        return Err(EINVAL);
+> +    }
+> +
+> +    const TYPE_MASK: u32 =3D
+> +        =
+uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_TYPE_MASK as =
+u32;
+> +    const TYPE_MAP: u32 =3D =
+uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_TYPE_MAP as =
+u32;
+> +    const TYPE_UNMAP: u32 =3D
+> +        =
+uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP as =
+u32;
+
+How about:
+
+/// Operation type, packed into the top nibble of
+/// `drm_panthor_vm_bind_op::flags`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum VmBindOpType {
+    /// Map a BO range into the VM.
+    Map,
+    /// Unmap a VA range.
+    Unmap,
+}
+
+impl TryFrom<u32> for VmBindOpType {
+    type Error =3D Error;
+
+    fn try_from(flags: u32) -> Result<Self, Self::Error> {
+        const MAP: u32 =3D =
+uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_TYPE_MAP as =
+u32;
+        const UNMAP: u32 =3D
+            =
+uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP as =
+u32;
+
+        match flags & Self::MASK {
+            MAP =3D> Ok(Self::Map),
+            UNMAP =3D> Ok(Self::Unmap),
+            _ =3D> Err(EINVAL),
+        }
+    }
+}
+
+impl VmBindOpType {
+    /// Bits occupied by the op type in `drm_panthor_vm_bind_op::flags`.
+    pub(crate) const MASK: u32 =3D
+        =
+uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_TYPE_MASK as =
+u32;
+}
+
+> +
+> +    match op.flags & TYPE_MASK {
+> +        TYPE_MAP =3D> {
+> +            let map_flags =3D match VmMapFlags::try_from(op.flags & =
+!TYPE_MASK) {
+> +                Ok(flags) =3D> flags,
+> +                Err(_) =3D> {
+> +                    dev_err!(vm.dev(), "VM_BIND op invalid map flags =
+{:#x}\n", op.flags);
+> +                    return Err(EINVAL);
+> +                }
+> +            };
+> +            let bo =3D crate::gem::lookup_handle(file, =
+op.bo_handle).map_err(|_| {
+> +                dev_err!(vm.dev(), "VM_BIND op invalid BO handle =
+{}\n", op.bo_handle);
+> +                EINVAL
+> +            })?;
+> +            // Validate the BO window before mapping.
+> +            let bo_size =3D bo.size() as u64;
+> +            if op.size > bo_size || op.bo_offset > bo_size - op.size =
+{
+> +                dev_err!(vm.dev(), "VM_BIND op BO range out of =
+bounds\n");
+> +                return Err(EINVAL);
+> +            }
+> +            vm.map_bo_range(&bo, op.bo_offset, op.size, op.va, =
+map_flags)
+> +        }
+> +        TYPE_UNMAP =3D> {
+> +            // Unmap must not carry map-specific flags or BO =
+references.
+> +            if op.flags & !TYPE_MASK !=3D 0 || op.bo_handle !=3D 0 || =
+op.bo_offset !=3D 0 {
+> +                dev_err!(
+> +                    vm.dev(),
+> +                    "VM_BIND UNMAP carries flags/BO refs: flags=3D{:#x}=
+ bo_handle=3D{} bo_offset=3D{}\n",
+> +                    op.flags,
+> +                    op.bo_handle,
+> +                    op.bo_offset
+> +                );
+> +                return Err(EINVAL);
+> +            }
+> +            vm.unmap_range(op.va, op.size)
+> +        }
+> +        _ =3D> {
+> +            dev_err!(vm.dev(), "VM_BIND op type {:#x} not =
+supported\n", op.flags);
+> +            Err(EINVAL)
+> +        }
+> +    }
+> }
+> +
+> +/// Reads `len` bytes of array padding, rejecting any nonzero byte =
+with `E2BIG`.
+> +fn read_padding_zero(reader: &mut UserSliceReader, len: usize) -> =
+Result {
+> +    let mut buf =3D [0u8; 64];
+> +    let mut remaining =3D len;
+> +    while remaining > 0 {
+> +        let chunk =3D remaining.min(buf.len());
+> +        reader.read_slice(&mut buf[..chunk])?;
+> +        if buf[..chunk].iter().any(|&b| b !=3D 0) {
+> +            return Err(E2BIG);
+> +        }
+> +        remaining -=3D chunk;
+> +    }
+> +    Ok(())
+> +}
+> +
+> +#[repr(transparent)]
+> +struct VmBindOp(uapi::drm_panthor_vm_bind_op);
+> +
+> +impl core::ops::Deref for VmBindOp {
+> +    type Target =3D uapi::drm_panthor_vm_bind_op;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        &self.0
+> +    }
+> +}
+> +
+> +// SAFETY: `VmBindOp` contains only integers, so any bit pattern is =
+valid;
+> +// the `#[repr(transparent)]` wrapper has the same layout as the UAPI =
+struct.
+> +unsafe impl FromBytes for VmBindOp {}
+> diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
+> index 76c3d60bb2fe2..610bab69c1a55 100644
+> --- a/drivers/gpu/drm/tyr/vm.rs
+> +++ b/drivers/gpu/drm/tyr/vm.rs
+> @@ -10,6 +10,10 @@
+> use core::marker::PhantomData;
+> use core::num::NonZeroU64;
+> use core::ops::Range;
+> +use core::sync::atomic::{
+> +    AtomicBool,
+> +    Ordering, //
+> +};
+>=20
+> use kernel::{
+>     device::{
+> @@ -437,6 +441,8 @@ pub(crate) struct Vm<'drm> {
+>     gpuvm: ARef<GpuVm<GpuVmData<'drm>>>,
+>     /// VA layout for this VM.
+>     pub(crate) layout: VmLayout,
+> +    /// Whether the VM is unusable.
+> +    unusable: AtomicBool,
+
+Atomic<bool>
+
+> }
+>=20
+> impl<'drm> Vm<'drm> {
+> @@ -496,6 +502,7 @@ pub(crate) fn new(
+>                 gpuvm,
+>                 gpuvm_unique <- new_mutex!(gpuvm_unique),
+>                 layout,
+> +                unusable: AtomicBool::new(false),
+>             }),
+>             GFP_KERNEL,
+>         )?;
+> @@ -526,7 +533,7 @@ fn deactivate(&self) -> Result {
+>=20
+>     /// Kills the VM by deactivating it and unmapping all regions.
+>     pub(crate) fn kill(&self) {
+> -        // TODO: Turn the VM into a state where it can't be used.
+> +        self.mark_unusable();
+>         let _ =3D self.deactivate();
+>         let _ =3D self
+>             .unmap_range(
+> @@ -538,6 +545,15 @@ pub(crate) fn kill(&self) {
+>             });
+>     }
+>=20
+> +    /// Marks the VM unusable.
+> +    pub(crate) fn mark_unusable(&self) {
+> +        self.unusable.store(true, Ordering::Release);
+> +    }
+> +
+> +    pub(crate) fn is_unusable(&self) -> bool {
+> +        self.unusable.load(Ordering::Acquire)
+> +    }
+> +
+>     /// Executes a virtual memory operation.
+>     ///
+>     /// This handles both map and unmap operations by coordinating =
+between the
+> @@ -649,6 +665,12 @@ pub(crate) fn map_bo_range(
+>         };
+>         let result =3D {
+>             let mut gpuvm_unique =3D self.gpuvm_unique.lock();
+> +            // Check under the GPUVM lock so a concurrent =
+`mark_unusable()`
+> +            // teardown cannot race with this operation.
+> +            if self.is_unusable() {
+> +                dev_err!(self.dev, "Cannot map on unusable VM\n");
+
+Can you improve the wording a bit on these messages?
+
+> +                return Err(EINVAL);
+> +            }
+>             self.exec_op(gpuvm_unique.as_mut().get_mut(), req, &mut =
+resources)
+>         };
+>         // We flush the defer cleanup list now. Things will be =
+different in
+>=20
+> --=20
+> 2.43.0
+>=20
+>=20
+
