@@ -1,75 +1,70 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022120.outbound.protection.outlook.com [52.101.101.120])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021083.outbound.protection.outlook.com [52.101.95.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192A3322C73;
-	Sat,  5 Sep 2026 23:32:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F10E36A022;
+	Sat,  5 Sep 2026 23:39:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.83
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788651161; cv=fail; b=lSzth5RUjzD/XUiTYIKr4HVYxWs1BcnbuuLjxQPnGDprulYOXFjgBvbvIZxfdF0CHQFsILHOitCxErue6gLA+MZOgrX2b88qf88ECxlkpKFnmCUbpez8lD0JV3EJlYr1bXSLvGthXE4YH3qp06ZHMA1iwAryO2Mx8FCJMlLix6U=
+	t=1788651581; cv=fail; b=AgSxU1/qEjtT3Ez3Kdce9oEL7+3Nm0wjIXqfdzPiPDE6qnw/NjcsN1FnHVTMeMAniZIdsxTsbAZKtR10ip3MwsGiQ/XwWMqI+BV+odgbwGfJoFh8DWZvHvay/1LSxzfoj3PwR8fEfhR2Wm17gMIek+DG9dhqyCTE7obNrqQLLWw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788651161; c=relaxed/simple;
-	bh=R6jp99bRIZED4TSzot7iBUIRDFlRTv9U+1PC9s32H2g=;
+	s=arc-20240116; t=1788651581; c=relaxed/simple;
+	bh=nn7406eNhJBePoAU8K7iVhSvvLFhD6MXsngDOXclLg0=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=sKil88pvw4+JBTiLads8QBqXBcsa/RA9CCQSjp/7IG1syzXwhKlQWeK7CUIFXrDpCaNucQXgWDx0N3WIRAv5oxOGDaLiF1aer3kx6yZYdK7yCvz8vpczW+NabX67gRCZtK+rmPMVEZixNErOnlZIlbdsrRjoCw8PHC+umUjNxI0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=VFGNARHH; arc=fail smtp.client-ip=52.101.101.120
+	 In-Reply-To:MIME-Version; b=bC0cHRMxzkErnrT/m8l4JT3LJ5xc5hOeBxtZMATz/Ct2swzCwyvYesQbMMwpjWd8sAAEinqddQx9qkCmjqjl8GLPM0IsQ88tjJsqAM2+ItHc3feVpQuI4WUaPuYzRhr65g1yb6Fo3bhA3pXMP6l/O8zEvN0OYVn+gSF9c3zt+Zw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=P05lDEHm; arc=fail smtp.client-ip=52.101.95.83
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="VFGNARHH"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="P05lDEHm"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dAvRhrFYZkMXBJpcbJJ/lIIqZ6HjpM3Ag/m6I38SkYFXk+vPLaV3n72fgdAtPCCOUoET/25qXVItUjOVtkYSrMZGEfv592zJ2513yn8r2TZUSMamFdFP0xecOIL9DyJEwcyQCS3/V4ZOIz43nx/uOpz9YkU3++uqlUg6fsn1g4HxAWrROM3B2PLVfCpM1XCHkFDbXBhPNCO7sWs6uMZiYcCQv2tcOqpNiWGrvr0oBTLnzzeYnwd3f417vDzjvpMiATOmpi3YzxQtoZ0dWzlLtA6bDIPYFjiHmGivXpEDV2QDO4806qd+9sYsNwT0gpQoLPVfOT0kO7vRG2u6b8mziA==
+ b=L5n/DAYyVxHelCTffUYhaSiXVXWaKAMvwdhC7Ups9cBxVUXMqaKoQ9bpdl3yG6cjRHSa/mDL08eI5a9be0mN9eUmA0HyKW6gUSE15sg+KfWHjudHuEevRWJQjVr0O6rzMaUolXhGoDZiRrUuBQe9w9QfT84s/PtuJmbMj3wO+lnGejbZCHM5c2A+qq/mgctja64hladMN0dL5HL2MlNOEipqCqDd+ac8pKnlKQf8XkhRtn8Xsho5kak5iy+u1cI5vJxr2UbjemdHaiRJB05w1zoHBehSC1GaC41FtZt+MjNvrj38lWVFeiFkkiPVCA8xsLqJWlmbhS4Fx0Z3852eNQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4k8FLvNwHhAb4SZo9hiMdWeCIkOp4k2nDFc5G2ofxl0=;
- b=jPp3yeRMyG0mLnmP6lp+jAnqrHVGRYew04YFTNVAx3IFDrGsF5WJ+Xg4DxFdqOLK6Qx0jdhOyjEOOcDOspArcbl9sFWn85mf9hQD5DNwkydH702fi1wugi4vJsijRk03+rPPzad+kmaRNtuAFF5d3JVVtyx+cupQv/rC8snzxnTRPw1fB676iLhqBiUTMsRNrHuvyEwXbcH4WISYgiVVSEI4ll9UKXW1bHPUHJFtug+NkE+xivHVINSkaRt6kPgNbadvQApoCKKnm3cCqTSoTKgyyDnTU0tswKe6e5ODhY6cBCDHC5evENNlgTyfxKiLec3qYhX/ZlQOtSuabpd5PQ==
+ bh=54YGzR5UisNvLK7y2e9goYC5g39BxS0jcSim5CjA6aE=;
+ b=NDUa3ZB8DLNZqDwKZCiPsKnSJ9RB3nxo223oiYq6xCiVR9Xg+hevX1a0u7LgTKz50Y3fuKB9hY2nXAkftSi+MPJTETZmdHyWzNUaB8Ahj32jWAJvRvp/xCsYWbnnZz74tLNmxuo/skVZ441Gmdn/xIpg8CsI4KjpRz2i9IVCMzmmw7UkgF/xO9ymUc7bxKqAr/1kpZ8uFMDMMmzHelgltDEzBuPRFymXhjXSj5eyPWRlISU5ThEUVuVSPWb/EfPELDnz++WLDw6ScRtBEMZK297CYi1ylyOYLC/xhhBF9dLjGGu+3Nb2bVlrKXekGCFJaMVdyvDxCo5wF5/BZwI84w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4k8FLvNwHhAb4SZo9hiMdWeCIkOp4k2nDFc5G2ofxl0=;
- b=VFGNARHHj+uwgPiTpRw1Mq4YdTrbWEqTz1FQz7bei4Yj1RdfDtbVy6zBpaoHyP7i2QuxeoO/YtE45JJoQBnEleZ3R3LlqAn1oG+XTjgmizvju5uVWvLDna0xBDF/uF7mM+bWyMY8PoVTgHXelm//LoaTMVsRHIfvV0lTEptSmRw=
+ bh=54YGzR5UisNvLK7y2e9goYC5g39BxS0jcSim5CjA6aE=;
+ b=P05lDEHm5FTf042x9Hni7UFahMIlLbiqS3Lat26cbjMUH+LzTdgJLttFbcNgp/wDA+eNL4eUgJ0REvb+611zm6vZ0+kScJk8CiUXciv6goBQhslMdaKMyvYLVdkG7pDN/mWnOYxkaDKURogHksyEXKGssyedZrhKcnAQcDXNcUs=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
  by LO5P265MB9367.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4c5::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Sat, 5 Sep
- 2026 23:32:36 +0000
+ 2026 23:39:36 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0382.014; Sat, 5 Sep 2026
- 23:32:36 +0000
+ 23:39:36 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 06 Sep 2026 00:32:35 +0100
-Message-Id: <DL7RX130417U.10PL9U4D6JU9L@garyguo.net>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v4 03/16] rust: mem: add `AsRepr` and `AsReprMut`
+Date: Sun, 06 Sep 2026 00:39:36 +0100
+Message-Id: <DL7S2EDXP5IH.395Z0FSCRMNIF@garyguo.net>
+Cc: <linux-serial@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Sashiko Bot" <sashiko-bot@kernel.org>
+Subject: Re: [PATCH v4] rust: serdev: Mitigate race conditions
 From: "Gary Guo" <gary@garyguo.net>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Gary Guo"
- <gary@garyguo.net>
+To: "Markus Probst" <markus.probst@posteo.de>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>
 X-Mailer: aerc 0.22.0
-References: <20260901-typed_register-v4-0-5552b1d59525@garyguo.net>
- <20260901-typed_register-v4-3-5552b1d59525@garyguo.net>
- <CANiq72nxtehkGdb9RZpd=MsjWzp9euoLw=MmCzvcqOgxxEwymg@mail.gmail.com>
-In-Reply-To: <CANiq72nxtehkGdb9RZpd=MsjWzp9euoLw=MmCzvcqOgxxEwymg@mail.gmail.com>
-X-ClientProxiedBy: LO4P123CA0264.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:194::17) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+References: <20260905-rust_serdev_fix-v4-1-31e1bbcc0c00@posteo.de>
+In-Reply-To: <20260905-rust_serdev_fix-v4-1-31e1bbcc0c00@posteo.de>
+X-ClientProxiedBy: LO4P123CA0308.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:197::7) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -79,98 +74,192 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO5P265MB9367:EE_
-X-MS-Office365-Filtering-Correlation-Id: b10b0471-7cb2-47a9-bd2f-08df0ba5f773
+X-MS-Office365-Filtering-Correlation-Id: edd41035-9b2b-446b-cad1-08df0ba6f240
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|10070799003|366016|376014|7416014|10067099003|56012099006|4143699003|6133799003|22082099003|18002099003;
+	BCL:0;ARA:13230040|23010399003|1800799024|10070799003|366016|376014|7416014|10067099003|56012099006|921020|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	J8cuk3Q0JAHS0+yqnjJPGo/We1AOhtPm3zAhbw1a89JXag1n5dKqaLx0+Fz8q7OP91BiE7cpL6DKe8JxknK8/zib4CPSvtP6GP2HBVpN6ap9zLoedf1C2T7pqUu5VKwVGogdpgP+2On02UVIrrJsOA+sepFX9KG3SNaz0dzqUF21GknDSFD21t7UsT1pu4oWz63mk1u7SgGbArY8jUXZF++hRFm5IcH4JFh7+o1MuyoTPsY37U3T/JtsuZKocUHCv0cQHWm/hcs9VMMuPCMoForqVQoY288mqxLnZuAWAg0soyAPzWvD/byhxRwIp8YQtUtbrbR3n/B7jQtszNFKwShB7686KcdtCbb+RwYQoIpF24RCNsKPmFI9PwhbRsEzz6MlwIstS4qCxa4YQs+/ovkNbkNKoYGeHS5vQAU/+ohAiVF9EPAow28LtgWi9fLrxvADDjzdIJU896KLsGrVMuUL6iA59Tv3ClqCh5UsIjz5cpV4Z7jzXOEqK3nIXilUE2E4B7oCtejzDT6yg5EVsZpI0i9QABJqNKO6VyIopVgrYSrSQkj/MnuUhv+/sh1grS279UakWWP+lL7kUYK4TZU/KVOXrBJMFC3PCt90d3uFzQ534pn02eCPl34A/SB5ObSdbgqG6dQ4H/NEcLmKVk641h4yqPe8lkdZgCgYkiE=
+	gpxFCRPUUcRB/91AOzkP9veonC0ScyHTCa0zf+JdmMCUnWqqxYKa37O2C3Bd/JiNi5XSuF+pBpnn7deiCKawtx3KhtfIhnRhnPSyKg7lpJSPH/0u+o/pW3GjXpU4eTjsaMa8gRe85K0M9iyltAc95ue+Q2fenzgwdRBptGWr+RGApD0Sdf9rr0FKRnw8GI6iD6XJsVlkH0UDhESkgdYFsxF1aJDrxJcbstapTJcBETC4jebmz4LaVsx+mR5jxCsUGIjAMruz5Qu5ruQJYciXnBA2NOnYpdUKmAE4ymNqFKBUqllbC1S3bOdixWw2kLcdXg/pIZhp1Mom9LcRKSD3mcZwJfB8Wtuj1+nCm58snMs/UZTqHuVXx+lVfsaNKLJRcSEmc9PNNk9dV7kqSUlE5UgDjN9UVJff604NDyCYuRvxpuHeYLbJKD1Xou+rAv3GwiHLluM9j2IMBWh5w5NdD9a2RFmjUAI6tME1pK6DAfoBaCEWf8OGkf5828bSsgGW2jIXaBhE9fSgF9gr8S5Pk7PZj0/GPja+QIWMgQpRVlA+jNwGCLhE4pxMrmvE6N/dlhR80Qwi2cC2qG0i4aUVeRk1JB2BDlrwCj6lOzaDUgyZ8CxBMMMwCpW2Nnu6BCP+0tOwIByQ4JANqWriIFgx3iAhKow7g9emH0E8+twxvuM=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(10070799003)(366016)(376014)(7416014)(10067099003)(56012099006)(4143699003)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(10070799003)(366016)(376014)(7416014)(10067099003)(56012099006)(921020)(22082099003)(18002099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eTBVL1ArODhRbEJYZ1Q4aXR0Q2pOMTVQODZnRDFVbFN0eWExbitFQzRjMXdz?=
- =?utf-8?B?a2hISjFNNExYemdOa2UzN1JId3BDeFdOVkU5d2J6ZjFUdjEwMXU1OFpwdTB4?=
- =?utf-8?B?NU1BYnNGb3VNMkgvQ1AxODNpVVNKUnMzMENEQjdGcVFZd3kzdUg2cWdrWnM4?=
- =?utf-8?B?bHBaSytNUmxERFhFWVpKMUFMSEpLWUZjZktlNDM4M3ovRW9CNjVabTNycC85?=
- =?utf-8?B?c0xrbkFTR05yOFQ3UFRqRHJGT29yd3dNaGlFMGpXNGFrTU9mbENSK1lYUVMx?=
- =?utf-8?B?NEtBM1pSV2Z0cXdqdTE5ejJjL2E1dWlMU1B5SWpQcEZuSWk1OTBwRHAwMS83?=
- =?utf-8?B?ck1GQ2FwOE01ajBqRWcvZmtNUTZwNGlQUHp2UXVRTXM4ZWlTVGNaSmErak5G?=
- =?utf-8?B?MUtLMUhnUHAvVVp2Yy9kMWhwWWt5ZGx5UVJPa1pObTBWalRLbGptUXZxOHVn?=
- =?utf-8?B?MHFQWjB2MXRjNWtNbGJWcFU0SHBob0k2ajB2Zi8xTE02bW5VR2VwOVVjeTZK?=
- =?utf-8?B?alN2SDF6ZER0SHVvOGJVSEFlSVViZVpFZDdFZCtWVGVpOWdaUVRNNkI5M1U0?=
- =?utf-8?B?dWhOZXpDdHlHdHE2MXY0SG15RnVGL3JxNzFHYWFpalM5L2thVFJzcUd1cnU2?=
- =?utf-8?B?bDJEeFN2eU5uSHNMRjhWeEs5cGRvYjZqdk5PaUFDUFRDdDlBUGt3d3lMTXF6?=
- =?utf-8?B?c0xQaXV1UHVjL0pJQURKNURwNFN1TGpzVTYwbGlWVGFkMTBIaVFyQnZNWC8w?=
- =?utf-8?B?bWoyV0pQM3g5QUpXTzdmNDZmQzBHSGtVVjdRZG5xeCs1LzdCbVFGSXpLcStP?=
- =?utf-8?B?VEUrSTluWlJSM3dJUFpxMVJwOUNvUm03VzJHQUdPSVcrKzF2SkNqRTZSaVYx?=
- =?utf-8?B?TTNmWGhSNjRtaFNwTlloMDR1QUIweXBNV1R2UXVxazl5WTFKc0hoUk1XZEhM?=
- =?utf-8?B?bmNHU21IZE1vWDVKaVFWQkc5TjloV3U5SXI4L0dKQTkybkQ5MC9NcmUwVS95?=
- =?utf-8?B?NmlhSjhqY253N1NWdHVKVVEzYllPSDhpelVNbkl2cTFzOUNQbzQzQU95VnNz?=
- =?utf-8?B?ZzlxUmlvNTFJMkdJeFgvQ0owV08wL1V4RUhtaDRPbXdQbVRmUkFpdFNodFFD?=
- =?utf-8?B?MFhyVFJEeVJxaWJJNlhreUsrOW5TNTJmd1R1bjFEUUkyeVJPSUtvTTNvSFFP?=
- =?utf-8?B?K1NRR3AvRzZmazVFMUNGVUpoOWwva0tXaWZhR3JzNEd4OWhtMC82djE1TkhP?=
- =?utf-8?B?dzgvZlM1SjNqbnVlVVVyYkpLMitKVlFwZ1NjK1NjaDJYY29jdGdMM1N6cUFs?=
- =?utf-8?B?cytwWC9xT3E0MWlWWWFnRzRNbU9pZUZZcG8rNnRwSHNGdDh3a0RZREk5OVJO?=
- =?utf-8?B?RmFHYUpnc3VIb2tRdWZEUzROMitTeWExNGgxOVE3cmUvS2Q1WVY2T0FuSXRF?=
- =?utf-8?B?K1lnSU5TM3lEcEE4YXltVG1zbXpJdkhGVndYREN4clorMENqR0lRYTJad3Bt?=
- =?utf-8?B?QXdaZkVyaUNobkY3ZkVXcFhDMHlRSmE5ekIvK2RITmN0OEtBbGozRTVCM040?=
- =?utf-8?B?MUE5QkR5dUxoZitPOHd6SE1paVYyWjlLSklXUWxrYTZiQlVUMFdRZlBNNmtl?=
- =?utf-8?B?amdsOUVrZW9TY1RyMHFzcW5ub1hseWpMK1F0NDlvZEJQOUdYQmczbW94NDls?=
- =?utf-8?B?VWdMTm14cUhCRmtab2NpZ1IwbzBSbzRXM0xZcHgzQi9EYVp0bGpoU3FwcXVK?=
- =?utf-8?B?NkR5VnphTjNpVXFoNnN3cDhPTjBJM0lhZkhqeGNGV2tkK0plZGJrTDFvaHRz?=
- =?utf-8?B?MFd5c21jTE43UDFTZCtxY2VIb0ZMQnk1ZEpJR2dmTCtUWnNrYVJrVGNCempO?=
- =?utf-8?B?aHpHeFg1RDJ2TkxCZVZ0elhiZEU0b25paVNvZjdxZnJ1aG5GMVBFRlh0bEVm?=
- =?utf-8?B?dFhmMGRvT1RURUhUVTlHRzBtdjBQYWZHc3dXcnZ5dDM2dm9tMU05c05wU2Q2?=
- =?utf-8?B?blBlYXNTTzZ2QWIrWkJLWnBWbzVwWkNBeXBXWkFCTkU4dXJoNGthTVZreDMz?=
- =?utf-8?B?YkVEYjFsMis1U09rZWdRcElTSktBRy8rbkg1T040Q2hFTlFucnJIUWhDZGZr?=
- =?utf-8?B?VDgrUGpzWU11RUdiVUhZc2NJTGhVN3JENWt2YjBXZEJmUmQ1OUhmNlRXRXJk?=
- =?utf-8?B?N3Z3TnZic093Tmg5T3NDcGJJN0x2dEFqU0xXa1M0cDRmdy9vWk0zSFlBQmtv?=
- =?utf-8?B?dUNNODYwZ2w4ek1zOVRBcG9nTkwyT2NNZTNqVzNNS3REYXE2WW5ZWnhXcFRu?=
- =?utf-8?B?ckZrOU1ZL3RHTzZ5OG1ZQUF5U2sySTZPWmIrWVhOcjZKNG5iSmRsZz09?=
+	=?utf-8?B?cUMyWk1tVG1pVlo2aUErM25FWmtBZElCMVhkby9KVEUybkt4OEJEbHpKYU9V?=
+ =?utf-8?B?YVZoZzQ1ektHdXM0YjdFZXh4TGNFN285Rk4yb0N5MS9LTkFzOGlBclhlbmUz?=
+ =?utf-8?B?VXhhWVB4SXB3WGxlQWlNck9vZ3Z4SFNiMlhZcnNYTUFYN2draHM0b01RQ2du?=
+ =?utf-8?B?NWgydEEya2k0c1M4MHZyMjIrYUQ0NWNUQ2VYTXhZdzIxMFhSMGJ0OFQ5UmRN?=
+ =?utf-8?B?R0NIZU1Kc3hUNmtFQ0ExQ25EQ1RIVTZja2N3UHZnWitjZUlrNXlGcWo2aVE0?=
+ =?utf-8?B?dDVHcXYxTWlkQitISTdHU2lVVnY0YjlORVdJN0Jld0xBdldIMmM4WnpBQnVJ?=
+ =?utf-8?B?aHUrVWczNEVQTzN4WnNRMStuRTU5QXVoditnTWYwTXpTdTNXN3JrWGlJSTM4?=
+ =?utf-8?B?UW5HMVV1SWY1dVhvVDNjbW9PMVhpOEdIb3hPVUplVmI0ZXcrK01oSWNKVCs4?=
+ =?utf-8?B?QkU3aGRkdjlZWFRzOW55aVBSRVBtbzRrc2JDKyt4b3RzSlE5QndYK1AvVmdy?=
+ =?utf-8?B?TmJFZW5CQ1ZBMU1JZG5PbEltWmZ1ZmZ3MVY5OGVzUlpyVVhaV0ZSeERSakgr?=
+ =?utf-8?B?N0YvbVFYaVl6NWxpQmxYZkp6RytpSC9wek9sS2RaUjErRkhVVTlLRHNDSTl4?=
+ =?utf-8?B?bitaZkJUQWpmVlo1TmQ5bVdsZHBFa3M2Z0h5ZG5BUVd1Yzl1R20vL2Z0REFH?=
+ =?utf-8?B?VFBud2FON1ozVVJUWWZPeGRLMFR0bjVKWlV3dmoxYlpMbk5pMUcwYXRFMEE3?=
+ =?utf-8?B?TjdycWRJRWllMUdOZUhZWkM1SmNGR2VKT09Qc3VINUQ3VUFQT0o4RVNOa2kz?=
+ =?utf-8?B?blVCVmkwYmJsbVl3Z1RwdmRXbGlsU2hsQTA2N3lxV3U4YWYwMVZsOWZVWXUr?=
+ =?utf-8?B?MitxdFZ5SDEvTVdMRnZ2OU1nNUdKVUZ0R3Jma3NuMWp3LzJrbTkxM09vNHZj?=
+ =?utf-8?B?UlVScDZ4SmQ2SDNCckFUN0pDR1htMHhYa2YzMHV1am9lSE0rckJqaDNYVEtp?=
+ =?utf-8?B?V1ZjN1c4YmYya1d5U2l4MnhvWDJxMkoxWGsvb2g0NUtKcUZyOU5vTjl4bng1?=
+ =?utf-8?B?M0U3enMwdDgxNGgwcFpRRHB0VVEzNjhCZXlpN0tRdUtPWG1RU0RxSnBqV2dQ?=
+ =?utf-8?B?b1kxSCtKUUtjVFdJVXRsajBuSVZvbExaNURRN3FHMmlMMTJ0UVJMMnFERGhC?=
+ =?utf-8?B?bitOZEdTa3AzWnhCSlFmTTIvUGpUc2dxKzdVVkloU0NBN21PNjVCL29VaE5T?=
+ =?utf-8?B?bzdQclNvZnFVa3ZUZk5BbXFqcWhCRVI0N0VZYjlUbmNnMDBOYmN1elFaV2Nv?=
+ =?utf-8?B?MFBtaWV0N2N4UysyUlZpNkZOTlFlNFVUeVpTOE1tYXdyaEtVRXl3US9EY0RS?=
+ =?utf-8?B?UEh3NnlxMmNhUENQSlFsYnlwNnVEMzB6QVBvdWw0Qyt3cDJqYXUyRUorQk52?=
+ =?utf-8?B?Umd0YWhnakV3Ry95MHRWYlBnUURPU2lkUFgycHhCWXVaRmloQ0dMZ3UxcmEz?=
+ =?utf-8?B?dlhZZDJuSWtyVDRVeFZ0enZxTWJPdjRORTd5TnpVc3R3L01hY3JTUk1zUUxK?=
+ =?utf-8?B?YTlKQ0FnandhTW5GN2lGTHpDRDJRSko4SjlFMWJaZHBzTjJPa2cxMmFKVFd4?=
+ =?utf-8?B?WkFCWTdSR0QzTHVDeTROUXBzNVdDRzRnVEZyYVFoR0tMOXNtaXdNTGZRQk1p?=
+ =?utf-8?B?ZEpvdndMdWV4VHZaWStvZUEvR1dlR2VKWFp3TE1pVXE3MkRFcktNOHB1ZzBp?=
+ =?utf-8?B?NFR4NHFtc2xVbTM3SnRvY1l2cmcwc0h1OTFPeHFuQmhyenpGa3JxT0Q4bHQ0?=
+ =?utf-8?B?UHlUaUlDb2p0cThWV0RrYm11YTJEeFNDWGpPRVVmdmhjcXcwaHhzTGtocHN5?=
+ =?utf-8?B?OGROdGI0dDJYWldLZ3F3d1hSeXBVSW51blJWOVJtdmVVL2xpN1NiU09XOVpJ?=
+ =?utf-8?B?L3FaYm9ydm9QTGh5Z3BmdEN3TzVPVUo0UnU2cG82QW15WDJ2dHZEOUFoSk5T?=
+ =?utf-8?B?UGUwZTVSaTA3V2VjajBWTTVVdGpHMlN3elBFbnRsVUJoMGxtSTYrR1FkeXlV?=
+ =?utf-8?B?d213QTBhZkhOQ2JXc3V2TlZRVXFmQlRNaUh4ckpBWmVTSmFiVU1pVUhweXVW?=
+ =?utf-8?B?QzJDd1ZWanFNUlFOemlJbEs1Mk1YbHV5VkdmSFRhZEpEZzNSRXpWbDA4OGc2?=
+ =?utf-8?B?UDlDTDVDUTJ6dytudlJmZmtqRWlJMHBrMFRTY2JYQ2hyOEVZYUplVURPT3Jn?=
+ =?utf-8?B?UGxIQkEzWTVieFJQelRBc3hkUmhCei9XTUN2cmZvdm1XTVZWL0dqNE5GTFMw?=
+ =?utf-8?B?RE0xazZTR05uWW00S3pacVp6SXhLZysvWmRmVC9OYzZYRU5XK0hMdz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: b10b0471-7cb2-47a9-bd2f-08df0ba5f773
+X-MS-Exchange-CrossTenant-Network-Message-Id: edd41035-9b2b-446b-cad1-08df0ba6f240
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2026 23:32:36.0060
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2026 23:39:36.7436
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MdjhwE+bnTq1J7lK6IdUXgY0bXRRrxeqOeBm8CuD1wezsuYwhN2sHCdSUbu5qrBc3cGvHeMsFqIPz4CRuwNwDw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: PY3R+P/c4ebFy5q4KmJ0qCgeewjYWwyG+nOZ0N9YDcejlDtbvPzkcORQsRn/VvFVTn2ful73ekB9qqopLH4Vtw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO5P265MB9367
 
-On Sat Sep 5, 2026 at 8:22 PM BST, Miguel Ojeda wrote:
-> On Tue, Sep 1, 2026 at 6:50=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->>
->> +    /// Convert from `Self` to [`Self::Repr`].
+On Sat Sep 5, 2026 at 7:47 PM BST, Markus Probst wrote:
+> There are currently 2 race conditions:
+> - in probe if `Driver::probe` returns Err
+> - in unbind
+> . In those cases the driver data will be set to NULL before the serdev
+> device was closed. If data is received while the driver data is dropped,
+> the `receive_buf_callback` might try to access the `active` mutex on a
+> null pointer. The race conditions can only occur if `Driver::receive` is
+> implemented.
 >
-> I think [`Self`] etc. work too.
+> The issue cannot be cleanly fixed without rewriting some logic, which
+> might introduce new regressions.
+>
+> Temporarily disable the use of `Driver::receive`, until fixed in the
+> next release.
 
-I'm not sure why we'd want a self link.
+Isn't this basically undoing all the usefulness of having the serdev abstra=
+ction
+in the first place?
+
+As this is for unbound only, I don't think we need to rush to fix this for =
+rc
+anyway. Many C drivers don't get unbind correct (and our misc device). Ther=
+e's
+no in-tree user that will hit this API anyway.
+
+I think we'd better just find a proper fix for the next cycle and leave the
+current code as is.
 
 Best,
 Gary
 
 >
->> +/// - [`Self`] must be [transmutable] from [`Self::Repr`].
+> Fixes: 99f59aa82341 ("rust: add basic serial device bus abstractions")
+> Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/linux-serial/20260905000836.C8FC91F00A3D@=
+smtp.kernel.org/
+> Closes: https://lore.kernel.org/linux-serial/20260903222159.70A911F000E9@=
+smtp.kernel.org/
+> Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> ---
+> I will submit a patch (for the next merge cycle) soon, which will
+> address this issue and make the probe and unbind code less convoluted.
+> ---
+> Changes in v4:
+> - remove comments
+> - Link to v3: https://patch.msgid.link/20260905-rust_serdev_fix-v3-1-b860=
+56c3f7a4@posteo.de
 >
-> We say "can" in the `AsRepr` one -- we should be consistent.
+> Changes in v3:
+> - mitigate it
+> - Link to v2: https://patch.msgid.link/20260905-rust_serdev_fix-v2-0-35df=
+cd06ef2e@posteo.de
 >
->> +// SAFETY: `bool` has the same size and alignment as `u8`, and Rust gua=
-rantees that `bool` has
->> +// only two valid bit patterns: 0 (false) and 1 (true). Thus `bool` can=
- be transmuted to `u8`.
+> Changes in v2:
+> - also fix race condition on unbind
+> - Link to v1: https://patch.msgid.link/20260905-rust_serdev_fix-v1-1-2ea9=
+2b154a6b@posteo.de
+> ---
+>  rust/kernel/serdev.rs              |  6 +++---
+>  samples/rust/rust_driver_serdev.rs | 13 +------------
+>  2 files changed, 4 insertions(+), 15 deletions(-)
 >
-> `false`, `true`
+> diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
+> index 17ca504b7f8d..f4c0f43b5273 100644
+> --- a/rust/kernel/serdev.rs
+> +++ b/rust/kernel/serdev.rs
+> @@ -148,9 +148,8 @@ fn drop(self: Pin<&mut Self>) {
+> =20
+>  impl<T: Driver> Adapter<T> {
+>      const OPS: &'static bindings::serdev_device_ops =3D &bindings::serde=
+v_device_ops {
+> -        receive_buf: if T::HAS_RECEIVE {
+> -            Some(Self::receive_buf_callback)
+> -        } else {
+> +        receive_buf: {
+> +            const_assert!(!T::HAS_RECEIVE);
+>              None
+>          },
+>          write_wakeup: Some(bindings::serdev_device_write_wakeup),
+> @@ -233,6 +232,7 @@ extern "C" fn remove_callback(sdev: *mut bindings::se=
+rdev_device) {
+>          T::unbind(sdev, data_pinned);
+>      }
+> =20
+> +    #[expect(dead_code)]
+>      extern "C" fn receive_buf_callback(
+>          sdev: *mut bindings::serdev_device,
+>          buf: *const u8,
+> diff --git a/samples/rust/rust_driver_serdev.rs b/samples/rust/rust_drive=
+r_serdev.rs
+> index 51b4898cd855..3fd3eef15371 100644
+> --- a/samples/rust/rust_driver_serdev.rs
+> +++ b/samples/rust/rust_driver_serdev.rs
+> @@ -4,10 +4,7 @@
+> =20
+>  use kernel::{
+>      acpi,
+> -    device::{
+> -        Bound,
+> -        Core, //
+> -    },
+> +    device::Core,
+>      of,
+>      prelude::*,
+>      serdev,
+> @@ -60,14 +57,6 @@ fn probe<'bound>(
+> =20
+>          Ok(Self { sdev: sdev.into() })
+>      }
+> -
+> -    fn receive<'bound>(
+> -        sdev: &'bound serdev::Device<Bound>,
+> -        _this: Pin<&Self>,
+> -        data: &[u8],
+> -    ) -> usize {
+> -        sdev.write(data).unwrap_or_default() as usize
+> -    }
+>  }
+> =20
+>  impl Drop for SampleDriver {
 >
->> +        // SAFETY: $unsigned has the same size and alignment with itsel=
-f, and is transmutable to
->
-> `$unsigned` (a few below).
->
-> Cheers,
-> Miguel
+> ---
+> base-commit: e5e04726cdd043e309677071ab1b65a4b18f422b
+> change-id: 20260904-rust_serdev_fix-be3ff9c8a5e8
 
 
