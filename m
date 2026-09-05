@@ -1,121 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C7E37AA9F;
-	Sat,  5 Sep 2026 08:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FBF2D7DD4;
+	Sat,  5 Sep 2026 09:31:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788598544; cv=none; b=MHpmsnk27q3s+EX0/4mQyjEAddRtZUR+At5LYHVuLgduAeGD2yNt6MfqwqG9OjNWNjy9HyJUYxQVcQHHWswYAsYC6+4i+qo0WIkzq8OJFX/M++TE1VFAtDmFqPmUahNrWMMjTNe3SdcI8o8KValkgaWlNo473YdCgYdDYiJfTPE=
+	t=1788600713; cv=none; b=QzFXl4gF2WnLeKy8aEfI+Q/vwtW9lb/ebnm6YUtyVx9lDdJ5dkYufc+Boe9NEL9gSTp0Z8NFk0BG1sifcgNZlSQqFXvi84p8/HtADOAGLzqBhhJpAC5IT/OFlPT5to9nwLcxsu+Dup43tJZruh8xX6OvOmZCUTpCknuUOAS94bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788598544; c=relaxed/simple;
-	bh=EO/DauOYW4TtZT2a8/moYn9E1EV6Pnh1V5d1nsVJNSc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g0OjcoSoTMfb9yD9YXYJE3CPevDK7uVjJ0n7pekGY/fNDe9ZeupDY58GQZPt+gbsYgRLWvQS3oK+ejud2KRDrf24wnARvkTGdq2DeD25WjCfESfj4mckdX97m8Qsi2Llnlt3K2H9UHYRmEtbQnIP4zyrlFN6b1iqxnKzKCBTr04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EC9TjBFT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788600713; c=relaxed/simple;
+	bh=FgZynRmD9vHs8fVwu+0Q3CDriaBiUT7qGyVPwjPPEjQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GWOo84Wwtf3xdrGasYM6Goxi3Wc/Ri5/6NNlyzUmF7JEaU8GgguLb0JUYK+atoPW3W6byDBFXFdtw2o/AUos3mw7z0ESBi7xRJh9GFThkoMUjbAu3gatPsdDTnpbeQCxIR+sKeMzIyXrqVB05JVVNk3Sb+jWT3Z8G5+Vlu13T5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=XPOorHN2; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EC9TjBFT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2390A1F00A3D;
-	Sat,  5 Sep 2026 08:55:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788598540;
-	bh=0Mylv/zjucclPhSFWD9H4kpgBfaJoJIM1JbCqsv9PYA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EC9TjBFTQIQLUsk0iIGli6uRHfd/+cw5DbG2qtso+MfnUkRxSMepYHZhjpm+0mntI
-	 7g/VVps0SwoDr9ZCs1VeNWtDkWdreGKZGVCXQAxW1TJqyp7sCswd7nv6hrp3VrqjAs
-	 +53U9ycaYy2pncyWk5GfEJTAhlUQj0FvhYzqs2FAQGiutrHaZTBKyHHGfV0b+63tBv
-	 VRv0HX07kWlgebWUoDWVjd/GK9Q8EIu/0Xkebep6h06rI14iMi38wMneqSs1I0O/bF
-	 szCRrjAwW0l6eb8NOAd/OyNu9X0G4l97ooBYSzt6SmTPhAR3a0+i8dr+4a63WC2giT
-	 OyjyEAsesnV0A==
-From: Philipp Stanner <phasta@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Burak Emir <burak.emir@gmail.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH v11 2/2] MAINTAINERS: Add entry for Rust dma-buf
-Date: Sat,  5 Sep 2026 10:53:43 +0200
-Message-ID: <20260905085343.1827305-4-phasta@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260905085343.1827305-2-phasta@kernel.org>
-References: <20260905085343.1827305-2-phasta@kernel.org>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="XPOorHN2"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4hcSlQ5BPYz8sfB;
+	Sat, 05 Sep 2026 11:31:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1788600706;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FgZynRmD9vHs8fVwu+0Q3CDriaBiUT7qGyVPwjPPEjQ=;
+	b=XPOorHN2XqqDgVVKdA9iO8ExLdixgWeWmELPuWTKFu8uDs7B8aH8sADsc2xeullHDszWPB
+	36vV03mphrZUTObIPvm4eWpaVsf6N7dIKx9crjcFZTFkbXxm1ePW01zsOLS6M8zNmoukqH
+	TJmGBMEogljX33HIgNwmjJ43WeV06ZXZi6OIQXFGf29YMxICLqm9JWQpfsrLvvEyRLyrNB
+	pTfr2Bzoqo2aHvnmeDqbWcejlt4R7vlSdz9XD6hYdU2C8dg2i4NZ6lUeek+tTWsov9qYvu
+	U3P9QBqrPSS/VBa3PsmmQO5TzqM97caIefz6wgw2Lts8ytcl6yNcBXkV3WSNyQ==
+Message-ID: <e8a53eb241b2cc912e9cfad5f6a0120aa9683481.camel@mailbox.org>
+Subject: Re: [PATCH 1/3] drm/gem: Add callback for when handle count goes to
+ 0
+From: Manuel Ebner <manuelebner@mailbox.org>
+To: Thorsten Leemhuis <linux@leemhuis.info>, Alex Deucher
+	 <alexander.deucher@amd.com>, amd-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, Felix.Kuehling@amd.com
+Cc: Mukul Joshi <mukul.joshi@amd.com>, Christian =?ISO-8859-1?Q?K=F6nig?=	
+ <christian.koenig@amd.com>, Mark Brown <broonie@kernel.org>, Miguel Ojeda	
+ <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, Linux Next Mailing List
+	 <linux-next@vger.kernel.org>
+Date: Sat, 05 Sep 2026 11:31:41 +0200
+In-Reply-To: <aaef18cd-ab55-4fb8-8563-ca3a5ea9cbc6@leemhuis.info>
+References: <20260831183311.1090131-1-alexander.deucher@amd.com>
+	 <20260831183311.1090131-2-alexander.deucher@amd.com>
+	 <aaef18cd-ab55-4fb8-8563-ca3a5ea9cbc6@leemhuis.info>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: 9d5iowodpfcuperubek5wusbfdpqohho
+X-MBO-RS-ID: 780ec277d222eeaae0e
 
-Rust does now have abstractions for dma_fence. These abstractions are
-quite complicated and require expertise with both the C and the Rust
-side. Therefore, using the existing entry also for maintenance of the
-Rust code appears reasonable.
+On Sat, 2026-09-05 at 07:36 +0200, Thorsten Leemhuis wrote:
+> On 8/31/26 20:33, Alex Deucher wrote:
+> > From: Mukul Joshi <mukul.joshi@amd.com>
+> > ...
+> ...
+>=20
+> > > error[E0063]: missing field `handle_free` in initializer of `drm_gem_=
+object_funcs`
+> > > =C2=A0=C2=A0 --> rust/kernel/drm/gem/mod.rs:265:58
+> > > =C2=A0=C2=A0=C2=A0 |
+> > > 265 |=C2=A0=C2=A0=C2=A0=C2=A0 const OBJECT_FUNCS: bindings::drm_gem_o=
+bject_funcs =3D bindings::drm_gem_object_funcs {
+> > > =C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^=
+^^^^^^^^^^^^^^^^^^^^^^^^^ missing `handle_free`
+> > >=20
+> > > error: aborting due to 1 previous error
+> > >=20
+> > > For more information about this error, try `rustc --explain E0063`.
+> > > make[2]: *** [rust/Makefile:799: rust/kernel.o] Error 1
+> > > make[1]: *** [/builddir/build/BUILD/kernel-7.3.0-build/kernel-next-20=
+260904/linux-7.3.0-0.0.next.20260904.221.vanilla.fc43.aarch64/Makefile:1442=
+: prepare] Error 2
+> > > make: *** [Makefile:256: __sub-make] Error 2
+> """
+> Full log:
+> https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/f=
+edora-43-aarch64/10951622-next-next-all/builder-live.log.gz
+>=20
+> Reverting this change and 2/3 from this set fixed the problem for me.
 
-Philipp volunteers to help maintain the dma_fence abstractions. Add a
-corresponding MAINTAINERS entry.
+Verified.
 
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Acked-by: Christian König <christian.koenig@amd.com>
-Acked-by: Sumit Semwal <sumit.semwal@linaro.org>
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3a19da74d00c..88db6fb06042 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7680,6 +7680,7 @@ F:	fs/dlm/
- DMA BUFFER SHARING FRAMEWORK
- M:	Sumit Semwal <sumit.semwal@linaro.org>
- M:	Christian König <christian.koenig@amd.com>
-+M:	Philipp Stanner <phasta@kernel.org>
- L:	linux-media@vger.kernel.org
- L:	dri-devel@lists.freedesktop.org
- L:	linaro-mm-sig@lists.linaro.org (moderated for non-subscribers)
-@@ -7693,6 +7694,8 @@ F:	include/linux/dma-buf.h
- F:	include/linux/dma-buf/
- F:	include/linux/dma-resv.h
- F:	rust/helpers/dma-resv.c
-+F:	rust/helpers/dma_fence.c
-+F:	rust/kernel/dma_buf/
- K:	\bdma_(?:buf|fence|resv)\b
- 
- DMA GENERIC OFFLOAD ENGINE SUBSYSTEM
-@@ -8697,7 +8700,9 @@ T:	git https://gitlab.freedesktop.org/drm/rust/kernel.git
- F:	drivers/gpu/drm/nova/
- F:	drivers/gpu/drm/tyr/
- F:	drivers/gpu/nova-core/
-+F:	rust/helpers/dma_fence.c
- F:	rust/helpers/gpu.c
-+F:	rust/kernel/dma_buf/
- F:	rust/kernel/drm/
- F:	rust/kernel/gpu.rs
- F:	rust/kernel/gpu/
--- 
-2.55.0
-
+Thanks
+ Manuel
+>=20
+> Ciao, Thorsten
+> > ...
