@@ -1,173 +1,114 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5E0377ABC;
-	Sun,  6 Sep 2026 07:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B918930D411;
+	Sun,  6 Sep 2026 07:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788679047; cv=none; b=khFj8kJgWGlFujm7f+tC7gAG1+EbA+bF2woTeLKCdUiybLhvBaZcsf9zICUYB5rLHMVnyixQXUpnhM5uyXR8uBxGgAcA8fsUZlDy6YK1W/4b+vAOQsCIS+g/Ic8rHVunwS0pDOHurbC6zlGAhkmFXpcxg3BR/zgRJH32rOIx+0w=
+	t=1788680464; cv=none; b=Iz7E7Uq4s/xXkhvLTONlAzDPz8VRiKBeI9pOw0FAb3lXj2gsyjj6NCk0eCt6EUt8aObjt/Su83tW3IuGKNHQmb/I8eAcj+huHgMRhXAeGutQAHt+/a7qbjNxGlVVdm+32qk05V5Oq3X05aBMgZ6Fsg15sylDQw5Mr5H92+aDqTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788679047; c=relaxed/simple;
-	bh=rRCH8gt/5mOkrlJvq466GnwekETqDZn0YclcWLINKjM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eqVnByH3tuD25/Akw3fvgpr4yuTzQWgnlRC4q56PSxS8frB1wLG15QpGDik8hPddFUU8/Qlvb8xmD3KBeLqNbmoKzwSojzcu08wAGHbsNaaNy9FAnmF/1bZHgzhlFyjlbCFIf0aPnYxHsALWkM0l6QSJ0Xjm3JsE07SZeYHF178=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=MvPxCNF1; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1788680464; c=relaxed/simple;
+	bh=1kXz5wOBXL0GP3+XmuMSSMzE03Du7ycyU7THVSvL2WE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TMRvCh+8tsnO7qkzs7hWJPdCSB1zsEjTa06WbKP+/47rfCAcr01d0x7czaoziZ56gneDLDxsFizmHqaGjw5tjxCpFXjkXuovgpUHsi7Qm5RPW0WHeEJKpADW1o372tpUXfRRx4r68yonuUEFAI3CUXBf/LGfYxg9BGRegZ7zjFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qtzuijcC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="MvPxCNF1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1788679034; x=1788938234;
-	bh=QcZeDQsDI8IiVvV9Mls8GpNfSv4icCfhUiY5ki37lz8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=MvPxCNF1KkN0B4KlO+2tydyitMpD6nmu0S+meh+QVG/Jqi0l+n60HQPi5iXMufUDy
-	 t5W2oognASgqzodwaQNhKK1XZjXQ+NDgltuPB/Agl1BdEjJIGlbZJlreBIIUaizJJH
-	 il+44fAsfNLWDHZ9r6bPkNjHgMs7DyVU6ZDx1/8bHMlPmdHLujvoe0OVXG/YDr2d3O
-	 mjjZFsgd1cbfZDTzd+BVECiyGOtsRa/Dlii/8mfHgCKKD048lWjMrJ3Y0lRBpI0dBm
-	 vChuZ45xGiSUDxXE4pMDXsBAwJPAGq9ioGwGmSsOmGFzk6L7FDx99TTBPpigGJOI5n
-	 6RqGOt2+hi7gA==
-Date: Sun, 06 Sep 2026 07:17:09 +0000
-To: Danilo Krummrich <dakr@kernel.org>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-From: Sagar Taunk <sagartaunk@proton.me>
-Cc: Sagar Taunk <sagartaunk@proton.me>
-Subject: [PATCH 3/3] rust: dma.rs: Migrate to zerocopy's `Frombytes/IntoBytes`
-Message-ID: <20260906071635.160615-4-sagartaunk@proton.me>
-In-Reply-To: <20260906071635.160615-1-sagartaunk@proton.me>
-References: <20260906071635.160615-1-sagartaunk@proton.me>
-Feedback-ID: 130121444:user:proton
-X-Pm-Message-ID: be199ad065d60aac636093b021cef3878b6f4e9c
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qtzuijcC"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2C442C2BCB8;
+	Sun,  6 Sep 2026 07:41:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788680464;
+	bh=1kXz5wOBXL0GP3+XmuMSSMzE03Du7ycyU7THVSvL2WE=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=qtzuijcCrc4vH887GqNpTTCQ/zIaP3GSYMWasYPUDSAel3Se/bDhCU4ZqWTPaQGm0
+	 uY/5Hg2RttBJNllUGsmxroW9MGUNyEVuj+ZUb1a/mzUdLldRSsjmuOt8lbAmvwEj3k
+	 DxSo7yV8qIobGe0sKt5SBUFr5X4zrJeNelE+T92rsMOt4JMWGeFV8vScu5nVJZwOCK
+	 Bh1dPE5znXKsgqy5kJmu7x9LYNZngi78VLy3PizNcv5CsG+5GLw3HnCJmwJyzRPqMi
+	 a1vidaoWYAvhiBNSYoaObsKxNmqItPbr6hoH2XctHk2afc0PKXK2xQOogNjdiGFc+E
+	 siwwRAJA6eYSQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 17899C79F9E;
+	Sun,  6 Sep 2026 07:41:04 +0000 (UTC)
+From: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
+Date: Sun, 06 Sep 2026 09:40:53 +0200
+Subject: [PATCH] rust: num: document why Integer is sealed
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260906-docs-rust-num-integer-sealing-safety-v1-1-78057391302c@younes.io>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWNSw7CMAxEr1JljUUIqFCugli4qZsagYvsFIGq3
+ p1+lm8082Z0Rspk7lqMTunDxr3McNgVLnYoiYCbmV3wofSVL6Hpo4EOlkGGF7BkSqRghE+WBIY
+ t5R8c0VOoyjNWp4ubVW+llr/rze2+sQ31g2Je3EujRiOoFSV2S9QrJ5b9+rMtp+kPvosgoKwAA
+ AA=
+X-Change-ID: 20260906-docs-rust-num-integer-sealing-safety-3a0e2967a948
+To: Alexandre Courbot <acourbot@nvidia.com>, 
+ Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Younes Akhouayri <git@younes.io>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788680463; l=1364;
+ i=git@younes.io; s=20260712; h=from:subject:message-id;
+ bh=toyc2RIIIaJbEQPl2zcDj4AAt9VV1aOmVSKrcNUyvD0=;
+ b=NgZNpApSLlAtQzmYTKRmaZGWYOb9/B1JL8s1nbgvApDS4vo2LedCRd6bYosnD3J/hCiO18diG
+ Dbdja9+/wYwC+64T/Fa3/SUF/A94QovyNcHgfRwkiCEGsbD2ozxkZpW
+X-Developer-Key: i=git@younes.io; a=ed25519;
+ pk=1DRfzPrQ04RQHHgGK28t+vjIAPv5oISPiAdLMU6J5dE=
+X-Endpoint-Received: by B4 Relay for git@younes.io/20260712 with
+ auth_id=866
+X-Original-From: Younes Akhouayri <git@younes.io>
+Reply-To: git@younes.io
 
-Replace explicit imports of `transmute::FromBytes`/`AsBytes` with
-zerocopy's equivalents.
+From: Younes Akhouayri <git@younes.io>
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1241
-Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
+Bounded relies on Integer::BITS and Integer::Signedness accurately
+describing the implementing type to justify unchecked operations.
+The reason external implementations are prohibited is currently recorded
+only in the commit history.
+
+Document this safety requirement on Integer itself.
+
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://lore.kernel.org/all/CANiq72m8kycbfQ1teyne-OtB5d5TsUcX_WW0FCkWB3Ayyg-qWw@mail.gmail.com/
+Signed-off-by: Younes Akhouayri <git@younes.io>
 ---
- rust/kernel/dma.rs | 22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ rust/kernel/num.rs | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-index 2ce09f8e90c6..9bd47f20c784 100644
---- a/rust/kernel/dma.rs
-+++ b/rust/kernel/dma.rs
-@@ -25,10 +25,6 @@
-     prelude::*,
-     ptr::KnownSize,
-     sync::aref::ARef,
--    transmute::{
--        AsBytes,
--        FromBytes, //
--    },
-     uaccess::UserSliceWriter, //
- };
- use core::{
-@@ -417,7 +413,7 @@ fn from(direction: DataDirection) -> Self {
- /// ```
- pub struct CoherentBox<T: KnownSize + ?Sized>(Coherent<T>);
-=20
--impl<T: AsBytes + FromBytes> CoherentBox<[T]> {
-+impl<T: IntoBytes + FromBytes> CoherentBox<[T]> {
-     /// [`CoherentBox`] variant of [`Coherent::zeroed_slice_with_attrs`].
-     #[inline]
-     pub fn zeroed_slice_with_attrs(
-@@ -454,7 +450,7 @@ pub fn init_at<E>(&mut self, i: usize, init: impl Init<=
-T, E>) -> Result
-=20
-         // SAFETY:
-         // - `ptr` is valid, properly aligned, and within this allocation.
--        // - `T: AsBytes + FromBytes` guarantees all bit patterns are vali=
-d, so partial writes on
-+        // - `T: IntoBytes + FromBytes` guarantees all bit patterns are va=
-lid, so partial writes on
-         //   error cannot leave the element in an invalid state.
-         // - The DMA address has not been exposed yet, so there is no conc=
-urrent device access.
-         unsafe { pin_init::raw_try_init(ptr, init)? };
-@@ -523,7 +519,7 @@ pub fn from_slice(
-     }
+diff --git a/rust/kernel/num.rs b/rust/kernel/num.rs
+index de589792a77a..1d06395d3a63 100644
+--- a/rust/kernel/num.rs
++++ b/rust/kernel/num.rs
+@@ -20,6 +20,11 @@ pub trait Sealed {}
  }
-=20
--impl<T: AsBytes + FromBytes> CoherentBox<T> {
-+impl<T: IntoBytes + FromBytes> CoherentBox<T> {
-     /// Same as [`CoherentBox::zeroed_slice_with_attrs`], but for a single=
- element.
-     #[inline]
-     pub fn zeroed_with_attrs(
-@@ -554,7 +550,7 @@ fn deref(&self) -> &Self::Target {
-     }
- }
-=20
--impl<T: AsBytes + FromBytes + KnownSize + ?Sized> DerefMut for CoherentBox=
-<T> {
-+impl<T: IntoBytes + FromBytes + KnownSize + ?Sized> DerefMut for CoherentB=
-ox<T> {
-     #[inline]
-     fn deref_mut(&mut self) -> &mut Self::Target {
-         // SAFETY:
-@@ -565,7 +561,7 @@ fn deref_mut(&mut self) -> &mut Self::Target {
-     }
- }
-=20
--impl<T: AsBytes + FromBytes + KnownSize + ?Sized> From<CoherentBox<T>> for=
- Coherent<T> {
-+impl<T: IntoBytes + FromBytes + KnownSize + ?Sized> From<CoherentBox<T>> f=
-or Coherent<T> {
-     #[inline]
-     fn from(value: CoherentBox<T>) -> Self {
-         value.0
-@@ -663,7 +659,7 @@ pub unsafe fn as_mut(&self) -> &mut T {
-     }
- }
-=20
--impl<T: AsBytes + FromBytes> Coherent<T> {
-+impl<T: IntoBytes + FromBytes> Coherent<T> {
-     /// Allocates a region of `T` of coherent memory.
-     fn alloc_with_attrs(
-         dev: &device::Device<Bound>,
-@@ -753,7 +749,7 @@ pub fn init_with_attrs<E>(
-         // SAFETY:
-         // - `ptr` is valid, properly aligned, and points to exclusively o=
-wned memory.
-         // - If `raw_try_init` fails, `self` is dropped, which safely free=
-s the underlying
--        //   `Coherent`'s DMA memory. `T: AsBytes + FromBytes` ensures the=
-re are no complex `Drop`
-+        //   `Coherent`'s DMA memory. `T: IntoBytes + FromBytes` ensures t=
-here are no complex `Drop`
-         //   requirements we are bypassing.
-         unsafe { pin_init::raw_try_init(ptr, init)? };
-=20
-@@ -948,9 +944,9 @@ unsafe impl<T: KnownSize + Send + ?Sized> Send for Cohe=
-rent<T> {}
- // methods that access the buffer contents (`field_read`, `field_write`, `=
-as_slice`,
- // `as_slice_mut`) are `unsafe`, and callers are responsible for ensuring =
-no data races occur.
- // The safe methods only return metadata or raw pointers whose use require=
-s `unsafe`.
--unsafe impl<T: KnownSize + ?Sized + AsBytes + FromBytes + Sync> Sync for C=
-oherent<T> {}
-+unsafe impl<T: KnownSize + ?Sized + IntoBytes + FromBytes + Sync> Sync for=
- Coherent<T> {}
-=20
--impl<T: KnownSize + AsBytes + ?Sized> debugfs::BinaryWriter for Coherent<T=
-> {
-+impl<T: KnownSize + IntoBytes + ?Sized> debugfs::BinaryWriter for Coherent=
-<T> {
-     fn write_to_slice(
-         &self,
-         writer: &mut UserSliceWriter,
---=20
-2.55.0
+ 
+ /// Describes core properties of integer types.
++///
++/// This trait is sealed because [`Bounded`] relies on [`Integer::BITS`] and
++/// [`Integer::Signedness`] accurately describing the implementing type to
++/// justify unchecked operations. An incorrect implementation could therefore
++/// make safe [`Bounded`] operations cause undefined behavior.
+ pub trait Integer:
+     private::Sealed
+     + Sized
+
+---
+base-commit: c6709d5e14072d0e3d02f291daee46a199e5dad3
+change-id: 20260906-docs-rust-num-integer-sealing-safety-3a0e2967a948
+
+Best regards,
+--  
+Younes Akhouayri <git@younes.io>
 
 
