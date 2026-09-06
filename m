@@ -1,299 +1,118 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C4342125A
-	for <rust-for-linux@vger.kernel.org>; Sun,  6 Sep 2026 08:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788684387; cv=none; b=Rgtp9Vf1lDZ37odNNc4Om/CpDusN4pi6p8BQaIXpOSE4pyDYLmzT1r/GSMEKh84vMiIOMqOhQa6BOL89QoN9QbGRRpM3UJ92hoq/8MAZySoPjI1nQMj06bM18I9F8JNNLJJeWf3g9zFjl7zJdTh6JiUlnRzpnh1AinyJZYcrLQw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788684387; c=relaxed/simple;
-	bh=EAwiGhsNfNUoTWCfH5MKHO2VRQhaq1dnt2ypoyVNiWg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=j3bFEBdf32Xa0jkwVKyap4IgrZQUABnkhw1Y4cqx02uDOtbnv36yfl0YxYvSk+ylCiRPf0geamnAIDwddLuHL2eN6ORf/CCf9D0RQl0lBSpLJJ5YRCDXereI8qTU3MhdScamA8mDlg7Ai4Z9yMoFGjmZqgzkMJ7V1AyliRO8nVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HXriYoCS; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790BC3AA4F2
+	for <rust-for-linux@vger.kernel.org>; Sun,  6 Sep 2026 09:49:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788688181; cv=pass; b=WBpEvWTbJp2hDZ413D9v71ZJ2yMjKdc4EniWvwWW+iG2RO51RL3Vv2wYvdLY+iev9ZKwKsZuQlO7aDg6YF87/177gRUK7Xrm69ZS/GhMe19p4Raed80PkDYsCgDn5WnUU4ckMc9hLA7xlxP1ZH4n+kwl2uvmLgfNSi2aPNEX+xw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788688181; c=relaxed/simple;
+	bh=uFo1S3usMCbLdEWy9LjKCdoBjHBFRVmushfAGQzmLtQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PUMD3PZc3Up6aZ27EC8zzwqcXgbIeM87nsStykjsFo28pYwsiM6ozUzq1slFACicJb08ikV2DMwKTNfvZIFpWxhcNO/MaRqEG5JMw+mcbd5pCpHpgQYw7PpXW2uQshS7Bz60U/PfeKGh71W2QFItxl+cWA17ceaxUFgpWIgnrA0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p7u/dEdE; arc=pass smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HXriYoCS"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cc1c3c90074so2037801a12.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 06 Sep 2026 01:46:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p7u/dEdE"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39666e7c9eeso134968a91.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 06 Sep 2026 02:49:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788688179; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZHOWv5pRQaKAn6vAeKtr7TVp5YehO7Urbsej/Tflj/mo3Q5k1YzqlXLRM0+EqDhrwy
+         AK0Ar5ESEy2Dj2bEXxIKGpgjcQthNljwkuVzto3QsGd/L3AibhtjQNB52AEU3yF8pmQp
+         slD60l8PvZmkQZPtGW3TLGZUPsmX8K+jWdAcB0VshBgrbJ/n01VG3voN81TNEHubQhjP
+         bPYVngDgJGD92OVK+MbXnLCJcYHc8n2Kuxa+Zhl4VnJfcKCDvg3IDrCX92UqmT8CaXFp
+         Ew/5vKR9Oa33r7ijAPuzTFCxJOI/nFj5YSh6/9blZ8+0M1e5X5LHRKljEWY85sqWtVsA
+         MphQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uFo1S3usMCbLdEWy9LjKCdoBjHBFRVmushfAGQzmLtQ=;
+        fh=gslTcfEI6324NIQf+SiAhAYZestqHHg3ZcwVVM3AUVk=;
+        b=BOhEhf4iQj003HOpQpPD6VfA3veHH7iDHz2U7ckTseeeXF8jL7H8mwwa5fb2btrtDP
+         r3C+NMBQn2pVl80g6iNg3hhv5kb5o1UFIjSTJSgDhU0vGGB1c1DsM0jPF7VPRp8tSc2y
+         tTb1RDK6PgNg6of5c2kEwETODJHejPXqB3nDU9c3L//bPE/l9gqAXTr/qWlnbDj9B2Pt
+         82qDbIYkyznxX4upbg7oOKWNy7ZCSL9cWAz4DK5XtdJNP7gnbiZ8hK/4iyzRoTi+68G9
+         5z3urZE2FKQ1IroSMQ1/o7M+9yvNk0Coh7pIqWrY5x5HQ1jh7lfHjl80/rrkYxwVETxx
+         k5Gw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788684385; x=1789289185; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Y5IIaAx3QztQSmArELd1kmaa4AxdD+imzocVdEF8EdM=;
-        b=HXriYoCSKM21a5H9MmP+Id9gCuGSBw2ZptUfmvCIPaYNnovQurrm6udYtDT/jotBk2
-         fKUCZXmJHiomt1mBsyJ4P/E6CIvG8JLn3K+rov0P2/GbySOZLipzqJrn1o747xKdNLTG
-         fa/qN5ttDexkHTbZ68D1MYMYc/a0PNUnJvN5CW/k1eGDLQ2NHDGcbZ1n/K5ce1jU1JIl
-         axYIxexXxqvJTR+dxsJrOmXBEXRrNNv+VlQ9HWTdUShpzdCz8YAUTKp3ESl8QCG98EbR
-         hF3JgmG6kIUsWy1fpWMX5Mu//TUcUrcv9/+JDfhUKrOt/hAQx4iv41K6guer2Lug+nWZ
-         SiRA==
+        d=gmail.com; s=20251104; t=1788688179; x=1789292979; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=uFo1S3usMCbLdEWy9LjKCdoBjHBFRVmushfAGQzmLtQ=;
+        b=p7u/dEdEUWtYxwBHACDb0DUPEiPf6Ws3Nae4hmhP/OwHgLd94oQKd4soQaRc3avfhz
+         BHP0ilsivwepnwbrcFHwHVN6BxR7XJBqw79A/Fmlrf1k7gsk+dKiNuCrRqZnwSTRSUTX
+         Z9u8aYpymZCACxrpSY/8QQZ31fUwiuSYiGLArjB1PwPcNDx2gFunNqnmkohnALi9RTgu
+         +sGGZOru/AtNAjNc7VWrcLrqYNBUMrNMYTSXEFx24Q1vAl8r/zuEaF6hTVAHGpIKyjvE
+         wGR4F2jL8fNx3ElMJ6KeKH4uNvVyZJF3FeC5Xb62Y/wNtECnwrKw/5yxpbyTdaBn2A6L
+         Gpaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788684385; x=1789289185;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1788688179; x=1789292979;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Y5IIaAx3QztQSmArELd1kmaa4AxdD+imzocVdEF8EdM=;
-        b=En3K/eeMPwsmhD4SBmOnvxtBbBli7s8HV2NBazUDh2mOjhHPm2DuWEbu9ETfXgqox0
-         KpgTy/Os7yKyabGoX0P9kqXDyFPZHvv1IA+CgHog8ODjCfJjIrDLexYm0goVtyUhPB0i
-         o2UEsTeY065ru6Mhetc07u7REkZFtS6Oysejr6qHTWj0ol4BQ9hepTvaUF0WjjeNdnoP
-         WO76p9AzgMh7GBsDf+dQ/CLnNhG1s2IiC2GJ4At6B+LLfGVvGuyUJT+4difI8qIqulnq
-         lTAYxCIkWwa1/5Rs3k+p41r1HEpCaJiax4b5Lq6KvvC0boKbPehBxgx3mBeNSe5/nXm4
-         6Mbw==
-X-Forwarded-Encrypted: i=1; AKwUvBzG2r8aLUK1HQUMXe6MDN10GZxKHzaZ8F++R1Ekh6k1OwlDmOyfIwj33V4LAH8BeMCRCn308jm0uUKFMlR0Tw==@vger.kernel.org
-X-Gm-Message-State: AFuF++k1mJxu4QXcyW1WbdvBIMKWS77hEHGZx2BvkFJC6yRKhx9RApFp
-	DTdM86BRadBORNnTUdvcE9jzwe7RUR83hqYRYMX+6OQkPl3mCT2pqHPY
-X-Gm-Gg: AYBFou2cO0Cru1kUOCFRE1Ud1K2h8weMf19R4BS3/afDBKL/2zid5+wabQJeP0hkG/S
-	eH6gp2xiwHHXdZiROSTssbJ7ibyMYfI8WfBX33m6fMjpLekiZyOKZwZV1ZsQDYIgmq0Cp0TAHtw
-	JywjwmzUbJvtdPmhDiPqOPKia7jXyTf5GQYVspUP4sFp6NbEaVgSJR+8dNgK9dhlc3fkAfsqJqT
-	F66JpqPczJ/BkFDxx78DaHOCNIOS7dpH4ufrPAjMjnkKY4/rHpbCbZ/Cy6DbeULhKR4AhMtGwYZ
-	HVshr1k5rEpEBT/etSgZzqgDTUJcjrfuazmD7u4kHb09CPSJY8dsVNwDiz0pAN3wBOHQam++jiJ
-	6qLaU2HMGsEwHPH50CIxAYibjntZO0+R1X38er/Z5/tM+6vhxk3qu7hyP2AYFWIzufSz+KQhAL2
-	9KiYxVE9c5VDxROrNY65MAcW6WmuekaUAhDEFWnNkvEoe++sI9gRDmteyzj/cazmN9GT2fH1bVq
-	DHv63VH
-X-Received: by 2002:a05:6a21:8202:b0:3c3:7a0a:18a6 with SMTP id adf61e73a8af0-3da3a11eee0mr23307025637.18.1788684385308;
-        Sun, 06 Sep 2026 01:46:25 -0700 (PDT)
-Received: from localhost (madb688426.ap.nuro.jp. [219.104.132.38])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc46da5acabsm1204179a12.8.2026.09.06.01.46.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Sep 2026 01:46:24 -0700 (PDT)
-From: Kohei Ito <koheiito.dev@gmail.com>
-Date: Sun, 06 Sep 2026 17:45:51 +0900
-Subject: [PATCH 3/3] sample: rust: Add GPIO consumer sample driver
+        bh=uFo1S3usMCbLdEWy9LjKCdoBjHBFRVmushfAGQzmLtQ=;
+        b=CUO0js4SiMcAjSS4o9HRSRmw7ikAz50NuUEUe/XOrVOeiqdUtIZ29UgnCL5AYpkhBI
+         6oKP64DthWq0gwPRUoitg5jx3d11BDt1+sNDpKhgbVDd4wKZ+m5cz51TdiK1yHHTXKdj
+         2p5yO6RoxX3tH4CKaho3W53+zm5KpZiuhNG4WVHbqVKDxyXTNKDX2k0DIDwYJm33Ylyl
+         f7C6yJHn1LjwLiGfcbL2IuCrW5VanGzBYqjorsd5lxzfPwsWB6LNLFRsD8kR+FONecZm
+         BQ6bbfDa1Xg3WpwAEENC7XVYZxfhF1Cq60EIlV/L8azf7ds7GBVqtV4PysBaH5JljGtG
+         dcJQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwCncIK2wECviwsWflniel5RhrxVLq4rqil3BdrGhagohVl1GvLZ9FNPePuXYS08x7VLhpIElCmH0fDJ18t8w==@vger.kernel.org
+X-Gm-Message-State: AFuF++m+pTDd/8IcMj7Hg1Xb+KrzK0my8nmaAeAUuHqWYJ0AQH7W+kwq
+	T/dcoh1+fWygrUC8SouX6uWc2ybEBQKJ0PwuZjrF3ijpF8xNHT5BcvCwwm387rJiPiVJnTtduZN
+	aQq1iQ9YhQfedZSJnYt1jWFWPLTM+Jb0=
+X-Gm-Gg: AYBFou3X6dm5kLLl72o4TtdEYnHrNvqFZFuwzPwxkgaa30AXgNXK4XNAXZmJnJP/3xX
+	rinQO84MHk5Y66Z2alK1ZGJO98ZnExZIPTWGLubHhOM9O18HZUar+Ss0BUGVMUKWwU9JVSfbeKO
+	xrfTfvnxM2CLodAIY63KVxMtfET3Lphkj/iZ2MB2FRAbd29L6ElCHp2R6UzT8ODSjtsBobRudUm
+	hsivVIBexDhrfJ7ijCemZw6E7r8uYgeOakqLNZqbMRwDAa+PAL9Uv2XEe6pkI4Scf0Dn2j0rbUn
+	+YNTSzk64NlkhQronIq9rlNx20dzdjHzsuG4iBHUCgqd883JjW1FcCyBjGM2/hkBNGdHHcX1Sts
+	ebG3LOJZ0OLP7GgtgmgRZQoefxBWDdUAnr7l+5BLju/zovDvFIUBU8kZ0yKGm5lkmPmnBhv0=
+X-Received: by 2002:a17:90b:578b:b0:39b:3510:4af7 with SMTP id
+ 98e67ed59e1d1-39b3d5ccb8fmr10221355a91.1.1788688178890; Sun, 06 Sep 2026
+ 02:49:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260906-add-rust-gpio-consumer-v1-3-24d192f93760@gmail.com>
-References: <20260906-add-rust-gpio-consumer-v1-0-24d192f93760@gmail.com>
-In-Reply-To: <20260906-add-rust-gpio-consumer-v1-0-24d192f93760@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-gpio@vger.kernel.org, Kohei Ito <koheiito.dev@gmail.com>
-X-Mailer: b4 0.15.2
+References: <20260906071635.160615-1-sagartaunk@proton.me> <20260906071635.160615-2-sagartaunk@proton.me>
+In-Reply-To: <20260906071635.160615-2-sagartaunk@proton.me>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 6 Sep 2026 11:49:25 +0200
+X-Gm-Features: AcwNN1VXiJDpw7Yx5y7AHks6u9YshI7REEbxh0m-sHpFxLllVsN403pcWq9oNiw
+Message-ID: <CANiq72kUVbdGGbMnWTQp6kAoq8pbddRVUOPzT=0RjWFf5dtQ4w@mail.gmail.com>
+Subject: Re: [PATCH 1/3] rust: net: netlink: Migrate to zerocopy's `IntoBytes`
+To: Sagar Taunk <sagartaunk@proton.me>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a sample driver to demonstrate the use of the Rust GPIO APIs.
+On Sun, Sep 6, 2026 at 9:17=E2=80=AFAM Sagar Taunk <sagartaunk@proton.me> w=
+rote:
+>
+> Signed-Off-By : Sagar Taunk <sagartaunk@proton.me>
+> Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
 
-Signed-off-by: Kohei Ito <koheiito.dev@gmail.com>
----
- samples/rust/Kconfig               |  11 +++
- samples/rust/Makefile              |   1 +
- samples/rust/rust_gpio_consumer.rs | 156 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 168 insertions(+)
+It seems you wrote the first one by hand? There are two typos there.
 
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index c49ab9106345..1085d90c87f3 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -161,6 +161,17 @@ config SAMPLE_RUST_DRIVER_AUXILIARY
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_GPIO_CONSUMER
-+	tristate "GPIO Consumer Driver"
-+	depends on GPIOLIB
-+	help
-+	  This option builds the Rust GPIO consumer sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_gpio_consumer.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_SOC
- 	tristate "SoC Driver"
- 	select SOC_BUS
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index 6c0aaa58cccc..1cf181dea6d3 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_SAMPLE_RUST_DRIVER_USB)		+= rust_driver_usb.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+= rust_driver_auxiliary.o
- obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+= rust_configfs.o
-+obj-$(CONFIG_SAMPLE_RUST_GPIO_CONSUMER)		+= rust_gpio_consumer.o
- obj-$(CONFIG_SAMPLE_RUST_SOC)			+= rust_soc.o
- 
- rust_print-y := rust_print_main.o rust_print_events.o
-diff --git a/samples/rust/rust_gpio_consumer.rs b/samples/rust/rust_gpio_consumer.rs
-new file mode 100644
-index 000000000000..b70b305126fc
---- /dev/null
-+++ b/samples/rust/rust_gpio_consumer.rs
-@@ -0,0 +1,156 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust GPIO consumer driver sample.
-+
-+use kernel::{
-+    device::{
-+        self,
-+        Core, //
-+    },
-+    gpio::{
-+        self,
-+        consumer::{
-+            GpioDesc,
-+            GpiodFlags, //
-+        }, //
-+    },
-+    of,
-+    platform,
-+    prelude::*,
-+    time::{
-+        delay::fsleep,
-+        Delta, //
-+    }, //
-+};
-+
-+struct SampleDriver;
-+
-+impl platform::Driver for SampleDriver {
-+    type IdInfo = ();
-+    type Data<'bound> = Self;
-+    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+
-+    fn probe<'bound>(
-+        pdev: &'bound platform::Device<Core<'_>>,
-+        _info: Option<&'bound Self::IdInfo>,
-+    ) -> impl PinInit<Self, Error> + 'bound {
-+        let dev = pdev.as_ref();
-+
-+        dev_dbg!(dev, "Probe Rust GPIO consumer driver sample.\n");
-+
-+        Self::examine_gpio(dev)?;
-+
-+        Ok(Self)
-+    }
-+}
-+
-+type GetValue = fn(&GpioDesc) -> Result<gpio::LogicalLineLevel>;
-+type GetRawValue = fn(&GpioDesc) -> Result<gpio::PhysicalLineLevel>;
-+type SetValue = fn(&GpioDesc, gpio::LogicalLineLevel) -> Result<()>;
-+type SetRawValue = fn(&GpioDesc, gpio::PhysicalLineLevel) -> Result<()>;
-+
-+impl SampleDriver {
-+    fn examine_gpio(dev: &device::Device) -> Result {
-+        let gpiod = GpioDesc::get(dev, None, GpiodFlags::ASIS)?;
-+
-+        let cansleep = gpiod.cansleep()?;
-+        let (get_value, get_raw_value, set_value, set_raw_value): (
-+            GetValue,
-+            GetRawValue,
-+            SetValue,
-+            SetRawValue,
-+        ) = if cansleep {
-+            (
-+                |gpiod| gpiod.get_value_cansleep(),
-+                |gpiod| gpiod.get_raw_value_cansleep(),
-+                |gpiod, value| gpiod.set_value_cansleep(value),
-+                |gpiod, value| gpiod.set_raw_value_cansleep(value),
-+            )
-+        } else {
-+            (
-+                |gpiod| gpiod.get_value(),
-+                |gpiod| gpiod.get_raw_value(),
-+                |gpiod, value| gpiod.set_value(value),
-+                |gpiod, value| gpiod.set_raw_value(value),
-+            )
-+        };
-+
-+        let pr_status = || -> Result<()> {
-+            dev_info!(
-+                dev,
-+                "direction: {}, value: {}, raw value: {}\n",
-+                gpiod.get_direction()?,
-+                get_value(&gpiod)?,
-+                get_raw_value(&gpiod)?
-+            );
-+            Ok(())
-+        };
-+
-+        let active_low = gpiod.is_active_low()?;
-+
-+        dev_info!(
-+            dev,
-+            "got the GPIO ({}{})\n",
-+            if active_low {
-+                "active low"
-+            } else {
-+                "active high"
-+            },
-+            if cansleep { ", sleepy" } else { "" }
-+        );
-+        pr_status()?;
-+
-+        gpiod.direction_output(gpio::LogicalLineLevel::Inactive)?;
-+        dev_info!(dev, "line is inactivated\n");
-+        pr_status()?;
-+
-+        fsleep(Delta::from_millis(1));
-+
-+        set_value(&gpiod, gpio::LogicalLineLevel::Active)?;
-+        dev_info!(dev, "line is activated\n");
-+        pr_status()?;
-+
-+        fsleep(Delta::from_millis(1));
-+
-+        set_value(&gpiod, gpio::LogicalLineLevel::Inactive)?;
-+        dev_info!(dev, "GPIO: line is inactivated\n");
-+        pr_status()?;
-+
-+        fsleep(Delta::from_millis(1));
-+
-+        let level = get_raw_value(&gpiod)?;
-+
-+        gpiod.direction_input()?;
-+        dev_info!(dev, "line is input mode\n");
-+        pr_status()?;
-+
-+        fsleep(Delta::from_millis(1));
-+
-+        gpiod.direction_output_raw(!level)?;
-+        dev_info!(dev, "line is toggled\n");
-+        pr_status()?;
-+
-+        fsleep(Delta::from_millis(1));
-+
-+        set_raw_value(&gpiod, !!level)?;
-+        dev_info!(dev, "line is toggled\n");
-+        pr_status()?;
-+
-+        Ok(())
-+    }
-+}
-+
-+kernel::of_device_table!(
-+    OF_TABLE,
-+    MODULE_OF_TABLE,
-+    <SampleDriver as platform::Driver>::IdInfo,
-+    [(of::DeviceId::new(c"test,rust-gpio-consumer"), ())]
-+);
-+
-+kernel::module_platform_driver! {
-+    type: SampleDriver,
-+    name: "rust_gpio_consumer",
-+    authors: ["Kohei Ito"],
-+    description: "Rust GPIO consumer driver",
-+    license: "GPL v2",
-+}
+Thanks!
 
--- 
-2.50.1
-
+Cheers,
+Miguel
