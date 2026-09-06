@@ -1,73 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8482237269C;
-	Sun,  6 Sep 2026 15:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B154378D7B
+	for <rust-for-linux@vger.kernel.org>; Sun,  6 Sep 2026 15:53:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788709713; cv=none; b=izJTfnHR3QemKJBJ8BgDpSXXwdewRW231PONFGgSsReZVDLjCCdp3wJ01nHHwvpd9evobbXi5FeAM0nGlojBbk7YMTR4zho/Mba73PlFn9Zds4MCAjjEhPXJRECiyiuP9P0N3j3NBrHPGw9tqTB1W3QloJTTeC0J+UCeSR9hCNo=
+	t=1788710027; cv=none; b=Fc8i3BU0m5NXXTaoMrjLKJ5Q9LuXTpZuS5ZCay4kYaReAGSFikqrflAmsD3iBtM0KMjZ/1dzDUlcJWqJEtVZyBT5xFojpCiK6cVjvcKrUQkxBr8mbXhwRfpBjG/kN7etBEmhWqtt3qrIzK9yHG2yWuk4u2Zy68inkIpZVkXtsAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788709713; c=relaxed/simple;
-	bh=CxVdC86NibetUJ1BoN5X0bntQZCOXiVjDYGYA1pdXXA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=js55kAkninHUuLy5aw1I2KbJBZXdH1BltN7CtQ1Weix1Qu2Wu26tfFI5OGLxofmNPgYF/JN287zIKmLj0uTgiF40A33pbCaJYN96QwRvfxcALqtFKW1Gy5LpYwfYatIx7TOE4S8FyrAYNwG7n0KUSJT9Yh9chAFR5V0Kl0qdNts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SKdgoEC2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788710027; c=relaxed/simple;
+	bh=iXeuXZinLwPRHtHoRD2Ox32yQacS6fb88foD+iwKC5I=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BfY8cyfOP/oBs0swGtdW0RGnULszRiJhN3elUzgAdsOHguYw76+NkGBh6SemvLSNkJvVZXbdbRZIFjZl5yTSqtgqL1ibWlHXiAgXEvNsQfaV4mz40jqw/N731MHUGLdkF+19ZS2wI1nXn5vBzsawIW49111tcpsgipXKRxHTo84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I0k1WdWs; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SKdgoEC2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85631F00A3A;
-	Sun,  6 Sep 2026 15:48:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788709705;
-	bh=IDFseMZa4azllhHFWZJmTM2RIwtY3xXXrSyX07T869g=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=SKdgoEC2SG6+Ns29lNiSl4KlLi/ziU9o5/4Fp5nGUPrSSixPZC33BaZDbId5+QyP9
-	 cde4cf9ud3IYLvMN1z+Bk0X4cOuKCpLMiv0Tx/mz4sOnSGhLLJAqgNa0zvLobPwXB3
-	 D3COFSC2VIFrBtPiYr06Z0mVf6QCj5TO5sxnqDqaUkx/5/+D/FIGTyLbPr6Lz+Owz1
-	 qfysRuFi1OMxetE33GWaVHc0MIF6aBZzVh19gpXoNzIspnZmkxLCanDgVeE1XKD09d
-	 di9nRksZWlfhX5X8ji/8ceEx2ErG0JJtFSx8vifTsc+ZhC5FqgkY9RIeCrzFPz5WD9
-	 GMo9QqP06PR5w==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I0k1WdWs"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-ca80d708489so1951908a12.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 06 Sep 2026 08:53:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788710024; x=1789314824; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:subject:cc:to:from:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YZKG0N4Qd9s3jT0vFHcSeVc0433ACE4MO/8edec8Z6I=;
+        b=I0k1WdWsx9WNfUFzK3BCcm/BNEFTWwsSSN1wsCkjh/W3e03sW3FrKRgga6+nkV5OIa
+         GEqvcSuepfem0vtcK9eRFpdHfs0fsmMrFwXcXObxNZ0W/5MTQfFnnzXgCch1vdFT355o
+         AKlgGOiBw7NXbkXRQhWgRlnS73Soey6eW/4SWZOlLv/qlWWc4yF5Zc0UfmVCgbtRfA7p
+         Rab3z+XWQZPxKy0j9hBclzk5skPzkXj9IYYjj+lQUrExtfpo0tRP+TGkOLjAtcwVM+gS
+         0vg5gESMA1idbisUWf9LZEANhJ3vno7R5txyykz0JKQOhgbsYpBSQcA8B5+Q9QZbZR9W
+         4V+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788710024; x=1789314824;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:subject:cc:to:from:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YZKG0N4Qd9s3jT0vFHcSeVc0433ACE4MO/8edec8Z6I=;
+        b=Eq3aLbhmcJrb0WfBuAqxHwjIhn51fwACTVtR2R3ROdVPdQapdGzZGFi+D37Kn3RD89
+         yVzctTK8wyDRPtE3MuU8GgYDE5WVm92gQ48nl4QDtsrd4MViZht51Ktueko78ECVA/e1
+         7F7kQ1+IRV3lhFLmPAwId/RBigXzF+fgtSlYoPL+lZznWXD9Awzo2+LP46Qfs+gQQVlo
+         QxbY6jl5P+z1xvJ8z96mNPYyXTRAhy/r6HIQQyYtRskPANetuzTRB1xuedcmFRGoofOr
+         gEpt1oH2Ea4h9aoGOjEwXWK79Hl6MmRKc8F75Isu1Ybca1UBNTjpmMshrJLGVg27FR4j
+         adIA==
+X-Forwarded-Encrypted: i=1; AKwUvBwnBKQIDZEglp3S6phqnokfcYU8q8mojr9Iho+XtPbVXxkAmrlAC3oXbALn4aDS6kZO45e7jOiZXa4Y4AjDUA==@vger.kernel.org
+X-Gm-Message-State: AFuF++mFsGTQt5xDVqMuBDt4TxguZzwFSs5LjYXTyiin667uURTSqT7e
+	CXPIWauRJtMuUIWf5E6UrQdyImBpFeY5ko3NXbOSTb3LZBcH/eZ15vkV
+X-Gm-Gg: AYBFou1ZOjx8kIFWgb4MQsOZVcxxnaToDpbatqKPtVUHCYte5/q5yFLDlVr5Ch4hJcH
+	CH6OdxgJ0r3e9gLN2ge4PiLYcVZhqKz9qxyD41QTo12EYPR5g8fScPkcc1ObJUnZEIRx3SmbPpo
+	HGXuMRmgg6W+TTVBGQslBUMXeFutOmoQgiOUEolJOSHN4HX4Mwl3k3neytr3ONTGwvAbfHC2F1C
+	Jn7GcNj5Lf3sY97vCk5pJGveLB4DsdmYMaDhiLDHMkubaBbFmVsCkY8EbXpoQTbontUkvxVnq/m
+	StDESdyaMVXycfYbIT6lMKqEtTQKC7KEDd5uojXL4ROqgedWcV14A9WVLxoIUl9BH1EUSkwuyr1
+	Loy7zjrdVTmwAJ+S+LMJY89GupCXP1FaPu/BqTea75ezPUpcTcPnfxB6oGNGhvpc6jV91Ntjd0p
+	OiewVawTVhLOhI2rDE39L8SPLn/j5o9kQtwjjyyXejODv25JLO9zimzN87rLlHShFAgpOsSL74x
+	SHWic2nYsnYDdMgw5g=
+X-Received: by 2002:a17:90b:2ccd:b0:398:baa7:4c2f with SMTP id 98e67ed59e1d1-39b27c442f8mr14641110a91.5.1788710024292;
+        Sun, 06 Sep 2026 08:53:44 -0700 (PDT)
+Received: from localhost (madb688426.ap.nuro.jp. [219.104.132.38])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08c3a526sm21561901a91.10.2026.09.06.08.53.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Sep 2026 08:53:43 -0700 (PDT)
+Message-ID: <6a9d8c87.7436a696.197962.124d@mx.google.com>
+X-Google-Original-Message-ID: <20260906155336.vppadsy6zpw3mlfa@DESKTOP-1P5QNTF.>
+Date: Mon, 7 Sep 2026 00:53:36 +0900
+From: Kohei Ito <koheiito.dev@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Subject: Re: [PATCH 1/3] rust: gpio: add GPIO module with common definitions
+References: <20260906-add-rust-gpio-consumer-v1-0-24d192f93760@gmail.com>
+ <20260906-add-rust-gpio-consumer-v1-1-24d192f93760@gmail.com>
+ <CANiq72m6YZhqzE7GWEakmsZ35QN5UF_HTcVBavKxbq8cV7yk6A@mail.gmail.com>
+ <DL89AIIO0EQF.3U7UGK7JIRZ72@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 06 Sep 2026 17:48:18 +0200
-Message-Id: <DL8CO3P0U67U.10GU95WWXFSCN@kernel.org>
-Subject: Re: [PATCH v2 3/3] rust: dma.rs: Migrate to zerocopy's
- `Frombytes/IntoBytes`
-Cc: "Sagar Taunk" <sagartaunk@proton.me>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Eric Dumazet" <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>, "Simon Horman" <horms@kernel.org>, "Abdiel Janulgue"
- <abdiel.janulgue@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Tamir
- Duberstein" <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, <driver-core@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Gary Guo" <gary@garyguo.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260906102826.202874-1-sagartaunk@proton.me>
- <20260906102826.202874-4-sagartaunk@proton.me>
- <DL88TLWYE8H8.1FP5GCIYUL1BN@garyguo.net>
-In-Reply-To: <DL88TLWYE8H8.1FP5GCIYUL1BN@garyguo.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DL89AIIO0EQF.3U7UGK7JIRZ72@garyguo.net>
 
-On Sun Sep 6, 2026 at 2:47 PM CEST, Gary Guo wrote:
-> I am surprised that just changing this is sufficient. Are all users of
-> `CoherentBox` already have the both zerocopy and kernel traits implemente=
-d?
+Hi, Miguel and Gary,
 
-No, and I think the uaccess patch won't compile either. It breaks
+On Sun, Sep 06, 2026 at 02:09:30PM +0100, Gary Guo wrote:
+> On Sun Sep 6, 2026 at 10:56 AM BST, Miguel Ojeda wrote:
+> > On Sun, Sep 6, 2026 at 10:46 AM Kohei Ito <koheiito.dev@gmail.com> wrote:
+> >>
+> >> Add the top-level GPIO module with minimal common definitions. This
+> >> module is the basis for future Rust GPIO extensions.
+> >
+> > Thanks & welcome!
+> >
+> > I see you Cc'd linux-gpio, which is good, but the GPIO maintainers
+> > should be Cc'd too, since they are the ones that will be deciding on
+> > this -- doing it for you in this one so that they are in the loop.
 
-	impl<T: KnownSize + AsBytes + ?Sized> debugfs::BinaryWriter for Coherent<'=
-_, T>
+Thank you for adding the GPIO maintainers. I'll make sure to Cc them in
+future revisions.
 
-from the DMA code and I think it also breaks binder and tyr.
+> > By the way, it is nice to see GPIO again :) Now that some years have
+> > passed, how does it compare to
+> >
+> >   https://lwn.net/Articles/863459/
+> >
+> > ?
+> 
+> This is possibily also a show case for all our I/O projection and register macro
+> work :)
+
+Thank you for the pointer. I was not aware of the past GPIO abstractions
+[1].
+
+As I understand it, the past GPIO work focused on the GPIO driver APIs
+(`include/linux/gpio/driver.h`), i.e., for the drivers that provide GPIO
+functionality, mostly present in `drivers/gpio`.
+
+On the other hand, this series implements GPIO consumer APIs
+(`include/linux/gpio/consumer.h`), i.e., for the drivers that use GPIOs,
+such as `drivers/leds/leds-gpio.c` and `drivers/reset/reset-gpio.c`.
+
+I assume that the GPIO driver abstractions will be implemented later in
+`rust/kernel/gpio/driver.rs`.
+
+[1] https://github.com/Rust-for-Linux/linux/blob/rust/rust/kernel/gpio.rs
+    (Current hash: 18b7491480025420896e0c8b73c98475c3806c6f)
+
+Best regards,
+Kohei Ito
