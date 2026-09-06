@@ -1,148 +1,190 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D904E156661
-	for <rust-for-linux@vger.kernel.org>; Sun,  6 Sep 2026 16:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788713823; cv=pass; b=B8PPwRKYWS6Jl1/l/vQwQofxVgExHOnzU+y/1Ddeuc4bvsPGN/O0hO2azP1/ysJnP+GiJGObDaonQ6ukoP286OpiQ+UFDxV2Q33/Svyb0A/IOOWGcfhNpuBE/NPrQX6kc6mkDTZoRtTep477dwaj9ZPFrr20q9EiNqfngUOBaOY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788713823; c=relaxed/simple;
-	bh=jLbNWAYKOjUjCxKPAnKQtbCBXntzd3CfPr6hFf0UbZI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Jpc0LCwIZDKd3XbsZESIYyhtYWCyiJTkw/d7h2RUr/9Bm0M/NUIBKu8AbnVmVIjHuNSkwE6KjSJV0HY/Vx29GMo141/qs5ce+Q2ZurVVNS5TRSCZJNja7WW4BSTJVFtD/HOWjNd84sNNbkYeTC4Yk7QTz3/BLCfPB3FybvwSSOY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UjHPtZQt; arc=pass smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018DB37A846
+	for <rust-for-linux@vger.kernel.org>; Sun,  6 Sep 2026 17:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788716217; cv=none; b=g+TazfffJjieAt32kBR60TvilcYpE/YyFwrWyQZ0OT16I4m9gUcTGwgrXMtN4+S5Y2r9NdbwSLY3U+41V0hcYKykR//8EBWhDHKCWfDades4YBZi74BCYEZADx44obty1YzkVHUe57A3blAVMbYO5bJLmvHIGrqg2vLQLe+YiC8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788716217; c=relaxed/simple;
+	bh=fYQ56hs4JZbOPzI9GDapvEN/e9D4SZhXgTO/mzH3DAU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=W/AdnjI2f5LsaVRfRMCGojCGDUDFoWWa/OTikT3KHIbjhcl2+JUGLWRemgdFE8KYJJ+Je2h4ftGSHiwYx9AprdfiXDRN66AxD9bbrTGmmSDj1L93cZs8z9TL3obcwqOXp1q68e8jTezLEvars48TM63/bo8WtRxtZjAsaB96jhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=BUESNfXR; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UjHPtZQt"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39666e7c9efso175591a91.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 06 Sep 2026 09:57:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788713821; cv=none;
-        d=google.com; s=arc-20260327;
-        b=M7Fc7sCfvmacgPcF0rTOCjAaufD76MjBG77ejlU0NpgHbsy5gZ50GqDtRiCeqgozGY
-         N2jm/rq8OIwRRIOkhE9Ji0bvOPXZqFMuUQss3x5M47oD/DuIVxx8sxYUhg8PWCM52oWN
-         3jsuysIY3wWVbyHe/w/GiDFBH6Y1xWRdLRi5rq5coJZltRyOSxsjcjopLrPze7mGHa9g
-         zgZghjut+Xx6qxGkQaCXbp43L2SYhUkxjGGiriJSKEwdqTeysaq4sYb/D0lv8s9CAY7J
-         c6Ac95JEKXdvpeYapm4tFIEq7tnZU8GPpRNKRNZk+kMYLgpRsxxaicPOY32HUv1tItZT
-         Up3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jLbNWAYKOjUjCxKPAnKQtbCBXntzd3CfPr6hFf0UbZI=;
-        fh=9wNjybLrbcqvIQKDgnVydyk40cvq6qjugeKlVB3yQ7Y=;
-        b=a6bZvM1crYhSU3c2de0DODkaaWADJzBVLaxU52uAXZA0SX6Xe6iD31Y4VCYt6OhFjg
-         giIjH5Th4bFvxT0QtfjTARkCse1vsFTB67EZ/hOLSooG9alhuNEA5kMlHOiFm8oWbBMG
-         DcLmvXy1nyAMwvvSp2V9A7udimVO+EBU02ZmsY1DiVxQZT8V+ze1BTShCpvx3EjEjopU
-         mXHis3K8zrRb2mPty7bFCPJUqH4B6fA4D1TjlEbqTLYJxQRggvJZheU4iE+XNNyydqao
-         2l4NR4V5Bb0JWMR7BKy81Y/kDuprcecVCrurxGwC67gjp2cYkSfvtC2A8u631fptzV1W
-         +tgQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788713821; x=1789318621; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jLbNWAYKOjUjCxKPAnKQtbCBXntzd3CfPr6hFf0UbZI=;
-        b=UjHPtZQtZlfn+jMBdsesbKV9hhN0VxB45TUW8NF6jsIj/u6sMjuVZl/S6vNiEMAdHB
-         Te+UXjaLTopyZrVKblQ6F2RdO17BiDzp8YSjJWd1LjGv8/lpVMX/mJq6tjMcQBGE+lh3
-         gkbl212FSvMq4hzn08kjNsXAWfz8CFVxj8DwBvGDcA2V9pboEq4SigdRgrpS5P3lbPAR
-         WaeQlpczdSbYO4EXZkRcm/d2DFhfIccQOCyUcacVGnAtc0aqHvm4nD/lvAQStGw+ys2S
-         nEMr3QPCYz3NCaB4lrh+lVRBv1NLXl63CMfDijyK5BqBSV6Pp1fy8GFAFtzsiR1Bm/Qi
-         cjSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788713821; x=1789318621;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jLbNWAYKOjUjCxKPAnKQtbCBXntzd3CfPr6hFf0UbZI=;
-        b=gv3ToVqGTUgpy0KSZBsvVvXX2uir6NVB2jYfSP/LJ90Z8fF7gEIJGfmShOn+em8wDt
-         COKMVmthwLROqLGI2HCQUeITRS8jUx5eh3mmtHmuWUmBqUXoxjE/+CZPMBpfpugs1PBy
-         s24Py1dD07y7JQO3YymTsONN5zt25+LvYim/+5zmffRGuv6yqqGNMmFPn5/unVaiwTOd
-         t5d0HsNUU8YOhqzd2m5aIRzGwUZ9/jnYcwrQoqTeXKxoM7rL5AsYyzp6mX8ZC+uFvegR
-         gCKbZHmTN2Wi3QZNaoyOSEKR0U+AfVp58axj8/T5VXJCedapFpQ3gzlU93bk8xFRPfnd
-         DBBQ==
-X-Forwarded-Encrypted: i=1; AKwUvByy1zyQUiiA3amQ4zLuzd1333qg/xd5NGrcoFstQfMLAo8hupYEXw0Bc5o18yfLx4KBQ3jLvVELE90DTUa6qA==@vger.kernel.org
-X-Gm-Message-State: AFuF++mH0JVxClGvSvuQJan9A8LBt9dycRl+TFzfcnOsBgwKQGBftSRL
-	G4s9OKWIypYIjZ+IM7NKC1rzvED/LDSo56i7pen67ANzfv8eCXLmN3zjzjLf8rsjQuU0AbOVxCp
-	0Ed7vaGsm2DqibFa0w82C81BYsSvlqHk=
-X-Gm-Gg: AYBFou3TjnqvrllI+Hqm5kHqgyypb4z2sY7od3nfW/CeyBUUi51d5l4piH9QNKaTRRW
-	0ZyFzwGXpkew5EG4iJ9xRu7/vOmMJIONDXalwWZdG1Kpz9ewCR4wF16gXT4vzHIiJA3V61TdXxw
-	NHtSZoJZUur5IYHz19IehNtUD0O7NIg8FR6D+r2HDW5bkwqgmS4LxYnPlkYQjkUo6NnXyrQrIeT
-	+AsxRYiF1WJ2lNJI73FI2JVgLUelZjJilmYoxdmtEN93G213PCqyN9UUSv+Yt2KY25mZObIWPsL
-	ayxl2Fn5NHaWZuUQwfSkyKvSS4nPFLzrhQwhtP2OMSMQhhHYefgakCKz+OSEB1DT1Qe/iDKG3ZS
-	auM0nwwLgb0Yb7Tc3Hqh43il+K0cGLthd5RpByKB6haNF0OFLOFccxEHl6yT/N8Uj4AjQVXfY
-X-Received: by 2002:a17:90b:384d:b0:398:bac0:238e with SMTP id
- 98e67ed59e1d1-39b3d8377camr12050791a91.6.1788713821151; Sun, 06 Sep 2026
- 09:57:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="BUESNfXR"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 1D509240105
+	for <rust-for-linux@vger.kernel.org>; Sun,  6 Sep 2026 19:36:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
+	s=1984.8680eb; t=1788716211;
+	bh=DOeFnrNegKPZyHyOuDBcouHZPqHJUHfv+oiAMmLgHoY=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=BUESNfXR+UKLw1tFQelyLqKXqpf3Krmb1Hui7V+kwm4SrEL1hOahhW/7pY3mjql0Y
+	 kD9QnAyN7ihfAzGIj4bCKihGjpGLXpWl+CR9DqCUI7dBk2w4vMLTX+O7g+XGLcuduj
+	 c7busNO5Of5ZuVrXmuI6grrfnYiFfhfW7xZdqmrxPLAG9d5pOcCiq/DmstzbLQNnZN
+	 ZYYpoTqphUmBQNgThwpoQSTo0W/IpjMRbh8x8WMMTBzelTZHxf85T3o/5K0igBSBky
+	 uw6zbmKnciuMBjufgjSpl+1XO9/uQk5UqLav/NmAV5YUz0A5+KOGoE5wbTRdDm79R1
+	 YmbO4zvEvBHTg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4hdHSb1mS9z9rxN;
+	Sun,  6 Sep 2026 19:36:47 +0200 (CEST)
+Message-ID: <af5938831d18728e484753a787400a404eb81e55.camel@posteo.de>
+Subject: Re: [PATCH 5/5] rust: serdev: Pause receive callback before calling
+ unbind
+From: Markus Probst <markus.probst@posteo.de>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Ayush Singh <ayush@beagleboard.org>, Johan Hovold <johan@kernel.org>, 
+ Alex Elder <elder@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Miguel Ojeda	 <ojeda@kernel.org>, Boqun Feng
+ <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,  =?ISO-8859-1?Q?Bj=F6rn?=
+ Roy Baron	 <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=	
+ <work@onurozkan.dev>, Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel	
+ <ardb@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka	
+ <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Uladzislau
+ Rezki	 <urezki@gmail.com>, Jiri Slaby <jirislaby@kernel.org>, "Rafael J.
+ Wysocki"	 <rafael@kernel.org>, greybus-dev@lists.linaro.org,
+ linux-serial@vger.kernel.org, 	rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	driver-core@lists.linux.dev
+Date: Sun, 06 Sep 2026 17:36:49 +0000
+In-Reply-To: <DL8DCNMSENDS.3T14U5W1Y32IX@kernel.org>
+References: 
+	<20260906-rust_serdev_probe_refactor-v1-0-69cdae0074ec@posteo.de>
+	 <20260906-rust_serdev_probe_refactor-v1-5-69cdae0074ec@posteo.de>
+	 <DL8DCNMSENDS.3T14U5W1Y32IX@kernel.org>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-rnTpNxyRN/xwpGJ+AFb3"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260904-b4-arm64-callops-kcfi-v1-0-ce6687739b0c@linux.dev> <20260904-b4-arm64-callops-kcfi-v1-8-ce6687739b0c@linux.dev>
-In-Reply-To: <20260904-b4-arm64-callops-kcfi-v1-8-ce6687739b0c@linux.dev>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 6 Sep 2026 18:56:47 +0200
-X-Gm-Features: AcwNN1Vz7OHfpHx7W0dFC3jg8glvxcm1hmRiClFLpwy0F6DpBbL1JHHuwRxDDvo
-Message-ID: <CANiq72=xOrSXBBdmrKYfX1=qgF37LRAMzMJd4GJkXaYHMVe9yQ@mail.gmail.com>
-Subject: Re: [PATCH RFC 8/8] arm64: ftrace: Allow CALL_OPS on kCFI kernels
- built with Rust
-To: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Puranjay Mohan <puranjay@kernel.org>, 
-	Xu Kuohai <xukuohai@huaweicloud.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
-	Leon Hwang <leon.hwang@linux.dev>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, live-patching@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, 
-	linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Ben Cressey <ben@cressey.dev>, "Florent Revest (Anthropic)" <florent.revest@linux.dev>
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+
+
+--=-rnTpNxyRN/xwpGJ+AFb3
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 4, 2026 at 3:20=E2=80=AFAM Jose Fernandez (Anthropic)
-<jose.fernandez@linux.dev> wrote:
->
-> +# bindgen generates no code, and its libclang may predate the section
-> +# argument of -fpatchable-function-entry that a kCFI kernel with CALL_OP=
-S
-> +# passes on arm64.
-> +bindgen_c_flags =3D $(filter-out -fpatchable-function-entry=3D%,$(c_flag=
-s))
+On Sun, 2026-09-06 at 18:20 +0200, Danilo Krummrich wrote:
+> On Sun Sep 6, 2026 at 5:55 PM CEST, Markus Probst wrote:
+> > @@ -200,10 +203,14 @@ extern "C" fn receive_buf_callback(
+> >          // INVARIANT: `sdev` is valid for the duration of `receive_buf=
+_callback()`.
+> >          let sdev =3D unsafe { &*sdev.cast::<Device<device::BoundIntern=
+al>>() };
+> > =20
+> > -        // SAFETY: `receive_buf_callback` is only ever called after a =
+successful call to
+> > -        // `probe_callback`, hence it's guaranteed that `Device::set_d=
+rvdata()` has been called
+> > -        // and stored a `Pin<KBox<PrivateData<'_, T>>>`.
+> > -        let private_data =3D unsafe { sdev.as_ref().drvdata_borrow::<P=
+rivateData<'_, T>>() };
+> > +        // SAFETY:
+> > +        // - `receive_buf_callback` is only ever called after a succes=
+sful call to `probe_callback`,
+> > +        //   hence it's guaranteed that `Device::set_drvdata()` has be=
+en called and stored a
+> > +        //   `Pin<KBox<PrivateData<'_, T>>>`.
+> > +        // - `unbind_callback` calls `serdev_device_pause_rx` before a=
+ccessing the driver data,
+> > +        //   which guarantees that this function will not overlap with=
+ it. Thus we have exclusive
+> > +        //   access.
+> > +        let private_data =3D unsafe { sdev.as_ref().drvdata_borrow_mut=
+::<PrivateData<'_, T>>() };
+>=20
+> This would break the driver core's lifetime design. Any kind of registrat=
+ion
+> (such as class device, auxiliary, IRQ, etc.) may borrow fields from the b=
+us
+> device private data. The whole design is based on the guarantee that we n=
+ever
+> construct a mutable reference of the bus device private data.
+Thanks for the info.
 
-In general, one should be using the same version (we warn otherwise
-early in the build), but yeah, it is just a warning for now and it is
-nice to try to remain a bit flexible.
+That explains why unbind doesn't provide a mutable reference on
+platform drivers either.
 
-Now, if we are going to filter this out for Clang, should we just
-filter it out for GCC too? i.e. outside the `ifdef`?
+I will drop the 2 patches in the next revision.
 
-By the way, "generates no code" sounds a bit strange, since `bindgen`
-generates source code...
+Thanks
+- Markus Probst
 
-Thanks!
+--=-rnTpNxyRN/xwpGJ+AFb3
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-Cheers,
-Miguel
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmqdpKkbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPS0FMP+wetPILltgePj1usw34G
+G1LpNzCmHz5Zf9lWEu7r/zcmkY97jmpnWr8KzoZARisOm+eiJxkAi9FUkQe6s5B5
+fnBQNDLyrLsqRj0a3z3pXhDzyKTXIaoMgSQ2m2f7yYpHS0yRfxWJGjdRd1PBNWyq
+gwy1XrPXJDoRWtG9unaBoF83qGdm9AfCJxGv3gRzVTdB7Dqu0EIKLyBkuRwYh6gK
+6kmA5/ZCLSnLTFCP10fCb/FBRy2kcvNM7QZZlXpyilOUpIO1IOMyTWibPWumF/pg
+l31COrAHGxD2xZCM+z8b1ROwhgsz4UsVMHi8JYxS9/kHVDKq/L+rJn5oGte+X9CL
+F7kBU2UB9AcOFW/+GdHzw4UfRnd+18cqWTUvEISbkbhKLgzik5ie4RZN/KgQIIGy
+ousGkCFf0TT5N7HQf6R2/dvUernOBcMCBykpPo6udngT7ez7fmwA1lrm4Gh3BIQH
+nRaxJ4b47/Z4ymjYy32LstfJqJYFX2vLsHVZUzqWz4RV372FUipSIL+/cTsc9hRU
+n1sRWZnNrQ+psZVJTBj00b0R9dMSJEXa4s7fe9LMlFloUAeEN73yeC45U4J7b7LB
+wViW2m9sJrYFArAQw0tQLLCSPAkJq5fQi5aYMFSifh1xS3PFYMMMP+QNghkhLSZw
+15QMwoNXu0oqGSmxCo0mvrj0
+=iM0o
+-----END PGP SIGNATURE-----
+
+--=-rnTpNxyRN/xwpGJ+AFb3--
