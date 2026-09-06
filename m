@@ -1,146 +1,165 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B154378D7B
-	for <rust-for-linux@vger.kernel.org>; Sun,  6 Sep 2026 15:53:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE84378822
+	for <rust-for-linux@vger.kernel.org>; Sun,  6 Sep 2026 15:55:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788710027; cv=none; b=Fc8i3BU0m5NXXTaoMrjLKJ5Q9LuXTpZuS5ZCay4kYaReAGSFikqrflAmsD3iBtM0KMjZ/1dzDUlcJWqJEtVZyBT5xFojpCiK6cVjvcKrUQkxBr8mbXhwRfpBjG/kN7etBEmhWqtt3qrIzK9yHG2yWuk4u2Zy68inkIpZVkXtsAA=
+	t=1788710138; cv=none; b=bns4JpwdLkAKkRmmQ7X+YTwN47iP7T2CKMGAMxT7eg9H/l0jznNeqOv336eUd+gajnq+SLaLyAYLRBakcetSrFJ8l0tqRN+8m30dEF2RCYC+LfDmMov9Tt+2n71eg2Wvy28Bf1vPeOcaPHGjIT3EXzAEqrdWNaPryF8YQmsg2hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788710027; c=relaxed/simple;
-	bh=iXeuXZinLwPRHtHoRD2Ox32yQacS6fb88foD+iwKC5I=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BfY8cyfOP/oBs0swGtdW0RGnULszRiJhN3elUzgAdsOHguYw76+NkGBh6SemvLSNkJvVZXbdbRZIFjZl5yTSqtgqL1ibWlHXiAgXEvNsQfaV4mz40jqw/N731MHUGLdkF+19ZS2wI1nXn5vBzsawIW49111tcpsgipXKRxHTo84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I0k1WdWs; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788710138; c=relaxed/simple;
+	bh=IUT9wQKJhYMYNpvwzp523KgdDxKg/ILAJMoXUNXABsg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=m1kXf2wDuC46zkMeAOZh8H2KYnKV4AvsBhu1V5vkHquR1z8ryRpDFgpUISyvvQwiMb4laZa0/ttaLYq5MhDZ3t8gRoxz3bVIvCXD33IB2Z8QVomJ5ff8ZsjTCj3KxZunTi3i2L+v65M7IAM+vm5ekg3FyObKtYlnJWMnjkE2u/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=k6hQj54U; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I0k1WdWs"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-ca80d708489so1951908a12.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 06 Sep 2026 08:53:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788710024; x=1789314824; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:subject:cc:to:from:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YZKG0N4Qd9s3jT0vFHcSeVc0433ACE4MO/8edec8Z6I=;
-        b=I0k1WdWsx9WNfUFzK3BCcm/BNEFTWwsSSN1wsCkjh/W3e03sW3FrKRgga6+nkV5OIa
-         GEqvcSuepfem0vtcK9eRFpdHfs0fsmMrFwXcXObxNZ0W/5MTQfFnnzXgCch1vdFT355o
-         AKlgGOiBw7NXbkXRQhWgRlnS73Soey6eW/4SWZOlLv/qlWWc4yF5Zc0UfmVCgbtRfA7p
-         Rab3z+XWQZPxKy0j9hBclzk5skPzkXj9IYYjj+lQUrExtfpo0tRP+TGkOLjAtcwVM+gS
-         0vg5gESMA1idbisUWf9LZEANhJ3vno7R5txyykz0JKQOhgbsYpBSQcA8B5+Q9QZbZR9W
-         4V+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788710024; x=1789314824;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:subject:cc:to:from:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YZKG0N4Qd9s3jT0vFHcSeVc0433ACE4MO/8edec8Z6I=;
-        b=Eq3aLbhmcJrb0WfBuAqxHwjIhn51fwACTVtR2R3ROdVPdQapdGzZGFi+D37Kn3RD89
-         yVzctTK8wyDRPtE3MuU8GgYDE5WVm92gQ48nl4QDtsrd4MViZht51Ktueko78ECVA/e1
-         7F7kQ1+IRV3lhFLmPAwId/RBigXzF+fgtSlYoPL+lZznWXD9Awzo2+LP46Qfs+gQQVlo
-         QxbY6jl5P+z1xvJ8z96mNPYyXTRAhy/r6HIQQyYtRskPANetuzTRB1xuedcmFRGoofOr
-         gEpt1oH2Ea4h9aoGOjEwXWK79Hl6MmRKc8F75Isu1Ybca1UBNTjpmMshrJLGVg27FR4j
-         adIA==
-X-Forwarded-Encrypted: i=1; AKwUvBwnBKQIDZEglp3S6phqnokfcYU8q8mojr9Iho+XtPbVXxkAmrlAC3oXbALn4aDS6kZO45e7jOiZXa4Y4AjDUA==@vger.kernel.org
-X-Gm-Message-State: AFuF++mFsGTQt5xDVqMuBDt4TxguZzwFSs5LjYXTyiin667uURTSqT7e
-	CXPIWauRJtMuUIWf5E6UrQdyImBpFeY5ko3NXbOSTb3LZBcH/eZ15vkV
-X-Gm-Gg: AYBFou1ZOjx8kIFWgb4MQsOZVcxxnaToDpbatqKPtVUHCYte5/q5yFLDlVr5Ch4hJcH
-	CH6OdxgJ0r3e9gLN2ge4PiLYcVZhqKz9qxyD41QTo12EYPR5g8fScPkcc1ObJUnZEIRx3SmbPpo
-	HGXuMRmgg6W+TTVBGQslBUMXeFutOmoQgiOUEolJOSHN4HX4Mwl3k3neytr3ONTGwvAbfHC2F1C
-	Jn7GcNj5Lf3sY97vCk5pJGveLB4DsdmYMaDhiLDHMkubaBbFmVsCkY8EbXpoQTbontUkvxVnq/m
-	StDESdyaMVXycfYbIT6lMKqEtTQKC7KEDd5uojXL4ROqgedWcV14A9WVLxoIUl9BH1EUSkwuyr1
-	Loy7zjrdVTmwAJ+S+LMJY89GupCXP1FaPu/BqTea75ezPUpcTcPnfxB6oGNGhvpc6jV91Ntjd0p
-	OiewVawTVhLOhI2rDE39L8SPLn/j5o9kQtwjjyyXejODv25JLO9zimzN87rLlHShFAgpOsSL74x
-	SHWic2nYsnYDdMgw5g=
-X-Received: by 2002:a17:90b:2ccd:b0:398:baa7:4c2f with SMTP id 98e67ed59e1d1-39b27c442f8mr14641110a91.5.1788710024292;
-        Sun, 06 Sep 2026 08:53:44 -0700 (PDT)
-Received: from localhost (madb688426.ap.nuro.jp. [219.104.132.38])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08c3a526sm21561901a91.10.2026.09.06.08.53.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Sep 2026 08:53:43 -0700 (PDT)
-Message-ID: <6a9d8c87.7436a696.197962.124d@mx.google.com>
-X-Google-Original-Message-ID: <20260906155336.vppadsy6zpw3mlfa@DESKTOP-1P5QNTF.>
-Date: Mon, 7 Sep 2026 00:53:36 +0900
-From: Kohei Ito <koheiito.dev@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-gpio@vger.kernel.org
-Subject: Re: [PATCH 1/3] rust: gpio: add GPIO module with common definitions
-References: <20260906-add-rust-gpio-consumer-v1-0-24d192f93760@gmail.com>
- <20260906-add-rust-gpio-consumer-v1-1-24d192f93760@gmail.com>
- <CANiq72m6YZhqzE7GWEakmsZ35QN5UF_HTcVBavKxbq8cV7yk6A@mail.gmail.com>
- <DL89AIIO0EQF.3U7UGK7JIRZ72@garyguo.net>
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="k6hQj54U"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id DDC90240106
+	for <rust-for-linux@vger.kernel.org>; Sun,  6 Sep 2026 17:55:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
+	s=1984.8680eb; t=1788710128;
+	bh=jwpkQyFqnars/Ss4HKKXX19eAFdRFeFAU5evcC6HTRE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:To:Cc:Autocrypt:OpenPGP:From;
+	b=k6hQj54Uf7TKfLuZu1KE1gJYHZCSNjvCVS0pDi4Yf/WOHfm9D6gdOiL1+OV4XAPNP
+	 unQgNy5K30u7xHOhGyVVYHmu8cqKstsOnF+7Ub2buq7OXjLQDlAw/3yo31MM5qlhTV
+	 xUP+scp4aQjI/YE1fGVBd3wFDDJ5SbT38diQCNAEyUpSTA2Q2ZDg6C6sbH/dXSc3kY
+	 VpVYwY3aUbnzFyF7MXe+y79QPXoJPu9lkircVfa2Vz43TnosNEEeRqAtfuD+BHGAvg
+	 NmFpMIQb+9itOyvmGGXhsmhy9KC6LhhTn6HyXRvVHWywg5oAQV7WV7QFZbCeYtkdy2
+	 ek1yMzp87zK8Q==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4hdFCb1PyYz6tsg;
+	Sun,  6 Sep 2026 17:55:23 +0200 (CEST)
+From: Markus Probst <markus.probst@posteo.de>
+Subject: [PATCH 0/5] rust: serdev: Refactor
+Date: Sun, 06 Sep 2026 15:55:25 +0000
+Message-Id: <20260906-rust_serdev_probe_refactor-v1-0-69cdae0074ec@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DL89AIIO0EQF.3U7UGK7JIRZ72@garyguo.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2NUQ6DIBBEr0L2uzSIWFOv0hgCuG1pouiCpInx7
+ qW1ny8z82aDiOQxQsc2IMw++jAVqE4M3NNMD+R+KAxSyIu4iobTGpMuowGznilY1IR341IgLlB
+ aoVTdKNNCEcwl8e+f/NYfHFf7Qpe+xn+DcFnLazpqYE1E7sI4+tSx3J5rTq6Cft8/wRXhYaoAA
+ AA=
+X-Change-ID: 20260905-rust_serdev_probe_refactor-0e2b044354a7
+To: Ayush Singh <ayush@beagleboard.org>, Johan Hovold <johan@kernel.org>, 
+ Alex Elder <elder@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, 
+ Jiri Slaby <jirislaby@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: greybus-dev@lists.linaro.org, linux-serial@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ driver-core@lists.linux.dev, Markus Probst <markus.probst@posteo.de>, 
+ Sashiko Bot <sashiko-bot@kernel.org>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1376;
+ i=markus.probst@posteo.de; h=from:subject:message-id;
+ bh=IUT9wQKJhYMYNpvwzp523KgdDxKg/ILAJMoXUNXABsg=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqnYzpM1kWcej/BXrRcE0gPTEJK6GoWxaNk0+O8
+ lFpr00wIqSJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCap2M6RsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9KQfQ//QwfYYqEIif7p6eWR56NPMqWqqCOFwqV
+ ufBUpN4JAkpIsBkP9ux37sRPtHcUxm8vXfDxwMKJezn0o0Uc5PCWE1CkO8OoFTnO2mPMeoVxgxu
+ xGu7Qt+h9hBk5jwMcsLvI9rcQJ46U4nZ6o1sQL+9BZmRqLJA6pWLrP8lHVza+TwqGpbVY3XRSrX
+ 6t3ZvrYcNL6UUwmfa8Mcs7E7MG1MJ0HqaykPbUcpRAwK0UcfYDL5wBZNpqWvgDCDgXMitGke6gm
+ cPfGOgeFC/B83PRTx+eGI4pvTKQn0jeoeKKCO3OL9ZEFa4f+wFqp0+aCup1akDcGfqjSqxbIApt
+ ueNLOxcpjeRnX7VcsoewlPMFJgls2GDTOABKkKTPGYiyQemQJ5yDIdtykNZZDuAZl2vtYS6EGoq
+ 4F10NdQH0A/3E2lKeUgyn4TQnNqTBNTjbFn07Fu52aprzKZfI4KlrHGmjzWrbYcVAY5xC3T/tov
+ lvr4h/lMEwGQsC4nRRzxJYwfoe9zee3QZ3M7A2sD7/5XQAVdfRCEztSVfaFuk87rNTqXsRB2jzg
+ AFVmKZeN1WC6j35kpnqrPsaz9cArKS+KJRZbsz7ug2RA4sdYryi/3sQfEyAqWCjCWzsNvl+1T5H
+ x2/qET3mKDGpu2/chhxA9sTpS27og9XGl7NpINo0jLYLweKi7r7A=
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
+ fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=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
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-Hi, Miguel and Gary,
+The following has been changed:
+- introduce a new C serdev API to fix race conditions and simplify rust
+  code. Should also be useful on the C side.
+- fix race conditions
+- simplify rust code
+- add rust function to provide mutable references to driver's private
+  data
+- provide mutable references in callbacks to avoid the need for a
+  SpinLock in the greybus patch series [1]
 
-On Sun, Sep 06, 2026 at 02:09:30PM +0100, Gary Guo wrote:
-> On Sun Sep 6, 2026 at 10:56 AM BST, Miguel Ojeda wrote:
-> > On Sun, Sep 6, 2026 at 10:46 AM Kohei Ito <koheiito.dev@gmail.com> wrote:
-> >>
-> >> Add the top-level GPIO module with minimal common definitions. This
-> >> module is the basis for future Rust GPIO extensions.
-> >
-> > Thanks & welcome!
-> >
-> > I see you Cc'd linux-gpio, which is good, but the GPIO maintainers
-> > should be Cc'd too, since they are the ones that will be deciding on
-> > this -- doing it for you in this one so that they are in the loop.
+[1]
+https://lore.kernel.org/rust-for-linux/20260827-gb-uart-transport-v2-7-a03bb1f5fbd1@beagleboard.org/
 
-Thank you for adding the GPIO maintainers. I'll make sure to Cc them in
-future revisions.
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
+---
+Markus Probst (5):
+      tty: serdev: Export functions to pause receive_buf callback calls
+      rust: serdev: Replace `active` mutex with receive pause
+      rust: serdev: Simplify callbacks
+      rust: Add `Device::drvdata_borrow_mut`
+      rust: serdev: Pause receive callback before calling unbind
 
-> > By the way, it is nice to see GPIO again :) Now that some years have
-> > passed, how does it compare to
-> >
-> >   https://lwn.net/Articles/863459/
-> >
-> > ?
-> 
-> This is possibily also a show case for all our I/O projection and register macro
-> work :)
+ drivers/tty/serdev/core.c           |  50 +++++++++-
+ drivers/tty/serdev/serdev-ttyport.c |  32 ++++++
+ include/linux/serdev.h              |   6 ++
+ rust/kernel/device.rs               |  24 +++++
+ rust/kernel/serdev.rs               | 189 +++++++++++++-----------------------
+ samples/rust/rust_driver_serdev.rs  |   2 +-
+ 6 files changed, 180 insertions(+), 123 deletions(-)
+---
+base-commit: e5e04726cdd043e309677071ab1b65a4b18f422b
+change-id: 20260905-rust_serdev_probe_refactor-0e2b044354a7
 
-Thank you for the pointer. I was not aware of the past GPIO abstractions
-[1].
-
-As I understand it, the past GPIO work focused on the GPIO driver APIs
-(`include/linux/gpio/driver.h`), i.e., for the drivers that provide GPIO
-functionality, mostly present in `drivers/gpio`.
-
-On the other hand, this series implements GPIO consumer APIs
-(`include/linux/gpio/consumer.h`), i.e., for the drivers that use GPIOs,
-such as `drivers/leds/leds-gpio.c` and `drivers/reset/reset-gpio.c`.
-
-I assume that the GPIO driver abstractions will be implemented later in
-`rust/kernel/gpio/driver.rs`.
-
-[1] https://github.com/Rust-for-Linux/linux/blob/rust/rust/kernel/gpio.rs
-    (Current hash: 18b7491480025420896e0c8b73c98475c3806c6f)
-
-Best regards,
-Kohei Ito
