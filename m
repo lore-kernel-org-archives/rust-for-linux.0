@@ -1,43 +1,43 @@
-Received: from mail-43101.protonmail.ch (mail-43101.protonmail.ch [185.70.43.101])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34393DDB07
-	for <rust-for-linux@vger.kernel.org>; Sun,  6 Sep 2026 07:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5E0377ABC;
+	Sun,  6 Sep 2026 07:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788679041; cv=none; b=TYS+OOq77lUrpHKiDqk/TPBk9DJDhaoh0zDqDXWrQ7g2H8Mqi8s76Z3v98Dh/rnOSKj6S7LeAQjRvCl4LjeiV5gLF2YN8ssgst++t3CAf5jXKzRwxGrU1qj1QMsiIah4FFx8ZNd0JJkAalHdPJEbIrP8KpWLQ2i5XQYAxJiYLPw=
+	t=1788679047; cv=none; b=khFj8kJgWGlFujm7f+tC7gAG1+EbA+bF2woTeLKCdUiybLhvBaZcsf9zICUYB5rLHMVnyixQXUpnhM5uyXR8uBxGgAcA8fsUZlDy6YK1W/4b+vAOQsCIS+g/Ic8rHVunwS0pDOHurbC6zlGAhkmFXpcxg3BR/zgRJH32rOIx+0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788679041; c=relaxed/simple;
-	bh=1Ri6jWwNAKWKJpRPAfcZVQJ0GPmWeJJo7bFkWZHv8sw=;
+	s=arc-20240116; t=1788679047; c=relaxed/simple;
+	bh=rRCH8gt/5mOkrlJvq466GnwekETqDZn0YclcWLINKjM=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UbEXVblXsAdph8qR00I0bIBsBUVhx2RvqgVNsiJdr9T3277OxI4YhSSkt0D3iL3ysVVC53B+TpOOnnYqrghzZB8mEU72sJrEeMGsufrcIWL+KRYqUsla7QkiR9pStDrfjsAEQl7ohmo9hFdvkpZw1fXQie6TAUwlY6STwiSpOXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Y6YBnGSs; arc=none smtp.client-ip=185.70.43.101
+	 MIME-Version:Content-Type; b=eqVnByH3tuD25/Akw3fvgpr4yuTzQWgnlRC4q56PSxS8frB1wLG15QpGDik8hPddFUU8/Qlvb8xmD3KBeLqNbmoKzwSojzcu08wAGHbsNaaNy9FAnmF/1bZHgzhlFyjlbCFIf0aPnYxHsALWkM0l6QSJ0Xjm3JsE07SZeYHF178=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=MvPxCNF1; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Y6YBnGSs"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="MvPxCNF1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1788679027; x=1788938227;
-	bh=/Y/AqUbNVZkajcwTPWzScwSYtBpnkVaFtxCp5vUyZqE=;
+	s=protonmail; t=1788679034; x=1788938234;
+	bh=QcZeDQsDI8IiVvV9Mls8GpNfSv4icCfhUiY5ki37lz8=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=Y6YBnGSszgnzggGcxruBxFRZbaU7ixlet0MKmZWhz1WIvXMeRQt84Z6y7swCjKVog
-	 2l/uhk4u9k7KbPt9rPz0PHyuSzbyJyv9OOyslyVXPGA0yY+V3paoKtHjoPI8IJQA1I
-	 6Auxa73h0zJ36a2oXPVKqOxC6jzxoJXa8xJ/Aw6gtmY+iQQ5RzWIyDs1U0p9WMJCTT
-	 pYmpD7xrtCz7zQsSpZTr4IApfuE4H/ZlFQ8OJgDLD+DJozclODl/6sGsvC+p2az9jK
-	 KDxJ45F/b9SU7XmhKQvTIDA+vNQJ11uGMUp+6WtlHZojtDmdP8/nH9Gw6T64uhMM2j
-	 4P1wE7zTz+e3A==
-Date: Sun, 06 Sep 2026 07:17:01 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	b=MvPxCNF1KkN0B4KlO+2tydyitMpD6nmu0S+meh+QVG/Jqi0l+n60HQPi5iXMufUDy
+	 t5W2oognASgqzodwaQNhKK1XZjXQ+NDgltuPB/Agl1BdEjJIGlbZJlreBIIUaizJJH
+	 il+44fAsfNLWDHZ9r6bPkNjHgMs7DyVU6ZDx1/8bHMlPmdHLujvoe0OVXG/YDr2d3O
+	 mjjZFsgd1cbfZDTzd+BVECiyGOtsRa/Dlii/8mfHgCKKD048lWjMrJ3Y0lRBpI0dBm
+	 vChuZ45xGiSUDxXE4pMDXsBAwJPAGq9ioGwGmSsOmGFzk6L7FDx99TTBPpigGJOI5n
+	 6RqGOt2+hi7gA==
+Date: Sun, 06 Sep 2026 07:17:09 +0000
+To: Danilo Krummrich <dakr@kernel.org>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 From: Sagar Taunk <sagartaunk@proton.me>
 Cc: Sagar Taunk <sagartaunk@proton.me>
-Subject: [PATCH 2/3] rust: uaccess: migrate to zerocopy's `Frombytes/IntoBytes`
-Message-ID: <20260906071635.160615-3-sagartaunk@proton.me>
+Subject: [PATCH 3/3] rust: dma.rs: Migrate to zerocopy's `Frombytes/IntoBytes`
+Message-ID: <20260906071635.160615-4-sagartaunk@proton.me>
 In-Reply-To: <20260906071635.160615-1-sagartaunk@proton.me>
 References: <20260906071635.160615-1-sagartaunk@proton.me>
 Feedback-ID: 130121444:user:proton
-X-Pm-Message-ID: 8e891fd18680e461b03150e2c665a4baffc537b3
+X-Pm-Message-ID: be199ad065d60aac636093b021cef3878b6f4e9c
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,48 +47,126 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Replace explicit imports of `transmute::FromBytes`/`AsBytes` marker
-traits with their zerocopy equivalents.
+Replace explicit imports of `transmute::FromBytes`/`AsBytes` with
+zerocopy's equivalents.
 
 Link: https://github.com/Rust-for-Linux/linux/issues/1241
 Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
 ---
- rust/kernel/uaccess.rs | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ rust/kernel/dma.rs | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-index 5f6c4d7a1a51..d93c1a21f324 100644
---- a/rust/kernel/uaccess.rs
-+++ b/rust/kernel/uaccess.rs
-@@ -13,7 +13,6 @@
-     fs::file,
+diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+index 2ce09f8e90c6..9bd47f20c784 100644
+--- a/rust/kernel/dma.rs
++++ b/rust/kernel/dma.rs
+@@ -25,10 +25,6 @@
      prelude::*,
      ptr::KnownSize,
--    transmute::{AsBytes, FromBytes},
+     sync::aref::ARef,
+-    transmute::{
+-        AsBytes,
+-        FromBytes, //
+-    },
+     uaccess::UserSliceWriter, //
  };
- use core::mem::{size_of, MaybeUninit};
+ use core::{
+@@ -417,7 +413,7 @@ fn from(direction: DataDirection) -> Self {
+ /// ```
+ pub struct CoherentBox<T: KnownSize + ?Sized>(Coherent<T>);
 =20
-@@ -525,7 +524,7 @@ pub fn write_slice(&mut self, data: &[u8]) -> Result {
-     ///     writer.write_dma(alloc, 0, 256)
-     /// }
-     /// ```
--    pub fn write_dma<T: KnownSize + AsBytes + ?Sized>(
-+    pub fn write_dma<T: KnownSize + IntoBytes + ?Sized>(
-         &mut self,
-         alloc: &Coherent<T>,
-         offset: usize,
-@@ -599,7 +598,7 @@ pub fn write_slice_file(&mut self, data: &[u8], offset:=
- &mut file::Offset) -> Re
-     /// Fails with [`EFAULT`] if the write happens on a bad address, or if=
- the write goes out of
-     /// bounds of this [`UserSliceWriter`]. This call may modify the assoc=
-iated userspace slice even
-     /// if it returns an error.
--    pub fn write<T: AsBytes>(&mut self, value: &T) -> Result {
-+    pub fn write<T: IntoBytes>(&mut self, value: &T) -> Result {
-         let len =3D size_of::<T>();
-         if len > self.length {
-             return Err(EFAULT);
+-impl<T: AsBytes + FromBytes> CoherentBox<[T]> {
++impl<T: IntoBytes + FromBytes> CoherentBox<[T]> {
+     /// [`CoherentBox`] variant of [`Coherent::zeroed_slice_with_attrs`].
+     #[inline]
+     pub fn zeroed_slice_with_attrs(
+@@ -454,7 +450,7 @@ pub fn init_at<E>(&mut self, i: usize, init: impl Init<=
+T, E>) -> Result
+=20
+         // SAFETY:
+         // - `ptr` is valid, properly aligned, and within this allocation.
+-        // - `T: AsBytes + FromBytes` guarantees all bit patterns are vali=
+d, so partial writes on
++        // - `T: IntoBytes + FromBytes` guarantees all bit patterns are va=
+lid, so partial writes on
+         //   error cannot leave the element in an invalid state.
+         // - The DMA address has not been exposed yet, so there is no conc=
+urrent device access.
+         unsafe { pin_init::raw_try_init(ptr, init)? };
+@@ -523,7 +519,7 @@ pub fn from_slice(
+     }
+ }
+=20
+-impl<T: AsBytes + FromBytes> CoherentBox<T> {
++impl<T: IntoBytes + FromBytes> CoherentBox<T> {
+     /// Same as [`CoherentBox::zeroed_slice_with_attrs`], but for a single=
+ element.
+     #[inline]
+     pub fn zeroed_with_attrs(
+@@ -554,7 +550,7 @@ fn deref(&self) -> &Self::Target {
+     }
+ }
+=20
+-impl<T: AsBytes + FromBytes + KnownSize + ?Sized> DerefMut for CoherentBox=
+<T> {
++impl<T: IntoBytes + FromBytes + KnownSize + ?Sized> DerefMut for CoherentB=
+ox<T> {
+     #[inline]
+     fn deref_mut(&mut self) -> &mut Self::Target {
+         // SAFETY:
+@@ -565,7 +561,7 @@ fn deref_mut(&mut self) -> &mut Self::Target {
+     }
+ }
+=20
+-impl<T: AsBytes + FromBytes + KnownSize + ?Sized> From<CoherentBox<T>> for=
+ Coherent<T> {
++impl<T: IntoBytes + FromBytes + KnownSize + ?Sized> From<CoherentBox<T>> f=
+or Coherent<T> {
+     #[inline]
+     fn from(value: CoherentBox<T>) -> Self {
+         value.0
+@@ -663,7 +659,7 @@ pub unsafe fn as_mut(&self) -> &mut T {
+     }
+ }
+=20
+-impl<T: AsBytes + FromBytes> Coherent<T> {
++impl<T: IntoBytes + FromBytes> Coherent<T> {
+     /// Allocates a region of `T` of coherent memory.
+     fn alloc_with_attrs(
+         dev: &device::Device<Bound>,
+@@ -753,7 +749,7 @@ pub fn init_with_attrs<E>(
+         // SAFETY:
+         // - `ptr` is valid, properly aligned, and points to exclusively o=
+wned memory.
+         // - If `raw_try_init` fails, `self` is dropped, which safely free=
+s the underlying
+-        //   `Coherent`'s DMA memory. `T: AsBytes + FromBytes` ensures the=
+re are no complex `Drop`
++        //   `Coherent`'s DMA memory. `T: IntoBytes + FromBytes` ensures t=
+here are no complex `Drop`
+         //   requirements we are bypassing.
+         unsafe { pin_init::raw_try_init(ptr, init)? };
+=20
+@@ -948,9 +944,9 @@ unsafe impl<T: KnownSize + Send + ?Sized> Send for Cohe=
+rent<T> {}
+ // methods that access the buffer contents (`field_read`, `field_write`, `=
+as_slice`,
+ // `as_slice_mut`) are `unsafe`, and callers are responsible for ensuring =
+no data races occur.
+ // The safe methods only return metadata or raw pointers whose use require=
+s `unsafe`.
+-unsafe impl<T: KnownSize + ?Sized + AsBytes + FromBytes + Sync> Sync for C=
+oherent<T> {}
++unsafe impl<T: KnownSize + ?Sized + IntoBytes + FromBytes + Sync> Sync for=
+ Coherent<T> {}
+=20
+-impl<T: KnownSize + AsBytes + ?Sized> debugfs::BinaryWriter for Coherent<T=
+> {
++impl<T: KnownSize + IntoBytes + ?Sized> debugfs::BinaryWriter for Coherent=
+<T> {
+     fn write_to_slice(
+         &self,
+         writer: &mut UserSliceWriter,
 --=20
 2.55.0
 
