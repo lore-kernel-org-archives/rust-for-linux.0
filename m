@@ -1,134 +1,127 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D164C357D11;
-	Sun,  6 Sep 2026 09:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788688597; cv=none; b=G2zMNYDDGSZa0Z+vht+9ICd+MgTtMwuYIqmX3sKzy6Kvc+RF9pO+yHnM57/j8NXeMg/E+FmAWxCm50+VeJx3Hn385MiwQPuju0f7K0BVrhNc3jq7Zfam86SiDb9WgUNTDGE6xNClfa91nS6g6s74tDss4tlA9sT5wwVOHXHDdnM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788688597; c=relaxed/simple;
-	bh=nmLnH2FO22URT+zqx+3wQI0OkgcG32DGI4IEzKkKJJ0=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=HJJ68EVt6qRhZoS+VVRSPtj6MVfhOfSdrY/Fz0OB1K+oz1EKY9xuxbhYR7I7RTB5RE/ffMuDMgqWFIQf5nrKPp2gvojyIWShVa5CJSxJNYC9EDNaZ2b9SFZW5RuEggzMYE3eg27naH0A+6AAMTu8SsOFs8VZl0m8vXBCHl33Z4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=ZdRR2cSt; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HLRfvAU6; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232B639733E
+	for <rust-for-linux@vger.kernel.org>; Sun,  6 Sep 2026 09:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788688630; cv=pass; b=Z7/jMJ6eWxnofUDeKGJPIQ7Uwi+nSBNusjCjMoFuGWuZ2JR24dFsIU3w5Sy/RktA5qwGN79IOhwosrYwsFor3IwKrVEJZcdZ/k5SlnZqeJ8GDnnx6tXyVEXQZaty1jVMtk5FgN6vChd58wczVjlLX/w7D+j1oAJ1uK5h8PIV52Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788688630; c=relaxed/simple;
+	bh=U13cH0KPgJnKYO004jjmqA/IoRiQ83LwE2ozRFiKgzA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dbhMNaCFLdJIB+9cCN+xc5htQdP4AyEJnPQRYrlep+JsMjsUV/7eNT7NHNIVc64qyCaAxphSIft/lwTI8mHLeqgyu9ASrTx7ZgCWRwtkDOptidUIsmnVgCHcItMrsf80zTk/aK/nldQfnRs/9LeXqULZoVcAhQOzl7IO9tR76KM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hu1kb8+D; arc=pass smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="ZdRR2cSt";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HLRfvAU6"
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfout.stl.internal (Postfix) with ESMTP id A63A81D00073;
-	Sun,  6 Sep 2026 05:56:32 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Sun, 06 Sep 2026 05:56:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1788688591;
-	 x=1788774991; bh=Pr7P/bQe4OD/y9tPGao5y3yLVyT3OMv99kp5yzNiVs0=; b=
-	ZdRR2cStxXzs41LdAL9O5M2pY/KNZcCCtj6cLOwxD5k44HeoqlOeyaXSQjGPkvu0
-	maMMJSEVf9MiAgV6gXR6dHycpszhVq1p221ysZiQst3YwryImIFndr3eel670bG5
-	AefEY22Yj2gJ58XhHbaQjm/Jgs8rB50vkiBBgvYhwnTtiAi8m1Mfajg5yk1dxvAN
-	Uy2ZaKH3AJzPlp4e+JAEXfsumPD+qfTXT9wcS7pU3s8CmodssRgwq9jL1CiyJ/b4
-	wbu51lkzIVT9hay0qSGwmjOQdMAKSJ0Ei1ykKgLbu0uvwD/TzUF0JHvzoJi/JMy9
-	xLtzBb1jhNhn1qI7hT0wJg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788688591; x=
-	1788774991; bh=Pr7P/bQe4OD/y9tPGao5y3yLVyT3OMv99kp5yzNiVs0=; b=H
-	LRfvAU6wqai3iv3BrtgRH7M1B+Cruw7QVKZdUevyASL9tzjmiWAMwp9U69xSW2dI
-	eBMw9ehTFNgkizomsfQ6noIC7knUv5mmiv82qQ+DDHRM3AN7vQyX/ZL1aetR8tMX
-	04o31zHjXPL0XUD3uOr+3d+uP+yA8+LB0ZE1fjZuJ3yeitxtxHf3sk1FSx8HMQKo
-	J/Mgvl7R0HUC3Flcpzt7Cron7sq33xqty0MBVnbz0a0zkNo1bsf8L0dio0KPMRrp
-	zwLXEZCH6j4eJ7dfZh3FY8UhrohGwLqPQ+I/qo7DeZSk7KTXuFVbzHwCrC4ph0Ud
-	N/edXRsrjmmxV3+7pVaQg==
-X-ME-Sender: <xms:yDidagoJmvzu8cxFKf7-VtLUhlEqdW216nKkdhfVv8UoTFbsltLbjA>
-    <xme:yDidahepe84fN5cRZesgCRqcJ_K5HAke5xVdTt5dVDu3ddQMAAlby4e0EKqdTX_M0
-    tklWKWMxZN3kPay7w_0MsHfvDS-fvElhm0JIl6DCfiylbawMkvCQKWk>
-X-ME-Proxy-Cause: dmFkZTEGw6S2QRCJ4OZl8m5QpuOWMef4kALjhcDrEiPT6BNwXqlCG1J0/+3V4BOwdsGP8O
-    Yu0qtHRf3nk7DGelxrrZfs/uYxACYd4F+F57sN7JeCzoP22Sp/dQdTT1qWTMiOX7nAVXNI
-    /xOQk/g7JLFLswX1+IZjhK1TRYWuxCDXyQfTOJd90u4IZCSKGBKDp3wRdWgAuO8ktOuqgw
-    k3N1qYloD4DOJd0Gx17ZLfyFqYoFFZLcrMQe5G0PoYAYnK60lFc7187ict9Lu2KA1XPeI4
-    hNS7Bdlu5JDssn3j/XWy/CNmrZMpI/Xj70DWuNGWnGKvd/EgKdMuG1p+0d56rwhH6Htlp/
-    UPbDs/W1jvBK35xrYlh2nNTo1Tm/bT7u9/kjiZ1vQYcwm4vviNoLF6XoWhExe2Byv1TleP
-    gyXMnFJJWrU9qL72o7MC7c8aLomXRurbawvVI/WXHLcuVT4bR90AaYck+tRf6YW3qROyvG
-    ISHMJlH/nz7rGcwNOJ70qDgABY7Q2V2QQiOTksJz80Nx4Lj+x7DQwmXctaBUhiqaD9tWw1
-    p4brL94eydKSxjWqmgtvY7bkkKWhi4GEBUCOubpUZlUtTdBoPjoFTGDWQxkUuYGVhC+yCg
-    t3/BAiE0ibzTmOjG8WSNIkbUnfiWh4tGnY45udKNVHEzoNkUvt568qDleA8Q
-X-ME-Proxy: <xmx:zDidamZ-kDbBJoYIvsjFQMbacVFh4NX523mfwlc6u6mjfV6GFJ9WZQ>
-    <xmx:zDidamnMVR270UdgtybfWAZQG-N7jwdtd1Lv66TNWM0FB4GoQ6_VVQ>
-    <xmx:zDidalfXsQmi2MKKg3NSHDXmMzLPZFwIawKPrei5m-roH3slkG3JJg>
-    <xmx:zDidak3hLfTA2XpWxTCIsU3cbdLYL56jszObYjKtzyoVJljURXG5Dw>
-    <xmx:zzidan30H1w0rVYqmvBVGQmpZerrLRor3Amytml3XW-bQaxl2dMSTwn4>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id A882232A0078; Sun,  6 Sep 2026 05:56:24 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hu1kb8+D"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-399026951a2so293536a91.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 06 Sep 2026 02:57:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788688628; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hFhLlJk88hs0SeQYu0Grwvp4itrTWHumhocPE1C71SnOj4UGJAolrRX4ZNWREGe9Fv
+         dlJolVCafimG0D0BPeizyCAMqaG+qDet2oxB/kTQONM1+oiqKz9e4+79NhCjYGMkxBQ+
+         EIfOrgMN64wjQfkZ1+uHmfZ7vCU6+M2jlCxvQ8tDoxjjnHhQ3PtTAN/q+RxFW7ZaRPog
+         chb5GsTUcMAvJYardhRqa0PL72CXbYck6NBsaMxK9r9oyYhbYozO6p+d9yu7X3lyxfMI
+         jCOi7M2JqDFZywtfjoQbEdLR+ureFJzWUq5GfD1mPYLk+KQ0BulkvBzmpqOB/W1M0KKb
+         CDOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FNR0TadONT4lGDipXgfdwdOLaKBVMf8XKySJRN23CUo=;
+        fh=B7YAmcunTQzWZ+3ja3bkW1eJMQp+Ybee3+hyLOH5owo=;
+        b=MzGFTAXaMxFL3Il7+QSbCjWu8hbE5NpYdRFt6uugSy93Bq2BaFlJeG5T5IYohhj/6d
+         F+93KTSLVarwLuK0qwjBGXzkXP7o0zYD/A3FkDhzxBIXL0aZ5oLDD7kYnVT5QLmHwQsZ
+         Jk7QdaFxlJTJSovEdYVHHYEvy1gzDa5r70QrkkVz1RpIRyixOFzuaCcvSNlPki8YyIv3
+         VuopjsrlKM6XaRXO5Hy1qApnVJM8JvRBnCpEJHoOwVfQJrJZ9siSs2fbJUChOpmXJAzc
+         0PxruJ4bNb6JPxG3saMGteJFZ4RsQ2psnb9i8cWZ49hCfiEWqz8VBZpF6CgIark2GRhd
+         mzsw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788688628; x=1789293428; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FNR0TadONT4lGDipXgfdwdOLaKBVMf8XKySJRN23CUo=;
+        b=Hu1kb8+DUmdvY0GX1WOsprHnENusDc4jSlgGCj3mcghmMb+WlfnDPwlMYM0IyKGMOy
+         1tzw703XU0Mpx5z+/H7gI2UBM7JxK5s+TKYSzGVy7uPnS5kNn2mZ0fOFx1a9xwIQE0xP
+         IcuQ4nHYGeYPDAnrIxNgwQkbGKbeWeA2x2DsyPZ5isKx7iB12bqx1o+IYgftxwzujq94
+         cuxeKdaA8m3gHTSHcF+6LAPL/weAIS1XjCCyoA2/nu/lkaeJ4LwPC0V647usK4vkL5bL
+         t1FCDcObN5qvRdfpZkTwcvqLRWw8jBBkM13EkmiTiI12RpvK/t9e4KP2km57A/cKYe/s
+         NudQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788688628; x=1789293428;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FNR0TadONT4lGDipXgfdwdOLaKBVMf8XKySJRN23CUo=;
+        b=OqLmVGJKzhd9E4FEMWJz4pNtYrLwvWe6OqqX+Bvc6xo6yGl6AJrMGdNqePIs1+Rtu8
+         L4ffBRdTmu/pKPpjnO79QNPa76ym+eCRQR2h+yrc7frqElsevG9gzZ4trIO3CgFFYdJO
+         JE4w9sZib5ohdCqD93NMjGn0IzbifW8QA3TDLxL/wlblft4Tqg7cvQHncHByX4uJ1Vrx
+         CKLoWEUBWjGRNCTN1GCOfyfNmSThHTzzxqamZwjeQ5Q1PjOIykD+LsYGarvwSS1GZzLl
+         mTWWz/J3pKp7+0N/m3btNjNFFb7+oveDN21op4hCNzqARCNTVvklK/i1Omfy/oMx95qP
+         ZqAg==
+X-Forwarded-Encrypted: i=1; AKwUvBzIvd9l45o3KXBO2QjgHc8WlximgmKkypyLTvulKEtR3VNL17dLyNWbJghnhvmdKOobfUhUN/ewaKvVt+yrtg==@vger.kernel.org
+X-Gm-Message-State: AFuF++l6lySGW/vhbq0oegfBfTWVFdB2lOhibvh/eV6jcdObTNS5emTB
+	YZHvePU3Iwkvvpw+ANE/Ew3D4gU4ErMLjtpMxs+URflgE2L30A1kRq5RSmadMEho0WVpOETVmEw
+	+QPfZCzOQaJXiY4Psk1O8KHbF/ceuS6E=
+X-Gm-Gg: AYBFou1qamxPjkNMFujZtXlpmRXtnCgRxWTBSewi9lLEyjCC9fqO/g1zaoI/lMD/91t
+	p+tPekvSHsMlwYobbslAfAIxCLIZrZ9VOHDOK1kfQjeQ05n1Zl+FYhhuKWYRnPu5DACuADBVaHj
+	V5LBcA1fFox1vzN5PDsUEH73qBrozCn4ciDqCjEbftfc4KYfqidf9B4W3XI1tOEITnkdhroyWbr
+	qdu79TlcPQQslK5ZCe7MOYAeOppCdlOv7vhoAA9IVocYqCyAxmFbyftJM8d/WzCFbAEGcUubbr9
+	+l11F5xhscxUuV42Vv/6D5HFWEJv1iQQhH0JhXHHQ5gMwyMnpF/qWhn0lLbvQ35+4gkK9Dqli1D
+	TEOj0ea2/9frCmao/fQh7KLyb1+oYiP68KAQOZFovT94mIJxwHI01znnckoBAwczsjimt5e4=
+X-Received: by 2002:a17:90b:1d83:b0:398:bad2:c10 with SMTP id
+ 98e67ed59e1d1-39b3d85c011mr8915334a91.6.1788688628452; Sun, 06 Sep 2026
+ 02:57:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AIGO_lBJxreR
-Date: Sun, 06 Sep 2026 11:56:04 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Andrew Morton" <akpm@linux-foundation.org>,
- "Aaron Tomlin" <atomlin@atomlin.com>
-Cc: "Luis Chamberlain" <mcgrof@kernel.org>,
- "Petr Pavlu" <petr.pavlu@suse.com>, da.gomez@kernel.org,
- "Sami Tolvanen" <samitolvanen@google.com>,
- "Peter Zijlstra" <peterz@infradead.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Masami Hiramatsu" <mhiramat@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- neelx@suse.com, da.anzani@gmail.com, sean@ashe.io, chjohnst@mail.com,
- steve@abita.co, mproche@mail.com, nick.lane@mail.com, rishil1999@outlook.com,
- Linux-Arch <linux-arch@vger.kernel.org>, linux-modules@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-Id: <3cee4548-0ae7-46a7-b437-bf84e5c155ad@app.fastmail.com>
-In-Reply-To: <20260905172817.e367c940d750ca3e8484fef9@linux-foundation.org>
-References: <20260903185557.183224-1-atomlin@atomlin.com>
- <20260903132924.7a4d1b84791d30c706b394a1@linux-foundation.org>
- <ultg4rym4phqwqrbuz3hqtlse2lgafxebx3un7s3tdht7rz5xy@3ckauomiwqsy>
- <20260905172817.e367c940d750ca3e8484fef9@linux-foundation.org>
-Subject: Re: [PATCH v10 0/2] module: Extend module_blacklist parameter to built-in
- modules
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <20260906-add-rust-gpio-consumer-v1-0-24d192f93760@gmail.com> <20260906-add-rust-gpio-consumer-v1-1-24d192f93760@gmail.com>
+In-Reply-To: <20260906-add-rust-gpio-consumer-v1-1-24d192f93760@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 6 Sep 2026 11:56:54 +0200
+X-Gm-Features: AcwNN1WxK9zUI7wnq5z3F0MENjsFCu4a4OjUAQj32Gwuj-9LPj41p02F_uyi-BY
+Message-ID: <CANiq72m6YZhqzE7GWEakmsZ35QN5UF_HTcVBavKxbq8cV7yk6A@mail.gmail.com>
+Subject: Re: [PATCH 1/3] rust: gpio: add GPIO module with common definitions
+To: Kohei Ito <koheiito.dev@gmail.com>, Linus Walleij <linusw@kernel.org>, 
+	Bartosz Golaszewski <brgl@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-gpio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 6, 2026, at 02:28, Andrew Morton wrote:
-> On Fri, 4 Sep 2026 10:59:38 -0400 Aaron Tomlin <atomlin@atomlin.com> wrote:
->>
->> In summary, this patch brings parity between modular and built-in drivers,
->> removes a pain point in boot-time disaster recovery, and provides users
->> with a predictable, consistent interface.
+On Sun, Sep 6, 2026 at 10:46=E2=80=AFAM Kohei Ito <koheiito.dev@gmail.com> =
+wrote:
 >
-> Really helpful, thanks.  Please add this to the [0/N] and maintain it.
->
-> I don't really know who are the potential audience for this change, nor
-> how to attract their attention.  Greg might have some insights but he
-> wasn't cc'ed.
->
-> Let's leave it a week to see if there's feedback then resend with these
-> adjustments?
+> Add the top-level GPIO module with minimal common definitions. This
+> module is the basis for future Rust GPIO extensions.
 
-FWIW, I previously asked the same question on this series
-and still don't find the explanation lacking. Obviously,
-consistency is good, but the added complexity doesn't feel
-worth it here, given that this still has most of the same
-problems as the existing "initcall_blacklist=" option [1].
+Thanks & welcome!
 
-I think patch 2/2 would be fine on its own, but for 1/2
-I have yet to see a single example of a real-world problem
-that could have been solved by this but not using
-initcall_blacklist. In distro kernels, almost everything
-is already a loadable module, while users with custom
-kernels could easily turn off the drivers they don't want
-or disable the initcall by name.
+I see you Cc'd linux-gpio, which is good, but the GPIO maintainers
+should be Cc'd too, since they are the ones that will be deciding on
+this -- doing it for you in this one so that they are in the loop.
 
-      Arnd
+By the way, it is nice to see GPIO again :) Now that some years have
+passed, how does it compare to
 
-[1] https://lore.kernel.org/all/78ec1da5-11ae-4c35-a08e-cc88a5d083f4@app.fastmail.com/
+  https://lwn.net/Articles/863459/
+
+?
+
+Cheers,
+Miguel
