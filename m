@@ -1,132 +1,218 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EAB65192
-	for <rust-for-linux@vger.kernel.org>; Sun,  6 Sep 2026 22:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788734922; cv=pass; b=eZgYVMtg70y/X4E9lcxh/NeokQZPbXD1m5Z4GHRAdkZctAllhvVxZ3bYeA8aN/vFITn82o5aZKYfixrfqqejU5JD7X0PE7KldrbeR5rmYqLwi1DgTZcMu6jJVJ0QW7QRaXhiL6IHCmGjYfqWqCGqsZYrroyl8CsfVHDamVDolLs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788734922; c=relaxed/simple;
-	bh=lkeGMZbNZ+oOAb5w3Su4GGZ0+Qo8jUQnPu7MPtxhGwE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=byqPHfXYcMB2PetpKLNzvjOXtaGa3NmXF52oZqQOuC8JalIoP7EwnSTZzuKrXulQwbyvMmYUjw/w6UW39JsoPurzS/kAr/C0GZLhiW7KD9JqiA4a+gDhV7kJheUVwp4wVsLAsF1ccc+pmTVvlACYNzpnNva9Zaoh6hDQlo4tnD8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nt4n78Wc; arc=pass smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6BB349CD1
+	for <rust-for-linux@vger.kernel.org>; Sun,  6 Sep 2026 22:51:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788735106; cv=none; b=p5KN9GFeRQugffp7Ark7OCgIKCaJ80PPouMQMP/4UHVX5EY3B1MSkUIZPFxV8FXxn+tsx20xGJKpTzu1+AwZuBQqJIixkpNmJChCCLVybkUMC6Cu+xrCKhslBwxqGTWlWXf/LxROlHGIo06jIaHFoP1DS36nSrYH9ZGQX/D8zO0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788735106; c=relaxed/simple;
+	bh=i4+pMq8RfkXacHmv7Svg+kGHmqAZnCrvK/VeI7b2oXg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UXiuZAZr3QBszalTvDkRvXTmqDNWOetKdS3uW6c4NAP2Jf8R8eH7kVy9EcLjfwW3lVT3FjIFmOFM6BJ0WLuy6evJ86hinEARY+LCyD4odORpRIPhqMszpXXchfFOvxUEg6WtTfsU7W3IEgwtTCuSl68MhXuE1k0GVk5DzRwqsJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=V1FMP3+C; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nt4n78Wc"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39b2ad861b1so359551a91.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 06 Sep 2026 15:48:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788734921; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YYJ3ziQBO2qbON/GzAXZsQYZeL0oQgh7E26hV4MHsau7iY3U3PBeuyBwdGenVfw0Mr
-         cRpa4Fp6q4plvg8jXOj5qQFW1pYpar6CsNwjxWFhCc1RybmYOHS7nVG/A24UnOH1bfdI
-         WpypjVWgUOD62oLsk1yy7oD9h3I6SmuvAV32EXq3JMPwdibAHQ2kk9wTrZZhBD11fbEe
-         OwPMFtXXTawrUCGg/7X2gBpYZolsX1e3mK/n5mFZT2YYB8TZ1dZP50PvmY2IeCnWYsEO
-         9+NtxiMg/LmOAOBPuznnuwkGWQ7pSXNzopUJ+Rfc6IwcYMyWzcpGXNH3/OY6f3oEyyVf
-         fCog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=lkeGMZbNZ+oOAb5w3Su4GGZ0+Qo8jUQnPu7MPtxhGwE=;
-        fh=jr7vW4BEwC2rsovmSiywDFWGbE5PSJOfU/LvZXM+Fes=;
-        b=o0+u7l6AZCxXhWujJLUVbfA0tM1CDqmlbFjxV3gpkv4PE+ubMnjcjJ4/ExZO2mRYBA
-         WVWFM+YDblRwHZsEbCCOivtnlZlWpuboZpuLzAwH14Lhxi/95pUPTyQSHEdBhk6VsFnp
-         sglszjZzvpa/VynrX4eIQpsUzwTPlGNT1SO5rDx2aaNqmq3REYFm4BvMxy+Ru3zFJZOt
-         8KBXs1RCXs6mXmMEdG90LN/1BvtHBQIpgQizcen02LN/f5odbyge7YDu5exrUh+pKiYb
-         A6YKHwMEDk7WPe9UikdaOTuJdIBy787BBj8wQPx0Vx6Hzes37vpuVeNXMInxV8XTqzOY
-         eiGw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788734921; x=1789339721; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lkeGMZbNZ+oOAb5w3Su4GGZ0+Qo8jUQnPu7MPtxhGwE=;
-        b=nt4n78Wckh4fQcIpf5Y/Eb8aqYWBiECWAI/phzUgL8AHrzzprVhxd492K+5dMxxrbA
-         neWOETIMl5k9gxpGdkccXiBNNgDKrXhMK8JpmQ7Y/WDS7K9iiBaCmxPKjCPkcWXnzr9I
-         YnsBm5wjR6gOzgdLuqjQFm0DUcN/7eUETvVjv9jjv9wCA2mHM7D+x4WMpkVmtHqoMWtP
-         /Fe6L+BPVyl4I0wSmawhR7DgOyxxV79ifAJySE1RF0/rFYQ3R2Ko2f06TVgw2klnEIpP
-         StUP9UBgMOJO8VlgrynBH+kFa0FlbOXoUnPoN3P4YodUoRp6jq7YnpmGAjKt80ZkzDsi
-         C7vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788734921; x=1789339721;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lkeGMZbNZ+oOAb5w3Su4GGZ0+Qo8jUQnPu7MPtxhGwE=;
-        b=Mni3GPubPt0Kn5aA+bsCQafJhV1/I6PFIwySkmAO02ZMcUGxmNv6rcAev+L+gZEHof
-         F7Zq+tw678mA6ENTLdbkrFG3r3PeP9xlXcqd7nTzWOmLsxV4QIJ1qAb2PS8/mvBeKtN7
-         jobej2/Tdj1OWg5q7sfEm8G5GUX+UbgMw+xZ0iLKO7fRew8+CI5ya2+ydLvel9DiPOjy
-         ScTL888fVF8uVSJSsAX+WjV4vP0b3E59usmLXYOgBCuGt2OslEd2ewF8rAO3vy468pbF
-         vg3pk9XSQfRo+k5dZUy23brQKV9KbSnv/gc6O2Iio0Ipk73DcKgcCPrLcD2OgnrAP+J6
-         tedQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwF+6jnxpygSJbKGPb42YPvvdRMVjyW26yZ2jp8fDjjND2VdP/QgpQdSIbN8wUXGbYcOWKY5LjjhpqBtxZjdQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++ntCeuLpQYF3gn7EG013FCVZuSmdWAvBjwnfI9lTgJxhX3OifG/
-	dcgsHaCTx6yIlrrWDDJMVgx4PKNWvHZRB72UAY8Wva/Ah1cnTiPVutYtBNAq6ZTP1HUrJnhYbZP
-	VIoODXW8d2ofOAFJHn36aBrE2cKCEQVU=
-X-Gm-Gg: AYBFou1Qmt90Zp2EeMlJ8Ekn40S4GqEg+d7OOQSjcrMR7NBI3YMQ47h6+dqW3FmJCxp
-	wcLjx5399qVK4cu/cMdsVrbm8FDHA8ZO2FLcB+YV4lBGpBeVo0itJlM/JqIOg6wB2x0/a89GNiN
-	JYuIdI9Jvlx7CHBN7d9ocphotcSYpfALTWe8fyzbxFmoVbk4gi9dFNRjYNdF++a6XUAMDSkw4hG
-	9EpeyY8RBsY0lNOHfR9LYx2lXZtOOoTisXd2gcsHjacjcd58zwLsyBP2UV19/I/UX1ZXqidpaEX
-	VaxCclyqta6Yo8CnTPnauRDcTaLmyksArNFX3p1+msDrIeWwIaEh5uHydUyuZepPJBL6inbLA9T
-	ZJC/MFmh76BT7AMwLsE0L3XS5Ua9Q2AuK5eFpXD3mrECyqS00ZTumXCEeMPyppGlVDVe8eUY=
-X-Received: by 2002:a17:90b:4c03:b0:398:bac7:72d0 with SMTP id
- 98e67ed59e1d1-39b3d86acf2mr11403642a91.5.1788734920700; Sun, 06 Sep 2026
- 15:48:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="V1FMP3+C"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id D2CD724002A
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Sep 2026 00:51:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
+	s=1984.8680eb; t=1788735102;
+	bh=/Q56Wb1/9lKtdrTb6VR7lZsGxngRIpsDL8gGx9GD0jQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=V1FMP3+C/K7fvCMl7R0bdkuRqy9abAfT86sKSxy5o3a3OWtkQsaEs8LwFKgAQvIgq
+	 L3ZlzsdIvYCnIJqu6bCBfFzYR83dz7di10iTQBe2QRFtpIKFckKjyGnQFYbCLm5+sl
+	 QUkt3wVCpCGaQXaEn/e3gCGV1r7sR2n30e6BnzjovsFkTWnNgjuyUr2KvudKQhMVNk
+	 tf89c9A5HRGGyn7ZDejXiW8Y/7RuPxEMJVCIrUsSUyHGjp8hWn5W4jbb6uL5pwfhhs
+	 lrSjX2hiT772n1+wHh+0GX3npMaxBgL2r03RHqFoKJ7AG52OWRz7d3n7ly+N9AVB92
+	 aB/GZSEGIxJWQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4hdQRt3zrPz9rxD;
+	Mon,  7 Sep 2026 00:51:38 +0200 (CEST)
+Message-ID: <78d42a2753ae84e4983e9a7b118188f9cc8bdf3d.camel@posteo.de>
+Subject: Re: [PATCH 5/5] rust: serdev: Pause receive callback before calling
+ unbind
+From: Markus Probst <markus.probst@posteo.de>
+To: Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>
+Cc: Ayush Singh <ayush@beagleboard.org>, Johan Hovold <johan@kernel.org>, 
+ Alex Elder <elder@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Miguel Ojeda	 <ojeda@kernel.org>, Boqun Feng
+ <boqun@kernel.org>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross	 <tmgross@umich.edu>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=	
+ <work@onurozkan.dev>, Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel	
+ <ardb@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka	
+ <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Uladzislau
+ Rezki	 <urezki@gmail.com>, Jiri Slaby <jirislaby@kernel.org>, "Rafael J.
+ Wysocki"	 <rafael@kernel.org>, greybus-dev@lists.linaro.org,
+ linux-serial@vger.kernel.org, 	rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	driver-core@lists.linux.dev
+Date: Sun, 06 Sep 2026 22:51:41 +0000
+In-Reply-To: <DL8IAYDEO7VG.1HPQR4U9S7H2Q@garyguo.net>
+References: 
+	<20260906-rust_serdev_probe_refactor-v1-0-69cdae0074ec@posteo.de>
+	 <20260906-rust_serdev_probe_refactor-v1-5-69cdae0074ec@posteo.de>
+	 <DL8DCNMSENDS.3T14U5W1Y32IX@kernel.org>
+	 <DL8IAYDEO7VG.1HPQR4U9S7H2Q@garyguo.net>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-FffS2llmFmQCY0T8Gil3"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260906215822.1201022-1-jhubbard@nvidia.com>
-In-Reply-To: <20260906215822.1201022-1-jhubbard@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 7 Sep 2026 00:48:26 +0200
-X-Gm-Features: AcwNN1XFuhjogPVE1Fbcq7HeHPZK1wuDdjtRKlEb-R9udRbJcc54SrcVTu5koIw
-Message-ID: <CANiq72noJ-4Sx6Lj32yGWTm_pzmMkH1Ue37W1y2anzpmN9mMeA@mail.gmail.com>
-Subject: Re: [PATCH] rust: allow `clippy::as_underscore` in the generated bindings
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, rust-for-linux@vger.kernel.org, 
-	LKML <linux-kernel@vger.kernel.org>
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+
+
+--=-FffS2llmFmQCY0T8Gil3
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 6, 2026 at 11:58=E2=80=AFPM John Hubbard <jhubbard@nvidia.com> =
-wrote:
->
-> A CLIPPY=3D1 build emitted about 15000 `as _` conversion warnings, all of
-> them in bindgen's generated output and none in hand-written code.
->
-> bindgen 0.73 returns each bitfield read through a trailing `as _`, and
-> 0.72 returns it through a transmute, which the lint ignores. The
-> bindings and uapi crates allow `clippy::all` over the generated code.
-> That group does not cover `clippy::as_underscore`, a restriction lint.
->
-> The minimum supported bindgen is 0.71.1, and 0.72 does not emit the
-> cast, so upstream CI may not see these warnings yet.
->
-> Allow `clippy::as_underscore` by name in the bindings and uapi crates.
->
-> Assisted-by: LLM
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+On Sun, 2026-09-06 at 21:13 +0100, Gary Guo wrote:
+> On Sun Sep 6, 2026 at 5:20 PM BST, Danilo Krummrich wrote:
+> > On Sun Sep 6, 2026 at 5:55 PM CEST, Markus Probst wrote:
+> > > @@ -200,10 +203,14 @@ extern "C" fn receive_buf_callback(
+> > >          // INVARIANT: `sdev` is valid for the duration of `receive_b=
+uf_callback()`.
+> > >          let sdev =3D unsafe { &*sdev.cast::<Device<device::BoundInte=
+rnal>>() };
+> > > =20
+> > > -        // SAFETY: `receive_buf_callback` is only ever called after =
+a successful call to
+> > > -        // `probe_callback`, hence it's guaranteed that `Device::set=
+_drvdata()` has been called
+> > > -        // and stored a `Pin<KBox<PrivateData<'_, T>>>`.
+> > > -        let private_data =3D unsafe { sdev.as_ref().drvdata_borrow::=
+<PrivateData<'_, T>>() };
+> > > +        // SAFETY:
+> > > +        // - `receive_buf_callback` is only ever called after a succ=
+essful call to `probe_callback`,
+> > > +        //   hence it's guaranteed that `Device::set_drvdata()` has =
+been called and stored a
+> > > +        //   `Pin<KBox<PrivateData<'_, T>>>`.
+> > > +        // - `unbind_callback` calls `serdev_device_pause_rx` before=
+ accessing the driver data,
+> > > +        //   which guarantees that this function will not overlap wi=
+th it. Thus we have exclusive
+> > > +        //   access.
+> > > +        let private_data =3D unsafe { sdev.as_ref().drvdata_borrow_m=
+ut::<PrivateData<'_, T>>() };
+> >=20
+> > This would break the driver core's lifetime design. Any kind of registr=
+ation
+> > (such as class device, auxiliary, IRQ, etc.) may borrow fields from the=
+ bus
+> > device private data. The whole design is based on the guarantee that we=
+ never
+> > construct a mutable reference of the bus device private data.
+>=20
+> Mutable references should be fine (of course, provided that the bus actua=
+lly
+> serialize callbacks).
+The calls do not overlap.
 
-Thanks! Looks good to me.
+>=20
+> It's only problematic now because in absence of pin-init self-reference, =
+the
+> immutable borrow is the only mechanism that prevent user from having mult=
+iple
+> mutable borrow of the data fields.
+Why is having multiple mutable borrows, assuming they are from
+different fields, problematic?
 
-We have been getting 0.73.0 and 0.73.1 fixed for a correctness issue I
-noticed and I didn't see these yet -- I definitely recommend avoiding
-those versions for kernel builds.
+>=20
+> Say this code:
+>=20
+>     struct MyDeviceData<'a> {
+>         foo: Resource<'a>,
+>         bar: Resource<'foo>,
+>         baz: Resource<'bar>,
+>     }
+>=20
+> pin-init would make `foo` and `bar` be only visible immutably in the proj=
+ection,
+> even from `Pin<&mut MyDeviceData<'_>>`, so the design is still sound.
+So its only problematic, if the driver data is not pinned?
 
-Cheers,
-Miguel
+Thanks
+- Markus Probst
+
+>=20
+> Best,
+> Gary
+
+--=-FffS2llmFmQCY0T8Gil3
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmqd7mUbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSZwAP/1P67ir/sS3FGiHIcjFE
+8jCk3nCOtUt1Vt2YtW+8cpPPqEQNqzyW2VQhyQBTNQUzWJv1iVNT428F+2q2HnQb
+jhpNwyXn6nprwmutCaXBDSqJ6MeR4bIXwRqYP6Xe12yiwIQ0cf3gL7VU2sQL9TOS
+pO3ztzDKs7W8rT/CpmGWtuuo5qQfCg1R9rTeV+2PvoizLKovcjNePXIe09ZQtgze
+GQO92mLk662dCuZK2e5UQ7+G9J+0J9jR95HFFFlwAc4WDk9LdFLy2mIiV1/MBmD3
+dQvvHezx7IlesQ6cKAm8MNHN7jKUm07WfSEUtsVe/kirnB2mkbt1ptfUBFZg1oxj
+zzvqj2d9h+9d0DJFYF9XY1M3qqOFryH3CcHRVg9kpmPivL+HzR1DzrZwcbRVBViA
+IKn5HdFSivjovqmySGWSIeZT7P7b/0zMdFoQlKdcfYEwDNj6L3+ilhGnkuObbtR4
+g1nHfz0MUxkAOCbOV95VjzP9ixuEirFbrTfUr6+ITpRN3H88IWcNi32CdmhDD2a+
+g/09GpVaLZTxovh1QtDiNpiqtfEgvd81FnrsjUIp1EpUmzG+rLkpooP3FSStNnI6
+g27gPUF+2mFCfzNwXeBI2yFxmR9+KzJGNRblTt9wECqFvsI2rR4Ed7B6/BhC8O8b
+mn6vpw7pRQhiEXjW3eXp8Rrp
+=xwaE
+-----END PGP SIGNATURE-----
+
+--=-FffS2llmFmQCY0T8Gil3--
