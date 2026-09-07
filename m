@@ -1,143 +1,137 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD7447CC96
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Sep 2026 19:33:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788809599; cv=pass; b=kihs406CuFu/R1Ev7OYGkO6af69m3obNo7fwzo47PXO9Tb8LVz0d71Te+QYoEQHIsj5iDz/La3JmCnZ8W+OtkR9qRhsf74zVMF4mTbLThGinF0aKXlMrHORzwxuWrAjUaZ1Hvm/xkRmm5lDrWedz5wPRy0RGIxf+VvTDOUcKxBM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788809599; c=relaxed/simple;
-	bh=LbkJYZrKBAOtEAIquwnyRiPsYzlue46mhX6agZEqU8A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BRiRLAUFsrqXaVS61oe4V0G9YvMaKDKLV/IICH8gf9pUuNme4Pp1grE+WyLXsDnrY04VhFNX96ijdbotwytFlEcPgdIjBLMb6NXGV9YHzRFqz+mBGxuaJLBqHQkiBikbwaQZ1Lr9i8vbmTTlK6UdqPzNN++zw/98dQEUOn15Ck8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iK0qYj5j; arc=pass smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D12C3F660F
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Sep 2026 21:01:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788814866; cv=none; b=d+ZTqmvM5h8qqqwUubKmGLtNytH9mAVMAOW/C8KYVRRWc0CpjF2TTmJsCuwORMQ9Z72jwq5KStVEBjQ6/dssBEMAR9uNgVDsgH4Yb1uriGrl+xgMVotmseO9cAPRBEuW89KqM6i2+iPTtblvqow0N27afHbuOdr7fyhVzEBe0h0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788814866; c=relaxed/simple;
+	bh=Pfp4fHaGp3DYNoQNsq++Hih2POFfdEHNA9k/g4/DYlk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mX424X+6BbogoL0oGB3C7EdZi8ttl94smUrF0swcsZZNPA1IvFOdsY2vgzCUAdWGMgmNubBSqRm4cSDo0v34fpi1eXWPmMuJaDUoOVKz2qd6Y7gZdWC5lMoNMvdfWpkteJYpyCIKn7oxDHgKatAfpkQdEMwnGOZqpWYV7B9qqbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E4srLzoR; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iK0qYj5j"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39666bed444so436656a91.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 07 Sep 2026 12:33:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788809597; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AjBIfVlk3anZqwZDe6rn9YWNULAAwtUAGFgP3QbF4CWm4svsuoRY3jKhybW0j7awr4
-         pIuNnv7HwmPjSNO2CZnKyzJrzV0+53WGGwY0Ip1nK4516dBWxBVwQ6/1gLvNloJN3lhM
-         llA2EJhdGShi4qhqEhI95SFAEJe1d5Er+CpGe5fktrjsYdB33ryKKLcaC1jX7LkcpNiJ
-         dxITPpolnOcGeActOVAX1mpOQypookMEqFVtwkpK80t5rXHmOj1bsGpw+umDfB1zKc3x
-         GYPEX5Eiee4kQBrybKESo39k5W/phCjjQyXqSawamiLlmBoN+FdADRgngoa9hPzdBEWd
-         2gmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LbkJYZrKBAOtEAIquwnyRiPsYzlue46mhX6agZEqU8A=;
-        fh=ozBu5A9Ooxhh9Uc7SyuNEzRjKArjeRvFwYQ1fRlTzI4=;
-        b=MkWjafUHebd4SQafF8DFpu9PlFK9twLAzUugfbrPi4Brn3uGqgdIb2nJC+oALQjACE
-         s5BxNLsBCFv0+/q4Urx20ZdFdm6YZXk47JA4+47ExiaCVTeIAixAT0n9o7WWgofnJHtg
-         HkWE0Xh4csz9WJut8H0qb7cJyS/+wfsX5IxzDYqvkwC9i9RePoEa2HnaS+1O8rQaVQm5
-         PUolZoTXdTZ1iL9LT3tGCFaI0WFm3znyK8ThJIg31txV3iMHAB46AyKDzrqw/zb7A6pp
-         44s0u9aTrDaVzROldIsRZGNg+XkAW3WpJjdmgzsF7zWEeOVk9aXkTU01sxI3ltKd+Nk/
-         E8dQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788809597; x=1789414397; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LbkJYZrKBAOtEAIquwnyRiPsYzlue46mhX6agZEqU8A=;
-        b=iK0qYj5js7h9LqZ16ntFi4pR+coNw+J1DIsxddLy2bybdXua8s7AhsQh5PKG4aPy8k
-         cWfcsot8Jd3QOFo9QOMLhxclr26W+2bFQXUQb/5htv9RCQ75k/nTYOvsiDpAh9ZC1h0P
-         17HYrGhBkPAcaFKfVJDBRota6XZwJTFU94U1d0QKrv1bCLj5OM6vuETU3sDAU1WcF6/P
-         XwKGZTES39HLJn7EPOvbTJ556I3rp76dCWF5AVgyuUSKXaJklfe1ypw/YLdAV2Pt4o8p
-         oIt3UyGz4+F70fE+3rhKKK66OxHCacES0jUQHDbVEe3CfUFb1qgvkTLFywu8+KyEsrhR
-         Wz6A==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E4srLzoR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788814864;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=km54XNA3pesnlH9MUSOEbKUzj91GMmwN/4bvXZLN1Qw=;
+	b=E4srLzoRT2lSFcaQysiCLk/7gYWQXXHBWble0pc3yRK0BKbcUWXlkkenZdQBdblXltv429
+	aq23hN2ImYmLgJhVNpUkK9ErT/FV8Sa0bc3WYo3Bf/cgSD4jChuPK5MW4huzJs8Xh8G3m2
+	v2U/A6AYyGRGC393cggcW25+9qGapb4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-470-MuIgc3TaMFSJxI1ZBcyoWQ-1; Mon, 07 Sep 2026 17:01:03 -0400
+X-MC-Unique: MuIgc3TaMFSJxI1ZBcyoWQ-1
+X-Mimecast-MFC-AGG-ID: MuIgc3TaMFSJxI1ZBcyoWQ_1788814862
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4957287363bso31423285e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 07 Sep 2026 14:01:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788809597; x=1789414397;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LbkJYZrKBAOtEAIquwnyRiPsYzlue46mhX6agZEqU8A=;
-        b=Rxm2pQXrlt2X3S4h858K26wyxTDmbJySF+Lmv/fgNj9tC1lQVlJshn3KctsoT1chN1
-         nGjXPUS1ra7bkZXO31H1rD8fNpamVIFMSbI3e1pSMpJu3408SWTiEbMPp4+G9GdadbKZ
-         RxtiszAF0n2ph4zRo0EHru457QyfL2w39QTFz0BQJXJLdZP3d+GV39QPyR463Ihr1HVx
-         d7zWGIQ0ks7kzLB+w6+BnzEH80mQM7PFgtvURnxUWn0B6+8i2ka461hBzlampqm5EeYO
-         AQtetzHtymFea7ZBD6ntY2CMY8uyGW8QyPvnBcVALFlkmGFxFeRzR8fR+1EcCHNjL7d2
-         OxOw==
-X-Forwarded-Encrypted: i=1; AKwUvBzOFyuCcoFORUBMztGO/h+Ln/4P8O3SzdZjAalPawgOmMoCVs/ir759iN1YD5LMhoZjw4FiLJCL39MS/GcWdQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++lWZll3qqajdHr/vnNSBhXnQHgChBpriVUeEOo2h+MHqI+aP+17
-	fhQ8GVSW5znv+T4haotEDqEftZlIIsDjC+6e17E2FreDaVwhbO8AtSNCXarDUNXVFIBjAMfps7g
-	H3mM6YCtupcC1l7MsiEnAUuOCvVvTsKg=
-X-Gm-Gg: AYBFou0shcg7x/RUK1hd6TC2D8wSoe2nSEiiXxoYUzmBH8rZpM409XosvaX8E8wTIcI
-	9hiBtvfzG/oX+umOi8xyLeR13g2NVlA1WNFfqLhpqkEmWJ1rBqwj3TEih7C1XjDOILgAsSeLyvk
-	7JhFR25l9Xz6PRzUyOUsnjO9vH+v5TC27bu5Kzfq7SRCfTJu/FUE57p/TgY32ZiAAz/GG5SL5Ia
-	QILH11SIswy4hIVjrsLPtOviMjk/vc1Cf3NhInB7ybFMUs3WhCaX77Lpoxr+VP2gqnDD7aa6zi0
-	AstNyo+kOdmmcFZCilUrAG7phktrdP4kY/y9gEXf4Sl53IVdDJadJlBJd/8uJLLDd1aJy/EE80c
-	AsUa8tNMgwYjqJYhA1Rfmuew8FaAwdwHSkXIjfUrfalXK1Jrc4p+2tBxEpFlu2Q==
-X-Received: by 2002:a17:90b:1e04:b0:396:463e:2eeb with SMTP id
- 98e67ed59e1d1-39b264b24e2mr23088437a91.0.1788809597288; Mon, 07 Sep 2026
- 12:33:17 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788814862; x=1789419662;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=km54XNA3pesnlH9MUSOEbKUzj91GMmwN/4bvXZLN1Qw=;
+        b=c/YkvIf8kU3LoBH+y1EUGj/8U9cmiZ60tdL4gIzRxVU8/e6lQojyBznJ5FN9IC1E8Q
+         nr0j8+xK1qKDzI10pZJFAhCBbK/QzcIE9jYXY0eHN9ZPsHPJ6apxW97KetfwDzloIO+Y
+         fKRgeOUsUYbDk8O4y5y3gSFZpNZvdNSrWq4oIdonlg38DgQnt3t75ZSbDQK0mgzO1nrH
+         lBCl79wKYxheU+DoUtsLxj3dVIMb76bzOtauxcbnaE8LZkQIDJgYL9XAbLeV+fFNh7oG
+         0V6InbRrHKoV3Axr26sOFMJgNRAsu4Wb6cO8b4JnXxXXzmjUC9HnTdyCfMuAF+Y8BjR0
+         /LeQ==
+X-Forwarded-Encrypted: i=1; AKwUvByeq+gSYskiG0yS+Lid4Jc1RxHH7LFuVWnBmCVLihRSV5//pk+vk0wPdXZ7KGdqerwj/4526I3LtzX7K8bNsg==@vger.kernel.org
+X-Gm-Message-State: AFuF++knuU0soo8qXhPdvj7fHiGpsmZVNRSLA7s0rq0peEw4pfzbRbgU
+	to/nbMCi7iPG84rarT9lRxP2AXwpLV2cfBOqzCuYVLbz4Ci5xWOFRFp3PvRjytuSnOgyEpdIWQ+
+	HtPbcaWpwVk2kqaZPSEO4noOPQY3x8wYcP/MCvQC4UgsGaa3Y+uxFpz0qMMKa7I8quJOq
+X-Gm-Gg: AYBFou0FstyhRtaoI2aJBDn4d7/+jCI2xjLgBxbFFbkQr6FzOZKrNGl7n/zCxNNdpNP
+	+fdl5Zqw9TF5gjsoYmigxTxQ7aSrH502T1WffxcC34uHfS2RwZoYnVx++nRDyTulChly5PgBCR8
+	at9BPhMi20hm4hp3qyI8Rw00z8fxtTnZYa6SpNL+Bq12CeSwiQOrVna8Obcke4TvXbKpEEGHAeK
+	pebAECZtCyxEEGCo9i7rcidWM5H8o3yIX5qEPNUihBLYdZGKUA+TgxFFdCZVeXGzR+srQ4fAYx9
+	UsDPdzGW32ccmNdo5BPInuXL1HvyWpb0gr6ykba8X2jX7HMTPKbmPrDmTPOL+O3PYpIv3AirIlj
+	DjsAbJExTVd1GQ53vgjVVn+rOP6ED3q4SvJ2+DucNiTbuyO5h
+X-Received: by 2002:a05:600d:8649:10b0:49c:fa20:cc0a with SMTP id 5b1f17b1804b1-49cfa20cd58mr167275115e9.33.1788814861709;
+        Mon, 07 Sep 2026 14:01:01 -0700 (PDT)
+X-Received: by 2002:a05:600d:8649:10b0:49c:fa20:cc0a with SMTP id 5b1f17b1804b1-49cfa20cd58mr167274945e9.33.1788814861409;
+        Mon, 07 Sep 2026 14:01:01 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:11aa:87f0:ea69:b2b0:2dae:5ef9? ([2a01:e0a:11aa:87f0:ea69:b2b0:2dae:5ef9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf7703cefsm458086515e9.5.2026.09.07.14.00.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Sep 2026 14:01:00 -0700 (PDT)
+Message-ID: <b34807ad-6390-4804-ba29-43a407b3d9fb@redhat.com>
+Date: Mon, 7 Sep 2026 23:00:54 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260904-b4-arm64-callops-kcfi-v1-0-ce6687739b0c@linux.dev>
- <20260904-b4-arm64-callops-kcfi-v1-8-ce6687739b0c@linux.dev>
- <CANiq72=xOrSXBBdmrKYfX1=qgF37LRAMzMJd4GJkXaYHMVe9yQ@mail.gmail.com> <ap3Z-YDtzmdtMiMk@linux.dev>
-In-Reply-To: <ap3Z-YDtzmdtMiMk@linux.dev>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 7 Sep 2026 21:33:03 +0200
-X-Gm-Features: AcwNN1UJ5AD1nmjaRgagxZvj3fkfuD3Z7c-j0Zc231NENpcPq2HjO9j40kxIvNk
-Message-ID: <CANiq72mVXNmqh-RdOunFLBKRwMgYHFBqJOP7NbXrd8WHPb3sAw@mail.gmail.com>
-Subject: Re: [PATCH RFC 8/8] arm64: ftrace: Allow CALL_OPS on kCFI kernels
- built with Rust
-To: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Puranjay Mohan <puranjay@kernel.org>, 
-	Xu Kuohai <xukuohai@huaweicloud.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
-	Leon Hwang <leon.hwang@linux.dev>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, live-patching@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, 
-	linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Ben Cressey <ben@cressey.dev>, "Florent Revest (Anthropic)" <florent.revest@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 01/14] drm/panic: Do not use un-escaped URL as format
+ string
+To: Thomas Zimmermann <tzimmermann@suse.de>, javierm@redhat.com,
+ airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, geert@linux-m68k.org, rdunlap@infradead.org
+Cc: dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, nouveau@lists.freedesktop.org,
+ linux-renesas-soc@vger.kernel.org, virtualization@lists.linux.dev,
+ sashiko-reviews@lists.linux.dev, stable@vger.kernel.org
+References: <20260902121930.597222-1-tzimmermann@suse.de>
+ <20260902121930.597222-2-tzimmermann@suse.de>
+From: Jocelyn Falempe <jfalempe@redhat.com>
+In-Reply-To: <20260902121930.597222-2-tzimmermann@suse.de>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 4fWtFDkAJns0Ch1mxHXcVrYK-z3TLmXmFt0h_eqrOXg_1788814862
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, fr
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Sep 6, 2026 at 11:24=E2=80=AFPM Jose Fernandez (Anthropic)
-<jose.fernandez@linux.dev> wrote:
->
-> # Do not pass -fpatchable-function-entry to bindgen: its libclang may not
-> # support the section argument (Clang >=3D 21), and parsing does not need=
- it.
+On 9/2/26 14:13, Thomas Zimmermann wrote:
+> Replace the direct use of DRM_PANIC_SCREEN_QR_CODE_URL in snprintf()
+> with a %s conversion specifier. Avoids a possible vulnerabilty from
+> a crafted URL string.
+> 
+> As the attacker needs to control the kernel at the Kconfig level, the
+> potential for an exploit is likely low.
 
-Thanks! Hmm... Not sure if "parsing" is the right word, i.e. a flag
-change could still make `bindgen` parse and generate code fine but not
-match the ABI of the C compiler.
+Thanks, it looks good to me.
 
-i.e. I guess I would have expected something like "...: its libclang
-may not support the section argument (Clang >=3D 21) and the removal of
-the flag does not change the ABI" or similar.
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
 
-Cheers,
-Miguel
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
+> Cc: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: Jocelyn Falempe <jfalempe@redhat.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.12+
+> ---
+>   drivers/gpu/drm/drm_panic.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+> index e576c4791861..ba21df4be338 100644
+> --- a/drivers/gpu/drm/drm_panic.c
+> +++ b/drivers/gpu/drm/drm_panic.c
+> @@ -658,7 +658,8 @@ static int drm_panic_get_qr_code_url(u8 **qr_image)
+>   	char *kmsg;
+>   	int max_qr_data_size, url_len;
+>   
+> -	url_len = snprintf(url, sizeof(url), CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL "?a=%s&v=%s&z=",
+> +	url_len = snprintf(url, sizeof(url), "%s?a=%s&v=%s&z=",
+> +			   CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL,
+>   			   utsname()->machine, utsname()->release);
+>   
+>   	max_qr_data_size = drm_panic_qr_max_data_size(panic_qr_version, url_len);
+
