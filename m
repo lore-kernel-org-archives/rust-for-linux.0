@@ -1,84 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571D13EB108;
-	Mon,  7 Sep 2026 21:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A14418A36
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Sep 2026 21:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788815207; cv=none; b=XCDBeY/IakHKwDN6JztQhn+20dwuBVClyJF/KsoUI2O7IACnW1APgj5VYacFeXAeVNswXNWw+8vvW/OSfbTu5ok6So81APBpEaxRGolskXo8n5+D0hov1nzbo9jqS9WlB/iacriDKEdUAaQ9dj4oQ5+9J0PMG4o5gbOjKlDGfB0=
+	t=1788815403; cv=none; b=tKEbaUXM9LX3bWBDwgPQG61PLIzPrDAJ8UU4GZPwut5LtmImxGUHXB7/0uuSSOA8xZuaBt+WWz8ijSbhMctJkR9OSfwgfE3gm0m04VcYEDagNXrIivJ96ipxCraw6M1rinBHkeDxr4Gljs63ZcmWT42A81LD/2qiO7kByJeGBSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788815207; c=relaxed/simple;
-	bh=u0NXWeg/Httt9i9X81l4G9xFkgPmdQRSI5qAMBSyB1s=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:From:
-	 References:In-Reply-To; b=H4VXjbjL+Zx7vcrz6Jz03iC6av4tkza6qtlF7i/9O3ZPBNwnpuEzYixfZPFC5FbXL50f74D0X3Yn4uNr+nLfjqPPcIf71GZ6Ek5ci2uvFra9/10SzZ8FAlGLb5fVIHKi8T61BbKMZdnR92I+X+0eHJcMvgjE/Lqc2bvMpUCp7dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CaoOipGM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788815403; c=relaxed/simple;
+	bh=fOcgRzp+AkDsXO3kxiBG3fa0WOrkhLtbxHvF3DDw9Kc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Tv35kxmNq7yK4rdGoIewMtNE1xAuVSJaDvS9Mw++gRp0S9ABgty9ygBvZpxyc2r0AJbNm6gVOF5YZh4kB+40taprambBOyv4TBZX3C+4JKdLKg9probtnV8b+zrT6xCJgzbTRO2+CFszy9E7XUBEDr8hoWXGJUa5dVxjUfb3ImY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ges3/SVW; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CaoOipGM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9161F00A3A;
-	Mon,  7 Sep 2026 21:06:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788815206;
-	bh=90F9gpIn6ahg1Sh32fek9TE5xaVsZqJW6WdR2q7nJtE=;
-	h=Date:Subject:Cc:From:References:In-Reply-To;
-	b=CaoOipGMy+LRNytnbxmP9ZFmgaCGRcVpuOcDUxNDoNnDM+chAKVS3z/SXqC61FkUo
-	 hU5DbovmMj5tFB8LfDtshTKDvvGJdBPkrfS0YAj2pmLNy2AgCEyhsXk67NccTBz845
-	 oISqnvxdR/VOFI6UfhjeoO3O5Pu2gTZG8TzN2jYS0+MW58cq8ZUjLJL1vfChPKVAX4
-	 VvZkwdVgN7soN9BkH89HPHNFtn5ckczW6lmCuht7erv7PdPJ9CU9m6ObULR1/xi1wS
-	 RbNl564Rg+zj66OfqyUmjs2TD8gunPwNniUK0TyuOE32AKpROMJx9fLuku2w8wbovB
-	 rnv5+kbJs1aOw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ges3/SVW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788815399;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FuVXo6f9Z1spKRdlImVETM3b3qRtGRWXee9cH9hEi4U=;
+	b=ges3/SVWE4Ts89l/Qj4GDA62YM5nH/14wTb1iUriY3oDHxwaLxIlzIhKbFBwgT19BrPIrh
+	KP9UAnHWGyuGJheHLcnP0/mpmUIqooxKCDkwx36U6G257A8+IJj4TpTHNTq6YbsmkSSn/q
+	AazXyYnTJf9uZqZ/ZlvVn2yI1NziEng=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-_p36ToZzOMyOl86nP76L3Q-1; Mon,
+ 07 Sep 2026 17:09:53 -0400
+X-MC-Unique: _p36ToZzOMyOl86nP76L3Q-1
+X-Mimecast-MFC-AGG-ID: _p36ToZzOMyOl86nP76L3Q_1788815391
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1D3701801200;
+	Mon,  7 Sep 2026 21:09:50 +0000 (UTC)
+Received: from [100.91.157.188] (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D0FA15B1;
+	Mon,  7 Sep 2026 21:09:42 +0000 (UTC)
+Message-ID: <fea78e29-a3a8-48d2-9353-48a94d3a1649@redhat.com>
+Date: Mon, 7 Sep 2026 23:09:39 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 07 Sep 2026 23:06:40 +0200
-Message-Id: <DL9E2EFLN138.3DMBLYEZRFW1R@kernel.org>
-Subject: Re: [PATCH 0/4] rust: dma: tie DMA allocations to the device's
- bound lifetime
-Cc: <abdiel.janulgue@gmail.com>, <daniel.almeida@collabora.com>,
- <robin.murphy@arm.com>, <a.hindborg@kernel.org>,
- <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <aliceryhl@google.com>,
- <acourbot@nvidia.com>, <ojeda@kernel.org>, <boqun@kernel.org>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <tmgross@umich.edu>, <tamird@kernel.org>, <work@onurozkan.dev>,
- <mmaurer@google.com>, <driver-core@lists.linux.dev>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260830193824.471089-1-dakr@kernel.org>
- <20260906153753.3207797-1-dakr@kernel.org>
-In-Reply-To: <20260906153753.3207797-1-dakr@kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/14] drm/panic: Return from screen_user if display is
+ too small
+To: Thomas Zimmermann <tzimmermann@suse.de>, javierm@redhat.com,
+ airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, geert@linux-m68k.org, rdunlap@infradead.org
+Cc: dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, nouveau@lists.freedesktop.org,
+ linux-renesas-soc@vger.kernel.org, virtualization@lists.linux.dev,
+ sashiko-reviews@lists.linux.dev
+References: <20260902121930.597222-1-tzimmermann@suse.de>
+ <20260902121930.597222-8-tzimmermann@suse.de>
+From: Jocelyn Falempe <jfalempe@redhat.com>
+In-Reply-To: <20260902121930.597222-8-tzimmermann@suse.de>
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+X-Mimecast-MFC-PROC-ID: FQKve96ceh9-tgGqHNMCHeuxRbjFNsGw9-sj-xBFcRo_1788815391
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, fr
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun Sep 6, 2026 at 5:37 PM CEST, Danilo Krummrich wrote:
-> On Sun, 30 Aug 2026 21:37:12 +0200, Danilo Krummrich wrote:
->> [PATCH 0/4] rust: dma: tie DMA allocations to the device's bound lifetim=
-e
->
-> Applied, thanks!
->
->   Branch: topic/rust-dma
->   Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/drive=
-r-core.git
->
-> [1/4] rust: debugfs: drop 'static bound from ScopedDir file creation meth=
-ods
->       commit: 9dc6cedcd971
->
->       [ Remove unrelated change from Self to T. - Danilo ]
->
-> [2/4] rust: dma: tie CoherentHandle to the device's bound lifetime
->       commit: f6b56da8e1b8
-> [3/4] samples: rust_dma: separate driver type from driver data
->       commit: c3d4fd0e9d27
-> [4/4] rust: dma: tie Coherent and CoherentBox to the device's bound lifet=
-ime
->       commit: bed87375f90f
->
-> The patches are in the topic/rust-dma topic branch and will be merged int=
-o the
-> corresponding target branch soon.
+On 9/2/26 14:13, Thomas Zimmermann wrote:
+> Return an error if the display is too small to display at least a
+> single character. If the panic handler cannot display any message
+> it does at least not destroy the current output, which might help
+> with identifying the problem.
+> 
+> This change duplicates the logic from screen_kmsg output.
 
-Merged into driver-core-next and drm-rust-next, thanks!
+Thanks, it looks good to me.
+
+maybe add a check also for font->height > sb->height
+
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> ---
+>   drivers/gpu/drm/drm_panic.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+> index f597ef04c5bc..c317afc76669 100644
+> --- a/drivers/gpu/drm/drm_panic.c
+> +++ b/drivers/gpu/drm/drm_panic.c
+> @@ -486,7 +486,7 @@ static int draw_panic_screen_user(struct drm_scanout_buffer *sb, u32 fg_color, u
+>   	struct drm_rect r_screen, r_logo, r_msg;
+>   	unsigned int msg_width, msg_height;
+>   
+> -	if (!font)
+> +	if (!font || font->width > sb->width)
+>   		return -EINVAL;
+>   
+>   	fg_color = drm_draw_color_from_xrgb8888(fg_color, sb->format->format);
+
