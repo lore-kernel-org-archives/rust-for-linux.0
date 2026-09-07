@@ -1,251 +1,295 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013029.outbound.protection.outlook.com [40.93.201.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2514F30CF
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Sep 2026 14:07:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A355013B0;
+	Mon,  7 Sep 2026 15:07:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.29
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788790030; cv=pass; b=jurKIhghzuNiFI/VKTrWji9zDU9VNoVVXjVatfBapx1gWMuP06H6QbEHUYMlDcBeYjNsPOmtYtldtPrs98639eqtp6HCzo7XLllQ4Iqn3gMZfWZ1pKF7sviMBzPamc3hAKhlvri848kV15YBebLCAvrgT5HG/Ew8XEMXa3/IeoI=
+	t=1788793674; cv=fail; b=n12xEqvSzoRJ8p8k0JmT9i4SPumcS4Tfcqoz0ejs/inzBhLsSOFOXwMbxVoSSOFt5bYUS57sPuEEK0DvULjyQpx35mEXP0SxlPjRm+mnq0FhtVQ7RGfaQRTvDl13re+yT7QnC7GgIH2awNkycBhUkmcH6Nf9yYcDWHohCg3OOjE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788790030; c=relaxed/simple;
-	bh=HvMD0whYP38ILXbRvW4RQd+DD6z86Cgv8Z7FhShCV6w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d7PbgbCG4hT/dnAdfl7FsZF2szQfLI1EIDETKwSIc2sZ1vEnle+/sUvOgUu2S0oeDSjOag+kOUI8GgD5LWwaAOjZotxTDOcJ146eXr5oMcaHGsR3boG9XomcYbb5bdpVYc6BGrWIEghkjBJwCGPh5yiPHLPOYCkwWgrXU+LQ2Lo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aQrlrIzN; arc=pass smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1788793674; c=relaxed/simple;
+	bh=tohPry0VHd0yALjSH39rCWpifVQaOCMt23uDweBJG+k=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=IEPQ/LCNFS1hCkWNA6efYU8smXsQ3b1hyB9sZKa1oi7GYgyIeE7g1MbWAzDVTf5q41xEtoB7uI1vd6sDqkhoS5zY+VPRyV0l27l3KF4Y6emtmwKgjWGSC8fhXWJeAXCl4f2ZBE9rJp497n9zNmZynGKT12KHYLvMmeev0VX+U7o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Lbd79j2+; arc=fail smtp.client-ip=40.93.201.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aQrlrIzN"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-49b0d8bc2aaso45692635e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 07 Sep 2026 07:07:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788790024; cv=none;
-        d=google.com; s=arc-20260327;
-        b=b1eQxjoc0WEOfQF7ZHa4cRaCQUzTEzrk+pEEiioSm9J9ZPk/7ZWBVwcTOFgUz9UzwH
-         cCujoVfSOapwH5f7JsDNf36mQcPRY/KvBT84CZxvilJUX2991faybSdO/tQgPRARw18N
-         fbA4N3BDoMFXtXyv3b8xncwrHhD1sZNL5Hqkivr3tSzEbKqKH2tDyBF7JwVpidyNV+V+
-         VCIY6peb+RyL2bvs7k38xPeKEkWSABO77D4Lj38Rvz2G70RFj7r6AFcKCyYhGAWJtZ4b
-         OTpKSvuOMEan1q5TD5JU6SQYgU7ZRR9OORMnNdwIPO+yVlDbnEcC2SZI1YVuIC9zM/b1
-         H6rw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Vg2AiEFa68ARzliVtiEYWMnugqjIY8Sb5bHhQpyrHpw=;
-        fh=yPSWkAu05qEiyeb1DIra6GggSHMyYDPw0k7YtkVXxFg=;
-        b=ly90Lp+CL4sMnvlHLnTG8sbw1Bq3Gvw7XJpdaop0MuPilc+7XB/S03dMOjOlari7Mt
-         W5eKos7BMZIIH3mXLrFPKlfic8UmLT1+OP691mFLpVaTI9Pgf9BaIfsagX2jGzySyZBE
-         THBs8IkomO9LO+P8J+u8v+9WjII8ZMPsjgDnmlLvRQXFdDh/ehfmR71cBuxd4jcIhNyQ
-         d2bBYZ19P4ZCq/Awum9ySqfP1a15ktQRty0ddoJx7Trg8DLpmBtySZ18oKrV2BuC+r35
-         9rJEcDeSz9DBdsgppX5Osk0C7hLz7zwkAdPRpaXyNKjznL/6J67AVzjMSkmUakQIhBrc
-         MrrQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788790024; x=1789394824; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Vg2AiEFa68ARzliVtiEYWMnugqjIY8Sb5bHhQpyrHpw=;
-        b=aQrlrIzNQyqSfh0XaP2ut8GCXtY2oAawElTBuV+LQljHX0gNJJseP0Tj8aYK3SD1UD
-         DxMjndhj5KDlpdyEjZ79evHFe2IvVI6bUG4QUExTHVt3BfH4WcZMyheKZvC4sbHcvvLy
-         0un/LJkrtmw4eV8OnJFyUXGOvuzt1Nq0bP0mxJYJNQa1rJ/gwBypWZznL9EtEsx7+ia5
-         JB7V11qwc5rDT4HVc+V8HMuvDEwdwaR8EdRawNbtRFNOCyn6VhGnT9LikoOyRyfJNPF3
-         UkypSUwLLWWjBO6uU5u0KVpC7c6gx45KQFXmtTtDxEQ3U7M2FcdxMqL+gLfg0yJ7GO4p
-         XuZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788790024; x=1789394824;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Vg2AiEFa68ARzliVtiEYWMnugqjIY8Sb5bHhQpyrHpw=;
-        b=VY5q698v4izqifgC8Puy5Tvou9tmGlG748VgIrki+EaqoyIM5LQ4U3jpUj0cMHBV8i
-         jtdvu679dvnonE2QRcbeyUeYb8z/wLuQn+21xiKBQUhoBOD1/2dbsyjbr+3OVTGg2hF0
-         LF8dP1fvedwyx6X169h7NJ6RPML1kwTkctklefHui7I5/rIfEjF0d4McBhjRcKRpGrjd
-         0OcSjDyxurw18ORL37vJY+CVsQt2GyB1rCaxQeNUpOg3tx/gN4ROt+QYfNkasz4isHYG
-         oe4MZrojlaJUxljHuio3NUJTfZLOxpEM60KjokDNt4HHivG6/jGDy/t3f4si2UmwrR8R
-         dpog==
-X-Forwarded-Encrypted: i=1; AKwUvBxUsGGayCZGwgzf2b/mRCPc7vxgWGy8At5nlyYnPfNB8C9/mYdPhWB60t5H8dq0Fr8l1+tqEyhSQpc2Pnn0qA==@vger.kernel.org
-X-Gm-Message-State: AFuF++mcR+p2A0im2wrKYeIa3Pw7wN6Rpw4VwniC/OxC4LdBHFudnDkW
-	lbKxHVSWruQ5DcKM6J04afyf7lRHJRBD0FuaBvIp3pR83PHlwpcN3D8A4xfTaOV41mAMEqK1RRq
-	nMlMbqtMJTNPL3vM9gQukKeTfAfWQysJ5HwKgsB8s
-X-Gm-Gg: AYBFou0v+PSzyQmLYQ9JKr6QlEx7JFkOJMR4dX3XBgvWfIfgwN+8Zi4JbiT98vHmL/3
-	MmzDf5P34E5yzv+rClzBeQ8d4YUuNhkfF044Af82OZ+IciUzgvhrF9brA5//lPuQ3KH9j4n6vy+
-	MA5ZGQEbzqYL1fsM0mE4eHTEexCKGieGETS6MQUuS1nVSVwe5uAm1E4NfZGpRmEXQMjI20h0Ltp
-	WAs+sqzk/drtSPYzDKpEvdfuRDPfWxMIu5HR+hcgZ5kpBHEFWi7iGrAF5pcKM2d4IuDolexpk9f
-	tRo8gzYMBeCFImJ6ZDhcU9ooSyagaMzHTnlYwQ55xI+LPxlQLYPiYuwxozLZV5R4Cqu3iHLCYVW
-	WHdCkV2GPQSnkAmDYO6Fo5brKVjZYAIc=
-X-Received: by 2002:a05:600c:620e:b0:49c:fc6c:be19 with SMTP id
- 5b1f17b1804b1-49cff2078b8mr196871015e9.31.1788790023400; Mon, 07 Sep 2026
- 07:07:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Lbd79j2+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Mn1DFG68YjbC/P3XbelNDy5dV+uATiG0G45oQLKH8zb4zKzxneSK47cJxZixacXdYfsA7LqEuuRwPHxBXrp5dJDjUdD5/A4VRXvBfM6L8GqaZbj/xqzqXBo8AGxw89Ne/lOiBSTbKtSPssszIrUPVv6OaNruzppaJYqaJ6BgLmAat4ui0UOcOIf9v8QSM+wHhj4Ue2HOLZsJWUiLVN7SRx9t54JiFQ19+S3mhSVwut2/zxPlNsEUfNM+H4+TMnzMoD6RBqyjR0ncxZ/fxyWfV12qvCZ9YXmkSXsG/xJvnPYIUq5LzX+u0S+oAf0v6gLthSQa7rE0bT8hO/hRdCbpRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=t7gq0AS+Lf42T/2ZZxI6mmOhjSjVaehvWudNBlOrEvU=;
+ b=DCPIw7tuT2yqkvp79pIVvhm2buPSCD0MQu1Jm9/nRt/nwI6tQcnKfc92ava09pOTd91NsrpyGL2XedhsJQ/xknfd75HQljbsarNQ37+3hnN+AZQgK/PB8WHVyleohHgISP0n+2yg3w2EcoTiCIveDmlJYbjfdwWRYTiZTS1D2LF3hDgtifgq7KiFKJDaXziJ3gBZOKJFVZmBz/MC3hyAjDBUMsxn72+kD4WQJc2eOigs4oVYRYEhmze0v3gdaEVLY8yd5QmzKnhz3dAp3XJ5G7JT1t9tL94yCShoE6mp/AomrBbquYbED3lD6f+BzpFAsBOJ05Is867/dE3EWRmfNQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=t7gq0AS+Lf42T/2ZZxI6mmOhjSjVaehvWudNBlOrEvU=;
+ b=Lbd79j2+LzsbVxP1H2k/jR3RFi+miLVAy306rBsKVEVE8goJJR2CgqFKU1acaVlYsODYRxKnHmumbdrhvRx49JPlWezVGRWyztzcbyO7SPhtN7gg4xPS82a8YeMia3Ag5w4db0VNR+2e54BbzeMPki807dhlj/dHKxgIItAN9o+x/E648ajIOaZqp2Hyc2Hsasjy0j3N3+ymmKylkGmfQq7GGKmQE7cZR9IAW6E4MFZTVSQuNGV8ePQKeW0r7bWaXMuBevQwNkVCYP9XEfjMzxNJ5hvlJlEUh+AoFCNhTdOKuBY9ZdGu/ycyR/aVFhshXUobvS6LRe0N+rV3UIU6/g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by CY8PR12MB7754.namprd12.prod.outlook.com (2603:10b6:930:86::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
+ 2026 15:07:48 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0382.007; Mon, 7 Sep 2026
+ 15:07:48 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 08 Sep 2026 00:07:45 +0900
+Message-Id: <DL96FLHTRWOI.1FKOXD8RCXBUP@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Lorenzo Stoakes"
+ <ljs@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v2 4/8] gpu: nova-core: add NVKV encoder
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Eliot Courtney" <ecourtney@nvidia.com>
+Content-Transfer-Encoding: quoted-printable
+References: <20260827-b4-nvkv-v2-0-0de9d5c8658c@nvidia.com>
+ <20260827-b4-nvkv-v2-4-0de9d5c8658c@nvidia.com>
+In-Reply-To: <20260827-b4-nvkv-v2-4-0de9d5c8658c@nvidia.com>
+X-ClientProxiedBy: TY6PR01CA0012.jpnprd01.prod.outlook.com
+ (2603:1096:405:3bc::17) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260824-unique-ref-v20-0-490735672187@kernel.org>
- <20260824-unique-ref-v20-4-490735672187@kernel.org> <ao2WubjLtDuHvRzx@google.com>
- <DL894TFXM5AT.2QOXN683UKXIF@garyguo.net> <CAH5fLggAMfBcxprKJxs4JbieKadC_mKg4B0xNETOH1QUi72UGQ@mail.gmail.com>
- <8733vlxmm8.fsf@t14s.mail-host-address-is-not-set> <2dpwVpJS3VbfQ7CmE3HeY4IJSSMXTP_O9sSP3HHHUD7Z29RNEG4Hc0m8f94jKWjFlekcTXvIBA-QdGYrf8w1sw==@protonmail.internalid>
- <CAH5fLgjEfZO9DwcUxaKCWd_hFUrXU+cxiwmRg1UnM2pKD6gPvg@mail.gmail.com> <87zextw4c4.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <87zextw4c4.fsf@t14s.mail-host-address-is-not-set>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 7 Sep 2026 16:06:50 +0200
-X-Gm-Features: AcwNN1U77QgBa8sE7Mjd0WimH4SDjDY5r-Et6lPB5NUv3A9JgqpUTtiAXpyWSl8
-Message-ID: <CAH5fLgjYmvp1Ph3dYXnTKkAvWgNpgCAPeq_7PZhRai6pCNmVmw@mail.gmail.com>
-Subject: Re: [PATCH v20 4/8] rust: page: convert to `Ownable`'
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Lyude Paul <lyude@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	Igor Korotin <igor.korotin@linux.dev>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
-	Ira Weiny <iweiny@kernel.org>, Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev, 
-	linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Asahi Lina <lina+kernel@asahilina.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|CY8PR12MB7754:EE_
+X-MS-Office365-Filtering-Correlation-Id: 59d4b2db-a084-44f1-23c1-08df0cf1c76d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|10070799003|366016|23010399003|1800799024|6133799003|10067099003|56012099006|4143699003|11063799006|18002099003|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	C/0KivCkH1V/1V3BhploUxDXwti686ZcaH1yhIsQD1Oou5W/1ZSgiyUi4KK6sga+njrB4Jr9J+pBaUorv6SZ1UxTo/nnBQxIwYEv7iGv2MSpO364PYFBIJEJ/DkfDtLdwqCqrqOZhe0yASX3nWLCvVtShUiOiVt7iHdxD8guE+y6z6Vtuc66sCC+/3yKmCIuQIfIW26Kt6TWeaqUF8x1Nq06X//dJC3OpIRqumem4IRm1+2zjJYQNQGxnyzDCIU+S/K0kxRzyOtx2f7JnJ2eVUe7C5yR/f3MCI9skXp560HDn0Z/r1L4d5ffbHMl3A4QsSwVwl5SXDc3BlxH8T1yJR1M/TFyOAmWNdhj4y9ybCNgJfZ7ZTpsCc5bi0hH+Exbj/1LPEZ2mJOCY6CKv9ngai6udATW7rQ+RywEY5rAgTosDaIXuoSgU+o2bIqgsBElajVFxHMrzali6VnDRLuIZayG3GqLCw6ZYjwWIyWydGz+4zOdaWmtqJi8rQKWLrIJalPDjxUotNUfyy4eRw6Zqhyqop+RPBh4iI/B4QZvszSSeCMNyIJv7Y9uZQsXDZFVlzSo4v6/ROfMplsxLoO+8ZHhLoLoo+kQx6ClEbbmmjiYWkGitY4ZtqWhP/tzo2rz03G0XumO3JuydP+Bjub322LdaTx/xq+W1dVPXpyMUp4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(23010399003)(1800799024)(6133799003)(10067099003)(56012099006)(4143699003)(11063799006)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?a3R5OUd5MkVGSXBSeVVHNkx0bmVqbkpKVWFmYi9TaEF5UVZkWWFrWWpoL3Nx?=
+ =?utf-8?B?ZGNrMUIvNFllMktsOCt0blljTEliWngwcng3RkpNOTNHVVhJVXRSM1hmek1p?=
+ =?utf-8?B?VFlKamdQdk1nYkxKVk11UXhJdHFDMjV5OGVYeFp4UVlHWGtiYkNmNWZQUnFh?=
+ =?utf-8?B?VmpEdlY2ZlYwM1Nkbms4eCtVTVJ1ZFlaemhQd3Y2aDJ0TUNGVjArWVM5VldL?=
+ =?utf-8?B?QVgvK3FBYTRnUlc0SURaU2dHeC9KSmRDRHJuU0lnMVlIeW5SMUgyZzdvMXJG?=
+ =?utf-8?B?YWt4RXkxbkVRaVJheWpNVmZoRjZpb1N0djFwcUR4K3U1VVlKUGJ3YThteTRp?=
+ =?utf-8?B?ZlYybjNmaVhIVkdyVDBWNHRENVRKVXJpZlU3TVpSd2FKbnkyMjkvK3ZuSFRt?=
+ =?utf-8?B?akl4bEdUSVVkODU1Mkk0bkUwakdKSXlwR2toTm5kWGVKT2pQbW5sY2l1anVG?=
+ =?utf-8?B?cVZ2cGpORlR5ZGtSSXdyV2grTUxUN0tmcGxsQ1BZbGgzWG51VWRPNUlObkhJ?=
+ =?utf-8?B?Q3NzVTZwQ1c1T1kvbVdaQmR6UEh4RlVHdlk5TURDQmJUaFRPWkc0MVp0a2FZ?=
+ =?utf-8?B?N3VCU0c1STNNcndHR2JlT082c1Z1M2JjRVFDRUJYaFZIcUlBYVlrak1nSmdY?=
+ =?utf-8?B?bkdQK1haSGppbnlDTFdaNTloZFVUN1NJWUxlKzJVWFRPb1lOeDd0b0dFeGEr?=
+ =?utf-8?B?TnVjTlBGYkJHZW9obUVYVWRpekRUVm9ZT2pxeVdHb3FDY2hEcVFQQmdkVXRW?=
+ =?utf-8?B?UGh0elJDRHQyZHBzTGVabllyb0REZzFVbmpDWVJKZGsxYW15Z2VzQmFjSmFQ?=
+ =?utf-8?B?aWVlRGJPNUQybTZESVkwZnQzMmxuMHcrUnNsamdzZ21kOXMxSGpWOWJaS3Z1?=
+ =?utf-8?B?YWx3bWhhOEpBZmRWYmo1bGNxRWJNbUoyc20rSzRldHVFNTZaaTBscklrcDZN?=
+ =?utf-8?B?eEE3Vko3MzdETU9QcTBqVC9idXc3MzUrdDhvSW03dVZoV0h2ZnpFSzk2Wm91?=
+ =?utf-8?B?WXEyT3pPQ0MySTVWbTJhSHVxNmc1VXRYRDdQVWtnUWJhRC9Md1lGNVJYd0dJ?=
+ =?utf-8?B?UVpZb00yKzRJM0lJWUlNanZJVUg0cmlaQmVuckF3R3hsdkYzVFE3VEZ4U05H?=
+ =?utf-8?B?WWIvSjdBWDZQd0l6cDlnVmRxbjZ4ZURIZWZ5ZWRSOXJsa3Z0akoxRzVsT09G?=
+ =?utf-8?B?enZGdGdxajcvK0xPQjBPV3hiS1ZZYnVqK2V1SnNWR3BCYTRzUTV3bSs4c3hN?=
+ =?utf-8?B?bHl1dmRWTWJMZWt5WmpnaWNkL2ltYUFSVjhWNGFWYW9COEpsdittVlRPYUho?=
+ =?utf-8?B?dVhBaTRucTBaK2tLU1p2YWRVNGdqV0lVWEtCMjREcFdlQzNnR3pyZFgzaUU0?=
+ =?utf-8?B?RGc1Qy9zYTErSGNBQ0ZvNEwwbm9nU1RrSzVwanJVUXJ4dHllVTY0dVc0RXpG?=
+ =?utf-8?B?RDB5dmNtZzBrd2xBNWhKcWVkcDQrTU8ya3FHSHV0UXVWZUN0bzA5a3NwNDgv?=
+ =?utf-8?B?ZkpsQjR3U2RaQ2JkM0ZkRlNDWisrcnBDMWVtVUVkUEFzb1VOT0p2NFZPZkNP?=
+ =?utf-8?B?SjJETlJ1YW10R2grNkcrNEM1K2ZGcVBHR1h4ZDBZL1ZGNHdib25oV0ZORDMx?=
+ =?utf-8?B?OEd2MklRb0p1eVFkSU5OdFNTTHdnUGM4NWpUVjArL0ZpS2R2MzdYcEkxS2dP?=
+ =?utf-8?B?UUViUVdKbkwveFVhZGpybFpuMnVKcUZOK3I1L3lTZll4b3ZHUWczNmxhOUpj?=
+ =?utf-8?B?NURRTEtoSGppSEdhQTNWZ1NPTlRDcWJsNUdwOUoveXFXMjJaaDlXeGJ1TGg2?=
+ =?utf-8?B?ZWpnQURGNjBKeGIrRS81RjlGd2Fzb0RaWXU5Zk5ZY004ODhldWdkeSs2S0NG?=
+ =?utf-8?B?RGtaakRzWEFuZnpLdnlPU1ZLN0xSZFQ4Wm8yWFZ0UXpPM2lrNFZjdUVNdXlo?=
+ =?utf-8?B?SHBpeHlISVhVN3BGUDhKYlVyYTBpMUk3V2VNREhnZ0xYdks3ZXVWUXgyY0s3?=
+ =?utf-8?B?QU9YZWVrb0JMNllaSmRMZkJUaTgyRFBPUDg1US9MRjM4NFhrY25IUDVWL2l2?=
+ =?utf-8?B?dW10YnFHL08xOVJuaWJFWmRJbmNYQytPcTRLTm5FdnBIdWNteVp5eXlpaGNp?=
+ =?utf-8?B?c29GZWdPS1hWOXM0aGZkT0xQVWNueFVYQ0t1NHl1elh1S3VDOSt2ZE4zTFJI?=
+ =?utf-8?B?djUya29aakI2S21oOW9JNXViWnNnanVYdnVwblZoSDZzREhDbFlhLzlCZVor?=
+ =?utf-8?B?M3IzU0ZQeHdKOHdNeXErSTNPaGZ3VG1OYkw0VU5yd2xkWmJzaU0zRHpjdSty?=
+ =?utf-8?B?Wm5tUDlhdHgySTdEWFlLeW9telBreTFpOHJIU0ZVdXRtTzlxQWZ0eThDU09R?=
+ =?utf-8?Q?CMF1xsHHV94jxQrHSkT8DsRjim+eIGTrzjft78VwneLE3?=
+X-MS-Exchange-AntiSpam-MessageData-1: PvE3slR7rr+t9Q==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59d4b2db-a084-44f1-23c1-08df0cf1c76d
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2026 15:07:48.4907
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Hp+3h6ywkFfzypro7PkHwfKPgGH1JyvnZt05/95UQua9xUsr8H+cfb76wVZqpvWsHIC0wdmVczLzI4Z7iCF4HA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7754
 
-On Mon, Sep 7, 2026 at 3:58=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
-org> wrote:
->
-> "Alice Ryhl" <aliceryhl@google.com> writes:
->
-> > On Mon, Sep 7, 2026 at 2:38=E2=80=AFPM Andreas Hindborg <a.hindborg@ker=
-nel.org> wrote:
-> >>
-> >> Alice Ryhl <aliceryhl@google.com> writes:
-> >>
-> >> > On Sun, Sep 6, 2026 at 3:02=E2=80=AFPM Gary Guo <gary@garyguo.net> w=
-rote:
-> >> >>
-> >> >> On Tue Aug 25, 2026 at 2:20 PM BST, Alice Ryhl wrote:
-> >> >> > On Mon, Aug 24, 2026 at 01:17:56PM +0200, Andreas Hindborg wrote:
-> >> >> >> +        // SAFETY: We just successfully allocated a page, so we=
- now have ownership of the newly
-> >> >> >> +        // allocated page. We transfer that ownership to the ne=
-w `Owned<Page>` object.
-> >> >> >> +        // Since `Page` is transparent, we can cast the pointer=
- directly.
-> >> >> >> +        Ok(unsafe { Owned::from_raw(page.cast()) })
-> >> >> >
-> >> >> > This doesn't satisfy the safety requirements of Owned::from_raw()
-> >> >> > because the page may be used with vm_insert_page(), which increme=
-nts its
-> >> >> > refcount and causes it to be shared the vma system, and this occu=
-rs
-> >> >> > before Page::release() is called.
-> >> >>
-> >> >> I suppose the existing vm_insert_page() abstraction we have is alre=
-ady
-> >> >> problematic, because it uses `&Page`?
-> >> >>
-> >> >> Maybe we want to change the API to use `ARef<Page>` so it already h=
-as to be
-> >> >> shared? Conceptually it takes a reference count from a `&Page`, whi=
-ch isn't
-> >> >> possible because `Page` is not `AlwaysRefCounted`, so it needs a `&=
-ARef<Page>`
-> >> >> to be able to do that op.
-> >> >
-> >> > Honestly, the problem is the safety requirements of Owned::from_raw(=
-).
-> >> > Pages have a "special" main reference, and free_page() does more tha=
-n
-> >> > put_page(). It even does something when the refcount does not hit
-> >> > zero.
-> >> >
-> >> > The correct behavior for Page is to allow the user to hold one
-> >> > Owned<Page> whose drop calls free_page(), *plus* any number of
-> >> > ARef<Page> references that invoke put_page() on drop. This way, the
-> >> > owned page controls the special drop codepath.
-> >>
-> >> This does not mesh well with the model of `Owned` behaving like
-> >> `UniqueArc` to `ARef` behaving like an `Arc`.
-> >
-> > It's a different case, I agree.
-> >
-> >> Please help me understand; with page having a main ref and an auxiliar=
-y
-> >> refcount, if we model that with a single `Owned<Page>` and a number of
-> >> `ARef<Page>`, what would happen in the case where the main ref (`Owned=
-`)
-> >> is dropped first? Is this legal?
-> >
-> > Yes, it's legal.
-> >
-> >> My intuition here would be to follow Garry's suggestion and have
-> >> `vm_insert_page` take an `ARef<Page>`. Can you elaborate why this is n=
-ot
-> >> an option?
-> >
-> > That would be the wrong ownership semantics. The C side increments the
-> > refcount rather than take ownership of a passed-in refcount, so the
-> > correct argument type is &Page.
->
-> Or `&ARef<Page>`? Because with `Page` being `Ownable` it would not be
-> OK to increment the refcount from just a `&Page`.
+On Thu Aug 27, 2026 at 11:12 PM JST, Eliot Courtney wrote:
+<...>
+> +/// An encoded NVKV byte stream.
+> +///
+> +/// # Invariants
+> +///
+> +/// The byte length is always a multiple of `size_of::<u64>()`.
+> +pub(crate) struct EncodedStream(Vec<u8, StreamAllocator>);
+> +
+> +impl EncodedStream {
+> +    /// Creates an empty stream.
+> +    fn new() -> Self {
+> +        // INVARIANT: An empty stream's byte length is 0, a multiple of =
+`size_of::<u64>()`.
+> +        Self(Vec::new())
+> +    }
+> +
+> +    /// Appends a single `u64` to the stream.
+> +    fn push_u64(&mut self, value: u64) -> Result {
+> +        // INVARIANT: Appending `size_of::<u64>()` bytes keeps the byte =
+length a multiple of
+> +        // `size_of::<u64>()`.
+> +        Ok(self.0.extend_from_slice(&value.to_ne_bytes(), GFP_KERNEL)?)
+> +    }
+> +
+> +    /// Appends `data` as bytes to the stream, zero-padded to a `u64` bo=
+undary.
+> +    fn extend_with_padding<T: IntoBytes + Immutable + ?Sized>(&mut self,=
+ data: &T) -> Result {
+> +        let bytes =3D data.as_bytes();
+> +        let padded =3D bytes.len().next_multiple_of(size_of::<u64>());
+> +        // Reserve so that a failed allocation can't leave the invariant=
+ violated.
+> +        self.0.reserve(padded, GFP_KERNEL)?;
+> +        self.0.extend_from_slice(bytes, GFP_KERNEL)?;
+> +        // INVARIANT: The padding ensures the total length remains a mul=
+tiple of
+> +        // `size_of::<u64>()`.
+> +        Ok(self.0.extend_with(padded - bytes.len(), 0u8, GFP_KERNEL)?)
+> +    }
+> +}
+> +
+> +// The Deref to &[u64] relies on this alignment guarantee.
 
-That's just a limitation in your traits. There is no problem with
-creating a refcount from just a &Page.
+nit: `&[u64]`.
 
-> > Now, for the use-case in Binder I believe we could switch to
-> > put_page(), as we don't need the extra stuff from free_page(), in
-> > which case we only want ARef<Page> and do not require Owned support.
-> > But as long as we are calling free_page(), it needs to not be
-> > clonable.
->
-> You are calling `__free_page` directly in binder? I could not find this
-> with grep except in the C binder. Is this code you are calling into from
-> Rust binder?
+<...>
+> +/// Describes the format of the following NVKV operation.
+> +#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+> +#[repr(u8)]
+> +enum Opcode {
+> +    /// A 32-bit value in the op word.
+> +    Imm32 =3D 0,
+> +    /// 32-bit values for consecutive keys, starting at the op word's ke=
+y.
+> +    Seq32 =3D 1,
+> +    /// 64-bit values for consecutive keys, starting at the op word's ke=
+y.
+> +    Seq64 =3D 2,
+> +    /// An array of bytes.
+> +    Array8 =3D 3,
+> +    /// An array of 32-bit elements.
+> +    Array32 =3D 4,
+> +    /// An array of 64-bit elements.
+> +    Array64 =3D 5,
+> +}
+> +
+> +// TODO[FPRI]: This is a temporary solution to be replaced with the corr=
+esponding derive macros once
+> +// they land.
 
-Via the Drop of Page, not directly of course.
+Actually, can't you use the nova-core local `bounded_enum!` macro to
+define `OpCode`? This would generate the implementations below automaticall=
+y.
 
-> From `__free_pages()` kernel-doc (`mm/page_alloc.c`):
->
-> > If the last reference to this page is speculative, it will be
-> > released by put_page() which only frees the first page of a
-> > non-compound allocation. [...] **If you want to use the page's
-> > reference count to decide when to free the allocation, you should
-> > allocate a compound page, and use put_page() instead of
-> > __free_pages().**
->
-> I guess this is what you are referring to? We could change `Page` to
-> this style as well and all would be fine I think?
->
-> At any rate, today I learned about Pfn walkers, compaction,
-> memory-failure, etc. that take transient refcounts
-> pages. With that in mind we need to reformulate the invariant of
-> `Ownable` to exclude optimistic transient references.
+> +impl TryFrom<Bounded<u64, 4>> for Opcode {
+> +    type Error =3D Error;
+> +
+> +    fn try_from(value: Bounded<u64, 4>) -> Result<Self> {
+> +        match value.get() {
+> +            0 =3D> Ok(Self::Imm32),
+> +            1 =3D> Ok(Self::Seq32),
+> +            2 =3D> Ok(Self::Seq64),
+> +            3 =3D> Ok(Self::Array8),
+> +            4 =3D> Ok(Self::Array32),
+> +            5 =3D> Ok(Self::Array64),
+> +            _ =3D> Err(EINVAL),
+> +        }
+> +    }
+> +}
+> +
+> +impl From<Opcode> for Bounded<u64, 4> {
+> +    fn from(value: Opcode) -> Self {
+> +        Bounded::from_expr(value as u64)
+> +    }
+> +}
 
-Yes we can switch Rust Binder to use put_page() and have Page not
-implement Ownable at all. That would be okay, because Binder's pages
-are not higher order. But this case still does highlight that
-Ownable<_> currently does not address the use-case where the
-Ownable<T> is a special reference there can only be one of, rather
-than a completely unique reference.
+Sashiko has a point that `from` requires `#[inline(always)]`. Ideally,
+we prefer to avoid using `from_expr` when we can, which in this case we
+can by doing an exhaustive enumeration. Which is exactly what the
+`bounded_enum` does, so leveraging it also solves this issue. :)
 
-For instance, the GPUVM abstraction would be another case where
-Ownable<_> could be used if we have this other model where Ownable<_>
-and ARef<_> are legal at the same time. Currently GPUVM uses a special
-UniqueRefGpuVm type to solve this problem.
+> diff --git a/drivers/gpu/nova-core/gsp/nvkv/encode.rs b/drivers/gpu/nova-=
+core/gsp/nvkv/encode.rs
+> new file mode 100644
+> index 000000000000..6c1a9cbd90e8
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/gsp/nvkv/encode.rs
+> @@ -0,0 +1,210 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFIL=
+IATES. All rights reserved.
+> +
+> +#![cfg_attr(not(CONFIG_KUNIT), expect(dead_code))]
+> +
+> +use kernel::prelude::*;
+> +
+> +use super::{
+> +    EncodedStream,
+> +    Index,
+> +    KeyId,
+> +    Op,
+> +    Opcode, //
+> +};
+> +
+> +/// An encoder for an NVKV stream.
+> +pub(crate) struct Encoder {
+> +    stream: EncodedStream,
+> +}
+> +
+> +impl Encoder {
+> +    /// Creates an empty encoder.
+> +    pub(crate) fn new() -> Self {
+> +        Self {
+> +            stream: EncodedStream::new(),
+> +        }
+> +    }
+> +
+> +    /// Returns the encoded data.
+> +    #[must_use =3D "encoded stream must be consumed"]
+> +    pub(crate) fn finish(self) -> EncodedStream {
+> +        self.stream
+> +    }
+> +
+> +    #[inline(always)]
 
-Alice
+Unless not inlining implies a build error (as is the case for
+`Bounded::from_expr`), I think the convention is to stick to `#[inline]`
+for these.
+
+Same applies for other methods.
