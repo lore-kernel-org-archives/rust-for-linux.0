@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC474519A4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5C33AE6FB;
 	Mon,  7 Sep 2026 16:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788799695; cv=none; b=iu/DvRT41C696QF6m7sOK5XvUxmLbFQo88hihEWDupCGauv5AbE6ydfsj+wQGZJjerkCylrkasoS5YI8BMQAh16mgxod/1jUWRsZboiK+pngWD+oqNummjZx6b/UViaQU5BoiNJnHxHGa0PgtZCaXa3drOeTbqmI3rBik4OJ9jM=
+	t=1788799695; cv=none; b=qgcmhSW/qwDj0gAKDQZEfM1Lkx0iVv736faChVthcCv6viJbD/s+4c/WXPfkeIDrDICKSOu9DpuwHr6kEPnODlVuiWi7GYcWX55i6RNN9j6NFnBMGCpT8l405pMGPLXOOp5PbbTWA/b3vf9arLXMvWx8vuaTlS/4cD0pzjBms4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788799695; c=relaxed/simple;
-	bh=TlVDi0TxMxxZeN20pGON06eoA/EsPc4W/j9d+dr0EhM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XneRdc4K3jtW081C0kn4uE0vbj+nJuqknuNrJ+mgobMhdexG+fxivYHyAyum7jenyjnklVqSAByVqop199EhDUxXoSXr4+O/Jwaw7YZ7pKuUau003wZdsJxC7KQWXksPnnGziwt8K98UZu2/Oyk0v2TSFBqo1ytswiH2wO9QWG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rrqOjbmp; arc=none smtp.client-ip=10.30.226.201
+	bh=ugf+3s9PSyGAiuRrMcsfXDjILNpU++jjwzu5JJ9giJ8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NIbyiJu1h/DeXMN//5hDyQRQCzousrnbvm2fAqi/tpQ7COl+ddt3lm1JFhBLmmsoN+TqkG6lNGF2CyOVjpPNUsGed3phmppDd2trxFTHh38b5e7CH4FWBk5vPmNT8UyEJrxwst2IzFqOav4dD5R4fcCgT0OwC9h9pGQDYOlrEnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mCXN2QAe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rrqOjbmp"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A0338C32782;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mCXN2QAe"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4EB02C2BCC7;
 	Mon,  7 Sep 2026 16:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788799695;
-	bh=TlVDi0TxMxxZeN20pGON06eoA/EsPc4W/j9d+dr0EhM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=rrqOjbmpmqhDnPZQ0rqFifLFA1QDqx8VSp7Xw6zgQw360DA8I+CAfJKeMYotSeExN
-	 cWt8u/DpXUOFptrj2d8OvYJQFR8v5AmwMzj9qAGJwo66ki+o4coY6jXsnACXPmbYdD
-	 A+lYVk63Bo5/uFF3DpJa4sqjJtDOmJnphLMfva70KbJ5n4SoE9Yi5d8nzG21k76E1m
-	 nLwCAN29qjSPTjcUvU0HOa5QoeZS0xSCldT6xelKPok+y9f+Hjvp3aVtZxKWyBOE/h
-	 ZjmKIBWr54s6dchB/CWxK2UtTj0mJ2bn732+eUjHZr8ThThqVMecJ9Y1qsIIzQCsy6
-	 XRMi3CB+Mk7yA==
+	bh=ugf+3s9PSyGAiuRrMcsfXDjILNpU++jjwzu5JJ9giJ8=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=mCXN2QAeH0qjPksLPGX5Sd8iHxXfjvSJRxd1ISUNWifwnPguwXvkXl6QbDKdDRZ7F
+	 FycIffpGIFKcxr00LwyM2KZtNUZZybn+DiXP0zzFAKoOs7coYSuyV3u7LwdsaxbUPu
+	 bVVhLTk218fT+pKP4vYlwdtWMUMSo71ByYRmPmIUGiT/8a8iSKEiSSx+i5qPM//IVh
+	 m8LyvKUkjhkjOHthoJ6YtomjxgbLOFRyy7EivO77F3/t/NUHB9EHrXdjtVISUA5twH
+	 wn8EE06bFkDLXCgZb2yVt02GsxyBcgEQ2i3j3HWjxqksvICbBmvfIeE80s/zs+15GC
+	 T5fSJDDUo4uCQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89A13C79F99;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FB26C79F99;
 	Mon,  7 Sep 2026 16:48:15 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Tue, 08 Sep 2026 00:47:51 +0800
-Subject: [PATCH v2 4/9] drm/tyr: add per-file VM pool
+Subject: [PATCH v2 0/9] drm/tyr: add VM and BO ioctl support
+Date: Tue, 08 Sep 2026 00:47:47 +0800
+Message-Id: <20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,9 +40,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-tyr-ioctls-v2-4-88bea777df67@kylinos.cn>
-References: <20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn>
-In-Reply-To: <20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIALPqnmoC/03MQQrDIBCF4auEWdcyughpV71HySLq2AwNWlSkE
+ rx7baDQ5f/gfTskikwJrsMOkQonDr6HOg1g1sU/SLDtDQrViBeUItcoOJi8JeEkkkNrtFtG6Id
+ XJMfvA7vPvVdOOcR62EV+1x+j/pkiBQpCZ7WbtJU43Z51Yx/S2XiYW2sfnoRSEqUAAAA=
+X-Change-ID: 20260901-tyr-ioctls-f10ef0dcbfa6
 To: rust-for-linux@vger.kernel.org
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
@@ -60,11 +61,11 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
  linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788799692; l=6892;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788799692; l=2330;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=E5fAToBpW3fHYqXQ6LGiOZHomFP/OX5vReY6bzJsSvg=;
- b=/QTBTvhX2T9UgC1tr/jeIEsYz/XsFx949EuBDEIsCSIpGS0QvOWaEgti35ACCW4yDWb3TyIiN
- cmwwPpJeyItAczO/lPVp4oRzhYzxwsRNOtPfoGmGNyPagUZbuQnAzCk
+ bh=ugf+3s9PSyGAiuRrMcsfXDjILNpU++jjwzu5JJ9giJ8=;
+ b=ZORc0oMwW5l3N9ppq/jrr9PENAwfIkL5qA+VfygKJi+UlDdBIzYqYtuMxE/JT6moDx0PZvFco
+ ld1n0m+H8x2Ckk3gfwq9rUCzc5HpBK9X+Slchoo7nftAcQTpie/H7z0
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -72,214 +73,61 @@ X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
 
-From: Alvin Sun <alvin.sun@linux.dev>
+Add the VM and BO ioctls to the Tyr driver, aligning its userspace
+interface with panthor. The series is based on Danilo's `drm-file`
+series on `drm-rust-next`, and uses the existing IdPool and xarray
+abstractions for per-file VM management.
 
-Userspace needs multiple independent GPU address spaces per file,
-addressed by ID through the VM ioctls as in panthor. Store them in an
-IdPool (capped at 32 for panthor parity) plus an XArray. Each VM is
-stored with its VmOwner, so it is killed exactly once - on destroy or
-file close - regardless of remaining shared references.
+The panthor IGT tests pass on an RK3588S device.
 
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+A branch with the full series and all prerequisites applied is
+available at:
+https://gitlab.freedesktop.org/alvinsun039/linux.git tyr-ioctls
+
+Signed-off-by: Ke Sun <sunke@kylinos.cn>
+Link: https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/64
 ---
- drivers/gpu/drm/tyr/vm.rs | 157 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 156 insertions(+), 1 deletion(-)
+Changes in v2:
+- Fold the VM pool into vm.rs and cap it at 32 VMs per file (Deborah).
+- Add VmOwner so a VM is killed exactly once on drop, regardless of
+  remaining references (Daniel).
+- Replace the VmSpec enum with new_for_fw()/new_for_user()
+  constructors (Daniel).
+- Parse VM_BIND op types via VmBindOpType and use the kernel
+  Atomic<bool> for the unusable flag (Daniel).
+- Use PAGE_SIZE for the dummy object size (Daniel).
+- Rename BoData::create_flags() to flags() (Daniel).
+- Report VA-split failures with dev_err! at the caller (Deborah).
+- Link to v1: https://lore.kernel.org/r/20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn
 
-diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-index c5e307b1e2416..ae58135eeffdc 100644
---- a/drivers/gpu/drm/tyr/vm.rs
-+++ b/drivers/gpu/drm/tyr/vm.rs
-@@ -8,6 +8,7 @@
- //! mapped into hardware address space (AS) slots for GPU execution.
- 
- use core::marker::PhantomData;
-+use core::mem::ManuallyDrop;
- use core::ops::Range;
- 
- use kernel::{
-@@ -33,6 +34,7 @@
-         }, //
-     },
-     fmt,
-+    id_pool::IdPool,
-     impl_flags,
-     io::PhysAddr,
-     iommu::pgtable::{
-@@ -53,7 +55,11 @@
-         ArcBorrow,
-         Mutex, //
-     },
--    uapi, //
-+    uapi,
-+    xarray::{
-+        AllocKind,
-+        XArray, //
-+    }, //
- };
- 
- use crate::{
-@@ -154,6 +160,57 @@ fn try_from(value: u32) -> Result<Self, Self::Error> {
-     }
- }
- 
-+/// Owns a [`Vm`]'s destruction: the VM is killed exactly once, when this
-+/// value is dropped, regardless of how many `Arc<Vm>` references remain.
-+///
-+/// Callers that only need to use the VM take an `Arc<Vm>` via
-+/// [`VmOwner::get()`], which keeps it alive but does not kill it.
-+pub(crate) struct VmOwner<'drm>(ManuallyDrop<Arc<Vm<'drm>>>);
-+
-+impl<'drm> VmOwner<'drm> {
-+    /// A reference for callers that want to use the VM, not own it.
-+    #[expect(dead_code)]
-+    pub(crate) fn get(&self) -> Arc<Vm<'drm>> {
-+        Arc::clone(&self.0)
-+    }
-+
-+    /// Transfers the VM to the pool without killing it, leaving only the
-+    /// shared reference. The pool reconstructs the owner with
-+    /// [`VmOwner::from_shared()`] when the VM is removed.
-+    fn into_shared(mut self) -> Arc<Vm<'drm>> {
-+        // SAFETY: `self.0` is initialized, and `forget(self)` below prevents
-+        // the outer wrapper from being dropped, so the taken `Arc` is moved
-+        // out exactly once and nothing is leaked or double-dropped.
-+        let vm = unsafe { ManuallyDrop::take(&mut self.0) };
-+        core::mem::forget(self);
-+        vm
-+    }
-+
-+    /// Reconstructs an owner from a shared reference.
-+    ///
-+    /// The caller must currently own the VM's destruction.
-+    fn from_shared(vm: Arc<Vm<'drm>>) -> Self {
-+        Self(ManuallyDrop::new(vm))
-+    }
-+}
-+
-+impl<'drm> core::ops::Deref for VmOwner<'drm> {
-+    type Target = Vm<'drm>;
-+
-+    fn deref(&self) -> &Vm<'drm> {
-+        &self.0
-+    }
-+}
-+
-+impl Drop for VmOwner<'_> {
-+    fn drop(&mut self) {
-+        self.0.kill();
-+        // SAFETY: `self.0` is initialized and we are in `drop`, so it is safe
-+        // to drop the inner `Arc` now that the VM has been killed.
-+        unsafe { ManuallyDrop::drop(&mut self.0) };
-+    }
-+}
-+
- /// Arguments for a virtual memory map operation.
- struct VmMapArgs<'drm> {
-     /// Access permissions and caching behavior for the mapping.
-@@ -948,3 +1005,101 @@ fn pt_unmap(dev: &Device, pt: &IoPageTable<'_, ARM64LPAES1>, range: Range<u64>)
- 
-     Ok(())
- }
-+
-+/// Maximum number of VMs a single file may hold, matching panthor's
-+/// `PANTHOR_MAX_VMS_PER_FILE`.
-+const MAX_VMS_PER_FILE: usize = 32;
-+
-+/// Per-open-file pool of VMs.
-+#[pin_data(PinnedDrop)]
-+pub(crate) struct VmPool<'drm> {
-+    #[pin]
-+    ids: Mutex<IdPool>,
-+    #[pin]
-+    vms: XArray<Arc<Vm<'drm>>>,
-+}
-+
-+impl<'drm> VmPool<'drm> {
-+    /// Creates a new [`VmPool`].
-+    #[expect(dead_code)]
-+    pub(crate) fn new() -> impl PinInit<Self> {
-+        let ids = IdPool::new();
-+        pin_init!(Self {
-+            ids <- new_mutex!(ids),
-+            vms <- XArray::new(AllocKind::Alloc),
-+        })
-+    }
-+
-+    /// Takes ownership of `vm` and stores it, returning the allocated ID.
-+    ///
-+    /// On failure - ID space exhausted or store failure - the VM is killed
-+    /// here and only the error is returned.
-+    // TODO: allocate IDs with the XArray directly (once it grows range
-+    // allocation, the equivalent of C's `XA_LIMIT`) and drop the IdPool.
-+    #[expect(dead_code)]
-+    pub(crate) fn add(&self, vm: VmOwner<'drm>) -> Result<u32> {
-+        let id = {
-+            let mut ids = self.ids.lock();
-+            let unused = ids.find_unused_id(1).ok_or(ENOSPC)?;
-+            if unused.as_usize() > MAX_VMS_PER_FILE {
-+                return Err(ENOSPC);
-+            }
-+            unused.acquire()
-+        };
-+
-+        let vm = vm.into_shared();
-+        let mut vms = self.vms.lock();
-+        match vms.store(id, vm, GFP_KERNEL) {
-+            Ok(prev_vm) => {
-+                drop(prev_vm);
-+                Ok(id as u32)
-+            }
-+            Err(err) => {
-+                // Drop the XArray spinlock before acquiring the `ids` mutex.
-+                drop(vms);
-+                // Kill the VM and release the pooled id before returning.
-+                drop(VmOwner::from_shared(err.value));
-+                self.ids.lock().release_id(id);
-+                Err(err.error)
-+            }
-+        }
-+    }
-+
-+    /// Removes the VM with the given ID, handing back its owner.
-+    ///
-+    /// Dropping the returned [`VmOwner`] kills the VM immediately.
-+    #[expect(dead_code)]
-+    pub(crate) fn remove(&self, id: u32) -> Result<VmOwner<'drm>> {
-+        let mut vms = self.vms.lock();
-+        match vms.remove(id as usize) {
-+            Some(vm) => {
-+                drop(vms);
-+                self.ids.lock().release_id(id as usize);
-+                Ok(VmOwner::from_shared(vm))
-+            }
-+            None => Err(EINVAL),
-+        }
-+    }
-+
-+    /// Gets a shared reference to the VM with the given ID.
-+    #[expect(dead_code)]
-+    pub(crate) fn get(&self, id: u32) -> Option<Arc<Vm<'drm>>> {
-+        let vms = self.vms.lock();
-+        let borrow = vms.get(id as usize)?;
-+        Some(Arc::from(borrow))
-+    }
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for VmPool<'_> {
-+    fn drop(self: Pin<&mut Self>) {
-+        let this = self.project();
-+        // Kill every VM still owned by the pool. The ID range is bounded by
-+        // `MAX_VMS_PER_FILE`, so this loop is cheap and runs at file close.
-+        for id in 1..=MAX_VMS_PER_FILE {
-+            // Release the XArray lock guard before killing: `kill()` may sleep.
-+            let vm = this.vms.lock().remove(id);
-+            drop(vm.map(VmOwner::from_shared));
-+        }
-+    }
-+}
+---
+Alvin Sun (9):
+      rust: sizes: add SZ_4G constant
+      rust: mm: add `task_size` helper
+      rust: sync: arc: relax `ForeignOwnable` for `Arc<T>`
+      drm/tyr: add per-file VM pool
+      drm/tyr: add user and MCU VM specifications
+      drm/tyr: add BO creation and lookup helpers
+      drm/tyr: refactor new_dummy_object to use new_object
+      drm/tyr: add VM-related ioctls
+      drm/tyr: add BO-related ioctls
 
+ drivers/gpu/drm/tyr/driver.rs   |  14 +-
+ drivers/gpu/drm/tyr/file.rs     | 378 ++++++++++++++++++++++++++++++++++++++--
+ drivers/gpu/drm/tyr/fw.rs       |  37 ++--
+ drivers/gpu/drm/tyr/gem.rs      |  41 ++++-
+ drivers/gpu/drm/tyr/vm.rs       | 378 ++++++++++++++++++++++++++++++++++++++--
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/mm.rs               |   7 +
+ rust/kernel/sizes.rs            |  12 ++
+ rust/kernel/sync/arc.rs         |  12 +-
+ 9 files changed, 819 insertions(+), 61 deletions(-)
+---
+base-commit: 3ac51829f95368876dcfbfbb42823ca0cd6e6f56
+change-id: 20260901-tyr-ioctls-f10ef0dcbfa6
+
+Best regards,
 -- 
-2.43.0
+Ke Sun <sunke@kylinos.cn>
 
 
