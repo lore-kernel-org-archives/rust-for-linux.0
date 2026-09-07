@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF52819644B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40FA4398EE;
 	Mon,  7 Sep 2026 16:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788799695; cv=none; b=OVTsJ1lJbTGtKM4kz7Hr2+2/ePcAYgPgQdgPysF9XXPkPlwNNUX6Tq71PN8RDn87DBYPb+2XPKiDFaJtEuYe0t2h6XibjPCxwhoo0JtPpjZCjqHo0zqw3VfCkcJiaDM1Srmlrx7Y4/AQjuTY38v18+MxKfeIpYveawKd3SYlVrM=
+	t=1788799695; cv=none; b=hDQljrutdzfe6PJA+YGa/FifJkwdYw7KTebeZSJludnLuBM/5HgoeqdNdNmbLiyuhaqJUIvTnzXX/Fo+eaNduTR+wVfUyYczqb8p61J4U5+J0NZWTgVsSS/xqfYylv6ff2y+5Sw08AON/xUd+JougrzrrKrY9njrwyW8W6rA5Y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788799695; c=relaxed/simple;
-	bh=tAJEHSAuTRx0EwppaN+WcZOoNCdsIpUxUwps4sDokJQ=;
+	bh=SWfJYfIhU0ceNaMeMrQOIvNiAm90QJeCPkReTr2kGwU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CR1RY2/lpsD3GlNWfh4VIN1IvvZ/QAkiw6dkfbTur75GO+nFJ58xStM4k7LvXZTq9MenGUy87ggFd+B5TyICBzLblqtm3wlZRQb3DMrSkufpiMTbSapeT1hFMULjuBYUCAVzt1V5fLhuC4/ki/+L8J78UAqOastzBi5kRNZN31o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rbt2fYEQ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=LdpN92xQSlWHq1GL7grOs7kmxTCyJAaQMvjo+YWeHF993xWH2WW0tRu/HbafBmL3fobScDCWL543OAdY6Jvm6qw25Do1i/yu5hgzxpqkE4ULkAITkzoc517Zfr8zkIGF77KZZg5AsNWv2vcx3PMcfSdI3IDVR2zYNS8r3NDx1b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gdyYYfo6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rbt2fYEQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 80456C2BD00;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gdyYYfo6"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 882C9C2BD04;
 	Mon,  7 Sep 2026 16:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788799695;
-	bh=tAJEHSAuTRx0EwppaN+WcZOoNCdsIpUxUwps4sDokJQ=;
+	bh=SWfJYfIhU0ceNaMeMrQOIvNiAm90QJeCPkReTr2kGwU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Rbt2fYEQSS4C6EkdvC1fCToikE3BnUr2KIjHVVagi9tu7Irden05SaZW0kRUBOYvQ
-	 gbHhxXEwSG+UNMcnDcNzxFYCkhREKSXx9jgqjXeVbIK5RwtPT4kxwfw7XAsMed2c1W
-	 bWzasx772rdyAZ4tFhzbdhIohLbvZ9qg1f3pmTq8TFjAoVwuiXj6NREZmsUnWElSwc
-	 FlSrUHtUlMrBw3NxC4Oftm8StJ2mLAE0WKAKspm9LSOlRPS6rZd89SqxZi7338NBwR
-	 CWbJt7CBn5LiprSZE2MG4PImhAVM3oj/6sEREzGKWL+9CUauAAAjtp0AFd0j56bWG2
-	 yil5XWrUYSH/A==
+	b=gdyYYfo6ympMHjvgiFpwAKnU3kXVjM1uvnukbRGTsAPHYmyW8/1iVrbmboys2RKja
+	 tBKJNCTHkhBEXhVpCpBADp/AV/sDgyK7HKFb5wbRqZ0kR+mNYzksc8e+I8BCiNxA6W
+	 5euqlXCiqoc7AL0+RvVNNYY65DzBcDCJFasc9Vw5kgtMx+x7UiNVvNF1irLiE3Gk9u
+	 oQ5LN72w36XgArE53hrlaRRV75wC7ScqSY6HbyngRCIlTq/FFnEsLucF/VkVacFk20
+	 Iuohx+i+2D8YkLgbn9K5o9JKVS8YF+0DVBncNlgwjW1VXX2iI2sLTGvUO9+34gt5fV
+	 Fqvk0lM7XAC9g==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58BF1C79FA7;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 72702C79FA0;
 	Mon,  7 Sep 2026 16:48:15 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Tue, 08 Sep 2026 00:47:49 +0800
-Subject: [PATCH v2 2/9] rust: mm: add `task_size` helper
+Date: Tue, 08 Sep 2026 00:47:50 +0800
+Subject: [PATCH v2 3/9] rust: sync: arc: relax `ForeignOwnable` for
+ `Arc<T>`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-tyr-ioctls-v2-2-88bea777df67@kylinos.cn>
+Message-Id: <20260908-tyr-ioctls-v2-3-88bea777df67@kylinos.cn>
 References: <20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn>
 In-Reply-To: <20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn>
 To: rust-for-linux@vger.kernel.org
@@ -60,11 +61,11 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
  linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788799692; l=951;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788799692; l=1389;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=JO+2MVB8/0ZEX96oFL0eP1mAOKrIibNCaD5F9FcB8NY=;
- b=y55dyR98tdQkyQvRS1h0SbEjSI3cnaIDdg85SX7ZIaWbhXm+f+ZDU47osQZU2PcPwf9rjlhF1
- PmbRd8EcCmSC8RgKm7nNWPDYFWRTaPzPs62nL8aNDxU+XaJ2TT4eU/T
+ bh=E65clxOu/qjNbqNDrRBBfaWHB/W/gvw7JStoVkgnAT4=;
+ b=MUGHhOu/L1W8PlCpFLL38urACrHixCRiftGKCn8Otv2NxdConIIXRvD1Ykvxj2WGQejyHWiFX
+ Ekf59qcvlzkAOxJxuDCwj7VDvVlSMLlwndY/CSRCVJX9QHiM1yLd55k
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -74,33 +75,42 @@ Reply-To: sunke@kylinos.cn
 
 From: Alvin Sun <alvin.sun@linux.dev>
 
-Expose the task's address space size. It is used by the Tyr driver
-for splitting a VM's GPU address space into user and kernel regions.
+Drop the `'static` bound so that refcounted values borrowing from a
+driver registration scope can be foreign-owned by the XArray
+abstraction.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
 ---
- rust/kernel/mm.rs | 7 +++++++
- 1 file changed, 7 insertions(+)
+ rust/kernel/sync/arc.rs | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
-index 4764d7b68f2a7..d2dfbb7d43972 100644
---- a/rust/kernel/mm.rs
-+++ b/rust/kernel/mm.rs
-@@ -149,6 +149,13 @@ pub fn mmget_not_zero(&self) -> Option<ARef<MmWithUser>> {
-             None
-         }
-     }
-+
-+    /// The size of the process virtual address space.
-+    #[inline]
-+    pub fn task_size(&self) -> usize {
-+        // SAFETY: `self.as_raw()` is a valid pointer to an `mm_struct` per the type invariants.
-+        unsafe { (*self.as_raw()).__bindgen_anon_1.task_size }
-+    }
- }
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 8ae0fe6f19ec0..9b582a815f888 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -363,11 +363,17 @@ pub fn into_unique_or_drop(this: Self) -> Option<Pin<UniqueArc<T>>> {
  
- // These methods require `mm_users` to be non-zero.
+ // SAFETY: The pointer returned by `into_foreign` was originally allocated as an
+ // `KBox<ArcInner<T>>`, so that type is what determines the alignment.
+-unsafe impl<T: 'static> ForeignOwnable for Arc<T> {
++unsafe impl<T> ForeignOwnable for Arc<T> {
+     const FOREIGN_ALIGN: usize = <KBox<ArcInner<T>> as ForeignOwnable>::FOREIGN_ALIGN;
+ 
+-    type Borrowed<'a> = ArcBorrow<'a, T>;
+-    type BorrowedMut<'a> = Self::Borrowed<'a>;
++    type Borrowed<'a>
++        = ArcBorrow<'a, T>
++    where
++        T: 'a;
++    type BorrowedMut<'a>
++        = Self::Borrowed<'a>
++    where
++        T: 'a;
+ 
+     fn into_foreign(self) -> *mut c_void {
+         ManuallyDrop::new(self).ptr.as_ptr().cast()
 
 -- 
 2.43.0
