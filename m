@@ -1,120 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77EA521234;
-	Mon,  7 Sep 2026 18:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788804901; cv=none; b=RwqqTA2zl3ahMQuo27vBNV8/meOjX+hvPrvFyaNxsSYWtUUYZyNMLNZcevVQKCGDzopK0fkVPa+WXqEWKLx1hf5mAfPK1Vl8epzCBLvmYlEylGxu4SBqPpuRsXo9PcA62UeqZqaMXdhct25nPfgU2pIRzFmgGsp9LXyVmDtt4Ak=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788804901; c=relaxed/simple;
-	bh=iP1D0jXvjPpjZ7yLPsGOjEH+eOqwaNxY+TRsUbgmadI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=dUERZ4VY4ZYj/7DjH8aR0iL0NUcoVQp1xeT2rpetUMvV7FUVwVSUv4aq0gwz7e5l4sl4hixWWxhNQaOo398EqBoHBOZqtJuQJgmMyqQ+NOl7uaYZEIFihxiVLKae5/bVdozzUpJ2RdmXWpfaP+7oQQwwTXYNzJQgOcpxfP/c6Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hvYeMkQE; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD7447CC96
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Sep 2026 19:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788809599; cv=pass; b=kihs406CuFu/R1Ev7OYGkO6af69m3obNo7fwzo47PXO9Tb8LVz0d71Te+QYoEQHIsj5iDz/La3JmCnZ8W+OtkR9qRhsf74zVMF4mTbLThGinF0aKXlMrHORzwxuWrAjUaZ1Hvm/xkRmm5lDrWedz5wPRy0RGIxf+VvTDOUcKxBM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788809599; c=relaxed/simple;
+	bh=LbkJYZrKBAOtEAIquwnyRiPsYzlue46mhX6agZEqU8A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BRiRLAUFsrqXaVS61oe4V0G9YvMaKDKLV/IICH8gf9pUuNme4Pp1grE+WyLXsDnrY04VhFNX96ijdbotwytFlEcPgdIjBLMb6NXGV9YHzRFqz+mBGxuaJLBqHQkiBikbwaQZ1Lr9i8vbmTTlK6UdqPzNN++zw/98dQEUOn15Ck8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iK0qYj5j; arc=pass smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hvYeMkQE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23BC51F00A3A;
-	Mon,  7 Sep 2026 18:14:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788804899;
-	bh=G+mCSvbuHye2yBVI/OAa/LXl0oj9zqUI1neCRreAeV0=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To;
-	b=hvYeMkQE7bwUwMv5STk20dP0kTxw9T/YYZgdO5DHOulVZpT02Qho8hdv30USGae+Z
-	 6xaEPdNJGxlYqVZKejChg28HI9oFT3R5ERx23XI3MyD/cBfcDGGHTzVnHYqPdVoqyx
-	 McvVmqTEZAWwOuq9kFd7aVOqZptCCktiHbRYxNdUGTw50XX0Xnokc8dEZstNPZ8xM4
-	 e2aKEYBb4lENL561ne3r8OyVoqifgJWm6jTNEcwTftL/Sy9LI+JiwBkDnVQEdlGMkO
-	 NKXllKX8B27iBasLgEweFwF0V6TwPXUYKO8z+3aPEKCww/Ioipjoufl8381WBs63eR
-	 n8NPHJiV69kCw==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iK0qYj5j"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39666bed444so436656a91.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 07 Sep 2026 12:33:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788809597; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AjBIfVlk3anZqwZDe6rn9YWNULAAwtUAGFgP3QbF4CWm4svsuoRY3jKhybW0j7awr4
+         pIuNnv7HwmPjSNO2CZnKyzJrzV0+53WGGwY0Ip1nK4516dBWxBVwQ6/1gLvNloJN3lhM
+         llA2EJhdGShi4qhqEhI95SFAEJe1d5Er+CpGe5fktrjsYdB33ryKKLcaC1jX7LkcpNiJ
+         dxITPpolnOcGeActOVAX1mpOQypookMEqFVtwkpK80t5rXHmOj1bsGpw+umDfB1zKc3x
+         GYPEX5Eiee4kQBrybKESo39k5W/phCjjQyXqSawamiLlmBoN+FdADRgngoa9hPzdBEWd
+         2gmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LbkJYZrKBAOtEAIquwnyRiPsYzlue46mhX6agZEqU8A=;
+        fh=ozBu5A9Ooxhh9Uc7SyuNEzRjKArjeRvFwYQ1fRlTzI4=;
+        b=MkWjafUHebd4SQafF8DFpu9PlFK9twLAzUugfbrPi4Brn3uGqgdIb2nJC+oALQjACE
+         s5BxNLsBCFv0+/q4Urx20ZdFdm6YZXk47JA4+47ExiaCVTeIAixAT0n9o7WWgofnJHtg
+         HkWE0Xh4csz9WJut8H0qb7cJyS/+wfsX5IxzDYqvkwC9i9RePoEa2HnaS+1O8rQaVQm5
+         PUolZoTXdTZ1iL9LT3tGCFaI0WFm3znyK8ThJIg31txV3iMHAB46AyKDzrqw/zb7A6pp
+         44s0u9aTrDaVzROldIsRZGNg+XkAW3WpJjdmgzsF7zWEeOVk9aXkTU01sxI3ltKd+Nk/
+         E8dQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788809597; x=1789414397; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LbkJYZrKBAOtEAIquwnyRiPsYzlue46mhX6agZEqU8A=;
+        b=iK0qYj5js7h9LqZ16ntFi4pR+coNw+J1DIsxddLy2bybdXua8s7AhsQh5PKG4aPy8k
+         cWfcsot8Jd3QOFo9QOMLhxclr26W+2bFQXUQb/5htv9RCQ75k/nTYOvsiDpAh9ZC1h0P
+         17HYrGhBkPAcaFKfVJDBRota6XZwJTFU94U1d0QKrv1bCLj5OM6vuETU3sDAU1WcF6/P
+         XwKGZTES39HLJn7EPOvbTJ556I3rp76dCWF5AVgyuUSKXaJklfe1ypw/YLdAV2Pt4o8p
+         oIt3UyGz4+F70fE+3rhKKK66OxHCacES0jUQHDbVEe3CfUFb1qgvkTLFywu8+KyEsrhR
+         Wz6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788809597; x=1789414397;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LbkJYZrKBAOtEAIquwnyRiPsYzlue46mhX6agZEqU8A=;
+        b=Rxm2pQXrlt2X3S4h858K26wyxTDmbJySF+Lmv/fgNj9tC1lQVlJshn3KctsoT1chN1
+         nGjXPUS1ra7bkZXO31H1rD8fNpamVIFMSbI3e1pSMpJu3408SWTiEbMPp4+G9GdadbKZ
+         RxtiszAF0n2ph4zRo0EHru457QyfL2w39QTFz0BQJXJLdZP3d+GV39QPyR463Ihr1HVx
+         d7zWGIQ0ks7kzLB+w6+BnzEH80mQM7PFgtvURnxUWn0B6+8i2ka461hBzlampqm5EeYO
+         AQtetzHtymFea7ZBD6ntY2CMY8uyGW8QyPvnBcVALFlkmGFxFeRzR8fR+1EcCHNjL7d2
+         OxOw==
+X-Forwarded-Encrypted: i=1; AKwUvBzOFyuCcoFORUBMztGO/h+Ln/4P8O3SzdZjAalPawgOmMoCVs/ir759iN1YD5LMhoZjw4FiLJCL39MS/GcWdQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++lWZll3qqajdHr/vnNSBhXnQHgChBpriVUeEOo2h+MHqI+aP+17
+	fhQ8GVSW5znv+T4haotEDqEftZlIIsDjC+6e17E2FreDaVwhbO8AtSNCXarDUNXVFIBjAMfps7g
+	H3mM6YCtupcC1l7MsiEnAUuOCvVvTsKg=
+X-Gm-Gg: AYBFou0shcg7x/RUK1hd6TC2D8wSoe2nSEiiXxoYUzmBH8rZpM409XosvaX8E8wTIcI
+	9hiBtvfzG/oX+umOi8xyLeR13g2NVlA1WNFfqLhpqkEmWJ1rBqwj3TEih7C1XjDOILgAsSeLyvk
+	7JhFR25l9Xz6PRzUyOUsnjO9vH+v5TC27bu5Kzfq7SRCfTJu/FUE57p/TgY32ZiAAz/GG5SL5Ia
+	QILH11SIswy4hIVjrsLPtOviMjk/vc1Cf3NhInB7ybFMUs3WhCaX77Lpoxr+VP2gqnDD7aa6zi0
+	AstNyo+kOdmmcFZCilUrAG7phktrdP4kY/y9gEXf4Sl53IVdDJadJlBJd/8uJLLDd1aJy/EE80c
+	AsUa8tNMgwYjqJYhA1Rfmuew8FaAwdwHSkXIjfUrfalXK1Jrc4p+2tBxEpFlu2Q==
+X-Received: by 2002:a17:90b:1e04:b0:396:463e:2eeb with SMTP id
+ 98e67ed59e1d1-39b264b24e2mr23088437a91.0.1788809597288; Mon, 07 Sep 2026
+ 12:33:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260904-b4-arm64-callops-kcfi-v1-0-ce6687739b0c@linux.dev>
+ <20260904-b4-arm64-callops-kcfi-v1-8-ce6687739b0c@linux.dev>
+ <CANiq72=xOrSXBBdmrKYfX1=qgF37LRAMzMJd4GJkXaYHMVe9yQ@mail.gmail.com> <ap3Z-YDtzmdtMiMk@linux.dev>
+In-Reply-To: <ap3Z-YDtzmdtMiMk@linux.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 7 Sep 2026 21:33:03 +0200
+X-Gm-Features: AcwNN1UJ5AD1nmjaRgagxZvj3fkfuD3Z7c-j0Zc231NENpcPq2HjO9j40kxIvNk
+Message-ID: <CANiq72mVXNmqh-RdOunFLBKRwMgYHFBqJOP7NbXrd8WHPb3sAw@mail.gmail.com>
+Subject: Re: [PATCH RFC 8/8] arm64: ftrace: Allow CALL_OPS on kCFI kernels
+ built with Rust
+To: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Puranjay Mohan <puranjay@kernel.org>, 
+	Xu Kuohai <xukuohai@huaweicloud.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
+	Leon Hwang <leon.hwang@linux.dev>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, live-patching@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, 
+	linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Ben Cressey <ben@cressey.dev>, "Florent Revest (Anthropic)" <florent.revest@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 07 Sep 2026 20:14:52 +0200
-Message-Id: <DL9AEUZ4VGV5.2RT33JE0MHYME@kernel.org>
-To: "Philipp Stanner" <phasta@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v11 1/2] rust: Add dma_fence abstractions
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "Sumit Semwal" <sumit.semwal@linaro.org>,
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Yury Norov (NVIDIA)"
- <yury.norov@gmail.com>, "Asahi Lina" <lina+kernel@asahilina.net>, "Burak
- Emir" <burak.emir@gmail.com>, "Lorenzo Stoakes" <ljs@kernel.org>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, "FUJITA Tomonori"
- <fujita.tomonori@gmail.com>, "Boris Brezillon"
- <boris.brezillon@collabora.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-media@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>
-References: <20260905085343.1827305-2-phasta@kernel.org>
- <20260905085343.1827305-3-phasta@kernel.org>
-In-Reply-To: <20260905085343.1827305-3-phasta@kernel.org>
 
-On Sat Sep 5, 2026 at 10:53 AM CEST, Philipp Stanner wrote:
-> +impl<'a, T: Send + Sync + FenceContextOps> Drop for DriverFence<'a, T> {
-> +    fn drop(&mut self) {
-> +        let guard =3D self.as_fence().lock();
-> +
-> +        // Use dma_fence_test_signaled_flag() instead of
-> +        // dma_fence_is_signaled_locked() because the C backend wants to=
- get rid
-> +        // of the latter.
-> +
-> +        // SAFETY: `guard` is valid until the `call_rcu()` below.
-> +        let signaled: bool =3D unsafe { bindings::dma_fence_test_signale=
-d_flag(guard.as_raw()) };
-> +        if !signaled {
-> +            pr_err!("DriverFence drops unsignaled. Danger of memory corr=
-uption!\n");
+On Sun, Sep 6, 2026 at 11:24=E2=80=AFPM Jose Fernandez (Anthropic)
+<jose.fernandez@linux.dev> wrote:
+>
+> # Do not pass -fpatchable-function-entry to bindgen: its libclang may not
+> # support the section argument (Clang >=3D 21), and parsing does not need=
+ it.
 
-I'm not sure we want to keep this as pr_err!().
+Thanks! Hmm... Not sure if "parsing" is the right word, i.e. a flag
+change could still make `bindgen` parse and generate code fine but not
+match the ABI of the C compiler.
 
-If we really want to keep warning about this I'd either make this a WARN_ON=
-() or
-dev_warn() (we can easily store a device reference in the fence context), s=
-uch
-that it is at least clear who's the offender.
+i.e. I guess I would have expected something like "...: its libclang
+may not support the section argument (Clang >=3D 21) and the removal of
+the flag does not change the ABI" or similar.
 
-My preference would be dev_warn(), as I don't think it is that bad of an er=
-ror
-condition to begin with. It would be pretty odd to have a driver where a Dr=
-iverFence
-drops while the corresponding GPU job is not dropped. And further it'd be p=
-retty
-odd if dropping the GPU job would not imply that the GPU actually stopped
-processing the work associated with the job.
-
-For the same reason I also think it is a bit misleading to say "Danger of m=
-emory
-corruption!". It's not the signaling of the fence that does prevent memory
-corruption; it's the driver implementing a proper teardown sequence. And if=
- this
-sequence is structurally detached from the lifetime of the DriverFence (and=
- Job)
-structure, something is structurally wrong with the driver anyway.
-
-Furthermore, it would be very natural to just require the generic Job type =
-to
-own a DriverFence. In this case it becomes natural to either signal the fen=
-ce on
-Job completion, or just drop the Jobqueue, which does the ring teardown and
-subsequently drops all the Jobs, which would also imply signaling the
-DriverFence with ECANCELED. I.e. I think the fact that the DriverFence is
-signaled with ECANCELED if it is still unsignaled should just be an API con=
-tract
-and not an error condition.
-
-Honestly, given all that, I'd expect drivers to otherwise just wrap a
-DriverFence in a new type, which just signales the inner DriverFence with a=
-n
-error code in its own destructor.
+Cheers,
+Miguel
