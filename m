@@ -1,49 +1,49 @@
-Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC2625B08F;
-	Tue,  8 Sep 2026 09:26:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851554CA288;
+	Tue,  8 Sep 2026 09:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.252
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788859597; cv=none; b=M16b1NCs30bkWrB85E03N15aHAzzWPx+UjL53w06aj2yDosp38B96sCwyEeaAkikDvsble0MT31SV5/bv6i5IR7njn0ARldXjzMAVTXgIf93qQ1Jixs3f+qyFsL4mWqtoLY3oQCC4IFVakfAc0R3ME8syx3p8cbewXmPdHcsHUc=
+	t=1788859602; cv=none; b=IB36/WLk1RcBfY2EXk0PtcBdygcuwE4i7GLTcSuHJjVEMizLRz9iqgDYgfXoxOBxZbTTWWprsYaTWUNjS+c4nr1p2PwMLCqL1xxBgbsSTyb27x65dGy0DtFkbsqRt/+khGVGMnRwvxlDEIfOwkKuAhYnxzlpBFabcHwBtwwDDk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788859597; c=relaxed/simple;
-	bh=NVDE2sLQ4M13/fLqGyj0CojUDayUMwa1vGbUCOkpxE8=;
+	s=arc-20240116; t=1788859602; c=relaxed/simple;
+	bh=T2c+MrFCvUYsSxzNKVB10vbug6cnyJGcxZGjZsVQEZI=;
 	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=pO3hW//gxixE4U1cSVRQsaDD56bCzSLdM9opm772HFynsPXa3wevKUhvUrTAFssGcaC8AEb/FhkdMsrW1mufkTGiMWzaipiB8BscAVC8ouGcmR4UfgfYMY/uKeJelVDgEEl/S9rgAD0gmh+W2wJGDb3NLHzcUVGcbFPFotA1Xik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=WyeITCVj; arc=none smtp.client-ip=162.62.58.211
+	 MIME-Version; b=E8+lPZbqYd3kQj3klLyFmxLoifAxjwP3lY9vuf/TmXZ1p/gRwo88NwWybQyl2A+u8mvP3ZNNLmNTQepJtjUN15KifSvaK+k9Svti/wstXfxTXOVQHwHOspov0Qqadvf4yyYTLdwmbQUArc9pOQoqaG+VMR/KrBR8642ArK+w1N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=ViGkSUhL; arc=none smtp.client-ip=162.62.57.252
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="WyeITCVj"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="ViGkSUhL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1788859589; bh=VUWpumI6tH3yHTvLma2YBoGq7bQ7eQcYJZEP8zAuh54=;
+	t=1788859594; bh=gvxwUOb396K7iHMCJjYc4DeX5IFP84qAwIQq44IcqkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WyeITCVjRHh3e+gg44X5+hE0R8aCjX6/QoXZnUQn5XZ/h1Y4ln5TcyoNZnrVFzwoz
-	 c10FhW3BCSA2dntHwQUjKTq6TZFpDXC+sooyqEe4p0Oo2VC+tDgfpOCVMoyw216YLl
-	 gKABJoZcp+/OMxb7TOLO4BYm31M0rZKALzKyzun0=
+	b=ViGkSUhLsfI2SUd5J9jBxDRhpEjoy3bzOJqOq/jXcezu8N7/3dpKFXDf//9dIzuGB
+	 +nfsD/U07IOzLDDZQqZG7LNYsagEZw+zuh79ztsz81Cm57wlvhU0HmgBGFAy/pEA81
+	 GR5AT8kF0jL96cf+4SdGP+Ge3RLd4Ho8vsAad7Qk=
 Received: from localhost.localdomain ([240e:342:b241:2200:5415:9e:37cf:c860])
 	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
 	id 6999861F; Tue, 08 Sep 2026 17:26:25 +0800
-X-QQ-mid: xmsmtpt1788859585txyzkdv6z
-Message-ID: <tencent_1D199D902D0238FCF62DF8ED4FEDA3FDBA05@qq.com>
-X-QQ-XMAILINFO: OKkKo7I1HxIePrT1VHd6Pp1I7ERq7+J5AqqdveMi9KxJMlfwhbAI/ffC0EjlxO
-	 uloXKLYR9j34BUpZRro8hMZHllXx8b3fJuSfIHuKiYmDjqJ4vy69GaEAF2keq+Nj+obj8RgRw7oV
-	 Soxj2YoOtbcYqd1MbBRlwYSkJsDAc4Sf5T2eYDyNdoQsSJ9InyQFokiNsINryV4yMxEcsI6pdGlI
-	 3yhKjrTLWOV3KZktIzgvI+HKKpexQ4rxGTpAGl2V9u9zORfV+H4bacNONCOllUPrCKOmuC1yn2Sh
-	 odMD7KTRnrWLWQSeEGEayiMNrft2xwvUPmxNhM5hSBW/WpAyKGREAG/MDI/AbmEV7FWZj3hEenjB
-	 4A06gEhypEQ+yHMxQesVIPjQY8VFfFYPZVmGtdXth9a7W6ZbNqFhHNU7AbaVz3ZGQbUFaTKNSrkV
-	 o24z4rM44Z+PyWwd7OxAk3P3eNj2bs029rq/bLdr30snAWkD4tJzuvptKh5XHlLqlopgG4Lohllr
-	 cLFLZZPpZggz5Us+2o8H4BjsfQ6yiiAMLe86xEmXBEe2EmDMmLRe9jTupNcuxyPdO6fV9JReIpOz
-	 TkKLZID+SLGP/8M7D16FJb6lcVACqBtSw54mBpaz/yneRrJJjDN6ogjIBZcC+enwHmF66E4ADM7G
-	 uHL0kXrwYecSuUhIZgFu3F+pZMFW0Mnwe3vzu0ZoqDg/IxCjehOS0NBhLG78vknrfXxeyqT4s9Sb
-	 ktGCwjt70zJQsl3odsCyRr8i3G2Okx0k017nnqZ4DPHD6dsZvIMvLFmDgpogElU635c9QVHUJ3Fm
-	 +jDjQLxGUWgi7DAbF2jPBo29A40TCzaqQXsz8VWv70LD1iHMZoT9ADeiocy+z4CfLn5wVauEHHyN
-	 cTOxS5WWg+W7dJtneFnGR7H40R6tn8h3KVqnsxSZD3l91q+nsEQwCc0jf/RY0fstb9MYQiV8NbeD
-	 5wmO7RMyONmHlcVGxB0IzGuEXEVcs1rt9Oyzs9r7Y+H4qd35EzX9b9X0WKm3wsREJADb3WRmHxtN
-	 bbjJlEOGCRYeLyEhQwH0NMioHGVOB8HJnX+8jecZny1hqH+GpeSqe0Dw0c0+9M64ZwSJSjoa/kqQ
-	 vMcWSZ
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-mid: xmsmtpt1788859590tsyf96io9
+Message-ID: <tencent_DD87A0F7B21501AFDD1205B7FE797FF85F0A@qq.com>
+X-QQ-XMAILINFO: OWm3msKA4Noej9dA/jSqHOXeAWS3je7i9XWuP0l7nnSpD0VbMamtJ7FD/1Fz4p
+	 bLngQCOG2hlERIwqYwyE+i/DuDxN9lP5IUeYHrgi23CeSrgm3wCeT1FlydUg4ZswVAjGoji2JinY
+	 lk6DSWb9tqyOF3+3Z1oykDh3E+ybjCYZ2TzB5AF5zO0x5ZymKv7dqk264SiwTG5EbMe32MporUSr
+	 gdwpmsCcBbEMD2Vx1K9Pw4MWo6ZAfFgumvl6w0agMqMoEHQ5nF+NVLrObSy/FPgM7j2FHjJv7rjq
+	 GZFzftAVsRYzxdYjwprUtQ4jmgCx8mDr7QU0LIyUte6z6vkXxtZ848WK72MAzkRfgX+WJwq6YJkR
+	 a4e/Uek+f/u0XJRPNfKdW6wCyPv0aBdYx6/7TUo5WVafYVSuKKXs0TPDv3beCbGkML9sMOULJzbF
+	 TU/06SYXAsyNemq+CX4eL6doabMtTv3xdw/EKn9upp38uAQy2MoshXVzoNqIB2TVPXMH63S4Tceu
+	 G0c6719dFWc5Qt0iDU5GTqSmFiwEmtWpu88TcNJ3hJ1twvQwF0YKHn54jd49BPh0KkL/C/+bcpRy
+	 2qi9the9DrxHCX07sT8TV5bsXCt1ThSsRcENLDixMx5L/iJdIfsyhsz92q+lVzdbeCbsOeijwT79
+	 L/dyrZmlUYI2Swb3WNP1JfT6d0B4ufhrlwrus2yVo20I7zRnIcj0VVeyqGglEhCLQkxoPyfKpA/w
+	 y6SnIZ/rLp9flfh0Vns5mnKGg9LurcNf5PQYKTRliUJGnajxfnhd7Dle9lN1x2cRB4je+qVdJ/38
+	 jPKHdS9TyzVvJESFJWtEBdkG/si2aBfNGqPrcsa3ia6DDttldaJguN/8eiXVB/DKK13Wiu4P/vU1
+	 fHod+n3TpkycS8m7Mxqnmtgq7s250yR4tKzM/6TO/3kTyaKl3dd0hEo9YOLAXeU08QmHevInjLjx
+	 58a51Ua+JCnh6i8JVhdPYkg5tWEOR8jrLIjO7QV67bG88EXa0YosmmUi5t0Smw45rEk7BILjw97x
+	 cPkVqrdvO5kCcRRC6JmBOKNu7mbU1JdHsruLuQZ81KhTRN0CAuzxoOp99BWRLjnmnTkrqenjHptR
+	 msETWrKTsfCxmI9OhUkSs+591uQA==
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
 From: JX <1239989762@qq.com>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>
@@ -64,12 +64,13 @@ Cc: Boqun Feng <boqun@kernel.org>,
 	Uladzislau Rezki <urezki@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/2] rust: add unsafe precondition assertions to Vec length helpers
-Date: Tue,  8 Sep 2026 17:26:22 +0800
-X-OQ-MSGID: <20260908092624.63350-1-1239989762@qq.com>
+Subject: [PATCH v2 2/2] rust: alloc: use unsafe_precondition_assert! in Vec length helpers
+Date: Tue,  8 Sep 2026 17:26:24 +0800
+X-OQ-MSGID: <20260908092624.63350-3-1239989762@qq.com>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260908080604.34070-1-1239989762@qq.com>
+In-Reply-To: <20260908092624.63350-1-1239989762@qq.com>
 References: <20260908080604.34070-1-1239989762@qq.com>
+ <20260908092624.63350-1-1239989762@qq.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -78,41 +79,53 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The safety requirements of `Vec::inc_len` and `Vec::dec_len` are
-currently checked with `debug_assert!`. Convert them to
-`unsafe_precondition_assert!` so violations are reported consistently
-with other unsafe precondition failures.
+Vec::inc_len and Vec::dec_len are unsafe functions whose debug
+assertions directly check their documented safety preconditions.
 
-The first patch makes the no-message form of
-`unsafe_precondition_assert!` usable from const functions. This is
-needed by `Vec::inc_len`, which is const, and avoids runtime formatting.
+Use unsafe_precondition_assert! for these checks so violations are
+identified as unsafe precondition failures. The inc_len use also keeps
+the const-compatible macro path covered by kernel compilation.
 
-The second patch converts both Vec length helpers.
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1232
+Signed-off-by: JX <1239989762@qq.com>
+---
+ rust/kernel/alloc/kvec.rs | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-The series has been checked with:
-
-  make rustfmtcheck
-  make CLIPPY=1 rust/kernel.o
-  make rusttest
-  make rustdoc
-
-Changes in v2:
-- Use a fixed diagnostic literal instead of concatenating the stringified
-  condition into a format string, since conditions may contain braces.
-- Add a const-context documentation example with a block expression.
-
-Link: https://lore.kernel.org/r/20260908080604.34070-1-1239989762@qq.com
-
-JX (2):
-  rust: make unsafe_precondition_assert! const compatible
-  rust: alloc: use unsafe_precondition_assert! in Vec length helpers
-
- rust/kernel/alloc/kvec.rs |  7 ++++---
- rust/kernel/safety.rs     | 11 ++++++++++-
- 2 files changed, 14 insertions(+), 4 deletions(-)
-
-
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+index c7546b9da4..9216a4a304 100644
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -23,7 +23,8 @@
+     page::{
+         AsPageIter,
+         PAGE_SIZE, //
+-    }, //
++    },
++    unsafe_precondition_assert, //
+ };
+ 
+ use core::{
+@@ -230,7 +231,7 @@ pub const fn len(&self) -> usize {
+     #[inline]
+     pub const unsafe fn inc_len(&mut self, additional: usize) {
+         // Guaranteed by the type invariant to never underflow.
+-        debug_assert!(additional <= self.capacity() - self.len());
++        unsafe_precondition_assert!(additional <= self.capacity() - self.len());
+         // INVARIANT: By the safety requirements of this method this represents the exact number of
+         // elements stored within `self`.
+         self.len += additional;
+@@ -245,7 +246,7 @@ pub const fn len(&self) -> usize {
+     ///
+     /// - `count` must be less than or equal to `self.len`.
+     unsafe fn dec_len(&mut self, count: usize) -> &mut [T] {
+-        debug_assert!(count <= self.len());
++        unsafe_precondition_assert!(count <= self.len());
+         // INVARIANT: We relinquish ownership of the elements within the range `[self.len - count,
+         // self.len)`, hence the updated value of `set.len` represents the exact number of elements
+         // stored within `self`.
 -- 
 2.54.0
+
 
