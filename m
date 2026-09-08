@@ -1,191 +1,134 @@
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B694915B4
-	for <rust-for-linux@vger.kernel.org>; Tue,  8 Sep 2026 19:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.204
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788895551; cv=none; b=Ciw2QoReZixNGapqMjjXLRVcNlji+EeGsbavcw1a4zdy9xKqVOfPT8PwdCDgRNftpZnbCyHOp8wXTBE5QuGbjrGI2PyKE3ZoaKtQDnNkNULAB63NeFrN7kEp2vPCsUPfejNHGsiNZSMKPJmnAW4Cdv62quom65SCBp5jwd+JM9I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788895551; c=relaxed/simple;
-	bh=f/QI6fQPpYfaZdPpU8xWGiSPyzZLkdoD/NBWjln+Vyo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zw48jB3GeLmLYxgZYv+FYIbMxn7fGslJlPnl2DF4BpUmUdz/OIrm/tcMxtZ5eCatPab5x/LuTX0U4dj+TrbEYXQkeF35Mn5kaNqpuRk3jXUu5NHKuiCP+Q8bom2jIWAm+GQ8mhAIIIjcEmT2URYCIQPPRQtokZZLLmlNndhhrCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z1pzB0Vw; arc=none smtp.client-ip=74.125.229.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95F333123D
+	for <rust-for-linux@vger.kernel.org>; Tue,  8 Sep 2026 19:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788896850; cv=pass; b=iVnm5X6oSaKoooid4ojxEj000ROXWMrqaY5t+YqOipLsNSt9fTVbKwIgoQlcJoSmWTQw2jB58WSgE/C8XJwixKfEvQS149ZAPsB5uffYlH1ZNO4pLyzgQlv15ZblzbNBkRHo2vZ+Hek6/BZLJPK9eFpQhBwqAoQgU1txYPjbSrc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788896850; c=relaxed/simple;
+	bh=iY5QnsT4qlVhjZv2PDQCFtybqjTxSMGZqhX7XmXrD0U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XdnVafvzouQyl1/Ur5jwgHHAwqkmp+fNpogRLe+IWAYtnDzZqy8EZW/SUhIsiEsx6M/xV0K2/amUnQhG/6nHHe3RI60CKZKJh+Fevony0bWLQe74j32ZrAdkGYV/2YilELrF4oX1G+vWprzF4qMYHeY2+GiuXic+RBQIumFR8ck=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WKO4MDZE; arc=pass smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z1pzB0Vw"
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b5e4f1e022so563693e87.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 08 Sep 2026 12:25:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WKO4MDZE"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d6ff2f2c4dso4953165ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 08 Sep 2026 12:47:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788896849; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YfrzZ+U2ygx+W771UmBZYAQR2RylPKNwu7B4dQzGlkYuF5X4MaCQRp4A+yjHAkQMjQ
+         qdtePwSimu1PfUDNlYmOl0r7yCTljHURs8AK/t58vPMk+1t+irn+f3gCv/U8VxvASBqY
+         /hi6CempP56vShPd/WM1AOou48e6XwtIRcy0YKjYtvyJDtDjrifWxoD9Unl9FCjEZTP0
+         VHP0tFQM3eOBFfRo/h2cUKd5DWlVa5x8oUHx174OTplsZHW10bYz8EQrxHQuiOil6EkB
+         x6ZeRblyOv66/vb26+H9JfPtl3VF+Kg4R5LvFXxRIbDzu13zK89C9XTKayu4pl+FOu4E
+         6q+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=iY5QnsT4qlVhjZv2PDQCFtybqjTxSMGZqhX7XmXrD0U=;
+        fh=M1Q9MlkJFiF1/j6y2+T4SC5D4449J5fMUcSLPs2U1kw=;
+        b=c/8eJwzjPVuln3p6jiN3G971TBVGOFTSKi2oaf6NIbUuuDaLlUNh/hNTIrjcaPmwjD
+         ReWEFL1k8Rtp/wQ3hLyTO9sidQk1UwcTOZyr0Wsc8Jp1AAKtMWrzCFj9TcY/RTph5Ixc
+         ZFT6xXwldcL9oxUQdN+y/1iVMvV9Zsu6crW9wCYdmPCxp9tAu3ICkUdrsrtj3a4rQLQ9
+         gOFm4LBkMITtVqRd/inzIoima8CWW7OHFZyHehCyCXI5RQD96EFHk5L9NCGQeptdMC9v
+         WaiYkIQR51xHtTkTt3HU3uIbv2omUYzGObopXDqXDIiTozdLqT/bgbeqTO/bZ/axNVXf
+         P7Lg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788895548; x=1789500348; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qs8C9B+WUBDgq8aRTUIEYiHOvCr2S97eqgKrz0PamYA=;
-        b=Z1pzB0VwBxRVIccOWm645xf4t9yfWkvoSMe7uf5wj1A+a8UkN8ni/iQ+LpCAdwoAw8
-         YgnYT2E78ZUEPZAhrndyxO1BhJjiguPlOMxECi8t83BqAroWRNYC2WNPFNM7+E73O2+L
-         FHt3+VURZT/vP9pYCtrWrNSLyd8t27SHT2fMvLiDSymNd1zsPwqYx97c6HvLn9dbolYQ
-         ywHUtt4E2o6aIEXZwkGwkJJd+EVp1n2f5ypP8x7CqgHu0XVbiqCPld/jrlXow1ntfMhu
-         CcaCfPkKwJuK7FkGpxy1t3zI1Fx7sFNQezuUiDJ2wVtqlhqYXmxKGJQ8UNNVCo5AOxne
-         XmGQ==
+        d=gmail.com; s=20251104; t=1788896849; x=1789501649; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=iY5QnsT4qlVhjZv2PDQCFtybqjTxSMGZqhX7XmXrD0U=;
+        b=WKO4MDZEC19PCK+f2yr3mrZUQazyRNBEAjKxJsxbgYJA1jMqpjl7xaL2sg15NFSMxI
+         y2FlGOAt7Rf5rTsgQpqYaM5wBMwzDK6aQ6/VURQA+qcFtgg6f4uZEu80gdaG0nMbY2bP
+         /ssUrHWp+qOzfq6N9/tdtpAjm2PP8CLNo5zDCTBS0H7tSHRkJLzOWwrO0VYKE4QyUcGI
+         8lnAkcl2m9hck0k1gDVT6YZoGnBKSUokXcIBHw9f9kfEUNG1IMGBjso8lz3H+2xYgLTZ
+         DcA7fy3O6+6YOdOCDOGkMkG6NQxo/c9zLlgvVjwbJVMKXnLhS1HqR9R+J3W5Kk01VBHf
+         fqHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788895548; x=1789500348;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=qs8C9B+WUBDgq8aRTUIEYiHOvCr2S97eqgKrz0PamYA=;
-        b=sb7YQrkt1kEnljDI+0mEh7w6PdUGMNMiS1MgRh4UHKyzbNLcIhIpls4IJ4SMAa/kzY
-         h1it91DKQUMFyZoMXtNMU+BKoX7rLm+YIOD3MJFOSbzXiOUCS9N+4bTO6OzZ1aXf0eYc
-         j3d9+gF6UkBc1zHkE7gtoy4yV8LYs0b28KXd4+RMwmI2HyQOiHWZ6118KmE7iGGKgfJg
-         XjxhO0KUrzlJ5OBzDmC4/2NIwyQNcg3S0Uu2GStp6CzxEFrSo82OZdOl/qaqwXM5in8a
-         VyllChsgCGrhk+7jkAwJV+eAWxclYV5bB6yR2u9vGtQqvz3pN0zL9GX81Wcqkl8SDsy+
-         ji1w==
-X-Forwarded-Encrypted: i=1; AKwUvBx8c9bcGQW128CPx1rRNg5P+kEabj35Jrkgv0EKz2gZuWNYYhrE5GvKjVrOJMA8/3wDGz3N5YmejJgd9VWcgQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++l0pdYoMBoIjWkewcWS1bgoJKLoQJEOPgNriGvmZIlwBKo97kLu
-	mLGsamvzHhGiXr1lIbc0a4xM3C9hhBr0vUVL2yv5nqg/g2gFDnNaNaQK
-X-Gm-Gg: AYBFou3bsHCIkGWPfs86k7kIEPlZn6oDNlWVZU8lR+5Zo+HXG2shwmEpbRXRzHDU7jf
-	YaUspd5RpWFYGhnnfl/Jckx3vT2gHzafBlR3oSDYnt/GHuJglGuJLoR8bwNuiadOHXr1M0c3YaR
-	UeQzLbH5+o/PfhHazdmEbIAcqAJKr/Xp9nOYVbn6NC3iY5EfVUIeIpfNGqKGZ5e356woLvYPVsb
-	oFx1jGNATL6wrTBlx8u4WxjQUmPHwIHqE9dk5GQBX7q4qFCsvicnoGW1AchCRZorDd8KbiGimcx
-	WqEy0YehjEAPoRS76QR7hF3+JZ5s6fthEUxqBxtlmt7pGnPX+maScL5f+0TqsQsykLPoUfvxpor
-	U4SjYp9oU6pqITf97jmo8WJ1EEt1Ju0V9Wlru/U9DCevVWON4LmY/glXtMqlxJvkCYR6q/LsiKH
-	DwJkquJcCoJwzQrCNRtWvk28haLOnPLr1SSA1CrL/7moS36EZPVj1Sil39kJj18QIjcx2mdG6VK
-	aQ=
-X-Received: by 2002:a05:6512:3b96:b0:5b6:10bc:b867 with SMTP id 2adb3069b0e04-5b75c926908mr1490072e87.21.1788895547733;
-        Tue, 08 Sep 2026 12:25:47 -0700 (PDT)
-Received: from localhost (soda.int.kasm.eu. [2001:678:a5c:1202:7b92:9ac1:b9ef:5287])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b6166f6ca3sm3289156e87.32.2026.09.08.12.25.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 12:25:47 -0700 (PDT)
-Date: Tue, 8 Sep 2026 21:25:46 +0200
-From: Klara Modin <klarasmodin@gmail.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: dri-devel@lists.freedesktop.org, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alice Ryhl <aliceryhl@google.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	Mukul Joshi <mukul.joshi@amd.com>, Felix Kuehling <felix.kuehling@amd.com>, 
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, Thorsten Leemhuis <linux@leemhuis.info>, 
-	Manuel Ebner <manuelebner@mailbox.org>, Gary Guo <gary@garyguo.net>
-Subject: Re: [PATCH] rust/drm/gem: initialize callbacks with
- ..pin_init::zeroed()
-Message-ID: <aqBf1UYNR-Q3T-cs@soda.int.kasm.eu>
-References: <20260908175427.47207-1-klarasmodin@gmail.com>
- <20260908180555.0830E1F00A3A@smtp.kernel.org>
- <aqBX1siwtKuBTXBE@soda.int.kasm.eu>
- <aqBdJY43QlnN5wnx@soda.int.kasm.eu>
+        d=1e100.net; s=20251104; t=1788896849; x=1789501649;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iY5QnsT4qlVhjZv2PDQCFtybqjTxSMGZqhX7XmXrD0U=;
+        b=lhPe+dAjwrFWr93XvKDAkQ/5wPWsY50h+J7x7eAeyJxVfKsPpwZdbJHRjzaboqDnlO
+         F1aeGwAv0uu2oNb+non+jeA8pGDe6SR/4PiYMiyTGm44PHUOwAOWkj3Nb0+9757wKTfw
+         LiWjJZ4alwqOJF+lpwXc5HjwxODHNYBlWrfC9gCpSDcFvlFRzpBdrCmANwbIkptL7iXB
+         F7wG/hla3otmRwTsZu0SBynBg5BkTmPqnMqMUbOE+lRZ1hgAgwCx6O3cWZGdFdWu0T5m
+         KmSypbFgRpsPU/PYfJGOKwJaa4HUW/xPQm00xREcX0rhH+YUR002jszJ20wnXl8ENlbP
+         Ws6A==
+X-Gm-Message-State: AFuF++loGyjA+1u3mjUN9nQHE7bd+rT/CAvSZbJFPy6QtJAbpLGsThRA
+	B3ofLb4eJjlWoNlWJZgGFRLBiEse/xWV+FCGSl4k1eIkX1J+xhaNVNtRzPYBnOFiWoesJCQVFg7
+	Ie/F0KU00g/GxXF/PwDAt+RyxlPlUjHA=
+X-Gm-Gg: AYBFou2+GeuyVlFQO6U6YB7gjechcWjUBs9ONHOR/Si7qcWQYbFMj+s9FTxN3xgRoY8
+	RH4LoOEnJ4t7rNbpRkG/Fckr51GaRfT8X1WjgUDFJHpKZaNER1UUTYKZ0SADRl63Nobo/OfQCZx
+	YsMUBAvNFy5NBFr2yt2dH4i8ChT1/yF0uXQ9Ca1WaEbxRYzSTXsk+ytHFtQvHIIvfGvmRSiyH0O
+	vJKYywrJpwrtaz9WyAj4eW8VLhmq1bIMAW6dDu6hje3oZ7apctmqLoknq1FNsfjnjSzJih0181B
+	5fmuNvi6R6zWikeVts9ohhRgQqPoEs6XBibqM0R7noi/uFv4r/iPm3l+dayo3D4gZtn/77ar7rt
+	BnUDdyI2vhJotUkPgfRbNQ4d6MbJK9ioIbHcktgK5uohqAefPs49DFdBFccWqAfhHJlvAvg+k/Q
+	aQOwA/jdaIFaZuttiLp3ADDtQ7oGN2cg338qMS/OZUbi7ywWumui4=
+X-Received: by 2002:a17:90b:2801:b0:38f:aa76:88b with SMTP id
+ 98e67ed59e1d1-39b3d7d056fmr21707651a91.4.1788896849093; Tue, 08 Sep 2026
+ 12:47:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aqBdJY43QlnN5wnx@soda.int.kasm.eu>
+References: <20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn> <20260908-tyr-ioctls-v2-1-88bea777df67@kylinos.cn>
+In-Reply-To: <20260908-tyr-ioctls-v2-1-88bea777df67@kylinos.cn>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 8 Sep 2026 21:47:15 +0200
+X-Gm-Features: AcwNN1XXa9g_iZLSTKQDHhq0xMt2HPgPqo8BFVOYoRvUTe0z8qL0cOKPZrDxOdc
+Message-ID: <CANiq72mdp9hS_U=Mtf5F6Qv8M9=m38xOXtCP_a4c_QtkwhpFEA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/9] rust: sizes: add SZ_4G constant
+To: sunke@kylinos.cn
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Lyude Paul <lyude@redhat.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
+	Alvin Sun <alvin.sun@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-09-08 21:09:40 +0200, Klara Modin wrote:
-> On 2026-09-08 20:57:05 +0200, Klara Modin wrote:
-> > On 2026-09-08 18:05:54 +0000, sashiko-bot@kernel.org wrote:
-> > > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> > > - [Medium] Incomplete fix: missing `handle_free` field in conditionally compiled `shmem.rs`.
-> > > --
-> > > 
-> > > commit b5b83bb373847c99ca6d286c268d2e0ffab299f0
-> > > Author: Klara Modin <klarasmodin@gmail.com>
-> > > 
-> > > rust/drm/gem: initialize callbacks with ..pin_init::zeroed()
-> > > 
-> > > This commit updates the drm_gem_object_funcs struct initialization in the DRM
-> > > GEM module to use pin_init::zeroed() instead of explicitly assigning None to
-> > > unused callbacks. This fixes a build failure caused by a newly added callback
-> > > field in the C structure.
-> > > 
-> > > Closes: https://lore.kernel.org/all/aaef18cd-ab55-4fb8-8563-ca3a5ea9cbc6@leemhuis.info
-> > > 
-> > > > diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-> > > > index e1ebad77ebe2a..c63b0fe5a15e1 100644
-> > > > --- a/rust/kernel/drm/gem/mod.rs
-> > > > +++ b/rust/kernel/drm/gem/mod.rs
-> > > > @@ -266,18 +266,8 @@ impl<T: DriverObject, Ctx: DeviceContext> Object<T, Ctx> {
-> > > >          free: Some(Self::free_callback),
-> > > >          open: Some(open_callback::<T>),
-> > > >          close: Some(close_callback::<T>),
-> > > > -        print_info: None,
-> > > > -        export: None,
-> > > > -        pin: None,
-> > > > -        unpin: None,
-> > > > -        get_sg_table: None,
-> > > > -        vmap: None,
-> > > > -        vunmap: None,
-> > > > -        mmap: None,
-> > > > -        status: None,
-> > > >          vm_ops: core::ptr::null_mut(),
-> > > > -        evict: None,
-> > > > -        rss: None,
-> > > > +        ..pin_init::zeroed()
-> > > >      };
-> > > 
-> > > [Severity: Medium]-
-> > > Does this commit miss a similar update in rust/kernel/drm/gem/shmem.rs?
-> > > 
-> > > The VTABLE initialization in shmem.rs explicitly lists fields without
-> > > using pin_init::zeroed(), similar to what was fixed here. When compiling
-> > > with CONFIG_RUST_DRM_GEM_SHMEM_HELPER=y, won't this cause a missing
-> > > field error for the newly added handle_free callback?
-> > 
-> > Sure, but it should probably be a different patch in that case. The
-> > current patch fixes an issue to a currently existing build failure,
-> > while the issue mentioned here has not manifested yet.
-> 
-> On second thought, this is seems to be using the same binding so this
-> might be accurate.
+On Mon, Sep 7, 2026 at 6:48=E2=80=AFPM Ke Sun via B4 Relay
+<devnull+sunke.kylinos.cn@kernel.org> wrote:
+>
+> SZ_4G is used by the Tyr driver when splitting the GPU VA range into
+> user and kernel regions.
 
-Confirmed, on an arm64 build with the Tyr driver enabled:
+The message should explain what changes, e.g. a new paragraph after
+this one like "Thus add a new trait that ... and implement it for
+`u64` because ...".
 
- error[E0063]: missing field `handle_free` in initializer of `drm_gem_object_funcs`
-    --> /home/klara/git/linux/trees/next-local/rust/kernel/drm/gem/shmem.rs:130:52
-     |
- 130 |     const VTABLE: bindings::drm_gem_object_funcs = bindings::drm_gem_object_funcs {
-     |                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `handle_free`
- 
- error: aborting due to 1 previous error
- 
- For more information about this error, try `rustc --explain E0063`.
+> +const unsigned long long RUST_CONST_HELPER_SZ_4G =3D SZ_4G;
 
-I'll wait a while for other thoughts and otherwise respin with this
-included.
+Is it added here to be nearby other sizes, or something else?
 
-> 
-> > 
-> > Regards,
-> > Klara Modin
-> > 
-> > > 
-> > > rust/kernel/drm/gem/shmem.rs:
-> > >     const VTABLE: bindings::drm_gem_object_funcs = bindings::drm_gem_object_funcs {
-> > >         free: Some(Self::free_callback),
-> > >         open: Some(super::open_callback::<T>),
-> > >         close: Some(super::close_callback::<T>),
-> > >         print_info: Some(bindings::drm_gem_shmem_object_print_info),
-> > >         export: None,
-> > >         pin: Some(bindings::drm_gem_shmem_object_pin),
-> > >         unpin: Some(bindings::drm_gem_shmem_object_unpin),
-> > >         get_sg_table: Some(bindings::drm_gem_shmem_object_get_sg_table),
-> > >         vmap: Some(bindings::drm_gem_shmem_object_vmap),
-> > >         vunmap: Some(bindings::drm_gem_shmem_object_vunmap),
-> > >         mmap: Some(bindings::drm_gem_shmem_object_mmap),
-> > >         status: None,
-> > >         rss: None,
-> > >         #[allow(unused_unsafe, reason = "Safe since Rust 1.82.0")]
-> > >         // SAFETY: drm_gem_shmem_vm_ops is a valid, static const on the C side.
-> > >         vm_ops: unsafe { &raw const bindings::drm_gem_shmem_vm_ops },
-> > >         evict: None,
-> > >     };
-> > > 
-> > > -- 
-> > > Sashiko AI review · https://sashiko.dev/#/patchset/20260908175427.47207-1-klarasmodin@gmail.com?part=1
+> +/// Only implemented for `u64`.
+
+Intra-doc link: [`u64`]
+
+With that:
+
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+
+Thanks!
+
+Cheers,
+Miguel
