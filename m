@@ -1,136 +1,154 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F62D5592EF;
-	Tue,  8 Sep 2026 15:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FB251A72A;
+	Tue,  8 Sep 2026 15:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788880443; cv=none; b=gux7VjLlrdhOr/f8tZWDBHvQjgAvjN3tpOfjsUEOu3QkqJhgCF4XedzA/60zzuxlfNlWw63cyaPd1pV8QAPMT/Km/Nbf9NtYJbvuydWy78KIvtj5BUspMFG01vrbvT4NbU0Iu48OdlNF6XHZvqv0eJ7VXf3VEVCR0p0iGtKl/nE=
+	t=1788880517; cv=none; b=Elmk1FvZNhj8sXNZJgeXxbeOjZeGsgW+jo5hMsRCVaaSpYIp2qnAtsIOvFcAyhh0YpTCJcBPqNEs4jws8rWygAi8IgPTgLDVgGqMfLwUX3fhqWwHE/Yi2F3iAgaK9t7D/0SxF72lUrrZO2xnDFweIZ7NtZJ3963OxGBRS96Sof0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788880443; c=relaxed/simple;
-	bh=9VnbqKcFo0PdV/F50ouF++HgJygmdMQ5dTr+q9TdSv0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qdip1vlPIOM2PqJXL9+Oe8Ka25D5E/TITvZC2uOon45DijyEPp6Fh+4ylESwL81rUF/1PjZzFOrEUVZ8+29OwVw9N2tQ/WU031LOWGEovCRyi5VpJP2LgsFsrRysMlIgkj7gvFUgifBZwAaaiXTCWR/8BMJ2e9D3WTMN3Mi4/pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=fAETnApx reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1788880517; c=relaxed/simple;
+	bh=npBVPIx/WRGawCVtXNGKZVl2Ht00Z+1uN1WEVDLUYEM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
+	 In-Reply-To:Content-Type; b=VnAHNWUYKwnQEDtKnv6MTQ1/aFKyzy2mVudiRPnRXsgbb+HoqNKRYPvfL3Bx9G46TuZdex+N1s/LtpzGJHhio3qx7Jemh/ZXCPbx86LIsN9IVV+c82pzJ0n4DtrlvbRGo9vAD7tzGaK6CwNFl58ltz+fkTOlXE54gS6R+IVO2hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=bzDV0iRa; arc=none smtp.client-ip=188.68.63.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="fAETnApx"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AF2E640E01DD;
-	Tue,  8 Sep 2026 15:13:48 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 90bGYtLVFUMy; Tue,  8 Sep 2026 15:13:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1788880423; bh=SihVXpN4VvNY3Mg5IOkHy8UfEsHqRfkcnelNTeVhEJY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fAETnApxBEtfPuqHFKCgIL29nHx0Z2YHgAygdIUM8hU/Mz33/kA4ZUBeN/gRjrvau
-	 vtDllihc6pYSe5SXQwgoqpNhfk4/08/8KMfUsCAU9thasCFYYPKC5Y/pV7Y6XU69vH
-	 LNwlFlG04npY9qQKxVsZcrZnpWC37yTWxuzhzHRm5KpwYfkHvzNEQeiGPcvB58aLNL
-	 CiYr2yyCrB3Kpf/DVc891YwOW/34b2QLG1yPFPyiPhCi535fKHZgiFGNQiM2V+7vT2
-	 gPcZgp3ofWVjQmcjoKAe195uX42B3clf9ibePNVbJKWUY1oARNBH9aqSnI0FgzmH5W
-	 h3dWuWkymclGp3MUg9haChNnjvPBl3Zfv+FDejA3/AFf/CVXHWsWO5KDUQ2zEgeqt/
-	 YAh14BnniVfR4yGoNbbKeldMZUsNF3icLMOF+CXHFJzyhU2PGxTQ2922hXMjHxMdeL
-	 Z7VOvQUlIKK4Twu3A1MK/eNhNVBp3Aq4OXXBOciVJLy8/PcJIx0toX/zZ4lcn1jfV9
-	 ErcQYDZ5WCkd1WmQQESUO71elKnVOkkPTWwEHl1ZBofjxaMBHmYZWTaJGuyt7QqChy
-	 44ZU/2M46IVY51m5w2KmjWEiICeA6W5JNXmeJ3Nh9U8UDaWIWWakyv4XQKa/cqNpso
-	 4+S63J9RdOKwhC2R/OGeJJio=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="bzDV0iRa"
+Received: from mors-relay-8202.netcup.net (localhost [127.0.0.1])
+	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4hfSD270bqz48f7;
+	Tue,  8 Sep 2026 17:14:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1788880499;
+	bh=npBVPIx/WRGawCVtXNGKZVl2Ht00Z+1uN1WEVDLUYEM=;
+	h=Date:Subject:To:References:From:Cc:In-Reply-To:From;
+	b=bzDV0iRasfIGoJ4eLj1TCVT70hJaEAOMRX7MIRrV5legW5CJh40FsucJFRm0xinxd
+	 VSRAH2lnZTCW26I73YqQH0CzEhv+UKgfhE3rNts3CcTlfL6fLhwLarUaXQjI2TvO64
+	 tHz6Z+I4GbUQbkfjVjwf82ds839gkPvHpHG51VbJlS+aMOX104cO14AS1n9+xE8FbD
+	 QrItJsNcCCsnr+xemks/qx8yPJsQ1p5UXz/mZ56jGa1OWzbYJh9u4bUYkRhBM0g3qe
+	 Z/Bc9BKJ2feWuNglm1ngFw7E42dPdaGaPgU1OLaaySRHe6l/zH9smHiomdWlZFBTL3
+	 P4n3lkhjff7dA==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4hfSD26JNLz48V3;
+	Tue,  8 Sep 2026 17:14:58 +0200 (CEST)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2B8AE40E016C;
-	Tue,  8 Sep 2026 15:12:41 +0000 (UTC)
-Date: Tue, 8 Sep 2026 08:12:38 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev, linux-mm@kvack.org,
-	linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-	linux-s390@vger.kernel.org, linux-mips@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	Jan Stancek <jstancek@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: Re: [PATCH v5 02/24] x86/elf, um/x86/elf: Move relocation constants
- to UAPI
-Message-ID: <20260908151238.GBaqAl5iKb64meuPJl@fat_crate.local>
-References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
- <20260908-vdso-absolute-reloc-v5-2-3a93791af1cf@linutronix.de>
- <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local>
- <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de>
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4hfSD13Gv4z8svL;
+	Tue,  8 Sep 2026 17:14:57 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 983795F9C3;
+	Tue,  8 Sep 2026 17:14:56 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=linux@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <1b3d0eb2-9e9a-4d4e-b8c0-ff966033ef03@leemhuis.info>
+Date: Tue, 8 Sep 2026 17:14:55 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de>
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: rust: Build error in DRM bindings
+To: Thomas Zimmermann <tzimmermann@suse.de>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ "open list:RUST:Keyword:b(?i:rust)b" <rust-for-linux@vger.kernel.org>
+References: <4da62a4b-c4ef-492a-9a27-b56bd4784acf@suse.de>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: de-DE, en-US
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 MEK4
+Cc: Mukul Joshi <mukul.joshi@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, Felix Kuehling <Felix.Kuehling@amd.com>,
+ Linux kernel regressions list <regressions@lists.linux.dev>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Mark Brown <broonie@kernel.org>
+In-Reply-To: <4da62a4b-c4ef-492a-9a27-b56bd4784acf@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: 
+ <178888049708.3336765.16009071836980567864@mxe9fb.netcup.net>
+X-NC-CID: +8MkgHCp8RC5tsRYXFuTLb6WzoXvHmnlhMHKCi6gQfsCOicsRNQ=
 
-On Tue, Sep 08, 2026 at 04:26:00PM +0200, Thomas Wei=C3=9Fschuh wrote:
-> The existing, generic ELF definitions are there.
-> The ELF stuff in include/linux/ is highly specific to Linux.
+On 9/8/26 09:11, Thomas Zimmermann wrote:
 
-And putting them in UAPI casts them in stone. I wouldn't want to maintain=
- them
-forever if not necessary.
+> when building the Rust-DRM bindings with v7.3-rc2, I get
+> 
+>>>>
+> 
+>   RUSTC L rust/kernel.o
+> error[E0063]: missing field `handle_free` in initializer of
+> `drm_gem_object_funcs`
+>    --> /home/tzimmermann/Projekte/linux/rust/kernel/drm/gem/shmem.rs:130:52
+>     |
+> 130 |     const VTABLE: bindings::drm_gem_object_funcs =
+> bindings::drm_gem_object_funcs {
+>     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `handle_free`
+> 
+> error[E0063]: missing field `handle_free` in initializer of
+> `drm_gem_object_funcs`
+>    --> /home/tzimmermann/Projekte/linux/rust/kernel/drm/gem/mod.rs:265:58
+>     |
+> 265 |     const OBJECT_FUNCS: bindings::drm_gem_object_funcs =
+> bindings::drm_gem_object_funcs {
+>     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `handle_free`
+> 
+> error: aborting due to 2 previous errors
+> 
+> For more information about this error, try `rustc --explain E0063`.
+And I already wondered if I'm the only one that is running into this, as
+I reported this a few days ago already. Pseudo-patch to work around this
+can be found here:
+https://lore.kernel.org/all/apyTR-f8W6Jt7uP5@soda.int.kasm.eu/
 
-> Also later in the patchset I want to expose the definitions to the
-> tools/ build. Exposing generic UAPI definitions to tools/ is a much
-> easier sell than include/linux/.
+But for bisectibility I think it would be best if that fix could be
+folded into the culprit.
 
-tools/ *copies* kernel headers on a "they're needed" basis. No need to pu=
-t
-anything in UAPI for that.
-
-It's even written down: tools/include/uapi/README
-
---=20
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Ciao, Thorsten
