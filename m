@@ -1,76 +1,84 @@
-Received: from mail-oo2-f34.google.com (mail-oo2-f34.google.com [74.125.231.162])
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC9D59E329
-	for <rust-for-linux@vger.kernel.org>; Tue,  8 Sep 2026 20:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E993E40F3
+	for <rust-for-linux@vger.kernel.org>; Tue,  8 Sep 2026 20:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788898138; cv=none; b=vEcNAcpqLuUN2rqX0TSopIOMtfI5QDnEOyoDCoxeRzyMGJ+qGGdqrEFb+HQlE+E78m5n9TXsxvzWPYTD81SDCje2ppanKyQorNJe4goi3PNUZpjIkMrJ3CBjA1qmpAYqTIpqDRgWeGENQyN3tVPWd21oDIPZX/GnES4LCEjgFKY=
+	t=1788898429; cv=none; b=cUabByu3Z8LkQVUE4R9YSUyWPkDzcbgcgL2cJadaTH9KYbFiR4JSX1BWjKxC70wINkmN2OWyN1LHR8uvxqdjBUMRUytK0RMQR7gIgfTgtHyvY1Pel1LXHCZAKkqK7CXK5hveU4qvtKvjck8RsXpTvNwVWKquH8u3HSnVPL35WRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788898138; c=relaxed/simple;
-	bh=/kMit8CUDaP2BflI6bC+09wX3fqJwv8fLnZxYfqIkgU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NyRy1jd3bVQMQFn0wdM6UmosRj4Rq5XjyYvwGJNi78JYNMI8nLcXrS1k63GLmwkMbDglGdy0cBP6LvLn+OpAWdfBeMlKTcWnVqI9FNwzxpN5keO9Z38kuv09HmGTzy/VJ+ZyjllfsUixfrUGgWmEeW4rD+d8G8TEBCjzx4DyqVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tamu.edu; spf=pass smtp.mailfrom=tamu.edu; dkim=pass (2048-bit key) header.d=tamu.edu header.i=@tamu.edu header.b=GzgtppxI; arc=none smtp.client-ip=74.125.231.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tamu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tamu.edu
+	s=arc-20240116; t=1788898429; c=relaxed/simple;
+	bh=dxF2BaSzBnbJDO8svzFefD5jxms69tdB9jvx6FnSrDU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FXDVkLRIwbfLkA1tXifo6A4uy70UYMkXuAXT8B7qXWgvjXItMCHo43b+W7FkDJfz0zUGl34lMruTG4OiexhZL1JescIjdks7kRbYC6jr9ZqI3MPN74aE6k3Sfogam1prYWUj41TRXXimf8VG9jUBD25LNz/FlufqvWJCkpj84b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gtld5I3U; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tamu.edu header.i=@tamu.edu header.b="GzgtppxI"
-Received: by mail-oo2-f34.google.com with SMTP id 46e09a7af769-80032c08611so285336a34.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 08 Sep 2026 13:08:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gtld5I3U"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-52d7a3defe8so49955131cf.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 08 Sep 2026 13:13:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tamu.edu; s=google; t=1788898134; x=1789502934; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788898427; x=1789503227; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cpZBZiNkX1boADxTuU2IVraCPujz/4cVmGXwbGYdtrg=;
-        b=GzgtppxIDL/LhxXRbBfnTCRUpuvgQ9f9hlAu2dLKdN3vqY2Tk9jNIlNX11ACGrSXwQ
-         FUNtmXfyRVRbo/qRL1Lxyd8sUb2mpmQzlAP3wHQbClgGDeuIZZTEPnxaogPLzaKJP44v
-         kWGsvTNzbeNmPEjtf9J8Lv7Jqpt0kenHQV3zKWnylPYfDwZVajObpvUFJqGAzGTxe/2L
-         M9978pleCh7C+Iw58Eh173jQPq9oIbq3KlaBbLeFP+qUVxZoKKQYwDgkyqjUEGNYlaNw
-         11tXwDBn6t4e5pyM5pnPgx7DPN7AunkojkjaixANUlA1CnmqO84C0DJG8fCnq419otOn
-         tvMg==
+        bh=G1WVEAgCDTyboEwqwqS6xMrZxXr/rnP7TsZmJjP2k8c=;
+        b=Gtld5I3U3zwNlhdPWB5px2usxxEgyBd49PaFnJBCS4L2ICxZPfqn2Jcad8zvfxerSj
+         L9ef+QG1i7UDRlRewrAOv3KbiRkrMcUYBDcYSqtrPUqLis3kw0e0AuW7cT/r7S86weKk
+         o+VbBsbH5CDVAKHUEXTXWqge6QYrEc1F9jKKZn8FU+lVx39lxCDPGH4RSpTUBgwXL5AM
+         iW9kBe9XjIy6QeXiMgOuPgO/IFoMpEqwATzEZA6tSm8ng4vjlWcdYVR/ovz1AwpItMFf
+         jtRB5So56zmDMLD4P4Yc9XnlL03SqPlC6FvFDps4M7i9/OlMEY8UBw9jdVGET2JGpoZw
+         YX7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788898134; x=1789502934;
+        d=1e100.net; s=20251104; t=1788898427; x=1789503227;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=cpZBZiNkX1boADxTuU2IVraCPujz/4cVmGXwbGYdtrg=;
-        b=hW28O5nozxeZSwSn5qGITyBVT0aXiwu3xf5zcmVrVPuHf2S0OPNfDMTMQ9/U4kw6Sr
-         hUb2dhVbeQ9kqo/szbESoyGxg1O1oej/2J32R27qI0QjVPNGEefFFAEr+tcnBlzdm43Q
-         uqKUIUqi8zYA7RSmM2cc3Y9SssPxuDBfTSeSzKg2jnFq3lY/dnOx+/b/RAwysApd/9L5
-         33+sX4HPXSPyx09PKp0rfdMXfgqR1IqJ/LUO1+1Xiy31jEwHhcbftpQOmx0ELKHoPm8q
-         XdDYqtdc50aCsXYtWr2EaIfxs1+0aCdQiUDR6aV19qdu7FcIHwIaVKKN7ocz22BjEJfc
-         JUwQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwbjz7/8sXB4sshp7ywD4A/8thU9ne2b2RNwXmOCtsINY/gR2JkHdlM+/fAGKPRmwgwLPDdGpkJGE1zj6/mJA==@vger.kernel.org
-X-Gm-Message-State: AFuF++ms548ZeSEDKKsC1cWOiI4qi4lpxEyMAYy6VNZ7bONKb/dPpisk
-	ATn3WIS+UR+euruqxu8UaJPPNd9S7P9NTUKJWAMS5a5JuP+Ab4gVHp372BI7nixZOah4GlZfRQk
-	u3INHQ76vdxqX
-X-Gm-Gg: AYBFou3V8RlPNhxWd1Mt+GJPcKAEwJImOIMKHx6z4ZCjhURBBfVzats3NCant+skmHp
-	CPGLHIkfR2m8I9621dLYI4t+UJnyjDC+YyyKSfT18VD4Ts0UxUJM2D0dl+yPMIR4yoIfGQ3l6fo
-	xOLJi4jTLrXYE0JG6NUKoWFV9EtMAly7WyVEL7aYcI5hyTpq7YJTPSVnSPTxsIvAZhylst+va6K
-	ISlfRzIsYZcaNJx2IOPr7uU9OWKWZSm5ogsgCwkUk5Ls6TxE5yPpQOgh2CNw1PQ2G9JP5v5MmfP
-	okOKHo1rLSU8K1oDd9vjt5Z94p/DEm6wpQiaFLw7E9IeJxps9Ob7B/pG0wMZ/cymz9EfhvX5bLW
-	4VBUebNcF/QQv9oCkXKoBDQPzZKEBg3l9nt9sWIqfXXjYi6C55fJoGPx8rxSSypeZBr4daiqUi1
-	Ee/erkatX5FbJIYd7ELUPMAzu/jaCT3rdJXH3wvRbljWht97Xt9QM8EOCr5odLd+Ao9DiPvLq31
-	4EOlvfBmMHqKG95YbdGi+pSX/eVREH6WSdRgZi8tdMwiMjED1N2t8gfkdCdbYgvqzU8+bA=
-X-Received: by 2002:a05:6830:3499:b0:7f6:705b:ffe7 with SMTP id 46e09a7af769-800f1a35138mr1966540a34.14.1788898132377;
-        Tue, 08 Sep 2026 13:08:52 -0700 (PDT)
-Received: from fb.keuhufpvur4u1eezzhu5ttlizh.gx.internal.cloudapp.net ([20.106.51.18])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f9f6793f5fsm17086281a34.8.2026.09.08.13.08.49
+        bh=G1WVEAgCDTyboEwqwqS6xMrZxXr/rnP7TsZmJjP2k8c=;
+        b=lBN/gRQ1LcKtjcYehHFIhAkQ93EP3prnELyBd1yv/e4A9X+ooMEiymJndeStTVAhbd
+         vHFImitc2m2PcTR8SVykHzEB3OaJ2NFrvRZ2Y5bcsEKbQIhzEn0IDWDmoLNB3rx5rk9W
+         X39Vfw7uRt0wFuyXH2PON6IglZTlJbsM116IXE2qdMHsRNJ4VwGhJoVR9Fl0w6nPU8m6
+         eFoUiFDkTg7Xm+xmKLSxFIbbpbOZQq9DOCIgEHreKPNccXleB3e9esweOu93YNKlZTQG
+         CHzt/weSTVXzMOMmJxWTP28UGchY0G7zgVcxKbG8BgR4omAU0TE0VNuqcWpla2pOURze
+         EU3w==
+X-Forwarded-Encrypted: i=1; AKwUvByWmntFgpLNf0LVVORR/FN+pilbkoAUGFGM6fzPJFZhT/62oTfbNcZJkUiQizayYokXmmXusQ88ETocEzkAgw==@vger.kernel.org
+X-Gm-Message-State: AFuF++nPJt49xR2ipiKi8Yd+kigyPVydrTwMp92Futw2ULncNaO+vZXL
+	ittkSQkdcadVjdMb85kS0+AIemFtE16k06Vt1AOc7AzVMeiMgpCkblzR
+X-Gm-Gg: AYBFou3Gp8OBUa/5yEsi6hiiYd3L7Hc/Hdx+GT3QFZp11vdQY/vBR1anFZmWt8pHl5v
+	w3/g6zYmY6vuM3YRe72hu2UegkABRl/ZG0hQNIH6vz9s9VS8cOSxqnE2LE38/ueKmFDrxD5m/hn
+	RnlluljQTYraJS3rmZPz2X/ihAdw/cBK+5bO+o5IbgBtqxUtTM2biY3ZIBvcpNICwIYiggLTHYT
+	tvtJm5+K8w1sy24B4BuZd8E8h3+neJAXqqJxThaG79A1aigR+o245Rl+O0bfhinkhGTE89YvmsZ
+	jDlTdgFfKNjM0D+NqHp40k6iGGgmpzGG09fwLnkMXGm0jn6NwPEhIRWFUhWKiLrltqcYTdF78Iz
+	JhpRqt2TJ/3nvLFELs5xQc4nJq+sZROMe4PlI1ScBED7ewZl8L3UFnPBFDuUIEC2hA+a5A8YKR3
+	jviWZp/VcZtbr15NyGI2TwVJEfJ5f9swRYzcKIoZIaF5kwvfIkqVLEASnPY1o=
+X-Received: by 2002:ac8:5945:0:b0:530:42d4:4c9a with SMTP id d75a77b69052e-53054a34924mr346612041cf.44.1788898426597;
+        Tue, 08 Sep 2026 13:13:46 -0700 (PDT)
+Received: from tofu.. ([128.210.0.165])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-530a300c3adsm7197381cf.10.2026.09.08.13.13.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 13:08:51 -0700 (PDT)
-From: Qingxiao Xu <qingxiao@tamu.edu>
-To: 
-Cc: Qingxiao Xu <qingxiao@tamu.edu>,
+        Tue, 08 Sep 2026 13:13:46 -0700 (PDT)
+From: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>,
+	Burak Emir <burak.emir@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>
+Cc: Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rnull: fix geometry store check-then-act across lock scopes
-Date: Tue,  8 Sep 2026 20:08:43 +0000
-Message-ID: <20260908200845.405112-1-qingxiao@tamu.edu>
-X-Mailer: git-send-email 2.43.0
+	linux-kernel@vger.kernel.org,
+	Georgios Androutsopoulos <georgeandrout13@gmail.com>
+Subject: [PATCH v3] rust: bitmap: document panics in `next_bit` and `next_zero_bit`
+Date: Tue,  8 Sep 2026 16:13:02 -0400
+Message-ID: <20260908201302.1085862-1-georgeandrout13@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -79,92 +87,71 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The blocksize/rotational/capacity/irqmode stores check powered under one
-Mutex acquisition, drop the guard, then update under a second acquisition.
-A concurrent power-on can create the live disk from stale geometry in
-between, leaving powered==true with config != live disk.
+`next_bit()` and `next_zero_bit()` use `bitmap_assert!()` to check
+that `start` is less than `self.len()`, which panics when
+`CONFIG_RUST_BITMAP_HARDENED` is enabled. However, neither function
+has a `# Panics` section, and both document that `None` is returned
+for exactly the input that triggers the panic.
 
-Hold one guard for the powered check and the field update.
+Update the documentation of `next_bit()` and `next_zero_bit()` to add
+the missing `# Panics` sections, add the missing blank doc comment line
+before `Returns` in `next_zero_bit()`, and simplify the wording.
 
-Signed-off-by: Qingxiao Xu <qingxiao@tamu.edu>
+Fixes: 11eca92a2cae ("rust: add bitmap API.")
+Closes: https://github.com/Rust-for-Linux/linux/issues/1252
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Signed-off-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
 ---
- drivers/block/rnull/configfs.rs | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+Changes in v3:
+- Use Closes: instead of Link:, and add Fixes:, following feedback from
+  Alexandre Courbot and Miguel Ojeda.
+- Link to v2: https://lore.kernel.org/rust-for-linux/20260828133543.2259029-1-georgeandrout13@gmail.com/
 
-diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index 32c10c3f4..66ef91b3f 100644
---- a/drivers/block/rnull/configfs.rs
-+++ b/drivers/block/rnull/configfs.rs
-@@ -174,7 +174,8 @@ impl configfs::AttributeOperations<1> for DeviceConfig {
+Changes in v2:
+- Simplify doc wording following feedback from Alice Ryhl.
+- Remove extra empty line between Link: and Signed-off-by:.
+- Link to v1: https://lore.kernel.org/rust-for-linux/20260827150719.109145-1-georgeandrout13@gmail.com/
+---
+ rust/kernel/bitmap.rs | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
+index b27e0ec80d64..b51c8a96f1a8 100644
+--- a/rust/kernel/bitmap.rs
++++ b/rust/kernel/bitmap.rs
+@@ -459,7 +459,13 @@ pub fn last_bit(&self) -> Option<usize> {
+ 
+     /// Finds next set bit, starting from `start`.
+     ///
+-    /// Returns `None` if `start` is greater or equal to `self.nbits`.
++    /// Returns `None` if no bits are set on or after the given index. The
++    /// index `start` must be in bounds.
++    ///
++    /// # Panics
++    ///
++    /// Panics if `CONFIG_RUST_BITMAP_HARDENED` is enabled and `start` is
++    /// out of bounds.
+     #[inline]
+     pub fn next_bit(&self, start: usize) -> Option<usize> {
+         bitmap_assert!(
+@@ -479,7 +485,14 @@ pub fn next_bit(&self, start: usize) -> Option<usize> {
      }
  
-     fn store(this: &DeviceConfig, page: &[u8]) -> Result {
--        if this.data.lock().powered {
-+        let mut guard = this.data.lock();
-+        if guard.powered {
-             return Err(EBUSY);
-         }
- 
-@@ -182,7 +183,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-         let value = text.parse::<u32>().map_err(|_| EINVAL)?;
- 
-         GenDiskBuilder::validate_block_size(value)?;
--        this.data.lock().block_size = value;
-+        guard.block_size = value;
-         Ok(())
-     }
- }
-@@ -204,11 +205,12 @@ impl configfs::AttributeOperations<2> for DeviceConfig {
-     }
- 
-     fn store(this: &DeviceConfig, page: &[u8]) -> Result {
--        if this.data.lock().powered {
-+        let mut guard = this.data.lock();
-+        if guard.powered {
-             return Err(EBUSY);
-         }
- 
--        this.data.lock().rotational = kstrtobool_bytes(page)?;
-+        guard.rotational = kstrtobool_bytes(page)?;
- 
-         Ok(())
-     }
-@@ -225,14 +227,15 @@ impl configfs::AttributeOperations<3> for DeviceConfig {
-     }
- 
-     fn store(this: &DeviceConfig, page: &[u8]) -> Result {
--        if this.data.lock().powered {
-+        let mut guard = this.data.lock();
-+        if guard.powered {
-             return Err(EBUSY);
-         }
- 
-         let text = core::str::from_utf8(page)?.trim();
-         let value = text.parse::<u64>().map_err(|_| EINVAL)?;
- 
--        this.data.lock().capacity_mib = value;
-+        guard.capacity_mib = value;
-         Ok(())
-     }
- }
-@@ -248,14 +251,15 @@ impl configfs::AttributeOperations<4> for DeviceConfig {
-     }
- 
-     fn store(this: &DeviceConfig, page: &[u8]) -> Result {
--        if this.data.lock().powered {
-+        let mut guard = this.data.lock();
-+        if guard.powered {
-             return Err(EBUSY);
-         }
- 
-         let text = core::str::from_utf8(page)?.trim();
-         let value = text.parse::<u8>().map_err(|_| EINVAL)?;
- 
--        this.data.lock().irq_mode = IRQMode::try_from(value)?;
-+        guard.irq_mode = IRQMode::try_from(value)?;
-         Ok(())
-     }
- }
+     /// Finds next zero bit, starting from `start`.
+-    /// Returns `None` if `start` is greater than or equal to `self.len()`.
++    ///
++    /// Returns `None` if no bits are zero on or after the given index. The
++    /// index `start` must be in bounds.
++    ///
++    /// # Panics
++    ///
++    /// Panics if `CONFIG_RUST_BITMAP_HARDENED` is enabled and `start` is
++    /// out of bounds.
+     #[inline]
+     pub fn next_zero_bit(&self, start: usize) -> Option<usize> {
+         bitmap_assert!(
+
+base-commit: 73e3f0710014fe6d4ed98cfc02292f6121db7558
 -- 
-2.43.0
+2.47.3
 
