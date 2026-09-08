@@ -1,48 +1,47 @@
-Received: from out203-205-221-239.mail.qq.com (out203-205-221-239.mail.qq.com [203.205.221.239])
+Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19A735E1C0;
-	Tue,  8 Sep 2026 08:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF543A9616;
+	Tue,  8 Sep 2026 08:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788854802; cv=none; b=gA4eKx9hh6UaWE0bHMCMIGwkBWlK+4bREww2KDPKGaLVInc9Xz6W7jnVX63i0hKW9Wyy4owz93piqZxqNXFCZKb9G1tfeix6Vg0bhEbMwOqRHB/nsHcPMXF0BDDWGoQrfnm4Ok0epIKvETkMmxN9iQAOsZlNyFBcg3KrhyzOUGo=
+	t=1788854807; cv=none; b=R7KuTalXGfvUfYykcuP0tfihWBAL3yd0ApBerfYaS6J0RrCjIIcuF0MAREGeZ1JCewgT1QR/2ncqy4TTxoZVqBPU1T6oUwTYb5HCI6jKzSyvDZ8rNhjpAXYFN9uYoLtjF6U1+ZsN8CF2ih47jdZQpqbuQjDZFRqBIL8+7grOyR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788854802; c=relaxed/simple;
-	bh=1LNdn2DsFwH2jWJWGOv9b4qwkxvpmnmbyfdbFz/ZxiI=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=BDfGtcgEhFcq+wwKYElGIE2z/dX66hKGhwCLnZqt4SMQacZ0RweEsm6lslJMgB49GUVjraEf4gaRIa2h/8A42Lfi+kZHEtf2ezl/42aEGVOtOQYrLrqm0uVMHyfCRnqyNa6vYAjU7Ef8KAZTmSqZlCYXyBYl60w2iL/bjU53vvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=LO2NSogM; arc=none smtp.client-ip=203.205.221.239
+	s=arc-20240116; t=1788854807; c=relaxed/simple;
+	bh=2xqmYT9HDXnhzbfJRGQf79SeIwwTFyFfKijTt7HmlJg=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=o5HwV4bzJKCueX8Aa9yiczZq+l3yZVj4w2SiJbQ+pP7+ORtOBWdg/jjuRW7BQaGF4/A/S1oTtbYjeOPwwHjbbFIPEiFo2o/e2qlIYpmLUMRobD90jfE3v6JbGxHnpNRajeu8Zs0Wt/CavseNliFKitXNBx352kDa3LFbPy9Xt4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=L7Ed/hK3; arc=none smtp.client-ip=162.62.58.211
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="LO2NSogM"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="L7Ed/hK3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1788854796; bh=y1uTVxb9Gwa8hEjghU+MfLH1UYxda7+i6VRFQveA3F8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LO2NSogM8dxl1OO/I/JruzPfOktq7Ggg0tTrH0vWdvUhk4jcGNjSwubc3mItW50Rg
-	 EKt59fPrn00DFR+ILxSgCCBIwxyLZoAGbHJhUJq8CxlpHn2WOKvswB4A1HZtM/gE2B
-	 a2nDWYUxqf+loXw/ifC1ZUIOISQUPIjJv8J9n7Ss=
+	t=1788854792; bh=98YyOZdshhn5cPZjXVwyFbNEDVw72Ziv/YVFEcGoRpw=;
+	h=From:To:Cc:Subject:Date;
+	b=L7Ed/hK3+qnS4oGV6uXVbV0GmF63+DNoDaJsqF8bEhvhG6UKfOKB7vbcBUya1xJ3C
+	 wBxA37Q0FS1iRrTVfG7Ik4KKMXJS0+G5MuYekKMwZQhBhMBwHACeZS+UADdn1Ms0ed
+	 0yoL9Nb2NsHwCIhc4yVQXogwYLj9MqtbNAYY9z1A=
 Received: from localhost.localdomain ([106.114.216.75])
 	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
 	id 185190A2; Tue, 08 Sep 2026 16:06:05 +0800
-X-QQ-mid: xmsmtpt1788854791t2biivmd5
-Message-ID: <tencent_DD1EF416B64C6088DB85E0AE3F9F0FCCEB07@qq.com>
-X-QQ-XMAILINFO: N/WmRbclY25G4q9zHqrX04L5YCvnivhOktp5B/tow4dzNi8d415buZCs8o9djs
-	 Q01yyi0roSfTjIHwrERHbYo2WGFpuL2DoITKDYxXjo0DD4J1cQSRYVLNlCPMSzn4srZc8bdeIey1
-	 bP5lqxKk0Vwn+FWiG0R1y8jkE0qBmKF9Rx/OcotUkR1umYQKcYH8Qg21T4J77ielxUAG5shJUGlk
-	 9s1YKlQEchvYRggrjLb3pRXKAXcKrkPJn7oYnWCpDfbtZ3/rAlv6CqlwyT/r1jO2+oVX+BLwAKSw
-	 BvplsXQCvNL0KhRHtMWm+OJmCNFHF804I+gH2cGrgKfOsF4rL8EQbXYukkTAXdjNojfD8bhvM+qM
-	 Apu9LI5rvsUxFlFZ831Q5byPa2VzKheIq4j+JK+7cvl34Q9wciNnVNoNbSRJ34puQ/ewWtdw6fy4
-	 SGjogAL/v2RneDByQnGmCv3RRprsDDo3CtzBWOpmxWcFEUfzE+kfVJYpANZdBz8qCFOvMNTgzMyX
-	 +hI/BcvrGRpZ7mITUcdV/JHWvtY0Ve9GIThzy61eARAmMRnFC47v73NwieY3vbv1dO+5ML48NSep
-	 7wz5uINMdLofQS8mSJ4Vw2KgnGnwdG/EArNA4ENjlr8bRi1wKMV6YQJWqIYvsj52P9bR0FwhTbqM
-	 uXG22QgNnGuTefcNim9O70S9Wmk9/23lBb9+lqa6Yk1qE6iymVDyHAx37k6EPPY/Jd2gTDr6FMKR
-	 HlGC2HwYJEEjeekWl3vbtL9zD0LoYA2JogqeVOwOrLU5bPZuSjDiW+ap6fR3Y21OURpN/SxqsNxf
-	 taBBrMzAvLthRfJfXPXTy6T5aCORCLMVKi23OUDQ1BBlNdBksDODSl0vYmOAc9wh9zlexX4RYfjd
-	 51bhFHXGgUxkn5hvRVYuM2+2YbbaqMHX9Ermf6W6T11kYGqv1HERr5VBgtLcCYid9tEaLhcBUZ6S
-	 1JUO0rJIlxrUzBPg1zbGIdw9DcodPgtJzH+LSAIA8xdDn2GlwHSccdjIM5SbIZXrdRabRfSFTz2T
-	 LdUW2RE1/hIpOzISZotdpUQoTwWJSL/gWB6C3vUg==
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+X-QQ-mid: xmsmtpt1788854765tzqwk7xsr
+Message-ID: <tencent_4E077A13DB36F0C12D69B0E89FD5C7DCB506@qq.com>
+X-QQ-XMAILINFO: MDbayGdXPuoeCWl6JLYX9iT4KFyTP4BOAs/TVgRKNN3qePWHPHaM937c3cEOSw
+	 gEMzJx/6L0E7pc5TUef1oNNef8p7TaBjvKrF/RuJOmrVTIfaCeOvmZsFPvB4VWh+NPBfHW4fgepG
+	 S6epI4g9XYvj4k/+LmAenIn3SD3b9iRPLZvagISGUTONATkxU5qyPFCMfm4JsBb0XgXlTy/q9vCo
+	 8/fK7IyZfwNAZ0OxnohE1BC1b/AwTwihBMIDg+s5YnHRwW/Dcm+jV5XOVBY2qNw6cgv9CsuY6ep4
+	 nRjBqW0Hm2/1f+8Pf3DXf9Z+afrT6Z+8X242hTZExMcHQ55yxCsXQaEbvd3Dc8khKuGiMfCEAPZr
+	 ieljfu7Y1LaAbkjoziq4Pyy/WhJsMPKviVlue5loH0++WvQ5ct/bF0wAtI+0w5lLguC4Z2HxvMyu
+	 VsOj3K/d2KxEVYcEQbKpvfRizlwHH/YBm7eeieFn/gfkt7iqmI3iPDjqoHkyp47F6fXqUWbwHQpJ
+	 c0MetieAU+beo4icbzmRAwcvEgkvWE1NQz0kRg+vZO1ZhTDUed1wZqwfJ89Uath6NGCXr7znISJu
+	 Xh7Uk9rtMje7g2C/cHgOlp5/lkAaINsUBLr0aRolBhdmMUTiIgZ/DIsDd7vn0R6HNSXMD1fYclhq
+	 3/i3bYf9+7tbKMbohOSHSpnz3e1Kr1uHAH/sksflln8/pV50hni8IFgYS4FeMIW8/d+lHAD4aZoG
+	 Gxg24rfVWjcAPJm5OLRp5jJaTRYier+zr0iHxs/jfTkzDqSoOStepPP6qGjTvx8/DtDKiegJo5dU
+	 aURyrXNwvP8uLzycmv/1cJrxJ+BGEdbvBl+RLhy5rmZKZoT4YVmgwUub6mJRqCEmfT0tUVFfmyUq
+	 sLfJVN0MgpLUlOkg/Cf5GXwnfYKZl6dP3FPmwJBR6mlGt55gi1YmAmFKavc4mAYsFfG5PNwW3x5w
+	 31rpAyfDZpEf3q3EkVNhkopDgb1AtKeIK2m2L2W/LfRW1YSMw8fZB2lR1EK1GsW/lQJKSBlI4VwI
+	 UeZGQSNDtKrzCvvmaRglCV4Y9uKxmWtlYsiyEt3J03e0+ZpB2o
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
 From: JX <1239989762@qq.com>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>
@@ -63,12 +62,10 @@ Cc: Boqun Feng <boqun@kernel.org>,
 	Uladzislau Rezki <urezki@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] rust: make unsafe_precondition_assert! const compatible
-Date: Tue,  8 Sep 2026 16:06:02 +0800
-X-OQ-MSGID: <20260908080604.34070-2-1239989762@qq.com>
+Subject: [PATCH 0/2] rust: add unsafe precondition assertions to Vec length helpers
+Date: Tue,  8 Sep 2026 16:06:01 +0800
+X-OQ-MSGID: <20260908080604.34070-1-1239989762@qq.com>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260908080604.34070-1-1239989762@qq.com>
-References: <20260908080604.34070-1-1239989762@qq.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -77,50 +74,35 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The no-message form of unsafe_precondition_assert! routes the
-stringified condition through the formatting machinery. This prevents
-the macro from being used in const unsafe functions.
+The safety requirements of `Vec::inc_len` and `Vec::dec_len` are
+currently checked with `debug_assert!`. Convert them to
+`unsafe_precondition_assert!` so violations are reported consistently
+with other unsafe precondition failures.
 
-Build its static diagnostic with concat! instead. This preserves the
-message while allowing the no-message form in const contexts. Keep the
-custom-message form unchanged since it intentionally supports runtime
-formatting.
+The first patch makes the no-message form of
+`unsafe_precondition_assert!` usable from const functions. This is
+needed by `Vec::inc_len`, which is const, and avoids runtime formatting
+when the diagnostic consists only of the stringified condition.
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1232
-Signed-off-by: JX <1239989762@qq.com>
----
- rust/kernel/safety.rs | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+The second patch converts both Vec length helpers.
 
-diff --git a/rust/kernel/safety.rs b/rust/kernel/safety.rs
-index c1c6bd0fa2..a45a574709 100644
---- a/rust/kernel/safety.rs
-+++ b/rust/kernel/safety.rs
-@@ -7,6 +7,8 @@
- /// The check is enabled at runtime if debug assertions (`CONFIG_RUST_DEBUG_ASSERTIONS`)
- /// are enabled. Otherwise, this macro is a no-op.
- ///
-+/// The form without a custom message can be used in const contexts.
-+///
- /// # Examples
- ///
- /// ```no_run
-@@ -40,7 +42,13 @@
- #[macro_export]
- macro_rules! unsafe_precondition_assert {
-     ($cond:expr $(,)?) => {
--        $crate::unsafe_precondition_assert!(@inner $cond, ::core::stringify!($cond))
-+        ::core::debug_assert!(
-+            $cond,
-+            ::core::concat!(
-+                "unsafe precondition violated: ",
-+                ::core::stringify!($cond),
-+            ),
-+        )
-     };
- 
-     ($cond:expr, $($arg:tt)+) => {
+The series has been checked with:
+
+  make rustfmtcheck
+  make CLIPPY=1 rust/kernel.o
+  make rusttest
+  make rustdoc
+
+JX (2):
+  rust: make unsafe_precondition_assert! const compatible
+  rust: alloc: use unsafe_precondition_assert! in Vec length helpers
+
+ rust/kernel/alloc/kvec.rs |  7 ++++---
+ rust/kernel/safety.rs     | 10 +++++++++-
+ 2 files changed, 13 insertions(+), 4 deletions(-)
+
+
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
 -- 
 2.54.0
 
