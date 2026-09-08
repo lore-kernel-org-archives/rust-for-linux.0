@@ -1,153 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6E8545D9C;
-	Tue,  8 Sep 2026 13:01:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772C649CF37
+	for <rust-for-linux@vger.kernel.org>; Tue,  8 Sep 2026 13:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788872496; cv=none; b=Ipuz69+ut3dW2QhPDcJH5Yfv7nlcLRfIh6+DkJvOGnmpq3YUUO2ryS5AXupkTyqyBH4Ki2Q+XU11V7BTlEUi6zMgjTTSgv4ZsI4Y9QEbG1lKnCrNQ16WReUsJsQZlcVrYho221yMjfJBTDGwHm1te+jEI3mIIwlTKnQnhJnWL9I=
+	t=1788875132; cv=none; b=eAv9df1wovJxnwe1PWYhj4p+Hgq76use/lG0du6C/4shMuP6Sv4MG475Ui9A/uB4iVOPH4737+IpAhCLtGgExLe9QxVdHKyX/4tr4tcmjH0Uf5Es7GIlBOdsakm6G/LHvxTjPAkOa2sdDQ0QP1LS0z+x821uuPS5dvwiVUXKWCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788872496; c=relaxed/simple;
-	bh=pMOeSHDsKYOFYtRkwyrxDfhYHYauuOrZj3XIdzDVfQY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=oLOsu/gCsjgYDZ99joe+A2Jb3txgj6uusw9l6i/oP747IJpYsY1TfCuONKoaL04JtptLFPHbMVErM8ginAe2btaozeJcAPCS2WJeKysuxMDmCNNq8BnuFDaLK+2bHojylXEgT0TqR8v81wjRyshbaoOPGMO2nGqI8PhwNlrZv74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PRd6atRC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788875132; c=relaxed/simple;
+	bh=6w6s0ug5UOPVdsxgvUfsiNA99gSju60RMeWmxNRkB6E=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=FZ0DIPUvvm5cWkARUQA21kUGh6TjElv0u8ri8x/oJ3z/HTV57m6ZHyQsqjDNj6awWjrzm/pWP0XtSc9Fb8F4mqq9Up63xh5gK/2qix3bJusP2XtMo65WEImD04q6KRqLdLgR2RF7D3T+jPdh3fJo3FoaT2lIusJZy0RC6VQtsKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=rsxXIoWW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ChwdEso1; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PRd6atRC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33821F00A3A;
-	Tue,  8 Sep 2026 13:01:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788872487;
-	bh=3u4ZSLNpLujPiLXkQss3Ht8ENjBNQXFRpeFDq/oPqNc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=PRd6atRCTm+SjLj1CMxt5r0hmkntJIe53psxy8H11SDbkuRR6D6AnVUjRQysFz4o6
-	 NDImWAU+7EqogEioRdAppPMovRGhOoyzSs0fVH7rmrI1Hn1C5ADfqa5/W4U43ny54V
-	 4SQyX7vf0aLhIL7UEvN1t1bP+8V3BIBuh3VmoeDHTTPP9nwCu41zkVxXADo48QAjOs
-	 6H86pgxuM7LM05yCGgETfGse671dEdBKZokv5G9XL8ioJbEk9zgVi2OFhNcHnwENBD
-	 /uHBbUBPwC8/TSg6TWgWPNjNt3uyDVYeXE73lPeivhHez0UQN9it6rY0tXwnhVVqR7
-	 xuoTixWsepxmQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: mike@fireburn.co.uk, rust-for-linux@vger.kernel.org, boqun@kernel.org,
- fujita.tomonori@gmail.com, frederic@kernel.org, lyude@redhat.com,
- tglx@kernel.org, anna-maria@linutronix.de, jstultz@google.com,
- sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
- tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 9/9] rust: time: add ktime_get_real_seconds
-In-Reply-To: <20260908.201400.2113025819273270637.tomo@flapping.org>
-References: <-MGvfW7sYYLrXTWvmTSX5lTwjEMfK97Q5QgNWBrHikC8aI_fyF3Sa3qzN4A9Th5lK46jMOYU4KjO59m00z4P9A==@protonmail.internalid>
- <20260826162851.2497-10-mike@fireburn.co.uk> <877blb1y3a.fsf@kernel.org>
- <20260908.201400.2113025819273270637.tomo@flapping.org>
-Date: Tue, 08 Sep 2026 15:01:16 +0200
-Message-ID: <87h5jzx5gj.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="rsxXIoWW";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ChwdEso1"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id 1B28E1D00082;
+	Tue,  8 Sep 2026 09:45:19 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Tue, 08 Sep 2026 09:45:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1788875118;
+	 x=1788961518; bh=qn3F8gMKgd+rGr0Ix0q4yL6KpaV2b5CQQepTgShAvhg=; b=
+	rsxXIoWWRytjxqlg2LGzdVXn4ANjSrGvW1y2Y7N4n0eQmtniYpQPdCpdUhmi+/GZ
+	vyP1m8mZ4LxZhVH7D+qVI1diGRkj+c/zIhuVXbAOSiOWOSATGCh5n41qjpoekLdV
+	H6iJDKdHSepNMxQUfBPL+neBnfqTF6At2R8HgwoiJp2Y7FZQ+4tS7HKnZL6oIr+N
+	Ak+8wny0LLpJ/JTDcWpva72ZA8hpuf0sFhu6TCWsPY/J2OUCGMVD0AkksO/8Njkb
+	4n/01epJNAAlAStmqsilIuYHnoDTuYuPo46LTx6iL2pvcVRIpoWF4UvPBD5IxJUv
+	kYdkefWANCJqf8hatdL+8g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788875118; x=
+	1788961518; bh=qn3F8gMKgd+rGr0Ix0q4yL6KpaV2b5CQQepTgShAvhg=; b=C
+	hwdEso1wtF35QlpLxi7rMXPofu22DQA1y+cYa4Dj86NQXnXp01KY58ZpAlnvygML
+	GCCD2gsK2ziy7jSjBmOymJAQwjviDOVCY6I7cZB1OmsVqHO6sKc+BtaCrsvtWYFY
+	xszHHZ8gOXvnOYVE03WDPdNyOYaErHOQOD4UjcPNKUonOn3c9sB9mZj0Ey5uKjz0
+	OXF+TY25ID3yg5wClFm7I6JvZVy2TbZ7QrnJFdKOggxHze+3uLZcjespExZ+z7FN
+	kIA0MYjzJa55TcnQcAI+eLMEoa52giZzFGvn8Fooa2ZDHG/BxuxwqzI6WdpkVW4e
+	RzMfMjhMh/b766hm4pDLQ==
+X-ME-Sender: <xms:bhGgauDFzlFsaZO73M5CxZw6UdM8YH0GkdFma6QdJlC1LYKIGWXDPg>
+    <xme:bhGgao40YA-lq9fwd_uQXsYcxxG736FrlnkVw0OjDwf91NyGe3ayVAph1lLxJDrZf
+    SDS_qrViRpxD6kYRhiDLKMy2tMG9Tl910Rk0UIjdBpiB71JDf8ri8g>
+X-ME-Received: <xmr:bhGgaisC0BCgX9YfgfmEYgM-ywf_fEv_asQMaogWXhcS-NS-yZgccox9kex631PAKUrZQqRrmkTOSFe9eqZbPgx3>
+X-ME-Proxy-Cause: dmFkZTESs8iH2O/nQIANZ43/73lk7ybnhxR88LDm4fuhwpy3OzZOZRUggTobnSAw7iJkns
+    Uex91j3h6GTa0ZW8nD1eWGUtQYK3zkNmQh1gPNiZs6DJVJFX29P28v/UXxmGbjo6OYLYDD
+    MrhP5DPtkcS0CYUD4w91djzYCU1+buuF44XbItOWNLEXADO9GIdbaBsfl+wh7+iEuuNiVX
+    WYmRHPoSWQ1cVasc5lRdloKRDBOF69ieoEX7mt54YtGu6mobJu43GOKH2nNAG+n4XAPjI/
+    AedWl/bHCHRnfSebqbox67SeNIEnlPfqmvrMyVEu8V8TRtdMEA6SjhS8x9tnj/xB/MI4rB
+    bzXN/kHaRObdXwYmY/6a7Ipo8Xm1KZuMTma3NWu3A3elGybJB1MzELiIgUv89MqW4IYKy6
+    XaDVh33RqL8vgif4YaN7SgyE+RGBj0tPuV9PnNdPmMm40E3GPYOcCbjItw9SJHhrXm+QJG
+    Mw83tf90zNbVTBwgC8GH3UqdvBIxT4jQ/ddilvhWxdC7o0nLpw/iXNiK0qpl8Z7VCIZkK8
+    B7inRx4K76cJwCgmQFvyne+oOQrqoZoDzMBDPxgyNrMgKi0d+YuMMTBO/rU2okObP0bwLf
+    rkGAf+tEjnpGk0UKafQIJ0XX1un+HbJI7skSBYjLNQ91I8XXUr33eMcRMBZg
+X-ME-Proxy: <xmx:bhGgaow_-fHoQfSADMbA3vBccbWT_5HZlQDmpfjc4hujWibNn9E50w>
+    <xmx:bhGgaibbdo5jME5wf8IBp4pKbahd3fqGHOL_rgA3xiTdZLTbgvGNjg>
+    <xmx:bhGgav4aQxcBZkiEkEr_xWaLX_h49rbk3-fTuJWqLtBTSyPyXciUbA>
+    <xmx:bhGgap5PIJ6rVVEJKHtVlSALyWkVOdCvGJCc35AWwJKwB9EL20zr3w>
+    <xmx:bhGgap4chohqsdq9wSKyl3QjpwJF2401eGkEttB8V8VdJlZnjA0t22Ot>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 8 Sep 2026 09:45:13 -0400 (EDT)
+Date: Tue, 08 Sep 2026 22:45:11 +0900 (JST)
+Message-Id: <20260908.224511.1733725108685542391.tomo@flapping.org>
+To: aliceryhl@google.com
+Cc: tomo@flapping.org, a.hindborg@kernel.org, ojeda@kernel.org,
+ acourbot@nvidia.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
+ boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com,
+ frederic@kernel.org, gary@garyguo.net, jstultz@google.com,
+ lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
+ tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH v2] rust: time: add Delta::to_jiffies_timeout() for
+ timeout conversion
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <aqADhk2Z7ynuawJf@google.com>
+References: <20260907123524.2332118-1-tomo@flapping.org>
+	<aqADhk2Z7ynuawJf@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-FUJITA Tomonori <tomo@flapping.org> writes:
+On Tue, 8 Sep 2026 12:45:58 +0000
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-> On Thu, 27 Aug 2026 15:39:53 +0200
-> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->
->> "Mike Lothian" <mike@fireburn.co.uk> writes:
->> 
->>> Reading an `Instant<RealTime>` is the wrong tool for a caller that only
->>> wants a calendar time in seconds: it takes a full nanosecond timestamp and
->>> then needs a 64-bit division to get back to what the timekeeping core
->>> already maintains as a plain seconds field.
->>>
->>> Wrap `ktime_get_real_seconds()`, which is that field. Document the property
->>> that matters at the call site and that the type cannot express: the value
->>> follows CLOCK_REALTIME, so it is not monotonic and can move in either
->>> direction.
->> 
->> We recently added the concept of `TimeUnit`. For now it is exposed via
->> `Delta<U: TimeUnit>`. We could extend this to `Instant` as well to have
->> a seconds based `Instant`.
->
-> I don't think that is a good idea.
->
-> `Instant` is a point in time that exists to produce a `Delta`: `now()` is its
-> only constructor,
+> On Mon, Sep 07, 2026 at 09:35:24PM +0900, FUJITA Tomonori wrote:
+>> diff --git a/rust/helpers/math.c b/rust/helpers/math.c
+>> new file mode 100644
+>> index 000000000000..e2ee29bcce0f
+>> --- /dev/null
+>> +++ b/rust/helpers/math.c
+>> @@ -0,0 +1,8 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +#include <linux/math64.h>
+>> +
+>> +__rust_helper u64 rust_helper_mul_u64_add_u64_div_u64(u64 a, u64 b, u64 c, u64 d)
+>> +{
+>> +	return mul_u64_add_u64_div_u64(a, b, c, d);
+>> +}
+> 
+> This looks like it's never an inline function, so I don't think a helper
+> is needed.
 
-`Instant` is a point in time. `ktime_get_real_seconds` return a point in
-time. Whether the constructor is `Delta::now` or should be
-`Instant::now` could be discussed.
-
-> and what you do with it is `elapsed()`
-
-I don't see the issue with `Instant<RealSeconds>::elapsed()`. You would
-get a duration of seconds that has elapsed since the instant? Of course
-you get all the inaccuracy that comes with using seconds resolution.
-
-> or `Instant -
-> Instant`.
-
-Same.
-
-> So a seconds based `Instant` has to define what `Instant - Instant`
-> returns,
-
-A `Delta<Seconds>` would be the obvious choice? I perfer `Seconds` and
-`NanoSeconds`, but the abbreviated pattern is already prevalent, so
-probably best to go with that.
-
-> and `Delta<Sec>` would have no consumer.
-
-True, but OK I guess.
-
-> Every interface that takes a
-> span takes a `Delta<Nsec>`: `fsleep()`, `udelay()`, `HrTimer::forward()`,
-> `read_poll_timeout()`.
-
-That is fine. Those APIs do not have to take `Delta<Seconds>`, they can
-keep taking `Delta<Nsec>`
-
-> `Delta` also already treats seconds as an input format
-> rather than a unit, since `Delta::from_secs()` returns a
-> `Delta<Nsec>`.
-
-That is fine. In the context of `Delta::from_secs` the argument is a
-duration. `Instant<Seconds>` is a logically different concept. It is a
-point in time, not a duration.
-
-> That is
-> the difference from `Delta<Jiffy>`, which earned a type because the C side takes
-> jiffies at the boundary and the conversion is lossy; `time64_t` is an `i64` and
-> seconds to nanoseconds is exact.
-
-Yes, we made `Delta<Jiffy>` from a need to pass a jiffy based duration
-to C code. That should not prevent us from having a seconds based `Instant`.
-
-If you are concerned about the dead code in a seconds based `Delta`, we
-can gate the impls.
-
-> And that is not how `ktime_get_real_seconds()` is used in the first place. Its
-> callers need a calendar value in seconds because something outside the kernel
-> fixes the format: an on-disk field, a value passed to firmware, or a userspace
-> ABI field. Many of them compare it against an expiry time that came from the
-> wire or from disk.
-
-Again, sure, that is why we originally introduced these types. But I
-don't think we should gate our time representing types on the rationale
-of the first use case. We should represent points in time and duration
-of time with a single set of types.
-
-> Does that make sense?
-
-I think I understand your concern, but I do not share it.
-
-I would appreciate others to chime in on this - in either direction. How
-should we represent time in general.
+It's an inline function on x86; arch/x86/include/asm/div64.h.
 
 
-Best regards,
-Andreas Hindborg
+>> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+>> index 6c0a5e8090d0..8e9c349b1df7 100644
+>> --- a/rust/kernel/time.rs
+>> +++ b/rust/kernel/time.rs
+>> @@ -39,6 +39,10 @@
+>>  /// The number of nanoseconds per second.
+>>  pub const NSEC_PER_SEC: i64 = bindings::NSEC_PER_SEC as i64;
+>>  
+>> +/// The C side `MAX_JIFFY_OFFSET`, i.e. `((LONG_MAX >> 1) - 1)`. It is the upper
+>> +/// bound the kernel uses for a jiffies span, not a wait-forever value.
+>> +const MAX_JIFFY_OFFSET: isize = (isize::MAX >> 1) - 1;
+> 
+> Should this be:
+> 
+> const MAX_JIFFY_OFFSET: Jiffies = (isize::MAX >> 1) - 1;
+> 
+> The Jiffies type alias is always the same as isize, but it may be more
+> clear for readers to use Jiffies for the constant.
+
+Jiffies is crate::ffi::c_ulong, i.e. usize, not isize. And it will be
+removed; replacing it with Delta<Jiffy> is what the series is for
+
+https://lore.kernel.org/rust-for-linux/20260808062839.1159990-8-tomo@flapping.org/
+
+
+>> +        // `bindings::HZ` cannot be used here. bindgen keeps the first definition of a
+>> +        // macro and ignores a later `#undef`, so `HZ` resolves to `__USER_HZ`, i.e.
+>> +        // 100, from `include/uapi/asm-generic/param.h` instead of `CONFIG_HZ`.
+>> +        const HZ: u64 = bindings::CONFIG_HZ as u64;
+> 
+> Sounds very error-prone. Consider fixing this in rust/bindings/lib.rs
+> similar to `compat_ptr_ioctl` and then use bindings::HZ here. This will
+> reduce the chance of others using bindings::HZ and getting the wrong
+> value.
+
+Good idea, thanks. I'll do that in v3: patch 1 fixes bindings::HZ in lib.rs,
+and this patch then uses it.
 
