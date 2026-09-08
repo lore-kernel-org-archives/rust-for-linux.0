@@ -1,218 +1,162 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062B135200F;
-	Tue,  8 Sep 2026 18:22:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D701D59B683
+	for <rust-for-linux@vger.kernel.org>; Tue,  8 Sep 2026 18:57:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788891754; cv=none; b=FnsPldvCXFuegC66qUNlii2dtwMSpAPXhoNV97/Hu/efVMztQ7rFFfoYDVYu4ArTmmDWYvKLGkjFUEyBUeUeXdaS1xhj+BJXaY4psDG3ZKc2CiGMvEdsjKabXFkJ6vnw6UYFRNAdNr2UlswlUUPKtrdw+H4Cp//0aUtjOEWBME8=
+	t=1788893830; cv=none; b=fDwL41Jl5R3xS+DZ9z4PcAXqzM7hrf76ENybgL7YGxS0QHXuI3839f6UHpeJVFBoGigy4QIun9GVd8qmVLZVr4BJ9H7Wxn0JuqkMiZHIwy44eMIJoRwAeTbM93uYki0RRxBC49k9CQ4RXmBU0Sr8cvlsdCoKb21tV4iMg1JWhLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788891754; c=relaxed/simple;
-	bh=xPuSMZJqjAF33vsPdH/D84xjTnIL+xJcL+cp6YngebE=;
+	s=arc-20240116; t=1788893830; c=relaxed/simple;
+	bh=soEfeC9qUxvkfN6UEt9aQdcQ/wR4lPrN68Y2ziKQ2M4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M4vR+McYIoJgYeeKZ1rFwiGVlxHQ4WRz4sz/92w4bApOoN2aAy/YQ2PjUprtAdrjZJPTAw65XlnTgtOdogFhUHGNnQHlRCnBHom9ZgFqQaZedV8fPbon7IYrj6ZskfPmgDWmB/e6i0b5Ks2Xu+UrfxcvKIwtY8NzL7HOD1IpZIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=lWFkVQ1W; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=btC7SPFNXb96zoKlyx8HWAfUhUIjOU9FL8KLLW+keduV1P6jl9nU3ymPon6R8GPVaaG79OFEl1qqU9isbebkkrJnMXNEYbvVf2ug2XYapARySDVPBqWq4NgKc6H8Xfx6ljHxckauIUTn052YXGZCF5AtlLHCX9Zow/B6aQ5sUgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j2otlSG5; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="lWFkVQ1W"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=5slKt7OcHIIgNLR2zoIZ2Xkvk5tkSJNvbMwK4ZOzd9s=; b=lWFkVQ1WBxekoxef1ijFWsp6qw
-	vDG6ZW9iGsUld/caSpmh/gjmRAGIn8CPerKfYhrZweTUU1kt90397Mwctm8NOLI58RZ8dgws84rVv
-	MCdW8gUiD1M9TXNKKGM1mguVGInjew6s1ejveqcacnNWf2ApOXHl3MEgAqfSKUbs81jS2yD3ZrnWQ
-	zgecBG6GJFMO5BIJjUhvNDvRsRrwyDE8W3QRnFVOFaUkOreRncz8aq4tw+lmZGkt9AaF86AUkyk/0
-	2FtMFvmhjH8Lf/GOt+xpynujFn6R5n4t2AlaKu827dlNOQ2dZeWs4OJ1u+1n7nwx0kbemZ0hMP9B1
-	yWX0fd2Q==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x40Sh-00000009xrk-2S6W;
-	Tue, 08 Sep 2026 18:22:27 +0000
-Date: Tue, 8 Sep 2026 14:22:25 -0400
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Eliot Courtney <ecourtney@nvidia.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, 
-	Andrew Ballance <andrewjballance@gmail.com>, Danilo Krummrich <dakr@kernel.org>, 
-	John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>, 
-	Timur Tabi <ttabi@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org, 
-	nova-gpu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>
-Subject: Re: [PATCH v2] rust: maple_tree: implement Send and Sync for
- MapleTree
-Message-ID: <h3nctzhusfbtxubn63h5nydns6c7o2yshadszxzzagnltc5k47@7cbg2nbh7tsc>
-References: <20260908-maple-tree-send-sync-v2-1-24aae5b3a990@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j2otlSG5"
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-3a34f7ebcedso42782411fa.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 08 Sep 2026 11:57:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788893827; x=1789498627; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dPAv9/DNHgYvkBswgfcYE+/SWcKiJRn1AWqpJM/JUGk=;
+        b=j2otlSG5w1rEojOG9m30ruTyrsAqJMnini+MRsuDUOLH92t8rap9DH+YzTqGESCfy0
+         XhjXNEeyDgIqnXEI+Wu6pzLWhzbhEQgOpg0LCz6IXepg1ra/4QCdf3S+QKLzdJP39cBT
+         Kv6BszN3fhsUEAX/ySi96RvL1wi3xPdWD28+xA7CUa9Zu7FCpO82s4z3EK4cFyckM9Pn
+         hL7c0uvx4nzl6gRAZmva0MxElV1NWgKx2b2SmzKsPO35RtTqIXRclr4oPpWmhktQ/DGB
+         NoI0vP871+J+5Vbn/IbzjV3bpPEQg+ap42yaTUZy7fsNUsML7927dURT786o2iBmPBy5
+         NAlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788893827; x=1789498627;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=dPAv9/DNHgYvkBswgfcYE+/SWcKiJRn1AWqpJM/JUGk=;
+        b=JfubH7ypWjYVLSIDHjXRspMV4SXsZl/kfnzzoz6N7jPJoI2dU2/gGH3Yaq+Ldiky9f
+         YwDUwVyfTf3OWzm/zNWdRb5R3wnOsBne1Wkz0JGqtauEIva7an9cuQMrbG60Knc1crVy
+         3OlTq2E02COG5XMs2KmpR88JotjJ7Ge3S8mKT3uRpITaJy91AM1DE1Lmo95xRI4yAxBL
+         Po7Tb2wKpy+LJuoNnRn8kW9aR5JXwu0ersziUNd0uLFyBvdKdv7kWjpbfeQ29RBzLS3u
+         9iubTsiFkBTDR0Ij1ouC3QiLDPgCl7PKeJ4OPkDzXn5EMAKrxGUjk3qL2T1+s+SVv92K
+         7M/w==
+X-Forwarded-Encrypted: i=1; AKwUvBwIu/HJ/j1xZ9EmwtFIGvIrmZctkpsZU9kPUgd1NRCVft5wvj50J7h4RwC7tdMYa7D5CnogQ43kgoGRIf/8YA==@vger.kernel.org
+X-Gm-Message-State: AFuF++lupiQCrSggGT5vCPXnC4B7GIEG8cPU4FAk34j+2qEuPSDzgVGk
+	M79y1P+mGLSUXQNnik90dpWezL6jgF0aKORnQKlSX0q0WrWs+vu0l+6Q
+X-Gm-Gg: AYBFou33hcMP7D1+6icnYRWlooEGVdZvwQw4KsniUp4ksim7L5YZ2RITnLssRd/WXOx
+	3Ac7lSDK6uUiw7mkIJeJ3OkzqWd2+iMDLhtIc8EoMP4SlBd0ETOY1rQAgyNtw/Nbh37Q97lrYzd
+	EoFl1uaihmP/Au9E2+45kB4Ub/BUVv9ZndbeaqFurMkgbxLnaoHGmzXZHpzthmTXV/2lgvH1dPl
+	6QHb3thnEVXJ1qZf3Md/e3S5cTTdbaQJjB3goiN6lrHyivWaBp8hfUUjeIGeXXljx40Dia+ruvu
+	ISnCgSXKWAGQ/2T04rjpDuvLlQxkRL1L+D1Aj4NSZmMueEvFN4AyKdbhJubxWn28979hvqGyEK7
+	K/UxxuKkEsxddDUTITiaM0JGnO4Ry7hsWnqw3bt411B5rhVY/ZxMeEjo7f/2eZBp64dvcz1mq7x
+	TmpfL3kZK+aXwrL2bkyHfcRrJJaOOcbUtxA31pd3EZMio2qGxiCuNpqTp+UB81WC5LWZEZSHvW1
+	9NHogeBU0H13w==
+X-Received: by 2002:a05:6512:ac2:b0:5b6:4b2:de82 with SMTP id 2adb3069b0e04-5b6170596d8mr4800979e87.32.1788893826465;
+        Tue, 08 Sep 2026 11:57:06 -0700 (PDT)
+Received: from localhost (soda.int.kasm.eu. [2001:678:a5c:1202:7b92:9ac1:b9ef:5287])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b6166fe6d9sm3239335e87.56.2026.09.08.11.57.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 11:57:06 -0700 (PDT)
+Date: Tue, 8 Sep 2026 20:57:05 +0200
+From: Klara Modin <klarasmodin@gmail.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: dri-devel@lists.freedesktop.org, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust/drm/gem: initialize callbacks with
+ ..pin_init::zeroed()
+Message-ID: <aqBX1siwtKuBTXBE@soda.int.kasm.eu>
+References: <20260908175427.47207-1-klarasmodin@gmail.com>
+ <20260908180555.0830E1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260908-maple-tree-send-sync-v2-1-24aae5b3a990@nvidia.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260908180555.0830E1F00A3A@smtp.kernel.org>
 
-On 26/09/08 06:54PM, Eliot Courtney wrote:
-> From: Joel Fernandes <joelagnelf@nvidia.com>
+On 2026-09-08 18:05:54 +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] Incomplete fix: missing `handle_free` field in conditionally compiled `shmem.rs`.
+> --
 > 
-> The C maple_tree struct contains a *mut c_void, which prevents Rust from
-> auto-deriving Send/Sync. Following is an example error message when using
-> MapleTree in nova-core's Vmm.
+> commit b5b83bb373847c99ca6d286c268d2e0ffab299f0
+> Author: Klara Modin <klarasmodin@gmail.com>
 > 
-> This propagates up through MapleTreeAlloc to Vmm, BarUser, Gpu, and NovaCore,
-> causing NovaCore to fail the Send bound required by pci::Driver:
+> rust/drm/gem: initialize callbacks with ..pin_init::zeroed()
 > 
->   error[E0277]: `*mut c_void` cannot be sent between threads safely
->       --> drivers/gpu/nova-core/driver.rs:77:22
->        |
->   77   | impl pci::Driver for NovaCore {
->        |                      ^^^^^^^^ `*mut c_void` cannot be sent between threads safely
->        |
->        = help: within `MapleTreeAlloc<()>`, the trait `Send` is not implemented for `*mut c_void`
->   note: required because it appears within the type `kernel::bindings::maple_tree`
->   note: required because it appears within the type `Opaque<kernel::bindings::maple_tree>`
->   note: required because it appears within the type `MapleTree<()>`
->   note: required because it appears within the type `MapleTreeAlloc<()>`
->        = note: required for `Box<MapleTreeAlloc<()>, Kmalloc>` to implement `Send`
->   note: required because it appears within the type `core::pin::Pin<Box<MapleTreeAlloc<()>, Kmalloc>>`
->   note: required because it appears within the type `Vmm`
->   note: required because it appears within the type `BarUser`
->   note: required because it appears within the type `Gpu`
->   note: required because it appears within the type `NovaCore`
->   note: required by a bound in `kernel::pci::Driver`
->       --> rust/kernel/pci.rs:294:19
+> This commit updates the drm_gem_object_funcs struct initialization in the DRM
+> GEM module to use pin_init::zeroed() instead of explicitly assigning None to
+> unused callbacks. This fixes a build failure caused by a newly added callback
+> field in the C structure.
 > 
-> Implement Send and Sync for MapleTree. The tree contains no thread-local
-> state, and all shared access goes through the internal ma_lock spinlock.
+> Closes: https://lore.kernel.org/all/aaef18cd-ab55-4fb8-8563-ca3a5ea9cbc6@leemhuis.info
 > 
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-> Reviewed-by: Boqun Feng <boqun@kernel.org>
-> [ecourtney: also require T: Sync for the Sync impl]
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> > diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+> > index e1ebad77ebe2a..c63b0fe5a15e1 100644
+> > --- a/rust/kernel/drm/gem/mod.rs
+> > +++ b/rust/kernel/drm/gem/mod.rs
+> > @@ -266,18 +266,8 @@ impl<T: DriverObject, Ctx: DeviceContext> Object<T, Ctx> {
+> >          free: Some(Self::free_callback),
+> >          open: Some(open_callback::<T>),
+> >          close: Some(close_callback::<T>),
+> > -        print_info: None,
+> > -        export: None,
+> > -        pin: None,
+> > -        unpin: None,
+> > -        get_sg_table: None,
+> > -        vmap: None,
+> > -        vunmap: None,
+> > -        mmap: None,
+> > -        status: None,
+> >          vm_ops: core::ptr::null_mut(),
+> > -        evict: None,
+> > -        rss: None,
+> > +        ..pin_init::zeroed()
+> >      };
+> 
+> [Severity: Medium]-
+> Does this commit miss a similar update in rust/kernel/drm/gem/shmem.rs?
+> 
+> The VTABLE initialization in shmem.rs explicitly lists fields without
+> using pin_init::zeroed(), similar to what was fixed here. When compiling
+> with CONFIG_RUST_DRM_GEM_SHMEM_HELPER=y, won't this cause a missing
+> field error for the newly added handle_free callback?
 
-Acked-by: Liam R. Howlett (Oracle) <liam@infradead.org>
+Sure, but it should probably be a different patch in that case. The
+current patch fixes an issue to a currently existing build failure,
+while the issue mentioned here has not manifested yet.
 
-> ---
-> This is a repost of Joel's v3 [1]. The upcoming nova-core memory
-> management changes depend on it.
+Regards,
+Klara Modin
+
 > 
-> Compared to v3, I've added Boqun's Reviewed-by from the v2 thread [2],
-> which v3 didn't pick up.
-> 
-> This is based on drm-rust-next.
-> 
-> [1] https://lore.kernel.org/all/20260511143604.3848176-1-joelagnelf@nvidia.com/
-> [2] https://lore.kernel.org/all/aftiZGt3HQe0Bf_x@tardis.local/
-> [3] https://lore.kernel.org/all/CAH5fLgh_TQiqKxXsz_DVcQxkCaEw+q0JyTh4e4Tnp28V0JDmYg@mail.gmail.com/
-> ---
-> Changes in v2:
-> - Also require `T: Sync` for the `Sync` impl, so that shared borrows of
->   entries (e.g. future RCU readers) are sound [3]. (Alice)
-> - Kept Reviewed-by tags since e.g. Boqun also suggested the same `Sync`
->   change [4] and Gary was asking around the same kind of thing [5]
-> - Link to v1: https://patch.msgid.link/20260908-maple-tree-send-sync-v1-1-43adcd4a16e8@nvidia.com
-> 
-> [4] https://lore.kernel.org/all/aepRx2jgIKmoRp-r@tardis.local/
-> [5] https://lore.kernel.org/all/DHYYDQWP4FZ7.3MK090FH4HWID@garyguo.net/
-> ---
->  rust/kernel/maple_tree.rs | 30 ++++++++++++++++++++++++------
->  1 file changed, 24 insertions(+), 6 deletions(-)
-> 
-> diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
-> index 265d6396a78a..7abe41228cb7 100644
-> --- a/rust/kernel/maple_tree.rs
-> +++ b/rust/kernel/maple_tree.rs
-> @@ -16,7 +16,11 @@
->      alloc::Flags,
->      error::to_result,
->      prelude::*,
-> -    types::{ForeignOwnable, Opaque},
-> +    types::{
-> +        ForeignOwnable,
-> +        NotThreadSafe,
-> +        Opaque, //
-> +    },
->  };
->  
->  /// A maple tree optimized for storing non-overlapping ranges.
-> @@ -240,7 +244,10 @@ pub fn lock(&self) -> MapleGuard<'_, T> {
->          unsafe { bindings::spin_lock(self.ma_lock()) };
->  
->          // INVARIANT: We just took the spinlock.
-> -        MapleGuard(self)
-> +        MapleGuard {
-> +            tree: self,
-> +            _not_send: NotThreadSafe,
-> +        }
->      }
->  
->      #[inline]
-> @@ -302,19 +309,30 @@ fn drop(mut self: Pin<&mut Self>) {
->      }
->  }
->  
-> +// SAFETY: `MapleTree<T>` is `Send` if `T` is `Send` because `MapleTree` owns its elements.
-> +unsafe impl<T: ForeignOwnable + Send> Send for MapleTree<T> {}
-> +
-> +// SAFETY: `&MapleTree<T>` allows inserting and erasing entries from any thread, so `T: Send` is
-> +// required, and shared borrows of entries require `T: Sync`.
-> +unsafe impl<T: ForeignOwnable + Send + Sync> Sync for MapleTree<T> {}
-> +
->  /// A reference to a [`MapleTree`] that owns the inner lock.
->  ///
->  /// # Invariants
->  ///
->  /// This guard owns the inner spinlock.
->  #[must_use = "if unused, the lock will be immediately unlocked"]
-> -pub struct MapleGuard<'tree, T: ForeignOwnable>(&'tree MapleTree<T>);
-> +pub struct MapleGuard<'tree, T: ForeignOwnable> {
-> +    tree: &'tree MapleTree<T>,
-> +    // A held spinlock must be released on the same CPU that acquired it.
-> +    _not_send: NotThreadSafe,
-> +}
->  
->  impl<'tree, T: ForeignOwnable> Drop for MapleGuard<'tree, T> {
->      #[inline]
->      fn drop(&mut self) {
->          // SAFETY: By the type invariants, we hold this spinlock.
-> -        unsafe { bindings::spin_unlock(self.0.ma_lock()) };
-> +        unsafe { bindings::spin_unlock(self.tree.ma_lock()) };
->      }
->  }
->  
-> @@ -323,7 +341,7 @@ impl<'tree, T: ForeignOwnable> MapleGuard<'tree, T> {
->      pub fn ma_state(&mut self, first: usize, end: usize) -> MaState<'_, T> {
->          // SAFETY: The `MaState` borrows this `MapleGuard`, so it can also borrow the `MapleGuard`s
->          // read/write permissions to the maple tree.
-> -        unsafe { MaState::new_raw(self.0, first, end) }
-> +        unsafe { MaState::new_raw(self.tree, first, end) }
->      }
->  
->      /// Load the value at the given index.
-> @@ -375,7 +393,7 @@ pub fn ma_state(&mut self, first: usize, end: usize) -> MaState<'_, T> {
->      #[inline]
->      pub fn load(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
->          // SAFETY: `self.tree` contains a valid maple tree.
-> -        let ret = unsafe { bindings::mtree_load(self.0.tree.get(), index) };
-> +        let ret = unsafe { bindings::mtree_load(self.tree.tree.get(), index) };
->          if ret.is_null() {
->              return None;
->          }
-> 
-> ---
-> base-commit: e6a2c988ed96a5a3af51ed97ecba980521bf2fc0
-> change-id: 20260907-maple-tree-send-sync-a1479d1ab302
-> 
-> Best regards,
-> --  
-> Eliot Courtney <ecourtney@nvidia.com>
-> 
+> rust/kernel/drm/gem/shmem.rs:
+>     const VTABLE: bindings::drm_gem_object_funcs = bindings::drm_gem_object_funcs {
+>         free: Some(Self::free_callback),
+>         open: Some(super::open_callback::<T>),
+>         close: Some(super::close_callback::<T>),
+>         print_info: Some(bindings::drm_gem_shmem_object_print_info),
+>         export: None,
+>         pin: Some(bindings::drm_gem_shmem_object_pin),
+>         unpin: Some(bindings::drm_gem_shmem_object_unpin),
+>         get_sg_table: Some(bindings::drm_gem_shmem_object_get_sg_table),
+>         vmap: Some(bindings::drm_gem_shmem_object_vmap),
+>         vunmap: Some(bindings::drm_gem_shmem_object_vunmap),
+>         mmap: Some(bindings::drm_gem_shmem_object_mmap),
+>         status: None,
+>         rss: None,
+>         #[allow(unused_unsafe, reason = "Safe since Rust 1.82.0")]
+>         // SAFETY: drm_gem_shmem_vm_ops is a valid, static const on the C side.
+>         vm_ops: unsafe { &raw const bindings::drm_gem_shmem_vm_ops },
+>         evict: None,
+>     };
 > 
 > -- 
-> maple-tree mailing list
-> maple-tree@lists.infradead.org
-> https://lists.infradead.org/mailman/listinfo/maple-tree
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260908175427.47207-1-klarasmodin@gmail.com?part=1
