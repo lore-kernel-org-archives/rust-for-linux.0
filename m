@@ -1,62 +1,60 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D439C51A759
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BC34915B4
 	for <rust-for-linux@vger.kernel.org>; Tue,  8 Sep 2026 22:57:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788908246; cv=none; b=LqeQuq/Rz8CllQ+NJqtFGfIs115OhLotiz7ZFDITutba9kYlxDDM545J1dFUwAU6/K8pavwZe38E/l6NNAkMHhreSXkV/mgT9EwOHHiAe/fkeS2jlnLsXtCCpVFghzsLlRqEpz5DW3bdHKBDWSyrpICZCP55VV9kwx0tsRuGB8w=
+	t=1788908247; cv=none; b=fv+ZouN2PLRCL6V08wN/U1uNWx5Eyc1rJzZR+0uWq7dS4zllCnjFo9ubj7DiGjtpX/XTPe7n/kQhApmCjD/ro2n3/wD0pBq/WRfI7rxeZmNRCAXdDxmutjoWhgSuYEUoH6trWuWsKjkhf5K1OTkOInEXnX0JIkzF4FH1MOTFBrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788908246; c=relaxed/simple;
-	bh=6WXSA4nf0Fly4tunlt2IbwfTkbx9zucjFXABdBiGc2k=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=klC9DxpM0gJOJBWTwzoLVd00K5LFIG6Nu7eM2VUNrLoQjv7ZZXi2totsyLkNxEjzjmqa8dLJqqyg4iYOzLr/D1gllDAageA5I9evQ9N0TC5EonD/edyLJjUW/wqrR/AhKDt3cq1bPJ8sCnRueJA61Ux6kHgWki4Tsatt5i1m2X4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu; spf=pass smtp.mailfrom=uci.edu; dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b=W6XNsY74; arc=none smtp.client-ip=209.85.215.177
+	s=arc-20240116; t=1788908247; c=relaxed/simple;
+	bh=Lr4ZIAL+LIO3Foj4FD3rmUM15kJfPl3Ocr65uD8DFvs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EM0zAIBTpaaNG+72VXbkvktp/318XCCnnM+PrMmNJkj4m8dEDvBtpNpzYUwtpf8LvieQc87RMnly40gKTRR2sBf1DxleTZY8P9jPz6vxP1SR8rISIpoDaxLgm1efU+Bka2shWCJbCjNzkv6inb9sQV5j3rF6nASXT2rLZrRufd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu; spf=pass smtp.mailfrom=uci.edu; dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b=Y25l6ymt; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b="W6XNsY74"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cc1bcdb3c4cso3581296a12.2
+	dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b="Y25l6ymt"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cc1cb472b76so3992798a12.0
         for <rust-for-linux@vger.kernel.org>; Tue, 08 Sep 2026 15:57:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=uci.edu; s=google; t=1788908244; x=1789513044; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZHXZDGuTUHe9bZbvWR8znkC1eyqqIPnc5J8l+6ssveM=;
-        b=W6XNsY74//mNX29gVRYMb7oDr2CwxwZfkucyS6O30IiBfuFvhD/IryjapIe2zQxc7w
-         uQYZFfWKnRyh3R8gC7xWm+nD7FsciglKwKsYlxApADKC3F3mQOvfOQVcNHpw81RQ3UqV
-         IWV2IPP715VDAbeY3NcPF+QK9XekY66ouLBcQcBTnQzEEDlHFaDCIgK+9F2PcESQIDFd
-         1DaDSUo5czdHOq+RBgnlnbC9gLHwk7zAwSry68RL3AJdYXgmTIkgY2ORwJEXe1Jg1jSv
-         TjWQTmKjtrg2lUV4cSX9e/GMuUUFXBEko/9PVJIJwBzBb+by+gI6UM4y+V49pQQ9F2GG
-         gxMw==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=E8Ots96zTv4WZm+iO+fA67JGzY1EoUFxcIurn0THTv0=;
+        b=Y25l6ymtT7GteDV0UHPQ+2JbZxLA7cg0D0OgI3uqa8hjjiczuA37oA6k2XyaQA13HC
+         yA+6sppuketkwuS2UGo3VZqdaq3vSHTvzHeKnNoAawnu5wtW/hzYMeVVS1gcgvabEQt8
+         59LnXQTK67witCdlIOODI4UYqyvPKAwZj5pLcURipjq6eMA/+Wg/VgCKrJb2CWxPPYRW
+         V/i8ISz0jD/2rSDjKTCwGuP+86kRBTkHeiCUJwsuItilVe7npYEqHFa6WcMdRBxDqG54
+         5bjBmnSSfRpaUyBOl91VWcgRLGyttRTNGLwZIrTAMlSKBzXYUpz0ZHZS/t5anKsyCacE
+         yaQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1788908244; x=1789513044;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZHXZDGuTUHe9bZbvWR8znkC1eyqqIPnc5J8l+6ssveM=;
-        b=ncXlPp/RplD/fyJ7DCe6cL0dYZ3/Yg9oq0n/P+boU62YqrjM0Qzp7OPE1G3lKc6kWV
-         utmNKWL34VxhUa44g03o+PSepkLHE1NIAlcV1nWCiqBP3egii4/fdfn1LCuGybVB8fyJ
-         Ut3AvE//3Nb4QO4DH7Jkz+gondALzvOKrpYoWUe+8FeL0x9iu8YNbw9F3UjzrMlfwy4f
-         jSN5JE4I0gvnRnKwWaEPbaQWR0DstfzJE2mCH3iorjmA3/UmGOyVwRb16wF8uyK39OFb
-         oJfntU7irfw26tDmG77g8+8U1FwOggsmuFTLI4DWqukr10lUNci+glNXbojrirvpLY35
-         13Ug==
-X-Forwarded-Encrypted: i=1; AKwUvBxdl6sDSTI8hTuAwOfsvuZWI6mgnCkOvjG3v5DWon4XM+5sZb4UNNb7VcvI8sBTRwk4Ve7N7QUz6nUJVV6kJQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++lsadpepwB5q0ZvVJaTEBNDTIyfgap4rNp8OPsGYOb6Lh3U4aGF
-	+Z860UpBb77aCGyP1ZxEM9dT5jH87dVF0lKTLh1Rfk3eVhEK2NxTzMf39DAxbMjZpUM=
-X-Gm-Gg: AYBFou0kj8Bv2rWEFOLndJUFe93BPL7/RCxdCAsl4W6O+R/rR5wwtuI/o2CHKC/3GE9
-	Ek3YsiJt42pfKsp8yRAXoHcSUAP1I0S+kpL6AIjd5GIH/1NzDspusX/bZnrXX/ao718e2YFi+pN
-	iBM4FCRvyc1ABxC42dsZFTrqbe7aTVJ2NGhRcPxFteTmUlk7nXSvv5sL1bCW0akdiqSpM8tf0t2
-	3SA3sYJJfRTuq4uYw/Ro14neHse5VICeF4Ky7h5QlBbz7hEyQebbXXDe2nEEuDeeXFvd8MLDE9u
-	r/hNTqC32n0imutEqW6hN84HIYSyL/gs57Cv/YwfZ5AweOrCRnwOHggfXFAxYTBBeuHdT0IFmL/
-	oMu+PCB6bXP93P/Q76tpcpRP79dyPegD1FMIXe2+IkeoDLaGHoBJvrxjF8Z5hCMJeQUKQdTe0Kg
-	Ur5YPxFSbsIdkCY8Hqs9xPQuQ3BQWauwwHYUp54/X53x+B7OtVKGqWdr7DDbH6V9UM/EN1rmmYI
-	jeRCeeS6bvIeVTl+CbYcz7GMA==
-X-Received: by 2002:a05:6a21:6e97:b0:3d0:cc29:ff63 with SMTP id adf61e73a8af0-3da39ee15dcmr50629639637.12.1788908244323;
-        Tue, 08 Sep 2026 15:57:24 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=E8Ots96zTv4WZm+iO+fA67JGzY1EoUFxcIurn0THTv0=;
+        b=fcZ43VMsxwauRRRxJuCJFYTVv0Jlv+C0dA4gxlK/+Mt+Gu2qNyOveXFmggAISFma0C
+         MMOFyiHE2nSEcpUuyN+T7fGEb+FbJoxBut/E73pmFN0Jeb4X4OHAeqV4dfKSkBXG/GHU
+         clOh5cOj7qCf84WdLFuX+BbgNY9pH+IV2fVWT9FML75VuAWraz8dkRce1XI5x6FISOlH
+         yA9nhLc+sjl+QWVEp8bktj0/PGsqOdMVwosJ6IfkuwVYz9Me6cs2iX8y6gCpe/mTOnaZ
+         QFmMBHFZ0Irp2Xx6IDunvff3QPDAL1qGNTRCWt/iRl9PvFFKAMeRKftSf6sRxvOyiaaX
+         fVeQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz1Zab+2Z/MfdOwAbm7a0ZIhgoWqTODqFN+mHjfIb8rI1oSRK+9zNCFXeXqg7XRSqAN2wN4QzG5eBGZIlXztA==@vger.kernel.org
+X-Gm-Message-State: AFuF++mG5KAekT6yBNRIblXqgBmhiMi7ql5TRs+iGU+EnrrwFyuuDLvQ
+	nMbkKP42RAOobcATA6hZJucf45FpgeEnWGbQuqIAOdQITMR7L/3lY6wmaztmdEXvhxg=
+X-Gm-Gg: AYBFou1ExrGRszgXPyDOqkqNWQBf7/HKwi+0kaLVFHO21Clsjg2q3tsVXTRgKQWZo/I
+	oBe/H84ssoM5qURLnXOn2USSVT4g6QoQBBdckA5d/Hg0N0xDFoARL+U0FMX6t5YaTQ4e3fSNP+k
+	/8TqL2SxIrg79+g1JUqZeV+0Yi8Ertp5uWKtOFcKibzjoV1Pmeftieh+Gd0KwxCdev1Zn+ikEdx
+	wZbHWX4NrSMELVee8hgL31gOcGRd2vwnS92xP8MeiwfGvWITOYmpXSsryCwZa4a9MVnA0V1ISdk
+	k7QsEsP1cAs5Tnhj4ZtZOPiujw8NlUvY3F4zCTPz/6c05ZbJqmK9l08GeV8aG+6CPchgKD6xTAY
+	wKMmESFQefF1zzyU2Dwqsyp8wV3pcn+O+gX/OrJniQBrloNZVf0l/hU8Q1nv8UKTd40FbESUE7Q
+	j+Ubf5IrFWC+Uet1rXEV1d0exuiirfRxSctvJj/isb784+BH7wDzAJxZh9ZObFuU228JD79Wb7q
+	HJb2zhFYuxTKLIVWXEnrO7cyb4aGKbCoyvk
+X-Received: by 2002:a05:6a21:6f12:b0:3bf:49c8:f7b with SMTP id adf61e73a8af0-3da39fdfe0cmr47590687637.13.1788908243592;
+        Tue, 08 Sep 2026 15:57:23 -0700 (PDT)
 Received: from guest1.. (charm.ics.uci.edu. [128.195.4.118])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-3369856a9f7sm19881462eec.5.2026.09.08.15.57.23
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-3369856a9f7sm19881462eec.5.2026.09.08.15.57.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 08 Sep 2026 15:57:23 -0700 (PDT)
 From: Priya Bala Govindasamy <pgovind2@uci.edu>
@@ -69,12 +67,10 @@ Cc: ardalan@uci.edu,
 	zhiyunq@cs.ucr.edu,
 	dzueck@uci.edu,
 	pgovind2@uci.edu
-Subject: [PATCH 1/1] rust: io: Fix `Region::drop` trying to release nested resources from the wrong parent
-Date: Tue,  8 Sep 2026 22:57:22 +0000
-Message-Id: <a71c5593cfc66e21f24d9c07ae3469fc4f8ea501.1788901318.git.pgovind2@uci.edu>
+Subject: [PATCH 0/1] rust: io: Fix `Region::drop` trying to release nested resources from the wrong parent
+Date: Tue,  8 Sep 2026 22:57:21 +0000
+Message-Id: <cover.1788901318.git.pgovind2@uci.edu>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1788901318.git.pgovind2@uci.edu>
-References: <cover.1788901318.git.pgovind2@uci.edu>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -83,143 +79,214 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
+Dear Linux kernel maintainers,
+
+We are developing a tool called FerroLens to detect potential
+unsound behavior in Rust code in the Linux kernel. The tool
+internally uses an LLM to detect bugs.
+We then perform manual analysis to verify these reports.
+FerroLens reported the following bug in rust/kernel/io/resource.rs:
+
 Io resource regions can be requested beneath a specified parent 
-resource.
-But `Region::drop` does not consider the parent resource.
-It releases regions relative to the global resource root.
-For nested regions, it may fail to find and release the child region.
+resource. `Resource::request_region()` passes self as the parent to 
+`__request_region()`. But `Region` does not retain that parent.
+
+`Region::drop()` calls `release_mem_region()` or `release_region()`
+to release the `Resource`.
+Both of these functions start searching for the region to release 
+from the global resource root. They also do not search inside busy 
+regions. So they may not find a child region if it is nested 
+under a busy parent. This leaves the child still allocated. But the 
+remaining fields of the child `Region` are freed, including the 
+`name` Cstring that it owned. 
+
+Therefore, for nested regions, `Region::drop()` may fail to find 
+and release the child region. 
 This can lead to resource leaks and leaving the name pointer dangling.
 
-Fix this by storing a reference to the parent resource in `Region`.
-This ensures that the parent remains valid for the lifetime of the
-child region.
-The `Region::drop` implementation is updated to use the parent
-resource when releasing the region.
+Here is a PoC to demonstrate this issue:
 
-Fixes: 493fc33ec252 ("rust: io: add resource abstraction")
-Reported-by: Dylan Zueck<dzueck@uci.edu>
-Assisted-by: ChatGPT:gpt-5.6-sol
-Signed-off-by: Priya Bala Govindasamy<pgovind2@uci.edu>
----
+// SPDX-License-Identifier: GPL-2.0
+
+//! Demonstrate that `Region::drop` releases relative to the global resource
+//! root instead of the parent passed to `Resource::request_region`.
+
+use core::ptr;
+
+use kernel::{
+    bindings,
+    io::{
+        resource::Flags,
+        PhysAddr, Resource, ResourceSize,
+    },
+    str::CStr,
+    prelude::*,
+};
+
+module! {
+    type: ResourceParentPoc,
+    name: "resource_parent_poc",
+    authors: ["Priya Govindasamy"],
+    description: "PoC for releasing a nested Region with the wrong parent",
+    license: "GPL",
+    params: {
+        start: u64 {
+            default: 0x1000_0000,
+            description: "Start of the temporary 4 KiB iomem reservation",
+        },
+    },
+}
+
+const PARENT_SIZE: ResourceSize = 0x1000;
+const CHILD_OFFSET: PhysAddr = 0x100;
+const CHILD_SIZE: ResourceSize = 0x100;
+
+/// Obtain the underlying C resource pointer from its transparent Rust wrapper.
+fn resource_to_raw(resource: &Resource) -> *mut bindings::resource {
+    ptr::from_ref(resource).cast_mut().cast()
+}
+
+struct ResourceParentPoc;
+
+impl kernel::Module for ResourceParentPoc {
+    fn init(_module: &'static ThisModule) -> Result<Self> {
+        let start: PhysAddr = module_parameters::start
+            .value()
+            .try_into()
+            .map_err(|_| EINVAL)?;
+        let child_start = start.checked_add(CHILD_OFFSET).ok_or(EINVAL)?;
+
+        // Check the complete parent interval too, since __request_region uses
+        // `start + size - 1` internally.
+        start.checked_add(PARENT_SIZE - 1).ok_or(EINVAL)?;
+
+        // `Resource::from_raw` is crate-private. This is the equivalent cast
+        // for this out-of-tree PoC.
+        let iomem_root_ptr = ptr::addr_of_mut!(bindings::iomem_resource);
+        // SAFETY:
+        // - `iomem_resource` is a permanent, valid C `struct resource`.
+        // - `Resource` is a transparent wrapper around that type.
+        // - `Resource` uses interior mutability for access to the C object.
+        let iomem_root = unsafe { &*iomem_root_ptr.cast::<Resource>() };
+
+        // This parent is a normal busy region reachable from iomem_resource.
+        // If the selected address conflicts with another busy resource, load
+        // the module with a different `start=` value.
+        let parent = iomem_root
+            .request_region(
+                start,
+                PARENT_SIZE,
+                c"resource-parent-poc-parent".to_cstring()?,
+                Flags::IORESOURCE_MEM,
+            )
+            .ok_or(EBUSY)?;
+
+        let parent_raw = resource_to_raw(&parent);
+
+        // This call is safe Rust. Because Region dereferences to Resource, it
+        // requests a busy child directly underneath the busy parent.
+        let child = parent
+            .request_region(
+                child_start,
+                CHILD_SIZE,
+                c"resource-parent-poc-child".to_cstring()?,
+                Flags::IORESOURCE_MEM,
+            )
+            .ok_or(EBUSY)?;
+
+        let child_raw = resource_to_raw(&child);
+
+        pr_info!(
+            "resource_parent_poc: parent={:#x}-{:#x}, child={:#x}-{:#x}\n",
+            start,
+            start + PARENT_SIZE - 1,
+            child_start,
+            child_start + CHILD_SIZE - 1
+        );
+        pr_info!(
+            "resource_parent_poc: dropping child; Region::drop will search from iomem_resource\n"
+        );
+
+        // __release_region starts at iomem_resource, encounters the enclosing
+        // busy parent, refuses to descend into it, and emits:
+        //
+        //   Trying to free nonexistent resource <...>
+        //
+        // Consequently the child remains linked under `parent`.
+        drop(child);
+
+        // SAFETY: `parent_raw` is still owned by `parent`, which is alive, and
+        // no other code modifies this private child list during this PoC.
+        let child_was_not_released = unsafe { (*parent_raw).child == child_raw };
+        if !child_was_not_released {
+            pr_err!("resource_parent_poc: child unexpectedly disappeared from its parent\n");
+            return Err(EIO);
+        }
+
+        pr_info!(
+            "resource_parent_poc: confirmed: child is still linked under the original parent\n"
+        );
+
+        //check if child's name was freed
+        let name_ptr = unsafe { (*child_raw).name };
+
+        if name_ptr.is_null() {
+            pr_info!("resource_parent_poc: accessing the child's name now is: (null)\n");
+        } else {
+            let name = unsafe { CStr::from_char_ptr(name_ptr) };
+            pr_info!("resource_parent_poc: accessing the child's name now is: {}\n", name);
+        }
+
+        // Clean up the allocation that Region::drop failed to release. Unlike
+        // Region::drop, this supplies the parent used for the child request.
+        //
+        // SAFETY:
+        // - `parent_raw` points to the live parent region.
+        // - The exact child interval is currently a busy region immediately
+        //   underneath that parent, as checked above.
+        unsafe { bindings::__release_region(parent_raw, child_start, CHILD_SIZE) };
+
+        // SAFETY: `parent_raw` remains valid until `parent` is dropped below.
+        if !unsafe { (*parent_raw).child.is_null() } {
+            pr_err!("resource_parent_poc: explicit child cleanup failed\n");
+            return Err(EIO);
+        }
+
+        pr_info!("resource_parent_poc: explicit cleanup with the correct parent succeeded\n");
+
+        // This parent was requested relative to iomem_resource, so its normal
+        // Region::drop path is correct now that it has no child.
+        drop(parent);
+
+        Ok(Self)
+    }
+}
+
+impl Drop for ResourceParentPoc {
+    fn drop(&mut self) {
+        pr_info!("resource_parent_poc: unloaded\n");
+    }
+}
+
+
+
+Output:
+[423973.510861] resource_parent_poc: resource_parent_poc: parent=0xff000000-0xff000fff, child=0xff000100-0xff0001ff
+[423973.510929] resource_parent_poc: resource_parent_poc: dropping child; Region::drop will search from iomem_resource
+[423973.510985] resource: Trying to free nonexistent resource <0x00000000ff000100-0x00000000ff0001ff>
+[423973.511029] resource_parent_poc: resource_parent_poc: confirmed: child is still linked under the original parent
+[423973.511032] resource_parent_poc: resource_parent_poc: accessing the child's name now is: 
+[423973.511055] resource_parent_poc: resource_parent_poc: explicit cleanup with the correct parent succeeded
+
+
+Priya Bala Govindasamy (1):
+  rust: io: Fix `Region::drop` releasing nested resources from the wrong
+    parent
+
  rust/kernel/io/mem.rs      |  4 ++--
  rust/kernel/io/resource.rs | 38 ++++++++++++++++++++------------------
  2 files changed, 22 insertions(+), 20 deletions(-)
 
-diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
-index 32a919099dcd..245d8e1e5e6c 100644
---- a/rust/kernel/io/mem.rs
-+++ b/rust/kernel/io/mem.rs
-@@ -173,7 +173,7 @@ pub struct ExclusiveIoMem<'a, const SIZE: usize> {
-     /// range represented by the underlying `iomem`.
-     ///
-     /// This field is needed for ownership of the region.
--    _region: Region,
-+    _region: Region<'a>,
- }
- 
- impl<const SIZE: usize> ForLt for ExclusiveIoMem<'static, SIZE> {
-@@ -191,7 +191,7 @@ unsafe impl<const SIZE: usize> CovariantForLt for ExclusiveIoMem<'static, SIZE>
- 
- impl<'a, const SIZE: usize> ExclusiveIoMem<'a, SIZE> {
-     /// Creates a new `ExclusiveIoMem` instance.
--    fn ioremap(dev: &'a Device<Bound>, resource: &Resource) -> Result<Self> {
-+    fn ioremap(dev: &'a Device<Bound>, resource: &'a Resource) -> Result<Self> {
-         let start = resource.start();
-         let size = resource.size();
-         let name = resource.name().unwrap_or_default();
-diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
-index 17b0c174cfc5..0a94a4eb3e7c 100644
---- a/rust/kernel/io/resource.rs
-+++ b/rust/kernel/io/resource.rs
-@@ -27,15 +27,19 @@
- ///
- /// - `self.0` points to a valid `bindings::resource` that was obtained through
- ///   `bindings::__request_region`.
--pub struct Region {
-+pub struct Region<'a> {
-     /// The resource returned when the region was requested.
-     resource: NonNull<bindings::resource>,
-+    /// Parent supplied to `__request_region`.
-+    /// The reference also prevents a parent `Region` from being dropped
-+    /// before this child.
-+    parent: &'a Resource,
-     /// The name that was passed in when the region was requested. We need to
-     /// store it for ownership reasons.
-     _name: CString,
- }
- 
--impl Deref for Region {
-+impl Deref for Region<'_> {
-     type Target = Resource;
- 
-     fn deref(&self) -> &Self::Target {
-@@ -44,31 +48,28 @@ fn deref(&self) -> &Self::Target {
-     }
- }
- 
--impl Drop for Region {
-+impl Drop for Region<'_> {
-     fn drop(&mut self) {
--        let (flags, start, size) = {
-+        let (start, size) = {
-             let res = &**self;
--            (res.flags(), res.start(), res.size())
-+            (res.start(), res.size())
-         };
- 
--        let release_fn = if flags.contains(Flags::IORESOURCE_MEM) {
--            bindings::release_mem_region
--        } else {
--            bindings::release_region
--        };
--
--        // SAFETY: Safe as per the invariant of `Region`.
--        unsafe { release_fn(start, size) };
-+        // SAFETY:
-+        // - `parent` is the resource passed to `__request_region`.
-+        // - Its lifetime is tied to this `Region`, so it remains valid.
-+        // - `start` and `size` identify the region owned by `self`.
-+        unsafe { bindings::__release_region(self.parent.0.get(), start, size) };
-     }
- }
- 
- // SAFETY: `Region` only holds a pointer to a C `struct resource`, which is safe to be used from
- // any thread.
--unsafe impl Send for Region {}
-+unsafe impl Send for Region<'_> {}
- 
- // SAFETY: `Region` only holds a pointer to a C `struct resource`, references to which are
- // safe to be used from any thread.
--unsafe impl Sync for Region {}
-+unsafe impl Sync for Region<'_> {}
- 
- /// A resource abstraction.
- ///
-@@ -98,13 +99,13 @@ impl Resource {
-     /// Exclusive access will be given and the region will be marked as busy.
-     /// Further calls to [`Self::request_region`] will return [`None`] if
-     /// the region, or a part of it, is already in use.
--    pub fn request_region(
--        &self,
-+    pub fn request_region<'a>(
-+        &'a self,
-         start: PhysAddr,
-         size: ResourceSize,
-         name: CString,
-         flags: Flags,
--    ) -> Option<Region> {
-+    ) -> Option<Region<'a>> {
-         // SAFETY:
-         // - Safe as per the invariant of `Resource`.
-         // - `__request_region` will store a reference to the name, but that is
-@@ -122,6 +123,7 @@ pub fn request_region(
- 
-         Some(Region {
-             resource: NonNull::new(region)?,
-+            parent: self,
-             _name: name,
-         })
-     }
 -- 
 2.34.1
 
