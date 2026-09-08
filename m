@@ -1,22 +1,22 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F3F3A0EB8;
-	Tue,  8 Sep 2026 06:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382573A783D;
+	Tue,  8 Sep 2026 06:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788849237; cv=none; b=u5tiKca0PSJ+nodEiSZTtL14PvSbBdI8pD5Cw++s+9o4YvLSeJR2TEHQMY8FlXcva1upCehx7XYfBSIprBpusHNAj9Zf7I9EBzwWfetJMYB/PMlkN0Ov3oq8rV5eU+jKARXTY60/vgyr0DWa3m4Sr6VhufJrLkJWmb4xhruyL90=
+	t=1788849239; cv=none; b=IV0jIdOHSH1760EtQjWOPI1IPfaGrW0+O0q2Ci413FpJawDrlllZT/9tUZKLf8AQQcAm/ICHk4TRbJI6o/rvbGsXyqfahAscpiPG6/sLntUa2kxsTd6hNxFceObhtZk3oWil+JajzW+l2d2D6WQyDxI2gl7iwQJnGO9R3r7mugE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788849237; c=relaxed/simple;
-	bh=A2KwwyE44rpRvMfg8HmJMKqJMXpNGArDCbHCP2lPOtc=;
+	s=arc-20240116; t=1788849239; c=relaxed/simple;
+	bh=TVNv1EnbeVl7eOp2X/cpMXp3v4L6yRWQXdRgwohhP1I=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ga9Qai0XMcBAjbQ7UOYxgkrBhtd192Msio6cjkTx3bAyg9KinMBbNIVyFVcBIPbqp9I6B3MbFUcSxhpZP7C4AswD9823mSDNPVCCHD5uQQk+QR2lAkbHMSn29MmBzb26QWcoUx4XRcA2Ufxg3DkFRL2OwcL84HlPOkNwELtTj5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BBfchTQ3; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=epagOxWH; arc=none smtp.client-ip=193.142.43.55
+	 In-Reply-To:To:Cc; b=QnLDrKcn8iyM0AHT8bEPucRAFQcbQ3eada1OE9xgc+Ey9j+oZ+I5/LRfS3jqtl0JcgSZSNlFJmiTRTUcNoX2ddpilZYg9di6jbd/qZE6R7sPhN7+ULsUOOenkbtWNsHJUy+mvmg7KKpdb4Z2nXwX5eYnuR+FwfmcjcbwEvTx2p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RvteM5pX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tPWSdfCK; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BBfchTQ3";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="epagOxWH"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RvteM5pX";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tPWSdfCK"
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1788849231;
@@ -24,23 +24,23 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FawW0xiyyB3XDpeEil2328xu9JZeGaaUH29QSwtR0fg=;
-	b=BBfchTQ31DifkjFqwb5y4n5BvOGW48DOyhiHYRpdPzrEQcn+IitYmXoSVnLWzvWa6lwHuy
-	sZD+8Y+YV+U5Q+RLLiaQuk6+JRBJF9vi1Y1DGh92/GH1x2M0Sy+puIE8ZRZhqgBqF9ZxcX
-	OVMEGjMH4cuC2Ih8qYPFGclgRGEjWPRnkw/+9BlYAZfTwu3dB+NLPwZ6JmOUFvLGShphqo
-	lpE6byOStxgm5iAG6jOHo0tEAOdE8cTToyKI6d+gadpfoJgZfZRrWhapeXH8p8WEX3WKnq
-	ZIRI/ePB8OFwnrq7FOJP8oo233EMrmmz/MJKwghMXEJPb8wamnhU9yuJgEsxpg==
+	bh=MGf3TnE/lW/fYbZlFBrmGDjZjd6QYLG2uDJD7NOhZPg=;
+	b=RvteM5pX/6scTvVHhc9nHPA51oZliMFKpw0j5QYKMFpse7+yPHSkVy9fM+rso/Wb2YFrm1
+	H1wiqXKWH1Z2v3SGs3royO/jD58rDDfo11wybTYB9b0p52SEr1U93v/XqQsxU3Oz4QOvXM
+	lB9yw3AsT0ySjk0xrTX7JA5uNIOUl9V0q9lwcoZAUyxlZjaonToBT7f4xPG3MCq6XztezM
+	4IUl0hofZ21/AcEdhGZv5aCyyQyxkmx81s1BIOMmsqgAt4bfXss0uaKrGwDolo8Nz1mueb
+	HIbO21hw0BEwZGhu5nDiFjPqpQUd/uWztc8r7Mp5JuDJYZbhdyZxqsyCd2nS6g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1788849231;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FawW0xiyyB3XDpeEil2328xu9JZeGaaUH29QSwtR0fg=;
-	b=epagOxWHbraL4pZF2ABSEKqkk81eezIl8Gi009ltXa6+5yB+cGQ8VNDm3CyFBBc9mW3J0y
-	3loMMVZFFoRrE7AA==
-Date: Tue, 08 Sep 2026 08:33:40 +0200
-Subject: [PATCH v5 06/24] riscv: elf: Move relocation constants to UAPI
+	bh=MGf3TnE/lW/fYbZlFBrmGDjZjd6QYLG2uDJD7NOhZPg=;
+	b=tPWSdfCKOrl+sngE7bk54ExyIa5LzKKavkT70SIPlYNF5G1LVQzybS8BYFZ3IaW4EZdY9Z
+	8ES7SXoSssj4LgDw==
+Date: Tue, 08 Sep 2026 08:33:41 +0200
+Subject: [PATCH v5 07/24] LoongArch: Move relocation constants to UAPI
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -49,7 +49,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260908-vdso-absolute-reloc-v5-6-3a93791af1cf@linutronix.de>
+Message-Id: <20260908-vdso-absolute-reloc-v5-7-3a93791af1cf@linutronix.de>
 References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
 In-Reply-To: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
 To: Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -91,11 +91,11 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  Arnaldo Carvalho de Melo <acme@redhat.com>, 
  Alexandre Ghiti <alexghiti@rivosinc.com>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788849226; l=4962;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788849226; l=10431;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=A2KwwyE44rpRvMfg8HmJMKqJMXpNGArDCbHCP2lPOtc=;
- b=BIFQBlA6uOHvotUFp7WcFcjkRWr4zWTBvAzopoDSHqbuVQn/0iY7yQ9cklHXDfQCbhw1lLP4v
- +pw2vSBQ8BmAxY2zgjj9x+KL+h6I3EZtcmF2oBqsXSxkzdljxYY/Ns5
+ bh=TVNv1EnbeVl7eOp2X/cpMXp3v4L6yRWQXdRgwohhP1I=;
+ b=H7Of+EsKkYRm00bvzre3reaxsgBnlaZY8AOjsL+5NYLinUvECXNhAROQlYKStcUa1mehUxMl/
+ fwHuq7Wucb3BtsShMthHqQgQZN4C/z+vtTAIEgpoimFJKe1C60eIDd3
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
@@ -105,160 +105,289 @@ process ELF files during kernel cross-compilation.
 Move them from the kernel-private architecture-specific header to the UAPI.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Acked-by: Palmer Dabbelt <palmer@dabbelt.com>
 ---
- arch/riscv/include/uapi/asm/elf.h | 66 ---------------------------------------
- include/uapi/linux/elf-r.h        | 66 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 66 insertions(+), 66 deletions(-)
+ arch/loongarch/include/asm/elf.h | 130 ---------------------------------------
+ include/uapi/linux/elf-r.h       | 130 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 130 insertions(+), 130 deletions(-)
 
-diff --git a/arch/riscv/include/uapi/asm/elf.h b/arch/riscv/include/uapi/asm/elf.h
-index 11a71b8533d5..05cf74a4a535 100644
---- a/arch/riscv/include/uapi/asm/elf.h
-+++ b/arch/riscv/include/uapi/asm/elf.h
-@@ -32,70 +32,4 @@ typedef union __riscv_fp_state elf_fpregset_t;
- #define ELF_RISCV_R_TYPE(r_info)	ELF32_R_TYPE(r_info)
- #endif
+diff --git a/arch/loongarch/include/asm/elf.h b/arch/loongarch/include/asm/elf.h
+index 912c50cdd6b7..3cbce7e772fa 100644
+--- a/arch/loongarch/include/asm/elf.h
++++ b/arch/loongarch/include/asm/elf.h
+@@ -21,136 +21,6 @@
+ #define EF_LOONGARCH_ABI_ILP32_SINGLE_FLOAT	0x6
+ #define EF_LOONGARCH_ABI_ILP32_DOUBLE_FLOAT	0x7
  
--/*
-- * RISC-V relocation types
-- */
+-/* LoongArch relocation types used by the dynamic linker */
+-#define R_LARCH_NONE				0
+-#define R_LARCH_32				1
+-#define R_LARCH_64				2
+-#define R_LARCH_RELATIVE			3
+-#define R_LARCH_COPY				4
+-#define R_LARCH_JUMP_SLOT			5
+-#define R_LARCH_TLS_DTPMOD32			6
+-#define R_LARCH_TLS_DTPMOD64			7
+-#define R_LARCH_TLS_DTPREL32			8
+-#define R_LARCH_TLS_DTPREL64			9
+-#define R_LARCH_TLS_TPREL32			10
+-#define R_LARCH_TLS_TPREL64			11
+-#define R_LARCH_IRELATIVE			12
+-#define R_LARCH_MARK_LA				20
+-#define R_LARCH_MARK_PCREL			21
+-#define R_LARCH_SOP_PUSH_PCREL			22
+-#define R_LARCH_SOP_PUSH_ABSOLUTE		23
+-#define R_LARCH_SOP_PUSH_DUP			24
+-#define R_LARCH_SOP_PUSH_GPREL			25
+-#define R_LARCH_SOP_PUSH_TLS_TPREL		26
+-#define R_LARCH_SOP_PUSH_TLS_GOT		27
+-#define R_LARCH_SOP_PUSH_TLS_GD			28
+-#define R_LARCH_SOP_PUSH_PLT_PCREL		29
+-#define R_LARCH_SOP_ASSERT			30
+-#define R_LARCH_SOP_NOT				31
+-#define R_LARCH_SOP_SUB				32
+-#define R_LARCH_SOP_SL				33
+-#define R_LARCH_SOP_SR				34
+-#define R_LARCH_SOP_ADD				35
+-#define R_LARCH_SOP_AND				36
+-#define R_LARCH_SOP_IF_ELSE			37
+-#define R_LARCH_SOP_POP_32_S_10_5		38
+-#define R_LARCH_SOP_POP_32_U_10_12		39
+-#define R_LARCH_SOP_POP_32_S_10_12		40
+-#define R_LARCH_SOP_POP_32_S_10_16		41
+-#define R_LARCH_SOP_POP_32_S_10_16_S2		42
+-#define R_LARCH_SOP_POP_32_S_5_20		43
+-#define R_LARCH_SOP_POP_32_S_0_5_10_16_S2	44
+-#define R_LARCH_SOP_POP_32_S_0_10_10_16_S2	45
+-#define R_LARCH_SOP_POP_32_U			46
+-#define R_LARCH_ADD8				47
+-#define R_LARCH_ADD16				48
+-#define R_LARCH_ADD24				49
+-#define R_LARCH_ADD32				50
+-#define R_LARCH_ADD64				51
+-#define R_LARCH_SUB8				52
+-#define R_LARCH_SUB16				53
+-#define R_LARCH_SUB24				54
+-#define R_LARCH_SUB32				55
+-#define R_LARCH_SUB64				56
+-#define R_LARCH_GNU_VTINHERIT			57
+-#define R_LARCH_GNU_VTENTRY			58
+-#define R_LARCH_B16				64
+-#define R_LARCH_B21				65
+-#define R_LARCH_B26				66
+-#define R_LARCH_ABS_HI20			67
+-#define R_LARCH_ABS_LO12			68
+-#define R_LARCH_ABS64_LO20			69
+-#define R_LARCH_ABS64_HI12			70
+-#define R_LARCH_PCALA_HI20			71
+-#define R_LARCH_PCALA_LO12			72
+-#define R_LARCH_PCALA64_LO20			73
+-#define R_LARCH_PCALA64_HI12			74
+-#define R_LARCH_GOT_PC_HI20			75
+-#define R_LARCH_GOT_PC_LO12			76
+-#define R_LARCH_GOT64_PC_LO20			77
+-#define R_LARCH_GOT64_PC_HI12			78
+-#define R_LARCH_GOT_HI20			79
+-#define R_LARCH_GOT_LO12			80
+-#define R_LARCH_GOT64_LO20			81
+-#define R_LARCH_GOT64_HI12			82
+-#define R_LARCH_TLS_LE_HI20			83
+-#define R_LARCH_TLS_LE_LO12			84
+-#define R_LARCH_TLS_LE64_LO20			85
+-#define R_LARCH_TLS_LE64_HI12			86
+-#define R_LARCH_TLS_IE_PC_HI20			87
+-#define R_LARCH_TLS_IE_PC_LO12			88
+-#define R_LARCH_TLS_IE64_PC_LO20		89
+-#define R_LARCH_TLS_IE64_PC_HI12		90
+-#define R_LARCH_TLS_IE_HI20			91
+-#define R_LARCH_TLS_IE_LO12			92
+-#define R_LARCH_TLS_IE64_LO20			93
+-#define R_LARCH_TLS_IE64_HI12			94
+-#define R_LARCH_TLS_LD_PC_HI20			95
+-#define R_LARCH_TLS_LD_HI20			96
+-#define R_LARCH_TLS_GD_PC_HI20			97
+-#define R_LARCH_TLS_GD_HI20			98
+-#define R_LARCH_32_PCREL			99
+-#define R_LARCH_RELAX				100
+-#define R_LARCH_DELETE				101
+-#define R_LARCH_ALIGN				102
+-#define R_LARCH_PCREL20_S2			103
+-#define R_LARCH_CFA				104
+-#define R_LARCH_ADD6				105
+-#define R_LARCH_SUB6				106
+-#define R_LARCH_ADD_ULEB128			107
+-#define R_LARCH_SUB_ULEB128			108
+-#define R_LARCH_64_PCREL			109
+-#define R_LARCH_CALL36				110
+-#define R_LARCH_TLS_DESC_PC_HI20		111
+-#define R_LARCH_TLS_DESC_PC_LO12		112
+-#define R_LARCH_TLS_DESC64_PC_LO20		113
+-#define R_LARCH_TLS_DESC64_PC_HI12		114
+-#define R_LARCH_TLS_DESC_HI20			115
+-#define R_LARCH_TLS_DESC_LO12			116
+-#define R_LARCH_TLS_DESC64_LO20			117
+-#define R_LARCH_TLS_DESC64_HI12			118
+-#define R_LARCH_TLS_DESC_LD			119
+-#define R_LARCH_TLS_DESC_CALL			120
+-#define R_LARCH_TLS_LE_HI20_R			121
+-#define R_LARCH_TLS_LE_ADD_R			122
+-#define R_LARCH_TLS_LE_LO12_R			123
+-#define R_LARCH_TLS_LD_PCREL20_S2		124
+-#define R_LARCH_TLS_GD_PCREL20_S2		125
+-#define R_LARCH_TLS_DESC_PCREL20_S2		126
+-#define R_LARCH_CALL30				127
+-#define R_LARCH_PCADD_HI20			128
+-#define R_LARCH_PCADD_LO12			129
+-#define R_LARCH_GOT_PCADD_HI20			130
+-#define R_LARCH_GOT_PCADD_LO12			131
+-#define R_LARCH_TLS_IE_PCADD_HI20		132
+-#define R_LARCH_TLS_IE_PCADD_LO12		133
+-#define R_LARCH_TLS_LD_PCADD_HI20		134
+-#define R_LARCH_TLS_LD_PCADD_LO12		135
+-#define R_LARCH_TLS_GD_PCADD_HI20		136
+-#define R_LARCH_TLS_GD_PCADD_LO12		137
+-#define R_LARCH_TLS_DESC_PCADD_HI20		138
+-#define R_LARCH_TLS_DESC_PCADD_LO12		139
 -
--/* Relocation types used by the dynamic linker */
--#define R_RISCV_NONE		0
--#define R_RISCV_32		1
--#define R_RISCV_64		2
--#define R_RISCV_RELATIVE	3
--#define R_RISCV_COPY		4
--#define R_RISCV_JUMP_SLOT	5
--#define R_RISCV_TLS_DTPMOD32	6
--#define R_RISCV_TLS_DTPMOD64	7
--#define R_RISCV_TLS_DTPREL32	8
--#define R_RISCV_TLS_DTPREL64	9
--#define R_RISCV_TLS_TPREL32	10
--#define R_RISCV_TLS_TPREL64	11
--#define R_RISCV_IRELATIVE	58
--
--/* Relocation types not used by the dynamic linker */
--#define R_RISCV_BRANCH		16
--#define R_RISCV_JAL		17
--#define R_RISCV_CALL		18
--#define R_RISCV_CALL_PLT	19
--#define R_RISCV_GOT_HI20	20
--#define R_RISCV_TLS_GOT_HI20	21
--#define R_RISCV_TLS_GD_HI20	22
--#define R_RISCV_PCREL_HI20	23
--#define R_RISCV_PCREL_LO12_I	24
--#define R_RISCV_PCREL_LO12_S	25
--#define R_RISCV_HI20		26
--#define R_RISCV_LO12_I		27
--#define R_RISCV_LO12_S		28
--#define R_RISCV_TPREL_HI20	29
--#define R_RISCV_TPREL_LO12_I	30
--#define R_RISCV_TPREL_LO12_S	31
--#define R_RISCV_TPREL_ADD	32
--#define R_RISCV_ADD8		33
--#define R_RISCV_ADD16		34
--#define R_RISCV_ADD32		35
--#define R_RISCV_ADD64		36
--#define R_RISCV_SUB8		37
--#define R_RISCV_SUB16		38
--#define R_RISCV_SUB32		39
--#define R_RISCV_SUB64		40
--#define R_RISCV_GNU_VTINHERIT	41
--#define R_RISCV_GNU_VTENTRY	42
--#define R_RISCV_ALIGN		43
--#define R_RISCV_RVC_BRANCH	44
--#define R_RISCV_RVC_JUMP	45
--#define R_RISCV_GPREL_I		47
--#define R_RISCV_GPREL_S		48
--#define R_RISCV_TPREL_I		49
--#define R_RISCV_TPREL_S		50
--#define R_RISCV_RELAX		51
--#define R_RISCV_SUB6		52
--#define R_RISCV_SET6		53
--#define R_RISCV_SET8		54
--#define R_RISCV_SET16		55
--#define R_RISCV_SET32		56
--#define R_RISCV_32_PCREL	57
--#define R_RISCV_PLT32		59
--#define R_RISCV_SET_ULEB128	60
--#define R_RISCV_SUB_ULEB128	61
--
--
- #endif /* _UAPI_ASM_RISCV_ELF_H */
+ #ifndef ELF_ARCH
+ 
+ /* ELF register definitions */
 diff --git a/include/uapi/linux/elf-r.h b/include/uapi/linux/elf-r.h
-index 0d0dfaa7c724..02e420c255df 100644
+index 02e420c255df..4b6d3f111d7b 100644
 --- a/include/uapi/linux/elf-r.h
 +++ b/include/uapi/linux/elf-r.h
-@@ -314,4 +314,70 @@
- /* Keep this the last entry.  */
- #define R_PPC64_NUM		253
+@@ -380,4 +380,134 @@
+ #define R_RISCV_SET_ULEB128	60
+ #define R_RISCV_SUB_ULEB128	61
  
-+
-+/*
-+ * RISC-V relocation types
-+ */
-+
-+/* Relocation types used by the dynamic linker */
-+#define R_RISCV_NONE		0
-+#define R_RISCV_32		1
-+#define R_RISCV_64		2
-+#define R_RISCV_RELATIVE	3
-+#define R_RISCV_COPY		4
-+#define R_RISCV_JUMP_SLOT	5
-+#define R_RISCV_TLS_DTPMOD32	6
-+#define R_RISCV_TLS_DTPMOD64	7
-+#define R_RISCV_TLS_DTPREL32	8
-+#define R_RISCV_TLS_DTPREL64	9
-+#define R_RISCV_TLS_TPREL32	10
-+#define R_RISCV_TLS_TPREL64	11
-+#define R_RISCV_IRELATIVE	58
-+
-+/* Relocation types not used by the dynamic linker */
-+#define R_RISCV_BRANCH		16
-+#define R_RISCV_JAL		17
-+#define R_RISCV_CALL		18
-+#define R_RISCV_CALL_PLT	19
-+#define R_RISCV_GOT_HI20	20
-+#define R_RISCV_TLS_GOT_HI20	21
-+#define R_RISCV_TLS_GD_HI20	22
-+#define R_RISCV_PCREL_HI20	23
-+#define R_RISCV_PCREL_LO12_I	24
-+#define R_RISCV_PCREL_LO12_S	25
-+#define R_RISCV_HI20		26
-+#define R_RISCV_LO12_I		27
-+#define R_RISCV_LO12_S		28
-+#define R_RISCV_TPREL_HI20	29
-+#define R_RISCV_TPREL_LO12_I	30
-+#define R_RISCV_TPREL_LO12_S	31
-+#define R_RISCV_TPREL_ADD	32
-+#define R_RISCV_ADD8		33
-+#define R_RISCV_ADD16		34
-+#define R_RISCV_ADD32		35
-+#define R_RISCV_ADD64		36
-+#define R_RISCV_SUB8		37
-+#define R_RISCV_SUB16		38
-+#define R_RISCV_SUB32		39
-+#define R_RISCV_SUB64		40
-+#define R_RISCV_GNU_VTINHERIT	41
-+#define R_RISCV_GNU_VTENTRY	42
-+#define R_RISCV_ALIGN		43
-+#define R_RISCV_RVC_BRANCH	44
-+#define R_RISCV_RVC_JUMP	45
-+#define R_RISCV_GPREL_I		47
-+#define R_RISCV_GPREL_S		48
-+#define R_RISCV_TPREL_I		49
-+#define R_RISCV_TPREL_S		50
-+#define R_RISCV_RELAX		51
-+#define R_RISCV_SUB6		52
-+#define R_RISCV_SET6		53
-+#define R_RISCV_SET8		54
-+#define R_RISCV_SET16		55
-+#define R_RISCV_SET32		56
-+#define R_RISCV_32_PCREL	57
-+#define R_RISCV_PLT32		59
-+#define R_RISCV_SET_ULEB128	60
-+#define R_RISCV_SUB_ULEB128	61
++/* LoongArch relocation types used by the dynamic linker */
++#define R_LARCH_NONE				0
++#define R_LARCH_32				1
++#define R_LARCH_64				2
++#define R_LARCH_RELATIVE			3
++#define R_LARCH_COPY				4
++#define R_LARCH_JUMP_SLOT			5
++#define R_LARCH_TLS_DTPMOD32			6
++#define R_LARCH_TLS_DTPMOD64			7
++#define R_LARCH_TLS_DTPREL32			8
++#define R_LARCH_TLS_DTPREL64			9
++#define R_LARCH_TLS_TPREL32			10
++#define R_LARCH_TLS_TPREL64			11
++#define R_LARCH_IRELATIVE			12
++#define R_LARCH_MARK_LA				20
++#define R_LARCH_MARK_PCREL			21
++#define R_LARCH_SOP_PUSH_PCREL			22
++#define R_LARCH_SOP_PUSH_ABSOLUTE		23
++#define R_LARCH_SOP_PUSH_DUP			24
++#define R_LARCH_SOP_PUSH_GPREL			25
++#define R_LARCH_SOP_PUSH_TLS_TPREL		26
++#define R_LARCH_SOP_PUSH_TLS_GOT		27
++#define R_LARCH_SOP_PUSH_TLS_GD			28
++#define R_LARCH_SOP_PUSH_PLT_PCREL		29
++#define R_LARCH_SOP_ASSERT			30
++#define R_LARCH_SOP_NOT				31
++#define R_LARCH_SOP_SUB				32
++#define R_LARCH_SOP_SL				33
++#define R_LARCH_SOP_SR				34
++#define R_LARCH_SOP_ADD				35
++#define R_LARCH_SOP_AND				36
++#define R_LARCH_SOP_IF_ELSE			37
++#define R_LARCH_SOP_POP_32_S_10_5		38
++#define R_LARCH_SOP_POP_32_U_10_12		39
++#define R_LARCH_SOP_POP_32_S_10_12		40
++#define R_LARCH_SOP_POP_32_S_10_16		41
++#define R_LARCH_SOP_POP_32_S_10_16_S2		42
++#define R_LARCH_SOP_POP_32_S_5_20		43
++#define R_LARCH_SOP_POP_32_S_0_5_10_16_S2	44
++#define R_LARCH_SOP_POP_32_S_0_10_10_16_S2	45
++#define R_LARCH_SOP_POP_32_U			46
++#define R_LARCH_ADD8				47
++#define R_LARCH_ADD16				48
++#define R_LARCH_ADD24				49
++#define R_LARCH_ADD32				50
++#define R_LARCH_ADD64				51
++#define R_LARCH_SUB8				52
++#define R_LARCH_SUB16				53
++#define R_LARCH_SUB24				54
++#define R_LARCH_SUB32				55
++#define R_LARCH_SUB64				56
++#define R_LARCH_GNU_VTINHERIT			57
++#define R_LARCH_GNU_VTENTRY			58
++#define R_LARCH_B16				64
++#define R_LARCH_B21				65
++#define R_LARCH_B26				66
++#define R_LARCH_ABS_HI20			67
++#define R_LARCH_ABS_LO12			68
++#define R_LARCH_ABS64_LO20			69
++#define R_LARCH_ABS64_HI12			70
++#define R_LARCH_PCALA_HI20			71
++#define R_LARCH_PCALA_LO12			72
++#define R_LARCH_PCALA64_LO20			73
++#define R_LARCH_PCALA64_HI12			74
++#define R_LARCH_GOT_PC_HI20			75
++#define R_LARCH_GOT_PC_LO12			76
++#define R_LARCH_GOT64_PC_LO20			77
++#define R_LARCH_GOT64_PC_HI12			78
++#define R_LARCH_GOT_HI20			79
++#define R_LARCH_GOT_LO12			80
++#define R_LARCH_GOT64_LO20			81
++#define R_LARCH_GOT64_HI12			82
++#define R_LARCH_TLS_LE_HI20			83
++#define R_LARCH_TLS_LE_LO12			84
++#define R_LARCH_TLS_LE64_LO20			85
++#define R_LARCH_TLS_LE64_HI12			86
++#define R_LARCH_TLS_IE_PC_HI20			87
++#define R_LARCH_TLS_IE_PC_LO12			88
++#define R_LARCH_TLS_IE64_PC_LO20		89
++#define R_LARCH_TLS_IE64_PC_HI12		90
++#define R_LARCH_TLS_IE_HI20			91
++#define R_LARCH_TLS_IE_LO12			92
++#define R_LARCH_TLS_IE64_LO20			93
++#define R_LARCH_TLS_IE64_HI12			94
++#define R_LARCH_TLS_LD_PC_HI20			95
++#define R_LARCH_TLS_LD_HI20			96
++#define R_LARCH_TLS_GD_PC_HI20			97
++#define R_LARCH_TLS_GD_HI20			98
++#define R_LARCH_32_PCREL			99
++#define R_LARCH_RELAX				100
++#define R_LARCH_DELETE				101
++#define R_LARCH_ALIGN				102
++#define R_LARCH_PCREL20_S2			103
++#define R_LARCH_CFA				104
++#define R_LARCH_ADD6				105
++#define R_LARCH_SUB6				106
++#define R_LARCH_ADD_ULEB128			107
++#define R_LARCH_SUB_ULEB128			108
++#define R_LARCH_64_PCREL			109
++#define R_LARCH_CALL36				110
++#define R_LARCH_TLS_DESC_PC_HI20		111
++#define R_LARCH_TLS_DESC_PC_LO12		112
++#define R_LARCH_TLS_DESC64_PC_LO20		113
++#define R_LARCH_TLS_DESC64_PC_HI12		114
++#define R_LARCH_TLS_DESC_HI20			115
++#define R_LARCH_TLS_DESC_LO12			116
++#define R_LARCH_TLS_DESC64_LO20			117
++#define R_LARCH_TLS_DESC64_HI12			118
++#define R_LARCH_TLS_DESC_LD			119
++#define R_LARCH_TLS_DESC_CALL			120
++#define R_LARCH_TLS_LE_HI20_R			121
++#define R_LARCH_TLS_LE_ADD_R			122
++#define R_LARCH_TLS_LE_LO12_R			123
++#define R_LARCH_TLS_LD_PCREL20_S2		124
++#define R_LARCH_TLS_GD_PCREL20_S2		125
++#define R_LARCH_TLS_DESC_PCREL20_S2		126
++#define R_LARCH_CALL30				127
++#define R_LARCH_PCADD_HI20			128
++#define R_LARCH_PCADD_LO12			129
++#define R_LARCH_GOT_PCADD_HI20			130
++#define R_LARCH_GOT_PCADD_LO12			131
++#define R_LARCH_TLS_IE_PCADD_HI20		132
++#define R_LARCH_TLS_IE_PCADD_LO12		133
++#define R_LARCH_TLS_LD_PCADD_HI20		134
++#define R_LARCH_TLS_LD_PCADD_LO12		135
++#define R_LARCH_TLS_GD_PCADD_HI20		136
++#define R_LARCH_TLS_GD_PCADD_LO12		137
++#define R_LARCH_TLS_DESC_PCADD_HI20		138
++#define R_LARCH_TLS_DESC_PCADD_LO12		139
 +
  #endif /* _UAPI_LINUX_ELF_R_H */
 
