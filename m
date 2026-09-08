@@ -1,97 +1,99 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF583BD65D
-	for <rust-for-linux@vger.kernel.org>; Tue,  8 Sep 2026 21:06:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDB83D7D9F
+	for <rust-for-linux@vger.kernel.org>; Tue,  8 Sep 2026 21:13:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788901593; cv=pass; b=NyfcrObbue7SVd2mZ3herwcHPgXcvS9zYpjDRmLrOZS3VPdVwmc2/QWk6TjKW80qWxWyqIZPIm6zYiJTVPt1oddQXUQoAep7UsQSpigvwYRc4NXko0F6/AFVRDcQuRyeFxZwsUHLu8hhO4Fc4IKndHwZwy3/Ky8f1F5QwaZMXfE=
+	t=1788902000; cv=pass; b=YcJx8CXpv2ID9oQBhzzdT48Sf6T5xy5y6V6XgM8QAzRnjIi+AOhY/Q+92IoXn+o+Ya7DPldUkHQeSdCQNlpk4S0hXheZbKKp2yp9LVCvvf6X19K0IFq0I1c0hfdbreZyUwPUMfpo3b3pF+Ddp1/0GE2NTEzNLJTw/BIvUVCNF2g=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788901593; c=relaxed/simple;
-	bh=cIOFXtCuNna/zYNDEeDAmAkgX9xNg/vNmHFdct8PtpE=;
+	s=arc-20240116; t=1788902000; c=relaxed/simple;
+	bh=ABcg7txfjreOEvrgYloSz7dmSAX99sKg32JTqnOhFhM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZoG5nZf+Tafp2FecC9fy6rLLKsOV70AqILfKP2QaCqrOmuT1vO/NxtaVLvET7jKa3QY/yByHaEYmy/d3UzE52N4BeYu8ZkGrS/ht0MHTPXXZU1+iFmGp6FlElmqjJHzNJ/eZKcFZEOTQeMsQp6mx77KwM04dlmdxEph4wpI22RA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=otsf6b66; arc=pass smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=iG4oPeo+i/wdEa01HkpvOoMycK7a2yr+zEVBLETRc0XoEpEnLDRhsJhMgvmP8O1QdL6tpLYSKDaWBN04qcIZd2AKrbHokaMYwMvlL5K/rmjPd4EDqgyn+h6ak6kpxzP4L93roh61PEla1EvTJjKdqzFNeCElf3axe1LUJu3KXUo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kPf6ZmPD; arc=pass smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="otsf6b66"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49b392ccaacso75462615e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 08 Sep 2026 14:06:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788901590; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kPf6ZmPD"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39666bed443so1306121a91.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 08 Sep 2026 14:13:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788901998; cv=none;
         d=google.com; s=arc-20260327;
-        b=FFexl8mUORKSZzVflCe+Fi/xaS1tfe+wKQdiuoiEH+7+lCZCmYYwe80OUL3Fk19WDL
-         agsYoIQgvpUe99WqxMsU5cyjhODGb5hfTj6sE3QKWpLAJF+ynpwLTv5N8XuJNaMwne/C
-         S+rcv0bWf3y5uGFW6upVNW4E/ttJBrnhGsEvw+Xx+anpp44zsiEXBTFQY+P1QvTyGroD
-         jSaDUv2zpbQ3Cgg2rpIlRmhqlQ/d16t8LpRlzyBYp0jm6I2mNFHeLuK05eXnAE1KIrrq
-         hd/ZdODdyFEuC91g9+bx8NvDmm7ekabtz7OfbwIHSTcrgb990DIzQiyHIHVC0Y0+5hkR
-         QEZg==
+        b=WVHeocXXF5YGuC3rqZ16INwhGeLy3suvpims7xvmxn2zewHiLRHDuj2EkfefcdsJLo
+         InakjLkAZe+klro6CfltUOQon/vFkhpRcmiCeUQ+uRHV82ftedaosKASz7F8Ql3YVVS2
+         W/5Y0fbV69jQxIAEx7orCUdt//tJVSY0JiMMBPfdXIvkDPej3XPlQQiEgtHetZt+7eXq
+         4VrSzAp9HYUsfuMwWj3+qoBkCkeQAn3L8LAz9Auu63F52EQcYVrn8uS7hJRS8wIZZEa7
+         OLp4DHr6vUxczdRa1yYAWIuW6Le1ncrBUqt1xNbxHnoaMG/SWnkF8VyAYPLSlJOgQ6v8
+         myZg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=/CB3Vtp7eYFgiX1lhWfAP6WjiIrj8nFLFrnLp7SXQSY=;
-        fh=graNB+/TnWyJic1Jn7JT9vIn3YCPNSCIj1wUcOcaFX4=;
-        b=FzFcZ/Xbt+Ide+E+N8wAJ9DvAVbZ25r171GjiKOq+UW/Ughu3k1sykSKt820dQxIdc
-         shcConNrAYSuE2l7oeu7rqLUz4F6Jqv+iia1Nz/OIuF1Lqxzhk4TjGnX8GZS4/FzOcon
-         ByzMWQClakkl2PeKP/EP6XkQwQ7hYvc0XC24hCrotOltYFFgwTTmJnhYAwXbxsLGFn3a
-         VBot38k38Pu6RDlbY/jTIa91XJ4T9ytCHysR2KfnwAU3AvLjBmUAAFgEj+7ooFePZfZc
-         E4Yv+SEvkJnZivAEDc4nvX1FbmLP1n35YAnN8QBQ4GrtCGariTWs8WtKPq5O8BV/Rhhe
-         CEFQ==;
+        bh=0fhQV0gw/THBej21ZRoleMpcrYInoRUuBgF9MHF69Ek=;
+        fh=MDhplH7Ejogr3eRCpjGozjZJmwCN4qVraPg2Z6Za72s=;
+        b=jrkHIMmLhJbh2R5ukjWn5MqJKNTpf+dKBkoLvXPD9iiNZhUUbahJZodWvYEqf3v1fn
+         WXma0UOU6Sis3iAfQmgGu5tyClCQJNacpRBTw8KqWZkuifN6SgYHvEtA6hZUhl4R4Ejl
+         PM4BkkrKsGS3ifW+NoldB/5/6OTmupUQfthZXVi4vA+DJAXqN3gN8GMN5Naze5i0cvLW
+         /f6yS/rwLLqVIKXvS/YlCLKLtm+Y8D77Nyh9MH4hHhdyqzthDR4Co5tZljF980PRKra5
+         vClL2vVVnVJAk0wIIXWAVki/5sxaOiDXKO82Ff4WZGaKcRrIrKOaaYkPVkvw/HLnDGj2
+         BqeA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788901590; x=1789506390; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788901998; x=1789506798; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=/CB3Vtp7eYFgiX1lhWfAP6WjiIrj8nFLFrnLp7SXQSY=;
-        b=otsf6b66eLyN+62lzguVV+VBMlATv6z+svgDrA31hnA5b3fBV3bwYCqshPtnmsyGmv
-         QDNDZwx7N31zA+x89VYITcROT5ZRN8TP4ggK6R9uMannUm/MUJSMRZGWkbAMzCuOqlSY
-         H6biXYN3dL5DiY2yXed6Ky4yh4BVxXR56j5VYoNJgh5pu6nlbLx8ul8LTxw6ojhP81mJ
-         6JTXwtflQYVkO/SfV7yVBVRWnh5SQfasm8wlbFkY625Bkt4jmQ2QbNf1ssWLfzh6NMk7
-         l1RjM2KYlCGn6nKE0yFuTlHEHgKavdGE6I5+Sqelz5oi5Z+IpMaKNlUCqzRnSjeVC5x7
-         BuZQ==
+        bh=0fhQV0gw/THBej21ZRoleMpcrYInoRUuBgF9MHF69Ek=;
+        b=kPf6ZmPD2v4AefzfbB96CY/1Ro8ul1IcFijnGdxXVXzXHHTesc60tRNbKo2R6qNiCV
+         COm6UKvfUu6Q7EJ03xDCsbtZZbD+boDtakiCuWcq39IiGKN4AWNMMaVstLpEFMUY9fs/
+         fA3Ai9ETukyNfyw4rNxQfgzC3yRmNdwLUvg5cs5n0LI7BG+oMLyNjugmjmLMSwmDxeii
+         iJ9ESmD+qArHzXwghsJnFKtjbvVeFcor+5i9UXIjBUduxGmJNTr6bn/S+Vu/qGuE5X55
+         I4+dUgYq6dDOehzn331667NXRaNpuSHWvSLVHlvtNcNxcI1Le57wdyswdbpjKOR//hsO
+         L2cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788901590; x=1789506390;
+        d=1e100.net; s=20251104; t=1788901998; x=1789506798;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/CB3Vtp7eYFgiX1lhWfAP6WjiIrj8nFLFrnLp7SXQSY=;
-        b=Tso6NSjqX5K2YXoGlONwT49Hh5MLra6wR2vA1E8FCjPRsh8/WyD3JglsgEvirQNs5Q
-         h2rj36NbtJ50Zt3Rcrpaz2jiGPLIAKqlB+NUPk4Db5q2OeoQ9HoKVqstuAN/UzloNsme
-         1+itiLwbpguPmFSo3I+sC6A8vcqBlP2JLYYzedr53RXqajD42awrgWBWveSnEKqNyxuI
-         ocGbKHnABnqazt44PVY+9lLTZhJbCgZDKKJI1LTbUMa2x8P0EslmRa2dpyoocKBfVTr3
-         Ct/WW6O2dhcxEbEfC8gK+u3uCjgteUfE4OjjXI+WSZyQb5i7mpYu0MBhptuj0qct3Vf7
-         frAg==
-X-Forwarded-Encrypted: i=1; AKwUvBx1rEBVUi3iM7O37wSEpI/qEZkq8vYmqBMJ4LL/WY68c299POCX1Sy8oMI0FZDGuuTTfrACQrxmeGiHRofOJw==@vger.kernel.org
-X-Gm-Message-State: AFuF++mNZc/jpTLpNlpZ/RV1Eq/5g/iDUkJDDI18ksv/cCEP7zYf4cAX
-	ky4y6sLxnMf5qSlLCk0K7AWxLjVnEiqNyB9HtyXkJvcO7PcPsbZxUGI23eD+RVJUrYtquGmZ17u
-	//84ysgGZlIf+GBD30cL9p8Sl163MfIt8mS1CGpA0
-X-Gm-Gg: AYBFou04PTaGXvgtxtqNEI6PcIyEHDKkD3pfsZLba1W8EEuZFpnu7rMrm3DFHWWCcBq
-	7nDJZxIPbuQNTeqKzKVnzTi56lpY8Dajav2MsNY1kIzxVsItUmi0b5wGQd7i6QYyiIEKNR4r7rX
-	BeCQupge9beJG5/GAfBOD/66BH6E3BaVgjzqs7lr/QncBPtc7KKHVdIkrRy9TGCdNjuQhj9ecpC
-	QqhfdsOUcMdt+pp1Bh5u8mNvpa/p+4nFnk9d0iX/aMtPmDx+7kMyMJ0CLaQb0yJkmrGViKbFl8j
-	4FGgG3xY+Xw8/MS+qmuG+/hPMkOjg7uQ8aI0zZUzZ1zD43zdn1qbdMrZa2RYqk0qZwbIsY2D2zQ
-	BZIDp4KJ/x5LV+UM25y00e6A5NltT4uAoILHGoB/daI+KBRe2TgkmqDxc
-X-Received: by 2002:a05:600c:6091:b0:49c:eb17:cf3b with SMTP id
- 5b1f17b1804b1-49cf8252497mr286154405e9.8.1788901589479; Tue, 08 Sep 2026
- 14:06:29 -0700 (PDT)
+        bh=0fhQV0gw/THBej21ZRoleMpcrYInoRUuBgF9MHF69Ek=;
+        b=ns6iaaN35awjoV4PATqOsgcL2poNnS8Aa4vIH948VRc1yctodAe9vTKaVr5AJFGtAg
+         N695dA5NfLQuqpFZ6gPN0mO9xVXooZ1Zgbk/X8xwuS/F4YpStKX8Mjs2Ys80IdKv3aRf
+         Wh5lLYB43QzPUwA4olTh26o0KBCpkdzZQ9VYeO5SC3O+hNo2Z/mDVzphlej0KZQO5nWJ
+         OaWeRcwdFDDuGIPzT+JuoMZLvY45+3d6WThwEfZv0/jW4aL2B4PQeEqGgh9W9DJZK1vR
+         Za8ZDWr7HMME2d1fEqjDTvgW5LGRQvwrayrywoS91VznBJmzvtI/7jPkA1KEQI89n98/
+         6xYw==
+X-Forwarded-Encrypted: i=1; AKwUvBzsY6eQdiUWril4d6KJkoIXjT3EZk74H4PzrLGBI8gHWiXHCjTHTCSuLtSBp8f86Ntzb7qH+zb42nsWnJoFKQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++lJxtoHU9TqnapXP6fMo014LmYi667rMIza85eu5YtgwDKDnkO/
+	XrT1alxueS7yGTKSRmY9XP7JBM6g8RR7T8qH/OxLBGCygKTmtf9Ia/azkpDnsI5IQIst+5+uRW0
+	JM/pcWOnV1cwhTr/Vs6NctUfx2GHiuS4=
+X-Gm-Gg: AYBFou3ce8KiIi2A1O7q3lDei8oN6gK0uq0gRNKGlgHKsfTP+eotVH7/Qmsc/e7Tn35
+	lVBE5OUUeUKDfgid8po8fzlpgoJ4s8YZz/mNj9PlbtGtzVqzv6DcnG96MJsRSqFtKaWckgy4iKR
+	7+ckIQkdkvUJ0qajkHPcJjZAzduSaZm9ktqNrhiQVXcclhy6pqfoEKzgUhsFFv1Nj4//DrPjgnd
+	LS5dLvrtnVpm8hJ1tgtlf1YKSJb7dd7OBDWE8QeJB+yf+TMAuz9cQ1Nq2VQECPuQQOaq+WIQS7F
+	xctiLUpRwHY7AgSRvY1mQh7Wz72MlMqT3VnujM+a6s0GXtk9c3DwiaCseLSI1yzyA/h8CFWkrtL
+	85w7KpQ9UQeCMZ1Iz8Bf3Zdw4QwjJUYYWgZ4k/1Q5UXHLdDeodf4otWFxq6hSXit13sl6/XBqyu
+	eobgciCyhu3/CANoVGGmVCcr4pWFAOUED+nnIM1x2gDAIOjRRiIIA=
+X-Received: by 2002:a17:90b:3882:b0:396:a47f:d38f with SMTP id
+ 98e67ed59e1d1-39b268ce386mr30178901a91.3.1788901997757; Tue, 08 Sep 2026
+ 14:13:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
-In-Reply-To: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Tue, 8 Sep 2026 14:06:18 -0700
-X-Gm-Features: AcwNN1Vne6n6eJi0vjoX52mygVY2Bf7Bhttyek2fKXqRHQxDJ8Lg5WpFcLyZtjc
-Message-ID: <CAKwvOdmdFdW8=y+s5NLoNeKz4LVbmW8tr+JqJ26wqYFJDdARFQ@mail.gmail.com>
-Subject: Re: [PATCH 00/23] kbuild: significantly speed up kernel builds
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Nathan Chancellor <nathan@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Nicolas Schier <nsc@kernel.org>, 
+References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org> <20260908-build-speedup-v1-20-5dc1ac01672d@kernel.org>
+In-Reply-To: <20260908-build-speedup-v1-20-5dc1ac01672d@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 8 Sep 2026 23:13:04 +0200
+X-Gm-Features: AcwNN1U58TdOwuasMFef5tH_3N3xyJMe8mAu14nPZtzZCuWKC0n_7MgG3XQZVuw
+Message-ID: <CANiq72m5C5tNKUWTYYerBt81KtqRLgr-S4c5XLUN1uY5n7mqiQ@mail.gmail.com>
+Subject: Re: [PATCH 20/23] kbuild: rust: parallelise rustc front end
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nsc@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
 	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
 	Masahiro Yamada <masahiroy@kernel.org>, Alexey Gladkov <legion@kernel.org>, 
 	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
@@ -117,33 +119,26 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>, Nicolas Schier <nsc@kernel.o
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 8, 2026 at 1:55=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
+On Tue, Sep 8, 2026 at 10:59=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.o=
+rg> wrote:
 >
-> A typical kernel build consists of a frustratingly large amount of time
-> spent stuck in single-threaded bottlenecks.
->
-> It turns out that there's a lot we can do about this and doing so
-> significantly impacts kernel build times.
+> A future -j/--jobs option is planned for
+> rustc:(rust-lang/compiler-team#1005), so check to see if this available a=
+nd
+> if so use it.
 
+This is already implemented in nightly as far as I can tell. If it
+weren't, we shouldn't add it, even if planned.
 
-> Fundamentally the series improves build times by parallelising
-> single-threaded tasks as much as possible and improving the efficiency of
-> code used in the build process.
+(By the way, could you please add Link tags for those URLs?)
 
-Cool!  I have not reviewed this patch series, but am supportive of
-solving the problem, since I do recall this being an issue;
+> +config RUSTC_HAS_JOBS
+> +       def_bool $(rustc-option,-j8)
+> +
+> +config RUSTC_HAS_ZTHREADS
+> +       def_bool $(rustc-option,-Zthreads=3D8)
 
-i.e. it always annoyed me that despite have a 128 core machine, much
-of the build is sequential!  Having all those cores and not saturating
-them during a build was always something I noticed (usually have
-system monitor always showing system load, always) but never had time
-to look into.
+We can simplify using `RUSTC_VERSION` for these like we do elsewhere.
 
-It would be cool if your LLM could generate any visualizations of
-what's going on during a build? Seeing what's serial vs parallelized
-in perhaps useful. Particularly when you can compare the before vs
-after.
---=20
-Thanks,
-~Nick Desaulniers
+Cheers,
+Miguel
