@@ -1,168 +1,261 @@
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.166])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA8634F48F;
-	Tue,  8 Sep 2026 04:34:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAD525C818;
+	Tue,  8 Sep 2026 04:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788842058; cv=none; b=B2Ek2v78yF3Dq//XVUjYsZqJCbiEuToUuWfiqBYwTJu/fvD3yf48RmwAbnykf9p1cJzmembHCt/IRSzID3b05L3Xi8k4/lDZT2+3uZqqYtdpYxagvtLYWn6OaaPBbgrfpfwxR+x4ZRw5z31vUt/hhuLqjn1N7dBZShfqhlMbyX4=
+	t=1788842433; cv=none; b=cjvizquNBjNRtiizXhVKGLX9/Y1E56eNjwCovSRnI3sKaCfsnj+dXuXdNfk7mHirLw1/g7JrkKs72pOdiTdKn7r8WPjDfSa21nUiA9gsY3hbFvG6eTGeZXLnHsf4Vt64GS/DvtkUhCzUSxZy866KlPoRvtiuZpBBDOb4wPUuTOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788842058; c=relaxed/simple;
-	bh=RM2uDjlFoSwaGz1ZGrnrQMAsuHPyc1eT3wom3p+9gY4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VfoZzv2RUhNXDXujisoruP7e8PHewInUZnvFM1E8ce8EAkuOWQC9COwrF3Ynusqs8w+GLwHh6/SmqdTVGw4sm2CHd0hIV9s1JwbHulCLtphXig7/vOCO4/qARWdZiV1+75c66YeG84Y4Qinh1QMk7SGDEAt9xIzXYMnVTGtfXJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=Q6BiCJay; arc=none smtp.client-ip=188.68.63.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	s=arc-20240116; t=1788842433; c=relaxed/simple;
+	bh=uqWZN4R2OQIxsNEBMPRafa6W6zRwfZek/mynQtOCEA4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=nihA8MhjQLmJEDNZsOgCHFStSmgyI7IaG1A4QXke2CZLIFzM41f9UGZDY8vPm0Qchs9ZPK+9hzmqxttO6QHd+kET/LkErRQ5Ug6pHbFi/G27XjIATu+80Q2tA+x3IkCYh1E8GWp4lar6V6nHrerIsBlg+iESJxzk85iFfySv0x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LCsyh3mR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="Q6BiCJay"
-Received: from mors-relay-8202.netcup.net (localhost [127.0.0.1])
-	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4hfB045B4Tz4829;
-	Tue,  8 Sep 2026 06:33:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1788842020;
-	bh=RM2uDjlFoSwaGz1ZGrnrQMAsuHPyc1eT3wom3p+9gY4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q6BiCJayzYz6GjTSA2Dl8fdAucdaLi+G1TnvA83i/G4XOpecCGlYOF3m2FTY9qvW7
-	 PnRLZeJ9nSfceueOj9zyN5b5yEw5Migl07zQJqKj1GRARpF61/7KB0CdJd/jYShGTm
-	 Z/NLuXHcAFA4YKNSb9o3ziC+2CuUohSJJ+3z8fr4fu6ArgIe99UlU2L27cFPLZHSQN
-	 mc71aqGH0YDJitkLJE9Bzn3IxNcYhWlEk3NwlKnzyIX6o9dNIFdmiS2QWOObFFJXgE
-	 2dQPCirqJvrDVluRVVXMslRq18XtlGPHREIEfxJ3a8Pf/gLtQ31dwPOEBwQZn5fumv
-	 8/6nIRfgpIiOQ==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4hfB044TD9z4825;
-	Tue,  8 Sep 2026 06:33:40 +0200 (CEST)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4hfB035dhHz8sZP;
-	Tue,  8 Sep 2026 06:33:39 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id D879A5F9CD;
-	Tue,  8 Sep 2026 06:33:34 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=linux@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <d408716c-7af3-4f29-a796-cda595befb98@leemhuis.info>
-Date: Tue, 8 Sep 2026 06:33:33 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LCsyh3mR"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7992BC2BCB8;
+	Tue,  8 Sep 2026 04:40:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788842432;
+	bh=uqWZN4R2OQIxsNEBMPRafa6W6zRwfZek/mynQtOCEA4=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=LCsyh3mR1hfDAOjU1WMB7FEjgS++EamQ0Y74HnY/nzYSU72c0foU4ioCj92PnjKD6
+	 q+DLWrcz4VDGxWct9sC/uaguSOmzn6sxaCrSn8KGfTE5G9yf6eohG+2CktwQKoRPsJ
+	 oVm0eTYLkMxV+i6aukfrC6VHgnnayLRmoiNYJyPfVoP/WM9BIMtd2lGWKbPt3uBCNo
+	 LIkwC/vubO3nRoQCI2F08q9mTBZW4Tn1gqqc4aPi6osLs9v9/z+IwuJqEALANQoXou
+	 7ogVm6KUFiB4fciq3KVh+MG3xUJualjUnHiOaY5M4kBbG0cRjMbU/uXkIP/xdSE+GD
+	 YulI/wF/JZ7xQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 534F4C79F9E;
+	Tue,  8 Sep 2026 04:40:32 +0000 (UTC)
+From: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
+Date: Tue, 08 Sep 2026 06:39:59 +0200
+Subject: [PATCH v2] rust: num: document why Integer is sealed
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] drm/gem: Add callback for when handle count goes to 0
-To: Klara Modin <klarasmodin@gmail.com>,
- Manuel Ebner <manuelebner@mailbox.org>
-Cc: Alex Deucher <alexander.deucher@amd.com>, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, Felix.Kuehling@amd.com,
- Mukul Joshi <mukul.joshi@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, Mark Brown <broonie@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
- Linux Next Mailing List <linux-next@vger.kernel.org>
-References: <20260831183311.1090131-1-alexander.deucher@amd.com>
- <20260831183311.1090131-2-alexander.deucher@amd.com>
- <aaef18cd-ab55-4fb8-8563-ca3a5ea9cbc6@leemhuis.info>
- <e8a53eb241b2cc912e9cfad5f6a0120aa9683481.camel@mailbox.org>
- <apyTR-f8W6Jt7uP5@soda.int.kasm.eu>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Content-Language: de-DE, en-US
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 MEK4
-In-Reply-To: <apyTR-f8W6Jt7uP5@soda.int.kasm.eu>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: 
- <178884201540.1018164.10882620288814615527@mxe9fb.netcup.net>
-X-Rspamd-Server: rspamd-worker-8404
-X-Rspamd-Queue-Id: D879A5F9CD
-X-NC-CID: OfPuqa33tXIzRDlFuj7qC37NDFfZmiRRCGlOBkBPRqdvFQtbZiw=
+Message-Id: <20260908-docs-rust-num-integer-sealing-safety-v2-1-e8c65234db82@younes.io>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/5WOTQ6CMBCFr2K6drQUBerKexgWpQwwRlvTKURCu
+ Lv8nMDlN3nzvTcJxkDI4naYRMCBmLxbQB0PwnbGtQhULyyUVJnUMoPaW4bQcwTXv4FcxBYDMJo
+ XuRbYNBhHSI1EpbPc6EshFtUnYEPfreZR7sx99UQbV/eaqAwjVME4260nH6gld9569s8l0xFHH
+ 8Zt65Csrj9nDQkkkBfymqc6SaWy99H3DvlEXpTzPP8ACs769g4BAAA=
+X-Change-ID: 20260906-docs-rust-num-integer-sealing-safety-3a0e2967a948
+To: Alexandre Courbot <acourbot@nvidia.com>, 
+ Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Younes Akhouayri <git@younes.io>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788842431; l=9303;
+ i=git@younes.io; s=20260712; h=from:subject:message-id;
+ bh=Npbz8G8u3MVnEdlz8DnebUk4PDv4U212b+94+h5OrC8=;
+ b=YiE7+5KB3cJuv28DOLy2HKRm0h7SC4WELGqi/f/u/IiYFHrwmNsGWOFhSzEjq1n8TmG+2JXrK
+ u5Pzyk1ks7LB0ZGHUXoNxR29fIMrlQfGXlEQit9qNh6zGQqiCpfox7b
+X-Developer-Key: i=git@younes.io; a=ed25519;
+ pk=1DRfzPrQ04RQHHgGK28t+vjIAPv5oISPiAdLMU6J5dE=
+X-Endpoint-Received: by B4 Relay for git@younes.io/20260712 with
+ auth_id=866
+X-Original-From: Younes Akhouayri <git@younes.io>
+Reply-To: git@younes.io
 
-On 9/6/26 00:25, Klara Modin wrote:
-> On 2026-09-05 11:31:41 +0200, Manuel Ebner wrote:
->> On Sat, 2026-09-05 at 07:36 +0200, Thorsten Leemhuis wrote:
->>> On 8/31/26 20:33, Alex Deucher wrote:
->>>> From: Mukul Joshi <mukul.joshi@amd.com>
->
->>>>> error[E0063]: missing field `handle_free` in initializer of `drm_gem_object_funcs`
->>>>>    --> rust/kernel/drm/gem/mod.rs:265:58
->>>>>     |
->>>>> 265 |     const OBJECT_FUNCS: bindings::drm_gem_object_funcs = bindings::drm_gem_object_funcs {
->>>>>     |                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `handle_free`
->>>>>
->>>>> error: aborting due to 1 previous error
->>>>>
->>>>> For more information about this error, try `rustc --explain E0063`.
->>>>> make[2]: *** [rust/Makefile:799: rust/kernel.o] Error 1
->>>>> make[1]: *** [/builddir/build/BUILD/kernel-7.3.0-build/kernel-next-20260904/linux-7.3.0-0.0.next.20260904.221.vanilla.fc43.aarch64/Makefile:1442: prepare] Error 2
->>>>> make: *** [Makefile:256: __sub-make] Error 2
->>> Full log:
->>> https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-43-aarch64/10951622-next-next-all/builder-live.log.gz
->>>
->>> Reverting this change and 2/3 from this set fixed the problem for me.
-> 
-> That leaves only the documentation without the feature so might as well
-> drop 3/3 too in that case?
+From: Younes Akhouayri <git@younes.io>
 
-My intention was just to confirm that these patches are the problem, not
-suggest this as a solution, so I didn't bother about the docs. :-D
-> Otherwise, the following also fixes it for me:
+Bounded relies on Integer implementations to provide primitive integer
+semantics. Unsafe blocks use those semantics to justify unchecked
+construction and conversion, but their safety comments do not say why a
+safe trait may be trusted.
 
-Thx, for me, too.
+Document the seal at those safety comments and next to the private
+supertrait.
 
-Ciao, Thorsten
-> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-> index e1ebad77ebe2..847e0ee38863 100644
-> --- a/rust/kernel/drm/gem/mod.rs
-> +++ b/rust/kernel/drm/gem/mod.rs
-> @@ -278,6 +278,7 @@ impl<T: DriverObject, Ctx: DeviceContext> Object<T, Ctx> {
->          vm_ops: core::ptr::null_mut(),
->          evict: None,
->          rss: None,
-> +        handle_free: None,
->      };
->  
->      /// Returns the `Device` that owns this GEM object.
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Suggested-by: Gary Guo <gary@garyguo.net>
+Link: https://lore.kernel.org/all/CANiq72m8kycbfQ1teyne-OtB5d5TsUcX_WW0FCkWB3Ayyg-qWw@mail.gmail.com/
+Link: https://lore.kernel.org/all/DL88SQWYU15W.2CVZB5NVSSJGK@garyguo.net/
+Link: https://lore.kernel.org/all/CANiq72kx-YPPEruOFdu-Dp7GX+8=Et6svG+sQtqEmmF7kpnVyQ@mail.gmail.com/
+Signed-off-by: Younes Akhouayri <git@younes.io>
+---
+Changes in v2:
+- Shorten the comment explaining why `Integer` is sealed.
+- Mention the seal in the `SAFETY` comments that rely on it.
+- Link to v1: https://patch.msgid.link/20260906-docs-rust-num-integer-sealing-safety-v1-1-78057391302c@younes.io
+
+To: Alexandre Courbot <acourbot@nvidia.com>
+To: Yury Norov <yury.norov@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+To: Boqun Feng <boqun@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+To: Björn Roy Baron <bjorn3_gh@protonmail.com>
+To: Benno Lossin <lossin@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+To: Trevor Gross <tmgross@umich.edu>
+To: Danilo Krummrich <dakr@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+To: Tamir Duberstein <tamird@kernel.org>
+To: Onur Özkan <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+ rust/kernel/num.rs         |  1 +
+ rust/kernel/num/bounded.rs | 48 ++++++++++++++++++++++++++--------------------
+ 2 files changed, 28 insertions(+), 21 deletions(-)
+
+diff --git a/rust/kernel/num.rs b/rust/kernel/num.rs
+index de589792a77a..0449e84a384a 100644
+--- a/rust/kernel/num.rs
++++ b/rust/kernel/num.rs
+@@ -21,6 +21,7 @@ pub trait Sealed {}
+ 
+ /// Describes core properties of integer types.
+ pub trait Integer:
++    // Sealed so that unsafe code can rely on the correctness of its implementations.
+     private::Sealed
+     + Sized
+     + Copy
+diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
+index 2a2b0a4bca5e..1a3f369cd886 100644
+--- a/rust/kernel/num/bounded.rs
++++ b/rust/kernel/num/bounded.rs
+@@ -336,7 +336,8 @@ impl<T, const N: u32> Bounded<T, N>
+     /// ```
+     pub fn try_new(value: T) -> Option<Self> {
+         fits_within(value, N).then(|| {
+-            // SAFETY: `fits_within` confirmed that `value` can be represented within `N` bits.
++            // SAFETY: `Integer` is sealed, so `fits_within` has primitive integer semantics and
++            // confirmed that `value` can be represented within `N` bits.
+             unsafe { Self::__new(value) }
+         })
+     }
+@@ -379,7 +380,8 @@ pub fn from_expr(expr: T) -> Self {
+             "Requested value larger than maximal representable value."
+         );
+ 
+-        // SAFETY: `fits_within` confirmed that `expr` can be represented within `N` bits.
++        // SAFETY: `Integer` is sealed, so `fits_within` has primitive integer semantics and
++        // confirmed that `expr` can be represented within `N` bits.
+         unsafe { Self::__new(expr) }
+     }
+ 
+@@ -420,8 +422,8 @@ pub const fn extend<const M: u32>(self) -> Bounded<T, M> {
+             "Requested number of bits is less than the current representation."
+         );
+ 
+-        // SAFETY: The value did fit within `N` bits, so it will all the more fit within
+-        // the larger `M` bits.
++        // SAFETY: `Integer` is sealed, so the `Bounded` invariant can be relied upon. The value
++        // did fit within `N` bits, so it will all the more fit within the larger `M` bits.
+         unsafe { Bounded::__new(self.0) }
+     }
+ 
+@@ -472,12 +474,13 @@ pub fn cast<U>(self) -> Bounded<U, N>
+         T: Integer,
+         U: Integer<Signedness = T::Signedness>,
+     {
+-        // SAFETY: The converted value is represented using `N` bits, `U` can contain `N` bits, and
+-        // `U` and `T` have the same sign, hence this conversion cannot fail.
++        // SAFETY: `Integer` is sealed, so the bit widths and signedness are correct. The converted
++        // value is represented using `N` bits, `U` can contain `N` bits, and `U` and `T` have the
++        // same sign, hence this conversion cannot fail.
+         let value = unsafe { U::try_from(self.get()).unwrap_unchecked() };
+ 
+-        // SAFETY: Although the backing type has changed, the value is still represented within
+-        // `N` bits, and with the same signedness.
++        // SAFETY: `Integer` is sealed, so the signedness is correct. Although the backing type has
++        // changed, the value is still represented within `N` bits, and with the same signedness.
+         unsafe { Bounded::__new(value) }
+     }
+ 
+@@ -498,8 +501,9 @@ pub fn shr<const SHIFT: u32, const RES: u32>(self) -> Bounded<T, RES> {
+         const_assert!(SHIFT < T::BITS);
+         const_assert!(RES + SHIFT >= N);
+ 
+-        // SAFETY: We shift the value right by `SHIFT`, reducing the number of bits needed to
+-        // represent the shifted value by as much, and just asserted that `RES >= N - SHIFT`.
++        // SAFETY: `Integer` is sealed, so the shift has primitive integer semantics. We reduce the
++        // number of bits needed to represent the shifted value by `SHIFT`, and just asserted that
++        // `RES >= N - SHIFT`.
+         unsafe { Bounded::__new(self.0 >> SHIFT) }
+     }
+ 
+@@ -550,8 +554,9 @@ pub fn shr_exact<const SHIFT: u32, const RES: u32>(self) -> Option<Bounded<T, RE
+     pub fn shl<const SHIFT: u32, const RES: u32>(self) -> Bounded<T, RES> {
+         const_assert!(RES >= N + SHIFT);
+ 
+-        // SAFETY: We shift the value left by `SHIFT`, augmenting the number of bits needed to
+-        // represent the shifted value by as much, and just asserted that `RES >= N + SHIFT`.
++        // SAFETY: `Integer` is sealed, so the shift has primitive integer semantics. We augment
++        // the number of bits needed to represent the shifted value by `SHIFT`, and just asserted
++        // that `RES >= N + SHIFT`.
+         unsafe { Bounded::__new(self.0 << SHIFT) }
+     }
+ }
+@@ -565,8 +570,8 @@ impl<T, const N: u32> Deref for Bounded<T, N>
+     fn deref(&self) -> &Self::Target {
+         // Enforce the invariant to inform the compiler of the bounds of the value.
+         if !fits_within(self.0, N) {
+-            // SAFETY: Per the `Bounded` invariants, `fits_within` can never return `false` on the
+-            // value of a valid instance.
++            // SAFETY: `Integer` is sealed, so `fits_within` has primitive integer semantics. Per
++            // the `Bounded` invariants, it cannot return `false` on the value of a valid instance.
+             unsafe { core::hint::unreachable_unchecked() }
+         }
+ 
+@@ -1028,8 +1033,9 @@ impl<T, const N: u32> From<$type> for Bounded<T, N>
+             Self: AtLeastXBits<{ <$type as Integer>::BITS as usize }>,
+         {
+             fn from(value: $type) -> Self {
+-                // SAFETY: The trait bound on `Self` guarantees that `N` bits is
+-                // enough to hold any value of the source type.
++                // SAFETY: `Integer` is sealed, so the bit widths and signedness are correct. The
++                // trait bound on `Self` guarantees that `N` bits is enough to hold any value of
++                // the source type.
+                 unsafe { Self::__new(T::from(value)) }
+             }
+         }
+@@ -1104,9 +1110,9 @@ impl<T, const N: u32> From<Bounded<T, N>> for $type
+             Bounded<T, N>: FitsInXBits<{ <$type as Integer>::BITS as usize }>,
+         {
+             fn from(value: Bounded<T, N>) -> $type {
+-                // SAFETY: The trait bound on `Bounded` ensures that any value it holds (which
+-                // is constrained to `N` bits) can fit into the destination type, so this
+-                // conversion cannot fail.
++                // SAFETY: `Integer` is sealed, so the bit widths and signedness are correct. The
++                // trait bound on `Bounded` ensures that any value it holds (which is constrained
++                // to `N` bits) can fit into the destination type, so this conversion cannot fail.
+                 unsafe { <$type>::try_from(value.get()).unwrap_unchecked() }
+             }
+         }
+@@ -1137,8 +1143,8 @@ impl<T, const N: u32> From<bool> for Bounded<T, N>
+     T: Integer<Signedness = Unsigned> + From<bool>,
+ {
+     fn from(value: bool) -> Self {
+-        // SAFETY: A boolean is represented by `0` or `1`, so it fits within any valid unsigned
+-        // `Bounded` width.
++        // SAFETY: `Integer` is sealed, so `T` is a primitive unsigned integer. A boolean is
++        // represented by `0` or `1`, so it fits within any valid unsigned `Bounded` width.
+         unsafe { Self::__new(T::from(value)) }
+     }
+ }
+
+---
+base-commit: c6709d5e14072d0e3d02f291daee46a199e5dad3
+change-id: 20260906-docs-rust-num-integer-sealing-safety-3a0e2967a948
+
+Best regards,
+--  
+Younes Akhouayri <git@younes.io>
+
+
