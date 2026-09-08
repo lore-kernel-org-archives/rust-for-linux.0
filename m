@@ -1,49 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD3E4A6921;
-	Tue,  8 Sep 2026 20:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EF94B4866
+	for <rust-for-linux@vger.kernel.org>; Tue,  8 Sep 2026 20:38:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788899684; cv=none; b=sR08hOh+BfKkSUzXEc3pRYR2vdgXtnveGZN7DXTMdBhdfa691VNQe4zHog2GO8qNP/q7ab9QFBGTdlpqMZo/1TM/1Cym4jfjEgCryi6w+nks5kU8R8Bt/UhX0CcOFnK4+ewPMQQKKJNv23rNwSiN/whCBeLVngimS1ejM1woeXY=
+	t=1788899937; cv=none; b=m8gVwd/z2kMccYaGWgJQu81ITrU93vb/FjKRfKHUs3Gu6AElooboMXq+BxgOAAGxs1sE4sA6khkP1P4XdDSOvEkSNT8V6eeRaPjRz2ezzcPi9/JH7MSTPhSpH/jOudDC6FXhtUGmfkOLiDxUHkzDup4JBIppPd5TgaedANhUie8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788899684; c=relaxed/simple;
-	bh=YNPt/pv+SNAxikzMeSqs57yUM/YdnnOXve3MxfDf44o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fnbBVi0EO/0Cz/kODYoWj4NEDGF0esT4ZaD3k0389jOdCu3sDtBW9wZQRLBPmNUEp6T0pJ2QX09+nlT4t54rt/Vzgede9nchq9bj8GG5BvpM3ijFgsNPenPMuKoyCCn7GejalsmX5zq98QXJQhQ3bixKbV7sfRt7uqs1bmT5yZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WMHHwcnE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788899937; c=relaxed/simple;
+	bh=arNrw+iPsal8AZsnLzzOB1CyT7mCNMqIyMK/IIGqaGk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sADrS5q4igsHQHEpIR5vRFHstENbqQA1YJ5ylbDDlVAZYA0b8DfEJKqFEZBYEJkkDFZqE6k9Mri01ueu7Gg0vsY6jaPHRmKRs5O4tgzUdPkzW0NafgBqHPOvsrUbMhljvt5BGjt7/5d/eaJhSqvaJAoTexalgSewbtUQbgXmpSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iBEpBbWW; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WMHHwcnE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38FF1F00ACF;
-	Tue,  8 Sep 2026 20:34:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788899683;
-	bh=AoB/6AlrC21xrAzOYMzkf9Ib3/16DPISvxfS9ZuGVEw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WMHHwcnEiWh2FxvgSU2OQTX2jnldxPe1oXGawHTCxhaeJTefAhTekNOiZChyBQYvU
-	 J+/cHBXLA7otYuS/xFcdSopI+HxRlO4nwnZZG5KEFwB1rZNZp13yDni6nMp7m8PLbu
-	 fncBUt5TCRmiE9KZx9SDVaAfvL9YfHvJGpITeeLbkgrSI2wnhG7yxavbfV40dfRpDg
-	 tM/TaqMR1O6yK9F2cPJOINlq99C2X6+ZLDFIblJ7kb092mcHLB9cnqcOU4ARw3KDEF
-	 UcDomg2VL1gJUAEPeNDCN7/ZRjmFmd0v2XMRbzIrSz7VjpLEBAP3fWVW6bWoZX5WP0
-	 06KFAEBQ9GJ0Q==
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: x86@kernel.org
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iBEpBbWW"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cc9f581c4so5465705e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 08 Sep 2026 13:38:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788899935; x=1789504735; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/lPuDw+ORGOHKBcreKD51QJa/ZGL09ksPm4bGJzobvM=;
+        b=iBEpBbWW/oblC+2+wo9HQoR1q4Vynzwb1C9ei/1IIK1x7DoWx50Ji/et/3Z462RyTt
+         Ce6Lhlfq1Ia8Nr6/z06jzWu9+QnIjhc7UXreBOutNL22Sf1OLh/YFIoqkZKXKkqNoL5b
+         TQpZSO4XT3ppS5Sx1Rji1p8LgnJoRX5gpUH54IVUPxltgqKuaeG5Sn+/wG5gcX4cKZIi
+         txnSYtNKAP4TkSskjwVESeH3RqQzSQV3cXiUEBRpjGlxLbQQAldhqzAC7lflyjjMtTbR
+         BTPUxfi/SGx92o1dTjBL3CKpkIYYdP6QVwXdsyDCOYH8EEQLElkGH238d6+GyBGbf6XX
+         sKQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788899935; x=1789504735;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/lPuDw+ORGOHKBcreKD51QJa/ZGL09ksPm4bGJzobvM=;
+        b=eTqTP1GdjUFIaYaEMF1JM2+oJNgfdrbpvPOzBmoDO8vCxD636a5V2NmprekqIFtVNQ
+         B7LshS51qTu+CaGnWQnppgmdHRtDoempUhApTWciyNzwRhMYT14G9IB1+GlIszLweILh
+         5jR2KyHtZgzDNbqZS3O6LzTWzfDw5mjF8mqDym+Ash9xJewvDYo8JNNHEOlrSmCMNf/H
+         oD1Fo2+fvrNLi5yO3HUVNb+V4ew1orz9JgD3UjdKRPVcSFMd0J7uYpLT1EAFmloMrw4y
+         T0XkkoA7bMMOijWAdFFOLDPzE+Gf7p6ZWmM2EZM1Y9qvB1KHOFq7cJtXGee2BZ+E76j/
+         Ptag==
+X-Gm-Message-State: AFuF++mesopC5fQ/OluSqVkuMO+PJ/gg/rMwj4qGAVIKmtKRs79H7Sc9
+	dNt8i2JqmW7ijYYyTThIoqcDYgY1Xf8Cls5ddOaw+e6JJo5iBVf190MVaTQNfglo11w=
+X-Gm-Gg: AYBFou3kTI+5LqzpY/gUtuVXohTsvdXAWlYVr11Hbn0CvOFDKSV9RzOMG27Oajv9+iH
+	qN3JoieZg/CGfG81tr0B1/ELO3MPqSjBTkX5yVmQrkPqCGnKEKGe3IZgL4rIBmB6QRVyv7xs9gI
+	2YiG6RZ8CLVjuRespxTRaO5XlNEr8t2v2QXt9K11zrK6dRP7CuFrQHp2vzAdVosOSHytdw31Gtl
+	5RiILr2GUvyPeutDL09JfAUg4eVxBYOiDrNdH2dkTsxDTSBhVOKxSbEpU9FXD0xi+nYx4665Xyw
+	F+Yzp73LeVXpB/1+zhnU0TayVa7VRluA1zjrmQkvOZQwwzCemSqrif+RuubudfuJq4wcF+OU1Rt
+	xu1vk4sIb9w/Iba6Fr/9dw4TMuHcaLGXCEdPT+eLlDLKYmbnl4dYFZHJmh1jb8z4zXPBJNWK/KL
+	cZ+b+tnkwJbrQ/+8FgUcQsC8r9x/kSJBxKftw4qu5I0p7A6HJg1W2hmPlKpex/VJIe10YXqMlRE
+	C5PecIljb2S5VAMD3TB7niDKq7cDR1p8ewkidHRYzOmMpMmCWanmZSy23imfEEgeUSU
+X-Received: by 2002:a05:600c:b8d:b0:49c:e37e:4389 with SMTP id 5b1f17b1804b1-49d1754e950mr101462935e9.4.1788899934457;
+        Tue, 08 Sep 2026 13:38:54 -0700 (PDT)
+Received: from moosama76.. ([156.193.105.183])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d20dae82csm3943805e9.3.2026.09.08.13.38.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 13:38:54 -0700 (PDT)
+From: Mohamed Osama <mohamed.osama189110@gmail.com>
+To: rust-for-linux@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
-	Peter Zijlstra <peterz@infradead.org>,
-	Gary Guo <gary@garyguo.net>,
-	rust-for-linux@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	linux-kbuild@vger.kernel.org,
-	Huacai Chen <chenhuacai@kernel.org>
-Subject: [PATCH v2 27/27] objtool: Warn about missing/stale ANNOTATE_EXPORTED_NORETURN() usage
-Date: Tue,  8 Sep 2026 13:33:39 -0700
-Message-ID: <6a8ae573714ec91dd7a6ff7fe69260911dba33a7.1788899473.git.jpoimboe@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <cover.1788899473.git.jpoimboe@kernel.org>
-References: <cover.1788899473.git.jpoimboe@kernel.org>
+	ojeda@kernel.org,
+	Mohamed Osama <mohamed.osama189110@gmail.com>
+Subject: [PATCH] rust: print: document safety of printing functions
+Date: Tue,  8 Sep 2026 23:38:50 +0300
+Message-ID: <20260908203850.952156-1-mohamed.osama189110@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,163 +73,35 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add some warnings to keep ANNOTATE_EXPORTED_NORETURN() annotations
-correct.
-
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Mohamed Osama <mohamed.osama189110@gmail.com>
 ---
- tools/objtool/Documentation/objtool.txt | 22 ++++++++-
- tools/objtool/check.c                   | 59 ++++++++++++++++++++-----
- tools/objtool/include/objtool/elf.h     |  1 +
- 3 files changed, 71 insertions(+), 11 deletions(-)
+ rust/kernel/print.rs | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tools/objtool/Documentation/objtool.txt b/tools/objtool/Documentation/objtool.txt
-index d5ac48bc203ec..950e88c713d1d 100644
---- a/tools/objtool/Documentation/objtool.txt
-+++ b/tools/objtool/Documentation/objtool.txt
-@@ -393,7 +393,7 @@ the objtool maintainers.
- 
-    a) funcA()'s last instruction is a call to a "noreturn" function like
-       panic(), and objtool doesn't know that function never returns.  See
--      warning 3 above.
-+      warnings 3 and 13.
- 
-    b) funcA() uses the unreachable() annotation in a section of code
-       that is actually reachable.
-@@ -455,6 +455,26 @@ the objtool maintainers.
-     macros to create them.
- 
- 
-+13. file.o: warning: objtool: func() is exported and noreturn, its declaration needs __noreturn and ANNOTATE_EXPORTED_NORETURN()
-+
-+    func() is exported and never returns, but is defined in a module, so
-+    its noreturn status needs to be manually annotated.  Put an
-+    ANNOTATE_EXPORTED_NORETURN() next to its declaration.
-+
-+    Mark the declaration __noreturn while you're there, if it isn't
-+    already.  The two go together: __noreturn stops the compiler from
-+    emitting code after the call, and the annotation tells objtool the
-+    call doesn't return.
-+
-+
-+14. file.o: warning: objtool: func() has ANNOTATE_EXPORTED_NORETURN() but returns
-+
-+    func() is annotated as never returning, but it does.  Usually this
-+    means the annotation outlived the fact: the function grew a return path
-+    and the ANNOTATE_EXPORTED_NORETURN() next to its declaration was left
-+    behind.  Remove it, along with the __noreturn.
-+
-+
- If the error doesn't seem to make sense, it could be a bug in objtool.
- Feel free to ask objtool maintainers for help.
- 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index e6d33e57b7b33..cfd2d16cd5041 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -224,6 +224,22 @@ static bool might_return(struct objtool_file *file, struct symbol *func)
- 	return false;
+diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
+index 0d62beeedca5..def6ef5a1dec 100644
+--- a/rust/kernel/print.rs
++++ b/rust/kernel/print.rs
+@@ -29,7 +29,8 @@
+     use fmt::Write;
+     // SAFETY: The C contract guarantees that `buf` is valid if it's less than `end`.
+     let mut w = unsafe { RawFormatter::from_ptrs(buf.cast(), end.cast()) };
+-    // SAFETY: TODO.
++    // SAFETY: `ptr` is provided by the `%pA` formatting path and points to the
++    // `fmt::Arguments` passed to `_printk`.
+     let _ = w.write_fmt(unsafe { *ptr.cast::<fmt::Arguments<'_>>() });
+     w.pos().cast()
  }
- 
-+static bool is_noreturn_candidate(struct objtool_file *file, struct symbol *func)
-+{
-+	struct instruction *insn;
-+
-+	if (!is_func_sym(func) || is_undef_sym(func) ||
-+	    is_prefix_func(func) || func->embedded_insn ||
-+	    func != func->alias->pfunc)
-+		return false;
-+
-+	insn = find_insn(file, func->sec, func->offset);
-+	if (!insn || insn_func(insn) != func)
-+		return false;
-+
-+	return true;
-+}
-+
- static void detect_noreturns(struct objtool_file *file)
- {
- 	struct symbol *func, *dest;
-@@ -232,15 +248,7 @@ static void detect_noreturns(struct objtool_file *file)
- 
- 	/* Mark all functions guilty until proven innocent */
- 	for_each_sym(file->elf, func) {
--
--		/* Aliases and cold subfunctions inherit the parent's verdict */
--		if (!is_func_sym(func) || is_undef_sym(func) ||
--		    is_prefix_func(func) || func->embedded_insn ||
--		    func != func->alias->pfunc)
--			continue;
--
--		insn = find_insn(file, func->sec, func->offset);
--		if (!insn || insn_func(insn) != func)
-+		if (!is_noreturn_candidate(file, func))
- 			continue;
- 
- 		func->_noreturn = 1;
-@@ -410,9 +418,38 @@ static void read_annotate_noreturn(struct objtool_file *file)
- 
- 		if (is_undef_sym(func))
- 			func->_noreturn = 1;
-+
-+		func->annotate_noreturn = 1;
- 	}
- }
- 
-+static int validate_noreturns(struct objtool_file *file)
-+{
-+	struct symbol *func;
-+	int warnings = 0;
-+
-+	for_each_sym(file->elf, func) {
-+		if (!is_noreturn_candidate(file, func))
-+			continue;
-+
-+		if (opts.module && is_noreturn(func) && func->exported &&
-+		    !func->annotate_noreturn) {
-+			WARN("%s() is exported and noreturn, its declaration needs __noreturn and ANNOTATE_EXPORTED_NORETURN()",
-+			     func->name);
-+			warnings++;
-+		}
-+
-+		if (func->annotate_noreturn && !func->ignore_noreturn &&
-+		    !is_noreturn(func)) {
-+			WARN("%s() has ANNOTATE_EXPORTED_NORETURN() but returns",
-+			     func->name);
-+			warnings++;
-+		}
-+	}
-+
-+	return warnings;
-+}
-+
- static void init_cfi_state(struct cfi_state *cfi)
- {
- 	int i;
-@@ -5004,8 +5041,10 @@ int check(struct objtool_file *file)
- 
- 		w += validate_functions(file);
- 		w += validate_unwind_hints(file, NULL);
--		if (!w)
-+		if (!w) {
- 			w += validate_reachable_instructions(file);
-+			w += validate_noreturns(file);
-+		}
- 
- 		warnings += w;
- 
-diff --git a/tools/objtool/include/objtool/elf.h b/tools/objtool/include/objtool/elf.h
-index adf6e1322c6df..e79cdabf09c26 100644
---- a/tools/objtool/include/objtool/elf.h
-+++ b/tools/objtool/include/objtool/elf.h
-@@ -100,6 +100,7 @@ struct symbol {
- 	u8 fake		     : 1;
- 	u8 _noreturn         : 1;
- 	u8 ignore_noreturn   : 1;
-+	u8 annotate_noreturn : 1;
- 	u8 exported          : 1;
- 	struct list_head pv_target;
- 	struct reloc *relocs;
+@@ -109,7 +110,8 @@ pub unsafe fn call_printk(
+ ) {
+     // `_printk` does not seem to fail in any path.
+     #[cfg(CONFIG_PRINTK)]
+-    // SAFETY: TODO.
++    // SAFETY: `format_string` is one of the fixed format strings, `module_name` is
++    // null-terminated, and the `%pA` argument is a pointer to the valid `args`.
+     unsafe {
+         bindings::_printk(
+             format_string.as_ptr(),
 -- 
-2.55.0
+2.43.0
 
