@@ -1,49 +1,51 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6846333689D
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Sep 2026 21:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA8634F48F;
+	Tue,  8 Sep 2026 04:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788816918; cv=none; b=cOL19sGoIS0A2aua2HDAyCJYD3pUMH9OuiQlJPad6fQkEjVlKqzpUMFVOXVpqumyyMMTF0MKirEod/oul7eW36xHpPKsHs8Nn8OGr5IRyi7G9l2Np4Sq8WZ5P7IYCwhmmIDp7SU6+l1bQWERY6dO2royxjb7TRZIQ4H6xKoYpEE=
+	t=1788842058; cv=none; b=B2Ek2v78yF3Dq//XVUjYsZqJCbiEuToUuWfiqBYwTJu/fvD3yf48RmwAbnykf9p1cJzmembHCt/IRSzID3b05L3Xi8k4/lDZT2+3uZqqYtdpYxagvtLYWn6OaaPBbgrfpfwxR+x4ZRw5z31vUt/hhuLqjn1N7dBZShfqhlMbyX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788816918; c=relaxed/simple;
-	bh=Ujih48/7PyJVacHYK17Ti9IEauiWuQMit2sL2HMdfAE=;
+	s=arc-20240116; t=1788842058; c=relaxed/simple;
+	bh=RM2uDjlFoSwaGz1ZGrnrQMAsuHPyc1eT3wom3p+9gY4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MW6baLCb5LCx0+ndR2Ujp7hRG33aag45Lrr3L7kIxxzc/A6lEa9ruLApMDCb/464QlzHxyaK9SqsJYQV+hyNNINxxdWOcaSpAa3nD+TKEZ6LIOsU0/V6BUnvJcLQAgFjg44zuz26seTvew+JTD9vAbaIapT6gqGE71G9Mi/ZtLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ilWzpUvk; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=VfoZzv2RUhNXDXujisoruP7e8PHewInUZnvFM1E8ce8EAkuOWQC9COwrF3Ynusqs8w+GLwHh6/SmqdTVGw4sm2CHd0hIV9s1JwbHulCLtphXig7/vOCO4/qARWdZiV1+75c66YeG84Y4Qinh1QMk7SGDEAt9xIzXYMnVTGtfXJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=Q6BiCJay; arc=none smtp.client-ip=188.68.63.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ilWzpUvk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788816915;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JDsc9mqLSLWmK/G1yswq76Two3vz6FazKLBCHBs0HW4=;
-	b=ilWzpUvkbCntT50xlVjVw7V+dVDeVnWT4j6m+UjPGkmr9RZU6jHz551N6Q20DPPRDdGWq8
-	T5XJ4lZOpFX10Jp69s2uHsgwYUy9ZZaPm2jbv2uklMwUulMRAbfKhy3ulNXQs/P5FrBRej
-	pGrGrtxtvUsfqxsDUeTvwXjqeRXxyUg=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-450-eEV7gbATOIudCBG4JSjYYw-1; Mon,
- 07 Sep 2026 17:35:11 -0400
-X-MC-Unique: eEV7gbATOIudCBG4JSjYYw-1
-X-Mimecast-MFC-AGG-ID: eEV7gbATOIudCBG4JSjYYw_1788816909
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="Q6BiCJay"
+Received: from mors-relay-8202.netcup.net (localhost [127.0.0.1])
+	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4hfB045B4Tz4829;
+	Tue,  8 Sep 2026 06:33:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1788842020;
+	bh=RM2uDjlFoSwaGz1ZGrnrQMAsuHPyc1eT3wom3p+9gY4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Q6BiCJayzYz6GjTSA2Dl8fdAucdaLi+G1TnvA83i/G4XOpecCGlYOF3m2FTY9qvW7
+	 PnRLZeJ9nSfceueOj9zyN5b5yEw5Migl07zQJqKj1GRARpF61/7KB0CdJd/jYShGTm
+	 Z/NLuXHcAFA4YKNSb9o3ziC+2CuUohSJJ+3z8fr4fu6ArgIe99UlU2L27cFPLZHSQN
+	 mc71aqGH0YDJitkLJE9Bzn3IxNcYhWlEk3NwlKnzyIX6o9dNIFdmiS2QWOObFFJXgE
+	 2dQPCirqJvrDVluRVVXMslRq18XtlGPHREIEfxJ3a8Pf/gLtQ31dwPOEBwQZn5fumv
+	 8/6nIRfgpIiOQ==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-8202.netcup.net (Postfix) with ESMTPS id 4hfB044TD9z4825;
+	Tue,  8 Sep 2026 06:33:40 +0200 (CEST)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BCCCD19540D9;
-	Mon,  7 Sep 2026 21:35:08 +0000 (UTC)
-Received: from [100.91.157.188] (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 66E941801AEA;
-	Mon,  7 Sep 2026 21:35:03 +0000 (UTC)
-Message-ID: <27d2c523-fbdd-4dff-8920-88432d938b22@redhat.com>
-Date: Mon, 7 Sep 2026 23:35:00 +0200
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4hfB035dhHz8sZP;
+	Tue,  8 Sep 2026 06:33:39 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id D879A5F9CD;
+	Tue,  8 Sep 2026 06:33:34 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=linux@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <d408716c-7af3-4f29-a796-cda595befb98@leemhuis.info>
+Date: Tue, 8 Sep 2026 06:33:33 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,254 +53,116 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 14/14] drm/panic: Compile KUnit tests as module
-To: Thomas Zimmermann <tzimmermann@suse.de>, javierm@redhat.com,
- airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, geert@linux-m68k.org, rdunlap@infradead.org
-Cc: dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- linux-hyperv@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, nouveau@lists.freedesktop.org,
- linux-renesas-soc@vger.kernel.org, virtualization@lists.linux.dev,
- sashiko-reviews@lists.linux.dev
-References: <20260902121930.597222-1-tzimmermann@suse.de>
- <20260902121930.597222-15-tzimmermann@suse.de>
-From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <20260902121930.597222-15-tzimmermann@suse.de>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: ZSTeO6O65O_RAAa1aPJ_uFI0X3a4L8AFQdGUa07KpDw_1788816909
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, fr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/3] drm/gem: Add callback for when handle count goes to 0
+To: Klara Modin <klarasmodin@gmail.com>,
+ Manuel Ebner <manuelebner@mailbox.org>
+Cc: Alex Deucher <alexander.deucher@amd.com>, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, Felix.Kuehling@amd.com,
+ Mukul Joshi <mukul.joshi@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, Mark Brown <broonie@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
+ Linux Next Mailing List <linux-next@vger.kernel.org>
+References: <20260831183311.1090131-1-alexander.deucher@amd.com>
+ <20260831183311.1090131-2-alexander.deucher@amd.com>
+ <aaef18cd-ab55-4fb8-8563-ca3a5ea9cbc6@leemhuis.info>
+ <e8a53eb241b2cc912e9cfad5f6a0120aa9683481.camel@mailbox.org>
+ <apyTR-f8W6Jt7uP5@soda.int.kasm.eu>
+From: Thorsten Leemhuis <linux@leemhuis.info>
+Content-Language: de-DE, en-US
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 MEK4
+In-Reply-To: <apyTR-f8W6Jt7uP5@soda.int.kasm.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: 
+ <178884201540.1018164.10882620288814615527@mxe9fb.netcup.net>
+X-Rspamd-Server: rspamd-worker-8404
+X-Rspamd-Queue-Id: D879A5F9CD
+X-NC-CID: OfPuqa33tXIzRDlFuj7qC37NDFfZmiRRCGlOBkBPRqdvFQtbZiw=
 
-On 9/2/26 14:13, Thomas Zimmermann wrote:
-> Fix dependency of the panic-helper KUnit tests on CONFIG_DRM_KUNIT_TEST=y
-> and make them build as a module. Export the necessary interfaces from the
-> panic helpers iff the KUnit framework has been enabled.
+On 9/6/26 00:25, Klara Modin wrote:
+> On 2026-09-05 11:31:41 +0200, Manuel Ebner wrote:
+>> On Sat, 2026-09-05 at 07:36 +0200, Thorsten Leemhuis wrote:
+>>> On 8/31/26 20:33, Alex Deucher wrote:
+>>>> From: Mukul Joshi <mukul.joshi@amd.com>
+>
+>>>>> error[E0063]: missing field `handle_free` in initializer of `drm_gem_object_funcs`
+>>>>>    --> rust/kernel/drm/gem/mod.rs:265:58
+>>>>>     |
+>>>>> 265 |     const OBJECT_FUNCS: bindings::drm_gem_object_funcs = bindings::drm_gem_object_funcs {
+>>>>>     |                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `handle_free`
+>>>>>
+>>>>> error: aborting due to 1 previous error
+>>>>>
+>>>>> For more information about this error, try `rustc --explain E0063`.
+>>>>> make[2]: *** [rust/Makefile:799: rust/kernel.o] Error 1
+>>>>> make[1]: *** [/builddir/build/BUILD/kernel-7.3.0-build/kernel-next-20260904/linux-7.3.0-0.0.next.20260904.221.vanilla.fc43.aarch64/Makefile:1442: prepare] Error 2
+>>>>> make: *** [Makefile:256: __sub-make] Error 2
+>>> Full log:
+>>> https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-43-aarch64/10951622-next-next-all/builder-live.log.gz
+>>>
+>>> Reverting this change and 2/3 from this set fixed the problem for me.
 > 
-> Select DRM_PANIC_HELPER from DRM_KUNIT_TEST to meet the dependencies of
-> the panic-helper tests.
-> 
-> It is now possible to run the tests by modprobe-ing drm_panic_helper_test
-> at runtime.
+> That leaves only the documentation without the feature so might as well
+> drop 3/3 too in that case?
 
-Thanks, it looks good to me.
+My intention was just to confirm that these patches are the problem, not
+suggest this as a solution, so I didn't bother about the docs. :-D
+> Otherwise, the following also fixes it for me:
 
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Thx, for me, too.
 
-> 
-> v3:
-> - clean up after each test case (Sashiko)
-> v2:
-> - fix parameter order in decl of drm_panic_helper_draw_screen_qr()
->    (Sashiko)
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
->   drivers/gpu/drm/Kconfig.debug                 |  1 +
->   drivers/gpu/drm/drm_panic_helper.c            | 26 ++++++++++---------
->   drivers/gpu/drm/tests/Makefile                |  1 +
->   drivers/gpu/drm/tests/drm_panic_helper_test.c | 21 ++++++++++++---
->   include/drm/drm_panic_helper.h                |  8 ++++++
->   5 files changed, 41 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/Kconfig.debug b/drivers/gpu/drm/Kconfig.debug
-> index 1f4c98cbf090..b909cd0a619f 100644
-> --- a/drivers/gpu/drm/Kconfig.debug
-> +++ b/drivers/gpu/drm/Kconfig.debug
-> @@ -69,6 +69,7 @@ config DRM_KUNIT_TEST
->   	select DRM_EXPORT_FOR_TESTS if m
->   	select DRM_GEM_SHMEM_HELPER
->   	select DRM_KUNIT_TEST_HELPERS
-> +	select DRM_PANIC_HELPER
->   	select DRM_SYSFB_HELPER
->   	select PRIME_NUMBERS
->   	default KUNIT_ALL_TESTS
-> diff --git a/drivers/gpu/drm/drm_panic_helper.c b/drivers/gpu/drm/drm_panic_helper.c
-> index f64a3ca38467..683af48de38c 100644
-> --- a/drivers/gpu/drm/drm_panic_helper.c
-> +++ b/drivers/gpu/drm/drm_panic_helper.c
-> @@ -8,6 +8,8 @@
->   #include <linux/utsname.h>
->   #include <linux/zlib.h>
->   
-> +#include <kunit/visibility.h>
-> +
->   #include <drm/drm_fourcc.h>
->   #include <drm/drm_framebuffer.h>
->   #include <drm/drm_modeset_helper_vtables.h>
-> @@ -433,8 +435,8 @@ static void drm_panic_helper_logo_draw(struct drm_scanout_buffer *sb, struct drm
->   				   fg_color);
->   }
->   
-> -static int drm_panic_helper_draw_screen_user(struct drm_scanout_buffer *sb,
-> -					     u32 fg_color, u32 bg_color)
-> +VISIBLE_IF_KUNIT int drm_panic_helper_draw_screen_user(struct drm_scanout_buffer *sb,
-> +						       u32 fg_color, u32 bg_color)
->   {
->   	const struct font_desc *font = get_default_font(sb->width, sb->height, NULL, NULL);
->   	struct drm_rect r_screen, r_logo, r_msg;
-> @@ -466,6 +468,7 @@ static int drm_panic_helper_draw_screen_user(struct drm_scanout_buffer *sb,
->   
->   	return 0;
->   }
-> +EXPORT_SYMBOL_IF_KUNIT(drm_panic_helper_draw_screen_user);
->   
->   /*
->    * Draw one line of kmsg, and handle wrapping if it won't fit in the screen width.
-> @@ -504,8 +507,8 @@ static int draw_line_with_wrap(struct drm_scanout_buffer *sb, const struct font_
->    * Draw the kmsg buffer to the screen, starting from the youngest message at the bottom,
->    * and going up until reaching the top of the screen.
->    */
-> -static int drm_panic_helper_draw_screen_kmsg(struct drm_scanout_buffer *sb,
-> -					     u32 fg_color, u32 bg_color)
-> +VISIBLE_IF_KUNIT int drm_panic_helper_draw_screen_kmsg(struct drm_scanout_buffer *sb,
-> +						       u32 fg_color, u32 bg_color)
->   {
->   	const struct font_desc *font = get_default_font(sb->width, sb->height, NULL, NULL);
->   	struct drm_rect r_screen = DRM_RECT_INIT(0, 0, sb->width, sb->height);
-> @@ -549,6 +552,7 @@ static int drm_panic_helper_draw_screen_kmsg(struct drm_scanout_buffer *sb,
->   
->   	return 0;
->   }
-> +EXPORT_SYMBOL_IF_KUNIT(drm_panic_helper_draw_screen_kmsg);
->   
->   #if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
->   /*
-> @@ -691,9 +695,9 @@ static int drm_panic_helper_get_qr_code(u8 **qr_image, unsigned int qr_version)
->   /*
->    * Draw the panic message at the center of the screen, with a QR Code
->    */
-> -static int drm_panic_helper_draw_screen_qr_code(struct drm_scanout_buffer *sb,
-> -						u32 fg_color, u32 bg_color,
-> -						unsigned int qr_version)
-> +VISIBLE_IF_KUNIT int drm_panic_helper_draw_screen_qr_code(struct drm_scanout_buffer *sb,
-> +							  u32 fg_color, u32 bg_color,
-> +							  unsigned int qr_version)
->   {
->   	const struct font_desc *font = get_default_font(sb->width, sb->height, NULL, NULL);
->   	struct drm_rect r_screen, r_logo, r_msg, r_qr, r_qr_canvas;
-> @@ -763,6 +767,7 @@ static int drm_panic_helper_draw_screen_qr_code(struct drm_scanout_buffer *sb,
->   	drm_panic_helper_blit(sb, &r_qr, qr_image, qr_pitch, scale, fg_color);
->   	return 0;
->   }
-> +EXPORT_SYMBOL_IF_KUNIT(drm_panic_helper_draw_screen_qr_code);
->   #else
->   static void __init drm_panic_helper_qr_init(void) { };
->   static void __exit drm_panic_helper_qr_exit(void) { };
-> @@ -815,7 +820,7 @@ static int draw_panic_helper_dispatch(struct drm_scanout_buffer *sb,
->   	return ret;
->   }
->   
-> -static void drm_panic_helper_set_description(const char *description)
-> +VISIBLE_IF_KUNIT void drm_panic_helper_set_description(const char *description)
->   {
->   	u32 len;
->   
-> @@ -830,6 +835,7 @@ static void drm_panic_helper_set_description(const char *description)
->   		desc_line->len = len;
->   	}
->   }
-> +EXPORT_SYMBOL_IF_KUNIT(drm_panic_helper_set_description);
->   
->   static void drm_panic_helper_clear_description(void)
->   {
-> @@ -910,7 +916,3 @@ void __exit drm_panic_helper_exit(void)
->   {
->   	drm_panic_helper_qr_exit();
->   }
-> -
-> -#ifdef CONFIG_DRM_KUNIT_TEST
-> -#include "tests/drm_panic_helper_test.c"
-> -#endif
-> diff --git a/drivers/gpu/drm/tests/Makefile b/drivers/gpu/drm/tests/Makefile
-> index e7193b49cf91..42207df1d1c8 100644
-> --- a/drivers/gpu/drm/tests/Makefile
-> +++ b/drivers/gpu/drm/tests/Makefile
-> @@ -20,6 +20,7 @@ obj-$(CONFIG_DRM_KUNIT_TEST) += \
->   	drm_managed_test.o \
->   	drm_mm_test.o \
->   	drm_modes_test.o \
-> +	drm_panic_helper_test.o \
->   	drm_plane_helper_test.o \
->   	drm_probe_helper_test.o \
->   	drm_rect_test.o \
-> diff --git a/drivers/gpu/drm/tests/drm_panic_helper_test.c b/drivers/gpu/drm/tests/drm_panic_helper_test.c
-> index e6befe0f1c83..6184a6fc7eb8 100644
-> --- a/drivers/gpu/drm/tests/drm_panic_helper_test.c
-> +++ b/drivers/gpu/drm/tests/drm_panic_helper_test.c
-> @@ -6,13 +6,17 @@
->    * KUNIT tests for DRM panic helpers
->    */
->   
-> -#include <drm/drm_fourcc.h>
-> -#include <drm/drm_panic.h>
-> +#include <linux/highmem.h>
-> +#include <linux/units.h>
-> +#include <linux/vmalloc.h>
->   
->   #include <kunit/test.h>
->   
-> -#include <linux/units.h>
-> -#include <linux/vmalloc.h>
-> +#include <drm/drm_fourcc.h>
-> +#include <drm/drm_panic.h>
-> +#include <drm/drm_panic_helper.h>
-> +
-> +MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
->   
->   static void drm_panic_check_color_byte(struct kunit *test, u8 b)
->   {
-> @@ -86,6 +90,11 @@ static int drm_test_panic_init(struct kunit *test)
->   	return 0;
->   }
->   
-> +static void drm_test_panic_exit(struct kunit *test)
-> +{
-> +	drm_panic_helper_set_description(NULL);
-> +}
-> +
->   /*
->    * Test drawing the panic screen, using a memory mapped framebuffer
->    * Set the whole buffer to 0xa5, and then check that all pixels have been
-> @@ -229,7 +238,11 @@ static struct kunit_case drm_panic_screen_user_test[] = {
->   static struct kunit_suite drm_panic_helper_suite = {
->   	.name = "drm_panic_helper",
->   	.init = drm_test_panic_init,
-> +	.exit = drm_test_panic_exit,
->   	.test_cases = drm_panic_screen_user_test,
->   };
->   
->   kunit_test_suite(drm_panic_helper_suite);
-> +
-> +MODULE_DESCRIPTION("KUnit test suite for DRM panic handling");
-> +MODULE_LICENSE("GPL");
-> diff --git a/include/drm/drm_panic_helper.h b/include/drm/drm_panic_helper.h
-> index 6cc9a0eba077..6b19607e0784 100644
-> --- a/include/drm/drm_panic_helper.h
-> +++ b/include/drm/drm_panic_helper.h
-> @@ -8,6 +8,7 @@
->   enum drm_panic_type;
->   
->   struct drm_plane;
-> +struct drm_scanout_buffer;
->   
->   /* drm_panic_helper.c */
->   int drm_plane_helper_display_panic_screen(struct drm_plane *plane,
-> @@ -15,6 +16,13 @@ int drm_plane_helper_display_panic_screen(struct drm_plane *plane,
->   					  enum drm_panic_type panic_type,
->   					  u32 fg_color, u32 bg_color,
->   					  unsigned int qr_version);
-> +#if IS_ENABLED(CONFIG_KUNIT)
-> +int drm_panic_helper_draw_screen_user(struct drm_scanout_buffer *sb, u32 fg_color, u32 bg_color);
-> +int drm_panic_helper_draw_screen_kmsg(struct drm_scanout_buffer *sb, u32 fg_color, u32 bg_color);
-> +int drm_panic_helper_draw_screen_qr_code(struct drm_scanout_buffer *sb,
-> +					 u32 fg_color, u32 bg_color, unsigned int qr_version);
-> +void drm_panic_helper_set_description(const char *description);
-> +#endif
->   
->   /* drm_panic_helper_qr.rs */
->   size_t drm_panic_helper_qr_max_data_size(u8 version, size_t url_len);
-
+Ciao, Thorsten
+> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+> index e1ebad77ebe2..847e0ee38863 100644
+> --- a/rust/kernel/drm/gem/mod.rs
+> +++ b/rust/kernel/drm/gem/mod.rs
+> @@ -278,6 +278,7 @@ impl<T: DriverObject, Ctx: DeviceContext> Object<T, Ctx> {
+>          vm_ops: core::ptr::null_mut(),
+>          evict: None,
+>          rss: None,
+> +        handle_free: None,
+>      };
+>  
+>      /// Returns the `Device` that owns this GEM object.
