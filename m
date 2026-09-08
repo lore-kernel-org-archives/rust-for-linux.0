@@ -1,222 +1,108 @@
-Received: from mta0.migadu.com (out-83.mta0.migadu.com [91.218.175.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF3D2F7EE1
-	for <rust-for-linux@vger.kernel.org>; Tue,  8 Sep 2026 14:25:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11E53955F1;
+	Tue,  8 Sep 2026 14:26:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788877536; cv=none; b=E2UQg4wPMtF1l0IOewdcusYxw4tF3uAvv1oerd9En5FQzyBoAWmwZRbyseYYxnWlr6Di7B1Y4MHuhjtwC5s7RBVWOlvmzEBnh6tuXVA8OVSViVg+6cDkJgJg1gfAcG9cL6e53VmaI5p2mGsmJena0jS6WoPbqUey8sG93Xjeobg=
+	t=1788877583; cv=none; b=J8Gd0HwC1FJcmseUK+K1eUsdF31os7MOab8Pk4RvYRs+B0U4pJ6By24a6kNtV7vrcthIcSDtBhiuOC9xVEUPEGJs+Rn7xK+Y6MplbxWJCUZD80Kob7ChUEwPxK5E7XcfP8TDd35d3kS1GZ8xuneM+OdUL6CXwahUaJ6tM/N8Xf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788877536; c=relaxed/simple;
-	bh=lB6ADInmwINs9qRDDS5D7SYp9+41Judvy+epNhkXocs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oEDZbB6KQcORpHZY/zioPhxAV5wE5tN41EQ7lQSdxFaY0tqGpuWi+m4GIptAESQeD6W0LWGO35P8bgyOhdbemMB9bAoDVsboVVb824HfhhFUfM3GuEXjAshtp+yp3Mjk4V/hCOpiZcIXqVUz95oiMQwhLBBCP/VYD6XNeJgdO/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HccNCXs6; arc=none smtp.client-ip=91.218.175.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788877583; c=relaxed/simple;
+	bh=5Mv42E8KfV+o7sMkeP3depUAOidAkVxElMYKgS2D8nU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VVc9Mh7jtZR5cQpoXDX0FvhmQKtMjWJDL15zp2tHrQrligAw4a6WUWYh/EtVUR7Kwv1l9N61TiO0K3pfrbapyPejzQe5WfSgV9qObfsGGS+QpBOXlyUhmVGc4wxSFarY3rSoL2iUIwvzVavrMqMdwH+/yR/2s8GksWD1cr6yyB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ibCJ1vTa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dujpHxA7; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HccNCXs6"
-X-Envelope-To: rust-for-linux@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=lB6ADInmwINs9qRDDS5D7SYp9+41Judvy+epNhkXocs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788877516; v=1; x=1789482316;
- b=HccNCXs6AQB/0pyAXQxEQ0Fcd2fPfmL9ZXgcFMx6xko7qSlHmIFoYVUo0voAOTYNMyX5MYJN
- 3tlq0xHyEnzDcKnWJr4Z0K98Z+cijL9aQM0MhK3gd6/KAvAKU5mWvD+J4nPw1pstbvL6lDE2Bab
- RrOfAjhRRMfBbaqBOqtnwfXQ=
-X-Envelope-To: rust-for-linux@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id a2bb85ab9f24cd7b;
-	Tue, 08 Sep 2026 14:25:16 +0000
-X-Mizu-Trace-ID: a2bb85ab9f24cd7b
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <cbe03927-afdb-4558-9196-e57d899b8d01@linux.dev>
-Date: Tue, 8 Sep 2026 22:24:56 +0800
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ibCJ1vTa";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dujpHxA7"
+Date: Tue, 8 Sep 2026 16:26:00 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1788877566;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3bG7xzyOLgkq/hT1vQoL2+37rRIngeN99Zi6O3p/t1Q=;
+	b=ibCJ1vTaf2PfeTeGGS4CPdeCQlmt6p7aLY7mIyests6CYT2a6E4Mjbx9HP5VcqSFIGIDN5
+	lQzNq4LeidtkfT+EysNyxDj3JNRd+SkiSObbBLZntgveQTRfZuO3v/L3jsJBVUb2BH8YCM
+	7vKdLixe7hXeDeAfmTR73MLoheT6qddEqn0zSpdo08XfzCFSXasPoLv5PXY5oZ4uUtuuhQ
+	ue9dInv7mMssJZ5SEhI8zG40m/o1XMobx0JA0bqLkrd6i/I6QO8W9g5ozGh5HmdlKJSK+H
+	nBg3aR8ypjomfwqNmYevI/XWRU18YkOzSNQOVFvzM7BNe1wvopfv0uHl4KPu0w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1788877566;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3bG7xzyOLgkq/hT1vQoL2+37rRIngeN99Zi6O3p/t1Q=;
+	b=dujpHxA7PKpeJCyeZiOagFVHrYS6MiqrupOYGFJ0EP4mlmR+jdnMRKg1XsL53yLYA37pen
+	ASTs5tXfWZYBIDDw==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Andy Lutomirski <luto@kernel.org>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Christophe Leroy <chleroy@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org, 
+	linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
+	linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	Jan Stancek <jstancek@redhat.com>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
+	Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: Re: [PATCH v5 02/24] x86/elf, um/x86/elf: Move relocation constants
+ to UAPI
+Message-ID: <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de>
+References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
+ <20260908-vdso-absolute-reloc-v5-2-3a93791af1cf@linutronix.de>
+ <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 9/9] drm/tyr: add BO-related ioctls
-To: Daniel Almeida <daniel.almeida@collabora.com>, sunke@kylinos.cn
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lyude Paul <lyude@redhat.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org
-References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
- <20260902-tyr-ioctls-v1-9-e0fdbf8bd108@kylinos.cn>
- <FDEDAB25-FBF2-438C-9C1C-F72DC851E88C@collabora.com>
-From: Alvin Sun <alvin.sun@linux.dev>
-In-Reply-To: <FDEDAB25-FBF2-438C-9C1C-F72DC851E88C@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local>
+
+On Tue, Sep 08, 2026 at 06:55:13AM -0700, Borislav Petkov wrote:
+> On Tue, Sep 08, 2026 at 08:33:36AM +0200, Thomas Weißschuh wrote:
+> > These constants are useful for cross-platform userspace, for example to
+> > process ELF files during kernel cross-compilation.
+> > 
+> > Move them from the kernel-private architecture-specific header to the UAPI.
+> 
+> Why UAPI?
+> 
+> Why not include/linux/ ?
+
+The existing, generic ELF definitions are there.
+The ELF stuff in include/linux/ is highly specific to Linux.
+
+Also later in the patchset I want to expose the definitions to the
+tools/ build. Exposing generic UAPI definitions to tools/ is a much
+easier sell than include/linux/.
 
 
-On 9/5/26 04:35, Daniel Almeida wrote:
->
->> On 1 Sep 2026, at 13:09, Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org> wrote:
->>
->> From: Alvin Sun <alvin.sun@linux.dev>
->>
->> Expose buffer creation and BO mmap offset retrieval.
->>
->> - BO_CREATE page-aligns the size and returns a handle with
->>   write-combined mapping.
->> - BO_MMAP_OFFSET provides the offset for the DRM generic mmap
->>   path, rejecting NO_MMAP objects and non-zero pad.
->>
->> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-> Same comment as the previous patches, please write a few
-> more things here about why the changes are needed.
->
-> With that addressed,
->
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-
-Hi Daniel,
-
-Thanks for the review â€” your comments on patches 7 and 9 (the 
-conditional Reviewed-bys) are addressed in v2:
-
-https://lore.kernel.org/all/20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn
-
-Best regards,
-Alvin
-
-
->
->> ---
->> drivers/gpu/drm/tyr/driver.rs |  2 ++
->> drivers/gpu/drm/tyr/file.rs   | 70 +++++++++++++++++++++++++++++++++++++++++++
->> drivers/gpu/drm/tyr/gem.rs    |  7 +++++
->> 3 files changed, 79 insertions(+)
->>
->> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
->> index b3145526ada06..fc8d11c9ba1ca 100644
->> --- a/drivers/gpu/drm/tyr/driver.rs
->> +++ b/drivers/gpu/drm/tyr/driver.rs
->> @@ -224,6 +224,8 @@ impl drm::Driver for TyrDrmDriver {
->>          (PANTHOR_VM_DESTROY, drm_panthor_vm_destroy, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_destroy),
->>          (PANTHOR_VM_BIND, drm_panthor_vm_bind, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_bind),
->>          (PANTHOR_VM_GET_STATE, drm_panthor_vm_get_state, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_get_state),
->> +        (PANTHOR_BO_CREATE, drm_panthor_bo_create, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_create),
->> +        (PANTHOR_BO_MMAP_OFFSET, drm_panthor_bo_mmap_offset, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_mmap_offset),
->>      }
->> }
->>
->> diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
->> index 157bc40e1cac4..16abf2968299c 100644
->> --- a/drivers/gpu/drm/tyr/file.rs
->> +++ b/drivers/gpu/drm/tyr/file.rs
->> @@ -252,6 +252,76 @@ pub(crate) fn vm_get_state(
->>              Ok(0)
->>          })
->>      }
->> +
->> +    pub(crate) fn bo_create(
->> +        ddev: &TyrDrmDevice<Registered>,
->> +        _reg_data: &TyrDrmRegistrationData<'_>,
->> +        bocreate: &mut uapi::drm_panthor_bo_create,
->> +        file: &TyrDrmFile,
->> +    ) -> Result<u32> {
->> +        if bocreate.size == 0
->> +            || bocreate.pad != 0
->> +            || bocreate.flags & !uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0
->> +            || bocreate.exclusive_vm_id != 0
->> +        {
->> +            dev_err!(
->> +                ddev.as_ref(),
->> +                "Invalid BO_CREATE params: size={}, pad={}, flags={:#x}, exclusive_vm_id={}\n",
->> +                bocreate.size,
->> +                bocreate.pad,
->> +                bocreate.flags,
->> +                bocreate.exclusive_vm_id
->> +            );
->> +            return Err(EINVAL);
->> +        }
->> +
->> +        let size = usize::try_from(bocreate.size).map_err(|_| {
->> +            dev_err!(
->> +                ddev.as_ref(),
->> +                "BO_CREATE size {:#x} too large\n",
->> +                bocreate.size
->> +            );
->> +            EINVAL
->> +        })?;
->> +        let bo = crate::gem::new_object(ddev, size, bocreate.flags)?;
->> +        bocreate.handle = bo.create_handle(file)?;
->> +        bocreate.size = bo.size() as u64;
->> +
->> +        Ok(0)
->> +    }
->> +
->> +    pub(crate) fn bo_mmap_offset(
->> +        ddev: &TyrDrmDevice<Registered>,
->> +        _reg_data: &TyrDrmRegistrationData<'_>,
->> +        bommap: &mut uapi::drm_panthor_bo_mmap_offset,
->> +        file: &TyrDrmFile,
->> +    ) -> Result<u32> {
->> +        if bommap.pad != 0 {
->> +            dev_err!(
->> +                ddev.as_ref(),
->> +                "BO mmap offset pad not zero: {}\n",
->> +                bommap.pad
->> +            );
->> +            return Err(EINVAL);
->> +        }
->> +
->> +        let bo = crate::gem::lookup_handle(file, bommap.handle).inspect_err(|_| {
->> +            dev_err!(ddev.as_ref(), "Invalid BO mmap handle: {}\n", bommap.handle);
->> +        })?;
->> +        if bo.create_flags() & uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0 {
->> +            dev_err!(ddev.as_ref(), "BO mmap offset on NO_MMAP object\n");
->> +            return Err(EPERM);
->> +        }
->> +        bommap.offset = bo.create_mmap_offset().inspect_err(|_| {
->> +            dev_err!(
->> +                ddev.as_ref(),
->> +                "Failed to create mmap offset for handle {}\n",
->> +                bommap.handle
->> +            );
->> +        })?;
->> +
->> +        Ok(0)
->> +    }
->> }
->>
->> fn vm_bind_exec_op(vm: &Vm<'_>, file: &TyrDrmFile, op: &VmBindOp) -> Result {
->> diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
->> index d9ddcb287f52b..f404139f54f32 100644
->> --- a/drivers/gpu/drm/tyr/gem.rs
->> +++ b/drivers/gpu/drm/tyr/gem.rs
->> @@ -38,6 +38,13 @@ pub(crate) struct BoData {
->>      flags: u32,
->> }
->>
->> +impl BoData {
->> +    /// Returns the flags the BO was created with.
->> +    pub(crate) fn create_flags(&self) -> u32 {
-> I would prefer flags() instead of create_flags(), which reads a bit more like a constructor.
->
->> +        self.flags
->> +    }
->> +}
->> +
->> /// Provides a way to pass arguments when creating BoData
->> /// as required by the gem::DriverObject trait.
->> pub(crate) struct BoCreateArgs {
->>
->> -- 
->> 2.43.0
->>
->>
->>
+Thomas
