@@ -1,47 +1,48 @@
-Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
+Received: from out203-205-221-239.mail.qq.com (out203-205-221-239.mail.qq.com [203.205.221.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF543A9616;
-	Tue,  8 Sep 2026 08:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABB33A784E;
+	Tue,  8 Sep 2026 08:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788854807; cv=none; b=R7KuTalXGfvUfYykcuP0tfihWBAL3yd0ApBerfYaS6J0RrCjIIcuF0MAREGeZ1JCewgT1QR/2ncqy4TTxoZVqBPU1T6oUwTYb5HCI6jKzSyvDZ8rNhjpAXYFN9uYoLtjF6U1+ZsN8CF2ih47jdZQpqbuQjDZFRqBIL8+7grOyR0=
+	t=1788854876; cv=none; b=L42MR3DgEtyRqfinJ+O9e8IHxaxt+9hJp2HDGDwIMfTiJJ3EJCJ8W3CIzlbOP45/x/6gRjRKzRqTBtrv6fYwV22HqXfhqBiq0qM4XgH0JKfT5QSj8KlBLi3BNBgNLGERUT59hpf388khBHP5IaIOHGRuQUV4IuCceY6UfElxAJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788854807; c=relaxed/simple;
-	bh=2xqmYT9HDXnhzbfJRGQf79SeIwwTFyFfKijTt7HmlJg=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=o5HwV4bzJKCueX8Aa9yiczZq+l3yZVj4w2SiJbQ+pP7+ORtOBWdg/jjuRW7BQaGF4/A/S1oTtbYjeOPwwHjbbFIPEiFo2o/e2qlIYpmLUMRobD90jfE3v6JbGxHnpNRajeu8Zs0Wt/CavseNliFKitXNBx352kDa3LFbPy9Xt4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=L7Ed/hK3; arc=none smtp.client-ip=162.62.58.211
+	s=arc-20240116; t=1788854876; c=relaxed/simple;
+	bh=T2c+MrFCvUYsSxzNKVB10vbug6cnyJGcxZGjZsVQEZI=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=MkjrKCcaYZM3Rl0pqkSrcv+hW2T4GRllyOEXPDpZUGIp+Q1Hh71tG3aNKLbunC5fat2+VYwzXqipTXZwP0jdCSnD+PfLrlgTO26ENsUNx/GckA0UPHZDuKdW9iqQTrwHFzc5vRo4MNOQDXRRSumZBZ/QvrORg0CoY/9+cH0YZUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=sHOTjVhZ; arc=none smtp.client-ip=203.205.221.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="L7Ed/hK3"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="sHOTjVhZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1788854792; bh=98YyOZdshhn5cPZjXVwyFbNEDVw72Ziv/YVFEcGoRpw=;
-	h=From:To:Cc:Subject:Date;
-	b=L7Ed/hK3+qnS4oGV6uXVbV0GmF63+DNoDaJsqF8bEhvhG6UKfOKB7vbcBUya1xJ3C
-	 wBxA37Q0FS1iRrTVfG7Ik4KKMXJS0+G5MuYekKMwZQhBhMBwHACeZS+UADdn1Ms0ed
-	 0yoL9Nb2NsHwCIhc4yVQXogwYLj9MqtbNAYY9z1A=
+	t=1788854871; bh=gvxwUOb396K7iHMCJjYc4DeX5IFP84qAwIQq44IcqkE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=sHOTjVhZfqwauEnGnXvuC1Fhp1OZmwFtU/TTvC7wIHPE5yPcPglJ3qAj8sELCcKJh
+	 td8WohAr36cRxCxzAbF3QAeLsEB+w7G7K/pxXKF8MiDliojRZLhY56vEykXVJA0Ii7
+	 CbxJVxjjm/LUGwlxzrxTAypkFys5mBBvhRslaZ8k=
 Received: from localhost.localdomain ([106.114.216.75])
 	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
 	id 185190A2; Tue, 08 Sep 2026 16:06:05 +0800
-X-QQ-mid: xmsmtpt1788854765tzqwk7xsr
-Message-ID: <tencent_4E077A13DB36F0C12D69B0E89FD5C7DCB506@qq.com>
-X-QQ-XMAILINFO: MDbayGdXPuoeCWl6JLYX9iT4KFyTP4BOAs/TVgRKNN3qePWHPHaM937c3cEOSw
-	 gEMzJx/6L0E7pc5TUef1oNNef8p7TaBjvKrF/RuJOmrVTIfaCeOvmZsFPvB4VWh+NPBfHW4fgepG
-	 S6epI4g9XYvj4k/+LmAenIn3SD3b9iRPLZvagISGUTONATkxU5qyPFCMfm4JsBb0XgXlTy/q9vCo
-	 8/fK7IyZfwNAZ0OxnohE1BC1b/AwTwihBMIDg+s5YnHRwW/Dcm+jV5XOVBY2qNw6cgv9CsuY6ep4
-	 nRjBqW0Hm2/1f+8Pf3DXf9Z+afrT6Z+8X242hTZExMcHQ55yxCsXQaEbvd3Dc8khKuGiMfCEAPZr
-	 ieljfu7Y1LaAbkjoziq4Pyy/WhJsMPKviVlue5loH0++WvQ5ct/bF0wAtI+0w5lLguC4Z2HxvMyu
-	 VsOj3K/d2KxEVYcEQbKpvfRizlwHH/YBm7eeieFn/gfkt7iqmI3iPDjqoHkyp47F6fXqUWbwHQpJ
-	 c0MetieAU+beo4icbzmRAwcvEgkvWE1NQz0kRg+vZO1ZhTDUed1wZqwfJ89Uath6NGCXr7znISJu
-	 Xh7Uk9rtMje7g2C/cHgOlp5/lkAaINsUBLr0aRolBhdmMUTiIgZ/DIsDd7vn0R6HNSXMD1fYclhq
-	 3/i3bYf9+7tbKMbohOSHSpnz3e1Kr1uHAH/sksflln8/pV50hni8IFgYS4FeMIW8/d+lHAD4aZoG
-	 Gxg24rfVWjcAPJm5OLRp5jJaTRYier+zr0iHxs/jfTkzDqSoOStepPP6qGjTvx8/DtDKiegJo5dU
-	 aURyrXNwvP8uLzycmv/1cJrxJ+BGEdbvBl+RLhy5rmZKZoT4YVmgwUub6mJRqCEmfT0tUVFfmyUq
-	 sLfJVN0MgpLUlOkg/Cf5GXwnfYKZl6dP3FPmwJBR6mlGt55gi1YmAmFKavc4mAYsFfG5PNwW3x5w
-	 31rpAyfDZpEf3q3EkVNhkopDgb1AtKeIK2m2L2W/LfRW1YSMw8fZB2lR1EK1GsW/lQJKSBlI4VwI
-	 UeZGQSNDtKrzCvvmaRglCV4Y9uKxmWtlYsiyEt3J03e0+ZpB2o
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-mid: xmsmtpt1788854794t795kp610
+Message-ID: <tencent_B230D7AD5070ED9FECC7DFF5163A0D9B1906@qq.com>
+X-QQ-XMAILINFO: NbgegmlEc3JukfmWWJoEchQT6XC1wdXKgtMNTthKR6Df6KFQP7KLwF7TY1241h
+	 uG5hSxMkA8n5mxQUpMgDrDaB0HeiPnDNq1zIBmfAH8axJBYkC0DtkQsaklfA4v5xSYj42uBMWx9W
+	 zCslvj+miY4AcXqjdVBRvp90notS6dwdUTNkPKsHsvi+tX3hAKvonildarB3GzWimV4g6otY0DVl
+	 +qtYlrsQigq1wRJaHKIHB4ZpT5G38bBA5eBf+sJk2muOx2qjzsKVtdQpU/ZVw3Jc9JHWwF1zmMYr
+	 n38EjI5Zabrf9JaNobzTedI2PYQ/6oxb+gSyv8sdN6Td9z+KKi6MXSSL3MEW6OTmHVA51IV5f/WZ
+	 P8U3HgbmJXcZovMQXo8+MB1aKMhPlftunBgHOj+7L/yMY35D5tmza2kdyuhsN5CyA0LFE2H6eRac
+	 daJ6jDTa6boKqq28dOS4k5+FJ1LzkdmDXrOlKuk+GzABUVvS++WnL174OekNLEo1r/pS9SCBVWJg
+	 3VXLzgTv8C9VSPKAt6osiszuZvXZ48nWIOYkr1PtxzNEgf5RLE2WkXcPk2KqyRIYNOzdn1KpH+qz
+	 v5pWp3nAOCVY5NiWqaNqshyD8YtPJp/Ho/YVgOtwV9ctEHOPsbQnns8hJvzuxOGL3+BOXbGO7rzn
+	 tqtdTxS4cT6YjI+Ra498zNvlspDVFZxJTWlnoHNe7jyUjVSnX9G4VSbQN/alk26qLnwxzNdyUnvT
+	 Z1b3hsoyB8zSooDa80yNp0NMOJyUxiz1j6a+fw8Lgjj1v063s45JeAcvJDqO00lx4m/oxCiIRMPS
+	 J3ZivNQzIfzfC/eKw8TwoXxu7YwgPgBnYqbiTbDZyNA3Nxb8/74bIotk7HEhIDOLPZVQ35NWgMb1
+	 HSLD91z/5GYOB8LJHRMoFGSeYFPJbPU3MFfPKsWieTmeelvRGwEzbti5dD9D/Wy+ScY46/on2OtY
+	 ETDCONcmxUP3U/x1oDvOsFmTiYmcPDR3BJPwuFzGy0Iz3tpzkquy0CAjT3IpYnoXZwaCn9Z1xNW6
+	 snp5gQd0FUMzLpBZ4nzqTeugnzooo=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
 From: JX <1239989762@qq.com>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>
@@ -62,10 +63,12 @@ Cc: Boqun Feng <boqun@kernel.org>,
 	Uladzislau Rezki <urezki@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] rust: add unsafe precondition assertions to Vec length helpers
-Date: Tue,  8 Sep 2026 16:06:01 +0800
-X-OQ-MSGID: <20260908080604.34070-1-1239989762@qq.com>
+Subject: [PATCH 2/2] rust: alloc: use unsafe_precondition_assert! in Vec length helpers
+Date: Tue,  8 Sep 2026 16:06:03 +0800
+X-OQ-MSGID: <20260908080604.34070-3-1239989762@qq.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260908080604.34070-1-1239989762@qq.com>
+References: <20260908080604.34070-1-1239989762@qq.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -74,35 +77,52 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The safety requirements of `Vec::inc_len` and `Vec::dec_len` are
-currently checked with `debug_assert!`. Convert them to
-`unsafe_precondition_assert!` so violations are reported consistently
-with other unsafe precondition failures.
+Vec::inc_len and Vec::dec_len are unsafe functions whose debug
+assertions directly check their documented safety preconditions.
 
-The first patch makes the no-message form of
-`unsafe_precondition_assert!` usable from const functions. This is
-needed by `Vec::inc_len`, which is const, and avoids runtime formatting
-when the diagnostic consists only of the stringified condition.
+Use unsafe_precondition_assert! for these checks so violations are
+identified as unsafe precondition failures. The inc_len use also keeps
+the const-compatible macro path covered by kernel compilation.
 
-The second patch converts both Vec length helpers.
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1232
+Signed-off-by: JX <1239989762@qq.com>
+---
+ rust/kernel/alloc/kvec.rs | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-The series has been checked with:
-
-  make rustfmtcheck
-  make CLIPPY=1 rust/kernel.o
-  make rusttest
-  make rustdoc
-
-JX (2):
-  rust: make unsafe_precondition_assert! const compatible
-  rust: alloc: use unsafe_precondition_assert! in Vec length helpers
-
- rust/kernel/alloc/kvec.rs |  7 ++++---
- rust/kernel/safety.rs     | 10 +++++++++-
- 2 files changed, 13 insertions(+), 4 deletions(-)
-
-
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+index c7546b9da4..9216a4a304 100644
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -23,7 +23,8 @@
+     page::{
+         AsPageIter,
+         PAGE_SIZE, //
+-    }, //
++    },
++    unsafe_precondition_assert, //
+ };
+ 
+ use core::{
+@@ -230,7 +231,7 @@ pub const fn len(&self) -> usize {
+     #[inline]
+     pub const unsafe fn inc_len(&mut self, additional: usize) {
+         // Guaranteed by the type invariant to never underflow.
+-        debug_assert!(additional <= self.capacity() - self.len());
++        unsafe_precondition_assert!(additional <= self.capacity() - self.len());
+         // INVARIANT: By the safety requirements of this method this represents the exact number of
+         // elements stored within `self`.
+         self.len += additional;
+@@ -245,7 +246,7 @@ pub const fn len(&self) -> usize {
+     ///
+     /// - `count` must be less than or equal to `self.len`.
+     unsafe fn dec_len(&mut self, count: usize) -> &mut [T] {
+-        debug_assert!(count <= self.len());
++        unsafe_precondition_assert!(count <= self.len());
+         // INVARIANT: We relinquish ownership of the elements within the range `[self.len - count,
+         // self.len)`, hence the updated value of `set.len` represents the exact number of elements
+         // stored within `self`.
 -- 
 2.54.0
 
