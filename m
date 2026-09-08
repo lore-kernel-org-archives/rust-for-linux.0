@@ -1,128 +1,118 @@
-Received: from out203-205-221-239.mail.qq.com (out203-205-221-239.mail.qq.com [203.205.221.239])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABB33A784E;
-	Tue,  8 Sep 2026 08:07:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788854876; cv=none; b=L42MR3DgEtyRqfinJ+O9e8IHxaxt+9hJp2HDGDwIMfTiJJ3EJCJ8W3CIzlbOP45/x/6gRjRKzRqTBtrv6fYwV22HqXfhqBiq0qM4XgH0JKfT5QSj8KlBLi3BNBgNLGERUT59hpf388khBHP5IaIOHGRuQUV4IuCceY6UfElxAJQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788854876; c=relaxed/simple;
-	bh=T2c+MrFCvUYsSxzNKVB10vbug6cnyJGcxZGjZsVQEZI=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=MkjrKCcaYZM3Rl0pqkSrcv+hW2T4GRllyOEXPDpZUGIp+Q1Hh71tG3aNKLbunC5fat2+VYwzXqipTXZwP0jdCSnD+PfLrlgTO26ENsUNx/GckA0UPHZDuKdW9iqQTrwHFzc5vRo4MNOQDXRRSumZBZ/QvrORg0CoY/9+cH0YZUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=sHOTjVhZ; arc=none smtp.client-ip=203.205.221.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BE64A49BB
+	for <rust-for-linux@vger.kernel.org>; Tue,  8 Sep 2026 08:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788857386; cv=pass; b=D4aXVrx/3jb1zwq5vUaLSuSQUqlH/Q1KpRR2CMTsIxqEmZ6dG0oBw2dIbPVcF8OBhTTvXbLmXpaOGbvt4qXK+lxOBiIwkwDrVVnnhrmfHGnDQHaHRk+9FDo3pvz+Do+b/JGLjXvPJ4OLe1LMAEQB4yPIeYJLlU9tGabmf48QHUA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788857386; c=relaxed/simple;
+	bh=VlUILLLz6j/ItrW8OiGkI/9S62d/o220tqGa9E3WryY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qwhm1NTIyhtS0o7YPd4Q39aERMkZ3tKbj7S9J24gt/0jkm8+WKMvr7FFxcCLPaZkp8+OLmus0Nu7g3kRIms8abLxYENkNRZ22n+K0Vv89vkkU0wLcixnhxiKW7uYH26vbp7bhBhAIpIM67/Bnu3uB0qE24opkwXq1OcHnWXJlQs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ja3tTzjK; arc=pass smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="sHOTjVhZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1788854871; bh=gvxwUOb396K7iHMCJjYc4DeX5IFP84qAwIQq44IcqkE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sHOTjVhZfqwauEnGnXvuC1Fhp1OZmwFtU/TTvC7wIHPE5yPcPglJ3qAj8sELCcKJh
-	 td8WohAr36cRxCxzAbF3QAeLsEB+w7G7K/pxXKF8MiDliojRZLhY56vEykXVJA0Ii7
-	 CbxJVxjjm/LUGwlxzrxTAypkFys5mBBvhRslaZ8k=
-Received: from localhost.localdomain ([106.114.216.75])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id 185190A2; Tue, 08 Sep 2026 16:06:05 +0800
-X-QQ-mid: xmsmtpt1788854794t795kp610
-Message-ID: <tencent_B230D7AD5070ED9FECC7DFF5163A0D9B1906@qq.com>
-X-QQ-XMAILINFO: NbgegmlEc3JukfmWWJoEchQT6XC1wdXKgtMNTthKR6Df6KFQP7KLwF7TY1241h
-	 uG5hSxMkA8n5mxQUpMgDrDaB0HeiPnDNq1zIBmfAH8axJBYkC0DtkQsaklfA4v5xSYj42uBMWx9W
-	 zCslvj+miY4AcXqjdVBRvp90notS6dwdUTNkPKsHsvi+tX3hAKvonildarB3GzWimV4g6otY0DVl
-	 +qtYlrsQigq1wRJaHKIHB4ZpT5G38bBA5eBf+sJk2muOx2qjzsKVtdQpU/ZVw3Jc9JHWwF1zmMYr
-	 n38EjI5Zabrf9JaNobzTedI2PYQ/6oxb+gSyv8sdN6Td9z+KKi6MXSSL3MEW6OTmHVA51IV5f/WZ
-	 P8U3HgbmJXcZovMQXo8+MB1aKMhPlftunBgHOj+7L/yMY35D5tmza2kdyuhsN5CyA0LFE2H6eRac
-	 daJ6jDTa6boKqq28dOS4k5+FJ1LzkdmDXrOlKuk+GzABUVvS++WnL174OekNLEo1r/pS9SCBVWJg
-	 3VXLzgTv8C9VSPKAt6osiszuZvXZ48nWIOYkr1PtxzNEgf5RLE2WkXcPk2KqyRIYNOzdn1KpH+qz
-	 v5pWp3nAOCVY5NiWqaNqshyD8YtPJp/Ho/YVgOtwV9ctEHOPsbQnns8hJvzuxOGL3+BOXbGO7rzn
-	 tqtdTxS4cT6YjI+Ra498zNvlspDVFZxJTWlnoHNe7jyUjVSnX9G4VSbQN/alk26qLnwxzNdyUnvT
-	 Z1b3hsoyB8zSooDa80yNp0NMOJyUxiz1j6a+fw8Lgjj1v063s45JeAcvJDqO00lx4m/oxCiIRMPS
-	 J3ZivNQzIfzfC/eKw8TwoXxu7YwgPgBnYqbiTbDZyNA3Nxb8/74bIotk7HEhIDOLPZVQ35NWgMb1
-	 HSLD91z/5GYOB8LJHRMoFGSeYFPJbPU3MFfPKsWieTmeelvRGwEzbti5dD9D/Wy+ScY46/on2OtY
-	 ETDCONcmxUP3U/x1oDvOsFmTiYmcPDR3BJPwuFzGy0Iz3tpzkquy0CAjT3IpYnoXZwaCn9Z1xNW6
-	 snp5gQd0FUMzLpBZ4nzqTeugnzooo=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
-From: JX <1239989762@qq.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] rust: alloc: use unsafe_precondition_assert! in Vec length helpers
-Date: Tue,  8 Sep 2026 16:06:03 +0800
-X-OQ-MSGID: <20260908080604.34070-3-1239989762@qq.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260908080604.34070-1-1239989762@qq.com>
-References: <20260908080604.34070-1-1239989762@qq.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ja3tTzjK"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-485888b3c3dso4460195f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 08 Sep 2026 01:49:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788857378; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DQLh9CCys+RJOPYA5tdgeToWcMqSfmi3MA84Dzym8qmxuZpH4NNpIaS2yvhA11W7NJ
+         biOf1epOxv2NB8QXd30FDdScCf2vKlrsrIpg+7F0n6WpajbDHfKDZ5J3ZBogKcK+Erzm
+         3PUgZIK5S8lnJ7IGF+4eyReaGRd5CAUmGqLJ8Zkr9IlItG+b6S3CJjlIjjtbKj57g1Bv
+         mS/TuVdpyuyC91cgGeHmqFkSE4PAsAqA7N9kjdvsLPbidyuz5AISHE8sG3GLvXv8xWDc
+         Pynz+pPNtE5Stbq+rf2cAURZoPykbfkbNA3mvPiwx4E4pE6SLppAApR3pfqeuJOPwqFb
+         mYUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VlUILLLz6j/ItrW8OiGkI/9S62d/o220tqGa9E3WryY=;
+        fh=ok/xdoGvGk1cgN4NphYLEbfKyADo/FYXYDnGc52GEeg=;
+        b=gzm/+uClZzP4+p1/nV2ns0xNUobHMrqrfE17b2qzf+mz8j26qANDz8UmiGH0o1XecX
+         uoKStOg0SSYlZHibPNcI4tH4JBhlE75iKV1AHnWCGo+l1ru5Iz3iiWIxMfpXrSZxNrMu
+         VyoVHN/fO0YWdppTm1isl75NBO01C8SbqrhscizyzrWHroZKV3N1xPWDr1HzEij6ZlBL
+         gZ+Cryo/MhxtJ9v29pZ03tUe70MpVhuOqsFtch5IqecLs05IOvxTJhbtgbErg9z0jXy5
+         Yx/C9vx0lZ9tulqhDyTNv56c8Sy44cELL2nZ60pAu6BzjZ1Ok48SckyQN8912YDyZTlm
+         DDxQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788857378; x=1789462178; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VlUILLLz6j/ItrW8OiGkI/9S62d/o220tqGa9E3WryY=;
+        b=Ja3tTzjKLEI0EspicWD/xjfbSz6p8h/8kekpbV4awed9gO5PNOZUW1h5gZB1wVgyfa
+         8zVdstTwVB31K68NTPa4JMYYOFV6jEdJpUmALtQ4hEEONE/4ZdHfVMehj6jkfBmwTMDZ
+         XqxD2HWqcBynlhRJLv3HCYqinbKIMEDAPr5xBI4w0UQrqQHMy+Ds0PW1zNzYlNZt0pmu
+         tpynEroKxXbO1DYqSatFCeqmJIzUOMd6HYbrVxOtEKPFyJD8KwMIyvR/Elqvdz6C8lGb
+         0LqPc+KhHDB0JZLtJyKf7uRH8iH4vt4/Ivt4hxt90tK9AJUusExz7cU4AoovzCvwOihB
+         +Qsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788857378; x=1789462178;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VlUILLLz6j/ItrW8OiGkI/9S62d/o220tqGa9E3WryY=;
+        b=Lxkrqmso9orX45iMDkOex4PJF5WfFRtXNaNaY5DbpAqTcn57pfd99TJnhVO0efsMuw
+         frG1NJaLXkuuM6mTVYGeXXhZLZ74zeXcgghDGp/N2CBx1LTx1lP7m5+r2wdImJI1qodh
+         OcXMpFaqjrEKmXOryWnjVHTWpBEUnAnlfow6dPk6d3u6D27bkD2FPQVXkEY0ccNsPwwc
+         cyZDL0I6SEmGajMhndGoJPi4kzJye4sINiknXi9KVgOsLGC0w655iquNoVnGCGZn1I/v
+         5kp/zuzqbkKqP1WCztQRuTCeVqsoYrasPH0YjdEoj7c6Jx98WQOboZlIbKKjq0/oBr3I
+         013Q==
+X-Forwarded-Encrypted: i=1; AKwUvBw0pPufqG1EhGaQeq3a6GDYDiDDqdUxfO84uJkEbKVCpFJeth4vNZM0wD7mN0qVdaOKAyFo5poLk4ak3lZG3A==@vger.kernel.org
+X-Gm-Message-State: AFuF++lpKPzE9FjV34i5sOqJ22BxAPyj7gQjH4/f95IY67rt2NhJRLtR
+	0gaHQxUKAgwV1gioDQzAuUUcTGJPQ333oNvz6zgF2G0dGVfdFfJ+VCS8wENhVWdoea/HxnIIM9B
+	smhUo5nuh+18s1FQyIGRlsgEvbyBITn5ZNzP02fn9
+X-Gm-Gg: AYBFou3UR2RRDHlLKWC4xhgrgqBDKbng64yZwlvjezlTTiUWm3IvW7LpTA05XBD4J8g
+	/RUUpePphe6Xpswv05NqG5Jto19Hj9PCiTyZfZ6T3muDXXBfN3zun6HO7r/xekFHHlsVLc0NpDn
+	kBQqR3K9UEYvny5P45j57EJXD8npQZ7b2sx3bg99hirlTdS3HgHEB46uRmte0zEvvUoqmGc6n+Y
+	4eIAYIsb3jcBqXvUw8j63XSzd0BEUJiWkMfh57ALCZYFtYJqzjwYkZ1GaXw3eyTQklQip+/GG+I
+	XzQo1D/Riddk3pFyzOTflAuHmEGBizxhsEgnw111Lf9lODxszr1IW96rGIfkJzG+Lw2sIlJbh3h
+	mi0GdzcyMxtHtaATeEvqfdAyL2WmVBbB15p43gW23
+X-Received: by 2002:a5d:6f1e:0:b0:485:8c16:5ef0 with SMTP id
+ ffacd0b85a97d-4858c166129mr26214143f8f.42.1788857377473; Tue, 08 Sep 2026
+ 01:49:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260908-maple-tree-send-sync-v1-1-43adcd4a16e8@nvidia.com>
+In-Reply-To: <20260908-maple-tree-send-sync-v1-1-43adcd4a16e8@nvidia.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 8 Sep 2026 10:49:25 +0200
+X-Gm-Features: AcwNN1UnrR9dkVHvDMvsysJouh6r2YnSm2JySmMBpuB4OQ_lYYOQ4OyEmCZHEfw
+Message-ID: <CAH5fLgh_TQiqKxXsz_DVcQxkCaEw+q0JyTh4e4Tnp28V0JDmYg@mail.gmail.com>
+Subject: Re: [PATCH] rust: maple_tree: implement Send and Sync for MapleTree
+To: Eliot Courtney <ecourtney@nvidia.com>
+Cc: "Liam R. Howlett" <liam@infradead.org>, Andrew Ballance <andrewjballance@gmail.com>, 
+	Danilo Krummrich <dakr@kernel.org>, John Hubbard <jhubbard@nvidia.com>, 
+	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, maple-tree@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, nova-gpu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Vec::inc_len and Vec::dec_len are unsafe functions whose debug
-assertions directly check their documented safety preconditions.
+On Tue, Sep 8, 2026 at 9:51=E2=80=AFAM Eliot Courtney <ecourtney@nvidia.com=
+> wrote:
+> +// SAFETY: `&MapleTree<T>` never hands out `&T`; all entry access is ser=
+ialized
+> +// by `ma_lock` or `&mut Guard`, so `T: Send` suffices (`T: Sync` not re=
+quired).
+> +unsafe impl<T: ForeignOwnable + Send> Sync for MapleTree<T> {}
 
-Use unsafe_precondition_assert! for these checks so violations are
-identified as unsafe precondition failures. The inc_len use also keeps
-the const-compatible macro path covered by kernel compilation.
+This is true now, but will change if load_rcu() from
+https://lore.kernel.org/all/20260116-rcu-box-v1-2-38ebfbcd53f0@google.com/
+got merged.
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1232
-Signed-off-by: JX <1239989762@qq.com>
----
- rust/kernel/alloc/kvec.rs | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+It might be better to just pre-emptively require T: Sync now?
 
-diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-index c7546b9da4..9216a4a304 100644
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -23,7 +23,8 @@
-     page::{
-         AsPageIter,
-         PAGE_SIZE, //
--    }, //
-+    },
-+    unsafe_precondition_assert, //
- };
- 
- use core::{
-@@ -230,7 +231,7 @@ pub const fn len(&self) -> usize {
-     #[inline]
-     pub const unsafe fn inc_len(&mut self, additional: usize) {
-         // Guaranteed by the type invariant to never underflow.
--        debug_assert!(additional <= self.capacity() - self.len());
-+        unsafe_precondition_assert!(additional <= self.capacity() - self.len());
-         // INVARIANT: By the safety requirements of this method this represents the exact number of
-         // elements stored within `self`.
-         self.len += additional;
-@@ -245,7 +246,7 @@ pub const fn len(&self) -> usize {
-     ///
-     /// - `count` must be less than or equal to `self.len`.
-     unsafe fn dec_len(&mut self, count: usize) -> &mut [T] {
--        debug_assert!(count <= self.len());
-+        unsafe_precondition_assert!(count <= self.len());
-         // INVARIANT: We relinquish ownership of the elements within the range `[self.len - count,
-         // self.len)`, hence the updated value of `set.len` represents the exact number of elements
-         // stored within `self`.
--- 
-2.54.0
-
+Alice
