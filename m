@@ -1,168 +1,136 @@
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6FA550DB3
-	for <rust-for-linux@vger.kernel.org>; Tue,  8 Sep 2026 14:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788878948; cv=pass; b=tBgyU/qCxx8/+4qZMOkQjggvZgurxebBV04ftuWfcGQCOrJceGVFZpl6An5IEBdUdjD0AcM37BC7MMbS6sfDuy+yaVDu14PbVSBPcjBTtxZxhoaZIRnRKS7/ZnNasNNLXFMUuSX91rOG78K0ZSWK5fo6Q6PGQc7iWzeOpqBTXvM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788878948; c=relaxed/simple;
-	bh=vBTnbXlbtE0JtfGMQ2MHvqNX3t4tOrq8IAFxQ0wndOc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TJMTWawLeEUtkwRIydOd4/nm+Sq2+wzJctAiZ0xSkVKq6fCX+PudWK+tspKziuzCktl0leBID1+t9MyAFHKH+Yub0CF7+KLXNN+JQVyvMkvo1TmLzBgrQa7dwDVQu/UV+8/f10vccuQlzYDtZcTg0AFltRurl6tNiL/mQv2cjAw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=darkrefraction.com; spf=none smtp.mailfrom=darkrefraction.com; dkim=pass (2048-bit key) header.d=darkrefraction-com.20251104.gappssmtp.com header.i=@darkrefraction-com.20251104.gappssmtp.com header.b=usKQCZYU; arc=pass smtp.client-ip=209.85.221.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=darkrefraction.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=darkrefraction.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F62D5592EF;
+	Tue,  8 Sep 2026 15:13:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788880443; cv=none; b=gux7VjLlrdhOr/f8tZWDBHvQjgAvjN3tpOfjsUEOu3QkqJhgCF4XedzA/60zzuxlfNlWw63cyaPd1pV8QAPMT/Km/Nbf9NtYJbvuydWy78KIvtj5BUspMFG01vrbvT4NbU0Iu48OdlNF6XHZvqv0eJ7VXf3VEVCR0p0iGtKl/nE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788880443; c=relaxed/simple;
+	bh=9VnbqKcFo0PdV/F50ouF++HgJygmdMQ5dTr+q9TdSv0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qdip1vlPIOM2PqJXL9+Oe8Ka25D5E/TITvZC2uOon45DijyEPp6Fh+4ylESwL81rUF/1PjZzFOrEUVZ8+29OwVw9N2tQ/WU031LOWGEovCRyi5VpJP2LgsFsrRysMlIgkj7gvFUgifBZwAaaiXTCWR/8BMJ2e9D3WTMN3Mi4/pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=fAETnApx reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=darkrefraction-com.20251104.gappssmtp.com header.i=@darkrefraction-com.20251104.gappssmtp.com header.b="usKQCZYU"
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5c7d65c83feso4429243e0c.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 08 Sep 2026 07:49:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788878939; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QAF0FAW/qs/Me8iyT7M4OAiEUaG14UdRFjvOjgA/ywuhxiOMVVqy/ystT8NdhxVTeC
-         hOIP93B0Zjbq2L/p1JCRU3wknQOu2axodnzAR/ZrDsRHbttRlKhtYPczX0w0EgV4ZbvW
-         SHjdn12WOPPOkLjZ8m6IsaEH0dhP/vmJNtiVqYdd00lOPRDgFjHzMePYdgWHVWcyKhZx
-         0Lxz9GNpxqT3f7QaAGM12ATBn0GfATTOEwbqLb0Wt+75h8LGH/JXqqXeAmBVmMCkS8ns
-         qPK/0Kje/fXFTQ7Xg2JU8glkB1mP30akkJH5hzOr18lBpyQNrFnoZssV3+eNmDXN9mIP
-         iY1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Mn26V6U9AHVIB3sm1/v6lJDDiA+oJxKcvjPFvuodVsA=;
-        fh=AAM8ADa2+KGS/C6gvPtYh8BZsczP1aAIwTsoRRI9Rdc=;
-        b=TJl9N4XYlxamDZgvA0A9TGK4isTs5ygujZjk7LbvaE4gloMSgTurVY5a9c/KVsvQ1Q
-         oXLtcLyDt2ObzHISg97CaDqUZzyFIx5ToN3DJq6GY1Y1Lo1B16RLv3WM6LdY0NHxeceH
-         hglywI833wP0z3gWj2gWRz9bJu8ld4v7OfsT2SoSIPvN/gmTUOpU3bu2l+H/lqIpdPMo
-         kJPK/gneS5RtNqcIiExAi0+iXc9KRdw52L8xtVp0FBR6KqucxenmT9G6R0q3kZaKgCax
-         VoIK4oBBIrLzJhr9v0PxncnpaxSeQ4F2aprhTfTnuzErpy1BOQtZ1zveMGsphjjlBNrz
-         x9Vw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=darkrefraction-com.20251104.gappssmtp.com; s=20251104; t=1788878939; x=1789483739; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Mn26V6U9AHVIB3sm1/v6lJDDiA+oJxKcvjPFvuodVsA=;
-        b=usKQCZYUaNB14qGxSim51us7Ji6k6mUaZBzormMQZ7Azv8A3XC9AJxcY3dcC6Afwoa
-         4DmCFfRXeEoZv6EBxbHh+ZbGjuMJdEWQSYqyxLyuwi4VudJjmZ88xHpVqiQBnUQ4ON1e
-         kUGmNK1cfYoKXe3lg6Tau6ZQo0+6PeaNejGOMErA38ARqfQuIVe6Zd6PgZYJgN9xShu/
-         tG2gJmnhxwIUhHu/wOcScCL6AxzFGVn2/1uo3vOMbx+tXkIqDDQo3n5tWdsD3FMzYcx2
-         DOVpypblWFxdvfm5ZI7qFbspcEABb6OG6UBhJ0mg5G+JWy8A9eDz8bShDh5r0du+SpD0
-         yD5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788878939; x=1789483739;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Mn26V6U9AHVIB3sm1/v6lJDDiA+oJxKcvjPFvuodVsA=;
-        b=HMXGx0zBmX/KSMph/UxaJPVOEXhvcbGS5OakgF6WICXORdObFibVTk4w/gLsNexNep
-         kpbs96f3RjFpvSgENWGaqm/B8nFRCj1rQfdKeGyU8ALkQB8UyHRQ5IB+JT1HV2f39pso
-         1/xa6Md4mxKzanLIi6iGqNrVVVhCc+ApL68NPCeYIMLbPUu/VuHvUcHsONOjcWdzIg41
-         tFscyQQ9BP4+Np28WwNC7pvgTvcXe2dKNSYndTBtcpLzQ+2aDCC5RT5E21feR/zm3sGy
-         ZYUYTZrOW/SKS/vsFmlH3tP8bitbumGjxl2tvbJl6YKOhl06jBEwHHC1S/n2SoE3W1X1
-         qaYw==
-X-Forwarded-Encrypted: i=1; AKwUvBwfxU9lKwj9QUeEZtml8xk5I0VKpWfVzokA1/sCXQ/ilyihBaI6yN7Gguc1MsB8MhOzYhd0lyDAyFK1c54QPA==@vger.kernel.org
-X-Gm-Message-State: AFuF++mVfQ0CE4X1UhuZJiRtIhIpup3/VVKjSE+NHVzM2QuwXoKrQcar
-	9BdlFJAo+GbE+8lDSrsFWvAQdAh0S4J7KHfYuMYAK6J9uKhNxbx0UTtZdeT4fQvDvuOTL2M6jCQ
-	qkhhP3+Q1OAjHc3TL5qtTggf1Qui1QLidv/5f3p/6KUZIMDVvsq1LHFB7ew==
-X-Gm-Gg: AYBFou2zgFAM9raneZ5qi/Kkofb93dbPfJ+X2gkV5njTc6LGFYiHmG6YcX8MlV5pSS+
-	eA250xwvml0Gd652p2X8EVg98pouJP0A7G7u4mW0flsvjyGM69XFrm4+isBCVEaEWkxM7g4uCG7
-	vd5/nnVZYseXxfsQIuz26lhMXpglL00HDIRFCK+jnQxZK5yyIard3Je5zVQJ6KQfsFDeOSt6U1m
-	DySJhlqmgqFoiqdPYf0qGZIOjIQ3YGrDGy9qZ2VKwawcJwK0tMzlATezA7s0/BKkk5rT5YIgOqh
-	TyAC52yEnJKx7Emh5emkxHvLMLZG7G1JGETyg+wJEuBL
-X-Received: by 2002:ac5:ce1c:0:b0:5c7:ed31:3c11 with SMTP id
- 71dfb90a1353d-5c7ed796b9amr13188562e0c.3.1788878939466; Tue, 08 Sep 2026
- 07:48:59 -0700 (PDT)
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="fAETnApx"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AF2E640E01DD;
+	Tue,  8 Sep 2026 15:13:48 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 90bGYtLVFUMy; Tue,  8 Sep 2026 15:13:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1788880423; bh=SihVXpN4VvNY3Mg5IOkHy8UfEsHqRfkcnelNTeVhEJY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fAETnApxBEtfPuqHFKCgIL29nHx0Z2YHgAygdIUM8hU/Mz33/kA4ZUBeN/gRjrvau
+	 vtDllihc6pYSe5SXQwgoqpNhfk4/08/8KMfUsCAU9thasCFYYPKC5Y/pV7Y6XU69vH
+	 LNwlFlG04npY9qQKxVsZcrZnpWC37yTWxuzhzHRm5KpwYfkHvzNEQeiGPcvB58aLNL
+	 CiYr2yyCrB3Kpf/DVc891YwOW/34b2QLG1yPFPyiPhCi535fKHZgiFGNQiM2V+7vT2
+	 gPcZgp3ofWVjQmcjoKAe195uX42B3clf9ibePNVbJKWUY1oARNBH9aqSnI0FgzmH5W
+	 h3dWuWkymclGp3MUg9haChNnjvPBl3Zfv+FDejA3/AFf/CVXHWsWO5KDUQ2zEgeqt/
+	 YAh14BnniVfR4yGoNbbKeldMZUsNF3icLMOF+CXHFJzyhU2PGxTQ2922hXMjHxMdeL
+	 Z7VOvQUlIKK4Twu3A1MK/eNhNVBp3Aq4OXXBOciVJLy8/PcJIx0toX/zZ4lcn1jfV9
+	 ErcQYDZ5WCkd1WmQQESUO71elKnVOkkPTWwEHl1ZBofjxaMBHmYZWTaJGuyt7QqChy
+	 44ZU/2M46IVY51m5w2KmjWEiICeA6W5JNXmeJ3Nh9U8UDaWIWWakyv4XQKa/cqNpso
+	 4+S63J9RdOKwhC2R/OGeJJio=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2B8AE40E016C;
+	Tue,  8 Sep 2026 15:12:41 +0000 (UTC)
+Date: Tue, 8 Sep 2026 08:12:38 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev, linux-mm@kvack.org,
+	linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	linux-s390@vger.kernel.org, linux-mips@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	Jan Stancek <jstancek@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: Re: [PATCH v5 02/24] x86/elf, um/x86/elf: Move relocation constants
+ to UAPI
+Message-ID: <20260908151238.GBaqAl5iKb64meuPJl@fat_crate.local>
+References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
+ <20260908-vdso-absolute-reloc-v5-2-3a93791af1cf@linutronix.de>
+ <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local>
+ <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260828033531.1117754-1-apopple@nvidia.com> <20260828033531.1117754-6-apopple@nvidia.com>
- <DL3WXUPD5JKE.2GZ1CNJH539ID@kernel.org> <DL453EFS03T6.2VGI5TJEQ52QO@kernel.org>
- <apdvTgAp5eGezO5t@nvdebian.thelocal> <DL4QCAZXM8EU.2K8MLAM00VNTX@kernel.org>
- <apioGUDamrCur_oR@nvdebian.thelocal> <DL5MA26KZEF9.3KHKQXZ4JD2G6@kernel.org>
-In-Reply-To: <DL5MA26KZEF9.3KHKQXZ4JD2G6@kernel.org>
-From: M Henning <mhenning@darkrefraction.com>
-Date: Tue, 8 Sep 2026 10:48:33 -0400
-X-Gm-Features: AcwNN1VMoN6xdNn8eWXN2SwQNMCIT94e5yatQIWCSWj7WmgOlqVF8kOh6QLwKIs
-Message-ID: <CAAgWFh2iPJzQ5PJfFpPBTdgZ=GFjy7Eoz5C0e1WwFMuOuyJSTQ@mail.gmail.com>
-Subject: Re: [PATCH v5 05/11] drm: nova: Add an info ioctl
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alistair Popple <apopple@nvidia.com>, nova-gpu <nova-gpu@lists.linux.dev>, 
-	Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	Eliot Courtney <ecourtney@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de>
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 3, 2026 at 6:42=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> w=
-rote:
-> Because userspace otherwise has to figure out the architecture itself bas=
-ed on
-> the chipid, while the kernel already did derive this information.
->
-> There's many ways userspace could do this, and I don't want to incentivis=
-e any
-> of them.
->
-> For instance, you previously showed how userspace derives the SM value fr=
-om the
-> chipid with sm_for_chipset() in mesa with its own lookup table.
->
-> Then in NAK (src/nouveau/compiler/nak/ir.rs), there's this code.
->
->         fn is_turing(&self) -> bool {
->             self.sm() >=3D 73 && self.sm() < 80
->         }
->
->         fn is_ampere(&self) -> bool {
->             self.sm() >=3D 80 && self.sm() < 89
->         }
->
->         fn is_ada(&self) -> bool {
->             self.sm() =3D=3D 89
->         }
->
->         #[allow(dead_code)]
->         fn is_hopper(&self) -> bool {
->             self.sm() >=3D 90 && self.sm() < 100
->         }
->
->         fn is_blackwell_a(&self) -> bool {
->             self.sm() >=3D 100 && self.sm() < 110
->         }
->
->         fn is_blackwell_b(&self) -> bool {
->             self.sm() >=3D 120 && self.sm() < 130
->         }
->
->         fn is_blackwell(&self) -> bool {
->             self.is_blackwell_a() || self.is_blackwell_b()
->         }
->
-> That's two unnecessary indirections for something the kernel already has
-> available.
+On Tue, Sep 08, 2026 at 04:26:00PM +0200, Thomas Wei=C3=9Fschuh wrote:
+> The existing, generic ELF definitions are there.
+> The ELF stuff in include/linux/ is highly specific to Linux.
 
-Userspace mostly uses sm id and engine id for feature checks, and I'd
-like to keep it that way. They correspond to either the shader isa or
-which class methods are available, which are what it relevant for the
-related code. Most of the checks don't look like those functions
-you've pasted above. Most checks look something like `self.sm.sm() >=3D
-86` or `info->cls_eng3d < MAXWELL_B`, which is to say that a
-completely opaque enum isn't practical for our purposes. We typically
-need to check if we're before or after the point where a specific
-feature was added or removed.
+And putting them in UAPI casts them in stone. I wouldn't want to maintain=
+ them
+forever if not necessary.
 
-> Yeah, although if SM is correctly reported by the GSP, I'd rather have it
-> exported in an info structure than have userspace create its own lookup t=
-able.
+> Also later in the patchset I want to expose the definitions to the
+> tools/ build. Exposing generic UAPI definitions to tools/ is a much
+> easier sell than include/linux/.
 
-As others have stated, the sm ids reported by firmware don't always
-match the sm ids documented in cuda-related materials. and nvk follows
-the cuda conventions here.
+tools/ *copies* kernel headers on a "they're needed" basis. No need to pu=
+t
+anything in UAPI for that.
+
+It's even written down: tools/include/uapi/README
+
+--=20
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
