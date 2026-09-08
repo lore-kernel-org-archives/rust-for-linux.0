@@ -1,163 +1,120 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B772A579839;
-	Tue,  8 Sep 2026 16:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924C857269E;
+	Tue,  8 Sep 2026 17:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788886630; cv=none; b=RQRKLTbbjpi7hkasig6Mf1zoSyvnOz6MwF/PK0hHANuswz/ntzCUzk+aJ4svlnO6CZ7+pSVicADzyBQJ9bcuAC/fA/iAujodQ9I6nX1Kz4JDkekvwcayXhjH1PsLCj1dMaKTTFWQvx/C88YmUq1YE6/U9kCq5hV+vVAGjPO/xT8=
+	t=1788887168; cv=none; b=mhORzMorO4rBMwwLmKJA3oKYMA0UIKBaBhF8WCKawBrJ6XSq1K8iSUrv3PZZoY9WVy4QJl7KTYa+V7aeZCXWYgpRUdlq4fZG3/h9yGVn2VM3LyGuyFClxrbvWEpsmz7EiGoKcrPOPfw3Ck/m8ixKzIWmAfErC/D8eERopoEdzJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788886630; c=relaxed/simple;
-	bh=H6NK9coa2mZK47PwrdRFAoOQRzrhEJHHdDBblAJVLhM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=GD8qq/OmLmUZRnLIev1CpBUcjfyGeKXr60XF1ba3LJDxwVSwIpiaIgVtNXsKoY3qtsNndSu5Mx1CWcBc9ataQNRwUYWKBdIP6FfxEWmJINufjPuMEHM0435jiirUNhTVsSx+4zdN3BlS9PFHSrxCeRboPv4+ltUHJjwhKAZDK8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MvRO6m7r; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788887168; c=relaxed/simple;
+	bh=DmEcGIuIViBHOha3ytewODV0Ikb5MB58pqUxXeUM82g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IRpTMTAbN5qu/XOZOfX6n9im7y+b3EhEiVuAuAsIFGmYwVVdEyNf800jY0pE1aZ0wB142hhyx/A3lAi5gjbPM4twHgxBpcdj73Vf6vZw/JFR8coFkfileSB9r31l983vtjdkkHINLplb72TaYLWwiCpEcWAKkcqW3Xc3cr8+OaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVSpAPYN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MvRO6m7r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BE61F00A3A;
-	Tue,  8 Sep 2026 16:57:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVSpAPYN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D271F00A3A;
+	Tue,  8 Sep 2026 17:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788886628;
-	bh=VahQdN/0quUKghzDbd/rki/TpvW1Urg3Top+EN3xW/g=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=MvRO6m7rhVNT2KDjCad20J+tc+cViMc/grSglxqeOAunacaiFSwIlzP/VnhqX4/oP
-	 fLiCpUDe2Y3Up8XjAmf/E/j0BrE0eCRsvHGOnMdADqCJ97w6l6mVjWgYgDQxwiSumJ
-	 GEFbx7pzhhJkG8MLSj7H6dCMehMuJUW2xSOOTakgmj6o6dRxck6LHrYzXa2HHfCmmO
-	 S8QhXyZrbv7MNMO3nltEs3TXjeEVPQbD7ggfJN954CBAdgVnHwic8WM0HA0xqRzS4e
-	 t6QAadsyObN6tNTvCP07CnBBMfmpfUcLubRs5IlLZEChaam7UePgKRbZx1degxTW29
-	 eBPyEamldJ6pA==
+	s=k20260515; t=1788887167;
+	bh=+7xs9pGKZgdoziLh6xyiceOfRslnYaDU2pz1U7G3dSI=;
+	h=From:To:Cc:Subject:Date;
+	b=WVSpAPYNxRe6LcTsDo+lu312p9poJqbRtg25DQgyFu6qkfNoo+FFRw9WzS6eZ98oV
+	 Jhl7Yqm1DGo+zAdYooA7dv/Ep1Mok+a6dp+URkggUjn8lyseBlZPQ63WmF53CcldtU
+	 WFe58HWrrU5y7+NL3k1xAXiJvJjRV9h2nM/ZXmNWmGUVJa+g0lNp1fTMQmvOHtjjvM
+	 3KeFyFDHGvzeTUTPLA8cDCVvGClwxLElm8rzVdHDYHTxJ/hSk4lKCd+s75Jee/+GCL
+	 MuBBfl1n5aM/v3v8oKwL/yMV0zyTeiry4vKC68/r8GMs/8o1QcDSwivv019hhSPvIt
+	 gOdhqCPyeyTug==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	stable@vger.kernel.org,
+	=?UTF-8?q?Emilio=20Cobos=20=C3=81lvarez?= <emilio@crisal.io>
+Subject: [PATCH] rust: allow `unknown_lints` in generated bindings for Rust < 1.88
+Date: Tue,  8 Sep 2026 19:05:39 +0200
+Message-ID: <20260908170539.345207-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Sep 2026 18:57:04 +0200
-Message-Id: <DLA3DUADGEQX.1Z2G7Z4TYFK1@kernel.org>
-Subject: Re: [PATCH v5 05/11] drm: nova: Add an info ioctl
-Cc: "Alistair Popple" <apopple@nvidia.com>, "nova-gpu"
- <nova-gpu@lists.linux.dev>, "Alice Ryhl" <aliceryhl@google.com>, "David
- Airlie" <airlied@gmail.com>, "Alexandre Courbot" <acourbot@nvidia.com>,
- "Benno Lossin" <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Eliot
- Courtney" <ecourtney@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>
-To: "M Henning" <mhenning@darkrefraction.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260828033531.1117754-1-apopple@nvidia.com>
- <20260828033531.1117754-6-apopple@nvidia.com>
- <DL3WXUPD5JKE.2GZ1CNJH539ID@kernel.org>
- <DL453EFS03T6.2VGI5TJEQ52QO@kernel.org>
- <apdvTgAp5eGezO5t@nvdebian.thelocal>
- <DL4QCAZXM8EU.2K8MLAM00VNTX@kernel.org>
- <apioGUDamrCur_oR@nvdebian.thelocal>
- <DL5MA26KZEF9.3KHKQXZ4JD2G6@kernel.org>
- <CAAgWFh2iPJzQ5PJfFpPBTdgZ=GFjy7Eoz5C0e1WwFMuOuyJSTQ@mail.gmail.com>
-In-Reply-To: <CAAgWFh2iPJzQ5PJfFpPBTdgZ=GFjy7Eoz5C0e1WwFMuOuyJSTQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue Sep 8, 2026 at 4:48 PM CEST, M Henning wrote:
-> On Thu, Sep 3, 2026 at 6:42=E2=80=AFAM Danilo Krummrich <dakr@kernel.org>=
- wrote:
->> Because userspace otherwise has to figure out the architecture itself ba=
-sed on
->> the chipid, while the kernel already did derive this information.
->>
->> There's many ways userspace could do this, and I don't want to incentivi=
-se any
->> of them.
->>
->> For instance, you previously showed how userspace derives the SM value f=
-rom the
->> chipid with sm_for_chipset() in mesa with its own lookup table.
->>
->> Then in NAK (src/nouveau/compiler/nak/ir.rs), there's this code.
->>
->>         fn is_turing(&self) -> bool {
->>             self.sm() >=3D 73 && self.sm() < 80
->>         }
->>
->>         fn is_ampere(&self) -> bool {
->>             self.sm() >=3D 80 && self.sm() < 89
->>         }
->>
->>         fn is_ada(&self) -> bool {
->>             self.sm() =3D=3D 89
->>         }
->>
->>         #[allow(dead_code)]
->>         fn is_hopper(&self) -> bool {
->>             self.sm() >=3D 90 && self.sm() < 100
->>         }
->>
->>         fn is_blackwell_a(&self) -> bool {
->>             self.sm() >=3D 100 && self.sm() < 110
->>         }
->>
->>         fn is_blackwell_b(&self) -> bool {
->>             self.sm() >=3D 120 && self.sm() < 130
->>         }
->>
->>         fn is_blackwell(&self) -> bool {
->>             self.is_blackwell_a() || self.is_blackwell_b()
->>         }
->>
->> That's two unnecessary indirections for something the kernel already has
->> available.
->
-> Userspace mostly uses sm id and engine id for feature checks, and I'd
-> like to keep it that way.
+Starting with bindgen 0.73.2 [1], `#[allow(unnecessary_transmutes)]`
+are used, even when `--rust-target 1.85` is passed.
 
-Please note that I did not ask to change any of that in the context of
-chipset/architecture enums.
+However, the lint was introduced in Rust 1.88.0. Thus building with
+older Rust versions warns like:
 
-What I said is that I don't want to incentivise userspace to derive the
-architecture of a chip on its own, given that the kernel already does this.=
- (If
-it is never needed, that's fine too, then we don't need to export it. :)
+    error: unknown lint: `unnecessary_transmutes`
+         --> rust/uapi/uapi_generated.rs:26294:13
+          |
+    26294 |     #[allow(unnecessary_transmutes)]
+          |             ^^^^^^^^^^^^^^^^^^^^^^
+          |
+          = note: `-D unknown-lints` implied by `-D warnings`
+          = help: to override `-D warnings` add `#[allow(unknown_lints)]`
 
-Of course, architecture and engine class id can't be used interchangeably. =
-The
-engine class id is more fine grained. For instance, the engine class id is
-different for GA100 compared to all other Ampere chips.
+Thus allow `unknown_lints` in the generated bindings -- only when building
+with older Rust versions.
 
-At a quick glance the code above looked to me as if it doesn't care about t=
-he
-engine class id, because the granularity is architecture granularity and no=
-t
-engine class id granularity. But at a second glance, I think you are actual=
-ly
-deriving the engine class id and it just happens that the code does not nee=
-d to
-consider e.g. AMPERE_A vs. AMPERE_B, which is why you don't have an
-is_ampere_{a,b}() accessor I suppose.
+I have asked upstream if this is intentional [1], i.e. if we are supposed
+to always allow unknown lints in case `bindgen` uses such attributes,
+or whether it is an oversight.
 
-That said, nova can easily export the engine class id information instead o=
-f the
-architecture; the kernel will likely need the engine class id anyway. (Alth=
-ough
-it depends a bit on the GSP-RM API, I think technically it could get away
-without the driver passing it in.)
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Cc: Emilio Cobos Álvarez <emilio@crisal.io>
+Link: https://github.com/rust-lang/rust-bindgen/pull/3455 [1]
+Assisted-by: LLM
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/bindings/lib.rs | 1 +
+ rust/uapi/lib.rs     | 1 +
+ 2 files changed, 2 insertions(+)
 
->> Yeah, although if SM is correctly reported by the GSP, I'd rather have i=
-t
->> exported in an info structure than have userspace create its own lookup =
-table.
->
-> As others have stated, the sm ids reported by firmware don't always
-> match the sm ids documented in cuda-related materials. and nvk follows
-> the cuda conventions here.
+diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
+index ad24c920b919..9e2c9a8e7e6c 100644
+--- a/rust/bindings/lib.rs
++++ b/rust/bindings/lib.rs
+@@ -27,6 +27,7 @@
+ #[allow(clippy::ptr_as_ptr)]
+ #[allow(clippy::ref_as_ptr)]
+ #[allow(clippy::undocumented_unsafe_blocks)]
++#[cfg_attr(not(CONFIG_RUSTC_HAS_UNNECESSARY_TRANSMUTES), allow(unknown_lints))]
+ #[cfg_attr(CONFIG_RUSTC_HAS_UNNECESSARY_TRANSMUTES, allow(unnecessary_transmutes))]
+ #[cfg_attr(
+     CONFIG_RUSTC_HAS_SUSPICIOUS_RUNTIME_SYMBOL_DEFINITIONS,
+diff --git a/rust/uapi/lib.rs b/rust/uapi/lib.rs
+index 2df0340e63d1..c1e27192ecce 100644
+--- a/rust/uapi/lib.rs
++++ b/rust/uapi/lib.rs
+@@ -24,6 +24,7 @@
+     unreachable_pub,
+     unsafe_op_in_unsafe_fn
+ )]
++#![cfg_attr(not(CONFIG_RUSTC_HAS_UNNECESSARY_TRANSMUTES), allow(unknown_lints))]
+ #![cfg_attr(CONFIG_RUSTC_HAS_UNNECESSARY_TRANSMUTES, allow(unnecessary_transmutes))]
+ #![cfg_attr(
+     CONFIG_RUSTC_HAS_SUSPICIOUS_RUNTIME_SYMBOL_DEFINITIONS,
 
-Yes, Alistair confirmed this too:
+base-commit: 2ac74c6db40adaa29c50cbb281ae9a6f63de18e1
+-- 
+2.55.0
 
-	Yes, I did look into this. Unfortunately the SM version GSP currently
-	reports is different from the SM userspace code generation tools need (I
-	have no idea why, there appear to be way too many SM versions).
-
-However, I don't think we have to just give up on all this. We have NVIDIA
-people working on the project and firmware changes are made specifically fo=
-r the
-project already. So, ultimately I think it would be great to understand why=
- that
-is and possibly provide the correct information.
