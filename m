@@ -1,84 +1,83 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CD2563FA6
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Sep 2026 15:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F2C5540AE
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Sep 2026 15:37:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788967981; cv=none; b=EqT9j91+6ZH098y58MR0sV4RS2/zF6wm029+Gxip3tnoQ8Ip4a6lml+bizSComMdTut11Hj74Mb8pwAsuNW4G1p+/vwfnn1WLZ97Ap0p8yWYSq6SRKJGoJ3t1+fRcqdYLG4Xvv1XUtx7sg+SfFSzXOe0zPec5uYmttRVEHGsqv8=
+	t=1788968252; cv=none; b=W1+I9+DUM81Y9Y7VBNbQyYmeqYDxLHD2sb5Ug/RxkKSuw+eXnAM4+WDNoMk9b43v1tNusvtTwPinvDhKtwSUMPoNMI0RdFGOzO356xDD250l2mT3XmNeSn8eVh1ZqoPGNXwE3vfUwycppq5JnK7B/5X/hUuyC+is6WMc0D5o814=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788967981; c=relaxed/simple;
-	bh=t3yqbvSqtFoLUHow+WwPXXOfeaEh7bClm80fMM9rQTg=;
+	s=arc-20240116; t=1788968252; c=relaxed/simple;
+	bh=tlXMq73KJhLbqOa3sBQb6U+eAptv38yQqOaGm+TCraA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NDjvp0/CLJUtU3hieLI6FRUYl9rs3d2nYBX4CQ1oJS7GiazJrKzWUYJEDfIbesna2r9YXh5LMpI10PiiOW+iKRYWRAyOREc8LGFPlhkHZHyXtyTQRooaGDCljZsEGMDp7qDCG1/ml6/GHVLBG7SPQ8BAl0o6Qf/61qyp6DtUKpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FQKLDsfO; arc=none smtp.client-ip=209.85.208.170
+	 To:Cc:Content-Type; b=ZaqGc0x5jM5Aob3eDi48GHu8Cb8MwaMtvBs0SiupDlH2RJ5gNGzNyMWVPuvOBZ2z9SQ1KHvo56BdoUWv1qHkeYhYsiLdCZ8Lf5WWiG6q4MAwNwjw4OCb30uhoKDSujLpo4cgVGwryTBg8YPJjh8OKT7tM29QWB+ZztJ2YrW64Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XwHjtY/U; arc=none smtp.client-ip=74.125.228.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FQKLDsfO"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-3a1981228f8so51528631fa.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Sep 2026 08:32:58 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XwHjtY/U"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9f0b1fso183211666b.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Sep 2026 08:37:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1788967976; x=1789572776; darn=vger.kernel.org;
+        d=linux-foundation.org; s=google; t=1788968249; x=1789573049; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/FowYqhA2IUhImtOTNUOvZbuU0tnu+Lv5LcROnzCHgI=;
-        b=FQKLDsfO7XOOTzbgGCRCZkZXNPARCw03IYYJY8+Ee1IWA9dkDElvV9SrpiQe+nhQSl
-         yp9hSYdExvp2/fwT9LOKMPXkOK6zEpjkeHf9al7wzBwH1jheS3oTPDBdOu4jlY8NQlOD
-         pksavNI4YN7rJxxT7AAMjve5reqhv9Dwc64Mc=
+        bh=B7MDRo1IEz0/ztB5k2AgA6IiU/moC5VF/pQ54TqLA70=;
+        b=XwHjtY/U+jym45pEEOV74PkUlxGZmwntlmHaBN6DVTjlPQ0cYksJu25Z3tXy5VqyPH
+         /xRc2h2BnwudNBdvoRiQbfszEjrP2xIxXcFuQS6+tEH1uB4Hny/BxvYeTnRVtseAHQGP
+         2bOQK//DdhIzDHr5ESFNAwTHZW3bnPd7g9lCM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788967976; x=1789572776;
+        d=1e100.net; s=20251104; t=1788968249; x=1789573049;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=/FowYqhA2IUhImtOTNUOvZbuU0tnu+Lv5LcROnzCHgI=;
-        b=LSkD/DTfeCUBhgCbddLhha1gSmtxiddYb6FK7IVu9hV/QHwBFxvKnBpVZ0i0UuBW/K
-         69Tq7wI+HBy5QrvIHcf8Npoo3hnUYy4eArAGxwh45lhhgiXs843xjT57y2RaPjDKp9c/
-         fD8IC5VFFvTtzF2gUz9oFyGOrSyyZRHBU0rCJchGSknsMwjjjYgwTXxwJGT1fTid7KRu
-         //XP0kmZN9xXg/4fstEQcL4qwlhuNYafMQk4p5j5BFMPXWAl2qixPlYtjUO4Fh1ScKFj
-         sOR2DNE21vnOa1Blxz/IOncIPzzy9g3BAfjYTyk/Ref4CsJTzfylDN8X2E1MyDs2liDk
-         /3qw==
-X-Forwarded-Encrypted: i=1; AKwUvBwgfWnqEEZLp41QYbst+sMfBe0kK0M3Npf4kPQXRs0IfjRn0oBqPQkeNo2lNMBkDoWixMtFdI19i4xo4+SPDA==@vger.kernel.org
-X-Gm-Message-State: AFuF++m/bw2eOEF7V/fC1tiFS+gRoqQ4rGOIXU69ijvEqUqS/giRAzCd
-	B1kFYWDZnSt1fQWa2pck2Y8r8vySajUtuhWAf3Mm9emOLC3PygAa7NU0x38G78gCizCbxPwESMK
-	qpFlvN+5T6w==
-X-Gm-Gg: AYBFou3PG1fTeuZPeNS4VNx0zytvMCXwVvJ2LHWd45tI7KcX9p3PuPZIz6eGjFvVIsx
-	T6A26NCmYrm73uSAMucMw/zDDEAEvj/ESdQpgy+eJiHf7zEgsZEjy+a1Arg5PkHooQtz8m+7Hkl
-	SlH8LfxXbKtlkyN6XyTRXBZ7cezklO4MzWvFoa1gpmWujqwBZk7YPq8W8yxlNBqEZrtQtOCpL8z
-	z6/3hb9KleakhXOMkVATovFQAi6eMT8JV+U5ZxeAs/bLxMvuSj1PQJr+Dynfix+tY7m7XWmiAti
-	BpL9+yVitxEQJxvoYZ5oBsNjPxLu2LZ5TPjVZbvYO7l1BrnH2d2wsu5gWRJz/hVHaLxw6V3Y4GC
-	5rB+cxE4sm9a+Vm/5bYZReBCKpnWShrxSbx7jUNlI4MgNq8dVVsMM8YuDN8WDNAyLF/DCKnIL8R
-	jVwN3m051dU71lmsp7ACGMD9HHuzx+GvK7ZxwhvYPVbTBvTDuQl/YYsFIwabTrBhTIItRKx1DzJ
-	kwhW1Bj0RPuqHA6xcri+4mAEeQK9wXc/pvICOP7iFAmc0z/
-X-Received: by 2002:a2e:a551:0:b0:3a5:8dfb:8c2b with SMTP id 38308e7fff4ca-3a58dfb8f3cmr1686961fa.8.1788967976227;
-        Wed, 09 Sep 2026 08:32:56 -0700 (PDT)
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com. [209.85.221.52])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a464106771sm39869051fa.29.2026.09.09.08.32.55
+        bh=B7MDRo1IEz0/ztB5k2AgA6IiU/moC5VF/pQ54TqLA70=;
+        b=gDI7r/N+FHBcAYayAr0mmpzBv0Kg5cx+1VVpcwE0lkMBrFYNaS8sGiwVJxQaFv9sd7
+         AS2N2MmnmTSqnqkB1iH2rpNlU+8h0QDFgjQ4PITAMMW56D3derbIYgmY7XEfMKLWK1zD
+         mLW/sJnzz0Di5yYT0II38HRkBp0rOes5QPCzOTvs/ukzFzbej9Ts1yEHpAkyiYsoHMkV
+         9Oa3WKZ1lcFnT/OI/bRGd1IwBQjkCjoWhfWMLNCKhmSMb0NY09PNdZ6fB6oXWfKXiHY+
+         OwyHEKpXvtN590zRpqb2OgQbaOUoHR37N7ui40UpjzBJQyQeUcO+csUdieV/s/liC20b
+         f26g==
+X-Forwarded-Encrypted: i=1; AKwUvBzpnjmIiZSxtcnM92lamp3R4P10rqXqr/WLDimZNDIwK8S9wnZ3J87xncYBgCF+tnaVHTRNzHvjY1uFl20xyQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++km9yR797wSR1pJXGUDds/D5zuv5Ywkfm5o4AaQbjckpo6Bw1IC
+	D7B0y7ieZg/7wJ4mtFUzFP2Yki6is2aUsOH1tNWHSAQYTYW1kH/9VspKUApvLCVKGWKBiHPrA2V
+	UVzzU566tDc18
+X-Gm-Gg: AYBFou09cEWFpgt7PffdVYtr6KZLafXKTJ4aj3tmMdkUGevbJSCVJdwqLyVW6t5CQr1
+	W9wO1auNBrbxI1cYSISyJugWvA2NhNL+LuCToD8olaTGobzY8jVf6R4rn+KsMWZmLo9XnAb46HS
+	3e1GaKhI9nXVpeojxWEtqJi1JxxKOB8EJpctofa25DML2JJ8I10l8ZSBTTNKA5CnoWCJpjDDwAU
+	HO/51YrR2ac7mO+qC847KsbiAw8nkutbaDMMI+xFpmoO5SWJ73X6n0rgE6RuStoALpyES5hsL9t
+	1jYByohVuMfjHq8NYCWvyq7EWQfYnZhlhf0V5ZIphENvytnoH7mKKjTmPFKc+t1gHN1W7CudWA4
+	pMVbiCnSlsM0wDIru8ZV8LH6ekHQbIAYxh1zdyxZDdfWpnkHrsQpeO1rIGP5Xra3NYKIWGZAmko
+	2PZ8azBI+WNNP7vn9RuEXbIioCb7nNlmixBR+QBqDz5oNAxtca690m7zQd5xD3FSegXoNDN38/F
+	1yibNn9435BIbtC/BRjNqUtOXpkoA==
+X-Received: by 2002:a17:907:c50e:b0:c29:450f:bdbe with SMTP id a640c23a62f3a-c29450fc2d9mr22133166b.16.1788968248697;
+        Wed, 09 Sep 2026 08:37:28 -0700 (PDT)
+Received: from mail-ed2-x10.google.com (mail-ed2-x10.google.com. [2a00:1450:4864:33::10])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d4aa0b9sm799137066b.11.2026.09.09.08.37.27
         for <rust-for-linux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Sep 2026 08:32:55 -0700 (PDT)
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48441a2ba14so5052680f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Sep 2026 08:32:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByZchWWqBhhAA/9zfWVfMjrqDntko2Rlco2jyf8kJ2JwnMuye1ofstX/bVMOJRrxTS5jo9AXT3guohZRjUKDw==@vger.kernel.org
-X-Received: by 2002:a17:907:da4:b0:c26:1649:47af with SMTP id
- a640c23a62f3a-c26164955fcmr1368813666b.37.1788967618809; Wed, 09 Sep 2026
- 08:26:58 -0700 (PDT)
+        Wed, 09 Sep 2026 08:37:27 -0700 (PDT)
+Received: by mail-ed2-x10.google.com with SMTP id 4fb4d7f45d1cf-6a60591ae52so1920429a12.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Sep 2026 08:37:27 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwlORbJTrzx1VkYJFY1YwVEUn9wDTXKJ3dokP8K+s4S6xnkgpIi5DcRkz1reaqIy3Ywr6rziB6XU7rrP2Yj2g==@vger.kernel.org
+X-Received: by 2002:a05:6402:3817:b0:6a6:58e:f84b with SMTP id
+ 4fb4d7f45d1cf-6a98dfd77b1mr5256449a12.9.1788968246832; Wed, 09 Sep 2026
+ 08:37:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org> <20260908-build-speedup-v1-11-5dc1ac01672d@kernel.org>
-In-Reply-To: <20260908-build-speedup-v1-11-5dc1ac01672d@kernel.org>
+References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
+In-Reply-To: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
 From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 9 Sep 2026 08:26:42 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiA_UJbKiu8fOezKV=MfEcaFuzZiuk8Fto-Bc1KrA=43Q@mail.gmail.com>
-X-Gm-Features: AcwNN1UWYYtk4z7iDc5cI-l9BNT1_XTZBZ1EzZVT-QGEk4RrzSdK76DVFXE4iKE
-Message-ID: <CAHk-=wiA_UJbKiu8fOezKV=MfEcaFuzZiuk8Fto-Bc1KrA=43Q@mail.gmail.com>
-Subject: Re: [PATCH 11/23] kbuild: implement and use depcheck to check
- dependency timestamps
+Date: Wed, 9 Sep 2026 08:37:10 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wieaheq8rXSps3xRZpNNMQMEj9BH5gU+Dh4q_ZgokO51Q@mail.gmail.com>
+X-Gm-Features: AcwNN1XKEJS_S8eITIntw19v_mcHyut1QfPlZfjowWaI1qZq5Mivgkqwhzm7f_s
+Message-ID: <CAHk-=wieaheq8rXSps3xRZpNNMQMEj9BH5gU+Dh4q_ZgokO51Q@mail.gmail.com>
+Subject: Re: [PATCH 00/23] kbuild: significantly speed up kernel builds
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
 	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
@@ -105,49 +104,53 @@ Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
 	Jens Axboe <axboe@kernel.dk>
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 8 Sept 2026 at 13:57, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+On Tue, 8 Sept 2026 at 13:55, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
 >
-> Each object's .cmd file lists its header dependencies, which often
-> consists of over a thousand dependencies.
+> A typical kernel build consists of a frustratingly large amount of time
+
+.. you're preaching to the choir.
+
+>                 == allmodconfig FULL build ==
 >
-> When little has changed in the tree, this is what make spends most of its
-> time doing, spending over a second, single-threaded when parsing larger
-> directory trees.
+>                         before    after     delta
+>                       ----------------------------------
+> Threadripper, gcc       345.3s   275.2s    -70.1s (-20%)
 
-Side note: from some kernel build profiles I did long ago, I have this
-memory of it being made much worse by the fact that we use
+Well, that's certainly very encouraging. We should do this. I sent out
+some emails as just reactions to individual patches, but I have no
+numbers to back any of those emails up, and I never actually applied
+this series to my tree - they were all based on reading the patches
+themselves.
 
-    "$(wildcard xyzzy)"
+That said:
 
-for all our config header files in those .cmd.o files. That then
-causes extra work for 'make' for all of this.
+> An LLM was used to first determine where the bottlenecks were then to
+> figure out how to improve them.
+>
+> It generated a lot of code, much of it hideous.
 
-And we do that 'wildcard' thing not because we want to actually match
-a pattern, but because that was the only way to have 'make' not
-complain about missing config headers.
+This made me scared to look at the patches originally, and I held off
+in fear that the patches would be horrible and this build time
+improvement would be hugely controversial garbage code.
 
-I'm not even sure the original reason for it is relevant any more -
-this is all a very dim memory from years and years ago when I actually
-tried to look at profiles of 'make' itself (normally when I do kernel
-build profiles I only look at the what the kernel part of the build
-is, not user mode).
+But:
 
-I just tried removing the 'wildcard' generation from
-scripts/basic/fixdep.c and the kernel build didn't care about it at
-all. The whole 'wildcard' trick goes all the way back to the original
-commit that added that whole 'fixdep.c' phase.
+> I extensively audited and rewrote a lot of it, and heavily edited commit
+> messages, the cover letter and comments.
 
-Maybe the whole thing is entirely stale now and should be removed. I
-probably just didn't trigger the situation where those extra
-'wildcard' things matter. That whole thing is from a quarter century
-ago, and nobody has dared look at that code since..
+None of the patches look at all horrible to me. You clearly excised
+the hideous parts. All of my reactions were of the type "this could
+probably be taken _further_" rather than me throwing my hands up in
+disgust.
 
-Or maybe 'make' is better at those wildcards these days - or other
-things have shifted.
+So the Rust parallelism thing clearly isn't ready based on feedback
+from that quarter, but the rest looked safe and innocuous. I'm all for
+merging this, although it should obviously go in through the right
+channels. Mostly the kbuild tree, although some of it clearly would be
+other cases - the objtool change in particular is fairly substantial
+and needsobjtool people to approve. It didn't look all that
+contentious, but still..
 
-From those dim memories, make spent a lot of time doing filesystem
-lookups (directory reading  and 'stat()' calls - the wildcard thing
-triggered more getdents calls), but even more time just in string
-handling.
+Anyway, I'd love for this all to go in. Build times are a pet peeve of mine.
 
-               Linus
+              Linus
