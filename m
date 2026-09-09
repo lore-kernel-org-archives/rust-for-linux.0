@@ -1,104 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED170583AA9;
-	Wed,  9 Sep 2026 14:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40CD3CFF49;
+	Wed,  9 Sep 2026 14:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788963699; cv=none; b=KJrDcoAWknNj0eI546eA1rBxRmrJM/Mjx9XwsukMYpKqfpM3vjfQj5/L7V0WCpqPPSAB3FkpZ38l+m+L8/bflHEi2jauZ+y5DLFxl2eRBoPCuaiV2bkGW0OvjWHHF7njJSB27tmqqgcirxGpQaZIiU9IQWE3LoUrXPzsUgvZGTI=
+	t=1788963753; cv=none; b=Dh4OWqKEQN8RzmGnUivd6LAR/3GlBulxds+ZE6ZsHT1nwS+08vErq1+QK+mxssXFgCe19Z0+tPPfsXO3KNjXlNHSR66CIi7qLTKNW5jmBis5B5kcFf4r4sMMs3swdJ1R77dzNrNinR7rEu6PDcgRDC3BCyNSmgFkvebI1NPnzuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788963699; c=relaxed/simple;
-	bh=u3LQLk1Fga8Uu9bgbWoAgfnIG14OqYfgb+u2suqWZzQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LpPVa7vhYbNDVsdtYdaBDH/nyZlq8d+xToITKjl1L/rVJn9hUjsMQqU4Iuyly1GRPNVq43p5C1VZkOMkx9fYoCak46Mq4E9pfhDI3wW/ShqABL8i1mCWd7uf+TJNoQ//4pUrUjz6+o5fLeT8hemKJqCgQD5kdgRLs/jx9EjZOMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LJaI9lOb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788963753; c=relaxed/simple;
+	bh=xhaQtXKXvGz1RizoQa7SuL6Y+tbxk3SF34NiCq25TtY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hu41MpNKw//ubixiRiqUpTfZdDjVmhImrcFGIYBzvlKHvUcwiWIZbaR/E6Wq+tYW/HZecHbTv4gOlu/tGiH4bGkEdrhTNGNOHM2g6T6PBV9IwVm1Wh6AWzOH9SlYki0I6Gv8rsJIWkB3EDqw5XtG0ag+IvwIANav76MW/AJZ0B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I3WQzUYy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LJaI9lOb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF18A1F00A3E;
-	Wed,  9 Sep 2026 14:21:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I3WQzUYy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CED51F00A3A;
+	Wed,  9 Sep 2026 14:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788963697;
-	bh=hLijVf+xRDlxipvZ776I2HCvPwbsHIhjYtsUlH08peI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LJaI9lObJst9uoqN1vYu7Y7bf0HQkv27lDNyvT3u5Z8uVPgp7fUGgYbW2SYhDnDsl
-	 zlKPvBwE/E1y4xURDBukUh3KYTrwGd6v9FwMJMTM2xurBrsi9u2wBIuNJKYQ45gKz0
-	 GGqK84SpQRnDUl/1BskTNwkB/mCiPgaEBXqUS7FHMjasDC3yR02CrIfC9d7CxVp172
-	 1B9gaGxKK3lrDp5wC9lQ0AqwvRMhx1Gy3o/xkS9J6CummKPW5X1Dl8Opi9xu1JRTng
-	 JDGZHg9TP8ZywK/g/jlBCj8zU8nyiMVaY+ihhPMvbDQpxeXv4SwT9kMJKucd/5UhNe
-	 HwcTYYBWTFc3A==
-Message-ID: <dcc557f2-b537-45a6-ad55-3af5fdbf9f7f@kernel.org>
-Date: Wed, 9 Sep 2026 16:21:33 +0200
+	s=k20260515; t=1788963752;
+	bh=Pk1B8WY2LVSwCYtQsLVOVpVrwdeq2SzwuwcAh4JLsyY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=I3WQzUYyylKqYJS5qmsgtV4gCaBjFEJYODcC8Ol3i3kBCe2qTrc5wzzZNNy4kF7ij
+	 8pZMcrWK2JFQFt3KXt2LCmR0gY6JjzAAUj7SLD3O44QFr+LDHBDnSGzjJq2i1A5esv
+	 WQ/mxgnq/ZIfTB3Sw6DGSX81V+jiVwk3Xg+uc6Vo5k3b/humXMJcjQ/TwY2F+Shm3v
+	 R7yFCwfbbcoXINobG4EEvcVgDaAm1bZ5cKxJ84+SXKZqdc4B1YjEjMydoXY9AXcm2x
+	 k9tQ6yabRw+huoALoDMWZNBCDcyVj6/awBwzLz7HZAXgAWaQCg/ZJBXt1SzsvNgMI4
+	 IPvSDHhFEdzjQ==
+Date: Wed, 9 Sep 2026 15:22:17 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Alexey Gladkov <legion@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Jonathan Corbet <corbet@lwn.net>, 
+	Randy Dunlap <rdunlap@infradead.org>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
+Subject: Re: [PATCH 20/23] kbuild: rust: parallelise rustc front end
+Message-ID: <aqFre1PzEBhrQDpZ@gremlin>
+References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
+ <20260908-build-speedup-v1-20-5dc1ac01672d@kernel.org>
+ <CANiq72m5C5tNKUWTYYerBt81KtqRLgr-S4c5XLUN1uY5n7mqiQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] rust: maple_tree: implement Send and Sync for
- MapleTree
-To: Eliot Courtney <ecourtney@nvidia.com>
-Cc: "Liam R. Howlett" <liam@infradead.org>, Alice Ryhl
- <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>,
- John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Timur Tabi <ttabi@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>,
- Miguel Ojeda <ojeda@kernel.org>, maple-tree@lists.infradead.org,
- rust-for-linux@vger.kernel.org, nova-gpu@lists.linux.dev,
- linux-kernel@vger.kernel.org, Joel Fernandes <joelagnelf@nvidia.com>,
- Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>
-References: <20260908-maple-tree-send-sync-v2-1-24aae5b3a990@nvidia.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260908-maple-tree-send-sync-v2-1-24aae5b3a990@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72m5C5tNKUWTYYerBt81KtqRLgr-S4c5XLUN1uY5n7mqiQ@mail.gmail.com>
 
-On 9/8/26 11:54 AM, Eliot Courtney wrote:
-> From: Joel Fernandes <joelagnelf@nvidia.com>
-> 
-> The C maple_tree struct contains a *mut c_void, which prevents Rust from
-> auto-deriving Send/Sync. Following is an example error message when using
-> MapleTree in nova-core's Vmm.
-> 
-> This propagates up through MapleTreeAlloc to Vmm, BarUser, Gpu, and NovaCore,
-> causing NovaCore to fail the Send bound required by pci::Driver:
-> 
->   error[E0277]: `*mut c_void` cannot be sent between threads safely
->       --> drivers/gpu/nova-core/driver.rs:77:22
->        |
->   77   | impl pci::Driver for NovaCore {
->        |                      ^^^^^^^^ `*mut c_void` cannot be sent between threads safely
->        |
->        = help: within `MapleTreeAlloc<()>`, the trait `Send` is not implemented for `*mut c_void`
->   note: required because it appears within the type `kernel::bindings::maple_tree`
->   note: required because it appears within the type `Opaque<kernel::bindings::maple_tree>`
->   note: required because it appears within the type `MapleTree<()>`
->   note: required because it appears within the type `MapleTreeAlloc<()>`
->        = note: required for `Box<MapleTreeAlloc<()>, Kmalloc>` to implement `Send`
->   note: required because it appears within the type `core::pin::Pin<Box<MapleTreeAlloc<()>, Kmalloc>>`
->   note: required because it appears within the type `Vmm`
->   note: required because it appears within the type `BarUser`
->   note: required because it appears within the type `Gpu`
->   note: required because it appears within the type `NovaCore`
->   note: required by a bound in `kernel::pci::Driver`
->       --> rust/kernel/pci.rs:294:19
-> 
-> Implement Send and Sync for MapleTree. The tree contains no thread-local
-> state, and all shared access goes through the internal ma_lock spinlock.
-> 
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-> Reviewed-by: Boqun Feng <boqun@kernel.org>
-> [ecourtney: also require T: Sync for the Sync impl]
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-> ---
-> This is a repost of Joel's v3 [1]. The upcoming nova-core memory
-> management changes depend on it.
-> 
-> Compared to v3, I've added Boqun's Reviewed-by from the v2 thread [2],
-> which v3 didn't pick up.
-> 
-> This is based on drm-rust-next.
+On Tue, Sep 08, 2026 at 11:13:04PM +0200, Miguel Ojeda wrote:
+> On Tue, Sep 8, 2026 at 10:59 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> >
+> > A future -j/--jobs option is planned for
+> > rustc:(rust-lang/compiler-team#1005), so check to see if this available and
+> > if so use it.
+>
+> This is already implemented in nightly as far as I can tell. If it
+> weren't, we shouldn't add it, even if planned.
+>
+> (By the way, could you please add Link tags for those URLs?)
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+Ack, will do.
+
+>
+> > +config RUSTC_HAS_JOBS
+> > +       def_bool $(rustc-option,-j8)
+> > +
+> > +config RUSTC_HAS_ZTHREADS
+> > +       def_bool $(rustc-option,-Zthreads=8)
+>
+> We can simplify using `RUSTC_VERSION` for these like we do elsewhere.
+
+Ack also!
+
+>
+> Cheers,
+> Miguel
+
+--
+Cheers, Lorenzo
