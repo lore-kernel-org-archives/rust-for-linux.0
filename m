@@ -1,280 +1,121 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013062.outbound.protection.outlook.com [40.93.196.62])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A56D531;
-	Wed,  9 Sep 2026 04:48:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788929314; cv=fail; b=e2JwXLGS9ip5V0QmuFZnNcgc4cdmtUMIfeg2ormCxtn6HkZjrJBUWrRkRm54L8RvvIx5ds2wBhcC0EGfOVTDjTD6uPJoD5Tskbu+ZDi1HbYy/rDBrMBsuAZTkJCJLY2gxdhKnk1ypXmYTrbqeazJQ3gU1d5wz0a6fJ4d1SQUdI8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788929314; c=relaxed/simple;
-	bh=P1JE37ZoVRLggZnI5ubj2mimJcnAGtmwAmrok6Se0sw=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=Uw1/FNGI9gEreJbkpX8FY7KC8hnp8OO15sgJRKkvqL1rD35/UY7uGftQsWiXt3871uYOD+6bN8F/xVciVy9/gjD11C9U2RLNA02NZvejKCbHJD32y4kWCasE7hZ+X9qFdbWDVNsYSBr7E6iUkcywIiWfl9UQgOnW/UXkY2DudP4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=p0JbQkIZ; arc=fail smtp.client-ip=40.93.196.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB1334389C;
+	Wed,  9 Sep 2026 05:59:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788933595; cv=none; b=j0biSg/JioXPGR7W2HBJsTYXlNKmiDP1mBE1opz05DjocYI2Vf8iEcaytatjyQUiMQI2lUIanxl5eSiLXDAlBphkZ9UDusFCmugphhJaUVUOYFQNTgDF1RN5Bc/18shp+xeNfFgrl2rBNrLP608M9f2IiHfFN+tTQy61a3hrFec=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788933595; c=relaxed/simple;
+	bh=3Qbj6r+ei/gkmMYffeb/443xB3qDlB3pxJCAAWsXO50=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bg9VFzZLSKXFo8oMbAvnje5UyPGnvEeMk52EgoMRgyKE43kxTgvb2aD7ZCXkkybBoQ4kSfLkhxLoNU9ye/b+k7kkn0Cvmo9M+l8BtlooC4dcxaYqu0qtEoP3RLhNHYedP8kMR6CTDEiuYhASaozdibziLj1rD7GCvOdslJhurs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CMEIGvTJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VonGHAfq; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="p0JbQkIZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zStoVfZaiqcZ0SUBwD0YuDaXauwOPjzuVf9HRBKVWIyfUL2chN8smHtjfNup0sOoEhoKBpyHXUrfB9Y55RJetO6QIzA0UZAsbNEPe7KY7ei/QVWu4jBKYoesTm1JnMxjCrX/Oc71onlC88ZHj9dcpfZ9R7ueQOoIPrdpAH9ZMsBL3vXn6ebWPwpm5nsY+kgrFplYIKtwOJ4LNBf0v/UbxS5DUAuNiO0e3BhjhFRtNOKf3NleIKB0BpmrK4aUA4kwKR2uHXIWR75cgg94LtvTVVYYwkI3Q+LPmeZMhOcrTace2qmVNLH+1SWf83omEnzDwndTCSScUp42QNYfkrL9iA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F4pLmjB2LdTu6iRMarvGbGzNuMDTbRKhVIZu4BBeQWs=;
- b=Ox5sWMZS26rfjLVl6kCMxh6LP6gSmMXnJGwuqw+beE4QAWxpohv6PBft3AAFCsJujRDF8nyKUfUf/R+BAHdDyvOHKV2hYoceK7MxEQ9ErpoZ1v5rz3Eejzqah14+gL8dTJBbKPl0DtehnKRF6Z46wDHLoDkpIwcLD3naXYVJhBg12Dp0NeD3HitZ0e0JGAWXzDGn6OPIm6gmllygBd79TGQ+Sz756QCqckTbGXurgoiOD0QrcTiCMLsTxt8ghg4DFPprKsJJnQjabG/4BLg4E9TC2c8XPkzWEZUcMfyGFju15N4+Il6FzNpslPmwIDatee/gVC7NgblTFDs1lFOlkQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F4pLmjB2LdTu6iRMarvGbGzNuMDTbRKhVIZu4BBeQWs=;
- b=p0JbQkIZXYCPRVc5vds1O9iJVUuSOF4MSdNIGb7jxnA+2ylQ5ofSN0sBSE9ps4pLCTXMldfGxqoXC7xTtZK6pF5arod2uT+KN/QQQ63eLCxJx3b/9/IRMYaACZYHthtxuk8s8tOSjVM5FERtqcklD1vDBFDcrnDcDfThqfFkb2M1dOnrNI5u6In9xwAIK5VJlyfbzhmpiXPm10N0qFRuq8wcQ/ZXIz1zCTZMxEECOiXWb2wpZKv0YGb2yJcuuFM294FF2V4hyCCm69wzqvkNdaK6+lX4VHHCffgHAjGNneKc9s4AlmsNj9EB/EF54/HHN3nhELXgb7OwbIBt1kvC3A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by PH7PR12MB6953.namprd12.prod.outlook.com (2603:10b6:510:1ac::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Wed, 9 Sep
- 2026 04:48:28 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0406.005; Wed, 9 Sep 2026
- 04:48:28 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 09 Sep 2026 13:48:25 +0900
-Message-Id: <DLAIIHELWF8H.3KAZJV8DOIJ6O@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Lorenzo Stoakes"
- <ljs@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH v2 5/8] gpu: nova-core: add NVKV decoder
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Eliot Courtney" <ecourtney@nvidia.com>
-References: <20260827-b4-nvkv-v2-0-0de9d5c8658c@nvidia.com>
- <20260827-b4-nvkv-v2-5-0de9d5c8658c@nvidia.com>
- <DLADH5QVXWSD.2FO9OVBIGYNQG@nvidia.com>
- <DLADY8BA86SI.125037GQGOEN7@nvidia.com>
-In-Reply-To: <DLADY8BA86SI.125037GQGOEN7@nvidia.com>
-X-ClientProxiedBy: TYWPR01CA0005.jpnprd01.prod.outlook.com
- (2603:1096:400:a9::10) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CMEIGvTJ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VonGHAfq"
+Date: Wed, 9 Sep 2026 07:59:51 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1788933591;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XfBuOKvuia8jKU4jKhI6ImQ24+OP+x2lVvStL9kHB6c=;
+	b=CMEIGvTJ+RpDUpaQX63YOGpF9L1xMeGi9s7P9EumAFOOXvZhDn04zc5cDcznjmEwFWcMKn
+	aV3mh9HSsioEvvDCuqmuPhxAz0EDxVz5FVZWfmObWfXRSybwQ1ZxDVQ4z0tJ5bj8HKl6QH
+	2LpCD9FeG6rAkLbfiSKloV9FiP1FFipkSzlhBo3Zplknr1ofEEQBBTOoi2c+qR7w1FFuf1
+	oLRZ1Ohqd/R7qrq1gOVWGdmCLZlvGzRsKpGh6crrwVT4V1hNIEeMZP96qZ+DAKQJ/Yh6qb
+	V/ykB9y+Wc32WJFwaNxXjYic0iDsUwgblz+2Yps3KMILiE5BRXmRKCLGA9EuDw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1788933591;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XfBuOKvuia8jKU4jKhI6ImQ24+OP+x2lVvStL9kHB6c=;
+	b=VonGHAfqnQoueeh6Hl3Lomphhnqa2H/lUyc5Ke65gvgt5gNmjnE70KZBPhdx4hgXdpJF0U
+	tvpV+04d2I30q5AQ==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Andy Lutomirski <luto@kernel.org>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Christophe Leroy <chleroy@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org, 
+	linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
+	linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	Jan Stancek <jstancek@redhat.com>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
+	Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: Re: [PATCH v5 02/24] x86/elf, um/x86/elf: Move relocation constants
+ to UAPI
+Message-ID: <20260909075156-06ff671c-ab7b-47d8-aaa3-588b570888bc@linutronix.de>
+References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
+ <20260908-vdso-absolute-reloc-v5-2-3a93791af1cf@linutronix.de>
+ <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local>
+ <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de>
+ <20260908151238.GBaqAl5iKb64meuPJl@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|PH7PR12MB6953:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5db309c7-6778-4c40-20e6-08df0e2d9701
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|10070799003|6133799003|3023799007|10067099003|11063799006|4143699003|5023799004|18002099003|56012099006|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	W32EDNYSJY0Vhw6sTTD8iB9e7VYAZyDrceBf8gkmgsliTN/LcXKgO6QIrC5vdcdK0ffUoGTDdO+Dt8Y0zkEKemNHQBRFAGJSppuSUalr8SOZuJ5l4Lxqtq9siu/1SMMfhiy8VjF2nXnAQOs5vR7QsXmz+iJzyJT/h2uKnOHNWqtx9X9+ycyEoeb9RWO89GehRn2gFhF4uTIYPvPPKL0hOtUZCt+eCTtI+dWtByoqjsEK5uUK0+NzrqRxPOsJ5rG/A70OvZK4W0297NQp+CI9b4Pxh3MNG8AU9jKKrtlyx4PZyxanb6PRuDT+wJOnzijog+jo4cdyNOANdC1QSFyMqjSR7+3n2j7Y2eNArMAVAg9bp41QTwfSWa2+dLfn0Y7/WgcFcWAbYquxfibFK3CauoRRCpwyDbhGwo1CYzGlDPi5/7RIbjhqB9S2GEnosLQTqSHqdymQAS9ZSwQlsa+DTLqmb0BY94BbYhfDB3IF0wrVikzRfF/emnNfJg0tmZYODsgXrQa69wnhiy/+xLzXbQJ/EclufFnv8bbG9UUVdqnyfvprzFy4V70XocJrlJ29uuOVG0LhMK4QokuzmLMGfuSbjJxw2sKfqHHjThT9t3Grk3/rXE0RicI81r6dg3E+eHK/INYvYH9+WGz4+46ZCyNDILMtbRuJTPbuYRbvMhM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(10070799003)(6133799003)(3023799007)(10067099003)(11063799006)(4143699003)(5023799004)(18002099003)(56012099006)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RHVqOGZWcFRIaVgwZ2RNWmRrY1BtaHRnVEV2MGMrVk9PSXlvOWRETHo0cWZr?=
- =?utf-8?B?bFVPUjB6Zms2R2RXL09jYkxTZ2hPRXovV25UWXRxclZTOE41R0l3Z1FDZVBW?=
- =?utf-8?B?TGp0cnRoaFdHTSs3dGJwZjZkbmVzS3hRMTl4eGppWFcweEZJdGthNW9wc21a?=
- =?utf-8?B?LzZIV2s1NWpsdW1zM3NYSEIzY2RmMi9XRWJWYjF5WjB5K3RjNE5SNkQzS2E5?=
- =?utf-8?B?WTdRZG1SV3p4azIwcFpLKzJ6LzdUTExCSHJNNHVFeHFOVUNzNk5US1lxTUpW?=
- =?utf-8?B?MWZaSzJIaTlQV1ErUTRKTHBwaWNYYUhyU2NrZlB3anFxZ0dXRFJJRlJOQ1Vr?=
- =?utf-8?B?MEVYUU1wZDNFN05mNkZsTkp3YmRUaFBnZXdrT1FHMzc4S2NqdkFPR281YWJz?=
- =?utf-8?B?WUdoVjJRcDM5eUxNb0F1Tlp1dGZ2Q2xTQXpyelE2UFQ0QTJFZ1NMT0pmaVBW?=
- =?utf-8?B?Y2IyVVdwMy94V2x1MHFXUTk0MGxrL1pMZURYYXh4ODQ0N3RWZHQzR1A3UkNu?=
- =?utf-8?B?OHlBbkphRW9wdUJTUFZKUDNBWWtzdEpDMWt2c0xFWkhqRGVKbEM1anNxclA2?=
- =?utf-8?B?bHhBbjNkcUNCRzArNDJGUDlNSW1CUXhwUkluSlczbFRHaFdnUG42LzhiWm5i?=
- =?utf-8?B?MUcxK1YvaUdCSDUwalc3ei9UdC9lWjZQRCsvbUVvMDFaWlNoYURGOC9zckZI?=
- =?utf-8?B?Y1ljWXRIclpNKzVrOFVwVzNnZTRldFZuVU5ud3U3Tnp2anB4cWliTXljajlM?=
- =?utf-8?B?R01HcTFLM0I0TnlsMTNmT0c2bk9BdjFYM1dMNkFnbGFHZjBxZFFGbG9QMWdF?=
- =?utf-8?B?ckd2bXFGaiszZU5mdEZvSnQwc2xrbTM0TzdhOFZJcWczRDRsYnFSQ3BqdmhD?=
- =?utf-8?B?b1JjUVFJSEREWW9iQXdVUWp4UUYrSXN5M0N6bjdWT2xWckJuRm1aWldiM0N6?=
- =?utf-8?B?RUJJQ05xK3E3clpzZTVxckM3d1RqM1hLamlJNTNFRCs1NllFc0lOaklhL0dt?=
- =?utf-8?B?QWpzWHR5U0pSSHpSNFFOMWttZHM4VkxpdjIweDBOcGg5R1JVcWRwYTl6VEVp?=
- =?utf-8?B?SG9DQjZPb242WDVVSldESmxrcFppcjFRZEc3U2xWQ2FpMUFXT25SL0FnYmNW?=
- =?utf-8?B?SEQralo3OURacEVUa2xZaHFHY3dXVTVqenpYVGZWaHFlMmpjTHlqc0lTLzZI?=
- =?utf-8?B?VVg2N2NaemJnNnJxWmVUaThHYi9LbXFtTE53VWVLajkybE8rd0lHcFpHU0E5?=
- =?utf-8?B?ZVhFUm9YM2lnelFYZ05KWURqZTBEdkxEa2NuNHQxWVFPR2xJaVlrS3c5UXpx?=
- =?utf-8?B?TlRSS1VCLzBVZFdoTzNBRnpKUFo2M0tjM0FZdFZ3K2Zpc1d6RStCRmdCTXlI?=
- =?utf-8?B?OEVDSDN1MkNyVU1uTmcyb04xTUVnamhyb0pJT3pnMVphSENaOXlrRWI4cDJE?=
- =?utf-8?B?ZlNNVFI4eExaYVphRGlhb2hlcUsxQ2M5WVNsZzVTU0J3dE5yS3dCb0ZkbVJq?=
- =?utf-8?B?em01UHBjYVZ6UFBGQkxFMVBFeHBKaEFlWkt4V3dNOEJSanlSdS9uZ1o0VW4r?=
- =?utf-8?B?TjZ5WTQ2dzByajdXd2FhNFMyc1JDZ01VeGdyZ29reVh4cjRTVGNsNjlmQXNj?=
- =?utf-8?B?akZwMlR5eXhpTkxLRzZwTHFONlU2SkM1WUI0WHNtbjJxdmh3Q1VFTG1Da21z?=
- =?utf-8?B?cVdpelZ6ckk4QitXOEgyODRwL2doVUpUN3BTemp1Y1VKNVRiVC8zTGZLcDMw?=
- =?utf-8?B?aEx3NzR4N1A3eERQeHAyYllzVG5ubHBReTNqMDBFeXB1N0RabU1lOStOS0xW?=
- =?utf-8?B?SUllMXd5QzY1QXhKUFVHWmwxelI3a1Z1Z1BPOHZReEtJLytHN3d6S2ppTHNh?=
- =?utf-8?B?cFEvNTV1OTEzcTV4a3hSc28wMmNCVnZNYllXTDloeEErQnhnRkFLVzJEMTJE?=
- =?utf-8?B?ZHFETzFkRWJ5Z1ZLK1J5WVErR2dDTGl0NXkrTGk3dE5rSjBRMi9pNmlvd1Fk?=
- =?utf-8?B?eExMa25YVjMrYzBwQngzdHFBbCthQTdoVGFjb3Roa09qNloxWEpNcHNTbFk1?=
- =?utf-8?B?d3ZiMUg4YkFnWE51SUk1OHEycVR2N3lCam9IVmJaRFNiM0FQSCsxd0F5YitH?=
- =?utf-8?B?dldlT3dxZ2VQSG1CdkhHZ1ZPN3B5QnJjUytIUXl3SExxSyt4ZDIvN3gzMGc5?=
- =?utf-8?B?LzlRK2xYTjh4dkdlZlF5ZG02ZldXWmgvWG5NQnM4UlhGY29tTENERkwvRjhK?=
- =?utf-8?B?R1Q5SWZqNVF1MUw1WXZSN3B6ZGtpTFg4eFVFenRsZzVpT01zb1YzMVh6YWQ1?=
- =?utf-8?B?VEwrbzVWSnpEL2JZTTZDU1dVTUl1WXZjMHp5MmYrL2VUcDlWUmI5V3YxaFlQ?=
- =?utf-8?Q?3ahkas5cXLJ4R14re2ST+zvnmIbv+am8Y92r7tZrksvW+?=
-X-MS-Exchange-AntiSpam-MessageData-1: hPm+OKejjT/CWA==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5db309c7-6778-4c40-20e6-08df0e2d9701
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 04:48:28.1904
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1er8Ptg3FIiLWsinblG/EtDYM/DUc3KZV2bF0RZAXFjLmYiY3nX8W5xbAWSlgu6RXYmc2Pe2DX/145CSATGnsQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6953
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260908151238.GBaqAl5iKb64meuPJl@fat_crate.local>
 
-On Wed Sep 9, 2026 at 10:13 AM JST, Eliot Courtney wrote:
-> On Wed Sep 9, 2026 at 9:51 AM JST, Alexandre Courbot wrote:
->> On Thu Aug 27, 2026 at 11:12 PM JST, Eliot Courtney wrote:
->>> Add a decoder for NVKV. This is for receiving messages from GSP for
->>> GMCAPI calls. The NVKV format essentially encodes a sequence of functio=
-n
->>> calls f(key, index, value). This decoder reads an encoded stream and
->>> invokes a type implementing the new `Schema` visitor trait. The
->>> `Schema` trait can either consume the value or not, which is useful for
->>> composing Schemas. If a (key, index, value) is not consumed, error out
->>> depending on `UnknownKeyPolicy`. Whether ignoring unknown keys is ok or
->>> not is per each GMCAPI call.
->>>
->>> Add kunit tests for the decoder.
->>>
->>> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
->>> ---
->>>  drivers/gpu/nova-core/gsp/nvkv.rs        |   3 +
->>>  drivers/gpu/nova-core/gsp/nvkv/decode.rs | 265 +++++++++++++++++++++++=
-++++++++
->>>  2 files changed, 268 insertions(+)
->>>
->>> diff --git a/drivers/gpu/nova-core/gsp/nvkv.rs b/drivers/gpu/nova-core/=
-gsp/nvkv.rs
->>> index a8e16687a134..cbeee7f376b6 100644
->>> --- a/drivers/gpu/nova-core/gsp/nvkv.rs
->>> +++ b/drivers/gpu/nova-core/gsp/nvkv.rs
->>> @@ -27,6 +27,9 @@
->>>  mod encode;
->>>  pub(crate) use encode::*;
->>> =20
->>> +mod decode;
->>> +pub(crate) use decode::*;
->>> +
->>>  /// The allocator backing [`EncodedStream`].
->>>  type StreamAllocator =3D KVmalloc;
->>> =20
->>> diff --git a/drivers/gpu/nova-core/gsp/nvkv/decode.rs b/drivers/gpu/nov=
-a-core/gsp/nvkv/decode.rs
->>> new file mode 100644
->>> index 000000000000..ceb97e73e100
->>> --- /dev/null
->>> +++ b/drivers/gpu/nova-core/gsp/nvkv/decode.rs
->>> @@ -0,0 +1,265 @@
->>> +// SPDX-License-Identifier: GPL-2.0
->>> +// SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFF=
-ILIATES. All rights reserved.
->>> +
->>> +#![cfg_attr(not(CONFIG_KUNIT), expect(dead_code))]
->>> +
->>> +use kernel::prelude::*;
->>> +
->>> +use crate::gsp::nvkv::{
->>> +    Index,
->>> +    KeyId,
->>> +    Op,
->>> +    Opcode, //
->>> +};
->>> +use crate::num;
->>> +
->>> +/// A decoded NVKV value.
->>> +#[derive(Copy, Clone)]
->>> +pub(crate) enum DecoderValue<'a> {
->>> +    Scalar32(u32),
->>> +    Scalar64(u64),
->>> +    Array8(&'a [u8]),
->>> +    Array32(&'a [u32]),
->>> +    Array64(&'a [u64]),
->>> +}
->>> +
->>> +/// Implements `TryFrom` from the given `DecoderValue` variant to the =
-given type.
->>> +///
->>> +/// `TryFrom` is used by the `Schema` implementations in this file to =
-convert from the
->>> +/// `DecoderValue`s into the types to store. Provide the implementatio=
-ns for basic types here.
->>> +macro_rules! impl_try_from_decoder_value {
->>> +    ($ty:ty, $variant:ident) =3D> {
->>> +        impl<'a> TryFrom<DecoderValue<'a>> for $ty {
->>> +            type Error =3D Error;
->>> +
->>> +            fn try_from(value: DecoderValue<'a>) -> Result<Self> {
->>> +                if let DecoderValue::$variant(v) =3D value {
->>> +                    Ok(v)
->>> +                } else {
->>> +                    Err(EINVAL)
->>> +                }
->>> +            }
->>> +        }
->>> +    };
->>> +}
->>> +
->>> +impl_try_from_decoder_value!(u32, Scalar32);
->>> +impl_try_from_decoder_value!(u64, Scalar64);
->>> +impl_try_from_decoder_value!(&'a [u8], Array8);
->>> +impl_try_from_decoder_value!(&'a [u32], Array32);
->>> +impl_try_from_decoder_value!(&'a [u64], Array64);
->>> +
->>> +/// A visitor that consumes decoded NVKV and produces a `Target`.
->>> +pub(crate) trait Schema {
->>> +    type Target;
->>> +
->>> +    /// Visits one decoded pair. Returns `Ok(true)` if the schema cons=
-umed it.
->>> +    fn visit<'a>(&mut self, key: KeyId, index: Index, value: DecoderVa=
-lue<'a>) -> Result<bool>;
->>> +
->>> +    /// Returns an initializer that makes the decoded `Target`.
->>> +    ///
->>> +    /// After the returned initializer runs, the schema should be empt=
-y again.
->>> +    fn finish(&mut self) -> impl Init<Self::Target, Error> + '_;
->>
->> Would it make sense to make `finish` consume `self`? Because "the schema
->> should be empty again" sounds like an implicit contract not everybody
->> will think about enforcing, which could be a source of subtle bugs.
->
-> Yeah, it would make sense, and that's what v1 of this series did. But, I
-> noticed that it forced materialisation of the Schema on the stack (and
-> the Schema can be large), even if you allocate the Schema using a Box.
->
-> There's two places where it materialises - in Decoder::decode and also
-> in Accumulated.
->
-> anyway, that's why I changed it to the valid-but-empty like convention.
-> Please LMK if you think there's a better trade off solution to avoiding
-> materialising this on the stack.
+On Tue, Sep 08, 2026 at 08:12:38AM -0700, Borislav Petkov wrote:
+> On Tue, Sep 08, 2026 at 04:26:00PM +0200, Thomas Weißschuh wrote:
+> > The existing, generic ELF definitions are there.
+> > The ELF stuff in include/linux/ is highly specific to Linux.
+> 
+> And putting them in UAPI casts them in stone. I wouldn't want to maintain them
+> forever if not necessary.
 
-Indeed, I don't see a way around it. In this case can we make the
-requirement stronger than "should be empty" in the doc? Because AFAIU
-caller code depends on this behavior, although most of this is handled
-by `nvkv_decode`, so we are working in a controlled environment here.
+These names and numbers are defined by the architectures' ELF specifications.
+They are already cast in stone. For example see Table 4.9 of [0].
+Changing them would break compilers, linkers, loaders and more or less every
+existing ELF binary.
+
+> > Also later in the patchset I want to expose the definitions to the
+> > tools/ build. Exposing generic UAPI definitions to tools/ is a much
+> > easier sell than include/linux/.
+> 
+> tools/ *copies* kernel headers on a "they're needed" basis. No need to put
+> anything in UAPI for that.
+> 
+> It's even written down: tools/include/uapi/README
+
+That is the documentation for the tools UAPI headers.
+
+Also we already have other, closely related, ELF constants in the UAPI,
+see {,tools/}include/uapi/linux/elf{,-em}.h.
+
+[0] https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build
+
+
+Thomas
