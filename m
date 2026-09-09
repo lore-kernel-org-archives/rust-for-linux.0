@@ -1,395 +1,87 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C97E48E0D6;
-	Wed,  9 Sep 2026 09:01:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579EB44C678
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Sep 2026 09:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788944491; cv=none; b=QIT8ObroJ1ABTcXxm/T8aDdrngqD19deImUe6mlTw4f1pvzhp0TmsPySVF/LCO2cbOQ7H9kMfnNLsG+Klax02aRXfyb8BfSDJdF3dECULCdYSxS4Ey0dudTBv5NiRODQI43KPoFlZfFKWFbkQ/F3vNcz+WSI3CuM3XXyRp7cGSE=
+	t=1788946639; cv=none; b=okjhA+GVfYipsf8Si61tiSWKU2vPk4e0O47dHVHz0h67Ta5ApVP3+hGAK9aT18oGVXn8uBDp/KPVCNSt1hMi0Qm1U3OhfEfR42OTV9LwFBktPrktK+Ho5Pc+BceVY9xJW6aPxMhrKIbgtELjuTlfqbi4XQlP2j7AUrVA+DvhgFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788944491; c=relaxed/simple;
-	bh=EYXdpi3zJLDCunf6uAdATA3+W0zzdRUqhRyWXEb10eE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aSq5RgfPehuvl/H9gVPLI+o+vYZ5ODD/iY3Rcq3KnxYGj012Kk1Y4JYD8gX/kDSLkG4yxeF6mdF3T7oVDXVGUAhuo1IgGnAHGyIU3RT52XllYMlkpPRuSYtD8XgtuiLSMcIQzwBDn9dOGc6AIGl7ZBTVjkgFPXamMANCD0QYx80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=yUQ1myAA; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=zh6V/sS2; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=T1ZUgh7W; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Vcf3kcZz; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1788946639; c=relaxed/simple;
+	bh=CoR+vQjBubRI4wv3EktisroBpu3v3oIwSCS6EuZEAYs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=bGAH5tvJFXadYS3TwNjNd9Ljp4ymBxcsmq5bDdMgme/J8xeIAwLI5326ksuryko+0GsKW/cfdTA2OQpreEUr/Guc7iBZXAu3D6qd49JWC9+Ce/QBUGmcxNl9gZpau+i4D++UY4HsbL7H/KjvRQd8eZdt1UaAW9J/tteUExN4ch8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pFt4uUWD; arc=none smtp.client-ip=209.85.128.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="yUQ1myAA";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="zh6V/sS2";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="T1ZUgh7W";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Vcf3kcZz"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B1F011FA78;
-	Wed,  9 Sep 2026 08:58:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1788944326; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yP1qP9oEfRwqZz2UmA4hsRnPHC9gYON0rEKlw9gceFk=;
-	b=yUQ1myAAJ9nQtXUZv/lPKdnz11IijCbeG8sT/YhbNxaiRwBvquRXuZ9JTeD08iCxXZDeY9
-	EHog4aISBpjKqVnQQTkwyykagKKHo1W6yY+KpA0wVOYgosymSjG4lU8YPy+VdEjNjIrwcN
-	pNY8J4RUl57sidjIBXmMEpIxksp0rnI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1788944326;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yP1qP9oEfRwqZz2UmA4hsRnPHC9gYON0rEKlw9gceFk=;
-	b=zh6V/sS2b6BBVi7M04xm4geGxL4CCCSQ/cXYPy3nsgHPvwqnIOCp55cAaRbMciGBhsyuLF
-	bakhJ4JqtNpJo3AA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1788944322; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yP1qP9oEfRwqZz2UmA4hsRnPHC9gYON0rEKlw9gceFk=;
-	b=T1ZUgh7WiaN3v4pQ7H/EibxlE7bvJ64J82aU46TkS48J3jhjnxWDcieiO4ODtLNIYl13+w
-	+sV5CbjLv1L+whw2lOxuO5AzZVpRo+URz4tO3zt2t/GKBNYx2RMR7xX20qCY+9UkFvuAlJ
-	J+XcfXx1O0YMM15B431MqxhG/gMfQJw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1788944322;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yP1qP9oEfRwqZz2UmA4hsRnPHC9gYON0rEKlw9gceFk=;
-	b=Vcf3kcZzWjuofHxSDvUeSQVMSzB3bBClrPqJR2ijLN/4PWRmhdwqTY/DhjAh0KJBnQI3ir
-	w9xmlkU0GuBumQBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8C2EE13976;
-	Wed,  9 Sep 2026 08:58:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id AJncIL4foWoVUQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 09 Sep 2026 08:58:38 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: jfalempe@redhat.com,
-	javierm@redhat.com,
-	airlied@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	geert@linux-m68k.org,
-	rdunlap@infradead.org
-Cc: dri-devel@lists.freedesktop.org,
-	linux-doc@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	nouveau@lists.freedesktop.org,
-	linux-renesas-soc@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	sashiko-reviews@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v4 12/14] drm/panic: Internalize panic locking in DRM core and helpers
-Date: Wed,  9 Sep 2026 10:55:27 +0200
-Message-ID: <20260909085826.64529-13-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260909085826.64529-1-tzimmermann@suse.de>
-References: <20260909085826.64529-1-tzimmermann@suse.de>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pFt4uUWD"
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49ccb223bceso34699845e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Sep 2026 02:37:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788946633; x=1789551433; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CoR+vQjBubRI4wv3EktisroBpu3v3oIwSCS6EuZEAYs=;
+        b=pFt4uUWD/uFr9iWectDGs9IfshhdzMdo5NtOOMGPKE1aaWS26gjmqizlUGu9XVo38q
+         eKm5rMzihT59HVAb+7G175cc074xPO6kLP5rzL+A8rTpcx6JO2V6XbZ1AjRSSf5vxEhg
+         iEFdRx+KQ8y9SdyqO5HES+XF6wpBFkU4+CDSuLVtdH0UmilvfQFO+IL/xXhIbCcsBwNX
+         /uafc41c+b+Y60bmNsYAJBnFOiRVff7ibK79ZKWF/Q1DzMPYf66z5TroIvwuYjye43A9
+         nqiEU1UlM86+9KLZSqcLXnrFUJZFRQ8mk810mIyubG9e2cTEIapi+WFkWRiEUtWOejIc
+         OWZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788946633; x=1789551433;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CoR+vQjBubRI4wv3EktisroBpu3v3oIwSCS6EuZEAYs=;
+        b=b9Qufo6luKq/v7UerTs3bFGh/MqqDP3tkx5jPhw0FRR4osFmvCUOo+vUhbrdkKHAqQ
+         w/D054jOqhDB5VOmeHFHF7961bA00NEmjWupXCThQULXb2t6Eox7K1Vpx+dk7RU5a8JK
+         gLd4k1nlJwsCxW7bZ2Jj9E5tuQc3Gd7FRjAxXTm+6gfMrsXL9qvCnErv4AdkJyBdztf2
+         fy0M+bUMYwe4H++aP5qOVcy8uI9sbYaHAs2TTaDBlf9SuZ2DmBvKEFDzBmP6w6PqUpLG
+         9A4needi5qLTwj+hlx1E+gZLTbsKjvicFQy3DoeXfiEQopXQh0rztvFo9BRuP1CjxOy/
+         5Qgg==
+X-Forwarded-Encrypted: i=1; AKwUvBzz/hRVHAuFWpGXIqx+jFn2qP12JEiMq19wBA4pzsjFsveSjzh9vHHVt/MXFnd1HdwfawKe2NvWdtPTJ+NS8w==@vger.kernel.org
+X-Gm-Message-State: AFuF++kItMCshCCg6RoAH938GKlQrz+3n/iAuPjAn+cLK3kkVnKUexMx
+	Dc0jAkoWL2asWr75Nk2WVdpsBHYpXmVQfWsbMHPcQjtYtZ2wJaWT2TA3PDJHsQe7apzv5XfUn34
+	uBzC6i0ecOlcRp62nmw==
+X-Received: from wmnu16.prod.google.com ([2002:a05:600c:4410:b0:49c:f5c2:d311])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1c21:b0:49d:1e79:35d6 with SMTP id 5b1f17b1804b1-49d1e79368dmr64831015e9.14.1788946632676;
+ Wed, 09 Sep 2026 02:37:12 -0700 (PDT)
+Date: Wed, 9 Sep 2026 09:37:11 +0000
+In-Reply-To: <20260826131213.1820408-2-beata.michalska@arm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -3.30
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	FREEMAIL_TO(0.00)[redhat.com,gmail.com,linux.intel.com,kernel.org,linux-m68k.org,infradead.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email,gitlab.freedesktop.org:url];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLhthb38qh1ntkuzcrgoc19dwi)];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,gitlab.freedesktop.org:url,suse.de:mid,suse.de:email]
-X-Spam-Flag: NO
+Mime-Version: 1.0
+References: <20260826131213.1820408-1-beata.michalska@arm.com> <20260826131213.1820408-2-beata.michalska@arm.com>
+Message-ID: <aqEox8rYYBcfxtrN@google.com>
+Subject: Re: [PATCH v3 1/3] rust: add runtime PM support
+From: Alice Ryhl <aliceryhl@google.com>
+To: Beata Michalska <beata.michalska@arm.com>
+Cc: ojeda@kernel.org, dakr@kernel.org, gregkh@linuxfoundation.org, 
+	rafael@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, daniel.almeida@collabora.com, 
+	boris.brezillon@collabora.com, work@onurozkan.dev, samitolvanen@google.com, 
+	acourbot@nvidia.com, rust-for-linux@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-None of the DRM drivers handles panic locking. Declare the interfaces
-in an internal header file. Move the trylock required during the panic
-into the DRM core's sources.
+On Wed, Aug 26, 2026 at 03:10:55PM +0200, Beata Michalska wrote:
+> +/// Result type returned by runtime PM callbacks.
+> +pub type PMCallbackResult<T> = Result<Option<T>, (Option<T>, Error)>;
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
----
- Documentation/gpu/drm-kms.rst        |  3 ++
- MAINTAINERS                          |  3 +-
- drivers/gpu/drm/drm_atomic_helper.c  |  2 +-
- drivers/gpu/drm/drm_drv.c            |  2 +-
- drivers/gpu/drm/drm_panic.c          |  4 ++
- drivers/gpu/drm/drm_panic_internal.h | 55 +++++++++++++++++++++++
- include/drm/drm_panic.h              | 65 ----------------------------
- 7 files changed, 66 insertions(+), 68 deletions(-)
- create mode 100644 drivers/gpu/drm/drm_panic_internal.h
+So I think my number one feedback is that it would be really nice to get
+rid of this Option.
 
-diff --git a/Documentation/gpu/drm-kms.rst b/Documentation/gpu/drm-kms.rst
-index 0dd440a14946..8988fd64369b 100644
---- a/Documentation/gpu/drm-kms.rst
-+++ b/Documentation/gpu/drm-kms.rst
-@@ -421,6 +421,9 @@ Plane Panic Functions Reference
- .. kernel-doc:: include/drm/drm_panic.h
-    :internal:
- 
-+.. kernel-doc:: drivers/gpu/drm/drm_panic_internal.h
-+   :internal:
-+
- .. kernel-doc:: drivers/gpu/drm/drm_panic.c
-    :export:
- 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2e01cc9ff176..eb7ee0bfc6af 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9124,7 +9124,8 @@ S:	Supported
- T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
- F:	drivers/gpu/drm/drm_draw.c
- F:	drivers/gpu/drm/drm_draw_internal.h
--F:	drivers/gpu/drm/drm_panic*.c
-+F:	drivers/gpu/drm/drm_panic.c
-+F:	drivers/gpu/drm/drm_panic_internal.h
- F:	drivers/gpu/drm/tests/drm_panic_test.c
- F:	include/drm/drm_panic.h
- F:	include/drm/drm_panic_helper.h
-diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-index 285aac3554df..af3934df3313 100644
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -41,7 +41,6 @@
- #include <drm/drm_drv.h>
- #include <drm/drm_framebuffer.h>
- #include <drm/drm_gem_atomic_helper.h>
--#include <drm/drm_panic.h>
- #include <drm/drm_print.h>
- #include <drm/drm_self_refresh_helper.h>
- #include <drm/drm_vblank.h>
-@@ -49,6 +48,7 @@
- 
- #include "drm_crtc_helper_internal.h"
- #include "drm_crtc_internal.h"
-+#include "drm_panic_internal.h"
- 
- /**
-  * DOC: overview
-diff --git a/drivers/gpu/drm/drm_drv.c b/drivers/gpu/drm/drm_drv.c
-index 8c0879c336e5..64055514acbf 100644
---- a/drivers/gpu/drm/drm_drv.c
-+++ b/drivers/gpu/drm/drm_drv.c
-@@ -51,13 +51,13 @@
- #include <drm/drm_file.h>
- #include <drm/drm_managed.h>
- #include <drm/drm_mode_object.h>
--#include <drm/drm_panic.h>
- #include <drm/drm_print.h>
- #include <drm/drm_privacy_screen_machine.h>
- #include <drm/drm_ras_genl_family.h>
- 
- #include "drm_crtc_internal.h"
- #include "drm_internal.h"
-+#include "drm_panic_internal.h"
- 
- MODULE_AUTHOR("Gareth Hughes, Leif Delgass, José Fonseca, Jon Smirl");
- MODULE_DESCRIPTION("DRM shared core routines");
-diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
-index 2bb172231dd0..4836e974f86d 100644
---- a/drivers/gpu/drm/drm_panic.c
-+++ b/drivers/gpu/drm/drm_panic.c
-@@ -35,6 +35,7 @@
- 
- #include "drm_crtc_internal.h"
- #include "drm_draw_internal.h"
-+#include "drm_panic_internal.h"
- 
- MODULE_AUTHOR("Jocelyn Falempe");
- MODULE_DESCRIPTION("DRM panic handler");
-@@ -975,6 +976,9 @@ int drm_plane_helper_display_panic_screen(struct drm_plane *plane, const char *d
- }
- EXPORT_SYMBOL(drm_plane_helper_display_panic_screen);
- 
-+#define drm_panic_trylock(dev, flags) \
-+	raw_spin_trylock_irqsave(&(dev)->mode_config.panic_lock, flags)
-+
- static void drm_panic_display_panic_screen(struct drm_plane *plane, const char *description)
- {
- #if defined(CONFIG_DRM_PANIC_FOREGROUND_COLOR)
-diff --git a/drivers/gpu/drm/drm_panic_internal.h b/drivers/gpu/drm/drm_panic_internal.h
-new file mode 100644
-index 000000000000..c68d64c56e15
---- /dev/null
-+++ b/drivers/gpu/drm/drm_panic_internal.h
-@@ -0,0 +1,55 @@
-+/* SPDX-License-Identifier: GPL-2.0 or MIT */
-+
-+/*
-+ * Copyright (c) 2024 Intel
-+ * Copyright (c) 2024 Red Hat
-+ */
-+
-+#ifndef __DRM_PANIC_INTERNAL_H__
-+#define __DRM_PANIC_INTERNAL_H__
-+
-+#include <linux/spinlock.h>
-+
-+struct drm_device;
-+
-+#ifdef CONFIG_DRM_PANIC
-+
-+/**
-+ * drm_panic_lock - protect panic printing relevant state
-+ * @dev: struct drm_device
-+ * @flags: unsigned long irq flags you need to pass to the unlock() counterpart
-+ *
-+ * This function must be called to protect software and hardware state that the
-+ * panic printing code must be able to rely on. The protected sections must be
-+ * as small as possible. It uses the irqsave/irqrestore variant, and can be
-+ * called from irq handler. Examples include:
-+ *
-+ * - Access to peek/poke or other similar registers, if that is the way the
-+ *   driver prints the pixels into the scanout buffer at panic time.
-+ *
-+ * - Updates to pointers like &drm_plane.state, allowing the panic handler to
-+ *   safely deference these. This is done in drm_atomic_helper_swap_state().
-+ *
-+ * - An state that isn't invariant and that the driver must be able to access
-+ *   during panic printing.
-+ */
-+#define drm_panic_lock(dev, flags) \
-+	raw_spin_lock_irqsave(&(dev)->mode_config.panic_lock, flags)
-+
-+/**
-+ * drm_panic_unlock - end of the panic printing critical section
-+ * @dev: struct drm_device
-+ * @flags: irq flags that were returned when acquiring the lock
-+ *
-+ * Unlocks the raw spinlock acquired by either drm_panic_lock() or
-+ * drm_panic_trylock().
-+ */
-+#define drm_panic_unlock(dev, flags) \
-+	raw_spin_unlock_irqrestore(&(dev)->mode_config.panic_lock, flags)
-+
-+#else
-+static inline void drm_panic_lock(struct drm_device *dev, unsigned long flags) {}
-+static inline void drm_panic_unlock(struct drm_device *dev, unsigned long flags) {}
-+#endif
-+
-+#endif /* __DRM_PANIC_INTERNAL_H__ */
-diff --git a/include/drm/drm_panic.h b/include/drm/drm_panic.h
-index 430df536de14..99572b7eeab9 100644
---- a/include/drm/drm_panic.h
-+++ b/include/drm/drm_panic.h
-@@ -8,11 +8,9 @@
- #ifndef __DRM_PANIC_H__
- #define __DRM_PANIC_H__
- 
--#include <linux/module.h>
- #include <linux/types.h>
- #include <linux/iosys-map.h>
- 
--#include <drm/drm_device.h>
- #include <drm/drm_fourcc.h>
- 
- struct page;
-@@ -85,71 +83,8 @@ struct drm_scanout_buffer {
- 	 * set_pixel()
- 	 */
- 	void *private;
--
- };
- 
--#ifdef CONFIG_DRM_PANIC
--
--/**
-- * drm_panic_trylock - try to enter the panic printing critical section
-- * @dev: struct drm_device
-- * @flags: unsigned long irq flags you need to pass to the unlock() counterpart
-- *
-- * The panic-printing code calls this function. The panic printing attempt must
-- * be aborted if the trylock fails.
-- *
-- * Return:
-- * %0 when failing to acquire the raw spinlock, nonzero on success.
-- */
--#define drm_panic_trylock(dev, flags) \
--	raw_spin_trylock_irqsave(&(dev)->mode_config.panic_lock, flags)
--
--/**
-- * drm_panic_lock - protect panic printing relevant state
-- * @dev: struct drm_device
-- * @flags: unsigned long irq flags you need to pass to the unlock() counterpart
-- *
-- * This function must be called to protect software and hardware state that the
-- * panic printing code must be able to rely on. The protected sections must be
-- * as small as possible. It uses the irqsave/irqrestore variant, and can be
-- * called from irq handler. Examples include:
-- *
-- * - Access to peek/poke or other similar registers, if that is the way the
-- *   driver prints the pixels into the scanout buffer at panic time.
-- *
-- * - Updates to pointers like &drm_plane.state, allowing the panic handler to
-- *   safely deference these. This is done in drm_atomic_helper_swap_state().
-- *
-- * - An state that isn't invariant and that the driver must be able to access
-- *   during panic printing.
-- */
--
--#define drm_panic_lock(dev, flags) \
--	raw_spin_lock_irqsave(&(dev)->mode_config.panic_lock, flags)
--
--/**
-- * drm_panic_unlock - end of the panic printing critical section
-- * @dev: struct drm_device
-- * @flags: irq flags that were returned when acquiring the lock
-- *
-- * Unlocks the raw spinlock acquired by either drm_panic_lock() or
-- * drm_panic_trylock().
-- */
--#define drm_panic_unlock(dev, flags) \
--	raw_spin_unlock_irqrestore(&(dev)->mode_config.panic_lock, flags)
--
--#else
--
--static inline bool drm_panic_trylock(struct drm_device *dev, unsigned long flags)
--{
--	return true;
--}
--
--static inline void drm_panic_lock(struct drm_device *dev, unsigned long flags) {}
--static inline void drm_panic_unlock(struct drm_device *dev, unsigned long flags) {}
--
--#endif
--
- #if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
- size_t drm_panic_qr_max_data_size(u8 version, size_t url_len);
- 
--- 
-2.55.0
+> +/// Runtime PM data stored within the `struct device_private' during
 
+Should be ` ... ` rather than ' to render correctly in html docs.
+
+Alice
