@@ -1,179 +1,263 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012025.outbound.protection.outlook.com [40.93.195.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f12.google.com (mail-oi2-f12.google.com [74.125.231.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA65425866;
-	Wed,  9 Sep 2026 20:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7B6581259
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Sep 2026 20:32:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.204
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788985443; cv=fail; b=nvy7rroFXWRLHqDMBa6j9+41BGCBkt5s2WdoWVJImqoAv/+1blyxtbsLhHQrvOi4AZL3jZitf0P8F5QezNjS+NHHB+eopvpPYmuPL5Ix8/+l9P9U5GhKXSRK9T0hBbp/At4+E2s8HHbDdm76avy5kO5d288ckfxyohuL/a5SlaM=
+	t=1788985950; cv=pass; b=lJuqCW3mMfPEqCfDOOZXF5RZTg1WeaBqPvXuCuRgc+vnsB1wGVZB9DzRxaPgZlpT3MklYw3H7vBLPgtWrWmvaJae64gdMKo+2oSudxyheLYGfqLm5r3reD0jBjauG9g71BIC7Udh7bLOXJcUnQTT56GOgYQLAWh9iSf7IAKImvI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788985443; c=relaxed/simple;
-	bh=a6RnOfOu/BmY65rCbhfrsU6jtMq4Gn51oJTj75bU6z8=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=DOsZpsQP9kAJJJrqNufjdCXRm2/4mMrC09enUmIoHcovhcvCSFu1IKcJJ9AZ0lZQbR2nWzpckH6AGnJYo+jt2ByzFnCR6FCPpXCQYM/fASzZ5IDsG3x5BXOV6jnxx0Vlm567lG4q0UcQVELIiBxpgBKlk5scVfLGaYFFBUE6h4w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MxBozvAM; arc=fail smtp.client-ip=40.93.195.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1788985950; c=relaxed/simple;
+	bh=RDnvDdT3gqyBnSoIqf9qQ2y2LD/nCKQusFnx59PqfCg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jhNxPh18EMhqOpf+6pNSihIcyO3gW/wq9wNoEMIJmp6gNVctK80/Kg9A5W16XDnDW57/0J1Iv2jAd6gYtYXCMOYNtEjMvA600ck6U27/yKsPLHRoPPB5SrnriDWfmIwgRUYeMcOX1ksCGu1FM2oxKUX/6Ky9/jcJlcbU3YEcGFk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZJ8pbEpL; arc=pass smtp.client-ip=74.125.231.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MxBozvAM"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GZYv4UhFQS/sDIWqf8LNH2lQyNlC6S1ds5Ewons+xntAKZyig9RG1Qg2vgP9nlu2i9342ogE6gV0U0grOsNSX5Ke5vl43xgA0PtzCt29BdjZyhA3q8TISOFebuWUz4UGAVNDd0+Vwxedaf6pWZo0R0CsZgOdDN3mkLPEJ+ROb8FDAoVRi5Mkt2CdYJVOOG5ivn82JigFNgJkEqNvpUVyY5kem6PB9ISZqHFpMIMPuKUMSN2fHfNtSox6PwELXIT5Fjnneb6nwIeSLBCCgpQ9ngETR+Uhi66qubDxPeUYuj6ZJcTQ9Z0EhWQ1Wzb+EmbqbZdUfJy/JLT+q7IuwBlUsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6IPMvnNNt8HtJGBGXKXHohKK2hbZ0nCkpJMV4xDBdQ0=;
- b=dN7DdqzDUrBg10zw2OgPe8geK4htT/hcRAcxgVTtPJTO+YfwWd5jSJg8c3c9gmX+XBtLNDywyO4C2QqWttJ8pl4V9nGqM6sVPOAPI+vXHhkkgbMnCs0KmqSjLBGlM/n0lm4U+KxVfs0q6WAqFJar/Q3F+QR3sEzA2ty/IN5BH/Ebp9grjpRVh58kG7taCBuyA16TUOLlWSg+VwzcQDJMRt1EhSyTCgVtR4Lby771lGZBBLmkh+TuQPIuGUQ/emgsjb3iToiZ7wtBbmeUaPtty5FpguU3xDHPitsaTaYzR26PZs7pzgdR4rdfidDfUB8JGScU7l2hbjbXNmDJnc86dw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6IPMvnNNt8HtJGBGXKXHohKK2hbZ0nCkpJMV4xDBdQ0=;
- b=MxBozvAMuR7nhZzbEwcLmeSSZ5XGN5g9VLJndj6i8QFBMwmuCN1qnRKtLkevQok0J+0A9RJwcJiZtUxFiWWjKwYAQeqP8CIs7MmNkBn3TqGiBlAf+ckY1l4ihND0jXL1I9Ttvo/6RV2jOwgWTzLkrhpRVFy+mDPvP9O0TsU48SvQqf60Pe/OVQJRS5UOUGZa86H/5WoTP+PIKRujXKZP4/u5tqtWRVyXdJJMjRKftq5QPC3X8eszqTRfb6eja/Qw/m/Pq1cPGBy38wKkDkfsnX2w1ihDkA3wyOOiFD9pqV7wvT9tuDfGfddIIRDss21D1Cqcwu/GGbgTWyJ1b/IQYg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM4PR12MB5182.namprd12.prod.outlook.com (2603:10b6:5:395::24)
- by SJ0PR12MB7081.namprd12.prod.outlook.com (2603:10b6:a03:4ae::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.8; Wed, 9 Sep 2026
- 20:23:49 +0000
-Received: from DM4PR12MB5182.namprd12.prod.outlook.com
- ([fe80::120d:ace8:656:fac2]) by DM4PR12MB5182.namprd12.prod.outlook.com
- ([fe80::120d:ace8:656:fac2%6]) with mapi id 15.21.0406.007; Wed, 9 Sep 2026
- 20:23:47 +0000
-From: Edwin Peer <epeer@nvidia.com>
-To: dakr@kernel.org,
-	aliceryhl@google.com,
-	phasta@kernel.org,
-	sumit.semwal@linaro.org,
-	christian.koenig@amd.com
-Cc: jhubbard@nvidia.com,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	linux-kernel@vger.kernel.org,
-	Edwin Peer <epeer@nvidia.com>
-Subject: [PATCH drm-rust-next] rust: dma_fence: gate abstractions on CONFIG_DMA_SHARED_BUFFER
-Date: Wed,  9 Sep 2026 13:23:27 -0700
-Message-ID: <20260909202327.33285-1-epeer@nvidia.com>
-X-Mailer: git-send-email 2.50.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0102.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::17) To DM4PR12MB5182.namprd12.prod.outlook.com
- (2603:10b6:5:395::24)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZJ8pbEpL"
+Received: by mail-oi2-f12.google.com with SMTP id 5614622812f47-4b37a30eb3bso1391897b6e.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Sep 2026 13:32:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788985945; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KjOkBw3UI0PP4PtlqbIfgxEPqh8mEU5u9pe9n4/HERvbA07Ccd9LYyvrI88oWOIq9C
+         AL/cRxrn3GgyLoFPf3XR1QZ12zxrSGY7bTv0kLaitiylGZ22dFsBAq/8koH3BFDiL6C8
+         Mcii4/ak5oKAyHFyMr5ZFMQ/0WmYRj9TbtR9WPv2Gx2fxvuIarB9DSpq8v62x1f0wdgI
+         ln/2hgfKbzHcar/Ntr1ucPQQLz7j+YMsq1JoDaWiy44qtj3SL/9NM8SgdnTlw8P0trUz
+         T0Li2Sd13NwQCYv3H9IrNU1sSbaFwAibQDRkyAyMuin8sHwvMWS/KAG8r+AaqPIT3Z2y
+         eB1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=aGmxbhzdNURowH0NhYZYh+4kKqv4nS/H+afPTxx5XOs=;
+        fh=Pl/kiFTysBJMuzr0JZb5qu6jFA2+FKiwjZwSw3ZCpkU=;
+        b=W8UgGElzhqimbKGwryy1Il1n2yR/fUyV0O8xpxfQY7TUzeBTceycmB0S8iOx9UdDBV
+         HZYgVz4oU1BfaxsKiylamhTmOnujWwazQtSjf5VQBn7UvitAaB1JPlznw4egP6nTj2NM
+         S43xw5JyXTyalpfR16Q5+5WqDu4cWuvHS8IT4OkIkpZyFcxXCAfL7eAeezAyhZUoEQG5
+         Ft1xFVB5RZJYcftHTza815a5wSRaKUUXj/zbG1jjZNLcEAuYI/fMy/4Bfi7o9SWOZ7Uu
+         AyymtxX5uJOSEtRQfN7J/Edsj0j/Yu//PFtpxrCRHHX1VFaecZ91s3yVhU2+RjzJXDr1
+         g97A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788985945; x=1789590745; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aGmxbhzdNURowH0NhYZYh+4kKqv4nS/H+afPTxx5XOs=;
+        b=ZJ8pbEpLzPNlcPD1IYu60zMFiWvHJaKQNR+vV+YEI7uzxYHaI3A5mAP9CLoTIiQwrq
+         YmMLsS7Bh/9+wTdW62fg/KslN4asUictQ9qeWgRCtadIAbnoF9Gir2R5dTJOij4yK/U3
+         NgR6jPaUtr9GybUfrHO3a2gJtJGr14aHx3Y+/CrqaxPpH/LYelnG8D47UbXvi9h4JxC1
+         7G4bWPOHAcab0Vgi7lnxrN6twNt3zcJbo22UP+4PfidB0JM2vXQuUMCCjFEDEFd9o5Xh
+         775n2038bEhBgJqAdC903eaFfyTa+zh8FiKBvLkzM4JZ5k+Op89y8RbZcKj3Lf1RqE9J
+         /K6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788985945; x=1789590745;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aGmxbhzdNURowH0NhYZYh+4kKqv4nS/H+afPTxx5XOs=;
+        b=IZfrWVy+egE1ke/O7mzcDRU/QwoChL1Q8PjrymBOK6AdC40aQM4qQYBJrbbbzxOcyl
+         QzN42MkHdwg2jYhy4bfpPMPGPUm3wweSQnMKqqIOlWpVWY3lar7OOhG/FZGmlRmwOXOm
+         K3gxXHgieIe9asaGorX+oG19RnQ8/CVQuhIpEY/18jh+5os9WDK2IloXmN8/7Evea3Aq
+         TREzLg1GWEVs41hUQGwC4kJzHGrTzUSRfHxmWQINOghyGkgXSXzn6ZbXpPw0ygNnkgj3
+         1lLuqQHxU5l3LDc/1x8RNPzdm3Hki9rgJxTbsr2B6RHrv3QhVH5L1ZnuKnkgs7wwImUH
+         fFFw==
+X-Forwarded-Encrypted: i=1; AKwUvBwbegVeNGnRyEHHO4uut9YS2+hLPI/kYXF6goU+ANsyQpDxedS69Tyc+LIGHt8jixzUkR5+6tcoKddKiXAxBw==@vger.kernel.org
+X-Gm-Message-State: AFuF++nUQkE29N7RixNUyLyfsQWO9EBAjivfIr0QSdyZptdHwySgPzOZ
+	x8+GJ/mvgOKgczvOg41BD9sZwKb+dDiTbYwlG6M7FNiVKzD8IfCRbk4pEiB3FxNQrS7sY6c44EJ
+	P3BD+U/xsk8mFS+6LrSier9bZKrYRvNE=
+X-Gm-Gg: AYBFou0ORsZ37xtrg4U9mL3crZZGPt/hyiz9bN0Dw52xvMQDii3UgsMJyMCmWj8yVCJ
+	bSFR9LThqBz+7Gi+qtpwlgMPofVAhEd8hbHWCfR51Y3+NffrdVkT/MHoIpk7QVwNiOImeHYPpVD
+	U3SdPS4SBmUAq82QLvBs5Vsg3uIREdo0L8Z4Y8einxtymZlkUw2OkjmURTHwJWOGHs0EGqey2qx
+	4/xrBxm2Nb6c5CRxreSy2iaKpRsMf+IkPvcIqylqLnEnEKX9Y/KT0xwaq0O2RARkg3zFdTIbQNE
+	Dpq4ZEuftWC6ubF4C33ISXIrJFfZ8rMhCRKhl2aLgMr6UZ0qO715sc0HUzGuxkAUPeBEy9mEnPs
+	IaPraWg19hfaA+w==
+X-Received: by 2002:a05:6808:199b:b0:4b3:7a14:6b25 with SMTP id
+ 5614622812f47-4c0250d649emr9426459b6e.14.1788985944982; Wed, 09 Sep 2026
+ 13:32:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5182:EE_|SJ0PR12MB7081:EE_
-X-MS-Office365-Filtering-Correlation-Id: e205b15a-43fc-4862-fd82-08df0eb04078
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|10067099003|56012099006|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	zCk0/kpBZXfyX0U5XVbclXBVQlD0PjD6OYYPlv9Bfi8Ed6LkntXw6w4Gu/wEhO7vpFMq7qmPQ5L++XWClchP3CSrJX4yTXgWVmVssrb3QvB6R7O35sWkpLe0MOjBV5uZaTlhLWBOBPtiNeB4apuIkKqKUNzu6EEymWkzraNnfJPbk8n5mSIUrkkGaIJO1r4evJ+I9n7ZZoWtZIPTes08iSwobIT898vaMRu6IGb141lD50fNNwkVcGTWsCSalzee1PDlxaDGvX/FCJkRVZL87/uNmMhFpC8YLblH+FALX1/KokIn469/P0oXxp9/Kr/slA96TSInfk36oAeZTNkaCXT6oQ+7N7N/FFlUkyUMmW5f1nos647sWwfJXH27yn6WuigBPdBG9FVGwPaOA3B7ZvHDTkPj9jZK4IgExNUHq4y8vmGFQuRLqYUNoLk8U6fgd9QwkTvXvx99EUExccSwZnVNaHzBDcPXiQ7519KYiLMAQk0pWnSlv96efzEKtlPHUmCEJys3paxwZglHg+/TiLDlQ21MKL6niTdAMiq0IJSXsMqVDy/kn5vvLVNuYPQkkFp2SodPvag+hTzX3pZxM/2ijqXrekloVSF8dDSoeJ/NnE7AmT7n0o8jvN+lYmnvJggNTf4ob3vrFfiaAuYSfw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5182.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(10067099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7FCV5GoVb8GwoVsvce6bd4xMoGgMoIv2/K7towm2Nz3Z85OHYyLZejBWnILQ?=
- =?us-ascii?Q?NmzewSPQPU7AzTwAhxSPHwX3aA3PFYYZrC4QrKl+atCwfIFhS6/+N4caZPIp?=
- =?us-ascii?Q?DZOIx+Koa0GLGwB8bk3mDwa33X7J/0jQLCYCO/n1xt0QmikWxJLHl/RD4JcY?=
- =?us-ascii?Q?4g0jejmd2SYqZzVubfuo41mJU6+RV5o81B3mGT06l63/Ol5TTYaIMRU7bcQg?=
- =?us-ascii?Q?xQa5djAIgjhEr5msWIjiFmGMhn4S7jQLL7uS/YhkNtkhkHF0/WVJEMfJbhpQ?=
- =?us-ascii?Q?63dWjbchu0SvTt7VmHAH/fqLxoS8k8nfCUhkmNWCLT7vNEVVwfHZScrvrHJI?=
- =?us-ascii?Q?d+tSWAraikYNVWhYb4+cIDaJuLmG15w83AgZyWyDRHVBR8SA2JX/RMlpYSv9?=
- =?us-ascii?Q?4KHgloZk00bEfRFf8rgpbY6Wq4HJz2m5wum4knAsu91mrGPAnkIeyJ3KEXml?=
- =?us-ascii?Q?ITzRIs4N1IV5O0rdfEVw5NBXs3kGfCzvgMIYJu8R9TZRHWcPXcS85UyHnhUn?=
- =?us-ascii?Q?pXZVwTkmbBIW0mwSLJosjo9dFhQSGQUsYVlcWm0FEoDNSuvdX143IEzmsupo?=
- =?us-ascii?Q?PGj193RppYAjx2LdfUyfomO0wo6nYiacnjKQ7b28fhVVj00Nf4PRBAJl3MEN?=
- =?us-ascii?Q?asY4DWqqZNhAQp0II1L1Bc+YaEVAnoFI7AMtdpiesOtXLb7v5zu9O5Plnxgd?=
- =?us-ascii?Q?cZ3RIMzNIKWo3cSSCOmA2oC3vByljS+6aY66qfehYwJZPEbL5OnbSHBrVdXv?=
- =?us-ascii?Q?Zf9VwCCuvLyMBOkQEmH0si4MQ95BheXaZQM/sYspyAOrWgisRHY7gpOsk9+i?=
- =?us-ascii?Q?QvzCWByAgIGD1i8fGBWxBaMrX9TYdPX/uBE3Msivk06jrvpJKr5oYytrStsl?=
- =?us-ascii?Q?c4wfvqWV2bY5U6Da/AslvjZQoj52ffRqfJmsQO22BDqkN9dUC39ltJ1sY1Te?=
- =?us-ascii?Q?d4sQfyPzotoWv71t5eGcV8ObCEVk+nAsRoSccmHMz8EvGf5ByH/5zjJbLSdu?=
- =?us-ascii?Q?fxP6J7TrdOfIdbRnkN/KB5rPv9kIy0vVHIyJVEuHVZo8XhiwpdjeeAqeHImM?=
- =?us-ascii?Q?0Pou9XJXdwAM52lsdrFRRXMBI1rUD7nrIJl8X2ggsnd3shqmKcFGqM/3552z?=
- =?us-ascii?Q?T3j1quRnKoZTeSFSjaKbR9/H67p/gGXIpAlEn7exjQuE8XGfEXOJZT7Mu8Kn?=
- =?us-ascii?Q?RzMyl8bPA2OptYLr58ruPLRHbYlxmgHlzZQAFNvrhOlfqeizCV74ZZn/a9sO?=
- =?us-ascii?Q?TLGzLcINWwCrecLGISYYbr7Je4bQuET++hnwQgxEnIrVHnXFeGp73NhA/V7A?=
- =?us-ascii?Q?UN3Z3fNgQGsaTR35nDM6bsN5cMIHxx2aYkEfEfK2+Vn/iO5B0PS6n4T37Ls1?=
- =?us-ascii?Q?s6p5NYolx+x3mj50dLJ/u9bHkXRws/UyORH5a02HNkQ+v0jEwvzAYsyxZ+PY?=
- =?us-ascii?Q?GmaaaWJJ2mtdtrdRiOk1lk5GB3ppY9YRNgqtzMoCdRnO1nh6VBvrZpZ4VviN?=
- =?us-ascii?Q?QUow2Z+8isunekE8G7JdDyJH4tUiFyzmsKyi8X2bOshu8i2en+qDAwcWz9vP?=
- =?us-ascii?Q?LM48BQSNqUrDpL4uBf3fP6m88W4oddU5r4dtSmPGABMmCa+XFbVJFvte7CC+?=
- =?us-ascii?Q?BkW3ZGayCP+1u300qB3sFO+NIoc3MwPGQd266AH8IrLc2/Ab2mnykbYDCnKC?=
- =?us-ascii?Q?IUWAfLepFjsjj2UK2iCNjL83wfP+SZWg15jz3Nt16CUdL/Gm?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e205b15a-43fc-4862-fd82-08df0eb04078
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5182.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 20:23:46.9760
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x1FXzaGXmuvrsRe6ZAf/QXvaP+WXYpIUhAmuClRZHP7CyZWr4B6M/agiENjwAvfui5507eG0mz6kenEpHMnTYg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7081
+References: <20260909033246.2779303-1-georgeandrout13@gmail.com>
+ <2026090955-lustfully-fanning-33f9@gregkh> <DLAR1FIFL0Y5.22A7AJKNW0YQP@kernel.org>
+In-Reply-To: <DLAR1FIFL0Y5.22A7AJKNW0YQP@kernel.org>
+From: George Androutsopoulos <georgeandrout13@gmail.com>
+Date: Wed, 9 Sep 2026 16:32:14 -0400
+X-Gm-Features: AcwNN1UhJN0ysufwaCf-45J3Jdkut3tQFJ3a4uYdflnPIbeGW7A1nWp9glQ99fI
+Message-ID: <CAESH5oeL4+rgO1PODjza1PiTzvfOBmCP_WtUoAyaejwSCcQkSQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: auxiliary: validate DeviceId name length
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Dave Ertman <david.m.ertman@intel.com>, 
+	Ira Weiny <iweiny@kernel.org>, Leon Romanovsky <leon@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The dma_fence abstractions added by commit 3282d5916019 ("rust: Add
-dma_fence abstractions") are compiled unconditionally, but the C
-`dma_fence_*` symbols they reference live in
-drivers/dma-buf/dma-fence.c, which is only built when
-CONFIG_DMA_SHARED_BUFFER=y. Kernels with CONFIG_RUST=y and
-CONFIG_RUST_KERNEL_DOCTESTS=y but CONFIG_DMA_SHARED_BUFFER=n fail
-to link:
+On Wed, Sep 9, 2026 at 7:29=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> w=
+rote:
+> It's not actually fixing a bug, so I don't think this needs a Fixes: tag.
 
-  ld.lld: error: undefined symbol: dma_fence_release
-  >>> referenced by usercopy_64.c
-  >>>               vmlinux.o:(rust_helper_dma_fence_put)
-  ... dma_fence_signal{,_locked}, dma_fence_context_alloc,
-      dma_fence_init, dma_fence_{add,remove}_callback ...
+Agreed, dropping it in v2.
 
-Wrap the dma_fence.c helper include in the same
-`pub mod dma_buf;` in rust/kernel/lib.rs with a matching #[cfg].
+> I'd rather document that this is only intended to be called within device=
+ ID
+> table creation; in const context a panic is just a compile time error.
 
-Fixes: 3282d5916019 ("rust: Add dma_fence abstractions")
-Signed-off-by: Edwin Peer <epeer@nvidia.com>
-Reviewed-by: John Hubbard <jhubbard@nvidia.com>
----
- rust/helpers/helpers.c | 2 +-
- rust/kernel/lib.rs     | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+Agreed, replacing the `# Panics` section with that in v2.
 
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 609689fba3dd..2c5eecc091c4 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -57,8 +57,8 @@
- #include "cred.c"
- #include "device.c"
- #include "dma.c"
--#include "dma_fence.c"
- #ifdef CONFIG_DMA_SHARED_BUFFER
-+#include "dma_fence.c"
- #include "dma-resv.c"
- #endif
- #include "drm.c"
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 72f5527ba66c..f9ef36217bb5 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -67,6 +67,7 @@
- pub mod device_id;
- pub mod devres;
- pub mod dma;
-+#[cfg(CONFIG_DMA_SHARED_BUFFER)]
- pub mod dma_buf;
- pub mod driver;
- #[cfg(CONFIG_DRM = "y")]
--- 
-2.50.1 (Apple Git-155)
+> >>      pub const fn new(modname: &'static CStr, name: &'static CStr) -> =
+Self {
+> >>          let name =3D name.to_bytes_with_nul();
+> >>          let modname =3D modname.to_bytes_with_nul();
+> >>
+> >> +        assert!(
+> >> +            modname.len().saturating_add(name.len()) <=3D bindings::A=
+UXILIARY_NAME_SIZE as usize,
+> >> +            "auxiliary device ID is too long"
+> >> +        );
+>
+> Isn't this missing to consider the separator and NULL terminator?
 
+I believe both are covered. `to_bytes_with_nul()` includes each string's
+terminator, and after the copy loop `modname`'s NUL is overwritten
+with the `.` separator, so `modname.len() + name.len()` is exactly the
+required capacity.
+
+At the boundary, `DeviceId::new(c"a", <37 bytes>)` stores "a." plus 37
+bytes plus the NUL, which is 1 + 1 + 37 + 1 =3D 40 and is accepted; one
+byte more is rejected.
+
+> Unfortunately, we can't enforce that is function can only be called from =
+const
+> context, so technically it could also be called outside of the device ID =
+table
+> in non-const context, but it would be odd to construct outside of a devic=
+e ID
+> table.
+
+Ideally that would be enforced rather than documented. Miguel pointed at
+Gary's `#[const_eval_only]` [1] in the other branch, and `DeviceId::new()`
+looks like a good candidate for it: it exists only to build device ID
+tables, so a non-const call is a mistake rather than a supported use.
+
+For v2 I will document the intent, and the attribute can be applied as a
+follow-up once that series lands.
+
+[1] https://lore.kernel.org/rust-for-linux/20260903-cv-v2-0-e93b1613e40c@ga=
+ryguo.net/
+
+
+On Wed, Sep 9, 2026 at 7:29=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> w=
+rote:
+>
+> On Wed Sep 9, 2026 at 9:19 AM CEST, Greg Kroah-Hartman wrote:
+> > On Tue, Sep 08, 2026 at 11:32:46PM -0400, Georgios Androutsopoulos wrot=
+e:
+> >> `DeviceId::new()` copies `modname` and `name` into the fixed 40-byte
+> >> `auxiliary_device_id::name` array without checking that they fit. An
+> >> oversized name is caught by the array bounds check, but the error
+> >> reports an out-of-bounds index in the copy loop rather than the
+> >> constraint the caller violated.
+> >>
+> >> Check the invariant explicitly instead, so the failure states the leng=
+th
+> >> limit rather than an array index.
+> >>
+> >> In a constant context exceeding the limit leads to a build error; at
+> >> runtime it panics, so add a `# Panics` section for it.
+> >>
+> >> Fixes: ce735e73dd59 ("rust: auxiliary: add auxiliary device / driver a=
+bstractions")
+>
+> It's not actually fixing a bug, so I don't think this needs a Fixes: tag.
+>
+> >> Signed-off-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+> >> ---
+> >>  rust/kernel/auxiliary.rs | 10 ++++++++++
+> >>  1 file changed, 10 insertions(+)
+> >>
+> >> diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
+> >> index 60dfbec8f330..1f3ba86d6d96 100644
+> >> --- a/rust/kernel/auxiliary.rs
+> >> +++ b/rust/kernel/auxiliary.rs
+> >> @@ -137,10 +137,20 @@ macro_rules! module_auxiliary_driver {
+> >>
+> >>  impl DeviceId {
+> >>      /// Create a new [`DeviceId`] from name.
+> >> +    ///
+> >> +    /// # Panics
+> >> +    ///
+> >> +    /// Panics if the combined module and device name, including the
+> >> +    /// separator and trailing NUL, exceeds `AUXILIARY_NAME_SIZE` byt=
+es.
+>
+> I'd rather document that this is only intended to be called within device=
+ ID
+> table creation; in const context a panic is just a compile time error.
+>
+> >>      pub const fn new(modname: &'static CStr, name: &'static CStr) -> =
+Self {
+> >>          let name =3D name.to_bytes_with_nul();
+> >>          let modname =3D modname.to_bytes_with_nul();
+> >>
+> >> +        assert!(
+> >> +            modname.len().saturating_add(name.len()) <=3D bindings::A=
+UXILIARY_NAME_SIZE as usize,
+> >> +            "auxiliary device ID is too long"
+> >> +        );
+>
+> Isn't this missing to consider the separator and NULL terminator?
+>
+> >
+> > We really shouldn't panic, we should error out and fail the creation
+> > instead.
+>
+> This is only ever used from const context to construct the device ID tabl=
+e, e.g.
+> as in
+>
+>         kernel::auxiliary_device_table!(
+>             AUX_TABLE,
+>             <NovaDriver as auxiliary::Driver>::IdInfo,
+>             [(
+>                 auxiliary::DeviceId::new(NOVA_CORE_MODULE_NAME, AUXILIARY=
+_NAME),
+>                 ()
+>             )]
+>         );
+>
+> and a panic in const context makes the compilation fail, so it works as
+> intended.
+>
+> Unfortunately, we can't enforce that is function can only be called from =
+const
+> context, so technically it could also be called outside of the device ID =
+table
+> in non-const context, but it would be odd to construct outside of a devic=
+e ID
+> table.
+>
+> > But what is placing the constraint of the name size here?  The C api
+> > just takes a pointer, it doesn't care about the size, why does the rust
+> > binding care?
+>
+> I assume you were thinking of something else? This struct represents
+>
+>         #define AUXILIARY_NAME_SIZE 40
+>
+>         struct auxiliary_device_id {
+>                 char name[AUXILIARY_NAME_SIZE];
+>                 kernel_ulong_t driver_data;
+>         };
