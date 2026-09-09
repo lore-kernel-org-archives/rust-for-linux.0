@@ -1,215 +1,121 @@
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EAB545DAB;
-	Wed,  9 Sep 2026 12:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788955353; cv=none; b=C3ud1VFL6tEMHoCDpqPOtY5CpTiZdX6rqLx8EUNmiHtOjDNNPvwIOh3y8mM37Dgzi+KV+sANTDn+DxXdoINXDJJTjAE2I/szbNWmoPbZujFrEMZcvNX0nrTpZnLVW0MxLxzIOvCBUQcXSu6XTUhIxxQ1x8oZsN04wAhblJJOtdg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788955353; c=relaxed/simple;
-	bh=K/tG6mLi7kaBxy1QZ1ckLxO6z1brlEG4Dja18T4gOnE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WWfNZB5nJRbEO+iGud7Wi0R2KtfKEwSAlYUA1TWW/vHpAxdrgagMMvxGfOyErvH5c0fq1gC04/kVrhaj2CUTqxC+KG1oHcFLVQc5p5fBI8P2aSpUAXNWkop25ZqCfeXWeH/GeFvdGlH6GoWSpKULHWGusHbX4QJfs4b3cszo5Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=Gt5VfsOG; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=U0G2Bu/m; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C77054DAD5
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Sep 2026 12:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788957651; cv=pass; b=BU02PEH6ID1uBH5RzRd7xaNwewaVDpSyR7eRP76B2xqgCNNeCcg2ywovCHy63t+shNVOz1TjYB9hJgSeGN4YOowUGTc2PYwLG7irbE66Z4zOszN4mAL4uyE85QMGUAOuuDuFwQvJmKL0EwaFLFSgfe4TgDdRy15n8cLEcMinWOQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788957651; c=relaxed/simple;
+	bh=CvYtV/SZ3/N68blqG6IXcgd9EYI6RO/7AwXt0HZiXpI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EvzfAe4Kh82xius5jW9r/qcAdbNZ9h+4oll5CEQw0yJM0wTHGyGPT/heM/cCEnVXhWslnbjlEjfdB5+h6qE6arjJhzI5dh2vVRqfEQb4Mxqz5wC44UBeRHunQevIfp8s64QvB+UBFTb1mXoYH12YYB/dHmuY2azQ75W1SDk8D0M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mX13pZHt; arc=pass smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="Gt5VfsOG";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="U0G2Bu/m"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.stl.internal (Postfix) with ESMTP id 1C8381D00060;
-	Wed,  9 Sep 2026 08:02:30 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Wed, 09 Sep 2026 08:02:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm3; t=1788955349; x=1789041749; bh=bVY1yWQUiCsPGp2dXwrxQ
-	STFwCySs8TKGWg3lCvR4EI=; b=Gt5VfsOGdSidpqDTNMzZTOKTlLeh+bGKRxUJj
-	GdYtYoocfUbRYOLvzMOwemaYzW137LJQWwWXLUm+L0ZS/H6GfWNmQEcAaodvbGoX
-	7LFB8f2wT+/imWDySy5SJPVb4wVEIOjnO3s17vHlZo6AcBtpCay5Rvq4i9KsHGsE
-	vplRWY0KpccQ4w09215pPsSjKU5Ud8xMG5Qm+FF+s4L9aIWwLEqTqlYMJsGoDrmH
-	WEBas9KbpBWSrNPRUYOw2lPPbDOZ9zHsuNG3kxyjC+0+wxI/mj21Sil6j7iUW9gd
-	7c87jH4VS3FIORlSauotKR555kVo3xu04c5ENvRnB95R8HFmg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1788955349; x=1789041749; bh=bVY1yWQUiCsPGp2dXwrxQSTFwCySs8TKGWg
-	3lCvR4EI=; b=U0G2Bu/mv2PSW2dlbxNPTDlbs5ZXDqpJnJgRDByxQ/KNkS4qaig
-	GJD/48fZJM/gV/QxDuVc8hx0SzlbOLcjx1SYw/NSmHw5OpHB/cCc/NCZg9ZeBQid
-	3xR2exW/1fLwNzOJ/3zCq9RZJt27GG/luxHit9tN5U19IYLD/UesOPh3HJqBAOCE
-	auAObcUoljsqeVqfL7crPVCKhrViYOZDUl41k4DVVezbHOVvxH/Am+gYSbYtN02Y
-	eZHb551GtvAqV5PPll2z9A/1amkpzglEb+XTd4xpRodZ2yaWegIP7XL7gf4hiM0P
-	zMlVYCbdDM+ho4nSKUD+R6Kp5ox+wIuz1ew==
-X-ME-Sender: <xms:1Uqhas3MfwoXN69VMffgmbbi_Ci4WQg6wd2TV8k1ySo-3Ph_v4dECQ>
-    <xme:1Uqhaof4gD8qNS8WPW6TtfI04zWMnuhuBNqLmSvk4ReV_rSCaeL5v333w_C-r8_V2
-    I0mSDtpIBcbJH7pij5FqZjVKulwU1JX3c_mK7qzhNI8KZE49jNBygG8>
-X-ME-Received: <xmr:1UqhauLaXbOtC5S4cwE2T3M9-WTCu_bYKMqRCA9aqG6oTNyYqi9muwO8UJrSJaDOqkja6eXfKo4ngUJZp08>
-X-ME-Proxy-Cause: dmFkZTF8JotZO26WxgsmnG/Ajp996d2BGwdmvKHi3HvquRZbstdGZv6p0PnalyffemgUkf
-    l4IoXZSfXnqHN0sLv16x3nazy9VtB6ClR7WdvLQ2hGWMBbooTHb1OV2R1PgG/Fa02lDWgi
-    Ku7E1kXG1AwNFJq26Qh0YSBRQ15KTCRsmZwVC+hg+tTu6tiBpRsKbWbXLZpzOtqDS54fLC
-    WCaLMEaG4DrtaPGgY70hwOkSes3xO3WKMxsHaSXiwzuYLMoTRkr4WAmual9XxhnRcNc3dZ
-    0HzMmJJYBndfov33+yudsJRAfNj5ni2PI3JQy7Im/BPaI7fbIe8EFPs4+Zyxcac3A1hCpz
-    3+8iMYHuJ9sjE12MwTrwKWq0RvcP+Hz10OGBtxPNkGukUmQ90ZDVoak8fP3629cuY3yh5q
-    Yy8Oaah8KxFNi2KqGd6THi8yMMCuKnMKrRSTwyifgQEhV3KFBAlgNkWtQF4N5vcN1xLm/t
-    +RIfZaLJcn697115vxIykMXznABL77ZDqWIAT3sVW6y58XiNche4s3hXsBsZVsqxEJpKdg
-    kSaNXcd/yM66Vcyc01U0MIhCrcqbrpZ8A8InsbRp8VSkgfMy4qptR8cTsnGlG+o/hgGhp9
-    +c5fJQ7lgbH4BWVyoCQG3KV/wETbDxzQjjewmcnCiQiEGTJUs9I2fHr/oQfg
-X-ME-Proxy: <xmx:1UqhauH063nL6GPDfCT7dzo6XqV_czpw009f_mNAVlqiAgduluPCqA>
-    <xmx:1Uqhal5zi9q8KgRGoHWa0kYPelBbbpU67QDCNs5fwulV10JAhdjBkw>
-    <xmx:1Uqhap3wkUqXVPl6tF-j4Nfxm7dzmHawPP-GEK-YiGA3agLae4igmQ>
-    <xmx:1UqhahjT-4aUBswukYV3H_UfH_sEk1Ttf01l3lzxiZcG6a6Hxxzl5w>
-    <xmx:1Uqhak2PGRdPj348L4sSAHufacTtpI0SZTdMaW5YFFKRf0z-3DW9ckgb>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 9 Sep 2026 08:02:25 -0400 (EDT)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: aliceryhl@google.com,
-	gary@garyguo.net,
-	ojeda@kernel.org,
-	rostedt@goodmis.org
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	lossin@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	mhiramat@kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	linux-trace-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v2] rust: add mark_used macro
-Date: Wed,  9 Sep 2026 21:02:10 +0900
-Message-ID: <20260909120210.2488674-1-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mX13pZHt"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc42c773d05so142043a12.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Sep 2026 05:40:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788957648; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jKqyoqw6BsENFcuBXNunLFWjejAIdmrrhtz6GXvL+ScgZARu2Nfm0mWmj1ABsCQjY7
+         RireObRtRYfQJ6Mu+5igxR4Dzd9F/+mEYm+zo/ZrbXnRzPt/N361gV3VeQO4jR5xqKq3
+         i4Ro9o0YZ0Gr0MhMZjIYyyO//0olFRigOYhrE26NUNwTbu+D1fpQxucGr7PIxrGOs+ce
+         RwoAh6WLPqgG6scqpZqU6SunCre7KunjuqZ9xmhU8BfGsDaeJxNoqjG5HvWAAZhBI8St
+         KPi5VT4DJjaruWCkTCGWSjnyg4yXr3uSgEQN8l2h4/kSVt/ZfWl/NFvcOsaFesnV9EdU
+         kCEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=CvYtV/SZ3/N68blqG6IXcgd9EYI6RO/7AwXt0HZiXpI=;
+        fh=50Oiq9R0sCjPDKO7EZ+fDeCGGA2bdg0YB9aT3ec5Bn0=;
+        b=OVeInxSAT3lDhfYcIG5oV5RiUSLqx+88T0MKDj7R5Mh+Z7ZvFzryCMwkS3psb2I/fZ
+         K4ejnp3keat6N5WK50I6C0ovb9NWtw+lZbHO0uOMgeKeYTPvkTBqFTNcbBBJv1CWybyI
+         TOVvvK3OXUpsNxSzd6Yf7qqeX9Q+JcZ9SKJQJt1pv+Xh6UAgd/t+rZ/x4HtktfDZIpjy
+         yUvt/buVUtcKZfre/Hd75Vp96ldus/OzstS9Ra+FnUNrXWnvyREsk4GAYrU1jkMXV4nM
+         d49t8Eo88ONw/QAiJK3CW88nkURytUlpfGy4JgJ5uCQFnji0qqFJx6onOsDu4tMOTtJd
+         WAhQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788957648; x=1789562448; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CvYtV/SZ3/N68blqG6IXcgd9EYI6RO/7AwXt0HZiXpI=;
+        b=mX13pZHt0XOH5UXYsdmBK/FiAX6R2VSrGayXfKqNrNgUi4zNBLJYe9NN+L+zHR92KA
+         kZ6WbbvrFPZ/7FbDr3lFOBc6lqHJAk/gC4JvY+dyY4pdlNYV1WzzyMcGCzbco9hijbcv
+         Le2uVWct8KMOT53E0r+a5MYT0GEBv+kyR2XtdQQAGETl5bm5hOITk6FcqK4dD2zaM+6d
+         TBwagmjI+Arr17dviVbgjALu0aVP/bAawnRlnlCTMYNwP95uzVhsAwkjSjf/G3vFsOYl
+         NNlz3WJObT7cjQDTDCvGcvLN1A8QnYh/lsy0hm24hlLqkhPCm1hnhLGLxOSGxvm8b5st
+         kKgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788957648; x=1789562448;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CvYtV/SZ3/N68blqG6IXcgd9EYI6RO/7AwXt0HZiXpI=;
+        b=RH4y5PWF//fjhDyps2Csd8xSNtHG8imz9DCLhoYTMOluMZOwvkPHRc0mIKKp7i6Fkh
+         /1udA8IvrUHTouqvMhvo8q0HRAWOtR3i9zhPx54qX5NZnNAugm6nsE5zL15bclJECcEk
+         oUl7viL8oM2jvDNtl6ZNr+1gZd8k/8nYWxdRPO+JqSRaoqo6sU3ellYi99BpsVI3Bwyy
+         1tR69xq45igbYPXRU6z4b4EMSsWZwXTg1Fj4Wq9PMHQCElMHU1EMP1tjEA9nVt3iEe58
+         iAwqhGcfnQX32IcHna3IGydJUfw+M/0VuachFOVxNf3tRNnB/Nb4gpDFCbQFtlS0P7tk
+         qljw==
+X-Forwarded-Encrypted: i=1; AKwUvByrS+Fh4ULRAI59AyY1Ik1Dfkh/64vu+Ltd5FMTcAWE2gdL9PdkRcSlFQh6D1g3zW2v6NLF3s3T+kNJVnKNbQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++lujg5+kxI4hbeza4sw0l+0LJOEwnbTIzVy3xZXo7NsjRWEA+4n
+	zTNtnM1ObQUiWmUjYjVGQRfg/yf98a/oCM4dgtLKLq0LBPyDeGf35LwMtyx/nUgBFg0413uqDaO
+	z1+PkiLonXv5ImQj/lBexehCjy2soSLA=
+X-Gm-Gg: AYBFou02onT4y/gtCtvD/OwNxsK4iNZEfJN/JVcWXv53rJ6+7+9vxWsm+FAnz3BGwHa
+	NRwgTcSGy0NLU9VdUbWhOBipGyKpwrB8xu2cddwlELQ5l196ZSXBwURbXfsPrZzbhiYt8j+zbe2
+	eHJds4yAnL7rTABlcp7dk40aqo0IlAlvbjMo3kKpn+euHDKXtbE7thrsaw3SIqz+NGSvmVwUf3y
+	eKTD5qYE2sxivm1529gmOkBTFhRQkVWL+n6qqK33uipnDqxndyIbBSRCDDvNMngkW85yz/yuWtI
+	rpJ3Gcm/1sp1THzno9jnUKN0o6WjXRssTj3UeI/WBd8vc/C6sthCGLRQ1t+7hzsz4k5sl3e5hzQ
+	YGQ5+7BxkzIrj/mm2gWzlR1TQTAz2l9Mv04UfqZcG5YGOZHyrqcBaqWMmNhxdMFMWtfdaP70/Ka
+	mA8Yac30byTWP68+YClt3NxEMLvM1YsMugGFsoPundyfscqdxe9EybyGSy18crwg==
+X-Received: by 2002:a17:90b:3843:b0:390:3936:8760 with SMTP id
+ 98e67ed59e1d1-39b3d3db82emr25928663a91.0.1788957647620; Wed, 09 Sep 2026
+ 05:40:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20260909033246.2779303-1-georgeandrout13@gmail.com>
+ <2026090955-lustfully-fanning-33f9@gregkh> <DLAR1ECFC1WO.8NOBWPL6WM8E@nvidia.com>
+In-Reply-To: <DLAR1ECFC1WO.8NOBWPL6WM8E@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 9 Sep 2026 14:40:34 +0200
+X-Gm-Features: AcwNN1XhXoN5_IFb34ArOzJVpKsqjlwNs9WCrPY6BaOeCuMJu7VIDDuOhdGDBiY
+Message-ID: <CANiq72mCdDWsWD_O7LJ0i6rM-0C8p-pi-Wqvn4hTWv2Py5DMRg@mail.gmail.com>
+Subject: Re: [PATCH] rust: auxiliary: validate DeviceId name length
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Georgios Androutsopoulos <georgeandrout13@gmail.com>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <iweiny@kernel.org>, 
+	Leon Romanovsky <leon@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, driver-core@lists.linux.dev, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Wed, Sep 9, 2026 at 1:29=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.c=
+om> wrote:
+>
+> Note that this is not a runtime panic, this method is only ever called
+> in const context by the `auxiliary_device_table!` macro, so a panic here
+> translates to a build error.
 
-Macros whose expansion depends on the kernel configuration end up
-ignoring some of their arguments, resulting in unused warnings.
+Yeah, this is one instance where `#[const_eval_only]` (or
+`#[consteval]` or ...) will make it clearer.
 
-Add a macro for the `if false { _ = ...; }` idiom used to avoid them,
-and convert the existing open-coded users in `warn_flags!` and
-`declare_trace!`.
-
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
-v2:
-- Drop the comment in `declare_trace!`. The macro name says the same thing.
-- Add Gary's Reviewed-by.
-- Rebase on rust-next.
-v1: https://lore.kernel.org/rust-for-linux/20260810075144.1245761-1-tomo@flapping.org/
----
- rust/kernel/bug.rs        | 18 ++++--------------
- rust/kernel/lib.rs        | 12 ++++++++++++
- rust/kernel/tracepoint.rs |  4 +---
- 3 files changed, 17 insertions(+), 17 deletions(-)
-
-diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
-index 3566f0234ca4..c1e4eb7d4a70 100644
---- a/rust/kernel/bug.rs
-+++ b/rust/kernel/bug.rs
-@@ -55,9 +55,7 @@ macro_rules! warn_flags {
-     ($file:expr, $flags:expr) => {
-         const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
- 
--        if false {
--            _ = $file;
--        }
-+        $crate::mark_used!($file);
- 
-         // SAFETY:
-         // - `flags` and `size` are all compile-time constants, preventing
-@@ -83,9 +81,7 @@ macro_rules! warn_flags {
- #[cfg(all(CONFIG_BUG, CONFIG_UML))]
- macro_rules! warn_flags {
-     ($file:expr, $flags:expr) => {
--        if false {
--            _ = $file;
--        }
-+        $crate::mark_used!($file);
- 
-         // SAFETY: It is always safe to call `warn_slowpath_fmt()`
-         // with a valid null-terminated string.
-@@ -106,10 +102,7 @@ macro_rules! warn_flags {
- #[cfg(all(CONFIG_BUG, any(CONFIG_LOONGARCH, CONFIG_ARM)))]
- macro_rules! warn_flags {
-     ($file:expr, $flags:expr) => {
--        if false {
--            _ = $file;
--            _ = $flags;
--        }
-+        $crate::mark_used!($file, $flags);
- 
-         // SAFETY: It is always safe to call `WARN_ON()`.
-         unsafe { $crate::bindings::WARN_ON(true) }
-@@ -121,10 +114,7 @@ macro_rules! warn_flags {
- #[cfg(any(testlib, not(CONFIG_BUG)))]
- macro_rules! warn_flags {
-     ($file:expr, $flags:expr) => {
--        if false {
--            _ = $file;
--            _ = $flags;
--        }
-+        $crate::mark_used!($file, $flags);
-     };
- }
- 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 4d5c96ddc49c..3b38e6b8196b 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -227,6 +227,18 @@ macro_rules! container_of {
- #[doc(hidden)]
- pub fn assert_same_type<T>(_: T, _: T) {}
- 
-+/// Marks the given expressions as used.
-+///
-+/// This avoids "unused" warnings in kernel configurations that do not otherwise use them.
-+#[macro_export]
-+macro_rules! mark_used {
-+    ($($e:expr),* $(,)?) => {
-+        if false {
-+            $( _ = $e; )*
-+        }
-+    };
-+}
-+
- /// Helper for `.rs.S` files.
- #[doc(hidden)]
- #[macro_export]
-diff --git a/rust/kernel/tracepoint.rs b/rust/kernel/tracepoint.rs
-index c6e80aa99e8e..29d2d2d0aca8 100644
---- a/rust/kernel/tracepoint.rs
-+++ b/rust/kernel/tracepoint.rs
-@@ -38,9 +38,7 @@ macro_rules! declare_trace {
- 
-             #[cfg(not(CONFIG_TRACEPOINTS))]
-             {
--                // If tracepoints are disabled, insert a trivial use of each argument
--                // to avoid unused argument warnings.
--                $( let _unused = $argname; )*
-+                $crate::mark_used!($($argname),*);
-             }
-         }
-     )*}
-
-base-commit: 28924df2a08f440c73991b83028032c901de2ae4
--- 
-2.43.0
-
+Cheers,
+Miguel
