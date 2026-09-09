@@ -1,277 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-198.mta0.migadu.com [91.218.175.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF6130D401;
-	Wed,  9 Sep 2026 01:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D00430C37A
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Sep 2026 02:26:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788917853; cv=none; b=mdxwpnqbp/gdfRX4FFm9iJfi93Fb/Z9nVjm9qcC2kXGHWoxQcjqgquGEibgZd7mXXI5HB5uJL5YFLRyqPZRTfvbzLX+zp/Z25JkYDvmZDOooYVg1mXmGyJ9wqDabKwwt/JLQTU5+urIK6PsDgGQSlTkJ1r4/wDijM7JCAlQ8m/k=
+	t=1788920816; cv=none; b=bTsWnI3zZdhyO16lvcxAP80UYyhdfERoOsbHiHXGUJ4Rl8dshY2PwDXj5E/XjsHD6kAO/hmsS2q/Y/f5TsaiwVWU2f3hBLYB6Nu+40pn/iF0Kf0nWf16Z1/ZhiIDLx9jrJrFkHAG6U2v8SH/9Mf6epPsde9irKi4T6zbsifBgAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788917853; c=relaxed/simple;
-	bh=Eq0Qtdau7zlRrzZB2FvIsTQ/8RoLXqA3j8Pg33WvdD4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GZ2sgtYvVzGTnRbYJqnIe2QFPQILOr6sJjnaFQO2ofCmbRQKWEPmTMKmAY2F6BKq27Xc8cZxT3Ny/5u3cz/lCc49POBSQHVR2UaOXMsdV60Z4e5vJIDjNEm0CKKsBN/4uJRV/s2OnSvGumhvdO0vccZIfIQia1Whn/T/PAMx4Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z1Qfzmvx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788920816; c=relaxed/simple;
+	bh=hhi3c8zU+U+EE/Oqa9R3g7YzwauRmJN/Xy5b4xnh/b4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Phc4HaeSgOrdrGHqOOb3hxA5SSjJuw2JKXs99+IKtL3VjX/y346QCAJXMvwmbyQc5jIINM+m3s0Uuhb2BaOe7fbD+Wx96AzVt8nBv1kSyBB8nUrNHC73rpTmAdab8In8RKKptwltaj9F+RmHV27rMewPN24MI2EkLeS1anhXKU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AfNlsM7o; arc=none smtp.client-ip=91.218.175.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z1Qfzmvx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC3611F00A3A;
-	Wed,  9 Sep 2026 01:37:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788917848;
-	bh=8PtESzw2OCQ7Ixyfx24GTeteaH9f0sYX5thCaw9E91k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Z1QfzmvxWU8syXDuVj/zGxIoqhtKhiUswC+nVkmYnGkHOibqqNwWhXVqAtqJhrgfq
-	 rT+3/YA+2ojHd4WoLAGoRHiY3SY/SXJMkemI9LGmejg1Smr4oBrDcCF6kR8+Rc09i5
-	 u9VQ6M6nl6Kxw0Se8uPX6TzcARn9Jm6qEdu2rDYpA7v4SJQSz2whoc7oKaV2eEIwNz
-	 o2IZI5KBTr1BQvmM8UgjfWpHZDM3khM31NbpvFSXXcYBmWv0+JFwx0wMkyupS+AZqK
-	 nq6rix2H0erDT4mZtpIUXofUywhPa0nZZmwuhTYYmEsBAQAAdIoMZMR/XLAyPZL1vn
-	 uH3kA2WoHj55g==
-Date: Wed, 9 Sep 2026 02:37:22 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: alistair23@gmail.com
-Cc: linux-pci@vger.kernel.org, Jonathan.Cameron@huawei.com, djbw@kernel.org,
- rust-for-linux@vger.kernel.org, lukas@wunner.de, alistair@alistair23.me,
- linux-cxl@vger.kernel.org, bhelgaas@google.com, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, gary@garyguo.net, ojeda@kernel.org,
- benno.lossin@proton.me, a.hindborg@kernel.org, wilfred.mallawa@wdc.com,
- tmgross@umich.edu, boqun.feng@gmail.com, bjorn3_gh@protonmail.com,
- alex.gaynor@gmail.com, aliceryhl@google.com
-Subject: Re: [PATCH v3 21/21] lib: rspdm: Support SPDM challenge
-Message-ID: <20260909023722.5615672b@jic23-huawei>
-In-Reply-To: <20260901010347.2614656-22-alistair.francis@wdc.com>
-References: <20260901010347.2614656-1-alistair.francis@wdc.com>
-	<20260901010347.2614656-22-alistair.francis@wdc.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AfNlsM7o"
+X-Envelope-To: rust-for-linux@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=hhi3c8zU+U+EE/Oqa9R3g7YzwauRmJN/Xy5b4xnh/b4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788920812; v=1; x=1789525612;
+ b=AfNlsM7o97Br2/sCy3LyFv1cglqrdHrc/mwfcaIcqTIcOatLtpd3zaOEr6eM0C7axcNcxvBm
+ +7vOidl348F6u5exW8gV3var8GPZBMJEG6emqdXty5JT/TUT9NgM4adB8xs3szxpTkwa9sNvn+d
+ I6NbUW9SyoJK4BTEtjt54v0M=
+X-Envelope-To: rust-for-linux@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 23bb6d8fa3f5e24a;
+	Wed, 09 Sep 2026 02:26:51 +0000
+X-Mizu-Trace-ID: 23bb6d8fa3f5e24a
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 9 Sep 2026 02:26:36 +0000
+From: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nsc@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, 
+	Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, 
+	Puranjay Mohan <puranjay@kernel.org>, Xu Kuohai <xukuohai@huaweicloud.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
+	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, Leon Hwang <leon.hwang@linux.dev>, 
+	Ihor Solodrai <ihor.solodrai@linux.dev>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	live-patching@vger.kernel.org, linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	bpf@vger.kernel.org, linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Ben Cressey <ben@cressey.dev>, "Florent Revest (Anthropic)" <florent.revest@linux.dev>
+Subject: Re: [PATCH RFC 8/8] arm64: ftrace: Allow CALL_OPS on kCFI kernels
+ built with Rust
+Message-ID: <aqDCSBRtnH4wVQDu@linux.dev>
+References: <20260904-b4-arm64-callops-kcfi-v1-0-ce6687739b0c@linux.dev>
+ <20260904-b4-arm64-callops-kcfi-v1-8-ce6687739b0c@linux.dev>
+ <CANiq72=xOrSXBBdmrKYfX1=qgF37LRAMzMJd4GJkXaYHMVe9yQ@mail.gmail.com>
+ <ap3Z-YDtzmdtMiMk@linux.dev>
+ <CANiq72mVXNmqh-RdOunFLBKRwMgYHFBqJOP7NbXrd8WHPb3sAw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72mVXNmqh-RdOunFLBKRwMgYHFBqJOP7NbXrd8WHPb3sAw@mail.gmail.com>
 
-On Tue,  1 Sep 2026 11:03:47 +1000
-alistair23@gmail.com wrote:
+On Mon, 7 Sep 2026 21:33:03 +0200, Miguel Ojeda wrote:
+> i.e. I guess I would have expected something like "...: its libclang
+> may not support the section argument (Clang >= 21) and the removal of
+> the flag does not change the ABI" or similar.
 
-> From: Alistair Francis <alistair@alistair23.me>
-> 
-> Support the CHALLENGE SPDM command.
-> 
-> Signed-off-by: Alistair Francis <alistair@alistair23.me>
+I will use that in v2, thanks!
 
-Hi Alistair
-
-I probably need to come at this with fresh eyes as I struggled to align
-the generation of what was being signed with the spec.  Anyhow out of
-time for today and unfortunately I'm not sure when I'll get back to this.
-
-Jonathan
-
-> diff --git a/lib/rspdm/state.rs b/lib/rspdm/state.rs
-> index fc7df9dd7b97..1fd691037fa5 100644
-> --- a/lib/rspdm/state.rs
-> +++ b/lib/rspdm/state.rs
-
-> @@ -990,4 +1051,180 @@ pub(crate) fn validate_cert_chain(&mut self, slot: u8) -> Result<(), Error> {
->  
->          Ok(())
->      }
-> +
-> +    pub(crate) fn challenge_rsp_len(&mut self, nonce_len: usize, opaque_len: usize) -> usize {
-> +        // No measurement summary hash requested (MSHLength == 0)
-> +        let mut length =
-> +            core::mem::size_of::<SpdmHeader>() + self.hash_len + nonce_len + opaque_len + 2;
-> +
-> +        if self.version >= SPDM_VER_13 {
-> +            length += 8;
-> +        }
-> +
-> +        length + self.sig_len
-> +    }
-> +
-> +    fn verify_signature(&mut self, signature: &mut [u8]) -> Result<(), Error> {
-> +        let mut sig = bindings::public_key_signature::default();
-> +        let mut mhash: KVec<u8> = KVec::new();
-
-Can we move this down nearer where it is used?
-
-> +
-> +        sig.s = signature as *mut _ as *mut u8;
-> +        sig.s_size = self.sig_len as u32;
-> +        sig.encoding = self.base_asym_enc.as_ptr() as *const u8;
-> +        sig.hash_algo = self.base_hash_alg_name.as_ptr() as *const u8;
-> +
-> +        let mut m: KVec<u8> = KVec::new();
-> +        m.extend_with(SPDM_COMBINED_PREFIX_SZ + self.hash_len, 0, GFP_KERNEL)?;
-> +
-> +        if let Some(desc) = &mut self.desc {
-> +            desc.tfm = self.shash;
-> +
-> +            unsafe {
-> +                to_result(bindings::crypto_shash_digest(
-> +                    *desc,
-> +                    self.transcript.as_ptr(),
-> +                    (self.transcript.len() - self.sig_len) as u32,
-> +                    m[SPDM_COMBINED_PREFIX_SZ..].as_mut_ptr(),
-> +                ))?;
-> +            };
-> +        } else {
-> +            return Err(EPROTO);
-> +        }
-> +
-> +        if self.version <= SPDM_VER_11 {
-> +            sig.m = m[SPDM_COMBINED_PREFIX_SZ..].as_mut_ptr();
-> +        } else {
-> +            let major = self.version >> 4;
-> +            let minor = self.version & 0xF;
-> +
-> +            let prefix = CString::try_from_fmt(fmt!("dmtf-spdm-v{major:x}.{minor:x}.*dmtf-spdm-v{major:x}.{minor:x}.*dmtf-spdm-v{major:x}.{minor:x}.*dmtf-spdm-v{major:x}.{minor:x}.*"))?;
-
-Sometimes I think they added this bit just to make sure all implementations break
-the coding style and generally look ugly. 
-
-> +            let mut buf = prefix.into_vec();
-> +            let zero_pad_len = SPDM_COMBINED_PREFIX_SZ - SPDM_PREFIX_SZ - SPDM_CONTEXT.len() - 1;
-> +
-> +            buf.extend_with(zero_pad_len, 0, GFP_KERNEL)?;
-> +            buf.extend_from_slice(SPDM_CONTEXT.as_bytes(), GFP_KERNEL)?;
-> +
-> +            if buf.len() != SPDM_COMBINED_PREFIX_SZ {
-> +                pr_err!("combined_spdm_prefix calculation is incorrect");
-> +                return Err(EPROTO);
-> +            }
-> +
-
-> +            m[..SPDM_COMBINED_PREFIX_SZ].copy_from_slice(&buf);
-> +
-> +            mhash.extend_with(self.hash_len, 0, GFP_KERNEL)?;
-> +
-> +            if let Some(desc) = &mut self.desc {
-> +                desc.tfm = self.shash;
-> +
-> +                unsafe {
-> +                    to_result(bindings::crypto_shash_digest(
-> +                        *desc,
-> +                        m.as_ptr(),
-> +                        m.len() as u32,
-> +                        mhash.as_mut_ptr(),
-> +                    ))?;
-
-Could do with a few comments or spec references. It's a challenge
-to align the spec with the code. I've read this a couple of times and
-can't figure out why we have a hash of something we already hashed.
-I may well have forgotten a spec detail though.
-
-
-> +                };
-> +            } else {
-> +                return Err(EPROTO);
-> +            }
-> +
-> +            sig.m = mhash.as_mut_ptr();
-> +        }
-> +
-> +        sig.m_size = self.hash_len as u32;
-> +
-> +        if let Some(leaf_key) = self.leaf_key {
-> +            unsafe { to_result(bindings::public_key_verify_signature(leaf_key, &sig)) }
-> +        } else {
-> +            return Err(EPROTO);
-> +        }
-> +    }
-> +
-> +    pub(crate) fn challenge(&mut self, slot: u8) -> Result<(), Error> {
-> +        let mut request = ChallengeReq::default();
-> +        request.version = self.version;
-> +        request.param1 = slot;
-> +
-> +        let nonce_len = request.nonce.len();
-> +
-> +        if self.next_nonce.len() > 0 {
-> +            let request_nonce_len = request.nonce.len();
-> +
-> +            if self.next_nonce.len() == request_nonce_len {
-> +                request
-> +                    .nonce
-> +                    .copy_from_slice(&self.next_nonce[..request_nonce_len]);
-> +            } else {
-> +                return Err(EINVAL);
-> +            }
-> +
-> +            self.next_nonce.clear();
-> +        } else {
-> +            unsafe {
-> +                bindings::get_random_bytes(&mut request.nonce as *mut _ as *mut c_void, nonce_len)
-> +            };
-> +        }
-> +
-> +        let req_sz = if self.version <= SPDM_VER_12 {
-> +            offset_of!(ChallengeReq, context)
-> +        } else {
-> +            core::mem::size_of::<ChallengeReq>()
-> +        };
-> +
-> +        let rsp_sz = self.challenge_rsp_len(nonce_len, SPDM_MAX_OPAQUE_DATA);
-> +
-> +        // SAFETY: `request` is repr(C) and packed, so we can convert it to a slice
-> +        let request_buf = unsafe { from_raw_parts_mut(&mut request as *mut _ as *mut u8, req_sz) };
-> +
-> +        let mut response_vec: KVec<u8> = KVec::from_elem(0u8, rsp_sz, GFP_KERNEL)?;
-> +
-> +        let rc = self.spdm_exchange(request_buf, response_vec.as_mut_slice())? as usize;
-> +
-> +        // The transport must report a length within the buffer we provided.
-> +        if rc < core::mem::size_of::<ChallengeRsp>() {
-> +            pr_err!("Truncated challenge response\n");
-> +            return Err(EIO);
-> +        }
-> +        response_vec.truncate(rc);
-> +
-> +        let _response: &ChallengeRsp = Untrusted::new(response_vec.as_slice()).validate()?;
-> +
-> +        // MSHLength is 0 as no measurement summary hash requested
-> +        let opaque_len_offset = core::mem::size_of::<SpdmHeader>() + self.hash_len + nonce_len;
-> +
-> +        if opaque_len_offset + 2 > response_vec.len() {
-> +            return Err(EIO);
-> +        }
-> +
-> +        let opaque_len = u16::from_le_bytes(
-> +            response_vec[opaque_len_offset..(opaque_len_offset + 2)]
-> +                .try_into()
-> +                .unwrap_or([0, 0]),
-> +        );
-> +
-> +        let rsp_sz = self.challenge_rsp_len(nonce_len, opaque_len as usize);
-> +
-> +        if rsp_sz > response_vec.len() {
-> +            pr_err!("Truncated challenge response\n");
-> +            return Err(EIO);
-> +        }
-> +
-
-We should sanity check the context matches that in requester.
-Probably just a zero check given we aren't setting it in request.
-
-> +        self.transcript
-> +            .extend_from_slice(&response_vec[..rsp_sz], GFP_KERNEL)?;
-> +
-> +        /* Verify signature at end of transcript against leaf key */
-> +        let sig_start = rsp_sz - self.sig_len;
-> +        let signature = &mut response_vec[sig_start..rsp_sz];
-> +
-> +        match self.verify_signature(signature) {
-> +            Ok(()) => {
-> +                pr_info!("Authenticated with certificate slot {slot}\n");
-> +                Ok(())
-> +            }
-> +            Err(e) => {
-> +                pr_err!("Cannot verify challenge_auth signature: {e:?}\n");
-> +                Err(EPROTO)
-> +            }
-> +        }
-> +    }
->  }
-
-
+- Jose
