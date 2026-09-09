@@ -1,166 +1,152 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFDB58038F
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Sep 2026 15:57:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788969473; cv=pass; b=FB+lqYzSVTjpCh3HiblDl+4IcVeRzaXujgWrAONOU0GSJjNhCmq0At59UYLJmMZy/IqmA8ThFAf0q/uLhoJfjgAlyyRqzkWPwndoidl9BMZPZPYUku3+ouk4fS+5ORI75Vbc23tALYzLo2hJcRVoyWQpjnoojpgXOFfjICXLJao=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788969473; c=relaxed/simple;
-	bh=n8ymrHajDVUDFp8O7i8jBrbc2qOh74Mf7H3d2702CV0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AASNY7GMn1RIj2xK9eA3HHa0VwbIm1i8oQZzcqc/SE5upNkpysTyyziiPSSi+7zu4V5FYIsQ3vdIg46AHmwK5VFVIaKid5YEyVefO3EzD+46isWJrBXP58oYsMIPBxN96exv+JKCAeqWwWfNq4Tc9wRwLEUYUo+tRhCURQuc2mY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UAajVIpe; arc=pass smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5FC569F04;
+	Wed,  9 Sep 2026 16:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788971435; cv=none; b=LCj1cz5pEydsngfoVNIH2iAbTHMy4GcLGUAG3Pdwsg6MamIJW671n/mobnZXFH5sK4ex9ZVel1tRRawLkjy2fT4DA574yvXbi564cPcMDifL+zwhD6x7sIppRttbHblmNQXq8+XjWnngEfWKhL4OM4gKl5jeJycQ5uBMPr0/qOk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788971435; c=relaxed/simple;
+	bh=wWzKtrFidTzm1N7slbL3klzIb0Qo2W2SWXnk1Ha8gms=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sPRggIgSGkWPOos/H5UBqeByDwT2NbXy8bfqZ1pTRA36y5Tus4ZP9y4BWmOkesmxYIvgLBbHzui0u2RU8osJBIn0tZj/sbjWQqkgkg8B4FIe918ZUagq2MJhqx2Bm+JHGgG6+Pdng5Hipi3K5eCEJkD077D1Xr0k8C/Cf0A3fUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dcYf5Ku6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UAajVIpe"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39666e7c9edso609987a91.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Sep 2026 08:57:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788969471; cv=none;
-        d=google.com; s=arc-20260327;
-        b=F/mVKeGaJ3Jo59sWwah9YEKxqtS+P3Msdrnh1+IBRMSy0W7/lNtU4bAEZpwGrfmyum
-         PWn5OXAvHfTXTpmAUkn2FbqNcqF3HPzeObK94Jv0XpfqSOBVMtxIvHXn1MzDpCQU9fKR
-         oiKQHh2yCWi8A9LxHF0e0B/TZum8qosxeJCbLFcKkMB6DvhI2OXNeKTATAmBAvGQC1Xl
-         z2nF7szZsCR5W1Fx1g27mMDy8QaTVslZDKjGahRkmtxZLh6Je65Z5B1rWVOiFQWIahtd
-         WZ0RG2F1P88rnWxNcZDTRLe3L2pSs0ZhWTPpgxxzaeCAtqyoujzlaPUHX/t59oA0L+tw
-         p8nA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0v9v/l61LJDXvYLeJKA3EU6R7TFlt+aBLu3xlyi9va8=;
-        fh=+LlGQXBzS41JXTv5jQrgbjUSEjhHE4phpOvfdRTjPpE=;
-        b=UTgUsvrq4jMosWSbf86Q55mxlTT0A4tjAXhGIcM2pCHqVPI/R+RIbodWvkEhMT0xCK
-         pXU+rqLU7WMtaMxRmBnGnEgkrz+GX0rciF8MBDv3j6/F82b3J0tSIFY/1BV+iF4Ggi1w
-         Xj6+4wss7gD4V+OYpv3rCOrrRB3Z9uO64iG+3RFYBINwLA5B7CROhRN93Kuu3BedarX+
-         olv1xMVaZatJVhnSIICSIxmya1Y5+80cgrvdpVwHDA9z3H75ZEufNtm2JtajM5kQ7y4u
-         bVQLfL2SpaYV5NZOYHx7ACCP9ztAsNqlNhRK1sMkXuwcBEKsEjam1fISZI7X4/9tZ0mH
-         7KUg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788969471; x=1789574271; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0v9v/l61LJDXvYLeJKA3EU6R7TFlt+aBLu3xlyi9va8=;
-        b=UAajVIpeHay7Xi2zDnHI5utjc/BPDyqV+MiiU74JzlmhmMg5DOac4vagEW/b61yIYt
-         hKMhJnRRNMj6AiMUOZ0X7UBoYFmoIeH/UiYcSn55dsGr1+XVn+LUup2hxNsKiL2NvB8O
-         QQdg0bFB3y+psKdlKgIYKQYtC/Ey1xVaavUhQCl2l050uBdOMIl8bUdxuO2Pn3HO1R4A
-         XtSQW4WlbVMLlvo419o7+ipXL8pAqpO2WbF13Iz1eVP6fCiJ+JoxqFSRXasqKZivY0if
-         MYFtAqzgikUKWkKbI9qKILqcRcA7l8FcAhtmhJrQJeaPP7Qgrhjc3D0ScmZVThoLe+hR
-         vLSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788969471; x=1789574271;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0v9v/l61LJDXvYLeJKA3EU6R7TFlt+aBLu3xlyi9va8=;
-        b=hc1UmrSUz6teWNqA3cW8qh20JL14JKVOAS2vQgtZmDvaS2ublzbnEKjwJyhy3NBxb0
-         MMRCKYN44WvSYgWqiR4P2UCDDlHamP6RkvbgaHyPGASnVq4FZIK4oVJa+tZryES40ObH
-         lbTdFQW+nbL4/p1t5/74HKzRhmi7EAdt8vqHck/hIfKpx6VPGWzS10p/HcBrhN8BA9hX
-         hnUTLel9qG80LTKw9ZKWcrheuyFRb0K+xyV1zhvqJEP0QUjdWHaz8pXnAzX4fe6KPMis
-         d0bmnJPVXAYVi5uG/UFAtk9YRU6o/385Toxwb/ZCu/It24RBUunAjcu98FCdaAuE8lAg
-         x8IA==
-X-Forwarded-Encrypted: i=1; AKwUvBw//TeTRu699jsaT0ibUyGBN9wBsWMewnpSZCbUO0if5+C54nEICx1EkH2+3JaAkRamq6ETLsSWPCpEZuqUHA==@vger.kernel.org
-X-Gm-Message-State: AFuF++nud+w5Wl4s5HoiXA7fK1q0hX3q16FuM/EOP27SoXLfn29ALdQn
-	mmtFL+HF/pgO9zkcK3r6x5OOY6flLdxeHt3+lYyaLlapeBGUj+K4hMxAQGByOm/N7fh6wpOH8a9
-	W1HtB0BNZcj9vYuGl7Wght6JSmaihu+A=
-X-Gm-Gg: AYBFou39OJFOzzf2Sa9fEiL8w1o8Eq+nDA57O1LYnWBMvBhoEVx5DupxJMezxzWQSnS
-	XOHL5FzsvHcoU2eUX2c30TpEHfSLFJHsunfqWIhaExc87ehRsKc16DMXcILRvXneBzAk6RD3kP5
-	ds9FPUfsTw5PMt90do9QZCLwTNAilyKu6btZMoI3HFbEQwNxBTeVkppMwo1za53zJL003aARxeG
-	GWacUpy8mtPZabVAbMPSW1oOEzWwDFXRNPyU7AcHZZiv7D16lQKQAktwfIOTIhPgJNWLX46zNHX
-	eukoFoN92O40Oo6YqyYISxfsaylwnHXTOPI1DdHVEgxR6jpBaXkd9UHpeVE61Ab6cKY9ZIYfANo
-	nKQanvLOQUssKDYu7qXzEj8ya/Z0qrEWPP0Qoz4lApomJFZjY6nSe
-X-Received: by 2002:a17:90b:2251:b0:398:bac0:238d with SMTP id
- 98e67ed59e1d1-39b3d7fc6a1mr28548919a91.5.1788969470558; Wed, 09 Sep 2026
- 08:57:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dcYf5Ku6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFE61F000FF;
+	Wed,  9 Sep 2026 16:30:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788971434;
+	bh=Kz7rWeqwh7ufJDv87BxiJfD/gwwv4aMAp/7XS3gBPEo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dcYf5Ku63ij8aECQoJafs4Ipg1pK9oXj9HMZSoM3ml9RYUs9bgWbI892r15HKD+aq
+	 TO6FjMT8mTQhfp+iMomWORtQlAM3jIsyaPwYZSaHoJn7R/JGCghwy4f2f0niwav6ni
+	 eBJdRLPFcGRmhIBelQgMN8TiQon3ZGk+0ZjUxsPj6ZoUq1f644nJlygEq9jKwgJozp
+	 ivMzm6l0Cf1qm0bdrELXOXxe7OHf/vwZsgJpnbZUDSpqIhRXP81TW35ZC+juNo5mm5
+	 w8CyZDKbmN2fe9Tm4ZiwdQMSYdgzFqNx03fbVBS+oujn39g8U1gp6xIrrIUpTbPfjZ
+	 fo6l8mjP/fXXQ==
+Date: Wed, 9 Sep 2026 17:30:19 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Alexey Gladkov <legion@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Jonathan Corbet <corbet@lwn.net>, 
+	Randy Dunlap <rdunlap@infradead.org>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
+Subject: Re: [PATCH 00/23] kbuild: significantly speed up kernel builds
+Message-ID: <aqGG1iSwF7SyY7d6@gremlin>
+References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
+ <CAHk-=wieaheq8rXSps3xRZpNNMQMEj9BH5gU+Dh4q_ZgokO51Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260909094729.1593-1-mike@fireburn.co.uk>
-In-Reply-To: <20260909094729.1593-1-mike@fireburn.co.uk>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Wed, 9 Sep 2026 11:57:37 -0400
-X-Gm-Features: AcwNN1V2tAyfr-GYaZ5JcK9f7LxBdPRCMCy96FW7mYbvwWHGJtRYNOXLOtAWttM
-Message-ID: <CADnq5_Mf5mQ4CF=8UTnEjYPGVUS-Hf29sHmesvtwdfnNxtrQMA@mail.gmail.com>
-Subject: Re: [PATCH] rust: drm: gem: add missing handle_free to the object vtables
-To: Mike Lothian <mike@fireburn.co.uk>, Klara Modin <klarasmodin@gmail.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Thorsten Leemhuis <linux@leemhuis.info>, Gary Guo <gary@garyguo.net>
-Cc: dri-devel@lists.freedesktop.org, dakr@kernel.org, aliceryhl@google.com, 
-	alexander.deucher@amd.com, mukul.joshi@amd.com, 
-	rust-for-linux@vger.kernel.org, amd-gfx@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wieaheq8rXSps3xRZpNNMQMEj9BH5gU+Dh4q_ZgokO51Q@mail.gmail.com>
 
-Adding a few people.  Alternative patch at:
-https://lists.freedesktop.org/archives/amd-gfx/2026-September/152673.html
+On Wed, Sep 09, 2026 at 08:37:10AM -0700, Linus Torvalds wrote:
+> On Tue, 8 Sept 2026 at 13:55, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> >
+> > A typical kernel build consists of a frustratingly large amount of time
+>
+> .. you're preaching to the choir.
 
-Alex
+:) Yeah, it's something that's annoyed me for a long time too.
 
-On Wed, Sep 9, 2026 at 5:47=E2=80=AFAM Mike Lothian <mike@fireburn.co.uk> w=
-rote:
 >
-> Both OBJECT_FUNCS and the shmem VTABLE initialise every member of
-> drm_gem_object_funcs explicitly, so adding a field to the C struct
-> breaks the Rust build:
+> >                 == allmodconfig FULL build ==
+> >
+> >                         before    after     delta
+> >                       ----------------------------------
+> > Threadripper, gcc       345.3s   275.2s    -70.1s (-20%)
 >
->   error[E0063]: missing field `handle_free` in initializer of
->   `drm_gem_object_funcs`
+> Well, that's certainly very encouraging. We should do this. I sent out
+> some emails as just reactions to individual patches, but I have no
+> numbers to back any of those emails up, and I never actually applied
+> this series to my tree - they were all based on reading the patches
+> themselves.
+
+Thanks, will have a read through those!
+
+I do recommend trying them locally ;)
+
+It makes a surprising difference to defconfig even. (Though you need pigz
+installed for the full effect)
+
 >
-> The callback is optional and the Rust abstraction has no equivalent
-> DriverObject method, so leave it unset.
+> That said:
 >
-> The shmem copy is only built with CONFIG_RUST_DRM_GEM_SHMEM_HELPER,
-> which DRM_TYR selects.
+> > An LLM was used to first determine where the bottlenecks were then to
+> > figure out how to improve them.
+> >
+> > It generated a lot of code, much of it hideous.
 >
-> Fixes: b67d2d039f64 ("drm/gem: Add callback for when handle count goes to=
- 0")
-> Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
-> Assisted-by: Claude:Opus-5 [Claude Code]
-> ---
+> This made me scared to look at the patches originally, and I held off
+> in fear that the patches would be horrible and this build time
+> improvement would be hugely controversial garbage code.
 >
-> b67d2d039f64 is only in agd5f/drm-next, so this can be squashed into it
-> instead if you would rather keep that branch bisectable.
+> But:
 >
-> The shmem hunk is by inspection - CONFIG_RUST_DRM_GEM_SHMEM_HELPER is
-> not set in my config, so only the mod.rs copy is compile-tested.
+> > I extensively audited and rewrote a lot of it, and heavily edited commit
+> > messages, the cover letter and comments.
 >
->  rust/kernel/drm/gem/mod.rs   | 1 +
->  rust/kernel/drm/gem/shmem.rs | 1 +
->  2 files changed, 2 insertions(+)
+> None of the patches look at all horrible to me. You clearly excised
+> the hideous parts. All of my reactions were of the type "this could
+> probably be taken _further_" rather than me throwing my hands up in
+> disgust.
+
+Thanks! :)
+
+I made sure to audit everything it came up with patch-by-patch, got it to
+rework the horrors then rewrote large chunks of what it came up with.
+
 >
-> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-> index 80d8f524f9d5..ae61ca7e1246 100644
-> --- a/rust/kernel/drm/gem/mod.rs
-> +++ b/rust/kernel/drm/gem/mod.rs
-> @@ -278,6 +278,7 @@ impl<T: DriverObject, Ctx: DeviceContext> Object<T, C=
-tx> {
->          vm_ops: core::ptr::null_mut(),
->          evict: None,
->          rss: None,
-> +        handle_free: None,
->      };
+> So the Rust parallelism thing clearly isn't ready based on feedback
+> from that quarter, but the rest looked safe and innocuous. I'm all for
+
+Sure, happy to drop anything like that.
+
+Though based on what Miguel said it _might_ be ok perhaps with a nightly
+gate on it? Will see what he/Bjorn say.
+
+> merging this, although it should obviously go in through the right
+> channels. Mostly the kbuild tree, although some of it clearly would be
+> other cases - the objtool change in particular is fairly substantial
+> and needsobjtool people to approve. It didn't look all that
+> contentious, but still..
+
+Agreed, it definitely needs some eyes on it, especially the trickier bits.
+
 >
->      /// Returns the `Device` that owns this GEM object.
-> diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
-> index a687d46d170d..d08a03cb7a13 100644
-> --- a/rust/kernel/drm/gem/shmem.rs
-> +++ b/rust/kernel/drm/gem/shmem.rs
-> @@ -145,6 +145,7 @@ impl<T: DriverObject> Object<T> {
->          // SAFETY: `drm_gem_shmem_vm_ops` is a valid, static const on th=
-e C side.
->          vm_ops: unsafe { &raw const bindings::drm_gem_shmem_vm_ops },
->          evict: None,
-> +        handle_free: None,
->      };
+> Anyway, I'd love for this all to go in. Build times are a pet peeve of mine.
+
+Yeah, it'd be nice to see this benefit everyone!
+
+Am happy to iterate on it as needed to get it upstream.
+
 >
->      /// Return a raw pointer to the embedded drm_gem_shmem_object.
-> --
-> 2.55.0
->
+>               Linus
+
+--
+Cheers, Lorenzo
