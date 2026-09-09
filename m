@@ -1,127 +1,132 @@
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F2F52FE4F
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Sep 2026 10:45:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8CA530E0F;
+	Wed,  9 Sep 2026 10:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788950708; cv=none; b=urpD7aeWiBPzQOUDk2A8lKoo9LteQ6Aun5g03jIRAOwsYG9t2wTwTKMgDFLWgqYPMU/DRc/jSzkMBHdUI41CGUdSMqoCYH4yPz74Su2+FuL7/7KDnaznVdOUrFNkyfQCXGzOPdbXjfh7Kem/ciMsSx3bw8dsygjdm/KxmJwP5mA=
+	t=1788950999; cv=none; b=JJG9AM8zIxjcZUUb6lFcIly+9jPeek6rQXdxc2JZMYNwH4Kq1QoOtmDIpJJSLFf2t379u3EuGFNgyr8ZumzN645TaLD6LC0Iw3OtWMhaRnM/UjkmJrL7Y+ckLj1Ps0XVzSwVEb7cGhUIRFGgTMal6oU5j8SSEmSrGp9GsVb1gLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788950708; c=relaxed/simple;
-	bh=pfB+KZaSY3RlPTkNlGMroxzDczth/bgr6J+oW40CVc8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UaE7a6p+kGP0Mf/ZXEf1CeZhFlHuFeI4bJixXGyf2h3FSkGb9jFpUAuzCuoohrqYtxcdSieMB75PtP2XI4MhPu4iPR3FujVX5QCbiqW9v3TZzbDi0Mk7irjzFW7PtTa3UIvzRZXt0Ouokdf1kTr3ilQESCOooE6paF5oMxTP2Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=WMUBIphe; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=s5ydCYOV; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="WMUBIphe";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="s5ydCYOV"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 76266EC0136;
-	Wed,  9 Sep 2026 06:45:05 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 09 Sep 2026 06:45:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm3; t=1788950705; x=1789037105; bh=bHEC0peSc9+H+sGiKBsXc
-	ulIJxlU/Upn+UBvvoo4Jf0=; b=WMUBIpheIUbWvjFHIPFBAcZabOCxyywo4wsUs
-	htOKxAFW/wdOw/E1Q/dCZdGiJGSu9aNSVtck53psQBm1ye4zYCkabYqJ1W0uoH7z
-	hPIQiQZi4lvpndamuP5JsQieMnQfko9r0/5Q4QNqVUdQ7WpRzRHocihqIBwyhKB8
-	Q0DKxzfuOuLDQveogdaaI4Qp71ZhyoXVd538Td0g6u+5oMkgzj2UY2LP+lv0VHL/
-	7Kqukwn2owBKhvacY6tJmZYhBKoOx7LuDQMMvCC6d0vq77Vx4+/tZMe1Uzd2If/K
-	+eXViIAUv7rii9UT7NkKpuiXFiaudFAcbfl4Y1hfyOIh3erAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1788950705; x=1789037105; bh=bHEC0peSc9+H+sGiKBsXculIJxlU/Upn+UB
-	vvoo4Jf0=; b=s5ydCYOVIj3c1f9KcJIV57KglPKBy05rgx1hAq08oVBt1R3r8ee
-	zc7a4vJ1Erv7nSLPk9L9d4Ysb0GcyKWumhHOqKYgMqv5iRV5LRiF4uJ83GFDX+Hr
-	uPLHMpyGUhSn1GwMPdzjkbDPRt4RX5I9eF7XRpSsct0xxybf+YjwmRLpwXgF5BVM
-	6OtfcQItWA6K2joFh+4yT9sIQam9CpqFm5rUZbuBbwW8bogRY2sABaOsBiiSn19j
-	i7qFeIRSK9nrG6E+oFaOlTP/LDxzHFir5exT5B2rQrdIhaa0OawGx9Cc3iNM8/uG
-	nPs4QkFAO+6uAuHGTeomaj1m8azBslZFqzw==
-X-ME-Sender: <xms:sTihaspQRjsz-ag1wXeSgpjqgw4yb6yEdiFUXvXegYAnDnKMFpbPyQ>
-    <xme:sTihahIgRO_8NIfbfWqjLDfwqCW_B2XvMZZBn8xIlNV3IlqOGz8R57Jkw4LLInsCB
-    o7wTKOnB1DqF8ZxyYfOF1tDEQVLEGkpGELBOAUcU4DhngckhB0N4Ls>
-X-ME-Received: <xmr:sTihaoDvZbe5IJe8DbwV7UXonw3Ez9kqFuBwGtuf2zBJfEo2wkD0yMAvhxr5uLhHLc5Rl0c57lVvkB-seyI>
-X-ME-Proxy-Cause: dmFkZTEeSEUAov8nfa5Lj2/pSs9RUxanqVsOmKxl7GNz8D29g29DfEiDTkS+w2j+NqVB4X
-    nTpUstNbXh6Fgyw8DXdnWI2ToM2aeMz04qYUCs819f5+mchhoWbt3YbpTKnKYY95ZAt/7F
-    Uv3xOrQfKUpsg8NuJirM05eZ1wZqYadndf3tqkT0ccL3CQeBrOE8z3kvbc1hRTKZXE12+Q
-    h5ymT9oiwU3f2NcDiv92wWs/c2zGBfc/WyIweFTQe2y0ovZhbFqsYej8TszMDG0tDEWhh9
-    4BvWIAmAxhu5a+VeIVVmsXMb+lCUW6/r3ObG6x9jToSW5J5aIIw+CRN56gsv33nNGWyVBO
-    +17XW272jusPqejtQ4pCMjDT+NyIUjcDWDTt0gRr3r92+Xat50w8W8guzvn5lh6FAQbARE
-    +vH1HdbpMSj4dle6e9Fd7YxFQ3V5RyUWM+zzCnmHB4cB99usZ9rtV8+4Sodc2lr3guQQ30
-    dZnHEmMkb/tEHHh5669zJ5J87bq5nONmJl40g4265SLXyZYKHsN7/v3Xbi5qeWMm8tG3/q
-    zI144ifsIBsDIyGhZMJUIAcAmT4xyHQTpo19xjZiOqMD7LczHxXLmJvKZEDk2SEGNewpWP
-    8jfIFEJQtWtuwIHr3wF692k6+gbfecOhAoVSeswNkMH8D9+Lm09OyC3zAmJA
-X-ME-Proxy: <xmx:sTihaj5F-kbqf6h0vynUa_QzoDt5fOgz0vs79Tri8Xj3iovD7bBMYA>
-    <xmx:sTihakFt7HvwpesuxpnFq-yULjmPK0IEZ7tqgdAZC1dPjCcb92N82Q>
-    <xmx:sTihauRo93-3fhuOeRD_IcusrwYNMjvgtZcei9-d1mJmBu_TE2WVDA>
-    <xmx:sTihaueGcQ3PcxDXj2ML5QU8b_D-FVNbk2o2MBKh06bpE8znZpR2Xw>
-    <xmx:sTihagC59BOP6BG2Ow-76iHiRuf890_xMlsDw5a1d0-yYwle07xXloK_>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 9 Sep 2026 06:45:01 -0400 (EDT)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: ojeda@kernel.org,
-	tj@kernel.org
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	jiangshanlai@gmail.com,
-	lossin@kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v1] MAINTAINERS: add the Rust workqueue abstractions to WORKQUEUE
-Date: Wed,  9 Sep 2026 19:43:13 +0900
-Message-ID: <20260909104313.2453991-1-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1788950999; c=relaxed/simple;
+	bh=qa7uKVmuRKbzZkSWTupVeLu/yAB1fOSaZ/W3rSwhgRQ=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=txvdWL3tICw0z6Zd46HwfwtefhcjT2iIsM7FkZg19Pi2gKFRrZT38UNmDuStDir3RThBDCB51nq3J/ZfOKVBW0ytfEXIj41/5g4ROsVrjh0jPWHo8xczMbTYKRdpvu5lnPA44RHXL2BQVpUjTn8srHC6ZjAO0HmEbt4O2vDkTpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
+Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 689Amg9A031559;
+	Wed, 9 Sep 2026 19:48:42 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from [192.168.1.6] (M106072072000.v4.enabler.ne.jp [106.72.72.0])
+	(authenticated bits=0)
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 689Amgtj031555
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+	Wed, 9 Sep 2026 19:48:42 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <60bf7af2-b84e-4056-9195-a26ad51ada46@I-love.SAKURA.ne.jp>
+Date: Wed, 9 Sep 2026 19:48:41 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Jens Axboe <axboe@kernel.dk>, Bart Van Assche <bvanassche@acm.org>,
+        Christoph Hellwig <hch@lst.de>
+Cc: Al Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Brian Foster
+ <bfoster@redhat.com>,
+        Damien Le Moal <dlemoal@kernel.org>, Hillf Danton <hdanton@sina.com>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        Ming Lei <tom.leiming@gmail.com>, Qu Wenruo <wqu@suse.com>,
+        Tao Cui <cui.tao@linux.dev>, kernel test robot <lkp@intel.com>,
+        linux-block <linux-block@vger.kernel.org>,
+        rust-for-linux@vger.kernel.org
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Subject: [PATCH 1/2] block: Add post_release() operation
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Anti-Virus-Server: fsav213.rs.sakura.ne.jp
+X-Virus-Status: clean
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Add post_release() block device operation which provides a hook for
+performing synchronous cleanup without disk->open_mutex held, which is
+needed by the loop devices.
 
-rust/kernel/workqueue.rs and rust/helpers/workqueue.c hold the Rust
-abstractions for the C workqueue API, but they are not listed in the
-WORKQUEUE entry. Add them so that changes to the Rust side are also sent
-to the workqueue maintainer.
+Real-world container engines, test suites, and system utilities rely on
+fput() from __loop_clr_fd() being completed when lo_release() returns.
+But changes which went to the v7.1 merge window broke an assumption that
+there is no outstanding I/O when __loop_clr_fd() is called, causing NULL
+pointer dereference problem in lo_rw_aio().
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In order to fix this regression, we want to allow __loop_clr_fd() to flush
+outstanding I/O. But calling drain_workqueue() from __loop_clr_fd() with
+disk->open_mutex held causes lockdep warnings. We need a mechanism which
+can flush outstanding I/O without disk->open_mutex held.
+
+This post_release() operation is intended for performing only idempotent
+actions such as flush_work(), for nothing prevents multiple threads from
+concurrently calling this operation. That is, the loop device schedules
+a work_struct for calling __loop_clr_fd() from lo_release() where
+disk->open_mutex is held, and waits for completion of that work_struct
+using post_release() operation where disk->open_mutex is not held.
+
+Also, this post_release() operation is called from only bdev_release()
+path. This is because loop_configure() is not yet called (there is nothing
+to clear) if something went wrong between an initialization lo_open() and
+an error-unwinding lo_release() within the bdev_open() path.
+
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 ---
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+ block/bdev.c                     | 2 ++
+ include/linux/blkdev.h           | 6 ++++++
+ rust/kernel/block/mq/gen_disk.rs | 1 +
+ 3 files changed, 9 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 6215fcb07770..a8b0c70d16bd 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -29484,6 +29484,8 @@ F:	Documentation/core-api/workqueue.rst
- F:	include/linux/workqueue.h
- F:	kernel/workqueue.c
- F:	kernel/workqueue_internal.h
-+F:	rust/helpers/workqueue.c
-+F:	rust/kernel/workqueue.rs
+diff --git a/block/bdev.c b/block/bdev.c
+index cd8323083740..7ce5acaacf43 100644
+--- a/block/bdev.c
++++ b/block/bdev.c
+@@ -1188,6 +1188,8 @@ void bdev_release(struct file *bdev_file)
+ 	else
+ 		blkdev_put_whole(bdev);
+ 	mutex_unlock(&disk->open_mutex);
++	if (bdev->bd_disk->fops->post_release)
++		bdev->bd_disk->fops->post_release(bdev->bd_disk);
  
- WWAN DRIVERS
- M:	Loic Poulain <loic.poulain@oss.qualcomm.com>
-
-base-commit: 28924df2a08f440c73991b83028032c901de2ae4
+ 	module_put(disk->fops->owner);
+ put_no_open:
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index 4f7905c3412b..f05dba1b5962 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -1605,6 +1605,12 @@ struct block_device_operations {
+ 	 * driver.
+ 	 */
+ 	int (*alternative_gpt_sector)(struct gendisk *disk, sector_t *sector);
++	/*
++	 * Called after disk->open_mutex is released in the bdev_release() path.
++	 * Used by loop devices that need to perform synchronization without
++	 * holding disk->open_mutex. This operation has to be idempotent.
++	 */
++	void (*post_release)(struct gendisk *disk);
+ };
+ 
+ #ifdef CONFIG_COMPAT
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index fc97dd873974..2ff77ef49781 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -129,6 +129,7 @@ pub fn build<T: Operations>(
+             submit_bio: None,
+             open: None,
+             release: None,
++            post_release: None,
+             ioctl: None,
+             compat_ioctl: None,
+             check_events: None,
 -- 
-2.43.0
-
+2.55.0
