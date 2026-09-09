@@ -1,205 +1,215 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011071.outbound.protection.outlook.com [52.101.62.71])
+Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7515F5437E0;
-	Wed,  9 Sep 2026 11:29:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788953367; cv=fail; b=LM+OIEi+ptuEFtEL3d2RPdfC6aodA5nURMFfJsilHzNovCa3iqeKzT4FVYxvb/rLtJumfbJHwQz2XfvMThS4NDE+8R7iDOHHrOLD+aPuYFLAqKTFZWILRo7ayMg56BCq546U44URgOJc+cIkJ+R+lQGot1lVpiUMeAYzFTOAn60=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788953367; c=relaxed/simple;
-	bh=HQQ0l8Fhf/pL4ZK3adoLUvTzlJ+ab9OVsHDIt6KTdPc=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=BpSm38wOdTov84sBlXaCSRIg6E5iepzNujDL+sXFP+r/fd9r16DDnbDmdlx95l9wuW7CYN+gHzLnYLWkRF4buPxtQGmcdBhO5mHwl5Njys5PhNsmB6DEoAbYKSfrXxASfMvnP7I5hfkVnQ7fMOxtoZvfzWH0hf3pzp/tPXJcllg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Mnyi4/Mz; arc=fail smtp.client-ip=52.101.62.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EAB545DAB;
+	Wed,  9 Sep 2026 12:02:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788955353; cv=none; b=C3ud1VFL6tEMHoCDpqPOtY5CpTiZdX6rqLx8EUNmiHtOjDNNPvwIOh3y8mM37Dgzi+KV+sANTDn+DxXdoINXDJJTjAE2I/szbNWmoPbZujFrEMZcvNX0nrTpZnLVW0MxLxzIOvCBUQcXSu6XTUhIxxQ1x8oZsN04wAhblJJOtdg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788955353; c=relaxed/simple;
+	bh=K/tG6mLi7kaBxy1QZ1ckLxO6z1brlEG4Dja18T4gOnE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WWfNZB5nJRbEO+iGud7Wi0R2KtfKEwSAlYUA1TWW/vHpAxdrgagMMvxGfOyErvH5c0fq1gC04/kVrhaj2CUTqxC+KG1oHcFLVQc5p5fBI8P2aSpUAXNWkop25ZqCfeXWeH/GeFvdGlH6GoWSpKULHWGusHbX4QJfs4b3cszo5Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=Gt5VfsOG; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=U0G2Bu/m; arc=none smtp.client-ip=202.12.124.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Mnyi4/Mz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wXarlo7Hub022IRn7JfdWtheGPdIKNIOYYtqI/WUoFfYFrZwP49BygsPvUZjqcpolP6MlnA+aEsdQU5lmPeXww/0g7g/VdKBs6xTC2ft3dKS5nZimY7e/+1rLbrVrjxg7dEpMZxW+kTC2b4HLIw4Td2GtxXQwhijfUnp3lojjeB00xJk/Tme5KzqhO7+IJTimZR8PZY3RYP3x8GD3AWogDNexcg6BzjpQTRuQPKVwSQtklrzF458sQPn0p668vNqeHCSPnEZP13nc55Z1dOQMIYKN5N3ZeB7ftwamI8wILBfrvzRdrNiMvjVqfc1YLCVPi/YzFizSydHwGZ8gO6VUg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=y0hh/SoqUmmUZxqi86+iX1cyqtermT4wFXZLqpi4LSs=;
- b=IO48soccWvG+OI+wpRJYQZQUEoOUgVF8DLO3u9lZeyTzlssE1Og96bNhQnQ64XoDVRUj3yvYdf6AnZOVTKKaeKuzR/Pyl2dsrdIWtFO1Tm59qVvDal0JdmzB5x5DUwRSq0D8TbmJnOCKAJlK6OyEXG3wkbuvQAVSSRX0nl7MhjtCB4haGwmg0IvNqpJnGAKSzdE4WT9JXxd1IxFpzMRK1C+R4f8B/S3nhaJXBbY6nvY9RMD1JjDPGDV3RhUOLPqX156T6jGLIy8OIGayoGJs8X13zqdMbe8PrwYb4PMa7BruYD1+ZH5RJQ76vDUgnEoJ23j9c4DahmnJBpEYNDeBYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=y0hh/SoqUmmUZxqi86+iX1cyqtermT4wFXZLqpi4LSs=;
- b=Mnyi4/MzSr20q/UttS6CW8fuQF3iLYm26+ShEP6uOz1cjJP70XkHfVknbIhwRaSlCzrI7aEuV9H4PydtzsvjZ1YxSASkQ6tNRnXWQPEh/lJ48zCGcKvI+9riimvsjSLMtFlFZ/fqb+SjpRNgjyHeG82HMmb+J9ho9KoZ8uoqtjyrj/erMY8Tfb3Y3CsEJUy9OqqB5aFlJ4IrdDwdXSW8hNBbhKqD2z1AWlR6KjcDSPNfL6Pnh2Tloai2kQ+U3bUHbvLf64sgcGIVRleJdLLBCu9vUtHy5LHaB2i1roAW6r9mBkyMTVj6uO4U0VSYL0qr+wtwhS9KT4TZ3+hpXqvK8Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by DS0PR12MB6390.namprd12.prod.outlook.com (2603:10b6:8:ce::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.406.7; Wed, 9 Sep 2026 11:29:19 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0406.005; Wed, 9 Sep 2026
- 11:29:19 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 09 Sep 2026 20:29:16 +0900
-Message-Id: <DLAR1ECFC1WO.8NOBWPL6WM8E@nvidia.com>
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-Cc: "Georgios Androutsopoulos" <georgeandrout13@gmail.com>, "Rafael J .
- Wysocki" <rafael@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Dave Ertman" <david.m.ertman@intel.com>, "Ira
- Weiny" <iweiny@kernel.org>, "Leon Romanovsky" <leon@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: auxiliary: validate DeviceId name length
-Content-Transfer-Encoding: quoted-printable
-References: <20260909033246.2779303-1-georgeandrout13@gmail.com>
- <2026090955-lustfully-fanning-33f9@gregkh>
-In-Reply-To: <2026090955-lustfully-fanning-33f9@gregkh>
-X-ClientProxiedBy: TY6PR01CA0012.jpnprd01.prod.outlook.com
- (2603:1096:405:3bc::17) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="Gt5VfsOG";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="U0G2Bu/m"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.stl.internal (Postfix) with ESMTP id 1C8381D00060;
+	Wed,  9 Sep 2026 08:02:30 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Wed, 09 Sep 2026 08:02:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm3; t=1788955349; x=1789041749; bh=bVY1yWQUiCsPGp2dXwrxQ
+	STFwCySs8TKGWg3lCvR4EI=; b=Gt5VfsOGdSidpqDTNMzZTOKTlLeh+bGKRxUJj
+	GdYtYoocfUbRYOLvzMOwemaYzW137LJQWwWXLUm+L0ZS/H6GfWNmQEcAaodvbGoX
+	7LFB8f2wT+/imWDySy5SJPVb4wVEIOjnO3s17vHlZo6AcBtpCay5Rvq4i9KsHGsE
+	vplRWY0KpccQ4w09215pPsSjKU5Ud8xMG5Qm+FF+s4L9aIWwLEqTqlYMJsGoDrmH
+	WEBas9KbpBWSrNPRUYOw2lPPbDOZ9zHsuNG3kxyjC+0+wxI/mj21Sil6j7iUW9gd
+	7c87jH4VS3FIORlSauotKR555kVo3xu04c5ENvRnB95R8HFmg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1788955349; x=1789041749; bh=bVY1yWQUiCsPGp2dXwrxQSTFwCySs8TKGWg
+	3lCvR4EI=; b=U0G2Bu/mv2PSW2dlbxNPTDlbs5ZXDqpJnJgRDByxQ/KNkS4qaig
+	GJD/48fZJM/gV/QxDuVc8hx0SzlbOLcjx1SYw/NSmHw5OpHB/cCc/NCZg9ZeBQid
+	3xR2exW/1fLwNzOJ/3zCq9RZJt27GG/luxHit9tN5U19IYLD/UesOPh3HJqBAOCE
+	auAObcUoljsqeVqfL7crPVCKhrViYOZDUl41k4DVVezbHOVvxH/Am+gYSbYtN02Y
+	eZHb551GtvAqV5PPll2z9A/1amkpzglEb+XTd4xpRodZ2yaWegIP7XL7gf4hiM0P
+	zMlVYCbdDM+ho4nSKUD+R6Kp5ox+wIuz1ew==
+X-ME-Sender: <xms:1Uqhas3MfwoXN69VMffgmbbi_Ci4WQg6wd2TV8k1ySo-3Ph_v4dECQ>
+    <xme:1Uqhaof4gD8qNS8WPW6TtfI04zWMnuhuBNqLmSvk4ReV_rSCaeL5v333w_C-r8_V2
+    I0mSDtpIBcbJH7pij5FqZjVKulwU1JX3c_mK7qzhNI8KZE49jNBygG8>
+X-ME-Received: <xmr:1UqhauLaXbOtC5S4cwE2T3M9-WTCu_bYKMqRCA9aqG6oTNyYqi9muwO8UJrSJaDOqkja6eXfKo4ngUJZp08>
+X-ME-Proxy-Cause: dmFkZTF8JotZO26WxgsmnG/Ajp996d2BGwdmvKHi3HvquRZbstdGZv6p0PnalyffemgUkf
+    l4IoXZSfXnqHN0sLv16x3nazy9VtB6ClR7WdvLQ2hGWMBbooTHb1OV2R1PgG/Fa02lDWgi
+    Ku7E1kXG1AwNFJq26Qh0YSBRQ15KTCRsmZwVC+hg+tTu6tiBpRsKbWbXLZpzOtqDS54fLC
+    WCaLMEaG4DrtaPGgY70hwOkSes3xO3WKMxsHaSXiwzuYLMoTRkr4WAmual9XxhnRcNc3dZ
+    0HzMmJJYBndfov33+yudsJRAfNj5ni2PI3JQy7Im/BPaI7fbIe8EFPs4+Zyxcac3A1hCpz
+    3+8iMYHuJ9sjE12MwTrwKWq0RvcP+Hz10OGBtxPNkGukUmQ90ZDVoak8fP3629cuY3yh5q
+    Yy8Oaah8KxFNi2KqGd6THi8yMMCuKnMKrRSTwyifgQEhV3KFBAlgNkWtQF4N5vcN1xLm/t
+    +RIfZaLJcn697115vxIykMXznABL77ZDqWIAT3sVW6y58XiNche4s3hXsBsZVsqxEJpKdg
+    kSaNXcd/yM66Vcyc01U0MIhCrcqbrpZ8A8InsbRp8VSkgfMy4qptR8cTsnGlG+o/hgGhp9
+    +c5fJQ7lgbH4BWVyoCQG3KV/wETbDxzQjjewmcnCiQiEGTJUs9I2fHr/oQfg
+X-ME-Proxy: <xmx:1UqhauH063nL6GPDfCT7dzo6XqV_czpw009f_mNAVlqiAgduluPCqA>
+    <xmx:1Uqhal5zi9q8KgRGoHWa0kYPelBbbpU67QDCNs5fwulV10JAhdjBkw>
+    <xmx:1Uqhap3wkUqXVPl6tF-j4Nfxm7dzmHawPP-GEK-YiGA3agLae4igmQ>
+    <xmx:1UqhahjT-4aUBswukYV3H_UfH_sEk1Ttf01l3lzxiZcG6a6Hxxzl5w>
+    <xmx:1Uqhak2PGRdPj348L4sSAHufacTtpI0SZTdMaW5YFFKRf0z-3DW9ckgb>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 9 Sep 2026 08:02:25 -0400 (EDT)
+From: FUJITA Tomonori <tomo@flapping.org>
+To: aliceryhl@google.com,
+	gary@garyguo.net,
+	ojeda@kernel.org,
+	rostedt@goodmis.org
+Cc: a.hindborg@kernel.org,
+	acourbot@nvidia.com,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	lossin@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	mhiramat@kernel.org,
+	tamird@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev,
+	linux-trace-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v2] rust: add mark_used macro
+Date: Wed,  9 Sep 2026 21:02:10 +0900
+Message-ID: <20260909120210.2488674-1-tomo@flapping.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|DS0PR12MB6390:EE_
-X-MS-Office365-Filtering-Correlation-Id: 84db5c63-d154-43ef-72c9-08df0e6596ac
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|10070799003|7416014|376014|366016|10067099003|22082099003|18002099003|11063799006|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	BVn2RvHS7czb8TSOOkzvXAfEShZD5HVHx0V81ySlQ0mQ57I9+ji4XA/wBvwLhajOLStCUdYmjIWtB5OvF8Kw5UQpWTqZHWqDxVAcbRV6vGbAKUqYdCut3PbcVPsshKrPqqGD6wwEJtsbgQuUECRhB2lC7R2PlDwRLMGpz89jzFO1ims7k4/CXRXksvxZWpmdtaybVZzd+6pIIyFPtrHdfJ1ldgOapDmlKc9p2noVMxZSTZsnex/hPmx5zkmwUHcCdhxZCSIx/zA/eV5EF5mj269f6GeaB6HIet90wv5JSOFdYPpjd/0hgJeMXMwpAWoq/1fQ8l0x2XTpZ/N9ghGK/4+xqxwbNQMAwd/voIz75lCGYWNdTg8Rzf/oJiJd7qiiezJFks2YXzOO28/Tv5dkyTyIiwG3uuAJrPGC9/KTeTON4JBEVECGNmD7rgBcp4J6Bztol1oZlncPunYjIbXKBfLb0f7OL+NdWfG0SHZV8W6qc2NMAdMH2TRf+i5iky7VmpnX1kQvy1ks7kN7qsqEBMA9ojEpTXk4jwl8K0jlYJUhGTgZPK5UAmDnhcqk/PcvBez2TTm9Boa8/c8aDxDCMrzEFjTe1ZE6HvnhPycJEX/qt386Pps6pfM00/SMVwmZIgh/AlHeaxYdPDlD2xtFl9hTHYvT5TTDlQfyyp78RE4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(10070799003)(7416014)(376014)(366016)(10067099003)(22082099003)(18002099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cjZPdUp6UUQ0RlJNT0V2TDk5bHlLZE0rNVQ1am5FT0c2dlZiUi9VTlN3d1li?=
- =?utf-8?B?RkpEWHFvUm5Xd1MvR2pYdlAxU1poTWtxZHY4azVVTkVqSXg4WUhCUGFNWE8w?=
- =?utf-8?B?Qjh3R09pVkEyNmJpM2ZVdzVxUWVnUXIwWnhkV1RqUHE5NXdQNnpRSWxOMDBn?=
- =?utf-8?B?aDUwNmIyK0dtbExqdkdPNCtlaTFmbXU0NExsU2d5MzB5Z05mbitsUEJ6VldM?=
- =?utf-8?B?R1BBRHp5ZUFtZ1N1RUpZRWdqOFZ1Y3ZNTDExbVNuWWtTNGRlV3lPRE9WbzNE?=
- =?utf-8?B?Z29TRFZuMEZqV3dxeGlDZHdtVWJWSFBNT24rck9pOFVCQTJlbGhmWDQyb2xJ?=
- =?utf-8?B?N2dvem9qUDRybUhZaE9QNTNVbFNPTEU5YUJrNlhSaC80bUd2QlI0VWh0ZGMr?=
- =?utf-8?B?QTQzbmFOVkVwdEplV285bVUzcDZkanhxNjQ2WVc2aVd3N2o5MFBDMDAyZzl1?=
- =?utf-8?B?L0NVU0NMLzVPUzRxT1g3a1kxV2V5TXhIbE5wS0d4TWwwSTZjWWlKbTYrUFVQ?=
- =?utf-8?B?OS84Mk93QWd5bW8yTTlMQk5RUldoU0VlSStyV3lub00vTzJnZEJRT29FQm01?=
- =?utf-8?B?dVMzd2VIWlNocXp3TWl1c0Vud1orcURpdE9Vd2dFbDNaaTY5SFdTZzdNa2VU?=
- =?utf-8?B?dHVZSVR6N1poUkV0M2tjMm9kTTJwck02YXBaa05aak1MdjQ0amdpem1YNXBy?=
- =?utf-8?B?WGxpQm8rV0ZXRkRtU3BlWXhCNUFqZGZpVFdxYmJBSEFOR1F1YWRnMGgrNlpS?=
- =?utf-8?B?R3YvYmd0TForNFd1UVpBVFVvSnNrOEV2TzRQR3o3ZE53cmpIeVREZ1NiWEdt?=
- =?utf-8?B?U29KZmt5SWNGRUVvTHl2KzJ2WGNMYk1JdGpmTEQrQzVQajE0dnBxNHNOVEgx?=
- =?utf-8?B?blBYRnl5b3ppVEc0NklROVgwbFZaQVl3QWQ5bWVlZ00xOU9GQVMzYTlobnlY?=
- =?utf-8?B?K2w4VDJ5NkY2Q0F1aDFSR0RBTEZMdURNSW1EUnlOMFBCVU1SSWRuaVIxYjV3?=
- =?utf-8?B?UDJGOFcxejNiZzdXem9xUFdDbTdTN3VkVVd0anM1SW0vRkFoQ0pwMFd3NGFG?=
- =?utf-8?B?bXRIWVB5YjlPNUQwYkM2THlYNmpLS21kYVFSRC9Yai9BVitZWWNlS1V2ZDhp?=
- =?utf-8?B?U01TMHF1Rld0bG8yV3R0NEFDV1M2REpmTHJvSDdWZTZ1RFBSRHdrcFgxeVQ4?=
- =?utf-8?B?ektVdmQ1OEQ2czFLaS9YNjhadkttbWRKOHdNcElpLzNtTnRnY2hFZU12NXpZ?=
- =?utf-8?B?ZnUrcTQ1SE0xL0grWUhQdlJxMDUrMWlROEpBdEExd01CKzNERUVOYkg4UU91?=
- =?utf-8?B?SDJzSExwM29hM05ablMxUkY4bDY5ejFSa1ptNHRZQ01SbEtpQS9LU0pCV0Jx?=
- =?utf-8?B?MzlrcU1HbFRuRmJ5ZXVGRnBTVWtQekFQcW5XU0FDQWE5djQrcTMrZXozT005?=
- =?utf-8?B?TllnWmF3NWx5YXNqMkxIMHMvak1kYVZIZHZ0SlFwcU4zVFVBbXhYbnBkMUxk?=
- =?utf-8?B?T1NQMnRYSnN0N21FdEg1M25rNHpFQS82dWhBWWdFbGp3a0VmZWlMRjhLczJz?=
- =?utf-8?B?cCtWT2FqUGpZTTFtam1RTm1DRDBSNEQ3dStOUnR4em56bUlZSjJHcTlWa0pM?=
- =?utf-8?B?T1NYdnFjTGZCT3k2SG5CWlF4RSt5QW1CTlkvQkNDdEh0NklJamVJTW9mdytQ?=
- =?utf-8?B?ZkZqNHplU0hiUjFWa3BoeGxzWlBaN0p2bTlKcWFFZTQwMDRCUlJiR0FFdm1G?=
- =?utf-8?B?TlhleG5JUWZXb0lOZlhjSFE2cUZkblh3aGtCaGFxU1VoMU15TkY4ckNkUVBR?=
- =?utf-8?B?VFE0QkRqcWdFbGtwbmtQVnJVSGNiZFJIYkVrNFR3QjFjNCtIelk0a2sxZVQ1?=
- =?utf-8?B?VjRiUUxUeTFKalpUR3Nudk5rQy9XMWttUXNiSzQ5SEdLaGtVbVFRUnkvWVM3?=
- =?utf-8?B?Y04yUHdpd3M4YkJFL2tnTkFIM3c5NkJmaDVidU5Ud3FCR3BnME1TQ3ZRbUd3?=
- =?utf-8?B?WURhNTVjVkNDeitDcndmRjJ1Y1Jid3d0V0ZGSDBDcGRNY1pHbjhoK09iNDA2?=
- =?utf-8?B?c2NlQ05maitKUzNCK2k4aUlUY1JXNEo0bXpJc3EvckdONUpRUmd2YmoveXNn?=
- =?utf-8?B?dGtHd0JTQ1praU5LL3BRZmdvZzVzVDdYZ3Z4N0FLT0V0U212NlBHbGZQYnJD?=
- =?utf-8?B?Ym1MdWkzdVpNNXZhKy9sKzdUNkx6Y3IySm5HMlJLOUZ4bDB5SXhQZXdSbWh0?=
- =?utf-8?B?bFRmSGlXbWcvbVdVaTB2Z2lacGpQY2xTNXZkYjA4dS9jZ1Z6S1llck51OFJn?=
- =?utf-8?B?cWFXWkxMZlUyaGlBcVNBSXJNR1Y4My9lRytEMml2R01pWTgvbStlcjBNcUhI?=
- =?utf-8?Q?Ty+plVCprLJyBraEnO3Oycv5bWyk9ygnwLxEUwWWbUyB9?=
-X-MS-Exchange-AntiSpam-MessageData-1: ZSOgNCbxvsJdzw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 84db5c63-d154-43ef-72c9-08df0e6596ac
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 11:29:19.4201
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wlsChohSNhVbYyasrzP+ohrDHWNOqGJJtvkESyBR9RdOVBqySrXEmW1eOpZNbEOPL/P8aOForKO9fBVzE3wh7w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6390
+Content-Transfer-Encoding: 7bit
 
-On Wed Sep 9, 2026 at 4:19 PM JST, Greg Kroah-Hartman wrote:
-> On Tue, Sep 08, 2026 at 11:32:46PM -0400, Georgios Androutsopoulos wrote:
->> `DeviceId::new()` copies `modname` and `name` into the fixed 40-byte
->> `auxiliary_device_id::name` array without checking that they fit. An
->> oversized name is caught by the array bounds check, but the error
->> reports an out-of-bounds index in the copy loop rather than the
->> constraint the caller violated.
->>=20
->> Check the invariant explicitly instead, so the failure states the length
->> limit rather than an array index.
->>=20
->> In a constant context exceeding the limit leads to a build error; at
->> runtime it panics, so add a `# Panics` section for it.
->>=20
->> Fixes: ce735e73dd59 ("rust: auxiliary: add auxiliary device / driver abs=
-tractions")
->> Signed-off-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
->> ---
->>  rust/kernel/auxiliary.rs | 10 ++++++++++
->>  1 file changed, 10 insertions(+)
->>=20
->> diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
->> index 60dfbec8f330..1f3ba86d6d96 100644
->> --- a/rust/kernel/auxiliary.rs
->> +++ b/rust/kernel/auxiliary.rs
->> @@ -137,10 +137,20 @@ macro_rules! module_auxiliary_driver {
->> =20
->>  impl DeviceId {
->>      /// Create a new [`DeviceId`] from name.
->> +    ///
->> +    /// # Panics
->> +    ///
->> +    /// Panics if the combined module and device name, including the
->> +    /// separator and trailing NUL, exceeds `AUXILIARY_NAME_SIZE` bytes=
-.
->>      pub const fn new(modname: &'static CStr, name: &'static CStr) -> Se=
-lf {
->>          let name =3D name.to_bytes_with_nul();
->>          let modname =3D modname.to_bytes_with_nul();
->> =20
->> +        assert!(
->> +            modname.len().saturating_add(name.len()) <=3D bindings::AUX=
-ILIARY_NAME_SIZE as usize,
->> +            "auxiliary device ID is too long"
->> +        );
->
-> We really shouldn't panic, we should error out and fail the creation
-> instead.
->
-> But what is placing the constraint of the name size here?  The C api
-> just takes a pointer, it doesn't care about the size, why does the rust
-> binding care?
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Note that this is not a runtime panic, this method is only ever called
-in const context by the `auxiliary_device_table!` macro, so a panic here
-translates to a build error. The current code also panicks if the name
-is larger than the target array, but it did so when the array was
-accessed out-of-bounds, with a more obscure error message. What this
-patch does is provide a better error message for a condition that was
-already checked.
+Macros whose expansion depends on the kernel configuration end up
+ignoring some of their arguments, resulting in unused warnings.
 
-So while the patch is arguably an improvement, I would suggest to drop
-its `Fixes:` tag as it doesn't really fixes a condition that wasn't
-already checked. Also the commit message's "at runtime it panics" gives
-the wrong idea of when this code is evaluated.
+Add a macro for the `if false { _ = ...; }` idiom used to avoid them,
+and convert the existing open-coded users in `warn_flags!` and
+`declare_trace!`.
+
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+v2:
+- Drop the comment in `declare_trace!`. The macro name says the same thing.
+- Add Gary's Reviewed-by.
+- Rebase on rust-next.
+v1: https://lore.kernel.org/rust-for-linux/20260810075144.1245761-1-tomo@flapping.org/
+---
+ rust/kernel/bug.rs        | 18 ++++--------------
+ rust/kernel/lib.rs        | 12 ++++++++++++
+ rust/kernel/tracepoint.rs |  4 +---
+ 3 files changed, 17 insertions(+), 17 deletions(-)
+
+diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
+index 3566f0234ca4..c1e4eb7d4a70 100644
+--- a/rust/kernel/bug.rs
++++ b/rust/kernel/bug.rs
+@@ -55,9 +55,7 @@ macro_rules! warn_flags {
+     ($file:expr, $flags:expr) => {
+         const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
+ 
+-        if false {
+-            _ = $file;
+-        }
++        $crate::mark_used!($file);
+ 
+         // SAFETY:
+         // - `flags` and `size` are all compile-time constants, preventing
+@@ -83,9 +81,7 @@ macro_rules! warn_flags {
+ #[cfg(all(CONFIG_BUG, CONFIG_UML))]
+ macro_rules! warn_flags {
+     ($file:expr, $flags:expr) => {
+-        if false {
+-            _ = $file;
+-        }
++        $crate::mark_used!($file);
+ 
+         // SAFETY: It is always safe to call `warn_slowpath_fmt()`
+         // with a valid null-terminated string.
+@@ -106,10 +102,7 @@ macro_rules! warn_flags {
+ #[cfg(all(CONFIG_BUG, any(CONFIG_LOONGARCH, CONFIG_ARM)))]
+ macro_rules! warn_flags {
+     ($file:expr, $flags:expr) => {
+-        if false {
+-            _ = $file;
+-            _ = $flags;
+-        }
++        $crate::mark_used!($file, $flags);
+ 
+         // SAFETY: It is always safe to call `WARN_ON()`.
+         unsafe { $crate::bindings::WARN_ON(true) }
+@@ -121,10 +114,7 @@ macro_rules! warn_flags {
+ #[cfg(any(testlib, not(CONFIG_BUG)))]
+ macro_rules! warn_flags {
+     ($file:expr, $flags:expr) => {
+-        if false {
+-            _ = $file;
+-            _ = $flags;
+-        }
++        $crate::mark_used!($file, $flags);
+     };
+ }
+ 
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 4d5c96ddc49c..3b38e6b8196b 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -227,6 +227,18 @@ macro_rules! container_of {
+ #[doc(hidden)]
+ pub fn assert_same_type<T>(_: T, _: T) {}
+ 
++/// Marks the given expressions as used.
++///
++/// This avoids "unused" warnings in kernel configurations that do not otherwise use them.
++#[macro_export]
++macro_rules! mark_used {
++    ($($e:expr),* $(,)?) => {
++        if false {
++            $( _ = $e; )*
++        }
++    };
++}
++
+ /// Helper for `.rs.S` files.
+ #[doc(hidden)]
+ #[macro_export]
+diff --git a/rust/kernel/tracepoint.rs b/rust/kernel/tracepoint.rs
+index c6e80aa99e8e..29d2d2d0aca8 100644
+--- a/rust/kernel/tracepoint.rs
++++ b/rust/kernel/tracepoint.rs
+@@ -38,9 +38,7 @@ macro_rules! declare_trace {
+ 
+             #[cfg(not(CONFIG_TRACEPOINTS))]
+             {
+-                // If tracepoints are disabled, insert a trivial use of each argument
+-                // to avoid unused argument warnings.
+-                $( let _unused = $argname; )*
++                $crate::mark_used!($($argname),*);
+             }
+         }
+     )*}
+
+base-commit: 28924df2a08f440c73991b83028032c901de2ae4
+-- 
+2.43.0
+
