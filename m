@@ -1,213 +1,234 @@
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2AD1A6835;
-	Wed,  9 Sep 2026 07:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBD74457DE;
+	Wed,  9 Sep 2026 08:01:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788940160; cv=none; b=ZqFno8spsGrGJCa8KA3zVQLGjX8QDXNI49WodrLwev9ga3MAhCxymvtUOx2V0tGHht9gxuFmVtDdKZAAxOAWGt8a3ji6sf14IihH6/ULdMgsYr7NpCZAHG/gIarMtQagZkpkVyrd9EgevUtRLXX/nBSBZyhBmYtTcoeOEWWsUPY=
+	t=1788940899; cv=none; b=LBD+jZFsidEwt+LldzPugs9Vdm+vJa5yXsWyO2TihVuyOiFl1QwlKI7Kdm02UlCTpUOPZ6U6bl4Y342OJSxWdz0cnNnMIYWvj47HnBiTAVeU8J52U88p0jOkbGQUP7v+zEupGo0fr0FVLQxkMJi0OMtEAWzSCfvoGpBeBr28yDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788940160; c=relaxed/simple;
-	bh=0uIdegXlGCDD7vAxvb8llLpTuPgZpjk/VvtpaggYSyQ=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=L7A1VevxtNFWvvyj0rM7ULplh+tRkOf6mjJuCRXgveqFphMMuzSPFwEeY/L5VE9g74SWkqXZtWF9qr1tsx3fRosnuNUrr5kW05bLR6r41jE1abeMILICR+mHUGqpHoOxuxNQq/tOoRmXm/arBW61+2hcG8F2WpXDWtlDbFUrfdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=CV2yIYLm; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZJ6YQO3A; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	s=arc-20240116; t=1788940899; c=relaxed/simple;
+	bh=Azkq80u6Zs11HEEIgD0144Bvb9O8pd/EXTnXNViG0nM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iWy1lhN7pgzxcCcuQGwXQKxZYW2Q/Z9HrfaIvn5BXZVDyQVLm7X0K5uhq0/xUQAvvD8eHYAIQIHwyumZySpRGYW3nuMlwlE25bkZoRO09HYHQ+IqZwxmMjORziz6w0K7Nnjoh18L4JlgCSLh9ehmxG2GJx2z6SzOfWZHjjndovw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=j27fhShv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=rAiVPu6p; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tHZ+68w/; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=litFSRiF; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="CV2yIYLm";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZJ6YQO3A"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id B688C140006D;
-	Wed,  9 Sep 2026 03:49:17 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Wed, 09 Sep 2026 03:49:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1788940157;
-	 x=1789026557; bh=4NH7DFSnpb/q5t7A1jLrPBi5gmQR/IXFpF+VKe1QfMQ=; b=
-	CV2yIYLm2RdszT8QHVjHywN0JNSd0a1jqBC2kyGfKEFyih/8aRkJxw2PmvAA/r5K
-	fL+U33crudoqL/cNyYbxrvzs0r1yxZP7Zaf00N2rqOD6/BGBe0E+S1XXd7wnDuLg
-	UQ+nSp7xSfDN1mr3kdQBy+iI+X1oUt3qXqf+PIExDL6vGT0W2GmzyGPU3TiRkdWB
-	SQQtejMVNQNWPQ9R5NipiH/tvUQVVajSF/BmAL/ZwfXLPzjk9+JvgwofXDRwXaCw
-	hyuGv0Pc/naYeJ0t9okaUq5hW3CwDl8kya/7tZD3uieYNjixoD93+wONM1B8ZMX7
-	phEE6TkONuGM5h/W7uu4Iw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788940157; x=
-	1789026557; bh=4NH7DFSnpb/q5t7A1jLrPBi5gmQR/IXFpF+VKe1QfMQ=; b=Z
-	J6YQO3Ag5qzao5xrpfrzYXALE5WeOwxgXaDww5WK7awkeoBCJlsurcmFdvs1run9
-	NPHA47Z7xAbMeCaPrG+DSaqA7Vz44yrR00bmv0mu/yMtlP4XfguzjCpxPGgjVAfB
-	WTKogzYndd1y0ooPEeVAzxuyqIKemx7mxsbMkcigIylbbe6L+lVNEKzLPo7bxrEm
-	1XhXQnHHd6sDVc+Byzy/YWIb94tgy9qD0xHxx791RA3alj6LnQ8M8Jj+YvqvhV9L
-	IazDXD42FDoYerIOjFz5uPQKvhOAJilKJydkKwIbnWJnr9xFrQ68NUadyqLmoqxA
-	dIC54ISV+53Q9rw9vzunw==
-X-ME-Sender: <xms:fA-hamyj8Ed7VEXsuaSYqWqMNLNR807LHiGS1ooPP9TB-V-Xr3KDCQ>
-    <xme:fA-hajMbEWDd5-7WaY521XW6-IPE46-otpsXHLk5vx2pufZ4h68hOBlDWFGDAa_n3
-    DMWbxVRYdQ5ff1YMVILXOlp_2TUJv5vno-kyYisP7HFIFQKjDd7dKI>
-X-ME-Received: <xmr:fA-haopsaXHbzSNaZh8InI1oV1ppwB27-SZdPpchbaIuzzPGoOuZRKv8hd6liszJEjjpoe4oNoY0F4LiHO0d1CLB>
-X-ME-Proxy-Cause: dmFkZTFyZJtxQHxEmKA0c5uw898wco3bNEi1GS6gdG5Oc3TwCXmt2VDbWlwEfVvjod3bTi
-    ej2qcI6R8AaHLpcR8MaL9hBl3L0w9yYDYBdc/mnV26rPzluX4ERNPuEYkt8LRIIS7Qc6Dp
-    CYKjFEVbR5zB3ADMCYO9P02FH4m/gxawY4tE3Y5ffsgl9U4eppfKgFJrk10Va2AZOqYeP2
-    uR7+KPFR1L205E3DFAv8Yn9RJRIl71YPkH13TKCoaxCDdB51j6K7xAThOicVf1GTLV4RA/
-    DlT896CkZ0Cf32yH+zH+WQLHFcAgJDq+MJt4z9XKLUh7ZSBmRpCN5dteBkkg3ORZxXpHJQ
-    74XmbGbTeJIugU/lRym/CZtYYsLxjiHcubyr9IpVDuv+C3Z06Pv7sMMyfb11fs96yR6Msv
-    z3fpHdLvXta3tdwUpSO/A/R6ba3oAQdr8IePTMR7x2XeMwAt2iwNiMxNalN12RjY1BR112
-    ER4MEJAtU1DL/ttZ1vdY2FYdM+9U7sZiiUrlTCFYfpefmlw7Sn/r8A1yeJ4UWjHBXNqAlD
-    dewigh//NaSDwJK7zpKLsjjBgucoBtB7mrbwW0Ox/KKgHKnGewMzALtZ3fCiuzjtkJtWrM
-    EVpGIM7k95F/6CSNUxwJsMTKUrsnMRU60OEvpYLMvqPxv37084rGrU95+SkQ
-X-ME-Proxy: <xmx:fA-haq_8IGomnwdjNcAzHD9uJZpmXxNIceyBV_wK9At2uhHX0Sc-Lg>
-    <xmx:fA-hau1yWkBiYB2HG5xVx2CkVAl0dB9jJYoL9K-1H2I2xD48cZ3ZSg>
-    <xmx:fA-hatCbhGu1Ua9lUPu_GBwHH3dYCkMFgfzdaFUqUjqJHw9uJq9SqQ>
-    <xmx:fA-hatDTFLKSDSuVIJzc6hQCSRQTP3tn3237OdqGRxH_GwaKupFz8w>
-    <xmx:fQ-hatOr-6IeIXRzXF7wq_q9pntwIg29vxguZ3p81OaPzwxDD9Mp1SXE>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 9 Sep 2026 03:49:13 -0400 (EDT)
-Date: Wed, 09 Sep 2026 16:49:09 +0900 (JST)
-Message-Id: <20260909.164909.180036819630013679.tomo@flapping.org>
-To: springbreeze@stu.pku.edu.cn
-Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
- andrew@lunn.ch, hkallweit1@gmail.com, rmk+kernel@armlinux.org.uk,
- ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
- fujita.tomonori@gmail.com, tmgross@umich.edu, stable@vger.kernel.org
-Subject: Re: [PATCH net v5] rust: net: phy: fix off-by-one bit positions in
- device status accessors
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <20260901143251.136378-1-springbreeze@stu.pku.edu.cn>
-References: <20260901143251.136378-1-springbreeze@stu.pku.edu.cn>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="j27fhShv";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="rAiVPu6p";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="tHZ+68w/";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="litFSRiF"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5308A1F7AF;
+	Wed,  9 Sep 2026 08:01:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1788940890; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=V+w6mHfMv7ALo2DRy+HOaCZ0lsuSiiOBsrZzxBKyKAw=;
+	b=j27fhShvgAohUMfs8OwK3hesxgv/nJpbEf9u4Dft7c0wKiycToXgr9AIDoMlyWmtWUbgAS
+	Jk+v1GMSDpWx37aCG/ErjIHWvomw2tV7yNGLhAjJsrq3ZKwfYYqrDuyzHTKNQWmGy+fIHq
+	lbWU1e0uL7cHZNEV97HBn4xZuwBfGG4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1788940890;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=V+w6mHfMv7ALo2DRy+HOaCZ0lsuSiiOBsrZzxBKyKAw=;
+	b=rAiVPu6plSd7Zy67NELRDMXUGW0kJsTVWUJW3ENJPX86AYoZTcnnVZSj64aggPNahKAgy6
+	E+riASYvOlIpCfCA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tHZ+68w/";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=litFSRiF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1788940885; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=V+w6mHfMv7ALo2DRy+HOaCZ0lsuSiiOBsrZzxBKyKAw=;
+	b=tHZ+68w/PpQ5aX2RKeT7BtD2CGvGXPZspFfjx24b2gWaEmmGb5/bPv+y08J7pK+EB+vZmF
+	uoLmfM8ovodRWFHtQriMjSnLAEO5YeV2DXxCyNP1HR5wfKuxKe+v7HxVi9mKzy9iUa0GtK
+	MwaJhDA+vLpw/gsZA1xpndzhXiu7bjY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1788940885;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=V+w6mHfMv7ALo2DRy+HOaCZ0lsuSiiOBsrZzxBKyKAw=;
+	b=litFSRiFgfgWm4xB9HTHLoC46sB3724Rigpz/RTt8nF2O+/Nh1v2Q+Qlxkocu28Lt149UU
+	dTGYYKQHPaPB7/CA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BDA121352C;
+	Wed,  9 Sep 2026 08:01:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id JEkJLVQSoWqzGQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 09 Sep 2026 08:01:24 +0000
+Message-ID: <2642740a-b894-47bd-b26e-cabdaa14d8b8@suse.de>
+Date: Wed, 9 Sep 2026 10:01:23 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust/drm/gem: initialize callbacks with
+ ..pin_init::zeroed()
+To: Klara Modin <klarasmodin@gmail.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Deucher
+ <alexander.deucher@amd.com>, Mukul Joshi <mukul.joshi@amd.com>,
+ Felix Kuehling <felix.kuehling@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Thorsten Leemhuis <linux@leemhuis.info>,
+ Manuel Ebner <manuelebner@mailbox.org>, Gary Guo <gary@garyguo.net>,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <20260908175427.47207-1-klarasmodin@gmail.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260908175427.47207-1-klarasmodin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -4.51
+X-Rspamd-Queue-Id: 5308A1F7AF
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,ffwll.ch,kernel.org,google.com];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,leemhuis.info:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,garyguo.net:email,suse.com:url];
+	URIBL_BLOCKED(0.00)[suse.de:dkim,suse.de:mid,suse.com:url,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,garyguo.net:email,leemhuis.info:email];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Flag: NO
 
-On Tue,  1 Sep 2026 14:32:51 +0000
-Chunfeng Song <springbreeze@stu.pku.edu.cn> wrote:
+Hi
 
-> The hand-written bitfield offsets in is_link_up(), is_autoneg_enabled()
-> and is_autoneg_completed() were correct when the abstraction was
-> merged: at that time autoneg, link, and autoneg_complete were at bits
-> 13, 14, and 15 of struct phy_device's first bitfield unit. Commit
-> 2796ff1e3dca ("net: phy: add flag is_genphy_driven to struct phy_device")
-> later inserted is_genphy_driven just before autoneg, shifting the three
-> fields up by one, so the accessors now read:
-> 
->   is_link_up()           reads bit 14 = autoneg
->   is_autoneg_enabled()   reads bit 13 = is_genphy_driven
->   is_autoneg_completed() reads bit 15 = link
-> 
-> The official ax88796b Rust driver uses all three accessors in its
-> link-change handling, so it inherits the bug.
+Am 08.09.26 um 19:54 schrieb Klara Modin:
+> When the commit b67d2d039f64 ("drm/gem: Add callback for when handle
+> count goes to 0") added the handle_free callback, it did not update the
+> rust abstraction, which will cause a build failure when that is enabled.
+> Rather than just adding another None initializer, use
+> ..pin_init::zeroed() to make all unlisted callbacks None, and remove the
+> existing None-initializations.
+>
+> Fixes: b67d2d039f64 ("drm/gem: Add callback for when handle count goes to 0")
+> Reported-by: Thorsten Leemhuis <linux@leemhuis.info>
+> Closes: https://lore.kernel.org/all/aaef18cd-ab55-4fb8-8563-ca3a5ea9cbc6@leemhuis.info
+> Suggested-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Klara Modin <klarasmodin@gmail.com>
 
-"link-change handling" is ambiguous. The driver uses all three accessors in
-read_status(). It also has a link_change_notify() callback, and that one
-uses none of them. Can you say read_status() instead?
+Please see my bug report at [1].  This patch fixes half of it. I still get
 
-> On genphy-driven devices
-> is_genphy_driven is always 1, which masks the broken
-> is_autoneg_enabled() check.
+error[E0063]: missing field `handle_free` in initializer of 
+`drm_gem_object_funcs`
+    --> /home/tzimmermann/Projekte/linux/rust/kernel/drm/gem/shmem.rs:130:52
+     |
+130 |     const VTABLE: bindings::drm_gem_object_funcs = 
+bindings::drm_gem_object_funcs {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `handle_free`
 
-I don't think this applies to the ax88796b driver. phy_attach_direct()
-sets is_genphy_driven only in the `if (!d->driver)` branch, the one that
-falls back to the generic driver. The ax88796b driver is a real driver, so
-d->driver is set and is_genphy_driven stays 0.
+error: aborting due to 1 previous error
 
-With is_genphy_driven == 0, is_autoneg_enabled() reads bit 13 as 0 and
-compares it against AUTONEG_ENABLE (1), so it always returns false. This
-code never runs the following code:
+[1] 
+https://lore.kernel.org/dri-devel/CANiq72mUW5d1dOQDgpYjuKoUaZAi-im7j3v30Wd4KTDznmM9zw@mail.gmail.com/T/#r8f10eefc91d3bbce58869433b8258882c2d19ff5
 
-        if dev.is_autoneg_enabled() && dev.is_autoneg_completed() {
-            dev.resolve_aneg_linkmode();
-        }
+Best regards
+Thomas
 
-> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> index 956cda573ddb..256f939c5098 100644
-> --- a/rust/kernel/net/phy.rs
-> +++ b/rust/kernel/net/phy.rs
-> @@ -123,39 +123,43 @@ pub fn state(&self) -> DeviceState {
->      /// Gets the current link state.
->      ///
->      /// It returns true if the link is up.
-> +    #[inline]
->      pub fn is_link_up(&self) -> bool {
-> -        const LINK_IS_UP: u64 = 1;
-> -        // TODO: the code to access to the bit field will be replaced with automatically
-> -        // generated code by bindgen when it becomes possible.
-> -        // SAFETY: The struct invariant ensures that we may access
-> -        // this field without additional synchronization.
-> -        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
-> -        bit_field.get(14, 1) == LINK_IS_UP
-> +        let phydev = self.0.get().cast_const();
-> +        // SAFETY: By the type invariant of `Device`, `phydev` points to a valid
-> +        // `struct phy_device`, and the caller is in a context where this access
-> +        // is safe. The bindgen raw accessor does not create a Rust reference to
-> +        // the C struct.
-> +        let link = unsafe { bindings::phy_device::link_raw(phydev) };
 
-The last sentence does not describe why bindings::phy_device::link_raw()
-can be called safely. It describes the accessor itself, and the commit
-message already says it.
 
-link_raw() can be called safely here because the pointer is valid and
-there is no concurrent write. The old SAFETY comment covers both.
+> ---
+>   rust/kernel/drm/gem/mod.rs | 12 +-----------
+>   1 file changed, 1 insertion(+), 11 deletions(-)
+>
+> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+> index 80d8f524f9d5..af8274134a71 100644
+> --- a/rust/kernel/drm/gem/mod.rs
+> +++ b/rust/kernel/drm/gem/mod.rs
+> @@ -266,18 +266,8 @@ impl<T: DriverObject, Ctx: DeviceContext> Object<T, Ctx> {
+>           free: Some(Self::free_callback),
+>           open: Some(open_callback::<T>),
+>           close: Some(close_callback::<T>),
+> -        print_info: None,
+> -        export: None,
+> -        pin: None,
+> -        unpin: None,
+> -        get_sg_table: None,
+> -        vmap: None,
+> -        vunmap: None,
+> -        mmap: None,
+> -        status: None,
+>           vm_ops: core::ptr::null_mut(),
+> -        evict: None,
+> -        rss: None,
+> +        ..pin_init::zeroed()
+>       };
+>   
+>       /// Returns the `Device` that owns this GEM object.
 
-> +        link == 1
->      }
->  
->      /// Gets the current auto-negotiation configuration.
->      ///
->      /// It returns true if auto-negotiation is enabled.
-> +    #[inline]
->      pub fn is_autoneg_enabled(&self) -> bool {
-> -        // TODO: the code to access to the bit field will be replaced with automatically
-> -        // generated code by bindgen when it becomes possible.
-> -        // SAFETY: The struct invariant ensures that we may access
-> -        // this field without additional synchronization.
-> -        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
-> -        bit_field.get(13, 1) == u64::from(bindings::AUTONEG_ENABLE)
-> +        let phydev = self.0.get().cast_const();
-> +        // SAFETY: By the type invariant of `Device`, `phydev` points to a valid
-> +        // `struct phy_device`, and the caller is in a context where this access
-> +        // is safe. The bindgen raw accessor does not create a Rust reference to
-> +        // the C struct.
-> +        let autoneg = unsafe { bindings::phy_device::autoneg_raw(phydev) };
-> +        autoneg == bindings::AUTONEG_ENABLE
->      }
->  
->      /// Gets the current auto-negotiation state.
->      ///
->      /// It returns true if auto-negotiation is completed.
-> +    #[inline]
->      pub fn is_autoneg_completed(&self) -> bool {
-> -        const AUTONEG_COMPLETED: u64 = 1;
-> -        // TODO: the code to access to the bit field will be replaced with automatically
-> -        // generated code by bindgen when it becomes possible.
-> -        // SAFETY: The struct invariant ensures that we may access
-> -        // this field without additional synchronization.
-> -        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
-> -        bit_field.get(15, 1) == AUTONEG_COMPLETED
-> +        let phydev = self.0.get().cast_const();
-> +        // SAFETY: By the type invariant of `Device`, `phydev` points to a valid
-> +        // `struct phy_device`, and the caller is in a context where this access
-> +        // is safe. The bindgen raw accessor does not create a Rust reference to
-> +        // the C struct.
-> +        let completed = unsafe { bindings::phy_device::autoneg_complete_raw(phydev) };
-> +        completed == 1
->      }
->  
->      /// Sets the speed of the PHY.
-> 
-> base-commit: 2709dd5ae32f0828f386327c76bba9f39f63a1c6
-> -- 
-> 2.43.0
-> 
-> 
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
+
+
