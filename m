@@ -1,156 +1,197 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020114.outbound.protection.outlook.com [52.101.196.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F2C5540AE
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Sep 2026 15:37:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788968252; cv=none; b=W1+I9+DUM81Y9Y7VBNbQyYmeqYDxLHD2sb5Ug/RxkKSuw+eXnAM4+WDNoMk9b43v1tNusvtTwPinvDhKtwSUMPoNMI0RdFGOzO356xDD250l2mT3XmNeSn8eVh1ZqoPGNXwE3vfUwycppq5JnK7B/5X/hUuyC+is6WMc0D5o814=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788968252; c=relaxed/simple;
-	bh=tlXMq73KJhLbqOa3sBQb6U+eAptv38yQqOaGm+TCraA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZaqGc0x5jM5Aob3eDi48GHu8Cb8MwaMtvBs0SiupDlH2RJ5gNGzNyMWVPuvOBZ2z9SQ1KHvo56BdoUWv1qHkeYhYsiLdCZ8Lf5WWiG6q4MAwNwjw4OCb30uhoKDSujLpo4cgVGwryTBg8YPJjh8OKT7tM29QWB+ZztJ2YrW64Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XwHjtY/U; arc=none smtp.client-ip=74.125.228.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F874331EB9
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Sep 2026 15:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.114
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788969070; cv=fail; b=QWu3I8WcdZgMf5YonG/oLAGN0KZHBXilHr1QephcIRNhVnvqgHFr3go7Si1CS3UBcyaXcYgNbUBxzfIW/ssilhD6bBhYomJ9bsBJnWfuZ0egVXphcy9vYfl/yuViTwERszvytiDHF6olf08mNOjYq7Z3Hju0QWpM2aWVA1qJzFA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788969070; c=relaxed/simple;
+	bh=ikVsnkuSzHWCACDeT/cfZ82SoA7i5GEoC7j12N76A/Y=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=cHCpZ+NiG4/UpLEhfBGgv1SCwWjS7Weun1Gko0zidfwQi5FjEPC94XmkJ7jST9DmOPUCYJ1wCXqnxGF9TeKrqYPxxgyBIQ6smd/kiTZrd8x7rbHklj4JDMBsZJBJSXZ/WbtJj0K0HIsbnTnbGx/birR6YX793j8TE2IKq365w8A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Q7C1yqsv; arc=fail smtp.client-ip=52.101.196.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XwHjtY/U"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9f0b1fso183211666b.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Sep 2026 08:37:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1788968249; x=1789573049; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=B7MDRo1IEz0/ztB5k2AgA6IiU/moC5VF/pQ54TqLA70=;
-        b=XwHjtY/U+jym45pEEOV74PkUlxGZmwntlmHaBN6DVTjlPQ0cYksJu25Z3tXy5VqyPH
-         /xRc2h2BnwudNBdvoRiQbfszEjrP2xIxXcFuQS6+tEH1uB4Hny/BxvYeTnRVtseAHQGP
-         2bOQK//DdhIzDHr5ESFNAwTHZW3bnPd7g9lCM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788968249; x=1789573049;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=B7MDRo1IEz0/ztB5k2AgA6IiU/moC5VF/pQ54TqLA70=;
-        b=gDI7r/N+FHBcAYayAr0mmpzBv0Kg5cx+1VVpcwE0lkMBrFYNaS8sGiwVJxQaFv9sd7
-         AS2N2MmnmTSqnqkB1iH2rpNlU+8h0QDFgjQ4PITAMMW56D3derbIYgmY7XEfMKLWK1zD
-         mLW/sJnzz0Di5yYT0II38HRkBp0rOes5QPCzOTvs/ukzFzbej9Ts1yEHpAkyiYsoHMkV
-         9Oa3WKZ1lcFnT/OI/bRGd1IwBQjkCjoWhfWMLNCKhmSMb0NY09PNdZ6fB6oXWfKXiHY+
-         OwyHEKpXvtN590zRpqb2OgQbaOUoHR37N7ui40UpjzBJQyQeUcO+csUdieV/s/liC20b
-         f26g==
-X-Forwarded-Encrypted: i=1; AKwUvBzpnjmIiZSxtcnM92lamp3R4P10rqXqr/WLDimZNDIwK8S9wnZ3J87xncYBgCF+tnaVHTRNzHvjY1uFl20xyQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++km9yR797wSR1pJXGUDds/D5zuv5Ywkfm5o4AaQbjckpo6Bw1IC
-	D7B0y7ieZg/7wJ4mtFUzFP2Yki6is2aUsOH1tNWHSAQYTYW1kH/9VspKUApvLCVKGWKBiHPrA2V
-	UVzzU566tDc18
-X-Gm-Gg: AYBFou09cEWFpgt7PffdVYtr6KZLafXKTJ4aj3tmMdkUGevbJSCVJdwqLyVW6t5CQr1
-	W9wO1auNBrbxI1cYSISyJugWvA2NhNL+LuCToD8olaTGobzY8jVf6R4rn+KsMWZmLo9XnAb46HS
-	3e1GaKhI9nXVpeojxWEtqJi1JxxKOB8EJpctofa25DML2JJ8I10l8ZSBTTNKA5CnoWCJpjDDwAU
-	HO/51YrR2ac7mO+qC847KsbiAw8nkutbaDMMI+xFpmoO5SWJ73X6n0rgE6RuStoALpyES5hsL9t
-	1jYByohVuMfjHq8NYCWvyq7EWQfYnZhlhf0V5ZIphENvytnoH7mKKjTmPFKc+t1gHN1W7CudWA4
-	pMVbiCnSlsM0wDIru8ZV8LH6ekHQbIAYxh1zdyxZDdfWpnkHrsQpeO1rIGP5Xra3NYKIWGZAmko
-	2PZ8azBI+WNNP7vn9RuEXbIioCb7nNlmixBR+QBqDz5oNAxtca690m7zQd5xD3FSegXoNDN38/F
-	1yibNn9435BIbtC/BRjNqUtOXpkoA==
-X-Received: by 2002:a17:907:c50e:b0:c29:450f:bdbe with SMTP id a640c23a62f3a-c29450fc2d9mr22133166b.16.1788968248697;
-        Wed, 09 Sep 2026 08:37:28 -0700 (PDT)
-Received: from mail-ed2-x10.google.com (mail-ed2-x10.google.com. [2a00:1450:4864:33::10])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d4aa0b9sm799137066b.11.2026.09.09.08.37.27
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Sep 2026 08:37:27 -0700 (PDT)
-Received: by mail-ed2-x10.google.com with SMTP id 4fb4d7f45d1cf-6a60591ae52so1920429a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Sep 2026 08:37:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwlORbJTrzx1VkYJFY1YwVEUn9wDTXKJ3dokP8K+s4S6xnkgpIi5DcRkz1reaqIy3Ywr6rziB6XU7rrP2Yj2g==@vger.kernel.org
-X-Received: by 2002:a05:6402:3817:b0:6a6:58e:f84b with SMTP id
- 4fb4d7f45d1cf-6a98dfd77b1mr5256449a12.9.1788968246832; Wed, 09 Sep 2026
- 08:37:26 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Q7C1yqsv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mcifu5jvRRqDi0vUvot//P2WZT7bMhVWAogRpi7Ld1t8uinJtC6txKT3HlgSGpF79IeY5e+YYc1QOYaXxwncUl/ldHb7sOn3fcSrl+YxNd2t/JApFE+uPdtgStg8X3wRt+83vW+MqtUXjEHbyTTnIhQcRmO7tFAwfLfMvbDG+r3DVBLgLQa902nLZi4wz1qGNPnYooKughdYikF/5oF8DFtH27GWWzkLdwi5PMNnr2zrNHvlWC1H9BDr9YYzV/7b1VtNxdf7eP8loUWWF8B72nG3q3XpYHvtuW5xRDjVTpeDe7oTCDgyiY3dhK5KdomLpKu3onZAg5mKUYptSS/pWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P8FnZSSbCjL2BnnRbLvYuZp4YwiYAKLm2EBxT0poxRE=;
+ b=N8ERifRIjYBCe7s4Ap0iGj3gsOrHj3n9uj8PLswgVJ3f7MqbOVi7j0TRDgy433DUpa3z3cHESmiaZ0n1I1GAjOMfyLCVISFE4KK1gYADZnFXVRGGOZ/DxU0mkkw6DTpC4lQ9YtKgYJcNelaEXzUSFn1bqndRC1UqrIormt9lp8MzQOpumQwVsCVCY6y7g6X7eqqigVaZS3PHXZMdg5Ui1JeBLtTFexJylLSzsAK0MTXRhmlTrgY4+X2E6vmQj10vnPQwMIhfo4/YuwvpeNv7ukbPYis9DpbWwhW5gf6vt5aRpsT3GKxsm4V1Mcvfhx0TU8liZ4/zmmnl8uczIoG7tA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=P8FnZSSbCjL2BnnRbLvYuZp4YwiYAKLm2EBxT0poxRE=;
+ b=Q7C1yqsvT0l9MaMiUklACTLYnbhyfhZgHKxX8OryxrA6R0NESNCLrLTlwdPibhWTAU5Qe4aKKWtr0pqChWn5xDaVQ/L56ffEC8gAjSB1C8YnQsMrSU2g4eRjIynTm002N5efLVGnl9Y9WYChvtnD9Jd15Jd35CFZmJu28WPLEWY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+ by CWLP265MB2595.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:a1::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.8; Wed, 9 Sep 2026
+ 15:51:04 +0000
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0406.005; Wed, 9 Sep 2026
+ 15:51:04 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 09 Sep 2026 16:51:03 +0100
+Message-Id: <DLAWLU6AXFHL.21123DVM64SKI@garyguo.net>
+Subject: Re: [PATCH] rust: drm: gem: add missing handle_free to the object
+ vtables
+From: "Gary Guo" <gary@garyguo.net>
+To: "Mike Lothian" <mike@fireburn.co.uk>, <dri-devel@lists.freedesktop.org>
+Cc: <dakr@kernel.org>, <aliceryhl@google.com>, <alexander.deucher@amd.com>,
+ <mukul.joshi@amd.com>, <rust-for-linux@vger.kernel.org>,
+ <amd-gfx@lists.freedesktop.org>
+X-Mailer: aerc 0.22.0
+References: <20260909094729.1593-1-mike@fireburn.co.uk>
+In-Reply-To: <20260909094729.1593-1-mike@fireburn.co.uk>
+X-ClientProxiedBy: LO4P265CA0073.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2bd::6) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
-In-Reply-To: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 9 Sep 2026 08:37:10 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wieaheq8rXSps3xRZpNNMQMEj9BH5gU+Dh4q_ZgokO51Q@mail.gmail.com>
-X-Gm-Features: AcwNN1XKEJS_S8eITIntw19v_mcHyut1QfPlZfjowWaI1qZq5Mivgkqwhzm7f_s
-Message-ID: <CAHk-=wieaheq8rXSps3xRZpNNMQMEj9BH5gU+Dh4q_ZgokO51Q@mail.gmail.com>
-Subject: Re: [PATCH 00/23] kbuild: significantly speed up kernel builds
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Alexey Gladkov <legion@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Jens Axboe <axboe@kernel.dk>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWLP265MB2595:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8f15f307-2eba-45ac-9282-08df0e8a2768
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|10070799003|6133799003|22082099003|18002099003|56012099006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	HRq3fTW6L6mDXrbUEl8PP087kIeGZquFbcBeWZG06thpnbKZn0FmqIkRYDNmF2eJQFya7iVfKe+K0V6wLc/k3TqmctBK2Mk1SxymAUW6HREHrRk3F1Uj5ZCswkZUlpCseI+RLithGRjLdNZvXnDzwd5tkSgzB65it06/T76sVOugvi4N/WTqmjkHsw5WgK+pN+I+UkFLnGw3ocWld5BzyfgB+I7ZZmpqpyD1P/6JgiEGAWd2WR2b1O1/zNDO+dQaMBwzOetaKp4NFzpFYJJyvZHT6Vkxg6NeWeem/nGlghXGpGA4gbc++JolxqRQcvSTmlQfUWVvfNRune2/Y8yBJi9s2rAxv1Z+MhytUmmVNjyuFlfX5DNg3dm0fJ33VjL66BdOYJ4mA5IDDt6t4vvju8qmFKrwfBqnbfqrcp3ZoQlgmVU7/HQkkk9JD6USnZ57YSoLCntLL2k46CBpiBSkSACtr4tCRizKU8M+QdPY/zfgzQ0RWCH11mFZikIuwcJa2TFAQ8Q7IrybTgDQOPQdf5VKxIq1U2Uukv3fW4XHc7gvUOc3t5MfAJO00p5iwHesqvwxz2HJV/XW7wl4xI8FLNN60fsR1HbwbjJ36xFBJahHcGZSnLlW/333Ym3DFuvt0QWZAqBrtjrGaSVB/lfAUSNxn/VI2B1bqLGuajmStnU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(10070799003)(6133799003)(22082099003)(18002099003)(56012099006)(10067099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QmV0TkVEMmQrQXVzMzg0eWFQVEZUaXZ0UitHK2YzT0RTc0tGanJzcS9UeEdh?=
+ =?utf-8?B?SUZSdFpFOUhwRUlqdm45RXRCU0dOdmt6eEQ3RmRyRHNaSDJHdm9uMzFwVDh4?=
+ =?utf-8?B?YWpGQnVnSlVGQzFqaG5sLzFiQXZZR2JLa1IzSTdKeXRaMnExQ1Fock5JSlFq?=
+ =?utf-8?B?dFhXbE0xMnlya3RIUkl5VW4wWnlWejlVNmJ3aHNValgzZGorOS8zaGVyWWVD?=
+ =?utf-8?B?bzRnSFRlSVZBSTlzdjNwOVNJMGhsL3ZyNXIvZHAzdXVqWGswTG9IVkZtV2M3?=
+ =?utf-8?B?U05LOUJyVWZoY3BYc0dKYW1BdzlzdTBmYm8zSndaWW1wSHZ2L052RTZjL2t3?=
+ =?utf-8?B?b2tXMW9kRkd1TmJmQUxpQy9PWWFjUnFmdGx1ZmFiM3hVQVFlSHlPS21RNlVY?=
+ =?utf-8?B?NStGWTFkc1JMVDR4UWtna2Q3NDJISXNiVU9wdHpoT3dINmNBL3pCZElMT2Nt?=
+ =?utf-8?B?OTlCVjUxd25PS2Y1WjdiRk9sbFFRT1NaT2FuSWhzZnRPTmJuVEV2LzZDdVh5?=
+ =?utf-8?B?MWNEcERybm5OOE5WQmd3YU5jMVpzbC9MVmJ4UDlORlY2RklleCtnbTJvVVZS?=
+ =?utf-8?B?OW9qL3l0MkNQamJvdUwzT3lLL1l0Uko4d04xaUhlN091cEg3cC9UaUlVWlV6?=
+ =?utf-8?B?NTR4VnFNdnBqSWNSbWY4UjdRa0l5WjVMZDZwZ3Vjb09sWGdnNEZTclRxOVEx?=
+ =?utf-8?B?d3M1WTJoS0xRUk5CUUZkNXliaXY0RGRyQit5emVmL2Z5OE8zR1pQMXhMUHR1?=
+ =?utf-8?B?Mm9uOWNLL1pZaU5WQlNWRHUxMEVmNmN5dXRSall0dmJZL1VwL3I5WVNQYlQ2?=
+ =?utf-8?B?eGExMnhUbXgwbmJ6MjNhdGg3Vjh2WXRFMTZqOTBON2duazhSdHNja2JKMXFL?=
+ =?utf-8?B?M2RZVEZqSldrWThyRTFlQlVrZnRaQzdvSkZjdHl0Zng1eUx2dU00Smh5TS9S?=
+ =?utf-8?B?RHlhYU9zd0YzSUFWUFVhSHcyUG9hVEhLQVZSNVpMM2tjMjBhZ2h4bGppNHUr?=
+ =?utf-8?B?SEd2QjhjeTR6NXpvMnZCQU5WMkxkajFlN2o5QVdseFA3WnU2dldub0V6Z0JL?=
+ =?utf-8?B?ZUsxNTk0eVdsekRSZFNGSG5BM2VnMXQrSHFqQXBnOGpkd1djMXZRUElleUV3?=
+ =?utf-8?B?VU1GbFFPcDNDaksyNUQ4U0o5Q2dFaDNyeDNXWDIremJIU0JhOWVwVTlZRyt6?=
+ =?utf-8?B?ZGxBdkV4L2NIMkJxekhGcUdzYXo3OE4xcVZjTmxVQjBlSElUSE1BbXJrdTE2?=
+ =?utf-8?B?WEUyMHRsMjBtS0h1VHV1RitxVmcyOVBLaHZWaGYrbVd0WE1PeVBUUlZDYnJW?=
+ =?utf-8?B?NWhoZk9UL2YvMVJjTkh4T2lZYWJmaVhyRXh1WVd6bCtCdnMxekIzaVN5U1Z3?=
+ =?utf-8?B?YndmYWRndmN5YmZzdHlHYm4zNVJSWTFaYXlPTXE3TWp1d0JzREVBZHhidkZ1?=
+ =?utf-8?B?MjVzY0lVYXhnZG5rRTh4QWhvbUYvMFh6dUI1aEJmeTc4RTJNK2ZnTllGVmo1?=
+ =?utf-8?B?VEN5U0dvQlpVT3VyUnZiQ3BaeFRkRjMvV0tmbU9oK3NEMjNEUUV6dlBPcENs?=
+ =?utf-8?B?akdLbzllbDNvZW1QWWhNZVlUVmVHQmNKTHZaMEZ5V1hiQlZvaFpjU1o3ZWNS?=
+ =?utf-8?B?ZTJWaTRMSFpBV3M1cWV5ZXordW5CSHplSDVUcWZWMlExMlIwdEt0MEhUcnpa?=
+ =?utf-8?B?VEF3VDIzL1hoQ2tZNWJiUWo4aDZuVUgxSU9vMXAyeWpCN1NMdEYzWk5VWGFp?=
+ =?utf-8?B?eXAwTkFvQ0dLRXhNUEVtem9ZcHl4QlhTVzhaNGoyQXN6QkhwL0hVYzVyVkhV?=
+ =?utf-8?B?cklHSU82aU15YnBESzNnc0FkR3Q4RUQ0S3ZhUklacUQ5M01PSHVnSVdubDBo?=
+ =?utf-8?B?eU56RmdFSUJDSmE3SjlESldYTklNVXZSeHE4WldvMTM3bHZWSU0rbjlGRjRo?=
+ =?utf-8?B?Z3diZUVhWU96bG5YaXMrTTN1a1N6UzhmUkV3SmxvS1VoeDNVNWM2bFg4a0kw?=
+ =?utf-8?B?cWZiRHh0NG44Q0VDdFF2eGwwSE9FNWE5OGg1R3o4azM1UGY0akRlQzNiMTNC?=
+ =?utf-8?B?SEZQZmk0d3FjR2hhSlBYSGNxUlMwaHFXZ0F1WTZQVVRyN2NHSkxrdkNXWTJF?=
+ =?utf-8?B?YlRESnNCRS82THNTSmhwcFJtYWpKY2MrbUdEVU54WiswY0xIZTYxbDhNV1Zk?=
+ =?utf-8?B?NUR2ZlpUQWM1cEViNHlvV0o3OVh3VVBud2wxNEdDb3pqeXArYlgzRXhyWEdC?=
+ =?utf-8?B?UEJ6N2IwSW41MHlncDhhMVZKd2NDTG9LaUh3LzByYkZsc2VDV3IzbGh1eHZF?=
+ =?utf-8?B?K3VCZlJsay85U2poUVNQUy9OWHpZQ2VmYUx4emJobXJuNDlhUytKdz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f15f307-2eba-45ac-9282-08df0e8a2768
+X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 15:51:04.0322
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7bSSWiHJ2ZR69Q/v766J5VjYXy95NDoqn05QPiVPbGD1ZS/SZOLuTkjQqd7kgPgFTgNKI3LCa+F/puVJDjY3uw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB2595
 
-On Tue, 8 Sept 2026 at 13:55, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+On Wed Sep 9, 2026 at 10:47 AM BST, Mike Lothian wrote:
+> Both OBJECT_FUNCS and the shmem VTABLE initialise every member of
+> drm_gem_object_funcs explicitly, so adding a field to the C struct
+> breaks the Rust build:
 >
-> A typical kernel build consists of a frustratingly large amount of time
-
-.. you're preaching to the choir.
-
->                 == allmodconfig FULL build ==
+>   error[E0063]: missing field `handle_free` in initializer of
+>   `drm_gem_object_funcs`
 >
->                         before    after     delta
->                       ----------------------------------
-> Threadripper, gcc       345.3s   275.2s    -70.1s (-20%)
-
-Well, that's certainly very encouraging. We should do this. I sent out
-some emails as just reactions to individual patches, but I have no
-numbers to back any of those emails up, and I never actually applied
-this series to my tree - they were all based on reading the patches
-themselves.
-
-That said:
-
-> An LLM was used to first determine where the bottlenecks were then to
-> figure out how to improve them.
+> The callback is optional and the Rust abstraction has no equivalent
+> DriverObject method, so leave it unset.
 >
-> It generated a lot of code, much of it hideous.
+> The shmem copy is only built with CONFIG_RUST_DRM_GEM_SHMEM_HELPER,
+> which DRM_TYR selects.
+>
+> Fixes: b67d2d039f64 ("drm/gem: Add callback for when handle count goes to=
+ 0")
+> Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
+> Assisted-by: Claude:Opus-5 [Claude Code]
 
-This made me scared to look at the patches originally, and I held off
-in fear that the patches would be horrible and this build time
-improvement would be hugely controversial garbage code.
+There's
+https://lore.kernel.org/dri-devel/20260908175427.47207-1-klarasmodin@gmail.=
+com/.
 
-But:
+Best,
+Gary
 
-> I extensively audited and rewrote a lot of it, and heavily edited commit
-> messages, the cover letter and comments.
+> ---
+>
+> b67d2d039f64 is only in agd5f/drm-next, so this can be squashed into it
+> instead if you would rather keep that branch bisectable.
+>
+> The shmem hunk is by inspection - CONFIG_RUST_DRM_GEM_SHMEM_HELPER is
+> not set in my config, so only the mod.rs copy is compile-tested.
+>
+>  rust/kernel/drm/gem/mod.rs   | 1 +
+>  rust/kernel/drm/gem/shmem.rs | 1 +
+>  2 files changed, 2 insertions(+)
+>
+> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+> index 80d8f524f9d5..ae61ca7e1246 100644
+> --- a/rust/kernel/drm/gem/mod.rs
+> +++ b/rust/kernel/drm/gem/mod.rs
+> @@ -278,6 +278,7 @@ impl<T: DriverObject, Ctx: DeviceContext> Object<T, C=
+tx> {
+>          vm_ops: core::ptr::null_mut(),
+>          evict: None,
+>          rss: None,
+> +        handle_free: None,
+>      };
+> =20
+>      /// Returns the `Device` that owns this GEM object.
+> diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
+> index a687d46d170d..d08a03cb7a13 100644
+> --- a/rust/kernel/drm/gem/shmem.rs
+> +++ b/rust/kernel/drm/gem/shmem.rs
+> @@ -145,6 +145,7 @@ impl<T: DriverObject> Object<T> {
+>          // SAFETY: `drm_gem_shmem_vm_ops` is a valid, static const on th=
+e C side.
+>          vm_ops: unsafe { &raw const bindings::drm_gem_shmem_vm_ops },
+>          evict: None,
+> +        handle_free: None,
+>      };
+> =20
+>      /// Return a raw pointer to the embedded drm_gem_shmem_object.
 
-None of the patches look at all horrible to me. You clearly excised
-the hideous parts. All of my reactions were of the type "this could
-probably be taken _further_" rather than me throwing my hands up in
-disgust.
 
-So the Rust parallelism thing clearly isn't ready based on feedback
-from that quarter, but the rest looked safe and innocuous. I'm all for
-merging this, although it should obviously go in through the right
-channels. Mostly the kbuild tree, although some of it clearly would be
-other cases - the objtool change in particular is fairly substantial
-and needsobjtool people to approve. It didn't look all that
-contentious, but still..
-
-Anyway, I'd love for this all to go in. Build times are a pet peeve of mine.
-
-              Linus
