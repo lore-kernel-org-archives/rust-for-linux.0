@@ -1,234 +1,118 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBD74457DE;
-	Wed,  9 Sep 2026 08:01:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788940899; cv=none; b=LBD+jZFsidEwt+LldzPugs9Vdm+vJa5yXsWyO2TihVuyOiFl1QwlKI7Kdm02UlCTpUOPZ6U6bl4Y342OJSxWdz0cnNnMIYWvj47HnBiTAVeU8J52U88p0jOkbGQUP7v+zEupGo0fr0FVLQxkMJi0OMtEAWzSCfvoGpBeBr28yDo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788940899; c=relaxed/simple;
-	bh=Azkq80u6Zs11HEEIgD0144Bvb9O8pd/EXTnXNViG0nM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iWy1lhN7pgzxcCcuQGwXQKxZYW2Q/Z9HrfaIvn5BXZVDyQVLm7X0K5uhq0/xUQAvvD8eHYAIQIHwyumZySpRGYW3nuMlwlE25bkZoRO09HYHQ+IqZwxmMjORziz6w0K7Nnjoh18L4JlgCSLh9ehmxG2GJx2z6SzOfWZHjjndovw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=j27fhShv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=rAiVPu6p; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tHZ+68w/; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=litFSRiF; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DB444C64E
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Sep 2026 08:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788941135; cv=pass; b=b1D3n95H7TWP1Ook2YNobKEe79xa2rXXB+gckEsXs/3o3yS5xEktB+oJNHl0r335NTfmvlf3vd0UMmQGy+awlOfGDj701ASKjsvCQZeEgYnzK9fryPxT4mLakatDrt2dcN+6YgzMjethmA7QjSoptlWM5vv3540ZAP9FFVUZ5oQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788941135; c=relaxed/simple;
+	bh=PtrcaN2EICQuixSidXkdAeZUjbAr4kNZ4zmQ6EU6LkA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fTxSmQ3GGRp8q/u3i7EjYQ0U7UnJq23Z2Z1+t91BpGWa0qx4izrc7xYlnKnkPbM/GV5EQwbq8z2u02Ap/fGYXT8EN++ukEt+kadlVISrrp8EiB/RGDSFDAE2o3u+Q8067d/7m0MfT/8tmk4nYMtSqJX95uO/9ePCqDFdFdCeGGE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hY5sHadW; arc=pass smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="j27fhShv";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="rAiVPu6p";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="tHZ+68w/";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="litFSRiF"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5308A1F7AF;
-	Wed,  9 Sep 2026 08:01:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1788940890; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=V+w6mHfMv7ALo2DRy+HOaCZ0lsuSiiOBsrZzxBKyKAw=;
-	b=j27fhShvgAohUMfs8OwK3hesxgv/nJpbEf9u4Dft7c0wKiycToXgr9AIDoMlyWmtWUbgAS
-	Jk+v1GMSDpWx37aCG/ErjIHWvomw2tV7yNGLhAjJsrq3ZKwfYYqrDuyzHTKNQWmGy+fIHq
-	lbWU1e0uL7cHZNEV97HBn4xZuwBfGG4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1788940890;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=V+w6mHfMv7ALo2DRy+HOaCZ0lsuSiiOBsrZzxBKyKAw=;
-	b=rAiVPu6plSd7Zy67NELRDMXUGW0kJsTVWUJW3ENJPX86AYoZTcnnVZSj64aggPNahKAgy6
-	E+riASYvOlIpCfCA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="tHZ+68w/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=litFSRiF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1788940885; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=V+w6mHfMv7ALo2DRy+HOaCZ0lsuSiiOBsrZzxBKyKAw=;
-	b=tHZ+68w/PpQ5aX2RKeT7BtD2CGvGXPZspFfjx24b2gWaEmmGb5/bPv+y08J7pK+EB+vZmF
-	uoLmfM8ovodRWFHtQriMjSnLAEO5YeV2DXxCyNP1HR5wfKuxKe+v7HxVi9mKzy9iUa0GtK
-	MwaJhDA+vLpw/gsZA1xpndzhXiu7bjY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1788940885;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=V+w6mHfMv7ALo2DRy+HOaCZ0lsuSiiOBsrZzxBKyKAw=;
-	b=litFSRiFgfgWm4xB9HTHLoC46sB3724Rigpz/RTt8nF2O+/Nh1v2Q+Qlxkocu28Lt149UU
-	dTGYYKQHPaPB7/CA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BDA121352C;
-	Wed,  9 Sep 2026 08:01:24 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id JEkJLVQSoWqzGQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 09 Sep 2026 08:01:24 +0000
-Message-ID: <2642740a-b894-47bd-b26e-cabdaa14d8b8@suse.de>
-Date: Wed, 9 Sep 2026 10:01:23 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hY5sHadW"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396672b2565so1088697a91.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Sep 2026 01:05:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788941133; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NlCUYs4Tf7DR9bNwM56uDtZtTu//IRA7bvtusDIg8QD/jliuff/ggs5KBfun9XBIS8
+         Jlr5MCMnVRRyNN1fobXegGKagwyhfWoU9yb56S/dp+UlA8PDJK/5fzZKGbM217aDgMp1
+         EwJxwogCV5JaJVZq4TttgMG5ARmQhr7e1pBsogsM6zeIl4JvNyzZNkyBdaxOEGVDvf4U
+         E58DuT57VvN9pQRw5imuDhQe0CReVrno+pzGkayEkfY1k8BxtZy75ZHYCR3HFu3jnjs1
+         RPHE9l/knKochunxUSqhDMlMU3kSsiDqI5WlOoT0M5/IgDpwRyIU4bVeEdgBNtzS7Oj4
+         wQDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=PFzJhTwC5v2xxJH8grG7O2UX6Uz5UZc0kMv7qk7w9wE=;
+        fh=Jn8P0Wfc6LuzfZa5VMhsLBZgyoTHUdCdIF30sB/l6yQ=;
+        b=MwBizHaAIuDxxOr/kcWDQ5HXOxGMokif2sbbroi/5V2kbmh1UNGX54O7463fjjRcYv
+         pD3i/xX57FyVxm5LgfVkcA9+yeh7un4dcoaqnCEz3sJJJvpr/cf6St6b8F377wD9kAmQ
+         bsJOFdQ3GQOo0Ef8sSZkSpU+gLNVwKHeVfr8C0b8teW+IEBSRb2ZgvlbG6bZx+v9IVYQ
+         FlShgrrs0lmy37gh0PJVh9v69ZHePEmU9k4qeu8/fktTCIcSZ1x3k7zE5puh8M/HxvI7
+         CuwnrR/pnyikl7V4EDMvy2Gv49Ttevz6pVKgO7PQ7yEEJcVsG6OEicIFlFe4Vtm0B4Kz
+         LL1w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788941133; x=1789545933; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PFzJhTwC5v2xxJH8grG7O2UX6Uz5UZc0kMv7qk7w9wE=;
+        b=hY5sHadW1f1icTS/eighd6eMp6MkmV+m/QdByMEruXecmHQ2SOTTiff0FO2U3GmZt7
+         qM//YbSxTjVC3BdJBIX6A7nR57+L4Xkdqykf4Rd/zZUpBK+sZOdinAJpAHmKTdTxn671
+         QztQliUcpItem4H0N9ZJuWONsP3rXlJeJcSVmGU1S0fe2r5UHz6XoZI3atPRgmKR03d9
+         SucIJUYI5krAlZPWRRisTEynAtMyFBs5g3aZuYGf+hgGU/4rym45wV7TbzRb+/tsfFW6
+         edyivrcNPXcBBboBRQaOiRbbw7h2lVZYLhwsd+OKGXLcrW6OgTcbwYcY5G+T7PZFUOoE
+         xyiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788941133; x=1789545933;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PFzJhTwC5v2xxJH8grG7O2UX6Uz5UZc0kMv7qk7w9wE=;
+        b=dC/hifNyPF/alh8ID/BzwSA7Stf9Tn/r6gEOHQWmbtuqTOL5nP7Y5JYq+40eqiggPM
+         E+4zbI6NonQFYn4CjhXbvf6o6LIyY8xR4kVJ5PJnjBhU28W90/7hFjIq6ROVquRJf+Tk
+         E8kEpd7NnNOj80e6BQqMtaOLnadxMcBfsyv8ARxPYvpJIv51sAYdmBvmbbdUFTXtge/h
+         KQr8oWQT0E6mFCIJXMcMD2hQur6gkWMOqFJZejU2hGzXF8SDypS0m3vZIu5KM08SzdxG
+         1N7AoWtlvz/sFu7DKZAj2SDpYkOqmjyPFTHtdNP0DLwzzK9UVhxYoqSt0iceDqMM5g6n
+         gVYA==
+X-Forwarded-Encrypted: i=1; AKwUvBxgMyLYP7+CpDPmCTevieibLinDXN50tDKMcMdoJN8rp9IQ/A1halv5WCbNBBeWa/Q9SRh+nTvQQrepgCiHaw==@vger.kernel.org
+X-Gm-Message-State: AFuF++luiXKXTXchvhNDgKgy97P1E4bS6QMZdW2vd8D0KSaZPchz43B9
+	ppn3O48v+jt/8QTWVvPcPOfFX2jWV8M1mKxo4LfXWYitxA4r638ZMoH5kFX+DKNDIJ/WLHJZ3ZV
+	KL9+Rq+nMifBsMcMNjjX2aU9txH60zRg=
+X-Gm-Gg: AYBFou0A+VtOv1efXUMDLP955SkEMvGiIUl9X9Jv1OXCf6ET3N/Sc6e7InOI1Gtob/C
+	FljMfqJXV68glqrk8rzi5ydj0Sxht3DJdWd9rJ+3OiPUSwtwfQFEVib0fm3lU1QDTkcqyIicagG
+	DAq6b1n1LmL6z/jslvvzv/E9zfWZjKva+wg5xQ3W1iwlIl/J++EOtjnapGL2sPm+wOjZXl4+Bys
+	KuOKOfm70h7fGMQM+f7VmRPhI38YheI3dPGHK2PLqwMaNUV5gUSRmaktbVLtPf8Cjm/2JsWfTLT
+	tjpiTcW8lbqImk7Oe5cs7oJjTzBCi0o/hsjtkSUpozKZqM6/opK+o2GSvDYS70ADnQKc2jhM79l
+	bGUUOnYjITm89eMFe1vDEFbWU/gH6Ug8n2ezW6oYpyzv1keytccMASAaLu59FE/cwaQEfwxsWlo
+	BUyDq4zjoBUzkMVMHRkn5j8V2ywiIc7WuIA6lhDucKnCEloaOVWZ8=
+X-Received: by 2002:a17:90b:498c:b0:398:a2e4:c784 with SMTP id
+ 98e67ed59e1d1-39b3d5c4449mr23521825a91.1.1788941133232; Wed, 09 Sep 2026
+ 01:05:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust/drm/gem: initialize callbacks with
- ..pin_init::zeroed()
-To: Klara Modin <klarasmodin@gmail.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Deucher
- <alexander.deucher@amd.com>, Mukul Joshi <mukul.joshi@amd.com>,
- Felix Kuehling <felix.kuehling@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Thorsten Leemhuis <linux@leemhuis.info>,
- Manuel Ebner <manuelebner@mailbox.org>, Gary Guo <gary@garyguo.net>,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <20260908175427.47207-1-klarasmodin@gmail.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260908175427.47207-1-klarasmodin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -4.51
-X-Rspamd-Queue-Id: 5308A1F7AF
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,ffwll.ch,kernel.org,google.com];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,leemhuis.info:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,garyguo.net:email,suse.com:url];
-	URIBL_BLOCKED(0.00)[suse.de:dkim,suse.de:mid,suse.com:url,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,garyguo.net:email,leemhuis.info:email];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Flag: NO
+References: <20260908175427.47207-1-klarasmodin@gmail.com> <2642740a-b894-47bd-b26e-cabdaa14d8b8@suse.de>
+In-Reply-To: <2642740a-b894-47bd-b26e-cabdaa14d8b8@suse.de>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 9 Sep 2026 10:05:20 +0200
+X-Gm-Features: AcwNN1VaFSH3EyJDGBY_TKDiMWxaUjeqs441wwiCpqb3pVX1iCtXogyjN7rFa0g
+Message-ID: <CANiq72ntt_2n03UReCt6zFD_AvTMvNE6O+v3E3sURTsqW6x4Ng@mail.gmail.com>
+Subject: Re: [PATCH] rust/drm/gem: initialize callbacks with ..pin_init::zeroed()
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Klara Modin <klarasmodin@gmail.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Deucher <alexander.deucher@amd.com>, 
+	Mukul Joshi <mukul.joshi@amd.com>, Felix Kuehling <felix.kuehling@amd.com>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Thorsten Leemhuis <linux@leemhuis.info>, Manuel Ebner <manuelebner@mailbox.org>, 
+	Gary Guo <gary@garyguo.net>, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi
-
-Am 08.09.26 um 19:54 schrieb Klara Modin:
-> When the commit b67d2d039f64 ("drm/gem: Add callback for when handle
-> count goes to 0") added the handle_free callback, it did not update the
-> rust abstraction, which will cause a build failure when that is enabled.
-> Rather than just adding another None initializer, use
-> ..pin_init::zeroed() to make all unlisted callbacks None, and remove the
-> existing None-initializations.
+On Wed, Sep 9, 2026 at 10:01=E2=80=AFAM Thomas Zimmermann <tzimmermann@suse=
+.de> wrote:
 >
-> Fixes: b67d2d039f64 ("drm/gem: Add callback for when handle count goes to 0")
-> Reported-by: Thorsten Leemhuis <linux@leemhuis.info>
-> Closes: https://lore.kernel.org/all/aaef18cd-ab55-4fb8-8563-ca3a5ea9cbc6@leemhuis.info
-> Suggested-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Klara Modin <klarasmodin@gmail.com>
+> Please see my bug report at [1].  This patch fixes half of it. I still ge=
+t
 
-Please see my bug report at [1].  This patch fixes half of it. I still get
+I think fixing that is the respin that Klara meant in
 
-error[E0063]: missing field `handle_free` in initializer of 
-`drm_gem_object_funcs`
-    --> /home/tzimmermann/Projekte/linux/rust/kernel/drm/gem/shmem.rs:130:52
-     |
-130 |     const VTABLE: bindings::drm_gem_object_funcs = 
-bindings::drm_gem_object_funcs {
-     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `handle_free`
+  https://lore.kernel.org/rust-for-linux/aqBf1UYNR-Q3T-cs@soda.int.kasm.eu/
 
-error: aborting due to 1 previous error
-
-[1] 
-https://lore.kernel.org/dri-devel/CANiq72mUW5d1dOQDgpYjuKoUaZAi-im7j3v30Wd4KTDznmM9zw@mail.gmail.com/T/#r8f10eefc91d3bbce58869433b8258882c2d19ff5
-
-Best regards
-Thomas
-
-
-
-> ---
->   rust/kernel/drm/gem/mod.rs | 12 +-----------
->   1 file changed, 1 insertion(+), 11 deletions(-)
->
-> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-> index 80d8f524f9d5..af8274134a71 100644
-> --- a/rust/kernel/drm/gem/mod.rs
-> +++ b/rust/kernel/drm/gem/mod.rs
-> @@ -266,18 +266,8 @@ impl<T: DriverObject, Ctx: DeviceContext> Object<T, Ctx> {
->           free: Some(Self::free_callback),
->           open: Some(open_callback::<T>),
->           close: Some(close_callback::<T>),
-> -        print_info: None,
-> -        export: None,
-> -        pin: None,
-> -        unpin: None,
-> -        get_sg_table: None,
-> -        vmap: None,
-> -        vunmap: None,
-> -        mmap: None,
-> -        status: None,
->           vm_ops: core::ptr::null_mut(),
-> -        evict: None,
-> -        rss: None,
-> +        ..pin_init::zeroed()
->       };
->   
->       /// Returns the `Device` that owns this GEM object.
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, (HRB 36809, AG Nürnberg)
-
-
+Cheers,
+Miguel
