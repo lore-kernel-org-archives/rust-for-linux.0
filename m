@@ -1,157 +1,162 @@
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E53374E60
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Sep 2026 17:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934AB345EA6;
+	Wed,  9 Sep 2026 19:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788975917; cv=none; b=nk0nB9ziLce8+GtvGL3CBB2xN/j67OWz0V4SXeYYEJOejY4vToD8DQjWJkBWjuqOS8MXlzF3KuQXs8AEMlbeYow4bPJ926x4Oc11YonTR0ErBKl/TqjeWDw+0dGuvbh/tEzvk/1fhgdRIW3fQWcfkIrI/p46ppiBOmeBJHa0RiE=
+	t=1788982217; cv=none; b=A91Acn6V/NWpJ+1+TXyBzfX3zXM2QWmHfFgA/wQLUPpgWoVgrEnhQofd1LfBloxGRCWWHPROHx/bwhTALV0GTfd7RvuK7YNq9TpjGE2EBRwS4tGPOFqHFMbjXTZjt+mEytpl88GMJUuH5sYeIZoU7skeDrGk38KVrsIpbx1IlSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788975917; c=relaxed/simple;
-	bh=/knlwceH/jM+jAdW0zO7ydq3ITxwRcvlpc55nWxJ3Dk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TjgeL53gKlAEbKYofZYZVWuADbTbBL3mQ252dw7hXg9fSADBWU9bwDT9fDmZBhUXKe9dU5eysKhsSvjmZasrDtSBjOAZN193kxwsFCVwqM/GrKy8KssMjoRUv1kGxn9TlEQnPAdY4NsNZERgptaNJf0F2bjRZGIvUf5PrylYMfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U4fRlc2Z; arc=none smtp.client-ip=74.125.229.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788982217; c=relaxed/simple;
+	bh=6FWk2kCaq7dt/dT206fJQw/agDhO+pyh0SswIzM/cJE=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=EDcMYeq05q0QXPJsp32MXc3vNFVVKPzjygvxo6hQar2kMFRy5bJup4JvxCTlxnpENOZkAKre8Lw0V5y4ipHNFUoN+FzzbkXokOxc9gIV4sH3ItB7u/tDHwdcD/XXpbOsVsssKdFR8vy0XaZQmmidIw0W2Z2q63PYvSh/dYuKk8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=KGmenuJ4; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U4fRlc2Z"
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b76668f4ddso420412e87.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Sep 2026 10:45:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788975914; x=1789580714; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZFJ8LJvBoSFpLXLWJCrf1H0OwBPOca5szWV2v59OKPs=;
-        b=U4fRlc2Z3oBOO4DGVgfqk1g22nrxBBBxQdx9hvSgHYZqBKx66EMK05a4OWTxt4MCg+
-         OxVae+Hs6MO9fG5GTw96FPHq4k6UNYFcthmARh8iqGhI2r+UpzMeCG+GRILW8nGtIXwD
-         WhNA3gcI8ZciyN2ge0IAJamdNSSn1gJjjN1AM4nYmFfhrwb3Pqbh4xMLXu62rBkyne/y
-         ob3+L7Pj3cKe3DKCWIblC637w9poqnt6yS9ANBb169cRazrCn0/dfunC7Uyja/wkt0E8
-         482JpsIK4Ja/WlX2vTk+gyv8VG0wVgz+ZJGTKK3G3MmWe5SYxyg3QeobiYfXBYebfrbz
-         cYbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788975914; x=1789580714;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=ZFJ8LJvBoSFpLXLWJCrf1H0OwBPOca5szWV2v59OKPs=;
-        b=Coc77fm2u58MaZq2Id6gjw0vu+eBHM0336ZGtRVtXZb1sr7HGKyLQ63SdOqb3WeMh/
-         8B35EBgBOa+FGdm+dO/NBsdRjUBaVUl2JzJ+BMkqbjOHujSthznhptD2CscGGg4ID3of
-         mOqXGJmkaRYkWtXg706BKrzuG+rMiJ9LtEFitgOrgzz1qOBZWo54dTH+rfIhHuivAGsc
-         Fmbo8wG52z+xEEvfsuHAXwa2gHZ5WI00TGKlmwfS22Dx+ModDvP1wpmwPb3jgEwqZ3hO
-         Cq2zm6ztFaBo8ctnvB1AP5M70vc9NDswQZ9Rf9aUyns+goaCygLH3zO5ITzPRDaSzlCp
-         i9Ag==
-X-Forwarded-Encrypted: i=1; AKwUvByKe4mK9X0vvRhH6Pbv8jPdP3Rarsn4xl/1Vq6N7RA9+ckFCzAXGVeaSGFR2a5p/7d+fmNibLMazEVXPviF7w==@vger.kernel.org
-X-Gm-Message-State: AFuF++k7sf/Ed85OfOFDkZric2Q4puzkuGeLIBi0bBS/NShJUda43Gsk
-	Z5ybRGNUt+dpkVJImVkZ+7yA4rudL0mU2C5Wer++tG7HR9FaOu+/fm/j
-X-Gm-Gg: AYBFou1qOw0JZlDQ2rr333I/bTxAt3Q92RUEAEFLbMizVm8lhk6lLzCpfYIj+kxxEgZ
-	G3WEaKie6mERFw8orbUQXmFDDACjAsDA7IfKQZ3ylBqP+QA3FCm6XX0Hz4I8i2T/ecxY98NxAMB
-	RcUf2DuK75kQlSTSnObuf64ea6QgLGb+4BkepXIArX+A8Hb8s7Xi/WuFkzzgrGmPk407uR5aVmJ
-	1fTpZ6Z/kpeBjamMg6q83V+14Pj0rixdz0gUjxhsiH0lQksIA4V33GouRM+I0WWL9elvB4jBHei
-	nHcuVxRp2eGXyZSGxh3PP4Df+fJ4TE0nWC3HbFIMKvOfqcib4+qiKUY6/nsFnyPyBwfXpP49cv6
-	Uzx3Ce4eHNCyyyAAwdItkXBoWYpcjkQpiPNIBrOYdyLSagFqy+Akba2iExrg3nsI/b/v2xrAwRa
-	v1xzU5CMhLTrs00YC4d5icX9mARR+7MjcENEs7TTUvyfgzghdCaeMqN3/S0w76jN+xkT8OwxaUG
-	vOMJM2LQxaWyg==
-X-Received: by 2002:a05:6512:1590:b0:5b4:ac27:8f76 with SMTP id 2adb3069b0e04-5b89a2fb651mr67482e87.7.1788975913434;
-        Wed, 09 Sep 2026 10:45:13 -0700 (PDT)
-Received: from localhost (soda.int.kasm.eu. [2001:678:a5c:1202:7b92:9ac1:b9ef:5287])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b6166ecf24sm4071183e87.16.2026.09.09.10.45.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 10:45:13 -0700 (PDT)
-Date: Wed, 9 Sep 2026 19:45:12 +0200
-From: Klara Modin <klarasmodin@gmail.com>
-To: Mike Lothian <mike@fireburn.co.uk>
-Cc: Alex Deucher <alexdeucher@gmail.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Thorsten Leemhuis <linux@leemhuis.info>, 
-	Gary Guo <gary@garyguo.net>, dri-devel@lists.freedesktop.org, dakr@kernel.org, 
-	aliceryhl@google.com, alexander.deucher@amd.com, mukul.joshi@amd.com, 
-	rust-for-linux@vger.kernel.org, amd-gfx@lists.freedesktop.org
-Subject: Re: [PATCH] rust: drm: gem: add missing handle_free to the object
- vtables
-Message-ID: <aqGaa4sEAvIIOLjK@soda.int.kasm.eu>
-References: <20260909094729.1593-1-mike@fireburn.co.uk>
- <CADnq5_Mf5mQ4CF=8UTnEjYPGVUS-Hf29sHmesvtwdfnNxtrQMA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="KGmenuJ4"
+Received: from ehlo.thunderbird.net ([172.59.162.201])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 689JRcBm234939
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Wed, 9 Sep 2026 12:27:39 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 689JRcBm234939
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026082801; t=1788982063;
+	bh=dm9wpz4h++ofzecnaqGunBw1Zr0gciiuIEIuRKgM8Ow=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=KGmenuJ4WDEIJmD1OjtLBCTBIwmOPf5WXdqCO5NhxzNk/PRMxxRdYtCQ/e9LiQrbV
+	 5nqhJq3gZmxqektEkouPM43IJ+O+eLEDDnkzku4OU8RnhJdWNoOzbcM86CqUSS8cda
+	 TGHj1Sj2JK1rzrE8/0GlItXDBmcjxoplXEs2uNG488VNDWTtxr1RHdwo+/ZC/5FRv+
+	 Wy6lT+Qfy6Lh4xU4ePky/daoK1IUOfrPNaz0BFP5rM0ouPsB86TVM+rt/GpXFp601e
+	 VoZGbeqZhFA9YU7x21eyffmZrBwUa7PfRZVyvemk05/BdqUB6bb3V5JxF/PsdotOYc
+	 tTrjTgSh5/hig==
+Date: Wed, 09 Sep 2026 12:27:30 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Borislav Petkov <bp@alien8.de>,
+        =?ISO-8859-1?Q?Thomas_Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+CC: Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+        Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+        Bill Wendling <morbo@google.com>,
+        Justin Stitt <justinstitt@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?ISO-8859-1?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <lossin@kernel.org>,
+        Andreas Hindborg <a.hindborg@kernel.org>,
+        Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+        Danilo Krummrich <dakr@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+        Christophe Leroy <chleroy@kernel.org>, Boqun Feng <boqun@kernel.org>,
+        Nicolas Schier <nsc@kernel.org>, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org,
+        linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+        linux-s390@vger.kernel.org, linux-mips@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        Jan Stancek <jstancek@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v5_02/24=5D_x86/elf=2C_um/x86/?=
+ =?US-ASCII?Q?elf=3A_Move_relocation_constants_to_UAPI?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20260909144930.GAaqFx-mjH3-u6jLjw@fat_crate.local>
+References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de> <20260908-vdso-absolute-reloc-v5-2-3a93791af1cf@linutronix.de> <20260908135513.GAaqATwXHcQD7plnH-@fat_crate.local> <20260908161740-0d79e592-87a6-43c5-9174-84ce1904e639@linutronix.de> <20260908151238.GBaqAl5iKb64meuPJl@fat_crate.local> <20260909075156-06ff671c-ab7b-47d8-aaa3-588b570888bc@linutronix.de> <20260909144930.GAaqFx-mjH3-u6jLjw@fat_crate.local>
+Message-ID: <F9786718-8378-443D-A21E-77E057B62BB2@zytor.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADnq5_Mf5mQ4CF=8UTnEjYPGVUS-Hf29sHmesvtwdfnNxtrQMA@mail.gmail.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-09-09 11:57:37 -0400, Alex Deucher wrote:
-> Adding a few people.  Alternative patch at:
-> https://lists.freedesktop.org/archives/amd-gfx/2026-September/152673.html
-> 
-> Alex
-> 
-> On Wed, Sep 9, 2026 at 5:47 AM Mike Lothian <mike@fireburn.co.uk> wrote:
-> >
-> > Both OBJECT_FUNCS and the shmem VTABLE initialise every member of
-> > drm_gem_object_funcs explicitly, so adding a field to the C struct
-> > breaks the Rust build:
-> >
-> >   error[E0063]: missing field `handle_free` in initializer of
-> >   `drm_gem_object_funcs`
-> >
-> > The callback is optional and the Rust abstraction has no equivalent
-> > DriverObject method, so leave it unset.
-> >
-> > The shmem copy is only built with CONFIG_RUST_DRM_GEM_SHMEM_HELPER,
-> > which DRM_TYR selects.
+On September 9, 2026 7:49:30 AM PDT, Borislav Petkov <bp@alien8=2Ede> wrote=
+:
+>On Wed, Sep 09, 2026 at 07:59:51AM +0200, Thomas Wei=C3=9Fschuh wrote:
+>> These names and numbers are defined by the architectures' ELF specifica=
+tions=2E
+>> They are already cast in stone=2E For example see Table 4=2E9 of [0]=2E
+>> Changing them would break compilers, linkers, loaders and more or less =
+every
+>> existing ELF binary=2E
+>
+>So?
+>
+>Your goal is to provide them to tools/=2E You want to provide them to
+>*everything*=2E See the discrepance here?
+>
+>> That is the documentation for the tools UAPI headers=2E
+>
+>Did you even read that file?
+>
+>"Why we want a copy of kernel headers in tools?
+>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+>There used to be no copies, with tools/ code using kernel headers
+>directly=2E From time to time tools/perf/ broke due to legitimate kernel
+>hacking=2E At some point Linus complained about such direct usage=2E Then=
+ we
+>adopted the current model=2E
+>
+>The way these headers are used in perf are not restricted to just
+>including them to compile something=2E
+>=2E=2E=2E"
+>
+>Just read the damn thing before you reply=2E
+>
+>> Also we already have other, closely related, ELF constants in the UAPI,
+>> see {,tools/}include/uapi/linux/elf{,-em}=2Eh=2E
+>
+>Srsly?!?
+>
+>You moved them there:
+>
+>commit 626fd35278295fbb21f2da331cd8028e9738d965
+>Author: Thomas Wei=C3=9Fschuh <thomas=2Eweissschuh@linutronix=2Ede>
+>Date:   Wed Feb 26 12:44:46 2025 +0100
+>
+>    tools/include: Add uapi/linux/elf=2Eh
+>   =20
+>    It will be used by the vDSO selftests=2E
+>
+>
+>Looking at the rest, it looks like some elf bits got exported, you added =
+some
+>more and that ship has sailed=2E I still think us providing headers is
+>completely unnecessary and it will come to cause conflicts eventually but=
+ hey,
+>not my problem=2E
+>
 
-Sorry, I missed you when sending my v2. It's at
-https://lore.kernel.org/lkml/20260909173103.73656-1-klarasmodin@gmail.com/T/#u
-if you want to have a look.
+I do believe there are *some* headers that would be reasonably to export t=
+o tools/ beyond what it is in uapi; a major reason for that is that the too=
+ls are suffering from a crazy level of internal inconsistency right now=2E=
+=20
 
-Regards,
-Klara Modin
-
-> >
-> > Fixes: b67d2d039f64 ("drm/gem: Add callback for when handle count goes to 0")
-> > Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
-> > Assisted-by: Claude:Opus-5 [Claude Code]
-> > ---
-> >
-> > b67d2d039f64 is only in agd5f/drm-next, so this can be squashed into it
-> > instead if you would rather keep that branch bisectable.
-> >
-> > The shmem hunk is by inspection - CONFIG_RUST_DRM_GEM_SHMEM_HELPER is
-> > not set in my config, so only the mod.rs copy is compile-tested.
-> >
-> >  rust/kernel/drm/gem/mod.rs   | 1 +
-> >  rust/kernel/drm/gem/shmem.rs | 1 +
-> >  2 files changed, 2 insertions(+)
-> >
-> > diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-> > index 80d8f524f9d5..ae61ca7e1246 100644
-> > --- a/rust/kernel/drm/gem/mod.rs
-> > +++ b/rust/kernel/drm/gem/mod.rs
-> > @@ -278,6 +278,7 @@ impl<T: DriverObject, Ctx: DeviceContext> Object<T, Ctx> {
-> >          vm_ops: core::ptr::null_mut(),
-> >          evict: None,
-> >          rss: None,
-> > +        handle_free: None,
-> >      };
-> >
-> >      /// Returns the `Device` that owns this GEM object.
-> > diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
-> > index a687d46d170d..d08a03cb7a13 100644
-> > --- a/rust/kernel/drm/gem/shmem.rs
-> > +++ b/rust/kernel/drm/gem/shmem.rs
-> > @@ -145,6 +145,7 @@ impl<T: DriverObject> Object<T> {
-> >          // SAFETY: `drm_gem_shmem_vm_ops` is a valid, static const on the C side.
-> >          vm_ops: unsafe { &raw const bindings::drm_gem_shmem_vm_ops },
-> >          evict: None,
-> > +        handle_free: None,
-> >      };
-> >
-> >      /// Return a raw pointer to the embedded drm_gem_shmem_object.
-> > --
-> > 2.55.0
-> >
+Basically uapi =E2=8A=82 treewide =E2=8A=82 kernel, but also treewide =E2=
+=8A=82 tools common =E2=8A=82 tool-specific=2E=2E=2E
