@@ -1,227 +1,153 @@
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B8152B1DD;
-	Wed,  9 Sep 2026 10:50:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED665427F2;
+	Wed,  9 Sep 2026 11:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788951039; cv=none; b=iQB3Y2ltE2JJeF6NXk3+wqsrukWZVjJen4SCcV2fw0KAptwHQ4bgWp1PRpbg+zuZKuf290U5FUfSC06OsYGX5+T09C8680BK+0GzRLkirZ5mo7U2t+z2tBkK6GWs6FqsG0Xkdkm5URgCRtY3UFaYyYpY4TK9R3PWX/D+vmwuS0k=
+	t=1788953366; cv=none; b=RH0kP8ebAAcRD0QXpTaAYD/U2XbTIivvnFpFIie4Fg5HwG3IE6Nua+w+fNnD8T5MzMkySKV88AJoodlaBngixLbVih3YFRKUsAUs2FsQJIAwtPwoNtJgSHBuO9j5FCNKdrUHT+V35zTdgnY4fhNgdU/7Tut/rQ9YA+Kb1Q8j6pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788951039; c=relaxed/simple;
-	bh=LrY/spde1THOVMj4vSyeQauD/Idb6vnbA/Pl5x5U5zI=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ZrAXlw3/SSLYs3ZEpgTcGFGwYewvgj9//o4SHDZ9miTv9M1sPRzM3th0TINu3imfdpzgdo2xgBbpUCS9kVabSO1MQLe2vVsBnmADz1stih8JVf8Yq0zRp3M4SGmdkn1YMGFA2xVEYd7kenVaeUGQf/BamtpuLk+URalVncYYvYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
-Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 689AnhK5031844;
-	Wed, 9 Sep 2026 19:49:43 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from [192.168.1.6] (M106072072000.v4.enabler.ne.jp [106.72.72.0])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 689AnhPI031841
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 9 Sep 2026 19:49:43 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <9f1273a7-6dfe-46bb-966f-fe08876f4375@I-love.SAKURA.ne.jp>
-Date: Wed, 9 Sep 2026 19:49:41 +0900
+	s=arc-20240116; t=1788953366; c=relaxed/simple;
+	bh=5t2lkATIi7BZC0vRD7XUkmgQ9EM3eDdhwa1UQgM9Azs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=s3Bt037BMCPJmHVUbuPhu/TKQn2TbvmIoS5LxA6O19BX/2IC59rd3VkYlTffeCAf/D0j6gNL8lQb7CkWHlhfklAILhfrR/sFG8ei6GiZtOVc16M0DK3MNls9u7Sj7eCBfE0qKd4cCxikw/tiyCtrOxLKWvshmjUFS5gCEIL6hMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ad4Cajq9; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ad4Cajq9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409141F00A3A;
+	Wed,  9 Sep 2026 11:29:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788953364;
+	bh=WC7hKSBtPkgNxzwAYTZWfYgCBEV8gwtgoSM05bxD/M4=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To;
+	b=Ad4Cajq9O9K9hG9+AEr7VEyvKeZCvUzHFhYvzSabrKfJBxtuX/PUQViw68Ug8a5gd
+	 sErkz7zF5YqaPmV89jsASNjfPOlvszcdTjXuXCzPKX6LuAbOZ+QrlGNuS9ttE7kxM3
+	 3qbTSQLrl91S/q0JEie+NcXDUmBAYUE9cIpkBR3ua7GcIQGRlDqBKnPfHDrO6mtN6N
+	 nlcyS43VNSbPzjo875DIiptOm7dhd8LPW93Un24LIDf3IpALHH2etNw+pQihePtebJ
+	 lVzyVrlprChjXjHuMFZ/qGYBDgURYvERiAj4Spoxs/ptRVtl9ZdEH3rwlMcQKkhCmM
+	 Cuzs/bMw0FpxA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH 2/2] loop: Perform __loop_clr_fd() after disk->open_mutex is
- dropped.
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-To: Jens Axboe <axboe@kernel.dk>, Bart Van Assche <bvanassche@acm.org>,
-        Christoph Hellwig <hch@lst.de>
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Brian Foster
- <bfoster@redhat.com>,
-        Damien Le Moal <dlemoal@kernel.org>, Hillf Danton <hdanton@sina.com>,
-        Markus Elfring <Markus.Elfring@web.de>,
-        Ming Lei <tom.leiming@gmail.com>, Qu Wenruo <wqu@suse.com>,
-        Tao Cui <cui.tao@linux.dev>, kernel test robot <lkp@intel.com>,
-        linux-block <linux-block@vger.kernel.org>,
-        rust-for-linux@vger.kernel.org
-References: <60bf7af2-b84e-4056-9195-a26ad51ada46@I-love.SAKURA.ne.jp>
-Content-Language: en-US
-In-Reply-To: <60bf7af2-b84e-4056-9195-a26ad51ada46@I-love.SAKURA.ne.jp>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Anti-Virus-Server: fsav113.rs.sakura.ne.jp
-X-Virus-Status: clean
+Date: Wed, 09 Sep 2026 13:29:18 +0200
+Message-Id: <DLAR1FIFL0Y5.22A7AJKNW0YQP@kernel.org>
+Cc: "Georgios Androutsopoulos" <georgeandrout13@gmail.com>, "Rafael J .
+ Wysocki" <rafael@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Dave
+ Ertman" <david.m.ertman@intel.com>, "Ira Weiny" <iweiny@kernel.org>, "Leon
+ Romanovsky" <leon@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, <driver-core@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH] rust: auxiliary: validate DeviceId name length
+References: <20260909033246.2779303-1-georgeandrout13@gmail.com>
+ <2026090955-lustfully-fanning-33f9@gregkh>
+In-Reply-To: <2026090955-lustfully-fanning-33f9@gregkh>
 
-syzbot is reporting NULL pointer dereference in lo_rw_aio().
-An analysis by the Gemini AI collaborator considers that this problem
-is caused by a timing shift primarily exposed by commit 65565ca5f99b
-("block: unify the synchronous bi_end_io callbacks"), along with helper
-refactorings like commit 92c3737a2473 ("block: add a bio_submit_or_kill
-helper").
+On Wed Sep 9, 2026 at 9:19 AM CEST, Greg Kroah-Hartman wrote:
+> On Tue, Sep 08, 2026 at 11:32:46PM -0400, Georgios Androutsopoulos wrote:
+>> `DeviceId::new()` copies `modname` and `name` into the fixed 40-byte
+>> `auxiliary_device_id::name` array without checking that they fit. An
+>> oversized name is caught by the array bounds check, but the error
+>> reports an out-of-bounds index in the copy loop rather than the
+>> constraint the caller violated.
+>>=20
+>> Check the invariant explicitly instead, so the failure states the length
+>> limit rather than an array index.
+>>=20
+>> In a constant context exceeding the limit leads to a build error; at
+>> runtime it panics, so add a `# Panics` section for it.
+>>=20
+>> Fixes: ce735e73dd59 ("rust: auxiliary: add auxiliary device / driver abs=
+tractions")
 
-But due to difficulty of reproducing this race, discussion about what is
-happening and how to fix this problem is stalling. Also, we haven't
-identified how many filesystems are subjected to this problem.
+It's not actually fixing a bug, so I don't think this needs a Fixes: tag.
 
-Therefore, introduce a grace period for flushing outstanding I/O
-(which should be a good thing from the perspective of defensive
-programming) so that we won't hit NULL pointer dereference problem.
+>> Signed-off-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+>> ---
+>>  rust/kernel/auxiliary.rs | 10 ++++++++++
+>>  1 file changed, 10 insertions(+)
+>>=20
+>> diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
+>> index 60dfbec8f330..1f3ba86d6d96 100644
+>> --- a/rust/kernel/auxiliary.rs
+>> +++ b/rust/kernel/auxiliary.rs
+>> @@ -137,10 +137,20 @@ macro_rules! module_auxiliary_driver {
+>> =20
+>>  impl DeviceId {
+>>      /// Create a new [`DeviceId`] from name.
+>> +    ///
+>> +    /// # Panics
+>> +    ///
+>> +    /// Panics if the combined module and device name, including the
+>> +    /// separator and trailing NUL, exceeds `AUXILIARY_NAME_SIZE` bytes=
+.
 
-Since calling drain_workqueue() from __loop_clr_fd() with disk->open_mutex
-held causes lockdep warnings, schedule lo_clr_work from lo_release() which
-calls __loop_clr_fd() and wait for completion from lo_post_release().
+I'd rather document that this is only intended to be called within device I=
+D
+table creation; in const context a panic is just a compile time error.
 
-Link: https://lkml.kernel.org/r/fbb3edda-f108-4e5b-acf2-266f043f8125@I-love.SAKURA.ne.jp
-Reported-by: syzbot+cd8a9a308e879a4e2c28@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=cd8a9a308e879a4e2c28
-Reported-by: syzbot+bc273027d5643e48e5b3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bc273027d5643e48e5b3
-Depends-on: "block: Add post_release() operation"
-Fixes: 65565ca5f99b ("block: unify the synchronous bi_end_io callbacks")
-Assisted-by: Gemini-Pro
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
----
- drivers/block/loop.c | 68 +++++++++++++++++++++++++++++++++++---------
- 1 file changed, 55 insertions(+), 13 deletions(-)
+>>      pub const fn new(modname: &'static CStr, name: &'static CStr) -> Se=
+lf {
+>>          let name =3D name.to_bytes_with_nul();
+>>          let modname =3D modname.to_bytes_with_nul();
+>> =20
+>> +        assert!(
+>> +            modname.len().saturating_add(name.len()) <=3D bindings::AUX=
+ILIARY_NAME_SIZE as usize,
+>> +            "auxiliary device ID is too long"
+>> +        );
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 758c20678bf6..9fe0f7ca4c7e 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -75,6 +75,7 @@ struct loop_device {
- 	struct gendisk		*lo_disk;
- 	struct mutex		lo_mutex;
- 	bool			idr_visible;
-+	struct work_struct	lo_clr_work;
- };
- 
- struct loop_cmd {
-@@ -1136,13 +1137,42 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
- 	return error;
- }
- 
--static void __loop_clr_fd(struct loop_device *lo)
-+static void __loop_clr_fd(struct work_struct *work)
- {
-+	struct loop_device *lo = container_of(work, struct loop_device, lo_clr_work);
-+	struct gendisk *disk = lo->lo_disk;
- 	struct queue_limits lim;
- 	struct file *filp;
- 	gfp_t gfp = lo->old_gfp_mask;
- 	int err;
- 
-+	/* Step 1: Flush all outstanding I/O, without open_mutex held. */
-+	/*
-+	 * Since loop_queue_rq() is called with RCU read lock, this synchronize_rcu()
-+	 * makes sure that no more queue_work() calls are made from loop_queue_work()
-+	 * from loop_queue_rq(). Subsequent loop_queue_rq() calls which are made after
-+	 * this synchronize_rcu() returned shall see lo->lo_state != Lo_bound and
-+	 * return with BLK_STS_IOERR.
-+	 */
-+	synchronize_rcu();
-+	/*
-+	 * This drain_workqueue() makes sure that no more loop_handle_cmd() calls are
-+	 * made from loop_process_work() from loop_workfn()/loop_rootcg_workfn().
-+	 */
-+	drain_workqueue(lo->workqueue);
-+	/*
-+	 * This blk_mq_freeze_queue() waits for completion of all outstanding I/O
-+	 * which has been scheduled via loop_queue_rq(), by waiting for q_usage_counter
-+	 * to reach 0. Since the lo->lo_state != Lo_bound check in loop_queue_rq()
-+	 * guarantees that no more new I/O requests are made, we can call
-+	 * blk_mq_unfreeze_queue() immediately after blk_mq_freeze_queue() returns.
-+	 */
-+	blk_mq_unfreeze_queue(lo->lo_queue, blk_mq_freeze_queue(lo->lo_queue));
-+
-+	/* Step 2: Perform remaining cleanup, with open_mutex held. */
-+	mutex_lock(&disk->open_mutex);
-+	WARN_ON_ONCE(lo->lo_state != Lo_rundown);
-+
- 	spin_lock_irq(&lo->lo_lock);
- 	filp = lo->lo_backing_file;
- 	lo->lo_backing_file = NULL;
-@@ -1153,12 +1183,7 @@ static void __loop_clr_fd(struct loop_device *lo)
- 	lo->lo_sizelimit = 0;
- 	memset(lo->lo_file_name, 0, LO_NAME_SIZE);
- 
--	/*
--	 * Reset the block size to the default.
--	 *
--	 * No queue freezing needed because this is called from the final
--	 * ->release call only, so there can't be any outstanding I/O.
--	 */
-+	/* Reset the block size to the default. */
- 	lim = queue_limits_start_update(lo->lo_queue);
- 	lim.logical_block_size = SECTOR_SIZE;
- 	lim.physical_block_size = SECTOR_SIZE;
-@@ -1201,11 +1226,9 @@ static void __loop_clr_fd(struct loop_device *lo)
- 	WRITE_ONCE(lo->lo_state, Lo_unbound);
- 	mutex_unlock(&lo->lo_mutex);
- 
--	/*
--	 * Need not hold lo_mutex to fput backing file. Calling fput holding
--	 * lo_mutex triggers a circular lock dependency possibility warning as
--	 * fput can take open_mutex which is usually taken before lo_mutex.
--	 */
-+	/* Step 3: Drop refcounts, without open_mutex held. */
-+	mutex_unlock(&disk->open_mutex);
-+
- 	fput(filp);
- }
- 
-@@ -1771,8 +1794,22 @@ static void lo_release(struct gendisk *disk)
- 	need_clear = (lo->lo_state == Lo_rundown);
- 	mutex_unlock(&lo->lo_mutex);
- 
-+	/*
-+	 * In order to flush outstanding I/O (without open_mutex for deadlock
-+	 * avoidance) before clearing the backing device, defer __loop_clr_fd()
-+	 * to WQ context and let lo_post_release() wait for completion.
-+	 * The Lo_rundown state guarantees that lo_open() will fail with -ENXIO.
-+	 */
- 	if (need_clear)
--		__loop_clr_fd(lo);
-+		queue_work(system_long_wq, &lo->lo_clr_work);
-+}
-+
-+static void lo_post_release(struct gendisk *disk)
-+{
-+	struct loop_device *lo = disk->private_data;
-+
-+	/* Wait for __loop_clr_fd() to complete. */
-+	flush_work(&lo->lo_clr_work);
- }
- 
- static void lo_free_disk(struct gendisk *disk)
-@@ -1791,6 +1828,7 @@ static const struct block_device_operations lo_fops = {
- 	.owner =	THIS_MODULE,
- 	.open =         lo_open,
- 	.release =	lo_release,
-+	.post_release = lo_post_release,
- 	.ioctl =	lo_ioctl,
- #ifdef CONFIG_COMPAT
- 	.compat_ioctl =	lo_compat_ioctl,
-@@ -2036,6 +2074,7 @@ static int loop_add(int i)
- 	lo = kzalloc_obj(*lo);
- 	if (!lo)
- 		goto out;
-+	INIT_WORK(&lo->lo_clr_work, __loop_clr_fd);
- 	lo->worker_tree = RB_ROOT;
- 	INIT_LIST_HEAD(&lo->idle_worker_list);
- 	timer_setup(&lo->timer, loop_free_idle_workers_timer, TIMER_DEFERRABLE);
-@@ -2140,6 +2179,9 @@ static int loop_add(int i)
- 
- static void loop_remove(struct loop_device *lo)
- {
-+	/* Wait for __loop_clr_fd() to complete. */
-+	flush_work(&lo->lo_clr_work);
-+
- 	/* Make this loop device unreachable from pathname. */
- 	del_gendisk(lo->lo_disk);
- 	blk_mq_free_tag_set(&lo->tag_set);
--- 
-2.55.0
+Isn't this missing to consider the separator and NULL terminator?
+
+>
+> We really shouldn't panic, we should error out and fail the creation
+> instead.
+
+This is only ever used from const context to construct the device ID table,=
+ e.g.
+as in
+
+	kernel::auxiliary_device_table!(
+	    AUX_TABLE,
+	    <NovaDriver as auxiliary::Driver>::IdInfo,
+	    [(
+	        auxiliary::DeviceId::new(NOVA_CORE_MODULE_NAME, AUXILIARY_NAME),
+	        ()
+	    )]
+	);
+
+and a panic in const context makes the compilation fail, so it works as
+intended.
+
+Unfortunately, we can't enforce that is function can only be called from co=
+nst
+context, so technically it could also be called outside of the device ID ta=
+ble
+in non-const context, but it would be odd to construct outside of a device =
+ID
+table.
+
+> But what is placing the constraint of the name size here?  The C api
+> just takes a pointer, it doesn't care about the size, why does the rust
+> binding care?
+
+I assume you were thinking of something else? This struct represents
+
+	#define AUXILIARY_NAME_SIZE 40
+=09
+	struct auxiliary_device_id {
+		char name[AUXILIARY_NAME_SIZE];
+		kernel_ulong_t driver_data;
+	};
