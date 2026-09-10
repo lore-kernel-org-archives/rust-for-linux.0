@@ -1,213 +1,123 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.94])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDF24B2031;
-	Thu, 10 Sep 2026 15:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789055341; cv=none; b=cPjfMoR7dKSVsPY9us8lbFvkojdRvfjTcXtSOzeA7kah9zmk0hfb6gsU1Lk2QQPsyeDAYXV3F7Bp7PkO7cvuuy6n6JbOG/z7m/5CufQmUg6/tRL7bDsstZnsH4IJfu0BdkImNHoLDlADHdDiVyn1QkowbZrYqskDeGr3YhdOIH4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789055341; c=relaxed/simple;
-	bh=uuZUs8CyGKyoIbJX7p5GwQ6gTH4+NO01yolE0a/TQxk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X5IBkrIO/gUEUl2C5iGw8i4MXiTMI0awfWUb1NvHLyw8lIaVuV2u4KPNFDHDs+PitsqD3LEoc+vDcLMJj2B7W8SRrVv+qO78/kZ4aQJd6uNJ3vr+DiBI9AejAqRO8pbK7ECl/LwQ963/HFiKdFDIiBms6jO2Fd9lMVBFEa4SLq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b=kw5yKkpR; arc=none smtp.client-ip=212.42.244.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C7D4BB266
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 16:14:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789056885; cv=pass; b=u0dk4r+fVbSeNptHRgixmbDNCLCw9sUPrXtyRpNB/liVvE1s7zDTTuaw6Fn8s715WrR3Loi27PKW9Gn/bMpsoGfR+vYXQUKhUmWPj9F4m7w7njDiOAJVGVWke9SRa+KmZo2Fj3JxOGPo2SJ8q3BE61lRlYMad4toQAM5gjhLW6Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789056885; c=relaxed/simple;
+	bh=AIdeJfpL79Jnckoa3vMq8Pu7laRqtN2LS+kT46oxafc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hJBj+uGh2ksrfacKld1jUclqceci+Vozkz1HCAYFt8BlKL2k0KZGCtBsKpqLqcO6XAHobLI5EsmNynAYbHPjtx8yxhTSE9tuWGFfy8tM7LbBl7SDgBxvTQsZvH+wMQ1I5vZdxjR3Vgu4Naj7qH4mn3Yxtr+C+g9wcNff6M/2GuE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F3gozuAj; arc=pass smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b="kw5yKkpR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fritz.com; s=mail;
-	t=1789055335; bh=uuZUs8CyGKyoIbJX7p5GwQ6gTH4+NO01yolE0a/TQxk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kw5yKkpRe/Y1tmb9JymSosqjJQjw2qgzZ9KZZqyOmhAQAxTz5HEFZqrYiX3oICPQf
-	 ckaNlryfcAgmbWmlTplxNOFmSwApoY77UM024WyrBpNuKJop80mERVjlCKBEsV9h7C
-	 U5HBWhhLjMM6uGRzezT0msAoFEspWJUThjDU6syaNqM3YlOIMpkIA4pPasaGQMpeVt
-	 DczFspQ1hYXtkffJ+qQHHDqf1EuOrSJn4XAkOwXtyaoUeBU83fAAIFx8iLVtR2o5OB
-	 2Bci4tkbqtQ5t/TTxOYveG5IbW5M45rNI+QR0L4wqde5mduY4arbUKWhFjFdZ3inb1
-	 SJ8Nm0uv2d06g==
-Received: from [2001:bf0:244:244::78] (helo=mail.avm.de)
-	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
-	(envelope-from <n.schier@fritz.com>)
-	id 6aa2d167-6dc7-7f0000032729-7f000001b250-1
-	for <multiple-recipients>; Thu, 10 Sep 2026 17:48:55 +0200
-Received: from mail-auth.fritz.com (unknown [IPv6:2001:bf0:244:244::78])
-	by mail.avm.de (Postfix) with ESMTPS;
-	Thu, 10 Sep 2026 17:48:55 +0200 (CEST)
-Date: Thu, 10 Sep 2026 17:48:53 +0200
-From: Nicolas Schier <n.schier@fritz.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Alexey Gladkov <legion@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Randy Dunlap <rdunlap@infradead.org>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
-	Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH 16/23] kbuild: batch module finalisation
-Message-ID: <20260910-nondescript-fierce-wapiti-de1cea@l-nschier-aarch64>
-References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
- <20260908-build-speedup-v1-16-5dc1ac01672d@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F3gozuAj"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1d189a400so37a12.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 09:14:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789056883; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qKzWoeK58hQvEkxNPIIX5pXcm6ECyjEuf542cSWlOCh1wmSD6msejoW4qR3DML/afA
+         h3qmaf4L1iagRzsX6sGVVh0FYzRr9tjh7U0xMx3TIiw/B8S6gqw8B5/TxCzCXd/khIav
+         Wb1Em7N6Qw5Qfk8kvpz0q1gFmuNA+qvLZXQ0DRsvDbCpOxE1WthDAjN139+HF26CeBMr
+         4xywMdPjUUFOoRS5HlXYGD+lHusn9X4pZ+72ge9dJ57RmtWRboewTfoyZTKR5pg2fCUU
+         RoxJdDQrXQSs+tts0ibn99mduZ268yZUdWNCziYVq2H0iqIlQuWodxIxdTzKs7Kvtb5w
+         PHXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AIdeJfpL79Jnckoa3vMq8Pu7laRqtN2LS+kT46oxafc=;
+        fh=KU729isP575GCYptcf0/uaOGImSCA/RiwTXVH43Pumo=;
+        b=U9QBFozvCWsEH5CkDA+h9cIS9Wsx2tSvuf0A/gxRXN0gMrYvQFyZTAEUw7ytg27hCS
+         Hy5cWamaCNIh/n3kTQy6x+TrIaAs4DDXAvUyJNOFjO3dwDV6ZKm7SzZI9hHlyGy+sePg
+         Yt/bASADrpwfWmRK5p4lsaLDOm6sjTDoT8Zhq7Wn1rURv5JofDuD2j6SM8sO61+Y7TbL
+         Vt0tPA0xGzV72e4sLNTsJN0HaSNK/FMphiURPcTBgOTrpVZCRKjimwiDPKbCEzfYWJw8
+         0+sGctgxozdLBPJLtiqOfsRQjNY1ZDrXFveCHX80IlpIhhO1B6pie+T5/ORB4nce5MO/
+         x15A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789056883; x=1789661683; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=AIdeJfpL79Jnckoa3vMq8Pu7laRqtN2LS+kT46oxafc=;
+        b=F3gozuAjfDDbMeZ/dLSy2CXjr+RjB/+c95R3VRdJY9j2ECNnpTLl8Ln0/Lsa3i+JEX
+         o20WRjxX1ZltoNB1JmAgHuVAuaIjPxEo8VOgWNy+leeH0FUSFgibVbT8AJcrIvgJmDXH
+         qmLqVy58lsjL2JVFPjtlCMeURg8mL7ZasrPHhYHjYSl5xLCBAAvVQbUhcOEvxE4tRyUM
+         lNA2SXaxmN8czo1K9iLlb76i49BLzFUi96zKi9dyF5/u4ziPQ6ZcJAU9Aqf1JAzkUZaN
+         h1BcG2aQKgJAXkHLkhpDLlDglKIkTVEA3TraZg/u+YYW3RWb5kHwwLnYTb42JnRZx528
+         TIRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789056883; x=1789661683;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AIdeJfpL79Jnckoa3vMq8Pu7laRqtN2LS+kT46oxafc=;
+        b=ShRcORrj6Txevkf3MvWpv7Vc0o4wZAvrylGY8P1pX1ablevkNrgyi9D7ebR4yXLLv0
+         E5c3uChbWE5M/ON0Uvm+WTlRp9XsLTVQRxu9Vb/ea/1JmVoSYmwEdaL2OuorqVEIIFSX
+         Nbl/8eg6YUL9dytlXvx4eNmokwf1fcoimsj7AjmZkh0Igv0uO6gl78tL7p0QZ/v8dOtG
+         uJ0KCLGqgFapFazpIjh93Q1YJyY51XMd+qNoEPrhYAKa8PH28tUQ47EjDFOKenbVsIBB
+         xKFSr0gQQjmX+Hjdmq3S9C3s/PK6HqRA7Z/9YxBN56/FhzfLcibfM9aXS1DLg7h/WSM4
+         aCrA==
+X-Forwarded-Encrypted: i=1; AKwUvBzEe2VOCl12SCOBN7rGOwNAm6Id/klREdSkvVzyMnZuZf8JJoM9+GMoxQik9r3cAT9EKCzGXTu5sNDa1Cb8iQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++nfR+8kx61R95lY0QXmvbuWwQtacgjDJM9NyzVo7oDleN/K++Hb
+	jm+tLUEKmSL7hIGp8iaaCOMVCB7jKa7YAEZqAuzC7o8S46rLlom9KFbrDcKX18ZMrXbJhIIoHGK
+	oEtuXdeCH+FL7dLzOQEx8YxGLo3d9f9Y=
+X-Gm-Gg: AYBFou3vUsUUlsv9dTS1AA+TNuHHe8NgUEpPuoFAz4mNFlzUchVXtaKusLDKAP1GGAT
+	Ct3cpJ0U36D9ZqZhAKc1SlJWUa6prwVmFWQquX1a2Z8PA1+6xgRtPqQlsRDdJzcDKuYUPPvqE33
+	NHeXrLz/P3A3Y7H8ZwbVmqrV0X2SlXMg6bW+PEJf1zZ3qLzcpaOdbRPoUzYJDVom6SyvuqAnAtX
+	At5nrRKwMGLfDetcFARoIUzKaCWecgRmv2aV/77pXBYMmqKyEtIzAvuSmWZ45+alw+utcfWcYcC
+	7KgBYaKAUwCqKM9JWTTv1uD/4sqUyg4LKepJ1rYRPBAWU+TnYslyuPH9o0vln0fvuuIe2gju4jD
+	HqU4/3P1kq9B4cPICRTWeRLFd8j2AeRH1ryR2VYeHNikNawig7GSbxPwhCyo/rBDSzrlAyrLwY6
+	OYc3zNFy97Jqd9CNu8mhwen04WGkzDPxMKRnD1jtaurjzLtwPVOI0=
+X-Received: by 2002:a17:90b:384d:b0:398:bac0:238e with SMTP id
+ 98e67ed59e1d1-39b3d8377camr37403886a91.6.1789056883468; Thu, 10 Sep 2026
+ 09:14:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="4KfRRQPTJ7GRTheh"
-Content-Disposition: inline
-In-Reply-To: <20260908-build-speedup-v1-16-5dc1ac01672d@kernel.org>
-Organization: FRITZ! Technology GmbH
-x-ms-reactions: disallow
-X-purgate-ID: 149429::1789055335-064A40BC-80480D36/0/0
-X-purgate-type: clean
-X-purgate-size: 4263
-X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
-X-purgate: clean
-X-pfmilter: host: postfix-mx-03  mail-id: 2B66AA0198  external: no
-
-
---4KfRRQPTJ7GRTheh
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20260828024335.946-1-nils.lehnen@proton.me> <CANiq72mn2vvCL2VP8yJxmzXM4n+jfV4R7arUcj4UXSi04y5sfQ@mail.gmail.com>
+ <CAHC9VhSuuNmdRQ5puaxWh5ez3Dz9LhtAmZU40SUGgEAL8Sn9-w@mail.gmail.com>
+ <CANiq72m0yYRj75RQBRprcHTrqfd7=m_OnZAAQfZdO9T3dfUQdw@mail.gmail.com> <CAHC9VhRjjJpv95AgF6cnOdh4g3gC4zViRoiHVehMLx-Fv9b1vw@mail.gmail.com>
+In-Reply-To: <CAHC9VhRjjJpv95AgF6cnOdh4g3gC4zViRoiHVehMLx-Fv9b1vw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 10 Sep 2026 18:13:00 +0200
+X-Gm-Features: AcwNN1VxW1A9qw4fmjGeQ9XUhu8Og04GW9DSoVdDsQNP46Gy5I2b0ZJEDU2k5-s
+Message-ID: <CANiq72mY_Sjg=WnfEEhSx9XZiqwDgqZqSqHa9Tsc4-qR-X8UEQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: security: replace `core::mem::zeroed` with `pin_init::zeroed`
+To: Paul Moore <paul@paul-moore.com>
+Cc: Nils Lehnen <nils.lehnen@proton.me>, James Morris <jmorris@namei.org>, 
+	"Serge E . Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>, 
+	Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Onur Ozkan <work@onurozkan.dev>, 
+	Atharv Dubey <atharvd440@gmail.com>, Ke Sun <sunke@kylinos.cn>, 
+	linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 08, 2026 at 09:55:16PM +0100, Lorenzo Stoakes (ARM) wrote:
-> Module finalisation on allmodconfig builds consists of a large number of
-> very short-lived jobs, and the make job dispatcher cannot possibly dispat=
-ch
-> jobs fast enough.
->=20
-> For allmodconfig x86-64 this can be on the order of ~22,000 jobs of a few
-> milliseconds in duration each.
->=20
-> However per-job cost grows with the variables the instance holds, here the
-> savedcmd_* of every .mod.o and .ko read back from the .cmd files, since it
-> walks them all to build each child's environment.
->=20
-> This makes module finalisation very inefficient when large numbers of
-> modules are being built.
->=20
-> Fix this by splitting modules.order into chunks of 128 at a time, run in
-> parallel.
->=20
-> Each instance holds only its own modules' variables and the top-level one
-> reads no per-module .cmd files at all, the same rules serve both levels,
-> and an instance is told its chunk with modfinal-first=3D<index>.
->=20
-> "make modules" with every *.mod.o and *.ko deleted goes from 28.9s to 15.=
-9s
-> with clang 22. No-op "make modules" goes from 5.6s to 4.8s, as checking t=
-he
-> 22,000 targets is spread over the chunks too.
->=20
-> Whole build, 128-thread Threadripper 9980X, best of N runs:
->=20
->                                          before   after     delta
->                                          -------------------------------
->   x86 allmodconfig, no-op make, gcc         1.9s     1.2s    -0.74s (-39%)
->   x86 allmodconfig, no-op make, clang       2.4s     1.6s    -0.77s (-32%)
->   x86 allmodconfig, clean, gcc            304.5s   291.4s     -13.1s (-4%)
->   x86 allmodconfig, clean, clang          301.7s   297.0s     -4.7s (-2%)
->=20
-> Assisted-by: LLM
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  scripts/Makefile.modfinal | 26 +++++++++++++++++++++++++-
->  scripts/mod/sumversion.c  |  4 ++--
->  2 files changed, 27 insertions(+), 3 deletions(-)
->=20
-> diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
-> index 75e9effdf02c..858fa798090b 100644
-> --- a/scripts/Makefile.modfinal
-> +++ b/scripts/Makefile.modfinal
+On Thu, Sep 10, 2026 at 4:20=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
+ote:
+>
+> I'm not sure we have a "usually" yet with the Rust LSM glue code, but
+> I'm happy to take this patch :)
+>
+> Since you've already reviewed it, can I add your Reviewed-by tag?
 
-[...]
-> diff --git a/scripts/mod/sumversion.c b/scripts/mod/sumversion.c
-> index 2cbadd3cd97d..5501d6aa0bea 100644
-> --- a/scripts/mod/sumversion.c
-> +++ b/scripts/mod/sumversion.c
-> @@ -249,7 +249,7 @@ static int parse_comment(const char *file, unsigned l=
-ong len)
->  /* FIXME: Handle .s files differently (eg. # starts comments) --RR */
->  static bool stop_char[256];
-> =20
-> -static void init_stop_chars(void)
-> +static void sumversion_init(void)
->  {
->  	static bool done;
->  	int chr;
-> @@ -274,7 +274,7 @@ static int parse_file(const char *fname, struct md4_c=
-tx *md)
->  	len =3D strlen(file);
->  	if (!len)
->  		goto out_file;
-> -	init_stop_chars();
-> +	sumversion_init();
->  	buf =3D xmalloc(len); /* File output buffer. */
-> =20
->  	for (i =3D 0; i < len; i++) {
->=20
-> --=20
-> 2.55.0
->=20
+Sure!
 
-(I have only skimmed through, not yet reviewed this patch.)
+Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
 
-The change in sumversion.c seems to be wrong here.
-
---=20
-Nicolas
-
---4KfRRQPTJ7GRTheh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEDv+Fiet06YHnC6RpiMa8nIiabbgFAmqi0WIACgkQiMa8nIia
-bbg5EQ/+NGRAk8Ctc+X1OAU6pfHnSz6kq0kRgbNGW5OX2SXnhplNS7CMXxqLkUbZ
-SQAY69x1eLH/K0A4j5Memv4kYSDGoAEawgiydt9wSZuQDi1eDhGnDC1T9q74bds3
-uDrrnCbLogaoGnhXm4g7WcWVmdx+6rKgupL8kFDt4XQbrPVh2lsE5R5KfWvGWyH8
-w/btnaniJv5lTR37xXrMWBXfPqxJY/uhiXW2Tov+iqO/sAdeIhGXWEgc5SPwx3qB
-T0rZdFYTfeJ3BCXJF7x96X19HqORTftMzE4rOQtAwBebquwVV86tVUhPlKub/VpJ
-I2KhiqAspQ+QME+xDGib76j3Z0HD/lm9ARByIO5hbBYHkBmXsOhTXdIDY5gTYm2e
-I52eUWyf2CVwty/1aKNHQnDxo+N45dX9srD7ZbC3OUVSJqLG8oHOKoNGcsUmvVeO
-egN83lroNk0UqyLlvugHgIMi01bNORXUn68pMrzto85iBXlaV0/6zAwpZSNe8fY5
-ofrc7hzoQLkNNJJORkOXjdCdVAuAN+pCcTHLdQ84dMOviKCd4fLEDlpcV6b3kjFe
-Jbu0Sqx0Cy41+Fwh7jmxXTRWhWCWnzpL3GFV65F4wdZtV2ajgaqsOPQfTpnz0yu5
-5iDFJMVpe9pqv7hLuXGIlIYpxmQpm0gEeLqvZE72mDwn5IM2qyM=
-=oTTk
------END PGP SIGNATURE-----
-
---4KfRRQPTJ7GRTheh--
+Cheers,
+Miguel
