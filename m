@@ -1,43 +1,43 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF02207DF7;
-	Thu, 10 Sep 2026 23:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79417370D6E;
+	Thu, 10 Sep 2026 23:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789081335; cv=pass; b=tjESj23um3ObMjWFUCqHx05nF2JjXvNXoOq87O71HvGn6EW9PgdH4saA6TtYzS/bDwVpIdEVRwRauom38nsDsHQWsW+Bn0w3YwXBpFAy9DzwgLhNrG4pW+Dw18bh5TkX0TQfHG3lJpiFlLl5gGPmDvoqwC6eqiJvrFayW9z5wsA=
+	t=1789082429; cv=pass; b=AE3XaN7mJ4GL9n+BOCAt+ppFVb+2aulM28VHBg60yVM+dpEZ56Oja33wtq3K66+5ShiiKEr0VscEy6IPMQy+E3c18xO9UKF2aYOROhRCPc0PykC6wWymQFRts3lQkaKnDTZsFvh0bLLDD2ku0ReK+xHuWTcd1Jmy0SHR9FIsxlw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789081335; c=relaxed/simple;
-	bh=EysiNMAymz+CEI4gdX9gD9dZg1YUoVzI7UUvFIg8T1A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EUg1+KIsh844HBxFaIsIDMUZG2Ltq/BpgA0M8juaAJp3NpbNz2Lq8mg91L6zpoeu9YuoJTmEkxn+KL9O9yJ6W1c0iU1G8Dn3N5ir0LMf+bV6BUPOYENqHBOyrp7g+4LSW9FJqv3M0QqikczHQEt8Vxpkt4DgcO9FTNYZ0Aizi2g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=D5FUsM20; arc=pass smtp.client-ip=136.143.188.11
+	s=arc-20240116; t=1789082429; c=relaxed/simple;
+	bh=pcE0l/tn3Wq8uejNfCTycfx1GuqzrRT0owXDnlhmIqc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jqND1BbXc4VA8+b5IHw4J/U6QXIlKHFGcrtS9jjwmxjyMSdlEXkuomMRmBS+aapR8NRzP3t1p0fSP7vKOCZG3aHq4+5OZc9fsXZXtKwtRNpXGxIqJWZ9chv2T7t6hdjYAW6dW+dCp6/EvX95LybxEi1Q7t6RnCyBJ6PUj2P220Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=ciFY4bB3; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="D5FUsM20"
-ARC-Seal: i=1; a=rsa-sha256; t=1789081320; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="ciFY4bB3"
+ARC-Seal: i=1; a=rsa-sha256; t=1789082411; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=Vct1JUYy56GduX2B1Kf34yaSQbpxCJclzCyeoETz/PKJ/Ai+wgzNvTe+nbzUIZhJUWaRiPQWus5giBOHj+juyBxzLwEO2J5RYqRAZ5DGxtfrR3ngb7RD4NY0p/qW6mZf5IWOhpJWJgSdNTJliWOSYCwgpxftzWJXMC7BjBiqBWE=
+	b=dICRLHWmFcJhW7Li1ZKAzPR9SeXMIVisP7+e2dML8eh4sl0I8v9AcF9fCZxU6WK04oumBuz5HE/ww02tZgE0fEGUzR6+J0T9Al8c2X4iKLZWmUU2KCq5prNo+Gdobu0Lb4/XQESKZBGrulK8DCgQaCn2UodByaI8fkUCBe5mf6Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1789081320; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=YPcNiTNd+EFqHZBOKeezkN1gDau+W9MRCDQDDa3NZpM=; 
-	b=NZDDrs924TpWiX428fioqCGIRkD9dKyLfbwsI8fxAoxv90PlMhzMDIi04JCx+7yfwsHti46SmQVXCH36xJn9v6Swi9vhNykxHTXD2NjZ/fL5Xv6BDxwiIIBXz2l7CXNA1Vuog02v+eNSu8BEWbeQlMdy8/s9r/q7bBNG7IfayJU=
+	t=1789082411; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=187CcQoCTRoovqrYNY1ZOziIvuACVyaVv/zhl3TFBHo=; 
+	b=WxJctdud6S257OVprHvf/uHhZ6DVm1Lwatid089fv+9G6u/egv/baA43bJ62WnP4fRpNxnHR7CgzX4qJY9HUnxkCzNzONUST6G+nBhE/KmgWh6k+PJobC07IFeXvbiNwkmND2SCfbYcBkahAd0hh3YuYLkIsyL8BuJX3dWJo/Gc=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1789081320;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1789082411;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
-	bh=YPcNiTNd+EFqHZBOKeezkN1gDau+W9MRCDQDDa3NZpM=;
-	b=D5FUsM200wVutwLdYXdllYKdOkVp0LvgDVJtIHg8qxI6KW7KD/jexLhrtBum55Pz
-	gu+F3TyjwpPN+yoWjdufMZlJHJ/lw6ygjzWUqglCxinLeJE9NpMNO3Cp/4qetq1eUQD
-	Ahxar1QWroU+r9q8U3f+nO35lR8tw7KQOqAzbZGM=
-Received: by mx.zohomail.com with SMTPS id 1789081319983511.92469138538536;
-	Thu, 10 Sep 2026 16:01:59 -0700 (PDT)
+	bh=187CcQoCTRoovqrYNY1ZOziIvuACVyaVv/zhl3TFBHo=;
+	b=ciFY4bB3qD9m6kx1lqTEnWt6pK5J0lbPf4yzPuKIzH8R4lZDDNbw2M6PUh15nd53
+	p9+Ys7jNdMedS+9oMTHf7vkyXsgOgVlMsS+KOZJNJKK0xXpY8l2ZIFrXyqLIjGANbv1
+	gopBfsPfIPDQGrv+tSlI715Jvr/sdsnBoSTgZp8E=
+Received: by mx.zohomail.com with SMTPS id 1789082409978286.37295934064014;
+	Thu, 10 Sep 2026 16:20:09 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Thu, 10 Sep 2026 16:01:36 -0700
-Subject: [PATCH] drm/tyr: reduce size of doorbell array
+Date: Thu, 10 Sep 2026 16:20:04 -0700
+Subject: [PATCH] MAINTAINERS: add rust-for-linux list for Tyr
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,71 +45,60 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260910-b4-doorbell-v1-1-f3ca2f501600@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avIrBN0EMGuEi20xhoQDYUIwrsnL
- d/i/xcaVaYGs3ih0s2NSx7Qk4Dt9PkgyfswoEKrnFYyGLmXUgOlJBGNszZ65dHBKK5KkZ//tqy
- 9f5QsxNRdAAAA
-X-Change-ID: 20260910-b4-doorbell-224966fa0a29
-To: Daniel Almeida <daniel.almeida@collabora.com>, 
- Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, gary@garyguo.net, 
- boris.brezillon@collabora.com, laura.nao@collabora.com, 
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260910-b4-add-list-for-tyr-v1-1-cd74ff2c1f8a@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MSwqAMAwA0atI1gaa4v8q4kJtqgFRSUUU8e4Wl
+ 28x80BgFQ7QJA8onxJkWyMoTWCc+3ViFBcN1tjC1GRwyLB3DhcJB/pN8bgV88oPoy2qkogglru
+ yl+u/tt37fknBLAplAAAA
+X-Change-ID: 20260910-b4-add-list-for-tyr-58fbc2687111
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1973;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=980;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=EysiNMAymz+CEI4gdX9gD9dZg1YUoVzI7UUvFIg8T1A=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmLze6GpCndzdO5o9N06p/WRmH9HWYq70JXdik/PPah5
- lzbrL8hHaUsDGJcDLJiiixn7Y16xKveG+nO/98MM4eVCWQIAxenAEzksDLDP434b2qp5dsC5l5J
- 9zc03lPLZPP7xyH3ikWsL53Wz8tr02T4w/1iZbn8rpS7U15ntITduViS/kGX40nJTlGT8uzH4bO
- PsgMA
+ bh=pcE0l/tn3Wq8uejNfCTycfx1GuqzrRT0owXDnlhmIqc=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmLrTWW2czvqfat4FMqna64MnXClvLtqaw13y4158xzd
+ fW+0JPRUcrCIMbFICumyHLW3qhHvOq9ke78/80wc1iZQIYwcHEKwEQ4PRj+F63n3VhlzmiiwnrI
+ ernuyVoX48eGzn6v1hvs/6Jywk9pIcP/2EWXDkk3vVrn+EXz/60VohHPjx2fvjxb6P2MwshNAkp
+ pHAA=
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-Currently the number of doorbells is set to 64 which is an architectural
-maximum for the Mali GPU major v10 supported by Tyr. Since each doorbell
-needs a 64 KiB page, the doorbell array alone would need 4 MiB of register
-memory. Since the doorbell array starts at offset 0x80000, its exclusive
-end would be 0x480000, but the rk3588 device that Tyr is compatible with
-only provides a 2 MiB iomem region in total.
-
-Reduce the number of doorbells so that they fit into the rk3588 iomem
-region. This is consistent with Panthor’s doorbell id assignment.
-Doorbell 0 is the global doorbell. Panthor assigns the remaining doorbells
-to the active command stream group (CSG) slots. The number of slots is
-capped at 16 (MAX_CSG_PRIO + 1). Therefore Panthor uses a maximum of 17
-doorbells. The 17 doorbell pages span 0x110000 bytes. Since the doorbell
-array starts at offset 0x80000 its exclusive end is 0x190000 and so fits
-within the 2 MiB register region.
+Tyr is a Rust DRM driver and Tyr patches are reviewed on the
+rust-for-linux mailing list. Add the list to the Tyr MAINTAINERS entry so
+that scripts/get_maintainer.pl and b4 prep --auto-to-cc include it.
 
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/regs.rs | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-index 0c419c4e1186..68701c39aee2 100644
---- a/drivers/gpu/drm/tyr/regs.rs
-+++ b/drivers/gpu/drm/tyr/regs.rs
-@@ -1802,7 +1802,10 @@ pub(crate) mod doorbell_block {
-     use crate::driver::TyrRegisters;
- 
-     /// Number of doorbells available.
--    pub(crate) const NUM_DOORBELLS: usize = 64;
-+    /// The architectural maximum is 64 but this full array does not
-+    /// fit in the 2 MiB iomem region. Panthor currently uses a maximum of
-+    /// 17 doorbells so do the same here.
-+    pub(crate) const NUM_DOORBELLS: usize = 17;
- 
-     /// Doorbell block stride (64KiB).
-     ///
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2389df80ba50..04709f381d04 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2333,6 +2333,7 @@ ARM MALI TYR DRM DRIVER
+ M:	Daniel Almeida <daniel.almeida@collabora.com>
+ M:	Alice Ryhl <aliceryhl@google.com>
+ L:	dri-devel@lists.freedesktop.org
++L:	rust-for-linux@vger.kernel.org
+ S:	Supported
+ W:	https://rust-for-linux.com/tyr-gpu-driver
+ W:	https://drm.pages.freedesktop.org/maintainer-tools/drm-rust.html
 
 ---
 base-commit: 73e5616f3d197c1af5a04a481fe0f13aa3913bd1
-change-id: 20260910-b4-doorbell-224966fa0a29
+change-id: 20260910-b4-add-list-for-tyr-58fbc2687111
 
 Best regards,
 -- 
