@@ -1,77 +1,99 @@
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7EC48424B;
-	Thu, 10 Sep 2026 12:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF22047CC82;
+	Thu, 10 Sep 2026 12:25:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789042521; cv=none; b=qcr7nIeiK47yPrjDY1w1+gCtei423ibI5N9VWSH0MQZ1LrC1ybskN2Kt9ADXI95t1YbMQZVHBK2YoXJ5ODlKIua1TZD8Lv5WidwgW6f31G+X5aj+mfTrkPh8gKnd3lH78XdxzWsvUHUAd5cIbN7GGCoAUh4A/NLzkEpEt/IcxYI=
+	t=1789043146; cv=none; b=gPUbWCk2mZNjHQLpD1LCDIc7EW4xao29F5vIvcCSrPfMWiVJnzjYqN1Mhcd1AsfrSkfOueKAyvzeoViZPeUwhnIDduJH6Jb7DFYEi1q2Ef3EEVBFQKj7TYDjkIwbXCoAQQx/YCOh4COVxnyxotm347/o+N5VUHuQ5uLlALBkX28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789042521; c=relaxed/simple;
-	bh=PwBrAIaMu8oQIyyulPBwR1jewchE2mu8edNRHoKxoqA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JJZ9nYJ46JIwjTwSSI1eIdKJz88Ig1ZpXFu6icggvJtCTocpvY53Xp5oQgnG9xh4hXqytQ8o8m3fnFNCWFCU33+7wo2yyJP6+niDDnVwr49pMNZxcN8aIuwuJG2oKjnXyx9Sg7Tje47HceFRQI0DMngCma1cttP/bf96S/ddt6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
-Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 68ACDxpw035979;
-	Thu, 10 Sep 2026 21:13:59 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from [192.168.1.6] (M106072072000.v4.enabler.ne.jp [106.72.72.0])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 68ACDxJ5035976
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Thu, 10 Sep 2026 21:13:59 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <a3c9aa16-caf8-49db-b7b9-42e3f3c665c5@I-love.SAKURA.ne.jp>
-Date: Thu, 10 Sep 2026 21:14:00 +0900
+	s=arc-20240116; t=1789043146; c=relaxed/simple;
+	bh=BO6TOgtbP8xX9WEKqa3BajNVFuzPTWio3Zhgdhs9daE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kpVupIXh/kidnQOpib9mro4JBMwaVwX2kzAJ3jpdTWBvhlwfhC5HotuC1EQmtwjFOKb+MXa9/vDQOaRQVYNFryRxGWZSvkpBCRAAnVfyIEu03jAO1w9nsC0Vfa1Sw/pTXff0fN/8Sk8y6+mJ96s5Qu6j9r9plWBSmtj6UT/Jq5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PI8pDV1p; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PI8pDV1p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C331F000FF;
+	Thu, 10 Sep 2026 12:25:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789043144;
+	bh=r3Gniwpo9ILrHoRb1aFF/nqXCtCQyWfCq/qLdr8+214=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PI8pDV1prtOGYW7AWbHlLpNTedtkWAPrIKf1M5A7RKP0hM+8yxmyoUu6OFEVzKG/q
+	 XixS2nm/5Eou4W/qCEB3ONp1Yc9ZySHO3GOg3k4oPK0F+5UPjC9PFm6ZW6SwjCcivm
+	 9Ix17KysnbobtA/5+LI+/oa9NAk6lS57l9t3ZAlcJcP/DM5W+fxMmXWRhVgFkMqB7N
+	 7xbpELojA6FZ71lAWC+hAB+XLJAikRriFccjpI8n+0t10y+9OF2Bo8NK/7xrY72Tg1
+	 wxA/kLVbRVcP7aI18eu+UVFWzMsGpo1WD8uaVzVKCtPcgRQTaYdb3Iy3Y+/rhyOZM5
+	 jRCLkt9dwKK9w==
+Date: Thu, 10 Sep 2026 14:25:26 +0200
+From: "Nicolas Schier (FRITZ!)" <nsc@kernel.org>
+To: =?iso-8859-1?Q?Bj=F6rn?= Baron <bjorn3_gh@protonmail.com>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Alexey Gladkov <legion@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Randy Dunlap <rdunlap@infradead.org>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+	Jens Axboe <axboe@kernel.dk>
+Subject: Re: [PATCH 20/23] kbuild: rust: parallelise rustc front end
+Message-ID: <aqKhtoJZC0tt3OGj@derry.ads.avm.de>
+References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
+ <20260908-build-speedup-v1-20-5dc1ac01672d@kernel.org>
+ <t8iID_-Rgtrxxg-f1ZfdOg1xmm7YedvOT4pgDFEXKxoIeu29-JooZ3SSlbze088O0kLSOdgP7xN_Bo9Xm_lO1x51Gd-gIgT-tFPfwM_gCEw=@protonmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] block: Add post_release() operation
-To: Gary Guo <gary@garyguo.net>, Jens Axboe <axboe@kernel.dk>,
-        Bart Van Assche <bvanassche@acm.org>, Christoph Hellwig <hch@lst.de>
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Brian Foster
- <bfoster@redhat.com>,
-        Damien Le Moal <dlemoal@kernel.org>, Hillf Danton <hdanton@sina.com>,
-        Markus Elfring <Markus.Elfring@web.de>,
-        Ming Lei <tom.leiming@gmail.com>, Qu Wenruo <wqu@suse.com>,
-        Tao Cui <cui.tao@linux.dev>, kernel test robot <lkp@intel.com>,
-        linux-block <linux-block@vger.kernel.org>,
-        rust-for-linux@vger.kernel.org
-References: <60bf7af2-b84e-4056-9195-a26ad51ada46@I-love.SAKURA.ne.jp>
- <DLBM64YIHJ5U.3NZZTGR2NP75Y@garyguo.net>
-Content-Language: en-US
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <DLBM64YIHJ5U.3NZZTGR2NP75Y@garyguo.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Anti-Virus-Server: fsav315.rs.sakura.ne.jp
-X-Virus-Status: clean
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <t8iID_-Rgtrxxg-f1ZfdOg1xmm7YedvOT4pgDFEXKxoIeu29-JooZ3SSlbze088O0kLSOdgP7xN_Bo9Xm_lO1x51Gd-gIgT-tFPfwM_gCEw=@protonmail.com>
 
-On 2026/09/10 20:53, Gary Guo wrote:
->> Real-world container engines, test suites, and system utilities rely on
->> fput() from __loop_clr_fd() being completed when lo_release() returns.
->> But changes which went to the v7.1 merge window broke an assumption that
-> 
-> What change? You should mention it with a Fixes tag.
-> 
-> The message should also explain how the assumption is broken, not just stating
-> that it's broken.
+On Wed, Sep 09, 2026 at 10:22:33AM +0000, Björn Baron wrote:
+[...]
+> I tried implementing this a couple of years ago, but back then
+> if I recall correctly either binutils ar or llvm-ar was unable to produce a
+> thin archive referencing members of another archive like Kbuild expects to
+> do. I'm not familiar enough with Kbuild to know how to skip the thin
+> archive production.
 
-Unfortunately, nobody knows why it got broken. Please see "[PATCH 2/2] loop:
-Perform __loop_clr_fd() after disk->open_mutex is dropped." for background.
+You might be referencing to llvm-ar <= 14, cp.
+https://git.kernel.org/stable/c/a48bd961fb20
+https://github.com/llvm/llvm-project/commit/d17c54d17de22d2961a04163f3dbc8e973de89b8
 
-I have tried a debug printk() patch at
-https://lkml.kernel.org/r/3244d4dd-8254-47c0-9609-b1db53450c7c@I-love.SAKURA.ne.jp
-that tries to capture buggy callers, but syzbot could not reproduce this problem
-using the linux-next tree. Now that I am forbidden to carry debug printk() patches
-in the linux-next tree, we have no means to (try to) debug this problem unless we
-send such debug code to the linux tree.
+
+-- 
+Nicolas
