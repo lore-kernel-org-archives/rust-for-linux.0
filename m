@@ -1,189 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D5A3FCC;
-	Thu, 10 Sep 2026 07:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BCB3CDBB7
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 07:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789025814; cv=none; b=FZXdmOHyQgw2cWKriZJ8a+5dQwNO/qU+e4SnH4m+i6tBPvuDZFqwBXbmlMACfhXJOXfNKw/u7mjGmMFaCbCVRi9t7LK6UZcy0iCPXo/vZoheewQw20qlIO5YRhQdk2Y/r0G0I0ESlhW4+td/ecOxmS4oFkG+jtGFvsS3iPrnDVg=
+	t=1789025849; cv=none; b=AvOV0MXDP+gXdbrbSBDlP4Pw8gaz4bYNHUPAzmBn94ywPfNVtgCv4NNU2SbAhlBXlvMYaacViow84aZwn0IUKdYdJbWYLzWk5Mt7/vK3xbW6hx7ExWg6cUo8Bw/+KY08gYBVsTrqyI69VLIkbElz1XaO7YSVspHsYRaA2Y+03pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789025814; c=relaxed/simple;
-	bh=NEY+rd6LEF8qj7Yia3cIk4vFAXeSR+U/5Bz/Zibf3yM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f+xVU3lsBL6RWIoXARt4Mm/nMrcQNro4K0suNL+RrdEY/GZjhHpz/qcSfYUOEvdI5NApro7bf/vEJtgj5Z+Y8Uwsq58vWZbeynl6KnFtgzvS22Ru7lmx9IeBOx144cUEygq265NxApplNfkD3nkOwPEbYvJHVgzwUFoA+L5pwHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i8wIqyyn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789025849; c=relaxed/simple;
+	bh=xP2NWy6tbMB5SQ4bv/wOShCOnnsGV1kVmtph8qJeEjg=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J6DSSjK5iFYrcp5N16NLN2QIYVS6AkFgG5TfBt7UxYb8q4q5XVAS6kUmPjiY2UNRarY4Ngen6ofvVwNBWiD0PnuvKKDKK7oZ82lHdsybMXiWzbeZqD23kww7ow0BKyUKu8E/HH/UrKGeKCz5NYvTM9jilsNu7nB0egG1xgvldIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LwWR5Ysj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i8wIqyyn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8140E1F000FF;
-	Thu, 10 Sep 2026 07:36:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LwWR5Ysj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8DE71F00899
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 07:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789025804;
-	bh=N8H5Y7b1qMwZuFef2QciYQi6Mlqrglt14h/cSL2EZ0s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=i8wIqyynC1WW5Ne7bNtG8OS/iVwy3UVXPoMVLaYWQsUsWKVHdSZDkNTUkeRsW4qJR
-	 uOG6DvuvMJKd1zVu3keBfLb7JQpOyHFzzYtI0GNOgERZivQI8Q9QZwEexTnbv3vNTL
-	 hoB6paCbWHqvHzl982ak9AfTIsnaIhBf9o1AVB0jklkGUEsVO6moB/Gf6FLSlPi08c
-	 l+grrOCEWhXQnJcif0ukTwkjt3LrV0zihGjjpYP6BPznz2Zd0CU07+x89HjHmQaolk
-	 QeCWbUcisLxkU99rUawEW8NF+tzxqehUbneK3liIWZDLPuv49MRL+ECOU97ryz2fQV
-	 2Tpjpz+GyABQQ==
-Message-ID: <0605f2ed-32a1-492d-850e-d1080007b4bc@kernel.org>
-Date: Thu, 10 Sep 2026 09:36:34 +0200
+	s=k20260515; t=1789025839;
+	bh=xP2NWy6tbMB5SQ4bv/wOShCOnnsGV1kVmtph8qJeEjg=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=LwWR5YsjcUJzWAyTDBmV2HxkrISSUbN7fNR32q4XNwGaNMGn1lV/dvYqL7N/X90nY
+	 sP9PnTtTx4ufQm1rY4cTUVTO6iMr5kgZTgTw7/5CEKaLy4gqm0L3JAJiJRDXG626ki
+	 pGnjuKmeoNC2u48didJ0qxk6O6wyXMe1wQEtp4nJkA9HmClLx3831MpTnz23cTAo5z
+	 2LOuhgDrkAGrnNxq4PQLvP6f1Jq040A8aArGU6saqlmXmMeSKiNlA1N8iMdgkSjndu
+	 yKxNf7nHubmjxN0Gba90z/Za2jDa6C9tswQKim1kTvKSsONTuSBVcsZiF0IwZBoj3O
+	 Md+gr5zDEAZ0w==
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b899413537so1720149e87.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 00:37:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBw6i6yk9K/jAqrFxZKjmVW9m0/T90Gh8B3SggmNeQfn7vY4pyMcKDwUpB6ZK/pWwJCVPCcSvke8ISftchkXWA==@vger.kernel.org
+X-Gm-Message-State: AFuF++k9puJxlcSvox9IjGYTBPjrwNz16rIbBgDEPEpQMWiAqIeq/QkO
+	enUdJxK6q60Bl8SJ8Mll21ObH3W+h3lAyrsYdwX9R3gvRyhWDFi9DGrIog5aPEBK8XvsEQE2oGc
+	YuDiIqctwDhZK2IsOgRgP8big1XBTSn7bqxnl6QE58A==
+X-Received: by 2002:a05:6512:a84:b0:5b6:183b:d202 with SMTP id
+ 2adb3069b0e04-5b8981085afmr1156990e87.41.1789025838560; Thu, 10 Sep 2026
+ 00:37:18 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 10 Sep 2026 00:37:17 -0700
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 10 Sep 2026 00:37:17 -0700
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260906-add-rust-gpio-consumer-v1-3-24d192f93760@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] powerpc/bug: Add ARCH_WARN_ASM and refactor
- _EMIT_BUG_ENTRY for Rust support
-To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
- maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, pjw@kernel.org,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, ojeda@kernel.org,
- boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
- tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev,
- linkmauve@linkmauve.fr, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
- rust-for-linux@vger.kernel.org
-Cc: FUJITA Tomonori <tomo@flapping.org>
-References: <20260910071252.1950488-2-mkchauras@gmail.com>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260910071252.1950488-2-mkchauras@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20260906-add-rust-gpio-consumer-v1-0-24d192f93760@gmail.com> <20260906-add-rust-gpio-consumer-v1-3-24d192f93760@gmail.com>
+Date: Thu, 10 Sep 2026 00:37:17 -0700
+X-Gmail-Original-Message-ID: <CAMRc=Meei7Z1f1n0M_Hy1LdxG=NVhkFeEiT3=p5QVpw6BTv3EA@mail.gmail.com>
+X-Gm-Features: AcwNN1WblH_4DnqwSoSbaoD4YNI5OuN7Vd8NeXv9VOpbiqzrQs585HeeDA3MWMs
+Message-ID: <CAMRc=Meei7Z1f1n0M_Hy1LdxG=NVhkFeEiT3=p5QVpw6BTv3EA@mail.gmail.com>
+Subject: Re: [PATCH 3/3] sample: rust: Add GPIO consumer sample driver
+To: Kohei Ito <koheiito.dev@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Content-Type: text/plain; charset="UTF-8"
 
-
-
-Le 10/09/2026 à 09:12, Mukesh Kumar Chaurasiya (IBM) a écrit :
-> The Rust kernel infrastructure generates inline asm for WARN() via
-> ARCH_WARN_ASM(file, line, flags, size), expanding it through a C
-> preprocessor pass (generated_arch_warn_asm.rs.S) to produce an
-> arch-specific asm template string for use in Rust's core::arch macros.
-> 
-> powerpc currently lacks ARCH_WARN_ASM and ARCH_WARN_REACHABLE, causing
-> Rust builds to fail on powerpc with
-> ```
-> error: no rules expected `ARCH_WARN_ASM`
->     --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_warn_asm.rs:1:28
->      |
->    1 | ::kernel::concat_literals!(ARCH_WARN_ASM("{file}", "{line}", "{flags}", "{size}"))
->      |                            ^^^^^^^^^^^^^ no rules expected this token in macro call
->      |
->     ::: ../rust/kernel/lib.rs:279:1
->      |
-> 279 | macro_rules! concat_literals {
->      | ---------------------------- when calling this macro
->      |
->      = note: while trying to match sequence start
-> 
-> error: no rules expected `ARCH_WARN_REACHABLE`
->     --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_reachable_asm.rs:1:28
->      |
->    1 | ::kernel::concat_literals!(ARCH_WARN_REACHABLE)
->      |                            ^^^^^^^^^^^^^^^^^^^ no rules expected this token in macro call
->      |
->     ::: ../rust/kernel/lib.rs:279:1
->      |
-> 279 | macro_rules! concat_literals {
->      | ---------------------------- when calling this macro
->      |
->      = note: while trying to match sequence start
-> 
-> error: aborting due to 2 previous errors
-> ```
-> 
-> Refactor _EMIT_BUG_ENTRY to accept explicit (file, line, flags) string
-> arguments rather than relying on positional asm operand references
-> (%0, %1, %2, %3). This allows the macro to be composed as a plain
-> string concatenation, which is required for ARCH_WARN_ASM where no asm
-> operand context exists.
-
-For a cleaner _EMIT_BUG_ENTRY() macro, shouldn't it also pass the label 
-where the trap sits as a macro argument instead of blindly relying on it 
-being 1: ?
-
-Christophe
-
-> 
-> Move the .org and .previous directives out of _EMIT_BUG_ENTRY and into
-> the BUG_ENTRY() call site to preserve existing behaviour while enabling
-> ARCH_WARN_ASM to supply its own size operand independently.
-> 
-> Add ARCH_WARN_REACHABLE as an empty define, matching the arm64
-> convention, indicating that no additional reachability annotation is
-> needed after a WARN on powerpc.
-> 
-> This brings powerpc into line with x86, arm64, s390, and riscv, all of
-> which already define ARCH_WARN_ASM and ARCH_WARN_REACHABLE.
-> 
-> Reported-by: FUJITA Tomonori <tomo@flapping.org>
-> Closes: https://lore.kernel.org/all/anG67Q6Y59kDqh-c@desktop
-> Fixes: 73b741adb264 ("rust: Add PowerPC support")
-> Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+On Sun, 6 Sep 2026 10:45:51 +0200, Kohei Ito <koheiito.dev@gmail.com> said:
+> Add a sample driver to demonstrate the use of the Rust GPIO APIs.
+>
+> Signed-off-by: Kohei Ito <koheiito.dev@gmail.com>
 > ---
-> Changelog:
-> V1 -> V2:
-> - commit message now has error, fixes tag and closes tag
-> 
->   arch/powerpc/include/asm/bug.h | 28 ++++++++++++++++------------
->   1 file changed, 16 insertions(+), 12 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
-> index 0db48977c70c..8aba39e0cf26 100644
-> --- a/arch/powerpc/include/asm/bug.h
-> +++ b/arch/powerpc/include/asm/bug.h
-> @@ -32,34 +32,38 @@
->   #endif /* verbose */
->   
->   #else /* !__ASSEMBLER__ */
-> -/* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
-> -   sizeof(struct bug_entry), respectively */
->   #ifdef CONFIG_DEBUG_BUGVERBOSE
-> -#define _EMIT_BUG_ENTRY				\
-> +#define _EMIT_BUG_ENTRY(file, line, flags)	\
->   	".section __bug_table,\"aw\"\n"		\
->   	"2:	.4byte 1b - .\n"		\
-> -	"	.4byte %0 - .\n"		\
-> -	"	.short %1, %2\n"		\
-> -	".org 2b+%3\n"				\
-> -	".previous\n"
-> +	"	.4byte " file " - .\n"		\
-> +	"	.short " line ", " flags "\n"
->   #else
-> -#define _EMIT_BUG_ENTRY				\
-> +#define _EMIT_BUG_ENTRY(file, line, flags)	\
->   	".section __bug_table,\"aw\"\n"		\
->   	"2:	.4byte 1b - .\n"		\
-> -	"	.short %2\n"			\
-> -	".org 2b+%3\n"				\
-> -	".previous\n"
-> +	"	.short " flags "\n"
->   #endif
->   
->   #define BUG_ENTRY(cond_str, insn, flags, ...)		\
->   	__asm__ __volatile__(				\
->   		"1:	" insn "\n"			\
-> -		_EMIT_BUG_ENTRY				\
-> +		_EMIT_BUG_ENTRY("%0", "%1", "%2")	\
-> +		".org 2b+%3\n"				\
-> +		".previous\n"				\
->   		: : "i" (WARN_CONDITION_STR(cond_str) __FILE__), "i" (__LINE__),	\
->   		  "i" (flags),				\
->   		  "i" (sizeof(struct bug_entry)),	\
->   		  ##__VA_ARGS__)
->   
-> +#define ARCH_WARN_ASM(file, line, flags, size)		\
-> +		"1:	twi 31, 0, 0\n"			\
-> +		_EMIT_BUG_ENTRY(file, line, flags)	\
-> +		".org 2b+" size "\n"			\
-> +		".previous\n"
-> +
-> +#define ARCH_WARN_REACHABLE
-> +
->   /*
->    * BUG_ON() and WARN_ON() do their best to cooperate with compile-time
->    * optimisations. However depending on the complexity of the condition
 
+I don't like samples as they rarely get built or tested. We seem to already
+have kunit support for rust, wouldn't it make more sense to implement a kunit
+module for rust GPIO abstractions? If we don't have provider abstractions, you
+should be able to reuse gpio-sim as the GPIO controller for testing just by
+instantiating simulated GPIO devices.
+
+Bartosz
