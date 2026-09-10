@@ -1,125 +1,149 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08AA6475340
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 15:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789053345; cv=pass; b=uhTxC5UxrkbUSADFjBRDExriwaAdp1c3Cn45RsVDAHSDyVR55wCm3jGHb/bLWalw6X/X6ylA2v5g7huVCx0zjG83R9lWw5L+8aLeUVeA2NiGwzb7BB7z0UFGmq6jexFN3Ds0f70z/XtEclzRvZK75w/solS42Xj5Sl7pDbq5uIc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789053345; c=relaxed/simple;
-	bh=i0qyr2C0ENgPCQGsh4QhYiKOgzXs/bwuuJYt5R71+JY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S2y88NyNK3knDcR69QAbgz4OKHtCgNH4XJhhdfLE7vpnmXAmVG4imhWZFgNVzowoUjju0ZMNin4k9bgzSf8l0FcssnQKYqM24sRjtvpFT9ZzZk5jeCkFJOAQSOxe3CE7Ql8rouZhP3Yhx3AlNsuaxIyBd1m9XEF4LhHbC3nvdkk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=imB4GUPW; arc=pass smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776D24A4828
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 15:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.204
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789054777; cv=none; b=fT4d4J6FOzMwSZbtVROm98piDNmkSvdeY0FIieXhOnQn046RudLZNHCrbhaRl8mdE18HVCd/Nw8Jc6iRGDFPNNJwplnDjK6daoweMnKyhgpA+QRUX/vnmnvmCBmbWy9VjDmC82EmSS0pKqXPDh5t5LKPYPpusmtBYMbzSbCyA5w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789054777; c=relaxed/simple;
+	bh=yWG+hoDEtLJ/6H3nP82927cNZvMVB+giKJZJxO/9hwY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NXGoeja69psxrJV81EuZpON/rkaIfoO2KX4wUI1h5B2FyU/mqCDOIi786bKlyhyjUSwP2T1bs8lIOQUr4y7uVWll3M4QhIW9kPJozuAnVL3PJkn3GAsVQomY5pvSFnXWBPL9i+YZ1TtBWPVBZLF0btIu1FlviYLnL65Kcm9AvXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rn6XOEe5; arc=none smtp.client-ip=74.125.230.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="imB4GUPW"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4956869750eso65108215e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 08:15:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789053336; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ALeZrdpc9ZlqPLHLdBDDjDMd6GbEgzMKDm1N8pxJOjgRsSBnQmkdDJnNPppVP2rCFm
-         mB9Ztnyi5f1+Xhsg3M7QGhQryqad2mujVJQh/vkYwpW/RDQ5+/U1fikwxuRIoITgPLuF
-         57WtoVZnO94J9Rsztal1yvNKdWb4Nw+msWfuYK0bxOulK/DMWfZe/hMw8eALE5Wv/usx
-         hEeE1M+dPdmthg53Ymow71dGEmdy4f7uTzcs9OOgLj8ACu00bp0ZnP8hn9qhH2aZ6Nph
-         xbx6bGl4m/+XXfo5oDbHqhBFgkh4M+H60/doH0vAXKoo5EpLJ/+aVi6VvqiLz+ZDCGNg
-         YX9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=i0qyr2C0ENgPCQGsh4QhYiKOgzXs/bwuuJYt5R71+JY=;
-        fh=LZAB38ZrYFmaShySAbgjOCy0isijuNPGkg3a8ric3rk=;
-        b=fsyveHVxOvXdM2BznukjPpZnkdcBmjUl1pf0R30jcSwyMsSKK3G4jKfSdzk0OCNuK2
-         SG6ojV4AUR0UcFXHXeNm3gVxGTWkv9IVKO5hIS2gSCF1/g5QC27gU5BXFIPll2iBmdQt
-         SnTlzyw7tFhDvZVaV9KsMsYWEx2Zmo4RQx35FhPm78qG4NLeP0py1ooMesVLD/4z969/
-         tmYJm91rmHmfbNoMdkC1PY9vh+umbVlSJJKQhakcF/vmnTqgNsUmX418BYx50Uh6jEm6
-         1cypMYKWRVCMe28GHOE18TFoAamrdY+IR7MVlPxJ4DkK4wNTBbjjc8nv675xu5CuN0aD
-         F3kw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rn6XOEe5"
+Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-5308fc4b67cso14493981cf.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 08:39:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789053336; x=1789658136; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=i0qyr2C0ENgPCQGsh4QhYiKOgzXs/bwuuJYt5R71+JY=;
-        b=imB4GUPWYRB9n5uEeYH1k10nz0FXOI8gBScrMUfZkeO+Fr+FHa55uMRuCClC1CUJaD
-         KsrWa9HIwp2DIbUsVk4d1LUfJ2eCUh06Wjb4+Tj2US1C2KamtSj+rFINO/oCoOfU2Xpv
-         aPPfd+4fGPUOV35rsiI3fFrtQ+a24u8auHg6LhP8biFQkQAZt0zE9yylJvhuc/OhKfBE
-         iuKGppTiGEi4w4zvJEC7jBBiY5THlSEDrTKj9wCWyf+gyZueNJ/wan6ol1IcTsQUwGuc
-         wQV4OO4A2bhCVa81SYU8dnRrprvKVcicHQ+EL9SvNrO21atGozNj9yidsBkzUqgKQ2xV
-         g9Yw==
+        d=gmail.com; s=20251104; t=1789054774; x=1789659574; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LVg0q1Ig+XeCRC/Adf+hBiNx1miS6vJUHYevs12aWqM=;
+        b=rn6XOEe5eR3CvGtusW2Y5oWYJ861I5S8DHjNeP4uo+jnGfHopfHnA6OjxpzYXScrNU
+         vVfbp/0NQ0JyEFs1vVX3tb4Ee+vKJ5ghkZesChZoQZnYFOx/8YM+bh9T9b+O9zDS22aZ
+         jxxks++bcrge+TR6WBtRlJjuBksCT4vnJBLB6isM3wSigWQw0j1bCMCgjg4gahzwa+3j
+         jI90g9ThbT9cJARel5CRBBbii3LJzj8gbvBCiqRq6CDzzNV3Lb40iCVP65eh3LfjbKdG
+         1pD0NP/U7dQbdJPT3Dq05g98sogLNOSvZmMr2tdvcIH+cre14K1JO6O78PSokjVBV0Ad
+         SXow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789053336; x=1789658136;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=i0qyr2C0ENgPCQGsh4QhYiKOgzXs/bwuuJYt5R71+JY=;
-        b=MYYYTjepn++WKnvFGpN1fa2azZ5CrcYJT87gQ8fcy/xSl2ihUQ9I1xnTQ08/TbHG0e
-         wXNfK3IUK4msQnOuX27OBzSnu4/5jAp+LW3CwF6UrCLFcMwk4Mq3RzuH0G2hS32LAtrc
-         TiU5Y2iKDZ3D53arknJrx4PnNtlJu12KDEVikJP8/utTK0FPpVjIJoUb0s6Pwt/BbggP
-         kd3HTBTo0UHQkZNF+KuYVyAPj6fI8PZjqHkGG/rvKpyXYo2F2cpnMknYhkDHXKLK54Pd
-         ra0RIcRDH9PeL9YlhoOAwY3RlmI64YHk4G3v1ydUGhVez2xvfFPmnS7bPSPxIjBHFo+W
-         rawg==
-X-Forwarded-Encrypted: i=1; AKwUvBwjbPITNa+Um5lj2zEb9bvK9bBgOfMdc4nAxJZZ7YLIjIpYCUd8SreeRd0uweiNGkgiL9aR/hU4veJpH2jtMA==@vger.kernel.org
-X-Gm-Message-State: AFuF++mfkV5BmiqXXun7TIyLIlRo6KfbbwtzK2hFQOLa5U6zgoEZyTzK
-	y87qQWfxxg9Mk85ED58ydaYoWIgEBjtKVHcr5SeiIQX82BIm73wqNupUhLgIP4qEcvQpmGLckQZ
-	taUL1hdBqu54/9DmgEUpSMtvw3D59dEbSkoic2WDt
-X-Gm-Gg: AYBFou2NK31t8jyjSNyyljFqV35DsI1TuGWHRPydBITJb9lWBhFgv0NyydEKHl+hfkK
-	Ygzb+RCs2myr91ceLSWKbdHYQX8Y8/3rdFmz7SjwhKth8Leyqa9veyPvTeePB6cygC1JBwwefut
-	p7ftdeOY54nV5OVd90y6ds7O0QN+OlpmHSoeNU6urWR+pB7UsdCT9YnvlYDZ8dZEP+DTJlaSD8G
-	3UZuP+72y/7JLym1ngTvdS57ji41E3NmEDjGR778kCAak2kCM7qH36mvJiiFKtT1fINKY6ntUpK
-	HOyOsX+58DeKPS92Ynff18ri2LXihBZK3K3+/hpj9cOrVZdDkiPHuvWsZZvR3nfVqmzkW3WEv8q
-	Po7RoXfVCPlU4fzEbW5C/
-X-Received: by 2002:a05:600c:3495:b0:49c:dadb:18a7 with SMTP id
- 5b1f17b1804b1-49cf8244260mr429288325e9.10.1789053333570; Thu, 10 Sep 2026
- 08:15:33 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1789054774; x=1789659574;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LVg0q1Ig+XeCRC/Adf+hBiNx1miS6vJUHYevs12aWqM=;
+        b=sMu9X51ltLviO13AenZmMKCH9nz+WV/dx0haAlGXbANduwudoyMoA4QUrGG5QHV9D8
+         Fz4qBX3UUMcQXg4nbAsdImw/2ghsTAe3ARd7rXji/98WI2yd4WbQ+dxx6ww3lmYObHkV
+         XMXDvInmJU3CYyCYPpZzolwYbJcSfOApCNzyIAYTRW1IcflWxAm6D4WKOnoJvqLJYXQ+
+         IaSkVMmMR7P0IqdYbI3UaEKuN3SoLDjLo3tis5y3Dmcewhh21VEIPvQu5DAlWtwuW254
+         sDGwuyillk0k4TO1GSvfZpLfaLVSiUiOEX9mgMMpyLFfKBJeuefLUKEXdA+fwDEJyR+d
+         ezcw==
+X-Forwarded-Encrypted: i=1; AKwUvBx4b68QVyf82T5igaKYGgVYkYit3CG0M/b7n0pntkx0I26qpXfI4NUBf55z30WR5/rWcvjOc0vEQHAp4tvDRQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++l5qUzObcWg7NB1o3I8vNr7X8IB7PwM68bbqwQFuWv4YJuCtrrk
+	ynlsT8mqOYacoIhutSRm14m2EttwgE2MbJDX9+fr4RdiqEaWKrt/6ZlU
+X-Gm-Gg: AYBFou0oHzZ8oXTZcl/QttN8Xs21T/hFjlp8N7hliiGz0u9zLJx07JtVROh6p7dSqmM
+	eqIPhx9V9oXe0s/BFf0qeMBgdvf0JCd9ySm7LMRwzEMS3okdKvlT2wMHruQy0L+WBn18bjOnlwS
+	y91mGcd3FPI+wsB28OpaJ+AbFRX70s/CZeF74n8s1Y6xZgL5CuF2jRPGjb71j8qz8YlYN1Axghd
+	2LPN0InL6S3JeYJ6GNnzRqMHbQ0rSkTUrWoFGicE9tEKOcm4arW0nVVB/GWiyhUpsattGb27iHe
+	hJU51QBRO/jaYeSxRIxrdeshax0+OxWIeAsj27IAhbxEKtAvoNwDeJKOLWxFkTBAU5fKFNoF8vb
+	+hSODTVja+VUQcZKjoeGoaz2ynLfNmOQHBAa00rfLp4wjU/ORhTt9IrKVY9sxXgrk2Kx8n+KKm3
+	Ud2pUqDJEGOVm9HG0WcWNB05sxXs7QuJK/XSnfuXtEySnkKQaFNvKt3ncTTBdzNPy+yZEsxmsiu
+	4/sdsfz
+X-Received: by 2002:ac8:5a8d:0:b0:530:6ffd:1ce8 with SMTP id d75a77b69052e-530aedb7cbbmr100110721cf.41.1789054773862;
+        Thu, 10 Sep 2026 08:39:33 -0700 (PDT)
+Received: from tofu.. ([128.210.0.165])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5305413ce9dsm170860171cf.11.2026.09.10.08.39.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 08:39:33 -0700 (PDT)
+From: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <iweiny@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	driver-core@lists.linux.dev,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Georgios Androutsopoulos <georgeandrout13@gmail.com>
+Subject: [PATCH v2] rust: auxiliary: validate DeviceId name length
+Date: Thu, 10 Sep 2026 11:38:44 -0400
+Message-ID: <20260910153844.3987791-1-georgeandrout13@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260828024335.946-1-nils.lehnen@proton.me>
-In-Reply-To: <20260828024335.946-1-nils.lehnen@proton.me>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 10 Sep 2026 17:15:21 +0200
-X-Gm-Features: AcwNN1Uzoi8lwGKaGFrFRU-C5_p6rCaJZlH12ISlamLuab6ijiQmyc1yoeBy_qE
-Message-ID: <CAH5fLgib5D=nk4OwoREHAqzpC7=Ly=MZoU3gUGpTgGTZLS0mjg@mail.gmail.com>
-Subject: Re: [PATCH] rust: security: replace `core::mem::zeroed` with `pin_init::zeroed`
-To: Nils Lehnen <nils.lehnen@proton.me>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E . Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>, Benno Lossin <lossin@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>, 
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Onur Ozkan <work@onurozkan.dev>, 
-	Atharv Dubey <atharvd440@gmail.com>, Ke Sun <sunke@kylinos.cn>, 
-	linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 28, 2026 at 4:44=E2=80=AFAM Nils Lehnen <nils.lehnen@proton.me>=
- wrote:
->
-> From: Benno Lossin <lossin@kernel.org>
->
-> All types in `bindings` implement `Zeroable` if they can, so use
-> `pin_init::zeroed` instead of relying on `unsafe` code.
->
-> If this ends up not compiling in the future, something in bindgen or on
-> the C side changed and is most likely incorrect.
->
-> Link: https://lore.kernel.org/r/20250814093046.2071971-8-lossin@kernel.or=
-g
-> Link: https://github.com/Rust-for-Linux/linux/issues/1189
-> Signed-off-by: Benno Lossin <lossin@kernel.org>
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-> Signed-off-by: Nils Lehnen <nils.lehnen@proton.me>
+`DeviceId::new()` copies `modname` and `name` into the fixed 40-byte
+`auxiliary_device_id::name` array without checking that they fit. An
+oversized name is caught by the array bounds check, but the error
+reports an out-of-bounds index in the copy loop rather than the
+constraint the caller violated.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Check the invariant explicitly instead, so the failure states the length
+limit rather than an array index.
+
+This should only be reached when constructing a device ID table, so the
+failure is a compile time error. Document that intent.
+
+Signed-off-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+---
+Changes in v2:
+- Drop Fixes: following feedback from Danilo Krummrich and Alexandre
+  Courbot.
+- Replace the `# Panics` section with a note that this is for device ID
+  table construction, following feedback from Danilo Krummrich and Gary
+  Guo.
+- Reword the commit message so it does not suggest runtime evaluation,
+  following feedback from Alexandre Courbot.
+- Link to v1: https://lore.kernel.org/rust-for-linux/20260909033246.2779303-1-georgeandrout13@gmail.com/
+---
+ rust/kernel/auxiliary.rs | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
+index 60dfbec8f330..2ace0428e45e 100644
+--- a/rust/kernel/auxiliary.rs
++++ b/rust/kernel/auxiliary.rs
+@@ -137,10 +137,18 @@ macro_rules! module_auxiliary_driver {
+ 
+ impl DeviceId {
+     /// Create a new [`DeviceId`] from name.
++    ///
++    /// This is only intended to be called in const context, when constructing a
++    /// device ID table, where exceeding `AUXILIARY_NAME_SIZE` is a compile time error.
+     pub const fn new(modname: &'static CStr, name: &'static CStr) -> Self {
+         let name = name.to_bytes_with_nul();
+         let modname = modname.to_bytes_with_nul();
+ 
++        assert!(
++            modname.len().saturating_add(name.len()) <= bindings::AUXILIARY_NAME_SIZE as usize,
++            "auxiliary device ID is too long"
++        );
++
+         let mut id: bindings::auxiliary_device_id = pin_init::zeroed();
+         let mut i = 0;
+         while i < modname.len() {
+
+base-commit: 28924df2a08f440c73991b83028032c901de2ae4
+-- 
+2.47.3
+
