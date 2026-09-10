@@ -1,71 +1,68 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022134.outbound.protection.outlook.com [52.101.96.134])
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020142.outbound.protection.outlook.com [52.101.196.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD4B4749C9
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 11:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4AE47D460;
+	Thu, 10 Sep 2026 11:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.142
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789040206; cv=fail; b=omP2U3xOZAfHaNP9rNwcuHHwOzs5h4+KJzocAi81WvXZrzT+3xKton6IQsb+VzT1WGnjM+IS8jqS0VZ7eMPlmSe8wxjHTP6Ovkx4me9dExc0bqxxt69rbc0C+QWfSPzRic+LUdqg/LEMDdnj4LWDqm9ueNWbNz4ZHktSkSqQLo4=
+	t=1789041198; cv=fail; b=jM4TU+/cn8c9euL5sqrE53TN6uO4/WQcKbLl4UtXGaLnnnEwRk7x0GXr7DH+2VsVmGET5ljkwihlpnUlNW2riZk7DhiAZoJkd98Wb9w19hFItQTzyAOC7qoKBeRB3CQ1mnmhGHlo6tv0HjSJb4tulRMDphEQqv7iHGKVFvunrm8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789040206; c=relaxed/simple;
-	bh=0GgvOLHApolWCFScpB722KYvs+kV6fl9t/bJD+gJH4k=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=t1Eep4oNXJjGfcmRZsp/udZnO0g4EjGUuQ4aMxKKpoGIRoODvDwwZWFZf7OEtXs0mT+FZvYTtohf1KbkNwa7wSS+hMnhhsHRBwG3zxikhkfYVf5G0NnrPqlkD7p+g9zysdqvUJbR/VRBow9cH6ncMCd+ca0zGmkqsQ8eVYom3IY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=KfU66U6F; arc=fail smtp.client-ip=52.101.96.134
+	s=arc-20240116; t=1789041198; c=relaxed/simple;
+	bh=mis+9m4PePU+MlURn0+BRA5EoyBVFRTh+oM9u97uSZk=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=f/bSRQt0AVxxT3EWWWEBfRQ1tHClPQgcfXBaSsVdFANbrM4vin9pElq1N2Ca1sXfXPeGdxod6ji+EH0iydTXMZhg0ciplebBHk4PntAfI+1vcSUhdtEzk/WLgHfjhciOcS6Rb/l58nqAPuoqj7ATR1J+Kjx/yZ+O6jQ2y2JIzX4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=KdRU7BpB; arc=fail smtp.client-ip=52.101.196.142
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="KfU66U6F"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="KdRU7BpB"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UCD7bH0zNQ7ZNxJ9NZzTicG/As6XiiFAbQLKorXSQVr1Ij4LelfxUFkUhPIAgjHwqXO6xWKEULu9qo/N3pcvOxVaNfwsY59ziA5xTRxEq4tc9JykWMIdFlFoxwbFOoSL4WtwODJZbF08N/HFU6hKuh8Cvp+CRaDejN/jQBfVKH1GuuCzVTNhW/wxYi7kAbvD31ob9pY1yejFkFV8ovJmCsurZfyfZxPVGoaGvsdD1lnhROKH9bMLSv3ypc1XlkjgaWwL2WnRCw5cmOVAiitrIDQV1LRPw8bWNf/UNhPvRbaNUdrgecrF5wj2OiY9CfcsJlKr2ZLiKa9V7r8Rg247iA==
+ b=eopGiQ/H7JUlqKhYEeLmGaLFzqVWMUssNIL5gGSz+UFqaLF/icw4mBmor5kgdyn9c9fhwnZ7RM6715jbtKe9dZ408NCYfu5oAuyaTLHBNQb1lfGGAEvb6VnLv6hfYQFqtvSSjGpa1cSgFGO2iaKZifdqCspbdPODHkJkcfCPTfWiFUgboybRAZT1clbt6BJQxbSyTEbsaPvqBZnQhjCZ9NV1HhkReEdmHyNX4xHMYIeX/P+noF6K4YpkkQZdii7Td62/PTn0aX5ceaFEAzNkBcZP/u3QtFqiHSk3Uzxk8kcNtF+tl9VZhPEY5vAduGN5HDA06BSauCZa16CkXIcOag==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8lzmT5o94chQ+HbCNN6EXV6znsizF8wC7tWFvRao3Uo=;
- b=Q+i0Xy27bBZO2Jjeee6befUjVPSzhvQljkknAdtT9vAjYYQ2qmgoDfwy0iZmcyaAhZQrT4dKmPLlLMIasPfzYzfjjwITeBTtX7mYm5OZpuXidin1+79NCbwcno6hCU+OBUkx5WfE4IquduVDPLS/DwXD24ompAzTtCyHkrW7jV+4O6OyGZSMUhpxboJM0l5f7D2DNbKE+/fZM9zGgpJOLVhb2+sbHcIcvAWi7qbhyQg74jtBxBjzQzXmMCa+hBLL5QP6zlJ8U4P1l/bgA7EXeZ77W/nMdwfH+cC6Y0sQOkSyy0TWNBS2Jo9E5jcxr3lGzYXABGKRC/v1ZY5O3TrLqA==
+ bh=HJi+P5rJVUgbxW7rvcOQda+09y57Bnf36RvvQnm92Zw=;
+ b=jzjeO9nagkfoPf6RfcQgwW0VponxZYSJLTl/FZBSwHx0hBgZlxeRq9cSNI3E4hkJZGhjTCG4oJfvmVdBWSKv/1djhQNXLW4zn7jY7DnBn8TnyaviGTcbtdO+iCPdMChxhpJrI1Y/B0/8ar/LOyZGPzDEPfoMfEdbB7YQpqjgM5AowvoyHHQHIf+JD+wOJ8TD8ypFPN4zy0U0l1Elalcy5+ZmGy8n7/fhntv3vsAUIMBnuuAlPr1DERhHqUfndHPHguR3hWWrHAWZ6wWrnCGhEa6apBt3AB60P+E8fGr/xF5YifAStuhDI13zErY+uAyfB2sOLZdIc6LJicMw9C4NuA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8lzmT5o94chQ+HbCNN6EXV6znsizF8wC7tWFvRao3Uo=;
- b=KfU66U6FrAXY20/VzBg9aa7bdoVwOAVOZ12POMzB8ulET6dNUXkr73OBcB4O4kma1y1QZYCEZ3y27wx95O7W9AmHQa8YiV0U+zq26GaOGLLWOqsAj1V3PqZ//h/D+ahcLjOb9zJjyu91uUTRAMTSsHdFhi/4URTKVXTYTNvLO1g=
+ bh=HJi+P5rJVUgbxW7rvcOQda+09y57Bnf36RvvQnm92Zw=;
+ b=KdRU7BpBXyp0jqV+Jnr1zaWtw7US63BRALU44j+0/KpRovWKiZMfWC491CMpRfPZVNkuadilhVsfa4EM/iK+PmABStJdWXMTJBVYd3yzfamsWmf4U6jS1NXySaGx36SO2Fu12DsvrSOEt8VJdFaAnBVfjKZpLcZw2OCatKQhAXc=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LO9P265MB7931.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3a1::15) with
+ by LO7P265MB7437.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:41d::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
- 2026 11:36:38 +0000
+ 2026 11:53:03 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
- 11:36:37 +0000
+ 11:53:02 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 10 Sep 2026 12:36:37 +0100
-Message-Id: <DLBLTKG6KVE9.VNWH1D3896J6@garyguo.net>
-Subject: Re: [PATCH] rust: kbuild: export symbols from the `uapi` crate
+Date: Thu, 10 Sep 2026 12:53:02 +0100
+Message-Id: <DLBM64YIHJ5U.3NZZTGR2NP75Y@garyguo.net>
+Cc: "Al Viro" <viro@zeniv.linux.org.uk>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Brian Foster" <bfoster@redhat.com>, "Damien
+ Le Moal" <dlemoal@kernel.org>, "Hillf Danton" <hdanton@sina.com>, "Markus
+ Elfring" <Markus.Elfring@web.de>, "Ming Lei" <tom.leiming@gmail.com>, "Qu
+ Wenruo" <wqu@suse.com>, "Tao Cui" <cui.tao@linux.dev>, "kernel test robot"
+ <lkp@intel.com>, "linux-block" <linux-block@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 1/2] block: Add post_release() operation
 From: "Gary Guo" <gary@garyguo.net>
-To: "Alistair Popple" <apopple@nvidia.com>, "Gary Guo" <gary@garyguo.net>
-Cc: <rust-for-linux@vger.kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Asahi Lina"
- <lina+kernel@asahilina.net>, "Martin Rodriguez Reboredo"
- <yakoyoku@gmail.com>
+To: "Tetsuo Handa" <penguin-kernel@I-love.SAKURA.ne.jp>, "Jens Axboe"
+ <axboe@kernel.dk>, "Bart Van Assche" <bvanassche@acm.org>, "Christoph
+ Hellwig" <hch@lst.de>
 X-Mailer: aerc 0.22.0
-References: <20260909060623.888777-1-apopple@nvidia.com>
- <DLAUS65AAH2A.39ZT3OE05AR1K@garyguo.net>
- <aqIQNhGdRTsv4v52@nvdebian.thelocal>
-In-Reply-To: <aqIQNhGdRTsv4v52@nvdebian.thelocal>
-X-ClientProxiedBy: LO4P123CA0610.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:314::12) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+References: <60bf7af2-b84e-4056-9195-a26ad51ada46@I-love.SAKURA.ne.jp>
+In-Reply-To: <60bf7af2-b84e-4056-9195-a26ad51ada46@I-love.SAKURA.ne.jp>
+X-ClientProxiedBy: LO3P123CA0026.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:388::6) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -74,165 +71,169 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO9P265MB7931:EE_
-X-MS-Office365-Filtering-Correlation-Id: dd79d202-4eae-43ab-a6cc-08df0f2fc674
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO7P265MB7437:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7742ebed-9c5d-4e66-a1fe-08df0f321175
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|10070799003|366016|376014|7416014|6133799003|4143699003|56012099006|22082099003|18002099003|3023799007|10067099003|5023799004;
+	BCL:0;ARA:13230040|1800799024|23010399003|7416014|376014|366016|10070799003|10067099003|5023799004|56012099006|6133799003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	8g7WpRm/Np1qNX9DEsNmAAqc/FVdIzEozQVaiK6iF7ONy69wK3s9F6S4oUhDjtipnexfYRCp57nN2ID6o/P5n045ebdso9EHD7nkI9tbd40CkfAEj5dCgchqLRl4BnsqSBouK0IxtW7zxzfgDrTiNQ9l36jcCWcWzewVcMiqABUbia8c0IM+ZNeAWs/JemhqEJ9TrSUXnv5TmymOPIs0L3qrLjAvzanWYWunHvl7h7lPt0zjuo2VqiRuAdZbCwpUHuTeMo1+g9AEbkh9brrUqMLtQ7Ea3CrI2AqjW4nHs2pT9sDoZb2MFDDybRINJfk93ZdsBVByolfq8OnDSg58xGu5CAbJWx+4cYvDjRcv44IpvISHRadhZymx/80ihI4CzcgCyrcIZeeOpWxB98Gy5vf7daXNhn8l6za04+S1vVg3FSbkXz1He73x17dPp0bFlitL+YIYUrcddBOjyFWp7+oLsANhFo/W4rQyBbLJlYZgR6Z4S6EdBfrNo0Uc93T3iHsR9+dg66irpldg5x7uMtGW65QlarG+aJOx1rEqdHWfZYhmJmNi4+vHbIxAVeouHzYWphfB/MORYh//5eyXwBNgJRU2+bNX5c/1sh1KhGgTc/pOO9Yu0XB/1WFD0h/TZ9me/UFdgWLFMWs8DmQUfiztFvbwK1Nk4SUUFTsfYTM=
+	C48v3JlltlBsh73fIJSjsiZKSjfuHD6KTqYgol3dhnx838bbaOc7ovhJy+xqOkgqi8uYuifuw5jw3Wf6lv5G5GgXYwGo9WjhK5hfXj9+Q2aIXP7nk507+Vqy7qUZNnrU21vkW6e1yHcJRF3TNOZfplgEaG84lqpWnBFq2HzuKVXXQfGbiNpNQ+FBXLFbFWNtwXm9ZKEosBhCO1qacyMkldQS0Zp5glUDWK10RCe5mAQ4Nh0xBANaCVVixPjO/v9SkVzUmR3ZOPJCxVIRgevJBrojTAhp4GlgDA15d1Wh4fhYuGBrM3H3pgxQ/hJ7C/QejqaB6CpY6vmMDhhmEgtLVeNsNJB2bkInM56qA8sn9nVpqfa86aXLxwum9W0VmsHjhuNBX5/3V0u1ub0dgpZnu6dFOePWKaVt6NZ4GPqz1tHxcqFTZe7c/KhDB2e5eLCInRODoR2Mw6jke6UC4lTWyQf8Y+zE45gGIfSYBXPncuAN7d+XsZCxw9c2cPMTrwmc3CLOa87R049XzVJj4SfUa4sbKPtC2NIg0n6W3KU9o6HyNVZqQ95H22cVgknEbpqV3IHazfG4iNMmO/M7legIpw5l+ugsTdutJwF/Ri59m0XqAq+s0ICdJQ81MuS4uVFSlMOTWvuCEOmy2ctvHzty9JdL0QYdz6UqTqqwXmD+HT8=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(10070799003)(366016)(376014)(7416014)(6133799003)(4143699003)(56012099006)(22082099003)(18002099003)(3023799007)(10067099003)(5023799004);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(7416014)(376014)(366016)(10070799003)(10067099003)(5023799004)(56012099006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bFEwaWoyYVNlRXU1dktGdTIrbGp0UnJ6Z3dHRlJ5QXJMV3NYd3p2bUw5bVpG?=
- =?utf-8?B?YitsbXR6QmZtYXY4UlN5d1VDTWFYdUw0QjREWXg5T0F6dko0TWtMTmQvMWgv?=
- =?utf-8?B?RGl1T3JmdU1yVmdhd3lXODdlSlRBVTM5S1REeTBQNzN6WFJTQithWEd2Q29h?=
- =?utf-8?B?TmxvYmlkSzlkVUljSjFOTytvdnI5RGd4eUpVTTdHNmJPNnQ3MEsxOGVrWjFY?=
- =?utf-8?B?SjJqMytZR3lqMmhEYkk4ZDM0UVhvUnRiZEZLZkxRNERJQjRTdWV0RmdYSjZu?=
- =?utf-8?B?cE9teFdaRWtYRkdHVlNNeThRM1hnTlBuUWpmY0Ruazg4WmVjbDhJWHJvSkpT?=
- =?utf-8?B?WlFzb2F1WXhkTnAvZVBWbEp0eWhtdTExbDRMRjNwbElnWDVQWkxqbERma2Ja?=
- =?utf-8?B?cSt1NXZoYm80d1RTOHdtQ3I2ZTdBR2pIQXdZcW9hVnh5UlNVMXJOdU9TTkdT?=
- =?utf-8?B?WThJdnZDd3ZtdFhzSnJidk9Gck9yN2VmS1ZEWHVRaldZWWVwNVBJRnRKU1dj?=
- =?utf-8?B?eWN6U1prMXY3T25qZFc3LzdDZXM0STBnWlJaTTl0RktqTENhVHVBamE3cHRm?=
- =?utf-8?B?VWFWRkRRWmFNRVFFV3pqaGpNMkt2aEI2WldKL3paRjNDWGR1ckIzL2tsQ1hK?=
- =?utf-8?B?UHJsK1c3TWZ1eGIzU2pGeVlrRVFLdlMwWHF1cmJlS3p2RnpvV3VvalNSc0RZ?=
- =?utf-8?B?QjBKak1RVlBVL1Y3MVVDbVNOR053Z2E4TnFUNHViaStKWVhBSnJ4SG5VOHVn?=
- =?utf-8?B?RVZTaE00eHVZTGxtTU5IUE5IN2I1aDJPb1o4bVhQd0F2WE1iaU5IcTN5ZFRI?=
- =?utf-8?B?YnhoY0dMVGpQSEJ0TXQybUJ3a0x3bXlIaHIveElkTy9ubzRybDhiVWZKWWlP?=
- =?utf-8?B?Sytwb09xaW5IT2F6L09CRjBTYTFHNUMwQjNKRTkrVkJBS0lLaUtBTzZBNDFW?=
- =?utf-8?B?M251SGJHY1FDcEhEeVpjcnlOWDlwMFFNM205TFJaQlI5UTJwVXlZeFRPN09D?=
- =?utf-8?B?OVZYU05Td0VYTTl6aE5HL3pZLy9sQXhORjkzdXZzeGZMeCt4SUdUeWNQMTZV?=
- =?utf-8?B?S01OaEhYWnVuRC9IYm41bFZ5T3JxR2RGUEZHeDk0Q2w0QnQxdkhnbGVHSldm?=
- =?utf-8?B?SzJ2V1krdGlwQXNOZ0p5ZHI4bFJFVU1POU1XOHdDa2sxTUc1YmJoSFFPOG9x?=
- =?utf-8?B?R0JXMFdEeDg1NEVQQ1NFZUlwZEl1bXplY0I2emhEWVR4Y1kvWUV0SkRmQTI2?=
- =?utf-8?B?V2xMb0gxZXdUVWhSSlIxODF3YXIzZUU1aGI3dHRDOUNoMlM1VGd2SmtjVnMx?=
- =?utf-8?B?VWg2ajVJS2NiYTVEYW1sWlJJdDVhRWZ4dlFwU01pS1gwekttRjFjL0VXbUVs?=
- =?utf-8?B?QXc3UG9hUnNWYUhIWk13OW50UHoxTzI4TTNKZFZpYVFrNlNNNTJWZnNyTnht?=
- =?utf-8?B?bzhmQlpib2pEZVZFVllxUk44elNQNXJpVEFaNW9oeWI5ajU4RTlZdUxHNkk1?=
- =?utf-8?B?TW04UnJjNEtoK3A2Q2sxYlErSEpHeCtGMGU1Y3pRV3dCb2QwenZrdWZaTk5R?=
- =?utf-8?B?N2NjanIwNDc5T3I1WVFqZzU0WXVNL1hVdnZab3pncy9TWXYvdVpRVG1uOFBu?=
- =?utf-8?B?ZkhWS25zYkYwY0ZKdE9IYXB2Zmt5QTJmeVR0OTlqTVBpelVIelF1VnFwRmk0?=
- =?utf-8?B?M2hGaG1EY0lhYzlaQ21rQnR0dmtsckpnM1NVdXNPa1JGVUZiamhETTZwbWdq?=
- =?utf-8?B?dFRvdkdZRmYxSDl5OTFaNEdOOC94ZW14OEVVWmNNaG13aWxHRENjUExyOStt?=
- =?utf-8?B?eGRaWEZHbEs1SHJQYWV2T0VCa3IvdzZFT0Fsc2lWd0JHbUt4RVVZbVh0aEZ2?=
- =?utf-8?B?dXZyd3FrNENYVmhwZ1h3dzdnWnNUVU1PWmtIVkJhMmdMNUFyVGJmNTdHSU5X?=
- =?utf-8?B?enAybFlOTkFhUml3eWdTcTVpNnh5a3NCR1FPeHpXYmp3YS9nSHFOMEhRcHUy?=
- =?utf-8?B?MXFwd1RCNmQ4cWFKL1lIS2hyZjdkZVkrY2pOUld4MXhtSXpsMXN3cjZVNXdP?=
- =?utf-8?B?RzNOKytHWGE5eGtpQjBkamhzR2FUZ0YwMFBxNFNSRTZWRnh1NEZrWHJWYVVs?=
- =?utf-8?B?c0ppV0JoSVp4a085M01kYlFqdHpoNER1UVNLbVRaVURzQ2pCRnN6Q2d3bHBa?=
- =?utf-8?B?OGc5NGRWNjdRdlRCUnp3YWNRRlpMMlpnNWxCWDlyNlNkMlg2U2NzOUtHclpy?=
- =?utf-8?B?NUJoUnIvbTh4dVMyQUt0eHNnTDd1dCtVODZ1Vndaa2d4U25NTXpCbkpTOVNB?=
- =?utf-8?B?SWo2THZITEsxYnJVamE0UmhxL2ZsTDloUldUem9iWGVXVW52UkJ2dz09?=
+	=?utf-8?B?bWZjNXJUUTZkUWlwVkU1bktJVmJjY3crbTRNVy9iR25DVks4bWdVRVUzYkE3?=
+ =?utf-8?B?ZCtlMG9hVktGcFp1Ly9qeGVnaXhla1ZDTFB1WW5FTHlxRXpOVDFhU3U2WjJF?=
+ =?utf-8?B?TXlQS0ZOMEh4dVhiWFpKMjFEYnpaRXQva3JoYWs5cE83STJndnR2Ym1hUGk3?=
+ =?utf-8?B?Zm50V0xVekhXRURtZjBBSXZaOWZISXE3YlluYk9FWjJxVDdJcGxQa0dQck83?=
+ =?utf-8?B?RjI4b0dZOWtCdHBqc053L1hkc2NvNldNZm13bDFmSHVJK2NvNnZPVER5Z2hx?=
+ =?utf-8?B?NUdRQXRLTmJCQ010aFdTT1ZubHdqT0djWko3SUxDODlwZlJtcG5OcnB3ckRj?=
+ =?utf-8?B?REhkdGs3WW90UnF4bE5pVnlHdSs4T2VvTVJHdTlhcWtWR1hZUzBYcjFLZHBv?=
+ =?utf-8?B?ZW9sV0lEeE5hNWRCcXVpWEx4Zmd3eHVCTm1CakxEV2FzVW1JM095ZFhGY1Fx?=
+ =?utf-8?B?YVkzWmgwY0lVb2VHU1lEYXJpd044WkNVUmsrMWdmUFg5SE0xZTZwV1AxajNX?=
+ =?utf-8?B?Ly96VGk0SGpPemFKRWQ4cnNLSEV4ZkE3azNqNUtWRC9KZTcydUVXbm9rSEFw?=
+ =?utf-8?B?Z0twYnpnbGtPYXppQ3RKeTNZSEN0ZzhaR3VPUVYwT2x5T0k2aW1WQVJQQ0NT?=
+ =?utf-8?B?SENBazhmNXkrNUs0WCs5S0l4bDh2Wkw5R3M0cWZVWFdXSzNoanFFRUtueW9Y?=
+ =?utf-8?B?TXllRjh3OE12S1FwZHh5TkpPR0Z4dDZWQXB5Y1puZGZpcXplbmE0YVlVdFVn?=
+ =?utf-8?B?WjFxNC9Pck1JTTVVanpTV2xrOElrZUtzeUZJa1lXMUsrb29hOTFKSVgyS2tC?=
+ =?utf-8?B?TEFrSStUeHpuNWd5RG1rYTYzQmZyM0RVc2RoOFdWZkJuRDlNZHc3NXl1OVBU?=
+ =?utf-8?B?WHg0NHl6R25vVEc4V2szMU93Q09iczk2T3JRdmVtVnptMWdjeEJGQmdxZUxw?=
+ =?utf-8?B?dTZlUDVLS0hGOU1zZVJwbVJUTGptd2FLV3N0V1NnbDlCVm9qV0I5S3MrWkIy?=
+ =?utf-8?B?WDhmbzFyMG8wSHZFdkpTRDlZS1lnc1J2N0FZSWxxd1JncjZ5VWNQRXpHMHY3?=
+ =?utf-8?B?WDVUYkpXVWJGbFZlaEw3Q2FwZ2ovZnZFV2Y1aFptbCtneDYzY1JCcHZJKytV?=
+ =?utf-8?B?M0tOajNwMjI0RDcrcllnelZBWUpJNEJpelhacG51MFNqT1FRTUwxS2RrR3BE?=
+ =?utf-8?B?djZobndmMEpJazRnL3JwTTRVcEIvczZLM0pUaThhWTYwbUlSMStRdVFqSFpk?=
+ =?utf-8?B?eDhIb1RkazZlMzVGZjhiWUdqaUJ5aFlVb1pUNVJoVEk0dEFmVnU4cXphNmI4?=
+ =?utf-8?B?V3ZnSzNGTkpzNEpQVXdlQ3k5YytJV1lXOUxYWXNWby9YRjVNYVVhbC9sN3dW?=
+ =?utf-8?B?TDAwaDhVUVN2K3ZiRUVkK0E4VDQvNFVtSjg0M09zeXV5NTNnajY5eVRIUXVu?=
+ =?utf-8?B?WTFiU2hVeWNYdk51ZGtqSXUwZzY3dElnVUJDOUhFT0Z0OWdaM3pGWHdFR09X?=
+ =?utf-8?B?bmEwMFRmY2V5N0FRSmh3TlpzbThSRjZnMXN1bXpVbWo2WkN5QUVJMCtXSDVs?=
+ =?utf-8?B?K25TYjhRRHhFTk14R0MvUEVhQzV5ZllwbVZ2VFIwSE5jSTd6ZzF3UklUYytC?=
+ =?utf-8?B?c2FxSWtxMWUvU2dYSGtVWXhNckdhcnhabjJYblRuV3NWMUl2OElmd2J5eGhP?=
+ =?utf-8?B?dW9TOWR0c1BBK3hTUEZXQTJqSzU2Q01wTkpQZzF5U1Q5VVFSWWtLYWNPdW1y?=
+ =?utf-8?B?VjN4OXdFcE1RY3pKekZTNHByMk82eXBBdXUwMTFiUThjcXpRWDYrMUw0UjFH?=
+ =?utf-8?B?dFhjWW5iWmgrcFpBNkpwZHFRTWRZQkFRRzJPY21IclMvdVJVZlduZ3pDOGt6?=
+ =?utf-8?B?ZmtYY3RvcmxDL2szMHFYREhRQkFUWVoxSlVwci9JUlFkYTZ6SUxLUHViN1JW?=
+ =?utf-8?B?aWVkTDVzTEUzVFpRQXVHNmFYMVhCZklUMVFGQ3pKQVhTbDVhd1p2Wnh1QWI1?=
+ =?utf-8?B?VWxFeElnbzMybFdXbXFXVExjZ2N3Wnp6eCtUTmRuME81K2JPa3pURUJLOVBl?=
+ =?utf-8?B?N21vWHVCZCt2S3Zxd2cva0FnSml6VTRRTENqRHQyK3lYOHZqSWpYZ3VVMFFE?=
+ =?utf-8?B?dmc5TVJEaWJ5SjNwOXBOMEdqK05mRzJxMDVBd0R6NUZTYTJXRGNJQlFHdHJr?=
+ =?utf-8?B?VUt0dUtrdTNreDFiaVhlR1ZDYTNqWWpURXFuaklvTHdJRFk2bGJ3WTk1cFRv?=
+ =?utf-8?B?YmZGWXR1ZjlQRWtiNEVmOFZoUXNFcFdCb0pjTkt3ZVgzREVIR2Y1dmcxZEI2?=
+ =?utf-8?B?VVY3WERSTUx5akxzU2lycTF6Ulkrdk0vbi9mdVJ6NlFjaE1jSHhkUT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd79d202-4eae-43ab-a6cc-08df0f2fc674
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7742ebed-9c5d-4e66-a1fe-08df0f321175
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 11:36:37.8287
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 11:53:02.6825
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mLA1HolnKp5NzzGnGugsoe8hH6hkD2gLrr3pKgU7iAQ29QKGNyULoa2xXjEEl8nrJpVTQ65LH3SW4LcmUok1tw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO9P265MB7931
+X-MS-Exchange-CrossTenant-UserPrincipalName: x975aILJj0Q6chZXRQGFYYhWChYx+UEPsCmG34yrzUDottTq4D3sP43q+UuB7KRXBmfjKKnjjgbpkdFvsclH5A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO7P265MB7437
 
-On Thu Sep 10, 2026 at 3:21 AM BST, Alistair Popple wrote:
-> On 2026-09-10 at 00:25 +1000, Gary Guo <gary@garyguo.net> wrote...
->> On Wed Sep 9, 2026 at 7:06 AM BST, Alistair Popple wrote:
->> > Symbols from the `bindings` crate and the C helpers are exported so
->> > that loadable modules can link against code the compiler chose not to
->> > instantiate in the module itself. The `uapi` crate has the same proble=
-m
->> > but nothing from it is exported.
->> >
->> > In practice this goes unnoticed because the only functions in `uapi`
->> > are the trivial `Default` implementations generated by `bindgen`,
->> > which rustc inlines across crates. With CONFIG_RUST_DEBUG_ASSERTIONS=
-=3Dy
->> > however, the `Default` implementation for structs can grow past the
->> > automatic cross-crate inlining threshold. The module then references t=
-he
->> > copy in `uapi.o`, which is not exported, and the build fails:
->> >
->> >   ERROR: modpost: drivers/gpu/nova-drm.ko: symbol '_RNvXsH_Csk9v2ZIpWb=
-Wt_4uapiNtB5_17drm_nova_info_gpuNtNtCsfr3MPOfBGpN_4core7default7Default7def=
-ault' undefined!
->>=20
->> Hmm, uapi' ideally should just be type exports and produce no code.
->>=20
->> Default implementation should carry `#[inline]` annotation so they're
->> only codegenned in actual user crate. Rust's `#[derive(Default)]` would =
-always
->> add that. Can you check if that's bindgen-produced manual Default impl t=
-hat
->> somehow misses the attribute?
+On Wed Sep 9, 2026 at 11:48 AM BST, Tetsuo Handa wrote:
+> Add post_release() block device operation which provides a hook for
+> performing synchronous cleanup without disk->open_mutex held, which is
+> needed by the loop devices.
 >
-> Right, bindgen-produced Default impl do not have that attribute. For exam=
-ple
-> here is the bindgen generated implementation I see:
+> Real-world container engines, test suites, and system utilities rely on
+> fput() from __loop_clr_fd() being completed when lo_release() returns.
+> But changes which went to the v7.1 merge window broke an assumption that
 
-Perhaps you can open an issue upstream?=20
+What change? You should mention it with a Fixes tag.
 
+The message should also explain how the assumption is broken, not just stat=
+ing
+that it's broken.
+
+> there is no outstanding I/O when __loop_clr_fd() is called, causing NULL
+> pointer dereference problem in lo_rw_aio().
 >
-> impl Default for drm_nova_info_gpu {
->     fn default() -> Self {
->         let mut s =3D ::core::mem::MaybeUninit::<Self>::uninit();
->         unsafe {
->             ::core::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
->             s.assume_init()
->         }
->     }
-> }
+> In order to fix this regression, we want to allow __loop_clr_fd() to flus=
+h
+> outstanding I/O. But calling drain_workqueue() from __loop_clr_fd() with
+> disk->open_mutex held causes lockdep warnings. We need a mechanism which
+> can flush outstanding I/O without disk->open_mutex held.
 >
-> Manually adding #[inline] fixes the problem of course. I guess we could a=
-dd some
-> sed Makefile hackery to manually add it. For example something like the b=
-elow,
-> not sure if that would be preferred?
+> This post_release() operation is intended for performing only idempotent
+> actions such as flush_work(), for nothing prevents multiple threads from
+> concurrently calling this operation. That is, the loop device schedules
+> a work_struct for calling __loop_clr_fd() from lo_release() where
+> disk->open_mutex is held, and waits for completion of that work_struct
+> using post_release() operation where disk->open_mutex is not held.
+>
+> Also, this post_release() operation is called from only bdev_release()
+> path. This is because loop_configure() is not yet called (there is nothin=
+g
+> to clear) if something went wrong between an initialization lo_open() and
+> an error-unwinding lo_release() within the bdev_open() path.
+>
+> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+> ---
+>  block/bdev.c                     | 2 ++
+>  include/linux/blkdev.h           | 6 ++++++
+>  rust/kernel/block/mq/gen_disk.rs | 1 +
+>  3 files changed, 9 insertions(+)
+>
+> diff --git a/block/bdev.c b/block/bdev.c
+> index cd8323083740..7ce5acaacf43 100644
+> --- a/block/bdev.c
+> +++ b/block/bdev.c
+> @@ -1188,6 +1188,8 @@ void bdev_release(struct file *bdev_file)
+>  	else
+>  		blkdev_put_whole(bdev);
+>  	mutex_unlock(&disk->open_mutex);
+> +	if (bdev->bd_disk->fops->post_release)
+> +		bdev->bd_disk->fops->post_release(bdev->bd_disk);
+> =20
+>  	module_put(disk->fops->owner);
+>  put_no_open:
+> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+> index 4f7905c3412b..f05dba1b5962 100644
+> --- a/include/linux/blkdev.h
+> +++ b/include/linux/blkdev.h
+> @@ -1605,6 +1605,12 @@ struct block_device_operations {
+>  	 * driver.
+>  	 */
+>  	int (*alternative_gpt_sector)(struct gendisk *disk, sector_t *sector);
+> +	/*
+> +	 * Called after disk->open_mutex is released in the bdev_release() path=
+.
+> +	 * Used by loop devices that need to perform synchronization without
+> +	 * holding disk->open_mutex. This operation has to be idempotent.
+> +	 */
+> +	void (*post_release)(struct gendisk *disk);
+>  };
+> =20
+>  #ifdef CONFIG_COMPAT
+> diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_=
+disk.rs
+> index fc97dd873974..2ff77ef49781 100644
+> --- a/rust/kernel/block/mq/gen_disk.rs
+> +++ b/rust/kernel/block/mq/gen_disk.rs
+> @@ -129,6 +129,7 @@ pub fn build<T: Operations>(
+>              submit_bio: None,
+>              open: None,
+>              release: None,
+> +            post_release: None,
+>              ioctl: None,
+>              compat_ioctl: None,
+>              check_events: None,
 
-Yeah, textual hacks are a bit too fragile (especially that it'll break when
-upstream bindgen adds these annotations). So if you need these impls, I thi=
-nk
-exporting these symbols are fine.
+You can use
 
-That said, you can achieve what you need with `drm_nova_info_gpu::zeroed()`
-instead?
+    ..pin_init::zeroed()
+
+to have all other fields zeroed. It might be beneficial if we care about kn=
+owing
+all new callbacks, but it doesn't look this is the new case.
+
+We probably should remove all `None` assignments so it's all covered by the
+`..zeroed()`, but that'll need to be its own patch.
 
 Best,
 Gary
-
->
-> ---
->
-> diff --cc rust/Makefile
-> index da1a7409d984,da1a7409d984..535a3bf181bb
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@@ -525,13 -525,13 +525,16 @@@ quiet_cmd_bindgen =3D BINDGEN $
->   $(obj)/bindings/bindings_generated.rs: private bindgen_target_flags =3D=
- \
->       $(shell grep -Ev '^#|^$$' $(src)/bindgen_parameters)
->   $(obj)/bindings/bindings_generated.rs: private bindgen_target_extra =3D=
- ; \
-> --    sed -Ei 's/pub const RUST_CONST_HELPER_([a-zA-Z0-9_]*)/pub const \1=
-/g' $@
-> ++    sed -Ei 's/pub const RUST_CONST_HELPER_([a-zA-Z0-9_]*)/pub const \1=
-/g; \
-> ++        s/^([[:space:]]*)fn default\(\) -> Self \{/\1#[inline]\n\1fn de=
-fault() -> Self {/' $@
->   $(obj)/bindings/bindings_generated.rs: $(src)/bindings/bindings_helper.=
-h \
->       $(src)/bindgen_parameters FORCE
->         $(call if_changed_dep,bindgen)
->  =20
->   $(obj)/uapi/uapi_generated.rs: private bindgen_target_flags =3D \
->       $(shell grep -Ev '^#|^$$' $(src)/bindgen_parameters)
-> ++$(obj)/uapi/uapi_generated.rs: private bindgen_target_extra =3D ; \
-> ++    sed -Ei 's/^([[:space:]]*)fn default\(\) -> Self \{/\1#[inline]\n\1=
-fn default() -> Self {/' $@
->   $(obj)/uapi/uapi_generated.rs: $(src)/uapi/uapi_helper.h \
->       $(src)/bindgen_parameters FORCE
->         $(call if_changed_dep,bindgen)
->
 
