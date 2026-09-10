@@ -1,123 +1,90 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C7D4BB266
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 16:14:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789056885; cv=pass; b=u0dk4r+fVbSeNptHRgixmbDNCLCw9sUPrXtyRpNB/liVvE1s7zDTTuaw6Fn8s715WrR3Loi27PKW9Gn/bMpsoGfR+vYXQUKhUmWPj9F4m7w7njDiOAJVGVWke9SRa+KmZo2Fj3JxOGPo2SJ8q3BE61lRlYMad4toQAM5gjhLW6Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789056885; c=relaxed/simple;
-	bh=AIdeJfpL79Jnckoa3vMq8Pu7laRqtN2LS+kT46oxafc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hJBj+uGh2ksrfacKld1jUclqceci+Vozkz1HCAYFt8BlKL2k0KZGCtBsKpqLqcO6XAHobLI5EsmNynAYbHPjtx8yxhTSE9tuWGFfy8tM7LbBl7SDgBxvTQsZvH+wMQ1I5vZdxjR3Vgu4Naj7qH4mn3Yxtr+C+g9wcNff6M/2GuE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F3gozuAj; arc=pass smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18C35476EA;
+	Thu, 10 Sep 2026 17:05:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789059969; cv=none; b=PA6rWjciOiDgHJc/eSrPHBESFaZFifU0JwEZHtoYDpuljcZ2GVA03k817fJvJiLgy6/vnWyWirc9DDtXC2ufvZJnk3vmr7Zzl+YF5ocoTepy9YskVOSOGQC9fEF6X76TZjuNxjBronQzB5Ad2/eal+eztisEIekNNWjoNitsZYs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789059969; c=relaxed/simple;
+	bh=D8kzOhtZNgalaZW/BREDdjgWIkSZ998vKcdeRRSZrIM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O6Y23/HJnMjBRnJKj/1YP+48DJaQpU6VBSDWwt4wiGnsXF6moZNI2IxWsRRmMdtFL7ulz/adD9dfKUZjTxgML4hj03YQqd3iyFjf/1/3gLQftGYHM2Lj38hc7SFWDAiLrrdzFzXQm9GhPJ5Zj0dXPIuLItQinCuMPqd9SiYa0xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PzI1uSvo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F3gozuAj"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1d189a400so37a12.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 09:14:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789056883; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qKzWoeK58hQvEkxNPIIX5pXcm6ECyjEuf542cSWlOCh1wmSD6msejoW4qR3DML/afA
-         h3qmaf4L1iagRzsX6sGVVh0FYzRr9tjh7U0xMx3TIiw/B8S6gqw8B5/TxCzCXd/khIav
-         Wb1Em7N6Qw5Qfk8kvpz0q1gFmuNA+qvLZXQ0DRsvDbCpOxE1WthDAjN139+HF26CeBMr
-         4xywMdPjUUFOoRS5HlXYGD+lHusn9X4pZ+72ge9dJ57RmtWRboewTfoyZTKR5pg2fCUU
-         RoxJdDQrXQSs+tts0ibn99mduZ268yZUdWNCziYVq2H0iqIlQuWodxIxdTzKs7Kvtb5w
-         PHXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AIdeJfpL79Jnckoa3vMq8Pu7laRqtN2LS+kT46oxafc=;
-        fh=KU729isP575GCYptcf0/uaOGImSCA/RiwTXVH43Pumo=;
-        b=U9QBFozvCWsEH5CkDA+h9cIS9Wsx2tSvuf0A/gxRXN0gMrYvQFyZTAEUw7ytg27hCS
-         Hy5cWamaCNIh/n3kTQy6x+TrIaAs4DDXAvUyJNOFjO3dwDV6ZKm7SzZI9hHlyGy+sePg
-         Yt/bASADrpwfWmRK5p4lsaLDOm6sjTDoT8Zhq7Wn1rURv5JofDuD2j6SM8sO61+Y7TbL
-         Vt0tPA0xGzV72e4sLNTsJN0HaSNK/FMphiURPcTBgOTrpVZCRKjimwiDPKbCEzfYWJw8
-         0+sGctgxozdLBPJLtiqOfsRQjNY1ZDrXFveCHX80IlpIhhO1B6pie+T5/ORB4nce5MO/
-         x15A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789056883; x=1789661683; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AIdeJfpL79Jnckoa3vMq8Pu7laRqtN2LS+kT46oxafc=;
-        b=F3gozuAjfDDbMeZ/dLSy2CXjr+RjB/+c95R3VRdJY9j2ECNnpTLl8Ln0/Lsa3i+JEX
-         o20WRjxX1ZltoNB1JmAgHuVAuaIjPxEo8VOgWNy+leeH0FUSFgibVbT8AJcrIvgJmDXH
-         qmLqVy58lsjL2JVFPjtlCMeURg8mL7ZasrPHhYHjYSl5xLCBAAvVQbUhcOEvxE4tRyUM
-         lNA2SXaxmN8czo1K9iLlb76i49BLzFUi96zKi9dyF5/u4ziPQ6ZcJAU9Aqf1JAzkUZaN
-         h1BcG2aQKgJAXkHLkhpDLlDglKIkTVEA3TraZg/u+YYW3RWb5kHwwLnYTb42JnRZx528
-         TIRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789056883; x=1789661683;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AIdeJfpL79Jnckoa3vMq8Pu7laRqtN2LS+kT46oxafc=;
-        b=ShRcORrj6Txevkf3MvWpv7Vc0o4wZAvrylGY8P1pX1ablevkNrgyi9D7ebR4yXLLv0
-         E5c3uChbWE5M/ON0Uvm+WTlRp9XsLTVQRxu9Vb/ea/1JmVoSYmwEdaL2OuorqVEIIFSX
-         Nbl/8eg6YUL9dytlXvx4eNmokwf1fcoimsj7AjmZkh0Igv0uO6gl78tL7p0QZ/v8dOtG
-         uJ0KCLGqgFapFazpIjh93Q1YJyY51XMd+qNoEPrhYAKa8PH28tUQ47EjDFOKenbVsIBB
-         xKFSr0gQQjmX+Hjdmq3S9C3s/PK6HqRA7Z/9YxBN56/FhzfLcibfM9aXS1DLg7h/WSM4
-         aCrA==
-X-Forwarded-Encrypted: i=1; AKwUvBzEe2VOCl12SCOBN7rGOwNAm6Id/klREdSkvVzyMnZuZf8JJoM9+GMoxQik9r3cAT9EKCzGXTu5sNDa1Cb8iQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++nfR+8kx61R95lY0QXmvbuWwQtacgjDJM9NyzVo7oDleN/K++Hb
-	jm+tLUEKmSL7hIGp8iaaCOMVCB7jKa7YAEZqAuzC7o8S46rLlom9KFbrDcKX18ZMrXbJhIIoHGK
-	oEtuXdeCH+FL7dLzOQEx8YxGLo3d9f9Y=
-X-Gm-Gg: AYBFou3vUsUUlsv9dTS1AA+TNuHHe8NgUEpPuoFAz4mNFlzUchVXtaKusLDKAP1GGAT
-	Ct3cpJ0U36D9ZqZhAKc1SlJWUa6prwVmFWQquX1a2Z8PA1+6xgRtPqQlsRDdJzcDKuYUPPvqE33
-	NHeXrLz/P3A3Y7H8ZwbVmqrV0X2SlXMg6bW+PEJf1zZ3qLzcpaOdbRPoUzYJDVom6SyvuqAnAtX
-	At5nrRKwMGLfDetcFARoIUzKaCWecgRmv2aV/77pXBYMmqKyEtIzAvuSmWZ45+alw+utcfWcYcC
-	7KgBYaKAUwCqKM9JWTTv1uD/4sqUyg4LKepJ1rYRPBAWU+TnYslyuPH9o0vln0fvuuIe2gju4jD
-	HqU4/3P1kq9B4cPICRTWeRLFd8j2AeRH1ryR2VYeHNikNawig7GSbxPwhCyo/rBDSzrlAyrLwY6
-	OYc3zNFy97Jqd9CNu8mhwen04WGkzDPxMKRnD1jtaurjzLtwPVOI0=
-X-Received: by 2002:a17:90b:384d:b0:398:bac0:238e with SMTP id
- 98e67ed59e1d1-39b3d8377camr37403886a91.6.1789056883468; Thu, 10 Sep 2026
- 09:14:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PzI1uSvo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF0E1F000FF;
+	Thu, 10 Sep 2026 17:05:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789059955;
+	bh=SdlcoQDN0jkt/DkUUNNZAWMgxLwuEsMvjVDP8/JRjqc=;
+	h=From:To:Cc:Subject:Date:Reply-To;
+	b=PzI1uSvoubbNpFeg8w/de1uR4A19/6lpGYtd9iweN2VWg5h2DQw36nOfOUZpLJH8G
+	 1Znrh6sH8g2oYG63gd2QiiJVbVxgNO66TsVJGXtcJSYRvcwcblzgbbppJt+HVUwaBh
+	 IV6EN5IJKbdcTKEAhoVFegTdmw6iAL4qcmRIclXT4aV1aypeOVXAKgKtUXTbjuyc2h
+	 ffFjFdevY4oyjXQ+al0k/3Sm8c+l3i8sRCJbr89gZK+Ll7RTo5fqFsqtXUpMTl1c0c
+	 9j6aMeBBLZUVukE57YBRoDaWl26uedGySYRFsQrViXtybyroLxholWuOigb8NwV6em
+	 Bas2GpDbU07YA==
+From: Gary Guo <gary@kernel.org>
+To: Alexandre Courbot <acourbot@nvidia.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: bitfield: remove unnecessary `#[allow]`
+Date: Thu, 10 Sep 2026 18:05:42 +0100
+Message-ID: <20260910170542.92010-1-gary@kernel.org>
+X-Mailer: git-send-email 2.54.0
+Reply-To: Gary Guo <gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260828024335.946-1-nils.lehnen@proton.me> <CANiq72mn2vvCL2VP8yJxmzXM4n+jfV4R7arUcj4UXSi04y5sfQ@mail.gmail.com>
- <CAHC9VhSuuNmdRQ5puaxWh5ez3Dz9LhtAmZU40SUGgEAL8Sn9-w@mail.gmail.com>
- <CANiq72m0yYRj75RQBRprcHTrqfd7=m_OnZAAQfZdO9T3dfUQdw@mail.gmail.com> <CAHC9VhRjjJpv95AgF6cnOdh4g3gC4zViRoiHVehMLx-Fv9b1vw@mail.gmail.com>
-In-Reply-To: <CAHC9VhRjjJpv95AgF6cnOdh4g3gC4zViRoiHVehMLx-Fv9b1vw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 10 Sep 2026 18:13:00 +0200
-X-Gm-Features: AcwNN1VxW1A9qw4fmjGeQ9XUhu8Og04GW9DSoVdDsQNP46Gy5I2b0ZJEDU2k5-s
-Message-ID: <CANiq72mY_Sjg=WnfEEhSx9XZiqwDgqZqSqHa9Tsc4-qR-X8UEQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: security: replace `core::mem::zeroed` with `pin_init::zeroed`
-To: Paul Moore <paul@paul-moore.com>
-Cc: Nils Lehnen <nils.lehnen@proton.me>, James Morris <jmorris@namei.org>, 
-	"Serge E . Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>, Benno Lossin <lossin@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>, 
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Onur Ozkan <work@onurozkan.dev>, 
-	Atharv Dubey <atharvd440@gmail.com>, Ke Sun <sunke@kylinos.cn>, 
-	linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 10, 2026 at 4:20=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
-ote:
->
-> I'm not sure we have a "usually" yet with the Rust LSM glue code, but
-> I'm happy to take this patch :)
->
-> Since you've already reviewed it, can I add your Reviewed-by tag?
+From: Gary Guo <gary@garyguo.net>
 
-Sure!
+The `#[allow(non_camel_case_types)]` was there because register names can
+be commonly SCREAMING_CASE and thus not CamelCase. However, when a bitfield
+type is created by itself, this justification does not apply. Thus, remove
+it.
 
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+Users that want to use non-standard styles can add the `#[allow]`
+themselves. For example, the invocation of `bitfield!` inside `register!`
+macro carry this annotation.
 
-Cheers,
-Miguel
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+ rust/kernel/bitfield.rs | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/rust/kernel/bitfield.rs b/rust/kernel/bitfield.rs
+index 15c78790e151..8d7d78175336 100644
+--- a/rust/kernel/bitfield.rs
++++ b/rust/kernel/bitfield.rs
+@@ -295,7 +295,6 @@ macro_rules! bitfield {
+         $(#[$attr:meta])* $vis:vis struct $name:ident($storage:ty) { $($fields:tt)* }
+     ) => {
+         $crate::bitfield!(@core
+-            #[allow(non_camel_case_types)]
+             $(#[$attr])* $vis $name $storage
+         );
+         $crate::bitfield!(@fields $vis $name $storage { $($fields)* });
+
+base-commit: 73e5616f3d197c1af5a04a481fe0f13aa3913bd1
+-- 
+2.54.0
+
