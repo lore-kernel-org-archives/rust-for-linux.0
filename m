@@ -1,242 +1,323 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1390D3DC4CE
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 10:09:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C768413D99
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 10:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789034982; cv=none; b=YkqCiKRXN7G3iIrnU+G04r5vdaVHuQtQ4DDgUXfLk+6S2jzISw0bp5jH/Qo0GBGaBxSllE9pfK52OrvWtepO8E5jvGwc6CuU2kgX/m8nthvs3KB96gDMAtV+USmcXtR8UPo5q+8rW5MYPFEZijFThZSHsuQK00uEEBhdvfhyuok=
+	t=1789036392; cv=none; b=fVE8GOuAt1j5ICPgglxHVdQcpNIz/xeH6pzDMsC7HK1XWPh77aA0iwQFscvu/AUEw3tT9ilKnnVdun/RuVcRNsWNZ3+ITc3vL184yMpqHfAONGf5UkBESzWO1KnKk6RPReNtKDDK3l5DFDsxusx02EqYsvd9XXebcEoXMZ1W1fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789034982; c=relaxed/simple;
-	bh=5MTpEF29vY3ddpLprqaotRdeYOwb+VnVZdNgLIvFcmw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X0XXz3EH44cgVYsEslc67810E0R89YybdQ53R1vtdSeD5/Jy9/WdFTWWIitBGTiq3fwdOnaXw2Vgrhb5LhStqbsFU3jFnjeSbnvgGdgg3+wfIiucEDOzShCKwWnuNtOH/NcbYcvpjHxyUxPkJE1t0N8anOdFsf5OpFZIxz/UYmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ctytSY7L; arc=none smtp.client-ip=209.85.215.175
+	s=arc-20240116; t=1789036392; c=relaxed/simple;
+	bh=JLYUPRgY3VU17t6D/KBuFz5KGU4hmck2Zh29/I5+qBM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TgJqEIhn9zJwvM+VbDuwpO+6JofJOwpr9d33+nTlTwBLF7ly/3fL2fx+0Hk5XccGiP2gY9RdC/uk5wsYdsyxL6KGcBQdNfF92BHgFaBf+ph56ghXecPpdgVQFkRqBbWgtuSPNnpRwB+A3FgAw2NYH3QcKKYT6uYqNHdHYnDYR+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ea/X5/ww; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ctytSY7L"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cc149372c14so3607635a12.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 03:09:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ea/X5/ww"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4998b5a63e2so79467495e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 03:33:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789034970; x=1789639770; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v5leu8y8+SZGo99Bk+YLh7ZmObofNLoxXT8B8pxE/vs=;
-        b=ctytSY7L/DxEzqk8j7+gaGI6mvluVfU3O2r2Pv6lA5ZPvr/AimXeCBMvrct/yR5WtK
-         tl/0oQVoeVE3191rLgWEe5hKsyXp8FpEBYj8EomuCTfT0gGuKY3W/WCSgR/fAK2P2Vv0
-         oxHYuUc0z8iawlEti2VZA+9cGcDYJ6RD+Yy9XZOw7MKqGneVfEk/AHsxt8xgJSCf/C2P
-         bRfPgkVm/HmXbUWA6hWL3upem518tWiXvdSKVwrIgcDOCXJKSk0A82SYq5DqAApe16Y9
-         G8ZvXESyYKdUpHqVgoLNswImC46tzflLstu00cbblF1SzAKf8WyWlODP5mONUO9ErwWG
-         hbEw==
+        d=gmail.com; s=20251104; t=1789036382; x=1789641182; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mRawg4Z5mHetwl9Q1bHnfv9ACubJE6CgvdpEZZ5c2ZM=;
+        b=ea/X5/ww5FaU4VhPEnXhYVwwwm6cRfrZOBsy9YrO2dBe0VdGku1hFm0QZ/cUUXJFIn
+         2cXqaN/93kIR541V4hjAfpqo2Hmc+B/VzlXqBV9y/j+bw2RSSfp5zUVzjJhWBkoB/hgk
+         PEYGK36CidTRPDZZB8kzGZuDCdKxQVbP/b+buyxFLTQrVPTWDmeX4ngi8j7qohQ7NUGV
+         9aseNcbGv22MMu5meU9j6u7UrLjadmZ8UH9KrxkRLEigLxgGciWEstEmrwCtXkp1IELt
+         TSImCsnfm/dLwc2KtCfQ126rJkqX/sHDf2twwsHlieVeQuIpsdcmsUgKbi6MNYWbF7l5
+         Unrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789034970; x=1789639770;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=v5leu8y8+SZGo99Bk+YLh7ZmObofNLoxXT8B8pxE/vs=;
-        b=WWioxZBK35iXy/hkCLRg/9AFf97OIj2zaittvDP7iyv42gNJTF3wS0LQoWdy31iUcD
-         u2OTqXlJRFkjlrO9zWfMFTX2oylqZWkgrycXFmSz3Rk5vMsK/W2BKvie2upUq9uzSino
-         ki6qSSWwFOpqlmQZsKmL5Txb5jsFeW07FP+jfI1018PVB1jiyZoCLNIknct/qTFDilJJ
-         hoTd2xbDKH1nxgXAQXZQ7Z34EbwsM/7lt89uNerAPlH3keYwmxoIXJaZxlO9xN7BGBAG
-         UieY1lzNmy2gY8UDbFMZR2aijSYhYw0Yxnc+qJDmAiAdG1TWEPb1nfiaIBjuQFv+ybwb
-         Iz4g==
-X-Forwarded-Encrypted: i=1; AKwUvBwe65scCMUpSfP5+STYQUIQt8z3Ddyp0vWn1j6P93p31KiD+hhozWRzOIq2QcGCsiinnQ3mm/x4RfXD5heztQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++kgfkPWrlsPic6ajxv72GlS/8RD2bzZZpEOT+HzOBz946euukYs
-	1LjattbzzDTW535GfG/fQptqeo7BGdAUW6p5cte0OEbasoKOhTdiVwuT
-X-Gm-Gg: AYBFou3x1FohiIjvi2XoVFWegXcFhzcI2ypFSqJxV5lYrrbetJ+tfMRYFbA+qtcpUki
-	uWqjkvA6S4G5sbm6Crek1qUN3pTit9VCV9twouw4JXFpOv4mLZANEb5kbTz3d2yRSJ3XW1kKSf2
-	tP2UsDQQtKGECoF68lG9AMcDJp9hFdIzI5PQQUdtkQmtJQsCWffA7j+Ts+XIweciTaB6vH8e49t
-	HfOyvEFuPJsu8HRCYxXZ0vPAcrjiZPMExMfmxk7KjDKyZn3q07Q4Hm8GgPHGcHIc8cqY7SDj8w5
-	iKuc5baldcvAAhYWhc8DXpV43NROTAL+sxBy17RTyszMQpwoSrZ7IUuKq2S3o5PDyYBhAbj60P1
-	iZe9XimJ8gkKfmG4AUpL55jh2ug+bEH9aEr0lADsX41CaTiXtISw0v35dkBIo1eZv4MQ8+CWzFA
-	kOrWPIdcL1ybupzJ7iNuatlqg+6Xgz0vadi8QHIwTWOsb6tvKUd4LQhDoWmLjNCIPToCpfZWlGM
-	I9758kxdL8gSxFeg5k29jFBSkryCb3P6g4v0Ek0MDzwAZkZmPxsZ8dIogzwwOhP
-X-Received: by 2002:a17:90b:33c1:b0:398:9bd1:3214 with SMTP id 98e67ed59e1d1-39b262dfa81mr56515343a91.21.1789034970472;
-        Thu, 10 Sep 2026 03:09:30 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.bl1-in.ibm.com ([129.41.58.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39bae60b23csm3460207a91.0.2026.09.10.03.09.20
+        d=1e100.net; s=20251104; t=1789036382; x=1789641182;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mRawg4Z5mHetwl9Q1bHnfv9ACubJE6CgvdpEZZ5c2ZM=;
+        b=dCwAe90su2py/GKXjWB5AcL2ONXunUYqi3NBpmFHBYncizVnos5ptgMUDGsd6+QFpf
+         pZGz64cfxh+zggqVe2bz8SBwi2+8GxqfxPTtA1G497Kl76NXLbluYdW2JlyeFTBB33iK
+         HOS6tzec52zcuKjOFlGegHrog7XmJzMFbihkrb+sYTH7VkMvLmJkreBiU3xaQjOrXUue
+         Wof7b8Mv7onYX+fDUyO5Cfc5egYSCD8pbZH+HJ4ZMhi+rgVtljRyBdanSTQA4db4qi1i
+         1rT3QBtq2zGKKanvCddXqRNAbjfse2yH4tzcWc4focc0CSUaDyEqIkO1gAZlOWNiWnkl
+         2Gbg==
+X-Forwarded-Encrypted: i=1; AKwUvBwd6eRr/gdYIidGva1xGreYxj0KxV8YZ3cgk5X0H28DZJUGRH/m1lA81Onp060AjXvqATpoOkIGAne+2eKFAg==@vger.kernel.org
+X-Gm-Message-State: AFuF++kLDhZ0GGDA/Qa+7KcgkPNIcsVNxd2cjdVCZsuoGfLGnn6cV9UP
+	bzyr1swWzK5Mpe/x65r3YxdhPle9dp7ipW+pqhkdlVkUnE8LwnYjak0I
+X-Gm-Gg: AYBFou1olFWJMQwA1K0HKkVtkqcQQxY1rAgk5BVzXXlO6Q9eMSQdjTk1pSwPLZME/BI
+	Q0wSdNC2dx1Qs2lEguEFz0QjoGQz2ChvP0h0ZhW0HVXEtdhverh+Yeq+s4Z1hwgh/w3S8edgAhV
+	5QwQZlGhFZVeu43W29jmyTPnydrDkmkvj1OnE+UXDt3MUoYiCbDbqJLae9ZlAjQskL4fjviWxGn
+	g0BcUn43SpFpwg+NGUdThJpU1W8XDI53YBfBy3SDjG8IPIVhMKm0823+R5JHLZ4wEU4s9zHyvcA
+	vxTnOOmpbH7a8nkyOeksCIJvWifvw+THGEJsVXYs922PK3Cy2w3W0Mz1IGQuMgkrv9L4QJTBcEx
+	gTtMXWrfPeoiZo/OuNj8/IUvhSuCZE//munudrvnB9Jz8YWfblWRFGM6X/MRjiN7WN8n1PKOyL9
+	gVLFrxB8dhbTNJCsuAuINMjVwCvk8ipn9wGDy+kmMccZx5JMpNMODuMdbzOqEiRKFSpbL6a5jvI
+	nHA1TgC70hYFjBFYINP99vjmhWtsWTcDWis
+X-Received: by 2002:a05:600c:4f43:b0:49c:fc6c:be0b with SMTP id 5b1f17b1804b1-49cffd457a4mr308628235e9.17.1789036382123;
+        Thu, 10 Sep 2026 03:33:02 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26bfd04fsm60049095e9.10.2026.09.10.03.33.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 03:09:29 -0700 (PDT)
-From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-To: maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	mkchauras@gmail.com,
-	linkmauve@linkmauve.fr,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	rust-for-linux@vger.kernel.org
-Cc: FUJITA Tomonori <tomo@flapping.org>
-Subject: [PATCH V3] powerpc/bug: Add ARCH_WARN_ASM and refactor _EMIT_BUG_ENTRY for Rust support
-Date: Thu, 10 Sep 2026 15:38:02 +0530
-Message-ID: <20260910100801.2159785-2-mkchauras@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        Thu, 10 Sep 2026 03:33:01 -0700 (PDT)
+Date: Thu, 10 Sep 2026 11:32:59 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Nathan Chancellor
+ <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Nick Desaulniers
+ <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt
+ <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, Alexey
+ Gladkov <legion@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti
+ <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, Ilias Apalodimas
+ <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir
+ Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
+ Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Jonathan Corbet
+ <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev, linux-riscv@lists.infradead.org,
+ linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
+Subject: Re: [PATCH 17/23] modpost: perform srcversion hashing in parallel
+Message-ID: <20260910113259.743b9686@pumpkin>
+In-Reply-To: <20260908-build-speedup-v1-17-5dc1ac01672d@kernel.org>
+References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
+	<20260908-build-speedup-v1-17-5dc1ac01672d@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The Rust kernel infrastructure generates inline asm for WARN() via
-ARCH_WARN_ASM(file, line, flags, size), expanding it through a C
-preprocessor pass (generated_arch_warn_asm.rs.S) to produce an
-arch-specific asm template string for use in Rust's core::arch macros.
+On Tue, 08 Sep 2026 21:55:17 +0100
+"Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
-powerpc currently lacks ARCH_WARN_ASM and ARCH_WARN_REACHABLE, causing
-Rust builds to fail on powerpc with
-```
-error: no rules expected `ARCH_WARN_ASM`
-   --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_warn_asm.rs:1:28
-    |
-  1 | ::kernel::concat_literals!(ARCH_WARN_ASM("{file}", "{line}", "{flags}", "{size}"))
-    |                            ^^^^^^^^^^^^^ no rules expected this token in macro call
-    |
-   ::: ../rust/kernel/lib.rs:279:1
-    |
-279 | macro_rules! concat_literals {
-    | ---------------------------- when calling this macro
-    |
-    = note: while trying to match sequence start
+> modpost does a lot of single-threaded work hashing files from each object's
+> .cmd file.
+> 
+> This makes the build slower than it needs to be, so do this work in
+> parallel.
+> 
+> This is egregious for allmodconfig builds - for instance x86-64 can end up
+> opening 200,000 files individually and hashing them all serially.
+> 
+> Parallelise this operation by maintaining a thread pool for the hashing
+> work.
+> 
+> Combined with the per-file hashing commit this cuts modpost's run time
+> nearly in half for an allmodconfig build.
+> 
+> Module.symvers and every *.mod.S are byte for byte the same.
+> 
+> modpost is on the serial tail of every allmodconfig build, however
+> defconfig does not set CONFIG_MODULE_SRCVERSION_ALL and is unchanged.
+> 
+> Whole build, 128-thread Threadripper 9980X, best of N runs:
+> 
+>                                          before   after     delta
+>                                          -------------------------------
+>   x86 allmodconfig, touch mm/vma.c, gcc    33.4s    30.2s     -3.2s (-10%)
+>   x86 allmodconfig, touch mm/vma.c, clang  31.1s    28.1s     -3.0s (-10%)
+> 
+> Assisted-by: LLM
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  scripts/mod/Makefile     |  1 +
+>  scripts/mod/modpost.c    | 72 ++++++++++++++++++++++++++++++++++++++++++++++--
+>  scripts/mod/modpost.h    |  2 ++
+>  scripts/mod/sumversion.c |  3 +-
+>  4 files changed, 74 insertions(+), 4 deletions(-)
+> 
+> diff --git a/scripts/mod/Makefile b/scripts/mod/Makefile
+> index fbd5099e0441..fdd486184f9c 100644
+> --- a/scripts/mod/Makefile
+> +++ b/scripts/mod/Makefile
+> @@ -5,6 +5,7 @@ hostprogs-always-y	+= modpost mk_elfconfig
+>  always-y		+= empty.o
+>  
+>  modpost-objs	:= modpost.o file2alias.o sumversion.o symsearch.o
+> +HOSTLDLIBS_modpost := -lpthread
+>  
+>  devicetable-offsets-file := devicetable-offsets.h
+>  
+> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+> index 550ccd753ed8..882169e51851 100644
+> --- a/scripts/mod/modpost.c
+> +++ b/scripts/mod/modpost.c
+> @@ -16,6 +16,7 @@
+>  #include <fnmatch.h>
+>  #include <stdio.h>
+>  #include <ctype.h>
+> +#include <pthread.h>
+>  #include <string.h>
+>  #include <limits.h>
+>  #include <stdbool.h>
+> @@ -1717,8 +1718,7 @@ static void read_symbols(const char *modname)
+>  	if (!mod->is_vmlinux) {
+>  		version = get_modinfo(&info, "version");
+>  		if (version || all_versions)
+> -			get_src_version(mod->name, mod->srcversion,
+> -					sizeof(mod->srcversion) - 1);
+> +			mod->need_srcversion = true;
+>  	}
+>  
+>  	parse_elf_finish(&info);
+> @@ -1736,6 +1736,72 @@ static void read_symbols(const char *modname)
+>  	}
+>  }
+>  
+> +static struct module **srcversion_mods;
+> +static unsigned int nr_srcversion_mods, next_srcversion_mod;
+> +
+> +static bool get_next_src_version(void)
+> +{
+> +	struct module *mod;
+> +	unsigned int idx;
+> +
+> +	idx = __sync_fetch_and_add(&next_srcversion_mod, 1);
 
-error: no rules expected `ARCH_WARN_REACHABLE`
-   --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_reachable_asm.rs:1:28
-    |
-  1 | ::kernel::concat_literals!(ARCH_WARN_REACHABLE)
-    |                            ^^^^^^^^^^^^^^^^^^^ no rules expected this token in macro call
-    |
-   ::: ../rust/kernel/lib.rs:279:1
-    |
-279 | macro_rules! concat_literals {
-    | ---------------------------- when calling this macro
-    |
-    = note: while trying to match sequence start
+When I've done this is the past, adding 'a few' items was faster
+because it reduced the contention on the counter.
+(Although there were probably some very cheap 'actions'.)
 
-error: aborting due to 2 previous errors
-```
+> +	if (idx >= nr_srcversion_mods)
+> +		return false;
+> +	mod = srcversion_mods[idx];
+> +
+> +	get_src_version(mod->name, mod->srcversion,
+> +			sizeof(mod->srcversion) - 1);
+> +	return true;
+> +}
+> +
+> +static void *srcversion_worker(void *arg)
+> +{
+> +	while (get_next_src_version())
+> +		;
 
-To add ARCH_WARN_ASM, _EMIT_BUG_ENTRY first needs to be refactored.
-The old definition was a bare macro with no parameters, relying on
-positional asm operand references (%0-%3), hardcoding the backward
-reference to local label 1b, and including .org/.previous directives
-inline. That made it impossible to compose as a plain string outside of
-an asm operand context, and left an invisible contract that callers must
-always emit their trap at label 1:.
+I don't think the extra function call helps.
 
-Refactor _EMIT_BUG_ENTRY to take explicit (label, file, line, flags)
-string arguments via string concatenation. This removes the dependency
-on asm operand numbering and makes the trap label an explicit argument,
-so the caller's intent is visible at the call site and a future caller
-using a different label cannot silently produce a wrong bug table entry.
+> +
+> +	return NULL;
+> +}
+> +
+> +static void hash_srcversions(void)
+> +{
+> +	unsigned int i = 0;
+> +	struct module *mod;
+> +	pthread_t *threads;
+> +	long nr_threads;
+> +
+> +	list_for_each_entry(mod, &modules, list)
+> +		if (mod->need_srcversion)
+> +			nr_srcversion_mods++;
+> +
+> +	if (!nr_srcversion_mods)
+> +		return;
+> +
+> +	srcversion_mods = xmalloc(nr_srcversion_mods * sizeof(*srcversion_mods));
+> +
+> +	list_for_each_entry(mod, &modules, list)
+> +		if (mod->need_srcversion)
+> +			srcversion_mods[i++] = mod;
+> +
+> +	nr_threads = sysconf(_SC_NPROCESSORS_ONLN);
 
-Move the .org and .previous directives out of _EMIT_BUG_ENTRY and into
-each call site, so BUG_ENTRY() can still pass sizeof(struct bug_entry)
-as an asm operand while ARCH_WARN_ASM can supply its own size string
-independently.
+One thread per cpu is probably a few to many.
+It might be worth adding a command line parameter for the 'max threads'.
+Possibly with -n meaning 'all but n'.
 
-Add ARCH_WARN_REACHABLE as an empty define, matching the arm64
-convention, indicating that no additional reachability annotation is
-needed after a WARN on powerpc.
+> +	nr_threads = nr_threads < 1 ? 1 : nr_threads; /* On error assume 1. */
+> +	if (nr_threads > nr_srcversion_mods)
+> +		nr_threads = nr_srcversion_mods;
+> +
+> +	sumversion_init();
+> +	threads = xmalloc(nr_threads * sizeof(*threads));
+> +	for (i = 0; i < nr_threads; i++) {
+> +		if (pthread_create(&threads[i], NULL, srcversion_worker, NULL)) {
+> +			perror("pthread_create");
+> +			exit(1);
+> +		}
+> +	}
 
-This brings powerpc into line with x86, arm64, s390, and riscv, all of
-which already define ARCH_WARN_ASM and ARCH_WARN_REACHABLE.
+The main code can call srcversion_worker() here.
 
-Reported-by: FUJITA Tomonori <tomo@flapping.org>
-Closes: https://lore.kernel.org/all/anG67Q6Y59kDqh-c@desktop
-Fixes: 73b741adb264 ("rust: Add PowerPC support")
-Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
----
-Changelog:
-V2 -> V3:
- - Add label argument in _EMIT_BUG_ENTRY
-V2: https://lore.kernel.org/all/20260910071252.1950488-2-mkchauras@gmail.com
+David
 
-V1 -> V2:
-- commit message now has error, fixes tag and closes tag
-V1: https://lore.kernel.org/all/20260819084825.969116-1-mkchauras@gmail.com
-
- arch/powerpc/include/asm/bug.h | 36 +++++++++++++++++++---------------
- 1 file changed, 20 insertions(+), 16 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
-index 0db48977c70c..df2183c35945 100644
---- a/arch/powerpc/include/asm/bug.h
-+++ b/arch/powerpc/include/asm/bug.h
-@@ -32,34 +32,38 @@
- #endif /* verbose */
- 
- #else /* !__ASSEMBLER__ */
--/* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
--   sizeof(struct bug_entry), respectively */
- #ifdef CONFIG_DEBUG_BUGVERBOSE
--#define _EMIT_BUG_ENTRY				\
--	".section __bug_table,\"aw\"\n"		\
--	"2:	.4byte 1b - .\n"		\
--	"	.4byte %0 - .\n"		\
--	"	.short %1, %2\n"		\
--	".org 2b+%3\n"				\
--	".previous\n"
-+#define _EMIT_BUG_ENTRY(label, file, line, flags)	\
-+	".section __bug_table,\"aw\"\n"			\
-+	"2:	.4byte " label "b - .\n"		\
-+	"	.4byte " file " - .\n"			\
-+	"	.short " line ", " flags "\n"
- #else
--#define _EMIT_BUG_ENTRY				\
--	".section __bug_table,\"aw\"\n"		\
--	"2:	.4byte 1b - .\n"		\
--	"	.short %2\n"			\
--	".org 2b+%3\n"				\
--	".previous\n"
-+#define _EMIT_BUG_ENTRY(label, file, line, flags)	\
-+	".section __bug_table,\"aw\"\n"			\
-+	"2:	.4byte " label "b - .\n"		\
-+	"	.short " flags "\n"
- #endif
- 
- #define BUG_ENTRY(cond_str, insn, flags, ...)		\
- 	__asm__ __volatile__(				\
- 		"1:	" insn "\n"			\
--		_EMIT_BUG_ENTRY				\
-+		_EMIT_BUG_ENTRY("1", "%0", "%1", "%2")	\
-+		".org 2b+%3\n"				\
-+		".previous\n"				\
- 		: : "i" (WARN_CONDITION_STR(cond_str) __FILE__), "i" (__LINE__),	\
- 		  "i" (flags),				\
- 		  "i" (sizeof(struct bug_entry)),	\
- 		  ##__VA_ARGS__)
- 
-+#define ARCH_WARN_ASM(file, line, flags, size)		\
-+		"1:	twi 31, 0, 0\n"			\
-+		_EMIT_BUG_ENTRY("1", file, line, flags)	\
-+		".org 2b+" size "\n"			\
-+		".previous\n"
-+
-+#define ARCH_WARN_REACHABLE
-+
- /*
-  * BUG_ON() and WARN_ON() do their best to cooperate with compile-time
-  * optimisations. However depending on the complexity of the condition
--- 
-2.55.0
+> +	for (i = 0; i < nr_threads; i++)
+> +		pthread_join(threads[i], NULL);
+> +
+> +	free(threads);
+> +	free(srcversion_mods);
+> +}
+> +
+>  static void read_symbols_from_files(const char *filename)
+>  {
+>  	FILE *in = stdin;
+> @@ -2729,6 +2795,8 @@ int main(int argc, char **argv)
+>  	if (files_source)
+>  		read_symbols_from_files(files_source);
+>  
+> +	hash_srcversions();
+> +
+>  	list_for_each_entry(mod, &modules, list) {
+>  		keep_no_trim_symbols(mod);
+>  
+> diff --git a/scripts/mod/modpost.h b/scripts/mod/modpost.h
+> index d5f6d82837d5..10d5f8f2f293 100644
+> --- a/scripts/mod/modpost.h
+> +++ b/scripts/mod/modpost.h
+> @@ -127,6 +127,7 @@ struct module {
+>  	bool has_init;
+>  	bool has_cleanup;
+>  	char	     srcversion[25];
+> +	bool need_srcversion;
+>  	// Missing namespace dependencies
+>  	struct list_head missing_namespaces;
+>  	// Actual imported namespaces
+> @@ -213,6 +214,7 @@ void handle_moddevtable(struct module *mod, struct elf_info *info,
+>  			Elf_Sym *sym, const char *symname);
+>  
+>  /* sumversion.c */
+> +void sumversion_init(void);
+>  void get_src_version(const char *modname, char sum[], unsigned sumlen);
+>  
+>  /* from modpost.c */
+> diff --git a/scripts/mod/sumversion.c b/scripts/mod/sumversion.c
+> index 5501d6aa0bea..4521b92ef868 100644
+> --- a/scripts/mod/sumversion.c
+> +++ b/scripts/mod/sumversion.c
+> @@ -249,7 +249,7 @@ static int parse_comment(const char *file, unsigned long len)
+>  /* FIXME: Handle .s files differently (eg. # starts comments) --RR */
+>  static bool stop_char[256];
+>  
+> -static void sumversion_init(void)
+> +void sumversion_init(void)
+>  {
+>  	static bool done;
+>  	int chr;
+> @@ -402,7 +402,6 @@ static int parse_source_files(const char *objfile, struct md4_ctx *md)
+>  				     line, strerror(errno));
+>  				goto out_file;
+>  			}
+> -
+>  		}
+>  
+>  	}
+> 
 
