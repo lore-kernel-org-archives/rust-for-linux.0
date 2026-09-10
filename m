@@ -1,195 +1,176 @@
-Received: from mail-vs2-f12.google.com (mail-vs2-f12.google.com [74.125.227.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA89048A8B9
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 13:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789046165; cv=pass; b=r+XDvB0GE+X7NDRevqnsQgEqpEOcYSL7tT8Svp9BCgn7r7L7DOkxueP1KeOaQqbxw2ny1kJBAPzMcD8jB9e7/79+jmbE6s0gEzcNqTHBFfGoZ7/mZTZhnFqY3z5udosW6LvMy+7foi7UfO+1BWWIp95zan7o2v0xHphZaWcv3nk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789046165; c=relaxed/simple;
-	bh=r9p+KqcSZBzwlNv4UIOkluYxZzxF3C9CkP39r42NlUU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e9oUWaU7a3Mb0vfFxlPRy3AJ9J10qAmFAx14Tx3zZ4ZZilep/YSDjXmVAOzYa/wg2vH5bz/PnhJ2rJqz8bbYLN96QeRdDtiQhjrpjo1K3tGqSQkMX+oy2xnFMSRwBG6Gsa7iM8DyWUbJTec404Ae37eWOjh0wOmPLFyg+djQqnk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b66tnTQ8; arc=pass smtp.client-ip=74.125.227.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25AC48AE20;
+	Thu, 10 Sep 2026 13:24:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789046672; cv=none; b=tC5Zw69y042WwnbzkjHghLplBuDSPE6/v1lHz8daIvDdCXZyip6Mix0aXMk+98hIpdyXEkoVnMDP0dgzS/wRZohdYVQIgUUScDy/aqLajoSnyRTaDZmhAK/vvZ+tQQI+rgAOAkBqtMU9NgmUKo7UD1u70qMtmBAHGjQQcbblExw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789046672; c=relaxed/simple;
+	bh=+VbvFGXiK89TFpoWtiLNX+IaqJLiERKN2CC6vh99MJw=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=YxvrOCXrY1rZA3KiAa9WOeBWILfQWYSx6ZC8yUxboIGvHvaStWT7h+InuqPzDSwm2MSaFcj+ayjykueXq0WGko6Wn/VqSwQs38aWG81vX7J9/y6OCT4mnsU394mKJw1wlAm2xHfAcUgP2nEySSElAL/776OZxf4ZOLmQvG8vqtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=gA7IDNQ5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nY6v7Fp3; arc=none smtp.client-ip=202.12.124.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b66tnTQ8"
-Received: by mail-vs2-f12.google.com with SMTP id ada2fe7eead31-781d581d9bdso249133137.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 06:16:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789046162; cv=none;
-        d=google.com; s=arc-20260327;
-        b=NV/dlx7/oGQbCHMpfEkPjnReCzcpB2MXqWsaSgKxojOkRrZ0pdsz64fI0Sq40rygdy
-         7j5ozYQRljDwcPDEG8dtT2kmP4cJ4OQdNVBb6BjcGfkyHvkw2RW020FskFjy6rQfpk+W
-         K91kdMZMt431eZQ8k4muqbXSEhVNoPeNyyrYgwcu5s74jgIycPCF73r247+pyjjqVJoO
-         UB/v2che3CKMMpQdTdIw07g2MJVGKBvaFAzHZEnRXR8zC/UWhcIlLwI+aIoHuX+N4zSm
-         g01Bcdf986cXuFtMKAqOHzjRd/4Z1wSWxev1jVJDf4glrTZEeRVcrzK4YKquv+t/Xw21
-         /Qhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=moA5jUO3uVa6D/ugtSObUrS5bANjOYs5c5g0mj7H5a0=;
-        fh=d6Pf215jK/SP7pyEOWD+u55anMyRYbkPNbwR/YNwOOU=;
-        b=VKGnxQQGhChD2y8+ThqQrD3+i6JCAC2xXqYAc87S2eQZtChKTX5yt0aDxhRpi0phKR
-         /r8pBLLwySpNBDHc4HR49Bw7hfjfH7ABJC3S5QtlPY52lba2b2qjN7hozSeg6cABZikE
-         WOQrNPELdg4zPhNCTkfixCGesVma6RHQlqgciYLTZpQ/fbOdzQHGEhgzKsTppghninT3
-         7Zo/vvMRZtdhge2anUDPgMoLn/A62e62KM6cZfM/nRDXQPHe3JvvYLtlCARPbKg0jrGM
-         H4sC4CB3cesR8zGOoGrGtP91obx45ut3kLibHVwqU4iFh/L03rnB6y2R0oTQdr3rktMF
-         274Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789046162; x=1789650962; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=moA5jUO3uVa6D/ugtSObUrS5bANjOYs5c5g0mj7H5a0=;
-        b=b66tnTQ84Smqti3gL2sPo+HpSbXYjnKsqMTwwxQtewG+Os+PQYomsDy8Ia41zmBATc
-         B0HM3lXvJ9bi08YezVh7B8GUrU8LJn7d4q4SWeeCGDtdAZxuT5Hb8oJk8kWFnFa2G7zD
-         Brq9uDxXnFVz9j6pHt/EL8txXU/OS1xRIBgzV5NzpR7fHpfF2v1zPM0H2RKXi9z31Lsa
-         iF4xlIdM6AflRERNgUpnrnuTkOgFi2abagtSvyJkf4EKxFyJ5fCQUmMKEI9LpMAhHoYQ
-         DJGnwQkOXSuGZDvSMAwLYKvpL0Y0PJQNAjhHua748I0UZ3i21RIIxeOHlMrlKCU/4vKB
-         NiAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789046162; x=1789650962;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=moA5jUO3uVa6D/ugtSObUrS5bANjOYs5c5g0mj7H5a0=;
-        b=MOgeknz9hqiSPh+bVzTVsv7BQYlevnQq3ryLyfxwNcan6pO3ycom5LM2X+CnFphhe8
-         HwX812RpUx9d705PtTICA3p7xFz6Z/oycwDzwoxKJoN3q6JvARWNRxsO9kBHcnmpqst0
-         n41c9ncP2MwhGgGmK/a3FEJ6hmCj5yszZYvTcVUcAuNaSLaoxc5J2C9oLJr9iCAxFkM+
-         KYVx0y6ScG4kIiykBUJHipbb+GhV319yWK/EFRCw1QE2p7geXpy3ALc7d46WaRaMU2xt
-         fBdQ7AwovVfhFC2V856BFD8JJHzZGdEF3KRyPUKqWXhsRbnR046Vm14EIiKSlJH/gnDR
-         eldA==
-X-Forwarded-Encrypted: i=1; AKwUvBx9gcfuKGlBtGm44rExeFvxAJCcoSy1l6d4ly4ZJii3ARZQr/I1rbLdRCihZ+gMo43vdf3KClcEYb7aiHvhqA==@vger.kernel.org
-X-Gm-Message-State: AFuF++mffB8nfT8Rd+z0cDx49O/zV/oXFWzBVEYfa79zXQ5w761nGGkJ
-	2taULcQgKBcblgnKZqr1b0FgG9h0OTR2/LYBm8pT6mtqVOUiq1NoUPy83pwM4WePC2os7Ys4iX/
-	/WHrjzRNu6UktM3aXnbaVNZezhQIUfIQ=
-X-Gm-Gg: AYBFou38AU/yeIe4qQHBpCXekQAzQyDfAnQywphomSxhShRgGH87D8FtXt+qNJKKxNK
-	l0DI/avT5G8apEGcvf4D4ifXYniMnJx0xySn9qfH9IeZi9iWG8T4a1zByJuQJ2C3CR1f1XiYqGg
-	5UbrzgqMM+OlyoJhxuiK0RRNay97SUb0S5FQQWZXCXMTntnqnEkvhLk6yjuQVxI8zps9XKI0Y+Y
-	NMdDLc4B2Ip8N+ahbmg+R3FdOLUG7dzEISL58Q+fD+jS9B6ees7gewODrYV1G53Wawt4FhzUKls
-	6aKshuL7asJUOBVtemXpCq8XI8EDNOy2xlKXfbdZty7gVUblDNTcTlgExTomVcxOlzpS2bF6puU
-	WeewBKBNRLcw9cHG00+1PEsUBGCurlvqQqXFrFDW5bw==
-X-Received: by 2002:a67:ebd5:0:b0:790:563:8d1b with SMTP id
- ada2fe7eead31-79005639f22mr1869415137.0.1789046161658; Thu, 10 Sep 2026
- 06:16:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="gA7IDNQ5";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nY6v7Fp3"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 755037A00BD;
+	Thu, 10 Sep 2026 09:24:28 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Thu, 10 Sep 2026 09:24:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1789046668;
+	 x=1789133068; bh=pPNVfymHR2XC9ByNjrUYouH52ihzMf/+u8o83ywFdQA=; b=
+	gA7IDNQ5qcGQ9FpoVUXx9Rl3euUYNZXCVvMUXllrij8BbixGwlvEoz+9AmV/oe8F
+	klwFza6v+Hvs7i9T/PobFxsBaXSh8CpcDBbQfhD81HBahEPDTNRiXueurK9nM/Po
+	fCbADRszzAEoYA4tnSUBJfTiyPpEUGJVfqpiVuus1c8nzILjIIk6+BqdXh+88b4H
+	LTnHh0eG7dRkS48byEoYQyFw8+Chf2ptYiq2yadDL7LyRsU7iepSJhVPZranDtCL
+	vu7ZHtkVKQZ5vWU9sZCJCQh447z+hKgU6g/R2aTx4hVmfei0kdAqAP5QmrLDj+Tp
+	eiZ6RgAcdMkjLEKeXrVcaw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789046668; x=
+	1789133068; bh=pPNVfymHR2XC9ByNjrUYouH52ihzMf/+u8o83ywFdQA=; b=n
+	Y6v7Fp3DIuBnH4qWqWrhvgGn8EpZdyXTxR/TVEn5qpH+MBLay5FShFAcIVqrh868
+	os9oa0fPPAKtyKLOZ9H3qvO70CPLiFTXfE2/q4qO3eVN6BZQ5rZAyyyfk6pdcX1u
+	wGbfu/41czlwRjJMnwu+8FQtQ4M52XftYOe1xViiXZjUZ207rGQPFLKxkQwvN4+U
+	p10s39b0WMEwLx9XaEl5sUlhawoblXVzSnY2DlobwjdD2eYfdFcuxll7d7pxC4PL
+	/BKogLV3SXHDZjLAZrhDwY63kBkJMRutj2CnW3l1nLf62WwxNnhw40F7GxKfmpyD
+	99IsnV93FfZSImJPgWyfA==
+X-ME-Sender: <xms:iq-iau1ZCqh3xeTm8AsCTDDwXElvTfmJJ8FPc5up_wuHJVzjvusHCw>
+    <xme:iq-iaqu7-sHbm7-NYmO4UD99rGyGL7EXy2NIPADQS3IL1bz52ihG0_0XhxHiX9ql7
+    5kUH6FCyMy7smka-K_qc2gyNkGDyG0gmZW4h7O5KIW9_M4CsuxsGfx->
+X-ME-Received: <xmr:iq-iaqXxZlRXMG6Q087BNmElwkwy7c5kMjQNNG2N3bl1LoUM5cRlkWyQxQK7RJwPA3Syt0_y8nQFYmzTRdUhfIKg>
+X-ME-Proxy-Cause: dmFkZTGW95mqvfGMGPYTEqTrjHWUVhcvA5HTKwj8urM2KImtx2Iw9C8bH169hBTFRhfrF5
+    EXeXd9fEyRmAWq9C2AqmFUuIGYg/rCdWRGD5tqrtc0m9Lhzfe+klqthxkpugjTTbNWrHfM
+    wKkmWGL6lweONGEbJlksgvzcsa+Runt4ZT+UhiucVixdhhbKgwMLrxvwWBsqhNctodDxiX
+    RhKdnuGYmxMwDpUPut0kWqIpwpWh7wFiX1VHnz9y81TIP16Sm/ODsJnLE1VbX8czDGZ4cV
+    VnrFvtCSTjzb5GUj2Kwvm+WTy0Y9CC7bnCVPt9Yjp5Hb63szP80RltNxaT8GmrQ+7bzToH
+    uSAMr6O8uIM9PgHR8wHhCKsDgQsE6NyQ1Akb3s20XBOFhVNDLkBuA4DZcr370TyYkPfOJm
+    idUL8lrxcn1/Sg3PMKZS5IEdNXCiCkFwoBsMwXsuADlEPM5EpBFyRygH/ylWjEFcO8GDl8
+    onCEtXKyRX/LiKCWmfFxf1w9g3MflXjTVaKzS/1OAvttW1MtnRg/TmGkIcX2nOVWw6UZP2
+    Ei2H8MjjdY+Oh2vgIwjyANe9Y7D0h6S8wyOjp+AYfGS0gC+p57aNyKjXSSF9gwhm/tRL0y
+    kmVdqVgottQbPVU7s/CzACugOVlyd6HNA+WS9TMNI1LjAFOvUdosxnB7yOaQ
+X-ME-Proxy: <xmx:iq-iamsBE7VFp0yC1usqqOlKq6NWZOi2YZ7MMOpPyHX_T1aba7SUvQ>
+    <xmx:iq-iasMa2D8EhXge6o50AOreJAAV5d8ekGHgPXI7vUp2CxdepWUmXg>
+    <xmx:iq-ialnWx7C9_Bx9AM9fOxw6XPc4d9fM1jjtkuxlA5WQbsbeKZ1WJw>
+    <xmx:iq-iaizoz_Gdf6XyKAvKLqi5mCun_CYzbYMm4UqE_B6Y6IZ310BXgA>
+    <xmx:jK-iajLKynxfVMAs1dc03eCGD-yBdoLJ1PdVyg3mE6-cAJthBQ0IY_9c>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 10 Sep 2026 09:24:20 -0400 (EDT)
+Date: Thu, 10 Sep 2026 22:24:17 +0900 (JST)
+Message-Id: <20260910.222417.2048885189565815846.tomo@flapping.org>
+To: gary@garyguo.net
+Cc: mkchauras@gmail.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
+ npiggin@gmail.com, chleroy@kernel.org, pjw@kernel.org, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, alex@ghiti.fr, ojeda@kernel.org, boqun@kernel.org,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
+ daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
+ work@onurozkan.dev, linkmauve@linkmauve.fr, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+ rust-for-linux@vger.kernel.org, tomo@flapping.org
+Subject: Re: [PATCH V3] powerpc/bug: Add ARCH_WARN_ASM and refactor
+ _EMIT_BUG_ENTRY for Rust support
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <DLBMFNHCKSJ6.1I36FDVEACEUF@garyguo.net>
+References: <20260910100801.2159785-2-mkchauras@gmail.com>
+	<DLBMFNHCKSJ6.1I36FDVEACEUF@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260909173103.73656-1-klarasmodin@gmail.com>
-In-Reply-To: <20260909173103.73656-1-klarasmodin@gmail.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Thu, 10 Sep 2026 09:15:48 -0400
-X-Gm-Features: AcwNN1XHoZUcFvWmvZ91jrJEiVXoE4O9xNxPdZc5AmfqfU3fK8LxM3IuZyCmVsY
-Message-ID: <CADnq5_MCChZJ3vFmAeMPhq1xHLC5Ba+=g+v4+OUKZ8ciLbKY3A@mail.gmail.com>
-Subject: Re: [PATCH v2] rust/drm/gem: initialize callbacks with ..pin_init::zeroed()
-To: Klara Modin <klarasmodin@gmail.com>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Deucher <alexander.deucher@amd.com>, Mukul Joshi <mukul.joshi@amd.com>, 
-	Felix Kuehling <felix.kuehling@amd.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Thorsten Leemhuis <linux@leemhuis.info>, Manuel Ebner <manuelebner@mailbox.org>, 
-	Gary Guo <gary@garyguo.net>, Thomas Zimmermann <tzimmermann@suse.de>, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	amd-gfx@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Applied.  Thanks.
+On Thu, 10 Sep 2026 13:05:27 +0100
+"Gary Guo" <gary@garyguo.net> wrote:
 
-Alex
+> On Thu Sep 10, 2026 at 11:08 AM BST, Mukesh Kumar Chaurasiya (IBM) wrote:
+>> The Rust kernel infrastructure generates inline asm for WARN() via
+>> ARCH_WARN_ASM(file, line, flags, size), expanding it through a C
+>> preprocessor pass (generated_arch_warn_asm.rs.S) to produce an
+>> arch-specific asm template string for use in Rust's core::arch macros.
+>>
+>> powerpc currently lacks ARCH_WARN_ASM and ARCH_WARN_REACHABLE, causing
+>> Rust builds to fail on powerpc with
+>> ```
+>> error: no rules expected `ARCH_WARN_ASM`
+>>    --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_warn_asm.rs:1:28
+>>     |
+>>   1 | ::kernel::concat_literals!(ARCH_WARN_ASM("{file}", "{line}", "{flags}", "{size}"))
+> 
+> I think we probably want to catch this earlier by have something like
+> 
+> #ifndef ARCH_WARN_ASM
+> #error "ARCH_WARM_ASM is not defined"
+> #endif
+> 
+> in generated_arch_warn_asm.rs.S.
 
-On Thu, Sep 10, 2026 at 6:08=E2=80=AFAM Klara Modin <klarasmodin@gmail.com>=
- wrote:
->
-> When the commit b67d2d039f64 ("drm/gem: Add callback for when handle
-> count goes to 0") added the handle_free callback, it did not update the
-> rust abstraction, which will cause a build failure when that is enabled.
-> Rather than just adding another None initializer, use
-> ..pin_init::zeroed() to make all unlisted callbacks None, and remove the
-> existing zero-initializations.
->
-> Fixes: b67d2d039f64 ("drm/gem: Add callback for when handle count goes to=
- 0")
-> Reported-by: Thorsten Leemhuis <linux@leemhuis.info>
-> Closes: https://lore.kernel.org/all/aaef18cd-ab55-4fb8-8563-ca3a5ea9cbc6@=
-leemhuis.info
-> Reported-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Closes: https://lore.kernel.org/all/4da62a4b-c4ef-492a-9a27-b56bd4784acf@=
-suse.de
-> Suggested-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Klara Modin <klarasmodin@gmail.com>
-> ---
-> v2:
-> - also remove initialization of vm_ops, which is also handled by
->   ..pin_init::zeroed() (thanks Gary)
-> - fix the same issue in the shmem helper (thanks Thomas, also reported
->   by Sashiko)
-> - v1: https://lore.kernel.org/lkml/20260908175427.47207-1-klarasmodin@gma=
-il.com
-> ---
->  rust/kernel/drm/gem/mod.rs   | 13 +------------
->  rust/kernel/drm/gem/shmem.rs |  5 +----
->  2 files changed, 2 insertions(+), 16 deletions(-)
->
-> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-> index 80d8f524f9d5..9d4280002765 100644
-> --- a/rust/kernel/drm/gem/mod.rs
-> +++ b/rust/kernel/drm/gem/mod.rs
-> @@ -266,18 +266,7 @@ impl<T: DriverObject, Ctx: DeviceContext> Object<T, =
-Ctx> {
->          free: Some(Self::free_callback),
->          open: Some(open_callback::<T>),
->          close: Some(close_callback::<T>),
-> -        print_info: None,
-> -        export: None,
-> -        pin: None,
-> -        unpin: None,
-> -        get_sg_table: None,
-> -        vmap: None,
-> -        vunmap: None,
-> -        mmap: None,
-> -        status: None,
-> -        vm_ops: core::ptr::null_mut(),
-> -        evict: None,
-> -        rss: None,
-> +        ..pin_init::zeroed()
->      };
->
->      /// Returns the `Device` that owns this GEM object.
-> diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
-> index a687d46d170d..24cb5343e0db 100644
-> --- a/rust/kernel/drm/gem/shmem.rs
-> +++ b/rust/kernel/drm/gem/shmem.rs
-> @@ -132,19 +132,16 @@ impl<T: DriverObject> Object<T> {
->          open: Some(super::open_callback::<T>),
->          close: Some(super::close_callback::<T>),
->          print_info: Some(bindings::drm_gem_shmem_object_print_info),
-> -        export: None,
->          pin: Some(bindings::drm_gem_shmem_object_pin),
->          unpin: Some(bindings::drm_gem_shmem_object_unpin),
->          get_sg_table: Some(bindings::drm_gem_shmem_object_get_sg_table),
->          vmap: Some(bindings::drm_gem_shmem_object_vmap),
->          vunmap: Some(bindings::drm_gem_shmem_object_vunmap),
->          mmap: Some(bindings::drm_gem_shmem_object_mmap),
-> -        status: None,
-> -        rss: None,
->          #[allow(unused_unsafe, reason =3D "Safe since Rust 1.82.0")]
->          // SAFETY: `drm_gem_shmem_vm_ops` is a valid, static const on th=
-e C side.
->          vm_ops: unsafe { &raw const bindings::drm_gem_shmem_vm_ops },
-> -        evict: None,
-> +        ..pin_init::zeroed()
->      };
->
->      /// Return a raw pointer to the embedded drm_gem_shmem_object.
-> --
-> 2.55.0
->
+Good idea.
+
+One thing needs to be fixed first. arm and loongarch do not define
+ARCH_WARN_ASM. rust/kernel/bug.rs uses bindings::WARN_ON() on those
+architectures, so it never includes generated_arch_warn_asm.rs. But
+rust/Makefile still generates the file for them. With #error, their
+builds would break.
+
+I think we should add a condition to rust/Makefile to stop generating
+the file for arm and loongarch. Then #error can be unconditional.
+
+Does that sound reasonable? I can send patches.
+
+
+>>  arch/powerpc/include/asm/bug.h | 36 +++++++++++++++++++---------------
+>>  1 file changed, 20 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+>> index 0db48977c70c..df2183c35945 100644
+>> --- a/arch/powerpc/include/asm/bug.h
+>> +++ b/arch/powerpc/include/asm/bug.h
+>> @@ -32,34 +32,38 @@
+>>  #endif /* verbose */
+>>  
+>>  #else /* !__ASSEMBLER__ */
+>> -/* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
+>> -   sizeof(struct bug_entry), respectively */
+>>  #ifdef CONFIG_DEBUG_BUGVERBOSE
+>> -#define _EMIT_BUG_ENTRY				\
+>> -	".section __bug_table,\"aw\"\n"		\
+>> -	"2:	.4byte 1b - .\n"		\
+>> -	"	.4byte %0 - .\n"		\
+>> -	"	.short %1, %2\n"		\
+>> -	".org 2b+%3\n"				\
+>> -	".previous\n"
+>> +#define _EMIT_BUG_ENTRY(label, file, line, flags)	\
+>> +	".section __bug_table,\"aw\"\n"			\
+>> +	"2:	.4byte " label "b - .\n"		\
+> 
+> "b" is part of the label. "1b" itself is a label and "1" is just an integer.
+> 
+> If the code uses
+> 
+>     _EMIT_BUG_ENTRY(..)
+>     "1: ..."
+> 
+> then the correct label would be "1f".
+
+Agreed.
+
+I think keeping the label fixed, as v2 did, would be fine too. x86,
+arm64 and riscv all hardcode it. A comment that says the caller must
+put the trap at 1: might be enough.
+
