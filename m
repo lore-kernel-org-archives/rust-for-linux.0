@@ -1,121 +1,124 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA085947FB
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 19:00:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A65361670;
+	Thu, 10 Sep 2026 19:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789066821; cv=none; b=dD378XAJYAHw/5BjFpOdvbX7//NFBBbotPR6k3k9aZqHsAm2yZ5e0hpr4w5bhgWLxHKPZ8Bj8fBAQ7CoDYZfENK9885I7wriDiGAGlSdWgCiPINvQR1VDFPaezkA2Obx0Tc+87ggNb45rgVnBvXNaL7Vf4dpj+xW4o3ETn4vfPE=
+	t=1789066833; cv=none; b=gPLEmkigGFBZ3hnvfZ1HQ8g4Zm2DArjMTtYCOKTZ/HWZVTRR66bZQHnsoPsKamdwpe3vnV6p+eXhMQYjICdYFKc8FqB706LFnfIWNesu1C0Qn4wb/81nwsHA0ENMJAtOrH8Lx53kE59TdfLk3PnnQy1DRfBqZeKuiz3wegCGfUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789066821; c=relaxed/simple;
-	bh=0vvZwREGhVLOGIz6V7/e3vYEdb98WjrdXPg4bmpdzmM=;
-	h=Date:Message-ID:MIME-Version:Content-Type:From:To:Cc:Subject:
-	 References:In-Reply-To; b=BoTo2R/Jh+TMGhnrN27aPdNHH4ZDrcH0x+j7CxR2DiX0FZGyFBaIl6o7gQc8Ec/fAXpzKECfzww25N18sAlCK0AdroUzsVv7q70s+0B8bMJ9DNtnA8s/EXO2d63nE+o/Vqmvc0m1wLsSGWfHASds6fwofm88TydaEMWc2KX404I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=KfUXvnD1; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	s=arc-20240116; t=1789066833; c=relaxed/simple;
+	bh=TqXpALvbDXvsA0sqSVnOHDQuA9LO48i8U28lTHA8Mb4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BgEUOsfkh1t0NLprf+8G6NNHiO4aEtACRW/n09Jn0KDI6ZFYWAtR4YODybsOtzcmhva9ci2LDktUy1UME6+KMMeHf5Xq4NNAwvPVD36o9LfLQZU7MWbU71nMbIJ8X7YnL4kgSuBNURGwH8ULEY7P1dVh3BwvaDmsG5bNU57aqtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fpt2DW2D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="KfUXvnD1"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5306d609317so1228241cf.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 12:00:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1789066817; x=1789671617; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :content-type:mime-version:message-id:date:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uy7q6C+WBEDRAlNlGjV9EVm7qH12BqCcTHIyf0ThSEU=;
-        b=KfUXvnD16lizCzF9wvGLcS2je7B/yEqIi9sboIHbA1cMJ+emGPxk+sSiCucig8SpXK
-         hYv3/m8+oYneYZlQicJmBZfZBqM6aID/qplSJtPJL/Q5U3GHW6Jat3VX4ypsnLkafnxg
-         jkelDKYNQTbL2awAL4/xmSnPGgySwJ9KjipDv/S581d4aW0sNobZQVJuOSw6jvrFwAL8
-         5o7orzIu8kaSOUEw3aBSuMIfjcrorTOYzxAO8BmXf1XitD4t4xG8M/O8K6PF+fK4AMWj
-         Xsu1ZTknwnfunmzbay0cAuhsVOV4vuGJHIH7F7IH+8otWPTFga7D9poq/fsUmz+gcKrl
-         USLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789066817; x=1789671617;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :content-type:mime-version:message-id:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uy7q6C+WBEDRAlNlGjV9EVm7qH12BqCcTHIyf0ThSEU=;
-        b=Veq3xQJQ5uEvMFbTxnzIuSgrs70c5jF8OeFhkQzNPmSmjkUk1D9s8eRu6AtO6y5DQC
-         EDiP1fs3n07z4FGVBI+uUERCymVyLFm+MU91cCHVJndu3YSXVfFH2AICBTIEMmaIHp0d
-         MiVOIkDBEFW+5xZ1lKAMM+ZfuKbQqgPpv4khG4NKH4X3QHFklLycz8KgvWl8bOConIY4
-         nYg2oqWLTys6G3djgh3un3zdsqL5hnb7pCxrIfsLPo3GUxQa1+MN76UxWfaromCS5Lt3
-         BVXvkiOMaGvZbgAPcqYD8pVMsQzmT2ot2SzGQ3ar7vNCifRBBoUMkTuCYsy1qjwyRP1g
-         NLsA==
-X-Forwarded-Encrypted: i=1; AKwUvBzsX5lmxafactDhejTBINs33Jm0kxCjj7xDxuhaETjsdVzqtPJ+HVk+V72aTjxq/w5yNXl/qCKGNe0dqx6gmA==@vger.kernel.org
-X-Gm-Message-State: AFuF++nx1QJ+E27YFyzHRGyAqANMER5Cr8WFGvBgqyM+6ZHw/5L8OeGz
-	4H9822GJG67MCfrk9L19kMV8ah3ZYxWfIojJ+59kaYOsew/jg2httuj2Vmag1Auwvg==
-X-Gm-Gg: AYBFou1anuoUaM9DXBKFfGpg1gbgYnSkdyUAhMctcZjFfNkGvDUSnkggqrJOntq6HVm
-	U1wPx98oUVhv1W1w8YPxp3cJaCK0rPmFmkc/ZnbUi3vDSGtpV9Nu+y+HrGxZEP7aIS3C8tlm5nW
-	XN3CAI+0Dyou4tvHdnzMY6IvQJqP6LYyV1DMXogXu/Xp/zQxjwMNXCbs3bAAXSfIPau7T8+lUje
-	DHzHBWhXmyO/RaT7i3wrTZaCtvplzGtdeGRjjd5wZ97PhOEJcHm6DTiKjZ94L8W94EgXfs+nBy2
-	nbhHGEoRVJEIJInk5fR/7f6Oixu9siwFnArPa8ebfTc99UkYwwIs0S3SlvKiVxVIfhuvp4DLP8s
-	NCI0BPOBqy3WiGgrejcORTAUQ1nQp8myoF8Hn9jtps4sXKygFSSr+ZsE/ioDO8Bu3KMIRDiGfyM
-	ZiL8pQvyR+p3iBbG6NG/arjQfffA1b+ds1SJBTeVr1iBVSKwP8R6TcUCTp7POvUJpOn3/9w11Xb
-	TL+x8KhyQso9QsVM0fvFUNMtCNZZfqe9ryFhWlhj1EAcecBXa36SEowXSHbPFyW6bLJX+ogtywv
-	hg==
-X-Received: by 2002:a05:622a:514:b0:530:b2e4:91bc with SMTP id d75a77b69052e-530c878ffdamr12092271cf.53.1789066816931;
-        Thu, 10 Sep 2026 12:00:16 -0700 (PDT)
-Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-530ca50cd05sm270221cf.29.2026.09.10.12.00.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 12:00:16 -0700 (PDT)
-Date: Thu, 10 Sep 2026 15:00:15 -0400
-Message-ID: <f7363063f6457ebe9eed74f878ec579a@paul-moore.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fpt2DW2D"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id C19AF1F008A7;
+	Thu, 10 Sep 2026 19:00:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789066832;
+	bh=qVLCzCol0ztHmPBF0fa8Jwjb86wBY4YsV5QLOxzKWYg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=fpt2DW2DYha1MqdROAQMJuWiFYGP2IXkY29JJawBo8RZ6Ij4EMIJzWGzzTj8Fz9if
+	 fwvuecYFpKATLPy/E6JBQLSpVSg5fkTPerDXEl5QcC3WMZ1ExStoj3AKX2lAf3yBfy
+	 ohO/V2c3DDBc7QRsB4WqARy0H46e1HQjPK9yvegAcLogsjQFUHTyjrCOze21/9RJcF
+	 eoPJkrHBYKOtulGI2+dAKmgMwkVWoUWR1xs5RvxLdWYAvmSeC9oTy6tA5kmjNhu4aA
+	 9IZ47udxuU4aDKE+9Q2nPRPOuTqaTza60/Br216MGndlCKBlzO1A9KjVvaklnLHWFb
+	 rb81xbPcYsw1w==
+From: Nicolas Schier <nsc@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Alexey Gladkov <legion@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Nicolas Schier <nsc@kernel.org>,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-efi@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Jens Axboe <axboe@kernel.dk>
+Subject: Re: [PATCH 01/23] scripts/mksysmap: drop the MODULE_INFO() symbols from kallsyms
+Date: Thu, 10 Sep 2026 21:00:15 +0200
+Message-ID: <178906667516.724141.3737829890204628745.b4-ty@b4>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260908-build-speedup-v1-1-5dc1ac01672d@kernel.org>
+References: <20260908-build-speedup-v1-1-5dc1ac01672d@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 
-Content-Type: text/plain; charset=UTF-8 
-Content-Transfer-Encoding: 8bit 
-X-Mailer: pstg-pwork:20260909_1743/pstg-lib:20260909_1550/pstg-pwork:20260909_1743
-From: Paul Moore <paul@paul-moore.com>
-To: Nils Lehnen <nils.lehnen@proton.me>, James Morris <jmorris@namei.org>, "Serge E . Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Onur Ozkan <work@onurozkan.dev>, Atharv Dubey <atharvd440@gmail.com>, Ke Sun <sunke@kylinos.cn>, linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Nils Lehnen <nils.lehnen@proton.me>
-Subject: Re: [PATCH] rust: security: replace `core::mem::zeroed` with  `pin_init::zeroed`
-References: <20260828024335.946-1-nils.lehnen@proton.me>
-In-Reply-To: <20260828024335.946-1-nils.lehnen@proton.me>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Aug 27, 2026 Nils Lehnen <nils.lehnen@proton.me> wrote:
+On Tue, 08 Sep 2026 21:55:01 +0100, Lorenzo Stoakes (ARM) wrote:
+> Commit 3e86e4d74c04 ("kbuild: keep .modinfo section in vmlinux.unstripped")
+> keeps .modinfo symbols out of System.map and kallsyms, which assumes unique
+> IDs have a format like '__UNIQUE_ID_modinfo123'.
 > 
-> All types in `bindings` implement `Zeroable` if they can, so use
-> `pin_init::zeroed` instead of relying on `unsafe` code.
+> However, commit afb026b6d35c ("compiler: Tweak __UNIQUE_ID() naming"), sent
+> in the same cycle, changes this to '__UNIQUE_ID_modinfo_123'.
 > 
-> If this ends up not compiling in the future, something in bindgen or on
-> the C side changed and is most likely incorrect.
-> 
-> Link: https://lore.kernel.org/r/20250814093046.2071971-8-lossin@kernel.org
-> Link: https://github.com/Rust-for-Linux/linux/issues/1189
-> Signed-off-by: Benno Lossin <lossin@kernel.org>
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-> Signed-off-by: Nils Lehnen <nils.lehnen@proton.me>
-> Link: https://patch.msgid.link/...
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> ---
-> Resend of Benno's patch from the Zeroable series [1]: only patches 1, 2
-> and 11 of that series were applied, and the issue [2] asks for the rest
-> to be re-sent. Rebased onto rust-next; it applied cleanly, and a
-> defconfig build with CONFIG_RUST=y and CONFIG_SECURITY=y passes.
-> 
-> Two equivalent one-off patches were posted earlier [3][4]; Miguel asked
-> in [5] for a resend that keeps Benno's authorship, which this is.
-> Cc'ing the LSM list per Paul's request on the original thread.
-> 
-> [1] https://lore.kernel.org/r/20250814093046.2071971-1-lossin@kernel.org
-> [2] https://github.com/Rust-for-Linux/linux/issues/1189
-> [3] https://lore.kernel.org/r/20251129135657.36144-1-atharvd440@gmail.com
-> [4] https://lore.kernel.org/r/20260120083824.477339-8-sunke@kylinos.cn
-> [5] https://lore.kernel.org/r/CANiq72nJqFOR9vhPBfZUNrxU+M1HMV6wN9bN6i8e9rf_oOD2qw@mail.gmail.com
-> 
->  rust/kernel/security.rs | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+> [...]
 
-Merged into lsm/dev, thanks everyone!
+Applied to kbuild/linux.git (kbuild-fixes-unstable), thanks!
 
---
-paul-moore.com
+[01/23] scripts/mksysmap: drop the MODULE_INFO() symbols from kallsyms
+        https://git.kernel.org/kbuild/c/3e2276de
+
+Please look out for regression or issue reports or other follow up
+comments, as they may result in the patch/series getting dropped,
+reverted or modified (e.g. trailers).
+
+The patch is applied to the kbuild-fixes-unstable branch and accepted
+pending wider testing in linux-next and any post-commit review; it will
+generally be moved to the kbuild-fixes branch within about a week if no
+issues are found.
+
+Best regards,
+-- 
+Nicolas
+
