@@ -1,66 +1,66 @@
 Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30FD3CF1E4
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 06:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2193806DD
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 06:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789021916; cv=none; b=W4yLRSze7+2x0sdccDVheettkR02FOFcvdif0yaEDvGgamVfafS6hw0P6A2WxHlAHqwvP8OMexf233/7mbE82MTpPoYkju0rtEHI5QNLdIjWXUbvgySNeArCJ6jIMmVpXmWssKJeSx1tk+97E0N/Md4hhc9JKmucBzSuwi77Kck=
+	t=1789023185; cv=none; b=qnfbhGAFTeP8tii5/AfP7waWyfbkike9WnsOik1+YOtehPakN087RDl7DF/gjRuzyLb4L8fp0OitGWQvQeXXbWQ1SEt/Eg4xKplb397vWA3zGFt10gbMh/XJgcvBQ91Ln7PlFp7NQNVjAHB/nz4U1Tfsq7p4fCwBZAauSPJm0dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789021916; c=relaxed/simple;
-	bh=4Tvd6TLKSh4VlsuaCKI+5gByiR6tEcXdxBcXIv/rcnc=;
+	s=arc-20240116; t=1789023185; c=relaxed/simple;
+	bh=OG8nqpVIiVaUDqsBzlwBd7F+WF7t4IRbr3zHcFb5WRo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iEw8UxGF3A2azXWqoK2Toxg3YLTF2BUk8XgfHYgWOcWN1ZWMVHQX1xtMZxxeQyLeonPyzn38c3TilfcoUTEv9/Sw7hS6Of8+Cd9wY1KjeFyN1aumXWkyMtMtMPsEQDzZloIut6bqWNnqSejU/M4acgtrb25BIKUafL7qu+BdiXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CBX7tlpy; arc=none smtp.client-ip=209.85.216.53
+	 Content-Type:Content-Disposition:In-Reply-To; b=TQIehUZ1NM5MqnT3ryIP81DmhBToMzAf4XfQnnqkUuRshk0lksJ1ON82V6/z5qyLUVFjb59Sh4fOuJthq0VMHP5AMeu1AGt5rm2VyxSlAhQVl4ysIZHn5ich6c219KyMzgnbPDX87jqUEa6LLNJmAsELGmaAHsCmVX1yG8iLN9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ERQBxovg; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CBX7tlpy"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-39b9a99469fso2645636a91.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Sep 2026 23:31:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ERQBxovg"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38e42560ebcso5218790a91.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Sep 2026 23:52:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789021910; x=1789626710; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789023178; x=1789627978; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1toCXFJJyIGT7Bi3z+gvDkztm6+uDMf7He5yX/dqQdk=;
-        b=CBX7tlpyDsi7FLF4pLFU8mliwhYbKYqB1r17Idyeu+COShfdlQNupygFGPsGjW/G+L
-         sND2RYQ1Pl/71pLr15OEMCu4zjV1oWi+qqUZu9rlRh042olh9VDnkdTxloN7iHWVHDiF
-         +NMPBmOGCcconcefnZaDTVSAmrZLhrPBr/A7JF3+4I2ZAfcLnTBoTGHwBPlJgwi0fS6z
-         bE6klUyQHAUAIAl5yJYE5/+3fYLLilCyfbopU/n27ZDR9DNS5LIUJzFqz/MHKGdLBNZG
-         I5hDaK5FZOv1IFE6YSwmE3LC/QH/lSIuZT2TwItoximyU7JOEFiz5lLqbTKob8uMNdEq
-         nPPA==
+        bh=UNeh3lUekONIP+bceTcz/qzQUFIH9IGvapVm9Sqamho=;
+        b=ERQBxovgElPNzqrI4q5qwQ/NQeCCz0ZveLXjgzOJsg4d7n0jiouChI82la5qAJ7T0z
+         U6E0Lq6tRszoQ5JZCTVw2q1DQKImfMwCYXJd0JGWC4SXbUU+SyS30bDesqNWu51dlzG0
+         sUob9Upp1Qz/OvRqbouf+YSd+bn+Ha/oAsvEm+puakpJ9hjP/zr7Myw9FWJbm2Mnpy+q
+         0B5eWS+pNtdrtyjzEU5mElqOZHn+7GDL0XhNimnkoPnMP8zSaoDYqqxatB/JuC+dI3RL
+         SpbutMHh1eVhl14Rj1Bkjnk9Uclydn72Z6iDTwRIuCZvgporHTPtt2JXg83SJpi71mgB
+         Wnig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789021910; x=1789626710;
+        d=1e100.net; s=20251104; t=1789023178; x=1789627978;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=1toCXFJJyIGT7Bi3z+gvDkztm6+uDMf7He5yX/dqQdk=;
-        b=aP9OQslcU7pf6CeBYsZBlHtKCovRB2puF2r9ewCysrmWXUbzK+aHLD5XGqqmkw0+gM
-         9gn3mITaVVUJ6Ub27WUnUL+AnrALUJgFo3OqjwJwoGZewoRCmy9UzswHVUy2RgK9O2nj
-         2yUPC8O4F9g7SAqHxGHnrqgirUmehkBpJTGk6ZkQqoe2sY++6mjy48hP/ZpYMkKy6USO
-         MGs+JNPLenthR5bzU/8fZi2i4wQdCT1Yy566qPu6jplkZ9UvWtGLzn+xUW4mkecep5uB
-         IBz2fzWwQfsCTTqbskEQlgT4teZeWtLOy9Xi307+YjHAJJJMDjAhC9Vg1CZn+1wEGfGT
-         5SYg==
-X-Forwarded-Encrypted: i=1; AKwUvBxkm2myR34M2mZHHcpQZaKHHgCZ5FwGm1+0dlXEityVC2HcD/KMJFwB1wb5P5erkibWziEYz5GW3QO786vy5A==@vger.kernel.org
-X-Gm-Message-State: AFuF++mdnEwdyW9xT4gK7tKZ/P1IwJ2ioOlPrMNR4QfFO+hcDod4wPWz
-	XWBiNB+IoEhG1tK1voUzjk4dhl53GQr3trql963jqS1M5zn7WMooo9Bm
-X-Gm-Gg: AYBFou1CFMiX6RWm326j1R7Juro39YLLB4SbTBPxHeuBbXyK8CcSAKgl8R5/SQi63uf
-	sLNxDwx2zX8iKB33o/2odBIRkbDx/fbupPYlED1n10aMlTvQTSiKvK9T8hR6zl6dU3SQy9bhnDN
-	mSqByf2Dkq2YQ8j24ZXAvgLNX+hEvbZZ7HBs/HawFxLTga4zK9defvM8SMOMeKrwnp0H77byFbI
-	sVJlkIpgHKA8BQ0uteOca/jcf6+6WLDWiKHbePLIsYfIvkQMbeTROSlQJ1evfYUfcOo8Yku5qmU
-	Y/qtm0l7jpUD5IaLkCL/rJHH6iQqfJsLoVZR1UNciKinh/nCIy5MxhFpp4lUZmH64YPUGnWBVAz
-	o2JxcQvluNGoudKrAd+BH3Y5/mblkoOtCqQdBY9h8scumoXNUg2yiRiCY/BpBdQAwFLukCIO3qe
-	U3NzgYYguoJ/Zwywa5xOKttkEZWW1X9JAtWfr9aWrxRkX8RV4SPIdjjtvnqEwM1v22sh/jG8/lA
-	/3RIVvyRY7G3Us7s/5j0hu6mPZBXhzA2GWU5r9gisA=
-X-Received: by 2002:a17:90b:258d:b0:396:4c63:7193 with SMTP id 98e67ed59e1d1-39b261323e0mr64061526a91.11.1789021909725;
-        Wed, 09 Sep 2026 23:31:49 -0700 (PDT)
+        bh=UNeh3lUekONIP+bceTcz/qzQUFIH9IGvapVm9Sqamho=;
+        b=VfOYrOAFQpZNlsB2ERv9yMKUtYe++rYWXHMVH/mIMK071xZ7GQBalF3B7eSjlZpQzj
+         ReCEnDEeNGVwvXFIbJb+mxB9PikVOZJnFGNuknt7pFrG9s8gmpEsKSHEkkIY8eBNYhb8
+         3ldJ9rF6czIocj2GhMWTe8dkpFuKGYrf9zBLLrwJgtrrZIbVeGd1kFort4rxqVuPCHIF
+         WCUx8uFRNcAeIz67OlKAJX38gIJ7ihHJ/AZlWljcrlbMYYgCLryU3ZZ/88wWAi12aqY3
+         nZOz/DY2aca4zVmHKOUy0wSPuGW95T65kJd6uP4lBS2ppfEHrwGWVGm8bX8SPLg81LZ1
+         7tiQ==
+X-Forwarded-Encrypted: i=1; AKwUvByKgbRsuczID4duh/Fzy5VLwd3L1S+wuZBo70KLkmxliWGXxcYBF/F8i51xOza8+vP8bOx/B7h0GS66z6Ui4g==@vger.kernel.org
+X-Gm-Message-State: AFuF++mHttb7RF3+otBmkewoaAPA3cxc7LSRhg0S6CD6oObZCsp10soQ
+	lac23b9+6YhPQY0qtnW3+6ORa9XATZuY0jrRUGDFX2wlPjZrF87Ga4S/
+X-Gm-Gg: AYBFou2sJSC420phfcl2ydYWSnty5bz/D18AM4zK5UZaAPSKkRQmWMYYpm3WIxsABQV
+	RstjTkY1wiFj2CG/MpABiTYvwIcEz7X1Egbon5K1nJGao1SbltADYUtv7MYXA2+SKPO6DKJu9Yg
+	9nMRoej1MUAZmUmY0JC7UVta7BMt3anicweo72YDG0tX0pR9Lf3jONrUxjMNapKBL9eVio1dSP7
+	MDim+a+yL28tpnjQpW8nyx1UZ4hmaawuHiyafMxtxAHeK1C5lCw3RgkqP/TLBVs1J31XDXNjxl0
+	OrTDOaI0dixKXR3FnSaRcTIbNLZuaEzDfRxXWhlyEGbZ49H9jlIJPM0h9FyvlsA9U5WHptL3cGr
+	+Vgl2UkODI+w/XbSyE26Ey9aZOdiSnSZy6vomlq+u04LyJHayzC0ibm+Wj7LbAzJsgOMIOgg1J/
+	KOhBwlkG75IZOLhqIH2rwwdE03RCZjHU/vdzDMfTFLL9pfXFnC8Cqgq0daI0s1pmArb2PGgjh1x
+	OvgYOMGNKxDQRY7Jjm58uZQBTtO9l5UK+EdoI+AQjo=
+X-Received: by 2002:a17:90b:3d92:b0:398:bf7e:b267 with SMTP id 98e67ed59e1d1-39b2614df9dmr61606265a91.2.1789023178292;
+        Wed, 09 Sep 2026 23:52:58 -0700 (PDT)
 Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d7e834319sm2507639a91.10.2026.09.09.23.31.29
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d7e77498csm2694423a91.3.2026.09.09.23.52.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 23:31:49 -0700 (PDT)
-Date: Thu, 10 Sep 2026 12:01:26 +0530
+        Wed, 09 Sep 2026 23:52:57 -0700 (PDT)
+Date: Thu, 10 Sep 2026 12:22:33 +0530
 From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
 To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -91,10 +91,10 @@ Cc: Paul Walmsley <paul.walmsley@sifive.com>,
 	linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
 	Jan Stancek <jstancek@redhat.com>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
 	Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: Re: [PATCH v5 01/24] elf, uapi: Add a header for relocation constants
-Message-ID: <aqJOscgnnevybiKO@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+Subject: Re: [PATCH v5 12/24] vdso: Add the vdsocheck tool
+Message-ID: <aqJS61DbuUI3xoY3@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
 References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
- <20260908-vdso-absolute-reloc-v5-1-3a93791af1cf@linutronix.de>
+ <20260908-vdso-absolute-reloc-v5-12-3a93791af1cf@linutronix.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -104,50 +104,79 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260908-vdso-absolute-reloc-v5-1-3a93791af1cf@linutronix.de>
+In-Reply-To: <20260908-vdso-absolute-reloc-v5-12-3a93791af1cf@linutronix.de>
 
-On Tue, Sep 08, 2026 at 08:33:35AM +0200, Thomas Weiﬂschuh wrote:
-> While the numeric constants for relocations are architecture specific,
-> it is still useful to get access to them from other architectures.
-> Also the definitions are useful for userspace in general.
-> For example tools processing elf files during a kernel cross-compilation
-> can make use of them.
+On Tue, Sep 08, 2026 at 08:33:46AM +0200, Thomas Weiﬂschuh wrote:
+> All vDSO code needs to be completely position independent. Symbol
+> references are marked as hidden so the compiler emits PC-relative
+> relocations. However there are cases where the compiler may still
+> emit absolute relocations, as they are valid in regular PIC DSO code.
+> These would be resolved by the linker and will break at runtime.
+> This has been observed on arm64, see commit 0c314cda9325 ("arm64: vdso:
+> Work around invalid absolute relocations from GCC")
 > 
-> Introduce a dedicated header for them, similar to the elf-em.h header.
-> For now the header is empty but it will be filled step by step in
-> upcomming commits.
+> Introduce a tool to check for absolute relocations during the build,
+> as the current inline-shell logic is not expressive enough.
+> The check is done on the object files as the relocations will not exist
+> anymore in the final DSO. As there is no extension point for the
+> compilation of each object file, perform the validation in vdso_check.
 > 
 > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
 > ---
->  include/uapi/linux/elf-r.h | 5 +++++
->  include/uapi/linux/elf.h   | 1 +
->  2 files changed, 6 insertions(+)
+>  Makefile                    |  19 ++
+>  lib/vdso/Kconfig            |   5 +
+>  lib/vdso/Makefile           |   2 +
+>  lib/vdso/Makefile.include   |  14 ++
+>  lib/vdso/check/.gitignore   |   3 +
+>  lib/vdso/check/Makefile     |  34 +++
+>  lib/vdso/check/elf.rs       | 498 ++++++++++++++++++++++++++++++++++++++++++++
+>  lib/vdso/check/vdsocheck.rs | 154 ++++++++++++++
+>  8 files changed, 729 insertions(+)
 > 
-> diff --git a/include/uapi/linux/elf-r.h b/include/uapi/linux/elf-r.h
-> new file mode 100644
-> index 000000000000..2c382c8a4807
-> --- /dev/null
-> +++ b/include/uapi/linux/elf-r.h
-> @@ -0,0 +1,5 @@
-> +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> +#ifndef _UAPI_LINUX_ELF_R_H
-> +#define _UAPI_LINUX_ELF_R_H
+> diff --git a/Makefile b/Makefile
+> index 4ad67b737af7..e6e0dd7818ef 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -1559,6 +1559,25 @@ vdso_install: export INSTALL_FILES = $(vdso-install-y)
+>  vdso_install:
+>  	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.vdsoinst
+>  
+> +# ---------------------------------------------------------------------------
+> +# vDSO check
 > +
-> +#endif /* _UAPI_LINUX_ELF_R_H */
-> diff --git a/include/uapi/linux/elf.h b/include/uapi/linux/elf.h
-> index ee30dcd80901..b3e312255552 100644
-> --- a/include/uapi/linux/elf.h
-> +++ b/include/uapi/linux/elf.h
-> @@ -4,6 +4,7 @@
+> +ifdef CONFIG_RUST_IS_AVAILABLE
+> +ifdef CONFIG_VDSO_CHECK
+> +
+> +# Build the checker early.
+> +prepare: vdsocheck
+> +
+> +# If the architecture builds the vDSO early, make sure to be earlier.
+> +PHONY += vdso_prepare
+> +vdso_prepare: vdsocheck
+> +
+> +PHONY += vdsocheck
+> +vdsocheck:
+> +	$(Q)$(MAKE) $(build)=lib/vdso/check $@
+> +endif
+> +endif
+> +
+>  # ---------------------------------------------------------------------------
+>  # Tools
 >  
->  #include <linux/types.h>
->  #include <linux/elf-em.h>
-> +#include <linux/elf-r.h>
->  
->  /* 32-bit ELF base types. */
->  typedef __u32	Elf32_Addr;
-> 
-> -- 
-> 2.55.0
-> 
-Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+> diff --git a/lib/vdso/Kconfig b/lib/vdso/Kconfig
+> index 597f5f0f9681..112b42a5aeb1 100644
+> --- a/lib/vdso/Kconfig
+> +++ b/lib/vdso/Kconfig
+> @@ -23,3 +23,8 @@ config VDSO_GETRANDOM
+>  	select VDSO_DATASTORE
+>  	help
+>  	  Selected by architectures that support vDSO getrandom().
+> +
+> +config VDSO_CHECK
+> +	bool
+> +	help
+> +	  Selected for architectures that are supported by the 'vdsocheck' progam.
+	s/progam/program
+
+Regards,
+Mukesh
