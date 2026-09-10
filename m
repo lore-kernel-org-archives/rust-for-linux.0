@@ -1,67 +1,68 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021081.outbound.protection.outlook.com [52.101.95.81])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012003.outbound.protection.outlook.com [40.107.209.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F0C2AD00;
-	Thu, 10 Sep 2026 01:32:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5EF36A35A
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 02:22:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.3
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789003967; cv=fail; b=dypCo62zrhmzS4l3tjKxSDN+iTo0MAZLuA6ELp7yrAkLiZ5e4mTcoLJH9Ehkd7fn/MjyHjIN5gCtDQ/kNfHiyewITNn/O2BbHNXZSO6QEGvBkIG2HexnJEJF0fY7G3XMMJqJCjk2oH94miRCQWZFDJ1Lq3y+N3zo4kSn1raeyHE=
+	t=1789006930; cv=fail; b=Rbi2xWCAoQ65dFSKcwdUbtCAmpKUz8bP0HWpacYnO1tGfQ6x5Li1/HoA9ReOgsebxWpxqCat9i4umb/lpR7umIDVbkGMbQjhN1+UwK34h0RUSP6L0vGzTJYzhcdN+B4qBzUp111h6GxmVVGeqVvGNc2jRPIZvkfo8/u21MFV/H4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789003967; c=relaxed/simple;
-	bh=jQItyttPpMJEVtc3dhlatMiXFnk7WJRbltIYVcRe2R8=;
+	s=arc-20240116; t=1789006930; c=relaxed/simple;
+	bh=SoDNtLyG77hKJo4SpE2QAA5wlKoRfvERE5hjKFydcSM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ldobSoQcXq4wryjfKYAkaISCOWV/WpJ8eu03Y03VyHxHtIF4KCq3ht9tlhvAxmFK1yEOPVloBkyhWVO9OA8Oz96vAqHfeSwTgT3SRSWWeLPwBFkPcM/ig3ZFegymHQaiM21p00v6YhGIOd0SiqfPy09lauNSxeot7PdSDuHh3V0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomlin.com; spf=pass smtp.mailfrom=atomlin.com; arc=fail smtp.client-ip=52.101.95.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atomlin.com
+	 Content-Disposition:In-Reply-To:MIME-Version; b=YXsoV2+xpIbx66mzbTJpK8F7ZFa769DXGZ0HPe/KAyS7EGeWFcXZVBYAVT+Eo14fkCGD+yhTMhorAeZV1ZwU0WVAAn0WMDY4ldS6qkE6y48ecHifbGMIkc6zulMCg7FOjJe9+0HYM2ZYPVWqaAIv/b2W+4ynTfQ2f+h/n5iZEcw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=npZTCVI4; arc=fail smtp.client-ip=40.107.209.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="npZTCVI4"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a9RJXrYVtjxk3ODiiUh5AytB1B1sBhdSTJoHZ3BVa37pyi9y148PTpwXo1QILAZhA2xNuCO7vudDyrYXl0lsNm4xWPu8E5ZB8Q4EcGrynr3e5hJ1AJ1tq7YxenCf7dOja4OJEagGzJOnBvhOJBe93hLUXFievIhQsX2r6dOiuXwqvnmRiLh9DMFeQPKjA5Sf8CuFg8iHUFEvtn/cJ6e+Mslji/rW17gPQBWElJYVakz/Qqmeh3fyQXJyEuhowwu/AopmDU+TMMF8W/y5kyxX6T8Y9Sr767P2Vda+9XUCQIQjAl0XBJGapRj7NzPjkjbfoj+kxGMh3T6kqeiEVBOe0w==
+ b=KcNj6kvqM70R2rJ7VGn72HSglJy/wLQuOrZH4H4+QEw8Yoy77d7U0jthGebB3GaqBlYV4VZcuRLWBhM0Z31zj0KrUOLjA9/0Rat+gIyEKK6qMzTh9T6emse4dmvoJFd2M2C+mVv4GKc7JNbsXO+feUjKQWTC6qp6y/ypx6F9u6fchz4k+qHROA3vy5h6p2JOn1CEVdVtgqwDDdsCuz5YUNMjFIzTlc/k4mv6j3R3i7kSjz6HT6VdV2Y6R4AlNohSanfRYnjBPLJm9ZOfFd2WYSiUCNyEkt+2aMLtw38EUlvg4/tLIQk+uMT4Rv8wamVQV4EpvbPNIaNvg0G+Fvo+ZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
- bh=+8qYb6OY8KTeBSeSTdgOCRNDXfmGdHNVCnxAqR303m0=;
- b=pcOLJgYILeK9Rvwl+hLd+9lfhRPZIU7n/2te9m6x206ZO9HooUAyxQuvW8gtcZD9twadNjmmgT6ZvOyUTCWD2Wz8xoVTD0paHGL9+33oPnGiYj87nS7i5axDPSaGNRJB5mAqIByXGID9ost4DjUup3ghW3fsaL1yEsloVB36TZJd2+nuLFL4DHouKxl0SVbwOtoxT4XbEh+gEkH5M0uonpXaOmsPUUUDDApVcP0jy2YoS6piVeLlCo9+teOExxqU4g06/CZO604T05VBtaLud6geJK7F/jKoqjS3g8Gf50CFGtn/pUrwUR/Pgn7wFfQCsMQ191dL+JLMYENt+39MGQ==
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5p9UNx1cOcEp/dcsekdnCs4Sg35R4ckd2npdT9ak0g0=;
+ b=zR1cJ13giSx2lEyQuJeAOp9pl4YLNM0Cw/tTSjVSf7YbGZGqyP5brVFFLnCk5wuxDyjZOWB8LCqrA7r6b+EvWjiN69mLdCqPHCIWnYk9eud6C3hO/o9As8G4QVlILiA02Z9d/cXxAZbCea7oXpvQxW/OgmayDIPsgWsc0M9w5IFsBhvhSBQh4u7w2G0wbrwPdZwV0+yrc+OjxBksSGUhW1JSiCLaJ2dlPl4IjuRXayaJyPpPwV7bUbhrYMeW4G1bIlvU/ay9hNNWl3dYVHrN9gXMRov5o1AJROlv+VyDQkTKig6A5kuL5y6Q/dkMA5Zm7BfZCWdeg5meuhptkiW9Zg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=atomlin.com; dmarc=pass action=none header.from=atomlin.com;
- dkim=pass header.d=atomlin.com; arc=none
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5p9UNx1cOcEp/dcsekdnCs4Sg35R4ckd2npdT9ak0g0=;
+ b=npZTCVI4Fqlja1oKhaDV8lruYMUvMu4f+3qHG6Z4ciHYp7RBNWTPtLu9pqOETU2Vy2oRFLCvLMnyWd+ls1i2QlMNQmVmMmm5KP0GFXZqeZI7nUDepL2yBroZZMln3Z+RiDpqdFiTe/7UveunxZ/NWUFptpfQs3LG7eoytGAMY/ltfJzwrfKEi753qDJp8uvwoteBIQ9m34X7d9UCEQkw1c3CZk7tqM167modoaOU3DvsvUMOZ7OMBnoH6a9tMm8O30DyG0yaBAGKnc+lMu1Q0KrDcT4ElXn5TnY/IT0vJZc2wz8aOPyRJDCt2Z2mSD37/MGRySC2VsgUYxktn3lblQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=atomlin.com;
-Received: from CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:183::5)
- by LO0P123MB7767.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:428::9) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN0PR12MB5977.namprd12.prod.outlook.com (2603:10b6:208:37c::22)
+ by MW6PR12MB8736.namprd12.prod.outlook.com (2603:10b6:303:244::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
- 2026 01:32:41 +0000
-Received: from CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
- ([fe80::cec4:77ab:262e:d230]) by CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
- ([fe80::cec4:77ab:262e:d230%4]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
- 01:32:41 +0000
-Date: Wed, 9 Sep 2026 21:32:37 -0400
-From: Aaron Tomlin <atomlin@atomlin.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Petr Pavlu <petr.pavlu@suse.com>, da.gomez@kernel.org, Sami Tolvanen <samitolvanen@google.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Boqun Feng <boqun@kernel.org>, neelx@suse.com, 
-	da.anzani@gmail.com, sean@ashe.io, chjohnst@mail.com, steve@abita.co, 
-	mproche@mail.com, nick.lane@mail.com, rishil1999@outlook.com, 
-	Linux-Arch <linux-arch@vger.kernel.org>, linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 0/2] module: Extend module_blacklist parameter to
- built-in modules
-Message-ID: <ffac4ftjetrrnuprjwt6smmfuovehykses5npyg4phzhlvxqcx@nluoqy7nrwfo>
-References: <20260903185557.183224-1-atomlin@atomlin.com>
- <20260903132924.7a4d1b84791d30c706b394a1@linux-foundation.org>
- <ultg4rym4phqwqrbuz3hqtlse2lgafxebx3un7s3tdht7rz5xy@3ckauomiwqsy>
- <20260905172817.e367c940d750ca3e8484fef9@linux-foundation.org>
- <3cee4548-0ae7-46a7-b437-bf84e5c155ad@app.fastmail.com>
- <3gyxhudb5zwrrevc522qjpddnzxbsyxeeqair7tvii6jhfu6kl@f63vlxgftjpl>
- <aqFdqQ5xCucwijsl@google.com>
-Content-Type: text/plain; charset=utf-8
+ 2026 02:22:05 +0000
+Received: from MN0PR12MB5977.namprd12.prod.outlook.com
+ ([fe80::d8:f725:258:2f28]) by MN0PR12MB5977.namprd12.prod.outlook.com
+ ([fe80::d8:f725:258:2f28%4]) with mapi id 15.21.0406.005; Thu, 10 Sep 2026
+ 02:22:05 +0000
+Date: Thu, 10 Sep 2026 12:21:59 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Asahi Lina <lina+kernel@asahilina.net>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Subject: Re: [PATCH] rust: kbuild: export symbols from the `uapi` crate
+Message-ID: <aqIQNhGdRTsv4v52@nvdebian.thelocal>
+References: <20260909060623.888777-1-apopple@nvidia.com>
+ <DLAUS65AAH2A.39ZT3OE05AR1K@garyguo.net>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aqFdqQ5xCucwijsl@google.com>
-X-ClientProxiedBy: BN9PR03CA0282.namprd03.prod.outlook.com
- (2603:10b6:408:f5::17) To CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:400:183::5)
+In-Reply-To: <DLAUS65AAH2A.39ZT3OE05AR1K@garyguo.net>
+X-ClientProxiedBy: SY5PR01CA0033.ausprd01.prod.outlook.com
+ (2603:10c6:10:1f8::10) To MN0PR12MB5977.namprd12.prod.outlook.com
+ (2603:10b6:208:37c::22)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -69,95 +70,185 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP123MB6607:EE_|LO0P123MB7767:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6b8928e1-7dc5-4ce3-b484-08df0edb67ad
+X-MS-TrafficTypeDiagnostic: MN0PR12MB5977:EE_|MW6PR12MB8736:EE_
+X-MS-Office365-Filtering-Correlation-Id: c254e89a-5a84-40b7-9192-08df0ee24e57
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|10067099003|4143699003|56012099006|18002099003|22082099003;
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|4143699003|6133799003|10067099003|11063799006|5023799004|56012099006|18002099003|22082099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	I+CFJfJe2nZiPB3Mxzoz9LgJvlm4zwIS0vMixjLYgLAT23vDBUMWuTSgCWCZN5Tmu09mlp8O5ERzeQakUoIcqUkjrH1fcIQXrLIKUrE/1HXdcnt6m9KNGwxZ3B5mh+lMhS6dVFwhH710aXQjskgipGkBYGn1AR8AG5t1Nywjijf9UGo8f8D0oArw9AqmRBbIs9zxpeMKElQswKTBByZppjGIDA1TEwfZx9JQ87mQJer2XxySbIJl5NidvNqpNczauracThko0ALvrRAFFR/QzXFoArvK8uCQ8hF0XXALBNQCoORQyCLhF59AhOakjHG/r1oYat1iJ2e5uqtVfUjxKt3ggMWnK+rs03897phIQ1LSM0SzetYxasrIP2K3yPgttlyZpuQaE8LNDj+g021YMc4XDrcWrnDBr50SUdRaucR9ayIG2vpqFzLIF11RTUSw3XGQ/iFwfSXHimF/SNqd/5VkGgpPnA5fT9FVi6IBjNUn/YdLt3ty7qOaqTCh68cfJNoYLBxpM3mn4jHuSpNRvCDvMAuQozH47lB5xtRO6MN+5WL3YYyCzCjQEXC9qUNNJOVOdfSTwW7+ESXj6XDc14ufGzMeS802igLBeGhmLUAVMlFeSPdugn/qKMfWysXZb8j/sKOcagVbynTnIQaPNw==
+	b3EW7SDqQtijb6OlKusaLKOMlb7IrIFKZp2A0yUVY7jx/zOfqgThcNNwjNirbKAu41dEgogSw6fvizl+7wdhIPhpq5jLXzhwPseIti4ZyUEx7WSdpHdnSiB2QD+/G37ckw7pOwCEBvfigrFxSz9RcQv+Y7m/usVWHcs7Ftk4A62UGEPOJzXfhu53durGqR4ehJCA8gj+HvxBp+49bLRGAFvEt8evHb2BOFuFNveKMyrPVa1Zzf/CUVE2v9gvkqi4XliC4cRM7wz8IMUHsLyLLxDCRaHmobDrt3UsrNHm+VWEqn3Dn50ypiSBzzu1MiZHv9Pvf69/2UaiwO4GkyCm+PhZvimNo8u7CvXwn5J/pvgiQbz0EgxXJpexgLjeR1jkuSmL3/cb2MRTGFPAfL/fU+GOGh4h/5pYAsiXd+HaScHv1gh8PSlk/jlBW3y7bjrvvUmzrJxOLK2oZJLw8iZr1VqLX7jEyaaTQ2kt1JIWox9vgjN/+pt3QdbZ4wHyjAvWQJhFJSNib9iR8muSru8WXKyW8zFxFFj+MsBMX5f08UUddkkpjYqFVqvLTXQnnUscLDozbKjhsMY8z5hrx6eV9lv8J0dqKWEYgiZgEWOmNp0BggDNtrYhd+RsvhkK1tAbQT90w25PKoKzY91nxKGlkKxW6R6p/addadQoseQv3vU=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(10067099003)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB5977.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(4143699003)(6133799003)(10067099003)(11063799006)(5023799004)(56012099006)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UlhnVk5KV1VNRTkyT3VkWkFseDR2SWRCTmZKbmtkZzV1Mlp1ems0UURaWVpp?=
- =?utf-8?B?d0pYUXMrdXZUbGJMVlBiVjdERVVybWY1NGxWTlpYQm9QYU5VK0ZXMjdrK0cw?=
- =?utf-8?B?ejlnNC9lMTUxNUwrcWJ6NE1rK01tWThpSERQbjNINjFONDROR0VBSXQ0YTdY?=
- =?utf-8?B?S2ZqNVVHcjNKTGlXU2trVklOV1pRaS9EZ29PSHZDQnpMekc0UU16ZW5JNyt6?=
- =?utf-8?B?OGRKQWRTVm1iVGVTNEpNcHZ3VkJKZFQwZHBTbk03aFpKMFMvMS83dnN5Ynho?=
- =?utf-8?B?ZjlVSU9jRVZ2SUVKd0xOWXZBZ24wbFNrZlZMTjlaNlpIZnpCUmJKR1g2UmhX?=
- =?utf-8?B?U0NIWkdPTmt4YXFhWVRnMFRyQzN3K2U3aVZwcWZsVGkvaytQOUh2MWZ1NGNM?=
- =?utf-8?B?aXlVTWNTMHAzbWQ2am92ZHVsY2NlazNabnhtbHFmK2NxOFM3N01na1ZBYU0x?=
- =?utf-8?B?d01Gajg0UlhSNkYzb2F1c3FFTGVlNGs5VlhLN3d6azhjUWNKcnkwaDNuK0Nx?=
- =?utf-8?B?eEdaRE5IYlhmSWFXZDZkc0JVTGR4RzYxYW44OVhwNXlJVFdxNjJMeWtaMHRq?=
- =?utf-8?B?Y0g4eVFzSFB2REtrbTNoL1AyejdzcHpGdEk3VUpCNXBCWDFBM01NQU9SVTly?=
- =?utf-8?B?VEpGelZ0a1RIcXB3VXJzT2tRSXlaY2FTOFVHM0ZTNCtmVG1NUzFKUUxURjFC?=
- =?utf-8?B?ZXlkUGVnbm40dmtxazhVN3hjNlFjNVplYjlSUU5Malo3SzBLQzJpaldNaDlK?=
- =?utf-8?B?TVVhcDJaM3QyU1FNZDdnY1RHdTBNaXJKQWZ2UVFmMllyRytjcCtnb3BrZWdB?=
- =?utf-8?B?dGF6L1ZzcnhnMkhSZHQ4QUxmL3NjZEhyNENjWk5ma2pXUkRXL2pRWFhXdXZt?=
- =?utf-8?B?VG1xQ2F3T2dWU1czU2pLSVJaMlJjR1dEYkdLRlZvbzZYL0swNHBidFYwUE5n?=
- =?utf-8?B?TXNzYjhRKzBPTC9rdm9nSmxsZzlDQnN2ZFBxbHJURjBWeW1vTFZnRkVhaWtU?=
- =?utf-8?B?QWh3V3IvTk1pUUtzdUs1ZjRBeXhJOHBDNFlBTlBxVGVQam1tK3BLaTQ3TVNI?=
- =?utf-8?B?bDU2NndEODhwQTR0U3ZKT2xSSmhZZTZkcEVEMmZZeCt4Y1hIK0E4ZGM4Qm5j?=
- =?utf-8?B?Y1E0NTRXQ2tzN0dXczh2VDcrRVlka05IdjQ5enVBd2FTeTBMN2hrajFpcksy?=
- =?utf-8?B?SlhKM2c2cExWODQ5L1lhSEhFd21CMjFhazBXbnN2WGFHOTk4QTZES3NDNlRk?=
- =?utf-8?B?enV4ZEhLZDBzVmJWNW0rS1VGN05ycVZxVmhOUE90aWJYelBTMUkvSm44NmF1?=
- =?utf-8?B?dUZnUzExS3psMW1NdTd6KzYxOHphSVNNQnY1aUtYZTVPWUl2R0NmK2w4Vm8x?=
- =?utf-8?B?TnRiWkd5SHJiZlhTVk5xWkxhVXBGS1FPSHBkUTN0WVFEZjVNSm95SG5XUTJy?=
- =?utf-8?B?Z0pCenNDT2duNWtBalcrcC8xcS80TkZncE1xNmFkNCtlczRZczRjT2w5Q0pP?=
- =?utf-8?B?WldjWDlGeVgyWjNkMFVZN1l2ZWtyQ2dnQU9FRTRRaEhSY0p2TDZnRE5KWXVM?=
- =?utf-8?B?V1JnMmhZNmVmcUxmdWh1WU9tTWYwY09ZZG9JN2Z3REtQVitJSFZrYWY2MmtY?=
- =?utf-8?B?QlZLalhsOTR4N3lyWjBOV3h2bVlOQXQ1VnVlZXMyTFNRTHd3aU45M3FYRk9N?=
- =?utf-8?B?NERZVGFYWUV6RUhidnRZeU9UamhWa090d2lyVDNMMHB0SW81TndqNS8vKzU5?=
- =?utf-8?B?ZlBrTSsrMjBHd3dmOWdCS3NKQU52akhxRW90b3l0Wjd5WHNlb1hBUnUxdWxt?=
- =?utf-8?B?SzQ1TkV5a2puVzZ5aE42UGJwTUp5MlJGcWJqK0xZR1RmNUxRSksvNkx3L0pJ?=
- =?utf-8?B?Sm9JSnR5K3ZVd3A3UTZvZXRLRzZKTUhTVk15MmVsbHAzMDRGTmg0eFAwR3Rq?=
- =?utf-8?B?WmtCSC94dlppcjN2U3RCU055bU02N25zNmlrWk5zVVB1cnl0ajdoUW5tRkl5?=
- =?utf-8?B?WkFhZXFLeWRZUUZpY3RtNG96Z1l4Vm81MGVIRWM2QlR0dzAzNytITmtSRVFW?=
- =?utf-8?B?K1pxZlVSVmMvRjVaVkg4NjRscGRMcFZtcmlOOW1KQzV6alg5S2tYUFZ4cVJ5?=
- =?utf-8?B?cmh3SHlCaGR3RFpZbm5WbUhLYkZjU2JtS0ZSM1JSYlJCZlQweHpHL1NVNWV5?=
- =?utf-8?B?MmRhWlovbjNKR3dOcnpZNXg1NnBKYTdNZkZOM1daTlIzeEtvVlRYV0dQQkhj?=
- =?utf-8?B?Z2JyVThSbE0rZm9scWtNODJtaER3OVhCSTJTWlBGaERiN1I1RDVCVjdOaHlN?=
- =?utf-8?B?WE1PWS9JZWdJbDQ0djZTU2xHUGVYV0tIeUNnc0tpWm5WNnQwekl1UT09?=
-X-OriginatorOrg: atomlin.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b8928e1-7dc5-4ce3-b484-08df0edb67ad
-X-MS-Exchange-CrossTenant-AuthSource: CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
+	=?us-ascii?Q?kBl5qpFa90dp9L4qXtR+5s7YNDcb2zjqgiaX/MS8Gktt3STurbRq5mAUPGGk?=
+ =?us-ascii?Q?FicKcpPwOwBbxhVr7Flttn/LXveZIgBolTpjKHpiF5QkB94RY/sa99O6FrdU?=
+ =?us-ascii?Q?wukkCpblHw2hvFd95/8g8SAMGHIZ4Q5V5xNUGpSPp0D8Wwrghw1wAx3ojhka?=
+ =?us-ascii?Q?kGVk1ITU5hr85y+NjnFH8RXSet626IRvBGz0eRnjI2uP8DdAh9a82AmvsZIP?=
+ =?us-ascii?Q?OIXklN8eerZtQXW/mKoRo3rN3BnJPBRqvP7+MqECETUWizsYxAGIU/bXYSTh?=
+ =?us-ascii?Q?Oi/x3+mJqGYunSuqQkE1+m40bAIX3wh5c20HMXaUSxjFYbuABZXHUGgkoZEh?=
+ =?us-ascii?Q?vJckiXRSxSVTCbW8Rg2uynGStIH9GEY4GQFAdRpCsCydXcQaHRf0uPXVXBpn?=
+ =?us-ascii?Q?RY5ZeqyrO3d/ki7s/zHaT87x+2yryBL2KQAajyyj+reERGzxXFzDQirUSncq?=
+ =?us-ascii?Q?UEiO/RfcEeWT8As0RKnRFcXIX0ZDNk85dmFGyxMdKx9w+AGbuz9pZwKIDMHE?=
+ =?us-ascii?Q?X0HpXDbA565G+blbSMj2UVJ/D6wUymyXmqfRti5XmIwvdJKOkMNgC+r5S6zR?=
+ =?us-ascii?Q?eCvzFhdHcmwy5k9AHhGJGvaLUcqcO9RaXOZRcZbyVQL+CyWk0scXwQ/rcEBD?=
+ =?us-ascii?Q?zKAkTKbR3E4iztVfi+cyPSzpp386JVgpnd2zONkOht6zd3zMB3Mo8Z0S9RE1?=
+ =?us-ascii?Q?3/H8WC4HcHRkKd5ZJ1VjBDrdgwVip+Z0pT7+/FuPWHGHyDFBWrqaoWuunPjq?=
+ =?us-ascii?Q?lLaz5rw950VCrh6nYaCTkSlzlSeTzdFskEDCCVxQz+L8w2kiHa06ABZM9Pf1?=
+ =?us-ascii?Q?e/78attTeSQQIjP63ImtZaZrDNl+44AzkWgGNtZRgnhxYhBx5g1jOEcpORFP?=
+ =?us-ascii?Q?OGnwYy8PUsmXu55zdqP1cPrxQlKM5tIkvIdfMxAcdqjYuTWjgdNin4sXfvl6?=
+ =?us-ascii?Q?gxaIklkYMN+OqTmqItv02rKmA2IrC2Mjj0QLVrWkDnYYLbA4HcuKBK/7izr+?=
+ =?us-ascii?Q?Iiq/VYebKX8AHetE3Gq9P4vTOucdxWzQ9UVQAEuqAuJZvG41BKEANxjwS+Zc?=
+ =?us-ascii?Q?KavO4A33x6eSiXxJoxW8pkLJV18Z7YrKyr3SQ6uw23MiXXQDEJ9EutAqLOrw?=
+ =?us-ascii?Q?BLmRDYwZwqJ7rfDWZjhEJqYZjtmm+G252HVpw97RrEDoKo5R80a2C50suDAc?=
+ =?us-ascii?Q?go67uvk2WesJcrMfOKkBriYTDN/5lM1vGBwNPyIUBQvBLUID/UnAX4BDy/ZU?=
+ =?us-ascii?Q?bLV36hDaj5J02dcG/x6ArbG+zYzIxPcrDYh9nMbHixBdsZNCag+hdMVeQ0eu?=
+ =?us-ascii?Q?Iv5S2WgGiVBe/8iphxqyc4Kg1NT1gbi6LsQ7rqF8EO2nzxvPeBR8F0JFH1/V?=
+ =?us-ascii?Q?yZRu7xHJ0RTFjazDqI7M2YEYhxZEpw9w5aoqkgV667m6XS2qgxSQF7OJ+vLj?=
+ =?us-ascii?Q?E5gFCH5lVSUgNkiUzEt0NDPydqMQDodkE4iovD7WZ1f2KlIwDXWZ3qHe7C00?=
+ =?us-ascii?Q?UW/dGuRRkJyGiCD35PLXbwr6tlV/1JpcsWND6NRNEd0EqYE6ZPau8NbotZht?=
+ =?us-ascii?Q?aTbklJ9gKSvw+A8gC/vU/x2vv4mx5IF9PQ7N1eeYiE2WGgR38FueKyaOtNjg?=
+ =?us-ascii?Q?PmmlQ86shHOWX+H/rqMBwU5nJyWnwo0l323goCr3ZF5B+Bw0f1MjO2viA60N?=
+ =?us-ascii?Q?a8Ie8LPt6DycP0ge5iVjyTTARfDKlNNnaCcieAMpivgh5l06bXDcJBR4wFF8?=
+ =?us-ascii?Q?mk9xWtbQjA=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c254e89a-5a84-40b7-9192-08df0ee24e57
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5977.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 01:32:41.1629
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 02:22:05.3502
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: e6a32402-7d7b-4830-9a2b-76945bbbcb57
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iAiUjlkxEdwJRQgkacSU6NFtPW65az9cQb/NsJtlduhT7J7SxTRz3k5GIlxX5/7mUOdN2yZLM8QThLWll2paGg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P123MB7767
+X-MS-Exchange-CrossTenant-UserPrincipalName: cCiR4KQo3k6NC89sBEL0+ZUbh/L24yf1OZykT7UD6taM+aicCSrD1emDRCKlTvg8eq9EwtRUNXonX5vDKKR9ww==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8736
 
-On Wed, Sep 09, 2026 at 01:22:49PM +0000, Alice Ryhl wrote:
-> On Sun, Sep 06, 2026 at 10:08:57AM -0400, Aaron Tomlin wrote:
-> >     2.  Mangled Names in Rust
-> > 
-> >         For drivers written in Rust, initcall symbols are compiler-mangled,
-> >         which makes initcall_blacklist= virtually impossible for a user to
-> >         specify at a boot prompt.
+On 2026-09-10 at 00:25 +1000, Gary Guo <gary@garyguo.net> wrote...
+> On Wed Sep 9, 2026 at 7:06 AM BST, Alistair Popple wrote:
+> > Symbols from the `bindings` crate and the C helpers are exported so
+> > that loadable modules can link against code the compiler chose not to
+> > instantiate in the module itself. The `uapi` crate has the same problem
+> > but nothing from it is exported.
+> >
+> > In practice this goes unnoticed because the only functions in `uapi`
+> > are the trivial `Default` implementations generated by `bindgen`,
+> > which rustc inlines across crates. With CONFIG_RUST_DEBUG_ASSERTIONS=y
+> > however, the `Default` implementation for structs can grow past the
+> > automatic cross-crate inlining threshold. The module then references the
+> > copy in `uapi.o`, which is not exported, and the build fails:
+> >
+> >   ERROR: modpost: drivers/gpu/nova-drm.ko: symbol '_RNvXsH_Csk9v2ZIpWbWt_4uapiNtB5_17drm_nova_info_gpuNtNtCsfr3MPOfBGpN_4core7default7Default7default' undefined!
 > 
-> Are you sure?
+> Hmm, uapi' ideally should just be type exports and produce no code.
 > 
-> As far as I can tell, the Rust module! macro applies #[no_mangle] to the
-> initcall, so no mangling should apply to it. Its name is the name of the
-> module followed by an underscore.
+> Default implementation should carry `#[inline]` annotation so they're
+> only codegenned in actual user crate. Rust's `#[derive(Default)]` would always
+> add that. Can you check if that's bindgen-produced manual Default impl that
+> somehow misses the attribute?
+
+Right, bindgen-produced Default impl do not have that attribute. For example
+here is the bindgen generated implementation I see:
+
+impl Default for drm_nova_info_gpu {
+    fn default() -> Self {
+        let mut s = ::core::mem::MaybeUninit::<Self>::uninit();
+        unsafe {
+            ::core::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+            s.assume_init()
+        }
+    }
+}
+
+Manually adding #[inline] fixes the problem of course. I guess we could add some
+sed Makefile hackery to manually add it. For example something like the below,
+not sure if that would be preferred?
+
+---
+
+diff --cc rust/Makefile
+index da1a7409d984,da1a7409d984..535a3bf181bb
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@@ -525,13 -525,13 +525,16 @@@ quiet_cmd_bindgen = BINDGEN $
+  $(obj)/bindings/bindings_generated.rs: private bindgen_target_flags = \
+      $(shell grep -Ev '^#|^$$' $(src)/bindgen_parameters)
+  $(obj)/bindings/bindings_generated.rs: private bindgen_target_extra = ; \
+--    sed -Ei 's/pub const RUST_CONST_HELPER_([a-zA-Z0-9_]*)/pub const \1/g' $@
+++    sed -Ei 's/pub const RUST_CONST_HELPER_([a-zA-Z0-9_]*)/pub const \1/g; \
+++        s/^([[:space:]]*)fn default\(\) -> Self \{/\1#[inline]\n\1fn default() -> Self {/' $@
+  $(obj)/bindings/bindings_generated.rs: $(src)/bindings/bindings_helper.h \
+      $(src)/bindgen_parameters FORCE
+        $(call if_changed_dep,bindgen)
+  
+  $(obj)/uapi/uapi_generated.rs: private bindgen_target_flags = \
+      $(shell grep -Ev '^#|^$$' $(src)/bindgen_parameters)
+++$(obj)/uapi/uapi_generated.rs: private bindgen_target_extra = ; \
+++    sed -Ei 's/^([[:space:]]*)fn default\(\) -> Self \{/\1#[inline]\n\1fn default() -> Self {/' $@
+  $(obj)/uapi/uapi_generated.rs: $(src)/uapi/uapi_helper.h \
+      $(src)/bindgen_parameters FORCE
+        $(call if_changed_dep,bindgen)
+
+
+> Best,
+> Gary
 > 
-> Alice
-
-Hi Alice,
-
-Sorry, I was wrong.
-
-Looking at rust/kernel/module.rs, indeed #[no_mangle] ensures the symbols
-are named __{module_name}_init and __{module_name}_exit without compiler
-mangling.
-
-Thank you for the follow up!
-
-Kind regards,
--- 
-Aaron Tomlin
+> >
+> > Fix this by exporting the `uapi` symbols in the same way as `bindings`.
+> >
+> > Fixes: 4e1746656839 ("rust: uapi: Add UAPI crate")
+> > Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> > Assisted-by: LLM
+> > ---
+> >  rust/Makefile  | 7 ++++++-
+> >  rust/exports.c | 1 +
+> >  2 files changed, 7 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/rust/Makefile b/rust/Makefile
+> > index da1a7409d984..083992a5c1c9 100644
+> > --- a/rust/Makefile
+> > +++ b/rust/Makefile
+> > @@ -27,6 +27,7 @@ always-$(CONFIG_RUST) += exports_bindings_generated.h exports_kernel_generated.h
+> >  
+> >  always-$(CONFIG_RUST) += uapi/uapi_generated.rs
+> >  obj-$(CONFIG_RUST) += uapi.o
+> > +always-$(CONFIG_RUST) += exports_uapi_generated.h
+> >  
+> >  ifdef CONFIG_RUST_BUILD_ASSERT_ALLOW
+> >  obj-$(CONFIG_RUST) += build_error.o
+> > @@ -575,7 +576,8 @@ $(obj)/exports_core_generated.h: $(obj)/core.o FORCE
+> >  # in the crate where they are defined. Other helpers, called from non-inline
+> >  # functions, may not be exported, in principle. However, in general, the Rust
+> >  # compiler does not guarantee codegen will be performed for a non-inline
+> > -# function either. Therefore, we export all symbols from helpers and bindings.
+> > +# function either. Therefore, we export all symbols from helpers, bindings and
+> > +# uapi.
+> >  # In the future, this may be revisited to reduce the number of exports after
+> >  # the compiler is informed about the places codegen is required.
+> >  $(obj)/exports_helpers_generated.h: $(obj)/helpers/helpers.o FORCE
+> > @@ -587,6 +589,9 @@ $(obj)/exports_bindings_generated.h: $(obj)/bindings.o FORCE
+> >  $(obj)/exports_kernel_generated.h: $(obj)/kernel.o FORCE
+> >  	$(call if_changed,exports)
+> >  
+> > +$(obj)/exports_uapi_generated.h: $(obj)/uapi.o FORCE
+> > +	$(call if_changed,exports)
+> > +
+> >  quiet_cmd_rustc_procmacrolibrary = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) PL $@
+> >        cmd_rustc_procmacrolibrary = \
+> >  	$(rustc_target_envs) \
+> > diff --git a/rust/exports.c b/rust/exports.c
+> > index 1b52460b0f4e..434f0b73151f 100644
+> > --- a/rust/exports.c
+> > +++ b/rust/exports.c
+> > @@ -17,6 +17,7 @@
+> >  
+> >  #include "exports_core_generated.h"
+> >  #include "exports_bindings_generated.h"
+> > +#include "exports_uapi_generated.h"
+> >  #include "exports_kernel_generated.h"
+> >  
+> >  #ifndef CONFIG_RUST_INLINE_HELPERS
+> >
+> > base-commit: b705c185105762676aa6ec16cf976101df87cc35
+> 
+> 
