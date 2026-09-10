@@ -1,212 +1,147 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561F53E1218
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 09:29:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4E33BC664;
+	Thu, 10 Sep 2026 09:43:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789032550; cv=none; b=FtJ0FDjqExxB5kWkVyuG/REN9ApAv0f6e42rC9q4xaFtMSEkpMpkryxl3OdSG+VhrTadJg8zNzg/8DmgQEr6YekuDp1U/kKLvDBZFTQjBK0xixnZI/XgdzPBZxQrDnnehwKW9a9Q6qFukP816XEszZr7RvlELsO5b0k31QD7lD0=
+	t=1789033406; cv=none; b=oWnMjp3urSpdcEjO5iGq8HlBftaSh7CTSWb8NGzvjcYoPlgcx0Hir/r/TVtmhZzUWXfQoYfvdkkUOFLjl99cdC0xju1hp+BjEwnWlW26OC44vq2tivBKfUCNNV8LJRZ3bsZcK19R2VhVTF230sZ8b4mitxeiMy/zROdvW6zLeGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789032550; c=relaxed/simple;
-	bh=YmZhILYI1Ap/QhHEbws/tgVKUcLX7+iRsfdsJ1tAFSs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hbMmciJ+pEPUPjQGlbgq2ykHuJi8IhvmanFJGDzn5LclsXnrs/5BJ+XV88mFMt1R673ekuqUt1TVjI/yeosp0g3HK7UYIusAYlfU7I5v4DyKhXIV6dWbGA3Sn1wL0J4ME3Ek39OB7BKQ4RnL9/yfBIxNrBiMKU2At/jifdFRRiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fl7rpEKW; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789033406; c=relaxed/simple;
+	bh=+6oSOjLmvlGXeBraeldI93DGcjqsw53UdWyMNY0eAZ0=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=PeUQfoi8DEvYNZ0ZHu8p4LYpLu7BYgCw5QqauWJhnMZEuAsNQu2vOTzNzLjPqdFtg66uLwtte+gOlIT0L0hRG5Iu4JYCHMqeXUdq9R2hE6DyLs5QvxfMoidkTRz0CtDLcQM5oUKfOwO0nY1DQBnQeRcilfHF9tF9OHV2w4wrOgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=J/z6XktK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZBetrq6h; arc=none smtp.client-ip=103.168.172.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fl7rpEKW"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49b96837ca3so53015825e9.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 02:29:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789032546; x=1789637346; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xKhavT2ReA2W483I2xKkmSEJ1FM7bdVhooTyy/B0hnc=;
-        b=fl7rpEKWOGJGTfMOVeV9QpCGl2mMK4Vehvs3dY8Rm+didzRH0gtOfiyzeoU8ALNMoM
-         cT2BPMjJbXV5gQ6sliYvSB0QZIjgDx8/CdX1PBfpXHGSWrpCsIwYqoddBYs/UedP0HG3
-         17GV1ku/mwl67dARTOxQ1Kpd06hZJ0r/c10p5zF0ehwV5FtS0mZnrdm99rFVd8Xtpjiz
-         6VD6yvQSxr2ssCUsOX9CqQ8e534WuIcxyEfYFBisMF9gWWhB//9kRq84KgudvGXGGI2G
-         7qfV7g8OkDajr/59MwtxDvgu3IQT3JAm7g/o50sPZ2s+6GE9ZKKNDlMGj5vUjZoPBa88
-         3WPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789032546; x=1789637346;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xKhavT2ReA2W483I2xKkmSEJ1FM7bdVhooTyy/B0hnc=;
-        b=ZKJSf1WxUGKKbvnamGZxEubDReyFqdjB4zlczcDgUnPPb0t0jq7uLgiuf+ydLube6L
-         pIOxnakLXKltkK/6whZUrZvCzMeFu+U1u90JOvVpKPDWJwWBymH2Sls062gNYgoL8oz0
-         jnxMTdV++vUorunQe7STj/EnqGlg9o9s866yUXSF6fSE2kf6CNywI14R88kw0HeByZDC
-         QNiY7JkW2Tj+trgkOILvgqAIa6lkRD3iden6qXJwJbw7sXS6nne/eTgpMFn7La0l8Hey
-         hslwai9vbRLer8Sz41qsNW8rLFtNc0vbmG+aQz9xJxGvuTMGPgveg/hjyLhFeop/gYEp
-         w7Yg==
-X-Forwarded-Encrypted: i=1; AKwUvBzCxMt9Q57n8BXGpDJBF2odG11jSB2GWoKNXCFONTL3yhdnA4H3TPvT+6357Ik061ORfek4ZxP3RPq0cGAk2w==@vger.kernel.org
-X-Gm-Message-State: AFuF++mgif43h4vzU9x1shbMaK0xqUkAyeofGLg3AtTgdJ3hqxYlAASy
-	/TEZNLSg0yId2K3RjwgKu9NIsmzUbt0hu90NniKv06f3FnjgX85POqmJ
-X-Gm-Gg: AYBFou1lL707D7bLrw6Tzr7+VWLEQmYuTj8e94YqsOTl82Ifm6rzZoapDRzOW+Ong+P
-	c5pe64O2tZRmKDipjWE8c/eQ13WWX8+VgNg5uagK/exCXYJAhrmDUhDuRdZr7s3RYnD4YdJudy2
-	Q1weblNuT+LeEwMC3BTaRnapjwfDZKBH4Hvpe0kCYS+P2or+ZFugIdp84ZydsmYz81r+pfpUHuw
-	aJLraWmDwLJR40SJTrI47bw8uGuOdX6aRjhSC/Ry0UPM25d3uO1ZbE11QB/W8aSMrRuZtmcjHQa
-	n7hcVPIcDqLUPCedncrknKKTZam8YDSrHYs80Cck3PlyiWL27mGraI9oE5vgIG1sv+jrAZfLQbs
-	a/xp/6HzVcPHLMtn4zO/z+lTnCFw5ufxEM/iG+9FTfjZEnRpOBPl2zbMyOWXNm4bZ3eAmqKVwrW
-	K6a9Nt7b1mUtLA/qnnSHB91nU7yWnNd67Z7jbG8AVrrVe4M9g0nenIPwN8i0UpKc/9f//g6O7nT
-	eFUHLrhJSyExF4B29SSqEb0QFmnvIHy1CQL
-X-Received: by 2002:a05:600c:138b:b0:49e:2a61:a17b with SMTP id 5b1f17b1804b1-49e2a61a41emr9166915e9.5.1789032546119;
-        Thu, 10 Sep 2026 02:29:06 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d20fc23fcsm106027125e9.3.2026.09.10.02.29.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 02:29:05 -0700 (PDT)
-Date: Thu, 10 Sep 2026 10:29:03 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Nathan Chancellor
- <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Nick Desaulniers
- <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt
- <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, Alexey
- Gladkov <legion@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti
- <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Mark Rutland
- <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, Ilias Apalodimas
- <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
- Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir
- Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
- Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Jonathan Corbet
- <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev, linux-riscv@lists.infradead.org,
- linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH 04/23] kallsyms: output binary data to speed output and
- kallsyms assembly
-Message-ID: <20260910102903.1b211f6b@pumpkin>
-In-Reply-To: <20260908-build-speedup-v1-4-5dc1ac01672d@kernel.org>
-References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
-	<20260908-build-speedup-v1-4-5dc1ac01672d@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="J/z6XktK";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZBetrq6h"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id A2F8DEC01C7;
+	Thu, 10 Sep 2026 05:43:13 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Thu, 10 Sep 2026 05:43:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1789033393;
+	 x=1789119793; bh=rGpCjTTaXk/1OjFn96aTdp97nAqNN9TOBbQgQXpBgLE=; b=
+	J/z6XktK3lhj8a8wcp9Tzabwseta0a3ewoJAUV2PsGbmfn0eiveZ/YeV0mARlWj2
+	OOLXIXfN/b7GaZXDVCZ9Q6YHKukJdBPNzYgBFDwp24JZ8cNfJnOCCvAIzEX4QQRJ
+	T6ZBXXFZiuiT+JwicCTe/+XguMggG5QoQAnH+AmRsuntbtrGZEJ7QfR4eNjzqJqi
+	yhvajAaaSz77I0PQ0NryE6vIppZrcxtBai/ROcgJhbbw5vGlIXHjUiLdLIehaU6q
+	ORPSrFtJHeAuYdo088rXpoJirb9LgebfBaGak7CbKEBYnQot87msfBMwg/zbfGbL
+	16H2HVhq+pwpa/LfXWXoAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789033393; x=
+	1789119793; bh=rGpCjTTaXk/1OjFn96aTdp97nAqNN9TOBbQgQXpBgLE=; b=Z
+	Betrq6h3syUZMPHebTfykwsXNxihHJOVuAXp2d7cOup+aPnodLBr5WfEPHvWC0wr
+	uIE8GVr9+zjqbw8F23/+O2hwOCztjj2M2EhE6nIBLY52RJsGoqt/9U3/ljCYa675
+	0yZGVLuGxIn9/o5z1pjjx9sMRwFl1YFa3gpWotL9CQis3S6Xg4qGAO4okOtn/TwW
+	Mg0Qo0gwy+v+1rlGgBFfEVST5ldnkdaXH1uNhgrEvkgj1A1NkOFabVrSiD+4zOB5
+	S9fJ0E7QZ9t9Mrt+8Nw8m+4Uo8y5n5Tmli/3xOv/GKCQGaxy0MZE/x+8NZ38S7Y/
+	YyANE42O/AHXkIvFBxMCw==
+X-ME-Sender: <xms:sHuiauOLbZf5D0OayaR55D-cymMRK2YFWbSAkfdTUBgGCY2UDYzawQ>
+    <xme:sHuiat7_zvALGkmZxvNG4okfCUHbdjAR7IcxGqBAuf2s1ApDw6b9au19ZF9Tspgs1
+    mPnifT4GsvRpy5RomzxbL1bTfAD39eGQuHYkUg6yQCZgBgIHTfNRoQF>
+X-ME-Received: <xmr:sHuiallrWcUj6tdr5QX-N1EwfVJ6_Pd3VrhpnR8Ctz1mGVFR2IL5sdEyVgTd4hXHpiZzXlT2C7YWbtfP2OdhTdXa>
+X-ME-Proxy-Cause: dmFkZTE16hG9w6wxs93DPArtrnIuDa+52j6xSwqM2XaR5vsTiQ3JKiRT5LuN88L6NZGGEt
+    P4KQaKl2ykpDTdYt2Xdo+nlQTjPe9nNHq6pCMK5+cBYN30tCVZBu5YecwOTByoV7wTKnqd
+    p/wdU/5EsZ3CGrzycP2asJcmkm6x2UMkByd+APfMi8gklxjiUANvaqcwhC3MIhZEOu5/Sg
+    57nFqh/frQxdpvubOd4DxiUj7ozouSgvdHIjll3EIAHyBRNib+IYEN0Vzh3tdVHCrn7N/9
+    +9w4YhMsNBDOzTDciy3S9tEDMCcqxH8NEDLvDK9YKqbeperSIZwSU1sYE8oQ5IuItT+GBe
+    KUNhpTzSTP6DvmXKYoH9RatGrHJxMbotl0O9NZjeN1aATenK6BTwZdqXmCpmurH0DUQyfQ
+    iUjeX74m0IbCKFhLXCOljGuFmyit2P3NIO/2UgJIHrzjRg36MskVvjg0BwSvSo+BLLKZCR
+    f9Sa1N4nb7E0MSx2HKUx7j1Nv5URgyddl6KJvZJlseA4etTZ5CFdi+vdxetvifRb4C87Bg
+    FdbU3BKsHEFPhcVvS239HNM63dgbUWFwxuB310geq5sbW1sa1vhtqGEwFM4ti+IjVKQmby
+    bY7PPLgVtVipsJNKmSyIjlqVh4QQPf3+ISwstdkC6KE7beH/XQ+3EyR8RPgA
+X-ME-Proxy: <xmx:sHuiatJ0Ei8tx3xzGBqFX8V11cXK0OcsDCrggxWn1Yc1VUVs_TZEcA>
+    <xmx:sHuiatQLXieLhgD2BeEXByyan2d6i9LPvU9yLk3Eo-d8uKml0HgzMQ>
+    <xmx:sHuiaitAYErpZKn0K4QA1gEYlacDlOJj-dN6P0dCx-HrzF6rlYKkGg>
+    <xmx:sHuiao-QJ1mYwRTwH58kkjRn_Rifrk-Lt5LSVkz4xxL_Lp3hKJQEnw>
+    <xmx:sXuiapJtYPJAcC_1tsKpBIqMnOQR15Bei_zCletiM1VwwYmhph1BA5Rf>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 10 Sep 2026 05:43:08 -0400 (EDT)
+Date: Thu, 10 Sep 2026 18:43:04 +0900 (JST)
+Message-Id: <20260910.184304.1524423111546318369.tomo@flapping.org>
+To: springbreeze@stu.pku.edu.cn
+Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ andrew@lunn.ch, hkallweit1@gmail.com, rmk+kernel@armlinux.org.uk,
+ ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
+ fujita.tomonori@gmail.com, tmgross@umich.edu, stable@vger.kernel.org
+Subject: Re: [PATCH net v6] rust: net: phy: fix off-by-one bit positions in
+ device status accessors
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <20260910055110.167110-1-springbreeze@stu.pku.edu.cn>
+References: <20260910055110.167110-1-springbreeze@stu.pku.edu.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Tue, 08 Sep 2026 21:55:04 +0100
-"Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+On Thu, 10 Sep 2026 05:51:10 +0000
+Chunfeng Song <springbreeze@stu.pku.edu.cn> wrote:
 
-> kallsyms generates an assembly file that consists mostly of .byte entries
-> containing compressed names, token strings and name-sorted sequence
-> numbers.
+> The hand-written bitfield offsets in is_link_up(), is_autoneg_enabled()
+> and is_autoneg_completed() were correct when the abstraction was
+> merged: at that time autoneg, link, and autoneg_complete were at bits
+> 13, 14, and 15 of struct phy_device's first bitfield unit. Commit
+> 2796ff1e3dca ("net: phy: add flag is_genphy_driven to struct phy_device")
+> later inserted is_genphy_driven just before autoneg, shifting the three
+> fields up by one, so the accessors now read:
 > 
-> For an x86-64 build with 158k symbols that is a 37 MiB .S file which takes
-> 0.57s to assemble each of the two to three times it is built over a kernel
-> build.
+>   is_link_up()           reads bit 14 = autoneg
+>   is_autoneg_enabled()   reads bit 13 = is_genphy_driven
+>   is_autoneg_completed() reads bit 15 = link
 > 
-> Each time it is generated it also takes kallsyms a similar amount of time
-> to output it.
+> The official ax88796b Rust driver uses all three accessors in its
+> read_status() implementation, so it inherits the bug.
+> phy_attach_direct() sets is_genphy_driven only when it falls back to
+> the generic driver, and ax88796b has a real driver, so
+> is_genphy_driven stays 0. The broken is_autoneg_enabled() therefore
+> reads bit 13 as 0, compares it against AUTONEG_ENABLE (1), and always
+> returns false, so read_status() never reaches the
+> resolve_aneg_linkmode() call.
 > 
-> Avoid this overhead by instead outputting this data as binary and importing
-> it into the assembly using the .incbin directive.
+> The ordinary bindgen accessors take &self. Calling them through
+> (*phydev).link() would create a shared reference to the complete
+> bindings::phy_device, which is not appropriate for an object wrapped in
+> Opaque.
 > 
-> Tables that are wider than a byte remain part of the assembly to ensure
-> endianness and relative relocations are performed correctly.
+> Use the bindgen-generated raw accessors (link_raw(), autoneg_raw(),
+> and autoneg_complete_raw()) instead. They retain the bit positions and
+> endianness handling generated from the C layout without creating a Rust
+> reference to the complete phy_device. Drop the hand-written numbers
+> together with the TODO comment that marked them as a stopgap.
 > 
-> With this change, the output assembly file shrinks from 37 MiB to 9.8 MiB,
-> with a 2.6 MiB binary data file alongside it, and the object remains
-> identical.
+> The raw accessors are only emitted by bindgen 0.71 and later, and were
+> added at the Rust-for-Linux project's request, so this fix can only be
+> backported to stable branches whose minimum bindgen version is at least
+> that, hence the scope on the Cc: stable line below.
 > 
-> The generated binary file is deleted correctly on build clean along with
-> all other ephemeral data.
+> Found by a static equivalence audit (C2RustDrv, a C-to-Rust driver
+> migration tool) that compares hand-written bitfield offsets against
+> the bindgen layout of struct phy_device. Verified by building the
+> bindings and checking the generated accessors; no runtime testing was
+> possible without PHY hardware.
 > 
-> On an x86-64 system with CONFIG_KALLSYMS_ALL set:
-> 
->                        before   after    delta
->   scripts/kallsyms     0.24s    0.18s    0.06s
->   assemble             0.57s    0.16s    0.41s
-> 
-> Per kallsyms invocation/assembly, for a total of 0.47s time saving upon
-> invocation.
-> 
-> An incremental build on the same system was reduced from 11.15s to 9.65s,
-> indicating a total of 1.5 seconds saved over the build.
-> 
-> The kallsyms runs and their assembly are on the serial tail of every build
-> that links vmlinux, no-op builds are unchanged.
-> 
-> Whole build, 128-thread Threadripper 9980X, best of N runs:
-> 
->                                          before   after     delta
->                                          -------------------------------
->   x86 defconfig, touch mm/vma.c, gcc       10.8s     9.9s    -0.92s (-8%)
->   x86 defconfig, touch mm/vma.c, clang     10.7s     9.5s     -1.2s (-11%)
->   x86 defconfig, clean, gcc                29.5s    28.7s    -0.81s (-3%)
->   x86 defconfig, clean, clang              29.7s    28.6s     -1.1s (-4%)
->   x86 allmodconfig, touch mm/vma.c, gcc    45.3s    44.0s     -1.3s (-3%)
->   x86 allmodconfig, touch mm/vma.c, clang  42.9s    40.2s     -2.7s (-6%)
-> 
-> Assisted-by: LLM
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  scripts/kallsyms.c      | 97 ++++++++++++++++++++++++++++++++++++++-----------
->  scripts/link-vmlinux.sh |  2 +-
->  2 files changed, 77 insertions(+), 22 deletions(-)
-> 
-> diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
-> index 350d118c3b9e..61c5eb537ed4 100644
-> --- a/scripts/kallsyms.c
-> +++ b/scripts/kallsyms.c
-> @@ -5,7 +5,10 @@
->   * This software may be used and distributed according to the terms
->   * of the GNU General Public License, incorporated herein by reference.
->   *
-> - * Usage: kallsyms [--all-symbols] in.map > out.S
-> + * Usage: kallsyms [--all-symbols] [--pc-relative] in.map out.bin > out.S
-> + *
-> + *      The byte tables go to out.bin and are pulled into out.S with .incbin;
-> + *  wider tables stay assembler source for endianness and relocations.
->   *
->   *      Table compression uses all the unused char codes on the symbols and
->   *  maps these to the most used substrings (tokens). For instance, it might
-> @@ -102,7 +105,7 @@ static void sym_arr_free(struct sym_arr *arr)
->  
->  static void usage(void)
->  {
-> -	fprintf(stderr, "Usage: kallsyms [--all-symbols] in.map > out.S\n");
-> +	fprintf(stderr, "Usage: kallsyms [--all-symbols] [--pc-relative] in.map out.bin > out.S\n");
->  	exit(1);
->  }
->  
-> @@ -319,6 +322,40 @@ static void output_label(const char *label)
->  	printf("%s:\n", label);
->  }
->  
-> +static void write_bin(FILE *file, const void *data, size_t len)
-> +{
-> +	if (fwrite(data, 1, len, file) == len)
-> +		return;
-> +
-> +	perror("kallsyms: write");
-> +	exit(EXIT_FAILURE);
-> +}
+> Fixes: 2796ff1e3dca ("net: phy: add flag is_genphy_driven to struct phy_device")
+> Cc: stable@vger.kernel.org # Only 7.1.y and later (requires bindgen's raw pointer accessors).
+> Link: https://github.com/rust-lang/rust-bindgen/issues/2674
+> Signed-off-by: Chunfeng Song <springbreeze@stu.pku.edu.cn>
 
-It is pretty pointless checking the return value from fwrite().
-Most of the time it is just doing a memcpy().
-Instead call fflush() and the ferror() prior to the fclose().
-(Or just rely on fclose() giving you that error status.)
+Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-David
+Thanks,
+
