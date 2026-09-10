@@ -1,68 +1,71 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020142.outbound.protection.outlook.com [52.101.196.142])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021118.outbound.protection.outlook.com [52.101.100.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4AE47D460;
-	Thu, 10 Sep 2026 11:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014A946D0A0;
+	Thu, 10 Sep 2026 12:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.118
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789041198; cv=fail; b=jM4TU+/cn8c9euL5sqrE53TN6uO4/WQcKbLl4UtXGaLnnnEwRk7x0GXr7DH+2VsVmGET5ljkwihlpnUlNW2riZk7DhiAZoJkd98Wb9w19hFItQTzyAOC7qoKBeRB3CQ1mnmhGHlo6tv0HjSJb4tulRMDphEQqv7iHGKVFvunrm8=
+	t=1789041937; cv=fail; b=JwYlTVY9+VoSNGm1xUHbpK/kiAGzdkHGqgKejFbiVEkPaLuvTLDUlRffZVdDan9dJa4AREkilKFgkVp84kYTm8Xo7DEBjChAlXhf03Ed+544Dm1Izsj6CEESj9k3adWFnLvZA5ar0+pHZoR0PbH2rfhjWwea1oJSE094Wwp2lD4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789041198; c=relaxed/simple;
-	bh=mis+9m4PePU+MlURn0+BRA5EoyBVFRTh+oM9u97uSZk=;
+	s=arc-20240116; t=1789041937; c=relaxed/simple;
+	bh=+sEOstsnUOCCSQrcNalAQPtIDv4Tb+S5j1B1jvnrMco=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=f/bSRQt0AVxxT3EWWWEBfRQ1tHClPQgcfXBaSsVdFANbrM4vin9pElq1N2Ca1sXfXPeGdxod6ji+EH0iydTXMZhg0ciplebBHk4PntAfI+1vcSUhdtEzk/WLgHfjhciOcS6Rb/l58nqAPuoqj7ATR1J+Kjx/yZ+O6jQ2y2JIzX4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=KdRU7BpB; arc=fail smtp.client-ip=52.101.196.142
+	 In-Reply-To:MIME-Version; b=HMJJfVQ6KtkmMr7ggaC0Fi7xi9lEk1a0OHm/nMQ31ZrNqF0Cb0/8hgdkoeyfhZOB2xE5VG6mlRUpeVr3Q1GS1BrNPpJD4hNF30q6Y6nlCoI0PAtLpfNWSJkVatZFpvOBVg87lQZDjzrAeKYUI3nI2TwI3HqZV0UApofLkhtDSEU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=s1DrRTVX; arc=fail smtp.client-ip=52.101.100.118
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="KdRU7BpB"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="s1DrRTVX"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eopGiQ/H7JUlqKhYEeLmGaLFzqVWMUssNIL5gGSz+UFqaLF/icw4mBmor5kgdyn9c9fhwnZ7RM6715jbtKe9dZ408NCYfu5oAuyaTLHBNQb1lfGGAEvb6VnLv6hfYQFqtvSSjGpa1cSgFGO2iaKZifdqCspbdPODHkJkcfCPTfWiFUgboybRAZT1clbt6BJQxbSyTEbsaPvqBZnQhjCZ9NV1HhkReEdmHyNX4xHMYIeX/P+noF6K4YpkkQZdii7Td62/PTn0aX5ceaFEAzNkBcZP/u3QtFqiHSk3Uzxk8kcNtF+tl9VZhPEY5vAduGN5HDA06BSauCZa16CkXIcOag==
+ b=PKRljbv56uvPCJ0grRAC5grVHBrsRgaM8686LqAxN5gf7Wur2xDZxK/tPtdJewyuz6EbqMava6e1gA9aejfmH6h6dqjlP9CnQDVcY0XqItukKtb3u/SDKFK88YnGwtXXWH6y31b3X2AN7251e8BnznFQ3cu9l4g/8qKyQ07GN8MxtHIgjeHgijJJ54YbZcgDbCnv0R4qd/2GKgPzdCdfspWF93s7LZufnLsDyejOYVaoYHRdiewm28Xud/tvnlyBbjH2e198RsKTXkdHuTn6HVwmw94Np6kRvf70YeviZfzdQitHvnphL5sSNY/+gBTQNFvwx/YhQSfC8YemQT1w7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HJi+P5rJVUgbxW7rvcOQda+09y57Bnf36RvvQnm92Zw=;
- b=jzjeO9nagkfoPf6RfcQgwW0VponxZYSJLTl/FZBSwHx0hBgZlxeRq9cSNI3E4hkJZGhjTCG4oJfvmVdBWSKv/1djhQNXLW4zn7jY7DnBn8TnyaviGTcbtdO+iCPdMChxhpJrI1Y/B0/8ar/LOyZGPzDEPfoMfEdbB7YQpqjgM5AowvoyHHQHIf+JD+wOJ8TD8ypFPN4zy0U0l1Elalcy5+ZmGy8n7/fhntv3vsAUIMBnuuAlPr1DERhHqUfndHPHguR3hWWrHAWZ6wWrnCGhEa6apBt3AB60P+E8fGr/xF5YifAStuhDI13zErY+uAyfB2sOLZdIc6LJicMw9C4NuA==
+ bh=IkPKM4xg1QtdLXmZIk6tQM9JV4h5uAtG7ZlJHdI0nd4=;
+ b=NLGrRty2OfiD6fMBItctKdQtpMj9icaUDXBxjB1uY6yDeOPHr1vNI9waztq1a853D9DhLxNyw23WRfLUb7qgr9c/U55UEovcDLAg89DANRwu67ymaEHzEOQisqOvQ2OXWwwPHoImBb7KP7APj6T2Fk5MNEnq73TifEMtmNmBPqmxmaDZ8mCKzMxEtpe5dPSTQg6a87ep0IQyudObsSfJvix90scb/me3326qM0d2VKpoIQ5M6Oa3LlpIWCZCBqzE2cdOORmm012pNRuE5sZng2kdo5SMme8ERJpwKlzphyl1TOsXOHsp9idb6cjlC8uxK0tsqc0wfT33pwqaivYXgA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HJi+P5rJVUgbxW7rvcOQda+09y57Bnf36RvvQnm92Zw=;
- b=KdRU7BpBXyp0jqV+Jnr1zaWtw7US63BRALU44j+0/KpRovWKiZMfWC491CMpRfPZVNkuadilhVsfa4EM/iK+PmABStJdWXMTJBVYd3yzfamsWmf4U6jS1NXySaGx36SO2Fu12DsvrSOEt8VJdFaAnBVfjKZpLcZw2OCatKQhAXc=
+ bh=IkPKM4xg1QtdLXmZIk6tQM9JV4h5uAtG7ZlJHdI0nd4=;
+ b=s1DrRTVXaIRs96FaFvb4Fw/aqZkIZMhh+oDJegVmZd1a0nJJkLsyYfbB90w4ASIwsTbW4CGzOjBfeq7b2hZB3Epuv6zVE50K+qkb7xL1om+kfuGCNtX2o+iIeyLrlUGCGq8Y3M306J6NUY23kASWdOdnDhdhyAuta7GwvH8L0t4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LO7P265MB7437.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:41d::6) with
+ by CWXP265MB5650.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:159::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
- 2026 11:53:03 +0000
+ 2026 12:05:30 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
- 11:53:02 +0000
+ 12:05:30 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 10 Sep 2026 12:53:02 +0100
-Message-Id: <DLBM64YIHJ5U.3NZZTGR2NP75Y@garyguo.net>
-Cc: "Al Viro" <viro@zeniv.linux.org.uk>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Brian Foster" <bfoster@redhat.com>, "Damien
- Le Moal" <dlemoal@kernel.org>, "Hillf Danton" <hdanton@sina.com>, "Markus
- Elfring" <Markus.Elfring@web.de>, "Ming Lei" <tom.leiming@gmail.com>, "Qu
- Wenruo" <wqu@suse.com>, "Tao Cui" <cui.tao@linux.dev>, "kernel test robot"
- <lkp@intel.com>, "linux-block" <linux-block@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 1/2] block: Add post_release() operation
+Date: Thu, 10 Sep 2026 13:05:27 +0100
+Message-Id: <DLBMFNHCKSJ6.1I36FDVEACEUF@garyguo.net>
+Cc: "FUJITA Tomonori" <tomo@flapping.org>
+Subject: Re: [PATCH V3] powerpc/bug: Add ARCH_WARN_ASM and refactor
+ _EMIT_BUG_ENTRY for Rust support
 From: "Gary Guo" <gary@garyguo.net>
-To: "Tetsuo Handa" <penguin-kernel@I-love.SAKURA.ne.jp>, "Jens Axboe"
- <axboe@kernel.dk>, "Bart Van Assche" <bvanassche@acm.org>, "Christoph
- Hellwig" <hch@lst.de>
+To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
+ <maddy@linux.ibm.com>, <mpe@ellerman.id.au>, <npiggin@gmail.com>,
+ <chleroy@kernel.org>, <pjw@kernel.org>, <palmer@dabbelt.com>,
+ <aou@eecs.berkeley.edu>, <alex@ghiti.fr>, <ojeda@kernel.org>,
+ <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <dakr@kernel.org>, <daniel.almeida@collabora.com>,
+ <tamird@kernel.org>, <acourbot@nvidia.com>, <work@onurozkan.dev>,
+ <linkmauve@linkmauve.fr>, <linuxppc-dev@lists.ozlabs.org>,
+ <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
+ <rust-for-linux@vger.kernel.org>
 X-Mailer: aerc 0.22.0
-References: <60bf7af2-b84e-4056-9195-a26ad51ada46@I-love.SAKURA.ne.jp>
-In-Reply-To: <60bf7af2-b84e-4056-9195-a26ad51ada46@I-love.SAKURA.ne.jp>
-X-ClientProxiedBy: LO3P123CA0026.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:388::6) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+References: <20260910100801.2159785-2-mkchauras@gmail.com>
+In-Reply-To: <20260910100801.2159785-2-mkchauras@gmail.com>
+X-ClientProxiedBy: VIYP296CA0012.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:800:29d::13) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -71,169 +74,240 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO7P265MB7437:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7742ebed-9c5d-4e66-a1fe-08df0f321175
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWXP265MB5650:EE_
+X-MS-Office365-Filtering-Correlation-Id: ed89c7d2-6d84-44ee-bf83-08df0f33cf25
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|7416014|376014|366016|10070799003|10067099003|5023799004|56012099006|6133799003|18002099003|22082099003;
+	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|10070799003|1800799024|921020|6133799003|22082099003|18002099003|5023799004|56012099006|3023799007|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	C48v3JlltlBsh73fIJSjsiZKSjfuHD6KTqYgol3dhnx838bbaOc7ovhJy+xqOkgqi8uYuifuw5jw3Wf6lv5G5GgXYwGo9WjhK5hfXj9+Q2aIXP7nk507+Vqy7qUZNnrU21vkW6e1yHcJRF3TNOZfplgEaG84lqpWnBFq2HzuKVXXQfGbiNpNQ+FBXLFbFWNtwXm9ZKEosBhCO1qacyMkldQS0Zp5glUDWK10RCe5mAQ4Nh0xBANaCVVixPjO/v9SkVzUmR3ZOPJCxVIRgevJBrojTAhp4GlgDA15d1Wh4fhYuGBrM3H3pgxQ/hJ7C/QejqaB6CpY6vmMDhhmEgtLVeNsNJB2bkInM56qA8sn9nVpqfa86aXLxwum9W0VmsHjhuNBX5/3V0u1ub0dgpZnu6dFOePWKaVt6NZ4GPqz1tHxcqFTZe7c/KhDB2e5eLCInRODoR2Mw6jke6UC4lTWyQf8Y+zE45gGIfSYBXPncuAN7d+XsZCxw9c2cPMTrwmc3CLOa87R049XzVJj4SfUa4sbKPtC2NIg0n6W3KU9o6HyNVZqQ95H22cVgknEbpqV3IHazfG4iNMmO/M7legIpw5l+ugsTdutJwF/Ri59m0XqAq+s0ICdJQ81MuS4uVFSlMOTWvuCEOmy2ctvHzty9JdL0QYdz6UqTqqwXmD+HT8=
+	TNXQIsyg6nk7yq744E6lpWlGAsQQSfemgigqljBEF4vo7JcBpQtvRCYi6qMzUfiI2KVpjyRdcYUi1DS4nCh8RhUFjV1K/Y63vIKYhTiKdAxWnteEDMz9kCcYG57Q4TsSW6qeUrjxpt7m1wY54gaC2zpTAP69NdOWD5NlHHZqYl4B8uV+zF67whjgA+gnutBP2CbHVyF1WvtRvGwamJwZk3dwxayODJbHzsQR0GyDg1+OcU7WZLuFmzstfDgc46jdkAIx2ulv11/CnP/Akih9ryY1wtltJ3PubdicsILGqkCZPdbOOY+NUaHZHVhB2YGo3APugbtjSmn/GBjSIRTWwrXGLwuM8BDgi1EyP5e/aVflJrvNKiPSUxNvwbTfotMbZQLCtjuNhV/+e1sP2VOll7GfhCxAueybK0GHwQ1DbqeZbIxQxaALJRavxgscWTd2vuOETsKa+FqhslHN7DOwMg9Wn61VMrMjhm2+WgbFOET7viiaQsFH3uE51O4ZIfLCf8IeUKNw56efhlazpI6FIjuOWkRsu6XfMA2y2R9Bowt46Dne9Nz+xDhUwRVlzsLf1tdFYmB63U81lNIDJlq/gyzC/b7/Mt3840m60GK1Uq9DaxBbylgmnXuuZwmIr8IHIBkS80xdDeH1ykvDDk5DqPdMsxj2yH3+DfKxIAukjjfln2VY+4LKUSfVBRLLcezwUsW2T7RarHv7RBKsJ2PcaA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(7416014)(376014)(366016)(10070799003)(10067099003)(5023799004)(56012099006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(10070799003)(1800799024)(921020)(6133799003)(22082099003)(18002099003)(5023799004)(56012099006)(3023799007)(10067099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bWZjNXJUUTZkUWlwVkU1bktJVmJjY3crbTRNVy9iR25DVks4bWdVRVUzYkE3?=
- =?utf-8?B?ZCtlMG9hVktGcFp1Ly9qeGVnaXhla1ZDTFB1WW5FTHlxRXpOVDFhU3U2WjJF?=
- =?utf-8?B?TXlQS0ZOMEh4dVhiWFpKMjFEYnpaRXQva3JoYWs5cE83STJndnR2Ym1hUGk3?=
- =?utf-8?B?Zm50V0xVekhXRURtZjBBSXZaOWZISXE3YlluYk9FWjJxVDdJcGxQa0dQck83?=
- =?utf-8?B?RjI4b0dZOWtCdHBqc053L1hkc2NvNldNZm13bDFmSHVJK2NvNnZPVER5Z2hx?=
- =?utf-8?B?NUdRQXRLTmJCQ010aFdTT1ZubHdqT0djWko3SUxDODlwZlJtcG5OcnB3ckRj?=
- =?utf-8?B?REhkdGs3WW90UnF4bE5pVnlHdSs4T2VvTVJHdTlhcWtWR1hZUzBYcjFLZHBv?=
- =?utf-8?B?ZW9sV0lEeE5hNWRCcXVpWEx4Zmd3eHVCTm1CakxEV2FzVW1JM095ZFhGY1Fx?=
- =?utf-8?B?YVkzWmgwY0lVb2VHU1lEYXJpd044WkNVUmsrMWdmUFg5SE0xZTZwV1AxajNX?=
- =?utf-8?B?Ly96VGk0SGpPemFKRWQ4cnNLSEV4ZkE3azNqNUtWRC9KZTcydUVXbm9rSEFw?=
- =?utf-8?B?Z0twYnpnbGtPYXppQ3RKeTNZSEN0ZzhaR3VPUVYwT2x5T0k2aW1WQVJQQ0NT?=
- =?utf-8?B?SENBazhmNXkrNUs0WCs5S0l4bDh2Wkw5R3M0cWZVWFdXSzNoanFFRUtueW9Y?=
- =?utf-8?B?TXllRjh3OE12S1FwZHh5TkpPR0Z4dDZWQXB5Y1puZGZpcXplbmE0YVlVdFVn?=
- =?utf-8?B?WjFxNC9Pck1JTTVVanpTV2xrOElrZUtzeUZJa1lXMUsrb29hOTFKSVgyS2tC?=
- =?utf-8?B?TEFrSStUeHpuNWd5RG1rYTYzQmZyM0RVc2RoOFdWZkJuRDlNZHc3NXl1OVBU?=
- =?utf-8?B?WHg0NHl6R25vVEc4V2szMU93Q09iczk2T3JRdmVtVnptMWdjeEJGQmdxZUxw?=
- =?utf-8?B?dTZlUDVLS0hGOU1zZVJwbVJUTGptd2FLV3N0V1NnbDlCVm9qV0I5S3MrWkIy?=
- =?utf-8?B?WDhmbzFyMG8wSHZFdkpTRDlZS1lnc1J2N0FZSWxxd1JncjZ5VWNQRXpHMHY3?=
- =?utf-8?B?WDVUYkpXVWJGbFZlaEw3Q2FwZ2ovZnZFV2Y1aFptbCtneDYzY1JCcHZJKytV?=
- =?utf-8?B?M0tOajNwMjI0RDcrcllnelZBWUpJNEJpelhacG51MFNqT1FRTUwxS2RrR3BE?=
- =?utf-8?B?djZobndmMEpJazRnL3JwTTRVcEIvczZLM0pUaThhWTYwbUlSMStRdVFqSFpk?=
- =?utf-8?B?eDhIb1RkazZlMzVGZjhiWUdqaUJ5aFlVb1pUNVJoVEk0dEFmVnU4cXphNmI4?=
- =?utf-8?B?V3ZnSzNGTkpzNEpQVXdlQ3k5YytJV1lXOUxYWXNWby9YRjVNYVVhbC9sN3dW?=
- =?utf-8?B?TDAwaDhVUVN2K3ZiRUVkK0E4VDQvNFVtSjg0M09zeXV5NTNnajY5eVRIUXVu?=
- =?utf-8?B?WTFiU2hVeWNYdk51ZGtqSXUwZzY3dElnVUJDOUhFT0Z0OWdaM3pGWHdFR09X?=
- =?utf-8?B?bmEwMFRmY2V5N0FRSmh3TlpzbThSRjZnMXN1bXpVbWo2WkN5QUVJMCtXSDVs?=
- =?utf-8?B?K25TYjhRRHhFTk14R0MvUEVhQzV5ZllwbVZ2VFIwSE5jSTd6ZzF3UklUYytC?=
- =?utf-8?B?c2FxSWtxMWUvU2dYSGtVWXhNckdhcnhabjJYblRuV3NWMUl2OElmd2J5eGhP?=
- =?utf-8?B?dW9TOWR0c1BBK3hTUEZXQTJqSzU2Q01wTkpQZzF5U1Q5VVFSWWtLYWNPdW1y?=
- =?utf-8?B?VjN4OXdFcE1RY3pKekZTNHByMk82eXBBdXUwMTFiUThjcXpRWDYrMUw0UjFH?=
- =?utf-8?B?dFhjWW5iWmgrcFpBNkpwZHFRTWRZQkFRRzJPY21IclMvdVJVZlduZ3pDOGt6?=
- =?utf-8?B?ZmtYY3RvcmxDL2szMHFYREhRQkFUWVoxSlVwci9JUlFkYTZ6SUxLUHViN1JW?=
- =?utf-8?B?aWVkTDVzTEUzVFpRQXVHNmFYMVhCZklUMVFGQ3pKQVhTbDVhd1p2Wnh1QWI1?=
- =?utf-8?B?VWxFeElnbzMybFdXbXFXVExjZ2N3Wnp6eCtUTmRuME81K2JPa3pURUJLOVBl?=
- =?utf-8?B?N21vWHVCZCt2S3Zxd2cva0FnSml6VTRRTENqRHQyK3lYOHZqSWpYZ3VVMFFE?=
- =?utf-8?B?dmc5TVJEaWJ5SjNwOXBOMEdqK05mRzJxMDVBd0R6NUZTYTJXRGNJQlFHdHJr?=
- =?utf-8?B?VUt0dUtrdTNreDFiaVhlR1ZDYTNqWWpURXFuaklvTHdJRFk2bGJ3WTk1cFRv?=
- =?utf-8?B?YmZGWXR1ZjlQRWtiNEVmOFZoUXNFcFdCb0pjTkt3ZVgzREVIR2Y1dmcxZEI2?=
- =?utf-8?B?VVY3WERSTUx5akxzU2lycTF6Ulkrdk0vbi9mdVJ6NlFjaE1jSHhkUT09?=
+	=?utf-8?B?U0xYQ3ZiQnBHaTE2RWdvMFEyY3lTclRDUWZTZGtNbkFQNGFQQTU1SWxUMzcr?=
+ =?utf-8?B?c0x4cUF2cEZvNXlXZHk1ck02ZW9QZi8xTzJ2ZU9vaTBCbTlHdTRPeXhaaTFE?=
+ =?utf-8?B?TGRURjFpOWo4VUhmaHN3eTJSSlhxQ3MxNXBrWGxTaVgxd24wcXpaeTA5bTky?=
+ =?utf-8?B?MDhNeDNicnYrMEg3VzBpTkhZUmprWlVETjRyQ1VjZGdjNzBJSmk1MFI5VGhE?=
+ =?utf-8?B?MW5seUwwNGV3cUpJSlRydDhObGxKejJTZzRuUnVIM1BCUHc3QzdFRnRkbC9z?=
+ =?utf-8?B?dlRXN0EwRXBjK0hQUEFSaGE1UUZCMjNjTTdzQUNyRkJqdlNhRjRzK2ZHNm5k?=
+ =?utf-8?B?RUd4VXgvUWJ2dVBGZHhGYzg4UitNM3NPTnBMRjFNaFpnczE5NnBUcU56cXli?=
+ =?utf-8?B?RkduTWtxTWFYRjhORFh3dWViU2s0UCszOXU5SmlYbEhTR0tBdjlzN3FsQVAw?=
+ =?utf-8?B?NkR6UC9qOTIraUdEMHNNdnhaM1VxOU5KbzZMRlRLby9vS05RamlSbVNObTNr?=
+ =?utf-8?B?bHNLTDJWWFVzYjZqcFpmaE5hbE9JbjR6Tk5OUi90TkFEaEpZeERMN3daTmlv?=
+ =?utf-8?B?NnZOMEpXWHJNVFdqZHlqN0J1dVNkRHY3SFQwMnZpcTlpdy9rNzdZYkR6amFU?=
+ =?utf-8?B?YkhGSVVoR3JZUGxrYUZ0cFk4RGRtbnVWNkJVSElOa2M1Y0RUUjlNOUlEc2d4?=
+ =?utf-8?B?WjdlY2RxNlEzMXczUzA0L2wrNDZ4R1lZYTVMN3V3WU5OWFJrVUZTU2gvbUhN?=
+ =?utf-8?B?ZU9rL091RlFOdlJXOGp5M1BUeDRGZlFyaGppdFR5ZlF2ZW1RUHMwbzhicEt0?=
+ =?utf-8?B?cnl3OTZoNXlWKy9mWERWWHlFS3oxKzVnQXVuZlJjbUxBcm5SS3FCamNxV3pO?=
+ =?utf-8?B?aTVLUFJhSnlFbGszTTVVaEJzV2NhNTNGWk5GY1ROdVdqYlpxNmVVdmI2S05R?=
+ =?utf-8?B?T0JCQ3EvL1hVM0pvNW51YlgwQ0JvblVpQUl5N3dtK2NRbExTeXNCdDUraDFV?=
+ =?utf-8?B?UkNpQUpjRHRIY05oTjl2V1p1K0JNYmcxTHoySEovNWpMd3RQR3htN0M2Vjgy?=
+ =?utf-8?B?Ym85bkRudk5vdEM2a1FPdDkvT1dEdjdPU0RXelB3TVJIc3FqOFVMZWR1RE95?=
+ =?utf-8?B?NlJ2SlV3YTBnb0pkNFlySkwwNEd6elhqTlNXWG9DcWRUMjlHdXNGNDFRcHlC?=
+ =?utf-8?B?bk1heG1FakdlektSQks5aFAvT2JSUStjNUpLckh2ZklpWE9sTmNCRVdDM3BF?=
+ =?utf-8?B?UGN2YWJpUmdVN0hkSUxUQ1FWNXhOTEE3eHp4NVE4WmhBS3c4TUNQUWNBMitR?=
+ =?utf-8?B?QTRPb2ZzNkFLMG91SWQxTk5rOHBWREtxVGE3TXp2VXlrQzI5SHJsNWhMbVRi?=
+ =?utf-8?B?NXZWbzFOYXBjK3oxaFhQcTBITjBNbFJHNk1ka2hDU3hKN2xJUk5sNE5PUnhq?=
+ =?utf-8?B?MkZnWWlMK0kvTUF4c1IyaUpOcGIwMXdKbys5dGg4TDlFbzUwVGtyeGNYZmtQ?=
+ =?utf-8?B?WVlOWFBLNlNlYnlHVWsyWFJ3UEtZRU9rNEo3M3hZU1BjUXIvYW9OZnpJYWps?=
+ =?utf-8?B?akFzaUtOeXpZRkc4OEt5VmQ5YU91TzRPcUtIVmYyTndCTnJKcFNpUkp3c1VB?=
+ =?utf-8?B?R0NrUUhVMnpjbE1CQmNYdTY4Rlc4ejY1UTNzUHM2MmswVHowUklkWGt3SDhz?=
+ =?utf-8?B?WDBiUHl1dFRKN3QvWG1qVVpvOEdwT2d5QVhGZWlFVFhTbUpWT2hDV2FKSTMy?=
+ =?utf-8?B?YXRxZ3BPVWZyMGNGbHB2em9CMGJMTjd5dUhoS1I0YkJKU0pDRDEvZzBhNStW?=
+ =?utf-8?B?VnZ2R1NtRUgwWGswVEpLYThGV0t1d0xKZFdMNVhyc2JXNkwzYkJlcm1VYzFm?=
+ =?utf-8?B?ekMxU2oxZFl0YTBsVE5GRjFZMVlHMVdxTDJieUVVN0V0WmkvTk1FSVRHRjZn?=
+ =?utf-8?B?c0xnU2xCR1MrYXBzR2JnMkYyWUV5NHh6NEd6RDQ3KzUxemdiNnBwTnRSRzZL?=
+ =?utf-8?B?YUp5Vk1IeG9hRWpjY01IU2VXOXRWZHJGd3lBQ1pJVzZYOCtXamExai85S3Rv?=
+ =?utf-8?B?SDNYU1lzMXFwZXpPaFV4RjNVZy83S2gzREtnSnJid2JrYUNheXpWWEs4cHdw?=
+ =?utf-8?B?ZGNZM0xwSitnN0JiV0E0STVaZlpjeDEvUVorZ3dwRXBlaXVrVXZ5ZEthdm04?=
+ =?utf-8?B?K2owdEQ1eU0xNG8vOHRoMi84eVd3SXVQOG5rblQ5YjA5cktXakVnajFFL3I3?=
+ =?utf-8?B?NjVXbFgwblhqRkpVaUE5U3FHK2ZnWTNXM2ttUnhjUzhoOFhzRFV1WWlYeFRx?=
+ =?utf-8?B?NTJHMFZoYlVGU1hNOXRYL1FUd2MrNmV0UUJVK0oxb1ZFUURRdUdOQT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7742ebed-9c5d-4e66-a1fe-08df0f321175
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed89c7d2-6d84-44ee-bf83-08df0f33cf25
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 11:53:02.6825
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 12:05:30.3749
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x975aILJj0Q6chZXRQGFYYhWChYx+UEPsCmG34yrzUDottTq4D3sP43q+UuB7KRXBmfjKKnjjgbpkdFvsclH5A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO7P265MB7437
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8wA6s0KxN79V7HFYJgFUE9zsMp6eqDQmLAv3QG6BUQbEDihjaDWF4c3bOqRZXvb0mkBwmPItaxKU0Kbg55D4lg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB5650
 
-On Wed Sep 9, 2026 at 11:48 AM BST, Tetsuo Handa wrote:
-> Add post_release() block device operation which provides a hook for
-> performing synchronous cleanup without disk->open_mutex held, which is
-> needed by the loop devices.
+On Thu Sep 10, 2026 at 11:08 AM BST, Mukesh Kumar Chaurasiya (IBM) wrote:
+> The Rust kernel infrastructure generates inline asm for WARN() via
+> ARCH_WARN_ASM(file, line, flags, size), expanding it through a C
+> preprocessor pass (generated_arch_warn_asm.rs.S) to produce an
+> arch-specific asm template string for use in Rust's core::arch macros.
 >
-> Real-world container engines, test suites, and system utilities rely on
-> fput() from __loop_clr_fd() being completed when lo_release() returns.
-> But changes which went to the v7.1 merge window broke an assumption that
+> powerpc currently lacks ARCH_WARN_ASM and ARCH_WARN_REACHABLE, causing
+> Rust builds to fail on powerpc with
+> ```
+> error: no rules expected `ARCH_WARN_ASM`
+>    --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_warn_asm.=
+rs:1:28
+>     |
+>   1 | ::kernel::concat_literals!(ARCH_WARN_ASM("{file}", "{line}", "{flag=
+s}", "{size}"))
 
-What change? You should mention it with a Fixes tag.
+I think we probably want to catch this earlier by have something like
 
-The message should also explain how the assumption is broken, not just stat=
-ing
-that it's broken.
+#ifndef ARCH_WARN_ASM
+#error "ARCH_WARM_ASM is not defined"
+#endif
 
-> there is no outstanding I/O when __loop_clr_fd() is called, causing NULL
-> pointer dereference problem in lo_rw_aio().
+in generated_arch_warn_asm.rs.S.
+
+>     |                            ^^^^^^^^^^^^^ no rules expected this tok=
+en in macro call
+>     |
+>    ::: ../rust/kernel/lib.rs:279:1
+>     |
+> 279 | macro_rules! concat_literals {
+>     | ---------------------------- when calling this macro
+>     |
+>     =3D note: while trying to match sequence start
 >
-> In order to fix this regression, we want to allow __loop_clr_fd() to flus=
-h
-> outstanding I/O. But calling drain_workqueue() from __loop_clr_fd() with
-> disk->open_mutex held causes lockdep warnings. We need a mechanism which
-> can flush outstanding I/O without disk->open_mutex held.
+> error: no rules expected `ARCH_WARN_REACHABLE`
+>    --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_reachable=
+_asm.rs:1:28
+>     |
+>   1 | ::kernel::concat_literals!(ARCH_WARN_REACHABLE)
+>     |                            ^^^^^^^^^^^^^^^^^^^ no rules expected th=
+is token in macro call
+>     |
+>    ::: ../rust/kernel/lib.rs:279:1
+>     |
+> 279 | macro_rules! concat_literals {
+>     | ---------------------------- when calling this macro
+>     |
+>     =3D note: while trying to match sequence start
 >
-> This post_release() operation is intended for performing only idempotent
-> actions such as flush_work(), for nothing prevents multiple threads from
-> concurrently calling this operation. That is, the loop device schedules
-> a work_struct for calling __loop_clr_fd() from lo_release() where
-> disk->open_mutex is held, and waits for completion of that work_struct
-> using post_release() operation where disk->open_mutex is not held.
+> error: aborting due to 2 previous errors
+> ```
 >
-> Also, this post_release() operation is called from only bdev_release()
-> path. This is because loop_configure() is not yet called (there is nothin=
-g
-> to clear) if something went wrong between an initialization lo_open() and
-> an error-unwinding lo_release() within the bdev_open() path.
+> To add ARCH_WARN_ASM, _EMIT_BUG_ENTRY first needs to be refactored.
+> The old definition was a bare macro with no parameters, relying on
+> positional asm operand references (%0-%3), hardcoding the backward
+> reference to local label 1b, and including .org/.previous directives
+> inline. That made it impossible to compose as a plain string outside of
+> an asm operand context, and left an invisible contract that callers must
+> always emit their trap at label 1:.
 >
-> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+> Refactor _EMIT_BUG_ENTRY to take explicit (label, file, line, flags)
+> string arguments via string concatenation. This removes the dependency
+> on asm operand numbering and makes the trap label an explicit argument,
+> so the caller's intent is visible at the call site and a future caller
+> using a different label cannot silently produce a wrong bug table entry.
+>
+> Move the .org and .previous directives out of _EMIT_BUG_ENTRY and into
+> each call site, so BUG_ENTRY() can still pass sizeof(struct bug_entry)
+> as an asm operand while ARCH_WARN_ASM can supply its own size string
+> independently.
+>
+> Add ARCH_WARN_REACHABLE as an empty define, matching the arm64
+> convention, indicating that no additional reachability annotation is
+> needed after a WARN on powerpc.
+>
+> This brings powerpc into line with x86, arm64, s390, and riscv, all of
+> which already define ARCH_WARN_ASM and ARCH_WARN_REACHABLE.
+>
+> Reported-by: FUJITA Tomonori <tomo@flapping.org>
+> Closes: https://lore.kernel.org/all/anG67Q6Y59kDqh-c@desktop
+> Fixes: 73b741adb264 ("rust: Add PowerPC support")
+> Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
 > ---
->  block/bdev.c                     | 2 ++
->  include/linux/blkdev.h           | 6 ++++++
->  rust/kernel/block/mq/gen_disk.rs | 1 +
->  3 files changed, 9 insertions(+)
+> Changelog:
+> V2 -> V3:
+>  - Add label argument in _EMIT_BUG_ENTRY
+> V2: https://lore.kernel.org/all/20260910071252.1950488-2-mkchauras@gmail.=
+com
 >
-> diff --git a/block/bdev.c b/block/bdev.c
-> index cd8323083740..7ce5acaacf43 100644
-> --- a/block/bdev.c
-> +++ b/block/bdev.c
-> @@ -1188,6 +1188,8 @@ void bdev_release(struct file *bdev_file)
->  	else
->  		blkdev_put_whole(bdev);
->  	mutex_unlock(&disk->open_mutex);
-> +	if (bdev->bd_disk->fops->post_release)
-> +		bdev->bd_disk->fops->post_release(bdev->bd_disk);
+> V1 -> V2:
+> - commit message now has error, fixes tag and closes tag
+> V1: https://lore.kernel.org/all/20260819084825.969116-1-mkchauras@gmail.c=
+om
+>
+>  arch/powerpc/include/asm/bug.h | 36 +++++++++++++++++++---------------
+>  1 file changed, 20 insertions(+), 16 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bu=
+g.h
+> index 0db48977c70c..df2183c35945 100644
+> --- a/arch/powerpc/include/asm/bug.h
+> +++ b/arch/powerpc/include/asm/bug.h
+> @@ -32,34 +32,38 @@
+>  #endif /* verbose */
 > =20
->  	module_put(disk->fops->owner);
->  put_no_open:
-> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-> index 4f7905c3412b..f05dba1b5962 100644
-> --- a/include/linux/blkdev.h
-> +++ b/include/linux/blkdev.h
-> @@ -1605,6 +1605,12 @@ struct block_device_operations {
->  	 * driver.
->  	 */
->  	int (*alternative_gpt_sector)(struct gendisk *disk, sector_t *sector);
-> +	/*
-> +	 * Called after disk->open_mutex is released in the bdev_release() path=
+>  #else /* !__ASSEMBLER__ */
+> -/* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
+> -   sizeof(struct bug_entry), respectively */
+>  #ifdef CONFIG_DEBUG_BUGVERBOSE
+> -#define _EMIT_BUG_ENTRY				\
+> -	".section __bug_table,\"aw\"\n"		\
+> -	"2:	.4byte 1b - .\n"		\
+> -	"	.4byte %0 - .\n"		\
+> -	"	.short %1, %2\n"		\
+> -	".org 2b+%3\n"				\
+> -	".previous\n"
+> +#define _EMIT_BUG_ENTRY(label, file, line, flags)	\
+> +	".section __bug_table,\"aw\"\n"			\
+> +	"2:	.4byte " label "b - .\n"		\
+
+"b" is part of the label. "1b" itself is a label and "1" is just an integer=
 .
-> +	 * Used by loop devices that need to perform synchronization without
-> +	 * holding disk->open_mutex. This operation has to be idempotent.
-> +	 */
-> +	void (*post_release)(struct gendisk *disk);
->  };
-> =20
->  #ifdef CONFIG_COMPAT
-> diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_=
-disk.rs
-> index fc97dd873974..2ff77ef49781 100644
-> --- a/rust/kernel/block/mq/gen_disk.rs
-> +++ b/rust/kernel/block/mq/gen_disk.rs
-> @@ -129,6 +129,7 @@ pub fn build<T: Operations>(
->              submit_bio: None,
->              open: None,
->              release: None,
-> +            post_release: None,
->              ioctl: None,
->              compat_ioctl: None,
->              check_events: None,
 
-You can use
+If the code uses
 
-    ..pin_init::zeroed()
+    _EMIT_BUG_ENTRY(..)
+    "1: ..."
 
-to have all other fields zeroed. It might be beneficial if we care about kn=
-owing
-all new callbacks, but it doesn't look this is the new case.
-
-We probably should remove all `None` assignments so it's all covered by the
-`..zeroed()`, but that'll need to be its own patch.
+then the correct label would be "1f".
 
 Best,
 Gary
+
+
+> +	"	.4byte " file " - .\n"			\
+> +	"	.short " line ", " flags "\n"
+>  #else
+> -#define _EMIT_BUG_ENTRY				\
+> -	".section __bug_table,\"aw\"\n"		\
+> -	"2:	.4byte 1b - .\n"		\
+> -	"	.short %2\n"			\
+> -	".org 2b+%3\n"				\
+> -	".previous\n"
+> +#define _EMIT_BUG_ENTRY(label, file, line, flags)	\
+> +	".section __bug_table,\"aw\"\n"			\
+> +	"2:	.4byte " label "b - .\n"		\
+> +	"	.short " flags "\n"
+>  #endif
+> =20
+>  #define BUG_ENTRY(cond_str, insn, flags, ...)		\
+>  	__asm__ __volatile__(				\
+>  		"1:	" insn "\n"			\
+> -		_EMIT_BUG_ENTRY				\
+> +		_EMIT_BUG_ENTRY("1", "%0", "%1", "%2")	\
+> +		".org 2b+%3\n"				\
+> +		".previous\n"				\
+>  		: : "i" (WARN_CONDITION_STR(cond_str) __FILE__), "i" (__LINE__),	\
+>  		  "i" (flags),				\
+>  		  "i" (sizeof(struct bug_entry)),	\
+>  		  ##__VA_ARGS__)
+> =20
+> +#define ARCH_WARN_ASM(file, line, flags, size)		\
+> +		"1:	twi 31, 0, 0\n"			\
+> +		_EMIT_BUG_ENTRY("1", file, line, flags)	\
+> +		".org 2b+" size "\n"			\
+> +		".previous\n"
+> +
+> +#define ARCH_WARN_REACHABLE
+> +
+>  /*
+>   * BUG_ON() and WARN_ON() do their best to cooperate with compile-time
+>   * optimisations. However depending on the complexity of the condition
+
 
