@@ -1,182 +1,224 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2193806DD
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 06:52:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850402DC798
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 07:13:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789023185; cv=none; b=qnfbhGAFTeP8tii5/AfP7waWyfbkike9WnsOik1+YOtehPakN087RDl7DF/gjRuzyLb4L8fp0OitGWQvQeXXbWQ1SEt/Eg4xKplb397vWA3zGFt10gbMh/XJgcvBQ91Ln7PlFp7NQNVjAHB/nz4U1Tfsq7p4fCwBZAauSPJm0dM=
+	t=1789024397; cv=none; b=BCeO/a7NoP6P6kT66cvxW6CzMwoyhWr+tHN6lOuSPC91hzUwlNu8Q6G8dn7NYoioItuHR81YTZPU54FN8nWfxRPFqGX9ZDphft0xFN8dQ/MLDPw2NlknFFSeCBdKQQYzV+gU5oI/phhsJX9qXz715DZGLVzneYQrH0X2H7BTPqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789023185; c=relaxed/simple;
-	bh=OG8nqpVIiVaUDqsBzlwBd7F+WF7t4IRbr3zHcFb5WRo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TQIehUZ1NM5MqnT3ryIP81DmhBToMzAf4XfQnnqkUuRshk0lksJ1ON82V6/z5qyLUVFjb59Sh4fOuJthq0VMHP5AMeu1AGt5rm2VyxSlAhQVl4ysIZHn5ich6c219KyMzgnbPDX87jqUEa6LLNJmAsELGmaAHsCmVX1yG8iLN9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ERQBxovg; arc=none smtp.client-ip=209.85.216.53
+	s=arc-20240116; t=1789024397; c=relaxed/simple;
+	bh=fCdtyTmQLFJCppzzCnTNnwRvkB3lcC2v6IB30SxEUK4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GSei7O87/xMYYdTqrA/SEZHE9/vDt/nZDFlS+qZXDyDs946eC4wHboZp90PxsvPg9j18tFvvuHE1NgOc0TBVgtqmX7XPTboLfVSQSSz0gyXmHY1pyjLRarQnKhAhilgn5ilLyns2SFXg6CPUUYjGl2fyFH7ckkdymTgX4iHVPUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tJpoeeyq; arc=none smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ERQBxovg"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38e42560ebcso5218790a91.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Sep 2026 23:52:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tJpoeeyq"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747ed9866so10749925ad.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 00:13:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789023178; x=1789627978; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UNeh3lUekONIP+bceTcz/qzQUFIH9IGvapVm9Sqamho=;
-        b=ERQBxovgElPNzqrI4q5qwQ/NQeCCz0ZveLXjgzOJsg4d7n0jiouChI82la5qAJ7T0z
-         U6E0Lq6tRszoQ5JZCTVw2q1DQKImfMwCYXJd0JGWC4SXbUU+SyS30bDesqNWu51dlzG0
-         sUob9Upp1Qz/OvRqbouf+YSd+bn+Ha/oAsvEm+puakpJ9hjP/zr7Myw9FWJbm2Mnpy+q
-         0B5eWS+pNtdrtyjzEU5mElqOZHn+7GDL0XhNimnkoPnMP8zSaoDYqqxatB/JuC+dI3RL
-         SpbutMHh1eVhl14Rj1Bkjnk9Uclydn72Z6iDTwRIuCZvgporHTPtt2JXg83SJpi71mgB
-         Wnig==
+        d=gmail.com; s=20251104; t=1789024395; x=1789629195; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2oXTxVfBODKLGSc/9HbMzKqtFz+JtlQq+nSqeCi24+U=;
+        b=tJpoeeyqtUgppSt53xkFE55Yc7jRV7VFQP2zVZl5BEEAFj6Q/ZgMq7yfNISydPWWLe
+         6ftHg9l6ibSwpHPg8i16H/kOBDgyxp9PgKhaKUohG5nL00g1hVFxpO7jRGBPnsKvUwHi
+         3yTJDry3yF8aveR170GFgBdjjG14fl9JQ4fXWo9+3dsq+Gg11SKCC6UkNs7gJ30r9ayg
+         D/l+AhNCaM/7+kyD5DwRFmL092QfVdyiHWaenFvFAhuDmRBngg8k28wfjvnpuUrQ8KaB
+         jGXSuJ5DbkIpbGoNjhfpIXGtsuRGFl6DZBv+Ur1o8uAQ6TM8TfJH7OrlyY2y2akuAN/2
+         mJyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789023178; x=1789627978;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=UNeh3lUekONIP+bceTcz/qzQUFIH9IGvapVm9Sqamho=;
-        b=VfOYrOAFQpZNlsB2ERv9yMKUtYe++rYWXHMVH/mIMK071xZ7GQBalF3B7eSjlZpQzj
-         ReCEnDEeNGVwvXFIbJb+mxB9PikVOZJnFGNuknt7pFrG9s8gmpEsKSHEkkIY8eBNYhb8
-         3ldJ9rF6czIocj2GhMWTe8dkpFuKGYrf9zBLLrwJgtrrZIbVeGd1kFort4rxqVuPCHIF
-         WCUx8uFRNcAeIz67OlKAJX38gIJ7ihHJ/AZlWljcrlbMYYgCLryU3ZZ/88wWAi12aqY3
-         nZOz/DY2aca4zVmHKOUy0wSPuGW95T65kJd6uP4lBS2ppfEHrwGWVGm8bX8SPLg81LZ1
-         7tiQ==
-X-Forwarded-Encrypted: i=1; AKwUvByKgbRsuczID4duh/Fzy5VLwd3L1S+wuZBo70KLkmxliWGXxcYBF/F8i51xOza8+vP8bOx/B7h0GS66z6Ui4g==@vger.kernel.org
-X-Gm-Message-State: AFuF++mHttb7RF3+otBmkewoaAPA3cxc7LSRhg0S6CD6oObZCsp10soQ
-	lac23b9+6YhPQY0qtnW3+6ORa9XATZuY0jrRUGDFX2wlPjZrF87Ga4S/
-X-Gm-Gg: AYBFou2sJSC420phfcl2ydYWSnty5bz/D18AM4zK5UZaAPSKkRQmWMYYpm3WIxsABQV
-	RstjTkY1wiFj2CG/MpABiTYvwIcEz7X1Egbon5K1nJGao1SbltADYUtv7MYXA2+SKPO6DKJu9Yg
-	9nMRoej1MUAZmUmY0JC7UVta7BMt3anicweo72YDG0tX0pR9Lf3jONrUxjMNapKBL9eVio1dSP7
-	MDim+a+yL28tpnjQpW8nyx1UZ4hmaawuHiyafMxtxAHeK1C5lCw3RgkqP/TLBVs1J31XDXNjxl0
-	OrTDOaI0dixKXR3FnSaRcTIbNLZuaEzDfRxXWhlyEGbZ49H9jlIJPM0h9FyvlsA9U5WHptL3cGr
-	+Vgl2UkODI+w/XbSyE26Ey9aZOdiSnSZy6vomlq+u04LyJHayzC0ibm+Wj7LbAzJsgOMIOgg1J/
-	KOhBwlkG75IZOLhqIH2rwwdE03RCZjHU/vdzDMfTFLL9pfXFnC8Cqgq0daI0s1pmArb2PGgjh1x
-	OvgYOMGNKxDQRY7Jjm58uZQBTtO9l5UK+EdoI+AQjo=
-X-Received: by 2002:a17:90b:3d92:b0:398:bf7e:b267 with SMTP id 98e67ed59e1d1-39b2614df9dmr61606265a91.2.1789023178292;
-        Wed, 09 Sep 2026 23:52:58 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d7e77498csm2694423a91.3.2026.09.09.23.52.36
+        d=1e100.net; s=20251104; t=1789024395; x=1789629195;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2oXTxVfBODKLGSc/9HbMzKqtFz+JtlQq+nSqeCi24+U=;
+        b=IZzrsLVPsewfcyhXb4QD9cKrEB7sG9vW3Ua9JKMnalR+2MNeb/tr3PSxJfnDag1lqU
+         XFhSLvNNkE0Mi8j8AOULjtpO/TKuVXfLyHTMnj34XzfyETTBMVhkZ+HkftZ9jHhdMr1c
+         JlIodlMr31HaOY2/h1iB/Mw0+V2Ny8yQD2PBvHuBaFY2RTS00lOj5F5YLTrxnd5/zlhq
+         /mqxk55z5hesV6e81kELQkx4nW0aDUeoO6VxOmoS12jkbNfP9HU2TsjDLga5o7SPHajq
+         Fc4zEL0Qe2nCv+6Qq2Twpo67ohgvvSAJIGvjslqH36s11jOQOyaYHyYtCd9Y2ktsAUBW
+         t8eQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxbkTHjZpi19m5M1BGaX9HoxOUE2Li9FI+2/HZzh3U5Qa8/GM5YIXhhCY8O5OhW0S5yP4PLE/qOtYG8nbyWoA==@vger.kernel.org
+X-Gm-Message-State: AFuF++nB+hv9ECym8/jQJ88aeNc7YJA1SetZ6Xv9dE1M3p06nEeA6qW+
+	wK0ZYpORU9WL5GGP1tZVgkI/B366jr2ZWYVPchZXbnGeRwbjhn6NzS2K
+X-Gm-Gg: AYBFou2WFwSPM1SM6J2tTzUfYZiX66KC7ITQemCylQkvC1DW6x+Fu5ZA11pZQ+mfztm
+	bMNCRty3PRSyT5LkdJwvdyC2qAChS1VyUNSHyr0rDumiM0ojzxkCa4hwP6GQBRE/wXf408BbG91
+	LebrS4Wzv4kC5WVPg1W507KHgct13WxTFlgQLGwyn3JaCsHaF6wpY/dNkktDDzPd76XlJxERdgq
+	n4GYColRaNRR93yd9jJTkeO9KK+dZVAqTWQSLtAAsFUesZ6P70rU7nTCJBn0XJJqKjCTcs25TvG
+	fJNF0Poub5xhnSLuvwDG4WbFC3bkEoayQYGrttZT3ItZO+MeVQoheIONfjnh5Ar0GSPAP/stGTX
+	A4FjB9fuLLcmFfrxcfWh1gz5Yupa5aOrE+o5NlNyd+dhh0LVzWhGS0ZdvQKKM2/AJvFgHouCgnm
+	RMT7SwS+Khe4jxw543KpE+7IVGASLEJDiK0cg3SV+c3doDDSqn52vSShlkziTE2Wk2EjKJjuiva
+	7BinXfckQceg508yIWy+dwdtlENwDLqgIQlGbbZIYafRWT4H30ZEQ==
+X-Received: by 2002:a17:903:17cc:b0:2d9:4871:393d with SMTP id d9443c01a7336-2dd07cb17dbmr88797695ad.21.1789024394747;
+        Thu, 10 Sep 2026 00:13:14 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.bl1-in.ibm.com ([129.41.58.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db14ae8af3sm82366995ad.80.2026.09.10.00.13.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 23:52:57 -0700 (PDT)
-Date: Thu, 10 Sep 2026 12:22:33 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Christophe Leroy <chleroy@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Nicolas Schier <nsc@kernel.org>, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, linux-mm@kvack.org, 
-	linux-um@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
-	linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	Jan Stancek <jstancek@redhat.com>, Arnaldo Carvalho de Melo <acme@redhat.com>, 
-	Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: Re: [PATCH v5 12/24] vdso: Add the vdsocheck tool
-Message-ID: <aqJS61DbuUI3xoY3@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260908-vdso-absolute-reloc-v5-0-3a93791af1cf@linutronix.de>
- <20260908-vdso-absolute-reloc-v5-12-3a93791af1cf@linutronix.de>
+        Thu, 10 Sep 2026 00:13:14 -0700 (PDT)
+From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+To: maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	chleroy@kernel.org,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	tamird@kernel.org,
+	acourbot@nvidia.com,
+	work@onurozkan.dev,
+	mkchauras@gmail.com,
+	linkmauve@linkmauve.fr,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	rust-for-linux@vger.kernel.org
+Cc: FUJITA Tomonori <tomo@flapping.org>
+Subject: [PATCH V2] powerpc/bug: Add ARCH_WARN_ASM and refactor _EMIT_BUG_ENTRY for Rust support
+Date: Thu, 10 Sep 2026 12:42:53 +0530
+Message-ID: <20260910071252.1950488-2-mkchauras@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260908-vdso-absolute-reloc-v5-12-3a93791af1cf@linutronix.de>
 
-On Tue, Sep 08, 2026 at 08:33:46AM +0200, Thomas Weiﬂschuh wrote:
-> All vDSO code needs to be completely position independent. Symbol
-> references are marked as hidden so the compiler emits PC-relative
-> relocations. However there are cases where the compiler may still
-> emit absolute relocations, as they are valid in regular PIC DSO code.
-> These would be resolved by the linker and will break at runtime.
-> This has been observed on arm64, see commit 0c314cda9325 ("arm64: vdso:
-> Work around invalid absolute relocations from GCC")
-> 
-> Introduce a tool to check for absolute relocations during the build,
-> as the current inline-shell logic is not expressive enough.
-> The check is done on the object files as the relocations will not exist
-> anymore in the final DSO. As there is no extension point for the
-> compilation of each object file, perform the validation in vdso_check.
-> 
-> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> ---
->  Makefile                    |  19 ++
->  lib/vdso/Kconfig            |   5 +
->  lib/vdso/Makefile           |   2 +
->  lib/vdso/Makefile.include   |  14 ++
->  lib/vdso/check/.gitignore   |   3 +
->  lib/vdso/check/Makefile     |  34 +++
->  lib/vdso/check/elf.rs       | 498 ++++++++++++++++++++++++++++++++++++++++++++
->  lib/vdso/check/vdsocheck.rs | 154 ++++++++++++++
->  8 files changed, 729 insertions(+)
-> 
-> diff --git a/Makefile b/Makefile
-> index 4ad67b737af7..e6e0dd7818ef 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1559,6 +1559,25 @@ vdso_install: export INSTALL_FILES = $(vdso-install-y)
->  vdso_install:
->  	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.vdsoinst
->  
-> +# ---------------------------------------------------------------------------
-> +# vDSO check
-> +
-> +ifdef CONFIG_RUST_IS_AVAILABLE
-> +ifdef CONFIG_VDSO_CHECK
-> +
-> +# Build the checker early.
-> +prepare: vdsocheck
-> +
-> +# If the architecture builds the vDSO early, make sure to be earlier.
-> +PHONY += vdso_prepare
-> +vdso_prepare: vdsocheck
-> +
-> +PHONY += vdsocheck
-> +vdsocheck:
-> +	$(Q)$(MAKE) $(build)=lib/vdso/check $@
-> +endif
-> +endif
-> +
->  # ---------------------------------------------------------------------------
->  # Tools
->  
-> diff --git a/lib/vdso/Kconfig b/lib/vdso/Kconfig
-> index 597f5f0f9681..112b42a5aeb1 100644
-> --- a/lib/vdso/Kconfig
-> +++ b/lib/vdso/Kconfig
-> @@ -23,3 +23,8 @@ config VDSO_GETRANDOM
->  	select VDSO_DATASTORE
->  	help
->  	  Selected by architectures that support vDSO getrandom().
-> +
-> +config VDSO_CHECK
-> +	bool
-> +	help
-> +	  Selected for architectures that are supported by the 'vdsocheck' progam.
-	s/progam/program
+The Rust kernel infrastructure generates inline asm for WARN() via
+ARCH_WARN_ASM(file, line, flags, size), expanding it through a C
+preprocessor pass (generated_arch_warn_asm.rs.S) to produce an
+arch-specific asm template string for use in Rust's core::arch macros.
 
-Regards,
-Mukesh
+powerpc currently lacks ARCH_WARN_ASM and ARCH_WARN_REACHABLE, causing
+Rust builds to fail on powerpc with
+```
+error: no rules expected `ARCH_WARN_ASM`
+   --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_warn_asm.rs:1:28
+    |
+  1 | ::kernel::concat_literals!(ARCH_WARN_ASM("{file}", "{line}", "{flags}", "{size}"))
+    |                            ^^^^^^^^^^^^^ no rules expected this token in macro call
+    |
+   ::: ../rust/kernel/lib.rs:279:1
+    |
+279 | macro_rules! concat_literals {
+    | ---------------------------- when calling this macro
+    |
+    = note: while trying to match sequence start
+
+error: no rules expected `ARCH_WARN_REACHABLE`
+   --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_reachable_asm.rs:1:28
+    |
+  1 | ::kernel::concat_literals!(ARCH_WARN_REACHABLE)
+    |                            ^^^^^^^^^^^^^^^^^^^ no rules expected this token in macro call
+    |
+   ::: ../rust/kernel/lib.rs:279:1
+    |
+279 | macro_rules! concat_literals {
+    | ---------------------------- when calling this macro
+    |
+    = note: while trying to match sequence start
+
+error: aborting due to 2 previous errors
+```
+
+Refactor _EMIT_BUG_ENTRY to accept explicit (file, line, flags) string
+arguments rather than relying on positional asm operand references
+(%0, %1, %2, %3). This allows the macro to be composed as a plain
+string concatenation, which is required for ARCH_WARN_ASM where no asm
+operand context exists.
+
+Move the .org and .previous directives out of _EMIT_BUG_ENTRY and into
+the BUG_ENTRY() call site to preserve existing behaviour while enabling
+ARCH_WARN_ASM to supply its own size operand independently.
+
+Add ARCH_WARN_REACHABLE as an empty define, matching the arm64
+convention, indicating that no additional reachability annotation is
+needed after a WARN on powerpc.
+
+This brings powerpc into line with x86, arm64, s390, and riscv, all of
+which already define ARCH_WARN_ASM and ARCH_WARN_REACHABLE.
+
+Reported-by: FUJITA Tomonori <tomo@flapping.org>
+Closes: https://lore.kernel.org/all/anG67Q6Y59kDqh-c@desktop
+Fixes: 73b741adb264 ("rust: Add PowerPC support")
+Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+---
+Changelog:
+V1 -> V2:
+- commit message now has error, fixes tag and closes tag
+
+ arch/powerpc/include/asm/bug.h | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+index 0db48977c70c..8aba39e0cf26 100644
+--- a/arch/powerpc/include/asm/bug.h
++++ b/arch/powerpc/include/asm/bug.h
+@@ -32,34 +32,38 @@
+ #endif /* verbose */
+ 
+ #else /* !__ASSEMBLER__ */
+-/* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
+-   sizeof(struct bug_entry), respectively */
+ #ifdef CONFIG_DEBUG_BUGVERBOSE
+-#define _EMIT_BUG_ENTRY				\
++#define _EMIT_BUG_ENTRY(file, line, flags)	\
+ 	".section __bug_table,\"aw\"\n"		\
+ 	"2:	.4byte 1b - .\n"		\
+-	"	.4byte %0 - .\n"		\
+-	"	.short %1, %2\n"		\
+-	".org 2b+%3\n"				\
+-	".previous\n"
++	"	.4byte " file " - .\n"		\
++	"	.short " line ", " flags "\n"
+ #else
+-#define _EMIT_BUG_ENTRY				\
++#define _EMIT_BUG_ENTRY(file, line, flags)	\
+ 	".section __bug_table,\"aw\"\n"		\
+ 	"2:	.4byte 1b - .\n"		\
+-	"	.short %2\n"			\
+-	".org 2b+%3\n"				\
+-	".previous\n"
++	"	.short " flags "\n"
+ #endif
+ 
+ #define BUG_ENTRY(cond_str, insn, flags, ...)		\
+ 	__asm__ __volatile__(				\
+ 		"1:	" insn "\n"			\
+-		_EMIT_BUG_ENTRY				\
++		_EMIT_BUG_ENTRY("%0", "%1", "%2")	\
++		".org 2b+%3\n"				\
++		".previous\n"				\
+ 		: : "i" (WARN_CONDITION_STR(cond_str) __FILE__), "i" (__LINE__),	\
+ 		  "i" (flags),				\
+ 		  "i" (sizeof(struct bug_entry)),	\
+ 		  ##__VA_ARGS__)
+ 
++#define ARCH_WARN_ASM(file, line, flags, size)		\
++		"1:	twi 31, 0, 0\n"			\
++		_EMIT_BUG_ENTRY(file, line, flags)	\
++		".org 2b+" size "\n"			\
++		".previous\n"
++
++#define ARCH_WARN_REACHABLE
++
+ /*
+  * BUG_ON() and WARN_ON() do their best to cooperate with compile-time
+  * optimisations. However depending on the complexity of the condition
+-- 
+2.55.0
+
