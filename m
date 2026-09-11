@@ -1,193 +1,177 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F964779A8;
-	Fri, 11 Sep 2026 12:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451DD39022A;
+	Fri, 11 Sep 2026 13:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789130906; cv=none; b=GqY15EFjxc7rXCjZXIriBhYfTBchKkVYYuKhC8T9tFiQmBJBIs8b93klMUNaGAZHt/1GaXTGxV9bmBai6cyJLdDS6MuiV3S23OGuFnR1t6UezxXiB36oqyvnASL6o8OTs4xfizw8EV9ywgUIV7MfgHV4P3rLRUjBfToZclCxIWc=
+	t=1789133161; cv=none; b=mQXd5tHqC+2DaCWiT7UoXiF37PWZF4EDMK7E82RIarYGywgLbtJtfEeg6HJO2qojAWaM99zF0kchPcxtikodkckEEGM3/PY/bqjEGX/LuWiaM4JSdluc6kAkscS3sl1W9nRMvpTWQmGBuwiDOXjkMBii2WTq/bIBiqve+SKO6sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789130906; c=relaxed/simple;
-	bh=LJHZ6KCxwsKKNuf/zX87PHgsvBnitasvTfoElzqx/lc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nkB96MGUidmGEeTKno+BZAndEirXKpRvieAtzF/l0ijmt9wkq07VDmPk8RXr+PBnL4NiOc0URgkRNxQLsuWGoiOHJRuDCsgDKUpXxsMdDAQqWXbHkduEdWici+ZP41W7IMH2W0R854oxiI/wuYGeVZCIctHJnqpO1OfQjGH4Hg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e29Oa1xF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ALyD02LC; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Uf7/pL2F; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vCrEhHV5; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1789133161; c=relaxed/simple;
+	bh=zFyyWzdhfFZMVM5stqf613uCaXnIeVSxmc31g5HKUZA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ldRG3ptfGA+efkj+hq8IbutQrj6EoFKmZYy4TUQPd3CbJaINrnr0X1GUejTi4MkQ8kVJAqaeshedy37fE2dJ0A3GtB74pNrR9SPJwAunrvBKkEcbhKjz9yuk6m38UgVgPU/ZuduFa35nQv5zZK8UnZro6CkKN63rK+wvVDmMi3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VXtn1fiY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e29Oa1xF";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ALyD02LC";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Uf7/pL2F";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vCrEhHV5"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 512DF21D67;
-	Fri, 11 Sep 2026 12:45:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1789130756; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/yw/+e2gzQxo9H+pdwIa/AXa45ESt2VPejHwf9N8gL4=;
-	b=e29Oa1xFS7EvCT/Twis4W+zabXg4WlAFO5wNmeaEblSD97h5J82BBRaTmWH8htfnkcOx+B
-	8G5Ar1ko3aEQTvb1G/y04Ehm8hD+EizcbzfkmPdCPUthx3YrTz0e74pPjr1qfQgmwqV5Ds
-	vYyN34/VEukJSXaxTzMh6R4Z1h9T9Mw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1789130756;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/yw/+e2gzQxo9H+pdwIa/AXa45ESt2VPejHwf9N8gL4=;
-	b=ALyD02LCN9j0MyFx1q6nKPo5caPjsAKLraWALUyuwhFfsVkxLiHzn6ZWbZfhU02cfELx0E
-	C5LfCklP1QrizJAA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1789130752; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/yw/+e2gzQxo9H+pdwIa/AXa45ESt2VPejHwf9N8gL4=;
-	b=Uf7/pL2F3BXitbtkLejjeB65jZGFp/fNd8lJ3ixj4tJs/6FAqegHYinUcJlJ4zfLorPHrl
-	bzyoFAeVHb4DA2cS2LTNJmRPN9Zor9dqlx22A1BCJRFACH2YiTVPyfMrfSR37PhXaiwtt8
-	hD9Mshv9meFxhmjAgUPF7oN+pYZFHEQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1789130752;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/yw/+e2gzQxo9H+pdwIa/AXa45ESt2VPejHwf9N8gL4=;
-	b=vCrEhHV5x+2HNHCTInx512gGwfmjw56Tv7GH3g02rDS/V+yl7KIpzz2sYlk13P317reNuB
-	PGPaNXrfDAjz5jBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EFDDF136ED;
-	Fri, 11 Sep 2026 12:45:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id YGEjOf73o2r8EQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 11 Sep 2026 12:45:50 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: jfalempe@redhat.com,
-	javierm@redhat.com,
-	airlied@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	geert@linux-m68k.org,
-	rdunlap@infradead.org
-Cc: dri-devel@lists.freedesktop.org,
-	linux-doc@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	nouveau@lists.freedesktop.org,
-	linux-renesas-soc@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	sashiko-reviews@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v5 10/14] drm/panic: Restrict to primary planes
-Date: Fri, 11 Sep 2026 14:44:03 +0200
-Message-ID: <20260911124540.279841-11-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260911124540.279841-1-tzimmermann@suse.de>
-References: <20260911124540.279841-1-tzimmermann@suse.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VXtn1fiY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34FF51F00898;
+	Fri, 11 Sep 2026 13:25:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789133159;
+	bh=b8hBkIDR5gbaIa/OcVZo7VYHM8DXFaO8ihp5gcV65Tc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=VXtn1fiY2o5DXMdoNaf8ZzLgSZsGCdT7ZwNY6FB4pdySVmjeQIqo+jTZLfm3/q33+
+	 LnCbzK/A0d6W3mHy5MlGsh+dOBxN4T+7UuC7if51SC4Y4WOsawT4loI6z4f/cPPsPb
+	 LEHZm4NM/UiYfaaDB2e8nAEDA/bUbIeD89ffVwAWP5YoZyzbml/CvceH29+Tq6pfbc
+	 5OiH8ODldkyB5xaiz0JQc+5SkYuDaxk8ZB5CaqnQ1olk+xod9sHadlEIgKFs0bPhqk
+	 mpWXADE1ONaJWHe+tK1DyeoOXHAnAcaBRnsz8NpG1Ysw760kl3cXOV1DCzOlIhHu25
+	 jY4cewUPGE/7g==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda
+ <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
+ Lyude Paul
+ <lyude@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve
+ =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, Todd Kjos
+ <tkjos@android.com>, Christian
+ Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, "Rafael
+ J.
+ Wysocki" <rafael@kernel.org>, Dave Ertman <david.m.ertman@intel.com>, Leon
+ Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge
+ Hallyn <sergeh@kernel.org>, David Airlie <airlied@gmail.com>, Simona
+ Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan
+ Kara <jack@suse.cz>, Igor Korotin <igor.korotin@linux.dev>, Viresh Kumar
+ <vireshk@kernel.org>, Nishanth
+ Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>,
+ Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, Michal Wilczynski
+ <m.wilczynski@samsung.com>, Ira Weiny <iweiny@kernel.org>, Matthew Brost
+ <matthew.brost@intel.com>, Thomas =?utf-8?Q?Hellstr=C3=B6m?=
+ <thomas.hellstrom@linux.intel.com>, Philipp Stanner <phasta@kernel.org>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, driver-core@lists.linux.dev,
+ linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-pwm@vger.kernel.org, linux-usb@vger.kernel.org, Oliver Mangold
+ <oliver.mangold@pm.me>
+Subject: Re: [PATCH v21 6/9] rust: Add `OwnableRefCounted`
+In-Reply-To: <aqPHvi1xFnMXvYLW@google.com>
+References: <20260910-unique-ref-v21-0-e83257373062@kernel.org>
+ <20260910-unique-ref-v21-6-e83257373062@kernel.org>
+ <or1Yx6egJPyUT07SJzH5J4d8aI6S2qOc1sfl70J55bvsy-l2H0DHJHa-MeXQIv40mrfFILbhL0uB2G0aHIYUlA==@protonmail.internalid>
+ <aqPHvi1xFnMXvYLW@google.com>
+Date: Fri, 11 Sep 2026 15:25:43 +0200
+Message-ID: <87se3fvs14.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spam-Score: -6.80
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-6.80 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_HAS_DN(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_TO(0.00)[redhat.com,gmail.com,linux.intel.com,kernel.org,linux-m68k.org,infradead.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid];
-	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLhthb38qh1ntkuzcrgoc19dwi)];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+Content-Type: text/plain
 
-Restrict panic handling to primary displays. Overlays and cursors
-should not display panic output. If there are exceptions, they can
-be registered by the driver itself.
+"Alice Ryhl" <aliceryhl@google.com> writes:
 
-v3:
-- also update drm_panic_is_enabled() (Sashiko)
-- still do some testing when unregistering (Sashiko)
+> On Thu, Sep 10, 2026 at 11:00:10AM +0200, Andreas Hindborg wrote:
+>> From: Oliver Mangold <oliver.mangold@pm.me>
+>>
+>> Types implementing one of these traits can safely convert between an
+>> `ARef<T>` and an `Owned<T>`.
+>>
+>> This is useful for types which generally are accessed through an `ARef`
+>> but have methods which can only safely be called when the reference is
+>> unique, like e.g. `block::mq::Request::end_ok()`.
+>>
+>> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+>> [ Andreas: Fix formatting, update documentation, fix error handling in
+>>   examples. ]
+>> Assisted-by: LLM
+>> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>
+>>  /// Types that specify their own way of performing allocation and destruction. Typically, this trait
+>>  /// is implemented on types from the C side.
+>>  ///
+>> -/// Implementing this trait allows types to be referenced via the [`Owned<Self>`] pointer type. This
+>> -/// is useful when it is desirable to tie the lifetime of the reference to an owned object, rather
+>> -/// than pass around a bare reference. [`Ownable`] types can define custom drop logic that is
+>> -/// executed when the owned reference [`Owned<Self>`] pointing to the object is dropped.
+>> +/// Implementing this trait allows types to be referenced via the [`Owned<Self>`] pointer type.
+>> +///  - This is useful when it is desirable to tie the lifetime of an object reference to an owned
+>> +///    object, rather than pass around a bare reference.
+>> +///  - [`Ownable`] types can define custom drop logic that is executed when the owned reference
+>> +///    of type [`Owned<_>`] pointing to the object is dropped.
+>
+> This diff looks like it should be in the patch introducing Ownable.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
----
- drivers/gpu/drm/drm_panic.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+Yes, wrong target commit for the edit.
 
-diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
-index 809d51ad78a8..522ea990a2e9 100644
---- a/drivers/gpu/drm/drm_panic.c
-+++ b/drivers/gpu/drm/drm_panic.c
-@@ -1059,9 +1059,13 @@ bool drm_panic_is_enabled(struct drm_device *dev)
- 	if (!dev->mode_config.num_total_plane)
- 		return false;
- 
--	drm_for_each_plane(plane, dev)
--		if (plane->helper_private && plane->helper_private->get_scanout_buffer)
--			return true;
-+	drm_for_each_plane(plane, dev) {
-+		if (plane->type != DRM_PLANE_TYPE_PRIMARY)
-+			continue;
-+		if (!plane->helper_private || !plane->helper_private->get_scanout_buffer)
-+			continue;
-+		return true;
-+	}
- 	return false;
- }
- EXPORT_SYMBOL(drm_panic_is_enabled);
-@@ -1079,6 +1083,8 @@ void drm_panic_register(struct drm_device *dev)
- 		return;
- 
- 	drm_for_each_plane(plane, dev) {
-+		if (plane->type != DRM_PLANE_TYPE_PRIMARY)
-+			continue;
- 		if (!plane->helper_private || !plane->helper_private->get_scanout_buffer)
- 			continue;
- 		plane->kmsg_panic.dump = drm_panic;
-@@ -1106,6 +1112,8 @@ void drm_panic_unregister(struct drm_device *dev)
- 		return;
- 
- 	drm_for_each_plane(plane, dev) {
-+		if (plane->type != DRM_PLANE_TYPE_PRIMARY)
-+			continue;
- 		if (!plane->helper_private || !plane->helper_private->get_scanout_buffer)
- 			continue;
- 		kmsg_dump_unregister(&plane->kmsg_panic);
--- 
-2.55.0
+>
+>> +/// # #![expect(clippy::disallowed_names)]
+>> +/// # use core::ptr::NonNull;
+>> +/// # use kernel::alloc::{flags, kbox::KBox, AllocError};
+>> +/// # use kernel::sync::aref::{ARef, RefCounted};
+>> +/// # use kernel::sync::atomic::Acquire;
+>> +/// # use kernel::sync::Refcount;
+>> +/// # use kernel::types::{Owned, Ownable, OwnableRefCounted};
+>> +///
+>
+> This newline will appear weirdly in generated docs because no content is
+> shown above it. Consider not hiding the imports.
+
+Will remove.
+
+>
+>> +pub trait OwnableRefCounted: RefCounted + Ownable + Sized {
+>> +    /// Checks if the [`ARef`] is unique and converts it to an [`Owned`] if that is the case.
+>> +    /// Otherwise it returns again an [`ARef`] to the same underlying object.
+>> +    fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, ARef<Self>>;
+>> +
+>> +    /// Converts the [`Owned`] into an [`ARef`].
+>> +    fn into_shared(this: Owned<Self>) -> ARef<Self>;
+>> +}
+>
+> This trait provides two methods that have very different conditions for
+> existing, IMO.
+>
+> The into_shared() method is so likely to exist, that I would almost
+> consider placing it on the Ownable trait.
+>
+> pub trait Ownable {
+>     unsafe fn release(this: NonNull<Self>);
+>
+>     fn into_shared(this: Owned<Self>) -> ARef<Self>
+>     where
+>     	Self: Refcounted;
+> }
+>
+> On the other hand, I think try_from_shared() is more likely to be a
+> tricky operation you cannot necessarily implement, and as such it can be
+> on its own separate trait like you have here.
+
+Ownable does not require RefCounted, so this method is not always
+implementable.
+
+>
+> At the very least, I can easily imagine that some types can never become
+> unique again after having been shared.
+
+It could make sense to split the capability in a separate trait. But
+perhaps we should wait with that till we need it and not introduce
+premature complexity?
+
+Best regards,
+Andreas Hindborg
+
+
 
