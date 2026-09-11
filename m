@@ -1,89 +1,78 @@
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A9E582BBC;
-	Fri, 11 Sep 2026 20:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5A240A945;
+	Fri, 11 Sep 2026 20:28:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789157060; cv=none; b=gDj4KUiuJeUqInHOxMO8DEWlbJTiiYI8M5ezn2loWzqJij0r1ZiuJPDCTA/ui4HaW1uTT+i8Tgs/EfXRLyYh4Ee0Lofb5hZN3nmuXey/9FRyz2XgGGM6umtSvbzZJAHPSx3Qdn2w5L+zuzNNfsDx5Nu9q+vI/a6w6Sxm/Bo6Ihk=
+	t=1789158534; cv=none; b=hh4zWtpDkEPweGJvYOy8k0aBMTZCd6dnwDwHMxA4y00aI8JhXaKVV9aEm+TANqfszzHR73VZ8fPlFQu1+1lZhCTV0M35hxy4LhPQbBLox6Q2Se8YZ6Ew0h2scVc/TsZdMMJkMnv2dRfjjjzD/Iys3Ly15RpNbAM2N5YWYSZcAAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789157060; c=relaxed/simple;
-	bh=HIDPV2uNIewrth5OQ3+QaUHHaMD41l/JEGJnxqFl78o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W+ImskXlTSY5skYpJ4eEfRX2PPclQk040LA1lcjY91uwHFwlwo6JfkXnRcsJXvqpEj2WlaULrrzvi1/3ZMiILTS7rYlhkCBhJ1n5ZPmtmq6gZxLhfWeCcvH0UutpTBVSqMWDEs8Nzlrg9d7uNr5KKv00dYpWw2Xwdz0bZ8zR/tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=q62fyD0k; arc=none smtp.client-ip=199.89.1.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+	s=arc-20240116; t=1789158534; c=relaxed/simple;
+	bh=posZRNGtXy2frZiYX5qhxcx6BncEzD+P8N1aN2Ie5aM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f5bzi9nOMHsE7jPLuWLkKO8MGrMwRDTkx2kKyXL2a40LOrB3C2J+K4xY7MkEnrF4lRQ6ttLqd8pKPxdddV/qMFKYpTsJQbQWCRely/ym6IdssgrZ6mo9aBCHQ/e9aXHyI2+Rp0xxOhQTiBADLU5wPlKMuTNasjuRIdJlFAxG/eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVXbQPm7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="q62fyD0k"
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4hhQVL5v3nzlfwHS;
-	Fri, 11 Sep 2026 20:04:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1789157044; x=1791749045; bh=9V6y/LA3PpCkJiAhn6rEdd4W
-	zhdjTn5sjQoVNJe2/7A=; b=q62fyD0k/RJXnCNNOoFiWEoCbk0Rws5wUDMBYfML
-	ckwzq81OtjcsvJmV4plmcFGelGfLUR4QwmQQHxn5mMl8gMPDVT9/xLuvgIzMW3mZ
-	GcZkt4oDs/s3Yd/DpzXzrnVx0tGq9g3NKWayER+0ZHqLPBHteqzG3husPe9S/aQ+
-	XuSMqgyT+JNJlLPVPpOrrXYRZWvbSbMcAK7W/ZHc3i20BQW1GM8aJ2qwmuOICJoF
-	AaMFd2AHfkmszuVqqWxMsmYU8lESN2xOPz7paJP7m68TS7X/fIo45d6RbgCe3Pdm
-	byIqrrmBpNGXQS/BQB16j1iK9+dxq2fh2CB6PVW/KW/RqQ==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id RwW8F8ojH23T; Fri, 11 Sep 2026 20:04:04 +0000 (UTC)
-Received: from [100.80.231.125] (unknown [104.135.182.41])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4hhQV81dQkzlfvqM;
-	Fri, 11 Sep 2026 20:03:59 +0000 (UTC)
-Message-ID: <d89aa722-2d13-4733-b5c1-f0194bf4b342@acm.org>
-Date: Fri, 11 Sep 2026 13:03:59 -0700
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVXbQPm7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB631F000FF;
+	Fri, 11 Sep 2026 20:28:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1789158532;
+	bh=+5mzSpgILzHqr06GJbUTwa7c20pDz/QnXUmvQGKoMkU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AVXbQPm7L0+754CrGe0f211fQ6sydBek9ZkqMY9Ci1uoXaN6Rz7cKivlJ13lO6Ee2
+	 qd/MZRW7s0ESXHDxjw1N4mJTbQm/jDNkTno7QB21Qt6GYOwBer80RKRWxPPESRswKL
+	 JQ6KQkax6pA78HIpsw/wovO+XuGJrtg+iToQLhxQ=
+Date: Fri, 11 Sep 2026 22:27:02 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: jaemyung.lee@samsung.com
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH RFC] drivers/rufs: add Rust UFS host controller driver
+Message-ID: <2026091124-treason-trickily-bc52@gregkh>
+References: <20260912-rufs-private-v1-1-716db733e655@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] loop: Perform __loop_clr_fd() after disk->open_mutex
- is dropped.
-To: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
- Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
- Andrew Morton <akpm@linux-foundation.org>, Brian Foster
- <bfoster@redhat.com>, Damien Le Moal <dlemoal@kernel.org>,
- Hillf Danton <hdanton@sina.com>, Markus Elfring <Markus.Elfring@web.de>,
- Ming Lei <tom.leiming@gmail.com>, Qu Wenruo <wqu@suse.com>,
- Tao Cui <cui.tao@linux.dev>, kernel test robot <lkp@intel.com>,
- linux-block <linux-block@vger.kernel.org>, rust-for-linux@vger.kernel.org
-References: <60bf7af2-b84e-4056-9195-a26ad51ada46@I-love.SAKURA.ne.jp>
- <9f1273a7-6dfe-46bb-966f-fe08876f4375@I-love.SAKURA.ne.jp>
- <3883b05e-0a34-43f7-b2a9-a46d2b0c5ffc@acm.org>
- <08b0057a-280d-4e55-8e94-e510ec1a371f@I-love.SAKURA.ne.jp>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <08b0057a-280d-4e55-8e94-e510ec1a371f@I-love.SAKURA.ne.jp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260912-rufs-private-v1-1-716db733e655@samsung.com>
 
-On 9/10/26 2:44 AM, Tetsuo Handa wrote:
-> On 2026/09/10 4:33, Bart Van Assche wrote:
->> __loop_clr_fd() is queued from the lo_post_release() callback and hence
->> may be called concurrently with or after another thread has called
->> bdev_open(). Hence, lo->lo->state should be checked instead of assuming
->> that it equals Lo_rundown.
-> 
-> No, __loop_clr_fd() is queued from the lo_release() callback.
+On Sat, Sep 12, 2026 at 12:52:55AM +0900, Jaemyung Lee via B4 Relay wrote:
+> Comments on the decision to bypass the SCSI midlayer, the blk-mq model used
+> in its place, and the proposed prerequisite API boundaries would be
+> especially welcome.
 
-Yes, it is *queued* from the lo_release() callback function but there is
-no guarantee that __loop_clr_fd() has started before bdev_open() is
-called again.
+Many many years ago, the USB subsystem tried to bypass the SCSI midlayer
+for its storage driver, and while it was a "quick solution" at the time,
+in the end, it didn't work out and we dropped the driver as it just made
+no sense to keep duplicating all of the logic all the time.
 
-Thanks,
+So I wouldn't recommend it, as long as UFS builds on top of the SCSI
+commands and the like, you should not attempt to duplicate it in a
+separate driver, no matter how much "simpler" it initially seems to be.
 
-Bart.
+But really:
+
+>  30 files changed, 10005 insertions(+)
+
+30 files and 10000 lines doesn't seem that simple :)
+
+thanks,
+
+greg k-h
