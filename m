@@ -1,138 +1,161 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B86920ED;
-	Fri, 11 Sep 2026 05:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C56C38A73B
+	for <rust-for-linux@vger.kernel.org>; Fri, 11 Sep 2026 05:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789102871; cv=none; b=mwG3DnmnkLGLjYfK00gfUbsoRvJ7IY4mm2VSbccGFgBcRJc3UUo5JSTv9qmGc+hTRI3mIvUykXufhjsF3aV7u7tSHkCwFddmi54/LcnT5Uyyc8gP81VluyoJrbegOm7omtspCY6hepHPxyofnSdA091wT8+UJUXeBX5hn8Cjic8=
+	t=1789103784; cv=none; b=IBWCMSjRMnYFfaH6NqRr4/6MFfFABDI0Du1cjWXK1Qs67u8AEPZKTZOyDu3Gh1JfGVG1UjsM42TWEewB2nCmhK14bUPclD4hDUY4h/C3KTVDod2D5vixXk1VqVs4MveTvkmIkWnQ/jLOrGrS/rvoa7qqquzGVDGVhfW5qRJ8zk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789102871; c=relaxed/simple;
-	bh=EWCFZyqZRFXrUzy1urkQlPkhhfvHVAN1sWXFOm/cKPo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=noy9Xy9n4IcWygA46mwAktrZpP4Jdpj8OVsA+OZKbBNk7lwEtfysqxussTGVAgXHDIK1flQ6Av25kGbR1ca3ilwBqUVD+rcy1XXQqlneuXQDCp8qgknv/p3CNSr6a4XM6Brb3dJm0JrQ6jktVgTNKEIwREIGPL3c0VKzDbPo/LY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me; spf=pass smtp.mailfrom=alistair23.me; dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b=lrmF4eHq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fLeVGZ7E; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alistair23.me
+	s=arc-20240116; t=1789103784; c=relaxed/simple;
+	bh=m2uyPzp+R3+sWOW8xYa+N/Car2zCoXVJYfU/R1QYc+w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ft6ngSwO0K60irJaodqDKxSI+v07LVTDu7DiJz9YiACxT+u+3Dnaix9q8BeCwdf38zogiR/TYMJnu9WtjbdjwdgoPPqH6iRJ+1hY9joyLx+R2ATM2SSaNRtUVYl1ENRmjxVHnbaKWtew78Or82SWQlrD0Jz0F9wcfEHi24iovyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fSP9lae3; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b="lrmF4eHq";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fLeVGZ7E"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 567061D000E5;
-	Fri, 11 Sep 2026 01:01:08 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Fri, 11 Sep 2026 01:01:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alistair23.me;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
-	 t=1789102868; x=1789189268; bh=EWCFZyqZRFXrUzy1urkQlPkhhfvHVAN1
-	sWXFOm/cKPo=; b=lrmF4eHqJNzq9TcQUvTdjD+CcRZTCe1g0EKd4t6p4L0lhn5l
-	V5+jGNIfk+3xdjW6yvW2ICaQJsKR2Ec1LYZD5k6ce+qiHI71ldEOvtYoF6az5AI5
-	L42SrHFcc9/c0zoMdLldHMjYMEH2rMi1qzkbvCjR7Z3S4H5TpfjK2Z11p7dEiAJv
-	Su9U9zdBrFpsXLqTq8GhgJgZFJNL6uQMKcbfaUNsfGkRUdpn9CuJZnFlAhBm5IJi
-	Blo9naMm2SHlGx8e4MjtUzXIz8LBVAyDSx0JH+C4FLZDff2N/Ygv3xD9EIYYJKwN
-	JjOSdCglAEiECVjnsHmWyAvchPOf4MEJ5tmrzw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789102868; x=
-	1789189268; bh=EWCFZyqZRFXrUzy1urkQlPkhhfvHVAN1sWXFOm/cKPo=; b=f
-	LeVGZ7EKU/jNThi422s2VFpRtRWSgciZs/mdGPB4wRbrjcvp1rk4GxUJxmH5/Pr4
-	j+zX1NLAwBmUa83tA+CGmTmrPcAEoPNBguW3ItvVLhSjHoEsspyLmj8cwVyTrwZS
-	ej7sr0ETXhqPyxa363cBWT6NS0TugWgJSDCyBeIV6RKaCkrQYmQ5Vor/2GAkgsVi
-	vd/7ecP+/QtBSMwZOU47lIYCmVEF1+OM7gZ0QJSox7ydkcmbb+sjnAjmVEzxCGg1
-	rq0JgE0vfZMAfuSEThhY2jCiTQbIUdabqEuXgTQqQj3wgFOEv54Uw6IxpjtrvUgq
-	ClcOQp+x+ZRipoWH3rMiA==
-X-ME-Sender: <xms:E4ujavIWgcR_lllY5svcvTmFQ6Yc_BLGHifHcKCSFJSDVh2okE2B5g>
-    <xme:E4ujajjlunK63SMeAZxWnKcEsY3hujXg0SCx-F6cEmnB8H7UmzxBdsH7r23sR37uy
-    _tlKC8U3pWp4-FUKFeGBXcSzfVawsL5bg5dNQluoUBkchxCTikhdOfy>
-X-ME-Received: <xmr:E4ujao323SEXyL9whwrjKf1WKe1h0YJgUvZKBClYqeoKrROFHyHr-Cys4Hn7RaeqTNFSwq9TnEZRXfy9W4YaIc3WOxE>
-X-ME-Proxy-Cause: dmFkZTF7hgcu7GHxYYmGlxiI8fB69kQzj15ESgtg0KpvjpId2fB0RPjCxNjA/ebMyR7dep
-    GzE+QzUZ4XMLNdHGLHa/y+x0O5hxU3UotjKqi+zis/7KeVFho2+TOtbIpPAEYANhrwUgsd
-    RRftb7kSu8TJJ66ePZmi42okx4iNJGXHvJy2W+rVBvDknwJITQYWS/47UPn1tRa3StH0o3
-    riEXqgBWIp5rDhNW59xvSgmGsb+h+apy89nBJPxLZTCP2lPdaCjSyJtqALMlCvlfDybKV0
-    cj/yl0BeLAb8m8B/H6unSOdPNH5aR0p9MAJIwNw/kc5hZV8Ja6xuxP4TLTY4bZf544ZpC+
-    Z+1LMlYa3tuU/sBivs8WeFSTiG1vnSBkU/t6D0LVOuOhxe/WWtZxB0Ga1mCwDL6f8PdkdL
-    6h7/fgXB9w0Cj5TOHvOMvltUAfctgs99AWnZhlcarq4LbcGFBt7K+8O4dz1TNlWgWXsHZk
-    6endl5nIBj5JjM6+l6MgZjUk0c5C8AfaIu1QaFs32lB+XRpjANSWWiOaB6uSEZnGF2N4kE
-    Oz6eO7IUqfYsTmem44FLWYGZicV+PjoYiKsay1YI+jx6kiuhVMNtox4X7PAfoZmxXFPuDv
-    gc/y/qAjEUE7oie/NSTHFaKf8WBnHp/KE58i57ZXvGAE0MgeauuqU1MEn+sA
-X-ME-Proxy: <xmx:E4ujakZZ0gSNIBDhTTv1eBAZmtzksIoQFas7Rz5HCfMCVabI8rNHFQ>
-    <xmx:E4ujaljre6U1cGQqAFyRqdqYrJ69ojtB3C79cFwTDaWP85_iX2G2rg>
-    <xmx:E4ujakjsD7urDD1KEmGkwscEm7sX2g7UxbPc4Arno9f76_7v3_4VMg>
-    <xmx:E4ujaiDolXyPCjQ8YtLsLctzU0OJq9KJ6DAhuvTNJIPDgGEXewpeEg>
-    <xmx:FIujaoI1qyHxwhgq88ZWnU7WIuOUxC7XimjncSiuHdcuVrcGdGYQdw1S>
-Feedback-ID: ifd214418:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 11 Sep 2026 01:01:01 -0400 (EDT)
-Message-ID: <f9b1c0410e622f7ac1e6feacaa3eae98951bcd79.camel@alistair23.me>
-Subject: Re: [PATCH v3 10/21] PCI/TSM: Rename pf0 to host
-From: Alistair <alistair@alistair23.me>
-To: Jonathan Cameron <jic23@kernel.org>, alistair23@gmail.com
-Cc: linux-pci@vger.kernel.org, Jonathan.Cameron@huawei.com, djbw@kernel.org,
- 	rust-for-linux@vger.kernel.org, lukas@wunner.de,
- linux-cxl@vger.kernel.org, 	bhelgaas@google.com, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, 	gary@garyguo.net, ojeda@kernel.org,
- benno.lossin@proton.me, a.hindborg@kernel.org, 	wilfred.mallawa@wdc.com,
- tmgross@umich.edu, boqun.feng@gmail.com, 	bjorn3_gh@protonmail.com,
- alex.gaynor@gmail.com, aliceryhl@google.com
-Date: Fri, 11 Sep 2026 15:00:59 +1000
-In-Reply-To: <20260909000158.78ffa790@jic23-huawei>
-References: <20260901010347.2614656-1-alistair.francis@wdc.com>
-		<20260901010347.2614656-11-alistair.francis@wdc.com>
-	 <20260909000158.78ffa790@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (by Flathub.org) 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fSP9lae3"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cc4aa18f9afso465203a12.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 10 Sep 2026 22:16:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789103782; x=1789708582; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JQ54+lD2n/aIXsWwyvLa1NXcPj36AMrVbfAkkYOl2fw=;
+        b=fSP9lae3pplaMBlzvB9Lk0fi6l2gK1A1CbROx0lvrLtSXU5yzGCHz585uGiUtSX0qR
+         ElMA+fefQ/bA2A09ENDv63FrS5zwqITJh79nMae7SiE38TZjk7SH6tLlMUIExY/zbvQZ
+         y/ouRJ/FRsH2Lg/8vBWc9rlm7tcPsCzg8DgrHcxnRSq8PUQuSy0kSO7c4z2qNcc+XbHS
+         CU3es571RWHwQd+WHVxIFzKJP3puGDE+YRWV57+cfB4AKuYMFsyD5A3tGhPpbR4BxB/b
+         c6rBBQ42ujhYVQRhn/DEJ+sXkx6ID7V73LgbVeiP+UdBcxh5KbTisTX/YIM2rcp9osqt
+         CD3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789103782; x=1789708582;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JQ54+lD2n/aIXsWwyvLa1NXcPj36AMrVbfAkkYOl2fw=;
+        b=SuEtcyeGHcdNJzofV49Cb8S8jR8arFPaF/qff9bnUCeku1wr+Ei0iERd5qE1fTX+DD
+         CVm7vs8a6tafpnBBCA3rF6DX80cRQ+FiEjMzDZ9Ce5lJnQ/Lf9U/1+9kXob+C9vFUIzU
+         F3d0MXxr2RFZu6xkE2Mwoi8N8Eo52S5P+EbQKCxgLUFAW7zAh/0orxX4VYQJVwcvyJO/
+         nMIADPTNIyRMr7HrDJBSm4xd7hpWtefnQ7WMWahbe2hRdwDpnd+LysF5x660rJpnFh0A
+         uAHnkwkSAaf+dW+P+GFSUqCi4jkEkNJ9XUuxwZoyhqRSQePLRqsCoIx/BWPNTFCJnWng
+         kSGQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwnbz2pq9TBTsMJoT04pGUblYKlJ0cSxXLftcD8eDxAjuqysr8/LVRytY037ZNEzowtSkLP3FiFOJJRufmyVA==@vger.kernel.org
+X-Gm-Message-State: AFuF++kCD2Bd8wG1YlCYaGiqoeIkRDKUd4Qs480FjIWMd+IOvueajs/p
+	QWzeM0/uXe+8oWf+JtHayK3WwskWg7nXSch3oYUPrN3VsHxuu1P8fuzZ
+X-Gm-Gg: AYBFou169Jk+ZTcDT3UUvzE5VoVVwtoS2NXNt771Ror7cWr7XuF905/XIlsJPtfwn2J
+	zVffWNI7Kk2NAgPD4koUbW6KhHeDT6lU2HDfheu8qhpIRA3jvAhpozxDt7aYX18En7WDv501Nni
+	sT+JP958BWJl2d05WrR7zX0CWqJnfee3wFW1wnFiAhi5nee+CqIoRkq0zh82MXB/AmKc/am/q4/
+	0wnZmAHxped//76gRVDiorZVdGNkBdhrk9dAijkQBnDVzAyuswRLs0WTn2lbn4mW4mc6UJ9u3x3
+	xloK2VRy1pMuDZ6c+vVLEH0TFmXPyhRelz5wl3i+tLjHxwuOanaydpsusk9uXYqBljkhgVl6MH7
+	MzH8xt2f7UIto/12PxMI7cIzqWwY7imHcDClxxUrYaNZorhZt+uqyyuYtU8Ufe0dbs0RUUnJMk6
+	a5Y81f0zqd7An2824MeSb3hUJ4XTVG25JJnf76qUqdJgcrP649QnP0r4f3ID1Z/po9v/2oLH250
+	Jqf//EtDMftweX8gBEgvQ4CtwKiyfOAoMaXf3b0TgKZ/WDW9iNWVEZB
+X-Received: by 2002:a05:6a20:7347:b0:3d1:39e9:b269 with SMTP id adf61e73a8af0-3daed15388dmr4300321637.4.1789103782257;
+        Thu, 10 Sep 2026 22:16:22 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.165.23])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4ed79absm3295201eec.17.2026.09.10.22.16.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 22:16:21 -0700 (PDT)
+Date: Fri, 11 Sep 2026 10:46:10 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	alex@ghiti.fr, ojeda@kernel.org, boqun@kernel.org, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org, 
+	acourbot@nvidia.com, work@onurozkan.dev, linkmauve@linkmauve.fr, 
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, FUJITA Tomonori <tomo@flapping.org>
+Subject: Re: [PATCH V3] powerpc/bug: Add ARCH_WARN_ASM and refactor
+ _EMIT_BUG_ENTRY for Rust support
+Message-ID: <aqON9aluXdKk8nNq@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+References: <20260910100801.2159785-2-mkchauras@gmail.com>
+ <DLBMFNHCKSJ6.1I36FDVEACEUF@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DLBMFNHCKSJ6.1I36FDVEACEUF@garyguo.net>
 
-On Wed, 2026-09-09 at 00:01 +0100, Jonathan Cameron wrote:
-> On Tue,=C2=A0 1 Sep 2026 11:03:36 +1000
-> alistair23@gmail.com=C2=A0wrote:
->=20
-> > From: Alistair Francis <alistair.francis@wdc.com>
-> >=20
-> > Rename pci_tsm_pf0 to pci_tsm_host (and rename variables and
-> > function
-> > names from pf0 to host) as part of converting pci_tsm_host
-> > to be any device that knows how to speak any of CMA, IDE, or
-> > TDISP.
->=20
-> I'm not against the change, but I would like at least one example of
-> 'what' other type of device you plan to use this for.
->=20
-> vf or something else?
+On Thu, Sep 10, 2026 at 01:05:27PM +0100, Gary Guo wrote:
+> On Thu Sep 10, 2026 at 11:08 AM BST, Mukesh Kumar Chaurasiya (IBM) wrote:
+> > The Rust kernel infrastructure generates inline asm for WARN() via
+> > ARCH_WARN_ASM(file, line, flags, size), expanding it through a C
+> > preprocessor pass (generated_arch_warn_asm.rs.S) to produce an
+> > arch-specific asm template string for use in Rust's core::arch macros.
+> >
+> > powerpc currently lacks ARCH_WARN_ASM and ARCH_WARN_REACHABLE, causing
+> > Rust builds to fail on powerpc with
+> > ```
+> > error: no rules expected `ARCH_WARN_ASM`
+> >    --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_warn_asm.rs:1:28
+> >     |
+> >   1 | ::kernel::concat_literals!(ARCH_WARN_ASM("{file}", "{line}", "{flags}", "{size}"))
+> 
+> I think we probably want to catch this earlier by have something like
+> 
+> #ifndef ARCH_WARN_ASM
+> #error "ARCH_WARM_ASM is not defined"
+> #endif
+> 
+> in generated_arch_warn_asm.rs.S.
+> 
+Hey Gary,
 
-It's based on the reply here: https://lkml.org/lkml/2026/6/18/1741
+Sounds good.
+[...]
+> >
+> >  arch/powerpc/include/asm/bug.h | 36 +++++++++++++++++++---------------
+> >  1 file changed, 20 insertions(+), 16 deletions(-)
+> >
+> > diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+> > index 0db48977c70c..df2183c35945 100644
+> > --- a/arch/powerpc/include/asm/bug.h
+> > +++ b/arch/powerpc/include/asm/bug.h
+> > @@ -32,34 +32,38 @@
+> >  #endif /* verbose */
+> >  
+> >  #else /* !__ASSEMBLER__ */
+> > -/* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
+> > -   sizeof(struct bug_entry), respectively */
+> >  #ifdef CONFIG_DEBUG_BUGVERBOSE
+> > -#define _EMIT_BUG_ENTRY				\
+> > -	".section __bug_table,\"aw\"\n"		\
+> > -	"2:	.4byte 1b - .\n"		\
+> > -	"	.4byte %0 - .\n"		\
+> > -	"	.short %1, %2\n"		\
+> > -	".org 2b+%3\n"				\
+> > -	".previous\n"
+> > +#define _EMIT_BUG_ENTRY(label, file, line, flags)	\
+> > +	".section __bug_table,\"aw\"\n"			\
+> > +	"2:	.4byte " label "b - .\n"		\
+> 
+> "b" is part of the label. "1b" itself is a label and "1" is just an integer.
+> 
+> If the code uses
+> 
+>     _EMIT_BUG_ENTRY(..)
+>     "1: ..."
+> 
+> then the correct label would be "1f".
+> 
+> Best,
+> Gary
+> 
+Thanks, I missed that part.
 
-I don't know PCIe that well, so honestly I'm not sure.
+Will fix it and send it out.
 
-My use case is a root complex integrated endpoint
-
-Alistair
-
->=20
-> >=20
-> > This commit just renames the functions and provides no functional
-> > change. That will happen in the next commit.
-> >=20
-> > Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-> > ---
-> > =C2=A0drivers/crypto/ccp/sev-dev-tio.h |=C2=A0 4 +-
-> > =C2=A0drivers/crypto/ccp/sev-dev-tsm.c | 12 ++---
-> > =C2=A0drivers/pci/tsm.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 84 ++++++++++++++++-----------=
--
-> > ----
-> > =C2=A0include/linux/pci-tsm.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 | 18 ++++---
-> > =C2=A04 files changed, 61 insertions(+), 57 deletions(-)
-> >=20
+Regards,
+Mukesh
+> 
+[...]
