@@ -1,95 +1,95 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4128746AA65
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Sep 2026 09:08:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4580471CF2
+	for <rust-for-linux@vger.kernel.org>; Fri, 11 Sep 2026 09:09:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789117715; cv=pass; b=jRXD5mfxCd6+Xs1njalb+wcpEvbs0RivOvj6NVqz72yHEa15YpIy5lDXzitOKZqN+hlA9CloMKBRzEqMgaIPzAVDineXgijUDt6dbYUdwRruSWXjZ0F1Xxe/plT8PJiw805BLKVAlieaTaHoMXPdMRiPKRUjXXrgqbS5h8Ztd94=
+	t=1789117802; cv=pass; b=gH3+A6cGD4PVvDX4pMtxXddz51UGfYxzCJmMFYaV7teYMZ7jkFvWqBwgnfZcoX2FV9AS9kXMsISNWy1DVLrrYv5/oBKOXlByVYUCMygQuzNuO5tNaERHYUx5rgcwnDv0ZjzAixTNkOzLGfwCz/4OxXYpY+UraAGbTP952Ig3/u0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789117715; c=relaxed/simple;
-	bh=9AitBb1GHyxUD8itXAfWQrOndn4vr+DMbiE1kW67HMc=;
+	s=arc-20240116; t=1789117802; c=relaxed/simple;
+	bh=DqoU+uWaz7+Vutomy33tnRZ5BBkjj/lsKZ4FCxPriAw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ibKZDplQCe13cibloq9Vuz8KjIw4/54fgsFqnsXCphj6LgfRaAGvHBIWhSTcbiPbYUsHNoVIAqZUpg2Nz6oIGbSEqK1UfzRgbJ9KFtKiuJkcRF2S8eUGaOATQ1k912SMJp4oIaVWaV3v15zIuS0oV4mnYnRFL+CaYFXVtcSNFL0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ntc0+0D2; arc=pass smtp.client-ip=209.85.221.41
+	 To:Cc:Content-Type; b=LWUA/wJuCADytdSiJ0T1gzKB2zapj3mDgn7NMqGN+aDOcaRgB1c6uz2spWglWP7YF7V9QwE2DbObM62nEwGDpNH8LLotxvsJg9Xcy6KqfFMX6TgUhQP2gsZjxHSFWNUwTa3VuMfkJ2mQ9rT11v7bBBgJUh7EsT/0OFTLN4ggyMk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MSlPe9Et; arc=pass smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ntc0+0D2"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4843e397f74so406022f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 11 Sep 2026 02:08:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789117711; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MSlPe9Et"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-485aca32ab7so108217f8f.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 11 Sep 2026 02:09:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789117793; cv=none;
         d=google.com; s=arc-20260327;
-        b=Af7v/o//AfrsKFUmLKsm92fh7KNtCwtOSpHdLpql2UOhYsou63a3iLH5ha+4WvDh+V
-         d9sehHhYpQDf8P+rr5VpYp6652BIESxgFoPn1CaxVpux8yy+ONjN1i0eyGyQxGxYcCJ7
-         J2W8TzZC7tBo/3mOj/ygr9PYh+9x1eSxJX73V73YivNjAf4CigFh3SpTrpHts/AuiKa4
-         DrbaZPKyyBpqIKEU+dwnE9Z/iu9EUR/JMyzWQm5A0aQ+lZs9saZHpopunWtQKLk/dWTa
-         TD5VK9hQj1u1W/sjMQedUsEvkVEGeHJlGxWJIWBfETEljDYGm97+4NHWyanKis8Kr1rp
-         wX2A==
+        b=U1CPRZF/BihzjyY65EICn9Iw5YzfA92O3BSozyM+dJNTvJBbAuGlP6FIrAtmmx/8WJ
+         0PZ6DgDCs3ZhXNhGqqCPSnZHhYakyBdRUPiuaTNZIJ/BtLp7Tr/7dswMtPw/lzV2DxDc
+         RZto/I1KsL1lFtThYQQGXYTlS4VwCF19okKUYXQ7aDtUIbzdjfiBz+RNBHhWNgYyl1tf
+         WgCiMlfdq1cYSpC+Qq85FYbDsI/CNV/WPVZ6DOyR7uiw/gEX9au85WsdPfVyuP45qkLv
+         CqViwwNuRvbWZbG2IhZ0v9ztJUcBotU29MnD77jSrc48NzdHC2F1v4lIrDf3MpuLKTWv
+         hVkw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=8V6E7xJ2vtTyuoasuWVTwqEDTbAd7Nywgb6H8W3xPYA=;
-        fh=cEKxmyrzLdVE5OpEJPhHYd53Y+1aafIsRvV+Y5e4e+U=;
-        b=aryzFx14HftmsKoQspeRz6lJO1r5A1xyWZ3VZML9hYyw7UIhxP4y71YewXh3Rrcp+r
-         3u0Ij3WldKek6Dn0laY7Y+ePA+Tj7xBwkYDWfNMeRLp8bUF3s/K3kRfhHuEMu71m9eWt
-         0ASSAdphyF+Fa5jjKU3CkMmfWNOSshhPkCrPkAsbybYJ9BJsA+Po47LuVh9C424bB3GD
-         0H5i+WW3OMetALBnhaIYhyclva6U2RCPciA1bzvzsFECLoo1dTdcalc6l24l6+I0o6TB
-         SDG0K6eVCIM1Wr/JU6dIjGA5scn+Kn37Cn9uAk24MjaWSoAJAiacymNOCOUYAiNy6IsZ
-         82RA==;
+        bh=DqoU+uWaz7+Vutomy33tnRZ5BBkjj/lsKZ4FCxPriAw=;
+        fh=AHuvbM9ruVeSiYT9uQsATbTYRJMsND1TGcRwfl7ugt4=;
+        b=LkyblGGx1OaxjdPslDyGnoI8taruf2I3w2BrdvyY9bujqHlClEpGj7nesLUX016v7n
+         YHFeZY5Jxz4Nnnxa7nlQfWP0OeWMBUM3A0GQX4iM5YKEdhs5TUle5o7p8uU0OhSL3hfV
+         uZgss1LgT5E8RpUHRToYiPirDkHqqdZ9ip9yaaleEmjS0SJVdOrbzBtS+tYhMtbHzRNh
+         LAEk/zxun0F1lK+9Js+njzPZ6GUpibKlviB6MnVx8kwlDDZ4DyLX4ovDy/VBiZeMYNah
+         wbMNBUvbjWL6m7u5FBUvmqyusSieEGGz6+KxJe/K0fa7udCvQtCfCpXwZppukvZpRkhC
+         TUYA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789117711; x=1789722511; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789117793; x=1789722593; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=8V6E7xJ2vtTyuoasuWVTwqEDTbAd7Nywgb6H8W3xPYA=;
-        b=Ntc0+0D23+YujkzMEy4eJ6nXRpHFOnm4AtVkxEhi5vnpCexhU7KW4PmGmKyNMt+kZa
-         TPGlSB3IBPA9MiD4PQN6ttGdFWT2WqMR0/+bikrH32dyf3RHlyaDpdo24c0XMpHO5GJU
-         lDTJahlTxAMonEnDUsydvsqrYYCX0kfnhBDCQrNCn+atyDFTDkDtjvAsv2M6xPLh4eMe
-         a/AWqeYbYlOAESo9Wgc1GsNr33dNbudqVttD6Sl4VuL4rsbQ/aL6gINrZx4FRE2ZMT3U
-         4K5dculSYJThgW463pZtuOMCZuRhxZHA32PPtyLFovJ2VLCOKrv7CixBauixl/iB/3rB
-         IKCQ==
+        bh=DqoU+uWaz7+Vutomy33tnRZ5BBkjj/lsKZ4FCxPriAw=;
+        b=MSlPe9Et/aYooxs+mmr25pr80uFZG23i1Ff+HYNwoUYblRVkid0l2inKFKvyYhCHpA
+         74RMEIvUI+LYnoLKLKfOmV3XsO+idJkaF0kKg+yth0rRQtl5E2y2iqZ2+BzrV44esGe9
+         Gfqu0/0FtTeTt/gj1nMdkeGllp4GG8/dPMW6SAduAajB2PJTTh0EyTtISUFtDK6olxs/
+         iuCpPN7ycYnpIx1qtI10WS4KO12IM90KAskYtoHYQeaRXYEsRQKGp3BGi7i/JLvOBusZ
+         K3RJXi816wGUGyT/m2NeekI8C+6tI9P5dFmWFfKhpigFYWlsVGwnGy/m0LuueQHmrlvX
+         Kr3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789117711; x=1789722511;
+        d=1e100.net; s=20251104; t=1789117793; x=1789722593;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8V6E7xJ2vtTyuoasuWVTwqEDTbAd7Nywgb6H8W3xPYA=;
-        b=owxl+epbQxjAPzzdb9Afvr+j6Vs4H+vlCJRrz4lHlV3ZyHEAspxec827G6YI+zVAYj
-         Y69OLRpn9OFGFCLn0NS+2TKIFWPrOVO992s2mZy/i+x46lGm5LqLlE9Ekx94BD7Nu3+a
-         sjY2Aya4X6QnhNPrJYYXczGjTwKAmgfwaYanmofbDGnC2EOof2IVwQl4ndT1c4CveqWQ
-         ev8paxGT0O9tUoMlaMW9QhbL2ycKkuh6+R1Ri3DEwJel4CTY4i9g9uXSv1f3ZbEGZb8n
-         TLPCnPePam51MWLfEcT5JZMn2uvik4ZdWho5F3Pw2AXom2sAqFpQ9VWUFK1TQ8p9Usq+
-         6IZg==
-X-Forwarded-Encrypted: i=1; AKwUvBzwfiqb54vvhEiycbb2w+zMwcdCjonbEWIlqxLbqy4nypmY+yHgqLSIpT1Bj0GhIDJg0J3g8tssvbw9WiggLA==@vger.kernel.org
-X-Gm-Message-State: AFuF++leqeZdEjJGcwjMIi8m+iCN548pTec1ItDI25uShKFfNuzVwHhv
-	KZAHwi5i5ipQnEvdvmIBxUdCutxtHaJhNg/TIEOwNYge0rcEk6lgrAp5jAfBJYBGfVA3ZWX8PWz
-	YdXYm5pAsfjMCFXa6EXwopATTB0QiEEI4kaCl8zMc
-X-Gm-Gg: AYBFou1jUY7kUG6pKnJwselh5senUxz+sKkLCNQaUmsYb7aS0qbPjmb+m6AdGwcn/pF
-	eq5dhW86TL1BTWBc14+b9gcyn7JWmKEqTeyqYMhe0HMiyrsnN+mv8cjuvNEQ7A435fVNu523vX6
-	7dXAIvk7J6mNYF/PNN9gBf6lMj+lHMeXgnkk/5tlyfhGz5s+chFkk17oFbHIjKQkuY6DOrJWmLE
-	+jGdjrPRwNsvhbOgvMSZL9du+Of9Hq/e/ns2HAXK8sqDX3IT1AwMA4Hi/vu+LS0bCEzk9uO61Yx
-	O8XGoqLT+7quY/Wbhu+b8RJ40ArT1du4B6TVed9iM3PaMId0eCRiRpFuNoAo6VQkvUfLummBFTE
-	Q6UCl4UfCEhbAKa25SqzavZpXic79VCaZpIBPrGYMgP7TCggJ6TPcNIr6pEqLZhDl
-X-Received: by 2002:a05:6000:46d0:b0:485:8226:c691 with SMTP id
- ffacd0b85a97d-486e0f6ce92mr8157059f8f.16.1789117710377; Fri, 11 Sep 2026
- 02:08:30 -0700 (PDT)
+        bh=DqoU+uWaz7+Vutomy33tnRZ5BBkjj/lsKZ4FCxPriAw=;
+        b=qGbD3vS6s5LvCl/By16LobkWm47LauAp8hx08PD7F42YdUDWV9ZYLHJCyL2jzBVOfl
+         cEGGCYsNkcTJUjSTs4xh3clhW0iIa4tq+y1ph/zmG/PVCoT8YNrYqsYyz0tmu2VK2T15
+         L6IoBu1HGkMQIFTap/dOAIsfSV/TGmrptB3Y63aIgw/T4rcLGMtAzAjXiUfbNsgq6qga
+         BN3GSULKLBMetwPgaMdATh9r/3aCjorrCDRjFiAs4tj76kuglbvBa6gOH9ZkcUoMiKUm
+         Ls+8Lxpi08WFv9mUj/GfQGKowz9Z1gYyYSVywrog0XQs3/OSPUnNeMxaHFRbdbOtPs+G
+         +wpQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzJntNDddZ5SoyPDK24vbR4mtmvZBFF5rBFoFE6n1N4PTnhrJosynEQGBfpKA4vxnjqR+V5uFwqJNAefZiqjg==@vger.kernel.org
+X-Gm-Message-State: AFuF++n7syHGKR80hx1J0UHxyDyoBA5K4guwLaIzMb7QIjjtIaWyMFWb
+	UtXiLwluHuRaFcVolPEm3ZTrZzzQFbpGBPOcKwaSXfXrCvKVeKgBhi72jIlnVFQa2eZCi0t+MS3
+	9YJ0/iZ0SjqtFXOvcsmLSNyVA3KcPw2f/nWCjetXb
+X-Gm-Gg: AYBFou0MrMaK+aqiGWBB0qlitQIPKpcUs0Ryb5UQwE43Toio2N3Q4K9As482+oeRbL3
+	ph7csY7QF9IEaN4qq1lUxP0symPa6Gzfs77s4UZbDquAP2PcdMfttUNz3hUbsq6P6peu7RMtn4R
+	tbozgdywTpHweQj/bD0zJ+lHJld2vLcPVW5JTYK+4SnON0k3N73/3z+WE5R8SXpJ+7J0js8S2Ly
+	QiJ1qZqIE+50gmBQ6+VwFefjfp5BOe4qwszgKB8mZqDpfDWPlzKC0JGZDGTus3Z5w1bbLKL2MtH
+	tdjjjyNBYNteYwcXwafdCGt82xZesvwdb7853Kbp/uTX7s7tw2BM/6dzqXt3kh2a/fKK/Ra96hF
+	VFPUoP8Ay+0Dbc8Y2mfkoyYmO7Kipe5M4iRGJYoHb2S7mfxcfbTF9
+X-Received: by 2002:a05:6000:118b:b0:485:8c16:5ef0 with SMTP id
+ ffacd0b85a97d-486eb2fe6e9mr2544735f8f.42.1789117791504; Fri, 11 Sep 2026
+ 02:09:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260910-unique-ref-v21-0-e83257373062@kernel.org> <20260910-unique-ref-v21-4-e83257373062@kernel.org>
-In-Reply-To: <20260910-unique-ref-v21-4-e83257373062@kernel.org>
+References: <20260910-unique-ref-v21-0-e83257373062@kernel.org> <20260910-unique-ref-v21-5-e83257373062@kernel.org>
+In-Reply-To: <20260910-unique-ref-v21-5-e83257373062@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 11 Sep 2026 11:08:18 +0200
-X-Gm-Features: AcwNN1Wcpw91RcC64bgI4fLKPGdY59qIT8O1U-qjeWGvrNCV-tRUtkCYbazUk4w
-Message-ID: <CAH5fLghUQW5urTfLCCDT4BhuqoFVoLUAG46TS-SxaS37bJcgWQ@mail.gmail.com>
-Subject: Re: [PATCH v21 4/9] rust: rename `AlwaysRefCounted` to `RefCounted`.
+Date: Fri, 11 Sep 2026 11:09:37 +0200
+X-Gm-Features: AcwNN1U8uQc4Zj212gVRashrRro-WErwh8uVMQ_MWKQsPaL29993fZfZR2Hn4U8
+Message-ID: <CAH5fLggBGvXayMT2QGo5JeQkYeJYc0L-348-kKLsBs_g45-fnQ@mail.gmail.com>
+Subject: Re: [PATCH v21 5/9] rust: Add missing SAFETY documentation for `ARef` example
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
 	"Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -118,46 +118,22 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlasti
 	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
 	linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
 	linux-pwm@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Oliver Mangold <oliver.mangold@pm.me>, Viresh Kumar <viresh.kumar@linaro.org>
+	Oliver Mangold <oliver.mangold@pm.me>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 10, 2026 at 11:01=E2=80=AFAM Andreas Hindborg <a.hindborg@kerne=
+On Thu, Sep 10, 2026 at 11:02=E2=80=AFAM Andreas Hindborg <a.hindborg@kerne=
 l.org> wrote:
 >
 > From: Oliver Mangold <oliver.mangold@pm.me>
 >
-> There are types where it may both be reference counted in some cases and
-> owned in others. In such cases, obtaining `ARef<T>` from `&T` would be
-> unsound as it allows creation of `ARef<T>` copy from `&Owned<T>`.
+> SAFETY comment in rustdoc example was just 'TODO'. Fixed.
 >
-> Therefore, we split `AlwaysRefCounted` into `RefCounted` (which `ARef<T>`
-> would require) and a marker trait to indicate that the type is always
-> reference counted (and not `Ownable`) so the `&T` -> `ARef<T>` conversion
-> is possible.
->
-> - Rename `AlwaysRefCounted` to `RefCounted`.
-> - Add a new unsafe trait `AlwaysRefCounted`.
-> - Implement the new trait `AlwaysRefCounted` for the newly renamed
->   `RefCounted` implementations. This leaves functionality of existing
->   implementers of `AlwaysRefCounted` intact.
->
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/351
 > Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-> [ Andreas: Updated commit message and rebase on rust-next (7.2) ]
-> Acked-by: Igor Korotin <igor.korotin.linux@gmail.com>
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 > Assisted-by: LLM
 > Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-This has a lot of safety comments of the form "This does not implement
-Ownable, *therefore* it can implement AlwaysRefcounted". But I think
-the safety comment should instead explain that it's okay to create an
-ARef<_> from an &_ for this type. The fact that Ownable is not
-implemented is not sufficient argument.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
