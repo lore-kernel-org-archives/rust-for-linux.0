@@ -1,43 +1,43 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79417370D6E;
-	Thu, 10 Sep 2026 23:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7B21DFF0;
+	Fri, 11 Sep 2026 00:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789082429; cv=pass; b=AE3XaN7mJ4GL9n+BOCAt+ppFVb+2aulM28VHBg60yVM+dpEZ56Oja33wtq3K66+5ShiiKEr0VscEy6IPMQy+E3c18xO9UKF2aYOROhRCPc0PykC6wWymQFRts3lQkaKnDTZsFvh0bLLDD2ku0ReK+xHuWTcd1Jmy0SHR9FIsxlw=
+	t=1789085202; cv=pass; b=Wtqve+P/uflaIBYVRFK1wR/nl/ErHOVVZXKziRoGcz4x+pR1XIn+RgcrgAY3gt04rCvj7K4M2uscCP3l34wejAaMyiTLbJNrRTwCm9XfAuKNUJclneUc6ObQ/fJr2hpqyVsr+06lLF0cCPIsoIJ6tEEVpy9nH4Ar9qsYW35DylA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789082429; c=relaxed/simple;
-	bh=pcE0l/tn3Wq8uejNfCTycfx1GuqzrRT0owXDnlhmIqc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jqND1BbXc4VA8+b5IHw4J/U6QXIlKHFGcrtS9jjwmxjyMSdlEXkuomMRmBS+aapR8NRzP3t1p0fSP7vKOCZG3aHq4+5OZc9fsXZXtKwtRNpXGxIqJWZ9chv2T7t6hdjYAW6dW+dCp6/EvX95LybxEi1Q7t6RnCyBJ6PUj2P220Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=ciFY4bB3; arc=pass smtp.client-ip=136.143.188.12
+	s=arc-20240116; t=1789085202; c=relaxed/simple;
+	bh=tKjdn9Vn3pQSgt7PGipa416Xnyoc39Jsc48mxcEuARE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Y525irrQ3Cr/Wz9qSj0Hyg9zK4cTp0knY/TrhBB5iJ6Iq9JlAyP0b4E6CQ/Ooy7in5Oa9GiCWZpOn7shfe3u16n39irFu5qRSLVFSX0wz3j4j74dsSTZoYzQUZ8EQy6JmP2WcxRBAIwH/cZjKBiHDYku1b60zbmmwg/ClIek6K4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=Fbj5gbsY; arc=pass smtp.client-ip=136.143.188.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="ciFY4bB3"
-ARC-Seal: i=1; a=rsa-sha256; t=1789082411; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="Fbj5gbsY"
+ARC-Seal: i=1; a=rsa-sha256; t=1789085189; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=dICRLHWmFcJhW7Li1ZKAzPR9SeXMIVisP7+e2dML8eh4sl0I8v9AcF9fCZxU6WK04oumBuz5HE/ww02tZgE0fEGUzR6+J0T9Al8c2X4iKLZWmUU2KCq5prNo+Gdobu0Lb4/XQESKZBGrulK8DCgQaCn2UodByaI8fkUCBe5mf6Y=
+	b=eDUETEdFEs03QNAP4rG9m9EaPhHMhzP9QlCnDXvfuE19bpXD98khTSzk4Uq2W+uo/oi/3DORdT/firTYeuvN9npDo+um4+WDfiytFHjy2IgIdWeCvcxSX/2INMlR0mwl8m1qrgBiMQj5hALLYeuJgDG3d1cqh/tQcVgWa+5syLQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1789082411; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=187CcQoCTRoovqrYNY1ZOziIvuACVyaVv/zhl3TFBHo=; 
-	b=WxJctdud6S257OVprHvf/uHhZ6DVm1Lwatid089fv+9G6u/egv/baA43bJ62WnP4fRpNxnHR7CgzX4qJY9HUnxkCzNzONUST6G+nBhE/KmgWh6k+PJobC07IFeXvbiNwkmND2SCfbYcBkahAd0hh3YuYLkIsyL8BuJX3dWJo/Gc=
+	t=1789085189; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=xwnBmmACncmIplPNRZzLr43OgRegovVIyfRRBkQb6Zg=; 
+	b=IJazjr+01rgQi+oDrJ/qiZEMq7hiQGmyLDhPLj0PHCK7SCBGcfVrVQvSaZ3ouuECYReQclUjt4xLZYstR5arSFDagLuCpxwABpk+N4CopQevkA2Hkdet7HJ4+pxRds7ihYE0GxsPccrP9+iCedUzfNYQUkN/t/HDSNhobEj87jg=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1789082411;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1789085189;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
-	bh=187CcQoCTRoovqrYNY1ZOziIvuACVyaVv/zhl3TFBHo=;
-	b=ciFY4bB3qD9m6kx1lqTEnWt6pK5J0lbPf4yzPuKIzH8R4lZDDNbw2M6PUh15nd53
-	p9+Ys7jNdMedS+9oMTHf7vkyXsgOgVlMsS+KOZJNJKK0xXpY8l2ZIFrXyqLIjGANbv1
-	gopBfsPfIPDQGrv+tSlI715Jvr/sdsnBoSTgZp8E=
-Received: by mx.zohomail.com with SMTPS id 1789082409978286.37295934064014;
-	Thu, 10 Sep 2026 16:20:09 -0700 (PDT)
+	bh=xwnBmmACncmIplPNRZzLr43OgRegovVIyfRRBkQb6Zg=;
+	b=Fbj5gbsYKyczQ9oaXFrFOmMsn/iI1siiWPpymzS4C+LUKpXr6nfZht7tsvdfY611
+	ZBYPHL0y2FsIMqNW6FAUORT694z07hHQ7zjwHnlKfqbEOPVFE9cNgOWk+w1YWgetHNC
+	Y43+9W1A/ob9uiLBqrwYXN/7O4Y+y3QhiQq9gk2U=
+Received: by mx.zohomail.com with SMTPS id 1789085189322917.5264316778831;
+	Thu, 10 Sep 2026 17:06:29 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Thu, 10 Sep 2026 16:20:04 -0700
-Subject: [PATCH] MAINTAINERS: add rust-for-linux list for Tyr
+Date: Thu, 10 Sep 2026 17:06:26 -0700
+Subject: [PATCH] drm/tyr: use bitfield! for non-MMIO fields
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,59 +46,117 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-b4-add-list-for-tyr-v1-1-cd74ff2c1f8a@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MSwqAMAwA0atI1gaa4v8q4kJtqgFRSUUU8e4Wl
- 28x80BgFQ7QJA8onxJkWyMoTWCc+3ViFBcN1tjC1GRwyLB3DhcJB/pN8bgV88oPoy2qkogglru
- yl+u/tt37fknBLAplAAAA
-X-Change-ID: 20260910-b4-add-list-for-tyr-58fbc2687111
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
+Message-Id: <20260910-b4-use-bitfield-v1-1-fdddfccff73b@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3M3QpAQBBA4VfRXJuaWT/hVeQCO5gS2kVq8+42l
+ 9/FOQG8OBUPTRLAya1e9y2C0wTGpd9mQbXRYMiUVDPhkOPlBQc9J5XVYsHGcJ6VVDFBrA4nkz7
+ /se3e9wPEH8uTYQAAAA==
+X-Change-ID: 20260910-b4-use-bitfield-512214360810
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
  Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, gary@garyguo.net, laura.nao@collabora.com, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=980;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2867;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=pcE0l/tn3Wq8uejNfCTycfx1GuqzrRT0owXDnlhmIqc=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmLrTWW2czvqfat4FMqna64MnXClvLtqaw13y4158xzd
- fW+0JPRUcrCIMbFICumyHLW3qhHvOq9ke78/80wc1iZQIYwcHEKwEQ4PRj+F63n3VhlzmiiwnrI
- ernuyVoX48eGzn6v1hvs/6Jywk9pIcP/2EWXDkk3vVrn+EXz/60VohHPjx2fvjxb6P2MwshNAkp
- pHAA=
+ bh=tKjdn9Vn3pQSgt7PGipa416Xnyoc39Jsc48mxcEuARE=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmL3Vg0nv7QXf36wrK3v1/f4F78tdOub8ZGbpuDV+oz2
+ i6wfIw+2VHKwiDGxSArpshy1t6oR7zqvZHu/P/NMHNYmUCGMHBxCsBENCsZ/hlHvt5wV0d33ldt
+ y1u3zJZNj60rkF7r27Tse/PjTWvC9xsx/LNV1tx+Zv5ZhTsq15v1LRjeaD598uJn6nvNdXdn7jn
+ oy8kEAA==
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-Tyr is a Rust DRM driver and Tyr patches are reviewed on the
-rust-for-linux mailing list. Add the list to the Tyr MAINTAINERS entry so
-that scripts/get_maintainer.pl and b4 prep --auto-to-cc include it.
+SectionFlags and MMU_MEMATTR_STAGE1 describe bitfields rather than
+hardware registers. Use bitfield! instead of register! so they aren't
+confused with actual registers.
 
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/tyr/fw.rs   | 11 ++++-------
+ drivers/gpu/drm/tyr/regs.rs | 11 +++++------
+ 2 files changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2389df80ba50..04709f381d04 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2333,6 +2333,7 @@ ARM MALI TYR DRM DRIVER
- M:	Daniel Almeida <daniel.almeida@collabora.com>
- M:	Alice Ryhl <aliceryhl@google.com>
- L:	dri-devel@lists.freedesktop.org
-+L:	rust-for-linux@vger.kernel.org
- S:	Supported
- W:	https://rust-for-linux.com/tyr-gpu-driver
- W:	https://drm.pages.freedesktop.org/maintainer-tools/drm-rust.html
+diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
+index 7edb5eff1707..8d11f888a9b9 100644
+--- a/drivers/gpu/drm/tyr/fw.rs
++++ b/drivers/gpu/drm/tyr/fw.rs
+@@ -14,6 +14,7 @@
+ //! [`Section`]: crate::fw::Section
+ 
+ use kernel::{
++    bitfield,
+     device::{
+         Bound,
+         Device, //
+@@ -27,7 +28,6 @@
+     },
+     num::Bounded,
+     prelude::*,
+-    register,
+     str::CString,
+     sync::{
+         Arc,
+@@ -39,8 +39,7 @@
+ use crate::{
+     driver::{
+         IoMem,
+-        TyrDrmDevice,
+-        TyrRegisters, //
++        TyrDrmDevice, //
+     },
+     fw::parser::{
+         FwParser,
+@@ -101,11 +100,9 @@ fn from(value: CacheMode) -> Self {
+     }
+ }
+ 
+-register! {
+-    base: TyrRegisters;
+-
++bitfield! {
+      #[allow(non_upper_case_globals)]
+-    pub(super) SectionFlags(u32) @ 0x0 {
++    pub(super) struct SectionFlags(u32) {
+         0:0 read => bool;
+         1:1 write => bool;
+         2:2 exec => bool;
+diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
+index 0c419c4e1186..3377b8fc5029 100644
+--- a/drivers/gpu/drm/tyr/regs.rs
++++ b/drivers/gpu/drm/tyr/regs.rs
+@@ -986,6 +986,7 @@ pub(crate) mod mmu_control {
+     /// This array contains 16 instances of the MMU_AS_CONTROL register page.
+     pub(crate) mod mmu_as_control {
+         use kernel::{
++            bitfield,
+             num::Bounded,
+             prelude::*,
+             register, //
+@@ -1130,14 +1131,12 @@ fn from(val: MemoryType) -> Self {
+             }
+         }
+ 
+-        register! {
+-            base: TyrRegisters;
+-
++        bitfield! {
+             /// Stage 1 memory attributes (8-bit bitfield).
+             ///
+-            /// This is not an actual register, but a bitfield definition used by the MEMATTR
+-            /// register. Each of the 8 bytes in MEMATTR follows this layout.
+-            MMU_MEMATTR_STAGE1(u8) @ 0x0 {
++            /// This bitfield definition is used by the MEMATTR register.
++            /// Each of the 8 bytes in MEMATTR follows this layout.
++            struct MMU_MEMATTR_STAGE1(u8) {
+                 /// Inner cache write allocation policy.
+                 0:0     alloc_w => bool;
+                 /// Inner cache read allocation policy.
 
 ---
 base-commit: 73e5616f3d197c1af5a04a481fe0f13aa3913bd1
-change-id: 20260910-b4-add-list-for-tyr-58fbc2687111
+change-id: 20260910-b4-use-bitfield-512214360810
 
 Best regards,
 -- 
