@@ -1,268 +1,304 @@
-Received: from mail-06.mail-europe.com (mail-06.mail-europe.com [85.9.210.45])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D07357CFA;
-	Sat, 12 Sep 2026 11:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948224BEE32;
+	Sat, 12 Sep 2026 11:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789211429; cv=none; b=FekrXhRStHLvLTMKJAv+JP6MDnVun2QIxAt50KqgPxAragTbjggq+kPF0s3lMZoMnr7005YTSvzm8K704rTSIGa7jNxd3Jk1A8yA8gK+OUmrdP8JGnWyoAG3QtSox+fBHa+8ZLVv/fRnhXRXZtJsGszGHdGoDrthD/2cQ/I19WA=
+	t=1789212066; cv=none; b=ABFIAGJV7cK3Sdj/BkmW2r/y/xizlFqdp5nH53Kl8JbZMs9fm1bFy5Am7MtvYEbGHXOZHo4sv2eiO0WfUUASifdqlhknWjqfwone1WHknlvD5iy8/CNXXq8JRNB+PZFfHNNmZSRLToYVB/Ao2g5/Gq23bE2dE5luTBnOfWHcCVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789211429; c=relaxed/simple;
-	bh=dy3zG9UwpK0UjlmGfKCpEspzFI94brgeIUvrnDStqoc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jlRSszmk6QIsq+KWdYFPd6tbtlKl6WzZbiFbiKK0jYkyd9Qe84llZKrxeuToAGv+PRld4PHpyMrTDQO/gBgxeSxaCrbCy3VEnkrfPyQfmuwiV7BSbc8TW0dRfGQkeMVX2uJqbt4V9aalc9ZbwcUakoVFr2GbDCRG5BI5iBO5SUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=qEkVgEMX; arc=none smtp.client-ip=85.9.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1789212066; c=relaxed/simple;
+	bh=C+Am4wWyRZWkCJzSxMTfxEVDuvTMtFNGm5gvUiXFpTY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=d2hRu5uSUdCTCgRvAPAfrlqa3U6mAiCAP7wToUuEEJXYzmftir0QsKIVn7Xyl+vEccEVUAQazWyCRwJAzOe7QR+pUL3qH1lzlGQYwyc/rEheiSEnKz9Gn47Ie7iRqOpkqJHCiMjQrcu2qt8jWTjtAC97tgbJnr4/sgJh9iz1Nyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iV09A33W; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="qEkVgEMX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1789211415; x=1789470615;
-	bh=brHblU+c7r3MzG9dIZ+DO2MZ/5N6mzTS5GxaXqzuGRA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=qEkVgEMXLzufGhROLJ76Gi910eT3sMOX0sqNYXUrzSkKkLPguKlX5qS3FDFMeF9fl
-	 PgunjSNhtizsENQzv3Pqb9aOrENcWy4hNQ2wJNm0teOdxRYGxegBzjD+TmXjBGLjoh
-	 ytd34upXrwm6w18NbcmzOiyIZyubljlmbfM1Prwy22ANwKCDiS/PzXLYIDarkAqLIU
-	 I54h4ijWeuP6DcTggVVK5dW6R4cDxx0Km+uxJy/A8d4MrMqRR+XqGWdc9oxeLLWnor
-	 xDmR5iaWz91w0vumq6VDHQHfP0EDMjFV4L8JjtxIOdXKlblaXwWx5N9K8nHYtY5cb3
-	 eGhFMAqNWMpcw==
-X-Pm-Submission-Id: 4hhpbm6L9Mz1DDs3
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	dakr@kernel.org,
-	aliceryhl@google.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu
-Subject: Re: [PATCH v6 3/3] drm/tyr: put iomem behind the hardware gate
-Date: Sat, 12 Sep 2026 14:10:07 +0300
-Message-ID: <20260912111011.5274-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <39E7E24E-147C-4894-AD8F-095B60FDA955@collabora.com>
-References: <20260819-tyr-reset-impl-v6-0-7b4e1e041fe5@onurozkan.dev> <20260819-tyr-reset-impl-v6-3-7b4e1e041fe5@onurozkan.dev> <39E7E24E-147C-4894-AD8F-095B60FDA955@collabora.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iV09A33W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E4A1F00899;
+	Sat, 12 Sep 2026 11:21:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789212064;
+	bh=C+Am4wWyRZWkCJzSxMTfxEVDuvTMtFNGm5gvUiXFpTY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=iV09A33WC7aStPTKmzQvLa5iXwGtPWw8W0q4zNblm5kDIZIiIHbjUwqaYPu932UMP
+	 +KUdbxLOduuBadcQUDacJi8PxlVP2Ybtf24eGWEpYSYLNxgGg76NIoQtFKfVIIRalL
+	 m6p+eWyVqyQA5S5HKvjRPOjgI/1o6XImcdX/pDssr0X5Kwlt/KnKCi/NcNPp0JdlUS
+	 65Hs84AjKXmlL10GPF29BOvuzeCAAwsP28Mzsy/Wvvl1vIQVC67EuI/ohYy80pBO1b
+	 E/j+dDd+QfKUsfN9/qISObcdxzzl2tDWZzvZOUNHKkr0CCFFIg+ZvsjrL/i7YSavRF
+	 pICK3nTBbFQBg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Bean Huo <beanhuo@iokpp.de>, jaemyung.lee@samsung.com, Miguel Ojeda
+ <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary
+ Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH RFC] drivers/rufs: add Rust UFS host controller driver
+In-Reply-To: <4c38f13af8f75020fefc35827463e9bc643b99f4.camel@iokpp.de>
+References: <20260912-rufs-private-v1-1-716db733e655@samsung.com>
+ <8mLXEMDMxh8mZQqVywUYUeOiZPZIPmrVGRlOkDbHptW0NEJeszKVpff5h39MjUvD5yyivwY3Z7kCXIH5VlGoiw==@protonmail.internalid>
+ <4c38f13af8f75020fefc35827463e9bc643b99f4.camel@iokpp.de>
+Date: Sat, 12 Sep 2026 13:20:53 +0200
+Message-ID: <87jyoqvhpm.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 24 Aug 2026 14:05:11 -0300=0D
-Daniel Almeida <daniel.almeida@collabora.com> wrote:=0D
-=0D
-> Hi Onur,=0D
-> =0D
-> =0D
-> While testing this patch, I came across the following splat:=0D
-> =0D
-> =0D
-> [   12.648287] WARNING: possible circular locking dependency detected=0D
-> [   12.648826] 7.1.0-rc5-g991a312b28c2 #1 Not tainted=0D
-> [   12.649245] ------------------------------------------------------=0D
-> [   12.649782] modprobe/167 is trying to acquire lock:=0D
-> [   12.650208] ffff0001f1713c80 (drivers/gpu/drm/tyr/reset/hw_gate.rs:42)=
-{+.+.}-{4:4}, at: rust_helper_mutex_lock+0x14/0x20=0D
-> [   12.651169] =0D
-> [   12.651169] but task is already holding lock:=0D
-> [   12.651677] ffff0001f1713cc0 (drivers/gpu/drm/tyr/reset/hw_gate.rs:43)=
-{.+.+}-{0:0}, at: srcu_lock_acquire+0x4/0x40=0D
-> [   12.652588] =0D
-> [   12.652588] which lock already depends on the new lock.=0D
-> [   12.652588] =0D
-> [   12.653299] =0D
-> [   12.653299] the existing dependency chain (in reverse order) is:=0D
-> [   12.653948] =0D
-> [   12.653948] -> #1 (drivers/gpu/drm/tyr/reset/hw_gate.rs:43){.+.+}-{0:0=
-}:=0D
-> [   12.654664]        srcu_lock_sync+0x30/0x3c=0D
-> [   12.655035]        __synchronize_srcu+0x58/0x180=0D
-> [   12.655441]        synchronize_srcu+0x20c/0x28c=0D
-> [   12.655838]        _RNvNtCs8XoewxZdfnt_3tyr5reset9run_reset+0x3c/0x1d4=
- [tyr]=0D
-> [   12.656469]        _RNvXNtCs8XoewxZdfnt_3tyr6driverNtB2_17TyrPlatformD=
-riverNtNtCsbuTvttuFvbr_6kernel8platform6Driver5probe+0x254/0x470 [tyr]=0D
-> [   12.657573]        _RNvMs0_NtCsbuTvttuFvbr_6kernel8platformINtB5_7Adap=
-terNtNtCs8XoewxZdfnt_3tyr6driver17TyrPlatformDriverE14probe_callbackBT_+0x4=
-4/0x10c [tyr]=0D
-> [   12.658812]        platform_probe+0x68/0xa4=0D
-> [   12.659182]        really_probe+0x198/0x42c=0D
-> [   12.659551]        __driver_probe_device+0xc8/0x190=0D
-> [   12.659979]        driver_probe_device+0x40/0x240=0D
-> [   12.660392]        __driver_attach+0xf8/0x294=0D
-> [   12.660775]        bus_for_each_dev+0xec/0x144=0D
-> [   12.661168]        driver_attach+0x24/0x30=0D
-> [   12.661528]        bus_add_driver+0x158/0x2a8=0D
-> [   12.661910]        driver_register+0x68/0x100=0D
-> [   12.662293]        __platform_driver_register+0x24/0x30=0D
-> [   12.662752]        init_module+0x70/0xfc4 [tyr]=0D
-> [   12.663157]        do_one_initcall+0x114/0x4b4=0D
-> [   12.663551]        do_init_module+0x54/0x220=0D
-> [   12.663927]        load_module+0x1754/0x1984=0D
-> [   12.664302]        __arm64_sys_init_module+0x184/0x23c=0D
-> [   12.664755]        invoke_syscall+0x48/0xf8=0D
-> [   12.665125]        el0_svc_common+0x90/0xdc=0D
-> [   12.665494]        do_el0_svc+0x1c/0x28=0D
-> [   12.665833]        el0_svc+0x54/0x258=0D
-> [   12.666159]        el0t_64_sync_handler+0x78/0x12c=0D
-> [   12.666582]        el0t_64_sync+0x198/0x19c=0D
-> [   12.666948] =0D
-> [   12.666948] -> #0 (drivers/gpu/drm/tyr/reset/hw_gate.rs:42){+.+.}-{4:4=
-}:=0D
-> [   12.667665]        __lock_acquire+0x18b4/0x3208=0D
-> [   12.668062]        lock_acquire+0x110/0x300=0D
-> [   12.668429]        __mutex_lock_common+0xec/0x1490=0D
-> [   12.668851]        mutex_lock_nested+0x2c/0x38=0D
-> [   12.669242]        rust_helper_mutex_lock+0x14/0x20=0D
-> [   12.669671]        _RNvMs0_NtNtCs8XoewxZdfnt_3tyr3mmu13address_spaceNt=
-B5_19AddressSpaceManager13as_wait_ready+0x28/0x108 [tyr]=0D
-> [   12.670670]        _RNvMs0_NtNtCs8XoewxZdfnt_3tyr3mmu13address_spaceNt=
-B5_19AddressSpaceManager11as_send_cmd+0x24/0xb0 [tyr]=0D
-> [   12.671645]        _RNvXs_NtNtCs8XoewxZdfnt_3tyr3mmu13address_spaceNtB=
-4_19AddressSpaceManagerNtNtB8_4slot14SlotOperations8activate+0x2dc/0x3ac [t=
-yr]=0D
-> [   12.672807]        _RNvMs0_NtCs8XoewxZdfnt_3tyr2fwNtB5_8Firmware3new+0=
-x12d4/0x184c [tyr]=0D
-> [   12.673520]        _RNvXNtCs8XoewxZdfnt_3tyr6driverNtB2_17TyrPlatformD=
-riverNtNtCsbuTvttuFvbr_6kernel8platform6Driver5probe+0x368/0x470 [tyr]=0D
-> [   12.674622]        _RNvMs0_NtCsbuTvttuFvbr_6kernel8platformINtB5_7Adap=
-terNtNtCs8XoewxZdfnt_3tyr6driver17TyrPlatformDriverE14probe_callbackBT_+0x4=
-4/0x10c [tyr]=0D
-> [   12.675860]        platform_probe+0x68/0xa4=0D
-> [   12.676228]        really_probe+0x198/0x42c=0D
-> [   12.676596]        __driver_probe_device+0xc8/0x190=0D
-> [   12.677024]        driver_probe_device+0x40/0x240=0D
-> [   12.677437]        __driver_attach+0xf8/0x294=0D
-> [   12.677818]        bus_for_each_dev+0xec/0x144=0D
-> [   12.678210]        driver_attach+0x24/0x30=0D
-> [   12.678570]        bus_add_driver+0x158/0x2a8=0D
-> [   12.678951]        driver_register+0x68/0x100=0D
-> [   12.679334]        __platform_driver_register+0x24/0x30=0D
-> [   12.679792]        init_module+0x70/0xfc4 [tyr]=0D
-> [   12.680196]        do_one_initcall+0x114/0x4b4=0D
-> [   12.680589]        do_init_module+0x54/0x220=0D
-> [   12.680964]        load_module+0x1754/0x1984=0D
-> [   12.681338]        __arm64_sys_init_module+0x184/0x23c=0D
-> [   12.681790]        invoke_syscall+0x48/0xf8=0D
-> [   12.682159]        el0_svc_common+0x90/0xdc=0D
-> [   12.682529]        do_el0_svc+0x1c/0x28=0D
-> [   12.682868]        el0_svc+0x54/0x258=0D
-> [   12.683193]        el0t_64_sync_handler+0x78/0x12c=0D
-> [   12.683615]        el0t_64_sync+0x198/0x19c=0D
-> [   12.683982] =0D
-> [   12.683982] other info that might help us debug this:=0D
-> [   12.683982] =0D
-> [   12.684677]  Possible unsafe locking scenario:=0D
-> [   12.684677] =0D
-> [   12.685192]        CPU0                    CPU1=0D
-> [   12.685586]        ----                    ----=0D
-> [   12.685981]   rlock(drivers/gpu/drm/tyr/reset/hw_gate.rs:43);=0D
-> [   12.686483]                                lock(drivers/gpu/drm/tyr/re=
-set/hw_gate.rs:42);=0D
-> [   12.687196]                                lock(drivers/gpu/drm/tyr/re=
-set/hw_gate.rs:43);=0D
-> [   12.687908]   lock(drivers/gpu/drm/tyr/reset/hw_gate.rs:42);=0D
-> [   12.688403] =0D
-> [   12.688403]  *** DEADLOCK ***=0D
-> [   12.688403] =0D
-> [   12.688917] 3 locks held by modprobe/167:=0D
-> [   12.689268]  #0: ffff0001f0ee3938 (&dev->mutex){....}-{4:4}, at: __dri=
-ver_attach+0xec/0x294=0D
-> [   12.690004]  #1: ffff0001f3573468 (drivers/gpu/drm/tyr/mmu.rs:76){+.+.=
-}-{4:4}, at: rust_helper_mutex_lock+0x14/0x20=0D
-> [   12.690921]  #2: ffff0001f1713cc0 (drivers/gpu/drm/tyr/reset/hw_gate.r=
-s:43){.+.+}-{0:0}, at: srcu_lock_acquire+0x4/0x40=0D
-> [   12.691869] =0D
-> [   12.691869] stack backtrace:=0D
-> [   12.692250] CPU: 4 UID: 0 PID: 167 Comm: modprobe Not tainted 7.1.0-rc=
-5-g991a312b28c2 #1 PREEMPT =0D
-> [   12.692255] Hardware name: Radxa ROCK 5B (DT)=0D
-> [   12.692257] Call trace:=0D
-> [   12.692258]  show_stack+0x18/0x24 (C)=0D
-> [   12.692266]  dump_stack_lvl+0x40/0x9c=0D
-> [   12.692272]  dump_stack+0x18/0x24=0D
-> [   12.692278]  print_circular_bug+0x324/0x32c=0D
-> [   12.692283]  check_noncircular+0x15c/0x178=0D
-> [   12.692287]  __lock_acquire+0x18b4/0x3208=0D
-> [   12.692291]  lock_acquire+0x110/0x300=0D
-> [   12.692295]  __mutex_lock_common+0xec/0x1490=0D
-> [   12.692300]  mutex_lock_nested+0x2c/0x38=0D
-> [   12.692306]  rust_helper_mutex_lock+0x14/0x20=0D
-> [   12.692311]  _RNvMs0_NtNtCs8XoewxZdfnt_3tyr3mmu13address_spaceNtB5_19A=
-ddressSpaceManager13as_wait_ready+0x28/0x108 [tyr]=0D
-> [   12.692323]  _RNvMs0_NtNtCs8XoewxZdfnt_3tyr3mmu13address_spaceNtB5_19A=
-ddressSpaceManager11as_send_cmd+0x24/0xb0 [tyr]=0D
-> [   12.692334]  _RNvXs_NtNtCs8XoewxZdfnt_3tyr3mmu13address_spaceNtB4_19Ad=
-dressSpaceManagerNtNtB8_4slot14SlotOperations8activate+0x2dc/0x3ac [tyr]=0D
-> [   12.692346]  _RNvMs0_NtCs8XoewxZdfnt_3tyr2fwNtB5_8Firmware3new+0x12d4/=
-0x184c [tyr]=0D
-> [   12.692357]  _RNvXNtCs8XoewxZdfnt_3tyr6driverNtB2_17TyrPlatformDriverN=
-tNtCsbuTvttuFvbr_6kernel8platform6Driver5probe+0x368/0x470 [tyr]=0D
-> [   12.692368]  _RNvMs0_NtCsbuTvttuFvbr_6kernel8platformINtB5_7AdapterNtN=
-tCs8XoewxZdfnt_3tyr6driver17TyrPlatformDriverE14probe_callbackBT_+0x44/0x10=
-c [tyr]=0D
-> [   12.692379]  platform_probe+0x68/0xa4=0D
-> [   12.692385]  really_probe+0x198/0x42c=0D
-> [   12.692389]  __driver_probe_device+0xc8/0x190=0D
-> [   12.692393]  driver_probe_device+0x40/0x240=0D
-> [   12.692398]  __driver_attach+0xf8/0x294=0D
-> [   12.692402]  bus_for_each_dev+0xec/0x144=0D
-> [   12.692409]  driver_attach+0x24/0x30=0D
-> [   12.692413]  bus_add_driver+0x158/0x2a8=0D
-> [   12.692416]  driver_register+0x68/0x100=0D
-> [   12.692420]  __platform_driver_register+0x24/0x30=0D
-> [   12.692426]  init_module+0x70/0xfc4 [tyr]=0D
-> [   12.692437]  do_one_initcall+0x114/0x4b4=0D
-> [   12.692443]  do_init_module+0x54/0x220=0D
-> [   12.692447]  load_module+0x1754/0x1984=0D
-> [   12.692451]  __arm64_sys_init_module+0x184/0x23c=0D
-> [   12.692458]  invoke_syscall+0x48/0xf8=0D
-> [   12.692464]  el0_svc_common+0x90/0xdc=0D
-> [   12.692470]  do_el0_svc+0x1c/0x28=0D
-> [   12.692476]  el0_svc+0x54/0x258=0D
-> [   12.692482]  el0t_64_sync_handler+0x78/0x12c=0D
-> [   12.692489]  el0t_64_sync+0x198/0x19c=0D
-> =0D
-> I suggest that we take the gate only once per public AS operation, and pa=
-ss=0D
-> &IoMem to the lower layers as needed. This has the side effect of making =
-the=0D
-> whole AS op atomic w.r.t to resets, which does not appear to be the case =
-today,=0D
-> as we nest calls to access(). Additionally, we can reintroduce the &mut s=
-elf's=0D
-> that were removed to make this compile; which I'd prefer. This can probab=
-ly be=0D
-> done by cloning the Arc<HwGate>, so it doesn't borrow self, i.e.:=0D
-> =0D
-> let hw =3D self.hw.clone();=0D
-> let guard =3D hw.access(); // doesn't borrow self=0D
-> =0D
-> -- Daniel=0D
-> =0D
-=0D
-Hi Daniel,=0D
-=0D
-I fixed this in v7 [1] and tested on Orange Pi, the deadlock shouldn't happ=
-en=0D
-anymore.=0D
-=0D
-[1]: https://lore.kernel.org/all/20260912-tyr-reset-impl-v7-0-077ce72084eb@=
-onurozkan.dev=0D
-=0D
-Thanks,=0D
-Onur=0D
-=0D
-> =0D
-> =0D
+"Bean Huo" <beanhuo@iokpp.de> writes:
+
+> On Sat, 2026-09-12 at 00:52 +0900, Jaemyung Lee via B4 Relay wrote:
+>> From: Jaemyung Lee <jaemyung.lee@samsung.com>
+>>
+>> Add a Rust UFS host controller driver that exposes UFS logical units as
+>> native blk-mq block devices without depending on the SCSI midlayer.
+>>
+>> Implement host controller setup, UIC link startup and power-mode
+>> configuration, device and unit descriptor discovery, query operations, a=
+nd
+>> SCSI protocol command construction. Support normal read, write, flush, a=
+nd
+>> discard I/O with coherent UTP descriptors and owned streaming DMA mappin=
+gs.
+>>
+>> Provide both single-doorbell and multi-circular-queue transfer backends.
+>> Map shared blk-mq tags directly to UFS task tags, retain request ownersh=
+ip
+>> while commands are in flight, dispatch completion per MCQ completion que=
+ue,
+>> and return polled completions through the blk-mq completion batch.
+>>
+>> Add PCI and Qualcomm platform frontends. The PCI frontend supports the Q=
+EMU
+>> UFS controller and existing Intel and Samsung IDs. The Qualcomm frontend
+>> provides the clocks, PHY, reset, interconnect, power-domain, OPP, GPIO, =
+and
+>> controller-specific initialization needed by supported SoCs.
+>>
+>> This establishes normal-I/O support for UFSHCI single-doorbell and MCQ
+>> controllers. Full timeout recovery, error handling, and power management
+>> are left for follow-up work.
+>>
+>> Signed-off-by: Jaemyung Lee <jaemyung.lee@samsung.com>
+>> ---
+>> This RFC introduces RUFS, a UFS host controller driver that sits directly
+>> on the block layer and does not use the SCSI midlayer. UFS logical units
+>> are exposed as native blk-mq block devices, the same way NVMe namespaces
+>> are. The driver is written in Rust.
+>>
+>> Why decouple UFS from SCSI
+>> --------------------------
+>>
+>> The existing UFS driver is built on the SCSI subsystem. That made sense
+>> historically: UFS adopted the SCSI Architecture Model as its application
+>> layer, so reusing the SCSI midlayer's command queuing, error handling,
+>> power management, and logical-unit addressing let UFS reach Linux quickly
+>> and reliably. ufshcd bridges the SCSI midlayer to UFS Protocol Informati=
+on
+>> Units.
+>>
+>> That foundation has become a source of friction. The evolution of UFS is
+>> governed by JEDEC and increasingly includes UFS-specific features outside
+>> the SCSI command set standardized by T10. These features must still be
+>> expressed through, and constrained by, a SCSI-shaped driver. Features th=
+at
+>> are meaningful only to UFS are difficult to land in a subsystem whose
+>> maintainers reasonably want to keep SCSI focused on SCSI, and block layer
+>> or shared infrastructure changes that UFS needs end up mediated through
+>> SCSI's priorities. In practice UFS is treated as an add-on to SCSI rather
+>> than as a first-class storage interface, and a significant amount of UFS
+>> functionality lives off-tree as a result, with the back- and forward-
+>> porting cost that implies.
+>>
+>> We propose to decouple UFS from SCSI with a standalone driver that sits
+>> directly on the block layer, alongside drivers like NVMe. This lets
+>> JEDEC-specific features evolve independently of T10, gives UFS
+>> its own dedicated review surface, and removes the impedance mismatch
+>> between the UFS data model and the SCSI command model. UFS uses a subset=
+ of
+>> the SCSI command set within command UPIUs, so the driver can construct t=
+he
+>> required CDBs directly without depending on the SCSI midlayer.
+>>
+>> The driver is designed around the UFS and UFSHCI specifications rather t=
+han
+>> as a line-by-line translation of ufshcd. Its target is JEDEC UFS 4.1 and
+>> UFSHCI 4.1.
+>>
+>> Why Rust
+>> --------
+>>
+>> The architectural question above would be the same for a C driver. We ch=
+ose
+>> Rust because UFS features arrive at a high pace, and turning new
+>> specification features into stable, validated code on tight timelines is
+>> where memory- and concurrency-safety guarantees pay off: fewer classes of
+>> bugs reach production, and iteration is faster. Rust's growing acceptance
+>> in the kernel makes a block-layer-native UFS driver a realistic
+>> architecture to evaluate.
+>>
+>> Initial feature set
+>> --------------------
+>>
+>> The new driver supports single-doorbell and multi-circular-queue operati=
+on,
+>> PCI and Qualcomm platform frontends, logical-unit discovery, and normal
+>> read, write, flush, and discard I/O. It uses shared blk-mq tags as UFS t=
+ask
+>> tags, keeps request ownership through completion, and uses owned DMA
+>> mappings for the complete I/O lifetime.
+>>
+>> Full timeout recovery, error handling, and power management remain
+>> follow-up work.
+>>
+>> Patch layout and dependencies
+>> -----------------------------
+>>
+>> The single patch contains the complete driver. This keeps review focused=
+ on
+>> the RUFS architecture and the SCSI-independent blk-mq model.
+>>
+>> The driver depends on Rust block, DMA, IRQ, and platform abstractions th=
+at
+>> are intentionally excluded from this posting. Some of these abstractions
+>> have already been posted to the list, most notably in the Rust null block
+>> driver v2 series, the Ownable/OwnableRefCounted page series, and the
+>> impl_flags extensions. The remaining abstractions are new and will be
+>> posted as separate series before the first non-RFC version of this drive=
+r.
+>>
+>> A buildable tree based on v7.3-rc2 with all dependencies and this patch =
+is
+>> at:
+>>
+>> https://github.com/SamsungDS/rufs/tree/rfc/rufs-public
+>>
+>> Testing
+>> -------
+>>
+>> The v7.2 development version has been exercised with SDB and MCQ on the
+>> QEMU UFS model, including ext4 fio workloads and module load/unload cycl=
+es.
+>> SDB probe and normal I/O have also been exercised on Intel PCI and Qualc=
+omm
+>> UFS hardware. The current port has been compile-tested independently with
+>> PCI-only and Qualcomm-platform-only configurations.
+>>
+>> The exact v7.2 tree used for the hardware measurements is available at:
+>>
+>> https://github.com/SamsungDS/rufs/tree/rufs-7.2
+>>
+>> On Intel UFS 2.1 hardware, 4 KiB direct io_uring at QD32/job gave
+>> these optimized-mode ranges over 1/2/4 jobs (three samples):
+>>
+>> =C2=A0 Workload=C2=A0 Op=C2=A0=C2=A0=C2=A0=C2=A0 RUFS kIOPS=C2=A0=C2=A0 =
+C kIOPS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Difference
+>> =C2=A0 --------=C2=A0 -----=C2=A0 -----------=C2=A0 -----------=C2=A0 --=
+-------------
+>> =C2=A0 randread=C2=A0 read=C2=A0=C2=A0 48.91-61.26=C2=A0 41.56-41.60=C2=
+=A0 +17.6% to +47.4%
+>> =C2=A0 randwrite write=C2=A0 8.19-8.30=C2=A0=C2=A0=C2=A0 8.21-8.22=C2=A0=
+=C2=A0=C2=A0 -0.4% to +1.1%
+>> =C2=A0 randrw=C2=A0=C2=A0=C2=A0 read=C2=A0=C2=A0 5.26-5.34=C2=A0=C2=A0=
+=C2=A0 5.28-5.38=C2=A0=C2=A0=C2=A0 -0.9% to -0.4%
+>> =C2=A0 randrw=C2=A0=C2=A0=C2=A0 write=C2=A0 5.27-5.34=C2=A0=C2=A0=C2=A0 =
+5.29-5.37=C2=A0=C2=A0=C2=A0 -0.8% to -0.5%
+>>
+>> The coefficient of variation (CV), calculated as the sample standard
+>> deviation divided by the sample mean, measures run-to-run variability
+>> relative to the mean. CV is a descriptive statistic; no normal or other
+>> distribution was fitted to model the variation. The accompanying
+>> two-sided 95% confidence intervals for the mean used Student's
+>> t-distribution because each point contains only three samples. Those
+>> intervals assume independent, approximately normally distributed sample
+>> means and should be interpreted cautiously at this sample count.
+>>
+>> RUFS randread had a CV of 28-57%, versus below 0.8% for C. Its apparent
+>> gain therefore has low confidence and should be treated as preliminary.
+>> Both drivers also logged platform UIC errors. Stable write and mixed
+>> points differed by no more than 1.1%.
+>>
+>> Feedback
+>> --------
+>>
+>> Comments on the decision to bypass the SCSI midlayer, the blk-mq model u=
+sed
+>> in its place, and the proposed prerequisite API boundaries would be
+>> especially welcome.
+>
+> Jaemyung,
+>
+> thanks sharing.
+>
+> You still use scsi everywhere in your implementation protocol/scsi.rs bui=
+lds
+> READ_10/16, WRITE_10/16, SYNCHRONIZE_CACHE and UNMAP CDB, so "decouple UF=
+S from
+> SCSI" really means "copy a small part of sd and the SCSI error handling i=
+nto a
+> UFS driver." while JEDEC defines the UFS application layer as SCSI, the S=
+CSI
+> work doesn't go away, you just move somewhere else, and it has to be writ=
+ten
+> again.
+
+See my response to Greg. The SCSI specific code in this driver is very
+minimal.
+
+>
+> The "friction" claim is weak. SCSI has already been changed to fit UFS. T=
+wo
+> examples: UFS now uses SCSI simple copy, group number in scsi write comma=
+nd.
+>
+> I doubt how far this can go. do we really need to pay effort for a new RU=
+ST UFS
+> driver, I am not very confident, unless SCSI is removed from the UFS spec=
+ and
+> JEDEC defines native UFS commands, or we talk to the device directly with=
+ UPIU.
+> please name the JEDEC feature that the SCSI midlayer really blocked, or t=
+hat was
+> historial issue which has been fixed.
+
+I am sure the UFS experts will be able to answer this better than me.
+
+> I would also like to see the heavy and hard parts, because they are the p=
+arts
+> that decide if this design worrks:
+>
+> 1, error handling: abort, LU reset, retries with limits, sense decoding, =
+this is
+> the very hard part of UFS driver.
+
+I agree. However, we decided to get the discussion going with a smaller
+feature set. We can build an efficient feature complete driver, but we
+would really like to talk to the community about it first.
+
+> 2, user-space tools interface: SG_IO and bsg (sg3_utils, ufs-utils, FFU w=
+ith
+> WRITE BUFFER), and the UFS sysfs tree..
+
+On the account of this not being a scsi driver, some changes would have
+to be made. But we should be able support
+/sys/bus/platform/drivers/ufshcd/* just fine.
+
+> Did any AI tool help write this code? If so, please add the Assisted-by: =
+tag.
+
+We use AI for code review and spell checking, so I guess the tag is warrant=
+ed.
+
+Best regards,
+Andreas Hindborg
+
