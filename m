@@ -1,93 +1,95 @@
-Received: from mail-08.mail-europe.com (mail-08.mail-europe.com [57.129.93.249])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CA042BC39;
-	Sat, 12 Sep 2026 10:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.129.93.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1BB4718D7;
+	Sat, 12 Sep 2026 11:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789209636; cv=none; b=RIGfC8HzK+Bxyu3MSdQTNcCSYc2CsGfjJ/KtQQ8C/4SweBZP5MF+tvSwNoI4kvhb5a+oKLyZ13CsRIPUKbDduikmn02wvOnccQ5Ixy9fXq6b4ozIhQrdrQWY71H3421IkrdV9WQQJ2Iz8x46OBSU4EF5eNXl3R4K3odgbQsP6Bs=
+	t=1789210812; cv=none; b=Hu5sBZALHfxJBkzk+bGw7hASeeLerCkFf704aASx3vwI2jPdSxYHdvGb0vmldfxFcuXTnMpmEYE2Vjo6E4Dg0exjPOfLpLWdPaLZmC2GNG29Mc3CuQoFJq+BR9OgJ4qghx7ZRTpA9DW42b1DPc1B6PyJZnEll1+YwGcbMLpk6ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789209636; c=relaxed/simple;
-	bh=0IUKkIxWfHtK24r262lTJP16+nFRTvm7yNxUZxJ5lKA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a4wxYHjU2uHT83wtAJGWtHZ/9ztoyddt6D9a7EcNO7l+OV02Th8sxMYBvxzCuFHtksbKJusKgVPD+Srcs/8arb3R1zxRRv40H3Xm6d9dY/WMEg8TA+D+oXOnYLyiUokx5R38Y1/41Ht2eD0L2Z/Mf8n66AQkCmCWUhjnNMVgcPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=GgUogUBy; arc=none smtp.client-ip=57.129.93.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1789210812; c=relaxed/simple;
+	bh=yMOmuHQZeZO2DYB4FecN+9SKHrlnAi9MIs6rM4dzN8Y=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lPktYCZpcNDJIZFsZ1wwl+4UkwuK61iesiedcLu7R9mr41vYNgDYvgnjAez5do0JdxBLL0dQop4JEhF4tfWvLYFzJ8AGj7Mziwwv7E8A8uzU+9bDppOYSkITYwXysExsMlMmQZXPnqWe/v6eGEDnx91JtyWudj9/6x7DpJaflPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q8Yt7vt2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="GgUogUBy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1789209615; x=1789468815;
-	bh=JdeH9lY2NP8nPLfQyL5sTp8NMpMGmAuuAgYyRqq+6Jw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=GgUogUByZs9n6r3+ddN59Tf6fp/mzD5B/HGDUxHENwHZR08xoONDQbzGweJ6lRTkz
-	 8oqBk5CdNFGvZ7QqaZkbSfaFANLdzQYTeixE0YVdA5lQEkCaroFSTKC8k1BoWL2hQt
-	 LGUCZjufFDjWa4ddK+IaD0Z156LRnF3IHg8kp+T5BtenZwj/JZx+dwfbZlmppAzJ6B
-	 ikwAGmS0m9txHetV8FsBVDigHCeaBpY8n5Bp4wOHWgDlGTtTS12wlSMm07YBu4Enfy
-	 phBgV4DOie5sRxYC6OdcYiTVaudNeY16KFA9cOlDq0s7Hd0jjDaNA+OHZMOoqz8I0Z
-	 JBtFSCOgiunfA==
-X-Pm-Submission-Id: 4hhnx930Hbz1DFFV
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Cc: dakr@kernel.org,
-	aliceryhl@google.com,
-	daniel.almeida@collabora.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Boris Brezillon <boris.brezillon@collabora.com>
-Subject: [PATCH v7 1/3] drm/tyr: clear stale IRQ state before soft reset
-Date: Sat, 12 Sep 2026 13:39:54 +0300
-Message-ID: <20260912-tyr-reset-impl-v7-1-077ce72084eb@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260912-tyr-reset-impl-v7-0-077ce72084eb@onurozkan.dev>
-References: <20260912-tyr-reset-impl-v7-0-077ce72084eb@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q8Yt7vt2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C991F00893;
+	Sat, 12 Sep 2026 11:00:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789210811;
+	bh=xLww4sKnxO9neFXT3j4RVAXakrCt95cYTPTrtUYkk4U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Q8Yt7vt2zA9T7oJXUqwgXtJl++1dWs9Wyc/txnDnArGbsa5Ltq9V8/4AHXcXUNzjb
+	 w0WfcKLqW3EuIAUHexWf8cP3DSCVH9I/+6WaKSNm0yA3NeqnazfVFmzVM/MNOYc1VE
+	 PJ3j3Kz79v8PNPBP+kgMI7s+bAFWb6CxTwmwwYWoz67/NAPRUZWmt3MbuT6pze1GPp
+	 LQi4dzfo3oyapfZpSzobdabTEo5s/KHikxd7i7UY+RZvXS0y5COysldbnsNK4mExzY
+	 BYymrz3Owr/as2YOhmAh5diPMEbr3zt2EZbvsRRBxtmZjMVLSebch5lrNzPRZwMVHf
+	 NPmPVz4Bytz9g==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>, jaemyung.lee@samsung.com
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH RFC] drivers/rufs: add Rust UFS host controller driver
+In-Reply-To: <2026091124-treason-trickily-bc52@gregkh>
+References: <20260912-rufs-private-v1-1-716db733e655@samsung.com>
+ <YKq4TcQM0v2dXF4wTHEvZKwASII6PDd_R7_UiHWe3NRnR4JsrC_ZS-x6jA_Kl7P6ONehU0REHYk7WaLz8Xv5gA==@protonmail.internalid>
+ <2026091124-treason-trickily-bc52@gregkh>
+Date: Sat, 12 Sep 2026 13:00:01 +0200
+Message-ID: <87mrtmvioe.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Previous reset may leave the reset completed IRQ set which can make the
-poll return too early.
+"Greg KH" <gregkh@linuxfoundation.org> writes:
 
-Clear the IRQ first so the driver waits for the current reset to
-complete.
+> On Sat, Sep 12, 2026 at 12:52:55AM +0900, Jaemyung Lee via B4 Relay wrote:
+>> Comments on the decision to bypass the SCSI midlayer, the blk-mq model used
+>> in its place, and the proposed prerequisite API boundaries would be
+>> especially welcome.
+>
+> Many many years ago, the USB subsystem tried to bypass the SCSI midlayer
+> for its storage driver, and while it was a "quick solution" at the time,
+> in the end, it didn't work out and we dropped the driver as it just made
+> no sense to keep duplicating all of the logic all the time.
+>
+> So I wouldn't recommend it, as long as UFS builds on top of the SCSI
+> commands and the like, you should not attempt to duplicate it in a
+> separate driver, no matter how much "simpler" it initially seems to be.
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- drivers/gpu/drm/tyr/driver.rs | 3 +++
- 1 file changed, 3 insertions(+)
+The scsi related code in this driver is less than 300 lines and is
+mostly struct packing/unpacking. I guess we could lift the struct
+definitions from the scsi layer via bindgen. But at 280 lines I am not
+sure it is worth it, and it hardly counts as duplication.
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index c5063b2be94d..90d6cd988cd2 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -86,6 +86,9 @@ pub(crate) struct TyrDrmRegistrationData<'bound> {
- }
- 
- fn issue_soft_reset(dev: &Device, iomem: &IoMem<'_>) -> Result {
-+    // Clear any stale reset IRQ state before issuing a new soft reset.
-+    iomem.write_reg(GPU_IRQ_CLEAR::zeroed().with_reset_completed(true));
-+
-     iomem.write_reg(GPU_COMMAND::reset(ResetMode::SoftReset));
- 
-     poll::read_poll_timeout(
+The ufshci driver is duplicated by this driver. Our suggestion is
+replacing it.
 
--- 
-2.54.0
+> But really:
+>
+>>  30 files changed, 10005 insertions(+)
+>
+> 30 files and 10000 lines doesn't seem that simple :)
+
+You can take a look and decide for yourself :) To each his own I guess.
+To me, reading this ufshci driver is much easier than reading the C
+ufshci driver along with the scsi subsystem.
+
+
+Best regards,
+Andreas Hindborg
+
+
