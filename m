@@ -1,154 +1,130 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3333B3FD96B
-	for <rust-for-linux@vger.kernel.org>; Sat, 12 Sep 2026 10:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4D937CD32
+	for <rust-for-linux@vger.kernel.org>; Sat, 12 Sep 2026 10:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789207404; cv=none; b=QjRoowUtXVWaohvBFtgP4LY8y6n6K2+js2X5nfI2PEZ+EYVeVFRx693UUD/4zel+JPAI8wM/kMuNhlYJtPNCt0rt6XSHeUg/gr0DmNxvazx715OoZJSvK9MtY4p0koRlJ90x0NCl0WY7JGyhiDxh0qW1PMqqOwwUkaV0seNxuzk=
+	t=1789209571; cv=none; b=bTuNYGp0e/ngf6CjNgZEdoIP1WvkZYJB0bQX54S5wF7gkDl+BKiarpcF3j+Jk5UdYY4kifOM8WSGA2wwcIAV9GPkhlCK7VALtpCVlSJodWWl0LFCZCHGYyZwn3QhafmHzW3+GS9HIT3XtrpmXaX2nlpujOFbDcuSWa7WQ4ZNdbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789207404; c=relaxed/simple;
-	bh=8sojs+se8QPBJyJ3S7gUk1OtieiG2IMnEQyGHnpeALo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f+6QAbwH4QZzuQqnTHntITk1+JhuM3UoS0etas8biKP8eyQlD0ibOBHIQEDuyl2BLYDObGOVzivDZix695inDQelpMldp+KQx8RTH1wds9e28/a+Glwx/5cpND9z+mdDsKKna+IIDbDDGnrLIA5q1QaMdjipuPv1B04gAKXtcgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fe+AZyiP; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789209571; c=relaxed/simple;
+	bh=dEvFralNB3TbE490Ysei/yvIZptOih5GWsRJ7ZwgI+U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JH6zGNswNZdG5dhM1Xmsf8UFAN93abh7NXyMa+zYGhog6TqM1aafCgjtNlQJg19DpNSsPtooGW1PymUREvLKixC6PM46fVA/gFI0VowCb13XwudDqyvKkzFmAYF807Zt0mnfki6BEiR0RgVL8rduMHDz8Sr66LUF3zEs80HwEFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=mSHmY8h9; arc=none smtp.client-ip=79.135.106.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fe+AZyiP"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-485984ebf5cso300929f8f.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 12 Sep 2026 03:03:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789207400; x=1789812200; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=78QJrighesf7VQwGx1w3HgeMelr4wZOukxrUbALylpM=;
-        b=Fe+AZyiPJOfMvfVWNuDtyAcWTVKbBm96f/FC3Afm6JLZBHlBx4RDyqfVRdhFrVnLcu
-         n4w48wdDXiNehawYgSXj6RD10qznhIwlXp2oOKq81tWWQcrvxbZzbDpLoCKjGmThvW5n
-         kuCdUk/zDHrjp2P8fcKrJCIIptcNIR9aAVXgQITG7+l0EDdMQJzK1hv9Fhm1dzDDpJjr
-         sX/pIp21teXMpdb2inVRL30AHaleM1Yuo4FVYGmeaLlbXvYBIVwd30kdVsV6ZMYtdNk5
-         RJUK/36fQ0Yjypq3Y2OzYHXDnBliRbq6ba9NaXMK89x1NGAILWj+/oOeA3oS/cZnbvOW
-         QfHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789207400; x=1789812200;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=78QJrighesf7VQwGx1w3HgeMelr4wZOukxrUbALylpM=;
-        b=ivfqnaCivTg2+QsZ0rQu69jGS4lg1MeVAzuGtXTI3cMdJMutbgo4pWRbscZrlBqQ5H
-         pGVyHr6DpLV1St7PZ719ybrrx8tQfZAdC8slS/XP/yVFT+Lj5mw9Mq7U3hoAIhOZ6iyN
-         CivKBZzX/m5KbNaizDzeX2JLRrR5LHfoOJOTC7yXerzKYjKaJjOFeb7Owjm10NquxbNX
-         hYHcrfqa0b64l0/jXw7i7jOzWD/kjSWsjsTKjaH6++RzpN6ErdtG2sLA9qYMLB8l5h/H
-         kzJp8+eatalDoEKxtTcerCc3Fd9ByOAsfutIIqrImAcaURlzWU6PpqLlHH+hTwa/y2H4
-         jJIQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwpaivi7ZQK/7IuKGdOAwm+Gs9AWeegfCA1grT73irE0w9KLpsUwaUNbADhJVVPrbQyMyUSQWT1ZNJBPbQsFg==@vger.kernel.org
-X-Gm-Message-State: AFuF++m2u9t8Gvbl3iqO4DazY8TiPwjdfm0G+khgFEickVbDYMWlSY1n
-	GYInsaJ8hQD7nn74Nxc69nAC7gExFLdrBgluirWuyk8cSmGvmMpAGU9a
-X-Gm-Gg: AYBFou2BRqmsh49TiTPUBVPJvEMIM3Yksk74CoBlEzSCc3nQYeg932fSke/NjLGqPhe
-	PyQx4oWPraVBSI/ESSRdRf1ZzccrF08B4tm7O5QCmQNlSuMYNBLRoAjWOpcbYhnzl+eud9IH4mB
-	lotejzz0naoYrfyezZzdzy5qHMJ8Qs6eVpv/sOHwY2twgLB8jt/5CBlMeokHOlEgM92YA8FqmJq
-	bGtVV3zY8M+dBHXWOMDkSDt9twTkHXow2PWbXTQ+xowiV6dEiWz5N0cWox3yNZiIImfnNr5A+aj
-	UUrekcmv/NH5OCjSY+frypSE+b6Muti00Iq3+7xukZsEPF0tdF5hFPa9N3PFQwYlyfAl6T7kFkk
-	Pup9BwMQgtyfEBys7GfXfYSuQbdsrMvR7w0wEm3WMmBbtTZ15ZVSLc4gOvozWJ8Qaeap+XQCWQR
-	S5mYKXCI2lltZMPcsMA54CHS69xjqWMy4M+4Opf4uobBO1YsIMv5XX7J4DbwAPNsP8My7zRRxN4
-	INp8PDwVL6QNmSlTKK+tYD3TgBKEKtgCIKGNRGPj9OjfmQ=
-X-Received: by 2002:a5d:5848:0:b0:481:512b:f0e7 with SMTP id ffacd0b85a97d-486f6c0a974mr2053384f8f.17.1789207400506;
-        Sat, 12 Sep 2026 03:03:20 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486f301121asm7428212f8f.0.2026.09.12.03.03.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 03:03:20 -0700 (PDT)
-Date: Sat, 12 Sep 2026 11:03:18 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Linus Torvalds
- <torvalds@linux-foundation.org>, Nicolas Schier <nsc@kernel.org>, Nick
- Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>,
- Justin Stitt <justinstitt@google.com>, Masahiro Yamada
- <masahiroy@kernel.org>, Alexey Gladkov <legion@kernel.org>, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Paul Walmsley <pjw@kernel.org>, Palmer
- Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
- Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Mark Rutland
- <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, Ilias Apalodimas
- <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
- Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir
- Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
- Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Jonathan Corbet
- <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev, linux-riscv@lists.infradead.org,
- linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH 12/23] kbuild: avoid re-running compiler and linker
- probes
-Message-ID: <20260912110318.23bb6619@pumpkin>
-In-Reply-To: <178901395292.3971858.13236774094648272066.b4-review@b4>
-References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
-	<20260908-build-speedup-v1-12-5dc1ac01672d@kernel.org>
-	<178901395292.3971858.13236774094648272066.b4-review@b4>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="mSHmY8h9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1789209557; x=1789468757;
+	bh=B9i83SiDjSpKwhV2wxvRP5EbKHjuMpjaXeYGQMHf3n4=;
+	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
+	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=mSHmY8h9Li4Ybz4qZEwkn91WDhI0o3R77ylYtanYzjfm8RwYZ0ARK8o5WeS7UQhIu
+	 ExI0cKIJU00QvNw7WIWoy0mvSqh5ztdoKrukeQT9x/XdRXIcdH8UtWDu4iH4x3okXB
+	 MW9VTyJ9zQBDQQYm/hXmEeoOE/3b73RN0d/McLgSjHL+NlrpiRC4ykOHgBCGv+Edx1
+	 OULl0YapjTBldczdunh50LV0Eh5HKg0HCyBGTgtxCsKnh+gkqVaiTIIgnreLCZ6h54
+	 ORqbJGLMJ6WoHYgCxhtJJ2xELPhiWX64z/4EcCZmP9hGeIAmTlsKAHE8is78hBjotf
+	 AR1sCggaAMHjg==
+X-Pm-Submission-Id: 4hhnw23BYPz2SdJY
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Cc: dakr@kernel.org,
+	aliceryhl@google.com,
+	daniel.almeida@collabora.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH v7 0/3] drm/tyr: GPU reset infrastructure
+Date: Sat, 12 Sep 2026 13:38:56 +0300
+Message-ID: <20260912-tyr-reset-impl-v7-0-077ce72084eb@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20260813-tyr-reset-impl-93e951f996b4
+Content-Transfer-Encoding: 8bit
 
-On Wed, 09 Sep 2026 21:19:12 -0700
-Nathan Chancellor <nathan@kernel.org> wrote:
+Add support for scheduling GPU resets on a dedicated workqueue. Track
+the reset state to avoid queueing another reset while one is already
+pending or in progress.
 
-> > diff --git a/init/Kconfig b/init/Kconfig
-> > index 8583d9f06c52..3c92c87254a3 100644
-> > --- a/init/Kconfig
-> > +++ b/init/Kconfig
-> > @@ -144,6 +144,44 @@ config CC_HAS_ASSUME
-> >  config CC_HAS_NO_PROFILE_FN_ATTR
-> >  	def_bool $(success,echo '__attribute__((no_profile_instrument_function)) int x();' | $(CC) -x c - -c -o /dev/null -Werror)
-> >  
-> > +config CC_HAS_ZERO_INIT_PADDING_BITS
-> > +	def_bool $(cc-option,-fzero-init-padding-bits=all)
-> > +
-> > +config CC_HAS_NO_STACK_CLASH_PROTECTION
-> > +	def_bool $(cc-option,-fno-stack-clash-protection)
-> > +
-> > +config CC_HAS_NO_ADDRSIG
-> > +	def_bool $(cc-option,-fno-addrsig)  
-> 
-> I am generally in favor of this proposal since I think these checks
-> should be cached by Kconfig where possible to clear up running them
-> twice. That said, I wonder if we should pick a better dumping ground for
-> these checks other than init/Kconfig. Maybe init/Kconfig.tools or
-> scripts/Kconfig.tools or something?
-> 
-> I also worry about backsliding and growing cc-option checks. Should we
-> update the documentation to state that it is preferrable for these
-> checks to live in Kconfig so that they can be properly cached?
-> 
+Use an SRCU based gate with mutex-protected reader admission to block
+hardware accesses while reset work runs and wait for current users
+before resetting.
 
-Thought...
-Can some/all of the checks be done by running 'cc --help=xxx' once and
-parsing the result?
+Stop new reset requests during teardown and drain any queued or running
+reset work before releasing the device resources.
 
-Although I'm not really sure that shaving off 0.2 seconds really matters.
-(I know the little bits add up, but there are much bigger delays.)
+This is the initial reset infrastructure only. It is not wired to a reset
+source yet as those will follow in separate work.
 
-One thing that does annoy me is the delay before the first compile when
-you do a -j1 build. I've not looked at what is being run.
-This is all made worse because gmake doesn't stop on errors very well.
-I fixed that in NetBSD's make about 25 years ago.
-(IIRC it mostly required always getting a new token from the pipe.)
+Based on 'commit 53441a9cae3c ("drm/tyr: program CSF global interface")'
+from tyr-for-upstream with the following patch series on the ML:
+  - rust: add SRCU abstraction [1]
+  - rust: workqueue: add cancel_sync support [2]
 
-David
+TODOs:
+  - On reset failure, we don't do anything for now. We should unplug
+    the GPU.
+  - In schedule(), similar to panthor_device_schedule_reset(), we should
+    have a PM check but similar to the note above, we don't have the
+    infrastructure for that yet.
+
+Changes since v6:
+  - Acquire the hardware gate once per address-space operation and pass
+    the guarded iomem reference to helpers to avoid deadlocks.
+  - Clone the gate Arc before acquiring a guard so mutating address-space
+    helpers can retain their &mut self receivers as suggested by Daniel.
+  - Collect review and test tags.
+
+Link: https://lore.kernel.org/all/20260613065348.96750-1-work@onurozkan.dev [1]
+Link: https://lore.kernel.org/all/20260807165252.3849875-1-dakr@kernel.org [2]
+Link: https://lore.kernel.org/all/20260708114358.957305-1-work@onurozkan.dev
+Link: https://gitlab.freedesktop.org/panfrost/linux/-/issues/28
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+Onur Özkan (3):
+      drm/tyr: clear stale IRQ state before soft reset
+      drm/tyr: add GPU reset infrastructure
+      drm/tyr: put iomem behind the hardware gate
+
+ drivers/gpu/drm/tyr/driver.rs            |  65 ++++-----
+ drivers/gpu/drm/tyr/fw.rs                |  16 +-
+ drivers/gpu/drm/tyr/mmu.rs               |   9 +-
+ drivers/gpu/drm/tyr/mmu/address_space.rs |  90 +++++++-----
+ drivers/gpu/drm/tyr/reset.rs             | 242 +++++++++++++++++++++++++++++++
+ drivers/gpu/drm/tyr/reset/hw_gate.rs     | 106 ++++++++++++++
+ drivers/gpu/drm/tyr/tyr.rs               |   1 +
+ 7 files changed, 436 insertions(+), 93 deletions(-)
+---
+base-commit: 53441a9cae3c4be552fa8aefa6e61b0f1bceb8a5
+change-id: 20260813-tyr-reset-impl-93e951f996b4
+prerequisite-message-id: <20260807165252.3849875-1-dakr@kernel.org>
+prerequisite-patch-id: 4275f7d6e3cf96d61221d47f2398ebfb896db0c7
+prerequisite-patch-id: f5e24f7b3717f2ab0445b5395c7f12b554861d78
+prerequisite-patch-id: 0bf6ae4abcef7090d0e48921d6ec627a59dc6a7a
+prerequisite-patch-id: 8dc24064e858240a6bb5411a261a987a7eae3fad
+prerequisite-patch-id: eefbd4a72ed6da0083e20811882738cc3b05604f
+prerequisite-patch-id: 7502236d334b13c547a8b47f0be9bf7171b5ca6b
+prerequisite-message-id: <20260613065348.96750-1-work@onurozkan.dev>
+prerequisite-patch-id: 9e1efee190d212ba1b01cd0acb5a4357e0b4da42
+prerequisite-patch-id: 26aba035f4d1e212fa6ea7078095febefff5c5ba
+prerequisite-patch-id: ffa25d5aadec4c04589af2bdd59a9c022f0fc9b0
+prerequisite-patch-id: c2e05a4ac9d665d331952b291a622df6be673e41
+prerequisite-patch-id: c14a4bd8a68b045356d61f7fa94690bd037ad08b
+
+--  
