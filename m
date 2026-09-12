@@ -1,101 +1,123 @@
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0403339361;
-	Sat, 12 Sep 2026 01:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D2C3603C3;
+	Sat, 12 Sep 2026 06:25:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789177462; cv=none; b=ZwAegFNkcUzXkaL0sDW5wQrjUaSykyoZQGuR2aj+Bze0YrVkTZbhH4nIFSSI1fXdBg+jnnh/Teb1gePohotqTCKXoCCGalDpJA8R9wJvN2fjFHWP42skzodpnZPF6OkuAW9HPIcC1y8y1Xa3Yx/dTCZo33b655rn6CGmRDK7Emc=
+	t=1789194364; cv=none; b=qdDOwBzo6tqxgoFZRntc9hJMnkfMECNKswMVTJW5lfrme8IuvdmVEBiJstBSJ68CwEyiyk3ARz8vBynWGGfxKQuiNuds7aPCJBc5QaJFFkNN2AsuqykE4hni+bay2VNjI50+SDRJDwAST+N3Stljrtf3HoPaDyZjUWVW+xZ7L38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789177462; c=relaxed/simple;
-	bh=Ed0ZSyQqT+c5ORdQP5wW1quoXwM0MrGu69HcJtvtmQs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bU+SmEPg5P1VhytZEpAVvkBaNzh79CcBrqYABQH6ndvih/dGkp3OxLiP8SdtNm41bCev7zRyXsGPYw9oR8pLPeCMF4IjkEM7KEsN2+0hK7+mqLuw98nUkhA1ImG4pu5Uqk62FMUaY4kyVpp+jtUF9lCyBBzaHMLo2Fev0K14q6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
-Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 68C1hdK0098830;
-	Sat, 12 Sep 2026 10:43:39 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from [192.168.1.6] (M106072072000.v4.enabler.ne.jp [106.72.72.0])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 68C1hdW7098826
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Sat, 12 Sep 2026 10:43:39 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <79a4b554-6863-48de-8d68-3a9f8537ea81@I-love.SAKURA.ne.jp>
-Date: Sat, 12 Sep 2026 10:43:38 +0900
+	s=arc-20240116; t=1789194364; c=relaxed/simple;
+	bh=LXFB/ZwOqDYyjksqQ2b0dmXeG+8rjPHlC4T+NYMGW5I=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=IeCIhM55a3qrjHI47Nkg9ruxOD0uwG85GyOZcYI0AURFXDbTREr8vGWX+DZyI2RgaenzyfqdijRF62KInEcf+p7kCmLZXqmuGlJglGOqTIvei2MtyOF7bK27qTtryhUynm5Z4XuL48ki9+SoeKvNafsMHp3RDz5lbxABzogqxjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=CqvRM8QL; arc=none smtp.client-ip=109.224.244.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="CqvRM8QL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=umyhfihd7raclp6qpvkn3iaxra.protonmail; t=1789194350; x=1789453550;
+	bh=2Ln0c+cFT05cfCP/yMw4EfUk9itFzGT2tqOdce2BmS8=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=CqvRM8QLQi+3tntgR/hLfo4OXkJKcnbL5ZpLS1ki62eT57pC5I55cv3vCIkOzM4lc
+	 fwM5yKzqV+5QQVDE/be1XqQbelLrDzQ/gvWoU1IlyIMjIdnmfkLp2uZqZImqURn8RR
+	 /vxAQBf83397UbEoDs9RuvRufnNI4OQrmUEXs4QfevzsMGyeELF1c+Ji0EuBcthomJ
+	 zl5h5iFSetPJ5cm1tKFPGdY/KeyjbJts7B2yIbcXZtsttPcPAyvnZ4yxDE3nJNZRS9
+	 t40JjuXDbKB2l5tPJ1M1YfBhIp5YTdUR0SiPFtXPbHAHJrhhnMZ6R0xWB9yMK0G/Hg
+	 mwr9/nsSlXX7A==
+Date: Sat, 12 Sep 2026 06:25:45 +0000
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+From: Sagar Taunk <sagartaunk@proton.me>
+Cc: Sagar Taunk <sagartaunk@proton.me>
+Subject: [PATCH] rust: net: netlink: Migrate to zerocopy's `IntoBytes`
+Message-ID: <20260912062536.363720-1-sagartaunk@proton.me>
+Feedback-ID: 130121444:user:proton
+X-Pm-Message-ID: d76dbb697311a0626cdb87e99dc332e72c880d27
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] block: Add post_release() operation
-To: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>,
-        Christoph Hellwig <hch@lst.de>
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Brian Foster
- <bfoster@redhat.com>,
-        Damien Le Moal <dlemoal@kernel.org>, Hillf Danton <hdanton@sina.com>,
-        Markus Elfring <Markus.Elfring@web.de>,
-        Ming Lei <tom.leiming@gmail.com>, Qu Wenruo <wqu@suse.com>,
-        Tao Cui <cui.tao@linux.dev>, kernel test robot <lkp@intel.com>,
-        linux-block <linux-block@vger.kernel.org>,
-        rust-for-linux@vger.kernel.org
-References: <60bf7af2-b84e-4056-9195-a26ad51ada46@I-love.SAKURA.ne.jp>
- <3fceb17e-35f5-4275-bfa5-f1a018c732c9@acm.org>
- <f00a7749-c59a-4c96-bc41-b34c80a40aef@I-love.SAKURA.ne.jp>
- <a863d8ea-d72e-48b4-862f-1a7439cb255c@acm.org>
-Content-Language: en-US
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <a863d8ea-d72e-48b4-862f-1a7439cb255c@acm.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Anti-Virus-Server: fsav213.rs.sakura.ne.jp
-X-Virus-Status: clean
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 2026/09/12 9:31, Bart Van Assche wrote:
-> On 9/11/26 3:34 PM, Tetsuo Handa wrote:
->> On 2026/09/12 4:54, Bart Van Assche wrote:
->>> On 9/9/26 3:48 AM, Tetsuo Handa wrote:
->>>>        int (*alternative_gpt_sector)(struct gendisk *disk, sector_t *sector);
->>>> +    /*
->>>> +     * Called after disk->open_mutex is released in the bdev_release() path.
->>>> +     * Used by loop devices that need to perform synchronization without
->>>> +     * holding disk->open_mutex. This operation has to be idempotent.
->>>> +     */
->>>> +    void (*post_release)(struct gendisk *disk);
->>>
->>> Instead of referring to bdev_release(), which is not in the public API,
->>> the above comment should mention that .post_release() is called after .release().
->>
->> Such change is not accurate. The .release() is also called if something went wrong after
->> the .open() succeeded. The reason I emphasis bdev_release() is that the .post_release()
->> is not called if something went wrong after the .open() succeeded.
-> 
-> Please integrate the above text in the comment above .post_release().
-> 
-Are you OK with below description?
+Replace the kernel's own `transmute::FromBytes` and `AsBytes` traits
+with their zerocopy equivalents. Specifically, this updates
+`GenlMsg::put` to rely on `IntoBytes` for converting attributes into
+byte slices.
 
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1577,6 +1577,14 @@ struct block_device_operations {
- 			unsigned int flags);
- 	int (*open)(struct gendisk *disk, blk_mode_t mode);
- 	void (*release)(struct gendisk *disk);
-+	/*
-+	 * This operation is called after returned from release() and
-+	 * disk->open_mutex was released. But this operation is not called
-+	 * after an initialization open() has succeeded but something went
-+	 * wrong and an error-unwinding release() was called.
-+	 * This operation might sleep and has to be idempotent.
-+	 */
-+	void (*post_release)(struct gendisk *disk);
- 	int (*ioctl)(struct block_device *bdev, blk_mode_t mode,
- 			unsigned cmd, unsigned long arg);
- 	int (*compat_ioctl)(struct block_device *bdev, blk_mode_t mode,
+Also, add `Immutable` trait bound on `GenlMsg::put` as zerocopy
+splits the `no interior mutability` guarantee that `AsBytes` bundled
+together.
+
+Moreover, shashiko pointed out `put()` trusted an unchecked `as` cast
+from `usize` to `c_int` for the attribute length. A length larger than
+`i32::MAX` wraps to a negative value in that cast, which can pass
+`nla_put()`'s own signed `skb_tailroom()` check and then be reinterpreted
+as an enormous unsigned length via `__nla_reserve()`/`skb_put()`, leading
+to a kernel panic via `skb_over_panic()`. Validate the length with
+`c_int::try_from()` and reject it with `EMSGSIZE` instead.
+
+Link: https://github.com/Rust-for-Linux/linux/issues/1241
+Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
+---
+ rust/kernel/net/netlink.rs | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
+
+diff --git a/rust/kernel/net/netlink.rs b/rust/kernel/net/netlink.rs
+index 22ef3dde36fa..f929f63b32c1 100644
+--- a/rust/kernel/net/netlink.rs
++++ b/rust/kernel/net/netlink.rs
+@@ -12,11 +12,12 @@
+     alloc::{self, AllocError},
+     error::to_result,
+     prelude::*,
+-    transmute::AsBytes,
+     types::Opaque,
+     ThisModule,
+ };
+=20
++use zerocopy::{Immutable, IntoBytes};
++
+ use core::{
+     mem::ManuallyDrop,
+     ptr::NonNull, //
+@@ -84,14 +85,22 @@ impl GenlMsg {
+     #[inline]
+     fn put<T>(&mut self, attrtype: c_int, value: &T) -> Result
+     where
+-        T: ?Sized + AsBytes,
++        T: ?Sized + IntoBytes + Immutable,
+     {
+         let skb =3D self.skb.skb.as_ptr();
+-        let len =3D size_of_val(value);
+-        let ptr =3D core::ptr::from_ref(value).cast::<c_void>();
+-        // SAFETY: `skb` is valid by `NetlinkSkBuff` type invariants, and =
+the provided value is
+-        // readable and initialized for its `size_of` bytes.
+-        to_result(unsafe { bindings::nla_put(skb, attrtype, len as c_int, =
+ptr) })
++        let bytes =3D value.as_bytes();
++        // `nla_put()` takes attrlen as a plain `c_int`. If `bytes.len()`
++        // doesn't fit, an `as` cast would wrap around a negative value.
++        // Which then, would feed a huge unsigned length to `__nla_reserve=
+()`
++        // and `skb_put()` causing it to panic via `skb_over_panic()`. So,
++        // the following check will reject it instead.
++        let len =3D c_int::try_from(bytes.len()).map_err(|_| EMSGSIZE)?;
++        let ptr =3D bytes.as_ptr().cast::<c_void>();
++        // SAFETY: `skb` is valid as per `NetlinkSkBuff` type invariants.
++        // `bytes` is a valid Rust slice, so `ptr` is readable for `len`
++        // bytes, and `T: Immutable` guarantees nothing can mutate `*value=
+`
++        // while `nla_put()` copies it.
++        to_result(unsafe { bindings::nla_put(skb, attrtype, len, ptr) })
+     }
+=20
+     /// Puts a `u32` attribute into the message.
+--=20
+2.55.0
+
 
