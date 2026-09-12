@@ -1,32 +1,32 @@
-Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
+Received: from mail-106112.protonmail.ch (mail-106112.protonmail.ch [79.135.106.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4D937CD32
-	for <rust-for-linux@vger.kernel.org>; Sat, 12 Sep 2026 10:39:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A01429CC7
+	for <rust-for-linux@vger.kernel.org>; Sat, 12 Sep 2026 10:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789209571; cv=none; b=bTuNYGp0e/ngf6CjNgZEdoIP1WvkZYJB0bQX54S5wF7gkDl+BKiarpcF3j+Jk5UdYY4kifOM8WSGA2wwcIAV9GPkhlCK7VALtpCVlSJodWWl0LFCZCHGYyZwn3QhafmHzW3+GS9HIT3XtrpmXaX2nlpujOFbDcuSWa7WQ4ZNdbA=
+	t=1789209619; cv=none; b=IgtGBYoiH6zkskum2NX2iPEhg+LPRrFKr6qeehCqgv1w5o2J5Yh8Qjdl55PjLz+fBUYUX+gfbWhC02no07kb6Up3eXr+iXph/yOtaoxEONNBmFLQTZKXJF3D5L01IRr+Y8vTWioZBFPdEyWqCF899iPExCYVhr9P8zJ2K+fldpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789209571; c=relaxed/simple;
-	bh=dEvFralNB3TbE490Ysei/yvIZptOih5GWsRJ7ZwgI+U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JH6zGNswNZdG5dhM1Xmsf8UFAN93abh7NXyMa+zYGhog6TqM1aafCgjtNlQJg19DpNSsPtooGW1PymUREvLKixC6PM46fVA/gFI0VowCb13XwudDqyvKkzFmAYF807Zt0mnfki6BEiR0RgVL8rduMHDz8Sr66LUF3zEs80HwEFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=mSHmY8h9; arc=none smtp.client-ip=79.135.106.113
+	s=arc-20240116; t=1789209619; c=relaxed/simple;
+	bh=T2Mcc668o+DpQiiDvygcAVOhtRO9tvhq5zYHb2RSGFI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qzSvhZ8yCcQx4q84Dn3gSz6eQp9BZM//xVXmZXry2Rqu1CLo2esvxwCoVwlRUE1F0wbAWFs29dAi72G0WWjTuvx/gXi37YPegXco4Lro+KANlONxVh1BzPnv/laqj4AiyxO7fYzIThI9M8tnZW2bK6HkJN8o25SKlGuj1llXRHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Ql0oOA2/; arc=none smtp.client-ip=79.135.106.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="mSHmY8h9"
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Ql0oOA2/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1789209557; x=1789468757;
-	bh=B9i83SiDjSpKwhV2wxvRP5EbKHjuMpjaXeYGQMHf3n4=;
+	s=protonmail; t=1789209613; x=1789468813;
+	bh=Vako4VkziNjtt4ByJRowjB5r64C2g/LbzNGVzHSPwC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
 	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=mSHmY8h9Li4Ybz4qZEwkn91WDhI0o3R77ylYtanYzjfm8RwYZ0ARK8o5WeS7UQhIu
-	 ExI0cKIJU00QvNw7WIWoy0mvSqh5ztdoKrukeQT9x/XdRXIcdH8UtWDu4iH4x3okXB
-	 MW9VTyJ9zQBDQQYm/hXmEeoOE/3b73RN0d/McLgSjHL+NlrpiRC4ykOHgBCGv+Edx1
-	 OULl0YapjTBldczdunh50LV0Eh5HKg0HCyBGTgtxCsKnh+gkqVaiTIIgnreLCZ6h54
-	 ORqbJGLMJ6WoHYgCxhtJJ2xELPhiWX64z/4EcCZmP9hGeIAmTlsKAHE8is78hBjotf
-	 AR1sCggaAMHjg==
-X-Pm-Submission-Id: 4hhnw23BYPz2SdJY
+	b=Ql0oOA2/tSpG8EpvpGEgPawnGHZGtyoXeG0Ex5CHukL1iyDjuB3DcFANP8TX3fhwj
+	 dl6XiC+OFiIYF2YTS/7yqakpJW0VlWiGpjxDHE2Ngxm6tSjIE70BGd8Wzb/ahuZaNl
+	 ogmAOndIIKyFqctftOfynHT3HasAPOXYHi+Vif9b7gGoXCNw6nnHRs/jrgrxlkSQgH
+	 L/csl7TlNygUej/2RGD05lx3yWf7YAtOydNgS3nE0b/KcDHUMs6aZ2Sc5NogUP0xtd
+	 UXxa2A3cRd6wLRHJkChaGUbmDeAZTY0xjIFrXaEKdwj4C6UPABYaeVNiu4fGPUBVNM
+	 oTMSAO9H40F3A==
+X-Pm-Submission-Id: 4hhnx45SkPz1DFFN
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
 To: linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
@@ -45,7 +45,7 @@ Cc: dakr@kernel.org,
 	tmgross@umich.edu,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
 Subject: [PATCH v7 0/3] drm/tyr: GPU reset infrastructure
-Date: Sat, 12 Sep 2026 13:38:56 +0300
+Date: Sat, 12 Sep 2026 13:39:53 +0300
 Message-ID: <20260912-tyr-reset-impl-v7-0-077ce72084eb@onurozkan.dev>
 X-Mailer: git-send-email 2.51.2
 Precedence: bulk
@@ -57,6 +57,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Change-ID: 20260813-tyr-reset-impl-93e951f996b4
 Content-Transfer-Encoding: 8bit
+Message-ID: <20260912103953.zkDzyY-s_e5oTJIM9h_1_LfpsWbjUeLB104TzWfoFp8@z>
 
 Add support for scheduling GPU resets on a dedicated workqueue. Track
 the reset state to avoid queueing another reset while one is already
@@ -89,7 +90,6 @@ Changes since v6:
     the guarded iomem reference to helpers to avoid deadlocks.
   - Clone the gate Arc before acquiring a guard so mutating address-space
     helpers can retain their &mut self receivers as suggested by Daniel.
-  - Collect review and test tags.
 
 Link: https://lore.kernel.org/all/20260613065348.96750-1-work@onurozkan.dev [1]
 Link: https://lore.kernel.org/all/20260807165252.3849875-1-dakr@kernel.org [2]
