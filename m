@@ -1,81 +1,154 @@
-Received: from mail-244108.protonmail.ch (mail-244108.protonmail.ch [109.224.244.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8DD3403F5
-	for <rust-for-linux@vger.kernel.org>; Sat, 12 Sep 2026 08:03:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3333B3FD96B
+	for <rust-for-linux@vger.kernel.org>; Sat, 12 Sep 2026 10:03:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789200209; cv=none; b=c0/XzndHogXREZzPrqwLCn+HsEccvqQa1LZxZsB6BUpBq3EeqtgVV26z9UwoB2uN6MbCiEvC7h/LNfhtxEn4fkSKlv3sbtiLsj3g+3JeeRJObvSBu3suSKeKseU8B/oLiicLL9LTcqIFI3HkHvARsGXNtca/4a+6dGRLu5Dk+wY=
+	t=1789207404; cv=none; b=QjRoowUtXVWaohvBFtgP4LY8y6n6K2+js2X5nfI2PEZ+EYVeVFRx693UUD/4zel+JPAI8wM/kMuNhlYJtPNCt0rt6XSHeUg/gr0DmNxvazx715OoZJSvK9MtY4p0koRlJ90x0NCl0WY7JGyhiDxh0qW1PMqqOwwUkaV0seNxuzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789200209; c=relaxed/simple;
-	bh=teKekUbsLbZTfK8cipzX7J8A+wZqme4cswd/NEqv9mc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X1+2jcb6B3Mqh3jKiwSTHT6PhinXwl587LDDfVtlL9JJTba6i0H1hbhUYQfcno3NUGERB4RrMEo9AC43AsfbXlNsQR8Z+muEZ50kOdfeJcj4Yud+N+WCwJUj/3KjmTiCbsj+voA+sfGKit1ft11f9Wn/QmfTrA4yC1F9p5Co+i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=kPovIeMB; arc=none smtp.client-ip=109.224.244.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1789207404; c=relaxed/simple;
+	bh=8sojs+se8QPBJyJ3S7gUk1OtieiG2IMnEQyGHnpeALo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f+6QAbwH4QZzuQqnTHntITk1+JhuM3UoS0etas8biKP8eyQlD0ibOBHIQEDuyl2BLYDObGOVzivDZix695inDQelpMldp+KQx8RTH1wds9e28/a+Glwx/5cpND9z+mdDsKKna+IIDbDDGnrLIA5q1QaMdjipuPv1B04gAKXtcgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fe+AZyiP; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="kPovIeMB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1789200205; x=1789459405;
-	bh=kK7CQgC17BZEaNS8D1YaLCnpNWJ1hulzqUvU7kaLBmg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=kPovIeMBW5V9/JqworP/bg79xmmgxWyhBUFtnle7WSBVUZM7q3jwb6GYoJzT8TtDd
-	 s8RkVjbch/6YD67SWKkC1MlZIuu37TWSWE4+UFSBnM+e+LzD0yq+uogpUos4OEkpIV
-	 YRNRg+WAuMXp1a72SH4yrVq4IYq1UdaN5DcgIBsBXoqfc+zUAmPLK5m8JAt8Fi52wb
-	 /igTf/rhVSyZzKkTTNuLOaiXRIpdlPy1GpA7rxEBPzYGkS1uRjH5CxKQiu5NCwE5D0
-	 2Y+wPMeU7oGPdjnDxlcS5JSy54UJ/R7XhQvY9/46jt/J2U1F+jEIQejLx2cldjPivE
-	 +5O7TrUHdXflw==
-X-Pm-Submission-Id: 4hhkSB3vgqz2ScN7
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	dakr@kernel.org,
-	aliceryhl@google.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu
-Subject: Re: [PATCH 2/2] drm/tyr: unplug the GPU when reset fails
-Date: Sat, 12 Sep 2026 11:03:17 +0300
-Message-ID: <20260912080321.78104-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <62D24E3D-0956-402E-8451-24FADC8D357D@collabora.com>
-References: <20260823-tyr-gpu-unplug-b4-v1-0-e99c07d4c785@onurozkan.dev> <20260823-tyr-gpu-unplug-b4-v1-2-e99c07d4c785@onurozkan.dev> <62D24E3D-0956-402E-8451-24FADC8D357D@collabora.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fe+AZyiP"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-485984ebf5cso300929f8f.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 12 Sep 2026 03:03:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789207400; x=1789812200; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=78QJrighesf7VQwGx1w3HgeMelr4wZOukxrUbALylpM=;
+        b=Fe+AZyiPJOfMvfVWNuDtyAcWTVKbBm96f/FC3Afm6JLZBHlBx4RDyqfVRdhFrVnLcu
+         n4w48wdDXiNehawYgSXj6RD10qznhIwlXp2oOKq81tWWQcrvxbZzbDpLoCKjGmThvW5n
+         kuCdUk/zDHrjp2P8fcKrJCIIptcNIR9aAVXgQITG7+l0EDdMQJzK1hv9Fhm1dzDDpJjr
+         sX/pIp21teXMpdb2inVRL30AHaleM1Yuo4FVYGmeaLlbXvYBIVwd30kdVsV6ZMYtdNk5
+         RJUK/36fQ0Yjypq3Y2OzYHXDnBliRbq6ba9NaXMK89x1NGAILWj+/oOeA3oS/cZnbvOW
+         QfHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789207400; x=1789812200;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=78QJrighesf7VQwGx1w3HgeMelr4wZOukxrUbALylpM=;
+        b=ivfqnaCivTg2+QsZ0rQu69jGS4lg1MeVAzuGtXTI3cMdJMutbgo4pWRbscZrlBqQ5H
+         pGVyHr6DpLV1St7PZ719ybrrx8tQfZAdC8slS/XP/yVFT+Lj5mw9Mq7U3hoAIhOZ6iyN
+         CivKBZzX/m5KbNaizDzeX2JLRrR5LHfoOJOTC7yXerzKYjKaJjOFeb7Owjm10NquxbNX
+         hYHcrfqa0b64l0/jXw7i7jOzWD/kjSWsjsTKjaH6++RzpN6ErdtG2sLA9qYMLB8l5h/H
+         kzJp8+eatalDoEKxtTcerCc3Fd9ByOAsfutIIqrImAcaURlzWU6PpqLlHH+hTwa/y2H4
+         jJIQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwpaivi7ZQK/7IuKGdOAwm+Gs9AWeegfCA1grT73irE0w9KLpsUwaUNbADhJVVPrbQyMyUSQWT1ZNJBPbQsFg==@vger.kernel.org
+X-Gm-Message-State: AFuF++m2u9t8Gvbl3iqO4DazY8TiPwjdfm0G+khgFEickVbDYMWlSY1n
+	GYInsaJ8hQD7nn74Nxc69nAC7gExFLdrBgluirWuyk8cSmGvmMpAGU9a
+X-Gm-Gg: AYBFou2BRqmsh49TiTPUBVPJvEMIM3Yksk74CoBlEzSCc3nQYeg932fSke/NjLGqPhe
+	PyQx4oWPraVBSI/ESSRdRf1ZzccrF08B4tm7O5QCmQNlSuMYNBLRoAjWOpcbYhnzl+eud9IH4mB
+	lotejzz0naoYrfyezZzdzy5qHMJ8Qs6eVpv/sOHwY2twgLB8jt/5CBlMeokHOlEgM92YA8FqmJq
+	bGtVV3zY8M+dBHXWOMDkSDt9twTkHXow2PWbXTQ+xowiV6dEiWz5N0cWox3yNZiIImfnNr5A+aj
+	UUrekcmv/NH5OCjSY+frypSE+b6Muti00Iq3+7xukZsEPF0tdF5hFPa9N3PFQwYlyfAl6T7kFkk
+	Pup9BwMQgtyfEBys7GfXfYSuQbdsrMvR7w0wEm3WMmBbtTZ15ZVSLc4gOvozWJ8Qaeap+XQCWQR
+	S5mYKXCI2lltZMPcsMA54CHS69xjqWMy4M+4Opf4uobBO1YsIMv5XX7J4DbwAPNsP8My7zRRxN4
+	INp8PDwVL6QNmSlTKK+tYD3TgBKEKtgCIKGNRGPj9OjfmQ=
+X-Received: by 2002:a5d:5848:0:b0:481:512b:f0e7 with SMTP id ffacd0b85a97d-486f6c0a974mr2053384f8f.17.1789207400506;
+        Sat, 12 Sep 2026 03:03:20 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486f301121asm7428212f8f.0.2026.09.12.03.03.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Sep 2026 03:03:20 -0700 (PDT)
+Date: Sat, 12 Sep 2026 11:03:18 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, Nicolas Schier <nsc@kernel.org>, Nick
+ Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>,
+ Justin Stitt <justinstitt@google.com>, Masahiro Yamada
+ <masahiroy@kernel.org>, Alexey Gladkov <legion@kernel.org>, Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Paul Walmsley <pjw@kernel.org>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
+ Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, Ilias Apalodimas
+ <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir
+ Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
+ Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Jonathan Corbet
+ <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev, linux-riscv@lists.infradead.org,
+ linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
+Subject: Re: [PATCH 12/23] kbuild: avoid re-running compiler and linker
+ probes
+Message-ID: <20260912110318.23bb6619@pumpkin>
+In-Reply-To: <178901395292.3971858.13236774094648272066.b4-review@b4>
+References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
+	<20260908-build-speedup-v1-12-5dc1ac01672d@kernel.org>
+	<178901395292.3971858.13236774094648272066.b4-review@b4>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 26 Aug 2026 11:05:39 -0300=0D
-Daniel Almeida <daniel.almeida@collabora.com> wrote:=0D
-=0D
-> Hi Onur,=0D
-> =0D
-> I have nothing against this patch, but as with anything touching Revocabl=
-e, I'd=0D
-> rather get Danilo's opinion here regarding revoke() and the Arc in the re=
-gistration.=0D
-> =0D
-> Otherwise LGTM.=0D
-> =0D
-> -- Daniel=0D
-=0D
-Before implementing this, I asked for Danilo's opinion so I believe there=0D
-shouldn't be significant issues with the approach from his perspective.=0D
-=0D
-But yeah, it would be great to get his feedback on the complete design.=0D
-=0D
-	Onur=0D
+On Wed, 09 Sep 2026 21:19:12 -0700
+Nathan Chancellor <nathan@kernel.org> wrote:
+
+> > diff --git a/init/Kconfig b/init/Kconfig
+> > index 8583d9f06c52..3c92c87254a3 100644
+> > --- a/init/Kconfig
+> > +++ b/init/Kconfig
+> > @@ -144,6 +144,44 @@ config CC_HAS_ASSUME
+> >  config CC_HAS_NO_PROFILE_FN_ATTR
+> >  	def_bool $(success,echo '__attribute__((no_profile_instrument_function)) int x();' | $(CC) -x c - -c -o /dev/null -Werror)
+> >  
+> > +config CC_HAS_ZERO_INIT_PADDING_BITS
+> > +	def_bool $(cc-option,-fzero-init-padding-bits=all)
+> > +
+> > +config CC_HAS_NO_STACK_CLASH_PROTECTION
+> > +	def_bool $(cc-option,-fno-stack-clash-protection)
+> > +
+> > +config CC_HAS_NO_ADDRSIG
+> > +	def_bool $(cc-option,-fno-addrsig)  
+> 
+> I am generally in favor of this proposal since I think these checks
+> should be cached by Kconfig where possible to clear up running them
+> twice. That said, I wonder if we should pick a better dumping ground for
+> these checks other than init/Kconfig. Maybe init/Kconfig.tools or
+> scripts/Kconfig.tools or something?
+> 
+> I also worry about backsliding and growing cc-option checks. Should we
+> update the documentation to state that it is preferrable for these
+> checks to live in Kconfig so that they can be properly cached?
+> 
+
+Thought...
+Can some/all of the checks be done by running 'cc --help=xxx' once and
+parsing the result?
+
+Although I'm not really sure that shaving off 0.2 seconds really matters.
+(I know the little bits add up, but there are much bigger delays.)
+
+One thing that does annoy me is the delay before the first compile when
+you do a -j1 build. I've not looked at what is being run.
+This is all made worse because gmake doesn't stop on errors very well.
+I fixed that in NetBSD's make about 25 years ago.
+(IIRC it mostly required always getting a new token from the pipe.)
+
+David
