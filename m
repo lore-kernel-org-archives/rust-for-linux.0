@@ -1,157 +1,132 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2A43EF0AA;
-	Sun, 13 Sep 2026 13:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA714326924;
+	Sun, 13 Sep 2026 14:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789307086; cv=none; b=WQ+ju4xY/LWQ1oauEzxdbwtxy8bEBm7w103DibE+m2+B6hznjTZ8QUYyFYWyYycjZPuMkFFv/1GJ/fGSKgw5G4+BINXvQx4K2ow7jwRW9ZdJuPLvmOIJSNtUsXlezD2qmwFQFheZWqmb73z9uaXBH5lXac1mJ0rdByBp6eDDotI=
+	t=1789311506; cv=none; b=Gp0fxhIuhgSUUMJr8yrGyR/nGtZuTSu6vNwWf8RP6Co7CrokEwKDqAZlwKIFBAChXjQ4X3GLCVZQ9buQmlyf94zVgcsj9Keyz4YLG817UniA5omnspjxCO9Z1qnyTY1k0QbjJ6sWtlIN72esPs97sefpOswE2DOOtyG5UtrT0zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789307086; c=relaxed/simple;
-	bh=i2WGeqQH68Q4Ba86qdnwpKbZXbPbJYs0hfODq/KlDsU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Iggc+jpt35L5zEIhfzW3lZH4/EaI24FJSKgbYZKP8B3YGZIyGVXy7j23/Cgpnt35BnFAxsM21HlxJlmLU5u5OKlDz+ggmk+XTQF13sFRSTUw3WtO/jOlR+t6rn02TpWSvsN+jVdQeUdM2ydd+l6Vh6WxCTTYZsPnHhNZJzDeE90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OwtMfMHk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789311506; c=relaxed/simple;
+	bh=kDc/e76ePF5PsxonlfBmEtXhWoctQj8Q2BP/Zw86+G4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D2CPDRiYko/ePdSXi8kn46gIZdDLDu0+l20/6NY1cj7GsbjdDzyIPHibXb8qalbX+yjjBaLSmDJHtWjgtmvXdvrOHU5HwZcOAspshH3kaazI72w1VIkVspCMcSxV+DpBZy9MD/xa/IhP5QEIOu5FHukLFnfO5frpmX7YhxgKaXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tavf8WB2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OwtMfMHk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BEEE1F000FF;
-	Sun, 13 Sep 2026 13:44:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tavf8WB2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185CE1F000FF;
+	Sun, 13 Sep 2026 14:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789307084;
-	bh=i2WGeqQH68Q4Ba86qdnwpKbZXbPbJYs0hfODq/KlDsU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=OwtMfMHkaeK8fzy6kMxd7McWxngHxwVyMbJomdrceij5d7CFaOoym9OYvBpu7+KIi
-	 gLA8FFrqhysldQgBcT5sSM6xGSbTsRl5cMjn7VyUGF4AAtlVvYco+L4NY8NQ8QrkFT
-	 TbR2/EBwb9nD+iJYpY5r1fylzLNPjw07Z7yolLH+np68kttOQhls7MwpInQ9VF31W0
-	 NO4n7gkhel3KMjmafMADvEwjHcHuEIgzHd07/LzVBRdvOKZaLQ14PcqZi16BnXNPgn
-	 PpnXSpTg++v5IXhJFafKPDfRM2q8mv/iJ0Jh7W3q5UeaDlibUwtgZwwn7dcis6zPw8
-	 yFCESRSN+1xHg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Bean Huo <huobean@gmail.com>, Greg KH <gregkh@linuxfoundation.org>,
- jaemyung.lee@samsung.com
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-block@vger.kernel.org, linux-scsi@vger.kernel.org,
- linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH RFC] drivers/rufs: add Rust UFS host controller driver
-In-Reply-To: <182679ae5437916095a4b04187e350c80235c088.camel@gmail.com>
-References: <20260912-rufs-private-v1-1-716db733e655@samsung.com>
- <YKq4TcQM0v2dXF4wTHEvZKwASII6PDd_R7_UiHWe3NRnR4JsrC_ZS-x6jA_Kl7P6ONehU0REHYk7WaLz8Xv5gA==@protonmail.internalid>
- <2026091124-treason-trickily-bc52@gregkh> <87mrtmvioe.fsf@kernel.org>
- <raUHMVWl_mMP5ffB5hk9eDe5BVvmO01q_9zfZ4NqJ3CymLnRO3EL0_X_K044vKerqwrwXshEVE-o45MXSlGVbw==@protonmail.internalid>
- <182679ae5437916095a4b04187e350c80235c088.camel@gmail.com>
-Date: Sun, 13 Sep 2026 15:44:26 +0200
-Message-ID: <87zexltged.fsf@kernel.org>
+	s=k20260515; t=1789311505;
+	bh=G0U/yrKqs9C3NLRrdkhjlkft4ZZy0R8NVYB37IZiL+A=;
+	h=From:To:Cc:Subject:Date;
+	b=Tavf8WB2U6Qqo4y1n+W4YNbj5Bg14q0ZlpP39dPIHjBqglDQ7viuRuuW2r0atCOS9
+	 gA2AY+jUjt6iN/Wh9gN8CZrl4rLDc+WtPNCkoXXoxWbD7xuI4ZFrdJ5HKlqPyyyXh5
+	 x28U2wKVMwGsc4EdvmkBXOivmNZx+GDMY3/UA/mqChDEsdt2uL2oS9EPGyT0J4TvHJ
+	 wr4/avN+a7XP6ruefxTA/J0QAKdhbloopHu9jYN7n5WIPgLyID1XpSMjUkB9I/KYQE
+	 HbKz8+H+DdkCeOfKoFIbPvDGduHVHv3o+Sz+oavkrNKvW8LbJxz3sahsm4CkaWSCq5
+	 uE56nyVh0sq2A==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 7.3 (2nd)
+Date: Sun, 13 Sep 2026 16:58:08 +0200
+Message-ID: <20260913145808.28006-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-"Bean Huo" <huobean@gmail.com> writes:
+Hi Linus,
 
-> On Sat, 2026-09-12 at 13:00 +0200, Andreas Hindborg wrote:
->> "Greg KH" <gregkh@linuxfoundation.org> writes:
->>
->> > On Sat, Sep 12, 2026 at 12:52:55AM +0900, Jaemyung Lee via B4 Relay wrote:
->> > > Comments on the decision to bypass the SCSI midlayer, the blk-mq model
->> > > used
->> > > in its place, and the proposed prerequisite API boundaries would be
->> > > especially welcome.
->> >
->> > Many many years ago, the USB subsystem tried to bypass the SCSI midlayer
->> > for its storage driver, and while it was a "quick solution" at the time,
->> > in the end, it didn't work out and we dropped the driver as it just made
->> > no sense to keep duplicating all of the logic all the time.
->> >
->> > So I wouldn't recommend it, as long as UFS builds on top of the SCSI
->> > commands and the like, you should not attempt to duplicate it in a
->> > separate driver, no matter how much "simpler" it initially seems to be.
->>
->> The scsi related code in this driver is less than 300 lines and is
->> mostly struct packing/unpacking. I guess we could lift the struct
->> definitions from the scsi layer via bindgen. But at 280 lines I am not
->> sure it is worth it, and it hardly counts as duplication.
->
-> I agree the SCSI code in this RFC is small today. But I think it is small
-> because the hard parts are not ready in your RFC yet, not because UFS does not
-> need them.
->
-> The SCSI logic is also not only in protocol/scsi.rs. upiu.rs decodes SAM status,
-> and queue.rs parses sense data and decides retries.
+Please pull these fixes for Rust.
 
-Yes, you are right. But it is still very minimal bits of logic. I
-definitely want to encapsulate all SCSI logic in a single place now, so
-it is more clear.
+They have been in linux-next for at least 3 rounds (most for more).
 
-> And some things are already
-> missing because the driver does not use sd and the SCSI error handling:
->
-> 1, VPD block limits are not read, and a discard of 4 GiB or more fails with
-> EOVERFLOW
-> 2, the cache mode page is not read, so FLUSH/FUA are likely never sent
-> 3, the residual count is ignored, so a short transfer completes as success
-> 4, UNIT ATTENTION and BUSY are requeued without a limit
-> 5, LUs are found by 0..bNumberLU, not REPORT LUNS, so sparse LUs are missed
-> 6, no START STOP UNIT at shutdown
->
-> Each of these needs more SCSI code in your RUFS. For comparison, sd.c,
-> scsi_error.c, scsi_lib.c and scsi_scan.c are about 15000+ lines today, and
-> ufshcd uses all of them. Once RUFS has error handling, power management, RPMB
-> and SG_IO, I expect the SCSI part will be large, and it will be a second copy of
-> code we already have and maintain.
+No conflicts expected.
 
-I cannot counter this argument without proof of existence. But I don't think
-we will be anywhere near 15k lines extra to add these features.
+Thanks!
 
-> I suggest you samsung first works in JEDEC, together with the other UFS vendors
-> and host controller vendors, to remove scsi from the UFS spec as the application
-> layer.
+Cheers,
+Miguel
 
-I appreciate the input.
+The following changes since commit cee9395acd8043be0644b25c34bfa86623f2b935:
 
-> As long as scsi is the UFS application layer, every UFS device must still
-> uses scsi, decode scsi in FW, and RUFS must still send SCSI commands and handle
-> SCSI status and sense data, as it does today. Moving this SCSI work out of the
-> SCSI midlayer and into a new driver does not make the whole ecosystem simpler.
+  Linux 7.3-rc1 (2026-08-30 13:34:40 -0700)
 
-It may not make the ecosystem simpler at first, but I do believe it will
-make the driver more simple.
+are available in the Git repository at:
 
-> It only means the same SCSI work is done in two places, and it can even make
-> things worse.
+  ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.3-2
 
-It's a very small part though, so it should be fairly easy to manage. I
-do acknowledge that our RFC driver has bits sprinkled about, and that
-making it feature complete will make these bits grow. I don't think it
-will grow as much as you hint at.
+for you to fetch changes up to f4c3e38111fd84c2c7ae5785755f4a4d476e1cba:
 
-> If the spec changes, then a new driver built on native UFS commands would make
-> much more sense. That is the first thing to do, not just post an RFC
-> patch.
+  rust: allow `unknown_lints` in generated bindings for Rust < 1.88 (2026-09-08 23:29:18 +0200)
 
-We did send this patch with the intention of starting this exact
-conversation, so there is that. I appreciate your input that you would
-prefer the conversation to be started in a different channel.
+----------------------------------------------------------------
+Rust fixes for v7.3 (2nd)
 
-> I
-> could send a Rust based UFS driver as well with AI assist, but that does not
-> make it sensible to change the base of our current UFS ecosystem.
+Toolchain and infrastructure:
 
-I am not sure what to read from this. I want to make it very clear that
-this patch is not some kind of vibe coded pile of AI slop. I'd love to
-discuss responsible and efficient use of LLMs for kernel work, but this
-thread is not the place for that conversation.
+ - Work around a 'bindgen' 0.73.2 bug that emits an 'allow' attribute
+   for 'unnecessary_transmutes', which is unknown in older compilers.
 
-Best regards,
-Andreas Hindborg
+ - Clean 'clippy::as_underscore' lints in generated code by the new
+   'bindgen' 0.73.0+ releases.
 
+ - Clean new 'clippy::needless_range_loop' lint for the upcoming Rust
+   1.100.0 (expected 2026-11-12).
+
+'kernel' crate:
+
+ - 'num' module: fix soundness issue in 'Bounded' by sealing the
+   'Integer' trait.
+
+'pin-init' crate:
+
+ - Fix unreachable warning for the upcoming Rust 1.100.0 (expected
+   2026-11-12) due to 'Infallible' becoming an alias of '!'.
+
+Samples:
+
+ - Add missing newlines in 'pr_*!'s macro calls.
+
+----------------------------------------------------------------
+Gary Guo (1):
+      rust: pin-init: use irrefutable pattern for `stack_pin_init`
+
+John Hubbard (1):
+      rust: allow `clippy::as_underscore` in the generated bindings
+
+Mehmet Koseoglu (1):
+      rust: samples: add missing newlines in rust_print_main
+
+Miguel Ojeda (2):
+      drm/panic: clean new `clippy::needless_range_loop` lint for Rust 1.100.0
+      rust: allow `unknown_lints` in generated bindings for Rust < 1.88
+
+Younes Akhouayri (1):
+      rust: num: seal Integer
+
+ drivers/gpu/drm/drm_panic_qr.rs | 4 ++--
+ rust/bindings/lib.rs            | 4 +++-
+ rust/kernel/num.rs              | 9 ++++++++-
+ rust/pin-init/src/lib.rs        | 8 +-------
+ rust/uapi/lib.rs                | 4 +++-
+ samples/rust/rust_print_main.rs | 8 ++++----
+ 6 files changed, 21 insertions(+), 16 deletions(-)
