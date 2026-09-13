@@ -1,172 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx1.mail-out.lima-city.de (mx1.mail-out.lima-city.de [91.216.248.203])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368AB33BBAF;
-	Sun, 13 Sep 2026 20:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D572773E4;
+	Sun, 13 Sep 2026 21:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.248.203
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789331340; cv=none; b=SJxpK4pK6BRU1vLcM6Wzyo07+F7MbUzC8trDDAIoh8Yu1583cJnC9FmPJyntoDdHQLblA+OPm4aJ/U77UDOmotcPT7Rg2yaNXajFLqgvJ1Dej6Dmprz3xUA9fWVI9GIGCJkGfoGB790/exrywk5jqELa9MM4SX2DlgmtqxRl2/I=
+	t=1789333702; cv=none; b=qfzEfxQ1lwwDO0iJKerZEtGHRcs56bpIg0/vhypSM8xFzQLN9vRX71jS8BkmUBArR6AnqB5rZMYxez3vXPQFGon36FO7bY9Cve/6HNLIGUSEWPZE5pVDsCVFU61Cn6GHgfe1zqBIYbbOn3cwEmISrFAvERVuurraF0CIOR0yUno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789331340; c=relaxed/simple;
-	bh=l2mySYUZ2bDnO/iGgv2uGFdFT2j6OD6SRY1Ji2QN6Yo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qB2IYEqKF6GpETorR8e2Bd2OpfCLCXwOGhBQ7+o8BB8eN1sejEVLbj7tDZy39rbge7od4sIGZhLHTWD9AWSmGBNJie8Xktvfj0HdNLHOLqNHlQj2FbZTYfk8AEh9pdyAV15ldrN6XDcIqcvVT2Vm4puwJ1lpmrNjqxzVzjc/p/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e0ZhGK8I; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789333702; c=relaxed/simple;
+	bh=1nOAV41JRiEkn7rHromEqYHd1MBILhut8xZP4SO300o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZrJ5znDq725Es6b5VYEGQuKxNUhVTHXyBEUuWwiOebKIW6arQSyYRQVFx+e++2zgXP33oUWqYu0rPv9CD4uVwgyMz5a+OJfnBpqoH3HeEtN0qqnayySnNJ/R7Yrv7mmNx/r6aIfA0MfqJ2u7XKzxBmHagjROGNVO/bDOaTUxPsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matt3o12.de; spf=pass smtp.mailfrom=matt3o12.de; dkim=pass (2048-bit key) header.d=matt3o12.de header.i=@matt3o12.de header.b=BXef/1Tp; arc=none smtp.client-ip=91.216.248.203
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matt3o12.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matt3o12.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e0ZhGK8I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FA71F000FF;
-	Sun, 13 Sep 2026 20:28:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789331338;
-	bh=aOuVJZFYo0EDnLKzsfleMThuTLbpPfRT1aSflxZmaT8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=e0ZhGK8IM4pIb1CdketDYt0edlRhvhAJcYPbTotFxrv2kw0TO70plhK5M8Ow4nV2Y
-	 mwMDowI3NHyoBWV011IY2wWsKAKGOGixpCreQgvVUT8twOX4rpEdIR2R6pSU2G9cgK
-	 xLls4fh66gx+pevVkNSnHxgSeeATqKD58Y1wwNy2bsCKZfSRn7EVljxkzQd1Adjxg5
-	 A2iv7O9vUu9qd0iw0fOkZhS+rxtfbCfGQLPN1oobjnRl3APaZENDbJCNztY8EkulbF
-	 5GsMUdC4Rzpaaick9NOgUDWw4DUkDASFngKX/AxtrH+14+4CDDqGNsqS8be0SY+/X4
-	 H26ZtERmdMyng==
-Date: Sun, 13 Sep 2026 21:28:48 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Alexey Gladkov <legion@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
-	Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH 18/23] objtool: cache relocations and function dead end
- state, do less work
-Message-ID: <aqcGKhbNOPZvmOL4@gremlin>
-References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
- <20260908-build-speedup-v1-18-5dc1ac01672d@kernel.org>
- <aqW4klkDI2P0aUn5@jpoimboe>
+	dkim=pass (2048-bit key) header.d=matt3o12.de header.i=@matt3o12.de header.b="BXef/1Tp"
+From: Matteo Kloiber <kernel@matt3o12.de>
+X-Lima-ML-UUID: 9c5bb7f3-3e9d-46dc-8fa5-ceb4fbd37a3b
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=matt3o12.de;
+	s=securedbylima-20230709; t=1789333698;
+	bh=1nOAV41JRiEkn7rHromEqYHd1MBILhut8xZP4SO300o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BXef/1Tpn9tEOQ71hlicYdSa9GNetRhnazrr8IzSC0hPFio8yIOHVRZii8jjGlGKA
+	 uigpdKC1FkoDDrAgALHIT+zDfqHCE3FoUNu9unVqYTnt+YHqdDrfjSw0g+QnsQurjM
+	 HTulRh93xlwRv268q8HDF0M2H0WFaAQ/yh8DzI8f+3t2jhPln8+GMoMfZcKM3bDI9U
+	 70ACkYfs9D0CWhanETkOTFPxKyPpFXGS4aTi++aH4qE3qR0l/0OS8ezVtgwssFYgJy
+	 rDlPJOtXl3hfK+Ja7Tmuu29+uNDMkNuNOh5mymZbaiDe9E+cZy50YuEAJeM0MzY7go
+	 NtGp0P+H+4N3A==
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: dakr@kernel.org,
+	aliceryhl@google.com,
+	ojeda@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	abdiel.janulgue@gmail.com,
+	daniel.almeida@collabora.com,
+	robin.murphy@arm.com,
+	a.hindborg@kernel.org,
+	nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	driver-core@lists.linux.dev,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: scatterlist: honor the device's maximum segment size
+Date: Sun, 13 Sep 2026 23:08:03 +0200
+Message-ID: <20260913210806.125589-1-kernel@matt3o12.de>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <DL8QLYLQJEL1.3F653J67DYZ47@nvidia.com>
+References: <20260831233215.287881-1-kernel@matt3o12.de>  <20260831233215.287881-3-kernel@matt3o12.de>  <DL8QLYLQJEL1.3F653J67DYZ47@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqW4klkDI2P0aUn5@jpoimboe>
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 12, 2026 at 03:47:33PM -0700, Josh Poimboeuf wrote:
-> On Tue, Sep 08, 2026 at 09:55:18PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > Whole build, 128-thread Threadripper 9980X, best of N runs:
-> >
-> >                                          before   after     delta
-> >                                          -------------------------------
-> >   x86 defconfig, touch mm/vma.c, gcc        8.4s     8.1s    -0.28s (-3%)
-> >   x86 defconfig, touch mm/vma.c, clang      7.5s     7.1s    -0.41s (-5%)
-> >   x86 defconfig, clean, gcc                27.1s    26.8s    -0.34s (-1%)
-> >   x86 defconfig, clean, clang              26.6s    26.2s    -0.40s (-1%)
-> >   x86 allmodconfig, touch mm/vma.c, gcc    30.2s    28.4s     -1.8s (-6%)
-> >   x86 allmodconfig, touch mm/vma.c, clang  28.1s    26.0s     -2.1s (-7%)
->
-> Nice!
->
-> > @@ -305,7 +305,15 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
-> >
-> >  static bool dead_end_function(struct objtool_file *file, struct symbol *func)
-> >  {
-> > -	return __dead_end_function(file, func, 0);
-> > +	if (!func)
-> > +		return false;
-> > +
-> > +	if (!func->dead_end_known) {
-> > +		func->dead_end = __dead_end_function(file, func, 0);
-> > +		func->dead_end_known = 1;
-> > +	}
-> > +
-> > +	return func->dead_end;
-> >  }
->
-> This bit seems like it should be a separate patch.  Though actually, it
-> can just be dropped as I have something similar brewing:
->
->   https://lore.kernel.org/9d4b8ccfed745ac47a954aa2e1de62a85197122d.1788899473.git.jpoimboe@kernel.org
->
-
-Ack, dropped for v2, will reference that seris in the cover.
-
-> > -struct reloc *find_reloc_by_dest(const struct elf *elf, struct section *sec, unsigned long offset)
-> > +/* Should never be invoked, provided as a backstop. */
-> > +static struct reloc *find_reloc_linear(struct section *rsec,
-> > +				       unsigned long offset, unsigned int len)
-> >  {
-> > -	return find_reloc_by_dest_range(elf, sec, offset, 1);
-> > +	struct reloc *reloc, *first = NULL;
-> > +
-> > +	WARN("%s: linear scan for sec %s with %u relocs at offset %lu len %u",
-> > +	     __func__, rsec->name, sec_num_entries(rsec), offset, len);
->
-> Won't this be triggered for sections created with
-> elf_create_rela_section()?  I don't see where they set rsec->hashed.
-
-Good catch thanks, it was triggering for those, e.g. CONFIG_LIVEPATCH, repro'd
-locally.
-
-Updated the code to hash these too correctly for v3.
-
->
-> > @@ -1147,6 +1307,28 @@ static int read_relocs(struct elf *elf)
-> >
-> >  		rsec->base->rsec = rsec;
-> >
-> > +		/* DWARF relocs are never looked up. */
-> > +		if (is_dwarf_section(rsec->base))
-> > +			continue;
-> > +		if (reloc_sec_in_order(rsec)) {
-> > +			rsec->sorted = true;
-> > +			continue;
-> > +		}
-> > +
-> > +		rsec->hashed = true;
-> > +		nr_hashed += sec_num_entries(rsec);
-> > +	}
->
-> Hm, I'm not sure whether hashing is even still needed, as compilers
-> generally emit sorted relocs.
-
-They do, and anything read from the file in the build does, but this is a
-fallback for sections that objtool grows or creates itself which needs the
-duplicate check + can be appended out of order.
-
->
-> > @@ -1592,6 +1799,7 @@ static int elf_alloc_reloc(struct elf *elf, struct section *rsec)
-> >  	}
-> >
-> >  	rsec->nr_alloc_relocs = nr_alloc;
-> > +	copy_reloc_cache_to_hash(elf, rsec, nr_relocs_old);
->
-> Not all relocation appends go through this allocation code path.
-> It can return earlier in this function if the space has already been
-> allocated previously.  So this call probably belongs in
-> elf_create_reloc().
-
-Ack thanks, fixed for v2.
-
->
-> --
-> Josh
-
---
-Cheers, Lorenzo
+On Mon Sep 7, 2026 at 11:43 AM JST, Alexandre Courbot wrote:=0D
+> I guess what this last paragraph wants to state is that no user is=0D
+> affected by this patch? There is another subtle user though: the Rust=0D
+> DMA sample.=0D
+=0D
+Yes, that's what I meant. I missed the sample, but it wouldn't make a=0D
+difference anyway. So I just removed the paragraph in v2.=0D
+=0D
+> nit: if we rename this variable, let's name it `max_mapping_size` for=0D
+> consistency.=0D
+=0D
+Agreed. Fixed. Let me know if everything is fixed in v2.=0D
+=0D
+> It also means that without patch 1, nova-core would split the firmware=0D
+> into hundreds of 64KB SG entries, which is not breaking but still=0D
+> something we want to avoid. The correct fix is to make sure that=0D
+> `dma_set_max_seg_size` is called by the driver, and while we are at it=0D
+> we also want every driver to call `dma_set_mask_and_coherent`. Ideally=0D
+> we would use the type system to make sure that both functions are called=
+=0D
+> before any DMA operation can take place (using a safe interface), but=0D
+> I'm not quite sure yet how we can do this.=0D
+=0D
+This sounds sensible indeed. Should I open a thread regarding that on Zulip=
+?=0D
