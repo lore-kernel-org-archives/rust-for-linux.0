@@ -1,50 +1,59 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA714326924;
-	Sun, 13 Sep 2026 14:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F74369D75;
+	Sun, 13 Sep 2026 15:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789311506; cv=none; b=Gp0fxhIuhgSUUMJr8yrGyR/nGtZuTSu6vNwWf8RP6Co7CrokEwKDqAZlwKIFBAChXjQ4X3GLCVZQ9buQmlyf94zVgcsj9Keyz4YLG817UniA5omnspjxCO9Z1qnyTY1k0QbjJ6sWtlIN72esPs97sefpOswE2DOOtyG5UtrT0zU=
+	t=1789313751; cv=none; b=f8nsBQcq8Wx6jRAueAD4f52czeHvniYxpmCk0Jg2zmYb1ydoAQCD53hkiEfUvR5My2akZGw3f8cNXkHIleWMT/x/yiuAOknu+7BZo4yVbmK/UxlxXz6IpTad5DmrfHQl5ysf9RUILcLLpx6qmo2VbloZySTVqXhxJR1wSN3+FDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789311506; c=relaxed/simple;
-	bh=kDc/e76ePF5PsxonlfBmEtXhWoctQj8Q2BP/Zw86+G4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D2CPDRiYko/ePdSXi8kn46gIZdDLDu0+l20/6NY1cj7GsbjdDzyIPHibXb8qalbX+yjjBaLSmDJHtWjgtmvXdvrOHU5HwZcOAspshH3kaazI72w1VIkVspCMcSxV+DpBZy9MD/xa/IhP5QEIOu5FHukLFnfO5frpmX7YhxgKaXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tavf8WB2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789313751; c=relaxed/simple;
+	bh=1OboO4uEvOz/a5KE+QeqEmDeWyOpiSB0NhjaWV2SiWc=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=HrVuK4R6pAEO/b7otr054WxQAFsFJZmiqaKX2ZzY/kwM0ygomYGmlr0QuQnEchPkeMaxcsOUOUlic+aPIWINbgVDVEJVx2HBsmd8sQdhGoWYgb9bogs++XW9fFyjwPLOxdnxOJhLc/draTsQilt4VT59h1HksztCDRk1odJef7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=M3WH4SH5; arc=none smtp.client-ip=162.62.57.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tavf8WB2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185CE1F000FF;
-	Sun, 13 Sep 2026 14:58:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789311505;
-	bh=G0U/yrKqs9C3NLRrdkhjlkft4ZZy0R8NVYB37IZiL+A=;
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="M3WH4SH5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1789313737; bh=rOJD5bqY+dsD1LRjOw90rAEvNSHdnLVanZNmnrCmvno=;
 	h=From:To:Cc:Subject:Date;
-	b=Tavf8WB2U6Qqo4y1n+W4YNbj5Bg14q0ZlpP39dPIHjBqglDQ7viuRuuW2r0atCOS9
-	 gA2AY+jUjt6iN/Wh9gN8CZrl4rLDc+WtPNCkoXXoxWbD7xuI4ZFrdJ5HKlqPyyyXh5
-	 x28U2wKVMwGsc4EdvmkBXOivmNZx+GDMY3/UA/mqChDEsdt2uL2oS9EPGyT0J4TvHJ
-	 wr4/avN+a7XP6ruefxTA/J0QAKdhbloopHu9jYN7n5WIPgLyID1XpSMjUkB9I/KYQE
-	 HbKz8+H+DdkCeOfKoFIbPvDGduHVHv3o+Sz+oavkrNKvW8LbJxz3sahsm4CkaWSCq5
-	 uE56nyVh0sq2A==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust fixes for 7.3 (2nd)
-Date: Sun, 13 Sep 2026 16:58:08 +0200
-Message-ID: <20260913145808.28006-1-ojeda@kernel.org>
+	b=M3WH4SH5x1vdfN3sVfxnGVIPWUCo1gy6s9kIzsrGL+GbpK3eq+3xgIyYoNb04SYTd
+	 OTqxVrOLEk214V9vLJHvnGKuOil41AZQenga511YhUpAm8Jycgrp2+nk8K5S4os/Q5
+	 dmSmZulOy42aP1OgT90D34Vgt9z3bz20aDHYew0A=
+Received: from localhost.localdomain ([202.120.234.146])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id 8968A66D; Sun, 13 Sep 2026 23:34:22 +0800
+X-QQ-mid: xmsmtpt1789313662tzfy2dnrs
+Message-ID: <tencent_AA30574AC78ECFD88D7E042A49371119ED08@qq.com>
+X-QQ-XMAILINFO: OBlHcmIAkWj9xmcj01MLmNje1lhHchkpOQ/BOaFD+nSfB/QErkP2YgeMaiNaJf
+	 buZp5cE4/PWLnZ8qoYCY3qGyufkexdqVkLv+iUvwFp1AqusGUKXA9gn/lFJHwodSzso4g6s7thhx
+	 OX2JkPbPODnhx/qc7pwK9g3Mol45s22aw2Vc1qomDK12vBghdd/CBA0oJfRTKyB/r9oT8FmPAqzV
+	 LPg8Nl9GO7YCKcWZRODyf60gXruf/U2pRGQm2uwFy8/WGfLiqkqxrCECL28bRQ6d2UP7u+FmLBKn
+	 U3YC+fPk0CNz6mchs06AA4HXC1ngfLDcZB4i/0lTSWhZnJtSFkabRs5xnnCE/Me9MfuwDzX+KQ4o
+	 K3gcyvTka9SFsA/62u0wnsXgV7k7TADJim/x7J9Kk7h79rNtfVfltO/NoNhE7UVgLJcp9MwChXH9
+	 VdA5pIzM86WDg8aiuEs2vHmaV4NXgy7+VGPf5HdZnxRl2hYl7VSOCSyqzBWTEvJkT4YuFsm21/cd
+	 m2hGPHsF5hacGNxj2efPgtXWqs3Adlwl0n2Uv/uExf1RaUQ5bPgeEPHCVBX+LD8MLjZmevZcJy0R
+	 pJGo4ZrblKukIMS53yE1b/Rx4Hpa9LE0qzoRcck2QawJv45aoMf4DxCj4Mg2/h61+Zaqdb3dp4pR
+	 kfmaXg4+FG2QlWXj+IZokg8hvhOBmXY7UxWplwPrRX9xWa5tG25j2L0AtRRgXbZhcfJZ91KFd3pp
+	 W0YSmUKlkCmsanvtAlawyD/DD7t4jLUe6CDDaU6oy+VRmrenCgFt/ZlVJtQXlCEN2A8Ncn2k8Vn3
+	 jyTYz0hZjwvyjlzHggPezI61eJ2xALAKybg/epqDBWUVonqQgZ4EE9y5qHuQc1VUJuDOm1U6UAb5
+	 5W7DEwFV8zlacwqVG3xeV6a+6vNl9JH9ydSqDv46z9BYiU6BULKAPKng5iBvHb5154/YJ46W5NOm
+	 +22bTSGgUDlpua1WVmkS9E5s325LWOwB+UJ3r0j8KYeRIfUVT+elctkfBj4V+n4HtSc2AbEW4Rfp
+	 MeMUlrygWueEPBmWxJQe/XdkQXBlmsV49gdByje1gBcUdHOdy5kEDRZim/pG5jck0so0JFbKKMN8
+	 AejqmF9DZVSuKUcTs=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+From: Yilin Chen <1479826151@qq.com>
+To: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	acourbot@nvidia.com,
+	yury.norov@gmail.com,
+	ojeda@kernel.org,
+	Yilin Chen <1479826151@qq.com>
+Subject: [PATCH] rust: bitfield: require Zeroable storage for Zeroable impl
+Date: Sun, 13 Sep 2026 15:34:17 +0000
+X-OQ-MSGID: <20260913153417.1918185-1-1479826151@qq.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,80 +62,40 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Linus,
+The bitfield! macro implements Zeroable for generated wrapper
+types. This assumes the storage type accepts an all-zero bit
+pattern. However, the macro accepts any type and does not encode
+that requirement.
 
-Please pull these fixes for Rust.
+Add a Zeroable bound to the generated implementation. This prevents
+invalid storage types from obtaining an unsound Zeroable implementation.
 
-They have been in linux-next for at least 3 rounds (most for more).
+Fixes: b7b8b4ccdad4 ("rust: extract `bitfield!` macro from `register!`")
+Assisted-by: Codex:GPT-5.6 Sol
+Signed-off-by: Yilin Chen <1479826151@qq.com>
+---
+ rust/kernel/bitfield.rs | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-No conflicts expected.
+diff --git a/rust/kernel/bitfield.rs b/rust/kernel/bitfield.rs
+index a0d0894..3dd4dea 100644
+--- a/rust/kernel/bitfield.rs
++++ b/rust/kernel/bitfield.rs
+@@ -330,8 +330,12 @@ macro_rules! bitfield {
+             }
+         }
+ 
+-        // SAFETY: `$storage` is `Zeroable` and `$name` is transparent.
+-        unsafe impl ::pin_init::Zeroable for $name {}
++        // SAFETY:
++        // - `$storage: Zeroable` guarantees that the all-zero bit pattern is valid.
++        // - `$name` is `repr(transparent)` over `$storage`.
++        unsafe impl ::pin_init::Zeroable for $name
++        where $storage: ::pin_init::Zeroable
++        {}
+ 
+         impl ::core::convert::From<$name> for $storage {
+             #[inline(always)]
+-- 
+2.25.1
 
-Thanks!
-
-Cheers,
-Miguel
-
-The following changes since commit cee9395acd8043be0644b25c34bfa86623f2b935:
-
-  Linux 7.3-rc1 (2026-08-30 13:34:40 -0700)
-
-are available in the Git repository at:
-
-  ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.3-2
-
-for you to fetch changes up to f4c3e38111fd84c2c7ae5785755f4a4d476e1cba:
-
-  rust: allow `unknown_lints` in generated bindings for Rust < 1.88 (2026-09-08 23:29:18 +0200)
-
-----------------------------------------------------------------
-Rust fixes for v7.3 (2nd)
-
-Toolchain and infrastructure:
-
- - Work around a 'bindgen' 0.73.2 bug that emits an 'allow' attribute
-   for 'unnecessary_transmutes', which is unknown in older compilers.
-
- - Clean 'clippy::as_underscore' lints in generated code by the new
-   'bindgen' 0.73.0+ releases.
-
- - Clean new 'clippy::needless_range_loop' lint for the upcoming Rust
-   1.100.0 (expected 2026-11-12).
-
-'kernel' crate:
-
- - 'num' module: fix soundness issue in 'Bounded' by sealing the
-   'Integer' trait.
-
-'pin-init' crate:
-
- - Fix unreachable warning for the upcoming Rust 1.100.0 (expected
-   2026-11-12) due to 'Infallible' becoming an alias of '!'.
-
-Samples:
-
- - Add missing newlines in 'pr_*!'s macro calls.
-
-----------------------------------------------------------------
-Gary Guo (1):
-      rust: pin-init: use irrefutable pattern for `stack_pin_init`
-
-John Hubbard (1):
-      rust: allow `clippy::as_underscore` in the generated bindings
-
-Mehmet Koseoglu (1):
-      rust: samples: add missing newlines in rust_print_main
-
-Miguel Ojeda (2):
-      drm/panic: clean new `clippy::needless_range_loop` lint for Rust 1.100.0
-      rust: allow `unknown_lints` in generated bindings for Rust < 1.88
-
-Younes Akhouayri (1):
-      rust: num: seal Integer
-
- drivers/gpu/drm/drm_panic_qr.rs | 4 ++--
- rust/bindings/lib.rs            | 4 +++-
- rust/kernel/num.rs              | 9 ++++++++-
- rust/pin-init/src/lib.rs        | 8 +-------
- rust/uapi/lib.rs                | 4 +++-
- samples/rust/rust_print_main.rs | 8 ++++----
- 6 files changed, 21 insertions(+), 16 deletions(-)
