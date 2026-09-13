@@ -1,170 +1,117 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96EA3806A6
-	for <rust-for-linux@vger.kernel.org>; Sun, 13 Sep 2026 16:24:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BAF31E858;
+	Sun, 13 Sep 2026 16:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789316658; cv=none; b=u0Ak9uHa6ZpMxEWPHr2KnnOYTnvhhvX6GUs0M5NZ+WgvvWCRBUw3+DTNLTxJ9rawevSmdSBh2kkPpKmOiC7d98E0qn0L0grFEjIxifiBYcnwU2RFJibKSogu1wkJwc+MPu16AepdfwyI/buhN6Mgsmtg1g3Dn7R3qeLIQtXEZG4=
+	t=1789316861; cv=none; b=XMRAPv0pwjs3hZyd4AKCJoq/+Nz+PRIM4+u0BKXLFzPPnXIqycmcLtX0bfEWUA04BFqSCxToklijdCvXRQLlcE1zJnBseG1U3L5K46iwnJsRhsJwiH9U6lHXJCwmQNXgVDGX0VMaGBj3mNOUlRQMprhyYOS5RKXd785F2fx6oyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789316658; c=relaxed/simple;
-	bh=yymUnlFMbFRaI+zM6TZ1QhF7FtNy1mLIdFau2Q5EO9Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CRBIagEMeeXO6LV3Q8gQM4RRC6kzQxZECKra5JFKBWH7Bo0Jxh4AjKVpycA6+iQwwE6Lvq+517GtsCg/U1QPgZnk6Fd20pfwK6SXHIO+npMT3seuVsu2MAUbsOdoKuiMhIlVidS62nh6gsZFs+yYOr6+aGauacf25dkGeJJY5mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=CmeI1HTQ; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1789316861; c=relaxed/simple;
+	bh=O/e6CfAS9RNEQqaHGYKaIdIIqALc4dIkdCyGZZYAd/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kfKHsjgqdZ7hANXu4s2o/+LGrxSwEo6Ibj4OWrYH5OAvzn/FEDbznzC/8iHNsO5I8bX1IyDNdfMGrVsYZ/V/s7iZEbouoDtGJDvI3ZRMH8Vpi0R/+gTD+tugM/VusEy+Telv1f0U7onnXg8zfLLfumztaBILax1BXys1nwgWS2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S1T5EvtI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="CmeI1HTQ"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 2374D240105
-	for <rust-for-linux@vger.kernel.org>; Sun, 13 Sep 2026 18:24:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1789316649;
-	bh=BR/kOTPy8WlHRCwmQBBq1dgGLlhcCxn5wBHj3AWf0ds=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=CmeI1HTQXWsoeMbKl3FUmjpTMxqn6piWiDlnd9yKalMXWdhPOwQE9nN058QRnUCIh
-	 nAC4yhrx1O1h5N+slqlPSIMF3wN+v+sBeoc1vQta4I6VFaP0AzpLhNuVfL+mZOtKlv
-	 DYvfubdeWf9lnzc5+FqG60n3/EVbq/WODnhYJC4pImEkZ+DFYpBhOdIUrguJhyflWI
-	 rmfdZ6vJpARiQU2HyuxFsgrwYeovhVvGZf12UVKmvWbPQT8wBhCbzHTaVqk6lznFKz
-	 +xYmPfkUwRynQI4bcF4dNt3ltWsHEEMBuMfEjbM89xpdt1/GNINcmQO7sJUEklOzBO
-	 ZEjEvOtaeSJrw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4hjYWT2yTJz9rxK;
-	Sun, 13 Sep 2026 18:24:05 +0200 (CEST)
-Message-ID: <bd1aeb53bb12077d1406e724b66bc78ff17fbbc2.camel@posteo.de>
-Subject: Re: [PATCH v25 2/4] rust: leds: add Mode trait
-From: Markus Probst <markus.probst@posteo.de>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman
- <david.m.ertman@intel.com>, Leon Romanovsky	 <leon@kernel.org>, Miguel
- Ojeda <ojeda@kernel.org>, Alex Gaynor	 <alex.gaynor@gmail.com>, Gary Guo
- <gary@garyguo.net>,  =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- "Rafael J. Wysocki"	 <rafael@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?=	
- <kwilczynski@kernel.org>, Boqun Feng <boqun@kernel.org>, Daniel Almeida	
- <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=
- <work@onurozkan.dev>, Ira Weiny	 <iweiny@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Date: Sun, 13 Sep 2026 16:24:07 +0000
-In-Reply-To: <20260913-rust_leds-v25-2-1a10371d78c3@posteo.de>
-References: <20260913-rust_leds-v25-0-1a10371d78c3@posteo.de>
-	 <20260913-rust_leds-v25-2-1a10371d78c3@posteo.de>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-OaxUqTEkTo+BhzyBoF/J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S1T5EvtI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049D11F000FF;
+	Sun, 13 Sep 2026 16:27:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789316859;
+	bh=A34XyoS7noGhiNdA0/AU98h7WFkZVbNZsRjK3AbUsrc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=S1T5EvtIkopSpnh+GD+zu8g4AJduDGp4esWSo99SyJNqgNpcU1UVbfy4cZhHMNB0i
+	 LHSz2WYMWir3RbcYjKe/iPRdEa+j0hhJUnM/Y2wcjhDmtHgIgTt+SMBRaE+EKNHur3
+	 tISbPphKo+YKH1t2eW+TWtim9ts6B0icsa2UF204ftWrTdf6+U35adxnq+u1RGPUgE
+	 6+NK6KcfQtUATUK4NjWOw4HkQ4OuKPR6xoMhT8hU+MSm/FZJUMH6cEFCc/BLLAKkax
+	 hFL/+6sEynaqO3hN0xSh2fX2eW7avxvzNLOpeFKX5TxXn2w7A57CIRGSGoV88TZ2qI
+	 B5QZhmpvaMAEQ==
+Date: Sun, 13 Sep 2026 17:27:25 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Nicolas Schier <nsc@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Alexey Gladkov <legion@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Jonathan Corbet <corbet@lwn.net>, 
+	Randy Dunlap <rdunlap@infradead.org>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
+Subject: Re: [PATCH 00/23] kbuild: significantly speed up kernel builds
+Message-ID: <aqbO2wNPeBiLDwAB@gremlin>
+References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
+ <a4167b18-f1ea-48bb-9287-210bdd4f35eb@broadcom.com>
+ <aqPlUt6aIvof2LcM@gremlin>
+ <20260912064437.GB2002951@ax162>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260912064437.GB2002951@ax162>
 
+On Fri, Sep 11, 2026 at 11:44:37PM -0700, Nathan Chancellor wrote:
+> On Fri, Sep 11, 2026 at 12:28:34PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Wed, Sep 09, 2026 at 02:58:59PM -0700, Florian Fainelli wrote:
+> > > On 9/8/26 13:55, Lorenzo Stoakes (ARM) wrote:
+> > > > A typical kernel build consists of a frustratingly large amount of time
+> > > > spent stuck in single-threaded bottlenecks.
+> > > >
+> > > > It turns out that there's a lot we can do about this and doing so
+> > > > significantly impacts kernel build times.
+> > > >
+> > > > This series makes allmodconfig builds up to 36% faster, incremental builds
+> > > > up to ~70% faster, and noop builds up to ~90% faster.
+> > > >
+> > > > Builds are faster across the board on every device I tested.
+> > > >
+> > > > Machines used for perf testing:
+> > > >
+> > > > * Threadripper -   x86, AMD Threadripper 9980X, 64 cores, 128 threads
+> > > > * EPYC         -   x86, 2 socket EPYC 9754, 256 cores, 512 threads
+> > > > * M2           - arm64, 2022 M2 macbook pro, 8 cores, 8 threads
+> > > >                          (4 perf, 4 efficiency)
+> > >
+> > > My AMD EPYC 9454P server shows an improvement in the order of 13% using the
+> > > arm64's defconfig and make -j97. Thanks for doing this!
+> >
+> > Nice thanks! Good to confirm others are seeing the benefits :)
+>
+> I see similar gains on an 80-core Ampere Altra system
+>
+>   6h 21m 42s -> 5h 31m 15s (-13.22%)
+>
+> and a 32-core AMD system.
+>
+>   3h 38m 55s -> 3h 13m 18s (-11.7%)
+>
+> The build matrices were different between machines but it is good to see
+> similar numbers across different environments.
 
---=-OaxUqTEkTo+BhzyBoF/J
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Nice, yes for sure!
 
-On Sun, 2026-09-13 at 16:15 +0000, Markus Probst wrote:
-> Add the `led::Mode` trait to allow for other types of led class devices
-> in `led::LedOps`.
->=20
-> Signed-off-by: Markus Probst <markus.probst@posteo.de>
-> ---
->  rust/kernel/led.rs        | 37 ++++++++++++++++++++++++++-----------
->  rust/kernel/led/normal.rs | 12 ++++++++++--
->  2 files changed, 36 insertions(+), 13 deletions(-)
->=20
-> diff --git a/rust/kernel/led.rs b/rust/kernel/led.rs
-> index deda8cc548a8..7cd8f0504649 100644
-> --- a/rust/kernel/led.rs
-> +++ b/rust/kernel/led.rs
-> @@ -4,11 +4,7 @@
->  //!
->  //! C header: [`include/linux/leds.h`](srctree/include/linux/leds.h)
-> =20
-> -use core::{
-> -    marker::PhantomData,
-> -    mem::transmute,
-> -    ptr::NonNull, //
-> -};
-> +use core::{marker::PhantomData, mem::transmute, ops::Deref, ptr::NonNull=
-};
-supposed to be vertical.
+>
+> --
+> Cheers,
+> Nathan
 
-Thanks
-- Markus Probst
-
---=-OaxUqTEkTo+BhzyBoF/J
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmqmziQbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSGAsQAJKm37JDmgYQ7+ndKdPv
-Jjf+780GMAfSCqHfM8Y1bEZZBXfUBlQvN6Pnx50NBlK9xDlDOBrdq1ji7u1gxSUu
-j+crXgluVMYgAcgOkRovg5a2qTer6/xDDyuEkk49ps4jaCuupDKw2rjSMc8x+AQ4
-Kr/wrN7uqy4oZijv06lMGu3pih6l+SYy+BTjX1ptzE9/8tSPozbn46Ho8TbtkcHW
-s6fgsSSFyXauW0otO4dfJpn6X/OIo1utIsxsQN9m//aQ5OdxUmhd7z2uO2WgjrTL
-+lbhWTUNl1tyIgd7pV6xDQcdGNwCyBJA+E34YeflcNxs1vQfsqwIcBn0pye++mjp
-PFPad08ClzgDQ4Fi307a3Ja+L63UZbtJdJSHdIrFpAlbnRPhhTE3NiLeV+tnNlvT
-VEtY4EKm/90ZbWHQ9nNspCNR21ILHnDYqM1ZAvAqJVBjsFla6tHvTiqPGXj2PcY8
-tfu1Wg+QkOKYi0xnXOjBPtEkM3UVAfIR2Nth4b4NE5o6ldNvMmO5YRUptZVVU0fS
-oE3iq9UDstB346JlK72QL1uy30il/BO2NaQxdnEFOyUMJQZnQdxsUfxwC3NVtUIG
-WNfMigdBpnW1fLuouhtRkZcmPkEbLD6H5jvfV92OBZqvOIVN/kEyGgucAvCuK09x
-bJT1hzRNamyhVVe6B7EMQqVc
-=pH62
------END PGP SIGNATURE-----
-
---=-OaxUqTEkTo+BhzyBoF/J--
+--
+Cheers, Lorenzo
