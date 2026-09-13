@@ -1,126 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3EB361943;
-	Sun, 13 Sep 2026 16:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AFC348C77;
+	Sun, 13 Sep 2026 17:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789317414; cv=none; b=s+cQzpMS4Rxy0vmtGg62nCgYWnk0mQ2XWjhP0E3XyOR/W116v1pKkZWO8YJl/n7ZISQj2bzXxXmgsMjJOFDfZJHmU9SdxJblRSUSlnlo2OT63qt7ogkJAcLNd/g4HK0hHuPDo9PIPHFsY1QzX0ZM42evp51sauicxZas6zJRUnM=
+	t=1789321125; cv=none; b=cJOGYYVqf1hJ5sGhAANysc4iLkFkeiRx2ulssNTcup48FO8eyw+jDgKhfzQq89kVhJEWJH7J2pe0sdw5qPQHVfKktlHCG5lUUCDD9WVxzqGeG1zRk0fkR1e7kxMf/ckM7D2rbOFX8H/hJbZawHzceKw1Q9vQafRXpBWUNF3KgbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789317414; c=relaxed/simple;
-	bh=3cetiHmsplFWJ+S96Qjna0YXLC/+Qhfff+MJkaGC2AU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EpmnLeEtkx4/mzmFJyM+n0YBQKZFTs77RculjMXbDdW+rBFE2a5m/jWK+H1rWdtBtO+JjkEdBsSG2E0A/j49G4+Ku/g4rsFc4UU8h8H3VEOKDqmmIto68cMEMvQfbAAbNLQK8k18cGajLhB8YtX6YpDtpdSk/CRXGjeoRnUuJxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VMRn/4Gg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789321125; c=relaxed/simple;
+	bh=PKjijOjyp8B+A/AHDZ4kCkSZRdeD1AEmIH6hPHQ3/vs=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=fpsxZM2s8jvxqOQCOfWqYii2TTOLYKbLVtHrOkpb5L0RAx0E4brFIGzEVJxrn/+2S0s5O0C/lyiIAafNKviMIvORLQ8ve8cdrWrGLFfnoWQh9isFKxiCQGg7MqDNitQujnNnMs5okUqXtgWmwfrteOKqxQxTXthPH1As5V1Snt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZwY8VRCh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VMRn/4Gg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2A71F000FF;
-	Sun, 13 Sep 2026 16:36:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZwY8VRCh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E71D61F000FF;
+	Sun, 13 Sep 2026 17:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789317413;
-	bh=4B9lPYJZx2WtDB/f5GYcYiGdJjQEGc2VffrdMkBYbGc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VMRn/4Ggw0dXaUy1jNqG3n3Y3lFltR1JKKPxPddcpiouSI90FL6bJhQ0xjuXhlNvp
-	 QO1eJQCBNg+tmWZk87cuALgFzNb/l7wfaiANKKcLbSXgtVUrkWdkNh64DthcliwB3k
-	 0oxm7Ms59/P2/kAKOj9iBsmBiBTunJMFV80yf35hbkPAs4+FIHmmbL3vZJD6FpvmxZ
-	 mHQ7218RLoe2DdnCFuFPUqEz4+gu0Hl6ff15ZY13jwu8GRfFcoVd5HkF51bunsZjp/
-	 xGN3TJ3cymEhnAkRu8EhgLboTMnYMtazjxkrpjpzHNudJWLJHnoXfwaiSJEJt+1Gbn
-	 Meb3psVdxKrCA==
-Date: Sun, 13 Sep 2026 17:36:39 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Yann Droneaud <yann@droneaud.fr>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Alexey Gladkov <legion@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Jonathan Corbet <corbet@lwn.net>, 
-	Randy Dunlap <rdunlap@infradead.org>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH 17/23] modpost: perform srcversion hashing in parallel
-Message-ID: <aqbP9ewBMAGAXbQB@gremlin>
-References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
- <20260908-build-speedup-v1-17-5dc1ac01672d@kernel.org>
- <4e447b33-574e-425e-bc92-2b728128cf18@droneaud.fr>
+	s=k20260515; t=1789321124;
+	bh=iG2bkv+azAGPvUZkh0JpkzrvrHr9eZUbGOFK0xHLhYA=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=ZwY8VRChlFos1svebyO3M1dryn2YoCszvMNNNrStLKIrjWW+t+EMFNzW6KcyyDjt+
+	 DZd7yjl2gpghFvdqByWxXAyx1byfT0aJj4Gf/xDY8epN94wLvSQMaxKnaHJIPcAFU/
+	 vX/XVvvpS5gHFB0PYMnXsDFOp2q/BnV/aUzGRXEeLEQmWR2lA1ZifRDqobK+5BwGHd
+	 cOc7jWvYik7TNsWx+qxMZNt/hMDv6yZAE740s9u2X6GNaCzhVUVbhgolJBrLPc2zQy
+	 j1ChdO6PbFzcsSDFivOEpif5B4iJVmC9DShChKnD904zuEdQaCP8uHUzhDH4x72xJb
+	 XTedMhIt7j+Hw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AFB380A957;
+	Sun, 13 Sep 2026 17:37:40 +0000 (UTC)
+Subject: Re: [GIT PULL] Rust fixes for 7.3 (2nd)
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260913145808.28006-1-ojeda@kernel.org>
+References: <20260913145808.28006-1-ojeda@kernel.org>
+X-PR-Tracked-List-Id: <rust-for-linux.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260913145808.28006-1-ojeda@kernel.org>
+X-PR-Tracked-Remote: ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.3-2
+X-PR-Tracked-Commit-Id: f4c3e38111fd84c2c7ae5785755f4a4d476e1cba
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 180534c09b2dd877c3ec83c900253765923c2e42
+Message-Id: <178932105942.3902938.2440792355458879964.pr-tracker-bot@kernel.org>
+Date: Sun, 13 Sep 2026 17:37:39 +0000
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4e447b33-574e-425e-bc92-2b728128cf18@droneaud.fr>
 
-On Sat, Sep 12, 2026 at 01:50:00PM +0200, Yann Droneaud wrote:
-> Hi,
->
-> Le 08/09/2026 à 22:55, Lorenzo Stoakes (ARM) a écrit :
-> > modpost does a lot of single-threaded work hashing files from each object's
-> > .cmd file.
-> >
-> > This makes the build slower than it needs to be, so do this work in
-> > parallel.
->
->
-> If you're going parallel, it would be nicer to do it under make's jobserver
-> supervision.
+The pull request you sent on Sun, 13 Sep 2026 16:58:08 +0200:
 
-Ack, though this patch is going to be dropped due to mod versions being removed
-upstream.
+> ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.3-2
 
->
->
-> > This is egregious for allmodconfig builds - for instance x86-64 can end up
-> > opening 200,000 files individually and hashing them all serially.
-> >
-> > Parallelise this operation by maintaining a thread pool for the hashing
-> > work.
-> >
-> > Combined with the per-file hashing commit this cuts modpost's run time
-> > nearly in half for an allmodconfig build.
-> >
-> > Module.symvers and every *.mod.S are byte for byte the same.
-> >
-> > modpost is on the serial tail of every allmodconfig build, however
-> > defconfig does not set CONFIG_MODULE_SRCVERSION_ALL and is unchanged.
-> >
-> > Whole build, 128-thread Threadripper 9980X, best of N runs:
-> >
-> >                                           before   after     delta
-> >                                           -------------------------------
-> >    x86 allmodconfig, touch mm/vma.c, gcc    33.4s    30.2s     -3.2s (-10%)
-> >    x86 allmodconfig, touch mm/vma.c, clang  31.1s    28.1s     -3.0s (-10%)
-> >
-> > Assisted-by: LLM
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >   scripts/mod/Makefile     |  1 +
-> >   scripts/mod/modpost.c    | 72 ++++++++++++++++++++++++++++++++++++++++++++++--
-> >   scripts/mod/modpost.h    |  2 ++
-> >   scripts/mod/sumversion.c |  3 +-
-> >   4 files changed, 74 insertions(+), 4 deletions(-)
-> >
->
-> Regards.
->
->
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/180534c09b2dd877c3ec83c900253765923c2e42
 
---
-Cheers, Lorenzo
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
