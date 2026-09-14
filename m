@@ -1,205 +1,219 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out203-205-221-233.mail.qq.com (out203-205-221-233.mail.qq.com [203.205.221.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CF247AF5D;
-	Mon, 14 Sep 2026 13:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4833476CEE;
+	Mon, 14 Sep 2026 14:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789394256; cv=none; b=st3AHx3GfNte40RHjuIZ04j7tuFK5fLcHgCejnw5xUfYwoyKHWMMK5r33t+yKcAYhqC2NFfX5nwaa0EVP3ou3PeBkWjfm4+vESNh1nqbm+hVpkL/6NdeSX889R7CUxO59wvIZjj0wCAFoSo88JYe3RiOkrZEcf52GXWsPEYDzyE=
+	t=1789394958; cv=none; b=e5QwXTMze2+KG3mVngrtXu38fKeXakktedfQjYrO38NQgeYOljCOjRV3s1ue2k3KrFmFn8e7giXt8KVY4yP1q+XZcymtim+Io7R/La9bCaBzHjaN7UUXVG2kXzRd6fNyBrSjWZ19t7Qs+BPcRHAne+aLEkiM0iW6sAf3Q6QfiOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789394256; c=relaxed/simple;
-	bh=lbfR6UTbGje8kTS7uXKfuCIKbDAp15t0ygJfzZX74VQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=YPYTGEQlBWK6K4fNJ1CBdKOFZpdP9U/yVuQ3S4mjXKgMiJXYUv7ilN5zQttxXq4qJzdVxkPea3wDYopv5UrDlv0BVZZRnJbPBjd0k6iGGCe1Zh2THkoBC7YF/EjR9UTSwq3Z2nt/AnJpuDz6+hPy3kzLz/izbvILmO53mX4uqzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PbijN69z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789394958; c=relaxed/simple;
+	bh=K1ndBXkauxQF/G+RjfeBt/ibyFSN3MLQ6BS8dr4Qzlo=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=BvoOVdJjDQ875WnD0vS0UF+IdQ8Yqwyg0V13FWJM4eS3xteS4gf7FX5yEKk91NmRgGy49xyUUybRiTQFf3mb9//9yCZTX0V19J6kVuForAXkkKdnvPcwXGG9RwmOWe0zJe47qz9n9GueWKHlKSO5EbnZhnwr8i8COG3qtHXkg3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=PpuF3yUr; arc=none smtp.client-ip=203.205.221.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PbijN69z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881E01F000FF;
-	Mon, 14 Sep 2026 13:57:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789394253;
-	bh=hWQfMjTwrhS/wEak3lQlYZWJXa+nrsd9RSvMVNpNwAY=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=PbijN69zCRfEB+alm6uXogzEaz9s2BRnelOZWna8gydWoSEci7YrJjkbOhNJEWnZo
-	 MtmEE5UYbXR961euWsi0jvDmgHVf0rZdgb+vk/K0jB+DQ7NLjXK3ydMY512gxEtfHo
-	 coL8g+XJONkwIr5azr9son0ok5LpRHsn2J2hJTwse41koUTTxb+irWE4UO2SzX7UkE
-	 JFg3ZBcnVloIa4vLixpg9T3NzQn298tcSxWgHRZoPUZJuHzftzNchk6A7nBmOAcfRe
-	 Oscetkf+QV+1YJWZJDCqsqDYL4QwN1OwdeWOP2gHJwExNAxWJz/6xPchz1QquNpb58
-	 swUFTXsR2v+fQ==
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="PpuF3yUr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1789394944; bh=I7JxcpE2pTIIXWVKgV7u98WT4XU0JiKYmscV17HK1Js=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=PpuF3yUrjj7pVUyhZ2KgO/f7vHk1xJ4LiTvWb/m6xn4U3HRwfR/9c8b49Xj0q9l8D
+	 ae3UhMGt3cDvXifaiqBSIIUnMt8MNqV3S7OVQMBh0XdynDn1RAaO30f7R9bd1bxzmc
+	 zmq7mrTmmIy3z1GgIPpD+BJnQn8oywTyv9A7goKo=
+Received: from localhost.localdomain ([202.120.234.146])
+	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
+	id 240B7095; Mon, 14 Sep 2026 22:09:00 +0800
+X-QQ-mid: xmsmtpt1789394940tjylahrsf
+Message-ID: <tencent_5449081195EDDF5726C709CF648DD4044A08@qq.com>
+X-QQ-XMAILINFO: OfdIMQeyotv9s/ammIJTK903T6pwg6IQcjfoR0ywfBHLJD4IY3IHopzXgrRe5Q
+	 sLvtywtRVXQVN2h9/czCF9ZDrGrkQ4UqM7+iUNw9nTZVF8HsUq1iDdpU/nCAYnpe3gJ5PttCo+Ta
+	 gcMZ3DF2AdB+is6cuYQ2KpC9rlcAFMMsKkq1NWrVZsCwfI4NHY/R5POE3bV0QbIpBs5nz0JWmFs/
+	 Qp4xDSYy1RRuyuGp632io7XG9nyQ3KXhPQrzWnrp4YCxovJTDNn3rs0nw/CfHXTh0van2VU1bMnl
+	 d9FkzRihNiiiDxLEzf9HMigB7QVM3uGQv/YmRL5A4kOLmWS4w7DCDLLc5iy3ZYhHZqjZRLv6YwCo
+	 MmE+Hjov5UqdLdA5lYSOLAkrdpelcvY9l+BWBaKtdnsM/yVFjQxOXcqMbfQ/YXZ3Fb4utuHsTh1k
+	 GJB5rZy484mK1NEnLfylKJZ9SCDAeGbTNI3V2S2vmXJN6ZLUUKtuNVNqB+1tTeEKGBIEFncubyC6
+	 iggQzjhR0S/Azw/rKhWP4cVfml61kQ+KnzMYMiDfmLhybPoBBtLjEKoa+EW71VqwWW/COHhJ+BVh
+	 RBnCVgeG/M78cWO86p69uH18F+QEkZxzDre0q+d5D5k1Jq4CeBTLBAbgY8KgPGutXTGL0CsNiPjS
+	 Uf9OYdTiGedmjjiwNoctSqhDlsfoxvvJRsCa9RDra9o1GGpGOl9bBWXOBzp22EMTBIcpqeLMt0qF
+	 SB6w5Y7TklTFrfdiRG7fgJyE9LpODPi0rzwNKRzDnm//DjiieXw+563GfRvXnrT4mSEWUoQJxBR4
+	 jhtxiIsDC2gp2UHa5j7b4x8pCDWUQ58XoI9UTShV2FxEkRIXclxVceyCeZqIm8jRvYjhZjOhsGfW
+	 qAdO8ODtYX29p1jWB3rOQTkB5W47xI+tmsCKzu6Dp3pvExw++yNMSuvZp30y//wm6YAyf3JZe1Ho
+	 6fIAGRztXtrMYmcEeaOv+wADC6s4/t+U5qGdkUUKBT/IktfDw/7XdLD5iHLVgXavQPV15EarmIUD
+	 aXpqZIfoYhvgM1OmGWMa+ho2oyrOZ1u5FGQFMJBURhEIz9NEDEMt71ULpV3Emxo3Yb2N6y84Yt3t
+	 76lNRRDP+DIHjKR5lHtjAt6R208yIbtEGT/vv3
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+From: Yilin Chen <1479826151@qq.com>
+To: a.hindborg@kernel.org,
+	ojeda@kernel.org
+Cc: boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	tamird@kernel.org,
+	acourbot@nvidia.com,
+	work@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yilin Chen <1479826151@qq.com>
+Subject: [PATCH v2] rust: configfs: require thread-safe callback data
+Date: Mon, 14 Sep 2026 14:09:00 +0000
+X-OQ-MSGID: <20260914140900.2456157-1-1479826151@qq.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <87v788t7xh.fsf@kernel.org>
+References: <87v788t7xh.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 14 Sep 2026 15:57:29 +0200
-Message-Id: <DLF3BLOLU8HS.1AXNNXWVQUFNU@kernel.org>
-Subject: Re: [PATCH 2/2] rust: scatterlist: honor the device's maximum
- segment size
-Cc: "Robin Murphy" <robin.murphy@arm.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "Matteo Kloiber" <kernel@matt3o12.de>,
- <aliceryhl@google.com>, <ojeda@kernel.org>, <airlied@gmail.com>,
- <simona@ffwll.ch>, <abdiel.janulgue@gmail.com>,
- <daniel.almeida@collabora.com>, <a.hindborg@kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Gary Guo" <gary@garyguo.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260831233215.287881-1-kernel@matt3o12.de>
- <20260831233215.287881-3-kernel@matt3o12.de>
- <DL8QLYLQJEL1.3F653J67DYZ47@nvidia.com>
- <20260913210806.125589-1-kernel@matt3o12.de>
- <DLEMH1X0KQA1.D1PYVJD0E6SR@nvidia.com>
- <DLEY8AHWZFCQ.QUHP2NHJW1QX@kernel.org>
- <DLEYQNUGTQYU.34AISCMMZXG8B@garyguo.net>
- <ea8caba1-eb78-40cd-b025-e8c02009f2d7@arm.com>
- <DLF2GNSEGHKR.2UI219W5RK94F@garyguo.net>
-In-Reply-To: <DLF2GNSEGHKR.2UI219W5RK94F@garyguo.net>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon Sep 14, 2026 at 3:17 PM CEST, Gary Guo wrote:
-> On Mon Sep 14, 2026 at 1:17 PM BST, Robin Murphy wrote:
->> On 14/09/2026 11:22 am, Gary Guo wrote:
->>> On Mon Sep 14, 2026 at 10:58 AM BST, Danilo Krummrich wrote:
->>>> On Mon Sep 14, 2026 at 2:45 AM CEST, Alexandre Courbot wrote:
->>>>> On Mon Sep 14, 2026 at 6:08 AM JST, Matteo Kloiber wrote:
->>>>>> On Mon Sep 7, 2026 at 11:43 AM JST, Alexandre Courbot wrote:
->>>>>>> It also means that without patch 1, nova-core would split the firmw=
-are
->>>>>>> into hundreds of 64KB SG entries, which is not breaking but still
->>>>>>> something we want to avoid. The correct fix is to make sure that
->>>>>>> `dma_set_max_seg_size` is called by the driver, and while we are at=
- it
->>>>>>> we also want every driver to call `dma_set_mask_and_coherent`. Idea=
-lly
->>>>>>> we would use the type system to make sure that both functions are c=
-alled
->>>>>>> before any DMA operation can take place (using a safe interface), b=
-ut
->>>>>>> I'm not quite sure yet how we can do this.
->>>>>>
->>>>>> This sounds sensible indeed. Should I open a thread regarding that o=
-n Zulip?
->>>>>
->>>>> Probably not necessary, the mailing-list has a larger audience and is
->>>>> the right place for this. I expect people will jump in here with thei=
-r
->>>>> thoughts.
->>>>
->>>> The problem with those is not that they must strictly be called before
->>>> allocating DMA memory, but they must not be called concurrently with o=
-ther DMA
->>>> operations, such as allocating DMA memory, as it would technically be =
-a data
->>>> race.
->>>=20
->>> Do they really have to be called *before* allocating DMA memory, not do=
- they
->>> just need not be called *concurrent* to DMA memory allocation?
->>
->> Similar to DMA masks, the segment parameters should be set appropriately=
-=20
->> before any dma_map_sg() operation. Plus since they likely influence=20
->> scatterlist geometry, that means typically they're also going to need to=
-=20
->> be set before building the scatterlist to be mapped in the first place.
->
-> Right, in that case I think we have the following options:
->
-> 1.  Have setters these being unsafe, with precondition that they must be =
-done
->     before creation of DMA mappings.
+The Rust configfs abstractions do not fully constrain callback data for
+cross-thread use. Add the missing `Send` and `Sync` requirements.
 
-As mentioned, I don't think the safety requirement has to be before using o=
-ther
-DMA APIs, but just requiring to not do it concurrently. Not doing it would =
-be a
-semantic bug, but it shouldn't have any safety implications.
+Specifically, make the following changes:
 
-> 2.  Have a `dma_info()` method like Danilo mentioned. However, we cannot =
-expose
->     `&Device<Core<'_>>` inside such callbacks, because otherwise driver w=
-ould be
->     able create DMA mappings. This however is too restrictive to be the o=
-nly way
->     of setting DMA masks, because Nova needs to access the bar before set=
-ting the
->     DMA masks.
+1. Require `Data: Send` when implementing `Send` for `Subsystem<Data>`,
+   since the subsystem stores its data by value.
+2. Make `GroupOperations` a `Sync` supertrait because `make_group` and
+   `drop_item` receive `&self` from foreign threads. Require `Child: Send`
+   because configfs may release child groups on an arbitrary thread.
+3. Require `AttributeOperations::Data: Sync` because its callbacks receive
+   `&Data` from foreign threads.
+4. Update the safety comments in FFI callbacks that call `get_group_data`
+   to cite these bounds as justification for sharing the returned
+   references with the callback thread.
+5. Remove redundant `Child: 'static` bounds from `GroupOperationsVTable`
+   and `new_with_child_ctor`.
 
-Just to clarify, I mentioned this to be something we could do in addition t=
-o (1)
-for drivers where those values are statically known.
+Fixes: 446cafc295bf ("rust: configfs: introduce rust support for configfs")
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/Should.20add.20Data.3A.20Send.2FSync.20bounds.20in.20configfs.3A.3ASubsystem.3F/with/623719979
+Assisted-by: Gpt-5.6 Sol
+Signed-off-by: Yilin Chen <1479826151@qq.com>
+---
+Changes in v2:
+- Require attribute data and group operation implementers to be `Sync`.
+- Require child data to be `Send` for arbitrary-thread release.
+- Document the bounds that make shared references safe in FFI callbacks.
+- Remove redundant `Child: 'static` bounds from `GroupOperationsVTable`
+  and `new_with_child_ctor`.
 
-> 3.  Use wrapper type instead of generics for typestate. Then, we can expr=
-ess the
->     pattern of typestate transformation (generics cannot do this because =
-we
->     always place it behind a reference).
->
->     For example, we can have `Device` to mean `Device<Normal>`, and then =
-have
->     `Bound<Device>` to mean `Device<Bound>` (both of which are behind a s=
-hared
->     reference, like today, and `Bound<D>` can deref to `&D`).
->
->     Then, for `Core` typestate, we can instead have
->
->         struct Core<'a, D>(&'a Bound<Device>);
->
->     where it's passed by value. We can then define the DMA setters method=
-s to
->     operate on `Core` like we did today, but safely. Instead of providing=
- a
->     `Deref` impl that turns `&Core<'_, D>` to `&Bound<D>`, we only implem=
-ent
->     forwarding functions for APIs that can work without DMA configured (e=
-.g. PCI
->     bar).
->
->     Then, provide a `into_bound()` method which *consumes* `Core<'a, D>` =
-and
->     give out `&'a Bound<Device>` (this is why typestate generics cannot w=
-ork,
->     because `&'a Device<Core<'_>>` is Copy and we cannot represent the ow=
-nership
->     consumption).
+ rust/kernel/configfs.rs | 35 ++++++++++++++++++++---------------
+ 1 file changed, 20 insertions(+), 15 deletions(-)
 
-Yeah, we had this discussion in the past with similar ideas; it is the kind=
- of
-complication that we concluded not to be worth it and that I mentioned in m=
-y
-initial reply.
+diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
+index cd082b83e9e7..de9306a5e527 100644
+--- a/rust/kernel/configfs.rs
++++ b/rust/kernel/configfs.rs
+@@ -135,8 +135,9 @@ pub struct Subsystem<Data> {
+ // SAFETY: We do not provide any operations on `Subsystem`.
+ unsafe impl<Data> Sync for Subsystem<Data> {}
+ 
+-// SAFETY: Ownership of `Subsystem` can safely be transferred to other threads.
+-unsafe impl<Data> Send for Subsystem<Data> {}
++// SAFETY: Ownership of `Subsystem` can safely be transferred to other threads
++// if its data can be transferred as well.
++unsafe impl<Data: Send> Send for Subsystem<Data> {}
+ 
+ impl<Data> Subsystem<Data> {
+     /// Create an initializer for a [`Subsystem`].
+@@ -325,7 +326,6 @@ unsafe fn get_group_data<'a, Parent>(this: *mut bindings::config_group) -> &'a P
+ impl<Parent, Child> GroupOperationsVTable<Parent, Child>
+ where
+     Parent: GroupOperations<Child = Child>,
+-    Child: 'static,
+ {
+     /// # Safety
+     ///
+@@ -344,8 +344,9 @@ impl<Parent, Child> GroupOperationsVTable<Parent, Child>
+         this: *mut bindings::config_group,
+         name: *const kernel::ffi::c_char,
+     ) -> *mut bindings::config_group {
+-        // SAFETY: By function safety requirements of this function, this call
+-        // is safe.
++        // SAFETY: By function safety requirements, `this` points to a configfs
++        // group containing `Parent`. The `GroupOperations` bound guarantees
++        // that `Parent: Sync`, so it is safe to share it with this thread.
+         let parent_data = unsafe { get_group_data(this) };
+ 
+         let group_init = match Parent::make_group(
+@@ -390,8 +391,9 @@ impl<Parent, Child> GroupOperationsVTable<Parent, Child>
+         this: *mut bindings::config_group,
+         item: *mut bindings::config_item,
+     ) {
+-        // SAFETY: By function safety requirements of this function, this call
+-        // is safe.
++        // SAFETY: By function safety requirements, `this` points to a configfs
++        // group containing `Parent`. The `GroupOperations` bound guarantees
++        // that `Parent: Sync`, so it is safe to share it with this thread.
+         let parent_data = unsafe { get_group_data(this) };
+ 
+         // SAFETY: By function safety requirements, `item` is embedded in a
+@@ -483,12 +485,12 @@ const fn vtable_ptr() -> *const bindings::configfs_item_operations {
+ ///
+ /// Implement this trait on structs that embed a [`Subsystem`] or a [`Group`].
+ #[vtable]
+-pub trait GroupOperations {
++pub trait GroupOperations: Sync {
+     /// The child data object type.
+     ///
+     /// This group will create subgroups (subdirectories) backed by this kind of
+     /// object.
+-    type Child: 'static;
++    type Child: 'static + Send;
+ 
+     /// Creates a new subgroup.
+     ///
+@@ -555,8 +557,10 @@ impl<const ID: u64, O, Data> Attribute<ID, O, Data>
+             // `config_group`.
+             unsafe { container_of!(item, bindings::config_group, cg_item) };
+ 
+-        // SAFETY: The function safety requirements for this function satisfy
+-        // the conditions for this call.
++        // SAFETY: By function safety requirements, `c_group` points to a
++        // configfs group containing `Data`. The `AttributeOperations` bound
++        // guarantees that `Data: Sync`, so it is safe to share it with this
++        // thread.
+         let data: &Data = unsafe { get_group_data(c_group) };
+ 
+         // SAFETY: By function safety requirements, `page` is writable for `PAGE_SIZE`.
+@@ -589,8 +593,10 @@ impl<const ID: u64, O, Data> Attribute<ID, O, Data>
+         // `config_group`.
+             unsafe { container_of!(item, bindings::config_group, cg_item) };
+ 
+-        // SAFETY: The function safety requirements for this function satisfy
+-        // the conditions for this call.
++        // SAFETY: By function safety requirements, `c_group` points to a
++        // configfs group containing `Data`. The `AttributeOperations` bound
++        // guarantees that `Data: Sync`, so it is safe to share it with this
++        // thread.
+         let data: &Data = unsafe { get_group_data(c_group) };
+ 
+         let ret = O::store(
+@@ -643,7 +649,7 @@ pub const fn new(name: &'static CStr) -> Self {
+ pub trait AttributeOperations<const ID: u64 = 0> {
+     /// The type of the object that contains the field that is backing the
+     /// attribute for this operation.
+-    type Data;
++    type Data: Sync;
+ 
+     /// Renders the value of an attribute.
+     ///
+@@ -749,7 +755,6 @@ pub const fn new_with_child_ctor<const N: usize, Child>(
+             ) -> Self
+             where
+                 Data: GroupOperations<Child = Child>,
+-                Child: 'static,
+             {
+                 Self {
+                     item_type: Opaque::new(bindings::config_item_type {
 
-The only safety relevant issue should really be the data race of the primit=
-ives
-values being set, which is more on the theoretical side of things.
+base-commit: 08df884136f1c1197bab2a27814404fd329d9aac
 
->> I don't think there's any expectation that they would ever change=20
->> *between* different mappings - especially given the underlying hardware=
-=20
->> properties they represent - so while that might technically be possible=
-=20
->> in the C API if the caller can enforce sufficient ordering, it should be=
-=20
->> fine to rule it out in the Rust abstraction if that makes things easier=
-=20
->> to reason about.
->>
->>> If it's the former, we can require these to require mutable reference i=
-nstead,
->
-> Correction: this should say "latter".
->
->>> so the probe takes `Pin<&'bound mut Device<Core<'_>>>` which still dere=
-fs to
->>> `&'bound Device<Bound>`, but Rust will require the shared reference to =
-not
->>> co-exist with the mutable reference.
-
-I think that doesn't work, there are drivers that need to perform MMIO befo=
-re
-knowing e.g. the DMA mask, i.e. we can't have Pin<&'bound mut Device<Core<'=
-_>>>
-at the same time as e.g. pci::Bar<'_>, which borrows a &Device<Bound>.
