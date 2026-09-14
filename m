@@ -1,69 +1,39 @@
-Received: from linkmauve.fr (linkmauve.fr [82.65.109.163])
+Received: from mail.stoffel.org (mail.stoffel.org [172.104.24.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BA747426E;
-	Mon, 14 Sep 2026 14:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E3F43F4A3;
+	Mon, 14 Sep 2026 15:09:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.104.24.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789395208; cv=none; b=FuMvIFcywqg4hu+p9AVW2KStHMDqbn5doE5XWhGRLTCQBlJ9cLGL7gdlyP2uBLQWfUga/9tJUUkN7MvS6aPSRt8vGNN1Zksm+2rlZe3Qx9muv21A2fyPk3xz4FefRLrAc0gxtiER7TtdJFJcCvc74ItoFWblcR/3GKlWU0CgECA=
+	t=1789398545; cv=none; b=bahhZWxzIiz5d6tXHKjpC7U0CewQVH8N9I+mFawoImRwkwk1hyrgSvYN2no46Wd7Ay4hckoAOcf1zWA2Yl0ReXFz92aB8KltAaA50i1sL3iB5+RuBjpSmWKYBlzqqn+NwUKSOKl3V5cu5wdYd5F4g/x7gQ56XI5aie6OarYSxxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789395208; c=relaxed/simple;
-	bh=HPoZWFDHbv/7IEvQj89VBgQug8JWRFu6B46ZI2l/FlA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X3bRhkpBAz4l/JyJka57IG2btJDlVISht36wa7ADPwA9+SAFAkb42Dpr8NiViwmF82ypC80HOL9Yxs8wWm4ztpq/NekOU/EfNrb37lacbI/RGaT3kwdpC4I3Z8Yp/QDVAS6DVNoaAeb7xsjaUUV9bCafxOJqtnOGyOiiuz7gk04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
-Received: by linkmauve.fr (Postfix, from userid 1000)
-	id 6BE34717EC24; Mon, 14 Sep 2026 16:13:17 +0200 (CEST)
-Date: Mon, 14 Sep 2026 16:13:17 +0200
-From: Link Mauve <linkmauve@linkmauve.fr>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Link Mauve <linkmauve@linkmauve.fr>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Sasha Finkelstein <k@chaosmail.tech>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
-	Neal Gompa <neal@gompa.dev>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Kalyani Akula <kalyani.akula@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Johan Hovold <johan@kernel.org>,
-	Ronald Claveau <linux-kernel-dev@aliel.fr>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev, imx@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 0/3] nvmem: migrate to const void * in reg_write
-Message-ID: <aqgA_bGo3yqBNL0_@desktop>
-References: <20260804135940.2378737-1-linkmauve@linkmauve.fr>
- <aoNY85rdMdBDSiGW@ashevche-desk.local>
+	s=arc-20240116; t=1789398545; c=relaxed/simple;
+	bh=oMblGF1PmYRaqle4YPaaEqUlpIDejeN8jfSd3IyEo/E=;
+	h=MIME-Version:Content-Type:Message-ID:Date:From:To:Cc:Subject:
+	 In-Reply-To:References; b=PV+YwHWcZsjYG6fVGWebIf+OfmGG36YDARmOu6C4ZhqwT0tyWj+pZNg9rkcpTWRDGpB/GI/TKn2pk9rsyS7ybWh+hG9q4/X1P/gOLyg490Qr01eNgzGMpGBQzjjNspf3YyPu4af4kZZK+aTHTVGgTilGzYwMFisT1G3KiAylC44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=stoffel.org; spf=pass smtp.mailfrom=stoffel.org; dkim=pass (2048-bit key) header.d=stoffel.org header.i=@stoffel.org header.b=AlmtH9ST; arc=none smtp.client-ip=172.104.24.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=stoffel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stoffel.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=stoffel.org header.i=@stoffel.org header.b="AlmtH9ST"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stoffel.org;
+ i=@stoffel.org; q=dns/txt; s=20250308; t=1789398143; h=mime-version :
+ content-type : content-transfer-encoding : message-id : date : from :
+ to : cc : subject : in-reply-to : references : from;
+ bh=oMblGF1PmYRaqle4YPaaEqUlpIDejeN8jfSd3IyEo/E=;
+ b=AlmtH9STTB3sBPP31THd4Ukf5Z6t561oZCkY6InocAjV6FJV0GlJpESrVaoEiZ4A2uvYj
+ gSessr0w8EU13qxN0B+jYQ20yXsLhCqUZutbGy7AcGcD5CFenB+bVoo/1m8Bw/R1ZtoWetF
+ sBmKOUI3nx0KxE7wUcDCF+5n4994xds9o7lSQH/T2399oBGJXN2k3kZ8PCGsCP8feOVSZt7
+ E2jqE9cJAeF1HOKpro5FXdEZy3YI3ScbXELaBw6grc9sla2gt2x7VXc0k45gBGa5H3OmWN9
+ QSHUKS/Lr8CJN8h1E+WssVpWqEPHuNKBoEAReWkV8A5H3NgyUYydzjMKYCNw==
+Received: from quad.stoffel.org (unknown [24.177.6.168])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by mail.stoffel.org (Postfix) with ESMTPSA id 929541EB4A;
+	Mon, 14 Sep 2026 11:02:23 -0400 (EDT)
+Received: by quad.stoffel.org (Postfix, from userid 1000)
+	id E573BA3288; Mon, 14 Sep 2026 11:02:22 -0400 (EDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -71,46 +41,114 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoNY85rdMdBDSiGW@ashevche-desk.local>
-Jabber-ID: linkmauve@linkmauve.fr
+Content-Transfer-Encoding: 7bit
+Message-ID: <27304.3198.867048.379684@quad.stoffel.home>
+Date: Mon, 14 Sep 2026 11:02:22 -0400
+From: "John Stoffel" <john@stoffel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+    Nathan Chancellor <nathan@kernel.org>,
+    Nicolas Schier <nsc@kernel.org>,
+    Nick Desaulniers <ndesaulniers@google.com>,
+    Bill Wendling <morbo@google.com>,
+    Justin Stitt <justinstitt@google.com>,
+    Masahiro Yamada <masahiroy@kernel.org>,
+    Alexey Gladkov <legion@kernel.org>,
+    Thomas Gleixner <tglx@kernel.org>,
+    Ingo Molnar <mingo@redhat.com>,
+    Borislav Petkov <bp@alien8.de>,
+    Dave Hansen <dave.hansen@linux.intel.com>,
+    x86@kernel.org,
+    "H. Peter Anvin" <hpa@zytor.com>,
+    Paul Walmsley <pjw@kernel.org>,
+    Palmer Dabbelt <palmer@dabbelt.com>,
+    Albert Ou <aou@eecs.berkeley.edu>,
+    Alexandre Ghiti <alex@ghiti.fr>,
+    Arnd Bergmann <arnd@arndb.de>,
+    Catalin Marinas <catalin.marinas@arm.com>,
+    Will Deacon <will@kernel.org>,
+    Mark Rutland <mark.rutland@arm.com>,
+    Ard Biesheuvel <ardb@kernel.org>,
+    Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+    Josh Poimboeuf <jpoimboe@kernel.org>,
+    Peter Zijlstra <peterz@infradead.org>,
+    Miguel Ojeda <ojeda@kernel.org>,
+    Boqun Feng <boqun@kernel.org>,
+    Gary Guo <gary@garyguo.net>,
+    =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+    Benno Lossin <lossin@kernel.org>,
+    Andreas Hindborg <a.hindborg@kernel.org>,
+    Alice Ryhl <aliceryhl@google.com>,
+    Trevor Gross <tmgross@umich.edu>,
+    Danilo Krummrich <dakr@kernel.org>,
+    Daniel Almeida <daniel.almeida@collabora.com>,
+    Tamir Duberstein <tamird@kernel.org>,
+    Alexandre Courbot <acourbot@nvidia.com>,
+    Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+    Jonathan Corbet <corbet@lwn.net>,
+    Randy Dunlap <rdunlap@infradead.org>,
+    Kees Cook <kees@kernel.org>,
+    "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+    linux-kbuild@vger.kernel.org,
+    linux-kernel@vger.kernel.org,
+    llvm@lists.linux.dev,
+    linux-riscv@lists.infradead.org,
+    linux-arch@vger.kernel.org,
+    linux-arm-kernel@lists.infradead.org,
+    linux-efi@vger.kernel.org,
+    rust-for-linux@vger.kernel.org,
+    linux-doc@vger.kernel.org,
+    Jens Axboe <axboe@kernel.dk>,
+    linux-hardening@vger.kernel.org
+X-Clacks-Overhead: GNU Terry Pratchett
+Subject: Re: [PATCH v2 11/21] kbuild: avoid re-running compiler and linker
+ probes
+In-Reply-To: <20260914-build-speedup-v2-11-39817ec5db23@kernel.org>
+References: <20260914-build-speedup-v2-0-39817ec5db23@kernel.org>
+	<20260914-build-speedup-v2-11-39817ec5db23@kernel.org>
+X-Mailer: VM 8.3.3snapshot under GNU Emacs 28.2 (x86_64-pc-linux-gnu)
 
-Hi,
+>>>>> "Lorenzo" == Lorenzo Stoakes (ARM) <ljs@kernel.org> writes:
 
-On Mon, Aug 17, 2026 at 09:54:43PM +0300, Andy Shevchenko wrote:
-> On Tue, Aug 04, 2026 at 03:59:34PM +0200, Link Mauve wrote:
-> > This callback used to take a mutable void * for no reason, which causes
-> > the compiler to be unaware that the val buffer should never be modified
-> > by the callback.
-> > 
-> > This was found while drafting the nvmem-provider Rust abstraction.
-> > 
-> > Thanks to the guidance of Andy Shevchenko, this now introduces a new
-> > callback and deprecates the existing one, with the goal of renaming the
-> > new one into the old one once no user remains in the kernel.
-> 
-> FWIW, if the approach taken is okay by maintainers,
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+> Each kernel make invocation begins with ~30 compiler and linker runs each
+> of which performs duplicate probe for a number of compiler and linker
+> options.
 
-Thanks for the review!
+> This is useless work - the compiler and its version is known, so use these
+> to determine which options are available, once.
 
-> 
-> I think this is right direction to go. We should use all possible ways to
-> protect the data from corruption.
+> A convention already exists for this - CC_HAS_xxx, LD_HAS_xxx in Kconfig
+> files (for example, CC_HAS_COUNTED_BY), so convert these probes to Kconfig
+> options where appropriate.
 
-Sorry for not pinging again before the end of the 7.3 merge window, I
-was on vacations, but this only delayed that work by one cycle.
+> This change avoids a sublte issue with ppc32 (big endian) - clang doesn't
+                       ^^^^^^
 
-Is there anything I could do to make it happen for 7.4, or should I just
-wait until a maintainer picks up that series?  I just tested and
-everything still builds file on top of linux-next as of next-20260911.
+subtle
 
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+> accept -fno-stack-clash-protection on this sub-target, so keep this option
+> in the Makefile.
 
--- 
-Link Mauve
+> With gcc and clang, defconfig and allmodconfig, the recorded command
+> lines are unchanged, a build with nothing to do rebuilds nothing and W=1
+> continues to function correctly.
+
+> Doing this improves all builds, but has a particularly positive impact on
+> no-op builds (builds where nothing has changed).
+
+> Whole build, 128-thread Threadripper 9980X, best of N runs:
+
+>                                          before   after     delta
+>                                          -------------------------------
+>   x86 defconfig, no-op make, gcc           0.78s    0.60s    -0.18s (-23%)
+>   x86 defconfig, no-op make, clang         0.94s    0.66s    -0.28s (-30%)
+>   x86 defconfig, touch mm/vma.c, gcc        8.6s     8.5s    -0.16s (-2%)
+>   x86 defconfig, touch mm/vma.c, clang      8.0s     7.7s    -0.24s (-3%)
+>   x86 defconfig, clean, clang              29.8s    29.4s    -0.37s (-1%)
+>   x86 allmodconfig, no-op make, gcc        12.9s    12.7s    -0.23s (-2%)
+>   x86 allmodconfig, no-op make, clang      14.2s    13.9s    -0.29s (-2%)
+>   x86 allmodconfig, touch mm/vma.c, clang  32.2s    31.9s    -0.30s (-1%)
+
+Are these deltas just per-patch, but cumulative with all the previous
+patches applied?   
+
