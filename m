@@ -1,120 +1,121 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716F63659FD;
-	Mon, 14 Sep 2026 09:49:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51D63438BE;
+	Mon, 14 Sep 2026 09:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789379376; cv=none; b=hmCbchFWOfe1Fs/sE4CQoqpyk4X9nacBgy6CchlfL5Kv1hz1PLLeSeHiLj0MnsvdrxleR3t8z6aYbVn4hIFfXcJcrh0I11G9eDbCzqoo0LU3l+tJ+YB/KpzELJhSRKf7YqYlFM9dh4sLYFi/MD6Zp27/JjvH9oOjRq1tKie4lZU=
+	t=1789379890; cv=none; b=ioPtxw567Q1UfyT7U355c26hLxRbpDEVDsWzqvzTSC0PvMloIQCEUJIC4jp+/QuG9KnwAU1JuM+/r1iwJ7MGy427Jq2HIPjdReYiFsc+d2GQVv/nCbC83FaYu4Y+B+iEGplLsv+cUtwfwLuts4hzKDmWVKALMZeJy6Whc6K4iH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789379376; c=relaxed/simple;
-	bh=fFpokA8xz9+jONXdKLRIuen5of1BLot2wdHJfyGypck=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UKUYhEpwNHgox4OS8R/eLdLaJbdg5vrG7pS6yBm9OWCja+ZDilk1RYHCtXnhSYJsMwzEgNzWmo29gXuINkielxOXv+COSc0VlEfNS+UQ+Pym/JJUV/YhEZTW/vcEQcgz7e0HUEEsksJ7clIsvY9Kk4vganvRFIN2sl/GGcnveBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H9ggI9ko; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1789379890; c=relaxed/simple;
+	bh=b53VofDGPRM1GBlgP66ZMJ0fkJDmyWLK7QstQpHO3rw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=j92YqIJbduMWAbMaIJx6uFQW2+8/Qv0sWBJveknNH8hELxZIi46tOqrKC4hfNSDYX0+rFj+y1NAEClLXVrFnOp+ahX5+nr0xOmuTuzS93QhgnvoUzNMEahWZ4V5YNwkK4iatCidxku20/bVvdNSMcr8+7alBmrgmQL6s39wIor4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OCse/liL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H9ggI9ko"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789379374; x=1820915374;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fFpokA8xz9+jONXdKLRIuen5of1BLot2wdHJfyGypck=;
-  b=H9ggI9koejmWW0DHzrYa/6ngdofoJKIasmg4EYbttLDTlmyOvrS6EgkQ
-   LFa0+vrYrYIF1sDnuvwmnB8TboCyG9rsAmuQ92kNyJvzT7lp3oAf7+xge
-   dwZpufW7UOSi+NBtCO3UfPZtYLKmDqN07OTusyrAd9GAUB/QSjIaNQn/r
-   FI65SfhM/X5RClHs5vkpvRMd763KZ0QSJm6wojm9XxNjb4XTGdWtzezY7
-   0MjML0T/Qgql1FNIf4UX6eN3tmXnYY9ofW4O0966k3i/xtD5sUDtrKjVT
-   QygrOcYWkaH7dy5MANKNFN6kWfoF/zX+7zhiVMe59/a+Adn1w2lUEJYSq
-   Q==;
-X-CSE-ConnectionGUID: zQpinD+7QceyJs2MGXSgYA==
-X-CSE-MsgGUID: pFdb+oGkQeq1HZLu+yG+ZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11904"; a="89742297"
-X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
-   d="scan'208";a="89742297"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 02:49:34 -0700
-X-CSE-ConnectionGUID: nMPOfAqpQX6EtG6DT99wOw==
-X-CSE-MsgGUID: Q+dr2F59QxuEl9PLtq7vhA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
-   d="scan'208";a="276754901"
-Received: from lkp-server01.sh.intel.com (HELO 462990a40a85) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 14 Sep 2026 02:49:30 -0700
-Received: from kbuild by 462990a40a85 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x63JW-000000002jn-3lw5;
-	Mon, 14 Sep 2026 09:49:26 +0000
-Date: Mon, 14 Sep 2026 17:49:19 +0800
-From: kernel test robot <lkp@intel.com>
-To: Filipe Xavier <felipeaggger@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Filipe Xavier <felipe_life@live.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: impl_flags: add conversions for raw flag
- representations
-Message-ID: <202609141744.1nZ48tzs-lkp@intel.com>
-References: <20260912-add-from-raw-conversions-v1-1-0cee34684d24@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OCse/liL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF0B1F000FF;
+	Mon, 14 Sep 2026 09:58:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789379888;
+	bh=NV5ysSYUzr7wTam47Xgr5BpP0ObkoK7ZWem9Cub+zLY=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=OCse/liLHwkV5ghS83TJD0nEEp3k/7NCtbvhQpsWjEHvSX13i3c4WIlqNwyrkiN3n
+	 bNUu0o7vcMjxsIly8au6ZzJqUCQ7hhKCZeGJtmOGYoJGdkgaYk196+JKHelCepjJOo
+	 y/eWwie63/vQ408vRMnBnzEAuP8BvOJof92ByeDwp86warvGOzDD5r1loM0OS1juaa
+	 hA9FzMwU44A9t4WjW7bld8O+Q3NCEz4+LdunqtSDZbtEmrEkJ4XIfy3i5tPhtbBejn
+	 wbXl++57n9Ybwf+JSsRuiiFfuhf4yarwOAPjZgV1KF+6sc3yEe42d+HuSAgLLzj9ft
+	 ayANgIx7PCmqQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260912-add-from-raw-conversions-v1-1-0cee34684d24@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 14 Sep 2026 11:58:04 +0200
+Message-Id: <DLEY8AHWZFCQ.QUHP2NHJW1QX@kernel.org>
+Subject: Re: [PATCH 2/2] rust: scatterlist: honor the device's maximum
+ segment size
+Cc: "Matteo Kloiber" <kernel@matt3o12.de>, <aliceryhl@google.com>,
+ <ojeda@kernel.org>, <airlied@gmail.com>, <simona@ffwll.ch>,
+ <abdiel.janulgue@gmail.com>, <daniel.almeida@collabora.com>,
+ <robin.murphy@arm.com>, <a.hindborg@kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260831233215.287881-1-kernel@matt3o12.de>
+ <20260831233215.287881-3-kernel@matt3o12.de>
+ <DL8QLYLQJEL1.3F653J67DYZ47@nvidia.com>
+ <20260913210806.125589-1-kernel@matt3o12.de>
+ <DLEMH1X0KQA1.D1PYVJD0E6SR@nvidia.com>
+In-Reply-To: <DLEMH1X0KQA1.D1PYVJD0E6SR@nvidia.com>
 
-Hi Filipe,
+On Mon Sep 14, 2026 at 2:45 AM CEST, Alexandre Courbot wrote:
+> On Mon Sep 14, 2026 at 6:08 AM JST, Matteo Kloiber wrote:
+>> On Mon Sep 7, 2026 at 11:43 AM JST, Alexandre Courbot wrote:
+>>> It also means that without patch 1, nova-core would split the firmware
+>>> into hundreds of 64KB SG entries, which is not breaking but still
+>>> something we want to avoid. The correct fix is to make sure that
+>>> `dma_set_max_seg_size` is called by the driver, and while we are at it
+>>> we also want every driver to call `dma_set_mask_and_coherent`. Ideally
+>>> we would use the type system to make sure that both functions are calle=
+d
+>>> before any DMA operation can take place (using a safe interface), but
+>>> I'm not quite sure yet how we can do this.
+>>
+>> This sounds sensible indeed. Should I open a thread regarding that on Zu=
+lip?
+>
+> Probably not necessary, the mailing-list has a larger audience and is
+> the right place for this. I expect people will jump in here with their
+> thoughts.
 
-kernel test robot noticed the following build errors:
+The problem with those is not that they must strictly be called before
+allocating DMA memory, but they must not be called concurrently with other =
+DMA
+operations, such as allocating DMA memory, as it would technically be a dat=
+a
+race.
 
-[auto build test ERROR on 08df884136f1c1197bab2a27814404fd329d9aac]
+Now, we can't really have drivers define them statically (e.g. in the drive=
+r
+trait) as there may be cases where it depends on the runtime state or prope=
+rties
+of the device queried at runtime. Sometimes it is also defined through OF
+properties (which from a kernel perspective are runtime values too).
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Filipe-Xavier/rust-impl_flags-add-conversions-for-raw-flag-representations/20260912-135434
-base:   08df884136f1c1197bab2a27814404fd329d9aac
-patch link:    https://lore.kernel.org/r/20260912-add-from-raw-conversions-v1-1-0cee34684d24%40gmail.com
-patch subject: [PATCH] rust: impl_flags: add conversions for raw flag representations
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20260914/202609141744.1nZ48tzs-lkp@intel.com/config)
-compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
-rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260914/202609141744.1nZ48tzs-lkp@intel.com/reproduce)
+For the same reason it is also pretty hard to invent a type state pattern f=
+or
+those setters that is not getting ridiculously complex without much value, =
+which
+is why we just kept them unsafe for the time being.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202609141744.1nZ48tzs-lkp@intel.com/
+The best option to get rid of the unsafe would probably be to use atomics
+instead. It would however be a rather big change, what makes it a bit of a =
+hard
+sell, given that the reason of this unsafe is more on the theoretical side =
+of
+things.
 
-All errors (new ones prefixed by >>):
+Theoretically, we could also optimize the situation for when it is statical=
+ly
+known, e.g. some dma::Config trait that can be implemented, such that the b=
+us
+can set the before calling probe(). But we'd really want this to work per d=
+evice
+ID table entry, as it may differ between supported devices. But that might =
+not
+be quite straight forward without associated_type_defaults. The simplest th=
+ing I
+could think of is some callback, such as
 
->> error[E0119]: conflicting implementations of trait `TryFrom<u32>` for type `VmMapFlags`
-   --> drivers/gpu/drm/tyr/vm.rs:74:1
-   |
-   74 | / impl_flags!(
-   75 | |     /// Flags controlling virtual memory mapping behavior.
-   76 | |     ///
-   77 | |     /// These flags control access permissions and caching behavior for GPU virtual
-   ...   |
-   92 | | );
-   | |_^ conflicting implementation for `VmMapFlags`
-   ...
-   144 |   impl TryFrom<u32> for VmMapFlags {
-   |   -------------------------------- first implementation here
-   |
-   = note: this error originates in the macro `impl_flags` (in Nightly builds, run with -Z macro-backtrace for more info)
+	fn dma_info(id_info: Option<&Self::IdInfo>) -> DmaInfo
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+which is called before probe(), but that's not great either. Maybe there is=
+ a
+good solution for this, but I'd first want to exhaust getting the setters s=
+afe.
