@@ -1,123 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012029.outbound.protection.outlook.com [52.101.43.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057D7368D4A;
-	Sun, 13 Sep 2026 21:30:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789335053; cv=none; b=dEsuFXHbvOCFV68B2sbQeVeazVqhQFnld/5Q0HvF8t9aaIOxdrUKgelebwbk2/YMBHzNxWnjSLkZxbB/4olrbIF/PlnXABVKNp+nre0SJcMZbq0L2BF38yAHlFQ4mYvDZlI/ec1JeB0fb6ZYU33JAXgvVVg/AHgR5RIJJI3YzMw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789335053; c=relaxed/simple;
-	bh=zHj4TrfScp8NUQmY2H3hh9ODOhBU5G/V6DHM3N4sOLo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jxqqqMJs13gYqkHHf8YnfaikdBTfi6BX9XIk2pI2c9IsCStz7nl/HlYXupC+KYhWTVMhVT2VlSS0QkesAQK2sqSWLBXmbW9uIPpdWBTgAVEBcj3xmo13XKxa/Lv1TjiZsT77/kzOxz/iEb/q8lSWPyjZd9ALyzgd5owy/6gJHP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AogI6zYE; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F82F21ADC7;
+	Mon, 14 Sep 2026 00:45:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789346725; cv=fail; b=tkbX0kk+Tv6syxmj9lW+j1n6QS00pVfCKwnt0C4UKpCi6k2OJO2UvQdyUkMRarBXMQgKK7uUPfznC10rF4wH06TAI4mKqQVN4sGyGTY4iRXMdDHkbH03YbBcEuyf0pGOK0kcvMagHKGgZlea5I/wbm1F68K8LCZ+Qdv+FYl6MUc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789346725; c=relaxed/simple;
+	bh=0srAe7leHLcuTk2u8vKWuuvw7NWA22PuqY7pZolgt3M=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=o7fzia/Nel20K27XvgdtW7SgQvuWeBITBXzXEWnDJsIsoRwEVRkqj3fKHH03BYewNr2ChwVZ8LnFQhtkAf07T8OdWRUxWNalRmcoybykxGzT97DV2YW7NRVoVXSLUDKE+IKErpEjTvgH14ILG0sVVcbeb8SduphFGIm0TUBhC04=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oHTD0fMQ; arc=fail smtp.client-ip=52.101.43.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AogI6zYE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D97D1F000FF;
-	Sun, 13 Sep 2026 21:30:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789335051;
-	bh=8Op6TT+ye7ilPzZZhA+0bF/cZnCKFVYCxqoH+Jt7ciM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AogI6zYE9Khh/gIeznHIfBrXAQbQqM+AaREGLZTqRZLUXl9A0qLUp9IGQpoYOxnfT
-	 Oprg5UR25Yk95sS2NoceDjN8dTCPDlZedl/7TNdrQFaiPXp4pI6WxVjIRtyg6ghG9o
-	 xhfO11NvrCEN8U6/RYoBgoSQhjru0JOW0O9RDtKvQta9cH4V1Ps/6dSAe4j/7IWR2J
-	 OGS3s0ARLZc5A2jUPQYso8SxtcRzmH+F6XTUFnlGHKIcBp2b1AsMuYfRLZp98b9tr6
-	 /1Xkwktlq11CX8GXfzTt/2uMWdKY/9D1nNe0QENXcuSOjkppbxgVch47KcNShfKS6M
-	 oWYhL+Qadgcjg==
-Date: Sun, 13 Sep 2026 22:30:41 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Nicolas Schier <n.schier@fritz.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Alexey Gladkov <legion@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Jonathan Corbet <corbet@lwn.net>, 
-	Randy Dunlap <rdunlap@infradead.org>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH 20/23] kbuild: rust: parallelise rustc front end
-Message-ID: <aqcTSgN7Qui-NYKS@gremlin>
-References: <20260908-build-speedup-v1-0-5dc1ac01672d@kernel.org>
- <20260908-build-speedup-v1-20-5dc1ac01672d@kernel.org>
- <20260911-impressive-heavy-bobcat-6ceeb1@l-nschier-aarch64>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oHTD0fMQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zB1WGPSDaJw2ZGvXVKQtxqJxLOTQUgdaimMDZe+bGier9ShFz0oXTRlmrWk/HeP2AYOnwJcj+QeDRyfpUxlSu+t2ghKnQE/g57RpcO7tRAIW+qvlwIt1zJXETQJmP77LeSt9HGAB/WliBPA/2WcXtJQ30lPa55AWQBRr088JMJR1MDjuN0QMEeBatKSf/M/JhZOEH98gGJw+6rMNW8DPApUZ/Y+2s05QfTnnOGymLJdj7GmvtqusdAea9PQBW9Q9OJKt5MWdNzZavTnMrgjR5w9g6pHa1stn5A03++X+QK/XQ7Lqwh0sRigcQqBNOSDpbzoAe4JdR7CfWywrCNTJcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0srAe7leHLcuTk2u8vKWuuvw7NWA22PuqY7pZolgt3M=;
+ b=ELl9I7oZS/yisGemutLo9HfBv7vLQZ20JFm2MGXBcy5AhMotvW/5Bc/71U9Lm3Aj3txg9z4ElsBmli9Pdld4ZaPcOJpLxNLpUsXDjz/jnoSdtXg/uKCVpj0OQSmXy4v+psSYcBG8nCoNPT4aXXXKeD2zPiPQGa7a4GIQEnpUNzoCJ4KtdgtRZXNL1gq6Zz7jQ3i7sl8H93FszRM2G2Vo1GYZzmnNEikpb8ihRz9HY/pqAI1xDbUKFr7qJh6Sg6POeMCYqjEzR3+iYp5kRskomdNY5cP6Ty43d0/zP1l2yRtwdK2KpSYpFQ7d4KSmaHCd6N/R2lh1WVb6xYYy2w7dQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0srAe7leHLcuTk2u8vKWuuvw7NWA22PuqY7pZolgt3M=;
+ b=oHTD0fMQDqiGo+1tancMnbX9jZSk9C+gL4T6zglWL+1Q/bfqKaAkjE6dgUu9IjzKtx29GfBaKQYxhS/T/ZR7zV6/T9f59eXSKeZ9Nfl05799BnrhNJlGrtly0JnSslri+XGRaRYN28gLmJw2LAcC86vdiEEOuHofsa9yVQR28nntArHEY5VrHYq7fhH4tjim/r3frAPXuZk13FtgnVjTrjZNPykU/XozPU37c9WtOUYbGbPt0Yx7aKZz13kw0Wdiygx8crk2c3zuLU9PP0SREJ+T/TRy+k8fd7tuJtd9fafqw3W4O0mF3Lrc9IvhE4cgpYGD1u0oCxcuknCV5jxUtQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by BY5PR12MB4196.namprd12.prod.outlook.com (2603:10b6:a03:205::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
+ 2026 00:45:21 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
+ 00:45:21 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 14 Sep 2026 09:45:17 +0900
+Message-Id: <DLEMH1X0KQA1.D1PYVJD0E6SR@nvidia.com>
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Matteo Kloiber" <kernel@matt3o12.de>
+Cc: <dakr@kernel.org>, <aliceryhl@google.com>, <ojeda@kernel.org>,
+ <airlied@gmail.com>, <simona@ffwll.ch>, <abdiel.janulgue@gmail.com>,
+ <daniel.almeida@collabora.com>, <robin.murphy@arm.com>,
+ <a.hindborg@kernel.org>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <driver-core@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] rust: scatterlist: honor the device's maximum
+ segment size
+References: <20260831233215.287881-1-kernel@matt3o12.de>
+ <20260831233215.287881-3-kernel@matt3o12.de>
+ <DL8QLYLQJEL1.3F653J67DYZ47@nvidia.com>
+ <20260913210806.125589-1-kernel@matt3o12.de>
+In-Reply-To: <20260913210806.125589-1-kernel@matt3o12.de>
+X-ClientProxiedBy: TY4PR01CA0042.jpnprd01.prod.outlook.com
+ (2603:1096:405:2bd::7) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260911-impressive-heavy-bobcat-6ceeb1@l-nschier-aarch64>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|BY5PR12MB4196:EE_
+X-MS-Office365-Filtering-Correlation-Id: e6c03a56-74e5-47e6-7c27-08df11f97490
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|10070799003|23010399003|1800799024|366016|6133799003|10067099003|4143699003|56012099006|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	YxU5O3vLGcRb6d2JbgLlf7Kj3x5THIDpQNcCEgFE5+flrV4U9Ffd1EzqHRJ4SOxQXnaqBArACk4Xw5kLIGCizC6C9dSL8PK8UmE+VH249/sHK7q2jlsqO5/wD42lYVBbZMIae2oosXyb9M7iVe4K5N6jsDjxgE5Mg9OuU7ulEyJZ3hAYl3lpezieDku/kZZPrFSDzCnQ4++wcIZkGZzn6VcC0YzoQjwmPq+hGb7IejvD6hxDNGQXUG8c4NrXxxS8AIRNxWDKhVbcPj5POBd5z1MY/98+x0Negc/3Ba5Zg71ktXdBWPyQdlit1Xc4Z8N3rI2Gh9Vp4GUzrXac4wR5GxmmwcopR0LR3C/XChrBcPA7Hazgr2Omre5c2Fqq7bpG9V/Nk5xDt3MW4cqZOjHpFtLaM7dHWWPQYU+bBSxrVlmn32JBQhf6G4Q5Ce2++A8/0XpOp9uZf5EHDQnQbBFTO3nJX444SMlMczHN7lOTR3XaO3tntzbAZ+rtBZWSTDZfcj0JJYCeR2jYsmgv8S9CF6cZxj/YpoxaYXaiLIgGDmXDiusbSm9YCBXI1OspB7IHRpiRXeIuxhf3ifaCjliHaGr09WoVpJxmEJ7QVu2Br9Wfhg/AgNBtU8WlgzWamRhzYNzW7peuECEUHddN1iuQK2dut2sKOkZE0+TTDVa0bhs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(10070799003)(23010399003)(1800799024)(366016)(6133799003)(10067099003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TEhWV0NJNm1zdk1XL2diKzVaamsvSncreUVIQWkxaEhnd3Bac1hVNFBtMW50?=
+ =?utf-8?B?VjNtbGxaazVUem16OThWQm00a2xGcDlZUDVNVGNNczJzZ0x3UEtWdm9LL0pM?=
+ =?utf-8?B?NVN2STlySTEvYTR5UGwxbGdYSTlKYm1hdHBkQnh3TUJFNG03TlhqY0hweFhs?=
+ =?utf-8?B?YXpDRGUyRjV4dkRsMVNEVEZLS05WclVPSmhHS0dHaFE5REYrNGE4V1VCUWdD?=
+ =?utf-8?B?dXd1aEhkMmY3WHByaTJySE9ZQ2NBWXdkdDNob2V4eVJxTVJMcW12NEdkTEhq?=
+ =?utf-8?B?MjIwc1BiRjkwNVBsTUZFRjV5aGpINnovdk9MOCtwV3MyU3dQY0o2RW0veVdD?=
+ =?utf-8?B?NFY1VGh1Tml0WUNLS01mYXU3UGNSRkZDdE4rUmJjTVBrVzJVU3p2Nkp1Rmkw?=
+ =?utf-8?B?UUVwSW5jTldLS0pxYWZkRDJIREZIbWsxNDVvU1hBTzc4aENYL0NkVVdCWnJj?=
+ =?utf-8?B?VlJLTEFOZk8zMkhBbS8wQS9KYnNLUzdKUzRjMmY4UFp4WHdXRGZEK1JjV0kw?=
+ =?utf-8?B?WjNxMEV2STVNTUVqcThDZWZRZGlSUDY0ZHYvZzMzMzZZaS9rejFuTWVZNzkx?=
+ =?utf-8?B?eTg2QVZiaFVKSysrUmxaV1grSnJUUWE5djc3aTEzQUhCeGQ4ZHU0WThYQmIv?=
+ =?utf-8?B?aDlibERGUldGWnZWNjltMWswUW5sTkpnRzNtZ2ZDYnE2TnJwZWw3aHZNR3d3?=
+ =?utf-8?B?ZWZaQ09lYlJyU0V0WUJ6WnlwRGppaDJQZmNzTFIwUHlXTG1aUC83Mm9hTTFs?=
+ =?utf-8?B?cjBkV1JtdzliNWtjMWJBQytud0E3bzFJK1RFSXFXU3dWdjRZWCtKZTVpS3F3?=
+ =?utf-8?B?dWxtZitPdzdPSVFlSksyY2JWUjFyeHhUOUFPSnd1b1RodGVrL01TVjE3MVdO?=
+ =?utf-8?B?QVAydGRmQ3N5dXo2K2UrMUxRUFJrd1JSVk9NOFF5NjlNWEVySCtCMTNJMHE0?=
+ =?utf-8?B?bS9xckE5RjdDalppSzhJc09nY1RjNG9EY2dxNDlVbmN0RjRXYXBFV0hITlVJ?=
+ =?utf-8?B?cDJrRWowamJjdjdzb1hiaWdkeFhSWEswZHZyMHhWVGVvSUEvSG9VdE1oU0V6?=
+ =?utf-8?B?ZWtXNFJ4U0RzcUxVR0FHWC9Fd0Q0M01SbmJOWUNyenYvQjVJS0ZDTVZKSFU2?=
+ =?utf-8?B?RWlTTlNzWDY1bUEvYllGS0tibXI2d04xUlRMa0QwZGFGYnpKVXh0VUFuTWcv?=
+ =?utf-8?B?M3dldndCQTJldFNEeFQwZExMSmI3OU52bUF2VTBJMVNvQlhWbFdqWStTNGN3?=
+ =?utf-8?B?blRjSlRpZjV4OGljdUJpa28wMDZVdklNbEM3WlRSR2RVMXdmUjFZcnpSZWhr?=
+ =?utf-8?B?L1BKQWRQMVM0K0xLUnhCUlE3a09kREthQkFpYW03WFJlOEhoeGJ6bnlDNGpJ?=
+ =?utf-8?B?UnJBUUk1L1lvYUJGSzlEYWJVL3dpNllheHZ0NlhYakx6TCtIcjc2WlFsQjZG?=
+ =?utf-8?B?YVZIOEJaV1RMeWFGT1drbWdTUHVsTFRlZ3l0eC9MVmEvU0lPY29qQytud3JQ?=
+ =?utf-8?B?Y1BBdWtPcy9uT1Z6Yy9nME5POEJCcGpnRlU2QWJ4RHFaQVhSQmcwVmhWeUhL?=
+ =?utf-8?B?TnJCMTQxVEUyTkxVc293MlpxVDVVK1FPMVBhcTRpUWdTbUtEQ0lPeDhnUWo4?=
+ =?utf-8?B?ZG1tWU8zTmJ4WlRteWpUdXc5WC8vYTZ5Z2NQOTVSdjRKNUJLdGdLdUNuOXc5?=
+ =?utf-8?B?Y09xQ2hEUzhnclhhUE9wbTVLUFc2ZDhNak1valFlRmxFQnBUcm5PM1lMbnNk?=
+ =?utf-8?B?SkdlTVdXM1VQeVpsK3RGMXl3OC95Nis1Mndtb05HZEk2OHc2MGh1WlE1bk0v?=
+ =?utf-8?B?SGpVYzdJTW9lYTFYME54V2JBcmhMRnROZDcybE5wbEVjVktRaVVzamFMbUFu?=
+ =?utf-8?B?MVJ0azBZR3g2SVpPOERQYllKYTJDRmd4Vnlhd1JLSGdCb3FTR2hkNFB0MEhZ?=
+ =?utf-8?B?dFVKVi9mQVRac01xcVJmcFR6RnNtNG1TUEhJZmFHWGZoa1ZjL05qZWROMnpw?=
+ =?utf-8?B?dzdtWmI1RlpuWmUzU0ppaitOeWdDaHNTYU1pWmdFSkJNaldUTFdyVjJoZXpN?=
+ =?utf-8?B?eVIyM2Z1clVoVzhkRTVFN1pHTkFucUsyYSt4U2tZdW9KMHpHODZvM3NROFBE?=
+ =?utf-8?B?UFZDMjVMbDRVRHlwMHkyZngxNVpZVlMxTVhEQUlxSUdVQXBVbUd5bmIxR1ZZ?=
+ =?utf-8?B?U2ZIRFFoUzVTa2VBQXptTVhZT1FIdloxYTJUNGI5a3RWWERWYVdlOXVINE5B?=
+ =?utf-8?B?aDBxbnZaQnU5QW9nT2FxaDJTWWNXVlBzOVdaS1VTMzVlbnZQS092SnIrWGZS?=
+ =?utf-8?B?SnlrbGVTNmJpM2t1ZG9VRS9jWjhxOUFzWDN5RXJqSCsrVjBncGdMMHRMdTdj?=
+ =?utf-8?Q?S/QWT/gW9hvxh11TiUzleFKjneU6+ObpZlsLzTyb1nzzq?=
+X-MS-Exchange-AntiSpam-MessageData-1: 2DG8VjztjVqDDg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e6c03a56-74e5-47e6-7c27-08df11f97490
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 00:45:21.0913
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xU8SmtBS4jXWL6E7N8UI1NVVy+ohL4EqDJU0Ym2TUj/fv+WpDBOB9U4UHXseAaoFViqO1e44hOuTy6tGYFG8nQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4196
 
-On Fri, Sep 11, 2026 at 09:00:40PM +0200, Nicolas Schier wrote:
-> On Tue, Sep 08, 2026 at 09:55:20PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > Rust crates are compiled in a serial chain on the critical path - core,
-> > bindings, kernel crates and then the drivers - each a rustc invocation.
-> >
-> > With CONFIG_RUST set and every rust driver enabled, the entire chain takes
-> > around 25 seconds on a 128-thread machine, with the associated C code
-> > taking 24 seconds.
-> >
-> > Each time a change is made to any of the bindings, it triggers a rebuild.
-> >
-> > Use the -Zthreads option to have rustc perform builds in parallel. This has
-> > been available since rust 1.84 (rust-lang/rust#132282), and the kernel
-> > requires rust 1.85 or above.
-> >
-> > A future -j/--jobs option is planned for
-> > rustc:(rust-lang/compiler-team#1005), so check to see if this available and
-> > if so use it.
-> >
-> > If the user's rustc supports neither, then it falls back gracefully and
-> > neither are used.
-> >
-> > The threads are taken from make's jobserver, so a parallel build is not
-> > oversubscribed. It was found that benefits level off at 8 threads (16 was
-> > found to be around the same, and 32 slower).
-> [...]
+On Mon Sep 14, 2026 at 6:08 AM JST, Matteo Kloiber wrote:
+> On Mon Sep 7, 2026 at 11:43 AM JST, Alexandre Courbot wrote:
+>> It also means that without patch 1, nova-core would split the firmware
+>> into hundreds of 64KB SG entries, which is not breaking but still
+>> something we want to avoid. The correct fix is to make sure that
+>> `dma_set_max_seg_size` is called by the driver, and while we are at it
+>> we also want every driver to call `dma_set_mask_and_coherent`. Ideally
+>> we would use the type system to make sure that both functions are called
+>> before any DMA operation can take place (using a safe interface), but
+>> I'm not quite sure yet how we can do this.
 >
-> > diff --git a/Makefile b/Makefile
-> > index 997fc7ebe096..7d23d7b64be3 100644
-> > --- a/Makefile
-> > +++ b/Makefile
-> > @@ -1204,6 +1204,10 @@ KBUILD_RUSTFLAGS += --remap-path-prefix=$(srcroot)/= --remap-path-scope=macro
-> >  endif
-> >  endif
-> >
-> > +ifdef CONFIG_RUST
-> > +KBUILD_RUSTFLAGS += $(if $(CONFIG_RUSTC_HAS_JOBS),-j8,$(if $(CONFIG_RUSTC_HAS_ZTHREADS),-Zthreads=8))
-> > +endif
->
-> Is there a reason for the 'ifdef CONFIG_RUST'?
->
-> Hard-coding '8' feels a bit odd.  If some kind of KBUILD_RUST_JOBS would
-> be used, it could allow users to disable or override the parallelism for
-> rust.  Does it make sense to have rust parallelism configurable?
+> This sounds sensible indeed. Should I open a thread regarding that on Zul=
+ip?
 
-Have decided to go with a build var for v2 - KBUILD_RUST_THREADS=n - which
-solves the default thread count, the instability issues and the confiigurability
-all at once! :)
-
->
-> --
-> Nicolas
-
---
-Cheers, Lorenzo
+Probably not necessary, the mailing-list has a larger audience and is
+the right place for this. I expect people will jump in here with their
+thoughts.
