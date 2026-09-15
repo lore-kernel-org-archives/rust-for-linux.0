@@ -1,161 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CCC3D9DA1;
-	Tue, 15 Sep 2026 15:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FAC4B541D
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Sep 2026 16:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789484655; cv=none; b=ejYAVnRuZvV3VX3j/nTTIUFN5Axl56rdGYZkeUsOZSe6a/tGlHLSy2hYGZHO7tVdneiHxw8yObUme8LvtMJHoeMNuJ13xvf05GbwUiRkvh318v9R7dCgR08zfbSOXPBW3IM7YJkOKcKr3yffXmdpm3Y/eS0hIoL/ErQLC5v+Tzk=
+	t=1789490431; cv=none; b=jWprNJNGFv2sOucaqgt46eZ97eywZT8iRU+Djcy9OCKa+kTn3jWBc5vEwKPHC7k9Jh+k6GaHUw98YQpesdTkuGBOP67fOzjYQIEqyR0U4ZJS2wWyyApGRPRGPD6vNX1YzSQcmRzWoLVKX43Wb3kwySALrI4RmHgFH6mYP78hCyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789484655; c=relaxed/simple;
-	bh=IZYowYo0tr99LV5bF5s2Q786jBuUYkEw4pS9QMyuqbA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VHNp+NlDRMt/80ZGWAjRtlSbBcLMYoA74cEeUlx7ACrxZp7qVH9Dzfg5zm+ftYJd6fWMPI1YYCSAY/TfGCbGuKkv3BVIU7JGQKEj2xCT+uEBwyOuaEasO8XsDmy6QM/hA87bPNHJcq/salGMPkjoJKlpenKD1Ibu5Kssm2fsZZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CfUJfxGo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789490431; c=relaxed/simple;
+	bh=S1DZx7X55e2WW66cR3XPfdNeDoS82+Wq4VfjwuWWrVM=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=bwdMHHOjlqNTnCOGPuWPCM7TcXUMoP85M25lvJPvN98Jr8arxb/zgxRFsK3Qs3s4Fy/1DZTypB1F/mBQTmPn6vO2Fx14t+mgj3vILNgb9kxiurA5KPEH/JCL01RLCVGY+OvI1gGA0Ssuvv+jilsr5+6d5IhEcwqUtH6yXJ6GvJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=no3A9ZrD; arc=none smtp.client-ip=79.135.106.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CfUJfxGo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445A51F000FF;
-	Tue, 15 Sep 2026 15:04:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789484651;
-	bh=6WCAfz85+ZGgRMN8wAwQXLQh8ReFwgRJPZyO/JsNeYI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CfUJfxGo8VPDYjL6tBgfl6L002bEGl1ULF2dCRDxLcUo+ron9vtXHUBT/L1UTJo8L
-	 U0iLglw63rY+yRq09BUmnCcoTd/5o8qIRnxuo2JlsFOAqKr9geNfwGfR1AickYadR1
-	 eZ+UJH8NBVkcyKnuFPyAHxFthRRJgRf2DHU7c2yHI6ZgtsWCDAM9+Dp/WgT7KnklKF
-	 xxwMgPPtPplf0k17pupUP4U4BTD5IWphakn+2wgwPt4Ob7KYYh4Fiufotq7wXJZle1
-	 XndOOWOAK6nwCgJYzumwG2wlhaFBpVgHKhfhm0X9wnZqdojf8v+Yk3NqQjtqoeQ/bI
-	 RWTqH0Scqd2sg==
-Date: Tue, 15 Sep 2026 16:04:00 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Kees Cook <kees@kernel.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nsc@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Alexey Gladkov <legion@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Jonathan Corbet <corbet@lwn.net>, 
-	Randy Dunlap <rdunlap@infradead.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Jens Axboe <axboe@kernel.dk>, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2 17/21] objtool: decode instructions and resolve branch
- targets in parallel
-Message-ID: <aqlau0-opF8yG-JU@gremlin>
-References: <20260914-build-speedup-v2-0-39817ec5db23@kernel.org>
- <20260914-build-speedup-v2-17-39817ec5db23@kernel.org>
- <202609141112.F8983EE9C@keescook>
- <aqkR9Xqu-0Tem1zm@gremlin>
- <20260915122959.2348bf90@pumpkin>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="no3A9ZrD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1789490416; x=1789749616;
+	bh=dnEl1BcBNFLTKuLcIgJ5HH7MiCpVZFsVbpLITtItNxM=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=no3A9ZrDFxBfOjyFFHzlKl8rwkbsWcWm7Ay9n8wdVSMr9xI5Wd2co8c3u58aIyYas
+	 Dl6BrN/qHtH91r3PptbeB1+ISkLej8XuqDffaUl5VXW6ljSW4UYnlgUSMGpDioduMt
+	 pMZzoGnvhbKnf7pRMxWMaK+wL2tv8QHLZ579XRZTHvlGxx7GHPFB7icrk2pLQBLIi1
+	 uy/BHUr2+Idcvw7dwzgfzR8xco3429Xs6vT4b44f/OXHRBuTOf/dJgUdKNk+xrO2LA
+	 vCd16ra+WBym7Ar8P4NeEn+CdyaNGYUctvnA4ttWRD+NV7tQdG9iZCeZigHIsx3v7Q
+	 iJ021nFDs2JhQ==
+Date: Tue, 15 Sep 2026 16:40:10 +0000
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+From: Sagar Taunk <sagartaunk@proton.me>
+Cc: Sagar Taunk <sagartaunk@proton.me>
+Subject: [PATCH v2] rust: net: netlink: validate attribute length before casting to `c_int`
+Message-ID: <20260915164000.124340-1-sagartaunk@proton.me>
+Feedback-ID: 130121444:user:proton
+X-Pm-Message-ID: 1147f2041977a0213fbf642dabc16417746aaf94
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915122959.2348bf90@pumpkin>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 15, 2026 at 12:29:59PM +0100, David Laight wrote:
-> On Tue, 15 Sep 2026 11:09:25 +0100
-> "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
->
-> > > > +static unsigned int decode_threads(unsigned long text_size)
-> > > > +{
-> > > > +	const long nr_cpus = sysconf(_SC_NPROCESSORS_ONLN);
-> > > > +
-> > > > +	if (text_size < DECODE_THREADED_MIN_TEXT || nr_cpus < 2)
-> > > > +		return 1;
->
-> The text_size check ought to be before the sysconf() call.
+`put()` trusted an unchecked `as` cast from `usize` to `c_int`.
+When the length exceeds `i32::MAX` that cast wraps around to a
+negative value.
 
-This is bordering on a silly level of micro-optimisation :)
+This ultimately resulted in a kernel panic when the reinterpreted
+value via `__nla_reserve()` and `skb_put()` became enormous.
 
-This is ~us runtime, run once. We can live with it.
+Validate payload and header both fit together in a `u16`, rejecting
+any payload that wouldn't leave room for `NLA_HDRLEN`.
 
->
-> > > > +
-> > > > +	return min_t(unsigned int, nr_cpus, DECODE_MAX_THREADS);
->
-> Why min_t() -  you might as well make nr_cpus 'unsigned int'.
+Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
+---
+Changes Since V1:=20
+Tried to make the diff smaller as pointed out by Alexandre Courbot.
+Moreover, as pointed out by Sashiko,`nlattr` is stored in a 16-bit=20
+field which houses both the header and the payload, so make the check=20
+verify that there is enough space left for the header to fit with the=20
+payload.=20
 
-Except... sysconf() returns a long and -1 on error. Isn't min_t()
-explicitly for cases like this?
+ rust/kernel/net/netlink.rs | 5 +++++
+ 1 file changed, 5 insertions(+)
 
->
-> > > > +}
-> > >
-> > > No, anything using _SC_NPROCESSORS_ONLN internally is wrong, whether its
-> > > pigz or objtool.
-> >
-> > Why? We shouldn't cap a 4 CPU box to 4 CPUs?
->
-> You almost certainly don't want to use more...
-> (Unless they end up waiting for disk)
+diff --git a/rust/kernel/net/netlink.rs b/rust/kernel/net/netlink.rs
+index a2f4bd171dcf..667667346f96 100644
+--- a/rust/kernel/net/netlink.rs
++++ b/rust/kernel/net/netlink.rs
+@@ -90,9 +90,14 @@ fn put<T>(&mut self, attrtype: c_int, value: &T) -> Resu=
+lt
+     where
+         T: ?Sized + IntoBytes + Immutable,
+     {
++        let max_payload_len =3D u16::MAX as usize - size_of::<bindings::nl=
+attr>();
++
+         let skb =3D self.skb.skb.as_ptr();
+         let len =3D size_of_val(value);
+         let ptr =3D core::ptr::from_ref(value).cast::<c_void>();
++        if len > max_payload_len {
++            return Err(EMSGSIZE);
++        }
+         // SAFETY: `skb` is valid by `NetlinkSkBuff` type invariants, and =
+the provided value is
+         // readable and initialized for its `size_of` bytes.
+         to_result(unsafe { bindings::nla_put(skb, attrtype, len as c_int, =
+ptr) })
+--=20
+2.55.0
 
-Yup on the former.
 
->
-> >
-> > The idea is that the empirically obtained 16 core limit should naturally be
-> > capped to the number of CPUs.
->
-> The 'empirical' limit is very likely to be system dependant.
-
-This same objection could be made against literally anything I do or do not
-do, it's a little silly.
-
-Every single cap like this is heuristic and limited. In any case - for
-smaller machines, the cap will be CPU count, on larger machines 16 CPUs is
-where there stops being an noticeable benefit.
-
-Other solutions are strictly worse, this is a sensible, practical
-engineering solution.
-
-> There might also be situations where you don't want the build to run as fast
-> as possible because the system is performing other workloads.
-
-Umm what? It's 2026, schedulers are pretty good now :)
-
-In any case with the changes here objtool doesn't dominate the runtime, so
-it'll have little impact. So run make j=1 to your heart's content :)
-
-> (Not to mention if you have had to add tracing to find a bug.)
-
-This is almost an argument against parallelism in general.
-
->
-> >
-> > I guess in a world where make hands jobs off this could be dropped, though,
-> > if the complexity there seems worthwhile.
->
-> You need to pull tokens out of the make pipe :-)
-
-Thanks, I understand what's required, as I said to Kees there's simply no
-benefit for the added complexity.
-
-Series like this can die by 1,000 cuts with all the nitpicks and what if's,
-let's focus on the _significant_ improvements introduced here and keep
-things in perspective please!
-
->
-> David
->
-
---
-Cheers, Lorenzo
