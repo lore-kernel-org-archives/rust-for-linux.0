@@ -1,161 +1,160 @@
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F94C4BCAD6;
-	Tue, 15 Sep 2026 17:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789493807; cv=none; b=W0aRsK9J1GX7P0W9JQnJXPIEBInb7Wy2/Ro3mrb6rWvLaQMxBBByO2zQDGI4wDz2Rl87gTShomx2/YQ6moM0uaCD/7gOGcrm8czEpvxHwP5Xb+LTfnCc2VJqKLqMwshwBEX/eVETl2h9km9buAenaol4ZHNT2wibYvTw4nz6fv0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789493807; c=relaxed/simple;
-	bh=haCJjpvxdy5Wk+oaFaPh7AyDc26SKJkmUlJxZtfxRw4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s63CJsFEWyNPUKvW+uH10u5yn89IvEVjVSu/LQtx3jvX98T1l3oEvrsXYvmITHnqiHdKHhClxKc2jB9ghh9GywsaSBMMh1RYNk0r+58fnzLyfMidgRzd8w0AJRk9XduZNd1TYzMu0ftr63LQXL7lQ1qYbqVGDRRtvu6oiNAj3ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=OUKMUYKB; arc=none smtp.client-ip=199.89.1.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CD64B66F8
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Sep 2026 17:47:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789494471; cv=pass; b=F7e/zWrJujtXEYYu15iPnozgNMR44QK9UFJMlJQLCQz+x0fpiLl2/FN96gv4cDuMixzeyW8z1b7fxjjLlCYQDKPXIBjXneCMShERF2dkowapUN+/YAq0A+75Tt8j6lNPD7KJYOa2U/+SJg2cRbN0b6WqAOf40Y4CRxSL2LK2SVw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789494471; c=relaxed/simple;
+	bh=u6Gw0oEc8G0Na/fDm4B5c157a2l4J+0QxPZsDNbgEew=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tPg0kU9J7/1n9C52HOlQeAt7+X+D8yQzeg6EtdezMq2VmqVYyFJErHhfS+l9g6LVzfNGqwCx0HPSzMfQjPveiFOrtluWJN3vy0YYKptrkXOJCH1RGVxoe3dURB9eBLgGw7HGWpdqzXrElgkjCqy6Yjl7KtKo+tRZXWFC+hZHDa4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SC4kCaqf; arc=pass smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="OUKMUYKB"
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4hkq2L3yX5zlfvq1;
-	Tue, 15 Sep 2026 17:36:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1789493791; x=1792085792; bh=LVL2tZV2y084omEP1NoRSeYy
-	3Kb1se75ERMKZV3zIek=; b=OUKMUYKB6lvNecxG/ZgpZj3UzwXkM6jAaXYchvLP
-	KR0ApiVEtIW9xipyPkLRyVCC3PnhhfCYVyGc27GTuOznY1szMcrZavU4LUHvRfYz
-	/jBTanELFdbIFLA5jZvqWsplGkUcKZ/y5nnsSua6YH8BnSQ4QyZvuMd52OnpjWFi
-	pDWqM5HnjNA4L3X4A69uOo59/i7t8ZJcedjD4dAgi4z5cmhQgeeshcbasnxTG4+P
-	nkut8ZWie7hIhzylmsOMV8JGcWDHELRfYN/vNKL5wymx3PyloFQkNxdZDvMADcCn
-	L3EnnxKzvmXqBqj2mZ3z4/J0PneATHiDZEKr9Q6YkhrpBA==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id P4eRAqqf1Lb3; Tue, 15 Sep 2026 17:36:31 +0000 (UTC)
-Received: from [IPV6:2a00:79e0:2ed2:d:c609:318c:4379:cce1] (unknown [104.135.182.41])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4hkq225l7bzlfvpG;
-	Tue, 15 Sep 2026 17:36:26 +0000 (UTC)
-Message-ID: <e8fd7e8c-4a14-49d6-8bce-16fd44d864b9@acm.org>
-Date: Tue, 15 Sep 2026 10:36:25 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SC4kCaqf"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-495437bb891so8901975e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Sep 2026 10:47:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789494466; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Pi8lCX9HuJPZWE5Nb7UlSIJFVtGdjCh0OVKr8ArH1bHJS/Y4AjYYqgNgvCxpGXOkA2
+         +OnK3jdiBM7U0CTxhJWNhORv1yrtxF473XAEGILJrWhGUMDlLwCcBxIgth4zikCIrBcm
+         qPpovjd2J9ZrHlhS06CLUtVjkivjtL5jbDj+28V/f1gGTRDVlbsegLPKbszCuQXR3JTR
+         GH1d6MgRLVrZud7h8xmBRrbzONVUMF8cDm2yZMbREDEOTXFbPv6xC8kL8q2h7fxF4zfZ
+         v0aFa/H/Z8FK8adiq52DQquuoKZ3PIFC3ycwnxrnO5pCbh6zbcXRgWTB6k8qLaXYP207
+         rXqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=u6Gw0oEc8G0Na/fDm4B5c157a2l4J+0QxPZsDNbgEew=;
+        fh=dDoDPs2BLWRY7T287KzGYAIxsSVEjXqQm02RFk5KPqQ=;
+        b=gCgiAcsq7T+MJE5qBhNry79ZYiY+PFyIFH9bXuQe94dz+vcdomY8tcd023HKisEMxw
+         BTfYDZ9btM82lxVp9X9e7Ijfoq6G3rzf7Pn2punvET0/MczSTBlKPzy93ZCBI3PozrPL
+         n+JeRkHNfXMNaH1Q3WALJAJqACz20wqnMxxXEyZ+WA+pctV9Zco3SFyV3xhmd3RLwCnF
+         JAjJvqgpvsV/yKCNJlsseczckDNgkmvdCofaoc829HQpHtS+agfkYMukibZRSD3R4SB7
+         otztr9A73/fXDkxdikc+FERk5rqRxKMoSlNVn1E5Oa3rsTRQLUtjdhwEYguJ1T+glJLb
+         2lTA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789494466; x=1790099266; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=u6Gw0oEc8G0Na/fDm4B5c157a2l4J+0QxPZsDNbgEew=;
+        b=SC4kCaqfVVRGG5CrPQH/SMlPkiIKeXl83D4UvgxjX69ghdnUrnuUqyHeshbHL7v3XU
+         MciOzn7JIO9Y1K03tB70Y1eRi39OTU0IszyivUgKVlYAdjxNulv95mjqsR7bnCS8ldRX
+         YSkgn4Qvd+FzLDnfI6RWmHgFd8RnJXjiw60CDK6CC3yZbf/T8tyHxKswzKVlpOU1Ifet
+         cSas4HSNTNnIrGPq963ZUw9VRnXemCoxAdUi0BmmOeCPgGp1gPpG/dMliWtjlfDpuzkU
+         U0Cp5g/97Q5+jtIPfWjlZAOjJDWvnugaRoFqaKUBCzD/GTkVXI9Yfcz6X/9gSZBRg0Ir
+         vneA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789494466; x=1790099266;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=u6Gw0oEc8G0Na/fDm4B5c157a2l4J+0QxPZsDNbgEew=;
+        b=O6byUyM/Di4KyjsCzFAA2p4NYYsIpebrM3y0okMs3b2oP19TMRCF4dF0dfOzShM2zS
+         mNSD/d6BL/QJlnHDQ0s2VBRHL7RoRFpElJVdRK4qQQ9s4YulLtgyGzo9LzcYbkm+EUYR
+         xCbp4a5itLPN9K0bnebIYsqawrfxzh9+WrJsa8vR0tFoP8apVWp6ASK+4eW0D+W4X9x1
+         t13c3V1TM+/hrxE/BOvKnEZYEuKaZ4VJFFTV4fCioi6xlQXTFhbKf4PuzZm/JGvqbR2b
+         3KqDKnmF+8Nsu4lWtkC4guDakSKhA2Dmoz+3GdZ+gul9wDV+2ND8e3npG5LHnZo+rnhk
+         AZcA==
+X-Forwarded-Encrypted: i=1; AKwUvByXQBCY1xGfN5sUtMaUVS6Sgun5tqGlLV+Hb2WThtaEkdyK/uqIEV8f0341/aPMUv6s1vfUV+fkMaUK0SGurA==@vger.kernel.org
+X-Gm-Message-State: AFuF++lmICYeeo5NZQJU0vxfUW2Mbn+CFa1k4hCw+KRHrFDTl73Mx6aW
+	db5111nDTVYTVAfYeZ94yGacZC9pYQTmRigC0B1DioZ/frGzW//EgBKUjrKYvQGTkw6V3GyBnaQ
+	8DPvr3vmz2uwj5gLB1RuAlGjMF4Ne3e3VmQ8x+i/e
+X-Gm-Gg: AYBFou1Gb3WdMCph168kc5Sp+vmieIzH9jj+X878XVYquUm/ijzep9dQ1pw2DVWNbSm
+	H0cdYaqJizkEl17hTrhXNeicunPBIz+fNSi9HkWfckoXMeqnZh4CXWe8pl6f1O7A0V5xk1YyM30
+	ubo2NJVHQFoWe/0RYfl2TBvRdrTpUdo980zKuHP0UiyEkOYXFpOuCWnCcw+qlvP4xIEBognK82N
+	7ah8/56oIPJ366E+ydce8w7FqEO92nuQP78yk+y2uI5ixjvJUR4+jM44jlhHlTKUXAa4T127r0Q
+	sv7u6Cp0eRal0TOzNjeBTEDjyuU3MfEwmNi+bXBOUoYu/a+56J8M/PeSspXsVNH4F8OA4Cgb39k
+	uLYnlr6Ah1jjtttQ91zc0l2wpPE1x5Ay31VU/mpnQtjbou1eIZnVm6My+JWd9mO48i5g=
+X-Received: by 2002:a05:600d:84ca:10b0:49c:ff66:7d88 with SMTP id
+ 5b1f17b1804b1-49e7d725e6fmr51370615e9.7.1789494465544; Tue, 15 Sep 2026
+ 10:47:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] loop: Perform __loop_clr_fd() after disk->open_mutex
- is dropped.
-To: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
- Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
- Andrew Morton <akpm@linux-foundation.org>, Brian Foster
- <bfoster@redhat.com>, Damien Le Moal <dlemoal@kernel.org>,
- Hillf Danton <hdanton@sina.com>, Markus Elfring <Markus.Elfring@web.de>,
- Ming Lei <tom.leiming@gmail.com>, Qu Wenruo <wqu@suse.com>,
- Tao Cui <cui.tao@linux.dev>, kernel test robot <lkp@intel.com>,
- linux-block <linux-block@vger.kernel.org>, rust-for-linux@vger.kernel.org
-References: <60bf7af2-b84e-4056-9195-a26ad51ada46@I-love.SAKURA.ne.jp>
- <9f1273a7-6dfe-46bb-966f-fe08876f4375@I-love.SAKURA.ne.jp>
- <3883b05e-0a34-43f7-b2a9-a46d2b0c5ffc@acm.org>
- <08b0057a-280d-4e55-8e94-e510ec1a371f@I-love.SAKURA.ne.jp>
- <d89aa722-2d13-4733-b5c1-f0194bf4b342@acm.org>
- <15037162-0e54-4722-ac7e-c9a863a8a2f7@I-love.SAKURA.ne.jp>
- <b700652d-ed63-444a-b879-ec2725affaa7@acm.org>
- <6fdefda9-c7e4-4368-8d9a-280043b4051e@I-love.SAKURA.ne.jp>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <6fdefda9-c7e4-4368-8d9a-280043b4051e@I-love.SAKURA.ne.jp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20260914-build-speedup-v2-0-39817ec5db23@kernel.org>
+ <20260914-build-speedup-v2-21-39817ec5db23@kernel.org> <202609140844.FA7E848A@keescook>
+ <aqk9gakQhxToLnDI@gremlin> <202609150955.A51C9F7A20@keescook>
+In-Reply-To: <202609150955.A51C9F7A20@keescook>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Tue, 15 Sep 2026 10:47:34 -0700
+X-Gm-Features: AcwNN1U4CY7rpoxX3OGd9mqCs-kE5osRcDbnjG2lLmWDcf89pyFwGTPPrVzl7qI
+Message-ID: <CAKwvOdmgeyqivO4pVa=30XDWpXvdRzBR8f13rfuPzDx=LJ1Tsw@mail.gmail.com>
+Subject: Re: [PATCH v2 21/21] kbuild: use pigz for gzip compression if available
+To: Kees Cook <kees@kernel.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Alexey Gladkov <legion@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Jens Axboe <axboe@kernel.dk>, linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 9/11/26 6:22 PM, Tetsuo Handa wrote:
-> On 2026/09/12 10:02, Bart Van Assche wrote:
->> On 9/11/26 3:18 PM, Tetsuo Handa wrote:
->>> On 2026/09/12 5:03, Bart Van Assche wrote:
->>>> On 9/10/26 2:44 AM, Tetsuo Handa wrote:
->>>>> On 2026/09/10 4:33, Bart Van Assche wrote:
->>>>>> __loop_clr_fd() is queued from the lo_post_release() callback and =
-hence
->>>>>> may be called concurrently with or after another thread has called
->>>>>> bdev_open(). Hence, lo->lo->state should be checked instead of ass=
-uming
->>>>>> that it equals Lo_rundown.
->>>>>
->>>>> No, __loop_clr_fd() is queued from the lo_release() callback.
->>>>
->>>> Yes, it is *queued* from the lo_release() callback function but ther=
-e is
->>>> no guarantee that __loop_clr_fd() has started before bdev_open() is
->>>> called again.
->>>
->>> Since lo->lo_state was set to Lo_rundown by lo_release(), lo_open() w=
-ill return -ENXIO.
->>> What can go wrong if bdev_open() is called again before __loop_clr_fd=
-() starts?
->>
->> This breaks LO_FLAGS_AUTOCLEAR, isn't it?
->=20
-> Why do you think so?
->=20
->    App1                   App2                   system_long_wq
->    Calls lo_release().
->      Schedules __loop_clr_fd().
->                           Calls lo_open() but fails with -ENXIO.
->                                                  Starts __loop_clr_fd()=
-.
->    Calls lo_post_release().
->      Starts waiting for completion of __loop_clr_fd().
->                                                  Finishes __loop_clr_fd=
-().
->      Finishes waiting for completion of __loop_clr_fd().
->=20
->    Calls lo_open() again and succeeds.
->                           Calls lo_open() again and succeeds.
->=20
-> App1's open() after close() is succeeding.
-> App2's open() being temporarily failing with -ENXIO should be acceptabl=
-e.
-> If App2 wants to avoid repeatedly failing with -ENXIO, App2 should use
-> ioctl(LOOP_CTL_GET_FREE) before open().
+On Tue, Sep 15, 2026 at 10:31=E2=80=AFAM Kees Cook <kees@kernel.org> wrote:
+>
+> On Tue, Sep 15, 2026 at 03:30:43PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Mon, Sep 14, 2026 at 09:39:07AM -0700, Kees Cook wrote:
+> > > However, parallelism needs to be set. We can't let it eat all CPUs: i=
+t
+> > > needs to respect the -j make option (and make its CPU reservation kno=
+wn
+> > > to "make"), which we already have a solution for in
+> > > scripts/jobserver-exec.
+> >
+> > The only place where it's invoked is vmlinux.bin at the end of the seri=
+al
+> > tail, where all the tokens would be free anyway.
+> >
+> > So I don't think it really buys anything at all?
+>
+> There are 2 things I'm thinking about:
+>
+> a)
+> My main concern is the lack of respecting the -j make argument. In my
+> mind, this is a blocker, because it means a build will now _always_ spin
+> up max CPUs (not what -j has limited it to), and for CIs, shared compute
+> systems, or whatever, this violates the requested parallelism level. For
+> example, if I'm doing a long-running Coccinelle replacement in one tree
+> (which uses half the CPUs), any builds I launch I'm asking for the other
+> half of my CPUs to be used so they don't thrash my cache.
+>
+> This is the kind of "why are all the CPUs spinning up?" question I
+> helped track down with commit 51e46c7a4007 ("docs, parallelism: Rearrange
+> how jobserver reservations are made") forever ago.
 
-Userspace applications and tests (such as mount/umount, losetup,=20
-systemd, and xfstests) expect that:
-1. Teardown of a loop device with LO_FLAGS_AUTOCLEAR completes
-    synchronously during the final close() (in lo_release()), releasing
-    the backing file references (fput()).
-2. Calling open() immediately after close() succeeds (allowing the loop
-    device to be immediately reallocated, reopened, or configured in
-    Lo_unbound state).
+Parse -j from MAKEFLAGS (https://stackoverflow.com/a/76517886),
+forward it to pigz?
 
-There is evidence of this in the history of drivers/block/loop.c:
-* The Asynchronous Autoclear Regression & Revert (Commits 322c4293ecc5
-   and bf23747ee053) In December 2021, commit 322c4293ecc5
-   ("loop: make autoclear operation asynchronous") attempted to break a
-   circular lock dependency by offloading autoclear (__loop_clr_fd())
-   from lo_release() to a workqueue (system_long_wq).
-* In February 2022, commit bf23747ee053 ("loop: revert 'make autoclear
-   operation asynchronous'") had to revert that change after xfstests
-   broke. The commit message explicitly states:
-
-   "The kernel test robot is reporting that xfstest which does
-
- =C2=A0=C2=A0=C2=A0=C2=A0umount ext2 on xfs
- =C2=A0=C2=A0=C2=A0=C2=A0umount xfs
-
-   sequence started failing, for commit 322c4293ecc58110 ("loop: make
-   autoclear operation asynchronous") removed a guarantee that fput() of
-   backing file is processed before lo_release() from close() returns to
-   user mode."
-
-   When autoclear was asynchronous, close() returned before the device
-   was unbound and before the backing file was released, breaking
-   immediate reuse and subsequent filesystem unmounts.
-
-Bart.
+--=20
+Thanks,
+~Nick Desaulniers
