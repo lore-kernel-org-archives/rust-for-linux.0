@@ -1,63 +1,65 @@
-Received: from mail-vs2-f12.google.com (mail-vs2-f12.google.com [74.125.227.12])
+Received: from mail-ua2-f25.google.com (mail-ua2-f25.google.com [74.125.226.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8953812FB
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Sep 2026 19:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF3744838E
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Sep 2026 19:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789501006; cv=none; b=Swcc/FBaTvoOR3d+Kjfi2k1m3CM2cBaoBUajbd09zaTux7Pp2+AVngjYbW8ia6SsTioIXJA+v4eiILqYjGHobKqOsOz2wXEqHJbGMahdb8ikdk4e+530UBdcE33owN178fKkNs648MGrGTss+NiKwWeXds5szk8+kwREeSbBa/s=
+	t=1789501014; cv=none; b=GJIZPIGVphaTKDTCLDpY8hfvjzF+T1c/kpnCFcWqciNLxHl2NrIJizebmB9bpyAiIZkp0Dt+TvAEOathZ8ZAdp3RhrgFauMwjeXoxj6gHmXKri31ao/INQmYLzMUfoP+jcw5ERY6Pc8UcpI6UYoAB5+v13lVvdIqO2zHP/LtS2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789501006; c=relaxed/simple;
-	bh=NZxyuYd8MBX4INnHpLnZWaZcXYmbCWHu3By/SP04rlE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kqLji1YPB+j1qLW2mmygiLsEM0gRSAFaEJYcAJ+NT0dlCkMNMfuVH9pnwohmDwIdqMZP80C1gRAq1lUpkIqCtOTNT+c6N32/7oezzLIS8k+OD4qw43eccL4IrZY5lHgCiw+IgqRTzu5q3nq30f5xvBMViMlLJaRRAF2m4Uqzxso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eZq/uiYk; arc=none smtp.client-ip=74.125.227.12
+	s=arc-20240116; t=1789501014; c=relaxed/simple;
+	bh=+iRmEeBjlr3/YDeOaNs/gKK7p0cdRpBI+YfHHlG1884=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pBoP9k9IymEFBIQRKbvWek1d12kGykgcU+oX2yqwty/UDQHoCEDM0KlLpR0620LHSnEJQDT+smd/Y0+mUnikFtIF3SuBrYO5MtkvzkOMiNlRVKSeiXT/7Q1ElKfPdrn7RbFiWVOU5FgsRI+Z6RyvmVrYsrEipHWB0MwAsBc/zAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eHa74lOb; arc=none smtp.client-ip=74.125.226.217
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZq/uiYk"
-Received: by mail-vs2-f12.google.com with SMTP id ada2fe7eead31-78564319a92so36167137.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Sep 2026 12:36:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eHa74lOb"
+Received: by mail-ua2-f25.google.com with SMTP id a1e0cc1a2514c-982e8fa91d3so25379241.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Sep 2026 12:36:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789501003; x=1790105803; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c+JWI+F2CNEMS8Pu8FOZHWNS+sSqTKhiXS9hsbDKr4o=;
-        b=eZq/uiYkHR71kkcAH4NT/0XzUHTinyM50HByJjHRtb0bE9AKkj6otMvlkTDx1Tl9ts
-         wjki0yvRGZgYHsMO0nFL/vbtPQn6fIP8kTLUx3QwDAK7vBOmSzT6KA7DVLY7By63r+bk
-         x7vQOerb8YWEKGX/7K4RcdCCSOTpX8eQTR/b7+w7Z02dEJnGQTvVRZj6266uquF54tYY
-         GBnDrpgq6MOcDch/2hcCX8113LJ0T1CGjPvrWU3uCfymg7h0yHHfoaZfWpUvItUAKhj6
-         qLJMypp6L+232poGxgVbMkACiSO/WQ7BR5supKoJdcMS6vkjcV4YloIOwFGDGSaHQzE1
-         jSwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789501003; x=1790105803;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1789501011; x=1790105811; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=c+JWI+F2CNEMS8Pu8FOZHWNS+sSqTKhiXS9hsbDKr4o=;
-        b=n83f+wZSlBXltbuYT/ElFV3XEXkG+zdj88PeuSNhHv2Z+e5pVYu6WvNuZt8hktT1sT
-         26O+Rl945iCaouydOWZfbO0WKETj1H2Hr9CRcmcKUpvB0DAfLiogQ/gk7sp76j54J1t9
-         eBcS8cNArEA08d3hBVMGmvC70tTTk01xNgW6TUD4aMDHVY6db5eOusp5ItNrzRfi+qew
-         cZfYNlUGZqNwh/mU/Lv30Q0mFha3YW8Rt3V8ZzZwy1iZTCHhrAl7vhxYkd/iys2f+qEX
-         H9HWX4/U7dnPSfNNwQo5b4ZmHBmOy0nmnVaYj6kmb5yWob3tIswSnwHJfRpdyde0xJb5
-         vKbA==
-X-Forwarded-Encrypted: i=1; AKwUvBx/uPrmnLB3wLNobSoiVLdQJuBbbG0MeyXDsoMphlh6gKJ1GNYNyQ9L4eYsFKsxTC9sY2kdndqb46yla37Akg==@vger.kernel.org
-X-Gm-Message-State: AFuF++khCfURaaBZM2YIGMWJx/bHX5zSuJTEFd+QuBZwUjDJlz9u0h7G
-	5Juake8RYqxfx/yVRKDv0oOxXLASInyJQouiHD3Cbqi+5XqztvcMvgs=
-X-Gm-Gg: AYBFou1sx1ZQtnNqSuMtuXrCMSzOaBwRcJn3Jz8XJE5cW+EdrMHMCdt5Bib3DCmNMv/
-	pkCqatNq6ZokWudcadgxeGQjMcfJ+AzRyTl9X42VSFKT6tgVSWRMDRyXQ/a+yIR9Kgxvx0Nrqxe
-	1kdGVjCm5t/yr0Agod0bEqOWWBGbRQK69VLhMYkn1VMWLKbcYF8+A+jgjI6zkShpnsqkiQOc+hA
-	H6AYjkPGHSq5gWqecAlj5Bbf2PAbzFkLjneOsQnjhlczDprh/6yxZjXGGkB1TzTra4JR1gcaHEz
-	Cq+Wn5v28eBooYpXvQetFpaj80TqzuZ0TycfJQsXonxQWymDD7kfDdHXV22VWwqSfmzxDLA4QhZ
-	Arm47Gm56l+Ukc2XmdUwPepxmLdn7oFh6lV4+mOwNmV4KrxRGa93BiVHE6YYRoxtoOIAGblrooD
-	2pFJXBSsOwhF8c2BS3i6Og4woUjQAolShdlo0Ynx5fXLcAlK3bAymzLAUOFJxtmcP9z4SCeVK9K
-	ebImktkvK+Ku/wA4pQ9+9p2poYFVOslH1ugRJH/d1Yi3OonVw==
-X-Received: by 2002:a05:6102:510b:b0:778:5369:763d with SMTP id ada2fe7eead31-79b56aec243mr10445153137.1.1789501003323;
-        Tue, 15 Sep 2026 12:36:43 -0700 (PDT)
+        bh=8pR1KvLC6hY0Jo9rktWgyCwoo7PEpaTdDrv6JZT+Rlw=;
+        b=eHa74lObtbnJQr+zgXq3wjQr7K3SDUjfng1Q50hMFSTTHE7TRxVtQ8TlWbDaP8+ls4
+         RPNqNZ38FpggkAcZRJ9CJbEHe6lEc4n2TPkeKDW2SabUlJbPyCT9IIPGh9hJZ+TU8I8A
+         JY+K+7KXRNXn04vUAbSUoKafMNqw4vHdT4/LvSE/dM8tda07gkJpa1zE7cdSfC6SFf8m
+         xZk043MYGXaA843Ro2a4fXQvk910mY1O6vTw3CZ5QGuogaux3YAvlZ0KFmkLuxEdzw5P
+         MX7DpY/LzhGaYbeczZtIcN9SqobSg5VAzhq96uObmIJCtWf2YoaaiLZ8M6R5kQGoFkYu
+         SGCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789501011; x=1790105811;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8pR1KvLC6hY0Jo9rktWgyCwoo7PEpaTdDrv6JZT+Rlw=;
+        b=lISj18r43DwCj1Jfko9CeIHbRgjS7AQeS+si9Iwvn8s2aC39LY3CBsC0VwfxEbwOSf
+         ENBqp+uViSno104ipkwWPhhPaF4pu7iJKNgWjblGkQRjILTR2MN4xYHxNCKWuHz4Qw9v
+         KLQU+6LoVGlGWCnFta6FMD1LMOV6LDWVfSSEke4sTZXAlHA9IKS02Bk6mvQhjCkp/NQ3
+         hZQgfhxS7UFOYJQkLbVBMSzDAhfGu5/gjWsamZWquHZIlpcyEVMCtM/opAiAxKs8yNn4
+         VA9TSeYkPPvSMqb6i0OtRpooT/1vRlrLrbsFFv8JT69LK6z/1phdK4vvLqE3L+LZD841
+         dJRQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwIK05yiKEa6KqI4USenfsw59+qkAD06IdrqA78gdeIBM+hqY/xEdU+NKMT0Av1lpF44YNMbYzCC1L1CapW2Q==@vger.kernel.org
+X-Gm-Message-State: AFuF++luViNmYKBueDLG2MlpNygIk4kssrVBYwEMkmTRH5Hs9jJArbbr
+	SjHNvD3u1oqCt0A0c6cQHk2K911eYXQjOHadLw/TM3b3q2Wd6r/3AVE=
+X-Gm-Gg: AYBFou3BNAf6iM83CBuJQOwFVeHZ02xvKbR/RRToU+6dO25qAGUwnMT+u5q7AYEOLcu
+	DTmXDYIohthu9ehCoCmFOXamk+qHMj3ue7HRP8DIUcbK/YIF4sFwG2URq7TT2SMMNLT5N60L4w7
+	l3wp/wOuatWEZVzxVcSmoPlxn++068tv8TvQPmxKORlf8VXMCuDtjbACiKpEkZMO5kFcm8sc4Pw
+	E+k9M1JjdU9v+UvQOVkkNPBC9J3+HqpNoKJKLBEXVj3xhxjN2cUhQ/aLMpzy6y34hDlQ39yTMiM
+	hcSmCFccZPS/TaH2HgxKu7TXzLBFSJhfblzsxf3WXZugZ23mOywjXJVbcWayRAVeWGQ3YHkVxo2
+	HGJojf4Pjg3EQanQcnmz7PFa5Vuw7qf0OnxEpJ1k9TJ585AQu0yepU7Chm4VP3kPMyOb7SSaYLF
+	O+pEnv46lc1zhlTcJ1nh9sE4mhqIszw8MJJxS0gOG1u77bIWQ7WasTizhCJUqYxAF0lAcnM/AOu
+	mE0W236f0toY4JeWWacSyOKJRcgR5KLFiBLwXYCl9doFNTNwg==
+X-Received: by 2002:a05:6102:32d2:b0:798:24e8:23f4 with SMTP id ada2fe7eead31-79d25ece59bmr2938976137.7.1789501011162;
+        Tue, 15 Sep 2026 12:36:51 -0700 (PDT)
 Received: from localhost.localdomain ([186.158.238.108])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-79fb1148f57sm691450137.4.2026.09.15.12.36.37
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-79fb1148f57sm691450137.4.2026.09.15.12.36.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 12:36:42 -0700 (PDT)
+        Tue, 15 Sep 2026 12:36:50 -0700 (PDT)
 From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
 To: Alice Ryhl <aliceryhl@google.com>,
 	Burak Emir <burak.emir@gmail.com>,
@@ -84,10 +86,12 @@ Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel-mentees@lists.linux.dev
-Subject: [PATCH RFC 0/3] rust: kunit: #[should_panic] and same test name with different #[cfg(...)] support
-Date: Tue, 15 Sep 2026 16:33:51 -0300
-Message-ID: <cover.1789500084.git.nico.antinori.7@gmail.com>
+Subject: [PATCH RFC 1/3] rust: kunit: add #[should_panic] support
+Date: Tue, 15 Sep 2026 16:33:52 -0300
+Message-ID: <f9a3f490689322638b45d29351f1fa3cdc4c9f0f.1789500084.git.nico.antinori.7@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1789500084.git.nico.antinori.7@gmail.com>
+References: <cover.1789500084.git.nico.antinori.7@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -97,118 +101,224 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This patch series intends to implement two features for KUnit tests
-written in Rust. The work is based on a TODO comment made in the
-`bitmap.rs` module [1].
+KUnit tests in Rust are written using user-space like syntax. This patch
+adds support for the `#[should_panic]` attribute, enabling the user to test
+conditions that are expected to cause a panic and report the test as
+successful.
 
-1. Supporting `#[should_panic]` [2]:
-
-KUnit tests in Rust follow the user-space syntax, but at the moment
-`#[should_panic]` is not supported. The first patch of this series adds
-support for the attribute (only in its basic form, `#[should_panic =
-"message"]` is not supported, and I don't know if it makes sense to
-support it)
-
-The way it is supported is by having a separate `#[panic_handler]` when
-`CONFIG_KUNIT` is enabled. When a test is marked with `#[should_panic]`,
-a static value (KUNIT_SHOULD_PANIC = 0xDEAD7357) is assigned to the
-kunit's `priv` field, since it is meant for saving arbitrary user data
-[3]. At the moment, I did not find any place where Rust tests use that
-field, so it should be safe to write it.
-
-When the test panics, the `#[panic_handler]` function is called, obtains
-the kunit current test and checks if the `priv` field is not null and
-contains the value `KUNIT_SHOULD_PANIC`.
-
-If those conditions are true, it marks the test as successful (since it
-panicked as expected) and calls `__kunit_abort_expecting_error`, a new
-function that exits the testing thread but fills `try_catch->try_result`
-with a 0 so the test runner does not mistake it as a failed test.
-
-If those conditions are not true:
- - If `priv` is null, the test panics as it would have before having
-   this feature, priv = null means that the test was not expected to
-   panic.
- - If `priv` is not null but its value is not `KUNIT_SHOULD_PANIC`, the
-   test panics with an error message informing that the code found in
-   `priv` was invalid.
-
-If the test does not panic, the `#[panic_handler]` is not triggered. The
-test is marked as failed (since it was expected to panic).
-
-Regarding this feature:
- - Do this approach make sense?
- - Is it ok to mark the `#[should_panic]` tests with a static constant?
-   Is another mechanism better to check in the `#[panic_handler]` that
-   the test was supposed to panic?
-
-2. Allow same test name with different #[cfg(...)]:
-
-When testing `#[should_panic]` in `bitmap.rs` (check the last patch of
-the series) I found that the test that was supposed to panic had the
-same name as another one, but they were run on different configurations.
-This caused the following compilation error:
-
-ERROR:root:error[E0428]: the name `kunit_rust_wrapper_owned_bitmap_out_of_bounds` is defined multiple times
-   --> ../rust/kernel/bitmap.rs:503:1
-    |
-503 | #[macros::kunit_tests(rust_kernel_bitmap)]
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `kunit_rust_wrapper_owned_bitmap_out_of_bounds` redefined here
-    |
-    = note: `kunit_rust_wrapper_owned_bitmap_out_of_bounds` must be defined only once in the value namespace of this module
-    = note: this error originates in the attribute macro `macros::kunit_tests` (in Nightly builds, run with -Z macro-backtrace for more info)
-
-
-To fix this problem, I appended to the `kunit_rust_wrapper_*`
-identifiers an 'stringified' version of the test's #[cfg(...)]
-arguments. The purpose of this is that, if we have a test with the same
-name and configuration, it would fail.
-
-The configuration string was also appended to the tests names. This was
-done to have a better test run report:
-
-...
-[SKIPPED] owned_bitmap_out_of_bounds_cfg_not_config_rust_bitmap_hardened
-[PASSED] owned_bitmap_out_of_bounds_cfg_config_rust_bitmap_hardened
-...
-
-Otherwise we would have something like the following:
-...
-[SKIPPED] owned_bitmap_out_of_bounds
-[PASSED] owned_bitmap_out_of_bounds
-...
-
-Regarding this:
-- Does it makes sense to allow same test names with different cfgs?
-- Is it ok to 'stringify' the configuration so it can be distinguished
-  in the report? Would you prefer something like `_case_1` `_case_2` ..
-  instead?
-
-This is the first RFC patch I send to the LKML, if there's something not
-right with it please let me know.
-
-Kind Regards,
-Nicolás
-
-[1] https://github.com/Rust-for-Linux/linux/blob/fd73f4a6659897191fa0d40695fe370925dd3780/rust/kernel/bitmap.rs#L592-L600
-[2] https://doc.rust-lang.org/rust-by-example/testing/unit_testing.html#testing-panics
-[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/kunit/test.h?id=f6e7b42bf05b2427fb8a7a1d1c387a86638bb413#n314
-
-Nicolás Antinori (3):
-  rust: kunit: add #[should_panic] support
-  rust: kunit: allow same test name with different #[cfg(...)]
-  rust: bitmap: kunit: uncomment owned_bitmap_out_of_bounds panic case
-
+Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
+---
  include/kunit/test.h      |  1 +
  include/kunit/try-catch.h |  1 +
- lib/kunit/test.c          | 14 +++++++
- lib/kunit/try-catch.c     |  7 ++++
- rust/kernel/bitmap.rs     | 40 +++++++++-----------
- rust/kernel/kunit.rs      | 24 ++++++++++++
- rust/kernel/lib.rs        | 46 +++++++++++++++++++++--
- rust/macros/kunit.rs      | 78 ++++++++++++++++++++++++++++++++++++---
- 8 files changed, 181 insertions(+), 30 deletions(-)
+ lib/kunit/test.c          | 14 ++++++++++++
+ lib/kunit/try-catch.c     |  7 ++++++
+ rust/kernel/kunit.rs      |  9 ++++++++
+ rust/kernel/lib.rs        | 46 ++++++++++++++++++++++++++++++++++++---
+ rust/macros/kunit.rs      | 21 ++++++++++++++++--
+ 7 files changed, 94 insertions(+), 5 deletions(-)
 
+diff --git a/include/kunit/test.h b/include/kunit/test.h
+index da5312e0dfa5..8b42f431e1c1 100644
+--- a/include/kunit/test.h
++++ b/include/kunit/test.h
+@@ -723,6 +723,7 @@ void __printf(2, 3) kunit_log_append(struct string_stream *log, const char *fmt,
+ #define KUNIT_SUCCEED(test) _KUNIT_SAVE_LOC(test)
+
+ void __noreturn __kunit_abort(struct kunit *test);
++void __noreturn __kunit_abort_expecting_error(struct kunit *test);
+
+ void __printf(6, 7) __kunit_do_failed_assertion(struct kunit *test,
+ 						const struct kunit_loc *loc,
+diff --git a/include/kunit/try-catch.h b/include/kunit/try-catch.h
+index d4e1a5b98ed6..a47b1cfbcf93 100644
+--- a/include/kunit/try-catch.h
++++ b/include/kunit/try-catch.h
+@@ -54,6 +54,7 @@ struct kunit_try_catch {
+ void kunit_try_catch_run(struct kunit_try_catch *try_catch, void *context);
+
+ void __noreturn kunit_try_catch_throw(struct kunit_try_catch *try_catch);
++void __noreturn kunit_try_catch_throw_expecting_error(struct kunit_try_catch *try_catch);
+
+ static inline int kunit_try_catch_get_result(struct kunit_try_catch *try_catch)
+ {
+diff --git a/lib/kunit/test.c b/lib/kunit/test.c
+index 09e3dabfac0c..32e5419a2d52 100644
+--- a/lib/kunit/test.c
++++ b/lib/kunit/test.c
+@@ -323,6 +323,20 @@ void __noreturn __kunit_abort(struct kunit *test)
+ }
+ EXPORT_SYMBOL_GPL(__kunit_abort);
+
++void __noreturn __kunit_abort_expecting_error(struct kunit *test)
++{
++	kunit_try_catch_throw_expecting_error(&test->try_catch); /* Does not return. */
++
++	/*
++	 * Throw could not abort from test.
++	 *
++	 * XXX: we should never reach this line! As kunit_try_catch_throw_expecting_error
++	 * is marked __noreturn.
++	 */
++	WARN_ONCE(true, "Throw could not abort from test!\n");
++}
++EXPORT_SYMBOL_GPL(__kunit_abort_expecting_error);
++
+ void __kunit_do_failed_assertion(struct kunit *test,
+ 			       const struct kunit_loc *loc,
+ 			       enum kunit_assert_type type,
+diff --git a/lib/kunit/try-catch.c b/lib/kunit/try-catch.c
+index d84a879f0a78..123e1f86a5b3 100644
+--- a/lib/kunit/try-catch.c
++++ b/lib/kunit/try-catch.c
+@@ -22,6 +22,13 @@ void __noreturn kunit_try_catch_throw(struct kunit_try_catch *try_catch)
+ }
+ EXPORT_SYMBOL_GPL(kunit_try_catch_throw);
+
++void __noreturn kunit_try_catch_throw_expecting_error(struct kunit_try_catch *try_catch)
++{
++	try_catch->try_result = 0;
++	kthread_exit(0);
++}
++EXPORT_SYMBOL_GPL(kunit_try_catch_throw_expecting_error);
++
+ static int kunit_generic_run_threadfn_adapter(void *data)
+ {
+ 	struct kunit_try_catch *try_catch = data;
+diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+index 91eaff8c186a..65a1040ee2b0 100644
+--- a/rust/kernel/kunit.rs
++++ b/rust/kernel/kunit.rs
+@@ -9,6 +9,9 @@
+ use crate::fmt;
+ use crate::prelude::*;
+
++#[doc(hidden)]
++pub static KUNIT_SHOULD_PANIC: u32 = 0xDEAD7357;
++
+ /// Prints a KUnit error-level message.
+ ///
+ /// Public but hidden since it should only be used from KUnit generated code.
+@@ -345,6 +348,12 @@ fn rust_test_kunit_in_kunit_test() {
+         assert!(in_kunit_test());
+     }
+
++    #[test]
++    #[should_panic]
++    fn rust_test_kunit_panic_in_kunit_test() {
++        panic!("This test should panic and pass");
++    }
++
+     #[test]
+     #[cfg(not(all()))]
+     fn rust_test_kunit_always_disabled_test() {
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 4d5c96ddc49c..0f6c3c00ddd5 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -174,14 +174,54 @@ impl ModuleMetadata for LocalModule {
+     };
+ }
+
+-#[cfg(not(testlib))]
+-#[panic_handler]
+-fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
++#[inline]
++fn bug_on_panic(info: &core::panic::PanicInfo<'_>) -> ! {
+     pr_emerg!("{}\n", info);
+     // SAFETY: FFI call.
+     unsafe { bindings::BUG() };
+ }
+
++#[cfg(all(not(testlib), not(CONFIG_KUNIT)))]
++#[panic_handler]
++fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
++    bug_on_panic(info);
++}
++
++#[cfg(all(not(testlib), CONFIG_KUNIT))]
++#[panic_handler]
++fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
++    // SAFETY: This function is safe to call even if CONFIG_KUNIT=n. If a null pointer is returned,
++    // the panic is handled same as if CONFIG_KUNIT=n.
++    let kunit_test = unsafe { ::bindings::kunit_get_current_test() };
++    if kunit_test.is_null() {
++        bug_on_panic(info);
++    } else {
++        // SAFETY: We are in the else branch of kunit_test.is_null() condition, meaning that
++        // `::bindings::kunit_get_current_test()` returned a kunit struct successfully.
++        let should_panic_ptr: *const u32 = unsafe { (*kunit_test).priv_ as *const u32 };
++        let should_panic_code: u32 = if should_panic_ptr.is_null() {
++            bug_on_panic(info);
++        } else {
++            // SAFETY: Already tested that the should_panic_ptr pointer is not null, casting it to
++            // its value should be safe since kunit_test is not null and KUnit Rust tests are
++            // initialized by assigning either null or a u32 value to the priv_ field.
++            unsafe { *should_panic_ptr }
++        };
++
++        if should_panic_code == crate::kunit::KUNIT_SHOULD_PANIC {
++            // SAFETY: We are in the else branch of kunit_test.is_null() condition, meaning that
++            // `::bindings::kunit_get_current_test()` returned a kunit struct successfully.
++            unsafe {
++                (*kunit_test).status = ::kernel::bindings::kunit_status_KUNIT_SUCCESS;
++                bindings::__kunit_abort_expecting_error(kunit_test);
++            };
++        } else {
++            pr_emerg!("Invalid KUnit priv_ code 0x{:x}\n", should_panic_code);
++            bug_on_panic(info);
++        }
++    }
++}
++
+ /// Produces a pointer to an object from a pointer to one of its fields.
+ ///
+ /// If you encounter a type mismatch due to the [`Opaque`] type, then use [`Opaque::cast_into`] or
+diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
+index ae20ed6768f1..2c6405cebc0a 100644
+--- a/rust/macros/kunit.rs
++++ b/rust/macros/kunit.rs
+@@ -106,6 +106,11 @@ pub(crate) fn kunit_tests(test_suite: Ident, mut module: ItemMod) -> Result<Toke
+             .cloned()
+             .collect();
+
++        let should_panic = f
++            .attrs
++            .iter()
++            .any(|attr| attr.path().is_ident("should_panic"));
++
+         // Before the test, override usual `assert!` and `assert_eq!` macros with ones that call
+         // KUnit instead.
+         let test_str = test.to_string();
+@@ -135,6 +140,19 @@ macro_rules! assert_eq {
+             &CString::new(test_str.as_str()).expect("identifier cannot contain NUL"),
+             test.span(),
+         );
++        let assertion = if should_panic {
++            quote!(
++                (*_test).priv_ = &raw const crate::kunit::KUNIT_SHOULD_PANIC as *mut ffi::c_void;
++                let _ = #test();
++                (*_test).status = ::kernel::bindings::kunit_status_KUNIT_FAILURE;
++            )
++        } else {
++            quote!(
++                (*_test).priv_ = core::ptr::null_mut();
++                use ::kernel::kunit::is_test_result_ok;
++                assert!(is_test_result_ok(#test()));
++            )
++        };
+         processed_items.push(parse_quote! {
+             unsafe extern "C" fn #kunit_wrapper_fn_name(_test: *mut ::kernel::bindings::kunit) {
+                 (*_test).status = ::kernel::bindings::kunit_status_KUNIT_SKIPPED;
+@@ -145,8 +163,7 @@ macro_rules! assert_eq {
+                 #(#cfg_attrs)*
+                 {
+                     (*_test).status = ::kernel::bindings::kunit_status_KUNIT_SUCCESS;
+-                    use ::kernel::kunit::is_test_result_ok;
+-                    assert!(is_test_result_ok(#test()));
++                    #assertion
+                 }
+             }
+         });
 --
 2.47.3
 
