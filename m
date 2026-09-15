@@ -1,218 +1,143 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012013.outbound.protection.outlook.com [40.107.200.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BF1326924;
-	Tue, 15 Sep 2026 04:52:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C913F4118
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Sep 2026 05:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.141
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789447962; cv=fail; b=ItFfPOq3/g9P0NcJajq7OUdir3SOx3vnjirLmof3qNwKj089IOdMQtFXCUh35Amx1yaTmhtrOY1fr3h0TYVS4xzYM+KRN9JGrI2RHPIrjGgi1HK2Y3ib9qwlwk52JEFnSay634HUtgXsheB283Z2JwpaZHiYec0NVA6KQMUQfEM=
+	t=1789450760; cv=pass; b=oWY8H0vHTtnMX3g/BruQcTotwN1QfCbhrh1qBZuW4IHj/HpJgnJfbeGtsUkFyI7HWhtcd08LrEqipoZOFtvdtBKUQHpVRgU6GgYQ5HLeCDdya1DewyU2IxsFG8WsqkTvx31A73Mu1+ycIuKxaTAywzbTR+VNA7yQUbJvTD1BZy0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789447962; c=relaxed/simple;
-	bh=/hqbPRs/8dJSA4f0qBiKclYcjZqP7FEPUWNGbbkqr/E=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=hPkfcsmX6YN5WAm96FTLhC1IJJAnzkXs11hZgSQAc3+ZJhSfoDcCTdyZC7Vz70WnDogiNBUhqSwUieRhz8rdfLEngh3AyebhdXHIDsTT3kNN524CLfUL/frx5MRk8FHJUMU/gi8fuG7an2YxHnYU27MVAHs++5Kv/Gdo04znWDU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=E7DcL1rY; arc=fail smtp.client-ip=40.107.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1789450760; c=relaxed/simple;
+	bh=oZgPhjZZTU7Cih19Ba+ylw61wgq4bdvOE9HAW8ogZSA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BzNd1NJSwWlHZHfdCsskNDbUit3bWCVuu14067mLg0qtOS98VnqPlqwjiey3Fwv1A+EbKVtw0Rdwx9Ynf813a7b4MaqR/ruGRYL2AbshcJhRj2t3CaH90SUUf8O3DnLA6KHIjftF7h5J1LHcN4udaUD5jL7zrD1Nug9ipnCFM58=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hRHQyWib; arc=pass smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="E7DcL1rY"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lib8XDOmO8OPwndE4zWf9p+8H58dFCgzRuS9lz7WFCExRxLXoa/egxg+K6JoXHhP+gt6QoyVAC9M0a15uZfm/shEOJYDciGpH7BzTXaxfrmrOEbu28NJ6nmJ07Ebp51w8K/5Ad5yyoctFQcewCTgl2mRy0X+0UWnqRDNpKr3AayH3kqtT/GarP/TAxjPkB6FZ69kQjGWUU02Va1WuOmVrEOf//l+lGbjyY3+V91x9XSVd0y0hUkWDRJY7Fd8jx4S5ibAH1XzRwE3B5/BN7ofsppfLd+MV+xECQ5XVuP4TLG2KIYCMefE2kg3n+XKby4am3N6RXBNiE94RC2uV7Cv6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/hqbPRs/8dJSA4f0qBiKclYcjZqP7FEPUWNGbbkqr/E=;
- b=GGWyoBAlm+6M045GCOX4LqZ1NLwFYodU3CWrZIaSaorwtNVf/7hklMqMK4IzKBpUXKSAlBw3wJJZ80Nx5r3cXypRm3WuyniZoz9fVljEf8oFouc7PG+vpnMU3PCK4MjOVAoMNOzyS2qraOcIUOes9nyTcgt/Dc1xmAVpz3ritx02uin7E47fM6/pQXiV7Bvf9V2We9CC51gVmC5MSV8ZZHaVJ/djAcpltZQUiwz26fBfecLt8grqTCug417+aba85OfFMDtCV95FG+2qyhmc349XeOBmRwQsRxCtJN/YoZ1AEHse8RHWQ88FDM5hYnz8PNv69oIZ+EtXNXe9BRt++w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/hqbPRs/8dJSA4f0qBiKclYcjZqP7FEPUWNGbbkqr/E=;
- b=E7DcL1rYarXnlND1KvP17KzjEREvpganTx6gBC714i+QnfHByiln07I0kX+nrTybeWOjCq6eAQNeCWrlpvsU157YSL6mg8LxcHyWwU3Sxp5WH1USsRKzUbb0BX0tAbSx7Edxx8zSNu5I7Tfh5YwsX01ahYMvig0ojRM1fyiP0Yf2SlI/JE9c6ejOXMfUVo6e5Dl5MMdpeOU1eVzdR3TkmpDTehDoO5nFG/CHrudVOaLykiRgb7GGnQfbOtueffwHT5iWMMDF4Sea1mz+Iqf5J3djiyEMa0P7OxlX3zNPOfZ2UOt1UdAu9+8UhwI0zOVTw2MRVThTisySmPCexiMnyQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by SA5PPFC3F406448.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8e0) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.8; Tue, 15 Sep
- 2026 04:52:36 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0406.007; Tue, 15 Sep 2026
- 04:52:36 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 15 Sep 2026 13:52:32 +0900
-Message-Id: <DLFMCWWIALSU.2RHGOMHHCOJS@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Matteo Kloiber"
- <kernel@matt3o12.de>, <aliceryhl@google.com>, <ojeda@kernel.org>,
- <airlied@gmail.com>, <simona@ffwll.ch>, <abdiel.janulgue@gmail.com>,
- <daniel.almeida@collabora.com>, <robin.murphy@arm.com>,
- <a.hindborg@kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <driver-core@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] rust: scatterlist: honor the device's maximum
- segment size
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>
-References: <20260831233215.287881-1-kernel@matt3o12.de>
- <20260831233215.287881-3-kernel@matt3o12.de>
- <DL8QLYLQJEL1.3F653J67DYZ47@nvidia.com>
- <20260913210806.125589-1-kernel@matt3o12.de>
- <DLEMH1X0KQA1.D1PYVJD0E6SR@nvidia.com>
- <DLEY8AHWZFCQ.QUHP2NHJW1QX@kernel.org>
- <DLEYQNUGTQYU.34AISCMMZXG8B@garyguo.net>
- <DLFM6SJH6L3P.9YG5DXQPR3TX@nvidia.com>
-In-Reply-To: <DLFM6SJH6L3P.9YG5DXQPR3TX@nvidia.com>
-X-ClientProxiedBy: FR2P281CA0114.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9d::6) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hRHQyWib"
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396672b2569so294692a91.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Sep 2026 22:39:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789450758; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LJYemBdOxgvt0dkdSAzYwhah+a7uwGnCseceFg25l1neQDwF8MoiZMjqGMuXEQ0nfY
+         3cDsF9SMiGqCufkBarLZXOhFg5sYbum4lK9Bua69N17I+Ed50zpu3UpSlMn0OTNQVMSG
+         FmdtGKXs8W2iwNrhB4mjRbHKhwGrqDXEggsUwWUBFRqds2zV+gGHOdFInlgh+p0A7VtF
+         2UvKgh6BhoG/vu6kbj2aIzEuCPLFAiHY9OYjnP34M5gbF6Hbuw/rmnJv4vu0NISjBAzM
+         uzF28Sku4X4VZE1EwVVrdNL5XLDBqiYMy0p2VCul5PVIVD8uPltk7dsUE4Xve8AjkZfx
+         eb+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=poCNEIaA6VGdI5KVygK3LN32EN3HdWB0bLyXipA7M98=;
+        fh=guERN6uH2jmw7ZtTJE3BO3DUzyPpySS1arDMqUat34w=;
+        b=jjw2bcXZXlmoK6l8iY9TUOibhHOGTjvAU22VwTHFbpDc85uoysWdwpKX7yl8rA5RLc
+         GdjSBxZGFB6PeOCEd9bbJwSo1O494tZlBhL0PE5Lk/FpRynUJQF4XqQK0NWQspmgwHZ1
+         V1AYCO5UuHu4tS00s57SYCTQ7scAKDlc4HZdZ3TePTmmGJY9fjpqAjqmMhs3DZceEaGq
+         j62slWIygFdCDCdo4uAiXdNaGhdWtl6l3MrNvWogXUQs4LXU/H1nxuOBlzWi6SW0eSLM
+         O4236guBNmcl+Z6YCdaCPdSjxrMpwfReePBJQWMa20KFmgQgfn6l0BtjTMet+m3C05jH
+         /vTg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789450758; x=1790055558; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=poCNEIaA6VGdI5KVygK3LN32EN3HdWB0bLyXipA7M98=;
+        b=hRHQyWibMLxCSmj5dub9G0ebI+pr/CwMvVFjX89BzqYUAkDOjp77cIWZJaRBBrCfYb
+         WsvhlW/2wPU010IXeUYCxjTOhb+96I9ohdGX1l5Sj/HPpGnEJ+xff0jlXsUbFocQgHWn
+         R/Ry09lZecc6IZ5T9fmEQIReO4k9RkXRTiUwU+9acAM87AYNhUTflSbjjYdzXnHrmsZo
+         J5Ltv/WGdiW3048YJtbLRb9UFiEG8ax3zBQJLIKirtVF2/EuoDxOZOd1RNa6F10AswSm
+         qqUp8Gc3FBxbtD1gbx9R8N3mT0pruVzwrZXUFV9ZN+ctMcJVsaOV2PywAQZNCRUNWVmF
+         C1lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789450758; x=1790055558;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=poCNEIaA6VGdI5KVygK3LN32EN3HdWB0bLyXipA7M98=;
+        b=fYfFLB2YqvVHQkU7CvFNcjeKTYLv2/gdm98p78SjxfRmaLux5vjrVCRmwnczIfM0So
+         Z7ro91xISK66WNkAW0vA94Gp3Iz7dAI2VzJ8MyYybnYL8DgKl/gVdUC7NxqKKheh3S+z
+         Ye6mCNmW1wqZWMTCA7yqU903rYlLUMvqz7TW24wqIZ0/jA0omk4TmzbtjtXZn8DWqyvx
+         yPRJWrfZtHLt18mpeZeN5mVF7jTgBM1BY23ESu7pBYaDFCghzPf4W/cFGt/DZqMTxTSY
+         saEOymQCtEHzaD97RbXYPiMhTifcrxu/3GzqtfN0DS6QEfWbGp8duQfaKU9IE5OrZmj5
+         3Kpg==
+X-Forwarded-Encrypted: i=1; AKwUvBx1TO2sdXkueDel02EZX7iAkJKg4NM4MZbw7BLtTHWIIONwhBrvu7OLmDaVsBCo9lWNeKGEiePJdx4CsTidEg==@vger.kernel.org
+X-Gm-Message-State: AFuF++kus9NrwyBbqBLM2pcUYxrO4+I0KlRnXnULu/Ccw1u5hlqsbDPv
+	U87OOWRaSSlv/PleSxBGm6yMuIKQaIMOTjVSryUL+ClMCM4IwG7mBjWMoadCaX7O7E1gH+BtBs+
+	MNULW7w2hQncUYU4Qgxe0HytxvLeTX5I=
+X-Gm-Gg: AYBFou0MOP7+kEslk3AURQO73OKJ09lZK8prXxreL+LcqkNAPnbKWoaykBEVJEtVMar
+	e5d2/SUNWI4POkNw55jTVu/o4tIOWTDhfYmMRUePh9BLvwBxxvFtilp6RQodODiwZfkuQ4YWVfj
+	XMx+qU2qqYbFRswX3JxY3CiXYfErWDp8FK8PyNMNlHo/De6Ph/7s3P87Ti4Yq69ZQHEsMEyeUez
+	O0b6W/ffTN7z/PfmTxFd9EqglGq/JMHjo6zonrjIQjk3pyVqiEQMudACPK5xObah1iI3LRAPmwX
+	4UY7cMKqfnqPlSBNv/Dwx7RWOMDhEUlIsnS7Q4UgGF/VNjQBvOKTZyiquKPUNOEdHXTtPRboEkS
+	CS8MEGR/hvUNpJa58q4SPA6eg0WO1ZWYwQH27y43XPn0QrU1ZMCn0jxQFR5KEnvY/SAs6/5g95U
+	fXU2VhEEbLDLmZmDtqA0xfmuLDUXF9QVtKBrT785c738kCECzaLQ==
+X-Received: by 2002:a17:90b:440c:b0:381:bcfb:e710 with SMTP id
+ 98e67ed59e1d1-39dec137c0emr7955486a91.3.1789450757965; Mon, 14 Sep 2026
+ 22:39:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|SA5PPFC3F406448:EE_
-X-MS-Office365-Filtering-Correlation-Id: 168d0703-7cff-45bf-fcf3-08df12e52954
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|366016|23010399003|376014|6133799003|22082099003|18002099003|3023799007|56012099006|10067099003|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	djy+lgqyDfgX6I6hNf7B8yFmitB31UmrDUMpyIruM2V7fCT8LMlSGpMjx1Bi5LBOU1AqA54pFq5luleNL0bZjj93PEFn6JOUSWlE4L854fPDBUA7iCJWwgDa/2VqbgyCJAS7/Zbo5a81AduFo2f7d7tberWvZM49rFefjvfcFIklKpOoZLaNpBYXrWrjeJD2WuqbI2yRrCwyIGAh0ZyI2tSCEQLvAdPrr8MIEK6qroRsWxzjqSJGEl9scujlkUfR0V4VZT+7A/G9OvfqEZ0bsVOVp7wAaBo0wbi8T+GqYOttuzb/wOm2oMIigSbN2Z6fOUf1Xgszkc33UN4uPkkntrdMMfl76KNMySC8tJv+41VeNlRNaXXk+ZVL4B5LAySnw2SAFXUbENINwK1pa9G0jZgP9TLBjGML0LAmcdxKHAugT0xYS9Gy1xVLw8wjsKKJNWfK3jI07tdKoHd34mrPA+FSy2AJkzJhC/T8NSG3Cx+HTn1TW021NryU3HJdKW6RGfm9uXcPN6qCZcMw1rwIIKm2eo3Z1NTiw0qSKKbtpv2n2YHATNGUXmIaYT1DTc0t9Qxv4MqrjtU5l8a782hsyjd9FNDw6bFu37OaxauMWce7rbA5EqEwCJjuR49BH3Z0QeCBHEOssRVdahIXk9PTJugRdZnqf97Jrzgv/aooMJc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(23010399003)(376014)(6133799003)(22082099003)(18002099003)(3023799007)(56012099006)(10067099003)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bnh4a0I2TG1iTWxCeDNieWptRGJTY2ZNa0lraWdRWTQwbHpGUEpQZG4wazBk?=
- =?utf-8?B?MGxUWkNLZ1BqZDVzM2RuYXFPRUFUNTAxMStTUWJJZW1BSGdqSXR3djhTTDho?=
- =?utf-8?B?NzlBWmRkSEhsOXlPSEJ5YlZsbW9iekJmZ3MzMURoTktnRXRNaWVEV3liYzFu?=
- =?utf-8?B?d08wZlhzQ0RvVFdrTEJRcUdRRHZJMm1lU2V0MThQclErRm1wUEw2N1pFVitQ?=
- =?utf-8?B?QzBkZHVKQVluWllza1c2dUl2Q2lqVzlYQ0d4TzRvTXZVbEcxaHUrczczNXhN?=
- =?utf-8?B?d1NFUjViVjdZMjlzR3Y1ZVM4SUVqN2FWd1RBUlhUb01lSlYzdmhhSXVxd3Rx?=
- =?utf-8?B?YStyTEEveStrcURIZU1PRjNzTVM1MklyaHNhZ3cwdy9EWCtCaXNoNUl2STlR?=
- =?utf-8?B?bHhnSnFaUElkWE9tUjRqakI2bTdHU3RVVldhTW5aWFQzN3FaQUx4QWRQNTkz?=
- =?utf-8?B?TmhZeFduQVZuT0k0RnJtZTd2Yy92YjJpTVRlakpIUHlDZFlCTDQvb1VkSUpI?=
- =?utf-8?B?SVZDTFkxdlRhYWl1ZFd6WlUwcXhsUC94SERpb2ZTNHU0ZzN4QmVmekZlSEJN?=
- =?utf-8?B?YnM4U2l5Q2F6dVRJZTgwRkRRRkd4VkM0SkY5YnBiTTZNY2VsSmlZZ2V6QkZC?=
- =?utf-8?B?blJOWjJwQk9tNTJaYkEzeENiT3p4RXUyaUFFVnB4c0FDUm9MV084aDY2RXox?=
- =?utf-8?B?ZlZvN2kxNk9jTkZXVERKelozVWg2cHZQNG5rSjc3L2loSGQ2S3ZMUHJkSkI3?=
- =?utf-8?B?M1hlZFFwSDhYOG9qRHdFbGhyazBWNnRPME9SMGxCQmw5M3FSbkVHRTlxSllV?=
- =?utf-8?B?dkk2MTVvZ00zeVhvRks1UVE3TWVKS0NiUGR0elpuY2kvRmdMeEJMOGNjT3BY?=
- =?utf-8?B?d3EwVStqbGc5aGVFNUxxSDZPeGQ4OGdxcGtORUJybkNuYUFkTW5YSFJwZCti?=
- =?utf-8?B?ZUJJbW1tQlBRUWYyYmlRRXl2RkZ1YnphUm4weHp0eUhVK25NL3l0N0pMc0Rk?=
- =?utf-8?B?aVhjUHVSeUdzYWprc1h6dk9rVE5RQzhsNG9lL0tYd3NHQXp3dFBGb2luKzhx?=
- =?utf-8?B?bDZnVGhGMU40YlNQVElNL1o4MFV1UG9MMmc4ckMyQUp2Zm04b2luYTlvdGpH?=
- =?utf-8?B?QWJjV1JLUlkwckREcmN4bDgwaXp0VlFnZUdIekhCSE1vRkMxc3IwRkpNbVdE?=
- =?utf-8?B?R1J2dEFjSHJ6ZWYxVTB3Z1lOTkRES2tGMEdKTUJxOTU0cUpLa0R5TFBqVGVO?=
- =?utf-8?B?OGtMeWdJc2xSV29MZnFkWXltdllmVHJhTjh0dVNkMEJkYktNRzRoblNjTzA3?=
- =?utf-8?B?QzJvaDFwUnN6dVlYZ3A5dXVBTFEvU3pGNm8yZ0RHOUNNTWZvU0drd09peVNx?=
- =?utf-8?B?U3ZkbCsveStiR0pocGtwSUIzb09PTjRoem1TQ1QvY1ZqQ0o0ZXZiUFNKeUp4?=
- =?utf-8?B?Mmg4RC9QVDg1Z0R5RG43Q29IZng4aUVwM0U3cklidWpLZExuajVFRzFMZUxa?=
- =?utf-8?B?dnY2djA0WTFLdmtSclltVTQrTHZnTzlYVGtteTR1NFZGSWRtd0VzcExYaEJU?=
- =?utf-8?B?eWR2eER5bjM0UXRBc0ZKc3NzUnhkQ042UEovSUZhV0dFU1RLblRyRjRGT0xq?=
- =?utf-8?B?bkE1U0NQVDhnTWtyVGJRblcxMm1WVWV5d3lrQVZuRmVsL2NYeHFJWUg3Vjdq?=
- =?utf-8?B?dWpIS0JEZWtpbjhnUTlEY3E4MWhjMTA1UFo5NStVREZkOHljYTJaWklKWnZF?=
- =?utf-8?B?bk84VkUzMHBwZi80UGNzK2Mvc0FsdkJRSUxGU08vTkROZEpRWGxPbkU1THFl?=
- =?utf-8?B?eTdnMm5TdzNIaVpMS2hPRk1TM3ZrY01DR0ROSlJxRldKUVdlY0Ywd3ZJOCt2?=
- =?utf-8?B?bS8xZVRtaWRGaUdNYWRLaWlxQkxlUWpHSUhNL1l4ZFFCeWRjSHBXVVk5S1ZY?=
- =?utf-8?B?b3VtVEhiaktRRG5lK1lyS0pEMkZkR2VjYmRqTjY1TWFHMUVUc3FxYTdZSllo?=
- =?utf-8?B?MFNuK0l6dFQybFdaVFY3amI5QjlkMC9IeitMMEp6ZzNoWnRxOFVycENRckhs?=
- =?utf-8?B?dGJpVUk0Y0hyaTRRZHJsWEMrQXVTTGc2cnpCd0dUU2FxOG5HQTczb1VLZDZp?=
- =?utf-8?B?bk9DWnRLaFVzVVhaY3NaNG54Z3BrcXBkQVBtMktyUXN5a3kxTVJoRldzWVhv?=
- =?utf-8?B?aWQxbUhndmkrUlRubjRPS2RzWHJiSW1rNlZ3WWtkdUc0RGRkQXhXcEtJQXpB?=
- =?utf-8?B?TVBFdStxOHZ1RGhHU0pacEVMNVppVWlnQ3FVeHBrS2hQblBYdElMQXhLMktI?=
- =?utf-8?B?YkNWeGtlUXg2VEhCMlZrZEtNUzJpQVMrWmM0NCttMThjelV6eld5dz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 168d0703-7cff-45bf-fcf3-08df12e52954
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2026 04:52:36.1080
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zoBVpvfYb7OtD5KctVUXey2bnFOxq0XmFldZ/3pVWixw9yqhks1nRtcAi8WBoFX6SlLd018Ds+jiknUoagedpw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFC3F406448
+References: <cover.1789420324.git.pgovind2@uci.edu> <f515b62bb05e7b6bf0bb06c8fdb362486fea25a8.1789420324.git.pgovind2@uci.edu>
+In-Reply-To: <f515b62bb05e7b6bf0bb06c8fdb362486fea25a8.1789420324.git.pgovind2@uci.edu>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 15 Sep 2026 07:39:05 +0200
+X-Gm-Features: AcwNN1VLEVsnNcc7MgH6GABS_6vDgssPHdlXmRPoVWKppjYFE36L4oSTNOtsqVY
+Message-ID: <CANiq72=jRupLtnQSnAewyZZC7q4-oeAVmA=SfBGN+z_nefsnvQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] rust: block: Fix unsoundness in `Operations::queue_rq`
+To: Priya Bala Govindasamy <pgovind2@uci.edu>
+Cc: a.hindborg@kernel.org, boqun@kernel.org, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, ardalan@uci.edu, zhiyunq@cs.ucr.edu, 
+	dzueck@uci.edu, 
+	"linux-block @ vger . kernel . org" <linux-block@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue Sep 15, 2026 at 1:44 PM JST, Alexandre Courbot wrote:
-> On Mon Sep 14, 2026 at 7:22 PM JST, Gary Guo wrote:
->> On Mon Sep 14, 2026 at 10:58 AM BST, Danilo Krummrich wrote:
->>> On Mon Sep 14, 2026 at 2:45 AM CEST, Alexandre Courbot wrote:
->>>> On Mon Sep 14, 2026 at 6:08 AM JST, Matteo Kloiber wrote:
->>>>> On Mon Sep 7, 2026 at 11:43 AM JST, Alexandre Courbot wrote:
->>>>>> It also means that without patch 1, nova-core would split the firmwa=
-re
->>>>>> into hundreds of 64KB SG entries, which is not breaking but still
->>>>>> something we want to avoid. The correct fix is to make sure that
->>>>>> `dma_set_max_seg_size` is called by the driver, and while we are at =
-it
->>>>>> we also want every driver to call `dma_set_mask_and_coherent`. Ideal=
-ly
->>>>>> we would use the type system to make sure that both functions are ca=
-lled
->>>>>> before any DMA operation can take place (using a safe interface), bu=
-t
->>>>>> I'm not quite sure yet how we can do this.
->>>>>
->>>>> This sounds sensible indeed. Should I open a thread regarding that on=
- Zulip?
->>>>
->>>> Probably not necessary, the mailing-list has a larger audience and is
->>>> the right place for this. I expect people will jump in here with their
->>>> thoughts.
->>>
->>> The problem with those is not that they must strictly be called before
->>> allocating DMA memory, but they must not be called concurrently with ot=
-her DMA
->>> operations, such as allocating DMA memory, as it would technically be a=
- data
->>> race.
->>
->> Do they really have to be called *before* allocating DMA memory, not do =
-they
->> just need not be called *concurrent* to DMA memory allocation?
->>
->> If it's the former, we can require these to require mutable reference in=
-stead,
->> so the probe takes `Pin<&'bound mut Device<Core<'_>>>` which still deref=
-s to
->> `&'bound Device<Bound>`, but Rust will require the shared reference to n=
-ot
->> co-exist with the mutable reference.
+On Mon, Sep 14, 2026 at 10:47=E2=80=AFPM Priya Bala Govindasamy
+<pgovind2@uci.edu> wrote:
 >
-> As Danilo pointed out [1] from a strict safety perspective they must not
-> be called concurrently to DMA allocations. So there is not a hard need
-> to call them before.
->
-> But my point is different: until patch 1 of this series, nova-core
-> didn't do anything particularly wrong but was operating with an
-> inaccurate DMA segment size. Which is currently inconsequential as long
-> as you don't set `CONFIG_DMA_API_DEBUG`, but will become sub-optimal if
-> patch 2 gets merged (which it should be, otherwise more DMA-limited
-> devices could start misbehaving).
->
-> The thing is that every driver *really* should set their DMA mask and
-> max segment size ASAP, but at the moment this is done through two unsafe
-> functions that are very easy to overlook.
->
-> And practically speaking, is there a reason *not* to do that setup
-> before allocating objects?
->
-> So I am thinking that maybe we could have a kind of `DeviceDma` type
-> which construction involves setting the core DMA parameters (or
-> acknowledging the defaults), and to which all allocations would be tied.
-> IOW, Danilo's DMA allocations rework [2] would tie to that `DeviceDma`
-> object (which itself would be tied to the bound device) instead of the
-> device itself.
->
-> [1] https://lore.kernel.org/DLEY8AHWZFCQ.QUHP2NHJW1QX@kernel.org
-> [2] https://lore.kernel.org/20260830193824.471089-1-dakr@kernel.org
+> Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
 
-Sorry, I typed this message while travelling (and offline) and sent it
-before noticing there has been new replies that make most of it
-irrelevant.
+Should this have Cc: stable?
+
+> Assisted-by: ChatGPT:gpt-5.6-sol
+
+Nowadays, it is enough to say "Assisted-by: LLM" (the rules recently change=
+d).
+
+> Signed-off-by: Priya Bala Govindasamy<pgovind2@uci.edu>
+
+The tags seem to be missing a space before `<`.
+
+Cc'ing the linux-block list too (please see the `MAINTAINERS` file).
+
+Finally, it is usually nice to provide a simple example when possible
+of the safe code that triggers the issue.
+
+> +    /// # Safety
+> +    ///
+> +    /// The implementor of this method must ensure that if Err is return=
+ed:
+> +    /// - The request has not already been completed.
+> +    /// - No ARef derived from the request remains anywhere.
+> +    /// - No reference was converted to raw or transferred to another th=
+read.
+> +    unsafe fn queue_rq(
+
+The `# Safety` section is about the preconditions for callers, not for
+implementers of the trait -- this should likely be on the trait.
+Should this method be `unsafe fn` then? Did you build with `CLIPPY=3D1`?
+
+Also, please add intra-doc links where possible, and please see
+Sashiko's output too.
+
+Thanks!
+
+Cheers,
+Miguel
