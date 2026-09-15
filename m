@@ -1,148 +1,166 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB2D43DEA2
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Sep 2026 17:56:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789494977; cv=pass; b=NBp+OvrVsZmoPCTVVLDkYE3oSvdNhDnXichXek0xfM7c4uD85F878R67C2/qyDYDSQTAoTxxOhjSsvV6wok0bpO9aCp/+0YF2fARI6WhMlbKhfIZtJ9ZOmDsonQ4Kx0I4byxqexIEy/HxbBt2TOcAlS8rwVSBq6UtT78KSYdGCc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789494977; c=relaxed/simple;
-	bh=P7a2zFFMvnl7AMMV9J8HoSFvOnO26MuCDolXpy7oTxA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=brygQHRPp00YjfJh2QVFxN6raT1WFBwnrnKkgdJzLR03YtX8YfIK5Af4knF9cej+mQbfY13AiXZMa40CKxNq1qMbULOlNPs7URTo8EF9s1XoUdiG1d1JCIXm1rgt8yvuaaHUU44YQBTUa1F7lLFKIOUarVdrv8lbqc1zeMMwnn8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a6KqVcGU; arc=pass smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C08E3BBFB9;
+	Tue, 15 Sep 2026 18:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789495416; cv=none; b=bf96vjaKA5lFwSz8Cfq/IPk+2pUIl9Kg0nELMnQTUoGstI0n2AaeBYjoTi+vnmfSVx80l+rcazafBgVU49jk+CDhCSY7LC0XbA7HXXWwUg5Or66OeQoFLPrM2cHAimZXi7YzsXBIpd79l/HgbC/Wr3GnyurLL9EOkF//0zERMjY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789495416; c=relaxed/simple;
+	bh=acA8Pl0ra8uGRhaY3yUxU7JeUeRVK1VSh+mJtBE56Dw=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=ZdhWVAeTmgXJaVzuBy3taytPjhZuR6CNWa0xOArT6gbV4GkQnegx3TGoye28qio4OTKAwcqcChEO9OSHl3AZp/T1Wf3BTfUEEZ1j/a3qTEDhD1nSkJUGL8Ic5xPbHGg8rvNaq4h7+g9GojidXb53wGGeRM4hCAmNDqrLie8yFWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=bfzeMig/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=oZOUFFuD; arc=none smtp.client-ip=202.12.124.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a6KqVcGU"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4843e397f74so707066f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Sep 2026 10:56:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789494973; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FDvyYIbQOjrC/lFlVIOF4aIrik4Wmc0W3XLGEaBDPvmoyMB0qCKVoZvEDhLUNBdCTb
-         6bJq8j+vb1hTeIYixj6x+NgT4s9NPzWC56jcVe8+t9zq19Eb8i1wJam8R9149rQkCb55
-         PSxyfGIhSy4zx6MrInp1kt/0qJnvCKdbyzYhRHqYvAvUhcbYtTrlKliQ5yhLOGVtYIdb
-         byBT9y9W7kgkguknxx4uzDiS4XOGIICJSGkWnzN9PuobukrENVAXdgCPsf+xWl7K46tM
-         VIUALLo00DSK94rnovDDUyIeDfNjJv3d85r75Q1B7FZEOh2WENZcjKO+LBMpnFMwmS14
-         PYlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GXjIVxCi/wI/JEAgJbDGbjdOXMojQ1soppHskXz6ugY=;
-        fh=oFkcy5ILAJqn+DX7aVkbQ9jvLCAYVXdJSqbRCnXo8V4=;
-        b=l33HPl1xeow4gWUBVkWgK2l2xxfw+JpBb+gB8U7m4ueuTERVqOGKGywhFIG5iMtOHu
-         B94udGEzEJ+aqJGl5y0J+Y5zR/E85EePaX3wlASn87KJ8v6UZZg4XGpd/89Fqe4kk+P+
-         Q6qLkOcWpBRZgZnXhHObQ7q/zJ6fu1YlcT3ZdwQPz9tpxFZcltrUof2PV9OELaYCJW+a
-         rfcgKBb3dFsc4X/rdlGMlCE350dJDrwwXsuMreqxCa6+cw5fKxmRu07A0tMzbGJWuflc
-         7bX5+J4CjPb2nn9+F2r8RfqJrZMcqULwaxDESMRP8SM4Rtk2xhuZhMBwNr+337ut7g3M
-         FRHQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789494973; x=1790099773; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GXjIVxCi/wI/JEAgJbDGbjdOXMojQ1soppHskXz6ugY=;
-        b=a6KqVcGUw2fLFtF1Hm9cc5yrvLvRY7YxPEhLHNJIfcavwgt1rbW5yhhfaSMX9+BAED
-         DGIeBSCgb1PlyB68lxCyUYa/zeD7s7Lo+A6Qmv93dYvmxfOjOqiT4T0+b7iIrlo89kl3
-         YmXf3optvEP5cx8oa/c2vYZz/Cpd/9YBfStzMILEteq521PB7cv0n4n8ZyMgrCmgFcCE
-         lMSUEJYprCL+/e4j6Ny2nYOmfUuoU2z79ZlpeYGa4QTjMUcNXGJrHFAK5pWg2+Dyb0Pk
-         ebFFkqcbAhZKuXXO3iWlS5mmW4BKwKJfkzmb/CfloFnTWbyEEabpV3Xv4BxGONXxY8dZ
-         5NfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789494973; x=1790099773;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GXjIVxCi/wI/JEAgJbDGbjdOXMojQ1soppHskXz6ugY=;
-        b=jehu32N+Mmg8e5Sey8np/RQurZ6I1gTrVzAol2BMmDqb9DS6PvjPsbguUyCpl2WxsE
-         mVX4Xp4kMIw/OcvwJil9pQYk23WU2T8k0eh84v0ueTkEe+yLNtWk11U5az2351N4AtAi
-         WQHu8/25x9QKR22e3anunim5+lczo+UEgsSFEw1qWV6JbZYSvVmj1AIls02lyt2fo3Oe
-         cpaC0ZUxG770DMxmHVDV6sHNzaJYdxRt7txeEMRDMcGNOXxaxjYctAEEnAcx3rxCmMik
-         SPlVp8ItjZFg3X9zI9p6Ofie3lDooVanuN13OYV2qyiuNLCwa3KHuOB6BDD8FJB4ZeKN
-         XNtw==
-X-Forwarded-Encrypted: i=1; AKwUvBxAlUsuUaX9bdotafE+jg+o1K1r37VkkT5tu97GaQTyla6OLTl4Dog8bmlaft3Bvs3BG+X7SIMjAjUTPOInAA==@vger.kernel.org
-X-Gm-Message-State: AFuF++njb7x/uzVib7RpWGoTVLUuVMxx5B2izsBjbR1+sljT6cD1Pv5+
-	wz74ecIzG/lDlJSXFKqI/WNqoScA02+Lstk+HdI5W5gbZVswh5+GbAIo6RgltB/qBmpbeGYsLTz
-	cDYbHw2/3VJtIhgB+UG6oLpvpb+Erz6kVjydDOJwK
-X-Gm-Gg: AYBFou0vaWsYnwQGZtYVDOxbMhipwuZ2WdmhPq1nI+QAwh0tjwAXw58iRZ2ATLISvdo
-	/xGTAghjXfGiqw8lPkqAN/+rYidgA/+Iir1vOhq1lp/wOV1dyeYrxYEjKGB35Pi+fLBit+xBmXr
-	y+8u0b2GCjzg3V4paaX0ZSwIXEYLm0rCrjRh+cCJPscKuEweCM9J7q1IydDBo5DGAcUaMIHFY31
-	7iJuSz1SEez38e8wi4tWzfYB7Ncc79XZZL+oB1KwnJEAvp+2hdU5tf/rBiL1HXEHgtm68I+gCkU
-	5eyiPiOuLu42KqQZrdCCIktoYQffibrGPIpYRGTN1/iGN4cwNyShZxcfgraNYikCVh8ASoausUW
-	cl4oOR0R9LwE9OjvTHmNdRC+RwqavwkFY3y5PNczr7JoyRxYMkLq+FWC6gbzRHKT5VGI=
-X-Received: by 2002:adf:eec3:0:b0:487:13f:4968 with SMTP id
- ffacd0b85a97d-48705b5d792mr5756089f8f.11.1789494972051; Tue, 15 Sep 2026
- 10:56:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="bfzeMig/";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="oZOUFFuD"
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfout.stl.internal (Postfix) with ESMTP id ACCCF1D0021E;
+	Tue, 15 Sep 2026 14:03:32 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 15 Sep 2026 14:03:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1789495412;
+	 x=1789581812; bh=M+18z9TRevaxtOpUOsKP4yasoi0N4a+EiZHqRi1jYdY=; b=
+	bfzeMig/Y+tGM1+bYmo0BbhIVS0y9dIGMrA4LwRTf2Lpje/Kfm8S570bfH/QjUqL
+	6/a3eiCelvTXGqhVquzIsr4cr0lUv3ospVpRgXtP4LZbhaVeTzfcbSaGwHa3vtxs
+	BcqqDiGb2M6gEjECAzLQuPz0yP99Kk1u011d5pP+gbGS0GiMHg4PRfXQDFoacDOz
+	mUF3+J6mkqpifQzxfE5vToAQ+ss3hXjYEHX/9CCuXLtEPcvajpXjy5o6HO5hC5+F
+	SRPnzQnKKQAFxx2KqQsMFLmwjSHntR0zRO7nbwOKsRHGNJZYVXFl6AbfAkK1wvXY
+	tWR6d95RnBDQpPokvuZ/FA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789495412; x=
+	1789581812; bh=M+18z9TRevaxtOpUOsKP4yasoi0N4a+EiZHqRi1jYdY=; b=o
+	ZOUFFuD6XnpqFUSEJsY2ku4+E5wCoyzzuuGjDK3VOLtNoMZpIRvRxVprQ9i/22II
+	jG1jG15qMEzvpaLpECfgkboC8JdgLp9Q39mqgTcR8lYXn/d83bLIcQ5dXDL+TemW
+	klIRqMV8FflS6YTNzEQwkIfn2xX1LkA7dmLFMj4E00Q1CW0JkSLBLf2Zk1/g8U4A
+	ejyIqZLoetKA/i/YaBFIiwJjewrsmt2inIMSFgG6e+QsHc3VL/1ujnHfQDpawgEm
+	I0nYSDFstqFLf3IPHvTqv/TfrIzepp3oweewt4zuJrTzNSjkToeN7dZvBMpDoMyQ
+	3pfG1/3YATpk1jIhSkoew==
+X-ME-Sender: <xms:cYipaqE_AZTIyS7ZUScZTZ4wde-IC-i3ZyB5ji0kH44t1e0B3LSclg>
+    <xme:cYipamKRrUVZH90_QVcnKEsG_cZ2n0jvO7k-iE1vh3ku8J-yTzn_jXbvbJU5AFnEV
+    JytVsriQCYwRwPPY87Xo4C9mG4acZP8NtAqXcTtz16YbQpFQW1ivg>
+X-ME-Proxy-Cause: dmFkZTEqhHjzH1soeTRI55HShuI0NwF6ztlzSeEa6rdk6X/pP/Jtsnp/rah2tHi5jjcKB2
+    lusLwR9l1hsFDHtzVzUwOj5TctfcRlmmLokL8SZY0QOvkDneEL8NNm5kzUhlGtnnIOSY+k
+    QYkqiKZp2SLcPCb3DscDI2fJXz78s3/4Ckjem3nv0+Ua+COftzMGlwTptdt88qWV3osb7T
+    T5ye+RBTmyxZgFvcLaWtdcO7CFvSIKyHLXrBshilUZxavJSyPA7zRqFPUfEURGFWUZJwOc
+    cWn5hWkzyz2adzsNIlzBWhO/OFUO8SAd3243e1XMNMZRUA2r3QWhWls6hiFMwBaPqqSRSe
+    dt0T6ZGZOm8+lgAsiZUthxmJtKEmZLaACB/aj4Zn0jPxFJskSxiS/dKB0+K99b18stM6E/
+    MGYZZD4Dbbl6ZPwnUdzZbbxWoRg1HxbTeB9DH1iSzXuIw6R3mn9qYrAHsC28FsDlXckeL8
+    r0g684T9Dc21Nc1FenOYOwWBi9QUvertwK2jfjyZXgANc9pSFa8KxijA9exEgC/NQSabNT
+    N1yuOPdlP61ofVBk3S/9gx/HFxtGHAvc0zRoG7U84I8l0OAHiBmxyobTjsVL3y5sCwVQlM
+    pKS/rS0rLj0nsA6qufToAQrMqBJeRG3FxWPhepx4hFOQeYS2c1YC0XYKUYcQ
+X-ME-Proxy: <xmx:coipary-7p7j1Kt0qU7OG_-8DDJhBtgPod0au9RKw52o1qZnSESppw>
+    <xmx:coipaqIEgSO4ryECQ4vjQQxF3TkIFmqQ9ZxieSNK2v8s1f25VovtPQ>
+    <xmx:coipatoXg2wUi6tLNO5bNikhZjmnI5yJjun9dPQztNmowsDc-CeI6Q>
+    <xmx:coipahIu2IlxV-XBevCCTOyDFXx89QoUF0csr5hA57H2JIoH8rSBww>
+    <xmx:dIipanoLEVa1nmatRE4Cfwr0jAv58eY7-FZDBV9fHKFGa4SlCFozRXvG>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 2D5C132A0081; Tue, 15 Sep 2026 14:03:29 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-ThreadId: ArHA-gVR6p-N
+Date: Tue, 15 Sep 2026 20:02:38 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Nick Desaulniers" <ndesaulniers@google.com>,
+ "Kees Cook" <kees@kernel.org>
+Cc: "Lorenzo Stoakes" <ljs@kernel.org>,
+ "Linus Torvalds" <torvalds@linux-foundation.org>,
+ "Nathan Chancellor" <nathan@kernel.org>,
+ "Nicolas Schier" <nsc@kernel.org>, "Bill Wendling" <morbo@google.com>,
+ "Justin Stitt" <justinstitt@google.com>,
+ "Masahiro Yamada" <masahiroy@kernel.org>,
+ "Alexey Gladkov" <legion@kernel.org>,
+ "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "Paul Walmsley" <pjw@kernel.org>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>,
+ "Albert Ou" <aou@eecs.berkeley.edu>, "Alexandre Ghiti" <alex@ghiti.fr>,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Will Deacon" <will@kernel.org>, "Mark Rutland" <mark.rutland@arm.com>,
+ "Ard Biesheuvel" <ardb@kernel.org>,
+ "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
+ "Josh Poimboeuf" <jpoimboe@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ "Benno Lossin" <lossin@kernel.org>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ "Jonathan Corbet" <corbet@lwn.net>,
+ "Randy Dunlap" <rdunlap@infradead.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev, linux-riscv@lists.infradead.org,
+ Linux-Arch <linux-arch@vger.kernel.org>,
+ linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+ "Jens Axboe" <axboe@kernel.dk>, linux-hardening@vger.kernel.org
+Message-Id: <90006ad1-73df-4bd0-a434-61875edd5bb9@app.fastmail.com>
+In-Reply-To: 
+ <CAKwvOdmgeyqivO4pVa=30XDWpXvdRzBR8f13rfuPzDx=LJ1Tsw@mail.gmail.com>
 References: <20260914-build-speedup-v2-0-39817ec5db23@kernel.org>
- <20260914-build-speedup-v2-14-39817ec5db23@kernel.org> <202609141056.6AE2C82E@keescook>
- <aqkZvtAKWYf9-1ZW@gremlin> <202609150943.000EC9277@keescook>
-In-Reply-To: <202609150943.000EC9277@keescook>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Tue, 15 Sep 2026 10:56:01 -0700
-X-Gm-Features: AcwNN1WPMMWK_d5_qt02ICUH5UNGl72dPPgrM0zv_mQxUiZh6yRKMNR6HBnx31I
-Message-ID: <CAKwvOdms6QWc7RMW6hJb3qzgmpK+aw40C7b_h7eG161ie_Y8ZA@mail.gmail.com>
-Subject: Re: [PATCH v2 14/21] kbuild: batch module finalisation
-To: Kees Cook <kees@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Alexey Gladkov <legion@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Jens Axboe <axboe@kernel.dk>, linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+ <20260914-build-speedup-v2-21-39817ec5db23@kernel.org>
+ <202609140844.FA7E848A@keescook> <aqk9gakQhxToLnDI@gremlin>
+ <202609150955.A51C9F7A20@keescook>
+ <CAKwvOdmgeyqivO4pVa=30XDWpXvdRzBR8f13rfuPzDx=LJ1Tsw@mail.gmail.com>
+Subject: Re: [PATCH v2 21/21] kbuild: use pigz for gzip compression if available
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 15, 2026 at 9:49=E2=80=AFAM Kees Cook <kees@kernel.org> wrote:
+On Tue, Sep 15, 2026, at 19:47, Nick Desaulniers wrote:
+> On Tue, Sep 15, 2026 at 10:31=E2=80=AFAM Kees Cook <kees@kernel.org> w=
+rote:
+>> On Tue, Sep 15, 2026 at 03:30:43PM +0100, Lorenzo Stoakes (ARM) wrote:
+>> a)
+>> My main concern is the lack of respecting the -j make argument. In my
+>> mind, this is a blocker, because it means a build will now _always_ s=
+pin
+>> up max CPUs (not what -j has limited it to), and for CIs, shared comp=
+ute
+>> systems, or whatever, this violates the requested parallelism level. =
+For
+>> example, if I'm doing a long-running Coccinelle replacement in one tr=
+ee
+>> (which uses half the CPUs), any builds I launch I'm asking for the ot=
+her
+>> half of my CPUs to be used so they don't thrash my cache.
+>>
+>> This is the kind of "why are all the CPUs spinning up?" question I
+>> helped track down with commit 51e46c7a4007 ("docs, parallelism: Rearr=
+ange
+>> how jobserver reservations are made") forever ago.
 >
-> On Tue, Sep 15, 2026 at 11:44:01AM +0100, Lorenzo Stoakes (ARM) wrote:
-> > On Mon, Sep 14, 2026 at 11:00:27AM -0700, Kees Cook wrote:
-> > > On Mon, Sep 14, 2026 at 10:22:13AM +0100, Lorenzo Stoakes (ARM) wrote=
-:
-> > > > Module finalisation on allmodconfig builds consists of a large numb=
-er of
-> > > > very short-lived jobs, and the make job dispatcher cannot possibly =
-dispatch
-> > > > jobs fast enough.
-> > >
-> > > This "cannot possibly" sounds like a weird LLM language intensifier. =
-I'd
-> >
-> > Again that's my writing actually, probably best to stop assuming LLM no=
-w ;)
->
-> Apologies; whatever the opposite of the Turing Test is, I have failed.
-> :P The AIs are winning: humans are suspicious of each other now. :)
+> Parse -j from MAKEFLAGS (https://stackoverflow.com/a/76517886),
+> forward it to pigz?
 
-Is there a term for this yet?  Cylon paranoia?
+That still has a potential O(n=C2=B2) problem: if one builds N kernels
+with a top-level jobserver on N CPUs, and they all take the same
+amount of time, you end up with N pigz processes each trying to use
+N cpus at the same time. Ideally we'd use the equivalent of
+-flto=3Dauto in the compiler, which respects jobserver settings,
+but I don't think pigz supports this at the moment.
 
---=20
-Thanks,
-~Nick Desaulniers
+      Arnd
