@@ -1,174 +1,161 @@
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729B64BB80D
-	for <rust-for-linux@vger.kernel.org>; Wed, 16 Sep 2026 14:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF444A3F2A
+	for <rust-for-linux@vger.kernel.org>; Wed, 16 Sep 2026 14:18:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789567820; cv=none; b=nPQ+7jXzKSWoRnOItM01ZKJX+/4XJI+bEBauxoNV+YcJgRdRL5x2+l5iB/FLuzKcDd8OFw+znRoJxKpnQUXF/MiPlqmPuyporx4nVpOt2GpAbPAfYR0UY1LszzbISAuDxDp2nL42sSar/NChirytx5eNve5T1h8YY7cJ2qOgbck=
+	t=1789568287; cv=none; b=Ww9CB54MBS8QRodVXq3WGv1ytKkkt0ulyn0uyZoR7CS4N0qgYllAERw+dnNhO09CYNVTOlfmp8Ds8bz62mq3jhE+EjRkjBhRYAgYHGiUTayQsW1F0Q8llPLZSvTOoEjWkZeXN1tmu0SdDEzIouKTicOlwX2SX2OwiZaIBq7Crf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789567820; c=relaxed/simple;
-	bh=s5QnJ5KlfG+i1v7zEfNCfUSyTgAaB5f7UDHGob3uUUY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jtv/Oh4nwJ0WCzFiFnJyJhigOo3NYIKPTG+Oq5PYVShpWURh5D1+di9BjcotHDboPDBiuj7KwmLEI/v4UKEjPOLK54IdJErHrNgCnWb9RJXfD4lfbUTvIdUoCSs8vOY+OQZJwcvoR8gqCpz7Vh+KQUZsekMJA5aVh1tcgi4ZzuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=V2Uyyhpm; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KwMwH09r; arc=none smtp.client-ip=103.168.172.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	s=arc-20240116; t=1789568287; c=relaxed/simple;
+	bh=lFVUic2iSQ4OXuyGGvF2a4ZliviAlyWvaKF/K+za15U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uqpGIiZDhAIqIyXY2sXHAvefokIFntq3RIilVcilsfakdWlqZ7N1wLiiFvW8z5iUnHzURo/S+O7grpGHH6XZeAOSBqI1vhPPmLypspXCFQjIKNOFiypSLvHnnvA6oyyuANd03ft6JTqsrHWAgWhf4loNciy0RLNvfmwk2peMGjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CGJLwgN0; arc=none smtp.client-ip=74.125.230.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="V2Uyyhpm";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KwMwH09r"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 8C618EC00FB;
-	Wed, 16 Sep 2026 10:10:17 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Wed, 16 Sep 2026 10:10:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm3; t=1789567817; x=1789654217; bh=EdYQ0YYaqUpsIAwJStZVq
-	jJMxlZSMLlpaDDdTzewgPM=; b=V2UyyhpmDmW6qgz9cl7DPDXNxHK106XvYNtjy
-	HnsOuWVCnJS352AFvmXWzQELSlMQnT+S5JS203xBsglnzWclWoxxS1rctrlY17p5
-	4iYOUsg2M6kpejMEyAGxKCnVjfhllgLuV81ev9YLHyDExLNuZDtHh7fhE+p0HVQs
-	r6Wv1T7pvCKX1STy6y4AmpNBUHVj0jtBHix1NuVvw7N3Rr0aWIvnUGqJgo3qbKT4
-	ihB2fkUjgFRhNno5q0Hf4gxf61GfUXC8r2E7c7suLe5dBfkPvec5HU/3KYwkU7Y8
-	ZoM0qFCFQQrZx36ACVIaCHM6lMXbfmtH8YuWvyV5j89bbEh2Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1789567817; x=1789654217; bh=EdYQ0YYaqUpsIAwJStZVqjJMxlZSMLlpaDD
-	dTzewgPM=; b=KwMwH09rfCH4v+4qV0H47yLgYSv1I6FsryXeHYMvfbO5gIqFhyZ
-	eK7KqnY2omK2aUKseLoKNokw9/VOBr+cyc0KuTjZkun35U9jezME8J36tUcI+KjV
-	frLgHKTwohS0tq/J76vpkq6FlPXe4aBT4Nw1hdQcyibwg9kg0Ys1ZRmkYWSSu7vd
-	hGFg/3xhTKbBMFwNxsKtkmdMzNX2ZA/yqQrX5W8ciH/dFeQu7sO3NGitjrF1KIiY
-	qmYe79ntD5+8oP7Z7AqVtU5YG+X9HAxBOibmJPPL0PwKeTcTKCGyl6z5DLAhPVem
-	Yu+I+0A6bDmLCFB+ap4IY7QXkcaPJj66PkQ==
-X-ME-Sender: <xms:SaOqaphy_2A7LsS5KBWWuTaaG5tgvbltCNYPUV0A8DdEnJweYne1jw>
-    <xme:SaOqanamPhMa_e_BFjbQW0S6jBhK-_4d4_5VpzPD7SmXcQ7PDZU-PmY4_xO7fWTuR
-    QJ8Cwfv4kemDphr64aOkLnXLC_tMI-e8K9miVAv2v4xtyHIMPEVovbr>
-X-ME-Received: <xmr:SaOqahkiAhQ5Z0J83rPxRkjKV4tv72KVEGh4yqtzABPdIgHNxTzBmqbiBWh15KHVZ5cs3BqAqB5e9yxPE-o>
-X-ME-Proxy-Cause: dmFkZTFc4N2ADyMAP7+/AFGrGRnNhcF6kiD8BjDmJw2dX0DdaCh3jLG7cqhC1QJbxfAPR0
-    BdfdqdSm+3ogDHX6Ano+E9D4kap94lD3cMIkdKrpjUtOfnUapi7kMO8EH2Vp9iKt+tlzmQ
-    IWReQzVvrMrNm8S4NpKoqtJOfWsvsqhZlgFB1krDLiJ0g1g12pf1/7INBDP79Ut7Mh2EUV
-    7FCJs6yRL5MPqrg2ixcKfLoWOMmw1aKuFcZLWupeiLRvZMt6ky2zfLbtBNN2to6eIn0bEE
-    IWpbhRq2JIj4E1tSnwNJ4KTncoiQ/94EXMZk1sIMJPUXjVtFxWmB00BUp6gW8G1mIvblL0
-    BrGST3az0sybcySgzoUqo4Fz9UKHPVsvdBG4RVXX1URxz1vzFZO2Q5l7NEa5yDQSsH1iMM
-    sVkFFqXpmg48UTd9x6MCQRrtg2IL4s6vnC5Qy/Q+SBf0p2lOH4uRysWp+AdzyUsKEfm0Jp
-    ABTG2IjgdJEInrAa6QZqGusvnTjFpMGcWwzqBw7QJB284zX1FgAIiw8uj3DBMecpd26/oD
-    8EgfI948ThyqE7ql4QmPsEzCYtQDfUbHH8P0W5Y1v8vHwjr5kTU544DlMWRfe9EHIAua/j
-    4AxWc46egBduoFjkazGfDvm9BvOzQNgxgzvHImIJivLqUQu5xW9s3Ee2wmqQ
-X-ME-Proxy: <xmx:SaOqatx4z8jVRIoLAuBi2b3z7E-olt_7dp0pWaIv2aHcD2oPpAKraw>
-    <xmx:SaOqan8jafgtS7OZ9E5Zt0pGY0xpmBgio8THjhcDG93B-Biqdf_Vhw>
-    <xmx:SaOqagABPsPRJ3-_v3siZO9ufQ4ZFyAU8BHubeLFKB9Sd62_dvCyyQ>
-    <xmx:SaOqamoPQnzwrBBrR9VAGQHMunzvDLp08Nk4fU7EDQOC3Qc2RJZwuQ>
-    <xmx:SaOqaqkyqtiTeNnhbWbo-XL6VVBJ1o_BiJ6TqTAdQJ8xx5BFPdEp51Yi>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 16 Sep 2026 10:10:13 -0400 (EDT)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: ojeda@kernel.org
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	lossin@kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	mkchauras@gmail.com,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v1] rust: bug: add a KUnit test for warn_on!
-Date: Wed, 16 Sep 2026 23:09:52 +0900
-Message-ID: <20260916140952.3290924-1-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CGJLwgN0"
+Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93910c3d02aso33819085a.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 16 Sep 2026 07:18:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789568284; x=1790173084; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VlFUKUT2IfapdBX0ngXWnLICIsdlboN0BkEZmE+ZMG4=;
+        b=CGJLwgN04tw5223g5XxlHkM/T4Zytmfmk4RH7NRpenHGYhkSUXKOCoPHR4RBAP4FLL
+         4z6XamY/LTKr7YRCz5s+3uAeIkgRYLck5dG1PMSqtagzL6xMTr2IhVTYBheT9VQQD8Dk
+         94AmgBdr0HZWRyPTo/wTZkqRajxXFgscbQyGLfQhfYjuXFcL9W4fbJIdcVLod8MN/IaD
+         M6thX+9JC+d7tjJKxXYFlunL+F0cDmaXbWIwEtR8BrSJA/Bnn4dwlukp7+n+3AdPNN3W
+         OJFndeDQpYLVobdh8M1+UpHpNMs8q5h0YNS6vUr3Ysrlylsn9zIEr18Y0ZP81kYcyUzq
+         8A6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789568284; x=1790173084;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=VlFUKUT2IfapdBX0ngXWnLICIsdlboN0BkEZmE+ZMG4=;
+        b=MER/36VQY/2twXfRjFXGc28s+93QFgbVhSQAWq4GbjAwfW86GUP9+gL5Nunh7CTs5x
+         +WncE76ls28hqJvxxCxbPAH3N54vycev5q6QCYMXPbGf/Bvr/p9F4p8ZW+HCyB018G70
+         oTu7SLW+8jy2QmUi6iHWZpbztwi/s+xz0NyUe0Iyf/C9CyfX8bne1DipiCcYx4fHEufS
+         TtLcZ9Cyffau2k7aOZS1kteZ3vomONFNjnT86ZhqxXNXAHbeIPvr9KPBSaC4qcvnpRyf
+         WHTsxZA03B4gLMmBV0WrCYFgXnkNzKl1j7R+LfsXg5p3jzfEQa8gJpUMoLxvQBh5gwLj
+         QjBA==
+X-Forwarded-Encrypted: i=1; AKwUvBz8NEFp/OZDm6wX4yhKyHuJxIYf3sEL/HysEOOeHmGv6tp/ElG0C2ThT/ITK/NjwcHRj8HbyGlMBA83RVG4vQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++kz+exwhk5jX2siRI1erbzF6SN0zULpQ+puPiHW4MLx20YZfai6
+	U4TMAMHBZ6ChZyKr3Virkv3Vl78Gyl0EjHywBpTYSTfVt/dw+0wS8UfHuDkPf4/5
+X-Gm-Gg: AYBFou2kzCuyDM9sfBRfTi8aALlycIJp98vtnODEE14q+G5ygZO79Z0+S6aPh4smpAE
+	k0ObqBLIe4aQBX638++BqrmIy1ZlAt5xN+3yAbIhs8ASN8GNaQ0VXaB1OosgR5nl3Sqap5MCLe1
+	KaW6FiPuddK9MVOEl2x06HTmHSBIiO+kVusMsNtFymuTIr2lKC6Gc/aY87XYSZTLpxvlRT8Mw71
+	Dn3b8cemCham/HRBPUUxxLrwF0qBziSmitc1jaA077pHLm3p0nSh4ppJIkuC9qQex/dbyWWxnAh
+	iIfjXaaxIR9lPMyfZjxTjE9SqOHFsYXQBZNsj/8n0pFi5XGScTJxRK5jbqPgBsAHrAbm2b+Bsfl
+	iXCr52VQDMHwSrgaJ0+YNPEM4TIdly8sG7ptmTFg1y9/bSXN9gzKy43LFZ7j1n8/Cl8+Dlhc/Ga
+	ZmHLURczusPAiwzhhWmAbQ7bwR7qP6LkhjNJsxFCj1tUdkLChe03erqsMkMIkkKlV3EgmMNQMWi
+	ksgPF6+iEPX06z/Sdhv7tevdM12/tRTKDr0uNY4jrhcnw==
+X-Received: by 2002:a05:620a:318c:b0:939:83c1:d8c6 with SMTP id af79cd13be357-93bb71b6f5cmr340423285a.8.1789568284122;
+        Wed, 16 Sep 2026 07:18:04 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.165.23])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93b81d19df1sm228561685a.45.2026.09.16.07.17.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2026 07:18:03 -0700 (PDT)
+Date: Wed, 16 Sep 2026 19:47:47 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+To: FUJITA Tomonori <tomo@flapping.org>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org, 
+	acourbot@nvidia.com, work@onurozkan.dev, pjw@kernel.org, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, alex@ghiti.fr, nathan@kernel.org, ndesaulniers@google.com, 
+	morbo@google.com, justinstitt@google.com, ynorov@nvidia.com, david@davidgow.net, 
+	joelagnelf@nvidia.com, fujita.tomonori@gmail.com, linkmauve@linkmauve.fr, 
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, llvm@lists.linux.dev
+Subject: Re: [PATCH V5 2/2] rust: kernel: Add KUnit tests for powerpc
+ ARCH_WARN_ASM bug table emission
+Message-ID: <aqqk-YRcGcUsqOiI@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+References: <20260915090453.1227034-1-mkchauras@gmail.com>
+ <20260915090453.1227034-3-mkchauras@gmail.com>
+ <20260916.230658.2266384286281034372.tomo@flapping.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260916.230658.2266384286281034372.tomo@flapping.org>
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Wed, Sep 16, 2026 at 11:06:58PM +0900, FUJITA Tomonori wrote:
+> On Tue, 15 Sep 2026 14:34:53 +0530
+> "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com> wrote:
+> 
+> > Verify that the __bug_table entry emitted by ARCH_WARN_ASM has a correct
+> > bug_addr displacement ― i.e. the '1b' label reference in _EMIT_BUG_ENTRY
+> > resolves to the trap instruction ― by calling find_bug() with the exact
+> > virtual address of the twi instruction, mirroring what the real powerpc
+> > trap handler does.
+> > 
+> > The trap address is captured at link time via a .dc.a 1b relocation placed
+> > in .data by the global_asm! block. global_asm! is used instead of asm!
+> > because LLVM eliminates asm! blocks in dead branches; global_asm! is
+> > file-scope and always emitted. BUG_KUNIT_TRAP_ADDR is defined as a .global
+> > symbol directly on the .dc.a word so the linker relocation lands on it ―
+> > a Rust static initialized to zero would end up in BSS where relocations are
+> > not applied.
+> > 
+> > .dc.a emits a pointer-width word (4 bytes on ppc32, 8 bytes on ppc64),
+> > so BUG_KUNIT_TRAP_ADDR is declared as usize on the Rust side, making the
+> > tests correct on both ppc32 and ppc64. The global_asm! block is split into
+> > two cfg-gated variants (CONFIG_PPC64 / !CONFIG_PPC64) to select the right
+> > .balign since concat!() only accepts literals.
+> > 
+> > Five tests are included in the rust_kernel_bug_powerpc suite:
+> > 
+> >   bug_entry_found         - find_bug() returns non-NULL for the trap address,
+> >                             proving the bug_addr displacement is correct
+> >   bug_entry_is_warning    - the emitted entry has BUGFLAG_WARNING set
+> >   bug_entry_file          - bug_get_file_line() returns the correct source
+> >                             file (requires CONFIG_DEBUG_BUGVERBOSE)
+> >   bug_entry_line          - the recorded line number is non-zero, confirming
+> >                             the {line} operand was substituted correctly
+> >                             (requires CONFIG_DEBUG_BUGVERBOSE)
+> >   bug_entry_addr_is_in_text - kernel_text_address() confirms the trap address
+> >                             lies in kernel text, not data or zero
+> > 
+> > The suite is named rust_kernel_bug_powerpc and the Kconfig option
+> > CONFIG_RUST_BUG_POWERPC_KUNIT_TEST depends on PPC && GENERIC_BUG,
+> > covering both ppc32 and ppc64.
+> > 
+> > Tested on ppc64le (ltcfujiaac-lp3, 7.3.0-rc1+): pass:5 fail:0 skip:0.
+> > Tested on ppc32 Book3S (QEMU mac99 G4, chrp32_defconfig): pass:5 fail:0 skip:0.
+> > Tested on ppc64le (QEMU pseries, pseries_le_defconfig): pass:5 fail:0 skip:0.
+> > 
+> > Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+> > ---
+> >  rust/kernel/Kconfig.test |  13 +++
+> >  rust/kernel/bug.rs       | 209 +++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 222 insertions(+)
+> 
+> I think that testing warn_on!, in particular that the right address is
+> put in the bug entry, is a good idea.
+> 
+> I'd prefer such a test to work on every architecture. This one depends on
+> details of powerpc's ARCH_WARN_ASM, such as the '1b' label. KUnit has a
+> warning suppression API. A test can call warn_on! inside a suppression
+> block and check that one warning was counted. The counter is only
+> incremented after find_bug() found the entry, so a wrong address is caught
+> too.
+> 
+> I'll send a patch for that shortly.
 
-The test runs warn_on!(false) and warn_on!(true) inside a KUnit warning
-suppression block, then checks that one warning was counted. The counter
-is incremented by the kernel warning path, not by warn_on! itself, so a
-count of one means the warning was really reported.
+yeah,
 
-warn_flags! has a different definition per architecture. The test does not
-look at any of them, so it runs on every architecture that supports Rust.
+makes sense.
 
-The new CONFIG_RUST_BUG_KUNIT_TEST depends on BUG. With CONFIG_BUG=n,
-warn_on! does nothing and no warning is counted.
-
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/kernel/Kconfig.test | 11 +++++++++++
- rust/kernel/bug.rs       | 25 +++++++++++++++++++++++++
- 2 files changed, 36 insertions(+)
-
-diff --git a/rust/kernel/Kconfig.test b/rust/kernel/Kconfig.test
-index e6a5c7a795f0..966b07872ba1 100644
---- a/rust/kernel/Kconfig.test
-+++ b/rust/kernel/Kconfig.test
-@@ -83,4 +83,15 @@ config RUST_BITFIELD_KUNIT_TEST
- 
- 	  If unsure, say N.
- 
-+config RUST_BUG_KUNIT_TEST
-+	bool "KUnit tests for the Rust BUG/WARN functionality" if !KUNIT_ALL_TESTS
-+	depends on BUG
-+	default KUNIT_ALL_TESTS
-+	help
-+	  This option enables KUnit tests for the Rust BUG/WARN functionality.
-+	  These are only for development and testing, not for regular
-+	  kernel use cases.
-+
-+	  If unsure, say N.
-+
- endif
-diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
-index 3566f0234ca4..17adb1b44fe2 100644
---- a/rust/kernel/bug.rs
-+++ b/rust/kernel/bug.rs
-@@ -152,3 +152,28 @@ macro_rules! warn_on {
-         cond
-     }};
- }
-+
-+#[cfg(CONFIG_RUST_BUG_KUNIT_TEST)]
-+#[macros::kunit_tests(rust_kernel_bug)]
-+mod tests {
-+    // The counter is incremented by the kernel warning path, not by `warn_on!`
-+    // itself. A count of one means the warning was really reported.
-+    #[test]
-+    fn test_warn_on() {
-+        // SAFETY: `kunit_get_current_test()` is always safe to call (it has
-+        // fallbacks for when no KUnit test is running).
-+        let test = unsafe { bindings::kunit_get_current_test() };
-+        // SAFETY: This function runs only as a KUnit test case, so `test` is a
-+        // valid pointer to the running test.
-+        let handle = unsafe { bindings::kunit_start_suppress_warning(test) };
-+        assert!(!warn_on!(false));
-+        assert!(warn_on!(true));
-+        // SAFETY: `kunit_suppressed_warning_count()` accepts any value returned by
-+        // `kunit_start_suppress_warning()`.
-+        let suppressed_count = unsafe { bindings::kunit_suppressed_warning_count(handle) };
-+        // SAFETY: `test` is valid as above. `kunit_end_suppress_warning()` accepts any
-+        // value returned by `kunit_start_suppress_warning()`.
-+        unsafe { bindings::kunit_end_suppress_warning(test, handle) };
-+        assert_eq!(suppressed_count, 1);
-+    }
-+}
-
-base-commit: fd73f4a6659897191fa0d40695fe370925dd3780
--- 
-2.43.0
-
+Regards,
+Mukesh
