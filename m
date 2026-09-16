@@ -1,123 +1,124 @@
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB372FD7B1;
-	Tue, 15 Sep 2026 22:39:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38DC30D411;
+	Wed, 16 Sep 2026 01:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789511991; cv=none; b=ZWywRlvKHhllzxtHTxZcXIYKHJI0v2ilQ6jdnU4Ya5TrCs1mlGDQAdJMcv1pKb9S6NYtpBr2bmpMiGMVTMq0m6edZUG+liNDO4ciIOWWkhwpMn6JgJ2T5l+aeq6IF4eN+5+9ZVuMPSOqHg+/EKLBad9jfRy0ZcV1zg73d2ov54E=
+	t=1789520767; cv=none; b=gMKVvJVL/A+Hg4AD5p1Gwwu9pLAJ62ZvCAqkYDdpluVVA62wBcu4anmzNWAUbwESKe56xNfZCmdvnIk7LSPCSuq6g916UqOjjnkMMjajP9oV17RNfkiq1RVlR2/E+CHcBdDhzykqOBL1QJ+Po4xZ+SBd1zr4CBKPhDUPKoRAFOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789511991; c=relaxed/simple;
-	bh=BytfvsOQXDGpqrDU7apJCC+qNjb/4afOahQqHgZcpQE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lKxieleDj85iUUxwyxf7komV5MAwo/uUgXlVE5iHr6p2hBIwtZO5WOO6poN3ZJ3YpDXz7Xl6xK3RqgFbu3rQXoeIWYNGSCgFB2tpAxK6YsEVcQy/GEvEhYQje2zOjWKuo6wvZo0fBlbbnX2Zy2GbHUZCVmR8xrAC3zRR4VQ82Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
-Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 68FMciqg048547;
-	Wed, 16 Sep 2026 07:38:44 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from [192.168.1.6] (M106072072000.v4.enabler.ne.jp [106.72.72.0])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 68FMci0x048544
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 16 Sep 2026 07:38:44 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <2dd38a68-4ceb-48d5-953d-7ea2c7122418@I-love.SAKURA.ne.jp>
-Date: Wed, 16 Sep 2026 07:38:43 +0900
+	s=arc-20240116; t=1789520767; c=relaxed/simple;
+	bh=Saf9w/qoU4P4L+eoRXMaLuF8LHIiH0+7eiiF2u0xKxs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TvwtQm1Abl/QMqbTkfgfEypNPkHpdmDcXz1qLOqg1j/AKtV+0p/vAF43SjL8FivWgjiHuoaPZy+oxqyetk20p6me7mIoq1HTjPRXH1pXtNWCZMOVGC18Uo2mMS4PDRba+L7V7YNqxw+T0vqyFcG2XZ/y+gq2Z6uQwjWCzhlvy6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AH7a/Zx2; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AH7a/Zx2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D9D1F00893;
+	Wed, 16 Sep 2026 01:06:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789520765;
+	bh=XvgNiNkqBk6+kkXqTrzqW7sJYsvtakfLRPDEyhDg7Hw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AH7a/Zx22fCnj33kUljdAwOHOUB6dl3lKvMgl39S8dfLFFpjmDAaW7aDoy2lCXff3
+	 Zo5MdcsT9MVBmf7RLpdu82PWxH+JojNmdB3QU8us1QpIAD7fzrNCMEQUBFDPoCmVVH
+	 v64SNvGRvvxsBLc8xfHi2oNua4PEqxDdKLcX3VVlpXjL4N84lDvzPXSLk1zwfUBqDC
+	 nmtEMH2BW2uTaL8N30L/XGO7Tufc7TIYAa1z299zYRAmx4fX0IqrXdw2LMtGQGZgiC
+	 EmB9ZWdwrChtSsjs57wQqaPMI5KKrLLVc4HWuYUtR+CTCpfaRt9iJx0l0wdcqoCnv+
+	 qCNr4m7E8ofTQ==
+Date: Tue, 15 Sep 2026 18:06:05 -0700
+From: Kees Cook <kees@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Alexey Gladkov <legion@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2 21/21] kbuild: use pigz for gzip compression if
+ available
+Message-ID: <202609151758.BA5732348@keescook>
+References: <20260914-build-speedup-v2-0-39817ec5db23@kernel.org>
+ <20260914-build-speedup-v2-21-39817ec5db23@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] loop: Perform __loop_clr_fd() after disk->open_mutex
- is dropped.
-To: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>,
-        Christoph Hellwig <hch@lst.de>
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Brian Foster
- <bfoster@redhat.com>,
-        Damien Le Moal <dlemoal@kernel.org>, Hillf Danton <hdanton@sina.com>,
-        Markus Elfring <Markus.Elfring@web.de>,
-        Ming Lei <tom.leiming@gmail.com>, Qu Wenruo <wqu@suse.com>,
-        Tao Cui <cui.tao@linux.dev>, kernel test robot <lkp@intel.com>,
-        linux-block <linux-block@vger.kernel.org>,
-        rust-for-linux@vger.kernel.org
-References: <60bf7af2-b84e-4056-9195-a26ad51ada46@I-love.SAKURA.ne.jp>
- <9f1273a7-6dfe-46bb-966f-fe08876f4375@I-love.SAKURA.ne.jp>
- <3883b05e-0a34-43f7-b2a9-a46d2b0c5ffc@acm.org>
- <08b0057a-280d-4e55-8e94-e510ec1a371f@I-love.SAKURA.ne.jp>
- <d89aa722-2d13-4733-b5c1-f0194bf4b342@acm.org>
- <15037162-0e54-4722-ac7e-c9a863a8a2f7@I-love.SAKURA.ne.jp>
- <b700652d-ed63-444a-b879-ec2725affaa7@acm.org>
- <6fdefda9-c7e4-4368-8d9a-280043b4051e@I-love.SAKURA.ne.jp>
- <e8fd7e8c-4a14-49d6-8bce-16fd44d864b9@acm.org>
-Content-Language: en-US
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <e8fd7e8c-4a14-49d6-8bce-16fd44d864b9@acm.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Virus-Status: clean
-X-Anti-Virus-Server: fsav414.rs.sakura.ne.jp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260914-build-speedup-v2-21-39817ec5db23@kernel.org>
 
-On 2026/09/16 2:36, Bart Van Assche wrote:
-> On 9/11/26 6:22 PM, Tetsuo Handa wrote:
->> On 2026/09/12 10:02, Bart Van Assche wrote:
->>> On 9/11/26 3:18 PM, Tetsuo Handa wrote:
->>>> On 2026/09/12 5:03, Bart Van Assche wrote:
->>>>> On 9/10/26 2:44 AM, Tetsuo Handa wrote:
->>>>>> On 2026/09/10 4:33, Bart Van Assche wrote:
->>>>>>> __loop_clr_fd() is queued from the lo_post_release() callback and hence
->>>>>>> may be called concurrently with or after another thread has called
->>>>>>> bdev_open(). Hence, lo->lo->state should be checked instead of assuming
->>>>>>> that it equals Lo_rundown.
->>>>>>
->>>>>> No, __loop_clr_fd() is queued from the lo_release() callback.
->>>>>
->>>>> Yes, it is *queued* from the lo_release() callback function but there is
->>>>> no guarantee that __loop_clr_fd() has started before bdev_open() is
->>>>> called again.
->>>>
->>>> Since lo->lo_state was set to Lo_rundown by lo_release(), lo_open() will return -ENXIO.
->>>> What can go wrong if bdev_open() is called again before __loop_clr_fd() starts?
->>>
->>> This breaks LO_FLAGS_AUTOCLEAR, isn't it?
->>
->> Why do you think so?
->>
->>    App1                   App2                   system_long_wq
->>    Calls lo_release().
->>      Schedules __loop_clr_fd().
->>                           Calls lo_open() but fails with -ENXIO.
->>                                                  Starts __loop_clr_fd().
->>    Calls lo_post_release().
->>      Starts waiting for completion of __loop_clr_fd().
->>                                                  Finishes __loop_clr_fd().
->>      Finishes waiting for completion of __loop_clr_fd().
->>
->>    Calls lo_open() again and succeeds.
->>                           Calls lo_open() again and succeeds.
->>
->> App1's open() after close() is succeeding.
->> App2's open() being temporarily failing with -ENXIO should be acceptable.
->> If App2 wants to avoid repeatedly failing with -ENXIO, App2 should use
->> ioctl(LOOP_CTL_GET_FREE) before open().
-> 
-> Userspace applications and tests (such as mount/umount, losetup, systemd, and xfstests) expect that:
-> 1. Teardown of a loop device with LO_FLAGS_AUTOCLEAR completes
->    synchronously during the final close() (in lo_release()), releasing
->    the backing file references (fput()).
+On Mon, Sep 14, 2026 at 10:22:20AM +0100, Lorenzo Stoakes (ARM) wrote:
+> diff --git a/Makefile b/Makefile
+> index 790ef23c5e8a..38c0cdc9f591 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -561,7 +561,7 @@ PERL		= perl
+>  PYTHON3		= python3
+>  CHECK		= sparse
+>  BASH		= bash
+> -KGZIP		= gzip
+> +KGZIP		:= $(if $(shell command -v pigz 2>/dev/null),pigz,gzip)
+>  KBZIP2		= bzip2
+>  KLZOP		= lzop
+>  LZMA		= lzma
 
-App1 is achieving it via the combination of lo_release() and lo_post_release().
+I had another idea that I think solves both my concerns (limits
+to parallelism, new surprise users) and your concerns (complexity,
+single-threaded when needed)... how about:
 
-> 2. Calling open() immediately after close() succeeds (allowing the loop
->    device to be immediately reallocated, reopened, or configured in
->    Lo_unbound state).
+Makefile:
 
-App1 is achieving it via the combination of lo_release() and lo_post_release().
+KPGZIP	:= $(if $(shell command -v pigz 2>/dev/null),$(PYTHON3) $(abs_srctree)/scripts/jobserver-exec $(abs_srctree)/scripts/parallel-gzip,gzip)
 
-So, what is wrong?
+and the same scripts/parallel-gzip:
+
+	#!/bin/sh
+	exec pigz -p ${PARALLELISM:-1} "$@"
+
+And then replace the /boot/ KGZIP uses with KPGZIP. Then we don't need
+to change modules, config_data, new users, nor cmd_gzip, etc, which all
+continue to use the regular KGZIP and the "use python" part for the
+KPGZIP case becomes is a 1-time cost?
+
+-Kees
+
+-- 
+Kees Cook
