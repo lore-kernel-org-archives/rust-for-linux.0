@@ -1,374 +1,224 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012028.outbound.protection.outlook.com [52.101.43.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A931238DC54
-	for <rust-for-linux@vger.kernel.org>; Wed, 16 Sep 2026 01:15:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789521315; cv=none; b=i4fn835SM2yOJnH605eHVWipI2uMjnYP4lupZdqm8Ol1Nj36W2M8d+hr2J9u5rje44YtaTHiZkamDFWKpizSalnTTYKFHpy9CaAkoJgwD1Le2L3kgPu+yb8YD6pcvLYqYND9gQVVsylo8bjyq0wY5DTJJC9+3XHyOej74im+26M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789521315; c=relaxed/simple;
-	bh=1oHur9vEj+OaGrHshuKT+eDTAu8cXqL6ipLWH80GzPo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f1k2LHZdUFiLpBzIDEXwoftYMT4hH27NvsI0b9wE3ce3xXC8ytJg9ADpjcM4Le/US+I62o7RaRCqj9jQJm8c/nytxoNq9tOWmDYD50qTMo+V7OAcmSMwPtv4G14MupuwvRsVDkN5IJ4F1vVgP6X+88a92cBsjBPK8rgCeG0zgYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sAXcBLNF; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A545FDF6C
+	for <rust-for-linux@vger.kernel.org>; Wed, 16 Sep 2026 01:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789521926; cv=fail; b=bxKwspWjr9Az4J48hJTOpsQkvf0FqNYywhvTDdlu5lRZ1K3FzYFJHDxKxmcWrAqZP1nj6CJwBgay8XIBaGUTr6hmZJsyC25qXx3BeDpc0Y4GQT4OE6vuLA+4GDJJ9mCK2lbi8JCWlKc1VGax/xELYnJkZhMadLXSCtWtMhwVBfc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789521926; c=relaxed/simple;
+	bh=lfNp9SABaZiGxUfU32lG1A4OgGoJMAclQ1qBg2iPTwg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mItbAteZm+VBDNpuoH872KPzxtOYMkM0jCAUn01v3zekMeRpKtt1IWxK1gN2pmIrDyrqqu/0NYBKuyd02SGhpUZJdxtF/bbhm04Fh/+riskws2D5uczHQoXTJHaIqm6bduEf029qLFS/xa9DX1DGooaRt9uIARpAmeVhek8fV6A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Q0teQGq1; arc=fail smtp.client-ip=52.101.43.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sAXcBLNF"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49cd38e0f79so1834725e9.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Sep 2026 18:15:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789521311; x=1790126111; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jnXDLK26KNZ+Nc8tc4KYaeGG7+wo+38IhWGefLy0ryc=;
-        b=sAXcBLNF8mJ9yDJtXRLX2zVPFKNgN5+KR3ZA0BGPvB9GuDwmPW0M/ZWXPLacdfSBoQ
-         soIGFj3p2SJpprt/WjtqqS9qg/BkbnoZS0NLIfUO+RCEEcal6KJ6ZW8SmOnmmSd9zNpF
-         Y5GvJKpsNDBIaJZrFElsORrIyfpM2tKBul9Px60i3b5O4aj+WTJf4oxnz1xQ4AdL8o5o
-         TuJp7vM64CRk8gg5KTD3E2DbWLohjzO023xdO/IcvLRChG9iHfG+cGHWdNIlzr9aMEB2
-         ggntOWtaUHx7n8blfT/nXMhbYNOeT/VWfUjxHm8qsLa0M68TEAQev71UG7O2eBE3Z+vh
-         mNFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789521311; x=1790126111;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jnXDLK26KNZ+Nc8tc4KYaeGG7+wo+38IhWGefLy0ryc=;
-        b=Ggz+thgZUwXnzRE+Z0IeEptK2zppBO0kdhGWybVhnbbZDplqiVrDmBzjnOq9Gs6bJ+
-         40tQCX3PkpAkHXCxT4uawv8P6UOR5Y548K/8UbkX96i5hIzIUX8L1qx5gOEnk2UVNSl5
-         hf14Zpu1H6aBmm0Zbva/quTFykPntLsGt/yB29S5LLjXR0CP3w6g7rYMzitFN1c1Vme5
-         D1g0b25hi59RiTomfMMHMBi4Wnd5nF19PM+yfj8OPjS7j3dXABn3CHiHHvLTuJJodhuw
-         t58kse5CQN+654jcdMla0XhNtmErsr5XCk3Zf47w7GcsrYGra349RJd0nKzOvFJMm0Ri
-         sRuQ==
-X-Gm-Message-State: AFuF++lzj6zI+6MzklGPsjFq0LKDDAznIFUVd98vyqpIMylOY1CbVkOJ
-	d03V/XpVDBaJmrAMsuP7ihWS9mEZcWnnaPUOv8c6haDWM15A1Te58kafURSJR6wu
-X-Gm-Gg: AYBFou0qbL/pq9ywntvRjB1OV4ffayK1HJxavv5KyBIWvs2HCr8BC4x1wm7ExCvz+Tm
-	bH7OCQwl398QmL7ujbelb++qDJaXxs3E2JyeR0zl54X4t3o9Hw4v3Mm2D3a1F2ijzqiMl1JHPSk
-	HG48SjAyXLOqIrxRC9+ePcmf+zoz+ZSRiZYlQwj+prsY6O90MYlfc7McLZcjLpYicVpGJt9ZFaF
-	ALSk/YWiloRGSSwty9giBPrjg7YfBmxAuBiwXvL+Ou/EuL7v+AwUzXAZs49eUAdicLKcoMZAzGq
-	MXDNRxl/o9ibYNvlQFDK1YhkFDRNZneDeDGYRDIm6faYWnZbtUieYKj85L9yAyW1+vgc1q0zCi6
-	y966WfWkBgsT3lPtu/n4iZQtTvRopByRZN6Ha/DCM0DZ05RLrNj1VmMe8FLTcypWIQlKPzXywSD
-	IDGmv2Uh6pCUmsNLeWbXoyGfaV6OmdCVSjrtJUzMTNN3kCsXRg3hOJiVzdL3AHpu1oMqdrDW7F+
-	zti0VqRsiS9L0Nn+F8lGBD4XEXszrw1OFPjy3mhYe1gQH3Nnd3lYGWfnHiiQLnHRA==
-X-Received: by 2002:a05:600c:3b97:b0:49e:6050:9fbe with SMTP id 5b1f17b1804b1-49ebcc010d5mr9739045e9.15.1789521311221;
-        Tue, 15 Sep 2026 18:15:11 -0700 (PDT)
-Received: from moosama76.. ([156.193.15.50])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e83fca34asm26367435e9.1.2026.09.15.18.15.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 18:15:10 -0700 (PDT)
-From: Mohamed Osama <mohamed.osama189110@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: linux-block@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mohamed Osama <mohamed.osama189110@gmail.com>,
-	Gary Guo <gary@garyguo.net>
-Subject: [PATCH] rust: mem: add DropGuard
-Date: Wed, 16 Sep 2026 04:15:00 +0300
-Message-ID: <20260916011500.529743-1-mohamed.osama189110@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Q0teQGq1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IXtzSs44USCRIqjWWjECsF91EAYVIXHJlLiYLtDp9/RjCOxX+cWf0U7pIYzPdTgu4rcfWCr/jMHsxHuZIk6ARrlf6VZPueWkt/7nBmQTfib/Y/ErqMn+UaGjmoPSfZu2RMYPiU41WK19lVMJnKqtDwtlz7xXvA5mEUqqzeRUKpmPqfXEg5K1UsNR4sK+1V5GeVwimk6P6uqDzvzLw56Cyc1jcynlRKeyYSjnBIhKGTvJDCFmqwLyufokaq2ZIoCr2apJqM2MTvGG8t7wU8nslu9Q75IRK89MorVCLcD21jxcDh2l0t6wH23CUWXy4kX34LS3bAGS/euarX5SNXkp8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P5asyj6zC2dyoP7EGc5ieNg6E2SQYalG3LmNfpXeVuE=;
+ b=gNfycQlLX8EaxbYQPWjc+SLcDA1jWzxXfzkaXc3fJRG4bVdXRrxmzoC/YuUg6fb4EaX3QEGlTkOeiP38m143IE8OyqSswcZ2JhOYaW1qkOkq5cEIhBlPus4iTtwpNlPthYpWaZ+JAKqfY6qdLvPoea4b6wgNf4p07qJD6kfDSDAPoUXokH+JvdPTl+PV1raAsp7uI3G45Mkpdhu5dRc7mIRSe+Qrrmq7rWYZ2APpo+46sTQ8K0OPlmB5BNnecvDRGSUhT/gMQdzLCJ7E2Hl8Ba5kIVq+AwxItOSsdB8fINf3wx5ggVO5u0Qd2Ra8nuJUZHZA/2bH54AVpe5vkxVmAw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=P5asyj6zC2dyoP7EGc5ieNg6E2SQYalG3LmNfpXeVuE=;
+ b=Q0teQGq1K5Q3h4GJuraw3d8HRJbRfrQgco2QAg6AZdt7D0NKU+nkJwU+w/PdhD4dFEfuT1T23+/u1Gk/B4znZXdranMWHTGmpJpwMBol3wyFIYjRA6yWaw7LppvuE1ig6GwE1bJX9BYFWHW0RsHn/f2HugT7AWZrIzBHz2pLTZntKlH6eoZtH9jUZOJvu+HJOqFCHP9ZZ1MlQmPMkOwAmaywD8osc7FWPNmQpt+wjL/e+mi/WnsZIM+bC9bCo9r+0L/hdjakvfM/RYQiUcLUpKmTjmGnitCc7UClxMxjoTvm1ZeGAZP5nuF72wT+znK7J+AOS9E1mXN1tZpcmmZkjg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN0PR12MB5977.namprd12.prod.outlook.com (2603:10b6:208:37c::22)
+ by BY5PR12MB4289.namprd12.prod.outlook.com (2603:10b6:a03:204::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Wed, 16 Sep
+ 2026 01:25:20 +0000
+Received: from MN0PR12MB5977.namprd12.prod.outlook.com
+ ([fe80::d8:f725:258:2f28]) by MN0PR12MB5977.namprd12.prod.outlook.com
+ ([fe80::d8:f725:258:2f28%4]) with mapi id 15.21.0428.008; Wed, 16 Sep 2026
+ 01:25:19 +0000
+Date: Wed, 16 Sep 2026 11:25:13 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Asahi Lina <lina+kernel@asahilina.net>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Subject: Re: [PATCH] rust: kbuild: export symbols from the `uapi` crate
+Message-ID: <aqnqBivf3is_1N7x@nvdebian.thelocal>
+References: <20260909060623.888777-1-apopple@nvidia.com>
+ <DLAUS65AAH2A.39ZT3OE05AR1K@garyguo.net>
+ <aqIQNhGdRTsv4v52@nvdebian.thelocal>
+ <DLBLTKG6KVE9.VNWH1D3896J6@garyguo.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DLBLTKG6KVE9.VNWH1D3896J6@garyguo.net>
+X-ClientProxiedBy: SY5P282CA0192.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:249::18) To MN0PR12MB5977.namprd12.prod.outlook.com
+ (2603:10b6:208:37c::22)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB5977:EE_|BY5PR12MB4289:EE_
+X-MS-Office365-Filtering-Correlation-Id: a5c1427b-7026-4e74-2eac-08df13915ecb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|23010399003|376014|366016|6133799003|22082099003|18002099003|3023799007|10067099003|5023799004|56012099006|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	VyRvNpzJ7LguzlmLfpPipz+snC7v0qxWdM3asZdlgxr6TgGw4LA+BYKlJ90CHYI2SOi8O2N5KFPGbARyDh3kNH/VTra8mwh/xxPHAUiKbSZl5ixWdlsCSDY8+EzsMdeZ9lJxGPCAJNZpA4jEEq9+qeeZDHJIKp45GOboLnrTph47x4WvCLGIAhbdN07gFYr37ZY5QHnmMIZqxZutr0szL27sRN6Ah8WHKD1EiNqTzVcUVId/sLa2ssl4TcDz44a+THcODvTftY1rsRhWUNhfyl1nId887n0tPKAUl1ide4lzjnTAcgaGLB61u1ZTnXy4rnZJHOF1cWMndqo4SimTF81X27NP1yvpQcMMixr1S5z47f63Ug25YGtf1XaDftgVAJ05zy+dZpnyCRM2PpuT49h7v4RzYSA5YGa7Z6zRgLytMcVnl7ZpLoks1QYsd/lFClgABhfEVeFsrgkldVYroWpcyPiokM7eC2j6IZjzTZI9Hg41ed8XcLihtWIFDLM4ACVBQJ/zyQTroyJ9fYRGeg/oPpXRnvICejPQJS0KBPZgyy6EqOvVe6Hs+apUP7a3WToJueiGPAfXmR9OYKqMlDyQYlaiICZHuzIuzVPL1jkodhSyTQkfSXQ9B8d/eW/i0LTmODWxkB0mTnUfmNuskPtOHFyU5Jo6TC7TMf89c/8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB5977.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(23010399003)(376014)(366016)(6133799003)(22082099003)(18002099003)(3023799007)(10067099003)(5023799004)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?p7LUNc6Wbo9d5zWTnpCi/IJXHNOShUzAN7Wk+WST93/J17Bkc/PJ/2VtNuZ9?=
+ =?us-ascii?Q?uoIYeGiRI6MdkiZCiQw65y3A9SMme4DGSAtlNmdXix6ia9aURnsspw/Aq1sE?=
+ =?us-ascii?Q?OrK5CKJk6NP6nvSOkwLeCdSRYDgHDSpVuBI0ARKQKkXv3Mz03fZ3guqrl9Au?=
+ =?us-ascii?Q?inSH8zr+0FIamAcHzRkUCV8D6ejPUQ/zGdsLthg/lMUJoY3H+q0x8550GnG/?=
+ =?us-ascii?Q?4R8Osx4Q5eKE2iaEMTnEB+NVY0ShuTKFj+1WkajVjrC8KjPJ2Tu0bfhRTcN+?=
+ =?us-ascii?Q?6NeDTevBahPkdoZEWvRywWNvwys2DWobzH4tiHfXqvdUWisKgx+VVWf5i8hs?=
+ =?us-ascii?Q?HG5/9mkdYnKFrDqvbZ4p8TsrageG2Iu7RvkoCrL0Fft1T3fsPflk0NsCB7DM?=
+ =?us-ascii?Q?Z5GzGUYYWqfzw3uXBgJH52zggQhn10GgXesqCINvfBFAJ7BjUcClf9yxOMtJ?=
+ =?us-ascii?Q?ZBGStXTMTL/bUTw1UgMLW9m/J2T9KoNGgPdjU86pcXQCOmFpUpWwoygUdUZS?=
+ =?us-ascii?Q?WyQtbFJ+PdFX4G9mxFzF0SBuo10hkz6+0OxTqga4QW4RZslDHIxRWgnNg0mG?=
+ =?us-ascii?Q?4STkiFftWip849WxMFsRG5CMOGs6VoHYGITkANncDP1YNlqc/Q1sWoUZRRJq?=
+ =?us-ascii?Q?5SyUa4o9jpEc6Q89kQZ7xuahHmhAR2/xyqnYC/AMKxJ3gbkJ0e94+MgpBAPR?=
+ =?us-ascii?Q?lzzXTwCRQ7q54uT4LdpvW4GuHHgcUsDhmlQIAJWvd7KjSQMoXKWX0qIum+vu?=
+ =?us-ascii?Q?MnhkeGlHqt1BYcjTKOldD7GLt1V7AHOQjrxF0TwQB8a5qp2R6BOGoYS2qfvo?=
+ =?us-ascii?Q?8Pa7geY2n5z7fOjdjjrIOuXEddF2hmwoa5NZsLB3qZaD5c1oUDUxQ2k8SOTI?=
+ =?us-ascii?Q?hPLhlwCNA13gMzm4DhsSo+S7rsJBfUc8vcT6BAnFbmEjmapuPQ6jaZivmIEE?=
+ =?us-ascii?Q?Yk2HXYTf/j7gEzTe5/XS2F2pDDsSk4wLWZJ0OSk0jaFK3HCtu9TLL4orfhdm?=
+ =?us-ascii?Q?ZejO2lRdSEqv0w8pghUXLGl5a9CgfKk+uYF/29VPaQDHX/FfdvlDdHPZyLgn?=
+ =?us-ascii?Q?4snKJ2ykwbcZPyQUuTMOsiFaEORVxuPcMEhrFT9dqf22jU5Sv+hvwvilZms6?=
+ =?us-ascii?Q?IC342dIuwQRkBI6nwHZNPI0Y0PZ8OlcVqbApioj61ERgJ0bZ/xrK1P6Ces3C?=
+ =?us-ascii?Q?AFqv8HqytXm0SL7vkUwqROJ97wxyyJz604j7DC6UPcjKRXEJP1p7o31RcvS6?=
+ =?us-ascii?Q?BldWldPohm2wBT46GVBuVw4ixLQh6CXQFyTDFlI0TQx70q7+AgMYFpphvPa2?=
+ =?us-ascii?Q?8GsAg1NYa52MHTaFZw8B7CBACecW18B/Paazp8QWGM5Mb+ZgOmHzCgbDfL8m?=
+ =?us-ascii?Q?/eEpY18S7cMp/6nQ5wziUYqHzAYMvg139AOlBND2nviVoQf7GrCstz9faFwH?=
+ =?us-ascii?Q?lZNMkZdp492fW/OoMrnaU/X9OEuWmcFnKbotS2wtZCSSw76Dpfq/PiglTCN1?=
+ =?us-ascii?Q?rOjRckzHc25uLzGPWCfRApfhJcfo4Ial2M3YcRzxpplhjqAhaHW0ACFPu7NA?=
+ =?us-ascii?Q?zCR4OPEEwcBX5jra3RQszGuXT2fbyiVoHWchuSqRaNid4LrRbNKF/j1YFVPY?=
+ =?us-ascii?Q?nTS8ykk027olH/o4XuimiUQhR2lbZK7X3hUzzQ6sZ6wMe88zi3HdU0ps2K5k?=
+ =?us-ascii?Q?YUKz5HzXw8AIoPFbjPpgLidEgiInuVz48Z5baoT/++e9NW60doKi04YJOXNB?=
+ =?us-ascii?Q?XgmDeACcyQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a5c1427b-7026-4e74-2eac-08df13915ecb
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5977.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 01:25:19.3693
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wCvaEzODpkYLpjdnnP+Cl7W0+NboqCi8eV9cD13TPo8Kl1FPxXYR04FAadPX+KR5ygm9urq3uU+5pfPCvrYQOQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4289
 
-Add a `DropGuard` type to the Rust kernel memory module for running
-cleanup code when a scope is left.
+On 2026-09-10 at 21:36 +1000, Gary Guo <gary@garyguo.net> wrote...
+> On Thu Sep 10, 2026 at 3:21 AM BST, Alistair Popple wrote:
+> > On 2026-09-10 at 00:25 +1000, Gary Guo <gary@garyguo.net> wrote...
+> >> On Wed Sep 9, 2026 at 7:06 AM BST, Alistair Popple wrote:
+> >> > Symbols from the `bindings` crate and the C helpers are exported so
+> >> > that loadable modules can link against code the compiler chose not to
+> >> > instantiate in the module itself. The `uapi` crate has the same problem
+> >> > but nothing from it is exported.
+> >> >
+> >> > In practice this goes unnoticed because the only functions in `uapi`
+> >> > are the trivial `Default` implementations generated by `bindgen`,
+> >> > which rustc inlines across crates. With CONFIG_RUST_DEBUG_ASSERTIONS=y
+> >> > however, the `Default` implementation for structs can grow past the
+> >> > automatic cross-crate inlining threshold. The module then references the
+> >> > copy in `uapi.o`, which is not exported, and the build fails:
+> >> >
+> >> >   ERROR: modpost: drivers/gpu/nova-drm.ko: symbol '_RNvXsH_Csk9v2ZIpWbWt_4uapiNtB5_17drm_nova_info_gpuNtNtCsfr3MPOfBGpN_4core7default7Default7default' undefined!
+> >> 
+> >> Hmm, uapi' ideally should just be type exports and produce no code.
+> >> 
+> >> Default implementation should carry `#[inline]` annotation so they're
+> >> only codegenned in actual user crate. Rust's `#[derive(Default)]` would always
+> >> add that. Can you check if that's bindgen-produced manual Default impl that
+> >> somehow misses the attribute?
+> >
+> > Right, bindgen-produced Default impl do not have that attribute. For example
+> > here is the bindgen generated implementation I see:
+> 
+> Perhaps you can open an issue upstream? 
 
-`DropGuard` runs a `FnOnce` callback when dropped and provides
-`dismiss()` to take the wrapped value without running the callback.
+For sure - see https://github.com/rust-lang/rust-bindgen/issues/3494
 
-Replace the current `ScopeGuard` users in `gen_disk`, `serdev`, and
-`sync::lock` with `DropGuard`. Keep `ScopeGuard` since it is still used
-elsewhere.
+I wasn't quite sure of the justification for why we don't want to just export
+these, so please feel free to comment there.
 
-Add KUnit tests for cleanup on drop and `dismiss()`.
+> >
+> > impl Default for drm_nova_info_gpu {
+> >     fn default() -> Self {
+> >         let mut s = ::core::mem::MaybeUninit::<Self>::uninit();
+> >         unsafe {
+> >             ::core::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
+> >             s.assume_init()
+> >         }
+> >     }
+> > }
+> >
+> > Manually adding #[inline] fixes the problem of course. I guess we could add some
+> > sed Makefile hackery to manually add it. For example something like the below,
+> > not sure if that would be preferred?
+> 
+> Yeah, textual hacks are a bit too fragile (especially that it'll break when
+> upstream bindgen adds these annotations). So if you need these impls, I think
+> exporting these symbols are fine.
 
-Tested with:
-- `make LLVM=1 -j$(nproc)`
-- KUnit: 8 tests passed
-- `make LLVM=1 rustfmtcheck`
-- `git diff --check`
-- `checkpatch.pl`
-- `make LLVM=1 rustdoc`
+Fun though :) But yes, I agree this is pretty hacky so would rather export the
+symbols, at least until bindgen is fixed.
 
-Suggested-by: Gary Guo <gary@garyguo.net>
-Link: https://github.com/Rust-for-Linux/linux/issues/1255
-Signed-off-by: Mohamed Osama <mohamed.osama189110@gmail.com>
----
- rust/kernel/Kconfig.test         |  10 +++
- rust/kernel/block/mq/gen_disk.rs |  11 +--
- rust/kernel/mem.rs               | 116 +++++++++++++++++++++++++++++++
- rust/kernel/serdev.rs            |   8 +--
- rust/kernel/sync/lock.rs         |   5 +-
- 5 files changed, 138 insertions(+), 12 deletions(-)
+> That said, you can achieve what you need with `drm_nova_info_gpu::zeroed()`
+> instead?
 
-diff --git a/rust/kernel/Kconfig.test b/rust/kernel/Kconfig.test
-index e6a5c7a795f0..011c72f14e2c 100644
---- a/rust/kernel/Kconfig.test
-+++ b/rust/kernel/Kconfig.test
-@@ -33,6 +33,16 @@ config RUST_KVEC_KUNIT_TEST
- 
- 	  If unsure, say N.
- 
-+config RUST_DROP_GUARD_KUNIT_TEST
-+	bool "KUnit tests for Rust DropGuard API" if !KUNIT_ALL_TESTS
-+	default KUNIT_ALL_TESTS
-+	help
-+	  This option enables KUnit tests for the Rust DropGuard API.
-+	  These are only for development and testing, not for regular
-+	  kernel use cases.
-+
-+	  If unsure, say N.
-+
- config RUST_BITMAP_KUNIT_TEST
- 	bool "KUnit tests for Rust bitmap API" if !KUNIT_ALL_TESTS
- 	default KUNIT_ALL_TESTS
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index fc97dd873974..d9019fbbb361 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -10,11 +10,12 @@
-     block::mq::{Operations, TagSet},
-     error::{self, from_err_ptr, Result},
-     fmt::{self, Write},
-+    mem::DropGuard,
-     prelude::*,
-     static_lock_class,
-     str::NullTerminatedFormatter,
-     sync::Arc,
--    types::{ForeignOwnable, ScopeGuard},
-+    types::ForeignOwnable,
- };
- 
- /// A builder for [`GenDisk`].
-@@ -102,7 +103,7 @@ pub fn build<T: Operations>(
-         queue_data: T::QueueData,
-     ) -> Result<GenDisk<T>> {
-         let data = queue_data.into_foreign();
--        let recover_data = ScopeGuard::new(|| {
-+        let recover_data = DropGuard::new((), |_| {
-             // SAFETY: T::QueueData was created by the call to `into_foreign()` above
-             drop(unsafe { T::QueueData::from_foreign(data) });
-         });
-@@ -150,7 +151,7 @@ pub fn build<T: Operations>(
-         // SAFETY: `gendisk` is a valid pointer as we initialized it above
-         unsafe { (*gendisk).fops = &TABLE };
- 
--        let cleanup_failure = ScopeGuard::new_with_data((gendisk, data), |(gendisk, data)| {
-+        let cleanup_failure = DropGuard::new((gendisk, data), |(gendisk, data)| {
-             // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above and
-             // has not been added to the VFS on this cleanup path.
-             unsafe { bindings::put_disk(gendisk) };
-@@ -161,7 +162,7 @@ pub fn build<T: Operations>(
- 
-         // The failure guard now owns both pieces of cleanup; the early guard
-         // must not run on this path anymore.
--        recover_data.dismiss();
-+        DropGuard::dismiss(recover_data);
- 
-         let mut writer = NullTerminatedFormatter::new(
-             // SAFETY: `gendisk` points to a valid and initialized instance. We
-@@ -185,7 +186,7 @@ pub fn build<T: Operations>(
-             },
-         )?;
- 
--        cleanup_failure.dismiss();
-+        DropGuard::dismiss(cleanup_failure);
- 
-         // INVARIANT: `gendisk` was initialized above.
-         // INVARIANT: `gendisk` was added to the VFS via `device_add_disk` above.
-diff --git a/rust/kernel/mem.rs b/rust/kernel/mem.rs
-index f2d4cdf87d00..e098675ea195 100644
---- a/rust/kernel/mem.rs
-+++ b/rust/kernel/mem.rs
-@@ -4,6 +4,88 @@
- 
- use crate::prelude::*;
- 
-+use core::mem::ManuallyDrop;
-+use core::ops::{Deref, DerefMut};
-+
-+/// Wraps a value and runs a closure when dropped.
-+///
-+/// This is useful for running cleanup code when leaving a scope.
-+///
-+/// The [`DropGuard::dismiss`] function can be used to take ownership of the wrapped
-+/// value without running the cleanup function.
-+#[doc(alias = "ScopeGuard")]
-+#[doc(alias = "defer")]
-+pub struct DropGuard<T, F>
-+where
-+    F: FnOnce(T),
-+{
-+    inner: ManuallyDrop<T>,
-+    f: ManuallyDrop<F>,
-+}
-+
-+impl<T, F> DropGuard<T, F>
-+where
-+    F: FnOnce(T),
-+{
-+    /// Creates a new `DropGuard`.
-+    #[must_use]
-+    pub fn new(inner: T, f: F) -> Self {
-+        Self {
-+            inner: ManuallyDrop::new(inner),
-+            f: ManuallyDrop::new(f),
-+        }
-+    }
-+
-+    /// Consumes the `DropGuard`, returning the wrapped value without
-+    /// running the cleanup function.
-+    pub fn dismiss(guard: Self) -> T {
-+        let mut guard = ManuallyDrop::new(guard);
-+
-+        // SAFETY: We have taken ownership of the guard and prevent its destructor from running.
-+        let value = unsafe { ManuallyDrop::take(&mut guard.inner) };
-+
-+        // SAFETY: We have taken ownership of the guard.
-+        unsafe { ManuallyDrop::drop(&mut guard.f) };
-+
-+        value
-+    }
-+}
-+
-+impl<T, F> Deref for DropGuard<T, F>
-+where
-+    F: FnOnce(T),
-+{
-+    type Target = T;
-+
-+    fn deref(&self) -> &T {
-+        &self.inner
-+    }
-+}
-+
-+impl<T, F> DerefMut for DropGuard<T, F>
-+where
-+    F: FnOnce(T),
-+{
-+    fn deref_mut(&mut self) -> &mut T {
-+        &mut self.inner
-+    }
-+}
-+
-+impl<T, F> Drop for DropGuard<T, F>
-+where
-+    F: FnOnce(T),
-+{
-+    fn drop(&mut self) {
-+        // SAFETY: `DropGuard` is in the process of being dropped.
-+        let inner = unsafe { ManuallyDrop::take(&mut self.inner) };
-+
-+        // SAFETY: `DropGuard` is in the process of being dropped.
-+        let f = unsafe { ManuallyDrop::take(&mut self.f) };
-+
-+        f(inner);
-+    }
-+}
-+
- /// Transmute between two types.
- ///
- /// Use this instead of [`core::mem::transmute`] when it is known that sizes are identical but this
-@@ -232,3 +314,37 @@ unsafe impl AsReprMut for $signed {}
-     // `usize` is not normalized to particular integer for portability.
-     usize isize,
- }
-+
-+#[cfg(CONFIG_RUST_DROP_GUARD_KUNIT_TEST)]
-+#[macros::kunit_tests(rust_drop_guard)]
-+mod tests {
-+    use super::*;
-+
-+    #[test]
-+    fn test_drop_runs_cleanup() {
-+        let mut cleaned = false;
-+
-+        {
-+            let _guard = DropGuard::new(42, |value| {
-+                assert_eq!(value, 42);
-+                cleaned = true;
-+            });
-+        }
-+
-+        assert!(cleaned);
-+    }
-+
-+    #[test]
-+    fn test_dismiss_returns_value_without_cleanup() {
-+        let mut cleaned = false;
-+
-+        let guard = DropGuard::new(42, |_| {
-+            cleaned = true;
-+        });
-+
-+        let value = DropGuard::dismiss(guard);
-+
-+        assert_eq!(value, 42);
-+        assert!(!cleaned);
-+    }
-+}
-diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
-index 17ca504b7f8d..a400d241c2ad 100644
---- a/rust/kernel/serdev.rs
-+++ b/rust/kernel/serdev.rs
-@@ -13,6 +13,7 @@
-         to_result,
-         VTABLE_DEFAULT_ERROR, //
-     },
-+    mem::DropGuard,
-     new_mutex,
-     of,
-     prelude::*,
-@@ -21,10 +22,7 @@
-         Mutex, //
-     },
-     time::Jiffies,
--    types::{
--        Opaque,
--        ScopeGuard, //
--    }, //
-+    types::Opaque, //
- };
- 
- use core::{
-@@ -174,7 +172,7 @@ extern "C" fn probe_callback(sdev: *mut bindings::serdev_device) -> kernel::ffi:
-             }))?;
-             // SAFETY: We just set drvdata to `PrivateData<'_, T>`.
-             let private_data = unsafe { sdev.as_ref().drvdata_borrow::<PrivateData<'_, T>>() };
--            let private_data = ScopeGuard::new_with_data(private_data, |_| {
-+            let private_data = DropGuard::new(private_data, |_| {
-                 // SAFETY: We just set drvdata to `PrivateData<'_, T>`.
-                 drop(unsafe { sdev.as_ref().drvdata_obtain::<PrivateData<'_, T>>() });
-             });
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 10b6b5e9b024..15f9cbe76c8d 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -7,8 +7,9 @@
- 
- use super::LockClassKey;
- use crate::{
-+    mem::DropGuard,
-     str::{CStr, CStrExt as _},
--    types::{NotThreadSafe, Opaque, ScopeGuard},
-+    types::{NotThreadSafe, Opaque},
- };
- use core::{cell::UnsafeCell, marker::PhantomPinned, pin::Pin};
- use pin_init::{pin_data, pin_init, PinInit, Wrapper};
-@@ -242,7 +243,7 @@ pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
-         // SAFETY: The caller owns the lock, so it is safe to unlock it.
-         unsafe { B::unlock(self.lock.state.get(), &self.state) };
- 
--        let _relock = ScopeGuard::new(||
-+        let _relock = DropGuard::new((), |_|
-                 // SAFETY: The lock was just unlocked above and is being relocked now.
-                 unsafe { B::relock(self.lock.state.get(), &mut self.state) });
- 
--- 
-2.43.0
+We could, but I'd rather fix this here as people are inevitably going to try and
+use default::Default() and the linker errors that come from it are pretty obtuse
+and difficult to diagnose what the problem really is.
 
+ - Alistair
+
+> Best,
+> Gary
+> 
+> >
+> > ---
+> >
+> > diff --cc rust/Makefile
+> > index da1a7409d984,da1a7409d984..535a3bf181bb
+> > --- a/rust/Makefile
+> > +++ b/rust/Makefile
+> > @@@ -525,13 -525,13 +525,16 @@@ quiet_cmd_bindgen = BINDGEN $
+> >   $(obj)/bindings/bindings_generated.rs: private bindgen_target_flags = \
+> >       $(shell grep -Ev '^#|^$$' $(src)/bindgen_parameters)
+> >   $(obj)/bindings/bindings_generated.rs: private bindgen_target_extra = ; \
+> > --    sed -Ei 's/pub const RUST_CONST_HELPER_([a-zA-Z0-9_]*)/pub const \1/g' $@
+> > ++    sed -Ei 's/pub const RUST_CONST_HELPER_([a-zA-Z0-9_]*)/pub const \1/g; \
+> > ++        s/^([[:space:]]*)fn default\(\) -> Self \{/\1#[inline]\n\1fn default() -> Self {/' $@
+> >   $(obj)/bindings/bindings_generated.rs: $(src)/bindings/bindings_helper.h \
+> >       $(src)/bindgen_parameters FORCE
+> >         $(call if_changed_dep,bindgen)
+> >   
+> >   $(obj)/uapi/uapi_generated.rs: private bindgen_target_flags = \
+> >       $(shell grep -Ev '^#|^$$' $(src)/bindgen_parameters)
+> > ++$(obj)/uapi/uapi_generated.rs: private bindgen_target_extra = ; \
+> > ++    sed -Ei 's/^([[:space:]]*)fn default\(\) -> Self \{/\1#[inline]\n\1fn default() -> Self {/' $@
+> >   $(obj)/uapi/uapi_generated.rs: $(src)/uapi/uapi_helper.h \
+> >       $(src)/bindgen_parameters FORCE
+> >         $(call if_changed_dep,bindgen)
+> >
+> 
