@@ -1,54 +1,54 @@
 Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022104.outbound.protection.outlook.com [52.101.101.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20AB383C8D;
-	Wed, 16 Sep 2026 12:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE5D3A5421;
+	Wed, 16 Sep 2026 12:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.104
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789560727; cv=fail; b=EHX5GLVLINVkEHQ2SfWAWK0XpaHVLfx7AxccMFKm8xA/xfp9x4VLEsjkLEP6rf6TlzyP+z9Q2WmEArsrKQAzq6iROi+kdrBJ2T4BGyQg3S1s0RSzd/3bi/C8t+/LubnhB133sOxFV2V1Vvoxh3DOIBJI/dXF3KlKcco11IAR4OQ=
+	t=1789560730; cv=fail; b=LCl0nYtxfg+csk17F0CYGYtl9kbmML2Hh2iDpdisw0B4SpXuEXUJ/1ZCQpToRvqh2r+rD8wRxbjyySpWzSFr5NVSSxpnEaPDgHn9oGyclePNeKhdKSmwkRi5zNWGRzP5lcxq/qQm0PeGQRIIepqLnxHazmuI9nUkin2zrGkP910=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789560727; c=relaxed/simple;
-	bh=LCrmIdd4GhRIDnPRatlnHc41av4wF6QbVm9CpcOvar0=;
+	s=arc-20240116; t=1789560730; c=relaxed/simple;
+	bh=TUpCJi89VK2o1Ffe/xiz6Ld3TJn9X3cvMsu16eFc9oc=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=lS8ssAliMDmmmi1wnNOvVyEqjbt+Y4qsGJC7aD0HzupLosYbv8STyxhqSJjl/45TBQ6BcfRYqOrbsabDLYvNg1Ja0Zneqk7Ygo/JB0ivSu69SgKjq3v1M5y4J6UlQtNDIkc157ZwwddLv77OHzXyt+hS6yqd8aa79EK1UcE7Eq8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=L4+DWxM8; arc=fail smtp.client-ip=52.101.101.104
+	 To:Cc:MIME-Version; b=ATUk0sAw9MUkvm12ztWoqAtuc+i0yMLuRh9hQ+o3lT/Cc2e5WAtTg6vgtcLByfGRLp83UAbczZ4ED7EV7YnbF05xQEaiT1iAUH7ev5TMSBxVvhu5keMwQvoG7LJskRnjr0CBkwXoc1R9Lwu6JgpeIA3TP4zr7wQwMHJZ013Zo5g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=tdZRuGoM; arc=fail smtp.client-ip=52.101.101.104
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="L4+DWxM8"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="tdZRuGoM"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aTFgSE9ikbtAahlyM6gchvkBT8IKR8IF2v/AZzJNFk2JJemeSFzzgszm4cpBjTgxKKOLDVfgbW16mTvX3hioRV5CWxPomJFGVhkk6SPOwlwSviAIhh+Wbyo4iaY8J4kG2OdNNkoeEI51Zo/JRXfmwLQsRCtXF7FURDwUXiz5Vxjz52WN/TAVhyoio84px/elA2zIKxDFS74P1vKGsWZLOwrX4zlqubGOT+Df8Nb2fMPNvWy4hkRvo68CQi9HuBMVPu0GerdniGBDLWzLRNdWNzUDA7aIdFSeHpmiqNI7BZCHv1FXdrwBXXAovCRu+hhKdS6Zg1SaJ6+gZTzYlwR8zA==
+ b=xA4Mww2Z36jUJjWfn9aTvAcBSrQkedt8hBu0xnBnTCiZQyWBA7LNwDBwmaZPYgLCyGRSj/Q0JEPvnaAvnjrruBtCzbCJQShWK8GqlJnpF9iIwLtQAxvVsGOvmZNivsyGpofAx1leKUaRcqK8quxciaHajzw3tRRQB3v52vX30prCG7Ehxyx910JWlysfQDL5DzbUEm4By11fLaNuH1AkBamHSCKfSmg6jPtH6u1eE1J+HUxol140jGYZeoThs9BuUIiV5E1dzDwqp89Lm4l1BGW0uc/lMaIGk6P6hWU7PDIEkFXwbN0wS4JJ/3lLA/n3aiBXnIYPSs7kPTUvg4j/PQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PE5SP8QkQ0jHFHAbDKnYQSoUkeWTmtFaRjLmTOO4/mQ=;
- b=UU7/5rF9l0lF3LnjO5PY4czFkUKtUV462jGv4xD8L6s+RdIofnWQdrtCZjffi/dkL8e63Onx/K+hM9QuBIB7pVJZaOrBdRFENv+8RBl7zUuIFmRljjGs3mwyFfI3a6CUQIodDMUsXLWnG6UjSk1wznyCMqqV+l+Q752HVQzSd/392rTvWRGbSZbrMG2kjckl00kdogyNLchZcCvARqeTqBwU/KlyhldSmrYvoUdQT0Uvf1uaxjCyYij06X/eaqYTkjUvnTfYVJhMz8bTHD6ruQ/rUB8ZZnjIhxC8X8BOF3sPhOSwf7ZFb7QuH+1OfdMDCcLADbsafdzeaTcuDnsztA==
+ bh=ro0STTuK1KOsYMforwrE/9ZxHNhXFuJyKnXcsohBwC4=;
+ b=FMgyxUVrFghlzdPA9B6jru6//aVc1PE6hjnfDmAYLD9V+TLhnz6gkMV8JyqOT/swYumrJ65wwSAM/gWjPIiUOSUCg+YnLzpDrf9XNR4u4EJIBxLUCV4WbaRqm/cCLUC+k1n7lARnd8Mytokjjvh+r8c8s5RvYG7sibaxki9c2smMv2aF+3hCNQuIuk5yHOJjvxT3IhqMdnI7hA9Rszbovxz6R0JctBC6ku18Jtcc4pvgXjDkYkn7ZfdCAHeJPH7Vmp/o53uhKxPGTHp9YLSV7JtrkaIVVKMeGQHYpEmKwXeR7eg1bRb2IySmZuShHU3OmbSktFt1MYSUUp/TQvNaNg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PE5SP8QkQ0jHFHAbDKnYQSoUkeWTmtFaRjLmTOO4/mQ=;
- b=L4+DWxM8WrwgMcBwrUSqiJnJ6OIAMdsgsCaYEhghmB6Wns4ypcyqvH7oY9WBuZQbIjrD6cVhgEf9ldXG+hqUcZJbHWHMxRg9sil9ENneUNyOR+4BfMdQzJZheP1ggJag4TWrBKB1ytHcDKuUY9Ej7Adn6pYdXAUgR/Ccd+J//Nc=
+ bh=ro0STTuK1KOsYMforwrE/9ZxHNhXFuJyKnXcsohBwC4=;
+ b=tdZRuGoMGtfoLwa/uCGmGvx/Qp0JbNm9j3+EBHNow9SZpEg+weRPfN+ajlh6iE79NyaL5+Ootrx8a8Eb5uy3xB2WIdwy2WBKpAziZAAjW0uXhffD3mYIh7Y5A1KJPMD4sgbOFIzOA9qsOJ9bmWCuTAWPjhL8SLU2zajHhAjYdLg=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
  by LO2P265MB3421.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:19b::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.11; Wed, 16 Sep
- 2026 12:11:59 +0000
+ 2026 12:12:01 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0406.012; Wed, 16 Sep 2026
- 12:11:59 +0000
+ 12:12:01 +0000
 From: Gary Guo <gary@garyguo.net>
-Date: Wed, 16 Sep 2026 13:11:32 +0100
-Subject: [PATCH 1/3] rust: pin-init: internal: pin_init: emit `slot` using
- mixed site hygiene
+Date: Wed, 16 Sep 2026 13:11:33 +0100
+Subject: [PATCH 2/3] rust: pin-init: internal: pin_init: use `slot`
+ identifier directly with mixed site
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260916-dev-hygiene-v1-1-dfb6ae2588ba@garyguo.net>
+Message-Id: <20260916-dev-hygiene-v1-2-dfb6ae2588ba@garyguo.net>
 References: <20260916-dev-hygiene-v1-0-dfb6ae2588ba@garyguo.net>
 In-Reply-To: <20260916-dev-hygiene-v1-0-dfb6ae2588ba@garyguo.net>
 To: Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -62,12 +62,12 @@ To: Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>,
  =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2597; i=gary@garyguo.net;
- h=from:subject:message-id; bh=LCrmIdd4GhRIDnPRatlnHc41av4wF6QbVm9CpcOvar0=;
- b=owJ4nJvAy8zAJca/kLG6/oLwNsbTakkMWavae/4tELa4elTj6ZHGfY/DvnrnTZb+58o/uf/kt
- IRzIRpGO5Z2lLIwiHExyIopsnh0M6ZtYpwte1mr/CXMHFYmkCEMXJwCMJFL7Qz/fVo23q6fv7bg
- tJF06vU/h8s/hlfvXiR2xtxIb9JTs61lbAz/882eL7jU0Hb/0sWEepvz2U1Ozv8fy/O5Xgx8sVD
- oYOdGVgCo4kzq
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5464; i=gary@garyguo.net;
+ h=from:subject:message-id; bh=TUpCJi89VK2o1Ffe/xiz6Ld3TJn9X3cvMsu16eFc9oc=;
+ b=owJ4nJvAy8zAJca/kLG6/oLwNsbTakkMWavaexLqs7YyM/19qX06/eSqu5omX6anHvhn9n9Km
+ V+Q4YoTX7Z1lLIwiHExyIopsnh0M6ZtYpwte1mr/CXMHFYmkCEMXJwCMBGeiQz/I66fcdqhnr8h
+ 0qfHzmrbLs3767dba6XtO2kop8QgvXy6PSPD258hn8UMK1sVLU7+E2B5b9cwZcVshjR+1kuJN/j
+ 5NM4zAQDjUUYe
 X-Developer-Key: i=gary@garyguo.net; a=openpgp;
  fpr=E25A77AED6FDB55D05B304A09D8C6F14E3E60652
 X-ClientProxiedBy: MA3P292CA0014.ESPP292.PROD.OUTLOOK.COM
@@ -81,127 +81,186 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO2P265MB3421:EE_
-X-MS-Office365-Filtering-Correlation-Id: 220c1d9b-682f-4ae0-2b21-08df13ebb595
+X-MS-Office365-Filtering-Correlation-Id: 218bd64e-fe3c-4f50-911d-08df13ebb660
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|10067099003|6133799003|22082099003|18002099003|56012099006|921020;
 X-Microsoft-Antispam-Message-Info:
-	3YqAQg7LqsUcbHjn2+N1TSeZJEd7ahcFWxYOI7+6GqDg7d2VVgqn+qr0j0rssafm8VbAuNosdjjJbYtC7ON2a1wp5tnMlJP6lOSpN7VErJevAMTUDz7oOeve4lVqBWBwGLOaBa5mXCzpDK0Ru/9rUQdHKbvBdOZKh/OWeGmBen1/Or5REaYMq8adLWGCKJaa5qiQ1QnK08B8JOdvOTzJVs9K96AsqVS7DbraYJ9SklEi5ZQnG8ApH5EDHyrSVc9PPpU5hLS30hbCwfLv1KIrwdx91aNMnxV7pNRjcEM74VVEcZFI/fJdlHAU/FgYwmSwWHc7AOu+4XoW/YC7/qjimGXl6dnkquMhZP18hNLYKoJztOqi9pZqMPZ+m5cwOP2ba1waWTPeKMXFhveevFWwWAIEbUbDF5YiRAHFtnWeQXx0HGVSZoopGA2lo9/8tj+FNHiZZnUJIcojE4g55I0vlsjEnmmf9hD8/Xi68Tgb5qKDXK/yPQl9JXtAONPOYJzdn/HwNjtk5R1kuuNPwHjXtAsbLCbKgbs5uvbgAJ30dU3Upz1fX79NpLGgWDmtLIRzaMbJEjo5cLKF7n+XxHPtERwBuDZ7JIk1cxbxHKhpTW3zpDS8gTybIDMR/5WqaKHBMNhFbhOWCBoSvOH/MkGERKo+PuQxd6FrMjYExr3EYcJMKePQM2snqhz+xibHISuwHRuB0uSqqTv/2hhO347IjA==
+	XE59xB59kdSN7b0giOrL203FZSc4N4vkHEPBHyIXycui1pM9LUYkeXUuI78x/fIq68j3EWogF1muFozZGtgoeprbLVIQOJrGo3Gvqn83on0w9uzS6cs3XFTrNlKNrXtnD9CCGQNFgE8UCW0RLOjZMNpQwqv6ZVji3EM7sTCRqKDkRStkumhqaUwS9sQbEdwUYDMdaCdOPmq0pvIn86Z0MQjbn5XLkFb1pdRNicOTRR2Iae4zQDFOuDJLZOKjdtzE2S59CfxZvAOb8QfMwuaBu74/xKA6fPbj5wJgdUQw3P2HoAeuu2wvFzxp0dxU5ojQQMrtLGUUPYiB+7k7jxs3V2bK+9+VH7J+dywCzA9BXvvye14unOAXIVCZpAvyJa1vOrXlLzTMKgi4eKiVlDp8HVpJvLMps40h29nr7cFMHhmDEbRhSqch6jcfw91IMm2F4dM6Yx17WCDklBghNLbwoqmYv5usRcwUXB7w1KToLARyQ21dawD6M/gJ/u1tnwZKMu2ZDrqmJMxHv4bqLFFAnzJsPxxIYnLu84UFKcjyQaLqqbXJye1uNt7+HP/8C6P6CYqWOhr0/7SF5dTGsUOtbHiXH4IfZGrOeKi5ySfFdma35chadErug2xp6rWa/P1fSNwPofk6ZTW347ZKuEUnKZzl9+A7pUPKEzU2luPV6LbUAW6ptv2kjzIrcu7NRyo4bZnNj4/zdfMSmchgA6tAAg==
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(10067099003)(6133799003)(22082099003)(18002099003)(56012099006)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NWZOOWFKSXlLZnNmTHJjMm01K2g1V3dlTjlaZGFVUjlaMkVCM1BYb0NsV1V3?=
- =?utf-8?B?YXcvb0UxY3lrNktYV1BlNUd4VUtpOE9ZWW9NUkcvbjVmcG1Ua0JMRGk0QVA4?=
- =?utf-8?B?OEljZnRwTTBnTzQ0WnU5NTdBWVY2N2hDZTlOS0xxUUpwUjRjSjJoS0U1Rk9O?=
- =?utf-8?B?dXloSTVNblRnVktGM2trY2xlalFYVjY2eGpScllKaHU4a1NtaDRIYUtJZHMy?=
- =?utf-8?B?R1RULzlvMk5HajkzY0piSHlpdU8rNXlPczFqS0ZGUk96ZVRNaVkrN2FwSWIv?=
- =?utf-8?B?c00wZVBMWm9JT3c0OEcrSlVZTUprdzlQWUhhS0hRSmZVZUdsNWc2QlVaNWxr?=
- =?utf-8?B?dWc4WTZ1ZlVzYmo5VUFEbWlmVWtHWWVZSG1pbzl1Tm5ZUVZqQXRnTStOekFx?=
- =?utf-8?B?VTl3TTNsV0FZby9LNlpnM2xRRzBxai9pQUN5bWhXY3EyS2tRU2l2cTZWazRS?=
- =?utf-8?B?bXhpOVVlSm81TlZSTHFMaGxXMVNOZGxWOWNaRVY5R2trbXdCcmptNk1CeWZO?=
- =?utf-8?B?UTR1cGpGaXB3aEI2ZndOZGRQT1lHZzM1YzNkcmpmRnZ1ZHFCRzQ4emxUbTg5?=
- =?utf-8?B?N2xTWVhUbllibTRDOEtoZ1ZaanNLejFyeEtVQlZWbVlORzlGZ2xKamIydWpY?=
- =?utf-8?B?UkFjT0RoMGh6MnBzbjVuL0pJb25kTGpEQS9pcnRmOGhiWG1CalBzbXI2eUhh?=
- =?utf-8?B?cE0rKzJaU3lXanRBYkQyY21Yc1hveVgxWWladmhxc09QajUyZHJVc0kyYTZG?=
- =?utf-8?B?MDlKTm9LWkVTekRBMjdlNUdKN2dDQUpGSnpKclZqc05KSk1oM3ZjTkhuZkFn?=
- =?utf-8?B?ZG9nM1Iza1I0MHNmRnhNUkpWTmRxQUE0WTVnK21hTGRtVnR3TU9sQmlaZC9s?=
- =?utf-8?B?SEFCQmNmN2JRNmt1MnZyaDQwTGVEb3lqUHpXK1ZZczFVUmF2QUZEN3grcG1m?=
- =?utf-8?B?czVsejRYMU82eUpLQkFXLy92ZE00ZE1xOHBGanM2MnkxSDkyYUFRa3h5djdW?=
- =?utf-8?B?bk1aOXZiaWtPekF1akN3b0U4NTM0U2VvZkp0amVnN0V6YUpEUUpNeUo4S2E4?=
- =?utf-8?B?MzQ0bGJjeERjZlM4c0NuSWxyWFNKMjk3ODlSODljbldhcitGa0ZvYVpPRFB6?=
- =?utf-8?B?R284alBDYStyVC9YUlBFbU01bE40Y1lpcGtXT01pWXRLQ1crYUlvd3J4NWQ2?=
- =?utf-8?B?NVY3Q1JaaVppSkd1S3VxTkRQaHlKano4Qm9LZmJnTXdqc0Q0NkNqNkZ4QWk5?=
- =?utf-8?B?d21yL3c0SUd0TVdWV2xMY0JJcHEvNk1ENFh0Yk5YSHI5K05CUUtNVVAzK0xv?=
- =?utf-8?B?WGh4Q0ttb2lZdTJCRXJYYmhIYnNTSUFpTU94WW9YeDA2NEgycmVUekNWMGNX?=
- =?utf-8?B?MVFmUDZGczIxOWE2MGcvc3B3dWtOSTVKVDFmL0FsWndzak9nRVBGdjgycmcr?=
- =?utf-8?B?TmZyVW9CVWFwc1V5dkNOcExKbmRRZEJqdTVTK0R1NUZoTUp6R2lBR3AyS0VG?=
- =?utf-8?B?dzR0NURmaVFNRVgydnhXYXN3RjduMTVqWkdrWUtuVkZDNFc1YWYvYVp1QWZF?=
- =?utf-8?B?UzFTY01iS0tTZG96MzliejBjTGNpRzBmQnB4WWZCbkFScU53Y3VSZU1wdEp6?=
- =?utf-8?B?V0Yrc2VzbU00MjNqWmVHNW9LMml2ZnMyemxmYkZCcVhiOEx4V1hpc0Zwa05t?=
- =?utf-8?B?dk95WG1GWk81Tk00MUxiRnJTc3YxbTBiM2xSZEZHSGRSb2U0VVJXeUFydjRs?=
- =?utf-8?B?TFpIWnEyeldPUEdCVWxqd1pMZ1Fia05tbys4cVByNHAvL09QbHlYOXNxVkJL?=
- =?utf-8?B?M0R2czkvVnNSdEtZZTNTdnhoZEJyYjdqQmYwRTlHQkQreHcwc3RJWGJvWFNo?=
- =?utf-8?B?cUJ3RVc1ZEpDeHZyZ0RyL3M2NmdlTzFCZlVvSWM5MFZuWmR4ZjVaaGtQSUZi?=
- =?utf-8?B?OEZGeU5scWRjT0IwVTljbklLcXdzRWZBUElHOXBOZ0lrUERlWGRFVjVhMjJq?=
- =?utf-8?B?VWpiRUdpSVp6ZVZ6K3huZFBRWWpZa0hTQzRTQkpyKys1cEZya3JpOFY2V3dT?=
- =?utf-8?B?M0h1RzFhbFZkZG1FYmhkWWs4YjV2dXF5Tm1JZ25DTTl2cFJVSklKb1dYWVkz?=
- =?utf-8?B?VUFMaVdqSmxXUU5IaWlXYkY3K0ZVTjdkZ2cvVmVpMStKaldrQzVUaXBhRklv?=
- =?utf-8?B?dFl2Q2l4eTZ3elBJVXoyUytWTVdPYjgyaUdoK0FjVW9jcmpYb0hSM1BTY3Y3?=
- =?utf-8?B?MHhFVlNUVCtmclBHOWxNYU42UVNEUWtPOEJzVzFtc3A2VWF2SzZXeWpKNHZE?=
- =?utf-8?B?VGpXNUNOSnBrSFRwZldkLzM2VW02a2pxS0xZbm0vUkhSTG5CTWFZUT09?=
+	=?utf-8?B?UnZHRldWT0hVeFEvcDdQaU93MTBlQitqZEtHejREZkQ1TEpnSG9mM1dseHp6?=
+ =?utf-8?B?cERIRmh2WFdpbGZObGVsV1Q0VldsUEQrMzlwemZGeWVWRktWYmlYb0h3bDZ2?=
+ =?utf-8?B?RVBrRUc0allKNWxVWnUzTEw1TCtOUFBOV2N3c205cTFlTlpNRjR2KzRFelR6?=
+ =?utf-8?B?aE5ocm1wdlhhemVjUlZxWWx4K0xyTU80cytENFpTeGJmdFk0TUVCVmFtOGNu?=
+ =?utf-8?B?cU5rTkhGb3FsbjQ3d2tzNFdTVFpQYnEwL2tKSEdnT2VveVRyVDJ0MVA3dkJn?=
+ =?utf-8?B?L1lyT2h1cWdhMWNMYnFrTk9ZOVZJRnZNRmVxMEtKaHZyaWVCMzBTRy9nTkVU?=
+ =?utf-8?B?ZXhyR3VqUDdtNWt4bys4eVZ2Q3JtcHdrQ0p4aktjdGZnNitVTmZCSS9XOHdp?=
+ =?utf-8?B?eGhZYzNJdmZ2amJUR0p0ZmR6WlNQQU1SbW5uUFlaS0kxRGRpbkt1WldZZi9I?=
+ =?utf-8?B?OWc4ZjUrMzlBU1REKzVyZThlVnhFZUx4RXJSZERPZ001TytRTEpEN2dZR01Q?=
+ =?utf-8?B?enRVeU5ubFQxVmpaZnNmMWJDRnZzc0l0cGtrbTcxZTdwNGZ2eUxmcTYwOGtB?=
+ =?utf-8?B?cm5sd1N1eEt0cWN3RmVaTXA3NjA2NThnTmErOEN5cWlTOWY4dkUrY3lqV2Ix?=
+ =?utf-8?B?YUx2Q0tMM1ZjM1dleGlGTitrM0k3UjNiUERPUUJlRE1MeG9vUVhMVWM0aWsx?=
+ =?utf-8?B?RmtWZVh0bEVCSmtLRnpLSHhqMnJjdjg1RmRNZnd5bnZlWGNWT1FUSzdNUE5m?=
+ =?utf-8?B?S2hVZzlUSTRKUDQzNHovdURlZ1NBMDA0RUprdk1BTWVsTWYvLzhoZWdOQVZO?=
+ =?utf-8?B?b0RoTXhxeHlJMGtPQ25vYmFEa245RlRsN1hJZWtkZm1RZWZ0bU1qQWhCSkFU?=
+ =?utf-8?B?dWtKd000bGpFSGVHTGVOL044YjR2elkreWR4QzlRdUlkSEQ4bWd6eTlNelhJ?=
+ =?utf-8?B?b0F2U1doTzlTeWhVNjBEZldDeS9vMjhJWGJqTjQ2ZmcyRHhuKzNDRXZUSC96?=
+ =?utf-8?B?ZkpUUzBVaDAwalJLWWlOc1hYM2o1Sm1PZDM0STM2WlNPayt3SkdqSlhTTElK?=
+ =?utf-8?B?aDNJOXpqQ1loeXplYUpvT1RqOUdlVXg5NW1sZVZQL3FjK3BVVkZmVmpjb2t5?=
+ =?utf-8?B?Z1VzUVEzUCtJbVlWNzF4MUd0WGRIbnRhTDUxdU82Z09MWE5lTTBNQ1UySUVt?=
+ =?utf-8?B?UzBJRDR3OEg4bVpqazJ4OFRIYk1uaHhoVzNPYkJIUXNGODBOZHhUUFNkY3Fq?=
+ =?utf-8?B?dUIzaWhNeHMxQzg3WkdLQmFRUEZyc0t2VXpZOE41LzBXL29DN011ZXBuRzdw?=
+ =?utf-8?B?QW5hMHRVY1ZsLzlKaUhCalppc3FzYnQxNVZURWw1eWdkUW1wQlZTTEsydmVI?=
+ =?utf-8?B?R1U0dWFBaS9NS1hwSUkwZVppMWNUd3Joamk5MDRPcTkxdmtoNXNjY0pBTmlB?=
+ =?utf-8?B?K0NLRmZVb2krMEhVenY1Nzg0b210SDRib0d1VzlRdVoySDhEOHVtWnRMV3Yv?=
+ =?utf-8?B?R2JSNFpZYm90cmlxNlptVXBVbnp1V2prN3VobzkvT01DNk11NDVFa2Z4cjJH?=
+ =?utf-8?B?VXNOYjh4RWpGVllaZG9xWGlEMWdxaWF3M1VNNUxyN2g1dy92cjlSSEx6U3hk?=
+ =?utf-8?B?S3ZhSXRPZkxwMnJBbnlIbmkwUk0vanhyRzlza2NKUzJCa0NKRndwaHUrL0dP?=
+ =?utf-8?B?QUJ1bnMwNUJLUHFiUWpzTEdGUTdrUURlV01JaUJXUlVHbzlKeGo1aE1nSVUz?=
+ =?utf-8?B?ZUI4c1VwKzU3WFpsZytadWlPeXBHeWUyVWFwSE1VbUN1TEw5ZTYxMDY1bmI0?=
+ =?utf-8?B?eFh4N29YUmdWbzVpb0RQc2VsRGd6aHNqS3ppLzNRd2NzN0hDMzJFcGlDenhU?=
+ =?utf-8?B?WGFRRWVWMm9zTUtrcTRHRUx2d2MwaTBNcWdPRWZMTXBwL0tsQXcwL0RQMkFV?=
+ =?utf-8?B?OWY0SkkrQ2p1b1ZLNHRXTGdLQTVzeDg0TVA5WGJHM0twdDg4U09lRmpKajUw?=
+ =?utf-8?B?RTNhbE5MaHQ1ZStsV3pWVklJVWN0UjhzTGhpWGQwcm9jR21LamNpYWljdmV4?=
+ =?utf-8?B?VElROVUzc3BGZ2h0Q3ZVS1A3Z0FZcGFEOGlMZGZhRUF1SHpjQzJpejAyRWFM?=
+ =?utf-8?B?ZDczUXA2OUV3MmM5eVF0ZVlnQTBqY3k4bXVoTXZhKzhzSlNrdVdEdlc0TTVq?=
+ =?utf-8?B?YmF0a0xCWjlGYytYNEh3V2kwbTRIa3JVeEZVVzc3YWxLdm9mTG9YNjNrWDNm?=
+ =?utf-8?B?OEJWcVg3bnNTUkVZdURycUhRTUhWTVNZdUlpQWpQTWpEdjQydTRRbDFhTDZN?=
+ =?utf-8?B?V1BrTFMyaGdoQWFJRzhkajBBdlFPWXF4amRuaFY1QlNIbnpIOENXUT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 220c1d9b-682f-4ae0-2b21-08df13ebb595
+X-MS-Exchange-CrossTenant-Network-Message-Id: 218bd64e-fe3c-4f50-911d-08df13ebb660
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 12:11:59.5727
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 12:12:00.9190
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rj6A+CuBmRaBc2H5IjbkxafSEF2vjm54hk0fbfXM7ncrw0iFmendVWicDdOVdaSSUJxZlMbdyr/zEFgLAhAdrQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZMmeIdgyK1iYRfDJcSCUtKMePNWWRMUVQtyl+PeQkDDnO2PWxo87N4+KvBOZ2e7/KqIPrm39g50SWoPQSJNsYA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB3421
 
-Syn/quote's default is the call site hygiene. If user provides a field
-named `slot`, it will conflict with pin-init generated `slot` identifier.
-Change it to use mixed site hygiene instead.
+Use `quote_spanned!(Span::mixed_site() => ...)` directly instead of
+creating `slot` identifier and interpolate it later. Do the same for
+`__data`, too.
 
-Fixes: 4883830e9784 ("rust: pin-init: rewrite the initializer macros using `syn`")
+This is needed so that we can customize the location of the span without
+having the `slot` identifier getting in the way. For example:
+
+    quote_spanned!(Span::mixed_site().located_at(loc) => ...)
+
+with `slot` mentioned directly will have the diagnostic pointing to the
+desired location, while `#slot` won't.
+
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/pin-init/internal/src/init.rs | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ rust/pin-init/internal/src/init.rs | 31 ++++++++++++-------------------
+ 1 file changed, 12 insertions(+), 19 deletions(-)
 
 diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
-index dc5dfb2ca114..6ade192d27e6 100644
+index 6ade192d27e6..a77ffef9926b 100644
 --- a/rust/pin-init/internal/src/init.rs
 +++ b/rust/pin-init/internal/src/init.rs
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: Apache-2.0 OR MIT
- 
- use proc_macro2::{Span, TokenStream};
--use quote::{format_ident, quote, ToTokens, TokenStreamExt};
-+use quote::{format_ident, quote, quote_spanned, ToTokens, TokenStreamExt};
- use syn::{
-     braced, parenthesized,
-     parse::{End, Parse},
-@@ -269,7 +269,7 @@ fn expand(
+@@ -269,7 +269,6 @@ fn expand(
          },
          |(_, err)| Box::new(err),
      );
--    let slot = format_ident!("slot");
-+    let slot = Ident::new("slot", Span::mixed_site());
+-    let slot = Ident::new("slot", Span::mixed_site());
      let (has_data_trait, get_data, init_from_closure) = if pinned {
          (
              format_ident!("HasPinData"),
-@@ -302,7 +302,7 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
+@@ -286,7 +285,7 @@ fn expand(
+     let init_kind = get_init_kind(rest, dcx);
+     let zeroable_check = match init_kind {
+         InitKind::Normal => quote!(),
+-        InitKind::Zeroing => quote! {
++        InitKind::Zeroing => quote_spanned! { Span::mixed_site() =>
+             // The user specified `..Zeroable::zeroed()` at the end of the list of fields.
+             // Therefore we check if the struct implements `Zeroable` and then zero the memory.
+             // This allows us to also remove the check that all fields are present (since we
+@@ -295,9 +294,9 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
+             where T: ::pin_init::Zeroable
+             {}
+             // Ensure that the struct is indeed `Zeroable`.
+-            assert_zeroable(#slot);
++            assert_zeroable(slot);
+             // SAFETY: The type implements `Zeroable` by the check above.
+-            unsafe { ::core::ptr::write_bytes(#slot, 0, 1) };
++            unsafe { ::core::ptr::write_bytes(slot, 0, 1) };
+         },
      };
      let this = match this {
-         None => quote!(),
--        Some(This { ident, .. }) => quote! {
-+        Some(This { ident, .. }) => quote_spanned! { Span::mixed_site() =>
-             // Create the `this` so it can be referenced by the user inside of the
-             // expressions creating the individual fields.
-             let #ident = unsafe { ::core::ptr::NonNull::new_unchecked(slot) };
-@@ -312,7 +312,7 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
-     let data = Ident::new("__data", Span::mixed_site());
-     let init_fields = init_fields(&fields, pinned, &data, &slot);
+@@ -309,20 +308,19 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
+         },
+     };
+     // `mixed_site` ensures that the data is not accessible to the user-controlled code.
+-    let data = Ident::new("__data", Span::mixed_site());
+-    let init_fields = init_fields(&fields, pinned, &data, &slot);
++    let init_fields = init_fields(&fields, pinned);
      let field_check = make_field_check(&fields, init_kind, &path);
--    Ok(quote! {{
-+    Ok(quote_spanned! { Span::mixed_site() => {
+     Ok(quote_spanned! { Span::mixed_site() => {
          // Get the data about fields from the supplied type.
          // SAFETY: TODO
-         let #data = unsafe {
-@@ -512,7 +512,7 @@ fn make_field_check(
-             ..::core::mem::zeroed()
-         }),
-     };
--    quote! {
-+    quote_spanned! { Span::mixed_site() =>
-         #[allow(unreachable_code)]
-         // We use unreachable code to perform field checks. They're still checked by the compiler.
-         // SAFETY: this code is never executed.
+-        let #data = unsafe {
++        let data = unsafe {
+             use ::pin_init::__internal::#has_data_trait;
+             // Can't use `<#path as #has_data_trait>::#get_data`, since the user is able to omit
+             // generics (which need to be present with that syntax).
+             #path::#get_data()
+         };
+-        // Ensure that `#data` really is of type `#data` and help with type inference:
+-        let init = #data.__make_closure::<_, #error>(
++        // Ensure that `data` really is of type `data` and help with type inference:
++        let init = data.__make_closure::<_, #error>(
+             move |slot| {
+                 #zeroable_check
+                 #this
+@@ -380,12 +378,7 @@ fn get_init_kind(rest: Option<(Token![..], Expr)>, dcx: &mut DiagCtxt) -> InitKi
+ }
+ 
+ /// Generate the code that initializes the fields of the struct using the initializers in `field`.
+-fn init_fields(
+-    fields: &Punctuated<InitializerField, Token![,]>,
+-    pinned: bool,
+-    data: &Ident,
+-    slot: &Ident,
+-) -> TokenStream {
++fn init_fields(fields: &Punctuated<InitializerField, Token![,]>, pinned: bool) -> TokenStream {
+     let mut guards = vec![];
+     let mut guard_attrs = vec![];
+     let mut res = TokenStream::new();
+@@ -413,16 +406,16 @@ fn init_fields(
+         let ident = member.as_ident();
+ 
+         let slot = if pinned {
+-            quote! {
++            quote_spanned! { Span::mixed_site() =>
+                 // SAFETY:
+                 // - `slot` is valid and properly aligned.
+                 // - `make_field_check` checks that `&raw mut (*slot).#member` is properly aligned.
+                 // - `make_field_check` prevents `#member` from being used twice, therefore
+                 //   `(*slot).#member` is exclusively accessed and has not been initialized.
+-                (unsafe { #data.#ident(#slot) })
++                (unsafe { data.#ident(slot) })
+             }
+         } else {
+-            quote! {
++            quote_spanned! { Span::mixed_site() =>
+                 // For `init!()` macro, everything is unpinned.
+                 // SAFETY:
+                 // - `&raw mut (*slot).#member` is valid.
+@@ -431,7 +424,7 @@ fn init_fields(
+                 //   `(*slot).#member` is exclusively accessed and has not been initialized.
+                 (unsafe {
+                     ::pin_init::__internal::Slot::<::pin_init::__internal::Unpinned, _>::new(
+-                        &raw mut (*#slot).#member
++                        &raw mut (*slot).#member
+                     )
+                 })
+             }
 
 -- 
 2.54.0
