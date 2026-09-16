@@ -1,108 +1,124 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E944FB9C8
-	for <rust-for-linux@vger.kernel.org>; Wed, 16 Sep 2026 13:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E79A4E56FD;
+	Wed, 16 Sep 2026 14:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789565395; cv=none; b=Lu4+CZPz3DAhbY82yfPWuAsO72mBGaYJh/g+UFrdb/jmnVXSVD+Nck2CBRusVlnLCyDl9/lvCgMnDAtfcIy0PMoM7Onshz1tUbhixYDxKdA9+nNlotJINf0+Uwt+j2AIYX3hAv1WbubR1udAfDiwSY847QmHvhyXoaqUIdK2yvA=
+	t=1789567418; cv=none; b=k0g4RCErPqElinwcQsvouEu+R2vFkolmkRGwZLnexHdkxV+8s6WKnu9Kty+0YevUBZJ7p5CezEW4WUlaaXSCTMaWaAP+KLBhgWDkv8CW9/FWRUiEjA6WuSwo/aBywdlEF49d+ZAWMryv+XQ+pHbLcgtU62Ew96wkrBzhSzaxx80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789565395; c=relaxed/simple;
-	bh=IORbvXx/c6Gpc8K78W23rNHJdpN4+xG3DMovp/3gbmY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=p92zQrkzZUb8puiT2wC8JHLE6ahayf3cqLpF4C/Y008jPLbqbgMNx2VkHMIGnF9lky/8TmLOdtLxlfJu9iUZYtDM1FY2XgZmEUT09YPu8pCDLn0UC2uHrWJNJRdwCPKhtDM6VQkbRZoDo3OpdMIq6OQ3vQftgovW8nm9e8Hn2/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BWrnUMQ8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789567418; c=relaxed/simple;
+	bh=TkXVw7bC4g65duQjFd6vedB6h/ilVBg8U3NCSCJYqFI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sq1Rz2k8OaHP57cx7lmqSDtPp/9i98WX7fxJwIeuUsxLKq/0KQUqhlAtrHER083n1bMnC4TqsIpZ2uzgL/hH9b5g1M0WeC6iuWlOvpHp2K8xP0DYdEJi/GQvsbZblFcXHynS4wP8MZc7UN/Hq8tTBVtBF4pLBG6Xzu9smyBtZPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f7RWrddx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BWrnUMQ8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB9B1F0089C
-	for <rust-for-linux@vger.kernel.org>; Wed, 16 Sep 2026 13:29:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f7RWrddx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7105E1F000FF;
+	Wed, 16 Sep 2026 14:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789565392;
-	bh=z/P7t1wuWNLiDcXonxKrexE65u9JMyjIm7e9Rdjj4pg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=BWrnUMQ88bd4s/Nz5kkkM+Eri8bZ84hiEsAP9Cf7sY+gzwua6EcpXYyDSqJ4VajPl
-	 hwbjkh+NPz24CSDzFfduQpLJ1wbfbGO55wpcZhFG+ePEfTFRx3l7wJErGQYzdKHK36
-	 zEY+An5zIC1QzLgAKlr2eSIleHn4w4YljrTkWQFcO1R+T7+k6IFdQ13fziqZ+isvsh
-	 qzTIwNOPJUSvePyAzoGzH24Fmhu4Vlyi/5FhL5LseDI2/PjTiqPX43LLv6aKbjnxo5
-	 WrsfUlQTQJNSRJ+Gnz6DXkCCfwXR/hI77Za+sSpke6sNUDX/0zCAKIM3C4TQPwhn2W
-	 Dj40z9ICYDxKA==
-Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b5e4f15d00so931092e87.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 16 Sep 2026 06:29:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBw6blUXolb5kcw3ffoUHbP2/lpls/h8Z8ivE7it74xE2a1NpQV3Y+dcgr6gAcSOE0X/xzY84VchE8H7hQu47Q==@vger.kernel.org
-X-Gm-Message-State: AFuF++n/Q6qRHVO/LeE118hwZ4q9JFgG19zgR4nDxU+zhOSIAojNHAjn
-	6qMPdUYSfELUOkQNKMsqFUSHIznBO0De6I3BDcdI6EsAHHxppNyLZnJQWSvlofJF9gAnqJRuHtI
-	GdIgRIQG0mjKe+pWlXhopkp+3QUXGljk=
-X-Received: by 2002:a05:6512:1384:b0:5b7:58c6:d808 with SMTP id
- 2adb3069b0e04-5b8b6643968mr754988e87.35.1789565391450; Wed, 16 Sep 2026
- 06:29:51 -0700 (PDT)
+	s=k20260515; t=1789567417;
+	bh=hO1YRILVaBOqm+dWq6qCTgxEbPpdVWHsaZacHfjUT/A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=f7RWrddxO53t7XqQWGQqpP3lfBJi6WfPwofmEdM57qil6qIChEXUlmwKor5h6kBoa
+	 9GtiaQGHN39ej2oq8F37LOrKCVhmvTOQjKW6hJb7MLQQEBdL7Wp00+3QWKwZvAomyS
+	 NoKwMiPOeftTdpj8xAtWPVc7gLXBtJhue+mreMUdP9rjPp5itv0EZmpo1EcFGFuaOg
+	 6wBCD6BMMJuwTQfzHiqvbcCmwd3OrUYtvR6xVydAwVB94b6TjTf4NHDOAN6iJkQ1H5
+	 JA+OYVYfyUjxkHRwB6C+LIyIx3AxkqaUGC2gvED56T6jLRNYsj01r7C5w9ImRppKs6
+	 qi9QEBSo801MQ==
+Date: Wed, 16 Sep 2026 15:03:21 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Kees Cook <kees@kernel.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nsc@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Alexey Gladkov <legion@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
+	Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2 20/21] kbuild: build rust crates in parallel with the
+ rest of the build
+Message-ID: <aqqhKFuclruH3lXn@gremlin>
+References: <20260914-build-speedup-v2-0-39817ec5db23@kernel.org>
+ <20260914-build-speedup-v2-20-39817ec5db23@kernel.org>
+ <202609141133.7CA979C89@keescook>
+ <aqkv9SqIdh0qKPFc@gremlin>
+ <DLGKLQ9LJPBG.3QU14CCO1Y6Q@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260906-add-rust-gpio-consumer-v1-0-24d192f93760@gmail.com> <20260906-add-rust-gpio-consumer-v1-1-24d192f93760@gmail.com>
-In-Reply-To: <20260906-add-rust-gpio-consumer-v1-1-24d192f93760@gmail.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 16 Sep 2026 15:29:39 +0200
-X-Gmail-Original-Message-ID: <CAD++jL=pZG1ddc+v3ebeTKe-ZTKOTh-L0uXshaZWqOqyuqAYxQ@mail.gmail.com>
-X-Gm-Features: AcwNN1XEpBQxV9-NVG6C5eZyZpBeebdnhpFCnie_jIo-7R_YWcKi8M1ApASGFcs
-Message-ID: <CAD++jL=pZG1ddc+v3ebeTKe-ZTKOTh-L0uXshaZWqOqyuqAYxQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] rust: gpio: add GPIO module with common definitions
-To: Kohei Ito <koheiito.dev@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-gpio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DLGKLQ9LJPBG.3QU14CCO1Y6Q@garyguo.net>
 
-Hi Kohei,
+On Wed, Sep 16, 2026 at 08:42:41AM +0100, Gary Guo wrote:
+> On Tue Sep 15, 2026 at 12:58 PM BST, Lorenzo Stoakes (ARM) wrote:
+> > On Mon, Sep 14, 2026 at 11:37:54AM -0700, Kees Cook wrote:
+> >> On Mon, Sep 14, 2026 at 10:22:19AM +0100, Lorenzo Stoakes (ARM) wrote:
+> >> > +# Rust code elsewhere in the tree depends upon rust/.
+> >> > +ifdef CONFIG_RUST
+> >> > +$(KBUILD_RUST_DIRS): | rust
+> >> > +endif
+> >> > [...]
+> >> > +export KBUILD_RUST_DIRS := drivers lib mm samples
+> >>
+> >> Doesn't this make all of drivers/, lib/, mm/ and samples/ wait for rust/?
+> >> That's a lot of stall: drivers/ is most of the tree. I think then a
+> >> CONFIG_RUST build has most of its C work waiting on the rust chain;
+> >> only the other top-level directories start early? This didn't create new
+> >> build delays for those configurations?
+> >
+> > Yeah good point.
+> >
+> > For a defconfig+rust clean build on 128 threads the other top-level directories
+> > were done at ~14s while rust ran to ~18.6s, so there was 4-5 of idle.
+> >
+> > However the patch improves things by net -3.9s regardless.
+> >
+> > This is really only a big box issue though. With fewer threads the rest of the
+> > tree takes longer so it has no impact on the build.
+> >
+> > (An aside - this kind of trade-off is what the series is all about really - the
+> >  'serial tail' - i.e. the single threaded stuff that _overlaps_ the end of the
+> >  build is what slows you down.)
+> >
+> > Since this _still_ gives you a significant speed up on bigger boxes, I think
+> > it's fine as-is.
+> >
+> > The LLM says a fix for this would need significant work - a cross-instance lock
+> > and an on-demand rust/ build. So I think best as a follow-up?
+>
+> If we do it we're basically reinventing a new build system. Not saying that
+> Kbuild isn't one already :)
 
-thanks for your patch!
+:)
 
-On Sun, Sep 6, 2026 at 10:46=E2=80=AFAM Kohei Ito <koheiito.dev@gmail.com> =
-wrote:
+I mean arguably make is a seriously limiting factor in improvements (the other
+might be... C headers... but that's a whole other kettle of fish ;)
 
-> Add the top-level GPIO module with minimal common definitions. This
-> module is the basis for future Rust GPIO extensions.
+>
+> Best,
+> Gary
+>
 
-Describe what you want to enable by this patch.
-
-- Enabling in-kernel Rust code to use things from the
-  GPIO subsystem? (It looks like so.)
-
-- Writing GPIO drivers in rust? (It seems like not.)
-
-> Signed-off-by: Kohei Ito <koheiito.dev@gmail.com>
-(...)
-
-> +/// Describes the logical GPIO level, i.e. taking the ACTIVE_LOW status =
-into account.
-> +#[derive(Clone, Copy, PartialEq, Eq)]
-> +pub enum LogicalLineLevel {
-
-Neat!
-
-> +/// Describes the raw GPIO level, i.e. the value of its physical line wi=
-thout regard for its
-> +/// ACTIVE_LOW status.
-> +#[derive(Clone, Copy, PartialEq, Eq)]
-> +pub enum PhysicalLineLevel {
-
-No thanks.
-
-We want to hide the actual physical line level inside the
-gpiolib (encapsulation).
-
-We should not expose the physical line level at all
-unless there is a consumer in the kernel that absolutely
-needs this, and there is none.
-
-Yours,
-Linus Walleij
+--
+Cheers, Lorenzo
