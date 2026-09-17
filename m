@@ -1,62 +1,79 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022118.outbound.protection.outlook.com [52.101.101.118])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022101.outbound.protection.outlook.com [52.101.96.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245A4466B09;
-	Thu, 17 Sep 2026 07:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AE54E50B1;
+	Thu, 17 Sep 2026 07:54:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.101
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789629664; cv=fail; b=kF6DUnrWIvTXwrTou3S9VSIzFhLHO0anRL7MgwD/H/h30X0lU4qfNGl5a510xTiGebxNMgDvDz9rYjAfNWerQbjsAKvbQ/bcgoNzrWEdQFMSoSsMueijVM9XTlrzcUrLbDC7TjWEdczCssvDp1fucEoHbYbwU8foSmrNDC9a3vI=
+	t=1789631648; cv=fail; b=PeHmzLXDaE0pRTnfe/m++D1mxgry/4bDV+oTN2++R3NsV1AWdXnFZFn6281o5UsYa3gqcAfLOOnOUE4c25+xd3U1APmXqOocKCUE8YnFxLZRP9/Gno+c7zEHGqVZLnRwH64cE7QErTWtuhC/7CLCJBgXBhOxh8wtV756sQfQz1A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789629664; c=relaxed/simple;
-	bh=Nfd62zPMTgIm/eeaUTFBaOsrOih7zdXjal14KMJeKOw=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=KGR/DTFe/SqJTrl3/Snd/B82SbM+B+R3vKzXwRYWuZMB1Fb8aZ2R2TO2tBJROyAScWRsfmWljHTv2n7q6WUt9C2kuUmCAfC89CnQ67miQl3kWiNG5PhH3uaZbTWV1JxC7XyEcSZiLwQ3Hd6YUAScTb+6m4BTRVWvXEBdgIHoQRE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=v6Pi2MM0; arc=fail smtp.client-ip=52.101.101.118
+	s=arc-20240116; t=1789631648; c=relaxed/simple;
+	bh=XkkLSIxLf3CFEYWXv5PtChe98M9uxXTuvWjXAXbcQNw=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=f7k/kp7Ae3EfwSrYbY3hHdriIzyzoWTe8nRsMrtqFBd8a9TxcDUOM62E/g8yFO1XgDpc8vDtHh6AOYJVj+h3bQ6jUTQ2VpDip5/ocELVFQIOs6/hE9/FXcu0TiEcFHpQ8JBbahoYBMNR3zxqk20Lwo0Nv+NVfDaCburLIZmWfNI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=r8X6D9XS; arc=fail smtp.client-ip=52.101.96.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="v6Pi2MM0"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="r8X6D9XS"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JmzMZJ6hR8A9vgtz39E0P3vwTcCYTFj3aLCgd9139Sj9khb3UsIoby/G11uw5ti7SQKRkWWEsriJEF+5h3J8czjsi6ZKdPee2oef6MjOZcnpbxd8eScP3XwtEMN0JL9EfiWxPLNgjafard1GPYQqyi2qgMXiAEEBtQr+FdLjmKohIU+xJaUsxRIvOzoePBvtH/pzdhXykt2cGx7iaqoLuFkM6a4Blm33mTY6T7nVhpMxofnuS91QMCIiRCc9dcp7dhMgV/e+HaCwT/nkFdb3TdXtdEYqbmxhr8edEd8S3fhhnAVGyJRrYTQubGT4SB78ZLjoTyrwu0S2wAsUqiJFwA==
+ b=q213LX9uewB8JA3dOtKJJOQX6kwPxXKaGoNa6CXGlouCESYmK0dDrFJP8cSFC2j8fnSUPb7+8Mn39WPTR7UaXFLmn/67njM8vaQmoUZogFSCMJXaXGn/SjS3tuTpKVZXmUELaY4s1tb+R4HSlo2x+GR27MrR2KzRJIydfMRMoME/PqZbRq7wdVV0lNfwhVjFgxaZIUGJHp4vhm9VSjbr0HQ/vseXXKZhC8Fy6hWxcLqcLZVlCz1GHJh3weI/9rlWI479DkIChKyfDNfHo05ia+gUZ/YIYs0dSUTJiA5YNtDVsd8+N41AeIXq/w8RkG/SCu82IyecYdFt20RgVgmmZg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mpmm2dIRi+WsTTwuSzpkXgXDsAXWbDiF6ZzTZpIqbPM=;
- b=Pxsa2C4XYp+l8C3w/tZ64oB5C2LxH1c8tnfEZyU3zXPPUrf0/6m59aA8rlnwD/EwwSrxuxR8ZeCIC2XAeTL5uHWqQ/KHr4uxc22iP0lF8fMAUab25by5H8e7E+89cSvGaQWX0EUlp4cehIMmlfH8PA2cbTLbjCGXVsDNTKV44TQmq6v2L54u/GnaAe6LGfR4B7sjyReyVecc0Di+jqVJMq4dgog5cTqhG2//SBQ8zD1kjA3SCRwe5wweROtArOr8UiEoHPuJyWe9UjC3yJ8Yyl+8qSTfGiVego7/NGH6Pg3c66Jva/7HnDz3lJwulU2eYe+DLZMbl13O4DHzlvvwgA==
+ bh=yUDUzkZgc1iTbO2RZOnIFG4NjtMDza/Fjz8YZOKeZNo=;
+ b=p/XtrxY/drfao8EpvXQatmIPC37qXp0uH63YJy3dzQg0f2ENbrea6KnMVYK6GntIuSXNUaSMlc5FFxfbLZwYT68Wmx3Zhr8dm1HtSu3MjUCQqzIAZ7LEPRQgkgMSiG5otZlLAs5mjeBEEmcaptxnFCnf6hfUW4HNrtz4cERkZSi3cqC5RcmW5hRrlUGPMqR0tL4SraMFlfKvVTuZoySGMMinKAJ/Z5Dq5p5CBqf22NJqLTO4wrJULjzkxzYpDorV+GjBZ0kIcVbHc12kK0SUkn+5d1AqvtDK2SiFFxx38b9XAHXUVr+qGvytVAyv2eVi950+hC7zz1YgiVp21IajGw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mpmm2dIRi+WsTTwuSzpkXgXDsAXWbDiF6ZzTZpIqbPM=;
- b=v6Pi2MM0Y4lOV3OkesUVP7ElrpGCwnzw9MNChGUiAwg8m+jfJ8k8GAuTeK8mqlgIp4+7GIBsDKvmVnUehZELovHdSyGYvYA0lMJKe7rSwUr9hP6hICw6QqkP00ccL4+qWuZdWySrtK6xmmj/9ZM1ilmcQDdu4KuVqbtFvqCqrvQ=
+ bh=yUDUzkZgc1iTbO2RZOnIFG4NjtMDza/Fjz8YZOKeZNo=;
+ b=r8X6D9XS0jcmuADCpiy+4CJlQW/oyLLSXxixRMpp28Fkk9WrRcaoJn3NZ4DFy4y2weqHUR07EpAi6zZuGmaDqXAQzRVBPHb8SWHQlQbz6kSX2SQaf8j/ScarUOZn0GpeMbCWcikHYBQ7xX97VDJnwxGesZRtFe7Joz98aos18CY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4b4::24)
- by LO2P265MB3117.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:163::14) with
+ by CWXP265MB2822.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:c3::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.12; Thu, 17 Sep
- 2026 07:20:59 +0000
+ 2026 07:54:01 +0000
 Received: from LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM
  ([fe80::c07d:488c:d4aa:2a4a]) by LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM
  ([fe80::c07d:488c:d4aa:2a4a%4]) with mapi id 15.21.0406.007; Thu, 17 Sep 2026
- 07:20:59 +0000
+ 07:54:01 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 17 Sep 2026 08:20:57 +0100
-Message-Id: <DLHERMQ9DOIC.1TRR4M82WNLIZ@garyguo.net>
-To: =?utf-8?q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-modules@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: macros: allow non-ASCII characters in `authors`
+Date: Thu, 17 Sep 2026 08:53:56 +0100
+Message-Id: <DLHFGW1ISL53.3D3X360WD8HPV@garyguo.net>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Lorenzo Stoakes"
+ <ljs@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, "dri-devel"
+ <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH v2 7/8] gpu: nova-core: add NVKV typed decoding
 From: "Gary Guo" <gary@garyguo.net>
+To: "Eliot Courtney" <ecourtney@nvidia.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>
 X-Mailer: aerc 0.22.0
-References: <20260917051147.98775-1-tweek@google.com>
-In-Reply-To: <20260917051147.98775-1-tweek@google.com>
-X-ClientProxiedBy: LO4P123CA0106.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:191::21) To LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM
+References: <20260827-b4-nvkv-v2-0-0de9d5c8658c@nvidia.com>
+ <20260827-b4-nvkv-v2-7-0de9d5c8658c@nvidia.com>
+ <DLEQBIQ50C39.23F0YZK9D7VUD@nvidia.com>
+ <DLEUCB80B7ZP.BW7O43IISMQR@nvidia.com>
+In-Reply-To: <DLEUCB80B7ZP.BW7O43IISMQR@nvidia.com>
+X-ClientProxiedBy: LO4P123CA0221.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a6::10) To LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:4b4::24)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -65,143 +82,191 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOZP265MB8551:EE_|LO2P265MB3117:EE_
-X-MS-Office365-Filtering-Correlation-Id: 24a974f2-1c52-42bf-fad5-08df148c38f9
+X-MS-TrafficTypeDiagnostic: LOZP265MB8551:EE_|CWXP265MB2822:EE_
+X-MS-Office365-Filtering-Correlation-Id: 56e3acca-623e-4595-3f2d-08df1490d636
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|6133799003|18002099003|22082099003|56012099006|10067099003;
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|23010399003|10067099003|4143699003|56012099006|3023799007|10063799003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	Uy9akqNlD06F7mxjJ00oOsxJXmRJ970E4UMBaikaVrb90wU0AVk79xIx3GZbhgWhK9l9mWiveO2bvO/ST0zWRtImbyQyWfFrvQyUBI5B1ySVz/2scwkREL7HdRNe5UBa5dCVlbx4psu6Dg357Q5JBWuLnGUk75eJPrBYGrlDqhRHPU2rJnmhIwT2kumk+jC1QjtUZ10Wb7kEHVHf+7hmZpNhTW5R/urk/mqbKozzHKsxifyIPx1G96/oVDUn2qFGf+oIu75ilIcMZZhq97qRIXC8Fxr5e7ShRXNXUA7PrxHtDOR0d1eDKvux7QAU7wPnT6wR8Q2HzAcWZzzmpDtblzJWSBxcOj5Aot6HSCEHKCAnRlfA8L58m0UfuAiUkjo0Md0fYNHKqy/WCZfTrmPXD+lJAXkb7TFnv1PP0UUEbfiMii5zoZKmUF0FstfpeQ70nT3sQIPxBPWjTHApX2UGDDlC62sPE8A2V5KBZn9IydQqIJB5wFVsRr0DsjPh3Qghp7DJXfMewwlyNh1uEZ6cbvD5XPwNDQTS+gMG3AyyHAtIv80zKDvJuT10jirL3ioxwU++cWoYAxcYoVy62BKNruOkIClt6hoz3+5Y+9u/mhJtkywG5CIPZCqLDglmzSiTiKfXkTw6pj5VAODFYztjR5UXSTHEMuLuPJITWQ1CeZQ=
+	Fn8eJyzD51Z0uJkJyLwzWsJ0SfKubrUlX+5ZffnM82yjrMdCYsgl5l9IOuHq1Jv1RdUJk9hCtUc3dx7hAF6XcXdvJFuMWj68dmAO+7Sjir27m0oSE9dqQf+t3pnxXWNkgKO1VjTacXanEmPNa2ven2cSFik2aOSB3yRlmIXQg1S0d/7a67n7i/AMocCODFLzsltgBqiSyGrnog0uaSsSm/Cdpv+ox3xiKQv8hbLXscDxa4eE8OkOULTrEP9gwEnXPRX415gbWEhEsyQ7uKA4B4YdwTy29h+js6jvwFyzZdhuNuvN7G5eoANao9xe32B7ZNei8qWcPBo1gtY77r9kdTWH1dEyZym8k6r0xVSIvpbKgLYVBy+OswFEO5IdDeYi6vNbGU2yh6nJHa3jnzCWoHthuZmovat4yryKBZM9ipoS/OgaqWfld+329HC7mbNUVsaSdwrFi1+W3N47iDv464czJZp4rsmMIZGVAQt/wS8qZPo/tAM/lL4IWIuOvmx1nSDw7NQnF8snoDdLjhZA/YbG6O0OnJB6V7ixhERNxfYWN9NOjl/6kwIUGshaXAATA836/5NO1qzfLAxU4iBC/ZH1ZHugFwHNG1S5843nAOmClAD20/GMRvEls7tRkMzdFOACD/fKHQ6H2wvDyi7o/V2tYzo8qfyKVxE0eJkeX68=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(6133799003)(18002099003)(22082099003)(56012099006)(10067099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(23010399003)(10067099003)(4143699003)(56012099006)(3023799007)(10063799003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?KzFIbTQyMlV5dlFVR2kvdE1SWkVjYktMU0dIUXlSb2o3MU5sUnQzSXNMbWlv?=
- =?utf-8?B?VENnakpFa09hcHpBQ2NRNWpxSWZrTjhsMXJyMjFxNlpidVBzZHBTYmJzamc5?=
- =?utf-8?B?K2lRZTdOU2lHVnRZNkRPRkpMNTRkaldqdExQYm94QUNwd3JIS3k5WTdQUFQ1?=
- =?utf-8?B?dVVkdkIwbnBORUdCVXhJbUpyaXhhdmVTV3NHVE5qd0NRZm5QdkEvQlpuSkxJ?=
- =?utf-8?B?ajkzOElTVUpaU0gzS0piOUJ6N21yc3RaL2oxRWlxZmx2R2xXV09kTmQ5SGFM?=
- =?utf-8?B?Vk5EOHdCTTJGcHlxeDlEYW43QlgzNXZIdVZBQXJsSWdJeTkyOFAyQ2Z4eWZN?=
- =?utf-8?B?dnh0UTN5U21la2h5V2ptQTJSY29WU05ZQnBiZU5jNGVuSUlSbUp2OEdncGhI?=
- =?utf-8?B?Q1V1QUk3ZjNla0NwTSt1N0V3Nm42Z3lBWTVVN2xBSzcrWVQySkJ4STZBQjZu?=
- =?utf-8?B?c21ETE1HTDhVb2Zkbmx6ZG1YK256ZVJhZ0x1RzhhZk53WE10aGlNRWdvelh6?=
- =?utf-8?B?L1F5eU9ySFRsaUhpdytLT3FURHpiazdSWE1YNzFBZkVvOW5TK0hyRUhVK21K?=
- =?utf-8?B?VDhCN3EzQ0p5c293U3ZXR3FhRnBra05kdWk1ZmJXOURYQjhoczB0WGF2TjBm?=
- =?utf-8?B?Slo2b1RITHFVU2dnaVFXQmFxZWdHOU9TS2N4MmtiSFo5eWd3N0todFVzMlhp?=
- =?utf-8?B?dmF2Umd1RUYrT25ER29XZHJjTm1JWGw3eXRXTG03ckFjYjNkVXREODBLK0E0?=
- =?utf-8?B?ZktYZFd6Z3UwSTFsdzdWdy9vZWgxUWxoWCtTTGtUQUgzeCt1RzQ1NG44TjRy?=
- =?utf-8?B?Q0hoSHYrckFkZU1nd1FpOUIyQzZmK3JwQkhia2tLanJTVGtFZktrUWxSK1F2?=
- =?utf-8?B?bFd2b0xwRXM2SVd5UFd2dXB5bStTVDJpMmpvNUFsTHlKVnpwZUNleFBoVkFZ?=
- =?utf-8?B?VEpkNUpjeWJteXZJa3pOanFOQXA3SnhKZndjRWV3YmVQSHJabnFHaitnS0FY?=
- =?utf-8?B?eVlwb0d5dnczSE9MQ2VWZi9LTTc4bVRkL25uVHJ4eEkySWNDQlViQkJZaDVC?=
- =?utf-8?B?SGZWQUJGdlJZVkU5WEVJVWNNQkl1Qis4clpQUWJTbHlndXFULzU0TVNsQzli?=
- =?utf-8?B?c0xtUEkzZHRhWnFOS093UzdhZERtWXF3TlZxbWtMalZLbkg2NWdUQkpuSFZS?=
- =?utf-8?B?b0ltMVdtMWN0SlRpc2ppMVdlL1lvcGJGSk45NG1UR3RIWVVUU3dBd1BuYW1r?=
- =?utf-8?B?U3EySTBPWXREZEcxa1FUbEZkNkRtL1dHenBWc3hBTHo1QXMxRURyV2RpUXht?=
- =?utf-8?B?b2phNy9GeWFZcjk2cHJkcjVNcVFCem9jbk1KdDVBODlrRnBHbVdCdldON1ow?=
- =?utf-8?B?ZnpmRUhQVTdQdlcySEtzRDhtc3U1ZTR3L0VzNFFGVUxaVnRmQWNIOGM3M2t2?=
- =?utf-8?B?YVN4TkM4WjVseXBKQ1lZcDd0cEQ3bWNLTlJPVmJ6MkI1NlZoOEs4Q3poYUdL?=
- =?utf-8?B?NHljVDVKNURwNEZrRnNuSWRWSWRPNEwvRmR6S1VSYlVrSXRDVWkxZUttdkNj?=
- =?utf-8?B?YmVZbDRJVEJ2SitvczI4Vjg5VUEwR3hPOHpmeXNwYnQ5UlZHWnA0Qkp3WlBu?=
- =?utf-8?B?bGQ2UW52NjI4S2NyYmtka29RdHNNZko3cWFHaGJ3SHpscGRxUDVPUEdxNnRQ?=
- =?utf-8?B?aHBsWUs4WjI3WG5xNmpxNi9QVHNCUGNVV2xCbzlnQTBFYUpEZDBkbHM2M0Zr?=
- =?utf-8?B?RlFEZ2ZwSmdDYUdGS1ZtbXVvaFRhT0hEYzlTRkd6R0UwVnAwVGxUUXlQbEtQ?=
- =?utf-8?B?UTVkL2NQWExtMGdIMnROR1pGTkgxWStaS2Y2b1p6aUlnTzFjcURwL0hsOHlm?=
- =?utf-8?B?bUV2UjVDZXBNdzBITk1nM1hnYlN4SGVzbFdnd0ZzRlQ5SXhvcVNNanIzL21w?=
- =?utf-8?B?endIMXBJWXoveGFOOFhVVVJjRFVPMjZmazFHYTlVSGF0WmVORlMxbC9aeWFW?=
- =?utf-8?B?YXVReGxjemNsWldFTk82RHFrajRRRFpRKzNCRTIvQmMyYnJKSjdzbUVTdEhV?=
- =?utf-8?B?Vm05VC9aR2VEaVlQbDZHNjJ4N3lsaDgyZ0VYQ3I1cVc1bXgxcVlHQXR0bHdx?=
- =?utf-8?B?ajE4anlJNlRiNDR1TUxZZE1FbEVoTStHL3MzdjZKMjdMd2NXVFZ5ZG4wdmhu?=
- =?utf-8?B?MFZSVEtOQ1lzU2pVU0JvTytmTWl6cXNNYjhmN2RmTXowU2hBNUh3Zi9TdHRQ?=
- =?utf-8?B?SFZUTGthUmlldjhnQVU3TFowVEZiQzFjUHp5bEszRzZIWWR3Sit3aHRGMUpt?=
- =?utf-8?Q?MqkYqbI5RO3KPK+qa8?=
+	=?utf-8?B?QThZQXdoWnRoZU1hL0RvNTRSN2tvSlVSNlhKdGlQazBjU0VOV1FURzhCQzJL?=
+ =?utf-8?B?a0U0TXdSN0xOcTFIK0lHUVRPcXdJR1pQTStNK2dKbEJMV3Q4MTBYSzRnUHVJ?=
+ =?utf-8?B?TTBBNENlZFpTdVJIOUUrTUxPcFJ2c0Z3c2g5TnFXRVBRZW4rb2hOR2YxRHJD?=
+ =?utf-8?B?OWpVRld0TGNSLzdQWGIrTjlkOFdqSlVGM2FsQS9DdHYxVFVpZTFZcCsyMFdt?=
+ =?utf-8?B?UnhvTG81SmpGQzBtN2oxVkxJU0k2TytzNElJZ1I3QS9GV3JDL1B4ajhYV00y?=
+ =?utf-8?B?ZVBibGwwWFZhQmhreTRqNWZLbldHR3NVeDJKUVJlZ29QNjNoeEdTZjhnYkpy?=
+ =?utf-8?B?alM4VmV1b1FrNmFtUGFOeFVhbkpsZ0I0dkQvMzQ5SHhVaC9yNzJmaTNmZENO?=
+ =?utf-8?B?VEZUV2psOUd5ZVFCN0s2eGtVaDdXcUxhMnc1eFY1dEtDQm5tTUVHY3BRelF3?=
+ =?utf-8?B?cEcwYWl5QkFMdXFtay9zQlV4RGhaWTFHaHNtakUwZkZsOEVZbzRtUExVSDBZ?=
+ =?utf-8?B?eGl2SC8vbVRSVEJiaHRXUHo3UFNMbFJ4SjgxalJhTk01cU82MkhaL1BCMk5H?=
+ =?utf-8?B?TVM4VjN1Y29qSk82K2RnNE9ySUQ4TzN5RjN4Y3lpWUZudTNrdS9pOHNHUVdY?=
+ =?utf-8?B?TTM3Z0xVWk9uenJlYThtQnlUVWR6WGNyWTlLTnRUMk45TFdWMmVFOUlMa3Fa?=
+ =?utf-8?B?L3JJeTZXTXh3emo1NFZrUkZNNjI5blBKOFV1SDB5RVN3OXhMSFA3MEpHOGFY?=
+ =?utf-8?B?OTNSaTNsL1JTZG0xODdHSTVFdDJHekk5RVFmbHErUkJEaHBmbUJKUEFVb0Zm?=
+ =?utf-8?B?L0ZKME9jeVlHVFF1OGVaNndHa2hrRDRRUGVHU005QmVxVWZESkpOUWs0Z1Rx?=
+ =?utf-8?B?RUdSMnpYUDIzbkxxU0h3N1FHZ2U4ZjZmUXdLMFBlUjZ5WlVYZk1ERjF4enA4?=
+ =?utf-8?B?NkkvT0NIRTNOaGg5RHBIVFc0ZTY1cGc5VlI1b3ZFRm9sYWtxb0pWMldaRExz?=
+ =?utf-8?B?YUQ0Y1hvOTcyemlLa0RTdWFXZEZjVXZqNnl1d3Z2RHRnY05XcFlFOXM2aEZL?=
+ =?utf-8?B?WWt3dFhXUU1WOGh5RkM0a3BEUlBaSGExZ0pDc21vcVd2cXpQMkFKTzJlUlBx?=
+ =?utf-8?B?UXVsVlUzemhzQjdSckxObmg3NWVqZ2xrMVY5RTlnOTVlaVlqam1vaXdNVUtq?=
+ =?utf-8?B?Qzdtc0NENFRMZzgxSHZ1bEoxS1hDeE1qSzZIZ2JGOVZCbGZPTXFmUGR0M2ZK?=
+ =?utf-8?B?dTFVQXVVaU5LckhHZTcwcWl6UEpuK01HeHEyc2lIVmIzYzQwWEZ0TVkvSGhZ?=
+ =?utf-8?B?Q1ZWUkxHUmRxVlFiVkRRK2orSG9ZQWRYNU4yZVQzSER4M3hpWWhuM1h6bDFv?=
+ =?utf-8?B?Z0NXQUhYcmNQMVlMd1V6Mzh1OVFHemQ3eDQveUpjaEg0TDNJaVpyazBCSHFT?=
+ =?utf-8?B?VTN1R3owUjQyL1hML2FkSDg4dis4c2JkS3YxWXZ0RWc5NG45elBTVWxEdUg2?=
+ =?utf-8?B?eW1GSnhFejFQYTRnOGh0OFpvY1ZjaTNUVWpYS3Bpb1cvUWRoUWZSUUkrajJ5?=
+ =?utf-8?B?QmxCMWlNRnBNSVBFK0YrZlFMcTExbi9tb2NFby90VW9GamhyemdseFMvM29k?=
+ =?utf-8?B?d3Jnd2JvOUVodU40bkNNdUVDbkJqRit0WjNzTnJQL3hYcmZwVURqOWI4Z01a?=
+ =?utf-8?B?Q2lEbG1pS2NSL0xwaFEwQy9xd3FNMzUyWlNsRjc2SjlBWkFGR1dodERYOE1i?=
+ =?utf-8?B?dzhJMG43UUUrUlQ1ZXZpTGZOZVdYV3ZvV2VhYk1zSm5ZVURwTmFMNHZ0R1Nv?=
+ =?utf-8?B?ZUEvUGpkWXNOVXVDVStUV1R1ZjVIVEEwL3VEYmF6Y25NdXNhYlBJZmpjbU1E?=
+ =?utf-8?B?Uk5Yb3diRmxSQ0I3YzlNS2YzRFdIU2ZwTE5MMXVUd3FGQ2ZuNWJHTmY0dnVm?=
+ =?utf-8?B?Q3E3M0dqYVVONDM5MEFXLzdhTFBEODB3Y1Nmd2pESGxSSzhad3lnNTRrdnFr?=
+ =?utf-8?B?b1dUWFRMRlNVM1hWMFhkOWM2b0xmakliK0lJTENNS08vdTExR1k1aVBkQWdO?=
+ =?utf-8?B?aXdIc2hBYnRaOGNNdmF2TjFuMGdvY3lQODAwNWV3TFVYM3IwWEsrdWFicmJD?=
+ =?utf-8?B?NU1DcWJ0dC9aZjZlM2Jzc2xHUzFxUDBHcFFJNGl5ZU45OVZiV0FHK2I1eCs4?=
+ =?utf-8?B?ajdTOHVrVlVZQ2xrNGJLem41SjFMOHdhekhPUXNJRERwMExuS096V2NpMXZP?=
+ =?utf-8?B?c1RzdVhUbWpNM2pkL3FGejYwOXBBeVgzNWE1aktET0pQeFZMa0x4N2hiK3g1?=
+ =?utf-8?Q?XN1QrnwDlPHPAFb4Md?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 24a974f2-1c52-42bf-fad5-08df148c38f9
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56e3acca-623e-4595-3f2d-08df1490d636
 X-MS-Exchange-CrossTenant-AuthSource: LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 07:20:59.5143
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 07:54:01.3975
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +tQRN2aiweKL1XDU1aeJb6JloHvPpn/cRRHlRkSL1PGeWn8azUihxc2gU81NCu+cS8uCk4iRd8oP7qRcGI3C2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB3117
+X-MS-Exchange-CrossTenant-UserPrincipalName: qYS9OIpKKrVwZb3qxTU5CfAWfUY6AoBKDSQeh06nxwv+J65RsKf4oM5xZ5y6b+I3ZJimftMKn9t728I0h7KrxQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2822
 
-On Thu Sep 17, 2026 at 6:11 AM BST, =3D?UTF-8?q?Thi=3DC3=3DA9baud=3D20Wekst=
-een?=3D wrote:
-> Module authors may have non-ASCII characters in their names. In C,
-> `MODULE_AUTHOR` allows arbitrary string literals which are emitted as
-> raw UTF-8 bytes into the `.modinfo` section, and multiple in-tree
-> modules use non-ASCII author names.
+On Mon Sep 14, 2026 at 7:55 AM BST, Eliot Courtney wrote:
+> On Mon Sep 14, 2026 at 12:46 PM JST, Alexandre Courbot wrote:
+>> On Thu Aug 27, 2026 at 11:12 PM JST, Eliot Courtney wrote:
+>>>  use crate::gsp::nvkv::{
+>>> +    Array,
+>>>      Index,
+>>> +    Key,
+>>>      KeyId,
+>>>      Op,
+>>>      Opcode, //
+>>>  };
+>>>  use crate::num;
+>>> =20
+>>> +/// Defines a schema struct together with its [`Schema`] implementatio=
+n that decodes into `$target`.
+>>> +///
+>>> +/// Each member of the struct should implement `Schema`. For every (ke=
+y, index, value) triple
+>>> +/// decoded from the NVKV stream, the generated parent `Schema` implem=
+entation will call each member
+>>> +/// in declaration order with that triple. If a member consumes that t=
+riple, it will stop there.
+>>> +/// Otherwise it will keep going until all members are tried.
+>>> +///
+>>> +/// The schema struct holds the state required by the schema implement=
+ation to do the decode. It's
+>>> +/// recommended to use one of the existing Schema kinds (`Required`, `=
+Accumulated`, `Key`, `Array`,
+>>> +/// `Indexed`) for each member.
+>>> +///
+>>> +/// # Examples
+>>> +///
+>>> +/// ```
+>>> +/// nvkv_decode! {
+>>> +///     struct RequestSchema =3D> Request {
+>>> +///         id: Required<u32, 0x0001>,
+>>> +///         name: Array<u8, 64, 0x0002>,
+>>> +///     }
+>>> +/// }
+>>> +/// ```
+>>> +macro_rules! nvkv_decode {
+>>> +    (
+>>> +        $(#[$attr:meta])*
+>>> +        $vis:vis struct $name:ident =3D> $target:ident {
+>>> +            $(
+>>> +                $(#[$field_attr:meta])*
+>>> +                $field_vis:vis $field:ident : $ty:ty
+>>> +            ),* $(,)?
+>>> +        }
+>>> +    ) =3D> {
+>>> +        $(#[$attr])*
+>>> +        $vis struct $name {
+>>> +            $(
+>>> +                $(#[$field_attr])*
+>>> +                $field_vis $field: $ty,
+>>> +            )*
+>>> +        }
+>>> +
+>>> +        impl $crate::gsp::nvkv::Schema for $name {
+>>> +            type Target =3D $target;
+>>> +
+>>> +            fn init() -> impl ::kernel::prelude::Init<Self> {
+>>> +                ::pin_init::init!(Self {
+>>> +                    $( $field <- <$ty as $crate::gsp::nvkv::Schema>::i=
+nit(), )*
+>>> +                })
+>>> +            }
+>>> +
+>>> +            fn visit(
+>>> +                &mut self,
+>>> +                key: $crate::gsp::nvkv::KeyId,
+>>> +                index: $crate::gsp::nvkv::Index,
+>>> +                value: $crate::gsp::nvkv::DecoderValue<'_>,
+>>> +            ) -> ::kernel::error::Result<bool> {
+>>> +                Ok(false
+>>> +                    $( || $crate::gsp::nvkv::Schema::visit(&mut self.$=
+field, key, index, value)? )*)
+>>
+>> Mmm looks like this is going to be `O(n)` with `n` being the number of
+>> fields?
+>>
+>> This is ok for a first implementation but eventually I hope we can
+>> switch to a more efficient dispatch.
 >
-> Originally, the single `author` field permitted arbitrary string literals
-> including non-ASCII characters. When support for multiple authors was
-> introduced in commit 38559da6afb2 ("rust: module: introduce `authors`
-> key"), it reused the `expect_string_array` helper that had originally bee=
-n
-> added for module aliases. Because that helper enforced an ASCII check,
-> `authors` inadvertently became restricted to ASCII-only string literals.
-> Later, when the macro parsing was rewritten to use `syn` in commit
-> c578ad703ae9 ("rust: macros: use `syn` to parse `module!` macro"), this
-> restriction was carried over by using AsciiLitStr in `authors` type.
+> I thought quite a bit about this while writing this code, since we need
+> the escape hatch to imperative decode (custom Schema impl basically). To
+> be able to get it down to a match on the key, we need to know ahead of
+> time which keys a Schema will consume. That duplicates the info from the
+> visit() implementation.
 >
-> Change the element type of `authors` in `ModuleInfo` from `AsciiLitStr`
-> to `LitStr` so that UTF-8 author names are permitted.
+> I thought up a few methods but it's unclear to me which one is best, so
+> I just left it for now. Please LMK if you think this is urgent, I can
+> try in a follow up to improve this. Here are my ideas (when I say O(1)
+> lookup I mean modulo how the compiler decides to do it with the set of
+> key IDs it gets):
 >
-> Fixes: 38559da6afb2 ("rust: module: introduce `authors` key")
-> Signed-off-by: Thi=C3=A9baud Weksteen <tweek@google.com>
+> 1. current code - just visit()
+> pros: key source of truth not duplicates
+> cons: O(field) visit as you say
+>
+> 2. Associated const KEY_ID: Option<KeyId> - None if a Schema accepts mult=
+iple keys.
+> You can match on each associated const in the macro.
+> pros: O(1) if the current key goes to a field with KEY_ID =3D Some(...)
+> cons: O(#fields accepting multiple keys) if current key is one of them
+>
+> 3. fn accepts() -> bool
+> You can match on `if F::accepts(key)` for each field. We could potentiall=
+y make
+> this const with Gary's const traits polyfill.
+> pros: O(1) if you write an inline-able+optimizable implementation.
+>
+> 4. Associated const KEYS table; use tricks to concat tables
+> pros: O(1) lookup=20
+> cons: actually MSRV can't get this to optimize down to O(1)=20
+>   if you use slice::contains(), but stable can.
 
-Off topic, but I have a question for modules maintainers...
-
-Does the `authors` field still serve this purpose today?
-
-Almost always it is just the initial submitter, while the code has been sub=
-ject
-to many changes (many of them tree wide too), and the maintainers could hav=
-e
-changed as well.
-
-We have copyright comments on top of files, and git for checking the file
-history. What's the point of keeping his inside module metadata?
+Hmm, am I missing the obvious? Why not generate a `match` expression on IDs=
+ of
+fields? It looks like in the example all keys would have a known ID to the
+macro.
 
 Best,
 Gary
 
-> ---
->  rust/macros/lib.rs    | 2 +-
->  rust/macros/module.rs | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index 24f96feaeb34..ea2e232b61b1 100644
-> --- a/rust/macros/lib.rs
-> +++ b/rust/macros/lib.rs
-> @@ -129,7 +129,7 @@
->  /// # Supported argument types
->  ///   - `type`: type which implements the [`Module`] trait (required).
->  ///   - `name`: ASCII string literal of the name of the kernel module (r=
-equired).
-> -///   - `authors`: array of ASCII string literals of the authors of the =
-kernel module.
-> +///   - `authors`: array of string literals of the authors of the kernel=
- module.
->  ///   - `description`: string literal of the description of the kernel m=
-odule.
->  ///   - `license`: ASCII string literal of the license of the kernel mod=
-ule (required).
->  ///   - `alias`: array of ASCII string literals of the alias names of th=
-e kernel module.
-> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-> index bc7027f8dbb2..0a7b9e24c960 100644
-> --- a/rust/macros/module.rs
-> +++ b/rust/macros/module.rs
-> @@ -369,7 +369,7 @@ pub(crate) struct ModuleInfo {
->      type_: Type,
->      license: AsciiLitStr,
->      name: AsciiLitStr,
-> -    authors: Option<Punctuated<AsciiLitStr, Token![,]>>,
-> +    authors: Option<Punctuated<LitStr, Token![,]>>,
->      description: Option<LitStr>,
->      alias: Option<Punctuated<AsciiLitStr, Token![,]>>,
->      firmware: Option<Punctuated<AsciiLitStr, Token![,]>>,
