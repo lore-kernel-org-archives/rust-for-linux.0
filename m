@@ -1,80 +1,74 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010003.outbound.protection.outlook.com [52.101.201.3])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011053.outbound.protection.outlook.com [52.101.57.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2127B4B95BE;
-	Thu, 17 Sep 2026 11:42:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9936D3AD539;
+	Thu, 17 Sep 2026 12:26:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789645338; cv=fail; b=QSeEY8Rh0hKlmAPjiAnyx9MYesTZvj7DO2LnirEeYSuz5FKTfYpbrhD6o+tNikoyle8JYEeZkPmhbTXJAcASInyQIG8lOo45oL6ZoPl4F2XCunLUgs2aQxg92mgbw9URFZlaJIB6+hZx7mFp0V/0Ad/fqWAB7/uagitfd+oFa9g=
+	t=1789648019; cv=fail; b=CoJyGFS+JuNw4W96c5xhq51Dg4MJnnVVgRqYJDWq39AecszJrGhdSZxIcljb9AlFUXsYUGPX7WG7endbj4kFzavsrAeUKvExep7NBSNVrRxrU0kfSgegLpYBy34P5htFJFtRpmpQm/+7dyWOmIW9FZYc24leAGNI11iPNXbvgZ8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789645338; c=relaxed/simple;
-	bh=Ae/q79c16wjyYCi4O/M3VaON5SdxGA6jQipPbBuxTsw=;
+	s=arc-20240116; t=1789648019; c=relaxed/simple;
+	bh=UFcj0n4AUIqhFJzWPsT95CnKmYRZzz5Sf/UyaTCSquM=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=BZqqS1e/suf/mA++sevL2Qe939A8sib0wpn/jfAHvZ5/sWitmMXLUZzKEf2nqqn/3nT5ODqHSB8ozyRQvTfd50Z+v+tCqmmrRN794uc8xUOvnqpnR1UTKPweRNnnk1O5z+oyMOxIRaEKAX4XA/vJB3BLVmMKuAXfzyOarR76KSw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lBjGyDwC; arc=fail smtp.client-ip=52.101.201.3
+	 In-Reply-To:MIME-Version; b=YxZaVAT8wfxsAwMTgl/XazkQm4+ztpKee1C0KxsSRmIAbn7Bt6l7WkSwdFoqjGCnPwjtC2q0sVqfK7ZmOld3v6wUMdiYgfoauvbNjh9odaKbGvDvrUeQFIiga5b4ehcVUV3L6WqMOb52c5ovZ0d9zHA+/KNRMO0lY7jN1giF+1o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=X3kt5knl; arc=fail smtp.client-ip=52.101.57.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lBjGyDwC"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="X3kt5knl"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yxn3K2UpsQ+dDgFeDVs6OHk08zt/gNOydgkpIfLcAa+0AHhzvh+737d/A81p5YSRuIcibjmshboosBnun2Y6aC/p9hz0yXXa3LR9UNU/jurnvyUDcOKdxkrx5p1oWOlCSHpHHWIO+lKM5kXzjYKFiBdQsf0E4CAxnzGAsYzN2OpKCTW4ZU/9RKyCEAsGh9veIyuB68PhjfstpGRrmrcfDivRiXOVGtFDmVrFYhqrztfWclIVJKU70JSn29o+28Oj3Ss4bD8/0/0ix5wt2JjT4iJ93vLCB85Q1fv24Yh/bS0KyLcx3QKfsk2dkjcyV90VQ24R1KWum7ZPFbr9j+qp2w==
+ b=gen54zvfSvNeuMusMfEjgl0A/QKQtVVJL7e7ZhFrfJIcYYE9vTxZpJGMluPHp4xbnNu8wOAKQuSjRMR9wK6ktaBShIzYGuTr0/Ft/bsPNW2InvJOniUgGlzdfp0vcImWx94BVKN2lJA9XxjKQmMnV+OQjduU5CPEwZz/fHSZ+Jecy1Fx4aIRmeh4NVuc5ZML4eR0MRJTgSbfmMq/DDnG8/OFrYmLpG5ntBekZfSk6cn+obtWKoRYpNUm6L+GYZVqh9iJGSNiFnzFja6KIBERYhyFIBNTVk3/xigAp6Av+2q8DkIg+iVpAtRDMcqoyVzGOBa43sXTPtumYVJ6NmJQoQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LuenNrnlVkNBGHeXc6GXaQVy/5kMClE2H3lql5Htim0=;
- b=Vujooz7bUZpkFYxKKIgi5JVYBZpEh3ni9/0hvnNPelDo6x6bxsNahQ9h7CenX1K9Tld4PIvTngwgWHJQNl4ry7UuX+AH6Ippp//qiq8wAU7kOlMlELT8eO+26TOJhB0Dtbtns3fMDfSKQE3FB1WEVRSrli+SCqCdp6JL67FYtjTXTWkcuiAcxAlSPRBtIO5rN9X7hy1/ykIgw7OrTpdTUHcfj3MJJ/OcO/MfAwMUj+DhHDnQb5edvaBsVbMNxX2hjkCVhZ3QLaK4uI9i2DyYQYyXzcxYhKxj6luw6Sbx6uFx++q8PExp0EyQFAnfcUsqAXGat4tDiF7+cIK9Kb+1Og==
+ bh=q9aSkKKc7WtnQVFW80/zLdDT1oTrC0xtTfmak4Yieus=;
+ b=SkK5MkqaFfIK4yjfYh30qP6oK9SbDLUhAflFGWEkX3u6D7jYdUl77vvvtWovgAzekUi47m9ogR8p2XzlSoKW0CNOl5JI9sv6Jp+w81tru48Vp1wMQNKpC6FOVg8toO0KrFZqNalUk+6tG4iqvNGLepLgTRiqMVEGsxqGq+1n/mGZ8r5C2e5hzlIiCICCqD9BSU3RSnaohhrdy7VqQzRKBDNXZe9ilv0Pn5q7mGJathqeEb4y44ok6uMytQR95Fdee2cp9qdIHpHCGWo0oLMsMXa8VtjgnomH2YSAW3E9U9ctGwIAFlQPWCZCe4LpqPhkdTfWzgBjt04PstVZMFzIpg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LuenNrnlVkNBGHeXc6GXaQVy/5kMClE2H3lql5Htim0=;
- b=lBjGyDwCsAQobc1YrpDG1fXtATlRCR3gjKy6yLcDmfoeMU/IbQh7OJbypgpEIf3r4kbSAFVouZ6FFxFgU76a9Sl3bR48h5h/TCTz84mfHWK5RyssFYd5ycH7mjsuJettShk3AzgleJ9bUmtAcscV/sQKsEP/Kx1Czvl7g/iQgBRBg2ilHIK1tGjIh/FPACPv403tQ0UV4MK0HPooZi59rbPHn0qGago7kn7rg7CHYQZyEygMj+OCNBSutZg0t/00peioqUCE+AuzhfqfrSWSVBlZaWNX94DHqjnZSFUC9zipohVOIkgdAFpkpImNkPnU8zE22A4FbT0RrUOmVUwbjw==
+ bh=q9aSkKKc7WtnQVFW80/zLdDT1oTrC0xtTfmak4Yieus=;
+ b=X3kt5knl63d8q0jq/vKxdF1iCEuu56/DL4kXcRhRx4j3ocLyBNbBsxtnpLO7TIgSpvundMgPYY/aD9f/i2jKvGjMw9gX3OJxqjAOGjpFWg2p4syA6aEUiDP9Dz9kGT2FgvuxTEk+15qiKlbOYL+LpS4AS/Iebu+spbtA8lu221DW+/KISReHnahTzri2xnYi8IHqajjyv0klpIDgIKpKsYLyd51067TSpsungZi05w3SLHAAchz1sIxUx5rGyJwWWPDUba2VpspfLS10skUPR7Rp1K5oxMQD+bxZVOZaA0n45kclZ1rv37VhrOKGhwW0Bu10kuZA7G9u5pziLBR5Nw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
- DM4PR12MB6088.namprd12.prod.outlook.com (2603:10b6:8:af::18) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.406.13; Thu, 17 Sep 2026 11:42:11 +0000
+ SA3PR12MB176418.namprd12.prod.outlook.com (2603:10b6:806:513::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.12; Thu, 17 Sep
+ 2026 12:26:33 +0000
 Received: from DS0PR12MB6413.namprd12.prod.outlook.com
  ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
  ([fe80::e82a:6673:4142:37fa%5]) with mapi id 15.21.0428.011; Thu, 17 Sep 2026
- 11:42:11 +0000
+ 12:26:33 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 17 Sep 2026 20:42:07 +0900
-Message-Id: <DLHKBLIVFIX8.346WFGAIJBL9D@nvidia.com>
-Cc: "Eliot Courtney" <ecourtney@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil Babka"
- <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Uladzislau
- Rezki" <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+Date: Thu, 17 Sep 2026 21:26:29 +0900
+Message-Id: <DLHL9KBOH0I3.FBEIRPGX0U5D@nvidia.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Daniel Almeida"
  <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH v2 7/8] gpu: nova-core: add NVKV typed decoding
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2 0/3] rust: const_eval: add a mechanism to do const
+ trait calls
 From: "Eliot Courtney" <ecourtney@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>, "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Gary Guo" <gary@garyguo.net>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
 X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20260827-b4-nvkv-v2-0-0de9d5c8658c@nvidia.com>
- <20260827-b4-nvkv-v2-7-0de9d5c8658c@nvidia.com>
- <DLEQBIQ50C39.23F0YZK9D7VUD@nvidia.com>
- <DLEUCB80B7ZP.BW7O43IISMQR@nvidia.com>
- <DLHFGW1ISL53.3D3X360WD8HPV@garyguo.net>
- <DLHGE0SNY9CO.1OPWR5QXKJLAZ@nvidia.com>
- <DLHGPFAO0A8J.TU9XW1AZ8XAK@garyguo.net>
-In-Reply-To: <DLHGPFAO0A8J.TU9XW1AZ8XAK@garyguo.net>
-X-ClientProxiedBy: TYCP301CA0020.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:400:381::13) To DS0PR12MB6413.namprd12.prod.outlook.com
+References: <20260903-cv-v2-0-e93b1613e40c@garyguo.net>
+ <CANiq72mgqhjAYR-a5gSnMjK++TVc1n6RFpj=Go6QqXtQRX3=9g@mail.gmail.com>
+ <DL5SQWU5QH9S.1F1V38FAA5Y4Q@garyguo.net>
+ <DL8Z2OZLK8KS.1KVH6W27ZTOWG@nvidia.com>
+ <DLAUXSH2302V.2OKAZYA7XOEEF@garyguo.net>
+In-Reply-To: <DLAUXSH2302V.2OKAZYA7XOEEF@garyguo.net>
+X-ClientProxiedBy: TY4P286CA0109.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:380::15) To DS0PR12MB6413.namprd12.prod.outlook.com
  (2603:10b6:8:ce::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -83,225 +77,149 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|DM4PR12MB6088:EE_
-X-MS-Office365-Filtering-Correlation-Id: d533a4f7-d98a-4b2f-fe8f-08df14b0b5df
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|SA3PR12MB176418:EE_
+X-MS-Office365-Filtering-Correlation-Id: 822f72bd-c4f2-45e6-6979-08df14b6e890
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|23010399003|1800799024|7416014|376014|10067099003|56012099006|3023799007|10063799003|22082099003|11063799006|18002099003|4143699003;
+	BCL:0;ARA:13230040|23010399003|366016|376014|7416014|1800799024|10070799003|6133799003|10067099003|11063799006|4143699003|56012099006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	Y8Bbd8b8lGqFMgiCZzOxINHrHcFg+IJ7GvYObtqsQA0mJnbCzOXkQk3fBeWNQagZ/o/suzZZjFi7qg6EWPGpeVkr6/d9DAAOlJdezHW09S+mubeckFwMe6I5AfqT7tMPLTz+d54EdQK89N9gMnzeebePh4NXcYWVFMwsiE52pB6gUglJiGPT5e0urepb5pmyf4nvAZcvkSbQzx3jHKfpufLe+V3ePuIU+3sir6xQIKnUy3L1BmK2o7eINFFDWDOcxlbeP99fvXtESDLMOGYIVdS2Y+3CGGqoLlgj5kF1KJ93kqg3BDUNw9ZcI+N6u/Y040KnTtV3JtET/6gjR/g/ASjbwTbjymJgf1TN3dbHAUaJr9unXIOhM4K3KRreEQmnKxGU4obZtCg5BBi9czbS8swG7ogKDCYmtEhNtSQMI0aA8UM3+hjHkvr+qBxj2xtSQ9SF54xZoAtZq6yrrFh0HZzWCqqkZKljQNDT70NFVOVRklWlzPDXJNpFXPFHOD0cADkMU++RM0KZfmFyrhhWMLIft2Fc1Px1TLLjXOjwDyqYPfINmbs/4pTsKWlGPhA59zJhU9oIi0sU54W/gAwlxcXu1TRdzMNcNOd6472KWDLUDQisPL+H/7kbhCdCjTD7SgEP8SdRRP41FrG6J0MGJCLr9YBURpTdYi/TtbxO7zQ=
+	B+r8SKpx/LaNXrL73gNL4ONxrVSnzcc/bm/WJegnRNqPhfJoWTJWYTaYbAnomZCPR97sZKC7pcjNDJIVjX9KivuoyVekDC9X/f1J9R+u6bc1X9lvrgpiObCS626z8Hnxi8uHVKeUIWh7cxK9KtjQ/9KFFC3XKabdlo0LU8zilh+s86TPWlqBKDtz2qtqpw0I8FSigBmW9+TEIoD67+/IahdCUj/Cbywt4qWp3kaIss2cO0Fpppkm3sQNP1ZkkVK0s6wwf2Hrk2KZuD30VZ4QoRttlJWG9d4aUpgTLSY81Q1jYwHUoOCnuVGd+fcdIKbbbAMxfWlZtDOONXp5v2+bzP04fQjT87LF9nVv6hfx8NsmGLxJz7dZ2m7cMXLRXv16WDpjYD/ifPO8N+bVfjojo57ZBp1rNv7y7ZUPDKUT3p2wpgXx30lx2SxRrUudMDkQ+LIjsMy/Tqu2JmxcO8A8YRVp8CkbagD+j7DOHj7/eSrHW16ZY9uAygzsOqOBzB1JJfavJwcU7AIR2rjhh7DSx/Rv2QxJmqt9cclKnIBuL1gBRYt/5RPVo6ttQo2nZFQgpvBzMQzP8ukdcNDKmfPNTKBo+EjfWAi7i7dD2laIFSn8ov/6J7cgeS9HF1zkyeK9n1GnRA2tgu1naYmmkY9F56GZ7M8e/T5VY7547DHJWnA=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(23010399003)(1800799024)(7416014)(376014)(10067099003)(56012099006)(3023799007)(10063799003)(22082099003)(11063799006)(18002099003)(4143699003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(7416014)(1800799024)(10070799003)(6133799003)(10067099003)(11063799006)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?K2Nsc1VFVHFNb2FEOGxXSjZmY0tEblBWZlhQa3ZiYndBSXB6SDN6VmY5aENp?=
- =?utf-8?B?Z1NacjhhQ2xjSlNYZUNNWFh3aE1aSW5FWU1OZlNUQnFhVkVYTy9uZzVWRE8z?=
- =?utf-8?B?UTR3SXZEenNBYXBhQ1Q2Szg5QWJPWkxUSHVuajMyNmVMR2h6allMSGkvckhS?=
- =?utf-8?B?WjdzMjkyQXJyRDJWYnoyTG5oaEJqeFBZMU94ODdlR0VCK1JsTkNsUUMrTjh0?=
- =?utf-8?B?VVF4VnJnTERXd3J3TnVsblRQdHlpa001QlFjWEtGb3FLQjJQMDYwRFlVVDBq?=
- =?utf-8?B?enNGYWVTYkhHaVNoOEhnMEVTd1V1ajh6bWkzV0RFbzNpbityZFdudWRFK1dJ?=
- =?utf-8?B?SmU2R0M0N0pZM3B6SktRcFhaT1NqRlY1TDZmVnJiWG84eE5oVTgvNllXOGtD?=
- =?utf-8?B?VFNPQlQySVl1YlR0QXFGVWVwaTdGakU3RHVoSEtRbm5KZVJnOWp5TFU4bisy?=
- =?utf-8?B?bC9hSnVpeldndndOVFV6Tk9GYVd2OE02and2dmg1YnR5bWJXVGMvNWoyU3NE?=
- =?utf-8?B?MUVVYlNWNWtuVDJ4cHpsZ0daSlArVTZaZXN6WUFhd1RDa3BtQ0Z2YzYwVDVw?=
- =?utf-8?B?K2dLellYbUZnMTJFKzAxN0VRczIxMGhad1hIUTZlazd5ZGdCb2ltcHg2bDJL?=
- =?utf-8?B?Y0M2eHRmRC9zZm1LNFEvUjZLb0hXeCtJK2wvVmFkWHBydkRmRzR2NlVzNnRB?=
- =?utf-8?B?OWlPdUJzRXYzY3Uxd3Z4ejZIVURCalpQYS9LMCtKeTdDd1hNQlkxbnpQMkd6?=
- =?utf-8?B?YjJPQVBMYkhTYnduODlnRmp2elJtMklrUkRBMFNPNFVJY2JsbGdQYjlsc2Z4?=
- =?utf-8?B?T0s4R1hPTjZwUHVNUWs4WU0wd1lSY1RLbk9oNURMSE9QQlM2enUwaTdJUUdF?=
- =?utf-8?B?TDBzaGVKR2lqMTFGa3A1ODJib3Q2d0UxRVlYeC9BNEp4VFVJaXR0cThvNWI2?=
- =?utf-8?B?ejdhUGkyM0dTcEo4aWJ2bjdZcjVwNWx0VjdUM1NGNG13aklkQ0F5WitPeEpN?=
- =?utf-8?B?c1pmVTI0ZkFIeTdLV3N0ZE5pODR6dDNFOTZqRDJNdkNNcjIrRjlNMldHaVVK?=
- =?utf-8?B?c0JtOWdSWmVEcUlSdHpyTTRaeUtHYVdRRXJBbGlMUktRKy9DUzRiV0Y0eEVt?=
- =?utf-8?B?MDljdFZWSUVDZVVidVVkdGIyK2Z1eHl6V0tINytJK2NaYWxRR2EzdHQraXRU?=
- =?utf-8?B?RzMzVHByY09WREdTM2Q5bTBHbkIxUlNJbENHdUcydXNlMEdFT2cyRWtJc3B4?=
- =?utf-8?B?Qys1ZHJwdGRORFJRdWFqT2hmV2lZaTZsTll2MVYweGpKR1VvSk1rQlYzeTM5?=
- =?utf-8?B?MFI5THNRb2Y2ZmM1d1AvRWlYazNkU0cwOEJmeVZDSHBOOXpzVS9LZ1dBUWJF?=
- =?utf-8?B?YUVDRVpzd21sOXFCYTRleUxnamtESU9JZ2ttMUZGVi9wLzVmVkExMWc4Vkc0?=
- =?utf-8?B?TnJOV2xCb3B4MjNuaDhaM2tqLzZHNkIrbW5kY1NTMUlVbkV3MTl1V0ZadkFB?=
- =?utf-8?B?a0dQaml0ZFpobm9YVE1SeVp5bFhPSTVyQUUvS2pVOFBiRG9NZlVrY0hEeXVX?=
- =?utf-8?B?M2syY1FQaHdBNEtPTkhUa0cxQXNaOHd3V0RtTDBnbGNPamc3cC9RZ1JXMnhu?=
- =?utf-8?B?V0dUdFdrQkZPTlliNFhMTG11SXcvZGlUY0xnOXVETnJ2Tm5ROExhcW1PRHNk?=
- =?utf-8?B?cmtEekt4UzJ6dllyZDRXZ1RjS2puRXNFblVqUmJQSjIwaEp0WkpBZ29qbU52?=
- =?utf-8?B?Uk5WaDdNcGJxbjBQR0N4bkFLR3ZYLzc4WE9jQzRpN08rR2hXYlVtRnV1Ujl5?=
- =?utf-8?B?Q1IrZHhqZDZwaHFzUGI0RmdkYUo1TWNwME9LU3JnTjBnMW82Tm41TXBvSnZB?=
- =?utf-8?B?WnV0OE5zU3o5UGc4N0NXem92TDYzdEMvTFV4UXFucktKenZZazg2WnBFazNl?=
- =?utf-8?B?VE9Qa2Z5ZnVuQkpCaEZQNTRRSGQ5N25kbzhHRUhpdEdQTzZWL0k0U1JCSTR6?=
- =?utf-8?B?ZXNOQ2FQM1hmcUVwREQ1TUtQa1lTcFhkVlFrWXQvWmRXZlFCMVMvZU1jVnBT?=
- =?utf-8?B?MnFNeEJJeUJSOVB6UktKYi9nR3R4MWxmN0dkRXdaUkNMYkt6K1RRV05uU3E3?=
- =?utf-8?B?eld5aHZnYlR2Y3dWekgydm8xNDJOejBDdUI4YXZ1UGFJc0RSUVUwcEl4MVNx?=
- =?utf-8?B?M0lqQTV0bEVHWHh2M05HWi9lNEtSRjd0NytyL0RXV2hZaTdRb1Bzd1llNDY0?=
- =?utf-8?B?ZVFBV1ZxV2tKNlVaU3lQNEVDeDdEM2FIZDBNN1VSdkpTQ3BkeHMydjhSK0x2?=
- =?utf-8?B?OUVzbUc5VGptaGVWRXBUUlVFcGF6YWg5dEVlNDhVV1JlVjRtOVQvei9iRjR2?=
- =?utf-8?Q?OfcK8n2jo9pq71gRGHHmzKNRv8xK0u6sou+91ojaLayD9?=
-X-MS-Exchange-AntiSpam-MessageData-1: 6i4IlDmghvznyQ==
+	=?utf-8?B?d29JNTMxUzh2QjREcWVVbTZ1ZlhPT3BwOEticFNkdHlWTVFsWThrMWxaZlFn?=
+ =?utf-8?B?dUkwZll3Y1V5QUZuYW55Q1h0SkV2bGJVcWhPcVhmRm5CRW5IWUZ6VjUvZjhC?=
+ =?utf-8?B?RGhRQ29LSWd3K2JPRHRDUUZTS0VUeDF6WUlCbVYwdGJ1V0hCSHlNTHBDcEUv?=
+ =?utf-8?B?U3d1MkZVN3pScDlxS3hvQW1FM0d3NStFaHZtREVkOVFrYWVhVHVNc2hLR1Vn?=
+ =?utf-8?B?MWtXU3J6U1c1dWRTblZzM2hFRTAwTWRNU2xtVEF0cE8xSVRjRlY1cm9NT1RM?=
+ =?utf-8?B?SkdoVFRzNHVMUEdjdDlHczgrdWdleGZidHJQWFg0YjJuY0l3KzExWEtZRlJu?=
+ =?utf-8?B?cC9heWhqQVJpMktFbWg4amNJWUVqTm8xNW4yMi9LbExYOU5FckRTYkFKN1BR?=
+ =?utf-8?B?SndvSVZKL0d5TzR4R1loSXpTa2dqVXlMeHJyeko4Rk9lVSt2czJxdVBQR0RN?=
+ =?utf-8?B?NWw5SVd0blZOTDNDRk53NHlGYURMNVhSTlFaM2Jzb0ZxbjVFY0J2ano2bmF0?=
+ =?utf-8?B?bkcwNEtuTHlJWFVVWkVvQTE1N04rS3dJRWNFK2hMU2dJcFZFYUg4emM4MWJm?=
+ =?utf-8?B?dHB3SGNibTdoTnJMQmYrUkw5aEdpMDdNS21NRXFvWVJ6RUtpQUord0d4U3NN?=
+ =?utf-8?B?c1BMd2FFYmh1VXEzY0tVZXcrcXNQbTczNCtoM3JyWHl4RkE4cHE2Rm5mZ0Fm?=
+ =?utf-8?B?eXg5Y0RiRys1dit3MUQ2b1pNR1JGNDE5SlVraDAxL29XekNRNEtEcFQyc01G?=
+ =?utf-8?B?TGlneU5EZTBld0NueXZPVTZ0TDBtVnQrNEs3SFRJL3FpZXE2UFpSb0VYUmVh?=
+ =?utf-8?B?V20yOWEzNFZoSVJxaGN6R1RxZHdBUjliMzR0QmlUWW51Mnp4ZXZteVVaNHVk?=
+ =?utf-8?B?QnlnQTBISFVVYm56REF4WFBwN05wa3pzSnZTMk0vZVBTTmRBaVBJN1hhdWI0?=
+ =?utf-8?B?bWJZdTJ2eVJ5aDZ2V3I2ZVBKVkVwN29yUVBwSUsxdnF4SUZMZlpPUnpMUklk?=
+ =?utf-8?B?aTBNdWJwbnZPS2xBSlZ5LytRRytYNVdROXFHVzlEelZ5WFlKVDZ0TDIxUzI2?=
+ =?utf-8?B?T2VrVXZlUWJJTE82UlpIemJ4cWJyeE8za2Rvd1Fkby8xM2Q5SXBNN090SXhL?=
+ =?utf-8?B?NmV1MDdVM3hKMGNNK3R3cFlzZnVYZVY0bmJUQ3F3S29MVCtXMjVJRnd3cGJw?=
+ =?utf-8?B?RnVJTEJpaHpYaC9xZ29tOUNIOU52dEhsRWpwMzFReFlIRDMvVVA5ZUFEN0RZ?=
+ =?utf-8?B?VHFSamdML0lpQmtpd2kwdEQxTnh6RlpsTXNSUXJ3WEFWbXdmc0JlenpXYm00?=
+ =?utf-8?B?RU5sRFZZc3Y1K1dqZFhZS3kvRVF0Ump4eEQ3RzcwUG9CWkQwR0lWbEcreHBR?=
+ =?utf-8?B?ZDViRkIzendGZmVJUmZ2UGhUeGxkSmtFYzVTMEFsc1JpNkJjNWtWWGN2TGk0?=
+ =?utf-8?B?eFNDVVE4eEsvWE12bUlxL2FRR2hEeVJKYU91QzBSbGRMMFE4dzJXWUxyZVA0?=
+ =?utf-8?B?eEo3MElxeGZmbkVxWWlXbkF5K3JxQjV4c1g2djAxdzliNkxhZ05EY0t0Ynd1?=
+ =?utf-8?B?cjFWVXRsUFBoSGExNitEMUxkeEkyQWFJWXBJc1hxMWpyOXZYSzhsZ0taOU9D?=
+ =?utf-8?B?bmdxczBBK2c0Z3FGN2lObEx2T2NwTk5nRnF2dEVNcnlZbW5CbHdUQnl5WVov?=
+ =?utf-8?B?eWgwSEFSVFNiUDUwMlBoaXJtMEZERWIyU2UyZDZ6U0lsQXYvYzY2ZFNzbExz?=
+ =?utf-8?B?Tjkwajl5SUY5b0UxZEVBamR1S0hpSGltc2I2REJOazVkTGpuQ3pzQ2N2VmdF?=
+ =?utf-8?B?eHJPSDBHazB6cEZqcUFvSng1Rlc2TzNacXRFZmRzRFNyQTIzQ2Jtci9KQml5?=
+ =?utf-8?B?dHdSSit1ZVptS2JjQTdRZW4ybWluK3lqSExuWkRZWHpwUFQvZGZjUnAwU1Q5?=
+ =?utf-8?B?YW5CSldYMWNlM2RCdTBpQ2E5YTFVMzVMVU01SXZHWTBVQXdjcUtDUG8xeTQ4?=
+ =?utf-8?B?SWJTbHpSU3Z1Y3kvWjQzTkY2N01SbDl2UFdkMjkwU0doNzFXOU42eVNSOVY4?=
+ =?utf-8?B?ODZrajNhMGtMa1FJVEtaaHd1cy9lZEIwVkJVc2VOQllJVS9ETnFDUU1QYU5i?=
+ =?utf-8?B?a3BRZmV2cG9RUmxlNXUrZHBrbkowN3dzbmowNkVmSkJFTnpjVTFsam00aGtL?=
+ =?utf-8?B?bnJSQ2NiQUtxZlhYbkMxamtxc1BUd2Nrbmlha2xyelZYbk9NOGRYSEFXRGh0?=
+ =?utf-8?B?UG43dGxma1drRzZYYlN6ZS9pWDM4RnRHTVpGeFV2L0FuajhlenRiZ2JBd1l1?=
+ =?utf-8?B?T3hWc1ZTMk1pRnQxa25odHBGZ2MrcDNWdGN4TFErcjhjZE5scEZ2cmdBMU0x?=
+ =?utf-8?Q?avHj3veemDlGBtJipgbGBoEMHW13QwlntUA+4wZcqTJuh?=
+X-MS-Exchange-AntiSpam-MessageData-1: kpThwvzejkp3uQ==
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d533a4f7-d98a-4b2f-fe8f-08df14b0b5df
+X-MS-Exchange-CrossTenant-Network-Message-Id: 822f72bd-c4f2-45e6-6979-08df14b6e890
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 11:42:10.9917
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 12:26:32.9946
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0GfuqYVndhjP2PHa2drseAeWxkdjnWsHO659VBfeGFp19V9X2UA9NoD+XdlzieFkSP1JN0CC2BC4yrqPQbBqiw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6088
+X-MS-Exchange-CrossTenant-UserPrincipalName: KaxK2SrRyOAel2STOUe7+cp8V9HMLErcmDkJajrdaCFeQoJ15WiM1hEErjb7rFaZrIy14lxh4nhH1+ww5MtTNQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB176418
 
-On Thu Sep 17, 2026 at 5:52 PM JST, Gary Guo wrote:
-> On Thu Sep 17, 2026 at 9:37 AM BST, Alexandre Courbot wrote:
->> On Thu Sep 17, 2026 at 8:53 AM BST, Gary Guo wrote:
->>> On Mon Sep 14, 2026 at 7:55 AM BST, Eliot Courtney wrote:
->>>> On Mon Sep 14, 2026 at 12:46 PM JST, Alexandre Courbot wrote:
->>>>> On Thu Aug 27, 2026 at 11:12 PM JST, Eliot Courtney wrote:
->>>>>>  use crate::gsp::nvkv::{
->>>>>> +    Array,
->>>>>>      Index,
->>>>>> +    Key,
->>>>>>      KeyId,
->>>>>>      Op,
->>>>>>      Opcode, //
->>>>>>  };
->>>>>>  use crate::num;
->>>>>> =20
->>>>>> +/// Defines a schema struct together with its [`Schema`] implementa=
-tion that decodes into `$target`.
->>>>>> +///
->>>>>> +/// Each member of the struct should implement `Schema`. For every =
-(key, index, value) triple
->>>>>> +/// decoded from the NVKV stream, the generated parent `Schema` imp=
-lementation will call each member
->>>>>> +/// in declaration order with that triple. If a member consumes tha=
-t triple, it will stop there.
->>>>>> +/// Otherwise it will keep going until all members are tried.
->>>>>> +///
->>>>>> +/// The schema struct holds the state required by the schema implem=
-entation to do the decode. It's
->>>>>> +/// recommended to use one of the existing Schema kinds (`Required`=
-, `Accumulated`, `Key`, `Array`,
->>>>>> +/// `Indexed`) for each member.
->>>>>> +///
->>>>>> +/// # Examples
->>>>>> +///
->>>>>> +/// ```
->>>>>> +/// nvkv_decode! {
->>>>>> +///     struct RequestSchema =3D> Request {
->>>>>> +///         id: Required<u32, 0x0001>,
->>>>>> +///         name: Array<u8, 64, 0x0002>,
->>>>>> +///     }
->>>>>> +/// }
->>>>>> +/// ```
->>>>>> +macro_rules! nvkv_decode {
->>>>>> +    (
->>>>>> +        $(#[$attr:meta])*
->>>>>> +        $vis:vis struct $name:ident =3D> $target:ident {
->>>>>> +            $(
->>>>>> +                $(#[$field_attr:meta])*
->>>>>> +                $field_vis:vis $field:ident : $ty:ty
->>>>>> +            ),* $(,)?
->>>>>> +        }
->>>>>> +    ) =3D> {
->>>>>> +        $(#[$attr])*
->>>>>> +        $vis struct $name {
->>>>>> +            $(
->>>>>> +                $(#[$field_attr])*
->>>>>> +                $field_vis $field: $ty,
->>>>>> +            )*
->>>>>> +        }
->>>>>> +
->>>>>> +        impl $crate::gsp::nvkv::Schema for $name {
->>>>>> +            type Target =3D $target;
->>>>>> +
->>>>>> +            fn init() -> impl ::kernel::prelude::Init<Self> {
->>>>>> +                ::pin_init::init!(Self {
->>>>>> +                    $( $field <- <$ty as $crate::gsp::nvkv::Schema>=
-::init(), )*
->>>>>> +                })
->>>>>> +            }
->>>>>> +
->>>>>> +            fn visit(
->>>>>> +                &mut self,
->>>>>> +                key: $crate::gsp::nvkv::KeyId,
->>>>>> +                index: $crate::gsp::nvkv::Index,
->>>>>> +                value: $crate::gsp::nvkv::DecoderValue<'_>,
->>>>>> +            ) -> ::kernel::error::Result<bool> {
->>>>>> +                Ok(false
->>>>>> +                    $( || $crate::gsp::nvkv::Schema::visit(&mut sel=
-f.$field, key, index, value)? )*)
+On Wed Sep 9, 2026 at 11:32 PM JST, Gary Guo wrote:
+> On Mon Sep 7, 2026 at 10:21 AM BST, Eliot Courtney wrote:
+>> On Fri Sep 4, 2026 at 12:46 AM JST, Gary Guo wrote:
+>>> On Thu Sep 3, 2026 at 4:34 PM BST, Miguel Ojeda wrote:
+>>>> On Thu, Sep 3, 2026 at 5:21=E2=80=AFPM Gary Guo <gary@garyguo.net> wro=
+te:
 >>>>>
->>>>> Mmm looks like this is going to be `O(n)` with `n` being the number o=
-f
->>>>> fields?
+>>>>> Add a mechanism to perform const trait method calls, with the same ty=
+pe
+>>>>> inference capabilities. This would only work for concrete types (not =
+inside
+>>>>> generic functions).
 >>>>>
->>>>> This is ok for a first implementation but eventually I hope we can
->>>>> switch to a more efficient dispatch.
+>>>>> As an example, convert `as_char_ptr_in_const_context`, so instead of
+>>>>>
+>>>>>     kernel::str::as_char_ptr_in_const_context(c_str)
+>>>>>
+>>>>> one may write
+>>>>>
+>>>>>     const_call!(c_str.as_char_ptr())
+>>>>>
+>>>>> instead.
+>>>>>
+>>>>> Signed-off-by: Gary Guo <gary@garyguo.net>
 >>>>
->>>> I thought quite a bit about this while writing this code, since we nee=
-d
->>>> the escape hatch to imperative decode (custom Schema impl basically). =
-To
->>>> be able to get it down to a match on the key, we need to know ahead of
->>>> time which keys a Schema will consume. That duplicates the info from t=
-he
->>>> visit() implementation.
+>>>> Thanks for resending this!
 >>>>
->>>> I thought up a few methods but it's unclear to me which one is best, s=
-o
->>>> I just left it for now. Please LMK if you think this is urgent, I can
->>>> try in a follow up to improve this. Here are my ideas (when I say O(1)
->>>> lookup I mean modulo how the compiler decides to do it with the set of
->>>> key IDs it gets):
+>>>> So I definitely like having `#[const_eval_only]`, because we do want
+>>>> to limit those calls sometimes and it is nice to have C++'s equivalent
+>>>> to `consteval` (perhaps this could be called just `#[consteval]` to
+>>>> match?); i.e. what we talked about in the call.
+>
+> I'm okay with either. I put in `_only` because I think it makes it very c=
+lear
+> that this is not just const-evalutable (that's provided by `const`) and i=
+s
+> *always* const evaled.
+>
 >>>>
->>>> 1. current code - just visit()
->>>> pros: key source of truth not duplicates
->>>> cons: O(field) visit as you say
->>>>
->>>> 2. Associated const KEY_ID: Option<KeyId> - None if a Schema accepts m=
-ultiple keys.
->>>> You can match on each associated const in the macro.
->>>> pros: O(1) if the current key goes to a field with KEY_ID =3D Some(...=
-)
->>>> cons: O(#fields accepting multiple keys) if current key is one of them
->>>>
->>>> 3. fn accepts() -> bool
->>>> You can match on `if F::accepts(key)` for each field. We could potenti=
-ally make
->>>> this const with Gary's const traits polyfill.
->>>> pros: O(1) if you write an inline-able+optimizable implementation.
->>>>
->>>> 4. Associated const KEYS table; use tricks to concat tables
->>>> pros: O(1) lookup=20
->>>> cons: actually MSRV can't get this to optimize down to O(1)=20
->>>>   if you use slice::contains(), but stable can.
+>>>> On `Const` and `const_call!`, i.e. the other two patches: I am not
+>>>> sure if we care that much to introduce a macro for it, but it doesn't
+>>>> look bad either. I guess perhaps it helps to have a consistent way to
+>>>> do it and to easily remove it later when the actual feature lands in
+>>>> Rust. I would like to hear some thoughts on it from others.
+>
 >>>
->>> Hmm, am I missing the obvious? Why not generate a `match` expression on=
- IDs of
->>> fields? It looks like in the example all keys would have a known ID to =
-the
->>> macro.
+>>> I think it's good to have such macro compared to our current approach; =
+it can be
+>>> made into a identity macro once we have const trait impl.
+>>>
+>>> FWIW, I even considered an extra macro that allow you to write
+>>>
+>>>     #[const_trait_impl] // #[const_trait_impl(foreign)] for core types
+>>>     impl MyTrait for MyType {}
+>>>
+>>> and generate the `impl Const` part too (and also add a line to the docu=
+mentation
+>>> that the method is const-callable with `const_call!()`).
+>>>
+>>> Best,
+>>> Gary
 >>
->> Some keys may come from embedded structs, which the macro has no way to
->> see.
+>> I agree with the consteval macro, that sounds very nice.
+>>
+>> On the const_call! I have similar thoughts to Miguel. I reckon if we
+>> have a bunch of prospective users of this right now, and some thoughts
+>> on what would use this in the future then it's good. If it's just one
+>> use case right now, then not so sure.
 >
-> You can match all keys that you can see, and delegate to embedded structs=
- if
-> keys are not known.
->
-> This is essentially the same pattern that `#[serde(flatten)]` uses, just
-> replacing identifier names with keys.
->
-> The keys don't need be part of the type system, and it just additional me=
-tadata
-> for the macro to generate correct impl.
+> Some other candidates include `Alignable` (we currently have a "const_ali=
+gn_up")
+> and maybe `IntoSafeCast`.
 >
 > Best,
 > Gary
 
-This sounds approximately equivalent to the option #2 I mentioned
-(w.r.t. delegating if the keys are not known).
-
-I considered a serde-like approach where the metadata is annotated for
-the macro rather than by the type system, but I wanted to keep the macro
-simple and not introduce more macro-DSL than I need to. And also keep it
-kinda easy to write manual Schemas by not keeping the deserialization
-info in macro metadata.
+I'm definitely not opposed to a const trait polyfill, it's pretty cool
+actually IMO. I also do think there is a bit of survivorship bias on the
+argument (which I made) that there are not many users. And it can be
+removed once const traits become available in MSRV. I am keen to hear
+from others on this.
