@@ -1,164 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D584EDCCC;
-	Thu, 17 Sep 2026 17:41:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A96E51815D
+	for <rust-for-linux@vger.kernel.org>; Thu, 17 Sep 2026 17:43:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789666912; cv=none; b=c7h7YA6GS8TADYV/H7ZD8TDDyVV4JXQ+7qepS53FiFppLYu4ofNm8MQXVgGBidWKOxJ7Ma2pVr8f04bOSF7uxyoq8rRgBqkMkIUgVNEQZwIYO8I4eRSDj60xXfjAP4e5zeoMM5fKGfrePEi2jnKYPLPQWfrGmsnpVKkiZQGc+T0=
+	t=1789667004; cv=none; b=tD5ztBMfHKc5I5IKHbfOVhOD/bAUjjmzZLZMBinE+JoPncRLVJlJZVbtGMjDG/6dZLvXauUSgl8P7nl/XFjmg43BJiM1ehyQLgUENttSA6YKYZfymaSX3qGfj4nbwBv8GE4t7yJzqPJ8tGC3RoVWw1txdpyjkUj1VE2qs62EBjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789666912; c=relaxed/simple;
-	bh=O9y+xz6YUE/McVHuome0ueRYW3Aop/THgqTvZEJdTsc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kAFSFeL8YPSw++qcSBpXzqTpdSbi2jhG+WuaBJv75eHCj4npZec0H5ZuWHZ23+QzeEWFIqYrkCc4VevGBNv4Cdr+4e2qf+lqaheeQ1ZtlvGXToQf+NOa/ViJmtTWq5lPFjEp+mjB3XSa9f/fSBIMCFfn3+DA6lWDFgbsIP/oBV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZQSNhIXj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789667004; c=relaxed/simple;
+	bh=444jU8uxONFDfWRTdInIMtXV5eo1AbdDgMSf0Q+N+2o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fp2CMuHjPzbcnilV2SbT0iy2QbQ8of2NIl3tjzi9gfmVNQCDzl47V4nqchPNWI/8vefPQv4IzIiOC1vcf0o45A2P/ZIoL7DzIRf87lX2nWYrkRtu2oGh3SenqKimi6QNm1l3tomEka+74bfD1EJgrk+OFIxjB4P7SxIlzrA9wUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu; spf=pass smtp.mailfrom=uci.edu; dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b=I2TP1KkU; arc=none smtp.client-ip=74.125.228.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZQSNhIXj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C36D1F00893;
-	Thu, 17 Sep 2026 17:41:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789666910;
-	bh=Uh0DnghKUQkR5OlPXn3bepA6xTGTHb5e2CJRGs+0Cdg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZQSNhIXjS4Rf6c7O0fzir52Dyukvpz6zlKyqkusDAk6bn/UAXdp+/2ljGiZEmQ8Tk
-	 HFXtpxsS2Dwb2xp0bZtHlPuiHBw6g38BAPqNGBUHIUya6ojfFb3bauBjpRJ+bg/Lt8
-	 NrcJeHI/6/+bs8BjIVrOeBezFILAX+UaN1gac6ntowyoBgb+3d4/dh4Jo5Qz8Pt1io
-	 FciLuu0U3rlvweOipPfcC8NoOKRNA4BY7ESlXQEYrFwZw5wh8TvvEj+A646vXtcxUE
-	 ojbFoj8Q9n1P86a3vwz3uDKcBQdxJSx+uhEUw562G5v1J2T1tvuq/63Lse83xvsVZJ
-	 bqEnqm9esY7Yw==
-Date: Thu, 17 Sep 2026 10:41:50 -0700
-From: Kees Cook <kees@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Alexey Gladkov <legion@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev, linux-riscv@lists.infradead.org,
-	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v3 05/20] kbuild: only emit vmlinux relocations when
- required
-Message-ID: <202609171039.A9B14A02A@keescook>
-References: <20260917-build-speedup-v3-0-9ecf4163ff36@kernel.org>
- <20260917-build-speedup-v3-5-9ecf4163ff36@kernel.org>
+	dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b="I2TP1KkU"
+Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc4bdf8abaaso936406a12.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 17 Sep 2026 10:43:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=uci.edu; s=google; t=1789667002; x=1790271802; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=b5eExaHbJZnwQdAGroZ7wxeNna2+m+5wmicEcqAFsiQ=;
+        b=I2TP1KkUaEkPqnFuU+N/gVG0S5Xtco+Fu2eiHIkAm4mfRZ0mVfdcqUDHhCBrhC4uAF
+         N4d7pqh0phcqHIVJdm6wcdSbb6hfens1BlJQ5ResM7k6kgt+6Cjh/sJ67hJWl2tpwLYL
+         Ku3WRWEHvdKRgtfFD5KwRaq+u9+PkmGIDny05fkkaAL4Zlktiz3Tbqc2q425VfEKWpj+
+         webQL9eyPY351F+foQhEF+FWl5mD4O9wOED5WqCLhfLLUrMG1JCGF/D6dko7fHlYfaOw
+         nb4qKSAb1MjMPgCYQpmJn37M8Vp79N8gtjAcxwClxRaOY/JSrUBc86CVa9vwRX6XbDSt
+         QnkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789667002; x=1790271802;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=b5eExaHbJZnwQdAGroZ7wxeNna2+m+5wmicEcqAFsiQ=;
+        b=mUzn9seeJsy320Y+JcBM+2lIifS4njKnUV7VhEyzI6+w3QjlYROm0yGb/tZlWAQMrQ
+         ZYjByXQO0CpllWZMJjmC5EkVg+oyjxgPPC105djklGVE7URAgQPo7mTJx/iDkFc4hhzQ
+         ZYufu1zix+R8jrTKx3VZ7KbXq4w11o9o3sTE4BOKgTAm0N2uAyX0wOJZNfHYg51jzGbm
+         ZdvC3XxDo4464jIGFXzLUGIYjEda3ATbC7y+yMNzEmEg9u/OeIW242fMosyBng70feIM
+         d3weIDnG8LEflJIADUUKrx2rXAK5iOa8j5ITIXCF/HPuz426v+laeKxRotbaHR1St6Sf
+         c4GA==
+X-Forwarded-Encrypted: i=1; AKwUvBwSJlBzNwwnItdTQfCe7kRYL3q6Eg/4tKcfR2NJipN/MktQinfNcVhT5Dz0juO93Zqn7TMDvQtS6jHqjnj7Og==@vger.kernel.org
+X-Gm-Message-State: AFuF++nNhGtIEZTm+KM1mSOwRpMSVHmDVROGGrojdUetnb4rU5sCzalj
+	E/9DQtTs3nKTmf3ZlpT7vSHuUvngY1pwgDjWHrCB9A3erAYPAeyjf5X2+kWVqvnBlbE=
+X-Gm-Gg: AYBFou3RCIlsX1nvAfVhtJdQVKh8uZ3gwLTyoTnjWqPrkM6gNwcNdkRu9hUh3qiQ4sP
+	UqhWaZHErVDg9sGiWhNXUhsp1mL9geTDFdYwsPw50mOA9Wfh4VJNRM1e9Bbb8oRszS77vo09Q5i
+	E3PECNZifD0Xko2tLvqueJpdoMvCLv46DNp9CEDnRsOybqo/mhf5WQbBV+8dTxFSt8fE25nv1RM
+	sWka9NjgXUY/dPcCgDlQHjlGc4NsaL/uq/GzDY5CY9NQ7ZrzzWBc4mzy5zwcCfDgEFIYOtz0JOC
+	8JTO0Cthya1Rw5VM3Grw8evgRI33v7iZjZ2qsfbv3W95qH4OgdcOp79uAh6QQBeIxghRom+D2v9
+	IrXea34eim2CXncvN7hYspffOurdxEZ+oXymbAAa57Iwz1r88jNXaqSfAXhcWNDvKf9NEOOmnxF
+	w5HNMwWRWcMH2KGaZqJbXwXH8WhD4S3kwfuBHK6bSlDPHiaWVDQvQOOSaQBpWeOwNq6uRukEmee
+	NAD7kRKF9p5lnfWw2J4+vxp/lMAjRC5T3Cz
+X-Received: by 2002:a05:6a20:9147:b0:3b4:7e2d:a3c2 with SMTP id adf61e73a8af0-3dd5f57c1bamr17309358637.18.1789667002542;
+        Thu, 17 Sep 2026 10:43:22 -0700 (PDT)
+Received: from guest1.. (charm.ics.uci.edu. [128.195.4.118])
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33bf5aa1194sm19657730eec.14.2026.09.17.10.43.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 10:43:22 -0700 (PDT)
+From: Priya Bala Govindasamy <pgovind2@uci.edu>
+To: mcgrof@kernel.org,
+	petr.pavlu@suse.com,
+	da.gomez@kernel.org,
+	samitolvanen@google.com,
+	ojeda@kernel.org
+Cc: atomlin@atomlin.com,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	tamird@kernel.org,
+	acourbot@nvidia.com,
+	work@onurozkan.dev,
+	linux-modules@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	ardalan@uci.edu,
+	zhiyunq@cs.ucr.edu,
+	dzueck@uci.edu,
+	pgovind2@uci.edu
+Subject: [PATCH 0/1] rust: module_param: Fix potentially incorrect access  of `SetOnce<T>`
+Date: Thu, 17 Sep 2026 17:43:19 +0000
+Message-Id: <cover.1789426258.git.pgovind2@uci.edu>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260917-build-speedup-v3-5-9ecf4163ff36@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 17, 2026 at 05:06:15PM +0100, Lorenzo Stoakes (ARM) wrote:
-> A kernel build consists of more than one linking pass on vmlinux.o and
-> vmlinux, at minimum two, and with CONFIG_KALLSYMS and BTF enabled on x86-64
-> for example there are 5 such stages.
-> 
-> For architectures that build their own relocation tables (x86, riscv, mips,
-> s390), vmlinux is linked with the --emit-relocs parameter specified.
-> 
-> However, this is only required on the final vmlinux link.
-> 
-> Symbol tables of trial links preceding it don't need it because they
-> already check that System.map matches kallsyms symbols on each build.
-> 
-> GNU ld is slow at emitting relocation tables, so this results in a
-> reduction in build time.
-> 
-> Whole build, 128-thread Threadripper 9980X, best of N runs:
-> 
->                                          before   after     delta
->                                          -------------------------------
->   x86 defconfig, touch mm/vma.c, gcc        9.5s     9.1s    -0.42s (-4%)
->   x86 defconfig, clean, gcc                30.1s    29.5s    -0.59s (-2%)
->   x86 allmodconfig, touch mm/vma.c, gcc    37.2s    35.8s     -1.4s (-4%)
-> 
-> Note that this has little impact on LLVM ld which performs this operation
-> more efficiently.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  Makefile                | 2 +-
->  scripts/link-vmlinux.sh | 5 +++++
->  2 files changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index 0f1b80100b47..dd4c10afbb7f 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1263,7 +1263,7 @@ LDFLAGS_vmlinux += --orphan-handling=$(CONFIG_LD_ORPHAN_WARN_LEVEL)
->  endif
->  
->  ifneq ($(CONFIG_ARCH_VMLINUX_NEEDS_RELOCS),)
-> -LDFLAGS_vmlinux	+= --emit-relocs --discard-none
-> +LDFLAGS_vmlinux	+= --discard-none
->  endif
+Dear Linux kernel maintainers,
 
-Nit: I think a comment here is worth adding, like in link-vmlinux.sh.
-They're separate files, and it's kind of weird that ...NEEDS_RELOCS
-doesn't actually add --emit-relocs here unless you go find how
---emit-relocs is used later.
+We are developing a tool called FerroLens to detect potential 
+unsound behavior in Rust code in the Linux kernel. The tool 
+internally uses an LLM to detect bugs.
+We then perform manual analysis to verify these reports. 
+FerroLens reported the following bug in rust/kernel/module_param.rs:
 
->  
->  # Align the architecture of userspace programs with the kernel
-> diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
-> index 970ca10f8fa9..ed5ff97c0667 100755
-> --- a/scripts/link-vmlinux.sh
-> +++ b/scripts/link-vmlinux.sh
-> @@ -96,6 +96,11 @@ vmlinux_link()
->  		ldflags="${ldflags} ${wl}--strip-debug"
->  	fi
->  
-> +	# Only the final link actually requires the relocations.
-> +	if [ "${output}" = "${VMLINUX}" ] && is_enabled CONFIG_ARCH_VMLINUX_NEEDS_RELOCS; then
-> +		ldflags="${ldflags} ${wl}--emit-relocs"
-> +	fi
-> +
->  	if [ -n "${generate_map}" ];  then
->  		ldflags="${ldflags} ${wl}-Map=vmlinux.map"
->  	fi
+The `set_param` function casts `kernel_param.arg` to `*const SetOnce<T>`
+But the Rust module macro in rust/macros/module.rs initializes `arg` with 
+`#param_name.as_void_ptr()`, and `#param_name` is a `ModuleParamAccess<T>`,
+not a `SetOnce<T>`.
 
-But yeah, otherwise, another "don't generate something that doesn't get
-used" improvement. :)
+ModuleParamAccess<T> has default Rust layout but `set_param` accesses its 
+first field SetOnce<T> assuming it to be at offset 0. This is not 
+guaranteed by Rust and if SetOnce<T> is not at offset 0 it could cause 
+type confusion leading to data corruption.
 
-Reviewed-by: Kees Cook <kees@kernel.org>
+In particular, if the kernel is built with a randomized layout 
+(e.g with KRUSTFLAGS='-Zrandomize-layout=yes -Zlayout-seed=1'), 
+the first field of `ModuleParamAccess<T>` may not be at offset 0. 
+This leads to incorrect behavior when loading the rust_minimal module 
+from samples.
+
+$ sudo insmod samples/rust/rust_minimal.ko test_parameter=1 test_bool_parameter=false
+insmod: ERROR: could not insert module samples/rust/rust_minimal.ko: File exists
+
+[  854.638251] rust_minimal: `1' invalid for parameter `test_parameter'
+
+Priya Bala Govindasamy (1):
+  rust: module_param: Fix potentially incorrect layout for 
+    `ModuleParamAccess<T>`
+
+ rust/kernel/module_param.rs | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 -- 
-Kees Cook
+2.34.1
+
