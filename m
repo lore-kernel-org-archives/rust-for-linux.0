@@ -1,366 +1,226 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1198F3DC4DE
-	for <rust-for-linux@vger.kernel.org>; Sun, 20 Sep 2026 19:19:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA503DD503
+	for <rust-for-linux@vger.kernel.org>; Sun, 20 Sep 2026 20:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789931969; cv=none; b=gTwGuu4sXZHUrjtUWb+koa3LB0nyPf0mY/mRGTgwQDqJzoKkznjRcEhQAF8yPiW2Ni2FxyxSM53ILNunBQ6493PSGmpgqcZUi9jlKGzvi0gtZXV4wUr7Bie27jXdMIeLAaVBk4p9nCz2JG1MGsgE9DZLxM8CUrS+DQypRzzW//A=
+	t=1789934640; cv=none; b=ZnxNxkgfvQZ7F0CLXS5VkXvMkVR1JUZJSlQzWS0JWj47O3EPHcDMZpfs3f//Cyw2hj0mLvhKwGS49YD8hB7WeG/y/GhV2thCsZKzj8H+lnIPgjrIZc+eO8fPYv1evy4uUyYXTNK31LEBAcynOdnAaYPeDePsbQ64H/RXCulZ5G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789931969; c=relaxed/simple;
-	bh=BM/v+17s5g23etAnLGYdKvKI+1ajgwLeZn7HVvkFme4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RIWjMOO8md88sWoZoukZt6GrkIFsRfrIU7IVN4zKJMx4AiJQidAq0SperlDHaPzXZIDzlp66Z8tKWs2HFUEEYXBeVmJ2MANmASA6Kinz6Sl0qXgv96umuLkndp03quaj/6iRffykVCGz8YYKmYgyVAQ1eGPFoZ9Ppj7Z0HKIeJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WoniwytG; arc=none smtp.client-ip=74.125.227.141
+	s=arc-20240116; t=1789934640; c=relaxed/simple;
+	bh=MUuqufV7F8li7ww/uKMPzHCm6Tj5VXKrnY7JwJN/Y2Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EwA317gGFJgcBA0Yqu6ed/CG+wIGZyA/B1VXPAdEqVIABJV0xBtUtRHv5Fxkfu9KhrHTTLG4LUegkASBHleTRfm4zfuMsQWAsvbDuFlzDVnD3/WVHpCBt9baMWVu9rDkM+ZrXfEiiJLnQRHEGqCmXt9y0wkMKOzyHJZxrmpHlWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hiSPZlUI; arc=none smtp.client-ip=74.125.227.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WoniwytG"
-Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2dd77300825so23693515ad.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 20 Sep 2026 12:19:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hiSPZlUI"
+Received: by mail-pj2-f43.google.com with SMTP id d9443c01a7336-2d747ed6d6eso22711875ad.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 20 Sep 2026 13:03:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789931966; x=1790536766; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=bKLYZ5zYTzX26ZlJ/Ce6O9aFub3iX+B/pKfI968fj2Y=;
-        b=WoniwytGsIkMTVE6vUlhCuz2L8pjkOiaS8XNaP6aGrPjMDlEXcIYWFY6MvAzHVN7he
-         SIV5s3A2opXdmswwLvPMq/SgUbUaQNHz7Qya7aOj4d424QEZmqLHSyGRYUzp8q5fHHdj
-         Zf9JRXyAqxo26qwt+K66oNeOloMZn2Xczreh78ktGI+a2sVrluUbaoAM4W8SxtgYYVHN
-         gZRKp5q5Tu1VTn56yyxDza1k/F9s/QH6+TUEaYUD+ZGWHRimRksc48pXLcUT5O6kk048
-         wp3WgpPNf2Jm0QQNsKUAw4srODKGorwR0a4YOOJvnjYjhPPrczb50uhk8dB5roN9ZR4R
-         ldDA==
+        d=gmail.com; s=20251104; t=1789934638; x=1790539438; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=L0cppsgBznO4lr0DL9YkMJQBoD71a+Vm1Btko6onEEI=;
+        b=hiSPZlUIjNasKHY3UdDc3p1MQ7CSExzehJhW3WY8mZovm0Cusio6vA9YYkdQRAFvEh
+         FSWClXemKUazyRzWdlRuhHmHWeTPt56qGTgyafEuOorgSbAsFzUBsSwm4PgVWw4E3Y/W
+         Y2mBm/SggYCvC6Jxjna05NgXJJIObMXx06NsHzwgZyd0Ox6v9Hnrfg1NuCcV8KEQUI2r
+         7zbxxaLv2QyB2Hwqb373T9DuB13dYHdZPN0akzoPyNQPmY+CJJ+jMEZseQiSrzv7q6jz
+         z89yJha3GJJBs0ZNJFrBFXNKp70+i71sj5b0xzokub5u0kubKiF6FtsVtHa6vrufqH94
+         dGMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789931966; x=1790536766;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=bKLYZ5zYTzX26ZlJ/Ce6O9aFub3iX+B/pKfI968fj2Y=;
-        b=lzimn5OIQllVwPI1siuXuH65sYqmJr+LbEDYkjBUNYIWxxgGaUc449XZlsGxCxXuSx
-         mX4L9UTHe9cX51pc1exOV4Wf8ehfvtyrIpQGrN6v9V70fPUqjAXcM25ch/PrEqMV/5/s
-         xY/1I6QOSHebNpD5TBShoNGPjRBrIodVfez6ZufJRTEltiEqo6USDKrdowq1InuDg+2A
-         GSNWGXl+SxPUv65fcyM+ZfEhLNQm3/UWLEfWERCfcpoZ3jE0XUzqQPm1BOwYxp250fsP
-         pDpZdiaGDlXe+Bmu/4ze6BCVvIy1kdjQd8nXgoX1Ph6AjaTcMizg1UquDb1XvX7ZRBGZ
-         kfcg==
-X-Forwarded-Encrypted: i=1; AKwUvBwVo129TKJd9/CM9mJQgW0U6WfhRMBXzQEhQ1G0+nmFQ/vAqGCpVSMu/7eCVLaOLNkOkOu9rukhDgMjdj562Q==@vger.kernel.org
-X-Gm-Message-State: AFuF++lEmr49nB/dg87Ev6RqYa3lLsfrvuIqwzJ9KY9pRi3DE/kOx/1H
-	weyTSa/fm7y3wrtbmpQjtIFauLVoVCDgAgaL3ghbV9qB6EM4g4ncZ9og
-X-Gm-Gg: AYBFou3tj5NY0ltChQN5kXR1GpqmEKPw0xNKPscvIe1vyB+XuoILjCYnG0EDpDX57b0
-	3lpjnkKGd/NpwzaANhtxNhlZHYaC3qpPzGjjWhfxuX5nKrs5bsYqgYJQWovFQ36NsN1zgsuAMPv
-	uEOagTDWjP2IVMxMDrJ7CC40ESRNqgaV2GlghSqXbhBoX2Nsi6LW5DIHDMudOVWtFgvGVVP3iLc
-	W0K7puMGWPjbiPYT3R3XPIEWJX6gv3j0k4Grspmvkc3/bk+H7pMdRcuzoeNEo77O0kFdjYQTwV3
-	VsIoDRJ9WSP3yzp5idO7BtcEI8HONstvHL+NkXBWL3z/xutr+thjz/t1m9lOdcGSO/cgLD/QAxk
-	C0yVlYJEc6VwWF2AJ9/1JcNeH61CF9tiaqJ5HZLLjzi+pp2F/UpOfllQmPI89pqVsmFYdP9d8/c
-	XkbNwhnNyIqytGthyLozA3QuiIx50z5G0zzO8RHZW1pOY8OKzrWto2wVuSV/DHgJURqeWGdkZuP
-	gqD
-X-Received: by 2002:a17:902:ce07:b0:2da:f1b1:56c4 with SMTP id d9443c01a7336-2ddb1ab3254mr141078815ad.3.1789931965693;
-        Sun, 20 Sep 2026 12:19:25 -0700 (PDT)
-Received: from fedora.local ([2804:d57:4e62:f400:ee3b:9f08:f174:9cdc])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c32f17dbdsm14445322eec.1.2026.09.20.12.19.21
+        d=1e100.net; s=20260707; t=1789934638; x=1790539438;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=L0cppsgBznO4lr0DL9YkMJQBoD71a+Vm1Btko6onEEI=;
+        b=jW+LWO34J0AARhRbMum+82+TcQSwMfU8H4gXtoYBPwvsAhh/1RTn2SEqqHWqD0Jypl
+         C/y1Kq1wXgJmpXmUsbQbxYucm/qPO/2sNTLjwfUYa3CRV1zP9VwZC4Coe9dnBaB9lYsi
+         J0JIl7L2Uvy8OZ5/7PILiLnTXBfd+SygoYlrL/gTC35PaU40B+J+2nkavOJUeQ0Z9jxS
+         sM+iRNlOUP2MWaX1g/KNzoq3pUgdtaL+6Sy+JTmm5DFv86VQrH76ynpEduWRprGaUBrj
+         jCPPBNttKwEEshCq3O6zAEXx6roBLPAxCduRSn+atuiVLnuHuQrRHm9zeozdNCtvTAJj
+         80Sg==
+X-Forwarded-Encrypted: i=1; AKwUvBzvXGP0/QZbwNoI57AoeS5oWsXfyElbMfKtHvRAf1d+xUjdN6kZVPjbg2wcG75QDsZzOcqmzTxefRryIsl3aQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++kMbOvtfd8lR3mLYst+WXXL4i0fhEUdT5dmCndcQHy5OfFiZe4s
+	Wld1i07Erk9QUou+5xWCiwtprsdI9Xm3y2LdLBNRGPP7OJvKgakwz7Ed
+X-Gm-Gg: AYBFou1OH6/EvyrnHcNc3ciW3Vx38CDheS9Y8LZEvOSD5tzDLX45NxjRs54RUNHdoEU
+	udlPmetpJYQDp3oWjBOKyRla+pp7ScnjyOThUy5OOP9VP/VccqDzIpXwysg5i+WKd5YZYcJKt4d
+	O41AMJ9eWCQ8QXSCZU3tcONtK5iFOjWhuEix/0swZLq1oY4ttbjZhiikJw4kDsx4ct4zvYdQiQ0
+	y/I1EwvlLSMB44j02y9B86YOHd1IzY1PeQMlerKtiu1syom8ZwskZaexKP6I7ZqckC05HXd1j6Z
+	3HRG5fkm7K/GOHavTvY4guLZCfS3yWVDmP+4eNLSDwK5JZQhcSh5RBC9YYkQsIJyQ7jbHGixmLQ
+	Cz8QSRpEoQvH6VSMaBRfq7JOP3fX/UFv+ntzTlKqh3TKV/YqiChcX87ELorFbb70SRBc34eLwIv
+	WidfCxLuNUpI/q6xVkUmdhApjGKRS4cnkNj8ylZAEdIciWwFm7p3vI/ZXd7bZxc6ewQzEaKw==
+X-Received: by 2002:a17:903:11cc:b0:2dd:c100:4b80 with SMTP id d9443c01a7336-2ddc1005ef1mr71490425ad.55.1789934638026;
+        Sun, 20 Sep 2026 13:03:58 -0700 (PDT)
+Received: from tofu.. ([128.210.0.165])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c331d3f2csm11663492eec.28.2026.09.20.13.03.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 12:19:25 -0700 (PDT)
-From: Filipe Xavier <felipeaggger@gmail.com>
-Date: Sun, 20 Sep 2026 16:18:53 -0300
-Subject: [PATCH v2] rust: impl_flags: add conversions for raw flag
- representations
+        Sun, 20 Sep 2026 13:03:57 -0700 (PDT)
+From: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+To: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Jan Kara <jack@suse.cz>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	linux-fsdevel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Georgios Androutsopoulos <georgeandrout13@gmail.com>
+Subject: [PATCH] rust: file: handle fd table teardown in file descriptor APIs
+Date: Sun, 20 Sep 2026 16:01:54 -0400
+Message-ID: <20260920200154.1194983-1-georgeandrout13@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260920-add-from-raw-conversions-v2-1-cef8e6e23ae2@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAJwxsGoC/42NTQ7CIBBGr9LM2jGApD+uvIfpgsK0JbHFDAY1D
- XeX9gQu35e8920QiT1FuFYbMCUffVgLqFMFdjbrROhdYVBC1aKTCo1zOHJYkM0bbVgT8e5E1LV
- uXNuJYWgaKPqTafSfI33vC88+vgJ/j6ck9/WPaJIoUViii65b7ZS+TYvxj7MNC/Q55x+XryiRw
- AAAAA==
-X-Change-ID: 20260912-add-from-raw-conversions-4647d890bb77
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: Filipe Xavier <felipe_life@live.com>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- Filipe Xavier <felipeaggger@gmail.com>
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 
-Extend the impl_flags! macro to support conversions between generated flag
-types and raw C/UAPI integers. Implement TryFrom<Repr> for individual flags
-(exact variant match) and flag sets (rejecting unknown bits), along with an
-unsafe from_raw() constructor for flag sets. Additionally, add BitOr and
-BitOrAssign implementations between the raw representation and flag types.
+Several Rust file descriptor APIs rely on `current->files` being
+available. However, `exit_files()` clears it while execution may still
+continue on the same task.
 
-Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
-Suggested-by: Andreas Hindborg <a.hindborg@kernel.org>
-Signed-off-by: Filipe Xavier <felipeaggger@gmail.com>
+This affects `LocalFile::fget()` and the
+`FileDescriptorReservation` operations that call
+`get_unused_fd_flags()`, `fd_install()`, and `put_unused_fd()`.
+`FileDescriptorReservation` cannot cross task boundaries, but remaining
+on the same task does not guarantee that `current->files` is still
+available when these operations are performed.
+
+Guard the affected operations against a missing `current->files`.
+`LocalFile::fget()` returns `EBADF` and
+`FileDescriptorReservation::get_unused_fd_flags()` returns `EMFILE`.
+For the infallible `fd_install()` and drop paths, warn once and avoid
+calling the corresponding C helper when the fd table is already gone.
+
+This prevents NULL dereferences through these safe Rust APIs after
+`exit_files()`.
+
+Fixes: 851849824bb5 ("rust: file: add Rust abstraction for `struct file`")
+Fixes: 5da9857b127e ("rust: file: add `FileDescriptorReservation`")
+Closes: https://github.com/Rust-for-Linux/linux/issues/1256
+Signed-off-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
 ---
-Changes in v2:
-- New Error InvalidFlagValue for TryFrom implementations, mapping invalid flag values to EINVAL.
-- Replace Tyr's local TryFrom implementation to use from the macro.
-- Add raw BitOr<$flags> and BitOrAssign<$flags> support to complete operations.
-- Link to v1: https://lore.kernel.org/r/20260912-add-from-raw-conversions-v1-1-0cee34684d24@gmail.com
----
- drivers/gpu/drm/tyr/vm.rs |  13 -----
- rust/kernel/error.rs      |  11 +++++
- rust/kernel/impl_flags.rs | 122 +++++++++++++++++++++++++++++++++++++++++-----
- 3 files changed, 121 insertions(+), 25 deletions(-)
+ rust/kernel/fs/file.rs | 69 ++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 60 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-index c5e307b1e2416837c85f890c074f62bc74289178..446672b4bc6bfedab789e20c97c4b754d5c019c0 100644
---- a/drivers/gpu/drm/tyr/vm.rs
-+++ b/drivers/gpu/drm/tyr/vm.rs
-@@ -141,19 +141,6 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-     }
- }
- 
--impl TryFrom<u32> for VmMapFlags {
--    type Error = Error;
--
--    fn try_from(value: u32) -> Result<Self, Self::Error> {
--        let valid = VmFlag::Readonly as u32 | VmFlag::Noexec as u32 | VmFlag::Uncached as u32;
--
--        if value & !valid != 0 {
--            return Err(EINVAL);
--        }
--        Ok(Self(value))
--    }
--}
--
- /// Arguments for a virtual memory map operation.
- struct VmMapArgs<'drm> {
-     /// Access permissions and caching behavior for the mapping.
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index e52793f771966f20258c7d021826f7b63f8cf35e..8d2c4300262743b504d82bcc041076e78636cda5 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -201,6 +201,10 @@ macro_rules! declare_err {
- #[derive(Clone, Copy, PartialEq, Eq)]
- pub struct Error(NonZeroI32);
- 
-+/// Represents an invalid value for a flag type.
-+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-+pub struct InvalidFlagValue;
-+
- impl Error {
-     /// Creates an [`Error`] from a kernel error code.
-     ///
-@@ -323,6 +327,13 @@ fn from(_: AllocError) -> Error {
-     }
- }
- 
-+impl From<InvalidFlagValue> for Error {
-+    #[inline]
-+    fn from(_: InvalidFlagValue) -> Error {
-+        code::EINVAL
-+    }
-+}
-+
- impl From<TryFromIntError> for Error {
+diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
+index 23ee689bd240..559f0985b12c 100644
+--- a/rust/kernel/fs/file.rs
++++ b/rust/kernel/fs/file.rs
+@@ -260,7 +260,17 @@ impl LocalFile {
+     /// [`assume_no_fdget_pos`]: LocalFile::assume_no_fdget_pos
      #[inline]
-     fn from(_: TryFromIntError) -> Error {
-diff --git a/rust/kernel/impl_flags.rs b/rust/kernel/impl_flags.rs
-index fdf44d5eea9cb907f6d8d209792a1d9b74b55be6..493cd7f51dcc5f4926e39c4e79c7d4ed7157233d 100644
---- a/rust/kernel/impl_flags.rs
-+++ b/rust/kernel/impl_flags.rs
-@@ -14,6 +14,8 @@
- /// - The struct and enum types with appropriate `#[repr]` attributes.
- /// - Implementations of common bitflag operators
- ///   ([`::core::ops::BitOr`], [`::core::ops::BitAnd`], etc.).
-+/// - Conversions between the Rust-native types and their raw representation.
-+/// - Validation when converting raw values back into Rust-native types.
- /// - Utility methods such as `.contains()` to check flags.
- ///
- /// # Examples
-@@ -68,6 +70,25 @@
- /// let negated = !read_only;
- /// assert!(negated.contains(Permission::Write));
- /// assert!(!negated.contains(Permission::Read));
-+///
-+/// // Convert individual flags and flag sets to their raw representation.
-+/// let raw: u32 = Permission::Read.into();
-+/// assert_eq!(raw, 1);
-+/// let raw: u32 = read_write.into();
-+///
-+/// // Raw values can be validated before entering the Rust-native API.
-+/// assert_eq!(Permission::try_from(1), Ok(Permission::Read));
-+/// assert!(Permission::try_from(3).is_err());
-+/// assert!(Permissions::try_from(3).is_ok());
-+///
-+/// // Raw C/UAPI fields can be updated without an intermediate conversion.
-+/// let mut raw = 0u32;
-+/// raw |= Permission::Read;
-+/// raw |= Permission::Write;
-+/// assert_eq!(raw, 3);
-+/// let read_write = Permission::Read | Permission::Write;
-+/// raw |= read_write;
-+/// assert_eq!(raw | read_write, 3);
- /// ```
- #[macro_export]
- macro_rules! impl_flags {
-@@ -103,6 +124,13 @@ fn from(value: $flag) -> Self {
-             }
-         }
- 
-+        impl ::core::convert::From<$flag> for $ty {
-+            #[inline]
-+            fn from(value: $flag) -> Self {
-+                value as $ty
-+            }
+     pub fn fget(fd: u32) -> Result<ARef<LocalFile>, BadFdError> {
+-        // SAFETY: FFI call, there are no requirements on `fd`.
++        let current = crate::current!();
++
++        // SAFETY: `current` points to the currently executing task, so it is
++        // valid to read its `files` pointer. The pointer may be null during
++        // task teardown.
++        if unsafe { (*current.as_ptr()).files.is_null() } {
++            return Err(BadFdError);
 +        }
 +
-         impl ::core::convert::From<$flags> for $ty {
-             #[inline]
-             fn from(value: $flags) -> Self {
-@@ -110,32 +138,45 @@ fn from(value: $flags) -> Self {
-             }
-         }
++        // SAFETY: There are no requirements on `fd`. We checked above that the
++        // current task still has a file descriptor table, which `fget` accesses.
+         let ptr = ptr::NonNull::new(unsafe { bindings::fget(fd) }).ok_or(BadFdError)?;
  
--        impl ::core::ops::BitOr for $flags {
--            type Output = Self;
-+        impl ::core::convert::TryFrom<$ty> for $flag {
-+            type Error = ::kernel::error::InvalidFlagValue;
+         // SAFETY: `bindings::fget` created a refcount, and we pass ownership of it to the `ARef`.
+@@ -403,7 +413,18 @@ impl FileDescriptorReservation {
+     /// Creates a new file descriptor reservation.
+     #[inline]
+     pub fn get_unused_fd_flags(flags: u32) -> Result<Self> {
+-        // SAFETY: FFI call, there are no safety requirements on `flags`.
++        let current = crate::current!();
 +
-             #[inline]
--            fn bitor(self, rhs: Self) -> Self::Output {
--                Self(self.0 | rhs.0)
-+            fn try_from(value: $ty) -> Result<Self, Self::Error> {
-+                match value {
-+                    $(
-+                        v if v == ($value as $ty) => Ok($flag::$name),
-+                    )+
-+                    _ => Err(::kernel::error::InvalidFlagValue),
-+                }
-             }
-         }
- 
--        impl ::core::ops::BitOrAssign for $flags {
-+        impl ::core::convert::TryFrom<$ty> for $flags {
-+            type Error = ::kernel::error::InvalidFlagValue;
-+
-             #[inline]
--            fn bitor_assign(&mut self, rhs: Self) {
--                *self = *self | rhs;
-+            fn try_from(value: $ty) -> Result<Self, Self::Error> {
-+                if value & !Self::all_bits() != 0 {
-+                    return Err(::kernel::error::InvalidFlagValue);
-+                }
-+
-+                // SAFETY: All bits set in `value` are valid flag bits.
-+                Ok(unsafe { Self::from_raw(value) })
-             }
-         }
- 
--        impl ::core::ops::BitOr<$flag> for $flags {
-+        impl ::core::ops::BitOr for $flags {
-             type Output = Self;
-             #[inline]
--            fn bitor(self, rhs: $flag) -> Self::Output {
--                self | Self::from(rhs)
-+            fn bitor(self, rhs: Self) -> Self::Output {
-+                Self(self.0 | rhs.0)
-             }
-         }
- 
--        impl ::core::ops::BitOrAssign<$flag> for $flags {
-+        impl ::core::ops::BitOrAssign for $flags {
-             #[inline]
--            fn bitor_assign(&mut self, rhs: $flag) {
-+            fn bitor_assign(&mut self, rhs: Self) {
-                 *self = *self | rhs;
-             }
-         }
-@@ -155,6 +196,21 @@ fn bitand_assign(&mut self, rhs: Self) {
-             }
-         }
- 
-+        impl ::core::ops::BitOr<$flag> for $flags {
-+            type Output = Self;
-+            #[inline]
-+            fn bitor(self, rhs: $flag) -> Self::Output {
-+                self | Self::from(rhs)
-+            }
++        // SAFETY: `current` points to the currently executing task, so it is
++        // valid to read its `files` pointer. The pointer may be null during
++        // task teardown.
++        if unsafe { (*current.as_ptr()).files.is_null() } {
++            return Err(EMFILE);
 +        }
 +
-+        impl ::core::ops::BitOrAssign<$flag> for $flags {
-+            #[inline]
-+            fn bitor_assign(&mut self, rhs: $flag) {
-+                *self = *self | rhs;
-+            }
-+        }
-+
-         impl ::core::ops::BitAnd<$flag> for $flags {
-             type Output = Self;
-             #[inline]
-@@ -240,6 +296,38 @@ fn not(self) -> Self::Output {
-             }
-         }
++        // SAFETY: There are no safety requirements on `flags`. We checked above
++        // that the current task still has a file descriptor table, which
++        // `get_unused_fd_flags` accesses.
+         let fd: i32 = unsafe { bindings::get_unused_fd_flags(flags) };
+         to_result(fd)?;
  
-+        impl ::core::ops::BitOr<$flag> for $ty {
-+            type Output = Self;
-+
-+            #[inline]
-+            fn bitor(self, rhs: $flag) -> Self::Output {
-+                self | (rhs as $ty)
-+            }
-+        }
-+
-+        impl ::core::ops::BitOrAssign<$flag> for $ty {
-+            #[inline]
-+            fn bitor_assign(&mut self, rhs: $flag) {
-+                *self |= rhs as $ty;
-+            }
-+        }
-+
-+        impl ::core::ops::BitOr<$flags> for $ty {
-+            type Output = Self;
-+
-+            #[inline]
-+            fn bitor(self, rhs: $flags) -> Self::Output {
-+                self | rhs.0
-+            }
-+        }
-+
-+        impl ::core::ops::BitOrAssign<$flags> for $ty {
-+            #[inline]
-+            fn bitor_assign(&mut self, rhs: $flags) {
-+                *self |= rhs.0;
-+            }
-+        }
-+
-         impl $flags {
-             /// Returns an empty instance where no flags are set.
-             #[inline]
-@@ -253,6 +341,16 @@ pub const fn all_bits() -> $ty {
-                 0 $( | $value )+
-             }
+@@ -421,13 +442,30 @@ pub fn reserved_fd(&self) -> u32 {
  
-+            /// Creates a flag set from its raw representation without validation.
-+            ///
-+            /// # Safety
-+            ///
-+            /// All bits set in `value` must correspond to valid flags.
-+            #[inline]
-+            pub const unsafe fn from_raw(value: $ty) -> Self {
-+                Self(value)
-+            }
+     /// Commits the reservation.
+     ///
+-    /// The previously reserved file descriptor is bound to `file`. This method consumes the
+-    /// [`FileDescriptorReservation`], so it will not be usable after this call.
++    /// The previously reserved file descriptor is bound to `file`. If the current task no longer
++    /// has a file descriptor table, the reservation is abandoned instead. This method consumes the
++    /// [`FileDescriptorReservation`] in either case.
+     #[inline]
+     pub fn fd_install(self, file: ARef<File>) {
+-        // SAFETY: `self.fd` was previously returned by `get_unused_fd_flags`. We have not yet used
+-        // the fd, so it is still valid, and `current` still refers to the same task, as this type
+-        // cannot be moved across task boundaries.
++        let current = crate::current!();
 +
-             /// Checks if a specific flag is set.
-             #[inline]
-             pub fn contains(self, flag: $flag) -> bool {
-
----
-base-commit: 08df884136f1c1197bab2a27814404fd329d9aac
-change-id: 20260912-add-from-raw-conversions-4647d890bb77
-
-Best regards,
++        // SAFETY: `current` points to the currently executing task, so it is
++        // valid to read its `files` pointer. The pointer may be null during
++        // task teardown.
++        if unsafe { (*current.as_ptr()).files.is_null() } {
++            crate::pr_warn_once!(
++                "FileDescriptorReservation::fd_install called with current->files == NULL\n"
++            );
++
++            // `put_unused_fd` also requires `current->files` to be valid, so do not run
++            // the reservation's destructor after the current task has lost its fd table.
++            core::mem::forget(self);
++            return;
++        }
++
++        // SAFETY: `self.fd` was previously returned by `get_unused_fd_flags` and has not yet been
++        // used. This type cannot be moved across task boundaries, so `current` still refers to the
++        // same task, and we checked above that it still has an fd table.
+         //
+         // Furthermore, the file pointer is guaranteed to own a refcount by its type invariants,
+         // and we take ownership of that refcount by not running the destructor below.
+@@ -446,9 +484,22 @@ pub fn fd_install(self, file: ARef<File>) {
+ impl Drop for FileDescriptorReservation {
+     #[inline]
+     fn drop(&mut self) {
++        let current = crate::current!();
++
++        // SAFETY: `current` points to the currently executing task, so it is
++        // valid to read its `files` pointer. The pointer may be null during
++        // task teardown.
++        if unsafe { (*current.as_ptr()).files.is_null() } {
++            crate::pr_warn_once!(
++                "FileDescriptorReservation dropped with current->files == NULL\n"
++            );
++            return;
++        }
++
+         // SAFETY: By the type invariants of this type, `self.fd` was previously returned by
+-        // `get_unused_fd_flags`. We have not yet used the fd, so it is still valid, and `current`
+-        // still refers to the same task, as this type cannot be moved across task boundaries.
++        // `get_unused_fd_flags` and has not yet been used. This type cannot be moved across task
++        // boundaries, so `current` still refers to the same task, and we checked above that it
++        // still has an fd table.
+         unsafe { bindings::put_unused_fd(self.fd) };
+     }
+ }
 -- 
-Filipe Xavier <felipeaggger@gmail.com>
+2.47.3
 
