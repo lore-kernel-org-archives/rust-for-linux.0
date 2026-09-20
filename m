@@ -1,68 +1,39 @@
-Received: from linkmauve.fr (linkmauve.fr [82.65.109.163])
+Received: from mail-106120.protonmail.ch (mail-106120.protonmail.ch [79.135.106.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B429A3F5BE4;
-	Sun, 20 Sep 2026 11:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764343E5EF8;
+	Sun, 20 Sep 2026 12:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789903132; cv=none; b=eN6HNk+bcf06uSLB3JjMIJPYDjha6sfhm4zcA0GMNz01AbYnuV/NutxdEmdYzakhzo7VSOir/YURXJrHfNVmSfUPRmCMx7PMWvKtW9bngM09mSelILpPn5wbnmwbvLh2NYUvO2JFZ33ATStPPE7p3CdEzjj5fsBZifh9xn5xzSA=
+	t=1789906463; cv=none; b=d9YPsydOIkhTfDZNfRAFfNCq635oMz8pLqh/1yR90Emlkj+WOqvUI95AVzYhzGIDf7w5+PVIuxJqhR3UN+gN0O9esdzsPv//go72rEtY/7LloF9cVt5gndV3tqjkgBaDHfPU8YdB1QeR67ZcEYFfxwtDjk3k9j8936DRene2Mw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789903132; c=relaxed/simple;
-	bh=YHFSIfa4pVKxrlhxSffj9dcUAOSEVU/P5QMiQksQiaU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s2P+lz7hc3tAtJ9tyK3Hv9PnJCVZc1Om3GbZD1dCVhyJjtaUd/+vzDJbiIyR+2AxQcRXhhfLN1C0VT2PTDI4e1HW0pX4rRSt40+OTkaUAppL0nq7CJcCWhtfk8v8v2eBQCQwhLkjsE2lGZlJKssdu1YuU0Jdi7M5q8uggyZHIrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
-Received: by linkmauve.fr (Postfix, from userid 1000)
-	id 8CCBF7189A90; Sun, 20 Sep 2026 13:18:45 +0200 (CEST)
-Date: Sun, 20 Sep 2026 13:18:45 +0200
-From: Link Mauve <linkmauve@linkmauve.fr>
-To: Link Mauve <linkmauve@linkmauve.fr>
-Cc: Srinivas Kandagatla <srini@kernel.org>,
-	Sasha Finkelstein <k@chaosmail.tech>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
-	Neal Gompa <neal@gompa.dev>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Kalyani Akula <kalyani.akula@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Johan Hovold <johan@kernel.org>,
-	Ronald Claveau <linux-kernel-dev@aliel.fr>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev, imx@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v6 0/4] nvmem: migrate to const void * in reg_write
-Message-ID: <aq_BFQ4wgnJqGngQ@desktop>
-References: <20260920111000.2404131-1-linkmauve@linkmauve.fr>
+	s=arc-20240116; t=1789906463; c=relaxed/simple;
+	bh=cLuRYECRXfEosEYKeVS6j3vfjY4Vdfw6I4sDd2yC5Qk=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=J3Nb3P0u/jFMHB1dRLpVM4YEm1ph5kUnXDP6BH8a1M9sIZyxmWKEAG0UAc2/KuHSgWMJPIlsg2M7g2693Etbzj6oeQKy+06CqcfudX1QRKp8Nh6KfXFBDeGsI7yPHiJ1rDF64rKmwyokLLPFgxsATgn3A+NVBkRkeVyjvfXF3qU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=SMe+7ytG; arc=none smtp.client-ip=79.135.106.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="SMe+7ytG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1789906444; x=1790165644;
+	bh=FFArF+zmZlijNiWL8WyOKfrxWTrndzncvzJ7v/qcJwI=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=SMe+7ytGWvydVYCAZeKvNwpwzyds4DPk0j3PPMS2QBIqohMtmslgHAFAfHtxZLSMR
+	 woliGKxjkfKnLfB0RfzloVUCeJFAVRiEnN6iciKNxxb8fmLeYBNWBJbC74qk1maI4+
+	 4QUAHTKNc5yHKCZVo2J41fzJ6DK5nMekuQ8pU6+qfcRZ7xlaZHwGtQPG2WQ/Q2B9GY
+	 pT/9TCqk45HPmkCWV3/SD6/RlXo6SYfdxaFn6erX/wEBN1ZnXhQ1haz4MD0ZlmuQA9
+	 dNgTZ/i7GcwAD9XWaONfRC57FEK/YwhA2MCVNkRgw9OqFiR1cMUe4W/HsceAMiCLKi
+	 DiLOas7uIuF/g==
+Date: Sun, 20 Sep 2026 12:13:57 +0000
+To: Daniel Almeida <daniel.almeida@collabora.com>, Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, Robin Murphy <robin.murphy@arm.com>
+From: Lorenzo Delgado <lnsdev@proton.me>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev, driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org
+Subject: [PATCH v3] rust: io: convert ResourceSize into a transparent newtype
+Message-ID: <20260920-resource-size-newtype-v3-1-9451444e83bb@proton.me>
+Feedback-ID: 53083996:user:proton
+X-Pm-Message-ID: ecc26dd13504dadec62f9f489bc7a969f187b114
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,116 +41,256 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260920111000.2404131-1-linkmauve@linkmauve.fr>
-Jabber-ID: linkmauve@linkmauve.fr
+Content-Transfer-Encoding: quoted-printable
 
-Oops, I forgot to carry the tag I got in v5…
+`ResourceSize` is a bare type alias for `resource_size_t`, so it
+inherits every integer operation and `as` cast. That allows operations
+that make no sense for the size of a hardware resource, such as mixing
+it with unrelated integers or truncating it with a cast.
 
-Here it is:
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Wrap it in a `#[repr(transparent)]` newtype so each conversion at a
+boundary is explicit. The representation is unchanged, so this is
+ABI-identical; only the spelling at the FFI boundary changes. Provide
+`from_raw`/`into_raw`, `From` in both directions, and a fallible
+`TryFrom<ResourceSize> for usize`. On 64-bit, where `resource_size_t`
+is a `u64`, also implement `FromSafeCastArch<ResourceSize> for usize`,
+so code that is specific to 64-bit can keep the conversion infallible.
 
-On Sun, Sep 20, 2026 at 01:09:53PM +0200, Link Mauve wrote:
-> This callback used to take a mutable void * for no reason, which causes
-> the compiler to be unaware that the val buffer should never be modified
-> by the callback.
-> 
-> This was found while drafting the nvmem-provider Rust abstraction.
-> 
-> Thanks to the guidance of Andy Shevchenko, this now introduces a new
-> callback and deprecates the existing one, with the goal of renaming the
-> new one into the old one once no user remains in the kernel.
-> 
-> Changes since v5:
-> - Link to v5:
->   https://lore.kernel.org/rust-for-linux/20260804135940.2378737-1-linkmauve@linkmauve.fr/T/
-> - Add a dev_warn() when registering a nvmem driver with a deprecated
->   reg_write callback.
-> - Add a fourth patch enabling COMPILE_TEST on three more nvmem drivers,
->   which forgot to depend on that config.
-> - Remove a few unneeded (void *) and (const void *) casts in core.c.
-> 
-> Changes since v4:
-> - Link to v4:
->   https://lore.kernel.org/rust-for-linux/20260726131724.15299-1-linkmauve@linkmauve.fr/T/
-> - Rebase on top of linux-next 20260803, the previous series didn’t apply
->   any more due to changes in core.c.
-> - Also convert the at24, at25, eeprom_93xx46 and m24lr drivers to the
->   new reg_write_const callback, these were missed because they got moved
->   to the nvmem directory in linux-next between v3 and v4.
-> 
-> Changes since v3:
-> - Link to v3:
->   https://lore.kernel.org/rust-for-linux/20260716142415.28718-1-linkmauve@linkmauve.fr/T/
-> - Drop Apple SPMI patch, which had already been independently included
->   in linux-next as 7089170e1df160f5f8fb395bc5aa2e2697b4e896.
-> - Reword the cover letter’s subject.
-> - Reorder the meson firmware patch before the other ones, so that every
->   commit is always working correctly.
-> 
-> Changes since v2:
-> - Link to v2:
->   https://lore.kernel.org/rust-for-linux/aljAqBNVXV1aVJqx@luna/T/
-> - Rebase on top of linux-next/master.
-> - Fix logic error which made all devices read-only.
-> - Remove a blanket cast of function pointers to void * in
->   apple-spmi-nvmem (patch 3).
-> - Also fix constness of write buffer in firmware: meson, which is used
->   exclusively by meson-efuse (patch 4).
-> - Re-review all changes to make sure the passed types are more correct
->   than they were before.
-> - Actually test with COMPILE_TEST, which I forgot to enable before…
-> 
-> Changes since v1:
-> - Link to v1:
->   https://lore.kernel.org/rust-for-linux/20260715175229.24672-1-linkmauve@linkmauve.fr/
-> - Removed all changes to other subsystems than nvmem.
-> - Added a new reg_write_const callback instead of changing the exisitng
->   reg_write.
-> - Deprecated the existing reg_write callback, it will get removed once
->   all users in the kernel will be done migrating to the new one.
-> 
-> Link Mauve (4):
->   firmware: meson: pass a const buffer to meson_sm_call_write()
->   nvmem: core: deprecate reg_write callback with reg_write_const
->   nvmem: make all reg_write callbacks take const void *
->   nvmem: enable COMPILE_TEST for more drivers
-> 
->  drivers/firmware/meson/meson_sm.c       |  2 +-
->  drivers/nvmem/Kconfig                   |  6 +++---
->  drivers/nvmem/apple-spmi-nvmem.c        |  4 ++--
->  drivers/nvmem/at24.c                    |  6 +++---
->  drivers/nvmem/at25.c                    |  4 ++--
->  drivers/nvmem/bcm-ocotp.c               |  8 ++++----
->  drivers/nvmem/core.c                    | 26 ++++++++++++++++---------
->  drivers/nvmem/eeprom_93xx46.c           |  6 +++---
->  drivers/nvmem/imx-ocotp-scu.c           |  6 +++---
->  drivers/nvmem/imx-ocotp.c               |  6 +++---
->  drivers/nvmem/internals.h               |  1 +
->  drivers/nvmem/lan9662-otpc.c            |  6 +++---
->  drivers/nvmem/lpc18xx_eeprom.c          |  6 +++---
->  drivers/nvmem/m24lr.c                   |  4 ++--
->  drivers/nvmem/max77759-nvmem.c          |  4 ++--
->  drivers/nvmem/meson-efuse.c             |  8 ++++----
->  drivers/nvmem/qcom-spmi-sdam.c          |  6 +++---
->  drivers/nvmem/qfprom.c                  |  6 +++---
->  drivers/nvmem/rave-sp-eeprom.c          |  6 +++---
->  drivers/nvmem/snvs_lpgpr.c              |  4 ++--
->  drivers/nvmem/sprd-efuse.c              |  6 +++---
->  drivers/nvmem/stm32-bsec-optee-ta.c     |  2 +-
->  drivers/nvmem/stm32-bsec-optee-ta.h     |  4 ++--
->  drivers/nvmem/stm32-romem.c             | 10 +++++-----
->  drivers/nvmem/zynqmp_nvmem.c            |  6 +++---
->  include/linux/firmware/meson/meson_sm.h |  2 +-
->  include/linux/nvmem-provider.h          |  6 +++++-
->  27 files changed, 87 insertions(+), 74 deletions(-)
-> 
-> 
-> base-commit: 3f2425f5b5bbbdd991ca9cdfd5502e68d8895998
-> -- 
-> 2.55.0
-> 
+Update the producers, `Resource::size` and `SGEntry::dma_len`, and the
+`Region` and `request_region` consumers. nova-core only builds on
+64-bit, so its page count in gsp.rs uses `from_safe_cast_arch()`. tyr
+widens `dma_len()` to `u64`; go through `into_raw()` so that still
+builds on 32-bit ARM, where `resource_size_t` is a `u32`.
 
--- 
-Link Mauve
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1203
+Signed-off-by: Lorenzo Delgado <lnsdev@proton.me>
+---
+Changes in v3:
+- Rebase on rust-next (v7.3-rc4).
+- Implement FromSafeCastArch<ResourceSize> for usize in the kernel
+  crate, next to the type, now that the lossless casts live in
+  kernel::num::casts. Drop the impl from nova-core's num.rs, and switch
+  gsp.rs to usize::from_safe_cast_arch(), the same line the nova-core
+  conversion to kernel::num uses.
+- Convert the dma_len() user in tyr, added since v2. Without it, tyr
+  fails to build on 32-bit ARM without LPAE.
+- Link to v2: https://lore.kernel.org/r/20260719200945.687904-1-lnsdev@prot=
+on.me
+- Link to v1: https://lore.kernel.org/r/20260712113602.389060-1-lnsdev@prot=
+on.me
+---
+ drivers/gpu/drm/tyr/vm.rs             |  2 +-
+ drivers/gpu/nova-core/firmware/gsp.rs |  3 +-
+ rust/kernel/io.rs                     | 83 +++++++++++++++++++++++++++++++=
++---
+ rust/kernel/io/resource.rs            |  6 +--
+ rust/kernel/scatterlist.rs            |  2 +-
+ 5 files changed, 85 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
+index c5e307b1e241..c32d0259af5b 100644
+--- a/drivers/gpu/drm/tyr/vm.rs
++++ b/drivers/gpu/drm/tyr/vm.rs
+@@ -645,7 +645,7 @@ fn sm_step_map<'op>(
+             #[allow(clippy::useless_conversion)]
+             let mut paddr =3D u64::from(sgt_entry.dma_address());
+             #[allow(clippy::useless_conversion)]
+-            let mut sgt_entry_length =3D u64::from(sgt_entry.dma_len());
++            let mut sgt_entry_length =3D u64::from(sgt_entry.dma_len().int=
+o_raw());
+=20
+             if bytes_left_to_map =3D=3D 0 {
+                 break;
+diff --git a/drivers/gpu/nova-core/firmware/gsp.rs b/drivers/gpu/nova-core/=
+firmware/gsp.rs
+index e8f9491e84cc..956f76611cb0 100644
+--- a/drivers/gpu/nova-core/firmware/gsp.rs
++++ b/drivers/gpu/nova-core/firmware/gsp.rs
+@@ -9,6 +9,7 @@
+         DmaAddress, //
+     },
+     firmware,
++    num::casts::arch::FromSafeCastArch,
+     prelude::*,
+     scatterlist::{
+         Owned,
+@@ -154,7 +155,7 @@ pub(crate) fn radix3_dma_address(&self) -> DmaAddress {
+ fn map_into_lvl(sg_table: &SGTable<Owned<VVec<u8>>>, mut dst: VVec<u8>) ->=
+ Result<VVec<u8>> {
+     for sg_entry in sg_table.iter() {
+         // Number of pages we need to map.
+-        let num_pages =3D usize::from_safe_cast(sg_entry.dma_len()).div_ce=
+il(GSP_PAGE_SIZE);
++        let num_pages =3D usize::from_safe_cast_arch(sg_entry.dma_len()).d=
+iv_ceil(GSP_PAGE_SIZE);
+=20
+         for i in 0..num_pages {
+             let entry =3D sg_entry.dma_address()
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index 5ce9fd129068..3cc64983be82 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -6,11 +6,13 @@
+=20
+ use core::{
+     marker::PhantomData,
+-    mem::MaybeUninit, //
++    mem::MaybeUninit,
++    num::TryFromIntError, //
+ };
+=20
+ use crate::{
+     bindings,
++    fmt,
+     prelude::*,
+     ptr::{
+         Alignment,
+@@ -35,11 +37,82 @@
+ /// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit archite=
+ctures.
+ pub type PhysAddr =3D bindings::phys_addr_t;
+=20
+-/// Resource Size type.
++/// Resource size type.
+ ///
+-/// This is a type alias to either `u32` or `u64` depending on the config =
+option
+-/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit archite=
+ctures.
+-pub type ResourceSize =3D bindings::resource_size_t;
++/// This wraps either `u32` or `u64` depending on the config option
++/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a `u64` even on 32-bit archi=
+tectures.
++///
++/// # Examples
++///
++/// ```
++/// use kernel::io::ResourceSize;
++///
++/// let size =3D ResourceSize::from_raw(0x1000);
++/// assert_eq!(size.into_raw(), 0x1000);
++///
++/// // Round-trips through the raw C type.
++/// let raw: kernel::bindings::resource_size_t =3D size.into();
++/// assert_eq!(ResourceSize::from(raw), size);
++///
++/// // Fallible conversion to `usize` (can truncate on 32-bit).
++/// assert_eq!(usize::try_from(size)?, 0x1000);
++/// # Ok::<(), core::num::TryFromIntError>(())
++/// ```
++#[repr(transparent)]
++#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
++pub struct ResourceSize(bindings::resource_size_t);
++
++impl ResourceSize {
++    /// Creates a resource size from the raw C type.
++    #[inline]
++    pub const fn from_raw(value: bindings::resource_size_t) -> Self {
++        Self(value)
++    }
++
++    /// Turns this resource size into the raw C type.
++    #[inline]
++    pub const fn into_raw(self) -> bindings::resource_size_t {
++        self.0
++    }
++}
++
++impl fmt::Debug for ResourceSize {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        write!(f, "{:#x}", self.0)
++    }
++}
++
++impl From<bindings::resource_size_t> for ResourceSize {
++    #[inline]
++    fn from(value: bindings::resource_size_t) -> Self {
++        Self::from_raw(value)
++    }
++}
++
++impl From<ResourceSize> for bindings::resource_size_t {
++    #[inline]
++    fn from(value: ResourceSize) -> Self {
++        value.into_raw()
++    }
++}
++
++impl TryFrom<ResourceSize> for usize {
++    type Error =3D TryFromIntError;
++
++    #[inline]
++    fn try_from(value: ResourceSize) -> Result<Self, Self::Error> {
++        Self::try_from(value.into_raw())
++    }
++}
++
++// A `resource_size_t` is a `u64` on 64-bit platforms, so it fits into a `=
+usize` there.
++#[cfg(CONFIG_64BIT)]
++impl crate::num::casts::arch::FromSafeCastArch<ResourceSize> for usize {
++    #[inline]
++    fn from_safe_cast_arch(value: ResourceSize) -> Self {
++        crate::num::casts::arch::u64_as_usize(value.into_raw())
++    }
++}
+=20
+ /// Untyped I/O region.
+ ///
+diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
+index 17b0c174cfc5..a33a416b289a 100644
+--- a/rust/kernel/io/resource.rs
++++ b/rust/kernel/io/resource.rs
+@@ -58,7 +58,7 @@ fn drop(&mut self) {
+         };
+=20
+         // SAFETY: Safe as per the invariant of `Region`.
+-        unsafe { release_fn(start, size) };
++        unsafe { release_fn(start, size.into_raw()) };
+     }
+ }
+=20
+@@ -114,7 +114,7 @@ pub fn request_region(
+             bindings::__request_region(
+                 self.0.get(),
+                 start,
+-                size,
++                size.into_raw(),
+                 name.as_char_ptr(),
+                 flags.0 as c_int,
+             )
+@@ -130,7 +130,7 @@ pub fn request_region(
+     pub fn size(&self) -> ResourceSize {
+         let inner =3D self.0.get();
+         // SAFETY: Safe as per the invariants of `Resource`.
+-        unsafe { bindings::resource_size(inner) }
++        ResourceSize::from_raw(unsafe { bindings::resource_size(inner) })
+     }
+=20
+     /// Returns the start address of the resource.
+diff --git a/rust/kernel/scatterlist.rs b/rust/kernel/scatterlist.rs
+index b83c468b5c63..5d67242befd8 100644
+--- a/rust/kernel/scatterlist.rs
++++ b/rust/kernel/scatterlist.rs
+@@ -93,7 +93,7 @@ pub fn dma_address(&self) -> dma::DmaAddress {
+     pub fn dma_len(&self) -> ResourceSize {
+         #[allow(clippy::useless_conversion)]
+         // SAFETY: `self.as_raw()` is a valid pointer to a `struct scatter=
+list`.
+-        unsafe { bindings::sg_dma_len(self.as_raw()) }.into()
++        ResourceSize::from_raw(unsafe { bindings::sg_dma_len(self.as_raw()=
+) }.into())
+     }
+ }
+=20
+
+---
+base-commit: 40288c9206c17eb66a603262e06a58d300d0f279
+change-id: 20260920-resource-size-newtype-63a82d4f2cdb
+
+Best regards,
+-- =20
+Lorenzo Delgado <lnsdev@proton.me>
+
+
