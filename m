@@ -1,128 +1,112 @@
-Received: from out162-62-58-216.mail.qq.com (out162-62-58-216.mail.qq.com [162.62.58.216])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F40F493651;
-	Mon, 21 Sep 2026 12:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF279488DAF;
+	Mon, 21 Sep 2026 12:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789992117; cv=none; b=De3AnK+W5HaLP4rHr+h2xbGhNgZ4PJx9aJxNUeahhOWQrs6fVtz+pf8pSBy+HOtIqNzCaEtb/LqGG896+1FKgwi1ZCVWadd42rMzebiTAfxjQcLUEr8bNYN2icGoTqz1dfA05Uqbc6RQU723FBv4Rt2Z28vSYNsFaHN738lROe4=
+	t=1789992580; cv=none; b=Fhs/BEDrQxxqE3wAm0GsmkTwhGzUzKhdCxWJi4c1ohHBYWEwOoX4z62kgipXKtZqaxHJn9lz2b2rO7jSS8iLT4Fyuop7445zJchEKfHh7jw9dTG8Iz4DPsIjWTHN0dDSga1IsnHsraGBb4yux7Kr55jQ70ypdIA/j4LcadNHKMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789992117; c=relaxed/simple;
-	bh=nFVv1hw2LAlqCZcW9tB0V1fWqL1oB3ynzlA3Aj5IBco=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=oA9BZFUCNHQHS1YdhiVbb0FfaLvxsHkvkC3chLZ2Jot4eaDcVkpfHgWU/31rlM0Vyul32uCG+0rYDMB4zQ+xNL+NmgZymZip/qxrOVYA7x4GwbGw5VzJD1rZge5fJNpYgwKYb5C3ofkma9jhaesKJBnMTKv+JQTgV27OxKuifb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=kD9XGGO8; arc=none smtp.client-ip=162.62.58.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1789992580; c=relaxed/simple;
+	bh=u9UJ5FPD/iawT9BypdKY9UQHnXff5vFR5/his7/VTkk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Lp0JeUuFdst4xQCGFOb3AfrHm4QQx7AWgtbeVZlDHhF1fBi14No+TyCMoAahs3nuVAJeKjzxDdYPHWG8JXXDigOrZqQVcLMCs+J6/LNqEr8N96jk4MpkIFKCjI1599LQTiyEPFpxe0KnKFsXQ4XMHEaMvxH0T5JuZh1rF2N7Lqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XZwdLRFg; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="kD9XGGO8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1789992100; bh=AGcyMt6afjY7JRTjcf606pOI3YtMAQCRo3jjVfdNQzo=;
-	h=From:To:Cc:Subject:Date;
-	b=kD9XGGO8z6JMxRY25oVzOl6KCaLKwDe4C50lNXZGdlVBySRYjUe+R20Yh8x5EsFnO
-	 FrVisr4+qIPr3Tsmbp9SNsuNgqcMRP75srH75TW7h0Hsw0D+N9zt6HiARm7XgrjlF7
-	 N8Xx2+fnezWeLDgDGrVxoaD0jCiz2uc5vMGoSyaY=
-Received: from localhost.localdomain ([202.120.234.146])
-	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
-	id 652324A; Mon, 21 Sep 2026 20:01:37 +0800
-X-QQ-mid: xmsmtpt1789992097tqi643qwv
-Message-ID: <tencent_5F3F1A5D096692FC22CADA8FAF888EE39E09@qq.com>
-X-QQ-XMAILINFO: M9x8kX0uaJja0dRWvhuk+ZaWxMcu4uBFXETS0F691T+jhbLdXp+K2l5kUpFI4n
-	 sdS2/tShuBC4YB7BUfaNrESM7GN340HP0aFahk+rDNKpmrymlgTn9HiYsMeWFzv0DjqL3RDp+CdF
-	 3p0e8jEfalKlASYHlbBWyzX7Qen61S3mXN83K5KAZO5FLRWzWhN9wVixO0Os26cy0/vsiowiwJ1h
-	 X79ey6jyTaqf8X+97IHoics40zxMyBzpMYU2tmuCs3OWBx1NVwsK6L2w4BrAO46jvZOxQ/wuJiYU
-	 zj0Y1i0hqFRMEElCqjhppond1byGr6S4bVQS5mZuzTvy+IxnKrarQ6SaKTIqWuMqfiU9c4vtvvNr
-	 YGQ7UF2Y4HWZa7LF+AfT3uwdKuO/AfAwp3BmpPbUGywwflHdTXX8CJGKFAiRKC7WcJDeMi87INQ1
-	 Vk7O/Sc8OBZYHfh58gOUNJkP+o25fViqyi1+FIKUDpfgkhWvX/rPEKz1mF+CiO/K0TmO9OjcTH2P
-	 Ew/VuVHtesi/L8UKAgzASmDYynBeR3EprqgQtIrOU4B/g8Eb4Em1CpsE+k5fBs2Z63VK1bvFNIAA
-	 UWOWu0TQGSe9F1l3zfvHuAdHB2I4fq6Tmu3Mk/tnzGR/t1NtBXwI6os88qQbaNo10zL1djeHWJTM
-	 rwOVxcdz7WLhYa+y5qKAwJguGAwuf8MhYwiR+osiR/l4t1hkIFJPCh3N9MdADMt3xlag/N4lMWQe
-	 44l8D7eUbLnA28F5Xr3qlmUDT3nO1PNVRn4MZiv9uKNET4s8Rs7Bb3lwpJwSsPIL2TIQrDW8Wt9u
-	 5/QR739kf88ZkcL9j3iaDvNIETEcR28p1i7ytvWNMxv3vSSCf8p30Vkudfk8I557e/yAN8c96a+h
-	 jZFzFds5M3afp+gNeGRWFwfSB4vpIHRF+femPtDxIGlvkDulKlYbGJ3lviUjvy58U3ax1WQmCgFF
-	 JKixqKYfGhQEHv/uTyIH5mDktO/Wu8Z/xM/mlAzIdP8fwvi52Nt+Vfs350Zi5BARfDZ5gjtL0zA0
-	 FWlBpGk4bLe5FYnXtWNjGNFV0fEPrCaGmdZvNTSFtpTA8KVT7F55c+KxhdNzA4nfrBWYL93mVrdn
-	 EC3kEuHmGAdIHcaLR7SGMj1foAsJcjelXuD0wZ
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-From: Yilin Chen <1479826151@qq.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yilin Chen <1479826151@qq.com>
-Subject: [PATCH] rust: print: document safety of formatting calls
-Date: Mon, 21 Sep 2026 12:01:36 +0000
-X-OQ-MSGID: <20260921120136.1406994-1-1479826151@qq.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XZwdLRFg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789992579; x=1821528579;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=u9UJ5FPD/iawT9BypdKY9UQHnXff5vFR5/his7/VTkk=;
+  b=XZwdLRFgzkuEzvvcpbI2ab/Kw2rXVMIEQLKR+OD2RBZSXu2d9h3p0x+x
+   kifB56uYOoXMvbSSsI0ZWvVjmxLtHIVnOkOrbH5r+RspB/OA5ZLRSAacE
+   L7IVJRJC2ng75YrpSsexMhQqPO4Mjca8FSRPwbTOGKpgl+OODc/VD8oUK
+   Y0nLjC7XzhK4uIGFFejoeS5PHSTuYqfrfkuexR920V2W0fgy2ENTd5Kbl
+   FaLkUTJ6KQTycC9HZkc14NEq1fmRA/5DvgMEN8Rcl6gX2Q+7AEYzRR6I3
+   PTJSQ9TUT1klGpd7wlL632ZPevRm734nJUITQeD/+ra8R+gavaAugQUVf
+   g==;
+X-CSE-ConnectionGUID: 6G6L2wXXRMyhtBHGSgplmw==
+X-CSE-MsgGUID: 2C4D+OH6SzC5QdGKU3RdFQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11911"; a="101093377"
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="101093377"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 05:09:33 -0700
+X-CSE-ConnectionGUID: W0f4H5asSJaS6m7Gt56H4g==
+X-CSE-MsgGUID: SYS7McWiRMag8Rx/VxvOaA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="271149277"
+Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.180])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 05:09:20 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Petr Pavlu <petr.pavlu@suse.com>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Nathan Chancellor
+ <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Nick Desaulniers
+ <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt
+ <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, Alexey
+ Gladkov <legion@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti
+ <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, Ilias Apalodimas
+ <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
+ =?utf-8?Q?n?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein
+ <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Onur
+ =?utf-8?Q?=C3=96zkan?=
+ <work@onurozkan.dev>, Jonathan Corbet <corbet@lwn.net>, Randy Dunlap
+ <rdunlap@infradead.org>, Kees Cook <kees@kernel.org>, "Gustavo A. R.
+ Silva" <gustavoars@kernel.org>, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+ linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, Jens Axboe
+ <axboe@kernel.dk>, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2 13/21] modpost: emit module descriptors as assembly
+In-Reply-To: <95baacfb-d8d9-4d2f-bc89-592df6f6f8e3@suse.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260914-build-speedup-v2-0-39817ec5db23@kernel.org>
+ <20260914-build-speedup-v2-13-39817ec5db23@kernel.org>
+ <95baacfb-d8d9-4d2f-bc89-592df6f6f8e3@suse.com>
+Date: Mon, 21 Sep 2026 15:09:14 +0300
+Message-ID: <2f22f2ae7e5ddd8049994aceb2e52e2993f8c6fe@intel.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Replace the remaining "// SAFETY: TODO." comments in the Rust printing
-implementation with explanations.
+On Mon, 21 Sep 2026, Petr Pavlu <petr.pavlu@suse.com> wrote:
+> As a side note, I'm currently working on cleaning up what linux/module.h
+> includes. This was also originally motivated by an effort to reduce the
+> compilation time of .mod.c files, though cleaning up that header makes
+> sense in general, since it is the most explicitly included file in the
+> kernel.
 
-The `call_printk` function passes a module name for %s and a pointer to
-fmt::Arguments for %pA. Restrict its safety contract to
-non-continuation format strings, since the continuation format contains
-only %pA and uses a different argument layout.
+You might find this [1] helpful.
 
-Assisted-by: Gpt-5.6 Sol
-Signed-off-by: Yilin Chen <1479826151@qq.com>
----
- rust/kernel/print.rs | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index 0d62beeedca5..86b4347a7707 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -29,7 +29,8 @@
-     use fmt::Write;
-     // SAFETY: The C contract guarantees that `buf` is valid if it's less than `end`.
-     let mut w = unsafe { RawFormatter::from_ptrs(buf.cast(), end.cast()) };
--    // SAFETY: TODO.
-+    // SAFETY: `%pA` is a Rust-only format specifier. Its callers pass `ptr` as
-+    // a valid pointer to a `fmt::Arguments<'_>` value.
-     let _ = w.write_fmt(unsafe { *ptr.cast::<fmt::Arguments<'_>>() });
-     w.pos().cast()
- }
-@@ -96,8 +97,8 @@ pub mod format_strings {
- ///
- /// # Safety
- ///
--/// The format string must be one of the ones in [`format_strings`], and
--/// the module name must be null-terminated.
-+/// The format string must be one of the non-continuation strings in
-+/// [`format_strings`], and the module name must be null-terminated.
- ///
- /// [`_printk`]: srctree/include/linux/printk.h
- #[doc(hidden)]
-@@ -109,7 +110,10 @@ pub unsafe fn call_printk(
- ) {
-     // `_printk` does not seem to fail in any path.
-     #[cfg(CONFIG_PRINTK)]
--    // SAFETY: TODO.
-+    // SAFETY: `format_string` is one of the non-continuation strings in `format_strings`,
-+    // so its `%s` and `%pA` specifiers match `module_name` and `args`, respectively.
-+    // `module_name` is NUL-terminated as required by this function's safety
-+    // contract.
-     unsafe {
-         bindings::_printk(
-             format_string.as_ptr(),
+BR,
+Jani.
+
+[1] https://lore.kernel.org/r/20260915104331.255636-1-jani.nikula@intel.com
+
+
 -- 
-2.25.1
-
+Jani Nikula, Intel
