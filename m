@@ -1,139 +1,123 @@
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5B24A49B5
-	for <rust-for-linux@vger.kernel.org>; Mon, 21 Sep 2026 16:09:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.204
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790006951; cv=pass; b=CzjdKNASfc+LY9DSHWSW6ErVeCqllGyHePy3hDa0bvLGrO5ysuXDdfolcmPkgaHaWCkzqu5mbEJjVkJgaYtI9p57jORe2VCN9pEZDZCICW056Ver0ypoH2LIkZCgrkKLVoqhNfPdREzRmkIBpUQo+mA3K7W2FTGK7eO3PAts98o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790006951; c=relaxed/simple;
-	bh=AIjc3MXIEI1WNzfDBHDw6Y+wt0nahAW6usfM1evUcdQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r8jl+T38hfxPnQZTCJse5EP+VYtuvtOrYVimAxz3+teZluwYIJDDGCiNoG25mMnBUu+102jzrLxUyVNcidT01ZugTnbFJrt/JbfGpiLt3c6Mrcn+VBTHO1c5plpLcQ7woY8oWEloHPWOmrAP9ukUToPUR5kdASrkL/+8QZ3nFFw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HyZzq0iI; arc=pass smtp.client-ip=74.125.229.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422973290AA;
+	Mon, 21 Sep 2026 17:28:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790011684; cv=none; b=MdVNziGvNzJLboucXtoiQioYGCerApkTbYEeHgG8S2nBNac9oMyo4HOOCgCJpT1rU2WLgNswYKWV0GQ4qQJbvA4TnA3J808wJEI1SfYiu2vKe6xEe5y+3QygiKlBUxhjY8dGGSZaMOEYnDtZtXnrCOWL6/+G8Ch+jqnGjlmfVfU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790011684; c=relaxed/simple;
+	bh=yUgPAsGODFo/WbxGPEZgi9eL2qVTmnv+llaOMNpBMXY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nScMGZVlW7GKGnMJBg++XPIsbDU+H+8B1wROKf5oadeVtufsy97dAbX67vnW3N+8YSo4Dbv0Zrkw5bCJNdIJuzyO9+WeM34T0wgfxwJ1TF2Jnrb0YrxWeuQS/dFxOHtbGHr1rCLvUAqGKrDo0O3kxaOji1vYWLXDYAdq+/UN2Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=EGgzuX0q; arc=none smtp.client-ip=199.89.1.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HyZzq0iI"
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b79786cdafso468175e87.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 21 Sep 2026 09:09:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790006947; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QiaEzgmKE9TKjViv+M9vi18V8iT9jMTCQCkOkJ/9XchAycyKFtQ1vNSKQs+R2cw7T7
-         BVR2K9YK74tMn2Ck91Mvn2/pjf9SHR1LqxGOilF4cJagcleGe6W2WDgzFaoT+a1ZJoUR
-         Yl8uVl+Z0ppsu1o1ZutNVYKtHBRqqb/VhGD1otPT8BmuUjnIDza5oH34z/U6VHsKKrot
-         AmXFwpo+j4Ykk/m9HlrE/ulU5L2mxZX1xXKM56/B1Yog/6griyz1E6PZZE4r24R+0Y95
-         g43xjcRMeBLN5ZPD6vboGuV5SliBkrj+neLDDl7ikxyFXG+VHNh1RlePXRWEsAauyDwX
-         jB+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AIjc3MXIEI1WNzfDBHDw6Y+wt0nahAW6usfM1evUcdQ=;
-        fh=NTYe5UBaq57NVKkNuPIr497daW3GsQ6D4M6MhLdVB3M=;
-        b=QHF1lZqsBrXd2lvfqHw/Iv17Fi0oj89/GXfDbPfNFNFGlS8oBtixcGCzIC3hxY0CDN
-         1vvIbJ+OhIoSaS8ockLn4GtOxCgiM1KqNA6shsjnWWtMf5ClAd639BnGBife+TuU8+9G
-         6j0hS2O9y+uocuGmXRJ6UnD7VJw1/PRqXrk7D/ETScFWc+8pU+w94OEVQO49RhSTAVwl
-         LiYb9ELUerhkHBFCgy4/sS1ZNYoCTyfEjECl/kLigcVjW6GkH4FITiNjJxfkYASVuvGO
-         1n7BVOpxFEPX1w09zIcvn01+hjoDNNKa4emZFow48NGeVA9RIwigZb31QiQRmK9mFwPS
-         e6qw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790006947; x=1790611747; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AIjc3MXIEI1WNzfDBHDw6Y+wt0nahAW6usfM1evUcdQ=;
-        b=HyZzq0iICYBObXLKZzkAbYdHutJgeMFWvA3srR1rgB9/G3D0DM4o72UNWCWsecRCUe
-         +NL6bE5yfhrSDsN32oKwXFadspCpfpFLd1FVlcIvBLJ0Z7zpuKMJivUJvf7NL9x4W3aT
-         n0SkrBqDJiMKlMJZ+9Vnx9t1OTZrqlzc6xcMW/Xupzv5oIDUAFLlltcbALfsGedOBKfi
-         yx1qMu7wOJ7UgTqd4fu6TQxQ7AYVp7fK1aKSGdhsKFSWt7HGUX/4fU5HgWD0O0HZeGWR
-         gO0jA3unzMgTiSzuVz/0MObUlTtmZ5KNhs5IHD6lr5HmeVx1e5ZkHgMBmKwANx4S8EXm
-         2oLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790006947; x=1790611747;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AIjc3MXIEI1WNzfDBHDw6Y+wt0nahAW6usfM1evUcdQ=;
-        b=MIOdC3KbwNYiSBxlY0chfUPKY4/rvfSlRaQIFkdPDd/mg8LNatGinJK8iMJHNerydj
-         cCXEMDLyiE5Ns4U9NzSQ1jzXvcP9yADfkKcQWL9q45dx2b6AWHXTOa1RepGWsG3txwwt
-         U3yDxiUJe5M/7EIx1Uv/kLNRJH51zpq6hVLYtEO3U6g7Amv65bgBriVT8LKpaEH7W6fJ
-         EDcKTruMY4XkbT1lTFQEAOLdSTgqg518Hi0vCe14CvAARpoV9Bo/53tjvh5IjO+wnyiB
-         pI1/EmXaGlxxMU5ew5mYcnzCCFSy2N6SZddCbPLDreHM3sEWNNtFq2HnauYFp9o9g7/9
-         kIaQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwtlqvokcDOulnnzuMpyAidZsAmsAW31pseOdhbspUQ/H03GCp005l6FwgZQVG3iIC+vVCPZE2vinKKFvcjTA==@vger.kernel.org
-X-Gm-Message-State: AFuF++m/yT9yPRxO7wNUIANz13DFgb7HOeAIoBkeMblN395dCOjOD9p5
-	hWZWtMEsJwn20irY3O7VAoanx9OQgsoUg4norjSylXi8XqtFN9GWX7bbb1P5Z7fmitts0YYDRvE
-	gJaxEL9QG435lD99wPxllRCi2vdj4Mng=
-X-Gm-Gg: AYBFou3daKb09NGVC6dfh+DhK2VanPH0cJOM541iqi2k1fHTQHuPMWf6zwOGGjsF1Ua
-	vVXuMQ2bp42e1hK4kwuuCkEftE1vRNH1g3JID4adFzj4sz4+TChAklF2OD3N+a/F0WAk/a78nGb
-	0SlmnYdm4lKZ3PR3ah8lPN2OmAHh+c2/rPnHa4AOJaqGxQfn5LZIH/bkKIOvCJ5QlW5aAASS8N3
-	u5N+T/is87g02SKs+sOn3wHsqzgyD7q5SOIebQxFotckQrkPQg65a63+LBvpPYlJM7buaQJFQta
-	3hGQFMDZFWD8dlreczqRtVt4yDsVAE8qAxrIuWSU99Q7+0R+7kh8+CrBRDgWUQQWCcvnGfsPR56
-	3KvzR0X3YHurLpQY25z+KHt7ODCiLuidNJ3KnQGNnJMBnsP2uBH15AeDVwg84aNa0JWZMxSxNgg
-	wPOzw/1S7sYj0yUdqTwNY0WlFjpd8oE9giEWDKeSfzwejQEiVl+A==
-X-Received: by 2002:a05:6512:65d3:20b0:5b8:c6de:48f9 with SMTP id
- 2adb3069b0e04-5b8c6de4cc7mr1586547e87.4.1790006946532; Mon, 21 Sep 2026
- 09:09:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="EGgzuX0q"
+Received: from localhost (localhost [127.0.0.1])
+	by 011.lax.mailroute.net (Postfix) with ESMTP id 4hpVYZ1WZ2z1XM4Tn;
+	Mon, 21 Sep 2026 17:28:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1790011669; x=1792603670; bh=Zu0vvQlvdONab+lcfCw2kySy
+	AZiMONJq//ESXNNrzOI=; b=EGgzuX0qwhtiQXEmfTxNrs3qek8kpCU/e3wxDiTm
+	7KOokRhVDJXLnTyEnC74/z8w2NcS7l+aTIwY0U31OwI+voTNksK0pcV8DEbJSt6g
+	6P1JWb5ixHK13O3pWk2a9M4cdsC19iiaP5ddIdbeiWCVOeYOym/5hbi1cTyGEhCL
+	AHfFyu7vbZhY7OrTep9V7NmR3t5TEF+ClHXkgzvmDQb1D5jYItQlhZD0P+HtncNM
+	fL3F5g7Xi2qSaLinyw/4uu8YavaUPiiAsfW4336MnCH0F53OCn0+cspNFnIdz+t2
+	0wEQPWI5NKofl1blwYlsmj1VlxvprMD/M4A8yA8VGps++Q==
+X-Virus-Scanned: by MailRoute
+Received: from 011.lax.mailroute.net ([127.0.0.1])
+ by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id 55PwjSU8twFO; Mon, 21 Sep 2026 17:27:49 +0000 (UTC)
+Received: from [100.80.231.125] (unknown [104.135.182.41])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4hpVYF0Tdhz1XM4TB;
+	Mon, 21 Sep 2026 17:27:44 +0000 (UTC)
+Message-ID: <afbf50a0-d409-45a3-8e95-99c04ca0e302@acm.org>
+Date: Mon, 21 Sep 2026 10:27:43 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260908225615.1732105-1-georgeandrout13@gmail.com>
- <DLHSL43HJVOM.2LMYD808W8FPN@nvidia.com> <arFPKcA1RCecTfMD@redhat.com> <CAH5fLggOMBVi3DjQSmLtstnntgJQzDsQjEt15nRkiNi7EuLB8w@mail.gmail.com>
-In-Reply-To: <CAH5fLggOMBVi3DjQSmLtstnntgJQzDsQjEt15nRkiNi7EuLB8w@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 21 Sep 2026 18:08:46 +0200
-X-Gm-Features: AcwNN1XQ73lDz4xpLQP5yNOyxGkJdAQw7Y0pwDB52hNn7bLVuCDQdmrVcz_Iz7g
-Message-ID: <CANiq72koa5rBohoBg4zaawBUPuhBatGouBzqTWi8djxMaaLacQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: clk: document overflow panics in `Hertz` constructors
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Brian Masney <bmasney@redhat.com>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Georgios Androutsopoulos <georgeandrout13@gmail.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Brian Masney <bmasney+clk@redhat.com>, Jerome Brunet <jbrunet+clk@baylibre.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, linux-clk@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] block: Add run_todo() operation
+To: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+ Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+ Jan Kara <jack@suse.cz>, linux-block <linux-block@vger.kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>,
+ Andrew Morton <akpm@linux-foundation.org>, Brian Foster
+ <bfoster@redhat.com>, Damien Le Moal <dlemoal@kernel.org>,
+ Hillf Danton <hdanton@sina.com>, Markus Elfring <Markus.Elfring@web.de>,
+ Ming Lei <tom.leiming@gmail.com>, Qu Wenruo <wqu@suse.com>,
+ Tao Cui <cui.tao@linux.dev>, kernel test robot <lkp@intel.com>,
+ rust-for-linux@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Nilay Shroff <nilay@linux.ibm.com>
+References: <e615fb71-f386-4029-8ceb-22e375ad9e94@I-love.SAKURA.ne.jp>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <e615fb71-f386-4029-8ceb-22e375ad9e94@I-love.SAKURA.ne.jp>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 21, 2026 at 5:51=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> My understanding is that the "default" way patches land is that the
-> subsystem also takes Rust patches related to the subsystem, and that
-> the rust tree is a fallback tree.
+On 9/19/26 3:50 AM, Tetsuo Handa wrote:
+> Add run_todo() block device operation which provides a hook for performing
+> synchronous cleanup without disk->open_mutex held, which is needed by the
+> loop devices.
 
-Indeed, the idea on how we suggest setting up the `MAINTAINERS`
-entries is that, by default, maintainers keep control of both sides
-(they are the experts, after all) and that, hopefully, they get more
-involved on the Rust side etc.
+I like the "post_release()" name much better. I think it is more clear
+and more descriptive than "run_todo()".
 
-It makes sense for reworking the subsystem, too, since it may happen
-that a rework on the C side may need adjustments on the Rust side etc.
+> diff --git a/block/bdev.c b/block/bdev.c
+> index cd8323083740..8f09aafbae11 100644
+> --- a/block/bdev.c
+> +++ b/block/bdev.c
+> @@ -974,6 +974,8 @@ int bdev_open(struct block_device *bdev, blk_mode_t mode, void *holder,
+>   	bool unblock_events = true;
+>   	struct gendisk *disk = bdev->bd_disk;
+>   	int ret;
+> +	struct module *fops_owner = NULL;
+> +	void (*run_todo)(struct gendisk *disk) = NULL;
+>   
+>   	if (holder) {
+>   		mode |= BLK_OPEN_EXCL;
+> @@ -996,6 +998,7 @@ int bdev_open(struct block_device *bdev, blk_mode_t mode, void *holder,
+>   	ret = -EBUSY;
+>   	if (!bdev_may_open(bdev, mode))
+>   		goto put_module;
+> +	run_todo = disk->fops->run_todo;
+>   	if (bdev_is_partition(bdev))
+>   		ret = blkdev_get_part(bdev, mode);
+>   	else
+> @@ -1037,12 +1040,15 @@ int bdev_open(struct block_device *bdev, blk_mode_t mode, void *holder,
+>   
+>   	return 0;
+>   put_module:
+> -	module_put(disk->fops->owner);
+> +	fops_owner = disk->fops->owner;
+>   abort_claiming:
+>   	if (holder)
+>   		bd_abort_claiming(bdev, holder);
+>   	mutex_unlock(&disk->open_mutex);
+>   	disk_unblock_events(disk);
+> +	if (run_todo)
+> +		run_todo(disk);
+> +	module_put(fops_owner);
+>   	return ret;
+>   }
+The above changes introduce a bug: these changes cause module_put()
+to be called if try_module_get() fails. I think that's wrong.
 
-The file is already under "COMMON CLK FRAMEWORK", so in this instance
-it seems fine.
+Thanks,
 
-Brian: in case you want it (but it wouldn't be needed!):
-
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-
-As Alexandre said, we may want to rework how these work (instead of
-panicking), but documenting helps for now (and whether this counts as
-a Fix or not is, I guess, up to what you usually do in your
-subsystem).
-
-I hope that helps!
-
-Cheers,
-Miguel
+Bart.
