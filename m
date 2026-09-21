@@ -1,147 +1,208 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010070.outbound.protection.outlook.com [52.101.201.70])
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E767324B20;
-	Mon, 21 Sep 2026 03:48:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789962541; cv=fail; b=lS/Urr/m6aLlc7SJyTi/bSJuUjlB33+jU3WUexStQ36nQJe0VpPmNWtytMzXQTm3u0GcUhWPrrq5hwHKgmRdvKOhvKNNE/j/HJ3zKc0/3AigeV7U6dxiJoRdvD/pfPI5wWbANhhkWAYLlCv3qr8MkxUzGPwsO/e8kvzu1P/+yTo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789962541; c=relaxed/simple;
-	bh=oJl+BVKmUlStr3vyksF46x6r4J2tPPLJwGLHymAQrLc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 Content-Type:MIME-Version; b=lUYuWxPlaj/I+wXA/zHJcx6bliA10PpF09c78OtUx9eTXtVCPfs2V/HW4RYV9tU+7/VXkhCepfR83P6Vv6E42KfxDC70x9/3Jsb7fyrwI5ylYcXAz6iJ34qRq+VWVlGiPqAcS5XXFfMGd7r79NOK9Aw6Pw+U95eRApWFQspEj4w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=N9usyesI; arc=fail smtp.client-ip=52.101.201.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A78E26656D;
+	Mon, 21 Sep 2026 04:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789964065; cv=none; b=F03nVb6FB83blOZsegCBPBg0+iEYWlJzIObLQCTGSTq9t2GCjpilCHrk8KPapxjRXUx8wAEXbuxD6lK+bxUG9Yi2UVmMSSmsh8FhpLDM5+LbO/eWsgkfDeLQ9H0b2uVGyuiVOnSlN0PbCw8fK9xPnKNxkIUhsixjbup4ZZxM5Y0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789964065; c=relaxed/simple;
+	bh=iRYvNnPl3VQmlECSCn53GfxBtZNkyCBLb8oOBJnXe2s=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=V0plzjIV5363UREqrJxqVTa6wlZxiQJ5YXvG3m1zSZvJTJmLju1rSQLz5IDrwyEmxOaO/up+xeKpCxDKi8gT0+aZ3mCtQnkyokB6FAD/b9/Z6LuKpAcn4e7eKMVuGEM4TZ3FwBmsqUrPTMlIMgb0rMJGlLUaIgn8MyY+AGVAZM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=znMxX8Bx; arc=none smtp.client-ip=43.163.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="N9usyesI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tMKi54UfRtyV3F70KtwQgM+/M90MaQCdo3ipiFWeOE8vayt/X2WJDxO9Ce+TRQkCV/NHSr2VxixRTf1cpXV0igP3GG6/qZOAv8pxovFSIKSouCxvCr7I2mOouSTecXEPmc59elVj4uRorTJOBaK+j+2I3G7Ymh70XhNeHfBnrzONIk2fpwckZNF4dEtQTZHNbO48e9kMDuVTVyfirm+xI5Z7XAdzNZTqQhzDkrwBA8bnT67kmlpVZaiav4gCq/Xp4SbveZv4gEBDKVJIrXLSpCOZrCN/f7ACSFTWwOWzerYTD9yrLi4+na36QU9mDywpnKf5C0y8rgOYXftsAN2PUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8eJWmTCkrntGjFW3Ic4fja/afXjLTV95OQADUpUAqnI=;
- b=hJ8kXULb3RY19XeRXge4InJyATfTN8DrzK1iXl5MNs81UqWIDaA0hlYaFjptvgyxu6BHLcXT+n3YTQmm1VMFb4MlCfz5YqUjvB+/rlDwccMNGy5Bomqc0y87+MP2YdHYXoKYoL9vv+ovsAqVzu+BZTJQZ/LfciwTo7Ala+Q6sTw76BXmeHhMOV8chdyG4juAaD/w34C1PBNuduV3uN3OuL4KpEGQPVgVm7Yt5KtCUFzST4KjsDgNYe4WFvh4nUig/qa77ZKlWi6IrPZJ/CF0f05UC+zpPtx25J+gcuNis8thcD15VV7iVn5KVz6u+iJR9bd2MAd366qPZcd2P58glw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8eJWmTCkrntGjFW3Ic4fja/afXjLTV95OQADUpUAqnI=;
- b=N9usyesIGKeQVqyFYOzCBzwSma9XCxyqIM++kTqjUqotwlRnMFFAQmHiUYvv6uskqbgBm5PBjuKdBqKDvjMFVCA/f/50Sl2iVi649f/LXCSqlARCw7+kvcBxZir5PVKTxTZzFLILD4/3yXio166mWlxglSbosWMr+DaVQAJqgvfL/cG2+byGq7kTDq/C8AFOJ+3wv7pH8uxGD9lzHJriPyLa2f3CpVHhXSkcTm24/6j8MxRjyIZ4//Mg+ZMjegtyxFyBuPM5dchLJOsnncwurgB8SafVOo230DG23KghvVfvYSdHb5DPvCQrHoOCZ0wMxXeWTLTLqSsG8G/92sGY/A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by PH7PR12MB9067.namprd12.prod.outlook.com (2603:10b6:510:1f5::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
- 2026 03:48:56 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
- 03:48:56 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-To: dakr@kernel.org, Matteo Kloiber <kernel@matt3o12.de>
-Cc: aliceryhl@google.com, ojeda@kernel.org, airlied@gmail.com, simona@ffwll.ch, abdiel.janulgue@gmail.com, daniel.almeida@collabora.com, robin.murphy@arm.com, a.hindborg@kernel.org, nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260913210828.125655-2-kernel@matt3o12.de>
-References: <20260913210828.125655-2-kernel@matt3o12.de>
-Subject: Re: [PATCH v2 1/2] gpu: nova-core: declare unlimited DMA max segment size
-Message-Id: <178996228310.999062.10377951387828615492.b4-ty@b4>
-Date: Mon, 21 Sep 2026 12:44:43 +0900
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: OS3P301CA0034.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:604:21e::9) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="znMxX8Bx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1789964053; bh=O3RVgr7CiMucacgWG0CW24IkajveUZ/7Nmd8pYeqxDs=;
+	h=From:To:Cc:Subject:Date;
+	b=znMxX8BxAarSgoRmBtEC+0mHqWRxWN0rbZlKqI6NB5rqgumlt8+xj0LajjvkFYmmR
+	 ektHBOu3TlhLYuiWqu1O3ZqQWZH7jTXc2JNs3ijiK34PwLNndjeNnVtIpSmwGsvppM
+	 Js6tYDSWGyeSHj6afFn1KDAFfw+DZfa3btCf7lZg=
+Received: from localhost.localdomain ([202.120.234.146])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id 389942B0; Mon, 21 Sep 2026 12:14:09 +0800
+X-QQ-mid: xmsmtpt1789964049t1mv0ye6k
+Message-ID: <tencent_F3A825AD475CB58F5C0D1C833FD3353E130A@qq.com>
+X-QQ-XMAILINFO: NEW4AM7T0EBsYG2ExRARQxO3hr6TdO07J16dKb0jPZqRt1GtGL3OFK+pv+W8aA
+	 L2sLTn5ti49z5EpicYGh025QxxwYCn5JXR0d2Z71tv3U0X+HSaENSVrpo81I6QZtvUTkTMhiv0aD
+	 nI+PVgCAyNdMsdWLfrUgpe3M2TIuqU7zbNNERNVRzFHyk7OQY3RSCrU45J6mfN5Mpvyu39id+tlV
+	 wKQF4n15MAqfiCW1HAoQ0cSnljsdazJC/eU/suqFG7YUCUyRxJjZ0VKXXcusI8GjuLjigbDw0fJu
+	 fd/ntNL/sjEhiy/YSw7qfz3mi9CxfpqrJ8+6BYdFqn7vVv3YyJxmDcKVD220GNFm8F0JjpO5H4mE
+	 vrsTEOArnBgiIJJ2PeWy9tGe+n5tJCclWP84D86sdLPVIUZWbo78NVcDi7z7i/walvVbPB1ai1oj
+	 1kAzSfOzHjEA/ssq1pEhysrCJfX1SvH/ElOFO+uGmRgHxZV9lgmKvpdPxD9nhLlrYTJgpTXEwXvI
+	 UzlqOO2Ot4Wv1OmFyFqY7PZXijthnuRFVxe1xyWj600ZjKWRPOuI7/2bsSJYIUr7I1gnixQBfH7x
+	 ea0P8tnQrlhuIBPS/BhFI8tbIcLWHWnWPh1gevsndGIOFbqBCp03fN3S/eWcPs7dOBdpBjNOmb9d
+	 h3WqBazLb+fYJCKfjE/WggQxDlZRV8CBEl7HFbn0aD0o3tgdpwO5XPFbtmIkIX6yN3tOiGx43u3j
+	 3GV4fP3MaUdVYWmCtLE1TR670M7tJr04eSSOZjR20u3WhtPmI1qE0AfWub/VfadwzWy8kdPFr2oP
+	 IMPmT2hmLF5n9vj+r5gxBPNSpBOyCt0gdJ1x0E9N5XB7hj7fYA6o/ozzToJDGlTqj6VH3Pb7UwP9
+	 td1slwKmV6sriE+3/iBEMj2TBmKLqPg67d1bNHNPKvCrdj2VZ+Ie4+Rj9e3aNjRINqO6jfloEhcA
+	 JPOEBsivnoFZITjnY2iwCGPx62srRB657TI5ZoJcQzoZeOMKeGR3TK7Qry8TWZ4m+dOdYVtTI802
+	 v1rZj1riTRGzZkQ/SEIjCOOJLGsE5cbHfWaA6keEA6PInpx2I3L9rBSU5kiaqrjfSxSPrKZpy5Gz
+	 4bcQc3mET1eF2cMCI=
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+From: Yilin Chen <1479826151@qq.com>
+To: ojeda@kernel.org
+Cc: boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	tamird@kernel.org,
+	acourbot@nvidia.com,
+	work@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yilin Chen <1479826151@qq.com>
+Subject: [PATCH] rust: list: document safety discharge and add offset_of! check
+Date: Mon, 21 Sep 2026 04:14:07 +0000
+X-OQ-MSGID: <20260921041407.1203693-1-1479826151@qq.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|PH7PR12MB9067:EE_
-X-MS-Office365-Filtering-Correlation-Id: 97456bf0-8d1e-46c4-d94b-08df179342e9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|7416014|1800799024|10070799003|376014|6133799003|18002099003|22082099003|56012099006|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	dascAdnAWI+tLznWhgLwYyXNgMZdV3tEEXMJ7EU5qVanlDyhXG945fe1RmoTeCP1lwX3RQzX0g00qeqR2s0TqRlQOGugXlNz8C1DxSZvvR5JSno8bE8/nLBWfqpBMTLwEvh6+305q949JP7PQBx9pXtqboaXw9qveD8fNGsWkeyDi7jfjZlH7Ci69CTqsD+1MTPEGP5DVe/fbKANiNe+XpORZP87JirnJYuPjJo1C2D5/2qZIxtekXLAJDBDGm3Yt69oQkcR3dk0iqhECPqXarNB6C2ULSoS4OWwvUegXVHy4D9Ov1P6dUK6Q6gy7yQ1sfqKKvnGHoINTBTIp3cpmddhRA8MDkL4eAmDER/Lw4ToGe3aC3p8fLM0fJELRDBDqLg5rUNIoBKF7a1uYkvxNzljzbVRrbvZg28MQL0Wl65fiZQdE/o8Kq6In18XALbwvSjB2oMvfnGfqacf9pd+FZgBydQYO+k7D16vPUE2rXK3bRoUhTN/BitQfWahD9DWZskMiSDY/z+HBS7tgrF1uUP/lykzQYBve5idZDmPmWVYOcb4063m4YkubTFzeBwTUHpoglk031YJ8NZ/+8TcXiyDvrsPZC9OGWJl0VRHw/tiF3r8oNiap9pruiFKU/NdOiZwcGXPlkC6Jfg0Sbq1x9PtLd6Kb7m0/navlyA/AbE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(1800799024)(10070799003)(376014)(6133799003)(18002099003)(22082099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MlhlNkpvaTdvQXZnVjhYMkYxc2JMK0NVRlQvODQ3TmlkcUdDZDJuaitBNVFq?=
- =?utf-8?B?b1RYTDQrYlozSVhHZVp0K0ppVnhlbkYxeXJySXVIajdLSUUrREdmZmhlZW1n?=
- =?utf-8?B?amZzU3NIbDdjOUVBeGhIZ1o4bW9hZDVSSklHREJyVm9GZ25ORTZrRW93TExP?=
- =?utf-8?B?VzFkY241RUIyMlRRSlBONlhVZTI4TWtqaXRueGVOcFRRUGFIc25pbmtxL1Jj?=
- =?utf-8?B?ekczOXZ5T0ttU0hsa3BuOVBlTC8zelZvK1diTGppSTdyV3M3NDZaSDFDWERX?=
- =?utf-8?B?anIvbXJFbmJ5b0lnRTcyajhybVJHbm9QMWpPektPOEFOLzl2dnYzOTNlNU1a?=
- =?utf-8?B?OHkvRzFKYUJLTk42N1hwZHVpN1VMcDRJSC9HN2xVemUrSVZzZW1yOW1LaUJI?=
- =?utf-8?B?T2xwMzIrdHJGSmhoMzUwU0dMSUxWY2dnSzNOdm44RmMwOUtnQVc4N1ZQRGFF?=
- =?utf-8?B?V2ZDeEZROGpRY2w0bDk1MWx3eU5NWnBxRi9PQVN5dXFEZDRLN0dKZHdxNFI0?=
- =?utf-8?B?QkQ0MTNJU0hpTkM4ZTdabFJqbmdmMFBlTGhlQmJ0VCtPSjVVeGVMTnZHcEM4?=
- =?utf-8?B?Wktmb2NhUzdIdUl4L2lVeS96NGJ0TkxYb2M2RUkrcnErMWVJNEZUN3lyb25M?=
- =?utf-8?B?YllITjM5aTRHL2VyM0Qreml4QUQ0eE5KMmUzOTlPc1Q3clZxSGZHd0dCUFJB?=
- =?utf-8?B?cGJoc2h1TmpQWFJFclJ2elQxNENxak82Wm5jRW9Kb25qbjRQbDZQZUtkdEFY?=
- =?utf-8?B?OUxuMlJ5a2xuUFVHOWQvaUFlQjNLVFBWTG9MTUJTaFZWbzhicElOU2hCajNS?=
- =?utf-8?B?UTA1c0JESXV3TndKaDdJOFNIVWJqUk1oTXQyUlpTc3hleXgySitadlh0TTEx?=
- =?utf-8?B?MW53ZEx0MlNZeld1WFRvYjdnUFdWZzB6WkxyNEVjc3IvRUM1Rjc4aCtVeWJn?=
- =?utf-8?B?K1RYRjhMQ3Uzb0kxejJsZkVncEZ1L1VqQ2JxSWVqcWVHSnZnY2ZGOVltWVlj?=
- =?utf-8?B?bUpaODkxZzkwS0V3QTFEL0d6TklhTmR2Mm9lWlFKS0NVZDRSSU1WcHlFNExE?=
- =?utf-8?B?RmhkM2hPZmFkbmwxb3kvMW5ubStCaXdLUU50ZzJyZEtNOWhmazRHRHEzN1Nr?=
- =?utf-8?B?b1lEMTlSQytMUEJrTDlMYTRESTErRFVlbGZYT1k1UjVxZlF0eEErM1M2OUlm?=
- =?utf-8?B?VCtOWXRDb01LeW8wUjU2YTNDMDFCV3MwSHlieXI4elhtMGVBeGd4QmJXYVlT?=
- =?utf-8?B?UklxTTJURkNpeHI2NERSRmxLWTRBdjVzdGdldnk3U0VMa0FrVUE2VnhRSm9u?=
- =?utf-8?B?TGRQTXJTTWFodDduUUdzZFdOSWtkTzlBVFRtKy83cWJJbnRiaVFYSlh0ZGF1?=
- =?utf-8?B?K0cxbjkxbDk4bWFPRFM1OURabGZRNFVXNjVJSU1xWGVHUnBrTlViRUVKWG55?=
- =?utf-8?B?Z3JkWllkZ1BQY1FEVWJ4MjE0b2VJVFhZVTJnTjRKRm1RR0VrRlFtMGZLV21y?=
- =?utf-8?B?MFQ3cWtDUDZmRjJrbnVFVUVFS294UWoxOTVpTitwWldYaHpzU2p3QXhzRlBC?=
- =?utf-8?B?QnhBNjl3TTBjazg5c25vbWxLTkVVQ0MvRFFMSGVMTE95RGdDL1FmdWcreUJw?=
- =?utf-8?B?T3E4aml0Yys5aVh1Um8zeWllaWVheW4xYlZxaWtCOGdMeHp1OGxCMmxpMS9T?=
- =?utf-8?B?ekdYN0RjTWtZZHJGYVRWU1ovM3UrWnJtSUw2V0drSGI0Q295Q2swK2FoNVlk?=
- =?utf-8?B?TlIvZS9JY0IzVEdDTU9sOHJ0YitrT1dzVWZCb2dYd0kwb1JjSVFpbGdWaEt4?=
- =?utf-8?B?R2Zad3NuN3N2WHdIOEQzU0Z6RXUrR3ZQRlg0OHJDZzNFWkkyM2RmOEtFTWlO?=
- =?utf-8?B?MFRlV2tkR2wvL2txUFlZTzZnQUd2dDV6V2JrWWdGNnp2RERQVnVSRlRjVGFH?=
- =?utf-8?B?S044eWFEMENISTJkY3l0dlltY3lJNmxicXJ6UXIyQUVvOXQ1bzd2NUVURURP?=
- =?utf-8?B?eFZzRUxTcmRndk1La2VsNzNSZWFJa0pwNldoaGVrUHZqNGRTWXdObXVEUkxD?=
- =?utf-8?B?YmtSclQyNWxVSDRJWG5BUWlyYldqemtKdUttaFdxMDc0YmVYZjBOZG85NkZs?=
- =?utf-8?B?cGlXVVRpeS9XU0JWVzQ0Njh6N2dYYWlYck9nNEdsdElJVXMxSXh2WDJnWHRF?=
- =?utf-8?B?RHJlOVNaZ2UwSitSNGZORW1ZWHlIZ3o2bnM4bTZXSVliVjJwV051dUswZUwx?=
- =?utf-8?B?a2tPVnVONFVEYjlQQ2UyMFhyeGdSUno2ZFF4aXc1QWJQZVBaT1hLYTc5a0Zl?=
- =?utf-8?B?TUdrdXBOSm0wTmJURk81R2hLVDcwV2diZmc4MWc0SzJ5VE95UEltUmRNVk9x?=
- =?utf-8?Q?PhtJD2zwrmtl4z4cRAM8/6F1bvBMUSUcTcYmWgtGPjvFe?=
-X-MS-Exchange-AntiSpam-MessageData-1: Refz71kNDjNlpg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 97456bf0-8d1e-46c4-d94b-08df179342e9
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 03:48:56.1525
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vKqOw9x6ohJyU/2Xy1qDG/qBgeof2DfiL2ViqRzIdEwAMeD4Z5oDmyfI0CF7LLIb9R10MO4T2Tt+PX5IvIG83g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9067
+Content-Transfer-Encoding: 8bit
 
-On Sun, 13 Sep 2026 23:08:27 +0200, Matteo Kloiber wrote:
-> The PCI default max_seg_size is 64 KiB. nova-core never raises it, so
-> mapping the GSP firmware image (~60 MiB) as a scatter-gather table
-> triggers a DMA-API debug warning when contiguous pages coalesce into
-> segments that exceed the default:
-> 
->   DMA-API: nova-core 0000:00:03.0: mapping sg segment longer than
->   device claims to support [len=62914560] [max=65536]
-> 
-> [...]
+Replace the remaining "// Safety: TODO" in the Rust intrusive list
+implementation with explanations.
 
-Applied to drm-rust-next, thanks and congrats on your first kernel patch! :)
+Also, the `impl_has_list_links_self_ptr!` macro does not perform
+the field-path validation already used by `impl_has_list_links!`.
+As a result, `addr_of_mut!` also accepts paths that require
+implicit dereferencing.
 
-[1/2] gpu: nova-core: declare unlimited DMA max segment size
-      commit: 6bd5eaeb9827ca7ba953b68fb27948fdb3e40630
+Use offset_of! in an unreachable branch to ensure that the path consists
+only of actual nested fields. The value is not evaluated, so the check
+has no runtime cost.
 
-Patch 2 has triggered more discussion as hoped, so let's see where this goes
-first.
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/Should.20.60impl_has_list_links_self_ptr.21.60.20add.20offset_of.21.20macro.3F/with/624615061
+
+Signed-off-by: Yilin Chen <1479826151@qq.com>
+---
+
+I don't know whether it is designed for allowing that format. But I think
+it is better to restrict the field path to embedded in Self, so I added
+offset_of! check to ensure that.
+
+I opened a topic in Zulip to discuss this but nobody has responded yet.
+The link is in the commit message.
+
+Looking for feedback from the maintainers about whether this is
+a good idea. Thank you for your feedback.
+
+ rust/kernel/list.rs                    | 10 ++++++-
+ rust/kernel/list/impl_list_item_mod.rs | 36 ++++++++++++++++++++------
+ 2 files changed, 37 insertions(+), 9 deletions(-)
+
+diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
+index 0f367264ee2e..28e109750968 100644
+--- a/rust/kernel/list.rs
++++ b/rust/kernel/list.rs
+@@ -599,7 +599,15 @@ pub fn pop_front(&mut self) -> Option<ListArc<T, ID>> {
+     ///
+     /// `item` must not be in a different linked list (with the same id).
+     pub unsafe fn remove(&mut self, item: &T) -> Option<ListArc<T, ID>> {
+-        // SAFETY: TODO.
++        // SAFETY:
++        // - `item` is a valid reference to a value of type `T`, satisfying the requirement of
++        //   `ListItem::view_links`.
++        // - If the item is not in a list, `ListItem::view_links` guarantees that the
++        //   returned pointer points at a read-only `ListLinks` with two null pointers,
++        //   which is dereferenceable.
++        // - If the item is in a list, `ListItem::view_links` guarantees that the
++        //   returned pointer is the same as the most recent `ListItem::prepare_to_insert`,
++        //   which is dereferenceable.
+         let mut item = unsafe { ListLinks::fields(T::view_links(item)) };
+         // SAFETY: The user provided a reference, and reference are never dangling.
+         //
+diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel/list/impl_list_item_mod.rs
+index 5a3eac9f3cf0..87ce54d9215b 100644
+--- a/rust/kernel/list/impl_list_item_mod.rs
++++ b/rust/kernel/list/impl_list_item_mod.rs
+@@ -82,16 +82,26 @@ pub unsafe trait HasSelfPtr<T: ?Sized, const ID: u64 = 0>
+        for $self:ty
+        { self$(.$field:ident)* }
+     )*) => {$(
+-        // SAFETY: The implementation of `raw_get_list_links` only compiles if the field has the
+-        // right type.
++        // SAFETY: The implementation of `raw_get_list_links` returns the `inner` field of the
++        // `ListLinksSelfPtr<$item_type, ID>` selected by the field path.
+         unsafe impl$(<$($generics)*>)? $crate::list::HasSelfPtr<$item_type $(, $id)?> for $self {}
+ 
+-        // SAFETY: TODO.
++        // SAFETY: The implementation of `raw_get_list_links` only compiles if the field has type
++        // `ListLinksSelfPtr<$item_type, ID>`. Since `ListLinksSelfPtr` is `repr(C)` and `inner` is
++        // its first field, a pointer to the former is also a pointer to the latter.
+         unsafe impl$(<$($generics)*>)? $crate::list::HasListLinks$(<$id>)? for $self {
+             #[inline]
+             unsafe fn raw_get_list_links(ptr: *mut Self) -> *mut $crate::list::ListLinks$(<$id>)? {
++                // Statically ensure that `$(.field)*` doesn't follow any pointers.
++                //
++                // Cannot be `const` because `$self` may contain generics and E0401 says constants
++                // "can't use {`Self`,generic parameters} from outer item".
++                if false { let _: usize = ::core::mem::offset_of!(Self, $($field).*); }
++
+                 let ptr: *mut $crate::list::ListLinksSelfPtr<$item_type $(, $id)?> =
+-                    // SAFETY: The caller promises that the pointer is not dangling.
++                    // SAFETY: The caller promises that the pointer points at a valid `Self`. We
++                    // know that this expression doesn't follow any pointers, as the `offset_of!`
++                    // invocation above would otherwise not compile.
+                     unsafe { ::core::ptr::addr_of_mut!((*ptr)$(.$field)*) };
+                 ptr.cast()
+             }
+@@ -274,14 +284,18 @@ unsafe fn prepare_to_insert(me: *const Self) -> *mut $crate::list::ListLinks<$nu
+                 // SAFETY: The caller promises that `me` points at a valid value of type `Self`.
+                 let links_field = unsafe { <Self as $crate::list::ListItem<$num>>::view_links(me) };
+ 
+-                // SAFETY: TODO.
++                // SAFETY: `links_field` was returned by `view_links`, which forwards the pointer
++                // returned by `HasListLinks::raw_get_list_links`. `HasSelfPtr` guarantees that
++                // this `ListLinks` is the `inner` field of a `ListLinksSelfPtr<Self, $num>`.
++                // Therefore, the resulting container pointer is in bounds of the same allocation.
+                 let container = unsafe {
+                     $crate::container_of!(
+                         links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
+                     )
+                 };
+ 
+-                // SAFETY: By the same reasoning above, `links_field` is a valid pointer.
++                // SAFETY: By the reasoning above, `container` points at a valid
++                // `ListLinksSelfPtr<Self, $num>`.
+                 let self_ptr = unsafe {
+                     $crate::list::ListLinksSelfPtr::raw_get_self_ptr(container)
+                 };
+@@ -326,14 +340,20 @@ unsafe fn view_links(me: *const Self) -> *mut $crate::list::ListLinks<$num> {
+             //   `ListArc` containing `Self` until the next call to `post_remove`. The value cannot
+             //   be destroyed while a `ListArc` reference exists.
+             unsafe fn view_value(links_field: *mut $crate::list::ListLinks<$num>) -> *const Self {
+-                // SAFETY: TODO.
++                // SAFETY: The caller guarantees that `links_field` either originated from the
++                // most recent `prepare_to_insert` or was returned by a subsequent `view_links`,
++                // and that `post_remove` has not been called since. In either case, the pointer
++                // originated from `HasListLinks::raw_get_list_links`, and `HasSelfPtr` guarantees
++                // that this `ListLinks` is the `inner` field of a `ListLinksSelfPtr<Self, $num>`.
++                // Therefore, the resulting container pointer is in bounds of the same allocation.
+                 let container = unsafe {
+                     $crate::container_of!(
+                         links_field, $crate::list::ListLinksSelfPtr<Self, $num>, inner
+                     )
+                 };
+ 
+-                // SAFETY: By the same reasoning above, `links_field` is a valid pointer.
++                // SAFETY: By the reasoning above, `container` points at a valid
++                // `ListLinksSelfPtr<Self, $num>`.
+                 let self_ptr = unsafe {
+                     $crate::list::ListLinksSelfPtr::raw_get_self_ptr(container)
+                 };
+-- 
+2.25.1
+
