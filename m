@@ -1,112 +1,294 @@
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+Received: from black.elm.relay.mailchannels.net (black.elm.relay.mailchannels.net [23.83.212.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80D54570F8;
-	Tue, 22 Sep 2026 23:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.182.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790118986; cv=pass; b=mMu53gWnHJZXbIn4f6Q3gLzJbtZnqoeqgHnb+WuOS77vYvcjzgznmJv/kmgsrT5GZFirmGRhv83klPGLe5BwAPc+AQsrJ6lwDXod/qYxTHl7ZUor860QwAb8+yO+cZ8iqHuKxnSnvJTv7HdC25uaChPqhDEdlogpNCWgn7deOqw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790118986; c=relaxed/simple;
-	bh=rA7Q97uhEejy46pnz3jpCfb75C7irewmrdSSzlhAAzo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=n7vtWTSl81tQt5JGU3Uo6tnTOY8/193UCoDV7qL4xGHrSF9k3GrIVhd+abB3FbZVbfKFWYTU/mNQU0U6BNMWwLDjZnq5M0BytZVkRVjH/zAwwimXEE8ckiTp8aB+FQ08ZtbpJH8enUaK7FhNc2i4JQeb94j7n4VkKHBcsSHrCzo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=Yx3HZM8y; arc=pass smtp.client-ip=165.173.182.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BC4538D69;
+	Tue, 22 Sep 2026 23:49:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.83.212.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790120992; cv=none; b=BOnAlmPWg4MCjUkTOKAdM944OyF1p93ksljbFaulnf2YEx7/OFQvLNhiUU6vfGk1Mn9mDcOzHyTltNcPp6ccnJnqfYiVxSmRT+OncJHMIqT71HhN+rWOtu6PWO7sKq9wRqA2F9mh30lEZK8GI3CFTZ9VSKXT450+vk+c8ntZVTc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790120992; c=relaxed/simple;
+	bh=KfBdE6t7FPnuZzUjPuds1r9e3PGeWBYgu1ZyWfWibEk=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vgd5FgmqjOLtdBxAtcopyxbHL4EN3NkWFf40d/3L8l0gfGraBW3dDwpzwGpp1TY3vyw22w+BGd25EUqy2HhT7i0/SvQi3NV6BOJKw+3ONDchIeLS3LugiB55CBlGyGMzItGXiiGGjQlACRkOcJb6DP11f4lZfgHcvmfkj2SYKbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaehlcke.net; spf=pass smtp.mailfrom=kaehlcke.net; dkim=pass (2048-bit key) header.d=kaehlcke.net header.i=@kaehlcke.net header.b=B69BsV0n; arc=none smtp.client-ip=23.83.212.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaehlcke.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaehlcke.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="Yx3HZM8y"
-ARC-Seal: i=1; a=rsa-sha256; t=1790118974; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=n1llWulrYEIajR7IuM3qosDEMUQeCV7BGxsVK8gaFOxPkUo4f4mKqEigC4ADV/XB+cmpOaYSRtRTLKv2wcLzor9v/WgH63c1uZEuTz0ZqdP1ajiTc1m2P5B+PZA4sQypflJBm4qreuMRn8Jz+Ele9r05Tu3enAhS8CQ3kl6JoAk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1790118974; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=vhoc42pCqHiQewv5L6Ecg/vqH9ZIuVDppghiEGTI8KU=; 
-	b=BYhCsoHVolXDo4zaX3NgCuFJ/iqllm2gj4NlEwopI985mTq7mYlLS3L4wt4EBF0wx63tDsbO2O7jcfwKYZ5aE1pMYw+ND6MlWy9JSM4O3+93iaIJblqptpskfxyrq06m8WvSbqKxgd+c7/e/pVzfYsbvSuB/4O0DTYrVu4U0zXQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1790118974;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
-	bh=vhoc42pCqHiQewv5L6Ecg/vqH9ZIuVDppghiEGTI8KU=;
-	b=Yx3HZM8yUTKZo4pSaZayKXxhsC15q2csGUKJLRsAg5sIS4ns3HtCZOp9rrRsB8X1
-	+rln+LaGk+cRQY8AUz6XBbZ+NqryQe9hYkygCGfPVNylV4QZMLpN/0hC0B/+EIBisHn
-	W6uul6ZX4EcHApBkAntY9vaY5/rSEvz8N+K/cgTA=
-Received: by smtp.zohomail.com with SMTPS id 1790118972361369.87324403281946;
-	Tue, 22 Sep 2026 16:16:12 -0700 (PDT)
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Tue, 22 Sep 2026 16:16:08 -0700
-Subject: [PATCH] drm/tyr: gpu_info: zero out new/unused fields
+	dkim=pass (2048-bit key) header.d=kaehlcke.net header.i=@kaehlcke.net header.b="B69BsV0n"
+X-Sender-Id: dreamhost|x-authsender|matthias@kaehlcke.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 8FE2E8C3360;
+	Tue, 22 Sep 2026 20:23:12 +0000 (UTC)
+Received: from pdx1-sub0-mail-a243.dreamhost.com (100-99-162-101.trex-nlb.outbound.svc.cluster.local [100.99.162.101])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 4E96C8C30C5;
+	Tue, 22 Sep 2026 20:23:12 +0000 (UTC)
+X-Sender-Id: dreamhost|x-authsender|matthias@kaehlcke.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|matthias@kaehlcke.net
+X-MailChannels-Auth-Id: dreamhost
+X-Share-Inform: 627f490d7ea5f0bd_1790108592430_3881385717
+X-MC-Loop-Signature: 1790108592430:3447525529
+X-MC-Ingress-Time: 1790108592430
+Received: from pdx1-sub0-mail-a243.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.99.162.101 (trex/8.0.2);
+	Tue, 22 Sep 2026 20:23:12 +0000
+Received: from bielski.sytes.net (unknown [79.117.203.148])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: matthias@kaehlcke.net)
+	by pdx1-sub0-mail-a243.dreamhost.com (Postfix) with ESMTPSA id 4hqBPC6XkPz105h;
+	Tue, 22 Sep 2026 13:23:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaehlcke.net;
+	s=dreamhost; t=1790108592;
+	bh=9WxhL77RDJwBHr8SB5zwWSYMVxhQysRUO1B8XQCVkxk=;
+	h=Date:From:To:Subject:Content-Type;
+	b=B69BsV0nu72p++psYT0f6XCU/CPZaAW1m4qM57gA6Rwok88dCeaP6yaIraQ0N7D8+
+	 V+g4+EsQKhibAt09kd2o9EqRLtLBGRWnzdq0obMjb0jrgMXOcl5kzARY41zOD9Bzly
+	 2RZVIX84M4TgXBcljh7M9bVGIQHcyGUwfHk3B4nuWgiqKlFVTWQy//WCGUlcRpIiVs
+	 B59P9EHHCJElD4Qf8nbimX5VTkltiJUa7KTdpJquZ8RTIWEX2ucUcJ2IAFQ/MBD5jH
+	 m2TMgkCsGLtfmM3LNia4Eaket87couedrwVzJ++GTyHBG7CoMNjC3C6qVKNEOIP6TM
+	 +2ZzY/0EknkGw==
+Received: by bielski.sytes.net (Postfix, from userid 1000)
+	id 871B680E1C; Tue, 22 Sep 2026 13:23:09 -0700 (PDT)
+Date: Tue, 22 Sep 2026 22:23:09 +0200
+From: Matthias Kaehlcke <matthias@kaehlcke.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alice Ryhl <aliceryhl@google.com>, driver-core@lists.linux.dev,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: debugfs: add primitive type bindings
+Message-ID: <20260922202309.fwdfx4vskalq7grs@bielski>
+Mail-Followup-To: Matthias Kaehlcke <matthias@kaehlcke.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alice Ryhl <aliceryhl@google.com>, driver-core@lists.linux.dev,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <9306c51f937e4bb4026e68d862b64b16f6894282.1790103860.git.matthias@kaehlcke.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260922-b4-gpu_info_zero-v1-1-7259840069c6@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MSwqAIBRG4a3EHSeUhGVbiYgev3YnGkoRhXtPG
- n6Dc16KCIxIffFSwMWRvcuoy4LWfXYWgrdskpVUlZZSLI2wxzmxM356ELww7QoFKD13mnJ2BBi
- +/+UwpvQBobu/imIAAAA=
-X-Change-ID: 20260922-b4-gpu_info_zero-f7ce6ee69a89
-To: Daniel Almeida <daniel.almeida@collabora.com>, 
- Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, karunika.choo@arm.com, 
- boris.brezillon@collabora.com, laura.nao@collabora.com, 
- steven.price@arm.com, liviu.dudau@arm.com, 
- Deborah Brouwer <deborah.brouwer@collabora.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1442;
- i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=rA7Q97uhEejy46pnz3jpCfb75C7irewmrdSSzlhAAzo=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmbeay3hOy4bM72xm6W/M93Dww8W4vmiaQlCUxk536nb
- 7pNqoe9o5SFQYyLQVZMkeWsvVGPeNV7I935/5th5rAygQxh4OIUgIncr2P4p6yzQtwpTd0sZvbD
- xv0pRzrfR5gfK1n25vLc1A9qx129cxn+GYTsYJH3fM3i+jxdwHimmXPqr4Oxt0739uq9NZ2WMtG
- fEQA=
-X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
- fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9306c51f937e4bb4026e68d862b64b16f6894282.1790103860.git.matthias@kaehlcke.net>
 
-If a new field is added to the struct drm_panthor_gpu_info in the panthor
-uapi, Tyr must initialize this field or it will cause a compile error.
+sashiko-bot@kernel.org pointed out a few issues that seem valid,
+I'll try to address these first before human reviewer time is
+needed.
 
-To pre-emptively avoid compile errors, use ..pin_init::zeroed() to zero
-out all new fields added to this struct. Tyr can subsequently change the
-initialization as necessary. Also use it instead of manually zeroing out
-existing fields at the end of the struct.
+El Tue, Sep 22, 2026 at 09:18:58PM +0200 Matthias Kaehlcke ha dit:
 
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
----
- drivers/gpu/drm/tyr/gpu.rs | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-index 592b8bb16eba..e1b04a0c5159 100644
---- a/drivers/gpu/drm/tyr/gpu.rs
-+++ b/drivers/gpu/drm/tyr/gpu.rs
-@@ -74,10 +74,8 @@ pub(crate) fn new(io: &IoMem<'_>) -> Self {
-                 io.read(TILER_PRESENT_HI).into_raw(),
-             ),
-             core_features: io.read(CORE_FEATURES).into_raw(),
--            // Padding must be zero.
--            pad: 0,
--            //GPU_FEATURES register is not available; it was introduced in arch 11.x.
--            gpu_features: 0,
-+            // Zero unsupported and newly added UAPI fields.
-+            ..pin_init::zeroed()
-         })
-     }
- 
-
----
-base-commit: e1a9f41b896f0d57eb1165dd8a4c7446be6af638
-change-id: 20260922-b4-gpu_info_zero-f7ce6ee69a89
-
-Best regards,
--- 
-Deborah Brouwer <deborah.brouwer@collabora.com>
-
+> Introduce `impl_debugfs_primitive!` to implement debugfs attribute
+> creation for native Rust primitive types by wrapping C debugfs creation
+> helpers.
+> 
+> Signed-off-by: Matthias Kaehlcke <matthias@kaehlcke.net>
+> ---
+>  rust/kernel/debugfs.rs       | 52 +++++++++++++++++++++
+>  samples/rust/rust_debugfs.rs | 91 ++++++++++++++++++++++++++++++++++++
+>  2 files changed, 143 insertions(+)
+> 
+> diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
+> index d7b8014a6474..bec600c67a06 100644
+> --- a/rust/kernel/debugfs.rs
+> +++ b/rust/kernel/debugfs.rs
+> @@ -400,6 +400,58 @@ pub fn scope<'a, T: 'a, E: 'a, F>(
+>      }
+>  }
+>  
+> +/// Implements `debugfs` interface operations for a single primitive type.
+> +///
+> +/// This macro generates the necessary FFI wrappers and glue code to expose
+> +/// a specific primitive type (e.g., `u32`, `bool`) to the `debugfs` filesystem.
+> +///
+> +/// # Type Support
+> +///
+> +/// Accepts standard integer primitives (`u8` through `u64`, `x8` through `x64`),
+> +/// `bool`, and `usize`.
+> +///
+> +/// # Examples
+> +///
+> +/// ```rust,ignore
+> +/// impl_debugfs_primitive!(u32, create_u32, debugfs_create_u32);
+> +/// ```
+> +macro_rules! impl_debugfs_primitive {
+> +    ($type:ty, $fn_name:ident,$c_func:ident) => {
+> +        impl Dir {
+> +            /// Creates a debugfs entry for a primitive `$type` value inside this directory.
+> +            ///
+> +            /// # Safety
+> +            ///
+> +            /// `value` must point to a valid memory location that outlives this directory `Dir`
+> +            /// (e.g., inside a pinned driver state structure or a `static` location).
+> +            pub unsafe fn $fn_name(&self, name: &CStr, mode: u16, value: *mut $type) {
+> +                let parent_ptr = match self.0.as_deref() {
+> +                    Some(entry) => entry.as_ptr(),
+> +                    None => core::ptr::null_mut(),
+> +                };
+> +
+> +                // SAFETY: `name` is a valid CStr. `parent_ptr` points to a valid parent
+> +                // dentry or NULL. The caller guarantees that `value` outlives the debugfs node.
+> +                unsafe {
+> +                    bindings::$c_func(name.as_char_ptr(), mode, parent_ptr, value);
+> +                }
+> +            }
+> +        }
+> +    };
+> +}
+> +
+> +// Bind native Rust primitive types to their corresponding C debugfs helpers.
+> +impl_debugfs_primitive!(u8, create_u8, debugfs_create_u8);
+> +impl_debugfs_primitive!(u16, create_u16, debugfs_create_u16);
+> +impl_debugfs_primitive!(u32, create_u32, debugfs_create_u32);
+> +impl_debugfs_primitive!(u64, create_u64, debugfs_create_u64);
+> +impl_debugfs_primitive!(u8, create_x8, debugfs_create_x8);
+> +impl_debugfs_primitive!(u16, create_x16, debugfs_create_x16);
+> +impl_debugfs_primitive!(u32, create_x32, debugfs_create_x32);
+> +impl_debugfs_primitive!(u64, create_x64, debugfs_create_x64);
+> +impl_debugfs_primitive!(bool, create_bool, debugfs_create_bool);
+> +impl_debugfs_primitive!(usize, create_size_t, debugfs_create_size_t);
+> +
+>  #[pin_data]
+>  /// Handle to a DebugFS scope, which ensures that attached `data` will outlive the DebugFS entry
+>  /// without moving.
+> diff --git a/samples/rust/rust_debugfs.rs b/samples/rust/rust_debugfs.rs
+> index 77c19a437695..b2ef8c71f7ee 100644
+> --- a/samples/rust/rust_debugfs.rs
+> +++ b/samples/rust/rust_debugfs.rs
+> @@ -34,6 +34,7 @@
+>  use core::str::FromStr;
+>  use kernel::{
+>      acpi,
+> +    c_str,
+>      debugfs::{
+>          Dir,
+>          File, //
+> @@ -79,6 +80,8 @@ struct RustDebugFs {
+>      array_blob: File<Mutex<[u8; 4]>>,
+>      #[pin]
+>      vector_blob: File<Mutex<KVec<u8>>>,
+> +    #[pin]
+> +    primitive_values: PrimitiveValues,
+>  }
+>  
+>  #[derive(Debug)]
+> @@ -87,6 +90,36 @@ struct Inner {
+>      y: u32,
+>  }
+>  
+> +struct PrimitiveValues {
+> +    u8: u8,
+> +    u16: u16,
+> +    u32: u32,
+> +    u64: u64,
+> +    x8: u8,
+> +    x16: u16,
+> +    x32: u32,
+> +    x64: u64,
+> +    size_t: usize,
+> +    bool: bool,
+> +}
+> +
+> +impl PrimitiveValues {
+> +    fn new() -> Self {
+> +        Self {
+> +            u8: 8,
+> +            u16: 16,
+> +            u32: 32,
+> +            u64: 64,
+> +            x8: 0x88,
+> +            x16: 0x1616,
+> +            x32: 0x32323232,
+> +            x64: 0x6464646464646464,
+> +            size_t: 12345678,
+> +            bool: true,
+> +        }
+> +    }
+> +}
+> +
+>  impl FromStr for Inner {
+>      type Err = Error;
+>      fn from_str(s: &str) -> Result<Self> {
+> @@ -171,9 +204,67 @@ fn new<'a, 'b>(
+>                      c"vector_blob",
+>                      new_mutex!(kernel::kvec!(0x42; SZ_4K)?),
+>                  ),
+> +                primitive_values <- PrimitiveValues::new(),
+>                  _debugfs: debugfs,
+>                  pdev: pdev.into(),
+>              }
+>          }
+> +        .pin_chain(|this| {
+> +            // SAFETY: primitive values live until the module is dropped
+> +            unsafe {
+> +                this._debugfs.create_u8(
+> +                    c_str!("u8"),
+> +                    0644,
+> +                    core::ptr::addr_of!(this.primitive_values.u8) as *mut _,
+> +                );
+> +                this._debugfs.create_u16(
+> +                    c_str!("u16"),
+> +                    0644,
+> +                    core::ptr::addr_of!(this.primitive_values.u16) as *mut _,
+> +                );
+> +                this._debugfs.create_u32(
+> +                    c_str!("u32"),
+> +                    0644,
+> +                    core::ptr::addr_of!(this.primitive_values.u32) as *mut _,
+> +                );
+> +                this._debugfs.create_u64(
+> +                    c_str!("u64"),
+> +                    0644,
+> +                    core::ptr::addr_of!(this.primitive_values.u64) as *mut _,
+> +                );
+> +                this._debugfs.create_x8(
+> +                    c_str!("x8"),
+> +                    0644,
+> +                    core::ptr::addr_of!(this.primitive_values.x8) as *mut _,
+> +                );
+> +                this._debugfs.create_x16(
+> +                    c_str!("x16"),
+> +                    0644,
+> +                    core::ptr::addr_of!(this.primitive_values.x16) as *mut _,
+> +                );
+> +                this._debugfs.create_x32(
+> +                    c_str!("x32"),
+> +                    0644,
+> +                    core::ptr::addr_of!(this.primitive_values.x32) as *mut _,
+> +                );
+> +                this._debugfs.create_x64(
+> +                    c_str!("x64"),
+> +                    0644,
+> +                    core::ptr::addr_of!(this.primitive_values.x64) as *mut _,
+> +                );
+> +                this._debugfs.create_bool(
+> +                    c_str!("bool"),
+> +                    0644,
+> +                    core::ptr::addr_of!(this.primitive_values.bool) as *mut _,
+> +                );
+> +                this._debugfs.create_size_t(
+> +                    c_str!("usize"),
+> +                    0644,
+> +                    core::ptr::addr_of!(this.primitive_values.size_t) as *mut _,
+> +                );
+> +            }
+> +
+> +            Ok(())
+> +        })
+>      }
+>  }
+> -- 
+> 2.47.3
