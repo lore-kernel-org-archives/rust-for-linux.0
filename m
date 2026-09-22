@@ -1,109 +1,72 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3AB54144D
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Sep 2026 12:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E5C318BB5;
+	Tue, 22 Sep 2026 12:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790079418; cv=none; b=ThHk2FsmtP/KOMJbH5QsOEdWR1i52WwTwEkI4GN7fV00LtIp2bkMVbL1SIwji1OxXO8Rsk3VbTj33JnMh/nzIb53IhOnAAMwiWvn3sweeoFKaTH8c9/SFARMVMUT3SnTFlkU4p6QjweSZbUuoPJuYnlhbVhhJlRK6MmEGKvIMmg=
+	t=1790080736; cv=none; b=FX5P9fNlwUijhtev9jfUu9r8GpQAsecgBbXOhZnzI0PPv4NP8SHTNqUwDDcjzzk4zXPejyo74xyOqT+Wd4dOd6HUVxcTdtTZfZyaFauOPyHKolAajqOEcH/yejFUsKQUJ2D0hMU+bRQvSf0nvlWWUOAmZw/qptQDH7ZPq/zcd2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790079418; c=relaxed/simple;
-	bh=be2Y1OoUX2Z3H8XLQu3ekiAnAW4Ns+iopXrYkhiGjFw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Qn3OecAB963cJQxqkBK5hqu+LPym6CMDFnKJriOO8U076kWtU5NcN5G/FOORJVrKFVJxZ1Y6lVQvU6dO29/xy1kUr0bkmUAoPBGwtfUEA4j9286ifINJYvjRkr1N98sc5dhZlc2dUOD4awOxEcEGsfR/wN2iQ2caasGliPsLC1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=OQZUocIX; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1790080736; c=relaxed/simple;
+	bh=cScClSEFXuaUS8XKb6a1KH7r1p4cEPwQACRbELUv12o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=G8uxOJtm8MLYVW3hvJTILT2Fyjse9S9uNAAWOuTOqsFK5I50b6Ev1ub7ep1ZV7lQT4rko7w7J29wYruYS1mOiGdYGUirET9uw+q166tV1oxe8cDdkM7xoUZyxb1yLQR8l9cRVoaksXBJFY0MTjCG5i1cNPWvcH68rgXXrAxBoiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T0G2RlRw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="OQZUocIX"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6350f88so2559066f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 22 Sep 2026 05:16:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1790079415; x=1790684215; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qYZAQI2MQFIAWvU45KsUnqIxxfeReE1kdzg/hPVRdMU=;
-        b=OQZUocIXA25N0fPKAIruZntV3ZEP5EN9YvzISI0VjBPrjdipX7NzMz+lzmuBsDyf12
-         9VR0htwPwVJwwbAHd5/2A7+BQA1G5ZkIgbBWZC7fbWneEEZwTF7Uka1iUjEAVx4dg5t5
-         /D+F2VwTjsqGwdh65OAFeJjLmbxfmmAATZqA2d7K2fUdG7Tvj+1z5jMLgq2Orf0uR2VP
-         TwamgpEB0xHuLK2LLBRWj06zls6MheTHDsXVcFQrMVY+iwn7avH3pUwxw8JGOsojM3PB
-         CcNt/a8PcNZqY26jA0M8wD5sEQHLamKAWgOe/al5LPnuhQq9bMGJ3LERbDD09cqhMYL2
-         wecg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790079415; x=1790684215;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qYZAQI2MQFIAWvU45KsUnqIxxfeReE1kdzg/hPVRdMU=;
-        b=HQ9iyeU5tm1Mdvx7QOAoA91FVYF3ZqJydyu2eD831uWP/cuCNiskFpScPJeJmAaihw
-         aH+z2+KkINYxoV30P9bByPdTp8/K33CXc1UGLXznkdmftn3R7ciBiCXKaKl7PL0qU0hT
-         vA32zIEqo/GpTFZ2408T6XPddRxTVISugQXNPcpwKtAeMlaAB6uQMQ2EQGsVkFg3hv5m
-         pmCoFgg0+SgtylC5xItFOBcVNw8BoJ2YBbp1W9mhoNmC2MP4qg7Y3Sp3qLryqvzB2yTm
-         99PLCXz1bkm/fjQ5hs6qqTNeqZnm2Qyku2ToosSXV/zCvk1AUOrbabF+QOaYgqbG9CgX
-         PK0w==
-X-Forwarded-Encrypted: i=1; AKwUvBwyoZleUFQdEO+WkYxYI2SPlDfS8cgstsHULaEVrZbnYA4LephVzh1kKvIMN8SIDnhBpFyKZbbcXXxYE8NXsg==@vger.kernel.org
-X-Gm-Message-State: AFuF++kkYpmblfpk8O3kOw9T+wNcCGc55MQTtO4yR2DItR6xzAiphbGo
-	4yUnoOhrCCBUvZ5Ha6F/buu81KfB8w6NtNvqiaEUZGA0Ao+VZLdg3TjtT8BQ/PeLxIg=
-X-Gm-Gg: AYBFou3pD54eSuiWbkVSSnc4DJZxo5xQkAQz/cWLuGK0JpBID5q+j9giCktTguZp9ql
-	ZqstNZjUxWiV9Z4nAIlFGOi/EBOP83a42FmoYBw/5nrJS6mGCV91vdGo9bn3s/Vb/jON92CnBll
-	pM83bB7vXdfUAp1134+kJ/ZG5TZlGMsyYUQKMAOMQ92szwjB3Mi1iMSprQ03p+1Xm0pMBLyiKo1
-	rfjR3GMRihcTuOeyevkB9GUBL4uGdfHGZOmFl6tZ1gVelgaAaMKHjPT96CexTF2Yejuxz35gpYz
-	xET1XvKLtxDkPABgKTHrOwYAIFwDphpOtRMi3vHXV3PZ2EXDKNkcyL0NEoTq/YemVoimT8fRjYT
-	A6qdGEpOzRT24YXhGFcM9qjmXjj+W2EQyXx/FlL2qttWW6fMfwRqhfBI+/uGxs89L+qS5gUGq10
-	0Qe8n9aK8wfA4nWzy+SMOKk7cBFHI6sIAnaPBoCafO9AUtS/5waPLVHdo0XMHE6szUre9L8fR/C
-	TusWs8+rpf5/KlO3CRc1gwb6woFxX2l2h9n+0bbxT4k0y5pF9daGoh6Cf2XMvFxMna9C3N18pAO
-	92qfFG8lioBLcxCRy1o0hq8BpaPmhUKY94WjFZsyfnM7ZSOBwxc=
-X-Received: by 2002:a05:6000:29d7:b0:488:5d3e:bf47 with SMTP id ffacd0b85a97d-4885d3ec41fmr4775296f8f.33.1790079414556;
-        Tue, 22 Sep 2026 05:16:54 -0700 (PDT)
-Received: from ?IPV6:2a00:1028:838d:271e:8e3b:4aff:fe4c:a100? (dynamic-2a00-1028-838d-271e-8e3b-4aff-fe4c-a100.ipv6.o2.cz. [2a00:1028:838d:271e:8e3b:4aff:fe4c:a100])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-488627937b5sm4088822f8f.30.2026.09.22.05.16.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Sep 2026 05:16:54 -0700 (PDT)
-Message-ID: <0f8f5dd7-06b6-4145-8b85-ed62504e2d4f@suse.com>
-Date: Tue, 22 Sep 2026 14:16:53 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T0G2RlRw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E910B1F00893;
+	Tue, 22 Sep 2026 12:38:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790080734;
+	bh=2ORII6Ge34B1BzAh+lcRHMUXsQkyOQDuClowMpGXjk4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=T0G2RlRwzGqFfKWSYchIgdzk6bssCAtVvqvwQYEnh83z4zKyPyWQFyKlpdsZq8kPm
+	 T1vPM7qljXvr8yRnzC5KSkGxzIAbZp7sGqhryW/b04vq8JNA7PaFLLAOo+MX+Wbiyr
+	 jtSoa7N3CLJjv5YbJvrOLgYt4NJy5iF/tr1+SbPBic+I/Zqu0q4OZRNZbr1EoB34ng
+	 EFu903R11wO/XGBfq36fgaTaMkl1dctQBelFwGFv2qJ+CBOdsPmvmUPrv7Ggt1symW
+	 0dEOeo1TXIweeq/KxWubBj/LlO+Uy169TNVVvkeLXHu/tINd2wH0D763rohMsfwZiz
+	 Zn7HHHnKGOt1g==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Priya Bala Govindasamy <pgovind2@uci.edu>, mcgrof@kernel.org,
+ petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
+ ojeda@kernel.org
+Cc: atomlin@atomlin.com, boqun@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
+ tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev,
+ linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ ardalan@uci.edu, zhiyunq@cs.ucr.edu, dzueck@uci.edu, pgovind2@uci.edu
+Subject: Re: [PATCH 1/1] rust: module_param: Fix potentially incorrect
+ access of `SetOnce<T>`
+In-Reply-To: <e65203759411aeca4805e3f619f3dd20839dba35.1789426258.git.pgovind2@uci.edu>
+References: <cover.1789426258.git.pgovind2@uci.edu>
+ <FdiPIlB8b46OSfjlwz76TUlT6wZZlBnrojdIpqdfcvdhwJDwKrBZama8zVUX8dFHpUYYXw02R732rD5GuNCeKw==@protonmail.internalid>
+ <e65203759411aeca4805e3f619f3dd20839dba35.1789426258.git.pgovind2@uci.edu>
+Date: Tue, 22 Sep 2026 14:38:41 +0200
+Message-ID: <8733v14g1a.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] rust: module_param: Fix potentially incorrect access
- of `SetOnce<T>`
-To: Priya Bala Govindasamy <pgovind2@uci.edu>
-Cc: mcgrof@kernel.org, da.gomez@kernel.org, samitolvanen@google.com,
- ojeda@kernel.org, atomlin@atomlin.com, boqun@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
- daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
- work@onurozkan.dev, linux-modules@vger.kernel.org,
- rust-for-linux@vger.kernel.org, ardalan@uci.edu, zhiyunq@cs.ucr.edu,
- dzueck@uci.edu
-References: <cover.1789426258.git.pgovind2@uci.edu>
- <e65203759411aeca4805e3f619f3dd20839dba35.1789426258.git.pgovind2@uci.edu>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <e65203759411aeca4805e3f619f3dd20839dba35.1789426258.git.pgovind2@uci.edu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 9/17/26 7:43 PM, Priya Bala Govindasamy wrote:
+"Priya Bala Govindasamy" <pgovind2@uci.edu> writes:
+
 > The `set_param` function casts `kernel_param.arg` to `*const SetOnce<T>`
 > But the Rust module macro in rust/macros/module.rs initializes `arg` with
 > `#param_name.as_void_ptr()`, and `#param_name` is a `ModuleParamAccess<T>`,
 > not a `SetOnce<T>`.
-> 
+>
 > ModuleParamAccess<T> has default Rust layout but `set_param` accesses its
 > first field SetOnce<T> assuming it to be at offset 0. This is not
 > guaranteed by Rust and could cause type confusion leading to data
 > corruption.
-> 
+>
 > Fix this by casting `kernel_param.arg` to `ModuleParamAccess<T>` and
 > then accessing the `value: SetOnce<T>` field.
-> 
+>
 > Fixes: 0b08fc292842 ("rust: introduce module_param module")
 > Reported-by: Dylan Zueck <dzueck@uci.edu>
 > Assisted-by: LLM
@@ -111,29 +74,57 @@ On 9/17/26 7:43 PM, Priya Bala Govindasamy wrote:
 > ---
 >  rust/kernel/module_param.rs | 4 +++-
 >  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
+>
 > diff --git a/rust/kernel/module_param.rs b/rust/kernel/module_param.rs
 > index f9a14765a926..7ae87ffe1d6b 100644
 > --- a/rust/kernel/module_param.rs
 > +++ b/rust/kernel/module_param.rs
 > @@ -75,7 +75,9 @@ pub trait ModuleParam: Sized + Copy {
 >          let new_value = T::try_from_param_arg(arg)?;
->  
+>
 >          // SAFETY: By function safety requirements, this access is safe.
 > -        let container = unsafe { &*((*param).__bindgen_anon_1.arg.cast::<SetOnce<T>>()) };
 > +        let param_access = unsafe { &*((*param)
 > +            .__bindgen_anon_1.arg.cast::<ModuleParamAccess<T>>()) };
 > +        let container = &param_access.value;
->  
+>
 >          container
 >              .populate(new_value)
+> --
+> 2.34.1
 
-This looks ok to me, except for the formatting. I plan to take it on the
-modules tree, after giving others a bit more time to potentially
-comment.
+This is indeed a bug. Nice catch.
 
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+I think the primary reason for this error is that the safety comment is
+lacking. It is also covering two distinct unsafe operations. I think we
+should rephrase as so:
 
--- 
-Thanks,
-Petr
+diff --git a/rust/kernel/module_param.rs b/rust/kernel/module_param.rs
+index 7ae87ffe1d6b..1a2fcbf4a5b3 100644
+--- a/rust/kernel/module_param.rs
++++ b/rust/kernel/module_param.rs
+@@ -74,9 +74,12 @@ pub trait ModuleParam: Sized + Copy {
+     crate::error::from_result(|| {
+         let new_value = T::try_from_param_arg(arg)?;
+ 
+-        // SAFETY: By function safety requirements, this access is safe.
+-        let param_access = unsafe { &*((*param)
+-            .__bindgen_anon_1.arg.cast::<ModuleParamAccess<T>>()) };
++        // SAFETY: By function safety requirements, `param` is valid for read.
++        let arg = unsafe { (*param).__bindgen_anon_1.arg };
++        let param_access_ptr = arg.cast::<ModuleParamAccess<T>>();
++        // SAFETY: The `arg` field is initialized with a pointer to a `static ModuleAccessParam` by
++        // the rust module macro. Thus, the pointer is valid for use as a reference.
++        let param_access = unsafe { &*(param_access_ptr) };
+         let container = &param_access.value;
+ 
+         container
+---
+
+Please also remember to run `make rustfmt` to format the code properly.
+
+
+Best regards,
+Andreas Hindborg
+
+
