@@ -1,160 +1,185 @@
-Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7031C46F48C;
-	Tue, 22 Sep 2026 15:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.242.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC893568557
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Sep 2026 16:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790092429; cv=none; b=WLh4z3Cu2d8AOdRgyVFLsVWJyELEYz9NdT+m4hMHWb5Somw1urjEg6hdw7qtCR38smh8aLgel7m3jjQY/X+GvESI0DH9UqOEgeZ4CNWEdTwyKGHYEYJzOgiHCkXrhAVMAN+Vcz208nAgkJRVw6dsmZoMZBYr53TeBxgUFbVA/v8=
+	t=1790094571; cv=none; b=aX66xcYP6IF6iGvLO27zNvwcTyuZ39FlWslJYp7bYDDcwWXBdbW8cSZ7bNNf2EOCyylWFPx7+D/tprr5ixbzRH6yQICxUgn5oeQnM1lXig4xCCJDYP6VijWk9RpHu/m4OGRB5kM9V5xCYOy0oiFBfJteKjtxMVnw6ORX2JN07pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790092429; c=relaxed/simple;
-	bh=POGvfoLuQ5Q4SGsj8xHVfctk8vu3p62ckvf40grZPjY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wn4Wkyzi8hzaxJ10aeVjzoovhR0aqNNj6ybYhUtvkmASYi97MHS8JqahC04M6gf9iUnNrLRgEUiUVEIroAA5hdtcpXtUeKuJB4wDu1ZLCS8amW8Js6xm3vQJRq2GANDe5jhn/molusm9nja3Eo+G9p4uR5di4hfZDiCWkOgu9hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net; spf=pass smtp.mailfrom=davidgow.net; arc=none smtp.client-ip=203.29.242.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
-Received: by sphereful.davidgow.net (Postfix, from userid 119)
-	id A2D641EAC71; Tue, 22 Sep 2026 23:53:43 +0800 (AWST)
-X-Spam-Level: 
-Received: from [IPV6:2001:8003:8802:7000::41b] (unknown [IPv6:2001:8003:8802:7000::41b])
-	by sphereful.davidgow.net (Postfix) with ESMTPSA id EFC151EAC62;
-	Tue, 22 Sep 2026 23:53:38 +0800 (AWST)
-Message-ID: <cfed2509-a365-4040-8079-484750ad3cdf@davidgow.net>
-Date: Tue, 22 Sep 2026 23:53:36 +0800
+	s=arc-20240116; t=1790094571; c=relaxed/simple;
+	bh=VB3WnbRvt2J9LKmcdb7uv8dSEpH5QKJ7IXLu9KgM7d8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tEbCizAA6vQ4vEwHkW8pwai/q4fIgRsFYTKQUn4csC9u2ePU+cynhxCeaBvwPl4KZ8rqCM1h6fHgcjbciagNzxDIIb+RwzNCXlD42R9TknGlT7Jms9NrF41324/58BS4R3SGKAbAjGw6zYVjNLg3dVfab3RSS52SUet9WCncPHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=cvSvI+SE; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="cvSvI+SE"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id CE02C240105
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Sep 2026 18:29:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
+	s=1984.8680eb; t=1790094561;
+	bh=VB3WnbRvt2J9LKmcdb7uv8dSEpH5QKJ7IXLu9KgM7d8=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=cvSvI+SE1xWq0cMXMfLUtoI0wSf1mGoXpE5fgwj9mmB/2kTtcRsktOrS7zgntEygI
+	 ot/bmwlshR+guiXMZep1kfPnMUmXAP9skW+yXgrOFi8fTBgpdZ4mlsmVPSIUwkWhy1
+	 WhLf0RRoC1A39IDvhRYg54RnN5ndQDO3546qdTqyiBADv4YyNIM02iE0rJD22wpfpd
+	 ybWgUWtMupLLvUWuVvzH8cYbAzsOjg1FWNMHJGRarsKSam0yNHTjxWTBMe7A8ovWs1
+	 JFPLzE2plZUe0TPapxmajzoLKyFhvBj40sk31fFbCOjZ/8RfZm1uokZ8z1PszQ6Hep
+	 0wdZovSOmoKKA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4hq5CK5Y70z6txf;
+	Tue, 22 Sep 2026 18:29:17 +0200 (CEST)
+Message-ID: <0b51e27e1b2e16ac5bf5776c7c1704ca90857ec5.camel@posteo.de>
+Subject: To Lee, Pavel: Re: [PATCH v25 0/4] rust: leds: add led classdev
+ abstractions
+From: Markus Probst <markus.probst@posteo.de>
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman	
+ <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, Miguel Ojeda
+	 <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo	
+ <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ "Rafael J. Wysocki"	 <rafael@kernel.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?=	
+ <kwilczynski@kernel.org>, Boqun Feng <boqun@kernel.org>, Daniel Almeida	
+ <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=
+ <work@onurozkan.dev>, Ira Weiny	 <iweiny@kernel.org>,
+ rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Date: Tue, 22 Sep 2026 16:29:20 +0000
+In-Reply-To: <20260913-rust_leds-v25-0-1a10371d78c3@posteo.de>
+References: <20260913-rust_leds-v25-0-1a10371d78c3@posteo.de>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-hrTAX/W6mLo7sKDNm8zH"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/3] rust: kunit: #[should_panic] and same test name
- with different #[cfg(...)] support
-To: Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Nicol=C3=A1s_Antinori?=
- <nico.antinori.7@gmail.com>, Alice Ryhl <aliceryhl@google.com>,
- Burak Emir <burak.emir@gmail.com>,
- Brendan Higgins <brendan.higgins@linux.dev>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Boqun Feng <boqun@kernel.org>, Brigham Campbell <me@brighamcampbell.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Danilo Krummrich <dakr@kernel.org>, Jori Koolstra <jkoolstra@xs4all.nl>,
- =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Rae Moar <raemoar63@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>,
- Tamir Duberstein <tamird@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Yury Norov <yury.norov@gmail.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kernel-mentees@lists.linux.dev
-References: <cover.1789500084.git.nico.antinori.7@gmail.com>
- <d20cc2b2-afeb-432c-924b-55ad00d980fe@davidgow.net>
- <DLLVV64UIC5E.10C9AB66BOEXV@garyguo.net>
- <d00d6512-ec95-4337-ad62-a515b507862b@davidgow.net>
- <DLLYGLVEA0R3.3D1733XFFTFPV@garyguo.net>
-Content-Language: en-US
-From: David Gow <david@davidgow.net>
-In-Reply-To: <DLLYGLVEA0R3.3D1733XFFTFPV@garyguo.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-Le 22/09/2026 à 23:37, Gary Guo a écrit :
-> On Tue Sep 22, 2026 at 4:27 PM BST, David Gow wrote:
->> Le 22/09/2026 à 21:35, Gary Guo a écrit :
->>> On Tue Sep 22, 2026 at 8:56 AM BST, David Gow wrote:
->>>> Le 16/09/2026 à 03:33, Nicolás Antinori a écrit :
->>>>> - Is it ok to 'stringify' the configuration so it can be distinguished
->>>>>      in the report? Would you prefer something like `_case_1` `_case_2` ..
->>>>>      instead?
->>>
->>> I also don't like the stringifcation of cfgs.
->>>
->>>>
->>>> I don't _like_ this: my preference would be for us to keep the same
->>>> name, and just not emit a test_case for anything which should be
->>>> compiled out with cfg. Unfortunately, implementing that is a bit harder
->>>> than would be ideal: we need a way of evaluating the cfg() arguments in
->>>> a proc macro, I think. (Ultimately, because otherwise there's no way of
->>>> statically determining the length of the TEST_CASES array?)
->>>
->>> This is possible with a trick. In pin-init we have a similar need, so what I do
->>> is for
->>>
->>>       #[macro]
->>>       struct Foo {
->>>           #[cfg(a)]
->>>           bar: u32,
->>>       }
->>>
->>> to be expanded to
->>>
->>>       #[cfg(a)]
->>>       #[macro]
->>>       struct Foo {
->>>           bar: u32
->>>       }
->>>
->>>       #[cfg(not(a))]
->>>       #[macro]
->>>       struct Foo {
->>>       }
->>>
->>> However, for kunit I don't think that's needed. Deduplicating the names
->>> should be sufficient?
->>>
->> The problem with (at least my naive implementation of) duplication is
->> that -- while it works great for switching between implementations -- it
->> doesn't handle the case where _no_ implementation is active.
->>
->> (The current implementation just compiles to a skipped test if the
->> #[cfg(...)] isn't active, which sidesteps the problem until we have
->> multiple implementations...)
->>
->> Even the expansion above could be problematic, as we really are trying
->> to add entries to a static array, so I don't know what we could put in
->> the not(a) case (particularly since there'd be potentially lots of them).
->>
->> Maybe the trick is to generate the array size by using a big series of
->> something like:
->> static mut TEST_CASES: [...,
->> 	#[cfg(a)] 1
->> 	#[cfg(not(a))]0
->> 	+
->> 	#[cfg(b)] 1
->> 	#[cfg(not(b))]0
->> 	+
->> 	…] = {
->> 	#[cfg(a)] case1,
->> 	#[cfg(b)] case1,
->> 	…
->> 	}
->> }
->>
-> 
-> For array sizes, you have the option of building a slice first.
-> 
-> Some thing like:
-> 
->      const TEST_CASES_UNIT: &[()] = [
->          #[cfg(a)] (),
->          #[cfg(b)] (),
->      ];
-> 
->      static mut TEST_CASES: [...; TEST_CASES_SLICE.len()] = [...];
-> 
-
-Neat: I hadn't thought of that, and it seems to work great.
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
 
-> You could also just build everything as a const slice of `&'static
-> [kunit_cases]`, if there is no need to make it `mut`. But I suppose it needs to
-> be `static mut` for some reason?
-> 
-Yeah, the kunit_cases are modified at runtime to store the result, so 
-this really does need to be `static mut`. And while these writes are all 
-done behind the scenes from C, so they should _appear_ constant from 
-Rust (modulo a couple of writes to status we can get rid of once we fix 
-the cfg() stuff here), we still need to ensure they can't end up in 
-read-only memory.
+--=-hrTAX/W6mLo7sKDNm8zH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Cheers,
--- David
+@Lee, @Pavel:
+
+Hi,
+
+This message has already been posted once [1] and no reply has been
+sent. So I added your names to the subject line, so this message will
+hopefully make a difference.
+
+--- The contents of the original message:
+
+Regarding the leds rust abstraction patch series.
+
+Lee already mentioned he will take Rust patches into his tree if
+"quality Rust-specific Reviewed-by" trailers are present [2].
+Will this also apply for any subsequent patches (e.g. bug fixes)?
+
+Secondly, there hasn't been a comment on me taking the maintainer role
+for the Rust abstraction yet. If thats fine with you, I kindly ask you
+to ACK the patch adding the MAINTAINERS file entry [3].
+
+I was told there have been cases in the past of maintainers leaving the
+kernel directly after code has been merged. To take away any fears that
+might exist, I can assure you I will take care of the Rust code.
+
+If there is a patch with breaking API changes on the C side, simply add
+me to Cc and I will fix the Rust side.
+
+The missing ACK on the patch adding the MAINTAINERS file entry [3] and
+the missing Reviewed-By Rust trailers should be the only blockers of
+this patch series.
+
+Thanks
+- Markus Probst
+
+[1]
+https://lore.kernel.org/rust-for-linux/6c57e08a5f4aa9096711d14d82ece19fb68c=
+893f.camel@posteo.de/
+
+[2]
+https://lore.kernel.org/linux-leds/20251110134058.GC1949330@google.com/
+
+[3]
+https://lore.kernel.org/linux-leds/20260903-rust_leds-v24-4-8d9e4c04db69@po=
+steo.de/
+
+--=-hrTAX/W6mLo7sKDNm8zH
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmqyrNQbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSJa4P/3iq5hDp/fMSRneXBm4/
+Qt2omZIzS+m3e8Ds4MkTm+g8+38aL/JArAnGSdxrhiGqkzcP2QPr4B5pN+uhlnHU
+guCBb0ifat9OXljaBitpPOUIlgt/YAhLJIedLJtVAh8Roc0Byz2dDMc0E14ZfGNC
+7DKxSycz7qr7Rm6C0c2emM2wqlpS1i2ouYbALkgcCbF6BoqTcMxTP/8QcdksnrpI
+VUuDV6y1rZbPuxzEsacwf2UWWlqp6ZsqEDlbmT8V8QZbv/DVl9n+Uz24iXzU6Ks7
+N6vP5ZLAJniDBBRSj2jeIGIvCg+itBSjWtYarVE/iUxkrLtaRMUTtCUytYNNkTkp
+FMwXSn9XrMdSSprl8EUlddyvWZXJeiry3qCc3QaAEBugpjUAQJYXQRqS2Qfk+TC+
+5jzizYQ7F+KFZzTcHD1JzqoXujJfK4eZTxCmBk4sBgcrTX9iMekuaVqHPSUFIpNu
+cdmm0lbkEG92P4RFXyuD3ZbSIIgVYPDzgWYH1C9hFzf+mP6TtpkHGindygzGvhmg
+FVL73qxVTXoph2uaGEZdGAZbhQAnoZxCm5jjjWAfAgpDZRSLL8RPdnIvmSNICxcR
+N7uG28EeJ2Kn7qt5DGKuzLNcIU/1sOrhcqhADiLBb8qWU1vMCR6AEwRQzc59t1OO
+cZ7EcoHIvs8V7Fe9hCFLYZN+
+=JywU
+-----END PGP SIGNATURE-----
+
+--=-hrTAX/W6mLo7sKDNm8zH--
