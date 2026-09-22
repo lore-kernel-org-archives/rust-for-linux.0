@@ -1,96 +1,124 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E94353E313;
-	Tue, 22 Sep 2026 13:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E3733F589
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Sep 2026 13:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790082579; cv=none; b=H9mCJO9Bl7E44XAhl8KQQ255pKRuyPZ6hptAoBIjsQBVZH6Cez+8+GQ8I8Ntia2fiHWhkv97xIR9PHjLTY1fTR3AhjV3xUV8mgMzCV1zWgxC7ON2SzOuHTpTyRDUAiChfvylV+cfzm2I3injNp+kVUX1gNLR1Bp9lYcyqPHa+ps=
+	t=1790083448; cv=none; b=Kvld0hoPSZ66hKz9ln5m2ncbCNVTIZmNganb6PqDDAFm0X7Cv/XOXnGFK/7sqUPw9ZCFb3SGs/1v4YsI5IlfMoycexdOoYYlc1sopQLDYD7Q9QK+J0jdE8oDYfkKwct1sBZrd/gMSri/UXh9/WJ4+Jf28k1NdQxyribKEfPF7TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790082579; c=relaxed/simple;
-	bh=AgYRKeGx6YrxHo5tLOfYUAdJiIfBFhEsQpTA/20bgCU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EmCsgFVgTlNW0Lx7HUbYewalUroonFo1ztFGFVBlssabeCxOG+THkLsdIZE3+Y8GchhmM3dXNO5fQihxhQL8LGkoud+YbggHqdrktmPke4L+LNEUgilT48jMdyZvSy0KpzBrbNn8yM1ejhNEmOj3w8h+FzBMeBmEmGxDkAEh7G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MtUom7eB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790083448; c=relaxed/simple;
+	bh=goK+VwBYaFB26slnzfkhTeD20csoO7Pe52oI3ggQEKo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Du4gOms/5Y7g8Gojp47a+AeM9wDXdqCZLxE90dvelp8aTxJ6jyEKpOc/eo38yVai4APYRyoWeb8G11hhmOHnK6u6uGXfQVv55+qwbD277y459cMGvL1TZJPdeh/SfodTkisnbmKQdMbTZhUKsN+1fx5aD5KFKhsJw4hmN4wDxfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FGj6iVUQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MtUom7eB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037D31F000FF;
-	Tue, 22 Sep 2026 13:09:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FGj6iVUQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 704001F000FF;
+	Tue, 22 Sep 2026 13:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790082578;
-	bh=AgYRKeGx6YrxHo5tLOfYUAdJiIfBFhEsQpTA/20bgCU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MtUom7eBTFRpDBmC5PC16C5qIL5Ywu9NH+SE0K9c1jgXsItXNIbsoXLlqLDE9nyLi
-	 fD7w9uOE4hQ6p5C3WrqxT9iCd0Ti9bY1Yp11pFK8cfEu4cnBoF7cmLzyf7YGb6puUL
-	 ACqI1nfguAjSKdnRWZ4sCh5yWXK6a8eUMMQdhCtTvyURYIw0gBPNcz4vv6YhkLixLP
-	 tucoL78ZEps4VrU6pRz+AsOmtwsdrdrlTDmZVX01Ew2uILwbH/zWwnPkDwKfCO6QOS
-	 DpTalaKpOS69IVpTTWiDFgWTYeUf916M1x0zOQ/73Ce0EJamJnVZsGD0S0GuuSE19p
-	 nfnZlw89sqKgA==
-Date: Tue, 22 Sep 2026 14:09:22 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Alexey Gladkov <legion@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Jonathan Corbet <corbet@lwn.net>, 
-	Randy Dunlap <rdunlap@infradead.org>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2 13/21] modpost: emit module descriptors as assembly
-Message-ID: <arJ9QwpjQq5Z512z@gremlin>
-References: <20260914-build-speedup-v2-0-39817ec5db23@kernel.org>
- <20260914-build-speedup-v2-13-39817ec5db23@kernel.org>
- <95baacfb-d8d9-4d2f-bc89-592df6f6f8e3@suse.com>
- <arEZrFmXeCO4hZpP@gremlin>
+	s=k20260515; t=1790083446;
+	bh=owvdtntWuCL5Z4qH24aB6lebBigjOxwq4Wr+O7UhuQU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=FGj6iVUQJhokp/eF13lQNsUSYy0rOkFOOasM8H43Tuypv3OgApOV2NgRKKLwr5o9N
+	 2IPYUt2NVsRgk81jPAF/n3c+lWTabaOc/Ee/NQyWLU8IWUMWjjegxfJbeoQx4yrE+V
+	 qXJRhrVQWqtyvI2VMAvmMiRG2ZTf9wz6fN9uDmxv1On4f4dzlIY6cCH/XRMFTXeUgH
+	 7zwcPuxpj+wTzWtfWCm8iKW0X1fRMXBd7ZPLOc0YkuG6YhrPVSzG1mk3yCWKpkNfsi
+	 OyF9BF7R/rRUzY/Xq3PVsAzoaRqQFEsjK2sYgGoQJrwYpVVcedBcveitFzKC66+qjg
+	 P6jXpXZn4TCRQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: FUJITA Tomonori <tomo@flapping.org>
+Cc: tomo@flapping.org, gary@garyguo.net, ojeda@kernel.org,
+ acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
+ daniel.almeida@collabora.com, frederic@kernel.org, jstultz@google.com,
+ lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
+ tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH 0/4] Fix forward()/expires() racing with concurrent arming
+In-Reply-To: <20260824.200725.1646650851096110842.tomo@flapping.org>
+References: <87bjaw7xqa.fsf@kernel.org>
+ <20260821.185308.614720109603525569.tomo@flapping.org>
+ <87se437q77.fsf@kernel.org>
+ <20260824.200725.1646650851096110842.tomo@flapping.org>
+Date: Tue, 22 Sep 2026 15:23:57 +0200
+Message-ID: <87wlsd2zde.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arEZrFmXeCO4hZpP@gremlin>
+Content-Type: text/plain
 
-On Mon, Sep 21, 2026 at 12:57:57PM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Mon, Sep 21, 2026 at 01:25:09PM +0200, Petr Pavlu wrote:
-> > If the <module>.mod.S files are fully self-contained and do not even use
-> > something like KBUILD_MODNAME, would it be possible to name them
-> > <module>.mod.s and skip the C preprocessor as well?
+FUJITA Tomonori <tomo@flapping.org> writes:
+
+> On Mon, 24 Aug 2026 12:44:44 +0200
+> Andreas Hindborg <a.hindborg@kernel.org> wrote:
 >
-> Ack will do for v4!
+>> FUJITA Tomonori <tomo@flapping.org> writes:
+>> 
+>>> On Fri, 21 Aug 2026 09:13:01 +0200
+>>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>>
+>>>> FUJITA Tomonori <tomo@flapping.org> writes:
+>>>> 
+>>>>> On Thu, 20 Aug 2026 14:34:16 +0200
+>>>>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>>>>
+>>>>>>>> We discussed this at the call last night. We came to the conclusion that
+>>>>>>>> we would like to experiment with the solution outlined by Gary, where we
+>>>>>>>> inject `expires` into the callback handler, and the callback handler
+>>>>>>>> returns a forward duration in addition to a restart value. Because with
+>>>>>>>> that approach, we can avoid adding complexity to the Arc end of the API.
+>>>>>>>> 
+>>>>>>>> For the best implementation of this scheme, we probably need to change
+>>>>>>>> some bits in the C code, add an additional path. Down the line, we could
+>>>>>>>> also see how man callers of the C code can be changed to use this
+>>>>>>>> pattern.
+>>>>>>>> 
+>>>>>>>> Do you want to send a patch based on this solution Tomo?
+>>>>>>>
+>>>>>>> https://lore.kernel.org/rust-for-linux/20260814.084700.1697518597717457311.tomo@flapping.org/
+>>>>>>>
+>>>>>>> The solution that we discussed before, right? It changes how the
+>>>>>>> hrtimer core calls the callback. If the C maintainers take that, I
+>>>>>>> will do the Rust side for it.
+>>>>>> 
+>>>>>> Yes this one. We don't know if C maintainers will like it. We were
+>>>>>> discussing having a separate path on the C side just for just,
+>>>>>> alternatively converting C side callers.
+>>>>>> 
+>>>>>> I think we should be able to reach some kind of agreement with C
+>>>>>> timekeeping. But if not, we can solve it on rust side only, but less
+>>>>>> efficient. We can grab the base lock again, read expires, then drop the
+>>>>>> lock. But better to do it in the C code.
+>>>>>
+>>>>> The Rust side cannot take the base lock: lock_hrtimer_base() is static
+>>>>> in kernel/time/hrtimer.c, internal to the core. So that way needs some
+>>>>> agreement with the C maintainers as well.
+>>>> 
+>>>> Right, we would have to export the symbol, or a function for this
+>>>> purpose. But it is a smaller change to C code. I would prefer we solve
+>>>> it properly though, not with hacks.
+>>>
+>>> Could you propose the solution to the C maintainers? I will do the
+>>> Rust side, whichever way it goes.
+>> 
+>> Not sure what you are asking. C people are CC in this thread. I think
+>> the best way to discuss is to write a patch that can be the basis of
+>> discussion. Do you want me to draft up something, or do you want to do
+>> that?
 >
+> The former, please.
+>
+> This thread has a lot of Rust-specific detail, so I think a new thread
+> with the patch would be a better basis for the discussion.
 
-Unfortunately this broke because the build passes flags that are only
-meaningful to the preprocessor (esp. on an LLVM=1 build) and
--Qunused-arguments was removed from kbuild in commit 8d9acfce3332 ("kbuild:
-Stop using '-Qunused-arguments' with clang") purposefully.
+For tracking purposes, the new thread is here [1].
 
-And some flags are needed and others not so keeping track of which is which
-just for this is asking for things to be fragile/break, esp. on the rando
-arches.
+Best regards,
+Andreas Hindborg
 
-The win here isn't very much overall so I think I will revert this change
-for v4.
+[1] https://lore.kernel.org/all/20260825-expires-v2-v1-0-90411c6217c7@kernel.org/
 
-(All your other requests have already been applied for v4 :)
-
---
-Cheers, Lorenzo
