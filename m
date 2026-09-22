@@ -1,195 +1,140 @@
-Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656B747F3C3;
-	Tue, 22 Sep 2026 18:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790100620; cv=none; b=mmQpGDMOraQ01b1k8/vqX8ELH2H/fD2UZUj/CV+Sj3Q72hoMjdQKUQ2BhxN0BcqI0OyhaW2191Atxiiwh+tS2FPgA3825tQ3tzckPjLZAqlr3qgwKCYESwmp3n/KuIC0+JXz32gxHSQLpl0LNc4ne2mGINz3Xq9UnIpmltPutBI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790100620; c=relaxed/simple;
-	bh=deKIgFiUGBErYiAo09/pFi8Zuuux40USuhet68Qc0jw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cKEqusmimhFuxLg1gA4HfGavfTj1beoqfuDmhNcXsnTGtrWXUSXt9E8r7R4HqygApG68NEM79zvgg9StPgHVG/6VvQY0Qisnqzwnd+q4HeT58hzfgg5sM3ge35Qrp2nMhgcEcbIyI+kbC1wVlnOdF+A4F8sG8I9YQmwaNnWuhFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=TzE1ft7S; arc=none smtp.client-ip=199.89.1.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340CA36896D
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Sep 2026 18:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.205
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790101834; cv=pass; b=aOIbNjowNJvEMAaECeMnHdsNZlIztrr64WRBFpORF3nGV2lzjFnyzCofyS9K+vvOWknwQPIeh4lwESvpYjMyyuXn+U3g+/sRXWkBIkxmzxSNRWYjzD/DBzD5VdDPTygDWJ+nGqQ5fx1POINSAFJ+sKDsxGfz2xQazfLKQ+9E60o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790101834; c=relaxed/simple;
+	bh=kblI8jvzuw+DdDqY67GusYDiVjYY1AFEjqn2PvfijFA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ny2w7TKU7fE7RBPZLb08gR9m6D64ga3+mXll9hM+Oil0MswQkfVph6lg4s/T68lq8FodH6B5ypXDieTm+Mscjqu+8YnLJtJ21dv6/60KdF4CC/K1NJlq24S//LOh5NsIPceRcg83N4Cvw3dI0r4ALcURem7+Eu2wi3iFm/LcLws=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l7Y0Qsbg; arc=pass smtp.client-ip=74.125.231.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="TzE1ft7S"
-Received: from localhost (localhost [127.0.0.1])
-	by 011.lax.mailroute.net (Postfix) with ESMTP id 4hq7Rs3fgFz1XM4TB;
-	Tue, 22 Sep 2026 18:10:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1790100601; x=1792692602; bh=6iFUwmy3Y7707Y6oNNSb5VkG
-	F0O3ViC9MBP2z4P2CIs=; b=TzE1ft7Sw8h9N7ctQFg1mr3uZsJIFWnugd+GGPze
-	w5/cxTs7YuwxpETzPcLbVh16/kNq742MCOw5TNGC32xYb/Ta5PpGoJPwhJYjCrOT
-	VchYRkiwp04Da1nNzFNUk+XDXjB7aaSX13snXIfuLttV3JhZ4Rsa+T+ATe59Pp2W
-	zM3v6kjkzvXm5a67gcmIsT7J6+QurLOh/r4WsLvFIMSefSLtbSRFdTBnxl2F7aQA
-	dOw8clumwTKRKIAb8MCDKsK7t78o5e+iZoC4NO1R3uKCV1uhr8HmU4K+1aKs53hu
-	BJOIF9//u4anBJglNZGVo9D4tfrPO43DuQsyKKGT8K/MWQ==
-X-Virus-Scanned: by MailRoute
-Received: from 011.lax.mailroute.net ([127.0.0.1])
- by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id 7bApeaQEWz9c; Tue, 22 Sep 2026 18:10:01 +0000 (UTC)
-Received: from [192.168.0.215] (c-24-6-239-25.hsd1.ca.comcast.net [24.6.239.25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4hq7RR17XPz1XM4Sx;
-	Tue, 22 Sep 2026 18:09:54 +0000 (UTC)
-Message-ID: <ac1d3825-8a10-42e1-9eaa-f2ba51216660@acm.org>
-Date: Tue, 22 Sep 2026 11:09:53 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l7Y0Qsbg"
+Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4c13f2685f2so137737b6e.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 22 Sep 2026 11:30:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790101832; cv=none;
+        d=google.com; s=arc-20260327;
+        b=G1MejmTZjZup+16a3KzAQ1l5NrFDG9exRMqxfK+UIhVlgWni9p0BwboWPguu4XFtb5
+         ts6FjBj8sOn9zDrroyBgOiSea9vFTN0EBfR/GSad6aN06fsQW4aw185EBh+cPygZeKaW
+         ZhtMUkQd0yW9jLZbd7ERq+t7ZEL1PPzZfBnA7I4ERB8gCZVAyQzdNRKHdVqYWXnSdJPn
+         k5cWGoVOSp4+M0oc6VqHIDwfUe0/Yo+gDYQmYNiEsnJ+rtQBbwyifHXMS2Z56t1/1acU
+         H7p1vSiw+JMBerzGr35W6W9SvPJJQ6zZUBsgSu/Qn5fyRIzCykNju9aKyVoTVJQoKZKt
+         gdDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kblI8jvzuw+DdDqY67GusYDiVjYY1AFEjqn2PvfijFA=;
+        fh=yHf4EePBKPgbcsXNPR4hYAv0jn4I4AsizRvrtaHWHVg=;
+        b=If/FFdQf2tjHFMUIbA8rQ1KKE8tlkBokvOqeaZ4fT7jiQ2smmBx3E0P+/YS02/HGGD
+         A+wvIWy5GA/BkHL7ocjm/BR4P2vkpJXwql+hFaNsmxH+bqgG1ABrmslh2jIq4j4L25YT
+         J2D2eQNRPJvlggIt0j6tXB1hN5gpStt26bKY4OxzznG876FAzR1wYpmYGGfJzp8KDBx/
+         vqQFk0IUY8cDKgK+uBV+YIHLy7yEMJU8IuDU/HEjji0+F7TsbPuz4WXX7ZWEpu1+5u2H
+         COCfwGJkPppPglV+/VtFffNmxw8ItZwBFsJgah5ec8Rbcw24bbLgG0bUesnUx2ot3lwd
+         IF0Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790101832; x=1790706632; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kblI8jvzuw+DdDqY67GusYDiVjYY1AFEjqn2PvfijFA=;
+        b=l7Y0QsbgxSeX7YI6DdTjrF7Aev0Ksef8ZwY7Fk8NlV/FSRo0NwRxp23nQgMb4hK3Uo
+         jfotH+1SG2sZ7D3wgzjgc7LzsXUa8YPojVdU4AvSkYmugHSKtiuO9J8F/UmkCzPkxk5J
+         qAFrTyN3+AjbroiQSKgCC71lkrk7L/iIoQ671k8UIxLFBZVgiBhi8iSBRImAXI97XuzK
+         FlWiy1xkzoHGC43+ARG2B98dJb8jNrSPefW7R1mAdj1ej5TUz2pfeK4BSUfxMO2gqJL4
+         lkiYlkLUS/3niQMv2RMd1KkyhvYJfOCOQwkAzDYfZnrVp0Hg8jc9z/LHorUSNPAvIQv3
+         RArQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790101832; x=1790706632;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kblI8jvzuw+DdDqY67GusYDiVjYY1AFEjqn2PvfijFA=;
+        b=T0sJaJ0qViDmY/LLcQfbT3j2oKcf4k8qhLVgRub6WUPFxevnTYcCm/W9kIc3b1Hgvv
+         Y1jyI7zzsN8rNRgp+hKnSCP+48hNg3LQMtu3G6/CdPUM8IoiQCh3oOtyx1pJvixc4+Ci
+         T1sewX+nEwYHX87o/KivIzOo55f1m2wyFZWvksJl3zz9aRQs5xB7d5dUQGWKxXcGKnAW
+         tPE1l1mKoAVd/nrUdoQwjTbi0yNzaWFq33bG7J7YTTMdhnTu4iq/y3Z3rvvDIEz9Oska
+         Ygbxl1hKQzpWO5cV5nYj5EkzI7zCUqKFHb2iAhfsgjaGdJWTTDzkcqqOwBO/Cr70EL9k
+         13vg==
+X-Forwarded-Encrypted: i=1; AKwUvBzgRplElGAyz22FV6OlDbFjLElsZK+lAisOcPRl+F4wYDorUkQcjGKpibibSbv7jMtd2HD0KnhZ2AWK/3eS6g==@vger.kernel.org
+X-Gm-Message-State: AFuF++kbxfA8UqCWvX9bRBLn7kewlGPTAgtDEo9Q91jDMhdv5b5zOWxx
+	6WBlLp4UJgYRnv8URovLnWDRcXi3p5IITQjCU9Kc3X6dUnXD65gysVBvCTZDPSd4fJkmcO0sYyG
+	8Zc318l1Hb+ZJ+NSdbNQ+A8ELWyU4lkk=
+X-Gm-Gg: AYBFou3j2gswtUfN3dgd+nXpxVonidtJNAhSKf1LffHKpIigAGcUj8cXlIU8VqJklzj
+	CMznE9QizC8hIGeBV2nSWr8Pz1+Ud1oknDp3D9Fe8ruqcKH3wmCvTde6pMYHJIFmV03WcVOXSnt
+	4xhYb30LFTK2FAlQIP4RbxvomDGc1IhYoNLbZ1GYaPpe2KSv76/asuW//iqbYGcBm2zUGsT/Zvm
+	na51PJ4AIlO0tXdtPgnpCZOgCVlRSycLd5t++lvNpCUYZX5jQz4Qr05GN06iQY0h/f4vwkFF11Z
+	8w2PT1vyu7OR8JX+86At3wZWKmSiBDelCkYmSaIfg9HFM0kbuyjdFRTGuhw6Anf4x6t6oqvge5y
+	V5/fWSyaT+hZjIEH0NmV8LMX8
+X-Received: by 2002:a05:6808:1247:b0:486:8a11:6e8b with SMTP id
+ 5614622812f47-4d5b7508c71mr243620b6e.2.1790101831981; Tue, 22 Sep 2026
+ 11:30:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] block: Add run_todo() operation
-To: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
- Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
- Jan Kara <jack@suse.cz>, linux-block <linux-block@vger.kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
- Andrew Morton <akpm@linux-foundation.org>, Brian Foster
- <bfoster@redhat.com>, Damien Le Moal <dlemoal@kernel.org>,
- Hillf Danton <hdanton@sina.com>, Markus Elfring <Markus.Elfring@web.de>,
- Ming Lei <tom.leiming@gmail.com>, Qu Wenruo <wqu@suse.com>,
- Tao Cui <cui.tao@linux.dev>, kernel test robot <lkp@intel.com>,
- rust-for-linux@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Nilay Shroff <nilay@linux.ibm.com>
-References: <e615fb71-f386-4029-8ceb-22e375ad9e94@I-love.SAKURA.ne.jp>
- <afbf50a0-d409-45a3-8e95-99c04ca0e302@acm.org>
- <24ef93b9-7385-4dda-8912-f7c78f9705d1@I-love.SAKURA.ne.jp>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <24ef93b9-7385-4dda-8912-f7c78f9705d1@I-love.SAKURA.ne.jp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260920200154.1194983-1-georgeandrout13@gmail.com> <DLKFTVSN56P2.2NHCFW6NIUOAH@garyguo.net>
+In-Reply-To: <DLKFTVSN56P2.2NHCFW6NIUOAH@garyguo.net>
+From: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+Date: Tue, 22 Sep 2026 14:30:21 -0400
+X-Gm-Features: AcwNN1WCk-bP1a41pSc70f2QVB_IR4W1RwREP0VVcFOJquCvEG0378Po8h1cQFo
+Message-ID: <CAESH5oeuKoDyr6ZcGR3Fa+_nPn+ceg9PbqBXoXjRsstaSKtJtw@mail.gmail.com>
+Subject: Re: [PATCH] rust: file: handle fd table teardown in file descriptor APIs
+To: Gary Guo <gary@garyguo.net>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Jan Kara <jack@suse.cz>, Boqun Feng <boqun@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/21/26 10:08 PM, Tetsuo Handa wrote:
-> I think post_release() is misleading because post_release() is also called
-> when disk->fops->open() in blkdev_get_whole() failed (and therefore
-> bdev->bd_disk->fops->release() in blkdev_put_whole() from blkdev_get_whole()
-> was not called).
+On Sun, Sep 20, 2026 at 4:48=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+> I think we want to add `unlikely()` on them (which is being added by
+> https://lore.kernel.org/rust-for-linux/20260406095820.465994-2-ojeda@kern=
+el.org/).
 
-Has it been considered to call the new callback only if fops->release()
-has been invoked? Here is an (untested) example of how this could be
-implemented:
+I checked current `linux-next` and `rust-next`, but this does not seem to
+have landed yet. Should I leave these as regular checks for now and add a
+`TODO:` to use `unlikely()` once it is available?
 
-diff --git a/block/bdev.c b/block/bdev.c
-index cd8323083740..82be4812a7a0 100644
---- a/block/bdev.c
-+++ b/block/bdev.c
-@@ -766,7 +766,8 @@ static void blkdev_put_whole(struct block_device *bdev)
-  		bdev->bd_disk->fops->release(bdev->bd_disk);
-  }
+> I wonder if we should upgrade this to `WARN_ONCE`. As code being executed=
+ when
+> exiting are cleanup code, for this code path to be hit, it would mean tha=
+t some
+> code is installing FD descriptor while being dropped -- which is likely a=
+ bug.
+>
+> Putting a "BTW, some Rust code is installing a FD when process is exiting=
+" in
+> dmesg is not going to be useful to understand what's going on. We'd want =
+a full
+> backtrace.
 
--static int blkdev_get_whole(struct block_device *bdev, blk_mode_t mode)
-+static int blkdev_get_whole(struct block_device *bdev, blk_mode_t mode,
-+			    bool *called_release)
-  {
-  	struct gendisk *disk = bdev->bd_disk;
-  	int ret;
-@@ -793,18 +794,20 @@ static int blkdev_get_whole(struct block_device 
-*bdev, blk_mode_t mode)
-  		ret = bdev_disk_changed(disk, false);
-  		if (ret && (mode & BLK_OPEN_STRICT_SCAN)) {
-  			blkdev_put_whole(bdev);
-+			*called_release = true;
-  			return ret;
-  		}
-  	}
-  	return 0;
-  }
+`WARN_ONCE` does not seem to be available on the Rust side yet either.
+`warn_on!()` is available on the current base and would give us the
+backtrace. Would you prefer using that here for now?
 
--static int blkdev_get_part(struct block_device *part, blk_mode_t mode)
-+static int blkdev_get_part(struct block_device *part, blk_mode_t mode,
-+			   bool *called_release)
-  {
-  	struct gendisk *disk = part->bd_disk;
-  	int ret;
+> I think we can remove this warning. Skipping put_unused_fd isn't actually
+> leaking anything as the files_struct is cleaned up.
 
--	ret = blkdev_get_whole(bdev_whole(part), mode);
-+	ret = blkdev_get_whole(bdev_whole(part), mode, called_release);
-  	if (ret)
-  		return ret;
+Agreed. I'll treat dropping the reservation after fd table teardown as
+normal cleanup, skip `put_unused_fd()`, and document that this can happen.
 
-@@ -821,6 +824,7 @@ static int blkdev_get_part(struct block_device 
-*part, blk_mode_t mode)
-
-  out_blkdev_put:
-  	blkdev_put_whole(bdev_whole(part));
-+	*called_release = true;
-  	return ret;
-  }
-
-@@ -973,6 +977,7 @@ int bdev_open(struct block_device *bdev, blk_mode_t 
-mode, void *holder,
-  {
-  	bool unblock_events = true;
-  	struct gendisk *disk = bdev->bd_disk;
-+	bool called_release = false;
-  	int ret;
-
-  	if (holder) {
-@@ -997,9 +1002,9 @@ int bdev_open(struct block_device *bdev, blk_mode_t 
-mode, void *holder,
-  	if (!bdev_may_open(bdev, mode))
-  		goto put_module;
-  	if (bdev_is_partition(bdev))
--		ret = blkdev_get_part(bdev, mode);
-+		ret = blkdev_get_part(bdev, mode, &called_release);
-  	else
--		ret = blkdev_get_whole(bdev, mode);
-+		ret = blkdev_get_whole(bdev, mode, &called_release);
-  	if (ret)
-  		goto put_module;
-  	bdev_claim_write_access(bdev, mode);
-@@ -1037,7 +1042,14 @@ int bdev_open(struct block_device *bdev, 
-blk_mode_t mode, void *holder,
-
-  	return 0;
-  put_module:
-+	if (holder)
-+		bd_abort_claiming(bdev, holder);
-+	mutex_unlock(&disk->open_mutex);
-+	if (called_release && disk->fops->post_release)
-+		disk->fops->post_release(disk);
-+	disk_unblock_events(disk);
-  	module_put(disk->fops->owner);
-+	return ret;
-  abort_claiming:
-  	if (holder)
-  		bd_abort_claiming(bdev, holder);
-@@ -1189,6 +1201,9 @@ void bdev_release(struct file *bdev_file)
-  		blkdev_put_whole(bdev);
-  	mutex_unlock(&disk->open_mutex);
-
-+	if (disk->fops->post_release)
-+		disk->fops->post_release(disk);
-+
-  	module_put(disk->fops->owner);
-  put_no_open:
-  	blkdev_put_no_open(bdev);
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 4f7905c3412b..f2a2f70a9582 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1577,6 +1577,7 @@ struct block_device_operations {
-  			unsigned int flags);
-  	int (*open)(struct gendisk *disk, blk_mode_t mode);
-  	void (*release)(struct gendisk *disk);
-+	void (*post_release)(struct gendisk *disk);
-  	int (*ioctl)(struct block_device *bdev, blk_mode_t mode,
-  			unsigned cmd, unsigned long arg);
-  	int (*compat_ioctl)(struct block_device *bdev, blk_mode_t mode,
-
-Thanks,
-
-Bart.
+Best,
+George
