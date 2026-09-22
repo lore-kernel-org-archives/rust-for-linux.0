@@ -1,173 +1,85 @@
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D4C54A7C5;
-	Tue, 22 Sep 2026 14:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C9E3EAC74;
+	Tue, 22 Sep 2026 14:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790087013; cv=none; b=XBS23bMRRX+zwmOwZGSA/iDCT1BcmoAbbVXSoSiUUcokR7YFL7Lny0fJ6aI8VufSN+ZWOLz7vs2Ff5yCKKaSUDRdMpFf6n4joCtrBTCbsRfzdxDTPEOyB94NrvAt71u3yiXbct0FfLYXXQef4WkDSJ/bTO7T69/kv0lq4Gulwho=
+	t=1790087701; cv=none; b=RelK4ouvXdDW0CMIjBk/7zF2J9WqwSYs1l+pd3mdK9sNgQaaMcshjQ1SviJUvLCvQEWLM+nsaJxvpvYGV69+nf30ASbajS8DOZG65Sq+5Hpie71KJ9Z3lnS7v2YDZPhzG+0tqtzGp+jYdLJE4/zQ91VtuyOFKHXind2wRN7JvKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790087013; c=relaxed/simple;
-	bh=1WKltNj3bFDrgEz9P/aKVfd4rrHoohpi19d8Td3ILlA=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=odPlqywAj4abHMtFpw8WdNzQfbesfzeyOrmHsEe8Qeox6sl5KGZtucoEijfEcW85RgZdOIuWOXV+i0oKC7FTjA31eFeoKpQgbzxcdozEyX2mqNUBSykXfl5ZRRIsGYyAHp/0F19C0/hPhqIFXLmUSM+YK5u+HDywXuUP4sMWVe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=hKIQ+b69; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ph5vUBWg; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	s=arc-20240116; t=1790087701; c=relaxed/simple;
+	bh=KlbmuMxkLkoxuH6oBTyGHj5Wu5Zm16Y5Kw/5vSn8XIg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=i958nEEj+knnAz9IoYvTJQOQSNi93pennVhiz+LcnqJEJLQiloyjxtKaGrkgUUvdu4WFqe5Vc5HWhFeZ3hVFCCwXpQiSP2StgYRwlftcCgXOqxC9Q1IgvFw/qvhmL3G5w1J3q23jjo5ODKzrFy0K+NWcvd9WLrBgIivdv6Uy4B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DhgkK8MU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="hKIQ+b69";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ph5vUBWg"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.phl.internal (Postfix) with ESMTP id 32113EC0255;
-	Tue, 22 Sep 2026 10:23:31 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Tue, 22 Sep 2026 10:23:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1790087011;
-	 x=1790173411; bh=vP9NCCO9GuK9qooVOCyuEm5uZhDmllxHIjo/78tO+Pw=; b=
-	hKIQ+b69lR/QRXxYIMhN3io8jvGqegQYkf+3KfmtuXmHwvr1d4DjG9nQ8gwoPrLH
-	t7tEf5xGSFklaJUZt4Gy0WN+sAxqAJDmWH9yF+w/97Py/EiSSU57WKYSwcG0nqWR
-	g1Tu9GUexW8diP8C9ufusBxWHmXEFUeMQCQbFnwIHiDq/+zQNwXxD0+ue9rIUWfo
-	29QiX6ZEFWwqTP1RZSCxG74pdwV4SHeP+Up2cflBJX6ebZ0sqUIiijdAfarTrAKP
-	PdM5ePnLaIEcwDRWUu7x+vGjyBIBXe8XpeMP5o9lLMQic5uCkH+F4iyTVK587JxA
-	NufaDHWtXpbOIsGhFlh7JQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790087011; x=
-	1790173411; bh=vP9NCCO9GuK9qooVOCyuEm5uZhDmllxHIjo/78tO+Pw=; b=P
-	h5vUBWg/zqWLwJ3jfioGfIW5O93B51vdG0eAIMr0XgaVXQEBIshZ2iMG5trr36Vz
-	Ydw3JO+R4LwRxj/TrNh+PNwI0M1WHXP7NxTfCGhq/c2v6ekJXvFlMsjyHXUPJPXr
-	SamARGuooAvITbRf2lvkI3If7/gr0KEyTQzsu0UkCFEOLj6DEjpF+oLBEHwtej6o
-	LD8JuFU9eNtyOJMiYPgJBZ8+ZU7rFnaO0EhuGaKXVY/xMnr1xFr4NTQvQkZ92oPu
-	h5dpa6rSDEBffRKrKw6u3qeosHoZMPOTrlxyOIFNCfC6DdA57wHyMy4jUaZvf1K6
-	0qAFkeIDvqJ61Hurzi4nA==
-X-ME-Sender: <xms:Yo-yagft1iuBg0Moau-V9TpRXe7TF3Rl4fFe1jhIe1YwqTuCwx8cWQ>
-    <xme:Yo-yar25NtRX4YACu6-EoQb66NSBZ8Mwt9c5ZvITC7PrQY-H7rcWichADrH9sb5g8
-    xiGBN-EHZVSATX-S2sE-4XbUMP5M5XR2e2tSN0mnsvq5BXIYcLfTgM>
-X-ME-Received: <xmr:Yo-yak9LztJJXV1dFMLrh-AgCwOvUOQ4ppAS10y9TMxikYYSB9-GQ2J-XUu0z-fYYhJLjDwgOhVI7n_PDQeGYAUo>
-X-ME-Proxy-Cause: dmFkZTEcJYB+omvP8dKlV8xLth5GXJ9j9iW3ImwKvcGSnFTaE1WaHA/S6NdnJnJz5sVdcu
-    udISQMbDm1Utl/4u9jvV53Ek+Dau9nZwvw7jCsTZ5BOJw68JI8i8AoXErQHGQdLuYaJqCO
-    1DsMx0CsvfR/0TXTf/hlGG69sFRJAVk6DgoRC1nBkVoLNjBXp9CJijOD3wfGdD/XNcI0Nx
-    F9rlHSziZe7faI9Sqt0fnkmUDT1n45sqCtDtErj5cgRBAthfHe61UohNgCrcB7pBu+Q1of
-    jDx1BQt+VKrWYmXJ0CqRRiy61a54Iq4EH73BVzXMbbfpRoylz1TSYmiRd39FZ+VxQftXgX
-    +/wwHCAOvtjuplHisUySsny9LTygpJT1hKU/p0pseGQwd7987T250xY6fNhXVs52gQr6DR
-    PFfkm6+8viVF17bl+Uiz7k70PT5gkeFyYAYD5iT5fOHFgIjMweaMraarPvoTV6sdecxrNG
-    pgNgVN1sY2Mh7JvuT+YAqwEOMiHPNJKsMYWcyAV4QCoEaPjv6qMoYn2tN9Eq7jdGLG8fcZ
-    IZQ4mx8dJ/0vZwIu5e/KkKKtuhog2UC526w96lZUWDQymuDjAuEOerOJkQISTfdR80VuKW
-    //M2bIJDIKUkCs16z/dN+8SVQo8oMvrg4bDqJEg2KvvnyoeQHDu+PxcKm2tQ
-X-ME-Proxy: <xmx:Yo-yas3qWnYcWEfBHh30sGl2NQQAkL5MU6c0HdL_mMZZdz6Y5uh42g>
-    <xmx:Yo-yan2FfEkMXR4iiVVYfnFqEuYwJzC48_PFZGOMWn7dCBuoXdmWsA>
-    <xmx:Yo-yaotjJDOhw7I-Z_CLJ72MQ0hlmcWxIg123uu-MJZLbXJF8gd3fA>
-    <xmx:Yo-yanbyKiAd26Fu22DY9iVo7t2HmDOxjeE9GD9cZ9E9yhZbKL1U_A>
-    <xmx:Y4-yarhE8reLxNjsAl-phNcKt3YIsIOF6P8gEfXf63iPNF9uFq2qcAdY>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 22 Sep 2026 10:23:24 -0400 (EDT)
-Date: Tue, 22 Sep 2026 23:23:19 +0900 (JST)
-Message-Id: <20260922.232319.1364383574405174986.tomo@flapping.org>
-To: laura.nao@collabora.com
-Cc: dakr@kernel.org, aliceryhl@google.com, daniel.almeida@collabora.com,
- airlied@gmail.com, simona@ffwll.ch, ojeda@kernel.org, boqun@kernel.org,
- gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
- a.hindborg@kernel.org, tmgross@umich.edu, tamird@kernel.org,
- acourbot@nvidia.com, work@onurozkan.dev, fujita.tomonori@gmail.com,
- frederic@kernel.org, lyude@redhat.com, tglx@kernel.org,
- anna-maria@linutronix.de, jstultz@google.com, sboyd@kernel.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org,
- kernel@collabora.com, deborah.brouwer@collabora.com
-Subject: Re: [PATCH 7/9] rust: time: add arch_timer_get_rate wrapper
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <20260915-tyr-interfaces-v1-7-5d28f1f75aca@collabora.com>
-References: <20260915-tyr-interfaces-v1-0-5d28f1f75aca@collabora.com>
-	<20260915-tyr-interfaces-v1-7-5d28f1f75aca@collabora.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DhgkK8MU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499E61F000FF;
+	Tue, 22 Sep 2026 14:34:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790087700;
+	bh=KlbmuMxkLkoxuH6oBTyGHj5Wu5Zm16Y5Kw/5vSn8XIg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=DhgkK8MUcycLpRmE6lKgjwUAQSEMQlBlYhu8F0yUAhEOaR3ya3vwei4H3JmHqqqCV
+	 yCRLObzvCszsYxMELOFj91Vxv6hQXsiKkVqBXRzKTXgUoORkELo/PnBv7NK2sZLvyU
+	 OluB9RoD9ac8FGdL3meQeq6eVCLjlD/h+99ZYq0pUSZ0XUkAzdmpcbSk+jJ8tkaqCT
+	 fkgKY8PkKUjugPCXUBb9Yl5q03WyxZtkTSl9ewmIR24j/yJc3HP4CLvRbMp5/PNwbj
+	 MriE240BfaQUp5tespqgyhztYV3IGo+Iz3Hi19TIy44b5Up3rRFygj3ijWwPZK7Sbz
+	 TB9a3XOMhA9hA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>, Breno Leitao
+ <leitao@debian.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
+ <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir
+ Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
+ Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>, Matthew Brost
+ <matthew.brost@intel.com>,
+ Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Rodrigo Vivi
+ <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Dan Williams <djbw@kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-coco@lists.linux.dev, linux-acpi@vger.kernel.org, Thomas
+ =?utf-8?Q?Wei=C3=9Fschuh?=
+ <linux@weissschuh.net>
+Subject: Re: [PATCH 0/6] configfs: Allow the registration of const struct
+ configfs_attribute
+In-Reply-To: <20260716-configfs-const-base-v1-0-c545a4053cb5@weissschuh.net>
+References: <bHvLFyR13nE7HUTBaSLSUZOfB-goGIQLnTtXl9nIQ_beVuvnPA2GpKpdWw-JM4MamQAdiSxOnCc_msKnwqqISw==@protonmail.internalid>
+ <20260716-configfs-const-base-v1-0-c545a4053cb5@weissschuh.net>
+Date: Tue, 22 Sep 2026 16:34:46 +0200
+Message-ID: <87tsnh2w3d.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 15 Sep 2026 12:57:40 +0200
-Laura Nao <laura.nao@collabora.com> wrote:
+Thomas Wei=C3=9Fschuh <linux@weissschuh.net> writes:
 
-> From: Deborah Brouwer <deborah.brouwer@collabora.com>
-> 
-> Provide a safe Rust wrapper for arch_timer_get_rate().
-> 
-> The Rust binding calls a C helper that returns 0 when the ARM
-> architectural timer is not available or not yet initialized. Map this to
-> Option<u32> to make the absence of a valid rate explicit to Rust callers.
-> 
-> This allows Rust drivers to query the system timer frequency and
-> select appropriate time sources when programming hardware timeouts.
-> 
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> Signed-off-by: Laura Nao <laura.nao@collabora.com>
-> ---
->  rust/helpers/time.c |  6 ++++++
->  rust/kernel/time.rs | 30 ++++++++++++++++++++++++++++++
->  2 files changed, 36 insertions(+)
+> The attribute structure defined in driver code never need to be
+> modified. Allow them to be marked as const.
+>
+> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
 
-(snip)
+For the rust parts:
 
-> +/// Returns the ARM architecture timer frequency in Hz, if available.
-> +///
-> +/// This function queries the system-wide ARM architecture timer frequency.
-> +/// The architecture timer provides a consistent time source across all CPU cores.
-> +///
-> +/// Returns `None` if:
-> +/// - The ARM architecture timer is not available (`CONFIG_ARM_ARCH_TIMER` not enabled)
-> +/// - The timer rate is zero (not initialized)
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// use kernel::time::arch_timer_get_rate;
-> +///
-> +/// if let Some(rate) = arch_timer_get_rate() {
-> +///     // Use `rate`.
-> +/// }
-> +/// ```
-> +pub fn arch_timer_get_rate() -> Option<u32> {
-> +    // SAFETY: The C helper is available in all configs; it calls
-> +    // `arch_timer_get_rate()`, which falls back to an inline stub returning 0
-> +    // when CONFIG_ARM_ARCH_TIMER is disabled.
+Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-A SAFETY comment states why the unsafe call is sound. This one
-explains why the helper is available in all configs.
-
-How about:
-
-// SAFETY: It is always safe to call `arch_timer_get_rate()`.
-
-It just returns a variable without any lock. rust/kernel/time.rs
-already does this for `ktime_get()` and `ktime_to_us()`.
+@Breno, will you take the entire series through your tree?
 
 
-> +    let rate = unsafe { bindings::arch_timer_get_rate() };
-> +    if rate == 0 {
-> +        None
-> +    } else {
-> +        Some(rate)
-> +    }
-> +}
-> +
->  impl Delta {
->      /// A span of time equal to zero.
->      pub const ZERO: Self = Self { value: 0 };
-> 
+Best regards,
+Andreas Hindborg
 
-This puts the new function between `impl ops::Div for Delta` and
-`impl Delta`, so it splits the `Delta` blocks.
 
-`msecs_to_jiffies()` is the only other free function in this file and it
-is at the top, next to the type aliases. Please put
-`arch_timer_get_rate()` there,
+
+
