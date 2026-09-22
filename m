@@ -1,131 +1,194 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013004.outbound.protection.outlook.com [40.93.201.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489645372D7
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Sep 2026 13:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73B954856A;
+	Tue, 22 Sep 2026 13:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.4
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790084559; cv=pass; b=bKpABbkAbOKzcy3PypplJntaKklvCCsUy78SW57Nc6NXjlQt5cbgVsqm7Z2TnYIecRQvcm6cNDPXTPIcDAVbSC2IjkGfYdFb13yGHxsknnckDcMM+pzVHZDb7nXgoCXqFIZdc7uSLPVNaWttn3lAbotOir2lq3DvZVihyr1XyZI=
+	t=1790085201; cv=fail; b=XJWB243ea1J0iUhEsgkNbeXHrBJ3Ewe1oL/w3ZURi65VagqXH2Gkk4nYUp/f5wX6qhOAqQ/DcSGKgN7VitVhg3Jit+8KsjUkZFRQCryVbq00G1dAPbRE7nOiFTED5ojFOQD5X0xuKiopXa9yIBJ2SS4QeOMppITA9rH7/tSpdMo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790084559; c=relaxed/simple;
-	bh=RWbJJQvfWAeHPWGm2VIAzQ4UpyfGNL/jTGHu/y+875c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=evVXJ16mAdjrN1LwNMQp2Hvx+xUVQo8L59zDnxNmsY/j+5BtLSevk5XDbB0d3b953OysRb+QjMb+xvpfmZ43QwqrDnXREv9y5jY045JzoKsJI2nEsA7/nhgXGml88M9JaPCg4wsNJcL0K0aWdljV/P40qJBOg3wVColxCh/wm+I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PVKFefBl; arc=pass smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1790085201; c=relaxed/simple;
+	bh=vg7BGxDOha+BG3rUptjc6yVuKBDEnWjbloQNRZzpAbc=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=Q2G1daaSacke57uld9jXR1nymPrIE92riD5C95cIerLOuWbXS2HzuKO4KrEx1iKKyWKTnluILxt7VwQ1+FonkcTsBmt2tFU3g98k4ifMkcnZneZqRFC8dw/Xfn+bEDQILTEPyHBpAmUw6omHMUQIouPPe20ritzLfaJzcOZgN9s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FVaIhpil; arc=fail smtp.client-ip=40.93.201.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PVKFefBl"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ccff31419so35583745e9.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 22 Sep 2026 06:42:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790084555; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kheeykckcx77YXTCEySOeET5tY8odXfP/RE/AtSVu6XNtw0cG8z3ROht3A2ppQZWzM
-         qSt6th7LsPtfDY7D16qgu5n9M6nyx5MvBQ7DDUZ9RwG3Cz8MQc1vHfTUtTr1UaKjwYgc
-         pV7OZQHgQ71XQwv80rbxvaiOSXWKZmC7beDqgH55jPwXn7VhUqpcsAeTobc1bIHnunKP
-         IQll/D0P4K1FwfOZRhjFLBn1ZVoOXJf349ubuW3mpMcjgE8P9XQUNjJJOGwvdMt+bTai
-         io52sOyAK3qd7x0Ch0aVO1p1KPpVPqRHqlWFyWZ+Q5razjHAZ2ZV4KnGrp+6So1PRfzb
-         Y3uA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RWbJJQvfWAeHPWGm2VIAzQ4UpyfGNL/jTGHu/y+875c=;
-        fh=42U4wS7uvSK2LmGmBkGD1axz46/gOouFcGHKI8uGUnE=;
-        b=LlDFUpGkuM4sVmxkaq3uKcT/w+8/UvLnK3badqeK6ZkFEf+Y68l8IpbQCEHGUYw4I4
-         xKvWGpU3on9YLI5sD/i8yOOC+fkWgP+4pgqNbIBRA+2Nn1/K9CwMSu7t08W+Aas7Tkw7
-         +bB9WMqkUYQmid6aUCNW0wRgUpUXFE1FEOg3Jjmc9eilYn81TVvUom8s/KxT7Iq9l9Tw
-         IGa5ENZRexc1AmRkTg86MMAMjglc7Rg0F91oGsHAUO61tG5ejtpSFvuMocv2hxeeBcOI
-         rHq5kF9zFSa94qzr0Z6ahUrw3bXZjPVD6Vc/044Y+C3o1Lxlpt/x1y1nt9HAlgCd1qN+
-         GyxA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790084555; x=1790689355; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RWbJJQvfWAeHPWGm2VIAzQ4UpyfGNL/jTGHu/y+875c=;
-        b=PVKFefBlcFOCDKy1n0QN5lHjLSrft4fKCdSbgxb57Na/UU483SjKnCQj+x1SoySmrX
-         d0TGW7wrANuRhC2Lst8Unmhk2M5iJvBJsHpJAp257cp6Xq1AwScABAaQIC9nGyB1n0aR
-         JW3upfYBQ+7zT3+qwM7Jy3LOiMx4PbGPxt6v9tkscTS83kQUyqtsv76ADdC5Fkwp/gUZ
-         pNHnSn0eKwflk/y5274BmEMeaj9dE9qNWLZ0Z6/Vel2sKDEBxs0qMmQLGEfvoKVtjv98
-         1f0bZZpwVaGUYP0fxJmlWJSlC2bPV1fhUKBBicwjqHE68jHW1scrva2Pdd76SHH7M0tf
-         ZH7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790084555; x=1790689355;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RWbJJQvfWAeHPWGm2VIAzQ4UpyfGNL/jTGHu/y+875c=;
-        b=BneTLEmmRPamZRAd4+sG4J6pzoCVV7iXp1cmCC4FW+av4osHY8JDEdY8QEXpZxXRcS
-         28XWhO7wpcV1oa5GcGyXhbYVRWoEWpwFKYfhj0JXIYVsSWs4Uc4tQeK9DxRFgVOXZJnc
-         eK7z+8QYS2sfeD1E03k9OKBtNNlXA02vGcoa7MM7+c6gOlmYvEssdYm/GvhSPH2UtRaG
-         KhrYOkQuqoBxBxz/GSgTpR+4xWZFEC1iOt4auXn/ulPO9t8pGjZIa61u04/RIAM4hYLU
-         luPJoqCwSQcnHs8zCdu+4r7qKjmjcUu66HJ7cW72oS29Rzf3kaYYZA62KT3xjhQxPcvh
-         5VOw==
-X-Forwarded-Encrypted: i=1; AKwUvBwdCY9NH28nA/DqjSbnJ+83ZC1ucHoA9k0K4v8i7GbZFWpX7I85s3hmEiyRPvlxDXBN5QlPcvgDX1cmGKWRpQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++k6IakQal0uCBq88porQ73KZc3ompg3PSLEtZ0TOyh1rK+2VQg7
-	UYtjHpOVu2NG1ZsGFBjdAJsY3ha6PqchQp46Xj7Cqa8AC5W4nThu3N7VZmJatl3ygNjj4F/1U3j
-	Jv8cGIkx5A9666gY0zVOXGiipChEandd3kMieqx2q
-X-Gm-Gg: AYBFou06lltRU8T3ywziAWS+ld/XfCu4dvh3c1xRV8zG0B+IxBJpen0+gmb70ANN1cp
-	NPm2eet4rlEHXUsa0Jt9BgZpoQcwe9kXBkZrPS+D8RjPkeNzHCkn7zPLOIACPR84nJPnEO3qm/q
-	AwfLdIwBZEpqk7YeLO4bBgNtB1U/QuVyBHekdneHwHpx/Ml9vwkb6kjpoNFd13L5l5lD6ZW65z1
-	teYcW/OzcSXq3THWkm0xKYRN7qAU0XkIVkucyE9lseto8ZvsfwhU4TIis5hbo9ry8+Vp5s4IZFJ
-	52DhP3iy20435MPyF6Is54AY8ENy2Mue7UzQ2pmNd2AB6aWHlrPpY+fXnVOpOoFYKnf5eS8EUNm
-	CacYwozIkTOk/vuCKvqmhtBKQeZ9nGQMgk4zt5uc6PviRXp4x95rv
-X-Received: by 2002:a05:600c:3585:b0:49c:cee0:f383 with SMTP id
- 5b1f17b1804b1-49fc5734ef6mr255037765e9.16.1790084554891; Tue, 22 Sep 2026
- 06:42:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FVaIhpil"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Wg6K+vqciogHmyKEDWzCKhwSTN8BySNmJX1D1MJ7kciPEESbhdwgEt68i1LVVvw59uqsJV11273pSZLoJJiFmvLojDpeE1J7QCX4oafQ4MfaWqDnqEdM0AodArykj2lPK9CTF+4iYJrTbNmcJ7Fte7NT2ornUcfGeVr/5CYApKbA0cOC9wDctjL0MwTJ7IeTBO2QtVppATRouUQv3bETyxD62Se3W4/rFdUfewCL+xMkLP2hmGPrSDz8dFyvV8EO/IkPQ6IhB5My+IA0eL1h6Ff/bIGvmSvpS615f7A2KarsKBASpmwir7mh34XzPfoT/CrdAYX4rwiOrtJk/3SKRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xO83crHQFyBJm2jcYob9jWu86e8EESU2tJn+1Aulk/4=;
+ b=MK1872yF905TLcW6mXNsVfLqgsRoDJuXv0G7Ib8RwEssChPiSr35lZpt+8OqklJ8UrzTiE67p2XAr5302aC8cSYOogWPbX1XccxJHIhAJEvIooNOl+myJuvjcDufugH2nqkUASacOz7vpVldjHal7qtlWKNT4+6pB2V4gh0Gj1TmAORpAaHChKXpp3NMewfEv2AlycslgploS0BUsiHRIpU16/tDX39Ep7h9N5tuU11tvmpX0fv9FFwDxPmr59SEiI5fd5+37kXoKb0xArQLx23S31VNSfsPHJjKXjt5HEsHKFh6f5J/+G0m2Xji4N7kmzgYHD73NaR4S7166nZ4Vg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xO83crHQFyBJm2jcYob9jWu86e8EESU2tJn+1Aulk/4=;
+ b=FVaIhpilpVryg0zjYyvi7QyrnCuFsw/Ug9iGhyZqVPn9y53YMfmX3hPzDSU9PqXLyLmWD9TY7oKLlH6KJqpXZaYxDrVbcqBeeuG/qIS3smE5KXddIVyWrqbqQ4TR1JyutNXvs1JLEMQ4qNdOrYAxy5oND5ioqsU6AU7xPBg7Nnc4Ak0YS6wDq9o/IVZJDkgLSwpnUlwCkGjyVfaa7w/DSCtexrNe2++IAk8YJJjUdfeIz1hxJ6nMtSl1yXwhBPGezRZ+wxmTcZ9xiBy3EJr3L3l478SGp3T3e6chi6F8dNsEfSvO/BNm4efwtdzQ7WGFpFrvjoRBKWEvnrcerYWY1w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by PH8PR12MB7111.namprd12.prod.outlook.com (2603:10b6:510:22d::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Tue, 22 Sep
+ 2026 13:53:14 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0451.014; Tue, 22 Sep 2026
+ 13:53:14 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 22 Sep 2026 22:53:10 +0900
+Message-Id: <DLLW8NY8GF79.3U3VGJF2C3Z63@nvidia.com>
+Cc: <gary@garyguo.net>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <yury.norov@gmail.com>, <ojeda@kernel.org>
+Subject: Re: [PATCH v2] rust: bitfield: require integer storage
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Yilin Chen" <1479826151@qq.com>
+Content-Transfer-Encoding: quoted-printable
+References: <DLKWS377R3K0.1XFDX36YZWRQU@garyguo.net>
+ <tencent_6ED5B37F63268169D25F84557BD655D9B106@qq.com>
+In-Reply-To: <tencent_6ED5B37F63268169D25F84557BD655D9B106@qq.com>
+X-ClientProxiedBy: TYWP286CA0013.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:178::9) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260918100016.100988-1-sagartaunk@proton.me> <KZuCCqRjSSbylbLLVhoUD9-xyBpzD9jUB4vGC16N0_hIra8SNxFeh9lEJ6FIMYMgKqf41J_swYT_HVx3w13k0cSrYYkBljOF56suy3gpgAU=@proton.me>
- <164304b3-3324-45f1-8766-536767e7b9d7@redhat.com>
-In-Reply-To: <164304b3-3324-45f1-8766-536767e7b9d7@redhat.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 22 Sep 2026 15:42:22 +0200
-X-Gm-Features: AclHuK_p5XqAJq4ss3l1aLkxA8gLh1Up43oHI9_Jc3xmArdkhL0aeV3XgEseFCc
-Message-ID: <CAH5fLgjBC7o4wt0WPH6xEkQEkOvsjj0ymLq2xAGXoMwN-fZyBQ@mail.gmail.com>
-Subject: Re: [PATCH net v3] rust: net: netlink: validate attribute length
- before casting to `c_int`
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Sagar Taunk <sagartaunk@proton.me>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Matthew Maurer <mmaurer@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|PH8PR12MB7111:EE_
+X-MS-Office365-Filtering-Correlation-Id: f14ef798-c007-4e4e-4e94-08df18b0d8df
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|10070799003|23010399003|6133799003|18002099003|22082099003|11063799006|10067099003|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	8qxln/TcDzbCRHMkO8Wec9zu7T1rG1C5aMEFBZzag39GFv6otMkfpayxnGqK9dDR9qjMVm/PiSZDCv1kktgEhGT4ahzhYN56nwCE8mq1yRJlKSSuKKGePC/w9UobMrd8lC8T0ExN/BaVKzcKDFUPH/bkfbiEBOl9NQPttZOx5/RsBy2uW5OkrDymjK5sBU6PNhtuL+fO5oayTOSPWdO4qqm7UxhTygpPx4H/O5CSo3zqZcseBxc3fvwTwL66LwYLFEE16FLfrZKTNwGMqMN4NwYSKXg/Yx58xSPVWeFZ7senuKcNDOIJ7r9/+arYlrEfSbuv/K+Q139rvs0fL270cqYdwH4LSX7jR/5rORDj7phXUr63m2pB83hYrkc7sTtWcPyhQC+IeTJ3/m2fgtl4+jlzwlyZY3YU5G5We6cAr7q8TgapeDRkTTAT00y6vJWhrgnWRxsuVlsw16qdmn5wnp/xiFCC2XxIYiTDZBPThzzFRHdKNApwhSR7QumwKJFcia4fGQHezfYugAjUQuNiAm5wi991jAuXjyDdZKqL8ePvxoBP4T3lDZhDY3Kh0v7f3MwRxqm3t71kjyaOSFBhb1g2Kl6vhVD86HmDCdkxvgLsdtM8U4/abma9GDyf5Z6yNZbMTjGkT11fot4mYooEbFQm3ck0onX4sNC4M7wlJek=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(10070799003)(23010399003)(6133799003)(18002099003)(22082099003)(11063799006)(10067099003)(4143699003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Y21XcjRIekxQelZmcjN2SGxybUdYc3p2Z1cvWkJ0NTlLREJsQm12WUE4SzRr?=
+ =?utf-8?B?c3phbWVpbmI1MUZ3UjN0SllrVW9RSWVabmlVK0VoM0pGRFA3ZjYxbElnVG15?=
+ =?utf-8?B?QWxlUWpSbDl0Nno5RENIeUFQamp0Y2lCZndMVzNrbDYrYmd5c0cvanlmYU1B?=
+ =?utf-8?B?UnVUczJCYVh0Zk9hd2dRekp4TE43aEppZlNUK3pVQXQrM2JyMkFTSzU4S3dM?=
+ =?utf-8?B?bmdCWWtRbzRZSXkwaEZXZWdOQ2kxUGg1a1ZOWkZ3WXd6elRzNStmbFd4eWls?=
+ =?utf-8?B?b1JDRW0rakpUdkxsTnFxMGI4dzl5ZURLcHhaMEVnV0xQVGk5L29VVHM4cmZY?=
+ =?utf-8?B?TElpQVRXTk5rclNtcjA0WjRUWnlGemJ5ZnhOSUsyMXhzNXN3b2srUzZSQTU4?=
+ =?utf-8?B?WXRhOGdvbGk0ZkxJYm4wdXIzdG9kSGxwZjZ3REZ6YUNFM1B6RkphWm1OZWdM?=
+ =?utf-8?B?SU1VSHlXR0I5REU5elBIR1FoSEd4SXZtTm1aTDF4NUpuemNpVlZTSUx2NzJS?=
+ =?utf-8?B?OW10RnB1UlFXVkRDQnh5MktQLzRSdnhqalpDZmRTYUphejQwOFIvb25zNWxo?=
+ =?utf-8?B?aG9WMTBRQ0VYY21uMFJsSGRaelErcUlrSDVReitWeHFFdDZqQ3B2eDMzdGpN?=
+ =?utf-8?B?dDd2QkFvNXJJSVBOcDR1QlpaTDBoanVOR1RBdHE3VWJ6dXNubmRlT2UyTDlx?=
+ =?utf-8?B?U2Zaa1BqTHBJUlpvNVpLdEtlZE5tMDBPVWR0VXBGZU91KytUS2ZpVHV0bitZ?=
+ =?utf-8?B?OW5SeCtxRVgxMlJ1SXlLVTFZY1RteFNUSmdUcVJiYjJUNm04bHo3b0l0VUJB?=
+ =?utf-8?B?RDJSNUNlbzBGNXFGZVU2elJ3dXh2K0Z0Q0pjN3VkVDluT2E3eVc1U1VoSW9R?=
+ =?utf-8?B?R3hwd0NpUWZqSlkwZWdkV1lkSUw5R21XVTVValZuR0VCYVZwVHhyMnhpNTJG?=
+ =?utf-8?B?cXJaYndYS05IRVIzcXVVSHorZ24yU3Z5eGhHZmhzVVYwZFM4VWJvNU1xa2VF?=
+ =?utf-8?B?T1cxc3Q1UlB6NnJMbk1MUit2MjI0ZHRGSjBBeWMxL2xZT1RWbFhVMElWc0pN?=
+ =?utf-8?B?aXFpREpxdTlMQVZzUnZWNDdWaFBnVGVPTTZOamRCcnFudGZpT3B4RVA4NC9F?=
+ =?utf-8?B?TG1QMnVUd01KOVUxUGdnSUZvOXNJN3JTbzRuM1lNN1o2ck1qZlJlUnIyZFJ3?=
+ =?utf-8?B?bEo5NElrK0EyaGQ5NXhrUUlIcWhBalNJWmpSQXJ5dWE4M04vckVub2c4TllD?=
+ =?utf-8?B?U3VsVWN6Nk5VVzJLU1ROVytROFRZbVp1TGp3SXdMZEtxbmcwYjBvcFhhODY4?=
+ =?utf-8?B?ZWxMTS93czB3SDR2cUxGalBlZlFOZnE0VGViK2M2RHhnakxYS0FyWkhZb1JY?=
+ =?utf-8?B?Nk00bzlIelIxNU5tbVFMekRlU29OUkphTzJPVjU5K04wUWppaysrbUY0aHlj?=
+ =?utf-8?B?dWtQdHJSOFJ0Q2x1M3BTQmphOVVTOVF5SEprbmRDSEYwY0xacTBUdkN1aUVl?=
+ =?utf-8?B?WTRrbzNxR0JhSVJkYXVCYXdZYlhqV1dtY0tOT3ZEVUxyeU5saXNmVFBQbWdB?=
+ =?utf-8?B?aGIvVFQ0RERMSzlZcUNCcUZFb1dkcEFhVnBnTm1zTnBXTllzL2h1dkF5b3FL?=
+ =?utf-8?B?TUQ5MHVoT1FZcDZjL3B0WDJocXhRUFc0UmI0aFlVYStEM0pqdDh3c1ZSMDNQ?=
+ =?utf-8?B?TGlWSDBTbzh4bEhBOUl0RFNrb1RlN2Z3QVpBcU5iMXM4aEdUVnhYZTBhR1FU?=
+ =?utf-8?B?UlUzNEJ4M2sza0NFeU5yRmNWN285clhWWFFaZFpnV3RUeE9pbnJBTE1zYVAy?=
+ =?utf-8?B?OGViTkdoZzZvQkRhajJmbVZuTHVUM2RXSzZWdUcvZ2hpUkFETkU2Q1JGdldx?=
+ =?utf-8?B?ZllNY0xIV3kvWm9YMFYxemR2bWR3TUx0UWRJTElDUWlOSUJJenNuUGFTQW1K?=
+ =?utf-8?B?WE1mN3NtZGlaOWRBTGViN2Y0UEt1UGRMQWlLbWZ0bTV4VFk5UFl3azdyeUE5?=
+ =?utf-8?B?R0t2cDVTNDRmTWt0T05tc2JFcjRlYThzZ0NCYkw4MFNlczlwOXM0eWVBL2Iy?=
+ =?utf-8?B?U3YvTUh4azBtNXJ1ZHcwNTlwbS81dlUrdm1Pd2twN2ZIVGVWajZzVXB4TDN3?=
+ =?utf-8?B?MVhITVpBa2wybWdKSFZRNXloK1VLbmtSMjY5ZlZhdTd4bWp3ZTVPVHlEckZ4?=
+ =?utf-8?B?M1NKbjZxYmN1V2lETlUzU294K2dHdEVDOERwRWJ6WG9JenErZlRrMkwyMU9H?=
+ =?utf-8?B?MHM3VTJFbkx0TDFLTzdtOHhRMDFLekNoakdFZmQ0NmxCd05uZytpOXBQZkhG?=
+ =?utf-8?B?bThITkNLOUZyMStCZUpKU0UyS2RxSDhkM3ppdVN5TnI5L3VWcGZ0cFA5a3Ax?=
+ =?utf-8?Q?Osn9QSwHjnwo6YeFg6wB8od2riDipN7s+a+S33zj12dXr?=
+X-MS-Exchange-AntiSpam-MessageData-1: yKvpO9N/EHLjDA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f14ef798-c007-4e4e-4e94-08df18b0d8df
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 13:53:14.4532
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jvL4gG395ZVpL3HcBdf4ay7mvLBHTHGbK8TO8Wk5wqb0IXUCOeZp8NP7x5t26PC9OsxaWnFxmadP8KStZogeyw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7111
 
-On Tue, Sep 22, 2026 at 3:36=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wro=
-te:
+On Tue Sep 22, 2026 at 2:28 PM JST, Yilin Chen wrote:
+> The bitfield! macro generates an unconditional Zeroable implementation
+> for its wrapper type. An empty field list generates no Bounded usage, so
+> the storage type can bypass the Integer requirement.
 >
-> On 9/22/26 04:31, Sagar Taunk wrote:
-> > Hello, are there any updates for this?
-> >
-> > Also, I wanted to ask is it fine if I keep fixing stuff pointed out by =
-sashiko for now ? (I.e pre-existing issues pointed out by it in other's pat=
-ches or should I ask the original authors of it first ?)
-> Does not apply cleanly to net. Since a repost is needed, you must
-> also avoid empty lines in the tag area (i.e. after the fixes tag).
+> Require the storage type to implement the sealed Integer trait for the
+> generated Zeroable implementation. This ensures that bitfield storage is
+> limited to primitive integer types with a valid all-zero bit pattern.
 >
-> WRT sashiko-reported issues, beyond be aware of false-positives,
-> generally speaking net-next is the preferred target tree (i.e. no
-> or very limited impact, very old issue, etc...) with no fixes tag.
->
-> Focusing on high stakes changes would be appreciated.
+> Fixes: b7b8b4ccdad4 ("rust: extract `bitfield!` macro from `register!`")
+> Assisted-by: GPT-5.6 Sol
+> Signed-off-by: Yilin Chen <1479826151@qq.com>
 
-From my perspective there's no issue in landing this through net-next
-instead of net, as it's not urgent.
+Looks like my wish [1] has been instantly granted.
 
-Alice
+[1] https://lore.kernel.org/rust-for-linux/DLLVY7G20JJA.2B0KTTODUU9FG@nvidi=
+a.com/
+
+> ---
+> Changes in v2:
+> - Add `where $storage: ::kernel::num::Integer` bound.
+> - Update `// SAFETY` section.
+> ---
+>
+> I track the default rust-next branch, and there is not any code about
+> `AsRepr` in that branch. So in patch v1, I didn't know that case could
+> not compile. Thank you for your feedback!
+>
+>  rust/kernel/bitfield.rs | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/rust/kernel/bitfield.rs b/rust/kernel/bitfield.rs
+> index a0d089423f21..b1fc98d7f8c3 100644
+> --- a/rust/kernel/bitfield.rs
+> +++ b/rust/kernel/bitfield.rs
+> @@ -330,8 +330,13 @@ impl $name {
+>              }
+>          }
+> =20
+> -        // SAFETY: `$storage` is `Zeroable` and `$name` is transparent.
+> -        unsafe impl ::pin_init::Zeroable for $name {}
+> +        // SAFETY:
+> +        // - `$storage: Integer` is sealed to primitive integer types, f=
+or which the all-zero bit
+> +        //   pattern is valid.
+> +        // - `$name` is `repr(transparent)` over `$storage`.
+> +        unsafe impl ::pin_init::Zeroable for $name
+> +        where $storage: ::kernel::num::Integer
+> +        {}
+
+While I guess that would somehow work, I think the proper place to do
+this is the struct definition, i.e:
+
+  $vis struct $name
+  where
+      $storage: $crate::num::Integer,
+  {
+      inner: $storage,
+  }
+
+This makes the error message also more explicit about what the problem
+is (a bitfield requires an `Integer`, not merely the ability to
+initialize it to zero).
