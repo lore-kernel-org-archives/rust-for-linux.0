@@ -1,43 +1,63 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23483793A8;
-	Tue, 22 Sep 2026 02:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D002C383993;
+	Tue, 22 Sep 2026 04:16:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790044306; cv=none; b=OfU2uK5EdsFeE/N03OmnC3bfsh283ujNMxM9efUOWOmIszdOWRSX8KiaQPVxM7OKv/cYswBnP61aAGsmnEG3ZNvMKKpZpul7+jHCoO4+NoO0R6oTGRCI7LLFLrtZmQilf1p8N0JG8++PI1E71+qV7stsp6KMxPerwj7LIhGe+Cw=
+	t=1790050590; cv=none; b=oVOaPGMM1Pk/LZqstaHu/ijCMu+HP3F7mLEgmp3Y/NTFrol05sOIAQG95OvIes1VOzsUPiSmQt+zphnerpjEqjt5gyLfIhbEqW1m1OLrRD1gXvHvA6b5wchDuI6POo9O9PfbdP99W8Zh0Wxjd+PB+ldMaKw6Yqv9fLazwLvNW44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790044306; c=relaxed/simple;
-	bh=u8gbXTYoEIjUB7Qmya/d5oMK8aMpmcc/irjlk00YvH4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R4FuySoXNWvGZ1CDXkCXeyTM0g6PufJi1imD9XmU7ERuieM6vY2q4nVd/FbYEUnJgPCH6LXtQeNKVsYVH41Jr8KLuZz1G1CGOyWYoaQwjc63fgITdfl0udLVwv54KBOXGS/1xHOtrXZKRukhH3cSGfxufJElLny5RtioxYqmbMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=cFN0pho7; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1790050590; c=relaxed/simple;
+	bh=sYKvSvuhWweJzHqCA2hqtqha4VqzIFKBfyTY+5/UtU0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ixfBj8NUk64o5plDgioaNiImlcaS4mOWjfTlPS6JJsOUjRUqGgj9ijLJn37MsGVzaUyLBd5DpmtD3Wez6PyDlJYkM4AQ8e1e7eCotGw6OLejLf9x7cBt7ZMu7p0oMpHJcux293N4MEWWRCj0VgJJ0hEMSQrZjbo+cnANsjlB70k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AqZfjAj6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="cFN0pho7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1790044297; x=1790303497;
-	bh=zDBB5h9LrgeJeS21qXelLX0Umo+oovh6GkKLBft31xg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=cFN0pho7XVHMM6N5jGshbGxZPdWcwVSzghrb/a2SWphlpXmGo0qXK7Nno1zKQDMxm
-	 391GnGs1GTSYmYfwKUXQ+KpWWqoNtAI3x5uJkF2iKKQizWJojp/kCIpoW7TsXyiCUE
-	 DRXGOfiO9gVEtpjj9fqa9JnenfoxhzQaL/uMxCnTBrwl53gfY51VSWsOAFNk1KGZ6c
-	 JFt9bkew0ikY5rbdoiURsleC5BgiQsI4G0pkv9tJkLRMUUsL0G2nKe5Ih6SpZGh85P
-	 /g2l3fudJgVhcuRzzJfI+5qUEk0AMwiE5HymDsCHgoGbwBgzsZEO/cHSeEVog84YQt
-	 FOQPHXMij5zjA==
-Date: Tue, 22 Sep 2026 02:31:32 +0000
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Matthew Maurer <mmaurer@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-From: Sagar Taunk <sagartaunk@proton.me>
-Cc: Sagar Taunk <sagartaunk@proton.me>
-Subject: Re: [PATCH net v3] rust: net: netlink: validate attribute length before casting to `c_int`
-Message-ID: <KZuCCqRjSSbylbLLVhoUD9-xyBpzD9jUB4vGC16N0_hIra8SNxFeh9lEJ6FIMYMgKqf41J_swYT_HVx3w13k0cSrYYkBljOF56suy3gpgAU=@proton.me>
-In-Reply-To: <20260918100016.100988-1-sagartaunk@proton.me>
-References: <20260918100016.100988-1-sagartaunk@proton.me>
-Feedback-ID: 130121444:user:proton
-X-Pm-Message-ID: 919b550a0812367024e10ab45b8f8d9a554fa4ee
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AqZfjAj6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C0471F000FF;
+	Tue, 22 Sep 2026 04:16:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790050588;
+	bh=RqPZN4CQe2FjLfMYs6z6JAlBF3IuRy4nyatTd0khWuY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AqZfjAj6n1aloLbaYNuH+qUMs6HuFlg2zq2c+COl1oIlvOOdFsofup6L1BojfFZG3
+	 eDf7jHjlOH4Vpf2PN4SueTF6bRdX1PD25MO5skdlnCWPyYnJJkZFE07FeKAYfin4yJ
+	 XzX5wMlTb2osMmCCLoZ6ixDabNJUq3SxyurfbFxoAcFWYJ2rvzsRps+mZm0tXVsHuh
+	 m/3jF8AySYckadqyTY5pfx3pTvieXguUIgtsdWE94PET+HS5kbX0l9OdqusVapFV5D
+	 u9oYzOmdi1z1acm15i6PEzdijE4SUwB/uf9cGzUAETBXJKg2qWIJrY6YfUav3ZqCJ0
+	 o/KHFOjZijkkw==
+Date: Mon, 21 Sep 2026 21:16:21 -0700
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Alexey Gladkov <legion@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
+	Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
+	Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Jens Axboe <axboe@kernel.dk>, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v3 15/20] objtool: cache relocations, do less work,
+ eliminate relocation hash
+Message-ID: <arG07kfxJCmnVPY4@jpoimboe>
+References: <20260917-build-speedup-v3-0-9ecf4163ff36@kernel.org>
+ <20260917-build-speedup-v3-15-9ecf4163ff36@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,76 +65,57 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <20260917-build-speedup-v3-15-9ecf4163ff36@kernel.org>
 
+On Thu, Sep 17, 2026 at 05:06:25PM +0100, Lorenzo Stoakes (ARM) wrote:
+> This relies upon the entries within a section being sorted, which is the
+> case for all sections supplied to objtool by the link step during the
+> kernel build.
 
+This is wrong (or at least actively misleading).  Objtool doesn't *only*
+run on linked objects.  In some configs it runs on individual .o files.
+And GCC doesn't sort relocs:
 
+  Relocation section '.rela.text' at offset 0xc0d0 contains 724 entries:
+      Offset             Info             Type               Symbol's Value  Symbol's Name + Addend
+      ...
+  0000000000005c50  0000009000000004 R_X86_64_PLT32         0000000000000000 _raw_spin_lock - 4
+  0000000000005c65  0000009100000004 R_X86_64_PLT32         0000000000000000 _raw_spin_unlock - 4
+  0000000000005c6d  0000019f00000004 R_X86_64_PLT32         0000000000000000 put_files_struct - 4
+  000000000000004d  0000008f00000004 R_X86_64_PLT32         0000000000000000 __x86_return_thunk - 4
+  0000000000000075  0000008f00000004 R_X86_64_PLT32         0000000000000000 __x86_return_thunk - 4
+  00000000000000cd  0000008f00000004 R_X86_64_PLT32         0000000000000000 __x86_return_thunk - 4
 
-Hello, are there any updates for this?
+(JMP target relocations are emitted in a second pass, for whatever
+reason)
 
-Also, I wanted to ask is it fine if I keep fixing stuff pointed out by sash=
-iko for now ? (I.e pre-existing issues pointed out by it in other's patches=
- or should I ask the original authors of it first ?)
-Thanks,
-Sagar Taunk
+So the hash may actually be needed as a fallback after all.  Or some
+other scheme.
 
--------- Original Message --------
-On Friday, 09/18/26 at 15:30 Sagar Taunk <sagartaunk@proton.me> wrote:
-`put()` trusted an unchecked `as` cast from `usize` to `c_int`.
-When the length exceeds `i32::MAX` that cast wraps around to a
-negative value.
+Either way it's overkill to have more than a single fallback.  No second
+fallback for "just in case".  Attempting to search an unhashed section
+(DWARF) can just be a fatal error instead of the "just in case"
+WARN+linear fallback thing.
 
-This ultimately resulted in a kernel panic when the reinterpreted
-value via `__nla_reserve()` and `skb_put()` became enormous.
+> @@ -1168,19 +1286,26 @@ static int read_relocs(struct elf *elf)
+>  				return -1;
+>  			}
+>  
+> -			elf_hash_add(reloc, &reloc->hash, reloc_hash(reloc));
+>  			set_sym_next_reloc(reloc, sym->relocs);
+>  			sym->relocs = reloc;
+>  
+>  			nr_reloc++;
+>  		}
+>  		max_reloc = max(max_reloc, nr_reloc);
+> +
+> +		/* DWARF relocs are never looked up, so are not worth indexing. */
+> +		if (is_dwarf_section(rsec->base))
+> +			continue;
 
-Validate payload and header both fit together in a `u16`, rejecting
-any payload that wouldn't leave room for `NLA_HDRLEN`.
+This DWARF reloc skipping is a standalone improvement, can you split
+this out to another patch?
 
-Fixes: 5eaa5fbb6e6c ("rust: netlink: add raw netlink abstraction")
-
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
----
- rust/kernel/net/netlink.rs | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/rust/kernel/net/netlink.rs b/rust/kernel/net/netlink.rs
-index a2f4bd171dcf..36f2e39c3ab7 100644
---- a/rust/kernel/net/netlink.rs
-+++ b/rust/kernel/net/netlink.rs
-@@ -11,6 +11,7 @@
- use kernel::{
-     alloc::{self, AllocError},
-     error::to_result,
-+    num::casts::u16_as_usize,
-     prelude::*,
-     types::Opaque,
-     ThisModule,
-@@ -90,9 +91,17 @@ fn put<T>(&mut self, attrtype: c_int, value: &T) -> Resu=
-lt
-     where
-         T: ?Sized + IntoBytes + Immutable,
-     {
-+        // `nla_len` is a 16-bit field that encodes the total attribute le=
-ngth
-+        // (header + payload). Subtracting the header size from `u16::MAX`=
- gives
-+        // the largest payload that still fits within that field.
-+        const MAX_PAYLOAD_LEN: usize =3D u16_as_usize(u16::MAX) - size_of:=
-:<bindings::nlattr>();
-+
-         let skb =3D self.skb.skb.as_ptr();
-         let len =3D size_of_val(value);
-         let ptr =3D core::ptr::from_ref(value).cast::<c_void>();
-+        if len > MAX_PAYLOAD_LEN {
-+            return Err(EMSGSIZE);
-+        }
-         // SAFETY: `skb` is valid by `NetlinkSkBuff` type invariants, and =
-the provided value is
-         // readable and initialized for its `size_of` bytes.
-         to_result(unsafe { bindings::nla_put(skb, attrtype, len as c_int, =
-ptr) })
---
-2.55.0
-
-
+-- 
+Josh
