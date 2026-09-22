@@ -1,132 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4B43F329E;
-	Tue, 22 Sep 2026 04:27:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F405B1FC4;
+	Tue, 22 Sep 2026 05:09:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790051258; cv=none; b=llPc7/PCQRUv+b/Cw2H+XiJjC9KHO0C+pxq/0pOYQJP5DcsscTPtrVjNqMopuZ287MXEGK+3sNaCyUS9fGp5KFou00RnxW7OMdzwb1QxqMJ9o6BszRYIv3+SIYS67VkuZ6u/HVXFnm+RDnN5lodqbV195Mjq6X6eIodKooNp8NY=
+	t=1790053799; cv=none; b=qvI7xYba5wChi9Us/rVRSJWClrKQ0Ohi7vtRQ4F2llM+6MTM1SbxB9jFGZT7SmOOJ+ivQuLBpgj8VN3bC80ZZHwY7kDCJJbZa20q5odZQqJByEqBNVh7xxwLRti+YyJpoiBgppj9bcsMwhs1bK06ruyYRj3gwnme8iwxeNUrhGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790051258; c=relaxed/simple;
-	bh=HhudhUK5yzn8hhCT6NM2I9TPL8fH9kTRoXbU8Ec24+U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rpw9TmcJ5KtZb53ACH1Vo5Qhb+K0H95UCsgrIrZryMfwIqSYgHm7j3Uag20cBwJXa/l81/b1L3O5pkWb8uCD0dT8TYiSOqUa47n+bI7qrM8mBmrj8nAr2kvDK29wQJ0KnBNyI+PB1Xnbox85u5pjkV6fWXhwE+0oa5st6BAvFGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MXA4r0PH; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MXA4r0PH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0961F000FF;
-	Tue, 22 Sep 2026 04:27:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790051256;
-	bh=dG15CqrnbAsOXWaUpYt6BDYQSM8cnW2c3KA5Prsjavo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MXA4r0PH3HgT3iDgDRuDNJmWk/ZUsYEcSUJgSYAhpCjtRahhxqjcteIyBCizLYuR0
-	 bBcv4s83G+WwaXS5KJIdHDIYvBEBAngTAH1AaI0rrEoQcEKpcNfu3zSGwNVgguzjMh
-	 1InYjz1c3D/m00ZJZGR8MhjhkI+oOV8ibVQ8HUEQ8RzM2H7mHeFtHzZsVntWowVopS
-	 2ZQ4NnVHqPr8zHY3I3ZDAhrTkSgT+St3c/kIcL9PMtgwMk5+lHZuOMccwaQxqBZhQj
-	 U2y7anUp4MeMk91bn7KDUqq6BkJW/ggpJujiZoPQkT92dO4tVzXyTjeUJjh6lxoukO
-	 9/QiAbsZRdy+w==
-Date: Mon, 21 Sep 2026 21:27:33 -0700
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Alexey Gladkov <legion@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
-	Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
-	Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Jens Axboe <axboe@kernel.dk>, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v3 17/20] objtool: decode instructions and resolve branch
- targets in parallel
-Message-ID: <arICcrXVFLVzO-Jx@jpoimboe>
-References: <20260917-build-speedup-v3-0-9ecf4163ff36@kernel.org>
- <20260917-build-speedup-v3-17-9ecf4163ff36@kernel.org>
+	s=arc-20240116; t=1790053799; c=relaxed/simple;
+	bh=Sl5+ibW9Ni5uZqI5D8DGq8p4oXB/YnA1+OvTct4KMs8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jtue8wLyi6VTEoU3CKm2Upn45lILr2aOpIHuz+vk37z8nrwL/D1xsA3HXLz0Re8SCSok7U9PioUN/JuhS93L9KwFMBKnDeB0+fk6egWrEwXGDBJZ43+Xu/fx7Y9BeenbxN31iz2nL5Yvpn4HyaAf4TwnUghaHUhpq/WQn1Esfms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
+Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 68M58RYZ087222;
+	Tue, 22 Sep 2026 14:08:27 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from [192.168.1.6] (M106072072000.v4.enabler.ne.jp [106.72.72.0])
+	(authenticated bits=0)
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 68M58Rd3087213
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+	Tue, 22 Sep 2026 14:08:27 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <24ef93b9-7385-4dda-8912-f7c78f9705d1@I-love.SAKURA.ne.jp>
+Date: Tue, 22 Sep 2026 14:08:27 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260917-build-speedup-v3-17-9ecf4163ff36@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] block: Add run_todo() operation
+To: Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>,
+        Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>,
+        linux-block <linux-block@vger.kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Brian Foster
+ <bfoster@redhat.com>,
+        Damien Le Moal <dlemoal@kernel.org>, Hillf Danton <hdanton@sina.com>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        Ming Lei <tom.leiming@gmail.com>, Qu Wenruo <wqu@suse.com>,
+        Tao Cui <cui.tao@linux.dev>, kernel test robot <lkp@intel.com>,
+        rust-for-linux@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Nilay Shroff <nilay@linux.ibm.com>
+References: <e615fb71-f386-4029-8ceb-22e375ad9e94@I-love.SAKURA.ne.jp>
+ <afbf50a0-d409-45a3-8e95-99c04ca0e302@acm.org>
+Content-Language: en-US
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <afbf50a0-d409-45a3-8e95-99c04ca0e302@acm.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Anti-Virus-Server: fsav412.rs.sakura.ne.jp
+X-Virus-Status: clean
 
-On Thu, Sep 17, 2026 at 05:06:27PM +0100, Lorenzo Stoakes (ARM) wrote:
-> During a kernel build objtool is used to decode vmlinux.o's instructions
-> and resolve every jump and call destination.
+On 2026/09/22 2:27, Bart Van Assche wrote:
+> On 9/19/26 3:50 AM, Tetsuo Handa wrote:
+>> Add run_todo() block device operation which provides a hook for performing
+>> synchronous cleanup without disk->open_mutex held, which is needed by the
+>> loop devices.
 > 
-> This forms a large part of the work objtool does during the build process,
-> and it is all done in serial.
-> 
-> Decode these in parallel at a function granularity to speed things up, but
-> limit this to invocations that pass --link, and only where the there is 8
-> MiB or more text to justify it.
-> 
-> In practice this limits this to processing vmlinux.o in the kernel build
-> and modules are processed as they were before.
-> 
-> Only the instruction hash is shared between the threads and nothing is ever
-> removed from it, so an insertion is a compare-and-swap on the bucket head.
-> 
-> Threading is limited to decoding and the jump pass, so the gain flattens
-> out at 16 threads and any further threads were found to only add overhead.
-> 
-> When performing an allmodconfig build, the clang invocation of objtool when
-> processing vmlinux.o took 5.93s on 1 thread, 4.56s on 8, 4.51s on
-> 16 and 4.63s on 128.
-> 
-> Therefore cap the thread count at 16 or the number of CPUs, whichever is
-> fewer.
-> 
-> The output of objtool before and after this change was confirmed to be
-> byte-for-byte identical for x86_64 defconfig and allmodconfig with gcc and
-> clang, and for a loongarch defconfig, where objtool runs on every object.
-> 
-> On a 128-thread machine, objtool on the clang allmodconfig vmlinux.o goes
-> from 5.2s to 4.4s (6.5s to 4.4s together with the previous two patches),
-> and on defconfig from 1.99s to 1.38s.
-> 
-> objtool on vmlinux.o is on the serial tail of every build that links
-> vmlinux, no-op builds are unchanged.
-> 
-> Whole build, 128-thread Threadripper 9980X, best of N runs:
-> 
->                                          before   after     delta
->                                          -------------------------------
->   x86 defconfig, touch mm/vma.c, gcc        8.2s     7.7s    -0.55s (-7%)
->   x86 defconfig, touch mm/vma.c, clang      7.3s     6.9s    -0.44s (-6%)
->   x86 defconfig, clean, gcc                28.6s    28.2s    -0.47s (-2%)
->   x86 defconfig, clean, clang              29.1s    28.7s    -0.45s (-2%)
->   x86 allmodconfig, touch mm/vma.c, gcc    25.7s    23.7s     -2.0s (-8%)
->   x86 allmodconfig, touch mm/vma.c, clang  24.1s    22.5s     -1.6s (-7%)
-> 
-> Assisted-by: LLM
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  tools/objtool/Makefile  |   2 +-
->  tools/objtool/check.c   | 717 ++++++++++++++++++++++++++++++++++++------------
->  tools/objtool/objtool.c |  14 +-
->  3 files changed, 546 insertions(+), 187 deletions(-)
+> I like the "post_release()" name much better. I think it is more clear
+> and more descriptive than "run_todo()".
 
-This is an interesting patch, but I'm not really convinced it's worth
-the pain.
+I think post_release() is misleading because post_release() is also called
+when disk->fops->open() in blkdev_get_whole() failed (and therefore
+bdev->bd_disk->fops->release() in blkdev_put_whole() from blkdev_get_whole()
+was not called).
 
--- 
-Josh
+> 
+>> diff --git a/block/bdev.c b/block/bdev.c
+>> index cd8323083740..8f09aafbae11 100644
+>> --- a/block/bdev.c
+>> +++ b/block/bdev.c
+>> @@ -974,6 +974,8 @@ int bdev_open(struct block_device *bdev, blk_mode_t mode, void *holder,
+>>       bool unblock_events = true;
+>>       struct gendisk *disk = bdev->bd_disk;
+>>       int ret;
+>> +    struct module *fops_owner = NULL;
+>> +    void (*run_todo)(struct gendisk *disk) = NULL;
+>>         if (holder) {
+>>           mode |= BLK_OPEN_EXCL;
+>> @@ -996,6 +998,7 @@ int bdev_open(struct block_device *bdev, blk_mode_t mode, void *holder,
+>>       ret = -EBUSY;
+>>       if (!bdev_may_open(bdev, mode))
+>>           goto put_module;
+>> +    run_todo = disk->fops->run_todo;
+>>       if (bdev_is_partition(bdev))
+>>           ret = blkdev_get_part(bdev, mode);
+>>       else
+>> @@ -1037,12 +1040,15 @@ int bdev_open(struct block_device *bdev, blk_mode_t mode, void *holder,
+>>         return 0;
+>>   put_module:
+>> -    module_put(disk->fops->owner);
+>> +    fops_owner = disk->fops->owner;
+>>   abort_claiming:
+>>       if (holder)
+>>           bd_abort_claiming(bdev, holder);
+>>       mutex_unlock(&disk->open_mutex);
+>>       disk_unblock_events(disk);
+>> +    if (run_todo)
+>> +        run_todo(disk);
+>> +    module_put(fops_owner);
+>>       return ret;
+>>   }
+> The above changes introduce a bug: these changes cause module_put()
+> to be called if try_module_get() fails. I think that's wrong.
+
+No, this change is safe. module_put(NULL) is no-op, fops_owner is initialized with NULL,
+and fops_owner might become non-NULL at the put_module label.
