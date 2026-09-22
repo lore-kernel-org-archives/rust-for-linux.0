@@ -1,231 +1,139 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021135.outbound.protection.outlook.com [52.101.100.135])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930C65221E4;
-	Tue, 22 Sep 2026 10:12:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.135
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790071971; cv=fail; b=tYEzUE0snwF44vfeYxlfMIo2fePSMgUQ2my4ulPAwlc3clEu5+18uBgJAQ5yf2a82N/TOza61DVw9VoK2XsGS4pQ7vpml/lJ+aLJ/++NC9T3t2Eei01kbpHp8O38CmM5oEumutpdRkhzJE+OwidDoTbfRYpYZ7IE9iYfPjVyWdg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790071971; c=relaxed/simple;
-	bh=j5FgePZ3SpRVda+bCz1Fg8QtYx1WmAYPY4c9pu4Z4H8=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=rDVqsAMC33v+uCmQFrA1OxNKiiRCgH3GdqxgUlYlSoTMA7J4SXi2eD/+gPTPZFdjMeUsMPMp5mO4Gidj8//u12rpSOWqy+8slAV3YOchunXkB5AkfyrI+3dJToMsNWCDds2BzpjfejQk1azj8c7ARihQYlLkgyjvglVRIgTBwro=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=wChp6oNy; arc=fail smtp.client-ip=52.101.100.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3AB54144D
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Sep 2026 12:16:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790079418; cv=none; b=ThHk2FsmtP/KOMJbH5QsOEdWR1i52WwTwEkI4GN7fV00LtIp2bkMVbL1SIwji1OxXO8Rsk3VbTj33JnMh/nzIb53IhOnAAMwiWvn3sweeoFKaTH8c9/SFARMVMUT3SnTFlkU4p6QjweSZbUuoPJuYnlhbVhhJlRK6MmEGKvIMmg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790079418; c=relaxed/simple;
+	bh=be2Y1OoUX2Z3H8XLQu3ekiAnAW4Ns+iopXrYkhiGjFw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qn3OecAB963cJQxqkBK5hqu+LPym6CMDFnKJriOO8U076kWtU5NcN5G/FOORJVrKFVJxZ1Y6lVQvU6dO29/xy1kUr0bkmUAoPBGwtfUEA4j9286ifINJYvjRkr1N98sc5dhZlc2dUOD4awOxEcEGsfR/wN2iQ2caasGliPsLC1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=OQZUocIX; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="wChp6oNy"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y9wyr2Q9jYy+qYRFB296++C4AJ0Vy6X1h+OqVzSzaQzXH/EMibjbbbP7tAOEBVbrIWAeQLswI5HuTNtEzb4beG4/ZHspdxGC709qaa7tlu5HgzF6WyeroYlGvYJlGz0XpTuJ7peUR1TnyV3EF9fKbm2NLlT9nnf7e14IUImakm2wynQoqCK+AeuiuN47aq3nYoY9lXyxi6WJ50mujvk8zU70s1netNhZydj4ml+Y5x+w9KxAzr+rddkN4P3uH9z11Cx/pBFXMdJu/JI69OvlUWwzJFVB+v5rCSlJaiFAI2IAq6gweWHLcLANfD8VX32gdyNpjDAAZVASBOmLPvwxSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iMpvqw3mRJrtnPm4QU95Cw0rW9Ac70kyPpq88EIShX0=;
- b=UkmVVcQ64OmpamX/dNIICE1WbGV6Fwt5qEv082MvzaqvduGoSwsV7PdhgbKwRDtfMi9VtwDq1pxd15gwnnPrvAQ1QSCmY5f464qOsaBmP+gTFc96M1+MFL1ZvkaNTozbVdlFUVoD+YDUFbCjL1EgahUZ3rhV/oWlvCHrWqrExfEAhgr7u3Xoyo1Gf1DPsRsA1YkbHaPZzUUnytMAHTw2mPBpTT6S8sLqvoePSGoSpKTfnCZXbblhYvv9gnWQUskKcYO/oasHHONSfP7hHB0Mp22/rDJr5m0a48geX9OW7PaDySvo/KmFAB6kQFzsLJf2WkHIb2CaYz5JRdRjhjX8Dg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iMpvqw3mRJrtnPm4QU95Cw0rW9Ac70kyPpq88EIShX0=;
- b=wChp6oNy6nYprTb1bMhi7k+WIwoftupFra02h9tLdjBrBm+FNqT92O3g7ziCW3zlKSzMjRyx8ZxEVTwNej4EPQXIxzDCYUOR/26SkcHFGGk/GdiKwtnuujaiOGAy2gymtd3nHBjqeEAyqTGR/NrSiZytgMwJx+u+zAUYZCES5Dw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by CWXP265MB2261.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:76::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Tue, 22 Sep
- 2026 10:12:43 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0451.012; Tue, 22 Sep 2026
- 10:12:43 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 22 Sep 2026 11:12:42 +0100
-Message-Id: <DLLRJUZ985MU.8MA9P30J0K4X@garyguo.net>
-Subject: Re: [PATCH] rust: DmaFence: Remove static lifetime
-From: "Gary Guo" <gary@garyguo.net>
-To: "Philipp Stanner" <phasta@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Sumit Semwal"
- <sumit.semwal@linaro.org>, =?utf-8?q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>
-X-Mailer: aerc 0.22.0
-References: <20260922083631.444614-2-phasta@kernel.org>
-In-Reply-To: <20260922083631.444614-2-phasta@kernel.org>
-X-ClientProxiedBy: LO4P123CA0221.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a6::10) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="OQZUocIX"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6350f88so2559066f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 22 Sep 2026 05:16:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1790079415; x=1790684215; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qYZAQI2MQFIAWvU45KsUnqIxxfeReE1kdzg/hPVRdMU=;
+        b=OQZUocIXA25N0fPKAIruZntV3ZEP5EN9YvzISI0VjBPrjdipX7NzMz+lzmuBsDyf12
+         9VR0htwPwVJwwbAHd5/2A7+BQA1G5ZkIgbBWZC7fbWneEEZwTF7Uka1iUjEAVx4dg5t5
+         /D+F2VwTjsqGwdh65OAFeJjLmbxfmmAATZqA2d7K2fUdG7Tvj+1z5jMLgq2Orf0uR2VP
+         TwamgpEB0xHuLK2LLBRWj06zls6MheTHDsXVcFQrMVY+iwn7avH3pUwxw8JGOsojM3PB
+         CcNt/a8PcNZqY26jA0M8wD5sEQHLamKAWgOe/al5LPnuhQq9bMGJ3LERbDD09cqhMYL2
+         wecg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790079415; x=1790684215;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qYZAQI2MQFIAWvU45KsUnqIxxfeReE1kdzg/hPVRdMU=;
+        b=HQ9iyeU5tm1Mdvx7QOAoA91FVYF3ZqJydyu2eD831uWP/cuCNiskFpScPJeJmAaihw
+         aH+z2+KkINYxoV30P9bByPdTp8/K33CXc1UGLXznkdmftn3R7ciBiCXKaKl7PL0qU0hT
+         vA32zIEqo/GpTFZ2408T6XPddRxTVISugQXNPcpwKtAeMlaAB6uQMQ2EQGsVkFg3hv5m
+         pmCoFgg0+SgtylC5xItFOBcVNw8BoJ2YBbp1W9mhoNmC2MP4qg7Y3Sp3qLryqvzB2yTm
+         99PLCXz1bkm/fjQ5hs6qqTNeqZnm2Qyku2ToosSXV/zCvk1AUOrbabF+QOaYgqbG9CgX
+         PK0w==
+X-Forwarded-Encrypted: i=1; AKwUvBwyoZleUFQdEO+WkYxYI2SPlDfS8cgstsHULaEVrZbnYA4LephVzh1kKvIMN8SIDnhBpFyKZbbcXXxYE8NXsg==@vger.kernel.org
+X-Gm-Message-State: AFuF++kkYpmblfpk8O3kOw9T+wNcCGc55MQTtO4yR2DItR6xzAiphbGo
+	4yUnoOhrCCBUvZ5Ha6F/buu81KfB8w6NtNvqiaEUZGA0Ao+VZLdg3TjtT8BQ/PeLxIg=
+X-Gm-Gg: AYBFou3pD54eSuiWbkVSSnc4DJZxo5xQkAQz/cWLuGK0JpBID5q+j9giCktTguZp9ql
+	ZqstNZjUxWiV9Z4nAIlFGOi/EBOP83a42FmoYBw/5nrJS6mGCV91vdGo9bn3s/Vb/jON92CnBll
+	pM83bB7vXdfUAp1134+kJ/ZG5TZlGMsyYUQKMAOMQ92szwjB3Mi1iMSprQ03p+1Xm0pMBLyiKo1
+	rfjR3GMRihcTuOeyevkB9GUBL4uGdfHGZOmFl6tZ1gVelgaAaMKHjPT96CexTF2Yejuxz35gpYz
+	xET1XvKLtxDkPABgKTHrOwYAIFwDphpOtRMi3vHXV3PZ2EXDKNkcyL0NEoTq/YemVoimT8fRjYT
+	A6qdGEpOzRT24YXhGFcM9qjmXjj+W2EQyXx/FlL2qttWW6fMfwRqhfBI+/uGxs89L+qS5gUGq10
+	0Qe8n9aK8wfA4nWzy+SMOKk7cBFHI6sIAnaPBoCafO9AUtS/5waPLVHdo0XMHE6szUre9L8fR/C
+	TusWs8+rpf5/KlO3CRc1gwb6woFxX2l2h9n+0bbxT4k0y5pF9daGoh6Cf2XMvFxMna9C3N18pAO
+	92qfFG8lioBLcxCRy1o0hq8BpaPmhUKY94WjFZsyfnM7ZSOBwxc=
+X-Received: by 2002:a05:6000:29d7:b0:488:5d3e:bf47 with SMTP id ffacd0b85a97d-4885d3ec41fmr4775296f8f.33.1790079414556;
+        Tue, 22 Sep 2026 05:16:54 -0700 (PDT)
+Received: from ?IPV6:2a00:1028:838d:271e:8e3b:4aff:fe4c:a100? (dynamic-2a00-1028-838d-271e-8e3b-4aff-fe4c-a100.ipv6.o2.cz. [2a00:1028:838d:271e:8e3b:4aff:fe4c:a100])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-488627937b5sm4088822f8f.30.2026.09.22.05.16.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Sep 2026 05:16:54 -0700 (PDT)
+Message-ID: <0f8f5dd7-06b6-4145-8b85-ed62504e2d4f@suse.com>
+Date: Tue, 22 Sep 2026 14:16:53 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWXP265MB2261:EE_
-X-MS-Office365-Filtering-Correlation-Id: fd08e668-0b29-41db-1ceb-08df18920aae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|23010399003|376014|7416014|366016|921020|6133799003|10067099003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	+Rrnid19oWzDDNXxGgpMfYbhq5IW3LvMl6EFCm/quN9gRQtfb3cnAuKWyFG52KRWFOQK1Mt1und+1O9bXdJXW7CA5bfcat51msSF/ax3qjPlf8nAWuYw5dlnhhj48m5AvMA2RZU9GoC9c7sMdD+LXzeCmicHiDmoFADxnlIunlFMd1jFh0+hRZOvhBUBJzXbuNkR8nwoRlM5h/fIpTmRltvbcRmRJQOFQGv2LzzyKR8+gXbsFVnLu82cEwZ17QwOaMA/F9VSt7AG45HzghIJX6UZQ0/eDMHFg9mtKfGpNABHjd66xfplXSkIrYBb6zRmkY4ZlBtgn1sASrS4ksiJq467GuWeDJDYQU22JlvvkngK+dIq6I+MN66I8CPRfyzwApxqAHIpeWTcyXg0zFicYrSBtABXVDBWJ53KKsjOfaEiEimI7i/4HiQnyD788wfvffmZ0FHIs525jMzZgjUeALwmPPnNKAvA5MqG+oGC7ALDFBNcBACVnpjKN3lZs50mC/IWenWrnvm4w0HBdkB7+yBHqlCfti0yrObjlSo5CvPIHraOQkSwMTw/phFCb7KxsOaCA4IQWklsn2amxyYHp+bHl9lPNBbv4PzrANkKU2zWRQ2Y8/4xDbc7qrv46TJ2vuekf1a5VdLsRKmi73ob+XvKEUvvY/lLdR2GgjGGgYIwL5HbOR+AnyGdFEE0vphu3ZVZSBo1E6BoV2YXgBRKgA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(23010399003)(376014)(7416014)(366016)(921020)(6133799003)(10067099003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TTZhelY2WWMwNXNLTSt0K1hrQVE3WXFYSStXYm9jVFg4ZkJkaS9wL0d0R3BW?=
- =?utf-8?B?UEZwNnVaMlJvbE1XU0cyVEEvd25GNStxczQ4Q1hSWFBiV1pRZnp6Sk1PeGx3?=
- =?utf-8?B?ZDE0aWdIaFRtK1d6ZG0yUmU1R3dVbnNPYVFLQTZaR1psS1NHUmlJTkc4VEZo?=
- =?utf-8?B?bXJkd1Z4SFhvZk9NY2xPb0t3aGRZb1pqMDN3bEZRMzJlUFJPMmZzS21wa1h6?=
- =?utf-8?B?UkZwRXlBcWY3d3R3VFhsNVRxYUoxbGFTMmRuVzdwd29yeFpHR3NEOWZkVkNC?=
- =?utf-8?B?VHN0ZTlSQlE1bVg0ZS9tZnBMNStoemVlb3lBN2hmRjJVRFVTaENDbUp0UzV0?=
- =?utf-8?B?WU5waE1jZ3QrdlBSSGR6ZmkwdzkwWEg1NmlIY3F0dTRlYldNSGVMWEtnRG1z?=
- =?utf-8?B?N01ZUlJCMDlIMlJRd2VvYWhHUGJtYXFsQ3pKcGZkb1lwaTUvaGpxOEVPeHFz?=
- =?utf-8?B?ZGpsc21uZVdId3E3dUJINWM2SjQ0Nm96MmFmaUVLRDlxb0hnejB6ejBtUlht?=
- =?utf-8?B?eGpEY2QvejBUUUtEaWlmeHRDTVFUdlJ5K2hxT0lkWXhoMFl5OUhqTEJXTzZh?=
- =?utf-8?B?M3RNWlVUWmpVVzVwbHhTWlFCU3BCazdkeVFYRmlCc2RCbEM0NEVuSzFuaU5k?=
- =?utf-8?B?Rk5EUjc0SWdOWkMrZWFlUGZ0VzNnVkNLRVdacEtMWm1TLzI1MkdzZG45T04x?=
- =?utf-8?B?NlNuT2t6bmh4dU5WOTBGTDVYcjhDMGxEMG43Wm1tVzlUYk5JRVFXNzlwM1Nq?=
- =?utf-8?B?REQvb3krOWVtNkhpR0ZYUDF3WXRSYzRYSDFEYTc0RjRhK1gxbWRyWHdOSkhi?=
- =?utf-8?B?QVJRc0M5QkEvQnlPNWI1MGFZUjIybW1DckNKbisyU2Q4VkZ5VDQ0YmVsak5N?=
- =?utf-8?B?QnBXOE14b3ZMVmgrWmF5Z3VXaFhsbzEzTGRwRGdPVk9uQkFLTlprQ05oNXZ4?=
- =?utf-8?B?QklLVDBVT0VLdjdKQ0pmQXpzcklCMWdZYjZkVTY0L0l4VlRaN0QvZmNFN202?=
- =?utf-8?B?UENjMVlmSVJVbTFjOHlaaEY0M2g4WmM0OC81R0dTbTBsUXQ5SDh1cWtQVE44?=
- =?utf-8?B?bzRCSHJVSjB6RVArNlZiWWxTRHF5VzdhS3U2bUZ0L3JjYTVIQ1Jhek16S2pi?=
- =?utf-8?B?YTBZc1QrUmZ2alNucWpxeHVSUWZNeC9PaUkxVmR5Q1YrUCtOOTFrQXlraTh5?=
- =?utf-8?B?elpXUy9ScGVVdnpIUnZ4dkI3Y0lFcFZ5cUtLMUJWZTVmTVBwOW1pZGNNWWZp?=
- =?utf-8?B?cGZOWWZiNGlOMzBaVU1lUGhQUGJIZFBzWGtjb0E2ajNvbW5JZnhyR0V0Um5T?=
- =?utf-8?B?UjhaQW52VkM2VFo3V3FIM25vc25lR01YRWl4ck9UbUtETEl3RjdzaWJ2YVpo?=
- =?utf-8?B?M09YR29oZFRyOTRuV3ZZUVcwb3FYcFJrYndFa0pWM1NPVXYwZkR6MW9ZN3cx?=
- =?utf-8?B?dGJuVEVGa3R3VGpxUitQMEhMVGRNQUN3SnFQSitEeDBBZU1RaWN0Nm1JWWI2?=
- =?utf-8?B?WjFNZ21SZmlCb1BJejR6cjRBcTVEV2dsaG8wWnVrNWlsand4b3RUWVRuZlNK?=
- =?utf-8?B?bW9NT3BZN0w2YllEZ3FUWGI0SVQxVWgwQS9EK3BEYXlGZ1l5OE5jZlFJT2cy?=
- =?utf-8?B?WG1BSCtmbVpSbUdkbENHd2Q3UUJZY29ZMnRLQmE1TDZham1wei9kdFE1QXRy?=
- =?utf-8?B?U21IRk1xS091VnBWQ2o4ZHNBV3dTZDdkOE1mR0dsaTFnWUNLanArRHgyYlI4?=
- =?utf-8?B?a2Q0YXJIN29oL3FMMUlSNlVvSW1GV016MEgyRC9iWUF1aThVVjhPMEMxM3Bx?=
- =?utf-8?B?M0hIYzEra3BBRmhTc0hseTBYditFRjJkcWQ2Nlk1VDJRWXlEMFpKVzJPaWEv?=
- =?utf-8?B?Z0JTbExjZnJKUVR3TGVPZGEvMlhuUUg4dTNLN1V6ZzlXNEhSenpmb3VSTHNX?=
- =?utf-8?B?bGs1SU5kTitZMVdaQm5xVzA0TzlMWkhWMUdXOWVBcTkvUlZ1a2VkMG1yTDNX?=
- =?utf-8?B?VXlidDBrbFdWUVMvOE1lMmJ6ZzRiUkFrOEtPMzhZakd6dVAzSVY1UDRzamJQ?=
- =?utf-8?B?YlI3bk92Y0s5c0IwZ2RGMW4yeGJkTkVTQklvQzBINGNidzVITEp2VFBaTDFp?=
- =?utf-8?B?cjhKQXprZFFML1pvZnU3cWJqRThwYThIMzhzQXljUkY4RWxUVjRQMlZYSFAw?=
- =?utf-8?B?dFlzZzd3dklFWStHdmpJL0RQdnNQOW10K1FMTEhhSGZuemp2OU5WRWwwc2ds?=
- =?utf-8?B?MXIrU2lDdWttYU1XanIydC9mWWltbFoySEo0T1hQemxwajVRcDBjdGZvQnNI?=
- =?utf-8?B?VHdKWkJ0RXlpdXJhWndJTXNnNEtVbHl2cHZZN1NjYWRPS1pOY2hzQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd08e668-0b29-41db-1ceb-08df18920aae
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 10:12:43.4675
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T2vun5ouSEwwmg5aIawdQzAW5fvvDLz+4QctGfcwyFT8uHzvaJg5hOJXS2gv5FMMWEXVSR/7TmiNJLE6I5oVpA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2261
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] rust: module_param: Fix potentially incorrect access
+ of `SetOnce<T>`
+To: Priya Bala Govindasamy <pgovind2@uci.edu>
+Cc: mcgrof@kernel.org, da.gomez@kernel.org, samitolvanen@google.com,
+ ojeda@kernel.org, atomlin@atomlin.com, boqun@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
+ daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
+ work@onurozkan.dev, linux-modules@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, ardalan@uci.edu, zhiyunq@cs.ucr.edu,
+ dzueck@uci.edu
+References: <cover.1789426258.git.pgovind2@uci.edu>
+ <e65203759411aeca4805e3f619f3dd20839dba35.1789426258.git.pgovind2@uci.edu>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <e65203759411aeca4805e3f619f3dd20839dba35.1789426258.git.pgovind2@uci.edu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue Sep 22, 2026 at 9:36 AM BST, Philipp Stanner wrote:
-> A FenceCallbackRegistration can stem from another party than the one
-> that has created a Fence. Should that party forget the registration
-> object (for example through a refcount cycle) and then unload the
-> module, a fence signaling would run into the unloaded module, causing
-> UAF bugs.
->
-> So far, this has been solved by demanding that the payload data of the
-> registration object demanding static lifetime.
->
-> It turns out, however, that this is harmful because the static lifetime
-> bubbles up to all users, ultimately potentially causing a large amount
-> of driver data to be static, which renders the lifetime obsolete.
->
-> Solve this issue instead through an unsafe requirement which demands
-> that the user does not forget the registration object. This is also the
-> solution chosen by ScopedWork.
->
-> Suggested-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Philipp Stanner <phasta@kernel.org>
+On 9/17/26 7:43 PM, Priya Bala Govindasamy wrote:
+> The `set_param` function casts `kernel_param.arg` to `*const SetOnce<T>`
+> But the Rust module macro in rust/macros/module.rs initializes `arg` with
+> `#param_name.as_void_ptr()`, and `#param_name` is a `ModuleParamAccess<T>`,
+> not a `SetOnce<T>`.
+> 
+> ModuleParamAccess<T> has default Rust layout but `set_param` accesses its
+> first field SetOnce<T> assuming it to be at offset 0. This is not
+> guaranteed by Rust and could cause type confusion leading to data
+> corruption.
+> 
+> Fix this by casting `kernel_param.arg` to `ModuleParamAccess<T>` and
+> then accessing the `value: SetOnce<T>` field.
+> 
+> Fixes: 0b08fc292842 ("rust: introduce module_param module")
+> Reported-by: Dylan Zueck <dzueck@uci.edu>
+> Assisted-by: LLM
+> Signed-off-by: Priya Bala Govindasamy <pgovind2@uci.edu>
 > ---
->  rust/kernel/dma_buf/dma_fence.rs | 16 ++++++++++++----
->  1 file changed, 12 insertions(+), 4 deletions(-)
->
-> diff --git a/rust/kernel/dma_buf/dma_fence.rs b/rust/kernel/dma_buf/dma_f=
-ence.rs
-> index 18a43e1bb442..c3fa68c4df86 100644
-> --- a/rust/kernel/dma_buf/dma_fence.rs
-> +++ b/rust/kernel/dma_buf/dma_fence.rs
-> @@ -291,7 +291,7 @@ fn from(e: AllocError) -> Self {
->  ///     }
->  /// }
->  /// ```
-> -pub trait FenceCallback: Send + 'static {
-> +pub trait FenceCallback: Send {
->      /// Called when the fence is signaled.
->      ///
->      /// This is called from the fence signaling path, which may be in in=
-terrupt
-> @@ -310,7 +310,7 @@ pub trait FenceCallback: Send + 'static {
->  /// When this object is dropped, the callback is automatically removed i=
-f it
->  /// hasn't been called yet.
->  #[pin_data(PinnedDrop)]
-> -pub struct FenceCallbackRegistration<T: FenceCallback + 'static> {
-> +pub struct FenceCallbackRegistration<T: FenceCallback> {
->      #[pin]
->      callback_foreign: Opaque<bindings::dma_fence_cb>,
->      callback: ManuallyDrop<T>,
-> @@ -326,7 +326,14 @@ impl<T: FenceCallback> FenceCallbackRegistration<T> =
-{
->      /// On success the callback is pinned in place and will fire when th=
-e fence
->      /// signals. On `AlreadySignaled` the callback is returned to the ca=
-ller so
->      /// that owned resources can be reclaimed.
-> -    pub fn new<'a>(fence: &'a Fence, callback: T) -> impl PinInit<Self, =
-CallbackError<T>> + 'a
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `callback` must not be forgotten.
+>  rust/kernel/module_param.rs | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/module_param.rs b/rust/kernel/module_param.rs
+> index f9a14765a926..7ae87ffe1d6b 100644
+> --- a/rust/kernel/module_param.rs
+> +++ b/rust/kernel/module_param.rs
+> @@ -75,7 +75,9 @@ pub trait ModuleParam: Sized + Copy {
+>          let new_value = T::try_from_param_arg(arg)?;
+>  
+>          // SAFETY: By function safety requirements, this access is safe.
+> -        let container = unsafe { &*((*param).__bindgen_anon_1.arg.cast::<SetOnce<T>>()) };
+> +        let param_access = unsafe { &*((*param)
+> +            .__bindgen_anon_1.arg.cast::<ModuleParamAccess<T>>()) };
+> +        let container = &param_access.value;
+>  
+>          container
+>              .populate(new_value)
 
-This should rather say "the callback registration" must not be forgotten (i=
-.e.
-not the `callback` parameter, but the constructed init value).
+This looks ok to me, except for the formatting. I plan to take it on the
+modules tree, after giving others a bit more time to potentially
+comment.
 
-Best,
-Gary
+Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
 
-> +    pub unsafe fn new<'a>(
-> +        fence: &'a Fence,
-> +        callback: T,
-> +    ) -> impl PinInit<Self, CallbackError<T>> + 'a
->      where
->          T: 'a,
->      {
-> @@ -693,7 +700,8 @@ struct DriverFenceData<'a, T: Send + Sync + FenceCont=
-extOps> {
->  ///
->  /// let cb_data =3D CallbackData { };
->  /// let waiting_fence =3D ARef::from(fence.as_fence());
-> -/// let cb_reg =3D FenceCallbackRegistration::new(&waiting_fence, cb_dat=
-a);
-> +/// // SAFETY: `cb_data`'s content is not forgotten.
-> +/// let cb_reg =3D unsafe { FenceCallbackRegistration::new(&waiting_fenc=
-e, cb_data) };
->  /// let cb_reg =3D KBox::pin_init(cb_reg, GFP_KERNEL)?;
->  ///
->  /// // TODO signalling guards
-
-
+-- 
+Thanks,
+Petr
