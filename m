@@ -1,138 +1,224 @@
-Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7AFD52CCDF;
-	Wed, 23 Sep 2026 14:00:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790172037; cv=pass; b=JNc081OIz6sjcn5mc/Jn5Ybt5EVx4FNC8AFoUEme51JTfFUUEVlwRmPFyIp3FSd+tXXt0WT6iX7uQnGVYp6QyrF5uBMvBLruprvyngtKhLcQPyLX3Z/kKi3iYY36x9wHO3aR4GIKtl+pIreGMjC33YKjYYJittO6P7hqlLBus7Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790172037; c=relaxed/simple;
-	bh=6533UyEVQVvXizIdCznOAiy6uyccdRCYUbyNmbwZJMs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=hin3ZDEmUfMvIIgDYqFLyNr4EJVaYxCtDA8wiCm8vL0WYqXel1W1W66Xi9Sh/lha3PXd/LJ/ANpZZPf6KszUaeUbbg0ACm0nWdIx4zltlryMdrrq1Y5ExCHhzspMDMBjFGVMCcrDIJl8ChWAi5mLOY9DOyXISCtlpBHi+9HvuG8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=fjIYZKEz; arc=pass smtp.client-ip=165.173.180.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDF1244687;
+	Wed, 23 Sep 2026 14:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790172394; cv=none; b=MzFjS+vtp+EXRolq1G/PAvyymSHlAHupL1wLXNAqyCn2OruASS8IwCZ8NjidbTKdcg5g8GWPBG8dCveq99EmEo9rzIToKLN+ZZYuW87Of9ctLQQ2peG3GRslSiD/rWpwVz42nSALqyltizYcYANQnN2Yy53X6Z/Uzkn4XU+y8Zg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790172394; c=relaxed/simple;
+	bh=q8fCd9Z/XZucUQsh9gLexsvtOqoYnGlIMraaR/z6kCs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nJg47P3t2JPersg0CORn7t6ECygznnBs1ldsVzXqtx89u3fNoQU0w02tDy7J7skfYrCRhKwxK/4LQVhV72arlCPgmH3rlojcwag+fuj4G9zwVd2eBDlP5QdT259RFrnGQY67JofG4QhXUBhf0HaMoB79waUb96h34+z4vKPgHJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UfbvFQ8t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="fjIYZKEz"
-ARC-Seal: i=1; a=rsa-sha256; t=1790171965; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=jicYzAoprwpsIWN1U00F8UuLOdczK6zyosgQsUMxTcGqqofaM/VefKS9qvdQrsxWMCf5AZkZr8q32XtrxvhfhNLmZHp1ao9SI5AHGaK4ExjXcKJK+tDjeO/Fb9OxcfaRJ7WG4YExTzLqcZDR/Ca4A1KcOcqiO9tFkaKxAM9oUZ8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1790171965; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=L7epMfBwO2rJwwLcucODN167YbFCjHgq+KPch1hiG+E=; 
-	b=U3raRjcO6FiJ8s4sct/2rOaXtEQ1OwGsVPV2UGR0TsHGrfboVeAFLUD4w9dcVfeLpOrT7G7ChlDTpjpM53jLZq27vMKLoywIn4N/YME9tmzdnd+ihTLg5QkGu1qS/1N+gXO7c1kVJwsgc1xLASfLmu5M0fZgWn8hU0bIAAe84rA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1790171965;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=L7epMfBwO2rJwwLcucODN167YbFCjHgq+KPch1hiG+E=;
-	b=fjIYZKEzmcfcdkZEfeXVr6h+2+NJw9FaHxC7kbQcYExCGJHZK0rPbOBJl5vriP1m
-	4rzcIccVn9O/ZqzG2XS29d9x0NE0QIS5rhdcZ81UjTTDCuXDTTRh/MFIqgpnLODgrPh
-	q+jBR+IOtijQ1DjlES/Nm9Da1CotXBbDEdC8T1T4=
-Received: by smtp.zohomail.com with SMTPS id 1790171962617504.15189302321266;
-	Wed, 23 Sep 2026 06:59:22 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UfbvFQ8t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78961F000FF;
+	Wed, 23 Sep 2026 14:06:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790172392;
+	bh=K+DgeqwBXy16mXxOtEILhg0nQc96HCehJ64AnqqPWjA=;
+	h=From:To:Cc:Subject:Date:Reply-To;
+	b=UfbvFQ8t20iJN86zpaMJcK8P7WhNFPoh+Mg6hKG0BwyWTW2Z04o5B0ALSHbS9gecN
+	 QjvyO67yHmsPNYMfDXeCNlfgBA9C+PyBoTq3F1UgPUFevHpcu1GfTxMNjlYmGdV8iZ
+	 pk1vRrMspzVvCmrEEAV9sOyMUq3WApDBzzSBr845/MBEuB7nErG9/X+w2tXHeZuQuZ
+	 IQ7pz80lgfcBBmeLldEIfiES66rOsdMxnZSqDgOOP5oLn0Dq8WlwoYkLikaQ9Ay6NA
+	 e/H6/mlWcofoZ1MiAQOYOpAFW3/JaLIOGry6QawwSaBHmk1Skk/2T26kqm4nHguem5
+	 aQn5j7ELVDwCg==
+From: Gary Guo <gary@kernel.org>
+To: Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/3] rust: pin-init: internal: handle item and expr diagnostics differently
+Date: Wed, 23 Sep 2026 15:06:13 +0100
+Message-ID: <20260923140618.1978181-1-gary@kernel.org>
+X-Mailer: git-send-email 2.54.0
+Reply-To: Gary Guo <gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
-Subject: Re: [PATCH 1/9] drm/tyr: validate presence of CSF shared section
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260915-tyr-interfaces-v1-1-5d28f1f75aca@collabora.com>
-Date: Wed, 23 Sep 2026 10:59:02 -0300
-Cc: Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Frederic Weisbecker <frederic@kernel.org>,
- Lyude Paul <lyude@redhat.com>,
- Thomas Gleixner <tglx@kernel.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>,
- John Stultz <jstultz@google.com>,
- Stephen Boyd <sboyd@kernel.org>,
- dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org,
- driver-core@lists.linux.dev,
- rust-for-linux@vger.kernel.org,
- kernel@collabora.com,
- Deborah Brouwer <deborah.brouwer@collabora.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C8FBCD55-3246-41B6-9F45-C1190F0FFD14@collabora.com>
-References: <20260915-tyr-interfaces-v1-0-5d28f1f75aca@collabora.com>
- <20260915-tyr-interfaces-v1-1-5d28f1f75aca@collabora.com>
-To: Laura Nao <laura.nao@collabora.com>
-X-Mailer: Apple Mail (2.3901.100.1.1.11)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+From: Gary Guo <gary@garyguo.net>
 
+Currently `DiagCtxt` is used to allow error recovery in the pin-init
+macros, by generating both a `compile_error!()` macro item and continue
+expansion, and then merge token streams together. This works very well for
+items, however for expressions, this will produce invalid expression and
+result in a confusing error message.
 
-> On 15 Sep 2026, at 07:57, Laura Nao <laura.nao@collabora.com> wrote:
->=20
-> From: Deborah Brouwer <deborah.brouwer@collabora.com>
->=20
-> The firmware binary must have a shared section for communicating with
-> the MCU. Check for this section after parsing and fail with -EINVAL if =
-it
-> is missing.
->=20
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> Signed-off-by: Laura Nao <laura.nao@collabora.com>
-> ---
-> drivers/gpu/drm/tyr/fw/parser.rs | 14 ++++++++++++++
-> 1 file changed, 14 insertions(+)
->=20
-> diff --git a/drivers/gpu/drm/tyr/fw/parser.rs =
-b/drivers/gpu/drm/tyr/fw/parser.rs
-> index c4d0ad1d7899..8bddaa1f0aa2 100644
-> --- a/drivers/gpu/drm/tyr/fw/parser.rs
-> +++ b/drivers/gpu/drm/tyr/fw/parser.rs
-> @@ -197,6 +197,20 @@ pub(super) fn parse(&mut self) -> =
-Result<KVec<ParsedSection>> {
->             return Err(EINVAL);
->         }
->=20
-> +        // Validate that the firmware contains the required shared =
-memory section.
-> +        let has_shared_section =3D parsed_sections
-> +            .iter()
-> +            .any(|section| section.va.start =3D=3D =
-super::CSF_MCU_SHARED_REGION_START);
-> +
-> +        if !has_shared_section {
-> +            dev_err!(
-> +                self.cursor.dev,
-> +                "No shared section found at 0x{:08x} in firmware\n",
-> +                super::CSF_MCU_SHARED_REGION_START
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
->         Ok(parsed_sections)
->     }
->=20
->=20
-> --=20
-> 2.39.5
->=20
+    error: macro expansion ignores `::` and any tokens following
+      --> tests/ui/compile-fail/zeroable/invalid_spread.rs:15:9
+       |
+    13 |       let _ = init!(Foo {
+       |  _____________-
+    14 | |         a: 0,
+    15 | |         ..MyZeroable::init_zeroed()
+       | |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    16 | |     });
+       | |______- caused by the macro expansion here
+       |
+       = note: the usage of `init!` is likely invalid in expression context
 
+Fix this by wrap the concatenated diagnostics in a block, with the
+generated expression in its tail position. This results in the desired
+error message.
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
+    error: expected nothing or `..Zeroable::init_zeroed()`.
+      --> tests/ui/compile-fail/zeroable/invalid_spread.rs:15:9
+       |
+    15 |         ..MyZeroable::init_zeroed()
+       |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+ rust/pin-init/internal/src/diagnostics.rs | 55 +++++++++++++++++++----
+ rust/pin-init/internal/src/lib.rs         | 12 ++---
+ 2 files changed, 53 insertions(+), 14 deletions(-)
+
+diff --git a/rust/pin-init/internal/src/diagnostics.rs b/rust/pin-init/internal/src/diagnostics.rs
+index c7d9b3e624fc..c42f1095ab10 100644
+--- a/rust/pin-init/internal/src/diagnostics.rs
++++ b/rust/pin-init/internal/src/diagnostics.rs
+@@ -3,7 +3,7 @@
+ use std::fmt::Display;
+ 
+ use proc_macro2::TokenStream;
+-use quote::quote_spanned;
++use quote::{quote, quote_spanned};
+ use syn::{spanned::Spanned, Error};
+ 
+ pub(crate) struct DiagCtxt(TokenStream);
+@@ -29,16 +29,55 @@ const fn warn() {}
+         ));
+     }
+ 
+-    pub(crate) fn with(
+-        fun: impl FnOnce(&mut DiagCtxt) -> Result<TokenStream, ErrorGuaranteed>,
++    fn with(
++        f: impl FnOnce(&mut DiagCtxt) -> Result<TokenStream, ErrorGuaranteed>,
++        merge_diag: impl FnOnce(TokenStream, TokenStream) -> TokenStream,
++        convert_diag: impl FnOnce(TokenStream) -> TokenStream,
+     ) -> TokenStream {
+         let mut dcx = Self(TokenStream::new());
+-        match fun(&mut dcx) {
+-            Ok(mut stream) => {
+-                stream.extend(dcx.0);
+-                stream
++        match f(&mut dcx) {
++            Ok(stream) => {
++                if dcx.0.is_empty() {
++                    stream
++                } else {
++                    merge_diag(stream, dcx.0)
++                }
+             }
+-            Err(ErrorGuaranteed(())) => dcx.0,
++            Err(ErrorGuaranteed(())) => convert_diag(dcx.0),
+         }
+     }
++
++    pub(crate) fn for_item(
++        f: impl FnOnce(&mut DiagCtxt) -> Result<TokenStream, ErrorGuaranteed>,
++    ) -> TokenStream {
++        Self::with(
++            f,
++            |mut out, diag| {
++                out.extend(diag);
++                out
++            },
++            std::convert::identity,
++        )
++    }
++
++    pub(crate) fn for_expr(
++        f: impl FnOnce(&mut DiagCtxt) -> Result<TokenStream, ErrorGuaranteed>,
++    ) -> TokenStream {
++        Self::with(
++            f,
++            |out, diag| {
++                // Diagnostics that we generate are always items.
++                // So for expressions create a block to place diagnostics in item position.
++                quote!({
++                    #diag
++                    #out
++                })
++            },
++            |diag| {
++                quote!({
++                    #diag
++                })
++            },
++        )
++    }
+ }
+diff --git a/rust/pin-init/internal/src/lib.rs b/rust/pin-init/internal/src/lib.rs
+index c488019d6250..0410024ba1e6 100644
+--- a/rust/pin-init/internal/src/lib.rs
++++ b/rust/pin-init/internal/src/lib.rs
+@@ -25,31 +25,31 @@
+ pub fn pin_data(args: TokenStream, input: TokenStream) -> TokenStream {
+     let args = parse_macro_input!(args);
+     let input = parse_macro_input!(input);
+-    DiagCtxt::with(|dcx| pin_data::pin_data(args, input, dcx)).into()
++    DiagCtxt::for_item(|dcx| pin_data::pin_data(args, input, dcx)).into()
+ }
+ 
+ #[proc_macro_attribute]
+ pub fn pinned_drop(args: TokenStream, input: TokenStream) -> TokenStream {
+     let args = parse_macro_input!(args);
+     let input = parse_macro_input!(input);
+-    DiagCtxt::with(|dcx| pinned_drop::pinned_drop(args, input, dcx)).into()
++    DiagCtxt::for_item(|dcx| pinned_drop::pinned_drop(args, input, dcx)).into()
+ }
+ 
+ #[proc_macro_derive(Zeroable)]
+ pub fn derive_zeroable(input: TokenStream) -> TokenStream {
+     let input = parse_macro_input!(input);
+-    DiagCtxt::with(|dcx| zeroable::derive(input, dcx)).into()
++    DiagCtxt::for_item(|dcx| zeroable::derive(input, dcx)).into()
+ }
+ 
+ #[proc_macro_derive(MaybeZeroable)]
+ pub fn maybe_derive_zeroable(input: TokenStream) -> TokenStream {
+     let input = parse_macro_input!(input);
+-    DiagCtxt::with(|dcx| zeroable::maybe_derive(input, dcx)).into()
++    DiagCtxt::for_item(|dcx| zeroable::maybe_derive(input, dcx)).into()
+ }
+ #[proc_macro]
+ pub fn init(input: TokenStream) -> TokenStream {
+     let input = parse_macro_input!(input);
+-    DiagCtxt::with(|dcx| {
++    DiagCtxt::for_expr(|dcx| {
+         init::expand_with_cfg(input, Some("::core::convert::Infallible"), false, dcx)
+     })
+     .into()
+@@ -58,7 +58,7 @@ pub fn init(input: TokenStream) -> TokenStream {
+ #[proc_macro]
+ pub fn pin_init(input: TokenStream) -> TokenStream {
+     let input = parse_macro_input!(input);
+-    DiagCtxt::with(|dcx| {
++    DiagCtxt::for_expr(|dcx| {
+         init::expand_with_cfg(input, Some("::core::convert::Infallible"), true, dcx)
+     })
+     .into()
+
+base-commit: dfb6a037fd586f1ffcba3b143dab58f5c88294d1
+-- 
+2.54.0
+
