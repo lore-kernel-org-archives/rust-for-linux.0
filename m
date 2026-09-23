@@ -1,112 +1,123 @@
-Received: from mail-wr2-f33.google.com (mail-wr2-f33.google.com [74.125.225.97])
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D334443AB0
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Sep 2026 08:10:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.225.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C9E394490
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Sep 2026 08:11:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.225.76
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790151054; cv=pass; b=XzL2Ok5lm0FzUJw9YjUBNNeIkXxEVALbNgBlsm+z83u9B+ScuUqzP7+H3zxTvFhX70V9JYR47+NZCndJ/wFql/3IkMuktm0paySjG0SKOi4m1XloPCAETbTJP90SViF54o8BGb/IBIqAUK40/0UNeQqZEhZskXtd/gwLNfPZGCQ=
+	t=1790151080; cv=pass; b=RjLdVLjqXC5g/IUZkZsAPYJ9RUQ9OUbR/uMlK2eRRctGZzMMqn0O8/pZSulmdgPeeb1Zgqv+/oDhMdWRxR/7RIJ7BBWQi6wvypkd22FwcZR7qzQizJO0o7+TFd6yfj8Z2zcQW5JL+cDvHt+Oz27I0R84e+zVFPlkvAzFbXPrZBE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790151054; c=relaxed/simple;
-	bh=52slL8Hr8rgjB8Ot10IDBs/l6D+Y4XBWl6hOA13KGyw=;
+	s=arc-20240116; t=1790151080; c=relaxed/simple;
+	bh=EdibQdRi79AEUk8N9XrOaQNDDtETqxgqjr2V4CzPR1g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oH3Nvkf6EUcYzhI0Sf/hcXP03mK8AUiVs0jjYqelS71w9bzvUz1HrBrLBIzn9BV/V96K1zBRzqpjJYhSgmg67Q3KU4yd5lRx2K8izDbP8NEHehF8KZJz1e03FkelAE22SRRCfZJUT68J6aMX3z+sbj1qoiRIidbmLSg00BquR7I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wY/o/MUz; arc=pass smtp.client-ip=74.125.225.97
+	 To:Cc:Content-Type; b=LR9ELOZ6JkJUDUDTIj0G80somS8AeiCNFb1cAx0wjrlo58hozrcssm0YTmCzseMC20+XxNz1yQkne04XeEYWAjLmMmnEFVv/fkXhz+zdEzrodWW+ZKl9tj7BuJrowDECfK8U4chwCXV63qr9CRs0c1UozsRyNKpsHhPZE54qyFY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ItdHb0Xc; arc=pass smtp.client-ip=74.125.225.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wY/o/MUz"
-Received: by mail-wr2-f33.google.com with SMTP id ffacd0b85a97d-482f6351831so407014f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 23 Sep 2026 01:10:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790151051; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ItdHb0Xc"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f633cd78so397961f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 23 Sep 2026 01:11:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790151076; cv=none;
         d=google.com; s=arc-20260327;
-        b=exifab6xXtT/1WXkZXqWYx4kqydh6L5V5uM2xgxGMx76XaXx2lZTE5YqlawH2k7y4h
-         /im8ux8S8xC7SM63/AGJXdjLIC8Kbiz5+AS047PY950bxbKtryxcBf2k+BOCcY0yqD/v
-         jIc/bw0u3RmBMWhe0Cufof5OMb7n74wnn3cmjXtk/d2eKjjBI3TAqQL4TcoA1NAKk4B0
-         y+E6BVS/5uTfyUAzLyuLCdqp2n+XoEHpoKceW+u9SNcAOeuc66kG6zxh6dVa2nfb4b2m
-         m7Lb8TsvXu8Jlaqvl2W8wHvtgVSBOs0FAryCHhLCX5N+LBXxzMIHTw9R7da9Mkob5TeS
-         QbmA==
+        b=sd+LtEe5fzLkD4X93k1lktUbcCKBVWz0fI4ZTvUF9qNqugyHLUICl0YpDI4wTPlRvi
+         pqxo1NvD1KkbQd+PwBVUEt9GNNOtKn2FP8HKK2CGwY+tFwy9QHb+4YtAyknmXgsmWski
+         mPn2Md1ZI9HliVq5C/JnfYoyVsmUixWIndZFkmedv75mNyVSclgZA6+3XONNeni/8U2l
+         NJKOmb4B+P8lDSvwz4lZ4sq+Wm4TJQMAqSKrxaPBzhHF6QccpX8F277BnP6kLWiG235M
+         ZrUXjgPXK5BEQHPuSm6GCdznABYdLoV6VwW+OMA+r2hvxr+WVmPV8+e7PEI6FX9VZBnm
+         jOjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=52slL8Hr8rgjB8Ot10IDBs/l6D+Y4XBWl6hOA13KGyw=;
-        fh=SRNTwAmRedmFoC9TzTKjzecvPM0Y4uaSiQstedg1EZQ=;
-        b=ZlExMiGLaaN4ejx+LFe/UUOa8yDH4UFRjjeX5QWQrPOOEnAP2arwIGF0Y0pc+uuKwu
-         UWaD6AiQPL4meZOOCuRkyfZFXAimr+STZ5A+ZUmHxgfGhU7xVB5szaU6JjwLYR4Vsh2u
-         rBSHWDFXztoBK40/LQGFDvPKLyA99byLjU/s3DkoZc2bhju+Cggz+IVHtlWgkGDWCpMZ
-         PUZf4Kfc1bRuNdPTSIkovJmqgdZ32+isOeUzmuonzZVbd1Pd8YDGaxz4AjNG5n+zNQC8
-         O7osNtx7+d2BVDq9sWJOipyCAiJwamQMjSzUxhBcLSfjKFI8+nGkeMPzJztDmELOoHSM
-         Qckg==;
+        bh=EdibQdRi79AEUk8N9XrOaQNDDtETqxgqjr2V4CzPR1g=;
+        fh=q57Hb5duABeAmF6NBFJl/ViScRfo+BGqci8G4xP182I=;
+        b=VvbGwpXpxxk1tLqQJS7de2oQTzfqlmHk1KsokifwB++OMgAdJxLrWvHgrEnvX31PUt
+         UwtN/Y6TTp06yzIkemT6rkoV+zM07TCSHeglOrBaAO6ORTelMhwescbOOzwe+q5krGY4
+         d6leSl4eRX7O7pOPYzsUhrbv64pTGwuRE7COozf7p0uec8YbXeXf6HimxHBq9jhFqP5L
+         5teHLwatg55QhJbZ+ItPowArt1gLFNVxS8Hk6a/W6H3A8QMrCLuhS9C43xztp3swAReS
+         13e7Dcy6eEiorCIConqGWdGrqBbphuqR4OskBFi+4X2xvD36fHrEdPBy3iUXv0i2nIoy
+         KzBQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790151051; x=1790755851; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790151076; x=1790755876; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=52slL8Hr8rgjB8Ot10IDBs/l6D+Y4XBWl6hOA13KGyw=;
-        b=wY/o/MUzRro1mx8juemsMVZ1BEL6U+icyGCjN7xSMOm54HlxJNGNa+TOAIrk87sCoI
-         ViczLvNuFplCnJ4vDl8S+Xw/MakDAAjiLsJlNB/ds6WVVzovL7YDWZrgqSRamgT0PkuQ
-         f0nVFq4dNaePhkh+bKHrv9QftOEtNdCSHny6BvyAZAF4NC8aQCjdqNM+P6TmU9kJMneI
-         IvzNI7ZJI/JZ99IE6Kj7O81/GL6WDkNoiOJOlzwZ4xx6uyQEkjlc4j31UyJti3fi4DRm
-         rN2j3FbvjXSLABu6hAm5vEnRhOsym89SMTyuX860Jc1Ivn+YSOxfFTttDCOS9bYLCAJb
-         1PjA==
+        bh=EdibQdRi79AEUk8N9XrOaQNDDtETqxgqjr2V4CzPR1g=;
+        b=ItdHb0XcqO2Qr1plJfJWO3NGEIeakKM6rK5oysThcQjtWkHUicpyGSiOXOcIc2lhPT
+         KgNGD5gfwDnPeRgSM+Omm4oDEJssatIdeRCXfkAD7zYxy6oqVyc9w43LNeEi7EpOyrsN
+         2fYjTwmJFwlYpT4lRpQ2+2xn2BMlERft0qwaCGgJ4k/0luEzBiIY9s+/W+6n2mx6bnGP
+         LRC3I8I2Rl3K5ewC4S7FX6/+aSIPlRZVD4+h2jemByaSE3vTP+0yrdDPt1PM6ZzqmJC8
+         VwZcSX3t8W9dOJTsymApDUjHfVws4jxu7wGUbYI7DdhxJZkkMdoZWf9loAfVMqOjARSf
+         uSFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790151051; x=1790755851;
+        d=1e100.net; s=20260707; t=1790151076; x=1790755876;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=52slL8Hr8rgjB8Ot10IDBs/l6D+Y4XBWl6hOA13KGyw=;
-        b=RMmOr0kpS3ct9u3W5sYk69B3M059JP/mTgY3TPOf56djDy0yFcWo58bAWTkJKpnt1f
-         Ee7OmDna3V3lGGKR40x6m2aUgZ/4xvwd92VT1UjcB4nDGilfYQAUup2aDeTSkzBccaV9
-         7NgwxX7vFjnvIT+bhqHScitZY1bsmgLTeGG/pJMMv4+E7VK0ZKxwfP2U24HuCnLxJz2J
-         sVDC6ULeHDBjrR+DB0PXxq1ggIgL44rSQ4tKls43q9j2mEk5VzPgdJO3xkv+cxD6Jvr9
-         GQW5bq3ownh1xah3ukQrGVeTrEEe9Zf2M99+UB1Qk3hwdYOZrbAHRjvzIuGhbt8angNW
-         vKAA==
-X-Forwarded-Encrypted: i=1; AKwUvBxtNaTdZe42IV6adiB55Qt90B7kKIBl5vgcFsa7X0BkHwR6fQ5J7JC5Jsqup9Xco/DxpADJSl3b92zZ34o97Q==@vger.kernel.org
-X-Gm-Message-State: AFuF++l+PYrDcp19lVwueA80jVFSFk+5f8rT5GtPuSZuxHRWp7hlICgz
-	He0WJPZRNFisK2VCwZwR4LqM6vQlAcVYXU+ifK3cmx5YCrNb9yCV0tdSSsdrw12BYcElcFs/S8M
-	+pbk/RXA7mPni8qvLYKbewWN4tZIGS7LsGcAGMVNG
-X-Gm-Gg: AYBFou2/goCfLBC8dVnaO6Y7XXoNkcmygA365SIgKTZnLaaUVU6yXGdJQJZ1H0FLKT5
-	MSKBffUIiCQN0kgv62A0TjstiX4CPjq3mtdn1Z/BdZjxSa1tgZ5LaY9dEzhNGv7WK5HoGZ85nsV
-	VVhPAcv/sLi4j6w1mq2WhJplQWok67bkyWXYIWlnZez4rH5mejTlgCGrhlmD9s4Xus9WrjT+b5b
-	bMBOnAU6Zp02gnrAx1AKQxiwrDXRJ7/Z8UcuDCLkEH1uCUtco2LQmimdaVnH1pV0qPAYcblw0y1
-	cc6pjFVgEPMDMiq7QGNsFDX3fOIp/VUwG++xAIatjW23210sJuECmUNpCAsat9dx0hN2kxWtB6H
-	m7CWMC8HyaBdhFn3V/riaqKXl4zbrvi/cm/YdndxZww==
-X-Received: by 2002:a05:6000:26d0:b0:487:360:4fd1 with SMTP id
- ffacd0b85a97d-48867060af3mr3013286f8f.5.1790151050299; Wed, 23 Sep 2026
- 01:10:50 -0700 (PDT)
+        bh=EdibQdRi79AEUk8N9XrOaQNDDtETqxgqjr2V4CzPR1g=;
+        b=JttOmAs8pHdHfaVL6Gt5guhYtLfo7XaB0wTv1RK0Zhu22iwJIoKBfyUpmhthHNacA5
+         qRg7ZF+yADIzC+SXVeeZ+KeaAsdcyNZNmMO7LMxPdhqmuSX3Fi1HSkvBV7uTr+044m1j
+         DPIdV2+kMHKUCk6HgNxMFirm32JV+uCh26pFukxqyzDoN9wFtB1i4oo303LPDIWOdTBx
+         c6Q6h+6cfXXE8r3X0fnqLK1EInYNHg4WQtce3mfdEq4yd4l7HrUbYD8zRvwKhyNH1EwL
+         6JZSJ/KPDCsQ8re0SxI4igUTBg0Uk3TMp1v83aSLxRb58TkqcbqpGav6oNlfCCx8z8e4
+         jnhw==
+X-Forwarded-Encrypted: i=1; AKwUvBxsJWdeXLUtHBLFgNz0+twQM+i7VPeaPtNRIK9PHFKwnuEaisJo9imrWXsTwEOHCZQ1JahsTqyq0u+awBMpgw==@vger.kernel.org
+X-Gm-Message-State: AFuF++nHzIclKU+D1nYS6ffBhW6z3L/4B5Lf+gKLehAs5DmG4Nx6JoCG
+	q+OmP3ULTt1FroIjIfEwLj/xfRT0cqB3xP9euiaGeeu4TfTyHU8jvW/JRXJ6R9LEDx6pSNWxjx4
+	NNumD0SBgW99XIHCrRiyJApJig5AXdYrrKDQLKjv/
+X-Gm-Gg: AYBFou3MV5/503/EEe/1XGeaSOac0kcVqml/uuf5NmlEHMpjcRzbMH9mIR+uN3jrQqX
+	F/Wvpjaa3QrOF5XRvdvhu/oVUDStp1uOq2ZLTsrLAgVqFEfF3IBT0y3RRx8qIHAK3MHYgMWAJx9
+	LzW9HZ2o+c6JCrfhAQKMvNt05nzI7YGk+/auRKp9mHC02V6BsS0SLHiywBRk6hHVTZ31vV4yXeN
+	FrXiQJ9KPXghZ3qzUsy56Yuf36Jr6slWvlnrIQLOTSo7854lA8Y+4gVcfCRdRtvYj5J208Yr8e+
+	mMxrNfFJLSUjI5U4Zf2kUaDHUTMTIJmiEdW9Cla4Jy27ZinUvCB1SYczISwgokuizoTZrKoBnm7
+	gqjooUoRj23dVOlIxY4KT
+X-Received: by 2002:a05:6000:2681:b0:486:f767:8be0 with SMTP id
+ ffacd0b85a97d-48867086ab7mr2788619f8f.12.1790151075171; Wed, 23 Sep 2026
+ 01:11:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260910-b4-add-list-for-tyr-v1-1-cd74ff2c1f8a@collabora.com>
-In-Reply-To: <20260910-b4-add-list-for-tyr-v1-1-cd74ff2c1f8a@collabora.com>
+References: <20260910-b4-doorbell-v1-1-f3ca2f501600@collabora.com>
+In-Reply-To: <20260910-b4-doorbell-v1-1-f3ca2f501600@collabora.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 23 Sep 2026 10:10:38 +0200
-X-Gm-Features: AclHuK83N6NgEdKtHsRmRTgf29F0Bv9EGKeqa04ZEKo4C3bnWfWqYur52dyGeok
-Message-ID: <CAH5fLgjerphsjv75W-dS+GOg+XgX15KchR1oFv3wCS-23MLreg@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: add rust-for-linux list for Tyr
+Date: Wed, 23 Sep 2026 10:11:03 +0200
+X-Gm-Features: AclHuK-cN3Y_6juBtWNq28GEXbcnGNxIQ1BXWgEb1aIXGrQ22BX1Va4FD9IYMnQ
+Message-ID: <CAH5fLgi6iQcTNOyZdpdB=d-AzniTPg5Z7uCgW2y3DQBQ8XxUxA@mail.gmail.com>
+Subject: Re: [PATCH] drm/tyr: reduce size of doorbell array
 To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	gary@garyguo.net, boris.brezillon@collabora.com, laura.nao@collabora.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 11, 2026 at 1:20=E2=80=AFAM Deborah Brouwer
+On Fri, Sep 11, 2026 at 1:02=E2=80=AFAM Deborah Brouwer
 <deborah.brouwer@collabora.com> wrote:
 >
-> Tyr is a Rust DRM driver and Tyr patches are reviewed on the
-> rust-for-linux mailing list. Add the list to the Tyr MAINTAINERS entry so
-> that scripts/get_maintainer.pl and b4 prep --auto-to-cc include it.
+> Currently the number of doorbells is set to 64 which is an architectural
+> maximum for the Mali GPU major v10 supported by Tyr. Since each doorbell
+> needs a 64 KiB page, the doorbell array alone would need 4 MiB of registe=
+r
+> memory. Since the doorbell array starts at offset 0x80000, its exclusive
+> end would be 0x480000, but the rk3588 device that Tyr is compatible with
+> only provides a 2 MiB iomem region in total.
+>
+> Reduce the number of doorbells so that they fit into the rk3588 iomem
+> region. This is consistent with Panthor=E2=80=99s doorbell id assignment.
+> Doorbell 0 is the global doorbell. Panthor assigns the remaining doorbell=
+s
+> to the active command stream group (CSG) slots. The number of slots is
+> capped at 16 (MAX_CSG_PRIO + 1). Therefore Panthor uses a maximum of 17
+> doorbells. The 17 doorbell pages span 0x110000 bytes. Since the doorbell
+> array starts at offset 0x80000 its exclusive end is 0x190000 and so fits
+> within the 2 MiB register region.
 >
 > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
