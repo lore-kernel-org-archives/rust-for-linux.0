@@ -1,158 +1,123 @@
-Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9438143DA3C
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Sep 2026 06:28:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790144912; cv=none; b=hZb7CNuhQ0b98/elVvhb9FONwNRCB8Ow23gqz86xFsQuzuojCmy6VUzMqvhpxtHeW+S3RYHV48vAIZC1g9TeiYaYuTb7RPMD6ojxSmcvyHJfsQI5IdQJTCOiaDgrpClRjs34qxjQy9UzfF50sQGl2qNOtw3rUp2T6rOpv9jYbr4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790144912; c=relaxed/simple;
-	bh=4G5stfYL+d2I3arosXAulfA419oGwxz6L8v47Lllkwk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KToRfnSjhRoP4Ytym39tzuvVYSeSrxaTnyDQyfr1sNl714f6Rx2Y6a4gQ9CVEDzlmeiU7aTlKsMq1AVI2Kzymw/HexfCwXyHeJddkSPGYL94/mEw/PdqkL5u/3bqRq7BGBBwcsPjBLXTfRkwd9rNczInrmYjv4enuNCl175M7cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J9cI9Q68; arc=none smtp.client-ip=74.125.229.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48EBB4582D6
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Sep 2026 07:42:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.225.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790149361; cv=pass; b=Og2MEYpmfXXrVSsBsTahg7B3DxWBbdRMNxVu1BkaH20h0O8nhUOZ6dibFkLZGGy9Pswc/LOeFHBVWcwRc2o+x1CtPsrVGPu7+GAiRMT+VAtd2eMOS9t7XupL/fcpauDiPqQt50poCnzzVZ9pHF8qZfxqVjDubWlkzC7sMY2yH2I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790149361; c=relaxed/simple;
+	bh=/IJk6BwyL2t+xmXjHGLGD+TklywKkZlMfXsjfutBVv8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C1xZsNrlioZtfW84onyb2CbjlhTj6tx8gcNVRKkiF0ZE3mO74ewQZ58Bslo4ygyhqrq4VQauTaKepaVQYAZB9qM3eAhy2sFCIOIPFIOn5WvqhFUrdE4R3FM+UMiEwfDV4prDUVUt+7X7AihcVurxErb1DJ4sKsWNg/L1savTGtA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PBuvzwOM; arc=pass smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J9cI9Q68"
-Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-32dbbe82e13so482414eec.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 22 Sep 2026 23:28:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PBuvzwOM"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f63546c3so524881f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 23 Sep 2026 00:42:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790149357; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bMOfbLAZX4J4RkSv6GBL8XXyfROujkaI1B5ImANqjLqGPpyqy1qz0BX0XjYHZMarmu
+         JkbUFfrxHotNxEKuASO6rWiRpnlyEWYAkiqOC7MDiuOOSeNb4eX5QC5p1Sbf5ZPTYVzI
+         N+yWDnTvM2PjMOhrbfuGEpSVh1U1Ge459ZnaBzFIo1PSJXwZ7LG4S/of+aRekKf77yQG
+         JLso5BOjtCJCvuvKUUwMe9L36R+Cx/ZWt4J6695XSaIaqEviBEV+1Eu3DmhaknVMStn+
+         NHh/IBHBwvmWKAkNUyGjZmNLCWoZUaSja6+PFs/R9JL+lMVtrQ/7QUhOtmwQRgEydab+
+         rv/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/IJk6BwyL2t+xmXjHGLGD+TklywKkZlMfXsjfutBVv8=;
+        fh=21bN9vPQLJpB5KkeqOdq+jjLtx74k3rMxgG+NlMPsVs=;
+        b=Tq0c7vQC1frStGw2Y3wLjG3Fu1YlHcdO4lcdUkm1kwSLUVgLOC952WvWd2aBOLX5/k
+         404MQj1vJz15YYrFdR74Fy3C2HaICTmWS6mKbQjHnl+f95iJ16S/CEz0TvGZod0xDoFm
+         yqFhuXMby5dj+epYO0hu6H89lJ9d4bNc0TZfKwrNz6zKdL5ktBP+MK0mQxQtoUpG1GBP
+         5vSe5Dop3foyUt/gRmiuRh9IThiRNgfjsgug0pnzFLDX9e9PCqTTeTmyCjM/u+40W08A
+         jCboLDA9gek94hiQDNhGbwfsFfdXRpP6N5yYROEYR8U3ca904S1xxSGNFdj/F1Zwyc8u
+         /EUw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790144910; x=1790749710; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2hUFOEJST1qHgvJkQDivOVNilsD3f7PYYgSWMm8/mzk=;
-        b=J9cI9Q689QlTD0Rm9iaM5DR4cDNSWcqmqC8MqDCEqXyee3VJcWWjwLUkuKVnL6+PAb
-         hLLKCZjcpJXP1Y0/UUqVaBp0LB9CPcitR2C7HIZoS+yg0Llqkb0JgXjtpsUi9F/otZOd
-         8GV+M5wB2eW/OGoFod4cNrbwEaBu1gpGvCmJH8+mKCCQqaRm1r4lVUpHAT8nMPKFGGp5
-         f+JQ0Cmqjs20HyR/ta8LjsKn1vJrKVFa0yBjPSy7NbpWu+KromApt3r9EpHoHUlky2rY
-         uiqUkjiMHn7uF7zCiuH2MQpY6UpuTsfvqYB8hsF/ahMZ5M0I5awG9Jdg0ydR3e8Ct1fd
-         BdSA==
+        d=google.com; s=20251104; t=1790149357; x=1790754157; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/IJk6BwyL2t+xmXjHGLGD+TklywKkZlMfXsjfutBVv8=;
+        b=PBuvzwOMlJE50DdNANx8SQ7X61G/v19IosMrQmMsLNtLvBx38548fP55e4IgXLwiaz
+         7hU9k3SwTJ/Bm/S+B5PLB8vaNWlAxQ9d46eLbhyQDhrwcZQD4RYIKXmgKu4NEmCCc1Ce
+         H+wVO5HRuy/PZLRKNLnyqMotJvdsS92S1c9oEWDn4XX0pQN/bX2OeVmlFZ5hi7U1RFup
+         iW7uwvRxa+SLDA4e4GogGxl4oHeBpfYaMES3D/A5EGEY8GrScQcaE3A+Cd9hOrvPBxAz
+         Dq5v1M7BrmYkDgDvwsHYUX55vjYU8YpfG0rHFWJw73oGIIVdzwVbuTCujP4XEC3u/PSN
+         tNQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790144910; x=1790749710;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=2hUFOEJST1qHgvJkQDivOVNilsD3f7PYYgSWMm8/mzk=;
-        b=QdzUA8WIXX/H/WXtHIg9Y8ocqbD8LVv4AtuJ09Fc8tjMhPI6xbF7N2AI0jFsgSsUjE
-         HVwf82s5AM+Emmu6PB0yWxNP8g1C+19w1n76nERaFuPsllA8MlI/XvvxhrjiGT6lIk2/
-         oe3dqwLlhtc9HOYYAdV1eT+NgjyUARfEMauqd0VOg58q8u6SnMAPz4fWV1qNS9MKrGIV
-         d215NHzItT0Ye/iZNlsaF4F5zVYze/LdLclQA+710TncHT9kYCOptCgpFxbLKkwTHBFL
-         0NnISbXeFNGMZlchxHJ3G8DnpMUtHXSuQagZ0RHn4pmuLb2kUdoRuMZcO1f4qSswrX37
-         F2HA==
-X-Forwarded-Encrypted: i=1; AKwUvBy8x72F6yOagt5m+hW3aiW8mlEmvJ5sM/VS1BcYRzjajODvbMpIbGnOt1fzLjiG3C0A1GnUomwz/KG6zgYXow==@vger.kernel.org
-X-Gm-Message-State: AFuF++mooObmr9YWxtVkAtAlYRBK6yPAh4PBcoJaRslaVXFrmKRKa319
-	12Alr8owPz3T/NgGWmTErxBl3D6+uLqOJYohqYWl04ogh5BhlpmV7j06
-X-Gm-Gg: AYBFou2RvouF2AWrWPmjd+/19eHjCAolUYJVrNMn5Xs4xV9Hb2Rbxo/CWffYjvHuirn
-	/bqbawaPrhpbSvWEofUn4tluojkiqdv20VM9KfNwle3RHByxrrqNK7ueZ/y1EHoooAXs12WL64V
-	Byqd8phjBkaN4vYs6WrpYAmpBHujPf1fS49dRUjURPw1/h3WQl/CUBpENZZvoiYM4q4MgQQg6ht
-	Ov5d9Iz0BeoaIzt+zXAoicb6jysmwEnMwsBhwop/mk6HgcnrL5m2AFwEYfV/A1QVqCqrD7lupnY
-	1B7rQgVvycF1o8g4DGuEopI0dCPTBjp2N85AGPBCLyp2hCS2T8KszOtxKAX9EGyK91dm/whTO72
-	A1XyJdSu9ZwKvl2biWj8uv9kObdWfD9VnZLBZeAfnT1WaiqQP2gBvO2x4ZsB2xFQnjmh0u4xNB1
-	MAi3jYEa0g1TE69f1VQLopmq3NvkW3Gg5yMUag08UYRwW6rnQ2isj4LZe+AKVP5I8Ky+8yaQ5hd
-	03iKek0R4rfDmRq8fECBa2pBlmsaY3hbVeeRa3U8vfHNNnSdunaNg==
-X-Received: by 2002:a05:7301:3a86:b0:33e:5c4f:f46e with SMTP id 5a478bee46e88-33e8d8d2598mr1603719eec.30.1790144909601;
-        Tue, 22 Sep 2026 23:28:29 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e97236754sm3074867eec.29.2026.09.22.23.28.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 23:28:29 -0700 (PDT)
-Date: Wed, 23 Sep 2026 11:58:13 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, 
-	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, 
-	ritesh.list@gmail.com, sshegde@linux.ibm.com, pjw@kernel.org, palmer@dabbelt.com, 
-	aou@eecs.berkeley.edu, alex@ghiti.fr, hca@linux.ibm.com, gor@linux.ibm.com, 
-	agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com, tglx@kernel.org, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
-	tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org, 
-	acourbot@nvidia.com, work@onurozkan.dev, nathan@kernel.org, ndesaulniers@google.com, 
-	morbo@google.com, justinstitt@google.com, jszhang@kernel.org, japo@linux.ibm.com, 
-	jpoimboe@kernel.org, seanjc@google.com, pmladek@suse.com, thuth@redhat.com, 
-	ynorov@nvidia.com, joelagnelf@nvidia.com, david@davidgow.net, 
-	fujita.tomonori@gmail.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [RFC] rust: kernel: Add KUnit tests for ARCH_WARN_ASM bug table
- emission
-Message-ID: <arNxAn7I7NCVWmD1@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260922054959.955093-2-mkchauras@gmail.com>
- <20260922064735.GS4121339@noisy.programming.kicks-ass.net>
+        d=1e100.net; s=20260707; t=1790149357; x=1790754157;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/IJk6BwyL2t+xmXjHGLGD+TklywKkZlMfXsjfutBVv8=;
+        b=ubYrzR5nrB85u6WjTsQM9CqJj8k1IRbhMGztcjaWuVlZ07yojRXsrgviyNZJYeZ9re
+         oxU+UINeKs9UmKX2Zt0LJgBaWPsJeee+b4Rgi3QdV1dgMmVHeiPvIK6svVtiV+mXi8rC
+         0gQVr9i51fq5rHmO+1PrV9LkoeToZy+8KL0AhlS74yzFpO7LkYcuE2MLSjhxv3r7vean
+         DyOMquNbzwMnZCW8red4J8gLVbYH0temrOFIKXGziXsRwZ0E6Wduqyrhcfvlr/zg5FPE
+         k+ZdbOLxue79i/xn8gj5nymUkT+JQVjZ+PfGRoSJC8Tr/PterkLb3zzx5eRdxoVwd0pY
+         Iy8g==
+X-Forwarded-Encrypted: i=1; AKwUvByjNZrE/nrBmS0gpS8gaw2na5wqFzFSOBZv9SDFNuL2n8AzEiUBbGgNK6UBc6LRLbEYDasldkv8VjIRkfFL/w==@vger.kernel.org
+X-Gm-Message-State: AFuF++mfE2srKUfaO/hN4jmSGDAvrMfz6u4sEbLJtxWIHO1IbdDOmLA0
+	5wstpMQzBUWRKjYJL8kW5F1QeU3bPv39AKxHoFpQKUR44UM0dXIOs9XX9ehYoawNl6bm2b4BK7r
+	1hRh0rAWAnhAqyyCzmC8ixbW/U40RUB1g+JqOokbC
+X-Gm-Gg: AYBFou2FT5ZuLeeJn3i0N8uhy1erxDdhe+oRsvokpEUsMNKXaSAUlBEAEm9hVjXDV0F
+	GudzZNwEWWDgbDvI2GyTU/oWywz+MxmnyqjX7vKFQNp9Uhiz06CQ6mBKdSuLHUuOJwzgnWt4weX
+	K8gBe4fT7aNWU7hsAJKltul2r+2i2EYH+t9ApoUMS6aXHnxtfOkP3+1h3wCdMnGHD3XtV2uwth3
+	LDerRidj+YCD4sMzwe4z4FNzr9F8k8NdeB2QZnSkxL3C0CMsD9Zw+4c4F3JJ1eCBXeTAxKf1Hei
+	VAA9RzfTpmlzzUWRAj24zzzCQEsH4lrQtLhebHrS7A8IESULkl/kc4t/7QN4MBz0iUfNPaYT9xt
+	byNRtrCQoUPpcGZEO71yLrzhkwkBIuT0=
+X-Received: by 2002:a05:6000:178b:b0:486:f1ec:f939 with SMTP id
+ ffacd0b85a97d-488670a6c46mr3157053f8f.40.1790149356616; Wed, 23 Sep 2026
+ 00:42:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260922064735.GS4121339@noisy.programming.kicks-ass.net>
+References: <20260922-b4-gpu_info_zero-v1-1-7259840069c6@collabora.com>
+In-Reply-To: <20260922-b4-gpu_info_zero-v1-1-7259840069c6@collabora.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 23 Sep 2026 09:42:23 +0200
+X-Gm-Features: AclHuK_kOTENlrajsbD3PM-8sSHORN3Gp4PV1SmVXbX3HMVeZKOfsOHmtEYRT3c
+Message-ID: <CAH5fLghN0w908Z-MYDfmaeC7gvAB78MMT7zg599=1kU0HexkOw@mail.gmail.com>
+Subject: Re: [PATCH] drm/tyr: gpu_info: zero out new/unused fields
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Benno Lossin <lossin@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	karunika.choo@arm.com, boris.brezillon@collabora.com, laura.nao@collabora.com, 
+	steven.price@arm.com, liviu.dudau@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 22, 2026 at 08:47:35AM +0200, Peter Zijlstra wrote:
-> On Tue, Sep 22, 2026 at 11:20:00AM +0530, Mukesh Kumar Chaurasiya (IBM) wrote:
-> > Verify that the __bug_table entry emitted by ARCH_WARN_ASM has a correct
-> > bug_addr displacement — i.e. the arch's trap label reference resolves to
-> > the trap instruction — by calling find_bug() with the exact virtual address
-> > of the trap, mirroring what the real trap handler does.
-> > 
-> > To support all architectures, each arch that implements ARCH_WARN_ASM now
-> > defines ARCH_WARN_ASM_TRAP_LABEL, a string constant naming the local label
-> > at which the trap instruction is placed:
-> > 
-> >   x86       "1"     (ud2 at label 1:)
-> >   powerpc   "1"     (twi at label 1:)
-> >   riscv     "1"     (ebreak at label 1:)
-> >   arm64     "14471" (brk placed at 14471: by __BUG_ENTRY_END)
-> >   s390      "0"     (mc at label 0:)
-> > 
-> > The label is used consistently: in ARCH_WARN_ASM itself, in the
-> > bug_addr back-reference inside __BUG_ENTRY / _EMIT_BUG_ENTRY, 
-> 
-> 
-> > diff --git a/arch/x86/include/asm/bug.h b/arch/x86/include/asm/bug.h
-> > index 23ab05438269..6cca8880660e 100644
-> > --- a/arch/x86/include/asm/bug.h
-> > +++ b/arch/x86/include/asm/bug.h
-> > @@ -62,8 +62,9 @@ extern void __WARN_trap(struct bug_entry *bug, ...);
-> >  #define HAVE_ARCH_BUG_FORMAT_ARGS
-> >  #endif
-> >  
-> > +#define ARCH_WARN_ASM_TRAP_LABEL "1"
-> >  #define __BUG_ENTRY(format, file, line, flags)				\
-> > -	"\t.long 1b - ."	"\t# bug_entry::bug_addr\n"		\
-> > +	"\t.long " ARCH_WARN_ASM_TRAP_LABEL "b - ." "\t# bug_entry::bug_addr\n" \
-> >  	__BUG_ENTRY_FORMAT(format)					\
-> >  	__BUG_ENTRY_VERBOSE(file, line)					\
-> >  	"\t.word " flags	"\t# bug_entry::flags\n"
-> > @@ -101,7 +102,7 @@ do {									\
-> >  	"99:\n"								\
-> >  	"\t.string \"\"\n"						\
-> >  	".popsection\n"							\
-> > -	"1:\t " ASM_UD2 "\n"						\
-> > +	ARCH_WARN_ASM_TRAP_LABEL ":\t " ASM_UD2 "\n"			\
-> >  	_BUG_FLAGS_ASM("99b", file, line, flags, size, "")
-> >  
-> >  #else
-> 
-> Not really a fan of that. And I can't really tell what you're doing with
-> it either. The kunit is in Rust and thus unreadable :-(
-> 
-> I would rather you fix up is_valid_bugaddr(), some architectures seem to
-> have an always true stub because of the callchains always being from the
-> break instruction.
+On Wed, Sep 23, 2026 at 1:16=E2=80=AFAM Deborah Brouwer
+<deborah.brouwer@collabora.com> wrote:
+>
+> If a new field is added to the struct drm_panthor_gpu_info in the panthor
+> uapi, Tyr must initialize this field or it will cause a compile error.
+>
+> To pre-emptively avoid compile errors, use ..pin_init::zeroed() to zero
+> out all new fields added to this struct. Tyr can subsequently change the
+> initialization as necessary. Also use it instead of manually zeroing out
+> existing fields at the end of the struct.
+>
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
-Hey Peter,
+Merged into drm-rust-next, thanks!
 
-thanks for the suggestion. I will fix up the is_valid_bugaddr for
-powerpc. I am not very good with other archs asm but i can do it for
-ppc32 and ppc64.
+With regards to sashiko bot, we should look into whether the
+MaybeZeroable that bindgen adds to structs applies on this struct. If
+so, we can remove our unsafe impl block. But it's not an issue in this
+patch.
 
-Regards,
-Mukesh
+Alice
