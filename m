@@ -1,231 +1,86 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from 011.lax.mailroute.net (011.lax.mailroute.net [199.89.1.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93963B47D9
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Sep 2026 15:06:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4039E5632B1;
+	Wed, 23 Sep 2026 17:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790175977; cv=none; b=BTPHOpu1fgTcoR7wMhHTKNZOLmv1dvmBw6w6Wt8iIOEejmz5vmoQ3/rEMtbSeH/w+Js4JRwuAAHdomU+ZIssFfVvGyAurdGD8EAOWssagYgyjj3uCAZp2vwZlEcVKBoeAk4VeN8unRz/m6qWDeelNbJ4RCrOeaE3bLaguQH3sts=
+	t=1790183126; cv=none; b=hsiz4aepJe2U8Hz5kgCpV3NDCSBTYe3yoIK/XAh6BgKA9/n+5sF8VlWkDiH3rE91noL6ef8Ln0mCUv8HpxwlbcAzIfOesRwcG5P8/R8Kcx/nQiTogbwjJh0NxBMJ//vt8dNvzLwV6JHcPzF5IQb6KcuZyR8mo1h8JYL3aDvx1qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790175977; c=relaxed/simple;
-	bh=W8mCp3SJrCu4CBEqSbc4yuvWfyqV1/A4EX/v4gQIyvI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qDKcK2cJwyKlXV51oDONTCq3asq0tnscLvtpWGrLzVB2B5uejHwcgEP0V4lcaNNMK0ibPXZM0Sh/mfKg6dTZkCHDXfBEq5J50UotG7pT4Sm29EflkUy3wNbpNJaOv2ZeuorFQX4aF9epyaAOo23flz6Bn6pP3greVVorf7Fzx40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=dUhDHp1O; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1790183126; c=relaxed/simple;
+	bh=6tBxyJgxdNerK82P7vUt7sp6cimA4C0a4+ZGuOo528U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PpUGRH2nRUOP9AWAfsVrt2go76E8l15pe1F/IUxAU/Vzzh7+ShTcFZoJ400PPrgBLa0Qhb3osIa8oKOGxgCrqksNRqz8boYyBhh130HTK0grUGsWPOED1BSaD69oidJYSyihTgNnpfb3hThhV1FYdGcqfmN5r+uaLKrzBD9x9Io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=UqAryOWF; arc=none smtp.client-ip=199.89.1.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="dUhDHp1O"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id D4256240104
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Sep 2026 17:06:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1790175969;
-	bh=uEgYgG2jtpKqiEwQEWofsJ4lh37upe+OlrEoikITC34=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=dUhDHp1OUpnfUasNBkFTQn3Qy1oMMMERHkE3RzNc9KDn9ean8msh6xLpynV9oGOAp
-	 b09yCVlnCBmOwaFbhThbOs+v5JnskGIneGE+ztRMDsSNovkKDIfQXyt+rqezbvv81Q
-	 E/0HZ/orNvk33taziSVjvMyYtYX5vc8s7E/5b5qWz7oHr9g1PWfshGY5/krzz9BPUS
-	 +CFRtuQxpawTPFuq0pXfRpR2hsxerydyZtnvaGZtY6ioq41T9lk50E2sgMEagyoqz6
-	 G7qg3mDRMvxh/x7gjggiZq8Tgj+eIyjTuWiNGIHLb/Xqewg05xSr84ZD60swSwlIwS
-	 QYuSC6cfaSo6A==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4hqgJs27jgz9rxD;
-	Wed, 23 Sep 2026 17:06:05 +0200 (CEST)
-Message-ID: <708eb7c004c0cce22d71bc8fbd68b44aa3b704a3.camel@posteo.de>
-Subject: Re: [PATCH v2 1/3] tty: serdev: Export functions to pause
- receive_buf callback calls
-From: Markus Probst <markus.probst@posteo.de>
-To: Gary Guo <gary@garyguo.net>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>
-Cc: Ayush Singh <ayush@beagleboard.org>, Johan Hovold <johan@kernel.org>, 
- Alex Elder <elder@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun@kernel.org>,  =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Daniel Almeida	 <daniel.almeida@collabora.com>, Tamir Duberstein
- <tamird@kernel.org>,  Alexandre Courbot <acourbot@nvidia.com>, Onur
- =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>, Eric Biggers	
- <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Lorenzo Stoakes	
- <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett"	
- <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Jiri Slaby	
- <jirislaby@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	greybus-dev@lists.linaro.org, linux-serial@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	driver-core@lists.linux.dev
-Date: Wed, 23 Sep 2026 15:06:08 +0000
-In-Reply-To: <DLMQUEKCSXRS.2OBTL1GV4FXVV@garyguo.net>
-References: 
-	<20260920-rust_serdev_probe_refactor-v2-0-43b855162f5d@posteo.de>
-	 <20260920-rust_serdev_probe_refactor-v2-1-43b855162f5d@posteo.de>
-	 <2026092356-chatting-dust-3de9@gregkh>
-	 <2fcec4f3cd70a41e282505ff5c99b19e5809aead.camel@posteo.de>
-	 <DLMQUEKCSXRS.2OBTL1GV4FXVV@garyguo.net>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-qFTq82k4Jz8KYLv/i1pk"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="UqAryOWF"
+Received: from localhost (localhost [127.0.0.1])
+	by 011.lax.mailroute.net (Postfix) with ESMTP id 4hqjyP0358z1XM5kW;
+	Wed, 23 Sep 2026 17:05:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1790183108; x=1792775109; bh=6tBxyJgxdNerK82P7vUt7sp6
+	cimA4C0a4+ZGuOo528U=; b=UqAryOWFZpU6mEJEXF8dfeid9DYIxg+8DniRbklF
+	Jyt5BS7qimL1gaX/th/8q9k0j1gFXwfNcXr6qyGA+CsJ6vz51ybcX8npFy2RKUB4
+	gdIGMekD3Ax/1Zct5HRepIi4qggs56+YKGP1vRMVee7TLckzWXI0sfh23FtuWDeo
+	OrjDxV78mYFSWA7CoD3DlQV7V84fumu17tTlYbh4EMkEc8tlY2IbRCxbQbqbbXVV
+	SbvhF0Q9EHkRVfENmA4BEQWHB8o9HRNBFH9Iy3rtCorj4L2rZ1e6nFfR7sBiUfUC
+	FFRaWVYIymha+KQy4ZDu/xeFwjeC/sj8bJOLDujBb8j4wg==
+X-Virus-Scanned: by MailRoute
+Received: from 011.lax.mailroute.net ([127.0.0.1])
+ by localhost (011.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id Oweng5elX4Wu; Wed, 23 Sep 2026 17:05:08 +0000 (UTC)
+Received: from [100.80.231.125] (unknown [104.135.182.41])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 011.lax.mailroute.net (Postfix) with ESMTPSA id 4hqjy76kWcz1XM4Sx;
+	Wed, 23 Sep 2026 17:05:03 +0000 (UTC)
+Message-ID: <03832dd0-16bd-4fd3-a689-9f956221cc22@acm.org>
+Date: Wed, 23 Sep 2026 10:05:03 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] block: Add run_todo() operation
+To: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+ Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+ Jan Kara <jack@suse.cz>, linux-block <linux-block@vger.kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>,
+ Andrew Morton <akpm@linux-foundation.org>, Brian Foster
+ <bfoster@redhat.com>, Damien Le Moal <dlemoal@kernel.org>,
+ Hillf Danton <hdanton@sina.com>, Markus Elfring <Markus.Elfring@web.de>,
+ Ming Lei <tom.leiming@gmail.com>, Qu Wenruo <wqu@suse.com>,
+ Tao Cui <cui.tao@linux.dev>, kernel test robot <lkp@intel.com>,
+ rust-for-linux@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Nilay Shroff <nilay@linux.ibm.com>
+References: <e615fb71-f386-4029-8ceb-22e375ad9e94@I-love.SAKURA.ne.jp>
+ <afbf50a0-d409-45a3-8e95-99c04ca0e302@acm.org>
+ <24ef93b9-7385-4dda-8912-f7c78f9705d1@I-love.SAKURA.ne.jp>
+ <ac1d3825-8a10-42e1-9eaa-f2ba51216660@acm.org>
+ <d83d3f4e-759c-4218-adfc-82eecdc5b84b@I-love.SAKURA.ne.jp>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <d83d3f4e-759c-4218-adfc-82eecdc5b84b@I-love.SAKURA.ne.jp>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 9/22/26 10:26 PM, Tetsuo Handa wrote:
+> The v5 patchset passed sashiko's review. Can we apply the v5 ?
 
---=-qFTq82k4Jz8KYLv/i1pk
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+That's up to Jens to decide. I think reviews from other block layer
+experts would make it easier for him to decide whether or not to queue
+this patch series.
 
-On Wed, 2026-09-23 at 14:52 +0100, Gary Guo wrote:
-> On Wed Sep 23, 2026 at 2:31 PM BST, Markus Probst wrote:
-> > On Wed, 2026-09-23 at 12:35 +0200, Greg Kroah-Hartman wrote:
-> > > On Sun, Sep 20, 2026 at 02:29:58PM +0000, Markus Probst wrote:
-> > > > These functions will be used to simply the serdev rust abstraction.=
- It
-> > > > also contributes to the fixing of 2 race conditions in the serdev r=
-ust
-> > > > abstraction.
-> > > >=20
-> > > > Signed-off-by: Markus Probst <markus.probst@posteo.de>
-> > > > ---
-> > > >  drivers/tty/serdev/core.c           | 50 +++++++++++++++++++++++++=
-+++++++++++-
-> > > >  drivers/tty/serdev/serdev-ttyport.c | 38 +++++++++++++++++++++++++=
-+++
-> > > >  include/linux/serdev.h              |  6 +++++
-> > > >  3 files changed, 93 insertions(+), 1 deletion(-)
-> > > >=20
-> > > > diff --git a/drivers/tty/serdev/serdev-ttyport.c b/drivers/tty/serd=
-ev/serdev-ttyport.c
-> > > > index bab1b143b8a6..e8aa89e733bd 100644
-> > > > --- a/drivers/tty/serdev/serdev-ttyport.c
-> > > > +++ b/drivers/tty/serdev/serdev-ttyport.c
-> > > > @@ -7,8 +7,10 @@
-> > > >  #include <linux/tty.h>
-> > > >  #include <linux/tty_driver.h>
-> > > >  #include <linux/poll.h>
-> > > > +#include "../tty.h"
-> > > > =20
-> > > >  #define SERPORT_ACTIVE		1
-> > > > +#define SERPORT_PAUSE_RX	2
-> > > > =20
-> > > >  struct serport {
-> > > >  	struct tty_port *port;
-> > > > @@ -32,6 +34,14 @@ static size_t ttyport_receive_buf(struct tty_por=
-t *port, const u8 *cp,
-> > > >  	if (!test_bit(SERPORT_ACTIVE, &serport->flags))
-> > > >  		return 0;
-> > > > =20
-> > > > +	if (test_bit(SERPORT_PAUSE_RX, &serport->flags))
-> > > > +		return 0;
-> > > > +
-> > > > +	/*
-> > > > +	 * Ensure writes by the driver are visible before allowing traffi=
-c to resume.
-> > > > +	 */
-> > > > +	smp_mb__after_atomic();
-> > >=20
-> > > This scares me.  Why not use a real lock?=C2=A0
-> > >=20
-> > I can use locks to make it less "fragile". But I don't I think I need
-> > them.
-> >=20
-> > > WHat's the issue here, you
-> > > need this to be "flushed" before this call:
-> > >=20
-> > > > +
-> > > >  	ret =3D serdev_controller_receive_buf(ctrl, cp, count);
-> > >=20
-> > > here?
-> > >=20
-> > > And you just tested a bit, you didn't set a bit, so what are you tryi=
-ng
-> > > to ensure is written exactly?
-> > This should be an acquire load operation (paired with the release store
-> > operation in `ttyport_resume_rx`).
->=20
-> Then you should use `test_bit_acquire`.
-Ok. For some reason there is no equivalent `set_bit_release`.
+Thanks,
 
->=20
-> However, this isn't sufficient because there's no synchronization between=
- this
-> bit test with the bit set inside pause_rx.
-Will be replaced with a mutex in the next revision.
-
-Thanks
-- Markus Probst
-
->=20
-> Best,
-> Gary
-
---=-qFTq82k4Jz8KYLv/i1pk
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmqz6twbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSOk0QALLiTzfWtOf81gvgqjYo
-mhW2jo2bqdGVcOHTrqDJY4ms9BRnQmAzJyMamlKEEks3mG6I0QtCAv41lntVXHeW
-jvcOXO54yyQWxVwS+J+M+y8z//MLdvO7mb5v91vYBEY1jnMwl60PHnuKUuVTLms7
-qN+zvihG68OVGFVTInb3CPN4N93cgZkM2gNl+2r/NJxci1tYJN/DgosHvFD2n2UA
-X1ZkfXBMYxiOClRI5V0M36HL3LNM1tNa7Z32Mvl1D4ym09eUoLhPOT+EPONi65cm
-WqBwSFQrWwCffcIzetd68CG6G6C9aPjbXValmd3kUAbsxWFdahghADq35wNb1kNE
-Ga7tcuqL6lpoT46U0wTkDtp8iBk76AjoMK3RtO8SxFxdnstvCVnk8XuqL77QR6tT
-Fd0lMktEYiCm/prxsbwC9jQqRZNEWMTPKGYr21rU2mClvElu4pRceWwzuxsm8D/i
-G7T6runz97OxPDxhdjqGdXLtl8yMF6ds8S7/yxx9DqbtzLp+IhZye+HPsstIECWj
-Xf+ElC8wyTVoCHosvVx6uw1TAKj/mxnq/A2adTvxHYEEiHGOEcMxMENmqZOaKk0G
-Q1U4Ec9RqiAP9Kri1LPxf0pPmiB7rFHtcpfsd79f4KbLI2Owu/bvxqJ7pEQLLAPo
-dFPE9V81NqqyfF4mWkx7RIC0
-=m2Wa
------END PGP SIGNATURE-----
-
---=-qFTq82k4Jz8KYLv/i1pk--
+Bart.
