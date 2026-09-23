@@ -1,227 +1,149 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE963254A9
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Sep 2026 02:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F813B5837;
+	Wed, 23 Sep 2026 03:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790130314; cv=none; b=P61V+pOys5JST+2GkF49j7/fUCrwlj7bYsn6F2jtKdHwkc3vnoEjvM2bnlS5v2Cs1juz1wqhqE+w/f+vDPutqzkD6tKxjIhEy1aiVUhVMAGI0b2hfsMUtPtpjBJu1KnajQinKLyK/oteIHvTvVtsG3FYlMSH+w9/WgjVXGWET1s=
+	t=1790134946; cv=none; b=mH6h67CC9Es1ABq2pBdc8PtujXn4NJBtNyDx5fX4bBkDjOFmTJ2KvOl0/SbKrDbBesdNRytlH6m4wwYYQp2m2o4n6b1tkr3DjViUTIqJQMWtPpEeJ2jeMm9C0GFqla7EMQiHZMuAfNPLrn3aaYjQIr/85Y5gv3QiywgaTQ8KrPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790130314; c=relaxed/simple;
-	bh=jy8mgvmzpGKOFzyvPOZqGWMmRJiQ3s6hVheMypI3Uaw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e7QmJ/y1ogBMm45AtnJ3BpTmiMdIcUl+29YcO7BIBObI9/upwRbic7cEtL3aVhSt410GfEJ+uYobr3CopWvCUqLfr2Yizzu02GNkh+3RPtlaWtsTjnANEbeji0/8csGZZw0Dy+J6+9Ht2WxKGTVAgUHQUD+nTZTVVzk7aOupZWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M0+ujz9p; arc=none smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790134946; c=relaxed/simple;
+	bh=DSWi2C0r8cqwdbL+D/oXhhGYggJoGev4OcBXZnAtWFY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=eoaiKKs++crCQ8njDn/R7oPFpeVj3V1HrP8EznySIpucjPboWiPefdKroJiJb6lmGJxME+h/1QKqvMxuKiPIHoc9ktV8JIc+Gic8deViQQQakkM89VbJ9XCdzCOXSLIzaYCTEoQBfqskoX5H/H3tzwRMD8BJyfAqdtWdTFWN8KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me; spf=pass smtp.mailfrom=alistair23.me; dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b=PRx++WoT; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=K55jbmV5; arc=none smtp.client-ip=202.12.124.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alistair23.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M0+ujz9p"
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530d8a00bcdso3633901cf.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 22 Sep 2026 19:25:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790130310; x=1790735110; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CLvQRDhNdQ+386SmPeBLxsAnS2o1lMXmcOlmjU9lVHU=;
-        b=M0+ujz9peXktUF5fY7twDXI6jge3I/CmgUx+tJPkhUR8BBlWiWCJvXKa2cS2f3DSPP
-         L+tW77/W8D774bvrcqXTpwevukctElp2h0dxA14wUOrLkfvVE0rlCfsZRg0muKjv5MCh
-         /JmQf2Hmdq1XuBrte5fWSy09gj13r0CWVFYbvkJQw4JPeGKOzEwczmQK50vAK+NhPIyf
-         DDFpS/2lHVQUD0nY3nJSPkOrxv+ZKU1Z4j25q8F6bP7vt9wK2WmdviJmRdNn6Nve56rf
-         iMXyh8inM6aHqy1n5zfk8DNa+NMW3PfbpPFRWGZOJNboyWbh9F2jogPday2lXADGFSvp
-         p7tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790130310; x=1790735110;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CLvQRDhNdQ+386SmPeBLxsAnS2o1lMXmcOlmjU9lVHU=;
-        b=hV4AM8nJuVsFnOAusBExdG1xm/KFWMIFRp2V/Mei1nKQFfdNBg4nwW4Zl73+CT6BW1
-         rVd82bEErJ5aUY3yJTtM517ua6nIsNTfaeUhaBRIoVsW/ul2RAEvkDPIp0zY3EjWGFc+
-         GLkZBYVAXkILQSRAWnxuPTG/+r1Ex/92lyFF6Y3HRo/bqj9/QEqiLRbR0r5gxw93Z4Bz
-         R4FAYaAsW4R1A9c3go4inIZQCXUuRZTAk1582/5piyINZqQt67iwKB7goHLIjFbhrXxb
-         23ESRVIX20X6MCCQoLlHXpYmYbUJzF42YLFhk9XAxFtthWZ/UWJEVJxa1NqYuf8Jjk26
-         eFSw==
-X-Forwarded-Encrypted: i=1; AKwUvBxDGLHP+N4OaBh015C3Z0WrXDetBgRHiGTgfvv7qKXiW9EQ15jnnM0oLOTsl+vrluxwmfLVx8DaVbTbRROiWA==@vger.kernel.org
-X-Gm-Message-State: AFuF++npRP8CrVrcPVeM17Iz6KNyxvqPZL/PW1loZgUbriDDgFbMgS2l
-	AVy7oY0gEQBNHVJ+RBW9lVH/7uRq20SrB6rVjv9ELOfFaBFonbti4sCu
-X-Gm-Gg: AYBFou3pX3BJ/6JLCp0Ifr4FeDLnui/SBAIYXMeBNQHv5Gz0ev4oSO7NjlwSRzLqgEg
-	hZV4XgTQXJ2Q+YhCq0b8gyYdYZlqKKrrUVmTq0ZPJyvjTwzcrkQCNdQ5a3zC+895/ZN5TPRkhTa
-	cjN3VKkwr7iC3DzIiVDfXlSfwQE2MrnIksmVdCNUj0eMDV4MDmsZSczvJplX3Qofmj9vTXQ4kDu
-	dGE0OA2JCdKpnWnzc7lAw4QZY5nq7qseb37BvcKmPMRNH5t13mkoWiLH/6tcfD0qWaZSGQtFgoD
-	yFkX8o+n9k7kzd5lrhjlRqRuX/d/RtpEUnwzlK4lKcrJxQgLyebT/xD1aPaRNS5RT6W2C4II6Yd
-	vVm9oVB+MAOWFF41siMZ4o88JVaWbqvbP7iCmUaYosQ6f9YLMvrI7s+lMBfo2QCH6N574PjNrdl
-	G5gNy/vzHuDH0mRq17A17ssDEv9+7xyRwni0XdZV04770nKnFZaByAZ5lAx7ZExfbWBlEYvQ==
-X-Received: by 2002:a05:620a:17a0:b0:93b:e9db:1bab with SMTP id af79cd13be357-93c251efb88mr212666485a.56.1790130310310;
-        Tue, 22 Sep 2026 19:25:10 -0700 (PDT)
-Received: from tofu.. ([128.210.0.165])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c24823976sm124500985a.13.2026.09.22.19.25.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 19:25:09 -0700 (PDT)
-From: Georgios Androutsopoulos <georgeandrout13@gmail.com>
-To: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: Jan Kara <jack@suse.cz>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	linux-fsdevel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Subject: [PATCH v2] rust: file: handle fd table teardown in file descriptor APIs
-Date: Tue, 22 Sep 2026 22:23:39 -0400
-Message-ID: <20260923022339.3340694-1-georgeandrout13@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b="PRx++WoT";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="K55jbmV5"
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfout.stl.internal (Postfix) with ESMTP id DF6491D0004C;
+	Tue, 22 Sep 2026 23:42:21 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Tue, 22 Sep 2026 23:42:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alistair23.me;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
+	 t=1790134941; x=1790221341; bh=DSWi2C0r8cqwdbL+D/oXhhGYggJoGev4
+	OcBXZnAtWFY=; b=PRx++WoTUWOsvJJFym88XUCOYrkBFJtThSya95aFTGESCAJJ
+	j6r0oqIzbFiXwgipGYtogG2LWflBSo/MHlZn9/l+mqpIjtNp9DyajOOHCSxwWYHO
+	tAQ+D3envhK8zH61bVoslEAWTgcD6kTcwEHuchWY+EiYD+n2B5t3yyEzROAmRQ9M
+	g3o5lBU5OpAEW9OtA6z6hmgSwzR3Hw9LOX+4zguiRCjg3LD7hSQVcGRqIJdQ+nm4
+	gYlxnAhog79+nFF8JTwcap3mUFM8H0VlBqjY2yKrTCm5rvHts6GcIMOuqVpvuOav
+	PLqdjEFxXdS5UBlE6Z4vDIb1xudsoT6f5qopIw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790134941; x=
+	1790221341; bh=DSWi2C0r8cqwdbL+D/oXhhGYggJoGev4OcBXZnAtWFY=; b=K
+	55jbmV5fObulKuAGe1zelj26AbdJg9xUAT0cYUeLgxPOkmXQgv1RHxPrAvwG6CFc
+	kr4xYE0PzuUTgZYFKLE20rXaey3b+21d3tiiLlxPAjWdsqTRQXV5cnZQ2/rNMFzZ
+	mcrPGnQr/C5mYqelZF8grwaoPeZXBvbThoXVN5kN6wQdyiA7oJdvalBIIlwB239o
+	UBlUlWEdco96RmF6HFh4b87qnoQxyDptlXDsNcfOokjWeJx1+M1sk+rCAptb8+ZH
+	Zlw2+0sPaMcUhdeC6eRzM2RW7BCPDtEDH8eeUgyjQF401sp+6MdgQmkPj38aLQUs
+	GqjlRhgIVbK+GMplJ19Sg==
+X-ME-Sender: <xms:nEqzanPof6OC4VujRL9AgMU7P9EjGQqb7wDRZak7FbFppdb9mAI9LQ>
+    <xme:nEqzaiX_X1ajAzmmVkZI9GKdoIHDB1rLVvvGLsMFAocZCa9GPGYNcU-uIpKTX9Ojp
+    Aog8Xt08Qm9O0NjwCqYaOLlbHdWD1mKNx86rTj5MG1g0DrNvqCsfReQ>
+X-ME-Received: <xmr:nEqzanbu8NACHSTiR_I8INeU1uobgqiLGWUayr6UeVEKtim5yTM9RCowceLl_xwzMI1C8QU3D_lep58t8z5Gp5wUM_A>
+X-ME-Proxy-Cause: dmFkZTFWQgVXt9bM2b6NNxDLU2jUhTZqo1HyJ/ceb/6fR6g5/ke7x/NK8aQ/wybD9G7sDE
+    CmtX3QwVhvD3JUclCR9ETEfWsOI7v+reJwTYob7hpcIpPo/4iZmOqyG1I7KAWWIFLXUgLw
+    v96DhGoz9UpYdkKeXc/hZBGnUfxawMjnjVtQDju3d8IVsfsa3zIyqXHLaCqTj4WNRQWGKq
+    tmmTTBcnw0y3dZS7EgIm2YwfTUf4M4enUg6Kt4bClJIVQc/UjREJZ8GfwzQdia7ZNwkro3
+    hK8iW8KSjamfbpmgjaynFsftX9uh5wvKPOsvXMNAxpHo+uCEXTvkZFkk6tJhDoEdtSwgV2
+    6GBehN5HqwyviruHFjGv/WzLwxQoGkueti404EXE3kf7u8qkOyKvo4OvBLEYolmfapcnxB
+    F4JccMi5Te1BZq7oMKbky2uQ5q7y7YKMULV0qOa2MFX9BJV98wv9AyL4iHxOPtRe730K9L
+    MSrboLxu6gG8yVR+5HsIh88Utz5N2KkVtSu/M1zWI9+Se6WJeYQ6P9skWKqRz1Twj/uNfo
+    iCDPvhJucpF8jjturp2P8zSMFq/LgsbLp5axv209DNCuwpcPaaDjlLg6YyrGhYpuOSvpup
+    Tg7vJWck7+rmhOaNt3U0xJDq95oRSreJUPgUvIDr8xnPNvQkrkuFhhj47LIg
+X-ME-Proxy: <xmx:nEqzans9bTMC1bKBz1twK_VLviUrmLn4zeL3QKe7-nefLy1468292g>
+    <xmx:nEqzaumzUv1rsGahWuIrYxwXaD2Tbpu0aHfxi87oMm4mAC5GarLA0Q>
+    <xmx:nEqzagWYYb2dfQ6GUgKoaSarfD0sCoSfqT8w4S_1T9pZokx7-frwIA>
+    <xmx:nEqzapnV4xGZWN9rlPOX_qimTj87Mmpoko6U6zFu9VW8EjK7bB8Olw>
+    <xmx:nUqzatDDdkgNtuOGYUS9GPknZSh2x6r0hLSKQZZlRCetsrAaQqNsJ_Wz>
+Feedback-ID: ifd214418:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 22 Sep 2026 23:42:14 -0400 (EDT)
+Message-ID: <0ba203994392fa8183c226d65c4caec5786112bc.camel@alistair23.me>
+Subject: Re: [PATCH v3 10/21] PCI/TSM: Rename pf0 to host
+From: Alistair <alistair@alistair23.me>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: alistair23@gmail.com, linux-pci@vger.kernel.org, 
+	Jonathan.Cameron@huawei.com, djbw@kernel.org,
+ rust-for-linux@vger.kernel.org, 	lukas@wunner.de,
+ linux-cxl@vger.kernel.org, bhelgaas@google.com, 	akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org, gary@garyguo.net, 	ojeda@kernel.org,
+ benno.lossin@proton.me, a.hindborg@kernel.org, 	wilfred.mallawa@wdc.com,
+ tmgross@umich.edu, boqun.feng@gmail.com, 	bjorn3_gh@protonmail.com,
+ alex.gaynor@gmail.com, aliceryhl@google.com
+Date: Wed, 23 Sep 2026 13:42:12 +1000
+In-Reply-To: <20260916031143.4fe2ae49@jic23-hlaptop>
+References: <20260901010347.2614656-1-alistair.francis@wdc.com>
+		<20260901010347.2614656-11-alistair.francis@wdc.com>
+		<20260909000158.78ffa790@jic23-huawei>
+		<f9b1c0410e622f7ac1e6feacaa3eae98951bcd79.camel@alistair23.me>
+	 <20260916031143.4fe2ae49@jic23-hlaptop>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (by Flathub.org) 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Several Rust file descriptor APIs rely on `current->files` being
-available. However, `exit_files()` clears it while execution may still
-continue on the same task.
+On Wed, 2026-09-16 at 03:11 +0100, Jonathan Cameron wrote:
+> On Fri, 11 Sep 2026 15:00:59 +1000
+> Alistair <alistair@alistair23.me> wrote:
+>=20
+> > On Wed, 2026-09-09 at 00:01 +0100, Jonathan Cameron wrote:
+> > > On Tue,=C2=A0 1 Sep 2026 11:03:36 +1000
+> > > alistair23@gmail.com=C2=A0wrote:
+> > > =C2=A0=20
+> > > > From: Alistair Francis <alistair.francis@wdc.com>
+> > > >=20
+> > > > Rename pci_tsm_pf0 to pci_tsm_host (and rename variables and
+> > > > function
+> > > > names from pf0 to host) as part of converting pci_tsm_host
+> > > > to be any device that knows how to speak any of CMA, IDE, or
+> > > > TDISP.=C2=A0=20
+> > >=20
+> > > I'm not against the change, but I would like at least one example
+> > > of
+> > > 'what' other type of device you plan to use this for.
+> > >=20
+> > > vf or something else?=C2=A0=20
+> >=20
+> > It's based on the reply here: https://lkml.org/lkml/2026/6/18/1741
+> >=20
+> > I don't know PCIe that well, so honestly I'm not sure.
+>=20
+> Yeah, that's about both VFs and other physical functions.
+> Those can exist on both real EPs and RCiEPs.
+>=20
+> >=20
+> > My use case is a root complex integrated endpoint
+>=20
+> Any more info to share on that? Why isn't it attested etc as
+> part of the host given it's integrated? Or is SPDM a path to
 
-This affects `LocalFile::fget()` and the
-`FileDescriptorReservation` operations that call
-`get_unused_fd_flags()`, `fd_install()`, and `put_unused_fd()`.
-`FileDescriptorReservation` cannot cross task boundaries, but remaining
-on the same task does not guarantee that `current->files` is still
-available when these operations are performed.
+Oh, sorry. It's not integrated in the sense of on the board. It's just
+a PCIe attached NVMe device. You can see the example for testing with
+QEMU in the cover letter.
 
-Guard the affected operations against a missing `current->files`.
-`LocalFile::fget()` returns `EBADF` and
-`FileDescriptorReservation::get_unused_fd_flags()` returns `EMFILE`.
-For `fd_install()`, warn and abandon the reservation when the fd table
-is already gone. In the drop path, skip `put_unused_fd()` after the fd
-table has been torn down.
+> something other than simple attestation here?=C2=A0 Fine to do it this
+> way, just seems like overkill so I'm curious what the application
+> is.
 
-This prevents NULL dereferences through these safe Rust APIs after
-`exit_files()`.
+The next step is to expand this to support other transports, like the
+storage ones.
 
-Fixes: 851849824bb5 ("rust: file: add Rust abstraction for `struct file`")
-Fixes: 5da9857b127e ("rust: file: add `FileDescriptorReservation`")
-Closes: https://github.com/Rust-for-Linux/linux/issues/1256
-Signed-off-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
----
-Changes in v2:
-- Use `warn_on!()` for `FileDescriptorReservation::fd_install()` and
-  remove the warning from the drop path, following feedback from Gary Guo.
-- Link to v1: https://lore.kernel.org/rust-for-linux/20260920200154.1194983-1-georgeandrout13@gmail.com/
----
- rust/kernel/fs/file.rs | 64 ++++++++++++++++++++++++++++++++++++------
- 1 file changed, 55 insertions(+), 9 deletions(-)
+Alistair
 
-diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
-index 23ee689bd240..8b5b5ec4cd04 100644
---- a/rust/kernel/fs/file.rs
-+++ b/rust/kernel/fs/file.rs
-@@ -260,7 +260,17 @@ impl LocalFile {
-     /// [`assume_no_fdget_pos`]: LocalFile::assume_no_fdget_pos
-     #[inline]
-     pub fn fget(fd: u32) -> Result<ARef<LocalFile>, BadFdError> {
--        // SAFETY: FFI call, there are no requirements on `fd`.
-+        let current = crate::current!();
-+
-+        // SAFETY: `current` points to the currently executing task, so it is
-+        // valid to read its `files` pointer. The pointer may be null during
-+        // task teardown.
-+        if unsafe { (*current.as_ptr()).files.is_null() } {
-+            return Err(BadFdError);
-+        }
-+
-+        // SAFETY: There are no requirements on `fd`. We checked above that the
-+        // current task still has a file descriptor table, which `fget` accesses.
-         let ptr = ptr::NonNull::new(unsafe { bindings::fget(fd) }).ok_or(BadFdError)?;
- 
-         // SAFETY: `bindings::fget` created a refcount, and we pass ownership of it to the `ARef`.
-@@ -403,7 +413,18 @@ impl FileDescriptorReservation {
-     /// Creates a new file descriptor reservation.
-     #[inline]
-     pub fn get_unused_fd_flags(flags: u32) -> Result<Self> {
--        // SAFETY: FFI call, there are no safety requirements on `flags`.
-+        let current = crate::current!();
-+
-+        // SAFETY: `current` points to the currently executing task, so it is
-+        // valid to read its `files` pointer. The pointer may be null during
-+        // task teardown.
-+        if unsafe { (*current.as_ptr()).files.is_null() } {
-+            return Err(EMFILE);
-+        }
-+
-+        // SAFETY: There are no safety requirements on `flags`. We checked above
-+        // that the current task still has a file descriptor table, which
-+        // `get_unused_fd_flags` accesses.
-         let fd: i32 = unsafe { bindings::get_unused_fd_flags(flags) };
-         to_result(fd)?;
- 
-@@ -421,13 +442,26 @@ pub fn reserved_fd(&self) -> u32 {
- 
-     /// Commits the reservation.
-     ///
--    /// The previously reserved file descriptor is bound to `file`. This method consumes the
--    /// [`FileDescriptorReservation`], so it will not be usable after this call.
-+    /// The previously reserved file descriptor is bound to `file`. If the current task no longer
-+    /// has a file descriptor table, the reservation is abandoned instead. This method consumes the
-+    /// [`FileDescriptorReservation`] in either case.
-     #[inline]
-     pub fn fd_install(self, file: ARef<File>) {
--        // SAFETY: `self.fd` was previously returned by `get_unused_fd_flags`. We have not yet used
--        // the fd, so it is still valid, and `current` still refers to the same task, as this type
--        // cannot be moved across task boundaries.
-+        let current = crate::current!();
-+
-+        // SAFETY: `current` points to the currently executing task, so it is
-+        // valid to read its `files` pointer. The pointer may be null during
-+        // task teardown.
-+        if crate::warn_on!(unsafe { (*current.as_ptr()).files.is_null() }) {
-+            // `put_unused_fd` also requires `current->files` to be valid, so do not run
-+            // the reservation's destructor after the current task has lost its fd table.
-+            core::mem::forget(self);
-+            return;
-+        }
-+
-+        // SAFETY: `self.fd` was previously returned by `get_unused_fd_flags` and has not yet been
-+        // used. This type cannot be moved across task boundaries, so `current` still refers to the
-+        // same task, and we checked above that it still has an fd table.
-         //
-         // Furthermore, the file pointer is guaranteed to own a refcount by its type invariants,
-         // and we take ownership of that refcount by not running the destructor below.
-@@ -446,9 +480,21 @@ pub fn fd_install(self, file: ARef<File>) {
- impl Drop for FileDescriptorReservation {
-     #[inline]
-     fn drop(&mut self) {
-+        let current = crate::current!();
-+
-+        // SAFETY: `current` points to the currently executing task, so it is
-+        // valid to read its `files` pointer. The pointer may be null during
-+        // task teardown.
-+        if unsafe { (*current.as_ptr()).files.is_null() } {
-+            // `put_unused_fd` uses `current->files`, so it cannot be called
-+            // after the current task has torn down its fd table.
-+            return;
-+        }
-+
-         // SAFETY: By the type invariants of this type, `self.fd` was previously returned by
--        // `get_unused_fd_flags`. We have not yet used the fd, so it is still valid, and `current`
--        // still refers to the same task, as this type cannot be moved across task boundaries.
-+        // `get_unused_fd_flags` and has not yet been used. This type cannot be moved across task
-+        // boundaries, so `current` still refers to the same task, and we checked above that it
-+        // still has an fd table.
-         unsafe { bindings::put_unused_fd(self.fd) };
-     }
- }
--- 
-2.47.3
-
+>=20
+> Jonathan
