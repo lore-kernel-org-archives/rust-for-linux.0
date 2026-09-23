@@ -1,190 +1,148 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021132.outbound.protection.outlook.com [52.101.95.132])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E344248C6;
-	Wed, 23 Sep 2026 18:41:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.132
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790188910; cv=fail; b=Nraq3oU7714yslF7cA5JikK49ILW7/RY7/7T8fD7O0cicjUJyFPKlZqYQFqaLqQPta713tvrI+NgabX/IBDeO+0j1K26482XFdDjaVF1zX/aIN0cUxDNc4TCCdsc2f2cy8mRZPRrgotOMquUiCB/wmBl0uCdw8Uyhq2W5l2FLu4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790188910; c=relaxed/simple;
-	bh=z2jKquVciKjj3tVrvsUDDatAi7t2z+CJ+ibEPg/uFYo=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=ktao5ARW9uAomd3/ysHLgm8rEvKmT2ycwPHHntcswGI0wFccv30QAaH9QjixXsOMl5opZoShlcqgjNZAntLwU8QqG3Lhutbi3bCYBkCyXLRbSLNBMCYvIU7BP6BVvNW5Lq6nswpORHGVrQQ1DzKUC0rZAlqBETwdA/rFKhndKyY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=STzw6BSh; arc=fail smtp.client-ip=52.101.95.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FB25625E4
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Sep 2026 19:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790191901; cv=none; b=aLCdeV0rX5Xzyq0r/P+ARPC4SfuCZy83UDd66KTKdgR1SwJN/FlTpIsvM3hIY23YIugAnSflzIMFgvQyGE4DU3LCXgYzIe5GoYEz8Eb///6Gq39El2fcsot+rx2qOQUFmvyKbu4u9PM9L2DUsqqyiO6EEVh/pkhcmVOTuL/ghD4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790191901; c=relaxed/simple;
+	bh=6iupfhzSHmFB3n5I6wsdrPypYlAtg1EjTEHMjDviSIA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=gkotLlCsbtly4iZsohMCuz2Ty30bmEXQXOm2y8fQBJNY7r1ToVReMfTWGY9SbzrfAPgs9xYy2Y62S5/j8P7XAdEe/CE4eQTHFVeQm6IIcacy2LgS6bDMedpBYfhuDe9gfR/+mVKAd9nPmoyawAbAz4TznT2zBDbXC+2bOd4fvzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Is7mSpCF; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="STzw6BSh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QOaI0P7eTu+GKUtv/6U4tXwVc5via0dmX2TkeXhy3ib/seShwHUI7hgh5ugRfn94cvC4cvug53ES76hO4Y+INGE6o6758PbdxQrXAn71LQT8mAfZmnEX10E2r/qP0Nr+0n7Nxkxu6HW1I93cIsXDyJQZws+dd3bEPSxDCU+b5qzI1ZQ2JvSe50zpLXLKVRp2ZuPf3ZFHhtT8So9FCUbdyxVOtISboBns0q2tiIg8WimtvbYI6zUCdB20GDx0SQzFAGiBouj4Crsn5SqC7sl+0X0kPYarG9GXOmTe6Wub3fpXzcX32Mg8RzdVOjWIOIfqfukOsR+fft0cDaDVk8Sfww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RGLAysBPU0lMX4JrmqbVwSkWCjZ1Bcymiz05jpKaaBc=;
- b=XHdUMxxyNs1M3aR7/SLPvgQ3xFhrPYkqE/iW4sFVHceUyhRwSknKYZgRxFYoSaA/I/eBG8jaLcVm5K07QJ/AwtSWAGmkSpFPoHLSai+gioVCRDEpOw+qJE3+RdrFYVmmf/UYfapVSFu4RJ6PYQfqpeJVvefGAbQsEUS9L+qxFlrhT7K3Pj3JYjnl4x4MiCC/jV2gBvbvMxLResmfoVSFYAALw4eSmU1OCPs23e73ud+Dm+EAHDu7TAFshU7kVFAuE81WDuGzZMmEBwOPwq/5sHP7GHFZ7WJsNP+5In0dKJCBLjtpnMQRmgM9VXOjIq/7eMcAgeVGqtdH0JksOscAKw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RGLAysBPU0lMX4JrmqbVwSkWCjZ1Bcymiz05jpKaaBc=;
- b=STzw6BSh9f1MRcj9Ni7D4y1hqKnrM2JYp85pngyNL9zk1MXJy2bCp+E5NSJq75lsNcBQJb/f8GMa0piYsloB0RJk4QD/AbOJnFnb0glUNAqqyR8pHnr78WGV8+5gfUJVQNMheOSatkyQE0wPrMTcMHtJDHAiQHSDtgMqRqpLCLM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LO9P265MB7724.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3b7::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.17; Wed, 23 Sep
- 2026 18:41:46 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0451.014; Wed, 23 Sep 2026
- 18:41:46 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 23 Sep 2026 19:41:45 +0100
-Message-Id: <DLMX05RAZD0S.1EZ4L85L0T2HS@garyguo.net>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] rust: sync: fix safety comment for `Arc::from_raw`
-From: "Gary Guo" <gary@garyguo.net>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Alice Ryhl"
- <aliceryhl@google.com>, "Lyude Paul" <lyude@redhat.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "Miguel Ojeda" <ojeda@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich"
- <dakr@kernel.org>, "Tamir Duberstein" <tamird@kernel.org>, "Alexandre
- Courbot" <acourbot@nvidia.com>
-X-Mailer: aerc 0.22.0
-References: <20260923-aref-from-raw-safety-v1-1-e34f0da04145@kernel.org>
-In-Reply-To: <20260923-aref-from-raw-safety-v1-1-e34f0da04145@kernel.org>
-X-ClientProxiedBy: LO4P123CA0306.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:196::23) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Is7mSpCF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790191898;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ovivw96bNcYL69Xo4W26bbtJi3QOHW7T3qBHC1K/UZc=;
+	b=Is7mSpCFEi3PjNGLWfPoI+vW2SdyN3ZQvj4kb20womUBMOvoWVXMt7nfjvSojkx8rtk5TR
+	XewifqYwuvreF7IG8CRjxVtOz3lWBomWniiEK08lbNQNBeClUZPJVL++gd//4xaIZbrt5g
+	c0qViOIuePEN5j4ruZZTNR6cEkzBH90=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-57-JndJk-REP0-elZ09BujZTA-1; Wed, 23 Sep 2026 15:31:37 -0400
+X-MC-Unique: JndJk-REP0-elZ09BujZTA-1
+X-Mimecast-MFC-AGG-ID: JndJk-REP0-elZ09BujZTA_1790191896
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-9106fce784dso23638896d6.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 23 Sep 2026 12:31:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790191896; x=1790796696;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:content-type:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Ovivw96bNcYL69Xo4W26bbtJi3QOHW7T3qBHC1K/UZc=;
+        b=TKABODBnstLvNKlqOKLr7t8ux61ynPOpiSPdnyTDQCrkbsWsIPAB0Wqt8p5ndxBZwJ
+         GDyg+XwvvYMIvXNZ0ojmNhCbCpZEpgiaT1AZAfRKj5MYk9BlsCakRBCsakyYbH2+tdID
+         miEQbiRzxFjjFS4mtKExNYUIGw0JeHxSto4W5fWNUXhtnYbrxhI4Qe8QFqvoaQTpnn6M
+         wnQ4S6JNXgJWj0CGLvuB0FoA2An0adTWdua997AX1CpEWJwEqTFw8gsqP9o5cm+2aVHA
+         qptLAgh6nQ/mrvD2ftbP2XuAa/6vacpf4Lca7hoBNfsaKXNAkvkuTYV4RPuHP4zeQX0E
+         7TcA==
+X-Forwarded-Encrypted: i=1; AKwUvBw6wQDC52MacnGtizHE2EzBQbAUAfN/S4FrVCkNRdfxxieYngpaBFMoxTWBYFCA+dATKT8IJMalychsmRoQMw==@vger.kernel.org
+X-Gm-Message-State: AFuF++lQbR5k3roQ7s7V3q4yAO1X45/u5Cr3+AXmH0CKFyk+kr0iE6PD
+	iCxoFXR+YPUh7JYLbEw+EB/eGPFRuVJRqyPzkXdCwi1/BU+4J9kksut3aVuiGpCUKEjWFE0HyDA
+	kPKUHXAYQ/RuwzehbtRQ6MvHfZBUe4hItGtKGN9JUoQJ+hNaE5/Qr550qn4kTnjEHi2dN
+X-Gm-Gg: AYBFou2ai3HGWitUe5CBqn6b6x5skcH0auG2zNXTXZZ9+aFA2HdnPhzLqirrtYBu6Y1
+	6zXjWuysq50THBZvlU/mF+5Sjq/qI6jvG0HXSI+l0P8JjLoUUYOGWv8NtqrUZJh2Yi65GYfZp3X
+	3PMheH6D5PguMVHU+CX5L5LmFngChYPtXgdc4K5Gk+TcX+rDl+wawGPus2S0L/zMWd81vTjuRYk
+	RmclsybNvTSeXUf6HdkxMqc+TuG1OFn+Ajnow8DLsnWPIZivuBFzIbTbvYS+b++lUSMUwXvs3Ba
+	1st0So4XraJFpX1lpAvNuDlqpkgZJu57uLb5EcrVKn2ipEG66evD5oi2dUMLN3ZvSU5SdLLS9tI
+	G+inusiHN
+X-Received: by 2002:a05:620a:890e:b0:93c:18ff:a0b with SMTP id af79cd13be357-93c3470da05mr22943585a.29.1790191896487;
+        Wed, 23 Sep 2026 12:31:36 -0700 (PDT)
+X-Received: by 2002:a05:620a:890e:b0:93c:18ff:a0b with SMTP id af79cd13be357-93c3470da05mr22940985a.29.1790191896030;
+        Wed, 23 Sep 2026 12:31:36 -0700 (PDT)
+Received: from redhat.com ([2600:382:8529:2779:5d36:56ab:46b2:2e62])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c248bd54esm297435985a.38.2026.09.23.12.31.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 12:31:35 -0700 (PDT)
+Date: Wed, 23 Sep 2026 15:31:31 -0400
+From: Brian Masney <bmasney@redhat.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Georgios Androutsopoulos <georgeandrout13@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: clk: document overflow panics in `Hertz`
+ constructors
+Message-ID: <arQpEx3LI5D5_EVf@redhat.com>
+References: <20260908225615.1732105-1-georgeandrout13@gmail.com>
+ <DLHSL43HJVOM.2LMYD808W8FPN@nvidia.com>
+ <arFPKcA1RCecTfMD@redhat.com>
+ <CAH5fLggOMBVi3DjQSmLtstnntgJQzDsQjEt15nRkiNi7EuLB8w@mail.gmail.com>
+ <CANiq72koa5rBohoBg4zaawBUPuhBatGouBzqTWi8djxMaaLacQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO9P265MB7724:EE_
-X-MS-Office365-Filtering-Correlation-Id: d36c78e8-0176-478a-2d33-08df19a251e9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|10070799003|7416014|921020|3023799007|6133799003|10067099003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	shFG8DUisR2DJ69i9T+gimgCG4lT9LUqRLyvbTio373Qkcs0gpgv609WHrOP3oj4Hxf3eMMOWaP4x30KJNuu0G2NnfrbgbgZ+LKI/73UdZbKfQS9/wVTbS9yAeqAb54WxsDgYlQ5bkmiqXBgUxPJQs6V4KkXSlgJ3saVash/wfLeXnIx82915yeRrxZ1i5GHgo/YgDRmqNj8F63pzzMsh2yjxGDJdmg64Gs4/an6UFRBPiKxF86cDFZep8L/j5QIYJwaTbrjfp1yCQQBz6nY0JNlZLSvf2wnTA0OkiRdyi6i8eQKOspCtHkprZUUAAyLmFqzBScrNuHtXcaKxsWzbqH3xhloB4kv6L27eTJJ0PkzZk7PqMePjeHdkQMp3G2BsVYh0zv8A6U8gk77ISQ1oHymSAwcFwAJoAbA/AKO0ODpNhApkN93sBC5EqyYe6OPx8ixqTYKAthQrpDeSKwEU/YD1oJ++NdAPg52KjXAyLNk/W72cZamVy5vXtwKjA5QGf8+EzRKJq5jxBP+vIr/sdkwXzBk3U/PIgHpqwKS1xwG79kfGzhBf25fjCAKIvwG0Y9kQ+FK00yhWqlEPldGa2EvutdfAhX35dHvCYSqwskkviLOgewJo0F5AdGAYkjy6sErv3DNWQctP2AbxSAFQMG+HPZKorzJxvZnHimUMr9cQhJlZLWV8SnPNgaif7g6wM1qmiTx8UB697NUqG1vJg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(10070799003)(7416014)(921020)(3023799007)(6133799003)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cWVGTjEvekhBTElzRktnV3JDZXMxUnpjNmpjOC9ibUIyOUJUTHNEK05mKzV3?=
- =?utf-8?B?TDVuVnNQVmw5bnpYVU5WTGN2ZUx0YUthdmVNbVNHNE1qSHNsSWlWeGFOMTdF?=
- =?utf-8?B?cHpITk1aTFNIYVdkazl1N3lhdHpScEM5eXRqbm5iY2FHMXdnbExDWHNwTCtl?=
- =?utf-8?B?N21oR3BkRGphdHJ6d3p2TnpuZmtLUlB2TFlEUjh4ZTY3WFZVekl4RlBTSXgw?=
- =?utf-8?B?bnlGbGZtNG8rajdsVlpMZGYwdjhreFdKWnBVODFtZEVoVDFPSFNmY1VVazVh?=
- =?utf-8?B?NE1VTUlGQVNCTnArd1lCN2kvcEg0SGpYYTBaaUwzcU9mZThqclRxTzlaNmhv?=
- =?utf-8?B?eVRKOTlDcmhqT1RUSE1jME0zcXpnQzAzS0pya2JjU0ZjbklWV0pvcGloeStC?=
- =?utf-8?B?anBrQkpJVU1aaTM4MkU5UnV6d1NqQ0ZNWDI1Z1BFQjZ2SFIvRkdoKzR2ZUFM?=
- =?utf-8?B?aWtSOUV5YUhaNFNuU1k5dzlDV3JweXg5TGRkZW9oTnJnTVlYQk4xK01EZDZV?=
- =?utf-8?B?aVQvZDE0UGp4bExtQkNVMGQxeU5DU2VjSVBpcjBoZHNBUnNhWmQ3SjFlcElm?=
- =?utf-8?B?R2Q1WjVXeTlBKytjN2lCdTEzWTRNeGlBL3JLYzE2ZCtsQysvckxQMTlzOGN6?=
- =?utf-8?B?ZU85WEkyQ0pycUFka1hnR1dUN0RuUkR2NmIwOEdhaCtkTVFrTE9tK0NtZjRp?=
- =?utf-8?B?eWtzdTZuQWdpMFkxT1ZkUGlPall1VFM1QlA0T2lhaUZUYVI5ck02WFQ4dVBB?=
- =?utf-8?B?R0JQOGphU25FMTdDVkcxcDkwYjNSSlMwNHBiRHFUZHZjVXEvQXVCREcxS3R5?=
- =?utf-8?B?Nyt0VFZLanVvTGNXVCtlNXlVZFloYVJIQkZ3RkFOR1ZqZEJRRXBWUm9hcVdN?=
- =?utf-8?B?QnR4TzRxKzZGTjgxa3Q0S3l3clZGWW5lU0RNcG9XUU04UGM0WGdhblJZcG5C?=
- =?utf-8?B?RjVQYXlkT2RHU3VyczRtc0FRT01ncnUwY2dhRklOWGJCTnJCNVkyQ0RKMWsw?=
- =?utf-8?B?WndXY0dHc1JjMVdWazA4b1ZEa1VPMWxrRjRBRWJ0aVp0Q1AzcitWVEZ0bXEv?=
- =?utf-8?B?ZnhPbjQraGc4SXRheDJsb3hZUmF6RzJxaXZHam9RZ0IzNFFQL3FPdWJzdFln?=
- =?utf-8?B?OVZKcGMxQ01qR1lMZTNheGV3VW5pSnVaajh0ZkhUN09hYWFaNkNzZ0FKOHdn?=
- =?utf-8?B?c2wwRWRxT242bUxQblVyWWEwbWZkeG5ZK3RZMzBvM0NFazBpcnVDcVk0d3Rz?=
- =?utf-8?B?VktBRTJKL3NkTTNFd2dhbFVHVWh3NkNFa01NKzhJd1EvTUsxejJZQU9WNXVY?=
- =?utf-8?B?cFJUMWZwNDBIbmI3c1ZKd3N3ZE93eExVRXRRYUFFSjRLRFV3L0MwdWZmVW52?=
- =?utf-8?B?Zjk2VzFIMmZCNUhpWjJxajJuMjdnWFBGSTQ4QlorT2JCa0JZZFhqY0ZBRkU0?=
- =?utf-8?B?bTBRYTN0UlBzM1VQNzd0bTcxUDh4NXN5Z0VSdGRpKy9wV1RrSnViT0JnTzZX?=
- =?utf-8?B?MitDTmJhS0MzdWtnY2U1VHZnRnZjQkNMWGxXdUtIdnd1cThPaHRLbG40cHFi?=
- =?utf-8?B?RnY5MEg3TWhqS2R6Qm9CNm1Ccjd0S0gxdnhMcUVmNnYvNDUvSWVGRFJJeWRl?=
- =?utf-8?B?dU81Mzg1L1ZIWUFMN3J2bm5uVXlTZno1RnphQm1lWFdiR2xxdWpMNHpuTGx5?=
- =?utf-8?B?RXU5TTArUXBWeHFCWndMekU3L0lSRHl6dWpNK2RmWXltb2k5L3RJN0pWWVo4?=
- =?utf-8?B?UjZRYVloUHhSQkhVUnRqMU5mei9OWXV0NnN4bnozMXF5OFhtbVlya1JIQkE4?=
- =?utf-8?B?MlZFS0lQQUZrWHYyZEkwajhFNW1VRWpQR0laalFXVWxFbXgvQnl4UmhFV3Vm?=
- =?utf-8?B?N05iZThUSE5jUzk2T2pZMlN0VTZVMjYyQTdxVXRIMDNjQi93Sk5HQmFOL1k5?=
- =?utf-8?B?MkhadGpqdEx5VStmdlFKQXBnNVVJKzFPVHQ0MGhqRDFTMmZxZ0NrU0g2MnRn?=
- =?utf-8?B?L0xSUU56ZTExUGEwQ0JsUXF4N1IrV3liTGUrVnZGM0tBYm1FczIvS3lBS0Q0?=
- =?utf-8?B?SHlJKzM5eUZreWlyL2FDZUQvdHAzbkZ4Tmtuek9Pa29JVXdZRDdzSlEvRXUv?=
- =?utf-8?B?QkVmVFFRbjRKZVgwWVlWOVpoZDhRL3ZSTFJuM1lRVXBqZU9HTSs1d3NDNDVl?=
- =?utf-8?B?ZnFFTS9FaWNwUXNvcUR0UHpwM3djNlJobEcrK2w4eXZGNEIvUjQ3UzNxalNQ?=
- =?utf-8?B?UGlEL0xXQjFoeEk5SnZXNk1wRnRtWmpVZVRTZXJXRHdJK0xkajM5ZDZlWXdp?=
- =?utf-8?B?RUtSSGJUL09VTVY3L2cxM285dnl0UzVKVlV5cnpmSGZWT25QTzUvQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: d36c78e8-0176-478a-2d33-08df19a251e9
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 18:41:46.0148
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +25ZClS0kntTpieRNTxL9nDjFB+pysUdGLZygBNFEPT8Kg5MH2FMBEdpCJ2E99a8ovGOmZwC0zrYOL81RD/MqQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO9P265MB7724
+In-Reply-To: <CANiq72koa5rBohoBg4zaawBUPuhBatGouBzqTWi8djxMaaLacQ@mail.gmail.com>
+User-Agent: Mutt/2.4.0 (2026-06-19)
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: w3SN6mb25IwK2uv_zW3jiLixKzhGizZXr_9d5J4HL7U_1790191896
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Wed Sep 23, 2026 at 7:32 PM BST, Andreas Hindborg wrote:
-> `Arc::from_raw` does not require `T: Send`. But if `Arc::from_raw` was
-> executed on a different thread than `Arc::into_raw`, `T` must implement
-> `Send` for the API to be sound. If this is not the case, ownership of `T`
-> may be sent across a thread boundary even if `T: !Send`.
->
-> Augment safety comment for `Arc::from_raw` to close this gap.
->
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/sync/arc.rs | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 8ae0fe6f19ec..06838ecf633c 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -276,6 +276,9 @@ pub fn as_ptr(this: &Self) -> *const T {
->      ///
->      /// `ptr` must have been returned by a previous call to [`Arc::into_=
-raw`]. Additionally, it
->      /// must not be called more than once for each previous call to [`Ar=
-c::into_raw`].
-> +    ///
-> +    /// If [`Arc::into_raw`] was executed on a different thread than the=
- one executing
-> +    /// [`Arc::from_raw`], `T` must implement [`Send`].
+On Mon, Sep 21, 2026 at 06:08:46PM +0200, Miguel Ojeda wrote:
+> On Mon, Sep 21, 2026 at 5:51 PM Alice Ryhl <aliceryhl@google.com> wrote:
+> >
+> > My understanding is that the "default" way patches land is that the
+> > subsystem also takes Rust patches related to the subsystem, and that
+> > the rust tree is a fallback tree.
+> 
+> Indeed, the idea on how we suggest setting up the `MAINTAINERS`
+> entries is that, by default, maintainers keep control of both sides
+> (they are the experts, after all) and that, hopefully, they get more
+> involved on the Rust side etc.
+> 
+> It makes sense for reworking the subsystem, too, since it may happen
+> that a rework on the C side may need adjustments on the Rust side etc.
+> 
+> The file is already under "COMMON CLK FRAMEWORK", so in this instance
+> it seems fine.
+> 
+> Brian: in case you want it (but it wouldn't be needed!):
+> 
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+> 
+> As Alexandre said, we may want to rework how these work (instead of
+> panicking), but documenting helps for now (and whether this counts as
+> a Fix or not is, I guess, up to what you usually do in your
+> subsystem).
+> 
+> I hope that helps!
 
-This needs to be `Send + Sync`?
+Sounds good, I'll pick this up.
 
-That said, I am not sure if we want to enumerate all cases where things can=
- go
-wrong. For example, would `Box::from_raw` need to mention that the type is
-`Send` too? `ARef::from_raw`? `ForeignOwnable::from_foreign/borrow/borrow_m=
-ut`
-all have to mention about this, too?
+Learning Rust is something that I want to start to do this coming
+Winter. I have an existing userspace project that I'm going to convert
+from python to rust.
 
-Best,
-Gary
-
->      pub unsafe fn from_raw(ptr: *const T) -> Self {
->          // SAFETY: The caller promises that this pointer originates from=
- a call to `into_raw` on an
->          // `Arc` that is still valid.
->
-> ---
-> base-commit: df2908090cda368b01ff43709f51890076c56157
-> change-id: 20260923-aref-from-raw-safety-78a7283627fa
->
-> Best regards,
-> -- =20
-> Andreas Hindborg <a.hindborg@kernel.org>
-
+Brian
 
