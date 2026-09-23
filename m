@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD5D3A5433;
-	Wed, 23 Sep 2026 21:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB2039F162;
+	Wed, 23 Sep 2026 21:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790197244; cv=none; b=uQlH+u89QM65rzOGpZA1+O0FiwXgm8BNVSSkaX2KX2xFy4z6Xt/6CxW2V01r60TiGAm/+YXWg9wpfGQq44QYp3MuCux2FzXZUoOLEernNGBcb4DAn53cdUti43U1Q69fX60gEJnpDt9cZ4a0RziFdiL2N0SdBlGqFbtZICAUuHU=
+	t=1790197251; cv=none; b=e8LqgbBy1GP8kUCoCv9A6NEmhP3Knncp3WK7SsBKwMT+2aGHJxKIGkubpiFCCxIBXgCVdOAB6Yvj9YmIgLmzgrDWPA8OqW9zfC7UlFMAsqFvvOScTIAogCU579+1aF6Si6qNWiU822j0RT2ejbOiRHlJyZVsC7CpVyoftp/qEW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790197244; c=relaxed/simple;
-	bh=11cdx0U+nqT4zXTiq4h5FSz2f0cr90vgBryKxz/xTZQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=lrKkvqPkRAA60P68dguPsKV2COPDDfzatHC6MgE11jj8JIFcZs2EQOKK4ObOBupYKPJBeYAxEW6QVuKub/E9QALgZ26PD/+bcmKC/g/6OlJFPrAqTLBR0OHjBdh+E3uOuVV7uJYA8M2Usllxk9McBm7mfcJ6e6cgC9Pkdvr5mL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kRu1QmOY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790197251; c=relaxed/simple;
+	bh=NDK47QPXsUnm2waVc+jmvrVWOOmbOrAV7ItS22ZH6Po=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=g5CWnkhW9PquGTstLCX0FNvFZWwF71K+r/WevtUUHQRCMZ0ETHccucGHLSTaBYk9LtAH1UYX6snhi56ctX9+2gpVr2wvsdRrDv9N59G3yo9V+LjPeReWgjjWhtSwEeatkv7KcAL1NufDcfLT0LJuy78sm2tC0pCRZcMeFlAdk5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OWRkxxBQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kRu1QmOY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAF91F000FF;
-	Wed, 23 Sep 2026 21:00:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OWRkxxBQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B3F1F00893;
+	Wed, 23 Sep 2026 21:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790197242;
-	bh=1xjjKzWLciUoH9UXz3tnTHMvxZmOGdUmUsdVq4ZrAc0=;
-	h=From:Subject:Date:To:Cc;
-	b=kRu1QmOYWERqBilxR/vRCV+l3W8MNUzZm9tEaKoR4pUblzDJr3GhKG8hTG06eKZRI
-	 0m5xEXeFr7w7Jve5u85W/Vtx+XXBvw/rzXR1Bf/aoykMlM1MkCpA9XG0W/6mXRDp1a
-	 pJD8l6QDffLwaNihq32YWYtOSeqgGhff3qfg5vj4hPrhjbnrpuPbFpAj/G4izKxS+O
-	 goxttS/Ub+ndL+dn7vwQX5o29kco7V1K/cyMfFe5Gxpdizdu2P0D+yzoV6alBOj/0h
-	 xQ0FhvzkTdLKMKoF9qAFvl0IeEnyCbPQtdzCAGvAEklea8tqQZ/JXIa5Y5YVPPXpac
-	 r40dZkKhOUCfA==
+	s=k20260515; t=1790197247;
+	bh=LUaewwcHCpqSdiyCfpM8aPg3NJxasQaB1aP4WCOQP7U=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=OWRkxxBQqWR6vu9xkRXUcTI7hh272FNCzrrfM6w2E5WhG4FCc5RkgNR6dITKlEmAm
+	 Zb1vVou/sXA0FLKy4PdGxl3xbjvIiKhFZvO+pph+dHlb8XnP3uyhRr18Xd1vXzfFKL
+	 3r+ZPLgQ93tPt1+FMKFuAUXqbFr9bkongD1jj3JB7LTuILB6Js3wH0HV3/NvwwrlRy
+	 4iAR1is4vJCqJbsREZCxEA/UKmQmXhH5XP9QazPmzZKZiGawiae1BVgQ5vf9h1Vaj3
+	 d4EnAVYR0hb+Q8coaZwwvdV6cNKTSeg7yjEmraIEuJQPWyXT3nC5/D0pdsRjpHHylc
+	 gmI6yJ5BZ32xQ==
 From: Daniel Gomez <da.gomez@kernel.org>
-Subject: [PATCH 0/3] Rust XArray
-Date: Wed, 23 Sep 2026 23:00:26 +0200
-Message-Id: <20260923-rxarray-next-v1-0-92eedf185649@samsung.com>
+Date: Wed, 23 Sep 2026 23:00:27 +0200
+Subject: [PATCH 1/3] rust: rxarray: add rust xarray support
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -36,11 +36,10 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqEMAxA0atI1hbaCIV6FZlFp0aNiyqpM1TEu
- 1t1+Rb/H5BImBK01QFCf068xAJTVxAmH0dS3BcDarTaISrJXsTvKlLe1GCcwcZa1C5ASVahgfO
- z6z6v0+87U9juB5znBYT9aT5wAAAA
-X-Change-ID: 20260922-rxarray-next-f1912366209c
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260923-rxarray-next-v1-1-92eedf185649@samsung.com>
+References: <20260923-rxarray-next-v1-0-92eedf185649@samsung.com>
+In-Reply-To: <20260923-rxarray-next-v1-0-92eedf185649@samsung.com>
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
@@ -61,164 +60,1477 @@ Cc: Julia Lawall <Julia.Lawall@inria.fr>,
  rust-for-linux@vger.kernel.org, Samsung GOST <gost.dev@samsung.com>, 
  Daniel Gomez <da.gomez@samsung.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790197237; l=7968;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790197237; l=60495;
  i=da.gomez@samsung.com; s=20240621; h=from:subject:message-id;
- bh=11cdx0U+nqT4zXTiq4h5FSz2f0cr90vgBryKxz/xTZQ=;
- b=tnqGXZRWU83kQtIicRM+74VQy84517SfUULHjKWHsuNIZVn2TqZtVppYd3InZoAjeVG59x5pv
- BoumWepY1YaD1Xcr4jQpnS3j86IBEHyNlXzp9Ofe5KOMVz0Zg+aPqS6
+ bh=ofgGLcKYp5pWfOmVBhixHxPNEQyJ6GQZTguVlJ5waoM=;
+ b=vVX7T1IeUbLWFcGN1wPU95uPRdod+UQIcDeOFHsdT/SrkEP5iMRmZHl/GPGfvpTeDl3y4bqdq
+ 9Kx8cd0qVnrDYjiXIigF9zKYoBhFW7FvsFrQyavmIFoy0zs2eCS5tv0
 X-Developer-Key: i=da.gomez@samsung.com; a=ed25519;
  pk=BqYk31UHkmv0WZShES6pIZcdmPPGay5LbzifAdZ2Ia4=
 
-We are evaluating Rust for the XArray to test if Rust delivers what it
-promises for a core kernel data structure, as a consequence of a page
-cache bug that was dormant for years, left users with a corrupted FS,
-was difficult to reproduce, and almost prevented the LBS work [1] from
-being merged. After looking at other XArray-related bugs, I think this
-particular one represents well the root cause of most XArray bugs:
-misuse of the API by its callers.
+From: Daniel Gomez <da.gomez@samsung.com>
 
-The XArray's main user is the page cache, but it has many other users
-and features, such as multi-index, RCU, etc. This initial support does
-not cover all these features and so, the initial evaluation targets
-are the ones that use the data structure in the simplest form. For this
-reason, I would like this series to be considered as a reference Rust
-implementation (experimental) [2] that we can merge in-tree to let users
-experiment and evaluate both implementations starting first from Rust
-users: null block driver and potentially drm gpu drivers such as tyr.
-What this series is missing to achieve this initial target is support
-for both new entry and preload APIs submitted [3] to the Rust XArray
-bindings.
+Add Rust XArray support.
 
-This series also includes support for a configurable benchmark library
-to test different types of workloads. I like to think of it as the
-fio equivalent for kernel data structures. Currently, it has support
-for sequential write workloads but the idea is to extend it to support
-read/write sequential/random as well as multithreading workloads.
+This is the Rust implementation of the XArray lib/xarray.c. As of now,
+it supports basic functionality: store, load, load_mut and erase.
 
-After this initial work is done, we can continue with the evaluation
-by adding support for the features as we see fit. My proposal is to
-start with C FFI and RCU. The C FFI is, IMO, the critical part to know
-if Rust can help reduce the bugs we keep finding in the use of this data
-structure, which, except for one case, are found in both Normal and
-Advanced API variants, but also in the object manipulation the user is
-responsible for. This work was presented at Kangrejos 2026 last week and
-some of the feedback included the possibility to add safety annotations
-on the C side; promote safety contracts and invariants as part of
-the API documentation so that C users better understand how to call
-it "safely" because of the benefits of using type-safe Rust language
-under the hood. Making these contracts explicit as part of the API is
-something we can add today and even try to auto-generate, or simply
-by using the Rust function signature as part of the API documentation.
-Another way Rust helps is with formal verification: Corinn T. and
-Julia L. are already doing this work on the C API side and their work
-"Towards Program Verification of the Linux Kernel Library XArray" will
-be presented at LPC in a few weeks [4]. My understanding is that Rust
-helps simplify the formal verification work, although this requires
-formalizing the API usage by users, not only the implementation. So,
-whether any of these 3 approaches can help reduce bugs on the C boundary
-side is something to explore throughout the following series and after
-this initial support lands, where the Rust users automatically benefit
-from a safe API.
-
-Multi-architecture support was raised as an initial concern [5] when
-we proposed this topic for discussion earlier this year. We think that
-is orthogonal work that will happen eventually but that we do not have
-control over, and that we can keep making progress if we use this as a
-reference implementation following the gradual support suggested.
-
-In the same thread, we asked which XArray workloads set the performance
-bar. Considering the scale of users and that some may require specific
-hardware, we think the best approach is to integrate a benchmark
-library (included in this series) that allows differential testing
-of the 2 implementations through the bindings, so they can be tested
-independently with standard workloads: seq/rand rw, multithreading,
-etc. While we expect these results to be representative of what users
-can expect, specific workloads will be considered too at each step.
-For example, fio for null block; fio and dbench for page cache as
-well as the in-tree tools/testing/radix-tree/benchmark.c. Once C FFI
-support lands, we can also extend differential testing from the C caller
-side. Functional testing is covered by KUnit tests (included in this
-series) and will further be extended once we have parity with C XArray
-functionality to support lib/test_xarray.c.
-
-The following table is a summary of the benchmark results on a QEMU
-instance with 8 cores and 4 GiB of RAM:
-
-1000 samples x 100000 entries, ns per sample:
-benchmark                   min       median          max         mean      runtime
-store_int_rxarray4      1347510      1366102      2069508      1389890       2.065s
-store_int_rxarray6       809970       822036      1327207       840727       1.417s
-store_ptr_rxarray4      2292776      2339906      3440329      2381492       3.953s
-store_ptr_rxarray6      1687739      1713935      2815930      1744127       3.226s
-store_ptr_xarray        2636308      2763015      5184648      2867016       4.494s
-
-Currently, the benchmark shows that storing pointer entries in the
-XArray6 configuration (`store_ptr_rxarray6`) is 1.6x faster than
-through the C XArray bindings. There is no C row for integer entries
-yet, as the bindings have no value-entry API.
-
-Note that this version does not include all features, so the comparison
-is against a C XArray (through bindings) doing probably more work
-per store. And that the result is only significant for Rust callers.
-The idea of these numbers is to keep them as baseline as we add more
-features and, once we have parity, compare them side to side with C
-equivalent benchmarks.
-
-To continue the work, we propose the following roadmap:
-
-For this initial series:
-* Core functionality support: store/load/erase [done]
-* C's memory footprint optimization: [done]
-* Functional testing KUnit [done]
-* Benchmark library: `bench` [done]
-* Sequential workload support [done]
-* Random and multithread workload support [planned]
-* Entry API [planned]
-* Preload API [planned]
-* `rnull` integration and A/B benchmark [planned]
-* `tyr` integration and A/B benchmark [planned]
-
-After this initial series, we can proceed working with the following
-topics as individual and incremental series:
-* Pointer provenance
-* Small tree optimization (expand/shrink)
-* RCU support
-* C FFI + null block integration and A/B benchmark
-* Mark support
-* Tagged pointers support
-* lib/test_xarray.c support
-* tools/testing/radix-tree/benchmark.c A/B
-* Page cache integration and A/B benchmark
-
-Link: https://lore.kernel.org/all/A5A976CB-DB57-4513-A700-656580488AB6@flyingcircus.io/ [1]
-Link: https://rust-for-linux.com/rust-reference-drivers [2]
-Link: https://lore.kernel.org/all/20260902-xarray-entry-send-v5-0-d18adae40708@kernel.org/ [3]
-Link: https://lpc.events/event/20/contributions/2540/ [4]
-Link: https://lore.kernel.org/all/aZR-ItMBkiqyBdKd@casper.infradead.org/ [5]
-
-A branch with the patches can be found here:
-https://git.kernel.org/pub/scm/linux/kernel/git/da.gomez/linux.git/log/?h=rxarray-next
-
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
 ---
-Daniel Gomez (3):
-      rust: rxarray: add rust xarray support
-      rust: kernel: add bench
-      lib/xarray_benchmark_rust: add module
+ MAINTAINERS            |   11 +
+ rust/kernel/lib.rs     |    1 +
+ rust/kernel/rxarray.rs | 1407 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 1419 insertions(+)
 
- MAINTAINERS                  |   13 +
- lib/Kconfig.debug            |   10 +
- lib/Makefile                 |    1 +
- lib/xarray_benchmark_rust.rs |  117 ++++
- rust/kernel/bench.rs         |  173 ++++++
- rust/kernel/lib.rs           |    2 +
- rust/kernel/rxarray.rs       | 1407 ++++++++++++++++++++++++++++++++++++++++++
- 7 files changed, 1723 insertions(+)
----
-base-commit: 4cfc5bf97cabf660c04b22ba933d198cc4aa98ec
-change-id: 20260922-rxarray-next-f1912366209c
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c2414447892c2..c40a254c35d3d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -29681,6 +29681,17 @@ C:	https://rust-for-linux.zulipchat.com
+ T:	git https://github.com/Rust-for-Linux/linux.git xarray-next
+ F:	rust/kernel/xarray.rs
+ 
++XARRAY [RUST]
++M:	Daniel Gomez <da.gomez@kernel.org>
++R:	Andreas Hindborg <a.hindborg@kernel.org>
++L:	rust-for-linux@vger.kernel.org
++S:	Supported
++W:	https://rust-for-linux.com
++B:	https://github.com/Rust-for-Linux/linux/issues
++C:	https://rust-for-linux.zulipchat.com
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/da.gomez/linux.git rxarray-next
++F:	rust/kernel/rxarray.rs
++
+ XBOX DVD IR REMOTE
+ M:	Benjamin Valentin <benpicco@googlemail.com>
+ S:	Maintained
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 4d5c96ddc49c7..1e3c8d3051e53 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -122,6 +122,7 @@
+ pub mod rbtree;
+ pub mod regulator;
+ pub mod revocable;
++pub mod rxarray;
+ pub mod safety;
+ pub mod scatterlist;
+ pub mod security;
+diff --git a/rust/kernel/rxarray.rs b/rust/kernel/rxarray.rs
+new file mode 100644
+index 0000000000000..9b939b0147252
+--- /dev/null
++++ b/rust/kernel/rxarray.rs
+@@ -0,0 +1,1407 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Rust XArray implementation.
++//!
++//! This module implements an extensible array (aka XArray) via the [`XArray`] type. See [`XArray4`]
++//! and [`XArray6`] for common configurations.
++//!
++//! The array can hold two types of entries at the same time where each index independently stores
++//! either an owned pointer (`T: ForeignOwnable`) or a bounded integer up to `usize::MAX >> 1`
++//! backed by [`Bounded`]. Users insert entries via the [`Entry`] type. References to entries in
++//! the tree are handled by the [`BorrowedEntry`] and [`BorrowedEntryMut`] types.
++//!
++//! # Differences from C XArray
++//!
++//! The C XArray uses RCU for lock-free reads and an internal spinlock for writes. This
++//! implementation does not provide internal locking. A mutable reference is required for writes, a
++//! shared reference for reads. Locking can be applied externally. RCU support is planned.
++//!
++//! This implementation allocates during store. `xa_reserve()` and `xas_nomem()` are not yet
++//! supported.
++//!
++//! C `xa_destroy()` frees only internal nodes; callers must free their own stored values. Dropping
++//! [`XArray`] also frees all stored entries.
++//!
++//! C `xa_mk_value()` issues `WARN_ON` if the value exceeds `LONG_MAX`; the left shift overflows,
++//! producing a wrong entry.
++//! Rust [`Entry::int()`] rejects out-of-range values at compile time via `Bounded`, and
++//! [`Entry::try_int()`] returns [`None`] at runtime.
++//!
++//! The C XArray grows in depth on demand to be efficient for small indices, creating a short tree
++//! whenever possible and adding levels as larger indices appear. This implementation always walks
++//! the full levels, whatever the largest stored index is. Variable height is planned.
++//!
++//! C XArray features like search marks, multi-index entries, advanced API, etc. are not yet
++//! implemented.
++//!
++//! This implementation aims for full feature parity with the C XArray; any gap not covered above is
++//! a defect in this list.
++//!
++//! # Data structure
++//!
++//! The XArray is a radix tree that maps `usize` indices to [`Entry`] values. Each node holds an
++//! array of `SIZE` slots (where `SIZE = 1 << SHIFT`), and the tree depth is
++//! `ceil(usize::BITS / SHIFT)`. Indices are decomposed so that each chunk indexes a slot in a
++//! node at the corresponding level.
++//!
++//! ```text
++//!                                 XArray
++//!                                    │
++//!                                    ▼
++//!                           ┌────────────────┐
++//!                           │   Root Node    │  Level = levels-1
++//!                           │ slots[0..SIZE] │
++//!                           └────────────────┘
++//!                            /       |       \
++//!               ┌───────────┘        │        └───────────┐
++//!               ▼                    ▼                    ▼
++//!      ┌────────────────┐       ┌────────┐       ┌────────────────┐
++//!      │      Node      │       │ Empty  │       │      Node      │
++//!      │ slots[0..SIZE] │       └────────┘       │ slots[0..SIZE] │
++//!      └────────────────┘                        └────────────────┘
++//!        /           \                                   |
++//!       ▼             ▼                                  ▼
++//!    ...            ...                          ┌────────────────┐
++//!                                                │   Leaf Node    │  Level = 0
++//!                                                │ slots[0..SIZE] │
++//!                                                └────────────────┘
++//!                                                 /       |       \
++//!                                                ▼        ▼        ▼
++//!                                             Entry    Empty    Entry
++//!                                             (Int)             (Ptr)
++//! ```
++//!
++//! Index decomposition for [`XArray6`] (SHIFT=6, 64 slots per node, 11 levels on 64-bit):
++//!
++//! ```text
++//!   ┌─────────────────────────────────────────────────────────────────┐
++//!   │ index                                                           │
++//!   ├─────────┬─────────┬───────────────┬─────────┬─────────┬─────────┤
++//!   │ level10 │ level 9 │      ...      │ level 2 │ level 1 │ level 0 │
++//!   │ [63:60] │ [59:54] │               │ [17:12] │ [11:6]  │  [5:0]  │
++//!   └─────────┴─────────┴───────────────┴─────────┴─────────┴─────────┘
++//! ```
++//!
++//! At each level, the slot offset is: `(index >> (level * SHIFT)) & (SIZE - 1)`.
++//!
++//! # C API
++//!
++//! This implementation does not have a C API yet. When one is added, its FFI layer must validate
++//! at runtime what the Rust API enforces at compile or construction time:
++//!
++//! - **Int values**: use [`Entry::try_int()`]; reject [`None`] as `-EINVAL`. C has no [`Bounded`],
++//!   so the FFI wrapper is the enforcement point.
++//! - **Pointers**: validate 4-byte alignment and non-null at runtime.
++//!   `const_assert!(T::FOREIGN_ALIGN >= 4)` only covers Rust callers.
++//! - **NULL pointers**: dispatch as erase (`xa_store(NULL) == xa_erase`) or reserve
++//!   (`XA_FLAGS_ALLOC`) before reaching [`XArray::store()`].
++//! - **Error entries**: reject `xa_is_err()` values; Rust would misclassify them as node pointers
++//!   (see `Slot` invariants).
++
++use crate::{
++    alloc::Flags,
++    fmt,
++    num::Bounded,
++    prelude::*,
++    types::ForeignOwnable, //
++};
++use core::{
++    marker::PhantomData,
++    mem, //
++};
++
++/// Type alias for [`XArray`] with a shift of 4 and 16 slots per node.
++pub type XArray4<T> = XArray<T, 4, 16>;
++
++/// Type alias for [`XArray`] with a shift of 6 and 64 slots per node.
++pub type XArray6<T> = XArray<T, 6, 64>;
++
++/// Type alias for [`Entry::Int`] values. Integers that fit in `usize::BITS - 1` bits
++/// (`0..=usize::MAX >> 1`).
++pub type Value = Bounded<usize, { usize::BITS - 1 }>;
++
++/// An entry is either an [`Entry::Int`] integer (`0..=usize::MAX >> 1`) or an owned
++/// [`Entry::Pointer`].
++///
++/// Empty slots are represented by [`None`], not a separate variant.
++///
++/// Integer values are validated by [`Value`]. Pointer alignment (`T::FOREIGN_ALIGN >= 4`) is a
++/// requirement of the slot encoding, enforced at compile time when an [`XArray`] over `T` is
++/// constructed (see the [`XArray`] invariants); [`Entry`] itself carries no invariants.
++pub enum Entry<T: ForeignOwnable> {
++    /// Integer value (`0..=usize::MAX >> 1`).
++    Int(Value),
++    /// Pointer payload. Owned (`T`).
++    Pointer(T),
++}
++
++impl<T: ForeignOwnable> Entry<T> {
++    /// Creates an [`Entry::Int`] validated at compile time.
++    ///
++    /// Fails to compile if `V > usize::MAX >> 1`.
++    pub const fn int<const V: usize>() -> Self {
++        Entry::Int(Value::new::<V>())
++    }
++
++    /// Creates an [`Entry::Int`] validated at runtime.
++    ///
++    /// Returns [`None`] if `v > usize::MAX >> 1`.
++    pub fn try_int(v: usize) -> Option<Self> {
++        Value::try_new(v).map(Entry::Int)
++    }
++}
++
++/// A borrowed entry returned by [`XArray::load()`], containing either an integer or a borrowed
++/// pointer.
++pub enum BorrowedEntry<'a, T: ForeignOwnable + 'a> {
++    /// Integer value (`0..=usize::MAX >> 1`).
++    Int(Value),
++    /// Pointer payload `T::Borrowed<'_>`.
++    Pointer(T::Borrowed<'a>),
++}
++
++/// A mutably borrowed entry returned by [`XArray::load_mut()`], containing either an integer or a
++/// borrowed pointer.
++pub enum BorrowedEntryMut<'a, T: ForeignOwnable + 'a> {
++    /// Integer value (`0..=usize::MAX >> 1`).
++    Int(Value),
++    /// Pointer payload `T::BorrowedMut<'_>`.
++    Pointer(T::BorrowedMut<'a>),
++}
++
++/// The error returned by [`XArray::store()`].
++///
++/// Contains the underlying error and the entry that was not stored.
++pub struct StoreError<T: ForeignOwnable> {
++    /// The error that occurred.
++    pub error: Error,
++    /// The entry that was not stored.
++    pub entry: Entry<T>,
++}
++
++impl<T: ForeignOwnable> fmt::Debug for StoreError<T> {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        f.debug_struct("StoreError")
++            .field("error", &self.error)
++            .finish()
++    }
++}
++
++impl<T: ForeignOwnable> From<StoreError<T>> for Error {
++    #[inline]
++    fn from(value: StoreError<T>) -> Self {
++        value.error
++    }
++}
++
++/// An extensible array backed by a radix tree, mapping `usize` indices to [`Entry`] values.
++///
++/// `T` must be a [`ForeignOwnable`] whose `FOREIGN_ALIGN` is at least 4. The type can be named with
++/// any other `T`, but constructing a value of it fails to compile.
++///
++/// # Ownership
++///
++/// When an [`XArray`] is dropped, all stored [`Entry::Pointer`] entries are freed via
++/// [`ForeignOwnable::from_foreign()`]. This differs from the C `xa_destroy()`, which only frees
++/// internal nodes and requires callers to free stored pointers themselves. [`Entry::Int`] entries
++/// are encoded integers with no backing allocation and need no cleanup.
++///
++/// # Examples
++///
++/// ```
++/// use kernel::alloc::{flags, KBox};
++/// use kernel::rxarray::{BorrowedEntry, Entry, XArray6};
++///
++/// let mut xa = XArray6::<KBox<u64>>::new();
++/// assert!(xa.is_empty());
++///
++/// // Store a pointer entry at index 1.
++/// let boxed = KBox::new(0xbeef_u64, flags::GFP_KERNEL)?;
++/// xa.store(1, Entry::Pointer(boxed), flags::GFP_KERNEL)?;
++/// match xa.load(1) {
++///     Some(BorrowedEntry::Pointer(val)) => assert_eq!(*val, 0xbeef_u64),
++///     _ => panic!("expected Pointer"),
++/// }
++///
++/// // Store a value entry at index 0.
++/// let old = xa.store(0, Entry::int::<0xdead>(), flags::GFP_KERNEL)?;
++/// assert!(old.is_none());
++/// assert!(!xa.is_empty());
++///
++/// match xa.load(0) {
++///     Some(BorrowedEntry::Int(v)) => assert_eq!(v, 0xdead),
++///     _ => panic!("expected Int"),
++/// }
++///
++/// let old = xa.store(0, Entry::int::<0xcafe>(), flags::GFP_KERNEL)?;
++/// match old {
++///     Some(Entry::Int(v)) => assert_eq!(v, 0xdead),
++///     _ => panic!("expected old Int"),
++/// }
++///
++/// match xa.erase(0) {
++///     Some(Entry::Int(v)) => assert_eq!(v, 0xcafe),
++///     _ => panic!("expected erased Int"),
++/// }
++/// assert!(xa.erase(1).is_some());
++/// assert!(xa.is_empty());
++///
++/// # Ok::<(), Error>(())
++/// ```
++///
++/// # Invariants
++///
++/// - `T::FOREIGN_ALIGN >= 4`, ensuring pointer entries do not collide with the integer or internal
++///   entry encoding.
++/// - `SHIFT > 0` and `SIZE == 1 << SHIFT`.
++/// - Every slot in every node satisfies the `Slot` invariants.
++/// - Interior levels (level > 0) contain only empty or node slots. Leaf level (level 0) contains
++///   only empty, `Int`, or `Pointer` slots.
++/// - The subtree below every node slot contains at least one of the `Entry` types (`Int` or
++///   `Pointer`).
++pub struct XArray<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize> {
++    root: Node<T, SHIFT, SIZE>,
++}
++
++impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize> Default for XArray<T, SHIFT, SIZE> {
++    fn default() -> Self {
++        Self::new()
++    }
++}
++
++impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize> XArray<T, SHIFT, SIZE> {
++    const fn validate() {
++        const_assert!(SHIFT > 0, "SHIFT must be > 0");
++        const_assert!(SIZE == (1 << SHIFT), "SIZE != 1 << SHIFT");
++        const_assert!(
++            T::FOREIGN_ALIGN >= 4,
++            "ForeignOwnable pointers must be 4-byte aligned"
++        );
++    }
++
++    /// Creates a new empty [`XArray`].
++    pub const fn new() -> Self {
++        Self::validate();
++        // INVARIANT:
++        // - `Self::validate` checks `T::FOREIGN_ALIGN >= 4`, `SHIFT > 0` and `SIZE == 1 << SHIFT`
++        //   at compile time.
++        // - `Node::new` fills every slot with `Slot::EMPTY`, which satisfies the empty-slot case
++        //   of the `Slot` invariants.
++        // - Every slot is empty, and an empty slot is valid at any level.
++        XArray { root: Node::new() }
++    }
++
++    /// Returns the number of levels in the tree.
++    const fn levels() -> usize {
++        (usize::BITS as usize).div_ceil(SHIFT)
++    }
++
++    /// Returns `true` if the tree contains no entries.
++    ///
++    /// Scanning the root node suffices: by the type invariants, every node slot in it leads to at
++    /// least one entry.
++    pub fn is_empty(&self) -> bool {
++        self.root.is_empty()
++    }
++
++    /// Erases the entry at `index`.
++    ///
++    /// Returns the previous entry, or [`None`] if the slot was empty. Empty intermediate nodes are
++    /// freed during traversal.
++    pub fn erase(&mut self, index: usize) -> Option<Entry<T>> {
++        self.root.erase(index, Self::levels() - 1)
++    }
++
++    /// Stores an entry at `index`.
++    ///
++    /// Returns the previous entry, or [`None`] if the slot was empty.
++    ///
++    /// # Errors
++    ///
++    /// Returns a [`StoreError`] carrying the entry back to the caller, with error [`ENOMEM`] if
++    /// a new intermediate node cannot be allocated. A failed stored leaves the tree unchanged. For
++    /// C callers, [`EINVAL`] in case of tree corruption detection.
++    pub fn store(
++        &mut self,
++        index: usize,
++        entry: Entry<T>,
++        flags: Flags,
++    ) -> Result<Option<Entry<T>>, StoreError<T>> {
++        self.root.store(index, entry, Self::levels() - 1, flags)
++    }
++
++    /// Loads the entry at `index`.
++    ///
++    /// Returns [`None`] if the slot is empty. The returned [`BorrowedEntry`] is a value that
++    /// borrows from the array where pointer entries carry `T::Borrowed<'_>` (e.g., `&T` for
++    /// `KBox<T>`), and integer entries carry a copy of the [`Value`].
++    pub fn load(&self, index: usize) -> Option<BorrowedEntry<'_, T>> {
++        self.root.load(index, Self::levels() - 1)
++    }
++
++    /// Loads the entry at `index` for mutation.
++    ///
++    /// Returns [`None`] if the slot is empty. The returned [`BorrowedEntryMut`] is a value that
++    /// borrows from the array where pointer entries carry `T::BorrowedMut<'_>` (e.g., `&mut T` for
++    /// `KBox<T>`), and integer entries carry a copy of the [`Value`].
++    pub fn load_mut(&mut self, index: usize) -> Option<BorrowedEntryMut<'_, T>> {
++        self.root.load_mut(index, Self::levels() - 1)
++    }
++}
++
++/// The internal storage unit: a single `usize` encoding an [`Entry`] or an internal node pointer.
++///
++/// # Invariants
++///
++/// The encoded value `self.0` is one of:
++/// - `0`: the slot is empty.
++/// - An odd value `(v << 1) | 1`: an integer value `v` where `v <= usize::MAX >> 1`.
++/// - An even, non-zero value with bits `1:0 == 0b00`: a valid, non-null pointer previously returned
++///   by [`ForeignOwnable::into_foreign()`].
++/// - An even, non-zero value with bits `1:0 == 0b10` and value > `NODE_THRESHOLD`: a valid pointer
++///   to a live `Node<T, SHIFT, SIZE>` allocation, created by [`Slot::mk_node()`] from
++///   [`KBox::into_raw()`] tagged with `| 2`. The slot owns the [`KBox<Node>`] allocation.
++//
++// All entries with bits `1:0 == 0b10` are internal to the XArray implementation. The encoded value
++// distinguishes sub-types:
++//
++// - Offset 0..=62, encoded 2..=250: sibling entries.
++//   The encoded value contains the offset of the canonical slot within the same node (multi-index
++//   entries, CONFIG_XARRAY_MULTI).
++//
++// - Logical 256, encoded 1026: retry (XA_RETRY_ENTRY).
++//   Tombstone signaling concurrent tree modification; RCU lock-free readers must restart.
++//
++// - Logical 257, encoded 1030: zero (XA_ZERO_ENTRY).
++//   Placeholder marking a slot as occupied but logically empty (xa_reserve, XA_FLAGS_TRACK_FREE).
++//
++// - Encoded value > `NODE_THRESHOLD` (4096): node pointers (heap addresses tagged with | 2). Always
++//   above this threshold.
++//
++// Note: C error entries (xa_is_err()) also encode as internal entries with values far above this
++// threshold. They are never stored in tree slots, only returned by the XArray state machine API. C
++// callers bypass this assumption; the FFI layer must reject error entries before they reach Rust,
++// where kind() would misclassify them as Node, causing as_node() to dereference an invalid
++// pointer.
++//
++// This implementation only creates node pointers via `mk_node()`. The other sub-types are reserved
++// for future RCU and multi-index support. See include/linux/xarray.h.
++#[repr(transparent)]
++struct Slot<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize>(usize, PhantomData<T>);
++
++impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize> Default for Slot<T, SHIFT, SIZE> {
++    fn default() -> Self {
++        Self::EMPTY
++    }
++}
++
++#[derive(Copy, Clone)]
++enum SlotType {
++    Empty,
++    Pointer,
++    Internal,
++    Node, // Internal with value > NODE_THRESHOLD.
++    Int,
++}
++
++impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize> Slot<T, SHIFT, SIZE> {
++    // INVARIANT: `0` is the encoding for an empty slot.
++    const EMPTY: Self = Slot(0, PhantomData);
++
++    /// Encodes an [`Entry<T>`] into a [`Slot`] for tree storage.
++    fn encode(entry: Entry<T>) -> Self {
++        const_assert!(
++            T::FOREIGN_ALIGN >= 4,
++            "ForeignOwnable pointers must be 4-byte aligned"
++        );
++
++        match entry {
++            Entry::Int(v) => {
++                // INVARIANT: `*v <= usize::MAX >> 1` is guaranteed by `Value` (`Bounded`), so the
++                // shift cannot overflow and the encoded value is odd.
++                Slot((*v << 1) | 1, PhantomData)
++            }
++            Entry::Pointer(p) => {
++                let bits = p.into_foreign() as usize;
++                debug_assert!(bits != 0, "ForeignOwnable returned null");
++                debug_assert!(bits & 3 == 0, "ForeignOwnable pointer not 4-byte aligned");
++                // INVARIANT: `into_foreign()` guarantees a non-null pointer aligned to
++                // `T::FOREIGN_ALIGN`, and `const_assert!(T::FOREIGN_ALIGN >= 4)` above ensures
++                // bits `1:0 == 0b00`.
++                Slot(bits, PhantomData)
++            }
++        }
++    }
++
++    /// Decodes a [`Slot`] into an owned [`Entry<T>`], consuming the slot.
++    ///
++    /// Returns [`None`] for empty slots.
++    fn decode(self) -> Option<Entry<T>> {
++        let slot_type = self.kind();
++        let bits = mem::ManuallyDrop::new(self).0;
++
++        match slot_type {
++            SlotType::Empty => None,
++            // Undo the `(v << 1) | 1` encoding from `Slot::encode`.
++            SlotType::Int => Some(Entry::Int(Value::from_expr(bits >> 1))),
++            SlotType::Node | SlotType::Internal => {
++                debug_assert!(false, "attempt to decode internal/node entry");
++                None
++            }
++            SlotType::Pointer => {
++                // SAFETY:
++                // - By the type invariant, a slot classified `Pointer` holds a pointer returned by
++                //   a previous call to `T::into_foreign()`.
++                // - `decode` takes the slot by value, so the caller has already removed it from
++                //   the tree, and `ManuallyDrop` suppresses `Slot::drop`. This is therefore the
++                //   only `from_foreign` call for this pointer.
++                Some(Entry::Pointer(unsafe {
++                    T::from_foreign(bits as *mut c_void)
++                }))
++            }
++        }
++    }
++
++    /// Borrows the entry in this slot without consuming it.
++    ///
++    /// Returns [`None`] for empty slots. Pointer entries are borrowed via
++    /// [`ForeignOwnable::borrow()`].
++    fn borrow(&self) -> Option<BorrowedEntry<'_, T>> {
++        let slot_type = self.kind();
++        let bits = self.0;
++
++        match slot_type {
++            SlotType::Empty => None,
++            // Undo the `(v << 1) | 1` encoding from `Slot::encode`.
++            SlotType::Int => Some(BorrowedEntry::Int(Value::from_expr(bits >> 1))),
++            SlotType::Node | SlotType::Internal => {
++                debug_assert!(false, "attempt to borrow internal/node entry");
++                None
++            }
++            SlotType::Pointer => {
++                // SAFETY:
++                // - By the type invariant, a slot classified `Pointer` holds a pointer returned by
++                //   a previous call to `T::into_foreign()`.
++                // - Every path that reaches `from_foreign` for this slot needs ownership of it
++                //   (`decode`) or a unique borrow (`Slot::drop`), and reaching either from the
++                //   array requires `&mut self` on the `XArray`. Neither can coexist with this
++                //   shared borrow, so any `from_foreign` on this pointer happens after the borrow
++                //   ends.
++                Some(BorrowedEntry::Pointer(unsafe {
++                    T::borrow(bits as *mut c_void)
++                }))
++            }
++        }
++    }
++
++    /// Mutably borrows the entry in this slot without consuming it.
++    ///
++    /// Returns [`None`] for empty slots. Pointer entries are borrowed via
++    /// [`ForeignOwnable::borrow_mut()`]; integer entries are returned by value.
++    fn borrow_mut(&mut self) -> Option<BorrowedEntryMut<'_, T>> {
++        let slot_type = self.kind();
++        let bits = self.0;
++
++        match slot_type {
++            SlotType::Empty => None,
++            // Undo the `(v << 1) | 1` encoding from `Slot::encode`.
++            SlotType::Int => Some(BorrowedEntryMut::Int(Value::from_expr(bits >> 1))),
++            SlotType::Node | SlotType::Internal => {
++                debug_assert!(false, "attempt to borrow internal/node entry");
++                None
++            }
++            SlotType::Pointer => {
++                // SAFETY:
++                // - By the type invariant, a slot classified `Pointer` holds a pointer returned by
++                //   a previous call to `T::into_foreign()`.
++                // - The returned value borrows `self` mutably, so no other `borrow()` or
++                //   `borrow_mut()` on this slot can overlap it, and every path that reaches
++                //   `from_foreign` for this slot (`decode`, `Slot::drop`) needs the slot by value
++                //   or by unique borrow, so any `from_foreign` on this pointer happens after the
++                //   borrow ends.
++                Some(BorrowedEntryMut::Pointer(unsafe {
++                    T::borrow_mut(bits as *mut c_void)
++                }))
++            }
++        }
++    }
++
++    // The boundary between internal entries and node pointers.
++    const NODE_THRESHOLD: usize = 4096;
++
++    #[inline]
++    fn kind(&self) -> SlotType {
++        let slot = self.0;
++        if slot == 0 {
++            return SlotType::Empty;
++        }
++        match slot & 3 {
++            2 if slot > Self::NODE_THRESHOLD => SlotType::Node,
++            2 => SlotType::Internal,
++            1 | 3 => SlotType::Int,
++            _ => SlotType::Pointer,
++        }
++    }
++
++    #[inline]
++    fn is_empty(&self) -> bool {
++        matches!(self.kind(), SlotType::Empty)
++    }
++
++    #[inline]
++    fn is_node(&self) -> bool {
++        matches!(self.kind(), SlotType::Node)
++    }
++
++    /// Returns a shared reference to the child node pointed to by this entry, or [`None`] if this
++    /// is not a node slot.
++    fn as_node(&self) -> Option<&Node<T, SHIFT, SIZE>> {
++        if !self.is_node() {
++            return None;
++        }
++        let ptr = (self.0 & !3) as *const Node<T, SHIFT, SIZE>;
++        // SAFETY:
++        // - By the type invariant, a slot classified `Node` holds `KBox::into_raw()` of a valid,
++        //   live `KBox<Node<T, SHIFT, SIZE>>` allocation owned by this slot. `& !3` reverses the
++        //   `| 2` tag.
++        // - The returned reference borrows `self`, so the slot cannot be modified and the
++        //   allocation cannot be freed while it is live.
++        Some(unsafe { &*ptr })
++    }
++
++    /// Returns a mutable reference to the child node pointed to by this entry, or [`None`] if this
++    /// is not a node slot.
++    fn as_node_mut(&mut self) -> Option<&mut Node<T, SHIFT, SIZE>> {
++        if !self.is_node() {
++            return None;
++        }
++        let ptr = (self.0 & !3) as *mut Node<T, SHIFT, SIZE>;
++        // SAFETY:
++        // - By the type invariant, a slot classified `Node` holds `KBox::into_raw()` of a valid,
++        //   live `KBox<Node<T, SHIFT, SIZE>>` allocation owned by this slot. `& !3` reverses the
++        //   `| 2` tag.
++        // - The returned reference borrows `self` mutably, so no other reference to the allocation
++        //   can exist and the slot cannot be modified while it is live.
++        Some(unsafe { &mut *ptr })
++    }
++
++    /// Creates a node slot from a heap-allocated [`Node`].
++    fn mk_node(node: KBox<Node<T, SHIFT, SIZE>>) -> Self {
++        let ptr = KBox::into_raw(node) as usize;
++        debug_assert!(ptr & 3 == 0, "Node pointer not aligned");
++        // INVARIANT: `ptr` owns a live `KBox<Node>` allocation from `into_raw()`, so it is at least
++        // 4-byte aligned (checked above) and `| 2` gives bits `1:0 == 0b10`. Kernel heap addresses
++        // are far above `NODE_THRESHOLD`, so the result classifies as node.
++        Slot(ptr | 2, PhantomData)
++    }
++}
++
++impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize> Drop for Slot<T, SHIFT, SIZE> {
++    fn drop(&mut self) {
++        match self.kind() {
++            SlotType::Pointer => {
++                // SAFETY:
++                // - By the type invariant, a slot classified `Pointer` holds a pointer returned by
++                //   a previous call to `T::into_foreign()`.
++                // - Every other `from_foreign` path (`decode`) consumes the slot through
++                //   `ManuallyDrop`, which suppresses this destructor, so this is the only
++                //   `from_foreign` call for this pointer.
++                drop(unsafe { T::from_foreign(self.0 as *mut c_void) });
++            }
++            SlotType::Node => {
++                let ptr = (self.0 & !3) as *mut Node<T, SHIFT, SIZE>;
++                // SAFETY:
++                // - By the type invariant, a slot classified `Node` holds a pointer produced by
++                //   `KBox::into_raw()` in `Slot::mk_node()`, tagged with `| 2`; `& !3` above
++                //   reverses the tag.
++                // - The slot is being dropped and passes that ownership to the reconstructed box.
++                //   `decode()`, the only other consumer of a slot by value, never accepts node
++                //   slots, so this is the only `KBox::from_raw()` for this pointer.
++                //
++                // Dropping the box drops the child's slots in turn, freeing the subtree. The
++                // recursion is bounded by the tree depth.
++                drop(unsafe { KBox::from_raw(ptr) });
++            }
++            SlotType::Internal => {
++                debug_assert!(false, "internal entry must not reach Slot::drop");
++            }
++            _ => {}
++        }
++    }
++}
++
++/// A single node in the radix tree. Each node contains `SIZE` slots, where each slot may be empty,
++/// contain a user entry (integer or pointer), or point to a child node at the next tree level.
++///
++/// # Invariants
++///
++/// - Interior nodes (level > 0): each slot is either `Empty` or a `Node` pointer created by
++///   [`Slot::mk_node()`] from a valid [`KBox<Node<T, SHIFT, SIZE>>`] allocation.
++/// - Leaf nodes (level == 0): each slot is either `Empty`, `Int`, or `Pointer`. No `Node` or
++///   `Internal` slots may appear at level 0.
++struct Node<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize> {
++    slots: [Slot<T, SHIFT, SIZE>; SIZE],
++}
++
++impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize> Node<T, SHIFT, SIZE> {
++    // Bitmask for extracting the slot offset. Equivalent to XA_CHUNK_MASK.
++    const MASK: usize = SIZE - 1;
++
++    const fn new() -> Self {
++        // INVARIANT: every slot is `Slot::EMPTY`, so the node satisfies the type invariants at any
++        // level.
++        Self {
++            slots: [const { Slot::EMPTY }; SIZE],
++        }
++    }
++
++    /// Extracts the slot index for `index` at the given tree `level`.
++    ///
++    /// Equivalent to `get_offset()` (see `lib/xarray.c`).
++    #[inline]
++    fn slot_index(index: usize, level: usize) -> usize {
++        (index >> (level * SHIFT)) & Self::MASK
++    }
++
++    /// Returns `true` if every slot in this node is empty.
++    fn is_empty(&self) -> bool {
++        self.slots.iter().all(|slot| slot.is_empty())
++    }
++
++    /// Erases the entry at `index`.
++    ///
++    /// Returns the previous entry, or [`None`] if the slot was empty. Frees empty intermediate
++    /// nodes on the way back up.
++    fn erase(&mut self, index: usize, level: usize) -> Option<Entry<T>> {
++        let slot_index = Self::slot_index(index, level);
++        let slot = &mut self.slots[slot_index];
++        if level == 0 {
++            debug_assert!(!slot.is_node(), "Found node pointer at leaf level");
++            // INVARIANT: `mem::take` leaves `Slot::EMPTY` behind, which is permitted at leaf level.
++            let old = mem::take(slot);
++            return old.decode();
++        }
++
++        if let Some(child) = slot.as_node_mut() {
++            let old_value = child.erase(index, level - 1);
++            if child.is_empty() {
++                // INVARIANT: `mem::take` leaves `Slot::EMPTY` behind, which is permitted at
++                // interior level. Dropping the taken slot frees the child node.
++                drop(mem::take(slot));
++            }
++            old_value
++        } else {
++            // Values at intermediate levels indicate tree corruption.
++            debug_assert!(slot.is_empty(), "Non-null non-node entry");
++            None
++        }
++    }
++
++    /// Builds an unlinked subtree that holds `entry` at `index`, from `level` down to leaf.
++    ///
++    /// A failed node allocation at any level returns the [`StoreError`] carrying `entry`, and the
++    /// nodes built so far are dropped automatically on the way out. The caller links the subtree
++    /// into the main tree only after the whole build has succeeded.
++    fn mk_subtree(
++        index: usize,
++        entry: Entry<T>,
++        level: usize,
++        flags: Flags,
++    ) -> Result<KBox<Self>, StoreError<T>> {
++        let mut node = match KBox::new(Self::new(), flags) {
++            Ok(node) => node,
++            Err(error) => {
++                return Err(StoreError {
++                    error: error.into(),
++                    entry,
++                })
++            }
++        };
++        let slot_index = Self::slot_index(index, level);
++        if level == 0 {
++            // INVARIANT: `Slot::encode` returns an `Int` or `Pointer` slot, both of which are
++            // permitted at leaf level.
++            node.slots[slot_index] = Slot::encode(entry);
++        } else {
++            let child_node = Self::mk_subtree(index, entry, level - 1, flags)?;
++            // INVARIANT: `Slot::mk_node` returns a node slot holding a valid `KBox<Node>`, which
++            // is permitted at interior level. The child subtree holds `entry` at its leaf level.
++            node.slots[slot_index] = Slot::mk_node(child_node);
++        }
++        Ok(node)
++    }
++
++    /// Stores `entry` at `index`, allocating intermediate nodes as needed.
++    ///
++    /// Returns the previous entry, or [`None`] if the slot was empty.
++    fn store(
++        &mut self,
++        index: usize,
++        entry: Entry<T>,
++        level: usize,
++        flags: Flags,
++    ) -> Result<Option<Entry<T>>, StoreError<T>> {
++        let slot_index = Self::slot_index(index, level);
++        let slot = &mut self.slots[slot_index];
++        if level == 0 {
++            debug_assert!(!slot.is_node(), "Found node pointer at leaf level");
++            // INVARIANT: `Slot::encode` returns an `Int` or `Pointer` slot, both of which are
++            // permitted at leaf level.
++            let old = mem::replace(slot, Slot::encode(entry));
++            return Ok(old.decode());
++        }
++
++        if slot.is_empty() {
++            // Link the subtree only after every allocation has succeeded. A failed allocation drops
++            // the partial subtree and leaves the main tree untouched.
++            let child_node = Self::mk_subtree(index, entry, level - 1, flags)?;
++            // INVARIANT: `Slot::mk_node` returns a node slot holding a valid `KBox<Node>`, which
++            // is permitted at interior level. The subtree holds `entry` at its leaf level.
++            *slot = Slot::mk_node(child_node);
++            return Ok(None);
++        }
++
++        let Some(child_node) = slot.as_node_mut() else {
++            // Unreachable unless the tree is corrupt. Rust type safety prevents this; C callers
++            // bypass that guarantee, so the FFI layer must ensure tree integrity before reaching
++            // this path.
++            debug_assert!(false, "Non-null non-node entry");
++            return Err(StoreError {
++                error: EINVAL,
++                entry,
++            });
++        };
++        // Any code after this call would block tail-call elimination.
++        child_node.store(index, entry, level - 1, flags)
++    }
++
++    /// Loads the entry at `index`.
++    ///
++    /// Returns a borrowed view of the entry, or [`None`] if the slot is empty.
++    fn load(&self, index: usize, level: usize) -> Option<BorrowedEntry<'_, T>> {
++        let slot_index = Self::slot_index(index, level);
++        let slot = &self.slots[slot_index];
++        if level == 0 {
++            debug_assert!(!slot.is_node(), "Found node pointer at leaf level");
++            return slot.borrow();
++        }
++
++        // Values at intermediate levels indicate tree corruption: trap when debug assertions are
++        // enabled, load as absent otherwise. Same shape as `load_mut()`, where the borrow checker
++        // constraints it.
++        debug_assert!(slot.is_node() || slot.is_empty(), "Non-null non-node entry");
++        slot.as_node()?.load(index, level - 1)
++    }
++
++    /// Loads the entry at `index` for mutation.
++    ///
++    /// Returns [`None`] if the slot is empty.
++    fn load_mut(&mut self, index: usize, level: usize) -> Option<BorrowedEntryMut<'_, T>> {
++        let slot_index = Self::slot_index(index, level);
++        let slot = &mut self.slots[slot_index];
++        if level == 0 {
++            debug_assert!(!slot.is_node(), "Found node pointer at leaf level");
++            return slot.borrow_mut();
++        }
++
++        // Values at intermediate levels indicate tree corruption: trap when debug assertions are
++        // enabled, load as absent otherwise.
++        debug_assert!(slot.is_node() || slot.is_empty(), "Non-null non-node entry");
++        slot.as_node_mut()?.load_mut(index, level - 1)
++    }
++}
++
++#[macros::kunit_tests(rust_rxarray)]
++mod tests {
++    use super::*;
++    use kernel::alloc::flags;
++
++    // Dispatches a test across all SHIFT/SIZE configurations. Default arm passes <T, SHIFT, SIZE>
++    // with T = KBox<u64>; `ptr` arm passes <SHIFT, SIZE> only for pointer tests that must construct
++    // KBox<u64> values because ForeignOwnable has no constructor, so T must be concrete.
++    macro_rules! for_each_xarray {
++        ($fn:ident) => {
++            $fn::<KBox<u64>, 4, 16>();
++            $fn::<KBox<u64>, 6, 64>();
++        };
++        (ptr, $fn:ident) => {
++            $fn::<4, 16>();
++            $fn::<6, 64>();
++        };
++    }
++
++    // `XArray` carries no explicit `Send`/`Sync` impl: the `PhantomData<T>` in `Slot` makes the
++    // auto-derived bounds follow `T`. These assertions fail to compile if that ever stops holding.
++    const fn assert_send<T: Send>() {}
++    const fn assert_sync<T: Sync>() {}
++
++    fn assert_auto_traits_impl<
++        T: ForeignOwnable + Send + Sync,
++        const SHIFT: usize,
++        const SIZE: usize,
++    >() {
++        assert_send::<XArray<T, SHIFT, SIZE>>();
++        assert_sync::<XArray<T, SHIFT, SIZE>>();
++    }
++
++    #[test]
++    fn assert_auto_traits() {
++        for_each_xarray!(assert_auto_traits_impl);
++    }
++
++    fn new_is_empty_impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize>() {
++        let xa = XArray::<T, SHIFT, SIZE>::new();
++        assert!(xa.is_empty());
++        assert!(xa.load(0).is_none());
++        assert!(xa.load(usize::MAX).is_none());
++    }
++
++    #[test]
++    fn new_is_empty() {
++        for_each_xarray!(new_is_empty_impl);
++    }
++
++    fn store_load_value_impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<T, SHIFT, SIZE>::new();
++        let old = xa.store(0, Entry::int::<137>(), flags::GFP_KERNEL).unwrap();
++        assert!(old.is_none());
++        assert!(!xa.is_empty());
++
++        match xa.load(0) {
++            Some(BorrowedEntry::Int(v)) => assert_eq!(v, 137),
++            _ => panic!("expected Int"),
++        };
++    }
++
++    #[test]
++    fn store_load_value() {
++        for_each_xarray!(store_load_value_impl);
++    }
++
++    fn overwrite_value_impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<T, SHIFT, SIZE>::new();
++        xa.store(137, Entry::int::<1001>(), flags::GFP_KERNEL)
++            .unwrap();
++        let old = xa
++            .store(137, Entry::int::<2002>(), flags::GFP_KERNEL)
++            .unwrap();
++
++        match old {
++            Some(Entry::Int(v)) => assert_eq!(v, 1001),
++            _ => panic!("expected old Int"),
++        }
++        match xa.load(137) {
++            Some(BorrowedEntry::Int(v)) => assert_eq!(v, 2002),
++            _ => panic!("expected Int"),
++        };
++    }
++
++    #[test]
++    fn overwrite_value() {
++        for_each_xarray!(overwrite_value_impl);
++    }
++
++    fn erase_value_impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<T, SHIFT, SIZE>::new();
++        xa.store(137, Entry::int::<1001>(), flags::GFP_KERNEL)
++            .unwrap();
++        xa.store(138, Entry::int::<1002>(), flags::GFP_KERNEL)
++            .unwrap();
++        xa.store(139, Entry::int::<1003>(), flags::GFP_KERNEL)
++            .unwrap();
++
++        let old = xa.erase(138);
++        match old {
++            Some(Entry::Int(v)) => assert_eq!(v, 1002),
++            _ => panic!("expected erased Int"),
++        }
++        assert!(xa.load(138).is_none());
++
++        match xa.load(137) {
++            Some(BorrowedEntry::Int(v)) => assert_eq!(v, 1001),
++            _ => panic!("expected Int at neighbor"),
++        }
++        match xa.load(139) {
++            Some(BorrowedEntry::Int(v)) => assert_eq!(v, 1003),
++            _ => panic!("expected Int at neighbor"),
++        };
++    }
++
++    #[test]
++    fn erase_value() {
++        for_each_xarray!(erase_value_impl);
++    }
++
++    // Two paths: (1) empty tree with no nodes allocated, (2) intermediate nodes exist but the
++    // target leaf slot was never stored.
++    fn erase_nonexistent_impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<T, SHIFT, SIZE>::new();
++        assert!(xa.erase(999).is_none());
++
++        // Intermediate nodes exist for index 0; index 1 shares the same leaf node but its slot was
++        // never populated.
++        xa.store(0, Entry::int::<1>(), flags::GFP_KERNEL).unwrap();
++        assert!(xa.erase(1).is_none());
++        match xa.load(0) {
++            Some(BorrowedEntry::Int(v)) => assert_eq!(v, 1),
++            _ => panic!("expected Int after erasing neighbor"),
++        };
++    }
++
++    #[test]
++    fn erase_nonexistent() {
++        for_each_xarray!(erase_nonexistent_impl);
++    }
++
++    // After erase frees intermediate nodes, re-store at the same index must re-allocate them.
++    fn erase_and_restore_impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<T, SHIFT, SIZE>::new();
++        xa.store(137, Entry::int::<1001>(), flags::GFP_KERNEL)
++            .unwrap();
++
++        let erased = xa.erase(137);
++        match erased {
++            Some(Entry::Int(v)) => assert_eq!(v, 1001),
++            _ => panic!("expected erased Int"),
++        }
++        assert!(xa.load(137).is_none());
++
++        let old = xa
++            .store(137, Entry::int::<2002>(), flags::GFP_KERNEL)
++            .unwrap();
++        assert!(old.is_none());
++        match xa.load(137) {
++            Some(BorrowedEntry::Int(v)) => assert_eq!(v, 2002),
++            _ => panic!("expected Int"),
++        };
++    }
++
++    #[test]
++    fn erase_and_restore() {
++        for_each_xarray!(erase_and_restore_impl);
++    }
++
++    // Stores at node boundaries to exercise tree structure:
++    // - SIZE-1: last slot in the first leaf node.
++    // - SIZE: first index requiring a second leaf node.
++    // - SIZE*SIZE-1: last index in the first level-1 subtree.
++    // - SIZE*SIZE: first index requiring a third tree level.
++    fn store_at_boundaries_impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<T, SHIFT, SIZE>::new();
++        xa.store(SIZE - 1, Entry::int::<0xA>(), flags::GFP_KERNEL)
++            .unwrap();
++        xa.store(SIZE, Entry::int::<0xB>(), flags::GFP_KERNEL)
++            .unwrap();
++        xa.store(SIZE * SIZE - 1, Entry::int::<0xC>(), flags::GFP_KERNEL)
++            .unwrap();
++        xa.store(SIZE * SIZE, Entry::int::<0xD>(), flags::GFP_KERNEL)
++            .unwrap();
++
++        match xa.load(SIZE - 1) {
++            Some(BorrowedEntry::Int(v)) => assert_eq!(v, 0xA),
++            _ => panic!("expected Int at SIZE-1"),
++        }
++        match xa.load(SIZE) {
++            Some(BorrowedEntry::Int(v)) => assert_eq!(v, 0xB),
++            _ => panic!("expected Int at SIZE"),
++        }
++        match xa.load(SIZE * SIZE - 1) {
++            Some(BorrowedEntry::Int(v)) => assert_eq!(v, 0xC),
++            _ => panic!("expected Int at SIZE*SIZE-1"),
++        }
++        match xa.load(SIZE * SIZE) {
++            Some(BorrowedEntry::Int(v)) => assert_eq!(v, 0xD),
++            _ => panic!("expected Int at SIZE*SIZE"),
++        }
++        assert!(xa.load(0).is_none());
++    }
++
++    #[test]
++    fn store_at_boundaries() {
++        for_each_xarray!(store_at_boundaries_impl);
++    }
++
++    // For XArray6 this allocates 10 intermediate nodes; for XArray4, 15. Erasing verifies cascading
++    // cleanup frees all intermediate nodes back to the root.
++    fn store_at_max_index_impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<T, SHIFT, SIZE>::new();
++        xa.store(usize::MAX, Entry::int::<0xFF>(), flags::GFP_KERNEL)
++            .unwrap();
++        match xa.load(usize::MAX) {
++            Some(BorrowedEntry::Int(v)) => assert_eq!(v, 0xFF),
++            _ => panic!("expected Int at usize::MAX"),
++        }
++        assert!(xa.load(0).is_none());
++
++        match xa.erase(usize::MAX) {
++            Some(Entry::Int(v)) => assert_eq!(v, 0xFF),
++            _ => panic!("expected erased Int at usize::MAX"),
++        }
++        assert!(xa.load(usize::MAX).is_none());
++        assert!(xa.is_empty());
++    }
++
++    #[test]
++    fn store_at_max_index() {
++        for_each_xarray!(store_at_max_index_impl);
++    }
++
++    // SIZE*3 entries spanning multiple leaf nodes. Erases even indices and verifies odd indices
++    // remain intact. Erase return values are not checked here; that path is covered by erase_value.
++    fn bulk_operations_impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<T, SHIFT, SIZE>::new();
++        let count = SIZE * 3;
++
++        for i in 0..count {
++            xa.store(i, Entry::try_int(i * 10).unwrap(), flags::GFP_KERNEL)
++                .unwrap();
++        }
++
++        for i in 0..count {
++            if i % 2 == 0 {
++                xa.erase(i);
++            }
++        }
++
++        for i in 0..count {
++            match xa.load(i) {
++                Some(BorrowedEntry::Int(v)) => {
++                    assert_eq!(i % 2, 1);
++                    assert_eq!(v, i * 10);
++                }
++                Some(BorrowedEntry::Pointer(_)) => {
++                    panic!("unexpected Pointer in value-only tree")
++                }
++                None => assert_eq!(i % 2, 0),
++            }
++        }
++    }
++
++    #[test]
++    fn bulk_operations() {
++        for_each_xarray!(bulk_operations_impl);
++    }
++
++    // Stores entries in different subtrees (indices 0 and SIZE diverge at level 1), then erases
++    // both. The second erase cascades cleanup through intermediate nodes that no longer have any
++    // children.
++    fn erase_all_restores_empty_impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<T, SHIFT, SIZE>::new();
++        xa.store(0, Entry::int::<1>(), flags::GFP_KERNEL).unwrap();
++        xa.store(SIZE, Entry::int::<2>(), flags::GFP_KERNEL)
++            .unwrap();
++        assert!(!xa.is_empty());
++
++        xa.erase(0);
++        assert!(!xa.is_empty());
++        xa.erase(SIZE);
++        assert!(xa.is_empty());
++    }
++
++    #[test]
++    fn erase_all_restores_empty() {
++        for_each_xarray!(erase_all_restores_empty_impl);
++    }
++
++    // Entry::int::<0>() encodes as (0 << 1) | 1 = 1; must not be confused with the empty slot
++    // encoding (0).
++    fn value_zero_impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<T, SHIFT, SIZE>::new();
++        xa.store(0, Entry::int::<0>(), flags::GFP_KERNEL).unwrap();
++        assert!(!xa.is_empty());
++        match xa.load(0) {
++            Some(BorrowedEntry::Int(v)) => assert_eq!(v, 0),
++            _ => panic!("expected Int"),
++        }
++
++        match xa.erase(0) {
++            Some(Entry::Int(v)) => assert_eq!(v, 0),
++            _ => panic!("expected erased Int"),
++        }
++        assert!(xa.load(0).is_none());
++    }
++
++    #[test]
++    fn value_zero() {
++        for_each_xarray!(value_zero_impl);
++    }
++
++    // Pointer-specific tests (ForeignOwnable path with KBox<u64>).
++
++    fn store_load_pointer_impl<const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<KBox<u64>, SHIFT, SIZE>::new();
++        let boxed = KBox::new(42u64, flags::GFP_KERNEL).unwrap();
++        let old = xa
++            .store(0, Entry::Pointer(boxed), flags::GFP_KERNEL)
++            .unwrap();
++        assert!(old.is_none());
++
++        match xa.load(0) {
++            Some(BorrowedEntry::Pointer(val)) => assert_eq!(*val, 42u64),
++            _ => panic!("expected Pointer"),
++        }
++    }
++
++    #[test]
++    fn store_load_pointer() {
++        for_each_xarray!(ptr, store_load_pointer_impl);
++    }
++
++    // Erase returns the owned KBox, verifying that Slot::decode transfers ownership via
++    // ManuallyDrop without double-free or leak.
++    fn erase_returns_pointer_impl<const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<KBox<u64>, SHIFT, SIZE>::new();
++        let boxed = KBox::new(99u64, flags::GFP_KERNEL).unwrap();
++        xa.store(5, Entry::Pointer(boxed), flags::GFP_KERNEL)
++            .unwrap();
++
++        match xa.erase(5) {
++            Some(Entry::Pointer(owned)) => assert_eq!(*owned, 99u64),
++            _ => panic!("expected owned Pointer"),
++        }
++        assert!(xa.load(5).is_none());
++    }
++
++    #[test]
++    fn erase_returns_pointer() {
++        for_each_xarray!(ptr, erase_returns_pointer_impl);
++    }
++
++    fn overwrite_pointer_with_value_impl<const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<KBox<u64>, SHIFT, SIZE>::new();
++        let boxed = KBox::new(42u64, flags::GFP_KERNEL).unwrap();
++        xa.store(0, Entry::Pointer(boxed), flags::GFP_KERNEL)
++            .unwrap();
++
++        let old = xa.store(0, Entry::int::<137>(), flags::GFP_KERNEL).unwrap();
++        match old {
++            Some(Entry::Pointer(p)) => assert_eq!(*p, 42u64),
++            _ => panic!("expected old Pointer"),
++        }
++        match xa.load(0) {
++            Some(BorrowedEntry::Int(v)) => assert_eq!(v, 137),
++            _ => panic!("expected Int"),
++        }
++    }
++
++    #[test]
++    fn overwrite_pointer_with_value() {
++        for_each_xarray!(ptr, overwrite_pointer_with_value_impl);
++    }
++
++    fn overwrite_value_with_pointer_impl<const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<KBox<u64>, SHIFT, SIZE>::new();
++        xa.store(0, Entry::int::<137>(), flags::GFP_KERNEL).unwrap();
++
++        let boxed = KBox::new(42u64, flags::GFP_KERNEL).unwrap();
++        let old = xa
++            .store(0, Entry::Pointer(boxed), flags::GFP_KERNEL)
++            .unwrap();
++        match old {
++            Some(Entry::Int(v)) => assert_eq!(v, 137),
++            _ => panic!("expected old Int"),
++        }
++        match xa.load(0) {
++            Some(BorrowedEntry::Pointer(val)) => assert_eq!(*val, 42u64),
++            _ => panic!("expected Pointer"),
++        }
++    }
++
++    #[test]
++    fn overwrite_value_with_pointer() {
++        for_each_xarray!(ptr, overwrite_value_with_pointer_impl);
++    }
++
++    fn mixed_values_and_pointers_impl<const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<KBox<u64>, SHIFT, SIZE>::new();
++        let boxed = KBox::new(42u64, flags::GFP_KERNEL).unwrap();
++        xa.store(0, Entry::int::<100>(), flags::GFP_KERNEL).unwrap();
++        xa.store(1, Entry::Pointer(boxed), flags::GFP_KERNEL)
++            .unwrap();
++
++        match xa.load(0) {
++            Some(BorrowedEntry::Int(v)) => assert_eq!(v, 100),
++            _ => panic!("expected Int"),
++        }
++        match xa.load(1) {
++            Some(BorrowedEntry::Pointer(val)) => assert_eq!(*val, 42u64),
++            _ => panic!("expected Pointer"),
++        }
++    }
++
++    #[test]
++    fn mixed_values_and_pointers() {
++        for_each_xarray!(ptr, mixed_values_and_pointers_impl);
++    }
++
++    // Drops a tree with mixed Int (even indices) and Pointer (odd indices) entries. Correctness
++    // depends on KASAN/kmemleak detecting leaks or double-frees.
++    fn drop_frees_pointers_impl<const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<KBox<u64>, SHIFT, SIZE>::new();
++        let count = SIZE * 2;
++        for i in 0..count {
++            if i % 2 == 0 {
++                xa.store(i, Entry::try_int(i * 10).unwrap(), flags::GFP_KERNEL)
++                    .unwrap();
++            } else {
++                let b = KBox::new(i as u64, flags::GFP_KERNEL).unwrap();
++                xa.store(i, Entry::Pointer(b), flags::GFP_KERNEL).unwrap();
++            }
++        }
++    }
++
++    #[test]
++    fn drop_frees_pointers() {
++        for_each_xarray!(ptr, drop_frees_pointers_impl);
++    }
++
++    // usize::MAX >> 1 is the maximum valid integer entry. Exercises both compile-time validation
++    // (Entry::int) and runtime validation (Entry::try_int).
++    fn value_encoding_boundary_impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<T, SHIFT, SIZE>::new();
++        let max = usize::MAX >> 1;
++
++        // Runtime: try_int accepts max, rejects max+1.
++        assert!(Entry::<T>::try_int(max).is_some());
++        assert!(Entry::<T>::try_int(max + 1).is_none());
++        assert!(Entry::<T>::try_int(usize::MAX).is_none());
++
++        // Compile-time: `Entry::int` validates via `const_assert!` in `Bounded::new`.
++        xa.store(0, Entry::int::<{ usize::MAX >> 1 }>(), flags::GFP_KERNEL)
++            .unwrap();
++        match xa.load(0) {
++            Some(BorrowedEntry::Int(v)) => assert_eq!(v, max),
++            _ => panic!("expected max value"),
++        };
++    }
++
++    #[test]
++    fn value_encoding_boundary() {
++        for_each_xarray!(value_encoding_boundary_impl);
++    }
++
++    fn overwrite_pointer_with_pointer_impl<const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<KBox<u64>, SHIFT, SIZE>::new();
++        let first = KBox::new(42u64, flags::GFP_KERNEL).unwrap();
++        xa.store(0, Entry::Pointer(first), flags::GFP_KERNEL)
++            .unwrap();
++
++        let second = KBox::new(99u64, flags::GFP_KERNEL).unwrap();
++        let old = xa
++            .store(0, Entry::Pointer(second), flags::GFP_KERNEL)
++            .unwrap();
++        match old {
++            Some(Entry::Pointer(p)) => assert_eq!(*p, 42u64),
++            _ => panic!("expected old Pointer"),
++        }
++        match xa.load(0) {
++            Some(BorrowedEntry::Pointer(val)) => assert_eq!(*val, 99u64),
++            _ => panic!("expected new Pointer"),
++        }
++    }
++
++    #[test]
++    fn overwrite_pointer_with_pointer() {
++        for_each_xarray!(ptr, overwrite_pointer_with_pointer_impl);
++    }
++
++    fn erase_at_boundaries_impl<T: ForeignOwnable, const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<T, SHIFT, SIZE>::new();
++        xa.store(SIZE - 1, Entry::int::<0xA>(), flags::GFP_KERNEL)
++            .unwrap();
++        xa.store(SIZE, Entry::int::<0xB>(), flags::GFP_KERNEL)
++            .unwrap();
++        xa.store(SIZE * SIZE - 1, Entry::int::<0xC>(), flags::GFP_KERNEL)
++            .unwrap();
++        xa.store(SIZE * SIZE, Entry::int::<0xD>(), flags::GFP_KERNEL)
++            .unwrap();
++
++        match xa.erase(SIZE * SIZE) {
++            Some(Entry::Int(v)) => assert_eq!(v, 0xD),
++            _ => panic!("expected erased Int at SIZE*SIZE"),
++        }
++        match xa.erase(SIZE * SIZE - 1) {
++            Some(Entry::Int(v)) => assert_eq!(v, 0xC),
++            _ => panic!("expected erased Int at SIZE*SIZE-1"),
++        }
++        match xa.erase(SIZE) {
++            Some(Entry::Int(v)) => assert_eq!(v, 0xB),
++            _ => panic!("expected erased Int at SIZE"),
++        }
++        match xa.erase(SIZE - 1) {
++            Some(Entry::Int(v)) => assert_eq!(v, 0xA),
++            _ => panic!("expected erased Int at SIZE-1"),
++        }
++        assert!(xa.is_empty());
++    }
++
++    #[test]
++    fn erase_at_boundaries() {
++        for_each_xarray!(erase_at_boundaries_impl);
++    }
++
++    // Erasing the sole pointer must return the owned KBox and free all intermediate nodes.
++    fn erase_last_pointer_cascading_impl<const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<KBox<u64>, SHIFT, SIZE>::new();
++        let boxed = KBox::new(777u64, flags::GFP_KERNEL).unwrap();
++        xa.store(0, Entry::Pointer(boxed), flags::GFP_KERNEL)
++            .unwrap();
++
++        match xa.erase(0) {
++            Some(Entry::Pointer(p)) => assert_eq!(*p, 777u64),
++            _ => panic!("expected owned Pointer"),
++        }
++        assert!(xa.is_empty());
++    }
++
++    #[test]
++    fn erase_last_pointer_cascading() {
++        for_each_xarray!(ptr, erase_last_pointer_cascading_impl);
++    }
++
++    fn load_mut_entries_impl<const SHIFT: usize, const SIZE: usize>() {
++        let mut xa = XArray::<KBox<u64>, SHIFT, SIZE>::new();
++        assert!(xa.load_mut(0).is_none());
++
++        let boxed = KBox::new(137u64, flags::GFP_KERNEL).unwrap();
++        xa.store(0, Entry::Pointer(boxed), flags::GFP_KERNEL)
++            .unwrap();
++        xa.store(1, Entry::int::<137>(), flags::GFP_KERNEL).unwrap();
++
++        match xa.load_mut(0) {
++            Some(BorrowedEntryMut::Pointer(val)) => *val = 131u64,
++            _ => panic!("expected Pointer"),
++        }
++        match xa.load(0) {
++            Some(BorrowedEntry::Pointer(val)) => assert_eq!(*val, 131u64),
++            _ => panic!("expected Pointer"),
++        }
++        match xa.load_mut(1) {
++            Some(BorrowedEntryMut::Int(val)) => assert_eq!(val, 137),
++            _ => panic!("expected Int"),
++        }
++    }
++
++    #[test]
++    fn load_mut_entries() {
++        for_each_xarray!(ptr, load_mut_entries_impl);
++    }
++
++    fn store_error_impl<const SHIFT: usize, const SIZE: usize>() {
++        let err = StoreError {
++            error: ENOMEM,
++            entry: Entry::<KBox<u64>>::int::<137>(),
++        };
++        match &err.entry {
++            Entry::Int(value) => assert_eq!(*value, 137),
++            _ => panic!("expected Int"),
++        }
++        let e: Error = err.into();
++        assert_eq!(e.to_errno(), ENOMEM.to_errno());
++    }
++
++    #[test]
++    fn store_error() {
++        for_each_xarray!(ptr, store_error_impl);
++    }
++}
 
-Best regards,
---  
-Daniel Gomez <da.gomez@samsung.com>
+-- 
+2.55.0
 
