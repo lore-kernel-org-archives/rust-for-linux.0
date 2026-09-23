@@ -1,95 +1,207 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1E157C720;
-	Wed, 23 Sep 2026 20:39:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790195964; cv=none; b=kztuiRNGiprRMxqi+NJW2rahYpTZnq7iRqSJziTFEpTriNWPGWOmE594pgta9LW0VSZwzZDDe4VvIiFhvVPQPrCQ3XSXjjBidDjQy6poAXSZrEWU79GlI2J+fS/0MTJHLLt12sjiBucfWBSQ4g9mFqqPNEA2syw3rb43DK7S/qY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790195964; c=relaxed/simple;
-	bh=0rIPTceHJYkPdHUcYuUIdtlF9hbmIaxrwDnahMT9hA8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Sgk5fKOs+gQcA13yLtAVAdByBCWlgUlYOYg73nlCUNkd3hi8KYRn1tqnaPMF7FNasKIO84ThPp3DtkegAj6bgr1mb+IXN9dgRF0agg4vk3FWMW1f96pu5zT8touz5AegW4Zni348/UorGc5EK942PNTbWQaeDBIcG8LIH6eTO5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sb8Z+kU6; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878563C1F;
+	Wed, 23 Sep 2026 20:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.182.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790196201; cv=pass; b=M3kwUdgDlPsHGx/nwBlV3lBUr7pJKWAAD+mA73eEGmcE6DP3GjQTHtSoSl0kA/PWYlhoZ1yHbOKWN4DHgZJssCyhV8vZVVa9ECyuvulANox6/BZ22RjkjeYqB5HA1EMB+1z17QHGZ8vrInqLTyJ6Cd+khflhDAq85qY0q9U3fDY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790196201; c=relaxed/simple;
+	bh=cQpgbVCfz1vyJ7PhUgvYbUvDkQyLBFh/zIn1QkfzTtE=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=XNcIKaDChcz6dEoYiCQMa3A9IgZwcILUUGiDJ4WrVcGasHRQTPkc9neKhGFYxPlaxwM/xuJKwN1QYGxhGKw4pKYh59N2LFxK/OCrSuUHygCd3B57LzT+ixU4/7GopbAIVTdAsVGRLeYSYoAMItKI0YuwOQqV/kVLIVmxYsvSybw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=gK9GgW7F; arc=pass smtp.client-ip=165.173.182.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sb8Z+kU6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27DA1F000FF;
-	Wed, 23 Sep 2026 20:39:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790195949;
-	bh=jfG5GGO+1MUArDjsH2YhnDZ5acPt65830dSNUaJVTxo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Sb8Z+kU6S1sDwygJtZwtiCp7L4KeBL9sEr8R+UPRJoY3Nx+UQq91Vqcn6RMko7Sik
-	 KZfx4QOoBJFajKhDmkPEQzdIkiIztzVusUuYRWkyJ9Gxla8v29lE43KpfatLlXNC0c
-	 IhocHhmviFzDLmQkK06Gqjt8fkrfGrsyNyj554Fedyd5LmmxjoZAxdcbiZp9+Co1O0
-	 J3MvuSa0oj5xDEYas9VFObf67EWb1xzxapaPhdbcHSUejQ6Dw1AIy+AW8k54d3Smqe
-	 gMChQdVO/8UNq6ncBU+zbLClWZJQcyX0+RaSw9n0gK97e61HO3LJyeJADBO+szIG+F
-	 rlSwuHEKFOkiQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>, Lyude Paul
- <lyude@redhat.com>, Daniel Almeida <daniel.almeida@collabora.com>, Onur
- =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>, Miguel Ojeda
- <ojeda@kernel.org>, =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Tamir
- Duberstein <tamird@kernel.org>, Alexandre
- Courbot <acourbot@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: sync: fix safety comment for `Arc::from_raw`
-In-Reply-To: <87a4p73dvy.fsf@t14s.mail-host-address-is-not-set>
-References: <20260923-aref-from-raw-safety-v1-1-e34f0da04145@kernel.org>
- <DLMX05RAZD0S.1EZ4L85L0T2HS@garyguo.net>
- <87a4p73dvy.fsf@t14s.mail-host-address-is-not-set>
-Date: Wed, 23 Sep 2026 22:38:57 +0200
-Message-ID: <877bkb3dpa.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="gK9GgW7F"
+ARC-Seal: i=1; a=rsa-sha256; t=1790196154; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=J8Qty4xuAwmy9p1FDA6M4MKIbduEQW68wW5K4RMKvg8qAeHjvbdt6gLa560gn5SKk1/3ODoSz+B2LiVShTnEffY774x4pasKBFCtCaWX0DMMZzQRqYxO27sWZqCxf6F3iNts4KA0msRVm/K5Umrv+AasYLLUCBFALEgb3a3u9os=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1790196154; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=xo7cgqIIFuStSgCn4luUGcQPHzo3wUQwdn1Qq+BTVqQ=; 
+	b=VBP0PCfW+ucS19AZr6VA2IULlPDugAlAIpeQwf0OWzJJEfklrHFGXPKce+yFKmMbUa4yoOjafYG8YkUU5dykK4KC2vX+B+Y/3fCU9SRlk1waiQeEQw4fUQ5LqUr8loaVKY01yAFrKHztVNX79a+vqpFBuXel2u7bS92KclvLlLw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1790196154;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
+	bh=xo7cgqIIFuStSgCn4luUGcQPHzo3wUQwdn1Qq+BTVqQ=;
+	b=gK9GgW7FLv0FVaPmeWXVOMiQb9TTQjskMlrMhkP8EZyo/jX1CKGHWQ0N4vnJzwr2
+	8I0KBZ0v6hseD7/Xhwd52EoxDtpeeUnNiz14hQfR+09smb7Gc+miE9elMMzw7lsXhGQ
+	pCmhQUJi9rL9Nfsfu8+xvXlvBOBhewEkTfu6U2ZM=
+Received: by smtp.zohomail.com with SMTPS id 1790196153019663.532298405788;
+	Wed, 23 Sep 2026 13:42:33 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
+Subject: Re: [PATCH 4/9] drm/tyr: add McuVa and claim-checked MappedBo views
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260915-tyr-interfaces-v1-4-5d28f1f75aca@collabora.com>
+Date: Wed, 23 Sep 2026 17:42:13 -0300
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Lyude Paul <lyude@redhat.com>,
+ Thomas Gleixner <tglx@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>,
+ John Stultz <jstultz@google.com>,
+ Stephen Boyd <sboyd@kernel.org>,
+ dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org,
+ driver-core@lists.linux.dev,
+ rust-for-linux@vger.kernel.org,
+ kernel@collabora.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C027787C-A04B-40AC-B0EF-62F0BBC156F9@collabora.com>
+References: <20260915-tyr-interfaces-v1-0-5d28f1f75aca@collabora.com>
+ <20260915-tyr-interfaces-v1-4-5d28f1f75aca@collabora.com>
+To: Laura Nao <laura.nao@collabora.com>
+X-Mailer: Apple Mail (2.3901.100.1.1.11)
+X-ZohoMailClient: External
 
-Andreas Hindborg <a.hindborg@kernel.org> writes:
+Hi Laura,
 
-> "Gary Guo" <gary@garyguo.net> writes:
->
->> On Wed Sep 23, 2026 at 7:32 PM BST, Andreas Hindborg wrote:
->>> `Arc::from_raw` does not require `T: Send`. But if `Arc::from_raw` was
->>> executed on a different thread than `Arc::into_raw`, `T` must implement
->>> `Send` for the API to be sound. If this is not the case, ownership of `T`
->>> may be sent across a thread boundary even if `T: !Send`.
->>>
->>> Augment safety comment for `Arc::from_raw` to close this gap.
->>>
->>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>> ---
->>>  rust/kernel/sync/arc.rs | 3 +++
->>>  1 file changed, 3 insertions(+)
->>>
->>> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
->>> index 8ae0fe6f19ec..06838ecf633c 100644
->>> --- a/rust/kernel/sync/arc.rs
->>> +++ b/rust/kernel/sync/arc.rs
->>> @@ -276,6 +276,9 @@ pub fn as_ptr(this: &Self) -> *const T {
->>>      ///
->>>      /// `ptr` must have been returned by a previous call to [`Arc::into_raw`]. Additionally, it
->>>      /// must not be called more than once for each previous call to [`Arc::into_raw`].
->>> +    ///
->>> +    /// If [`Arc::into_raw`] was executed on a different thread than the one executing
->>> +    /// [`Arc::from_raw`], `T` must implement [`Send`].
->>
->> This needs to be `Send + Sync`?
->
-> Why does the `Arc` need to be `Sync` as well? We are transferring
-> ownership, not a reference.
+It=E2=80=99s been a while since I wrote this, and I now see this could =
+use some
+improvements.
 
-Ah, I get your point. The comment is wrong, I meant to say "`Arc<T>`
-must implement `Send`". I did not mean to address `T`.
+I think the first problem is that this conflates "MappedBo" with "the =
+MappedBo
+backing the shared region". As soon as we try to add more users, this =
+will be a
+problem. I propose that we split this into two types that build upon =
+each other:
 
-Best regards,
-Andreas Hindborg
+a) a generic layer MappedBo, which remains roughly as-is:
+
+gem.rs:
+
+pub(crate) struct MappedBo<'drm> {
+  vmap: shmem::VMapOwned<BoData>,
+  bo: KernelBo<'drm>,
+}
+
+impl<'drm> MappedBo<'drm> {
+  // pub(crate) API:
+
+  // no Arc, McuMappedBo has to hold it by value, otherwise a second =
+holder
+  // could write around the claims.
+  fn new(bo: KernelBo<'drm>) -> Result<Self>
+  fn va_range(...) -> ...
+  fn vmap(...) -> ...
+}
+
+impl Deref for MappedBo<'_> { type Target =3D Bo ... }
+
+
+b) A MCU-specific BO type with the claims + offset logic:
+
+fw/mcu_bo.rs:
+
+pub(super) struct McuVa(...) + related McuVa impls.
+
+#[pin_data]
+pub(super) struct McuMappedBo<'drm> {
+  bo: MappedBo<'drm>, // private, no accessor
+
+  #[pin]
+  claims: Mutex<KVec<Range<u64>>>
+}
+
+impl<'drm> McuMappedBo<'drm> {
+  // pub super API
+
+  // builds its own MappedBo, checks the 32-bit range before allocating =
+and
+  // copies the section data from the fw binary before any view can =
+exist.
+  new(ddev, mcu_vm: Arc<Vm<'drm>>, va: McuVa, size: u64, flags: =
+VmMapFlags,
+      data: &[u8]) -> Result<impl PinInit<Self,Error>> {...}
+
+  // views borrow: &'a self instead of self: &Arc<Self>
+  fn try_view<'a>(&'a self, va: McuVa, len: u64, reach: u64)
+      -> Result<McuView<'a>>
+  fn try_view_mut<'a>(&'a self, va: McuVa, len: u64, reach: u64)
+      -> Result<McuViewMut<'a>>
+}
+
+c) Views get renamed to McuView, McuViewMut:
+
+#[derive(Clone)]
+pub(super) struct McuView<'a> {
+  vmap: &'a VMapOwned<BoData>,
+  base: u64,
+  range: Range<u64>,
+  reach: u64, // <=E2=80=94=E2=80=94=E2=80=94=E2=80=94 Store this
+}
+
+pub(super) struct McuViewMut<'a> {
+  view: McuView<'a>,
+  claims: &'a Mutex<KVec<Range<u64>>>,
+}
+
+impl<'a> Deref for McuViewMut<'a> {
+  type Target =3D McuView<'a>;
+  fn deref(&self) -> &Self::Target {
+    &self.view
+  }
+}
+
+impl Drop for McuViewMut<'_> {
+  // return claim here.
+}
+
+
+>=20
+> +// SAFETY: `MappedBo` may move between threads: the CPU mapping's =
+address is
+> +// valid from any thread; `KernelBo`'s teardown (GPU unmap through =
+`Arc<Vm>`
+> +// and the GEM object release) goes through thread-safe C APIs; and =
+the only
+> +// interior mutability (`claims`) is mutex-protected.
+> +unsafe impl Send for MappedBo<'_> {}
+> +// SAFETY: `&MappedBo` exposes the mutex-protected claims table, the =
+`Deref`
+> +// surface to the GEM object (thread-safe C APIs), and the mapping =
+itself,
+> +// whose contents are only ever accessed through volatile operations. =
+The
+> +// memory is shared with the MCU by design, so concurrent access is =
+part of
+> +// the model rather than a race the type system must rule out.
+> +unsafe impl Sync for MappedBo<'_> {}
+
+
+I don=E2=80=99t think we need a manual implementation here.
+
+The rest of the patch looks good to me.
+
+=E2=80=94 Daniel
 
 
