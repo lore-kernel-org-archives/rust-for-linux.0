@@ -1,54 +1,54 @@
 Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020120.outbound.protection.outlook.com [52.101.195.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885F352843C;
-	Wed, 23 Sep 2026 18:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5A7440A0D;
+	Wed, 23 Sep 2026 18:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.120
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790187645; cv=fail; b=Gc906zm/W2drEVdhHGjwdB808exRlWxdILiHhBZCXCSeYUSdXzfm3KMJwCStJIXlcduzPFv/aDNZnP9rDsWPL9V5Fo/KNi9OOMkPxfbYShFlvSb4AxU4+/fb9gfS+nrc6hzXEOO3sDflaR8K/op0bLH4f/P10ry9EsX4/iKFzIc=
+	t=1790187649; cv=fail; b=JX9uPzmXPlJPxwPt/NbjYGHvcsrq8KYpRmJDX5UN/b0xk42u3TG9ovidT5BZv7sWsnYnVpKl63CHvGeLFMuhutFz87cNcSOG6tYzaq/39hzXR360eVOV/l3CtJ/II4Xi/axef4batR8x+gYDZR0dXd1Cp0WNMRIvoShe9CobRto=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790187645; c=relaxed/simple;
-	bh=1eqZ/uzyj9yR0UoLHnh94cgdinYYXFKUD/IDj+Jr8aw=;
+	s=arc-20240116; t=1790187649; c=relaxed/simple;
+	bh=XBtIXC0M1dFD265oUX37BthhCp4tgf4WqOpUNB+x+Dc=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=FM+rhOGjcR2xF6fzoYiALEbxhx6LyFJh5SMITs9fw5AuvMeQ3j6WN9FX8roxAsO3jMxHmtuVw3/d400gvtrsAim2FDYxI+ohyjSL03DT7Nwuny3UjyRWbYc8ljn8XowaO8+KDx+7kiMLGXOWDE7o6zpKpSjVr9lAQL6dtWlstKo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=jpSg05op; arc=fail smtp.client-ip=52.101.195.120
+	 To:Cc:MIME-Version; b=Dij52KSO0mWUoqSu3md/r0+8roKl8ceReqDYV/S/AXu0i/q4nt9NxZI3jX023G9g6x/6SoWPFIj8wDD543bECJoIsVtZm0ksmBEjuXoIitWZxaBS+oIWZai8lug9VKOSmprKeCkwINotLRjTbHfkHm+FZAQHTSe0gaEEa1GCnk0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ywbWwgpN; arc=fail smtp.client-ip=52.101.195.120
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="jpSg05op"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ywbWwgpN"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ugh613cld6Duz5JX4GC+9DvVX3im8Gh4rvsqyrMXY8OU3CGZlF6ksf4HxrmNJ/ABUbOZpQe+AUuHesCmlK1FgMGgU4UhkbG7G+P/O/O8gnkLgeM0e6olNJ07lq2IRgzRAZPUX8FpdiWl+KLXdZ6zYL5HJQ0ahF+zKvidtfkrKpcMKyjH51j54y7HlwHtbZjPPQJXJphtySCG3yc64KkJeRMeK17dWGWwXJsQljz6pS7eHTRMo6ssfhfbhl+xkTjfPXS/OKIK0SWO7QcKAbCe7Dj3Oxnk7xfBgx7EBJQvO/r9XpN/F7w4q/myKol8epcLU8TLVtArIfbLk4mGFAL9lw==
+ b=irOn6YlrvsyFm/WQRGQ+oWmq5ZoDD0kncs3KDVBd908s+pAifGaIMLccvb35wFd+lfQFX0MtY93wfFr2DTfJ4pufBMQmKPixMDRR6IQD0wXouXs4WEgOtxiCV8v+gharrl+tsSxivSD8Uwt6BvOiJU/94gfDVAnhWvDYDwGpVoEgh1z/goApFaf4S00EAV6auvNjKXa2DTCLnQXOnmm2jzFerHQjBy+RkyXAcjSe3tFhvs9FloWPIb/YidTIGFi/qBgK2XnymiCMCfysgZ0RzqittDqu+D4u4d4ehwDgHmi5543G48sdJpEi2pXm3dJ+x2l4h69DUGkpvVWbtZVhOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YFjkXdbz7cWLH2DZn8Wtm4fgN347oeNWgMTjWS11cAo=;
- b=WdquYgiGwNOrLJC4yA6w+tWjRG53Q+HNo4xdr6F+gg170ax0tny3U1d7Ze0CCO0LD0PqoeDv5n18bF9PEdGiBg9eGpdqWBfYABGJ5k+fAadnljkrTiFq4q4MOjViq58shFxfx7S5TkKOLxGtmxlTXAsSp3sdvaqXiqlgNWGyHLt9zJugm7tLAE9Hd758pbiGCb/IiJ0mJ8tGCJeZeVJkd1tgkx2jp5YmSwHyostWLPDBxp9FIPwrkcM5IDNhruXM6zkpl4B+vAb0X5FPVrxPcTkVGed+8KTahict6mg8DV2Ft2am64ioI9oogO0d4W7qwDuBgLrQ/I6rph0C93PAmw==
+ bh=ig74jBLf4exwIbUiNoo0NMqworQNGKyMXUY6p0euWJ4=;
+ b=hgzvoGCpxSJsBc96lI6uP53C01nV8k5dMlO8FXmdowGEE1Z/bXttyLYZB34ouPD9jpv1fGkvrfw2mwWYFNeqy0A+hNt8coChYUGKO5GkyPw/p9Y1IXcc+2Ew2D9tisWWNZL+mWWPPQQxUMh4YUS9kgJHdzvkAReWEyM9SBZxVYj1otW+oRvfFVgvE7+5jgVkFsilHO+vzmB6hjry1VsvgJJDQamWeu3pBpL7K/6TqFyLMLq7CRZEzehzYocKR59EIpD11KQf195sdDYxpaa1At4axLyQ6StEWldVzKv1evD3y8mQr2bNUmSZk1EH5+GAOr2jwCX/J9fnD52YS3jXdg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YFjkXdbz7cWLH2DZn8Wtm4fgN347oeNWgMTjWS11cAo=;
- b=jpSg05opWD6FWs+OWACT0HIqU9NjJz06+z9a0xjqAvnDg5y6l2AuIAX2WAnBixilfE1708YjqLAZAqOXCAEWf1G11cS0LwJjMnxuur9jprSCqsugDiIKzqgEXW2kvdoUA9aJPBlgUXQ5/1RDHlWUUW5FZxRku0pwQaghRYkDuQw=
+ bh=ig74jBLf4exwIbUiNoo0NMqworQNGKyMXUY6p0euWJ4=;
+ b=ywbWwgpN9SUj2bX+IEb8u0+QqKbDKXi7A7LDb3bWqm7QzqpyZd4+BqrYiBBu513MJEdXc0VUwGPM9bNwB+XLei6NPypMCB3WkQ4mPwNaTNjUOKHU2s3Suco4Ousri/mHM8vDtCjOBEKKE+XhCcVTW4vV9cb0OuHZVdQUA3Ii4Ms=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
  by CWLP265MB6301.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:187::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.16; Wed, 23 Sep
- 2026 18:20:32 +0000
+ 2026 18:20:33 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0451.014; Wed, 23 Sep 2026
  18:20:32 +0000
 From: Gary Guo <gary@garyguo.net>
-Date: Wed, 23 Sep 2026 19:20:15 +0100
-Subject: [PATCH 2/5] rust: pin-init: internal: remove associated type of
- `HasInitData`
+Date: Wed, 23 Sep 2026 19:20:16 +0100
+Subject: [PATCH 3/5] rust: pin-init: internal: use `HasInitData` to provide
+ inference help only
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260923-dev-pin-data-diag-v1-2-e4d7193569e5@garyguo.net>
+Message-Id: <20260923-dev-pin-data-diag-v1-3-e4d7193569e5@garyguo.net>
 References: <20260923-dev-pin-data-diag-v1-0-e4d7193569e5@garyguo.net>
 In-Reply-To: <20260923-dev-pin-data-diag-v1-0-e4d7193569e5@garyguo.net>
 To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -63,11 +63,11 @@ To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Gary Guo <gary@garyguo.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790187630; l=2455;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790187630; l=6175;
  i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=1eqZ/uzyj9yR0UoLHnh94cgdinYYXFKUD/IDj+Jr8aw=;
- b=tFvgB+13/HJ0ZOeTMTd24ULjGYQVQkOIikFT1OpHUhA8ZirZnt5T5axEqEPZoPo+LXuA8Np0T
- ZgC9n2DxwSsBv3l60+v4qi2CjVnqcWXNgbh16ELFQXNMXwwAqyWQbPH
+ bh=XBtIXC0M1dFD265oUX37BthhCp4tgf4WqOpUNB+x+Dc=;
+ b=odXrfX27yKHDWly874CndI5qVIAwOmrng0LbrV9jFuH56vs98UfRKMByH7PlWeJVaYtCLzXhS
+ P2SWAyHuP/eA0WPl4Vg4Tv84zd+ZXYOZOMOH7xqc+LxtW1Io9HjN7xk
 X-Developer-Key: i=gary@garyguo.net; a=ed25519;
  pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
 X-ClientProxiedBy: LO4P123CA0182.GBRP123.PROD.OUTLOOK.COM
@@ -81,146 +81,206 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWLP265MB6301:EE_
-X-MS-Office365-Filtering-Correlation-Id: cb68b2cc-fda6-4a40-7ff9-08df199f5a28
+X-MS-Office365-Filtering-Correlation-Id: f5c23128-28cd-4deb-3a13-08df199f5a6b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|10070799003|6133799003|18002099003|22082099003|921020|56012099006|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	u1qdgq5S6WtH+Q+PnKMfI5bLe2wt7+H7E48NeBqOYjQPfTvZphP7r3j7Wxu6cszVs6wjtU7TxJ8T5A+3gXj3ZTH8yL0cHzyI/kRKGf23wrFybo2UnhiZHfqS37bkCB6uqFOd2K+NjjmAQazuy+NuindhR7p0CDjP//+iPSoTW+/VPMMT5I3rGevYtVuKjLtMSe+YoC+hRQvoMTJ5xM1sUpdjXCo3uiUCb7D01s1i1EintzHpgukQpT9/sKusmYpB3FupkgOXZaj1Xj/61ZEw96DEDUYPJ5NoAfKH32851PK9NwB7GG90kMcPFYDOlMhRUeZykC2Vq5YQ83KoKkLmPxGdyJRXV/1qtGulPEXw4/RPvsUS5Pb/Jbi2kOBktItkhBTP50xMo0YNoa3rJtgml1M+z1IIAWwQW0HcGzvAtVp9pBxQdzdwslmgMpqNItT0nVQhmV+vA5OmYQkt1D2utkTUc/VM5jq/1AQwPbhzuoWl93LIQvccy/CE4nqSOmnRMogzQIB+63wIoJ1w+fi+gTVIzCuqbLqm+AIOyiR2cVw42PgmsC1ZGkrT0L/NZt85WYuA9+BXLnectiJHH3LAYH0G7h6RjuDiWQRf/LJDNX3MKK5NcdOsdH4f5aKY8qK5Fv3Jfv+pPxyUMfNstf7pR+0iNCAFPI7HHY//TqKh6XD39uHdcitNAwIJbz/anCpDHU2ayh9MfsojNav7Z7SEgQ==
+	gAd8LjaK5CRWZpV4MEJ8eVDsus0X2JiegFGv1jj2D/14j9OkgUkrKPvEV6ISMlsZW0W61Xg92uZyZrjcXmXksBPa9i78caMuWGiEdG1A4hML0rxDqmGjfDxb46tkdUc5HwdzRUmF9EiQtgn4Fw4l9xqz/aSseV9bilGjRv5jLxQexS+CvJTMqtiI/CxR45Iz3ANY1AXK1vnPRZplmi4OZblkaLYf9OrZq+kcpybc7EzzeyndQf5YYkWpeMHiB33Y1SfDmfdI/lHV05cvb2omHhiyb/l2DosqpRo25pXpxsD/79pUNLHIpPyQ0qwyftu2drvKcMRbo7qfAbuMNZHAW05nH/sebdpF8iN2HzzDRNGNKUgn30y5njVSxdHj5l+7kxzBNTY5og/FwruXHKEivnWQecec9oW3YUn5fqG9uNbR3P1lgYzvvfPRy9YaOwUL389z/loqkeiR1p2nnP/ELuWnVS5i+SEoUk960+qN7/iy1XEm/SxgnmGagpxBjA7K9J59pdMbMgZTHfUW6MjUwFV53/FXbFQYyyVKEpfhFPaOnfEX26HXZWT5lm/1IxdLxYaOPpqvHe3g5nIbmvyXeDOE0ZBrd9qJudtU16eDLDTVOB2Vrm/gbvjtL3unJFfirgBBXQNJ9QtIjYqmvUvktirxigyE18GJc7HDXSzYRLCUY0IpuL3aF/HeY7/veHb7
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(10070799003)(6133799003)(18002099003)(22082099003)(921020)(56012099006)(10067099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MVEwclhZYXBqT2JwWDlCK0hVNmpveUtpY3RIUk1hdVAwekE1bU9WSWo5V3ND?=
- =?utf-8?B?NEphTzJ5Njl0ZFpabTVZRUVGeG02Z05kRnV2ZnU0c29vVEMxbkc1a0trTXQy?=
- =?utf-8?B?Q3JpTGUzanFmM0VUcUdRbytsS0pVQzRiTmMxYi9qN2tLcXNvWFpOcTBiSm9h?=
- =?utf-8?B?TWlWSmlkSzFPVUpFK25memxDVXRvdmdISjlqUHZCSVJ0dUdUMUFqbjY5US9H?=
- =?utf-8?B?ZEUzRUxzam4zVFU0alhQNFBwL1lrMDU5Y0xQcU1uOGpFVStYZmpaN3J1YjNI?=
- =?utf-8?B?YnBWMy9PL0NIODJVUzFGaGd5L2QzVnhPSCsvcG1mUlFXekhaYW9IT0VyS0Y2?=
- =?utf-8?B?YlRpVDZXaG1iMmY3NGJ3c2ZYUEZodVNwMmU1OTAwTXB3UDFJdXZOTG9Mb2Za?=
- =?utf-8?B?Vmc5c2U0U0pOQzJpYkRYSVZSdlpidVpOQ2NITWhFRUoxM1B5UmF3cmQ5RVVO?=
- =?utf-8?B?STJGeHplVzc3eVNqZVo5a1IxV20zZFNJMUlRQng2cVF2cVlkdVdNSGw2N2pB?=
- =?utf-8?B?ODhRYUlJQ3lJeFhLd1ExVlgxNVAzUXJVUlVKZW96WlpyS1A3WGk3cVMzSGpu?=
- =?utf-8?B?cnVibmk3RTh3ZlJxa0VBVnNkeFRZSFRQTEdIL05hbnlkOEJlWXIwYlpYUjli?=
- =?utf-8?B?TmZNZ0ZNVG5HM2l4TDNVZldicDMrOXBrcXJPWjk5Vit4QVJGcE1KaHNJRTFn?=
- =?utf-8?B?dFdFcnZrV1pYcVF0MmxmQXRDaE1GT21TM0ViUUFZUFJQbC9GZnZHaC9KM0Nm?=
- =?utf-8?B?VzVnSjcvZVJLd0FrTmlnVVpXRTU4amZ4eUVXZEtiRWMrUlNEQkIyNHRqR25a?=
- =?utf-8?B?S3pWeURkcUxRb3VUVFdpK0FhN2hPZEk4cXlsSk16MU5jcFcxdFZQd3ozdWFU?=
- =?utf-8?B?eUc5TFNPeGhxcjdXRnVvWXg4UnVteXRJSkNncWxZdUNlN0YrbU1ZMEoycjl2?=
- =?utf-8?B?OXlnUlR1Q3BlQS9zZEZBRlJ5YmlZKzJIak1YZmRNZFFlcFZMRDZBZEZuUWdn?=
- =?utf-8?B?ZXFQSGFDcFFXTEhqWDRjRzdNOVlOT2Jmc3ZBM1JETkZjd0p3MTlQRERsTUJH?=
- =?utf-8?B?L3crQjJZcy9hekgzbGxRMUV5ZEUwVFlDWXFLQmxIU3FTWFowU2wvOGZ3NFJy?=
- =?utf-8?B?eEZhL2ExMDhVREhEYkhYSUJDeVlKQXpqWUU0b3RKK09YMmhVMURiWnF5U0sz?=
- =?utf-8?B?NXBrS2lPaG91bUNoTFhjZEVtQk90N2pRYlBiZTFSNm84a2tITExaMm1GcVVy?=
- =?utf-8?B?RlBnUWgwZFJnNnEzcTVJdXhJRU5QeFIwMitYZ1ZuaUtiUExyT1JrOGpNUVJ1?=
- =?utf-8?B?WnV4OWN3UEZSOVBQNXB1L3pkamZjQUlRWi9OZmw1UGYxMlZHMDhYTGJZUlZ6?=
- =?utf-8?B?UnF1RVpxamRXN1QyK2FCMVpiSExsMEx5d0xIUFAyeFVlRXZ5NUVvWTIyNjV5?=
- =?utf-8?B?RGZrKzFEUE40UUJDaGFCMEc4NE4wRUU1MjBaUWJJWnR2ZHNDcVFCKzhra1pO?=
- =?utf-8?B?b1JQdTBhRnFldEQzcFBjZXNYSXRhZ1JWVmxJaWIvY0ZkMy8wQ2NkcXp2c3BJ?=
- =?utf-8?B?T2VlR0h0VWdaUVFndjVpdHFQcm9QdHBCK3RvaDBNUzJPZERVeXhxZ1luTXBN?=
- =?utf-8?B?R2VKT3BWbjZ5cjBxckJiWWVvNmZRa2Vhd1dCekN2dkphY3UzZGFSVEFEZSsx?=
- =?utf-8?B?eHNNcEFRaWt4YUo0YU15L2FzMklBWFVBVG9JNU5vSGlQN0xMMWRvaFhOblBq?=
- =?utf-8?B?V3dycHVmenB0MFNjOUtGRVdOSDZOelNUaEI4c1lZc0hEWlFUTWFDdExDUzRQ?=
- =?utf-8?B?dEZZVDVmc2RWV0Iyc0FqdkdxenJHbzYrcGdRQ0xRNkdNVGh1ckJYbGl2ZjZu?=
- =?utf-8?B?SHlwUTRNbkliUFVsbDVwK0J1K0lYcW5KMVl5SEdIb2pISElPUEt4Y21CZWN2?=
- =?utf-8?B?enlwL25wcnZ1ZzJMZjA3cENCTmVRalNoWTNUanFvak4zbHNnMTVzcTJKa00v?=
- =?utf-8?B?b1lTU3YzNjNoK2txUHJOTlo3cC9OSzYzL1FMYm9pYVdwQlNvRDFDTlhxU0tP?=
- =?utf-8?B?UjFld1Rlam5DRXU1VFQzakRSZGFUVU9hTVI5WmZPRUNrYW0reGJ1dE9JMDlO?=
- =?utf-8?B?bnpPZzdjYitwR0F0M01OOTAxemF5STlJU01WWFFhN3dCS0hneWx3cjJxSUtI?=
- =?utf-8?B?NVMyTU92UTdtUWd5T0taN2NEWFY5TnpxUU44WXo2akpTdStFNXRyWmpEbmEy?=
- =?utf-8?B?SHdwTzRNT2RMN0JRTmF6QjlvUk0reHRtUDkvNit1S3U3VU0yeTNMK25YZlB1?=
- =?utf-8?B?QjE0ZVRyU1RNUzUyWGdrK01YM0lVRlFYSVV4aEpCUXo3Q28vVzJYQT09?=
+	=?utf-8?B?aTdCeHc1eTdyY0lQV2JQcHZLT25GR3IzZmg0bFRPbVc2RllmRzNYZ2N2ZjJm?=
+ =?utf-8?B?ZUV5ZVFCQmxlQWFqaXcxL1E2Z0VoSkxtV2ptUzZ5dXBkazdsNVVkYUJFWVZ0?=
+ =?utf-8?B?dC9Yc3RtRFM4MzQ1WElYbjNLUHlRcGUxZXcrVGE2d0JzMUJQZy83NW1wZW5t?=
+ =?utf-8?B?UXQzYkxPRWo5RFY4bGUxK0Jla09BOHNmKzRMV1FuTTNwOExYWk94czVUUXRQ?=
+ =?utf-8?B?M1RDWGIrdTN5eEVjQklJR0JDNVA4Sm1INU5pVHg1Mm9lZUFRck01UGNoRHlz?=
+ =?utf-8?B?dTR0STFXcUtreTd3UmxJU3E5UWlONGNvaVZaVXRqaC9RRndJT2hFY0VpVWxz?=
+ =?utf-8?B?ZGxldWQrNWV6ZXVIUFBmUytJdHZKRW9hNXFWSFl2QkhYTmlrQlFZdDZmd3pa?=
+ =?utf-8?B?UVdwejRCZndBcFEzbHYrc2JJdHRBVDF5eGtJSjcxdU1DOThXMmJ6UjYrdGdk?=
+ =?utf-8?B?VUdIMHhObnh1TFRhdXNWdVcxOFdHWkZFN0N2MXZjSHNqUXFpMk5ZbnJmRDBG?=
+ =?utf-8?B?UVJxSUlnd2xmTTBRS3NFWmJUWjEyM2VPMHBYak1WcFIwWTJBTmloSmx3TG1a?=
+ =?utf-8?B?dnJkMmIvbWxYeDRLT2NuYVVlOEMrZXF6ZEUrYnlDZWNoMEpwSFVqWUtLaDR2?=
+ =?utf-8?B?K1BpU3ZkNEFxclozMDF5T202ZnViUGlqQmxXMDJsd09idkV4ek1vVzVuZ1Bp?=
+ =?utf-8?B?d0VrY08xTmwyYm5vTzdCUnA4WkJzRXQ5MTdpQldyTkxRb0lqb256b01uNjY2?=
+ =?utf-8?B?aThnb0d6a0xkV1Q0c3A1eTI0clpIdUNMZG84Znhzc1AzUWlFT0dnRkxDWjBB?=
+ =?utf-8?B?ZjAyVFpBV3pzSDBrSlpncXZYeFNMVWRKN2JtMkhRdnNtSCtrQjZnaEhCK3k3?=
+ =?utf-8?B?a0VUSmZwOFFRQnJaUHk5SjlPdkNMNElrdS9XZ0pTQ2M0bzNiS0t2NzIrNmxD?=
+ =?utf-8?B?d2h6ZmJuQjRNS1ZYTThwZEpLREFyWFhTNEovR1RzVW1qdDZFcVVkUDA2aGg4?=
+ =?utf-8?B?alB6TzZVNEdxdzF3eDhaVXQwdjBYSHdCUUs5TVJKaHRnVkFCZ29DWkQ5bjgx?=
+ =?utf-8?B?U01kSy9OUEt5ODV5YVdLd3ppeDRHeFdnRDcxUG15dFBib214NFJtMjUvRU5I?=
+ =?utf-8?B?S2MyMDkxcUtSYTBVamFkZmcwdS9xL0czQStxeWFtZlRDVUVCc3B5ZDdrSkdq?=
+ =?utf-8?B?MlNPd2crdUYzSlNzanhaUC85MCtQVDM4WVRMYkc3bDhFM0xVeHVyY3lDOTRR?=
+ =?utf-8?B?WjZ3SGJmeVlsbGpxV3NpUXdWamtWS0F2SDdTUGNucDMydm1ZT0RxQWVaa0Y4?=
+ =?utf-8?B?ZmNKK2d0MWViSWdsSEZaR2FtbEV0cWFXUmhnbG5xblMrQmpoSkJweGp6a3Bo?=
+ =?utf-8?B?RmRwZThOUTN5Nmg1ODRoT0UxdjFIdlArSU9rWUxpdUFWbzFiaGtaOEk2VFRG?=
+ =?utf-8?B?WlJsV2U2aUFEeVU5ek55ZGxBOS9rdFcvNk5ZM3NpSVJrY2NieXIvZXoyeFZV?=
+ =?utf-8?B?VGlHQ2tSVGlqY0dIODZ2eTFjNWdHcUhyZE8vOHgyZlRiVXlTSTQ0Q1kvbEQy?=
+ =?utf-8?B?VFRHL3JSNStick91Q3pEeksxbGFWRm0zZEpybkFDZFhvc1MrcS92cjh2Z3hC?=
+ =?utf-8?B?bmtBUDZjT1BoUTNGVmYySmV3MU1PVHR5U3NZM296RmduYmgrRGs0VmdLUk4x?=
+ =?utf-8?B?UUxWSG5jVCsvRXJLV1B5WDRXSEs5R21PSHlPY2FVMU0zL0xOZGhOOXYzZm8y?=
+ =?utf-8?B?L2JlSjdKMGxsckdaYytFcllaVkNmMDlPZE52dzFCa0dUQnRtcGRsSThna2xx?=
+ =?utf-8?B?QlBoNHZxN2JKSXRnOVlsSXRYRHFtc0VuWFRzUC9hSnVRYUNHU29scnFZYVNq?=
+ =?utf-8?B?TjIvWFdUYWJISFREWS9mM1dLNEJhVis0bFYvM3M0OHNXcU9qWnFWYlYvclBu?=
+ =?utf-8?B?MVVLN01JQ2JOUzJkUERGcVNoWldRQXB3czQ0NnV2RWMvOUJrZFZlYUhUZlM2?=
+ =?utf-8?B?bDQyU2ZxMTdHZHBzWk1oV20xY2ZKcmpQMWc2cWs4akZocXQ4TVVLRnREWHVH?=
+ =?utf-8?B?MnBoWjhwUkVCTUdNbnZkNFNDck5Xd2lxQjVUNWRLNEp1d1lTbURNOUZ3TytK?=
+ =?utf-8?B?UldURUhwbXhHNXp6bkNEcGF4RzQyb21UOXI3akl0UlJMVks3TlUzMXJ5Myt5?=
+ =?utf-8?B?ZittUjY5anV5QWIxbyt1b2RDRi9oOXY4bE5ITzlJVnNoMXloSFR1bkE4U0RQ?=
+ =?utf-8?B?emwwYW5EckdtdmJXREIxU0ZIVmdNNTFKcElBVXZKQVp0eiswNklmc2MxN1Vi?=
+ =?utf-8?B?MHZtdUUvS0haUktBbWNHd2RGb0dKWk5YN1RlZTdYMndiTFBXSTdyUT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb68b2cc-fda6-4a40-7ff9-08df199f5a28
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5c23128-28cd-4deb-3a13-08df199f5a6b
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 18:20:31.3651
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 18:20:31.8063
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RbbBwnaUfqIw1x4pRO+xXaUA0aZpJGpTj36tPWnPcKXvUyJwBXgEAdiO93mj9bhz9TNtRAzAumH9+A/V/ACBuA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: DtS7csiYXFlBuIlZZN0oyv0w2UafYBQAKGiO10YFA9UPSoXy7rCGqSkkvPcJgQNqOKZ9aRONVdz8a4MZEyDehg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6301
 
-There is only a single implementation, the associated type is not
-necessary. Remove it, and rename `AllData` to `InitData` to be a more
-meaningful name.
+Currently, type inference of the initialized type is done by use the
+function calling syntax `PATH::__pin_data` or `PATH::__init_data` to obtain
+the required init data type, without needing the user to explicitly mention
+all generics. Switch to always use `HasInitData::__init_data` to provide
+that inference, which will not produce method-not-found errors as it is
+always available.
 
-The single implementation also means that "unsafe" is redundant, so remove
-it as well.
+Change `__pin_data` to take `InitData<Self>` as the receiver, so for types
+that require `HasPinData`, `HasPinData::__pin_data(data)` can be used to
+obtain the needed type without having to mention the user-provided path
+again. The expanded code also uses the span of the type, so diagnostics
+will hint to user that the type is causing the issue.
+
+With this change, the error message when `HasPinData` is not implemented
+changes from
+
+    error[E0599]: no associated function or constant named `__pin_data` found for struct `Foo` in the current scope
+     --> tests/ui/compile-fail/init/missing_pin_data.rs:9:9
+      |
+    3 | struct Foo {
+      | ---------- associated function or constant `__pin_data` not found for this struct
+    ...
+    9 |         pin_init!(Self { a: 42 })
+      |         ^^^^^^^^^^^^^^^^^^^^^^^^^ associated function or constant not found in `Foo`
+      |
+      = help: items from traits can only be used if the trait is implemented and in scope
+      = note: the following trait defines an item `__pin_data`, perhaps you need to implement it:
+              candidate #1: `pin_init::__internal::HasPinData`
+
+to
+
+    error[E0277]: the trait bound `Foo: pin_init::__internal::HasPinData` is not satisfied
+     --> tests/ui/compile-fail/init/missing_pin_data.rs:9:19
+      |
+    9 |         pin_init!(Self { a: 42 })
+      |                   ^^^^ unsatisfied trait bound
+      |
+    help: the trait `pin_init::__internal::HasPinData` is not implemented for `Foo`
+     --> tests/ui/compile-fail/init/missing_pin_data.rs:3:1
+      |
+    3 | struct Foo {
+      | ^^^^^^^^^^
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/pin-init/src/__internal.rs | 37 ++++++++++++++-----------------------
- 1 file changed, 14 insertions(+), 23 deletions(-)
+ rust/pin-init/internal/src/init.rs     | 22 ++++++++++++----------
+ rust/pin-init/internal/src/pin_data.rs |  2 +-
+ rust/pin-init/src/__internal.rs        |  2 +-
+ rust/pin-init/src/lib.rs               |  3 ++-
+ 4 files changed, 16 insertions(+), 13 deletions(-)
 
+diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
+index 1957be83a196..e98182c65447 100644
+--- a/rust/pin-init/internal/src/init.rs
++++ b/rust/pin-init/internal/src/init.rs
+@@ -269,18 +269,17 @@ fn expand(
+         },
+         |(_, err)| Box::new(err),
+     );
+-    let (has_data_trait, get_data, init_from_closure) = if pinned {
++    let (get_pin_data, init_from_closure) = if pinned {
+         (
+-            format_ident!("HasPinData"),
+-            format_ident!("__pin_data"),
++            Some(
++                quote_spanned! { path.span().resolved_at(Span::mixed_site()) =>
++                    let data = ::pin_init::__internal::HasPinData::__pin_data(data);
++                },
++            ),
+             format_ident!("pin_init_from_closure"),
+         )
+     } else {
+-        (
+-            format_ident!("HasInitData"),
+-            format_ident!("__init_data"),
+-            format_ident!("init_from_closure"),
+-        )
++        (None, format_ident!("init_from_closure"))
+     };
+     let init_kind = get_init_kind(rest, dcx);
+     let zeroable_check = match init_kind {
+@@ -313,11 +312,14 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
+     Ok(quote_spanned! { Span::mixed_site() => {
+         // Get the data about fields from the supplied type.
+         let data = {
+-            use ::pin_init::__internal::#has_data_trait;
++            use ::pin_init::__internal::HasInitData;
+             // Can't use `<#path as #has_data_trait>::#get_data`, since the user is able to omit
+             // generics (which need to be present with that syntax).
+-            #path::#get_data()
++            #path::__init_data()
+         };
++
++        #get_pin_data
++
+         // Ensure that `data` really is of type `data` and help with type inference:
+         let init = data.__make_closure::<_, #error>(
+             move |slot| {
+diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
+index 30d9b8b54d8a..a12e5a44a512 100644
+--- a/rust/pin-init/internal/src/pin_data.rs
++++ b/rust/pin-init/internal/src/pin_data.rs
+@@ -538,7 +538,7 @@ unsafe impl #impl_generics ::pin_init::__internal::HasPinData for #struct_name #
+             type PinData = __ThePinData #ty_generics;
+ 
+             #[inline]
+-            fn __pin_data() -> Self::PinData {
++            fn __pin_data(_: ::pin_init::__internal::InitData<Self>) -> Self::PinData {
+                 __ThePinData { __phantom: ::pin_init::__internal::PhantomInvariant::new() }
+             }
+         }
 diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
-index 51f6b40daa9e..15eca4869bc3 100644
+index 15eca4869bc3..f236db47d18b 100644
 --- a/rust/pin-init/src/__internal.rs
 +++ b/rust/pin-init/src/__internal.rs
-@@ -89,30 +89,31 @@ pub unsafe trait HasPinData {
-     fn __pin_data() -> Self::PinData;
+@@ -86,7 +86,7 @@ pub unsafe fn new() -> Self {
+ pub unsafe trait HasPinData {
+     type PinData;
+ 
+-    fn __pin_data() -> Self::PinData;
++    fn __pin_data(_: InitData<Self>) -> Self::PinData;
  }
  
--/// This trait is automatically implemented for every type. It aims to provide the same type
--/// inference help as `HasPinData`.
-+/// This trait is automatically implemented for every type.
- ///
--/// # Safety
--///
--/// Only the `init` module is allowed to use this trait.
--pub unsafe trait HasInitData {
--    type InitData;
--
--    fn __init_data() -> Self::InitData;
-+/// It aims to provide type inference help; `PATH::__init_data()` is would be able to retrieve an
-+/// instance of `InitData<PATH<Generics>>` without having to mention the generics explicitly.
-+pub trait HasInitData {
-+    #[inline]
-+    fn __init_data() -> InitData<Self> {
-+        InitData(PhantomInvariant::new())
-+    }
- }
- 
--pub struct AllData<T: ?Sized>(PhantomInvariant<T>);
-+impl<T: ?Sized> HasInitData for T {}
-+
-+pub struct InitData<T: ?Sized>(PhantomInvariant<T>);
- 
--impl<T: ?Sized> Clone for AllData<T> {
-+impl<T: ?Sized> Clone for InitData<T> {
-     #[inline]
-     fn clone(&self) -> Self {
-         *self
-     }
- }
- 
--impl<T: ?Sized> Copy for AllData<T> {}
-+impl<T: ?Sized> Copy for InitData<T> {}
- 
--impl<T: ?Sized> AllData<T> {
-+impl<T: ?Sized> InitData<T> {
-     /// Type inference helper function.
-     #[inline(always)]
-     pub fn __make_closure<F, E>(self, f: F) -> F
-@@ -123,16 +124,6 @@ pub fn __make_closure<F, E>(self, f: F) -> F
-     }
- }
- 
--// SAFETY: TODO.
--unsafe impl<T: ?Sized> HasInitData for T {
--    type InitData = AllData<T>;
--
--    #[inline]
--    fn __init_data() -> Self::InitData {
--        AllData(PhantomInvariant::new())
--    }
--}
--
- /// Stack initializer helper type. Use [`stack_pin_init`] instead of this primitive.
- ///
- /// # Invariants
+ /// This trait is automatically implemented for every type.
+diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+index 4110590348c6..319485dc18ce 100644
+--- a/rust/pin-init/src/lib.rs
++++ b/rust/pin-init/src/lib.rs
+@@ -920,7 +920,8 @@ macro_rules! assert_pinned {
+     ($ty:ty, $field:ident, $field_ty:ty, inline) => {
+         // SAFETY: This code is unreachable.
+         let _ = move |ptr: *mut $ty| unsafe {
+-            let data = <$ty as $crate::__internal::HasPinData>::__pin_data();
++            let data = <$ty as $crate::__internal::HasInitData>::__init_data();
++            let data = $crate::__internal::HasPinData::__pin_data(data);
+             _ = data
+                 .$field(ptr)
+                 .init($crate::__internal::AlwaysFail::<$field_ty>::new());
 
 -- 
 2.54.0
