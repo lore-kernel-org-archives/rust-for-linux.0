@@ -1,47 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B82560AC2;
-	Wed, 23 Sep 2026 20:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3353E3C5A;
+	Wed, 23 Sep 2026 20:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790195529; cv=none; b=SRMB+dRFnP09+S1PN5wOKfjy2U9U3EboNjnegQLTgziJUIhGVh07wTH7eq5J0jHcLi8UjIl05g/pRleCRUMHQNv0/QtyHbW3JyqA17q5aWs1e6bs2OOBG5wgwGqmm2r+8+SPFPwPuJcaUps9Kutu2YUgGcLD+182mYDEOygVCrY=
+	t=1790195714; cv=none; b=KpEpCjNLIsQ4sxbLe2CGO2VhJqrVrqCiAAGBUUZMG6HwoWWbLIdtkEGfLd6gO5012zFr86cCubnhwwbOt75XEuw1+7kfbIk3ho6qfx22x0Fz6FgyuCUg3tPrdnWemqPlh+Sqn7q91igCWlixoAaBpS5tncx4pCCXtl/1hMZsKf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790195529; c=relaxed/simple;
-	bh=penjlBlTgqB2kWrPtgaOvaogZg7i5pf+p8NYD0/I4as=;
+	s=arc-20240116; t=1790195714; c=relaxed/simple;
+	bh=mOO03YoLIii2o7RvNEexat1TxNoZebB+V8cD24Rqeiw=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=kSREArKe7c6h3IV7OKHc6EP58qF3MaaOyISdnhRxOkUWpW4bHRecKt2EDylDkbId87s8c1z8rave+UYQjpsdYWPpy+QjnHXzRBB9w2Z8idkeRzdXur+SGnOdD6gVFpOQ1eKJITobmy00OIwaq7tp/FY6hQahomKGEqWOOeV+gbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yr3Q4IbW; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=XqkHKDmDW/j+4pHP44dj8vGzUKQ/0bXAU1LCrDrXP0icDHe+qLg79aO4BuFEi+e488M21q6VeDauiP1Ycv1lP1sba5Ci1E+z60aYyxN9Guj6p8wW1eTn9qhkRjCkf+uegDA1PL48e5eA6z33LdRfgjcPebBxYLE+2mvFXIcbQL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XGtm8BE6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yr3Q4IbW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236DC1F000FF;
-	Wed, 23 Sep 2026 20:31:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XGtm8BE6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133941F000FF;
+	Wed, 23 Sep 2026 20:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790195520;
-	bh=penjlBlTgqB2kWrPtgaOvaogZg7i5pf+p8NYD0/I4as=;
+	s=k20260515; t=1790195707;
+	bh=FROENDYx75+E2NhPAwA00OhrNjnBvzyeqYz3yYdCDlI=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Yr3Q4IbWQ+1R28k2uwHIxPOX/hK23qUPD2ZBKdzN63QtdN/2CDQtedx98IMEGVvKi
-	 S5A+E9RM3PD1i40dbSqegp8LwkPRdO0RKLnRlmFPPMYDMl+vkdpYj0oDCBhNtO2W6K
-	 AfJCx81k4wuKtmhKX4J4MBH0a+bv+F+AubebBpnSWNIc4IbynZ8Twjq+YbCYWmJ3aF
-	 UUP0Ndh/VuO3eQowmn5jD54PD13WRL93bCj09cWdp8FqbLqRk4a1P2yg11I8YUsyZg
-	 pb2gx2CJGKophHx7AQJd3nq+S4tGb2+GdNBdifh0Hd5Uh1MxZr58U0/j3Mn5oZn8Vp
-	 Xspd2kUlDktKQ==
+	b=XGtm8BE6d19TZd7VaSrfeQkt7qP8qAHSCkNw53QXts4y1kEPwzD1BxWfqJaTyVe88
+	 qPQ4YyR9DZqjpkHMTZBuLRLLfc5buf8d01I0GUs7AievGQrc6boHbwixbHSxrLqFrW
+	 2xbv8z5SIzL4OdBAi7IQsaYzb72kN+UoxZyciQvEYzTJQrP1k/MTEXuFMnrr5koVWe
+	 f8qiz6rlFApgt5T39q2SGcC7wZaaWvGWbNO3s68Ve2y5Z23QA84Pl6brxPMKrQuggY
+	 GiaoUVfvAP2pV+uaqO/8ODtuJWvS4jkbYkEGG9D272W5q8lYKHsDJ421ppZJlx+Zlz
+	 J1WAx9GDkIkiA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Adarsh Das <adarshdas950@gmail.com>, adarshdas950@gmail.com
-Cc: acourbot@nvidia.com, aliceryhl@google.com, axboe@kernel.dk,
- bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
- daniel.almeida@collabora.com, gary@garyguo.net,
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
- lossin@kernel.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org,
- tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev
-Subject: Re: [PATCH v3] rust: block: set GenDisk
- block_device_operations.owner to THIS_MODULE
-In-Reply-To: <87fqyz3etf.fsf@t14s.mail-host-address-is-not-set>
-References: <20260806083655.23161-1-adarshdas950@gmail.com>
- <20260806104027.83940-1-adarshdas950@gmail.com>
- <87fqyz3etf.fsf@t14s.mail-host-address-is-not-set>
-Date: Wed, 23 Sep 2026 22:31:50 +0200
-Message-ID: <87cxu33e15.fsf@t14s.mail-host-address-is-not-set>
+To: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>, Lyude Paul
+ <lyude@redhat.com>, Daniel Almeida <daniel.almeida@collabora.com>, Onur
+ =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>, Miguel Ojeda
+ <ojeda@kernel.org>, =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Tamir
+ Duberstein <tamird@kernel.org>, Alexandre
+ Courbot <acourbot@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: sync: fix safety comment for `Arc::from_raw`
+In-Reply-To: <DLMX05RAZD0S.1EZ4L85L0T2HS@garyguo.net>
+References: <20260923-aref-from-raw-safety-v1-1-e34f0da04145@kernel.org>
+ <DLMX05RAZD0S.1EZ4L85L0T2HS@garyguo.net>
+Date: Wed, 23 Sep 2026 22:34:57 +0200
+Message-ID: <87a4p73dvy.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,37 +51,50 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Andreas Hindborg <a.hindborg@kernel.org> writes:
+"Gary Guo" <gary@garyguo.net> writes:
 
-> Hi Adarsh,
->
-> Adarsh Das <adarshdas950@gmail.com> writes:
->
->> GenDiskBuilder left block_device_operations.owner NULL. Set owner from a
->> const block_device_operations table using this_module::<M>() and update
->> rnull to pass NullBlkModule.
+> On Wed Sep 23, 2026 at 7:32 PM BST, Andreas Hindborg wrote:
+>> `Arc::from_raw` does not require `T: Send`. But if `Arc::from_raw` was
+>> executed on a different thread than `Arc::into_raw`, `T` must implement
+>> `Send` for the API to be sound. If this is not the case, ownership of `T`
+>> may be sent across a thread boundary even if `T: !Send`.
 >>
->> Add ModuleMetadata::THIS_MODULE and this_module() so the owner pointer is
->> available in const context. Rebased on Alvins fix-fops-owner series [1].
+>> Augment safety comment for `Arc::from_raw` to close this gap.
 >>
->> Link: https://lore.kernel.org/all/20260805192020.107601-1-adarshdas950@gmail.com/
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>>  rust/kernel/sync/arc.rs | 3 +++
+>>  1 file changed, 3 insertions(+)
 >>
+>> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+>> index 8ae0fe6f19ec..06838ecf633c 100644
+>> --- a/rust/kernel/sync/arc.rs
+>> +++ b/rust/kernel/sync/arc.rs
+>> @@ -276,6 +276,9 @@ pub fn as_ptr(this: &Self) -> *const T {
+>>      ///
+>>      /// `ptr` must have been returned by a previous call to [`Arc::into_raw`]. Additionally, it
+>>      /// must not be called more than once for each previous call to [`Arc::into_raw`].
+>> +    ///
+>> +    /// If [`Arc::into_raw`] was executed on a different thread than the one executing
+>> +    /// [`Arc::from_raw`], `T` must implement [`Send`].
 >
-> We merged `LocalModule` [1]. Please use this feature to set the owner.
->
-> I don't think you need to move the operations vtable.
->
-> Best regards,
-> Andreas Hindborg
->
-> [1] https://lore.kernel.org/r/20260811-fix-fops-owner-v10-7-7e71776f9dbe@linux.dev
+> This needs to be `Send + Sync`?
 
-Actually we are going to pick this one instead [1]. Seems like you have
-been trying to do the same thing.
+Why does the `Arc` need to be `Sync` as well? We are transferring
+ownership, not a reference.
+
+> That said, I am not sure if we want to enumerate all cases where things can go
+> wrong. For example, would `Box::from_raw` need to mention that the type is
+> `Send` too? `ARef::from_raw`? `ForeignOwnable::from_foreign/borrow/borrow_mut`
+> all have to mention about this, too?
+
+I had a case where I was making unsoundness in the configfs API because
+of this, but without breaking any safety requirements. I think if this
+requirement had been present on `Arc`, I would have discovered the issue
+while writing the safety comment for the unsafe call.
+
+So I think it is worth it.
 
 Best regards,
 Andreas Hindborg
-
-
-[1] https://lore.kernel.org/r/20260811-fix-gendisk-owner-v1-1-c0fe4a449ecb@linux.dev
 
