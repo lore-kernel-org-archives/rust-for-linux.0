@@ -1,92 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E28DCA4E;
-	Thu, 24 Sep 2026 00:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DDD2D73A1;
+	Thu, 24 Sep 2026 00:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790210409; cv=none; b=Dcr9EuDj8C9DChhdvKqwfNr0VRD4skm1BN0Cc2PMICXv4qSVsYxWUwmg8ksgzxj+MlhXOfIYA3Q+4x/L4jYmvzsqO9YSmsSo8bNIeO/Y5xZFrU6xT/SaqaVowk9U7j17oJZ0pe3O3sPxTEapcv5SmuHeI+OAaInXYRZF1G/XLkQ=
+	t=1790211081; cv=none; b=EM6jTgLohstBqh1Nrl3gpMnlxZWLnx1McxXsDfD43xKSJvhzj/mIuSRBfRRFX9gsCyNMrGuhMJ/kTW7CBgBY0sRytPWYMj+ZoVRZ3h5fnzSomw3kqIjfiHBPXtr86lIUYLf2W4vO+lXNeIQzDSO58jGw2YIirGkj4OQWL4ZWTHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790210409; c=relaxed/simple;
-	bh=64uXb4X38XrSq/BVvQdzMJq2eRbmsD2MiKhrL+mD7IU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dfyHEGthn5/JVufFStkE/O5IbjumF0MhaR8QljUyxQohDjh7r2a6CfwLKgxR5G4pZqaxMumDnAP9HKvAUIP4rfyknqrwtOaJU4KYxIzOKwKj/Bv0uESnktUt7g5ItH21ikHCUMr8KbAII9nE3oVJixYfHwL4CDoLj/kJArf0VaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GsFpotYB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790211081; c=relaxed/simple;
+	bh=/azrSupv5XjVi35+gJau9kjb5Wup6px2ofG49fE7uVQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tQLU4329vg490Ok8HlbYjqziw8JlKt3x6P7KyTNzi/JUBZngY+JOKP8uCUbVzmrujuzCkX3Q7QKxRi/GhkuHbvGi8L1ldFa8BeKKORyCLj4G6NPiAZw1OELKKrdRCaKudokmhExU3joRwr1OCznbhkLnjvcIAIHHy9q1CYZDSJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KnHfZW+K; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GsFpotYB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17AE1F000FF;
-	Thu, 24 Sep 2026 00:40:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KnHfZW+K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB0A1F00893;
+	Thu, 24 Sep 2026 00:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790210408;
-	bh=I5fr4m5zV1HsbEvg5cpoj9adC8pbGMxGUDeIlmewPaA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=GsFpotYB328iRGcLSIV0KOtxbjtU0E4lZg8FC8ydEzp+mPQq/3gSTgBABICu31Irk
-	 ZlWgFeLlBRBGsl9VIq2Hnz9tjQfR6q1+1O2FwVFekMcB4AL8T6Ob3Z1SkF8ZOy/5Op
-	 7gohvq3hbSRXkhWAsr6Q+gTWuXhfL077sPNgdXD9Si5W6hzmzPpb/ilA4sQbj+N+9j
-	 A66l4Lzg3Ul7GDzMXOEUfXvFqU5PuCSs2NgfbHNl0Ev/8kW6FYlHXyuYuwIVDPk4zE
-	 IPjviNgfbKP17cxID4qPeNUb+Vn6VsCguEggqwIUC9YwNsgit84Mmw2PGD2CgbxQ7v
-	 5CViqO1tQ/EXg==
-Date: Thu, 24 Sep 2026 01:40:01 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: alistair23@gmail.com
-Cc: linux-pci@vger.kernel.org, Jonathan.Cameron@huawei.com, djbw@kernel.org,
- rust-for-linux@vger.kernel.org, lukas@wunner.de, alistair@alistair23.me,
- linux-cxl@vger.kernel.org, bhelgaas@google.com, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, gary@garyguo.net, ojeda@kernel.org,
- benno.lossin@proton.me, a.hindborg@kernel.org, wilfred.mallawa@wdc.com,
- tmgross@umich.edu, boqun.feng@gmail.com, bjorn3_gh@protonmail.com,
- alex.gaynor@gmail.com, aliceryhl@google.com, Alistair Francis
- <alistair.francis@wdc.com>
-Subject: Re: [PATCH v3 00/21] lib: Rust implementation of SPDM
-Message-ID: <20260924014001.328ca0ef@jic23-hlaptop>
-In-Reply-To: <20260901010347.2614656-1-alistair.francis@wdc.com>
-References: <20260901010347.2614656-1-alistair.francis@wdc.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	s=k20260515; t=1790211080;
+	bh=QMGhoK1Ey5kUBOODA0xeI7bswOPYkQnFaq58AZfxBUo=;
+	h=From:To:Cc:Subject:Date:Reply-To;
+	b=KnHfZW+Kx3FwrThLm2GnPNkUtbn4dgFiFILNvvpyEkaxUKAbF19CgtBBPRs63i/dg
+	 hs9OsAQxcOS2uY/R7ee86hfffAn7LULaTVsZYZJnGYwdU7O0AT2phywVzT9NcvHE+4
+	 8u2nmUGFm6jYiqRYctWy4Pf/OnYmyBfGzZT1QgHMkRCdtKpUsWeQxWgMichSAN8LD+
+	 D9gExWZGrA+8+GazRo2HeyeGV3bmjCjuk8rK2YHAYVcd5wut20DEeUAxPcPee+5ZD0
+	 W1kmKaRYxwtmOiJzc//jnsnzVF/3n76euijn9nMAbxXOsRcMtmUE4gHi6jUebSsaQC
+	 GqOMbY4MayLNg==
+From: Gary Guo <gary@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <david@davidgow.net>,
+	Rae Moar <raemoar63@gmail.com>
+Cc: linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RESEND] rust: doctest: trim function name for reproducbility
+Date: Thu, 24 Sep 2026 01:50:51 +0100
+Message-ID: <20260924005052.2805129-1-gary@kernel.org>
+X-Mailer: git-send-email 2.54.0
+Reply-To: Gary Guo <gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+From: Gary Guo <gary@garyguo.net>
 
-> 
-> qemu-system-x86_64 \
->   -nic none \
->   -object rng-random,filename=/dev/urandom,id=rng0 \
->   -device virtio-rng-pci,rng=rng0 \
->   -drive file=deploy/images/qemux86-64/core-image-pcie-qemux86-64.rootfs.ext4,if=virtio,format=raw \
->   -usb -device usb-tablet -usb -device usb-kbd \
->   -cpu Skylake-Client \
->   -machine q35,i8042=off \
->   -smp 4 -m 2G \
->   -drive file=blknvme,if=none,id=mynvme,format=raw \
->   -device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323,spdm_trans=doe \
->   -snapshot \
->   -serial mon:stdio -serial null -nographic \
->   -kernel deploy/images/qemux86-64/bzImage \
->   -append 'root=/dev/vda rw  console=ttyS0 console=ttyS1 oprofile.timer=1 tsc=reliable no_timer_check rcupdate.rcu_expedited=1 swiotlb=0 '
-> 
-Looking at this because of discussion about RCiEPs.
+Currently rustdoc will generate function names like
+"_doctest_main__home_gary_Projects_linux_rust_kernel_io_rs_824_0" for a
+doctest located at rust/kernel/io.rs:824, when building with separate
+outdir using `O=`. This creates overlong symbol names and is also not
+reproducible.
 
-For the test I'd do something more realistic and throw in a root port and put your
-device on that rather than as currently where I think it'll is presented as
-a Root Complex Integrated Endpoint.
+Fix it by doing a custom remapping to trim it to something like
+`_doctest_main_rust_kernel_io_rs_824_0`.
 
-You don't want a particularly complex setup for this but those ones in
-the qemu tests tend to provide syntax to copy.
-I like the HMAT bios table tests
-https://elixir.bootlin.com/qemu/v11.1.1/source/tests/qtest/bios-tables-test.c#L2058
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+ scripts/rustdoc_test_builder.rs | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-And that suggests you want something like:
+diff --git a/scripts/rustdoc_test_builder.rs b/scripts/rustdoc_test_builder.rs
+index df864437cef7..561f912c2000 100644
+--- a/scripts/rustdoc_test_builder.rs
++++ b/scripts/rustdoc_test_builder.rs
+@@ -72,6 +72,11 @@ fn main() {
+     // Figure out a smaller test name based on the generated function name.
+     let name = rustdoc_function_name.split_once("_rust_kernel_").unwrap().1;
+ 
++    // The rustdoc function name can include the absolute path when building with `O=` which is
++    // undesireable and create overlong symbol names. Remap it to use relative path.
++    let trimmed_function_name = format!("_doctest_main_rust_kernel_{name}");
++    let body = body.replace(&rustdoc_function_name, &trimmed_function_name);
++
+     let path = format!("rust/test/doctests/kernel/{name}");
+ 
+     std::fs::write(path, body.as_bytes()).unwrap();
 
--device pcie-root-port,chassis=1,id=pci.1"
--device nvme,drive=mynvme,serial=deadbeef,spdm_port=2323,spdm_trans=doe,bus=pci.1"
-
-Then you'll have a normal looking direct connected NVMe pcie express devices.
-
-Shouldn't make any real difference in practice beyond paths changing and it
-smelling more normal for something you might want to attest!
+base-commit: 93f51579e7df248780214094418f205253383cc5
+-- 
+2.54.0
 
