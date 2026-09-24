@@ -1,123 +1,86 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.94])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FCE492E56;
-	Thu, 24 Sep 2026 13:44:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FBA3002CF;
+	Thu, 24 Sep 2026 13:48:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790257503; cv=none; b=SdvMh7sKcZEIJZZMLTymn4p5ltxswAIfN4nuXs5jBsQIDWL1qwW2cWk99f5/F3WtfRG/gmCqNP4QoKqnCxZKeJ/whxAXgJTjlpvpd93CXX3gVtkEhOqczWBhfW9B8hgSGHe8GYqsRVU8TaomMBkanAS/Hz+75Na5ZJoFXmYS35w=
+	t=1790257696; cv=none; b=PobIhCJbm7wRWIs+5XDEIgEQshbKzn9ZaKga7Rejs2s+KbJb0n8Ycu/majAjR1ZO05QNP1LFLgn7ryiSzmgWF1N2Ymb6tjGNN9jCvA20Z1rVv3EZsScSRYrscQXc6PjY4T5i7baCY7QstHHLKa61YhrZ6uxugKDdOgRnSEw1q0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790257503; c=relaxed/simple;
-	bh=RNrHlkedPxi+Seo64aiciiC5cKPNZrA+d4i/PipmIlg=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=IK4yItQ+r4hea+nmp0cMksf4dIGJW1cB3gWmDogxIrdoZSttnq4v5ddDKCMV5z+yRw850AMgEfqZh0BYhXXQdVd2gmRbN4bzv7oCIsoJCE3YzP29VEEpXs9em91MBNhvnjNgGEGfZFvqs73Q9Me17zNjCfbInsbCdxOx2bSngDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b=Zqlo3F7I; arc=none smtp.client-ip=212.42.244.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b="Zqlo3F7I"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fritz.com; s=mail;
-	t=1790257492; bh=RNrHlkedPxi+Seo64aiciiC5cKPNZrA+d4i/PipmIlg=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date:From;
-	b=Zqlo3F7I9z6odqeWj380ltc1L8l1Y1OdMFIQ8fJGCcL0godj+AMTyZAdgeBzcvddy
-	 visMApYsWZFHUl+du/8beS1mqhyyK8ENoIV/CWxsvsCyh4cXW9xX5/jgMeBjt7Okbx
-	 0/ooMNq4gemCVy7fVq7GcIWAcjUgfeWkAadYPLTG/JWW8pKKwCcMOYLk1qQeJgLrW8
-	 b4tI9uek01mHErbJsLDhOWmma86ZwUu/kuFk/UO41MVhGaC3RTdij6ogY0d2ej8cFn
-	 orJV7gvvJ+I19L2+qoEA4l9czaoqgjfie6TZI2lVsYdMBW0eMfXwm6+6RMe9tD03QH
-	 luFchOl1IwK2w==
-Received: from [212.42.244.78] (helo=mail.avm.de)
-	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
-	(envelope-from <n.schier@fritz.com>)
-	id 6ab52954-03cd-7f0000032729-7f000001bc8a-1
-	for <multiple-recipients>; Thu, 24 Sep 2026 15:44:52 +0200
-Received: from mail-auth.fritz.com (unknown [212.42.244.78])
-	by mail.avm.de (Postfix) with ESMTPS;
-	Thu, 24 Sep 2026 15:44:52 +0200 (CEST)
+	s=arc-20240116; t=1790257696; c=relaxed/simple;
+	bh=5kC7JDWIoM/3unS9E6JWjLJ5UFkpfFnUOWZ2Nua6BoE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K4mw8myLJ7iglYpbpBmnCLbCugsPA5CfuliRS2P3xBCkHifIAKF1xv2iKqpKCoWLyZkaU+wez8tWaWZ3oI3qdg29oM9HUF3hEJgKFUyCxneJbjWRTcOweDlAaf9iYSTx2VtobnuCPS1XZMi9pMr60kijkWxJncP+EK3CCB6iXUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
+Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 68ODkcNH017868;
+	Thu, 24 Sep 2026 22:46:38 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from [192.168.1.6] (M106072072000.v4.enabler.ne.jp [106.72.72.0])
+	(authenticated bits=0)
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 68ODkcBo017863
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+	Thu, 24 Sep 2026 22:46:38 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <7d369be0-13c4-4d5a-a90b-516660508117@I-love.SAKURA.ne.jp>
+Date: Thu, 24 Sep 2026 22:46:34 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/2] block: Add post_release() operation
+To: Gary Guo <gary@garyguo.net>, Bart Van Assche <bvanassche@acm.org>,
+        Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Jan Kara <jack@suse.cz>, linux-block <linux-block@vger.kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Brian Foster
+ <bfoster@redhat.com>,
+        Damien Le Moal <dlemoal@kernel.org>, Hillf Danton <hdanton@sina.com>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        Ming Lei <tom.leiming@gmail.com>, Qu Wenruo <wqu@suse.com>,
+        Tao Cui <cui.tao@linux.dev>, kernel test robot <lkp@intel.com>,
+        rust-for-linux@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Nilay Shroff <nilay@linux.ibm.com>
+References: <69960302-1535-441a-be4e-d652766d65c2@I-love.SAKURA.ne.jp>
+ <DLMWXEJS130L.2WSB0G2YD3LY7@garyguo.net>
+Content-Language: en-US
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <DLMWXEJS130L.2WSB0G2YD3LY7@garyguo.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4 01/22] kbuild: do not allocate .modinfo in vmlinux
-From: Nicolas Schier <n.schier@fritz.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
- Nick Desaulniers <ndesaulniers@google.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- Masahiro Yamada <masahiroy@kernel.org>, Alexey Gladkov <legion@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
- Arnd Bergmann <arnd@arndb.de>, Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Ard Biesheuvel <ardb@kernel.org>, 
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
- Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
- Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- llvm@lists.linux.dev, linux-riscv@lists.infradead.org, 
- linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, 
- linux-hardening@vger.kernel.org, Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20260923-build-speedup-v4-1-73128809a4a4@kernel.org>
-References: <20260923-build-speedup-v4-0-73128809a4a4@kernel.org>
- <20260923-build-speedup-v4-1-73128809a4a4@kernel.org>
-Date: Thu, 24 Sep 2026 15:44:48 +0200
-Message-Id: <179025748878.4172706.1928342214472255763.b4-review@b4>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=529; i=n.schier@fritz.com;
- h=from:subject:message-id; bh=RNrHlkedPxi+Seo64aiciiC5cKPNZrA+d4i/PipmIlg=;
- b=owEBbQKS/ZANAwAIAYjGvJyImm24AcsmYgBqtSlSAaAHZSpwz+agR7A4nUL/f+UeSeo3MVlM+
- g0GySzoXvKJAjMEAAEIAB0WIQQO/4WJ63TpgecLpGmIxryciJptuAUCarUpUgAKCRCIxryciJpt
- uLpFD/4jbTD/m855zQY2oXD/P7gI5rKS0e2JEo4CFs/WQ1q0+MoV/WJx2zzT4SnAM6QXyzOFdL8
- N4GjNg6r/k+K/apkYq+ibSeq8HUHeSxbO4sdJRWjLXWSReqCL5kxhgvKohauiasWosm4pin+gdR
- RIwZVezT7eufa+MunXFc3rYHUcBkRsAk5RV5GV/lc9FQdBwdynEkTt0nWX4CiMH/iJh7dYLIYvp
- 1DkwLdomrF1bURPaP3rgb3sMMNwDGcgH/51PYGy1Cf7MRvdgqCZcW/HRqcEYzFMZPdCjsJgvkhw
- RUuROmOPYRqcKgbzduQ+SH1njzB9AJeTo5LqhHb7StHjZLRBkVm0tODdImmjW383URt3/Y20UQd
- wjXVi/xxqIrtsJt78RpFk68LZO82/G3bm1fE3d1JDLJmo0l3W+sR7WVzxKK2SH/AK30LuUXRXUJ
- 1SaSkqrau/qQNnQ2DyGm2l2l6Wu/gouZrGp1d2hhapMb8D9257v2CnrUEDhBcOh5xYcMlsorNx+
- S9sQuzuLiqpFAu9Wh/aFc04x+KPDGg2QDWA2KG5wWx8FcTJfAFCWTQfQJrEAD7ZcfQichDLYv1+
- r9/isWvL4j22ulU2/eqIEx2pPHPPDl5q61LJm6gQhc9gb53OoYIphIXTYZFxQdVLz+W0FuNgXmW
- 64JXl+x4hWlDQJg==
-X-Developer-Key: i=n.schier@fritz.com; a=openpgp;
- fpr=7CF67EF8868721AFE53D73FDBDE3A6CC4E333CC8
-X-purgate-ID: 149429::1790257492-2D7D8EE1-0BA55FA6/0/0
-X-purgate-type: clean
-X-purgate-size: 531
-X-Notice: Whitelisted
-X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
-X-purgate: clean
-X-pfmilter: host: postfix-mx-03  mail-id: 44310A00DA  external: no
+X-Anti-Virus-Server: fsav413.rs.sakura.ne.jp
+X-Virus-Status: clean
 
-On Wed, 23 Sep 2026 18:17:50 +0100, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> Commit 3e86e4d74c04 ("kbuild: keep .modinfo section in vmlinux.unstripped")
-> placed MODULE_INFO() strings in the .modinfo section in vmlinux.unstripped,
-> however it left the section allocatable, so it gets assigned an address and
-> on arm64, arm and riscv, the section is tagged as PT_LOAD.
+On 2026/09/24 3:38, Gary Guo wrote:
+>> diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+>> index fc97dd873974..2ff77ef49781 100644
+>> --- a/rust/kernel/block/mq/gen_disk.rs
+>> +++ b/rust/kernel/block/mq/gen_disk.rs
+>> @@ -129,6 +129,7 @@ pub fn build<T: Operations>(
+>>              submit_bio: None,
+>>              open: None,
+>>              release: None,
+>> +            post_release: None,
+>>              ioctl: None,
+>>              compat_ioctl: None,
+>>              check_events: None,
 > 
-> This is useless as the data is ultimately stripped anyway.
+> Ideally we'd use
 > 
-> [...]
+>     ..pin_init::zeroed()
+> 
+> At the end of the struct expression to zero out all other fields instead of
+> manually zeroing each single field.
+> 
+> This is pre-existing issue though, so leaving as is is also fine.
 
-Reviewed-by: Nicolas Schier <n.schier@fritz.com>
-
--- 
-Nicolas
-
+You can submit a patch, as I'm not familiar with Rust. I see no problem
+as long as we don't hit build failures due to racing with your patch and
+this patch.
