@@ -1,120 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102D0472F9B;
-	Thu, 24 Sep 2026 23:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCC34749D1
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Sep 2026 23:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790292327; cv=none; b=eeL84LAhCBwsAHRUtmyZ29Li2jrzzdeGiyZ0kkXtHAFoMFku/0fP6v6ioCYWMcXN6NRuu2jRB7CvfjtXBT4R42HfK1uK0LbbKADiyDJU7znhtYscTGtQb9UymVhqSgLTRyOwTb3pZc2riS1Nk99zBx9vHHmj4dGP0UG5M9L70EQ=
+	t=1790292375; cv=none; b=lMacQoMoVaLnsiVvsngbKs/jKRYp3Pa4F071Sqaa/1FWkttCgGTqFUHERIsMo4yaxBicSD61jEeg3w8YkGqcRxfmtk3lP0a9o9pF8Av0QZPeTaDVUn2diEWG0pZGr5y3+PZNwVUnrKA/Pt4z0vtl4Kt5bgZY5/4IrBhGlmUaX4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790292327; c=relaxed/simple;
-	bh=4ofZeZsPS10nkCfHIRsXboOLeOhyBF/VHKJZ7Rw5NG8=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=Dm1QHlq2Fw8ytwhZuLBo6VIv2bsFQaqYlD2r0OnfUQ/PxlZiP08JV85wlxLXy+8I9P8BbwXrQ4nhVizVnPrjDz5qqQ4lp6SCUMZ+VlTk4CURY7N5ng/wTBv3/F08ErJoFe84LK4CJVgV9D8SI3o5y1Jd+kqaCVmLROz7Cs/zl7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lP9j5O93; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790292375; c=relaxed/simple;
+	bh=9/u6UINBlmRkr8HsG8536mNFsfc9d/6Dmt6jzvPoMHg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HsGKnS3y/iJ9vUHOyYOfjrX3DyHQXYc82pUTRC+mr6hVQ8Tkz7nm6aiMsFHUk8zhYPbgOmxgrkwalmXRj+m4lAvDMDzL1eDsxQoVIBiVR7GSZJ+vld9apEqfmpaRZ99TELogM0y6uT+UYndNCOxsvZpz4q05vyaW3ML9o+8z14M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=l40MSbsg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=xZLL3ewv; arc=none smtp.client-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lP9j5O93"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0CA1F000FF;
-	Thu, 24 Sep 2026 23:25:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790292322;
-	bh=oiSH4uRWisdHYTr3/mGtD/pllD4YffCL5fwheMZHNIU=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=lP9j5O93+YowN/Tcd7aIj5PvNSSnjX2SiIj7OhnDjJ1Clynyctsv0jkIS280PDVb0
-	 XiAsKgY55sUL7a6XBMdJZydf5QD8nVZ1qRChXLtuxB65oXWXkMKA/TlJWODHoG98Rt
-	 orVge3h5wawvidyXkV7NkWdLz955zq+Jw+814n4xTANjgtDJ7VGwEFLKePz0T3etNv
-	 sgAK9QcHRPSzYAqSDYnbKMYjJuOeVicOzQnxU0hhR/vTSLGKLxNfcTm4AqX0kpFOmh
-	 zPAaknpUuEFBeGyV0GY/4mytOiSG9uYhbaADU89v+k8KzcehYbGezTF8Ltc4C6j+xL
-	 luNqp+Y5jrelQ==
-Content-Type: multipart/mixed; boundary="===============0374088084302990559=="
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="l40MSbsg";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="xZLL3ewv"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id ACAA51D0011E;
+	Thu, 24 Sep 2026 19:26:11 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 24 Sep 2026 19:26:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm3; t=1790292371; x=1790378771; bh=ReZ44VNi25PH/GnqYflJx
+	IQxb7G7Gtv/oUZ18ok8hyo=; b=l40MSbsgC0ehQcHq1Hv2u01CzDPfJkK8HtiDk
+	vPW16j5Qa4wjZiyW8XG5fRd8FgBqQNdtRSln9jbLTvVXnjD3fj/AVc9RKUBHFmrP
+	WjggOUIf4kbjoC8C63rjjh3k73xF5E+TO6gxxPDdf1t/bgpEW5aUctpBRAC2Y4ZW
+	DpxqoK/05qLr+CS/DTol1NxAzL8Ajf1pQnzqhro1jm1Taeib6/VvbN133hH04S7o
+	zgTsC7jVkoeDCPbDBpW7HYFX6Kc985ZTffZwBW8wVwqGc0BBJrhPqqSX1CGGILg0
+	oqeLNBobus/qrxhFomPxIeNxQ20lmxWNbcvzhLYixZzDeZJNw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1790292371; x=1790378771; bh=ReZ44VNi25PH/GnqYflJxIQxb7G7Gtv/oUZ
+	18ok8hyo=; b=xZLL3ewvMgG131I89lunelmG37hZR629gc4kxxTxBGM/8VuuZ/7
+	fAxgYuoMNlXn8k/W9QRtrHIFZY59unxQhWS1ExNDj7TzX35YeFBS2/IIbEtyPevr
+	grzacad25pqlcdnNQL9GjRlNAysB/FNco1jWx5oi3e40FTdBXbJggALJR0GhCzAB
+	psGQO3V9sMTZsKpa0IG9AaTBMIwsXgC39KxLLpzfaojB+KrLBpRXAslnQMIaKjjb
+	wLK7lxb3u+3j9pGzWi1g05C9O1OHbMZo2GY4XyP+tauvVqdT4FMKBNHg3j23BTwH
+	KZqpYZdXiuWcLx/Yg4Hjctz6WDliOKQxFnw==
+X-ME-Sender: <xms:k7G1atZKhyjA28LHwr3bo3kbyamAuw0tzA3xyQLojdL3-PAKNaC-uA>
+    <xme:k7G1agRwIjwEciEFEFlezJFkRoK7kvTVx310b-l7_PRuf3Og4y9m3gCW_ivM0QPkm
+    8fLdHu1iGn7ykIw1Mldidzz8Ts2tNs5W7MVaPyuMCmo8ZWIjvHEQ5vc>
+X-ME-Received: <xmr:k7G1arcwEVB7yjGTCSLOwjr_H-jYN0u53dIu77OVv0U_GBbgtBGQNCZed_XrtgSKufD5mVBHiY_-EbHZwqQ>
+X-ME-Proxy-Cause: dmFkZTFH+g/IRgDdgA92LjqhaqAD9/T/Ir1n6oeXkT1QrfJ30EsjmB3a/dPgJf20Bk+KT1
+    8rajfIPciRmePbmWNYqUqO8KrN/rcNoyq+IHSSGViDCq773JsgwRtRz0vxl95GSXNQ5TS7
+    iec5A64803F5TOcIxvlV+OBI4e7XXFT74ctCrYCIgBN/HsQ6ST/ymjGOL8RGHrR6vSVTLm
+    rwC6/luaQ21o3r+iEuAmuaV5j1ZLCAyO/iBueS9O1zM6U+PKjkD83LhNnwm0+aJ8FjKqqr
+    PqzCeBCUP0H2Dc7Xw50yx2GNkDmhY/maq2GXjuzehI/QsKWRH982crVFBeRD6O/nkbxFZz
+    5drZ1HtmhgYs1KKb+rXMxSj62wx6hNzYIFZjsAq2hc+bEcbl5iA25jZzg92rt5FeH//+Dw
+    co3wDabrdhXQ1Y/jPyHfkLPAv4PDYjeaXa0xswEWV9nKjH7LtJjLEjNwg0SpnYWu15wBfi
+    JOgFNdp/fWKAsoI3U14rFMo5ORnsr/bI6QgM2h87n+R8nTQNjQMd+khR1RHQoZuzHhSUDR
+    pCUmJnCQJV8HCzWkqNUXleVh4Hgs9g4d7zEDRLb74ldMZQLJb798HS9iOVzUL5A6wPsLPv
+    Gc5V9xH7SICtO5Okep1GMEFqaOCurgsEvRhWHn1xh6SjZ6dAo3BXFZw/D+MQ
+X-ME-Proxy: <xmx:k7G1avkRPXeNq5bsXe0yOiaKjyRHq1BAE7llnDTr5hgBp_V4fpL89Q>
+    <xmx:k7G1aggWHp77LhSKfe4L-5qGI_yjH6LXrhzVBOjG6vpwWOPeGlAwCw>
+    <xmx:k7G1agEoVlro7v4RLOSZh90sOlOu4cg_0g0IvAB9BIA3ndBMk9DwGw>
+    <xmx:k7G1avwPVqeTFar_UO-UarCyg1l7nMpkyyHjakc7ryyZ308q2hKxOg>
+    <xmx:k7G1anFAVpwmHswurSqtDaocYPtPH-ET-E1u9uBTtaltjpiML-2ep7RA>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 24 Sep 2026 19:26:06 -0400 (EDT)
+From: FUJITA Tomonori <tomo@flapping.org>
+To: a.hindborg@kernel.org,
+	gary@garyguo.net,
+	ojeda@kernel.org
+Cc: acourbot@nvidia.com,
+	aliceryhl@google.com,
+	anna-maria@linutronix.de,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	frederic@kernel.org,
+	jstultz@google.com,
+	lossin@kernel.org,
+	lyude@redhat.com,
+	sboyd@kernel.org,
+	tamird@kernel.org,
+	tglx@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v4 0/2] Add Delta::to_jiffies_timeout()
+Date: Fri, 25 Sep 2026 08:25:28 +0900
+Message-ID: <20260924232530.446588-1-tomo@flapping.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <e3ab0833252a329c1ede5118136e151249ea328127785dafddd328066f8d782c@mail.kernel.org>
-In-Reply-To: <20260924-b4-arm64-callops-kcfi-v2-9-587865b6d991@linux.dev>
-References: <20260924-b4-arm64-callops-kcfi-v2-9-587865b6d991@linux.dev>
-Subject: Re: [PATCH v2 9/9] arm64: ftrace: Allow CALL_OPS on kCFI kernels built with Rust
-From: bot+bpf-ci@kernel.org
-To: jose.fernandez@linux.dev,rostedt@goodmis.org,mhiramat@kernel.org,mark.rutland@arm.com,mathieu.desnoyers@efficios.com,nathan@kernel.org,nsc@kernel.org,ndesaulniers@google.com,morbo@google.com,justinstitt@google.com,catalin.marinas@arm.com,will@kernel.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,puranjay@kernel.org,xukuohai@huaweicloud.com,ardb@kernel.org,ilias.apalodimas@linaro.org,ojeda@kernel.org,boqun@kernel.org,gary@garyguo.net,bjorn3_gh@protonmail.com,lossin@kernel.org,a.hindborg@kernel.org,aliceryhl@google.com,tmgross@umich.edu,dakr@kernel.org,daniel.almeida@collabora.com,tamird@kernel.org,acourbot@nvidia.com,work@onurozkan.dev,samitolvanen@google.com,kees@kernel.org
-Cc: leon.hwang@linux.dev,ihor.solodrai@linux.dev,jpoimboe@kernel.org,live-patching@vger.kernel.org,linux-kernel@vger.kernel.org,linux-trace-kernel@vger.kernel.org,linux-kbuild@vger.kernel.org,llvm@lists.linux.dev,linux-arm-kernel@lists.infradead.org,bpf@vger.kernel.org,linux-efi@vger.kernel.org,rust-for-linux@vger.kernel.org,ben@cressey.dev,florent.revest@linux.dev,jose.fernandez@linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Thu, 24 Sep 2026 23:25:15 +0000 (UTC)
-
---===============0374088084302990559==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index afa566e0fa86..cad2bdf3456f 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -282,11 +282,16 @@ config CC_HAS_PATCHABLE_FUNCTION_ENTRY_SECTION
->  	# https://github.com/llvm/llvm-project/pull/131230
->  	def_bool $(cc-option,-fpatchable-function-entry=1$(comma)1$(comma).discard.patchable_function_entries)
->
-> +config RUSTC_HAS_PATCHABLE_FUNCTION_ENTRY_SECTION
-> +	# The section argument needs Rust 1.98.0 or later:
-> +	# https://github.com/rust-lang/rust/pull/157445
-> +	def_bool $(rustc-option,-Zpatchable-function-entry=1$(comma)1$(comma).discard.patchable_function_entries)
-> +
->  config ARM64_CFI_PERMITS_CALL_OPS
->  	def_bool y
->  	depends on CFI
->  	depends on CC_HAS_PATCHABLE_FUNCTION_ENTRY_SECTION
-> -	depends on !RUST
-> +	depends on !RUST || RUSTC_HAS_PATCHABLE_FUNCTION_ENTRY_SECTION
->
->  config ARM64_FUNCTION_PREFIX_NOPS
->  	int
-> diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-> index 653c1ed6ef38..b23430e2b856 100644
-> --- a/arch/arm64/Makefile
-> +++ b/arch/arm64/Makefile
-> @@ -152,6 +152,9 @@ ifeq ($(CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS),y)
->  			 -DCC_USING_PATCHABLE_FUNCTION_PREFIX=$(prefix_nops)
->      KBUILD_CFLAGS += $(CFI_PREFIX_CFLAGS)
->      export CFI_PREFIX_CFLAGS
-> +    # Rust functions are not patched by ftrace, but they are called indirectly
-> +    # from C and make indirect calls themselves, so they need the same prefix.
-> +    KBUILD_RUSTFLAGS += -Zpatchable-function-entry=$(prefix_nops),$(prefix_nops),.discard.patchable_function_entries
->    endif
->  else ifeq ($(CONFIG_DYNAMIC_FTRACE_WITH_ARGS),y)
->    KBUILD_CPPFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
-> diff --git a/rust/Makefile b/rust/Makefile
-> index da1a7409d984..b402ab768f72 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -511,7 +511,12 @@ endif
->  # prototypes for functions like `memcpy` -- if this flag is not passed,
->  # `bindgen`-generated prototypes use `c_ulong` or `c_uint` depending on
->  # architecture instead of generating `usize`.
-> -bindgen_c_flags_final = $(bindgen_c_flags_lto) -fno-builtin -D__BINDGEN__
-> +#
-> +# Do not pass -fpatchable-function-entry to bindgen: its libclang may not
-> +# support the section argument (Clang >= 21), and removing the flag does not
-> +# change the ABI.
-> +bindgen_c_flags_final = $(filter-out -fpatchable-function-entry=%, \
-> +	$(bindgen_c_flags_lto)) -fno-builtin -D__BINDGEN__
-                            ^^^^
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-This isn't a bug, but could the commit message mention that bindgen's C
-flags now drop -fpatchable-function-entry on all architectures, not just
-arm64 with CFI?
+The first patch makes bindings::HZ resolve to CONFIG_HZ.
 
-The change applies whenever any architecture passes -fpatchable-function-entry
-in CFLAGS (x86 CALL_PADDING, riscv, powerpc, loongarch, parisc, and arm64
-ftrace). The reason for filtering it out (bindgen's libclang may be older
-than the kernel's Clang and may reject the section argument) is documented
-in the code comment, but the commit message only describes the arm64 kCFI
-pieces.
+The second patch was previously posted as patch 4 of [1]; patches 1-3
+of that series have been applied. It has been reworked.
 
+[1] https://lore.kernel.org/rust-for-linux/20260808062839.1159990-1-tomo@flapping.org/
 
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+v4:
+- Use i64::max() and u64::min() instead of the method call syntax (Gary)
+- Add Reviewed-by from Gary
+v3: https://lore.kernel.org/rust-for-linux/20260908230445.2430296-1-tomo@flapping.org/
+- Add the first patch to set bindings::HZ to CONFIG_HZ.
+- Drop the CONFIG_HZ workaround.
+v2: https://lore.kernel.org/rust-for-linux/20260907123524.2332118-1-tomo@flapping.org/
+- Use mul_u64_add_u64_div_u64() instead of __msecs_to_jiffies().
+- Dropped the as_millis_ceil() example and KUnit test patch; the conversion
+  no longer uses as_millis_ceil(). Will send it separately.
+v1: https://lore.kernel.org/rust-for-linux/20260811150147.1360102-1-tomo@flapping.org/
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/36069841267
---===============0374088084302990559==--
+FUJITA Tomonori (2):
+  rust: bindings: set HZ to CONFIG_HZ
+  rust: time: add Delta::to_jiffies_timeout() for timeout conversion
+
+ rust/bindings/lib.rs     |   5 ++
+ rust/helpers/helpers.c   |   1 +
+ rust/helpers/math.c      |   8 +++
+ rust/kernel/Kconfig.test |  10 ++++
+ rust/kernel/time.rs      | 105 +++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 129 insertions(+)
+ create mode 100644 rust/helpers/math.c
+
+
+base-commit: 93f51579e7df248780214094418f205253383cc5
+-- 
+2.43.0
+
