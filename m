@@ -1,52 +1,59 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.119])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1787220F2A;
-	Thu, 24 Sep 2026 12:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.119
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FCB2F8EBC;
+	Thu, 24 Sep 2026 12:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790252336; cv=none; b=NcwV4jJ1P78Qf6La/teg6zcnyuGcu1dwXU7nE+Q8tfm9EMFvvAqCbIhhkN8aH+6JG8rLXvfKXklH6+DH6UNxVtMLPFrbkonDTlj4+18PfOW4ayjE8yJp1XMF1hwWWLUMeOsQbbA210ET1Zixvc4hOmnJ/pI0trtjOhKhOtVAM64=
+	t=1790253117; cv=none; b=RPjY9od/5swXzRzzmz43f5NQqF5ZRgRdkm58ea7dpGzGAmpIkXzjEKCPz91mhJ5Seax+4jqR+BKvhYtCb1ulnY5cGxzGQ1g+2TIv/wczwI2x/XGRlCDJxXSLmxKR99sjZy1ZoalavYcSkhMV3+V9mapMQswyTgcryK/pgFuv39Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790252336; c=relaxed/simple;
-	bh=KP4ToPXOPVipirFagGnGS34KNwnlLGi3RixUrqQrbyQ=;
+	s=arc-20240116; t=1790253117; c=relaxed/simple;
+	bh=tyroa8lBoOqLwHpTeRHuGpjV833qc9sQbRMa/D+dsoA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pZ2osJMDbL8bUhIOL/oiEwR+qWoJx+6plc/Fq9ZJRZdmR0LChpe2iZx4MmwIgidweGGlPjFS6hVd31SrKGbl6verVaykRgYKyqWVmcu50jqsKgfDHmpI/nDzk80gJ+C/Z7uezLOK+znJUwRaBG6LR4dtK575vdGQRLLYHEUXkQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b=WYQmN5p/; arc=none smtp.client-ip=212.42.244.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=ILxUdjR37BVLUVQK1t4mx3a/Z9msa3+4fijhXc64NdS4QRIL58TilBpSXQh/ekCcA4Coyx+miKjRTiwhaHFJqFmWcYzQiCVlmTyNmt/MYW5g1xKhIj5bIojuh6Q23zxcOURRXDp5hDxDJckgibKD3UW2m8FIh1UL21FSxC3y1/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=lz309Dy3; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b="WYQmN5p/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fritz.com; s=mail;
-	t=1790252330; bh=KP4ToPXOPVipirFagGnGS34KNwnlLGi3RixUrqQrbyQ=;
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="lz309Dy3"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9B3381570;
+	Thu, 24 Sep 2026 05:31:51 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2777F3F86C;
+	Thu, 24 Sep 2026 05:31:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790253115; bh=tyroa8lBoOqLwHpTeRHuGpjV833qc9sQbRMa/D+dsoA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WYQmN5p/RMZ62XWNG8Go6YsOY/y3H6R+SlGeFzj+gdZ9hmTLooAXHmHExzb7FE43W
-	 DLqBLb644eMJ4RHFqgAyUR0k6Ad6opFKHbqy5kKD7kvu2iQyjtlwCKyRghpF5n6Bn4
-	 m1XRNFRNSaBp+MXoNpFVjhgM2ZYahSEHeBMD+2korJ266LaYnfk7xnMmGc8FlRZ+iM
-	 qmAe0oaIPlF4uVX9gSQ65roKMq413uMnxF5Q8PKjijKtOo+CVsYOAFZf1DvvZ6KULD
-	 EAkrD7ksExRZoZ2P0oJfbFa3idKjIXrLm3J5+kbbkQ3pbepDZdgGsW7eONJnCMuUOH
-	 pFKGM+yBkN3SA==
-Received: from [2001:bf0:244:244::78] (helo=mail.avm.de)
-	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
-	(envelope-from <n.schier@fritz.com>)
-	id 6ab5152a-03d5-7f0000032729-7f000001d9ca-1
-	for <multiple-recipients>; Thu, 24 Sep 2026 14:18:50 +0200
-Received: from mail-auth.fritz.com (unknown [IPv6:2001:bf0:244:244::78])
-	by mail.avm.de (Postfix) with ESMTPS;
-	Thu, 24 Sep 2026 14:18:50 +0200 (CEST)
-Date: Thu, 24 Sep 2026 14:18:49 +0200
-From: Nicolas Schier <n.schier@fritz.com>
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
-	Peter Zijlstra <peterz@infradead.org>, Gary Guo <gary@garyguo.net>,
-	rust-for-linux@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>, linux-kbuild@vger.kernel.org,
-	Huacai Chen <chenhuacai@kernel.org>
-Subject: Re: [PATCH v3 24/28] kbuild: Generate the noreturn list and validate
- modules against it
-Message-ID: <20260924-antique-weasel-of-fantasy-6f4eac@l-nschier-z2>
-References: <cover.1790028654.git.jpoimboe@kernel.org>
- <ed33f66332772d5156dc91513d00e19218e5e68b.1790028654.git.jpoimboe@kernel.org>
+	b=lz309Dy3TlEu+7y1tHZCYfrdPqaWCgtZMoXnPf8tuQOM4LMWKCZ6sgCmYSkYsjvcs
+	 tO7bMRWvAOIpOXYh7A+nfbCx25N76QAhUGvlajWZ3EFwvUyLVK0EAGgwuHLQJWAXUT
+	 QV+kIw/8QJ9o4Wbe1n28zhddNcWmz6QOOLHombIo=
+Date: Thu, 24 Sep 2026 13:31:42 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
+	ritesh.list@gmail.com, sshegde@linux.ibm.com, pjw@kernel.org,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, tglx@kernel.org,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, ojeda@kernel.org, boqun@kernel.org,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org,
+	acourbot@nvidia.com, work@onurozkan.dev, nathan@kernel.org,
+	ndesaulniers@google.com, morbo@google.com, justinstitt@google.com,
+	jszhang@kernel.org, japo@linux.ibm.com, peterz@infradead.org,
+	jpoimboe@kernel.org, seanjc@google.com, pmladek@suse.com,
+	thuth@redhat.com, ynorov@nvidia.com, joelagnelf@nvidia.com,
+	david@davidgow.net, fujita.tomonori@gmail.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [RFC] rust: kernel: Add KUnit tests for ARCH_WARN_ASM bug table
+ emission
+Message-ID: <arUYLsJJewE--wqo@J2N7QTR9R3>
+References: <20260922054959.955093-2-mkchauras@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,45 +62,29 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ed33f66332772d5156dc91513d00e19218e5e68b.1790028654.git.jpoimboe@kernel.org>
-Organization: FRITZ! Technology GmbH
-x-ms-reactions: disallow
-X-purgate-ID: 149429::1790252330-8D7F0EF9-2FEB22D7/0/0
-X-purgate-type: clean
-X-purgate-size: 1413
-X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
-X-purgate: clean
-X-pfmilter: host: postfix-mx-02  mail-id: DC78CA086F  external: no
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260922054959.955093-2-mkchauras@gmail.com>
 
-On Mon, Sep 21, 2026 at 03:31:25PM -0700, Josh Poimboeuf wrote:
-> Most of the remaining hard-coded noreturn functions are exported symbols
-> which live in vmlinux.o.  The objtool vmlinux.o pass can detect them
-> automatically, but modules can't.
+On Tue, Sep 22, 2026 at 11:20:00AM +0530, Mukesh Kumar Chaurasiya (IBM) wrote:
+> Verify that the __bug_table entry emitted by ARCH_WARN_ASM has a correct
+> bug_addr displacement — i.e. the arch's trap label reference resolves to
+> the trap instruction — by calling find_bug() with the exact virtual address
+> of the trap, mirroring what the real trap handler does.
 > 
-> Instead of hard-coding them in noreturns.h, dynamically generate the
-> list in a new scripts/noreturns.builtin file, which objtool on modules
-> can then read.  That allows most of the remaining hard-coded noreturn
-> entries to go away, including the Rust ones.  Note this means that
-> modules need to be linked after vmlinux.o has been built and analyzed by
-> objtool.
+> To support all architectures, each arch that implements ARCH_WARN_ASM now
+> defines ARCH_WARN_ASM_TRAP_LABEL, a string constant naming the local label
+> at which the trap instruction is placed:
 > 
-> Objtool running on OOT modules will also need to read the generated
-> file.  Its location in scripts/ should ensure it gets installed with
-> kernel build files automatically.
-> 
-> Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-> ---
->  Makefile                                |  8 +++++
->  scripts/.gitignore                      |  1 +
->  scripts/Makefile.modfinal               | 15 ++++++--
->  scripts/Makefile.vmlinux_o              |  2 ++
->  tools/objtool/Documentation/objtool.txt |  8 ++---
->  tools/objtool/check.c                   | 46 -------------------------
->  tools/objtool/noreturns.h               | 17 ++-------
->  7 files changed, 29 insertions(+), 68 deletions(-)
-> 
+>   x86       "1"     (ud2 at label 1:)
+>   powerpc   "1"     (twi at label 1:)
+>   riscv     "1"     (ebreak at label 1:)
+>   arm64     "14471" (brk placed at 14471: by __BUG_ENTRY_END)
+>   s390      "0"     (mc at label 0:)
 
-Reviewed-by: Nicolas Schier <n.schier@fritz.com>
+I'm not a fan of exposing such a low-level implementation detail out of
+the architecture code, and I don't think we should expose this.
 
--- 
-Nicolas
+What exactly are you trying to verify here, and why? Has there been
+some _specific_ issue on powerpc that caused you to look at this?
+
+Mark.
