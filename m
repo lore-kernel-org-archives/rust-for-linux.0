@@ -1,73 +1,66 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951934B1286;
-	Thu, 24 Sep 2026 17:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FC84CCDDF;
+	Thu, 24 Sep 2026 17:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790271130; cv=none; b=Vfe64Q4r1NP5FpgF1VwJq9Q+CGUkIdkRwapE/NCrxxt7nXeaBPs8FtMTtupRrbe+bVkHgJBJplCPNKLoXDjehDm6gXoyqwE/y1EaE7KBlraceuyNp9L9b5jzJRglxLGs0U9FMPq9qwBptEXTwxJ6PVJ+4TYumLbN6+/ZOt27YYg=
+	t=1790272008; cv=none; b=F/OPAoltJt3LkqAL2qaz2t/go7jWm2Y7j//x/6YDSegnttmaYGPY1IIce0IoQxS5PRK8sYjWcebdfcbi4Pb8ZfvvCzE8hKN/rEqNzGvFTaw17uWZ6hB/2Otg9WyVKmmpT5foOTKu48YhrbuEWqoM+SG631JbU2H7uulQTwzMNzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790271130; c=relaxed/simple;
-	bh=RFJwjEodphSHzjmEP7vSRAPmphkucy/rNjsLiMIWmR0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=IYkNJiSsdUcCbxFU6AvrFe/+Hcsyy97lNqVjsk3FeCmGhgtdMU80qCkVKx91g2cUSbjpbvWbVrsAyTzOYIE4Z1gNYNbvopGcejwXGJHvmd97yxe4PLqKUdgu3dJ4dtOllvNjpOYa1XkZ4fNWuHS+gMUmD3q7RbGF2BftcSZXaMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=omwzz/1u; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790272008; c=relaxed/simple;
+	bh=NdlIP5k0zy8YqoEinakvl1zXvMFpKgO67bx90z/m6O8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Dy8rR2AbBye8zPL3RJzbgFZNgFJlPi8k7qwVD5r7PSjADPUvpuHe1jiiMU0Pc5F9krTfUeDVVWqbE2pnqt5Obd9j4a+mtF60gaUErIECdsRM1rKVN6LOSRYjjmSNCElWqB29IPbYbJOf/Zx/7PnzK0LUmW2fTV9tDNy61AegevU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bEoa+YVS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="omwzz/1u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F19A51F00893;
-	Thu, 24 Sep 2026 17:32:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bEoa+YVS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBF71F000FF;
+	Thu, 24 Sep 2026 17:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790271129;
-	bh=v0nG8DkbejkMnWyKvqLXvEl7ezaHXzKTPDdCNzRFtAM=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=omwzz/1uekkhm8Ug0Rv7hVE3dm6tPpHX+gNRYxySeolYcm3i++uWlKLeBP9SGF+5K
-	 fJ8OmWW3g5p63uxjsupup41XWpX9eym56Lywu0Ylv/FLUcWPbZehHXEfT5LFNKu7g6
-	 z1MYLhnKcZct/uggUJjndh9KlqiKngHUOi/vv/nok14L96+sexmAfcV5BjFVoUJqP8
-	 76gyC/jgPa0YnY0K7nanVT2NEvqPo+Cu6uCGTlpYvEEqE0a1ejiW9gvpYB5WPvavIv
-	 6CB08UYIbsYmCs5lE6zrNBZK+sJfshgzwU/qIKf8vFY6LYaqyQ6UU1cldM8D9vbLP+
-	 Kg4NmkfxaKCGg==
+	s=k20260515; t=1790272007;
+	bh=WcyHyzV8NxmGIRpq3KuKTXbjCp/07lHrPqYcfM1X3Sk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=bEoa+YVSMGTXNxZDtl1bbWHYD2dRqYejJWhFOe/SqINwO4hzzHOEpHSD/jE6wcMiJ
+	 wFbzUvLkPTaI07L5IWwpworUtaUOEq/3QI53LYiHt4ZM/Tb0SfbyB1UY5WEOHaWJjn
+	 G3un/nB3gDnxU2hTYDEREodonMzMOFyEgR+VpikdyIdbRMgL/rGp8fnjcXZ+qmleO7
+	 Dj8t9qo+oy6GfSt7mw67ZlUYvDnXdjPlEIeBgsACKXUo46V5FBb1CgiQiyJ+jU7w1e
+	 XIAD0le3haf2dG4/EJrYf54fPu9j/egLi1kSmttOeM1gadqBIjfXnPms6I5cFii1fO
+	 +gh6RuieOOuUA==
+Date: Thu, 24 Sep 2026 10:46:45 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Sagar Taunk <sagartaunk@proton.me>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
+ <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel
+ Almeida <daniel.almeida@collabora.com>, Tamir Duberstein
+ <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Onur
+ =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Matthew Maurer
+ <mmaurer@google.com>, Carlos Llamas <cmllamas@google.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Andrew Lunn
+ <andrew@lunn.ch>
+Subject: Re: [PATCH net-next v4] rust: net: netlink: validate attribute
+ length before casting to `c_int`
+Message-ID: <20260924104645.4764dbba@kernel.org>
+In-Reply-To: <20260923120504.9100-1-sagartaunk@proton.me>
+References: <20260923120504.9100-1-sagartaunk@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 24 Sep 2026 19:32:03 +0200
-Message-Id: <DLNQ5C9BTIAJ.1XEWLZ13TU1VF@kernel.org>
-Cc: "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "Lyude Paul" <lyude@redhat.com>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>
-To: "Maurice Hieronymus" <mhi@mailbox.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v3 2/5] rust: pci: rework device enabling API
-References: <20260812-b4-rust-pci-edu-driver-v3-0-5d0b5594e52b@mailbox.org>
- <20260812-b4-rust-pci-edu-driver-v3-2-5d0b5594e52b@mailbox.org>
-In-Reply-To: <20260812-b4-rust-pci-edu-driver-v3-2-5d0b5594e52b@mailbox.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed Aug 12, 2026 at 9:52 PM CEST, Maurice Hieronymus wrote:
-> @@ -75,7 +77,7 @@ fn probe<'bound>(
->          pin_init::pin_init_scope(move || {
->              dev_dbg!(pdev, "Probe Nova Core GPU driver.\n");
-> =20
-> -            pdev.enable_device_mem()?;
-> +            let enable =3D pdev.enable_device()?;
->              pdev.set_master();
+On Wed, 23 Sep 2026 12:05:17 +0000 Sagar Taunk wrote:
+> Rebased on the upstream rust-next tree. 
 
-I think we could implement set_master() for pci::DeviceEnableGuard instead,=
- so
-it can't be called out of order.
-
-Can you please do this in a separate patch?
+I'm confused, you're tagging this for net-next but rebasing 
+on rust-next. This patch does not apply for us.
+-- 
+pw-bot: cr
