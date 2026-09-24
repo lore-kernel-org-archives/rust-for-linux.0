@@ -1,115 +1,139 @@
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2FF41836E
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Sep 2026 23:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71709427A04
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Sep 2026 23:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790292805; cv=none; b=UnU9fulPTFu34Utrp0jAtHPB4Z7jFT6fMlYsah+0L/O3cXStSJUX8ErquUDrRyN+qbutJokdclAtVVGiX1z83TsqFDAfU//xqPhr5UE515ajsJ1+o3vNwFMii4UZrlvrrltGsQ4uFH3iGnz/zW+l8+SOy1Qjsf5+pSMgCHSF13k=
+	t=1790293205; cv=none; b=cPJ7QZSEtnJy8ZKkwwqW4v2rI7qchEdIJ8n9Cas3gCXbgAbuFoyhZq/Tv2QdD8L06r3XoiVWdUa5LGX79Z36IJ6CoX1MJYEzqv+mjvKdLNBSujpFagDuTMLcjm3QqKD3AWrvURkmuKLPJ1p6X2E1iIC+zkh9ueVzLljgS1hPLL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790292805; c=relaxed/simple;
-	bh=wfN+F/tXdirrm/AOA0CQm8pVDOCc6Zdd8CMhpsj2E0M=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=dPHW0eMsEmBWI2X8U27xU/MLLoV//ew5bhBwVxRsMBQPzL4rg7amVwQ1JdUPwpJyXTyPVw/j9+oJzlD6QVajjNFrBpH/OvsnSwRFpu0NTrgSNhBujfuxr4kesdxrQyAHzVvTilGCMtuLzNYY8LuUmyuKAHNo3XNy7PLp7Iju+28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=QgNDH3am; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ARq9gtcQ; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	s=arc-20240116; t=1790293205; c=relaxed/simple;
+	bh=4h4cpDObZqi2JEPN69eOCH4YBG2slYUeYHjBIAENU48=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 References:MIME-Version; b=nAJGI2ECLTssoWu5s1XyHMhfI1MLp+WrSKt52wLoqBC97iRCRBhqYza5JvUpfGlpKfKCbpQOlZuKx/lBjvLPIlnFxAjSIODI5gG/3hfyY5DW7bx+aTJDQVGH8xxW38PIigxBpkEKdTVRRksVhCdePKtpyO+rpTbsf51rWBAsD4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZGFYs1jG; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="QgNDH3am";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ARq9gtcQ"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id E952C7A0090;
-	Thu, 24 Sep 2026 19:33:22 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Thu, 24 Sep 2026 19:33:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1790292802;
-	 x=1790379202; bh=nc2JC2Zxo9niE2q94TVIY/g+WxooYGxP9IPArtPjwSc=; b=
-	QgNDH3am0IKxYUQqsrBA5p1NQIfVZHAtVi3sq928wz3ND21v6tXicPuwduenQzbJ
-	3bmmOA38pmiYVdKN4HP6Ng17xQWd9n2xne++cUwFnSghGyCErB5+AHqaOxNHmowd
-	Uwq6qDqlCMEAQX1FMeQaaGNg/KbvvR2DJwHdfjZFoXXa6mSKfHK2fr8zewMJwWgu
-	vu0JS/Q+k7RcUcnIWdwUoovlWntAmH/gpWRFWHjK1rHSLxrH0auh0QPq3keoMjKn
-	uqAalrEXeSI/lZCMtJB+cZozuzi5NysXw910GgwH8ZUvImGWiejdbhFF0MEijTlw
-	h6mCy289Qwm8CB5EWQFrzw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790292802; x=
-	1790379202; bh=nc2JC2Zxo9niE2q94TVIY/g+WxooYGxP9IPArtPjwSc=; b=A
-	Rq9gtcQ2aTJxzJD0L1aqQHsv4sxuuhbY0Sm1Pzc0PrGEH1Z4Zgukl7MakRze0EYg
-	FaPW6ppovQzwzNahq/MTA9ZVFmN7cQlqMecRTDktCgy6V2LnAZJ2M4GHMnshLSBP
-	oEdL5Os8CDgM36xcZYPFoOQ6M40Hd93Tb8oDwZANFhNpm74hHQJh//LfOYxhkp48
-	+8tKzNgtPkI8ZZ72sD3XL3m0K6HHY+noXXzMgK/CUSd3aBSmzgQQ3qGpimO0+yMa
-	n2wpm3Jpa2Q0fiG9bUHzBwKMPfbWDmEr5oU1nd9Qt81S9OlWTAimXbClfRpnRYnp
-	NPMWkUSOwy4xS+wHwRw9w==
-X-ME-Sender: <xms:QrO1aoruXlqMrGuULqnvvWp2vxICSbBXO7r0c7Bl3Q_WO9YfvQBuKg>
-    <xme:QrO1avBAAiJ55Rr6RFIfPaUacNKaar8zwgfB7sIvr0jd7YuilzTF0g2gKz2Naq3Xh
-    9SGB0Cu7RHoOi4DIY5O8sVv6Wgyrh-6TCP6d4iFbmm5rQ1ynyhku5FE>
-X-ME-Received: <xmr:QrO1auVTR_2AOIMCc-IpVwJJxso3ckEO3NIpyRObarnSNR4djw4tuDWZHU-Kv9EH3_uiqPxXqdJWdkBVLQPUfuST>
-X-ME-Proxy-Cause: dmFkZTFgsSDRsbZ5pT9tNJ+Wqw0HTkC+7GBexh/B7t8J6/0pZ6w4XzAlLnyWHPGdVtB4pl
-    B9koSu1Ox1YuJeqnNOjGArPeVlaOFxEhSwjmTvM+05Tr5E/z17oXwTYUYaQHeX1cf5X7iJ
-    yLIajyAPlUHvZLJqvdJJoeV1oM6Ko3bU97KF2V/p1c90IgSi9+QCb2Eb7GtWjV+vbE5TY9
-    vt1a11wB9J91OIBu4O9z/KqlyRnAK311YfzGOh9IhtYyA8EhT8NO06Qy8T6Fe3978go1SZ
-    QKNlf4huvQAVgEMrcY6QLG9N6FeBhg4bx+6e8X5uXdEll816SeU/sOzxELIERiA9Wo/fFk
-    lt+zNPneGVmYEYIZHwn59jAo2mHkrySuhLqBtXnOOhEZitF9U2LwRZ5e6kA8HjK0cAhiro
-    sRjZ5olHLiFOzYmJfABagkoZT6CnDAS98wr+cYxZqoEaf91uYmD9JyN3xnNUMnuZXTArrU
-    iSXkEmvVAfvT8JrBvMZqxE9mcVWntbJzzUPbaZSmct+UrBdN0cCBBFHKX7+S9d9X5CqgFy
-    h+cQYxhibt6G1FjRNUw6tKR56nTUfzutwHEKcHs8PgkiHyZWtJPxNi+3P4nAZ40KookuKX
-    6tpN9pk+PxZUauBSdXrwUY9cjrbcKg3ug8jVdLe3NgouMCD9coILiOciIBNw
-X-ME-Proxy: <xmx:QrO1ar4nrHf3MkeefV55x-FkCLlZvVZR--Cy6sxgJkGZyo6ia82o6w>
-    <xmx:QrO1anCkWKJ2Yj1Ud0j_TfzbS4HnGsKHNl5xJyNaC6tMbeaFnX9KzQ>
-    <xmx:QrO1aoBLdiWv6abDweWKf8tc1nc0kceFVhDnpHelqoEsIA2wzMcSxA>
-    <xmx:QrO1avjCWBv2Cnic_0eI1gsxqJea1ZzUR1hwbKiXU_rhhG5Qr8zykw>
-    <xmx:QrO1aunNLFXF6G6pqiUerCuYt9d0--A2oU17sEB03GnKG5N0YV7WqYaq>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 24 Sep 2026 19:33:17 -0400 (EDT)
-Date: Fri, 25 Sep 2026 08:33:15 +0900 (JST)
-Message-Id: <20260925.083315.1383506554290485158.tomo@flapping.org>
-To: gary@garyguo.net
-Cc: tomo@flapping.org, a.hindborg@kernel.org, ojeda@kernel.org,
- acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
- daniel.almeida@collabora.com, frederic@kernel.org, jstultz@google.com,
- lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
- tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
- rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Subject: Re: [PATCH v3 2/2] rust: time: add Delta::to_jiffies_timeout() for
- timeout conversion
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <DLMME4OBH3P8.3Q6UK95T2WGI@garyguo.net>
-References: <20260908230445.2430296-1-tomo@flapping.org>
-	<20260908230445.2430296-3-tomo@flapping.org>
-	<DLMME4OBH3P8.3Q6UK95T2WGI@garyguo.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZGFYs1jG"
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2db18fe433fso1037665ad.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Sep 2026 16:40:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790293204; x=1790898004; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gn5dD1CJfoor6GODqvLgahaKF8S1PUZ5xI0XuIL5LIc=;
+        b=ZGFYs1jG/Xr4uwPy2133K5sF0poGH1omJ0ns5UwD8enApwiJPDDFi1gLMSA+UY+qrO
+         6lyZmvL2zJXgrS4urBwMTV3vFSBosNfxEeAHC2L0cHJkMBE9Oj9QKSvAuXGCWTgwH0c7
+         yWYOAFlZXJt9BDXnhQUwZElM3+pKqDf9ymR/77Qjhm4q2k9A8H7TmnWzDJf4Vw1zQ8Vz
+         HgO06YL+sF+7Efo+udo1jYXz4T5XB+sMNcQcYJJG3eDGSkCa/UybsOWnOQ+yWqiUaJ9C
+         yc+2TaftdirQziHgwjLgiQLYNZ+cgLnH7mjbZhOQnbR+1/zQ5qgml8qc2Dm7Da1OEro+
+         myTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790293204; x=1790898004;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gn5dD1CJfoor6GODqvLgahaKF8S1PUZ5xI0XuIL5LIc=;
+        b=xmCbSuDtrLGLJ6McAl2SbtZSyB1cJuX2CHTbPTTgnyRLO6Ag+Tsk+vKNm/RL9T8bZO
+         Cr3i5aqaWwZbA1GLQIH/sJcK5rxu5Bu2LGiEuLoJY/b6wcWZjp9C7CjqLEgdEqV64An8
+         4mrh9rYvpTV00FeDlyw95wH3EkOs4DllCtNckdbzNQdCk3BdS0haVYBNguTm4k9SLesI
+         Gf1a1SJiR9NOWzkl5lOxgYS8s+D4S+wdPkoOOS+yi//laKcTlydkDGsH80ptDnGOMuQd
+         fxx1a2XAeXEksc+1tDCpdQvVGgvMiPwsgupNgQr3FhyBIXm2AFhmZ7tIGCXlUYaX2Dz4
+         0FOw==
+X-Forwarded-Encrypted: i=1; AKwUvByE9wWHCeSdl/Gd548iW+5wk1EE9b2CYnnXviF7qlu+aHrQXgIG5J6M61kTfZ4Xqii3U7nqYR5lk/nekKWVxA==@vger.kernel.org
+X-Gm-Message-State: AFuF++mrpTNnFSpUX2ZNSDf54EIgdv9/L4gxpFodhLKUDM/lDG+zvI5R
+	gqMVHWZDq60FpanYc2uWvaI2O6DzDCNrkbdLpmaiQ1HUIH+pDrzVlrKd
+X-Gm-Gg: AYBFou1Y+nMSQbW1St7qETlCnz3eFTFvzTSzX5LYtlEQ2Yca+AfrHmGVrSDYapn6NIA
+	JH4aOn2/0SZ94g150/90qDXWle+vV6u4ArrR/L1da/AYHWgASLajhkZOEiUeIwB9kRhELIKooD4
+	jA4ejimsodKcEtrzrQj0Z5GJe4DhamMfjqiq3o9QJVy8iodnOeoOH+7OhkwqEUGkgq/RJgzddEk
+	Ls5x42jWuHCjtaA8t8JQSrNXvsWhYoJKtvi82MjLI7oM6B/muaYgtJJ1QcPQQ7YSIcmFp2OZ4UD
+	XuuE4ViMNm90bmBp2FdPczJMBqjw4ej/HxHL8ivSwj3b+E3H7D0a4vaf2ZAPBoTVcKRzqN792da
+	Y9z+jWFsNrO23bfkRMRmK0C1JSjd40R+WR4J/2n2CNG9p/v5bDXYiVGihYM4OhAiS/nFcuJyoqA
+	XaLF4RUDu8RGD32ySqZnyQiMwQrl3bLdgcUQPuyFYh9MLUOKM86G2ccf30Y1r3JL47OQj7ajn+T
+	NVg0XvM4RM9/rOf6U7j9auw5DdQ/O00ejD/3p5z2GYyIwVscDA4XXRY2/vVdwWaWDFJhrYMdcPP
+	zio=
+X-Received: by 2002:a17:90b:1648:b0:39e:6c69:34d8 with SMTP id 98e67ed59e1d1-3a098fc574cmr3554656a91.60.1790293203799;
+        Thu, 24 Sep 2026 16:40:03 -0700 (PDT)
+Received: from localhost ([153.61.198.240])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b8efaeb3sm909723a91.2.2026.09.24.16.40.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Sep 2026 16:40:03 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 24 Sep 2026 23:40:01 +0000
+Message-Id: <DLNXZ2WK7TPD.2RZBUNRS4FA4L@gmail.com>
+Cc: "Leon Hwang" <leon.hwang@linux.dev>, "Ihor Solodrai"
+ <ihor.solodrai@linux.dev>, "Josh Poimboeuf" <jpoimboe@kernel.org>,
+ <live-patching@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-trace-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>,
+ <llvm@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <bpf@vger.kernel.org>, <linux-efi@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, "Ben Cressey" <ben@cressey.dev>, "Florent
+ Revest (Anthropic)" <florent.revest@linux.dev>
+Subject: Re: [PATCH v2 6/9] arm64: cfi: Use
+ CONFIG_ARM64_FUNCTION_PREFIX_NOPS for the type hash offset
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>, "Steven
+ Rostedt" <rostedt@goodmis.org>, "Masami Hiramatsu" <mhiramat@kernel.org>,
+ "Mark Rutland" <mark.rutland@arm.com>, "Mathieu Desnoyers"
+ <mathieu.desnoyers@efficios.com>, "Nathan Chancellor" <nathan@kernel.org>,
+ "Nicolas Schier" <nsc@kernel.org>, "Nick Desaulniers"
+ <ndesaulniers@google.com>, "Bill Wendling" <morbo@google.com>, "Justin
+ Stitt" <justinstitt@google.com>, "Catalin Marinas"
+ <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>, "Daniel
+ Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>,
+ "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
+ <memxor@gmail.com>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Song Liu"
+ <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa"
+ <jolsa@kernel.org>, "Emil Tsalapatis" <emil@etsalapatis.com>, "Puranjay
+ Mohan" <puranjay@kernel.org>, "Xu Kuohai" <xukuohai@huaweicloud.com>, "Ard
+ Biesheuvel" <ardb@kernel.org>, "Ilias Apalodimas"
+ <ilias.apalodimas@linaro.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "Sami Tolvanen" <samitolvanen@google.com>, "Kees
+ Cook" <kees@kernel.org>
+In-Reply-To: <20260924-b4-arm64-callops-kcfi-v2-6-587865b6d991@linux.dev>
+References: <20260924-b4-arm64-callops-kcfi-v2-0-587865b6d991@linux.dev> <20260924-b4-arm64-callops-kcfi-v2-6-587865b6d991@linux.dev>
+X-Mailer: mkdraft (claude review draft; edit before sending)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
 
-On Wed, 23 Sep 2026 11:22:47 +0100
-"Gary Guo" <gary@garyguo.net> wrote:
+On Thu, Sep 24, 2026 at 10:35 PM Jose Fernandez (Anthropic) <jose.fernandez@linux.dev> wrote:
+>  static inline void emit_kcfi(u32 hash, struct jit_ctx *ctx)
+>  {
+> -	if (IS_ENABLED(CONFIG_CFI))
+> -		emit_u32_data(hash, ctx);
+> +	if (!IS_ENABLED(CONFIG_CFI))
+> +		return;
+> +
+> +	emit_u32_data(hash, ctx);
+> +	for (int i = 0; i < CONFIG_ARM64_FUNCTION_PREFIX_NOPS; i++)
+> +		emit(A64_NOP, ctx);
+>  }
 
->> +        // CAST: `max()` makes the value non-negative, so the cast keeps it.
->> +        let nsecs = self.as_nanos().max(0) as u64;
-> 
-> Please use fn syntax and have `core::cmp::max(self.as_nanos(), 0)` or
-> `u64::max(..)`. Due to the method syntax hinting some action is taking place,
-> many people find it confusing, because you can easily understand `.max` it as
-> "clamp to a max of" while it actually means "clamp to a min of".
-> 
-> See https://internals.rust-lang.org/t/am-i-the-only-one-confused-by-a-min-b-and-a-max-b/13252
+For the series:
+Acked-by: Alexei Starovoitov <ast@kernel.org>
 
-Makes sense. Fixed in v4:
-
-https://lore.kernel.org/all/20260924232530.446588-1-tomo@flapping.org/
-
-Thanks for reviewing the patches!
+unrelated minor issue:
+ctx.offset[] is counted from ro_image, but bpf_prog_fill_jited_linfo()
+adds it to prog->bpf_func which is ro_image + cfi_get_offset().
+So with CFI jited_line_info is already off by one insn.
+After this patch it will be off by 4 or 6.
+s390 does
+	jit.addrs[i] -= cfi_get_offset();
+before the call.
+Would be great to send a follow up eventually.
 
