@@ -1,156 +1,219 @@
-Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176AC56B854
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Sep 2026 22:05:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790201150; cv=none; b=h4pozHXXXKTwuEHF6t+c1aV7RcdYvW0XTSpgm85aT2qjBsU2ohPRc+pTM/4SFTmJpFzaO98nwuQgZtamA6AbcjoBSTdH2cQ276nfA4STXu4UrR1DB6i3Ni5zXuMz12L3bp9EOVMspfsd7cCCWaAwb/W1Hc3X9n4i7bgMwqYvqt0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790201150; c=relaxed/simple;
-	bh=K2axbYRQNW+6vDySUPFdJODepbCos+4GY8IGWK9+sB4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=raXs706In4uCqo8IZBnhq4YwLEE6URLXN9rKSvmE2c03aMwLwH+lnauoAr7DQjT0XRFuz3LmVknH6JCyn8o2Yc6O+OC+D6j8qu7f+0tyuGM5RA0/5UNi/I5ZqQdGzQrQE1PkrNqK9HCVeI7weAzOho+2ccDrWSawfYhtAL51pOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu; spf=pass smtp.mailfrom=uci.edu; dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b=PWohvULh; arc=none smtp.client-ip=74.125.229.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FF729B781;
+	Thu, 24 Sep 2026 00:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.182.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790209287; cv=pass; b=VoQMsByBXKbq8ChMj/7Sck2QfR7rKMDkhGhz+DSC0mgDondl5cJnWw2rglLd0/jXl9lqi8AnS9nQ2ueywFLZ3SVQN+fBiaakJHJNJ/iJJpG3O2Wgjj3i1zR9cJSbY6jaopIquEccUUw7vxag0qjRH2KVJEtIy7dYaTJovbSdjvg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790209287; c=relaxed/simple;
+	bh=rYcXIJB0H9vuXe1TlPZ+/eIGNDr4asuuq5vLlOyvj5I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=R4HBM4RIdBILbbDD6yJ7nm9ey43gudk+W5izQ9HLOuBUanZV4P2icVbauFZfm/AzzDtTJvHldMlCy+kPUUqrTxGkXjPNhjzORGKeNkPzcgaLk4fu7j6J495KyCU97ijC72p8uMqxL+vndIQ+USibM6FNeoy2vcNr70QSklQ04Bg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=S9G62yRf; arc=pass smtp.client-ip=165.173.182.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b="PWohvULh"
-Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-328664d340aso914995eec.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 23 Sep 2026 15:05:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=uci.edu; s=google; t=1790201148; x=1790805948; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Q/nnxvPu+Ie5/oYJqt1aHS/OFcFQN5Rkx07F17u0JBU=;
-        b=PWohvULhtq2cuD9UNRoKn05JKrY7f5Q5fbpkJ047o9ms5IdsRkxyk4+fEPLuXYsxCF
-         KMaZYptWRuPKMBz85zizxXHOSYsE6xVh71JartJd3a3CrYbPaWPN328nH7lzCBBkC07T
-         OoeRAs3x+48ysJ8s5rNy46vvUWIlVfoc5NbwSyU/5VEweUocLkpXTIgzR9ZQIWPXdFu5
-         n57ThrGOvJVgfaRi74aDNblWeRG0pCo98EsCh6SRZ2CcNZh7NxERflkthmIfF8/fAExQ
-         nK7lSnv2NhMdTQcVzKvAoPzuHkRSw6rTBsK6lfAVEhfGCbDMGXSSYYLUK5EtnzPwV4y0
-         s5lQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790201148; x=1790805948;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Q/nnxvPu+Ie5/oYJqt1aHS/OFcFQN5Rkx07F17u0JBU=;
-        b=nENPwbTftuFB5uPpDfoQHjxaCAekVna0SF1jtVK0VZZQFBoEoFQES7mvr7eHGbKDKS
-         pCj3LU0XGgNrOEDuqgYb1CUnjckGTG67C/utKjqnRxuj530n99xqE5G3JC555qkRePWW
-         d49WYFU69PVziI+3YR+8aiGDuj2DphJXhk5ml65/EdMisOA89yqeNP0iL02l2l6kVFkT
-         wC7lmwDeCLzpA4wwwOylFZRsfZuc+seVox1LKLs5nJZXJMse77dBmGdTaIAXbvg3gij/
-         Mnpecx31gaZc+y4k4wGF2e0LBqAaW9M4ueA1+LXUGLJJ0uqOOuuMLkFKUxESAjGTm3tP
-         RHFA==
-X-Forwarded-Encrypted: i=1; AKwUvByM1yPoGtS3eHjIru6hzJomeBy1tLZGYjGwGEkaQu5iKlhVOOSBiFcYN/gakTp0L8CjqxIM7th8O8zxFHVrXQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++lCzzqV10TwRW2ko4mV4BoZCbZ1F5DS5jnipUQAQV8ZULLwimZz
-	1Wd2rJZFW+42wPrfDCGJFsHK4/6zFFikZsb7I6E4qjt7vLfAtdTXsrYQJC18cY/GExE=
-X-Gm-Gg: AYBFou3PO0eXjtq4BAewgXdStcYRnUFs/xr2+LwUPu/iSvOyCmr0s1Q9JWINEuC0tmq
-	DetfSwOP+rv3I2gYnZ/F/pUj3rkY/UnYEKuNoRj3YDy4mzxSiIokOVDGiJahV9zjBsVeutp/oau
-	7U9HIEYyWPgd5MMSlzf7Pr0F+sePz1VzdJGmN4DRkOnJjAE0xqE6Z2qYYOsok7xpbw43ouxX17S
-	Cx01y05V6BQ59EKfe0BJX261K9KMV69ju4oc+gjzjMaTnibSazZs5QL7REpJtyGLlDirRA57URx
-	EPqF9XiFweVE5z9ApRzINZLMMV9GJ9XeIaDK0a2/TtWaN/TJO9ydbpZRWEWjeZR23l1E1LR5T8w
-	H59R1pYIlMMk2uZUB2a2yRPrrCEdg4n3ewwl1+oNT7ng5ShTwSCtuRQeXoDA7ryKm85X3TbvJgf
-	kJDOyfAHbB7VSPsFlRSm+FN0bH2L0MuzeMm1XXH5l5RXFherHP7G7NvPW4+Jp/+iLv14K5XP3jZ
-	cPylb4QBvUwgPiYlpTFpmQ1Sp6C3NXhS4wnybl8zMpycQ==
-X-Received: by 2002:a05:7301:7bc9:b0:33c:e91:271b with SMTP id 5a478bee46e88-34001220f83mr451635eec.36.1790201147964;
-        Wed, 23 Sep 2026 15:05:47 -0700 (PDT)
-Received: from guest1.. (charm.ics.uci.edu. [128.195.4.118])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e96946d0csm9038456eec.21.2026.09.23.15.05.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 15:05:47 -0700 (PDT)
-From: Priya Bala Govindasamy <pgovind2@uci.edu>
-To: a.hindborg@kernel.org,
-	ojeda@kernel.org
-Cc: boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	stable@vger.kernel.org,
-	ardalan@uci.edu,
-	zhiyunq@cs.ucr.edu,
-	dzueck@uci.edu,
-	pgovind2@uci.edu
-Subject: [PATCH 1/1] rust: configfs: Fix incorrect subsystem root check in `get_group_data`
-Date: Wed, 23 Sep 2026 22:05:45 +0000
-Message-Id: <809b66930e6b7a47535c87366b193695f420d2df.1789770689.git.pgovind2@uci.edu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1789770689.git.pgovind2@uci.edu>
-References: <cover.1789770689.git.pgovind2@uci.edu>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="S9G62yRf"
+ARC-Seal: i=1; a=rsa-sha256; t=1790209260; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=RmFSmR+1S/O8XJgs4Qq+OihW6QlUM8YP+T7Z/RrdX3m3THAK/9Xv6d3W7c6tiGIUnzd8mx1IoA+v1Lnxah/ZKjzq809PjeuLfzle9CtcErnx5PtwturgfslcG5GNxFLCckCevSNthJfMgXmU/URPeow6LCRdqBGj8HdnlMu5Hvg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1790209260; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=+KorbPrqnzxaHJHprvzhFbK2cDqoGlVN/qVwcgSSmY8=; 
+	b=fHjBBGlSuVeTwrNq74hCBsevsJWPBCnbEJl2CYPYyfFyquskfD8ijO16gp7mWo50qKvpBOcWHxFBk83sMbrl9NbXk3PQq41w1rOPTt3LeIoEpfqni/o6i0IaTjiYENDCus4YCfqQ0pFvttuIAexjCxie07natRgs73VzrBExyZg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1790209260;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
+	bh=+KorbPrqnzxaHJHprvzhFbK2cDqoGlVN/qVwcgSSmY8=;
+	b=S9G62yRfWOj9Bujog9JzgkRDlQqanHnsx7MdtIao3Ps19dcm+bEVYvFQgV4jyM5B
+	+Jypcm2lDsTWxssXqxUtV2r6tFJu3MMtnCPiKbNPLyFjusGF556WYp/1HcMzeBrXI1X
+	+s6swrAJolnUOtr9avsrFSEnU3fgK9CShkWvKr4s=
+Received: by smtp.zohomail.com with SMTPS id 1790209260058565.5535614783416;
+	Wed, 23 Sep 2026 17:21:00 -0700 (PDT)
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+Date: Wed, 23 Sep 2026 17:20:57 -0700
+Subject: [PATCH] drm/tyr: safely write GpuInfo to userspace
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260923-b4-gpu_info_intobytes-v1-1-bb2173f91e11@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQ5AMBAAvyJ71oRVgq+ICLVlL620JUT6d43LJ
+ HOYecGTY/LQZy84utizNUnKPAO1z2YjwWtywAKbosNKLFJsxzmx0TYh2OUJ5IXCVdYau6pWLaT
+ 2cKT5/r/DGOMHkbTHdWcAAAA=
+X-Change-ID: 20260923-b4-gpu_info_intobytes-c2d45f2935c8
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Deborah Brouwer <deborah.brouwer@collabora.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5507;
+ i=deborah.brouwer@collabora.com; h=from:subject:message-id;
+ bh=rYcXIJB0H9vuXe1TlPZ+/eIGNDr4asuuq5vLlOyvj5I=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFlbcl6922VbouxzKmSFrbzFd6MNlXNart8quMbbsaiTg
+ TGZ71BaRykLgxgXg6yYIstZe6Me8ar3Rrrz/zfDzGFlAhnCwMUpABMRc2X4p/Gy6n0xK8P7eTm/
+ lHabdfV/idkXb6wiF3PRaCXXBtX3vYwMK6oqNtQ2egm/ebDEZYvKU90s6VorqfxpGcJ7DV1181Z
+ wAwA=
+X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
+ fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-In `get_group_data` to determine whether `this` is 
-subsystem root, the following check is performed:
-`(*this).cg_subsys.is_null()
-`get_group_data` then tries to read the `data` field of either
-`Group` or `Subsystem` structs depending on the result of the check.
+Tyr creates the struct drm_panthor_gpu_info from the Panthor UAPI
+bindings. It initializes this struct by querying the gpu and then writes
+the struct into userspace memory faithfully byte-by-byte.
 
-But the check always evaluates to false in `get_group_data`, since
-`link_group` in C always populates group->cg_subsys with a valid, 
-non-null pointer.
-Thus, if `this` points to a group representing the subsytem root,
-the incorrect branch in `get_group_data` may be taken, 
-leading to attempting to access `Subsystem.data` as `Group.data`.
-This is type confusion that can lead to data corruption.
+Currently, the struct drm_panthor_gpu_info does not have any implicit
+padding, but if implicit padding were added in the future Rust does not
+guarantee that it would be initialized. Then when Tyr writes the struct
+back to userspace it could expose uninitialized kernel memory.
 
-Fix this by comparing the group's address with its subsystem's su_group
-and updating the safety contract of `get_group_data`.
+Tyr implements the unsafe trait AsBytes for GpuInfo whereby the developer
+guarantees that struct drm_panthor_gpu_info does not include implicit
+padding, pointers, or interior mutability. This allows Tyr to safely copy
+the struct into userspace memory. However, relying on the unsafe trait
+AsBytes is fragile because if the Panthor UAPI changes, the SAFETY
+guarantees may no longer be accurate.
 
-Fixes: 446cafc295bf ("rust: configfs: introduce rust support for configfs")
-Cc: stable@vger.kernel.org
-Reported-by: Dylan Zueck <dzueck@uci.edu>
-Assisted-by: LLM
-Signed-off-by: Priya Bala Govindasamy <pgovind2@uci.edu>
+Instead, use the macros provided by the zerocopy crate to safely derive
+the traits IntoBytes and Immutable for struct drm_panthor_gpu_info. This
+will cause a compile error if the Panthor UAPI changes in a way that the
+traits IntoBytes or Immutable can no longer be implemented.
+
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- rust/kernel/configfs.rs | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/tyr/file.rs |  2 +-
+ drivers/gpu/drm/tyr/gpu.rs  | 12 ------------
+ rust/Makefile               | 12 +++++++++---
+ rust/bindgen_parameters     |  4 ++++
+ rust/uapi/lib.rs            |  4 ++++
+ 5 files changed, 18 insertions(+), 16 deletions(-)
 
-diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
-index cd082b83e9e7..c5fdafde0107 100644
---- a/rust/kernel/configfs.rs
-+++ b/rust/kernel/configfs.rs
-@@ -295,7 +295,8 @@ unsafe fn container_of(group: *const bindings::config_group) -> *const Self {
+diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+index 9f60a90d4948..ceadde976502 100644
+--- a/drivers/gpu/drm/tyr/file.rs
++++ b/drivers/gpu/drm/tyr/file.rs
+@@ -54,7 +54,7 @@ pub(crate) fn dev_query(
+                     )
+                     .writer();
  
- /// # Safety
- ///
--/// `this` must be a valid pointer.
-+/// `this` must be a valid pointer to a group linked into a registered configfs
-+/// subsystem. Its `cg_subsys` must be non-null and valid.
- ///
- /// If `this` does not represent the root group of a configfs subsystem,
- /// `this` must be a pointer to a `bindings::config_group` embedded in a
-@@ -304,9 +305,15 @@ unsafe fn container_of(group: *const bindings::config_group) -> *const Self {
- /// Otherwise, `this` must be a pointer to a `bindings::config_group` that
- /// is embedded in a `bindings::configfs_subsystem` that is embedded in a
- /// `Subsystem<Parent>`.
-+///
-+/// The containing `Group<Parent>` or `Subsystem<Parent>` and its initialized
-+/// `data` must remain valid for shared access for `'a`.
- unsafe fn get_group_data<'a, Parent>(this: *mut bindings::config_group) -> &'a Parent {
--    // SAFETY: `this` is a valid pointer.
--    let is_root = unsafe { (*this).cg_subsys.is_null() };
-+    // SAFETY: `this` and its `cg_subsys` are valid by the function's safety requirements.
-+    let is_root = unsafe {
-+        let subsys = (*this).cg_subsys;
-+        core::ptr::eq(this, &raw const (*subsys).su_group)
-+    };
+-                    writer.write(&reg_data.gpu_info)?;
++                    writer.write_slice(reg_data.gpu_info.as_bytes())?;
  
-     if !is_root {
-         // SAFETY: By C API contact,`this` was returned from a call to
+                     Ok(0)
+                 }
+diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
+index e1b04a0c5159..fde5bd0f87a1 100644
+--- a/drivers/gpu/drm/tyr/gpu.rs
++++ b/drivers/gpu/drm/tyr/gpu.rs
+@@ -16,7 +16,6 @@
+     },
+     prelude::*,
+     time::Delta,
+-    transmute::AsBytes,
+     uapi, //
+ };
+ 
+@@ -134,17 +133,6 @@ fn deref_mut(&mut self) -> &mut Self::Target {
+     }
+ }
+ 
+-// SAFETY: `GpuInfo`'s invariant guarantees that it is the same type that is
+-// already exposed to userspace by the C driver. This implies that it fulfills
+-// the requirements for `AsBytes`.
+-//
+-// This means:
+-//
+-// - No implicit padding,
+-// - No kernel pointers,
+-// - No interior mutability.
+-unsafe impl AsBytes for GpuInfo {}
+-
+ struct GpuModels {
+     name: &'static str,
+     arch_major: u32,
+diff --git a/rust/Makefile b/rust/Makefile
+index da1a7409d984..bf02a1efd6f3 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -365,8 +365,11 @@ rusttestlib-bindings: private rustc_target_flags = --extern ffi --extern pin_ini
+ rusttestlib-bindings: $(src)/bindings/lib.rs rusttestlib-ffi rusttestlib-pin_init FORCE
+ 	+$(call if_changed,rustc_test_library)
+ 
+-rusttestlib-uapi: private rustc_target_flags = --extern ffi --extern pin_init
+-rusttestlib-uapi: $(src)/uapi/lib.rs rusttestlib-ffi rusttestlib-pin_init FORCE
++rusttestlib-uapi: private rustc_target_flags = --extern ffi --extern pin_init \
++	--extern zerocopy=$(objtree)/$(obj)/test/libzerocopy.rlib \
++	--extern zerocopy_derive=$(objtree)/$(obj)/test/$(libzerocopy_derive_name)
++rusttestlib-uapi: $(src)/uapi/lib.rs rusttestlib-ffi rusttestlib-pin_init \
++	rusttestlib-zerocopy rusttestlib-zerocopy_derive FORCE
+ 	+$(call if_changed,rustc_test_library)
+ 
+ quiet_cmd_rustdoc_test = RUSTDOC T $<
+@@ -782,11 +785,14 @@ $(obj)/bindings.o: $(src)/bindings/lib.rs \
+     $(obj)/bindings/bindings_helpers_generated.rs FORCE
+ 	+$(call if_changed_rule,rustc_library)
+ 
+-$(obj)/uapi.o: private rustc_target_flags = --extern ffi --extern pin_init
++$(obj)/uapi.o: private rustc_target_flags = --extern ffi --extern pin_init \
++	--extern zerocopy --extern zerocopy_derive
+ $(obj)/uapi.o: private skip_gendwarfksyms = 1
+ $(obj)/uapi.o: $(src)/uapi/lib.rs \
+     $(obj)/ffi.o \
+     $(obj)/pin_init.o \
++    $(obj)/zerocopy.o \
++    $(obj)/$(libzerocopy_derive_name) \
+     $(obj)/uapi/uapi_generated.rs FORCE
+ 	+$(call if_changed_rule,rustc_library)
+ 
+diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
+index 8402b0c93545..65d913181eec 100644
+--- a/rust/bindgen_parameters
++++ b/rust/bindgen_parameters
+@@ -71,3 +71,7 @@
+ # Structs should implement `Zeroable` when all of their fields do.
+ --with-derive-custom-struct .*=MaybeZeroable
+ --with-derive-custom-union .*=MaybeZeroable
++
++# `drm_panthor_gpu_info` is copied byte-for-byte to userspace.
++--with-derive-custom-struct '^drm_panthor_gpu_info$'=IntoBytes
++--with-derive-custom-struct '^drm_panthor_gpu_info$'=Immutable
+diff --git a/rust/uapi/lib.rs b/rust/uapi/lib.rs
+index 797ead5b5626..ddb35ffcd4b6 100644
+--- a/rust/uapi/lib.rs
++++ b/rust/uapi/lib.rs
+@@ -36,5 +36,9 @@
+ type __kernel_ptrdiff_t = isize;
+ 
+ use pin_init::MaybeZeroable;
++use zerocopy_derive::{
++    Immutable,
++    IntoBytes, //
++};
+ 
+ include!(concat!(env!("OBJTREE"), "/rust/uapi/uapi_generated.rs"));
+
+---
+base-commit: 896ed083362758b33c49a1b5e5a3423c5814d87e
+change-id: 20260923-b4-gpu_info_intobytes-c2d45f2935c8
+
+Best regards,
 -- 
-2.34.1
+Deborah Brouwer <deborah.brouwer@collabora.com>
 
