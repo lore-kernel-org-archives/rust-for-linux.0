@@ -1,137 +1,228 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30343E3176;
-	Thu, 24 Sep 2026 12:53:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4E8175A6B;
+	Thu, 24 Sep 2026 12:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790254388; cv=none; b=Oe2+nT7EnxOW1L10oHrH4a0v/QADZdzZVUNv0Dimz8yRL/qp1bf0gXl4r8P+TmfyVspavXKgVAHkfDIR+t68/EnmHfS5RfQpkAF0fcaKCdnHYLI0XSJ91TLpMYRmsT2zmrGY8DnL8EdQcwdoKPdrgOon2jBqR1YA4CUK1PM0wgI=
+	t=1790254564; cv=none; b=NN1dS6UmMy3bl0gPY01reSPVnLQesgRV2gTzQe2cOW436OIkEkB6rtN8AWbSY9ckc7PMhWYBcIdO2f/1mF9t24DllVeWYnRSDpcntaywAQCPKGauQSY7E1ethySnlPCZteSQ9FLQ+hETpMRWUzZDahQRVZTBXVleX7rpBhMm3HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790254388; c=relaxed/simple;
-	bh=ERYCdMLJnLzMQY2SEXPJCfFarlUbghcDwEa2Vy8mW80=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X+HdkT1txZL4Co5C6cFrzBtTTFnwKoiInuTQUca7nx2es1WRO3v0tA3pXZsLY1UM47fgB9tn8tYaMOSymdjmmGlfrerdg3wN65ByyDL0i0chrkBlFJ8wHwUv1hqw7rX2ChOMYxaFVqOrThJjYSg/vr3+1KG/Mf5Z9kjL38Hc7Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ZQkOJyca; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1790254564; c=relaxed/simple;
+	bh=87bhEHeWGKWPBP62oXsPYEyQTEnRyhvNdRjqb56DU2w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kVb/YhQDtmbe8RiMbN+2+jV2lfZJ/TdmnU+6IpFaHUvACTvWQHUvL1lsGZilY1JZCmNL5lk9QnBWg3EM26CPw4jOFGB7BT+50HxyGJjmF9mjmYQTrgAxLwThvj5pEuEFYPIiExgZGiPJosdxxDeGWVpUK8fN+es0koXtWoiiCnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n8ME2WW1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ZQkOJyca"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=zhS6wEtyL82mK4tYraCNhULjxYZl5Eh2+XSrwYDuWw8=; b=ZQkOJycaKTprhGL2Hhsyj18VAW
-	QP37PcGkyStyxzK6pmRE8yj4uempNST/dK2Af/PFeAtR9zZC0/OUgaoFIoaPUCyWsm2Jr6FN6g6Bg
-	xNRygoulIooDosSIcbu9nOFHHDvmjceV9VIjt271smm7KDQe7PfFhuWRDKQWYQsSHqsZqTvJDdWbl
-	jkVLZ1ymoev3EyedypjGC62lyj4KQNKNm8O9ifUUs71pp4U2B/PvZ/yGrP1ymA4pBRxtnnwkGI00X
-	omzotSslOb6Liu2dgCMbQxJRyhqd4e2V280PdqTIoT0A35OLSrcbjCFLk2V7AyO2oVMIao0GEFAB/
-	y2pTtPTw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1x9iwY-0000000FzYq-2YXl;
-	Thu, 24 Sep 2026 12:52:59 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 7EFB13002D9; Thu, 24 Sep 2026 14:52:53 +0200 (CEST)
-Date: Thu, 24 Sep 2026 14:52:53 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>, catalin.marinas@arm.com,
-	will@kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
-	npiggin@gmail.com, chleroy@kernel.org, ritesh.list@gmail.com,
-	sshegde@linux.ibm.com, pjw@kernel.org, palmer@dabbelt.com,
-	aou@eecs.berkeley.edu, alex@ghiti.fr, hca@linux.ibm.com,
-	gor@linux.ibm.com, agordeev@linux.ibm.com,
-	borntraeger@linux.ibm.com, svens@linux.ibm.com, tglx@kernel.org,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, ojeda@kernel.org, boqun@kernel.org,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org,
-	acourbot@nvidia.com, work@onurozkan.dev, nathan@kernel.org,
-	ndesaulniers@google.com, morbo@google.com, justinstitt@google.com,
-	jszhang@kernel.org, japo@linux.ibm.com, jpoimboe@kernel.org,
-	seanjc@google.com, pmladek@suse.com, thuth@redhat.com,
-	ynorov@nvidia.com, joelagnelf@nvidia.com, david@davidgow.net,
-	fujita.tomonori@gmail.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [RFC] rust: kernel: Add KUnit tests for ARCH_WARN_ASM bug table
- emission
-Message-ID: <20260924125253.GY776954@noisy.programming.kicks-ass.net>
-References: <20260922054959.955093-2-mkchauras@gmail.com>
- <20260922064735.GS4121339@noisy.programming.kicks-ass.net>
- <arNxAn7I7NCVWmD1@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <20260924111557.GP1837346@noisy.programming.kicks-ass.net>
- <arUbw_TIA0Uj7oXT@J2N7QTR9R3>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n8ME2WW1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631041F000FF;
+	Thu, 24 Sep 2026 12:55:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790254562;
+	bh=hReg+YrKi6p88LgT45UuedITnL9D2a8DFEpWy5aKpeY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=n8ME2WW1zA4ClZSOdimLs6EYQOSgZwEzRkaX0FzZpd5/HTBczwP4XebXykdZjtjpd
+	 R9VcB3hqGRcDo3af4xflbtjiegQE8H3z0thD8yPsJkat4rfyPCymFrGrqhe0Co/ay6
+	 nT1bbebP7cete3pbfmR+8Kf2m5CAoeQLtmeufa3FF0mjJ4/JBCa2kNYGU3cBZHtgFA
+	 llxdfAFJdq7Tt+kHP1+/V9V8pl9gRtbQJXKkFuMjONZ5zHI8UAmsZDNxrS1YB4d+vT
+	 osgzjqgtD8FHYFWZblBrEntTbC5DlZP4PhZJSFKgz2VAVEzs4dpjW57BuIKsWKsUhR
+	 Pfswdo+YZtyAQ==
+Message-ID: <c91d9441-27ce-4fdd-b3c7-10b972f867af@kernel.org>
+Date: Thu, 24 Sep 2026 14:55:55 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arUbw_TIA0Uj7oXT@J2N7QTR9R3>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V6] powerpc/bug: Add ARCH_WARN_ASM and refactor
+ _EMIT_BUG_ENTRY for Rust support
+To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
+ maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+ ritesh.list@gmail.com, sshegde@linux.ibm.com, ojeda@kernel.org,
+ boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
+ tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev,
+ linkmauve@linkmauve.fr, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Cc: FUJITA Tomonori <tomo@flapping.org>
+References: <20260922054311.906816-1-mkchauras@gmail.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260922054311.906816-1-mkchauras@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 24, 2026 at 01:46:59PM +0100, Mark Rutland wrote:
 
-> > diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
-> > index 914282016069..3d8a969eab5f 100644
-> > --- a/arch/arm64/kernel/traps.c
-> > +++ b/arch/arm64/kernel/traps.c
-> > @@ -987,14 +987,13 @@ void do_serror(struct pt_regs *regs, unsigned long esr)
-> >  #ifdef CONFIG_GENERIC_BUG
-> >  int is_valid_bugaddr(unsigned long addr)
-> >  {
-> > -	/*
-> > -	 * bug_brk_handler() only called for BRK #BUG_BRK_IMM.
-> > -	 * So the answer is trivial -- any spurious instances with no
-> > -	 * bug table entry will be rejected by report_bug() and passed
-> > -	 * back to the debug-monitors code and handled as a fatal
-> > -	 * unexpected debug exception.
-> > -	 */
-> > -	return 1;
-> > +	u32 insn;
-> > +
-> > +	if (aarch64_insn_read((u32 *)addr, &insn))
-> > +		return 0;
-> > +
-> > +	/* Match ASM_BUG_FLAGS() / BUG() instructions. */
-> > +	return insn == (0xd4200000 | (BUG_BRK_IMM << 5));
-> >  }
-> >  #endif
+
+Le 22/09/2026 à 07:43, Mukesh Kumar Chaurasiya (IBM) a écrit :
+> The Rust kernel infrastructure generates inline asm for WARN() via
+> ARCH_WARN_ASM(file, line, flags, size), expanding it through a C
+> preprocessor pass (generated_arch_warn_asm.rs.S) to produce an
+> arch-specific asm template string for use in Rust's core::arch macros.
 > 
-> What problem is this trying to solve?
-> 
-> Mukesh's original patch seems to be trying to check whether we compiled
-> things correctly (such that the bug_table entry points at the expected
-> insturction), and I don't think that warrants a runtime check, but (as
-> per my reply to him) I don't understand why that's a thing to check in
-> the first place.
-> 
-> On arm64 we only call is_valid_bugaddr() under do_el1_brk64() ->
-> call_el1_break_hook() -> bug_brk_handler(). We only call
-> bug_brk_handler() when HW has taken a BRK exception with the BUG_BRK_IMM
-> immediate, and that can only be triggered by executing the right
-> instruction (BRK #BUG_BRK_IMM), which we ONLY use for BUG(). and WARN().
-> 
-> So I don't see why any change is necessary here.
-> 
-> If the HW has somehow taken a BRK exception from any other instruction
-> (which would presumably be a HW bug), there won't be a bug_table entry,
-> and so __report_bug() will fail to find an entry, and will return
-> BUG_TRAP_TYPE_NONE, same as for the !is_valid_bugaddr() case.
+> powerpc currently lacks ARCH_WARN_ASM and ARCH_WARN_REACHABLE, causing
+> Rust builds to fail on powerpc with
 
-Right, so I wasn't at all sure what he was doing, Rust is still mostly
-unreadable garbage to me.
+I'm a bit puzzled by the macro name. The name ARCH_WARN_ASM suggests 
+that it is used for warnings like WARN() and/or WARN_ON(). Which means 
+it should include flags BUGFLAG_WARNING and BUGFLAG_TAINT(TAINT_WARN).
 
-But I figured I'd much rather see him use is_valid_bugaddr() to do
-runtime checks than whatever dodgy games he was playing with that label.
+Also I have the feeling that it only handles WARN().
+WARN_ON() seems to have been forgotten.
 
-So *if* doing runtime checks is what is wanted, then is_valid_bugaddr()
-needs to actually work, because then it grows a user outside of the BRK
-handler.
+Christophe
 
-Lots of IFs etc, but since I am having a head-ache and am mostly
-useless, I figured I'd distract myself doing whatever :-)
+> ```
+> error: no rules expected `ARCH_WARN_ASM`
+>     --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_warn_asm.rs:1:28
+>      |
+>    1 | ::kernel::concat_literals!(ARCH_WARN_ASM("{file}", "{line}", "{flags}", "{size}"))
+>      |                            ^^^^^^^^^^^^^ no rules expected this token in macro call
+>      |
+>     ::: ../rust/kernel/lib.rs:279:1
+>      |
+> 279 | macro_rules! concat_literals {
+>      | ---------------------------- when calling this macro
+>      |
+>      = note: while trying to match sequence start
+> 
+> error: no rules expected `ARCH_WARN_REACHABLE`
+>     --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_reachable_asm.rs:1:28
+>      |
+>    1 | ::kernel::concat_literals!(ARCH_WARN_REACHABLE)
+>      |                            ^^^^^^^^^^^^^^^^^^^ no rules expected this token in macro call
+>      |
+>     ::: ../rust/kernel/lib.rs:279:1
+>      |
+> 279 | macro_rules! concat_literals {
+>      | ---------------------------- when calling this macro
+>      |
+>      = note: while trying to match sequence start
+> 
+> error: aborting due to 2 previous errors
+> ```
+> 
+> To add ARCH_WARN_ASM, _EMIT_BUG_ENTRY first needs to be refactored.
+> The old definition was a bare macro with no parameters, relying on
+> positional asm operand references (%0-%3), hardcoding the backward
+> reference to local label 1b, and including .org/.previous directives
+> inline. That made it impossible to compose as a plain string outside of
+> an asm operand context, and left an invisible contract that callers must
+> always emit their trap at label 1:.
+> 
+> Refactor _EMIT_BUG_ENTRY to take explicit (bug_entry, trap, file, line, flags)
+> string arguments via string concatenation. This removes the dependency
+> on asm operand numbering and makes the labels an explicit argument,
+> so the caller's intent is visible at the call site and a future caller
+> using a different label cannot silently produce a wrong bug table entry.
+> 
+> Move the .org and .previous directives out of _EMIT_BUG_ENTRY and into
+> each call site, so BUG_ENTRY() can still pass sizeof(struct bug_entry)
+> as an asm operand while ARCH_WARN_ASM can supply its own size string
+> independently.
+> 
+> Add ARCH_WARN_REACHABLE as an empty define, matching the arm64
+> convention, indicating that no additional reachability annotation is
+> needed after a WARN on powerpc.
+> 
+> Reported-by: FUJITA Tomonori <tomo@flapping.org>
+> Closes: https://lore.kernel.org/all/anG67Q6Y59kDqh-c@desktop
+> Fixes: 73b741adb264 ("rust: Add PowerPC support")
+> Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+> ---
+> Changelog:
+> V5 -> V6:
+>   - Dropped KUit tests from this series. It will be sent separately.
+> V5: https://lore.kernel.org/all/20260915090453.1227034-1-mkchauras@gmail.com/
+> 
+> V4 -> V5:
+>   - Fixed a build error with DEBUG_BUGVERBOSE=n
+>   - Added a label for bug entry
+> V4: https://lore.kernel.org/all/20260912065902.24017-1-mkchauras@gmail.com/
+> 
+> V3 -> V4:
+>   - Fix Label with appending b at end
+>   - Add KUnit test patch
+>   - Tested on ppc64le pseries: pass:5 fail:0 skip:0
+>   - Tested on ppc32 QEMU mac99 G4: pass:5 fail:0 skip:0
+>   - Tested on ppc64le QEMU pseries: pass:5 fail:0 skip:0
+> V3: https://lore.kernel.org/all/20260910100801.2159785-2-mkchauras@gmail.com
+> 
+> V2 -> V3:
+>   - Add label argument in _EMIT_BUG_ENTRY
+> V2: https://lore.kernel.org/all/20260910071252.1950488-2-mkchauras@gmail.com
+> 
+> V1 -> V2:
+>   - commit message now has error, fixes tag and closes tag
+> V1: https://lore.kernel.org/all/20260819084825.969116-1-mkchauras@gmail.com
+> 
+>   arch/powerpc/include/asm/bug.h | 46 ++++++++++++++++++----------------
+>   1 file changed, 25 insertions(+), 21 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+> index 0db48977c70c..bf31ee1e902a 100644
+> --- a/arch/powerpc/include/asm/bug.h
+> +++ b/arch/powerpc/include/asm/bug.h
+> @@ -32,34 +32,38 @@
+>   #endif /* verbose */
+>   
+>   #else /* !__ASSEMBLER__ */
+> -/* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
+> -   sizeof(struct bug_entry), respectively */
+>   #ifdef CONFIG_DEBUG_BUGVERBOSE
+> -#define _EMIT_BUG_ENTRY				\
+> -	".section __bug_table,\"aw\"\n"		\
+> -	"2:	.4byte 1b - .\n"		\
+> -	"	.4byte %0 - .\n"		\
+> -	"	.short %1, %2\n"		\
+> -	".org 2b+%3\n"				\
+> -	".previous\n"
+> +#define _EMIT_BUG_ENTRY(bug_entry, trap, file, line, flags)	\
+> +	".section __bug_table,\"aw\"\n"				\
+> +	#bug_entry ":	.4byte " #trap " - .\n"			\
+> +	"		.4byte " file " - .\n"			\
+> +	"		.short " line ", " flags "\n"
+>   #else
+> -#define _EMIT_BUG_ENTRY				\
+> -	".section __bug_table,\"aw\"\n"		\
+> -	"2:	.4byte 1b - .\n"		\
+> -	"	.short %2\n"			\
+> -	".org 2b+%3\n"				\
+> -	".previous\n"
+> +#define _EMIT_BUG_ENTRY(bug_entry, trap, file, line, flags)	\
+> +	".section __bug_table,\"aw\"\n"				\
+> +	#bug_entry ":	.4byte " #trap " - .\n"			\
+> +	"		.short " flags "\n"
+>   #endif
+>   
+> -#define BUG_ENTRY(cond_str, insn, flags, ...)		\
+> -	__asm__ __volatile__(				\
+> -		"1:	" insn "\n"			\
+> -		_EMIT_BUG_ENTRY				\
+> +#define BUG_ENTRY(cond_str, insn, flags, ...)			\
+> +	__asm__ __volatile__(					\
+> +		"1:	" insn "\n"				\
+> +		_EMIT_BUG_ENTRY(2, 1b, "%0", "%1", "%2")	\
+> +		".org 2b+%3\n"					\
+> +		".previous\n"					\
+>   		: : "i" (WARN_CONDITION_STR(cond_str) __FILE__), "i" (__LINE__),	\
+> -		  "i" (flags),				\
+> -		  "i" (sizeof(struct bug_entry)),	\
+> +		  "i" (flags),					\
+> +		  "i" (sizeof(struct bug_entry)),		\
+>   		  ##__VA_ARGS__)
+>   
+> +#define ARCH_WARN_ASM(file, line, flags, size)			\
+> +		"1:	twi 31, 0, 0\n"				\
+> +		_EMIT_BUG_ENTRY(2, 1b, file, line, flags)	\
+> +		".org 2b+" size "\n"				\
+> +		".previous\n"
+> +
+> +#define ARCH_WARN_REACHABLE
+> +
+>   /*
+>    * BUG_ON() and WARN_ON() do their best to cooperate with compile-time
+>    * optimisations. However depending on the complexity of the condition
+
