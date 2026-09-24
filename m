@@ -1,99 +1,73 @@
-Received: from cyan.ash.relay.mailchannels.net (cyan.ash.relay.mailchannels.net [23.83.222.47])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0F541D21F;
-	Thu, 24 Sep 2026 17:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.83.222.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951934B1286;
+	Thu, 24 Sep 2026 17:32:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790271014; cv=none; b=WLpQbyTt4mrXWsQQBOy6vab/0bCz1v4OXPZCcl606F2gKoenLzdOVYba7IhjrEu5y4GNfybhct0s8ZjrcCN37J5ltmvvLw28fwdCES12tD1+ymjrEjwxeOHDpz+zw1PWHvQjjRko/KkJWqKf71kLxmNAQ+ZLOY9t8J8zvJh/0i0=
+	t=1790271130; cv=none; b=Vfe64Q4r1NP5FpgF1VwJq9Q+CGUkIdkRwapE/NCrxxt7nXeaBPs8FtMTtupRrbe+bVkHgJBJplCPNKLoXDjehDm6gXoyqwE/y1EaE7KBlraceuyNp9L9b5jzJRglxLGs0U9FMPq9qwBptEXTwxJ6PVJ+4TYumLbN6+/ZOt27YYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790271014; c=relaxed/simple;
-	bh=oK/xA9gVMbI2vKHE5I6Vbh18NsrBzHCiAkSaKj73Mww=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mMjJopGqyCYvLTKWkIF9PYk8R6Zx/ygrq5Qrllku1087IE/OO6wHKTzq2uQo024sx3W8sGzEh+rcFmRzxhJ5BKV0XgcI5q/jdsxW3v2BBpkc/54ygvsMeD33+BHYZq0ToRF/yJ9aH0E5RNdn7iKvewRoDEFvhzTMSc4Hud0Nmqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaehlcke.net; spf=pass smtp.mailfrom=kaehlcke.net; dkim=pass (2048-bit key) header.d=kaehlcke.net header.i=@kaehlcke.net header.b=hI6zYUEY; arc=none smtp.client-ip=23.83.222.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaehlcke.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaehlcke.net
+	s=arc-20240116; t=1790271130; c=relaxed/simple;
+	bh=RFJwjEodphSHzjmEP7vSRAPmphkucy/rNjsLiMIWmR0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=IYkNJiSsdUcCbxFU6AvrFe/+Hcsyy97lNqVjsk3FeCmGhgtdMU80qCkVKx91g2cUSbjpbvWbVrsAyTzOYIE4Z1gNYNbvopGcejwXGJHvmd97yxe4PLqKUdgu3dJ4dtOllvNjpOYa1XkZ4fNWuHS+gMUmD3q7RbGF2BftcSZXaMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=omwzz/1u; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kaehlcke.net header.i=@kaehlcke.net header.b="hI6zYUEY"
-X-Sender-Id: dreamhost|x-authsender|matthias@kaehlcke.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id E0A429415F2;
-	Thu, 24 Sep 2026 17:23:59 +0000 (UTC)
-Received: from pdx1-sub0-mail-a251.dreamhost.com (100-100-64-102.trex-nlb.outbound.svc.cluster.local [100.100.64.102])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 971039407FB;
-	Thu, 24 Sep 2026 17:23:59 +0000 (UTC)
-X-Sender-Id: dreamhost|x-authsender|matthias@kaehlcke.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|matthias@kaehlcke.net
-X-MailChannels-Auth-Id: dreamhost
-X-Quick-Bubble: 5ccb675256e08514_1790270639729_550259935
-X-MC-Loop-Signature: 1790270639729:3222096326
-X-MC-Ingress-Time: 1790270639728
-Received: from pdx1-sub0-mail-a251.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.100.64.102 (trex/8.0.2);
-	Thu, 24 Sep 2026 17:23:59 +0000
-Received: from bielski.sytes.net (unknown [79.117.203.148])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: matthias@kaehlcke.net)
-	by pdx1-sub0-mail-a251.dreamhost.com (Postfix) with ESMTPSA id 4hrLKW1x34z1049;
-	Thu, 24 Sep 2026 10:23:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaehlcke.net;
-	s=dreamhost; t=1790270639;
-	bh=oK/xA9gVMbI2vKHE5I6Vbh18NsrBzHCiAkSaKj73Mww=;
-	h=Date:From:To:Subject:Content-Type;
-	b=hI6zYUEYJ7jh3RACo1sEpEjZTEeIGgBBCUEDiBnxWxOh4qd73H14tMFPAiu9DKnOC
-	 Uap4FB/xAddmxtoN6inSKbdVr/mi4LL9RmjG+Tk6+nHxzt1ZD0wcrIilxlpzF1Etdz
-	 WZyo3YvlSA/ZpY8tJXUsKG4mlRfUiGDlzLWboX2n4xmeonku6W654h79m6ogaGJM5r
-	 v/9VI7up29nkQ00iILGbmTtrlbPNe3P68KQL4sg37ENVq083dB8FFKKz0Meol8f/a4
-	 byDaD+1uSa2v4IfftFSsKOLj+KRYQgjAMW9h0iswmI5wFSOPmS66CercPDFpdnudxS
-	 YWh6OXX9CRgFg==
-Received: by bielski.sytes.net (Postfix, from userid 1000)
-	id 716C380E18; Thu, 24 Sep 2026 10:23:56 -0700 (PDT)
-Date: Thu, 24 Sep 2026 19:23:56 +0200
-From: Matthias Kaehlcke <matthias@kaehlcke.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alice Ryhl <aliceryhl@google.com>, driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: debugfs: add primitive type bindings
-Message-ID: <20260924172356.qut7abzafz7xwbqv@bielski>
-Mail-Followup-To: Matthias Kaehlcke <matthias@kaehlcke.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alice Ryhl <aliceryhl@google.com>, driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <9306c51f937e4bb4026e68d862b64b16f6894282.1790103860.git.matthias@kaehlcke.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="omwzz/1u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F19A51F00893;
+	Thu, 24 Sep 2026 17:32:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790271129;
+	bh=v0nG8DkbejkMnWyKvqLXvEl7ezaHXzKTPDdCNzRFtAM=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To;
+	b=omwzz/1uekkhm8Ug0Rv7hVE3dm6tPpHX+gNRYxySeolYcm3i++uWlKLeBP9SGF+5K
+	 fJ8OmWW3g5p63uxjsupup41XWpX9eym56Lywu0Ylv/FLUcWPbZehHXEfT5LFNKu7g6
+	 z1MYLhnKcZct/uggUJjndh9KlqiKngHUOi/vv/nok14L96+sexmAfcV5BjFVoUJqP8
+	 76gyC/jgPa0YnY0K7nanVT2NEvqPo+Cu6uCGTlpYvEEqE0a1ejiW9gvpYB5WPvavIv
+	 6CB08UYIbsYmCs5lE6zrNBZK+sJfshgzwU/qIKf8vFY6LYaqyQ6UU1cldM8D9vbLP+
+	 Kg4NmkfxaKCGg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9306c51f937e4bb4026e68d862b64b16f6894282.1790103860.git.matthias@kaehlcke.net>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 24 Sep 2026 19:32:03 +0200
+Message-Id: <DLNQ5C9BTIAJ.1XEWLZ13TU1VF@kernel.org>
+Cc: "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "Lyude Paul" <lyude@redhat.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>
+To: "Maurice Hieronymus" <mhi@mailbox.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 2/5] rust: pci: rework device enabling API
+References: <20260812-b4-rust-pci-edu-driver-v3-0-5d0b5594e52b@mailbox.org>
+ <20260812-b4-rust-pci-edu-driver-v3-2-5d0b5594e52b@mailbox.org>
+In-Reply-To: <20260812-b4-rust-pci-edu-driver-v3-2-5d0b5594e52b@mailbox.org>
 
-El Tue, Sep 22, 2026 at 09:18:58PM +0200 Matthias Kaehlcke ha dit:
+On Wed Aug 12, 2026 at 9:52 PM CEST, Maurice Hieronymus wrote:
+> @@ -75,7 +77,7 @@ fn probe<'bound>(
+>          pin_init::pin_init_scope(move || {
+>              dev_dbg!(pdev, "Probe Nova Core GPU driver.\n");
+> =20
+> -            pdev.enable_device_mem()?;
+> +            let enable =3D pdev.enable_device()?;
+>              pdev.set_master();
 
-> Introduce `impl_debugfs_primitive!` to implement debugfs attribute
-> creation for native Rust primitive types by wrapping C debugfs creation
-> helpers.
+I think we could implement set_master() for pci::DeviceEnableGuard instead,=
+ so
+it can't be called out of order.
 
-I realized most of the functionality is already there, regular decimal
-attributes can be created using Dir::read_write_file() or
-Dir::read_only_file(), with 'data' being of a type like Atomic<u32>
-or Mutex<u8>, similar to the 'counter' example in the sample driver.
-
-Sorry for the noise :)
+Can you please do this in a separate patch?
