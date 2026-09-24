@@ -1,110 +1,124 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1BE947CA71;
-	Thu, 24 Sep 2026 13:06:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.avm.de (mail.avm.de [212.42.244.94])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F1B49158D;
+	Thu, 24 Sep 2026 13:44:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790255173; cv=none; b=QjHTLZquwH8Zt/PjfqbHkI0Nj8VGyXuB8RwP1s0gLn3rcITTJWvdJ2PhXzO7/F83UhjnrKZt4nEaaaNF2mI3xyoS1Q+Fky9rXUut46ndO7XeBJd0VbQarlwHUp4BcVfD2WFgi344UE47x2UdcrGsHktcYhEjo4Lp3XgCMLg5od4=
+	t=1790257502; cv=none; b=HzAFR7ujKV7/Rj9PmOdZRNyIA0l6lMmF4c/t39tRSoRty0UgJX6J0a6c1B2jeHFtRpj6THhwFacmrBQ5TMkoIWhhi2j/Cfrce8CIHuZwWeMr82nibMuFeIlR7poAQTq/YmR7Y3IyV5vTRyd85xe9wJm8kuqrpJlp4iRufFrZJ/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790255173; c=relaxed/simple;
-	bh=EGw34BO6GoODDHqtAWjnN4dQ0qfGJO7mhTtfUZBl07g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DizoZYL4ypFDzFLYoyT2lx0HBuWKsS9FAdK+qulf9Gd1IRuptopDegG2h3tJhgmsszMv9QsnlJjtKsFY3ctVNq4Jq/DkaVXEztHa232Y3vTsyKCLyIu0cF4KgLc5+m4NNyFobwtRD4qeNh5SQmHmC4VUEUANINKq3wRqv6453LY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=L5T5MVGA; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790257502; c=relaxed/simple;
+	bh=gBLnS3+lAYmZ5kf9JL3anFiz4fYL1hWDBsQwL263l/k=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=RXH9vWf09l+WoyoW01k7wqntoPvddyAfDRWwl4QpV2n9N9+Yfd0CDLl6h5AdiRM07gWQvCQ4f0KXJpLRk8qX0rCaRk/VvlgRx8yVIP4VVN0I3NgjGuRE3tvc1XxbIWVE78yQF1TxP+1i+vDqWN6nRhl9mhSg/7NP4tOLMbxV2pA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b=eYjQcR1W; arc=none smtp.client-ip=212.42.244.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="L5T5MVGA"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 715281570;
-	Thu, 24 Sep 2026 06:06:06 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 540843F86F;
-	Thu, 24 Sep 2026 06:06:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790255169; bh=EGw34BO6GoODDHqtAWjnN4dQ0qfGJO7mhTtfUZBl07g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L5T5MVGA1XE7fvh0OgeMuV6WxEvg/uuyaiKVs7/Rb0XZiQu6QLiQiyVzic9dwbkKj
-	 AsHQO82O3eGMXwH0QQs/G8Eagu43wXo1aY65K+KpEyokxL7WJ+W4gxNEeTmwo5/88x
-	 2Z1VqPAa89aa8XVYSCxLOJX2ek0aIfWGYkdJLQV0=
-Date: Thu, 24 Sep 2026 14:05:57 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>, catalin.marinas@arm.com,
-	will@kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
-	npiggin@gmail.com, chleroy@kernel.org, ritesh.list@gmail.com,
-	sshegde@linux.ibm.com, pjw@kernel.org, palmer@dabbelt.com,
-	aou@eecs.berkeley.edu, alex@ghiti.fr, hca@linux.ibm.com,
-	gor@linux.ibm.com, agordeev@linux.ibm.com,
-	borntraeger@linux.ibm.com, svens@linux.ibm.com, tglx@kernel.org,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, ojeda@kernel.org, boqun@kernel.org,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org,
-	acourbot@nvidia.com, work@onurozkan.dev, nathan@kernel.org,
-	ndesaulniers@google.com, morbo@google.com, justinstitt@google.com,
-	jszhang@kernel.org, japo@linux.ibm.com, jpoimboe@kernel.org,
-	seanjc@google.com, pmladek@suse.com, thuth@redhat.com,
-	ynorov@nvidia.com, joelagnelf@nvidia.com, david@davidgow.net,
-	fujita.tomonori@gmail.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [RFC] rust: kernel: Add KUnit tests for ARCH_WARN_ASM bug table
- emission
-Message-ID: <arUgNdqpA5U8EjjP@J2N7QTR9R3>
-References: <20260922054959.955093-2-mkchauras@gmail.com>
- <20260922064735.GS4121339@noisy.programming.kicks-ass.net>
- <arNxAn7I7NCVWmD1@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <20260924111557.GP1837346@noisy.programming.kicks-ass.net>
- <arUbw_TIA0Uj7oXT@J2N7QTR9R3>
- <20260924125253.GY776954@noisy.programming.kicks-ass.net>
+	dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b="eYjQcR1W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fritz.com; s=mail;
+	t=1790257492; bh=gBLnS3+lAYmZ5kf9JL3anFiz4fYL1hWDBsQwL263l/k=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date:From;
+	b=eYjQcR1WJd5f0/15Ba5xdy+5Eo3SeKOJZR3qdSHt3fICFx8tX1cKIPQ/wnuwgLRsP
+	 CMq9IMBDX0AZMguVQ0l6gV4lKan31T5WvQvSZxqAMbJQYUWn2ILG4CMylgIkkAKO2z
+	 fzrBw1PhmaXVb5ULSjpsEYUNJlbEIKIm/3QhtwKrGLkZJyBuYPK6dtzXlEmflLu4Bc
+	 S259U6pLydk87KExUJWcfc73MmsymjWgI6FdGpR9ZIEdImYkG6QDIVzlDY7YHALr5l
+	 PoYaqDBR3EArkplUjljTKM+Jkwch4K8knUG7eqoGBC99piDVDC6ph5NuORvyEbaSrD
+	 gV2w/RYMaCfQw==
+Received: from [2001:bf0:244:244::78] (helo=mail.avm.de)
+	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
+	(envelope-from <n.schier@fritz.com>)
+	id 6ab52954-03cd-7f0000032729-7f000001bc94-1
+	for <multiple-recipients>; Thu, 24 Sep 2026 15:44:52 +0200
+Received: from mail-auth.fritz.com (unknown [IPv6:2001:bf0:244:244::78])
+	by mail.avm.de (Postfix) with ESMTPS;
+	Thu, 24 Sep 2026 15:44:52 +0200 (CEST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260924125253.GY776954@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v4 20/22] rust: make exports.o depend on the headers
+ generated for it
+From: Nicolas Schier <n.schier@fritz.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+ Nick Desaulniers <ndesaulniers@google.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ Masahiro Yamada <masahiroy@kernel.org>, Alexey Gladkov <legion@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ Arnd Bergmann <arnd@arndb.de>, Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Ard Biesheuvel <ardb@kernel.org>, 
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+ Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
+ Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ llvm@lists.linux.dev, linux-riscv@lists.infradead.org, 
+ linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, 
+ linux-hardening@vger.kernel.org, Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20260923-build-speedup-v4-20-73128809a4a4@kernel.org>
+References: <20260923-build-speedup-v4-0-73128809a4a4@kernel.org>
+ <20260923-build-speedup-v4-20-73128809a4a4@kernel.org>
+Date: Thu, 24 Sep 2026 15:44:48 +0200
+Message-Id: <179025748880.4172706.14868306891021608350.b4-review@b4>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=501; i=n.schier@fritz.com;
+ h=from:subject:message-id; bh=gBLnS3+lAYmZ5kf9JL3anFiz4fYL1hWDBsQwL263l/k=;
+ b=owEBbQKS/ZANAwAIAYjGvJyImm24AcsmYgBqtSlTKzAsNb3KAlPLj0QSENJsIHfwnQ8yLJWIb
+ PdD13zZvHGJAjMEAAEIAB0WIQQO/4WJ63TpgecLpGmIxryciJptuAUCarUpUwAKCRCIxryciJpt
+ uGGjD/9ODbOePpr2xjRjWb+mk2Bw35BUrXu5KQ8FyIBaOJfC8LNl3dAG0h/epaiw6+gGCUcqCoV
+ Q3pj0r8gWUPb7IFUdyND0fm4NnmizKDSAj1aS/iM+1qF6+KcxebfwTqo6pUukhTKO/1bMk+Nc1h
+ sxfRc0hHg8cVc1pw7RfGOYc7/hX0Tdowv6YHivIL+uGvlxZeBMEa0y/udNcjq2yEMWD25XvLqbm
+ WKEKwqlOVh/F5nd9/WWCSrQhON7emYprPSD5ecZo8Ymjf9C+IeoxHXELJ/sWNx70XKXS0iDS0xg
+ zaThLEGoO3SyycErqFEmC3tU0LcMH9KqgikPrJxgApXyuVZVa43I1zjt2hOPv9Za2Y0nMQz+7NQ
+ fDMa084Q7RznP4sbTzAQcMAvEFc2WUAx9FSB/oalarygzJGNR+mK1+IN0jv/Cbso0x/oX5jHNbR
+ EA1hTotxHDeyJtcvuvfirQLaLikWABqnJux/0r5MU72ClcJN9WRrxx+/ASsOYEHDCOfI1Xfx3R9
+ 9UjWiL09yC83csxRGUckCg5Dhi7uDpyAoYEgT4fNNs/H75VgKww6qTGQEHcCHUzIKb4RMu1aT1d
+ IQyAZppEid3lBMbaABGYBnrFdZOecoKo06mlo7eC+6mz4OhpE4KG/v+UgiRn2DKgmYHNnizchn4
+ J8E8QdflQiGphBA==
+X-Developer-Key: i=n.schier@fritz.com; a=openpgp;
+ fpr=7CF67EF8868721AFE53D73FDBDE3A6CC4E333CC8
+X-purgate-ID: 149429::1790257492-457F8EE1-47A04896/0/0
+X-purgate-type: clean
+X-purgate-size: 503
+X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
+X-purgate: clean
+X-pfmilter: host: postfix-mx-03  mail-id: 5BBD4A06F6  external: no
 
-On Thu, Sep 24, 2026 at 02:52:53PM +0200, Peter Zijlstra wrote:
-> On Thu, Sep 24, 2026 at 01:46:59PM +0100, Mark Rutland wrote:
-> > What problem is this trying to solve?
-> > 
-> > Mukesh's original patch seems to be trying to check whether we compiled
-> > things correctly (such that the bug_table entry points at the expected
-> > insturction), and I don't think that warrants a runtime check, but (as
-> > per my reply to him) I don't understand why that's a thing to check in
-> > the first place.
-> > 
-> > On arm64 we only call is_valid_bugaddr() under do_el1_brk64() ->
-> > call_el1_break_hook() -> bug_brk_handler(). We only call
-> > bug_brk_handler() when HW has taken a BRK exception with the BUG_BRK_IMM
-> > immediate, and that can only be triggered by executing the right
-> > instruction (BRK #BUG_BRK_IMM), which we ONLY use for BUG(). and WARN().
-> > 
-> > So I don't see why any change is necessary here.
-> > 
-> > If the HW has somehow taken a BRK exception from any other instruction
-> > (which would presumably be a HW bug), there won't be a bug_table entry,
-> > and so __report_bug() will fail to find an entry, and will return
-> > BUG_TRAP_TYPE_NONE, same as for the !is_valid_bugaddr() case.
+On Wed, 23 Sep 2026 18:18:09 +0100, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> rust/exports.c includes the exports_*_generated.h listing the symbols of
+> the core, bindings, kernel and helpers objects, but this is not expressed
+> in its Makefile.
 > 
-> Right, so I wasn't at all sure what he was doing, Rust is still mostly
-> unreadable garbage to me.
+> This worked previously because the headers are always-y targets, and make
+> prepare built all of the rust crates first, which is an implicit
+> dependency.
 > 
-> But I figured I'd much rather see him use is_valid_bugaddr() to do
-> runtime checks than whatever dodgy games he was playing with that label.
-> 
-> So *if* doing runtime checks is what is wanted, then is_valid_bugaddr()
-> needs to actually work, because then it grows a user outside of the BRK
-> handler.
+> [...]
 
-Thanks; I think we're aligned. :)
+Reviewed-by: Nicolas Schier <n.schier@fritz.com>
 
-Before we delve into implementation details, I'd like to understand the
-problem Mukesh is trying to solve.
+-- 
+Nicolas
 
-Mark.
