@@ -1,241 +1,92 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F336443C32;
-	Thu, 24 Sep 2026 08:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA6C3BB104;
+	Thu, 24 Sep 2026 09:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790240204; cv=none; b=ap34pvpLbhE98iAUjXLGB+/De1YurpVXxLTDeq3pnDJqiyQetjYFaWq42rqGLp3HrM0D+sPUJTRSW6jwM2DSahoufaVo99OyZEZo4z1mSEkbq6UVlYo3jiq2wIJYsJCkyGvuYckXh9juGIvP2/l9T8ymzVlq5cejmk/gMgooVuw=
+	t=1790242773; cv=none; b=LVoUMtpQ4AzqC64BhKmemneGtXapHt6tknwMgLcjSt94XRgRvBP2Ck6ZYxTJFnhlJSrr854xW/HqQ0r2oLCl37zs1/oKZuBoP/fethBN8Dj/fT+8Eeg7ztKcZIWyXSEBzzgnQq/0nx/9VNSPvwKEhkOf9+nTbtMlGwg14ktpwxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790240204; c=relaxed/simple;
-	bh=F4xOYxbBFxGhG7xAVfJrjljDoQ05a3QVGJHh/dmCurc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jLXt6XnyFWedoPKCPHT1I7ZmQlcfkp6b2xTtCF8K6J7QUypN31QmPHE2lY8m59Osq8K9nkFMIkL/BAfSjkQRqAG06IDZFOSez5wKccZNlFSNnbeXPr9WyzoQUXdPceR5Mchn6CNYqSYZ0aMotuCOLLCEhaE/USsVzGMKOhu3f2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D53tJSHD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790242773; c=relaxed/simple;
+	bh=jJ+Eb+1ydqqbJZ+lEcFQGZ3fxaw3MkCVu8JYnWNLLvc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=No++kk+ACH6/aVoHvLGtd6LgvY3jW0YqPyyXjJD8SXRcsXYMv9rsTy6UrBP8Jud0Ikh7ADdw5Vz+XFOukV/xc9Z+o+7cZ783nqwjckBjQm+ksJJlciaXJXDR/sQQ0XbRGI+2vkKrcHUQUsDwbDpwE9M966uwUsUbIAodMOVTVvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PLqSB++m; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D53tJSHD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C621F00893;
-	Thu, 24 Sep 2026 08:56:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PLqSB++m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 205601F008A2;
+	Thu, 24 Sep 2026 09:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790240194;
-	bh=QTziv6yxsGSc3zX94a/1OnC7b3UZDU7kb71l30MUCt8=;
-	h=From:To:Cc:Subject:Date;
-	b=D53tJSHDD9pkxGAhnlw+mJzYTDfzY9j4qTNBeljFVBJv6QtpZ/LAFpqgZiIT44fJT
-	 WN9BuwLGASEdbHqKvTbxIO8AyXiSXC9Jxrvr6QiI71Es7W3iS7wZpWc2DPl+RBDaox
-	 eNKhz7xhKum4Km1BXlyqV3yAnPiRAMZQApEoLR7+RHha0R8b2nTu73gLtRzpZ5U1+W
-	 CbIue4HYNsPmGgUDMPt/ESyQ6xqporVxSztKryxs53mGelZcKqse8VrbQesNdI2EG0
-	 eU5WdbhllwEf/jdnGPy6rMrgd3ygeR9xrpKnj40JWvXFJq067uqzm9pGyAHw2rl46F
-	 6CvrLE/0r9XwA==
-From: Philipp Stanner <phasta@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH] rust: sync: Accept errors for Lock payload data
-Date: Thu, 24 Sep 2026 10:55:24 +0200
-Message-ID: <20260924085523.2620704-2-phasta@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	s=k20260515; t=1790242763;
+	bh=jJ+Eb+1ydqqbJZ+lEcFQGZ3fxaw3MkCVu8JYnWNLLvc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=PLqSB++mhig73psN7KdzBeXJ176b2oUxYGos+x5Xoz72K7E0Bupncs8y15a8SG9fY
+	 k2DeOx9oa1+CcIx34MjQlOjsJ8PecygFGpUcFZ08rvEb39DxmhAmTLKKHoSoTGD4mc
+	 /9KcU7kTEhByTHEdJDQEdb7emnkp52aqIhGRuq722Z2o4un4MtfuzM6A4PWM1ma5oA
+	 WhHQAwzdHnBRBpUnIo1vQFE09VdZSuXVkCs6LfqaMrOue4LekuPxGP+AgS7q3QHzOq
+	 Tvs2vK4rFyQq6hcAtZoz+ZgknxysmXWE9NNgZln5MwqPpRcaAI0KZW0T5E3Gak82et
+	 Lxm9TL7xP6Tew==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Priya Bala Govindasamy <pgovind2@uci.edu>, ojeda@kernel.org
+Cc: boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org,
+ acourbot@nvidia.com, work@onurozkan.dev, rust-for-linux@vger.kernel.org,
+ stable@vger.kernel.org, ardalan@uci.edu, zhiyunq@cs.ucr.edu,
+ dzueck@uci.edu, pgovind2@uci.edu
+Subject: Re: [PATCH 0/1] rust: configfs: Fix incorrect subsystem root check
+ in `get_group_data`
+In-Reply-To: <cover.1789770689.git.pgovind2@uci.edu>
+References: <bGK-A3rROoAQiuwhu2X-iYVDvucc1an2Zql_F7rQ1d8ohSa5gEBXjEJZOkPgw_dBtBPu7LdYwLEmXsrCnN84GQ==@protonmail.internalid>
+ <cover.1789770689.git.pgovind2@uci.edu>
+Date: Thu, 24 Sep 2026 11:39:06 +0200
+Message-ID: <874iff2dl1.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-The `Lock` baseclass currently does not allow for fallible user-data.
-This can cause conflicts when used with other primitives, for example
-when a lock shall be pin-initialized with payload data that is fallible.
+"Priya Bala Govindasamy" <pgovind2@uci.edu> writes:
 
-Add support for the lock base class so that it works with
-try_pin_init!(). Adjust spinlock and mutex accordingly.
+> Dear Linux kernel maintainers,
+>
+> We are developing a tool called FerroLens to detect potential
+> unsound behavior in Rust code in the Linux kernel. The tool
+> internally uses an LLM to detect bugs.
+> We then perform manual analysis to verify these reports.
+> FerroLens reported the following bug in rust/kernel/configfs.rs:
+>
+> In `get_group_data` to determine whether `this` is
+> subsystem root, the following check is performed:
+> `(*this).cg_subsys.is_null()
+> `get_group_data` then tries to read the `data` field of either
+> `Group` or `Subsystem` structs depending on the result of the check.
+>
+> But the check always evaluates to false in `get_group_data`, since
+> `link_group` in C always populates `group->cg_subsys` with a valid,
+> non-null pointer.
+> Thus, if `this` points to a group representing the subsytem root,
+> the incorrect branch in `get_group_data` may be taken,
+> leading to attempting to access `Subsystem.data` as `Group.data`.
+> This is type confusion that can lead to data corruption.
+>
+> If the `data` fields of both structs are placed at the same offset,
+> we will not observe this issue, since the attempt to access the
+> `data` field will be valid regardless of the type. But this layout
+> is not guaranteed by the compiler.
+>
+> In particular, if the kernel is built with a randomized layout
+> (e.g with KRUSTFLAGS='-Zrandomize-layout=yes -Zlayout-seed=1'),
+> We observe incorrect behavior when using the rust_configfs
+> module from samples.
 
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
----
-Regarding removal of the CStrExt, I got "unused import" errors because
-of it. Don't fully understand why?
+Thank you for the patch. I think it was already reported here [1].
 
-P.
----
- rust/kernel/sync/lock.rs          | 21 ++++++++++++++-------
- rust/kernel/sync/lock/mutex.rs    |  7 ++++---
- rust/kernel/sync/lock/spinlock.rs | 20 ++++++++++----------
- 3 files changed, 28 insertions(+), 20 deletions(-)
+Best regards,
+Andreas Hindborg
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 10b6b5e9b024..1b2df5d0dcf9 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -7,11 +7,13 @@
- 
- use super::LockClassKey;
- use crate::{
--    str::{CStr, CStrExt as _},
-+    str::CStr,
-     types::{NotThreadSafe, Opaque, ScopeGuard},
- };
- use core::{cell::UnsafeCell, marker::PhantomPinned, pin::Pin};
--use pin_init::{pin_data, pin_init, PinInit, Wrapper};
-+use pin_init::{pin_data, PinInit, Wrapper};
-+
-+use kernel::prelude::*;
- 
- pub mod mutex;
- pub mod spinlock;
-@@ -126,14 +128,19 @@ unsafe impl<T: ?Sized + Send, B: Backend> Send for Lock<T, B> {}
- // data it protects is `Send`.
- unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}
- 
-+use core::convert::Infallible;
-+
- impl<T, B: Backend> Lock<T, B> {
-     /// Constructs a new lock initialiser.
--    pub fn new(
--        t: impl PinInit<T>,
-+    pub fn new<E>(
-+        t: impl PinInit<T, E>,
-         name: &'static CStr,
-         key: Pin<&'static LockClassKey>,
--    ) -> impl PinInit<Self> {
--        pin_init!(Self {
-+    ) -> impl PinInit<Self, E>
-+    where
-+        E: From<Infallible>,
-+    {
-+        try_pin_init!(Self {
-             data <- UnsafeCell::pin_init(t),
-             _pin: PhantomPinned,
-             // SAFETY: `slot` is valid while the closure is called and both `name` and `key` have
-@@ -141,7 +148,7 @@ pub fn new(
-             state <- Opaque::ffi_init(|slot| unsafe {
-                 B::init(slot, name.as_char_ptr(), key.as_ptr())
-             }),
--        })
-+        }? E)
-     }
- }
- 
-diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
-index cda0203efefb..35e6b02ff426 100644
---- a/rust/kernel/sync/lock/mutex.rs
-+++ b/rust/kernel/sync/lock/mutex.rs
-@@ -35,6 +35,7 @@ macro_rules! new_mutex {
- ///
- /// ```
- /// use kernel::sync::{new_mutex, Mutex};
-+/// use kernel::prelude::*;
- ///
- /// struct Inner {
- ///     a: u32,
-@@ -49,8 +50,8 @@ macro_rules! new_mutex {
- /// }
- ///
- /// impl Example {
--///     fn new() -> impl PinInit<Self> {
--///         pin_init!(Self {
-+///     fn new() -> impl PinInit<Self, Error> {
-+///         try_pin_init!(Self {
- ///             c: 10,
- ///             d <- new_mutex!(Inner { a: 20, b: 30 }),
- ///         })
-@@ -58,7 +59,7 @@ macro_rules! new_mutex {
- /// }
- ///
- /// // Allocate a boxed `Example`.
--/// let e = KBox::pin_init(Example::new(), GFP_KERNEL)?;
-+/// let e = KBox::try_pin_init(Example::new(), GFP_KERNEL)?;
- /// assert_eq!(e.c, 10);
- /// assert_eq!(e.d.lock().a, 20);
- /// assert_eq!(e.d.lock().b, 30);
-diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index aafc80125f59..8ea2c5b202e6 100644
---- a/rust/kernel/sync/lock/spinlock.rs
-+++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -4,10 +4,7 @@
- //!
- //! This module allows Rust code to use the kernel's `spinlock_t`.
- use super::*;
--use crate::{
--    interrupt::LocalInterruptDisabled,
--    prelude::*, //
--};
-+use crate::interrupt::LocalInterruptDisabled;
- 
- /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
- ///
-@@ -38,6 +35,7 @@ macro_rules! new_spinlock {
- ///
- /// ```
- /// use kernel::sync::{new_spinlock, SpinLock};
-+/// use kernel::prelude::*;
- ///
- /// struct Inner {
- ///     a: u32,
-@@ -52,8 +50,8 @@ macro_rules! new_spinlock {
- /// }
- ///
- /// impl Example {
--///     fn new() -> impl PinInit<Self> {
--///         pin_init!(Self {
-+///     fn new() -> impl PinInit<Self, Error> {
-+///         try_pin_init!(Self {
- ///             c: 10,
- ///             d <- new_spinlock!(Inner { a: 20, b: 30 }),
- ///         })
-@@ -184,6 +182,7 @@ macro_rules! new_spinlock_irq {
- ///
- /// ```
- /// use kernel::sync::{new_spinlock_irq, SpinLockIrq};
-+/// use kernel::prelude::*;
- ///
- /// struct Inner {
- ///     a: u32,
-@@ -199,8 +198,8 @@ macro_rules! new_spinlock_irq {
- /// }
- ///
- /// impl Example {
--///     fn new() -> impl PinInit<Self> {
--///         pin_init!(Self {
-+///     fn new() -> impl PinInit<Self, Error> {
-+///         try_pin_init!(Self {
- ///             c <- new_spinlock_irq!(Inner { a: 0, b: 10 }),
- ///             d <- new_spinlock_irq!(Inner { a: 20, b: 30 }),
- ///         })
-@@ -232,6 +231,7 @@ macro_rules! new_spinlock_irq {
- /// ```
- /// use kernel::sync::{new_spinlock_irq, SpinLockIrq};
- /// use kernel::interrupt::*;
-+/// use kernel::prelude::*;
- ///
- /// struct Inner {
- ///     a: u32,
-@@ -244,8 +244,8 @@ macro_rules! new_spinlock_irq {
- /// }
- ///
- /// impl Example {
--///     fn new() -> impl PinInit<Self> {
--///         pin_init!(Self {
-+///     fn new() -> impl PinInit<Self, Error> {
-+///         try_pin_init!(Self {
- ///             inner <- new_spinlock_irq!(Inner { a: 20 }),
- ///         })
- ///     }
--- 
-2.55.0
+[1] https://lore.kernel.org/all/20260608-configfs-fix-offset-v1-1-7f01b8fb9e5f@kernel.org/
 
