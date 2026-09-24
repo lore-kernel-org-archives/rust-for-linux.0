@@ -1,107 +1,241 @@
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D51219AD90
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Sep 2026 08:39:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F336443C32;
+	Thu, 24 Sep 2026 08:56:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790239182; cv=none; b=aiO8rjVwUwoGlhaZ4MK/J8w+8wLSfqG2uOeA/InaxctVmNAl0gKm10bvmTWmlkfMf5YGIKcH3pwXagypo+SRicgsS2YFLsqbAmdMEyVOaWWss3TvyLai926NMPaLuSGQo2Mh0OzA+cK8l6M8x8lEgtZgCh58PtnWn4PZjRNMfL8=
+	t=1790240204; cv=none; b=ap34pvpLbhE98iAUjXLGB+/De1YurpVXxLTDeq3pnDJqiyQetjYFaWq42rqGLp3HrM0D+sPUJTRSW6jwM2DSahoufaVo99OyZEZo4z1mSEkbq6UVlYo3jiq2wIJYsJCkyGvuYckXh9juGIvP2/l9T8ymzVlq5cejmk/gMgooVuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790239182; c=relaxed/simple;
-	bh=HNLbeuAgbJcHp3Q2f0PgdwdpgSxtX1CaPvnT8Dj/M/0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QuI/sGmeqGILt2TlWJ3IKcJbuZJPAAVR8tIjK3tJOW/d9GdDLENNegTmluvTbzfuEfiEaoAi9cr2ZaF9DSHi7tv2x6E8omVY6b+UtO8hovcBvCR75WlkgO07bQ1vvfnex9w5Fv2A8lLBdXFmXPACkAy/EHa6FbUyI90HQN9TSzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pveuWniF; arc=none smtp.client-ip=209.85.128.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1790240204; c=relaxed/simple;
+	bh=F4xOYxbBFxGhG7xAVfJrjljDoQ05a3QVGJHh/dmCurc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jLXt6XnyFWedoPKCPHT1I7ZmQlcfkp6b2xTtCF8K6J7QUypN31QmPHE2lY8m59Osq8K9nkFMIkL/BAfSjkQRqAG06IDZFOSez5wKccZNlFSNnbeXPr9WyzoQUXdPceR5Mchn6CNYqSYZ0aMotuCOLLCEhaE/USsVzGMKOhu3f2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D53tJSHD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pveuWniF"
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49e6683d48fso18062335e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 24 Sep 2026 01:39:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790239179; x=1790843979; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Dsz6uRel52dQEjbVAeMCIiPl3yIqAf1n7uTkjuAAjJI=;
-        b=pveuWniFKOhQqdW0PSjLVBPl8ZK6kYxfY7Hnj+MQYsIBJOk07/I5uPANTdy9v307rp
-         6ets14OK9UGo2UB+qmkLqGfwAhO8mVJRNXL7XBG85APLUgsQKXGDm6oOTgNQv9vjvfC4
-         0yC5RSWbQKcp4zch99+9dowNYyfiLUyGYUBmfW4h0Ns5w+01tLwn1W8MYfFGDtb24IuB
-         ZES1eLatGDTkFJX6tkpbXR7BeAObmFJXWMxn1kBxZ3B3Lc6gxt64ewEQxoijeATtozR1
-         5mIfaX09WNLXppfhRKSKJpEiEJzE64wiv6YqcchoExKCCpVOeJSurng5uIgxRvFZSeEP
-         rs+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790239179; x=1790843979;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Dsz6uRel52dQEjbVAeMCIiPl3yIqAf1n7uTkjuAAjJI=;
-        b=KbpTIOeIHPZw6WZpubcAueQs2Sv8/Cu4/wIKCdHwQUdWrJIDMqReVhFF2g/kOgfaKs
-         wDOamaV8ZsBZ4xrm1Vvz2MRCzr4NpgfdTyoXGQretAc35vk6CM1gIPGAAWiNsfF7ghs7
-         LJl37jcu45/fZE+9ptyGhtWfkkKkpW4Oh26SnDbN1CFpUVNJjozj5wIMRr6HEQFTyftv
-         nfCxZXjoeX4/JXPaKZQUsAT9U0kTcNOXrSzGosEITN1l6a4rwAqju7pPTHkZUThOQFi2
-         lKMYpi44OgfR2FMEefNmhTeqLhqPr2jcJiSh7IVbyqObSqrYySdgMHG63hJj3kN5OwqN
-         qSCQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwCzPcLOhbNwSZwZNpMJDID6bj260fl0/3gPpaBPEQ5T3T3waHggwR8u9OhzrGp90oCAMRrvWb9U2ONE5M1KQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++nf1LVa6S0ihn8aDtaez83BaaXBFM/8g1M0Qa0zDD6Pb8o9NJ/d
-	9owQbjVUZ34Ml2wQxcBAbUKrl8yYxftAB7jZ8/g9Rpw46cagMECsuG193r8hb0yXljxsVbReh2F
-	ueCwYtzsyg96xyjO4Pw==
-X-Received: from wmpc22.prod.google.com ([2002:a05:600c:4a16:b0:49f:e4ba:89d])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3e14:b0:49d:1de5:ce0a with SMTP id 5b1f17b1804b1-49fe66b43ffmr27830245e9.13.1790239179196;
- Thu, 24 Sep 2026 01:39:39 -0700 (PDT)
-Date: Thu, 24 Sep 2026 08:39:37 +0000
-In-Reply-To: <20260923022339.3340694-1-georgeandrout13@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D53tJSHD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C621F00893;
+	Thu, 24 Sep 2026 08:56:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790240194;
+	bh=QTziv6yxsGSc3zX94a/1OnC7b3UZDU7kb71l30MUCt8=;
+	h=From:To:Cc:Subject:Date;
+	b=D53tJSHDD9pkxGAhnlw+mJzYTDfzY9j4qTNBeljFVBJv6QtpZ/LAFpqgZiIT44fJT
+	 WN9BuwLGASEdbHqKvTbxIO8AyXiSXC9Jxrvr6QiI71Es7W3iS7wZpWc2DPl+RBDaox
+	 eNKhz7xhKum4Km1BXlyqV3yAnPiRAMZQApEoLR7+RHha0R8b2nTu73gLtRzpZ5U1+W
+	 CbIue4HYNsPmGgUDMPt/ESyQ6xqporVxSztKryxs53mGelZcKqse8VrbQesNdI2EG0
+	 eU5WdbhllwEf/jdnGPy6rMrgd3ygeR9xrpKnj40JWvXFJq067uqzm9pGyAHw2rl46F
+	 6CvrLE/0r9XwA==
+From: Philipp Stanner <phasta@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Philipp Stanner <phasta@kernel.org>
+Subject: [PATCH] rust: sync: Accept errors for Lock payload data
+Date: Thu, 24 Sep 2026 10:55:24 +0200
+Message-ID: <20260924085523.2620704-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260923022339.3340694-1-georgeandrout13@gmail.com>
-Message-ID: <arThye_219ruNbM2@google.com>
-Subject: Re: [PATCH v2] rust: file: handle fd table teardown in file
- descriptor APIs
-From: Alice Ryhl <aliceryhl@google.com>
-To: Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Jan Kara <jack@suse.cz>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, linux-fsdevel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 22, 2026 at 10:23:39PM -0400, Georgios Androutsopoulos wrote:
-> Several Rust file descriptor APIs rely on `current->files` being
-> available. However, `exit_files()` clears it while execution may still
-> continue on the same task.
-> 
-> This affects `LocalFile::fget()` and the
-> `FileDescriptorReservation` operations that call
-> `get_unused_fd_flags()`, `fd_install()`, and `put_unused_fd()`.
-> `FileDescriptorReservation` cannot cross task boundaries, but remaining
-> on the same task does not guarantee that `current->files` is still
-> available when these operations are performed.
-> 
-> Guard the affected operations against a missing `current->files`.
-> `LocalFile::fget()` returns `EBADF` and
-> `FileDescriptorReservation::get_unused_fd_flags()` returns `EMFILE`.
-> For `fd_install()`, warn and abandon the reservation when the fd table
-> is already gone. In the drop path, skip `put_unused_fd()` after the fd
-> table has been torn down.
-> 
-> This prevents NULL dereferences through these safe Rust APIs after
-> `exit_files()`.
-> 
-> Fixes: 851849824bb5 ("rust: file: add Rust abstraction for `struct file`")
-> Fixes: 5da9857b127e ("rust: file: add `FileDescriptorReservation`")
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1256
-> Signed-off-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+The `Lock` baseclass currently does not allow for fallible user-data.
+This can cause conflicts when used with other primitives, for example
+when a lock shall be pin-initialized with payload data that is fallible.
 
-This looks like it should ideally be on the C side instead.
+Add support for the lock base class so that it works with
+try_pin_init!(). Adjust spinlock and mutex accordingly.
 
-Alice
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+---
+Regarding removal of the CStrExt, I got "unused import" errors because
+of it. Don't fully understand why?
+
+P.
+---
+ rust/kernel/sync/lock.rs          | 21 ++++++++++++++-------
+ rust/kernel/sync/lock/mutex.rs    |  7 ++++---
+ rust/kernel/sync/lock/spinlock.rs | 20 ++++++++++----------
+ 3 files changed, 28 insertions(+), 20 deletions(-)
+
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index 10b6b5e9b024..1b2df5d0dcf9 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -7,11 +7,13 @@
+ 
+ use super::LockClassKey;
+ use crate::{
+-    str::{CStr, CStrExt as _},
++    str::CStr,
+     types::{NotThreadSafe, Opaque, ScopeGuard},
+ };
+ use core::{cell::UnsafeCell, marker::PhantomPinned, pin::Pin};
+-use pin_init::{pin_data, pin_init, PinInit, Wrapper};
++use pin_init::{pin_data, PinInit, Wrapper};
++
++use kernel::prelude::*;
+ 
+ pub mod mutex;
+ pub mod spinlock;
+@@ -126,14 +128,19 @@ unsafe impl<T: ?Sized + Send, B: Backend> Send for Lock<T, B> {}
+ // data it protects is `Send`.
+ unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}
+ 
++use core::convert::Infallible;
++
+ impl<T, B: Backend> Lock<T, B> {
+     /// Constructs a new lock initialiser.
+-    pub fn new(
+-        t: impl PinInit<T>,
++    pub fn new<E>(
++        t: impl PinInit<T, E>,
+         name: &'static CStr,
+         key: Pin<&'static LockClassKey>,
+-    ) -> impl PinInit<Self> {
+-        pin_init!(Self {
++    ) -> impl PinInit<Self, E>
++    where
++        E: From<Infallible>,
++    {
++        try_pin_init!(Self {
+             data <- UnsafeCell::pin_init(t),
+             _pin: PhantomPinned,
+             // SAFETY: `slot` is valid while the closure is called and both `name` and `key` have
+@@ -141,7 +148,7 @@ pub fn new(
+             state <- Opaque::ffi_init(|slot| unsafe {
+                 B::init(slot, name.as_char_ptr(), key.as_ptr())
+             }),
+-        })
++        }? E)
+     }
+ }
+ 
+diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
+index cda0203efefb..35e6b02ff426 100644
+--- a/rust/kernel/sync/lock/mutex.rs
++++ b/rust/kernel/sync/lock/mutex.rs
+@@ -35,6 +35,7 @@ macro_rules! new_mutex {
+ ///
+ /// ```
+ /// use kernel::sync::{new_mutex, Mutex};
++/// use kernel::prelude::*;
+ ///
+ /// struct Inner {
+ ///     a: u32,
+@@ -49,8 +50,8 @@ macro_rules! new_mutex {
+ /// }
+ ///
+ /// impl Example {
+-///     fn new() -> impl PinInit<Self> {
+-///         pin_init!(Self {
++///     fn new() -> impl PinInit<Self, Error> {
++///         try_pin_init!(Self {
+ ///             c: 10,
+ ///             d <- new_mutex!(Inner { a: 20, b: 30 }),
+ ///         })
+@@ -58,7 +59,7 @@ macro_rules! new_mutex {
+ /// }
+ ///
+ /// // Allocate a boxed `Example`.
+-/// let e = KBox::pin_init(Example::new(), GFP_KERNEL)?;
++/// let e = KBox::try_pin_init(Example::new(), GFP_KERNEL)?;
+ /// assert_eq!(e.c, 10);
+ /// assert_eq!(e.d.lock().a, 20);
+ /// assert_eq!(e.d.lock().b, 30);
+diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
+index aafc80125f59..8ea2c5b202e6 100644
+--- a/rust/kernel/sync/lock/spinlock.rs
++++ b/rust/kernel/sync/lock/spinlock.rs
+@@ -4,10 +4,7 @@
+ //!
+ //! This module allows Rust code to use the kernel's `spinlock_t`.
+ use super::*;
+-use crate::{
+-    interrupt::LocalInterruptDisabled,
+-    prelude::*, //
+-};
++use crate::interrupt::LocalInterruptDisabled;
+ 
+ /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
+ ///
+@@ -38,6 +35,7 @@ macro_rules! new_spinlock {
+ ///
+ /// ```
+ /// use kernel::sync::{new_spinlock, SpinLock};
++/// use kernel::prelude::*;
+ ///
+ /// struct Inner {
+ ///     a: u32,
+@@ -52,8 +50,8 @@ macro_rules! new_spinlock {
+ /// }
+ ///
+ /// impl Example {
+-///     fn new() -> impl PinInit<Self> {
+-///         pin_init!(Self {
++///     fn new() -> impl PinInit<Self, Error> {
++///         try_pin_init!(Self {
+ ///             c: 10,
+ ///             d <- new_spinlock!(Inner { a: 20, b: 30 }),
+ ///         })
+@@ -184,6 +182,7 @@ macro_rules! new_spinlock_irq {
+ ///
+ /// ```
+ /// use kernel::sync::{new_spinlock_irq, SpinLockIrq};
++/// use kernel::prelude::*;
+ ///
+ /// struct Inner {
+ ///     a: u32,
+@@ -199,8 +198,8 @@ macro_rules! new_spinlock_irq {
+ /// }
+ ///
+ /// impl Example {
+-///     fn new() -> impl PinInit<Self> {
+-///         pin_init!(Self {
++///     fn new() -> impl PinInit<Self, Error> {
++///         try_pin_init!(Self {
+ ///             c <- new_spinlock_irq!(Inner { a: 0, b: 10 }),
+ ///             d <- new_spinlock_irq!(Inner { a: 20, b: 30 }),
+ ///         })
+@@ -232,6 +231,7 @@ macro_rules! new_spinlock_irq {
+ /// ```
+ /// use kernel::sync::{new_spinlock_irq, SpinLockIrq};
+ /// use kernel::interrupt::*;
++/// use kernel::prelude::*;
+ ///
+ /// struct Inner {
+ ///     a: u32,
+@@ -244,8 +244,8 @@ macro_rules! new_spinlock_irq {
+ /// }
+ ///
+ /// impl Example {
+-///     fn new() -> impl PinInit<Self> {
+-///         pin_init!(Self {
++///     fn new() -> impl PinInit<Self, Error> {
++///         try_pin_init!(Self {
+ ///             inner <- new_spinlock_irq!(Inner { a: 20 }),
+ ///         })
+ ///     }
+-- 
+2.55.0
+
