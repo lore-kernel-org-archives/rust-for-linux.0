@@ -1,147 +1,90 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D7E3BD635
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Sep 2026 16:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE25741C2F2;
+	Thu, 24 Sep 2026 17:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790266747; cv=none; b=SLXyOGx3A+lJCJvBq5puWhHkeBErFLN4hSFV6dqaGDP0nlkyfokMrB5ka57WOnirwuPwL4U6wqIrS/hBFd2ByTB8qrEMAXSeuNFKWAmLrzP2F22/zLF011M5A0umOPzf36TbiRgc2Z4oYjInKQ2GwbdNu7O8Jp+F+peXmuZcO2E=
+	t=1790270519; cv=none; b=Bk2LJ8UCRjfD0wpBr4XZjj6cdMaB7sQ265Vjhyq2oHm/jd/mViusGWOiQIeLwf8pfmBr6U6qfOaFznEAHsTqbW6KgReiTmlhuytvWsksAf2wyuAp0e6NHmP6V5dC7iKvlN1IEMsa718YJG9f3DJUnju5pZ7XmAl+k6ZF1XZVarg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790266747; c=relaxed/simple;
-	bh=X5NJcOrsF5vYNxJ/RRFh1idRQODxnwRMJwFbIQHfJOo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ubs7xeLm5+NnbMbWoOesOUq52xn6wPqW0Ho8/XFQaK9Q0Wfc+q8+NnNIlkFhmCLfPSSgRV0KcoOB6VqRhprlfLmKZB2Cktu503LhFnskvVoMZkRrL5ycjPRtDgQS7m56bfzzdcDZHw6YHdnfRUCeBgLhfyGyzlvQgJOpIwTVPGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=eTcUUVi5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hldUuhdj; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=q55qYFca; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cJ0UZ03t; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1790270519; c=relaxed/simple;
+	bh=HBC3YtGwOS/hrQSLCFzW0giR+SP29nfbPT/65wjTmVA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=XUC8jGV1QR2ZSkQx3ts8bLV/6ok1XPswRPVuRq1ERQP4pj+Za2WZeIBsAiWfJt0B4bFwQRk7se1J9Ela42j3tKQiyakwEnEXmbSbOGREnVdCTrmRq+YU1H9xv9a6+yPp+IkSKB6NjlboeOqegsJuwCe1AwpB4UIqdKgozXbgoA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lfWJgHjt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="eTcUUVi5";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hldUuhdj";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="q55qYFca";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cJ0UZ03t"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A097D2014F;
-	Thu, 24 Sep 2026 16:18:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790266731; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K8GJRNxL/HNk3XDpyTSTQGcarD33mCw2i5GJir7XuR4=;
-	b=eTcUUVi5lRT7IqsR2j4B1KIhl7a+TunPKmFoxuKfTRFj7c6PZoALUo4CW7WJo8EegraaHP
-	wFJR2KZNGfJDaI3s0Rr0sfXC2+oQpxUuZOOr2ERyHdBCVp08agFO2UFjnijd+deXYcL/yI
-	CM4/10/gRUkthEIe0tXIc3NYp09qT0E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790266731;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K8GJRNxL/HNk3XDpyTSTQGcarD33mCw2i5GJir7XuR4=;
-	b=hldUuhdjxZd6zUPlxkMGPGzlxv5m+XXVXoA6Pd0pxD+sZOgZjwDdyW7eyF4BbGYKwJSweq
-	3/cSRlUoB1iiuhDw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790266727; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K8GJRNxL/HNk3XDpyTSTQGcarD33mCw2i5GJir7XuR4=;
-	b=q55qYFcaCjNw06Vs/8Z3WfJorevYOcycDaxbtHiTpzDcRgJbYWLXCcWrah+3O4OYkWui1O
-	CoJiRm3ZP410Fa0Exe3x5AASTdrOPIgE7jkC2GaiY+Ij+G0a+rqmm7jtAn9SCHk/xba+Vv
-	ConkVxyfisYHlx7to9q6znV34zpf70E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790266727;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K8GJRNxL/HNk3XDpyTSTQGcarD33mCw2i5GJir7XuR4=;
-	b=cJ0UZ03tuZNtkrfrIgfycAsi04HVdU1svCe8f+wn7E/f2VZnHHcGhZh8RIMblcpP2Eqlz1
-	eUqK5QIfUcvsKOAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3969513354;
-	Thu, 24 Sep 2026 16:18:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id timLAWZNtWp9bwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 24 Sep 2026 16:18:46 +0000
-Date: Thu, 24 Sep 2026 17:18:44 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Jan Kara <jack@suse.cz>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: file: handle fd table teardown in file
- descriptor APIs
-Message-ID: <arVL9aI02kF6yZDV@pedro-suse.tail5790ac.ts.net>
-References: <20260923022339.3340694-1-georgeandrout13@gmail.com>
- <arThye_219ruNbM2@google.com>
- <CAESH5ocJR9SLHcYfusixDmOR-CLce=HTpLxFU7zVQZFPtD9uuA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lfWJgHjt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488BC1F000FF;
+	Thu, 24 Sep 2026 17:21:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790270517;
+	bh=HBC3YtGwOS/hrQSLCFzW0giR+SP29nfbPT/65wjTmVA=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=lfWJgHjti98TQemT6CHMxITv1UlfN1h+FF2he8rd4Q5Ic4jxUwIFecS0eOKr40yQ4
+	 YHBo5xMEnjywMrKcrxgGss1rotB9Dhh7WBV7B+7YmfNmjkzupCxcxlWV4qtNPMBb19
+	 NCcQSAH1WjA1znQLZbVRkXRxOvyd5i6qrtjxshOqEzYugWHh3F8kOquEoipqlTSjnN
+	 RczjE7Jl5QLWCaRAZQ0G6EKGllepLt1WRUw1R+cBfuqVwi9sW5/Z7Sa7fkYZK84djZ
+	 HIIieVSQvMEryHL4lEbfZ80JF4ueoeMSfCCZV1b2KFlWj4heNIDwsJyFLkpPtxJ4ZM
+	 PhPwumnfqGC2w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAESH5ocJR9SLHcYfusixDmOR-CLce=HTpLxFU7zVQZFPtD9uuA@mail.gmail.com>
-X-Spam-Level: 
-X-Spam-Score: -4.30
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	RCVD_TLS_ALL(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,protonmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[google.com,zeniv.linux.org.uk,kernel.org,suse.cz,garyguo.net,protonmail.com,umich.edu,collabora.com,nvidia.com,onurozkan.dev,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 24 Sep 2026 19:21:51 +0200
+Message-Id: <DLNPXJ4WPH4L.2MBUGV1TAESYY@kernel.org>
+Subject: Re: [PATCH v3] rust: io: convert ResourceSize into a transparent
+ newtype
+Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Tamir Duberstein" <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "Abdiel Janulgue" <abdiel.janulgue@gmail.com>, "Robin
+ Murphy" <robin.murphy@arm.com>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>
+To: "Lorenzo Delgado" <lnsdev@proton.me>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260920-resource-size-newtype-v3-1-9451444e83bb@proton.me>
+In-Reply-To: <20260920-resource-size-newtype-v3-1-9451444e83bb@proton.me>
 
-On Thu, Sep 24, 2026 at 12:06:18PM -0400, Georgios Androutsopoulos wrote:
-> On Thu, Sep 24, 2026 at 4:39 AM Alice Ryhl <aliceryhl@google.com> wrote:
-> > This looks like it should ideally be on the C side instead.
-> 
-> I could move the `NULL` checks into the C helpers in `fs/file.c` that
-> currently dereference `current->files`. Since this would move the fix
-> into the VFS code, would it be okay to send this as v3 of this patch?
+On Sun Sep 20, 2026 at 2:13 PM CEST, Lorenzo Delgado wrote:
+> `ResourceSize` is a bare type alias for `resource_size_t`, so it
+> inherits every integer operation and `as` cast. That allows operations
+> that make no sense for the size of a hardware resource, such as mixing
+> it with unrelated integers or truncating it with a cast.
+>
+> Wrap it in a `#[repr(transparent)]` newtype so each conversion at a
+> boundary is explicit. The representation is unchanged, so this is
+> ABI-identical; only the spelling at the FFI boundary changes. Provide
+> `from_raw`/`into_raw`, `From` in both directions, and a fallible
+> `TryFrom<ResourceSize> for usize`. On 64-bit, where `resource_size_t`
+> is a `u64`, also implement `FromSafeCastArch<ResourceSize> for usize`,
+> so code that is specific to 64-bit can keep the conversion infallible.
 
-FWIW, I don't think this makes sense. The VFS abstractions should ideally
-be taught that using any of these functions from ->release() simply isn't
-safe.
+This looks good now, but it makes me notice that dma_len() shouldn't return
+ResourceSize in the first place.
 
-Adding random branches to rust or C code just to avoid UB sounds like
-delaying the inevitable; maybe your kernel doesn't crash (right away?),
-but the code is still incorrect and probably cannot correctly handle FD
-installation randomly failing, or fdget on a Known Good(tm) fd failing.
+The length of a single SG segment is bounded by max_segment_size, which is =
+also
+unsigned int.
 
--- 
-Pedro
+So, I think we should change dma_len() to just return u32 (I'm also fine wi=
+th a
+new type, but it might be slighly overkill).
+
+I'd usually pick this patch regardless and leave that for a follow-up, as i=
+t is
+a separate issue. But if we change dma_len() first, we only have to update =
+tyr
+once, whereas if change it after we end up touching nova and tyr twice.
+
+Thanks,
+Danilo
