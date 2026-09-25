@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD5B4C150A;
-	Fri, 25 Sep 2026 15:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910B94B0E28;
+	Fri, 25 Sep 2026 16:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790351411; cv=none; b=DMDdWJsiQNmMuuq6rodYT9N9sHmDDamhGlYyN4U8zGT5NM67Vg9CeOtyTrpXS0CN/w3NmemSjlosnmLxI+x/u2bFmdkXdhncBJOM7d5NiY8N8E3GvjBTM53d/eumka8/7DPg42T4jM0YEiIH5tCgZF1/3yiaDjidYR8HAA92eck=
+	t=1790352032; cv=none; b=Ne23hJFBAFr1BtSfahtVPP5MvXB+eJnfUeyW7ZkNOSJ4IpNasBYPyRKurJJSheGsP9hv570v79Gg09vQrmRto4w3F4abddQaAnhXOGhtdDAdfsQyXdLaB/A34YrnqI8HgnSKirEvlBqfsu1zVTKLS/+ETQ2aiIrl3J3zVUh7kW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790351411; c=relaxed/simple;
-	bh=rLydLkoX2buj8K7vNFnDF0+lONdi8sW15E9C0o2QLsY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=cF22/h4cWcccJl/py6v/e8FBy10Gz1b56+tD+yZLEkJ1djXpSZ9E2crk0ME94YSE54Ck5+ckYAFgxvAqILIked0p1XGZg5zWSgZ8k91Trgzfo004UbY7i3s87Hpbu7rrNzeDQAK9+W7FJHdRriOVX8UEomMexxEXrtmlbg7NigQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nsUUFKyp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790352032; c=relaxed/simple;
+	bh=ywbxnRCzIpxZKcKA4407lYkAqXuRPUNreym6wXcGaS4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=DHoEk4w5QrqYkH+UBxXVGBS8eXDxs4cyKZLWbbAhpiJ4xDw70PiMsVjS9Q8/HmSZceji/HrQx/QGnWNUiu9pLm+bl8oLIZRP9Pzj8+Fty6onl6UaMhAWDnYwnVOxNPH91VQbTJ9nSj2lzmteJ66vjRP/6GnNT+MOX58QNrYZ93c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bmheRZQj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nsUUFKyp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ECA61F00893;
-	Fri, 25 Sep 2026 15:50:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bmheRZQj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1AC1F000FF;
+	Fri, 25 Sep 2026 16:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790351410;
-	bh=rLydLkoX2buj8K7vNFnDF0+lONdi8sW15E9C0o2QLsY=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To;
-	b=nsUUFKyp0SwC7LLYJO118a3NMMnZb2Z+IKDrpC4p0kDCspgxzI3F+15oHPRnXM/jN
-	 N9UKKzJHZ826boWgKsq1Yl7xNC9bqI/IjErTlxs0xWcTux2JhJ+vuZMcOnSXEnz1f0
-	 2V0NxAuP4T7iSaxQB+J4SVgh5u4ORmdRwfjBG0WMtU1yIfsrnPTzYlphdLK+QbeN+Y
-	 O43FAZWbsZ4bKZtF6u/mN56dxiJL556nH/VLRlctH5UEuOv3wGEK97b70fvZkPnAla
-	 +tnCasWrYHbtpVfz/R07+oiAh4hl8XvX4Kmmzn7a0eSEnNfWmhnGTF+O3GJl4KlZIi
-	 EijrSBJBTxqLg==
+	s=k20260515; t=1790352031;
+	bh=ywbxnRCzIpxZKcKA4407lYkAqXuRPUNreym6wXcGaS4=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To;
+	b=bmheRZQjozopfrBYggaWB3DB6Wc6c8qJSjI5FAbid7Q8XlDH4jWun8/xfVeQsZOa1
+	 0LekADVIjGA/2jD8QqVB6550Jmzu4LENyLmdrW0dPFkP+7SjdjRdA0dIPL103D+Aek
+	 XoWv0oLq1IZpdeuaENP4VYY50WxskNsPFR46ZSxqmOleeXjgNxsKSUaYU6wGXRFuZp
+	 4VQAsZa7kTzNl2VFG9xtnREZaiuzYwctfcav729Od0h1QZuArQRk6gEmuyUnpJVZWq
+	 mVz2p84rCmhLPNg4gmE6WTclK0w7i4xe3srzy1geMBNLqUSTDvt9T1wRohumLs3lNJ
+	 PAQkAnbNBRB3A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,8 +34,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 25 Sep 2026 17:50:04 +0200
-Message-Id: <DLOILT0V4HCX.31L2PE7YIAKY3@kernel.org>
+Date: Fri, 25 Sep 2026 18:00:25 +0200
+Message-Id: <DLOITQ94Y374.2HQ1HVK4G8D40@kernel.org>
+To: "Philipp Stanner" <phasta@mailbox.org>
 From: "Danilo Krummrich" <dakr@kernel.org>
 Subject: Re: [PATCH] rust: DmaFence: Add better warning through Device
  reference
@@ -51,7 +52,6 @@ Cc: <phasta@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Alice Ryhl"
  <work@onurozkan.dev>, <linux-media@vger.kernel.org>,
  <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>
-To: "Philipp Stanner" <phasta@mailbox.org>
 References: <20260925081958.3048112-2-phasta@kernel.org>
  <DLOBPY6OBEOG.2Y4I4LRA276WU@garyguo.net>
  <DLOECU7X3MTR.31Z6N1I0WB0MJ@kernel.org>
@@ -59,20 +59,28 @@ References: <20260925081958.3048112-2-phasta@kernel.org>
 In-Reply-To: <f0248d1529378ab8be957009a93a0a73ee74bafb.camel@mailbox.org>
 
 On Fri Sep 25, 2026 at 3:08 PM CEST, Philipp Stanner wrote:
-> The driver can avoid dropping half-forgotten stuff by calling
-> jobqueue.complete_all_jobs(ECANCELED) immediately before dropping,
-> which allows us for having the warning without false-positives.
+> On Fri, 2026-09-25 at 14:30 +0200, Danilo Krummrich wrote:
+>> On Fri Sep 25, 2026 at 12:26 PM CEST, Gary Guo wrote:
+>> > On Fri Sep 25, 2026 at 9:19 AM BST, Philipp Stanner wrote:
+>> > > Replace the warning print with a dev_warn!(). To do so, have the
+>> > > FenceContext carry a reference to a Device, protected by the already
+>> > > present lifetime.
+>> >=20
+>> > Add a lifetime just to do this a print doesn't sound ideal. You could =
+use
+>> > `ARef<Device>` instead?
+>>=20
+>> Yes, that's what I recommend in general.
+>
+> Weren't you super opposed to refcounting wherever it's avoidable?
 
-This would just move it up a layer from inventing a new type around DriverF=
-ence
-to invent a new type around Jobqueue which does that instead.
+Well, a device by itself is already reference counted (which is fine). The
+lifetime constraint does not come from the lifetime of a struct device, it =
+comes
+from it being bound to a driver for bus devices; for class devices the life=
+time
+constraint comes from the device being registered.
 
-But the Jobqueue won't have any procedural teardown, it has to teardown stu=
-ff in
-drop() anyway, which includes dropping jobs already.
-
-What I'm saying is that there's not much value in DriverFence::drop() havin=
-g
-this warning in the first place, which then either the driver or the jobque=
-ue
-has to work around on teardown.
+I'm opposed to refcount stuff that has a bounded lifetime that is defined b=
+y
+some scope it must not outlive.
