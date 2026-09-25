@@ -1,139 +1,132 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71709427A04
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Sep 2026 23:40:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7684C3876BB
+	for <rust-for-linux@vger.kernel.org>; Fri, 25 Sep 2026 06:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790293205; cv=none; b=cPJ7QZSEtnJy8ZKkwwqW4v2rI7qchEdIJ8n9Cas3gCXbgAbuFoyhZq/Tv2QdD8L06r3XoiVWdUa5LGX79Z36IJ6CoX1MJYEzqv+mjvKdLNBSujpFagDuTMLcjm3QqKD3AWrvURkmuKLPJ1p6X2E1iIC+zkh9ueVzLljgS1hPLL8=
+	t=1790317320; cv=none; b=nCo4jnFuT/RsisMSkqt8K2D27/ImnxGfMjPTSdHAUKeHWBnzFRTbFPZd6w0eP06xlPdMEemzoi2zJLkkN60Qbr2knFX3EUDR2QpuFWsFjfgy6yf4QAGS5IVzbdzgls8hQCmoIKUE52zjV8ThIYF2EpMRq2Su746Bf9nZ3v/EViI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790293205; c=relaxed/simple;
-	bh=4h4cpDObZqi2JEPN69eOCH4YBG2slYUeYHjBIAENU48=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
-	 References:MIME-Version; b=nAJGI2ECLTssoWu5s1XyHMhfI1MLp+WrSKt52wLoqBC97iRCRBhqYza5JvUpfGlpKfKCbpQOlZuKx/lBjvLPIlnFxAjSIODI5gG/3hfyY5DW7bx+aTJDQVGH8xxW38PIigxBpkEKdTVRRksVhCdePKtpyO+rpTbsf51rWBAsD4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZGFYs1jG; arc=none smtp.client-ip=74.125.227.141
+	s=arc-20240116; t=1790317320; c=relaxed/simple;
+	bh=UjlgwLbgeh6LAkjBfXyoi1ibUIo+DP0JvbI95ZXgWUM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dP+XAwxEIAac5v+AswymnX792DCScD0OViJBcnYORtuvXb40RRjqCsZ/6JnJCMBHI0wHZz/R/6z5H5+4eMTA5dvWV4uRpWghIT9oy9FUjAjX32yx9HeyNL8PDccmio/fhZBuhCFE7Wqe+Um5EjoZumTSCGMlFfX2TbFlzieU9Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bcCf+rsu; arc=none smtp.client-ip=74.125.229.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZGFYs1jG"
-Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2db18fe433fso1037665ad.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 24 Sep 2026 16:40:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bcCf+rsu"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33c24422d4dso617991eec.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Sep 2026 23:21:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790293204; x=1790898004; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gn5dD1CJfoor6GODqvLgahaKF8S1PUZ5xI0XuIL5LIc=;
-        b=ZGFYs1jG/Xr4uwPy2133K5sF0poGH1omJ0ns5UwD8enApwiJPDDFi1gLMSA+UY+qrO
-         6lyZmvL2zJXgrS4urBwMTV3vFSBosNfxEeAHC2L0cHJkMBE9Oj9QKSvAuXGCWTgwH0c7
-         yWYOAFlZXJt9BDXnhQUwZElM3+pKqDf9ymR/77Qjhm4q2k9A8H7TmnWzDJf4Vw1zQ8Vz
-         HgO06YL+sF+7Efo+udo1jYXz4T5XB+sMNcQcYJJG3eDGSkCa/UybsOWnOQ+yWqiUaJ9C
-         yc+2TaftdirQziHgwjLgiQLYNZ+cgLnH7mjbZhOQnbR+1/zQ5qgml8qc2Dm7Da1OEro+
-         myTQ==
+        d=gmail.com; s=20251104; t=1790317315; x=1790922115; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=peRJubAzt5CBA3DlGa/amJu9ZBZekocmcGMZ2nqjKzw=;
+        b=bcCf+rsunlWa3cL2fTN0lmKtabtaSpPf9CxG//dRhkFwqKSBHmPh967KVU4dyqW1hN
+         S+/MJMVAB1rpNZoPph0y3i2MyKehfWzmrTciN/9X7GyjTC3G3qFiS97oSwBjslTgHMYq
+         tmdaWhiSdVVS/AKfY08MUrFsAyT25NpHMbf1mJPnOz7p8U3XeWuQnUAcRBfvPCy5NZQW
+         qbPv7bHikYGOXqI0CUjwHojlXG1gyAMH+f534exx2k3rwJyYgROCOd9ckPhz/osiV2iL
+         p7JGh1BHpSZ0MhpX/gwlU+TYbI9HoE1RDRM/kKCvvKIM+yyRaYEMTsmkrcJyvcuCei8p
+         86dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790293204; x=1790898004;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gn5dD1CJfoor6GODqvLgahaKF8S1PUZ5xI0XuIL5LIc=;
-        b=xmCbSuDtrLGLJ6McAl2SbtZSyB1cJuX2CHTbPTTgnyRLO6Ag+Tsk+vKNm/RL9T8bZO
-         Cr3i5aqaWwZbA1GLQIH/sJcK5rxu5Bu2LGiEuLoJY/b6wcWZjp9C7CjqLEgdEqV64An8
-         4mrh9rYvpTV00FeDlyw95wH3EkOs4DllCtNckdbzNQdCk3BdS0haVYBNguTm4k9SLesI
-         Gf1a1SJiR9NOWzkl5lOxgYS8s+D4S+wdPkoOOS+yi//laKcTlydkDGsH80ptDnGOMuQd
-         fxx1a2XAeXEksc+1tDCpdQvVGgvMiPwsgupNgQr3FhyBIXm2AFhmZ7tIGCXlUYaX2Dz4
-         0FOw==
-X-Forwarded-Encrypted: i=1; AKwUvByE9wWHCeSdl/Gd548iW+5wk1EE9b2CYnnXviF7qlu+aHrQXgIG5J6M61kTfZ4Xqii3U7nqYR5lk/nekKWVxA==@vger.kernel.org
-X-Gm-Message-State: AFuF++mrpTNnFSpUX2ZNSDf54EIgdv9/L4gxpFodhLKUDM/lDG+zvI5R
-	gqMVHWZDq60FpanYc2uWvaI2O6DzDCNrkbdLpmaiQ1HUIH+pDrzVlrKd
-X-Gm-Gg: AYBFou1Y+nMSQbW1St7qETlCnz3eFTFvzTSzX5LYtlEQ2Yca+AfrHmGVrSDYapn6NIA
-	JH4aOn2/0SZ94g150/90qDXWle+vV6u4ArrR/L1da/AYHWgASLajhkZOEiUeIwB9kRhELIKooD4
-	jA4ejimsodKcEtrzrQj0Z5GJe4DhamMfjqiq3o9QJVy8iodnOeoOH+7OhkwqEUGkgq/RJgzddEk
-	Ls5x42jWuHCjtaA8t8JQSrNXvsWhYoJKtvi82MjLI7oM6B/muaYgtJJ1QcPQQ7YSIcmFp2OZ4UD
-	XuuE4ViMNm90bmBp2FdPczJMBqjw4ej/HxHL8ivSwj3b+E3H7D0a4vaf2ZAPBoTVcKRzqN792da
-	Y9z+jWFsNrO23bfkRMRmK0C1JSjd40R+WR4J/2n2CNG9p/v5bDXYiVGihYM4OhAiS/nFcuJyoqA
-	XaLF4RUDu8RGD32ySqZnyQiMwQrl3bLdgcUQPuyFYh9MLUOKM86G2ccf30Y1r3JL47OQj7ajn+T
-	NVg0XvM4RM9/rOf6U7j9auw5DdQ/O00ejD/3p5z2GYyIwVscDA4XXRY2/vVdwWaWDFJhrYMdcPP
-	zio=
-X-Received: by 2002:a17:90b:1648:b0:39e:6c69:34d8 with SMTP id 98e67ed59e1d1-3a098fc574cmr3554656a91.60.1790293203799;
-        Thu, 24 Sep 2026 16:40:03 -0700 (PDT)
-Received: from localhost ([153.61.198.240])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b8efaeb3sm909723a91.2.2026.09.24.16.40.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Sep 2026 16:40:03 -0700 (PDT)
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 24 Sep 2026 23:40:01 +0000
-Message-Id: <DLNXZ2WK7TPD.2RZBUNRS4FA4L@gmail.com>
-Cc: "Leon Hwang" <leon.hwang@linux.dev>, "Ihor Solodrai"
- <ihor.solodrai@linux.dev>, "Josh Poimboeuf" <jpoimboe@kernel.org>,
- <live-patching@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-trace-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>,
- <llvm@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <bpf@vger.kernel.org>, <linux-efi@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "Ben Cressey" <ben@cressey.dev>, "Florent
- Revest (Anthropic)" <florent.revest@linux.dev>
-Subject: Re: [PATCH v2 6/9] arm64: cfi: Use
- CONFIG_ARM64_FUNCTION_PREFIX_NOPS for the type hash offset
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>, "Steven
- Rostedt" <rostedt@goodmis.org>, "Masami Hiramatsu" <mhiramat@kernel.org>,
- "Mark Rutland" <mark.rutland@arm.com>, "Mathieu Desnoyers"
- <mathieu.desnoyers@efficios.com>, "Nathan Chancellor" <nathan@kernel.org>,
- "Nicolas Schier" <nsc@kernel.org>, "Nick Desaulniers"
- <ndesaulniers@google.com>, "Bill Wendling" <morbo@google.com>, "Justin
- Stitt" <justinstitt@google.com>, "Catalin Marinas"
- <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>, "Daniel
- Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>,
- "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Song Liu"
- <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa"
- <jolsa@kernel.org>, "Emil Tsalapatis" <emil@etsalapatis.com>, "Puranjay
- Mohan" <puranjay@kernel.org>, "Xu Kuohai" <xukuohai@huaweicloud.com>, "Ard
- Biesheuvel" <ardb@kernel.org>, "Ilias Apalodimas"
- <ilias.apalodimas@linaro.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "Sami Tolvanen" <samitolvanen@google.com>, "Kees
- Cook" <kees@kernel.org>
-In-Reply-To: <20260924-b4-arm64-callops-kcfi-v2-6-587865b6d991@linux.dev>
-References: <20260924-b4-arm64-callops-kcfi-v2-0-587865b6d991@linux.dev> <20260924-b4-arm64-callops-kcfi-v2-6-587865b6d991@linux.dev>
-X-Mailer: mkdraft (claude review draft; edit before sending)
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20260707; t=1790317315; x=1790922115;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=peRJubAzt5CBA3DlGa/amJu9ZBZekocmcGMZ2nqjKzw=;
+        b=W5PozBvRR6J8YlzzeJbphcZfbSkrkxOYW2wM28R92lZkwG1535aB8enUKYcw95mobU
+         ABb8YUbzJx0iLr7VZyylLyGKHacLuf9CZfbPvWjkAJVmYdOYbf2HtSywV0h0zxdToUcb
+         kVBji/qw6sXEmVqnF7iGBr1Q9sSKMMa/IiGCeF/Ch0zul6GSQh4vIEDJX2vMRcfpta2D
+         Ows/mya9lbOs5J0DCQPyMdKRe0EXrvC1Rmkq7gf1QCwvehtpp8ub8YbxJqtVe+fcjBaX
+         NdXurICrN62XmyV5dcqBNUgl/DGR3+ggMnTnh69dMqzvWqPPaFGqUyyNoIw//6VA0RPN
+         ZuBg==
+X-Forwarded-Encrypted: i=1; AKwUvBysoQ6SCdlEi8WGzfjIQ/BH5dQNj4xMkEu4CUYL5VXZ3UHPZDwLD+LElyv4aUIRTaFHbpZQ5LO4xmOmwuN7fQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++mUrGMCoe9AEAKzbaRC6tJFdUeCWeSsywBIK3dJjlg002jFcUJu
+	5B5FooHjouEdQa+GjB24yZEJGN0McyXeOI5n8m7GcNROWFncL8txGfXR
+X-Gm-Gg: AYBFou1VXPnPAKt70hbHd2QZ3dJgSZ6uj/VqzkTvOlSOiQpoRMhGhzX6PEhcMEZ5GxW
+	lRYykKM2W5QSngTczKhmSzIHLWNNABhZieVQAy1lPQJQ1CLIOiKH/olr5zC2wxxmHMMKfQ6kgTH
+	TBWM490BfnbBvm4gkT1oyJwfBdUVKc+39olmgkpZroo45tda7QsX+Zl6TxZwlkOO/NoFYM0Ov7U
+	Rw0110CPHJlzQyu055gz8h6b8rtS8iuhI1llYRPwgUhONM37YSDGe8RZCJIbD4pXb9m5Mz6jio0
+	CnKp1+0nHkcBmekK+PfvQ94eeoAwnW08A2PRnLGebopyztq6VfduGNf+PZFdtO7APqV75BRBWR7
+	Z+2lJFYN+14DyQ17raajq504srl4KOPCFr+H3xlsJCxi2EyryIg1r9nHY/2ZQ2YzJMXEyud5Bco
+	AtNyrRtM0vtbB+J8YHt4/AqVho3YiIvxZldgj0TA6Y4zntW359fHEf6JnuAzu7W89nJCH2OB/ul
+	IAwml1MPPCJbRiABLZt/3ZFe04OvQyH7MJzWd4QyFVX
+X-Received: by 2002:a05:7300:dd47:b0:342:94b:aa28 with SMTP id 5a478bee46e88-342095b08cemr188044eec.27.1790317315073;
+        Thu, 24 Sep 2026 23:21:55 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.165.23])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34144172de6sm5598126eec.9.2026.09.24.23.21.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 23:21:54 -0700 (PDT)
+Date: Fri, 25 Sep 2026 11:51:33 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, maddy@linux.ibm.com, 
+	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, ritesh.list@gmail.com, 
+	sshegde@linux.ibm.com, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	alex@ghiti.fr, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, tglx@kernel.org, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org, 
+	acourbot@nvidia.com, work@onurozkan.dev, nathan@kernel.org, ndesaulniers@google.com, 
+	morbo@google.com, justinstitt@google.com, jszhang@kernel.org, japo@linux.ibm.com, 
+	peterz@infradead.org, jpoimboe@kernel.org, seanjc@google.com, pmladek@suse.com, 
+	thuth@redhat.com, ynorov@nvidia.com, joelagnelf@nvidia.com, david@davidgow.net, 
+	fujita.tomonori@gmail.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [RFC] rust: kernel: Add KUnit tests for ARCH_WARN_ASM bug table
+ emission
+Message-ID: <arYR4GrzNnFko7XO@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+References: <20260922054959.955093-2-mkchauras@gmail.com>
+ <arUYLsJJewE--wqo@J2N7QTR9R3>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <arUYLsJJewE--wqo@J2N7QTR9R3>
 
-On Thu, Sep 24, 2026 at 10:35 PM Jose Fernandez (Anthropic) <jose.fernandez@linux.dev> wrote:
->  static inline void emit_kcfi(u32 hash, struct jit_ctx *ctx)
->  {
-> -	if (IS_ENABLED(CONFIG_CFI))
-> -		emit_u32_data(hash, ctx);
-> +	if (!IS_ENABLED(CONFIG_CFI))
-> +		return;
-> +
-> +	emit_u32_data(hash, ctx);
-> +	for (int i = 0; i < CONFIG_ARM64_FUNCTION_PREFIX_NOPS; i++)
-> +		emit(A64_NOP, ctx);
->  }
+On Thu, Sep 24, 2026 at 01:31:42PM +0100, Mark Rutland wrote:
+> On Tue, Sep 22, 2026 at 11:20:00AM +0530, Mukesh Kumar Chaurasiya (IBM) wrote:
+> > Verify that the __bug_table entry emitted by ARCH_WARN_ASM has a correct
+> > bug_addr displacement — i.e. the arch's trap label reference resolves to
+> > the trap instruction — by calling find_bug() with the exact virtual address
+> > of the trap, mirroring what the real trap handler does.
+> > 
+> > To support all architectures, each arch that implements ARCH_WARN_ASM now
+> > defines ARCH_WARN_ASM_TRAP_LABEL, a string constant naming the local label
+> > at which the trap instruction is placed:
+> > 
+> >   x86       "1"     (ud2 at label 1:)
+> >   powerpc   "1"     (twi at label 1:)
+> >   riscv     "1"     (ebreak at label 1:)
+> >   arm64     "14471" (brk placed at 14471: by __BUG_ENTRY_END)
+> >   s390      "0"     (mc at label 0:)
+> 
+> I'm not a fan of exposing such a low-level implementation detail out of
+> the architecture code, and I don't think we should expose this.
+> 
+> What exactly are you trying to verify here, and why? Has there been
+> some _specific_ issue on powerpc that caused you to look at this?
+> 
+> Mark.
 
-For the series:
-Acked-by: Alexei Starovoitov <ast@kernel.org>
+Hey Mark,
 
-unrelated minor issue:
-ctx.offset[] is counted from ro_image, but bpf_prog_fill_jited_linfo()
-adds it to prog->bpf_func which is ro_image + cfi_get_offset().
-So with CFI jited_line_info is already off by one insn.
-After this patch it will be off by 4 or 6.
-s390 does
-	jit.addrs[i] -= cfi_get_offset();
-before the call.
-Would be great to send a follow up eventually.
+During implementing ARCH_WARN_ASM for rust I broke the bug entry for
+powerpc so I wrote this to verify. I sent it out mainly for ppc but
+few people wanted that if it needed it should be done for all archs.
+So separated this thing and sent it out as an RFC to check whether
+other archs want this or not.
 
+Regards,
+Mukesh
