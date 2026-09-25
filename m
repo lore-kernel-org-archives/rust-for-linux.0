@@ -1,216 +1,101 @@
-Received: from mail-ua2-f42.google.com (mail-ua2-f42.google.com [74.125.226.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AB643F4DA
-	for <rust-for-linux@vger.kernel.org>; Fri, 25 Sep 2026 19:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.226.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585484E431F;
+	Fri, 25 Sep 2026 19:30:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790363882; cv=pass; b=gX7eJhQTabvAqtDQHyoXWj0V60SbponbxtDV0Q16SkwHLx/+TnyOp9OKEmltw7zkiJ1rnI89GhCIb6bXRaS+txQzRH7uBKFW94v9pRE2HFju70NxOEbQ50csWOuHKcaPHS6C0tGbw2LsG/X+5SXlSMaeyeXXtYN9KElKO8isZ84=
+	t=1790364623; cv=pass; b=A9Jv6eEn7XksXW57bXTflfiy6Rfy8P1DGNib+Ad5DWkIkQEiXaBXMVoeBYPPL9tKvWBtRgYylhFHvKnFbqjWiHkPf2/rG9BfEydK9PxVQl5nrD/T8xX0mAtN0XHZpcpKYRbqXnjMkXX5IG7AhJS4VlcsugVyDKwyGIe/zARkht0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790363882; c=relaxed/simple;
-	bh=0YXk1p2g+BspsukgpRLeUnT1mCwteMBiEo6KobR3WE4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g/cfttH3B5Dh5WplVkp80t3puESv+Cf7FDIFrCwLFxHfwYaIMSAzqC4K84SrpP0aYn7w9I+u+/0MQt1iGIPD7XsCk03RTLeczX2yZhCCEgoR7SeFdsvhBZWchvoyI0lmztE6NnHWghMLMDiOERjhkUXo1yzdIFMRgG8Aij2UAOk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N4+TN+qe; arc=pass smtp.client-ip=74.125.226.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1790364623; c=relaxed/simple;
+	bh=Fl8MMa0wunW49KVsDpPNJOMA7OoJz4FEmIKxTOvvKpE=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=UPhZBZgaXNNoZBnqkmL4MgGinudIdrEWV6Sa0V+hUih4sodBAxLaRDbHOGJ/Yy88rdIadejpBhYYxMmMb+F6cdbu/jsjQ1lnmwwikj/CQXkwgXzcV8lY9TTHUxOTWzcsX7joCMgXB+JVeTAHA266dHQvrkSk45rBzL6a3qRuGp0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=NTK0p4uo; arc=pass smtp.client-ip=165.173.180.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N4+TN+qe"
-Received: by mail-ua2-f42.google.com with SMTP id a1e0cc1a2514c-986df7ac62dso474439241.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 25 Sep 2026 12:17:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790363878; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gKx5SghU9VgXIrc4W1KD8VU1P26r7T8v5MQ8atHV5UXF2CQB4C1iiuS2BPBVfMIpmQ
-         oRBKfXcancyDPFPtULwk/ymZEVglX2mZxiGLg8dEiLUcTV+foB2z7QdRFzeJmf6JZXM6
-         iOwjZSKF8eediYIIpdeUsfAWiTaLTCkIUvb2aCgZJxRLMBu1Xg5BShFDCZEQOMr6i+ll
-         WcXuFPh3WiJPAhepaNs42FTiiddCkQZP0czDV/oKDfHfq5s8kqfrqmwTpCXJNSUbDYHb
-         g8IkaUS/cduRiDkjPYXFirTgg26bMMY15LRKygGQTCXhAvVEyi4aDJJz+aiBIfY8bphj
-         Td3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=68/mkRd1a6DliLdoLvTqX92EpyDhdssnV15ZSAj23lc=;
-        fh=AJCEbXjZnoWeYEGKK7K0PSeBvHywjmkaLWoRESpys30=;
-        b=NihRb0Q248ggqYXHWJtg84nIUgsOseY7V9b5J0WYcMyybzbeFWX1eM7jj2VuRKtGXT
-         r2U8mNKw/CMKsXrFuc5uALLOCeUqqXivxqRlC36RnuOYnum0yDrZkKdFto6l7trYsOJ7
-         clNPtt7evr4WChUQhvyvJRAuaDmqrj8sQlZwnBVA30dKGevDT9H3yPEHQ9l3LmIFJXDw
-         P5X7B5HKQEe/rZfcaAYUprpsKWs9IplFKuWm1YhDwiKnddPqJDc5B//2EzF6J4bfoOt6
-         BHaj5kOnLbCe8O7sfAyh5+Ar9DTBWRkGFLWck3KNZmD4IbjcjAKpFeKc9Gk1LBO9sJNk
-         2CQQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790363878; x=1790968678; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=68/mkRd1a6DliLdoLvTqX92EpyDhdssnV15ZSAj23lc=;
-        b=N4+TN+qePb/0u5ajv38dlgbED0FFOtVewN/faWBmtfYDhcOb/0hSadfEwGcwTaDjBb
-         bII9vSXU7k4YttNcFjPW+Dg9C4YV2S7UibqHmUKdtKLRfzapSmCSVQyXbJYaAqnDTgFY
-         H+Zaaq322+v4udwDq1ObyFU8NEPx+CSmQW7+uc0n6yG+Ra7DKQV6ZFKgAJ8PP71GaY7c
-         QqsJjY6bedzj7A6qGM+vx8QeYT6/aPRVI3tOsbx/GXFX0yqNcnk2zWA8386ou1gC8C1T
-         9WT3GQh4u/+LD2+HLi6iup0oJbzYgTFLTdS0yRoIOkGAWTPpQtWFZLhoD6LpEycz3IkL
-         4y8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790363878; x=1790968678;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=68/mkRd1a6DliLdoLvTqX92EpyDhdssnV15ZSAj23lc=;
-        b=0E04hW44Fivztu+kVZQAY82WmAMYEYrrPOCwRSh885DadaKhMUx00C/CoGoJhqwDX8
-         AuYqScZPZTl3w8Jnm2wPGhMc2KxioNmAnXjb4jExBMXOT85C51EYwLWiZ9wA9tIyRi5R
-         62btlealmxB00uGLhOxNMiZiMcekronvk9vbS+RXlv4rQjZe1pnZfHhd0CJ/bVLD71LS
-         UOK5McVrj2/6FE5Hltx8h1JvjkaGeS9U0QH4XyEpWo5JnyjWcBDl8o87Kt1rn89H0irz
-         PKcCA/UQm3LZ3lFIp5eJP76oV79gSG/feGV49V3cSf3h7Qc4KBk20qfE3THIqoim6CtR
-         K4wg==
-X-Forwarded-Encrypted: i=1; AKwUvBzr0dSM/OVEeEJyV0o/Hz7WYTUsKebACWy2gYl4pFprVazVKdayM4IKDv5rBcHSxN9F5OlSYWUZ161E6ux2rw==@vger.kernel.org
-X-Gm-Message-State: AFuF++lE5OpO63ipjCb1k7e/og6XLdTZrIjOKX1O0yOQBid4sL+hgWEz
-	JzpXUgfgeSL+9YgpZkUs1E66NaD4eJZFs2L5OAmTpS40wtF/YHUcO4nN8m8pJJCmdUem7ClLUMU
-	hI0AcgJH3Fm+4Pi0E7Ou9A4exEjnWmpqVomPESac=
-X-Gm-Gg: AYBFou1/Rc7RiJWWBGIFzx+jPTYWu4D7YUWOlBbcHR1I7rkD9byey8gvfz8kGttOIQ+
-	BBfyAC1gnHN8K5OUULMKqqEqx0DKNpEiDi9GW53fmrGOosUILET9GL+6R9Yk3A5ECcUDyjFAuEr
-	0TIxGrg/vOc9ftHpyNb3ibBdDum5yBZAwky6gNaAisyB7z2ttBenm2ESwwLVPfqrJVBbDnQ16kA
-	2H1qpgEOEQCdISG08PtXlZte5hoSl/TZDUIpCLenlm/0u8diV928FRwsDON1BYk3+O0gkNXxkN0
-	eyyrPELY0SqFD1YiDVcl5LbCCrVUWo6uawbr37HWJkWFakbSxrPBn/aWZgizjpT7XGaatGQGa9n
-	NXqSLe+vDJtsOa9eXe3bso6/7dxCw8VfllO1GkKKhs+EBRPzp12uh
-X-Received: by 2002:a05:6102:3f06:b0:7a7:3485:33e4 with SMTP id
- ada2fe7eead31-7af1f2fce8cmr3602978137.33.1790363877295; Fri, 25 Sep 2026
- 12:17:57 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="NTK0p4uo"
+ARC-Seal: i=1; a=rsa-sha256; t=1790364588; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=SbbHqGT0S7wXi307gC/LcnQ+XTJCyDoKua/rYGbTbnpysFYFhnjszdQ1B94XB67w7MDoWiejy/Gd+jLj8bC+gpN73LNg8z7mxq9x71AtyGUobZZELwDf9fsOlFnorPccauzBRTI9zHrWFeHA9Er2rbmZ+uwqa+FdnVWe9qIMjag=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1790364588; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Fl8MMa0wunW49KVsDpPNJOMA7OoJz4FEmIKxTOvvKpE=; 
+	b=Kkr89YkUX4kSTqxDFZ3LUhk9m7yYa6L/em3QGZ+NbkhKLeadXEgBnFVHUuR5eewfM7pNAVC2NUnn7V8utnWCQ0t8nXG8Pp6EEURjnNyE7dqZWK5JhrxJQJhlycLchNo3pulRPYVVIAMdi7UI3tOj80h+CSgxbyzm3RlkmWwVHxg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1790364588;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
+	bh=Fl8MMa0wunW49KVsDpPNJOMA7OoJz4FEmIKxTOvvKpE=;
+	b=NTK0p4uo9POcg19eXN1XAUywWBQBt/BJaMeCeQats13bSmc+69mRlsb7giKlc24p
+	e2u4Nkyl2/U3/lAFWpFDbFJuJTTmzgYlmDK1NQKJQAWkfcfhO/uhHI/6pUJfa8UjqjW
+	BRaoyV0o6ivSrbr1uWVDxopVuFQ2p+yPELaU43+Y=
+Received: by smtp.zohomail.com with SMTPS id 1790364585866185.57766798937166;
+	Fri, 25 Sep 2026 12:29:45 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260924-b4-arm64-callops-kcfi-v2-0-587865b6d991@linux.dev> <20260924-b4-arm64-callops-kcfi-v2-6-587865b6d991@linux.dev>
-In-Reply-To: <20260924-b4-arm64-callops-kcfi-v2-6-587865b6d991@linux.dev>
-From: Bill Wendling <morbo@google.com>
-Date: Fri, 25 Sep 2026 12:17:41 -0700
-X-Gm-Features: AclHuK-u3uiT0pgSiQWlUPghLSJFY3GErd8b-v10N2yzXEaY6_RjJUbwQB3czv0
-Message-ID: <CAGG=3QVs=e5JtAs-D98vDsj2ax9H0gH-_rPc0oKhx-vNpq_RyQ@mail.gmail.com>
-Subject: Re: [PATCH v2 6/9] arm64: cfi: Use CONFIG_ARM64_FUNCTION_PREFIX_NOPS
- for the type hash offset
-To: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Puranjay Mohan <puranjay@kernel.org>, 
-	Xu Kuohai <xukuohai@huaweicloud.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
-	Leon Hwang <leon.hwang@linux.dev>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, live-patching@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, 
-	linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Ben Cressey <ben@cressey.dev>, "Florent Revest (Anthropic)" <florent.revest@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
+Subject: Re: [PATCH v6 0/2] drm/tyr: add Job IRQ handling
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260728-tyr-irq-v2-v6-0-15c90baed949@collabora.com>
+Date: Fri, 25 Sep 2026 16:29:27 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ kernel@collabora.com,
+ Deborah Brouwer <deborah.brouwer@collabora.com>
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <987240A7-9626-4520-8143-B283B431A2AC@collabora.com>
+References: <20260728-tyr-irq-v2-v6-0-15c90baed949@collabora.com>
+To: Laura Nao <laura.nao@collabora.com>
+X-Mailer: Apple Mail (2.3901.100.1.1.11)
+X-ZohoMailClient: External
 
-On Thu, Sep 24, 2026 at 3:37=E2=80=AFPM Jose Fernandez (Anthropic)
-<jose.fernandez@linux.dev> wrote:
->
-> Make cfi_get_offset(), SYM_TYPED_FUNC_START and the BPF JIT use
-> CONFIG_ARM64_FUNCTION_PREFIX_NOPS instead of hardcoding four bytes. kCFI
-> kernels with CALL_OPS need three NOPs, or five with ThinLTO and BTI.
->
-> CONFIG_ARM64_FUNCTION_PREFIX_NOPS is 0 on every CFI kernel today, so no
-> functional change.
->
-> Reviewed-by: Ben Cressey <ben@cressey.dev>
-> Reviewed-by: Florent Revest (Anthropic) <florent.revest@linux.dev>
-> Assisted-by: LLM
-> Signed-off-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
-> ---
->  arch/arm64/include/asm/cfi.h     |  8 ++++++++
->  arch/arm64/include/asm/linkage.h | 11 +++++++++++
->  arch/arm64/net/bpf_jit_comp.c    |  8 ++++++--
->  3 files changed, 25 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/arm64/include/asm/cfi.h b/arch/arm64/include/asm/cfi.h
-> index ab90f0351b7ae..03f02d4614c23 100644
-> --- a/arch/arm64/include/asm/cfi.h
-> +++ b/arch/arm64/include/asm/cfi.h
-> @@ -4,4 +4,12 @@
->
->  #define __bpfcall
->
-> +#ifdef CONFIG_CFI
-> +static inline int cfi_get_offset(void)
-> +{
-> +       return 4 + 4 * CONFIG_ARM64_FUNCTION_PREFIX_NOPS;
+Hi Laura,
 
-*drive by review* Could you explain the two fours in this equation
-with a comment? (Feel free to ignore this if it's obvious to
-developers.)
+It makes more sense to have Onur's reset v7 land first, so the Job IRQ =
+series
+needs a rebase on top of it:
 
--bw
+=
+https://lore.kernel.org/r/20260912-tyr-reset-impl-v7-0-077ce72084eb@onuroz=
+kan.dev
 
-> +}
-> +#define cfi_get_offset cfi_get_offset
-> +#endif /* CONFIG_CFI */
-> +
->  #endif /* _ASM_ARM64_CFI_H */
-> diff --git a/arch/arm64/include/asm/linkage.h b/arch/arm64/include/asm/li=
-nkage.h
-> index d1f7a16729d25..14bc3c67c38b3 100644
-> --- a/arch/arm64/include/asm/linkage.h
-> +++ b/arch/arm64/include/asm/linkage.h
-> @@ -39,6 +39,17 @@
->         SYM_START(name, SYM_L_WEAK, SYM_A_NONE)         \
->         bti c ;
->
-> +/*
-> + * The compiler emits CONFIG_ARM64_FUNCTION_PREFIX_NOPS NOPs between a C
-> + * function's kCFI type hash and its entry point. Callers check the hash
-> + * at that offset.
-> + */
-> +#define __CFI_TYPE(name)                               \
-> +       .4byte __kcfi_typeid_##name ASM_NL              \
-> +       .rept CONFIG_ARM64_FUNCTION_PREFIX_NOPS ASM_NL  \
-> +       nop ASM_NL                                      \
-> +       .endr
-> +
->  #define SYM_TYPED_FUNC_START(name)                             \
->         SYM_TYPED_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)        \
->         bti c ;
-> diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.=
-c
-> index c18e005a41dbe..7ad14d9847138 100644
-> --- a/arch/arm64/net/bpf_jit_comp.c
-> +++ b/arch/arm64/net/bpf_jit_comp.c
-> @@ -185,8 +185,12 @@ static inline void emit_bti(u32 insn, struct jit_ctx=
- *ctx)
->
->  static inline void emit_kcfi(u32 hash, struct jit_ctx *ctx)
->  {
-> -       if (IS_ENABLED(CONFIG_CFI))
-> -               emit_u32_data(hash, ctx);
-> +       if (!IS_ENABLED(CONFIG_CFI))
-> +               return;
-> +
-> +       emit_u32_data(hash, ctx);
-> +       for (int i =3D 0; i < CONFIG_ARM64_FUNCTION_PREFIX_NOPS; i++)
-> +               emit(A64_NOP, ctx);
->  }
->
->  /*
->
-> --
-> 2.52.0
->
+After his 3/3, the registers are only reachable through HwGate, whose
+access() takes a mutex. I added try_access_atomic() for the hard handler
+on top of v7 [0]. Can you rebase onto that and carry the patch at the
+front of your series? Then:
+
+a) hard handler: try_access_atomic(), return ThreadedIrqReturn::None on =
+None
+b) threaded handler: access()
+c) drop the #[expect(dead_code)]
+
+=E2=80=94 Daniel
+
+[0] =
+https://gitlab.collabora.com/dwlsalmeida/for-upstream/-/tree/tyr-hwgate-tr=
+y-atomic?ref_type=3Dheads=
