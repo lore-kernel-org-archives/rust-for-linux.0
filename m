@@ -1,132 +1,159 @@
 Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7684C3876BB
-	for <rust-for-linux@vger.kernel.org>; Fri, 25 Sep 2026 06:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42ED143DA59
+	for <rust-for-linux@vger.kernel.org>; Fri, 25 Sep 2026 06:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790317320; cv=none; b=nCo4jnFuT/RsisMSkqt8K2D27/ImnxGfMjPTSdHAUKeHWBnzFRTbFPZd6w0eP06xlPdMEemzoi2zJLkkN60Qbr2knFX3EUDR2QpuFWsFjfgy6yf4QAGS5IVzbdzgls8hQCmoIKUE52zjV8ThIYF2EpMRq2Su746Bf9nZ3v/EViI=
+	t=1790317971; cv=none; b=B4uLhH9n0WW5IeBTZRRegPqdzut+Az66vS/Tj28xPnH4by39yn+ZDE5Vw38QlcJgq+pW/bW7aCjOZ9MNErypL0eJG+CA8gFNZ8qZ09bVKr+WbFNx0J5RbEIXWPkYMINlj+LJWAjQ7cny1AxFBz+SPLcHehCITLph03cufNVrhPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790317320; c=relaxed/simple;
-	bh=UjlgwLbgeh6LAkjBfXyoi1ibUIo+DP0JvbI95ZXgWUM=;
+	s=arc-20240116; t=1790317971; c=relaxed/simple;
+	bh=xOahPn69qqJwSaHXWqegaZpvObEwTRDPSZd6wMIDrN0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dP+XAwxEIAac5v+AswymnX792DCScD0OViJBcnYORtuvXb40RRjqCsZ/6JnJCMBHI0wHZz/R/6z5H5+4eMTA5dvWV4uRpWghIT9oy9FUjAjX32yx9HeyNL8PDccmio/fhZBuhCFE7Wqe+Um5EjoZumTSCGMlFfX2TbFlzieU9Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bcCf+rsu; arc=none smtp.client-ip=74.125.229.43
+	 Content-Type:Content-Disposition:In-Reply-To; b=ApuQGE6zjalkFHZLtLWj6jPjjYAX4KtsdeRXoRF2ZSlUG51jz/S3o+lmu33a+OmTaYeFjhucEHSifZxGgj/L36/0evp8ptDPLBKvrXGDjnbBPXEDzmuVHFnnsloJjiN5JWrCG+vDiZZ6i2m5g4ofJ52eHAorbByB+VF6TWOb3mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p6gss9QJ; arc=none smtp.client-ip=74.125.229.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bcCf+rsu"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33c24422d4dso617991eec.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 24 Sep 2026 23:21:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p6gss9QJ"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33e46a156f4so269915eec.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Sep 2026 23:32:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790317315; x=1790922115; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=peRJubAzt5CBA3DlGa/amJu9ZBZekocmcGMZ2nqjKzw=;
-        b=bcCf+rsunlWa3cL2fTN0lmKtabtaSpPf9CxG//dRhkFwqKSBHmPh967KVU4dyqW1hN
-         S+/MJMVAB1rpNZoPph0y3i2MyKehfWzmrTciN/9X7GyjTC3G3qFiS97oSwBjslTgHMYq
-         tmdaWhiSdVVS/AKfY08MUrFsAyT25NpHMbf1mJPnOz7p8U3XeWuQnUAcRBfvPCy5NZQW
-         qbPv7bHikYGOXqI0CUjwHojlXG1gyAMH+f534exx2k3rwJyYgROCOd9ckPhz/osiV2iL
-         p7JGh1BHpSZ0MhpX/gwlU+TYbI9HoE1RDRM/kKCvvKIM+yyRaYEMTsmkrcJyvcuCei8p
-         86dQ==
+        d=gmail.com; s=20251104; t=1790317966; x=1790922766; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ff013h9UPO5JfvQ6KOoQNBZOiCtGEKIOGbWYKhP5c+0=;
+        b=p6gss9QJ+FW+VqAr7m46o4hoTZiZYuyY8RKXwAGRLxDZINW5gd+qEJJzF6sU41W8yD
+         T4DSkpk6ZdDjVC7LO99SIF6Fi7t/RA3vdn18aLS3ggHadEQqesAsh/GLxa0MEV0x1Gov
+         rvKpWhDNg48d38ISxcTIn3FWNZBqmCzPrme0KYTVv6jFWTgAT8/onT0alZ52qe8NtvUp
+         IU7JgbjsilcZ4WGWBcimrv7IUfrsVISSnE/R0c65/5fBiIfu74c66vL9KaXQlEIe5l2T
+         2RWtoIBHQZ1f/2PdD3zzFyQ0uK/hSCQUM1c9/WkUp1bMZ5ZrTKD13x3DeDH19HltRit5
+         BFUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790317315; x=1790922115;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=peRJubAzt5CBA3DlGa/amJu9ZBZekocmcGMZ2nqjKzw=;
-        b=W5PozBvRR6J8YlzzeJbphcZfbSkrkxOYW2wM28R92lZkwG1535aB8enUKYcw95mobU
-         ABb8YUbzJx0iLr7VZyylLyGKHacLuf9CZfbPvWjkAJVmYdOYbf2HtSywV0h0zxdToUcb
-         kVBji/qw6sXEmVqnF7iGBr1Q9sSKMMa/IiGCeF/Ch0zul6GSQh4vIEDJX2vMRcfpta2D
-         Ows/mya9lbOs5J0DCQPyMdKRe0EXrvC1Rmkq7gf1QCwvehtpp8ub8YbxJqtVe+fcjBaX
-         NdXurICrN62XmyV5dcqBNUgl/DGR3+ggMnTnh69dMqzvWqPPaFGqUyyNoIw//6VA0RPN
-         ZuBg==
-X-Forwarded-Encrypted: i=1; AKwUvBysoQ6SCdlEi8WGzfjIQ/BH5dQNj4xMkEu4CUYL5VXZ3UHPZDwLD+LElyv4aUIRTaFHbpZQ5LO4xmOmwuN7fQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++mUrGMCoe9AEAKzbaRC6tJFdUeCWeSsywBIK3dJjlg002jFcUJu
-	5B5FooHjouEdQa+GjB24yZEJGN0McyXeOI5n8m7GcNROWFncL8txGfXR
-X-Gm-Gg: AYBFou1VXPnPAKt70hbHd2QZ3dJgSZ6uj/VqzkTvOlSOiQpoRMhGhzX6PEhcMEZ5GxW
-	lRYykKM2W5QSngTczKhmSzIHLWNNABhZieVQAy1lPQJQ1CLIOiKH/olr5zC2wxxmHMMKfQ6kgTH
-	TBWM490BfnbBvm4gkT1oyJwfBdUVKc+39olmgkpZroo45tda7QsX+Zl6TxZwlkOO/NoFYM0Ov7U
-	Rw0110CPHJlzQyu055gz8h6b8rtS8iuhI1llYRPwgUhONM37YSDGe8RZCJIbD4pXb9m5Mz6jio0
-	CnKp1+0nHkcBmekK+PfvQ94eeoAwnW08A2PRnLGebopyztq6VfduGNf+PZFdtO7APqV75BRBWR7
-	Z+2lJFYN+14DyQ17raajq504srl4KOPCFr+H3xlsJCxi2EyryIg1r9nHY/2ZQ2YzJMXEyud5Bco
-	AtNyrRtM0vtbB+J8YHt4/AqVho3YiIvxZldgj0TA6Y4zntW359fHEf6JnuAzu7W89nJCH2OB/ul
-	IAwml1MPPCJbRiABLZt/3ZFe04OvQyH7MJzWd4QyFVX
-X-Received: by 2002:a05:7300:dd47:b0:342:94b:aa28 with SMTP id 5a478bee46e88-342095b08cemr188044eec.27.1790317315073;
-        Thu, 24 Sep 2026 23:21:55 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790317966; x=1790922766;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ff013h9UPO5JfvQ6KOoQNBZOiCtGEKIOGbWYKhP5c+0=;
+        b=EKSbFQD/7+hSqdbGwS+/M5VAwSZ0SbOIScEiJB3GWksWDtUuspPOcNbtwTrgp8RM2g
+         aQOed+HQQ9FaH+YpZaS5itYY8ZyRA/4DS+FanSk1bCOkB6yRtzFkv7ZLTa+B6B7D2Wbk
+         5uWSOF0zYLM8nkqSKVq74fM4NnEGTYM6lMvedI1varjAZMntvZzfBXhhOPAjGX8fLDG6
+         anWdkzOSXAf2KR4dsuReZ7i2969kA8fMl6lN0wkYW5mHqPXwmU6GbC4sKDpAE8/2y4Ow
+         gNO9os4+70Bslr2VmRNopEHa2O+tsDO7zY1JEDsJmgMhBfUm5lIE+oksYl6h3UN8GWEe
+         vLFg==
+X-Forwarded-Encrypted: i=1; AKwUvBxupYq5BiabGeoK4wiEPxcXNln64zhGGm91VvsdTj0V2yyQa+Li/XYNiE+m3RBwt9YlG02S4qIjm3UHauUZXA==@vger.kernel.org
+X-Gm-Message-State: AFuF++kNB4IQBM55nxHUrqV9FwM4ZggT98TtsAykYzRsxAHrKhE9gnsJ
+	tVNTGH2UbEHbY6hHshRAWgjP5vnmUJoGS1fv8LAu6srEzEGqA10gI7Fp
+X-Gm-Gg: AYBFou31jXhUa1+YwI4C/CY5rekH48CJ97lL/jqLd3UTFi+4h3+erCMWEyBwyr9NdMb
+	Jn851M35duJGQwU65fia7v5aVj9NKcDraB9LU9gpFZOVI8Sf3xR/rLszvGe+70l3ymWvjlzjBy3
+	8lyopa+fuc9idK0FC/wqp6eyHkuQer7R4FhExjbeA+IQfALtdY7Qnn/yG9/EtJuIoq1oVCEjFkv
+	gyzy80zn8hraJZceESt2r4o/ZI0MdLa0LOoBml1YSFxEOF4R0eFswAFZprX8R6Z+gFUEITlTnkQ
+	ZHXghmU9UKkeSTU8hI5xq6XImCZna07HOZ7IRBMNXfisUPbHe6fVM6uxvZEjV/+5Gd7UKm4gy7U
+	dKFjA4jUrYl6uxifQP0/CAipMx1riiYOIoB4o8iBehMx5/bw1pOV0qlnPNPAsPDtYaLU2KN3BPK
+	b04K8ms6bogIajmpyCkhfXCL/AIJC74eIJR+MEbofMEuGdq1XnhY8l0CX57LXc0ih+AZo2DiH/t
+	t8EBHDh7qI8hB/bMPRvS5RrC8C43ZmO5JNidbpHlKU0
+X-Received: by 2002:a05:693c:87c3:10b0:33b:c478:a545 with SMTP id 5a478bee46e88-34002be4604mr3482720eec.8.1790317965974;
+        Thu, 24 Sep 2026 23:32:45 -0700 (PDT)
 Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.165.23])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34144172de6sm5598126eec.9.2026.09.24.23.21.36
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34144172de6sm5786357eec.9.2026.09.24.23.32.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 23:21:54 -0700 (PDT)
-Date: Fri, 25 Sep 2026 11:51:33 +0530
+        Thu, 24 Sep 2026 23:32:45 -0700 (PDT)
+Date: Fri, 25 Sep 2026 12:02:24 +0530
 From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
 To: Mark Rutland <mark.rutland@arm.com>
-Cc: catalin.marinas@arm.com, will@kernel.org, maddy@linux.ibm.com, 
-	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, ritesh.list@gmail.com, 
-	sshegde@linux.ibm.com, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	alex@ghiti.fr, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	borntraeger@linux.ibm.com, svens@linux.ibm.com, tglx@kernel.org, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org, 
-	acourbot@nvidia.com, work@onurozkan.dev, nathan@kernel.org, ndesaulniers@google.com, 
-	morbo@google.com, justinstitt@google.com, jszhang@kernel.org, japo@linux.ibm.com, 
-	peterz@infradead.org, jpoimboe@kernel.org, seanjc@google.com, pmladek@suse.com, 
-	thuth@redhat.com, ynorov@nvidia.com, joelagnelf@nvidia.com, david@davidgow.net, 
-	fujita.tomonori@gmail.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Cc: Peter Zijlstra <peterz@infradead.org>, catalin.marinas@arm.com, 
+	will@kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com, pjw@kernel.org, 
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, hca@linux.ibm.com, 
+	gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com, 
+	svens@linux.ibm.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, ojeda@kernel.org, 
+	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
+	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, 
+	nathan@kernel.org, ndesaulniers@google.com, morbo@google.com, 
+	justinstitt@google.com, jszhang@kernel.org, japo@linux.ibm.com, jpoimboe@kernel.org, 
+	seanjc@google.com, pmladek@suse.com, thuth@redhat.com, ynorov@nvidia.com, 
+	joelagnelf@nvidia.com, david@davidgow.net, fujita.tomonori@gmail.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev
 Subject: Re: [RFC] rust: kernel: Add KUnit tests for ARCH_WARN_ASM bug table
  emission
-Message-ID: <arYR4GrzNnFko7XO@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+Message-ID: <arYUiddxIDeLYj8v@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
 References: <20260922054959.955093-2-mkchauras@gmail.com>
- <arUYLsJJewE--wqo@J2N7QTR9R3>
+ <20260922064735.GS4121339@noisy.programming.kicks-ass.net>
+ <arNxAn7I7NCVWmD1@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+ <20260924111557.GP1837346@noisy.programming.kicks-ass.net>
+ <arUbw_TIA0Uj7oXT@J2N7QTR9R3>
+ <20260924125253.GY776954@noisy.programming.kicks-ass.net>
+ <arUgNdqpA5U8EjjP@J2N7QTR9R3>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <arUYLsJJewE--wqo@J2N7QTR9R3>
+In-Reply-To: <arUgNdqpA5U8EjjP@J2N7QTR9R3>
 
-On Thu, Sep 24, 2026 at 01:31:42PM +0100, Mark Rutland wrote:
-> On Tue, Sep 22, 2026 at 11:20:00AM +0530, Mukesh Kumar Chaurasiya (IBM) wrote:
-> > Verify that the __bug_table entry emitted by ARCH_WARN_ASM has a correct
-> > bug_addr displacement — i.e. the arch's trap label reference resolves to
-> > the trap instruction — by calling find_bug() with the exact virtual address
-> > of the trap, mirroring what the real trap handler does.
+On Thu, Sep 24, 2026 at 02:05:57PM +0100, Mark Rutland wrote:
+> On Thu, Sep 24, 2026 at 02:52:53PM +0200, Peter Zijlstra wrote:
+> > On Thu, Sep 24, 2026 at 01:46:59PM +0100, Mark Rutland wrote:
+> > > What problem is this trying to solve?
+> > > 
+> > > Mukesh's original patch seems to be trying to check whether we compiled
+> > > things correctly (such that the bug_table entry points at the expected
+> > > insturction), and I don't think that warrants a runtime check, but (as
+> > > per my reply to him) I don't understand why that's a thing to check in
+> > > the first place.
+> > > 
+> > > On arm64 we only call is_valid_bugaddr() under do_el1_brk64() ->
+> > > call_el1_break_hook() -> bug_brk_handler(). We only call
+> > > bug_brk_handler() when HW has taken a BRK exception with the BUG_BRK_IMM
+> > > immediate, and that can only be triggered by executing the right
+> > > instruction (BRK #BUG_BRK_IMM), which we ONLY use for BUG(). and WARN().
+> > > 
+> > > So I don't see why any change is necessary here.
+> > > 
+> > > If the HW has somehow taken a BRK exception from any other instruction
+> > > (which would presumably be a HW bug), there won't be a bug_table entry,
+> > > and so __report_bug() will fail to find an entry, and will return
+> > > BUG_TRAP_TYPE_NONE, same as for the !is_valid_bugaddr() case.
 > > 
-> > To support all architectures, each arch that implements ARCH_WARN_ASM now
-> > defines ARCH_WARN_ASM_TRAP_LABEL, a string constant naming the local label
-> > at which the trap instruction is placed:
+> > Right, so I wasn't at all sure what he was doing, Rust is still mostly
+> > unreadable garbage to me.
 > > 
-> >   x86       "1"     (ud2 at label 1:)
-> >   powerpc   "1"     (twi at label 1:)
-> >   riscv     "1"     (ebreak at label 1:)
-> >   arm64     "14471" (brk placed at 14471: by __BUG_ENTRY_END)
-> >   s390      "0"     (mc at label 0:)
+> > But I figured I'd much rather see him use is_valid_bugaddr() to do
+> > runtime checks than whatever dodgy games he was playing with that label.
+> > 
+> > So *if* doing runtime checks is what is wanted, then is_valid_bugaddr()
+> > needs to actually work, because then it grows a user outside of the BRK
+> > handler.
 > 
-> I'm not a fan of exposing such a low-level implementation detail out of
-> the architecture code, and I don't think we should expose this.
+> Thanks; I think we're aligned. :)
 > 
-> What exactly are you trying to verify here, and why? Has there been
-> some _specific_ issue on powerpc that caused you to look at this?
+> Before we delve into implementation details, I'd like to understand the
+> problem Mukesh is trying to solve.
 > 
 > Mark.
 
-Hey Mark,
+Hey Peter and Mark,
 
-During implementing ARCH_WARN_ASM for rust I broke the bug entry for
-powerpc so I wrote this to verify. I sent it out mainly for ppc but
-few people wanted that if it needed it should be done for all archs.
-So separated this thing and sent it out as an RFC to check whether
-other archs want this or not.
+It's not as a problem, it's something i faced while implementing the
+ARCH_WARN_ASM, the generated assembly was not correct so i wrote a test
+for it, I sent it out along with the same patch[1] but then the
+discussion led to it being for all archs so I sent it out as an RFC to
+know others opinion.
+
+After Peter's last comment i found is_valid_bugaddr can use a bit more
+work(atleast on ppc) so i think i am going to drop this and go ahead
+with improving is_valid_bugaddr.
 
 Regards,
 Mukesh
+
+[1]https://lore.kernel.org/all/20260915090453.1227034-1-mkchauras@gmail.com/
