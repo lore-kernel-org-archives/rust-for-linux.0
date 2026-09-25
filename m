@@ -1,117 +1,125 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40E7426429;
-	Fri, 25 Sep 2026 13:08:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790341700; cv=none; b=nw7CVRmuHZAsXJmJp8VStafN/k/Wo6YOcR/cwHaLLs/xdGpuNgccRmf48H/IUbi7lFYF7hNMDwG8nxLiQ/SeW2xHCg9p3Invy2bY8tc3KfI1a8tLg7idpyqoEmA8/tGwst4k8yU3NYw9QqMqTDPEG8ykdG/aRePgFqZp4oXIeH4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790341700; c=relaxed/simple;
-	bh=ONHK6in2QFugTZAdE+WlBVZjzs5/SaRPqlOjW5r82d0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=r86YeWKBP7vSONBo/D1Y1B3WzSemLDTDoO22oJ3YDWmMW4ZI1V+7vuSRDc6YuOico6XFjxkjS4JpTtF0FNhmrN+TKOXgWZ5nZ6y6G4sPHnsS5w5EcmUrKy9v0niPj2BcmzV9jDE3goQnR/D//EET6vAnDcale6B37HLevdNpwBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=VJvFRdzm; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8CC3644A4
+	for <rust-for-linux@vger.kernel.org>; Fri, 25 Sep 2026 14:49:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790347751; cv=pass; b=f9m9b23jdZ+5Ew8FMxJLdl2oplhdkJmUEjORwGlvg4vzgdXmEap1fRA+AqBVWN+8llTLuvDsqt+6zKeVyvJymmA1rNH4z0cGcnSj2vIW+7GNKaAa6rUNg4JPZQaL+6hZRPO2rrXGdud1pwYHIOmOcsAClDj+5elAq71GLJSKdug=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790347751; c=relaxed/simple;
+	bh=WZnNp15iP53KOwKQKy8tNQAS3ibJG3jxA/o+ojXdF/U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UZbNZ8CYCRhUB4GZXvHNnMVgapxhMMA+onUhTEKbAs1RQRvwg9D/fpm6RzhZ3jNJSwNj3UUySADiNMQsJktZdqgm6DGHEZ5uNN/DYWkzYXubbpTWMp5WXIscpX2R9Kj8eScakJ1c/kgmA3JehDlk9oQZlq0MGZYx2y8URsEHQ6o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NQcReBlF; arc=pass smtp.client-ip=74.125.229.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="VJvFRdzm"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4hrrbw0hB5z8tb6;
-	Fri, 25 Sep 2026 15:08:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1790341692; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ONHK6in2QFugTZAdE+WlBVZjzs5/SaRPqlOjW5r82d0=;
-	b=VJvFRdzmjasGynjExD+5PDmk22sTHro/QyZxhGQWYqt0lxEugNgqvj/m3YEVmDzrFhnbZX
-	lz8cIzjEiLThuScQ4227h1Z003PNsshSx75JzOfJeDjHL/I+No8gr/jSP+gAVgAupXqIsh
-	oXUryIjzA6DtmGUYKJ+jPNBXAGiAAsaXyYCqIrHqMTd4F/OqBBItzMlOPtMz1Q3KSFkOVk
-	9iyNonnsfhwNhPPj/JGLmzIaF2F0qCpBps55l7mYVwFpgd6lhnKIcA8dkhNp35LNWp058o
-	/VFMOWLHWURnaxC57nXjUVXPyrb1DuVUJWekcR0VZjoxtC19A/fwe9ekHs378Q==
-Message-ID: <f0248d1529378ab8be957009a93a0a73ee74bafb.camel@mailbox.org>
-Subject: Re: [PATCH] rust: DmaFence: Add better warning through Device
- reference
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>
-Cc: Philipp Stanner <phasta@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Sumit Semwal <sumit.semwal@linaro.org>, Christian =?ISO-8859-1?Q?K=F6nig?=
- <christian.koenig@amd.com>,  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun@kernel.org>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Daniel
- Almeida	 <daniel.almeida@collabora.com>, Tamir Duberstein
- <tamird@kernel.org>,  Alexandre Courbot <acourbot@nvidia.com>, Onur
- =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>, 
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 25 Sep 2026 15:08:05 +0200
-In-Reply-To: <DLOECU7X3MTR.31Z6N1I0WB0MJ@kernel.org>
-References: <20260925081958.3048112-2-phasta@kernel.org>
-	 <DLOBPY6OBEOG.2Y4I4LRA276WU@garyguo.net>
-	 <DLOECU7X3MTR.31Z6N1I0WB0MJ@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NQcReBlF"
+Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-34251480737so31130eec.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 25 Sep 2026 07:49:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790347743; cv=none;
+        d=google.com; s=arc-20260327;
+        b=g033c3mqtYE7S7eZfN9l7mDG/6knaaBUAP5XSaopylypVLdROTeomU6C3wYDKyenq0
+         bH21kT+YUxDa643a4KGsB7ylyg/tusbS6ZvvlMyIoFXlCFsByQtwDrHnfIxCLA0GBGbD
+         +SQmZHWgipQm2VN7Cl0xRdWKyNVN5IEWCAs4y1ynbHFlXjQ/R8TbcXuKxS6KhQFZ8G2I
+         vPk1YGD/lfNfUnljDBMBKT8XnH6VhDzZm2JuHFqaZTE2IBGwh1RRoeF+JF7zolg/bXop
+         BMdacDgPd61K/yUogFqVJkbJyMuHfIbSwm84QOFqj/nGBuHDI2IbT3gC3k9W/r28dyan
+         +vwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=h6vInZeSo9rLzAW9JhCktacPiFSn1CMhEJDoYPiNUuA=;
+        fh=FnJGdH8UFbvjKZIDnBKPuvnKS6xa64uFDG3UfCztFcY=;
+        b=XoJmnZm6cPu25TPne+tWh5V/pbo38Xc8hotUfifuMXZRytbpjRvsomYsv+taCa1RoM
+         nwwr0KEARmEAFDs+amX/3gvwkCeRV9G6iPKSbFieN0qNRquUwxyUF8fI2MKJ7Z1V8xBu
+         NZOiCcTRWQ15V4UnSsUP/Vv+N4QQh/Mtiq+hlIJ7EZ/sRjt+BgI3dXfFVNkvVWQL+Nqy
+         MzYAzc76S7F7EpnmQN5knPt2vH4ePDJ0gddAeXl8FQYfxxUngI2QnfbGe0ireQlz5gW2
+         NDYWW/8EP/tlg94deX1qHW5Zx3oMlmqHqPmiqPSRjjAf7SaQpGYN7TNHL2es5YB/hvEq
+         v8oQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790347743; x=1790952543; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=h6vInZeSo9rLzAW9JhCktacPiFSn1CMhEJDoYPiNUuA=;
+        b=NQcReBlFL3RhOXlVSTBAyuFWdJEXfHGqIRDaJerGLCq2x1F9DGVazh9EfNvfqhNpJ6
+         TJO21ckTlUkyoFWArtyJeniFY5Zdrw1NCP5kGEMjzPzOrfWmwbnN8P7E+qrLRCelXkqN
+         OWcchhujfNpynCLe0NYCnH/A8AdH0FXnAMvmf1jyqmtLSVCSMCy0Ppdtj3fOX9bdGpYK
+         4Op8FJjqoNdB6W5Pb9hQYQvWa5Mqyk4UHoFbry0G5V7t38N4nzozemotrWzZmoCfjQLI
+         Q9y16ZckstfmD222l4YomB2gOzSh4nh3luzqjsJA62D78+xG5WYq1GFKYXetkiE6DS+A
+         M8WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790347743; x=1790952543;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=h6vInZeSo9rLzAW9JhCktacPiFSn1CMhEJDoYPiNUuA=;
+        b=W+W7+Jy588Olc/vo46TrwD1w8f1krmyRp4M+8l3zbuFbTHgoiybwFktSRZjAL2ICEZ
+         2/MchBsNlyAV/KZF+cRMzVQVYSkHzo2fGXg9ih6iaxYIlshnkdgWWrkmP+SEd/W1q/oO
+         W0sN0WOAMr0iUJ3U0tTY8Es9DXMDhePs9WbkDwZLcXaNPgGpr0iOyVuQcXKiQtTCUVpp
+         FUEjTIv1mstfHM6ew4u7ohUvAevhtBfNJWC1Udo/3uK7voRfPmQcZGLKMe59+XR1ac4I
+         Gxck2C1bif06AJ/RoF6Dqe+IKixeurw3UpokVQqvl/NlMSmlduEgKQ0FNgzB2mhAWx8o
+         Xwnw==
+X-Forwarded-Encrypted: i=1; AKwUvBw4f9lT8CLqaM7hifA0ySgqIkBiSAjptugTCoDC3UxBCJxUktjkaEo6N/tJr2yFWgAoZc1jyw9Uc7iZd5pulQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++lFxOOV451/LGhu8KhRKmBINKYPYmaRRYXgSKJvk63+9RfaIxU6
+	yOWqPV8WMBIAAbrKBKiXfpctIJ5/06tyEXzczMDpClFeLs+M5r+XjThLjf3UdfIbbRLyKv9CAf8
+	IAr9UMU9SljI8u464MIQ69F8zM9osltomKXFK
+X-Gm-Gg: AYBFou1Jemz/liSzK3DWUs4VUhrkBSh6FjLSEgSn60Q7Qhv1obr4o3AlaDEoWAZjawV
+	edRnhQY3yILimuZkNYkLEjygSfXyld7dofZLtgrpGi5Jk+ZY20fhyDNsok4PKcNNiJxBPGJ52ov
+	otWdMfD3z5MRCrFdWoTTq9jHgR2wVrmaHhfFYLnu/swPRtOAbcKLlOvCijub4vTYK9WvlliMClq
+	pZfIPjYLQWSO1IDmOfkEbpW7aC/Qqbh/kAWymlLNr2PQLTU1ijxHzHUPUmeDqrjzuGXqqe+k1tc
+	RdFOY3bHUIjyhf+RkvRnNH3XImxZH/3AcvEi4bHJkJWELgErrnc9wbpFplm81asV645473txFUD
+	JRAwKuZjgk/zdW7wDiLr8R1luv4mvpTnTPZYIG/xPILlvUGs7UgblpNMWg3MJZFksHWG09IvJq6
+	5dEDqVOFddgGbkFm84ggk6+1c/e2hPAlBunCYE6PiawZEVnUKYjCv7sHy6awTzoz8=
+X-Received: by 2002:a05:7300:c3a6:b0:33b:e1f2:fa0d with SMTP id
+ 5a478bee46e88-3427246aceamr752100eec.2.1790347743191; Fri, 25 Sep 2026
+ 07:49:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-ID: b787db3ca691950e030
-X-MBO-RS-META: 8c6mfob1m1qd7hgqm67bx3qp9g1rki55
+References: <N-9g7-JCEv-O-X7-hryv99BRSZvftBvpmaAmWdwRp9b9Gi64FWr6GAtnUToRHlX86lCBJgEKPQine1a1NsJcUg==@protonmail.internalid>
+ <20260924232530.446588-3-tomo@flapping.org> <87zex52224.fsf@t14s.mail-host-address-is-not-set>
+ <20260925.183924.808421603238938986.tomo@flapping.org>
+In-Reply-To: <20260925.183924.808421603238938986.tomo@flapping.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 25 Sep 2026 16:48:49 +0200
+X-Gm-Features: AclHuK8ZBbPvyfLLqDK_ncD0WBE14jrLMJK95H56rWY8QbrJl4lzschCX4qnqpo
+Message-ID: <CANiq72=iYeD0AZCRb6X_1BMR1OBxGrzy6j45ZAq5C41+giG5dA@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] rust: time: add Delta::to_jiffies_timeout() for
+ timeout conversion
+To: FUJITA Tomonori <tomo@flapping.org>
+Cc: a.hindborg@kernel.org, gary@garyguo.net, ojeda@kernel.org, 
+	acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de, 
+	bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org, 
+	daniel.almeida@collabora.com, frederic@kernel.org, jstultz@google.com, 
+	lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org, 
+	tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
+	rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2026-09-25 at 14:30 +0200, Danilo Krummrich wrote:
-> On Fri Sep 25, 2026 at 12:26 PM CEST, Gary Guo wrote:
-> > On Fri Sep 25, 2026 at 9:19 AM BST, Philipp Stanner wrote:
-> > > Replace the warning print with a dev_warn!(). To do so, have the
-> > > FenceContext carry a reference to a Device, protected by the already
-> > > present lifetime.
-> >=20
-> > Add a lifetime just to do this a print doesn't sound ideal. You could u=
-se
-> > `ARef<Device>` instead?
->=20
-> Yes, that's what I recommend in general.
+On Fri, Sep 25, 2026 at 11:39=E2=80=AFAM FUJITA Tomonori <tomo@flapping.org=
+> wrote:
+>
+> I think that the reason is the kernel image size. From commit
+> e74b7a3f5aee ("rust: tests: add Kconfig for KUnit test"):
+>
+>   All the tests are compiled unconditionally now, which adds ~200 kB to
+>   the kernel image for me on x86_64. As Rust matures, this bloating will
+>   inevitably grow.
 
-Weren't you super opposed to refcounting wherever it's avoidable?
+Quick note on that commit: it wasn't really "unconditional", i.e. one
+could still disable KUnit or make it `m` (I should have probably added
+a note to that commit message...). But some maintainers prefer
+fine-grained options, which is reasonable (though overdoing it may
+mean a lot of Kconfig options that most users do not care about).
 
-
-[=E2=80=A6]
-
-> That said, we can also use WARN_ON() instead, which avoids the device dep=
-endency
-> to begin with and still provides enough information to find the "offender=
-".
-
-WARN_ON() is fine by me.
-
->=20
-> But as I mentioned previously, I don't consider this that bad of a condit=
-ion in
-> the first place. Signaling with ECANCELED on drop() seems perfectly reaso=
-nable:
->=20
-> When a driver does a teardown of the channel (or more generically the exe=
-cution
-> context) it will follow the RAII pattern, so it will be very natural to j=
-ust
-> drop the Jobqueue, which will drop all jobs and hence all DriverFence obj=
-ects.
->=20
-> IOW, driver will likely invent a new type that does the same thing on dro=
-p, just
-> without the warning. :)
-
-The driver can avoid dropping half-forgotten stuff by calling
-jobqueue.complete_all_jobs(ECANCELED) immediately before dropping,
-which allows us for having the warning without false-positives.
-
-
-P.
+Cheers,
+Miguel
