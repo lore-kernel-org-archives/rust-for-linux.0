@@ -1,48 +1,62 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0084C4F79;
-	Fri, 25 Sep 2026 16:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790352051; cv=none; b=Q08IwruDGOCO7XDyv5FcDBbC2fEo0M24yDTyQXzsb8KqJyGNTEgPl8hK1JR1UNwnnJ4jxYnQLtE50MfK6LEnTPcWSEctlLzZkvc/ydW+bxooQrFI7sANeyENFfPsp98ua+fBAjnZqJtqvwvvuPV9/CTClArzt9IvZClfWtG84Gc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790352051; c=relaxed/simple;
-	bh=XPk2iVEi1ZZ+DK84171FOJEbD54WgjtBA5JCaekTJKA=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D804D0A12;
+	Fri, 25 Sep 2026 16:28:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790353728; cv=pass; b=S3d1FjSqzX41BBZWnmFlnqIOrvVtGADHgd2DtCFclq8iJH24br33taypn7Zlj8kwokAHzzqDQyJbYLZms3yzlr8ui93Ss4SVACvZXHKQUn9eLFVd9SBqFfBzB3uSwJv3RHq1fkW+I2cbVsyz7+0fMg0Stlm+XbixJQUccBF0QnQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790353728; c=relaxed/simple;
+	bh=ucy7uEcZSMCD5/6VIfsmjqG2utIJzHyut/yyqCIa7pg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C5Ves1+/GJCaM//zY31zGYIBg6CcSHPnBD79wlqOIJK24Np9ULgNunh3jPiVFYl6hXdQr0t4mGKhnh8N2efTE3f8gN3dVOSXSkASdSRci1hJI0wOifwufOw0bc6pOQ3uVLo0MIhc7UZnVJ3lognHmMge2hFMmC67Hb1YgAK79qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UrKX8OQ1; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=azOmBa2fzzAXVqNxRbwtPh2k3BMg/rX4RyPYKn5+zSGXkgmci2MG5+Q7Wl89FbgWpAY4TKqnywdNaAs53PQ9EumtDZAfQdnmRzr9B7Y2iJa95No/uQm9uBVMyeTLoH5WjiJAUxdYuX9WZP1Yd7BhQKnxMHwJARlfE7gRutKgg2o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=F/tcWsJc; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UrKX8OQ1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BBE1F000FF;
-	Fri, 25 Sep 2026 16:00:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790352050;
-	bh=rEVP8+QFyN1/i+S2OOZXHJB8hSPsPgMgJbSumvajv+U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UrKX8OQ13toMLb4824ibANKh2WamtYlsMo0uYd47N/7/tdb7mr10rVYD8DV+Wcob1
-	 H5rJPWjYq7WEpxHLlpb36LtYUApqp0Fb/SS7RBO6XgRpZU0fJZthtQ5r0Bgr4N+aqJ
-	 ul2BM7XXg6lZDlfoo4dIqtebsJuLJY78KLusUGszh+CuzwQIkEweZVGo6MBzCDdtFo
-	 cVVx6PrxT4NKLKfZCEyzPMX9OKvsaSWGgosnZqMCBvm6iFKJAG8IIGoPNM3YxgBANg
-	 sDi8JuNFMaBng0kd+eHNTrEa1r5uWz1VlGTZh/fXoyLeQjW7vOEtG1mPh+RK9rINhD
-	 sNtPXcIgwURRw==
-Date: Fri, 25 Sep 2026 18:00:42 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Georgios Androutsopoulos <georgeandrout13@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Miguel Ojeda <ojeda@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="F/tcWsJc"
+ARC-Seal: i=1; a=rsa-sha256; t=1790353704; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=MdsfFVxrSkLYQPPGY6Z+6FzCFPfUdPqICgV/A3fhkJ6P4Xs8E136h7S6I5943X6dCahBxrVGXNqvN9y6OmQ81CuyVMifHbgvFwXJdLJEsurYvTNtV9KEWBgVcSdhc5ZTHYOyyNxTocjuOU3V9FtiiTtAmQFEkkOhk1Jalf+SD2I=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1790353704; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=2vSghfXOezWDQ1X3SBhs5lQzlOszb8OvQbW7Q43qvhA=; 
+	b=AX4ozuzp6ki5Ke4ui8Oz7WixAzE+X+Pl0SJr1fGzvJo8ck40lNyKLDx6gauCJCBmdmlomrZbykIIAo/ggdR1oAxRWwfuHeVGIDBQ/0wmtaW7xcW6MlNCoTMN9XBwQ2ILa9hhDpjaOkCnvSl43PnKN/65L2IxzF4EHvRrLUoXW2Y=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1790353704;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:Message-Id:Reply-To;
+	bh=2vSghfXOezWDQ1X3SBhs5lQzlOszb8OvQbW7Q43qvhA=;
+	b=F/tcWsJcvEjnYTzzp/GbQYKZRaQ/uQY3fYN8aoVxz8ZiPUOuCTfcn3TujWo/s7rW
+	BkAYgKL8utlEE3FwEqDAQb1h+1Awr4Nvk1D9jwqusj0iunPWuNTxoRux0MGSJK8QJsW
+	1Whu4Q84v2fpg7kgYC/FbSNr1/3v/Ql5NUMle5iI=
+Received: by smtp.zohomail.com with SMTPS id 1790353703402972.0436234028067;
+	Fri, 25 Sep 2026 09:28:23 -0700 (PDT)
+Date: Fri, 25 Sep 2026 09:28:22 -0700
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: file: handle fd table teardown in file
- descriptor APIs
-Message-ID: <20260925-stellen-brummen-festrede-266af0305ac7@brauner>
-References: <20260923022339.3340694-1-georgeandrout13@gmail.com>
- <arThye_219ruNbM2@google.com>
+Subject: Re: [PATCH v2] drm/tyr: safely write GpuInfo to userspace
+Message-ID: <arahJjCnXfqBVEu-@um790>
+References: <20260924-b4-gpu_info_intobytes-v2-1-1b05e33df8a4@collabora.com>
+ <CAH5fLgj=h_riWoOvEX_TOH3+0FNbKBtjO1OrxzwHDQq7uzXg_A@mail.gmail.com>
+ <DLOBS2HQYSWS.2W0JMY91EZ48V@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,38 +65,54 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <arThye_219ruNbM2@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DLOBS2HQYSWS.2W0JMY91EZ48V@garyguo.net>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/290.345.46
 
-On Thu, Sep 24, 2026 at 08:39:37AM +0000, Alice Ryhl wrote:
-> On Tue, Sep 22, 2026 at 10:23:39PM -0400, Georgios Androutsopoulos wrote:
-> > Several Rust file descriptor APIs rely on `current->files` being
-> > available. However, `exit_files()` clears it while execution may still
-> > continue on the same task.
-> > 
-> > This affects `LocalFile::fget()` and the
-> > `FileDescriptorReservation` operations that call
-> > `get_unused_fd_flags()`, `fd_install()`, and `put_unused_fd()`.
-> > `FileDescriptorReservation` cannot cross task boundaries, but remaining
-> > on the same task does not guarantee that `current->files` is still
-> > available when these operations are performed.
-> > 
-> > Guard the affected operations against a missing `current->files`.
-> > `LocalFile::fget()` returns `EBADF` and
-> > `FileDescriptorReservation::get_unused_fd_flags()` returns `EMFILE`.
-> > For `fd_install()`, warn and abandon the reservation when the fd table
-> > is already gone. In the drop path, skip `put_unused_fd()` after the fd
-> > table has been torn down.
-> > 
-> > This prevents NULL dereferences through these safe Rust APIs after
-> > `exit_files()`.
-> > 
-> > Fixes: 851849824bb5 ("rust: file: add Rust abstraction for `struct file`")
-> > Fixes: 5da9857b127e ("rust: file: add `FileDescriptorReservation`")
-> > Closes: https://github.com/Rust-for-Linux/linux/issues/1256
-> > Signed-off-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+On Fri, Sep 25, 2026 at 11:29:07AM +0100, Gary Guo wrote:
+> On Fri Sep 25, 2026 at 8:56 AM BST, Alice Ryhl wrote:
+> > On Thu, Sep 24, 2026 at 7:22 PM Deborah Brouwer
+> > <deborah.brouwer@collabora.com> wrote:
+> >>
+> >> Tyr creates the struct drm_panthor_gpu_info from the Panthor UAPI
+> >> bindings. It initializes this struct by querying the gpu and then writes
+> >> the struct into userspace memory faithfully byte-by-byte.
+> >>
+> >> Currently, the struct drm_panthor_gpu_info does not have any implicit
+> >> padding, but if implicit padding were added in the future Rust does not
+> >> guarantee that it would be initialized. Then when Tyr writes the struct
+> >> back to userspace it could expose uninitialized kernel memory.
+> >>
+> >> Tyr implements the unsafe trait AsBytes for GpuInfo whereby the developer
+> >> guarantees that struct drm_panthor_gpu_info does not include implicit
+> >> padding, pointers, or interior mutability. This allows Tyr to safely copy
+> >> the struct into userspace memory. However, relying on the unsafe trait
+> >> AsBytes is fragile because if the Panthor UAPI changes, the SAFETY
+> >> guarantees may no longer be accurate.
+> >>
+> >> Instead, use the derive macro `zerocopy_derive::most_traits` for struct
+> >> drm_panthor_gpu_info. This macro will attempt to implement the zerocopy
+> >> traits for struct drm_panthor_gpu_info. If the Panthor UAPI changes so
+> >> that the traits IntoBytes or Immutable can no longer be implemented, Tyr
+> >> will no longer compile.
+> >>
+> >> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> >
+> > So this looks good to me
+> >
+> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> >
+> > but needs Miguel's ok since it modifies the Makefile. And I imagine he
+> > may ask the commit to be split into two.
 > 
-> This looks like it should ideally be on the C side instead.
+> FWIW I do think this should be two commits, one making Make changes and apply to
+> both uapi and bindings, and the second adding the Tyr-specific parts.
 
-Where is this godforsaken broken code, that tries to fd_install() after
-exit_files(). It is _a bug in the program_ that is not something the
-apis need to work around.
+I'll split the commit and send a v3.
+
+> 
+> Best,
+> Gary
+> 
+> 
