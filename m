@@ -1,132 +1,167 @@
-Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022095.outbound.protection.outlook.com [52.101.96.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC72A486B86
-	for <rust-for-linux@vger.kernel.org>; Fri, 25 Sep 2026 09:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790329175; cv=none; b=LaCLi3WrTN4jJGBpLdWIGkp9hlKKGAUsdmb2iVhyGQjSO+NejTOgNXIK/INSnuWDihp5FLnpgk+Cj2FhdByK+0P1N3tHXb0WLHMPcdFVcWHdQCvDPkDTkabdzo/SzewCH4g2Pm+i+JbNtWgVpvo/1e8MjR64knF+zqiKxDiQz8I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790329175; c=relaxed/simple;
-	bh=YR345H/ywsl+oFNo4Rj3/0Xoxos5dcxHcZxx+iOh36I=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=fcXq/phXvAt8fd+nWwUDXtXESY7kyutoMPG5G9WZ9n66jWmuMT9TmzSptQpmp4Qasg8oJ5Pt7PzxOWlcJExEYnDB5npf4new6DcdU21W4P2jlUhoPAJ+1h9/OGHELjrH/2wNfiqavLnifC/ogMN4OvcQSS4MJGLvzKMmc02ezzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=G762fKMR; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dTNRp6lD; arc=none smtp.client-ip=103.168.172.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18428490BF0;
+	Fri, 25 Sep 2026 10:26:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.95
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790331990; cv=fail; b=ZESHufpCwXd0us5s0vWRjgtQyoIa63i4CoTS2+LwmqHBB5ZeNBJMBMG301SLlXlsWOYiVgWYwsmDKkvKqkeU2NgTxOtG/tb1NFWJUc/MgRXmgwhoedW8pTfrzJwu4hNfJd/mH+9Oc4EaYj2/nAUzKq6o14AaY1A4atMpP4jm/pg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790331990; c=relaxed/simple;
+	bh=s+Fyj9oSJs2m5xTK8OQGL/SldXM8ntS2Kp7ijntcuYw=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=RT2rx8mAi65j7GmW3jOAnOJFa/77jCcoL//4r9o4i2VPM6vJxhJCW7AJ1kaTGvw7ZSfqOsBBeEb3DZUOyfT51ZKeUfipRVszCgyHHqGv9umwkDWyicXbK88kKKwifZ3VmlOPTvMpyGEuA1pCqpwM0AK/IRtgKaHuwHCBii+FGI8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Q4zNbtax; arc=fail smtp.client-ip=52.101.96.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="G762fKMR";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dTNRp6lD"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.phl.internal (Postfix) with ESMTP id 4DE4CEC0182;
-	Fri, 25 Sep 2026 05:39:32 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Fri, 25 Sep 2026 05:39:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1790329172;
-	 x=1790415572; bh=n+WsdDR0ww7LmISG3CPUeYuIMgt8+WLPC+8Ue2l8ggM=; b=
-	G762fKMRkZW735303DFQcOk6F6RrlHgDY80+Lxp/SS/y2rclTj9AeYpBNJrCd2ey
-	Rus7KBHwxP4P6/vrtzbd8WWTy/BWYS7ICCTdd1i0JwDTatGi4yp88js7O9dvlrbf
-	6H4bP3w0a+FRmTSOBfROCFPEuXQzFQbhycCT3Q744zA+altSlAP4fSX2bM85I23T
-	7i+XUZpXonEGwguGrMWSpA9fMgfOoOrI2nG27dDyAhiCn8NRU0kN7C0zXMg54uNc
-	LcO8vJ6c2A2mvBnckkPcITuOOgm2/A2ws/G3VSrSsVtJDPZszqTExya2C57OwuiW
-	VrQFK1hYfP3rZrs+VsecYw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790329172; x=
-	1790415572; bh=n+WsdDR0ww7LmISG3CPUeYuIMgt8+WLPC+8Ue2l8ggM=; b=d
-	TNRp6lDKP56BYhFfOcjkwonapLDV6JefTHMbAGJu8ifXCnJGJs1uD5heu5PosdNn
-	C1lxHE1mP0IOjFniNFyyV2/YcEBh8isgvEL3h+jmha8cyEdaQuCo+YXrh2veIXS4
-	GeaZmJbstogDV7u96/X4rrz+NxMOX44dIFYpCVb8N6zIo1jZn0drJZkByRIgm9km
-	SH4ePT4wQu9J6CUyLmiFvJDKyYFCWGkTAnZSN1Ou7ImItri1dKsRgwcvWRxLnNqS
-	Afl0LeoeBo3+9Dq6Qw18m3CDmWc7YSdpG6gefNL6gxxFzNrJ8AfQd/Mn2w+r0z6w
-	ezcBhdUCZLJqt51pd2I9g==
-X-ME-Sender: <xms:VEG2av0lCDJYdqqbuaZzO5li-z_J8EMRWDE0ESWwuSHbQx128UtxXw>
-    <xme:VEG2aucu5NSvB7Q2QcotL6VKDmnKx38HCKFdCGtHDRfP_BUsvWKVo-TkdmJIGyk1w
-    UqqxLUAHaqtzHs5hyXqnscNecPmsnIBmz4h56B4md6BsMP_gml9mhaI>
-X-ME-Received: <xmr:VEG2ahCQ-bQdTeFChQyIF4UXSSH7A3wOx1QfQqcthMRI39Xl8pisPevHWN5Cp7AhYpFT_-COSgwe_5gnfYHwrPRS>
-X-ME-Proxy-Cause: dmFkZTG2j94dB2ag3MgBQpaMq367bNc0zH1h+KGPs02FWUvfkg+AdCX3LcqXFBiOK3L9hn
-    Ccxfh7uTHML7XnXFrWuqQD+sqfo4xmWCtshdOZEah8UPUXtQrQnWarjru6yr/URdh+AyLA
-    Qo1UFFW3PADcn8gEIhwpEpeHzb5rf5ZeagkJh+H97tF3xoP509EpOwBeu2W+Jk3ECemKxs
-    TDK5x0wkMl+BTO4LNkkziaBSL7k6hWoG/3Z9uDB8SCdoltQUgv7LIy0rrm74ja9qWZGfNF
-    pAnKn5MKe19OhO0lWkR5ik6fV2wVLReoo+zKKQlmhEMviL4irPr6s+uC6qbIDKker60Koy
-    X4wjIpBJtiDmeLDKsFD385Tz7U99ynp0SSSpty6lKwyMPCCxMxNgcrmKeE6ZJ584SkVh34
-    tCsO0Rqh0OwLWxu9lC8C2Cn2ez0XXqutbuZzQ5PD1+m8zRf1ZTjHTxgGPqh7xj/qxmZ/tS
-    CxC1SXH9mH7Bh2TzXG4QGEYIv8VPt2MoVkhBDr8tDOy371TITTV/iPjy8pYZsF1cdVX5Ep
-    Zd/mE0YbLAmNvixp7rj8gqkQVxXip5nzFrcxH5ZpLKZahYxV16lF2Y+KPwb3CD2tuAGLCp
-    FKeVe1Ol10CpP6s0WEvFbpjcCtBNKxvcBKF8teqWc2xsQ3JBqPBFzuTLif1w
-X-ME-Proxy: <xmx:VEG2ag1oQpJDvioLhxy3oKV7jzaKVq-q5pM01vUTNNbQfRDVyhfRSQ>
-    <xmx:VEG2ahMA7by82slvPFlMWNyxjO2hBBMRrt7krX0IM5fVjDCfOhpMDA>
-    <xmx:VEG2aufBOZXBMXHkDDwhj-o8ptuSkMyHYIPkjrPW4KODJf75jqQw-Q>
-    <xmx:VEG2atO25sbR7jtzS6VtJNfiYX_COb2r-5Jh6RUB0hw2PuEkIwfbjQ>
-    <xmx:VEG2asu1MUoU2cTjZVsnp7mp-cPUqdGZLb1CzFAbypLcSVaWUU9IN2XM>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 25 Sep 2026 05:39:27 -0400 (EDT)
-Date: Fri, 25 Sep 2026 18:39:24 +0900 (JST)
-Message-Id: <20260925.183924.808421603238938986.tomo@flapping.org>
-To: a.hindborg@kernel.org
-Cc: tomo@flapping.org, gary@garyguo.net, ojeda@kernel.org,
- acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
- daniel.almeida@collabora.com, frederic@kernel.org, jstultz@google.com,
- lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
- tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
- rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Subject: Re: [PATCH v4 2/2] rust: time: add Delta::to_jiffies_timeout() for
- timeout conversion
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <87zex52224.fsf@t14s.mail-host-address-is-not-set>
-References: <N-9g7-JCEv-O-X7-hryv99BRSZvftBvpmaAmWdwRp9b9Gi64FWr6GAtnUToRHlX86lCBJgEKPQine1a1NsJcUg==@protonmail.internalid>
-	<20260924232530.446588-3-tomo@flapping.org>
-	<87zex52224.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Q4zNbtax"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=k728eXgz3AlXIa7rStLekEtyNUuA76FLNeaRi0loNxquKEW6281pSj8lswUCxCk+4zC/cHce1KcC1PIhdLI75rTysP3fUe/E7JpsPL/q2061EgA9G3WBJsgWpKZ+s0rrk15IiJCE4pRg8f/P37jeLvErHfq4XIjMFDedZoBnvtxILJVG8m2LjBNOM91JRGiKwKdzJu6ecpccFoiw+/c6F9zb5qlPMqVDuusq4Qaq10VW16PPbKNaWhYgoEj6TlVBAvqjPi6VWyAWOV5fTibQVxWxKWAmq7zZ2a9eZW4QJJbYaMuniJppeJ3Ipw7rP5WQfIEQq7PRqUj1m0UxdoHxyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CZJu9LoV7syLi+e6CLD3MHg/aKox3Bc7UM3+IlGh+m0=;
+ b=xuwNpA45vshX4FC1jvSDY8XeT9lkNrqLc/0RHYZndKRV3WOJv5yeabq3ww7yW7ZFtvq2BqW641MKQCYaQA/sP9b5hSeQoq1BIPIG8xL5vx+QJchRH4+HCb6DQxKV7WwtqiM3ZXjVd/tebqwCzpECN0ExxzNrXwvfcIo8NR2T2SfiibHLZxOu19cukaJLW4oURpWcPHDAThgYhy4efweCZh1xkFFYLozh0277ytTBFwC8GMnGo2x8AYJVwIg+1rt2QeCXB4+8ff3Lzm98B/tTEzMF2eFYtLg0oSRTLGxfuyIUNXYswlaAKrrrXr6ESZJLhJcSOI8WlGF2pP45iM8W1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CZJu9LoV7syLi+e6CLD3MHg/aKox3Bc7UM3+IlGh+m0=;
+ b=Q4zNbtaxX7ca/IRLHcLo/HGOwdy7oVqX/cEBUacoEtMM5YfcMexIctfTJm7MTUrqYkZjrb3uRPFj5CzHjTf6V1bWMGB2P1lVADizj5DTw3iGGqTRZa4Zf9mSEDGA+U8jXYOlh3yjiNbCd64SZJGXGV5A+QrXtlJucTL0dKaVVO0=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+ by CWLP265MB3010.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:d0::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Fri, 25 Sep
+ 2026 10:26:23 +0000
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0451.014; Fri, 25 Sep 2026
+ 10:26:22 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 25 Sep 2026 11:26:21 +0100
+Message-Id: <DLOBPY6OBEOG.2Y4I4LRA276WU@garyguo.net>
+Cc: <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: DmaFence: Add better warning through Device
+ reference
+From: "Gary Guo" <gary@garyguo.net>
+To: "Philipp Stanner" <phasta@kernel.org>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Sumit Semwal"
+ <sumit.semwal@linaro.org>, =?utf-8?q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>
+X-Mailer: aerc 0.22.0
+References: <20260925081958.3048112-2-phasta@kernel.org>
+In-Reply-To: <20260925081958.3048112-2-phasta@kernel.org>
+X-ClientProxiedBy: LO4P123CA0406.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:189::15) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWLP265MB3010:EE_
+X-MS-Office365-Filtering-Correlation-Id: 541edd9c-de4e-4f4f-0a2f-08df1aef723a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|10070799003|376014|7416014|23010399003|10067099003|18002099003|56012099006|5023799004|3023799007|22082099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	N64gNEEOtYJBrdYvM6wke8biTp3UKKbxJCpqzcmuYTLJpmKbtVwDVQ3oI0y5sBLbSrlao62oCSbNbhE08h2aPRIc+KEuvRxg4gwFg3bHbOX6khmynny+Y3ryPEzRZ+omxxY72d83au7WCFRwX5IHyIiK11I2fwF6ljAf90gmud6Vd3I0IaHAf/KrjSVsmVEihKg57nQKMPuezAXpJw1EF7VM42cU+JhYfJiIAsnkON7KzOtVLjInW0tI4gTXEshNJ5G9NrKBs4ICovUBhVmnQKmJ4/VPbVLUCqDyBJk9wF75oDDB6p3NOB/Fp21nQPwsv7FHWhxlVohwlYtFsmiLGAG9aSWnbas/GRO7FlZ6S9ldGKR56N4187ikdrQrPHwK4LnpCoTBPu9QCNdrbic9R/8rXY1QNEn8Ohb+EdhEBN8khumXtyNzXI1jt/AWcwtzZArqNHpVg6EJ2G6OX3AZdt+aWgCtIrBAqqVJxji/jg+OvH0EWgXKFlCLjIijSRkyzJ8SMwqY6B4nBcdVzTbrMW63H8DBh9mWuL/20npPkXY1FcXT53VBVhl2tFV94PnT4sQ5sglLCKL2w3YCocxucrafA9MblXA4MLNkjcuxK+IOjy57OAe0bm7FD3oM49x0D4YfVnT2LaaVj+NtEnQ/tlFKyuuZf+PdgSkuMss1Af4p8BXPlXdbwgrRcRuZ20TCtz/cLJriOBqEXSHGRIELNQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(376014)(7416014)(23010399003)(10067099003)(18002099003)(56012099006)(5023799004)(3023799007)(22082099003)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OVFmTVFuQ08xV0NhaUROVnZFTFhHU3FGYkllOGpKNUFid3AyRWtJN2wxWXRO?=
+ =?utf-8?B?QTFlUWpEdE9PSTA3cjZ6amNJd1lzdGxyTWNpNjRWK2Y5VHlGeHRFdVViWU54?=
+ =?utf-8?B?V3V2b1g4ekJOQlowcnFRbmRRaHRaVUdUemIyYmM5bXJ1aVdHWVk3SWVnODAy?=
+ =?utf-8?B?ekViWVRWZUFnZ3RCdTRxOUxGTWV4bkcra1VSV0hwZXAxVGdzcXZ5Q2hpU09O?=
+ =?utf-8?B?ZldRYjBtMXp2WlJKY2x5WW1JU3pKZnZtMldDZ0pybGVpWnBQUDAwYlhUcXQ0?=
+ =?utf-8?B?V2l2UFdIWjZ6ZjZ1RVhMWWU3bjVKWUJEV0YzN3ZwK2hmNTl1ZjQwbm0zTzBw?=
+ =?utf-8?B?amRKWTY3YUNXYUUxelpXWFJiQlpZY05RTlJXVFhiOTgzR2NYbU5RZmk4Tk9w?=
+ =?utf-8?B?Zkw4ektmNVZVMjlqSmR4WFYvZG1IYlNRQ28rd2NiSEQ4dnFpZzlWaVk5K1ps?=
+ =?utf-8?B?cVRoRFZad0ZpUWJPMEZma1FkVkdJK3RnaXdSeFJnaERMdlZUTXFRYmUzMlpn?=
+ =?utf-8?B?ODJORWZhdVEyM1hsNEZlL3JoNFZ0QXVjTXU1b1hRdUg4ZEdXTXd0SXc5eVBk?=
+ =?utf-8?B?aUg5MFBYVWNoNmFKTVVScnYrdW9hbnpCRUlSNSsrMGdKTWpzM3QxRU9EVVRD?=
+ =?utf-8?B?bUVkU0pUTzBQU1NEQnB6bDdVOHF4Vi9YU0FSMGQ3V2oxN3FueWY2TjVEcGRZ?=
+ =?utf-8?B?d1IwVUpaU21nMzNFbHhYakNsVlk0VmU3cVd6V295UERlcHYvRGR3YmF6emM4?=
+ =?utf-8?B?ZUFVOWRNMFJDRkVmb3VvZDBTRVNsbnFucDFFRWt5dzhjRXlkZzVLNENNV3FT?=
+ =?utf-8?B?d0pYQU9jZjZ5amxnNmhDb2hGVzlQWFV1V3NvakFEdGZqdFovRDgrelJWeHRH?=
+ =?utf-8?B?NVRySTZnZHVYVXR2WDlWbEtrcVBBUkJ3RkhZZWNNZmlHWDU4M0c1cnNaQldC?=
+ =?utf-8?B?Uld3ZEkzRXRDajh1Ulp5OTNsMktVcmpCbU9aM2pVWnFPOHhPRVdQUVJJUml6?=
+ =?utf-8?B?NXFvNkZpYXdwWXByUzVtTlY5aGdJSWptU2gwZnZScS8rN1pLQWVzWDkvYmpB?=
+ =?utf-8?B?NVNPRXRERmN5cmFxM2F5Y1h1NjlrZDR2VW5oUk1ra1hHZ1BJSE5MQld5NnlU?=
+ =?utf-8?B?UGM4Rmk5UjJnZEt5YzliOGl5SUgwNUVvL3NMZ3dlT0lQTXIyYlpJSHBOcFZw?=
+ =?utf-8?B?bnlySEk1YnRBVlQvWEdDUTVPakphVHg2T0FaTmk5UVVmZFVVT1UvVGdPN1Rt?=
+ =?utf-8?B?bUpQQjdzTWNacTlHQUp2aTlwaTl4WDU4T0FkYWQ1eExkeWZFMUVBaFVxWjJB?=
+ =?utf-8?B?Q1BuOEVSTUN2MkJBVUhrVGp2ZkFDSks0RVg3NTVYMUF5OXRuR1c0R1hEL1I0?=
+ =?utf-8?B?c2lGc0ZjeTlhV052bk92TUNqTkRNd05obVBXcUZNTm0rbWIwRklrL3RrVmZI?=
+ =?utf-8?B?MHpkSFdtbTRiOHNsUEl0YUJVYzhJeXF6bU0vOEF2WkJnSHZTbFJKeGx2NjU1?=
+ =?utf-8?B?NkFhUlhWc08vN2tXVmNkTlBKVEJWTjdNUkZSS05hb09YbERXdHRSbDJzR3dx?=
+ =?utf-8?B?aWg4eTl4T3NZanlLL1FyUlNTcWVrM2NPOWZ4ZE0yN0FsdXhWc1B3aUNubDJK?=
+ =?utf-8?B?cWU5dFl4SGxOcTNKVGlpVEZoSncxR1U4eWUvN3BhN2VyVitVbVU0MndmSEdt?=
+ =?utf-8?B?dEJuREZZYm83MWFXSE1TWWQrbUV3LzZHNW52SDNaeFkzMjFabXpGcXVWaWlP?=
+ =?utf-8?B?eWJGNkhadW5uUWNhdUFWRkFPVWJHMTd0U0FISnpidktTOFhuTUlMTkl0Qmd6?=
+ =?utf-8?B?NzdsQjJKZSt2SlRpeTdOalhpcTRRRjZDMDBTT2k3aCtxY2ZDaTZpYTFaT0U4?=
+ =?utf-8?B?cCt4MXk1WjFBVUFtcVJCcyt2RDFVa3Zud05vRkVtT3RheFh5aTRRd29URUJm?=
+ =?utf-8?B?dXRWZnZIN2lkWUo5Qi9kNjhjMHI1NFN5UDZ0eWpPWUJpVnZucFhuVE43Y3Nv?=
+ =?utf-8?B?d2RFRmd0dndXNGRiN0R4cTdGWGMrOWM0UEw4cWRHdTdtbkJGVURJejg1dy9R?=
+ =?utf-8?B?bXlLZDFnbEdCRzg4ZEtQL0QzakphUGh0WTRTTk9jV3dtUDJpU1ZhVUgvRGR1?=
+ =?utf-8?B?SlRvWWtmaDR2Y3dlZ3JyVHNycWRMSm9nRUNrZDMxNWNoZXd1ZTk2SFFnbVJ4?=
+ =?utf-8?B?NHpRU0ZCdVZDcnlGb2VGV3ozY1N4NnRESERTRFBnZU9xVzVZTUZoUzNvaHUr?=
+ =?utf-8?B?b3pmWGVWMnNnbWxVT3o2TGZQa2xOQ2JPQytzcXRLTWVGa3BETEJGcEpQcDNC?=
+ =?utf-8?B?bURZTUFLRTJDSW9Xa0dMZEkyanVKUVpidjd2VTZMMml6SjJqTTNrQT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 541edd9c-de4e-4f4f-0a2f-08df1aef723a
+X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2026 10:26:22.7230
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: K0TR+H+l7BUu7tc8BGXyxiXKJ5Jl4taR8+Yi6sTvDMakLwwLBJ8qjqKwj/4/FMck1kwvttVCDz5lvi4KFdxJ+g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB3010
 
-On Fri, 25 Sep 2026 10:00:19 +0200
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
+On Fri Sep 25, 2026 at 9:19 AM BST, Philipp Stanner wrote:
+> FenceContext::drop() contains a warning print that warns about possible
+> memory corruptions if there are forgotten fences. However, precisely
+> speaking, a forgotten fence is undefined behavior.
+>
+> Moreover, forgotten fences hint at a severe design problem in the
+> driver. In this context, the used pr_err!() does not provide very useful
+> text output.
+>
+> Replace the warning print with a dev_warn!(). To do so, have the
+> FenceContext carry a reference to a Device, protected by the already
+> present lifetime.
 
->> diff --git a/rust/kernel/Kconfig.test b/rust/kernel/Kconfig.test
->> index e6a5c7a795f0..0087749995d2 100644
->> --- a/rust/kernel/Kconfig.test
->> +++ b/rust/kernel/Kconfig.test
->> @@ -83,4 +83,14 @@ config RUST_BITFIELD_KUNIT_TEST
->>
->>  	  If unsure, say N.
->>
->> +config RUST_TIME_KUNIT_TEST
->> +	bool "KUnit tests for the Rust time API" if !KUNIT_ALL_TESTS
->> +	default KUNIT_ALL_TESTS
->> +	help
->> +	  This option enables KUnit tests for the Rust time API.
->> +	  These are only for development and testing, not for regular
->> +	  kernel use cases.
->> +
->> +	  If unsure, say N.
-> 
-> Why would you gate out the tests? They do not look like they take long
-> to run or anything.
+Add a lifetime just to do this a print doesn't sound ideal. You could use
+`ARef<Device>` instead?
 
-Documentation/rust/testing.rst says:
+Best,
+Gary
 
-  Each test suite should be guarded by a Kconfig option in
-  ``rust/kernel/Kconfig.test``.
-
-I think that the reason is the kernel image size. From commit
-e74b7a3f5aee ("rust: tests: add Kconfig for KUnit test"):
-
-  All the tests are compiled unconditionally now, which adds ~200 kB to
-  the kernel image for me on x86_64. As Rust matures, this bloating will
-  inevitably grow.
+>
+> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Philipp Stanner <phasta@kernel.org>
+> ---
+>  rust/kernel/dma_buf/dma_fence.rs | 25 +++++++++++++++++++------
+>  1 file changed, 19 insertions(+), 6 deletions(-)
+>
 
