@@ -1,65 +1,64 @@
 Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EBB36D9E0
-	for <rust-for-linux@vger.kernel.org>; Sat, 26 Sep 2026 16:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EEFC381B0A
+	for <rust-for-linux@vger.kernel.org>; Sat, 26 Sep 2026 16:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790440560; cv=none; b=kpLL3Fmm9cvVbGkfc5aPSDLFivbJmOB36sZPcXOH8KSJbg6UPDlla80Xn8NvJgzVnziskZebmlMiJEnoNZ24p56DGauhhNLyh3qXtI0Zj88498l94IsNfBzPWE8m6qjjIkOXLuAIz/LpKfq7JuNrGT/olMzLkle7q4k/PCkyKLE=
+	t=1790440563; cv=none; b=CApsFHlTbpEiXyXm2hNzwoDf+WwPTZW7w6tIvK5Hk2iAUEfpSiFS3w5QkNhlLw5UN0gH3MXmfErrwsiZMnoyT3h4lNHK/JtiDias3kCEnoMOFxtG4N4/3SfTRKKbBpsR7nQup5CJAw6klfqK9xhwoaydtec/bs6bLPVI1hZGpmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790440560; c=relaxed/simple;
-	bh=5VNrVx4ZKAIvebGxfLNqPgw9xDv0RVGMqeAFRyrl6Dc=;
+	s=arc-20240116; t=1790440563; c=relaxed/simple;
+	bh=WrDFYcSEi8mmKbs/PbalUMt2FcpwePnaNlDgkKerblM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6ixsvnQqgNFqAXY2W5jKZgc8j/KDbiB03kgghIrtUjRa9BHznWDOQ8m2mkz0jMn96NEA6EAWg5u5IMF1m/kLmGK9Ag1nRmMKOM7xcCES59YPjkdkLw1a7rmuU+Zou/hUk01ck3Z8YHqjPpVfEXgTxaq6AKVU+AYH2k+Jq/pTlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GMRKMigy; arc=none smtp.client-ip=74.125.225.141
+	 MIME-Version; b=Ei3/BMJMfMUVBGLjt3P3jL8PAc0kg4SRTvmjmDvN887ACbI1B37PZIjN2ca6rLHWl60aytRtzjXx3S9ere9QeM3P+wEon1jvUdkg/Fg2HM2DrGahdY/dD599Ui+RvMq6MW99opKQ8zdVKtydok9PMeX6klriLUBCES64C9a9JBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lLr5B0nE; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GMRKMigy"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b91369d18so11190235e9.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 26 Sep 2026 09:35:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lLr5B0nE"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b91369d18so11190305e9.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 26 Sep 2026 09:35:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790440556; x=1791045356; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790440558; x=1791045358; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=92J4cdfV5TssQddcjnr52AW40i0MRdcSuU09rnmRkE4=;
-        b=GMRKMigy15lhxSBtsY9tLDNnBp7jDte0j+9a22hpyfopd7WK/kzTZkyKuCrx3FDgOD
-         QB62hxpqiZiEpg/wmJfp15seOyKZJ8t8M3+LpotC1nj7mwchNUw10R3mSKxa8i8ZZNbI
-         b/u9ThPqkGvnDsDmuEe6Zsv4pTruh2Esy/PivZgp40yVT7/hf9XNRk5YrhByOlrkl54R
-         wCUToG/F7yMPkEDPSu12arX5Iqj3LrIVuNzZ9SUO2G339eTPuq/PKvbWzDJMkNNY2p/h
-         Ah1+crCdkTu/2KxpVi7Io+iyE/RJ7NVX2mWT7t7QTaljZLkZhfJeXSmNsXGKMol6+9lu
-         fBKQ==
+        bh=lO7O4QUZWD5NpE5omykRWv4rfNxkme+dmfp6zOtWq0c=;
+        b=lLr5B0nErLcvWheRidWJccnjRE1bRc0yfOiNJSBX3lx7wGM77z69S2/D5cq2upZUPY
+         sfa9IDGTzKne1A6rL7GgZ3nJEDXlym4Gy0emewzYV/YHx1i8aJ9298c1Qso1fJYJoZ7t
+         dE8gZL+r/LTT6s4uHZTg9luAuklBoOnyChCgMYk2j8o2pQJzJtg6sV9ibqXdxbF5G+rf
+         hgtyRcftMZMNERT44FoyYAmZRZpVWR7A1EIu1QQ7PtNktQQu+duvNxXLqSAUx6S2eOiw
+         NAK+T7puUP3mumVcfUiagRr7wTwMQEA6J7EJAEHIUxK+mBarzOo4eVEKN8VgoyrJfnZl
+         o20g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790440556; x=1791045356;
+        d=1e100.net; s=20260707; t=1790440558; x=1791045358;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=92J4cdfV5TssQddcjnr52AW40i0MRdcSuU09rnmRkE4=;
-        b=aauNhOZzcBu24/Ek1QQ9q0oKZAg9+rOqo0UpnLO5Tbb9pr8pM48dQIRAKYNEyAz+EF
-         iafFlCNWrzikvp9M7KHEX/qcXRIixAlME9GGlitz7aH/K1ciI2O6Ja3FQnNfuJa043pw
-         XOeeBwzP4jVXCj97XnLNG9TvTdVmDVgwnPylj4KO+dnoZjuoBjO5XgMIZZsWYceQMAxf
-         VoslRcDbTUnBgNh26WjBFZ8qJqiycHnZeoglepTmFlaVLWLiblQfSuFhw5k+c7/m93N9
-         nWyyz4G5buv7KcPjDusHWsvoKvthmJU/n5PAac4imUu6M/N7EUVpLgRN8m8fVOjBNgLZ
-         NBaA==
-X-Forwarded-Encrypted: i=1; AKwUvBzn7BY/lsEWdRBO0oQ+cnxlQ0YElnoU/8SvhEBYAF7kS9qTUB8/gX6VQ1LVMa0n0a1srl5kMDDFk/gk4jiKLg==@vger.kernel.org
-X-Gm-Message-State: AFuF++k96ZBEBkPpCQnk0MSb+1hG2bRmtBgLVAfsqa86KUgK3Unjqvx+
-	tUxt0aIBURpg7jRAWK+cT4iY7AbHPSQHBEbBwltub+ONHFAKGykE1dVq
-X-Gm-Gg: AYBFou04aaceyCF067Y0BljdagSFx30ak26SVod9lIHmBINGjoLpRcDBjA0kZqFaE1J
-	ugGcAPW2WehTB3+Q2ulQ9Isl92suMXAO/CKQYJQkEggbp93bIbyPZWVlbom4dcA5fTFcZS4eIh5
-	DV3aTSodQaCKtT9nTeZy6Q8snXLcK7Jq1jy7Rgc2SSCF+OtW7tS9j10iNU/PgXO5W08B9xe+Xkg
-	eEwcBUSNxbcdSO6guE1EdlYQEqNl5scKYLlFesHKVYxzDyy7JWEI3aV1ZVbakI6MQ358dBOaQlv
-	ggL/pF2+ArnzCnIoIqAsmhphULomN/Zk1o1KDfB9eWqWhtCmvQknrSMIBZwGBoi7hrm4Q/+jpS/
-	Qr0H9u46U+AjtfkHyk6cfHgBekGGGS1YTlqSrEvT/8Il/NGm2WTTczhIVhlPds6zvTVKhUM5uVN
-	dl7WQnkPCSCiiizBx0m3OzhtGWsDM8oGZ3ByNlgvPHeSd6vOvTRKR+iYH+UN7IjioVOvgpwhmE8
-	xOMZ8GhdXsg0fSjsz4wyZ/jqNTx0RNLh7W1uo+J5MkGCBSDelXP2CtLl/sjOWppr2WxDlDN3v1/
-	5A==
-X-Received: by 2002:a05:600c:1546:b0:49e:7a00:b9a5 with SMTP id 5b1f17b1804b1-49fe66bdee6mr155118895e9.4.1790440556411;
-        Sat, 26 Sep 2026 09:35:56 -0700 (PDT)
+        bh=lO7O4QUZWD5NpE5omykRWv4rfNxkme+dmfp6zOtWq0c=;
+        b=giwzD/PpjJRHcghqmFSf4J5DMEGUPAXV/9RvVegEsR/Rw3Gqv8+BCKTFI2XZC8iHhY
+         QmMnjFcku1k1k8kydlfXsGgpeVdmaslIbb152DtU073vPoxSzRUlBe4nn7NGqC4EcgWh
+         qUNdIV64Z9xaUdI8ADxrkzmyK3n1l7aKjRM+8wrhH1dfWv6P4rUNl0osoC8KP7AX1dtu
+         B4ZKxAeqCAAIyEuMaJsoW/UnT9LLBsJqdGx1o/VErzbgyQ9CSHt14xbgSxl34JHi+He0
+         l7PBuXslcMu0nW0hcK61goCp79CwZW1rlaIbZ8G5r3/TViwh+n4D20eKB7xAKei7Utj9
+         4Xbg==
+X-Forwarded-Encrypted: i=1; AKwUvBz3DcO0SYAVUZ5D2/h5fY4bH25oPi9hk43TRJDy1ljWj7GcmNBI/teZy2yaEMBO2rDIa/SxFsNFSb0uO3Vh+Q==@vger.kernel.org
+X-Gm-Message-State: AFuF++nwao/BI7+ZpYqRpaZ4KPpHwKvbVxvqKcKKEVEXrc6AXBybt1D8
+	+o+ErpSexspw9+XMzfNw3AaIXm6cPCHcH4ORhqRvXvv629PoUJ3NLImD
+X-Gm-Gg: AYBFou2X1L9cBtOBez6zb5BBMnzGVoWGSs+JkLXc6zXRat76GRRqm7JxEbbv0XwIJXD
+	LbLT07TOlQARtdkgXxSyGPKwX7FeHhwzHdnH3hQ66EVXlzIIqChjkWT5FF5GASwErzNqoy+jesW
+	Uk56nQa8YjgQKlS4V0IsKK6N6LtlzV9iYQHka/EsprGQatAsn89OgCL3qnrC04R0FlmnfAvji7e
+	gGtUQ5OBjxuM7aDipVS46Ed7DHE2uew6l1JoMSjgD3WsdrfLibMxAllCqAXbGDy2LD9udsWrVv3
+	TPd3PSpcn3BPz3Q83Qmg3oaa1vZ9nGZnPCengjYPFXH4npv4f2URR5NQAWFPqZ6dRTVFjY/A4KL
+	BDxSjgj4mdW66Xt7ufQ0SXPPervVw/Oq6jEOII4okwAVi0Vt+I5YHOgr81vDCqMz4+2u/LK0JEw
+	C2Bfhe0PyYb6GPkFtJQIsELGvw6dBaT3OFqlUo/wXtZewmyjGliPMiMZM1cEUCZcHUP8CauGIiN
+	2Pfvk6F5vMtwfXdoHyCkcqtyfFB+2sFkMp3YJizuiV9aTG0vNfC6XwzWuJziQykTqI=
+X-Received: by 2002:a05:600c:1d29:b0:49c:fc6e:a3d9 with SMTP id 5b1f17b1804b1-49fe66eeeaamr181452975e9.24.1790440558058;
+        Sat, 26 Sep 2026 09:35:58 -0700 (PDT)
 Received: from moosama76.. ([102.44.245.127])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a355d96sm16176146f8f.17.2026.09.26.09.35.54
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a355d96sm16176146f8f.17.2026.09.26.09.35.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 09:35:56 -0700 (PDT)
+        Sat, 26 Sep 2026 09:35:57 -0700 (PDT)
 From: Mohamed Osama <mohamed.osama189110@gmail.com>
 To: ojeda@kernel.org
 Cc: boqun@kernel.org,
@@ -80,9 +79,9 @@ Cc: boqun@kernel.org,
 	linux-serial@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/5] rust: add DropGuard KUnit test configuration
-Date: Sat, 26 Sep 2026 19:35:47 +0300
-Message-ID: <20260926163551.52371-2-mohamed.osama189110@gmail.com>
+Subject: [PATCH v2 2/5] rust: mem: add DropGuard
+Date: Sat, 26 Sep 2026 19:35:48 +0300
+Message-ID: <20260926163551.52371-3-mohamed.osama189110@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260926163551.52371-1-mohamed.osama189110@gmail.com>
 References: <20260926163551.52371-1-mohamed.osama189110@gmail.com>
@@ -94,37 +93,158 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a KUnit configuration option for testing the Rust DropGuard API.
+Add DropGuard to the Rust kernel memory module.
 
-The option follows the existing Rust KUnit test configuration pattern and
-defaults to KUNIT_ALL_TESTS.
+DropGuard runs a FnOnce callback when the guard is dropped and provides
+dismiss() to take ownership of the wrapped value without running the
+cleanup callback.
+
+This provides the Rust kernel with a scope guard API matching the
+upstream Rust DropGuard interface.
 
 Signed-off-by: Mohamed Osama <mohamed.osama189110@gmail.com>
 ---
- rust/kernel/Kconfig.test | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ rust/kernel/mem.rs | 123 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 123 insertions(+)
 
-diff --git a/rust/kernel/Kconfig.test b/rust/kernel/Kconfig.test
-index e6a5c7a795f0..011c72f14e2c 100644
---- a/rust/kernel/Kconfig.test
-+++ b/rust/kernel/Kconfig.test
-@@ -33,6 +33,16 @@ config RUST_KVEC_KUNIT_TEST
+diff --git a/rust/kernel/mem.rs b/rust/kernel/mem.rs
+index f2d4cdf87d00..17807c8e67ac 100644
+--- a/rust/kernel/mem.rs
++++ b/rust/kernel/mem.rs
+@@ -4,6 +4,95 @@
  
- 	  If unsure, say N.
+ use crate::prelude::*;
  
-+config RUST_DROP_GUARD_KUNIT_TEST
-+	bool "KUnit tests for Rust DropGuard API" if !KUNIT_ALL_TESTS
-+	default KUNIT_ALL_TESTS
-+	help
-+	  This option enables KUnit tests for the Rust DropGuard API.
-+	  These are only for development and testing, not for regular
-+	  kernel use cases.
++use core::{
++    mem::ManuallyDrop,
++    ops::{Deref, DerefMut},
++};
 +
-+	  If unsure, say N.
++/// Wraps a value and runs a closure when dropped.
++///
++/// This is useful for running cleanup code when leaving a scope.
++///
++/// The [`DropGuard::dismiss`] function can be used to take ownership of the wrapped
++/// value without running the cleanup function.
++#[doc(alias = "ScopeGuard")]
++#[doc(alias = "defer")]
++pub struct DropGuard<T, F>
++where
++    F: FnOnce(T),
++{
++    inner: ManuallyDrop<T>,
++    f: ManuallyDrop<F>,
++}
 +
- config RUST_BITMAP_KUNIT_TEST
- 	bool "KUnit tests for Rust bitmap API" if !KUNIT_ALL_TESTS
- 	default KUNIT_ALL_TESTS
++impl<T, F> DropGuard<T, F>
++where
++    F: FnOnce(T),
++{
++    /// Creates a new `DropGuard`.
++    #[inline]
++    #[must_use]
++    pub fn new(inner: T, f: F) -> Self {
++        Self {
++            inner: ManuallyDrop::new(inner),
++            f: ManuallyDrop::new(f),
++        }
++    }
++
++    /// Consumes the `DropGuard`, returning the wrapped value without
++    /// running the cleanup function.
++    #[inline]
++    pub fn dismiss(guard: Self) -> T {
++        let mut guard = ManuallyDrop::new(guard);
++
++        // SAFETY: We have taken ownership of the guard and prevent its destructor from running.
++        let value = unsafe { ManuallyDrop::take(&mut guard.inner) };
++
++        // SAFETY: We have taken ownership of the guard.
++        unsafe { ManuallyDrop::drop(&mut guard.f) };
++
++        value
++    }
++}
++
++impl<T, F> Deref for DropGuard<T, F>
++where
++    F: FnOnce(T),
++{
++    type Target = T;
++
++    #[inline]
++    fn deref(&self) -> &T {
++        &self.inner
++    }
++}
++
++impl<T, F> DerefMut for DropGuard<T, F>
++where
++    F: FnOnce(T),
++{
++    #[inline]
++    fn deref_mut(&mut self) -> &mut T {
++        &mut self.inner
++    }
++}
++
++impl<T, F> Drop for DropGuard<T, F>
++where
++    F: FnOnce(T),
++{
++    #[inline]
++    fn drop(&mut self) {
++        // SAFETY: `DropGuard` is in the process of being dropped.
++        let inner = unsafe { ManuallyDrop::take(&mut self.inner) };
++
++        // SAFETY: `DropGuard` is in the process of being dropped.
++        let f = unsafe { ManuallyDrop::take(&mut self.f) };
++
++        f(inner);
++    }
++}
++
+ /// Transmute between two types.
+ ///
+ /// Use this instead of [`core::mem::transmute`] when it is known that sizes are identical but this
+@@ -232,3 +321,37 @@ unsafe impl AsReprMut for $signed {}
+     // `usize` is not normalized to particular integer for portability.
+     usize isize,
+ }
++
++#[cfg(CONFIG_RUST_DROP_GUARD_KUNIT_TEST)]
++#[macros::kunit_tests(rust_drop_guard)]
++mod tests {
++    use super::*;
++
++    #[test]
++    fn test_drop_runs_cleanup() {
++        let mut cleaned = false;
++
++        {
++            let _guard = DropGuard::new(42, |value| {
++                assert_eq!(value, 42);
++                cleaned = true;
++            });
++        }
++
++        assert!(cleaned);
++    }
++
++    #[test]
++    fn test_dismiss_returns_value_without_cleanup() {
++        let mut cleaned = false;
++
++        let guard = DropGuard::new(42, |_| {
++            cleaned = true;
++        });
++
++        let value = DropGuard::dismiss(guard);
++
++        assert_eq!(value, 42);
++        assert!(!cleaned);
++    }
++}
 -- 
 2.43.0
 
