@@ -1,195 +1,210 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDA63515DA;
-	Sun, 27 Sep 2026 16:37:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AA8431E68
+	for <rust-for-linux@vger.kernel.org>; Sun, 27 Sep 2026 18:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790527034; cv=none; b=PasKwHndfVuYVz57HzZXyVNmLRhtgWAct/SPUMaieg9tEZHftiJe16R7MvP4FbtMi+aZJ2uczLvJj0vZC6KE6IvurJWDm28wQ/JugCfeD1HSywZCj1g2/c4CMEvzxowREICL6GXO9fkifWdZXT62fl1Gm81XetSmvpZ92oceXPI=
+	t=1790532715; cv=none; b=OnU5+DUBsSnET3VPG5GrrShpZS1GXd3Tts0qQO0jMJ/SVd10WX8n/nP2jdQg26hxk9I+nhKF982kH32eRNAN7b/uR1KroMdlPkopAHWHVUjgCk87FkjgZWwVqcUG+OHmaKlSvDoFjq11JCq/3OMLyLt6tN2ZbAFEn5jL1bx82/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790527034; c=relaxed/simple;
-	bh=Idg1y+ad/cTub9H1i0hV7vvZQwV2PjFne7cJxHYlTk0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=imy3x7DMQZm2rGEZyJrpiT+BtJx35onu1SPLi2+UMEDn1J8ujUPBwRT0jBWl0CvWch2tGWavTAiC3A1scKD0asp+oPJ8A4apypeUB0QuEwphQNBAXokdbLlPpIuesmLsuL9iDrlH58iSd1+lTFMshzTIcmT2Pewj6AIPVYLSfbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PyJZ4zoE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790532715; c=relaxed/simple;
+	bh=jgdKso4y+Q0WHnjpxujHsk8r+mm2LNsgvbCaKjJ4JdE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hhCSAxrRykF7sqXRECLUIh9zwQBpOdudh8XMCnKa8PE2VYhYWW8pC5e1Q0rEhypv27xShqNutRsgXb6CgjlkIEEWyFeoLvuPHVqIiz3s5UcvNeNzrCJJI/FGeoiF5aLNLdN8L6zwUhW92TsH+CkW/x/3aUE4gbcWomPwUabv/yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Y/FBx5xe; arc=none smtp.client-ip=109.224.244.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PyJZ4zoE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92751F000FF;
-	Sun, 27 Sep 2026 16:37:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790527033;
-	bh=4iWifuhf+mlMr2hSIS2hAq64IKM9N9DicnuVT2LclEE=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=PyJZ4zoECmSZGGcm9YSbDtHyntuqQixsxfZju9PwvjEmQ/j1VtZ945HDlvFqTNBVW
-	 nUA+X5qtLmY1hMhSIt4/lsY0Cp6fTESbaluATGKg67ZvsesQdjUTNCFschu5MIgGyq
-	 1X8YFCRO1QzmL+t7+qmXYCAgNpn+o8f7nWwGFSwPjNa6nUqKtmZWsHOuKu5U4Wvajs
-	 NhX7PvZ4E+hVz+1CudAsr0UqoCO658Stt60RvgwPwJUsO9cQVBIpowH+NAJ+MtWwfy
-	 Y9KHOaWVU1G2/AmIeaB1AHzHOcTzQTbNtympCfjgfkb1UCW1XF4SbH23C6NidJP37x
-	 eugupRS2VTbnQ==
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Y/FBx5xe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=u5wzv53u35d3xnejuqwvus4ajq.protonmail2; t=1790532701;
+	x=1790791901; bh=rU/Pw4sVsLNksMs3xC6f2YsQun2aeEfNFU7iJX4s9UQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Y/FBx5xecDNqd1o2B9PBc6SqEPBtQOKvV/+qg8RY6HmFjzB1wdF1OvQ68sLvdqBia
+	 y1V5H1piD9Eg2brhj1OJMexK/1G1ZPeCCAIjBIXOBAv7IGMOsK8+k5j9FQFdw/SUaS
+	 irIAfOYsHvWCiXyHZHHze5pnXJuk2sHKDlhBvsWQcYVQkqZ3wMfZlE2cpoWKOSBNHd
+	 tHK2wvrlDAXdBjWDxnNeroFlN5chnwOrGP29u63sdwCGY9WRNqrEGO9vY7MkKlHM2J
+	 Awrha0r8vQ0+T0m46MabEZn+mf1ygifsE1kraQPLovU5GN/oei+T7CeCHyeVK05mbi
+	 8ViURjdMmwptQ==
+Date: Sun, 27 Sep 2026 18:11:38 +0000
+To: Daniel Almeida <daniel.almeida@collabora.com>, Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+From: Lorenzo Delgado <lnsdev@proton.me>
+Cc: Lorenzo Delgado <lnsdev@proton.me>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org
+Subject: [PATCH v4 2/2] rust: io: convert ResourceSize into a transparent newtype
+Message-ID: <20260927-resource-size-newtype-v4-2-447a08af23fb@proton.me>
+In-Reply-To: <20260927-resource-size-newtype-v4-0-447a08af23fb@proton.me>
+References: <20260927-resource-size-newtype-v4-0-447a08af23fb@proton.me>
+Feedback-ID: 53083996:user:proton
+X-Pm-Message-ID: ec408884551717dee2135b6cb11405ceb3d6df7f
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 27 Sep 2026 18:37:06 +0200
-Message-Id: <DLQ8UW9ONGHB.NBCSFW530R38@kernel.org>
-Subject: Re: [PATCH v2 1/8] rust: pci: add {enable,disable}_sriov(), to
- control SR-IOV capability
-Cc: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <aliceryhl@google.com>,
- <bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
- <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
- <markus.probst@posteo.de>, <cjia@nvidia.com>, <smitra@nvidia.com>,
- <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
- <acourbot@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>,
- <jgg@nvidia.com>, <alex@shazbot.org>, "Peter Colberg" <pcolberg@redhat.com>
-To: "Zhi Wang" <zhiw@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260924190556.1620886-1-zhiw@nvidia.com>
- <20260924190556.1620886-2-zhiw@nvidia.com>
-In-Reply-To: <20260924190556.1620886-2-zhiw@nvidia.com>
 
-On Thu Sep 24, 2026 at 9:05 PM CEST, Zhi Wang wrote:
-> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-> index 3ec897709e89..e6dac919f02d 100644
-> --- a/rust/kernel/pci.rs
-> +++ b/rust/kernel/pci.rs
-> @@ -133,6 +133,10 @@ extern "C" fn remove_callback(pdev: *mut bindings::p=
-ci_dev) {
->          // INVARIANT: `pdev` is valid for the duration of `remove_callba=
-ck()`.
->          let pdev =3D unsafe { &*pdev.cast::<Device<device::CoreInternal<=
-'_>>>() };
-> =20
-> +        // Keep PF data installed until all VF remove callbacks have com=
-pleted.
-> +        #[cfg(CONFIG_PCI_IOV)]
-> +        pdev.disable_sriov();
+`ResourceSize` is a bare type alias for `resource_size_t`, so it
+inherits every integer operation and `as` cast. That allows operations
+that make no sense for the size of a hardware resource, such as mixing
+it with unrelated integers or truncating it with a cast.
 
-I don't think we need this? The VfRegistration should guard against this
-already.
+Wrap it in a `#[repr(transparent)]` newtype so each conversion at a
+boundary is explicit. The representation is unchanged, so this is
+ABI-identical; only the spelling at the FFI boundary changes. Provide
+`from_raw`/`into_raw`, `From` in both directions, and a fallible
+`TryFrom<ResourceSize> for usize`, since `resource_size_t` can be wider
+than `usize` on 32-bit.
 
-> +
->          // SAFETY: `remove_callback` is only ever called after a success=
-ful call to
->          // `probe_callback`, hence it's guaranteed that `Device::set_drv=
-data()` has been called
->          // and stored a `Pin<KBox<T::Data<'_>>>`.
-> @@ -472,6 +476,38 @@ pub fn set_master(&self) {
->          // SAFETY: `self.as_raw` is guaranteed to be a pointer to a vali=
-d `struct pci_dev`.
->          unsafe { bindings::pci_set_master(self.as_raw()) };
->      }
-> +
-> +    /// Enable the Single Root I/O Virtualization (SR-IOV) capability fo=
-r this device,
-> +    /// where `nr_virtfn` is number of Virtual Functions (VF) to enable.
-> +    #[cfg(CONFIG_PCI_IOV)]
-> +    pub fn enable_sriov(&self, nr_virtfn: i32) -> Result {
-> +        // SAFETY:
-> +        // `self.as_raw` returns a valid pointer to a `struct pci_dev`.
-> +        //
-> +        // `pci_enable_sriov()` checks that the enable operation is vali=
-d:
-> +        // - the device is a Physical Function (PF),
-> +        // - SR-IOV is currently disabled, and
-> +        // - `nr_virtfn` does not exceed the total number of supported V=
-Fs.
-> +        //
-> +        // The Core device context inherits from the Bound device contex=
-t,
-> +        // which guarantees that the PF device is bound to a driver.
-> +        to_result(unsafe { bindings::pci_enable_sriov(self.as_raw(), nr_=
-virtfn) })
-> +    }
-> +
-> +    /// Disable the Single Root I/O Virtualization (SR-IOV) capability f=
-or this device.
-> +    #[cfg(CONFIG_PCI_IOV)]
-> +    pub fn disable_sriov(&self) {
-> +        // SAFETY:
-> +        // `self.as_raw` returns a valid pointer to a `struct pci_dev`.
-> +        //
-> +        // `pci_disable_sriov()` checks that the disable operation is va=
-lid:
-> +        // - the device is a Physical Function (PF), and
-> +        // - SR-IOV is currently enabled.
-> +        //
-> +        // The Core device context inherits from the Bound device contex=
-t,
-> +        // which guarantees that the PF device is bound to a driver.
-> +        unsafe { bindings::pci_disable_sriov(self.as_raw()) };
-> +    }
->  }
+Update the producer, `Resource::size`, and its consumers in `Region`
+and `request_region`.
 
-I think we do not need to expose those as functions on Device<Core>. We sho=
-uld
-only need to call those from the sriov_configure() callback and should othe=
-rwise
-be covered by the VfRegistration.
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1203
+Signed-off-by: Lorenzo Delgado <lnsdev@proton.me>
+---
+ rust/kernel/io.rs          | 74 ++++++++++++++++++++++++++++++++++++++++++=
+----
+ rust/kernel/io/resource.rs |  6 ++--
+ 2 files changed, 72 insertions(+), 8 deletions(-)
 
-Hence, I suggest to expose those methods via a token type, which also helps=
- to
-use an RAII patterns for cleanup rather than manual enable/disable calls:
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index 5ce9fd129068..09b0586acf1a 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -6,11 +6,13 @@
+=20
+ use core::{
+     marker::PhantomData,
+-    mem::MaybeUninit, //
++    mem::MaybeUninit,
++    num::TryFromIntError, //
+ };
+=20
+ use crate::{
+     bindings,
++    fmt,
+     prelude::*,
+     ptr::{
+         Alignment,
+@@ -35,11 +37,73 @@
+ /// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit archite=
+ctures.
+ pub type PhysAddr =3D bindings::phys_addr_t;
+=20
+-/// Resource Size type.
++/// Resource size type.
+ ///
+-/// This is a type alias to either `u32` or `u64` depending on the config =
+option
+-/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit archite=
+ctures.
+-pub type ResourceSize =3D bindings::resource_size_t;
++/// This wraps either `u32` or `u64` depending on the config option
++/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a `u64` even on 32-bit archi=
+tectures.
++///
++/// # Examples
++///
++/// ```
++/// use kernel::io::ResourceSize;
++///
++/// let size =3D ResourceSize::from_raw(0x1000);
++/// assert_eq!(size.into_raw(), 0x1000);
++///
++/// // Round-trips through the raw C type.
++/// let raw: kernel::bindings::resource_size_t =3D size.into();
++/// assert_eq!(ResourceSize::from(raw), size);
++///
++/// // Fallible conversion to `usize` (can truncate on 32-bit).
++/// assert_eq!(usize::try_from(size)?, 0x1000);
++/// # Ok::<(), core::num::TryFromIntError>(())
++/// ```
++#[repr(transparent)]
++#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
++pub struct ResourceSize(bindings::resource_size_t);
++
++impl ResourceSize {
++    /// Creates a resource size from the raw C type.
++    #[inline]
++    pub const fn from_raw(value: bindings::resource_size_t) -> Self {
++        Self(value)
++    }
++
++    /// Turns this resource size into the raw C type.
++    #[inline]
++    pub const fn into_raw(self) -> bindings::resource_size_t {
++        self.0
++    }
++}
++
++impl fmt::Debug for ResourceSize {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        write!(f, "{:#x}", self.0)
++    }
++}
++
++impl From<bindings::resource_size_t> for ResourceSize {
++    #[inline]
++    fn from(value: bindings::resource_size_t) -> Self {
++        Self::from_raw(value)
++    }
++}
++
++impl From<ResourceSize> for bindings::resource_size_t {
++    #[inline]
++    fn from(value: ResourceSize) -> Self {
++        value.into_raw()
++    }
++}
++
++impl TryFrom<ResourceSize> for usize {
++    type Error =3D TryFromIntError;
++
++    #[inline]
++    fn try_from(value: ResourceSize) -> Result<Self, Self::Error> {
++        Self::try_from(value.into_raw())
++    }
++}
+=20
+ /// Untyped I/O region.
+ ///
+diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
+index 17b0c174cfc5..a33a416b289a 100644
+--- a/rust/kernel/io/resource.rs
++++ b/rust/kernel/io/resource.rs
+@@ -58,7 +58,7 @@ fn drop(&mut self) {
+         };
+=20
+         // SAFETY: Safe as per the invariant of `Region`.
+-        unsafe { release_fn(start, size) };
++        unsafe { release_fn(start, size.into_raw()) };
+     }
+ }
+=20
+@@ -114,7 +114,7 @@ pub fn request_region(
+             bindings::__request_region(
+                 self.0.get(),
+                 start,
+-                size,
++                size.into_raw(),
+                 name.as_char_ptr(),
+                 flags.0 as c_int,
+             )
+@@ -130,7 +130,7 @@ pub fn request_region(
+     pub fn size(&self) -> ResourceSize {
+         let inner =3D self.0.get();
+         // SAFETY: Safe as per the invariants of `Resource`.
+-        unsafe { bindings::resource_size(inner) }
++        ResourceSize::from_raw(unsafe { bindings::resource_size(inner) })
+     }
+=20
+     /// Returns the start address of the resource.
 
-Instead of a single sriov_configure() callback that covers both cases, we c=
-an
-have two callbacks.
+--=20
+2.55.0
 
-	fn sriov_enable<'bound>(
-	    dev: &'bound Device<device::Core<'_>>,
-	    data: Pin<&'bound Self::Data<'bound>>,
-	    token: SriovEnable<'_>,
-	) -> Result<SriovEnabled<'_>>;
 
-and
-
-	fn sriov_disable<'bound>(
-	    dev: &'a Device<device::Core<'_>>,
-	    data: Pin<&'bound Self::Data<'bound>>,
-	    token: SriovDisable<'_>,
-	) -> Result;
-
-Note the return type on sriov_enable(), which is obtained from token.enable=
-().
-It can serve as guard and automatically disable again of sriov_enable() fai=
-ls
-subsequently and returns an error. If it successfully returns SriovEnabled,=
- the
-PCI core can just discard it. The structs could look like this:
-
-	pub struct SriovEnable<'a> {
-	    dev: &'a Device<device::CoreInternal<'a>>,
-	    num_vfs: u32,
-	}
-=09
-	impl<'a> SriovEnable<'a> {
-	    pub fn num_vfs(&self) -> u32 {
-	        self.num_vfs
-	    }
-=09
-	    pub fn enable(self, num_vfs: u32) -> Result<SriovEnabled<'a>> {
-	        let ret =3D unsafe {
-	            bindings::pci_enable_sriov(self.dev.as_raw(), num_vfs)
-	        };
-	        to_result(ret)?;
-=09
-	        Ok(SriovEnabled { dev: self.dev, num_vfs })
-	    }
-	}
-
-And the destructor of SriovEnabled could be:
-
-	impl Drop for SriovEnabled<'_> {
-	    fn drop(&mut self) {
-	        unsafe { bindings::pci_disable_sriov(self.dev.as_raw()) }
-	    }
-	}
-
-We could still have the helpers on Device<CoreInternal> so you can use them
-safely in the guard types.
