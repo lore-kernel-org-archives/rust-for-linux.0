@@ -1,39 +1,43 @@
-Received: from mail-244116.protonmail.ch (mail-244116.protonmail.ch [109.224.244.116])
+Received: from mail-106119.protonmail.ch (mail-106119.protonmail.ch [79.135.106.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE3B4322E6
-	for <rust-for-linux@vger.kernel.org>; Sun, 27 Sep 2026 18:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EE342046E
+	for <rust-for-linux@vger.kernel.org>; Sun, 27 Sep 2026 18:11:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790532713; cv=none; b=NhbSamAIbhzMrDqqpd2tNqxK6SOqc+iGC6tIq9lnDoRKPjw/0HVdS2Qn2dmncmy3kwvwxV4TA/vZekXPYYLOT8TL7SlDqADdESssw9uGQmW/bMFVrF4YNtMC5St9nYapVMPgFKspI6p3/5EahYZoOhvzw+m8nWY/xdvyHVPfLoc=
+	t=1790532712; cv=none; b=iqon3jp+cQo3m91tM0FLCJaKHNp8iJXyDDurlrqqI9jLvHp8v0SevgyNwX5lxPVL0b1/YVGuJgfREFC4KadxGZyuvf9K81ySPSWVcJU2N66MbDU3Mp3prGl89T56X3Z0C8CUJYLKXW7AluUjVeIjYsuUnEvCx/+vBKo3PXx9fFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790532713; c=relaxed/simple;
-	bh=MsjhdNHNUOPcQ10FOtPouiKOZQKjr6aJbDQVX6QUNAw=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=t83jvhkZc2Ff0KF1+/OeQeGYf+Sxbw6SmuOPiy73xo70ZPN4TJEYDQJsXdwj2B4CZKGn845E57bZ5qYQCXbldTp8WnxQxPmc8GCrjh8Pmy+THm29owl1Tdfgm5hcDaUZSBg4i+E3eQ8j1TyAjINbLBQEtx0Qd5nQPhZzbixhYXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=zj5cByW8; arc=none smtp.client-ip=109.224.244.116
+	s=arc-20240116; t=1790532712; c=relaxed/simple;
+	bh=VKPUTJnZ5RtYzk38I8a5be1igeXKqoLTiQ2eUTRxFn4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SQL8kcyCj3RDS+mpG6YpFQm2XciJg2orMeoWo5Y4/tv1MsQspBr/RYnh+kaciVd005vI041UwUCdsRwopm77SVRtIdwmbyRhylGsm4QyqUTWtY7RFRV4cBWb/bnCjdNlbaAoSRKD57os3kko6RM4UKl8AHm3tp0qoV0KINhRKH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=AN6Rxr4i; arc=none smtp.client-ip=79.135.106.119
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="zj5cByW8"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="AN6Rxr4i"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail2; t=1790532695; x=1790791895;
-	bh=PW3qafb7hPoN12TvjOZ5TmRg4ziVC/vRpHNV2IFX1ZE=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=zj5cByW89kw3MtjACGq6C9IDrNSf0X/PiwvD8l6tNlS3JJZunZ6gW6GKgmB2qWvyn
-	 MuS59oHxqMMspdUYV/27hHn95/RfE62IzFXtec5WYi5FkTPYJt2zLiOuMvLGGrFL+D
-	 f8urS7TMOw6p5djSRNkdCy5WGK6HZCvaIzs7gOHkuoNPeTL1VAcs1PUVmWxmLJS4O5
-	 kvxRN1ZyzMkK6e6UpqP0nJTch0y2odQpoParYC4Czq3aMn5c+dKkhljD7YZSKQMXha
-	 KO8CtjuKXogNacrtqSBFTtYp02WesFK352mhVR5ZtV6Qk0efllZ1nTLV72VNUU46ky
-	 aVu4NcXZy1Ayg==
-Date: Sun, 27 Sep 2026 18:11:31 +0000
+	s=protonmail2; t=1790532701; x=1790791901;
+	bh=xojCAjopFrYdQ40SwOTqpF43M3oLSUS1UPbRcl8SZ7o=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=AN6Rxr4it50UbewfRUrpZtNff9+X17eoP0H6aHWMbovwUWJKUWMw9BWyeOSN6ST4S
+	 oXs6Jtu+VBDDEmArdDTa2RHc9QRvw7LsbqYidjhJ4kyQfsgjxOm5+xzDIJO+gMYe1z
+	 fgSTt3CM9tE7kr/94qAAhJi2/WNvqKFmZ/9NWJhfJAwYoWJgxc1I+wu85A4Q3nSXBN
+	 vDFo6ACGIhRynhNMNQ+uf7pdahqsnN25RFJlI1I8EdjMTZC7C8EGYYghMt4f6VX2t/
+	 e2RxooEGVDGztU8PY0b4fl5585KtzRBpVtBdz42552dPPzwA8C4imgPQ0+JWg50Clh
+	 m5EkF3hP13K/A==
+Date: Sun, 27 Sep 2026 18:11:35 +0000
 To: Daniel Almeida <daniel.almeida@collabora.com>, Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
 From: Lorenzo Delgado <lnsdev@proton.me>
 Cc: Lorenzo Delgado <lnsdev@proton.me>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org
-Subject: [PATCH v4 0/2] rust: io: convert ResourceSize into a transparent newtype
-Message-ID: <20260927-resource-size-newtype-v4-0-447a08af23fb@proton.me>
+Subject: [PATCH v4 1/2] rust: scatterlist: return u32 from SGEntry::dma_len()
+Message-ID: <20260927-resource-size-newtype-v4-1-447a08af23fb@proton.me>
+In-Reply-To: <20260927-resource-size-newtype-v4-0-447a08af23fb@proton.me>
+References: <20260927-resource-size-newtype-v4-0-447a08af23fb@proton.me>
 Feedback-ID: 53083996:user:proton
-X-Pm-Message-ID: 30c9204b4ec447a9bb7a0d0613384c97637b5e06
+X-Pm-Message-ID: 16d3e700f402241472419065386b064829754ca4
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -43,66 +47,72 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-This turns ResourceSize from a type alias into a #[repr(transparent)]
-newtype, so that every conversion at the FFI boundary is explicit.
+`SGEntry::dma_len()` returns `ResourceSize`, but the length of a DMA
+segment is not the size of a resource. The C side stores it as an
+`unsigned int` (`dma_length` in `struct scatterlist`), the helper
+returns `unsigned int`, and a single segment is bounded by the
+device's `max_segment_size`, which is an `unsigned int` as well. The
+method only widens the value to `resource_size_t`.
 
-The first patch changes SGEntry::dma_len() to return u32. The length of
-a DMA segment is an unsigned int on the C side, so it was never a
-ResourceSize. Doing that first means the newtype patch no longer has to
-touch tyr or nova-core.
+Return `u32`, which is what the binding already produces, and drop the
+`.into()` along with its `clippy::useless_conversion` allow.
 
-Note that Alexandre's nova_num series [1] rewrites the dma_len() line in
-nova-core's gsp.rs to usize::from_safe_cast_arch(), which takes a u64.
-With patch 1 applied, that line needs usize::from_safe_cast() instead,
-and the FromSafeCastArch import goes away. The two series apply on top
-of each other without conflicts, so this only shows up as a build
-error. I can rebase on top of nova_num if it lands first.
+tyr widens the length to `u64`, which is now a real conversion on
+every architecture, so drop its `useless_conversion` allow too.
+nova-core converts it to `usize` through `FromSafeCast`, which already
+covers `u32`, so it needs no change.
 
-[1] https://lore.kernel.org/r/20260828-nova_num-v1-0-e21f17ba4127@nvidia.co=
-m
-
+Suggested-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://lore.kernel.org/r/DLNPXJ4WPH4L.2MBUGV1TAESYY@kernel.org
 Signed-off-by: Lorenzo Delgado <lnsdev@proton.me>
 ---
-Changes in v4:
-- New patch 1: return u32 from SGEntry::dma_len(), as suggested by
-  Danilo.
-- Patch 2 no longer touches scatterlist.rs, tyr or nova-core.
-- Drop FromSafeCastArch<ResourceSize> for usize. Its only user was the
-  dma_len() conversion in nova-core.
-- Link to v3: https://patch.msgid.link/20260920-resource-size-newtype-v3-1-=
-9451444e83bb@proton.me
+ drivers/gpu/drm/tyr/vm.rs  | 1 -
+ rust/kernel/scatterlist.rs | 9 +++------
+ 2 files changed, 3 insertions(+), 7 deletions(-)
 
-Changes in v3:
-- Rebase on rust-next (v7.3-rc4).
-- Implement FromSafeCastArch<ResourceSize> for usize in the kernel
-  crate, next to the type, now that the lossless casts live in
-  kernel::num::casts. Drop the impl from nova-core's num.rs, and switch
-  gsp.rs to usize::from_safe_cast_arch(), the same line the nova-core
-  conversion to kernel::num uses.
-- Convert the dma_len() user in tyr, added since v2. Without it, tyr
-  fails to build on 32-bit ARM without LPAE.
-- Link to v2: https://lore.kernel.org/r/20260719200945.687904-1-lnsdev@prot=
-on.me
-- Link to v1: https://lore.kernel.org/r/20260712113602.389060-1-lnsdev@prot=
-on.me
+diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
+index c5e307b1e241..1dd11b2b1253 100644
+--- a/drivers/gpu/drm/tyr/vm.rs
++++ b/drivers/gpu/drm/tyr/vm.rs
+@@ -644,7 +644,6 @@ fn sm_step_map<'op>(
+             // Expressly convert to u64 to work with arm 32-bit builds.
+             #[allow(clippy::useless_conversion)]
+             let mut paddr =3D u64::from(sgt_entry.dma_address());
+-            #[allow(clippy::useless_conversion)]
+             let mut sgt_entry_length =3D u64::from(sgt_entry.dma_len());
+=20
+             if bytes_left_to_map =3D=3D 0 {
+diff --git a/rust/kernel/scatterlist.rs b/rust/kernel/scatterlist.rs
+index b83c468b5c63..f37bf29fdbca 100644
+--- a/rust/kernel/scatterlist.rs
++++ b/rust/kernel/scatterlist.rs
+@@ -34,9 +34,7 @@
+     bindings,
+     device::{Bound, Device},
+     devres::Devres,
+-    dma, error,
+-    io::ResourceSize,
+-    page,
++    dma, error, page,
+     prelude::*,
+     sync::aref::ARef,
+     types::Opaque,
+@@ -90,10 +88,9 @@ pub fn dma_address(&self) -> dma::DmaAddress {
+=20
+     /// Returns the length of this SG entry in bytes.
+     #[inline]
+-    pub fn dma_len(&self) -> ResourceSize {
+-        #[allow(clippy::useless_conversion)]
++    pub fn dma_len(&self) -> u32 {
+         // SAFETY: `self.as_raw()` is a valid pointer to a `struct scatter=
+list`.
+-        unsafe { bindings::sg_dma_len(self.as_raw()) }.into()
++        unsafe { bindings::sg_dma_len(self.as_raw()) }
+     }
+ }
+=20
 
----
-Lorenzo Delgado (2):
-      rust: scatterlist: return u32 from SGEntry::dma_len()
-      rust: io: convert ResourceSize into a transparent newtype
-
- drivers/gpu/drm/tyr/vm.rs  |  1 -
- rust/kernel/io.rs          | 74 ++++++++++++++++++++++++++++++++++++++++++=
-----
- rust/kernel/io/resource.rs |  6 ++--
- rust/kernel/scatterlist.rs |  9 ++----
- 4 files changed, 75 insertions(+), 15 deletions(-)
----
-base-commit: 93f51579e7df248780214094418f205253383cc5
-change-id: 20260920-resource-size-newtype-63a82d4f2cdb
-
-Best regards,
--- =20
-Lorenzo Delgado <lnsdev@proton.me>
+--=20
+2.55.0
 
 
