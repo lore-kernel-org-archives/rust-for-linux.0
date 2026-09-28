@@ -1,734 +1,252 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010057.outbound.protection.outlook.com [40.93.198.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33DC364EAB
-	for <rust-for-linux@vger.kernel.org>; Mon, 28 Sep 2026 01:31:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790559120; cv=none; b=XwaMAjavs3zu5+YZPOW13fAjOsWV1ru8tHVPDpYlJzH4uJwvogmkg26OgN2XCo1/dlqt9r0nbE4gy60HY+rYdUKDFvmYZxru6XUUftcDelLOsgc/ExT+kGzOxhg/oH+XV54WxK2XBV4xldftZgTht1yz+AOal4DtzrUTm+O/+H4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790559120; c=relaxed/simple;
-	bh=pabOeosSWMU9M1rzRU+bWUkg0CpGXv4hE027wKrT3gc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U2IgSpZ46gW/Cojke0d5HymsHMCF0f5jZh0P9RekXapOeqnMeIhUkZ6MCZlF0oJUUtcVyHg2youUiwFC8MFJztkKj/P+KLhfDgNDTFwQSOyXpgjbINKyGuHoiv5oMXV1ZWY1E7riuXF6R4+WB4NkaH1lOvIa/aB21jlwq5AQooI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sT7jDQbc; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A96377A8B;
+	Mon, 28 Sep 2026 03:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790565565; cv=fail; b=pY8NJ6MQ0OY7NCDFb30NZEpdAy6yAfzKEBFbjTQWL4dP4yf6aGk7JvR255rVczk9HScCsQByDB4t2k4UVzAy55/hlrn2Tl0QNUo7AKO/aEauZQS3khPZni8AiHMoNu5B69cNllKWMrj6eARJs1BhOfrRP2SZPrfVAPZxhSlKEHQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790565565; c=relaxed/simple;
+	bh=M/jXbZbBHuA5VOrJBDe5uRUFlx5l+bwD1Pvym3N9tm4=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=Q6o/9TtpVe44WIX0tE1eaN4h+wGIjLcIRXyEQbY+HIC2cqet4259KTYkXlRirP6bUMqkts/CZJdbfh6/fAfMtXDVFX3YhQ0BlcLHdGwdfHdPxrLBTuArbziXybAQnzl9CCgZtmrFVnb0OWOTM5NZuLxY4GKeiX38mjWdhOmquWM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=O8sVyxjK; arc=fail smtp.client-ip=40.93.198.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sT7jDQbc"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-398beb616f5so1308084a91.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 27 Sep 2026 18:31:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790559117; x=1791163917; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+4cD82D480m1fv/g5FMu9AjvBoGSNDXP4ZPsfJiWeUE=;
-        b=sT7jDQbc6h8/81NNRRBKTAY0MrZV0CJW4SitAkERX+dViKcqXAtWCyza9zEu1z73p6
-         zGcl1xG0us4YUaN6x0Wf2P7IHwjhfzXe1kt+GKjF7hQMSKUAk1bUHai9P1X/+uZMLFfT
-         6u0daFMnGyd3YH5MHZ/apNs5IebE2nawxrT29C7K0RBcKqWo919Bl/T0kGDrUcrms8F1
-         k+lSjriFL3udZyvJNU+Zpl4IfZfjgLEmg8F4P3mB+rry0ANvURBQnbwlOAakBwxtnhsV
-         1Hcz9zg3J4xmh/Wa9rxAZr3UEhxvI//TMbN6xXpSr4A9kguBFlIf0cpDqYpzRkBi7uIW
-         rjWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790559117; x=1791163917;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+4cD82D480m1fv/g5FMu9AjvBoGSNDXP4ZPsfJiWeUE=;
-        b=cFKPrkvbTHqisqIvzfKlA4fvz5yy2EpqE4WZQ2m1IzhGixdgpmu2kiVpHbt7ab9F5I
-         aEQInJKfZAOVzSAlRbfadrNL3++oOCFFzdzIzir8RuSGFLE3r7TbdFNqfkjW0mMkx5jr
-         d5GT2gpu/HJaRI8T09LNWqxkEUJTJECAX7hwysauMT2suZzUxSjszxf9N0XIJjevuRb3
-         eg1qC/Q8DW9y3pdOQqcdC63LuniD2OmVwYfk5VllsznppAnrNdxTl9HIBmCm/xjz0j5I
-         94bDm6jGMXeVihJbxPtk6/cfr7INbZx1pFqy4fg/oBAgKWkYdnOWCwhY4gBSX3r2zzLY
-         vkTg==
-X-Forwarded-Encrypted: i=1; AKwUvBwPuG5NBzgUPf2Zkse8xwjUEte3eeN8y29sbLFMpvx18NfmC9VKrFVSh/gSS2Su9vjHOk6NxFoLsnZ2eKrbcw==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKyqfTNBAF/VEpNVngwYmdpfuXINKTgjEu6ITXlL6oeFd3OrC5g
-	L8Tiw83fZcFuqJRhqGCnDkc+yidgrk74zJgIBTdyXcyxmInGRKQ13uue
-X-Gm-Gg: AYBFou2OuwDAEX3x5oZ/XbC9A5nBQT3R2CQSUoZdRzCXGZIpOivsjc24JorNcEKsrnc
-	KPXYuBwnSXDqQcS/Y2E+RnBUnQilXRcJnp1pgglf+J/cRzw4Xfn8eYAcolxqTevSyJIQAVXjin7
-	EM4MMMgN9Bm2gheeZ2iOnwxbKFqv+2WRBkVvL5lWgY5jpnfuDlvZA7kAqRa5rrlOB6yVm5vA3Bx
-	rtv9xPdWi1dA68Y09QF7QTjAvRQwjcjCh9KDb3Ly2XVEC0wibl2b+UBwd6aE9XpK84eo55oB6dJ
-	baa5J/HMv6IYUUNf6SG+p8YpTe1kVhtP0zF4NLaZ/XE+MwPmf0YZW3sRvaXbi6z8OBh3dZSh0iK
-	QglU9HkCh5nKKAFaMcxjw6fUFTPWB38vq84ghd2T9c88GIqMhIk69AzLORAKucnA/y37aTbbTDG
-	MhmL0dwGrdGEKUteuONvV9HtB5GphvlqOvEQLnoVKvSX/QatyzjDl5cK0/UD/NgGg2ra/Kjrj4T
-	vo+1EH/iWKf4TY/
-X-Received: by 2002:a17:90a:f16:b0:3a0:d82b:237b with SMTP id 98e67ed59e1d1-3a0d82b26cfmr1728591a91.25.1790559116654;
-        Sun, 27 Sep 2026 18:31:56 -0700 (PDT)
-Received: from toolbx.alistair23.me ([2403:581e:fdf9:0:13b2:851f:d9cb:44c5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0c719f86fsm14951084a91.7.2026.09.27.18.31.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 18:31:55 -0700 (PDT)
-From: alistair23@gmail.com
-X-Google-Original-From: alistair.francis@wdc.com
-To: djbw@kernel.org,
-	linux-pci@vger.kernel.org,
-	bhelgaas@google.com,
-	linux-kernel@vger.kernel.org,
-	Jonathan.Cameron@huawei.com,
-	rust-for-linux@vger.kernel.org,
-	lukas@wunner.de,
-	akpm@linux-foundation.org,
-	jic23@kernel.org,
-	alistair@alistair23.me,
-	linux-cxl@vger.kernel.org
-Cc: aliceryhl@google.com,
-	gregkh@linuxfoundation.org,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	boqun.feng@gmail.com,
-	ojeda@kernel.org,
-	alistair23@gmail.com,
-	bjorn3_gh@protonmail.com,
-	gary@garyguo.net,
-	tmgross@umich.edu,
-	wilfred.mallawa@wdc.com,
-	alex.gaynor@gmail.com
-Subject: [PATCH v4 22/22] lib: rspdm: Support SPDM challenge
-Date: Mon, 28 Sep 2026 11:31:23 +1000
-Message-ID: <20260928013123.566184-4-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260928013123.566184-1-alistair.francis@wdc.com>
-References: <20260928011123.450800-1-alistair.francis@wdc.com>
- <20260928013123.566184-1-alistair.francis@wdc.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="O8sVyxjK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=N4rYXDg+lqZkM15O0Zb/JiHIJhp9BqrLSpelv25hPkDG4OhcK6+0F62xe9a/gUdxEsOhZISVblOa0yz3GjPbPYrlHNFmeNwaqHIl0w6N5511nc61P86ubt+o42zlX6vcMZ1OuZZ0rr3fYpP1UeUttSrhJT53sTQ9E3kNs2U3BFL8fvp+YJQoeHAmf4p+20ZgNabSqH+Wmnj/m/J+C/+DzLBIrq2/Y0F7i3MYsJeUmgNhqRtd3/EPz4k9PthEr2+3ThmzxoGfO8RG7AQLWeXmO0hOiMzjBNPIsfTgCsy396naEjyEpg8GAimCLKy3B4qQqzRzNqf2OW2sg5wS4yzRdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ekQjOKpENlCYAfdJ76bm9CLiPVesMOrAjeNx7t27FMY=;
+ b=VSfUwa/J6VCy1u9OENhvA51FJDMhvX3md/s73ZoSMskHZDMq0ccjf90sstLo+xbsK+QgUBbYIM7xrGBkkvrOLTuTG3PPQbV4RoqjCdW/ljwH4AuckX7PMfZTiRHz6FSZYkQYpGGJesWFPHLvbjSLiqnVteIxPjaoE5tSGHW88i1uJZQDtuTeGMLWqS4MZIEPAIAi4H1Iybf9tToS1SGSvwdohgCBwzeJ8PWekeZ1gOkoBqd4srqqkVo+jVpRO6X9WXxLa5TCICWVXlOnQ/8eTAklqnVK2o7LXXs5LJk5aGEHU58O7vl4gTMr6qZJvo8u9lN270uLjU844NC/J3Khiw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ekQjOKpENlCYAfdJ76bm9CLiPVesMOrAjeNx7t27FMY=;
+ b=O8sVyxjKHLccZU/YqTsXQodmta0lQTTcbRQ6j07syTWR95vCMPqiBTfFFdZUKl1bntIgNfq4bFHPoLpF7vamGyDAAZY489S0KbWfSqaDJht6eTnchj0IkR82bQELR/8xUUb8p7HLAIiprO+DJR1xvtQf0I+pDkN9ZlQYSVT8DNI5p6Ud+gdsl7oOJuxIN0sjmvF744urINh6y3HefkruIV7aZ3DqsEAKCIWHpZyO+W0UIVypsxCdY+lEEdHvAjcM8Wi4YZwLK+smA3xxUt0XZtmOtg1CoV0x4u2US8lxTxRRqBPDoGxtJ4i3aYm7wrL496ngp0K+G76AEj9rQxAJEA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by LV1PR12MB999305.namprd12.prod.outlook.com (2603:10b6:408:3f8::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Mon, 28 Sep
+ 2026 03:19:20 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0451.022; Mon, 28 Sep 2026
+ 03:19:20 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 28 Sep 2026 12:19:17 +0900
+Message-Id: <DLQMIL9HQRBR.3N6WCVYOAM5H1@nvidia.com>
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "John Hubbard" <jhubbard@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Benno Lossin"
+ <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>
+Cc: "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>
+Subject: Re: [PATCH v2 6/9] gpu: nova-core: gsp: cmdq: split the transport
+ part of the receive path
+References: <20260927-cmdq-rpc-v2-0-c3f66ae73be4@nvidia.com>
+ <20260927-cmdq-rpc-v2-6-c3f66ae73be4@nvidia.com>
+In-Reply-To: <20260927-cmdq-rpc-v2-6-c3f66ae73be4@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0119.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:29c::18) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|LV1PR12MB999305:EE_
+X-MS-Office365-Filtering-Correlation-Id: b0e429ea-9672-459c-4f35-08df1d0f496b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|23010399003|10070799003|10067099003|11063799006|56012099006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	IdxoHheYhRDhQmzjR3+7p4T0XB5rMeYGfaRwwu2mfwf832dkSlz+pcQpIW+OqpqWPSpUAWFFt90Yy5yTFcT22TuHye/twzK4OiDPfr3WOJVj4rg6JAb9VkaYtvLr82doKhfN/Gpm6iQOPcU4MJjPd0ezrWsGvjmBx5TtlHyuyLlcAuo51DqUnXIO9A9YOxexf9bpJFRL8Qh7gkU0KqIjQOZiREDzZf3t6osfwgFa7cuRXnir6Xupk+YQNvNBhW1qm6e4zaXyr2qu5KfjyWIkC31c52z3zwWw+sJgdIiMP0bZioV66NtUoqLSK/zh3aw90s1snkOMJT8V8+fPk1dPirc5mI05laZ7A5MJa5EwMweNO6LjL8Ztk1ZxvV8diOjiaY75cUpWRTggHldDGm5vqHTAFUWTRnpnwe65eEGBB6c8ERl1eDP1ATAu5Qz70Njj4Vr/ydLZn39BtMBrW0OYgrvqXkd7M6ra2JFoFdgSrxQAxX6Jy2SmbQNkQA2nZhXApP3ikXfirOZ3HDp8rBX+A29z8xXzzLBbZzSwF9LeOQBfdhgeZBqgk6msjHI4B9luXfWybrrkau2T1/YKn89kVR9fn04gTXd+NvnA7lNx93Dyp6Ku5/p/B0M+OFA8Dou7PMkPSc35gpBgJzeD9HesjbejpFkmQAItu+mfFc5UTzQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(23010399003)(10070799003)(10067099003)(11063799006)(56012099006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OUdDVkxhNUVuSFFZd1pHdUoyZ1FVc0FobXdHUjlZeFlaV3laMzIzNFlXL1No?=
+ =?utf-8?B?NEZxUkpqRWNCZjR2L1p3b2FvRUJGeTNoWm9LYy9zeThXNEFvS0ZMRGY2Q2lB?=
+ =?utf-8?B?ZlE5b3JNQnhDMFh1bWhObzJoYXJ0TDZUSERFVWpWQUo5MVhQODdkenIwMi9i?=
+ =?utf-8?B?eENpSzNWZkRsWHNFZGtoZ0o3RWM1RmVIckxDVnMyN3FMK2NLdHMxRkgxL2hE?=
+ =?utf-8?B?MTBKYUdTbnNQYmFLWFlJNmVwVFU2WDEzbDNrUkk5bmV1cWJkK216d0I3cVdU?=
+ =?utf-8?B?N2ZhcVhYVXFWTzMxUDh0WmpmWFBDV3hiWEZZQ2VkOVhMQmF2T0lBb2FWS1Nl?=
+ =?utf-8?B?N2hxdDFrbHg5NFVZaDc1b3V5N0VKOWdxLzM5TEJyQktSejY3bVhjODRvTHU3?=
+ =?utf-8?B?Wlc4OXhsc0UxcnQvTXY0QWNWL1VwWmRuWXBoMEE0bnlPbzEvTGppZmVzZjA0?=
+ =?utf-8?B?R3NDUkNDS2pMay8vdEhZeUlNS3VmMll3OHFBRURXamNUS2RGR1pYUFRFQ1lW?=
+ =?utf-8?B?ZmhSaGdBSWx3NzJ1WVJpbXBaajZ4UFM3TVJhYlJERjdkVzN3UUVzSWhRc08v?=
+ =?utf-8?B?WFdlaTd1SzR5Ukg3bVBwRmM3UHNrQ1k5ekpLQ2ZmTEFOZU5EaG1tNkI3SEl0?=
+ =?utf-8?B?V2VPTWZtcDAwNFl3cFptQVk0MjBnWTh2dlhPVVJwaHhWTUZrdlVVcWNXVVIw?=
+ =?utf-8?B?TWhZT0IrSmVxRXBTZjBSbldqellGRm5ZOGJkMWQvYks4Q3BETjNhWVl5NHE1?=
+ =?utf-8?B?REJ3ckV2Z0dTRGJVOFltdHBBeEFSTG91QVBqZ2U5Z2x6SnRSUXQ1M0tLTTho?=
+ =?utf-8?B?SWxMRUp1cFZCWDdBeDFrMEJ6eHVLcTFDWXFhRVduSVlmblZYQU5MWXB1UG5S?=
+ =?utf-8?B?dzlpTlhrWmRJVS9NcFFyeERFVDZqT2JDN0pVYkJlamkvVWI5K29vVUhYc3dx?=
+ =?utf-8?B?VEZWcVVra0pqdlY5QWhFNktPTFRuSUM0ZVoyWk82WXgxRUltUVE5OTIvMktO?=
+ =?utf-8?B?eVZPaEpBWTFDMWRzaXByOWVyMGRvVTN6NStEVXFVQ05raTRabmZybUNYZDBv?=
+ =?utf-8?B?Tzdnc25oUC8rOGx6VHJzTlo0ZzVpREIwVzdpZW1pbWs1UzJiYUpQcng4dW9O?=
+ =?utf-8?B?Tk9KLzFRQ0p0cDBoWGNodENUMkZuWEZieS9JL0hOcW1tUDFJRHAvRTN6OHU2?=
+ =?utf-8?B?cXpUeU5yQ0lEQTBXZXVxUno4R1lkNGEzd0szeXYxOGZVU0hVSHcyaWtwZk5L?=
+ =?utf-8?B?MG1tbjZjd0M5Qmk3YzUxSWoxTW1LR3NseTFFZDhJczVUek83RmFWYVVKTTY5?=
+ =?utf-8?B?OFVVRVRKODlxbGlJUHljMUlybENZMmdqVEFNU0ozTjRzVVVaNDFrMkJjT0hI?=
+ =?utf-8?B?K1N1VnZESHlLQ3R2UEYraXFibWhhR0RYbld3bUtLU1QvUHh4NlFMTFNSdk1H?=
+ =?utf-8?B?WmdxcCswTmdrWVh5ZU81NllUN2RRd3ZjOWNoYmE3ZHBGcnJmcUxYZE9zTVg5?=
+ =?utf-8?B?aWlJM3VCUENHSmFKWWdKNE1Qbm5wbTdjL3ptVE10bEJnSWkwaW44RGRjeHNh?=
+ =?utf-8?B?bzBsQkZDQ2tyL1hueFJZZzFyZzJJdnlXb1MwQW5aZWF4bTRoem9KNXBtbjdo?=
+ =?utf-8?B?SlM4VDE5b1d0akFjd3FkUkJ4aURualRNZnh0d0g2UVNoV3RYRmdxREZMdWFu?=
+ =?utf-8?B?NzBaSDhRQnljT2ZvRVBSSUVHK290QVRKSjFEOVZDWCtoVXhjb1doZjdqMUdm?=
+ =?utf-8?B?UktmU1RPM2F6dVpIbWt3YVBDUGxkeTBoS2VJTU1BYXlua2pCSU5QVXdOcmFw?=
+ =?utf-8?B?S2RjMCtZemF4cTZtcFZmY3QzUEhrcEZ3THZiUmpiUGE0UEtHSlJIemFlcUg0?=
+ =?utf-8?B?Wit2TjVyZVo2M1dNRmVweVN4SVNxYWIvdHBkZ1hkQWdFb2RKUVdRanhMYS96?=
+ =?utf-8?B?YlZMbHc4SGlBZWJwT2Y4TUd2NHUyY0N3V0dkU0ZnSDJBOVJpUXlPdDZUL0Nk?=
+ =?utf-8?B?SnZNQmdCeTk2dzZkZnp3LzdCWVlSTk0vc2NXL0hubHpzMHd4REp4WXdGdllh?=
+ =?utf-8?B?ZDFhTkdRSEZtNk9ncDRTQkJ2Vk03R3MveWthL1hPVlkzeGdkTVF4SDNrNzFk?=
+ =?utf-8?B?WXdhU3dFQmFibHdaaTdZQjRGQi9iQnpCc2ZIV3N1V1RVVjQ5NU80ZkJOZXFK?=
+ =?utf-8?B?VGJ2aWlIeUtCeVpYcnBrZHo2SWd3ZWUyekNqTGp2MkgvQnppR2lwN2pLWFlO?=
+ =?utf-8?B?cVc4YW9hYkwyZjllaFNuUUp3UDFiS01nbGxmSVVhUkVGQXBpR2FWemI4VWJz?=
+ =?utf-8?B?THUybGRzaW1WVzdnVG0zWXBvaVg0VC9zRHNlakZjZlMwUVhhZnIrTjdyYUdo?=
+ =?utf-8?Q?aCV/qMMVhTUgiP6BGzd/a11x/LL7JmILnxZzjxHP6Z+OT?=
+X-MS-Exchange-AntiSpam-MessageData-1: KmbtCyY79wnFzw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b0e429ea-9672-459c-4f35-08df1d0f496b
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 03:19:20.7089
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UPGcQ4sD64HVIWCDGf5rRVRLARn5PtFLJRRkZpqMaxZW+d/m+iZuq0aXJvvDNAN5Oo4UQro8M5ioCHu+qstutQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR12MB999305
 
-From: Alistair Francis <alistair@alistair23.me>
+On Sun Sep 27, 2026 at 10:46 PM JST, Alexandre Courbot wrote:
+> `wait_for_msg` mixes two layers: the transport layer which polls the
+> queue, extracts the element header and validates the checksum, and the
+> RPC layer which reads the RPC header and trims the payload slices to the
+> length advertised by the RPC header.
+>
+> Move the transport layer into `wait_for_element`, and introduce
+> `consume_element`, a transport-level method which runs a closure on the
+> next element before advancing the CPU read pointer past it, and
+> `parse_rpc_message`, which validates the RPC layer. This sets things up
+> for moving the RPC code into its own module, leaving the transport
+>   agnostic of the message type.
+>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/gsp/cmdq.rs | 91 ++++++++++++++++++++++++++++-----=
+------
+>  1 file changed, 65 insertions(+), 26 deletions(-)
+>
+> diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gs=
+p/cmdq.rs
+> index 640afe2e29cb..169ef0865339 100644
+> --- a/drivers/gpu/nova-core/gsp/cmdq.rs
+> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+> @@ -411,7 +411,7 @@ struct GspCommand<'a> {
+> =20
+>  /// A message ready to be processed from the message queue.
+>  ///
+> -/// This is the type returned by [`CmdqInner::wait_for_msg`].
+> +/// This is the type returned by [`CmdqInner::wait_for_element`].
+>  struct GspMessage<'a> {
+>      // Reference to the header of the message.
+>      header: &'a GspMsgElement,
+> @@ -566,7 +566,7 @@ fn send_command_element(
+>          Ok(())
+>      }
+> =20
+> -    /// Wait for a message to become available on the message queue.
+> +    /// Wait for the next element to become available on the message que=
+ue.
+>      ///
+>      /// This works purely at the transport layer and does not interpret =
+or validate the message
+>      /// beyond the advertised length in its [`GspMsgElement`].
+> @@ -584,7 +584,7 @@ fn send_command_element(
+>      ///   message queue.
+>      ///
+>      /// Error codes returned by the message constructor are propagated a=
+s-is.
+> -    fn wait_for_msg(&self, timeout: Delta) -> Result<GspMessage<'_>> {
+> +    fn wait_for_element(&self, timeout: Delta) -> Result<GspMessage<'_>>=
+ {
+>          // Wait for a message to arrive from the GSP.
+>          let (slice_1, slice_2) =3D read_poll_timeout(
+>              || Ok(self.gsp_mem.driver_read_area()),
+> @@ -606,18 +606,65 @@ fn wait_for_msg(&self, timeout: Delta) -> Result<Gs=
+pMessage<'_>> {
+>              return Err(EIO);
+>          }
+> =20
+> +        Ok(GspMessage {
+> +            header,
+> +            contents: (slice_1, slice_2),
+> +        })
+> +    }
+> +
+> +    /// Wait for the next element on the message queue, pass it to `proc=
+ess_element`, and advances
+> +    /// the read pointer past it.
+> +    ///
+> +    /// The read pointer advances regardless of whether `process_element=
+` succeeds or not.
+> +    ///
+> +    /// # Errors
+> +    ///
+> +    /// Errors from [`Self::wait_for_element`] and from `process_element=
+` are propagated as-is.
+> +    fn consume_element<R>(
+> +        &mut self,
+> +        timeout: Delta,
+> +        process_element: impl FnOnce(GspMessage<'_>) -> Result<R>,
+> +    ) -> Result<R> {
+> +        let (elem_count, result) =3D {
+> +            let message =3D self.wait_for_element(timeout)?;
+> +
+> +            (
+> +                u32::try_from(message.header.length().div_ceil(GSP_PAGE_=
+SIZE))?,
+> +                process_element(message),
+> +            )
+> +        };
+> +
+> +        self.gsp_mem.advance_cpu_read_ptr(elem_count);
+> +
+> +        result
+> +    }
+> +
+> +    /// Validate the RPC layer of `element` and trim its contents down t=
+o the RPC payload.
+> +    ///
+> +    /// # Errors
+> +    ///
+> +    /// - `EIO` if the element is shorter than the payload length advert=
+ised by the RPC header.
+> +    fn parse_rpc_message<'a>(
+> +        dev: &device::Device,
+> +        element: GspMessage<'a>,
+> +    ) -> Result<GspMessage<'a>> {
 
-Support the CHALLENGE SPDM command.
+Since this trims the payload, we should return a different type
+(`RpcMessage`?) with a field referring to the RPC header, otherwise we
+risk getting confused as to which headers are in the payload or not.
 
-Signed-off-by: Alistair Francis <alistair@alistair23.me>
----
- lib/rspdm/consts.rs             |   6 +
- lib/rspdm/lib.rs                |  10 +-
- lib/rspdm/state.rs              | 215 +++++++++++++++++++++++++++++++-
- lib/rspdm/validator.rs          | 153 ++++++++++++++++++++++-
- rust/bindings/bindings_helper.h |   1 +
- 5 files changed, 375 insertions(+), 10 deletions(-)
-
-diff --git a/lib/rspdm/consts.rs b/lib/rspdm/consts.rs
-index 234534c7aa6d..d4d743f260c6 100644
---- a/lib/rspdm/consts.rs
-+++ b/lib/rspdm/consts.rs
-@@ -150,6 +150,8 @@ fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
- 
- pub(crate) const SPDM_GET_CERTIFICATE: u8 = 0x82;
- 
-+pub(crate) const SPDM_CHALLENGE: u8 = 0x83;
-+
- // If the crypto support isn't enabled don't offer the algorithms
- // to the responder
- #[cfg(CONFIG_CRYPTO_RSA)]
-@@ -178,3 +180,7 @@ fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
- pub(crate) const SPDM_HASH_ALGOS: u32 = SPDM_HASH_SHA2_256 | SPDM_HASH_SHA2_384_512;
- 
- pub(crate) const SPDM_OPAQUE_DATA_FMT_GENERAL: u8 = bit_u8(1);
-+
-+pub(crate) const SPDM_PREFIX_SZ: usize = 64;
-+pub(crate) const SPDM_COMBINED_PREFIX_SZ: usize = 100;
-+pub(crate) const SPDM_MAX_OPAQUE_DATA: usize = 1024;
-diff --git a/lib/rspdm/lib.rs b/lib/rspdm/lib.rs
-index 50ff92741086..e555c565faae 100644
---- a/lib/rspdm/lib.rs
-+++ b/lib/rspdm/lib.rs
-@@ -11,8 +11,7 @@
- //! from other subsytems.
- 
- use crate::bindings::{
--    spdm_state,
--    EPROTONOSUPPORT, //
-+    spdm_state, //
- };
- use core::ffi::{
-     c_int,
-@@ -136,7 +135,12 @@ pub extern "C" fn spdm_authenticate(state_ptr: *mut spdm_state) -> c_int {
-         provisioned_slots &= !(1 << slot);
-     }
- 
--    -(EPROTONOSUPPORT as i32)
-+    let provisioned_slots = state.provisioned_slots.trailing_zeros();
-+    if let Err(e) = state.challenge(provisioned_slots as u8) {
-+        return e.to_errno() as c_int;
-+    }
-+
-+    0
- }
- 
- /// spdm_destroy() - Destroy SPDM session
-diff --git a/lib/rspdm/state.rs b/lib/rspdm/state.rs
-index 9f7f6d0ffac6..d6ece65a6fc0 100644
---- a/lib/rspdm/state.rs
-+++ b/lib/rspdm/state.rs
-@@ -18,6 +18,7 @@
-         Error, //
-     },
-     str::CStr,
-+    str::CString,
-     validate::Untrusted,
- };
- 
-@@ -30,6 +31,7 @@
-     SPDM_ASYM_RSASSA_2048,
-     SPDM_ASYM_RSASSA_3072,
-     SPDM_ASYM_RSASSA_4096,
-+    SPDM_COMBINED_PREFIX_SZ,
-     SPDM_ERROR,
-     SPDM_GET_VERSION_LEN,
-     SPDM_HASH_ALGOS,
-@@ -37,10 +39,12 @@
-     SPDM_HASH_SHA_384,
-     SPDM_HASH_SHA_512,
-     SPDM_KEY_EX_CAP,
-+    SPDM_MAX_OPAQUE_DATA,
-     SPDM_MAX_VER,
-     SPDM_MEAS_RESP_CAP,
-     SPDM_MIN_VER,
-     SPDM_OPAQUE_DATA_FMT_GENERAL,
-+    SPDM_PREFIX_SZ,
-     SPDM_REQ,
-     SPDM_RSP_MIN_CAPS,
-     SPDM_SLOTS,
-@@ -50,6 +54,8 @@
-     SPDM_VER_13, //
- };
- use crate::validator::{
-+    ChallengeReq,
-+    ChallengeRsp,
-     GetCapabilitiesReq,
-     GetCapabilitiesRsp,
-     GetCertificateReq,
-@@ -69,6 +75,8 @@
-     SPDM_CERT_CHAIN_HDR_SZ, //
- };
- 
-+const SPDM_CONTEXT: &str = "responder-challenge_auth signing";
-+
- /// The current SPDM session state for a device.
- ///
- /// Concurrent access is serialised by wrapping the whole struct in a
-@@ -119,6 +127,12 @@
- ///  not populated. Prefixed by the 4 + H header per SPDM 1.0.0 table 15.
- /// @leaf_key: Public key portion of leaf certificate against which to check
- ///  responder's signatures.
-+/// @transcript: Concatenation of all SPDM messages exchanged during an
-+///  authentication or measurement sequence.  Used to verify the signature,
-+///  as it is computed over the hashed transcript.
-+/// @next_nonce: Requester nonce to be used for the next authentication
-+///  sequence.  Populated from user space through sysfs.
-+///  If user space does not provide a nonce, the kernel uses a random one.
- pub(crate) struct SpdmState<'a> {
-     pub(crate) dev: *mut bindings::device,
-     pub(crate) transport: bindings::spdm_transport,
-@@ -137,7 +151,7 @@ pub(crate) struct SpdmState<'a> {
- 
-     /* Signature algorithm */
-     base_asym_enc: &'a CStr,
--    sig_len: usize,
-+    pub(crate) sig_len: usize,
- 
-     /* Hash algorithm */
-     base_hash_alg_name: &'a CStr,
-@@ -148,6 +162,10 @@ pub(crate) struct SpdmState<'a> {
-     // Certificates
-     pub(crate) certs: [KVec<u8>; SPDM_SLOTS],
-     pub(crate) leaf_key: Option<*mut bindings::public_key>,
-+
-+    transcript: VVec<u8>,
-+
-+    pub(crate) next_nonce: KVec<u8>,
- }
- 
- impl Drop for SpdmState<'_> {
-@@ -198,6 +216,8 @@ pub(crate) fn new(
-             hash_len: 0,
-             certs: [const { KVec::new() }; SPDM_SLOTS],
-             leaf_key: None,
-+            transcript: VVec::new(),
-+            next_nonce: KVec::new(),
-         }
-     }
- 
-@@ -329,13 +349,15 @@ fn spdm_err(&self, rsp: &SpdmErrorRsp) -> Result<(), Error> {
-     /// The data in `request_buf` is sent to the device and the response is
-     /// stored in `response_buf`.
-     pub(crate) fn spdm_exchange(
--        &self,
-+        &mut self,
-         request_buf: &mut [u8],
-         response_buf: &mut [u8],
-     ) -> Result<i32, Error> {
-         let header_size = core::mem::size_of::<SpdmHeader>();
-         let request: SpdmHeader = Untrusted::new(&request_buf[..]).validate(&*self)?;
- 
-+        self.transcript.extend_from_slice(request_buf, GFP_KERNEL)?;
-+
-         let transport_function = self.transport.ok_or(EINVAL)?;
-         // SAFETY: `transport_function` is provided by the new(), we are
-         // calling the function.
-@@ -385,6 +407,18 @@ pub(crate) fn get_version(&mut self) -> Result<(), Error> {
-         request.header.version = SPDM_MIN_VER;
-         self.version = SPDM_MIN_VER;
- 
-+        self.transcript.clear();
-+
-+        // Clear the leaf cert as we are re-authenticating
-+        if let Some(leaf_key) = self.leaf_key.take() {
-+            // SAFETY: `leaf_key` was extracted from a x509 certificate
-+            // in `validate_cert_chain()` so it is valid to pass to
-+            // `public_key_free()`.
-+            unsafe {
-+                bindings::public_key_free(leaf_key);
-+            }
-+        }
-+
-         let mut request_buf = request.to_bytes()?;
- 
-         let mut response_vec: KVec<u8> = KVec::from_elem(0u8, SPDM_GET_VERSION_LEN, GFP_KERNEL)?;
-@@ -400,6 +434,9 @@ pub(crate) fn get_version(&mut self) -> Result<(), Error> {
- 
-         let response: GetVersionRsp = Untrusted::new(response_vec.as_slice()).validate(&*self)?;
- 
-+        self.transcript
-+            .extend_from_slice(response_vec.get(..response.len()).ok_or(EIO)?, GFP_KERNEL)?;
-+
-         let mut foundver = false;
-         for &entry in response.version_number_entries.iter() {
-             let alpha_version = (entry & 0xF) as u8;
-@@ -452,7 +489,11 @@ pub(crate) fn get_capabilities(&mut self) -> Result<(), Error> {
-         let response: GetCapabilitiesRsp =
-             Untrusted::new(response_vec.as_slice()).validate(&*self)?;
- 
-+        self.transcript
-+            .extend_from_slice(response_vec.get(..response.len()).ok_or(EIO)?, GFP_KERNEL)?;
-+
-         self.rsp_caps = response.flags;
-+
-         if (self.rsp_caps & SPDM_RSP_MIN_CAPS) != SPDM_RSP_MIN_CAPS {
-             pr_err!(
-                 "{:#x} capabilities are supported, which don't meet required {:#x}\n",
-@@ -601,6 +642,9 @@ pub(crate) fn negotiate_algs(&mut self) -> Result<(), Error> {
-         let response: NegotiateAlgsRsp =
-             Untrusted::new(response_vec.as_slice()).validate(&*self)?;
- 
-+        self.transcript
-+            .extend_from_slice(response_vec.get(..response.len()).ok_or(EIO)?, GFP_KERNEL)?;
-+
-         self.base_asym_alg = response.base_asym_sel;
-         self.base_hash_alg = response.base_hash_sel;
-         self.meas_hash_alg = response.measurement_hash_algo;
-@@ -652,6 +696,9 @@ pub(crate) fn get_digests(&mut self) -> Result<(), Error> {
- 
-         let response: GetDigestsRsp = Untrusted::new(response_vec.as_slice()).validate(&*self)?;
- 
-+        self.transcript
-+            .extend_from_slice(response_vec.get(..response.len()).ok_or(EIO)?, GFP_KERNEL)?;
-+
-         let mut deprovisioned_slots = self.provisioned_slots & !response.header.param2;
-         while (deprovisioned_slots.trailing_zeros() as usize) < SPDM_SLOTS {
-             let slot = deprovisioned_slots.trailing_zeros() as usize;
-@@ -683,6 +730,9 @@ fn get_cert_exchange(
-         let response: GetCertificateRsp =
-             Untrusted::new(response_vec.as_slice()).validate(&*self)?;
- 
-+        self.transcript
-+            .extend_from_slice(response_vec.get(..response.len()).ok_or(EIO)?, GFP_KERNEL)?;
-+
-         Ok(response)
-     }
- 
-@@ -907,4 +957,165 @@ pub(crate) fn validate_cert_chain(&mut self, slot: u8) -> Result<(), Error> {
- 
-         Ok(())
-     }
-+
-+    pub(crate) fn challenge_rsp_len(&mut self, nonce_len: usize, opaque_len: usize) -> usize {
-+        // No measurement summary hash requested (MSHLength == 0)
-+        let mut length =
-+            core::mem::size_of::<SpdmHeader>() + self.hash_len + nonce_len + opaque_len + 2;
-+
-+        if self.version >= SPDM_VER_13 {
-+            length += 8;
-+        }
-+
-+        length + self.sig_len
-+    }
-+
-+    fn verify_signature(&mut self, signature: &mut [u8]) -> Result<(), Error> {
-+        let mut sig = bindings::public_key_signature::default();
-+
-+        sig.s = signature as *mut _ as *mut u8;
-+        sig.s_size = self.sig_len as u32;
-+        sig.encoding = self.base_asym_enc.as_ptr() as *const u8;
-+        sig.hash_algo = self.base_hash_alg_name.as_ptr() as *const u8;
-+
-+        let mut m: KVec<u8> = KVec::new();
-+        m.extend_with(SPDM_COMBINED_PREFIX_SZ + self.hash_len, 0, GFP_KERNEL)?;
-+
-+        if !self.desc.is_null() {
-+            unsafe { (*self.desc).tfm = self.shash };
-+
-+            // Generate the `unverified_message_hash`, which is the the hash of
-+            // the `unverified_data` (Chapter 16 - "Signature Verification")
-+            unsafe {
-+                to_result(bindings::crypto_shash_digest(
-+                    self.desc,
-+                    self.transcript.as_ptr(),
-+                    (self.transcript.len() - self.sig_len) as u32,
-+                    m[SPDM_COMBINED_PREFIX_SZ..].as_mut_ptr(),
-+                ))?;
-+            };
-+        } else {
-+            return Err(EPROTO);
-+        }
-+
-+        // Must be in scope whenenver `sig` is used
-+        let mut mhash: KVec<u8> = KVec::new();
-+
-+        if self.version <= SPDM_VER_11 {
-+            sig.m = m[SPDM_COMBINED_PREFIX_SZ..].as_mut_ptr();
-+        } else {
-+            let major = self.version >> 4;
-+            let minor = self.version & 0xF;
-+
-+            // Generate the `spdm_prefix` (Chapter 15 - "Signature generation")
-+            let prefix = CString::try_from_fmt(fmt!("dmtf-spdm-v{major:x}.{minor:x}.*dmtf-spdm-v{major:x}.{minor:x}.*dmtf-spdm-v{major:x}.{minor:x}.*dmtf-spdm-v{major:x}.{minor:x}.*"))?;
-+            let mut buf = prefix.into_vec();
-+            let zero_pad_len = SPDM_COMBINED_PREFIX_SZ - SPDM_PREFIX_SZ - SPDM_CONTEXT.len() - 1;
-+
-+            // Copy in the `zero_pad` and `spdm_context` to form the `combined_spdm_prefix`
-+            // (Chapter 15 - "Signature generation")
-+            buf.extend_with(zero_pad_len, 0, GFP_KERNEL)?;
-+            buf.extend_from_slice(SPDM_CONTEXT.as_bytes(), GFP_KERNEL)?;
-+
-+            // The `combined_spdm_prefix` must be 100 bytes
-+            // (Chapter 15 - "Signature generation")
-+            if buf.len() != SPDM_COMBINED_PREFIX_SZ {
-+                pr_err!("combined_spdm_prefix calculation is incorrect");
-+                return Err(EPROTO);
-+            }
-+
-+            // `M` shall be the concatenation of the `combined_spdm_prefix`
-+            // and `unverified_message_hash`. We use `M` for pub/priv
-+            // signature verification below.
-+            // (Chapter 16 - "Signature Verification")
-+            m[..SPDM_COMBINED_PREFIX_SZ].copy_from_slice(&buf);
-+
-+            if !self.desc.is_null() {
-+                unsafe { (*self.desc).tfm = self.shash };
-+                // Generate a hash of `M` and use that for signature
-+                // verification (RSA or ECDSA)
-+                mhash.extend_with(self.hash_len, 0, GFP_KERNEL)?;
-+
-+                unsafe {
-+                    to_result(bindings::crypto_shash_digest(
-+                        self.desc,
-+                        m.as_ptr(),
-+                        m.len() as u32,
-+                        mhash.as_mut_ptr(),
-+                    ))?;
-+                };
-+            } else {
-+                return Err(EPROTO);
-+            }
-+
-+            sig.m = mhash.as_mut_ptr();
-+        }
-+
-+        sig.m_size = self.hash_len as u32;
-+
-+        // Finally verify the generated signature against the public key
-+        if let Some(leaf_key) = self.leaf_key {
-+            unsafe { to_result(bindings::public_key_verify_signature(leaf_key, &sig)) }
-+        } else {
-+            return Err(EPROTO);
-+        }
-+    }
-+
-+    pub(crate) fn challenge(&mut self, slot: u8) -> Result<(), Error> {
-+        let mut request = ChallengeReq::default();
-+        request.header.version = self.version;
-+        request.header.param1 = slot;
-+
-+        let nonce_len = request.nonce.len();
-+
-+        if self.next_nonce.len() > 0 {
-+            let request_nonce_len = request.nonce.len();
-+
-+            if self.next_nonce.len() == request_nonce_len {
-+                request
-+                    .nonce
-+                    .copy_from_slice(&self.next_nonce[..request_nonce_len]);
-+            } else {
-+                return Err(EINVAL);
-+            }
-+
-+            self.next_nonce.clear();
-+        } else {
-+            unsafe {
-+                bindings::get_random_bytes(&mut request.nonce as *mut _ as *mut c_void, nonce_len)
-+            };
-+        }
-+
-+        let rsp_sz = self.challenge_rsp_len(nonce_len, SPDM_MAX_OPAQUE_DATA);
-+
-+        let mut request_buf = request.to_bytes()?;
-+
-+        let mut response_vec: KVec<u8> = KVec::from_elem(0u8, rsp_sz, GFP_KERNEL)?;
-+
-+        let rc =
-+            self.spdm_exchange(request_buf.as_mut_slice(), response_vec.as_mut_slice())? as usize;
-+        response_vec.truncate(rc);
-+
-+        let mut response: ChallengeRsp =
-+            Untrusted::new(response_vec.as_slice()).validate(&*self)?;
-+
-+        if request.context != response.context {
-+            pr_err!("Mismatched challenge context response\n");
-+            return Err(EIO);
-+        }
-+
-+        self.transcript
-+            .extend_from_slice(response_vec.get(..response.len()).ok_or(EIO)?, GFP_KERNEL)?;
-+
-+        match self.verify_signature(&mut response.signature) {
-+            Ok(()) => {
-+                pr_info!("Authenticated with certificate slot {slot}\n");
-+                Ok(())
-+            }
-+            Err(e) => {
-+                pr_err!("Cannot verify challenge_auth signature: {e:?}\n");
-+                Err(EPROTO)
-+            }
-+        }
-+    }
- }
-diff --git a/lib/rspdm/validator.rs b/lib/rspdm/validator.rs
-index f4e9485179d0..9992679f7c8a 100644
---- a/lib/rspdm/validator.rs
-+++ b/lib/rspdm/validator.rs
-@@ -24,12 +24,14 @@
- use crate::consts::{
-     SPDM_ASYM_ALGOS,
-     SPDM_CAP_SUPPORTED_ALGORITHMS,
-+    SPDM_CHALLENGE,
-     SPDM_CTEXPONENT,
-     SPDM_GET_CAPABILITIES,
-     SPDM_GET_CERTIFICATE,
-     SPDM_GET_DIGESTS,
-     SPDM_GET_VERSION,
-     SPDM_HASH_ALGOS,
-+    SPDM_MAX_OPAQUE_DATA,
-     SPDM_MEAS_SPEC_DMTF,
-     SPDM_MIN_DATA_TRANSFER_SIZE,
-     SPDM_MIN_VER,
-@@ -142,7 +144,6 @@ pub(crate) struct GetVersionRsp {
- }
- 
- impl GetVersionRsp {
--    #[expect(dead_code)]
-     pub(crate) fn len(&self) -> usize {
-         self.length
-     }
-@@ -395,7 +396,6 @@ pub(crate) struct GetCapabilitiesRsp {
- }
- 
- impl GetCapabilitiesRsp {
--    #[expect(dead_code)]
-     pub(crate) fn len(&self) -> usize {
-         self.length
-     }
-@@ -577,7 +577,6 @@ pub(crate) struct NegotiateAlgsRsp {
- }
- 
- impl NegotiateAlgsRsp {
--    #[expect(dead_code)]
-     pub(crate) fn len(&self) -> usize {
-         self.length
-     }
-@@ -736,7 +735,6 @@ pub(crate) struct GetDigestsRsp {
- }
- 
- impl GetDigestsRsp {
--    #[expect(dead_code)]
-     pub(crate) fn len(&self) -> usize {
-         self.length
-     }
-@@ -893,7 +891,6 @@ pub(crate) struct GetCertificateRsp {
- }
- 
- impl GetCertificateRsp {
--    #[expect(dead_code)]
-     pub(crate) fn len(&self) -> usize {
-         self.length
-     }
-@@ -946,3 +943,149 @@ fn validate(unvalidated: &[u8], context: &'c SpdmState<'c>) -> Result<Self, Self
-         })
-     }
- }
-+
-+pub(crate) struct ChallengeReq {
-+    pub(crate) header: SpdmHeader,
-+
-+    pub(crate) nonce: [u8; 32],
-+    pub(crate) context: [u8; 8],
-+}
-+
-+impl ChallengeReq {
-+    pub(crate) fn to_bytes(&self) -> Result<KVec<u8>> {
-+        let mut out = self.header.to_bytes()?;
-+
-+        out.extend_from_slice(&self.nonce, GFP_KERNEL)?;
-+
-+        if self.header.version > SPDM_VER_12 {
-+            out.extend_from_slice(&self.context, GFP_KERNEL)?;
-+        }
-+
-+        Ok(out)
-+    }
-+}
-+
-+impl Default for ChallengeReq {
-+    fn default() -> Self {
-+        ChallengeReq {
-+            header: SpdmHeader::new(SPDM_CHALLENGE),
-+
-+            nonce: [0; 32],
-+            context: [0; 8],
-+        }
-+    }
-+}
-+
-+#[expect(dead_code)]
-+pub(crate) struct ChallengeRsp {
-+    pub(crate) header: SpdmHeader,
-+
-+    pub(crate) cert_chain_hash: KVec<u8>,
-+    pub(crate) nonce: [u8; 32],
-+
-+    pub(crate) opaque_data_len: u16,
-+    pub(crate) opaque_data: KVec<u8>,
-+
-+    /// `RequesterContext`, only present in SPDM 1.3 and later, zeroed otherwise.
-+    pub(crate) context: [u8; 8],
-+
-+    pub(crate) signature: KVec<u8>,
-+
-+    /// Size of the response, not public
-+    length: usize,
-+}
-+
-+impl ChallengeRsp {
-+    pub(crate) fn len(&self) -> usize {
-+        self.length
-+    }
-+}
-+
-+impl<'a, 'c> Validate<'c, Untrusted<&'a [u8]>> for ChallengeRsp {
-+    type Err = Error;
-+
-+    type Context = &'c SpdmState<'c>;
-+
-+    fn validate(unvalidated: &[u8], context: &'c SpdmState<'c>) -> Result<Self, Self::Err> {
-+        let header: SpdmHeader =
-+            Untrusted::new(unvalidated.get(0..4).ok_or(EIO)?).validate(context)?;
-+
-+        if header.code != SPDM_CHALLENGE - 0x80 {
-+            return Err(EINVAL);
-+        }
-+
-+        if header.version != context.version {
-+            pr_err!("Invalid version response\n");
-+            return Err(EPROTO);
-+        }
-+
-+        let hash_len = context.hash_len;
-+
-+        let nonce_offset = mem::size_of::<SpdmHeader>() + hash_len;
-+        // MSHLength (H) is always zero as we don't support it
-+        let opaque_len_offset = nonce_offset + 32;
-+        let opaque_offset = opaque_len_offset + 2;
-+
-+        let mut cert_chain_hash = KVec::new();
-+        cert_chain_hash.extend_from_slice(
-+            unvalidated
-+                .get(mem::size_of::<SpdmHeader>()..nonce_offset)
-+                .ok_or(EIO)?,
-+            GFP_KERNEL,
-+        )?;
-+
-+        let mut nonce = [0u8; 32];
-+        nonce.copy_from_slice(
-+            unvalidated
-+                .get(nonce_offset..nonce_offset + 32)
-+                .ok_or(EIO)?,
-+        );
-+
-+        let opaque_data_len = u16::from_le_bytes(
-+            unvalidated
-+                .get(opaque_len_offset..opaque_len_offset + 2)
-+                .ok_or(EIO)?
-+                .try_into()
-+                .map_err(|_| EINVAL)?,
-+        );
-+
-+        if opaque_data_len > SPDM_MAX_OPAQUE_DATA as u16 {
-+            return Err(EINVAL);
-+        }
-+
-+        let opaque_end = opaque_offset + opaque_data_len as usize;
-+        let mut opaque_data = KVec::new();
-+        opaque_data.extend_from_slice(
-+            unvalidated.get(opaque_offset..opaque_end).ok_or(EIO)?,
-+            GFP_KERNEL,
-+        )?;
-+
-+        // `RequesterContext` (8 bytes) is only present in SPDM 1.3 and later.
-+        let mut req_context = [0u8; 8];
-+        let context_end;
-+        if context.version >= SPDM_VER_13 {
-+            context_end = opaque_end + 8;
-+            req_context.copy_from_slice(unvalidated.get(opaque_end..context_end).ok_or(EIO)?);
-+        } else {
-+            context_end = opaque_end;
-+        }
-+
-+        let signature_end = context_end + context.sig_len;
-+        let mut signature = KVec::new();
-+        signature.extend_from_slice(
-+            unvalidated.get(context_end..signature_end).ok_or(EIO)?,
-+            GFP_KERNEL,
-+        )?;
-+
-+        Ok(ChallengeRsp {
-+            header,
-+            cert_chain_hash,
-+            nonce,
-+            opaque_data_len,
-+            opaque_data,
-+            context: req_context,
-+            signature,
-+            length: signature_end,
-+        })
-+    }
-+}
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 5cc71552b524..f3d3f6e9f60a 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -31,6 +31,7 @@
- #include <linux/acpi.h>
- #include <linux/gpu_buddy.h>
- #include <crypto/hash.h>
-+#include <crypto/public_key.h>
- #include <drm/drm_device.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_file.h>
--- 
-2.55.0
-
+Not re-sending just for that, but wanted to flag this for v3.
