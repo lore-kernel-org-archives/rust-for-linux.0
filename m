@@ -1,90 +1,58 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7ABD4E73C3
-	for <rust-for-linux@vger.kernel.org>; Mon, 28 Sep 2026 16:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0414C4D90AF;
+	Mon, 28 Sep 2026 16:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790612545; cv=none; b=dUsQHNnqJs/5MlR6CR5Kfze+/D3AomagnA8ZD0uknH/ksaDII7xLwzLJX8y2iOZUHzSvOvT8uqYqsfpE8w9XYWuiVCSfKaPhp44Ms/hhDYBKo0kxSTw0PagwHisZabFrtqASi4g/+EZC0xV0QAhnybiWKbJ+lR2euK6nM0HgOPQ=
+	t=1790614590; cv=none; b=KK8fGIQDpGeNB6yhr0Yhhb7Qu9Zib1hYzb9AQl92HMfT0OS98NvOj49nFNUnyWrnAX/IizcQiq8UkkoX2JXwP2MDa8s+yD2sP3qrt0/Yr9njeTK2M6JqHg4vRYM9uO7P442MSt6U6B8yAki90Ogw7REGMnr12uPz1JmDiZhG7ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790612545; c=relaxed/simple;
-	bh=T0BVWlH+xvCgpGrbu8nNWISjsWHXibM8xFq2to97JoE=;
+	s=arc-20240116; t=1790614590; c=relaxed/simple;
+	bh=I2BetFeSEOimiagM5fZoUJYuONuerQXiE6VR6C3lLx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G6I4w/dELRGocy9a10Cr42GoS/DTloiTlWw7QsPdGpjYezHd6Jgsav8qZljBZUUEchYOiwouzBDSW8GavCpClBcrJWzEjI7wZHPsOH0E9jRMGWpYl1cvyyoNZLoLCtDrfTC2sxx560FQ03iUzUEJiLmifcIFXg9esXiNKhExIjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eXBNNdrP; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version; b=JS18e7WqVfvx3/auiRymnSZo/ws7GHdyimTQYNnbXfLgomnXnXHrZh6G6bZX0jI3r0M/FVfKaxYzNEfGwCG/y76lRt/CU6iUFHbY245ye4MEXz3wPakXPgR+CcTR7CU60kqS1avoru/NkBnRYNJUFiyIYhqZH4PhyjLPdhZ2V6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PlxyqhuN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eXBNNdrP"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d822dso24322205e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 28 Sep 2026 09:22:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790612542; x=1791217342; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pnCeuLGKaQE+iBUrLvw9M2eMKqv09/kl1t4RvltPK10=;
-        b=eXBNNdrPIkTnwGz1WO2x3siSqzZk9NZTx99SD69BsgT5Wkoy0YZh2VInAruhjkYpXa
-         ENYXaD2rYB/sSFVWSOwAk8zocTYvKu+cWGFq0Qw/ZhrWwSgU0pr+EmZD4Du6ps0BeOxJ
-         xyn2eJi/0yslacFl4ibW0XxdB0e7nRVBdGuGQ+UeJEe1mDJfF+gvtGofBaCbren184BI
-         1XgWBfNJCNdYI9QeapMEChSthDFCH/kd2YBn2r1YQla14ypMFLwqNzCNZkAXbcnCdZr9
-         FgUn980OojVDTMtFM7N/rAsuYTBQGZErkgXmkOzCybLDzwUfBXzQqb4u/725l0A+w7IL
-         XQKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790612542; x=1791217342;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pnCeuLGKaQE+iBUrLvw9M2eMKqv09/kl1t4RvltPK10=;
-        b=BPffx8hKAZkxMnBzCgosdC4PE32KNQ8MPOmhvFvL34T79dlMVdqnwIu6MUFmO5+AUZ
-         ASXbVqoCDOjNBB3pchViQrQ/+VadNOX9wU8+qprd7UFx8K2XPM5sWcLLPCkUVdH7hZpO
-         npU8boJOwvx8o+RHrXw4CMkPgkwnzg+MLtconlhAxopLCNvMUlR6EILgXPnB2Qwbh7DP
-         OlHKcpDpVkpSqQjTQtnMG/tcI2peG9ljmAVvdzEsOSXNk2GdSJIU9tCCBGhr86MtazBD
-         0aKhQ5US0vN+Q9pbS5tcBmEtHxGPh7GnpbH2ObLGkrBrrxPSnWQuHduXHMRZMBLEYDmn
-         enzw==
-X-Forwarded-Encrypted: i=1; AKwUvBw7evPJQT5KuSmIUp/qbaGsXX7vdkhhnMlD+Me7VoPFgj77vueJU9ndTC1ajrFEQ0+f3Urq6QKmQ45RjtitvQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++kJiKbbsFiEEU4jhXwqqKdie/OUWmrwNXXyN9m6X+cHBSvx8iB5
-	zRY9xqtTSd5DBgMq81/yM8B7bVljlV7FYqv66nKdIH/1fm92E0tfCD7Q
-X-Gm-Gg: AYBFou2HPEuPXyD6330hS7SV6CjYbuxA4J6H+UdYAVUonVUlLxFCqCZds7Yt+Kgz9IR
-	KA6YYc+W64prFcoheX1pxCjAiyPhnQFcYUsS6Yy31fwNuKTJp6gFT90dYXS3Ly47pPc7qHPIliU
-	NOktEsCNslEOdC3C5tPMHot0DelCxRII2rn5cANkOG8sam3TkFOmBt18RdXwnvXaf2gLN+7kKgQ
-	+oHt0qcio4R7fWnUxunNCF1AhNFoh+T2PyemoRJ/asQIk0dw7JmCRhRjZzTicllm0wQC6/U9wdP
-	vwGEKbrQuy/JEQksKf8KfQWUVloFD5LyFKPBMcDjpjLjuvNMdUS4GRoU4pDnGZfOko6FF7EY02y
-	MCtMdGxQH5K+XffALxbUTbysEFg+gjHCmxz6mUOtKQzU9ep2x3NpnXffZ3R+9sCW2S8RKwfjsDT
-	iDd3rFVcf0bztI3B6QbiY4AGUCPOcVjbQgMNe/yyFQJfcV66ZxoQDrOwDYW6G0jOkMwxbbwTSrn
-	P8vOAO55NV0Ebxo19pJifZ1nuo+qPWqj8Vz0flwN8rcp4wsRns=
-X-Received: by 2002:a05:600c:348a:b0:49d:1840:4fd2 with SMTP id 5b1f17b1804b1-49fe7bbaf83mr222889565e9.23.1790612541529;
-        Mon, 28 Sep 2026 09:22:21 -0700 (PDT)
-Received: from sp1der-OptiPlex-7080.epfl.ch (dhcp-122-dist-b-107.epfl.ch. [128.178.122.107])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00cf9b150sm3372535e9.7.2026.09.28.09.22.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 09:22:20 -0700 (PDT)
-From: spidermana <xuyiwen14@gmail.com>
-To: mehmet.mkoseoglu@gmail.com
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PlxyqhuN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CC61F000FF;
+	Mon, 28 Sep 2026 16:56:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790614588;
+	bh=qdMdQ7xNoZT0JPAPrDLZpRnRksX8EJod56eBhYE2+9E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=PlxyqhuNqRl8HaNDmVdbT+HILDG54Fx6nLK9YGA8zHZwvvHeEUhVe1JQIGH8iTacq
+	 8y5MEMW3W5MaIZPUOaXBuAOesY18jLR3zkhGNriuTfbwfyCl+PG+tvDJxx+YPjDyHs
+	 wxGmmhsuinQi7MTzj6li8NyL9BFRWdAxmUC/DdvxJocRYPa8n9QMt0hthYAL4zFLDF
+	 ctll5WnKHJNHpGpCACfOnf0NLGg9SZ+TI0ml/qJ+PLtJaACtH1HQa7C1zWEXhWPCOY
+	 qs7b0qD7jhVRLBvlRCOa3eyuo4kKzFWahoMP/PIxbqj8dIuVrxrfFfL7gxMiNyvNCR
+	 Wv63+0e0ws+mA==
+From: SJ Park <sj@kernel.org>
+To: Enze Li <lienze@kylinos.cn>
+Cc: SJ Park <sj@kernel.org>,
+	ojeda@kernel.org,
 	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
 	dakr@kernel.org,
 	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	lossin@kernel.org,
-	ojeda@kernel.org,
-	rafael@kernel.org,
-	rust-for-linux@vger.kernel.org,
 	tamird@kernel.org,
-	tmgross@umich.edu,
-	viresh.kumar@linaro.org,
-	work@onurozkan.dev
-Subject: Re: [PATCH v3] rust: cpufreq: reject NULL from cpufreq_cpu_get()
-Date: Mon, 28 Sep 2026 18:22:14 +0200
-Message-ID: <20260928162214.487564-1-xuyiwen14@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260829161013.102967-1-mehmet.mkoseoglu@gmail.com>
-References: <20260829161013.102967-1-mehmet.mkoseoglu@gmail.com>
+	acourbot@nvidia.com,
+	work@onurozkan.dev,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	enze.li@gmx.com
+Subject: Re: [RFC PATCH 0/4] rust: damon: a first small step, plus a Rust prcl sample
+Date: Mon, 28 Sep 2026 09:56:20 -0700
+Message-ID: <20260928165621.18850-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <b1774aea-aac7-4399-815e-19b830d883a9@kylinos.cn>
+References: 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -93,24 +61,33 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Sat, 29 Aug 2026 19:10:13 +0300, Mehmet Koseoglu wrote:
-> cpufreq_cpu_get() returns either a referenced policy or NULL.
-> PolicyCpu::from_cpu() passed its return value to from_err_ptr(), which
-> rejects ERR_PTR values but accepts NULL.
+On Mon, 28 Sep 2026 20:59:45 +0800 Enze Li <lienze@kylinos.cn> wrote:
+
+> Hi SJ,
+> 
+> Thank you for the detailed reply.  Comments inline below.
+> 
+> On 9/27/26 18:07, SJ Park wrote:
 [...]
->          Ok(Self(
->              // SAFETY: The `ptr` is guaranteed to be valid and remains valid for the lifetime of
->              // the returned reference.
-> -            unsafe { Policy::from_raw_mut(ptr) },
-> +            unsafe { Policy::from_raw_mut(ptr.as_ptr()) },
+> > I understand this patch series is a kind of experiment rather than for a real
+> > use case that has a hard deadline.  If I'm not incorrect, I feel like this
+> > might not be the best time to start the experiment.  Could we wait until
+> > fundamental parts including module parameters support in Rust and ongoing DAMON
+> > reconstruction, or my learning of Rust are done and stabilized?
+> 
+> Yes.  I will park the patches and restart once both are true:
+> 
+> 1. Rust supports writable/sysfs-backed module parameters.
+> 2. the DAMON API reconstruction has settled enough that wrappers can
+>    target the new interfaces directly.
+> 
+> Meanwhile I will keep working on DAMON in C as usual.
 
-Just a quick nit here, maybe rephrase this SAFETY comment, e.g.:
+Thank you for accepting my humble suggestion, Enze.  If anybody has different
+optinions, please feel free to weigh in, though.
 
-            // SAFETY: `ptr` is non-NULL and `cpufreq_cpu_get()` took a reference on it, so it is
-            // valid for writing and remains valid for the lifetime of the returned reference.
 
-Either way, looks good to me.
-FWIW, I hit this too and have a reproducer [1].
-[1] https://github.com/Rust-for-Linux/linux/issues/1258
+Thanks,
+SJ
 
-Reviewed-by: Elowen Xu <malanalyzing@gmail.com>
+[...]
