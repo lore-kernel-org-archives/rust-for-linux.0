@@ -1,146 +1,232 @@
-Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F82E33D6F9
-	for <rust-for-linux@vger.kernel.org>; Mon, 28 Sep 2026 12:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790598099; cv=pass; b=M5siZPlS0+URex4P/fNUXtBheFEBGffhJNRxnrXvzx+cijMJpKyi/338aKyENjrZLI8FZIuo4GaNv9E3wRZOP4on217Sg/oQ2o7cDuEbHtRBwy8LinjMroHnVCIWj4lcSYfuq+lNQcADgdPegBSgN3iEAM6bJm7RZvEuYRO/5Xg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790598099; c=relaxed/simple;
-	bh=oiOJzAh5GCDekkxzmiAyZpk6ok4wyCpJnQb5vZtuPkY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pJ/nnau/eic1f/M939BueJ268hEVMtHGCBh8oALWhM1pkcTpyxm2I4GKUkq6dO3E622VEF7VmEGI/d4ivzUgr3rJlo+HOubBKTtscB5V6qlgVzabpxy+yTPC5G6WveCjVTYLMrIMNcdg4tocrJ0mzvgcyTfwmVAYqSoF26xj6aE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WcPL6Cu9; arc=pass smtp.client-ip=74.125.229.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WcPL6Cu9"
-Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-342c08bf64dso163915eec.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 28 Sep 2026 05:21:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790598097; cv=none;
-        d=google.com; s=arc-20260327;
-        b=NniKeXTrxkEAtEdJPX6ldxTiDlfaDfieBB0/EyL+H8tHNLSsdZ393B+C62PAPKWbZU
-         64xl9k3ah0H9EGxICMri56IDPmY8FyzmTJddZn7C23qQLr/SJs/R5jUavGaLrXwhgPpB
-         J03iZgpBg17JpgPf2OUh9LWfxQ+Ug84FHPXGL25T+RHoFSnDxFUYIdPt626+4BcalnMn
-         iqNDaOey9QqRt6zMqGnOQWUyH0fNKKyV8HvogvzlSRmaw99SGKSOWkjf3NYYqRpRVibw
-         xMt4rg11bBFFBDVeYIN+rzZFJXWtaJM6R623Y6olohvulPMpNniLQ3+AYB7s5B5RJH5c
-         kTdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wW+kBA+Cpt1SUepJVoW2nRQFXA7jpL9oUIIw6VJqh7A=;
-        fh=WrqAQ0rQSDYy4H5BtQudVvOOYu2b4I7m1ZMyQQrIDEY=;
-        b=TRZFhmP68HAHMl3oEg/4p9W+ZB0ZR8Zy3zGv0DXFYGG1JCveEFu1TRU+oyXjfex5dr
-         t1GtSxSDphcBfWxEDxUkK68RPCpvwh9BOLn1aA6tB7gUVHSPoufdsX+SfMovF9RLoog8
-         UmnuYiwJeqJpKokcqyTmBbh1o6GPCHGnsS2caerU3I7+4p7OaAfQbiHpFF8HJDqmCL7U
-         TM+GHxt+MlKA1jr8MaxG+l0dKC/yINnarQVMKHLwc1kjQ0HqFtgLQY1g7Iar1HxXnlyL
-         a7Xlsp5rihc7oYQ4aU3KQ56fU+akP4LxaSRgTFP4XJgccwEUeThwc1IWEGirMxu86Oil
-         PpBA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790598097; x=1791202897; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wW+kBA+Cpt1SUepJVoW2nRQFXA7jpL9oUIIw6VJqh7A=;
-        b=WcPL6Cu9bX/LnWKrsZLXNf8mPSu108d3o/GU3x3DkUJZFg18ImlqT5L4oxTmKUgx3a
-         lEGTJVITxQZSYRdEsz9PjFbdPPrsliiFp3ega2TCsZ17mwp/b9et+gu0AlEL60hoFNjW
-         POtgGDpBxkQRnd4+6A5ISpcE15VQMQSyJVfT+vw8GPp5IL0jE63z+7YybFjvdnhPNozs
-         Tc5ygh8tvfQt7u2A17e+A/2um5x3ISgeW23PXznrCYiU9oMuA03QXmfU1xW2X3cKtIOG
-         fA/wYIght0Abp93x+7tT9DX/Ews35D1SewsQL+I4ZhRu/f/dyyRdatWo2BVC4vEDg18W
-         31bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790598097; x=1791202897;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wW+kBA+Cpt1SUepJVoW2nRQFXA7jpL9oUIIw6VJqh7A=;
-        b=VgiMv6TRZn81FZPBmraDkBB82jppkrT5L+yhVFg4bryEc/je+MA0DDn9cPzYKdHNdT
-         vAPiIYXLF6j6wJzqwsl7XPSq7BeMr35zS/Ev595345Xc3lBk9Jtij5gX/AhDHC7FN7Z4
-         v+aa3vnXGOQ7Aw+pt/SRIHGkMwHFM0NoFBt/EZkfNkO8VmxLQcWyVQNS0t9VsROAF/xD
-         EvXFOcfS80p+k0UcsX7zVDLA+3fvzXwslcdKQPEwwbdrCyspBFlpFikExuRF+4fnVz+1
-         EBdI8TXrPr5tvbdzriVTssMu6C0/Yvjjbuuc76CX0BlETnIibAkcZch1FRQE9X5vkElx
-         +WGg==
-X-Forwarded-Encrypted: i=1; AKwUvBz0OHE2BsdPIA4gMwtXV8+AWN2FsrpFewCUKc/IaZbOC8ISUk+ocVDsWHSHDDgvVQpJueR8P6nvTWG1HATVfQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJmwuE+1BBgerk0ntrAm+OAEBfP+3bbogUnPgtWCgj3AtbelEUs
-	pL4ZrLi2Ik/HIskRO9knRQ/fYqx+p6iV6CV/hG0Fd/IJDmhjzPMM0cad/qrZx5vRfLpF5fDVnPr
-	MUIjqDg/66VvX4oGuQWpToOIBllYAmNs=
-X-Gm-Gg: AYBFou04gP4N83lDLEHwK+HUZd/Aewg3k/LU87IZkblUn2mF40oOB+xkHPLtg4+h4zy
-	cliP14tk6Qy4YTKBOhCFIjKKHenE6ZT9jK6L5nzEmGHz2gpMAeeYV6gtvYpXnxB//xZs20btL2+
-	COGadKx32Md7l9UF/Z2Ed6wZLb5Ro7DZzoH0yf3ekRQBj0h9QwbpimSXAVVvFF+Xdo1NQyFoEs5
-	bKLnw5oNX9dTk6a4X4OHQ8Y93vSI8eoErTQ7KYBQz7FleP8op4k7Zyc/G1w19EAPVSHT7Y1fxvZ
-	+aGLDb+ZsJG1wMcLyTs+VCHRDwnqSpBYG6YHJdbg7zI8Fged1AqB1d9os88YG4qi6khtLyCZXEI
-	pFaRz7Z4wqP0vxR2UcvHvBVc06uF1dVdQ18WqdG8a9djQlsCP2n38JbPsTah770HOA4s4VvOGt1
-	hRM8nJ20TnBP0LKePdjMy7tzyUC/rxKz59IhGbu4vnk2ZGe3AA7ec=
-X-Received: by 2002:a05:7300:de0b:b0:341:f4d6:d9a5 with SMTP id
- 5a478bee46e88-3427169be76mr15164074eec.1.1790598095923; Mon, 28 Sep 2026
- 05:21:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DAF3D5C12;
+	Mon, 28 Sep 2026 13:00:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790600404; cv=none; b=XCKzVkmeNn8AugBeTZ5LHHNqjey2aqN7a5vmJrr68TGscpbtBl6Mb4kGBVkKl3x7839IYH+i+wcYWWRIH6QRURi10MUtgLBFVIFHs6D94cK1VsCTuqD3SYACNjea8bI3q31iRZW16f0HPSjweypsSML7UU0dqOFd/dvqpXR5Yjs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790600404; c=relaxed/simple;
+	bh=F3r18ExGbPm4dhGR+DFniH9A9lokSPXbe7fETSHTj/U=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=DgX4Sgm3OHgky/VjmKQLQ8SWGVG4H6fcMf6xQnMXG+DPc5to4c3O4uWmvtU4bWKvcMP6d5bXpm2RoQqt///RcZWQGvZ2fRXa01Ehl2sjHJvVl3Ezs+9x68xkNzateWfMNGudasjxGOZyDO5PMcBlQ8wyu92bN58+se1pLOcfQYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 7cf4be08bb3c11f19a56ed5b684f684d-20260928
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:55f35981-00d2-4575-b6c9-7b287aadb6f6,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.19,REQID:55f35981-00d2-4575-b6c9-7b287aadb6f6,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:7db8b62,CLOUDID:c9b1ec987c3220615bbed103939654c3,BulkI
+	D:260927180756KXK67MMP,BulkQuantity:2,SF:17|19|64|66|78|80|81|82|83|102|12
+	7|841|865|898,TC:nil,Content:0|15|50|99,EDM:-3,IP:-2,URL:0,File:nil,RT:nil
+	,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BR
+	R:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 7cf4be08bb3c11f19a56ed5b684f684d-20260928
+X-User: lienze@kylinos.cn
+Received: from [192.168.3.106] [(111.193.136.161)] by mailgw.kylinos.cn
+	(envelope-from <lienze@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 490693840; Mon, 28 Sep 2026 20:59:49 +0800
+Message-ID: <b1774aea-aac7-4399-815e-19b830d883a9@kylinos.cn>
+Date: Mon, 28 Sep 2026 20:59:45 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260921115708.4009754-1-gary@kernel.org> <CANiq72nR-QzR3zOiV=RL4je4U8m_hCsPhOD3SxAcjc+4VCrMsw@mail.gmail.com>
- <DLQWWUKZ61KN.1X8VCC2YLPD53@garyguo.net>
-In-Reply-To: <DLQWWUKZ61KN.1X8VCC2YLPD53@garyguo.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 28 Sep 2026 14:21:22 +0200
-X-Gm-Features: AclHuK8ncUNTbZ31O7I8Q9x8vu3w0Yp2ed77b6bv8_kyDXsORDHq3MTG00hhWhM
-Message-ID: <CANiq72mOC_-6hzd=dG3YJoaLi=fYCZ620CaSXZv1Oo4ja2v5gQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: proc-macro2: enable `proc_macro_span` feature
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+From: Enze Li <lienze@kylinos.cn>
+Subject: Re: [RFC PATCH 0/4] rust: damon: a first small step, plus a Rust prcl
+ sample
+To: SJ Park <sj@kernel.org>
+Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
+ daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
+ work@onurozkan.dev, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, damon@lists.linux.dev, linux-mm@kvack.org,
+ enze.li@gmx.com
+References: <20260927100735.41931-1-sj@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20260927100735.41931-1-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 28, 2026 at 1:28=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> Another thing is that pin-init's diagnostics test suite is built with Car=
-go,
-> and the build script of proc-macro2 will probe if the nightly feature is
-> available and enable proc_macro_span automatically. So if this is not ena=
-bled on
-> RfL side, the diagnostics can diverge from what we expect.
+Hi SJ,
 
-Doesn't sound fun...
+Thank you for the detailed reply.  Comments inline below.
 
-> I think the self-ref one is the main motivating factor, because the diagn=
-ostics
-> with that can be confusing in general. That said, I have improved it much=
- over
-> the last week, it seems that it is not *that* needed anymore.
+On 9/27/26 18:07, SJ Park wrote:
+> Hi Enze,
+> 
+> On Sun, 27 Sep 2026 15:28:08 +0800 Enze Li <lienze@kylinos.cn> wrote:
+> 
+>> Hi SJ, hi all,
+>>
+>> Almost a year ago, right after a memory-leak fix discussion on this list, I
+>> asked whether introducing Rust for some DAMON modules could be worth
+>> exploring as a proactive measure.  SJ's answer was positive: he was open to
+>> Rust adoption in DAMON, both in kernel and user space, and even mentioned
+>> he had been wanting to write a Rust sample DAMON module himself since LPC,
+>> but had not found the time yet [1].
+>>
+>> So, here is my attempt at making that start happen.  This RFC is
+>> intentionally small: it adds just enough Rust support for DAMON to port the
+>> proactive reclamation sample (prcl.c), and nothing more.
+> 
+> Thank you for this patch series!  Yes, I'm interested in Rust, though I didn't
+> have sufficient time to dig in yet.  I'm planning to attend Rust for Linux
+> training day [1] on next Sunday.
+> 
+> TLDR: I feel like we might need to wait or focus on module parameter support in
+> Rust, ongoing DAMON extension works before adopting Rust in DAMON.  Also, I'd
+> suggest starting with wsse, which is simpler.
 
-Yeah, that one looks more important to have indeed.
+Agreed, and after thinking it over I am fine with deferring the series.
 
-> So, none of these are really big deals and that can be said to diagnostic=
-s in
-> general. But I think the change needed here is small enough that any impr=
-ovement
-> can be used to justify that. I also submitted the proc-macro2 change upst=
-ream
-> too: https://github.com/dtolnay/proc-macro2/pull/542; if that is merged a=
-nd we
-> later update proc-macro2, we should get down to just a single Makefile li=
-ne
-> change.
+For context, the original goal was never really the sample itself: what
+I was hoping to start was a thin Rust compatibility layer for DAMON --
+the damon.rs wrappers -- with prcl serving only as its first in-tree
+user, to validate that the wrappers are usable so that others can build
+their own DAMON-based modules on top of them.  It is therefore a bit
+unfortunate that the first step ends up blocked partly by something
+outside of DAMON, namely the lack of writable/sysfs-backed module
+parameters in Rust.
 
-Ok, in that case (plus what you mention above and the examples --
-thanks for those, by the way), I think it is fine either way.
+That said, I understand the position and I do not think waiting is the
+wrong outcome: the parameters have no committed timeline, and the DAMON
+API reconstruction is actively changing the interfaces the wrappers
+would sit on, so starting now with a debugfs-only interface we already
+know we want to replace would just add churn to moving APIs.
 
-I added it preemptively to the "nice to have" section in #2:
+> 
+>>
+>> The series has four patches:
+>>
+>>    1. Generate Rust bindings for include/linux/damon.h.
+>>    2. Add thin safe wrappers in a new rust::kernel::damon module: contexts,
+>>       targets, access patterns, quotas, watermarks, schemes, plus
+>>       start/stop.  Everything FFI-related is confined to the wrappers, with
+>>       the usual SAFETY comments; error codes are returned as kernel::Result.
+>>    3. Add samples/damon/rust_prcl.rs, a Rust port of prcl.c.  It watches the
+>>       virtual address space of a target process and pages out cold regions
+>>       with the DAMOS_PAGEOUT action, same access-pattern filter as the C
+>>       version.
+> 
+> I'd suggest starting from porting wsse, because it is simplest.  By scoping
+> down to it, you could drop the wrappers for DAMOS.
+> 
+>>    4. Add a MAINTAINERS entry for the two new files.
+>>
+>> Two differences from the C sample are worth noting.
+>>
+>> First, the control interface.  The C prcl sample is driven through
+>> runtime-writable module parameters (target_pid and enabled, the latter via
+>> module_param_cb), neither of which Rust can express yet -- its module
+>> parameters are load-time only and do not show up under /sys/module/, and
+>> there is no general sysfs abstraction in mainline or the RfL rust-next
+>> tree.  The debugfs abstraction, however, already provides the safe
+>> read/write wrappers we need, so the Rust sample exposes the same two knobs
+>> under /sys/kernel/debug/rust_prcl/.  This is a temporary detour, not a
+>> design preference: the sample will be switched over to match the C
+>> interface once Rust supports sysfs-backed module parameters.
+> 
+> Do we have a timeline for module parameters support in Rust?  I'd prefer to
+> avoid use of debugfs and directly start with sysfs.
 
-  https://github.com/Rust-for-Linux/linux/issues/2
+I am not aware of one.  rust-next still registers Rust module
+parameters with perm 0 (load-time only).  I will keep an eye on the
+rust-for-linux list; if anyone picks it up, I would appreciate being
+Cc'd.
 
-Cheers,
-Miguel
+> 
+>>
+>> Second, the functional scope.  The C sample also repeatedly reports the
+>> estimated working set size via a repeating damon_call() callback.  This
+>> initial Rust version covers only the core monitoring/reclamation path
+>> (context, target, PAGEOUT scheme, start/stop); wss reporting needs safe
+>> wrappers for damon_call() and region iteration, which will come in a
+>> follow-up series that also makes the Rust sample's output match the C
+>> one's.
+> 
+> As I abovely mentioned, I'd prefer porting wsse first, and later extend to
+> DAMOS-based samples like prcl and mtier.
+
+Noted -- when this restarts, it will be the wsse-scoped version, without
+the DAMOS wrappers, and the compatibility layer will grow around only
+what that sample actually needs.
+
+> 
+>>
+>> A quick word on the longer-term plan, so the design discussion here can
+>> happen with the destination in mind:
+>>
+>>    - Over roughly the next year, I would like to port the other two DAMON
+>>      samples (wsse and mtier) to Rust as well, and let the DAMON Rust
+>>      compatibility layer grow together with them, wrapping only what real
+>>      in-tree users need.
+>>    - Once that layer has matured, I would be happy to try Rust for the
+>>      production modules - damon/reclaim, damon/lru_sort and damon/stat.
+>>      That is a much bigger step, of course, and it only happens if SJ is
+>>      comfortable with it.  Consider it a willingness statement, not a
+>>      promise.
+> 
+> I think that's a good plan.  However, I'd like to call out we will also need to
+> make each step with good and sufficient discussions.  That is, for each step,
+> we will discuss if the previous step change was helpful and therefore make
+> sense to proceed to the next step.  If the conclusion is oppostie, we could
+> even revert the previous changes.  It would be great if we could make it driven
+> by data.
+> 
+>>
+>> Regarding the MAINTAINERS patch: I listed myself for the new files, but did
+>> not add SJ as a reviewer yet, since he mentioned limited bandwidth for Rust
+>> work in that earlier discussion.  The existing DAMON entry already covers
+>> samples/damon/, so the sample reaches him regardless; adding him to the
+>> RUST [DAMON] entry would only additionally route future changes to
+>> rust/kernel/damon.rs his way.  Happy to add the R: line if he wants it, or
+>> leave it out if he prefers.
+> 
+> I think I should at least review the patches.  Also I feel I am responsible to
+> the maintenance of the code.
+> 
+> We are extending DAMON to work for not only data access but general data
+> attributes.  I'm also planning to refactor DAMON API quite a lot in near
+> future.  Some interfaces will be added and removed.  DAMON API callers
+> including sample modules would also need to be changed a lot.  If we make the
+> Rust sample module with the current API, we may need to make changes not only
+> in C but also Rust parts.  I concern if it can introduce more breakages that
+> require unnecessarily long time to fix.  Among all, my lack of Rust
+> understanding is a big concern.
+> 
+> I understand this patch series is a kind of experiment rather than for a real
+> use case that has a hard deadline.  If I'm not incorrect, I feel like this
+> might not be the best time to start the experiment.  Could we wait until
+> fundamental parts including module parameters support in Rust and ongoing DAMON
+> reconstruction, or my learning of Rust are done and stabilized?
+
+Yes.  I will park the patches and restart once both are true:
+
+1. Rust supports writable/sysfs-backed module parameters.
+2. the DAMON API reconstruction has settled enough that wrappers can
+   target the new interfaces directly.
+
+Meanwhile I will keep working on DAMON in C as usual.
+
+Enjoy the training day, and good luck with the Rust learning.
+
+Thanks,
+Enze
+
+<...>
