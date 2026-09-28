@@ -1,132 +1,151 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F69648989F;
-	Mon, 28 Sep 2026 10:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802933B7B6E;
+	Mon, 28 Sep 2026 10:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790592217; cv=none; b=mlEYLb2ynsTLYeVrikYfje1N5L+ZqbrDpo3n1QQlpMwFUSyvymhQo1tfz43mg2kl/eQ4NHL1OZjIVj2EnoF8P6eeIoM/t9Z5L+I1ICI91P4VB+AEwCFjOh0nEWw9kKvFYTjnSTxGq1GXEw/SfmFOHrkyDtWC/O9RTK41miepZkw=
+	t=1790592244; cv=none; b=mPz7zvOupddTgUkGIecExg0JPGZXrRCAoG23V4+QNR6oFs4LP1efA7i/vdmyCKDeMHBy33HodzG46nkUHK2pWRrjqykjQY29wjdkSoZEum9Rx0mgI7ghwbJwhEKFjZbdHBJt2L7kw5IcgjqSkwFoKti3ogngYv7tcK+zGfNph6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790592217; c=relaxed/simple;
-	bh=IAMusWTMHU8SIclWHel+/IVnnuAKzzVXSNHbxaONyVw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d9pNkMomIzumBjUXBgcLw9UIEypD+O9eA2+Grtgi6y6ba+vmwhS4cDbdSNbS8fU8pn74HWQxUWq//NVI7yPiqVQMRoloWfEGbSNGoXMPAiPYcgRv4rmtwaeRvG6thQcTXXG7vwjZM7PKtV/HGi42mHJhdissGBvPlcoXNXNrkXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i/m1pk9V; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790592244; c=relaxed/simple;
+	bh=5SfTuxAiSv4mvZ89TZUYw5wDEzGgBJFCQM8+4xeEwfE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=pPsjSr1r5CdCpwrQ8NS6Hmp0nE9LpBgb8+iLpcyL9P177aw8xJflNsEM0F66SUnMaZ6AFUSpy10r7oRe8fICmOzY5gGXSjvTFjLGb4P7IABiB/DVKdRTW6oo6N0rdrjIw4KAGPCavRkCsm5fKpEOF4Qkn+yh4ah12hXCCVsB/sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z4jfKm8t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i/m1pk9V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790592213; x=1822128213;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IAMusWTMHU8SIclWHel+/IVnnuAKzzVXSNHbxaONyVw=;
-  b=i/m1pk9VVv462heW1xfF4awwHuTQIS/xcro/BR/7qcKWyYBiSQ76g7bM
-   IblyRMo3fxOZKl+/gmEzR9lBRcf0uYk1MRQCpxXsSOG44/zDKN8pjq0ZK
-   0kUEHrbaseLWixEniQ8lj5m1gPVM5n3RqUev1B6MBdEA109FbUcmYdd5a
-   V+vVGRCVMijIbduBfvnu/kEQnkvRZqpxvsXh5jVBShrVAMG5goffRn2RU
-   ++DqEj/SXzTHppwU5U4oUHvfvSkuEJl8Ooir+MrcdiK2D9hZS8h8bn55W
-   uYPRgJLOfhiEzjsP1LO3HUpDC4g4mFafAle4x7BPJNq+TGoYO46ef2XuG
-   w==;
-X-CSE-ConnectionGUID: muz+NCvuQU2DT7ziqkDwrA==
-X-CSE-MsgGUID: MRThJwr+TOqtOm/B9iZKCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11918"; a="90506056"
-X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="90506056"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 03:43:32 -0700
-X-CSE-ConnectionGUID: 1l1YSLV6Q5GvjlkKXTCojg==
-X-CSE-MsgGUID: AbDliMEMS2KhkhwmoWWURQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="304510639"
-Received: from igk-lkp-server01.igk.intel.com (HELO 04362d00df5a) ([10.211.93.152])
-  by orviesa002.jf.intel.com with ESMTP; 28 Sep 2026 03:43:27 -0700
-Received: from kbuild by 04362d00df5a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xB8pR-000000000y7-0YNn;
-	Mon, 28 Sep 2026 10:43:25 +0000
-Date: Mon, 28 Sep 2026 12:42:47 +0200
-From: kernel test robot <lkp@intel.com>
-To: Georgios Androutsopoulos <georgeandrout13@gmail.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, Jan Kara <jack@suse.cz>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Subject: Re: [PATCH v2] rust: file: handle fd table teardown in file
- descriptor APIs
-Message-ID: <202609281234.H1AixLDP-lkp@intel.com>
-References: <20260923022339.3340694-1-georgeandrout13@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z4jfKm8t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 281B61F000FF;
+	Mon, 28 Sep 2026 10:43:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790592243;
+	bh=Mp3XtGy21aQRxosj8wN/TOa0Q0Kwk8FEiqjAOGlRKRA=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=Z4jfKm8tURgzkzDL8XMRwfRfzIx6XQt9YZ3Cj5pnOFDdx9l+/VWZPCzVfKGoLILhV
+	 kwyWZ7ZjgtWu4UV4VJIsbSu5w+WcMUw2oGCOS5rHSQYm1RRokk84vXQ6YRJj0LkOhc
+	 5ognTu+rOZRN5YMdnW1SmVs0tSsnzi25zPkOqsFBkuJ0AJJajd0NMUGvwtmmPPA5Ty
+	 95oF6vcOBJD77eaYExtR5IDk6V2U8SPws8oHSofzVjF2WHhhiTtrNN1WJ2utgF+DR4
+	 o/ElFe3+3iM/ZLt8mjy8KOAggC0m34zuQXjbHixJ7Gw6RhTlo83clvqvB4/mubwyvA
+	 z6FQo7senxhKw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260923022339.3340694-1-georgeandrout13@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 28 Sep 2026 12:43:57 +0200
+Message-Id: <DLQVZ218WBQS.2A4Z1DSNU4I6H@kernel.org>
+Subject: Re: [PATCH] rust: DmaFence: Add better warning through Device
+ reference
+Cc: <phasta@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Sumit Semwal" <sumit.semwal@linaro.org>,
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, <linux-media@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Philipp Stanner" <phasta@mailbox.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260925081958.3048112-2-phasta@kernel.org>
+ <DLOBPY6OBEOG.2Y4I4LRA276WU@garyguo.net>
+ <DLOECU7X3MTR.31Z6N1I0WB0MJ@kernel.org>
+ <f0248d1529378ab8be957009a93a0a73ee74bafb.camel@mailbox.org>
+ <DLOILT0V4HCX.31L2PE7YIAKY3@kernel.org>
+ <ab1241777ac432666bb1564d875211bf142a6398.camel@mailbox.org>
+ <DLOKSGU61PUG.WSZBN04H0A2Q@kernel.org>
+ <37a2858a4687e4d9bbe0aba4c1861b96875c4ed7.camel@mailbox.org>
+ <DLQSQE8ZXLY1.1XFW8PGSDLICT@kernel.org>
+ <a44b26ceb273f0cdfc04a4391040c08386b31e01.camel@mailbox.org>
+In-Reply-To: <a44b26ceb273f0cdfc04a4391040c08386b31e01.camel@mailbox.org>
 
-Hi Georgios,
+On Mon Sep 28, 2026 at 10:32 AM CEST, Philipp Stanner wrote:
+> On Mon, 2026-09-28 at 10:11 +0200, Danilo Krummrich wrote:
+>> On Mon Sep 28, 2026 at 9:52 AM CEST, Philipp Stanner wrote:
+>> > > > So I suppose we agree that a warning is fine. It won't fire in JQ
+>> > > > anyways, but might benefit others.
+>> > >=20
+>> > > What scenario are you thinking of?
+>> >=20
+>> > Drivers doing "rather questionable" things, like we've seen a great
+>> > many times already ;)
+>> >=20
+>> > Note that the dma_fence backend fires a WARN_ON if a fence is freed
+>> > unsignaled, too, for the same reason.
+>> >=20
+>> > Life finds a way.
+>>=20
+>> I'd rather you engage with the arguments I made above and give a concret=
+e
+>> example of how it "might benefit others", instead of resorting to know-i=
+t-all
+>> platitudes.
+>
+> Stating that I cannot know nor conceive all possible patterns and
+> misbehaviors is quite literally me acknowledging that I do *not* "know
+> it all".
 
-kernel test robot noticed the following build warnings:
+I mean, you expressed a concern about a fence being signaled before the har=
+dware
+has been torn down accordingly. I provided arguments why I don't see that t=
+he
+concern holds and then you mentioned that the warning "might benefit others=
+".
 
-[auto build test WARNING on brauner-vfs/vfs.all]
-[also build test WARNING on linus/master v7.3-rc5 next-20260925]
-[cannot apply to linux-review/Georgios-Androutsopoulos/rust-file-handle-fd-table-teardown-in-file-descriptor-APIs/20260920-160154]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+To me this sounded as if you had concrete scenarios in mind, which doesn't =
+seem
+to be the case. If that's correct, and given that there was no reply to my
+arguments, it seems we can just remove it.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Georgios-Androutsopoulos/rust-file-handle-fd-table-teardown-in-file-descriptor-APIs/20260922-222339
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.all
-patch link:    https://lore.kernel.org/r/20260923022339.3340694-1-georgeandrout13%40gmail.com
-patch subject: [PATCH v2] rust: file: handle fd table teardown in file descriptor APIs
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260928/202609281234.H1AixLDP-lkp@intel.com/config)
-compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
-rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260928/202609281234.H1AixLDP-lkp@intel.com/reproduce)
+Maybe to further explain my reasoning:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202609281234.H1AixLDP-lkp@intel.com/
+The concern was that it could happen that the DriverFence is dropped while =
+the
+hardware still utilizes the memory "protected" by the fence. As mentioned, =
+to me
+this is not a concern because of the programming model we have in Rust. Tak=
+e
+this analogous DMA memory example:
 
-All warnings (new ones prefixed by >>):
+	struct Channel<'a> {
+	    shared: dma::Coherent<'a, Data>,
+	}
+=09
+	impl Drop for Channel<'_> {
+	    fn drop(&mut self) {
+	        self.stop_hardware();
+	        shared.free();
+	    }
+	}
 
->> warning: statement has unnecessary safety comment
-   --> rust/kernel/fs/file.rs:455:9
-   |
-   455 | /         if crate::warn_on!(unsafe { (*current.as_ptr()).files.is_null() }) {
-   456 | |             // `put_unused_fd` also requires `current->files` to be valid, so do not run
-   457 | |             // the reservation's destructor after the current task has lost its fd table.
-   458 | |             core::mem::forget(self);
-   459 | |             return;
-   460 | |         }
-   | |_________^
-   |
-   help: consider removing the safety comment
-   --> rust/kernel/fs/file.rs:452:12
-   |
-   452 |         // SAFETY: `current` points to the currently executing task, so it is
-   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#unnecessary_safety_comment
-   = note: requested on the command line with `-W clippy::unnecessary-safety-comment`
+We could use the exact same argument to require people to explicitly call f=
+ree()
+on a dma::Coherent allocation as the underlying hardware (represented by th=
+e
+channel) could still use the dma::Coherent allocation if we "drop it
+accidentally".
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+But as you can see, the ownership is already properly expressed by Rust, th=
+e
+Channel owns the dma::Coherent allocation, so the memory can just be freed =
+in
+Coherent::drop().
+
+The same applies to DriverFence, the thing that takes ownership is the thin=
+g
+that operates the hardware.
+
+> With this patch I was just trying to accommodate your post-merge
+> request for replacing pr_ with dev_err() or WARN_ON. If you think
+> neither is actually necessary, that's also fine by me.
+
+I did arrive at the conclusion to discuss whether we can't just get rid of =
+the
+warning entirely in my first reply [1], which you refer to, already.
+
+[1] https://lore.kernel.org/all/DL9AEUZ4VGV5.2RT33JE0MHYME@kernel.org/
