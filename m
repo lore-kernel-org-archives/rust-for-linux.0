@@ -1,54 +1,54 @@
 Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022083.outbound.protection.outlook.com [52.101.101.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B92D4E06FC;
-	Mon, 28 Sep 2026 17:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F3A4E36D8;
+	Mon, 28 Sep 2026 17:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.83
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790616764; cv=fail; b=oNhvwkCdL7sxckIGEvTb26Pcg84nPPm+31id0uEm7wvzpK+rvQr6V/yIb7PfyZ7BnN/61uACXG1Oas3KqIZ8YHL9jDaZgWwfrJz5sz307sVqf6oRcBQlig3x46Ff+ce+vYvlWagAph7BDiY9trgxbh3Mq6Zrv42cBxxH5qRaKrQ=
+	t=1790616765; cv=fail; b=d5qeKmhHFHICaX5qEOCv0pJbGUPQgHbI45UFYLhM1vXeOr+RICjpIIp6swWFfvek44mGuwFVdF07a/NFb6qahyu7bANLvELgKYuVuHXpBxmT99TvPI7vdrljFwLUVPQ2DyvN9ujZAuUrNrmZwtj3GtC43dH26VMbrxNBTaz3gEw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790616764; c=relaxed/simple;
-	bh=YOHNQwheROhSL58+Lxk8HvxRrEyRgzJv58DAyUkRUDo=;
+	s=arc-20240116; t=1790616765; c=relaxed/simple;
+	bh=I/i53pf39Ox8h3S2gk581a4j8ztAw8DIVR6NGBCOuDw=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=kBuFtAQWicWRSS2vk0o47Qsah6dnXmYRLDzyPH1dLBPhyKoKY0HlWf0duh31xqKuPhg6Aq9Me++vpXR0nGBCViJq9w+helR6jeHwM2L0RJaCRHJkuDoN2AvzhGSRkCMBzHFLOcU6eE3HMgsOrfEUtF8LADvsRgI4NleSYSFdHp8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=AaSypvF6; arc=fail smtp.client-ip=52.101.101.83
+	 To:Cc:MIME-Version; b=vAzWgmPzNlec6kt5T/sqoCmR4tZt58uSJRKoWzY3cBfikGQY45ccIgnJ903EPalnhOzg1aIAoqBZ1DTPU9I8S082OzWa+LuJjRTKMlLj79kmrQDVAPHr5flN5LCfAXXRWkCu6jA6n1T5RW8RaUDWd1pn1yw+haw/DbejWG3ZAXs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=pMdtLvv2; arc=fail smtp.client-ip=52.101.101.83
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="AaSypvF6"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="pMdtLvv2"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Jvk+DnCZvtlLiy/GEccfpJg7y4xGDVzQu5b5K3Cok2WflKOBij3UUxpIJWDdgjuMtNoR7P2aiWH2NLo58rkF6f0Ntc8pBulBZjW2GTbJdyHQNqI5ARyeZxtgcuHbjIM6mzRokPjokg+2WLFYgWOx6XS1QY5yMlfl6jy2HUEVDF6lRUko429Vn+powT0QTwt9lxu/FCxJ014VwiPvDhPlXFDAx83KHVfD//6R9gMOaPbSYSo3yibTCLYe8GdwR4ZoZ8JozdbGvt+IRFcnQTXmHN+tfGGuLbOKvr/nlRpQoahAEi3iBNAOQ9f6NiC6FTyFPC0gcnoMDfepmJVxclcbzQ==
+ b=ll23i6Ip2q4H227uiyN+fQl1zwC+13a+1tVMV481EzBPZmAld5JKI3ky1/pr9fX35eA0s0uUq7V9ibKsjI5ej7kFbpaGMxFf5XsRQ04AbrxV6upb2pnOqOFZNaIBGBF06lUUi0G2jjfvIecDEvV0txeJCmjzqxLphEWZl0lVCLtS2dHg3nnxHMv1L61DYYvyBrhFXNhoGMGZnAqYJSgwvy4ITguomC0Jp+Ab6Qsh/eIvX/yp66H+ujAZVM19zCpXnh8p9i1KyhBO/ZYhCvU1MypL/f8WmotlkcpK30g3tK704g9iYqKxICdnvoHKL0lw629FJX1PkW0sDKeDJ6lD0Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mN+Auxpljzv0iK1knjYzB4IkXuuF4mSbJA8mCQcNovM=;
- b=EMR6ujdpKyJYRK52aWScnXUoigVu3TOL2J6OdYpCfcTYbWAtdiAAJr0WWmJvwjlBYs0MtJ2a+4kzBoxU3L2gGxoixcAUaTb6qPxqHG2FV/GVFmnemSB90eFbHcx8re62SwW5iUvvnvSyfxpYDQmN+37xfTdfeSdmH7NBDHhbEOytX9kn/j4ad60PmcKLUB8T9Coa8zobpAhOwjwlw7tO34w5K+PV1VxceGWUJQuf0AoCTu/GTzWDgkdBZWtVkSeD5CDvrZVjwtCRqSM6OR+c1g31hTa+FYExB16uBMJjwUMLACMFhPwkkvoLw/3zCDqA9hLo1sISCKnM2hI0gddB3A==
+ bh=UkSMFg2q60M0rf8tHG5iEgsnjqurw635Et68lICB8wk=;
+ b=T/vdtIAUYcqKMiGMzc2tpUOXTnzQO2ex6ONrD/t6KT4n2keaF7JEze+PqHZadVo1ZTlOt19GvEZpJ77ci2bmGvvB0UNGAR48eLjVmtK3o2+sq42moh4FYuMSL34XrdTt9ruJZGi6iiwIDbDJncLuGDNQQEyU6h9kYOk/hKz/mgO9K3X1gkudWNjuB9B/lEzv7oFEhwBy7R1rLe2RMELFz/fwVIxeOMBb2wOrT4xwCQogui/ZmGav11d1C81PlhJFBSklK9MlMUMr2Q+rZyRw/4s4pjcN8NEeufVZjutS3AKs1SR7mNoXVjgL8ANCxlzfW6g5BUP4DyBmr8AexYESNw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mN+Auxpljzv0iK1knjYzB4IkXuuF4mSbJA8mCQcNovM=;
- b=AaSypvF6A3Y4mGcEf0vpXVkqeKd2JBcdZ0QFGCjRzRxYpUGX74rQQeFHJWxPQb71Gz6u/HnzCE3w82BF3Ypl71wyFXAtaCWuekpmAXSxnCukMpr83HjcvhCj/X4SbhUpUYs1tUyyFHTaOzO8f5cX+R+XBl7TE27yd/FsHpqsUOM=
+ bh=UkSMFg2q60M0rf8tHG5iEgsnjqurw635Et68lICB8wk=;
+ b=pMdtLvv2OoD3gr8MfZuTuG2HqPQlCNuRysrVxX4SF3znGlvQq4bLIwmN9F/s/RI0Ujk5SJO3q+wrSdiC3r6AqEs9jo5uUHa6cB5HcwNouJnwVKzzQkJ/BbAP80k3F7uYCq/+AbTr5z/PYuKUTIrukhcOEglWRN0OIozT/cPwl1M=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
  by LO4P265MB6824.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:348::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Mon, 28 Sep
- 2026 17:32:29 +0000
+ 2026 17:32:28 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0451.022; Mon, 28 Sep 2026
- 17:32:29 +0000
+ 17:32:28 +0000
 From: Gary Guo <gary@garyguo.net>
-Date: Mon, 28 Sep 2026 18:32:21 +0100
-Subject: [PATCH 3/3] rust: pin-init: internal: init: use span of `<-` or
- `:` for the init/write call.
+Date: Mon, 28 Sep 2026 18:32:19 +0100
+Subject: [PATCH 1/3] rust: pin-init: internal: init: allow reborrow of
+ `Pin<&mut T>` bindings
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260928-dev-pin-init-sync-v1-3-e591c8e9cf0e@garyguo.net>
+Message-Id: <20260928-dev-pin-init-sync-v1-1-e591c8e9cf0e@garyguo.net>
 References: <20260928-dev-pin-init-sync-v1-0-e591c8e9cf0e@garyguo.net>
 In-Reply-To: <20260928-dev-pin-init-sync-v1-0-e591c8e9cf0e@garyguo.net>
 To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -63,11 +63,11 @@ To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Gary Guo <gary@garyguo.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790616744; l=5339;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790616744; l=1943;
  i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=YOHNQwheROhSL58+Lxk8HvxRrEyRgzJv58DAyUkRUDo=;
- b=Jcg6sw+mleS5WvL4TZAj5iwTYPgfvSP3VvE/gjcns+i3JADSqmlT1NxkY1P+2cmTWCxtpfZDB
- TSxTFZyZMZIB4BG6faZ2/uLAQlCMjFUiE2Cn5b6SC7Bq56cPo5gfo/F
+ bh=I/i53pf39Ox8h3S2gk581a4j8ztAw8DIVR6NGBCOuDw=;
+ b=o7D3FIDWwkP6+MSMKOTtaRqq318ezYi8zMe9z0AyLNn5y8NG7criV3cAD46h6V8VUxm5hzLkC
+ pYuDyolP2iCCR1TIwVvGx4FEzdilVEiXse0oFi0kDFHczMfoNfwfnrC
 X-Developer-Key: i=gary@garyguo.net; a=ed25519;
  pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
 X-ClientProxiedBy: LO4P123CA0110.GBRP123.PROD.OUTLOOK.COM
@@ -81,192 +81,107 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO4P265MB6824:EE_
-X-MS-Office365-Filtering-Correlation-Id: 69fadd37-1bc6-470b-08d4-08df1d8676aa
+X-MS-Office365-Filtering-Correlation-Id: 3207e665-4aeb-4c58-06a3-08df1d867628
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|10070799003|366016|1800799024|23010399003|376014|7416014|921020|3023799007|10067099003|56012099006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	G54opo1ZbP3E6Ain97/d+MrGDkRLevAKY2ATLcQZjl9d2YHqYoSkWY0d1p4QFC6VIZ35MOmRpnOCPaA5pkPkdQS7r+Lb0/RGDsGa/bIC25KKwLy3nJ65gsrPNWDus08FPhGdD3ZxA1z9odt+I6R+zzKoFrUWMtkZX8A9gjBaGAWs4P3epsKlIk0N3lpCUHQaZqo0iyCXiP3uI6DMlAACemcRJS2K94Obc7n0POUMSf4BoRKZ9It2gHiKkp/whvl0+0XrNb2it9YJzvcBnihJP6OJP2sjpBWpfTmunRqOMm27W0akLH45wdr6idojoQd/+8RYh1046qdNgI2PRidV7V6yd1Ln+gcuxW4lgjtibGzBS480a0Ow46B9MUJjveG+PZ2kmktdG0bEr2Bb8oYSVrZvCDSYKr/R+i5nUfS/yJXonOQjfG6FMhYe1JGEmF9bG+FDbPETg8oJ10Rm8e+jcpwMBjaElrlam8PsNCHR3gHQMDXdhQ/2cMqMrYCRRX/hcnRFYonnmksJHtk5RbYumYO3bmgSlPdeTEcq1DxtN4Hf/nQ4mZYCbxv2BLIny4nMjr+/Q8jFWT2YipqU0lnz5ell7+vdN98Nynh0SMMdRCezRQIv2CaDICW/6VTduMOcsNQjEe2Slm0S/6rKAdylR0vJiY2mjkq04WADaAYqV1JYg7zGhbxoBrL1zedxV8DCQUuUTpCSnXiNda9+umO4fA==
+	MVVFfXCm2d7GEMDpzEGzbFBdYTGFS4HfMVcNIiR36Wl9oWf46oBXOzXHSr/KjEPKBwgXkHVzdKn4twsny5djQ/K/0PJ34G40Qq68ClTDXoNm4n0+9BcXRrkv0EmBCvGjRIkckZCVIbfIMn0o3+wbO7k0NKpZ0380z1oTHj3ApzjCXJIb1CrFlSELXtPPhgkPrGFCp6/tgOS3ABAbec86FL0A18mOfDkFHN221fzV/FS5r+41CO3y/fTUKBTqp8Qe7/BMfbOZBvsOZ05tldAgb0L5ZAtwU4XQyWasDR+CpOC+xMBqu7KHf5nO7lbY4a1atnT8FRWra7l7Cs6OdIlBBZfEzn7QP2XxfgOE42ee+tqfMOCxVZCvRczb0uWlJ2RKP3omFZhhXKfoj6YpSs7icvRTl1VzdI+bhNx0gfrOuy5yluOZlPoHjeq/271gKfdVlbxxYfsS3y8EH/Ur0QAndL3aR0aSgoNfcxytLGLX4q9PV+U00FAkzTMVyEdAOu7IQ7SopxCpN1b4CgyIbolGrY11gTN8fORqBPMxSHippaI0V9uiWyK3Z+v8k1ESpcF/59h1CIHL7/XZt+y1sy2b91yjOYbmZuxqnRSLL230T2fIrf13545QKU9mxEQUlV8JQ4UThDxDATluRZkWXXvOqt7ej2xOLXVSxL5hH8Jr9K8=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(23010399003)(376014)(7416014)(921020)(3023799007)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SXFIOHpaKytiOFIzWVowZW9VWWJZeThaOUFIMVVoWXc3VkRiL3dtZlI1b0JW?=
- =?utf-8?B?UmpZdS81VlZnUm1vTGhFL2svbTloWFR6dlVNVFE1V0FDWmx4Qnh3emxHQkpr?=
- =?utf-8?B?ZUxTUDFERnN1OGZGTk9IVk9nd3RCOVFNQitIMTRHdnNHb3JDVSt1R1JMV2s0?=
- =?utf-8?B?MmZ1Rmp6cml3MWJmRkRMOHV3NFVMZE54d2VLYWUyYlpid3RDOGY4aDJlQTRw?=
- =?utf-8?B?M0RCRVFvdkxTQVlhZk9SUjdwbkUvS2I4WmZUMjEvU3I3NnhQNmw4NTV1QTBG?=
- =?utf-8?B?eitHbysrSkZoZjZrVWVRYUpydlZvcDErYzY1dmU4QkFYNWpjUlF0REVJQllz?=
- =?utf-8?B?U2s1cHpkQUp3dU9SdjhUWDNiWTJ0bi83bGJpdlBZYlEwQTlBTkx5VFh4VzVW?=
- =?utf-8?B?bU5MUmNINEV5YnVVSFp4dzYzVGkzbXhlZjFVMUE5S3lHa2xaOU9aVlJzblZ6?=
- =?utf-8?B?NWhsKzM2VlpUbjJoZEpmdXduWk5sZVhSWm9TQWdhOHhnUkh3MEdSNTlPYWlB?=
- =?utf-8?B?YUcwbmpDOXc5cnRxZVRBWDlxM3JmcFkwWWJLRHB4WDhMcENSZU14eEJic3c2?=
- =?utf-8?B?VHBYTE41M0lMNlFQS2FFcGIrclFFVGVTN045OEExOEFZWU56TktoTmg3OEpB?=
- =?utf-8?B?Y1d4aUprTWd1bzZMQ2RGUG95azZOUmtmZ2ZxNGQzYjJVY2czSThPeGRMdW5i?=
- =?utf-8?B?Q1R2Z1FZNkFGVXAzM09Jd3NnTjBtaldyMHk5eWxNbFBLZEFXa0ZIN3doTEFn?=
- =?utf-8?B?dzBleFl5Q1BQMWtCZFdPTk5NRGw2dm9HazFOY3EySXJlR3dzMGxvU1VGRVAw?=
- =?utf-8?B?V1MvTkM5T2QxM0s1Y1I4VEtuaDlSSFh1MHdic2pyYzFKZTF0NGgzcUN4amhO?=
- =?utf-8?B?WEk0SzdJQktBNzFOa1BrSkhocDZZRmJWRmpzMXptZkQ0clpKYXF1SmFPeml2?=
- =?utf-8?B?SU5uall3TENpU3pyV2RaZnA3L3JEZC96akNYRlJsUFAxQnBtTWx3NTV6d0ZV?=
- =?utf-8?B?bG5EZG11YktJM3E4NktRMG5MajBvNjd4SmlyQTl4ekZRQjFlZTREWFdCL1RI?=
- =?utf-8?B?c0tQdFc5UHdNRXFKdDFOb1F5eVVUUnFuS3JhNmZmeTVNbzFvU2NlK0JKelhI?=
- =?utf-8?B?dUZFTk40NFpXMXJZOCtaWGdyYnBTZGpGekM4a1lTZC8yZ2dIWGZ6cmJUNlhC?=
- =?utf-8?B?U2pkTGlmKzZtWmszdUc1Wk9tQVkwenllVDZqY1NBT0lxcGpOMWFkRlJjcDhi?=
- =?utf-8?B?OVpoQ0VuUEFSQ1pMdlN3ZHAxcDh1cTR2Zm9FVXA0alIzVXluZTIvS1VkdHdJ?=
- =?utf-8?B?QmVxTzJFcWVUZWNiNnRVL0d3bzg3bm1PZXVqdGYrMUlyWml3Mmt3R3FLMllP?=
- =?utf-8?B?a2M1Y3VGRG5XSERobGlDZTlDR1hONU0vT0FwSGgxVnJSZ0J0WjVocXovbEo3?=
- =?utf-8?B?akJ6M0FLS2dlblQ4OHB3b2dlL1M3enBVaE1kdDY4V1NycFpMcU5hRVBXUkFr?=
- =?utf-8?B?SWI2M25TL0xIRzJ6RUt1QVczSzRUc2FWZjFFMmpiQkNsM1loN21ZbG81ZUFm?=
- =?utf-8?B?OENxT0hhT1dxNWtwcFdSQUwrUnZTemQxRjdvdU84UUo4ZUg1TG8yVTY2WGEv?=
- =?utf-8?B?czM4NElaSWFDS2VjN040VENQbkh0TUJYa0pSa3dhTlBCbnp0ejQ1N1FjSndw?=
- =?utf-8?B?eUM3NWE2NFBjUzJRZWxTSS8wOXhFQVRJMGhXUllTSm9PMG05KzRMbXVDcWFa?=
- =?utf-8?B?TmNOcEliMzVVREJjaDVuNlMvVE1weVRhUm5Hb1JJdHo1WDJIM1dMdzJ2SGt1?=
- =?utf-8?B?NEV2c1J4VXQxM2k1Uk5sY2UzSThPNi9LZ2JGa2Y3Ujh2Q2x6c0dseml4ZlM1?=
- =?utf-8?B?b0hOK29ZT0Y4QThqd0Z5bmtER2hNendBc2FsZ05XOElYQ1lLSzFTdlNYTm51?=
- =?utf-8?B?Q0NmMjNyenQxcTZDeGZIM1ZqVm9ZVUwrL0Fmd1ZqQW1IWVdOejRoUTVpREw5?=
- =?utf-8?B?bGh4TzQ0T1llV0dSZ3BSTHAwdGZPQ0FsbGhGTGNCTVk1YndSZ1ozSys5azRp?=
- =?utf-8?B?dENoTHNOeWZUUnd5V0p1VXdodWRXTU9qOHhIMWl2V1ljbUIxOWE5VllpOVlI?=
- =?utf-8?B?M0U1SnErL2k2Nm5tUDRMOS9XUEdNTmQ2K2diSDQrR3doT0JKeUpyMlcrVG1t?=
- =?utf-8?B?NHBqNnA3N0RDNlNYMlNHUG5BcVdvNEtXMjFkbExOWUpRdHJMK0lWRXlzUys3?=
- =?utf-8?B?VVNzQzFUNUJSZGVYL3Y1dkNQbDlRMXRESWVrcFhzRUtwVlJDSU5NM3Iyc3V2?=
- =?utf-8?B?ekIvdVlkWGo1RmFqMjJFM0ptb0lRN0NacGdhSlhleVlGZytHaFV3dz09?=
+	=?utf-8?B?b21ncmJzY3pUZGk0S2hYck0rbnJ3a3Y2VGRtTTFZTW9wZTdUdnl2YUl4SUpH?=
+ =?utf-8?B?Sk1GYnE0QTVic1BhV0RiaWd6am1YUFJ4TXovZVJhTVN1OEFKaVhzVG5IOVZi?=
+ =?utf-8?B?b3ZyRXRaSWdwT1JMZGw2Tk9qRE1wbVlZM0tFU3VBSjhrZ1hBUHcyL0dyZWZu?=
+ =?utf-8?B?cWxjM1BlN0kyZi9YUDZmTkMraGNwM1k3YVB1Nnd3bnZrWE9qWHBZTFFDT0RZ?=
+ =?utf-8?B?YWRhWDJwaE9Rc2xVOUs4L1k0SFFoUEZlZDNEWkY0QXEwcFFlbFdWT29JRHRp?=
+ =?utf-8?B?S2M4UmwyUzN5d29jSmZ2YXM0S2gzTExNb2R0UkQzTVFZUW4zYWk0d09KZHJD?=
+ =?utf-8?B?MlRJSzg3YjJsQ2tCa01YVGE0Q3dsaU4rYWk4RTZMcXJla3RuWEh6OWJkZkd0?=
+ =?utf-8?B?eHR4dEZEUmhvV0JzK3h4dlRZVUszUFJOT3RGYVRtM1Ftci9UdUxzV0U2cmFp?=
+ =?utf-8?B?RU9nWFgxbkVRVWV6UUpjYXp4WHVjYWp3OUNRQVRPNVptOHhIdWtMK0tyUVNH?=
+ =?utf-8?B?QSsyeEJTT1RaTk9sRjBXWG1TcVdVWWYyNUpMeUoxaUJVL1RGVTExQUhhNEw5?=
+ =?utf-8?B?Y3hrZE1LbUVKNkt1ODRrNmJ2R1pNaWlOMHhNOWdPUWd0Y1NFUGlvanE1YjB6?=
+ =?utf-8?B?UjJoK2psNEQrL0tSUDdvYXV0NFhXNUVGS0FNei9EVkc0V1V5VVU2aGZCN2VW?=
+ =?utf-8?B?SDFTdkJxKzAyRkxVcjQrUnM4VEJyWTBhL09NQzdNQm5yV1I2bXZoWnM3WmxS?=
+ =?utf-8?B?bmkrUDk4dTV6S0hvMFBpSU9nTDdWbGxnQTBwS3lLak9ZVTNXZFM2NnBJZXdQ?=
+ =?utf-8?B?N0UxeFdJTFpnUkRSc1RyNWgwQ1JDYVFjQ1JqRUVIQk0wbzZUT3NMVG9aQk1r?=
+ =?utf-8?B?SllZZmN2RkRxQUt0b0Z3dmVJL3oxZlRhTlhJSkxxR1UwVCtBREUwUEF5Qmxz?=
+ =?utf-8?B?OGVxMGdnY0hEcU1qd09CNVNxeWx6ZXZrckU2THFZYWtaREpLdTVmRTU0RmpN?=
+ =?utf-8?B?TTgyaFFjcUthWHk1bmV3ZUdxb1J0VWFKSGUzQnpOVGNnUmRXY05Vek1CMS85?=
+ =?utf-8?B?MjA0Qm15NUJCUEhKaFA5RkF5YXZjRlE5UW5mNm1Td3pDYmJOWU03Y0J0ampn?=
+ =?utf-8?B?WWtuaHpUNTVWdnN4d2JpWFE5NDZOOFgvQXROVGRvYnpCVTV2R0pDZkhZV0R5?=
+ =?utf-8?B?YUhkUnd0Z1JSOUl3RnpmSFBDY0R1bXREQ2tLRVNnS2xoY01PTTdLaHVUaWV3?=
+ =?utf-8?B?WTRPSHIwODV6SWhVdFJkNzRFdjNCNUpLWFhaeEJRaytXNUR0T2xiWlZkcFBn?=
+ =?utf-8?B?S0ZweUtHaWkyVWRYZDExbzZxZGtqSG5kMWovVUJ0YytiQVdTV3IxSDRHb1p0?=
+ =?utf-8?B?eTFDamxGTlFMeDl6dFN1ZUlNZkhrclZpZlRUZW8vaE02eFRqK285dTcvanlU?=
+ =?utf-8?B?MlZtOCtRc2c3Y2tsVTJUam9LVFZ3T0FWYXVFSnRpSXZtakt3TFJ1TXB6Q3B5?=
+ =?utf-8?B?RERkb2pzZ1lMdlArczBrNFVJUnV6ZmlXeVpDN1dHNFJYMFBLbGFPT1k5SElR?=
+ =?utf-8?B?K2I0T3JtR3BsTDBoUlFOM0dhQUhIaGlFNUpkQTNMSWFwaXFmU0lOWjFRYUdm?=
+ =?utf-8?B?NWVuNnoyNlVuakU5TTh4ejZkWUF6UGRRVzFzdW5iaU1Oczg3UjEyVExKdjEx?=
+ =?utf-8?B?UEZFbEZTRTJyS0xkQ2wwQ0taRWlLakJaTXJYaEQzM2p5M0Y5WTVqdVNxMi8r?=
+ =?utf-8?B?czk0VVBOQ3pJOWUzbUdqL21ZcE9TMk9nVmZ1MXNyN0FEdHBYOG9mdlpCUHFr?=
+ =?utf-8?B?QjN5bXVGWGhJaVBkT1o5cE11dmg4R3hyZnRkN3VrZXVLYkNJaXdydS9PTkNQ?=
+ =?utf-8?B?SEIySWZXRDVDMjhQVTFKL2lMVlJSYjVmbmtpU2dkdmplVnliU3oxWnEwb3JX?=
+ =?utf-8?B?WERuNWlCUGRwQ2NGaFBXUTlwNGJPVlRkc2JTeVoxTnNTUEsvVHJPaE9DWU15?=
+ =?utf-8?B?MHNLbzRwc2IvbWNaM3VUQ1hxa1l4dEh5Y1NXWUZjYStCai9neE1oRUNTUWJp?=
+ =?utf-8?B?bWhmNzhVSkl2Q2c0QThaV3NGUW1GRkg1eTFUSlRCL3I1clR0Tms2Tnc2WG5T?=
+ =?utf-8?B?dVV4K1QrQlN5TlYzZEhEckc3bnM3VjgxUEVHUnpPOG5acnpvWHZUVmJLQ0pl?=
+ =?utf-8?B?Y3BYVGdwd2xKZ3ZsT3NqUnJnVzJRS2ZmKzhPSnh2bkJlemErSUNPdlQxemEw?=
+ =?utf-8?B?bS9QMG9LRzZtY0p3TjB2YVBZL1I3WDl2SGQ0TkZXakJYME1FbkpjVDNjQUJL?=
+ =?utf-8?B?dm1WNGk4MFozbnRDN0lPUnZOU1JHSWVzMXdEWkI0UFBpZDM0ZkcxZz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 69fadd37-1bc6-470b-08d4-08df1d8676aa
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3207e665-4aeb-4c58-06a3-08df1d867628
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 17:32:26.4539
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 17:32:25.5785
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yoGO6d5tZE0LbnvKNEry+JcByJVi8w6OIWobdb2bMc4+xCuA7n96qGnYK/G5cwgko6/TmbO//p1GTQt3+NAi2Q==
+X-MS-Exchange-CrossTenant-UserPrincipalName: qms+EA3ziv6dsVfXt2AARC5l1rWgrLhU5YU6C3Paq79hCWEDhQ8sYsmqDUDzRDmigkvomcpxBucHPARFoc20+w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6824
 
-Currently we use the full span of the field initializer as the span of the
-generated init call. This produces overlapping spans for type mismatch
-errors, which is hard to read.
+Use `let mut` for created bindings of initialized field, so `Pin<&mut T>`
+bindings may be reborrowed in subsequent initializers or code blocks.
 
-Use the span of `<-` or `:` for the method name, which wll cause type
-mismatch errors or trait bound not implemented error to be appear from the
-`<-` or `:` token, which declutter the output a bit and make it easier to
-read.
+Without `let mut`, attempt to reborrow can produce error (and also a
+confusing fix):
 
-Before the change:
+    error[E0596]: cannot borrow `gpu` as mutable, as it is not declared as mutable
+       --> drivers/gpu/nova-core/driver.rs:129:17
+        |
+    129 |                 gpu.as_mut().run_selftests(pdev);
+        |                 ^^^ cannot borrow as mutable
+        |
+    help: consider changing this to be mutable                                                                                                                                                                                  |
+    119 |             mut gpu <- Gpu::new(
+        |             +++
 
-    error[E0277]: `impl pin_init::PinInit<Bar>` cannot be used to movably initialize `Bar` with error `_`
-      --> tests/ui/compile-fail/init/invalid_init.rs:19:16
-       |
-    19 |         bar <- Bar::new(),
-       |         -------^^^^^^^^^^
-       |         |      |
-       |         |      the trait `Init<Bar, _>` is not implemented for `impl pin_init::PinInit<Bar>`
-       |         required by a bound introduced by this call
-       |
-       = note: if your type implements `PinInit` but not `Init`, you might be forgetting a `#[pin]` annotation on fields
+    error: aborting due to 1 previous error
 
-After the change:
-
-    error[E0277]: `impl pin_init::PinInit<Bar>` cannot be used to movably initialize `Bar` with error `_`
-      --> tests/ui/compile-fail/init/invalid_init.rs:19:16
-       |
-    19 |         bar <- Bar::new(),
-       |             -- ^^^^^^^^^^ the trait `Init<Bar, _>` is not implemented for `impl pin_init::PinInit<Bar>`
-       |             |
-       |             required by a bound introduced by this call
-       |
-       = note: if your type implements `PinInit` but not `Init`, you might be forgetting a `#[pin]` annotation on fields
-
-Suggested-by: Benno Lossin <lossin@kernel.org>
+Reported-by: Danilo Krummrich <dakr@kernel.org>
+Closes: https://lore.kernel.org/nova-gpu/DLQXWXRP3P1J.28SLFOJJQ2EDK@kernel.org/
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/pin-init/internal/src/init.rs | 38 +++++++++++++++++++++++++++-----------
- 1 file changed, 27 insertions(+), 11 deletions(-)
+ rust/pin-init/internal/src/init.rs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
-index f6f3e2f8cda6..6605e04d49df 100644
+index c5b5a0ce5c4e..4e77c7af86f9 100644
 --- a/rust/pin-init/internal/src/init.rs
 +++ b/rust/pin-init/internal/src/init.rs
-@@ -101,7 +101,7 @@ enum InitializerKind {
-     },
-     Init {
-         member: Member,
--        _left_arrow_token: Token![<-],
-+        left_arrow_token: Token![<-],
-         value: Expr,
-     },
-     Code {
-@@ -415,24 +415,40 @@ fn init_fields(fields: &Punctuated<InitializerField, Token![,]>, pinned: bool) -
- 
-         // `mixed_site` ensures that the guard is not accessible to the user-controlled code.
-         let guard = format_ident!("__{ident}_guard", span = Span::mixed_site());
--        let full_span = kind.span();
-+        let full_span = kind.span().resolved_at(Span::mixed_site());
- 
-         let init = match kind {
-             InitializerKind::Value { value, .. } => {
--                let value = value
-+                let (colon_span, value) = value
-                     .as_ref()
--                    .map(|(_, value)| quote!(#value))
--                    .unwrap_or_else(|| quote!(#member));
-+                    .map(|(colon_token, value)| (colon_token.span(), quote!(#value)))
-+                    .unwrap_or_else(|| (member.span(), quote!(#member)));
-+
-+                // Use `:` as the span of the method name, so the type requirement appears to come
-+                // from `:`.
-+                let write =
-+                    format_ident!("write", span = colon_span.resolved_at(Span::mixed_site()));
- 
-                 quote_spanned! { full_span =>
-                     #(#attrs)*
--                    let mut #guard = #slot.write(#value);
-+                    let mut #guard = #slot.#write(#value);
-                 }
-             }
--            InitializerKind::Init { value, .. } => {
-+            InitializerKind::Init {
-+                value,
-+                left_arrow_token,
-+                ..
-+            } => {
-+                // Use `<-` as the span of the method name, so the trait bound appears to come from
-+                // `<-`.
-+                let init = format_ident!(
-+                    "init",
-+                    span = left_arrow_token.span().resolved_at(Span::mixed_site())
-+                );
-+
-                 quote_spanned! { full_span =>
-                     #(#attrs)*
--                    let mut #guard = #slot.init(#value)?;
-+                    let mut #guard = #slot.#init(#value)?;
-                 }
-             }
-             InitializerKind::Code { .. } => unreachable!(),
-@@ -690,7 +706,7 @@ fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
-         if lh.peek(Token![<-]) {
-             Ok(Self::Init {
-                 member,
--                _left_arrow_token: input.parse()?,
-+                left_arrow_token: input.parse()?,
-                 value: input.parse()?,
-             })
-         } else if lh.peek(Token![:]) {
-@@ -819,11 +835,11 @@ fn to_tokens(&self, tokens: &mut TokenStream) {
-             }
-             Self::Init {
-                 member,
--                _left_arrow_token,
-+                left_arrow_token,
-                 value,
-             } => {
-                 member.to_tokens(tokens);
--                _left_arrow_token.to_tokens(tokens);
-+                left_arrow_token.to_tokens(tokens);
-                 value.to_tokens(tokens);
-             }
-             Self::Code {
+@@ -446,7 +446,8 @@ fn init_fields(fields: &Punctuated<InitializerField, Token![,]>, pinned: bool) -
+                 // Allow `non_snake_case` since the same warning is going to be reported for the
+                 // struct field.
+                 #[allow(unused_variables, non_snake_case)]
+-                let #ident = #guard.let_binding();
++                // Include `mut` so that `Pin<&mut T>` bindings can be reborrowed via `.as_mut()`.
++                let mut #ident = #guard.let_binding();
+             },
+             Member::Unnamed(_) => quote!(),
+         };
 
 -- 
 2.54.0
