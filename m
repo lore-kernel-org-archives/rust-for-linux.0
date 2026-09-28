@@ -1,232 +1,181 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010008.outbound.protection.outlook.com [52.101.85.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DAF3D5C12;
-	Mon, 28 Sep 2026 13:00:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790600404; cv=none; b=XCKzVkmeNn8AugBeTZ5LHHNqjey2aqN7a5vmJrr68TGscpbtBl6Mb4kGBVkKl3x7839IYH+i+wcYWWRIH6QRURi10MUtgLBFVIFHs6D94cK1VsCTuqD3SYACNjea8bI3q31iRZW16f0HPSjweypsSML7UU0dqOFd/dvqpXR5Yjs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790600404; c=relaxed/simple;
-	bh=F3r18ExGbPm4dhGR+DFniH9A9lokSPXbe7fETSHTj/U=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=DgX4Sgm3OHgky/VjmKQLQ8SWGVG4H6fcMf6xQnMXG+DPc5to4c3O4uWmvtU4bWKvcMP6d5bXpm2RoQqt///RcZWQGvZ2fRXa01Ehl2sjHJvVl3Ezs+9x68xkNzateWfMNGudasjxGOZyDO5PMcBlQ8wyu92bN58+se1pLOcfQYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 7cf4be08bb3c11f19a56ed5b684f684d-20260928
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:55f35981-00d2-4575-b6c9-7b287aadb6f6,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.19,REQID:55f35981-00d2-4575-b6c9-7b287aadb6f6,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:7db8b62,CLOUDID:c9b1ec987c3220615bbed103939654c3,BulkI
-	D:260927180756KXK67MMP,BulkQuantity:2,SF:17|19|64|66|78|80|81|82|83|102|12
-	7|841|865|898,TC:nil,Content:0|15|50|99,EDM:-3,IP:-2,URL:0,File:nil,RT:nil
-	,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BR
-	R:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 7cf4be08bb3c11f19a56ed5b684f684d-20260928
-X-User: lienze@kylinos.cn
-Received: from [192.168.3.106] [(111.193.136.161)] by mailgw.kylinos.cn
-	(envelope-from <lienze@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 490693840; Mon, 28 Sep 2026 20:59:49 +0800
-Message-ID: <b1774aea-aac7-4399-815e-19b830d883a9@kylinos.cn>
-Date: Mon, 28 Sep 2026 20:59:45 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128B74C10DC;
+	Mon, 28 Sep 2026 15:05:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790607948; cv=fail; b=NFpxMBThyzMN7IaSwUNvHP/YlGqSLJA+atJWnjE+lOoe1J5h51+gV/8ZbYSX85gUITALDpMdmkRc/1aArNTvAMbGbdSxkQF99ge8hmGxYABVndcUfadmIVC5OHQkh+CyspZF9vxTV0lKWwHmBht5xQMhcl1SevwVvfXmtcUQ3L4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790607948; c=relaxed/simple;
+	bh=EnEuBFzhMBi+VVnpgZpEqjhAwBGYVHouBns/rpNqI9k=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=j42J49Po7o/TIj9I7cqbn4KAcAu+GiMnE0uptwF3VQwxf557xVpXB5wzO0xBhuoBkCbMQ6xi9zRFK+YD+6PSWq11EiLebgkBT8iTzLX6uaSz9FIxKJLnKrt7Pp5kcdLgIKqnPbHdLpHdB4Es7C5/iC84fOLdzGH94xWELIbU9DU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=efVL6Z6l; arc=fail smtp.client-ip=52.101.85.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="efVL6Z6l"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fpdM6+dAGumO+3o40RS11jR9lRnNDDx8OSqrmy7uPoYwq6XP8dIAUXXEWf2UJLpwn04GUdErxCC6+n+UiJ5/OsCPlpgNQtMHvHTmtLy0tnUKsvhaq7qgI0BdWYhOB3a/fcPTX75N+a0eVa2odazcWlO8z4lusk2pZAw0F1/Q1Mttpf/r4zBjC7pEtXd2dsecgATDEkzWPwVqFBak2DRtIVn4J7eXYGW1A9lQOU+m4kTH8vazaVGn/JtiAYOUm9D8cbMLBp/5kDR0YUv/m8PDPSvmNTOSyoKtVwJtGXEIojlgHHHWNhn+cZN584GYUEGy4JYpJFs4qbmaFrW0FxPeiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Bs+Lk4KNk6jd0j66sPCNvJAzAvBniaNtPdV7KAQ9lGU=;
+ b=YDflsoYTMjfMT5eo2k/06CuT2hiiGpPG4ugthdAHRtbVKfiYPQBFKAtSaNIyM7jIvYlt448N4zgM/UIyZ9FvfIs4s3DhFZ3dPTnTQ3P+JPxUQm5K3wiWbmRZo4pkr8cr4sST2zYr5WgvEGHSdfXgeLKL7gtwziiLZ8sZOC9SCvGBM8v7MNnvfPsJ7tqdwM8t9+4X4v45Y0TYIzyqk2Kixb2VjNlGIYDFoHm6/PFqebnt5LADDmbh21frKw4kjpisCRXCImi40ENWrwlp3AeF7knayqC7v9iYV6nBRJ+FNabpbPjoxUkq4JLarfccasOvkctsJ6NDq3TY/D0ISSnzHA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Bs+Lk4KNk6jd0j66sPCNvJAzAvBniaNtPdV7KAQ9lGU=;
+ b=efVL6Z6l7ls+7sFoMz4SMDiiBfF2mweYfVjYSh0cb/wmAtF6IrCMV4IWSLAFThfDwoeX14iJEq91BIy4n4wvqKnltmb/ba1Ekx6d9M/RXirpZZUJJyF5VsezvsH9ztjJ7yVVhjwlI/IIGcIC2MeFffqzomXaQaYLfbAVC6jH0au/9dA3jAzr58SbkYm2LYSq3KeshsUvQ8iBp9KAetyCKCysKt4egNLhnliLKubv52qJAMq8dsda5FhUXrHlbOY+lEnqilNhbOvy66r4hB7g0fgprSV6heruogX/pNms2YiIkaDTCPGMr66XbtSGTrjk9YpOGnlY3m+hW6x1eQmeoA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by PH7PR12MB8777.namprd12.prod.outlook.com (2603:10b6:510:26b::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Mon, 28 Sep
+ 2026 15:05:37 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0451.022; Mon, 28 Sep 2026
+ 15:05:36 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 29 Sep 2026 00:05:34 +0900
+Message-Id: <DLR1JCUWS824.35QJU45D2W9ZE@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ "Robin Murphy" <robin.murphy@arm.com>, <aliceryhl@google.com>,
+ <ojeda@kernel.org>, <airlied@gmail.com>, <simona@ffwll.ch>,
+ <abdiel.janulgue@gmail.com>, <daniel.almeida@collabora.com>,
+ <a.hindborg@kernel.org>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <driver-core@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] rust: scatterlist: honor the device's maximum
+ segment size
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Matteo Kloiber" <kernel@matt3o12.de>
+References: <20260831233215.287881-1-kernel@matt3o12.de>
+ <20260831233215.287881-3-kernel@matt3o12.de>
+ <DL8QLYLQJEL1.3F653J67DYZ47@nvidia.com>
+ <20260913210806.125589-1-kernel@matt3o12.de>
+ <DLEMH1X0KQA1.D1PYVJD0E6SR@nvidia.com>
+ <DLEY8AHWZFCQ.QUHP2NHJW1QX@kernel.org>
+ <DLEYQNUGTQYU.34AISCMMZXG8B@garyguo.net>
+ <ea8caba1-eb78-40cd-b025-e8c02009f2d7@arm.com>
+ <DLF2GNSEGHKR.2UI219W5RK94F@garyguo.net>
+ <DLF3BLOLU8HS.1AXNNXWVQUFNU@kernel.org>
+ <DLHH0K25NLX5.616R4D860TXU@nvidia.com>
+ <20260927224446.1053037-1-kernel@matt3o12.de>
+In-Reply-To: <20260927224446.1053037-1-kernel@matt3o12.de>
+X-ClientProxiedBy: TYCP286CA0293.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:3c8::11) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Enze Li <lienze@kylinos.cn>
-Subject: Re: [RFC PATCH 0/4] rust: damon: a first small step, plus a Rust prcl
- sample
-To: SJ Park <sj@kernel.org>
-Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
- daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
- work@onurozkan.dev, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, damon@lists.linux.dev, linux-mm@kvack.org,
- enze.li@gmx.com
-References: <20260927100735.41931-1-sj@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260927100735.41931-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|PH7PR12MB8777:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1fce4a14-44d6-424e-1ffe-08df1d71f39a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|1800799024|7416014|366016|10070799003|4143699003|6133799003|3023799007|10067099003|56012099006|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	q0wBw0FubBj04YrQ3eKngc4RJi9kUEwF9Oh2jFdO4unQqCJCXRkc6NIplCQfWPTaXqhvwck/TRZLpbqXkWqMW1jOPZ/g/E+Em/sHH24N9XQOkNJY3ZlL6MVIck9vJO5YgaS6PmEEaorbymh3lljvVOExsmmAFXAxii+TyVjpjfTEPjqu3EMGUlAdabCvUDX3BzT/QAgUEVdFtInSn4e02wB6RXLyDIwiQKhjGvRTQICXXuWy72+AGksFfOhfVDnRpnUyHJRn0duKn2IGzyOcTkCmJay/uwtzndqX7on7n6kSazzV7VJxMhW4IaJ5EUVmzXmoPjMj6yl6qiuyMaUo1aqF5tvyh2C2ogeT+71oJaCpQFHRNTbH01gG0+nucK+6SpCex4NBbBeVlR8ATT9W2R4TlkBGuH6bngkSZkwhQJvhxcLJiafjvJdGeyzebvKEwSxv586mAJMTSnUJSzicH/LGqllvn3V0eINXZKvpV0QCHVtblPxk3nZn98AXjEW8E9LGA2mpwSEI5h3D83moAp4zG/+1VpClWZzdAXvNyhj9obRSsYvEALm4BgJexFkJqcvpWAZQl5AZGWpRee5X82wk/0g2L8VDExzKGk32Qtr7OHMjjnsAB/614fkrxkPnFPe0ux3AOZEfEkPeUDc3vRI46sK96kcd0wZqGMs92KY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(7416014)(366016)(10070799003)(4143699003)(6133799003)(3023799007)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SkZEa2tIVHFBU2hxek5uWmpUV2x5cnBEak4yNzRnRDU5eng2SHdqT3BxT1Z6?=
+ =?utf-8?B?QVR3NXl1bVh2MDRBOXA0QWR1M3kxQk9tZG84K3VRbytNSFJMV0VSbDdIOFox?=
+ =?utf-8?B?MCs0QXQzV3gxc3ZESWhXRnd3YWtEVGJ6Q2duZVRZMmsxWFRwd3huMk5QZUdY?=
+ =?utf-8?B?aTNUQU9KQ2hiSzNScy9TOHBveTlqbVduZjRva01hNlVXVkkwK3dEbE9sVVg1?=
+ =?utf-8?B?a0oyVTFkcElVM3o5ZlNCTThUTFNLczlwdElHOGxlWWhTVCtibkxXOG0ydmZt?=
+ =?utf-8?B?d1pCd3QwUmFMcXBqNGNnL3RoSmx1NEpiM2NPVmJYRUtlRVArU21nUkJwVFI5?=
+ =?utf-8?B?N3FzQ2tOcWVOaG5wRkJYTmVOUFFJV1J3Vit4KzBadHlaTGtWb0RjTWtZSHlP?=
+ =?utf-8?B?NGpuUzFSdi9IWjFaa2JuM0NrcHF3dk1PdmhNM21FakNXOXI2ZHVFV1UvNGVV?=
+ =?utf-8?B?RXpvMjFML1FTM1FlWlQ5NG5GK0hqSVlEbmI0WHBpSW5DUFNDM3JKNS9QSEVC?=
+ =?utf-8?B?TWdBQUE2ZHBvVk5NRS8razd1RjNHRnJtbmlVYVBuSG9sN2VMc3lMazR3VUF0?=
+ =?utf-8?B?cWJDYU1oYmtRZHovc2QxeHRCTkpMSTNjRVhPZk9XOUwzZC9KaWVpQ3poMlFh?=
+ =?utf-8?B?bjhKbkt3ZjhvY0U4eGFmMkVpQ1ZoSmZMN0c2T2hqT3JoRXRpbnpXTkw4OGxr?=
+ =?utf-8?B?ZmE2R2RUbDdIcE1RU3RzTG85TTc5YVI4L3hqYUxsUkxNMFJwQVdJd091dXly?=
+ =?utf-8?B?WWV6MXVoc21ndi90MUZmMmxWeUtTWERnNnN1U2RyWmlMY0tMTnJUS3l4bFc1?=
+ =?utf-8?B?cnFYdFh0WWllYWI2OEZMZkdBYmpiWEVpQTZRdUtoQnNhNE9PUjZPRXpZa1BI?=
+ =?utf-8?B?QThncjNNUWdGNWE4dU1aWXVMK2xTUUkvak54akRhOHNDNnhDOHpBUVNFMzVQ?=
+ =?utf-8?B?am0zYlVNejlGblVOanNhZHl0VS9iZitkMHUyU3FsZThKVzQ0RmRwOVg5VUdt?=
+ =?utf-8?B?QWZHaFBxK3M5NE5hckdna3hCTStRN3c0UmJMSGFRVzBrRTVLRkdKOVJ4U0lH?=
+ =?utf-8?B?WWNJdFJXYUt5WTFoSFN1a3lSZktvRjR1d1dtZzJKeGllcVNSZmkwWDUzZlJF?=
+ =?utf-8?B?NkxZOUV2WGg4WnFrVEQybHVTdlhIVWtHbzJCZ3FWL1I1bWpqNGltRU1SS0ZL?=
+ =?utf-8?B?dEZZZ2NWeHVkZVR6Zm54SEk5TmNHNldhL0RNanpwTEdidHRpWGxpWGcrQkJF?=
+ =?utf-8?B?dysxTm9ZdTA2RCs3MVM5Zi92L3EvMXIrSHMwV3YwcW9NcDNXSXh3UURUY1Iv?=
+ =?utf-8?B?OEozdS9yTTlWVnpIMWlPSVdUUWowNlBBRzdNWElySlJtL01za083cnVrUnNz?=
+ =?utf-8?B?VjFDeHl4dEJZMnorNGZvWVZERlZiWE4rdXJBRmZWaEVlRGdXSHdVUUNoUHNh?=
+ =?utf-8?B?YWRMcGRkKzF6Yi9MSEJ1OWR4a1k4OVBTSjNxcm1QTWtxSGUxUU1qdCtLenpD?=
+ =?utf-8?B?WnZVaEdtMXNUemNKa0h6MTcxSVdJTnVDb2RRTjZFdjB3M0VkbWlacFl5SVZo?=
+ =?utf-8?B?aWN3Q2JidjlVdmsyS3Y5Nm1tU3VkTWZuU3JxWnVFN0Z5bWh3MWcxcm9MLzRz?=
+ =?utf-8?B?aXBWN1BOdG9uUGxjeGdCcUJmcXVNaGhqL3laelU0N3BtS25LU05SdUdkUUpL?=
+ =?utf-8?B?VGx6ZHlNd0d4R0VueGtlNkY5b09ydzBNWmtOYlhxQnZORkN6R2RiY0hMaGxW?=
+ =?utf-8?B?UmdKZkFSWk9ZMG9WVldvZk01SXZ1TFVpcHlDMmF5ODc5SHAvMTg2L1FNcWVo?=
+ =?utf-8?B?RTd6dlRWbjY4VmhtSFFmVmd4dSsvakJyajAxTW5mZXlSOGZhcm13Uk5lSnRK?=
+ =?utf-8?B?aHNxc3UxUWxNcE9NdFpNQkd3SkJkSHRNd2dURXFydzBzbFhWd0NraFdhdysv?=
+ =?utf-8?B?R0VIMmw2azg1YU1ZWTNVMDlSKzFqK0VJT3lFbVRTMVRuQXl0bzFKUGZWd3dz?=
+ =?utf-8?B?eVNDd3h6YXVLRk5EQUxNdStRMHdJVk9EUFpBNTBmNE1xSE4xR1VPUHFXa1ZQ?=
+ =?utf-8?B?OGRhY3NPeVA5MEFMZUpOSE45T08ycmpxQTdKNDBFOHhkUkl2S3ZvcC9neGJk?=
+ =?utf-8?B?OHRPSlV2Wk0xcWxCTjZKWE1wN1lzblRVL2RLVm1xaTJEWGpoS05BMnA2V21n?=
+ =?utf-8?B?UVdPbG95cGxLRlJ0OCtnc01XM1ZpaGFkSkpjRWt4RW5vbm51SlV6UkY0TTNY?=
+ =?utf-8?B?T2Q3b2NCK21EbmpFa1VBd01la095OUNUQk5xZVUvYnEraWNmUmxEWllkclRK?=
+ =?utf-8?B?ckxJVW5CdVY0NlRrd1dRM1d3Z25PY08wSUV4cEFueUwyYnFDZE1MbG9lZUZ0?=
+ =?utf-8?Q?3faFla+qNncFn3OxTWNOWzts1VDS29yDuYUDHo2MJJVBa?=
+X-MS-Exchange-AntiSpam-MessageData-1: BMzafcVNJRDXqQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1fce4a14-44d6-424e-1ffe-08df1d71f39a
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 15:05:36.8353
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EemIVQqhBmk591juynpPE5g07gkTehlSQxzYEeZQp75beP96yy/8fXLxBYorUoZ6OUXaYELHrTEPWjOZLFQUYw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8777
 
-Hi SJ,
-
-Thank you for the detailed reply.  Comments inline below.
-
-On 9/27/26 18:07, SJ Park wrote:
-> Hi Enze,
-> 
-> On Sun, 27 Sep 2026 15:28:08 +0800 Enze Li <lienze@kylinos.cn> wrote:
-> 
->> Hi SJ, hi all,
->>
->> Almost a year ago, right after a memory-leak fix discussion on this list, I
->> asked whether introducing Rust for some DAMON modules could be worth
->> exploring as a proactive measure.  SJ's answer was positive: he was open to
->> Rust adoption in DAMON, both in kernel and user space, and even mentioned
->> he had been wanting to write a Rust sample DAMON module himself since LPC,
->> but had not found the time yet [1].
->>
->> So, here is my attempt at making that start happen.  This RFC is
->> intentionally small: it adds just enough Rust support for DAMON to port the
->> proactive reclamation sample (prcl.c), and nothing more.
-> 
-> Thank you for this patch series!  Yes, I'm interested in Rust, though I didn't
-> have sufficient time to dig in yet.  I'm planning to attend Rust for Linux
-> training day [1] on next Sunday.
-> 
-> TLDR: I feel like we might need to wait or focus on module parameter support in
-> Rust, ongoing DAMON extension works before adopting Rust in DAMON.  Also, I'd
-> suggest starting with wsse, which is simpler.
-
-Agreed, and after thinking it over I am fine with deferring the series.
-
-For context, the original goal was never really the sample itself: what
-I was hoping to start was a thin Rust compatibility layer for DAMON --
-the damon.rs wrappers -- with prcl serving only as its first in-tree
-user, to validate that the wrappers are usable so that others can build
-their own DAMON-based modules on top of them.  It is therefore a bit
-unfortunate that the first step ends up blocked partly by something
-outside of DAMON, namely the lack of writable/sysfs-backed module
-parameters in Rust.
-
-That said, I understand the position and I do not think waiting is the
-wrong outcome: the parameters have no committed timeline, and the DAMON
-API reconstruction is actively changing the interfaces the wrappers
-would sit on, so starting now with a debugfs-only interface we already
-know we want to replace would just add churn to moving APIs.
-
-> 
->>
->> The series has four patches:
->>
->>    1. Generate Rust bindings for include/linux/damon.h.
->>    2. Add thin safe wrappers in a new rust::kernel::damon module: contexts,
->>       targets, access patterns, quotas, watermarks, schemes, plus
->>       start/stop.  Everything FFI-related is confined to the wrappers, with
->>       the usual SAFETY comments; error codes are returned as kernel::Result.
->>    3. Add samples/damon/rust_prcl.rs, a Rust port of prcl.c.  It watches the
->>       virtual address space of a target process and pages out cold regions
->>       with the DAMOS_PAGEOUT action, same access-pattern filter as the C
->>       version.
-> 
-> I'd suggest starting from porting wsse, because it is simplest.  By scoping
-> down to it, you could drop the wrappers for DAMOS.
-> 
->>    4. Add a MAINTAINERS entry for the two new files.
->>
->> Two differences from the C sample are worth noting.
->>
->> First, the control interface.  The C prcl sample is driven through
->> runtime-writable module parameters (target_pid and enabled, the latter via
->> module_param_cb), neither of which Rust can express yet -- its module
->> parameters are load-time only and do not show up under /sys/module/, and
->> there is no general sysfs abstraction in mainline or the RfL rust-next
->> tree.  The debugfs abstraction, however, already provides the safe
->> read/write wrappers we need, so the Rust sample exposes the same two knobs
->> under /sys/kernel/debug/rust_prcl/.  This is a temporary detour, not a
->> design preference: the sample will be switched over to match the C
->> interface once Rust supports sysfs-backed module parameters.
-> 
-> Do we have a timeline for module parameters support in Rust?  I'd prefer to
-> avoid use of debugfs and directly start with sysfs.
-
-I am not aware of one.  rust-next still registers Rust module
-parameters with perm 0 (load-time only).  I will keep an eye on the
-rust-for-linux list; if anyone picks it up, I would appreciate being
-Cc'd.
-
-> 
->>
->> Second, the functional scope.  The C sample also repeatedly reports the
->> estimated working set size via a repeating damon_call() callback.  This
->> initial Rust version covers only the core monitoring/reclamation path
->> (context, target, PAGEOUT scheme, start/stop); wss reporting needs safe
->> wrappers for damon_call() and region iteration, which will come in a
->> follow-up series that also makes the Rust sample's output match the C
->> one's.
-> 
-> As I abovely mentioned, I'd prefer porting wsse first, and later extend to
-> DAMOS-based samples like prcl and mtier.
-
-Noted -- when this restarts, it will be the wsse-scoped version, without
-the DAMOS wrappers, and the compatibility layer will grow around only
-what that sample actually needs.
-
-> 
->>
->> A quick word on the longer-term plan, so the design discussion here can
->> happen with the destination in mind:
->>
->>    - Over roughly the next year, I would like to port the other two DAMON
->>      samples (wsse and mtier) to Rust as well, and let the DAMON Rust
->>      compatibility layer grow together with them, wrapping only what real
->>      in-tree users need.
->>    - Once that layer has matured, I would be happy to try Rust for the
->>      production modules - damon/reclaim, damon/lru_sort and damon/stat.
->>      That is a much bigger step, of course, and it only happens if SJ is
->>      comfortable with it.  Consider it a willingness statement, not a
->>      promise.
-> 
-> I think that's a good plan.  However, I'd like to call out we will also need to
-> make each step with good and sufficient discussions.  That is, for each step,
-> we will discuss if the previous step change was helpful and therefore make
-> sense to proceed to the next step.  If the conclusion is oppostie, we could
-> even revert the previous changes.  It would be great if we could make it driven
-> by data.
-> 
->>
->> Regarding the MAINTAINERS patch: I listed myself for the new files, but did
->> not add SJ as a reviewer yet, since he mentioned limited bandwidth for Rust
->> work in that earlier discussion.  The existing DAMON entry already covers
->> samples/damon/, so the sample reaches him regardless; adding him to the
->> RUST [DAMON] entry would only additionally route future changes to
->> rust/kernel/damon.rs his way.  Happy to add the R: line if he wants it, or
->> leave it out if he prefers.
-> 
-> I think I should at least review the patches.  Also I feel I am responsible to
-> the maintenance of the code.
-> 
-> We are extending DAMON to work for not only data access but general data
-> attributes.  I'm also planning to refactor DAMON API quite a lot in near
-> future.  Some interfaces will be added and removed.  DAMON API callers
-> including sample modules would also need to be changed a lot.  If we make the
-> Rust sample module with the current API, we may need to make changes not only
-> in C but also Rust parts.  I concern if it can introduce more breakages that
-> require unnecessarily long time to fix.  Among all, my lack of Rust
-> understanding is a big concern.
-> 
-> I understand this patch series is a kind of experiment rather than for a real
-> use case that has a hard deadline.  If I'm not incorrect, I feel like this
-> might not be the best time to start the experiment.  Could we wait until
-> fundamental parts including module parameters support in Rust and ongoing DAMON
-> reconstruction, or my learning of Rust are done and stabilized?
-
-Yes.  I will park the patches and restart once both are true:
-
-1. Rust supports writable/sysfs-backed module parameters.
-2. the DAMON API reconstruction has settled enough that wrappers can
-   target the new interfaces directly.
-
-Meanwhile I will keep working on DAMON in C as usual.
-
-Enjoy the training day, and good luck with the Rust learning.
-
-Thanks,
-Enze
-
+On Mon Sep 28, 2026 at 7:44 AM JST, Matteo Kloiber wrote:
+> First of all, thanks for merging my first two patches and sorry about my =
+late reply.
+>
+> What I think Alex meant and what I agree with is that the new API should =
+focus on
+> making semantic bugs harder, not to necessarily make it easier to write s=
+afer
+> drivers. That being said, I think we can do both with this change.
+>
+> The key change here is that we introduce a structure that defines dma
+> parameters for a device. This structure deliberately has no default
+> implementation and new fields should be added even if they require change=
+s for
+> all dma drivers.
 <...>
+
+Thanks for the detailed plan; I think it mostly makes sense.
+
+A few details that we have discussed offline with Danilo:
+
+- The `probe` methods should not take the `dma::Setup` token directly,
+  but rather a bus-specific struct that contains it and can be augmented
+  with other capabilities. Drivers would have to deconstruct it using
+  the `..` operator to make sure code doesn't break if we add new tokens
+  to it.
+- The token should not assume default parameters and only call functions
+  corresponding to parameters explicitly set; converting the token to a
+  handler means the driver acknowledged all the settings, so we should
+  not make any parameter mandatory (the doc should of course detail what
+  drivers *should* do).
+
+With that and your plan I believe you have a solid basis to send a
+RFC/PoC. :)
