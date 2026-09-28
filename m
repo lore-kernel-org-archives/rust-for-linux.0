@@ -1,88 +1,112 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D22E470433;
-	Mon, 28 Sep 2026 08:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3A443FD3F;
+	Mon, 28 Sep 2026 08:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790583043; cv=none; b=Lno8UzFVxJMFnjIOH0VCFVuFEW4V0ZhXJP9feDF7yYHHiXx0ZWz6ZntGlcjiJ09zn1DrV8g18UY++TlS085FlBK8vKAY4s3S7MPSm4hVm+U2e7pXNfSUez98aG0tLVFOB44pwdbM51u0XVgYB+HoITjYFZfN99Xf9+X1shXyNN0=
+	t=1790583102; cv=none; b=WJOYoZ9R3tuQ66lEm1KFqk5AXsUdT0/8NEjHDc4s4HNQz3hQozKijFKTIs8/9FrFR7dHEfZailfEHpTFVtOyVxWeQtDvig2FUUqkYjCeS0gy55BDmHbvIm5I4BAF1BP8SP8F2AVLInDIaMflD2LuESy7czeGozSmXqBhSEW3aUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790583043; c=relaxed/simple;
-	bh=a8Lg9fETkgM2Pxdb8QutqdGGlgOIRfzOCGz5weQu930=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OY6Zg/eV7fs/HxssB5jqkX9P/AzqmD8YRGhttY2mx0lSIWzZw0cE4j8aARzyE3H1RuW7acrV8rCvKhgbw569pMehCg1JAntuUubzaml8DBETU6tDN8QNmdy4W+sXCvoSyfFitdwMt8/g081hwfRHM/mV7Y0VhwhrxvO9mi7rpp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=dKgp/gb0; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1790583102; c=relaxed/simple;
+	bh=oihozRlFZ7lt6GDwFed9U05sgh5zM+CW01iJD4rrReU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=pgSTcD6XuCeOtSoqFNVKElcVen7IS0hXkIcilgpVXutvZLpFt/WKtvDbR6lz+jrN+TFEkGPLnEmcYa5NkjjpFn7CW3vmb8aD0QmbR2q4LPAvHlwLmtaZSH8AOX9sNKJgQ2KV1NmHSs+mN4cV6ikK+/LDi7c8CM9PIY7Ozgi9h1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXFG54NN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="dKgp/gb0"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4htYs81KXjzKnmg;
-	Mon, 28 Sep 2026 10:10:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1790583036; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a8Lg9fETkgM2Pxdb8QutqdGGlgOIRfzOCGz5weQu930=;
-	b=dKgp/gb0x1CvjDhLB571dhdRPQgcjXRy/KyBd6HWENwUzgbjO9GxmNutXrnDBOQdGCFmGg
-	n1LKzK2dI7qL2Rshcl9KLRQFC3nkZukqa7/AUgLS4YOTdl/WcqqCfy38KwnmgKVvWG75SA
-	cBL9+Ov0WRGqF7s/KquwtZovhWBsV8ZIyHQKArDErcAP5LhI+d91lwO9jiTuYX5QW/yZRy
-	xRBD9YGVoFG4ek0wEib1Noy6Sv8/o5ApeSeYNY3RrpFMNfMya4Ahgg/+Tv1t4kBDuuHI1n
-	4Jhyu9SgURps2MLcW6M8vW6BaLkIwtTOl9PQkix9u6Iav6gMCmjzt3aAZ32xwA==
-Message-ID: <dc8b56abedca3c6d17649de7f682e4af0b91b645.camel@mailbox.org>
-Subject: Re: [PATCH] rust: sync: Accept errors for Lock payload data
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Gary Guo <gary@garyguo.net>, Philipp Stanner <phasta@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will
- Deacon <will@kernel.org>,  Boqun Feng <boqun@kernel.org>, Waiman Long
- <longman@redhat.com>, Alice Ryhl <aliceryhl@google.com>,  Lyude Paul
- <lyude@redhat.com>, Daniel Almeida <daniel.almeida@collabora.com>, Onur
- =?ISO-8859-1?Q?=D6zkan?=	 <work@onurozkan.dev>, Miguel Ojeda
- <ojeda@kernel.org>,  =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich	 <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot	 <acourbot@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Date: Mon, 28 Sep 2026 10:10:26 +0200
-In-Reply-To: <DLNHF9TPLXK2.1VQ2LJ0U6Y07K@garyguo.net>
-References: <20260924085523.2620704-2-phasta@kernel.org>
-	 <DLNHF9TPLXK2.1VQ2LJ0U6Y07K@garyguo.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXFG54NN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450541F000FF;
+	Mon, 28 Sep 2026 08:11:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790583101;
+	bh=oihozRlFZ7lt6GDwFed9U05sgh5zM+CW01iJD4rrReU=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=AXFG54NN28oi8qNx/+8HghJ8/4iBl+tTWjh5BeAP3onSRThy2zn/N1FdOwcSei4tG
+	 YwRDAfKywfqDIEEmpBMNcY7xY/qZ/UrDSvKbIw5xEOVzJEohYjSkb5QGeFoN+3FrXK
+	 CWOVLe84KPfzX5QfxV2PPG2x+eKPIBcp/ER1VBC5Cs6YSGHB+Zlse696OBWVweH4E5
+	 fBitSGWnjM7hHzZ8n2M63pTUvnvZpFUwQjErotQ+xKiOv0yaTNygFdwWq7kB6baGdN
+	 SJb2L5ZmB9y0Q0Zm0+GHPr9YjNDQWI0OZWqajuKdZt3yY1CT3X9Fg0seL4k0uR6yqW
+	 lMA6pweRMAAXA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MBO-RS-META: 5s4aq6a5zs5athpcfop1sf7apkqa8ay9
-X-MBO-RS-ID: 35331b9477956efe94c
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 28 Sep 2026 10:11:35 +0200
+Message-Id: <DLQSQE8ZXLY1.1XFW8PGSDLICT@kernel.org>
+Subject: Re: [PATCH] rust: DmaFence: Add better warning through Device
+ reference
+Cc: <phasta@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Sumit Semwal" <sumit.semwal@linaro.org>,
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, <linux-media@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Philipp Stanner" <phasta@mailbox.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260925081958.3048112-2-phasta@kernel.org>
+ <DLOBPY6OBEOG.2Y4I4LRA276WU@garyguo.net>
+ <DLOECU7X3MTR.31Z6N1I0WB0MJ@kernel.org>
+ <f0248d1529378ab8be957009a93a0a73ee74bafb.camel@mailbox.org>
+ <DLOILT0V4HCX.31L2PE7YIAKY3@kernel.org>
+ <ab1241777ac432666bb1564d875211bf142a6398.camel@mailbox.org>
+ <DLOKSGU61PUG.WSZBN04H0A2Q@kernel.org>
+ <37a2858a4687e4d9bbe0aba4c1861b96875c4ed7.camel@mailbox.org>
+In-Reply-To: <37a2858a4687e4d9bbe0aba4c1861b96875c4ed7.camel@mailbox.org>
 
-On Thu, 2026-09-24 at 11:41 +0100, Gary Guo wrote:
-> On Thu Sep 24, 2026 at 9:55 AM BST, Philipp Stanner wrote:
-> > The `Lock` baseclass currently does not allow for fallible user-data.
-> > This can cause conflicts when used with other primitives, for example
-> > when a lock shall be pin-initialized with payload data that is fallible=
-.
-> >=20
-> > Add support for the lock base class so that it works with
-> > try_pin_init!(). Adjust spinlock and mutex accordingly.
-> >=20
-> > Signed-off-by: Philipp Stanner <phasta@kernel.org>
-> > ---
-> > Regarding removal of the CStrExt, I got "unused import" errors because
-> > of it. Don't fully understand why?
->=20
-> Because it's part of the prelude.
+On Mon Sep 28, 2026 at 9:52 AM CEST, Philipp Stanner wrote:
+> On Fri, 2026-09-25 at 19:32 +0200, Danilo Krummrich wrote:
+>> On Fri Sep 25, 2026 at 7:21 PM CEST, Philipp Stanner wrote:
+>> > I guess we agree that it would be a horrible bug if there's still a
+>> > command buffer running on the GPU that can access memory which might
+>> > have been freed once the associated fence signaled.
+>>=20
+>> Sure, but that's unrelated.
+>>=20
+>> > So I suppose what you are saying is more: there is not much value in
+>> > the case of *JobQueue*, basically because all the jobs live inside of
+>> > it anyways.
+>>=20
+>> No, I'm saying there is not much value in general. Whatever thing owns t=
+he
+>> DriverFence has to represent the "device access" of some resource, which
+>> already naturally establishes the relationship.
+>>=20
+>> IOW, whatever thing owns a DriverFence is also the thing that stops the =
+hardware
+>> in its own drop() implementation; anything else would be rather question=
+able.
+>>=20
+>> > So I suppose we agree that a warning is fine. It won't fire in JQ
+>> > anyways, but might benefit others.
+>>=20
+>> What scenario are you thinking of?
+>
+> Drivers doing "rather questionable" things, like we've seen a great
+> many times already ;)
+>
+> Note that the dma_fence backend fires a WARN_ON if a fence is freed
+> unsignaled, too, for the same reason.
+>
+> Life finds a way.
 
-But why was it imported `as _` ?
+I'd rather you engage with the arguments I made above and give a concrete
+example of how it "might benefit others", instead of resorting to know-it-a=
+ll
+platitudes.
 
+The comparison with C does not address my point about ownership: C relies o=
+n
+explicit cleanup, whereas the Rust design I described ties cleanup to owner=
+ship
+through RAII.
 
-P.
+Again, please address the arguments I've already made.
