@@ -1,134 +1,155 @@
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9C44C10FF
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 08:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E533848E0DF;
+	Tue, 29 Sep 2026 09:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790671815; cv=none; b=t4CQ8coiGKi2Lm3Wq5AF0n/CXcG9hR1hRl1f7NYWQhFrmY9bUZeqDGczS6pryASFzCqWYpq27uX1kpJvSAT49cxHB0/qdVxPEhIxdpZFn0U8v39wQgbko40UMnxEZnoXYNVyxNFRHkfgeV77lDxHgCE7RGmZgPh7nlA0xYFJfxQ=
+	t=1790674507; cv=none; b=DW1R4iA8l0mzMK3HkzoHIIdDXyxZdb6A45KWeYbGNIIlXVhYT0N48wG3DWuvsV3eRk38p7JVlGkkX0UBn3vbYiL8EYVWgQL6VUlLM/AGX+CSGo6STqBJYhp0TA7qlrtwh72eDWph4TSGZ5LPh/8XCpWIJlaWsVBOagugys5E+M4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790671815; c=relaxed/simple;
-	bh=uxSCt0FV6gaua+FWWnEppijMyYUOY9i8SVsu0cEASms=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Bz+PBRTObj9ID9+j+fa2owiQQ6+qPrmKpa/qGrlzLPpUKo3xAZTEBQ6792QIW7bsk5sdB4al7peDsePoKFK2OQY/5UehvGonjW5I3vRrYlr0+nK/tg+nB0ytXyrrVWjYbWojHHjUTR9TiGc+nK5e27x7AbL48dryeh++wjOPjV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fSg5KjJL; arc=none smtp.client-ip=209.85.218.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1790674507; c=relaxed/simple;
+	bh=vYEYCbCErIjQydhSHmfl6bZP+IHmrXc3/8GGnStAr1U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=usgJbEZh8Q2B8RSdxkg9AOMMzZ08F8Q3CLG8kdotvy0l0+2Tce6beOCcOvxzvou00v9P1/K6GjqHGLc1tdmglKQsdk40dz8nwPzFU9iwir29pbQgXdP6EY2/OdcMEv7X5jejufmMNUxtkscU6+lpFE7lK/rSvQeX6w3uKHoOjEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kXJ1K68G; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fSg5KjJL"
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c2d93b92937so216604666b.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 01:50:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790671797; x=1791276597; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/Aobrvi+EUy84a4OEPy4ev1haJ3JzGtFESlBQNCRjoU=;
-        b=fSg5KjJLQxm29mm+s/bVY/Vph7tovPU7SNDHdlZfb8vH1mDG2JLAdubsjafXtpvgWf
-         uigPeQiBqhi+EADdw4M3Kx7mfc6vcvp8Vr+uSN5L+/4aAG/EUaBeXq727DjSil944MTC
-         hyJxsVlU09G9Csg1FUAqVWnOpsy6y+CgP+xnRvwx84x06sQ9ekCkn8nbeXksX/r3cwa4
-         5H5Ki6Sapwaguvdui0/0LUaVSQNkXerHJefTt7GjDb5OE+AXdCCzQQFWL0rP8PpTN0Qu
-         caLafThIxPKtlEekm9olxNM6ZGzGoaZVkViJj9UnptxRYzHtO6FMwSdz5BF90hNnQ7cq
-         tDGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790671797; x=1791276597;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/Aobrvi+EUy84a4OEPy4ev1haJ3JzGtFESlBQNCRjoU=;
-        b=fLIOosEWUaUXApvXxADRfIhNVzM96090XHN98xlZ3HXv/a9WahRxOB+U9dvbsC8CbC
-         Zn0TdJfVGlSuBsPS2F4kQ2wttzutmkU+iXXjD7FBzNpwx4sAQltMhL/eScGc9rMalN6R
-         mEtStMe9Q+9f+LoGIyjQP+tlKyqeJc3LuNR5wlIHWyezfhYWHzj9HwQXva6wj5P/teIe
-         or+C3cHHb1TpjdFCuxNp73aJ2C4GrwVRWlQbmiaLT/NNF1UV+f4UQRaDIMdVkNNq9oHU
-         36z9PCHy9h+JY/pqYDgzrV5mgzSjYStQenPFnU3sYmUSMr7PHR2dbPaVg5Urxz4cMDCn
-         kJGw==
-X-Forwarded-Encrypted: i=1; AKwUvBwaEjOYUcQpXJusQhoT+CevTG+nYq9mo4gD7UJLMXmr5gFlA/jJXKSzRa6bM/0ZK7Rd4DDWVhDS8lmRuudjrA==@vger.kernel.org
-X-Gm-Message-State: AFuF++m0w6yaD/7Qlkey/GOqhaFIlNgemFu8xeaSoFxhLrzWRgxZ8Ag/
-	LHid8Qp3VNVQFfeKcfC+dnOGrs/gPKsc+ab18NcO22RccpJyHGULljuU8Ys9UFcVYUBfwLc6fcW
-	sEpR1dQfv2eKBQRKzdQ==
-X-Received: from ejmc17.prod.google.com ([2002:a17:906:5291:b0:c2a:b946:e518])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:3d08:b0:c25:2a78:15ed with SMTP id a640c23a62f3a-c2ac22db502mr1246008766b.6.1790671797146;
- Tue, 29 Sep 2026 01:49:57 -0700 (PDT)
-Date: Tue, 29 Sep 2026 08:49:55 +0000
-In-Reply-To: <20260929044843.GA3909609@ZenIV>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kXJ1K68G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382711F00893;
+	Tue, 29 Sep 2026 09:35:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790674505;
+	bh=P5/5QKj5sSlw/iC/GDGwLdKweII5wIVHSwvDK8xDxzI=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=kXJ1K68G835pEZJbWLPazpOWc7gtCp2rJx3gkMfRrJVptDk8TL58/8Dza38G1YTCd
+	 1xlpCqr3s5LrFpxutI5Ua/OjxFq1DlW1+Su4vjbwlgTS3EXeFKFQd7GKrLvdwhmQvO
+	 zJbMvKi1YMRORUGZCcVhvQfs1JoadCzInzFIRMl6k8qQRIAR11l3b2sK4mkSZUV4UN
+	 9xQH+6eNLjLpaYcBLG+/BcqeymO1yE1h8Qy6vTZKC7GBpELOWY2FJEZIx5tmj1j6JP
+	 XMtdcZXLsyRM+bkpWuieMwi/ATo9DhU2h1BFtgQrW46WGaQOeK8D0BqFxKC0CBe2RP
+	 v3eMANEK8Do+g==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Tue, 29 Sep 2026 11:34:01 +0200
+Subject: [PATCH GIT PULL 3/9] rust: block: rnull: use vertical import style
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260923022339.3340694-1-georgeandrout13@gmail.com>
- <arThye_219ruNbM2@google.com> <20260925-stellen-brummen-festrede-266af0305ac7@brauner>
- <20260929044843.GA3909609@ZenIV>
-Message-ID: <art7swUNAa3AyUrL@google.com>
-Subject: Re: [PATCH v2] rust: file: handle fd table teardown in file
- descriptor APIs
-From: Alice Ryhl <aliceryhl@google.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>, 
-	Georgios Androutsopoulos <georgeandrout13@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, linux-fsdevel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260929-rust-block-for-v7-4-rc1-b4-v1-3-642a4c1aebd7@kernel.org>
+References: <20260929-rust-block-for-v7-4-rc1-b4-v1-0-642a4c1aebd7@kernel.org>
+In-Reply-To: <20260929-rust-block-for-v7-4-rc1-b4-v1-0-642a4c1aebd7@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2075; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=KQk+C40FnT5atkKayvNJ0LS4WhtlO7QzkIuajyLLa34=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqu4YVTQXCNyu4B3U0Qrl4o3iYeKvQimx6NUOhl
+ dUQL2Ooq9GJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaruGFQAKCRD6UCkIqsW9
+ 0BztEACneqR7X6S6yMI0Kz0J2rNz5KUJOBYiLM9YvLkmfiDwP3vUtWVgOxSanZT5bnXrtnQds+5
+ jLcksRKbeCyigIJnKQXXQ92wYf4QAbxC5KUUMX7D6AidMMB1xZGBEbyOuMIH8KElGI+0LhQ3TlN
+ XFL6NXTkIu7sXnOFoD8WdGLM6Q/PeVfsN2B5OHxhLEyd4Xgqqw+J5RMOHrOP5fhsDD40lwrIGWc
+ WkelXbeMHTTYhPnl5bFQgLymaGcIW2Ar81BQsqxZpbgUi/ZfCo6srpuh6JNDhpyUrKox2H7+Xo2
+ 7juKHc7AhLhJ7J390v60/2OiPCACmUVC0Z8l4rhsAzbRZ3840qt/uPy/qwJ3y14Q9KAf15qc1fS
+ yXBUJpIbu0oCTzXG5IF9IC1PPsIdTqzG3m4gGzuxPdtK5aRd8zY98QqOp75QTD37c0xBUfRh/xV
+ L0+Dk3U4Pz1N4YSTziN2le1pJX4AFyx2pPBNqhy997XBF20SOp5kK5MforXy3AnIga9Ul6Nk5dz
+ snTd0FvAwcW+yD2e34TWyTm+tm4fmLYSKiGEBKGIzDwlNOP8SVX65C0xT7ob4Ek1iX5VbZQohdV
+ Xv/uggimJ38ODzG0RDvkCnufGU19Ws2f5SmEd4fxBLPkEtCyti8jViNJiDmqGhr1zQZFsiXXBuK
+ YhPeEpoLl5w6Asw==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Tue, Sep 29, 2026 at 05:48:43AM +0100, Al Viro wrote:
-> On Fri, Sep 25, 2026 at 06:00:42PM +0200, Christian Brauner wrote:
-> > On Thu, Sep 24, 2026 at 08:39:37AM +0000, Alice Ryhl wrote:
-> 
-> > > This looks like it should ideally be on the C side instead.
-> > 
-> > Where is this godforsaken broken code, that tries to fd_install() after
-> > exit_files(). It is _a bug in the program_ that is not something the
-> > apis need to work around.
-> 
-> 	More to the point, papering over that at runtime is wrong, and not
-> just for modifying descriptor tables - fdget() is just as wrong in anything
-> that can be called from tail of do_exit().
-> 
-> 	It's exactly the same as with "what if it gets called from an
-> rcu callback?" - it's a bug, that's what.  Don't use these primitives
-> in such context.
-> 
-> 	In particular, ->release() mentioned upthread should not be allowed
-> to access _anything_ hanging off current, not just descriptor table.  Note
-> that the last reference to an opened file might be sitting in an SCM_RIGHTS
-> datagram pruned by AF_UNIX garbage collector; as far as the method is concerned,
-> it might be called from random thread.
-> 
-> 	If it tries to access (let alone modify) the current descriptor table,
-> you have no memory safety whatsoever and checking if current->files happens
-> to be NULL is nowhere near enough to resolve that.
-> 
-> 	I don't know how to express that gracefully in terms of typechecking -
-> sure, we could pass an empty token to each syscall, have fdget() et.al.
-> require that as an argument and propagate the damn thing to all such callsites,
-> but that would cause an insane amount of churn - if nothing else, ->ioctl()
-> signature would have to be changed and there's a _lot_ of instances out there.
-> And then there's the joy of dealing with ->sendmsg() and ->recvmsg(),
-> thanks to SCM_RIGHTS datagrams, again (reading descriptor table on sendmsg()
-> side, inserting into it on recvmsg()), especially when you consider the
-> fact that ->sendmsg() and ->recvmsg() *are* callable from contexts where
-> one shouldn't be allowed to access descriptor tables.  None of such
-> call chains is going to trigger descriptor table access (e.g. knbd is
-> not going to try and send SCM_RIGHTS datagrams, etc.), so it should be
-> safe, but having compiler prove that without inflicting overhead on
-> the code paths where it really wouldn't be welcome is not going to be trivial.
+From: Alvin Sun <alvin.sun@linux.dev>
 
-So, I previously wrote some code that could invoke filp_close() to close
-a given fd ... from a workqueue. This was in the scenario where the
-process dies and the usual cleanup function gets called deferred from a
-workqueue instead of from the ioctl like usual.
+Convert `use` imports to vertical layout for better readability and
+maintainability.
 
-In this case the correct behavior was just to do nothing.
+Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+Link: https://msgid.link/20260521-miscdev-use-format-v3-6-56240ca70d0c@linux.dev
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ drivers/block/rnull/configfs.rs | 22 +++++++++++++++++-----
+ drivers/block/rnull/rnull.rs    | 15 +++++++++++----
+ 2 files changed, 28 insertions(+), 9 deletions(-)
 
-It was a very easy mistake to make, and if such mistakes lead to null
-ptr derefs or worse, then I think it's worth doing something to reduce
-the bad consequences from this kind of mistake.
+diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
+index 32c10c3f4d0f..9b28be215093 100644
+--- a/drivers/block/rnull/configfs.rs
++++ b/drivers/block/rnull/configfs.rs
+@@ -2,15 +2,27 @@
+ 
+ use super::NullBlkDevice;
+ use kernel::{
+-    block::mq::gen_disk::{GenDisk, GenDiskBuilder},
+-    configfs::{self, AttributeOperations},
++    block::mq::gen_disk::{
++        GenDisk,
++        GenDiskBuilder, //
++    },
++    configfs::{
++        self,
++        AttributeOperations, //
++    },
+     configfs_attrs,
+-    fmt::{self, Write as _},
++    fmt::{
++        self,
++        Write as _, //
++    },
+     new_mutex,
+     page::PAGE_SIZE,
+     prelude::*,
+-    str::{kstrtobool_bytes, CString},
+-    sync::Mutex,
++    str::{
++        kstrtobool_bytes,
++        CString, //
++    },
++    sync::Mutex, //
+ };
+ 
+ pub(crate) fn subsystem() -> impl PinInit<kernel::configfs::Subsystem<Config>, Error> {
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index 0ca8715febe8..13048cea8bb0 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -10,12 +10,19 @@
+         self,
+         mq::{
+             self,
+-            gen_disk::{self, GenDisk},
+-            Operations, TagSet,
+-        },
++            gen_disk::{
++                self,
++                GenDisk, //
++            },
++            Operations,
++            TagSet, //
++        }, //
+     },
+     prelude::*,
+-    sync::{aref::ARef, Arc},
++    sync::{
++        aref::ARef,
++        Arc, //
++    }, //
+ };
+ 
+ module! {
 
-Alice
+-- 
+2.54.0
+
+
