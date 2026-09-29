@@ -1,141 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B747D538D7A;
-	Tue, 29 Sep 2026 14:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2C54CDDEF;
+	Tue, 29 Sep 2026 14:54:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790693149; cv=none; b=go1ac8qfzCR+ZyK3RQbBq2F+uqWncqPqF8t62GT9Th/lPMlxzcYf9yUgvb028Pmr2tDIZFxIDKsDGMsL+9vo1zNUnJo2b3G76AnKgv4EeqL5uvsnJ/VtmQotm4bA+es+laG7Cla2IANM91a4RxtLEuVB8w1T4hY0Pf4OMO5iAqc=
+	t=1790693654; cv=none; b=PRF+8Sx+JAy4f6LmsVD20MgGwwyi70jZeFJV5CBqmyDN/XZXzKsp3xMP20ZVtxL30EujaLQ3fk08u51BykMiOYagr5/3m2/Fy2wMGGM9ajX13QPrzaRG6SYjKzd9OLFjZPCjnEPIWjXpj9TYuIoczRF1DYUlPOZKMFXWLbqVbiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790693149; c=relaxed/simple;
-	bh=G91rNyoqBpxf08LDwH67RhsTWv9rePfgNtcjClFw7H8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=fXSsPdLPb2zgmmrUREtePAG+toPm+X3afd86XUYTg3JfWqAg2eAmQCCGpNgxLxELGL0VYYp96WjWIBpTynx6lXQSEPSKNZ4YjLNlPi9PLNaQAhpDIq+uNDrpCrz8xI//qRFreNtRsVezWhG2cPY5W8YgPhWALdifIpJ+WfJ5L9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RlWT7mKO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790693654; c=relaxed/simple;
+	bh=YjJznT4b0xAdGZ2PiRCaweISyYHg5n6lSKL0jyLHXAE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rGxO9AHjd4p4TqT8paBBqn3MaLxAKsUfAD09UY9j6aM69EcPJbyLnnO3E14uDYl0U0yppOLb/Ttxy+Pf8J+z0AzEe9HLhsXRdLitn9JMvpKfVX5OrrdgNhrHoxlUIv995q9vAXC4o33G/3m/y8xmjUME+37k7738zgafj8XO+wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=W4NvXe3S; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RlWT7mKO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FCB71F000FF;
-	Tue, 29 Sep 2026 14:45:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790693139;
-	bh=x2Ec6DrSeH/lKq1xJVwJgp4V44WP6XHNTIGQy7e1Jfg=;
-	h=From:Date:Subject:To:Cc;
-	b=RlWT7mKOYIXteLARQGOOneJmGbeWwnYFiF1nc9Ui70apfY7Nn1LOniUQ8DTphFQWS
-	 Xyny8Prl85Hjw1S0S+9AvgQKxwetyuNmGNIKDK92SqxrLEIKDVkZIw5KHD/5TTwaSl
-	 9kFo02sajc+zdeFf0hERpvd1RfEpYZ5+hEBjeBoECHDXy0PCgu6nHjozrNU8+8nQhK
-	 bfaChe2EK8oKabTLuH051UuE46L99BnBnV4E9AgGoKem+KIHsyCdJp46tg/Pu5yYkt
-	 oIQ/3cXqHgobAAFZSK1qmBHk77+R4bR/KzrOFfI8VAnIO7dm1m32iMlkvCdrlwUewP
-	 hzRGlQSmVIMCA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 29 Sep 2026 16:45:13 +0200
-Subject: [PATCH v3] rust: sync: export lock::do_unlocked
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="W4NvXe3S"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=cSs4Fxg3+Gv+8PrdKz5gHVkl12+opkOvD2Y/1wSCg1U=; b=W4NvXe3SsF07/exlGJuu7PFGcr
+	oqJNY4ii6Pa+mC1AsWqbfSQb1SkF+u8EyvwtRxE/mrN7nTHS9Az3CRxSfukMnzPQm1Y7qkMuBMEFO
+	HTd8ZV7WYtilYUrqoUQaHMTiQxYs8c5jQBZgVn8JtHIhrjnN1AhT49SknvhGLuLhba/XnOGN7M3XQ
+	TFTrFl6IrOEH1jA+33xeoUtX+U3f0wUa0QdUJO2DHpXn54Mft0Tbn3lZdMjdOWgx3nIjRDihdOdsD
+	+5Au6QmfFGbZkFkviLoDr8Z3+YjtjLDq93Wcout5uxJKzL4GxRF7h5dE/yPBWZXKRUo2BmvYBMWbd
+	I8aN0YxA==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.5 #2 (Red Hat Linux))
+	id 1xBZDS-0000000D1nR-1pym;
+	Tue, 29 Sep 2026 14:53:59 +0000
+Date: Tue, 29 Sep 2026 15:53:58 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Georgios Androutsopoulos <georgeandrout13@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Jan Kara <jack@suse.cz>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: file: handle fd table teardown in file
+ descriptor APIs
+Message-ID: <20260929145358.GC989762@ZenIV>
+References: <20260923022339.3340694-1-georgeandrout13@gmail.com>
+ <arThye_219ruNbM2@google.com>
+ <20260925-stellen-brummen-festrede-266af0305ac7@brauner>
+ <20260929044843.GA3909609@ZenIV>
+ <art7swUNAa3AyUrL@google.com>
+ <20260929132839.GA989762@ZenIV>
+ <CAH5fLgis-9ibYAEK-shQtwg_08Le-JDYChS77LugEhgZ=T+z8Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-export-do-unlocked-v3-1-f7000684178f@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAPjOu2oC/33NQQqDMBCF4atI1k2ZTKrFrnqP0kWajBqURBIbL
- OLdG92UQunyfzDfLCxSsBTZpVhYoGSj9S6HPBRMd8q1xK3JzRCwAhQlp3n0YeLG86cbvO7JcAB
- VKV3LszQnlg/HQI2dd/R2z93ZOPnw2n8ksa1/uSS44E2pDSLIB0Jz7Sk4Go4+tGzzEn6MCn4bm
- A1CCSBkDSjFl7Gu6xumYMBT+QAAAA==
-X-Change-ID: 20260215-export-do-unlocked-00a6ac9373d4
-To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
- Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>, 
- Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Miguel Ojeda <ojeda@kernel.org>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2493; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=G91rNyoqBpxf08LDwH67RhsTWv9rePfgNtcjClFw7H8=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqu88Hum2oj3sESGvTUOKhZBF0FLbPmrGlnt2n+
- 6GIRGkir/OJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCarvPBwAKCRD6UCkIqsW9
- 0LpQD/wKyeuc2Zx/i/aXGDxWPEUCMmltRR8gpsMWXhlMzPA04lfNyLWkkrZQcI5GCzDOUh4splq
- Trptz4H+fkxccu/Pyk3VPlLGlRsgUUkpoaIZb4vEtpDLLccmyj8rNXzjiVq2RPJB+50eow+oQ05
- Py6sUIcULp1AU3EV5VgIo/y4aPLO32D2NhsSy3p9H3TWPHjpVfweBpiAThTrJP9spjLBeSn7sad
- Jfrodtki8+rkMBwNJWR31zE3s7cpN0VzwsG8tuWOp0KTIsfiLzm6FAaGbl0BqvfdtQguMNoBns+
- cRUs6+pNgIu8g1uHF/a/px6Ho/Dk6eFYJJQlbeLXnLCYiUuBC0cP1y4Q76kDl7zxYa2tgixb5X9
- LxBO3jpiJDp62lqFdFms5x3CPGZFObCoLVGOxfOlsoDIQhw7hT+ez+Fgul0dBAFPf65/j2dSWXZ
- T20A1qe5SfWxJP9qGLA03CetOPv1y4F8NEFLo6MoWdqUC5bQNR9YXqZiBJ7VMGv/XbI2/tM30Lx
- eR0mWhfl5zgCZFEjjNnC2ev28pQL6dslgj40PY3CO/MrQzhTwJBpMmRe57LTJjhAbhurl0kHCVp
- mwJv/DnusG2u6POcnU9E5edL9imUUNQoY69wXD0iOrtG61Usc5oY9gm1xnBEwASjfPhgFRKJzjH
- 5Z1lX9KushWY4Eg==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAH5fLgis-9ibYAEK-shQtwg_08Le-JDYChS77LugEhgZ=T+z8Q@mail.gmail.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-Export lock::do_unlocked publicly. Add documentation for the method.
+On Tue, Sep 29, 2026 at 03:35:13PM +0200, Alice Ryhl wrote:
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
-Changes in v3:
-- Rebase on v7.3-rc5.
-- Do not import prelude in example (Alice).
-- Link to v2: https://msgid.link/20260605-export-do-unlocked-v2-1-e23001390231@kernel.org
+> Sorry I mixed it up ... the code called file_close_fd() and then
+> filp_close() with current->files. The important call here is the
+> file_close_fd() one, not the filp_close() one.
 
-Changes in v2:
-- Drop spurious space before `guard.do_unlocked` in the doc example (Benno).
-- Un-hide the imports in the doc example so the rendered docs no longer have a spurious blank line after them (Alice).
-- Link to v1: https://msgid.link/20260215-export-do-unlocked-v1-1-f5cd2203b20f@kernel.org
----
- rust/kernel/sync/lock.rs | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+Er...  But that would *not* see NULL ->files in case of workqueue -
+you'd get init_files instead.  vhost_task_create() is the only
+thing that creates threads with NULL ->files; it might or might
+not make sense to have the same for workqueue worker threads,
+but that wouldn't change anything in that bug anyway.
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 10b6b5e9b024..edfff9e10199 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -238,7 +238,31 @@ pub fn lock_ref(&self) -> &'a Lock<T, B> {
-         self.lock
-     }
- 
--    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
-+    /// Temporarily unlock the lock to execute the given closure.
-+    ///
-+    /// This method unlocks the lock before calling the closure `cb`, and re-locks it afterwards.
-+    /// This is useful when you need to perform operations that are not allowed while holding
-+    /// certain locks, such as allocating memory (which is prohibited while holding a spinlock).
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::new_spinlock;
-+    /// use pin_init::stack_pin_init;
-+    ///
-+    /// stack_pin_init!{
-+    ///     let lock = new_spinlock!(())
-+    /// }
-+    ///
-+    /// let mut guard = lock.lock();
-+    /// let mut buffer = KVec::new();
-+    /// // Temporarily unlock to allocate memory, which should not be done while holding a spinlock.
-+    /// guard.do_unlocked(|| {
-+    ///     buffer.push(5u32, GFP_KERNEL)
-+    /// })?;
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    pub fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
-         // SAFETY: The caller owns the lock, so it is safe to unlock it.
-         unsafe { B::unlock(self.lock.state.get(), &self.state) };
- 
+When you want to change the state of a thread component, be it
+descriptor table, cwd, umask, etc., you'd better do that in
+a thread that *does* share that component with the thread you
+want to have affected.
 
----
-base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
-change-id: 20260215-export-do-unlocked-00a6ac9373d4
+It's not a matter of race with exiting thread - closing a descriptor
+via schedule_work() is _always_ wrong.
 
-Best regards,
---  
-Andreas Hindborg <a.hindborg@kernel.org>
-
-
+I really don't get it...
