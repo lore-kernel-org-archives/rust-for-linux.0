@@ -1,66 +1,75 @@
-Received: from mail-ed2-f34.google.com (mail-ed2-f34.google.com [74.125.228.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4257E3515DE
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 09:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABCC34F46F
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 09:56:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790675747; cv=none; b=WmkPSBxWjjCCaZNuNo+nWsRTo46dSO2gH+5EyHdsZIcyqC+zF6cQrBH9MfCyjgvMI0ZiiuErq2GcsQYPMq7SuEdkGAgZQgwW68j3s3Cvk/rOxu0T2MzZckbYHzRtreK/9fMdb2h4bBSRd/w9Vyl9cXYqzri/HboEevwqSHg7uSQ=
+	t=1790675811; cv=none; b=pySKSV7gzic52VpwINkPEKfi+GHNvomU4Dp10AXiWXL8U+R1Y96sTHBrjxvjs8eYa6A6wvVJDys01UupJ+BP/uuX5kEcmZcD6AXOLQzbs6QBFqupSMPQWJqZ5uJROQ8UW/ofPaLDbayGIGGeNsHuieJuDNtPFffeifeoZwRIxzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790675747; c=relaxed/simple;
-	bh=07se/JviETlMYDRCO0tPeNRK6E3kx+s1WEeNG38MRU4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQOUXy+o4RlhdpFTCX7hsSELLdl/Obkrz4Cjw82f5BqssaXplaDz32nbMtS1iPIXtp39Q36wkySnJqjNFWAF4RaiX+Ane1HlFLo6HoBzpDaHZdhXOpkOIKK7w90I/jIT9Zhub93fMkfhv6JJA+XLvP6ybHB4OcZh/KkN9vmbCP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ouCN2Gqs; arc=none smtp.client-ip=74.125.228.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790675811; c=relaxed/simple;
+	bh=62jk+ArcPsJrcwqOo7iO+ykvL3sBQL3obMFZms42aVw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IfjcYrg1m0gLMmTeopBzTr1iBWDYVzmV/xjmzUW89z8FZgMUujaGLdV75LE7TNsa+sgcqaAAWhmbjG4X+LzPjYVD7kGarKsq0KFKhaewAXM4dehN2EDhO//CU/DYEVfSbvVfR3Idqo0A9N+eYdPGd6+sfsle0JxHjBLfjlGH+LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=YAVl7b29; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dAg0tvpf; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ouCN2Gqs"
-Received: by mail-ed2-f34.google.com with SMTP id 4fb4d7f45d1cf-6aae1f2cedfso5199850a12.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 02:55:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790675743; x=1791280543; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=07se/JviETlMYDRCO0tPeNRK6E3kx+s1WEeNG38MRU4=;
-        b=ouCN2GqsTA7bAtO/V/w8geFI9GhJJ8LPSpsPkiKmWpCVYPSn0lHisUJrocuRTN2Ky4
-         X+CD/k7qB7CZYVci82VyOomR8H9Xv5AESATOMuU0hq8x0HF28nBHPbnKFF7R2nzMFxUY
-         j7oy3+wgvxPeKxNjJcniLjLT64Y8qy7d6KeuAKPwr5OvWh47Wmr+NSTooRvL5hGF2VFG
-         qC7fuO6A2RnVZtX4/woJiOwF6wog3NRsPSA4cfCECDam6kPSFKux/LwIZMoKuqIbQoAI
-         BB80lT541nYHE6eQKvWprNB6V0z27ONvGtwMrqtRMAK5HTG8FharwBpkkYjcQUlbZ5l7
-         ZvbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790675743; x=1791280543;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=07se/JviETlMYDRCO0tPeNRK6E3kx+s1WEeNG38MRU4=;
-        b=gcPDMt+Yt5hoYXPf6KxWcYidydLnqIU9FVPq3aZDAkylsVeK0VRT4wYAWN00j7Kvtn
-         K1pz94pCH9kypnUVySyjIVQRJ7MfnSer0//yKSvf+gWtdEcqWdIqAWh1CyWU3tzbrFU1
-         llvOUK550dkTO5BqLOf1ADyEAgflsQxKHcVlhxkpJz9QHgF0rZHANdufS28tUBLaVqqU
-         uGA4vrppjBPQZAVficHi2+EBFbA3hzXj1G65T2x59fCS/0xVTwYO+t5ovjk+kP0qIGiB
-         N3QY9yDq/MEdjBxhAAQowmkgbg8pdKHsefVASa4/I4r2t3ytBWiR6j4xlJTh+GYkF9gF
-         yUlg==
-X-Forwarded-Encrypted: i=1; AKwUvByzjW2o+xxW38DNuCM+nBTMJZGERuiJw3BVN+3zt1Oq6gdCKyI2/i8WIkmo9dQeFdVSAY6IUd8EN/WzTcmpwg==@vger.kernel.org
-X-Gm-Message-State: AFuF++nDEXfeUATx+mJ9jYeVARhoUBx1tISDZjG8X5y7ntJN/1oAksga
-	NLhiEwNehNl1S+1QdzxfN/uzW2f1Vbp2iEOLD/emsbqf14z6k2r0CR88
-X-Gm-Gg: AYBFou2ZzGoLUjQ3vxxVfSXtKptz9PlcWdoJkogT5ahodYFlXmlDYrTwlA4uNmydBDI
-	80dWH7llRfz6IwZBeG5WVIuduQQ9pUsWhmdE4mVd2m6uaN8nr3ptuxNT06cXV1998s1WzVmd0sK
-	YlRlRDQRfBKccYcB+RcYg4FNY+ZbpYHyLIaj/ddzboBx7COp/MIu+CwLM6rz2vbaK5Yzuo1HMcr
-	s1dAM3cp16Tn9r1sVv31j7HNiq/QKPGMBIRoWVaT00RX2Szli/pcKeIHkTfjSxYxnvzQiMGu/eE
-	m4P4Ut/2e8rU7rWAZHqUgcLuN7Llt+FcMOhmTfOTh0QofzYSG8aWfHmHq9Z7wXrK/BqeR/oweie
-	t4qhDZPscd8LNcXl9vQee7TxedXGkpDk8oeU+3Q2XNX5QeATtw68n3Y9kDH7rsJd3Rr5xXOFluJ
-	rAe4/R3Sf/xObLAH/IACVPb+c6FzepKTZ5itt4P3wgQuz62n3jB6czxkPv2C2C2L6RlBz7anSwQ
-	sPMDeBqkA9tQ5yXNCq/gmgKW7BIUrh2OTBadcqe4PoQUlz1Wm0=
-X-Received: by 2002:a17:907:1c89:b0:c29:65ef:b907 with SMTP id a640c23a62f3a-c2ac24bcbe6mr1252123466b.26.1790675743155;
-        Tue, 29 Sep 2026 02:55:43 -0700 (PDT)
-Received: from sp1der-OptiPlex-7080.epfl.ch (dhcp-122-dist-b-107.epfl.ch. [128.178.122.107])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2dd1153f09sm323000566b.15.2026.09.29.02.55.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 02:55:41 -0700 (PDT)
-From: spidermana <xuyiwen14@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="YAVl7b29";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dAg0tvpf"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id D1B5E7A007A;
+	Tue, 29 Sep 2026 05:56:47 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Tue, 29 Sep 2026 05:56:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm3; t=1790675807; x=1790762207; bh=D8IUYrRXtjkc2HSHXutSK
+	zr1ZkVat0bgbq+ycjvQ0Gs=; b=YAVl7b291JYgRcjhYYd+myDZlGmYSuqALZEcB
+	KdUCm03CUIzmKVNkkx0qdwjz190dW/9Az9wg9wExwCDopbRFs0NYZHhQgGEnE13E
+	QQdWKInwdTC7g3iLMejDs55IuENxxnCKIH6f4M+YafF336T+9cEoD/1YLJxp5P01
+	VvLwCs6H01yRyDSI6l7nw9dVwCKNzTqO0VVmdNgtp2PaWgVUwdINNCcjAOM/oCzr
+	AM5DaXvzyVX86XImiOOwFdBhmbC68UktVyng0ifaBeVd/uGMDsrF6ID/urZojQO/
+	a3alr8xpmS0pZ3OXEenoW7t+OTEW9oINDP1BAHreoAHkulYHg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1790675807; x=1790762207; bh=D8IUYrRXtjkc2HSHXutSKzr1ZkVat0bgbq+
+	ycjvQ0Gs=; b=dAg0tvpf8JEN9QGy3IY+EnUb31GLjarQd9bz7Wzb3hc+Iea8x2P
+	IvXeeVYPs5lF3b4eXTvE9JjAje4AHmSYgh31sZS1hobndTH9DR8UgMGGzJSaTD4V
+	5OrmUqU4RZnfwSCyJnoT5CnOrUDZAC7CpG6m34BH7hj0CsG1HK9+lrrj5gBerZnK
+	GOh/un9vqTbvtWmH3eEdH6WPhLMWifielUe8Mxzq39XEldVRPF5rBtT6g6dIYMVk
+	Q42Wj7vyiKGfKK8qVrB1qbjpwJY9ALv+VR+a0uwUH9DY+PRNU9CwvMjofIvB7W5+
+	S3Y2PegdKnXXfryJXcRiRaPN2mXT+c+etOw==
+X-ME-Sender: <xms:X4u7aj72SRurupoSdkUz6RdaacMRemzMJ9i8WZCKL2PnoMRsIU9Qlw>
+    <xme:X4u7aqQj_DgB2pH05KNSUyoTTpphx87GwfndoJ3FwDGD0FX603yfgh6Nnfg7pJmuI
+    sMTCY32LU-fwv46QyqidzhKKEeoQM4B70SyCbEPkaR9w3_UM6xfx5hS>
+X-ME-Received: <xmr:X4u7ajtER3pjfd5vW79YpHsQNC_e17qaGVu-kEY5YCXg3lp-IHQCclnMOEc0otTciPokwhG8IfgwLo7aQrY>
+X-ME-Proxy-Cause: dmFkZTFvS3OFwVHaxub+ihmrLrskOCZmNiUvt1Z6reROFj64gHR3tsdoNds+dRKnW1YbtW
+    j5lCJiqHgqxPGdKQtMq7ysxB0x8OT9QnWoZKWUUbfVR5sHIRU2jQlWr0kFrVauvZjXgal8
+    wS/Iq7H8TmvgzjZyuiQz7v91L7fBo6ZbyVN/R0ahvFSvmSKA+eSr8kzJutl8P/VzJKV8T+
+    7cw/GaUVA81JbPC5rpwCSufv27Os11ZhtET9kGrXqRb6ly7GlzuUirfE1NsVOlXOCh7Gie
+    cXYspOxF8jMTh8Nq25rrDDKwSl7ja8fOac6MoX628Imq/CRc58vGk8wVXYx1uwUbPCioBN
+    fZz+pJu0I1yD2vRnjQWan+wbxGP1f12epgTJH+8j7flj227hSsFTwsvBiwvKjeIpsA/WAj
+    9IXCWlxxvC/yAdNb563bKKS5k2j2XgPoCmiwFLRGnWBRgF/+cTn0/B4SW/VJZ1PxHeKvwh
+    4tfpCrTUDsQIXeD8KosBerc0uRGU6qF+GKAd2szZgnwsqYdmC9KCZE4ZVScDXlHiHgTq3a
+    pvzNZ7lrPR4OFoFaunrlChmuMQiq7QE0FJeWfTsnOWu5K7D0uwBh4FRV2+iFar7bnOlPx+
+    sOjDyNTv68nxvUc3UUbTt4Z7TX2SRPX4stv2+6cUdmjnHcKlTzvdddBbGb/w
+X-ME-Proxy: <xmx:X4u7asbF_yvVxDao8M8Olx8IbgAQivzQ54AEXCT3TD0coIv_12zwMg>
+    <xmx:X4u7at8ixaNq5Ao7jEbuwtICxMMFSPBes22MG4PSCy3kOkvRCA-oew>
+    <xmx:X4u7aoqQu3T9ASdXwh2VRDQOPZrnkLqf79rPihKybJa3YbD3hhQRtg>
+    <xmx:X4u7agHZ39QwZALPpDVP3DxX52MqP2p-1BaFTgaBalTkrz87DlX2VQ>
+    <xmx:X4u7apBmdM9FuaANTtyeRfxU7ey58iaXwQP0ywM8QZy90TM0an56t_Sw>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 29 Sep 2026 05:56:43 -0400 (EDT)
+From: FUJITA Tomonori <tomo@flapping.org>
+To: ojeda@kernel.org,
+	fustini@kernel.org,
+	guoren@kernel.org,
+	wefu@redhat.com
 Cc: a.hindborg@kernel.org,
 	acourbot@nvidia.com,
 	aliceryhl@google.com,
@@ -69,36 +78,61 @@ Cc: a.hindborg@kernel.org,
 	dakr@kernel.org,
 	daniel.almeida@collabora.com,
 	gary@garyguo.net,
-	linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org,
 	lossin@kernel.org,
-	mehmet.mkoseoglu@gmail.com,
-	ojeda@kernel.org,
-	rafael@kernel.org,
-	rust-for-linux@vger.kernel.org,
 	tamird@kernel.org,
 	tmgross@umich.edu,
-	viresh.kumar@linaro.org,
 	work@onurozkan.dev,
-	xuyiwen14@gmail.com
-Subject: Re: [PATCH v3] rust: cpufreq: reject NULL from cpufreq_cpu_get()
-Date: Tue, 29 Sep 2026 11:55:39 +0200
-Message-ID: <20260929095539.1398671-1-xuyiwen14@gmail.com>
+	rust-for-linux@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v1] pwm: th1520: Fix 32-bit build with COMPILE_TEST
+Date: Tue, 29 Sep 2026 18:56:12 +0900
+Message-ID: <20260929095612.1072417-1-tomo@flapping.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CANiq72ki8M1KmxhO4vSkMUfLcuqOMvZtuTNdDpS-UcJy8rqWpA@mail.gmail.com>
-References: <CANiq72ki8M1KmxhO4vSkMUfLcuqOMvZtuTNdDpS-UcJy8rqWpA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On Mon, 28 Sep 2026 19:17:08 +0200, Miguel Ojeda wrote:
-> The From: doesn't seem to match the email of the tag, is that intended?
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Oops, no, thanks for noticing! Please disregard the tag in my
-previous reply. the correct one is:
+Fix the following build error on 32-bit ARM with COMPILE_TEST:
 
-Reviewed-by: spidermana <xuyiwen14@gmail.com>
+  ERROR: modpost: drivers/pwm/pwm_th1520.ko: symbol '__aeabi_uldivmod' undefined!
+
+The driver divides u64 values when it converts between nanoseconds and
+clock cycles. On 32-bit ARM, these divisions are compiled to calls to
+__aeabi_uldivmod, which the kernel does not provide.
+
+he TH1520 is a 64-bit RISC-V SoC, so the driver is only used on
+64-bit kernels. There is no point in compile testing it on 32-bit.
+Limit COMPILE_TEST to 64BIT instead of changing the arithmetic to use
+the div64 helpers.
+
+Fixes: 3c180003dffb ("pwm: th1520: Fix missing Kconfig dependencies")
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ drivers/pwm/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
+index 729776086879..abecd95b0c3c 100644
+--- a/drivers/pwm/Kconfig
++++ b/drivers/pwm/Kconfig
+@@ -772,7 +772,7 @@ config PWM_TEGRA
+ 
+ config PWM_TH1520
+ 	tristate "TH1520 PWM support"
+-	depends on ARCH_THEAD || COMPILE_TEST
++	depends on ARCH_THEAD || (COMPILE_TEST && 64BIT)
+ 	depends on RUST
+ 	depends on HAS_IOMEM && COMMON_CLK
+ 	select RUST_PWM_ABSTRACTIONS
+
+base-commit: d266640c6c760c9bc215bf5a3ece122ca488b6f5
+-- 
+2.43.0
+
