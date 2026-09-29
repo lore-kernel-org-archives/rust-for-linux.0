@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE86952E048;
-	Tue, 29 Sep 2026 14:00:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403B552ED2B;
+	Tue, 29 Sep 2026 14:00:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790690419; cv=none; b=qzJuPDCIiU/A6QmYh2XzThIxAZkHY6Oti6AlhcnBkDh8PfOrbuC364+bNKcEwnfJLwJWYyJIBUoE9vOBcvQ5QMfDDq0KkY+ML07iaZif24gCeRS/0XenbOmeTRTpbblVYPQsNeQHyoStc32+rDwLpVwwqderVDRJ48Pr7BoNklw=
+	t=1790690441; cv=none; b=ol8tHGSdyUnbdQqs32qCh2NU/qO/Ucv+8XGsV4kVbgHy801sthZzyVGx4Qg6UdK7a4wtSrcY5GPDaXm7X/DIjLlok3TZ2E24GI3wjdLCjQcHU2gfroOb2HH3f+M0wbxWfXI1HArjn0yVSOCEzDHc4CZZqB3LjYFj+Uxe8/V7o7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790690419; c=relaxed/simple;
-	bh=eEyeq6/fsT0PXkX0UIShoJfo0zn9fqNsdUy75nb+XUE=;
+	s=arc-20240116; t=1790690441; c=relaxed/simple;
+	bh=kMTfXmN76tXHjg7lMHDG8E9G2SXwV63lnKr/zCIsIT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i2hRF9uVLZT3zk7jDIKvqjlmAi6nRekoIk/hObOKVMG99i+D45ZpiCPlafrlF+9oLdHL6pn+u/9vE04JC1QnXxU4+yypWSxq2mpA5Ww8YTdo0MAc4raRDlHy/hA4h19W8DQw77e21TthnPungMFJ7TCWGTlQkIFyK5nanGrFhsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=AlayzuiV; arc=none smtp.client-ip=117.135.210.5
+	 MIME-Version; b=gb0OtYXP/a5kLdRT3nRhwstcOyRoSjzRcfpPPzs7FmzL4e+WhR872tKekJWB509PuWd0WFHlxI+ZnQD94vXKcgrtC53vLwjbaqQCYZL+g5nVX7aoy/IHqDQtwcq89bjLHuBH0GpVu+SviENiziIqywrbMIVXjFVh9vM6DbJun1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=TkbjctR2; arc=none smtp.client-ip=220.197.31.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="AlayzuiV"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="TkbjctR2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=7y
-	oPrFuCllkV3FYrWZZnRx/HC6rtb+rnZ0n/lDKR/Ks=; b=AlayzuiVeEw4sQQ6H+
-	AnUMZRtapimi3PR1/G2EiiHgSU0vqp7pg8pUkSITJNOONa1DFP9KCXcAIicfpRHY
-	xPxNKRzTRX5rPCeFQKT4CRfhuTXv7FcEDcG9ERk0c6kqN+MstIVPv4uv6vu3WErp
-	2dELUDg5XSsGvSVpkVB0n2eV0=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=vj
+	bTBB8DwF7g9ji0l50jBGPJhPvM44ev2BgqTyu3dIY=; b=TkbjctR20LRlfwvrAB
+	KVBHS85+oqhRKGYSn1vgukFqgOhXrRCMw8Js2AzqwfwK8DgudcQbh2UZehvEH9iE
+	adHzmP5zg8OcuqWTOC6nnFrQbCMTz1M5VvCvHz/9kDzu2yifaE8WLFWUwn/tAu4L
+	RNepQx1NAcFFefcG2OhGy9/bk=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3rr08xLtqmCNYBg--.46271S3;
-	Tue, 29 Sep 2026 21:59:30 +0800 (CST)
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgB3SLFPxLtqLmV_Bw--.47547S2;
+	Tue, 29 Sep 2026 21:59:48 +0800 (CST)
 From: Kaiqi Guo <chaoji_xinren@163.com>
 To: rust-for-linux@vger.kernel.org,
 	Miguel Ojeda <ojeda@kernel.org>
@@ -35,10 +35,12 @@ Cc: Jesung Yang <y.j3ms.n@gmail.com>,
 	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	Kaiqi Guo <chaoji_xinren@163.com>,
-	Charalampos Mitrodimas <charmitro@posteo.net>
-Subject: [PATCH v6 06/10] rust: macros: exercise the intended conversion doctest failures
-Date: Tue, 29 Sep 2026 21:58:51 +0800
-Message-ID: <20260929135855.36775-7-chaoji_xinren@163.com>
+	Alice Ryhl <aliceryhl@google.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Subject: [PATCH v6 10/10] gpu: nova-core: use conversion derives for two register enums
+Date: Tue, 29 Sep 2026 21:58:55 +0800
+Message-ID: <20260929135855.36775-11-chaoji_xinren@163.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260929135855.36775-1-chaoji_xinren@163.com>
 References: <20260929135855.36775-1-chaoji_xinren@163.com>
@@ -49,88 +51,101 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3rr08xLtqmCNYBg--.46271S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxuF48Kw48XF13Ar17Cr1DGFg_yoW5WF1fpa
-	yqyayxK3yxGas3Jw4IkFyjqw429ryrWas8XrW8JwnFkw43GF4fur45Kr45Grn0kF18ZF13
-	Ka4jyr1DJFn2va7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zN388sUUUUU=
-X-CM-SenderInfo: pfkd0yplb0x0xuhqqiywtou0bp/xtbC-gTLR2q7xESv6QAA3h
+X-CM-TRANSID:PSgvCgB3SLFPxLtqLmV_Bw--.47547S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJF48Wr13Xw47Wr47AFy5urg_yoW5Aw1rpF
+	45KrZ2kr17Zwn3Xa4xA3WUZFW3Cas3GFZ8uF47Jw1DursFyF10k3ykXrWFq34DG34IkrW2
+	gryvk345ua4UK37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piXTm-UUUUU=
+X-CM-SenderInfo: pfkd0yplb0x0xuhqqiywtou0bp/xtbC4hXPS2q7xFWmOAAA3t
 
-Use unit-only enums in the repr(C) compile-fail examples so they
-exercise the representation check rather than rejecting a struct. Fix
-the missing semicolon incidentally hidden by the TryFrom negative test,
-and correct the convert helper documentation.
+Replace bounded_enum! for Architecture with TryFrom and Into using the
+shared convert helper. Keep the six discriminants, Bounded<u32, 6> input
+and output, and Error/EINVAL on invalid inputs.
 
-Give the negative Bounded<u32, 32> examples a signed enum representation
-so that -1 is a valid discriminant and the conversion overflow assertion
-is what rejects it.
+Use From and Into for FalconCoreRevSubversion, which covers every value
+of Bounded<u32, 2>. Its existing infallible conversion and blanket
+TryFrom error type remain unchanged. Leave other register enums and
+Chipset conversion behavior in place.
 
-Suggested-by: Charalampos Mitrodimas <charmitro@posteo.net>
+This exercises both fallible and exhaustive conversions in actual
+register field users without changing register accesses or GPU
+initialization logic.
 
-Link: https://lore.kernel.org/rust-for-linux/m2qzr81jrd.fsf@ip-192-168-1-196.ap-southeast-1.compute.internal/
+Link: https://lore.kernel.org/rust-for-linux/DHHJCEG8BC47.2VC6GLDRRZH1B@nvidia.com/
 Signed-off-by: Kaiqi Guo <chaoji_xinren@163.com>
 ---
- rust/macros/convert.rs |  4 ++--
- rust/macros/lib.rs     | 12 +++++++++---
- 2 files changed, 11 insertions(+), 5 deletions(-)
+ drivers/gpu/nova-core/falcon.rs | 19 +++++++++----------
+ drivers/gpu/nova-core/gpu.rs    | 22 ++++++++++------------
+ 2 files changed, 19 insertions(+), 22 deletions(-)
 
-diff --git a/rust/macros/convert.rs b/rust/macros/convert.rs
-index c07870914242..78efbc7b99d7 100644
---- a/rust/macros/convert.rs
-+++ b/rust/macros/convert.rs
-@@ -893,7 +893,7 @@ mod overflow_assert_works_on_signed_bounded {}
-     ///
-     /// #[derive(Into)]
-     /// #[into(Bounded<u32, 32>)]
--    /// #[repr(u64)]
-+    /// #[repr(i64)]
-     /// enum Foo {
-     ///     // `-1` cannot be represented with `Bounded<u32, 32>`.
-     ///     A = -1,
-@@ -1459,7 +1459,7 @@ mod overflow_assert_works_on_signed_bounded {}
-     ///
-     /// #[derive(TryFrom)]
-     /// #[try_from(Bounded<u32, 32>)]
--    /// #[repr(u64)]
-+    /// #[repr(i64)]
-     /// enum Foo {
-     ///     // `-1` cannot be represented with `Bounded<u32, 32>`.
-     ///     A = -1,
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index cc6a96516c93..4d420d34ed6b 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -656,7 +656,7 @@ pub fn CovariantForLt(input: TokenStream) -> TokenStream {
- ///
- /// ## With `#[convert(...)]`
- ///
--/// The macro implements `From<Foo>` for each `T` specified in `#[into(...)]`,
-+/// The macro implements `From<Foo>` for each `T` specified in `#[convert(...)]`,
- /// which always overrides `#[repr(...)]`. `#[convert(...)]` is useful when the same type
- /// needs to be specified in both `#[into(...)]` and `#[try_from(...)]`:
- ///
-@@ -734,7 +734,10 @@ pub fn CovariantForLt(input: TokenStream) -> TokenStream {
- /// // `repr(C)` enums are not allowed.
- /// #[derive(Into)]
- /// #[repr(C)]
--/// struct Foo(u8);
-+/// enum Foo {
-+///     A,
-+///     B,
-+/// }
- /// ```
- #[proc_macro_derive(Into, attributes(into, convert))]
- pub fn derive_into(input: TokenStream) -> TokenStream {
-@@ -947,7 +950,10 @@ pub fn derive_into(input: TokenStream) -> TokenStream {
- /// // `repr(C)` enums are not allowed.
- /// #[derive(TryFrom)]
- /// #[repr(C)]
--/// struct Foo(u8)
-+/// enum Foo {
-+///     A,
-+///     B,
-+/// }
- /// ```
- #[proc_macro_derive(TryFrom, attributes(try_from, convert))]
- pub fn derive_try_from(input: TokenStream) -> TokenStream {
+diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
+index 65cb12d26e2b..15bbbda7df28 100644
+--- a/drivers/gpu/nova-core/falcon.rs
++++ b/drivers/gpu/nova-core/falcon.rs
+@@ -59,16 +59,15 @@ pub(crate) enum FalconCoreRev with TryFrom<Bounded<u32, 4>> {
+     }
+ }
+ 
+-bounded_enum! {
+-    /// Revision subversion number of a falcon core, used in the
+-    /// [`crate::regs::NV_PFALCON_FALCON_HWCFG1`] register.
+-    #[derive(Debug, Copy, Clone)]
+-    pub(crate) enum FalconCoreRevSubversion with From<Bounded<u32, 2>> {
+-        Subversion0 = 0,
+-        Subversion1 = 1,
+-        Subversion2 = 2,
+-        Subversion3 = 3,
+-    }
++/// Revision subversion number of a falcon core, used in the
++/// [`crate::regs::NV_PFALCON_FALCON_HWCFG1`] register.
++#[derive(Debug, Copy, Clone, kernel::macros::From, kernel::macros::Into)]
++#[convert(Bounded<u32, 2>)]
++pub(crate) enum FalconCoreRevSubversion {
++    Subversion0 = 0,
++    Subversion1 = 1,
++    Subversion2 = 2,
++    Subversion3 = 3,
+ }
+ 
+ bounded_enum! {
+diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+index fd1414004dd0..66249bb5b369 100644
+--- a/drivers/gpu/nova-core/gpu.rs
++++ b/drivers/gpu/nova-core/gpu.rs
+@@ -14,7 +14,6 @@
+ };
+ 
+ use crate::{
+-    bounded_enum,
+     driver::Bar0,
+     falcon::{
+         gsp::Gsp as GspFalcon,
+@@ -155,17 +154,16 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+     }
+ }
+ 
+-bounded_enum! {
+-    /// Enum representation of the GPU generation.
+-    #[derive(fmt::Debug, Copy, Clone)]
+-    pub(crate) enum Architecture with TryFrom<Bounded<u32, 6>> {
+-        Turing = 0x16,
+-        Ampere = 0x17,
+-        Hopper = 0x18,
+-        Ada = 0x19,
+-        BlackwellGB10x = 0x1a,
+-        BlackwellGB20x = 0x1b,
+-    }
++/// Enum representation of the GPU generation.
++#[derive(fmt::Debug, Copy, Clone, kernel::macros::TryFrom, kernel::macros::Into)]
++#[convert(Bounded<u32, 6>)]
++pub(crate) enum Architecture {
++    Turing = 0x16,
++    Ampere = 0x17,
++    Hopper = 0x18,
++    Ada = 0x19,
++    BlackwellGB10x = 0x1a,
++    BlackwellGB20x = 0x1b,
+ }
+ 
+ #[derive(Clone, Copy)]
 
