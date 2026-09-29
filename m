@@ -1,193 +1,204 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF403358399;
-	Tue, 29 Sep 2026 14:00:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBD32459E1
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 14:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790690462; cv=none; b=AF1y53zC6pJIK+v17f4A4j9mi+ixiMT+t3sTUZH5vQw1chH4esbEnEURqqNz+PZrlY9dnV1Cy7f4UNfZ3S2UFsR9bM6MvPMqgdeaYUpQl1th2QvuAPAgMtbr1wsG8uHRWtDlonjtM8h9aDoHpgyWkFqNQPhnGHQdyJ8AuoMSz+w=
+	t=1790691262; cv=none; b=SjVmr7sGX9/PEx4cR/wMshQ6eaTU5n5i8IHfD4PVrHp9yUC8n7i4cCAwSrtpZNMFDVs0+C7BqBV/o95UuP4k+a5+C4S1mQj1OXXm0vn165Sur61hQd4E/5stux67RO+ET9FBnANj/WSS7VfprSnGr8+FSHi7rkRiyW1yO5mP6n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790690462; c=relaxed/simple;
-	bh=hHXBHcUCrIplq/Wbvx/jiQO/FmwElDLURzK8n9eyhEQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BiGitDxfzcp0yAKxsjaF2ojiUMpoTaQ6RAOZjnIfT5eTMnzoq5OUbqdh934dQJ18tuVlFfEK7ErBHXr27ejmimQDQVZo/ZE9mAbdBKyCtsmnKIBPA1TE1HEP6d4Zqh2NkuK2/0dqn8ZiMp9Fy4I7Ssh7ooQRHhQI4LwdZoAK5yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ovo4oitI; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1790691262; c=relaxed/simple;
+	bh=q/uIYLcPSFObDJjtPbKhA7rAxxJvoJzI8r/TGrW80ps=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=A+vW0JMJ+P8Cj2KBa1dLaXRTerd8Sj0WCR25ZhZNEcEdpGtVLEz8aMEdLGJpazbdoqod0uPdfUEI/rXWQLkffNEL6Rej+CSOwJXX2LyICzr7GrNdh156t3gygkKvSHDG57sVo/9aFRTRVvhJOzIyk70YyEYuH/UpDTxGEfT6yVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OcNL2wOY; arc=none smtp.client-ip=74.125.229.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ovo4oitI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=P7
-	+Vtttm2uMFnng78VS5Um+xosrpZpAVlqn0HxUOE0g=; b=ovo4oitIGFGryFz4A5
-	UZt1yTJrhBLg1U1H5Dz2ApGkVw4vvfdmsUV8FntmhQJ0HgsYRk29n26IrdNTyiO7
-	sWZtkUAVUc1iFvv7cOK9IXFmIU7IXJmmfE3zSaRDbhgOaMPRVVfcfXF9SuvspeKX
-	NVhzOeFCz1SdJ+4IRxgk/i7xM=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgDX8L8hxLtqbwr+Bg--.43938S2;
-	Tue, 29 Sep 2026 21:59:03 +0800 (CST)
-From: Kaiqi Guo <chaoji_xinren@163.com>
-To: rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Jesung Yang <y.j3ms.n@gmail.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OcNL2wOY"
+Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-3428f70d7e7so2476812eec.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 07:14:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790691260; x=1791296060; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qSqpMHsSCgHMp6sYSZJ0Zph1nPml/+XmXvdv8QAUIRw=;
+        b=OcNL2wOYKfKHVMBEOS0YQnJZcLynWJs7LcvoBd3N2H+e7n47w5CGn1ooc8lDurjs5w
+         rAK8hKihJADI6YQyigci8Oo4/AalUWmIO/pofs9mpPENQd53IaYvz5EL2xfhsX6gCUWA
+         Si2zzmS3L8QGhPbhypyW9Xe8KWJ5LylGtn7oONA1TR3iV3fkVSdAhpNMJG37OYz6dTZi
+         hyzbV+U0uvd8u2XR4L8VRp+jw12VzDVzuUSoqMAJxsvRGES2C7eZAJm8pcHFO92oa1l8
+         hNpVBq1/jcUNkHDQ1Z2PDNaNmOSlHweJ+P4FWEIvDbZrWGjXDr9+ecXUDIv1p/qvLEZt
+         g6wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790691260; x=1791296060;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qSqpMHsSCgHMp6sYSZJ0Zph1nPml/+XmXvdv8QAUIRw=;
+        b=xmNiCO4+BEQYZSAr8APetcuulmCmc9GebHJEcCbL0zF9mnge84Telno/GAOTqyiXY0
+         Q1hRh7TLs08/adDjdEVUPL0qs+FpyR+Dge7k88l3QCGuSs9imJatXarN3j85AijmQfCm
+         QSrMU7cbKE9igW0bb53XUGjwpX9+x722STJWGlK7kojQRLXfUXwf2pTce4EokC3HFJ/4
+         Hj7DvKSFfTriNmLkg8qb2CcMq6a0FzKX7fEb/CRNPVKbG4UQlg02K5Dg2/AAXAB81a3I
+         bFPV63vwruZHaLKvBha7U23WpdF9/z+Wc7qKVEY8jJ9wJxas9ENhdAjZke7oopwU7Sx/
+         Sbzw==
+X-Forwarded-Encrypted: i=1; AKwUvBwh6mAnYkFLD/ptulB9t/HnXAwP4Ysg/04Sg6RDpot4rBWaxzAb2J+CKz75TQpM+jlzj8B2ltBo8gmDVIK89w==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKuKSHkCd+gvkNemVZTUac+m2K5QbNO0gBz/o0hJwn7t7Yyqh8L
+	ZoBvRyttPqtKef3Dg1OHTa6+aWbXgERHCmZuQhfkaZood7HXJ91QgLU=
+X-Gm-Gg: AYBFou2sd4ESSfGiGoFyEce3FcnovIU4WFT/D9t5Gw/CttTao4tYSRHrCsJON8wQ4Dn
+	RCFnaZnOBnzibbghwwABLGc+S2qdFJXo7TwXizInf/cBgVsEX56aa4EXq0kTvmPZ0UmOVh8e/MG
+	6sdynNG86Jk/0ZfYUWsb4XFp5/4OjeU12aFjKM1wJqnAyDpn2kcLkDM0uWwtTCWw/E5u9cUKSa9
+	h5rkEKXhp2OE76wZVUhcM78W5o4Wd6NxirLnz3gmkqut+PZw68cYup54mEdVr0wRZmU76Odstys
+	xXb0F3+0BJbgGSQiinEfWpG/0vdjWjNGbONdWIj1RGTBLlGo30oZvtT5uEsu2QtW84aM1D/HiS+
+	fmVU0ZHF/kXMrmLX4MIvPlOPNNERx/SDgRYf5jJUggxVz0uXV3QA9teqhzuDBHSKOx/aMDmf0sP
+	rHMOckYc4norV0G4JI8Hjnoa+i0QQt7tNi/tmUSMxNxRxf42ntx3C9WcGvj0eyMK7/RLI4IDOXV
+	MWwJKncBBvoLcFePERuoDayTFSH1QWLbTacId4hpC3YYxdSVA==
+X-Received: by 2002:a05:7300:80c9:b0:334:8fb7:1dfd with SMTP id 5a478bee46e88-342700c75e6mr17555271eec.8.1790691244787;
+        Tue, 29 Sep 2026 07:14:04 -0700 (PDT)
+Received: from localhost.localdomain ([186.158.238.108])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341459234a1sm34733297eec.24.2026.09.29.07.13.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 07:14:03 -0700 (PDT)
+From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>,
+	Burak Emir <burak.emir@gmail.com>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <david@davidgow.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: nova-gpu@lists.linux.dev,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Kaiqi Guo <chaoji_xinren@163.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com,
-	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
+	Benno Lossin <lossin@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun@kernel.org>,
+	Brigham Campbell <me@brighamcampbell.com>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Jori Koolstra <jkoolstra@xs4all.nl>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Rae Moar <raemoar63@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Tamir Duberstein <tamird@kernel.org>,
-	work@onurozkan.dev,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
-	Shivam Kalra <shivamklr@cock.li>
-Subject: [PATCH v6 00/10] rust: add conversion derives and exhaustive From support
-Date: Tue, 29 Sep 2026 21:58:45 +0800
-Message-ID: <20260929135855.36775-1-chaoji_xinren@163.com>
-X-Mailer: git-send-email 2.50.1
+	Trevor Gross <tmgross@umich.edu>,
+	Yury Norov <yury.norov@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev
+Subject: [PATCH 2/3] rust: kunit: allow same test name with different #[cfg(...)]
+Date: Tue, 29 Sep 2026 11:07:42 -0300
+Message-ID: <0f710a749bec162c3cf96f83d8425e7ad48e78e6.1790599486.git.nico.antinori.7@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1790599486.git.nico.antinori.7@gmail.com>
+References: <cover.1790599486.git.nico.antinori.7@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgDX8L8hxLtqbwr+Bg--.43938S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Xr4fCr4UXr1xAFy5KF1xXwb_yoWxGF47pF
-	4qk3yYkr48C3WfG39Fya1UZa45GFWfJFW5XF17Jw4DursIkr10qrWDKw4Y9F9rC340v39I
-	9r1Fyr1kCa4jva7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zi75r7UUUUU=
-X-CM-SenderInfo: pfkd0yplb0x0xuhqqiywtou0bp/xtbC4QnEQGq7xCnaGgAA3Q
 
-Nova register enums need conversions to and from integer fields. This
-series adds Into and TryFrom derives and a shared convert helper, then
-adds From for enums that cover every possible input value. Two Nova
-register enums use the derives without changing their conversion results
-or error types.
+Sometimes it is necessary to test the same code paths under different
+configurations. The `#[cfg(...)]` macro can be used to check if specific
+configurations are enabled and run tests accordingly.
 
-This continues Jesung Yang's work. The first five patches preserve his
-authorship and implementation from the unpublished tryfrom-into-macro.v6
-branch [1], rebased onto rust-next. Jesung has not formally posted this
-v6 series. The remaining five patches fix test and name-resolution issues,
-add exhaustive conversions, and exercise them in Nova. The last public
-submission I found is v5 [2]; the v6 branch was announced in March [3].
-The v6 numbering here follows that public submission history.
+Currently, defining multiple tests with the same name under different
+`#[cfg(...)]` attributes results in a compilation error. This patch
+removes that restriction, allowing identical test names across different
+configurations.
 
-Alexandre requested an infallible Bounded-to-enum conversion when the enum
-covers the entire field [4], referring to bounded_enum!'s compile-time
-exhaustiveness check [5]. This version adds:
+Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
+---
+ rust/kernel/kunit.rs | 22 ++++++++++++++++++++++
+ rust/macros/kunit.rs | 20 +++++++++++++++-----
+ 2 files changed, 37 insertions(+), 5 deletions(-)
 
-    #[derive(kernel::macros::From, kernel::macros::Into)]
-    #[convert(Bounded<u8, 2>)]
-    enum Mode {
-        A = 0,
-        B = 1,
-        C = 2,
-        D = 3,
-    }
+diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+index 5fa4d994e0f7..5ff988ab76a4 100644
+--- a/rust/kernel/kunit.rs
++++ b/rust/kernel/kunit.rs
+@@ -347,6 +347,28 @@ fn rust_test_kunit_in_kunit_test() {
+         assert!(in_kunit_test());
+     }
 
-The direction-specific spelling is #[derive(From)] with #[from(...)].
-From also supplies the standard blanket TryFrom with Error = Infallible;
-an explicit TryFrom derive for the same input would conflict with it.
++    // Tests with cfg have the same name on purpose because we are implicitly testing that
++    // tests with the same name but different configs do not throw a compilation error
++    #[test]
++    #[cfg(CONFIG_RUST_KUNIT_SELFTEST = "y")]
++    fn rust_test_kunit_run_only_active_cfg() {
++        assert!(in_kunit_test());
++    }
++
++    #[test]
++    #[cfg(CONFIG_RUST_KUNIT_SELFTEST = "n")]
++    fn rust_test_kunit_run_only_active_cfg() {
++        // This test should never run because of the `cfg`.
++        assert!(false)
++    }
++
++    #[test]
++    #[cfg(CONFIG_RUST_KUNIT_SELFTEST = "INVALID_VALUE")]
++    fn rust_test_kunit_run_only_active_cfg() {
++        // This test should never run because of the `cfg`.
++        assert!(false)
++    }
++
+     #[test]
+     #[should_panic]
+     fn rust_test_kunit_panic_in_kunit_test() {
+diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
+index f1d0210e6a49..18cfa463c8db 100644
+--- a/rust/macros/kunit.rs
++++ b/rust/macros/kunit.rs
+@@ -45,6 +45,8 @@ pub(crate) fn kunit_tests(test_suite: Ident, mut module: ItemMod) -> Result<Toke
 
-The exhaustiveness proof reuses the existing per-discriminant range
-assertions and Rust's rejection of duplicate discriminants. It checks
-that the number of distinct variants equals the input domain size,
-comparing spans to avoid overflowing a full-width cardinality. The
-generated function compares all but the final variant, then returns that
-variant. Missing values, gaps, and out-of-range discriminants fail at
-compile time even without a call site. No panic or unsafe path is needed.
+     let mut processed_items = Vec::new();
+     let mut test_cases = Vec::new();
++    let mut test_cases_cfgs = Vec::new();
++    let mut test_case_number: u32 = 1;
 
-This count-based proof is a new implementation choice, rather than the
-MAX.. match pattern suggested in the thread. Review of this choice and
-the From/from spelling would be welcome. No new conversion trait or
-Bounded abstraction is introduced.
+     // Generate the test KUnit test suite and a test case for each `#[test]`.
+     //
+@@ -135,7 +137,7 @@ macro_rules! assert_eq {
+         // Add back the test item.
+         processed_items.push(Item::Fn(f));
 
-Changes since the public v5:
+-        let kunit_wrapper_fn_name = format_ident!("kunit_rust_wrapper_{test}");
++        let kunit_wrapper_fn_name = format_ident!("kunit_rust_wrapper_{test}_{test_case_number}");
+         let test_cstr = LitCStr::new(
+             &CString::new(test_str.as_str()).expect("identifier cannot contain NUL"),
+             test.span(),
+@@ -172,15 +174,23 @@ macro_rules! assert_eq {
+             case.attr.rust_should_panic = #should_panic;
+             case
+         }));
++        test_cases_cfgs.push(cfg_attrs);
++        test_case_number += 1;
+     }
 
-- Preserve Jesung's shared convert helper and replacement of from_expr
-  with per-variant Bounded::new const-generic constructors.
-- Preserve his separate private Into and TryFrom doctest patches.
-- Rebase onto d266640c6c76, retaining the new ForLt/CovariantForLt macros.
-- Correct repr(C) negative examples that still used structs, and make
-  the negative unsigned Bounded tests exercise conversion overflow.
-- Add From/from and compile-pass/fail tests for exhaustive conversions.
-- Reject generic arguments on primitive helper types and qualify generated
-  Result and Bounded backing-type names against local aliases.
-- Migrate Architecture to TryFrom/Into and FalconCoreRevSubversion to
-  From/Into, preserving EINVAL and Infallible respectively.
-
-Two earlier API questions remain deliberately visible for review:
-
-- The absence of an explicit integer repr still defaults to isize.
-- Helper arguments still override the repr-derived conversion type;
-  they do not add an extra implementation for that repr type.
-
-These retain Jesung's v6 choices. TryFrom also retains Error/EINVAL;
-context-specific errors remain the caller's responsibility. This series
-does not change Chipset's ENODEV conversion or add a configurable error
-API. Bounded constructor support is unchanged (up to 64-bit and pointer
-width backing integers); primitive u128/i128 domains are checked too.
-
-Validation on Debian arm64, Rust 1.85.1, LLVM 19.1.7, bindgen 0.71.1:
-
-- Rust and drivers/gpu/nova-core.o builds passed.
-- rusttest: 128 doctests passed, 4 existing examples ignored.
-- rustfmtcheck, CLIPPY=1 builds, and rustdoc passed.
-- rust/.kunitconfig under arm64 QEMU: 360 tests passed.
-- Exhaustive before/after comparison of the actual Nova declarations:
-  Architecture 64/64 inputs identical (6 successes, 58 EINVAL), and
-  FalconCoreRevSubversion 4/4 identical, including round trips and the
-  Infallible error type.
-- Separate negative-test probes checked the expected diagnostic for
-  missing values, gaps, overflow, and duplicate discriminants.
-
-No NVIDIA hardware testing was performed. checkpatch reports no errors;
-the preserved original patches retain a new-file MAINTAINERS reminder
-and one 120-column doctest line warning. The five follow-up patches have
-no checkpatch warnings. Previous review/test tags dropped by Jesung are
-not restored, and no new review, test, or ack tags are claimed.
-
-Base: rust-next d266640c6c760c9bc215bf5a3ece122ca488b6f5
-
-[1] https://github.com/J3m3/linux/tree/2ea456bd5f26bd66c766b462a7d606d9842c208a
-[2] https://lore.kernel.org/rust-for-linux/20260129-try-from-into-macro-v5-0-dd011008118c@gmail.com/
-[3] https://lore.kernel.org/rust-for-linux/DH939HK0611M.22A8T9BJ3NG8@gmail.com/
-[4] https://lore.kernel.org/rust-for-linux/DHHJCEG8BC47.2VC6GLDRRZH1B@nvidia.com/
-[5] https://lore.kernel.org/rust-for-linux/DHHK2OJ6O83V.2MZNHRQYK21EU@nvidia.com/
-
+-    let num_tests_plus_1 = test_cases.len() + 1;
++    // This dummy array is used to calculate the exact number of tests cases that are active
++    // depending on their #[cfg(...)] attribute.
++    processed_items.push(parse_quote!(
++        const TEST_CASES_COUNT: &[()] = &[#(#(#test_cases_cfgs)* (),)* ()];
++    ));
++
+     processed_items.push(parse_quote! {
+-        static mut TEST_CASES: [::kernel::bindings::kunit_case; #num_tests_plus_1] = [
+-            #(#test_cases,)*
+-            ::pin_init::zeroed(),
++        static mut TEST_CASES: [::kernel::bindings::kunit_case; TEST_CASES_COUNT.len()] = [
++            #(#(#test_cases_cfgs)* { #test_cases },)*
++            ::pin_init::zeroed()
+         ];
+     });
++
+     processed_items.push(parse_quote! {
+         ::kernel::kunit_unsafe_test_suite!(#test_suite, TEST_CASES);
+     });
 --
-This series is based on Jesung's five commits below, followed by five
-separate continuation commits.
-
-Jesung Yang (5):
-  rust: macros: add derive macro for `Into`
-  rust: macros: add derive macro for `TryFrom`
-  rust: macros: add `convert` helper attribute
-  rust: macros: add private doctests for `Into` derive macro
-  rust: macros: add private doctests for `TryFrom` derive macro
-
-Kaiqi Guo (5):
-  rust: macros: exercise the intended conversion doctest failures
-  rust: macros: derive From for exhaustive enum conversions
-  rust: macros: test exhaustive conversion derives
-  rust: macros: validate and qualify conversion helper types
-  gpu: nova-core: use conversion derives for two register enums
-
- drivers/gpu/nova-core/falcon.rs |   19 +-
- drivers/gpu/nova-core/gpu.rs    |   22 +-
- rust/macros/convert.rs          | 2093 +++++++++++++++++++++++++++++++
- rust/macros/lib.rs              |  522 +++++++-
- 4 files changed, 2633 insertions(+), 23 deletions(-)
- create mode 100644 rust/macros/convert.rs
-
-
-base-commit: d266640c6c760c9bc215bf5a3ece122ca488b6f5
+2.47.3
 
