@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A182DEA75;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BA836A34F;
 	Tue, 29 Sep 2026 02:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790648156; cv=none; b=mmJhRdP7r1Q8/bGd3WC3gHW5+125591ZcLegVBfWHKwB+K4tEFNASpn4E3NwvaDPiQjjOML24GHJVdYAoWMtGd1pdJGvSxDFeqby4SrAOZxYDIqFf4UbrdcNxrVoXmvhS55gH+CNlHODSmrC4qWCyUaYygiBimHCWP5ouviLMFc=
+	t=1790648156; cv=none; b=ROSnB1lLBzO5qy3lJ7ywrnY+GjiM3vxj4hue8W1eH8YEHtUBT8/+llSxgMlqTmHqL5LnzvvaKMKFyfLRcQ/fFOwdGxfkSjtC6U4HSiR1mhuJcPdQnn7JFOpdd1iv8uol4tnIoNX4xqJrewSsA6DPYlDx91zdCoN3EA8hDcJOCpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790648156; c=relaxed/simple;
-	bh=KcRjclGxWWucAqNsmHW4CsL7AkQm1OZEgwKhM/93SCI=;
+	bh=Y+Bjb7lYNOXArFBTwJ5tEEIzUp4p6FTp653OpvMTivc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ChZJUNuLVP24wp/ZvYciT8DRYucJ6nt3bNonX9hgj7+Nt1LX38eT7pQ90AqQKSZ4xnKifYGnu0DIDGRT6EkRKEX4K+BWlCT7MxJ8EKJtej26MxHWMyejxnIdGbDBUHdZc1Qh2CT/0iEHJbwyrcJLQUx7h/yyeuM/YTdolVRMuDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N0zA444o; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=mJ6dZiKqr+wjvhB2m99b5dzUCkfjKiuqyT2bKIFXqbR/D/7s9sX+L1y9l1Xfh69MzyZAiL0G27kTIw5B/whYghGHpIk6A2SRG8T0ntGFOTfrAZWyykDJaMnGVoAaIg6c6V48qZR6XjKUvP2uMLQYy7kO6YTD67QKwicHAeK7k+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rz16EmNn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N0zA444o"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5B1E9C4AF15;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rz16EmNn"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 32F33C4AF12;
 	Tue, 29 Sep 2026 02:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1790648156;
-	bh=KcRjclGxWWucAqNsmHW4CsL7AkQm1OZEgwKhM/93SCI=;
+	bh=Y+Bjb7lYNOXArFBTwJ5tEEIzUp4p6FTp653OpvMTivc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=N0zA444oJE/c3+6D/NwuEebtUgg7rR0rjI8mi1w7os0cZLCFi4dTKXNOm54VMHzhO
-	 iwsTmDBo6jWwxrLXA3oCUsJZEFthsPU7AT7RhexEXOh2w53BEa0IYkJgBbcFxIu73s
-	 YwFVqWcg9k0Qb/j7LL0nJHIvDu20EX2+sBjhL+IKUYNOcwSpL098I4iTv76t2AL6W9
-	 D+tyyM8AkUuCSqzCJfcBdnAGweMvuTKNVhTnv0+Z90KI51CjqeJwhbDX3vqyiealUr
-	 /2DQQO0RgkvShAlVxb5lzR9RED2xCvCsfl3oev5jAuvWp7T061Y4WaxcSvyTm4Zyer
-	 tZASUWQVZiI3g==
+	b=rz16EmNniSViHWXdNQLsRMPsEq1FS0gJ7Zr2KPVyIS591DtITnqt5sYbet7FD4xma
+	 /IbfV8BwulSxoi7V7rBmE5zowXewZAac70Cx1QkHSi32V6DNLuAUI7t90tEMMykKbc
+	 y0vow2nJ2xrNR9K5uOBNP5XwDBV7fKx7lrDHAuT6ZobOtmcSQntGG8gDHsxEw5UXW1
+	 7oXV52SbCc6Zo3JI5nZ6Ni8PPkOvFPMJJHaSNetvSi3fbyl0usvWqAnmpLt/lE7K2E
+	 fyAsHHfL2H5zBqCw/d0f9C6h/7tOSVLarV75XE4vCVfV4K3J6dQNWmKPWOPbWa+Gtv
+	 ehdON+BO4qB3g==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 41701CA5FAD;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 117B0CA5FAB;
 	Tue, 29 Sep 2026 02:15:56 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Tue, 29 Sep 2026 10:15:54 +0800
-Subject: [PATCH v3 04/11] drm/tyr: add per-file VM pool
+Date: Tue, 29 Sep 2026 10:15:51 +0800
+Subject: [PATCH v3 01/11] rust: sizes: add SZ_4G constant
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -39,8 +39,8 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-tyr-ioctls-v3-4-26955fb111d5@kylinos.cn>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260929-tyr-ioctls-v3-1-26955fb111d5@kylinos.cn>
 References: <20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn>
 In-Reply-To: <20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -63,11 +63,11 @@ Cc: Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org,
  driver-core@lists.linux.dev, Ke Sun <sunke@kylinos.cn>, 
  Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790648153; l=4466;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790648153; l=1808;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=2k4Kro5Nu9GP4ZaXjA3FSWjNswGDeb0O0Mq0nSMnSeU=;
- b=kDfugSFGH7eKdA5+2sLu99cdt5TWEtYM8IV+0Y/ncOgm/ISOJ7zGt4CcRwbDNwVbxi0+yDxxa
- QuLPwX8bPXRD4aVNIF2NbenIspWPdfUYSapQ+0AOrEb7nAotBZKCqu0
+ bh=5K5ZDtbb0No9pS3iRwCaB/ZkoyNuv4RA97gE66KsHmQ=;
+ b=l3bdZ9ZK97meFn8m8zP4xbBKLXntFnscqTrboQul2MtghnL2aNeAsJbD2XGmryP2qCWeBvrYV
+ OkGMDVCvBd/AtMsUU1mlOzQ4qaxkyNYi+AmvkcvEWS6DJT1bIP8mxhd
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -77,144 +77,50 @@ Reply-To: sunke@kylinos.cn
 
 From: Alvin Sun <alvin.sun@linux.dev>
 
-Userspace needs multiple independent GPU address spaces per file,
-addressed by ID through the VM ioctls as in panthor. Store them in an
-IdPool (capped at 32 for panthor parity) plus an XArray. A failed
-insertion kills the VM before returning the error, and the pool kills
-every VM still stored when the file closes.
+SZ_4G is used by Tyr when splitting the GPU VA range into
+user and kernel regions. Add a LargeSizeConstants trait, implemented
+for u64 since SizeConstants only covers sizes that fit in a u32.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- drivers/gpu/drm/tyr/vm.rs | 106 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 105 insertions(+), 1 deletion(-)
+ rust/bindings/bindings_helper.h |  1 +
+ rust/kernel/sizes.rs            | 12 ++++++++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-index c5e307b1e2416..a2857820570cf 100644
---- a/drivers/gpu/drm/tyr/vm.rs
-+++ b/drivers/gpu/drm/tyr/vm.rs
-@@ -33,6 +33,7 @@
-         }, //
-     },
-     fmt,
-+    id_pool::IdPool,
-     impl_flags,
-     io::PhysAddr,
-     iommu::pgtable::{
-@@ -53,7 +54,11 @@
-         ArcBorrow,
-         Mutex, //
-     },
--    uapi, //
-+    uapi,
-+    xarray::{
-+        AllocKind,
-+        XArray, //
-+    }, //
- };
- 
- use crate::{
-@@ -948,3 +953,102 @@ fn pt_unmap(dev: &Device, pt: &IoPageTable<'_, ARM64LPAES1>, range: Range<u64>)
- 
-     Ok(())
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 930e63290cdd4..ee99f470ae5f4 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -116,6 +116,7 @@ const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
+ const size_t RUST_CONST_HELPER_ARCH_KMALLOC_MINALIGN = ARCH_KMALLOC_MINALIGN;
+ const size_t RUST_CONST_HELPER_PAGE_SIZE = PAGE_SIZE;
+ const size_t RUST_CONST_HELPER_GENLMSG_DEFAULT_SIZE = GENLMSG_DEFAULT_SIZE;
++const unsigned long long RUST_CONST_HELPER_SZ_4G = SZ_4G;
+ const gfp_t RUST_CONST_HELPER_GFP_ATOMIC = GFP_ATOMIC;
+ const gfp_t RUST_CONST_HELPER_GFP_KERNEL = GFP_KERNEL;
+ const gfp_t RUST_CONST_HELPER_GFP_KERNEL_ACCOUNT = GFP_KERNEL_ACCOUNT;
+diff --git a/rust/kernel/sizes.rs b/rust/kernel/sizes.rs
+index 521b2b38bfe77..0acc8733d2368 100644
+--- a/rust/kernel/sizes.rs
++++ b/rust/kernel/sizes.rs
+@@ -132,3 +132,15 @@ impl SizeConstants for $first {
  }
+ 
+ define_sizes!(u32, u64, usize);
 +
-+/// Maximum number of VMs a single file may hold, matching panthor's
-+/// `PANTHOR_MAX_VMS_PER_FILE`.
-+const MAX_VMS_PER_FILE: usize = 32;
-+
-+/// Per-open-file pool of VMs.
-+#[pin_data(PinnedDrop)]
-+pub(crate) struct VmPool<'drm> {
-+    #[pin]
-+    ids: Mutex<IdPool>,
-+    #[pin]
-+    vms: XArray<Arc<Vm<'drm>>>,
++/// Large size constants (≥ 4 GiB).
++///
++/// Only implemented for [`u64`].
++pub trait LargeSizeConstants {
++    /// `0x1_0000_0000`.
++    const SZ_4G: Self;
 +}
 +
-+impl<'drm> VmPool<'drm> {
-+    /// Creates a new [`VmPool`].
-+    #[expect(dead_code)]
-+    pub(crate) fn new() -> impl PinInit<Self> {
-+        let ids = IdPool::new();
-+        pin_init!(Self {
-+            ids <- new_mutex!(ids),
-+            vms <- XArray::new(AllocKind::Alloc),
-+        })
-+    }
-+
-+    /// Stores the VM and returns the allocated ID.
-+    ///
-+    /// On failure - ID space exhausted or store failure - the VM is killed
-+    /// here and only the error is returned.
-+    // TODO: allocate IDs with the XArray directly (once it grows range
-+    // allocation, the equivalent of C's `XA_LIMIT`) and drop the IdPool.
-+    #[expect(dead_code)]
-+    pub(crate) fn add(&self, vm: Arc<Vm<'drm>>) -> Result<u32> {
-+        let id = {
-+            let mut ids = self.ids.lock();
-+            let unused = ids.find_unused_id(1).ok_or(ENOSPC)?;
-+            if unused.as_usize() > MAX_VMS_PER_FILE {
-+                return Err(ENOSPC);
-+            }
-+            unused.acquire()
-+        };
-+
-+        let mut vms = self.vms.lock();
-+        match vms.store(id, vm, GFP_KERNEL) {
-+            Ok(prev_vm) => {
-+                drop(prev_vm);
-+                Ok(id as u32)
-+            }
-+            Err(err) => {
-+                // Drop the XArray spinlock before acquiring the `ids` mutex.
-+                drop(vms);
-+                // Kill the VM and release the pooled id before returning.
-+                err.value.kill();
-+                self.ids.lock().release_id(id);
-+                Err(err.error)
-+            }
-+        }
-+    }
-+
-+    /// Removes the VM with the given ID.
-+    ///
-+    /// The caller is responsible for killing the returned VM.
-+    #[expect(dead_code)]
-+    pub(crate) fn remove(&self, id: u32) -> Result<Arc<Vm<'drm>>> {
-+        let mut vms = self.vms.lock();
-+        match vms.remove(id as usize) {
-+            Some(vm) => {
-+                drop(vms);
-+                self.ids.lock().release_id(id as usize);
-+                Ok(vm)
-+            }
-+            None => Err(EINVAL),
-+        }
-+    }
-+
-+    /// Gets a shared reference to the VM with the given ID.
-+    #[expect(dead_code)]
-+    pub(crate) fn get(&self, id: u32) -> Option<Arc<Vm<'drm>>> {
-+        let vms = self.vms.lock();
-+        let borrow = vms.get(id as usize)?;
-+        Some(Arc::from(borrow))
-+    }
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for VmPool<'_> {
-+    fn drop(self: Pin<&mut Self>) {
-+        let this = self.project();
-+        // Kill every VM left in the pool. The ID range is bounded by
-+        // `MAX_VMS_PER_FILE`, so this loop is cheap and runs at file close.
-+        for id in 1..=MAX_VMS_PER_FILE {
-+            // Release the XArray lock guard before killing: `kill()` may sleep.
-+            let vm = this.vms.lock().remove(id);
-+            if let Some(vm) = vm {
-+                vm.kill();
-+            }
-+        }
-+    }
++impl LargeSizeConstants for u64 {
++    const SZ_4G: Self = bindings::SZ_4G;
 +}
 
 -- 
