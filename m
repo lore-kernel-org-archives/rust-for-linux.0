@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BD054A7F9;
-	Tue, 29 Sep 2026 17:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7EC5476C3;
+	Tue, 29 Sep 2026 17:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790704708; cv=none; b=W9At3z9nLzanVIHZDv/aTZ+8hI+JYQdHKs2u03TADEDmmYWGHIgcs1md72RqtGoopfZJASpxDr33ZEQtDP+DDQ3s8lPIAIc85IncK1bsLj8Grw69khvVRXrkHh/AMxjix4dl1eaQwxPZthsyv+jmJsolqcjhdh9o0isGULuC9Is=
+	t=1790704713; cv=none; b=KyMrAwK5u4WDgoKelDq3yHghFGsD//qS2pxgWq3DnxiCHPAtStSdJJkkILZvkrqqsPgqUA63Esg5UFPqtk/vJ3a0a5AoSqTXSOMLKd5/7U+2WGJ0O7XpNJ/kOeFvlAmXc1XDyxajUEDMQ0WEaz/IgcHkHw+Wl1zb5/macTU/EPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790704708; c=relaxed/simple;
-	bh=ob8aaFvZPEPE3Ti84U3DffMtnLiwOYsj7sIhrKuuYU8=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=J3Nk+fcF/c+m/jS69o6S4lZyrBbjFsGdRZA/V3qyzZMh3NiSaDJdNVhji3TLt2nWxS5EUQbVhK/SblQKG+aPirVAirqvpdE/ekuFT9sVjGR+f7eZzzrw9QjI9gyqQYSAwc73yON9fFCfGNtSbFm59LDDvgH2PUveCnasz0bsRE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IVUPuRtn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790704713; c=relaxed/simple;
+	bh=xhMnY8P3fAJuW7gQqQ0qb7YT+JEIYP+2o3RbxdirnqM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=m3Kwy0PXDs/X70rZQrAKD2zsUiHanycBNi23+F3p51J5/J0uYFolgRltBW8NDB5eQ3kbVK89E0hnDItjVZ0uqO6jTgXFq2URyU7y6X9tsT4yxGNbLg1pvGjvJU/ijYLtA5g1G959hZOHfGmo/y2uxhKbQmikSN2MmPI8Lq8zR3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ES24bieo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IVUPuRtn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8338D1F000FF;
-	Tue, 29 Sep 2026 17:58:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ES24bieo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7B31F00893;
+	Tue, 29 Sep 2026 17:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790704707;
-	bh=KHKJnA7KIO2FBTX9YSVUtiV+iyvGe4gtC+pF0ySN0dw=;
-	h=From:Subject:Date:To:Cc;
-	b=IVUPuRtndvcvpUbPyy/s2CCQsx0dw62PXvZwML8YeLqGYa85zxYsua1xPEi9kviwY
-	 Y+lV9vaIShVR8IxSDtC21N0t1lPvMrVqxQKAhk5aGT8FraB/isG4N+GqlV3dnLfsKf
-	 oedMdXX2wGtgzcjWpp00ixBxc45fubYvPXVg5jzT6XCtW8P6r+xqNTbE8IwNF0ChOK
-	 1LqqoZCs07yNPB4mMRKwpQHDL1bVCkuIFpACbZs8In2zNfTp/WKf2JHawYWnAjui7Q
-	 GFU0IfavaiytLb4eQ2oR08vvcAoDhhhA8HmGFc9T7w3O9LTMk+IUtk4Xe6tVFYKSX9
-	 km6zrxGzilvjQ==
+	s=k20260515; t=1790704712;
+	bh=0ytK01UUqKtotZZ62Ic77OTRq9P25Gej53iA0+pPsT4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=ES24bieoPKbsUbWOs74PnIlycqVArVt4vd3DF+ZCypQue6GN5PjrAcTXtmw9nPcXk
+	 xK9/bVtNW2cuPvG1aur6VBVVDE+bedSl5xQt/U26tifGnZObliofAbqMu+U4PvU0iZ
+	 v5x9XMefm7bT9OP9dP2fpQhBvhM+nVWhqt8gQJ5nhNBMjpLicOvQqHsdB/CMVBB4t6
+	 VZUgJIcFq2E4GDhrV/jbo3cyib+3eC+VWAQrZOy6D8jt32N1il4QOzKZBpEF6l14Co
+	 UqCgw0okDbPJxB1FY8YRy7jYmq7cAxpGLbklG/QX0rL6oqzv9Eg2Ag0Y11fRK5ZUmV
+	 mmaTQtypgKfhQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Subject: [PATCH v3 0/3] rust: add a few helpers
-Date: Tue, 29 Sep 2026 19:56:47 +0200
-Message-Id: <20260929-cpu-helpers-v3-0-e968ce5ee613@kernel.org>
+Date: Tue, 29 Sep 2026 19:56:49 +0200
+Subject: [PATCH v3 2/3] rust: add a wrapper for the `nr_online_nodes` C
+ function
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,11 +38,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAN/7u2oC/23MQQ6CMBCF4auQWVszHYSiK+9hXBQ6hUYCpNVGQ
- 7i7hY3RuHwv+f4ZAnvHAU7ZDJ6jC24c0sh3GTSdHloWzqQNhFQiyUI000N03E/sg8CKbU2FokO
- lIInJs3XPrXa5pt25cB/9a4tHub7/O1EKFFbXMjeVVLrg8439wP1+9C2soUgfXOIPpoRRGyJl0
- Rxl/YWXZXkDSjOG4+QAAAA=
-X-Change-ID: 20260215-cpu-helpers-08efb2572487
+Message-Id: <20260929-cpu-helpers-v3-2-e968ce5ee613@kernel.org>
+References: <20260929-cpu-helpers-v3-0-e968ce5ee613@kernel.org>
+In-Reply-To: <20260929-cpu-helpers-v3-0-e968ce5ee613@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -57,68 +56,82 @@ To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1825; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=ob8aaFvZPEPE3Ti84U3DffMtnLiwOYsj7sIhrKuuYU8=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqu/vnXJDD20TpV0AxP691V7/bbvnoiOzAVQNkT
- IbXR0F+74eJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCarv75wAKCRD6UCkIqsW9
- 0LXSD/9GfFmfbQFsoHSHNjw587yvn3wiEwkovCQ6wbnY8AiXda5twglB8jdz/alc+fvtitcuBvG
- neiBJomp6GdQRxzYHRWjyqgM0PVSRr/7ByGP2R/NDi+IEDfrOUT3yLjvrtnwPGKg8M6l0y8OKsI
- ivLuXY5p+UUPjqfN5p9KPzs/wH6T3Ofyct23Du3HMvix1G520J72S8CmRH4jkW/hp0mooq/dBIa
- 4Y3ebdmCNCIpts8Zx0kjn9kQEgTKyY2783oImyv8wPv96eG8seHg1Hmahtzd9wnKr9XsDhGM2YA
- vJRYcgV6poBMbDfC2R8mibc34/dZVdSSIgO2hyd5gH7fEtpo3iwssq19QhTeOnRK6gRPAHDxzPb
- cPmCgFkAJUWV5yGFoarvUD1X1ak3WwEDgqKUmhp46ssvFbCFkmSTBiNgV9liKmSB43YUrs5FB+m
- 3iaBmrM0L068C0yX1Y3AA4ydQxR7cX1lzNKtWpwsLA7VWWLuKhQgcsVPJ1XvITHYPX8Qw0yxQMD
- 3PEYQJIQ7l2X0ryO6fMh2Yk5olvgB9GPbb6k5gGY0yLycfq3ajAWCz+0VYcKcB50acHxO852X33
- lsGGVVWTqMF0Z5ijmINQnvQq2Yqf3WqQDxR+Pjz0mYK3QsBpnH23g8035UX8TdQGiI5BhjzMXqH
- DTbMFZHOIN5cJXA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1702; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=xhMnY8P3fAJuW7gQqQ0qb7YT+JEIYP+2o3RbxdirnqM=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqu/wbJU1VjOLSQUJRFAJPECJd9/FEeP2M0S5Tx
+ WBH+M9JQVaJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCarv8GwAKCRD6UCkIqsW9
+ 0PNZD/93QHc2dQpsnskLYOkLwRJiakxNnEwwECD3e4d+NbMPkkhBiO62Q0IYTuU9DWBtQWFM7OS
+ XZFhG4dG6RkDAbKKSCXyTWKHAqedTecqoXNQFBsBzdQqNWi9AFV4lzGeGD7N7ZAN2KIGzQbOuAO
+ 89yllTo7nrhTe/4vFlRhhLmTHRNTXNAzjHFTf/OYWdnXJ1QRXSAYMTqfOQbVJ8EbZBoAQUqltmR
+ P9K67rKyK23SIMAiqfv9lT/HSN3qZI+4FjXLqxubvJNPOvopyFyjsTxJ8yi32dSwr8jls2vlwgq
+ k0Uli9SljxMLU5ItkqvveWxDiAzVJ2tAOpc0DiFr3jBbWb/UBVO+rrww27m5irvFPbUXHhhahlA
+ m8su+asrf5X7Um7OoE6PA2TNL+cFVSFxhfXlcsCa0veHMN0X5LbHYMoTrlvagxftuPxGRUvrg4z
+ QC8xZo4BiS2I3w0KG73nOcXLplL2OVK3J6bBhw14D0QwMG6qeu16cuhY6v3Yvs21M7HPhOrD+T6
+ R2sWFf8V65ykyw0qSQDOBBoMv9TlFeLf0LhVLc3lPI/9uLnz1OE8TK4Eu4hhBrOdOUsRHY+4+gV
+ SVIbV4BtWvf7IvUBn8XOzO8+kv78UcciHUHjnb44e6Fxk+SMp8XDWR/2CeLN+XhF8DliFJJ2SkG
+ AN1d3qkXHEpKqMA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-This series adds two helpers for obtaining information about the number
-of numa domains and cpu count of the system. It also moves the `NumaNode`
-struct from `alloc` to `numa`.
+This function returns the number of online NUMA nodes.
+
+The wrapper is needed by the Rust null block driver.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
-Changes in v3:
-- Drop Alice tag on patch 2 due to restructuring.
-- Use a relaxed load to read `nr_online_nodes` (Gary).
-- Move `NumaNode` from the `alloc` module to the `numa` module in a
-  new patch (Alice).
-- Rebase on v7.3-rc5.
-- Link to v2: https://msgid.link/20260605-cpu-helpers-v2-0-0ad227f0d91b@kernel.org
+ rust/kernel/lib.rs  |  1 +
+ rust/kernel/numa.rs | 29 +++++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
-Changes in v2:
-- Move helpers out of the crate root into the `cpu` and `numa`
-  modules (Miguel).
-- Mark Rust wrappers `#[inline]` (Alice).
-- Mark the `num_possible_cpus` C helper `__rust_helper` (Dirk).
-- Mention the Rust null block driver as the consumer in commit
-  messages (Miguel).
-- Link to v1: https://msgid.link/20260215-cpu-helpers-v1-0-fab13d817a5e@kernel.org
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 4d5c96ddc49c..a7b1c9cf454f 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -105,6 +105,7 @@
+ #[cfg(CONFIG_NET)]
+ pub mod net;
+ pub mod num;
++pub mod numa;
+ pub mod of;
+ #[cfg(CONFIG_PM_OPP)]
+ pub mod opp;
+diff --git a/rust/kernel/numa.rs b/rust/kernel/numa.rs
+new file mode 100644
+index 000000000000..164e622d325f
+--- /dev/null
++++ b/rust/kernel/numa.rs
+@@ -0,0 +1,29 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! NUMA topology utilities.
++//!
++//! C header: [`include/linux/nodemask.h`](srctree/include/linux/nodemask.h)
++
++use crate::bindings;
++#[cfg(CONFIG_NUMA)]
++use crate::sync::atomic::{
++    Atomic,
++    Relaxed, //
++};
++
++/// Returns the number of online NUMA nodes.
++#[inline]
++pub fn num_online_nodes() -> u32 {
++    #[cfg(CONFIG_NUMA)]
++    {
++        // SAFETY: `nr_online_nodes` is a global variable that is valid for the lifetime of the
++        // kernel. The C side updates it with plain writes during node hotplug and reads it with
++        // plain reads. A relaxed load is the Rust equivalent of `READ_ONCE()`, which is the best
++        // we can do on the reader side.
++        unsafe { Atomic::from_ptr(&raw mut bindings::nr_online_nodes) }.load(Relaxed)
++    }
++    #[cfg(not(CONFIG_NUMA))]
++    {
++        bindings::nr_online_nodes
++    }
++}
 
----
-Andreas Hindborg (3):
-      rust: add a wrapper for the `num_possible_cpus` C function
-      rust: add a wrapper for the `nr_online_nodes` C function
-      rust: alloc: move `NumaNode` to the `numa` module
-
- rust/helpers/helpers.c         |  1 +
- rust/helpers/num_cpus.c        |  8 ++++++
- rust/kernel/alloc.rs           | 30 +++-----------------
- rust/kernel/alloc/allocator.rs |  6 ++--
- rust/kernel/alloc/kbox.rs      |  4 +--
- rust/kernel/alloc/kvec.rs      |  4 +--
- rust/kernel/cpu.rs             |  7 +++++
- rust/kernel/lib.rs             |  1 +
- rust/kernel/numa.rs            | 62 ++++++++++++++++++++++++++++++++++++++++++
- 9 files changed, 90 insertions(+), 33 deletions(-)
----
-base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
-change-id: 20260215-cpu-helpers-08efb2572487
-
-Best regards,
---  
-Andreas Hindborg <a.hindborg@kernel.org>
+-- 
+2.54.0
 
 
