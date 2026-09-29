@@ -1,137 +1,128 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7EC5476C3;
-	Tue, 29 Sep 2026 17:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32263A257C;
+	Tue, 29 Sep 2026 18:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790704713; cv=none; b=KyMrAwK5u4WDgoKelDq3yHghFGsD//qS2pxgWq3DnxiCHPAtStSdJJkkILZvkrqqsPgqUA63Esg5UFPqtk/vJ3a0a5AoSqTXSOMLKd5/7U+2WGJ0O7XpNJ/kOeFvlAmXc1XDyxajUEDMQ0WEaz/IgcHkHw+Wl1zb5/macTU/EPo=
+	t=1790705017; cv=none; b=JuUiCZrWPlp921M7GXahvybHhxLxqAUVii9FxU4Z9bTy2GmfBplVdf+2exM61FKsT62Gawbeq5SeVTRU63gvFte7TT83mZnxBTTldB+KRsc9LWYLuGTxS+FXPpx4xjLEHwFf3Ihni3IXmFpxj4PvyfWlLWoivTsIhMd27FVbOp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790704713; c=relaxed/simple;
-	bh=xhMnY8P3fAJuW7gQqQ0qb7YT+JEIYP+2o3RbxdirnqM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=m3Kwy0PXDs/X70rZQrAKD2zsUiHanycBNi23+F3p51J5/J0uYFolgRltBW8NDB5eQ3kbVK89E0hnDItjVZ0uqO6jTgXFq2URyU7y6X9tsT4yxGNbLg1pvGjvJU/ijYLtA5g1G959hZOHfGmo/y2uxhKbQmikSN2MmPI8Lq8zR3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ES24bieo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790705017; c=relaxed/simple;
+	bh=zD2doWgwT4bqf0agVJ3k3ZxPe3/tpjLSFfMmmwoa8gQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=VJrt0Je1DoDdfhdRA9O2joNcUPkMx6VCj4ri3/kkd4M5Zqa63g9QzXAPEA99Vdmx+6Su5k1L7rqTIATqenNtQNugG4ArRfY/dHSY66tkgGBcxnDYktl3Q1nXd3Z+6yD9pKfiYEO9ghPHLWgieDtsztwmpF5elon9eIW+PPss1uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cGEcYizF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ES24bieo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7B31F00893;
-	Tue, 29 Sep 2026 17:58:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cGEcYizF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2CD1F000FF;
+	Tue, 29 Sep 2026 18:03:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790704712;
-	bh=0ytK01UUqKtotZZ62Ic77OTRq9P25Gej53iA0+pPsT4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ES24bieoPKbsUbWOs74PnIlycqVArVt4vd3DF+ZCypQue6GN5PjrAcTXtmw9nPcXk
-	 xK9/bVtNW2cuPvG1aur6VBVVDE+bedSl5xQt/U26tifGnZObliofAbqMu+U4PvU0iZ
-	 v5x9XMefm7bT9OP9dP2fpQhBvhM+nVWhqt8gQJ5nhNBMjpLicOvQqHsdB/CMVBB4t6
-	 VZUgJIcFq2E4GDhrV/jbo3cyib+3eC+VWAQrZOy6D8jt32N1il4QOzKZBpEF6l14Co
-	 UqCgw0okDbPJxB1FY8YRy7jYmq7cAxpGLbklG/QX0rL6oqzv9Eg2Ag0Y11fRK5ZUmV
-	 mmaTQtypgKfhQ==
+	s=k20260515; t=1790705015;
+	bh=+veBZrMyqc9eVw5PlMkjRSIdNfyxwGCV+zfaborpVQE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=cGEcYizFp/IOrwtKIyznQVBLJq8EXnMUrH9RMR4kcU0Gf04x9UUYDUUfJPJuAZ5N4
+	 1UDmb1JOfsdHFEO994JvteJoBA67KjBYDm10dDc9IJX+TePb8AOpkOUg4hIrBGq5pO
+	 mwowKZBNoQPt1EutZ7Q7bTTVy1zkXL4JyWCsluSOniPTY2suW8Pm7Ji6dqnVyDzne5
+	 512Lf7p6b1GC2TKBrTRG51fLmY/qy9oMk0HUfgiZWciVMW9RlCH4RZ7l9p6HvHiCIG
+	 otcmaCekPszO/ftVsIWh/DAwiQoY1BAyM8r44OIGy+ccc3d70GS3i8GhGvr3lpyT9W
+	 2N8Km/fBLd2vw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 29 Sep 2026 19:56:49 +0200
-Subject: [PATCH v3 2/3] rust: add a wrapper for the `nr_online_nodes` C
- function
+To: Gary Guo <gary@garyguo.net>, Peter Zijlstra <peterz@infradead.org>, Ingo
+ Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng
+ <boqun@kernel.org>, Waiman Long <longman@redhat.com>, Gary Guo
+ <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>, Lyude Paul
+ <lyude@redhat.com>, Daniel Almeida <daniel.almeida@collabora.com>, Onur
+ =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>, Miguel Ojeda
+ <ojeda@kernel.org>, =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Tamir
+ Duberstein <tamird@kernel.org>, Alexandre
+ Courbot <acourbot@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3] rust: sync: export lock::do_unlocked
+In-Reply-To: <DLRXW31Y0IVK.3A3NJVS2BG39M@garyguo.net>
+References: <20260929-export-do-unlocked-v3-1-f7000684178f@kernel.org>
+ <N1IBV5ko8VdO1uPeg7myJ5jVnnfJI-s5phM0IuhjOxWo1AvKFtlvojnvOBY1fnhKJpl9GKVkN0dD6GEM3f1FKQ==@protonmail.internalid>
+ <DLRXW31Y0IVK.3A3NJVS2BG39M@garyguo.net>
+Date: Tue, 29 Sep 2026 20:03:20 +0200
+Message-ID: <87zex0rl3r.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-cpu-helpers-v3-2-e968ce5ee613@kernel.org>
-References: <20260929-cpu-helpers-v3-0-e968ce5ee613@kernel.org>
-In-Reply-To: <20260929-cpu-helpers-v3-0-e968ce5ee613@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1702; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=xhMnY8P3fAJuW7gQqQ0qb7YT+JEIYP+2o3RbxdirnqM=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqu/wbJU1VjOLSQUJRFAJPECJd9/FEeP2M0S5Tx
- WBH+M9JQVaJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCarv8GwAKCRD6UCkIqsW9
- 0PNZD/93QHc2dQpsnskLYOkLwRJiakxNnEwwECD3e4d+NbMPkkhBiO62Q0IYTuU9DWBtQWFM7OS
- XZFhG4dG6RkDAbKKSCXyTWKHAqedTecqoXNQFBsBzdQqNWi9AFV4lzGeGD7N7ZAN2KIGzQbOuAO
- 89yllTo7nrhTe/4vFlRhhLmTHRNTXNAzjHFTf/OYWdnXJ1QRXSAYMTqfOQbVJ8EbZBoAQUqltmR
- P9K67rKyK23SIMAiqfv9lT/HSN3qZI+4FjXLqxubvJNPOvopyFyjsTxJ8yi32dSwr8jls2vlwgq
- k0Uli9SljxMLU5ItkqvveWxDiAzVJ2tAOpc0DiFr3jBbWb/UBVO+rrww27m5irvFPbUXHhhahlA
- m8su+asrf5X7Um7OoE6PA2TNL+cFVSFxhfXlcsCa0veHMN0X5LbHYMoTrlvagxftuPxGRUvrg4z
- QC8xZo4BiS2I3w0KG73nOcXLplL2OVK3J6bBhw14D0QwMG6qeu16cuhY6v3Yvs21M7HPhOrD+T6
- R2sWFf8V65ykyw0qSQDOBBoMv9TlFeLf0LhVLc3lPI/9uLnz1OE8TK4Eu4hhBrOdOUsRHY+4+gV
- SVIbV4BtWvf7IvUBn8XOzO8+kv78UcciHUHjnb44e6Fxk+SMp8XDWR/2CeLN+XhF8DliFJJ2SkG
- AN1d3qkXHEpKqMA==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Content-Type: text/plain
 
-This function returns the number of online NUMA nodes.
+"Gary Guo" <gary@garyguo.net> writes:
 
-The wrapper is needed by the Rust null block driver.
+> On Tue Sep 29, 2026 at 3:45 PM BST, Andreas Hindborg wrote:
+>> Export lock::do_unlocked publicly. Add documentation for the method.
+>>
+>> Reviewed-by: Benno Lossin <lossin@kernel.org>
+>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>> Changes in v3:
+>> - Rebase on v7.3-rc5.
+>> - Do not import prelude in example (Alice).
+>> - Link to v2: https://msgid.link/20260605-export-do-unlocked-v2-1-e23001390231@kernel.org
+>>
+>> Changes in v2:
+>> - Drop spurious space before `guard.do_unlocked` in the doc example (Benno).
+>> - Un-hide the imports in the doc example so the rendered docs no longer have a spurious blank line after them (Alice).
+>> - Link to v1: https://msgid.link/20260215-export-do-unlocked-v1-1-f5cd2203b20f@kernel.org
+>> ---
+>>  rust/kernel/sync/lock.rs | 26 +++++++++++++++++++++++++-
+>>  1 file changed, 25 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+>> index 10b6b5e9b024..edfff9e10199 100644
+>> --- a/rust/kernel/sync/lock.rs
+>> +++ b/rust/kernel/sync/lock.rs
+>> @@ -238,7 +238,31 @@ pub fn lock_ref(&self) -> &'a Lock<T, B> {
+>>          self.lock
+>>      }
+>>
+>> -    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
+>> +    /// Temporarily unlock the lock to execute the given closure.
+>> +    ///
+>> +    /// This method unlocks the lock before calling the closure `cb`, and re-locks it afterwards.
+>> +    /// This is useful when you need to perform operations that are not allowed while holding
+>> +    /// certain locks, such as allocating memory (which is prohibited while holding a spinlock).
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// use kernel::new_spinlock;
+>> +    /// use pin_init::stack_pin_init;
+>> +    ///
+>> +    /// stack_pin_init!{
+>> +    ///     let lock = new_spinlock!(())
+>> +    /// }
+>> +    ///
+>> +    /// let mut guard = lock.lock();
+>> +    /// let mut buffer = KVec::new();
+>> +    /// // Temporarily unlock to allocate memory, which should not be done while holding a spinlock.
+>> +    /// guard.do_unlocked(|| {
+>> +    ///     buffer.push(5u32, GFP_KERNEL)
+>> +    /// })?;
+>> +    /// # Ok::<(), Error>(())
+>> +    /// ```
+>> +    pub fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
+>
+> Do we want to keep the name `do_unlocked` now this is public?
+>
+> I think we can drop "do_" and just call this `unlocked`, consistent with popular
+> Rust ecosystem crates like parking_lot and spin.
 
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- rust/kernel/lib.rs  |  1 +
- rust/kernel/numa.rs | 29 +++++++++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
+If this is the established way, I think we should do that.
 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 4d5c96ddc49c..a7b1c9cf454f 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -105,6 +105,7 @@
- #[cfg(CONFIG_NET)]
- pub mod net;
- pub mod num;
-+pub mod numa;
- pub mod of;
- #[cfg(CONFIG_PM_OPP)]
- pub mod opp;
-diff --git a/rust/kernel/numa.rs b/rust/kernel/numa.rs
-new file mode 100644
-index 000000000000..164e622d325f
---- /dev/null
-+++ b/rust/kernel/numa.rs
-@@ -0,0 +1,29 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! NUMA topology utilities.
-+//!
-+//! C header: [`include/linux/nodemask.h`](srctree/include/linux/nodemask.h)
-+
-+use crate::bindings;
-+#[cfg(CONFIG_NUMA)]
-+use crate::sync::atomic::{
-+    Atomic,
-+    Relaxed, //
-+};
-+
-+/// Returns the number of online NUMA nodes.
-+#[inline]
-+pub fn num_online_nodes() -> u32 {
-+    #[cfg(CONFIG_NUMA)]
-+    {
-+        // SAFETY: `nr_online_nodes` is a global variable that is valid for the lifetime of the
-+        // kernel. The C side updates it with plain writes during node hotplug and reads it with
-+        // plain reads. A relaxed load is the Rust equivalent of `READ_ONCE()`, which is the best
-+        // we can do on the reader side.
-+        unsafe { Atomic::from_ptr(&raw mut bindings::nr_online_nodes) }.load(Relaxed)
-+    }
-+    #[cfg(not(CONFIG_NUMA))]
-+    {
-+        bindings::nr_online_nodes
-+    }
-+}
+I don't think we need a new version of the patch, just fix it during
+apply?
 
--- 
-2.54.0
+Best regards,
+Andreas Hindborg
+
 
 
