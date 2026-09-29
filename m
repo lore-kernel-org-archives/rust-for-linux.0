@@ -1,237 +1,137 @@
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F3923ABBE
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 17:46:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54ED4511E71;
+	Tue, 29 Sep 2026 17:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790703979; cv=none; b=fNpQ59rHTyoNr3CJXjxEHD7g6oGfJN6gycF0rXL2ALJyX+iXSHzf6VHmHMZKMDqzvRL4CwbSCzAJ4XgQ1/+5p5suaEoDn4QV5TS4f8Ua3be3ZSLr+gRSY5FPMoXNrl080Py+UwXRGnkEMM+SlaCbHOtgtk5+G+G4uAJL+7n5zwE=
+	t=1790704698; cv=none; b=gmr+Zm5M9NbPF9ySYdJpr8gtTwUqLorlt/1OsPJwiKMN0Iwv2Fkj9UxQsnydgsHf4C/D96GJwH6WzdcT3hLfF/TtM24COLh6ajDP1oACbov+/J80TsMHy3SF1ZIBZ8l4lY+qdClBvrNgibSXtsq8MGi9YonqMiLVMPgkCxxnCck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790703979; c=relaxed/simple;
-	bh=o1FHGacRbJJH7vHCWuq9bvFoqtLARhCCbaNlLlOv/Pc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=blGjfI4nOgnJVZmMevOdiCR9phEg5lF0bBo36LFmjlbhRDG8I8I6pfZGc6Z1M1xBmTsNuqigxOeGX6sNBlcJutegH6alNKuyhAiCviBKTw+rX2h9rLIGOtq9m2iVny4324aJnjaGh/66BmK18VcjSK/2nAP12Drlsqivh/99V+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu; spf=pass smtp.mailfrom=uci.edu; dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b=mHexPXcC; arc=none smtp.client-ip=74.125.229.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
+	s=arc-20240116; t=1790704698; c=relaxed/simple;
+	bh=kzPNGXy8Xs6JTAYt8qa+TVAE98/I460uLuDMD/RdZhM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=BgV9Pu2HePMp3qSwbWs1uEs/yr3V3rDJXZU7JxKXNHlZjQ5XZtBOuDX19C8xbwg059+W3Wca8onodLFTlpaUKjsE1mJnQ5ARoskK4b9/MWyQQa0B/wgJAo/JsEyhq+9hdVHxV8Ah5M5RIA1XS2k0tAq9ekpMP/rQnvsUatRcybc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K00xvvgz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b="mHexPXcC"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33bfb26865fso4455319eec.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 10:46:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=uci.edu; s=google; t=1790703977; x=1791308777; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QgeDS8BVBQQhIl/1GekJiVq3cnAPaAStPbCRpt0A6es=;
-        b=mHexPXcCbZOZba8/BLvBg6yi8v1lDdSj+gFRtVCoAQxj1IXvdaJxNKPhwXorn6lgLH
-         0SWBtiqsPYmcjKcSYbjyayK0d/kYxIiFDG0fUeTpqwopQSN3BRr1ztkO2QNkMlGYY21y
-         mjFA9mDAdEMiCiCBDiB7DlCYpzEfdy9kl23g+8708pyXFLGbMRrSFcx1hgtI29vEkNNn
-         yGHYYsC5PupxELja0avfEQpZlsj2LDX99YBqvpS4Dt/6i/Xsxb9FM8Qg0JqZWJlHVs4l
-         4+h+7ecxuAnlGVHTvNvlhQNKuBQ4IZwhN7BY7zjQ2LNEJNOeS6jAoN1OeH8bZohs/k4E
-         wTDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790703977; x=1791308777;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QgeDS8BVBQQhIl/1GekJiVq3cnAPaAStPbCRpt0A6es=;
-        b=iWQccYYGb6o2n7BTthDPqqb6GQYqrgs+Euroy9L6gPKLjxYMoSCauDZqmdz11YTCEk
-         3eot2h/lSSOCCCe3F+xsbt/ih/5NLHSViWbJjJseVpY845hIpT+U3AHH85fom3lpm4Y9
-         k9dtF3GlSgFu1C5x6sivko363V5eKkpKZH4IBVZesNgQzgdMreNX0CnAV7Ind6WtRB14
-         9a8evRUfKTGx7C2oRpoTF+I6V/9SHnnF3rg+fFF+DJSp7j4UigyLcWi0A/BDiuU0yXSf
-         fAmWrF82sOm8zF0xOv3FvDD/ruD0DSjywY/Ap4XqxDmjFG2v8+8Dhm4TykdrjW/phtYY
-         q/Qw==
-X-Forwarded-Encrypted: i=1; AKwUvBw+h3G+96yIlgnsxYHYff6nrWuvxma6iT1f/QHZWAdbZ+zkFdXCLQaK7LUKy/6R2AjOC9+yNsICrge0mntGEw==@vger.kernel.org
-X-Gm-Message-State: AFq9FYIJy5vRngnOdLcTNB0dkKfkw5FFLtVDEyn4sQdMrLcvMBtoRDpx
-	1jxpk85R9ahXfrzNS0NnalDaTUilhK+YD6WUwPTCxvwHs5/YYlXYk2kqPjbHLAqoHNg=
-X-Gm-Gg: AYBFou2YjGlav2+DNZZULBj7+moTubCo966UEISDgvtpCaZIarbUIYYuLazdCkITkkT
-	xIGA5kSK/XrxFUMQvVy/67sku+DqrFEbrpNC79pbp9ayq1XTjWQz2s0+4qNTnLEVJs+65nlrgGa
-	EPrHIAoZnElhvdJVT7ZhQCVfu92O0bfd+78QJnCLg8it3HI1CIJs0VjI/lbFAnlAx++bsxxHPfL
-	irdBUtFv92d++QYfNmH1/Q38wcw2l71eapyIOdHSAS0TaI265r1wOtYbnsmXBsD7WTaBa4qijE1
-	Q/hJydwVxmMxb0zA5ZJ+xakAH1AdFk7ioVpCVphvlp4OzFiBhcInZBKycUd03eYTisrUbWxt5Vo
-	rLGAkcLnOloT7PtE6w2oMyjgfO7YcDGyzCgI7x7D4N4IwWF7qOd1IvQRVq7OYx0Kt4Uxk35VBVA
-	qfFlVIZqbZlfzdt6jktkH7zHfpsDv8OIM26iu7fubC2ziYSEtCnaCHQpp5XqeXCvwIo54mZb/MD
-	wuGyvKEzBT7iPGK5L6DmvoOABUcyjs3Z34=
-X-Received: by 2002:a05:7301:428d:b0:33c:e93:764d with SMTP id 5a478bee46e88-34c644d1084mr73576eec.39.1790703977092;
-        Tue, 29 Sep 2026 10:46:17 -0700 (PDT)
-Received: from guest1.. (charm.ics.uci.edu. [128.195.4.118])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34c32072ee7sm731120eec.0.2026.09.29.10.46.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 10:46:16 -0700 (PDT)
-From: Priya Bala Govindasamy <pgovind2@uci.edu>
-To: dakr@kernel.org,
-	aliceryhl@google.com,
-	daniel.almeida@collabora.com,
-	ojeda@kernel.org
-Cc: boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	me@kloenk.dev,
-	driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	ardalan@uci.edu,
-	zhiyunq@cs.ucr.edu,
-	dzueck@uci.edu,
-	pgovind2@uci.edu
-Subject: [PATCH 1/1] rust: io: Fix `Region::drop` releasing nested resources from the wrong parent
-Date: Tue, 29 Sep 2026 17:46:13 +0000
-Message-ID: <a71c5593cfc66e21f24d9c07ae3469fc4f8ea501.1788901318.git.pgovind2@uci.edu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1788901318.git.pgovind2@uci.edu>
-References: <cover.1788901318.git.pgovind2@uci.edu>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K00xvvgz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D431F000FF;
+	Tue, 29 Sep 2026 17:58:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790704697;
+	bh=d/V+WFX+aVSQPDmMwpcqH6P9DOEcIIzx9WA/VX2efD4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=K00xvvgzOEl3fMaEEHuqNqqINJX8sGCjynVBdtt0UVXRsq/VaVV99kbIU9IsBS9r4
+	 76Y2D3I1ERHO6Vlf/c/QSBvYwPT1EmgJ8oRavij+1paS6/l0mJpfLlcQZNKyiNjRXx
+	 XBHumfwAl51RGsADhreQaNZM5ujyl/HNG3G4QjNETkXB4tm+kT9N1T22f0mZdo4Acq
+	 R1sP9TydyWXFLOTvrelpKO3IuETq9p04kYqxK2HYDlF3w+fPc2m++b8Er2W1tlPsvB
+	 73dIaKAtMLZddsBTOraesNOlIEgQVIH0o4NWILlFauLXjNqPOYY7Oz9zS0o6RM+mG8
+	 CHeEgyxajG4Ig==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Tue, 29 Sep 2026 19:56:48 +0200
+Subject: [PATCH v3 1/3] rust: add a wrapper for the `num_possible_cpus` C
+ function
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Message-ID: <20260929174613.DJ0adPxVeVyXVaqOKF2jNsOD8tTLC7uNSOEHZf26cGw@z>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260929-cpu-helpers-v3-1-e968ce5ee613@kernel.org>
+References: <20260929-cpu-helpers-v3-0-e968ce5ee613@kernel.org>
+In-Reply-To: <20260929-cpu-helpers-v3-0-e968ce5ee613@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1745; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=kzPNGXy8Xs6JTAYt8qa+TVAE98/I460uLuDMD/RdZhM=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqu/wa3z7xVfnb4nAX7BcOkOfOUFhogS3Uq/Eut
+ xJIKPxhVK2JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCarv8GgAKCRD6UCkIqsW9
+ 0DbAD/9VlGlR+Upw2HWmVCSErLYsGRXB9XYkwiRZLJP36ZPhxSQVWiePo8E+04NYikriINOBhXj
+ jQIz9CI9cO/3Ivb66VE57PkVz1I4U/YmQhwFp0LIlqNTlxQLTWrtepker74hFxzCkUnv6XpTMSg
+ KNQull07i6qW7FrT5sHrJGgfOGI5djKcCmlpBupBSjhrHKcgpgWwmt/UvzKZtxrqW1CTZw/W+pA
+ Lpb/eO+BzIfiRVuLEWbLaughk9av0S07dPnXuNo35iyvPK3X6d5VJFgH+Zlg8MhuvGXQOCSvepD
+ k1KK6vjevzQW2y0n2lejp99XaFAwthEqt24jlEKO8mawIMtId/5CPzaLdy7M2QqNiM9CXEW/nco
+ H9D6t4UVdqGh5JREE6ZjQu3QEHRlyj1jyDq/gYG/iR1cdBFMyuR3gGNLXu4DEuiepdr6qnMRw2l
+ Dvlk+jvWmwH5Lg0xkFwSDfhryIDedVpJkCDKCxqd1y4h/g7DezxhE2w90Ih/nnj5/6F/o5rWf5S
+ BHZL3UbzOo6p77Gd4JMbEdrxK0gS2Su/hP1V9XEVSvCgnlmV1YbVG4Dr9QNatXgEttHL8x3juYG
+ JmGDZsIDuxOn9LvxVP8+iUK6+snsAE/XQ4Xt04im+IY0hsojBR1xu3aDKi/6yfQxg6nryy3l9kk
+ VpqooHGWATI9oqQ==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Io resource regions can be requested beneath a specified parent 
-resource.
-But `Region::drop` does not consider the parent resource.
-It releases regions relative to the global resource root.
-For nested regions, it may fail to find and release the child region.
-This can lead to resource leaks and leaving the name pointer dangling.
+This function returns the maximum number of CPUs that can be online.
 
-Fix this by storing a reference to the parent resource in `Region`.
-This ensures that the parent remains valid for the lifetime of the
-child region.
-The `Region::drop` implementation is updated to use the parent
-resource when releasing the region.
+The wrapper is needed by the Rust null block driver.
 
-Fixes: 493fc33ec252 ("rust: io: add resource abstraction")
-Reported-by: Dylan Zueck <dzueck@uci.edu>
-Assisted-by: LLM
-Signed-off-by: Priya Bala Govindasamy <pgovind2@uci.edu>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/io/mem.rs      |  4 ++--
- rust/kernel/io/resource.rs | 38 ++++++++++++++++++++------------------
- 2 files changed, 22 insertions(+), 20 deletions(-)
+ rust/helpers/helpers.c  | 1 +
+ rust/helpers/num_cpus.c | 8 ++++++++
+ rust/kernel/cpu.rs      | 7 +++++++
+ 3 files changed, 16 insertions(+)
 
-diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
-index 32a919099dcd..245d8e1e5e6c 100644
---- a/rust/kernel/io/mem.rs
-+++ b/rust/kernel/io/mem.rs
-@@ -173,7 +173,7 @@ pub struct ExclusiveIoMem<'a, const SIZE: usize> {
-     /// range represented by the underlying `iomem`.
-     ///
-     /// This field is needed for ownership of the region.
--    _region: Region,
-+    _region: Region<'a>,
- }
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 440fb7638e3c..89e38b08fd17 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -76,6 +76,7 @@
+ #include "mm.c"
+ #include "mutex.c"
+ #include "net/genetlink.c"
++#include "num_cpus.c"
+ #include "of.c"
+ #include "page.c"
+ #include "pci.c"
+diff --git a/rust/helpers/num_cpus.c b/rust/helpers/num_cpus.c
+new file mode 100644
+index 000000000000..54e8bacb46c3
+--- /dev/null
++++ b/rust/helpers/num_cpus.c
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/cpumask.h>
++
++__rust_helper unsigned int rust_helper_num_possible_cpus(void)
++{
++	return num_possible_cpus();
++}
+diff --git a/rust/kernel/cpu.rs b/rust/kernel/cpu.rs
+index cb6c0338ef5a..b38b6914b12e 100644
+--- a/rust/kernel/cpu.rs
++++ b/rust/kernel/cpu.rs
+@@ -6,6 +6,13 @@
  
- impl<const SIZE: usize> ForLt for ExclusiveIoMem<'static, SIZE> {
-@@ -191,7 +191,7 @@ unsafe impl<const SIZE: usize> CovariantForLt for ExclusiveIoMem<'static, SIZE>
+ use crate::{bindings, device::Device, error::Result, prelude::ENODEV};
  
- impl<'a, const SIZE: usize> ExclusiveIoMem<'a, SIZE> {
-     /// Creates a new `ExclusiveIoMem` instance.
--    fn ioremap(dev: &'a Device<Bound>, resource: &Resource) -> Result<Self> {
-+    fn ioremap(dev: &'a Device<Bound>, resource: &'a Resource) -> Result<Self> {
-         let start = resource.start();
-         let size = resource.size();
-         let name = resource.name().unwrap_or_default();
-diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
-index 17b0c174cfc5..0a94a4eb3e7c 100644
---- a/rust/kernel/io/resource.rs
-+++ b/rust/kernel/io/resource.rs
-@@ -27,15 +27,19 @@
- ///
- /// - `self.0` points to a valid `bindings::resource` that was obtained through
- ///   `bindings::__request_region`.
--pub struct Region {
-+pub struct Region<'a> {
-     /// The resource returned when the region was requested.
-     resource: NonNull<bindings::resource>,
-+    /// Parent supplied to `__request_region`.
-+    /// The reference also prevents a parent `Region` from being dropped
-+    /// before this child.
-+    parent: &'a Resource,
-     /// The name that was passed in when the region was requested. We need to
-     /// store it for ownership reasons.
-     _name: CString,
- }
- 
--impl Deref for Region {
-+impl Deref for Region<'_> {
-     type Target = Resource;
- 
-     fn deref(&self) -> &Self::Target {
-@@ -44,31 +48,28 @@ fn deref(&self) -> &Self::Target {
-     }
- }
- 
--impl Drop for Region {
-+impl Drop for Region<'_> {
-     fn drop(&mut self) {
--        let (flags, start, size) = {
-+        let (start, size) = {
-             let res = &**self;
--            (res.flags(), res.start(), res.size())
-+            (res.start(), res.size())
-         };
- 
--        let release_fn = if flags.contains(Flags::IORESOURCE_MEM) {
--            bindings::release_mem_region
--        } else {
--            bindings::release_region
--        };
--
--        // SAFETY: Safe as per the invariant of `Region`.
--        unsafe { release_fn(start, size) };
-+        // SAFETY:
-+        // - `parent` is the resource passed to `__request_region`.
-+        // - Its lifetime is tied to this `Region`, so it remains valid.
-+        // - `start` and `size` identify the region owned by `self`.
-+        unsafe { bindings::__release_region(self.parent.0.get(), start, size) };
-     }
- }
- 
- // SAFETY: `Region` only holds a pointer to a C `struct resource`, which is safe to be used from
- // any thread.
--unsafe impl Send for Region {}
-+unsafe impl Send for Region<'_> {}
- 
- // SAFETY: `Region` only holds a pointer to a C `struct resource`, references to which are
- // safe to be used from any thread.
--unsafe impl Sync for Region {}
-+unsafe impl Sync for Region<'_> {}
- 
- /// A resource abstraction.
- ///
-@@ -98,13 +99,13 @@ impl Resource {
-     /// Exclusive access will be given and the region will be marked as busy.
-     /// Further calls to [`Self::request_region`] will return [`None`] if
-     /// the region, or a part of it, is already in use.
--    pub fn request_region(
--        &self,
-+    pub fn request_region<'a>(
-+        &'a self,
-         start: PhysAddr,
-         size: ResourceSize,
-         name: CString,
-         flags: Flags,
--    ) -> Option<Region> {
-+    ) -> Option<Region<'a>> {
-         // SAFETY:
-         // - Safe as per the invariant of `Resource`.
-         // - `__request_region` will store a reference to the name, but that is
-@@ -122,6 +123,7 @@ pub fn request_region(
- 
-         Some(Region {
-             resource: NonNull::new(region)?,
-+            parent: self,
-             _name: name,
-         })
-     }
++/// Returns the maximum number of CPUs that may be online on the system.
++#[inline]
++pub fn num_possible_cpus() -> u32 {
++    // SAFETY: FFI call with no additional requirements.
++    unsafe { bindings::num_possible_cpus() }
++}
++
+ /// Returns the maximum number of possible CPUs in the current system configuration.
+ #[inline]
+ pub fn nr_cpu_ids() -> u32 {
+
 -- 
-2.34.1
+2.54.0
+
 
