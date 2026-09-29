@@ -1,80 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E273DFC74;
-	Tue, 29 Sep 2026 19:17:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F32F36B907;
+	Tue, 29 Sep 2026 19:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790709459; cv=none; b=tZ2s/CLFmU+b9GUWQa48rWfITa89CpaY5QnltIMTlUUk5GhSmB1Ltd5AXlwQCXwYy9JQ7p8HnvFf2XA+AqNW/CevzttSvkZMqopAnGvjbsxfbnHtPijZcseFzge6svBgpDBAkPVpBAqkXQpjvmCTyW27W0wU/dNd/eJnzpaiC3w=
+	t=1790711263; cv=none; b=FbvL4oiZNQKpSc4jfLuMrybTxOMCRDV+o/FfKh0RnPo5FD7bAv7AvgiJB/HVfR0Hd+1gn0c6VMXC3g183C/OZuYb06Qi1jgv7hcTx3MuJGZqVDxeS9uL5xWzZfxC2W/Ya5+pFwuS0Ue9b6lVsTyfdtaijS3pdgONiNsszRcvhcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790709459; c=relaxed/simple;
-	bh=VCBKCttqeOdFeuIcNpq6nY4WBNtkUAZhKVDYxuWIoOI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sqYgFunJI/5e0ucd8MdQ7xZ/gk0lmlJtTXL47din/gE6Hr0Oj+PhtNxCpL9Mu0iEl8cEHuEHg0kAUVNFsCJU3iIDkZO0CGcLOSJmlwa3nYKX5PDBzegR8fKz/N3KNStAoZtGwi0Zyzqa0CqOWvlGk/CUsylfL3fEkj3egDGBrlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F7bRnt5N; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790711263; c=relaxed/simple;
+	bh=sI325cC8UG3uv9TDadWiuNQxt8yHhmXIrUg0Vwq8FWU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KnZJ8QKCtDVgqCQ+mPmJjwh0ISZF80Yqr+rfvX5oHt6ZCnGKjt4pPRWAA3MEfIy3cOQXX2I9/7dTS+1AAGNGly1hprJngujUOOj1aukzwBhcH9/TsKFD+v0mcpCmV6ySqj9Y8lfS1J2kpINeMDTDsIl/z4CPrZZO0dSQTaA5xzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=NcL747iB; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F7bRnt5N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E33B1F000FF;
-	Tue, 29 Sep 2026 19:17:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790709458;
-	bh=Sj7mNn5u5Nq1jHVdJ0dFTacFxEkvlX0Q/cUx3s3Y2Hc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=F7bRnt5NZoU5lZnFdpA/DvFcSWSleQ09E61MguQN4KByzu+96wdklm2PYYU7PrXqA
-	 F7xFQLZAa9r8tpw/f4iA80gsh8UL4hPLo8w+umx7lok1y9nzfEumHM3zWasoLO47YE
-	 7KLQdN/Uw1fsp7b/C5NnXVxfxre5rDwP4kM70kY51bMEouOBR8aPJfvoBVHnb0ljqW
-	 /iv4U1qNyUFWUa5PRgG40M42UtbCfqPzc+UyUCkL5dPraC8C+3/JogkXhFgk0L4BaZ
-	 IThu01uQ/45Y7G0FIshbXirp7fc8yZXjt2KFsA8+HLCKzVaNG1lqSqUE6IbRkJ2oJ1
-	 lIP/MeS3k9OEQ==
-Message-ID: <ed541068-ac4b-4bb3-95f2-02b3a3a1e62f@kernel.org>
-Date: Tue, 29 Sep 2026 21:17:33 +0200
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="NcL747iB"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=NfOZsYWn5pZsGH9m0zoezdWqXY6d5EjWzhvFuRoX8rM=; b=NcL747iB7aF5ENFubPTI/02ASE
+	Q1EEVP33N0rMp9PynUFwbzqJslqYLdf6b3Yrz4kI8qJoXYga2UfCs9n5iRXQ3dJW6mib+o750rXZe
+	AXDhI3ThwrNJRowhvLAQCF7fHxM7M98103bgmM6mERt+yJADSDt1oPo/bJ6GBDnaKBVfCd/Vu0yQH
+	rr+ZtDL5e6I1uPJ96dhWiZxefXeYKuiHgH/WPJaVlHTmxNod4puN2igA1jPllTC3B3Oogy5BtK1DA
+	W2Jwj56ZWvvnUVE1hQouTfvDgPUqE20HAyNJ6QAwtZ0sfRjxDjaGT6TK+i/8HP1mtQWUT4F8vuaEU
+	bs19di2Q==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.5 #2 (Red Hat Linux))
+	id 1xBdnS-00000000ICf-3d6Q;
+	Tue, 29 Sep 2026 19:47:26 +0000
+Date: Tue, 29 Sep 2026 20:47:26 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Gary Guo <gary@garyguo.net>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Georgios Androutsopoulos <georgeandrout13@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Jan Kara <jack@suse.cz>,
+	Boqun Feng <boqun@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Al Viro <viro@ftp.linux.org.uk>
+Subject: Re: [PATCH v2] rust: file: handle fd table teardown in file
+ descriptor APIs
+Message-ID: <20260929194726.GE989762@ZenIV>
+References: <20260923022339.3340694-1-georgeandrout13@gmail.com>
+ <arThye_219ruNbM2@google.com>
+ <20260925-stellen-brummen-festrede-266af0305ac7@brauner>
+ <20260929044843.GA3909609@ZenIV>
+ <DLRSQRUVOGT2.10ZY01VEJVHCE@garyguo.net>
+ <20260929135154.GB989762@ZenIV>
+ <DLRXHGLDR2QQ.WZVRWGY995BT@garyguo.net>
+ <20260929170218.GD989762@ZenIV>
+ <DLS0CO1HEGJN.2XX8QX8LW8XJM@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] rust: pin-init: internal: init: allow reborrow of
- `Pin<&mut T>` bindings
-To: Gary Guo <gary@garyguo.net>
-Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260928-dev-pin-init-sync-v1-0-e591c8e9cf0e@garyguo.net>
- <20260928-dev-pin-init-sync-v1-1-e591c8e9cf0e@garyguo.net>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260928-dev-pin-init-sync-v1-1-e591c8e9cf0e@garyguo.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DLS0CO1HEGJN.2XX8QX8LW8XJM@garyguo.net>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On 9/28/26 7:32 PM, Gary Guo wrote:
-> Use `let mut` for created bindings of initialized field, so `Pin<&mut T>`
-> bindings may be reborrowed in subsequent initializers or code blocks.
+On Tue, Sep 29, 2026 at 07:22:28PM +0100, Gary Guo wrote:
+> On Tue Sep 29, 2026 at 6:02 PM BST, Al Viro wrote:
+> > On Tue, Sep 29, 2026 at 05:07:40PM +0100, Gary Guo wrote:
+> >
+> >> The reproducer that Georgios posted on GitHub is some cleanup job being added to
+> >> task_work, which drops FileDescriptorReservation. And since exit_task_work()
+> >> happens after exit_files(), put_unused_fd in that cleanup observe that
+> >> current->files is NULL.
+> >>
+> >> So it's not from random thread, it's from the current task. And I find that
+> >> particular case of doing per-task cleanup not unrealistic.
+> >
+> > FWIW, descriptor reservation ought to be tied to specific files_struct
+> > instance; note that dup_fd() can be called when there are outstanding
+> > reservations and the copy does *NOT* have those reserved.
+> >
+> > What rules would you suggest for such delayed put_unused_fd() wrt e.g.
+> > files_struct unsharing?
 > 
-> Without `let mut`, attempt to reborrow can produce error (and also a
-> confusing fix):
-> 
->     error[E0596]: cannot borrow `gpu` as mutable, as it is not declared as mutable
->        --> drivers/gpu/nova-core/driver.rs:129:17
->         |
->     129 |                 gpu.as_mut().run_selftests(pdev);
->         |                 ^^^ cannot borrow as mutable
->         |
->     help: consider changing this to be mutable                                                                                                                                                                                  |
->     119 |             mut gpu <- Gpu::new(
->         |             +++
-> 
->     error: aborting due to 1 previous error
-> 
-> Reported-by: Danilo Krummrich <dakr@kernel.org>
-> Closes: https://lore.kernel.org/nova-gpu/DLQXWXRP3P1J.28SLFOJJQ2EDK@kernel.org/
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-Tested-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+> Ah, is this about `unshare(CLONE_FILES)`? For that case indeed our existing
+> abstraction break down.
+
+FWIW, the current rules are "you must not have any outstanding reservations when
+you unshare descriptor table in any manner".  You are adding "... including the
+ones that would be discarded by an already-scheduled task_work callback".
+
+It's not just unshare(2) - there are more interesting callchains. For example,
+unshare_files() from do_coredump(); this one should be fine in face of
+put_unused_fd() in task_work, due to the task_work_run() in get_signal()
+being upstream of vfs_coredump() call, but it needs to be considered.
+Or begin_new_exec() - that has a lot more callchains leading to it.
+It should be safe at the moment, but that needs to be demonstrated, etc.
