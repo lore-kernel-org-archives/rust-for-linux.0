@@ -1,87 +1,261 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6AF4E66AD;
-	Tue, 29 Sep 2026 13:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A583CF21F;
+	Tue, 29 Sep 2026 13:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790689928; cv=none; b=BiPynhneRdHkRjLEJvRr0c4q6fChzX2SFHlroEq0ZDEBV6tfv7+MVxeneWa5G7qALpwl9tgiWX842INpUyDuNy6DHovjbh/oPKPG86AkXE9ubQbxth0qU+8yVNqisG6HMcHbwYK6OV3Bs6ypObeeK/DxzFlaG7fDDkQ4sZ1aQxw=
+	t=1790690386; cv=none; b=JoL2611cyh4suOK6DIomSCkQxG+TpZljxhUoTotEud3yUmqCxONkN04YBaY3tAGj9Yp/6CP6YocM0W3wm23q5LK2rwqMn+GDeyz2Im/BznDggFxBSvByC9tR1Ha4ispxngTDN0am148mrnvzOFmqdc0lSUiIqme4qz2DpgVUOuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790689928; c=relaxed/simple;
-	bh=nL5MClaRIwDVCv/QE0DFc1I9Xmfxdgj0PKlSIzVR9Hk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VR3wI4z+ntpLXnknXsy6V/xbrPqlWQYrXiD02/7SnzBk503snCRlSxG17UmKloWOCPGl9GEPcauBhDuM+DWl6B5aEKE4VZBoIqvP7uqSwu+zSTZOfGUIVR6Hv+JeCU0aEeQn7YYafR88VDVuOSugY+wAT7LFJDEWfjzTKvvld4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=Qi6PIQNu; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+	s=arc-20240116; t=1790690386; c=relaxed/simple;
+	bh=2famN4vTw9O356qIDyodkI/2LTm4aZacd8FXSyXRj94=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VHWqLZRDk03jTvrIUdtlOLbFWuE81a8ovT6M2ndkLt54GvB/yzAx1suim9WqIGRo7gEJz6wNKgHY/XBj+M6wOngAEd2CkZ9j3fwAHizmAz2utrrG1HuaahXWnGpoem39BX92fZ7bLGq4UJYNCyM1doqbsjx38PISBA8EkrtjGnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Hj3ypOiI; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="Qi6PIQNu"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=icW9vH+8BAeUrIYQizVMOie8ohpk97Gpl7u0ZmW23GI=; b=Qi6PIQNuPLEgJgehOf0EWDkzPn
-	Mnq+uYq0N4MG9SThLtF4LDbtW7fOwr3d0mjr67kHBHuhoU4SJf1aBQAOxynufxleH8Zvg6ujxT2R5
-	taEHsTEHtJrynDNel4k3Szcn2dLHGNMnl9K8IM5bGTBQQsHDeIloWQPRrZqbKcG2FpCN4e42nlW9e
-	/BlI0LVLs7vMKqGzy0g/ILnq0yqOEXoZDOSNVCURikXlzwQ3XRja0wcGj0MeiuiVR3bCt2vhe9M33
-	bIkAalOGSp1CK21W0Y2B4EcfOWfubGkcKkGqlZJaUKAIqC3f4pFDcSixCfJ8G/KHQbFKx0y8IMysC
-	2177flHA==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xBYFO-0000000C57q-2Pqj;
-	Tue, 29 Sep 2026 13:51:54 +0000
-Date: Tue, 29 Sep 2026 14:51:54 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Gary Guo <gary@garyguo.net>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Georgios Androutsopoulos <georgeandrout13@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Jan Kara <jack@suse.cz>,
-	Boqun Feng <boqun@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Hj3ypOiI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=B/
+	y0bZdDk4/i0/ETvkJS0z7BAXPByKlRi0BoFS3ozbA=; b=Hj3ypOiIV+q39Ers5U
+	D3GAX4GeqMj9dtV7IGzQDH0dto0h4Q3qwTM+HYrAszIbrLkciZM4hVeuPtP2OiDE
+	oVmFzzvH44KV2T8ETzYkT5bBCda0m4AcSSiQVaohbIHzFZ7iiVsxfaPjlKHbtmKj
+	gGyjeadpb0BLG1TWoZy8lmKCk=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgDX8L8hxLtqbwr+Bg--.43938S5;
+	Tue, 29 Sep 2026 21:59:15 +0800 (CST)
+From: Kaiqi Guo <chaoji_xinren@163.com>
+To: rust-for-linux@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Jesung Yang <y.j3ms.n@gmail.com>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Al Viro <viro@ftp.linux.org.uk>
-Subject: Re: [PATCH v2] rust: file: handle fd table teardown in file
- descriptor APIs
-Message-ID: <20260929135154.GB989762@ZenIV>
-References: <20260923022339.3340694-1-georgeandrout13@gmail.com>
- <arThye_219ruNbM2@google.com>
- <20260925-stellen-brummen-festrede-266af0305ac7@brauner>
- <20260929044843.GA3909609@ZenIV>
- <DLRSQRUVOGT2.10ZY01VEJVHCE@garyguo.net>
+	Danilo Krummrich <dakr@kernel.org>,
+	nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Kaiqi Guo <chaoji_xinren@163.com>
+Subject: [PATCH v6 03/10] rust: macros: add `convert` helper attribute
+Date: Tue, 29 Sep 2026 21:58:48 +0800
+Message-ID: <20260929135855.36775-4-chaoji_xinren@163.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260929135855.36775-1-chaoji_xinren@163.com>
+References: <20260929135855.36775-1-chaoji_xinren@163.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DLRSQRUVOGT2.10ZY01VEJVHCE@garyguo.net>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgDX8L8hxLtqbwr+Bg--.43938S5
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Xw18uF47tr47Wr4DWr4xCrg_yoW3JF1rpF
+	WUK3y0g343tas3Wan2kay2qw42kF1fJa15XrWrXwn2vFW5JrWS9r4UKw48tr98Cr1rJry3
+	KFWjkr1UWFy7Za7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zMjg4UUUUUU=
+X-CM-SenderInfo: pfkd0yplb0x0xuhqqiywtou0bp/xtbC-hPGQmq7xDOvFgAA32
 
-On Tue, Sep 29, 2026 at 01:24:45PM +0100, Gary Guo wrote:
+From: Jesung Yang <y.j3ms.n@gmail.com>
 
-> > 	In particular, ->release() mentioned upthread should not be allowed
-> > to access _anything_ hanging off current, not just descriptor table.  Note
-> > that the last reference to an opened file might be sitting in an SCM_RIGHTS
-> > datagram pruned by AF_UNIX garbage collector; as far as the method is concerned,
-> > it might be called from random thread.
-> 
-> This part is protected -- we mark FileDescriptionReservation as `!Send` which
-> prevents it being moved to another task. We also take care to make sure that
-> the task returned `current!()` is not allowed to be used outside the current
-> task.
+Introduce `#[convert(...)]`, a common helper attribute for the `Into`
+and `TryFrom` derive macros. This helps avoid repeating the same types
+in `#[into(...)]` and `#[try_from(...)]` when deriving both traits for
+the same enum.
 
-Not the point - ->release() can't make any assumptions regarding which thread
-it will be run in.  current won't change under it, but there's nothing
-useful you could want with it.  If it has non-NULL ->files (or ->mm, or...),
-that reference will also remain stable, but any attempt to do anything with
-it would be a bug.
+For example:
+
+    #[derive(Into, TryFrom)]
+    #[try_from(u8)]
+    #[into(u8)]
+    enum Enum {
+        A,
+        B,
+    }
+
+The above snippet can be shortened to:
+
+    #[derive(Into, TryFrom)]
+    #[convert(u8)]
+    enum Enum {
+        A,
+        B,
+    }
+
+Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
+Signed-off-by: Kaiqi Guo <chaoji_xinren@163.com>
+---
+ rust/macros/convert.rs |  7 +++-
+ rust/macros/lib.rs     | 78 +++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 80 insertions(+), 5 deletions(-)
+
+diff --git a/rust/macros/convert.rs b/rust/macros/convert.rs
+index c64e35447859..21d79bca16a0 100644
+--- a/rust/macros/convert.rs
++++ b/rust/macros/convert.rs
+@@ -150,6 +150,10 @@ fn get_helper_name(&self) -> &'static str {
+             Self::TryFrom => "try_from",
+         }
+     }
++
++    fn get_common_helper_name(&self) -> &'static str {
++        "convert"
++    }
+ }
+ 
+ fn parse_attrs(
+@@ -157,6 +161,7 @@ fn parse_attrs(
+     attrs: &[Attribute],
+ ) -> syn::Result<(Vec<Type>, bool, Option<Ident>)> {
+     let helper = target.get_helper_name();
++    let common_helper = target.get_common_helper_name();
+ 
+     let mut is_repr_c = false;
+     let mut repr_ty = None;
+@@ -175,7 +180,7 @@ fn parse_attrs(
+                 // Delegate `repr` attribute validation to rustc.
+                 Ok(())
+             })?;
+-        } else if attr.path().is_ident(helper) {
++        } else if attr.path().is_ident(helper) || attr.path().is_ident(common_helper) {
+             let args = attr.parse_args_with(Punctuated::<Type, Token![,]>::parse_terminated)?;
+             helper_tys.extend(args);
+         }
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index 8b4f3e9dc860..cc6a96516c93 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -557,6 +557,10 @@ pub fn CovariantForLt(input: TokenStream) -> TokenStream {
+ /// - The macro uses the `into` custom attribute or `repr` attribute to generate [`From`]
+ ///   implementations. `into` always takes precedence over `repr`.
+ ///
++/// - In addition to `into`, the `convert` custom attribute is supported. The purpose of
++///   this attribute is to avoid repetition when deriving both [`Into`] and [`TryFrom`]
++///   for the same enum. See ["With `#[convert(...)]`"](#with-convert) for an example.
++///
+ /// - Currently, the macro does not support `repr(C)` fieldless enums since the actual
+ ///   representation of discriminants is defined by rustc internally, and documentation
+ ///   around it is not yet settled. See [Rust issue #124403] and [Rust PR #147017]
+@@ -568,7 +572,7 @@ pub fn CovariantForLt(input: TokenStream) -> TokenStream {
+ /// [Rust issue #124403]: https://github.com/rust-lang/rust/issues/124403
+ /// [Rust PR #147017]: https://github.com/rust-lang/rust/pull/147017
+ ///
+-/// # Supported types in `#[into(...)]`
++/// # Supported types in `#[into(...)]` and `#[convert(...)]`
+ ///
+ /// - [`bool`]
+ /// - Primitive integer types (e.g., [`i8`], [`u8`])
+@@ -650,6 +654,36 @@ pub fn CovariantForLt(input: TokenStream) -> TokenStream {
+ /// assert_eq!(Bounded::<u8, 4>::new::<1>(), foo_b);
+ /// ```
+ ///
++/// ## With `#[convert(...)]`
++///
++/// The macro implements `From<Foo>` for each `T` specified in `#[into(...)]`,
++/// which always overrides `#[repr(...)]`. `#[convert(...)]` is useful when the same type
++/// needs to be specified in both `#[into(...)]` and `#[try_from(...)]`:
++///
++/// ```rust
++/// # use kernel::prelude::*;
++/// use kernel::{
++///     macros::Into,
++///     macros::TryFrom,
++///     num::Bounded, //
++/// };
++///
++/// #[derive(Debug, Default, Into, PartialEq, TryFrom)]
++/// #[convert(bool)]
++/// #[repr(u8)]
++/// enum Foo {
++///     #[default]
++///     A,
++///     B,
++/// }
++///
++/// assert_eq!(false, Foo::A.into());
++/// assert_eq!(true, Foo::B.into());
++///
++/// assert_eq!(Ok(Foo::A), Foo::try_from(false));
++/// assert_eq!(Ok(Foo::B), Foo::try_from(true));
++/// ```
++///
+ /// ## Compile-time Overflow Assertion
+ ///
+ /// The following examples do not compile:
+@@ -702,7 +736,7 @@ pub fn CovariantForLt(input: TokenStream) -> TokenStream {
+ /// #[repr(C)]
+ /// struct Foo(u8);
+ /// ```
+-#[proc_macro_derive(Into, attributes(into))]
++#[proc_macro_derive(Into, attributes(into, convert))]
+ pub fn derive_into(input: TokenStream) -> TokenStream {
+     let input = parse_macro_input!(input as DeriveInput);
+     convert::derive_into(input)
+@@ -727,6 +761,11 @@ pub fn derive_into(input: TokenStream) -> TokenStream {
+ /// - The macro uses the `try_from` custom attribute or `repr` attribute to generate
+ ///   [`TryFrom`] implementations. `try_from` always takes precedence over `repr`.
+ ///
++/// - In addition to `try_from`, the `convert` custom attribute is supported. The purpose
++///   of this attribute is to avoid repetition when deriving both [`Into`] and
++///   [`TryFrom`] for the same enum. See ["With `#[convert(...)]`"](#with-convert) for an
++///   example.
++///
+ /// - Currently, the macro does not support `repr(C)` fieldless enums since the actual
+ ///   representation of discriminants is defined by rustc internally, and documentation
+ ///   around it is not yet settled. See [Rust issue #124403] and [Rust PR #147017]
+@@ -739,7 +778,7 @@ pub fn derive_into(input: TokenStream) -> TokenStream {
+ /// [Rust issue #124403]: https://github.com/rust-lang/rust/issues/124403
+ /// [Rust PR #147017]: https://github.com/rust-lang/rust/pull/147017
+ ///
+-/// # Supported types in `#[try_from(...)]`
++/// # Supported types in `#[try_from(...)]` and `#[convert(...)]`
+ ///
+ /// - [`bool`]
+ /// - Primitive integer types (e.g., [`i8`], [`u8`])
+@@ -827,6 +866,37 @@ pub fn derive_into(input: TokenStream) -> TokenStream {
+ /// assert_eq!(Ok(Foo::B), Foo::try_from(Bounded::<u8, 4>::new::<1>()));
+ /// ```
+ ///
++/// ## With `#[convert(...)]`
++///
++/// The macro implements `TryFrom<T>` for each `T` specified in `#[convert(...)]`,
++/// which always overrides `#[repr(...)]`. `#[convert(...)]` is useful when the same type
++/// needs to be specified in both `#[into(...)]` and `#[try_from(...)]`:
++///
++///
++/// ```rust
++/// # use kernel::prelude::*;
++/// use kernel::{
++///     macros::Into,
++///     macros::TryFrom,
++///     num::Bounded, //
++/// };
++///
++/// #[derive(Debug, Default, Into, PartialEq, TryFrom)]
++/// #[convert(bool)]
++/// #[repr(u8)]
++/// enum Foo {
++///     #[default]
++///     A,
++///     B,
++/// }
++///
++/// assert_eq!(Ok(Foo::A), Foo::try_from(false));
++/// assert_eq!(Ok(Foo::B), Foo::try_from(true));
++///
++/// assert_eq!(false, Foo::A.into());
++/// assert_eq!(true, Foo::B.into());
++/// ```
++///
+ /// ## Compile-time Overflow Assertion
+ ///
+ /// The following examples do not compile:
+@@ -879,7 +949,7 @@ pub fn derive_into(input: TokenStream) -> TokenStream {
+ /// #[repr(C)]
+ /// struct Foo(u8)
+ /// ```
+-#[proc_macro_derive(TryFrom, attributes(try_from))]
++#[proc_macro_derive(TryFrom, attributes(try_from, convert))]
+ pub fn derive_try_from(input: TokenStream) -> TokenStream {
+     let input = parse_macro_input!(input as DeriveInput);
+     convert::derive_try_from(input)
+
