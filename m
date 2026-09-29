@@ -1,160 +1,137 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021114.outbound.protection.outlook.com [52.101.100.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f39.google.com (mail-dy2-f39.google.com [74.125.229.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1B5513550
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 11:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.114
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790680681; cv=fail; b=CyOlXP2Olki3YaeXNqCj93oxUM54ydGV2W8aeNne3KzCkv+Oa8nZRFIuCWh/rgNSq5C4WavlU5RlGnPhSEiAWPOqo/0Pex9SfAo7J9u//6HRB595c+6dpRfQX5cTIdNZxi7fS9pwWK50N+rstyenTOHrxXAfNW2BHTh+HJ/HmS4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790680681; c=relaxed/simple;
-	bh=TBSW/I9lKLyhyWIowpjRXWg8irppyvgPoR/Sup1F1sk=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=i613k8RXXS4tQ8srSxN1oBh1xxHd67gAM9jkNjtbfQkGskXjVxxub0kMc6P/uEpQB8gCOKgGapQWA0awf/xiwCCmEWZq+nCl/3bv/gcqekX/67Rr6BEei5z+n2tlujkr7jGL2NpxK8NtfdvM3fnrXd2hwyQRLjlwcK6ffKQRdVs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=UVUSglJ0; arc=fail smtp.client-ip=52.101.100.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9AE1518135
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 11:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.39
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790682445; cv=none; b=hCs3h/Tbb4WOdTeGWIzHtp4l2qNQCArPb+KStTfSOWFIr2gxCxnzxXJlfE678K0jbafat9jtzpnBKO67lkOk5ZUiN53/CYr2Zvb/lKOk+3S71T2+zcy1waXvFnISOEEmqL1vmNy4vS5c3Zh1eOa56BX4yv3S+/lfVqkjhtejECE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790682445; c=relaxed/simple;
+	bh=auO8vx1zCEc/BT+Se+M9GZe6jZ7lQ4XST00kVv5lCUI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=rRi2qU27cU76RlxKhhcRMCGwhhS5C7A6niGO295pet51yMbeZ74mp/A2ukOsltsJbFr7Y5fgRbiKA32qvezH+5eocTke9SmLH+sN/Im88CssaN1XQClsHozswRSZykX+g0pvhPQqgfmQAShwrd8LLbm9q3DPthOCXds62y1tjXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=LX8rgYEu; arc=none smtp.client-ip=74.125.229.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="UVUSglJ0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nMBz9Lr0oSW9sA3o1qdNb7SfAUMKgALvvLDzBWt6PkdKhMJleqPRNnEusjisKIHjs8p+eQB0AC4seJ6oYf+a4tnsmH8MdI1eeXvQkGmWnv4EX0vLzyOBYmcqFsHoI8eH8rVOzw4b596qDW0BxlXe/hehTIa6vE1gUibORAm/SygqVjMe4LisbRJR18e2xL5AYoZpcHbJzevnF/y4PHt3dRhH6Jp2kgr7n6BuLpBplbpSGIkULluaXovBTwNUj587UDAfaPiJQqIYjx0CoTZqYqYmqX/+CoriwCvietgAHHKKszqC4vEMgMggPnHsxuBHijJO143JXLx1iz79N11dxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ibM3GthIA2jgx2uZ/fVzSC/EKYdkKPuQx8+AeoTjnhQ=;
- b=b1If3aoyYA4ExJLnEGjMZ9Wd2CMC/9KV4d3xnkoypiEa5AoBfCOuOxGtGyXBvZHNRk3OnQYZus5IjlOvygcfMfCmD9ODfsLYchLdhjbSSQ4qSCxrYZVJ9QClexnS22Us0cl7076lFJk2Ec3AzGtlMgc/mYw25MTgG0fr3aVUlFEB6y7sIIgU60vF/+E/dsZpak6VReuAT54Bhb3RogYt09Le9Ox0TgG01LRVa9/ULkiAvxrEZxUpzV/k3fKggS6QHLe0ss/uCVqrTpQJ9HD5pClaFzQsibNTxR4qAd5xvCPtkNsLlm96qNOlMTc0vQSi2M7u2NXOPiVeyNMuVemBHg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ibM3GthIA2jgx2uZ/fVzSC/EKYdkKPuQx8+AeoTjnhQ=;
- b=UVUSglJ09pJRTbFxbABG0cZeYcXVumiTMd587RwEid8Rr4nquMqLzTyiN53C6+WCkmUTKsBjasTwdjwyDFxXoenMOueY3g6kXLBGq+X6qnB0xgWhwCyZLUDU9GoZk4W0DDrOEsjNNuofVNcDHHoZhkujQeMAZqbogAC3ahxdMZY=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LO0P265MB6727.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:30d::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.25; Tue, 29 Sep
- 2026 11:17:49 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0451.024; Tue, 29 Sep 2026
- 11:17:49 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 29 Sep 2026 12:17:48 +0100
-Message-Id: <DLRRBILPITPS.25SC9GL1ORLPW@garyguo.net>
-Cc: <a.hindborg@kernel.org>, <acourbot@nvidia.com>, <aliceryhl@google.com>,
- <bjorn3_gh@protonmail.com>, <boqun@kernel.org>, <dakr@kernel.org>,
- <daniel.almeida@collabora.com>, <gary@garyguo.net>, <lossin@kernel.org>,
- <tamird@kernel.org>, <tmgross@umich.edu>, <work@onurozkan.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
- "FUJITA Tomonori" <fujita.tomonori@gmail.com>
-Subject: Re: [PATCH v1] pwm: th1520: Fix 32-bit build with COMPILE_TEST
-From: "Gary Guo" <gary@garyguo.net>
-To: "FUJITA Tomonori" <tomo@flapping.org>, <ojeda@kernel.org>,
- <fustini@kernel.org>, <guoren@kernel.org>, <wefu@redhat.com>
-X-Mailer: aerc 0.22.0
-References: <20260929095612.1072417-1-tomo@flapping.org>
-In-Reply-To: <20260929095612.1072417-1-tomo@flapping.org>
-X-ClientProxiedBy: LO4P123CA0673.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:351::8) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="LX8rgYEu"
+Received: by mail-dy2-f39.google.com with SMTP id 5a478bee46e88-34b3a9cd8edso270451eec.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 04:47:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1790682443; x=1791287243; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:date:message-id
+         :subject:references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UrtlH6fh0bdY8+LsO+q/VzuQ9gl6JHaXCyoZ57Q1phQ=;
+        b=LX8rgYEuCs6CKNOQmX7Fm2p0fRH+V29wUua+DOblZ9yHWkX5Sbvw3ocBaxchS6/Ff+
+         okUxaJPqwoRuc1t1Bgw0fVCTEzrZYr99UkOtQI+TbARp921GswuBRsm4vHaTJn36L7Wy
+         zO/lbrSBF1rQZGVc8k8Zh5mK3hc9CX8iQORchmBfwtMhPBnCzhHr3NJ94HRC3rvO4en7
+         1OraFasrLY3oRHl9jo7fUSDwJSXc0ViLxf0h3dG5AOe/jHf+RRdGaOadyOeuVXpuTFfj
+         SuaY/dRxdFPjTYG5eBsE5NnDc4z/w+7QO1ZB4LqHmKOZVijdohJOWsmBrYdAgB/WsrwB
+         QkqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790682443; x=1791287243;
+        h=content-transfer-encoding:content-type:mime-version:date:message-id
+         :subject:references:in-reply-to:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UrtlH6fh0bdY8+LsO+q/VzuQ9gl6JHaXCyoZ57Q1phQ=;
+        b=bUkN6wQAD9kdj9C3ssB3MrNIwys/0T7A5tj4eppFF4IFvj/BTjjhzeP9acxi74KBnp
+         Ly67iLJDkdSMGEqi0cyKngE2HBHe7k2f3vNVdrtaguPA+M3XHz2l9K3AgLhjcHJpAknf
+         TTx+ZFaDNJ5MiuL+KbQFkBzWqSNQDub1MIAkv40LnSVukRwhwwsbidYQXD1xCZvLPs5L
+         bOASLu/DHMpRABST+Kno+MXJkF8q6mKeL2j3j7QWR6RNRX8HpvM+8p9i898fN0AHDG04
+         +5Ro6PZnbGeh3MAcDJDZZpma3xONInFNYb9GXi4vY9n03snXXkD0eEBlVojqpEY0dhxC
+         lWkA==
+X-Forwarded-Encrypted: i=1; AKwUvBxJh4LBhiTlblndUfeP+2TOZB0wge1T9jqT0atRCyr2QduWtkQgJ3s0UxSHo/DMktAPxa+zY6v44X5E7/zqaw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYLK7osQBl9EAC8XCmMC/l5PkyC3TnK7wdJtpIVRTBQ2QZjgGPxw
+	OehzsR3URJAtv/Qo0AjzhZdIGg2VdQv/dKsbOH5Pn4NqH3SUX3hANX4LLoR5Bip4Wek=
+X-Gm-Gg: AYBFou0YHUA7RHCkZzyP8jOFbyNmeFtUVXhNnRrFPfE7k9VRSo7wpC0NoZpMb7IrZwp
+	ri+fIPbspLIKLovj/DsdTHCLgMG25qYRRVfjhhwDyke2Hoi+N/5FeQuoYA0ZXMIPt5oIkdoEuUH
+	ak9orx8jur931BNqCfSYVfUWqubR3oM6owd5xRgpwgk8VGYxU/oAfWXfU0QPNwzdtXTX9h6/O08
+	eBwKfNtdCg4G35asT/OGKW02YAYNThxvYMjR8yl3MHmZ8cg0EgEOuxa5jf4jDY3UbXRaW3kpZZm
+	uViFpG/nu0wfJt75BjfuSc+Ewl5Bq45tUOzTua3/FPw93S77YBDHSnS50+D5dzPsKdHXngCqM4K
+	rGVQhd10pZ6gT6hPyLUEp5UQZnfu000wH6s5Jx/3+QBzU8I+M72tViK1YAY3/pFAokELMNe8iWY
+	g58gqljbSYeOrjwjRJlOeQa5hyAFm/LWN203WzB0UKnMf6tKYZiT9McAEuv+nNikuHi3SVXydtm
+	nfDR4FwVn2M8qQh1ckOZ3E5ZERvKkngwlZTuU1MWWFos50rk2CiymEabagOOAuN7Qlk
+X-Received: by 2002:a05:7301:1a03:b0:33e:643c:91fb with SMTP id 5a478bee46e88-34af50f9957mr2407486eec.5.1790682442660;
+        Tue, 29 Sep 2026 04:47:22 -0700 (PDT)
+Received: from [192.168.1.106] ([198.8.77.135])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341451457d0sm39636842eec.21.2026.09.29.04.47.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 04:47:21 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>, 
+ stable@vger.kernel.org, 
+ "Priya Bala Govindasamy <pgovind2@uci.edu>, Dylan Zueck <dzueck@uci.edu>, Yuan Tan" <ytan089@ucr.edu>, 
+ Sophon Z <aiqubits@hotmail.com>, Qingxiao Xu <qingxiao@tamu.edu>, 
+ Malte Wechter <maltewechter@gmail.com>
+In-Reply-To: <20260929-rust-block-for-v7-4-rc1-b4-v1-0-642a4c1aebd7@kernel.org>
+References: <20260929-rust-block-for-v7-4-rc1-b4-v1-0-642a4c1aebd7@kernel.org>
+Subject: Re: [GIT PULL PATCH 0/9] Rust changes for v7.4-rc1
+Message-Id: <179068244058.1205226.1765319338142659278.b4-ty@b4>
+Date: Tue, 29 Sep 2026 05:47:20 -0600
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO0P265MB6727:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3e69f01-e445-4fff-400a-08df1e1b4b93
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|10070799003|23010399003|1800799024|10067099003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	GaFMdwD13rZMNpC9yLGxLpg0/lgnQWD4ofuzGbXtqEbbjd8y+X4JCfAFy5Ts8KYqx7g1DCVU0HJ+kFBEgfjI44DaRu/vrh+/2bQE5ylx0fjYQWm/uBxV8j6Zmi29m2eWnQfX2w05+iuIWT0sB846Od83n6m/+w+XXsd74nc8dFSZf0ThW4DEtP8zNVtClL1OEi+2nXiiAXs7ANzRMImUW9tQndEqBUOjLDqkHtL4hKjwrfPX6t+SH+fFnHFurmmzCC5obF+6hFd+Fav/p1XQ+kgIpU7waUSEDfFVyA8NUiOgmVbyz5608STTOAVmJUqGfoS7Ysj9CDTmMwmqzh6pVKamAqs3aw9PXThLUihu/ekw9CtvVJ30nZlwsyO6U2rZqJ4a938qUvvdXe3Udo34bErl/tmsF1V8NjDXnZD+PL+LjT+I0sRIdXCSszhUWp392gHC6hOcYo4pulpJeFVi9eKNL7IH3DH27x16KllQMIRxr5vTJ6Qy2tZ0urGhrGvi5X19SaV20pUXam3iC/YBwdU47nV/0VarVqJNMBlYOrJizRC4fu0KSVAFfsBYms+lqZ6Tc5trhEr28INIMEbopPzzxuMw5lyoy0ULfqJdivGT4VUndKyi+/u/dsi1eCwWGe9wfL4ChI60KNpUCEaDJI4W9HSX7Wm90wfpttTam+Q=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(10070799003)(23010399003)(1800799024)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Y3NvdVZDRmtvRSswSDhlZUk0b0k0ZG5xaCtlcFFVMTBzSDVKeUNQdVZsUCtx?=
- =?utf-8?B?VXJkdllIWjJSY0RnSklTelJ3REszMEYremRMcDdSaTNFTXJDMnZ6bW1aOGwz?=
- =?utf-8?B?UjJsN09YdkNscjU1a1I0MzRLMzB0dEhMNG4waDRIYTluSlNRSmROUmI1VGU3?=
- =?utf-8?B?TURPMU9SVjhNZGwvWGppNVlSdE5zOXVXR1Y5MDBjbG5hNGJNNy9mUHdqNitr?=
- =?utf-8?B?eFdVQTY4UTdSZldGSkFjSWcyb3hFRlJDbVliQUpEbFRYajVVWlEvWVNROGdR?=
- =?utf-8?B?Vll6QzVkTjJNR05rMkpiS3dnNXpmUDhJYkhWb1ZvUHVVZjNlNFQ1YkYrd3lp?=
- =?utf-8?B?WUJybUhQM3EyTk92MGRNVWlWMVJ2SENERitGdGdKMlZqT1NtSnYwbXVmVzlR?=
- =?utf-8?B?dEtGTklES1prWmhWY1NsQU56Mjk1K2VPa1cwb01KRmIvS3BuWHp3MzQ4YVBB?=
- =?utf-8?B?aUFTU09Ua1R0VG5jNUZxMzYwWUxqUkJpd1ZjRUU2U29lOFRPbzFCOStWOWZJ?=
- =?utf-8?B?MGpMdkdzdXpLTWtxbGc3VldYMTJ1eGVsUFRMclowQ1gxMUU0am5Nd1BzYzNK?=
- =?utf-8?B?ZjJ1SGVFMlFLL1RuVFFUb0xaU1ZPR1huc3NkeGNTTktLazhuNG5mV0gzVzRK?=
- =?utf-8?B?U3llWlRrRE1leFIyZWVZdlRETWJUWkc1ZzgwYklsMlY1V0Z2cktoV25nNEZK?=
- =?utf-8?B?UG1BcGE1MXFpQVhOVERLamxwNjNtSCtvQy9LOTRSUGpHY1RFWGRrNWlEMmFh?=
- =?utf-8?B?enB4YXFPT056aXdSdSs3UHl6RGwzNWtuV29tb2FtVUJzZlh4OTlFNEJIbXBK?=
- =?utf-8?B?TWMweE9vazlIY2Vnd0E4VjVPOElwejJqTWVkWTJFY3NsL3ZaU0JKZFdOaiti?=
- =?utf-8?B?Mk4rb0pJeFpraWIxQURNbTgrcUwyTUcrRjRkNUJ6UW4xdnN1UmVDcDQwWG8y?=
- =?utf-8?B?ZE1kdXI4OU9reDlEQlNkRG9CSTZGb1BwUkRDR0RaVTNRTHhNYy81aGlXWi9J?=
- =?utf-8?B?cGU0dUVkTVZGYWNNbzY2QitHbjZFK0l2TEh5eEZEUFVicmdNUnM3SVpmUVZp?=
- =?utf-8?B?OTlDMnF4T0h1eGY5RTJtTFh4YjNyeGZEVUx4ZWlZMlhmK2s4Q3Q0endEV01F?=
- =?utf-8?B?UDFjNEZiektHamozQzIzN3ZvTm9SK01wNnlWbmwzUEtJM1lQQzFKWmxoRVFs?=
- =?utf-8?B?Wk1Cb3VLOCtwR0o5WHlFdWR0eG5aWm1UZEo4SGNkaEpKVk5iN3ZyQU9YMXla?=
- =?utf-8?B?bTlSQ1lKazNoby9MZGlMT3BzbThZWWtPRkhCR3RBZmxrdERJNGVua3J0WjVX?=
- =?utf-8?B?QlN1M2l5eDBhV3A0N3NTZldrSFgvL1hKWlZSVlpPL2hDY3UvSUd4S1o2VWFo?=
- =?utf-8?B?bU9OYmV1ZGFjZzlRRDN4OGVBck1wdEEyWXl5OUJMbDZ1VGdrUWYwV1FBVldj?=
- =?utf-8?B?TnhRT2JCNmtiSEFlSHZ4YTNjeGNzblZraGZ0OERtM2FtUUQ0SHVzbmNKTUZh?=
- =?utf-8?B?ZE82UjJrcnpaOHZrMGZsSC9RWkU3K2tmcjQ0WG1DZDllbU43ZWxwblllVWF3?=
- =?utf-8?B?NUVVVCtBK2w4cUUxRVc3ekJiZlVQRkUxSHJKRmRHVG5HSzRLVWJvblZsbVpv?=
- =?utf-8?B?aitobnRhcGg5enJLeHY0WW9yK28xa2pTL2ZoK3pJQWRocjhpY29acGdXUHFI?=
- =?utf-8?B?TnRsL0J1NnpuRUp0bTh1Mi95bXhTcVhnWWpvOUFuaWR1TDkwYWo5Q3Eva3E3?=
- =?utf-8?B?THprZDNHNkZ0ZVJ0VnVvWXppbklzYnUvYnB6WG1LaGk5a2NFc0pMMG1ReXFw?=
- =?utf-8?B?ZEM5U284eE5ja2ZtUEF6NEpkWFpFbjNRWnV1Y1RRUktTWEQ2d0JzYzRKcnNw?=
- =?utf-8?B?aFF0TVVCWE9DOWs5UmY1a29kQ08vVGN2bHVSR1RGY2JidG9Hd0o4UmVXT0xj?=
- =?utf-8?B?T1pmc2Zva3RJREgrQUtvOU9ZR2NOU0I1YVl3Z1dXQ1pYbzhOdnN1UVl2MFhS?=
- =?utf-8?B?SkRsbU1sUjlWN3owQlFQU0hJTlNjWGZzeWdsSTUxNllZbW0vdzdIcTB1VkNR?=
- =?utf-8?B?VWM5Z1V4c3VZdzJWQm9rRWNudkh3Rm5IeGhORHBtRy9PNlFqZzJzZ1pWUGxn?=
- =?utf-8?B?Y0xtVFhYZEs2bStxeElCaExKTXFOL3NjakxTVXpIZ0hoRUNIbTJkQU9PZGlF?=
- =?utf-8?B?VmlMcVN3a2dBeVk1dzdQY3dmeWZ0L1NMWFVBQlE5VFVud0lLcjMxOHE1YlQ3?=
- =?utf-8?B?eHFncHFFZngrV1ZnVzkzQThXaVVLdlM0Zk01Sy9DeEtabVRxN21oOE02VXk1?=
- =?utf-8?B?SWlDNUxaWXhXdzlNR2EraDljclhUcVltVk1qT3lxdDA3SDk3R1NjQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3e69f01-e445-4fff-400a-08df1e1b4b93
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 11:17:49.1619
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MceS/Yn6CqDtZ91n87kpa90QbiyjRfEFbSDMNQTubJxGl5RbVFUQ9soL0ZADsQrVEXBx/jICHWnimr8LCvba7w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6727
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15.2
 
-On Tue Sep 29, 2026 at 10:56 AM BST, FUJITA Tomonori wrote:
-> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
->=20
-> Fix the following build error on 32-bit ARM with COMPILE_TEST:
->=20
->   ERROR: modpost: drivers/pwm/pwm_th1520.ko: symbol '__aeabi_uldivmod' un=
-defined!
->=20
-> The driver divides u64 values when it converts between nanoseconds and
-> clock cycles. On 32-bit ARM, these divisions are compiled to calls to
-> __aeabi_uldivmod, which the kernel does not provide.
->=20
-> he TH1520 is a 64-bit RISC-V SoC, so the driver is only used on
-> 64-bit kernels. There is no point in compile testing it on 32-bit.
-> Limit COMPILE_TEST to 64BIT instead of changing the arithmetic to use
-> the div64 helpers.
->=20
-> Fixes: 3c180003dffb ("pwm: th1520: Fix missing Kconfig dependencies")
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+On Tue, 29 Sep 2026 11:33:58 +0200, Andreas Hindborg wrote:
+> I have a number of Rust block layer patches I would ask you to pick for
+> v7.4. I have collected them into a patch series as well as a pull request
+> so you can use whatever is easier.
+> 
+> The changes cover
+> 
+>  - Style and formatting changes.
+>  - Documentation fixes.
+>  - Fixes for missing trait bounds that can cause API unsoundness.
+>  - A change to set the owner of the file operations vtable in `GenDisk`.
+>  - Two bug fixes for the rnull driver.
+> 
+> [...]
 
-> ---
->  drivers/pwm/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks!
+
+[1/9] rust: block: mq: use vertical import style
+      commit: 020185c5f4a5590267b825dffda05eb5d45dfa5f
+[2/9] rust: block: mq: remove redundant imports and format
+      commit: 06e75dbe894f260651627c35e0f36536c4894536
+[3/9] rust: block: rnull: use vertical import style
+      commit: a463f71c492336f9650bae7d7166b66ee87461e9
+[4/9] rust: block: fix `Send` bound for `GenDisk`
+      commit: e502b667ee70a7fa2a578e7722672ecd4fe0eb81
+[5/9] rust: block: gen_disk: set fops.owner from driver module pointer
+      commit: 67a11f2e076016f054dc4a4a637d9b37530b7908
+[6/9] rust: block: Fix GenDiskBuilder block size documentation
+      commit: c595572d0e49c79fcefe8db8e3e4f4e6e1fab734
+[7/9] rnull: fix geometry store check-then-act across lock scopes
+      commit: 7ac697d4a08f01e7aefdeb1f3e1d6f71b2cdac0d
+[8/9] rnull: configfs: add power to configfs features
+      commit: 0cd698e89375d0dfc257f9ae978420aa7fe5359d
+[9/9] rust: block: require `Sync` for `Operations::QueueData`
+      commit: 67b7a2728e4873e64405c5564fe50f7123012b71
+
+Best regards,
+-- 
+Jens Axboe
+
+
 
