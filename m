@@ -1,166 +1,185 @@
-Received: from mail-dl2-f12.google.com (mail-dl2-f12.google.com [74.125.229.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010030.outbound.protection.outlook.com [52.101.201.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7028A1891A9
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 14:19:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790691557; cv=none; b=Uxdd+fCGcG7K9fFW8zb+5BHj89rdrvUNqDx39ycLjS/ev90mdxVG3C8U8StnchGdqbG2pfsqgKYjGsMC1u4zbk9fPhxcM65IvQYAV7YGd2/yFtkSPyvFt1avOmu/AJcVoe+fl8gB63NXQFbjndzOkvH/F/d2u9qj8ly9LVVYZHI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790691557; c=relaxed/simple;
-	bh=DcbTLHD/tVnZXO6Wcep2ztjwIHfAxEpXw9x6ciDS0H4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DyjU2TVevOcXjLMv65SBnMKrYIcP/XdE764tt2Avqb2rIrK8T0k8Zp9dH/NgY9zbN4WTt9kWpLVsMh4I5V0NUDGMfULS7scgIHWNZfXEJRK7RWbB5O0fn9NoAY1WBSJ4pfVcAXwpkd8rg1EH2JswfvqMq1/MIX8rKmS0XV7qfIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G/EahVrV; arc=none smtp.client-ip=74.125.229.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB18531612;
+	Tue, 29 Sep 2026 14:40:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790692843; cv=fail; b=Zs2lLIaOEZkxThmU8yyvRshNcx8tMTlonOXVpSv6O6Ii+y6t5JDHN1NYxOmR9R+nKFEBrsl4Q72UiYL5jKYc2XIetBD6o5YB5YNtCC9YVnFdAIZfOFU1xDX+ZAvoiT5YlHVt4d8dFP3u3EJNDxFhW0DkBHO6cAzY9nOhy85K8NM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790692843; c=relaxed/simple;
+	bh=1h3RTlmqFRyw2GwXHbXQJi0s+YR16hRqXIUaeq4eChM=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=Tqvtf/AzDRue7sdK1NHvaEcitRfkHYw69AgGn/vlyjP3ODp6EdmclmYysbjiJ5XvhGZ/swogkhKu3uCwXf7mttlkIriyEPEkThmCUMmfpQB38aVFgdG0edunzKOHh2Z/v3g0SaQvtolv5E5qfbeYjDh6J55+E6oO5IPqitB2/Og=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DhLhMNXL; arc=fail smtp.client-ip=52.101.201.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G/EahVrV"
-Received: by mail-dl2-f12.google.com with SMTP id a92af1059eb24-142dd04be87so940095c88.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 07:19:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790691555; x=1791296355; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=o0iuzWgmMrAdCcDL0sS3FSyhRSjl5Wen75MYK1Cmll8=;
-        b=G/EahVrV6VudcNY/jj+pOe1dJD5YUuISkj7d5KyZH0Jupx5WqIt+DJrirnbBWe9ddS
-         uukGApyZYWuRdlDSBki/gbjMUNbZfnKNYJSs7ttVKePjDwJSGilRSQTVFT+Qb/qkxedt
-         QSRVYq7wq0RAjJwlS3XvKoq8pXyZn9zRlEuMd98eEB0/H30fHVaJkWVK51zZdYYfNhjX
-         vVPH66H6o7slgCq7NxvP56FL6rGuxCpjASXGiA1kpCleqrWQR1RFvzWG68nZ9rjxc+eH
-         azWmuF/mt/4u5vlrUuWXTGedTLRfzvo5JxXqG8NTekm5OxtAa9kadhoQzUj6+8e1kcDC
-         l2kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790691555; x=1791296355;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=o0iuzWgmMrAdCcDL0sS3FSyhRSjl5Wen75MYK1Cmll8=;
-        b=Jg7Q5k+82azU431htsodJ8Hqqt5/wNXDlrQ7+5kcyfls8XktQYoTGuPKKEPUdEKxwY
-         1ZfFrXwUm4Qd2EhvJGQ1eplm1DqKEH2chfkaSKI94c7S99lCDIIdngjapwbPwumMFapr
-         wGgSvJ665nXQKeRlZuHxEd/Y+JRPwl+p7fZ/2SK77ydNvqQxN9JC6UDKYiveKHth4JrM
-         FIz6BBRcmGqxH+dWVhs+u4Bb4lhR4wlo4q/OnzKlhgHWGdNPOicoTpmegOIwm3iMpJPU
-         J6N3w1O9HHE8zu3AezL59CgaD1ITKOXyHf0EYmspeo6Sg38oyUkH3DiERCzk7RtnfL7u
-         dHBA==
-X-Forwarded-Encrypted: i=1; AKwUvBzTQB16+Y2rQR97oPfPXhSjb/2xaBhuY0PUC53CPBMypigRro3fSTB8IsOvMgrkU2bBJZj2ulUPOkyax3yZjQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++mQr+vcGaK5BE1BGneKSyF/2SHucCTr2ChuaoSX2gMUuiI+tM0T
-	YL42J+ciRQxegkH+sO0GQRyx+dbOlISziW+B7scTJ5/tAo5JKXVLGCfuaSN9
-X-Gm-Gg: AYBFou22udpE65dJ9l2M3Vxdo01Otmh6gFRiSfNa2KoaWjkteKwPpdJlNbrgD+VcpvA
-	2QyfPuvuSwoVuYUE/aFP/l/8Lo4YCOLEL/EVtwALcmyX6AAfalfLcVmTqUWhF9X1pGN28cnXuyY
-	0u1tXXi42GCriO4EZPgQrF5StzAidNA6oyGT/8A45v/uLT5/kPiD5lR/OEUM9grm5UgjO3Ijbih
-	+iboKFKhP7uaKM802FV6VsqteYRJJbfcyIPVHgka6TrlQ1lY+l5cfWhngzExk2iL3gwunQk3wfX
-	s822f2UN0WtnGntzC5Pjok8csjy+bbTVt0o4+YPwCrogUOEf2Pb/m7+8EZSqWcXN9GQG01SgVCG
-	4RjD+KgiBX9ubO8Og2zXsKu5nfunDKJbJRdTOzLteuc4tvWP8+KNtJXpicT3Uod3uv4CvCXpHjT
-	ndz/BxorS7YfuzQWWJJixHgyFdzYpd6HfJhR9CPId/idLy5RvpvYVpu/1bsOKfrZkj673LqhGR+
-	fK3Egawbo0mF97DgPlkMfuvM6TwwrDjlepARRVQXFH+nZvYfg==
-X-Received: by 2002:a05:693c:65d6:b0:340:c464:1a2f with SMTP id 5a478bee46e88-34270ab09f7mr15069104eec.16.1790691213669;
-        Tue, 29 Sep 2026 07:13:33 -0700 (PDT)
-Received: from localhost.localdomain ([186.158.238.108])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341459234a1sm34733297eec.24.2026.09.29.07.13.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 07:13:29 -0700 (PDT)
-From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>,
-	Burak Emir <burak.emir@gmail.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <david@davidgow.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Brigham Campbell <me@brighamcampbell.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Jori Koolstra <jkoolstra@xs4all.nl>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Rae Moar <raemoar63@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Yury Norov <yury.norov@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev
-Subject: [PATCH 0/3] rust: kunit: support #[should_panic] and same test name with different #[cfg(...)]
-Date: Tue, 29 Sep 2026 11:07:40 -0300
-Message-ID: <cover.1790599486.git.nico.antinori.7@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DhLhMNXL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hcmdD5iTunAhQuOwu3m12USo+2Ev0JW/J4DSQfLiSV//8eibrs+EWmD6KU/QUzM2PtsSlKI1zuTcdwzLm1VGxhpgwBY311SgblrWlgmJ9x99tWoSoVU9DeVUrYjIERZhyVjuMp71hVlOHNG0Apbo0WG65OiNSJIGkR+BEXDHec4FbEcLYFIY+CKo2CA12kn8iX3hPdGqH5XMkv8Q937c/gIjH53763c/IsBpWcwCI/O5TbiVN2xFlPF7vh2D9wA41+REijDX136iE16GXiuNuV9R9eJrJ2vkVQA8+M/cTB9Q+qXT0xcbjs+VzvZmxRNQSxAAiyhBeXGI/wctwCPqgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=v4aL6GbJ9FiMExmgue30oCHr4+UQLRVfMHX4WMvdwNk=;
+ b=sMRxKUDhFtEbFJ3huBqsKSlI7UvS5M3tvpgAGiV5/IXvXb04d6tRQE2At606n6OrS8QtQZgygQ8eU/eBpwz/2HxtP1OzxQpMQHOsU5xFn6DVkKPrthQb9il/kYk0LAGa9uI7nJt68+vI7E3lmdR01bYBaJyQbqOd+gU9I2QuZIp3fEtViBd0yFJxshKlNphDt1FAjTrRDgzK5vG2R4nea07TEibgomzjeGEA+sqcNe5URx/53n/M378t86yPVJEOyPqpgQjm6ioLqtyrvcDNx53T7XHKxkpMD69WQwEt7lJ82wX8xWAR4IizOxerLfmmGT4ObLwVxlhqK+sB0uGoxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=v4aL6GbJ9FiMExmgue30oCHr4+UQLRVfMHX4WMvdwNk=;
+ b=DhLhMNXLlI8Xq1e3JJvzqJZsXP4xMozlLs7pifJP6iGgjgn+6eJK+UZPU3QOs2pwu0uJXefNlYWbFc8z333xk8xOjlkwvmWd4Fys3JTyYhb/gQAZaSxvCZKCqtkhWGunJvtkI17WNT/mp7YEEVDYFD4AHM6ihIAu4+aJxmP2BuSyvX9dWu/R30Yz0jBAv3VUh+0CPw/a9jLHkvQDBtGSKzA5ShBPtHvmF9lgdHxK12v0OPXmtPpuoIYKBNd5eCFuqV9RGrVOT7P+Xh8zwbDSeW19Nm4xOma2hZZGfD9JupjJUhVAj1uj03h2TyZ9ybG83nT6nWHoM2vdJmicw8pEHA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by CH3PR12MB8909.namprd12.prod.outlook.com (2603:10b6:610:179::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Tue, 29 Sep
+ 2026 14:40:26 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
+ 14:40:25 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 29 Sep 2026 23:40:22 +0900
+Message-Id: <DLRVMM6HVO54.NV3FUAYPC7UU@nvidia.com>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Benno Lossin"
+ <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2 8/9] gpu: nova-core: gsp: move the RPC commands into
+ a sub-module
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Zhi Wang" <zhiw@nvidia.com>
+References: <20260927-cmdq-rpc-v2-0-c3f66ae73be4@nvidia.com>
+ <20260927-cmdq-rpc-v2-8-c3f66ae73be4@nvidia.com>
+ <20260928122015.3df66b3e@inno-dell> <DLQX62L47S38.1D5416RRETLY3@nvidia.com>
+ <20260928181106.06eca8fc@inno-dell>
+In-Reply-To: <20260928181106.06eca8fc@inno-dell>
+X-ClientProxiedBy: TY4P301CA0025.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:2b1::7) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|CH3PR12MB8909:EE_
+X-MS-Office365-Filtering-Correlation-Id: d9b5581d-4f8b-46b9-d0a3-08df1e37994d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|10070799003|366016|23010399003|22082099003|18002099003|3023799007|56012099006|10067099003|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	Vq115iPDGFf9oT8nriYZToncQaIah5wf01m4LRuNzy8ur85RVX54gnotZ/t6seHmw0mfikl6/xeslm5Bz43Tynl2vxhQ5n+C4WQTA134ABrQmDNuvv9ulIVyu2sD+LEO6fbiUUHJioJTsyjDtns4ssmqQp2LbGyZKzag1nBmw7jOwSKj61tUYaTnEvIJwj30Kbt98uH31lashWjf+AuoaxvpAdRYLn4/Buk+IGn7bJxEvEQbXJLnxARo1laqHxiW6Vcy6wdqJD6/7XP5j6+A/KlxOYTtL1SOrSUpQ2k40ZycBlBA4+nQtOgn6Ra3vt6xwrxoZDSESQEh1Oa8wT9dXGymAyhjgnuGvWTAFNkqNEDwmd3i6paNcwIBZmkQm/wuKztk7qaptLSwB5c+F8Z9ej+VuOc62mWbcpz/yyv0C41vNSx9tc2o+7D0WrGIUtGfX83LVR76cMlgdpG3ew5tN7R1JkaesniwRUkRs3pnrNIRkE0A9FaP+C2oFDe+v4FYQ2aRmwk3DN7sI9WMWGisum4gCO7q0fmVrgPf1lM2rmX9QVdLd6FSU8qK9adwIDp0lUQhadHtN1aoDrv71/MD1CMFfMtJ1j6vgjzkApan2XHk3XmMn9gHyONi2ZJqUqS0tt/lqJABL9ISViX40wxdWMcwaYxOTN2oG0uW6MYL8G8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(10070799003)(366016)(23010399003)(22082099003)(18002099003)(3023799007)(56012099006)(10067099003)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bWF5L28zWGtEMjZtajhCWFgrbTlOMlFCbTU0MDdNa1NiTGRHUFRNd0xwR3Mv?=
+ =?utf-8?B?Z1Z2RDZjTnYzdGNpTzVad3ZBdGlUSVBJMjlEWmdtS0liZ3ZZdGV1cmE3K05I?=
+ =?utf-8?B?a1JMMnhFeE1nV1VUSXFXM0lJNzlhaTZFeDlPZldnT1k0d1p5VlJCeitjVWY4?=
+ =?utf-8?B?QW1FMmJObHBQYmVQUHM2YU42UnBqTzkrZ2dRRDF2L1dEbUtVZFl2U3hPUzEy?=
+ =?utf-8?B?djRwNzVEd2lWTS9FM1lma0IwemRwS3ZOOGxTRVpqMXpQRVdPRGZTMmRzZjJx?=
+ =?utf-8?B?ZllpODdVbnpPUTBBVXh2QWZMdEVoaXdOKzQwbUkvb25xVlNPZFJDVFJ5N2R1?=
+ =?utf-8?B?djBnNHhXYWxQSk1ucDdmS2VPVXBTNXcrajh1ZW5NSGUzVFNDc2FhajlNNmZK?=
+ =?utf-8?B?V0RtZ0tQY1dHNkFuRVp4Y0VuV2x1Q2RFQnE0TFRnR291NytoUGowWlhJKytY?=
+ =?utf-8?B?aWZ4TElJNDYvQjlxdjd0YVE3YVZWVU1oVFN3Vk92aGx5OU1IajVPaExEN3By?=
+ =?utf-8?B?THpTa0EwWWdZUkpFbWdlTmd4cXc3WFd2aCtyUTU4TzBuRVNwMmRiQ0ZWR2s0?=
+ =?utf-8?B?ZU5UUFFPTTlRd3RkbTB1WlVpSXRHbDJyaEEzVHlYQWFKMStMOUJ4NFhseHNO?=
+ =?utf-8?B?Q3Y3dHJHdnB3OXQwUkZZVjFuVVEycXVuclhkYk9PYW5IUHNhSzM0K3U2Vzkv?=
+ =?utf-8?B?RFIzS3k3ODIwZkVOSWhlUUJrdm0vOWJ6OU5OR2RMUERKR0lXcUIxaEY2MVB0?=
+ =?utf-8?B?ZEpha3lhcnFJMEpBSWlyNE1NSUkwZWVXOHRhUWxaMlJVMENVM0lZWHVuUFd6?=
+ =?utf-8?B?eDNwYUpkU2UrWVM0QS9EdXA2YS9kVlJYbGRSYjg2YVhJNjJGNmhWR0xtTVBl?=
+ =?utf-8?B?U3hWeTFJR3RmM1hQMWdDMTY5TjhJNWtHc3hzY09LaWNRbDcwSHlaUTJzY2sr?=
+ =?utf-8?B?OHl6S0NzYk1HSzdIZHk3Q1JTb0Z2eVNxTklxS0NvNDlNS0puWGxBb3FTcThP?=
+ =?utf-8?B?VUhtb1NBWHRrQm5Lc2hKVmo3TXlWczg2eElFdGNUeTg4T1kvNllQendaalVP?=
+ =?utf-8?B?M0phNkp1ZVlIbkp6anc1d3ZVOHQvS0IzY0lET1g2S3J0QVc5M3loQkVCMEJI?=
+ =?utf-8?B?SzhpQkpadlBna1psdURBTHRCZFBUOWY0UHhxMTdleFlrcitHTEhZcEF1NTZw?=
+ =?utf-8?B?bkpkQnp2VGlvcE1NVmlwbVUzM0lwV0ozdDA0SVVxSStVbWNndnpnNW56UUdp?=
+ =?utf-8?B?S1RTQmF6SjdBVU9Ecmp5ejg1M2pVVmRWMTV0aWlnYWhndElNeUJXTTJ4TnBn?=
+ =?utf-8?B?ZVFUbWREMUc4YW9NWEptN1JmNVJYQnVDN3JaQ0FrZ0E3TlZSdU5FL0pUdWxX?=
+ =?utf-8?B?dHVKZ3JUSFR1SjhKb1o1aUxWNTZwUmk0QVhtRlV2Y2lURVErbnRJVDJHTDFR?=
+ =?utf-8?B?Zlc4OFhNVFVVdzVySHRtZHg5R2RvcEwzWVA3VXZ0TENxTEsycEp5aHJydWx0?=
+ =?utf-8?B?UnU5dXlQTHJZWG4zVTF5VFdWa2VLWXgydzNLN3llcGUwaW1WM0tmU0JVVFVw?=
+ =?utf-8?B?RXZBWG1HbkdyUllzYWhRci9Zc0VJK2NpdzY4ai84UDNUZWRxWU9NT3ZMRWhl?=
+ =?utf-8?B?aDQ5ZEhwTytkY0tlL1A2aDRXZjdUc3ZFcGY1bjc2eWJ2Rm5SL1ZyMlRwV3BP?=
+ =?utf-8?B?Q3MwcGlzb1lwNnlvcHFiQjVDZlBTT1NJRWdVY251MlN2b2hta3Jpa0hnZmp3?=
+ =?utf-8?B?V2RsRTJIbnV4azRzQ1ZSRXBaNG9Qd2ZUUkVCWUgvcjBSUEw5TGxRL3c5ZGFw?=
+ =?utf-8?B?YkNpSDM2ZEorU1YrZEVhdmxYNmo2ODhHajZOaVpYVlhUd2ZsYW44Tlpmd3B1?=
+ =?utf-8?B?NGFYdVNvYU9yMmN2Q2UyNG9pQjFaM1pUQUV6VDVaWEZDaCs2MjJLUjgrdTNs?=
+ =?utf-8?B?bjQwQWY2UWdlNklFdVA5ZWExWnNKbE8rVURJTjU0cGxCczNQNTZ0L2E5eGZE?=
+ =?utf-8?B?Y3kvZmpwdW56REpwdWtTeDFhaUVLL3V2aDFJWUhGNXArZDZRc0lrMy9DOTBh?=
+ =?utf-8?B?L2JlcGpxUmVTNXBCa2FNSVRSRlRQWm0xUkxueXI1M0ZkQzUrSE9yVlNlcklk?=
+ =?utf-8?B?ZkxoSjRGa2lLNm5GbUkxOVE0UkRwTU9XUlRhNUhZejBlK1NlNUp1T0N4VktF?=
+ =?utf-8?B?OXQzZExZenQ4TGZsZTFmS0Z2b0tYVTNqZkRrM0ZUcEdqTTZVbEx6YWJ2MlI3?=
+ =?utf-8?B?Z21Eb25GaUVORHBPK2RzY3g4bkh4dUJnanduM3FROGx0V1hqYmJjWS9VSW4x?=
+ =?utf-8?B?TWxCUkFCVGRYQ1JISEJDTzMwcUxEbWdKeHlLbUQ2WjFGSlN2aG02REhNU0E2?=
+ =?utf-8?Q?1z3TFB1PLp5IAw4jVldeetR7eAh5tvZOkBEXwuoOpUdGo?=
+X-MS-Exchange-AntiSpam-MessageData-1: ortGOp9YU9TvfQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9b5581d-4f8b-46b9-d0a3-08df1e37994d
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 14:40:25.6855
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XCwsVM4FUaA0T0RgqE5AiwRBWmCvXu2fE1m87dU/KKWJcGEV4rQQMjrK79J4+/rJdURbX0mVFuxi38d+GXpSWg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8909
 
-This patch series intends to implement two features for KUnit tests
-written in Rust. The work is based on a TODO comment made in the
-`bitmap.rs` module [1].
+On Tue Sep 29, 2026 at 12:11 AM JST, Zhi Wang wrote:
+> On Mon, 28 Sep 2026 20:40:08 +0900
+> "Alexandre Courbot" <acourbot@nvidia.com> wrote:
+>
+>> On Mon Sep 28, 2026 at 6:20 PM JST, Zhi Wang wrote:
+>> > On Sun, 27 Sep 2026 22:46:25 +0900
+>> > Alexandre Courbot <acourbot@nvidia.com> wrote:
+>> > =20
+>> >> Move the types and code related to RPC commands into the
+>> >> `rpc` sub-module, and update their users to reference them from
+>> >> their new location.
+>> >>=20
+>> >> This is a pure move commit, with no functional change intended.
+>> >>  =20
+>> >
+>> > Hi Alex:
+>> >
+>> > What would be the plan for commands.rs in the future after the
+>> > movement? I was adopting the similar code structures
+>> > (fw.rs/command.rs) for vGPU manager's RPCs and GSP plugin RPCs,
+>> > e.g. having RPC typed code and function handler(wrapper)s, it would
+>> > be nice that I can align with the idea accordingly. =20
+>>=20
+>> Can you point me to the the structure you have if it is posted?
+>> (sorry, too many series in-flight and I cannot find where it is ^_^;)
+>>=20
+>
+> No worry.
+>
+> I am trying to maintain vGPU-related RPCs and GSP plugin RPCs in below
+> two files. Basically the maintaining schema is similar to current
+> nova-core fw.rs and commands.rs.=20
+>
+> IMO, nova-core and vGPU managers bindings should stay together, but
+> there can be quite many vGPU RPCs. Would it be a good idea to maintain
+> them together with nova-core's fw.rs and commands.rs?
 
-Changelog:
-- RFC patch: [3]
+Unless there is a good reason not to do so, I'd put all vGPU commands
+into their own submodule. This makes it easier to e.g. create a version
+of the driver without vGPU support, which I feel like we may end up
+putting behind a Kconfig option since it won't be relevant to
+consumer-grade GPUs.
 
-1. Supporting `#[should_panic]` [2]:
-
-KUnit tests in Rust follow the user-space syntax, but at the moment
-`#[should_panic]` is not supported. The first patch of this series adds
-support for the attribute (only in its basic form, `#[should_panic =
-"message"]` is not supported yet).
-
-The way it is supported is by adding a new boolean property called
-`rust_should_panic` to `kunit_attributes` struct in kunit/test.h and
-check for the `try_catch->try_result` code and the named flag to detect
-if there was a panic in `lib/kunit/test.c::kunit_run_case_catch_errors`
-function.
-
-The difference with the previous version [3] is that now, almost
-everything is handled in the C side, meaning that we don't have a
-separate `#[panic_handler]` when KUnit tests are active. In other words
-there's no need of a Rust side panic handler because the C side catches
-Rust's panics too, since the `#[panic_hanlder]` executes a
-bindings::BUG().
-
-2. Allow same test name with different #[cfg(...)]:
-
-When testing `#[should_panic]` in `bitmap.rs` (check the last patch of
-the series) I found that the test that was supposed to panic had the
-same name as another one, but they were run on different configurations.
-This caused the following compilation error:
-
-ERROR:root:error[E0428]: the name `kunit_rust_wrapper_owned_bitmap_out_of_bounds` is defined multiple times
-   --> ../rust/kernel/bitmap.rs:503:1
-    |
-503 | #[macros::kunit_tests(rust_kernel_bitmap)]
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `kunit_rust_wrapper_owned_bitmap_out_of_bounds` redefined here
-    |
-    = note: `kunit_rust_wrapper_owned_bitmap_out_of_bounds` must be defined only once in the value namespace of this module
-    = note: this error originates in the attribute macro `macros::kunit_tests` (in Nightly builds, run with -Z macro-backtrace for more info)
-
-Now, only the tests with an active `#[cfg(...)]` will be executed by the
-runner. Tests with an inactive `#[cfg(...)]` will not appear in the
-report since they are not added to the TEST_CASES array.
-
-[1] https://github.com/Rust-for-Linux/linux/blob/fd73f4a6659897191fa0d40695fe370925dd3780/rust/kernel/bitmap.rs#L592-L600
-[2] https://doc.rust-lang.org/rust-by-example/testing/unit_testing.html#testing-panics
-[3] https://lore.kernel.org/rust-for-linux/cover.1789500084.git.nico.antinori.7@gmail.com/
-
-Nicolás Antinori (3):
-  rust: kunit: add #[should_panic] support
-  rust: kunit: allow same test name with different #[cfg(...)]
-  rust: bitmap: kunit: uncomment owned_bitmap_out_of_bounds panic case
-
- include/kunit/test.h   |  1 +
- lib/kunit/attributes.c | 18 ++++++++++++++++
- lib/kunit/test.c       |  5 +++++
- rust/kernel/bitmap.rs  | 40 ++++++++++++++++-------------------
- rust/kernel/kunit.rs   | 37 ++++++++++++++++++++++++++++++++
- rust/macros/kunit.rs   | 48 +++++++++++++++++++++++++++++++++---------
- 6 files changed, 117 insertions(+), 32 deletions(-)
-
---
-2.47.3
-
+Bindings are a different story, they are generated in one go and unused
+ones are just optimized away, so having them all in the same file is fine.
