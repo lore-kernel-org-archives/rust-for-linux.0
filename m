@@ -1,111 +1,166 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B70547057;
-	Tue, 29 Sep 2026 04:48:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790657349; cv=none; b=UnoPbrBaFvg5KjsW3vruQ7HvIdR8tZEulTsSsebCJ+zgQkzJlsbD8Wmx4tEq71bzpVA42ltGH1TjMkCL/FJ+MdBP2iiSV48eoD2dIuLyO9f4PDnort+csao3ekJy0klvc722JXNa0392ZdSf3TAIQtHkKPERTtuURbhe2lIrccM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790657349; c=relaxed/simple;
-	bh=J/UQimpf06iy9VfDQfTVGxVDQ06pWaArxYp+7nYCcB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ca+a+9p8g7tv3PyZFNAurFaCXrw9nf35/ji3P0S1E/MMp8Iep4KG1GziAS80Umxd8pAUNVh6IpANN0bfxmnSU74LlNcWYOWXCTTIyvew4U7c99QiucnKAc4uhwgWMEWFlO834AcFzkkyxk76cbc/0RmCSeWzSac/h4OGmoXoKyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=WtJwl6ix; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA40397352
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 07:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790666457; cv=pass; b=kG3+yFG1jRajQkrE6AgvjKzLJ0Oig3bHrbMQUsvFLocqMdhHdJnnhKUNI7dkXUrr6HAwU9Ds6s0WI+M63eAkTi+dl4JVyPx2uJVrpPMG0kWEarlXqEE7yfzvWPoMzmuTTRkKDIItlwkBorBnbvhwNhhTl608Epha3VRAfyckGo8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790666457; c=relaxed/simple;
+	bh=YIXPo5sDK++zye92vFkYMf2iMd3cbyUKcPD+7Xot4vM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KIHHGlowjFXDn0CxEd+E/eweUmO6CAUezxQoaPnaiDB7EDIzwmyPS3N6R3wLF7g0Pst7X+sgLKePS/KhdDSaj2BGq0I7vNXYuXySB4plfNTMSm8mFytVkceMvpuh7RD4S38Z68uE9N3Y0NUiRjgyvm4En3fFDxofnJpc7JSLBcI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CnMpJkLu; arc=pass smtp.client-ip=74.125.229.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="WtJwl6ix"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=NvA93RvJPlxSg6PcQeB+KluU3vvMLvZ/EyUbU6cqdOM=; b=WtJwl6ixHHzAWiNl6Qn/o37fpr
-	Mm/GYj4PSecTcge6nlf9eGM/R1pa9XfDCdH0lSVz9ZBVyjadqeH8kSnjznELlIiCd8QRUEltTW8Tz
-	84wSzMjBu89+qkgZcGKl4tFagmWwEuQECm7aO3h/kh0FabWtCl+RWvLcSV33qEqsVPwIOpJGw+Rbp
-	BOVOo3i6TZUt0evAH6K03LLzfTb9E5fU82INhMfO2m86NZPEKTwvd7mQ6xr1l9rO+CgeeAYPW0e3U
-	EvfZxOc8rbpLBoPE08+m+D1PbgPacVA9UFNjVRVpy7pvPjJHyFwCopvoPHsIFMLsd1MuU5Yr1sMj/
-	Hqf/O3TQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xBPlj-00000002Ph7-3aXN;
-	Tue, 29 Sep 2026 04:48:43 +0000
-Date: Tue, 29 Sep 2026 05:48:43 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	Georgios Androutsopoulos <georgeandrout13@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Jan Kara <jack@suse.cz>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: file: handle fd table teardown in file
- descriptor APIs
-Message-ID: <20260929044843.GA3909609@ZenIV>
-References: <20260923022339.3340694-1-georgeandrout13@gmail.com>
- <arThye_219ruNbM2@google.com>
- <20260925-stellen-brummen-festrede-266af0305ac7@brauner>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CnMpJkLu"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-34ad8819612so111070eec.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 00:20:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790666455; cv=none;
+        d=google.com; s=arc-20260327;
+        b=i7zZpe9/zEd56CyuYQTIezw4RYuVBvW67aMkdRFNOg8/uVd1KckgBkyVrE94rHrzCv
+         jo4fBDCJcVgfbDaYgWwyY+zNn/I5UaMGbWNa/oVs/ksG5WWBa+wO7VtTEQTqfqLleYUx
+         ZBOT87zHI8yvIAoZWerP03VMJi7HEJADDjhr4GTQU/lI+68sdSv8m0ECtSlVYvcV/s5Y
+         UApKOkjXwIrrf9W4TMO/Q3BAF/R55+Y21txBkm7er4OHZDERrxSkK+/l2HrTBdsbxXSC
+         iBu0Occv3LHxIBThd7wpn8ejE1oN1GGSHkq+U/TFj8z8odi1/bJx5Fd72EU11vbkEOnR
+         HqgA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WPlHzJtptV1uSpJGdy+PWfBS1MZ9EUMKQ00b3icFMx0=;
+        fh=ZlTRmiBBPR3WTXeY31wzpUENmDuLkrlY7qhe7Mt64oA=;
+        b=KvX0J5EfZzMzHspIHGnTh+ieHeygWt7nR+IGR+rJDPkecHAoRYVgao2coUJTBDpTG3
+         n4mLIPsi1hu1sO6UtVo65owKMLwUdxd3jfCv76PxFHIKnqKcsIqtVMi7ilrW4hafi+sW
+         fodlKXTX9tCaET2hcuqa6GV60RRHC1oU3okKz3nyAPf+CxvMk77OHUzPIOvGBymNoixd
+         Qkfiisyee4x8EmpgCL7dCGRLlciKhRdMbwhEyCpin43cjs0gQzDnBCBwqS0fyvsgvoZd
+         wP5jCAM/aPa99OVAA/18/zsfz4AWOWhMDBbJXP3a7UQBKzcUOnWyDDIH3gywuleypbgX
+         9e0g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790666455; x=1791271255; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=WPlHzJtptV1uSpJGdy+PWfBS1MZ9EUMKQ00b3icFMx0=;
+        b=CnMpJkLuHECctDlzwn+gkVy9ULXjVGUUKFkQpft1GrIL+o82Wrqum3Ns04vMlWg83c
+         j3FoExoS0As0NJjk48o+3a6JT2iScZk0wIjZHCgzwFZy2u474+bZmzTPuaIs5KmNBJsU
+         h/qLe+HIA8LASAGJMQWsMJXw2rLZd3bT0G8Fs+n2j8m2iDtm0C8aZXIF58/moriEug5z
+         S0G7ZbbBAL9M2nFuQe4IBx/4kR71yQNwsSOxRIe235gVbF2WHfIRYKdh2o2YZGdvt9pI
+         DKG2S0iTqHUjnucXgl2nFLg/K5fHqK1ylsqiqbjSFBJBpsVRoCRNphu67FjJn3kWytvO
+         jDBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790666455; x=1791271255;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WPlHzJtptV1uSpJGdy+PWfBS1MZ9EUMKQ00b3icFMx0=;
+        b=yHHbNr/7LCJuO6Vn0L8suFvjFVbY9KZvjsH2rAwYMIvQsiJ3odTfTe4QqgYyfEzxIb
+         ZtiUNp0Ofdp0rV8RNXoOKxoXtE62ZxCsf+35c0fe+ziDlz2hq2+a6wM3vwG0mf+F1S/T
+         aLsJMpNkTBnva9hM603KJvOHmT6AAdcQB+CqRlo8cGUdznRGsmU1bK6prP6uUwN1ouTx
+         yTQtUeGPAh4nqif3Q2RVtvq3Zgpbpa1JdRF71wmzttT7sjNUdJK/aEo3LIR2QP5QMD2d
+         NNbcE1LqvD8GVq+jjEWsjKar9Ola159Hp38dss9h5wlMLJS0Uq6nPgq2MVsOrUDh/I53
+         sQyA==
+X-Forwarded-Encrypted: i=1; AKwUvBzyyzPpssnTldq/xFytecfOdZtwW3Bgb43tXl1vz3AUsEHKNdOaR3tSbmMG2SgpCdilgND/nBgiZbToTjbLgw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJlCJFioejKUehTocvD6WRW9HT6tKbONRkL2SB6TNwZt2qbUlgZ
+	0716uF3UpLDB+pHjGGwY7NgZBFIhHl+L6Fr7NVOGNEFj/sKAeN6+AuVdgoNraG+/lQRwXScavtl
+	Ze294ML7zKlgsaAD4r3JwFKQ7r5sc79U=
+X-Gm-Gg: AYBFou2BSV5ytjfCGH6sv/EFcWe6/sJ1ihCWIVM6bkSXQt4SOZvRGtoZLkR88eRXYjn
+	ID5Rx8Eq/EY5bnaneSrrBWh9mwL01S/E2f581477IkF6+rBt0WSa42cL4+JmBMHOsOxSkZJzCkv
+	Q59YTcpV7p+ICdswGzyaXfBOK9M+OiyM5/cooJ6yfskGErkIwwTplrGRh/3v4vtQ5tXUVk2PXSz
+	umzqKesRaqjGc4U9Mof8hB16vSh5qXt64SKUI93AczLx5mX3OQPuJc5aUc8Jo7lU8ZfHAQDZq8Q
+	enPxF1s7mrlZv/RiHyTHoNUumr2a/YjHMKy0FcaW+EwNzMGhFx6LfZT7jm94ye/6Q26FV9zPaYq
+	dQnPzhwRXoSKA7JpBIAVOvaN4BKoXXpofX0CCqFCNV/Yj5991DgaxwA7QPWL1sA+NhXGITsuV19
+	qEfN88PN3UlenQvsNGWWm17mAIlrhPvfje9zJXc8ZyHrxOIJ80y5w=
+X-Received: by 2002:a05:7300:ff44:b0:34b:101f:cdaf with SMTP id
+ 5a478bee46e88-34b101fd0d0mr2826129eec.1.1790666454575; Tue, 29 Sep 2026
+ 00:20:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260925-stellen-brummen-festrede-266af0305ac7@brauner>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+References: <20260928183925.1315274-1-chenhan0017.work@gmail.com>
+In-Reply-To: <20260928183925.1315274-1-chenhan0017.work@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 29 Sep 2026 09:20:40 +0200
+X-Gm-Features: AclHuK-wUp_w85qzn7Pr0GSkGHptuldoh-dgMIHDSULZGx7jOmU4Ks9a3o77QsI
+Message-ID: <CANiq72=q0U1skGfrYWZQiHr9JmipZ+rpoUJ=-wH1kHW4H0E36w@mail.gmail.com>
+Subject: Re: [PATCH] rust: time: make Delta division and remainder fail consistently
+To: chenhan <chenhan0017.work@gmail.com>
+Cc: a.hindborg@kernel.org, ojeda@kernel.org, boqun@kernel.org, 
+	fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 25, 2026 at 06:00:42PM +0200, Christian Brauner wrote:
-> On Thu, Sep 24, 2026 at 08:39:37AM +0000, Alice Ryhl wrote:
+On Mon, Sep 28, 2026 at 8:39=E2=80=AFPM chenhan <chenhan0017.work@gmail.com=
+> wrote:
+>
+> Tested on x86-64 and ARMv7 QEMU with CONFIG_SAMPLE_RUST_REPRO=3Dy: zero
+> divisors and i64::MIN / -1 panic for both APIs, while 10 / 3 returns 3
+> and 10 % 3 returns 1 on both architectures.
 
-> > This looks like it should ideally be on the C side instead.
-> 
-> Where is this godforsaken broken code, that tries to fd_install() after
-> exit_files(). It is _a bug in the program_ that is not something the
-> apis need to work around.
+This does not add much information, since we don't have the reproducer
+here, i.e. what is `CONFIG_SAMPLE_RUST_REPRO`? I would instead explain
+what the reproducer is, if it is important to do so.
 
-	More to the point, papering over that at runtime is wrong, and not
-just for modifying descriptor tables - fdget() is just as wrong in anything
-that can be called from tail of do_exit().
+> Fixes: 4521438fb076 ("rust: time: Implement basic arithmetic operations f=
+or Delta")
 
-	It's exactly the same as with "what if it gets called from an
-rcu callback?" - it's a bug, that's what.  Don't use these primitives
-in such context.
+This points to something that could be backported, so if it is a fix,
+then we probably want:
 
-	In particular, ->release() mentioned upthread should not be allowed
-to access _anything_ hanging off current, not just descriptor table.  Note
-that the last reference to an opened file might be sitting in an SCM_RIGHTS
-datagram pruned by AF_UNIX garbage collector; as far as the method is concerned,
-it might be called from random thread.
+Cc: stable@vger.kernel.org
 
-	If it tries to access (let alone modify) the current descriptor table,
-you have no memory safety whatsoever and checking if current->files happens
-to be NULL is nowhere near enough to resolve that.
+However, this changes behavior -- did you check all callers etc.?
 
-	I don't know how to express that gracefully in terms of typechecking -
-sure, we could pass an empty token to each syscall, have fdget() et.al.
-require that as an argument and propagate the damn thing to all such callsites,
-but that would cause an insane amount of churn - if nothing else, ->ioctl()
-signature would have to be changed and there's a _lot_ of instances out there.
-And then there's the joy of dealing with ->sendmsg() and ->recvmsg(),
-thanks to SCM_RIGHTS datagrams, again (reading descriptor table on sendmsg()
-side, inserting into it on recvmsg()), especially when you consider the
-fact that ->sendmsg() and ->recvmsg() *are* callable from contexts where
-one shouldn't be allowed to access descriptor tables.  None of such
-call chains is going to trigger descriptor table access (e.g. knbd is
-not going to try and send SCM_RIGHTS datagrams, etc.), so it should be
-safe, but having compiler prove that without inflicting overhead on
-the code paths where it really wouldn't be welcome is not going to be trivial.
+> Signed-off-by: chenhan <chenhan0017.work@gmail.com>
 
+The kernel requires a "known identity", is "chenhan" one?
 
-Al, finally back to the state when reading from screen is tolerable for
-reasonably long time - dry eyes were _really_ not fun to deal with...
+  https://docs.kernel.org/process/submitting-patches.html#sign-your-work-th=
+e-developer-s-certificate-of-origin
+
+> +        // SAFETY: `divisor` is non-zero, and both operands are passed b=
+y value.
+
+What "both operands are passed by value" is trying to say? i.e. what
+precondition are you trying to satisfy?
+
+> +        // SAFETY: `rem` points to a local variable and `divisor` is non=
+-zero.
+> +        unsafe { bindings::div_s64_rem(dividend, divisor, &mut rem) };
+
+What happens in the `min / -1` case?
+
+> +/// Panics if `rhs` is zero, or if the quotient overflows, i.e. if `self=
+` is
+> +/// `Delta::from_nanos(i64::MIN)` and `rhs` is `Delta::from_nanos(-1)`. =
+Both
+> +/// cases panic on 32-bit as well as on 64-bit; see `div_s64_or_panic()`=
+.
+
+I think the last sentence is not needed, i.e. if nothing is said, then
+it should be understood apply to all cases. Perhaps we could keep the
+reference to the function, if it were public, with an intra-doc link,
+but it isn't, so I don't think we need it either.
+
+> +    /// platforms, `div_s64_rem()`, takes an `s32` divisor. The dividend=
+ (`self`)
+
+Perhaps `i32` with an intra-doc link instead?
+
+> +    /// is a full `i64` on every architecture, so the width restriction =
+applies
+
+Please add intra-doc links where they work, e.g. [`i64`]
+
+Thanks for the patch and welcome!
+
+Cheers,
+Miguel
