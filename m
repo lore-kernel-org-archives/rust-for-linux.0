@@ -1,93 +1,87 @@
-Received: from mta0.migadu.com (out-45.mta0.migadu.com [91.218.175.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-244116.protonmail.ch (mail-244116.protonmail.ch [109.224.244.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD353DDDAC
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 03:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5043DA5B4
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 03:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790653755; cv=none; b=B5NWkJ4t9zffB6cj9/s4cvLC3q9y1vmnq1TBu2j0JPdKdcSowEDGI+I0mwsKq/upnyrlmQjISwYnbvL1XhA8WfvVqMjxGbeI3QQbzFgt9P+Fa1igA6sv1fq97wkwYhVFzOEM5FVHgPvIBFZq1jhp+yecb776Bm+th+V8d9rEKz4=
+	t=1790654252; cv=none; b=PQv1PUqJ9i3HS8gDdu63nBh3E5j3d6uU9UPnd6ZJIZmiF1qt5Xa9uRBUjZIIBdMwoqIrdV0EnRBbUVQk2QmBsg4TyCMZEAlYBXIpQYH6IF9F1biZF0eie5kVluUg4q9COz+2Ad+OJE/gDA+5Gzp/7sZIdCn74dOX7eBXoOhl4d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790653755; c=relaxed/simple;
-	bh=Fvp9hn8BwhRF0NAnwNtaPHEg1s+I/R+7YNBitZfoCQE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=BNOS8SXj0iQH06iFf/6bWkXLAIwHvKVsUjJ4KDWs/UDRslqtAKtX862uiGw++LWJPpF9ksmsoMQQxFtFHtEJVT4CqjdRiCBDKMO7SfMhwMIXE1P7KCvMuZpwePZR+Des72fi32hLD0Y3559yHUZGkxdxUioELYeAEZGYGsMkfGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fgthNkwn; arc=none smtp.client-ip=91.218.175.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790654252; c=relaxed/simple;
+	bh=sek40AqGmQfgb9omWvB96Md19bglzRagoq176QNLv00=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dvf9K8Pl1JpCgRHECvguErKvgySnLi3xRfc5GL+j1xf7rtfa2ojvMsdNIXry2eXrdV5F42AmVhjXei1IjdnUu8RGl/KLqivUl+AUEzhiHYkLYbK97RdYUxMsLnFBbl98sSq+WiB5hdBi354frhNpq0lR+wfwPNvBhND6n3Gqp60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=q5XD6JWT; arc=none smtp.client-ip=109.224.244.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fgthNkwn"
-X-Envelope-To: rust-for-linux@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=Fvp9hn8BwhRF0NAnwNtaPHEg1s+I/R+7YNBitZfoCQE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790653751; v=1; x=1791258551;
- b=fgthNkwnHtTRZ0n18mQYOmug/n4yaFmTsfNWs97K9XF1iiU+YkoL7MZjDSevG/G3f/cv4638
- 5Dx7VhOXVZie83WWw8fTY5Wqivzqyc4P0XuPeGIcBx7KwEdxmOeayPFIviBhBz/+cff9zSGAjxM
- 3kS+HFMtf6D0+uDHnk4r6xCg=
-X-Envelope-To: rust-for-linux@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 573999a2c23f38af;
-	Tue, 29 Sep 2026 03:49:11 +0000
-X-Mizu-Trace-ID: 573999a2c23f38af
-X-Migadu-Flow: FLOW_OUT
-From: Alvin Sun <alvin.sun@linux.dev>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
- Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
-Subject: Re: [PATCH v2 1/9] rust: sizes: add SZ_4G constant
-Date: Mon, 28 Sep 2026 18:30:00 +0800
-Message-Id: <20260928-tyr-ioctls-v3-re-miguel-1@kylinos.cn>
-In-Reply-To: <CANiq72mdp9hS_U=Mtf5F6Qv8M9=m38xOXtCP_a4c_QtkwhpFEA@mail.gmail.com>
-References: <20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn>
- <20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn>
- <CANiq72mdp9hS_U=Mtf5F6Qv8M9=m38xOXtCP_a4c_QtkwhpFEA@mail.gmail.com>
-X-Mailer: git-send-email 2.43
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="q5XD6JWT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail2; t=1790654238; x=1790913438;
+	bh=PlMXP2WihhPPKK90Em+Xuc79/YPrbJTxPyupyiDD6oQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=q5XD6JWTgQWGGQWHgg15bqTo/Z2tIQ1eAlLv6DKXeKN4fNwBDTakBbIq4GZCgAGgs
+	 HjfztQ/T/Lhk02+caNWo8Hcws3v34wyYufUM1/ccmFC9xS8xXKnwO/KSnflNqwg8M3
+	 UQu/ca/iEsZ4XUxEvUS4cZDeYfHTKgdTJI0nBILd/SAmuvPouzaFER597//XNdiDEK
+	 cZNCLPyDLZeEzTY6dAQYLzQFgRwkw1TSsYN9UpAI2FWH/7REvch784aw9HzCwuR1Oj
+	 WZizElVpIsG2PEgllQ5p61DY7D0UAkSDMCED4ziNpyXsNC/aLw8OmMY7TY8B20CAHX
+	 tfUeSr8s1bwSA==
+Date: Tue, 29 Sep 2026 03:57:12 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, rust-for-linux@vger.kernel.org
+From: Sagar Taunk <sagartaunk@proton.me>
+Cc: Sagar Taunk <sagartaunk@proton.me>
+Subject: Re: [PATCH 0/4] rust_binder: add  transaction buffer tracepoints
+Message-ID: <MA5WohQDVE-anywwlBsIffVgVU36GPYOzQQ5luqbMOCk8jcyKSKBHucUT4ISOAP0lG_6B_5UFZmFSG6YC1HlBVBW4sNL0BRcnuU_Md42-bs=@proton.me>
+In-Reply-To: <20260927125622.676342-1-sagartaunk@proton.me>
+References: <20260927125622.676342-1-sagartaunk@proton.me>
+Feedback-ID: 130121444:user:proton
+X-Pm-Message-ID: 00958561db76445a20c9d340bc1619dc55eeee0e
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Miguel,
+On Sunday, September 27th, 2026 at 6:26 PM, Sagar Taunk <sagartaunk@proton.=
+me> wrote:
 
-Thank you for the review.
+> This series adds the following C Binder tracepoints that the=20
+> Rust Binder was missing around transaction buffer:
+> `binder_transaction_alloc_buf`, `binder_transaction_buffer_release`,
+> `binder_transaction_failed_buffer_release`, and
+> `binder_transaction_update_buffer_release`.
+>=20
+> Link: https://github.com/Rust-for-Linux/linux/issues/1226
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
+>=20
+> Sagar Taunk (4):
+>   rust_binder: add transaction buffer tracepoints
+>   rust_binder: allocation: call
+>     trace_transaction_failed_buffer_release()
+>   rust_binder: thread: wire up `transaction_buffer` `alloc/release`
+>     tracepoints
+>   rust_binder: add call site for
+>     `trace_transaction_update_buffer_release()`
+>=20
+>  drivers/android/binder/allocation.rs        |  7 ++++
+>  drivers/android/binder/rust_binder_events.h | 42 +++++++++++++++++++++
+>  drivers/android/binder/thread.rs            |  4 ++
+>  drivers/android/binder/trace.rs             | 37 ++++++++++++++++++
+>  drivers/android/binder/transaction.rs       |  2 +
+>  5 files changed, 92 insertions(+)
+>=20
+> --=20
+> 2.55.0
+>=20
+>=20
 
-On Mon, Sep 8, 2026 at 9:47 PM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> SZ_4G is used by the Tyr driver when splitting the GPU VA range into
-> user and kernel regions.
->
-> The message should explain what changes, e.g. a new paragraph after
-> this one like "Thus add a new trait that ... and implement it for
-> `u64` because ...".
 
-Done in v3 -- the commit message now includes the explanation.
-
-> +const unsigned long long RUST_CONST_HELPER_SZ_4G = SZ_4G;
->
-> Is it added here to be nearby other sizes, or something else?
-
-Yes -- to keep the size-related helpers grouped together.
-
-> +/// Only implemented for `u64`.
->
-> Intra-doc link: [`u64`]
-
-Addressed.
-
-The Acked-by is already carried in the commit.
-
-Best regards,
-Alvin
+Are there any updates for this?=20
+Thanks,=20
+Sagar Taunk
