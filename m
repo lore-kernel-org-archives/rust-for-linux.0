@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C434FECCC
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 10:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F4A4BFE7E
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 10:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790677237; cv=none; b=NgLb0ik+nYygk2FVTx2V0buBp6JmcPIybl0LxFLWGO8oLD14VNF0+jeorXWKBCE8b8qX9XiqM9ZGm5fPdt+8zK2P5FRwWiJgGy1/TrQoCakJLyCnk+EEd2tBLu96/S/WU2l80bJJrl82BCsCzeK/Kr/V+OnTB1GwPj45ZWMFpHE=
+	t=1790677243; cv=none; b=m3XSBKwuYK8OWFyMxAvywyLihPHlMtXEqPWXLSQnrPlN97jqAt6GU49Uj0qrO3KSekZFXA0DgovWj2/GfGLPaESwfImAOBHLllBdKAZi3aXuzW6/Qs6MEsHiirG9mvtD5jb4pU0daADJAF/GZvNtNSDGgCB0LpqVLHxEFUbnPXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790677237; c=relaxed/simple;
-	bh=k9nTI70uK1E/cuewdG3pvLWFWDrlQWWSkSkR3Ehz2u0=;
+	s=arc-20240116; t=1790677243; c=relaxed/simple;
+	bh=wJ4AaFOJhsi8DkZE3nBfGKbo/MUDIAQkPUUcJaEOtLg=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=OYmKDRRuwdZWC1VvdOKcRjLOA0rT+2JhUXqpMI2J1QPSlnHR8OC802u9I4NAIJXd0r1KPh7tqfUu6KqVFCKICx5znq+RQ5P6TG6frdwMTTL7QXiN8X4tHwM8e1EU9pb/hNl2jBk49q5RhAd64zoBpdiYX2gpFB2JqQ2YAJwSFH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KCtlsAMi; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=mDP5Pf5k2WKH0lYFAgdGq9gRvvNgRt0peJMeAK7+VHAfnPgSDPE1rHF5P3J3JnPgStLon4Ff0b+HVkNiySMHe8J/qteJzAVVYn0Ll3gfH0arlwRWpkpsCa+N0q4xrUzwZ3uKLtnNylb1ZuzlslqeZC7I/0ZR2kq8aY25hL9rMhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RvfcirQ2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KCtlsAMi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3FD31F00893;
-	Tue, 29 Sep 2026 10:20:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RvfcirQ2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BA61F00898;
+	Tue, 29 Sep 2026 10:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790677233;
-	bh=a//LDogqFag21Wkg76o45xFfaNlgfP4Zv38MCnNyVVM=;
+	s=k20260515; t=1790677237;
+	bh=D3wOBT+COfoR6xl8iBMARodnwxPNFcLWc8aMWEQ9VBA=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=KCtlsAMiPl+EwGlv3h1+rPcMlRvTUda801HThgfPo+6h9r7WFNPP6hlucjKgwGsEw
-	 5BaNlAQZVt+TBz+oD8y0zO3Hq5GO2tcnAvYabcSKTSx6cwBJap/S8B6FNWB5rBAGAb
-	 mWly+NNIgulWw3o/Y6RW2+Wl8ICOxxFtS4hFi85qflRRngmg/14rctwo2hvtwnYIBs
-	 JXFP+ljnu/dRepFWJgeQ41yKkEG2nJB+m72HDhX8KyamRdhThD3H03rcjPYH8JjEs9
-	 OI92xoG0vg2m3h6xeo+f+jSdybYvJztKgzFe4sqmBoZ0py72ZU9c5YmwCBey0vX8T9
-	 cJQsDR3YKwBcw==
+	b=RvfcirQ2nYosUnPU59G1l1K5Z/NG3pehZUHtqtNc5rF4hCvCPBjzTEjAU2TyC/Dr+
+	 MlbSHf6qM+MlYdkzKQJzDOSW0RI54qv4EkCUdsSHNLjPjO6Ys6dmV8Ni7rsAEN7vSp
+	 5fggmbQS3xQ93djrSz24UkhWd00m0g973c6mC4FcMnFDFvoBaPTjGNku6Qk4jS+/nh
+	 PokxdHYL8y/d99Sn5/qKXKM9xhWNFrKb/9VC+3vB8ZTHKrdApCh5g/98H7BEy8uYfe
+	 XMr7gv5NHj6JUgmzVexPmoJ4f2EzCe+WQpozrzcRIfegr2MWVmR4568iAKfz2hAx4A
+	 r1YtHVWACCyww==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Boqun Feng <boqun@kernel.org>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
- Thomas Gleixner <tglx@kernel.org>, John Stultz <jstultz@google.com>, 
- Stephen Boyd <sboyd@kernel.org>, Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-In-Reply-To: <20260621105909.4055210-1-ekffu200098@gmail.com>
-References: <20260621105909.4055210-1-ekffu200098@gmail.com>
-Subject: Re: [PATCH v3] rust: time: warn and assert out-of-range input in
- fsleep() and udelay()
-Message-Id: <179067695516.2043960.1478743875056457177.b4-ty@b4>
+To: gary@garyguo.net, ojeda@kernel.org, FUJITA Tomonori <tomo@flapping.org>
+Cc: acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de, 
+ bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org, 
+ daniel.almeida@collabora.com, frederic@kernel.org, jstultz@google.com, 
+ lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org, 
+ tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
+ rust-for-linux@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20260924232530.446588-1-tomo@flapping.org>
+References: <20260924232530.446588-1-tomo@flapping.org>
+Subject: Re: [PATCH v4 0/2] Add Delta::to_jiffies_timeout()
+Message-Id: <179067695521.2043960.4723065133655174729.b4-ty@b4>
 Date: Tue, 29 Sep 2026 12:15:55 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -51,20 +50,22 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16.0
 
 
-On Sun, 21 Jun 2026 19:59:07 +0900, Sang-Heon Jeon wrote:
-> fsleep() documents out-of-range input as a bug but does not check
-> it, unlike udelay(). Add `debug_assert!` calls to catch it in
-> debug builds.
+On Fri, 25 Sep 2026 08:25:28 +0900, FUJITA Tomonori wrote:
+> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 > 
-> Also add `pr_warn_once!` calls in both fsleep() and udelay() so
-> the clamped path is observable at runtime.
+> The first patch makes bindings::HZ resolve to CONFIG_HZ.
+> 
+> The second patch was previously posted as patch 4 of [1]; patches 1-3
+> of that series have been applied. It has been reworked.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] rust: time: warn and assert out-of-range input in fsleep() and udelay()
-      commit: 125a931f9d7f0fd93037f1c8c8154ab5b19678c8
+[1/2] rust: bindings: set HZ to CONFIG_HZ
+      commit: 4ebfdb2c8b28eb8ef85b4e4ce65e55bd5a4df8d5
+[2/2] rust: time: add Delta::to_jiffies_timeout() for timeout conversion
+      commit: a9aba476d42df2537403f97f185a2b1979d0dd97
 
 Best regards,
 -- 
