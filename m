@@ -1,129 +1,225 @@
-Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020097.outbound.protection.outlook.com [52.101.195.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBFA3B9D83
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 16:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAE33E7166;
+	Tue, 29 Sep 2026 16:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.97
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790698972; cv=pass; b=ojhf91811vJHabgwY59vx6lIGWJThYUZt/kAUGxGNDt/x8M9SQalXdWLDkYL+oePqGfphLIEXosd+qoGG8qWIELAnrZ68WhLWd5C/j3JE12LlHfpUkHlM3GO0w4WpPiY0B3/A9XK5BoPsAe7iFG9iGrcyaFdib2YnHA2JtPCVPc=
+	t=1790699216; cv=fail; b=DsOi83ziJa/WEapOfr30gLA0NmlO+hqM/fkaYqNswbfPaZMWGTzX/wvfQ3Cox9DI4BfJTxvtW5vr+XWEQZeQwdqo4lkT87REPoWgCDzqY46Nq1GaC5peS6wT2y4ZIPBrQbywm2//N7s8u7XWHqKYfFDKzHV9Un8O9kgxjG1Brk8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790698972; c=relaxed/simple;
-	bh=EUIv/v9If5sMrJ7ZxRvlVjCML+V2/1G7/EZAFvUebhQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZoxrlD+MVypIBM85ZNhWxPb25Um/ghs9oya2PVdhJYjNxTLVjFaDkAQnCr3D9DvNhLtuCaS/1cYRgCwuDLGoubbkFJQgJojFKd+hsa4mEmBqJCOtUVr3wiZLSbBmK2O8XmvbYdjc/QF59vmRIXNVKoFFSb67ldex7LeDiU/aqo0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YqnmLP0O; arc=pass smtp.client-ip=74.125.229.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790699216; c=relaxed/simple;
+	bh=9/udrK+hqKakiq3E6sxCk4GHhPdcylUmn2qfAXNIog0=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=W5Uc3XLLWDgPktWegA9wDrzFsv8ogDYUOypVCthCfewEuu7qhoIzM/aCm2ZpD+rq6hOK2Stbahnzwj94y5eMnBCYzKEObPulvkHVRyMKjJL8K408WlQyzlq5JnB608XTxV4AN3y33U/Pnhu+mIpOhf3edrAnmA8Awo3gWc3uZec=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=nAKRR3x5; arc=fail smtp.client-ip=52.101.195.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YqnmLP0O"
-Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-343697ad877so295375eec.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Sep 2026 09:22:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790698971; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Y9W30GJm3GYdlfUZynH2z10gqpFOIVH9fsvF7F/t2EopqCIoigerDz4P/9huZ9A3pm
-         k/85iXKpUDg1Z9wW7U0pg6d7Y0WQngaeaFT93hRQyRGK8AkZMblZCE2ohSCnok2I9BlQ
-         3QgQp+pNy17NACYbQWTIfn0H4sQ8mMDNQL2xCueln9XN23VGmnPFUzb+tfHWhu0HQh3m
-         NhGFg0Nsh+ZrOvYUcfUIY4oTp/86b/zgRv0UW0CSbYztOeqxkpsx9FmhEpk0DDDJIKdH
-         tCjdhW54+IUIibxbMEW4cKWzzMmbgOgON97lb2p4ZVuUVRIvuG+MgCtJoGQ/VqiXdWax
-         KGlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=aeqA9IgsbpJKecOhElEeP5QFRXfeP7pkj4jRPnaVoXE=;
-        fh=d503ZY8NM8ZGcm77B9SE+HnNtYMxf5YUndqXsx1u3rA=;
-        b=gLmkJ65WVQ9Ts5v4yd+wJdICSU3JtqyudD2DWIxFEGgX0corUgzbyLe4uRvbs/1wEr
-         TzTRcU8yQgBYwYi2q07SkhVcMyJncfgoG1zfx1al+QhiUlbvrQR5r6ixnb6M6QXZKuQ6
-         2vYsXsNUB+zXkirzqoXy5Nbuw2MpjNWUGniOPA49wWlkNXWB3EO0NQ3Lc5V/AJXHUtIB
-         PgmjHaycAmz8X8BQ0SDBhFr5A4OfHC8wWJSDTyL6xuez966yzf6Atv0z9aAwn9jXzfKT
-         xz3Q3QIgZ6MkMHRM6Gvz58S0tYGe4dNe4zkfQIIezf7ej2fc2nyBH93/vSKDLMOF3AX1
-         qWOg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790698971; x=1791303771; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=aeqA9IgsbpJKecOhElEeP5QFRXfeP7pkj4jRPnaVoXE=;
-        b=YqnmLP0Oyf2iEMQAuB1FYESTQLGud9gQFsFRwPdTeKxbl28hgZ3pUkAMYsu5xb/Vxd
-         cNb37XkHl6kqZ7sr/ey6sZ8mEGQfJaIuawhIsmtoBJNyy58eqGSUdSklX5rxeBb26vlO
-         GZi1cbNv9TIqCd4fDYSeYGzV2J1vEau332vskxFI+ypkOebLghTwNIUr/8y9+8viPLQW
-         5uUESiEvHPmjpaX9Ixj9w8VsGMG1yPnzIuFSD0+eyIDQ3/q9kwAE55QR04PHg33c89Rt
-         xHJkvR6mNL/tqw4AwaxV9ULtKKcB4MVHmL5y3pnVFBZ9L7qroDDGhXLBRQ++1b8QSRst
-         zP0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790698971; x=1791303771;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aeqA9IgsbpJKecOhElEeP5QFRXfeP7pkj4jRPnaVoXE=;
-        b=bG7SU69xVHK+nlq7hZPRGEr0YCVlJhw+ihgGQZLOqXJDDScK6R0PUWUlFTTmx4yHJ6
-         86jBIkGy8mP1S6yMNMdR3vHej8JVMvFq5JDhDRStRgk5NRCzrACL4dD3BNkH4+X4akDz
-         grafoFH0qlE/P4cNY0r/tVrz+XyWE1FOkjs+KqISmD7vd9kw42Op0NSGaEl+dYxduV51
-         p983RBVxEw7llbzIvkSY3YV8sdMYGQtrSPCpfkgjeRCpaWA3Kjrc3fWXxB2Ta7CXfIYx
-         m2I2uEm202oZ4YAUWJ6M0Vek3CVuofwAShdYAOfwCLwvk77rXuKmsa3PkTiTID+a2nsi
-         dvFg==
-X-Forwarded-Encrypted: i=1; AKwUvBwpsuZCCCuPUaEpOkSMV+/wC7awbkUXiSpp/byDfYDiyooe6wVn7SPtP0+x9jptgX9XnIAUqaLjovhmLFe7oQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYLJutIBxbxXeVbKrNZIeZIxhcDZkCWIF8hrws8dm4w4ec0hY3WY
-	rgQkEpjxdY18VN9GjkpJEMSwLD9obaXtFEOcUSvZLWmLC4CrhA5kAv9RdPVW8gmh2esx9dIoCg6
-	9TB7h823QXQAWd9TAS+eWV0woOUGxsHI=
-X-Gm-Gg: AYBFou00adKVk3a6nT5U/GApIQZJX00mnOk2Ksmqn9A7uvSvq17iyRsZdufFo7L6zEy
-	qxy01aUYqmgUQZPiGdIiVxEI2X1x+A18cjRMhEZyUYVYlE8C0tJZerDLO5vjp0X0ZQmW0Ty5YwS
-	h8e17/hHgEPtK9EBCXxeWDpABKzWQyHt9vihIZHuyS3gvBw5HVedM0vtvPAY77P7vSB9RJ6+HLT
-	gMYZKYBtiRSUZsyRYkQQR198cNMRRzkZVuwO4tNbR/z7AoM6LBa+2Mrrq0lN9BijSrnNK3ecSWr
-	wFPpo09HpAyqlic0qSTFUWH/5/bLlQMTTH0QM9Bte1lubt+pqnW0+k/SjAO++4u3thO8Ef/TE+t
-	nD55zr4d0s3jeF49Mr337wMZOgTQN3K7H/BIFlkmukcIOCX2nTJsUMtEcJ1iO+5hZwXGMtYxRsD
-	6ixBJwfJnYg9H7cgWSG5PYvZLnpTGHcrlMkDK0tf7amj6dRcruNxE=
-X-Received: by 2002:a05:693c:4092:b0:34b:7c9c:9a69 with SMTP id
- 5a478bee46e88-34b7c9c9c19mr3727503eec.0.1790698970688; Tue, 29 Sep 2026
- 09:22:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="nAKRR3x5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XEIUQmfYZCQF/sijjnqPMpJX1HpQL86g5BhHVuFYGxuj25VYWxTF2JKUN2adXjncQJY0xtZOAguhlmcYwa/LzLymjLmsrlxwq6yvFtrcV0JxJ4C0Q11zChIMEX4aazyHLVWmYvfIBxhw0CG9NLwsWN9UeqQLxbxEkKGH7/9qkey5vN2gIK67VstLrvNb8pztxUi5nRqofwAtlsfZpvD0cqto6o57hbBtoyds1V04OV0omBcToEpqv8pvfi0o5DBtBxWXu+fgbEigny6ilBtXwGWX7mfBGn5vmLAfVA5PF3Rb0SfO6da4i3a+0aojznXsGyCrGOuFBbW4wjf6iUX/pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Q4f5F6RHKUGcpKj5NeE+H2FH9gYfVGoaM/TEfd4XEGc=;
+ b=HzJb6/q4AxxBrs5FrhdwHWoqVwVRhao2Vzd93Y7+7cksfJLlrZ/9eUMk5JoQ/x1DCpE1H73Cy52lMQRmp6gQEcWPOwFFESPx3PzQIdO0Z8tBogDlHljx7x7hxu6Clt6u3bhQX3mQRzIEtX9pNENckAAL78rwnazTG0AY836AXAw7XN8GZffCi3jSi+Q1HQqDOBLB1GNYYPvmW4WatoATflzmk0yhQ+CiowXiQbRcNAmK7UYLGr0xxSLssBmAg9+VuPeiq5ugCvZLWwep4hFCjc+eFguELN26RRZcdwX8lIzjkwibBhAv3xQXfnZMO0six52cpgeONqgruySoLygx2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q4f5F6RHKUGcpKj5NeE+H2FH9gYfVGoaM/TEfd4XEGc=;
+ b=nAKRR3x5S5V4+LGp8bXw/X1lM9AcO7T2U4StLUnKpP7C35+RhjJ4heHCg4JxR3me/1k6fJ5bI/vbvl6QKh5+PCnJmZ9X31x1bIwSX32WhpLF9wpbvjpOHrRVMiPk1ShnJ7YOKkSMtZicFWS7Tp1usUixowXwAglTCi3eU46M4o8=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+ by LO0P265MB7159.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:335::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
+ 2026 16:26:47 +0000
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0451.024; Tue, 29 Sep 2026
+ 16:26:47 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 29 Sep 2026 17:26:46 +0100
+Message-Id: <DLRXW31Y0IVK.3A3NJVS2BG39M@garyguo.net>
+Subject: Re: [PATCH v3] rust: sync: export lock::do_unlocked
+From: "Gary Guo" <gary@garyguo.net>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Will Deacon"
+ <will@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Waiman Long"
+ <longman@redhat.com>, "Gary Guo" <gary@garyguo.net>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Lyude Paul" <lyude@redhat.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "Miguel Ojeda" <ojeda@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Tamir Duberstein" <tamird@kernel.org>, "Alexandre
+ Courbot" <acourbot@nvidia.com>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.22.0
+References: <20260929-export-do-unlocked-v3-1-f7000684178f@kernel.org>
+In-Reply-To: <20260929-export-do-unlocked-v3-1-f7000684178f@kernel.org>
+X-ClientProxiedBy: LO4P123CA0646.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:296::15) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1790599486.git.nico.antinori.7@gmail.com> <DLRXDBH5LB8G.24QDEEJWMGJG7@gmail.com>
-In-Reply-To: <DLRXDBH5LB8G.24QDEEJWMGJG7@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 29 Sep 2026 18:22:37 +0200
-X-Gm-Features: AclHuK_Wo_2TR6t3qQINXg6vuhw5smx_hDmbOB227r8MxbF1Jg4nL8yAzsAQFa0
-Message-ID: <CANiq72mzKkiDM7iBuDfO2u26roEaGGfYXQx4W0+33JHwE2p+jg@mail.gmail.com>
-Subject: Re: [PATCH 0/3] rust: kunit: support #[should_panic] and same test
- name with different #[cfg(...)]
-To: =?UTF-8?Q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Burak Emir <burak.emir@gmail.com>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Boqun Feng <boqun@kernel.org>, Brigham Campbell <me@brighamcampbell.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, Jori Koolstra <jkoolstra@xs4all.nl>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Rae Moar <raemoar63@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Tamir Duberstein <tamird@kernel.org>, Trevor Gross <tmgross@umich.edu>, Yury Norov <yury.norov@gmail.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel-mentees@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO0P265MB7159:EE_
+X-MS-Office365-Filtering-Correlation-Id: ed410f31-bdc9-45d6-2797-08df1e467566
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|23010399003|10070799003|7416014|1800799024|921020|56012099006|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	w6MIJdUNB44mWfAaABhFM4+Vq/ba6EH+qiflOo78hVLXk2Jh8J6e5XWL9/iniI1JcFsO0OaTKR/Ky/N5v8SYy0FrCEOHbwFXXe5tU1Z4+o8Wt3wLpU3zLrWyi8OOqP0yYQs3+hzgzw9TeKHL5jAXzw4XmyA1KrEcHaFSdaaP89VIapUuIu65D9hoICx6GLL/I+YoETiVkzo7VshGYv+9LLI18lRZ3QxMysl/fGTUsUwy7X9tqtcv2MPd8tupK/rPt9cr7Bk0lCQia9qv1H7yjjLttIp6Er4tojXcvdVttskAPM2l3byI3h54qroQ3PB2dMm3QiP/wMmDy8j9pQlLraXLsy2vAlx+QtfYTxOffzLkY+Em0FCzIpIrRz9qlJcbo5Lfz1X8NPEVpWqr0+y1IQ5kcyDf3A4ymeEUoW6bAYcbz4PavBReEnoupYKo+5e19FqoapavQ+Yr9C55RTxuUpCQx/b6qraR3dM5Xg9rDgqYQJV8finkToXFlfcSNurJ+ISD57Hb0U5w4HFim5DH6JU/CydUGt7Rmf8cZ2mroEkvtzou8FHPECcRKoX/SaPxXhKJ/FPL4G+jOLttEkEmpSi0vVMif5HvYaABMoOfbygurP/hXvqueYJaXzh+n+/vEZkKOdEINZG10na+CVzf0VqHj1xywoVDqLXcc471Pes=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(10070799003)(7416014)(1800799024)(921020)(56012099006)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eUZRWEYwUE1vdEtYNmRTeEdVMHBFblliS3BoSjJsQTQrWHRkK045a1hBT09T?=
+ =?utf-8?B?SG1EZm9nTnUrRU1yR0NiL09PN0kxeDJIMDlSYWM4OERNNW9oT2ZwbTU2anJH?=
+ =?utf-8?B?c1VlMGZ0U0k4Y2htVTYyd1JzOXJIR1dpOUlTMkJLb1dzZmxJRGRoT0FpKzl4?=
+ =?utf-8?B?eWZCMkd3d3Y0emJyaWlCMEVhNDhiRC9RbllWMTVVQzNqUVJzNnRJWmtWeEhl?=
+ =?utf-8?B?a1YrTXNrR3RmeVJ4NzU1K1Q2RUNaUHVwSWFtby9ORktkYXU3ODJ5SUxPTllz?=
+ =?utf-8?B?RExSamZCbGJBYkt5dmp3N2Urd3lpYUtPSmlLVHdFYzJzNkNvR2VoV043QzNa?=
+ =?utf-8?B?MVIzcTMwUFJMN2kvYXpDaVJNWVgzQnFOSVNsR0owLzNSZ2tyODFNRTBuWWFq?=
+ =?utf-8?B?TE5uMzlxeWlVdzZRUFZVNWNOREszWHNNcndSUGZuRDl1THRzVHJ4NEYxQkhB?=
+ =?utf-8?B?NHBrWGFNbldIVk9kQjd5L3VQRnp2MnYxaU1TZFl5YjNPMEpxWmdTWEtzeW4w?=
+ =?utf-8?B?Y1N6UzA4ZC9LTkhYbzhtTHM4VXdpaTJscS8vc05LVStDN29pcCs1QlNkNkJy?=
+ =?utf-8?B?MFNxbGgwK3FHRnppU01OaHZ1eTgyV1BnTEE3OG1wUGw3ZmlEbklBaVJUbFJK?=
+ =?utf-8?B?TnVQR3hnTko4Vyt1UzI0TitBSHFtbEtVY2dOa1VvdmVNdTB5UUc2T1hkUGpH?=
+ =?utf-8?B?NlNJSzFDNlN2blNYU0lnZXNiOXJPRVhvYzN3Q0E5RFlNSUNwdjQvbFV1T2hw?=
+ =?utf-8?B?RFh4RlFtcmh4U2hyNWdFWnBsK0hBWWNqY3RrTUd6R0txTUtWdXA0RWlwNksz?=
+ =?utf-8?B?V1hoYk5qdzFSQmtSRzRCclZHZEhQSzYvNEtKb2Z6aDE0a1ZZdnRqWjdsTWtu?=
+ =?utf-8?B?T283clFLTXNNeTd6dDRTaEkzYkQyYk94VHcrbmZSclVaNFdOWnFKNEJ5VU9D?=
+ =?utf-8?B?UnBJdjA1ZGp4amJROFA5U3R2WkZQV0pFZ0R0S0ljNjIvTWxYTnlZOTFiSEpm?=
+ =?utf-8?B?cjFhYlhZR2Q5b0xFY0V3TzkrMEo5THlNdHJ1cjE4RDR4MWtSK3VzQytNaTdT?=
+ =?utf-8?B?VGp5dTFhUm1XSGtqeDNneWpnSDN4L1BURVVPUXVteGpKNVp2eUpsWDBsS2Uz?=
+ =?utf-8?B?TEJ1WElzV0hhajkzU00vMUp6NzZxOVlJM0dudHFGZ1ZCZHJCUnNodm1FaWlG?=
+ =?utf-8?B?Tjgzby9qSGpSc3NXWG85RnVXbm5kL1l4VGh1RmRVcVFkZzhqMGJ4YThMVnFw?=
+ =?utf-8?B?YzlYZUlMQ1pjaHMzN3B5RWJtYnVwMi9FVnJsOXV4WjZoWTAyVkpzYUlaa3Q5?=
+ =?utf-8?B?RDh2MHc0eVJza2ppaGlpOWI0TlQ0ZWoydzlSNkRtQldzN3JhQytpWld3SXhB?=
+ =?utf-8?B?Q1hOV3YxMEZvVGF0NXAwOVhhaGkwQWRKMVV5TUI1dXBqZitYdGIzRFJkU2tE?=
+ =?utf-8?B?RHdwaWV4NFVCWnJxYlZsemVlQmYwbEM3YzBNLzNYbnNHQjA1dXoyZThOS3du?=
+ =?utf-8?B?cEtmdXRBVXJFbW9IVWVvTHYrVVpKN1VZU0FLZXNKVWFTZ1hRRnpnNDh4b3Yr?=
+ =?utf-8?B?VzY5eWtsN0l2WWxPZ2NzUFY3dHZpVDlBdHBSb3g4cnNRWGVpZVN2anI1b2Z5?=
+ =?utf-8?B?SUoyWGZBeVJybGcrWDNKVXlJV1R1Smpxd2kwNGRaWW1iQVhOdnB2Nk1remV5?=
+ =?utf-8?B?dWxBVFlreTlNWjVGMzhQd2habFk0TzRCajBMODcyODJCVi9qbk5hM1JobitS?=
+ =?utf-8?B?Z2tRRmt2dkRVUGNBYmdRS0hlSDlFek1idnhNUWFTdVJOWWV3bFFjb3hqZnRo?=
+ =?utf-8?B?OEFWcC9NdTRwaEM0QWNwMHFNbFkvazhmbTFFZm5vMUZza0t5VWlGa1AvMDVh?=
+ =?utf-8?B?QThqY29uOWxNckJhTm5Cc2h2bFplWS9Fajd2SjNaYlk5WGhuaXZnOG41NTdq?=
+ =?utf-8?B?NWV0UkptSlNBaDZXTVY2RWx5SUtqYVg0UFVQUnBiUjFHSTVGY09MempET2hD?=
+ =?utf-8?B?b0pIdnlwcmx0Lys2UWpMM3haRjN5OTMxOXQwV3lveTQrdTMyRHpzTGpXU0Mz?=
+ =?utf-8?B?YkFxNXNHY3cvaThkRGZuYkU0MlovSWs2YURYbHVHR3hPUGg3VEZ3cGwyU2Nr?=
+ =?utf-8?B?djBMYXR5dWVqMHJIcFpURm1aQUFUN0VCTy9yV0tjYW9zelg2blNhandzK0Jx?=
+ =?utf-8?B?L3ZjeUdyL0hlQUxNRmp5QWVFOGJ3MzA3T29UaXd3WC8zb091b2l2T0V4dmdu?=
+ =?utf-8?B?bHdJTUkwTjJ5OHB4b1V3dmwwQmtXMHVTdmRkOGpqcG52N3ZnVFRja1dhOE44?=
+ =?utf-8?B?S3ZoQkNmRkRsLzV3NFNpL3JkVFZlWUpSR1d6ZnRIZTQ5N0Z3UG5pdz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed410f31-bdc9-45d6-2797-08df1e467566
+X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 16:26:47.6735
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: spQn7DfHEK0RVvxOndoKUo7iHqdDJTEciOsZHr+UA8rPEJiv5GVAzqdQJ7ef6R1jo3pgufeyUFRl3aDDVwPifw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB7159
 
-On Tue, Sep 29, 2026 at 6:02=E2=80=AFPM Nicol=C3=A1s Antinori
-<nico.antinori.7@gmail.com> wrote:
+On Tue Sep 29, 2026 at 3:45 PM BST, Andreas Hindborg wrote:
+> Export lock::do_unlocked publicly. Add documentation for the method.
 >
-> For some reason, GMail is not letting me send the first patch of the
-> series as it marks it as spam. I'll check what happens and send a PATCH
-> RESEND of the series or reply this series with thah patch (I already
-> tried that and failed).
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+> Changes in v3:
+> - Rebase on v7.3-rc5.
+> - Do not import prelude in example (Alice).
+> - Link to v2: https://msgid.link/20260605-export-do-unlocked-v2-1-e230013=
+90231@kernel.org
 >
-> Apologies for the inconvenience.
+> Changes in v2:
+> - Drop spurious space before `guard.do_unlocked` in the doc example (Benn=
+o).
+> - Un-hide the imports in the doc example so the rendered docs no longer h=
+ave a spurious blank line after them (Alice).
+> - Link to v1: https://msgid.link/20260215-export-do-unlocked-v1-1-f5cd220=
+3b20f@kernel.org
+> ---
+>  rust/kernel/sync/lock.rs | 26 +++++++++++++++++++++++++-
+>  1 file changed, 25 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index 10b6b5e9b024..edfff9e10199 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -238,7 +238,31 @@ pub fn lock_ref(&self) -> &'a Lock<T, B> {
+>          self.lock
+>      }
+> =20
+> -    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U=
+ {
+> +    /// Temporarily unlock the lock to execute the given closure.
+> +    ///
+> +    /// This method unlocks the lock before calling the closure `cb`, an=
+d re-locks it afterwards.
+> +    /// This is useful when you need to perform operations that are not =
+allowed while holding
+> +    /// certain locks, such as allocating memory (which is prohibited wh=
+ile holding a spinlock).
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::new_spinlock;
+> +    /// use pin_init::stack_pin_init;
+> +    ///
+> +    /// stack_pin_init!{
+> +    ///     let lock =3D new_spinlock!(())
+> +    /// }
+> +    ///
+> +    /// let mut guard =3D lock.lock();
+> +    /// let mut buffer =3D KVec::new();
+> +    /// // Temporarily unlock to allocate memory, which should not be do=
+ne while holding a spinlock.
+> +    /// guard.do_unlocked(|| {
+> +    ///     buffer.push(5u32, GFP_KERNEL)
+> +    /// })?;
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    pub fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
 
-I would suggest trying the `b4` web submission endpoint in that case:
+Do we want to keep the name `do_unlocked` now this is public?
 
-  https://b4.docs.kernel.org/en/latest/contributor/send.html
+I think we can drop "do_" and just call this `unlocked`, consistent with po=
+pular
+Rust ecosystem crates like parking_lot and spin.
 
-I hope that helps.
+Best,
+Gary
 
-Cheers,
-Miguel
+
+>          // SAFETY: The caller owns the lock, so it is safe to unlock it.
+>          unsafe { B::unlock(self.lock.state.get(), &self.state) };
+> =20
+>
+> ---
+> base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
+> change-id: 20260215-export-do-unlocked-00a6ac9373d4
+>
+> Best regards,
+> -- =20
+> Andreas Hindborg <a.hindborg@kernel.org>
+
+
