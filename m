@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996EA52CCF0;
-	Tue, 29 Sep 2026 13:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E1852F262;
+	Tue, 29 Sep 2026 13:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790690388; cv=none; b=NAjcwCVKGMmeUm4IEQ/EFPqqdZ9eaIbQjvH+Rr+3hBpNj/oIiY09QX28Hu8PkRHf6Cq8Io/dy3t5LKMKuDapo6kkLiCCx7uLhRylPKAASE0EwoovQqjskmYaI4HYbn4kbNV6WZEJpC0M3VQ22YKyQkIYqpqL8XAK4B0rhH7hicE=
+	t=1790690392; cv=none; b=ucR2Y9Gpylp1eTS4rYHl6cULHzvS/7FBc1YI/EtrbxB1LaeDtyNR0z2hVOGarv7nqJyHZruJTVbsy++h6zxpPWtOlcrl0O2TVLwfrQYwxsm6wXBV0PxOHI9/rSBhcbV1hyu4gzfpvcEKrFWEoR+zWOHfJh71guA1vet9xznHRsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790690388; c=relaxed/simple;
-	bh=IjgRxZQhx3ZcSw896JcoJQO8eb+tDU+o6CJseXxzNPc=;
+	s=arc-20240116; t=1790690392; c=relaxed/simple;
+	bh=u/d4qeQk+cYX8jEedsTROYtAgb6icjHHqzbGjBSRxkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SP5iVl8+LbiiAMk0lZPrfQ2sMB5+PEXOCMvbJW9qp7js1f+uarkb7dquDkInsf52Lw6KCeuYi36iyN/dLePd+hetWBxS6RX/hoMY2SltowWLxm+mw7x+Ph3aWP+qaUbbQNqxMcUc/fe3+oqBEfaDa0OAsI1Zf2lvPn77GTEImNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=O1/lJjUb; arc=none smtp.client-ip=220.197.31.2
+	 MIME-Version; b=Z0ht+DVz7L8cqdB7Baj7LUI00AeP6fg3l32uKHgjY/2e9FKgha4X6v2a2CWf4ISXtdIf4YOguG9/iQ90ob3KHuc8aHYgIAqpfGvdtegREPu0/3ruNd5POlFU6wXTwqLOMPukdej4p6w7Hy9D34tLipz7TturJQRqXoEEd5Rw3Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=CUzbax/0; arc=none smtp.client-ip=117.135.210.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="O1/lJjUb"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="CUzbax/0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=1L
-	OmJSmI4akBGdXkMp5JGX+WBAPcfEy3bqt2RvIrNCQ=; b=O1/lJjUbaOjDlY+/C7
-	h5pCCU4yq/BJ/JE2yUi+ywnuXwm33hL2A4CCukrvPzHOcSq9vERUx3BAezGA/ohb
-	jjnc81sEBNUhx69WbdsZEAPd1iJ1/nxaLW5/95fuOZ/3e5RZGm9d83w8eLUVSoSH
-	4qUtdEsy3rTYxtd51kzpjx7h8=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=i2
+	3GQWHrqKEw4UmMHeQgbuB73EzYhp17zDEfnnMKIZE=; b=CUzbax/0e+akv0dON8
+	inVvkAw1NOnMzQA5Lejes9ulxrQ97YyD0X/MiVTT4EB1x6mhT1qNOUxB/U3xGVIN
+	dJPBYO13hl+wVMuO0kns8RC4wHVqSNgMYXyOM43B8h8rIocmr5FKEEtjw6fVtHLy
+	/E//B7LS2wB/jTnIMmnE+YZ+k=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgDX8L8hxLtqbwr+Bg--.43938S4;
-	Tue, 29 Sep 2026 21:59:11 +0800 (CST)
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgDX8L8hxLtqbwr+Bg--.43938S6;
+	Tue, 29 Sep 2026 21:59:17 +0800 (CST)
 From: Kaiqi Guo <chaoji_xinren@163.com>
 To: rust-for-linux@vger.kernel.org,
 	Miguel Ojeda <ojeda@kernel.org>
@@ -35,9 +35,9 @@ Cc: Jesung Yang <y.j3ms.n@gmail.com>,
 	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	Kaiqi Guo <chaoji_xinren@163.com>
-Subject: [PATCH v6 02/10] rust: macros: add derive macro for `TryFrom`
-Date: Tue, 29 Sep 2026 21:58:47 +0800
-Message-ID: <20260929135855.36775-3-chaoji_xinren@163.com>
+Subject: [PATCH v6 04/10] rust: macros: add private doctests for `Into` derive macro
+Date: Tue, 29 Sep 2026 21:58:49 +0800
+Message-ID: <20260929135855.36775-5-chaoji_xinren@163.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260929135855.36775-1-chaoji_xinren@163.com>
 References: <20260929135855.36775-1-chaoji_xinren@163.com>
@@ -48,322 +48,467 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgDX8L8hxLtqbwr+Bg--.43938S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW3XrW5JrW3CrW5Xr48ZFW3GFg_yoWDJrWrpF
-	4jg3yFga97tayfGa17Kay7WrW7KFyfJ3WfWrW7Jw1avFW5WFZ3ur47KryfXr90kr1UArya
-	gFWqkryUGF1Uta7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zNhFxUUUUUU=
-X-CM-SenderInfo: pfkd0yplb0x0xuhqqiywtou0bp/xtbC4RHGQmq7xDHamQAA3T
+X-CM-TRANSID:PCgvCgDX8L8hxLtqbwr+Bg--.43938S6
+X-Coremail-Antispam: 1Uf129KBjvJXoW3uw4UGFW5JF17uFWfGF18uFg_yoWDWw17pr
+	4j93y0q348JrZ3Aa4UG39rWw12gFs3Xas8ZFZrJw1IyFy2qFZruw4UWry7JFyFyr1UZry2
+	qFWjyryDW340y37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEGNt-UUUUU=
+X-CM-SenderInfo: pfkd0yplb0x0xuhqqiywtou0bp/xtbC-RbHQ2q7xDaqTQAA3r
 
 From: Jesung Yang <y.j3ms.n@gmail.com>
 
-Introduce a procedural macro `TryFrom` to automatically implement the
-`TryFrom` trait for unit-only enums.
-
-This reduces boilerplate in cases where numeric values need to be
-interpreted as relevant enum variants. This situation often arises when
-working with low-level data sources. A typical example is the `Chipset`
-enum in nova-core, where the value read from a GPU register should be
-mapped to a corresponding variant.
-
-The macro not only supports primitive types such as `bool` or `i8`, but
-also `Bounded`, a wrapper around integer types limiting the number of
-bits usable for value representation. This accommodates the shift toward
-more restrictive register field representations in nova-core where
-values are constrained to specific bit ranges.
+Add internal doctests to verify the `Into` derive macro's logic. This
+ensures comprehensive testing while keeping the public-facing
+documentation compact and readable.
 
 Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
 Signed-off-by: Kaiqi Guo <chaoji_xinren@163.com>
 ---
- rust/macros/convert.rs |  58 ++++++++++++++
- rust/macros/lib.rs     | 177 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 235 insertions(+)
+ rust/macros/convert.rs | 436 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 436 insertions(+)
 
 diff --git a/rust/macros/convert.rs b/rust/macros/convert.rs
-index 6702c2e48c1f..c64e35447859 100644
+index 21d79bca16a0..31cdf84082e7 100644
 --- a/rust/macros/convert.rs
 +++ b/rust/macros/convert.rs
-@@ -34,6 +34,10 @@ pub(crate) fn derive_into(input: DeriveInput) -> syn::Result<TokenStream> {
-     derive(DeriveTarget::Into, input)
- }
- 
-+pub(crate) fn derive_try_from(input: DeriveInput) -> syn::Result<TokenStream> {
-+    derive(DeriveTarget::TryFrom, input)
-+}
-+
- fn derive(target: DeriveTarget, input: DeriveInput) -> syn::Result<TokenStream> {
-     let data_enum = match input.data {
-         Data::Enum(data) => data,
-@@ -129,18 +133,21 @@ fn derive(target: DeriveTarget, input: DeriveInput) -> syn::Result<TokenStream>
- #[derive(Clone, Copy, Debug)]
- enum DeriveTarget {
-     Into,
-+    TryFrom,
- }
- 
- impl DeriveTarget {
-     fn get_trait_name(&self) -> &'static str {
-         match self {
-             Self::Into => "Into",
-+            Self::TryFrom => "TryFrom",
-         }
-     }
- 
-     fn get_helper_name(&self) -> &'static str {
-         match self {
-             Self::Into => "into",
-+            Self::TryFrom => "try_from",
-         }
-     }
- }
-@@ -186,6 +193,7 @@ fn derive_for_enum(
- ) -> TokenStream {
-     let impl_fn = match target {
-         DeriveTarget::Into => impl_into,
-+        DeriveTarget::TryFrom => impl_try_from,
-     };
- 
-     let qualified_repr_ty: syn::Path = parse_quote! { ::core::primitive::#repr_ty };
-@@ -245,6 +253,56 @@ fn from(#param: #enum_ident) -> #input_ty {
-         }
-     }
- 
-+    fn impl_try_from(
-+        enum_ident: &Ident,
-+        variants: &[Ident],
-+        repr_ty: &syn::Path,
-+        input_ty: &ValidTy,
-+    ) -> TokenStream {
-+        let param = Ident::new("value", Span::call_site());
-+
-+        let overflow_assertion = emit_overflow_assert(enum_ident, variants, repr_ty, input_ty);
-+        let emit_cast = |variant| {
-+            let qualified_variant = ::quote::quote! { #enum_ident::#variant };
-+            match input_ty {
-+                ValidTy::Bounded(inner) => {
-+                    let base_ty = inner.emit_qualified_base_ty();
-+                    let expr = parse_quote! { #qualified_variant as #base_ty };
-+                    inner.emit_new(&expr)
-+                }
-+                ValidTy::Primitive(ident) if ident == "bool" => {
-+                    ::quote::quote! { ((#qualified_variant as #repr_ty) == 1) }
-+                }
-+                qualified @ ValidTy::Primitive(_) => {
-+                    ::quote::quote! { #qualified_variant as #qualified }
-+                }
-+            }
-+        };
-+
-+        let clauses = variants.iter().map(|variant| {
-+            let cast = emit_cast(variant);
-+            ::quote::quote! {
-+                if #param == #cast {
-+                    ::core::result::Result::Ok(#enum_ident::#variant)
-+                } else
-+            }
-+        });
-+
-+        ::quote::quote! {
-+            #[automatically_derived]
-+            impl ::core::convert::TryFrom<#input_ty> for #enum_ident {
-+                type Error = ::kernel::prelude::Error;
-+                fn try_from(#param: #input_ty) -> Result<#enum_ident, Self::Error> {
-+                    #overflow_assertion
-+
-+                    #(#clauses)* {
-+                        ::core::result::Result::Err(::kernel::prelude::EINVAL)
-+                    }
-+                }
-+            }
-+        }
-+    }
-+
-     fn emit_overflow_assert(
-         enum_ident: &Ident,
-         variants: &[Ident],
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index 1faeebc0de4b..8b4f3e9dc860 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -709,3 +709,180 @@ pub fn derive_into(input: TokenStream) -> TokenStream {
-         .unwrap_or_else(syn::Error::into_compile_error)
-         .into()
+@@ -588,3 +588,439 @@ fn is_valid_primitive(ident: &Ident) -> bool {
+             | "isize"
+     )
  }
 +
-+/// A derive macro for generating an implementation of the [`TryFrom`] trait.
-+///
-+/// This macro automatically derives the [`TryFrom`] trait for a given enum. Currently,
-+/// it only supports [unit-only enum]s.
-+///
-+/// [unit-only enum]: https://doc.rust-lang.org/reference/items/enumerations.html#r-items.enum.unit-only
-+///
-+/// # Notes
-+///
-+/// - The macro generates [`TryFrom`] implementations that:
-+///   - Return `Ok(VARIANT)` when the input corresponds to a variant.
-+///   - Return `Err(EINVAL)` when the input does not correspond to any variant.
-+///     (where `EINVAL` is from [`kernel::error::code`]).
-+///
-+/// - The macro uses the `try_from` custom attribute or `repr` attribute to generate
-+///   [`TryFrom`] implementations. `try_from` always takes precedence over `repr`.
-+///
-+/// - Currently, the macro does not support `repr(C)` fieldless enums since the actual
-+///   representation of discriminants is defined by rustc internally, and documentation
-+///   around it is not yet settled. See [Rust issue #124403] and [Rust PR #147017]
-+///   for more information.
-+///
-+/// - The macro generates a compile-time assertion for every variant to ensure its
-+///   discriminant value fits within the type being converted from.
-+///
-+/// [`kernel::error::code`]: ../kernel/error/code/index.html
-+/// [Rust issue #124403]: https://github.com/rust-lang/rust/issues/124403
-+/// [Rust PR #147017]: https://github.com/rust-lang/rust/pull/147017
-+///
-+/// # Supported types in `#[try_from(...)]`
-+///
-+/// - [`bool`]
-+/// - Primitive integer types (e.g., [`i8`], [`u8`])
-+/// - [`Bounded`]
-+///
-+/// [`Bounded`]: ../kernel/num/bounded/struct.Bounded.html
-+///
-+/// # Examples
-+///
-+/// ## Without Attributes
-+///
-+/// Since [the default `Rust` representation uses `isize` for the discriminant type][repr-rust],
-+/// the macro implements `TryFrom<isize>`:
-+///
-+/// [repr-rust]: https://doc.rust-lang.org/reference/items/enumerations.html#r-items.enum.discriminant.repr-rust
-+///
-+/// ```rust
-+/// # use kernel::prelude::*;
-+/// use kernel::macros::TryFrom;
-+///
-+/// #[derive(Debug, Default, PartialEq, TryFrom)]
-+/// enum Foo {
-+///     #[default]
-+///     A,
-+///     B = 0x7,
-+/// }
-+///
-+/// assert_eq!(Err(EINVAL), Foo::try_from(-1_isize));
-+/// assert_eq!(Ok(Foo::A), Foo::try_from(0_isize));
-+/// assert_eq!(Ok(Foo::B), Foo::try_from(0x7_isize));
-+/// assert_eq!(Err(EINVAL), Foo::try_from(0x8_isize));
-+/// ```
-+///
-+/// ## With `#[repr(T)]`
-+///
-+/// The macro implements `TryFrom<T>`:
-+///
-+/// ```rust
-+/// # use kernel::prelude::*;
-+/// use kernel::macros::TryFrom;
-+///
-+/// #[derive(Debug, Default, PartialEq, TryFrom)]
-+/// #[repr(u8)]
-+/// enum Foo {
-+///     #[default]
-+///     A,
-+///     B = 0x7,
-+/// }
-+///
-+/// assert_eq!(Ok(Foo::A), Foo::try_from(0_u8));
-+/// assert_eq!(Ok(Foo::B), Foo::try_from(0x7_u8));
-+/// assert_eq!(Err(EINVAL), Foo::try_from(0x8_u8));
-+/// ```
-+///
-+/// ## With `#[try_from(...)]`
-+///
-+/// The macro implements `TryFrom<T>` for each `T` specified in `#[try_from(...)]`,
-+/// which always overrides `#[repr(...)]`:
-+///
-+/// ```rust
-+/// # use kernel::prelude::*;
-+/// use kernel::{
-+///     macros::TryFrom,
-+///     num::Bounded, //
-+/// };
-+///
-+/// #[derive(Debug, Default, PartialEq, TryFrom)]
-+/// #[try_from(bool, i16, Bounded<u8, 4>)]
-+/// #[repr(u8)]
-+/// enum Foo {
-+///     #[default]
-+///     A,
-+///     B,
-+/// }
-+///
-+/// assert_eq!(Err(EINVAL), Foo::try_from(-1_i16));
-+/// assert_eq!(Ok(Foo::A), Foo::try_from(0_i16));
-+/// assert_eq!(Ok(Foo::B), Foo::try_from(1_i16));
-+/// assert_eq!(Err(EINVAL), Foo::try_from(2_i16));
-+///
-+/// assert_eq!(Ok(Foo::A), Foo::try_from(false));
-+/// assert_eq!(Ok(Foo::B), Foo::try_from(true));
-+///
-+/// assert_eq!(Ok(Foo::A), Foo::try_from(Bounded::<u8, 4>::new::<0>()));
-+/// assert_eq!(Ok(Foo::B), Foo::try_from(Bounded::<u8, 4>::new::<1>()));
-+/// ```
-+///
-+/// ## Compile-time Overflow Assertion
-+///
-+/// The following examples do not compile:
-+///
-+/// ```compile_fail
-+/// # use kernel::macros::TryFrom;
-+/// #[derive(TryFrom)]
-+/// #[try_from(u8)]
-+/// enum Foo {
-+///     // `256` is larger than `u8::MAX`.
-+///     A = 256,
-+/// }
-+/// ```
-+///
-+/// ```compile_fail
-+/// # use kernel::macros::TryFrom;
-+/// #[derive(TryFrom)]
-+/// #[try_from(u8)]
-+/// enum Foo {
-+///     // `-1` cannot be represented with `u8`.
-+///     A = -1,
-+/// }
-+/// ```
-+///
-+/// ## Unsupported Cases
-+///
-+/// The following examples do not compile:
-+///
-+/// ```compile_fail
-+/// # use kernel::macros::TryFrom;
-+/// // Tuple-like enums or struct-like enums are not allowed.
-+/// #[derive(TryFrom)]
-+/// enum Foo {
-+///     A(u8),
-+///     B { inner: u8 },
-+/// }
-+/// ```
-+///
-+/// ```compile_fail
-+/// # use kernel::macros::TryFrom;
-+/// // Structs are not allowed.
-+/// #[derive(TryFrom)]
-+/// struct Foo(u8);
-+/// ```
-+///
-+/// ```compile_fail
-+/// # use kernel::macros::TryFrom;
-+/// // `repr(C)` enums are not allowed.
-+/// #[derive(TryFrom)]
-+/// #[repr(C)]
-+/// struct Foo(u8)
-+/// ```
-+#[proc_macro_derive(TryFrom, attributes(try_from))]
-+pub fn derive_try_from(input: TokenStream) -> TokenStream {
-+    let input = parse_macro_input!(input as DeriveInput);
-+    convert::derive_try_from(input)
-+        .unwrap_or_else(syn::Error::into_compile_error)
-+        .into()
++mod derive_into_tests {
++    /// ```
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(u8)]
++    /// enum Foo {
++    ///     // Works with const expressions.
++    ///     A = add(0, 0),
++    ///     B = 2_isize.pow(1) - 1,
++    /// }
++    ///
++    /// const fn add(a: isize, b: isize) -> isize {
++    ///     a + b
++    /// }
++    ///
++    /// assert_eq!(0_u8, Foo::A.into());
++    /// assert_eq!(1_u8, Foo::B.into());
++    /// ```
++    mod works_with_const_expr {}
++
++    /// ```
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(bool)]
++    /// enum Foo {
++    ///     A,
++    ///     B,
++    /// }
++    ///
++    /// assert_eq!(false, Foo::A.into());
++    /// assert_eq!(true, Foo::B.into());
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(bool)]
++    /// enum Foo {
++    ///     // `-1` cannot be represented with `bool`.
++    ///     A = -1,
++    /// }
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(bool)]
++    /// enum Foo {
++    ///     // `2` cannot be represented with `bool`.
++    ///     A = 2,
++    /// }
++    /// ```
++    mod overflow_assert_works_on_bool {}
++
++    /// ```
++    /// use kernel::{
++    ///     macros::Into,
++    ///     num::Bounded, //
++    /// };
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<i8, 7>)]
++    /// enum Foo {
++    ///     A = -1 << 6,      // The minimum value of `Bounded<i8, 7>`.
++    ///     B = (1 << 6) - 1, // The maximum value of `Bounded<i8, 7>`.
++    /// }
++    ///
++    /// let foo_a: Bounded<i8, 7> = Foo::A.into();
++    /// let foo_b: Bounded<i8, 7> = Foo::B.into();
++    /// assert_eq!(Bounded::<i8, 7>::new::<{ -1_i8 << 6 }>(), foo_a);
++    /// assert_eq!(Bounded::<i8, 7>::new::<{ (1_i8 << 6) - 1 }>(), foo_b);
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<i8, 7>)]
++    /// enum Foo {
++    ///     // `1 << 6` cannot be represented with `Bounded<i8, 7>`.
++    ///     A = 1 << 6,
++    /// }
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<i8, 7>)]
++    /// enum Foo {
++    ///     // `(-1 << 6) - 1` cannot be represented with `Bounded<i8, 7>`.
++    ///     A = (-1 << 6) - 1,
++    /// }
++    /// ```
++    ///
++    /// ```
++    /// use kernel::{
++    ///     macros::Into,
++    ///     num::Bounded, //
++    /// };
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<i8, 1>)]
++    /// enum Foo {
++    ///     A = -1, // The minimum value of `Bounded<i8, 1>`.
++    ///     B,      // The maximum value of `Bounded<i8, 1>`.
++    /// }
++    ///
++    /// let foo_a: Bounded<i8, 1> = Foo::A.into();
++    /// let foo_b: Bounded<i8, 1> = Foo::B.into();
++    /// assert_eq!(Bounded::<i8, 1>::new::<{ -1_i8 }>(), foo_a);
++    /// assert_eq!(Bounded::<i8, 1>::new::<{ 0_i8 } >(), foo_b);
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<i8, 1>)]
++    /// enum Foo {
++    ///     // `1` cannot be represented with `Bounded<i8, 1>`.
++    ///     A = 1,
++    /// }
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<i8, 1>)]
++    /// enum Foo {
++    ///     // `-2` cannot be represented with `Bounded<i8, 1>`.
++    ///     A = -2,
++    /// }
++    /// ```
++    ///
++    /// ```
++    /// use kernel::{
++    ///     macros::Into,
++    ///     num::Bounded, //
++    /// };
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<i32, 32>)]
++    /// #[repr(i64)]
++    /// enum Foo {
++    ///     A = i32::MIN as i64,
++    ///     B = i32::MAX as i64,
++    /// }
++    ///
++    /// let foo_a: Bounded<i32, 32> = Foo::A.into();
++    /// let foo_b: Bounded<i32, 32> = Foo::B.into();
++    /// assert_eq!(Bounded::<i32, 32>::new::<{ i32::MIN }>(), foo_a);
++    /// assert_eq!(Bounded::<i32, 32>::new::<{ i32::MAX }>(), foo_b);
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<i32, 32>)]
++    /// #[repr(i64)]
++    /// enum Foo {
++    ///     // `1 << 31` cannot be represented with `Bounded<i32, 32>`.
++    ///     A = 1 << 31,
++    /// }
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<i32, 32>)]
++    /// #[repr(i64)]
++    /// enum Foo {
++    ///     // `(-1 << 31) - 1` cannot be represented with `Bounded<i32, 32>`.
++    ///     A = (-1 << 31) - 1,
++    /// }
++    /// ```
++    mod overflow_assert_works_on_signed_bounded {}
++
++    /// ```
++    /// use kernel::{
++    ///     macros::Into,
++    ///     num::Bounded, //
++    /// };
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<u8, 7>)]
++    /// enum Foo {
++    ///     A,                // The minimum value of `Bounded<u8, 7>`.
++    ///     B = (1 << 7) - 1, // The maximum value of `Bounded<u8, 7>`.
++    /// }
++    ///
++    /// let foo_a: Bounded<u8, 7> = Foo::A.into();
++    /// let foo_b: Bounded<u8, 7> = Foo::B.into();
++    /// assert_eq!(Bounded::<u8, 7>::new::<{ 0 }>(), foo_a);
++    /// assert_eq!(Bounded::<u8, 7>::new::<{ (1_u8 << 7) - 1 }>(), foo_b);
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<u8, 7>)]
++    /// enum Foo {
++    ///     // `1 << 7` cannot be represented with `Bounded<u8, 7>`.
++    ///     A = 1 << 7,
++    /// }
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<u8, 7>)]
++    /// enum Foo {
++    ///     // `-1` cannot be represented with `Bounded<u8, 7>`.
++    ///     A = -1,
++    /// }
++    /// ```
++    ///
++    /// ```
++    /// use kernel::{
++    ///     macros::Into,
++    ///     num::Bounded, //
++    /// };
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<u8, 1>)]
++    /// enum Foo {
++    ///     A, // The minimum value of `Bounded<u8, 1>`.
++    ///     B, // The maximum value of `Bounded<u8, 1>`.
++    /// }
++    ///
++    /// let foo_a: Bounded<u8, 1> = Foo::A.into();
++    /// let foo_b: Bounded<u8, 1> = Foo::B.into();
++    /// assert_eq!(Bounded::<u8, 1>::new::<{ 0 }>(), foo_a);
++    /// assert_eq!(Bounded::<u8, 1>::new::<{ 1 }>(), foo_b);
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<u8, 1>)]
++    /// enum Foo {
++    ///     // `2` cannot be represented with `Bounded<u8, 1>`.
++    ///     A = 2,
++    /// }
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<u8, 1>)]
++    /// enum Foo {
++    ///     // `-1` cannot be represented with `Bounded<u8, 1>`.
++    ///     A = -1,
++    /// }
++    /// ```
++    ///
++    /// ```
++    /// use kernel::{
++    ///     macros::Into,
++    ///     num::Bounded, //
++    /// };
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<u32, 32>)]
++    /// #[repr(u64)]
++    /// enum Foo {
++    ///     A = u32::MIN as u64,
++    ///     B = u32::MAX as u64,
++    /// }
++    ///
++    /// let foo_a: Bounded<u32, 32> = Foo::A.into();
++    /// let foo_b: Bounded<u32, 32> = Foo::B.into();
++    /// assert_eq!(Bounded::<u32, 32>::new::<{ u32::MIN }>(), foo_a);
++    /// assert_eq!(Bounded::<u32, 32>::new::<{ u32::MAX }>(), foo_b);
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<u32, 32>)]
++    /// #[repr(u64)]
++    /// enum Foo {
++    ///     // `1 << 32` cannot be represented with `Bounded<u32, 32>`.
++    ///     A = 1 << 32,
++    /// }
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<u32, 32>)]
++    /// #[repr(u64)]
++    /// enum Foo {
++    ///     // `-1` cannot be represented with `Bounded<u32, 32>`.
++    ///     A = -1,
++    /// }
++    /// ```
++    mod overflow_assert_works_on_unsigned_bounded {}
++
++    /// ```
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(isize)]
++    /// #[repr(isize)]
++    /// enum Foo {
++    ///     A = isize::MIN,
++    ///     B = isize::MAX,
++    /// }
++    ///
++    /// assert_eq!(isize::MIN, Foo::A.into());
++    /// assert_eq!(isize::MAX, Foo::B.into());
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(isize)]
++    /// #[repr(usize)]
++    /// enum Foo {
++    ///     A = (isize::MAX as usize) + 1
++    /// }
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(i32)]
++    /// #[repr(i64)]
++    /// enum Foo {
++    ///     A = (i32::MIN as i64) - 1,
++    /// }
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(i32)]
++    /// #[repr(i64)]
++    /// enum Foo {
++    ///     A = (i32::MAX as i64) + 1,
++    /// }
++    /// ```
++    mod overflow_assert_works_on_signed_int {}
++
++    /// ```
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(usize)]
++    /// #[repr(usize)]
++    /// enum Foo {
++    ///     A = usize::MIN,
++    ///     B = usize::MAX,
++    /// }
++    ///
++    /// assert_eq!(usize::MIN, Foo::A.into());
++    /// assert_eq!(usize::MAX, Foo::B.into());
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(usize)]
++    /// #[repr(isize)]
++    /// enum Foo {
++    ///     A = -1,
++    /// }
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(u32)]
++    /// #[repr(i64)]
++    /// enum Foo {
++    ///     A = (u32::MIN as i64) - 1,
++    /// }
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(u32)]
++    /// #[repr(i64)]
++    /// enum Foo {
++    ///     A = (u32::MAX as i64) + 1,
++    /// }
++    /// ```
++    mod overflow_assert_works_on_unsigned_int {}
++
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(Bounded<i8, 7>, i8, i16, i32, i64)]
++    /// #[repr(i8)]
++    /// enum Foo {
++    ///     // `i8::MAX` cannot be represented with `Bounded<i8, 7>`.
++    ///     A = i8::MAX,
++    /// }
++    /// ```
++    ///
++    /// ```compile_fail
++    /// use kernel::macros::Into;
++    ///
++    /// #[derive(Into)]
++    /// #[into(i8, i16, i32, i64, Bounded<i8, 7>)]
++    /// #[repr(i8)]
++    /// enum Foo {
++    ///     // `i8::MAX` cannot be represented with `Bounded<i8, 7>`.
++    ///     A = i8::MAX,
++    /// }
++    /// ```
++    mod any_into_target_overflow_is_rejected {}
 +}
 
