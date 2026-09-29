@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BA836A34F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86293BB131;
 	Tue, 29 Sep 2026 02:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790648156; cv=none; b=ROSnB1lLBzO5qy3lJ7ywrnY+GjiM3vxj4hue8W1eH8YEHtUBT8/+llSxgMlqTmHqL5LnzvvaKMKFyfLRcQ/fFOwdGxfkSjtC6U4HSiR1mhuJcPdQnn7JFOpdd1iv8uol4tnIoNX4xqJrewSsA6DPYlDx91zdCoN3EA8hDcJOCpM=
+	t=1790648157; cv=none; b=tc4WRLHwU5DoJt6LYmoOZKW/Qf55nNz0wzMwrl5ZzmRI+kmhTk4H66ACejbSNA4qlkQ6e6C5b5qtwGJahalgSyjhq+ah1OUWEF/HkQ357Bd32cOmimpkk2QoyTwoN/kiOB4EXfu9gThB0eSg6evrAQ6gqr3fKagyGxXTq3u6GkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790648156; c=relaxed/simple;
-	bh=Y+Bjb7lYNOXArFBTwJ5tEEIzUp4p6FTp653OpvMTivc=;
+	s=arc-20240116; t=1790648157; c=relaxed/simple;
+	bh=GGbamOQ+HlpG790iODVm8xKYRwitufeQaNNIdHIRajA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mJ6dZiKqr+wjvhB2m99b5dzUCkfjKiuqyT2bKIFXqbR/D/7s9sX+L1y9l1Xfh69MzyZAiL0G27kTIw5B/whYghGHpIk6A2SRG8T0ntGFOTfrAZWyykDJaMnGVoAaIg6c6V48qZR6XjKUvP2uMLQYy7kO6YTD67QKwicHAeK7k+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rz16EmNn; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=h3RI8wLK7X/yDYCgs/rb3FRF4XdAzqh2usbbsBOB06idsQXTIAF0IJfOYkI/lc7bYCeXuUEKN/lk48Rc30DsbfSuW7wYa+BzooX9OYKjcJia+q9k14mV/ZsYMxbloT2AtuLWyr8lBpL8uMFZ0re6H878AUUYEzlCdLq+35fNIFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nAeARBmw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rz16EmNn"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 32F33C4AF12;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nAeARBmw"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B4C22C2BCB3;
 	Tue, 29 Sep 2026 02:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1790648156;
-	bh=Y+Bjb7lYNOXArFBTwJ5tEEIzUp4p6FTp653OpvMTivc=;
+	bh=GGbamOQ+HlpG790iODVm8xKYRwitufeQaNNIdHIRajA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=rz16EmNniSViHWXdNQLsRMPsEq1FS0gJ7Zr2KPVyIS591DtITnqt5sYbet7FD4xma
-	 /IbfV8BwulSxoi7V7rBmE5zowXewZAac70Cx1QkHSi32V6DNLuAUI7t90tEMMykKbc
-	 y0vow2nJ2xrNR9K5uOBNP5XwDBV7fKx7lrDHAuT6ZobOtmcSQntGG8gDHsxEw5UXW1
-	 7oXV52SbCc6Zo3JI5nZ6Ni8PPkOvFPMJJHaSNetvSi3fbyl0usvWqAnmpLt/lE7K2E
-	 fyAsHHfL2H5zBqCw/d0f9C6h/7tOSVLarV75XE4vCVfV4K3J6dQNWmKPWOPbWa+Gtv
-	 ehdON+BO4qB3g==
+	b=nAeARBmwf6BKNwvkkTYayaq9BwggQKMRFuadBGBocmwL6FwmQuGWcTt/ygj7KXhU3
+	 2IYmQJJfZyfSyZ2WSAXox7nGi3yKdFf4Ddm7G0y0XWmsA1+im5fftaHEp6uZDn9D2j
+	 8iuoo2jaKQAI227PORBCkKAdxizwMXmjT61/Lol7/+apYKlhXZ1DmkhKu8AenwMQUK
+	 lK30tiuOOgDX+K47wm+ZPD8nc77tNU6N3HwgifaTWa9vX1d0AAnAa2nU6LyKkKoVLY
+	 mVfJYN0wTXR9XwnI9hGxKtLY7E17RUvF+0xZDlTBcjLP0u+yPiq+P6K+XWdnPDroD1
+	 vKpF4yf+A1smQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 117B0CA5FAB;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DB00CA5FA5;
 	Tue, 29 Sep 2026 02:15:56 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Tue, 29 Sep 2026 10:15:51 +0800
-Subject: [PATCH v3 01/11] rust: sizes: add SZ_4G constant
+Date: Tue, 29 Sep 2026 10:15:59 +0800
+Subject: [PATCH v3 09/11] rust: device: expose dma_coherent()
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -39,8 +39,8 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260929-tyr-ioctls-v3-1-26955fb111d5@kylinos.cn>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260929-tyr-ioctls-v3-9-26955fb111d5@kylinos.cn>
 References: <20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn>
 In-Reply-To: <20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -63,11 +63,11 @@ Cc: Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org,
  driver-core@lists.linux.dev, Ke Sun <sunke@kylinos.cn>, 
  Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790648153; l=1808;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790648153; l=1677;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=5K5ZDtbb0No9pS3iRwCaB/ZkoyNuv4RA97gE66KsHmQ=;
- b=l3bdZ9ZK97meFn8m8zP4xbBKLXntFnscqTrboQul2MtghnL2aNeAsJbD2XGmryP2qCWeBvrYV
- OkGMDVCvBd/AtMsUU1mlOzQ4qaxkyNYi+AmvkcvEWS6DJT1bIP8mxhd
+ bh=XfO2LPkTwSiEqM7hoqHCFQ6seVfT+uG3TPffKXpZyws=;
+ b=dlpNSCMDn8r/2tfOALYXZiv/AaY/jqC+xKDE9iLPr5YqZoce/oETuwi7HSo5W03jtXpN3XtbH
+ Km/IKZIqgLWBW2YiTLEF/VwGN4M6hFlGcgepPAdJlqvcXNJoV3Hp+Hu
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -75,53 +75,48 @@ X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
 
-From: Alvin Sun <alvin.sun@linux.dev>
+From: Sami Tolvanen <samitolvanen@google.com>
 
-SZ_4G is used by Tyr when splitting the GPU VA range into
-user and kernel regions. Add a LargeSizeConstants trait, implemented
-for u64 since SizeConstants only covers sizes that fit in a u32.
+A driver may need to know whether its device is DMA-coherent, but
+rust/kernel exposes no accessor for the attribute today.
 
+Add a thin accessor on Device<Bound> that wraps device_get_dma_attr()
+and returns true only for DEV_DMA_COHERENT. The other attribute values
+(unset, non-coherent) are treated as non-coherent.
+
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/sizes.rs            | 12 ++++++++++++
- 2 files changed, 13 insertions(+)
+ rust/kernel/device.rs | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 930e63290cdd4..ee99f470ae5f4 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -116,6 +116,7 @@ const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
- const size_t RUST_CONST_HELPER_ARCH_KMALLOC_MINALIGN = ARCH_KMALLOC_MINALIGN;
- const size_t RUST_CONST_HELPER_PAGE_SIZE = PAGE_SIZE;
- const size_t RUST_CONST_HELPER_GENLMSG_DEFAULT_SIZE = GENLMSG_DEFAULT_SIZE;
-+const unsigned long long RUST_CONST_HELPER_SZ_4G = SZ_4G;
- const gfp_t RUST_CONST_HELPER_GFP_ATOMIC = GFP_ATOMIC;
- const gfp_t RUST_CONST_HELPER_GFP_KERNEL = GFP_KERNEL;
- const gfp_t RUST_CONST_HELPER_GFP_KERNEL_ACCOUNT = GFP_KERNEL_ACCOUNT;
-diff --git a/rust/kernel/sizes.rs b/rust/kernel/sizes.rs
-index 521b2b38bfe77..0acc8733d2368 100644
---- a/rust/kernel/sizes.rs
-+++ b/rust/kernel/sizes.rs
-@@ -132,3 +132,15 @@ impl SizeConstants for $first {
+diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+index 2291d85b6849e..57950aa71f33e 100644
+--- a/rust/kernel/device.rs
++++ b/rust/kernel/device.rs
+@@ -260,6 +260,22 @@ pub unsafe fn drvdata_borrow<T>(&self) -> Pin<&T> {
+     }
  }
  
- define_sizes!(u32, u64, usize);
-+
-+/// Large size constants (≥ 4 GiB).
-+///
-+/// Only implemented for [`u64`].
-+pub trait LargeSizeConstants {
-+    /// `0x1_0000_0000`.
-+    const SZ_4G: Self;
++impl Device<Bound> {
++    /// Returns `true` if the device is reported as DMA-coherent by firmware.
++    ///
++    /// This wraps `device_get_dma_attr()` and only returns `true` for the
++    /// `DEV_DMA_COHERENT` attribute. Devices for which no DMA attribute is
++    /// reported (`DEV_DMA_NOT_SUPPORTED`) or which are explicitly flagged as
++    /// non-coherent (`DEV_DMA_NON_COHERENT`) are treated as non-coherent.
++    #[inline]
++    pub fn dma_coherent(&self) -> bool {
++        // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer
++        // to a `struct device`.
++        let attr = unsafe { bindings::device_get_dma_attr(self.as_raw()) };
++        attr == bindings::dev_dma_attr_DEV_DMA_COHERENT
++    }
 +}
 +
-+impl LargeSizeConstants for u64 {
-+    const SZ_4G: Self = bindings::SZ_4G;
-+}
+ impl<Ctx: DeviceContext> Device<Ctx> {
+     /// Obtain the raw `struct device *`.
+     pub(crate) fn as_raw(&self) -> *mut bindings::device {
 
 -- 
 2.43.0
