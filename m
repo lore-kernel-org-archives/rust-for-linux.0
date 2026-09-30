@@ -1,83 +1,195 @@
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012006.outbound.protection.outlook.com [40.107.209.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD8646EC66;
-	Wed, 30 Sep 2026 22:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.182.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA743D3D18;
+	Wed, 30 Sep 2026 23:08:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.6
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790806479; cv=pass; b=Gl1lCvJNtR3Yz8lgQBXtIR35St1a4bz0GwvQSudA4io5R+l3MOdJH8mGnOoLQ1WKPxzxl5DgzYdi3nHcSGHNB7xq0wMjv8/oiGIASDmQjI8Hh7AVuNdz6QNGEQKHh2v5sHIklGAmngHwbwnvXDVQoG252sEnxxjkBVB2xOQB8PM=
+	t=1790809731; cv=fail; b=gpXms9WlFPnHrpwqpbeAu8YIqpmVe9GXqZboMyRaaUeTa849a00jCPj145OmnqrQw3WYpkJaGnQJkyhgqhcgYcySbn6ucFFg2Wnv6sYPXpVrHyH3nBWR8cVFiFU14eoLtmPhts3AS446UIWod2m09wUhBzqXUpsTMqdup/RfM3o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790806479; c=relaxed/simple;
-	bh=TdRUkVzrNS3ku3WjWU4WCQfeKQturZwGaSHBbvXUBsc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=T3SvS34GoCjlUjTNETTWA4+Lv1Kp4J1Pfzc3BesDA3nAU8g+a6F6wJHsA1VH6AN8vP6Aewva8x8NAHVIcrKkByIVKQ/ioS9q+PMIFwD+ocb+nkZpUYjmATDoWzl8Z7mYf0IX8stVyT7/6UxalGN2c9QaZAU8xtrsnkRrzoXLlvQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=UP3Vx+G2; arc=pass smtp.client-ip=165.173.182.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1790809731; c=relaxed/simple;
+	bh=xdlmUACTTAIoYjuuOP0KlBdc1kcIlcPnU6f0R4wnZL8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=sAY+Hamf5egEIdDtJAHJTccl723UwrZpgufqykpHLqaPmY6xc4p/StR02ymtz8t4Zi2zH2AFOq8eDdU1r260Nm7WifCKd0sAQNs4w4UrfBfnzyKLbtaleKvtRQDBzwPBYMfon2kwvo6j7Xky4EL40g3EzsJ092BuBvnkhHOIuyk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GMZQmSND; arc=fail smtp.client-ip=40.107.209.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="UP3Vx+G2"
-ARC-Seal: i=1; a=rsa-sha256; t=1790806416; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=R0rhfdejG1NpLJEfeA9SsbtEXoVD9oTYmVIspiW8SSA/sSY4AQvud3VTAvEoCJZwCsREvpq/2vD0uk6PkGbXsvjQWuHVkCyFqc354FftZeX2448AI/x6Ivf5FuFvE3cw616kQrwd0CIhzIsOW09X2JkiFFbLrkDb8qqHFjUEDz0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1790806416; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=TdRUkVzrNS3ku3WjWU4WCQfeKQturZwGaSHBbvXUBsc=; 
-	b=GCuRuc8KeR/NQDLEqlhXJlO9n626ppH43k+uCq/P7LeOZ7SO24w4ga8XxhPEeA6GaA0Qxou0tVZmLT5oBWwcNuFW9tajMia0tvx9hAF7CjfQtLtkZOPNho3pnY1gArrLeuH23LtSO/e4e2l/PJzP/gAi6rWld0AonyCRW1mNtHM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1790806416;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=TdRUkVzrNS3ku3WjWU4WCQfeKQturZwGaSHBbvXUBsc=;
-	b=UP3Vx+G2pstp23toOTjJlXLqFl61Yjv8gn7uD+vfwj0jrWQcv3M6WnU83edp0zf1
-	aSnH8mGnbwO3PjQSNY5qHBWWTlvQEwhvw1RLqnKtEKzzlS6gaGwH0lL0MgkfSjyfk3A
-	8nhCsYaZw5Wmfc+AOzCJcAbNu10wdRsumRQQRPp0=
-Received: by smtp.zohomail.com with SMTPS id 1790806415705949.7237250024347;
-	Wed, 30 Sep 2026 15:13:35 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GMZQmSND"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YfGc2jUnT3/tYT8TcVu16+KHh4HPZNtmpNGwVyByaS/K2ovJv3HLxFrS1AF9U8hMwc00k5eXxjuanZq+MtegbRhEWUnHa7hoQ78hEw1WVUfZjddDPNrEmIgrhlYbSl5ilck5Z9lEt2M0zylt4WiqNIMbvTXpAkTXLgtONYbb1eZqDeFaiwXeW4Ochjz1eHFfCDdvLmxftIkpDFACjQAckma1h/HbEhpZtR9FpZO3iM55DAj4kUBnmV1PMAGKpRMlmggDM0jy2wczoAlbO4E57xxnBs7yeYSUaUKe0iaaWXw/vYkg2qvz412mPB4Y2yKRdq6wY6t9op/EZWeD3NvFbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F5pP3fvwKuAxQUlcI1EBqHqqGgV3BlIaWBl9f5lFVU0=;
+ b=aOBNO8vUyZ+al8cQM009+nE1eRpdmCKLzotDLn7Y3U8L4cZR5pJ2/OvFiPO05nEclY23r6ENFNEtPO76R+C+g/URUZuZ5PkwHluobBc+sVVxz53LPgjaXdXUOzqyOk81KpS2iJ9UPQZojetS0zBcnN78fCYJqS9ioAa4iSCMAtaXB3XakSkFdgoi7BQ1ZEXrOAhzgeHD56jefvV7phz9m/eGdHK3j98GxK0U93h95fDHtV9PSApQeotW8B0xphR1iII5Yn69fc/lbiT1w1QPeA+Y+9osHE25GVxd6mSo9irWIYF3wyrNFLGjrGnARVvvgxl5JBysjTmvdNnwLqvygw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F5pP3fvwKuAxQUlcI1EBqHqqGgV3BlIaWBl9f5lFVU0=;
+ b=GMZQmSNDTbLyZPPMHX4qwPMXu4E252IoQo1nCCHK1mtQ+UJXP9TWkQjNe8P35EOGH5HH8kkeN2KME0+dlpyBDMb1ai/oS6J58fSRsTaI+ISi8eeJkdKlycuruOqiwU2Q99h69x7F5kKVkXoYn0kyATvXNWGFVSYnjJAZ9GX34poMUF2CNznSln95An8O0Fu7fI+63H1/1gBRwXhzyLtaAnjol6RbvQeQxC8OppJ4FqWNiAkflJZ41RHCQlEteWHILuF1ew+R2Kb1hyHCPeyJakS7YjaX+FkqFdv5UXd8TSejgjDkW6GEI56ahztoBSfPMVz6+xcYbqkRF7IvuWdqlg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN0PR12MB5977.namprd12.prod.outlook.com (2603:10b6:208:37c::22)
+ by CH2PR12MB4037.namprd12.prod.outlook.com (2603:10b6:610:7a::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
+ 2026 23:08:40 +0000
+Received: from MN0PR12MB5977.namprd12.prod.outlook.com
+ ([fe80::d8:f725:258:2f28]) by MN0PR12MB5977.namprd12.prod.outlook.com
+ ([fe80::d8:f725:258:2f28%4]) with mapi id 15.21.0451.026; Wed, 30 Sep 2026
+ 23:08:40 +0000
+Date: Thu, 1 Oct 2026 09:08:35 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, nova-gpu <nova-gpu@lists.linux.dev>, 
+	M Henning <mhenning@darkrefraction.com>, Alice Ryhl <aliceryhl@google.com>, 
+	David Airlie <airlied@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	Eliot Courtney <ecourtney@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v6 00/13] gpu: nova: Export parameters from nova-core to
+ nova-drm
+Message-ID: <ar2VtdBHgGqIPQQP@nvdebian.thelocal>
+References: <20260909064506.910162-1-apopple@nvidia.com>
+ <20260927121736.1186364-1-dakr@kernel.org>
+ <DLQ3HW61LAW1.FLV9E4Z9B5S@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DLQ3HW61LAW1.FLV9E4Z9B5S@kernel.org>
+X-ClientProxiedBy: SY5P300CA0079.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:247::23) To MN0PR12MB5977.namprd12.prod.outlook.com
+ (2603:10b6:208:37c::22)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
-Subject: Re: [PATCH v10 0/7] rust: add ww_mutex support
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260103073554.34855-1-work@onurozkan.dev>
-Date: Wed, 30 Sep 2026 19:13:19 -0300
-Cc: rust-for-linux@vger.kernel.org,
- lossin@kernel.org,
- lyude@redhat.com,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- a.hindborg@kernel.org,
- aliceryhl@google.com,
- tmgross@umich.edu,
- dakr@kernel.org,
- peterz@infradead.org,
- mingo@redhat.com,
- will@kernel.org,
- longman@redhat.com,
- felipe_life@live.com,
- daniel@sedlak.dev,
- thomas.hellstrom@linux.intel.com,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <21B6451E-4344-41C1-B74B-1DFAD1AA3D7D@collabora.com>
-References: <20260103073554.34855-1-work@onurozkan.dev>
-To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: Apple Mail (2.3901.100.1.1.11)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB5977:EE_|CH2PR12MB4037:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6b426f78-eb40-44d9-b206-08df1f47c3cd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|7416014|376014|18002099003|22082099003|4143699003|6133799003|3023799007|10067099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	PFkeU1K+IlF8B9wxYv7NxVC4nWeMo1H1Gl6ALZDvr87mK21QM6Oncx5n4DMY1tu837VVycP1N8bkMqLieka0uxhqqO/erzAayV6UEAJwUUD+rXpJgIvlUonJpZ0Yttyd1QC+DGCAiQBgAICn/oqasmc2gbpiUbjTK2wBQvb+ZEKuNybyfB357go/SKwrkUAH5aFYfu2Yd7SbEgpuoPbYfGJzfSi2oDXwc8VLXHOPZ1voXiG0eHHFZ+ivBJY5gA223u/SeqxFBvmhwOk0iFLF0go3SuYUGGrLK05zNid0Y2oGcq38U3AvrglqHDWvZUF7WjNYpupw428CaMj2xznN+UDXCGlAK9dAFdCpoBLEPGJ1lYr9OsZvayRyqToHXd4cTcu+0SpW65Qt6QKGsDq81qIqr00Dx795NE5xLsCSt1bOyOppP2PpdmEOxaY2SeLSRPFD1Q8n8eTfMeHfueYELlW2OgTtIWNTxsk14xq2fCXDaMjJT2HbCl10quKZvHyCoiZv6TJ+d4q5f9kwfetnholv0gYsgt+yzKAzZj9Kygu0dVcb8qLdmfmy1CJvWAEyZiuceko8kiJ1P4F07eYZA7o8n2WJp6JUEQ9nthDbC3MBVSBqzFBvaTgPNnHtGHxBpkTNlkn0CdLhTco8uq5cXwI8ixw1QgPYSfs2emFNBdY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB5977.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(18002099003)(22082099003)(4143699003)(6133799003)(3023799007)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ErXJ15WujbgNz/HWHjtdRtzXgYTJh3bN9anx/r2hrfuqF0u+U8hcJdzPQckV?=
+ =?us-ascii?Q?/p8WE7t5TaFwZRA4YUn8ukCmhBlzNHgnOUz8+aZitRoATSPWHU4QYvp32EKN?=
+ =?us-ascii?Q?1hIzT/rEiGgMUmWVRlb/oRL0UKXEmd0PcNhnI/PiULbxdK64f80lX5461+HD?=
+ =?us-ascii?Q?T8mPfUk+MvV9qY5+zWM+XF+nL1fhNT99m1unF7z3cWkri35zrRbQpim0z/8Q?=
+ =?us-ascii?Q?4MEx99AGBcF0pnAN3rXyJ9km7HkGxqoCBbn0QeiqG0juI0m4lIbHlGuqb4Vs?=
+ =?us-ascii?Q?AiePAfkLUiq0YGZU6jSUm5RnGjfxo0aHS2HwBjIjP/UIDL4SXzcmyZakn4u9?=
+ =?us-ascii?Q?QKNKtVTihDp8yhfTt7uK2k4SPC6txyhtva+A7JXXa8/nW/KZsHFWqHrv/T80?=
+ =?us-ascii?Q?H9hZHmKn7oyAqlRA/V8PrBeb5Gk3Fi+XQRnKNfEYSOGUXCX7qXBwAjCqFw38?=
+ =?us-ascii?Q?VV9LR4noD28XvMpbGk5CS3d7JUPMvWHEujmfS53RijRYrBvJcrc56ZkrPfNe?=
+ =?us-ascii?Q?MICddbp5wSOLsTS8I7kf/+qkIRCwQBL3Or6/GWLtbYRDoPn+eU9W+uC516ik?=
+ =?us-ascii?Q?2tCzwOcTWnlNuHFU7WZs4MY60LMcyhyZq1UTjiukP+4B1qiSk/gfsybh0HGV?=
+ =?us-ascii?Q?J9KPrdqaUWAdyeG7wwpMb6FsGYlfar7JXg/PuRX2F0i1/51sQhlqEMOiLZ4c?=
+ =?us-ascii?Q?WxacR5DJouKoYaMOcJmsaUq5kp0ENO2R2mbkP5AKyoHQoFmA5M9xJkIkae8b?=
+ =?us-ascii?Q?V/uHE4xDA1duzgvocojSpX3cR1kCrudIDqHiF0ySLLkJTSrD3/7RzBYxx8Oi?=
+ =?us-ascii?Q?hQq3jrlV7/DN15S8i96N/A6cjARMmMAzHzDZurXFI3OHmQOOKPL0x+vkJ8/9?=
+ =?us-ascii?Q?+fZaPXNEJh32TCal8HL51FnMo8sgC7q+LknIi/6b89kwkFYnHc2MJnoTXaa3?=
+ =?us-ascii?Q?3/MESZH8V1cfDuhSemHkNSgIIOlH6wchhUUGufSND6yYtNH1GrSN1NrP8scA?=
+ =?us-ascii?Q?SW5mQUUrt53RZyESirPuJt5g049rTxzqWuv+HwFTq/v6nmWYQp+XWHrQlXmd?=
+ =?us-ascii?Q?15idNaV2d4oRGEKcKvg0zIo9qeCbnLwokQQjhUHc9fALVpNbUO0sdTctjW0Y?=
+ =?us-ascii?Q?YT8zkJbP5wg9wwvvoXZTO1aDt/Vxap/7YPN7Cj1d4S/pRVBhyCbSVX/BUpIX?=
+ =?us-ascii?Q?Zyavttl1eo8G3zmbPttinGWV0zFtl7dsPot0wmfQuGoRt08UDB2I8vJt+6h3?=
+ =?us-ascii?Q?/V9f5qDs9TZYJwIRzJhfjI0E+HDOfCIsO8qHg+70g/KDZB7tbT3Fs55NQBKh?=
+ =?us-ascii?Q?olVplQ8HrFYZdYnIYNM8N+8eB4ZeE7r8TWDCMXBeTHYEThkX5T9iv5Djqp9q?=
+ =?us-ascii?Q?8qa1+5aat+YQLV86TW0e9A2vCcjM5Y7NcjcF6NVHknEoxgxaPvdO20FJC5c2?=
+ =?us-ascii?Q?2D9B7MRZD7Taqe7cYToGAOU6z3kKeR8P/UuvXFjHGasbVEKpvfhekhX0/W5w?=
+ =?us-ascii?Q?NeTwCtW0q4gjiuuJ/ALBvJblNnLpXWWXIex5uy6soEteSsxl83+zoXLzrtfx?=
+ =?us-ascii?Q?/ms5mQQwuX/lHU2xU0+bgsO+YMYEeooMNJhYfXo7b2uN2NN3etF075nhTaif?=
+ =?us-ascii?Q?tAK7x8wNzXnpHwqavVqhvove/VeFSdVU5oCz4xJjHRUDDjIL/YhpgMYsIFpZ?=
+ =?us-ascii?Q?0cGhtXTb7m4wL8rbtQE7HNo9gDksArbS7vOzKydbOGc7kqxO6sKNLJv5snFf?=
+ =?us-ascii?Q?GXD4tTWszw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b426f78-eb40-44d9-b206-08df1f47c3cd
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5977.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 23:08:39.9594
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jOOoO4f58NenqK0ST9vubVfYm2GGIditF6xF3GBTTRHXZupETok4a0odZztC2QiZI1PgnGWWRC/1inp4qxIGgA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4037
 
-Hi Onur,
+On 2026-09-27 at 22:25 +1000, Danilo Krummrich <dakr@kernel.org> wrote...
+> On Sun Sep 27, 2026 at 2:17 PM CEST, Danilo Krummrich wrote:
+> > On Wed,  9 Sep 2026 16:44:53 +1000, Alistair Popple wrote:
+> >> [PATCH v6 00/13] gpu: nova: Export parameters from nova-core to nova-drm
+> >
+> > Applied, thanks!
+> >
+> >   Branch: drm-rust-next
+> >   Tree:   https://gitlab.freedesktop.org/drm/rust/kernel.git
+> >
+> > [1/13] rust: auxiliary: let registration_data_with() closures return covariant sub-fields
+> >       commit: 4075acc9d489
+> > [2/13] gpu: nova-core: Add public driver API to nova-core
+> >       commit: 6e70b1719991
+> >
+> >       [ Rebase and use pin_chain() for Gpu::run_selftests(). - Danilo ]
+> >
+> > [3/13] drm: nova: Add DRM registration data
+> >       commit: ecedc604e0aa
+> > [4/13] drm: nova: Add GPU architecture enum to nova-drm UAPI
+> >       commit: 342aaa7bb3cc
+> > [5/13] drm: nova: Add chipid enum to nova-drm UAPI
+> >       commit: a1678ed1f8a3
+> > [6/13] rust: uaccess: add UserSliceWriter::write_truncated()
+> >       commit: b40f5ed85c5f
+> >
+> >       [ Inline write_slice_partial() and use it to simplify write_truncated().
+> >         - Danilo ]
+> >
+> > [7/13] drm: nova: Add an info ioctl
+> >       commit: ce6e59897ba5
+> >
+> >       [ Avoid 'as' casts (add From<Chipset> for u32, From<Architecture> for
+> >         u32 and use IntoSafeCast, IntoSafeCastArch); improve / simplify a few
+> >         comments. - Danilo ]
+> >
+> > [8/13] drm: nova: Add usable VRAM size to GPU info
+> >       commit: d9886a1a06cd
+> > [9/13] drm: nova: Use nova-core to read VRAM_BAR_SIZE parameter
+> >       commit: 7edc491f6fca
+> > [10/13] drm: nova: Expose a render node
+> >       commit: 843bb3ccde8e
+> > [11/13] drm: nova: Report GPU name in GPU info
+> >       commit: 391cc215d22c
+> >
+> >       [ Use ..pin_init::zeroed() instead of ..default::Default(). - Danilo ]
+> >
+> > [12/13] drm: nova: Report GPU short name in GPU info
+> >       commit: e6d9c5b08c23
+> > [13/13] drm: nova: Report GPU GID in GPU info
+> >       commit: 10a6623a24a8
+> >
+> > The patches will appear in the next linux-next integration (typically within 24
+> > hours on weekdays).
+> >
+> > The patches are queued up for the upcoming merge window for the next major
+> > kernel release.
+> 
+> Alistair, I've also updated and merged your drm-test changes. I've also added a
+> patch for a Chipset type with strum [1] (it would be nice to have something
+> similar in the kernel as well).
 
-Thanks for all your work on this!
+Thanks! I was happy to update once this series was merged but am totally fine
+with your updates as well.
 
-This is a few releases old by now. It needs a rebase.
+ - Alistair
 
-=E2=80=94 Daniel=
+> [1] https://docs.rs/strum/latest/strum/
