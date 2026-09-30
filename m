@@ -1,350 +1,199 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021115.outbound.protection.outlook.com [52.101.100.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6285F5372FB
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 17:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790790115; cv=none; b=EY/MD/ZWpnP+Po1Q9MLeaoSJKBRNySbS8VRXCvLnhuG5Rq0T4tC2OOMHdU1hkr/44ib4U9CMlDehGvLzfYHDpeBY8KnIlyYl30+DSIfnmW3FJ5wCL+F3Lt0kB93WomBkUF9b3e79bQgBRziNfBydQ/WwzB8Nqsbnn5XuLOi20t4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790790115; c=relaxed/simple;
-	bh=Uyr1RpyXlIyY6KkPKPkDm96tH+iJzRR1ZQPzNIGJgZM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rVFYVrFOqXUxXbMfq7sjGQ1bvdSB4L+qrcUy3OgzeVycDSfPsEDzfSuYARAM/D0HPw94RKuS+Mdy9LykXtIbanUM7oi2+tT1gz+G7/k0PvyC8QdtuKWaqrM9JoTW1nNeflowErvDVIivp0zeafqd7qig3NtHh7TauEdfDnheXTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=CmYZV/2M; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91723519DFD;
+	Wed, 30 Sep 2026 18:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.115
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790791272; cv=fail; b=TS75/GnWjRDQV/vw/FFpEfJjnArpV1vfFCp3UM/JAbGUZUFJI8xdv/HAoSxmo+fYNTgEmYZEhclwGteJlpg377ff7jNHL+FgYXscvCBGCYDGjRhhJbtPuxD032B4TM8lOxk82kcse0jnQ1lPZ7MsvjfDP81mIqN1vvsxfSgtYYE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790791272; c=relaxed/simple;
+	bh=q0Z/qUtS4KXfaR8tICW7TwRgOOh+Qc7ke4YpwYYfQMc=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=o6KOrubqQa32dni9QM6zTgsZ7/rZ5BY32f1BfVzinTc6g3E3BoLTWSb0rB4PW3PejRDvYny3TcjHmXZVHuwGiFIEjn2x/LH/HGtjSJlMWFRv85j6bUGQq822VOA6xUDkE4zDZ64RmpXp8H3S7XNlP2dr12wNAsUzk6CgIwOQ9Aw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Cjrr6mHt; arc=fail smtp.client-ip=52.101.100.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="CmYZV/2M"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 116A024002A
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 19:41:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1790790111;
-	bh=I+uTcAW8u8uHMkPAau7RErYoiCyAQlm8Ewbm3HbHyss=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=CmYZV/2MG0WEhi4+1luKeVDiorswRV4sI4kW0+LOacqDp05BpZUDHT4tQ03EZEY/b
-	 LfYoebei5s8XgKE3mv50PN7l4Jka1nIk3tRJY6mFYY/zY4k4E8HizdTkYfKkM24AKc
-	 8mylbRzaXtwfS5syPBOiH++bWERVmcUkBxpfaiKWDxk4k0GUtIB+4IKg+Z65iRZBSU
-	 gKLnuWxNuNpWg9p39HMJUlTNcJbDLtZ4ELqs403KIia1gsszTUfCnS9YWnKo+inN27
-	 DKYh1yKPBuWmveM+sb4/zsCZd2NaModSDOD3Cj4Y7IV0dA/rJcAB7aoVeVt25iO/QF
-	 0JSORhQWKn41w==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4hw2RG0mpLz6tsb;
-	Wed, 30 Sep 2026 19:41:46 +0200 (CEST)
-Message-ID: <6fa1d763b656ea9f212584cd20485a9314941f93.camel@posteo.de>
-Subject: Re: [PATCH v3 2/4] tty: serdev: Export functions to pause
- receive_buf callback calls
-From: Markus Probst <markus.probst@posteo.de>
-To: Ayush Singh <ayush@beagleboard.org>, Johan Hovold <johan@kernel.org>, 
- Alex Elder <elder@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Miguel Ojeda	 <ojeda@kernel.org>, Boqun Feng
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,  =?ISO-8859-1?Q?Bj=F6rn?=
- Roy Baron	 <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Daniel Almeida	 <daniel.almeida@collabora.com>, Tamir
- Duberstein <tamird@kernel.org>,  Alexandre Courbot <acourbot@nvidia.com>,
- Onur =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>, Eric Biggers	
- <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Lorenzo Stoakes	
- <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett"	
- <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Jiri Slaby	
- <jirislaby@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: greybus-dev@lists.linaro.org, linux-serial@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	driver-core@lists.linux.dev
-Date: Wed, 30 Sep 2026 17:41:49 +0000
-In-Reply-To: <20260930-rust_serdev_probe_refactor-v3-2-d1b6e77135e0@posteo.de>
-References: 
-	<20260930-rust_serdev_probe_refactor-v3-0-d1b6e77135e0@posteo.de>
-	 <20260930-rust_serdev_probe_refactor-v3-2-d1b6e77135e0@posteo.de>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-dy6088XJdc08HjE7tRiN"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Cjrr6mHt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UjVsZ9uhro7i6D6gkCfHBr/g/Gdew8AhcETE+/qHsjDjaDgCANpv04hpbutgaJ5cTdBmM9qRufXPk4PXcu6DdhgBt7UbspGIx/lztqFt4CrvvMPMZAbpPPagLdCSLRC3wuadxAxO77+aAU2dsO6AQP8t2rdxlD9oylSOVFUT8YIgk0qZZC0pmM/LocGfcYI2vX2jnVTBq1G2VC5Ct90TM8+BX48a9ZsRbOqYrsj3aAnncQcof9btskdJFXQQPFJjykU/JXJFNFJtTLsoG5OREZ2jgFIN7DrYi5HVE1vbidfywhqtUirij0zqxho7tvDTMA1CxEOglZ6TnnYEsSr7Hg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7txI4gpMndAKtNahJTjo0UrmyZYp1pye+hxJ+mR83f0=;
+ b=W1f65fCfuudLTtvganpgqqfySV8fSnACVgIyZ3zClsKk+Qw4jGaHhZMR4FYOamc7evBDs6oOGn9LzLeCz7bBX0UqTBssDOJLzhtO63t5fWgrdxcLtdqiUaB+Cy6fIisP2l43Ea4A97kXlZj2pgsLP0Ls7EoLwC2lRmR0U3iXl0V1nNZ6Yna2pvfgK6FY7fB1QyjiAz6ql98V1+rCQyXEDXfvzK+k66SrHpvJg39ZZkvY4sEf+I6bWNOHyeUyTYF4xFMe19qvSmtmTARuTKwqSX+tMCukUTAqWxesZXXGwKGPGkFE9dtasyUPM1ACoxdNdX5c31OiBc74rqPAxtuGEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7txI4gpMndAKtNahJTjo0UrmyZYp1pye+hxJ+mR83f0=;
+ b=Cjrr6mHt9PaWSVP4EBvA2FH99fNN/nprFgkG8gNLFYHA8HwXutV5XYucg1hUjz97vxD8IjDAQEqpE7XBtBFCesmyK0awfsOwTUw6pUrUQCymZXk8UPERg6UekCLdk4iEJER+yiXzZLDkRr6TK7WQfWvfg3ydWpfuf0pl77coQ7s=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+ by LO0P265MB6344.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2c9::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.16; Wed, 30 Sep
+ 2026 18:01:06 +0000
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0451.024; Wed, 30 Sep 2026
+ 18:01:05 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 30 Sep 2026 19:01:05 +0100
+Message-Id: <DLSUIU2NE5CT.ICPNRMGFATCB@garyguo.net>
+Subject: Re: [PATCH] rust: proc-macro2: enable `proc_macro_span` feature
+From: "Gary Guo" <gary@garyguo.net>
+To: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.22.0
+References: <20260921115708.4009754-1-gary@kernel.org>
+In-Reply-To: <20260921115708.4009754-1-gary@kernel.org>
+X-ClientProxiedBy: LO6P265CA0022.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ff::17) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO0P265MB6344:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9acf402d-5a6e-4ad3-2704-08df1f1ccc5e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|10070799003|366016|23010399003|1800799024|10067099003|921020|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	D4nn2kCGLN8ywmFjdY2zGhDsDnqC/f2fEnlsVpRwS6Og5Rjqu1LL+BNN0cZXScMpIT+RCojGvJgArzqmmGn8UVQafwnlhognOaMTNfVKoKioIWAkVQEZyDCKktn4e4rx8cNcCnqJSyXwW5HM/S7Nj50rnryXxy/so2/SLE3TrVTO4MaOeV6VDW7IKMyOl+XfUpRDCYJzVUMlQG1xh6wzO/suKZXNvXgamMCYk2g44BRgqXfHNdbKYDQEKmb856MSClwgMz4UfEAQMhvRMPMQZB3MOX+AI/rpGFgX9deUTF/FvLnq2Y3HPKPSA5mEHTo1MpUua0lKCJYVfIVSt5d7fVYzf2MCV32rJdBkzW14CJ2crIjRH6XEhIR9mpTICjknlaqdxsTjlGBvmI0cHvPI8DBCE8jh6khJ7QpK1V2GRY9rqGf9QGwqwHXHrfWVa4iZ2ewFlqjVxkHjHjzvHpxHKTmQ3TwHtM2LUag2Y4eJ3KbWIeKJPDyVkIO5rfqlZbWnLNC87ltk+adqARKgbGeWWQT5VXj4Je/opiapxo7/SzWgwUvkG09zqcz4JoP2hCKljIWSSwUWKDWKqBlg5W4KakVhRB6a+7Py0b4M8QOi78QqU1G4NYueUsupP/Q1M0439KyXSbAfbtjd7Xr/gjfWjvZE5k64EdrArD4YC6ouJseevsBGLLOynbzSligUgZjepoaK2tZDTJmMZYs3fxDGAA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(10070799003)(366016)(23010399003)(1800799024)(10067099003)(921020)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?U3lqNWpFeDROY1piVFdIT0JkQnZxT05NdTU5MWQ5OE9VWlByTzJYLzlBZVZY?=
+ =?utf-8?B?NEJCYm1Oby9hZ283ZXNnR3FwOTIzM29GaW83eTk4YmZ1elFBS015bkJCMmcz?=
+ =?utf-8?B?TE1aT0N2V3luOThzcDh2YzdhTVA3NVFrUkVtMnJ6N2JUbmw3V21DTEpEbldw?=
+ =?utf-8?B?TUd4SFVFdnBHbHE0V0d5a2Z0V0FIM3JDR0hZWjY2cG1GVVUwVW03Q0ZXQUth?=
+ =?utf-8?B?akttaFRPN2ZlSVhCdHMydGY3SHJrVHVSUDNaY1VacmZvei9SNDJJUmlwdkVl?=
+ =?utf-8?B?UGJpZ0pRMFBaUGM0WG1JdmlHdjVLOXJkR3RsQnd0clptTm5WWGRUME9IcVhX?=
+ =?utf-8?B?Ritoa1hLdDdWcDdiRU9RdVJqYWFZZDhrY0pqQlJoS3JTNHVQelRSeWgxUml0?=
+ =?utf-8?B?WEErdTNGZmdGcGZEeUNhbFpRMTV1dm1ObHRxdlZxSGx5ckNGcUNTOUZkSjJq?=
+ =?utf-8?B?d1pqR0Y5QW1Dck5VcVpoeVlxYVhNRWIyUDd2OFpScUlib1ZLczZnTVJ5b3JT?=
+ =?utf-8?B?MzlDOGJaU1ZKVHhtZ0ExbzlDNnIvKzBMcndvNFp4dlVQbzY4V2UzMFI5K0tq?=
+ =?utf-8?B?V3RNUGJvb2RPcTVXci9tekM1VXV1SGRtOWZIaTg1RjhOaWxrNXh5aTVhVzg3?=
+ =?utf-8?B?SjZzRWdTV243OStUYUxqbWt2RDhUU2pzWVZJRjlRbVNlQXRWM0ZQRGNyTWlS?=
+ =?utf-8?B?dzJBM1dPeGg5U0tUZ2dtVnYxbGUzUStZT1d0OUxCUDRtb1U5dUljeG41a1cy?=
+ =?utf-8?B?eitLRVVrYnNmeGRUbHE5UDk2V0tYSE10NFVMUVdNRlhPZ3lWSnJPbWJaUWdv?=
+ =?utf-8?B?NTllQ1FaTzUxQ2VyOG5TdktzRzlEMVNEWnViQVh6YWtLTklnaUNDODMrbG8r?=
+ =?utf-8?B?Uy9TejlyN1M4M044NUhGams3ejU0eFVLTEQ3NFROMzVuZk4yZ3NldGV0ZHhl?=
+ =?utf-8?B?R0pSbjZkaCtic3NmWFlMTHY1b1FnTnlCWTBlQVllblppSDFCZWpJaFdKK3Rk?=
+ =?utf-8?B?RUxNU3pRNjZnaVg4RkNOQkVqTS9ydHdIeW9vR3FZOFc1NXdzdmJFbFVSd0dp?=
+ =?utf-8?B?Zzd2blhGMFZma0ovNitObXgyZGhXZFdCekhLNllVUDloYUNlVDltZVZDUis3?=
+ =?utf-8?B?YVpNM3k0V1ZwWHlhNVFqZFhaYVNYUjJBUjVpZUhrMmp2SDF6UWlNVkIwQ0xT?=
+ =?utf-8?B?bit3eU55dzVDNmczQndqN3FCdEIwYmtKMWNOd3Z1am5VSVhNeEg0ZjRUamp2?=
+ =?utf-8?B?L1YxRUMrRi90SHNPTi9BODk4cXFSR0NPaTAyWTdYRUtBSnJGTWU3MCtWQXRr?=
+ =?utf-8?B?WXNmTFJ0YWw4VmtYdXN5Ym9kNVpqVlJYTm54ZWFhdXJHVkowd0hnbGtDcW1W?=
+ =?utf-8?B?ZWs1NnBGeWs1emFjY0t6NHkxQUh3SVY4bWNPUmRrVFZROElRWGsrZm1WbFpL?=
+ =?utf-8?B?YWUwM2RDWXJWMGNnVXVsTjVGRFQrV2FIUmZocXpBV2Z5eFJkK1krWHJ3djQr?=
+ =?utf-8?B?ZHZJTGwwOGhFK04wRXV1OUZ5UUV6SHNiRDBkNEJnTFpmRThXa1FoVmp4Vlp5?=
+ =?utf-8?B?OWRmbjdha0tzL0pGMUZRZXk5YWZ5dnUrQ2lGZVNyellCYmc4ZlNyelFZM3FJ?=
+ =?utf-8?B?aGVrK2pQV0dmRnA4SkY0S1RpNkRMWFRvZkdEd2NiM1JlSy9FS2RLZlduQ214?=
+ =?utf-8?B?UVpHRzIvSzZPUDZ6YnNuS3pCUXI5WUxmUzdxMk8zVDVFdjA4L05RZzZwZmM5?=
+ =?utf-8?B?aU5rWmRUSkhHRHhpNEFGR1lFZ08rby84K28vbzhCcnZUVXZlalE3RVR1M2dk?=
+ =?utf-8?B?WDlTUUNKWk9nam8xcVhNcllhYXhKMVVadzAxaFgwOU91N1pINmZwdk5qa0c1?=
+ =?utf-8?B?STFFLzBGZUM1YXdRMUhDYnVhR3NEV2FIbTVlNDA0akVhMVRJTnZGbmhFWU1V?=
+ =?utf-8?B?aXBGcEkvWTk0VnFmOXJnbE40MnVZUENWcHZDcWQxNEJFS1J4Zkc3ZTlyRm9F?=
+ =?utf-8?B?WlZFOEFEdjl1N215eU5odWNBb0tMMThpRURPSCtvdmF5ZFNiaWNFMXd6OUd3?=
+ =?utf-8?B?S3lNdUN4dXNBR0xTdk9UbGZYQnpINC9VcW1ySVNIQ2MrYU54RVc1djgyS21T?=
+ =?utf-8?B?RDdkcmtYQjBzTWk3UElvd3VoWitYTGh5anRaQ3FuMVdaOHpPbDdtajJhZTNO?=
+ =?utf-8?B?L0FaN2g3TENZU2o3L0Q4c2xSdjJXMHNmak1QSlBpc0VGZFpja0JQWEZnMVlY?=
+ =?utf-8?B?a3gwWGdxc2V5d1hxU0pUaDYvaUZiM3VSMXBOSDI4V1pERWRwbUNDS1ZaenNZ?=
+ =?utf-8?B?UWpnWlhtdVVvZG9QcS9reTBNOHA2S3N2RmtIQ2sxZ0lvQ01FZ1ErUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9acf402d-5a6e-4ad3-2704-08df1f1ccc5e
+X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 18:01:05.9008
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lJ8WNVdrf+nrKzAVDgLy/Nh+BPLBmoqFD4pIkyySZy8Fio/+w2ip7xzCuHO0asgF1ZhRZ4ZmraH9LWOknYcNWw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6344
 
+On Mon Sep 21, 2026 at 12:57 PM BST, Gary Guo wrote:
+> From: Gary Guo <gary@garyguo.net>
+>
+> The `Span::join` function is very important in generating useful
+> diagnostics. When invoking `syn::Spanned::span`, it attempts to return a
+> overall span that covers the whole expression. If the `join` function is
+> unavailable, however, only the span of the first token is generated.
+>
+> This causes worse diagnostics quality for all macros, notably pin-init,
+> when compared to the pin-init's own diagnostics test suite with the featu=
+re
+> enabled.
+>
+> For example, this diagnostic refers to only a fragment of path and not th=
+e
+> full one:
+>
+>     error: The field index `1` of type `PhantomPinned` only has an effect=
+ if it has the `#[pin]` attribute
+>      --> tests/ui/compile-fail/pin_data/tuple_struct_missing_pin_phantom.=
+rs:6:20
+>       |
+>     6 | struct Tuple<T>(T, core::marker::PhantomPinned);
+>       |                    ^^^^
+>
+> The special "<-" syntax gets parsed as two tokens, so they are only
+> partially marked in diagnostics:
+>
+>     error: `<-` is not supported in tuple constructor syntax; name the fi=
+elds by index instead, e.g. `Type { 0 <- initializer, 1: value }`
+>      --> tests/ui/compile-fail/init/no_tuple_paren_arrow.rs:7:29
+>       |
+>     7 |     let _ =3D pin_init!(Tuple(<- 1, 2));
+>       |                             ^
+>
+> In the upcoming pin-init self-reference series, there are also custom
+> diagnostics that wish to use the span of the full type instead of its fir=
+st
+> token.
+>
+> Thus, enable the `proc_macro_span` feature. This does make use of the
+> unstable `Span::join` function, but this is for producing diagnostics onl=
+y,
+> so we do not have a hard reliance on the feature. A very small tweak of
+> proc-macro2 vendored code is needed to make the code compile for 1.85.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
---=-dy6088XJdc08HjE7tRiN
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Applied to pin-init-next. Thanks all!
 
-On Wed, 2026-09-30 at 17:32 +0000, Markus Probst wrote:
-> These functions will be used to simply the serdev rust abstraction. It
-> also contributes to the fixing of 2 race conditions in the serdev rust
-> abstraction.
->=20
-> Signed-off-by: Markus Probst <markus.probst@posteo.de>
+Best,
+Gary
+
 > ---
->  drivers/tty/serdev/core.c           | 44 +++++++++++++++++++++++++++++++=
-+++++-
->  drivers/tty/serdev/serdev-ttyport.c | 33 ++++++++++++++++++++++++++++
->  include/linux/serdev.h              |  6 +++++
->  3 files changed, 82 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/tty/serdev/core.c b/drivers/tty/serdev/core.c
-> index 77e8e1d4d2a6..af1470e33620 100644
-> --- a/drivers/tty/serdev/core.c
-> +++ b/drivers/tty/serdev/core.c
-> @@ -191,6 +191,45 @@ void serdev_device_close(struct serdev_device *serde=
-v)
->  }
->  EXPORT_SYMBOL_GPL(serdev_device_close);
-> =20
-> +/**
-> + * serdev_device_pause_rx() - pause data receive
-> + * @serdev:	serdev device
-> + *
-> + * Pause calls to receive_buf.
-> + *
-> + * Note that if a call to receive_buf is currently executed, the functio=
-n will
-> + * sleep until it has finished.
-> + */
-> +void serdev_device_pause_rx(struct serdev_device *serdev)
-> +{
-> +	struct serdev_controller *ctrl =3D serdev->ctrl;
-> +
-> +	if (!ctrl || !ctrl->ops->pause_rx)
-> +		return;
-> +
-> +	ctrl->ops->pause_rx(ctrl);
-> +}
-> +EXPORT_SYMBOL_GPL(serdev_device_pause_rx);
-> +
-> +/**
-> + * serdev_device_resume_rx() - resume data receive
-> + * @serdev:	serdev device
-> + *
-> + * Resume calls to receive_buf.
-> + *
-> + * This can be called even if not paused to ensure data receive is activ=
-e.
-> + */
-> +void serdev_device_resume_rx(struct serdev_device *serdev)
-> +{
-> +	struct serdev_controller *ctrl =3D serdev->ctrl;
-> +
-> +	if (!ctrl || !ctrl->ops->resume_rx)
-> +		return;
-> +
-> +	ctrl->ops->resume_rx(ctrl);
-> +}
-> +EXPORT_SYMBOL_GPL(serdev_device_resume_rx);
-> +
->  static void devm_serdev_device_close(void *serdev)
->  {
->  	serdev_device_close(serdev);
-> @@ -402,6 +441,7 @@ EXPORT_SYMBOL_GPL(serdev_device_break_ctl);
->  static int serdev_drv_probe(struct device *dev)
->  {
->  	const struct serdev_device_driver *sdrv =3D to_serdev_device_driver(dev=
-->driver);
-> +	struct serdev_device *sdev =3D to_serdev_device(dev);
->  	int ret;
-> =20
->  	ret =3D dev_pm_domain_attach(dev, PD_FLAG_ATTACH_POWER_ON |
-> @@ -409,7 +449,9 @@ static int serdev_drv_probe(struct device *dev)
->  	if (ret)
->  		return ret;
-> =20
-> -	return sdrv->probe(to_serdev_device(dev));
-> +	serdev_device_resume_rx(sdev);
-> +
-> +	return sdrv->probe(sdev);
->  }
-> =20
->  static void serdev_drv_remove(struct device *dev)
-> diff --git a/drivers/tty/serdev/serdev-ttyport.c b/drivers/tty/serdev/ser=
-dev-ttyport.c
-> index c11908f5e1ce..2bed0e54202a 100644
-> --- a/drivers/tty/serdev/serdev-ttyport.c
-> +++ b/drivers/tty/serdev/serdev-ttyport.c
-> @@ -7,8 +7,10 @@
->  #include <linux/tty.h>
->  #include <linux/tty_driver.h>
->  #include <linux/poll.h>
-> +#include "../tty.h"
-> =20
->  #define SERPORT_ACTIVE		1
-> +#define SERPORT_PAUSE_RX	2
-> =20
->  struct serport {
->  	struct tty_port *port;
-> @@ -35,6 +37,9 @@ static size_t ttyport_receive_buf(struct tty_port *port=
-, const u8 *cp,
->  	if (!test_bit(SERPORT_ACTIVE, &serport->flags))
->  		return 0;
-> =20
-> +	if (test_bit(SERPORT_PAUSE_RX, &serport->flags))
-> +		return 0;
-> +
->  	ret =3D serdev_controller_receive_buf(ctrl, cp, count);
-> =20
->  	dev_WARN_ONCE(&ctrl->dev, ret > count,
-> @@ -177,6 +182,32 @@ static bool ttyport_close(struct serdev_controller *=
-ctrl)
->  	return true;
->  }
-> =20
-> +static void ttyport_pause_rx(struct serdev_controller *ctrl)
-> +{
-> +	struct serport *serport =3D serdev_controller_get_drvdata(ctrl);
-> +	struct tty_struct *tty =3D serport->tty;
-> +
-> +	guard(mutex)(&serport->lock);
-> +
-> +	set_bit(SERPORT_PAUSE_RX, &serport->flags);
-> +
-> +	if (test_bit(SERPORT_ACTIVE, &serport->flags))
-> +		tty_buffer_flush_work(tty->port);
-I just realised this could result in a deadlock.
+> Miguel, please let me know if you're okay with the proc-macro2
+> modification.
+>
+> I'd like to take this via pin-init-next if possible.
+> ---
+>  rust/Makefile                             | 1 +
+>  rust/proc-macro2/README.md                | 3 ++-
+>  rust/proc-macro2/probe/proc_macro_span.rs | 8 --------
+>  3 files changed, 3 insertions(+), 9 deletions(-)
 
-Since the mutex already prevents calling of
-`serdev_controller_receive_buf`, it is safe to completely remove this
-section (if statement + `tty_buffer_flush_work`).
-
-Thanks
-- Markus Probst
-
-> +}
-> +
-> +static void ttyport_resume_rx(struct serdev_controller *ctrl)
-> +{
-> +	struct serport *serport =3D serdev_controller_get_drvdata(ctrl);
-> +	struct tty_struct *tty =3D serport->tty;
-> +
-> +	guard(mutex)(&serport->lock);
-> +
-> +	clear_bit(SERPORT_PAUSE_RX, &serport->flags);
-> +
-> +	if (test_bit(SERPORT_ACTIVE, &serport->flags))
-> +		tty_buffer_restart_work(tty->port);
-> +}
-> +
->  static unsigned int ttyport_set_baudrate(struct serdev_controller *ctrl,=
- unsigned int speed)
->  {
->  	struct serport *serport =3D serdev_controller_get_drvdata(ctrl);
-> @@ -281,6 +312,8 @@ static const struct serdev_controller_ops ctrl_ops =
-=3D {
->  	.get_tiocm =3D ttyport_get_tiocm,
->  	.set_tiocm =3D ttyport_set_tiocm,
->  	.break_ctl =3D ttyport_break_ctl,
-> +	.pause_rx =3D ttyport_pause_rx,
-> +	.resume_rx =3D ttyport_resume_rx,
->  };
-> =20
->  struct device *serdev_tty_port_register(struct tty_port *port,
-> diff --git a/include/linux/serdev.h b/include/linux/serdev.h
-> index 0f4e81c0950d..02773554e759 100644
-> --- a/include/linux/serdev.h
-> +++ b/include/linux/serdev.h
-> @@ -89,6 +89,8 @@ struct serdev_controller_ops {
->  	int (*get_tiocm)(struct serdev_controller *);
->  	int (*set_tiocm)(struct serdev_controller *, unsigned int, unsigned int=
-);
->  	int (*break_ctl)(struct serdev_controller *ctrl, unsigned int break_sta=
-te);
-> +	void (*pause_rx)(struct serdev_controller *ctrl);
-> +	void (*resume_rx)(struct serdev_controller *ctrl);
->  };
-> =20
->  /**
-> @@ -194,6 +196,8 @@ static inline size_t serdev_controller_receive_buf(st=
-ruct serdev_controller *ctr
->  int serdev_device_open(struct serdev_device *);
->  void serdev_device_close(struct serdev_device *);
->  int devm_serdev_device_open(struct device *, struct serdev_device *);
-> +void serdev_device_pause_rx(struct serdev_device *serdev);
-> +void serdev_device_resume_rx(struct serdev_device *serdev);
->  unsigned int serdev_device_set_baudrate(struct serdev_device *, unsigned=
- int);
->  void serdev_device_set_flow_control(struct serdev_device *, bool);
->  int serdev_device_write_buf(struct serdev_device *, const u8 *, size_t);
-> @@ -233,6 +237,8 @@ static inline int serdev_device_open(struct serdev_de=
-vice *sdev)
->  	return -ENODEV;
->  }
->  static inline void serdev_device_close(struct serdev_device *sdev) {}
-> +static inline void serdev_device_pause_rx(struct serdev_device *serdev) =
-{}
-> +static inline void serdev_device_resume_rx(struct serdev_device *serdev)=
- {}
->  static inline unsigned int serdev_device_set_baudrate(struct serdev_devi=
-ce *sdev, unsigned int baudrate)
->  {
->  	return 0;
-
---=-dy6088XJdc08HjE7tRiN
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmq9SdkbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSdSsP/1aadVwJQNPm0NLQiSDA
-rumkbifsSrW/sUOr3yEhnrdWRcx55sto8VmWjGBDbvVsm0mRTGgRZfzuMTdEVoA0
-ngS1cQpcxiritOEnTZ3xjljAddE4AM04TD4PYnC3hyZGLbNP8eKOA1/Ew7iTEwUY
-NppQt0vYzdOvemHiskIZJZE2mCppRYPa9xJvlIg19e1YTESx5WTjKpxP5IQR6Fr7
-Q+rlWH4220ByPs8Xy9sqFToh/C6NZ18YpF7ezwODURGBvmmrkzL88raIspxmGP5E
-/RTxvZEiOfm1Qi8TmKbCK/sR50ZLO7253lWOI+3fyM0WTsCDyMpwzMaujg7mIwjo
-6GK/SoAw3gtw/RoFTEQi5uNC4FRRI3FMMgO3T2t6FI0O5bFIzvTypvSS83WzJMgR
-9llH79DCpw6hJJICtdIULfvaYM5MrVNQ/RrKgG/0J5vwBRRTHC0PNKNxZJnaN/Xb
-yKIiKz7/3w9oGGf2cfH9h6leLpHzKHBhKXuNu2vu+wgB12uHnFzrlatvgwzQVuoC
-v4v4eHAQqX64u9fawTmZWpz17ikH38L1CXqGvGzeo7wnTEdjcUo/v5373wa5iiU2
-PxZnSbj09cjtpJpoOROMb2xMTdrRAZrxec6MvGVZcoylvK3loYYHw0lKBhHCjmgv
-RUg07VB0KB7ED28LoM02XRUb
-=8CHL
------END PGP SIGNATURE-----
-
---=-dy6088XJdc08HjE7tRiN--
