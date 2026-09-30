@@ -1,335 +1,159 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010008.outbound.protection.outlook.com [52.101.201.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39FE5226A6
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 17:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790789560; cv=none; b=CpGFDIxHP66sj/kFyg0bxndEr6H3vVsVFB1Jk401NptyN21/9/opyufSYWvw1URPrDYxIYzp9q7dTh4L7Hakq0lG7PFCrozfQwr7jh74iLXuwkUjye8TFrHr0xYiAok9qhMx/vStRBLpScF460fX9+F15xb9my1gKk1KutuIcDc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790789560; c=relaxed/simple;
-	bh=WQslHMs2svOlSFQafK7q53v+0G7DlzBK6lZSGEX3Nu4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qggSFE5IZIn9z+aN0KITl/Dvo64BaREqO7dtTsDPuUf7/Buq07+PLSRB3mczMGn3LnUVe9PD2CP3xrzJlDmUSANfqYDsyDmiZZflpqWk4toYMF2n51h5s+s6h16ExuukpQ0tTHzbLoLpEDoEanJz0ZwyetcTZJT+MnVNX6gYlvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=E7QaKIsj; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6AC5304AC;
+	Wed, 30 Sep 2026 17:38:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790789930; cv=fail; b=DNla4rrzVU4MIjpJ5rcNTuHnNxbBx1aQFnaVkMe74655Rw0mgzB63VZqXumrav+jmJssgmmm1P+FY7nloY+YGQjkg6CH+lbmoizo7qDseUCa/io47t2T8VwBOJPh0/a17MuF3AJ2j6xObtilaULYOurGbkyVGsfQdDxZkmmnK6g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790789930; c=relaxed/simple;
+	bh=h7Tu8nMFBQf73Y4+KsEX0hz5W2oDw0fACJYr4cPYT1Q=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WdABxUY7C8Hxu7wxUWaRKp3mo1CeyGAvYQSL/vdLFHOleSzeQYoGcY8bzsHizwV1775CqSq33GBU/RXmKaVNxfpwi+I1x091sh2QomRal7OkgaFGFwjX2A6TOGwU8B1r4Kypr8rW31VAiS0MNHB4WhQ0W7T7FGjZMCswbUMRBe4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TAR5Uhxt; arc=fail smtp.client-ip=52.101.201.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="E7QaKIsj"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 5102B240107
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 19:32:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1790789556;
-	bh=v2EF/fsRX2gtP/07bUp+y+QrpNj7xZBjUZMkm63RIN4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=E7QaKIsjRfOGB/8kJzxFfy08SwOC0a6I6dq5pIcs8kdoWTb3xv8EycoKIfszItg9u
-	 XXiPm8ZV0dXpVmKWrw5trRoAQFqI6D9XwN7UhiB+3fYML9dr0l1UBBsdzI0HSBMRXf
-	 TvEllGuO0uRa05t0pcVD/OYGwEoHhza+yUAsmAhvherJI5p6xad7ItKnsFh9wcGlMO
-	 oGG/dnNYUurKQbNRCS9RNmCZ5Sk5WwB4Pyc/af9Dk+T09O4JsjigmEghFcJleASbcr
-	 iCJaPPK/OMXDWjQf8LnM4/tz8Q9yqiHAfI2+4BPeivHDapr+vyGksW9fw4U0aXEarp
-	 nDmXQMhBUlTzg==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4hw2Db0cV7z9rxB;
-	Wed, 30 Sep 2026 19:32:31 +0200 (CEST)
-From: Markus Probst <markus.probst@posteo.de>
-Date: Wed, 30 Sep 2026 17:32:32 +0000
-Subject: [PATCH v3 4/4] rust: serdev: Simplify callbacks
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TAR5Uhxt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bj0X6GtB5KBHKC+LisSy2VM1F8FC1c6mYXamOS5Rqom3Lns3X4QmRZIS1Y82hwKY8wcCNtyhDUKavANM3jexbDE2EYRukjgdmG/YyyqYP2KtfdkXk9im3AWntdoJ0uKZEGOOITX6Dz+f21ILgQbi/ApnFaSaFJHeaChvDZpiy+4VTSRa1xHqAcoWFdt5WCJcYckjF/Zz1ygfJ7aob74zXrkrIHF01CKGhDyj7iSARDLaKrY1OPYFocK4IkHnQz1p9BQ38QYS3nn9ztV+rcFDdt7XW5YdpaJ7zXsJfW0AvJ6xIHZMfcvS+28aQ/Hf1Wg5fCp1UTuzDmnQXOyK0+wJlA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9sAUz0R93eUErSdqv6MbEMBCGP4gTsHn0nHdpiLmUNI=;
+ b=xtE1nFn+xKCV8U+IE2L1BQeCCv5hIbdF8pHF1NKnEEI6AyRF19boru3WGmwJBPOCoNa4TY8XErfycO2KdWXnY/AymhNgvRXPmEAzIg22Pg+mpnd1DdnHS0EO8arVBYV71V1wy7/IQ5R3NOjnSEVQKRMecWBV3fBhFhW0QyucbTsTNiVGIR/2crVy0SkvWkILKSIIdmcJTvlBzyWnBIqIPaZEQjKkNM0Dkgx9t+lCzzOEpfDlxyELOKbXVv73ROmWFU0aY+Tl446RU6c39LnPbwyptBIClr7Dqnu2lE51/Ilgx0V5TVCIp/iUX2NM87q55pgYsR2D5EMmbPPxWgLqIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=collabora.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9sAUz0R93eUErSdqv6MbEMBCGP4gTsHn0nHdpiLmUNI=;
+ b=TAR5Uhxtcb0G+JYyaiSb3FIlKEsnODnFbkZaLaSzORgZwm+o2Bt3r6C4OsqdoAlAZB+X3lOx9so6kSLHFZnVQv0Jxqa7ZlRgEwqsrSgRAuNtV3NMhc/cttjy4awVFIQ2vqQj/1cA0eh6iu7GWC81glliSx2a1YrMtXviU48tuPLaxyJX2HLzRe+rj4pFppUIEdZVeiayPoX+/le0gMDyKwV2oIagbaqD2Z7jG0AQie6+PuWsoO6GQd+SlIqF+0VeJp1LC6jI3vDx4CG942qLBONltdIjG4fwxaoa53MANTqQJiclTjDoh4TfCVOoVRBoIzJ/kbINbmYzUCPMYUlIIg==
+Received: from DS7P222CA0028.NAMP222.PROD.OUTLOOK.COM (2603:10b6:8:2e::21) by
+ DS2PR12MB9589.namprd12.prod.outlook.com (2603:10b6:8:279::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.472.16; Wed, 30 Sep 2026 17:38:39 +0000
+Received: from CH3PEPF00000017.namprd21.prod.outlook.com
+ (2603:10b6:8:2e:cafe::18) by DS7P222CA0028.outlook.office365.com
+ (2603:10b6:8:2e::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.15 via Frontend Transport; Wed,
+ 30 Sep 2026 17:38:34 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CH3PEPF00000017.mail.protection.outlook.com (10.167.244.122) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.496.3 via Frontend Transport; Wed, 30 Sep 2026 17:38:33 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 30 Sep
+ 2026 10:38:08 -0700
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 30 Sep
+ 2026 10:38:07 -0700
+Received: from inno-dell (10.127.8.11) by mail.nvidia.com (10.129.68.9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49 via Frontend
+ Transport; Wed, 30 Sep 2026 10:38:01 -0700
+Date: Wed, 30 Sep 2026 20:37:58 +0300
+From: Zhi Wang <zhiw@nvidia.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+CC: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <dakr@kernel.org>, <aliceryhl@google.com>,
+	<bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
+	<boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+	<lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+	<markus.probst@posteo.de>, <cjia@nvidia.com>, <smitra@nvidia.com>,
+	<ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
+	<targupta@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
+	<jhubbard@nvidia.com>, <zhiwang@kernel.org>, <joelagnelf@nvidia.com>,
+	<daniel.almeida@collabora.com>, <tamird@kernel.org>, <work@onurozkan.dev>
+Subject: Re: [PATCH v9 1/1] rust: pci: add extended capability and SR-IOV
+ support
+Message-ID: <20260930203758.4d8f1b95@inno-dell>
+In-Reply-To: <DL7UAU8JQMJP.JBZ591QQ7LPH@nvidia.com>
+References: <cover.1787830828.git.zhiw@nvidia.com>
+	<2e9d992509299c2f13de48109c4c933f53817acb.1787830828.git.zhiw@nvidia.com>
+	<DL7UAU8JQMJP.JBZ591QQ7LPH@nvidia.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260930-rust_serdev_probe_refactor-v3-4-d1b6e77135e0@posteo.de>
-References: <20260930-rust_serdev_probe_refactor-v3-0-d1b6e77135e0@posteo.de>
-In-Reply-To: <20260930-rust_serdev_probe_refactor-v3-0-d1b6e77135e0@posteo.de>
-To: Ayush Singh <ayush@beagleboard.org>, Johan Hovold <johan@kernel.org>, 
- Alex Elder <elder@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, 
- Jiri Slaby <jirislaby@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: greybus-dev@lists.linaro.org, linux-serial@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- driver-core@lists.linux.dev, Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8348;
- i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=WQslHMs2svOlSFQafK7q53v+0G7DlzBK6lZSGEX3Nu4=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqvUelyfRJDHfq5WvbDUOYxPAS2WLn1ZhhKl8JL
- EPEMX0pNzuJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCar1HpRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9I2+Q/+NLGOA3opgIgGT/gfNPmKYqMSqo4Ky/D
- 5wLF9oovh/JIof0+w4v4CmylNpwwUVdO+f+rm2c92TyFyH4N3fdZ7v1PEnEO8EN9NR7SsUM9gjf
- UhM7lKTfDel+v8cYdhRxNUIl4UunNR7bOlxsJW1QQ0z+thCk/YYYmPGJSUKAARpTfkr2Dj6P4tM
- R2aDEKOylr/v6RoxS+P6OvFsxNXBn1lSdjip27+7vnsPthqNa7M2+4iQPrztmvQzduOoq/eFEC7
- LzU6ZDZmgHT0ewOmClPzq+e03jbLujsxKI4Z0a0lgF+rYNdy3XoL700kORlJZuTHBWrJph3zhJJ
- DF4Uo71fJEWUETJMgL1XnWXW1ZCNVbRr0ve0hDya+jCa8AhzFIQUI7m58+K1fXCn//ghyHc/Eo2
- JUB9aeGJkkQm9bFO3N3N8/LJ8eSFxGtO7NC7vjVpwmgXT8bFd49kuBAgivw3+CEbEVNJ8UmyZe4
- n/jloKh7aSbrlRSRUUrjdY/YOh9xmlZyv5fikVlQzluipET5yYWmeTgLph/92R2pbkzWZHcyY5m
- unyOT7cAX/X3w9mWULmT2L2S/HDA45g6iA2vzg6Ld7TXMyC2pGzaMOhrrufap3L5okReHkD1yxn
- FnDPsslUwLa7pZJ4wsx4G+a2HbsPiX/a/Iq0fEv9+iBJrEBi/v2A=
-X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
- fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
-  keydata=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
-  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000017:EE_|DS2PR12MB9589:EE_
+X-MS-Office365-Filtering-Correlation-Id: 52dd15bf-6e5d-4c29-254e-08df1f19a6b5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|36860700016|82310400026|23010399003|1800799024|10067099003|11063799006|56012099006|4143699003|6133799003|13003099007|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	HVMnHf+Z72D845CDOnpBixsBMUxv6HX7hTU/nXFEWIemTkfxxB1SKmaIEGdc6WtseTe8VEpQWORic2/YbIsOm4SzkQcc8v1F06dGUs996bmWOXG28XFxg/QdgTKh75uwku0Agu3yHqKtncj25Drq/MAvYPzkQ+H0cSI6x5/yKiMW7l9rvIYsnmoOqL28fEjJExt/rnQKwmvhNQGl4nzsOH9f/QEK6K7DZ1ZfhchmvkgpTAXsJ/N9VypshHlITbLYMRXLyf5EjrLnKioAFqrZXwbuIgrf+KzLtQN1HKRpJ+y4/yW/Z7h2D7abGe0JqYwmH9Rq+DjwDZ1rV01uwKolleTh6/jJ5tuW+qD5ZVLa+lztTZqLtKMyInZKIDZ24CcO+FNuHLLO+rDQ/W39POc9yviKoX9J1Xei0tUTzW7q3NSTqdk7s8cdoAXjnIrzkXWwvpFdEYUAul/cp+yJrTamt0Cnh1aKjliSgjLtGrBm7VS/LAfcigkX3mgSWivJRLTTdzyLzWjvKvTbFr2wsUViwIJ2DSfORuN7C8bjvd48u3ZOUHPtt5bEhwKfjO2pcVRMeUpJjXavwWvxN0QXNnYoJVZI6ln5wNAyut+OCCyY3ZCJ+1JOKijNapQp/B/sK8BQ0BVD51SC8dC65Gk3Z2JgON/yhlQBKpmyzvNHpfK2z6+3r3DhphM3BEm1XXNqPlrSoqQUCxqRlpJKb0X/N5uDVw==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700016)(82310400026)(23010399003)(1800799024)(10067099003)(11063799006)(56012099006)(4143699003)(6133799003)(13003099007)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	RbSYGvrYkpTXSKrzqsDdoyKG6XDVyWkrmyUfsk9XDVliX/ib4X+qcuMlWf+t3GxAaeM8LG0DuwUCPf577T41iwOP88wtSb+2ApfhsMxsWdpBt6/PCkZBOGzD1sKwZrNVk2Q0KQ38IgAbYTYD1qPBtNMKxyHyKefDe7rrf59sY7FaMfGy5rEKRP/AzORu9t+2WyccI1lwlbmCBio0Jl76psdLwLJ9xE6sla9aO829IzkNKXlOn0MZoJdL8VIzaOSjNyPwrYYMoQuixKQMDgV2yAWdPrw937nV+VCoR4dZd/eU0Pel/DmhxHPnj+tUnK17vrUhmy2M96M3ljqhnUVmxvtheNnzKZNvfQQD2gu2Tjer+yzJMwM3RYlx2dFNoI223OOD91ofS5FvjK4tZqwbcxeadeOUXz8hpXtc929mQuwvGAkf9Dr2CY2RML1RxDGO
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 17:38:33.9856
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 52dd15bf-6e5d-4c29-254e-08df1f19a6b5
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF00000017.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9589
 
-Initialize the driver's private data directly on `PrivateData`.
+On Sun, 06 Sep 2026 10:24:39 +0900
+"Alexandre Courbot" <acourbot@nvidia.com> wrote:
 
-Introduce `OpenGuard` for resource cleanup.
+Gentle ping for the next step. :)
 
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
----
- rust/kernel/serdev.rs | 131 ++++++++++++++++++++------------------------------
- 1 file changed, 52 insertions(+), 79 deletions(-)
-
-diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
-index c16d6593a8d2..3f9165e16776 100644
---- a/rust/kernel/serdev.rs
-+++ b/rust/kernel/serdev.rs
-@@ -17,16 +17,12 @@
-     prelude::*,
-     sync::aref::AlwaysRefCounted,
-     time::Jiffies,
--    types::{
--        Opaque,
--        ScopeGuard, //
--    }, //
-+    types::Opaque, //
- };
- 
- use core::{
--    cell::UnsafeCell,
-     marker::PhantomData,
--    mem::{offset_of, MaybeUninit},
-+    mem::offset_of,
-     ptr::NonNull, //
- };
- 
-@@ -92,24 +88,36 @@ unsafe fn unregister(sdrv: &Opaque<Self::DriverType>) {
-     }
- }
- 
-+struct OpenGuard<'bound> {
-+    sdev: &'bound Device<device::Bound>,
-+}
-+
-+impl Drop for OpenGuard<'_> {
-+    fn drop(&mut self) {
-+        // SAFETY:
-+        // - `self.sdev.as_raw()` is guaranteed to be a pointer to a valid
-+        //   `struct serdev_device`.
-+        // - The existence of self proves that the device is open.
-+        unsafe { bindings::serdev_device_close(self.sdev.as_raw()) };
-+    }
-+}
-+
- #[doc(hidden)]
--#[pin_data(PinnedDrop)]
-+#[pin_data]
- pub struct PrivateData<'bound, T: Driver> {
--    sdev: &'bound Device<device::Bound>,
-     #[pin]
--    driver: UnsafeCell<MaybeUninit<T::Data<'bound>>>,
--    open: UnsafeCell<bool>,
-+    driver: T::Data<'bound>,
-+    open: OpenGuard<'bound>,
- }
- 
--#[pinned_drop]
--impl<T: Driver> PinnedDrop for PrivateData<'_, T> {
--    fn drop(self: Pin<&mut Self>) {
--        // SAFETY: We have exclusive access to `self.open`.
--        if unsafe { *self.open.get() } {
--            // SAFETY: `self.sdev.as_raw()` is guaranteed to be a pointer to a valid
--            // `struct serdev_device`.
--            unsafe { bindings::serdev_device_close(self.sdev.as_raw()) };
--        }
-+impl<'bound, T: Driver> PrivateData<'bound, T> {
-+    #[inline]
-+    fn driver_data(self: Pin<&Self>) -> Pin<&T::Data<'bound>> {
-+        // SAFETY: We treat the result as pinned.
-+        let inner = unsafe { Pin::into_inner_unchecked(self) };
-+
-+        // SAFETY: `self.driver` is pinned.
-+        unsafe { Pin::new_unchecked(&inner.driver) }
-     }
- }
- 
-@@ -134,46 +142,30 @@ extern "C" fn probe_callback(sdev: *mut bindings::serdev_device) -> kernel::ffi:
- 
-         from_result(|| {
-             sdev.as_ref().set_drvdata(try_pin_init!(PrivateData::<T> {
--                sdev: &**sdev,
--                driver: MaybeUninit::<T::Data<'_>>::zeroed().into(),
--                open: false.into(),
-+                open: {
-+                    // SAFETY:
-+                    // - `sdev.as_raw()` is guaranteed to be a valid pointer to
-+                    //   `serdev_device`.
-+                    // - It is safe to call before open.
-+                    unsafe { bindings::serdev_device_set_client_ops(sdev.as_raw(), Self::OPS) };
-+
-+                    // SAFETY: `sdev.as_raw()` is guaranteed to be a valid pointer to
-+                    // `serdev_device`.
-+                    unsafe { bindings::serdev_device_pause_rx(sdev.as_raw()) };
-+
-+                    // SAFETY: `sdev.as_raw()` is guaranteed to be a valid pointer to
-+                    // `serdev_device`.
-+                    to_result(unsafe { bindings::serdev_device_open(sdev.as_raw()) })?;
-+
-+                    OpenGuard { sdev }
-+                },
-+                driver <- T::probe(sdev, info),
-             }))?;
--            // SAFETY: We just set drvdata to `PrivateData<'_, T>`.
--            let private_data = unsafe { sdev.as_ref().drvdata_borrow::<PrivateData<'_, T>>() };
--            let private_data = ScopeGuard::new_with_data(private_data, |_| {
--                // SAFETY: We just set drvdata to `PrivateData<'_, T>`.
--                drop(unsafe { sdev.as_ref().drvdata_obtain::<PrivateData<'_, T>>() });
--            });
--            // SAFETY: `sdev.as_raw()` is guaranteed to be a valid pointer to `serdev_device`.
--            unsafe { bindings::serdev_device_set_client_ops(sdev.as_raw(), Self::OPS) };
- 
-             // SAFETY: `sdev.as_raw()` is guaranteed to be a valid pointer to `serdev_device`.
--            unsafe { bindings::serdev_device_pause_rx(sdev.as_raw()) };
--
--            // SAFETY: The serial device bus only ever calls the probe callback with a valid pointer
--            // to a `serdev_device`.
--            to_result(unsafe { bindings::serdev_device_open(sdev.as_raw()) })?;
--
--            // SAFETY: We have exclusive access to `private_data.open`.
--            unsafe { *private_data.open.get() = true };
--
--            let data = T::probe(sdev, info);
-+            unsafe { bindings::serdev_device_resume_rx(sdev.as_raw()) };
- 
--            // SAFETY: We have exclusive access to `private_data.driver`.
--            let driver = unsafe { &mut *private_data.driver.get() };
--            // SAFETY:
--            // - `driver.as_mut_ptr()` is a valid pointer to uninitialized data.
--            // - `private_data.driver` is pinned.
--            let result = unsafe { pin_init::raw_try_init(driver.as_mut_ptr(), data) };
--
--            result.map(|()| {
--                private_data.dismiss();
--
--                // SAFETY: `sdev.as_raw()` is guaranteed to be a valid pointer to `serdev_device`.
--                unsafe { bindings::serdev_device_resume_rx(sdev.as_raw()) };
--
--                0
--            })
-+            Ok(0)
-         })
-     }
- 
-@@ -189,21 +181,10 @@ extern "C" fn remove_callback(sdev: *mut bindings::serdev_device) {
-         // and stored a `Pin<KBox<PrivateData<'_, T>>>`.
-         let private_data = unsafe { sdev.as_ref().drvdata_borrow::<PrivateData<'_, T>>() };
- 
--        // SAFETY: No one has exclusive access to `private_data.driver`.
--        let data = unsafe { &*private_data.driver.get() };
--        // SAFETY:
--        // - `private_data.driver` is pinned.
--        // - `remove_callback` is only ever called after a successful call to `probe_callback`,
--        //   hence it's guaranteed that `private_data.driver` was initialized.
--        let data_pinned = unsafe { Pin::new_unchecked(data.assume_init_ref()) };
--
--        T::unbind(sdev, data_pinned);
-+        T::unbind(sdev, private_data.driver_data());
- 
-         // SAFETY: `sdev.as_raw()` is guaranteed to be a valid pointer to `serdev_device`.
-         unsafe { bindings::serdev_device_pause_rx(sdev.as_raw()) };
--
--        // SAFETY: We already established that `data` is guaranteed to be initialized.
--        unsafe { data.assume_init_drop() };
-     }
- 
-     extern "C" fn receive_buf_callback(
-@@ -211,6 +192,9 @@ extern "C" fn receive_buf_callback(
-         buf: *const u8,
-         length: usize,
-     ) -> usize {
-+        // SAFETY: `buf` is guaranteed to be non-null and has the size of `length`.
-+        let buf = unsafe { core::slice::from_raw_parts(buf, length) };
-+
-         // SAFETY: The serial device bus only ever calls the receive buf callback with a valid
-         // pointer to a `struct serdev_device`.
-         //
-@@ -222,18 +206,7 @@ extern "C" fn receive_buf_callback(
-         // and stored a `Pin<KBox<PrivateData<'_, T>>>`.
-         let private_data = unsafe { sdev.as_ref().drvdata_borrow::<PrivateData<'_, T>>() };
- 
--        // SAFETY: No one has exclusive access to `private_data.driver`.
--        let data = unsafe { &*private_data.driver.get() };
--        // SAFETY:
--        // - `private_data.driver` is pinned.
--        // - `receive_buf_callback` is only ever called after a successful call to `probe_callback`,
--        //   hence it's guaranteed that `private_data.driver` was initialized.
--        let data_pinned = unsafe { Pin::new_unchecked(data.assume_init_ref()) };
--
--        // SAFETY: `buf` is guaranteed to be non-null and has the size of `length`.
--        let buf = unsafe { core::slice::from_raw_parts(buf, length) };
--
--        T::receive(sdev, data_pinned, buf)
-+        T::receive(sdev, private_data.driver_data(), buf)
-     }
- }
- 
-
--- 
-2.55.0
+> On Thu Aug 27, 2026 at 9:18 PM JST, Zhi Wang wrote:
+> > Rust PCI drivers have no typed interface for locating and accessing
+> > PCIe extended capabilities.
+> >
+> > The SR-IOV extended capability describes VF topology and VF BARs.
+> > Expose this information through the Rust PCI abstraction so drivers
+> > can use the existing typed configuration-space accessors instead of
+> > raw bindings.
+> >
+> > Define ExtCapability to associate a capability ID with a register
+> > layout, and add ConfigSpace::find_ext_capability() to locate and
+> > project that layout. Bound the view at the next capability or the
+> > end of extended configuration space. Add ExtSriovRegs and a decoded
+> > VF BAR iterator that reads and validates all six VF BAR register
+> > slots up front, yields decoded BAR addresses and widths in logical
+> > order, and keeps the raw configuration-space slot advancement
+> > internal. Since PCI_EXT_CAP_NEXT() is a function-like macro, expose
+> > it through a Rust helper.
+> >
+> > Keep raw SR-IOV registers private because PCI core owns their
+> > state. Expose the current First VF Offset through a read-only
+> > accessor because the Nova GSP ABI needs the raw 16-bit First VF
+> > Offset in Routing ID space. The pci_iov_virtfn_devfn() helper
+> > instead returns the low eight bits of a calculated VF Routing ID.
+> >
+> > Link:
+> > https://lore.kernel.org/rust-for-linux/20260818084633.1673214-2-zhiw@nvidia.com/
+> > Cc: Alexandre Courbot <acourbot@nvidia.com> Cc: Gary Guo
+> > <gary@garyguo.net> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+> 
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
 
