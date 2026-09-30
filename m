@@ -1,41 +1,41 @@
 Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA185208A5
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 17:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADE65208D1
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 17:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790789551; cv=none; b=Dd4F5DvTWF29fI1CBaUVd/zHm6Oj7oX2l7B/k93J+Lc+NumboBv464fn0/oUVTgcS48O+sRE0Hhfd6d84p+ISPshp6lu2bjcibcNKCU07ABCsWMt5+0xdQl0ELloP0DEXS6BCbKDbqS21Q57RMO1kP1uuM1gjUUSQndW4WWjWKA=
+	t=1790789552; cv=none; b=ueeXu3Mik+8Pji2bBIQ+fuhbtGD54n+PVauCoCjUxRZRusdg+A2dUUkpxL2s5Qfr08ZkucZHPSQIK+qCHZiAQTcBKX0Iofil6tdLWyLZWmO3o4B2cZTybIZRR9K+KIYSkBFA+4o3BM5RJzOhD5R6//AmIq87Hxd24eViifpz4SM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790789551; c=relaxed/simple;
-	bh=ocxkrVXBALWT/Mvum2xc+qBbFN29pgyyDjWxXSVPDLE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=V8ttnWh3FywtvzuT+vPRqfaEh8YVFPtUCB1KXTwgvhfIacvMAQwHsjNv5fEdFIU5SF6aD7qs/pdTSJsK3dZdG7hLnFxFMMT24QsY7HI9yOh4pskoquUuM5IGDUczgxKvUL2MQG5rLZf6VFVlkC/xQh+ydtyLjCzrlg1zbPryGO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=csBAb2Z2; arc=none smtp.client-ip=185.67.36.66
+	s=arc-20240116; t=1790789552; c=relaxed/simple;
+	bh=wROnZH5w/HgEnfohcLPrucgfChxgdtNv1tAynP5CqZU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=RxZ37EShZJQgieU/sN271fqf2jfZuw2n8Y0T5Uo7kQi8MGmEL+75ozZtXUc8OsbXztGmhej8S9YE5U8g5+t4zqFHlr8iPuDZpMUuRZAcGPaWLc5sf4flbHZMjLj4koITMjCP97Qs+OrxnjSn1QzSjtNUku5Sdr/TKYXevJ3VUfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=LLvQA0b7; arc=none smtp.client-ip=185.67.36.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="csBAb2Z2"
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="LLvQA0b7"
 Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id E8CEE240104
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 19:32:26 +0200 (CEST)
+	by mout02.posteo.de (Postfix) with ESMTPS id B06DB240101
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 19:32:28 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1790789546;
-	bh=3005sGFVDNO/bvbLNOBBEpqWdrYQtVPFlOxulGAOHEQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:To:Cc:Autocrypt:OpenPGP:From;
-	b=csBAb2Z29iNxLcJxNXeekOtcMS37I280b38JTzjHWCNaiduJfyy9siOVC0w5Zrp0Q
-	 mhVEgtGGcSIChbRrUs7/XnUb7eaw0KJwn9wwfVvw0exmBgHqrp5W2a6jtVZyeoCMQQ
-	 O6zkrgeoMNivVnvKvX4rELz9UvV9CuD5tODUpU1hnrQfuo2CiNalpPApAL//Tv73jA
-	 GMmmFeh6U0nN6189WTf9buu3aClPX5/YwTMF2+2C80Y7jpdxa6zXsTtsMrKR9kok44
-	 unHfngMjRKkAs4o2aSZMlcfbP61VvGp0bCp62fw1o2uph6B4P71aQkAIq9c9MwP6CQ
-	 cGMRvDN3tE3sA==
+	s=1984.8680eb; t=1790789548;
+	bh=shN8NFGcstwZPmTOc1xNbjhCshXXahtAgSO3rVvQXEI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
+	b=LLvQA0b7qokZZQH6sTTzmJy2+gfMhptW26Pw3b1X0FJ2DjJgobAD7IATxHpqez1vx
+	 aQsCZkalO3hUcrR9w6+1MIy0ZEsjSeB0oVaSal7+UE4R6CT0TtE7zBRNXccGr0tcXX
+	 Xyj6D4DAHj6snH8w22l76kcJSOkHnaxhEcQ83IPU7YiP+MYAWMBqJRql8RvPJpiZ34
+	 iiK2JZQOQRY7My2IQAO0gt4YF9oh6LUZa2LkjfMSHqvlObP3hbNkMhaodZtMmxDpDS
+	 zFEepLiKtcjhMf1HkZ+FpeUMQjiAR5Kn5ISj4EZnW3sDpSrh+NuQQ4OJgQNMVepKMg
+	 19Q/DE2KcR7lA==
 Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4hw2DQ12dLz9rxM;
-	Wed, 30 Sep 2026 19:32:21 +0200 (CEST)
+	by submission (posteo.de) with ESMTPSA id 4hw2DT3B05z9rxD;
+	Wed, 30 Sep 2026 19:32:25 +0200 (CEST)
 From: Markus Probst <markus.probst@posteo.de>
-Subject: [PATCH v3 0/4] rust: serdev: Refactor
-Date: Wed, 30 Sep 2026 17:32:25 +0000
-Message-Id: <20260930-rust_serdev_probe_refactor-v3-0-d1b6e77135e0@posteo.de>
+Date: Wed, 30 Sep 2026 17:32:27 +0000
+Subject: [PATCH v3 1/4] tty: serdev: Add mutex lock
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,12 +44,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32OTQ6CMBSEr0K6tuRRWlBX3sMY0p+n1kSLbWk0h
- LtbwIUrl5OZ+WZGEtBbDGRfjMRjssG6Rxb1piD6Kh8XpNZkTRiwBnYgqB9C7HLJYOp67xR2Hs9
- SR+cpIFPAeS24bEkG9NmxrwV+PK06DOqGOs7Eb8Ljc8ircY0RJQNS7e53G/dFasuaei3I3L7ak
- Efey9NULeHvqebfqVRRoM1OG4kALUd96F2I6EqDCzaxHxSDvyiWUbxWWyGqhp2F+UVN0/QB/WT
- Uzk0BAAA=
-X-Change-ID: 20260905-rust_serdev_probe_refactor-0e2b044354a7
+Message-Id: <20260930-rust_serdev_probe_refactor-v3-1-d1b6e77135e0@posteo.de>
+References: <20260930-rust_serdev_probe_refactor-v3-0-d1b6e77135e0@posteo.de>
+In-Reply-To: <20260930-rust_serdev_probe_refactor-v3-0-d1b6e77135e0@posteo.de>
 To: Ayush Singh <ayush@beagleboard.org>, Johan Hovold <johan@kernel.org>, 
  Alex Elder <elder@kernel.org>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -69,23 +66,22 @@ To: Ayush Singh <ayush@beagleboard.org>, Johan Hovold <johan@kernel.org>,
  Jiri Slaby <jirislaby@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>
 Cc: greybus-dev@lists.linaro.org, linux-serial@vger.kernel.org, 
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- driver-core@lists.linux.dev, Markus Probst <markus.probst@posteo.de>, 
- Sashiko Bot <sashiko-bot@kernel.org>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1502;
+ driver-core@lists.linux.dev, Markus Probst <markus.probst@posteo.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5000;
  i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=ocxkrVXBALWT/Mvum2xc+qBbFN29pgyyDjWxXSVPDLE=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqvUelZ+KvdynNzUumA0rA3Q2C0KtOTMXd6hQLV
- n7aoBoVh5SJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCar1HpRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9JxqQ/+I1uK7ZVlFfc8QShrpchTKSwadrPt0cn
- xXLqDhzxFT7nILlQWpvzCPJfGr1+IRACTC4BqpSuQ5+rRukK0fN87ib4qvfk47pKH6/63zXNWZP
- pdGf9xrjlHqMbk9zeLM/ubykphN+jVkEy8i2oFZHlzG4El3eUBCZUwH3xZ0CGzwGCwAIvzO4tQB
- BHt9NDlC3OWSYhSx2kFYH9tHxRiirNiIeq8oqpZuI9RVHl9syIhwRxAUGGOVtsdUn/X33Glk3KQ
- 1N7qv9J3oH7Mx7FVAyiQqzsF+gR6h/YMGnMWsRlyAtC84oFalA1mefd9DCRzRFctC1f7PsVgiBa
- w6K+SvEmpB5ncDsDr8zVakmqMkFrZzwWamPhEE0RGIcRLTx/2rO09NYwy4uYYBjx1HOpYbiXLr7
- 5Hmnwb2GzfllyagUK34kIe2q2jYuAZOttdMGo7Sf1dVNsTEv+vLftSjgrCwO6x4xQIDfoR0W5GE
- 6bQVjw3r8ZjBqvAZhF5Gj57vnaIYUmSKZoRrjyR7IlY6Thw+0T7/SKqFotygADsP6hgr7f8ii+O
- /3dUCIh1Yk1snn5g9ZIpsOq8qwFd/py/nYg1Pw6J/QqdNlgLc8hhym1iWnYBXNwqbylhb7Cnh+5
- XNXPz2bHSQLBa1C86QKuDkYxylClaJAVEKzZ55s+g0sWm/sg0vR0=
+ bh=wROnZH5w/HgEnfohcLPrucgfChxgdtNv1tAynP5CqZU=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqvUel7Y+6iGUkcZRV6FoC5OUM7ycgG4wQt+TuT
+ /VawAsVHOSJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCar1HpRsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9Inag/+MA8Mz53D2UH2yd9YO0b+lUC6eRljgzj
+ BhXWYHD4VrLjXpvSwKyyWX5e4oljO9E3seHqovaORH+btosH8mgYy9VigZN6wOquh3WZBKcBm1R
+ TTQeOlEDUUJlwXkuPevDxWI0P2y1qVEESHvIQv0B80wocYS3GMEe+sbxMCA9gml411MSq+X3vbF
+ o9xddzNIMl4bHS4wGA163WHsqh0UjQPSyrUZizWhIf7xDGSaEedI+XVb3raf+sSMKgP2R52LHuT
+ JQMNg/IKIT4K9rqy4cNLV5SkPSOqwTfEBbrNRoOB3op4gbYBbHxLF4asD6KKhIRA2Zz6DQQFpHu
+ +gGjuCU329lcDUZiIr+7h5P3/oKjdm5LQXzgXa13cpc+AoBLcAFTkoB7csRle8GSekwaQYlganW
+ FRof0k2auCsq7r2QCiNXoN3S890yae4Yjut4nLnNI0E0pbyBYrmvlQPIANLkXVioqV99F0Sjjbo
+ Ja6yyliHMuc2xTc6SXWBHL1cTlUd+NItoGY9JBfPjbKayXidyabr4m5M9gRcGjghd0f/NfBAeZF
+ WONXVpYSKOGFDU1uNJ6gufrjCkfTfUJvUfmkyz422i91Q1xuwiqQnA1RWskYjIku8I4KgYc5uct
+ 2WUqDi5h/MMuRTvb+z87wC9K2zNP4oKHtvqk4HJ2LomCsoFCyU+8=
 X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
  fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
 Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
@@ -131,40 +127,167 @@ Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
   aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
 OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-The following has been changed:
-- introduce mutex to C serdev tty port controller
-- introduce a new C serdev API to fix race conditions and simplify rust
-  code. Should also be useful on the C side.
-- fix race conditions
-- simplify rust code
+Besides more predictable behaviour, this allows for several hardened
+behaviour changes:
+
+Return -EALREADY in `serdev_device_open` if the device is already open
+instead of causing undefined behaviour.
+
+Allow calling `serdev_device_close`, even if the device is already
+closed instead of causing a null pointer dereference.
+
+If the device is left open by the driver after remove, close it and warn
+instead of leaving it in a invalid state.
 
 Signed-off-by: Markus Probst <markus.probst@posteo.de>
 ---
-Changes in v3:
-- add mutex
-- Link to v2: https://patch.msgid.link/20260920-rust_serdev_probe_refactor-v2-0-43b855162f5d@posteo.de
+ drivers/tty/serdev/core.c           | 10 +++++++---
+ drivers/tty/serdev/serdev-ttyport.c | 35 +++++++++++++++++++++++++++++------
+ include/linux/serdev.h              |  2 +-
+ 3 files changed, 37 insertions(+), 10 deletions(-)
 
-Changes in v2:
-- fix missing memory barriers in serdev apis
-- use `tty_buffer_restart_work` instead of `tty_flip_buffer_push`
-- use `tty_buffer_flush_work` instead of exclusively locking the mutex
-- add `#[inline]` to `PrivateData::driver_data`
-- remove patches for mutable references
-- Link to v1: https://patch.msgid.link/20260906-rust_serdev_probe_refactor-v1-0-69cdae0074ec@posteo.de
+diff --git a/drivers/tty/serdev/core.c b/drivers/tty/serdev/core.c
+index 7500efcdfc21..77e8e1d4d2a6 100644
+--- a/drivers/tty/serdev/core.c
++++ b/drivers/tty/serdev/core.c
+@@ -142,6 +142,11 @@ void serdev_device_remove(struct serdev_device *serdev)
+ 	struct serdev_controller *ctrl = serdev->ctrl;
+ 
+ 	device_unregister(&serdev->dev);
++
++	/* Warn if driver did not close the serial device. */
++	if (ctrl->ops->close && WARN_ON(ctrl->ops->close(ctrl)))
++		pm_runtime_put(&ctrl->dev);
++
+ 	ctrl->serdev = NULL;
+ }
+ EXPORT_SYMBOL_GPL(serdev_device_remove);
+@@ -181,9 +186,8 @@ void serdev_device_close(struct serdev_device *serdev)
+ 	if (!ctrl || !ctrl->ops->close)
+ 		return;
+ 
+-	pm_runtime_put(&ctrl->dev);
+-
+-	ctrl->ops->close(ctrl);
++	if (ctrl->ops->close(ctrl))
++		pm_runtime_put(&ctrl->dev);
+ }
+ EXPORT_SYMBOL_GPL(serdev_device_close);
+ 
+diff --git a/drivers/tty/serdev/serdev-ttyport.c b/drivers/tty/serdev/serdev-ttyport.c
+index bab1b143b8a6..c11908f5e1ce 100644
+--- a/drivers/tty/serdev/serdev-ttyport.c
++++ b/drivers/tty/serdev/serdev-ttyport.c
+@@ -16,6 +16,7 @@ struct serport {
+ 	struct tty_driver *tty_drv;
+ 	int tty_idx;
+ 	unsigned long flags;
++	struct mutex lock; /* lock preventing modification of flags */
+ };
+ 
+ /*
+@@ -29,6 +30,8 @@ static size_t ttyport_receive_buf(struct tty_port *port, const u8 *cp,
+ 	struct serport *serport = serdev_controller_get_drvdata(ctrl);
+ 	size_t ret;
+ 
++	guard(mutex)(&serport->lock);
++
+ 	if (!test_bit(SERPORT_ACTIVE, &serport->flags))
+ 		return 0;
+ 
+@@ -99,14 +102,23 @@ static int ttyport_open(struct serdev_controller *ctrl)
+ 	struct ktermios ktermios;
+ 	int ret;
+ 
++	mutex_lock(&serport->lock);
++
++	if (test_bit(SERPORT_ACTIVE, &serport->flags)) {
++		ret = -EALREADY;
++		goto err_flags_unlock;
++	}
++
+ 	tty = tty_init_dev(serport->tty_drv, serport->tty_idx);
+-	if (IS_ERR(tty))
+-		return PTR_ERR(tty);
++	if (IS_ERR(tty)) {
++		ret = PTR_ERR(tty);
++		goto err_flags_unlock;
++	}
+ 	serport->tty = tty;
+ 
+ 	if (!tty->ops->open || !tty->ops->close) {
+ 		ret = -ENODEV;
+-		goto err_unlock;
++		goto err_tty_unlock;
+ 	}
+ 
+ 	ret = tty->ops->open(serport->tty, NULL);
+@@ -130,23 +142,30 @@ static int ttyport_open(struct serdev_controller *ctrl)
+ 
+ 	set_bit(SERPORT_ACTIVE, &serport->flags);
+ 
++	mutex_unlock(&serport->lock);
++
+ 	return 0;
+ 
+ err_close:
+ 	tty->ops->close(tty, NULL);
+-err_unlock:
++err_tty_unlock:
+ 	tty_unlock(tty);
+ 	tty_release_struct(tty, serport->tty_idx);
++err_flags_unlock:
++	mutex_unlock(&serport->lock);
+ 
+ 	return ret;
+ }
+ 
+-static void ttyport_close(struct serdev_controller *ctrl)
++static bool ttyport_close(struct serdev_controller *ctrl)
+ {
+ 	struct serport *serport = serdev_controller_get_drvdata(ctrl);
+ 	struct tty_struct *tty = serport->tty;
+ 
+-	clear_bit(SERPORT_ACTIVE, &serport->flags);
++	guard(mutex)(&serport->lock);
++
++	if (!__test_and_clear_bit(SERPORT_ACTIVE, &serport->flags))
++		return false;
+ 
+ 	tty_lock(tty);
+ 	if (tty->ops->close)
+@@ -154,6 +173,8 @@ static void ttyport_close(struct serdev_controller *ctrl)
+ 	tty_unlock(tty);
+ 
+ 	tty_release_struct(tty, serport->tty_idx);
++
++	return true;
+ }
+ 
+ static unsigned int ttyport_set_baudrate(struct serdev_controller *ctrl, unsigned int speed)
+@@ -288,6 +309,8 @@ struct device *serdev_tty_port_register(struct tty_port *port,
+ 	port->client_ops = &client_ops;
+ 	port->client_data = ctrl;
+ 
++	mutex_init(&serport->lock);
++
+ 	ret = serdev_controller_add(ctrl);
+ 	if (ret)
+ 		goto err_reset_data;
+diff --git a/include/linux/serdev.h b/include/linux/serdev.h
+index b6c3d957ec15..0f4e81c0950d 100644
+--- a/include/linux/serdev.h
++++ b/include/linux/serdev.h
+@@ -81,7 +81,7 @@ struct serdev_controller_ops {
+ 	ssize_t (*write_buf)(struct serdev_controller *, const u8 *, size_t);
+ 	void (*write_flush)(struct serdev_controller *);
+ 	int (*open)(struct serdev_controller *);
+-	void (*close)(struct serdev_controller *);
++	bool (*close)(struct serdev_controller *);
+ 	void (*set_flow_control)(struct serdev_controller *, bool);
+ 	int (*set_parity)(struct serdev_controller *, enum serdev_parity);
+ 	unsigned int (*set_baudrate)(struct serdev_controller *, unsigned int);
 
----
-Markus Probst (4):
-      tty: serdev: Add mutex lock
-      tty: serdev: Export functions to pause receive_buf callback calls
-      rust: serdev: Replace `active` mutex with receive pause
-      rust: serdev: Simplify callbacks
-
- drivers/tty/serdev/core.c           |  54 +++++++++++-
- drivers/tty/serdev/serdev-ttyport.c |  68 +++++++++++++--
- include/linux/serdev.h              |   8 +-
- rust/kernel/serdev.rs               | 167 ++++++++++++------------------------
- 4 files changed, 173 insertions(+), 124 deletions(-)
----
-base-commit: 5a956dde5526a634dca7ccad27c051ebcc306089
-change-id: 20260905-rust_serdev_probe_refactor-0e2b044354a7
+-- 
+2.55.0
 
