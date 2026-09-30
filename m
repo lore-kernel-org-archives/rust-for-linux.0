@@ -1,161 +1,303 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021084.outbound.protection.outlook.com [52.101.100.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A604E01F3
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 13:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790773567; cv=none; b=dLQ8sxbu3FKuvoWVHVEUaH3/bzIWVEMrXUDUKkW0eIJDPP1q5MVH5ga5Cw3jMGV4tM2z/ErVI5y601NbL33pRCFsBN/HQml6YQwZBu6NMzhO+ZJxroGhQxE/yavx5+HWyaLJb9VjuCuGTIDPmXgjJqxbuZv3flvRHtkLrCTREU0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790773567; c=relaxed/simple;
-	bh=XBQeafZ4HH7kzXuhlxlrOFwSavls9meqpVU02VwtBlQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tN35ZHYsaSewuBpf/SoqpEXw+Suzt2MTD8IuPRta0Vf29GxJoZQtX+HTYCG22HMDVoXYlhEwRKXtayYleusaiektAOULq6u34YDcmps7Qjqb2QwOTHwoOdzUJpRb2ztvw8Y4hQcQbp7gLfZH27DYYBA3g8aC4t1jopj4AEDNWwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=mBUOju1S; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4405B4E1C74;
+	Wed, 30 Sep 2026 13:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.84
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790774109; cv=fail; b=WRXM2POvvm6nF0v8TZs7xUJ4fg7GCtHyGKoKM91D7G3XRmLFnC1JIc9QpdoXwT9DPGyX5g58Z5nj5guNu0KNdnEkKPvS4zzANQGsIINAZXkuB3TVE1YieHTNmDmmqteu95tGGkA5IK+tCAI4IemAv6ampf9RjS2Rw+SZL4yrDtc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790774109; c=relaxed/simple;
+	bh=AyxxUppYNFoQGG5De9RAynwjhbX/j4Lmgml7l42P2GI=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=lYUW0rNl5M36Xk0wFUZMmYU2Nwdg/eBeRgQ68UbyX9YajQzEAddbwWW1yQeuLo201tIyWV21yg8Sq4Ii8JjPB3EgjPO1MHhKogjJlrzGzebwjpeeZQ5vObPabvg59qNfLt/74RivLTvShK4PoJxf3B2td5kCIskK0n3s7Nkz27c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=pBbMUj3v; arc=fail smtp.client-ip=52.101.100.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="mBUOju1S"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 77FA324010E
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 15:05:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1790773536;
-	bh=1rJMZOoXjsvOB65KPMvqkp67+vOa9wcF8nHsjIlYKVM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=mBUOju1SSz5WoIC9VOJBETEP+gJeU1vcodjt3Dh/NI6fd7zZA5EPFCDDjIRa9ixPC
-	 xcsiOFyqHo9ZMfPFyoedb1pXHN89hMdDrjRZLD6EsHQPpa5U9oaaRXrE1x/pYx5y1J
-	 +WeVQoZJrpz/e7akEPjfYIz0sc1ZERH6lgfghfEcngYSq2JZYGbT0tSv8148EI+AcH
-	 f5GQMAeU6brK+i/zT5G3IS9glhM/WW2xm2mqTo61TSoK8lPS8hQrYgSCaCg6dXJo6G
-	 wVW7Tha7sNIG2VRCgz5BfoP9mYFyI2DogZc9Pds6gysGxP+yPH7F4JX7fbx24xZ2ad
-	 u8c6yny5RtXOQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4hvwJX4gzxz9rxL;
-	Wed, 30 Sep 2026 15:05:32 +0200 (CEST)
-From: Markus Probst <markus.probst@posteo.de>
-Date: Wed, 30 Sep 2026 13:05:35 +0000
-Subject: [PATCH v26 4/4] MAINTAINERS: rust: leds: Add rust abstraction
- entry
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="pBbMUj3v"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fCy/a88kmvfMxuWktVGvyGs+YpCNrpTBW3hEaDn9Pfgprvl/d9jI0Ah9OzNX65tobwPHtN1XET909pCijWgU9xcnHNru8HsvokPMapsUZT6+/T4QHcx+dJxL0WU5cP11ID3UMAn6kut+eDBLuVbMkNEdC/S85Ht28+jc94YQ3i3iH7d4LlyoNwncw1FvN+CfwfJ6dLgqH0plqlNtRer3ZdeDWK7rZBSXNErw/gQ4Zyn9gNG0ljYtYHkj+X4LYAv9yoXGRgR8yHeXsOs1BdAjuoUm/I2jqqwJTF5GMJcqWo17m1KT8TDEogx2ba7II7N+zF6hiyK7OuA/q9Q6KXrclw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2P57qKO+ONDByvbvtw2XJP7WzSaFZ40EsSFMOXW/7KA=;
+ b=biIpEobsqrbh2Y7faMxCdEERtHwZHGKYTdhtpyqziKCRys6OUdDfqZRpvR3lLCKgmD3D5+xiMo8zoaF5Tl0NBVkqbtzvcWNBNja6ASq+7w4b0nHQAe8RjrJoZlsXm5FbQ1WALjdnknFUJrGcW0sFwifEFO0nVbtAFEb/vQLbNDeHe/KUivbZg2E12sr0kZd1WHUasmPE9ErmI0Y82rkphSGZ5L9CbBEb4fvM68bS1hj52dESxV7LglTyy5rTelhEGjCdP9HNiLUKFeuBF0Kl9U3VDwJ+TyIrtqIldcgtA3Jb1YQcJ50WYvdrZafGKq0pyUE80+zJPnu09wq9HduFEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2P57qKO+ONDByvbvtw2XJP7WzSaFZ40EsSFMOXW/7KA=;
+ b=pBbMUj3vtIOPDN3LhpYiv/zHbgVmMfn3Q2IPQjMWs+VUpoiqvAqg7+7pHZKyJkr9I7BVmhj01GDRU7iTnMrLFF/IzE4FMwPQb6qDmaYRLneTt/O0H16P3EuenweHyZYaRVAZOH/GR+Ok16Pqsh27j/n7+EWdLsAJ86T8ocZ5oVE=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+ by LNXP265MB2428.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:137::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
+ 2026 13:14:53 +0000
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0451.024; Wed, 30 Sep 2026
+ 13:14:52 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 30 Sep 2026 14:14:51 +0100
+Message-Id: <DLSOFOGGZC92.12KYHEALX1271@garyguo.net>
+Subject: Re: [PATCH 1/6] hrtimer: add expiry injecting callback variant
+From: "Gary Guo" <gary@garyguo.net>
+To: "Thomas Gleixner" <tglx@kernel.org>, "Andreas Hindborg"
+ <a.hindborg@kernel.org>, "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
+ "Frederic Weisbecker" <frederic@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross"
+ <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "Jani Nikula" <jani.nikula@linux.intel.com>, "Joonas
+ Lahtinen" <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi"
+ <rodrigo.vivi@intel.com>, "Tvrtko Ursulin" <tursulin@ursulin.net>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Lyude
+ Paul" <lyude@redhat.com>, "John Stultz" <jstultz@google.com>, "Stephen
+ Boyd" <sboyd@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>, "FUJITA Tomonori"
+ <fujita.tomonori@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <intel-gfx@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>
+X-Mailer: aerc 0.22.0
+References: <20260825-expires-v2-v1-0-90411c6217c7@kernel.org>
+ <20260825-expires-v2-v1-1-90411c6217c7@kernel.org> <877bk3ixp5.ffs@fw13>
+In-Reply-To: <877bk3ixp5.ffs@fw13>
+X-ClientProxiedBy: LO4P123CA0586.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:295::7) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260930-rust_leds-v26-4-83837331020e@posteo.de>
-References: <20260930-rust_leds-v26-0-83837331020e@posteo.de>
-In-Reply-To: <20260930-rust_leds-v26-0-83837331020e@posteo.de>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Ira Weiny <iweiny@kernel.org>, Boqun Feng <boqun@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
- Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=693;
- i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=XBQeafZ4HH7kzXuhlxlrOFwSavls9meqpVU02VwtBlQ=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqvQkRmCUkSpzb9LqSuvqpTJwh5LIT4HwxnSNrE
- M++BJUeKLOJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCar0JERsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9IQOw//WpFpvF5bzo0xjIK/m87C8+fLEYzrFrr
- NUItZc1ezn6rCljwFIN5qB0UsUFIfNzStbygQyxRb16mCzHeiWbgjPk9GKMqwK5j+2iZnavGM2g
- TojeofoA210lCM1ydJ3cr8ouyVeJCKrma7ebOg8kNsnnsSOzJStXtaorVfUHfXUTP2qH7u4uRBQ
- r1VK8uq/tO3H8wTYcDvUD1AOGYwZ/4L8n7mXOmqgoV90XcVTC5/kFb9i1zgPBSp/sE7+QfFE9zz
- 7/KNhxFrYSQiHjFSg3t+M0X7BXudcW19xtOibjBCKtnpwTzAi52MXAdXEISM3V+r2qYaLpJOHqT
- dnIuuB0D5POfWcRpIpnE7Sa+IgwGZW7nRLMy6S7uUxtKTGB55p5KxkRk53zbqvH44Jwsm174Wz8
- cwwTD9rrj/yeApZyO2hvl5+Lr6jtDs87fc7Hst/oj04XEHv5Hv89OP0Sqc5hW9uHCDeOVmyvmh4
- vz/ikj0QXBxK2mEi01U4VtOSKOnDjMo1UC1/szj1r2Nd5PopTkPlHW2R2ArsZ+DWuIUEZOfQVCp
- 7FyMErGtz/RAy/YqoUSoj1cm4ZtVwNmBVoF/olVgJ7TR19yTxZiuBVe5+PvZzpaeGLyWHJlp3U/
- wjOsqwPC+pdhudkcGE5DtSy0fzRDIYAa3WQ4Y2D0JCWhb6LYFOj0=
-X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
- fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
-  keydata=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
-  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LNXP265MB2428:EE_
+X-MS-Office365-Filtering-Correlation-Id: a1ae3cf5-658f-471d-2777-08df1ef4cff1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|10070799003|1800799024|7416014|376014|366016|921020|4143699003|6133799003|10067099003|56012099006|5023799004|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	4IA6P2PL9dIT7BW5HpSmi/WRBspZWkXl+FzEaoKXf4EtyN5hz1RfhxSKpjmPtSFCkqe0eWaPZMJqrNfJt2PACgW4jw7MnsiTyYJqjM9z/s9TsifQufB8UWeToUuBbwiT8jzxZeSKEtMJuOsF5+15lejadvexCxx2nhQZHn1AlmTIzOel9bYM0Lk26TELwbNFLYPU887Ms3hXOm0X9A136mC1jCrJyRJc7sfmolHbVtBwyKGQ8cPr0ji62hn3X2NJaOzBY3FQca+D+nRof7YWw7wrj3w4zPFpUCcGipiUL3ZyAnyeByW4pI6ETpVzLWNts0fgIO9MoLjWKRvbM4avq2g7tpcz96V4VuT3ZscxJEuQv/LKaJyd1kVZCvg9PEzqIkh6A3L5EdZORHbRaFrA1v/oU2Z5iuslRwMKlA+JgEk/286eGJToelS2ZLLHnyqRERHtWKHGnCxb7N+vDFNliR/2Gi0+FCPT+ejthdujYYZlTwohI+dnKuRGEMWtGnjkXe42bJt1jW19wPq3Sx4JD7lzDWwYoKf9Tobeg6L44EgwNTsu7EOzf0sdcNK/NLQHwAeWbx2PE0uZnL3bruCvoOdOsR9v4AEGc/rPc8kndW4Oi+idFnjChrqVW8BP89gEo/SjH/ACvvqItIHZas1qO1g6DIhkc0sCHUqFpRK8gkKREkkANIyads8iUbHT8v8/HllZvnRRcLesLL6kI7MyRA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(1800799024)(7416014)(376014)(366016)(921020)(4143699003)(6133799003)(10067099003)(56012099006)(5023799004)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MXUxWHdjNytlbVA1UEdPbzhZMS9FZkpaYmZPYTd6dmFBOTVhYVFSam1xVFp4?=
+ =?utf-8?B?WFo5YmVGc01KQ0J1Rm5QcENvalp3RHZkajh2bmVGTXAzYnBRbHV1SjNleU02?=
+ =?utf-8?B?K3BDVitaWjN2ZUxUQnFVS05LVkhFbnFiSzRRNFplSExacmRrRHRiVUVmN0U1?=
+ =?utf-8?B?RGx2NjM2alJ3L3kxOFFHL0RxSzRUTllyV3NPTjhNeTFEa2hTT2QwY0xrUnZ6?=
+ =?utf-8?B?dzJBZVViNGd6UkhQdXJHUWJ5djBKVkJ3VHlDeHhyMk9FNHpWY3o3dS9tQkpT?=
+ =?utf-8?B?c04wSk92OFdCVG4rTVRjaGd6SVJhSHAweU9BZEhZR0hkTFZCMG8yNk1HRTBC?=
+ =?utf-8?B?R1ExMkpVOXFSbkZOOHZDS2FNN3Vtc2NMUk96Z2hDWTRYVkJ5UTQyaXh6SzIy?=
+ =?utf-8?B?MUNMRFBQVmhTQkVIcDIzSjdtVWJVU05sMTRCWFZ6OEpRVCs3Qys1bk9tK2Vy?=
+ =?utf-8?B?RDl4TnFSNHlDVEd0MEJ4T3BoSmZmekpXeG5VR1pCRlRkSGxuVCsxV0RvdWhM?=
+ =?utf-8?B?anU1V1c3TUlVNVVMR0J6S2htSUtaRDM0WlhBTmNURjJ3Q1RLMjZTMXpnQmhK?=
+ =?utf-8?B?UGVJN1BLaEtxOUNNTzhQRzBLbXBaYUVtaGhaWFVHUHFGZG5sQ1NtVjhJMTRI?=
+ =?utf-8?B?K3NxeFBRd1RnQ0ovZzdOekFRZGJaaG1GVk1HMXYxRFZWUEwvTVpnWVBJZWFy?=
+ =?utf-8?B?MW0xeDdpWlNrUlNkeXVnTDI4MGxZSXcvOTMzRWN5Mkl6OWZtcVF1aTl2VlBE?=
+ =?utf-8?B?dEVrMUhCcXdFYXlIbUN3VG4rWk9oR3l4MWdhVEM3ZTByQTFINzJ5Y3V4bGpo?=
+ =?utf-8?B?V0wwdGFSMXd1NVVjdWdlYUhHTXdqUTc0Z1dtY2hvMEpVb21ZYThXSDM4NVFh?=
+ =?utf-8?B?R29QVlFCTEc1L2xSdjRxMWo3b0UyVkdNOHNrT083ZStkY1hxb3o5YjQ0UjlW?=
+ =?utf-8?B?TExrWUk0aHhBYm83U3NBQURSSFpmcHFrVGthYVREdWpWcFNLay9FK0dvNlhw?=
+ =?utf-8?B?NlJ1U1RoOFErcDhXR1pWSEhIWTNuME1xRUt5QWMzTnFKREkxQXBIRVNYN0dK?=
+ =?utf-8?B?b2VCQnBDWUlJVXJjOUdScUpOUTZWaXBUWWt3S1Y1QW1yUzh3OWc1ck9nV2h3?=
+ =?utf-8?B?NHI5WTIvempPYUdzckRQeW1mN1RkV1dJUUFnQWZod0xBNlJzQkgyVVF1RW8w?=
+ =?utf-8?B?REd3dzJMMkZ1cFBmMWFCSmhhbDcwS1FBNm1HUjFkdFJMVWRYU2JJVStXY1My?=
+ =?utf-8?B?UjMzMzNSMlBtSmx5aFAya2R2NVpXSWZtUndQUVgyazRxU1BvM2UycHBPbkxV?=
+ =?utf-8?B?dnNzbFFRQ0p3MzA4UC9YK1dJOVU5ZTY3elhZVlJVMDZqNWxtaVhsVkxkRTZZ?=
+ =?utf-8?B?RmVHK1BZODJKNXFHQ1FWZ1RheUVMeG1Fcmt4a2ZMU01Xa29lVVNUTHliQ0M3?=
+ =?utf-8?B?WEJoWVlTMTduZVBkckU5V3FwVGxCZFVUd0JMOVA1azMwVU1EY3dSa3Z3T2pT?=
+ =?utf-8?B?Sk8ydVM4NG5Nb2JvQVpCb0h4MStQZkl6VjBnMk5zMVpJb0RkZ2c1cm1tUDR6?=
+ =?utf-8?B?bTVOMHdTbjV3QktWY0l2dmdLMzFiSDNOZ05wZmN6YWxXeHVZNGhyNERtcGk4?=
+ =?utf-8?B?VVRqZ1RkaEdabzBFMWlaWGdGY3VoVzNKdllCSVc5ME5JbXMyaE96UHN4OEF6?=
+ =?utf-8?B?R3FIaTA4N3UwbzhmY2tpV1VwM0k2OUdnU1Q1NTAybzZHZ09vdGdSOXZoQnd4?=
+ =?utf-8?B?VlRQTjFqNWplQVovQXNvdlNQcHVZbzZTZk1xa2pCbjQ1Yi96QXVmQmZTZVdK?=
+ =?utf-8?B?M3dZKzlyNzdDSThnZ2VlSkorbXF6R0xDd1VQRGtOaHByNFF5VnA1V2NFWmFO?=
+ =?utf-8?B?WG5RV1VOdnZFYy9NTzFTeHo4Yzc1UUl1bmVBLysyYzNtWTRkSlBZektpSWE4?=
+ =?utf-8?B?Mm93NlJpc3BPWDg2eGgyTnF3TVhnU0JHV1QrOGJRSXNDbEQvREhoSi9XR0tW?=
+ =?utf-8?B?TFN1VnhVS3lnbmIzaFNjZnRKU2xQbVlvV0x5dUc1bFUrT21iY1o3K0t0VUp1?=
+ =?utf-8?B?RDR4K1RycFNIbi9YU1NLdkhQbXQ4b3NnQzBDVEhOZFN2ZDUrZ0d4OTMwbmt6?=
+ =?utf-8?B?R2JRUk9LN2ZwYURhbEFLbGNPUjFTM2lrcitTcWE3NmprL1AvTFNwSUJZOThQ?=
+ =?utf-8?B?TWtXV1BmSUpxK28rZHlTWkIxUXVQbUxsSFdFQ0k3ckVQQmozOGl5R0NLaEk1?=
+ =?utf-8?B?a3FLdmlMWkNvTnJGenVsQzhaWWpYQ1ZhUU1qUCtqUW9CbytzYU9YV2NvSytU?=
+ =?utf-8?B?aThLY2FDZWJaVGhWNzJ3SHp4R01sdmVvQlEzMTRBWjM3STd0bFJydz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1ae3cf5-658f-471d-2777-08df1ef4cff1
+X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 13:14:52.2272
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: otVeYN220bDL/hP5/o+VgKf9/6uXasftlZarh75lZsyBHi5nrm6QSP7bAtNrqBu2lUHcdqGGEz5fXzEIyJ7dZg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LNXP265MB2428
 
-Add self as maintainer.
+On Tue Sep 29, 2026 at 9:56 PM BST, Thomas Gleixner wrote:
+> On Tue, Aug 25 2026 at 14:16, Andreas Hindborg wrote:
+>> A hrtimer callback may modify its own expiry with hrtimer_forward()
+>> and read it with hrtimer_get_expires(). Both run after
+>> __run_hrtimer() has dropped the cpu_base->lock, so they race with a
+>> concurrent hrtimer_start_range_ns() on another CPU, which rewrites
+>> node.expires under the base lock and requeues the timer:
+>>
+>> - The unlocked read-modify-write of node.expires in
+>>   hrtimer_forward() is a data race against the locked write in the
+>>   start path.
+>>
+>> - The is_queued check in hrtimer_forward() is racy with
+>>   a time-of-check-time-of-use bug as well: a concurrent
+>>   start can enqueue the timer between the check and the expiry
+>>   update, and forwarding an already queued timer changes the expiry
+>>   of a node inside the timerqueue without re-sorting, leaving the
+>>   tree unordered.
+>>
+>> Timer users which both forward in the callback and arm from other contex=
+ts
+>> must provide their own serialization, e.g. perf's cpc->hrtimer_lock plus
+>> hrtimer_active flag, see commit 4cfafd3082af ("sched,perf: Fix periodic
+>> timers"). The requirement is subtle and not enforced; i915_pmu and tapri=
+o
+>> currently get it wrong. For the Rust hrtimer abstraction it is a soundne=
+ss
+>> problem: safe code can arm a timer whose callback is running, so callbac=
+k
+>> context forward and expiry reads cannot be offered as safe API.
+>>
+>> Add an alternative callback variant that removes the race
+>> structurally instead of requiring serialization. An expiry injecting
+>> callback receives the expiry snapshotted under the base lock by
+>> value and, to restart the timer, fills a struct hrtimer_forward_args
+>> and returns HRTIMER_RESTART. __run_hrtimer() then applies the
+>> forward and the enqueue with the base lock held. The callback never
+>> accesses live timer state.
+>>
+>> If a concurrent start enqueued the timer while the callback ran, the
+>> restart request is discarded and the start wins, matching the
+>> existing "restart =3D=3D HRTIMER_RESTART && !timer->is_queued" handling
+>> for classic callbacks. The is_queued check is reliable here: while
+>> base->running =3D=3D timer, hrtimer_try_to_cancel() bails out before
+>> remove_hrtimer() and the timer cannot switch bases, so only a
+>> concurrent start can enqueue it, and the start path writes the
+>> expiry and is_queued in the same critical section. Thus !is_queued
+>> at requeue time guarantees the expiry still equals the snapshot
+>> handed to the callback: the deferred hrtimer_forward() cannot hit
+>> its concurrent start check, and an overrun count the callback
+>> derived from the snapshot is consistent with the forward that is
+>> applied.
+>>
+>> The new callback pointer shares storage with the classic one in an
+>> anonymous union, discriminated by a new is_ext flag placed in
+>> existing padding; sizeof(struct hrtimer) is unchanged and the
+>> classic callback path is unaffected. hrtimer_update_function()
+>> rejects timers with an expiry injecting callback.
+>
+> Aside of the horrible name (what is "ext"?) the whole mechanism is
+> creating a false sense of "safety" as the same problem exists when the
+> timer callback simply sets the new expiry time without invoking
+> hrtimer_forward().
+>
+> Also why is Rust special and wants to delegate the external
+> serialization requirement to the hrtimer core code and thereby adding a
+> boatload of extra conditionals into the hotpath to distinguish between
+> the two callback variants?
+>
+> Yes, you found an example for the downside of this design in the i915
+> code. That's not surprising because i915 is generally known for ignoring
+> documentation and making up their own rules just because they can. So
+> I'm not accepting this as an argument at all.
+>
+> I agree with you that the lack of enforcement of that external
+> serialization rule is suboptimal. External serialization is hard to
+> validate/enforce in general though it's not impossible.
+>
+> But let's first take a step back and look at the larger picture.
+>
+> The obvious question is:
+>
+>    Why is the base lock dropped when invoking the callback?
+>
+> The answer is simply that the callback might and in many cases will
+> acquire a lock which is used in the reverse lock order for the purpose
+> of external serialization.
+>
+> If you think about that then it's pretty obvious that you can introduce
+> a safe variant of hrtimer_forward() which can be invoked from the
+> callback:
+>
+> hrtimer_forward_safe_from_callback(timer)
+> {
+>         base =3D lock_running_timer_base(timer);
+>         if (!hrtimer_is_queued(timer))
+>         	hrtimer_forward(timer);
+>         unlock_timer_base(base);
+> }
 
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+FWIW we did discuss about this option. Here's the list of all options that =
+we
+come up with:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 72294ddfa5b7..aaebc4e541f6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14790,6 +14790,15 @@ F:	drivers/leds/
- F:	include/dt-bindings/leds/
- F:	include/linux/leds.h
- 
-+LED SUBSYSTEM [RUST]
-+M:	Markus Probst <markus.probst@posteo.de>
-+L:	linux-leds@vger.kernel.org
-+L:	rust-for-linux@vger.kernel.org
-+S:	Maintained
-+F:	rust/kernel/led.rs
-+F:	rust/kernel/led/
-+F:	drivers/leds/*.rs
-+
- LEGO MINDSTORMS EV3
- R:	David Lechner <david@lechnology.com>
- S:	Maintained
+1. Take base lock before calling forward and release it afterward (the one =
+you
+   mentioned above). This one requires exposing the base lock (at least to =
+Rust
+   abstraction).
 
--- 
-2.55.0
+2. Prevent timer operation from within the callback and have hrtimer core d=
+oing
+   it (Andreas's patch).
+
+3. Force users to stop the timer before re-arming. This was dismissed becau=
+se
+   stopping the timer will require waiting for the callback, and this is pr=
+one to
+   deadlock condition.
+
+4. Add a lock to Rust side that all users must take to forward / start. We =
+don't
+   want to add a new lock just for this, and taking base lock would be more
+   favourable.
+
+We consider (2) the best option because it avoids several pitfalls with (1)=
+:
+
+- It is impossible to forget to forward and return restart, or forward but
+  return norestart.
+
+- The base lock is not unlocked before relocked, so the forward and restart=
+ing
+  is atomic. So it's impossible to have the condition where the forward occ=
+urs,
+  but before returning RESTART, the hrtimer is concurrently queued.
+
+- Unlock/relock have an overhead (we didn't quantify how much impact this w=
+ill
+  be, though).
+
+I supposed another alternative is to add a mode in hrtimer core where the b=
+ase
+lock is not unlocked before calling the callback, and expose base lock APIs
+(like option 1) so that the Rust hrtimer abstraction can unlock it before
+calling the callbacks.
+
+Best,
+Gary
+
+>
+> That prevents the scenario you described in a completely safe way, no?
+>
+> Coming back to validation/enforcement of external serialization. That's
+> a problem which has been solved in other places already. Look at the
+> seqlock code for inspiration.
 
