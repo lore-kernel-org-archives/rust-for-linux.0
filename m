@@ -1,208 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027174FDE62;
-	Wed, 30 Sep 2026 15:41:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790782898; cv=none; b=l+YdpSrzmXMb+qJ27odog7hQwRIGT1ZP7s6NouFb54uO8P6Am8IjtfNa69VmHvzDWceHK0ERUQ9qkJedDfHlOVdjNtEu7a1BqLm9IoJrq84biEn9WXUTr6OrGw3BXX3CjRwfW6MPeVjEGzyY9abVzMFxFeRQhSHALVvBns72+rU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790782898; c=relaxed/simple;
-	bh=d07y4AH12Gb7L+Toaji4x96CQYlqmUb+XYLYmokP/w8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Kdaw+bfHvGtEDEDnN8n53h6rEGRRxuHt0yLXoTbl78GDrLOZ8IOGtmT/sNIKb1lNmR7Bg6Qfe4PT3JWTiQkMXfVEcHRwFnJ1QlWHMMXN48MPGHuuFAkBN8IGsGihS5JTRfaIEXAmNPFcMHtp6d6MU9mIHwX1gjzjVzEKjpT9mcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GJRi3bpS; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3225F374A17
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 15:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790783127; cv=pass; b=b+4o20tZVtGKjoxl935jz2A47zgNZLmhmLLrGDp51J2ZAW+MmDOmgTeQb/jk3mu+Djp9+TG8hpvwa3oFiKVmh33tqT2dsPsRWptGgGXooDEcvpcJChH9ZHAaTtDU+DZ0Qsn9VGpg8SWNb12weRyHbjJajDx/8xXW+Ddm6uZUCGo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790783127; c=relaxed/simple;
+	bh=i6GmaXuuU+zwtj2v1bb6dDRelxF99MNSWJOfop71WYo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CoK0fY8zAVqf/WUPcRDt6ORIEvqpGXpL4Uyd4jLV0zLAvG2y/wi/BzkYYC4H6zg/8LUAWYzfW/jJW/p72vicYiwyQbk+jJUDt16c3fgUNoilKrjQSlHDAvTn+BT4BPyL3UzR7IvnSKonv06aSHFbkZd0Fg+qjQYGvX/lByLd0N0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qRC3q1U4; arc=pass smtp.client-ip=74.125.229.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GJRi3bpS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7543E1F0089B;
-	Wed, 30 Sep 2026 15:41:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790782890;
-	bh=cx/7cpTOyS/9/r2l8q+jaZmiaiNVBtIMxCNWDxZTieY=;
-	h=From:To:Cc:Subject:Date;
-	b=GJRi3bpS409d12xQAjhAgAbhr1WYna/6pgncF8YPWpwBN6Jdhi6x5/pObuTOpL7in
-	 m+JC2kEZaXaBeeX8SEV6aYC+JDGXjcm8J/EZZ74WvtOAs1eS/I9sMxjMPKvLXsj7Qn
-	 cM9ggXp2wmhk88FTkTijbug2ALNtW/X6gnjkpL+VinqUFLdvzIFeinVrvu/q5QRbe1
-	 7EgScxq7iQdXi9pwA83ZSHy5U5/EUFbggUIbGaLvkyYHkIPjb6uE/oAYMYmbIRQhNn
-	 A9JlrSTIf4ru6tlFUJ1kTxdMQJMQ3kWrLxbZ1HZb13l56ZiHQhCj8fXA/6ho9fld5m
-	 9oLKK6HwMgORg==
-From: Philipp Stanner <phasta@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH v2] rust: sync: Accept errors for Lock payload data
-Date: Wed, 30 Sep 2026 17:41:02 +0200
-Message-ID: <20260930154101.1885705-2-phasta@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qRC3q1U4"
+Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-34c5d196b0bso138038eec.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 08:45:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790783119; cv=none;
+        d=google.com; s=arc-20260327;
+        b=e8CW3iFNyX5GPiXdwmkELepXzrTB/EPweqlIyWTgN7uVZbEeZeLgRUkf/73oeWxkm3
+         nP23JLfYtOYRVuGU35fyERMmkOIJz5h/ikiT5oKIbuxY8Trr94uSweEb/D60A/1C1PTK
+         oMNi1GAy+ADfvt0qLfPy13FaaCQufdZChBBjHIc8EnjCMQZ2j/TXoMITo6bIVO63HwIF
+         cINupR7SSlu2CMKlBFfdZAS48F118tr0LIs787S8ugRCbY/TOiLNNItdSIUW4fkCNWFd
+         SaTBuXOy1cp1LzxsmftRnt3uTDQbgFKel0XToXDv74gde9NvSWJo102Tb39SYEApU63a
+         dWAw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=i6GmaXuuU+zwtj2v1bb6dDRelxF99MNSWJOfop71WYo=;
+        fh=rUaJKMV83oMoHTik5IFXIeCWyy6B8LgzRiUntpbdjaE=;
+        b=c6jK+I3pTEK15nPLgkbtlwpBw8gg8V8Bw87KEsupn4G/fUc7YNiNK0wXbVC7azwxPP
+         A7+sPuMekKWXs7iHcV8soaGs5/Y3e7wxoFGL36uRDM+ejypOSvJb4zy7etGkCp8R92VC
+         cGPjODynZaPfcjShWRtrHDdUOjChNyO4lvKuWby0g4tOFB8kriGIHR41g2cU+5D8ftWg
+         UB6PhU0ysLJ6Oz6mUsouU604kxWfiZXeFKosTxZFIlZnmhgRybZ1jYOnbkb0hLfo34Zw
+         rF/iUkNaYPLp+cQ60PB2Pv2EfUJg1yVAHHKzfNHtItklSUbMwajgcUm9oxOtA4iF089N
+         h/Fw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790783119; x=1791387919; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=i6GmaXuuU+zwtj2v1bb6dDRelxF99MNSWJOfop71WYo=;
+        b=qRC3q1U4Jm+Zu721GKeU5MDnP/B/YfgcHDimuBO5GEsiNU3VKKWDkCTZEnb9l6VNdg
+         2uX4rKqKKIRYnLId3f6QSACrT1BuYB+/v103uivfoG2uzHbF0YZOsIgq69yeNBh1I3e3
+         HAnHMqj/wY9foUx+zI4vVlmTk8XcjO0FPDfuf+0XeGg5BWx0ousOEhzuYVoipo3y4Q+J
+         B6+oL/hSVZ7tOHagecfCogIYPBI4rR8fabNJ6k8iGEETNQhY9vxiznMyv47p1Haz+9ym
+         0WgLUCer3Z/1LejsxDM2pZNMPbS2DRBHB4tfobW3hNvGxxVKmqG24dXqTo/5yhxOO47S
+         LQIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790783119; x=1791387919;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i6GmaXuuU+zwtj2v1bb6dDRelxF99MNSWJOfop71WYo=;
+        b=uX2QoVxi6UuZkD6+xQfXZmNheV7hi7bXPJHqTHNE80pFgvlgDfzMi/WxuqYV1+czSj
+         iaU4G1KiVj279wpCQukaSXPyeYz0VQGDuq2d9+gX/xfBuoWrYmnUQSEYI99vVpq6chTm
+         csZ9i22QIOz0MkNaCPlVNfaxHdP5hkmWlTwf0sldng0yJ5mjIEeyK6b+Irpz3cpi7VNM
+         J2bJLrk2+cS2NcOk0rLkHfN6W70f8VRfvAEF/NnyE4i7OUzqQ0OtpHKGE46woFe1DDKb
+         DXVS70OJa10jvCCkGYT4hylMtb+OWynLjBp+b6tf/t3zEleUN+R+lPTaVNTtDPgi/3I4
+         0Atw==
+X-Forwarded-Encrypted: i=1; AKwUvBxL5TlB7TMaUX/LGE4wgRl43+PHnxcI++XFAhxwNoEYx+6igOxUTNGek+hZXhV8l0W+pwWcr5LClJdOovx4vw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYIDd317tWp19DnXFzBYkhis0b+196MoK+jrfdkwtx02aQxIs9bz
+	kDqX7yVsO3109gx+F4YHjvQLLJnULej9ranvjNnnLP8kXIAumTyltMlUzYtTrMIteA5ETEe4qir
+	Rmxo7k6odDgijCmMCAa16oqYGYlrg/gw=
+X-Gm-Gg: AYBFou3O97mLnHEwTYeLRmo6HTm/vdUud63X9I7cyd5g2hTHZNyT7vuRBStsY4cjGMs
+	1HsmxrmPHD9TZBA63+aFEq8YkPOLJaqBqbLcvPH14r01oUwtgRbrmWo82cus3TxEaataor0rRAC
+	YicRRBGUJXfNC/7kAC7d+n3J1a1d24+CB2GDYjquWJSIgyVTUjs8pg+o46thJ9/+liwQNiT50ei
+	XB2L/xxKYzirQo7qEBSanqJDeEfUg6+fmnSGMTWHS3MPf1l+QKhGNX5SY9tcCe4rG7dktuwuKEL
+	H1zd4fszfMt/XmxpL1Z4WFAHN4K7nujHymBlpCTWaFHpRPmrnpYlsqjhalgnmqXPJaY7Oz7Ert2
+	ddSse/hTSmDbgcTpwYosMvxEpackHhh+/BtYjB0zCirZgXmMWx5up5WV0o9IZ14UgqY6U68o7/n
+	Mvam2bSlC+6tenwneMo4AMy9ZyJcYBsi6JXvFKP+ODKjVVKGHzoxc=
+X-Received: by 2002:a05:7300:e9c9:10b0:34b:7c9c:9a69 with SMTP id
+ 5a478bee46e88-34cd8795e5fmr3668963eec.0.1790783119173; Wed, 30 Sep 2026
+ 08:45:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260917051147.98775-1-tweek@google.com> <CANiq72nRLF7PmqqVUrAiw_M3dYZCr9ifoo+Q4SuXfBQsAFH-pQ@mail.gmail.com>
+ <DLSOH1EVCWKD.XEIME3CYEYYJ@garyguo.net> <CANiq72m=rhBDJSSPBZ3yXb_r0jiCq7f8KOy+Fs1k8SzWJUwkhw@mail.gmail.com>
+ <DLSRGVBPWMXX.1LAWUQHDYKLCV@garyguo.net>
+In-Reply-To: <DLSRGVBPWMXX.1LAWUQHDYKLCV@garyguo.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 30 Sep 2026 17:45:06 +0200
+X-Gm-Features: AclHuK-xcuO0mR7ZCevwePsscH8hBfb4GfEBBZrYNyFBbqkPe1_OxY6I5DHFIUw
+Message-ID: <CANiq72mi-9xCyX0VfgbXwvSQsfvowzOdsTGVF1HpKy_h8eHesg@mail.gmail.com>
+Subject: Re: [PATCH] rust: macros: allow non-ASCII characters in `authors`
+To: Gary Guo <gary@garyguo.net>, Andreas Hindborg <a.hindborg@kernel.org>
+Cc: =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Aaron Tomlin <atomlin@atomlin.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The `Lock` baseclass currently does not allow for fallible user-data.
-This can cause conflicts when used with other primitives, for example
-when a lock shall be pin-initialized with payload data that is fallible.
+On Wed, Sep 30, 2026 at 5:37=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
+> Ah, that's my patch. It had been completely paged out from my memory. In =
+that
+> case this is indeed a fix.
 
-Add support for the lock base class so that it works with
-try_pin_init!(). Adjust spinlock and mutex accordingly.
+Thanks for confirming!
 
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
----
-Changes in v2:
-  - Don't import prelude in doctests. (Gary)
-  - Keep using pin_init! over try_pin_init! in Lock::new(). (Gary)
----
- rust/kernel/sync/lock.rs          | 19 +++++++++++++------
- rust/kernel/sync/lock/mutex.rs    |  6 +++---
- rust/kernel/sync/lock/spinlock.rs | 17 +++++++----------
- 3 files changed, 23 insertions(+), 19 deletions(-)
+> I don't think it's worth tagging stable though. It's not something worth =
+putting
+> effort backporting, but if AUTOSEL picked it via the fixes tag it doesn't=
+ hurt
+> either.
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 10b6b5e9b024..5467f1d1af55 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -7,11 +7,13 @@
- 
- use super::LockClassKey;
- use crate::{
--    str::{CStr, CStrExt as _},
-+    str::CStr,
-     types::{NotThreadSafe, Opaque, ScopeGuard},
- };
- use core::{cell::UnsafeCell, marker::PhantomPinned, pin::Pin};
--use pin_init::{pin_data, pin_init, PinInit, Wrapper};
-+use pin_init::{pin_data, PinInit, Wrapper};
-+
-+use kernel::prelude::*;
- 
- pub mod mutex;
- pub mod spinlock;
-@@ -126,13 +128,18 @@ unsafe impl<T: ?Sized + Send, B: Backend> Send for Lock<T, B> {}
- // data it protects is `Send`.
- unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}
- 
-+use core::convert::Infallible;
-+
- impl<T, B: Backend> Lock<T, B> {
-     /// Constructs a new lock initialiser.
--    pub fn new(
--        t: impl PinInit<T>,
-+    pub fn new<E>(
-+        t: impl PinInit<T, E>,
-         name: &'static CStr,
-         key: Pin<&'static LockClassKey>,
--    ) -> impl PinInit<Self> {
-+    ) -> impl PinInit<Self, E>
-+    where
-+        E: From<Infallible>,
-+    {
-         pin_init!(Self {
-             data <- UnsafeCell::pin_init(t),
-             _pin: PhantomPinned,
-@@ -141,7 +148,7 @@ pub fn new(
-             state <- Opaque::ffi_init(|slot| unsafe {
-                 B::init(slot, name.as_char_ptr(), key.as_ptr())
-             }),
--        })
-+        }? E)
-     }
- }
- 
-diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
-index cda0203efefb..38d8fb9dad5d 100644
---- a/rust/kernel/sync/lock/mutex.rs
-+++ b/rust/kernel/sync/lock/mutex.rs
-@@ -49,8 +49,8 @@ macro_rules! new_mutex {
- /// }
- ///
- /// impl Example {
--///     fn new() -> impl PinInit<Self> {
--///         pin_init!(Self {
-+///     fn new() -> impl PinInit<Self, Error> {
-+///         try_pin_init!(Self {
- ///             c: 10,
- ///             d <- new_mutex!(Inner { a: 20, b: 30 }),
- ///         })
-@@ -58,7 +58,7 @@ macro_rules! new_mutex {
- /// }
- ///
- /// // Allocate a boxed `Example`.
--/// let e = KBox::pin_init(Example::new(), GFP_KERNEL)?;
-+/// let e = KBox::try_pin_init(Example::new(), GFP_KERNEL)?;
- /// assert_eq!(e.c, 10);
- /// assert_eq!(e.d.lock().a, 20);
- /// assert_eq!(e.d.lock().b, 30);
-diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index aafc80125f59..222443fa1c6c 100644
---- a/rust/kernel/sync/lock/spinlock.rs
-+++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -4,10 +4,7 @@
- //!
- //! This module allows Rust code to use the kernel's `spinlock_t`.
- use super::*;
--use crate::{
--    interrupt::LocalInterruptDisabled,
--    prelude::*, //
--};
-+use crate::interrupt::LocalInterruptDisabled;
- 
- /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
- ///
-@@ -52,8 +49,8 @@ macro_rules! new_spinlock {
- /// }
- ///
- /// impl Example {
--///     fn new() -> impl PinInit<Self> {
--///         pin_init!(Self {
-+///     fn new() -> impl PinInit<Self, Error> {
-+///         try_pin_init!(Self {
- ///             c: 10,
- ///             d <- new_spinlock!(Inner { a: 20, b: 30 }),
- ///         })
-@@ -199,8 +196,8 @@ macro_rules! new_spinlock_irq {
- /// }
- ///
- /// impl Example {
--///     fn new() -> impl PinInit<Self> {
--///         pin_init!(Self {
-+///     fn new() -> impl PinInit<Self, Error> {
-+///         try_pin_init!(Self {
- ///             c <- new_spinlock_irq!(Inner { a: 0, b: 10 }),
- ///             d <- new_spinlock_irq!(Inner { a: 20, b: 30 }),
- ///         })
-@@ -244,8 +241,8 @@ macro_rules! new_spinlock_irq {
- /// }
- ///
- /// impl Example {
--///     fn new() -> impl PinInit<Self> {
--///         pin_init!(Self {
-+///     fn new() -> impl PinInit<Self, Error> {
-+///         try_pin_init!(Self {
- ///             inner <- new_spinlock_irq!(Inner { a: 20 }),
- ///         })
- ///     }
+Yeah, I think it doesn't matter either way. I can remove the Cc. If
+someone needs it, we can backport it later on.
 
-base-commit: f9a6960c7b27c03becd50a2a7620273d80e4040d
--- 
-2.55.0
-
+Cheers,
+Miguel
