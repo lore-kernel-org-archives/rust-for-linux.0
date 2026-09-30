@@ -1,78 +1,67 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021084.outbound.protection.outlook.com [52.101.100.84])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020106.outbound.protection.outlook.com [52.101.195.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4405B4E1C74;
-	Wed, 30 Sep 2026 13:15:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456042E1F0E;
+	Wed, 30 Sep 2026 13:16:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.106
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790774109; cv=fail; b=WRXM2POvvm6nF0v8TZs7xUJ4fg7GCtHyGKoKM91D7G3XRmLFnC1JIc9QpdoXwT9DPGyX5g58Z5nj5guNu0KNdnEkKPvS4zzANQGsIINAZXkuB3TVE1YieHTNmDmmqteu95tGGkA5IK+tCAI4IemAv6ampf9RjS2Rw+SZL4yrDtc=
+	t=1790774219; cv=fail; b=m+/s4FthF7B/llhBfKnCtG5OiiPD44Cer502CfgNNZ+gFF/QyLtytBkbQOWQb1pwK9KguS50L6bVmU59D31/OPbEmlohfekwUA7hFYGX1KBzrmAdgb4lmFxF66YyiDm4ysTb2Ad4t10BuKwTLkX841Wea1A8heCy3dg7lTm6Pq0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790774109; c=relaxed/simple;
-	bh=AyxxUppYNFoQGG5De9RAynwjhbX/j4Lmgml7l42P2GI=;
+	s=arc-20240116; t=1790774219; c=relaxed/simple;
+	bh=HD5j2ZMFmDajpkLHmCO1F78N95z2t4xc9NmuPKKKcuA=;
 	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=lYUW0rNl5M36Xk0wFUZMmYU2Nwdg/eBeRgQ68UbyX9YajQzEAddbwWW1yQeuLo201tIyWV21yg8Sq4Ii8JjPB3EgjPO1MHhKogjJlrzGzebwjpeeZQ5vObPabvg59qNfLt/74RivLTvShK4PoJxf3B2td5kCIskK0n3s7Nkz27c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=pBbMUj3v; arc=fail smtp.client-ip=52.101.100.84
+	 In-Reply-To:MIME-Version; b=NhA8V6zXVgj65uU+DBiAyJZ+iDitYIn5LVwb6xvLA3zoVlJ8vae28HcPtpkmMT+PHcl1g4M82tTDxssYqa3ftKCHpz54H74qMVujLMdCNbi3LjQntvleemMatcdP5q/gnM28hqSMOY26GeUOeouVwbOF9J33ARvbY3w1Su+o9sM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=rvpFuw+m; arc=fail smtp.client-ip=52.101.195.106
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="pBbMUj3v"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="rvpFuw+m"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fCy/a88kmvfMxuWktVGvyGs+YpCNrpTBW3hEaDn9Pfgprvl/d9jI0Ah9OzNX65tobwPHtN1XET909pCijWgU9xcnHNru8HsvokPMapsUZT6+/T4QHcx+dJxL0WU5cP11ID3UMAn6kut+eDBLuVbMkNEdC/S85Ht28+jc94YQ3i3iH7d4LlyoNwncw1FvN+CfwfJ6dLgqH0plqlNtRer3ZdeDWK7rZBSXNErw/gQ4Zyn9gNG0ljYtYHkj+X4LYAv9yoXGRgR8yHeXsOs1BdAjuoUm/I2jqqwJTF5GMJcqWo17m1KT8TDEogx2ba7II7N+zF6hiyK7OuA/q9Q6KXrclw==
+ b=YVjGhoBZFugjdsegm8W3cHq4UQh9PUN2pYik57pYwiRdrSbyQRglDvVXOGpk2tYrW1zdACxdTAKaWBdIWHWyJxD6ErKhhZfUIiq2m8KuP0AC6XoKuScS4C63E8pKCNNzWiox6PeKqIbJwZlT0fA0Vn6XF3XbPmYwJs0PJlX9Y2XQUrIVV67jt6aZcLvkdegRXvC7m8j3QM5uZIEwDKMC9vnhHQjlKjecgbpxm2rPLtqsFdEnLc1OCDinhOToGBZts6wH2wTYd9Qg+GAFdkcQxajLNXnkW7JsmnCrb/xq/zpJI6aRBidLGbaUFIbu+u1JLKXLmjtaes+NeXf22MZQtg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2P57qKO+ONDByvbvtw2XJP7WzSaFZ40EsSFMOXW/7KA=;
- b=biIpEobsqrbh2Y7faMxCdEERtHwZHGKYTdhtpyqziKCRys6OUdDfqZRpvR3lLCKgmD3D5+xiMo8zoaF5Tl0NBVkqbtzvcWNBNja6ASq+7w4b0nHQAe8RjrJoZlsXm5FbQ1WALjdnknFUJrGcW0sFwifEFO0nVbtAFEb/vQLbNDeHe/KUivbZg2E12sr0kZd1WHUasmPE9ErmI0Y82rkphSGZ5L9CbBEb4fvM68bS1hj52dESxV7LglTyy5rTelhEGjCdP9HNiLUKFeuBF0Kl9U3VDwJ+TyIrtqIldcgtA3Jb1YQcJ50WYvdrZafGKq0pyUE80+zJPnu09wq9HduFEA==
+ bh=HD5j2ZMFmDajpkLHmCO1F78N95z2t4xc9NmuPKKKcuA=;
+ b=xIVMXT/N2nDCeD6LziaoADZQk8eo9elwbjWJPPoZn31DWRJ8259XB+X1f/dZOj7ngdLuwljKFm/mOX64wwq3hiQRi9PB9ZFChFzWL2M7dHHSRnjpJo4dtFPbi+Ea7eWH9koCchgCqeASy0vb3wq1KNbVrBJNHlbV3ozHzqp+qIUqjI6ZH3cIyz6pEVDgNeFZsUAuE3Hyh44nwlceeYtl6M6i55T0Z5ke4/JwWn6W6xGGN1Pa2GdbGBgU9wKXAxbqx+MxDn2vuNOZXgIxNWRgiSqdO1kKVaWbT1UcT509odm8zJsznmYa+Qb8PPXTmsjzFR5l/s9rCWy5ZRU/h5f8ZQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2P57qKO+ONDByvbvtw2XJP7WzSaFZ40EsSFMOXW/7KA=;
- b=pBbMUj3vtIOPDN3LhpYiv/zHbgVmMfn3Q2IPQjMWs+VUpoiqvAqg7+7pHZKyJkr9I7BVmhj01GDRU7iTnMrLFF/IzE4FMwPQb6qDmaYRLneTt/O0H16P3EuenweHyZYaRVAZOH/GR+Ok16Pqsh27j/n7+EWdLsAJ86T8ocZ5oVE=
+ bh=HD5j2ZMFmDajpkLHmCO1F78N95z2t4xc9NmuPKKKcuA=;
+ b=rvpFuw+mDyi6AqwaUofiyQOKYFrxVR3rM3YS9U2nHV3RVKKpZ+AJ/jgJ6u5pm5igNc7xcEFoSv3TtLYoi0+8DXZ81wEtaFXN1lBbGKGzv6RCwviVzhG966xm6kopBk+R3PxKQ743DD3axQznwoSJWYzT8Tp74jg2EVtM5JfPw0o=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LNXP265MB2428.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:137::5) with
+ by LO3P265MB1996.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:10e::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
- 2026 13:14:53 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.25; Wed, 30 Sep
+ 2026 13:16:38 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0451.024; Wed, 30 Sep 2026
- 13:14:52 +0000
+ 13:16:38 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 30 Sep 2026 14:14:51 +0100
-Message-Id: <DLSOFOGGZC92.12KYHEALX1271@garyguo.net>
-Subject: Re: [PATCH 1/6] hrtimer: add expiry injecting callback variant
+Date: Wed, 30 Sep 2026 14:16:37 +0100
+Message-Id: <DLSOH1EVCWKD.XEIME3CYEYYJ@garyguo.net>
+Subject: Re: [PATCH] rust: macros: allow non-ASCII characters in `authors`
 From: "Gary Guo" <gary@garyguo.net>
-To: "Thomas Gleixner" <tglx@kernel.org>, "Andreas Hindborg"
- <a.hindborg@kernel.org>, "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
- "Frederic Weisbecker" <frederic@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross"
- <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "Jani Nikula" <jani.nikula@linux.intel.com>, "Joonas
- Lahtinen" <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi"
- <rodrigo.vivi@intel.com>, "Tvrtko Ursulin" <tursulin@ursulin.net>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Lyude
- Paul" <lyude@redhat.com>, "John Stultz" <jstultz@google.com>, "Stephen
- Boyd" <sboyd@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- "Gary Guo" <gary@garyguo.net>, "FUJITA Tomonori"
- <fujita.tomonori@gmail.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <intel-gfx@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
+ =?utf-8?q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Daniel Gomez"
+ <da.gomez@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Aaron
+ Tomlin" <atomlin@atomlin.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-modules@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.22.0
-References: <20260825-expires-v2-v1-0-90411c6217c7@kernel.org>
- <20260825-expires-v2-v1-1-90411c6217c7@kernel.org> <877bk3ixp5.ffs@fw13>
-In-Reply-To: <877bk3ixp5.ffs@fw13>
-X-ClientProxiedBy: LO4P123CA0586.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:295::7) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+References: <20260917051147.98775-1-tweek@google.com>
+ <CANiq72nRLF7PmqqVUrAiw_M3dYZCr9ifoo+Q4SuXfBQsAFH-pQ@mail.gmail.com>
+In-Reply-To: <CANiq72nRLF7PmqqVUrAiw_M3dYZCr9ifoo+Q4SuXfBQsAFH-pQ@mail.gmail.com>
+X-ClientProxiedBy: LO4P265CA0076.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2bd::11) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -81,223 +70,108 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LNXP265MB2428:EE_
-X-MS-Office365-Filtering-Correlation-Id: a1ae3cf5-658f-471d-2777-08df1ef4cff1
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO3P265MB1996:EE_
+X-MS-Office365-Filtering-Correlation-Id: f5a4557e-ebcb-4f15-17c2-08df1ef50f4b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|10070799003|1800799024|7416014|376014|366016|921020|4143699003|6133799003|10067099003|56012099006|5023799004|18002099003|22082099003;
+	BCL:0;ARA:13230040|7416014|376014|23010399003|10070799003|366016|1800799024|4143699003|56012099006|10067099003|22082099003|18002099003|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	4IA6P2PL9dIT7BW5HpSmi/WRBspZWkXl+FzEaoKXf4EtyN5hz1RfhxSKpjmPtSFCkqe0eWaPZMJqrNfJt2PACgW4jw7MnsiTyYJqjM9z/s9TsifQufB8UWeToUuBbwiT8jzxZeSKEtMJuOsF5+15lejadvexCxx2nhQZHn1AlmTIzOel9bYM0Lk26TELwbNFLYPU887Ms3hXOm0X9A136mC1jCrJyRJc7sfmolHbVtBwyKGQ8cPr0ji62hn3X2NJaOzBY3FQca+D+nRof7YWw7wrj3w4zPFpUCcGipiUL3ZyAnyeByW4pI6ETpVzLWNts0fgIO9MoLjWKRvbM4avq2g7tpcz96V4VuT3ZscxJEuQv/LKaJyd1kVZCvg9PEzqIkh6A3L5EdZORHbRaFrA1v/oU2Z5iuslRwMKlA+JgEk/286eGJToelS2ZLLHnyqRERHtWKHGnCxb7N+vDFNliR/2Gi0+FCPT+ejthdujYYZlTwohI+dnKuRGEMWtGnjkXe42bJt1jW19wPq3Sx4JD7lzDWwYoKf9Tobeg6L44EgwNTsu7EOzf0sdcNK/NLQHwAeWbx2PE0uZnL3bruCvoOdOsR9v4AEGc/rPc8kndW4Oi+idFnjChrqVW8BP89gEo/SjH/ACvvqItIHZas1qO1g6DIhkc0sCHUqFpRK8gkKREkkANIyads8iUbHT8v8/HllZvnRRcLesLL6kI7MyRA==
+	7Bzp/+5Yg/e/Xn2ZipIYF58qJLtyqI8nzPH+ms+hASxOvn4b5Uz7UutorBoz3eAVzWxrJbsT5MVx10joSdrVzlCuHWJ/5bjirrpMYa8zgIqUTFXfJQxeyw4VUMeg6WoRPAhXup1Jpa1pRvkhU1QIYrTQthSKUl2h6r49AL17SuGdRTvJIOdZfe8hEkbXyKVAtj9/nzCsIPBvZZvUtY7EezSKItDB7j/06HoDKVOux3nuLmHyF7Tsx8mGC2qhIYVuu9KrukF3OjYlj1TwOvrviTHfVe9KGybjLz8h/dARnFD8k0ApfL/b5ia8lcagncsDPyNDKdw0DjR4Lf/q/fGzuhF4AEhDr16QcdFPX9zsXdYjaLTbgxc+FcVWHA6DoxyB55L7nohQZtdFFS4W9FWeFON5lT8/viycg13jDcf2aCRbKws8Nk5VfoF+6783Qv6idxSD6T+Rst8WDb03pwBumVH9cmu7UglwFzxU/ODs2oSNRUJAw82PaOxya2FiTfg+ePA80UmW/zi8iO1re5nviD9RHMDGnCcMxpLd7P3sqK/OHiZzrkDhmpdceqbPLvivbvZ2QVyDnNA3WCFnX9dChyEHt4sMpc4aL4DYQEVlH9ZAeyHYjQXy9ztQ1+LsqEJQfI6bdK+etdQvrxe0i42sS4Um1ja6c1+fRcOP5mCpSiE=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(1800799024)(7416014)(376014)(366016)(921020)(4143699003)(6133799003)(10067099003)(56012099006)(5023799004)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(10070799003)(366016)(1800799024)(4143699003)(56012099006)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MXUxWHdjNytlbVA1UEdPbzhZMS9FZkpaYmZPYTd6dmFBOTVhYVFSam1xVFp4?=
- =?utf-8?B?WFo5YmVGc01KQ0J1Rm5QcENvalp3RHZkajh2bmVGTXAzYnBRbHV1SjNleU02?=
- =?utf-8?B?K3BDVitaWjN2ZUxUQnFVS05LVkhFbnFiSzRRNFplSExacmRrRHRiVUVmN0U1?=
- =?utf-8?B?RGx2NjM2alJ3L3kxOFFHL0RxSzRUTllyV3NPTjhNeTFEa2hTT2QwY0xrUnZ6?=
- =?utf-8?B?dzJBZVViNGd6UkhQdXJHUWJ5djBKVkJ3VHlDeHhyMk9FNHpWY3o3dS9tQkpT?=
- =?utf-8?B?c04wSk92OFdCVG4rTVRjaGd6SVJhSHAweU9BZEhZR0hkTFZCMG8yNk1HRTBC?=
- =?utf-8?B?R1ExMkpVOXFSbkZOOHZDS2FNN3Vtc2NMUk96Z2hDWTRYVkJ5UTQyaXh6SzIy?=
- =?utf-8?B?MUNMRFBQVmhTQkVIcDIzSjdtVWJVU05sMTRCWFZ6OEpRVCs3Qys1bk9tK2Vy?=
- =?utf-8?B?RDl4TnFSNHlDVEd0MEJ4T3BoSmZmekpXeG5VR1pCRlRkSGxuVCsxV0RvdWhM?=
- =?utf-8?B?anU1V1c3TUlVNVVMR0J6S2htSUtaRDM0WlhBTmNURjJ3Q1RLMjZTMXpnQmhK?=
- =?utf-8?B?UGVJN1BLaEtxOUNNTzhQRzBLbXBaYUVtaGhaWFVHUHFGZG5sQ1NtVjhJMTRI?=
- =?utf-8?B?K3NxeFBRd1RnQ0ovZzdOekFRZGJaaG1GVk1HMXYxRFZWUEwvTVpnWVBJZWFy?=
- =?utf-8?B?MW0xeDdpWlNrUlNkeXVnTDI4MGxZSXcvOTMzRWN5Mkl6OWZtcVF1aTl2VlBE?=
- =?utf-8?B?dEVrMUhCcXdFYXlIbUN3VG4rWk9oR3l4MWdhVEM3ZTByQTFINzJ5Y3V4bGpo?=
- =?utf-8?B?V0wwdGFSMXd1NVVjdWdlYUhHTXdqUTc0Z1dtY2hvMEpVb21ZYThXSDM4NVFh?=
- =?utf-8?B?R29QVlFCTEc1L2xSdjRxMWo3b0UyVkdNOHNrT083ZStkY1hxb3o5YjQ0UjlW?=
- =?utf-8?B?TExrWUk0aHhBYm83U3NBQURSSFpmcHFrVGthYVREdWpWcFNLay9FK0dvNlhw?=
- =?utf-8?B?NlJ1U1RoOFErcDhXR1pWSEhIWTNuME1xRUt5QWMzTnFKREkxQXBIRVNYN0dK?=
- =?utf-8?B?b2VCQnBDWUlJVXJjOUdScUpOUTZWaXBUWWt3S1Y1QW1yUzh3OWc1ck9nV2h3?=
- =?utf-8?B?NHI5WTIvempPYUdzckRQeW1mN1RkV1dJUUFnQWZod0xBNlJzQkgyVVF1RW8w?=
- =?utf-8?B?REd3dzJMMkZ1cFBmMWFCSmhhbDcwS1FBNm1HUjFkdFJMVWRYU2JJVStXY1My?=
- =?utf-8?B?UjMzMzNSMlBtSmx5aFAya2R2NVpXSWZtUndQUVgyazRxU1BvM2UycHBPbkxV?=
- =?utf-8?B?dnNzbFFRQ0p3MzA4UC9YK1dJOVU5ZTY3elhZVlJVMDZqNWxtaVhsVkxkRTZZ?=
- =?utf-8?B?RmVHK1BZODJKNXFHQ1FWZ1RheUVMeG1Fcmt4a2ZMU01Xa29lVVNUTHliQ0M3?=
- =?utf-8?B?WEJoWVlTMTduZVBkckU5V3FwVGxCZFVUd0JMOVA1azMwVU1EY3dSa3Z3T2pT?=
- =?utf-8?B?Sk8ydVM4NG5Nb2JvQVpCb0h4MStQZkl6VjBnMk5zMVpJb0RkZ2c1cm1tUDR6?=
- =?utf-8?B?bTVOMHdTbjV3QktWY0l2dmdLMzFiSDNOZ05wZmN6YWxXeHVZNGhyNERtcGk4?=
- =?utf-8?B?VVRqZ1RkaEdabzBFMWlaWGdGY3VoVzNKdllCSVc5ME5JbXMyaE96UHN4OEF6?=
- =?utf-8?B?R3FIaTA4N3UwbzhmY2tpV1VwM0k2OUdnU1Q1NTAybzZHZ09vdGdSOXZoQnd4?=
- =?utf-8?B?VlRQTjFqNWplQVovQXNvdlNQcHVZbzZTZk1xa2pCbjQ1Yi96QXVmQmZTZVdK?=
- =?utf-8?B?M3dZKzlyNzdDSThnZ2VlSkorbXF6R0xDd1VQRGtOaHByNFF5VnA1V2NFWmFO?=
- =?utf-8?B?WG5RV1VOdnZFYy9NTzFTeHo4Yzc1UUl1bmVBLysyYzNtWTRkSlBZektpSWE4?=
- =?utf-8?B?Mm93NlJpc3BPWDg2eGgyTnF3TVhnU0JHV1QrOGJRSXNDbEQvREhoSi9XR0tW?=
- =?utf-8?B?TFN1VnhVS3lnbmIzaFNjZnRKU2xQbVlvV0x5dUc1bFUrT21iY1o3K0t0VUp1?=
- =?utf-8?B?RDR4K1RycFNIbi9YU1NLdkhQbXQ4b3NnQzBDVEhOZFN2ZDUrZ0d4OTMwbmt6?=
- =?utf-8?B?R2JRUk9LN2ZwYURhbEFLbGNPUjFTM2lrcitTcWE3NmprL1AvTFNwSUJZOThQ?=
- =?utf-8?B?TWtXV1BmSUpxK28rZHlTWkIxUXVQbUxsSFdFQ0k3ckVQQmozOGl5R0NLaEk1?=
- =?utf-8?B?a3FLdmlMWkNvTnJGenVsQzhaWWpYQ1ZhUU1qUCtqUW9CbytzYU9YV2NvSytU?=
- =?utf-8?B?aThLY2FDZWJaVGhWNzJ3SHp4R01sdmVvQlEzMTRBWjM3STd0bFJydz09?=
+	=?utf-8?B?V2N3MFYxL3dMQ1ErTFV2ZTk2SktGQ2tYZFU3Z2M2TlVCQjkzUzRCRWJ6dDhM?=
+ =?utf-8?B?Y1lzZnVnSnMweTFPZnZmck5rUkxlRk1OZXlLUTZGTkd6ck5PNjc0UUVVTU50?=
+ =?utf-8?B?b3VSRVd2bC9CbnVlQ2hnTk1SVTM0VGQ3bTV0aWl2RWVLZExsMWNScUhpWmNZ?=
+ =?utf-8?B?bWNyM2R4c1lTQlpTNERGNDVwS2xyRkViQVNFTmNhcHFQQ2ZTeGRxcmhWR2g0?=
+ =?utf-8?B?S1l5SWhxcFhyaGFyQnJrS2RQejQyK01IZGQ4SGpiNUZnR3BxREZUcG82c0FW?=
+ =?utf-8?B?dmt2RllsUzFFOWV1alRJRjR3Y2JsTnFYV2dscGVJd2NSVVNBeUUwVytHOXBs?=
+ =?utf-8?B?cjFMZEplQ3lvRGRaNFJaenVXODhTTzN2Zm1JYVVnaWdFeGtLZlYwcHNKNG5w?=
+ =?utf-8?B?c1hlQmdvdlovZHRKTVJnL2ZGZ3hrVDJqcGpDelYzdUFUMksvNE5IaEhWNWhG?=
+ =?utf-8?B?d1Q0OUt5MFA4U3hVbnJQQmQvUytKTElNTFBZSGhaQ0dQRExpbHBERUN2VUR6?=
+ =?utf-8?B?eldoajYyRHkyaUdLSEhwdDJoSG9VejZpc0lKZDBLSVAwdThLZGt1WHMxWjMx?=
+ =?utf-8?B?b3d4QS9DVSsxWkE1MGkvc3NZcno5dkNTR25lV2xNaU5SMWJ6SUFsQVFneS9l?=
+ =?utf-8?B?dGxRK3RncGpRamlWSGc5Tyt0ZzVzV3RyVWVrRmZjUGRQMVdXTnhKZEd4Tlhw?=
+ =?utf-8?B?eE8wSGRWNjMyT256T0FHZnlKM3FOMWNWaUNEbXhUYWVIVEl4S0h1ZGtiSWZs?=
+ =?utf-8?B?bjVKWHZDcHA4RjJDTUtFVnZnWVZ5V2dXalNiS09nZk5VcDNueHBnOEorTFVa?=
+ =?utf-8?B?T0ljdWlUd2x5bTRrdTgzMnRNVk50VVBQL0FRZ01kWTVhMVR2UnpUaXdiYWQ0?=
+ =?utf-8?B?SkFzTmRDWUZuR0NZNVFqYTJwaU1tTkFndWNLVWM1Mm9QNEU2cVl0MWp2ZzJu?=
+ =?utf-8?B?aW5HMEZXem5tSE5mdUQyalcyUi9iUS8vWTlHck5OakQwaWQ1YkVJem4xWEtJ?=
+ =?utf-8?B?SmpEM2I2cWpLTzIzaDh6dWNQaXVReWpPcE94S0MyWjVIUFEwaURaOVgxNksv?=
+ =?utf-8?B?UWJBZHUydzF6ZWhsRjg1bWE0WXJuYlJFN09oU2l0SUpjalF1a08zb2ZzeXJu?=
+ =?utf-8?B?cXJPN1RWVWhhd1lpVEFzUEF5d1FpK3F5SXBWNGYzekdoV3FSVTZKUGRGY1Fs?=
+ =?utf-8?B?SVI5L1VzSjBsWXJYYnVSTHdBeE1tNGZMMDU5akhKNllaMkh4MWUyelV0V3k0?=
+ =?utf-8?B?RU1yUGQyME1RSDZkWkh3OXlDODMrb1FCTmpYV3laNklYcTExbjgxN1dqaHQy?=
+ =?utf-8?B?UzJyZXRySWh0UHVhVlN3N1c5SFFXcm5DdDEySGtNUUNLbmc0QldlbmJFOTZI?=
+ =?utf-8?B?S3hVYlZwdXViZzl3Zmk1Sm1CZTRFUXlTdkZlL0hDZkxzQURsQys3QWkwbXhS?=
+ =?utf-8?B?Q1grZFkzbW1hU0d3eGdTRWF3ZXpVbUx1VXVBY0J4d0hnSUVKNU9oUXRPNFNH?=
+ =?utf-8?B?MXpEbzZ0bitXOGVtZ3p2aGtYS29IMktSaW5Yay8vZUZ2cTMwUGd2dUdoMFk0?=
+ =?utf-8?B?TDkxbHhEd2NZYk8zZ2hJTDdZdFc4UHFZOTNtR2JVV09jd2dvZ0pDdjhJZ2pU?=
+ =?utf-8?B?SzJUMDJwVDczNm9TS1hnS2FCREp2dGJUVmZENnZ5ZTMrQ1lleDlJaTFsaThL?=
+ =?utf-8?B?OVg0Q0pOaFREcWFTU2hsYXJiRkczZi9yOXpudHljUmZxVUJyV0xWRERrMm1o?=
+ =?utf-8?B?Qk1SU2NCQkgvNDZsK0JlNVA3TmVVRVlqQ204RHk4QUY3TXhPcDRNRlpmY2Yy?=
+ =?utf-8?B?S05wU3J2MTRucERRallPYjE3SDhjK0RITHdwTzdteWt5VktKWWN0TnY3Wk83?=
+ =?utf-8?B?Q0J3S1o0OEJwYndQZVZVVU1yQmJ6Y3JPajl1SkQram4vaXF3ZUpXUDNoYlNo?=
+ =?utf-8?B?a0g0WW16QVdRdEkyaWJZY0ZtNkgrSS9qZ091dEZVUmFxdEZBS1JwbWFUbmFN?=
+ =?utf-8?B?WEVud21FeVJRdkx2dVZFSUk5QVhScm93Si9jMk9OenMxaTFEcDBPaThSRmFN?=
+ =?utf-8?B?MmdTOGc1cjV5Z1AxZVZxbzFhSGNFK3FxZTFwRXpVV3RDOUhhTzFTc2h6OXRl?=
+ =?utf-8?B?ay82ejE2NHNGNjEwN1NUOXdJZW02QTRwNmwvOEJoUHBRRWZHYW9BMFI0cTl1?=
+ =?utf-8?B?NmU2TC9wZjhLLzBnS2E1L0lpMDNKSlNzQkU5aDBlSGpLVzBFUmpOc2F3cEFy?=
+ =?utf-8?B?QU1lSTZxbGFxRDBFU1BTbEZCWWJEUGtEL2VIUytoL2pNaVBXTm5VMGVsR1Bw?=
+ =?utf-8?B?TGNOVDZGNldSQU9uZTBQdW4vUVJzRUlrdmVjSC93aU5kdXN2Zmx0UT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: a1ae3cf5-658f-471d-2777-08df1ef4cff1
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5a4557e-ebcb-4f15-17c2-08df1ef50f4b
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 13:14:52.2272
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 13:16:38.3364
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: otVeYN220bDL/hP5/o+VgKf9/6uXasftlZarh75lZsyBHi5nrm6QSP7bAtNrqBu2lUHcdqGGEz5fXzEIyJ7dZg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LNXP265MB2428
+X-MS-Exchange-CrossTenant-UserPrincipalName: d063TGLE1XYXXYcOX8sZLci70BokDmtRR9yFlWQgnzUiNO2s0qcQ+lDERNdKdreh5NYvUxxu9TaF9KcOfwBnjA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB1996
 
-On Tue Sep 29, 2026 at 9:56 PM BST, Thomas Gleixner wrote:
-> On Tue, Aug 25 2026 at 14:16, Andreas Hindborg wrote:
->> A hrtimer callback may modify its own expiry with hrtimer_forward()
->> and read it with hrtimer_get_expires(). Both run after
->> __run_hrtimer() has dropped the cpu_base->lock, so they race with a
->> concurrent hrtimer_start_range_ns() on another CPU, which rewrites
->> node.expires under the base lock and requeues the timer:
+On Wed Sep 30, 2026 at 1:13 PM BST, Miguel Ojeda wrote:
+> On Thu, Sep 17, 2026 at 7:11=E2=80=AFAM Thi=C3=A9baud Weksteen <tweek@goo=
+gle.com> wrote:
 >>
->> - The unlocked read-modify-write of node.expires in
->>   hrtimer_forward() is a data race against the locked write in the
->>   start path.
+>> Module authors may have non-ASCII characters in their names. In C,
+>> `MODULE_AUTHOR` allows arbitrary string literals which are emitted as
+>> raw UTF-8 bytes into the `.modinfo` section, and multiple in-tree
+>> modules use non-ASCII author names.
 >>
->> - The is_queued check in hrtimer_forward() is racy with
->>   a time-of-check-time-of-use bug as well: a concurrent
->>   start can enqueue the timer between the check and the expiry
->>   update, and forwarding an already queued timer changes the expiry
->>   of a node inside the timerqueue without re-sorting, leaving the
->>   tree unordered.
+>> Originally, the single `author` field permitted arbitrary string literal=
+s
+>> including non-ASCII characters. When support for multiple authors was
+>> introduced in commit 38559da6afb2 ("rust: module: introduce `authors`
+>> key"), it reused the `expect_string_array` helper that had originally be=
+en
+>> added for module aliases. Because that helper enforced an ASCII check,
+>> `authors` inadvertently became restricted to ASCII-only string literals.
+>> Later, when the macro parsing was rewritten to use `syn` in commit
+>> c578ad703ae9 ("rust: macros: use `syn` to parse `module!` macro"), this
+>> restriction was carried over by using AsciiLitStr in `authors` type.
 >>
->> Timer users which both forward in the callback and arm from other contex=
-ts
->> must provide their own serialization, e.g. perf's cpc->hrtimer_lock plus
->> hrtimer_active flag, see commit 4cfafd3082af ("sched,perf: Fix periodic
->> timers"). The requirement is subtle and not enforced; i915_pmu and tapri=
-o
->> currently get it wrong. For the Rust hrtimer abstraction it is a soundne=
-ss
->> problem: safe code can arm a timer whose callback is running, so callbac=
-k
->> context forward and expiry reads cannot be offered as safe API.
+>> Change the element type of `authors` in `ModuleInfo` from `AsciiLitStr`
+>> to `LitStr` so that UTF-8 author names are permitted.
 >>
->> Add an alternative callback variant that removes the race
->> structurally instead of requiring serialization. An expiry injecting
->> callback receives the expiry snapshotted under the base lock by
->> value and, to restart the timer, fills a struct hrtimer_forward_args
->> and returns HRTIMER_RESTART. __run_hrtimer() then applies the
->> forward and the enqueue with the base lock held. The callback never
->> accesses live timer state.
->>
->> If a concurrent start enqueued the timer while the callback ran, the
->> restart request is discarded and the start wins, matching the
->> existing "restart =3D=3D HRTIMER_RESTART && !timer->is_queued" handling
->> for classic callbacks. The is_queued check is reliable here: while
->> base->running =3D=3D timer, hrtimer_try_to_cancel() bails out before
->> remove_hrtimer() and the timer cannot switch bases, so only a
->> concurrent start can enqueue it, and the start path writes the
->> expiry and is_queued in the same critical section. Thus !is_queued
->> at requeue time guarantees the expiry still equals the snapshot
->> handed to the callback: the deferred hrtimer_forward() cannot hit
->> its concurrent start check, and an overrun count the callback
->> derived from the snapshot is consistent with the forward that is
->> applied.
->>
->> The new callback pointer shares storage with the classic one in an
->> anonymous union, discriminated by a new is_ext flag placed in
->> existing padding; sizeof(struct hrtimer) is unchanged and the
->> classic callback path is unaffected. hrtimer_update_function()
->> rejects timers with an expiry injecting callback.
+>> Fixes: 38559da6afb2 ("rust: module: introduce `authors` key")
+>> Signed-off-by: Thi=C3=A9baud Weksteen <tweek@google.com>
 >
-> Aside of the horrible name (what is "ext"?) the whole mechanism is
-> creating a false sense of "safety" as the same problem exists when the
-> timer callback simply sets the new expiry time without invoking
-> hrtimer_forward().
+> This looks good, thanks! We did discuss allowing non-ASCII long ago,
+> so this wasn't intentional.
 >
-> Also why is Rust special and wants to delegate the external
-> serialization requirement to the hrtimer core code and thereby adding a
-> boatload of extra conditionals into the hotpath to distinguish between
-> the two callback variants?
+> Petr & modules: I can pick this on up (an Acked-by would be nice!),
+> unless you want to pick it.
 >
-> Yes, you found an example for the downside of this design in the i915
-> code. That's not surprising because i915 is generally known for ignoring
-> documentation and making up their own rules just because they can. So
-> I'm not accepting this as an argument at all.
+> By the way:
 >
-> I agree with you that the lack of enforcement of that external
-> serialization rule is suboptimal. External serialization is hard to
-> validate/enforce in general though it's not impossible.
->
-> But let's first take a step back and look at the larger picture.
->
-> The obvious question is:
->
->    Why is the base lock dropped when invoking the callback?
->
-> The answer is simply that the callback might and in many cases will
-> acquire a lock which is used in the reverse lock order for the purpose
-> of external serialization.
->
-> If you think about that then it's pretty obvious that you can introduce
-> a safe variant of hrtimer_forward() which can be invoked from the
-> callback:
->
-> hrtimer_forward_safe_from_callback(timer)
-> {
->         base =3D lock_running_timer_base(timer);
->         if (!hrtimer_is_queued(timer))
->         	hrtimer_forward(timer);
->         unlock_timer_base(base);
-> }
+> Cc: stable@vger.kernel.org
 
-FWIW we did discuss about this option. Here's the list of all options that =
-we
-come up with:
-
-1. Take base lock before calling forward and release it afterward (the one =
-you
-   mentioned above). This one requires exposing the base lock (at least to =
-Rust
-   abstraction).
-
-2. Prevent timer operation from within the callback and have hrtimer core d=
-oing
-   it (Andreas's patch).
-
-3. Force users to stop the timer before re-arming. This was dismissed becau=
-se
-   stopping the timer will require waiting for the callback, and this is pr=
-one to
-   deadlock condition.
-
-4. Add a lock to Rust side that all users must take to forward / start. We =
-don't
-   want to add a new lock just for this, and taking base lock would be more
-   favourable.
-
-We consider (2) the best option because it avoids several pitfalls with (1)=
-:
-
-- It is impossible to forget to forward and return restart, or forward but
-  return norestart.
-
-- The base lock is not unlocked before relocked, so the forward and restart=
-ing
-  is atomic. So it's impossible to have the condition where the forward occ=
-urs,
-  but before returning RESTART, the hrtimer is concurrently queued.
-
-- Unlock/relock have an overhead (we didn't quantify how much impact this w=
-ill
-  be, though).
-
-I supposed another alternative is to add a mode in hrtimer core where the b=
-ase
-lock is not unlocked before calling the callback, and expose base lock APIs
-(like option 1) so that the Rust hrtimer abstraction can unlock it before
-calling the callbacks.
+I'm not sure that this should be considered a fix. More like a feature.
 
 Best,
 Gary
-
->
-> That prevents the scenario you described in a completely safe way, no?
->
-> Coming back to validation/enforcement of external serialization. That's
-> a problem which has been solved in other places already. Look at the
-> seqlock code for inspiration.
 
