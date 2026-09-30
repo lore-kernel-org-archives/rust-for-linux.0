@@ -1,167 +1,369 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0770537AA9C;
-	Tue, 29 Sep 2026 20:56:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0111A5B8C;
+	Wed, 30 Sep 2026 00:26:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790715371; cv=none; b=rS+FivgxjgPYkgLKz5hgRIx9J+6eXM/i7AC/KG7Ogs1AifpED9mOBbmpELd8vXNGSYX1pO1MJSSG04eWA2E73BgM/JwYfylPvY6VAW3pVNWTcnBzbUMSDcWMZbiRBm3ZSALrOF+rItPl8BsKFpGqx6Zl+H5WQ3pxxMNtX9mcQCs=
+	t=1790727978; cv=none; b=N2y1wQumaz/3vo9mcXILhPwPOmnDpaM1m+yhO05Fww1nYTOHsleu9J/Cr0UCoCB/Azhkvec4+4OaljzZyswfi+OUogAFunn7yHAJJXqe6+dwnm5cO/EhmwPeBvFPfMoZPLX5XUWQyoUSPYZhQIbAEH9V5dwlKrw5QYV9ksfNyUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790715371; c=relaxed/simple;
-	bh=Y6tLZ+MWmEK3aPAI7iP6Dz2kbWCHr5Co6SSMUqBltJw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=dZUyz8jCQ6XUAm1v73HIeYY5f+Q6AIQlI2f8I2Esv0a7OHoQViMMHTFbrDDIdSraZjjAsiqTKdLIsrRhaalrQgbcmT7Ee2jyMBLtRpL20fuPa9fgHMZUZaUASf7dZ3wcj9TKA5r58R7gEEwC0pDEmKfrGaC7TtwWxvx5QuArDzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qs6W0L7O; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790727978; c=relaxed/simple;
+	bh=voLjIQhFY8D7B/ivsOe++Eom4xXyxCHpWLeFmMrtzHw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JwKCLWowXLBCUrkB9zOToah/cyzJFvqXtYJs4kgUkiSoOWS12r8lAqX8FpQMFZxMSO6i3rhWMD/sHghFGSL8hoA5tnLL3Oz+7tbb4GKbzrwyQWHfcyQDx4JFEyi6a0e+AjAOc+7Kb1E5UpXqEAJhH7Bb+bmiHeMzqtlKu6HfPR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=JnFHq0GD; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qs6W0L7O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A3F1F000FF;
-	Tue, 29 Sep 2026 20:56:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790715369;
-	bh=egeJiaAABQ6NN/KxfVE7y0aHVwqQk0f06ablB231vIU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Qs6W0L7ODxRwl5KzB9FwrQyINYr7k7hSASbeNZeaNn4oxg0yzRCDjlG9vXh0oElPm
-	 TU+mCK4lsMfk+TfBefehlWEG6IgNuMEYzooCzfFfArRmnb0mp/TkIvngqEhE6tgHfX
-	 Zf7cS1AMMJXpwlhr1h7CKunFIKV59ZYgzgvZ5I0Hdh41+VDUQaH+bInjD+zUBpVoUZ
-	 TNsXvzryzPY7A0CuvQtvp15dtF39kDHIXqqocxOGE1TRC8UGj/FcOVaPwKqL1RCuBF
-	 jLkCysPHFFC4NYiVswiXu98R5V8B0zFrU2CYDYcMlpvzEsqHrVZv1Z6bH0ncQZW2CC
-	 toY5jIwNFu/yA==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>, Anna-Maria Behnsen
- <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida
- <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?=
- <work@onurozkan.dev>,
- Jani Nikula <jani.nikula@linux.intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Lyude Paul <lyude@redhat.com>, John
- Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>, FUJITA Tomonori <fujita.tomonori@gmail.com>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, Andreas
- Hindborg <a.hindborg@kernel.org>
-Subject: Re: [PATCH 1/6] hrtimer: add expiry injecting callback variant
-In-Reply-To: <20260825-expires-v2-v1-1-90411c6217c7@kernel.org>
-References: <20260825-expires-v2-v1-0-90411c6217c7@kernel.org>
- <20260825-expires-v2-v1-1-90411c6217c7@kernel.org>
-Date: Tue, 29 Sep 2026 22:56:06 +0200
-Message-ID: <877bk3ixp5.ffs@fw13>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="JnFHq0GD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=5n
+	hItF2JO+9u4ZfsvzSO0l/rwnk5MVivRImf+XWbgq4=; b=JnFHq0GDqrd5/oWWvM
+	dmSLKnckEcBjHEIv2l1vafx3LbAOGzSRLiYk5ZW/bPQWeeW+wCdHus4yXhne7gZ9
+	xKXNGQ1MNpX1emj89+BKJPrxs/3aAqhYzhvBXCLIXnoTsqadnJ4T+3ZSYuUwMfep
+	+QXSCbF2euOGbxhKfIzlD0I7g=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgBXnq7EVrxq2GTBBw--.56601S9;
+	Wed, 30 Sep 2026 08:24:55 +0800 (CST)
+From: Kaiqi Guo <chaoji_xinren@163.com>
+To: Jesung Yang <y.j3ms.n@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org,
+	nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	bjorn3_gh@protonmail.com,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	work@onurozkan.dev,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
+	shivamklr@cock.li,
+	Kaiqi Guo <chaoji_xinren@163.com>
+Subject: [PATCH v7 07/11] rust: macros: derive From for exhaustive enum conversions
+Date: Wed, 30 Sep 2026 08:24:32 +0800
+Message-ID: <20260930002436.21395-8-chaoji_xinren@163.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260930002436.21395-1-chaoji_xinren@163.com>
+References: <20260930002436.21395-1-chaoji_xinren@163.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PSgvCgBXnq7EVrxq2GTBBw--.56601S9
+X-Coremail-Antispam: 1Uf129KBjvJXoW3GrW8AFyfKFWxKw4rCryDWrg_yoWDJw1UpF
+	Z0g39Yg3y7JrZ7GrsrKa47XryxKFyfG3y3XFWxtw17Za15XF9a9r17Kr15JryFyw1qvFy3
+	KayjkrWUGF1jvFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zEVc_sUUUUU=
+X-CM-SenderInfo: pfkd0yplb0x0xuhqqiywtou0bp/xtbC-heUEGq8VteEGwAA3l
 
-On Tue, Aug 25 2026 at 14:16, Andreas Hindborg wrote:
-> A hrtimer callback may modify its own expiry with hrtimer_forward()
-> and read it with hrtimer_get_expires(). Both run after
-> __run_hrtimer() has dropped the cpu_base->lock, so they race with a
-> concurrent hrtimer_start_range_ns() on another CPU, which rewrites
-> node.expires under the base lock and requeues the timer:
->
-> - The unlocked read-modify-write of node.expires in
->   hrtimer_forward() is a data race against the locked write in the
->   start path.
->
-> - The is_queued check in hrtimer_forward() is racy with
->   a time-of-check-time-of-use bug as well: a concurrent
->   start can enqueue the timer between the check and the expiry
->   update, and forwarding an already queued timer changes the expiry
->   of a node inside the timerqueue without re-sorting, leaving the
->   tree unordered.
->
-> Timer users which both forward in the callback and arm from other contexts
-> must provide their own serialization, e.g. perf's cpc->hrtimer_lock plus
-> hrtimer_active flag, see commit 4cfafd3082af ("sched,perf: Fix periodic
-> timers"). The requirement is subtle and not enforced; i915_pmu and taprio
-> currently get it wrong. For the Rust hrtimer abstraction it is a soundness
-> problem: safe code can arm a timer whose callback is running, so callback
-> context forward and expiry reads cannot be offered as safe API.
->
-> Add an alternative callback variant that removes the race
-> structurally instead of requiring serialization. An expiry injecting
-> callback receives the expiry snapshotted under the base lock by
-> value and, to restart the timer, fills a struct hrtimer_forward_args
-> and returns HRTIMER_RESTART. __run_hrtimer() then applies the
-> forward and the enqueue with the base lock held. The callback never
-> accesses live timer state.
->
-> If a concurrent start enqueued the timer while the callback ran, the
-> restart request is discarded and the start wins, matching the
-> existing "restart == HRTIMER_RESTART && !timer->is_queued" handling
-> for classic callbacks. The is_queued check is reliable here: while
-> base->running == timer, hrtimer_try_to_cancel() bails out before
-> remove_hrtimer() and the timer cannot switch bases, so only a
-> concurrent start can enqueue it, and the start path writes the
-> expiry and is_queued in the same critical section. Thus !is_queued
-> at requeue time guarantees the expiry still equals the snapshot
-> handed to the callback: the deferred hrtimer_forward() cannot hit
-> its concurrent start check, and an overrun count the callback
-> derived from the snapshot is consistent with the forward that is
-> applied.
->
-> The new callback pointer shares storage with the classic one in an
-> anonymous union, discriminated by a new is_ext flag placed in
-> existing padding; sizeof(struct hrtimer) is unchanged and the
-> classic callback path is unaffected. hrtimer_update_function()
-> rejects timers with an expiry injecting callback.
+Nova register fields need From<Bounded<T, N>> when every possible field
+value names an enum variant. Add From and its from helper alongside Into
+and TryFrom, with the shared convert helper for round trips.
 
-Aside of the horrible name (what is "ext"?) the whole mechanism is
-creating a false sense of "safety" as the same problem exists when the
-timer callback simply sets the new expiry time without invoking
-hrtimer_forward().
+Reuse the existing discriminant range assertions. Rust already rejects
+duplicate discriminants, so checking that the number of variants matches
+the input range proves exhaustive coverage at compile time. Compare
+range spans in u128 with wrapping subtraction to handle signed minima
+and full-width ranges without overflowing a cardinality.
 
-Also why is Rust special and wants to delegate the external
-serialization requirement to the hrtimer core code and thereby adding a
-boatload of extra conditionals into the hotpath to distinguish between
-the two callback variants?
+After testing all but the final variant, return that variant directly.
+Missing values and out-of-range discriminants are compilation errors,
+including when no conversion is called; the generated implementation
+needs neither unsafe code nor a panic branch. Document the blanket
+TryFrom implementation and its conflict with an explicit derive for the
+same source.
 
-Yes, you found an example for the downside of this design in the i915
-code. That's not surprising because i915 is generally known for ignoring
-documentation and making up their own rules just because they can. So
-I'm not accepting this as an argument at all.
+Suggested-by: Alexandre Courbot <acourbot@nvidia.com>
 
-I agree with you that the lack of enforcement of that external
-serialization rule is suboptimal. External serialization is hard to
-validate/enforce in general though it's not impossible.
+Link: https://lore.kernel.org/rust-for-linux/DHHK2OJ6O83V.2MZNHRQYK21EU@nvidia.com/
+Signed-off-by: Kaiqi Guo <chaoji_xinren@163.com>
+---
+ rust/macros/convert.rs | 105 ++++++++++++++++++++++++++++++++++-------
+ rust/macros/lib.rs     |  95 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 182 insertions(+), 18 deletions(-)
 
-But let's first take a step back and look at the larger picture.
-
-The obvious question is:
-
-   Why is the base lock dropped when invoking the callback?
-
-The answer is simply that the callback might and in many cases will
-acquire a lock which is used in the reverse lock order for the purpose
-of external serialization.
-
-If you think about that then it's pretty obvious that you can introduce
-a safe variant of hrtimer_forward() which can be invoked from the
-callback:
-
-hrtimer_forward_safe_from_callback(timer)
-{
-        base = lock_running_timer_base(timer);
-        if (!hrtimer_is_queued(timer))
-        	hrtimer_forward(timer);
-        unlock_timer_base(base);
-}
-
-That prevents the scenario you described in a completely safe way, no?
-
-Coming back to validation/enforcement of external serialization. That's
-a problem which has been solved in other places already. Look at the
-seqlock code for inspiration.
-
-Thanks,
-
-        tglx
-
+diff --git a/rust/macros/convert.rs b/rust/macros/convert.rs
+index 78efbc7b99d7..7fa8a22dc913 100644
+--- a/rust/macros/convert.rs
++++ b/rust/macros/convert.rs
+@@ -38,6 +38,10 @@ pub(crate) fn derive_try_from(input: DeriveInput) -> syn::Result<TokenStream> {
+     derive(DeriveTarget::TryFrom, input)
+ }
+ 
++pub(crate) fn derive_from(input: DeriveInput) -> syn::Result<TokenStream> {
++    derive(DeriveTarget::From, input)
++}
++
+ fn derive(target: DeriveTarget, input: DeriveInput) -> syn::Result<TokenStream> {
+     let data_enum = match input.data {
+         Data::Enum(data) => data,
+@@ -109,6 +113,13 @@ fn derive(target: DeriveTarget, input: DeriveInput) -> syn::Result<TokenStream>
+         return Err(errors);
+     }
+ 
++    if matches!(target, DeriveTarget::From) && data_enum.variants.is_empty() {
++        return Err(syn::Error::new(
++            input.ident.span(),
++            "`#[derive(From)]` requires a nonempty enum",
++        ));
++    }
++
+     let variants: Vec<_> = data_enum
+         .variants
+         .into_iter()
+@@ -134,6 +145,7 @@ fn derive(target: DeriveTarget, input: DeriveInput) -> syn::Result<TokenStream>
+ enum DeriveTarget {
+     Into,
+     TryFrom,
++    From,
+ }
+ 
+ impl DeriveTarget {
+@@ -141,6 +153,7 @@ fn get_trait_name(&self) -> &'static str {
+         match self {
+             Self::Into => "Into",
+             Self::TryFrom => "TryFrom",
++            Self::From => "From",
+         }
+     }
+ 
+@@ -148,6 +161,7 @@ fn get_helper_name(&self) -> &'static str {
+         match self {
+             Self::Into => "into",
+             Self::TryFrom => "try_from",
++            Self::From => "from",
+         }
+     }
+ 
+@@ -199,6 +213,7 @@ fn derive_for_enum(
+     let impl_fn = match target {
+         DeriveTarget::Into => impl_into,
+         DeriveTarget::TryFrom => impl_try_from,
++        DeriveTarget::From => impl_from,
+     };
+ 
+     let qualified_repr_ty: syn::Path = parse_quote! { ::core::primitive::#repr_ty };
+@@ -267,25 +282,8 @@ fn impl_try_from(
+         let param = Ident::new("value", Span::call_site());
+ 
+         let overflow_assertion = emit_overflow_assert(enum_ident, variants, repr_ty, input_ty);
+-        let emit_cast = |variant| {
+-            let qualified_variant = ::quote::quote! { #enum_ident::#variant };
+-            match input_ty {
+-                ValidTy::Bounded(inner) => {
+-                    let base_ty = inner.emit_qualified_base_ty();
+-                    let expr = parse_quote! { #qualified_variant as #base_ty };
+-                    inner.emit_new(&expr)
+-                }
+-                ValidTy::Primitive(ident) if ident == "bool" => {
+-                    ::quote::quote! { ((#qualified_variant as #repr_ty) == 1) }
+-                }
+-                qualified @ ValidTy::Primitive(_) => {
+-                    ::quote::quote! { #qualified_variant as #qualified }
+-                }
+-            }
+-        };
+-
+         let clauses = variants.iter().map(|variant| {
+-            let cast = emit_cast(variant);
++            let cast = emit_variant_cast(enum_ident, variant, repr_ty, input_ty);
+             ::quote::quote! {
+                 if #param == #cast {
+                     ::core::result::Result::Ok(#enum_ident::#variant)
+@@ -308,6 +306,77 @@ fn try_from(#param: #input_ty) -> Result<#enum_ident, Self::Error> {
+         }
+     }
+ 
++    fn impl_from(
++        enum_ident: &Ident,
++        variants: &[Ident],
++        repr_ty: &syn::Path,
++        input_ty: &ValidTy,
++    ) -> TokenStream {
++        let param = Ident::new("value", Span::call_site());
++        let (last, rest) = variants.split_last().expect("nonempty enum checked above");
++        let overflow_assertion = emit_overflow_assert(enum_ident, variants, repr_ty, input_ty);
++        let input_min = input_ty.emit_min();
++        let input_max = input_ty.emit_max();
++        let span = rest.len() as u128;
++        let msg = format!("enum `{enum_ident}` does not cover every value of `{input_ty}`");
++
++        let clauses = rest.iter().map(|variant| {
++            let cast = emit_variant_cast(enum_ident, variant, repr_ty, input_ty);
++            ::quote::quote! {
++                if #param == #cast {
++                    #enum_ident::#variant
++                } else
++            }
++        });
++
++        ::quote::quote! {
++            #[automatically_derived]
++            impl ::core::convert::From<#input_ty> for #enum_ident {
++                fn from(#param: #input_ty) -> Self {
++                    #overflow_assertion
++
++                    const _: () = {
++                        // Rust rejects duplicate discriminants, and the overflow assertion
++                        // places every discriminant in the input range. Equal cardinality
++                        // therefore proves that every possible input has a variant.
++                        let min = (#input_min) as ::core::primitive::u128;
++                        let max = (#input_max) as ::core::primitive::u128;
++                        // Wrapping subtraction also handles negative minima. Compare spans
++                        // rather than lengths to avoid overflowing for a full 128-bit range.
++                        ::core::assert!(max.wrapping_sub(min) == #span, #msg);
++                    };
++
++                    // Exhaustiveness guarantees the final variant when no other one matches.
++                    #(#clauses)* {
++                        #enum_ident::#last
++                    }
++                }
++            }
++        }
++    }
++
++    fn emit_variant_cast(
++        enum_ident: &Ident,
++        variant: &Ident,
++        repr_ty: &syn::Path,
++        input_ty: &ValidTy,
++    ) -> TokenStream {
++        let qualified_variant = ::quote::quote! { #enum_ident::#variant };
++        match input_ty {
++            ValidTy::Bounded(inner) => {
++                let base_ty = inner.emit_qualified_base_ty();
++                let expr = parse_quote! { #qualified_variant as #base_ty };
++                inner.emit_new(&expr)
++            }
++            ValidTy::Primitive(ident) if ident == "bool" => {
++                ::quote::quote! { ((#qualified_variant as #repr_ty) == 1) }
++            }
++            qualified @ ValidTy::Primitive(_) => {
++                ::quote::quote! { #qualified_variant as #qualified }
++            }
++        }
++    }
++
+     fn emit_overflow_assert(
+         enum_ident: &Ident,
+         variants: &[Ident],
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index 4d420d34ed6b..f45f80dbf8cb 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -962,3 +962,98 @@ pub fn derive_try_from(input: TokenStream) -> TokenStream {
+         .unwrap_or_else(syn::Error::into_compile_error)
+         .into()
+ }
++
++/// Derives [`core::convert::From`] for a unit-only enum covering every input value.
++///
++/// Supported inputs and representation rules are the same as for [`macro@TryFrom`]:
++/// `bool`, primitive integers, and [`Bounded`]. `#[from(...)]` or `#[convert(...)]`
++/// selects the input types, overriding the default derived from `#[repr(...)]`
++/// (or `isize` when no representation is specified).
++///
++/// Every discriminant must fit each input type, and every input value must have
++/// a corresponding variant. Both conditions are checked at compile time, even
++/// when the conversion is never called. Duplicate discriminants are rejected by
++/// Rust itself. Empty enums and the layouts rejected by [`macro@TryFrom`] are
++/// not supported.
++///
++/// The generated conversion is infallible and contains no panic path. It also
++/// provides `TryFrom` with [`core::convert::Infallible`] through the standard
++/// blanket implementation. Do not additionally derive [`macro@TryFrom`] for
++/// the same input type; use it for inputs the enum does not fully cover.
++///
++/// [`Bounded`]: ../kernel/num/bounded/struct.Bounded.html
++///
++/// # Examples
++///
++/// ```
++/// use kernel::macros::From;
++///
++/// #[derive(Debug, PartialEq, From)]
++/// #[from(bool)]
++/// enum Switch {
++///     Off = 0,
++///     On = 1,
++/// }
++///
++/// assert_eq!(Switch::from(false), Switch::Off);
++/// assert_eq!(Switch::from(true), Switch::On);
++/// ```
++///
++/// Use `#[convert(...)]` with `Into` to derive both directions:
++///
++/// ```
++/// use kernel::{macros::{From, Into}, num::Bounded};
++///
++/// #[derive(Debug, PartialEq, From, Into)]
++/// #[convert(Bounded<u8, 2>)]
++/// enum Mode {
++///     A = 0,
++///     B = 1,
++///     C = 2,
++///     D = 3,
++/// }
++///
++/// for value in 0..=3 {
++///     let bounded = Bounded::<u8, 2>::try_new(value).unwrap();
++///     let mode = Mode::from(bounded);
++///     let round_trip: Bounded<u8, 2> = mode.into();
++///     assert_eq!(round_trip, bounded);
++/// }
++/// ```
++///
++/// Missing values are rejected at compile time:
++///
++/// ```compile_fail,E0080
++/// use kernel::macros::From;
++///
++/// #[derive(From)]
++/// #[from(Bounded<u8, 2>)]
++/// enum Incomplete {
++///     A = 0,
++///     B = 1,
++///     C = 2,
++///     // No variant represents 3.
++/// }
++/// ```
++///
++/// Having the right number of variants does not allow out-of-range values:
++///
++/// ```compile_fail,E0080
++/// use kernel::macros::From;
++///
++/// #[derive(From)]
++/// #[from(Bounded<u8, 2>)]
++/// enum OutOfRange {
++///     A = 0,
++///     B = 1,
++///     C = 2,
++///     D = 4,
++/// }
++/// ```
++#[proc_macro_derive(From, attributes(from, convert))]
++pub fn derive_from(input: TokenStream) -> TokenStream {
++    let input = parse_macro_input!(input as DeriveInput);
++    convert::derive_from(input)
++        .unwrap_or_else(syn::Error::into_compile_error)
++        .into()
++}
+-- 
+2.50.1 (Apple Git-155)
 
