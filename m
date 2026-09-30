@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CC74E3235;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7793C4E06EC;
 	Wed, 30 Sep 2026 13:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790774632; cv=none; b=phj+Y7Gw4gQ9Sd7t83DKXQfRnXLrKAjyL68jRpIDNI5R5uTnuzc++oHqyIHgiqfoZ47Z4VDUdx7u6nXBGcpw79SLRi8ZsXrhLwZpg0RdxTfvcHRa+c60dZ8Wx876j3SG8DfdG4CT8CVzx9BZI9tR2GeNXXGpUX+8IHbauJuxFuY=
+	t=1790774632; cv=none; b=l+wxrcCs+Fezwe5jBFWpmUDa9pDYHf6vT/3YGSPj/4rz4rTCanMkpXBQUiWmL/5GLoSfH8V2DtO2Sh38/Z6pl+iBeF4KIuA5fMZjUQVNVVF5CA5zGWn8DlUb7REsKd323dfD7vx3dRs/jyKaF+na0kBWYRvA+G1HuYbth2nALaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790774632; c=relaxed/simple;
-	bh=u953BPYPmN6v22nfpsWNzialuEGRIo4gat+Niscl1ts=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=d2EPKFUS9sY6g+GBdzVy+XU44iNBPCy4OhRXPUBzxmG1f2hdIJXALl2oEvoj2PE63IE6jq9YnaO6eGHZw7uhg9AyMFOD3RUD1mPR9TBUnRlY2zYOWeWYXzqDUr5h+ZLe5JwuqouEDdpH3iGGGaBy7vRHjn+oGv2BXNZD44PLacc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nYNmjlXx; arc=none smtp.client-ip=10.30.226.201
+	bh=VGHctiLRGLtxCXo9/4XFlJUglmSuiMVZOShKuE7rVnw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=icglwt8EEz4Dg2YD9UmBK2MFcD2T2Q1oVzYKvq0UZ5MES7YTWJypbYh0jZCa7cPQFqyVj+jOVFdpvyZ1oIig+sqqdtCyx4NYfDwVWjUJxA0w03NJIUupJ6UXaTB+M3e3nRPJeAGFVZzt0wYuiJ2GimS7OQPkMthjbAxOT0qdD30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SJxKcjNk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nYNmjlXx"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0327EC4AF13;
-	Wed, 30 Sep 2026 13:23:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SJxKcjNk"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D12F2C2BCF4;
+	Wed, 30 Sep 2026 13:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790774630;
-	bh=u953BPYPmN6v22nfpsWNzialuEGRIo4gat+Niscl1ts=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=nYNmjlXxAAB7lbrrjgS2hF6licew314aVgLS3EEbL3IyvF3evqjwX8d7ctM2X6XgP
-	 TSfNy8rXL0drJGieQKp+9IIBffeRMNL8WrENZyeI/dFKmTht6cSLJEbIg4Jm2mPxc7
-	 WYzzg3XZ4F5RzSkNBVR2+IQfgIy7q5oJQ2bPL4fsK2JpfAVEsSLNxC6JNenoRk+tMg
-	 DN3tI6VZGUyhQ28tKDbVn+LYCyIcrcWmrS/28a300KgjmEzePZDPqMqtpMVOb7xBhV
-	 QPiJE+2CqFHMUdw5aMJNiNQ7ayNLGaCtqFbmdQIOatWnjlKx0+beQqaP6ZbJH9MlmC
-	 8Clkwp0fy/3wg==
+	s=k20201202; t=1790774629;
+	bh=VGHctiLRGLtxCXo9/4XFlJUglmSuiMVZOShKuE7rVnw=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=SJxKcjNkWgB9BYVHgZ4TfndRpIWN58d0/pQkdYhugz8GUQVBoYJZY5lsXu8WmGRJg
+	 u60EaChrB5lesHOBAOxXQL6Smrzjo72bW9FrFR7mKggHSpxxAWj1hAVnojszpJn1X2
+	 JxJPyMnCb4hWA8TQuWu8C/4WzaMV1URaM1SBSAaj7Ywbl93+AUMAlzamPd0qST/K6L
+	 67fomaGStR0cXyIlbZ05a+5sL0h68RIkkr82RvGA+Qv3oRdqXJs+lcDoWzoRB0lSSG
+	 Zas+5tpAXwaWvOtd/kjiV4ca1Nx4hfuelke/cd5gZsIzMUh92vQ//5LsKpmd+m5V6w
+	 fwXKykBrwLIZg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E521ECA5FCC;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B98D4CA5FAC;
 	Wed, 30 Sep 2026 13:23:49 +0000 (UTC)
 From: =?utf-8?q?Nicol=C3=A1s_Antinori_via_B4_Relay?= <devnull+nico.antinori.7.gmail.com@kernel.org>
-Date: Wed, 30 Sep 2026 10:23:29 -0300
-Subject: [PATCH 2/3] rust: kunit: allow same test name with different
- #[cfg(...)]
+Subject: [PATCH 0/3] rust: kunit: support #[should_panic] and same test
+ name with different #[cfg(...)]
+Date: Wed, 30 Sep 2026 10:23:27 -0300
+Message-Id: <20260930-rust_kunit_v4-v1-0-e3b0d45311dd@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -41,9 +41,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260930-rust_kunit_v4-v1-2-e3b0d45311dd@gmail.com>
-References: <20260930-rust_kunit_v4-v1-0-e3b0d45311dd@gmail.com>
-In-Reply-To: <20260930-rust_kunit_v4-v1-0-e3b0d45311dd@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAE8NvWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDS2MD3aLS4pL47NK8zJL4MhNd88SkxNRUQ8NUs8RkJaCegqLUtMwKsHn
+ RsbW1ANhmrY1fAAAA
+X-Change-ID: 20260930-rust_kunit_v4-7abaee11e6ac
 To: Alice Ryhl <aliceryhl@google.com>, Burak Emir <burak.emir@gmail.com>, 
  Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, 
  Miguel Ojeda <ojeda@kernel.org>
@@ -61,13 +62,13 @@ Cc: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>,
  Yury Norov <yury.norov@gmail.com>, linux-kernel@vger.kernel.org, 
  rust-for-linux@vger.kernel.org, linux-kernel-mentees@lists.linux.dev
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3972;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3413;
  i=nico.antinori.7@gmail.com; h=from:subject:message-id;
- bh=gqKKuAOLxDKy392fHljpb4t4v5urh7WAzgomKGObknI=;
- b=owGbwMvMwCV2QdXfwqNJ1YjxtFoSQ9Ze3uQ/Nx882Lr9fnTjLlWRWR7rDj1mi9QTXl1W8E/wq
- 75f9W+fjlIWBjEuBlkxRZa5nO8/G9uaV5RLbwqCmcPKBDKEgYtTACbyIJGR4QCrusChWv2bVm4N
- E6NC3k3OyPv4/5p76KV7u7JtOFOfyTEyPD31N9v0yK/sL+b2nCeyQl7IdTSfmmTrc1rC78ybWSX
- 3OAA=
+ bh=VGHctiLRGLtxCXo9/4XFlJUglmSuiMVZOShKuE7rVnw=;
+ b=owGbwMvMwCV2QdXfwqNJ1YjxtFoSQ9Ze3uQpQg1cP3Ynumcdyv0WdOoQ62KeWu/bh+zWp745p
+ Vg0x8C4o5SFQYyLQVZMkWUu5/vPxrbmFeXSm4Jg5rAygQxh4OIUgIn0KzP8lYxKc6gKZwqMUbg1
+ QU7vkcxHxtXNGY7KzwP57nj/vqG4muG/j7K44XTjbblnThzt+nAtf7uU5fmZnxxUp9j+3L3i8P4
+ JjAA=
 X-Developer-Key: i=nico.antinori.7@gmail.com; a=openpgp;
  fpr=9D09EFF3333D3778771BB252D0254F3848822532
 X-Endpoint-Received: by B4 Relay for nico.antinori.7@gmail.com/default with
@@ -75,108 +76,77 @@ X-Endpoint-Received: by B4 Relay for nico.antinori.7@gmail.com/default with
 X-Original-From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
 Reply-To: nico.antinori.7@gmail.com
 
-From: Nicolás Antinori <nico.antinori.7@gmail.com>
+This patch series intends to implement two features for KUnit tests
+written in Rust. The work is based on a TODO comment made in the
+`bitmap.rs` module [1].
 
-Sometimes it is necessary to test the same code paths under different
-configurations. The `#[cfg(...)]` macro can be used to check if specific
-configurations are enabled and run tests accordingly.
+Changelog:
+- RFC patch: [3]
 
-Currently, defining multiple tests with the same name under different
-`#[cfg(...)]` attributes results in a compilation error. This patch
-removes that restriction, allowing identical test names across different
-configurations.
+1. Supporting `#[should_panic]` [2]:
+
+KUnit tests in Rust follow the user-space syntax, but at the moment
+`#[should_panic]` is not supported. The first patch of this series adds
+support for the attribute (only in its basic form, `#[should_panic =
+"message"]` is not supported yet).
+
+The way it is supported is by adding a new boolean property called
+`rust_should_panic` to `kunit_attributes` struct in kunit/test.h and
+check for the `try_catch->try_result` code and the named flag to detect
+if there was a panic in `lib/kunit/test.c::kunit_run_case_catch_errors`
+function.
+
+The difference with the previous version [3] is that now, almost
+everything is handled in the C side, meaning that we don't have a
+separate `#[panic_handler]` when KUnit tests are active. In other words
+there's no need of a Rust side panic handler because the C side catches
+Rust's panics too, since the `#[panic_hanlder]` executes a
+bindings::BUG().
+
+2. Allow same test name with different #[cfg(...)]:
+
+When testing `#[should_panic]` in `bitmap.rs` (check the last patch of
+the series) I found that the test that was supposed to panic had the
+same name as another one, but they were run on different configurations.
+This caused the following compilation error:
+
+ERROR:root:error[E0428]: the name `kunit_rust_wrapper_owned_bitmap_out_of_bounds` is defined multiple times
+   --> ../rust/kernel/bitmap.rs:503:1
+    |
+503 | #[macros::kunit_tests(rust_kernel_bitmap)]
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `kunit_rust_wrapper_owned_bitmap_out_of_bounds` redefined here
+    |
+    = note: `kunit_rust_wrapper_owned_bitmap_out_of_bounds` must be defined only once in the value namespace of this module
+    = note: this error originates in the attribute macro `macros::kunit_tests` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+Now, only the tests with an active `#[cfg(...)]` will be executed by the
+runner. Tests with an inactive `#[cfg(...)]` will not appear in the
+report since they are not added to the TEST_CASES array.
+
+[1] https://github.com/Rust-for-Linux/linux/blob/fd73f4a6659897191fa0d40695fe370925dd3780/rust/kernel/bitmap.rs#L592-L600
+[2] https://doc.rust-lang.org/rust-by-example/testing/unit_testing.html#testing-panics
+[3] https://lore.kernel.org/rust-for-linux/cover.1789500084.git.nico.antinori.7@gmail.com/
 
 Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
 ---
- rust/kernel/kunit.rs | 22 ++++++++++++++++++++++
- rust/macros/kunit.rs | 20 +++++++++++++++-----
- 2 files changed, 37 insertions(+), 5 deletions(-)
+Nicolás Antinori (3):
+      rust: kunit: add #[should_panic] support
+      rust: kunit: allow same test name with different #[cfg(...)]
+      rust: bitmap: kunit: uncomment owned_bitmap_out_of_bounds panic case
 
-diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index 5fa4d994e0f7ebf5bbe5fd3571a372548cc8499b..5ff988ab76a408751d1f57b59cc82a79c6c2534a 100644
---- a/rust/kernel/kunit.rs
-+++ b/rust/kernel/kunit.rs
-@@ -347,6 +347,28 @@ fn rust_test_kunit_in_kunit_test() {
-         assert!(in_kunit_test());
-     }
- 
-+    // Tests with cfg have the same name on purpose because we are implicitly testing that
-+    // tests with the same name but different configs do not throw a compilation error
-+    #[test]
-+    #[cfg(CONFIG_RUST_KUNIT_SELFTEST = "y")]
-+    fn rust_test_kunit_run_only_active_cfg() {
-+        assert!(in_kunit_test());
-+    }
-+
-+    #[test]
-+    #[cfg(CONFIG_RUST_KUNIT_SELFTEST = "n")]
-+    fn rust_test_kunit_run_only_active_cfg() {
-+        // This test should never run because of the `cfg`.
-+        assert!(false)
-+    }
-+
-+    #[test]
-+    #[cfg(CONFIG_RUST_KUNIT_SELFTEST = "INVALID_VALUE")]
-+    fn rust_test_kunit_run_only_active_cfg() {
-+        // This test should never run because of the `cfg`.
-+        assert!(false)
-+    }
-+
-     #[test]
-     #[should_panic]
-     fn rust_test_kunit_panic_in_kunit_test() {
-diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
-index f1d0210e6a49468876d69821cc559002ad12da50..18cfa463c8dbaa216160a686b1cd6c144986568c 100644
---- a/rust/macros/kunit.rs
-+++ b/rust/macros/kunit.rs
-@@ -45,6 +45,8 @@ pub(crate) fn kunit_tests(test_suite: Ident, mut module: ItemMod) -> Result<Toke
- 
-     let mut processed_items = Vec::new();
-     let mut test_cases = Vec::new();
-+    let mut test_cases_cfgs = Vec::new();
-+    let mut test_case_number: u32 = 1;
- 
-     // Generate the test KUnit test suite and a test case for each `#[test]`.
-     //
-@@ -135,7 +137,7 @@ macro_rules! assert_eq {
-         // Add back the test item.
-         processed_items.push(Item::Fn(f));
- 
--        let kunit_wrapper_fn_name = format_ident!("kunit_rust_wrapper_{test}");
-+        let kunit_wrapper_fn_name = format_ident!("kunit_rust_wrapper_{test}_{test_case_number}");
-         let test_cstr = LitCStr::new(
-             &CString::new(test_str.as_str()).expect("identifier cannot contain NUL"),
-             test.span(),
-@@ -172,15 +174,23 @@ macro_rules! assert_eq {
-             case.attr.rust_should_panic = #should_panic;
-             case
-         }));
-+        test_cases_cfgs.push(cfg_attrs);
-+        test_case_number += 1;
-     }
- 
--    let num_tests_plus_1 = test_cases.len() + 1;
-+    // This dummy array is used to calculate the exact number of tests cases that are active
-+    // depending on their #[cfg(...)] attribute.
-+    processed_items.push(parse_quote!(
-+        const TEST_CASES_COUNT: &[()] = &[#(#(#test_cases_cfgs)* (),)* ()];
-+    ));
-+
-     processed_items.push(parse_quote! {
--        static mut TEST_CASES: [::kernel::bindings::kunit_case; #num_tests_plus_1] = [
--            #(#test_cases,)*
--            ::pin_init::zeroed(),
-+        static mut TEST_CASES: [::kernel::bindings::kunit_case; TEST_CASES_COUNT.len()] = [
-+            #(#(#test_cases_cfgs)* { #test_cases },)*
-+            ::pin_init::zeroed()
-         ];
-     });
-+
-     processed_items.push(parse_quote! {
-         ::kernel::kunit_unsafe_test_suite!(#test_suite, TEST_CASES);
-     });
+ include/kunit/test.h   |  1 +
+ lib/kunit/attributes.c | 18 ++++++++++++++++++
+ lib/kunit/test.c       |  5 +++++
+ rust/kernel/bitmap.rs  | 40 ++++++++++++++++++----------------------
+ rust/kernel/kunit.rs   | 37 +++++++++++++++++++++++++++++++++++++
+ rust/macros/kunit.rs   | 48 ++++++++++++++++++++++++++++++++++++++----------
+ 6 files changed, 117 insertions(+), 32 deletions(-)
+---
+base-commit: d266640c6c760c9bc215bf5a3ece122ca488b6f5
+change-id: 20260930-rust_kunit_v4-7abaee11e6ac
 
+Best regards,
 -- 
-2.47.3
+Nicolás Antinori <nico.antinori.7@gmail.com>
 
 
