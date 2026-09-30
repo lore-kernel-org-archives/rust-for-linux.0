@@ -1,140 +1,124 @@
-Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577AB46982C
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 10:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790764058; cv=pass; b=BZlpuFfcyHSg06zSjCfYxO72iC/RmuVdoZTXYbYTACtY7jcYEwjWcW+OyIuxgBIz5pJqwdMSj+M1+JClU74V0yfkD06FpZG2zulKCaB+2GVzhE6lv5JphzzJ8QUKdvxwQkidsT2qDj3hSuvoczJ6jdqQ+DbUUhCte2kWeiEB4GY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790764058; c=relaxed/simple;
-	bh=XvCWzYsO5117WS0fLcPugtOovWWwKR7emRvgKSPyYEw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EDVNriQvMgFjp25mqwDlMUc31rJzah7IOLIcJBQs3d+vKhKaaXo5hyU1eG0WahzQpYXgq/t8AcRdNcIIVZv/ZtHPxDbQILg8O1l1B0+GHJfwNYmwWeIo7LxHrP94c8A+fRucvDJuFnyX3D4rthaCDTph9K66NdOKLsS52npFp00=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZqDfQK32; arc=pass smtp.client-ip=74.125.229.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B960543B483
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 10:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790764406; cv=none; b=dvL6v2N/q23MtP4eB5Liq5ChK2rcw+7Hei6+kDgfjp4vJUz4A+3vDPBe0DHJQmDC3x7nLyfbZ8w7W7qyZgDXiEmIPYU+DlIHhvNSh/OxmrOFAUu0tc9TL4pd6DYG6pLEszRksdpSPIoNDmtG3cI2fxn0BQPm9dXl4evTjwa4XKA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790764406; c=relaxed/simple;
+	bh=Afge1VGxYThuk4VFTZQjrw9p5H+Ni7gcE5O2Mz88XpE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=HeFkTrkbzKs6/ItpPra3sxgxOEckM5ord+ovvtxlZZhnPQHFDNHhGHUwPzvBrChRbu5Smjoq7m8ePu9ZOf5/p7Dk59muh4KQt1TX7xXbqbd9pbYAMVLW7y8pmTKaC2K5pExv/kOmieHETZb1OGjCWr5APtDH+lu+le4XE/8XyWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=E2lOBVIo; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZqDfQK32"
-Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-34c99260bd9so57611eec.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 03:27:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790764051; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YgzASbr+qmlk8yIKwCMUKWGmnfuyWZSEyIcagptdQVpJFe20JK5n1q81YU3y4EvKfB
-         t3LIlukc5efDXplT7eRkW9IBEoY6Ica+7R/R/ovJ+J2S/k7EGgw778Y7iMD6m6GfkMKi
-         g2TaEjl5SXW+8ely7Xgrz3qiDL7z5TllDWhK2q62I9NMQG3RvpLeOcSakcx5Rclxqayz
-         Pg0DHvXndKP86GRZbP5Ou4uLYyY/6Im4Fay3bnYCAc6X0aNWTGTfdSZI35o7D88lepYL
-         0uKLdGLY36PDbmi4J1GGyXXTokKgb4vq5GEzNpZE78JtzGkGlLFlFu48m9FMChzVJY4v
-         kcWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VnWslcQfJFoVXI2eTJRtMgF2Yhhk9njWDc0SCnJiKsg=;
-        fh=Ja4nUWfwBxxNzJf5bnDVa3dHLWVUPr3h6HRoDjRZXrY=;
-        b=afeoXRBKOqrvAEhsHP3lcdYThrGlmMHQhkdtRGIrknDuLSsc6myZT57akGqz0YsciC
-         dWzAhaiHpvpm+HQw93NJCZVYWuoKcvBszl1vUL5XCxv+SRWKniNVmnn8CqzCbe9FGsEE
-         AsHoVIm8jXi7PX9enSL0euRMrY+sLfqe/V4KmMA0N4q3ihXeXwmlItvDhAkyVheyImaC
-         HoynfgTZcAcEmbjWgZh5LD+knEovvaaxy93/85uwmzBrqK0S22ydwZbfoYvn1+7jaBax
-         itP3sBSDUaI6/GNc/Vr5VOVYFYmcmGrDCq398C/bOMODq11zvlqnGcqbFvK1fORx3pP0
-         Rxdg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790764051; x=1791368851; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VnWslcQfJFoVXI2eTJRtMgF2Yhhk9njWDc0SCnJiKsg=;
-        b=ZqDfQK32SxdlMSL7AML4DDYFSEn83S9XNnE8si1DlLMNsYKj+18tth+oXi+aVYu4iN
-         qdK2VKpn3Bh9PxYNSNe+Ab7nCNB7/rL7TqLwUrTbqSx1Rs/1ena/9EPCqlsMXr23YEmU
-         EMcdcamK7z8YhYRTaoB7hECpHWiMLiaMbI5zRnehidhHeL7CM6UKDWCwbMbgEmudN7a0
-         MiB0chDVX/EV6XTAiLqLtrkcgTM2czOWF6KLhI23rgvtzuJKS4TIRnLG9AXTZPEMGz70
-         vW4rZR5ErPqW0JEP7h1yBKERxrNJSbbGSk+YSpKgFVSfwVElqAKZfi5smSo/gSX6z8lH
-         Lngg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790764051; x=1791368851;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VnWslcQfJFoVXI2eTJRtMgF2Yhhk9njWDc0SCnJiKsg=;
-        b=LaXFDb8fsROtJ4ItIzi+NfFNG8Qgq7d+KD1V1Wswnp6bHDLYN6CnDBemEt+UHvCbKm
-         myi+R/xJBFQyytvd+/u+6e/yc7uPkCbgcwPDMru1ucYjSWZh8rlO+jAF9MJsVnXsfKdA
-         JyixAdgWgscODjunjfCxz0o7/8D/nB/Q2dcJx+3xbnAS/W4B2Q7mu+jU8n9OTEM/t4kd
-         vUaFfGbD9JM+uXiD2as9BN0TYL//rUC+UavIM1FzlCCKcHqQxNWtcpVI1AdaW9gsDUab
-         lj8jNW6mqy92EplB8dvMR0PbSWfLDqNnqd4trqRm/BGUBQIojSDsxehLdWd1GIF0XXCw
-         uJWQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy4S3Ljy5323rvdVFygQCoF/dtE47ct7VQvtWwGCS9s9TaIWe+Uj6GX7sTYdR16NgkgrfXhcUgTXJKBTPG5Lw==@vger.kernel.org
-X-Gm-Message-State: AFq9FYLEdPmlwBEnMeQnJzHiyycWJ7J6GOsx0IgO3GnVBRbH86aA7XMh
-	Bfa6sdvX7URbIRQUhERkKL6PQqOk3bC94bW7OM4b+dnoC8XaCPzndk4Dvvxktn1WJmUnpp1Fw+D
-	tV3cVQUoe90lITJPGT+qka2IrxQeyy20=
-X-Gm-Gg: AYBFou09ckRw1jQxErqJrEPDDwMNNF6osW+zaHl/hFuANL+UROFExeElNcmwGP54PHl
-	nDWcxB8bCCIgcg9xGLMkxof50SesBLwR6XISd218WuaskHEQ08QIqbetAX2Bz6E6eya6ePAh5N4
-	j0F8vBObMo/DZnS1QXZtLwMPOZc5sLgxvjchLLMO8dJqJBWcsFebsDhQ0hA6yc7paW3Igp+x2uR
-	aC9yfceNkuhF9w8Yj9Vpfr8oZvrFuyyFUXHbBpZjfIzc10YrwVUsNypS0y4P9zJoRaOZOAj5izG
-	JKr1se4K+opRh0OxSTri3zyX0fhy83CwHCDOU45j27xgvdpNunX+U23vuXE/Fq2peq7er7cCG2t
-	53dTY8ZDaPI4mD2DyyDH7AvzwEuolbrqnwHbMTNAFqjXLxIrQg03CB4sw4OqV/3Ky8dXEiLwkTA
-	wPqfPJLLCBm0dgMAIN/Z1uNPU22SE9Z5ZnLK6htaE0Bo+ZaXTjbS0=
-X-Received: by 2002:a05:7300:e9c9:10b0:34b:7c9c:9a69 with SMTP id
- 5a478bee46e88-34cd8795e5fmr2234714eec.0.1790764050978; Wed, 30 Sep 2026
- 03:27:30 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="E2lOBVIo"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260930103316euoutp01cff54c9337e16ebbb442237ead4e27db~aErsBrca72549625496euoutp01H
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 10:33:16 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260930103316euoutp01cff54c9337e16ebbb442237ead4e27db~aErsBrca72549625496euoutp01H
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1790764396;
+	bh=FJ+htCVvKAhLkwC8CUAuytt3OB7IBWbiwLyL2rvPoSg=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=E2lOBVIo/7n1IPo2fFD6qsSxcKMCFCoNKB79E6YI9JVI3ET/dGqoHL7EsoEM5F3d2
+	 kV0R6PwC6d+dXDLN/0VgElM3s3wu40j9RkJIhNAlFWC2Q1xj1VfKbje48WvsZoDLm3
+	 zLk3l3+dXG+F6trEvKNgxC4KIAldNa7VQ0vVtGJ4=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260930103315eucas1p1dc6504dfed6803e1f6c1a9d4156e3da0~aErrrMstU2676926769eucas1p19;
+	Wed, 30 Sep 2026 10:33:15 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260930103314eusmtip169db81e9f1c9f97f31c91e3ec55f06e6~aErqyiXeU0732407324eusmtip1b;
+	Wed, 30 Sep 2026 10:33:14 +0000 (GMT)
+Message-ID: <a95a44d9-6572-40f4-ab6d-1c160ecd5349@samsung.com>
+Date: Wed, 30 Sep 2026 12:33:14 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260930101257.1649945-1-tomo@flapping.org>
-In-Reply-To: <20260930101257.1649945-1-tomo@flapping.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 30 Sep 2026 12:27:18 +0200
-X-Gm-Features: AclHuK9Nh6JsI3E6OnYTw_dMYdR-qYkmEpYkodh3Keia0XE0NzXFf93RUybHrnk
-Message-ID: <CANiq72nRjBM5gPGKbEka8M6uZ8aVmoCZx9z0aXSMCkm1Od42jg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2] pwm: th1520: Fix 32-bit build with COMPILE_TEST
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: fustini@kernel.org, guoren@kernel.org, ukleinek@kernel.org, 
-	wefu@redhat.com, a.hindborg@kernel.org, acourbot@nvidia.com, 
-	aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun@kernel.org, 
-	dakr@kernel.org, daniel.almeida@collabora.com, gary@garyguo.net, 
-	linux-riscv@lists.infradead.org, lossin@kernel.org, m.wilczynski@samsung.com, 
-	ojeda@kernel.org, tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: FUJITA Tomonori <tomo@flapping.org>, fustini@kernel.org,
+	guoren@kernel.org, ukleinek@kernel.org, wefu@redhat.com
+Cc: a.hindborg@kernel.org, acourbot@nvidia.com, aliceryhl@google.com,
+	bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
+	daniel.almeida@collabora.com, gary@garyguo.net,
+	linux-riscv@lists.infradead.org, lossin@kernel.org, ojeda@kernel.org,
+	tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, FUJITA Tomonori
+	<fujita.tomonori@gmail.com>, stable@vger.kernel.org
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <20260930101257.1649945-1-tomo@flapping.org>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20260930103315eucas1p1dc6504dfed6803e1f6c1a9d4156e3da0
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260930101334eucas1p2ec64abcf499a296767711f13ad70c486
+X-EPHeader: CA
+X-CMS-RootMailID: 20260930101334eucas1p2ec64abcf499a296767711f13ad70c486
+References: <CGME20260930101334eucas1p2ec64abcf499a296767711f13ad70c486@eucas1p2.samsung.com>
+	<20260930101257.1649945-1-tomo@flapping.org>
 
-On Wed, Sep 30, 2026 at 12:13=E2=80=AFPM FUJITA Tomonori <tomo@flapping.org=
-> wrote:
->
+
+
+On 9/30/26 12:12, FUJITA Tomonori wrote:
 > From: FUJITA Tomonori <fujita.tomonori@gmail.com>
->
+> 
 > Fix the following build error on 32-bit ARM with COMPILE_TEST:
->
->   ERROR: modpost: drivers/pwm/pwm_th1520.ko: symbol '__aeabi_uldivmod' un=
-defined!
->
+> 
+>   ERROR: modpost: drivers/pwm/pwm_th1520.ko: symbol '__aeabi_uldivmod' undefined!
+> 
 > The driver divides u64 values when it converts between nanoseconds and
 > clock cycles. On 32-bit ARM, these divisions are compiled to calls to
 > __aeabi_uldivmod, which the kernel does not provide.
->
+> 
 > The TH1520 is a 64-bit RISC-V SoC, so the driver is only used on
 > 64-bit kernels. There is no point in compile testing it on 32-bit.
 > Limit COMPILE_TEST to 64BIT instead of changing the arithmetic to use
 > the div64 helpers.
->
+> 
 > Fixes: 3c180003dffb ("pwm: th1520: Fix missing Kconfig dependencies")
 > Cc: stable@vger.kernel.org
 > Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/=
-topic/64bit.20division.20in.20.60pwm_th1520.2Ers.60/near/626825599
+> Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/topic/64bit.20division.20in.20.60pwm_th1520.2Ers.60/near/626825599
 > Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 > Reviewed-by: Gary Guo <gary@garyguo.net>
 > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+> v2:
+> - Fix a typo in the commit message
+> - Add Cc: stable, Reported-by and Closes tags
+> - Add Reviewed-by tags from Andreas and Gary
+> - Rebase on v7.3-rc5
+> 
+> v1: https://lore.kernel.org/all/20260929095612.1072417-1-tomo@flapping.org/
+> ---
+>  drivers/pwm/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
+> index 729776086879..abecd95b0c3c 100644
+> --- a/drivers/pwm/Kconfig
+> +++ b/drivers/pwm/Kconfig
+> @@ -772,7 +772,7 @@ config PWM_TEGRA
+>  
+>  config PWM_TH1520
+>  	tristate "TH1520 PWM support"
+> -	depends on ARCH_THEAD || COMPILE_TEST
+> +	depends on ARCH_THEAD || (COMPILE_TEST && 64BIT)
+>  	depends on RUST
+>  	depends on HAS_IOMEM && COMMON_CLK
+>  	select RUST_PWM_ABSTRACTIONS
+> 
+> base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
 
-Thanks Tomo!
+Reviewed-by: Michal Wilczynski <m.wilczynski@samsung.com>
 
-If PWM wants me to pick it up for some reason, please let me know (I
-don't plan at the moment to send a fixes PR, though).
-
-Cheers,
-Miguel
