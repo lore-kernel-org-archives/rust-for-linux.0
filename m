@@ -1,136 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987474DE728;
-	Wed, 30 Sep 2026 14:25:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71707501291
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 14:34:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790778355; cv=none; b=UM/Yy0XrN1zDL3c1SjmxoWvgVQnpUM00xk1jEox0lWbW894RIpXYVe9joKaGW3CZVIB2zfT2gTr9/pcITjkQXzH2wE1JEtJAQV1RpUPs112c0HWmQfZsGmFW9O2vxdxf8w/aZqxEe+XbnSWQR0Kt2Qw7pf/6V7sVS6ps75exYUI=
+	t=1790778883; cv=none; b=JxEqQ6ajylV7OFCU0crcTOnqXrb46GV8khfhaHWwfnLkiFFugDMESA/bzyOnknr2hb6TmKdpcf3/JoRX0FGMDRAuDZ6cu4b2MZj44hkuj08Ryn12MIuG6/xHKwUuk5rE2igsRicnoz+t4+fNqMzCoYwPw3FeGKIXPlUzlRzjuT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790778355; c=relaxed/simple;
-	bh=sFTRJFqtVYKWAfrFtg2v2Y1AVLhVCYKz9iekFUdvHhA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=KqC3/64UQAclnrdzaGaS+FbgNDCDovzMFeJRgKxUf945P0iL9aRE5zqyes/4wqm398GZL1ECOoObmS1Mn4jAbs13nLskAnzC/XSfIjw/cnKSu5BXYtn84GJTQ05wSzLHiUkCbbJQ03c9ARRluHrMYqT3S7NH/Nzc2iel2R3BeQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTppVOQq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790778883; c=relaxed/simple;
+	bh=dpi5FuofdGs2KC0e7Onv0Ee4U3xJJPwiyRHSL+LWSkI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WwFXwMojIIHnt15gDEL9BsHhoqZUdP02Zwquxgm8fMDnX1LSRyIf3m30Ja4HQsQWQImnqCekUb3Q2oKCsWh+m4NNGj9oBObbq8DW6iF83WKe97osbwiszDHoBYociNG5aPOCpqLC9GRnwIwmtsC8YMsvdC+YU2s5NtlHgppghLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ka+fQutY; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTppVOQq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328521F000FF;
-	Wed, 30 Sep 2026 14:25:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790778343;
-	bh=Jqaukmxoh+YmJmbm/EJ3OHqbjz+fE8i2VWtHgQPGwbo=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=eTppVOQqzCpPEmLEytkG1MLDSXhlxypE36QFo6qp0UrfRANgPu11aWJHiaPip3kNZ
-	 oU7NfPFOorpQ90KxV6rhOYt4e1tzkB4deBOJK2Wxbzu9gS8i3BE+v32nE+m7kN3kqw
-	 8nMVR7aUyZclv9wkIvkruhuDPc7FffLEeVSym5ahgHLGYOwoNBrgWrlg9vLD87KtAE
-	 0enOppQyziCs57SxJzp4WCqmCKukWstT/5J6K4HYxocR8cqthIg62xxl4joo6fZD+7
-	 YFTKHc4ooj1UXldEIyfLypFPJX3kmxlxEmO3KnD7NPVgb9hPjXQMZ5R8nE0bghpH+Q
-	 bztKY0xT9D5eA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ka+fQutY"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e721b5503so50882645e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 07:34:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790778871; x=1791383671; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9WbMv3YGX7nMfLppnaRbgidczcJaf5jYeQSivTTiMGs=;
+        b=ka+fQutY8rrtx120UsgquEJDw/7LVnuaihjyyewP52akXkZCj3zGinEK8h6z1Ehuql
+         +/cUTw9gqOIxUGNqLlGVJuDsR/UQ8I0X/2YbrKHYO08Tv84hL/rWfBQ+s1D8eLR0Pbmp
+         0E07mvGSDUsEbRvQ5rLtcW1zvLfXdSPCrFaU7VX4OriL3vZ1Hzq2UmuQ+NMYv+mdCokH
+         Oelh1i0B2sj9iHCXc7UHc882lbGWi69B65AXYEkER0x0iwfRbBU8yRJ0jZCPhbKMeV+O
+         iEw0HgdWXpej5A+8NGKwgag2gY2k4wiPn3i2/+x7RE7DoIcjAnPU9PgNwK/xeK/AMGHK
+         oukQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790778871; x=1791383671;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9WbMv3YGX7nMfLppnaRbgidczcJaf5jYeQSivTTiMGs=;
+        b=AVIym0ZkcTvPL2OvRYQQ6lh6ZO0T5/Q5UJend/IDk0gXIZBQWewsQYoQDAV+lYRUnj
+         rZlGL4jLjSf/K4OcUIk0mQlIjZQbWmGzumi8PX6T8TAP170dWDDe7b6+ICVhEHaDpgLT
+         iq9hYrRXXBeD0pLqfNrbfEk+3dlEK9lXV2a9FGzWNcgyAEKjewfrAL5kbTOFVr4X85PN
+         spZDNTFCe9QMaeKfstvwUq67609jDoqhlf3kwSaMwJlquzO+sSuZq2H7Xsl4WbrMHXGv
+         6/JfSB0Dx4ijcwg228ZJbrNh+VolJHLmSS0ZZ1/6iZ1Kw7Namln5RRQtoECoBUSPJ59o
+         tPRQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwgFyBTOEk5FqPOh3wZouP6hRzFrJBI9rYvARmionW/7UsdoMS2i7LpbJ11KDXXuyLZ3W3c1qr3FEKf7cWERQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++kam9po3suRlkNJFKV2pXrId6H5wTphKbQ1tea2Nx/dcFn02c/f
+	h5rau3S9ugW8XnZAvm9St5T02lBiX2YLa6V7eM7AubQI3Whp8JJtQcAm
+X-Gm-Gg: AYBFou10wdaAejldMy9ikwmpVFjLu6JVEHSFuGDc3x/b7EnwJUc+IzUR2bLQKst6FHS
+	Bf4XYe4YeFlkqw9NH2pwGwew3MrPxGvXVIvGD5w9BwW1IaDG3zeEKlKqRQsaGJJ5dip2AFt0ZyQ
+	n3XMrKAAQxwMOlZlerbfiyfAWti0ztgdy7djdw+1649X/zqWI3IxQqtfN0FpWjajNso9vESZdUQ
+	JxR98KDQvsggdXhC7U1p+WtWaRqTnpsZY774eErE3R+4rsqkm0ww4qaX5JZ7GB36Il/1MIRd5/g
+	hrv3MQlvkzmfu9tTfWoNqSTExfOY3/wizKbG18YNi70EmabB90cw8vNbrgF6tuSxOPCUs8O/aj9
+	45Huu6LQAmIGy+18so/COwMzW1AcF7n0a8bNkFYqUN/sFJ/fCk8AtgclCQLZdo0rAQ9/2jAG7t2
+	gK8Wh8Szmix+Sh/rhP4A8Geen8bZgeRqiBIgX5bmbtbphy5r3NYl3581WRjGqgMeVFb2GR1Ohcp
+	p/lLgRvOXU5pTCcQFQBWTzD9gqlknj3lhel6RXegSUJQuYwXElut/E=
+X-Received: by 2002:a05:600c:1c10:b0:4a0:168f:d962 with SMTP id 5b1f17b1804b1-4a01ad8f2eamr34710865e9.3.1790778871080;
+        Wed, 30 Sep 2026 07:34:31 -0700 (PDT)
+Received: from C422HJQPQG-Fractile ([80.87.19.94])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01e42ad94sm4577045e9.1.2026.09.30.07.34.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 07:34:30 -0700 (PDT)
+Date: Wed, 30 Sep 2026 15:34:21 +0100
+From: "Vishal Moola (Fractile)" <vishal.moola@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] rust: bindings: fix VM_MAYSHARE blocklist entry
+Message-ID: <ar0d7Xl0py6plis3@C422HJQPQG-Fractile>
+References: <20260930123645.302318-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 30 Sep 2026 16:25:36 +0200
-Message-Id: <DLSPXUPSF0TC.3PC9F8RTDV1IL@kernel.org>
-Subject: Re: [PATCH v3 08/10] rust: pci: add SR-IOV enable and disable
- tokens
-Cc: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <aliceryhl@google.com>,
- <bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
- <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
- <markus.probst@posteo.de>, <cjia@nvidia.com>, <smitra@nvidia.com>,
- <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
- <acourbot@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>,
- <jgg@nvidia.com>, <alex@shazbot.org>, "Peter Colberg" <peter@colberg.org>
-To: "Zhi Wang" <zhiw@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <cover.1790705494.git.zhiw@nvidia.com>
- <9b092d339961f744c7ded1e4f21911b66c80ecb4.1790759932.git.zhiw@nvidia.com>
-In-Reply-To: <9b092d339961f744c7ded1e4f21911b66c80ecb4.1790759932.git.zhiw@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260930123645.302318-1-ojeda@kernel.org>
 
-On Wed Sep 30, 2026 at 12:18 PM CEST, Zhi Wang wrote:
-> +pub struct SriovEnable<'callback> {
+On Wed, Sep 30, 2026 at 02:36:45PM +0200, Miguel Ojeda wrote:
+> Commit 2b6a3f061f11 ("mm: declare VMA flags by bit") added constant helpers
+> for the VMA flags and blocklist entries to suppress their direct bindings.
+> However, it listed VM_MAYEXEC twice and omitted VM_MAYSHARE.
+> 
+> Thus fix it.
+> 
+> Fixes: 2b6a3f061f11 ("mm: declare VMA flags by bit")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-I understand why you chose 'callback, but I think just 'a is good enough.
+Nice catch!
 
-> +    pdev: &'callback Device<device::CoreInternal<'callback>>,
-> +    num_vfs: u32,
-
-Please see patch 1.
-
-> +}
-> +
-> +impl<'callback> SriovEnable<'callback> {
-> +    /// Returns the number of VFs requested for this callback.
-> +    pub fn num_vfs(&self) -> u32 {
-> +        self.num_vfs
-> +    }
-> +
-> +    /// Enables between one and the requested number of VFs.
-> +    ///
-> +    /// VF drivers can probe before this method returns, so the PF resou=
-rces they access must
-> +    /// already be initialized. The returned guard disables the VFs if s=
-ubsequent setup fails.
-> +    /// Return it from `sriov_enable()` to leave the VFs enabled on call=
-back success.
-> +    pub fn enable(self, num_vfs: u32) -> Result<SriovEnabled<'callback>>=
- {
-> +        if num_vfs =3D=3D 0 || num_vfs > self.num_vfs {
-> +            return Err(EINVAL);
-> +        }
-> +        let num_vfs =3D c_int::try_from(num_vfs).map_err(|_| EOVERFLOW)?=
-;
-> +
-> +        // SAFETY: The PF's driver data and registration remain installe=
-d throughout this callback.
-> +        // The registration owns final VF teardown after the enable guar=
-d is disarmed.
-> +        if unsafe { (*self.pdev.as_raw()).vf_registration_data_rust }.is=
-_null() {
-> +            return Err(ENODEV);
-> +        }
-> +
-> +        self.pdev.enable_sriov(num_vfs)?;
-> +        Ok(SriovEnabled {
-> +            pdev: Some(self.pdev),
-> +            num_vfs,
-> +        })
-> +    }
-> +}
-> +
-> +/// Enabled VFs awaiting successful completion of `sriov_enable()`.
-> +pub struct SriovEnabled<'callback> {
-> +    pdev: Option<&'callback Device<device::CoreInternal<'callback>>>,
-
-This doesn't need to be an Option.
-
-> +    num_vfs: c_int,
-> +}
-> +
-> +impl SriovEnabled<'_> {
-> +    #[expect(dead_code)]
-> +    fn disarm(mut self) -> c_int {
-> +        self.pdev =3D None;
-> +        self.num_vfs
-
-Instead of the Option dance, you can use ManuallyDrop to prevent the destru=
-ctor
-from running.
-
-> +    }
-> +}
-> +
-> +impl Drop for SriovEnabled<'_> {
-> +    fn drop(&mut self) {
-> +        if let Some(pdev) =3D self.pdev.take() {
-> +            pdev.disable_sriov();
-> +        }
-> +    }
-> +}
+Reviewed-by: Vishal Moola (Fractile) <vishal.moola@gmail.com>
