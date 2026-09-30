@@ -1,155 +1,192 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010052.outbound.protection.outlook.com [52.101.56.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA06E3BBFBF;
-	Wed, 30 Sep 2026 10:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790763212; cv=none; b=L6e6Xuct35w34BZgJ37fyYTu/4XP8I04RSrlT8IDlXZg5vzA/AVJJixBBFz5+cM4krtj8g6bSN/JkcjtcN0Sy/KBo2NyELOM28pJjk6HGtXx0k2naBIvWVAR2MTOayqYQkOm9ZKZV094wxpfGCUEVUCyhaRdy3steYCcYMLL6YA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790763212; c=relaxed/simple;
-	bh=FcdLUdFXlI6wsmRPpBcbBKr2+7aKuX4f72+AMDNJAWE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F22ULMH6i4IcckoW0UJY0BXLZh2g9pWRjIFTY5N4X1evKqaI3Ns1AsC5vgxG68Q5RXTP1FO5vo4/Vy8UEVyGt2ZbaBTwGv4ZgY5qzTVZbPz5jCAXkRL1gR1e3T6X9BLluuHwbnvP7yp8mCzprYmyWJJs1hT2ISUfFUeKY5PHWOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=jFk21V0M; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QyQEMPnf; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93BB230BD5;
+	Wed, 30 Sep 2026 10:19:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790763575; cv=fail; b=QSskQPFxosfOs2KALcNDGLTEBaA/WltgqoRn/CWhWP3TXmh/g3qDluFMZG2kyO5nYHDBjhArsf0I7eGp9PhRw3m+QhAK9CCFLCZS18kEp79OiV5Nqpq91Q4R18H2Z8hZoSPq3l8vPKG0B+X0PnKQC/jnct7GPDCPkjiCW7HwlWM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790763575; c=relaxed/simple;
+	bh=ccUPoDFG9dx1b+ML+N7Y9L7wSOdBsQ1bTAXpGt3IpJI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=k5AvWEdaQPcLmGtS+jftep/k86D8S0OwV4yIkcWlyCWhngZrZFJDfHuW6YPpfzCAZyjb25xrPAw2AsE5yzW6eYvzmQqGzuv42zzLOX50WKrRN18noYiYD2CkZgZCaZZg+XIZ53ALpdj0xbu0hJs8dPIbnwuADf3/+IG3GpdnV+k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Fz+4fxI1; arc=fail smtp.client-ip=52.101.56.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="jFk21V0M";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QyQEMPnf"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 428637A07E6;
-	Wed, 30 Sep 2026 06:13:29 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 30 Sep 2026 06:13:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm3; t=1790763209; x=1790849609; bh=RdQ15fTBCIw3BB41JZuI9
-	9EUXVLEbdksxycbVeaWNH0=; b=jFk21V0MQVL4zhaW5/EGnzaQl8DEJXLvV7V7T
-	vwp6MrD3sF1Bce4RvdIdlKlV/IIHU93Uar6Ry0VWgz1hZqn9p2kcc6Y1jZWOUIBZ
-	5IHIbMVMIFYr/X0CUkk1nDgTdPL2SiQ/AuqBBVql2csJuYltVnoCMq9HpICewPoK
-	oO221JTqUjD8ohu8aa0/eRZdkiQdJbAt4TJHPJPTkx7qObk50vDvR3ptN0+xQdJz
-	cb4gt81JfbgQuMI0ojB3TkfGywpnQlFckb/He7ewa2DzxtaOvohsDEcx0m8SoBek
-	+PawTIJfNJGkeYpq3CPqOXVPWIeDAUtGpFJ7E2NR65cIY64VA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1790763209; x=1790849609; bh=RdQ15fTBCIw3BB41JZuI99EUXVLEbdksxyc
-	bVeaWNH0=; b=QyQEMPnfYtxWpCZupuTYOgFymsMOhrbHGPBnGQHqOyXlAsZ12ag
-	H+KnTQgLFkoCroiDU44nwDCueo9slFqrE1sM/65bMepf0sYhI39uqkMV8/9j4E/q
-	Fj4kwv2JQSdyPpTStQnmkg2bxMaru/LEOzjZUkoZ6jUja41ww8/RxKODbgQYOYAD
-	0JG3NlW01eOEhurQsoIPkdkuzno9rgvD6kYjRXilxcQZS8bZWs+5nhz4PO82ZWKa
-	zYhCt7UtWavD2jy/jOHi2z3rn2qsW6pPtjffYb64EPf5rBUwjGqSOdznnuJHI9LG
-	An1AHsE/ylUOA8uS5DVFywXIg8hP5zy/QBQ==
-X-ME-Sender: <xms:yOC8anyR-xQYr82mAXqrxHF0-E-7TBwc7DfRAYnzlSaXHCScnhGVMQ>
-    <xme:yOC8ajj2HGgpAfyxRht2qaQLwtb3b6Ehu4zHm0yD6JyumRPFQMfiT8iChQQpr6i_G
-    BXzQp9BCGh46FxUqkVYn2kpAUQt0gQjAyVKVHmN3sy0_OXiVtK7fLID>
-X-ME-Received: <xmr:yOC8ak4ZfOcZdJY1cdAgwun4dsegEGjZWdWeHlIEKG8tXhLfeN2sC0YV39FCmw4qoIBqSP9SLWHiA5DE5y8>
-X-ME-Proxy-Cause: dmFkZTESPWaCPYjmflZ1CcqzfJY11iazwxpTYyd8FMAAJ1pSz45fUT14YP0CGfQApUd+xQ
-    evvDbn3MUe/syiRRDlOh+pLkd9dn5h5EJbaP4IK/j4yTvCjWGH/EuemWgTpQ2cmmGN/wbG
-    p8MkLVhpv74KRkfTSiwWef9ChM7F8D5Q0YdjqbNNrcba23BibYxhJZW6HGwRuKnGJBXlMK
-    QwSORU1B2oNxg77Y7k/gmt6o1KW3vOYpbLVwvKBeeCgdqeV3LJvK+1HP3jiZL7rcuca2SD
-    5yuDFwyREMbO80JRz7xzzWU1BKKURBz54dTdeK39XRQv6YR9VUTfyQeTsp7M/qiJ4WUgB9
-    i6VHFeDSBlptfd4xYUrLAnR+A5VnXaH8xNhjFxiA2wldSmc7JRFQ8RwKgUJcT5sVrejE+d
-    uWqdHy0+FPsOeUoXJLXaBOLlu4r92VwhYDmkVPNEyGGdIeUzowbcxE6WhA+m/O/AaI/206
-    zp/EwCq+YGJbVr21UnLVQHOlYE22yhkoaWnSsz+Cv8d/eT1dIG6q3K6Tptgx6yQ5tj2c5r
-    IKD7nMfh0nbcQi4dWfBeHOHLvqz4s546aOLiKOUHn4t+Ra3bd7yXuw3ozbrJzIZB3k86l7
-    QYlc/gjS8G6H9WIW1EguXPEPdTEMapKEGQFC0lQMSCO17tUIqdeJXRGgwtwQ
-X-ME-Proxy: <xmx:yOC8agrrpl71rHUMk39HfsQFFb_ugO97aHpkoFV2TPQWR5j1eeGs9w>
-    <xmx:yOC8aiXfF6q1VvSkMxGpruB4teIGKVx_4qhkmzqaxMmZUk4Nt-unlA>
-    <xmx:yOC8av6ZCUfKFh64ZJ4a_H7U4_kqtrocH4VFURcZCAQ5AHzgIEQvTg>
-    <xmx:yOC8ao0Mw-ffQFk7J8095GLsUU86CQyiblAbwf1WhAjgIHKCJY2DOw>
-    <xmx:yeC8ahkXKtpO_iyXmZRtpeLdzMTjevsil4vph5jhcD0z9fBB3n6Jds9g>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 30 Sep 2026 06:13:23 -0400 (EDT)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: fustini@kernel.org,
-	guoren@kernel.org,
-	ukleinek@kernel.org,
-	wefu@redhat.com
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	linux-riscv@lists.infradead.org,
-	lossin@kernel.org,
-	m.wilczynski@samsung.com,
-	ojeda@kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] pwm: th1520: Fix 32-bit build with COMPILE_TEST
-Date: Wed, 30 Sep 2026 19:12:57 +0900
-Message-ID: <20260930101257.1649945-1-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Fz+4fxI1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LbHM1P4LlK4mS+4Yfh9clp+IT1a8fPCK4FDYfMQfK0e+XEZOVyP1B4CP3oZRAExdL0DhgmbxFUkQGR11kdb4GtXOjcLaVgoO8mszp6slaWSD7g5Y4eYWte+3r7EVFUW0wGNaa2/TTQ2qS4mB7y3yHkCdqkg9GL6kP7kqWX2mWFleGqybqu8eG07GLWAkiuY0r8IZFb+8B2RgTdngfp40j0I3VP8F5kG+CrDDfkPtYz8FVPIPUFLDW6rw24xGlFGCD9f8qhL3pqAQpaCm2fQudxl9eq5F9iaLPlfW0dM5Fz2itOseTUgGkyzfDig30aBeUABn+7aDiKhyLfnTDlNSJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fnEz/iaa2A2j7gLUNGYMxI3ZA1Rday3sPg6kMG7hDgk=;
+ b=m2rIyYCcteCUZ5Qcoq51krvdTwu/q6CQ3a44YA4PVnpODl8044QlB6fL9soO3ZogaL0kkNjlYLXp5qQLVUr/xtE+reRO+HRM3gtwDJE+40NX1o9Tn4UCiOTCJMYCnEkf82aOCzB3x/z3ofuFd8AfaR3BOJP7GRaVh0NFeom+5pkH4hWFArrV0K6zKDXI407hJTZKNAK4K5RedS4Ts1Q5Kv2+HGQQ2JOtbUGLxL2XLnI3FhYxof33lrBYcchq74Bqnu8AP9NbjC3+RMH3cBgS/o3SywLY/nOLj5A9lNyZ8F0K3ghFEH03z5xEeWH5uukawcGhkjpTjxEp35OFWnr1jg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fnEz/iaa2A2j7gLUNGYMxI3ZA1Rday3sPg6kMG7hDgk=;
+ b=Fz+4fxI1w7400Am6BNygvVTvIIW35q45tli9ZHSRNAVz8AoDwa4WeWuWdbepT5Cenm/05y2f17VnhPLKaaGvp7qc/bkyhJuzPqJKBKQzuDigHygCzcgfyqY8sH34I8t4e0CuR7T7ZRFNyfioB/3yLKEbr1jLXMLtQluj1jDg/y0Gt6rUX7NNVq24933Rh/QPB3g4PMUTCqmDuK0BdOhDGwEtrpAlsLpsn0VdJ8qwlsCR/arcE1n2qN1u439xeCHcaj9CliY1M4OiPO54Q37K4hi8YxVXiIVZQ4erRpLwGdFdh+ecFW27mUXCsmaYsa2ztAZJweNJM9g9HuZP6HKtiw==
+Received: from BN9PR03CA0308.namprd03.prod.outlook.com (2603:10b6:408:112::13)
+ by MW4PR12MB7384.namprd12.prod.outlook.com (2603:10b6:303:22b::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
+ 2026 10:19:21 +0000
+Received: from BN2PEPF0000A88F.namprd04.prod.outlook.com
+ (2603:10b6:408:112:cafe::58) by BN9PR03CA0308.outlook.office365.com
+ (2603:10b6:408:112::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.22 via Frontend Transport; Wed,
+ 30 Sep 2026 10:19:20 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BN2PEPF0000A88F.mail.protection.outlook.com (10.167.248.181) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.472.14 via Frontend Transport; Wed, 30 Sep 2026 10:19:20 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 30 Sep
+ 2026 03:19:03 -0700
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 30 Sep
+ 2026 03:19:03 -0700
+Received: from inno-dell.home (10.127.8.11) by mail.nvidia.com (10.129.68.6)
+ with Microsoft SMTP Server id 15.2.2562.49 via Frontend Transport; Wed, 30
+ Sep 2026 03:18:55 -0700
+From: Zhi Wang <zhiw@nvidia.com>
+To: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <dakr@kernel.org>, <aliceryhl@google.com>, <bhelgaas@google.com>,
+	<kwilczynski@kernel.org>, <ojeda@kernel.org>, <boqun@kernel.org>,
+	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+	<a.hindborg@kernel.org>, <tmgross@umich.edu>, <markus.probst@posteo.de>,
+	<cjia@nvidia.com>, <smitra@nvidia.com>, <ankita@nvidia.com>,
+	<aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+	<kjaju@nvidia.com>, <alkumar@nvidia.com>, <acourbot@nvidia.com>,
+	<jhubbard@nvidia.com>, <zhiwang@kernel.org>, <jgg@nvidia.com>,
+	<alex@shazbot.org>, Zhi Wang <zhiw@nvidia.com>, Peter Colberg
+	<peter@colberg.org>
+Subject: [PATCH v3 00/10] Add Rust PCI SR-IOV support
+Date: Wed, 30 Sep 2026 13:18:41 +0300
+Message-ID: <cover.1790705494.git.zhiw@nvidia.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF0000A88F:EE_|MW4PR12MB7384:EE_
+X-MS-Office365-Filtering-Correlation-Id: 312ee71d-20c6-47b3-a111-08df1edc4ab8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|7416014|376014|23010399003|1800799024|56012099006|10067099003|6133799003|11063799006|13003099007|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	ecLH+amnzdKbhS9M2Ntuhd5hfF8umkclb10FbxExTy4HR6uZKw66MRfKfIXs/CP7aZ5gCGdBPjyGRftGIbWOtHNu6Gj6oBiD0RCdYNDVHWUQIWdPgdkKWxI7/UGjo1PdJJhIcFzUPfRxa1cy7wPp7xc4Y6Klzs+rtl7hfvlUHySuD6mJoHvwpm/xlBp6OTi1bHaWjbPocNBk8Yk4F4elUBWiSeqYoxN4zeZ6KbTVG5iQBWPkhe+BaoWbCay1JPyfYVYwaXJ7DbHG7q4mPQsD4holKHF/r4N4KjylXP3A1cHtwqEzisOdE1h4UV7TQhu+vkTmdtwS0ZFe/Q9pJ8+NKUyfMnWvDkabjzDFSRt3O00jcjbndOKk6glLwwHr3i/RbQail8xP3aUqRHVff7xWf1YAAEBLOsx4uBoBVIreMiPAQPnhRQauaREj2EYBoN3OrYCAPi9ug/LRTh9FcZNCDLcGCKn6NgjDHqDNqU80pPFJNeMnVyfcRjeaaZIqHTgXVvF2lIuJdqKIa4v0jPOpJu/Qv7gdnTBHmTPtpEhA1wV6+TEAgwSAEyyGdS/ARBXgf8/IC8n52yOVFtaJHzUj6h0JHH/HIIpA1cuB7SDF24zNhjBsa7K43cr9yu353SXRBBtF1VMnHQmHfqfpnu4R8LOHM34hme+AjFe4qJcUkIPzPja7aLRrkkEJb0xH9LgaAdgwMRlThN9Ad5vuMGhaKQ==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(7416014)(376014)(23010399003)(1800799024)(56012099006)(10067099003)(6133799003)(11063799006)(13003099007)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	0MYI4SLkAWyiZuAETlNg3lKc1XacfoKEADNVpNImld03SlCNVfh2q1J/j7N8jL+JchPIs8rbbeVguz4EeA23jpI0rOUVIiGBEInHOyyR8fh+ZMYHkRiWaYqBPA9Dr9Fx2+0gOA0zu5bui8BLW0BaKr1KnAHj6XPIesJoXwRK6O2bsgKnnYkW3rcm3bqi2Uir+UHyuSVLc29R+N1EAkOpICqrHZOA0IdTTbpo5bzF9cP0we7AgnLodH5jWBbgBsKAJFOLdSMJWw1tNz8FldF8fqERsTgKCknby3cQnC580OECcdIoypvNBm+D8pszPBmHvRgKzDTpYmx7xjkgCmyvhFDONiJjCnV1V1TJgexdrawD1Ly5l7Lm7EMVtwimzexurYtTF2X12sZ73AqKIZ/Mk01eRVMh2ThgN7Rb7Ic3rDi1NpGXsGAJT8MIcKxe2PtC
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 10:19:20.3254
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 312ee71d-20c6-47b3-a111-08df1edc4ab8
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF0000A88F.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7384
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Rust PCI drivers need to configure SR-IOV and let VF drivers borrow
+selected PF-owned data. This series provides those operations and a
+registration that keeps the shared data available until VF removal
+completes.
 
-Fix the following build error on 32-bit ARM with COMPILE_TEST:
+This builds on Peter Colberg's Rust PCI SR-IOV series [1] and Danilo
+Krummrich's typed PF registration design [2]. The PF/VF sample demonstrates
+the interface using QEMU's 82576 emulation.
 
-  ERROR: modpost: drivers/pwm/pwm_th1520.ko: symbol '__aeabi_uldivmod' undefined!
+Following Danilo's review, drivers now implement separate sriov_enable()
+and sriov_disable() callbacks. Each receives pinned driver data and a
+token for the requested operation. Enabling VFs returns a guard that
+disables them if later setup fails. Returning the guard successfully
+leaves the VFs enabled, with VfRegistration owning their final teardown.
+Drivers that do not share data with VFs can register ().
 
-The driver divides u64 values when it converts between nanoseconds and
-clock cycles. On 32-bit ARM, these divisions are compiled to calls to
-__aeabi_uldivmod, which the kernel does not provide.
+The series is based on driver-core-testing.
 
-The TH1520 is a 64-bit RISC-V SoC, so the driver is only used on
-64-bit kernels. There is no point in compile testing it on 32-bit.
-Limit COMPILE_TEST to 64BIT instead of changing the arithmetic to use
-the div64 helpers.
+Changes since v2 [3]:
+- Keep enable_sriov() and disable_sriov() internal to Device<CoreInternal>.
+  Add the callback tokens and rollback guard in a separate patch.
+- Replace sriov_configure() in the Rust Driver trait with paired enable
+  and disable callbacks.
+- Remove explicit SR-IOV cleanup from the PCI remove adapter and leave
+  it to VfRegistration.
+- Move the SR-IOV implementation into CONFIG_PCI_IOV-gated pci/iov.rs.
+- Remove the registration's published flag and raw-pointer accessors;
+- Restrict num_vf() to the PCI core callback context to serialize it
+  with VF configuration.
+- Remove the separate PF device accessor and match the auxiliary bus's
+  model.
+- Update the sample for the split callbacks and Peter's email address
+  throughout the series.
 
-Fixes: 3c180003dffb ("pwm: th1520: Fix missing Kconfig dependencies")
-Cc: stable@vger.kernel.org
-Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
-Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/topic/64bit.20division.20in.20.60pwm_th1520.2Ers.60/near/626825599
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
-v2:
-- Fix a typo in the commit message
-- Add Cc: stable, Reported-by and Closes tags
-- Add Reviewed-by tags from Andreas and Gary
-- Rebase on v7.3-rc5
+[1] https://lore.kernel.org/rust-for-linux/20260303-rust-pci-sriov-v3-0-4443c35f0c88@redhat.com/
+[2] https://lore.kernel.org/nova-gpu/DLCRZLO06SIO.LS7TWQXIPZSQ@kernel.org/
+[3] https://lore.kernel.org/rust-for-linux/20260924190556.1620886-1-zhiw@nvidia.com/
 
-v1: https://lore.kernel.org/all/20260929095612.1072417-1-tomo@flapping.org/
----
- drivers/pwm/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+John Hubbard (1):
+  rust: pci: add is_virtfn(), to check for VFs
 
-diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-index 729776086879..abecd95b0c3c 100644
---- a/drivers/pwm/Kconfig
-+++ b/drivers/pwm/Kconfig
-@@ -772,7 +772,7 @@ config PWM_TEGRA
- 
- config PWM_TH1520
- 	tristate "TH1520 PWM support"
--	depends on ARCH_THEAD || COMPILE_TEST
-+	depends on ARCH_THEAD || (COMPILE_TEST && 64BIT)
- 	depends on RUST
- 	depends on HAS_IOMEM && COMMON_CLK
- 	select RUST_PWM_ABSTRACTIONS
+Peter Colberg (6):
+  rust: pci: add internal SR-IOV enable and disable helpers
+  rust: pci: add vtable attribute to pci::Driver trait
+  rust: pci: add is_physfn(), to check for PFs
+  rust: pci: add num_vf(), to return number of VFs
+  rust: pci: add SR-IOV enable and disable callbacks
+  samples: rust: add Rust SR-IOV VF driver sample
 
-base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
+Zhi Wang (3):
+  rust: pci: drop driver data before remove returns
+  rust: pci: add typed SR-IOV PF registration data
+  rust: pci: add SR-IOV enable and disable tokens
+
+ MAINTAINERS                           |   1 +
+ drivers/gpu/nova-core/driver.rs       |   1 +
+ include/linux/pci.h                   |   7 +
+ rust/kernel/device.rs                 |   4 +-
+ rust/kernel/pci.rs                    | 103 +++++++
+ rust/kernel/pci/iov.rs                | 413 ++++++++++++++++++++++++++
+ samples/rust/Kconfig                  |  11 +
+ samples/rust/Makefile                 |   1 +
+ samples/rust/rust_dma.rs              |   1 +
+ samples/rust/rust_driver_auxiliary.rs |   1 +
+ samples/rust/rust_driver_pci.rs       |   1 +
+ samples/rust/rust_driver_sriov.rs     | 249 ++++++++++++++++
+ 12 files changed, 791 insertions(+), 2 deletions(-)
+ create mode 100644 rust/kernel/pci/iov.rs
+ create mode 100644 samples/rust/rust_driver_sriov.rs
+
+
+base-commit: c15c5befd6d6150e92ab7c6c7fde1088e0f543e6
 -- 
-2.43.0
+2.53.0
 
