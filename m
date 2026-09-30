@@ -1,232 +1,255 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020129.outbound.protection.outlook.com [52.101.195.129])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C7C4E3225;
-	Wed, 30 Sep 2026 14:01:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.129
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790776913; cv=fail; b=mzJpeluY35phx8xx6pG5atJY42kAf9+Lx/+C4dGJuA9qBiLF0N+RvfRzMmKgQcaKCspkWvVNBtHf2HV1JJAdbSYQjfRbYntwpVwcca2rYSIHe0vv4EFOnkRJy7Qg09THrAqh6aEoX17CbS4XbUQwS50EuGsS3afUc/zG6yLH0Oc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790776913; c=relaxed/simple;
-	bh=4aLMJY4Jq1dTWeXaHS0ZHjF58uDKFH4kk1FzTTavAvQ=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=nxCAThapnVUnwUx+MwO6Aw5BSXtQ0SBBTzAvK8JT++/nlKJvt0l7Ujd7Cmq+rrOj9PsfEnXTUKjrYIIR3iTYaqIMgQC5l7/oAJlwjxAlUbOg/WOpR9CBan3EvSsLt+G7/pbqXfCHeZdAmhFYy2QAr1ULV7q9TJqT0HOOCXtq31Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=R7dVNJBs; arc=fail smtp.client-ip=52.101.195.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B884FDA4F
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 14:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790777255; cv=none; b=s0hQpaHJVK0Eu3dnuaGi9knp1dBRP24xmq7EROTZllBZWy7aYXrX/TxXm+DolebGhLwOFOnGjmitVz6VONZHfZfjCiJHru6oRcebDNmakT64ydMWOxROHPAehV7D3VpT0/jxwqiPxfaACkReuvp8U4aAAXspoUM02eBouN8aSWY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790777255; c=relaxed/simple;
+	bh=nJUmfPhvoaVq+tzus3KQrCsS5a68ZjcnCCB9ptoHFnk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ebQ2luwbWDYomwt2pcu/Iog8tnyM7eDOUJb/mE1kS7Au8BYNUK91vBkP4M4+w0frTNxMt0vRVbzFeffSG/CiSnxy6TxNtfC0/wj8JDWybeDS0//PS5T6NmieafSnzoR64HF3wsySfBslpHk/7PkhUWDvALTspHGqwesEm2kJIvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=CmyIu8ze; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="R7dVNJBs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jS1LZZ0l+LpU/w1Y8jkhkXo+a6vrsl849e4uoXjpNQnNKjKV+1x72gplrZ25zVk1ZOP+rI4kkQ2zURgfQysswbVbasuLvL929lC8Mm4WCeEqhjQXOKn72yc1f0iusizLq2GMmn4CO1OkSnk5fCz1dJ0OChNBkDw7w0D7L5CVNYmj16tz4fQKqX0x6Dn5Hdf7Npf1erOnwsSOeBg5zc9NboQhheWvvEUEFeiNYX8w3HNOqgMB6l7nAPKaP8mO0ydkAxNFThaG6K0RPYrQfcGbUeUq3HnYt00DqksZ+Xx6bKOuW2bAT/ZjXgoRftLKzu6W4Ev+21y8/LKJzD31M1Iz5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KM7SaSx8hcpCzsyR4svAeYDoJWVyZ6rZqtMsE/5KoQM=;
- b=VTUIh+5VQe/xnVKcu1Ho8WjfAiUXLkl66RSWTL0wcB9qBQF8F9GVJZTz4jguaIE8RF02OSXbLBlYcSLVAjJ2T3dkCbyTeI663xP0kCty55in787wSdgAraIXy93mmxiD6trJdPXTPSvlLcGN//FRqgMw5ZvqY5YCthWnhW65qn02e2smcrdojiHJeaF/GzlRzEl79n7VO1o9w1Jtp6XnBI+udVjdCrvw8yWtV/dqL8v9+X0NPiD1V7KMn5maQ/exUYsJZIsEgphx4Onf2MkUGCbOErQxh/GhzovKCQFa4+ZG03s1VFOHdKpfupD3L+hiT6YjlH8Zb+Ic1S9/PJ31aA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KM7SaSx8hcpCzsyR4svAeYDoJWVyZ6rZqtMsE/5KoQM=;
- b=R7dVNJBsYbfRHzHktN5llR0ukAWpP6SuXa24EM09fq6QJkFrGAbgalpMX6Pyb4JSP039zFv5PMBBmlfDpD+1GrreBkhJ85gj7CdQyQwfF0i+0iNu1AmPyK9a+Kv8Q0Ka0Q/9TE++iYHI8swkMwzvATTjw9poQTGYazWyeN4T+yU=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by CWXP265MB3510.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:ec::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.16; Wed, 30 Sep
- 2026 14:01:42 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0451.024; Wed, 30 Sep 2026
- 14:01:41 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 30 Sep 2026 15:01:41 +0100
-Message-Id: <DLSPFJ7IF2XC.1KZBWTARDIG1I@garyguo.net>
-Cc: "Gary Guo" <gary@garyguo.net>, "Peter Zijlstra" <peterz@infradead.org>,
- "Ingo Molnar" <mingo@redhat.com>, "Will Deacon" <will@kernel.org>, "Waiman
- Long" <longman@redhat.com>, "Alice Ryhl" <aliceryhl@google.com>, "Lyude
- Paul" <lyude@redhat.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Miguel Ojeda"
- <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Tamir
- Duberstein" <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3] rust: sync: export lock::do_unlocked
-From: "Gary Guo" <gary@garyguo.net>
-To: "Boqun Feng" <boqun@kernel.org>, "Andreas Hindborg"
- <a.hindborg@kernel.org>
-X-Mailer: aerc 0.22.0
-References: <20260929-export-do-unlocked-v3-1-f7000684178f@kernel.org>
- <N1IBV5ko8VdO1uPeg7myJ5jVnnfJI-s5phM0IuhjOxWo1AvKFtlvojnvOBY1fnhKJpl9GKVkN0dD6GEM3f1FKQ==@protonmail.internalid> <DLRXW31Y0IVK.3A3NJVS2BG39M@garyguo.net> <87zex0rl3r.fsf@t14s.mail-host-address-is-not-set> <ar0SaUYCeGvi2fTD@MacBook-0RXW5>
-In-Reply-To: <ar0SaUYCeGvi2fTD@MacBook-0RXW5>
-X-ClientProxiedBy: LO6P123CA0032.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:2fe::7) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="CmyIu8ze"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 89D21240101
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 16:07:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
+	s=1984.8680eb; t=1790777242;
+	bh=IfIIsX3gg1lv/2HO6YvGlmYAAGS6W0Wyv8g6+LwIreM=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=CmyIu8zeKg4PJfOILEwm2TD8qOfYddBl6VZ/dsg2ccZcGJtF3o5aKkFuONDbPyTZF
+	 gBUTzyIlR2AaymPB+9wYLt3bsJOO2PIZ/qneTYMwcMyvEuKuj/tU7KGuCQ6fk2X+U6
+	 EhDtvPG+4wZ+4K3zT6vHPxWnABrB+pJTwXxLVtl3tOseJcZXdJG822N3sBA5+rCkfa
+	 oFw9FTaDZ7zlQXp3OYBhs1F3q0OfisBcERp3NbfLFfLaw3ZFEc1SLDLI56RaSahBBS
+	 l0/0k/Jg+r9gyOsVTU7e1o5G8vSejUHFmShrmaKIM0m/lCYlAFWIWuOjvgHz8Ou0FA
+	 33Pr3On+G6bww==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4hvxgr1L2Sz9rxN;
+	Wed, 30 Sep 2026 16:07:20 +0200 (CEST)
+Message-ID: <d2437243001e55ef6a845c88cfb19dc162a0c1b6.camel@posteo.de>
+Subject: Re: [PATCH v1] rust: serdev: use Delta<Jiffy> for timeouts
+From: Markus Probst <markus.probst@posteo.de>
+To: Gary Guo <gary@garyguo.net>, FUJITA Tomonori <tomo@flapping.org>, 
+	dakr@kernel.org, ojeda@kernel.org
+Cc: a.hindborg@kernel.org, acourbot@nvidia.com, aliceryhl@google.com, 
+	bjorn3_gh@protonmail.com, boqun@kernel.org, daniel.almeida@collabora.com, 
+	lossin@kernel.org, tamird@kernel.org, tmgross@umich.edu,
+ work@onurozkan.dev, 	linux-serial@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, FUJITA Tomonori	 <fujita.tomonori@gmail.com>
+Date: Wed, 30 Sep 2026 14:07:21 +0000
+In-Reply-To: <DLSP8RHJMYFZ.3II53ESHY15IL@garyguo.net>
+References: <20260930041339.1551129-1-tomo@flapping.org>
+	 <a8693eaa1f8eeb167ee334e7c35371832e43bb4f.camel@posteo.de>
+	 <DLSP8RHJMYFZ.3II53ESHY15IL@garyguo.net>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-FnDL+AGGzBAQZyfZ98yo"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWXP265MB3510:EE_
-X-MS-Office365-Filtering-Correlation-Id: db91fb54-1402-4e99-bc19-08df1efb5a83
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|23010399003|10070799003|1800799024|10067099003|56012099006|4143699003|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	9aUAK7Vbzzo8FBybGOUwHhfNEfFb6ynlkYyX14qYqH+3E0Xn87XzpZBu8v7R+5WD/9rGrNwwMuOT/kfpncepw3w1X2pSa0O/xihl4Rv2kb2w4NJ3rWh1uuwQbI++GnkBNUtxGiXK771OdVo1awtD+YYez8pWk7aesm+Tp9coMUUIksFnCQL2FssZrwzkW7XkFeTQzWWBASRgsgPzQRAgRHfh1sSZP8qASZG3mV4JAytMK9QLoXE2i9F332rZAmI7FgfpjDt7IYkAweQsIJclt3MZbg1BpS747DSU4SEPmeQlrXhF94/T3ivfb+Uihs0a/XnxWOHkEcf3kYtVrD0VgZXIJL4Bfn9xC8SVcWFr4ZcrC/YI8kHxjdFv5IvhIOs2FsKRUGMFxhVUokOEvaci5cSfs7BsJ11JJPX46burGMCDDK5dv9vqyw9HmpOYEg52viOkPiyypqj1vBTGeMIL5AwsanRY0a9AEuqmo2Nu5Bdlp+nRpdNb/67ez81qUZ/11MnqBSbJ7IKL1kFLSDXLMKyHZSd2o+xPrUEruqTO4I7EGIQsKWjcaSz9OvRgTOnS25QZCeefcXBN6whHn5U/pDNLHi141UDpO/dklHTRgDI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(10070799003)(1800799024)(10067099003)(56012099006)(4143699003)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VzdMUU9hOG96S1lGVjUxejlpYTB2bUJWVTUxWDh1QXExaHQ0WmJuTi93SFZt?=
- =?utf-8?B?Tk9uTGsxejlmaDJTZC96TlhzUXk3NVBLTEpmTjdxcFMrR1l4OGdtMXp3S1ds?=
- =?utf-8?B?eGpWeXMvQ1M1NSthRklFQWJ5ZzVvTGl2OFBrSCtURmJBdlVTR2I3QjF0U1Rm?=
- =?utf-8?B?alpNVUp1eXFNcXhsb0NEOXo0Q1htWEJPalJ5MDlubUVOdkcxVTBLcTNaU05h?=
- =?utf-8?B?Z1kvMnIwL1I0b0ZaR1gvMUNVSXNRbVRuUk9oSVBZUFV0TFU4eHZiTTgwYVVS?=
- =?utf-8?B?TXljbHJsTHhXUWdjUUloYVVvTEVVYXloaUFWN2FiVE9pUHIxUm9EQ05aYU5B?=
- =?utf-8?B?QVBkTWFhQ2h3UVhaZkF2T3U5SEt5cHd2UVEvQUpWNHMxK2lOWWdaYi9pRjNn?=
- =?utf-8?B?NEtyeGw3c0wxWkYrbi9XZ0dVZHREV1B2WWlqdWZ0OG9wNEpCS292bUsrNHI0?=
- =?utf-8?B?K0xrUGY3eFc4ZlpOR2gzVUx4OHB2YUl0WGZEQ1RnbkNFRzV6aXBsY0dzdDdr?=
- =?utf-8?B?bk1zWjcvdW9Bc0l3L1Y5VG5EYnRKWjh4dkhqTjgzSFQxclZxV1BnMjFXenFi?=
- =?utf-8?B?MnFzSFN3OWg4Ry9tVUVNemZ0eDM3bW1Wd3E5aEIzSWxDVE9wQXZ6TEhRcXNa?=
- =?utf-8?B?MU9YbTcrNWRZa1VhRlhFWEY3OVRST29NNkQrNWFvMGlOTXpORkpBTi8vV2Jw?=
- =?utf-8?B?K1BlMU1DWFJueEM3WnNCZlFMV2tNc29qTmFtSk9ERXpSUWhkSm80Q3ZzczlU?=
- =?utf-8?B?N2FNUVNrelh2SFZhU2VaTGoxRjhyTFBERXBxS2k4V0p2Q0RRRzhFUzdpTWFo?=
- =?utf-8?B?ZkxsWDBPbVZXQ1d0N0RLMVRUc1Jjb3MxdlpCTWJUTDZBZWRuVEFVRTJLYmhq?=
- =?utf-8?B?amlubnNXSlJOYlh5RHlZb2RpOXRhbU1DTnVaMlI2UE84RmVTZXlrTVBvWmZK?=
- =?utf-8?B?cjdjVjNpbk93V2JtMEcxRHpIM1M4L0JYbzcxZUNVT1pMTmx3THdWNEZBRXYy?=
- =?utf-8?B?cW9wcjZ1SGJGMDZMcWxNVTNFSXBmYUJ5bmtKOTIyc3NiSFFmY2phVEV4aGtl?=
- =?utf-8?B?UStucnJzMnJrUlpsWWZVbkIxWXp2MVJzRWNGNEl4OVZPOGpBRWFJVnpMRlor?=
- =?utf-8?B?UmcvV0VhWW1rQnFuYndUd3VvejFRRDFsUEFVNGY3bGtYbi80ajBwUEVmNi9L?=
- =?utf-8?B?R1h3VjBKMjFVNDN4WmlJdFoybTFOamQxNTZZK0JTQVdIUnAyL3FkeGJtOFpl?=
- =?utf-8?B?NVNqSnRWWEpLc2xpZFJqWEhrZ3Nla2QxYjUxdkMvUDNhZ0E2d0xneUhaUmpY?=
- =?utf-8?B?R1c2alR1cXVBMWJET1BRL1VheWhjc2RMaFlyMUdIeVlMR2oyRGVkcldnTGJn?=
- =?utf-8?B?MjV0Wm93WDNjSHhqTi9reitndnVWQytnQ2VZYktMSG05VFp3anRzUmdRV1FS?=
- =?utf-8?B?Q3RjdThEcUlENWExQVhCYWlFeU56ekE3RDEzQVRxQkh3UHk2YUg2a0J5YmFB?=
- =?utf-8?B?ZktWQTJ1UUVPQjJsVURIZ2ZRclhEdVJ1eEs3YnluOFNIcDhVU01SODUzNU9z?=
- =?utf-8?B?bUJrbFdsRHJia21ZeFFiWjhyekszQ1M2QWpkck1PL2crbkpvc0NKWE5WK3lF?=
- =?utf-8?B?KzhydmdldC96OGJNbFY4a0MyWEF6OEhyOTIyV0ZtbjJFRll2Q2c2SXg2TXJR?=
- =?utf-8?B?UDBZeXFGUzRzRlRkby8yTXNka0l4L1BHWFhpS3JIdmRPblI0dUhsR1VGNndk?=
- =?utf-8?B?Ull2QmxyYVhQMnVndGxNWXhsRlV0T0dick44ZStvVHhpdHV5aU83aDN3Ujd3?=
- =?utf-8?B?dnhBRTdFZlVJNitHRTdCTWhZQktmT012YTV4Y3RHMjNwNjYrM212SFp2MWw2?=
- =?utf-8?B?MWdDVUlsN1hkalZxaUpwaDBaVnJPT3djSzhzdjFKaVlxTWRmb2lXalJub1Jl?=
- =?utf-8?B?aFI1dlNoT2pBT1d4b0tNMjJicEptd2lsNFVsdHVvblphZXdTYWlGd0VwMGZj?=
- =?utf-8?B?UjRlenpISTIrM3crOE5wVUhYaWtCUFI0Z0x2VnVBKzN2aTdnZHcxZENmSGJt?=
- =?utf-8?B?L09KcTMrZ2tqYWJvUE9XWjhaVGFTTXFCSGQ4VDBwQVViTjZyK1VGZU5PZGdQ?=
- =?utf-8?B?OUlpbFN3MXpKTzQrbG40dmQzbkZURkZsV21HcUQ1MlNwVlFxSVRZRFc2Q0I4?=
- =?utf-8?B?ZE14YW55U01oNUNza2pCVnVjU204Vkl3ODB1UGdLR291dDhWeUcxeG16N3l3?=
- =?utf-8?B?NGllTnh3UENHWmtnSFJKQ0Z3SG1ka1krdE1obXQycjRSNGRVZnJYckJqVllP?=
- =?utf-8?B?OUV6OEJXVk9ha3FjOHJtWFBrNHhDQytIcXVkcEJ1SXpHVHJWcWNKZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: db91fb54-1402-4e99-bc19-08df1efb5a83
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 14:01:41.4960
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: weqpV3MosF8J6B10Z8nLZdaM5AnuPrawkG8xTieA2dRoe9LX7uvAXy/dsqnwvVvOa/20H0AxyypDAalxC0eblQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB3510
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Wed Sep 30, 2026 at 2:45 PM BST, Boqun Feng wrote:
-> On Tue, Sep 29, 2026 at 08:03:20PM +0200, Andreas Hindborg wrote:
->> "Gary Guo" <gary@garyguo.net> writes:
->>=20
->> > On Tue Sep 29, 2026 at 3:45 PM BST, Andreas Hindborg wrote:
->> >> Export lock::do_unlocked publicly. Add documentation for the method.
->> >>
->> >> Reviewed-by: Benno Lossin <lossin@kernel.org>
->> >> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
->> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> >> ---
->> >> Changes in v3:
->> >> - Rebase on v7.3-rc5.
->> >> - Do not import prelude in example (Alice).
->> >> - Link to v2: https://msgid.link/20260605-export-do-unlocked-v2-1-e23=
-001390231@kernel.org
->> >>
->> >> Changes in v2:
->> >> - Drop spurious space before `guard.do_unlocked` in the doc example (=
-Benno).
->> >> - Un-hide the imports in the doc example so the rendered docs no long=
-er have a spurious blank line after them (Alice).
->> >> - Link to v1: https://msgid.link/20260215-export-do-unlocked-v1-1-f5c=
-d2203b20f@kernel.org
->> >> ---
->> >>  rust/kernel/sync/lock.rs | 26 +++++++++++++++++++++++++-
->> >>  1 file changed, 25 insertions(+), 1 deletion(-)
->> >>
->> >> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
->> >> index 10b6b5e9b024..edfff9e10199 100644
->> >> --- a/rust/kernel/sync/lock.rs
->> >> +++ b/rust/kernel/sync/lock.rs
->> >> @@ -238,7 +238,31 @@ pub fn lock_ref(&self) -> &'a Lock<T, B> {
->> >>          self.lock
->> >>      }
->> >>
->> >> -    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) =
--> U {
->> >> +    /// Temporarily unlock the lock to execute the given closure.
->> >> +    ///
->> >> +    /// This method unlocks the lock before calling the closure `cb`=
-, and re-locks it afterwards.
->> >> +    /// This is useful when you need to perform operations that are =
-not allowed while holding
->> >> +    /// certain locks, such as allocating memory (which is prohibite=
-d while holding a spinlock).
->> >> +    ///
->> >> +    /// # Examples
->> >> +    ///
->> >> +    /// ```
->> >> +    /// use kernel::new_spinlock;
->> >> +    /// use pin_init::stack_pin_init;
->> >> +    ///
->> >> +    /// stack_pin_init!{
->> >> +    ///     let lock =3D new_spinlock!(())
->> >> +    /// }
->> >> +    ///
->> >> +    /// let mut guard =3D lock.lock();
->> >> +    /// let mut buffer =3D KVec::new();
->> >> +    /// // Temporarily unlock to allocate memory, which should not b=
-e done while holding a spinlock.
->> >> +    /// guard.do_unlocked(|| {
->> >> +    ///     buffer.push(5u32, GFP_KERNEL)
->> >> +    /// })?;
->> >> +    /// # Ok::<(), Error>(())
->> >> +    /// ```
->> >> +    pub fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
->> >
->> > Do we want to keep the name `do_unlocked` now this is public?
->> >
->> > I think we can drop "do_" and just call this `unlocked`, consistent wi=
-th popular
->> > Rust ecosystem crates like parking_lot and spin.
->>=20
->
-> I didn't find a unlocked() in spin. You mean
-> https://crates.io/crates/lock_api ?
 
-Right, both of them share the common interface via lock_api.
+--=-FnDL+AGGzBAQZyfZ98yo
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> To me, `do_unlocked()` is better, since it indicates something is going
-> to be done after the lock being dropped.
+On Wed, 2026-09-30 at 14:52 +0100, Gary Guo wrote:
+> On Wed Sep 30, 2026 at 1:59 PM BST, Markus Probst wrote:
+> > On Wed, 2026-09-30 at 13:13 +0900, FUJITA Tomonori wrote:
+> > > From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > >=20
+> > > write_all() and wait_until_sent() take the timeout as a raw Jiffies,
+> > > which is a c_ulong alias. The type does not show the unit.
+> > >=20
+> > > Take the timeout as Delta<Jiffy> instead. Clamp a negative timeout to
+> > > 0, as the current code does for a value larger than isize::MAX.
+> > >=20
+> > > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > > ---
+> > >  rust/kernel/serdev.rs | 27 ++++++++++++---------------
+> > >  1 file changed, 12 insertions(+), 15 deletions(-)
+> > >=20
+> > > diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
+> > > index 17ca504b7f8d..094503f059ff 100644
+> > > --- a/rust/kernel/serdev.rs
+> > > +++ b/rust/kernel/serdev.rs
+> > > @@ -20,7 +20,10 @@
+> > >          aref::AlwaysRefCounted,
+> > >          Mutex, //
+> > >      },
+> > > -    time::Jiffies,
+> > > +    time::{
+> > > +        Delta,
+> > > +        Jiffy, //
+> > > +    },
+> > >      types::{
+> > >          Opaque,
+> > >          ScopeGuard, //
+> > > @@ -481,22 +484,19 @@ pub fn set_parity(&self, parity: Parity) -> Res=
+ult {
+> > >      /// [`kernel::error::code::ETIMEDOUT`] or [`kernel::error::code:=
+:ERESTARTSYS`] if interrupted
+> > >      /// before any bytes were written. [`kernel::error::code::EINVAL=
+`] if `data.len() > i32::MAX`.
+> > >      #[inline]
+> > > -    pub fn write_all(&self, data: &[u8], timeout: Jiffies) -> Result=
+<usize> {
+> > > +    pub fn write_all(&self, data: &[u8], timeout: Delta<Jiffy>) -> R=
+esult<usize> {
+> > >          if data.len() > i32::MAX as usize {
+> > >              return Err(EINVAL);
+> > >          }
+> > > =20
+> > > +        let timeout =3D isize::max(timeout.as_jiffies(), 0);
+> > > +
+> > >          // SAFETY:
+> > >          // - `self.as_raw()` is guaranteed to be a pointer to a vali=
+d `serdev_device`.
+> > >          // - `data.as_ptr()` is guaranteed to be a valid array point=
+er with the size of
+> > >          //   `data.len()`.
+> > >          let ret =3D unsafe {
+> > > -            bindings::serdev_device_write(
+> > > -                self.as_raw(),
+> > > -                data.as_ptr(),
+> > > -                data.len(),
+> > > -                isize::try_from(timeout).unwrap_or_default(),
+> > > -            )
+> > > +            bindings::serdev_device_write(self.as_raw(), data.as_ptr=
+(), data.len(), timeout)
+> > >          };
+> > >          // CAST: negative return values are guaranteed to be between=
+ `-MAX_ERRNO` and `-1`,
+> > >          // which always fit into a `i32`.
+> > > @@ -547,14 +547,11 @@ pub fn write_flush(&self) {
+> > >      ///
+> > >      /// Use a timeout of 0 to wait indefinitely.
+> > >      #[inline]
+> > > -    pub fn wait_until_sent(&self, timeout: Jiffies) {
+> > > +    pub fn wait_until_sent(&self, timeout: Delta<Jiffy>) {
+> > > +        let timeout =3D isize::max(timeout.as_jiffies(), 0);
+> > > +
+> > >          // SAFETY: `self.as_raw()` is guaranteed to be a pointer to =
+a valid `serdev_device`.
+> > > -        unsafe {
+> > > -            bindings::serdev_device_wait_until_sent(
+> > > -                self.as_raw(),
+> > > -                isize::try_from(timeout).unwrap_or_default(),
+> > > -            )
+> > > -        };
+> > > +        unsafe { bindings::serdev_device_wait_until_sent(self.as_raw=
+(), timeout) };
+> > >      }
+> > >  }
+> > > =20
+> > >=20
+> > > base-commit: f1850e443b0e4f2429ddf42a8d5033ea54ae8a90
+> >=20
+> > Both functions have "Use a timeout of 0 to wait indefinitely." inside
+> > the rustdoc.
+> >=20
+> > Make sure `Delta::ZERO` is also usable for `Delta<Jiffy>` and replace
+> > the 0 in the rustdoc with "[`Delta::<Jiffy>::ZERO`]". You might also
+> > remove the "timeout of" part, but I don't mind if it stays.
+>=20
+> I think the API should ideally use `Option<Delta<Jiffies>>` for this case=
+, and
+> use `None` to represent indefinite wait.
+Yes, this would make it more explicit.
+>=20
+> We might need to round 0 jiffies to 1 to avoid C API change. But ideally =
+the C
+> API should be using MAX_JIFFY_OFFSET to mean indefinite..
+In both cases MAX_SCHEDULE_TIMEOUT is also accepted (even if not
+documented).
 
-I think that indication is usually "with". So `guard.with_unlocked(|| actio=
-n)`.
+At least both pass through such call:
 
-From my experience in Rust code "do_" is quite commonly the internal helper=
- for
-a public API.
+if (timeout =3D=3D 0)
+        timeout =3D MAX_SCHEDULE_TIMEOUT;
 
-Best,
-Gary
+Thanks
+- Markus Probst
 
+>=20
+> Best,
+> Gary
+
+
+--=-FnDL+AGGzBAQZyfZ98yo
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmq9F5AbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSaX8P/2x7DyQjhVEYVRTwPDUJ
+vWubThxzkv9H7WiodY8kUZAYEBecUB28gXazUXbJ5xMjQ9MZeq3aJKTiml8vPykT
+YjWSG3Pe3BMsxX5KKwmdFvt2NIg/DZE8AUCrd5OONH+PYbU8xCOQLTjHXZ141mog
+lpAY1PO0NmfNLRTJzUx0dN6TcL4Ui/cm3C7C/4THi+SAaCRgTol57Tz3Hf6LGaXu
+mErB+k7cEiIF2Q3/N5oD8+/eqJxT23jJ87wKG/yp4eg1PvAUB9sY27KAAVqpJjmd
+QEKKIPN6owBzcYclDo5zkTiO5ZqZhbf1VkFFNr7FhCkIH0KBcLtHWDwohhfC3+O+
+5GoLASVUR/onUTBNfiLL4qzNdJfKoC7oJj8clwoJibJ3v8Dx7uq9pNy3G5NQxXVq
+NrAx3DS9EfPnxdiF8D2gTvqXiv7ttnl9aWZdVpnS0UhhQ0VGmCuYQ/u7cnEjb0j7
++eym2mydzwnVPJsUtglz18OANzbdu957/pxR5p/f6NXRJlCexrnP5yg/qBWxgjuw
+kJh0M1hm9fl0zInCbJGkU9Gz6Edz3r/SiR/KM35fdf+MOKYy0Gy8Anc65IWHaSIL
+rKqL5PL6hq6luPD5BCzpTZF30/rdOidbNkLNBiEq7lVRuFozv8+yOg7VLXHrdUER
+akmTMSxJHNhrbfOMFOoa3zss
+=Swrs
+-----END PGP SIGNATURE-----
+
+--=-FnDL+AGGzBAQZyfZ98yo--
