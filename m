@@ -1,255 +1,385 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011004.outbound.protection.outlook.com [40.107.208.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B884FDA4F
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 14:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790777255; cv=none; b=s0hQpaHJVK0Eu3dnuaGi9knp1dBRP24xmq7EROTZllBZWy7aYXrX/TxXm+DolebGhLwOFOnGjmitVz6VONZHfZfjCiJHru6oRcebDNmakT64ydMWOxROHPAehV7D3VpT0/jxwqiPxfaACkReuvp8U4aAAXspoUM02eBouN8aSWY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790777255; c=relaxed/simple;
-	bh=nJUmfPhvoaVq+tzus3KQrCsS5a68ZjcnCCB9ptoHFnk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ebQ2luwbWDYomwt2pcu/Iog8tnyM7eDOUJb/mE1kS7Au8BYNUK91vBkP4M4+w0frTNxMt0vRVbzFeffSG/CiSnxy6TxNtfC0/wj8JDWybeDS0//PS5T6NmieafSnzoR64HF3wsySfBslpHk/7PkhUWDvALTspHGqwesEm2kJIvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=CmyIu8ze; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1494EDCC3;
+	Wed, 30 Sep 2026 14:18:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.4
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790777914; cv=fail; b=fcBpr9tqXwI/bwZwmr7gfp9FU5WxH1MEk6LUxIhF9O89rNAXLTougbblJYZ96/8T1PtZHogJG59TSEJJAUv0Tpkxj1R3Omsja0PjSh88ZLR8AtYWwEUPJkFrg7s3NGcSRpDcEsG0iiYHTuOHxGIZf4OUVS1E68gURPsYBBnKmGU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790777914; c=relaxed/simple;
+	bh=X+0toS8N7uE5h9ukxEMeQyCzYrydIAi8gQML9g0vFxI=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=pUHdfCjBUyy6zdCyjhvPxC/LcRnR+FOoqbSj+va8IoIb2j3ZXyxhNhFiZPxJ5asxlsep2cTZdqjGKtz9vK4jB6PMlt6gBaMR/tCkg5peY4e/a8WFNwbIk5fcwfjalAfzjQXNeM+yAVsQEo4GPNhrUcuRPOQ+HYnUBAMNZR90uAM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rcXttamY; arc=fail smtp.client-ip=40.107.208.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="CmyIu8ze"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 89D21240101
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 16:07:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1790777242;
-	bh=IfIIsX3gg1lv/2HO6YvGlmYAAGS6W0Wyv8g6+LwIreM=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=CmyIu8zeKg4PJfOILEwm2TD8qOfYddBl6VZ/dsg2ccZcGJtF3o5aKkFuONDbPyTZF
-	 gBUTzyIlR2AaymPB+9wYLt3bsJOO2PIZ/qneTYMwcMyvEuKuj/tU7KGuCQ6fk2X+U6
-	 EhDtvPG+4wZ+4K3zT6vHPxWnABrB+pJTwXxLVtl3tOseJcZXdJG822N3sBA5+rCkfa
-	 oFw9FTaDZ7zlQXp3OYBhs1F3q0OfisBcERp3NbfLFfLaw3ZFEc1SLDLI56RaSahBBS
-	 l0/0k/Jg+r9gyOsVTU7e1o5G8vSejUHFmShrmaKIM0m/lCYlAFWIWuOjvgHz8Ou0FA
-	 33Pr3On+G6bww==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4hvxgr1L2Sz9rxN;
-	Wed, 30 Sep 2026 16:07:20 +0200 (CEST)
-Message-ID: <d2437243001e55ef6a845c88cfb19dc162a0c1b6.camel@posteo.de>
-Subject: Re: [PATCH v1] rust: serdev: use Delta<Jiffy> for timeouts
-From: Markus Probst <markus.probst@posteo.de>
-To: Gary Guo <gary@garyguo.net>, FUJITA Tomonori <tomo@flapping.org>, 
-	dakr@kernel.org, ojeda@kernel.org
-Cc: a.hindborg@kernel.org, acourbot@nvidia.com, aliceryhl@google.com, 
-	bjorn3_gh@protonmail.com, boqun@kernel.org, daniel.almeida@collabora.com, 
-	lossin@kernel.org, tamird@kernel.org, tmgross@umich.edu,
- work@onurozkan.dev, 	linux-serial@vger.kernel.org,
- rust-for-linux@vger.kernel.org, FUJITA Tomonori	 <fujita.tomonori@gmail.com>
-Date: Wed, 30 Sep 2026 14:07:21 +0000
-In-Reply-To: <DLSP8RHJMYFZ.3II53ESHY15IL@garyguo.net>
-References: <20260930041339.1551129-1-tomo@flapping.org>
-	 <a8693eaa1f8eeb167ee334e7c35371832e43bb4f.camel@posteo.de>
-	 <DLSP8RHJMYFZ.3II53ESHY15IL@garyguo.net>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-FnDL+AGGzBAQZyfZ98yo"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rcXttamY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CrxRVesm5wjidSCrpHMEAKQzOZ3uvT1+hHo1gIt+agkqkh9U+XYwIsoYm8OH0Isn0iLY7ChSZIgqE2M249cUeQR+wHUA7K4IvfsTH/5/f/FyjYM8X+YzU8WzVYlLWIWu5M7e9WLS4hwuBcW2Bn2JRRIbsiLAThDEP28QgZhTgPdwuWHaqoJGIqb3Mzzb8Zjf2cA5EFib7/3o5fcnSmjZL/1pYNqYXRyoG6p9q/6ofLQkgPj61J6ME5co+1uPTkRRqUeDtQgUU4c778ghTIS/3kTor2yfav6Dm1fHgHibxrZWzJoXvnUUd4ZjInWSPJ1ubFkVATac9T/9mFUYAWdp7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=azOc5EJvy3AhV7o2eg1cefKeicaEh1+bo/KBiryc5O0=;
+ b=fOT5CgDnEbNUy6jWhx6qA6tR8UCh1JN8QmIIMXyMKyBynGzKqArtbM88UhheCBrLPDraqzrKXvfKvExKVXB2Ynm5S2Da+Uq/7wptUpcfzqJzD79dCRLrxLQxDBbBEqvU/KWIEZ2RgwGAXbchVwgJjeXU/ZGSk5c01M/PCJubhffRt97LZXSOl7DTakjwbhFn0tvYNuN6thFneET2lZYaL6kIlmw6phRgn5ugjzckwziPL0sO22vamUXXIhelZEU1EaltQmCwqAKUPMHzwygCgkHZbhJuc/cZd17O5hs7NRckh2EU1v6TT/Ycon4dPNvKX+8Dm6tL26NWZar4RN9lIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=azOc5EJvy3AhV7o2eg1cefKeicaEh1+bo/KBiryc5O0=;
+ b=rcXttamY+kGheR9r6TRV1bzmKxrJILRK4YytoyXgNhKGhpxu7uAb9b4nUvxVN5U28TreSbsHleDQiytZV2VZnEqXZathUd2y28IwDz3XyhlqywnP9zvnRSYERudJt6ecZe3EcDmshZF7++Dw1QWXQuG0rNImrFdVdTY+pI2nDUFGBlZP5Cb8bNdtqvaU2EK4CoGXEGEn38mLORVYBl+PhcHAIfQJ43TL5xucDb8K00YALo7B5y+5OGONdn+EnPI5L8eGvmFhBnnfG9kU+bthBcDUjQdU1NPONOFBTlP86anOgwEVErDMiAdZF8AZFlIMh1q0lWU8qzKCcSjGgpXDPg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by DS6PR12MB095541.namprd12.prod.outlook.com (2603:10b6:8:498::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
+ 2026 14:18:19 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0472.015; Wed, 30 Sep 2026
+ 14:18:18 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 30 Sep 2026 23:18:09 +0900
+Message-Id: <DLSPS53NPYB9.1H9UH2Y6JV49B@nvidia.com>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Benno Lossin"
+ <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, "dri-devel"
+ <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH v2 2/9] gpu: nova-core: gsp: introduce and use proper
+ RpcMessageHeader type
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Eliot Courtney" <ecourtney@nvidia.com>
+References: <20260927-cmdq-rpc-v2-0-c3f66ae73be4@nvidia.com>
+ <20260927-cmdq-rpc-v2-2-c3f66ae73be4@nvidia.com>
+ <DLQOB23WLFC6.UKBAHKWNG7ZY@nvidia.com>
+In-Reply-To: <DLQOB23WLFC6.UKBAHKWNG7ZY@nvidia.com>
+X-ClientProxiedBy: TYCP301CA0080.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:7b::9) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|DS6PR12MB095541:EE_
+X-MS-Office365-Filtering-Correlation-Id: 581e0130-bac0-40fd-bcf3-08df1efdaccc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|10070799003|376014|1800799024|7416014|366016|4143699003|6133799003|10067099003|56012099006|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	m69imjWLC7/BcXzSgaKqUBE2mdE7BkYSLieBy6QswPE4ea4UeK0nzYRH7hqD8lNjDwU87LT//wONOYoEZej0KZcenieVyvFNSe5QowtbdJ9Cm3YueP4GxzSpS4sGFyQPfpjyvLhGk+bGcgqUUit4UD6EuE3JwoO2RTysKN88zwgz/4qgugRUNNgJuFggSfwL8TUr8avUIBrHoe3/OHZ85oD+vbrQm+DkC030hPXNiV2KEf2gYd77SbX7c8VeDMkUkPbAKfWdzq6jQFePEAMBqXZedMkeic6t+rtDiOl9KANpkwTx4Wlz6DQx1HyoWWiN6g53zzcrcO1D9eD+B43Y4CGHNQjl1IW7/aAYaZ3KTyiGKhcgizPLbUwnY0fR/Ngg2ZMyKUAK7/AJO4c28tSrULNG4QtVK5UIWZaM4M+o2DxOgayScYpkdMVbeo2TslciKk51AZqTGiIcjAzxxF0AUpJIxe4q6jZcql/DEl+8BH7fFiZZNtRDuaonWbo61w+rh7GLU8QXtenht3hNxMiC13zCLzYuOC+gwpHLRvERJh15374GvLLCU3dTZ10FNW65B6sj8XC4YhWkfsYTEOycaWvYZ2cYbXR9f8XwHlDOp0YGC7/57oSbuXDi2HXeC0UyetJZd6cg0VsQEsvqIdWea8jJS8I224FcF2w4AkFXn/M=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(376014)(1800799024)(7416014)(366016)(4143699003)(6133799003)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NEYxeExOWWFyVDNOaEd5K0JRaEdCMDc0eWFNbWJlTlJ5RHl2Y2I3S0xtSnRB?=
+ =?utf-8?B?dTBybUtYdG5qTittNzZWL2xJOXEvbWJSMndLQXMwbFlaTGhnazNvSjY1R20z?=
+ =?utf-8?B?U0c2NVdpUC9XRUgwa2tKQm5RYnAyKytOV1VpK1R5ZGp2bjRCWTdHVVBSbXVZ?=
+ =?utf-8?B?c0NVbzh5bFQ0UXhkUkhCczhMbndXaGJ6dkdvZDZvK2pQeHY4NzVFa2pUSkdL?=
+ =?utf-8?B?ZjQ5Ny9Gb3V2WE9OcENmMnRXd3lRcFZHV0ZYNDhxa0JHa1Z3WkJGVmtaVVRi?=
+ =?utf-8?B?VVZWVTI2OXJuTlhKOVY5dTA4aURMRkM5NWNZeE1CM2VTak14Y1p1OUVxVTNE?=
+ =?utf-8?B?bE52MTNtd3JXOGE4cXYzL0dJMGcwVk54ZE4vOFI2K3lKZVcvcHhDN0Z4UTQ4?=
+ =?utf-8?B?RUtIcE5HMSswZHgrSzB2MGtqNmgvRzdCWDRhcUkwTHJBUDVlc243SjJ0YTdC?=
+ =?utf-8?B?TzIvUVpvam5TVXMxWGdMc2R6RVZNK2Ezb3grUjZOYSsvVys0dklnN3BRVWZF?=
+ =?utf-8?B?TE4wUnZVWHRzekhZUXZPcWpyVUkvNDFhVmRJMllDTTJCWm1PTjJlY29HWjZR?=
+ =?utf-8?B?TVJJbENHR0xwUjVOaFZpR2FlaVlSNnRCb2VNbE5RVkFKK2dyMGc3aGNWNmtF?=
+ =?utf-8?B?SE45eThlQlI3V1FrU1hXU3JPMFVSS1I4dEhNTlNJTExrWGhIY1hUVTRkU1dz?=
+ =?utf-8?B?amdVb0xhdkNNUFNVR0J0N1BEeFRGcDNPbmg1ZzhQcDVJdEFPMkQ4SWpCSVpy?=
+ =?utf-8?B?akVnc1FYQjFQbjZWbnV3QmNCMVZpS25jamdKaU9rRElqQk9mWnY5Z2h3dkxX?=
+ =?utf-8?B?emJBVS9ra2wyK1c2TGx4cmdCUXM1ZXZkOS9EMTB0SnVRcFVIWVlhdk5rVS84?=
+ =?utf-8?B?ZDdaaFdHOU1Jd1hFY3VpVzRJN0oxaVROdnF3NnAyVHBzaWZHN3ZSSnpPVThz?=
+ =?utf-8?B?U3JNUnpXRkRaQVlUa3g4dWdSRWlnbjgvQ1gzL3habVdiZXY0WUY4eUVTb2dv?=
+ =?utf-8?B?dFRBMzlSbm8xK1Y5L0Q5dFU4c2k2L3pFSmxiL2p3akZtbmEydE5NWEdNODRJ?=
+ =?utf-8?B?YjdKS2ZwRWNQSFpwKzE5a01GSHpnemZqMU5YYS90LzI1V3BtTk05amVyM3Fh?=
+ =?utf-8?B?S01kNzQ0RlZVT0ZVZEhXZlR6UlJNeFBnSlRQUVF0V3NUVFpZNjQzdmhRdzlv?=
+ =?utf-8?B?WGxFWFN0VlJYWGFpR0U0c0RwTVlrK0lHWmdteUdMLzdqRXdpL0FiWEVmdFp4?=
+ =?utf-8?B?eFM3cWErL3B2Z1JORnRZYU9iTnFqZnM5ZXpxdkNUenB2M3ZncjZyMkpVQ1BC?=
+ =?utf-8?B?OS9zdnNkeWxWTzRrcjJoVVJsWGpKS1FWQkxMVzRKR3hYUkhCcU5yQ0g2ZENy?=
+ =?utf-8?B?WGVQdllOQmVtU0pBRmRSTHRrWXhRY3F0QWxDTVdJNzl4ZEQ4M1F3dlJSYUVL?=
+ =?utf-8?B?TThFcFJUVkN1SEtoNDdhTjJSVEFNODloQTllMWhJajJaSVpJREc0Z3lxUStu?=
+ =?utf-8?B?V3FUc2NFWDRQNjBRNnYxOWJ5TWFSdTN6WmJaT0diTHI5b05NSkhia3pkYXlu?=
+ =?utf-8?B?ZW8ySnNhMkx4bzRyMTFyK29kbFFxUm83ZzVla3dFMFdNMzFaY2huM3p1Qnhl?=
+ =?utf-8?B?ZzZac2s3OWdFaDVvSWxyQW1vcG83RGVEcTFDSUFtTHo3L0MzeDUrTzFyT3dQ?=
+ =?utf-8?B?SVlzV0dWV0ZROGEvRy9VaUtLZEQxMmFGOUVQWWdkSThaVEp5UStTUXZLckdT?=
+ =?utf-8?B?c0tURndXTEs2MUw3Y0pqd2JiL2M3WEZYRmFYQlUxUlFLaFZ0dEU1Ulp3dElw?=
+ =?utf-8?B?M1c4dXVIclg1TFA5dkFXRjlqNXVWUEtKdnYxMnZMZXFCbkxlRFJhbkk2bU9O?=
+ =?utf-8?B?TkdqYjVVNU1JMmR1K21DWmpKU3ljS1NwU0VvOW5xUW5ncVhSSjU4b2laZTBV?=
+ =?utf-8?B?QjZaTUhMYnhLT3gydWpkN1YrWU8wM3NtRWlzbDNoMHdPUU5ueW56bkUrRUh0?=
+ =?utf-8?B?cXVIMjV3anNqUjBqaXM1TFBBYnBucXdWR0FaOFgwbC85QjREWUpjUjQxU05F?=
+ =?utf-8?B?UzZoTCtxd3U3WXpDak1seFN3V1RuSTRFcm9zVlQrclo3aW9sNGRNTC82Z2pr?=
+ =?utf-8?B?TEhHUGllTFdWTFpPS1lPcDU4UHFCV0cyUlR6YXc0dFhYdlU2NkUvNFJaNVRD?=
+ =?utf-8?B?RWhpaGRxcFV6NHhRVUNlYWdXRjd1Yjg1cVRqSGtXc3hIR0RVUFRPc1JqVTdo?=
+ =?utf-8?B?TkJ5Qy93cURsQXZsdWtTZHZ0amNwMjF0ZTN3dUUvVEtPcGxSYmo3UWFnVkVW?=
+ =?utf-8?B?Z0JXYi9uMWpkRFZFNlN2WEszUkViYUlqWUZSK3dRc252ZC80UkpGSk92TE55?=
+ =?utf-8?Q?nYuaZllRTGqCmm/w4141TX5Bw/kPUcC/VVPxv192BD6SH?=
+X-MS-Exchange-AntiSpam-MessageData-1: nI+CglzHvPeVzA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 581e0130-bac0-40fd-bcf3-08df1efdaccc
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 14:18:18.8210
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4G2tHtAGwChComa9YwOsDGgX6lf78DsuwAYThYGYTCJ0MFgLGFTFglBuw4E2Bi2fI8/aneOTFV0lME2yTLJ9PQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR12MB095541
 
+On Mon Sep 28, 2026 at 1:43 PM JST, Eliot Courtney wrote:
+> On Sun Sep 27, 2026 at 10:46 PM JST, Alexandre Courbot wrote:
+>> So far, the GSP command queue transport and message layer code were
+>> intertwined, a design issue that goes as deep as the types themselves:
+>> the generated bindings for `GspMsgElement` even include the RPC header
+>> at its end.
+>>
+>> This makes it difficult to introduce the new GMC message type; thus this
+>> patch works around these limitations to make the RPC message header more
+>> explicit and allow it to be eventually handled by a different layer.
+>>
+>> The `RpcMessageHeader` wrapping type is introduced following the same
+>> model as `GspMsgElement`, and can be obtained from the latter. The
+>> methods of `GspMsgElement` that actually query the RPC header are moved
+>> to `RpcMessageHeader`.
+>>
+>> Regarding initialization, `GspMsgElement` leaves the RPC header zeroed,
+>> and the command queue code is now responsible for initializing it in a
+>> separate call.
+>>
+>> The only functional change is that the RPC debug messages now display
+>> the size of the RPC payload instead of the whole message including its
+>> headers, as they are technically part of the message layer. This metric
+>> is arguably more useful as the headers have successfully been parsed by
+>> the time we can print these messages.
+>>
+>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>> ---
+>>  drivers/gpu/nova-core/gsp/cmdq.rs | 25 +++++++----
+>>  drivers/gpu/nova-core/gsp/fw.rs   | 95 +++++++++++++++++++++++++-------=
+-------
+>>  2 files changed, 78 insertions(+), 42 deletions(-)
+>>
+>> diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/g=
+sp/cmdq.rs
+>> index d293d28b0967..3a8548a51259 100644
+>> --- a/drivers/gpu/nova-core/gsp/cmdq.rs
+>> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+>> @@ -50,6 +50,7 @@
+>>              MsgFunction,
+>>              MsgqRxHeader,
+>>              MsgqTxHeader,
+>> +            RpcMessageHeader,
+>>              GSP_MSG_QUEUE_ELEMENT_SIZE_MAX, //
+>>          },
+>>          PteArray,
+>> @@ -664,11 +665,16 @@ fn send_single_command<M>(&mut self, command: M) -=
+> Result
+>>          let (cmd, payload_1) =3D M::Command::from_bytes_mut_prefix(dst.=
+contents.0).ok_or(EIO)?;
+>> =20
+>>          // Fill the header and command in-place.
+>> -        let msg_element =3D GspMsgElement::init(self.seq, size_in_bytes=
+, M::FUNCTION);
+>> +        let msg_element_init =3D GspMsgElement::init(self.seq, size_in_=
+bytes);
+>> +        let rpc_header_init =3D RpcMessageHeader::init(size_in_bytes, M=
+::FUNCTION);
+>>          // SAFETY: `msg_header` and `cmd` are valid references, and not=
+ touched if the initializer
+>>          // fails.
+>>          unsafe {
+>> -            pin_init::raw_try_init(core::ptr::from_mut(dst.header), msg=
+_element)?;
+>> +            pin_init::raw_try_init(core::ptr::from_mut(dst.header), msg=
+_element_init)?;
+>> +            pin_init::raw_try_init(
+>> +                core::ptr::from_mut(dst.header.rpc_header_mut()),
+>> +                rpc_header_init,
+>> +            )?;
+>>              pin_init::raw_try_init(core::ptr::from_mut(cmd), command.in=
+it())?;
+>>          }
+>
+> nit: I think the style is to have separate unsafe blocks for each call
+> with separate justifications.
 
---=-FnDL+AGGzBAQZyfZ98yo
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Fixed.
 
-On Wed, 2026-09-30 at 14:52 +0100, Gary Guo wrote:
-> On Wed Sep 30, 2026 at 1:59 PM BST, Markus Probst wrote:
-> > On Wed, 2026-09-30 at 13:13 +0900, FUJITA Tomonori wrote:
-> > > From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> > >=20
-> > > write_all() and wait_until_sent() take the timeout as a raw Jiffies,
-> > > which is a c_ulong alias. The type does not show the unit.
-> > >=20
-> > > Take the timeout as Delta<Jiffy> instead. Clamp a negative timeout to
-> > > 0, as the current code does for a value larger than isize::MAX.
-> > >=20
-> > > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> > > ---
-> > >  rust/kernel/serdev.rs | 27 ++++++++++++---------------
-> > >  1 file changed, 12 insertions(+), 15 deletions(-)
-> > >=20
-> > > diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
-> > > index 17ca504b7f8d..094503f059ff 100644
-> > > --- a/rust/kernel/serdev.rs
-> > > +++ b/rust/kernel/serdev.rs
-> > > @@ -20,7 +20,10 @@
-> > >          aref::AlwaysRefCounted,
-> > >          Mutex, //
-> > >      },
-> > > -    time::Jiffies,
-> > > +    time::{
-> > > +        Delta,
-> > > +        Jiffy, //
-> > > +    },
-> > >      types::{
-> > >          Opaque,
-> > >          ScopeGuard, //
-> > > @@ -481,22 +484,19 @@ pub fn set_parity(&self, parity: Parity) -> Res=
-ult {
-> > >      /// [`kernel::error::code::ETIMEDOUT`] or [`kernel::error::code:=
-:ERESTARTSYS`] if interrupted
-> > >      /// before any bytes were written. [`kernel::error::code::EINVAL=
-`] if `data.len() > i32::MAX`.
-> > >      #[inline]
-> > > -    pub fn write_all(&self, data: &[u8], timeout: Jiffies) -> Result=
-<usize> {
-> > > +    pub fn write_all(&self, data: &[u8], timeout: Delta<Jiffy>) -> R=
-esult<usize> {
-> > >          if data.len() > i32::MAX as usize {
-> > >              return Err(EINVAL);
-> > >          }
-> > > =20
-> > > +        let timeout =3D isize::max(timeout.as_jiffies(), 0);
-> > > +
-> > >          // SAFETY:
-> > >          // - `self.as_raw()` is guaranteed to be a pointer to a vali=
-d `serdev_device`.
-> > >          // - `data.as_ptr()` is guaranteed to be a valid array point=
-er with the size of
-> > >          //   `data.len()`.
-> > >          let ret =3D unsafe {
-> > > -            bindings::serdev_device_write(
-> > > -                self.as_raw(),
-> > > -                data.as_ptr(),
-> > > -                data.len(),
-> > > -                isize::try_from(timeout).unwrap_or_default(),
-> > > -            )
-> > > +            bindings::serdev_device_write(self.as_raw(), data.as_ptr=
-(), data.len(), timeout)
-> > >          };
-> > >          // CAST: negative return values are guaranteed to be between=
- `-MAX_ERRNO` and `-1`,
-> > >          // which always fit into a `i32`.
-> > > @@ -547,14 +547,11 @@ pub fn write_flush(&self) {
-> > >      ///
-> > >      /// Use a timeout of 0 to wait indefinitely.
-> > >      #[inline]
-> > > -    pub fn wait_until_sent(&self, timeout: Jiffies) {
-> > > +    pub fn wait_until_sent(&self, timeout: Delta<Jiffy>) {
-> > > +        let timeout =3D isize::max(timeout.as_jiffies(), 0);
-> > > +
-> > >          // SAFETY: `self.as_raw()` is guaranteed to be a pointer to =
-a valid `serdev_device`.
-> > > -        unsafe {
-> > > -            bindings::serdev_device_wait_until_sent(
-> > > -                self.as_raw(),
-> > > -                isize::try_from(timeout).unwrap_or_default(),
-> > > -            )
-> > > -        };
-> > > +        unsafe { bindings::serdev_device_wait_until_sent(self.as_raw=
-(), timeout) };
-> > >      }
-> > >  }
-> > > =20
-> > >=20
-> > > base-commit: f1850e443b0e4f2429ddf42a8d5033ea54ae8a90
-> >=20
-> > Both functions have "Use a timeout of 0 to wait indefinitely." inside
-> > the rustdoc.
-> >=20
-> > Make sure `Delta::ZERO` is also usable for `Delta<Jiffy>` and replace
-> > the 0 in the rustdoc with "[`Delta::<Jiffy>::ZERO`]". You might also
-> > remove the "timeout of" part, but I don't mind if it stays.
->=20
-> I think the API should ideally use `Option<Delta<Jiffies>>` for this case=
-, and
-> use `None` to represent indefinite wait.
-Yes, this would make it more explicit.
->=20
-> We might need to round 0 jiffies to 1 to avoid C API change. But ideally =
-the C
-> API should be using MAX_JIFFY_OFFSET to mean indefinite..
-In both cases MAX_SCHEDULE_TIMEOUT is also accepted (even if not
-documented).
+>
+>> =20
+>> @@ -694,7 +700,7 @@ fn send_single_command<M>(&mut self, command: M) -> =
+Result
+>>              "GSP RPC: send: seq# {}, function=3D{:?}, length=3D0x{:x}\n=
+",
+>>              self.seq,
+>>              M::FUNCTION,
+>> -            dst.header.length(),
+>> +            size_in_bytes,
+>>          );
+>> =20
+>>          // All set - update the write pointer and inform the GSP of the=
+ new command.
+>> @@ -777,16 +783,17 @@ fn wait_for_msg(&self, timeout: Delta) -> Result<G=
+spMessage<'_>> {
+>>              return Err(EIO);
+>>          }
+>> =20
+>> +        let rpc_header =3D header.rpc_header();
+>> +        let payload_length =3D rpc_header.length();
+>> +
+>>          dev_dbg!(
+>>              &self.dev,
+>>              "GSP RPC: receive: seq# {}, function=3D{:?}, length=3D0x{:x=
+}\n",
+>> -            header.sequence(),
+>> -            header.function(),
+>> -            header.length(),
+>> +            rpc_header.sequence(),
+>> +            rpc_header.function(),
+>> +            payload_length,
+>>          );
+>> =20
+>> -        let payload_length =3D header.payload_length();
+>> -
+>>          // Check that the driver read area is large enough for the mess=
+age.
+>>          if slice_1.len() + slice_2.len() < payload_length {
+>>              return Err(EIO);
+>> @@ -833,7 +840,7 @@ fn receive_msg<M: MessageFromGsp>(&mut self, timeout=
+: Delta) -> Result<M>
+>>          Error: From<M::InitError>,
+>>      {
+>>          let message =3D self.wait_for_msg(timeout)?;
+>> -        let function =3D message.header.function().map_err(|_| EINVAL)?=
+;
+>> +        let function =3D message.header.rpc_header().function().map_err=
+(|_| EINVAL)?;
+>> =20
+>>          // Extract the message. Store the result as we want to advance =
+the read pointer even in
+>>          // case of failure.
+>> diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp=
+/fw.rs
+>> index 918a7ae809eb..b12034db7857 100644
+>> --- a/drivers/gpu/nova-core/gsp/fw.rs
+>> +++ b/drivers/gpu/nova-core/gsp/fw.rs
+>> @@ -781,11 +781,25 @@ fn new() -> Self {
+>>      }
+>>  }
+>> =20
+>> -impl bindings::rpc_message_header_v {
+>> -    fn init(cmd_size: usize, function: MsgFunction) -> impl Init<Self, =
+Error> {
+>> -        type RpcMessageHeader =3D bindings::rpc_message_header_v;
+>> +#[repr(transparent)]
+>> +pub(crate) struct RpcMessageHeader {
+>> +    inner: bindings::rpc_message_header_v,
+>> +}
+>> =20
+>> -        try_init!(RpcMessageHeader {
+>> +// SAFETY: Padding is explicit and does not contain uninitialized data.
+>> +unsafe impl AsBytes for RpcMessageHeader {}
+>> +
+>> +// SAFETY: This struct only contains integer types for which all bit pa=
+tterns
+>> +// are valid.
+>> +unsafe impl FromBytes for RpcMessageHeader {}
+>
+> nit: these impls are not used
 
-At least both pass through such call:
+Nice catch, removed them.
 
-if (timeout =3D=3D 0)
-        timeout =3D MAX_SCHEDULE_TIMEOUT;
+>
+>> +
+>> +impl RpcMessageHeader {
+>> +    /// Creates a new RPC header.
+>> +    ///
+>> +    /// `cmd_size` is the size in bytes of the payload. `function` is t=
+he RPC function of the
+>> +    /// message.
+>> +    pub(crate) fn init(cmd_size: usize, function: MsgFunction) -> impl =
+Init<Self, Error> {
+>> +        let init_inner =3D try_init!(bindings::rpc_message_header_v {
+>>              header_version: MsgHeaderVersion::new().into(),
+>>              signature: bindings::NV_VGPU_MSG_SIGNATURE_VALID,
+>>              function: function.into(),
+>> @@ -796,8 +810,32 @@ fn init(cmd_size: usize, function: MsgFunction) -> =
+impl Init<Self, Error> {
+>>              rpc_result: 0xffffffff,
+>>              rpc_result_private: 0xffffffff,
+>>              ..Zeroable::init_zeroed()
+>> +        });
+>> +
+>> +        try_init!(RpcMessageHeader {
+>> +            inner <- init_inner,
+>>          })
+>>      }
+>> +
+>> +    /// Returns the length of the RPC's payload, not including the head=
+er.
+>> +    pub(crate) fn length(&self) -> usize {
+>> +        // `length` includes the length of the RPC message header.
+>> +        num::u32_as_usize(self.inner.length).saturating_sub(size_of::<S=
+elf>())
+>> +    }
+>
+> Suggest calling this `payload_length` because now we have to `lengths`,
+> one which is the length of the entire thing (On GspMsgElement), and
+> this, which is just the payload. optional nit: rename
+> GspMsgElement::length to frame_length.
 
-Thanks
-- Markus Probst
+I'm not completely convinced here, since the type should make it clear
+which length we are dealing with. One could argue that GspMsgElement's
+length is also the length of its payload, putting us in the same
+situation, only with a longer name. :)
 
->=20
-> Best,
-> Gary
+>
+>> +
+>> +    /// Returns the sequence number of the message.
+>> +    pub(crate) fn sequence(&self) -> u32 {
+>> +        self.inner.sequence
+>> +    }
+>> +
+>> +    /// Returns the function of the message, if it is valid, or the inv=
+alid function number as an
+>> +    /// error.
+>> +    pub(crate) fn function(&self) -> Result<MsgFunction, u32> {
+>> +        self.inner
+>> +            .function
+>> +            .try_into()
+>> +            .map_err(|_| self.inner.function)
+>> +    }
+>>  }
+>> =20
+>>  /// GSP Message Element.
+>> @@ -811,17 +849,15 @@ pub(crate) struct GspMsgElement {
+>>  impl GspMsgElement {
+>>      /// Creates a new message element.
+>>      ///
+>> +    /// The RPC header is left initialized to zero and must be initiali=
+zed separately using e.g.
+>> +    /// [`Self::rpc_header_mut`].
+>> +    ///
+>>      /// # Arguments
+>>      ///
+>>      /// * `sequence` - Sequence number of the message.
+>>      /// * `cmd_size` - Size of the command (not including the message e=
+lement), in bytes.
+>>      /// * `function` - Function of the message.
+>
+> nit: Update or remove argument list?
 
-
---=-FnDL+AGGzBAQZyfZ98yo
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmq9F5AbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSaX8P/2x7DyQjhVEYVRTwPDUJ
-vWubThxzkv9H7WiodY8kUZAYEBecUB28gXazUXbJ5xMjQ9MZeq3aJKTiml8vPykT
-YjWSG3Pe3BMsxX5KKwmdFvt2NIg/DZE8AUCrd5OONH+PYbU8xCOQLTjHXZ141mog
-lpAY1PO0NmfNLRTJzUx0dN6TcL4Ui/cm3C7C/4THi+SAaCRgTol57Tz3Hf6LGaXu
-mErB+k7cEiIF2Q3/N5oD8+/eqJxT23jJ87wKG/yp4eg1PvAUB9sY27KAAVqpJjmd
-QEKKIPN6owBzcYclDo5zkTiO5ZqZhbf1VkFFNr7FhCkIH0KBcLtHWDwohhfC3+O+
-5GoLASVUR/onUTBNfiLL4qzNdJfKoC7oJj8clwoJibJ3v8Dx7uq9pNy3G5NQxXVq
-NrAx3DS9EfPnxdiF8D2gTvqXiv7ttnl9aWZdVpnS0UhhQ0VGmCuYQ/u7cnEjb0j7
-+eym2mydzwnVPJsUtglz18OANzbdu957/pxR5p/f6NXRJlCexrnP5yg/qBWxgjuw
-kJh0M1hm9fl0zInCbJGkU9Gz6Edz3r/SiR/KM35fdf+MOKYy0Gy8Anc65IWHaSIL
-rKqL5PL6hq6luPD5BCzpTZF30/rdOidbNkLNBiEq7lVRuFozv8+yOg7VLXHrdUER
-akmTMSxJHNhrbfOMFOoa3zss
-=Swrs
------END PGP SIGNATURE-----
-
---=-FnDL+AGGzBAQZyfZ98yo--
+Oh right, `function` has been removed. Fixed, thanks - I've kept the
+list format to limit the diff.
