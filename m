@@ -1,140 +1,142 @@
-Received: from mail-dl2-f41.google.com (mail-dl2-f41.google.com [74.125.229.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A7F4BA1E8
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 12:13:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790770442; cv=pass; b=QFdorJvc0vg/1l92GXyHJmPD7LOXxiCfEgaxJ7d5DbpbdJ9tKHZWGnNQavpA+O6Ed5+kQXtdUmlIM0lJtJm/PjnI3ngSW0dbqFBP+Xgb9WVcBpEtkGSQ7PouFQZ+IQJ3HEJgxUSzfBcYlP9fCWdp60lNbv5aNDHbz8LsDZZspL0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790770442; c=relaxed/simple;
-	bh=2n4+UnejlqYn1u6OpHJx7OaKBKukorY5gDQh8E11BEI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NI2VWAXrktt1ArNXhje0275OTOErwYpppGKjxdhAkY8c/ePxMKuHOMKgc3WMJ1yoDUmJwaD57aFrpOLqyZQ/hxa/+MG6WpM+EDme/4XcLEB61jGOrjIX7MgsydMQp+vgOGR69UbTQpPlRuoewt7swLLphEjT8FnYFGqzG6/q8ZY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lr6HBdvp; arc=pass smtp.client-ip=74.125.229.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13C04D17A7;
+	Wed, 30 Sep 2026 12:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790771304; cv=none; b=N5sVWYJVUZngtEO6cQv7TmfJFmO09Z686rOz3u+4zCi3JS7Mt1b5ACeVgYML0C8sds5UWGUc0AexvFSnsaii+nsD2L0+E+blhuDnEmNXSezVtwuoVJapp0WFh405DGRoCiPTF8UrZ2YT9g9KnN8ptKi5RFtrHRdwiHPTeEIiPl4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790771304; c=relaxed/simple;
+	bh=9lmVFQC9Z4KGtoW38DAAhc2bvTVrr3skeuO3USIIg7U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kjNL3Iip1vqt/cY+/EUpxZ9IfRDUAi0QP7j6a3sdJqsu0R6I/RB0umEoFpqSPrvANR6T+JoN9RvrG4uThPBNcDwedAoPbhPbaVQO4GkvT9UX8/Aq1wIu7V2z76xqPWC107NbJ5PQsq9IgCpvUe9nY+bGyNejZ7qsA/OMMcH3DNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZW7CboBu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lr6HBdvp"
-Received: by mail-dl2-f41.google.com with SMTP id a92af1059eb24-14b1b157591so49979c88.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 05:13:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790770439; cv=none;
-        d=google.com; s=arc-20260327;
-        b=BSa4A9H1H9KTn7L6N0I42oQW8aasIL+TVTvP5RqxzYvyj2WOL533roXDQZYpbxOWV2
-         w3eijteEYROYTjxhX489PPJaWri8HYmeAeqAiNQw2EkWgUabOYWbwndpbRlsboD0q58A
-         YolA2grt+qSx+ssp/al+cqoNpbiIEZtbNjivPqcNiDACJp80MJCANes47/54LX6DHMow
-         ZJq7Ali5cja2wu//dUx/JKN2Ny1PNPgMqIzGduOixQeS8CqFOqvkpnjzBZ7xnQBAXZg1
-         +0QgY5LagzdC8JtW4QAaXRKVNos4Zzwh7cEddvpIrOUSyWFx3dO0qBmHc7pza87avfTg
-         jKog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2n4+UnejlqYn1u6OpHJx7OaKBKukorY5gDQh8E11BEI=;
-        fh=N2P1H1fa34QyYOuQt9Bgv7BO0CTAEjvGzHHH5sdewdE=;
-        b=pOrvH7Zcss9fLfPnVETUYRYhkNy3ql8M+LGIrHtVJlodk60oAqTUPfoMYNn+AVxVSg
-         wp5TvhB6cDtHCbk8JltUDFCGsOaERQBBo2rAtkzkM9oBxaUqpa22BpEnF2jHVbEJqXZc
-         WN5jikaT6+0bJCsJZ8pOZCTZ576eAQLxQJBlLWw0VfHezAszeJgtHH2D5FZE8yl4My+5
-         NoMZFDWOneeM1rYo1zrOUk6B5oVUMs2K5/OGjMmWg9RJPLIA6EiTqrLUohLnRUbyUcig
-         uf3IHCeBBLXx2jTa3vLXIn3QwD0Ms6qVSI+xC+3eXl3h0viLcVti/5u91ZvC5+z7kDTg
-         gC5g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790770439; x=1791375239; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2n4+UnejlqYn1u6OpHJx7OaKBKukorY5gDQh8E11BEI=;
-        b=Lr6HBdvpcK5gG3UJ90OoWJqwkSP6ZlqHmdnYLL+cfa8QgrsMSWUTgBdya7bqYL/BE+
-         TL0+0tKyL7s/C09bRHjxMhn4KGCtk0j/3MsLAuW2KD+imYKJTOYHBJPsFPje1/U/7fnj
-         wTP9ARh4w1acgjLpMKbpP809VU6qXT8PU6vLSnQYI7m6GZ2iQnuRrEwVuevDYuQojgRQ
-         JgdbG5xKOVKW86YoRYQdWHO+mC7Vct3h2YiYvL5Lx9Ukw/9ECCGRGqlSkKgQTGppYSy9
-         Cl4MR4Y6q58tyC1Fqem2oh01WjE6UxPOr4ZzIq4QkauTDulcjkOUDDRjbiqLMSQYPYXs
-         Mldw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790770439; x=1791375239;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2n4+UnejlqYn1u6OpHJx7OaKBKukorY5gDQh8E11BEI=;
-        b=dyCw+QhzrhqKZ6hdzWBRJR08QVDUPWKkWEQBykl80SGzs46lJuFGZzhhCoWDzBX68p
-         ijfbek1l76kB+8/8T1HMhbKK0CvwtrAhmVg/n/SKkS1eWTGcogsg+hrUeV4WbEYNN2lK
-         2DfgjUkv7hpaNanVlO3b3+oUj8T3pedyIpT3O50Gp/KxpsuM7cEguS8SRKZIfFDb0TJ8
-         /lqnpZyUupFYWJRrdzSjwLkOuvJzFG9uKnlDmXIHSfBB8xzLgn78I+tEuYbm0nNnwPxD
-         uig0F2wFYDZTJDYCMcqWCoBcKdMtPDZ8fPVC/nw5+sKYGwH4YWJXz1kB3yq05Gh7uNfW
-         3wxQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxheXVrzOt2RoGuDkl1LwZpIzrIHPApwlwW5atBQBETlzdqopbHoBfHgpOjjiWNCgS2+FBuZLZwJvA5MKb8Ww==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKKi67fwKISl+WSBpsoRp2ercBAlrPZGRlShY3vWbpnHho7/PaK
-	8QXc4hLKCGr4yimt6uWjJTM1Y2tbPQrM9tEOLov0snWcmC9l7DoQSLem6C6kiw17ZMSYuI5+qS0
-	938BVQMzYgPsEIxzfgS7dRAId6HU1/Fw=
-X-Gm-Gg: AYBFou2rPt2EKa8jjEj8izh0lkcTbKFymus0yoSij6ayQjKQCJRzXrkf4fIpxildiSZ
-	UkS0II6SsKiaF2t+XQbX489EutGokZXQd03SBLcdJp6UIJbqLih6wLyR+G3IbH4FAOBfsSl2gHC
-	DzY+0QO7rYjl5jR1OTp0SQ32YHTAFAa+KYKaI13ePbLLKzYqwjr5f8XyQsjH/olBJ514m8zo5F/
-	bn9YZqbwh3Oc3ZD0d1Deknvx84vPTTqAZTJoL127uHTlL0Q9JyDJb+MYQn2LVcxrbu2xYumZRZF
-	2BkovNn7YVS3wPspW0Mi5gXZB1WkOT1kw22OYcQOtIBVXoIPSe12N9lBwcgDjyzMaBfZmjtXvWJ
-	J4/KwpVIdcNbCemYQT9zcAHlI1sc7bJtHAAe2fKCCMTLbcw1OaqQRDHH/nkDef/b3EzRNQtMpbF
-	WBqbT12C8+JWeMvtiO8w0XduwyHy35IxTPP6bYM7ca64hlnhcHaGQ=
-X-Received: by 2002:a05:7301:6192:10b0:34b:101f:cdaf with SMTP id
- 5a478bee46e88-34cde6749bbmr2785844eec.1.1790770438477; Wed, 30 Sep 2026
- 05:13:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZW7CboBu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4421F000FF;
+	Wed, 30 Sep 2026 12:28:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790771301;
+	bh=3homTzU0A5b5rw9eK11AZ6XdME+l9JWLnwxZWPVmGdc=;
+	h=From:To:Cc:Subject:Date;
+	b=ZW7CboBubk39tvnYuGIZ5tXL+A0YFTPJJ2igNcxtbe8dp9Kh5SjalN1XLxq+NljCt
+	 3P78bGnK4azx8QEdlT+glzg356U4xxF0CSLLQqo0+f5A/stM8VfMNwMSwKI36T2oZt
+	 7aXL1FWA8l0ZwioPGA2ugwMIYKFQOFqlPiFuv0KZVBZekXPlAa/h8EnAxL8CcljzkC
+	 zt8H/MDI7YHtHwBSCpjpxpfq72fBkDmhQTbsQyw3Yt5G20YFXfNw6DT8W/4exY2rET
+	 ya5edFpNyiAXfkUNNoaihAjxXu5FWqhznT7HFyx8iO5U80og+97E4rUt9Zd+1m8lxL
+	 DvMTQWREcqLag==
+From: Philipp Stanner <phasta@kernel.org>
+To: Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] rust: DmaFence: Remove static lifetime
+Date: Wed, 30 Sep 2026 14:27:56 +0200
+Message-ID: <20260930122755.1657820-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260917051147.98775-1-tweek@google.com>
-In-Reply-To: <20260917051147.98775-1-tweek@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 30 Sep 2026 14:13:45 +0200
-X-Gm-Features: AclHuK-6adfLavzkp4ECmLqb4CW3_hXGJszcDPcphNHw_O5mw99JF2JHAArmZF8
-Message-ID: <CANiq72nRLF7PmqqVUrAiw_M3dYZCr9ifoo+Q4SuXfBQsAFH-pQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: macros: allow non-ASCII characters in `authors`
-To: =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 17, 2026 at 7:11=E2=80=AFAM Thi=C3=A9baud Weksteen <tweek@googl=
-e.com> wrote:
->
-> Module authors may have non-ASCII characters in their names. In C,
-> `MODULE_AUTHOR` allows arbitrary string literals which are emitted as
-> raw UTF-8 bytes into the `.modinfo` section, and multiple in-tree
-> modules use non-ASCII author names.
->
-> Originally, the single `author` field permitted arbitrary string literals
-> including non-ASCII characters. When support for multiple authors was
-> introduced in commit 38559da6afb2 ("rust: module: introduce `authors`
-> key"), it reused the `expect_string_array` helper that had originally bee=
-n
-> added for module aliases. Because that helper enforced an ASCII check,
-> `authors` inadvertently became restricted to ASCII-only string literals.
-> Later, when the macro parsing was rewritten to use `syn` in commit
-> c578ad703ae9 ("rust: macros: use `syn` to parse `module!` macro"), this
-> restriction was carried over by using AsciiLitStr in `authors` type.
->
-> Change the element type of `authors` in `ModuleInfo` from `AsciiLitStr`
-> to `LitStr` so that UTF-8 author names are permitted.
->
-> Fixes: 38559da6afb2 ("rust: module: introduce `authors` key")
-> Signed-off-by: Thi=C3=A9baud Weksteen <tweek@google.com>
+A FenceCallbackRegistration can stem from another party than the one
+that has created a Fence. Should that party forget the registration
+object (for example through a refcount cycle) and then unload the
+module, a fence signaling would run into the unloaded module, causing
+UAF bugs.
 
-This looks good, thanks! We did discuss allowing non-ASCII long ago,
-so this wasn't intentional.
+So far, this has been solved by demanding that the payload data of the
+registration object demanding static lifetime.
 
-Petr & modules: I can pick this on up (an Acked-by would be nice!),
-unless you want to pick it.
+It turns out, however, that this is harmful because the static lifetime
+bubbles up to all users, ultimately potentially causing a large amount
+of driver data to be static, which renders the lifetime obsolete.
 
-By the way:
+Solve this issue instead through an unsafe requirement which demands
+that the user does not forget the registration object. This is also the
+solution chosen by ScopedWork.
 
-Cc: stable@vger.kernel.org
+Suggested-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Reviewed-by: Onur Özkan <work@onurozkan.dev>
+---
+Changes in v2:
+  - Safety Docu: Be more precise about what must not be forgotten.
+    (Gary)
+---
+ rust/kernel/dma_buf/dma_fence.rs | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-Cheers,
-Miguel
+diff --git a/rust/kernel/dma_buf/dma_fence.rs b/rust/kernel/dma_buf/dma_fence.rs
+index 18a43e1bb442..a1d851656562 100644
+--- a/rust/kernel/dma_buf/dma_fence.rs
++++ b/rust/kernel/dma_buf/dma_fence.rs
+@@ -291,7 +291,7 @@ fn from(e: AllocError) -> Self {
+ ///     }
+ /// }
+ /// ```
+-pub trait FenceCallback: Send + 'static {
++pub trait FenceCallback: Send {
+     /// Called when the fence is signaled.
+     ///
+     /// This is called from the fence signaling path, which may be in interrupt
+@@ -310,7 +310,7 @@ pub trait FenceCallback: Send + 'static {
+ /// When this object is dropped, the callback is automatically removed if it
+ /// hasn't been called yet.
+ #[pin_data(PinnedDrop)]
+-pub struct FenceCallbackRegistration<T: FenceCallback + 'static> {
++pub struct FenceCallbackRegistration<T: FenceCallback> {
+     #[pin]
+     callback_foreign: Opaque<bindings::dma_fence_cb>,
+     callback: ManuallyDrop<T>,
+@@ -326,7 +326,14 @@ impl<T: FenceCallback> FenceCallbackRegistration<T> {
+     /// On success the callback is pinned in place and will fire when the fence
+     /// signals. On `AlreadySignaled` the callback is returned to the caller so
+     /// that owned resources can be reclaimed.
+-    pub fn new<'a>(fence: &'a Fence, callback: T) -> impl PinInit<Self, CallbackError<T>> + 'a
++    ///
++    /// # Safety
++    ///
++    /// The callback registration must not be forgotten.
++    pub unsafe fn new<'a>(
++        fence: &'a Fence,
++        callback: T,
++    ) -> impl PinInit<Self, CallbackError<T>> + 'a
+     where
+         T: 'a,
+     {
+@@ -693,7 +700,8 @@ struct DriverFenceData<'a, T: Send + Sync + FenceContextOps> {
+ ///
+ /// let cb_data = CallbackData { };
+ /// let waiting_fence = ARef::from(fence.as_fence());
+-/// let cb_reg = FenceCallbackRegistration::new(&waiting_fence, cb_data);
++/// // SAFETY: `cb_data` is not forgotten.
++/// let cb_reg = unsafe { FenceCallbackRegistration::new(&waiting_fence, cb_data) };
+ /// let cb_reg = KBox::pin_init(cb_reg, GFP_KERNEL)?;
+ ///
+ /// // TODO signalling guards
+
+base-commit: 6bd5eaeb9827ca7ba953b68fb27948fdb3e40630
+-- 
+2.55.0
+
