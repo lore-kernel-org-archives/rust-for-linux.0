@@ -1,241 +1,282 @@
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011035.outbound.protection.outlook.com [40.107.208.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BCF330307
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 01:42:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790732544; cv=none; b=LBAqIEm5UcfBJLoSLi7mNfBlHTjE/+E2s79ISBBp+RHJManNLUwdApYofPP2YvKEmCx5HEbc1r0+P2MnGW7iJESlWsFnru97byBNFvr5p0vS8u8Rgyry2Y+aD+T89GT3hEI7zX+BqoNeJ8hgEW4g2iNZEc7UDXo7Ebs4ZvZeSHk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790732544; c=relaxed/simple;
-	bh=Dzcdw+F8Wj7YoU+9gYZsfjq9r4b6vq6GlEwB94eMqXg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=redsZu0LInVjJF1q4UJ/SKDT32FG3TsKS5yr+DyYg/g2LtgGnyRIR1A6/rrWt4kidR/vaCYd+QcHPCb8jKKi+c3SJaelgFNopdNJdbdmTNlbSPsJI61SpMCoESBXgp0NybHjQbcPwzDYX+uM/UjDjH4qUqoc5DWwgljMT2x/Y9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=i06ZUfnB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AU5J2Aso; arc=none smtp.client-ip=202.12.124.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82E137C0E6;
+	Wed, 30 Sep 2026 02:44:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790736268; cv=fail; b=XHSI/JnUMKuk+4rpe5xITA/OlJVum0xW/biDIvhpPe3hWXWKDjtK8hHLVjyWdzGNftyoRokQUj4zBfZPuQY2RiIcbw6Vq3WTpWvC+b7vHE6ecB0mBoKSQGdX0o61VAw2veZOcwVvLZmjIXcd0lgZMUJ2Bo0lNa8xDxc4Fzymk2A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790736268; c=relaxed/simple;
+	bh=FLQ4uw8fS/QyWk1V3AfEizfVznhuXr9dThrZnyzjKlQ=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=rD5M1utKN+zfTvYCp0jgP8DzWwcVMko77UF6V8h4wkKBWDShK7jow1Zf0+UM3t6i+FPwxV2qvppUb9e0cIcrss57ecF0P7QKAcjE94Z6MRHbWJ38p3Iu4SXfrP0yFP+wYJj9mxLY0vDlUzQq6xT7Kr6qLRYuM3QpHX9ftuLgKPg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=X/eb0ZGV; arc=fail smtp.client-ip=40.107.208.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="i06ZUfnB";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AU5J2Aso"
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 662DB7A0788;
-	Tue, 29 Sep 2026 21:42:21 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-07.internal (MEProxy); Tue, 29 Sep 2026 21:42:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1790732541; x=
-	1790818941; bh=rTVirVkqDRXn0EOFLq+c6vrA4Ry/VUHeb0rHC0vHsmI=; b=i
-	06ZUfnBQD9PwYJEKVoyhsHBFKkcIJcKYEfxGXAt36aPRZqGBjXRMf8S6WT55ozNq
-	4EHJrX0023jfmGdyPbHkHbX/OlhaBXMrj+/xu1FtZyQ6xFIWUgozDGzxtSx4hZDO
-	CnBDRSpVjSe39/O3oXAFc64pS+ACs7GeN757LrDDCCoXE629cZHD00B35zIU4FN8
-	EGqHtMljg9oBBv6o0sXA7JSVNl5v55Kh2gXndhMjUkyRRiQWENHjrUcrH5UKKeG6
-	rwV26tANFcZI+wQ2ofyBILd96AAj+7+IixkI4xONz3jkM1KOo6azdwB7brON+SDq
-	RCYic8nlEac5WJiVUvyOQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1790732541; x=1790818941; bh=r
-	TVirVkqDRXn0EOFLq+c6vrA4Ry/VUHeb0rHC0vHsmI=; b=AU5J2AsoMavCtNQGk
-	CjdNjMnZQZ0ml/WOLnuTOYpp7aMAUdlStD7eKkZqZ/TMj1nY/t88P2jon5PcRpid
-	PAhkbIiRCYt4DdwHWqi6D7R1ieZf9PGknHp4Ch6fvMlNztcqqWbKDUKipDRTJvqN
-	CZ4sOdle0qUdBBpop4ZU9UvQA4cBzbWjxhj6xMbUrkaLf2X3SROK/V97ejfsPAAU
-	SDXJHxTnX0NvC+hI+PfDGRYqWGSAzfmJ8GINo7lpg7zfJJ6AAjPWoygIVxYWMQKf
-	WXGT8torApuAk/eEonP8r11biCVqPVibRLE+pj5MLoCHTImNAa0f5XA/b05WJ+zC
-	1VOlQ==
-X-ME-Sender: <xms:_Wi8avqlWR49e0H0BTaCLx2a-sXboity9D4LypZyGkK6EB09Czv4ZQ>
-    <xme:_Wi8aiDgBrCx9nR9loIvAFkPkjxo9bwi0StsSNbd7ldAP3T1P-E_coAcFSxnmKulf
-    vmBVHFVZS9Zc2A06YbJ_K9d6colMWi-aO6_2R8nHCCATasvCnnab-Bb>
-X-ME-Received: <xmr:_Wi8auaFjqiEsh3CIx5xQU2BU8wm9Kc9zY9biK7PU9p5B45_rjIVGLm346_wUFtcK10QwXKFOcUwnkDacKY>
-X-ME-Proxy-Cause: dmFkZTF28iLjUt/+/+jOu2GRhg2WUMQRPasnoXHyJ1IrCs/7vyK+w7ntbzJ4H08Of/htb2
-    +uVXyjLt03jGAg2WoI7VuSiPaMveTFP8+l24I95VMNMR9bGTEn9m7oxhrT0YmIn8BPnbwo
-    OBXSZozi2UEqP3u8JrKQ/BzDB3YmgKLXmaMS5nAqNmGLOUk9NJlcn79rzaxQjKZQedkkIT
-    IIAlx9ZL0HNNO5ZQb0ka2ECjh9zTn5TY3l9/Ud9/OJLkaF6JtbWgRf3xto6xNCGmn4kMsy
-    wjtlvydoGvkKS+JnrmDtqdCWV8Rx2RyB/A9FPqAmUYj1rR/c75JBGAmDSi6JDyETJTuHrH
-    mDN5AbTU4ycJqVyHT88L6iD8AnSUp3yYnqgt0wP3i8FMTTBkX4zu/Ps03kHgu//x1dVPyW
-    zaQB/Vry0Eh3vO/iUBO0pGnow35AN+7KsMyc2CB87gvdxSrxm7UJk7yl8kGk6Vt7u2udhh
-    IKwdTnTuCSuYSd8onbD2gWQH8cRkLvjPIBcKR/gGVObpjpusEIheEbpBhSBFB/UV/WUM2x
-    ovD+13ZdHPlfqnla2Ghwj5fdu0FKd+TvMmcRdYvLLA6Jp0WTIZfY24KiyY6o9CZpuGiZh0
-    ynZZAfr0AVBmByuZjRf3ADUavtbaEsnJP0jcOhkQYDAxOD4adDt2izPHvhqw
-X-ME-Proxy: <xmx:_Wi8aqvYYaaQ5bpyjLd5502i-pEN7RPnj58jag-Pw_SrS57hnLvH9g>
-    <xmx:_Wi8ag9MyBGydvAQiWlbSdevI-Af2RndUdKTSVKr76Nr_Zfvqp6ifA>
-    <xmx:_Wi8aqU7gep2hvYGze16l9nP10kvUTF6fBtsS4QGBE5EHT-O9VUdBA>
-    <xmx:_Wi8aktNqqpnnvoVaKkBzP3v2QEcsO1ORSwcs2ffBBmWmzKJjiC1ow>
-    <xmx:_Wi8apK4zn2WfcSduIKdRVPb5bk-d-uWo-6KWbywu06EFSE9R5VZvL-a>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 29 Sep 2026 21:42:15 -0400 (EDT)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	arve@android.com,
-	boqun@kernel.org,
-	brauner@kernel.org,
-	cmllamas@google.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	ojeda@kernel.org,
-	tkjos@android.com,
-	tj@kernel.org
-Cc: acourbot@nvidia.com,
-	anna-maria@linutronix.de,
-	bjorn3_gh@protonmail.com,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	frederic@kernel.org,
-	jiangshanlai@gmail.com,
-	jstultz@google.com,
-	lossin@kernel.org,
-	lyude@redhat.com,
-	sboyd@kernel.org,
-	tamird@kernel.org,
-	tglx@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v7 2/2] rust: sync: condvar: use Delta<Jiffy> for timeout and result
-Date: Wed, 30 Sep 2026 10:41:24 +0900
-Message-ID: <20260930014124.1454138-3-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260930014124.1454138-1-tomo@flapping.org>
-References: <20260930014124.1454138-1-tomo@flapping.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="X/eb0ZGV"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=F0c2FFWGm/fBw73KubSQ8RLMx+JdusdIU4Fx0kng4ekNTkiP1jKv0WmIk2eFzdxu1P8XIuWitzN0ggATTEx59JpuRPumlPbdupEd/fXjM2M4uJhN47xlAY5v2fB8ymCYS99IpQuyvXiCkoZfKEA+4RLOEdgIUdMUq1GNlJOOJt2Ak3MyCfObySbrotbKIbRg+8x91P4iaDv3lu1YuhEcPRmqiBr6dTGT4eMbEhuz/6COG6YkcoZF7e1B9VV76XamGelFeC7flV+lEwVeJQkMDIWfwGanPZGSvxOGGsX8KWbP0ipR5veRaHqf96BfdBPRIcW+TvybeRUAuFrdURcuRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Z9Nhi5RBkimph6UUpywtvH6I3UNoTyTi6kMylp0DLbM=;
+ b=gQtdjgiXoGiuOCqYptGQVs0ooCi4jcuzU/sHftFM4tGq75wvQCD2aU8xoiLFTKddJao7keiN3bQw77zucoEHp23fa3h+OFg5QGPPvXjaOk452aOo/uMLf2Yj1BcYt7fRq3TxnKxxm466uliFI5J1EL/roEen33a7Urerh456MLSU7quTmfGvKWfY07TXbw0jzlGFfsLTbcJkbkXsizLJb5G7fkkhwo7otQjB6RcIMOPOpGAKjOg4g4SB75dwHCs/jEYc0uK+hqukmvPcIjuO17UTHa2Iceq8NTsSogG6hInSUqXbrk8ClsZ5KxWUmVztQrQh/cxK2Dg7wr5lqeCC+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Z9Nhi5RBkimph6UUpywtvH6I3UNoTyTi6kMylp0DLbM=;
+ b=X/eb0ZGVmoVva3hVG1bcDMjh9NinoMHffSKX9WbItEtkekXMWpbhUJWvub6Du9GP2HpAXw+ZCaNZkKgbySVF3jkdYbpWCrrJvwnvyL0pjcVtrj8r+s3f8a6jkhqUzQj9Cl6MaXWrMf96I+hL3hXP8t+jDdrCtWKHaU0Xqjr7smbnBbgHi+lYpi0rumy3AhM2HySgCLKxRPIeZ/kOHvmxERmYzByS+jE24tqnTXzqDMRBc8sO+a4aQ7mSCtW2KYtPpYuRpuJsSVt3J43x7tgk6Ho6SYwhhtfwo+neEeuhDJkalE4rBFSUsSgIZfaCt1qEMLW4bom/+1ICbBAGeMFbmA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
+ BL3PR12MB6523.namprd12.prod.outlook.com (2603:10b6:208:3bf::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
+ 2026 02:44:20 +0000
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa%5]) with mapi id 15.21.0451.022; Wed, 30 Sep 2026
+ 02:44:20 +0000
+From: Eliot Courtney <ecourtney@nvidia.com>
+Subject: [PATCH v9 0/9] rust: Add support for reserving of ranges of IDs
+Date: Wed, 30 Sep 2026 11:42:49 +0900
+Message-Id: <20260930-chid-v9-0-0d6cca376cff@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23SzU7DMAwH8FeZeqbIcb534j0Qh8RxWJC2QbtVo
+ GnvTrp2WlE5WvLvbyX2pem5K9w3282l6XgofTkeauGfNg3twuGd25Jq3SCgAQOupV1JrXA5eCX
+ JJENNbf3sOJfvW8zr21T35/jBdBrt2LEr/enY/dzmDGLsmyItyClyEC20TmV2qD0rwy+HoaQSn
+ um4b8bMARcK7wqrIqlZs89RJr9Scqn8rGRVCETgQGKMtFLqoZyAWalxls8IJieK3q6UXiqcla7
+ KkDXWWogyq5UyS3V/l6lKGIisU446ppWyS2VnZasK2llko5L7Z5ZbKLwrV1Ukq8jaBCj+quu0z
+ o6/zvU4TtOOH7ex3cxh9TKG1iXFXmMmoWhbP7HaGHpua9K+nLYbAcEYlAFVcNqCMxo4h2QjCy0
+ covMKJCVbx15/AXGvM6WbAgAA
+X-Change-ID: 20260608-chid-18fa943c6d6c
+To: Alice Ryhl <aliceryhl@google.com>, Burak Emir <burak.emir@gmail.com>, 
+ Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>, 
+ Timur Tabi <ttabi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+ Eliot Courtney <ecourtney@nvidia.com>, Yury Norov <ynorov@nvidia.com>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: TYCP286CA0106.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:29c::13) To DS0PR12MB6413.namprd12.prod.outlook.com
+ (2603:10b6:8:ce::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|BL3PR12MB6523:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1d833e06-8753-4af7-53c8-08df1e9cba61
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|10070799003|7416014|376014|1800799024|366016|10067099003|56012099006|260925022911599003|260925021911599003|260925021311599003|921020|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	3pXOfayl9xTgE+vwRWu+MbkNckqX3QaMrSfCnm+khbmF3M5Ri2mKBYce+ucMeV5doEpJqNM46+COQ08WwAnD+xzWkN8Yq1hJ7vWpshOyC5XO1NjhnhSWC9NJOWtjhKy4k44YLcQlD3cqIvmDdwTO7gHAl6srSKFlh64UvXKRXFZDb88tGE1SBxgMf/fCUGIs4al37vG9TWyDJA/x4mJcPO+AdbLAZeBy4ZitNFr7twnuYXPhmsiGjLcZRZXRr4RtF411fuMekEj/Dgz7G1yufmjk9wFWDl1KAt/q4pgdZ8IkpKIXdDctOgkDAU4NNiTgUHTr6GqXA5j2NPIRSunbHiB3NPo/bb8pyzHj2eL/4bMmkHoRWRG23Nyo7CsvlxlyZKzRm9moFk8bbw/IAtKfkpQ34uSXIel2HjJOM9aXVBXEk/ovZunma64dLcR00YEssEBpHpYkYoar90EmUZDBvIQyz9CdYJqqBOYxEEXm1QbtrqZIQKXMPmI9N/6dbSAZqyaQNlt8zYBsgKp6ygfRMyPpD0z+gtGe2pR91P6fYkJNvB1v9I397D4LrjCoKRyTSr7YKGI1NgR0zqxjVdfmxAv1CvJBKPcbtOxaiPVQkeTO7jBIeXysWBPIcUWfOOa3bpV4MFOm7+3KYk9GGPxj0El+US1VldqCkdSXPCTcDPr/r3SEz6LgHwBC/w+8sOpQCc/02dceOCk4o3S+8iMK0w==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(7416014)(376014)(1800799024)(366016)(10067099003)(56012099006)(260925022911599003)(260925021911599003)(260925021311599003)(921020)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?K1JENDZxdEhDWWxsUW1VQ3hDK24yTEJVUlpGV051cUc1NjA1M0h0Wnd0NHBp?=
+ =?utf-8?B?QVF4Lyt3ZVQ1czRTQjhMc1pyMHBpaHovYVBERnNFMzczeTRnVG1LNVdCV3pW?=
+ =?utf-8?B?eDBVOVRmYlQ3dHAyU0tTOHZ6cG9OdVFMZHhpYUsvVytEN3dwVUEzWTk0ZzVF?=
+ =?utf-8?B?MC9wUFM0WXF0TFZ2dFkxUEZtVlIzRWU3UmpMdEtKTkVEVTNKdE1YWkJHSVZ4?=
+ =?utf-8?B?OUJsa2l4VnNMbm14Wk0wK3Y5amc2a1BVSkdvVGxQQ3JMWm5Ra1NFNmNZSm5R?=
+ =?utf-8?B?ZHgrVjd5T3QyKzV6bmw4OFNscjBMSnpsNUV4cWRmRC9HOXU0WWQ3T2tySUFD?=
+ =?utf-8?B?NXVPZmd0UThWaCtNQzJOdzNmTE1tcFBIN0ZEbTVUMi9ZYWhWZTNnbVpkaVg2?=
+ =?utf-8?B?SEFtRmZyMDQ5ZmVOSERFeEVGSkpNOTFKQlY2WThmVVRzSURLSCtHZDVTSFgv?=
+ =?utf-8?B?dkcyc3NJbGhVRGQ2cUFWU3JkTTNWbittNjU0ZFNsVWQ1RkVoZmpybWlJT0RQ?=
+ =?utf-8?B?UkZSM2VqVjdzcnBCeGMzdW5TVytPMm5HaWphRkdtRHZqU3NYTkdRbnUxblNt?=
+ =?utf-8?B?Vk1lZDJMb1JwR0tlMlpNU3RGOWl3YW9oSXZ5cHkyb1lBYWJDdTlCRTFUazVM?=
+ =?utf-8?B?aFI4UkVuL09LRVNRSUU4RVQyb1R5YXdidnBMM21IK1NLbDhZOW4yZm0xQkFV?=
+ =?utf-8?B?MW5YdlJnWjlValNFRjFOM0RhV1Q4aHN2eWdXSmtBK3hzL2owclU4alhwT2dx?=
+ =?utf-8?B?ajVsRW5OcklKaytCdkpZbXJJTk85cEo4ZlRJS0JPMjlkWk5hbnBaNTBaMFFS?=
+ =?utf-8?B?elMyS2puaG94Vkg0V3hRN0VRK1V4RHoxdEdxcEVaUG4wd0RLTldWeFRhNWNM?=
+ =?utf-8?B?aHlSY1k1eWRveG5MSTBqM0huRWRuRmdGaWRBbXJPaUk4M3N3Y2k3ZnBaNWxa?=
+ =?utf-8?B?Qm1ZM1B1QUlSOTRKZXpXZlZCd1luTDZZd0FuVUlMVkV2eUpYSEorK1RHL3Rr?=
+ =?utf-8?B?YU5BSU5mOHpSNFNrdEFSbGNrbGdBSCsyNjZNd1lXVnNSWERTSVB0MDNFek90?=
+ =?utf-8?B?U0w2d3prSm95bFJickVVWGhxTTgxWGhCelQ3d1lKVU1NeUJFVDhzUDEyWTRM?=
+ =?utf-8?B?MzM3cGdmaXozQ1E0UzN4a1RJWWhoZ3d5bVNta1oyMTNidTlac1ViM2EvRkd1?=
+ =?utf-8?B?YXVLR2VZYlJpcjlhTXdIaW5mU3ZWb2d5b3lIZEpZY1Y3SXRyaXMvb3Z2anR0?=
+ =?utf-8?B?NVVsWS8rUDVjU2JuS1VySzdid2NzV2NqNlRpOGpyRUdhMy8zSStXZ1lvZndz?=
+ =?utf-8?B?T1RhRjFWMUhqV3ZEdDcrbjJHY3ZqVnV6UTk4eDBrU2tUVjBmRzNYUllqWitZ?=
+ =?utf-8?B?WEx1QzlyRmJKelJpTVFtUWREdVdxR0daSy9UcEw0bm5iWnN1alg2QmcvdWdK?=
+ =?utf-8?B?NWdsUHcyVmpIcE1UQm9pYmkyV0NHYUVJYXlYZG5tVnlJYVJhZDQxZDVQaG1P?=
+ =?utf-8?B?a1Z2dnJQNEZ0VjZVZ1JLeDdOKzJlZTlTNUVkR25rYmRuYlAzSnJKZzF0UUVz?=
+ =?utf-8?B?eFVFNW40SUcvTE1iTFlHYk4yZ2Z1SFNXU3ZreFUvMVhxbTJQT2dnZVFrL3ll?=
+ =?utf-8?B?UFU3Q2JhN2hIL2pKRlAwbWFCVXdIblBjaXZZVmhtNm1wNlc4SFFZSFZyaEM5?=
+ =?utf-8?B?YmZENVRPdS8xZ3FRcW81YVBMYjZ6dXNsV01sdUJuZFZSRjBCSGlVN2J1SCti?=
+ =?utf-8?B?dUlMTlRoaHRwQi95OWdOUkd1VXkzeFJROHhwMDBxZ0Fsd2E3S3dSVEFKVTVY?=
+ =?utf-8?B?MXhsQ2Z5dlRiOWg3Vzk0Wk1KcjhtVEJvYXYwSW9VVmQ3clo3WmpDNzRUeUtj?=
+ =?utf-8?B?WjIxK3MyaEFqaHJWQjJFSEt3OXgwSktKM2lZNGd2amJlZG9QZXFvSHdQUWdn?=
+ =?utf-8?B?Smt2SG1ja01jRDV5SStNdHRNd1JSUjQzUnR2ZDloMzJKUURKZlN4Ulp3NDdj?=
+ =?utf-8?B?WmFlbEF0RmFUNE45TzA1RGc2Q0ZlVFlCVkNxQUgwNXppOUE0bkZMNzhSVnJO?=
+ =?utf-8?B?cUFMVGtzakY1R3pLK2VLWjVrV21TcDhSandxL0pTdVU2NTYxWUs5bzlDSjl5?=
+ =?utf-8?B?QVpRdUlOTnRaVXVKek4xWEh3OEtyaGRMWUs0d2hGMGt6SjlvNjVCajlqL2FF?=
+ =?utf-8?B?Ukc4RndNdWF6S2xiMWFFQmVYMHprbXJHT3hCMFp3cE1jdlF2L0pMRkEySTBI?=
+ =?utf-8?B?cEwvSWFpVjdJdndTQVdoMFVrRlRobWVYRmY0RzZCWmJVOVROeGVFT1FOUzhK?=
+ =?utf-8?B?VDFlcWpHd0djZzdFU1ZCQjJlL1lXRHZEVmFnUmYvREpLcGlWUTFNU0RkNGp4?=
+ =?utf-8?Q?sImGb/NHi4dt6u+Bz7IFtUu/sN7IIBmB9r60bo+u00qIB?=
+X-MS-Exchange-AntiSpam-MessageData-1: 8Iho2cNu/3/VXQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d833e06-8753-4af7-53c8-08df1e9cba61
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 02:44:20.2486
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AUMjJUCBrc3oLGRpNxCHCNsxgefINXPS7Nc/1Kx+ABwhKIN3px16JK/OQP7Ong/cnEkK1EivVqSah66ZEGyMJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6523
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Add support for reserving of ranges of IDs, with a usage in nova-core
+for channel IDs. This entails adding bindings for the C bitmap
+API for ranges of bits, then users of that in `IdPool`, and finally a
+user of `IdPool` in nova-core, `ChannelIdPool`.
 
-wait_interruptible_timeout() takes the timeout as a raw Jiffies, and
-CondVarTimeoutResult reports the remaining time as a raw Jiffies. The
-type does not show the unit.
+Channel ID tracking is needed for allotting ranges of channel IDs to
+vGPU guests, and later for regular host channel ID reservation.
+nova-core needs allocation of a contiguous sequence of IDs with a
+specific length and sometimes a specific alignment [1].
 
-Switch the parameter and the result fields to Delta<Jiffy>, in the
-same way as enqueue_delayed().
+About the tradeoffs between different data structures:
+- IDA/xarray do not support allocating a contiguous sequence of IDs
+  (ida_alloc_range() allocates a single ID within a range, not a contiguous
+  sequence).
+- A maple tree works, but is not as good a fit. The ID space is small
+  (limited to 2048) and aligned allocation needs an alloc_range()+erase() retry
+  loop (plus a Mutex around it, or new mas_empty_area() bindings) that
+  essentially reimplements bitmap_find_next_zero_area(). See the maple tree
+  version at [2]. For 2048 IDs a bitmap is also considerably faster and smaller
+  [3].
+- The bitmap API natively supports aligned contiguous area allocation
+  (bitmap_find_next_zero_area()).
 
-Delta<Jiffy> is signed, but schedule_timeout() prints an error and a
-stack dump for a negative timeout. Clamp a negative timeout to zero, so
-it means an immediate timeout.
+This is based on drm-rust-next and depends on the cv! series [4].
 
-Update the only user, binder. It now converts the freeze timeout with
-Delta::to_jiffies_timeout() instead of msecs_to_jiffies(). Both round
-up, so a short timeout does not become zero. They differ only for a
-very long timeout. msecs_to_jiffies() returns MAX_JIFFY_OFFSET for
-2^31 ms (about 24.9 days) or more, but to_jiffies_timeout() converts
-such a value like any other value.
+[1]: https://lore.kernel.org/all/84bc8bd2-e292-4b84-9580-a1b5df4c5bdc@nvidia.com/
+[2]: https://lore.kernel.org/all/20260710-chid-maple-v1-1-4ee869055268@nvidia.com/
+[3]: https://lore.kernel.org/all/20260717053241.916441-1-ynorov@nvidia.com/
+[4]: https://lore.kernel.org/all/20260917-cv-v4-0-547ef5727451@nvidia.com/
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
 ---
- drivers/android/binder/process.rs |  7 ++++---
- rust/kernel/sync/condvar.rs       | 31 ++++++++++++++++++++++---------
- 2 files changed, 26 insertions(+), 12 deletions(-)
+Changes in v9:
+- Rebase on drm-rust-next
+- Moved cv! to a separate series which this now depends on
+- Reference Link: tag from the text + indent code in patch #4 commit
+  message (Miguel)
+- Add reviewed-by tags
+- Link to v8: https://patch.msgid.link/20260827-chid-v8-0-bc74c77d0214@nvidia.com
 
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 5372bfbd93b3..ca944a50c6eb 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -35,6 +35,7 @@
-         Arc, ArcBorrow, CondVar, CondVarTimeoutResult, SetOnce, SpinLock, UniqueArc,
-     },
-     task::{Pid, Task},
-+    time::Delta,
-     uaccess::{UserSlice, UserSliceReader},
-     uapi,
-     workqueue::{self, Work},
-@@ -1549,8 +1550,8 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
-         inner.is_frozen = IsFrozen::InProgress;
- 
-         if info.timeout_ms > 0 {
--            let mut jiffies = kernel::time::msecs_to_jiffies(info.timeout_ms);
--            while jiffies > 0 {
-+            let mut jiffies = Delta::from_millis(info.timeout_ms.into()).to_jiffies_timeout();
-+            while jiffies.as_jiffies() > 0 {
-                 if inner.outstanding_txns == 0 {
-                     break;
-                 }
-@@ -1567,7 +1568,7 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
-                         jiffies = remaining;
-                     }
-                     CondVarTimeoutResult::Timeout => {
--                        jiffies = 0;
-+                        jiffies = Delta::from_jiffies(0);
-                     }
-                 }
-             }
-diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-index 69d58dfbad7b..ae70e91eca94 100644
---- a/rust/kernel/sync/condvar.rs
-+++ b/rust/kernel/sync/condvar.rs
-@@ -12,7 +12,10 @@
-     task::{
-         MAX_SCHEDULE_TIMEOUT, TASK_FREEZABLE, TASK_INTERRUPTIBLE, TASK_NORMAL, TASK_UNINTERRUPTIBLE,
-     },
--    time::Jiffies,
-+    time::{
-+        Delta,
-+        Jiffy, //
-+    },
-     types::Opaque,
- };
- use core::{marker::PhantomPinned, pin::Pin, ptr};
-@@ -182,19 +185,29 @@ pub fn wait_interruptible_freezable<T: ?Sized, B: Backend>(
-     /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
-     /// thread to sleep. It wakes up when notified by [`CondVar::notify_one`] or
-     /// [`CondVar::notify_all`], or when a timeout occurs, or when the thread receives a signal.
-+    ///
-+    /// A negative timeout is treated as zero.
-     #[must_use = "wait_interruptible_timeout returns if a signal is pending, so the caller must check the return value"]
-     pub fn wait_interruptible_timeout<T: ?Sized, B: Backend>(
-         &self,
-         guard: &mut Guard<'_, T, B>,
--        jiffies: Jiffies,
-+        delta: Delta<Jiffy>,
-     ) -> CondVarTimeoutResult {
--        let jiffies = jiffies.try_into().unwrap_or(MAX_SCHEDULE_TIMEOUT);
--        let res = self.wait_internal(TASK_INTERRUPTIBLE, guard, jiffies);
-+        let jiffies = delta.as_jiffies();
-+        let res = self.wait_internal(
-+            TASK_INTERRUPTIBLE,
-+            guard,
-+            jiffies.clamp(0, MAX_SCHEDULE_TIMEOUT),
-+        );
- 
--        match (res as Jiffies, crate::current!().signal_pending()) {
--            (jiffies, true) => CondVarTimeoutResult::Signal { jiffies },
-+        match (res, crate::current!().signal_pending()) {
-+            (jiffies, true) => CondVarTimeoutResult::Signal {
-+                jiffies: Delta::from_jiffies(jiffies),
-+            },
-             (0, false) => CondVarTimeoutResult::Timeout,
--            (jiffies, false) => CondVarTimeoutResult::Woken { jiffies },
-+            (jiffies, false) => CondVarTimeoutResult::Woken {
-+                jiffies: Delta::from_jiffies(jiffies),
-+            },
-         }
-     }
- 
-@@ -248,11 +261,11 @@ pub enum CondVarTimeoutResult {
-     /// Somebody woke us up.
-     Woken {
-         /// Remaining sleep duration.
--        jiffies: Jiffies,
-+        jiffies: Delta<Jiffy>,
-     },
-     /// A signal occurred.
-     Signal {
-         /// Remaining sleep duration.
--        jiffies: Jiffies,
-+        jiffies: Delta<Jiffy>,
-     },
- }
--- 
-2.43.0
+Changes in v8:
+- Clarify overflow cases in patch #2 (Alex)
+- Replace nz! with generalized cv! macro (Gary)
+- Add cv! macro to prelude
+- Split SizeConstants and adding new constants patch (Alex)
+- Move alignment size constants conersions patch (Alex)
+- Drop NonZero on IdPool, fix grow_request instead (Alice, Alex)
+- Add shrink/grow doctests (Burak)
+- Link to v7: https://patch.msgid.link/20260817-chid-v7-0-a5872e64d8f4@nvidia.com
+
+Changes in v7:
+- Add nz! macro for compile time NonZero
+- Implement SizeConstants for Alignment + add sub 1k size constants
+- Use Alignment constants + nz! in this series
+- Add final patch converting existing callers to use Alignment constants
+- Rename alloc_area/release_area -> reserve_ids / release_ids
+- Link to v6: https://patch.msgid.link/20260813-chid-v6-0-160be5dfb5bd@nvidia.com
+
+Changes in v6:
+- Take a NonZero nbits in `next_zero_area_off`, `set` and `clear` (Yury)
+- Remove `UnusedArea`, `IdPool::alloc_area` now allocates directly (Yury)
+- Add patch: take a NonZero capacity in `IdPool::with_capacity()`
+- Add patch: do not round the capacity up to `BitmapVec::MAX_INLINE_LEN`,
+  which also removes the bounds check in `ChannelIdPool::alloc_area`
+- Add more testing of Drop for `ChannelIdPool` (Yury)
+- Link to v5: https://patch.msgid.link/20260812-chid-v5-0-6c767770b3f4@nvidia.com
+
+Changes in v5:
+- `bitmap_assert!` i32::MAX length for Bitmap::from_raw* (Yury)
+- Only run overflow check on 32-bit (Yury)
+- Link to v4: https://patch.msgid.link/20260810-chid-v4-0-c9f206fdcb97@nvidia.com
+
+Changes in v4:
+- Add `next_zero_area_off` to match C code (Yury)
+- Replace overflow checks to match C code in bitmap-for-next.
+- Tighten `Bitmap` unsafe contract to disallow Bitmaps larger than i32::MAX
+- Link to v3: https://patch.msgid.link/20260729-chid-v3-0-20cc08032bbc@nvidia.com
+
+Changes in v3:
+- Use `Alignment` type in id_pool and bitmap (Alice)
+- Remove hang check on the basis that it's extraordinarily rare.
+- Link to v2: https://patch.msgid.link/20260723-chid-v2-0-c35e5e9fb3d9@nvidia.com
+
+Changes in v2:
+- Collected Alice's Reviewed-by on patch 1.
+- Address Yury's comments w.r.t. using __bitmap_set etc directly.
+- Address Yury's comments w.r.t. following the C names
+- Additionally check for an overflow case that causes a hang
+- Added more info to cover letter + patch 4 w.r.t. channel ID allottment
+  requirements
+- Add align parameter to ChannelIdPool::alloc_area() plus an aligned
+  allocation test
+- Add missing INVARIANT comment when constructing UnusedArea
+- Link to v1:
+  https://patch.msgid.link/20260703-chid-v1-0-84fe8259e46e@nvidia.com
+
+---
+Eliot Courtney (9):
+      rust: bitmap: use function-level cfg on kunit test
+      rust: bitmap: restrict bitmap length to at most i32::MAX
+      rust: sizes: add sub-1K size constants
+      rust: sizes: implement SizeConstants for Alignment
+      rust: use Alignment size constants
+      rust: bitmap: add contiguous area operations
+      rust: id_pool: add contiguous ID reservation
+      rust: id_pool: do not round capacity up to BitmapVec::MAX_INLINE_LEN
+      gpu: nova-core: add ChannelIdPool
+
+ drivers/gpu/nova-core/fb.rs           |  10 +-
+ drivers/gpu/nova-core/fb/hal/gb100.rs |   2 +-
+ drivers/gpu/nova-core/fsp.rs          |   4 +-
+ drivers/gpu/nova-core/gpu.rs          |   2 +
+ drivers/gpu/nova-core/gpu/channel.rs  | 198 ++++++++++++++++++++
+ drivers/gpu/nova-core/gsp/fw.rs       |  12 +-
+ drivers/gpu/nova-core/vbios.rs        |   7 +-
+ rust/kernel/bitmap.rs                 | 336 ++++++++++++++++++++++++++++++----
+ rust/kernel/gpu/buddy.rs              |  26 +--
+ rust/kernel/id_pool.rs                |  70 ++++++-
+ rust/kernel/io.rs                     |   5 +-
+ rust/kernel/sizes.rs                  |  47 ++++-
+ 12 files changed, 641 insertions(+), 78 deletions(-)
+---
+base-commit: 10a6623a24a85708650efad7be15182289403cd7
+change-id: 20260608-chid-18fa943c6d6c
+prerequisite-change-id: 20260828-cv-8d4e952fc14c:v4
+prerequisite-patch-id: b913a24359e679cb354298102cf5de13760a3c27
+prerequisite-patch-id: 01ec2e5a44b393a7ce1ee820654750dd4743fcb5
+
+Best regards,
+--  
+Eliot Courtney <ecourtney@nvidia.com>
 
