@@ -1,128 +1,173 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155B13B9D91;
-	Wed, 30 Sep 2026 22:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790805746; cv=none; b=rskaUDnmnCNDAfMGh8NNV+se+kz0LopXgCto+kYthgedMk3x+IWMnhK8kcOVTDv+U7Pwrx11NMRLkZ4VKIVzOkDRMJGzHJ3lIFBnl1PkIVN4EJsuekVOUkhb9vUn3qxLEb0+vttrmg5QmrBEoEkWwvFZuG14HmYSHbX7/MZJonU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790805746; c=relaxed/simple;
-	bh=Pni3qt6SQR0WSSoYxhV/3fWi+ppfTQbsXTLwAc7Nkgs=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=nZDakSle2JNmAdAap/ENGtKEuX8Z0jF1sU5ilibbCWfEILpx9q+sOas9EBbzMMXe84+sMCkALQaLLaw5DVDKgb6MbZHWP7ileO+hu/yW2d/LdqysJtGJPZPx2cN9J6uoI+ADphh3YpzMbswZv3tIG1/e2Czd5Zl2o2xavrIAGDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=hICjf1Gy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=vLqhHXG3; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69C43AFAE2;
+	Wed, 30 Sep 2026 22:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790806325; cv=pass; b=VNgz1P1SZ24rSzt1OMgnsSle3fKeRTS3QcR5oLO5jc1W3wN8PtYnj0SUNuhjOnia48k0r4klvxKpnxZTnA4Q+jFY/mytl9JkAtmId5TpslIJ9FglPVX9DobXLL91VUQtugbS8r3uCn9/5B4eu68v9iPj/prKuPpc/E6IXvark2E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790806325; c=relaxed/simple;
+	bh=oXoLYJSu6hPT3Z4IyHghD8zubc5NgSK5ilmVJ/G/8Ro=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=geIjEgbw4c1a34+1lKPdOdEA0W96WZweIt3O/jj3O8Pw2wkpJbsr9CZW1AS/Bz2yNDlwFeULt9hQvXt6XR7csRh6L1iiAwiQOHDlezueXKTxfKZCI+7kdXrkeFjntQjMPxLKKFQ9RUO/SDGYs/Ylk2OO+qS3jT5In9Wy1jsbzvc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=TgswJeQs; arc=pass smtp.client-ip=165.173.180.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="hICjf1Gy";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="vLqhHXG3"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id AA5FB1D00060;
-	Wed, 30 Sep 2026 18:02:23 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Wed, 30 Sep 2026 18:02:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1790805743;
-	 x=1790892143; bh=+7vzyzmPNyBsCrlSJl2Rf6M5M3oPOAwKb0gYKlfEvRU=; b=
-	hICjf1GyQ/UqyyDNFehn5s+vguTlIU89BjeIOAAz74NblGtZZ3s8WJoGmZp+N/fb
-	gzJjhvpntD0FvkOwsiHnZ4/NAfAKaFaAtnxm6K923Bub6XCiaG347ciF6rFcjf4r
-	EPR+ImEzAq6En1j95Wp/lvsGmYpZrDlawVDLN18dZJPlfGxoBr4DS49vUPRHIhpx
-	oSMRpOe6hnTOlVRoyEi2D97oSw/JS7i55gvmc5XcWYUBhorsMWuxFa4gpttSzds2
-	XETFQjc01F1bk7nlwe0iWPIs9B+z2eYSJQMyewLXA02gTGvSV7/JOuAIYNtPNyJp
-	WH3UzmzMXCXXvu0Lx3ewBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790805743; x=
-	1790892143; bh=+7vzyzmPNyBsCrlSJl2Rf6M5M3oPOAwKb0gYKlfEvRU=; b=v
-	LqhHXG3hwWHSqLdAQdxixh7PS/BdDA0eZVOa88zAHusLwDTcT3wu03qFuZ5UOByH
-	WyCsgLjjr2pr7AZoQjfEJs4qwXONXkROxjK3XtZAF3TLmdDm7INOH9/u16mu2abg
-	gFo2EuRUOHoxHf0Yp97JkwZmWIkygHOyoJFaWd8cpyFfQTueByrxPwQ1eZnv9juB
-	WpoErhUC70/Hzy7QpEXHfq5IBGxgxfWQJIzgtfVJzvIdQDigLEjOlCjR8//q6ldk
-	oSojeqX6c99hyPB0gG55uOE3NlMgOUy79i83ZwQ5HWuCQ346SRr2hd4P9Q7KRGas
-	V/f70B7l6O7rTb3eGmKXg==
-X-ME-Sender: <xms:74a9aoc5uF06efgQBMXQFmJ5FNynnWA-AM4KIxHLTOTDABfNDPC6EQ>
-    <xme:74a9auIPvlOYpXkA3TNoVHJCGTcNWdWryAPjFTr-0j7CmmbR1irZmcMsOKA-IQfrK
-    tQhQRWk8xcaAewgTvYP1Gljq9XR3qrwOj9Plyiwb8jlDtQXcCfycBoY>
-X-ME-Received: <xmr:74a9aiAPR1MHh3h4mZ4kYGjuJ9Mq2hPoCXZhdwIlssJoFhklqa41XBXLyZ6i6o_vZsRnAyqaT_TFjKY1_V9x5BEh>
-X-ME-Proxy-Cause: dmFkZTEh8a5mtMwJjm4OP/JFppemW1RPRtmhJ6QT5a6YrkqSaMjdfLQr1wK/lXFXXVqtLN
-    dfY5ZMQ533nSdgeO5vEeYT9mwMP0Grqc6B3CAICqST+5eeAq5FOxfz8ZHLeopm8rwIwKYp
-    AFGFm7XF+qXfB00CeOPH/mjk2W0d8pvz0382nekCbaDcgFuc83qPtWIQsuoA/Jc0eAC5mY
-    J4pzDFaTl00fjaYL2d3KgJvqxELXgjQP3vgY8op3EK5Eppion9z1GafN4NZljdrR34E1GG
-    Pl71NsKJMrjyw3U/dbnaJ3IiGmM8lnXBVyMfnSEIhCozL8tlU4XQH1yWzYqooyGK4qyPLL
-    MMgA2dDQtFM+R20LjuDrWtGDxiZ8N8TjjWTGyEGRRY7jMdJ8+3icRjXcsL6XplUizqBfey
-    y6sy180EWVponJsHkYa3L+aLaXe+aOfMUUtRniJ6xVk1YSp1cnG1HM1hLV1L0OQsyH/PSL
-    YHsrVMUu62G+jTtJSj5Y7/Vny24vPdVsVRepXpKC0IJAByo9s4p22bvWHCp4Tnkgkh+zJs
-    Tg4HZ6aSTqT7gZ0bVnk5vlBxxLAe8Xd4SDkpBWGVPfKe+STSALZySObNwsdY2djRk7KVxk
-    LBQ6ewd0BN92ObzVQL4Lw1kDQlQR91fxZ6ayOyMc2sFD/fPt9Z9xt//bBNBQ
-X-ME-Proxy: <xmx:74a9anhBNHB88LHwst52qfSLgee25CC83rWEMBkiKaLBmtWISFwTfA>
-    <xmx:74a9asMCevJLDsqFBWPyJgNAYbYFtuQ7DK19Ca3sO8z5oewGubaWJA>
-    <xmx:74a9auZwe4Ehqm-RoFo8rVkzkBJped0UgM-cY4FemIpKnMdh6mQMOQ>
-    <xmx:74a9ah_c9uDL884P0e1u19fneWBEhYj3z3xBmbBPwLjSzt2LI_5hzg>
-    <xmx:74a9ajrClykasys3hw2_ryqoUOh4n4UQLdNeRMA04s1D5lmidAs2sfK->
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 30 Sep 2026 18:02:18 -0400 (EDT)
-Date: Thu, 01 Oct 2026 07:02:15 +0900 (JST)
-Message-Id: <20261001.070215.521963012921142699.tomo@flapping.org>
-To: ukleinek@kernel.org
-Cc: tomo@flapping.org, fustini@kernel.org, guoren@kernel.org,
- wefu@redhat.com, a.hindborg@kernel.org, acourbot@nvidia.com,
- aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun@kernel.org,
- dakr@kernel.org, daniel.almeida@collabora.com, gary@garyguo.net,
- linux-riscv@lists.infradead.org, lossin@kernel.org,
- m.wilczynski@samsung.com, ojeda@kernel.org, tamird@kernel.org,
- tmgross@umich.edu, work@onurozkan.dev, linux-pwm@vger.kernel.org,
- rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2] pwm: th1520: Fix 32-bit build with COMPILE_TEST
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <arz487DLBlaBrWLN@monoceros>
-References: <20260930101257.1649945-1-tomo@flapping.org>
-	<arz487DLBlaBrWLN@monoceros>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="TgswJeQs"
+ARC-Seal: i=1; a=rsa-sha256; t=1790806234; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=KP4UtcmMfrie5mygnITzREXnvL9pcS8QpSEm5K5RlhurnWcg+eP5muYbD+4XTWMrNXSAcIpIVx58PAqo0+mEnYo2vWq+ajz9f6zurxvQoDVX9lIwX2CwAXpY/OimT/rnv7KKtMds9IfqGcFoMp+5GJ/cskmU5y60rpZM/fU1ev4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1790806234; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=WzSZ0hnUQT8CYMb5oLj6n5g++E2FZ910FVeaCeR9vMM=; 
+	b=RKoDia5lHt3ecYgP0mQbg0tg45ublQuFLVkNBfvREFbtfNuwAOF0+Q7iUzuy/EnGcb23dimop66q44R0GXbkHWX0Rd0xhPci6C5LW2dkNnXCtoVsL5No8PoajXBFIOZnb2ZUfEpMpDYuc0ooJUTyGhbIQjMlr1hO48cHOBBfZqw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1790806234;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
+	bh=WzSZ0hnUQT8CYMb5oLj6n5g++E2FZ910FVeaCeR9vMM=;
+	b=TgswJeQsT2KcLgzJU7Bc0CswanCEM81OQTY3i6ztQ2SsquPBJ9k/O2h+FcsARn4x
+	YOir9j6t0WSZcH01LIq1ntlI8oT7fKXtUcFPIldaL7Euidqe2Wj4fVhsP50GQxEcDPV
+	y9ov9Z+gRHdrq3LCE81BFLfTWbnVvdpBtBlm9Oto=
+Received: by smtp.zohomail.com with SMTPS id 1790806233139843.2903306911663;
+	Wed, 30 Sep 2026 15:10:33 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=iso-8859-1
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
+Subject: Re: [PATCH v10 6/7] rust: ww_mutex: implement LockSet
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260103073554.34855-7-work@onurozkan.dev>
+Date: Wed, 30 Sep 2026 19:10:16 -0300
+Cc: rust-for-linux@vger.kernel.org,
+ lossin@kernel.org,
+ lyude@redhat.com,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ a.hindborg@kernel.org,
+ aliceryhl@google.com,
+ tmgross@umich.edu,
+ dakr@kernel.org,
+ peterz@infradead.org,
+ mingo@redhat.com,
+ will@kernel.org,
+ longman@redhat.com,
+ felipe_life@live.com,
+ daniel@sedlak.dev,
+ thomas.hellstrom@linux.intel.com,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <A11C8B1A-00A3-49C9-B9B5-30A55AFDDF2B@collabora.com>
+References: <20260103073554.34855-1-work@onurozkan.dev>
+ <20260103073554.34855-7-work@onurozkan.dev>
+To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+X-Mailer: Apple Mail (2.3901.100.1.1.11)
+X-ZohoMailClient: External
 
-On Wed, 30 Sep 2026 13:57:31 +0200
-Uwe Kleine-K=F6nig <ukleinek@kernel.org> wrote:
+Hi Onur,
 
->> diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
->> index 729776086879..abecd95b0c3c 100644
->> --- a/drivers/pwm/Kconfig
->> +++ b/drivers/pwm/Kconfig
->> @@ -772,7 +772,7 @@ config PWM_TEGRA
->>  =
+The bot has caught it already, but remember to compile with CLIPPY=3D1 =
+for
+v11.
 
->>  config PWM_TH1520
->>  	tristate "TH1520 PWM support"
->> -	depends on ARCH_THEAD || COMPILE_TEST
->> +	depends on ARCH_THEAD || (COMPILE_TEST && 64BIT)
->>  	depends on RUST
->>  	depends on HAS_IOMEM && COMMON_CLK
->>  	select RUST_PWM_ABSTRACTIONS
-> =
+If push() fails, two things drop:
 
-> Can't we do better than that? For C code the right thing to do is to =
-use
-> one of the div helpers instead of a plain / for types bigger than lon=
-g.
+> +    /// Attempts to lock the given [`Mutex`] and stores a guard for =
+it.
+> +    pub fn lock<T>(&mut self, mutex: &'a Mutex<'a, T>) -> Result {
+> +        let guard =3D self.acquire_ctx.lock(mutex)?; <--- this guard
+> +
+> +        self.taken.push(
+> +            RawGuard {
+> +                // SAFETY: We just locked it above so it's a valid =
+pointer.
+> +                mutex_ptr: unsafe { =
+NonNull::new_unchecked(guard.mutex.inner.get()) },
+> +                _not_send: NotThreadSafe,
+> +            }, <------- also the raw guard, which drops in push()
+> +            GFP_KERNEL,
+> +        )?;
+> +
+> +        // Avoid unlocking here; `release_all_locks` (also run by =
+`Drop`)
+> +        // performs the unlock for `LockSet`.
+> +        core::mem::forget(guard);
+> +
+> +        Ok(())
+> +    }
+> +
 
-Indeed. Rust code already uses some div helpers. However, the kernel
-crate does not have Rust wrappers for the helpers this driver needs,
-such as mul_u64_u64_div_u64(), so we need to add them first. The
-changes would be too large for stable.
+Both unlock. I suggest that RawGuard consumes Guard on creation, or some
+variation of this.
 
-So how about merging this as a fix? I will work on patches to use div
-helpers in the driver.
 
+When locking, I don't think it makes sense to immediately retry on
+-EDEADLK. This will busy-loop on a lock that will probably still be
+taken. We should release all locks and sleep instead.
+
+> +    pub fn lock_all<T, Y, Z>(
+> +        &mut self,
+> +        mut locking_algorithm: T,
+> +        mut on_all_locks_taken: Y,
+> +    ) -> Result<Z>
+> +    where
+> +        T: FnMut(&mut LockSet<'a>) -> Result,
+> +        Y: FnMut(&mut LockSet<'a>) -> Result<Z>,
+> +    {
+> +        loop {
+> +            match locking_algorithm(self) {
+> +                Ok(()) =3D> {
+> +                    // All locks in `locking_algorithm` succeeded.
+> +                    // The user can now safely use them in =
+`on_all_locks_taken`.
+> +                    let res =3D on_all_locks_taken(self);
+> +                    self.release_all_locks();
+> +
+> +                    return res;
+> +                }
+> +                Err(e) if e =3D=3D EDEADLK =3D> {
+> +                    // Deadlock detected, retry from scratch.
+> +                    self.cleanup_on_deadlock();=20
+> +                    continue; <------ sleep on the contended lock =
+before continuing
+> +                }
+> +                Err(e) =3D> {
+> +                    self.release_all_locks();
+> +                    return Err(e);
+> +                }
+> +            }
+> +        }
+> +    }
+> +
+
+In order to sleep, we must record the contended lock though, which is
+something that this patch does not do yet. I suggest that we store a
+pointer to it and call from_raw() on that. Also, when acquiring the
+contended lock, we must hold it before retrying, or we will race for it
+again.
+
+> +    fn cleanup_on_deadlock(&mut self) {
+> +        self.release_all_locks();
+> +
+> +        // SAFETY: We released all the locks just above.
+> +        unsafe { self.acquire_ctx.as_mut().reinit() };=20
+> +    }
+
+
+IIUC, calling reinit() will forfeit our ticket and acquire a new one, so
+LockSet breaks the whole premise of wwmutex: when there's contention,
+the older ticket eventually wins. IMHO, remove that line.
+
+
+-- Daniel=
