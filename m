@@ -1,112 +1,133 @@
-Received: from mail-oo2-f40.google.com (mail-oo2-f40.google.com [74.125.231.168])
+Received: from mail-ed2-f32.google.com (mail-ed2-f32.google.com [74.125.228.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C8551AEEC
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 13:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E936518152
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 14:08:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790862868; cv=none; b=l0hIg7+ftFQswzMRhK6WdxhEudbVfRVamVOBSMNZge9fx2QjXMVV+O5aA4PdAH67AD+QZCh4iKD9q91DKjQCWgTea4LV+4AwxJh/xfskB40lml5qulVsG+4ipiMVwjGTt2HzfSlr3oR9hAmvc/D8Y3lUfO5wZ41ZCyupHKJMdIc=
+	t=1790863694; cv=none; b=J5O6ZUV8KCXuT3ZPw/Bx0p0Gkhjm/NiM0A6iH+GBuChHF5PN59hRBVR83kl2K2E8uvYw3tfmnkxWCDImQyg9s1WQcXnO9bpaVqyx01aKawxAH0cqq7j/+3pz7MskGKmojDQuAauA/FvbTSI39pitNB9pzyDnG0ZoLk9GkQuopL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790862868; c=relaxed/simple;
-	bh=qjW8hwIoElWxA0iUFDq4qI6cCoaWjoffu2xCTdl55CA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=pS14FcRi+npfATkWjGBTlLmdOqNOJPjmF/Ub1VIwGlt5EpOkN8KrZU14gY8UP84EQxBUEXwmFLllySyUceQqs2FWTCRnbw5GlVImxHEj/JnOGK2ppmGknbyIz3bFF4ptWeFQEy9iGW7uOdqdPoHBOaqDcKbBBxKVT09OIZQAA08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=IUmV1ZsJ; arc=none smtp.client-ip=74.125.231.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	s=arc-20240116; t=1790863694; c=relaxed/simple;
+	bh=zECpyUBkuoTFGnpwSyLJZls4RBh3ZrxrUUu2x8F+Hms=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=IwJ3gT/mUrbfR2C/Ow00yPXs4zRaZYwRNUNLszXPAdcuugVP5X2e9dtu8KZJog8EmIkbvaqN02AAUd79rUyFlWEd4rPFtrBNScGkpEA8Iu7+tqGKLwhTvu8+44pqqjTf8O2jr0Nl1UJxQFapgAVFr34lFGSx1JNXoyXCBZbJ09w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oRfj7FkH; arc=none smtp.client-ip=74.125.228.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="IUmV1ZsJ"
-Received: by mail-oo2-f40.google.com with SMTP id 006d021491bc7-6c72bd8a02fso3554211eaf.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Oct 2026 06:54:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oRfj7FkH"
+Received: by mail-ed2-f32.google.com with SMTP id 4fb4d7f45d1cf-6acaec6a74aso4804901a12.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Oct 2026 07:08:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1790862857; x=1791467657; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1q33kSEPPj9vs/L5DXTf6JcpgngvKm5JTS+mJu9VGq8=;
-        b=IUmV1ZsJN82AWuQ9LrabVy6OBSTm1XupN0yzyFSsxFC2L/jAFcKm75c8kbC+s+ZU5F
-         F3joDewuGaTizkRbgxeXodeSmO5qxOzsf9agFHWmWEeZOSEkYPeI5GihQiPNdsmhefty
-         DdseqsJVfDoT7Tt+oukh9vVhHiZjHXKe6k87Df0ogjviuGMkWRfzP7woPPx2cH0b7/hp
-         BWCogj50ff1vY/OrHgmys100QQS2XBCillebAvpiYnrs4U8+cfT/0RqTxy7I4g8LDrU1
-         QV0A7LUGUTNDe82WTmoorIEt/ZquzeFen00kwpTvi09uioXSPmNAO7FJvkwb5/sFs3kD
-         61kA==
+        d=gmail.com; s=20251104; t=1790863691; x=1791468491; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=zECpyUBkuoTFGnpwSyLJZls4RBh3ZrxrUUu2x8F+Hms=;
+        b=oRfj7FkHiu21TkuJzLEjQ1WBZAQCtT34TaAQiM70+g81xaqgv4HrCXysAoxBMuNWvE
+         n78oFjsZPhERWcCpn0GIfGfM3n2/cwzJrWDMhl1Ok9m0M9zCJxUW6I6ofQghh/RrL/Di
+         FQ3H3lbnZXxCd/EiIVVPf1PyJ5Fx5cnZ2AFLxYFaE1HJKRmPssvs9Xkkb7+Z+4yggMKj
+         k20P6SEwcqJKc9EgxyuIWnN4Yr+4subazOAxjj6BmRlqdIkmeGDS5yXqUf52guMhngh7
+         SggepNmp4yBLjZxCDGd4UQJ8ITJfGhRqOvLrjIhV9wgVBun75ZGzFHN+TrzHdHz/UZbC
+         wZLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790862857; x=1791467657;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1790863691; x=1791468491;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1q33kSEPPj9vs/L5DXTf6JcpgngvKm5JTS+mJu9VGq8=;
-        b=SmZLG29ijUfLBdVcbtSYk+TwjsBRR8Yh0w+M830wpwlm2IhELPtCFGYyWOWgbdM4UA
-         EzgOVoAyimW7diagjz/P5xg3Xt19tha/3akgviX2EIe9Tal3xLSLcIPe5E4jlTTFfWYE
-         4rFCwz0oF14ibMxz+JsmznYnVDnB3hKlcLYZW7zhuQ+0amEDKTWCSsy6xNUyllUfNHFE
-         BNk3V+hYV/yeQi1OZ/bUruNgMuHrEcAb6x8Opa2vHPP0+2A2yDkBiEc4q2yQ7YkPe4Vn
-         EWlIAGuOszgZCoje/IbBP4yDGc1SuQvMjtqArhyV49r1GH//7RoYKtgnfDz5P+IPxp+2
-         A6Jw==
-X-Forwarded-Encrypted: i=1; AKwUvBzBIjxXNgECCBNs3wjehWIl6oxyv5EoGBK9N34TP9cqk0u3ylvX7TH8fEydF7ZWnFb1JrjHev3mG+5vsvClPg==@vger.kernel.org
-X-Gm-Message-State: AFuF++n6k3oOmPvHQw3/JijRQ8mPmOXCcKjISvAjrnmjShPLV9+vLzzS
-	/Erf9Qu5z1mFJhdxDtl7n5NcrbPibGt79u4ULh+d4581JaF4HETebEuVyGMxs1k1fRE=
-X-Gm-Gg: AYBFou3qcpnRoy5U+7l95j2ZkOJrBFfiJs0bbE3m6DNo0h+RaQvYy11cMSJeTwGIJvG
-	ySmDexwfFFa2iF+oldn87j0CptO8ophb2Hh/eXBuGYsDDRM2t3zARd4naTmI565yisFuznlf0EI
-	k6PGV1M7FJA/DSwE/OgiWiAgbHU+LeBpX5LlSKMviIIPUWQhqPA2J+bAN3I7XMoEaT9N2GJO6Rt
-	9bAJyQHUxS6+Tdaw1HTWQUG2CgXhXLtBY+lsyOMxnnFLwVa+8X3D9Ota0KmB4F7TFFFmgJf5k6v
-	5vRxMEHFZdR9RONEgySHePWSxvi65zzE/TEOBwy4vku/QFbKL51/ur6oev1PLewliFJ706uK5a1
-	A+UTdxEX2mw4/q1/uY9KLwPsnmdQGz8aSY5m0GlaeQc0imBOmXOmHOw5+X8asITPB21wBiXPBit
-	niOBi7/Bk+UwxpaAUoJYV8HkSaH9rMDUqLz/AoDRGIXG94e0AbFmMmgzTgFU3W7nfCogTOa7ndd
-	1cNOn6WrySZ6k+NUn+y5fDHiam4OlcUQFlnQHpR1mzrTGMgUFw1vkM=
-X-Received: by 2002:a05:6820:4df3:b0:6ba:2927:3661 with SMTP id 006d021491bc7-6dcf514de6fmr4675732eaf.18.1790862857501;
-        Thu, 01 Oct 2026 06:54:17 -0700 (PDT)
-Received: from [192.168.2.38] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6dd985dfee1sm2647663eaf.12.2026.10.01.06.54.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 06:54:15 -0700 (PDT)
-From: Jens Axboe <axboe@kernel.dk>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Thorsten Leemhuis <linux@leemhuis.info>, Boqun Feng <boqun@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260930-tag-set-send-sync-v1-1-51acdb36f4bb@kernel.org>
-References: <20260930-tag-set-send-sync-v1-1-51acdb36f4bb@kernel.org>
-Subject: Re: [PATCH] rust: block: implement `Send` and `Sync` for `TagSet`
-Message-Id: <179086285425.1662570.7711958272817795555.b4-ty@b4>
-Date: Thu, 01 Oct 2026 07:54:14 -0600
+        bh=zECpyUBkuoTFGnpwSyLJZls4RBh3ZrxrUUu2x8F+Hms=;
+        b=mlqVUPaOzKF2dzjZlEWgKbBvAj8XOilixfU4A18NeQOZYLQL4RF0xHV+Gi2u5qIaAj
+         c08GIlmolyZA8qSwyemAO817uT8uZeROD/hv2OJxm7twccklsIR0izB5gAyZpuNjhxnU
+         uhFZAQ6Yz0FPLAGF1vu/yASCWUZQ8T41+/mhBcskwZzhBNeTkfQD4aUAy3DaAqoBVcr/
+         yyCglZROx2iaeR1WoCJ6VZT2GTvqTYsG439KL9NgO0ymMjUbkQtIVx4iu9h3+NPezMnZ
+         Oyu0W20NdZ7XVneS4koItqW+PvGL2v5o+oUxqbno1fehYGxMW6ZUwLvGduYR3clAiKuR
+         uwXw==
+X-Forwarded-Encrypted: i=1; AKwUvByZnRt/DHlmyUxITUa+Z6r2FAwc5Y2SkjxEFjX7g2BNrCySmrHsum26d3cAk/lILe1SU3MNTd23M6TQmKC58g==@vger.kernel.org
+X-Gm-Message-State: AFq9FYL2IqD0xjZrUjBtFD/GheybVjXw0owBxn86UIOvK1dWVRv8q/Zz
+	qecGUcPBtv0hsMWjLBJlJ3DDrIQTnnZSXPptZgUiaES2dynlgWhi2N0=
+X-Gm-Gg: AYBFou0ugdIW47dsDpalMhE6xShybtSr08xrOEoe/8xCMUUJdhaEKX1SJtBsLAEJ4P0
+	ri5JiwfYL8axN0gt7S9sAMhke/bUY9yXdBcKibbrv4VKNsbo/p+ShgWSfOCgtGyFxJyhqds1Ula
+	+SPB9AdI3bZj+qAyKmU1b/y6uIlKBW2+BvfWx/7sPuRKMA5vtwbBxxQEb52YgE25EFVm7MnR0Q7
+	PDyQdbhxaLUst4X9mIFnWu/cX+ZIgqBOlrP0Y0zTmsNW0OnBqYEfoyvlia6ZMC6Ryo2Lb+WhlhY
+	+AtOx24aI4M58JVr5Kx/OsrqdAstNpc0t5UX20J0PtR/Cpw6PtaFg3SAklCdqURE39+9SXzpbrW
+	Av2CovlkcVZR864U5M130MSz7HLw3elcsE/+WNgKlM49JGngEF4CSIFJjEDxDBcY5fD2RcJb0LG
+	6Vrt+tEPoU2+rFNBXHMG80TXhFEMvcVCN3bCOwIvVVQpWHmMzdrsNqIswENMaLo1i7UiaAM+E6I
+	Chp4MOfrCG4jfhteym+1ctVgS2Nd5lXDjn4JAMVGbR9
+X-Received: by 2002:a05:6402:52cf:b0:6ac:c4fd:c726 with SMTP id 4fb4d7f45d1cf-6ae1995216dmr3927218a12.42.1790863690562;
+        Thu, 01 Oct 2026 07:08:10 -0700 (PDT)
+Received: from localhost ([186.158.238.108])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6ae5ca76374sm1111911a12.30.2026.10.01.07.08.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Oct 2026 07:08:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15.2
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 01 Oct 2026 11:08:00 -0300
+Message-Id: <DLTK6X5RFK4Q.1OW6JA242CMRJ@gmail.com>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Andreas Hindborg"
+ <a.hindborg@kernel.org>, "Benno Lossin" <lossin@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Boqun Feng"
+ <boqun@kernel.org>, "Brigham Campbell" <me@brighamcampbell.com>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Jori Koolstra" <jkoolstra@xs4all.nl>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Rae Moar"
+ <raemoar63@gmail.com>, "Shuah Khan" <skhan@linuxfoundation.org>, "Tamir
+ Duberstein" <tamird@kernel.org>, "Trevor Gross" <tmgross@umich.edu>, "Yury
+ Norov" <yury.norov@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel-mentees@lists.linux.dev>
+Subject: Re: [PATCH 0/3] rust: kunit: support #[should_panic] and same test
+ name with different #[cfg(...)]
+From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
+To: "Gary Guo" <gary@garyguo.net>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Burak Emir" <burak.emir@gmail.com>, "Brendan Higgins"
+ <brendan.higgins@linux.dev>, "David Gow" <david@davidgow.net>, "Miguel
+ Ojeda" <ojeda@kernel.org>
+X-Mailer: aerc 0.20.0
+References: <20260930-rust_kunit_v4-v1-0-e3b0d45311dd@gmail.com>
+ <DLSQJS2QT4JW.3BPUMU5M6N171@garyguo.net>
+In-Reply-To: <DLSQJS2QT4JW.3BPUMU5M6N171@garyguo.net>
 
+On Wed Sep 30, 2026 at 11:54 AM -03, Gary Guo wrote:
+> On Wed Sep 30, 2026 at 2:23 PM BST, Nicol=C3=A1s Antinori via B4 Relay wr=
+ote:
+>> This patch series intends to implement two features for KUnit tests
+>> written in Rust. The work is based on a TODO comment made in the
+>> `bitmap.rs` module [1].
+>>
+>> Changelog:
+>> - RFC patch: [3]
+>>
+>> 1. Supporting `#[should_panic]` [2]:
+>>
+>> KUnit tests in Rust follow the user-space syntax, but at the moment
+>> `#[should_panic]` is not supported. The first patch of this series adds
+>> support for the attribute (only in its basic form, `#[should_panic =3D
+>> "message"]` is not supported yet).
+>>
+>> The way it is supported is by adding a new boolean property called
+>> `rust_should_panic` to `kunit_attributes` struct in kunit/test.h and
+>
+> This is now more general than Rust panics? Perhaps this should just be
+> "should_bug"?
 
-On Wed, 30 Sep 2026 21:43:55 +0200, Andreas Hindborg wrote:
-> `TagSet` never implemented `Send` or `Sync`. This did not matter until
-> commit "rust: block: fix `Send` bound for `GenDisk`" made `GenDisk: Send`
-> depend on `Arc<TagSet<T>>: Send`, which in turn requires `TagSet<T>: Send +
-> Sync`. With that bound unsatisfiable, `GenDisk` is never `Send`, and the
-> rnull driver fails to build once configfs requires `GroupOperations::Child:
-> Send`.
-> 
-> [...]
+I used the name suggested by David Gow in the RFC Patch [1]. I believe
+"should_panic" is better because it directly matches the attribute name
+and will stay consistent in case the panic handler changes the way it
+trigger kernel panics (although this is very unlikely I think).
 
-Applied, thanks!
-
-[1/1] rust: block: implement `Send` and `Sync` for `TagSet`
-      commit: 06dad60393f20985cc5f24eeed63f965d366c4a0
+That said, I'd be happy to change it to should_bug if that is preferred,
+please let me know what you think!
 
 Best regards,
--- 
-Jens Axboe
+Nicol=C3=A1s=20
 
+[1] https://lore.kernel.org/rust-for-linux/d20cc2b2-afeb-432c-924b-55ad00d9=
+80fe@davidgow.net/
 
 
