@@ -1,194 +1,172 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFFC3BBFC9
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 10:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790850150; cv=none; b=T/Ut/PBiKHkkyse9pCW6iWwP6uScJ1lMVpZvJGsWQZzNb3TilwENXDto3oXSn/ZYEbQ/vRoaTWlU1Rt55KHh+uGRq7o1FeWXjNNzh7KluCnQZgjBG/p5ho0HbcDsWp+zCidNQ/gRZn+Pj1kFfdTAha3eNfbiKwPyTinO5xTJwks=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790850150; c=relaxed/simple;
-	bh=VnVU8bPLJLWfbtAdNiLdfbQJCPObLTqpHbQuXDlr2xU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kxtyz/h0u1xiJV2Wszs2Cj86Lp9ce3fVw3XUR77susXr1Xe8OecFvPDVWkQ0o9NZwChFpbQiZIaM65LnYG06w4ZueEAXkkWa+cF6MZAwA0qf1jonxS2pGu5P9kum9A7SHktGzoF3YMwURgtIZcKg+DK8/ouVNjLnGHwBorBebzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YcoasWwK; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3B63ECBF5
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 10:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790851634; cv=pass; b=h9JKJU0KWhbL6rA7Pv1MDKa5MlC7j4w8k+KV6p2Tgb3y0g+4nFaGR3+8g7bgAAige+M24Fe2oD3JjfGEJ5EX2LaiLntVvsWe0pmRxsNNd+RwJr2mCowy8OpGzp7tO6UD13SXRPkcFI7kDBPO4T8Qvtg8igMAYoc2fPzUkjqMNmU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790851634; c=relaxed/simple;
+	bh=Sk7RTOQcN4cidxedcRYIVkGub/oGpNeLEskr9NMZ1eA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rPMLRhInMGdCq/S6W8WVySYvi8G6nsj81Nf5ykuSIbtXz8cjrbxL9/ztzU9t87PENYx+QzvO+kD/L3OqssraHTA5OeUpOjY5FXh+Ha1gJB2Q+dLdmN+sBUtGJDb9sEFVD+6NxRx8j9eDDvAYjQV2xKFnR5mWzuZADoQZhtTtZUc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SVLuSdq/; arc=pass smtp.client-ip=74.125.229.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YcoasWwK"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49cd5462b69so35389515e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Oct 2026 03:22:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SVLuSdq/"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-34b010e8c94so306668eec.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Oct 2026 03:47:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790851632; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TD26xzsbXKCZjTXkkak/JibHnTKgA+BPzin+YFYto7814OnOx/L+qJGPRw5KTX6y8K
+         EGwuh6zKe+Jmtglp1qw2oUAPjVlGCeIfUg/0j/IJMpQbJ8XYltkeLFKxhuHMbwNu+knG
+         U4nAedftzTE5OPw6tCGq3XcKmnFuVUjh7PphYj4GtJmpCX7BWRt90DEoP6meMfp8mlkA
+         ANzpdzFYiEd6n590KuYUUkPZCDPgeaZbmrRRczT2V0Jb8Nrh7sSttwTSy2nn6Yti6j5Z
+         Ye2fSy7UNTWtaQ3S27r1WC6+Ux84dhOZyw+/klnKKcil2mPpXlupBw1XyQ3NXT8wZaJ9
+         2piQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xZGQWu5F+L+LnhlrlKnJBt7Q9Qa/GJcvQeTn5kUBy+o=;
+        fh=aau669W/r1YbBOATay63OLpjG6QTCQ6QO9w099tGBig=;
+        b=AyxWjg5OyPHwrwgGY/uCR3NYeaN49q0Wfp8Q/DEnsANel44gH2BGmMaRnikBeH8U+0
+         8RQ6LRTNTiral6/htt6Tncu/f6Zb7h5ExBw7R8sJurh4C252bIatTqwGHcQ9yYkuulKy
+         uC90nlsMt6AI0oQO1WFTNCkbwzM2Z0ZL3+zRb8kr59KqvlReoXlejRIDdaocXFSnOTEp
+         tCWG4QHUV8Oh8PY+fx/keIV8qvNA/qbwAl5n1H8Mo1jJGAlmIeJSWTfPbEuocGfBXEwa
+         Ksg3zU9y+J5pBZ60B19/saMv8SSHQeZlU+2h3HyIWEszEVHwyTdj8zBy5XpoL+z/fdCA
+         REyQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790850146; x=1791454946; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1790851632; x=1791456432; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=nFzLuRrxO1MNqfhxtzwDFW5LDm+149ISNFd1xuYHuCg=;
-        b=YcoasWwKANqhJAT6ITRJApGZlPhldlCa3xeDRxEfwNSU7DdcpSvcZbECqojDb+i15L
-         iTz2NxaLca/myE23nQbmPyIMSRIthvctpPeXyyxfi8r1qmMc4zC/alrLzYLdN3ouN5D2
-         U4iTFWDDoj7ixO4ig1FDmEZ9qfc5myNxyc8kq9DjFl8/BqobYHyE2x/01WxvzLUZjZ3O
-         Jzl48w2XjO4J4HAerMfCJ1+OKjrbJulAhazaEQuzk4XQiwDdO2SKTC5azlLMoQnNlSJh
-         K8IgfpJ8xoftjXCuBTDZ5P83xNg9cMCi+bbTQriNhuGkHGaEWUXaFY4F/qUBDs/MX2Yr
-         Ihzg==
+        bh=xZGQWu5F+L+LnhlrlKnJBt7Q9Qa/GJcvQeTn5kUBy+o=;
+        b=SVLuSdq/5miDqsF3OehTAiZGkWSLw1jUF43HwR6I34Lu9xE1axu6bwF9gwcJNTA5kF
+         U8vPKBE1vUqFRqsFA7AE+q1OMVuz02OkhFEFW5+uHjRa4ok/8IohGfkZfLXNBqhQlxh+
+         3TZnW+atvLc7QhFxOLfUzwM/dAeAyXSLnLn0eabti8ybR2VijI9vivWhlSGusAQe4RI8
+         Ak9CLyn6BjL7OOer0dA4AJepj8TIJ205/WBR6upqEiX4LzP0QiGiPrbn9fK06Luua7BH
+         uHvzvoDfbEXHs2glbii7vHe7tSKb+hHy9LdvyUdBEcnYecBbZ2gk1gXQcfXpRgYt3sKe
+         bk6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790850146; x=1791454946;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1790851632; x=1791456432;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nFzLuRrxO1MNqfhxtzwDFW5LDm+149ISNFd1xuYHuCg=;
-        b=SrWjv4CSFIT5fh0ErfkT0fHBewb9mvCFyP4ml5aabmQ3Z7M4cYk/EGA07TV6btcg37
-         FxaESm8PL8JRzZhT2pt1JikT6gdcSwDyTHsu3H2IGKBFp8NjXv9KLB6f5aJXpD4VVPV/
-         Qp2LlVJtwVZcZuOtgRavRrTjupXl/JAMFr6JSpTHBkxbDFsKUi9EuNZz1dfnbdriy3Y3
-         +utkN7B/3EbCNme1zzIPSZq0pZnLmhaTbLKBtmtWPndJOKyVMmwLbuWtMKQohT35Z+8X
-         +K4cefe3VdoaPfcfUVnilITk8RjzqtsjqYOHPDnPuExfFSXOsX3U6ErLs2v6bINQm10a
-         i/aw==
-X-Forwarded-Encrypted: i=1; AKwUvBzDirVaAaYSucaCFxT00mBXoLrD1heXDkB60giku80MAYnj9BoBlyiksvKOy1rM8Y+lJ+cdQZL8Ri3q/P/tOw==@vger.kernel.org
-X-Gm-Message-State: AFuF++nRjqBEWyj2j/44zOLMyb9ESn6PrBr2QmaXUiIkC7p+neNaJPva
-	PKn4F11F02HC/eOFgAQ6bGsGd1KmcLEsmWc8HL9QAozBwIWloEBuzmrn
-X-Gm-Gg: AYBFou2D8u9Uxb42OK5K4SCrg45fHmSe0GZy6xrfQ7Ly6L39+jV7CZneJLj0XfrCDUB
-	I+sxwQEsY74Jp7BA7MwTjLyOCf5ZLIXtLuQhxxkCYXET34R+Pp7ODSeVAUXsX6tK2LNNRVAJHkb
-	qoqie55q9GXq2c8jty7cdLOJ3XThFRPiJk2Y0JV3rPmQ/AT1bLErksUikj4AUv9AfNwA9f9NT21
-	GhUclZr2GHNi74UFBszAm4Jib1PX5tHRjdDB3/FRfjpVsKqTjgtc7sb9hqEhjjY8aGVJvkAVbw+
-	KfILPkrb8Zb+q2ZCHJ01qNZ8541oEVHzEUehFblWibiRruFdI3LX+sE0YJQlMxhec9tpPGvpXxt
-	gDozwVpkp+W+4SCyG/7DkcZ3BhUFaZGVJrz+BrhOjF8HUrLrDzaz+CzmLi9mVvdDgmCfsE2mCCW
-	8wRYSKmhSd4SYzXV8TuHqa/lJGJaOe4ChtoUDxrZcWATQ2Jpsb/pvt2xXSKkNxk0svY0U=
-X-Received: by 2002:a05:600c:6815:b0:49f:ff32:803c with SMTP id 5b1f17b1804b1-4a01b0031a5mr65592665e9.16.1790850145677;
-        Thu, 01 Oct 2026 03:22:25 -0700 (PDT)
-Received: from main ([5.27.43.223])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01fa15e51sm58094425e9.2.2026.10.01.03.22.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 03:22:25 -0700 (PDT)
-From: Mehmet Koseoglu <mehmet.mkoseoglu@gmail.com>
-To: rafael@kernel.org,
-	viresh.kumar@linaro.org,
-	ojeda@kernel.org
-Cc: Mehmet Koseoglu <mehmet.mkoseoglu@gmail.com>,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	linux-pm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	xuyiwen14@gmail.com,
-	miguel.ojeda.sandonis@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH v4] rust: cpufreq: reject NULL from cpufreq_cpu_get()
-Date: Thu,  1 Oct 2026 13:19:15 +0300
-Message-ID: <20261001102213.45437-1-mehmet.mkoseoglu@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20260829161013.102967-1-mehmet.mkoseoglu@gmail.com>
-References: <20260829161013.102967-1-mehmet.mkoseoglu@gmail.com>
+        bh=xZGQWu5F+L+LnhlrlKnJBt7Q9Qa/GJcvQeTn5kUBy+o=;
+        b=FoNA+TiiXAA+Ra55nz3utGsZ8elTD1s5dB0VaDxqjcu/WCjzLECBHmSAhvNS3f+PUT
+         c7p81vaGVI4Q9kyNGk3+F0vPjKSF/tOeGo4Ps1Y3YGLFRAg4cGV0tds0XycfxRFPMdLZ
+         qdHQCVUCiIrNbTOah4mu0YnTEbo4KjWNjzHqv4DGryAx8ZfVattssRqkSKCt4rAD/WbW
+         pjLQFa/F6PPf7u73aLzffB172T2+enNx5y1YKuMlK3vSZxRozra2xhoCFzGXpuhld2Ys
+         tj52JbqOIP7viSwhNm1r970QP5tztU7ac3PYSj3HWYzm5t9rp9ldgALKxwnE3vS5yhi7
+         Qcfg==
+X-Gm-Message-State: AFuF++mPuMxQuBCi5N9qLBhsGvY8jfcQofmdUJvfYLTGMiEt9ruDuBMV
+	/RLqDX3+kvMkBGMVUdk+cxETwPGrxLNGrYk5AALfKWVORzrOwjJE/tTB+x7RZ7uRklPd0ofvwnw
+	L7gmdglsDKWWMxxZkWRg1Q2o7QOYGDeY=
+X-Gm-Gg: AYBFou3boQLq735X0T0+AgjBusl3KqWrqmeklI9rhmK3fZm7haft2I4e/2gBRJZTt1T
+	X+GE6Ckbqfg5qf0Q+e4JCVJdGCrW59fKGH+veERl/1UZMvJI5pssIgBzzEZtps9Qs4vTmKTA2/v
+	27z742SdP7lMvUSbSaOqFKI0BcLofjYFpzCK6yQtCP1sNXyP+LQwM8Ft90QsIdW612y489O/i4q
+	0MN6h1wviRcTBmt4LdBhAv0IfANx9+z/jHYw/691CuVtDBevwP+qNzZazMd/vNsHQ1SetEItjQq
+	w5T456QUu2h4YjFdDRuOLagIgf19MilliVkzR0c8WBEERSWOQjuQa5Cgoh0+wpJXjTmNzKjV9pq
+	H5YaYTajzu0w0bQPdJ3QuQda1qaMcOojdA37KUno3M/NGza/077IM5ambiX6ptIMCtXJv5Reiom
+	arZAgw+WXI6wtWzn3Ssbe0MfQaT4M7W31gAqV94VO7XhK7Qqz01JNKQRPK5AUdyw==
+X-Received: by 2002:a05:693c:8085:b0:34c:f181:85e4 with SMTP id
+ 5a478bee46e88-34cf1818b1fmr7262875eec.1.1790851632033; Thu, 01 Oct 2026
+ 03:47:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20261001042942.109012-1-chenhan0017.work@gmail.com>
+In-Reply-To: <20261001042942.109012-1-chenhan0017.work@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 1 Oct 2026 12:46:59 +0200
+X-Gm-Features: AclHuK-fHM8iJEVkEzuvz_ovqF_dLYt_Qxw_QJ6A0Z4myKEgiMjsoUcH2rpEiKc
+Message-ID: <CANiq72kjGWVk_9hR-gn4vJT-pgBsGWEvThMd9dF6-+GfBZseOA@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: time: make Delta division and remainder fail consistently
+To: chenhan <chenhan0017.work@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, a.hindborg@kernel.org, boqun@kernel.org, 
+	fujita.tomonori@gmail.com, frederic@kernel.org, lyude@redhat.com, 
+	tglx@kernel.org, anna-maria@linutronix.de, jstultz@google.com, 
+	sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com, 
+	tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, tomo@flapping.org, 
+	georgeandrout13@gmail.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-cpufreq_cpu_get() returns either a referenced policy or NULL.
-PolicyCpu::from_cpu() passed its return value to from_err_ptr(), which
-rejects ERR_PTR values but accepts NULL.
+On Thu, Oct 1, 2026 at 6:29=E2=80=AFAM chenhan <chenhan0017.work@gmail.com>=
+ wrote:
+>
+> commit. Correct the rem_nanos() parameter name to divisor as well.
 
-If the lookup fails, Policy::from_raw_mut() therefore constructs a mutable
-reference from NULL. Dropping the resulting PolicyCpu then passes the
-invalid pointer to cpufreq_cpu_put(), causing an oops in kobject_put().
+This seems like it should be a first patch.
 
-Reject NULL with NonNull before constructing the Policy reference. Return
-ENODEV instead.
+> Link: https://github.com/Rust-for-Linux/linux/issues/1254#issuecomment-58=
+69573842
+> Link: https://github.com/Rust-for-Linux/linux/issues/1254#issuecomment-58=
+69925737
 
-A KUnit negative-control run reproduced the oops with the original
-conversion. The same test passed with this change. The reproducer is
-available on request.
+The discussion is small enough, so I am not sure why we need the two
+Link:s. They can be useful if you want to reference something in
+particular, using e.g. the square brackets notation [1] to point to
+them.
 
-Fixes: 6ebdd7c93177 ("rust: cpufreq: Extend abstractions for policy and driver ops")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Mehmet Koseoglu <mehmet.mkoseoglu@gmail.com>
-Reviewed-by: Onur Özkan <work@onurozkan.dev>
-Reviewed-by: spidermana <xuyiwen14@gmail.com>
----
-No worries at all, here is a v4 update with the comment update and
-review tags.
+> On the MIN / -1 safety question: div_s64_rem() computes a quotient even
+> though the caller discards it. V1 already checked this input before the C
+> call; v2 keeps the guard and makes the representable-quotient condition
+> explicit in the SAFETY comment.
 
-Changes in v4:
-- Clarify that the policy pointer is non-NULL and cpufreq_cpu_get() holds
-  a reference for the lifetime of the returned reference.
-- Add Reviewed-by tags from Onur Özkan and spidermana (using the corrected
-  tag from spidermana's follow-up).
-- Resend at Viresh's request to replace the previously applied v3.
+Yes, that is fine -- what I meant is that even if we had the check,
+the `// SAFETY` comment should still justify why it is not UB (please
+see below).
 
-Changes in v3:
-- Add Cc: stable@vger.kernel.org.
+> -            // SAFETY: This function is always safe to call regardless o=
+f the input values
+> +            // SAFETY: The divisor is non-zero and the quotient is repre=
+sentable.
 
-Changes in v2:
-- Format modified imports using the kernel's vertical import style.
+"representable" is a fine way to succinctly put it, but I wonder if it
+would be better to just spell the condition.
 
-v3: https://lore.kernel.org/r/20260829161013.102967-1-mehmet.mkoseoglu@gmail.com
-v2: https://lore.kernel.org/r/20260828161834.29539-1-mehmet.mkoseoglu@gmail.com
+In any case, safety comment need to explain *why* those conditions are
+true, not just re-state them (otherwise, safety comments would be a
+repetition of the `# Safety` documentation of the function called, and
+thus not useful). In other words, the point is that they explain why
+something is supposed to hold.
 
- rust/kernel/cpufreq.rs | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+> -    /// Return `self % dividend` where `dividend` is in nanoseconds.
+> +    /// Return `self % divisor`, where `divisor` is a number of nanoseco=
+nds.
 
-diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-index affa2b9490ef..b75d692846a2 100644
---- a/rust/kernel/cpufreq.rs
-+++ b/rust/kernel/cpufreq.rs
-@@ -14,7 +14,13 @@
-     cpumask,
-     device::{Bound, Device},
-     devres,
--    error::{code::*, from_err_ptr, from_result, to_result, Result, VTABLE_DEFAULT_ERROR},
-+    error::{
-+        code::*,
-+        from_result,
-+        to_result,
-+        Result,
-+        VTABLE_DEFAULT_ERROR, //
-+    },
-     ffi::{c_char, c_ulong},
-     prelude::*,
-     types::ForeignOwnable,
-@@ -29,7 +35,10 @@
-     marker::PhantomData,
-     ops::{Deref, DerefMut},
-     pin::Pin,
--    ptr,
-+    ptr::{
-+        self,
-+        NonNull, //
-+    },
- };
- 
- use macros::vtable;
-@@ -687,12 +696,13 @@ fn clear_data<T: ForeignOwnable>(&mut self) -> Option<T> {
- impl<'a> PolicyCpu<'a> {
-     fn from_cpu(cpu: CpuId) -> Result<Self> {
-         // SAFETY: It is safe to call `cpufreq_cpu_get` for any valid CPU.
--        let ptr = from_err_ptr(unsafe { bindings::cpufreq_cpu_get(u32::from(cpu)) })?;
-+        let ptr =
-+            NonNull::new(unsafe { bindings::cpufreq_cpu_get(u32::from(cpu)) }).ok_or(ENODEV)?;
- 
-         Ok(Self(
--            // SAFETY: The `ptr` is guaranteed to be valid and remains valid for the lifetime of
--            // the returned reference.
-+            // SAFETY: `ptr` is non-NULL and `cpufreq_cpu_get()` took a reference on it, so it is
-+            // valid for writing and remains valid for the lifetime of the returned reference.
--            unsafe { Policy::from_raw_mut(ptr) },
-+            unsafe { Policy::from_raw_mut(ptr.as_ptr()) },
-         ))
-     }
- }
--- 
-2.55.0
+"a number of" seems to be added spuriously -- please try not to do
+unrelated changes, or you do them, please add as new commits (e.g.
+this one wouldn't be a fix to backport).
+
+> +    /// The divisor is an [`i32`] because `div_s64_rem()`, used on 32-bi=
+t
+> +    /// platforms, takes a signed 32-bit divisor. The dividend remains a=
+n [`i64`].
+
+Do we need this in the public documentation?
+
+> +    /// Panics if `divisor` is zero, or if `self` represents [`i64::MIN`=
+]
+> +    /// nanoseconds and `divisor` is `-1`, matching Rust's signed remain=
+der
+> +    /// operator even though the remainder would be zero.
+
+Not sure if we need the "even though ..." bit.
+
+Thanks!
+
+Cheers,
+Miguel
