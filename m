@@ -1,68 +1,68 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-wr2-f34.google.com (mail-wr2-f34.google.com [74.125.225.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46E05013CE
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 13:37:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B021D4C224A
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 13:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790861871; cv=none; b=QppWmW+xKiY1u2qDsHPnGVfoXkAQRdDMbB5Tk9YnoYyG0jx5ZEF+CCj2rc5qLAV47wL25erUwGGO3DcpLmHY0g4eU9FKUcXYowMjzjJ4hRYRlSYVnTfspQQ30yA8gMP/4EHuhll4N/hJNWApDJsVXwZnxZ3UEkMrTXSvCUtKYvI=
+	t=1790862062; cv=none; b=YXILn5E47XV70iz2PrZSDMq890ZiZr8hjAvNC17fGhxsfryKFMjShf0uVm9rIcg/xf8Bb9rIm8+8hZkjr9402YpzUqDjtnHDWbR0JwMSsOhbo4jAp9Jl/3HOYYy5EIwwKBnNX1utXO+qE5bO/eAqYNmZMYMpZ7mn+5Npv+bMxxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790861871; c=relaxed/simple;
-	bh=GTDnFhKJr9dcCymmLZx43u0kYHqfR/yMp3Bs8Hr08XE=;
+	s=arc-20240116; t=1790862062; c=relaxed/simple;
+	bh=jSF6sckf2CdykpIyTHyIXc502TuC2NL74BfAZtOKhK0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R1RhEfTh5kmk3XA53LuI5n1bIEctDfblJX3kda0fGgoGDm/Xn3ftW22cwkbLyXPMJ7wynR8Dj5TjbxUZegOvhcJ+4Lxv2wLkTo6z6ZsM2KpVW3YvjcbeAbyPLodQuPDnb1ZoiS/inJ96+QMTLX22Lb71N/ehkbpBli+N/bfYeig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=GnoUn0RF; arc=none smtp.client-ip=74.125.225.141
+	 In-Reply-To:Content-Type; b=f0gACU/X/YHuR/Ei7ALZkaxYxSwGZdPIVq01Cpegz1V81pzhEUHeq3Yh1xpjJVcq0MyUJ/Of8rzRy3+UipPgYMnV6fWgD7JCwG1OQ6UU+9Jdv2iqddj/09epCOnJY5KBgAvEj1prZ+AiYAGmuDWie+E43F6AlVwdVeUqUI2fbHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=exp965j+; arc=none smtp.client-ip=74.125.225.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="GnoUn0RF"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e6b885ef8so38872375e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Oct 2026 06:37:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="exp965j+"
+Received: by mail-wr2-f34.google.com with SMTP id ffacd0b85a97d-48b01c41135so1284719f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Oct 2026 06:40:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1790861866; x=1791466666; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1790862057; x=1791466857; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=cdpqPvVclhD887soSbD3DxkHY24ueUpkBJecYlWBIIA=;
-        b=GnoUn0RFIaFy6+Spji9bdPSxbDLqd6lWNrwm+d+D/ccF6jRjZPCwHOaZPVXUTRurdp
-         ChO9eqDA5GmBHq6+Gi8oJSTKligIIWshsFVQpwfBzCfqsiVb1YUfdG7PD1iUEX5DuxBb
-         W6YxFg5wjJCg5DC56ImX7nNN7yDRYxNK8orofUJm37zIe96WDrvfHHPwPYPqjDUbywlM
-         aBeT9KuAqnKc3DCP6jbM+76VtKmPMABJnZG0lDXGQ3A62DVlnafcCDbKRLpYj0gvVLjn
-         segPG+l2cF1NdPglR84ra/8HuE5CdN5u41gc5TgfIT8/W9VyT+2xAQMu024nMntJsrYq
-         DwPg==
+        bh=hGqLF1Rm/hEU75zgoHWcWsfF1Mh1p1AKwwc942QTcEk=;
+        b=exp965j+dK9d3Gg6mjmXjj64N8SdLOy+ZO3GDm6KuE6rw9tKEECr6wmASJdpi7W+A/
+         X1vof8aRgStYFZTE9Dnqt+0uSPx7g655K+vzr0LvkZF5qV67VZnkXVnnaYARmlEj75nX
+         ljbntdkA8J3v/FpBR2KA1vB9xIisyPDceWiKFoNsmV7ugiEyRoKO9BazcrAMJaGIUPNu
+         Y4XAR4SHh9QDwqol+bU2O030hn2Qk44gRWDi9lXA1T9cehmU8Pprdh1OOV2zb0YPUP4S
+         HNUHFt/SgkuRX7/no6zQ+uvTatXpJ1rDOWX1+CDt24vc4a6p8pm/i+PlatQSEKTKPZlD
+         d9Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790861866; x=1791466666;
+        d=1e100.net; s=20260707; t=1790862057; x=1791466857;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=cdpqPvVclhD887soSbD3DxkHY24ueUpkBJecYlWBIIA=;
-        b=h64hhTy5UsXHZ81+ufunGnKghb2yYC0d06IFe8INTU1Jn9maIXlbCFUTqx8WyrPSKL
-         zg3HoLWtGiJnR/4kLxFQMQrpQdD5PaCvjMIfLCMa8aAZ0Dci6B5W6dQGV1GbqNlT4MIA
-         Bb/V0kYYOKnBA+k4I0kVvK9GaOZ55F7r4s1a+OSY5TLTzAm0MntCE7fYfWhQe/z/RIbW
-         6wgCTLbQIQBlBUk0zDospWkkGdGsPsifdik37Ne0By3wT3A4OlBdnkGI6SAjVlLenIPX
-         Sno4yv5VuIIwzzo2FgHxPd333XJF2EXWjpqHZxlf89RTfkvyT4NNOxHV3MOuBk/W9Cnz
-         QPyQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzNwAto7pRzG8LGycQXVUc7SXSFXSpgdHrn4EUO3oIjiI8RjI87bCdX9/VA/YKqP+79lfQzyAUBfaqqpqk3Uw==@vger.kernel.org
-X-Gm-Message-State: AFuF++nGK9RJ/lPa82zKB9FIUIasJj1XjrF1kNKpw4v/4tUNLdLowEfr
-	CyVtTMVNv/Haa81xH2JWnlDlHqTAD/TfyCdTBJeWGB5G79qYqRTSTnY7l/CFv1bLP3w=
-X-Gm-Gg: AYBFou1J2oR6/gNkCfoGfyz8blihk1oKRIrvskGG8udZ6P49Z3Ae5ZYbH8K8nKl8PJ5
-	Vqq4LoAg1p5mm5LdCDIDpkRzdUJYNb8J/Fk4uZbfgoCC49swffAkewHicJBFjRWQmy/llGgWDYP
-	PH3fDljKR2xeAlHsV4sipMXwkDDk5xgF4d7RlmscLfutTE8SR4mpx1uQNm8m1nEmp92qg4vZ6Mh
-	ivFi10WJgMNydYTRTLnM2lFuPH7rBG3mx/+nJtjIHnApzFLgbOW+amOTgd0N5G+CTJNs5V8BAGf
-	51SK868TI1aEGvT6BpZPD4GrxIihwUFES05HY5jmtUvRPvuasrjuvzOd3yQ2BroyScOMXj4m+oW
-	lOlFr6y0O++EJbxNxB/R8mEiOy/fmpk45o9BMYAMMSnBxN6pixw722G3aGRyFMGks/9I63dhWAn
-	z11o5zhWWgJ2x02eRCHgsYzMUK+mupM5wgKqaBZcVinJ44P03zuIGesUAR0BQSpoCKPryh9GkJY
-	9CWK+BnutwKI7Mr0qQzkIPA4nKwtNpFoi4=
-X-Received: by 2002:a05:600c:45d3:b0:4a0:e45:e8d6 with SMTP id 5b1f17b1804b1-4a01aff0bb5mr71387835e9.13.1790861866411;
-        Thu, 01 Oct 2026 06:37:46 -0700 (PDT)
+        bh=hGqLF1Rm/hEU75zgoHWcWsfF1Mh1p1AKwwc942QTcEk=;
+        b=r1Tf7D3z0EEMvTCU6sdQ1VgvHdEE3eDEmrWU8w4q+/nvAhdjD7K3InmCCPPlcDVUob
+         OJrJ8nmBo6qQ1WASektNqH+ufc8cDa+rM3eyxN96I7F36yy6uz4GwZwwEDvrldkAW1AU
+         AlhCS7LY9xtgHvLmW1waLjcS1bHSMWWilixwkNRwdTMm9/rOjHMTmNkTl+D7/TnXvQsI
+         S8IkqEIQeT4b5uHn9dAdywXo2TxWk5qkc8enjbmjJp+jNxCf1K77hjwfYZs4Z5MVsWwr
+         TJn2EM5v+mdlBD2JgaEU9XV209c3uuL03+6Cr8prow9Fo489bCON7LkRyBHJMYNmGGMm
+         UIwg==
+X-Forwarded-Encrypted: i=1; AKwUvBxG05NiNePI9Ogf/VzNFBwGbXNB/egxYvVvxfM+2GKgIlN37EhQ6RpBsSb93wj7E+2uW9EXe5bcPiRT9kdA1A==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKUqIOmPcKbqx3XTvY5oENdRTv5BFzFxl8fWQei982CZfsJDWIx
+	YnQ0s+C5sjVfgNOfiCJgmyL6eSM39+4XDvDDs5P+ZpOmFJ5Pd9yopcVsvBcXKMxYFnU=
+X-Gm-Gg: AYBFou0/rD9ceaHJe+Bq0P3vo0k4YqAzAyAT4bNR7LrG8B74aruPUdacq72EnFchPtv
+	JAtRwxsFM0Rre+aq95jfMOIUQng+fAMkkTCpaULZDRN/3rfmPryNCJvEVa584e4Iq+dqB1MV9C3
+	bcGFz3tLPOS8Oow4ecz4NYumt3idKXdKxErpFoIkM4gtBLxqho47s/q2pMiFFExYGOU/7oOzCQ7
+	DHbm6m8Br24Yo/sKjwjz/dRc+O1/AITbNwkA22C906Um5QOEQ0IekW6nC0bF5OqQCMk+RyU5F+G
+	szxQQnqs1DO5vGG+LfWPv22bQVNDEvWeHQh7BFef6QdnLYYlurSAfmZflJENfkuToLKVlJS1MYq
+	pKPGxii5HccpUmTpQG3dpeA9RGszUNBji7b5uK12NDpX++FdpfwIecRYRa+IOwHc1HPqCPsN2Tj
+	sehzmW1UJyF4LAbn/d28EwplYtXhYg8yNxQwVOGDyerzWVU25HryoJs1i19N3Vdb8f5aQr2q32R
+	xQvHnYLXAUp4CwPKE1QYLS7L3YXlXt0+WE=
+X-Received: by 2002:a05:6000:3101:b0:48a:f318:ac03 with SMTP id ffacd0b85a97d-48b02505291mr8094664f8f.25.1790862057220;
+        Thu, 01 Oct 2026 06:40:57 -0700 (PDT)
 Received: from ?IPV6:2a07:de40:8100:0:89a9:fd0e:583d:4a53? ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f9851efsm78627845e9.8.2026.10.01.06.37.45
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b0691d681sm5667084f8f.23.2026.10.01.06.40.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Oct 2026 06:37:46 -0700 (PDT)
-Message-ID: <d3c7f66b-3853-4822-a7f6-2e60d54a20ab@suse.com>
-Date: Thu, 1 Oct 2026 15:37:45 +0200
+        Thu, 01 Oct 2026 06:40:56 -0700 (PDT)
+Message-ID: <2ce83a44-c85f-4e3d-ba47-fa07a1663253@suse.com>
+Date: Thu, 1 Oct 2026 15:40:56 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -71,104 +71,53 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] rust: macros: allow non-ASCII characters in `authors`
-To: Gary Guo <gary@garyguo.net>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
  Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
  rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20260917051147.98775-1-tweek@google.com>
- <DLHERMQ9DOIC.1TRR4M82WNLIZ@garyguo.net>
- <0ecdcba9-a0a5-456f-8d30-e2201828cd07@suse.cz>
- <DLOERNFT9KH0.E6BYORP7OCZM@garyguo.net>
+ <CANiq72nRLF7PmqqVUrAiw_M3dYZCr9ifoo+Q4SuXfBQsAFH-pQ@mail.gmail.com>
 Content-Language: en-US
 From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <DLOERNFT9KH0.E6BYORP7OCZM@garyguo.net>
+In-Reply-To: <CANiq72nRLF7PmqqVUrAiw_M3dYZCr9ifoo+Q4SuXfBQsAFH-pQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 9/25/26 2:49 PM, Gary Guo wrote:
-> On Fri Sep 25, 2026 at 1:36 PM BST, Petr Pavlu wrote:
->> On 9/17/26 9:20 AM, Gary Guo wrote:
->>> On Thu Sep 17, 2026 at 6:11 AM BST, =?UTF-8?q?Thi=C3=A9baud=20Weksteen?= wrote:
->>>> Module authors may have non-ASCII characters in their names. In C,
->>>> `MODULE_AUTHOR` allows arbitrary string literals which are emitted as
->>>> raw UTF-8 bytes into the `.modinfo` section, and multiple in-tree
->>>> modules use non-ASCII author names.
->>>>
->>>> Originally, the single `author` field permitted arbitrary string literals
->>>> including non-ASCII characters. When support for multiple authors was
->>>> introduced in commit 38559da6afb2 ("rust: module: introduce `authors`
->>>> key"), it reused the `expect_string_array` helper that had originally been
->>>> added for module aliases. Because that helper enforced an ASCII check,
->>>> `authors` inadvertently became restricted to ASCII-only string literals.
->>>> Later, when the macro parsing was rewritten to use `syn` in commit
->>>> c578ad703ae9 ("rust: macros: use `syn` to parse `module!` macro"), this
->>>> restriction was carried over by using AsciiLitStr in `authors` type.
->>>>
->>>> Change the element type of `authors` in `ModuleInfo` from `AsciiLitStr`
->>>> to `LitStr` so that UTF-8 author names are permitted.
->>>>
->>>> Fixes: 38559da6afb2 ("rust: module: introduce `authors` key")
->>>> Signed-off-by: Thiébaud Weksteen <tweek@google.com>
->>>
->>> Off topic, but I have a question for modules maintainers...
->>>
->>> Does the `authors` field still serve this purpose today?
->>>
->>> Almost always it is just the initial submitter, while the code has been subject
->>> to many changes (many of them tree wide too), and the maintainers could have
->>> changed as well.
->>>
->>> We have copyright comments on top of files, and git for checking the file
->>> history. What's the point of keeping his inside module metadata?
+On 9/30/26 2:13 PM, Miguel Ojeda wrote:
+> On Thu, Sep 17, 2026 at 7:11 AM Thiébaud Weksteen <tweek@google.com> wrote:
 >>
->> MODULE_AUTHOR() was apparently added in 2.1.18 back in 1996 [1], with
->> a comment that it is for documentation purposes.
-> 
-> I am pretty sure the kernel changed a lot since then :)
-
-It depends. Copyright lines, changelogs and the MAINTAINERS file were
-all present in 1996, yet MODULE_AUTHOR() was still added.
-
-> 
+>> Module authors may have non-ASCII characters in their names. In C,
+>> `MODULE_AUTHOR` allows arbitrary string literals which are emitted as
+>> raw UTF-8 bytes into the `.modinfo` section, and multiple in-tree
+>> modules use non-ASCII author names.
 >>
->> I don't have a full picture of how this modinfo field is currently used
->> by module authors, maintainers and users. I think it can be useful as
->> a record of all past and present primary authors of a specific module,
+>> Originally, the single `author` field permitted arbitrary string literals
+>> including non-ASCII characters. When support for multiple authors was
+>> introduced in commit 38559da6afb2 ("rust: module: introduce `authors`
+>> key"), it reused the `expect_string_array` helper that had originally been
+>> added for module aliases. Because that helper enforced an ASCII check,
+>> `authors` inadvertently became restricted to ASCII-only string literals.
+>> Later, when the macro parsing was rewritten to use `syn` in commit
+>> c578ad703ae9 ("rust: macros: use `syn` to parse `module!` macro"), this
+>> restriction was carried over by using AsciiLitStr in `authors` type.
+>>
+>> Change the element type of `authors` in `ModuleInfo` from `AsciiLitStr`
+>> to `LitStr` so that UTF-8 author names are permitted.
+>>
+>> Fixes: 38559da6afb2 ("rust: module: introduce `authors` key")
+>> Signed-off-by: Thiébaud Weksteen <tweek@google.com>
 > 
-> Well, if they're actually updated... But as pointed out that this was usually
-> not the case.
+> This looks good, thanks! We did discuss allowing non-ASCII long ago,
+> so this wasn't intentional.
 > 
->> and it has also value for external modules.
-> 
-> The version field has value for external modules too, but that was recently
-> removed. I don't think we should care about external modules too much.
-> 
->> Unlike copyright statements
->> and Git history, the information is directly visible to users through
->> the modinfo utility.
-> 
-> Hmm, why does the user want to know who is the primary author of a module?
-> Users shouldn't try to contact the authors anyway, they should find the current
-> maintainers...
-> 
-> Even if the field is perfectly up-to-date, a user running an older kernel should
-> still not use this field as they need to contact the current mainline maintainer
-> if they have issues.
-> 
-> I just find this info to be hardly useful at all.
+> Petr & modules: I can pick this on up (an Acked-by would be nice!),
+> unless you want to pick it.
 
-It is fairly common for software to list its authors in an About dialog
-or in its documentation. This information is typically not used to
-determine where to report bugs. One could therefore make the same
-argument that such information is not useful. In my view, it simply
-gives people credit in a more visible way. I think the module author
-field serves a similar documentation purpose.
-
-As mentioned, the author field is optional and individual module
-maintainers can decide whether it is useful for their modules. If it
-should be removed, I suggest removing the uses of MODULE_AUTHOR() first.
+Acked-by: Petr Pavlu <petr.pavlu@suse.com>
 
 -- 
-Regards,
+Thanks,
 Petr
