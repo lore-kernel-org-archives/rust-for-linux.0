@@ -1,164 +1,104 @@
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2ACC22D4DC
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 12:31:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEA329E10B;
+	Thu,  1 Oct 2026 12:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790857882; cv=none; b=cj5zzcU/qBWriTYPyaCfOqxiWzF5DMuCJ4FLCuBS37MidrsPwI91Jlg3dD45pZkRyXu8L6zfrPEufDdpFpcPJBdBYT5A8cQc0rG7jjUpHWwuTsf9L9gfdUekirlCp2tNcvHy3t1Vb93qihDBpOEc3MPEEIEw09XS3lFVsvyu+Mo=
+	t=1790857969; cv=none; b=iACL6zClrX3DTxNkju1oY5px/2cwfgPBjxXC6XsW06SRo/usqD6y2yCI+Pct79FFPAuVFDT/cFRvsIpjYY/nlvrFiUH0fZTLfNXGMJ7CCMJMQRZGG6VlNCtwICXCVa3+iTfn384yAsNot5IBm+RE2CH3Rw8V+qWtlssa8yKfJV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790857882; c=relaxed/simple;
-	bh=twM53lvJ3VhYvfBx9KT0LL7hdlFMgjTFuP5pELddS2k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dua7pNTGOqWz3Dx5xycVZYk4Dm6TNyHoJugteXPHwxJj64O9xZ/5Gga3qGpePjgsZjP7mkpAhtCuaqPcxxOde5tkR803OTepBUq4GnTWVA4vTsT56u1X471aWCi1B1VXPrHam3A6n7ewuD5pQcyLgoJgHR04bLk5Qn6tOfcQYIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=RltVOv+i; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=q/YmZUJU; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	s=arc-20240116; t=1790857969; c=relaxed/simple;
+	bh=hjofdRnQL47CMjOSKL5ec3jVQHHPgQqmOdwEFpg9POc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BOSY6wZS03DMrWJ/8FOFoDFM+NWfW4HMKmoYn8RN0ijF6gD4h2KnM7mSnJtIfjDXJuGRMTMghL4Rxm1ddplOUclZaYIm8A9tRe6QH8tLX2bWubLx75VbHobug0l/K0ndR4huLc5PUl8vRcKJWPQpka+qXcnEzKpsRdWd/dTz3Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDFaq5vN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="RltVOv+i";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="q/YmZUJU"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id B8B5B140011E
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 08:31:19 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Thu, 01 Oct 2026 08:31:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm3; t=1790857879; x=1790944279; bh=Wc/XaUzu4zm/FTuCYjNq4
-	8N/EyN6DPB0fjJUcT4PstY=; b=RltVOv+iFl019WFm9zEwIUhx3rf3AwFVQJlCW
-	IazUo/S+EQesb0BLvYiYiYGLHu8xPjg4jw9F0yS7fHuvHjgSL0NEO+qQ8rJrg5Vv
-	hG6wWPjhLDSwoOKvOvCb8+BKsfiPxPRKeW+xP+nPTnKwYtdX0GYJJK3lVWNgJ2Pz
-	FG4AFufVVABNpN6ELLQNxvggGlFrHzkoHAFtlpQB9REYNmMjIN/mVSQlYHGN32Le
-	zM8Gki/3DP3Uwie4qMKXTuqnzInXJrRBJBW6wRmInzTmbegstJ+0xCwL9r2RAfTm
-	PjCVWh+wITUOGQ6j6Wv0al0Pw319/GMOmZgkK3um3t29sq7sw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1790857879; x=1790944279; bh=Wc/XaUzu4zm/FTuCYjNq48N/EyN6DPB0fjJ
-	UcT4PstY=; b=q/YmZUJUI2/0HoWoK3pW3kEW/fMxFzaL97MVprN0fm4P136VAwJ
-	L/I8DTApGqo/iMHC/DARgPuLjkgSgI7qTevUPjo2kmwOSG3SUc0cyXnMftCA3vR8
-	RqLqoIsNnngf1X6O4TmLyDz78Sqdjt4p1pj7dQxqjiG2thpEVQcYawIRZXayhoqN
-	QPpeUZuwrcV9C3umKVSxXm84+DNm/wAeoG9eQUdbojIN6n8IVpJEng6YN1jeEQ+F
-	cI3ToRBjnJ8kpu3ekBsNZKeCLr2hNVyrr13Ve+xeKdE6JHy0rkkNkd/jw5h4QYl3
-	TUCk5E6YycIpjSk2sOG9LZ5uPFISgpeNhMg==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1790857879; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm3:rsa-sha256:Ax5pzw+Xi4fiplsUCQe4RkPdWe53SVzIWrbN8EfgoY8YsQB
-	TW7zMMfTy8oAQCx8/4ymhUKp/ashPbeNlCZZOJ8/HvPSPBVBFMEE+JJze4G4H+fI
-	SDVNxvMEK2lLvttwPv+F0gx/w1xL3aJPoY02jDsDckq09Bq1TPYL1l4msUo4B23j
-	3Wty+/jyQMpU4TPlG0FW7Wufxny5iWpDbsFpan4AQyuT26GgGbahEpufv2sUDzh8
-	rreDKouHgxAcwsgd96LF1RUpbLCS28qMyA958MiurS1a7edsNv85+D60ayCqyIeq
-	QDcnP7Fc3v5052y3r0bvMsP5vGu82v+JgzzsFiA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
-	action=mi-m=1; hc=9;
-	hn=cc,content-transfer-encoding,date,feedback-id,from,
-	message-id,mime-version,subject,to;
-Message-Instance: m=1; h=sha256:elZ88t6N8IC91EdShLwDg5uZGEGWOCpiT01GTlZ8A0k=:twM53lvJ3VhYvfBx9KT0LL7hdlFMgjTFuP5pELddS2k=;
-X-ME-Sender: <xms:llK-aiF47X1ORNVVTOHiWfYl5KKkTnfhmZaiuzKR7EX-wbgyyRXthw>
-    <xme:llK-aqZi0RQljVCyoTnth_rpM5vE8awnwtqLS3hBIvK04PlZH7GdJgNeHZNUqm_aR
-    SsBdMJAgxBg1xsOMkFlhta2bFPw5_DX3-au-pscIhcBX9r0_KS3hqLP>
-X-ME-Received: <xmr:llK-aj1Gmup7AhY5sGj6MKXhU9y60zKWXArB60JXymh9EAfoMiAkBJKl-RVqh7g1BEn_czdSp98gYMPaqtY>
-X-ME-Proxy-Cause: dmFkZTFwS70LB3erJYzbaTJsyLPdABAp/zeskGV2WMC+BSrmSlE9v0pqkD/yg1RYHMkSNn
-    I7wLTPwb90zziHO/mKGNl2k67luwVI4dTo6f40kR6JVbFk/T7h82hO/07U2LKJJkLwnxGZ
-    KXODYm9O6Htiu9yUb5W0zYNr3iuXfKo0ACrU4QRJD2hE9SHbeV8hFTYJ4uLBQZG1ZiAgma
-    iA1ybPD1zBZ5uK8zNsifAzmwSoJXmHWyiDc73S1YRr0pa0ig0R/Q4z6/40tFsaamcegK2i
-    WsAq9X0kaYu4LVu+Pkd5PdnM8DBhWkf3bx7CQO+b4cegfnJF8ry2prnHQEKijVcDETzNSN
-    udpUm89d9L7IrEtYQb4s8fnTbcU8P+mPrDav0dKmbl9s+Ko5ES/WcPFTyHJLKxUCQzDecx
-    bKy3mwYKe8ow+bIvKkoNHlNW9L1K1KQTLYsh9BDa1K3fUgZXySstfePWJPSvdwOxPJ0Y+p
-    Spf0V7Eru5YH3OfAhn8zazMmb+udVmsDSft7dga9hCMWAhBp3Wh38oIg7WNL5fHs5cgaEW
-    ePEwzspA2k3wI3hKVjGE0lcAEOCRpAuEgUiJYsqOjHMwivbqzWtJaudp9lh326DlnVYLIL
-    lSkhJ6zyeg08K8jYl8ErM+rXTlCBVk6js0XJ3c8TUR7dGicgGaT3Tg9onuKw
-X-ME-Proxy: <xmx:llK-aidqFe_5go7kpExN4t24SlmAvaaPURI-553oUgbAakh2U-V-VA>
-    <xmx:llK-alBKKza8lqcFWfs54IeuRTl5g47tNXycj1pCJPsu3xl-orTMVQ>
-    <xmx:llK-ak01xHQ3m5XSmknJ1cMaKhgl7TNvyuTGoTRqbTD3WlBNFJFh5Q>
-    <xmx:llK-alPkmIPC1XPPkCRXK5zjVVGZOg3y6OjpeB5VLSC0sVvdbTiZdA>
-    <xmx:l1K-av4OhgThdwQQ3S42Pi8iX2B5zb5F5uRZDWmLiVp1PrlNL0Vz9viR>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 Oct 2026 08:31:13 -0400 (EDT)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: ojeda@kernel.org
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	lossin@kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	richard@nod.at,
-	anton.ivanov@cambridgegreys.com,
-	johannes@sipsolutions.net,
-	linux-um@lists.infradead.org,
-	david@davidgow.net,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v1] rust: bug: pass TAINT_WARN to warn_slowpath_fmt() on UML
-Date: Thu,  1 Oct 2026 21:31:03 +0900
-Message-ID: <20261001123103.2198104-1-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDFaq5vN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2861F000FF;
+	Thu,  1 Oct 2026 12:32:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1790857967;
+	bh=ylWAN7T3Q5wC7Zm4CynqN1Zmf2AkZx/EcWboGHR+P+8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jDFaq5vNAQzHs6Wh8aG5/AnNApXIYG1/mWLX2ki45XUA2qhC5PxlcOK8BYUNRXwTd
+	 pNG9cRQMKjqNEmPXfV5GMabvAhXw1xevDNhi+i+V+B3oR7o9JS70i5JMSt3YiMblu6
+	 2JUWor+dS6zAgKK86dIH63KA8CzmD+P7FrKJCVHs=
+Date: Thu, 1 Oct 2026 14:32:41 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Carlos Llamas <cmllamas@google.com>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Danilo Krummrich <dakr@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Lyude Paul <lyude@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Trevor Gross <tmgross@umich.edu>, Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 4/5] rust_binder: consolidate transaction failure
+ prints
+Message-ID: <2026100130-perjurer-frisk-4af2@gregkh>
+References: <20260803-pr-ratelimited-v5-0-a77d456de974@google.com>
+ <20260803-pr-ratelimited-v5-4-a77d456de974@google.com>
+ <CANiq72kb=X1igu+pK=KmAxqDncGYF9zpxrihSuSD3WaCUm336Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72kb=X1igu+pK=KmAxqDncGYF9zpxrihSuSD3WaCUm336Q@mail.gmail.com>
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Tue, Sep 01, 2026 at 06:15:52PM +0200, Miguel Ojeda wrote:
+> On Mon, Aug 3, 2026 at 9:30 AM Alice Ryhl <aliceryhl@google.com> wrote:
+> >
+> > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> > index a56ba6309594..380cd3f7276b 100644
+> > --- a/rust/kernel/error.rs
+> > +++ b/rust/kernel/error.rs
+> > @@ -135,7 +135,7 @@ pub fn from_errno(errno: crate::ffi::c_int) -> Error {
+> >      /// Creates an [`Error`] from a kernel error code.
+> >      ///
+> >      /// Returns [`None`] if `errno` is out-of-range.
+> > -    const fn try_from_errno(errno: crate::ffi::c_int) -> Option<Error> {
+> > +    pub const fn try_from_errno(errno: crate::ffi::c_int) -> Option<Error> {
+> >          if errno < -(bindings::MAX_ERRNO as i32) || errno >= 0 {
+> >              return None;
+> >          }
+> 
+> Generally speaking, one should know from the context whether an
+> integer is supposed to be an error or not, and thus it is rare to need
+> this function instead of the public one (this one is private, and the
+> two callers are here, not elsewhere in `kernel`).
+> 
+> So I wondered if Binder needs this -- I noticed the change when doing
+> my usual go-through-the-ML exercise and asked Alice about it, since it
+> seemed to me like Binder could perhaps avoid using the fallible
+> operation (and maybe even define an `enum` for `BinderError` instead
+> of a `struct` to be more precise about when a `source` is needed).
+> 
+> Alice told me that the `Option` in `BinderError` is just meant for the
+> zero case, i.e. the raw integer there should not be a random value.
+> Thus, since the `if` already covers the zero case, it does look like
+> this could use the infallible operation since we do know statically it
+> should be an error (modulo a bug).
+> 
+> So it sounds like the change can indeed be avoided, which should also
+> improve the code.
+> 
+> In any case, if we keep it, then the `error.rs` change should be
+> mentioned in the commit message.
+> 
+> By the way, I am still happy to take the first three patches unless
+> Binder is picking this up.
 
-On UML, `warn_flags!` calls `warn_slowpath_fmt()` directly. Its third
-argument is a taint number, but `warn_on!` passes its bug flags there.
+I'll just take them all now, thanks.
 
-As a result, `add_taint()` gets 2304 instead of 9 (`TAINT_WARN`). The
-warning is not recorded: `/proc/sys/kernel/tainted` stays 0 after
-`warn_on!` fires, where it should be 512. It also causes an
-out-of-bounds write in `add_taint()`.
-
-Pass `TAINT_WARN` directly, as C does on UML.
-
-Cc: stable@vger.kernel.org
-Fixes: dff64b072708 ("rust: Add warn_on macro")
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/kernel/bug.rs | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
-index 3566f0234ca4..af8eba4563de 100644
---- a/rust/kernel/bug.rs
-+++ b/rust/kernel/bug.rs
-@@ -85,6 +85,7 @@ macro_rules! warn_flags {
-     ($file:expr, $flags:expr) => {
-         if false {
-             _ = $file;
-+            _ = $flags;
-         }
- 
-         // SAFETY: It is always safe to call `warn_slowpath_fmt()`
-@@ -93,7 +94,7 @@ macro_rules! warn_flags {
-             $crate::bindings::warn_slowpath_fmt(
-                 $crate::str::CStrExt::as_char_ptr($crate::c_str!(::core::file!())),
-                 line!() as $crate::ffi::c_int,
--                $flags as $crate::ffi::c_uint,
-+                $crate::bindings::TAINT_WARN,
-                 ::core::ptr::null(),
-             );
-         }
-
-base-commit: 551c722f40809618230001baccf219193e22fc5a
--- 
-2.43.0
-
+greg k-h
