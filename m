@@ -1,58 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127104AE8DE
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 08:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001CB4BB268
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 08:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790843139; cv=none; b=QLxNSeiQgnrx+ImJUYriVdGYDwgRlT6Mv9pbvaJkXZv/GgxQbnK9Ro8nH5zSE551VvY6oMyo4vhlxWRiVRadt9yBNjBH/KTypB1BwL9FIFVtW5jLc8sait4NajLjBkZHqq8FSxfxxY03o12heT8bVeLY4ZeWyPbjLiBDA1WpXow=
+	t=1790843140; cv=none; b=dS5tBB9MLzequH7MQtCU8JSQU6Erx0WezjMrUZWSPaPI2tRgkkItI2u3dAIux7G9XCBw/P0TxbUWK4grWh+4B251t9/HWRw0hzZeUKgcefRtc1/kwseX9dwoJrIT46lzuY2Rbty68dQ91Kp2DeK8W8RELM409vYKjwfY6zSZyFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790843139; c=relaxed/simple;
-	bh=uAvJ/4GuH3Jbbv6um4hA/PVJzjMwaiB9sPPRbSjA2ZU=;
+	s=arc-20240116; t=1790843140; c=relaxed/simple;
+	bh=epFo68DRO5HO03uyGogPfBRRkcxs6U0wYGl3of+7i+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GlKM1oimwvMepCdqENhPI01d6BnZbvZQ7hVmz8GYvUA3AFBb52OsKmEC2VH53+14vnTwErGzDh2VuNzqvmB/bpNcFLDvh3KM88Eck2SEl2pGyobdhof6hO+L5yf8ZccKGoPBftlaqRC/idyOkhjpiWChEtZ6R2dSpBEJEHXPM9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cXy/Je4p; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=M5pGLnbgpzSv/Rf7J4IHgJXP2xRiz1xR6/oTE+04djiBL3Phgel4DneewvFF4f26ji4DMjB8/Gj9pjBsNI1OBEJ9O/C8DLu+Wv9j0czu/sqEzKkwm6jLkHeMZ4sA/kL6o4Nq4dMgrRn0kklQ2HykDs6M7sJo91qkgC37FJLQFPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C+wCV3SV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cXy/Je4p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C264B1F0089F;
-	Thu,  1 Oct 2026 08:25:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C+wCV3SV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6887D1F0089E;
+	Thu,  1 Oct 2026 08:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790843133;
-	bh=/BEdQBJR6WDJGgF8LBmoLuMdvtqbd2IDFagzx+0WCOk=;
+	s=k20260515; t=1790843135;
+	bh=QG6EMhK7f31Zipc8Za8yi9V5CKNrwVi5K1KKEswjybA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cXy/Je4phKJv0VefVr9utQ6uGUonRADsZn3upbqor0eKM+nQmgWSiRc4HVo+d4rOj
-	 H20+IhXXjbmZLj+DFfSOHlvd4uGltu4uhozTnad4GLHHvZnRy9rufPUU/9tVwgdyuc
-	 Rsb2LpmUrgtoU502SSNvQoMMl78yi7x6PdxvuU681ocL1UZHIXwOIOIttDxsSBnNWa
-	 xdgMeKmR9y4ubOYbR45gW2ycNGMh+83heFfHj0TorEjAF4G2X5NTDb1oM/kF3PxMrU
-	 znyXMxl7GmLE+uQNlGZ7Te1sxS604YFc9vKDwELvvGT962wc2vTzWFRIEn34gEmiGR
-	 OFCtX5o6Ccpew==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id EA3A3F40066;
-	Thu,  1 Oct 2026 04:25:31 -0400 (EDT)
+	b=C+wCV3SV2kJOjEnkfvk8bkcXxRv8DoRhi8h7qWgifAyZ+hp+Lx5P0p1hACFilxsys
+	 KV4YbzxkCbmOJZ6UPqnOzP+/wk3NOtmXFucxA1WknU5x3BjTajGWJjKIZdrjq/xS2G
+	 Ah4TjgKBUFfGu9Z+9FIDfiTMoJ3/Pao6sidXa698zLUn2hJ3IuroDBVH3hcxBLkSdd
+	 4m3//nPWTn1Vae4q3HhWiKRM/s/aqfCobDoep2W4Dfb2z498Ypum6zXJi0ORVyxeaF
+	 CF9HQIDJGO8yq0nuyPZgaW2GzvfiJsf/AlgtkDj1WEPXFMmD9SbebKxF0T5H7oSj+/
+	 holEtQCHTPc0w==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 83A29F40066;
+	Thu,  1 Oct 2026 04:25:33 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 01 Oct 2026 04:25:31 -0400
-X-ME-Sender: <xms:-xi-ah6xfL5aXnrhds7i0O5NTp5CEARByTz7gcgeDxQwu-6Bar6kJg>
-    <xme:-xi-ake9kyFdLpOI8zwn26JuEVzgwz_CNSWP2SUZULLcaAuaJ5Iw9YA53VWixLs3j
-    34oQiuwr3lhBi1xqxH-NJ8gTT0oa7soNSr8wWekL8hO2e3BohygbT8>
-X-ME-Received: <xmr:-xi-aiDpuishDeH9e-5VFAyL7AFUutkpiDA591u65TU8Ow9mI6qLwhGjZcf8>
+  by phl-compute-01.internal (MEProxy); Thu, 01 Oct 2026 04:25:33 -0400
+X-ME-Sender: <xms:_Ri-aooTy5-qSJTKBoJCWvnwlKfmsbFfBbbFFtNSGJv0jkDOYuCRwg>
+    <xme:_Ri-akOt8N9tIkszG4vNAR6edS6L84ghRAcazRLLHMKZ1AMJddgC1GCcsOdc0gMu0
+    fItFD68dsGvWdiTlflGZd2qY2ExC1x9paMlw9FdpZ2ootaMsjNraHw>
+X-ME-Received: <xmr:_Ri-amx_OX1CddR3a4Xw9O5_7awEbKKXnd4yX_nalZy66coeLX7Re41SgV_8>
 X-ME-Proxy-Cause: dmFkZTFTtZ9e+AEXGyH/UMNFNKx7GWX00fXAsakj+PulafEHjbIKBMQx7Xnly6B3nqNRyA
     VpoObhA1Qhfd5N42FAzO0sTBGw4yFG6PnLFuaeM1bW97EfiTCSnufadyR4ojJhWoPi2Orp
     Nw2JMX8opnwBw/C+wIQG8nb1UCGojK0rMbXtCocQAaV/C59AWyi9HRGVAloGTrFNLENSW6
     18Nhy0c76z6pdAWuM1RbSN8pspZwRgkcin1hWylWhTZJTEMyJuzlL76xznqewDQePbxkmp
-    OZxFI4a4FQttqB7KZKggwQOHJeTyNiNl9FbtOJ+hzXoyQwWY84px4TyS7SR9tfVXrM6gQN
-    0q8th5cy7ucgtJNbXq7udsigvzsq2MX/gR681xu8jocuj4Pt3zyxbjNdslYSskZl+2PjB6
-    dvsFlHDJb30hr1vVqp8JKidbYvBH1fe5MKWQDcwe4P8T0sNjWjrCK6xk7I0uWxkL697xDn
-    sRx7KmZlP9FJvheXFYm/dDIca0kL9uG4P7dmNh8EpbVRgSaQAcU0Sgvy3Y9Maivvj8Xby6
-    XPNJeDrua/HDbtT0ankOPq1xtMVWK4JrAumffCu2peiphAOow6QMeXpl8IhW9MaGNp8tlD
-    7RxuMTOuzdeww3LKMx9L/ezUrqERT2j/dYjSIShfzYrUCAkonPvjWKu822lA
-X-ME-Proxy: <xmx:-xi-arBADhVJptQfwOP6xpfFm2uAjmj1-qHw0u3DcBTAjvpVH1ABBw>
-    <xmx:-xi-asbGa30k9cdg06o0JK2VUjnuJFw7lc2XgbZYxW6DMHnZu4gjpQ>
-    <xmx:-xi-agzSZ_9L9F50nsJXoLqaryM17g8VDj3dYfkAZFFIvbDROM6Jng>
-    <xmx:-xi-avd0-uD7FGkqpVrRhqYcRYZZwI04-4AZzSLTY4-w9uXdJ0ZaFQ>
-    <xmx:-xi-amI1phEy6ZL1SUZ1-0HQYY0Ulk3bfNxoHgmDBhtjaP2YStSw1GTB>
+    OZxFI4a4FQttqB7KZKggwQOHJeTyNiNl9FbtOJ+hzXoyQwWY84px4TyS7SR9tfVXrM6gBZ
+    aIwIKi/ed+3ot85pAQxX8josllyS7aSY2PiOI6OrDP6Wn2CEsYG+IKR8JFeMeJoBpEw+wQ
+    XttPdIXLBDAhoA+XAzJXP/xXqSu2y4jrSxftiG2ISdvtM5jaAXAsXsrxEzHuS2PqD4ZhLZ
+    pomAeTXUr1V3srUvPUKbUBV4wYPf8h/2JrgLA0hmzIemQgZ6SDOJIgzaPMBSLNiQuG0nkb
+    tCVnhEfpm7Em/Rcu2VX291sJVVO6xdHlDuaAiRaJd7g1/kAVWnUiCwBuU8oteIZ0irZpa6
+    bmhk9VX+QBVZFrCmFRGe+KY8HSPE6AUIqErIKOSWMG2Ilxoven5zamfkGd0A
+X-ME-Proxy: <xmx:_Ri-agyHDPnQGBg2twNEtq8K-s_Zl-EkBmLUvaF1urq-qpNO-6Q7xg>
+    <xmx:_Ri-avJjtqh5nQxXfzsuypfjiuqHmQIzUJ2Y0z7nCf_xqz3_bs6NlQ>
+    <xmx:_Ri-ashF8oO7CJdsCwS1SdQzqy_XLB0ygbejDZ2D9BmEsL5hV1cImQ>
+    <xmx:_Ri-agOkOG0e1UXtiUD0dFdueQtQl76lj9gR4iCCrixzIruyGZYW0A>
+    <xmx:_Ri-an4FdW2sld98aw7SZRUOmKsHOUt5Dg0ZK1b_3cl7SgHa8ztDjcaO>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 Oct 2026 04:25:31 -0400 (EDT)
+ 1 Oct 2026 04:25:33 -0400 (EDT)
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: "Ingo Molnar" <mingo@kernel.org>,
@@ -70,9 +70,9 @@ Cc: "Ingo Molnar" <mingo@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	Shrikanth Hegde <sshegde@linux.ibm.com>
-Subject: [PATCH v2 2/5] irq: Add {over,under}flow detection for local_interrupt_{enable,disable}
-Date: Thu,  1 Oct 2026 10:25:16 +0200
-Message-ID: <20261001082519.16195-3-boqun@kernel.org>
+Subject: [PATCH v2 3/5] selftests/bpf: Use the new NMI_BITS definition
+Date: Thu,  1 Oct 2026 10:25:17 +0200
+Message-ID: <20261001082519.16195-4-boqun@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20261001082519.16195-1-boqun@kernel.org>
 References: <20261001082519.16195-1-boqun@kernel.org>
@@ -84,56 +84,29 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently there is no way to detect overflow and underflow inside the
-HARDIRQ_DISABLE_MASK part of preempt_count. Add these detection guarded
-by DEBUG_PREEMPT similar to the detection for PREEMPT_MASK
-{over,under}flow.
+The definition of NMI_BITS was out of sync after the introduction of
+HAS_SEPARATE_PREEMPT_RESCHED_BITS, hence adjust it.
 
-Suggested-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Reported-by: Shrikanth Hegde <sshegde@linux.ibm.com>
 Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
 Signed-off-by: Boqun Feng <boqun@kernel.org>
 ---
- include/linux/interrupt_rc.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tools/testing/selftests/bpf/bpf_experimental.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/interrupt_rc.h b/include/linux/interrupt_rc.h
-index a9ed937a80e7..d385ab05a2b6 100644
---- a/include/linux/interrupt_rc.h
-+++ b/include/linux/interrupt_rc.h
-@@ -11,6 +11,7 @@
-  * make it easier to include without hitting circular header dependencies.
-  */
+diff --git a/tools/testing/selftests/bpf/bpf_experimental.h b/tools/testing/selftests/bpf/bpf_experimental.h
+index 2893bf06ff25..4bf7390994bf 100644
+--- a/tools/testing/selftests/bpf/bpf_experimental.h
++++ b/tools/testing/selftests/bpf/bpf_experimental.h
+@@ -371,7 +371,7 @@ extern int bpf_sock_read_xattr(struct socket *sock, const char *name__str,
+ #define SOFTIRQ_BITS	8
+ #define HARDIRQ_DISABLE_BITS	8
+ #define HARDIRQ_BITS	4
+-#define NMI_BITS	1
++#define NMI_BITS	(1 + 3*IS_ENABLED(CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS))
  
-+#include <linux/debug_locks.h>
- #include <linux/irqflags.h>
- #include <linux/preempt.h>
- #include <linux/processor.h>
-@@ -65,6 +66,13 @@ static inline void local_interrupt_disable(void)
- 	local_irq_save(flags);
- 	new_count = hardirq_disable_enter();
- 
-+	/* Is hardirq disable count overflow soon? */
-+	if (IS_ENABLED(CONFIG_DEBUG_PREEMPT) &&
-+	    DEBUG_LOCKS_WARN_ON(((new_count & HARDIRQ_DISABLE_MASK) +
-+				 (10 << HARDIRQ_DISABLE_SHIFT)) >=
-+				HARDIRQ_DISABLE_MASK))
-+		return;
-+
- 	if ((new_count & HARDIRQ_DISABLE_MASK) == HARDIRQ_DISABLE_OFFSET)
- 		_local_interrupt_save_state(flags);
- }
-@@ -73,6 +81,11 @@ static inline void local_interrupt_enable(void)
- {
- 	int new_count;
- 
-+	/* Unpaired local_interrupt_enable()? Warn and abort. */
-+	if (IS_ENABLED(CONFIG_DEBUG_PREEMPT) &&
-+	    DEBUG_LOCKS_WARN_ON((preempt_count() & HARDIRQ_DISABLE_MASK) == 0))
-+		return;
-+
- 	new_count = hardirq_disable_exit();
- 
- 	if ((new_count & HARDIRQ_DISABLE_MASK) == 0)
+ #define PREEMPT_SHIFT	0
+ #define SOFTIRQ_SHIFT	(PREEMPT_SHIFT + PREEMPT_BITS)
 -- 
 2.51.0
 
