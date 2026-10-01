@@ -1,48 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC293F0AAD;
-	Thu,  1 Oct 2026 12:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B823846D2DC;
+	Thu,  1 Oct 2026 12:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790858095; cv=none; b=RTI/UFvzSKe4VUDiDu43DagJTKyxr3FGfiRwNZh+OtBU5hhZg0zq33njjcCkk4kwEd+LFAGuIiyOoZFDvGvINSGO4/iwhy+ODC17BSxE+CKKlGrLQc2LWwS1gvpuy5UO03zKZfGi6hLW/qoq81B7uYYKpBOk7fzzTQk99U3MAdM=
+	t=1790858296; cv=none; b=aCRthR07fxjXj8rHeXUmEgA0tl5/N+R/9xzDfh9pZL+/79B/vaE2fZf1RiYdxK5CeIcq0Wrf/PuyhWoLPMmsRCERjaMWQNAwgytAYQcXK0K8lDISfAqq01xR2szMldBOGRpk+lnJdTlD/TK6mUz9N71I3LqMgM2TvTkCxw14XeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790858095; c=relaxed/simple;
-	bh=/hhNh5hCAYzlrRN/FeKgbrJTkJtZxYBhVaH4n61Een4=;
+	s=arc-20240116; t=1790858296; c=relaxed/simple;
+	bh=rTdJfTp6Ux7RxrKwWyxck6B5Jj/E+6IrrydWjAIDbCY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uZ5cbTDLJC/yYk7rCWGSR4ULA0NJ6xNEfUkTy3x3oJ13mEQQs69iW2h/BMjEfGdzqfCkAk1Fb/OBqbMcTgVq9gUXWhUMr9l0H7NMuqTxTi/+DnMze9+iqHwgNqWDDvDRZ6PXVu+P563ouSoYoIH/Gr2dUqx0ZDGeDfACzQSf2UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8zWOvSR; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=BrQzkFraPzfpEmRJfWO8ho31tv19ZoG1fRplEsJNE2MrELu/eTYhVfj44xFVlJNEplGwcqS3wUU7YRBlfDwRqaKCaPo5bF0/uHT9wKq8lEVIHp2mgssiWiw1pgzk5+NnirAJ5Ft132wrcdkTcARag+fSDZrVfclTOdIkZwmokS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmkIj3Dr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8zWOvSR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AD71F000FF;
-	Thu,  1 Oct 2026 12:34:52 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmkIj3Dr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A6EB1F00899;
+	Thu,  1 Oct 2026 12:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1790858093;
-	bh=b80SrHEHZfCdSiZYR0ZNIyYiVyr6v0DgMNSfIOWoxII=;
+	s=korg; t=1790858295;
+	bh=m0VE5bsXDh4gakyVXWTwStf+8GehEKit4oOjPmWVai8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=L8zWOvSRTX8qrgAK0YLkl0tC3ssJv+3Uoq6RWYNHbvhdry+Ruo7xHK8HrzGCfBvLY
-	 kVStv7PPzDBgujAL5d8WKBAZaJCR2tQYM76/Q/IUxnxTiaccgNFPduIxOZz2jBGfRr
-	 RQYWCH83lPRmQrW2L85fKz6R1nkPKhrlkpfalmPs=
-Date: Thu, 1 Oct 2026 14:34:46 +0200
+	b=KmkIj3Dr03cdBnmR7FrXS5Z4b05yR3OJotT0KpEBgYEH/9gebNk/7QiWwchjEW2k3
+	 xSlXgfaEAOvalHzP0I2FhuaBcd/YUqdd7W/jaSwo07Cmz80ABS/55ddazdQxBd35jd
+	 +eHpuOFuv6dkmJza6Otgc84ItNX2bd8XjI4mvCsM=
+Date: Thu, 1 Oct 2026 14:38:08 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Carlos Llamas <cmllamas@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] rust_binder: add transaction_log and
- failed_transaction_log
-Message-ID: <2026100136-immerse-wildlife-6d7e@gregkh>
-References: <20260930-binder-transaction-log-v2-0-8a15e9b8cae3@google.com>
- <20260930-binder-transaction-log-v2-3-8a15e9b8cae3@google.com>
+To: nenkov2004@gmail.com
+Cc: rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: binder: Use lower bound for node debug lookup
+Message-ID: <2026100156-strongly-plural-e7f1@gregkh>
+References: <20260831052635.42417-1-nenkov2004@gmail.com>
+ <20260831054920.42550-1-nenkov2004@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,430 +40,28 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260930-binder-transaction-log-v2-3-8a15e9b8cae3@google.com>
+In-Reply-To: <20260831054920.42550-1-nenkov2004@gmail.com>
 
-On Wed, Sep 30, 2026 at 01:56:38PM +0000, Alice Ryhl wrote:
-> Implement the binder_logs/transaction_log and
-> binder_logs/failed_transaction_log binderfs files in Rust Binder,
-> matching the circular 32-entry transaction logs in C Binder.
+On Mon, Aug 31, 2026 at 07:49:20AM +0200, nenkov2004@gmail.com wrote:
+> From: Hristos Nenkov <nenkov2004@gmail.com>
 > 
-> Example output from /dev/binderfs/binder_logs/transaction_log:
+> The Binder node debug lookup currently walks the process node RBTree
+> from the beginning until it finds the first node pointer greater than
+> the requested pointer.
 > 
->   261251: call  from 6157:6171 to 391:0 context binder node 170 handle 34 size 256:0 ret 0/0 l=0
->   261254: async from 606:783 to 669:0 context binder node 2048 handle 2 size 144:0 ret 0/0 l=0
->   261255: reply from 391:552 to 6157:6171 context binder node 0 handle -1 size 2436:8 ret 0/0 l=0
+> Use RBTree::cursor_lower_bound() to start the lookup at the relevant
+> tree position instead. When the lower-bound key is equal to the
+> requested pointer, inspect the next node to preserve the existing
+> strictly-greater-than semantics.
 > 
-> Example output from /dev/binderfs/binder_logs/failed_transaction_log:
+> This changes the tree lookup from a linear scan to an O(log n) search
+> without changing the returned node semantics.
 > 
->   194556: async from 6646:6853 to 7452:0 context binder node 177682 handle 450 size 160:0 ret 29189/0 l=process.rs:1081
->   194846: reply from 6646:6775 to 7452:7544 context binder node 0 handle -1 size 8:0 ret 29201/0 l=process.rs:1081
->   201573: call  from 7771:7793 to 6646:0 context binder node 198883 handle 28 size 0:0 ret 29189/0 l=process.rs:1081
-> 
-> Unlike C Binder, which writes to log entries without a lock using memory
-> barriers (smp_wmb/smp_rmb) and a debug_id_done field, each
-> TransactionLog uses an atomic index cursor with 32 cacheline-aligned
-> SpinLock<TransactionLogEntry> slots initialized in BinderModule::init
-> via SetOnce<_>. Using a SpinLock per slot avoids data races (such as
-> tearing when the ring buffer wraps around while an entry is being
-> printed) without requiring atomic accesses for every field, and has very
-> low risk of contention: concurrent transactions are spread across 32
-> separate cacheline-aligned locks, each lock is only held briefly for a
-> fixed-size copy, and two writers only contend on a slot if 32
-> transactions occur before a single copy completes.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1249
+> Signed-off-by: Hristos Nenkov <nenkov2004@gmail.com>
 > ---
->  drivers/android/binder/rust_binder_internal.h |   1 +
->  drivers/android/binder/rust_binder_main.rs    |  24 ++++
->  drivers/android/binder/rust_binderfs.c        |  19 +++
->  drivers/android/binder/thread.rs              |   7 +
->  drivers/android/binder/transaction.rs         | 197 +++++++++++++++++++++++++-
->  5 files changed, 246 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/android/binder/rust_binder_internal.h b/drivers/android/binder/rust_binder_internal.h
-> index 78288fe7964d..50a50df14c77 100644
-> --- a/drivers/android/binder/rust_binder_internal.h
-> +++ b/drivers/android/binder/rust_binder_internal.h
-> @@ -44,6 +44,7 @@ struct binder_device {
->  int rust_binder_stats_show(struct seq_file *m, void *unused);
->  int rust_binder_state_show(struct seq_file *m, void *unused);
->  int rust_binder_transactions_show(struct seq_file *m, void *unused);
-> +int rust_binder_transaction_log_show(struct seq_file *m, void *unused);
->  int rust_binder_proc_show(struct seq_file *m, void *pid);
->  
->  extern const struct file_operations rust_binder_fops;
-> diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-> index bd26ef96fefb..dd168a932d7a 100644
-> --- a/drivers/android/binder/rust_binder_main.rs
-> +++ b/drivers/android/binder/rust_binder_main.rs
-> @@ -310,6 +310,9 @@ fn init(_module: &'static kernel::ThisModule) -> Result<Self> {
->          // SAFETY: The module initializer never runs twice, so we only call this once.
->          unsafe { crate::context::CONTEXTS.init() };
->  
-> +        crate::transaction::TRANSACTION_LOG.init()?;
-> +        crate::transaction::FAILED_TRANSACTION_LOG.init()?;
-> +
->          let netlink = crate::netlink::BINDER_NL_FAMILY.register()?;
->          BINDER_SHRINKER.register(c"android-binder")?;
->  
-> @@ -550,6 +553,27 @@ unsafe impl<T> Sync for AssertSync<T> {}
->      0
->  }
->  
-> +/// # Safety
-> +/// Only called by binderfs.
-> +#[no_mangle]
-> +unsafe extern "C" fn rust_binder_transaction_log_show(
-> +    ptr: *mut seq_file,
-> +    _: *mut kernel::ffi::c_void,
-> +) -> kernel::ffi::c_int {
-> +    // SAFETY: Accessing the private field of `seq_file` is okay.
-> +    let is_failed = !unsafe { (*ptr).private }.is_null();
-> +    // SAFETY: The caller ensures that the pointer is valid and exclusive for the duration in which
-> +    // this method is called.
-> +    let m = unsafe { SeqFile::from_raw(ptr) };
-> +    let log = if is_failed {
-> +        &transaction::FAILED_TRANSACTION_LOG
-> +    } else {
-> +        &transaction::TRANSACTION_LOG
-> +    };
-> +    log.debug_print(m);
-> +    0
-> +}
-> +
->  fn rust_binder_transactions_show_impl(m: &SeqFile) -> Result<()> {
->      seq_print!(m, "binder transactions:\n");
->      let contexts = context::get_all_contexts()?;
-> diff --git a/drivers/android/binder/rust_binderfs.c b/drivers/android/binder/rust_binderfs.c
-> index 300cc65562d1..ef83d5a502af 100644
-> --- a/drivers/android/binder/rust_binderfs.c
-> +++ b/drivers/android/binder/rust_binderfs.c
-> @@ -46,6 +46,7 @@
->  DEFINE_SHOW_ATTRIBUTE(rust_binder_stats);
->  DEFINE_SHOW_ATTRIBUTE(rust_binder_state);
->  DEFINE_SHOW_ATTRIBUTE(rust_binder_transactions);
-> +DEFINE_SHOW_ATTRIBUTE(rust_binder_transaction_log);
->  DEFINE_SHOW_ATTRIBUTE(rust_binder_proc);
->  
->  char *rust_binder_devices_param = CONFIG_ANDROID_BINDER_DEVICES;
-> @@ -603,6 +604,24 @@ static int init_binder_logs(struct super_block *sb)
->  		goto out;
->  	}
->  
-> +	dentry = rust_binderfs_create_file(binder_logs_root_dir,
-> +				      "transaction_log",
-> +				      &rust_binder_transaction_log_fops,
-> +				      (void *)0);
-> +	if (IS_ERR(dentry)) {
-> +		ret = PTR_ERR(dentry);
-> +		goto out;
-> +	}
-> +
-> +	dentry = rust_binderfs_create_file(binder_logs_root_dir,
-> +				      "failed_transaction_log",
-> +				      &rust_binder_transaction_log_fops,
-> +				      (void *)1);
-> +	if (IS_ERR(dentry)) {
-> +		ret = PTR_ERR(dentry);
-> +		goto out;
-> +	}
-> +
->  	proc_log_dir = binderfs_create_dir(binder_logs_root_dir, "proc");
->  	if (IS_ERR(proc_log_dir)) {
->  		ret = PTR_ERR(proc_log_dir);
-> diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-> index 0891a36e9cbd..875daaef5f53 100644
-> --- a/drivers/android/binder/thread.rs
-> +++ b/drivers/android/binder/thread.rs
-> @@ -1299,6 +1299,7 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
->              self.push_return_work(err.reply);
->              if err.reply != BR_TRANSACTION_COMPLETE {
->                  info.reply = err.reply;
-> +                info.error_line = Some(err.line);
->                  if let Some(source) = &err.source {
->                      info.errno = source.to_errno();
->  
-> @@ -1330,6 +1331,8 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
->              }
->          }
->  
-> +        info.write_log(&self.process.ctx);
-> +
->          if info.oneway_spam_suspect {
->              // If this is both a oneway spam suspect and a failure, we report it twice. This is
->              // useful in case the transaction failed with BR_TRANSACTION_PENDING_FROZEN.
-> @@ -1345,6 +1348,7 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
->      fn transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
->          let node_ref = self.process.get_transaction_node(info.target_handle)?;
->          info.to_pid = node_ref.node.owner.task.pid();
-> +        info.to_node_debug_id = node_ref.node.debug_id;
->          security::binder_transaction(&self.process.cred, &node_ref.node.owner.cred)?;
->          // TODO: We need to ensure that there isn't a pending transaction in the work queue. How
->          // could this happen?
-> @@ -1431,6 +1435,8 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
->              orig.from
->                  .deliver_reply(Err(BR_FAILED_REPLY), &orig, Some(ee));
->              info.reply = BR_FAILED_REPLY;
-> +            info.errno = param;
-> +            info.error_line = Some(err.line);
->              err.reply = BR_TRANSACTION_COMPLETE;
->              err
->          });
-> @@ -1441,6 +1447,7 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
->      fn oneway_transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
->          let node_ref = self.process.get_transaction_node(info.target_handle)?;
->          info.to_pid = node_ref.node.owner.task.pid();
-> +        info.to_node_debug_id = node_ref.node.debug_id;
->          security::binder_transaction(&self.process.cred, &node_ref.node.owner.cred)?;
->          let transaction = Transaction::new(node_ref, None, self, info)?;
->          let code = if self.process.is_oneway_spam_detection_enabled() && info.oneway_spam_suspect {
-> diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
-> index 245f1556b5db..693644ef0b70 100644
-> --- a/drivers/android/binder/transaction.rs
-> +++ b/drivers/android/binder/transaction.rs
-> @@ -7,8 +7,9 @@
->      prelude::*,
->      seq_file::SeqFile,
->      seq_print,
-> +    str::BStr,
->      sync::atomic::{ordering::Relaxed, Atomic},
-> -    sync::{Arc, SpinLock},
-> +    sync::{Arc, SetOnce, SpinLock},
->      task::{Kuid, Pid},
->      time::{Instant, Monotonic},
->      types::ScopeGuard,
-> @@ -18,7 +19,7 @@
->  use crate::{
->      allocation::{Allocation, TranslatedFds},
->      defs::*,
-> -    error::{BinderError, BinderResult},
-> +    error::{BinderError, BinderResult, ErrorLocation},
->      netlink::Report,
->      node::{Node, NodeRef},
->      process::{Process, ProcessInner},
-> @@ -54,12 +55,195 @@ pub(crate) fn is_oneway(self) -> bool {
->      }
->  }
->  
-> +const LOG_SIZE: usize = 32;
-> +
-> +pub(crate) static TRANSACTION_LOG: TransactionLog = TransactionLog::new();
-> +pub(crate) static FAILED_TRANSACTION_LOG: TransactionLog = TransactionLog::new();
-> +
-> +#[derive(Copy, Clone)]
-> +enum CallType {
-> +    Call,
-> +    Async,
-> +    Reply,
-> +}
-> +
-> +#[derive(Copy, Clone)]
-> +pub(crate) struct TransactionLogEntry {
-> +    debug_id: usize,
-> +    call_type: CallType,
-> +    from_proc: Pid,
-> +    from_thread: Pid,
-> +    // The kernel ignores `target.handle` on replies (where `libbinder` passes `-1` / `0xffffffff`),
-> +    // and C Binder stores and prints this field as a signed `int` (`%d`).
-> +    target_handle: i32,
-> +    to_proc: Pid,
-> +    to_thread: Pid,
-> +    to_node: usize,
-> +    data_size: usize,
-> +    offsets_size: usize,
-> +    return_error_line: Option<ErrorLocation>,
-> +    return_error: u32,
-> +    return_error_param: i32,
-> +    context_name: [u8; 16],
-> +}
-> +
-> +impl TransactionLogEntry {
-> +    const fn empty() -> Self {
-> +        Self {
-> +            debug_id: 0,
-> +            call_type: CallType::Call,
-> +            from_proc: 0,
-> +            from_thread: 0,
-> +            target_handle: 0,
-> +            to_proc: 0,
-> +            to_thread: 0,
-> +            to_node: 0,
-> +            data_size: 0,
-> +            offsets_size: 0,
-> +            return_error_line: None,
-> +            return_error: 0,
-> +            return_error_param: 0,
-> +            context_name: [0; 16],
-> +        }
-> +    }
-> +
-> +    fn new(info: &TransactionInfo, ctx: &crate::Context) -> Self {
-> +        let call_type = if info.is_reply {
-> +            CallType::Reply
-> +        } else if info.is_oneway() {
-> +            CallType::Async
-> +        } else {
-> +            CallType::Call
-> +        };
-> +        let name_bytes = ctx.name.to_bytes();
-> +        let mut context_name = [0u8; 16];
-> +        let len = usize::min(name_bytes.len(), context_name.len());
-> +        context_name[..len].copy_from_slice(&name_bytes[..len]);
-> +
-> +        let failed = info.reply != 0 && info.reply != BR_TRANSACTION_PENDING_FROZEN;
-> +        Self {
-> +            debug_id: info.debug_id,
-> +            call_type,
-> +            from_proc: info.from_pid,
-> +            from_thread: info.from_tid,
-> +            target_handle: info.target_handle as i32,
-> +            to_proc: info.to_pid,
-> +            to_thread: info.to_tid,
-> +            to_node: info.to_node_debug_id,
-> +            data_size: info.data_size,
-> +            offsets_size: info.offsets_size,
-> +            return_error_line: if failed { info.error_line } else { None },
-> +            return_error: if failed { info.reply } else { 0 },
-> +            return_error_param: if failed { info.errno } else { 0 },
-> +            context_name,
-> +        }
-> +    }
-> +}
-> +
-> +#[pin_data]
-> +#[repr(align(64))]
-> +struct TransactionLogSlot {
-> +    #[pin]
-> +    entry: SpinLock<TransactionLogEntry>,
-> +}
-> +
-> +pub(crate) struct TransactionLog {
-> +    cur: Atomic<usize>,
-> +    entries: SetOnce<Pin<KBox<[TransactionLogSlot; LOG_SIZE]>>>,
-> +}
-> +
-> +impl TransactionLog {
-> +    const fn new() -> Self {
-> +        Self {
-> +            cur: Atomic::new(0),
-> +            entries: SetOnce::new(),
-> +        }
-> +    }
-> +
-> +    pub(crate) fn init(&self) -> Result<()> {
-> +        let entries = KBox::pin_init(
-> +            pin_init::pin_init_array_from_fn(|_| {
-> +                pin_init!(TransactionLogSlot {
-> +                    entry <- kernel::new_spinlock!(
-> +                        TransactionLogEntry::empty(),
-> +                        "TransactionLog::entries"
-> +                    ),
-> +                })
-> +            }),
-> +            GFP_KERNEL,
-> +        )?;
-> +        self.entries.populate(entries);
-> +        Ok(())
-> +    }
-> +
-> +    fn add(&self, entry: &TransactionLogEntry) {
-> +        let Some(entries) = self.entries.as_ref() else {
-> +            return;
-> +        };
-> +        let idx = self.cur.fetch_add(1, Relaxed) % LOG_SIZE;
-> +        let mut slot = entries[idx].entry.lock();
-> +        // Avoid overwriting a newer entry if the ring buffer wraps around between `fetch_add` and
-> +        // acquiring the lock.
-> +        // CAST: Overflowing behavior of this cast is intentional to handle `debug_id` wrap-around.
-> +        let diff = slot.debug_id.wrapping_sub(entry.debug_id) as isize;
-> +        if slot.debug_id == 0 || diff < 0 {
-> +            *slot = *entry;
-> +        }
-> +    }
-> +
-> +    pub(crate) fn debug_print(&self, m: &SeqFile) {
-> +        let Some(entries) = self.entries.as_ref() else {
-> +            return;
-> +        };
-> +        let cur = self.cur.load(Relaxed);
-> +        for i in 0..LOG_SIZE {
-> +            let idx = cur.wrapping_add(i) % LOG_SIZE;
-> +            let entry = *entries[idx].entry.lock();
-> +            if entry.debug_id == 0 {
-> +                continue;
-> +            }
-> +            let call_type = match entry.call_type {
-> +                CallType::Call => "call ",
-> +                CallType::Async => "async",
-> +                CallType::Reply => "reply",
-> +            };
-> +            let ctx_name = match CStr::from_bytes_until_nul(&entry.context_name) {
-> +                Ok(cstr) => BStr::from_bytes(cstr.to_bytes()),
-> +                Err(_) => BStr::from_bytes(&entry.context_name),
-> +            };
-> +            let return_error_line: &dyn kernel::fmt::Display = match &entry.return_error_line {
-> +                Some(line) => line,
-> +                None => &0,
-> +            };
-> +            seq_print!(
-> +                m,
-> +                "{}: {} from {}:{} to {}:{} context {} node {} handle {} size {}:{} ret {}/{} l={}\n",
-> +                entry.debug_id,
-> +                call_type,
-> +                entry.from_proc,
-> +                entry.from_thread,
-> +                entry.to_proc,
-> +                entry.to_thread,
-> +                ctx_name,
-> +                entry.to_node,
-> +                entry.target_handle,
-> +                entry.data_size,
-> +                entry.offsets_size,
-> +                entry.return_error,
-> +                entry.return_error_param,
-> +                return_error_line,
-> +            );
-> +        }
-> +    }
-> +}
-> +
->  #[derive(Zeroable)]
->  pub(crate) struct TransactionInfo {
->      pub(crate) from_pid: Pid,
->      pub(crate) from_tid: Pid,
->      pub(crate) to_pid: Pid,
->      pub(crate) to_tid: Pid,
-> +    pub(crate) to_node_debug_id: usize,
->      pub(crate) code: u32,
->      pub(crate) flags: TransactionFlags,
->      pub(crate) data_ptr: UserPtr,
-> @@ -70,6 +254,7 @@ pub(crate) struct TransactionInfo {
->      pub(crate) target_handle: u32,
->      pub(crate) errno: i32,
->      pub(crate) reply: u32,
-> +    pub(crate) error_line: Option<ErrorLocation>,
->      pub(crate) oneway_spam_suspect: bool,
->      pub(crate) is_reply: bool,
->      pub(crate) debug_id: usize,
-> @@ -81,6 +266,14 @@ pub(crate) fn is_oneway(&self) -> bool {
->          self.flags.is_oneway()
->      }
->  
-> +    pub(crate) fn write_log(&self, ctx: &crate::Context) {
-> +        let entry = TransactionLogEntry::new(self, ctx);
-> +        TRANSACTION_LOG.add(&entry);
-> +        if self.reply != 0 && self.reply != BR_TRANSACTION_PENDING_FROZEN {
-> +            FAILED_TRANSACTION_LOG.add(&entry);
-> +        }
-> +    }
-> +
->      pub(crate) fn report_netlink(&self, reply: u32, ctx: &crate::Context) {
->          if let Err(err) = self.report_netlink_inner(reply, ctx) {
->              pr_warn!(
-> 
-> -- 
-> 2.56.0.rc1.315.gc6ed9934b7-goog
-> 
+>  drivers/android/binder/process.rs | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 
-This patch did not apply to the char-misc-testing branch :(
+This does not apply to the char-misc-testing branch :(
