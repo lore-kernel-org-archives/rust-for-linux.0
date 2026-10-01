@@ -1,131 +1,136 @@
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCBC49DB96
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 20:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790885725; cv=pass; b=hJH/mYx2NCmFy1cAXOgegCp0CdJ/FK9dy0gPpvnIGUp+KdUWUZ7YoTWst3MuTxAqitPH6hn/WhXiZDu2RGAV0KbxuVtrlm1G0Ix4b3zVyZJm9K7Mhne6w13MoBGOSBNmnE10yGyGhseoK1kRHDnev5CqPj0eMd2wSbb+mPDA7Sk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790885725; c=relaxed/simple;
-	bh=xdsuKJRUPTMCYHnn44lGREsRwQPG7jyNO7dEeNDGY8E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CadnvCWXUCMgpuxazlJViKETcIJ6Ec2qvMtDLB2ZEA+F2CnxIdW1/N5A48ZUwJGz/EVtvgl3A2rrBrQqt/1fPMdY9zopzaiUCBpu24BC8rn5/c2+vg222mTK+z+uV00y/VHIWlixOlT7j4wOBdYv6+kIJu+lp00AyU+rUNCw+lw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O/RD/JB5; arc=pass smtp.client-ip=74.125.229.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637A837C0FE
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 21:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790890642; cv=none; b=clmxG9BAdtILdc9nmmakiYXO+F49YV9eSrjfV4nokAZovJK2GTiSYu9rcDil929HsNXTAclj9/37WkjdkSapYwv3qcCOTvOMiGbEx9u5XW2nGnh/HJlGPvNRdo5Zsf0go9hCfTP+IXpOnyNRmuNX64qzkUTyt1nrDlYsIN87QyI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790890642; c=relaxed/simple;
+	bh=XskUUS3t1YGfQbeYAVWsWXcHQo8zgnpmckTLiFplbpM=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=AFah1S0X2uEZPIk1Ijb+uFLqQYrSNm6Wbkp61Bq9EHhUnihmCpkUSs7AzGhyuQb3YECuLYiFhrvsK7bsaYN3jhy58bQQH05wowUcGwD8XoPZsqErJwM1HRZu3IHycDsO6tdSZrxwU2eLH69F1TVbOJOJxSwmOySSFD8j5RIm7B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=JkZj6/Ys; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MsLrtuAL; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O/RD/JB5"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33e4e75342aso558867eec.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Oct 2026 13:15:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790885723; cv=none;
-        d=google.com; s=arc-20260327;
-        b=He+11ZR2aUcCEja12cDBXBRMBW4NnX0ue6lhF0Nhqpd1brFahZx+jH+C8A4difvcLw
-         bF8UcSNU+mo11ytwiS2m/Qoim1hyxRw4xePbXhitYMXAjmRF+1tNek/5l4FI6fBvgX6X
-         S9QHYkMGJPwM/LLdOo1L0pl2HtfKYgCIVLWawcAZHLpEA8h9bp53CXWlWSfvsfVrWjpQ
-         udy1XztPXI8TDs5GkcTtPAF1y/d7pM4NuJC9Ow/TauRYBAfwF+kLnrpMcZaj8Ms2akzn
-         P2dhExuYzwKdFv97GAkeL2n8CCAPEyAq/5VvmEiG5L1Jbg+8fqy6qtRCozVrzW9c2IDW
-         6slA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xdsuKJRUPTMCYHnn44lGREsRwQPG7jyNO7dEeNDGY8E=;
-        fh=sFZIqZaYBz6G88KWxZCmTNLj+vni6WphRerq28CQHC4=;
-        b=KPy16iXt6qvgxRwmg6lsu7sEFwIW0OQeoK6qyFVfrmcVKCu772SVH4diHpp9QJz85f
-         9Ug35te1cDMpZ4H3hXIc/PWfyUUfgsuoLY1N/k/d1LKP5RlBa8f631mlT9Ez1HRH7iIl
-         tyspfDLq1GZpWDRs5htf3ATRDCYm8J01PNae2p0L4fSrmHQdn6qpukZg/gh3ywgjzrf6
-         O/iyFDKi1DJvX4vJba2mowF9l80A7ILss2+mewBrHlcFbFVb1TtfNyWG4oZWCfrTsS76
-         Adr/keEFGtH9kFaPeVWvdfqyx4oXuOsD41Phab2dtqMeT3hvKtS6S8Ka/JXjN71IvPjF
-         +EtA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790885723; x=1791490523; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xdsuKJRUPTMCYHnn44lGREsRwQPG7jyNO7dEeNDGY8E=;
-        b=O/RD/JB5sjvwoLnrSrxhQx2HChO8ZkGmT+DBAaE6QI5RIZjOl5RYbHFxxGtf4TZlGR
-         /FsqMAFZ/ByWS7CTjucA9/Y2T+5UbaFJsjSFtmXzEp8CTD9/uoBK0pNY27LAMv1QyuLo
-         E1lvi/y0sHrriLZN8x+cAM5IhiWPG4zyP46b+06WrnpkHvz7tOo+Epl8ikzqWjUEXR1L
-         a8LLvMwcxeVqBKCe8UQ+st0CUmlz9oWT4P1gVeIKlbERso7WYEmIPMCUpKsyv8I3UD4j
-         H7Uwy35LUi2E/wx0oxhgII9h6W9TkzvDVUJisZ456ggmivgoQSlsTOB133d4pG6pfA29
-         CWpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790885723; x=1791490523;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xdsuKJRUPTMCYHnn44lGREsRwQPG7jyNO7dEeNDGY8E=;
-        b=ezmLuhRxEBKRcXZybzwmLB7d1hJ65atO125B4R4mbksNcK9FoflrMucM9jyOPQhjL/
-         QFOY8V0nlU2WK/PTt87ns6ijkE0xq5mxxk+LnocB9owIw8BTQgd0/xJyqw/zqyeQEvIY
-         1vU8ATzFknTnEv+PXIEhhB7w4Lw++nuukISKt+FgNQkUdXZF1tLrUd/N0adxbeogV2yi
-         RwaceNGZJkwJcY9orZ8hSpzq7WglztHbqAHsjyiTbjQ4ClWymCOZiC1A7v7vUyyfnv45
-         vw6w+B1EXBbLHnu4irot7piN1H7vPjDR11RMfIQOJwlF79Vlq8oqnuoPs8sk6wMCxgrd
-         uSGA==
-X-Forwarded-Encrypted: i=1; AKwUvByc/JESYP5OOOcDJhFCfnGrJkcCoAPV6Ulqz6G7lR9s1umWTui9eNx2cTmwl9MOk60EUdNWzQ/0NFGfOS7uQA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYK4v7lbEHlM0bh2gju7w+Yz1xSRD/GXEl+HXvu2tqueaP6GIFwd
-	DeT2+YzDlhP+QICOPIB3i4KzchCHIDLKSwa7SUIuj83WYi9y7oKVNv2yNTXxhOeD5MA905qAr1v
-	AGluLTZGvqfxn7W86IQRLHJhizeuXBN0=
-X-Gm-Gg: AYBFou1YVMgNf8XSCsPv/nXBgejYornsHft7/dM53TA8jErnSxLQdUEj//BAheaaOf0
-	a6MhzXRP+2EyCVQ9I73Q3MXhcD2QyWCZMdKTyj329AfERT9tt7otVosuHQmv/rI9F0AhLV1Cq9V
-	c5t7BD+WNLsdu6Dt8jdyCEynIdq6IuiY3duWzDyJOOUixrf/R0mExRoIplWsHlUhsBi+EgzIfoo
-	VtLYA1aDaN1T+lQM5DefZLsRiX0eQLxfDxQ+VT0Yaa8Fbp+98I0hOYAAFLgj6G3HYUmDqpjqY/O
-	/vaQqvL0FV5d8Kyf8+mhW5s0rnnZ9gg413+KHpFEqd9Umz8i6RP8xi9jW9Hk5WOSjX+I6ixvkCF
-	APWx9Qy5C2I3F/rouHmqsuXX3KCuiuEGfITEGuPnF2/ouByZk/hzx5WLtbgNAICAa/7u/9ALOFu
-	hY6/kgtG5LgzWnq/JcN/GbIljTVHZjyXtZg6HRPOjdtRJxM40xz7A=
-X-Received: by 2002:a05:7301:9a83:b0:34c:f181:85e4 with SMTP id
- 5a478bee46e88-34f14ffa69cmr713853eec.1.1790885722936; Thu, 01 Oct 2026
- 13:15:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="JkZj6/Ys";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MsLrtuAL"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 72C471400175
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 17:37:19 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 01 Oct 2026 17:37:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1790890638;
+	 x=1790977038; bh=nj1jVmefdUSzapJyW7ajTxvn5kGuH8IBpwN1LN2wSEg=; b=
+	JkZj6/YscBr5LPanRsANXIT2mpoAAW3d4T1+2lDdFvq/hIy8U+MqyTDPiuQ0Ufrs
+	FTNelgUBLj1C5vIlwjA3pWsaTh1CdLVs6OHH0eZtmUH/EuuHMLg381i5UniWYQsO
+	tlD9JF9KP5ui7bdf0zRjcqcm6oMIKec/RxK54Uo3y1GiOo0ow90ctscc9BfRQADA
+	6xtcUfnTuR8ElwXPjW0iPIUAvG7LFmHoO2AjSr3Aje32DYBOn6D/vpdpdgCcrMg2
+	c5jBWvriM7dSxLI/wWzQ6P2+BazDIbdPibVSC4KL5QGpdZb9ua9PeJqyilF/3joe
+	ITDVqQQSLfiA9M3ALSEnHQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790890638; x=
+	1790977038; bh=nj1jVmefdUSzapJyW7ajTxvn5kGuH8IBpwN1LN2wSEg=; b=M
+	sLrtuALqdYJA7v1Sdi2kJ82nthvBoOgMQlP7BISf1X69K0fHrF+7rr+4OIwOXULq
+	TInakTiqOsLEff7XQ7TfEOxrquUoX5ESl2AjK4b1pheqH1ZL1tQwgq6VMf87hbHn
+	Hnxy/Lb5uIAkroVKHSkhEMgfBB1kmdI4PVoy73jfEQ6pOwuI1mJiPCjOG6tQ2Rh1
+	GZfFZHNziG8KdDObhTeb+8EMgmXwNoSRNyG/kQ9/Um3pxfG0JuXhog1GL76yKygV
+	n6itswspf2KSDakErGv1Hmwlj+bCzHh/u9FTZEjWQBuOp0cx8+PlLhDHaoZYkBBi
+	jYD9ezjeROYZJCuyS9aeA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1790890638; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm3:rsa-sha256:aYHtUeMXARgFM5M1fd1VzlTR1h6IH5grC5TQbZp2PdQI/Lk
+	OWLUUJhvR8XRmtsOzBFwVpyttFQGXw+XSbiVr4G288zVK1LzDCIZ/5MkUCcZeWem
+	S8WQXsrwg5v7SKGGic5Cu1v8Eq2Xcg1F23E6LgQshwy3EvwIirzXT+WITE8yYgDy
+	80I0UORht6JyCOHaRD2vdyHtVqwioxOhUCNzMHMA/38ZmZe3pvGH63kaA9rb6lXd
+	VIOtHhAsajSe0ZQnf/vZC9cMhMXIF49zCROXcftVAi0LQlNJ1K7I5GEPsoJk5DrZ
+	j4d/xz+gIlLqi62ye8KCNm7tNqi13O+fAb0whbw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:DKUPyUYKiS9nqYMPmOUUl5y30ZN8E7KFHgZYrzXiK00=:XskUUS3t1YGfQbeYAVWsWXcHQo8zgnpmckTLiFplbpM=;
+X-ME-Sender: <xms:jtK-ahD7xFXmG4MbYU0pNiUklDTZzMukMYVnvfTNnmHdQ7WWGzIT6Q>
+    <xme:jtK-at4voiQvFtDklaBkSvXJl0ntni06-SUnbU6iNP8SleOVP69IE9MmWJH639idy
+    CHYxVh2QEa7kxhBc1R7uRUBE1r4iAsrqM1vyRqJGJuQLN7ic6XhNVM>
+X-ME-Received: <xmr:jtK-aomOI3DW6SBXl7bFuNtBoeAHpqsXhqHLRlWERJevLl_t0RDttg1MXt8ScK3-J5oayjvZvBDiFrRCyF4-_bIO>
+X-ME-Proxy-Cause: dmFkZTGA/28tFsG2eG+vuhLM16qjGd2rDFqBq+c1CObnxw0wpOTXVdwSGc+lRcqH8KiQrF
+    Cn40jBq7dEgZcnYN3bvpwXMpBqwTLDSjflemcjMVmn1P5r1PvxxFzEUeBU+PzGdjgptNE+
+    5m/KDgW+XOr8t0brUTMTuKrJLqVnkHZsYembJIvzsYxIGlvBd5ZZFLFWGhOLN/1Yw2GGWJ
+    v1L6EmlcL6OASwLcEFhIW/95kedFK52vjx2G0drLOayVlZr24xfO+1MPNmF3+uPeM82ue9
+    JU8smIGQnl1nPPnTQUb9DGs/A0ovmNswC0oUM9Mc9KxBAK46YTn51XTw6KB9cm601qxqQa
+    Ggv3HYAXPRdsIVh55yf9Ik6IAEK8L8yNRgz7zSi0xbrz6AcPF6Dr5JE7B+Bq9b8JJNosIq
+    xNfWg3xQHb+MOPj05sRg8a/s0R8ivVsw/ZUK3duXW1TXb1w1UOMoGqAOWI0bD9LaU+SucU
+    PkOS7p5bnRH6C3uv00gS2dtzEdyWUF/Qp5sBKo3qMrAJr0Sk3jNsJ7hqo3/9/yFAa5wWZu
+    cY/rkQigDZR3cioNzqfZUKkG+NM6v3UMNq9lfTqJXIsvPTwgBzx1p4rTgl61AWjb9x0jv7
+    pSYkIm4tQF8Sqv+KJEzdOkY0H8p4ToWVsnli1pzaLVo+wl4oIBR+3gq8QTHw
+X-ME-Proxy: <xmx:jtK-au5c2qU1HFM0QPCmE8hlHCYXnXwdnORL2-m9aL3mkle5DyBqoA>
+    <xmx:jtK-auWGqeZquKB4nwLixekWCwrpAUN_Qq-7tmchVrBKrBNfxcP2-Q>
+    <xmx:jtK-aq_hikB_XB5MqAXvSAEja9OLgo_jKBk37gxO2-NCSxyCnIIqJg>
+    <xmx:jtK-ajhf848vsf7jY6c0I4pDeRKWl4BPvLfw-Q0ZwUw_qQRpJ_RZMg>
+    <xmx:jtK-aly7ryLI5q4Yf7NEDoKGF15JnfnIgcwSIfZfK730SVC0ppTJYbcp>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 1 Oct 2026 17:37:14 -0400 (EDT)
+Date: Fri, 02 Oct 2026 06:37:11 +0900 (JST)
+Message-Id: <20261002.063711.2115045889604804375.tomo@flapping.org>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: tomo@flapping.org, aliceryhl@google.com, ojeda@kernel.org,
+ rostedt@goodmis.org, gary@garyguo.net, a.hindborg@kernel.org,
+ acourbot@nvidia.com, bjorn3_gh@protonmail.com, boqun@kernel.org,
+ dakr@kernel.org, daniel.almeida@collabora.com, lossin@kernel.org,
+ mathieu.desnoyers@efficios.com, mhiramat@kernel.org, tamird@kernel.org,
+ tmgross@umich.edu, work@onurozkan.dev, linux-trace-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH v2] rust: add mark_used macro
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <CANiq72kZyRQR-cxYKGKLHu7CkyOGAy6KrV2PegFSnM7eHizbhA@mail.gmail.com>
+References: <ar4-kOdIs7z6zG6k@google.com>
+	<20261001.210403.2208685315788982617.tomo@flapping.org>
+	<CANiq72kZyRQR-cxYKGKLHu7CkyOGAy6KrV2PegFSnM7eHizbhA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260929-cpu-helpers-v3-0-e968ce5ee613@kernel.org>
- <20260929-cpu-helpers-v3-1-e968ce5ee613@kernel.org> <CANiq72k-_LX5GVSKWQQ5EJV25GDfXOhOebv3TLqdA63tQHNd-Q@mail.gmail.com>
- <87cxtvb2qm.fsf@t14s.mail-host-address-is-not-set> <CANiq72kZh4a39hcy0g9sqEmzx3m+dcPRW=omOB2r5DhpRq3BXw@mail.gmail.com>
- <87a4ozas7q.fsf@t14s.mail-host-address-is-not-set> <CANiq72ki4Pc6y8og2ROLRSeRTZBbnpY41v5EC+qJaTiZWVhwAw@mail.gmail.com>
-In-Reply-To: <CANiq72ki4Pc6y8og2ROLRSeRTZBbnpY41v5EC+qJaTiZWVhwAw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 1 Oct 2026 22:15:09 +0200
-X-Gm-Features: AclHuK_PqTgVixaCB2jBczKY92-k98QEC3Sx8f2chA4JCjVJrl5imL-InuRiNGY
-Message-ID: <CANiq72nXsGHbSQ1LfbG1zYaMaZv3X=u0+XzT6vHh=9vxLE8QTg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] rust: add a wrapper for the `num_possible_cpus` C function
-To: Andreas Hindborg <a.hindborg@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Burak Emir <burak.emir@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 30, 2026 at 1:38=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> I can do it.
+On Thu, 1 Oct 2026 15:02:40 +0200
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-Actually, `cpumask.c` may be better -- that is where C defines it and
-that helper has the right `#include`.
+> On Thu, Oct 1, 2026 at 2:04 PM FUJITA Tomonori <tomo@flapping.org> wrote:
+>>
+>> Miguel, what do you think?
+> 
+> I suggested it due to seeing the multi-line combination of `if false`
+> and `_ = ...`, and the fact that we will probably want to reuse the
+> combination in other macros. It makes the concept more explicit,
+> easier to grep, and follows other cases we have created for similar
+> things like this (e.g. `static_assert!`).
+> 
+> Having said that, I do prefer using plain language instead of macros
+> where possible/reasonable, i.e. I don't like introducing macros and
+> more concepts in general just for the sake of it. On the other hand,
+> sometimes language features aren't the best spellings to be honest
+> (like the `const _` "abuse") and some people prefer abbreviations
+> (like the discussion on `SZ_*` constants).
+> 
+> Either way is fine, obviously.
 
-Which in turn makes me wonder if we should also put the Rust one in
-`cpumask.rs` instead, rather than `cpu.rs`.
-
-However, we do already have `nr_cpu_ids()` in `cpu.rs`, though, which
-is however in `cpumask.h` in C.
-
-What do you think?
-
-Cc'ing cpumask.
-
-Cheers,
-Miguel
+Thanks, I'll drop it.
