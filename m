@@ -1,211 +1,347 @@
-Received: from mail-pz2-f2.google.com (mail-pz2-f2.google.com [74.125.228.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012005.outbound.protection.outlook.com [40.107.200.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED3A3CCFCB
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 04:29:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.2
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790829000; cv=none; b=tSVMufM25mS7rHUs0nnKEbNJCqZrFbmHZnF461QtnvWMBs3eS1wfxO3NjZVCtfJRyJfQLRRb/rY1o3gt4xQR1cGHr6bD/bJfTK52lMQMv32kBKQybxVfqyIcaFZCdCjfd3NY3pjA/zQ7ap1tgBvvO1kzU+vigokmxO4STDXq3yA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790829000; c=relaxed/simple;
-	bh=wO1grHH1gZVZYLUkMH1hpsXiJoEGlVDvY+6TNj/wMME=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bzc4Tk/4YS/gR0znN5UIH9X0waW9qEjb8WPZFIM/1M3ivap91/OoZblZ4++0e995vq9cMNncg0lNrbnFkC5NsqqHagepU0gcSrMlaVQoCksPg6yDClFF4UtluFEvLiBE52rh3q4vbIPnu8ce6TXi5YrJ/UlD2YZIAmE+kODU/UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MXEFh8Tb; arc=none smtp.client-ip=74.125.228.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F3B387363;
+	Thu,  1 Oct 2026 04:48:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.5
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790830097; cv=fail; b=cxJO69TQk4wK0Ob/FcGSALj3eKC+wK/8PwWu0SqRaz4OVvKjH8UppaSM4DU8FN5HRnI6tfZgX59qtxvFfr0E8CS3YNYNLodKZvA2LkHQLTl9MGtf4dLlpF6l8FkhOe5ZfczHqH3rt+cEaz1WrEwsTdTPOznRS1k0m3TSYSEYQqM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790830097; c=relaxed/simple;
+	bh=Xz3fcRptpIzIqQKmbbHtt4OFaEcIBa0bYwCHqR+2adE=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=QjAN6ELRFHOBqGv9T5THQt2pYW8r5o1L88Ymh1MsuQ1o1bPfHzN17Rf9HrCh0splgvFcslgy6PQ9uXSd3Ml9BGwzD98kncySN57LYQEc1Z0UTmnJxWR/KxK0/W8VNLtyMbi9LU80HwaZPFtvo0EAZ75ZHjBDYIGrNKdtlvGGyow=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dWd0U6+3; arc=fail smtp.client-ip=40.107.200.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MXEFh8Tb"
-Received: by mail-pz2-f2.google.com with SMTP id 41be03b00d2f7-cc7aefb09cfso315226a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Sep 2026 21:29:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790828998; x=1791433798; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=M+DBetYDkgHMltZZ2jThCGZXBLaahoRFrj1tlEtdqYg=;
-        b=MXEFh8TbwttAR20p9ts4oeJ8ETE4gJHib3JaDU7bprUaMjCrB/2xtDX/ynCvjikD/a
-         eg/An/Drb+3OId0OCxomWk/k9vxlGFLAzOXVGELTPxfpyIp8Y0xqquiIHVBbPir/sGyS
-         DZE8TCdFZDmCukq5Q4LzCs4YSYk9cm2JMSWWnYHD4yx47BMe1cMnqWuiJo2Qx772ShOE
-         T6ibcoH9u1jBZQzgsmY/3EZrjShnAxbWeeInnwDJA6U3vIK2pZgsGnPX3w3Ybs+km6dB
-         oAfXOm1qi/irHHOpNdPt76UASYEOFsveYzL8tKoGvRsYaKvD8xOMTWohZT2wPSC93IRZ
-         cmWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790828998; x=1791433798;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=M+DBetYDkgHMltZZ2jThCGZXBLaahoRFrj1tlEtdqYg=;
-        b=NcfOcFqOTR5qHBIuITywCDSRA7Var6gexR0/pDu5cBSLOV96mxofJ6+NBh1cscqwz2
-         fVL6dCCO2stu7Q1Gpv964HbSfzC8gMJTKctFpmJA7iiXBJ/MfFyJoPv3g92usMNxgL8p
-         f3+1klsH0PQfezQfsK8qa4e5dnbxwkfIUogP4aF0KkW9QPmOEP0pukDhsnPkTrOUjTUF
-         DfMKvZgA7Asshmt1KYBX46Xbtz1wNPlY35Am0zsBHYsh5Aytasm4PGzfZOyGfv4sKW1S
-         z4iGw4rxB2kB7+c75eamJKgHv6fukuVTuKzoNN/JLSU5YP8U/5lbBc45JtpTn1W6zpOb
-         Kv9A==
-X-Gm-Message-State: AFuF++k+CpGLXd4m3q3wUrtv4/BZzywzLGq+cgxpchMPXyazlL+T2GhK
-	FIBvHyjs6Mw0YBpTLTkcBqEtrG96DfVxdr5hz5kleH0Zr0PqV9n7+5E=
-X-Gm-Gg: AYBFou3giq2JDCrCufTexNRS+QV5JQBSl607UvXJISJjs5vCX2ktIgWWhz8HXx4ZbZ0
-	wdih8nUxvbVMnWfIlWIqaSvu9iHcY3AvlEerNfgPPeoe2ScLsSrFv6T3WXWRCGQKT1GCsH7meKQ
-	aGOVQfMvqyhFoEbIM7zEMQMem6J0RZX4NZWUR32UGWwmKg0bJ4SBcvrm+vWGvQ1IiFswj/nMwkB
-	hD8MyfLawx9Jhb2g8ZAKLcp6Rt4/k8YwV4lBngTBqJBTVPnQ3DVGDiiTb3ffpvJHGDYX3ILggg0
-	0cI5YzXbqOhvP3fDq50QgYlFCKtesrHjI6EGHUOB8mpSdDwtlTuSJkzqFzfr6DbWRAcBMfq3ALC
-	DxpTkq5Skl2T0MTY+YOxO/z/U1RklIrhz4330ZU5a5sio17Of+Z/eAQl8ouQAXfirLmnqc0Y3vq
-	YeiI8su5PlJ1zuhY9pqoLMviHCRZkf6dvwtcbWHZsiT3PFdA4zidSGVHAHD9nBKsPlGXfgacSLh
-	gojlEC/XHMXKnmVoDdJCTebW3o=
-X-Received: by 2002:a05:6a21:2e14:b0:3de:8825:15b with SMTP id adf61e73a8af0-3de9e7aab35mr3682756637.12.1790828997556;
-        Wed, 30 Sep 2026 21:29:57 -0700 (PDT)
-Received: from WIN-2DEDQG69EF6.localdomain ([139.180.198.96])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-888196d5073sm431618b3a.46.2026.09.30.21.29.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 21:29:57 -0700 (PDT)
-From: chenhan <chenhan0017.work@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com,
-	a.hindborg@kernel.org,
-	tomo@flapping.org,
-	georgeandrout13@gmail.com
-Cc: rust-for-linux@vger.kernel.org,
-	boqun@kernel.org,
-	fujita.tomonori@gmail.com,
-	frederic@kernel.org,
-	lyude@redhat.com,
-	tglx@kernel.org,
-	anna-maria@linutronix.de,
-	jstultz@google.com,
-	sboyd@kernel.org,
-	ojeda@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: time: make Delta division and remainder fail consistently
-Date: Thu,  1 Oct 2026 12:29:51 +0800
-Message-Id: <20261001042951.109054-1-chenhan0017.work@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260928183925.1315274-1-chenhan0017.work@gmail.com>
-References: <20260928183925.1315274-1-chenhan0017.work@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dWd0U6+3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QNs54bauM2uMV6GtjPt/wFls0HmVMgwzK6wnYdVOlutmGuCQwLr+FpP7DfpplCERYOXm9IUjjnQWMTfMPny1Nsy3D5gB6y3hxVOV3diP60Zo/3jMtR6Gng10ddkUm5oBp4U+Hfps98eckSBoqOhlUWIPlwTunjNSaBoyK47GmJvbvEntDdwNShpe/PIlSU9iyparCLeYa5JplEt/uqrNxowrK6XaPJqCNly7mt1M2UMnf/mlzUkFVvGC8ObcvgSgCaKTJ0Ffeg9fFUQ5sgIF3btez7OrbXxNFHmMKt+C7Mz5BJonD4BcNcwDtQMTz+wYWnQR8ltlu/ZoH2zlRRjiPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=R18SeuZkofCrsUU6mKDmlG2PDqNmNj0hlSz2uSSdbxY=;
+ b=HNVJDgbG/GqUP+S+Qy6bz/jiQ7mSRy2sNLqVZzJwMf0hhVzpkMc61gZoxf5Zy8uxc2u9OrIX4e1xA0FeVTALvKCUe27rDHaWPB8P0efC46Y1ktyibangK3C677+v/kQrLc3Uuj1EuBfGnVJ1V8MIewRWyPAy/GFarEz+3yF5fzMHNktaxa9unTywJr4DQU+7XT/b4rRI7mwDjXR1vD+qdFBAKswTpNbvN81rHWQnK2NaGH+3XE49qvirCc2d+IrvRFQj/fd6mO/n74zeOOx1Y/OnIMN6hIPKj3tBs7o/uZudNUgxGr/BMwCqkM9poY79kLmRnfc/JdnGKlqgsTGCYg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=R18SeuZkofCrsUU6mKDmlG2PDqNmNj0hlSz2uSSdbxY=;
+ b=dWd0U6+3s9/80sXGkYi1YLE7Q8QpigXgSYst1Hda4vn+o5Oa9Xx0FZx9yfagbKrAPE9xqCvQWH2kQGf+zB6zLJvUzNR9IZ7DTLf0kg1qPT4LoGLbMhPwAjlb9ma0FJ/o8QGQb6+EwKuCVrctApJzSBUr5x0QREWkMJq52ULvdb6yEWk+T627TLJVxfmBxWv5YOoOLuzjuEJ8aseWHVMRRb6Dh0u+yC3WFASY2muuil7i902I/YtrD/F8c5915dTC/xVgRS1qnx6TUIuRU6ujPbZBzP6NcZXqlX2MZgAvX0dOH8UlhXrtblZWtreMEtlXA1hY68kZNDXJKSxLeGmEfA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
+ IA0PR12MB7773.namprd12.prod.outlook.com (2603:10b6:208:431::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Thu, 1 Oct
+ 2026 04:48:09 +0000
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa%5]) with mapi id 15.21.0451.022; Thu, 1 Oct 2026
+ 04:48:09 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 01 Oct 2026 13:48:05 +0900
+Message-Id: <DLT8A7TU1HDY.1NYIPVOXD044F@nvidia.com>
+Cc: "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH v3 6/9] gpu: nova-core: gsp: cmdq: split the transport
+ part of the receive path
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Benno Lossin" <lossin@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>
+X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
+References: <20260930-cmdq-rpc-v3-0-91613f06520b@nvidia.com>
+ <20260930-cmdq-rpc-v3-6-91613f06520b@nvidia.com>
+In-Reply-To: <20260930-cmdq-rpc-v3-6-91613f06520b@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0370.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:79::18) To DS0PR12MB6413.namprd12.prod.outlook.com
+ (2603:10b6:8:ce::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|IA0PR12MB7773:EE_
+X-MS-Office365-Filtering-Correlation-Id: 73d5d028-af8c-4cd8-db3c-08df1f7730a8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|23010399003|366016|376014|7416014|1800799024|22082099003|18002099003|4143699003|10067099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	IB77glL37k9pjlTPhF+2dbTH70UtGnDdVdhm+VHOLMBr6NUjs23H53pNXIluJIxqTCt6iLuBqeLpHF7Tv7W8GNpEqr2ZgAlN5QEnJFC0R8khVyEHwM1WPS3xcdAWgDTzzCDPJ1hCW1/PKG7zCbx9oTGO72s+TayxBATrxjfYhJKvM4xgw4Qiiqo8c2AL7VRTFWlgRDWU9kQRZAnKxzMj6pvuoYeSpzOQZSqRk2PMg7REpuRU22jDpr2lPQR8jeRR8Ab3cL8Gre+ot2fE3hX1p6l4nlhcKUZpoMziweBHCg8XOIvClVFBWrGefZJ6hXDylTEeupmcF/v3bg1PhdiUS1zFPFxUiOgZF25IKnVrWkrrH0H9UyZmjh5smCMzVZLtrOkYxYBnx3zB23hEQEeIJ07/zO073w3u2EYZWBQQI6++kvUVT26Cd5Ng+mBVCqztN12rsT9v2BtXG+Q41RZiom0fb8kaI3ZFYGObzaHsB5DiYl3vBLjKEG746c1wMT0WKyIS07CFVsXxe8jTEfJNVuFfyjwOQUsmY2Dyb6D3Ocu4c/qmHE/nUDyDHbVd6+wpgSX+lAmtndUOJQQTbjeOONnUH+fX4f9fxmvKcY1UzulyqS9AP+UWYPiZSORbGjugZ/4oPvcc9MaRuiRR9YwNilgq8ZlwfYXMLO0HzmGTpfU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(23010399003)(366016)(376014)(7416014)(1800799024)(22082099003)(18002099003)(4143699003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?a1ZSTmVNSkRETFp3MGl4RUlLbWFwdW41OXN5aWZDZEQ4eGNTR01FNXVwSTk2?=
+ =?utf-8?B?bE9tMFZGV3pCRTRjeUh4WG5CLzI4RWZ1UCthcDllbzJOYjVSeEFWYWthbW5L?=
+ =?utf-8?B?M3c1ZXk4OGxZQ0xxeVRUTE5HbDRiLy9qU2VOb3RKcnRnTlpVZU50aHp2blRZ?=
+ =?utf-8?B?VlVTa25FSEQ1R0FLM0FjMDJiaDdRdi9qTmJuQ3VtcktJWU1Ic1N2UGFjNyto?=
+ =?utf-8?B?RFJFT0xzc0pGUzlvNmtLc3UwWlB1SVc3WUZBbWpHQTBkQzNGRmUzQ1c5ZElr?=
+ =?utf-8?B?cHB4QUVoRGREZWNTZlRTeWVvdUZsZXY1cC9jQTdLNzJhS01kem9US2J6Lzcx?=
+ =?utf-8?B?V1FBa1d3Z1FSSFgxZEJmdHRmNjRuVC9VMjZXcytwVzh2VEVWRWZUN3Bnd0lL?=
+ =?utf-8?B?aUlRa3ZQV2tvZmFienNMWEg0WEVTdWhBQzhLdldyUWEyVlNydHNJYWY5SkYy?=
+ =?utf-8?B?MmFqT0ppazFhR2FSWGdMdDdBdk5zd2dteEFtcmZGS0lxRlhXczU5Y0lBODh3?=
+ =?utf-8?B?K0djREx4SGUvOE9Vd3MvUXVyWGc4bFBHalEvaEQ0MDlSbWVRdE4rVGlzaCt3?=
+ =?utf-8?B?KytBUDFNZmNPK1hVVzlCQzM5dFBlbUpndkVvaG90NGlubnk3SnpWT2VhQ0My?=
+ =?utf-8?B?L2d0cFdXbkt6ajUwMlU2ZlhuV1d0SFVsbVo0T3E1bEJ2L1JqYTBiTDdhUm1u?=
+ =?utf-8?B?TEhHR0FXZFZsZ1FVRCtvaHkrSDBWbXFtcXRvY0RXdmZ5SlYrL0VmNmk3bCtz?=
+ =?utf-8?B?V1BCeDlvQUp0c0JmUFVIK3ExN3RTcGFTd2tQTEUrYThZQ3d6YTZuT29kdzd2?=
+ =?utf-8?B?eFJJM1YrcVNpcjdhNzBCYzBWTWJvQisvVEdsdWtvY01BcXRZZXpHM3lEaWVp?=
+ =?utf-8?B?MHljd3pod0p6bWJhWFNEVk9wbG1CSDljelg1dzFzTFNJWE5DdlJIUENOY3la?=
+ =?utf-8?B?SzB4bXp6a1J3VXMrL0tCcVhiN2oxR1ZOMEZpNWtVbzNVMDZsRis0eUNCM0h6?=
+ =?utf-8?B?MHZlUFBqa2lVdUdxSDRxay85LzUyQXFOdnNoVGYyam1ra1V4VDRnQjk5VCtO?=
+ =?utf-8?B?Mkd4d3lMRGJQYVBLYnF0Y3ZrZnIzMWhWOUkrZHlSSFlCSWxGYUJYeDlDQXFP?=
+ =?utf-8?B?OE9lZkYrRnM4RElzaVp6RVdSMFRpbE80OGxKZHFWS3BsVnFINFlCY1lvRGVN?=
+ =?utf-8?B?N3JvZTQ0dlpDMjEzaDhLOE1VZ3hzZDVMeWk1dzRmSUZwYlhTckFUR1Z1cUkz?=
+ =?utf-8?B?a1YxSU5JVExGN3ZlcmMzZjlpNm5qeUpLa1BlVW9FS2VPOTFmeW4xL0h1bERs?=
+ =?utf-8?B?ZTZtb1k4eXMzdHBoeEY4RmR6YWhRWVpxUVR1UkxtaXU4bXZxK2xjVi84bTR4?=
+ =?utf-8?B?MUJtTGZSc0hMRndXRmFieVJMRnA2UkNLZVFMQkVNdmdIaTVsSm1BOXU2WVd2?=
+ =?utf-8?B?cHo0Y0x2TkdOblVqcXJIbEtyenQ5ODFXTnlYMjUra2daa1lkWThQK0NNQklF?=
+ =?utf-8?B?TjdVbEtNcTRZUGZjYzh2ZE9LWjhqcGVSM0xpYjJLNklyM2VwSUZWZS9pTWVM?=
+ =?utf-8?B?bUcyY2U3SXozR2tqVXJwODByeXRpcUN5Z1E4WDB6OE53YWgxSXRRMXdUT0Ru?=
+ =?utf-8?B?ZVZ1QkRYK1R2dEVjcDh3UmxUM3hRTFQ1VTFXTWdBTjVCV2JxMWVtTTZzbVcx?=
+ =?utf-8?B?L0RQKys3UDYxU3NHRVdVWHdtS3c3QjZGUVlhZkVrUWNtRnNjYW5QeTU3U0RP?=
+ =?utf-8?B?U0c5WG82S2FXUlNSdGVuZ3REOVNzQzR1MzRGR2dHVmdqQUFsR1pyd0xxelFM?=
+ =?utf-8?B?OGZ3ZUpjUTBoUGFIM01UWWVkc1A3VEkwQ3dYQU9VaXBkZ2xESDZUQzJEekFu?=
+ =?utf-8?B?RjhtZm9jVUE0RnFZdDl6ZDNCcU9qekxsci9pQlhZWldqRDZ1YlJBMVJzbXpt?=
+ =?utf-8?B?S1JoR1AyenZNUElFOExTSEpPbHlxbkU4NC93VEYvVkhhcGVjSWZkc1NndlMz?=
+ =?utf-8?B?UWMxSnFFbWRLUnZSZlExcFZtaE5pMmxNOUNmRTBROUpXQTJUZGg3WHZlTkF5?=
+ =?utf-8?B?ejRJU25Hem9TVlRCMWVDa1JlK2xkYkNUUm9qcUExczErUUZzS1ZxSW93ZFVE?=
+ =?utf-8?B?QmhNeGYxK09TVGNaZzNzbjN4NThFWEFNaFNWM1VyU3h6dkIrOVB2Q3g2cnlG?=
+ =?utf-8?B?dFVkOEpNOSt6UWRqRk8rMkIzV0lGczg0NC9BR3lSd2QwODdkYS9LV2Nrdllx?=
+ =?utf-8?B?VEQvcnJNaGRtdlFKUkpRRlZSQ0gxR0s5Y0thWW1na0Jnc01oTDh6WkRweExz?=
+ =?utf-8?B?OHNxVS9FL0NZY0hjMnlHOTM1cDcreEZRbEdhdVlIZkdoR1hJSGMwVVBzWS9U?=
+ =?utf-8?Q?/dq5KwBwWQKiBHsdU62irRziZtPQ8SIvQRMl38m9QjKVp?=
+X-MS-Exchange-AntiSpam-MessageData-1: HAfY/rTrxZrSsg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 73d5d028-af8c-4cd8-db3c-08df1f7730a8
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 04:48:08.9253
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yE0ai91WkMufuH62Q0TsjNUzMnYNs84Xtn5isSC6ChKXmxbgPsl9FuMhZqIrr7Bhy8kEavt5f/TuPAn+SGadeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7773
 
-Hi Andreas, Miguel, Tomonori and Georgios,
+On Wed Sep 30, 2026 at 11:55 PM JST, Alexandre Courbot wrote:
+> `wait_for_msg` mixes two layers: the transport layer which polls the
+> queue, extracts the element header and validates the checksum, and the
+> RPC layer which reads the RPC header and trims the payload slices to the
+> length advertised by the RPC header.
+>
+> Move the transport layer into `wait_for_element`, and introduce
+> `consume_element`, a transport-level method which reads the message's
+> contents using an implementation of the `MessageElement` trait before
+> advancing the CPU read pointer past it, and `parse_rpc_message`, which
+> validates the RPC layer. This sets things up for moving the RPC code
+> into its own module, leaving the transport agnostic of the message type.
+>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/gsp/cmdq.rs | 219 +++++++++++++++++++++-----------=
+------
+>  1 file changed, 119 insertions(+), 100 deletions(-)
+>
+> diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gs=
+p/cmdq.rs
+> index b8a9e02b76fe..07036972dbec 100644
+> --- a/drivers/gpu/nova-core/gsp/cmdq.rs
+> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+> @@ -195,6 +195,15 @@ fn write(&self, dev: &device::Device, seq: u32, dst:=
+ &mut GspCommand<'_>) -> Res
+>      }
+>  }
+> =20
+> +/// Trait implemented by types that can be received as single command qu=
+eue elements.
+> +///
+> +/// The command queue validates the element header before calling `read(=
+)` to interpret the
+> +/// contents.
+> +trait MessageElement: Sized {
+> +    /// Tries to read `Self` from `element`. `dev` is the queue's device=
+, to be used for logging.
+> +    fn read(dev: &device::Device, element: GspMessage<'_>) -> Result<Sel=
+f>;
+> +}
+> +
+>  /// Trait representing messages received from the GSP.
+>  ///
+>  /// This trait tells [`Cmdq::receive_msg`] how it can receive a given ty=
+pe of message.
+> @@ -218,6 +227,94 @@ fn read(
+>      ) -> Result<Self, Self::InitError>;
+>  }
+> =20
+> +/// Wrapper type for receiving a RPC message from a command queue elemen=
+t.
+> +///
+> +/// [`MessageElement`] cannot be directly implemented for all [`MessageF=
+romGsp`] with a blanket
+> +/// implementation as it would conflict with other future message types.
+> +struct RpcMessageElement<M>(M);
+> +
+> +impl<M> RpcMessageElement<M>
+> +where
+> +    M: MessageFromGsp,
+> +{
+> +    /// Validate the RPC layer of `element` and returns its RPC header a=
+nd its contents trimmed down
+> +    /// to the RPC payload.
+> +    ///
+> +    /// # Errors
+> +    ///
+> +    /// - `EIO` if the element is shorter than the payload length advert=
+ised by the RPC header.
+> +    fn parse_rpc_message<'a>(
+> +        dev: &device::Device,
+> +        element: GspMessage<'a>,
+> +    ) -> Result<RpcMessage<'a>> {
 
-Thanks for the reviews. Here are the details behind the changes in v2.
+This doesn't depend on the type M, so it could go on `RpcMessage`
+instead.
 
-Miguel wrote:
-> This does not add much information, since we don't have the reproducer
-> here, i.e. what is `CONFIG_SAMPLE_RUST_REPRO`? I would instead explain
-> what the reproducer is, if it is important to do so.
+Also, moving this here breaks some doclinks from other locations (e.g. `
+This is the type returned by [`CmdqInner::parse_rpc_message`].`). Can
+you fix please?
 
-You're right; CONFIG_SAMPLE_RUST_REPRO was a local Kconfig option for
-samples/rust/rust_repro.rs, and neither was included in v1. Setting it to
-y built the test module into the kernel. Its init function read a dividend
-(i64), a divisor (i32) and an operation selector from module parameters,
-then evaluated one of these expressions using kernel::time::Delta:
+[...]
+> -    /// Receive a message from the GSP.
+> -    ///
+> -    /// The expected message type is specified using the `M` generic par=
+ameter. If the pending
+> -    /// message has a different function code, `ERANGE` is returned and =
+the message is consumed.
+> -    ///
+> -    /// The read pointer is always advanced past the message, regardless=
+ of whether it matched.
+> -    ///
+> -    /// # Errors
+> -    ///
+> -    /// - `ETIMEDOUT` if `timeout` has elapsed before any message become=
+s available.
+> -    /// - `EIO` if there was some inconsistency (e.g. message shorter th=
+an advertised) on the
+> -    ///   message queue.
+> -    /// - `EINVAL` if the function code of the message was not recognize=
+d.
+> -    /// - `ERANGE` if the message had a recognized but non-matching func=
+tion code.
+> -    ///
+> -    /// Error codes returned by [`MessageFromGsp::read`] are propagated =
+as-is.
+> -    fn receive_msg<M: MessageFromGsp>(&mut self, timeout: Delta) -> Resu=
+lt<M>
+> -    where
+> -        // This allows all error types, including `Infallible`, to be us=
+ed for `M::InitError`.
+> -        Error: From<M::InitError>,
+> -    {
+> -        let message =3D self.wait_for_msg(timeout)?;
+> -        let function =3D message.header.function().map_err(|_| EINVAL)?;
+> -
+> -        // Extract the message. Store the result as we want to advance t=
+he read pointer even in
+> -        // case of failure.
+> -        let result =3D if function =3D=3D M::FUNCTION {
+> -            let (cmd, contents_1) =3D M::Message::from_bytes_prefix(mess=
+age.contents.0).ok_or(EIO)?;
+> -            let mut sbuffer =3D SBufferIter::new_reader([contents_1, mes=
+sage.contents.1]);
+> -
+> -            M::read(cmd, &mut sbuffer)
+> -                .map_err(|e| e.into())
+> -                .inspect(|_| {
+> -                    if !sbuffer.is_empty() {
+> -                        dev_warn!(
+> -                            &self.dev,
+> -                            "GSP message {:?} has unprocessed data\n",
+> -                            function
+> -                        );
+> -                    }
+> -                })
+> -        } else {
+> -            Err(ERANGE)
+> -        };
+> -
+> -        // Advance the read pointer past this message.
+> -        self.gsp_mem.advance_cpu_read_ptr(u32::try_from(
+> -            message.header.length().div_ceil(GSP_PAGE_SIZE),
+> -        )?);
+> +        self.gsp_mem.advance_cpu_read_ptr(elem_count);
+> =20
+>          result
 
-    Delta::from_nanos(dividend) / Delta::from_nanos(i64::from(divisor))
-    Delta::from_nanos(dividend).rem_nanos(divisor).as_nanos()
+Previously, if we got an unknown function code or the message was too
+short for MessageFromGsp::Message or the payload length is too big for
+the remaining read area, it wouldn't consume the element, but now it
+does. If we had corrupted data that happened to pass checksum, it could
+mess up the queue (e.g. wrap the read pointer around in front of the
+write pointer).
 
-The inputs came from the kernel command line. Each failing operation ran
-in a separate QEMU boot, since a panic stops that test. The expected
-results with the fix are:
+Since this nests transport, message layer (RPC here), and content layer,
+it might be worth saying how each should be handled. Here's the previous
++ semantics with this patch:
 
-    dividend    divisor    division        remainder (nanoseconds)
-    10          0          panic           panic
-    i64::MIN    -1         panic           panic
-    10          3          3               1
+Transport:
+- Timeout, ETIMEDOUT -> no change
+- Bad checksum, EIO, not consumed -> no change
 
-V2 replaces the unexplained config name with a description of the test.
-For v2 I used an expanded test module: it passes operands through
-core::hint::black_box to exercise the actual APIs, checks 26 valid
-divisions and 21 valid remainders per architecture, and runs the four
-panic cases above in separate boots. All passed on x86-64 and ARMv7.
-The division tests also cover full-width i64 divisors. Both kernel test
-configurations had CONFIG_RUST_OVERFLOW_CHECKS=y; I have not boot-tested
-with it disabled. The guards themselves are unconditional, consistent
-with the Rust semantics discussed in the issue and cited in v2.
+Message:
+- Unknown function code, EINVAL: message consumed in this patch
 
-On Andreas' and Miguel's suggestion to move generic helpers to math.rs,
-Tomonori wrote:
-> Do you have other users in mind? If not, each helper has only one
-> caller, so they could go directly into div() and rem_nanos().
+  If we get an unknown function code, we can't know if things are still
+  in a valid state, so I think we should not consume the message and
+  return an error here.
 
-I tried the math.rs version, then checked for other users. Each helper
-still had only one caller. Time-unit conversions use fixed positive
-divisors, to_jiffies_timeout() uses unsigned arithmetic, and
-num/bounded.rs operates on generic integer types. None is a concrete
-extra user for these fixed-type signed helpers. V2 therefore follows
-Tomonori's suggestion: the checks are directly in the two methods, with
-no generic free functions in time.rs and no new math module.
+- Known but unexpected function code, ERANGE, consumed -> no change
 
-Miguel wrote:
-> However, this changes behavior -- did you check all callers etc.?
+  Think we have this since we don't have async GSP message handling
+  implemented yet so we use this to drain the cmdq of misc messages.
+  So all good here. N.B. we are implicitly relying on the discriminants
+  in `MsgFunction` essentially being an allowlist for events we can
+  drain, otherwise we hit the case above (in the code previous to this
+  patch, at least).
 
-I checked the tracked Rust sources, including drivers, samples and lib,
-at timekeeping-next 2ea0119f72db (the v2 base) and rust-next c82c75ae11fa.
-I searched named calls and inspected division expressions in Delta and
-Instant users, including values obtained through elapsed(). I found no
-in-tree calls to either API outside their definitions. Existing users
-construct timeouts, compare elapsed times, or convert to scalar units.
-Valid-input arithmetic is unchanged; invalid inputs on 32-bit now panic.
-The audit does not cover out-of-tree users or all stable branches. I kept
-the stable Cc alongside Fixes as suggested; please let me know if this
-consistency fix is unsuitable for backporting without an affected caller.
+- `slice_1.len() + slice_2.len() < payload_length` hits, EIO, consumed
+  in this patch
 
-Miguel wrote:
-> What "both operands are passed by value" is trying to say? i.e. what
-> precondition are you trying to satisfy?
-> [...]
-> What happens in the `min / -1` case?
+  This will mess up the read pointer.
 
-Passing by value did not establish a relevant safety precondition. The
-comments now state that the divisor is non-zero and the quotient is
-representable. div_s64_rem() computes a quotient even though we discard
-it. The MIN / -1 guard was already before the C call in v1; v2 keeps it
-and makes that condition explicit in the SAFETY comment. Without the
-guard, the generic 32-bit C implementation can produce a wrapped quotient
-and a zero remainder under the kernel's C arithmetic flags. Rust's signed
-remainder operator panics for this input even though the mathematical
-remainder is zero, so we reject it to match Rust's semantics. The pointer
-comment also explains that &mut rem provides a valid, aligned, writable
-i32 for the call.
+Content:
+- Payload shorter than MessageFromGsp::Message, consumed in this patch
 
-For the documentation comments from Miguel and Tomonori, I moved
-# Panics immediately above fn div(), removed the redundant architecture
-sentence and private-helper references, and added intra-doc links for
-i32, i64 and i64::MIN. I also removed the claim of identical inputs:
-Delta division takes a Delta holding i64 nanoseconds, while rem_nanos()
-takes an i32 divisor. Each method documents its own panic conditions.
+  This is another weird scenario that shouldn't happen. Arguably we
+  shouldn't consume the message here, but this patch changes that
+  behaviour.
 
-Miguel wrote:
-> The kernel requires a "known identity", is "chenhan" one?
+- MessageFromGsp::read fails, consumed -> no change
 
-Yes. chenhan is the identity I consistently use, and
-chenhan0017.work@gmail.com is my email address. I also participate in
-issue #1254 as WindDevil on GitHub. V2 uses that identity consistently in
-From and Signed-off-by.
+  Not sure, but seems a bit weird to consume this here.
 
-V2 includes all M: and R: contacts in both requested MAINTAINERS entries:
-DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST] and RUST. It also retains the
-discussion participants and mailing lists.
+- Payload not fully read, warning+Ok -> no change
 
-Georgios: I added the requested tag to the commit message:
-Reported-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+We could solve this with a custom error type for MessageElement, or
+return Result<Result<Self>> -> the Result<Result<Self>> is arguable
+since we are returning the result of the content layer.
 
-Andreas: sorry about the HTML reply and sending it only to you. I will
-use plain text and reply-all for this discussion.
+Send path semantics look unaffected by this series to me.
 
-Best regards,
-chenhan
+>      }
+
+
