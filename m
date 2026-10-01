@@ -1,58 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001CB4BB268
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 08:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728794A68BC;
+	Thu,  1 Oct 2026 08:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790843140; cv=none; b=dS5tBB9MLzequH7MQtCU8JSQU6Erx0WezjMrUZWSPaPI2tRgkkItI2u3dAIux7G9XCBw/P0TxbUWK4grWh+4B251t9/HWRw0hzZeUKgcefRtc1/kwseX9dwoJrIT46lzuY2Rbty68dQ91Kp2DeK8W8RELM409vYKjwfY6zSZyFY=
+	t=1790843142; cv=none; b=jDpSth8dfpb+1Nkz1kby17DwRvRBKCF4X0AkCVL9CCXg5pBjWB9DNgHfFpj09l4LW0rzzKHX5Cw4LQpCfjLITZeusAGtieYCR6VbgxEJbK2drEJa7aahMojk+7ZB53S/HgS4lWJrOPHtLmmqeVHQpL0Hno+DRl018jLA4yG+2H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790843140; c=relaxed/simple;
-	bh=epFo68DRO5HO03uyGogPfBRRkcxs6U0wYGl3of+7i+8=;
+	s=arc-20240116; t=1790843142; c=relaxed/simple;
+	bh=1p908kAj53x2JXFAE4DHGJA8un0ZhU7YEXyLoO/uAzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M5pGLnbgpzSv/Rf7J4IHgJXP2xRiz1xR6/oTE+04djiBL3Phgel4DneewvFF4f26ji4DMjB8/Gj9pjBsNI1OBEJ9O/C8DLu+Wv9j0czu/sqEzKkwm6jLkHeMZ4sA/kL6o4Nq4dMgrRn0kklQ2HykDs6M7sJo91qkgC37FJLQFPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C+wCV3SV; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=Csdpt+2iv+R1L7yYzu2jdiISRzhWMBhAVB9SDmd8uTpOf7NAvz4j8afc5TVyBiBs0GUjGE65CCFkybrM7ehflVD3FL6SiXMht2ZbFJJp1qiaSFottS9RNnJ0ZFqDf3BYBDEPjbIttXlC09uqdWEYcGxUGREVYtc+k+e6UqKAamo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Abbka+ln; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C+wCV3SV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6887D1F0089E;
-	Thu,  1 Oct 2026 08:25:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Abbka+ln"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093F91F00899;
+	Thu,  1 Oct 2026 08:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790843135;
-	bh=QG6EMhK7f31Zipc8Za8yi9V5CKNrwVi5K1KKEswjybA=;
+	s=k20260515; t=1790843136;
+	bh=C/GDfs2kEm4IC7+5QfOrnPjUnzCryeGCVYnuvorUEOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C+wCV3SV2kJOjEnkfvk8bkcXxRv8DoRhi8h7qWgifAyZ+hp+Lx5P0p1hACFilxsys
-	 KV4YbzxkCbmOJZ6UPqnOzP+/wk3NOtmXFucxA1WknU5x3BjTajGWJjKIZdrjq/xS2G
-	 Ah4TjgKBUFfGu9Z+9FIDfiTMoJ3/Pao6sidXa698zLUn2hJ3IuroDBVH3hcxBLkSdd
-	 4m3//nPWTn1Vae4q3HhWiKRM/s/aqfCobDoep2W4Dfb2z498Ypum6zXJi0ORVyxeaF
-	 CF9HQIDJGO8yq0nuyPZgaW2GzvfiJsf/AlgtkDj1WEPXFMmD9SbebKxF0T5H7oSj+/
-	 holEtQCHTPc0w==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 83A29F40066;
-	Thu,  1 Oct 2026 04:25:33 -0400 (EDT)
+	b=Abbka+lnDheRb0x+jNMC/bF0CqWEblE1gX0QtKqgChYqgu0ckQL78j/KxcmKXuXSu
+	 Vwd+0XGXdmmCJ5mqMRIOjpz6UrRk4xRAcFq5JXMOuKKMLwtVy9/qkBQy2yWXvxjSnn
+	 p44pIv3rxamHmfp8ZOR0QVxYQ/u8qG6Q/WoIpyu/sAPiFH5dDXMk2x3NJnzLh2+p+m
+	 8d6m5+Xl1bVhiPoNZbOiizywj92amhKYDb3Fz61/5cDfX61+Fy8IZmrI47tFyoV2V8
+	 GNgZZlgtyFKRyqVpcDizV2GTppyyyCH8eAlmCrWtUkZS5A9cpvpbIMQ0SbNU6D6Noi
+	 buBIKOw/RMHOg==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 2A6B4F40066;
+	Thu,  1 Oct 2026 04:25:35 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 01 Oct 2026 04:25:33 -0400
-X-ME-Sender: <xms:_Ri-aooTy5-qSJTKBoJCWvnwlKfmsbFfBbbFFtNSGJv0jkDOYuCRwg>
-    <xme:_Ri-akOt8N9tIkszG4vNAR6edS6L84ghRAcazRLLHMKZ1AMJddgC1GCcsOdc0gMu0
-    fItFD68dsGvWdiTlflGZd2qY2ExC1x9paMlw9FdpZ2ootaMsjNraHw>
-X-ME-Received: <xmr:_Ri-amx_OX1CddR3a4Xw9O5_7awEbKKXnd4yX_nalZy66coeLX7Re41SgV_8>
-X-ME-Proxy-Cause: dmFkZTFTtZ9e+AEXGyH/UMNFNKx7GWX00fXAsakj+PulafEHjbIKBMQx7Xnly6B3nqNRyA
-    VpoObhA1Qhfd5N42FAzO0sTBGw4yFG6PnLFuaeM1bW97EfiTCSnufadyR4ojJhWoPi2Orp
-    Nw2JMX8opnwBw/C+wIQG8nb1UCGojK0rMbXtCocQAaV/C59AWyi9HRGVAloGTrFNLENSW6
-    18Nhy0c76z6pdAWuM1RbSN8pspZwRgkcin1hWylWhTZJTEMyJuzlL76xznqewDQePbxkmp
-    OZxFI4a4FQttqB7KZKggwQOHJeTyNiNl9FbtOJ+hzXoyQwWY84px4TyS7SR9tfVXrM6gBZ
-    aIwIKi/ed+3ot85pAQxX8josllyS7aSY2PiOI6OrDP6Wn2CEsYG+IKR8JFeMeJoBpEw+wQ
-    XttPdIXLBDAhoA+XAzJXP/xXqSu2y4jrSxftiG2ISdvtM5jaAXAsXsrxEzHuS2PqD4ZhLZ
-    pomAeTXUr1V3srUvPUKbUBV4wYPf8h/2JrgLA0hmzIemQgZ6SDOJIgzaPMBSLNiQuG0nkb
-    tCVnhEfpm7Em/Rcu2VX291sJVVO6xdHlDuaAiRaJd7g1/kAVWnUiCwBuU8oteIZ0irZpa6
-    bmhk9VX+QBVZFrCmFRGe+KY8HSPE6AUIqErIKOSWMG2Ilxoven5zamfkGd0A
-X-ME-Proxy: <xmx:_Ri-agyHDPnQGBg2twNEtq8K-s_Zl-EkBmLUvaF1urq-qpNO-6Q7xg>
-    <xmx:_Ri-avJjtqh5nQxXfzsuypfjiuqHmQIzUJ2Y0z7nCf_xqz3_bs6NlQ>
-    <xmx:_Ri-ashF8oO7CJdsCwS1SdQzqy_XLB0ygbejDZ2D9BmEsL5hV1cImQ>
-    <xmx:_Ri-agOkOG0e1UXtiUD0dFdueQtQl76lj9gR4iCCrixzIruyGZYW0A>
-    <xmx:_Ri-an4FdW2sld98aw7SZRUOmKsHOUt5Dg0ZK1b_3cl7SgHa8ztDjcaO>
+  by phl-compute-02.internal (MEProxy); Thu, 01 Oct 2026 04:25:35 -0400
+X-ME-Sender: <xms:_xi-ajXoqJb2xckcjUoZnCnSLQysuqZMG88di8ZjWLAq6_BKsRfpbw>
+    <xme:_xi-aqG67MyrHklpVp-N-bQLCENQQllCu1aKLNXIRexamTubPh9enM4cQXXs-fTpF
+    FkTIA4P8eK7HAONzMtP7EstnRjvpYI-wXTXC0CQ3gQ64BYIIuKglCA>
+X-ME-Received: <xmr:_xi-amM44BBYY5j3qmh7QQ1h4W5eValVWYJ5gxNCA0QYOYiKZqjZ0nlZ5BXl>
+X-ME-Proxy-Cause: dmFkZTEOBUC+pHxGtIE/qFdlR+QeXl0dp7/vYN3LnEb9mNJr8cHDudba3rLf+c1wvZyOle
+    aOvBQZjkiAbZt5uERWQqcwmqnj9JWqOyCsiDUS+8GfxxdH1aFho3OvarHEX4FnsS62Qvsm
+    3pNdZnMfLSKeMrDw2F20jnNKlGhLh8ZsGBb7N40T+VBKVrlGr1+mz+AldlU1WdUHKUzoN3
+    +C75jILvDhA3IYu6s4xrGVxo6HbL/PpIK7r5FLueT8lrZmFkZSQitZrzIxVPugrGuTILup
+    bF0ugObAqh7GwjAKBlmju5bDj7zD20NWv1EaB+XI9FKq5fRXow0i4KN3vqMAZViBXn1Bq1
+    ZCPfLZDAultRUQXZSiXEuknWseAGnIAUd6F9fFadxpUvy2A7cmMb35UR4FVhh/m0AryNiE
+    +VNMsmgNugZFW2jrXKeFA8GM3qUAW5mW1hpV8Ib1O4H1YVWIf81JIM80eJE/p5gwgAzU3B
+    M1Z6nuwuWOpf1rLLntCwCppthBjWo9FEcKijs6DEfSCQltvzUDEKKvGixGB76xFxvvDoZA
+    KAvPOofEtTSKFNQ6WPtte32mb9TMOQ6vauOTLlNxKIinjq5NA1mLo7y07BVY5gOkwCADeA
+    bew0qoffEjpCV0l1/6+kBai1SNJn7+Jio6DybzuD4VJ4tm/W8r2RTRyd66yg
+X-ME-Proxy: <xmx:_xi-auU_y0hI7HgHtbhwpb879PgW-HmRC-H5_04JLF7hRcCaebPebw>
+    <xmx:_xi-alwwDecqrG1s10v9zV6kwhc0NLtHtJe8fsvuCqjcRpqpvljFAQ>
+    <xmx:_xi-amO9GNPZRxgxOeTdc-1ybsf2YWFhvpR-9-pHHXcK50VSA6R04w>
+    <xmx:_xi-avqaoGtGXr-4jct80McHV61RyU7wa-d0_AwPlGXDlVbjwDfpUA>
+    <xmx:_xi-al9imHYBP-w9VVIIgJseAONJ4TJ6vylFPugKaOFogjARXOlm_SBw>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 Oct 2026 04:25:33 -0400 (EDT)
+ 1 Oct 2026 04:25:34 -0400 (EDT)
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: "Ingo Molnar" <mingo@kernel.org>,
@@ -70,9 +70,9 @@ Cc: "Ingo Molnar" <mingo@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	Shrikanth Hegde <sshegde@linux.ibm.com>
-Subject: [PATCH v2 3/5] selftests/bpf: Use the new NMI_BITS definition
-Date: Thu,  1 Oct 2026 10:25:17 +0200
-Message-ID: <20261001082519.16195-4-boqun@kernel.org>
+Subject: [PATCH v2 4/5] irq: Explain better on NMI_MASK overflow condition
+Date: Thu,  1 Oct 2026 10:25:18 +0200
+Message-ID: <20261001082519.16195-5-boqun@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20261001082519.16195-1-boqun@kernel.org>
 References: <20261001082519.16195-1-boqun@kernel.org>
@@ -84,29 +84,31 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The definition of NMI_BITS was out of sync after the introduction of
-HAS_SEPARATE_PREEMPT_RESCHED_BITS, hence adjust it.
+Currently __preempt_count_nmi_enter() uses 15 as the maximum NMI nesting
+level, and it's because 4 bits are used to represent the nesting level
+of NMI. Replace the tautological comment with a more direct mention to
+the 4 bits limitation to help readers understand this condition.
 
-Reported-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Suggested-by: Shrikanth Hegde <sshegde@linux.ibm.com>
 Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
 Signed-off-by: Boqun Feng <boqun@kernel.org>
 ---
- tools/testing/selftests/bpf/bpf_experimental.h | 2 +-
+ include/linux/hardirq.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/bpf_experimental.h b/tools/testing/selftests/bpf/bpf_experimental.h
-index 2893bf06ff25..4bf7390994bf 100644
---- a/tools/testing/selftests/bpf/bpf_experimental.h
-+++ b/tools/testing/selftests/bpf/bpf_experimental.h
-@@ -371,7 +371,7 @@ extern int bpf_sock_read_xattr(struct socket *sock, const char *name__str,
- #define SOFTIRQ_BITS	8
- #define HARDIRQ_DISABLE_BITS	8
- #define HARDIRQ_BITS	4
--#define NMI_BITS	1
-+#define NMI_BITS	(1 + 3*IS_ENABLED(CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS))
- 
- #define PREEMPT_SHIFT	0
- #define SOFTIRQ_SHIFT	(PREEMPT_SHIFT + PREEMPT_BITS)
+diff --git a/include/linux/hardirq.h b/include/linux/hardirq.h
+index 73b48dd9f135..2648c49cd8f6 100644
+--- a/include/linux/hardirq.h
++++ b/include/linux/hardirq.h
+@@ -108,7 +108,7 @@ DECLARE_PER_CPU(unsigned int, nmi_nesting);
+ #define __preempt_count_nmi_enter()				\
+ 	do {							\
+ 		__preempt_count_add(HARDIRQ_OFFSET);		\
+-		/* Maximum NMI nesting is 15. */		\
++		/* NMI nesting is represented in 4 bits. */	\
+ 		BUG_ON(__this_cpu_read(nmi_nesting) >= 15);	\
+ 		__this_cpu_inc(nmi_nesting);			\
+ 		preempt_count_set(preempt_count() | NMI_MASK);  \
 -- 
 2.51.0
 
