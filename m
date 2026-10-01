@@ -1,172 +1,104 @@
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3B63ECBF5
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 10:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790851634; cv=pass; b=h9JKJU0KWhbL6rA7Pv1MDKa5MlC7j4w8k+KV6p2Tgb3y0g+4nFaGR3+8g7bgAAige+M24Fe2oD3JjfGEJ5EX2LaiLntVvsWe0pmRxsNNd+RwJr2mCowy8OpGzp7tO6UD13SXRPkcFI7kDBPO4T8Qvtg8igMAYoc2fPzUkjqMNmU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790851634; c=relaxed/simple;
-	bh=Sk7RTOQcN4cidxedcRYIVkGub/oGpNeLEskr9NMZ1eA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rPMLRhInMGdCq/S6W8WVySYvi8G6nsj81Nf5ykuSIbtXz8cjrbxL9/ztzU9t87PENYx+QzvO+kD/L3OqssraHTA5OeUpOjY5FXh+Ha1gJB2Q+dLdmN+sBUtGJDb9sEFVD+6NxRx8j9eDDvAYjQV2xKFnR5mWzuZADoQZhtTtZUc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SVLuSdq/; arc=pass smtp.client-ip=74.125.229.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D324F4CEB
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 11:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.71
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790852757; cv=none; b=ZkXkfRJvMEMtCRSWsCs6CONHvG2N8ulziJ/ehk1k6aznu7uEJ+dy3d16TLBdEqQxfgzLbH+nqHYHPrkc2x6eT0EPeKXNPWbYbq7s08LkpAl84tqdK0zMkDkFw65ET0e/EJwhJnAJDJ2By3ZSDK0rFTDASgv+FAfC2cjQnV3V6lo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790852757; c=relaxed/simple;
+	bh=x5ys3ou1s2SNqxZHNXG0kEAmte9nf0fwcDyiMeg6kbc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=N/04V6nhRAhdq6WHfOD1giqziWJnqtzqngxHCTQPRRTmS+dOY3jpl3JNlg11F5tu4nXmt7UDe4fz9Snf69JePKTY4i1ttBbhm0cktOYDWkSNyILTa+N9E7Zc+KdN58lRZNXvxSr6Rdx2yoc4q9avJv7vAYSFvMBZvoXix0B4l1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y9QHu3Wf; arc=none smtp.client-ip=209.85.128.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SVLuSdq/"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-34b010e8c94so306668eec.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Oct 2026 03:47:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790851632; cv=none;
-        d=google.com; s=arc-20260327;
-        b=TD26xzsbXKCZjTXkkak/JibHnTKgA+BPzin+YFYto7814OnOx/L+qJGPRw5KTX6y8K
-         EGwuh6zKe+Jmtglp1qw2oUAPjVlGCeIfUg/0j/IJMpQbJ8XYltkeLFKxhuHMbwNu+knG
-         U4nAedftzTE5OPw6tCGq3XcKmnFuVUjh7PphYj4GtJmpCX7BWRt90DEoP6meMfp8mlkA
-         ANzpdzFYiEd6n590KuYUUkPZCDPgeaZbmrRRczT2V0Jb8Nrh7sSttwTSy2nn6Yti6j5Z
-         Ye2fSy7UNTWtaQ3S27r1WC6+Ux84dhOZyw+/klnKKcil2mPpXlupBw1XyQ3NXT8wZaJ9
-         2piQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xZGQWu5F+L+LnhlrlKnJBt7Q9Qa/GJcvQeTn5kUBy+o=;
-        fh=aau669W/r1YbBOATay63OLpjG6QTCQ6QO9w099tGBig=;
-        b=AyxWjg5OyPHwrwgGY/uCR3NYeaN49q0Wfp8Q/DEnsANel44gH2BGmMaRnikBeH8U+0
-         8RQ6LRTNTiral6/htt6Tncu/f6Zb7h5ExBw7R8sJurh4C252bIatTqwGHcQ9yYkuulKy
-         uC90nlsMt6AI0oQO1WFTNCkbwzM2Z0ZL3+zRb8kr59KqvlReoXlejRIDdaocXFSnOTEp
-         tCWG4QHUV8Oh8PY+fx/keIV8qvNA/qbwAl5n1H8Mo1jJGAlmIeJSWTfPbEuocGfBXEwa
-         Ksg3zU9y+J5pBZ60B19/saMv8SSHQeZlU+2h3HyIWEszEVHwyTdj8zBy5XpoL+z/fdCA
-         REyQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y9QHu3Wf"
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a01ba12198so10663335e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Oct 2026 04:05:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790851632; x=1791456432; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xZGQWu5F+L+LnhlrlKnJBt7Q9Qa/GJcvQeTn5kUBy+o=;
-        b=SVLuSdq/5miDqsF3OehTAiZGkWSLw1jUF43HwR6I34Lu9xE1axu6bwF9gwcJNTA5kF
-         U8vPKBE1vUqFRqsFA7AE+q1OMVuz02OkhFEFW5+uHjRa4ok/8IohGfkZfLXNBqhQlxh+
-         3TZnW+atvLc7QhFxOLfUzwM/dAeAyXSLnLn0eabti8ybR2VijI9vivWhlSGusAQe4RI8
-         Ak9CLyn6BjL7OOer0dA4AJepj8TIJ205/WBR6upqEiX4LzP0QiGiPrbn9fK06Luua7BH
-         uHvzvoDfbEXHs2glbii7vHe7tSKb+hHy9LdvyUdBEcnYecBbZ2gk1gXQcfXpRgYt3sKe
-         bk6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790851632; x=1791456432;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790852754; x=1791457554; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xZGQWu5F+L+LnhlrlKnJBt7Q9Qa/GJcvQeTn5kUBy+o=;
-        b=FoNA+TiiXAA+Ra55nz3utGsZ8elTD1s5dB0VaDxqjcu/WCjzLECBHmSAhvNS3f+PUT
-         c7p81vaGVI4Q9kyNGk3+F0vPjKSF/tOeGo4Ps1Y3YGLFRAg4cGV0tds0XycfxRFPMdLZ
-         qdHQCVUCiIrNbTOah4mu0YnTEbo4KjWNjzHqv4DGryAx8ZfVattssRqkSKCt4rAD/WbW
-         pjLQFa/F6PPf7u73aLzffB172T2+enNx5y1YKuMlK3vSZxRozra2xhoCFzGXpuhld2Ys
-         tj52JbqOIP7viSwhNm1r970QP5tztU7ac3PYSj3HWYzm5t9rp9ldgALKxwnE3vS5yhi7
-         Qcfg==
-X-Gm-Message-State: AFuF++mPuMxQuBCi5N9qLBhsGvY8jfcQofmdUJvfYLTGMiEt9ruDuBMV
-	/RLqDX3+kvMkBGMVUdk+cxETwPGrxLNGrYk5AALfKWVORzrOwjJE/tTB+x7RZ7uRklPd0ofvwnw
-	L7gmdglsDKWWMxxZkWRg1Q2o7QOYGDeY=
-X-Gm-Gg: AYBFou3boQLq735X0T0+AgjBusl3KqWrqmeklI9rhmK3fZm7haft2I4e/2gBRJZTt1T
-	X+GE6Ckbqfg5qf0Q+e4JCVJdGCrW59fKGH+veERl/1UZMvJI5pssIgBzzEZtps9Qs4vTmKTA2/v
-	27z742SdP7lMvUSbSaOqFKI0BcLofjYFpzCK6yQtCP1sNXyP+LQwM8Ft90QsIdW612y489O/i4q
-	0MN6h1wviRcTBmt4LdBhAv0IfANx9+z/jHYw/691CuVtDBevwP+qNzZazMd/vNsHQ1SetEItjQq
-	w5T456QUu2h4YjFdDRuOLagIgf19MilliVkzR0c8WBEERSWOQjuQa5Cgoh0+wpJXjTmNzKjV9pq
-	H5YaYTajzu0w0bQPdJ3QuQda1qaMcOojdA37KUno3M/NGza/077IM5ambiX6ptIMCtXJv5Reiom
-	arZAgw+WXI6wtWzn3Ssbe0MfQaT4M7W31gAqV94VO7XhK7Qqz01JNKQRPK5AUdyw==
-X-Received: by 2002:a05:693c:8085:b0:34c:f181:85e4 with SMTP id
- 5a478bee46e88-34cf1818b1fmr7262875eec.1.1790851632033; Thu, 01 Oct 2026
- 03:47:12 -0700 (PDT)
+        bh=lq0jjzxKFZwxoQFxNcWNw0/FRt3Y9c+8HIkgfK5xmkU=;
+        b=Y9QHu3WfS2HaFjqufTh1a4KYYRiKZta3xG0wOwsh8jWcj5ldHbx4/2rR8hecNk/Uzv
+         BUEFZO/A5LRfBbyMl0QMsXNcbSFhmd0cacCio3wR/u65xkwkY6Tsf5rDmafCM1Wnv7G2
+         0P+L2lg5RdL1D12rsT9Q60uhv6qvgGjNSySWe0NhSMtZvFZqBGJRa2CXlHyuX8b2YflP
+         LDv29KEC5q8MAIALpGYjuiJw0rrqekikfLPV+rd0Az6+MvS/LHCkOslMnEuB+5wrBFAU
+         G8FCPsS6khTQRnVDonKwiXGqVNX0XiOuW9xTaq4oM154IjjZXDgglAciuO3pvpD+zv2j
+         ksWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790852754; x=1791457554;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lq0jjzxKFZwxoQFxNcWNw0/FRt3Y9c+8HIkgfK5xmkU=;
+        b=ABiK6p64L6DE9MCb7gwvgR9pi1Rsq+tQLEk47VKT6W9QLwDLqO2LwfXQjSQT/T5vHp
+         yiNCi1hSaf5nJntPJycs3kQw9bJMgh/WYZHRlmGLO/SBwFLQPlTmFVanngBcbZAEpO8D
+         8Ze+GgUmZjluFYt589CXspks8L+dp0XIPvlX/f+PdjfNxvehBecOQZgKx8MyFwgpRScm
+         VPdzCxxlgAM3univCNRDIuYO+4Uc9ZxgPeGf+2nEBg1WOVazc4RLspgw9mMDb1x4FV40
+         E4cOUbuDfav1adSdSWUdBHy4Zq+clrkeKub9aEwnMro3paMW02vVqB8D0J5b3uw9mjs6
+         g7Ww==
+X-Forwarded-Encrypted: i=1; AKwUvBxNn8JAbqT/CmkblIuaL8zLUySIckq28L6Ei4nM6qkUDS0R2KhvinNEExC8IzHPiprdbUOSHZMaw91Z+zaQ4g==@vger.kernel.org
+X-Gm-Message-State: AFuF++mV4OfezZCZY8QsSOsglx4k+6ciSJRfc9DVcyB3pTOo3rWUoLQU
+	1rAcbNRU8lsMNMVlAmrpAfxetmh2UfHKg18STulgj9GnhA2gxG8ILSIZJ4lbYnpXlQ8Y7dzRxJb
+	5Mlv0Tp/4W8R6fc3C3g==
+X-Received: from wmpc37.prod.google.com ([2002:a05:600c:4a25:b0:49e:65c1:6109])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:83ca:b0:49e:6581:7baf with SMTP id 5b1f17b1804b1-4a01eaf59c6mr43333055e9.2.1790852753706;
+ Thu, 01 Oct 2026 04:05:53 -0700 (PDT)
+Date: Thu, 1 Oct 2026 11:05:52 +0000
+In-Reply-To: <20260930.185028.532667902450882259.tomo@flapping.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20261001042942.109012-1-chenhan0017.work@gmail.com>
-In-Reply-To: <20261001042942.109012-1-chenhan0017.work@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 1 Oct 2026 12:46:59 +0200
-X-Gm-Features: AclHuK-fHM8iJEVkEzuvz_ovqF_dLYt_Qxw_QJ6A0Z4myKEgiMjsoUcH2rpEiKc
-Message-ID: <CANiq72kjGWVk_9hR-gn4vJT-pgBsGWEvThMd9dF6-+GfBZseOA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: time: make Delta division and remainder fail consistently
-To: chenhan <chenhan0017.work@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, a.hindborg@kernel.org, boqun@kernel.org, 
-	fujita.tomonori@gmail.com, frederic@kernel.org, lyude@redhat.com, 
-	tglx@kernel.org, anna-maria@linutronix.de, jstultz@google.com, 
-	sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com, 
-	tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com, 
-	tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, tomo@flapping.org, 
-	georgeandrout13@gmail.com, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260909120210.2488674-1-tomo@flapping.org> <20260930.185028.532667902450882259.tomo@flapping.org>
+Message-ID: <ar4-kOdIs7z6zG6k@google.com>
+Subject: Re: [PATCH v2] rust: add mark_used macro
+From: Alice Ryhl <aliceryhl@google.com>
+To: FUJITA Tomonori <tomo@flapping.org>
+Cc: rostedt@goodmis.org, gary@garyguo.net, ojeda@kernel.org, 
+	a.hindborg@kernel.org, acourbot@nvidia.com, bjorn3_gh@protonmail.com, 
+	boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com, 
+	lossin@kernel.org, mathieu.desnoyers@efficios.com, mhiramat@kernel.org, 
+	tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
+	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	fujita.tomonori@gmail.com
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Oct 1, 2026 at 6:29=E2=80=AFAM chenhan <chenhan0017.work@gmail.com>=
- wrote:
->
-> commit. Correct the rem_nanos() parameter name to divisor as well.
+On Wed, Sep 30, 2026 at 06:50:28PM +0900, FUJITA Tomonori wrote:
+> > diff --git a/rust/kernel/tracepoint.rs b/rust/kernel/tracepoint.rs
+> > index c6e80aa99e8e..29d2d2d0aca8 100644
+> > --- a/rust/kernel/tracepoint.rs
+> > +++ b/rust/kernel/tracepoint.rs
+> > @@ -38,9 +38,7 @@ macro_rules! declare_trace {
+> >  
+> >              #[cfg(not(CONFIG_TRACEPOINTS))]
+> >              {
+> > -                // If tracepoints are disabled, insert a trivial use of each argument
+> > -                // to avoid unused argument warnings.
+> > -                $( let _unused = $argname; )*
+> > +                $crate::mark_used!($($argname),*);
+> >              }
+> >          }
+> >      )*}
+> > 
+> 
+> Gentle ping. Could you take a look at the tracepoint.rs part? If it
+> looks fine, I think it is easiest to take the patch through the Rust
+> tree.
 
-This seems like it should be a first patch.
+Why are we adding this macro?
 
-> Link: https://github.com/Rust-for-Linux/linux/issues/1254#issuecomment-58=
-69573842
-> Link: https://github.com/Rust-for-Linux/linux/issues/1254#issuecomment-58=
-69925737
+I think it's better to prefer avoiding macros if we can. The current
+code is familiar to people who know Rust idioms, and now you are
+replacing it with a kernel-specific macro that such people will not be
+familiar with.
 
-The discussion is small enough, so I am not sure why we need the two
-Link:s. They can be useful if you want to reference something in
-particular, using e.g. the square brackets notation [1] to point to
-them.
-
-> On the MIN / -1 safety question: div_s64_rem() computes a quotient even
-> though the caller discards it. V1 already checked this input before the C
-> call; v2 keeps the guard and makes the representable-quotient condition
-> explicit in the SAFETY comment.
-
-Yes, that is fine -- what I meant is that even if we had the check,
-the `// SAFETY` comment should still justify why it is not UB (please
-see below).
-
-> -            // SAFETY: This function is always safe to call regardless o=
-f the input values
-> +            // SAFETY: The divisor is non-zero and the quotient is repre=
-sentable.
-
-"representable" is a fine way to succinctly put it, but I wonder if it
-would be better to just spell the condition.
-
-In any case, safety comment need to explain *why* those conditions are
-true, not just re-state them (otherwise, safety comments would be a
-repetition of the `# Safety` documentation of the function called, and
-thus not useful). In other words, the point is that they explain why
-something is supposed to hold.
-
-> -    /// Return `self % dividend` where `dividend` is in nanoseconds.
-> +    /// Return `self % divisor`, where `divisor` is a number of nanoseco=
-nds.
-
-"a number of" seems to be added spuriously -- please try not to do
-unrelated changes, or you do them, please add as new commits (e.g.
-this one wouldn't be a fix to backport).
-
-> +    /// The divisor is an [`i32`] because `div_s64_rem()`, used on 32-bi=
-t
-> +    /// platforms, takes a signed 32-bit divisor. The dividend remains a=
-n [`i64`].
-
-Do we need this in the public documentation?
-
-> +    /// Panics if `divisor` is zero, or if `self` represents [`i64::MIN`=
-]
-> +    /// nanoseconds and `divisor` is `-1`, matching Rust's signed remain=
-der
-> +    /// operator even though the remainder would be zero.
-
-Not sure if we need the "even though ..." bit.
-
-Thanks!
-
-Cheers,
-Miguel
+Alice
