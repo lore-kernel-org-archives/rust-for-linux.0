@@ -1,127 +1,135 @@
-Received: from mail-dl2-f40.google.com (mail-dl2-f40.google.com [74.125.229.168])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5814450B8CB
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 13:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.168
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790859778; cv=pass; b=akjleLVbK24mk+8B/Z5fdezEWUBzwlrXi34bjGD/qn0XrqX7DEht05fLsxFaAv0S/cBCbmobRcRPg1NR9hMwwZGXNnQFxHtqx4ZWGW/4jrt7eWqp0WZcIjzAi3jyGniUwyDYRdWhvGOyf4eAjeFNuZhvXTYp/rMJFwys77TeJVQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790859778; c=relaxed/simple;
-	bh=+tixK3qzfWgvnUC60slzVW+amwwduAv7za6OU4Pq5lI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SiOgEiJHzs+uZYAj0kQcJzornfEMr8vDHz6e+n3cYw0yCyRhS6pnGiS1w1ymGkvDro7HaRZ8Evxs1urJmD13kGny575PGaTmIyy0M5B4yB+8mMPueofqHLiRJn4ZtKK4hS5dPEax7eGG2cKRB/3irxwgQaR4kgsSVlW358uF97g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CgNvUpgR; arc=pass smtp.client-ip=74.125.229.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AD74734FD
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 13:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790860402; cv=none; b=qGVHi+bXWNx6okWmSTnUQLzVFL5Mwi745qwxQLwmjZKN2xplMVq70TV8xuWOR68kcCbqNGMIBn5X39QO78YkRhIpZDXE+lZ5XLQz4CU8zDMZaSCj7XzzDP2nmEglRzmdXanYXZ+LfKsYzYOL7aOpxN+bXzWfofa2A+r0SlpoW5Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790860402; c=relaxed/simple;
+	bh=6xbb45Cd7qX8d6Lsscqf/5XrdOkBiBVDs4ulJEDEk5U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CFWGfBl32vz9aKBCxWjhTSCCuxaQaBGdu7Ta8VI0a8aDt9beOPnfFb7b1YcqPUnHq+iElFZ/lyLMLbweR8J+7gLKlewWAwJN0dX+eyzphlmt+gkjkB6iGSM3ApCatfxS5TsDNQgUDcKaWJkX4ysTdofr/PobzW508lWUFZsMobM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qh4zaeIq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CgNvUpgR"
-Received: by mail-dl2-f40.google.com with SMTP id a92af1059eb24-14c96a4b7c7so367640c88.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Oct 2026 06:02:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790859776; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Ry7NgTFqvYQtTYaVIuUMqM4DqzEf1KGeN56eucPcic4PY+Y3Bbwu8G07EaqdbS8+Pk
-         fGXHr64Nhilh5ftNlMcxX4Zi7En9lLvaxsN2CA02mqGaZv+poN8q7O/WxB7VBLXA8F1B
-         kMna2Za7xsXrPtvoPRCqD1C2YpJnmeDpEpQryqGIY1ceTGhf2G1gsW4auDgjaaVgoNLD
-         bJ23E4cjUkzAlMujxWAFmmIWwJuM2qf3wpLfXQgj7MdzpGUF9ILNUFR/cpJtc8Z8SGzF
-         vjkkp9QGRzGiCPyErWfukZZY7zlljungNIG1uiayC5OR4VvbCcGTzCY1wsdDi6s6tNL1
-         jNAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+tixK3qzfWgvnUC60slzVW+amwwduAv7za6OU4Pq5lI=;
-        fh=VGJiCDTuky1Ojkd+fsubDErjUR/qEKEPp4alvTR+ihA=;
-        b=AVJ0rzkcGX0r1EcrQFQyCqEsCQYtWK4KRQup+YB+/589zPLm6BnPeskX7iTsuMnwWS
-         r4tSnJrU7T+KyjspUrJPxfGC9dgYWpOYRk8NwTjsMzXGOCWBt4v7w6gTGIcmAT4NuJNX
-         0I+BOtmBcSLpquceJxHjut70pLvlaRIkUStwXBFT4kJfDQJbSRdfdE0XuMlpJetu/W8H
-         SMVEnaCivEKP0FrTEp84AU/62p3YTEQukSRmgw3xASkE3wbiy8O5sUsyeVKXu8qWjEuh
-         Q4ts2mRb2mfK2D9vclw6WgHC7jA7eeQSLdwXHHVwMdM5T9E8tL95d2EVlWsJNBbz4iBC
-         YEOg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790859776; x=1791464576; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+tixK3qzfWgvnUC60slzVW+amwwduAv7za6OU4Pq5lI=;
-        b=CgNvUpgRSayV6oCpuhMMnEBeTlh8YssbXW4cevmZVX1SQYM3s1OKbuyS4fcazEPbRa
-         8kXYJNFnFM8Zxcsmb8r0im1f5g3XoEH5sqZREhGNI4fk5qulxRKrl6aFwFTL3hOEuZiB
-         NioaaFJqmjkfzUSsvhZkKfE65yCQL67YhNXFtsEcJRLzGIyx49pXnocK5O+GL8Tp6ceo
-         DuAwKTnyhFcpUama5IgM7xxotm47S6tzxvSWsMBZmHv/kETYnpMOsgCxSoBuEezB8fYb
-         LAje6fnJB/XzlrlGn6FTSsD2dti5eNENMJ3ZBOabVWMTocobvV7xG8EOJK3Hr6XwW4Wl
-         wIkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790859776; x=1791464576;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+tixK3qzfWgvnUC60slzVW+amwwduAv7za6OU4Pq5lI=;
-        b=1VUAzA9yXOprTi87f2eJtmr1h3gKpllcT4sO8fhvCAMgiYbXhKgiiyUiQbxayxRTwz
-         BeGMMvCQ5DsTVYwb0DvsWWAOMY+c5EAcSSdHxwPGbG6NobAxD9HvUFBPioeSZ7jxmn2N
-         gcbQmZXD2GfwIEhfk9R27zUXfOF7uleODMmyI8nX3Mc+3QvlsbZ/PnT5ZE+C+eHJgWu7
-         9VttV4wx3TX479RKiYZBCzoRv3g0mrjBAokixhDe3biiWlX0g4qk8akd3ll3gx0RvGU7
-         YfvLSKqcV3e5Vk1qeW0Mw4X2mdbay7uCTh8TnprKgvLVAE6hI/Nawo+0kr0oJEdB5W9x
-         n+lg==
-X-Forwarded-Encrypted: i=1; AKwUvBwrZemyvixu/fRi+sxVJ3xprAWHCqRUuizYxU6jG3AFEPr5wNflLEObd5opi2jW5j2siI7nlNxsX3RY5vySpQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJYDXBLDtELUzhLBZZna0iwyQolSx0N3LSjty0vEQUZl7sXrxgz
-	RFOlXHQkgs/5pXIqfcdOEIoLqVaSSKWLii0j9+hiQUit49KlwYh5J3NHr7/RQSRsBf3lrQCqLgK
-	zuj7C52EQUUHUiJu4izPa6zYK8Tbc7zHHbGsjzKI=
-X-Gm-Gg: AYBFou3L47F44K5VsXHd9GpStUd1xjQDPDXDFe4n5sFDvjKxmGPjkzFYcH7NZ/ln/0T
-	y+fMMRmikXHpYiP3DkplJRQZvDnTFweSoLCVXDWluB/3EQPa7qAyILcOLZBcSUQ+iPXw6T9GhiR
-	mEjRRuKC44Jfb2fLAB76KaSgwAOyJNQ4dbFTJkBCEhITNhf/Bdf4tgqZjUuiMIp50yBIII1UiGv
-	oZiuS6ycRRMw8L32iZGviXWcJheyv8Zgpj8HengG+9V4hOdGENzYFsCT0xgtl63IMXCj0co18wR
-	jPtn+otYNdyJmCsei8k/ap1HEcBPOE3m9nElQJpIlFxJsF1k+MivCgFLCI9IoYv9cW383sVhp4+
-	iKVUvAZA/2mb7zYKJLdpThbR29jiSPWsWRSu6DisxDPKkcbKvO6vipzmu/hqxtJ5WZ/3ht0XuJw
-	sCkYlGtNdu4173hNxA9VhkyMm8GlY+4cEF+BOIvj5yFx5wSI2vSlY=
-X-Received: by 2002:a05:7301:6192:10b0:34b:101f:cdaf with SMTP id
- 5a478bee46e88-34cde6749bbmr8550113eec.1.1790859775900; Thu, 01 Oct 2026
- 06:02:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qh4zaeIq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514FF1F0089A;
+	Thu,  1 Oct 2026 13:13:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790860400;
+	bh=0n5tH4utl+lNJ2Z0WOsD+MvspE1oa6n6hfh8YYdfuHM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Qh4zaeIqcFKK7k9mefOiVqI0yF8eCB9wgs49rrCJOlPgYEBN6X+6TU+5sthlg8wpY
+	 xCUor/n3qfh7vbn9MI1IqbUZB4+YiH4vyMa1XhwYfj0v6c+8gS6BXvCVAYmr4U/St6
+	 wvsOiBjSrSZx3Jgnp8rq+m0JRnWAncx6mqrfuJFOO9tskS0AIUNIi4K/JNP8gVOZst
+	 NoT5r8rX7zqvCCWf5Btdo/xj5NzaqC2Hsojk2CGqoK7cph2n0P1Ky9eLQRmMD/8A1E
+	 0M4I881dNSVqVPVJrhjG2IA8EJIJGmHcavV95SopTi75ZvfFShaLrJ+o0ftppK2czt
+	 gHxlFQUuIfesA==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 51F05F40066;
+	Thu,  1 Oct 2026 09:13:19 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Thu, 01 Oct 2026 09:13:19 -0400
+X-ME-Sender: <xms:b1y-anmo1UpaRpYg6XRqP2CPnR2kxCSda4ELj__J99O3aIaa6kezBw>
+    <xme:b1y-alhKhzKUw2tufLoXpPBmJB8G387XCzm9VQx4uTip6RAsgeSQNkAk7Hfkj6dk_
+    xJLZtk91FeK4LWQPHRfK8iZSmQ_yu0reXBmW-HmcDp5brTRGTr0>
+X-ME-Received: <xmr:b1y-akRqRfbuoWVpGPl0yqJfSdG0hEmfLRmGN0Vd9M6l7gNIXH_e8CcNXAOF>
+X-ME-Proxy-Cause: dmFkZTEDz/wPL61bnt0xT9qymFFCo40y1dH7QHJB0l82uOK/MZKSQe0FLWhrl+2yMWu8AT
+    +cCg5xLoYp1mcYyPJfy5VbLnSfJRXO83x7jG6igLfGRJVc96mxfn76jlDv9wc0xfSP0Q41
+    emqek1MoR3KVqHdbPw5mFuUc1nAniVZbdgAJkHGhO2uhtfqz2Y//0FWyLIX5b8LI5OpsXi
+    8YNsqg7wrdLeoumDnnS/OK9iY/rygeWhCwwGcEMM6iBiV5ZfXdr9dhlNN3f0a4CULVLGqv
+    A0DqacRPXQ1rT11HjJXAI5SKiOYyLtqDTvpIaYW0hVdhu7Zio7M9irLe4KGeMA9xi1yCq7
+    U4GB70ugXTFdSNePDPxVyVBiUerGOEZO4wZ5oqUQT5gavVPr9xoFfGbJ/TQljdd33oDEDp
+    qTgPvXZtGv8sJ4v6JWabNIHcyck7A5Ha3LMJo4FWXx0nSOWcHXgDwaeGYnf1oMSTLZjqvE
+    geD2xJeSixOcrqGScdqY/wUNb0X2nPJ2GU48XACQZLgc0fXF2/FROAaFpfp3+lBGK5dA4b
+    YeGF7S8Eq74bBTvKj88Ocqs8u7B8N5M8/BDrdGbsVycfQe1cNchmcke1zJ3HG5R2J+WGaa
+    i4Zqh1imKLkoVe/kosj9lCwKLZVTIgiJwZP9ATwxzjV6aYK8Ndz0keAh/L0g
+X-ME-Proxy: <xmx:b1y-aqjy38RU21ia2Is7TNv-A_QXMzUIM3GhSKVk0kf0je6YWIi4Lw>
+    <xmx:b1y-aghh3LQ4KY1aR3EQnRU2eKzBStxuEaHZNco3jLqaFgL2jpcDDw>
+    <xmx:b1y-aqYXfcYdxs5drgypvLOTTYDWan0Bf6z7AAHodoTcDKtQn_XxJg>
+    <xmx:b1y-ahX1QEPKaD71V-v9hg5Elp2OY8HyGZPZZLtdOge6TW_a1K5qXg>
+    <xmx:b1y-apjuKyj_MYeFMCfgu8Wdi02gDL0rb5_rVb1Xihwy3AGo32JxtIQw>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 1 Oct 2026 09:13:18 -0400 (EDT)
+Date: Thu, 1 Oct 2026 15:13:16 +0200
+From: Boqun Feng <boqun@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: Re: [PATCH v2 3/5] selftests/bpf: Use the new NMI_BITS definition
+Message-ID: <ar5cbL_ywJVP9m_s@MacBook-0RXW5>
+References: <20261001082519.16195-1-boqun@kernel.org>
+ <20261001082519.16195-4-boqun@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260909120210.2488674-1-tomo@flapping.org> <20260930.185028.532667902450882259.tomo@flapping.org>
- <ar4-kOdIs7z6zG6k@google.com> <20261001.210403.2208685315788982617.tomo@flapping.org>
-In-Reply-To: <20261001.210403.2208685315788982617.tomo@flapping.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 1 Oct 2026 15:02:40 +0200
-X-Gm-Features: AclHuK8TvMu4f1BwqJZ754q4kD8PFo0d3Wz5r_zshbC1-ZfB-xefTekYCfYh8D8
-Message-ID: <CANiq72kZyRQR-cxYKGKLHu7CkyOGAy6KrV2PegFSnM7eHizbhA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: add mark_used macro
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: aliceryhl@google.com, ojeda@kernel.org, rostedt@goodmis.org, 
-	gary@garyguo.net, a.hindborg@kernel.org, acourbot@nvidia.com, 
-	bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org, 
-	daniel.almeida@collabora.com, lossin@kernel.org, 
-	mathieu.desnoyers@efficios.com, mhiramat@kernel.org, tamird@kernel.org, 
-	tmgross@umich.edu, work@onurozkan.dev, linux-trace-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261001082519.16195-4-boqun@kernel.org>
 
-On Thu, Oct 1, 2026 at 2:04=E2=80=AFPM FUJITA Tomonori <tomo@flapping.org> =
-wrote:
->
-> Miguel, what do you think?
+On Thu, Oct 01, 2026 at 10:25:17AM +0200, Boqun Feng wrote:
+> The definition of NMI_BITS was out of sync after the introduction of
+> HAS_SEPARATE_PREEMPT_RESCHED_BITS, hence adjust it.
+> 
+> Reported-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+> Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+> Signed-off-by: Boqun Feng <boqun@kernel.org>
+> ---
+>  tools/testing/selftests/bpf/bpf_experimental.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/bpf/bpf_experimental.h b/tools/testing/selftests/bpf/bpf_experimental.h
+> index 2893bf06ff25..4bf7390994bf 100644
+> --- a/tools/testing/selftests/bpf/bpf_experimental.h
+> +++ b/tools/testing/selftests/bpf/bpf_experimental.h
 
-I suggested it due to seeing the multi-line combination of `if false`
-and `_ =3D ...`, and the fact that we will probably want to reuse the
-combination in other macros. It makes the concept more explicit,
-easier to grep, and follows other cases we have created for similar
-things like this (e.g. `static_assert!`).
+Per sashiko's report, seems I need the following to make it work:
 
-Having said that, I do prefer using plain language instead of macros
-where possible/reasonable, i.e. I don't like introducing macros and
-more concepts in general just for the sake of it. On the other hand,
-sometimes language features aren't the best spellings to be honest
-(like the `const _` "abuse") and some people prefer abbreviations
-(like the discussion on `SZ_*` constants).
+diff --git a/tools/testing/selftests/bpf/bpf_experimental.h b/tools/testing/selftests/bpf/bpf_experimental.h
+index 4bf7390994bf..94143cf0ab0d 100644
+--- a/tools/testing/selftests/bpf/bpf_experimental.h
++++ b/tools/testing/selftests/bpf/bpf_experimental.h
+@@ -367,6 +367,9 @@ extern int bpf_cgroup_read_xattr(struct cgroup *cgroup, const char *name__str,
+ extern int bpf_sock_read_xattr(struct socket *sock, const char *name__str,
+                               struct bpf_dynptr *value_p) __weak __ksym;
 
-Either way is fine, obviously.
++extern bool CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS __kconfig __weak;
++#define IS_ENABLED(cfg) (cfg)
++
+ #define PREEMPT_BITS   8
+ #define SOFTIRQ_BITS   8
+ #define HARDIRQ_DISABLE_BITS   8
 
-Cheers,
-Miguel
+?
+
+[Cc Leon and Alexi]
+
+Regards,
+Boqun
+
+> @@ -371,7 +371,7 @@ extern int bpf_sock_read_xattr(struct socket *sock, const char *name__str,
+>  #define SOFTIRQ_BITS	8
+>  #define HARDIRQ_DISABLE_BITS	8
+>  #define HARDIRQ_BITS	4
+> -#define NMI_BITS	1
+> +#define NMI_BITS	(1 + 3*IS_ENABLED(CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS))
+>  
+>  #define PREEMPT_SHIFT	0
+>  #define SOFTIRQ_SHIFT	(PREEMPT_SHIFT + PREEMPT_BITS)
+> -- 
+> 2.51.0
+> 
