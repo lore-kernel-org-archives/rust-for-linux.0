@@ -1,96 +1,97 @@
-Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
+Received: from mail-dy2-f23.google.com (mail-dy2-f23.google.com [74.125.229.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B654F93A1
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Oct 2026 16:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590004FD7AA
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Oct 2026 17:15:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.23
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790960389; cv=pass; b=M8BggUBdL6ZcIijhyQpig1664oL175cKigILLvSBMb/ZObhfp0Ad6lJeL8Wp3+IoBNqmPbMaYpjMjXgK8zJHkAgAHw79RnFcQONdk6DnnSgF5tWEYJ7YtNkXkiCsI7NQIBv8LP6odFNZw/Gi0yQXYCKVEwQRppCc+bI4EPKx8D8=
+	t=1790961348; cv=pass; b=maXGBbrNTTpBmTJbkPT875381J2KnBzlk40/GdEOvRMayFjq9p4ILwRSnxKxtj2hr+zGbqLVbCnR4vXoPKUUQ8f8nJ1YmSiG7FDNgJztik5YD9vW4doJ4+2J6h9Z3s8c9VmytijeicgTGFzFsbRqKjZ99sF/c3mJhdISGC9Sw/M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790960389; c=relaxed/simple;
-	bh=EHkJtd8Eu6RlYIDachMsn7gB1X9/FWHuhTARdLq36AQ=;
+	s=arc-20240116; t=1790961348; c=relaxed/simple;
+	bh=EN1cEQoe0e3LCZQ89Wmj7iyw49pEd9peoNHzrA2Y4aU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JwpHJjix/FB2uxlmVA+fNMOCC3eXikZL7SofrfXy63EgZcW0SeA3dzOKZhb5UPHjpgtC3xhcFBzd4R7S3yVHbBIKUx2m3LAF7bSd02AwuxlTV3ebVz16niMhR7UQy16w2HDZEGsD9zr54xs0UoT9uGzoV2347ib5w9JPIQR668I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mpIzZ8Fe; arc=pass smtp.client-ip=74.125.229.12
+	 To:Cc:Content-Type; b=oyscdBOrRj8UITn1IJZeiTneob75Ym4c8IzOBc9bECzlgDzjM3Lj+pl1Je8e88Uw1hstW/8oB9TS34j9DfjdRspr7tbo9UDyuxiur2x1LOitYmJ6IrXdNimpkPZ9zdqAcC3ixcAH8FdG/gAvQUNol+DAo0KT50XWIGcqL96h+kc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qPr7oCgb; arc=pass smtp.client-ip=74.125.229.23
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mpIzZ8Fe"
-Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-33bc6ff6cadso1188939eec.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Oct 2026 09:59:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790960386; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qPr7oCgb"
+Received: by mail-dy2-f23.google.com with SMTP id 5a478bee46e88-32be7127c64so969454eec.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 Oct 2026 10:15:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790961339; cv=none;
         d=google.com; s=arc-20260327;
-        b=OTCeQH2UQrD3JxJJqzLTRg7Zl7xGlogLZ/aR0KkQfNU8zTkIdSNsANwo7MqUk55BbK
-         KzCMTyES7Ba2NHrZW3YVbrGy5kI/2LBxrUWfGOkSFXoriR5CXR+5RGHP0xE49Dw/5HoZ
-         qAYfawEoOXqdekvb3bf+zL2hYJl745vNxUW/NbhEDC8VJNWDdZkKSLz/tvBff0KsHGnD
-         D2hyjtSvYkH57a+/uQIyGXkbQn29+q8Rfo7p018A4x5pmV9wObTHM8HVWmSaCmGApEU/
-         69SsFFAiLu4j8h4sLq9dEMGpYsZsTNQnPAapN1wF2wbWbXQoV0ovN9/fEIV3GEwp15UA
-         fMWw==
+        b=aIxdCSai2ibWuldwBuPccksbr4R91JYNRNQHmlhyU6wDrxFAHW6tdW+W7/x0AWHsD3
+         IXeLe8uorPJl/VXcSKlPLTX5mUnBuVbNFr1onaj54n20ABJdTxeCxKUQ84jifwQpcDuV
+         JFc+iZPC5ZC2AleRrLTsCM+0R/8hrxwPTCidpOfOwTQzJa6HUmn6mptkrcqElMjvNDMH
+         I2Ujcm4zO2YoYnnGh/82hP233iQ4OLTIwFoJtGiiz4fsrXPuIuRn8EdB4lXhQU1GU+4w
+         Iuk/mDqplDjrRWnyHSKJN844xdfEpLRSmxP7vbhXxhBqgpxlOteTLX5FufAXFZsmHv5p
+         IlIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=oTUdZg9mDghQf1o9x+wxMpJYTch+gpQ19dcPDYZue7Y=;
-        fh=y/sDFQvMqCFqF7pY80dVO73XdB7q+/2nWMGnvDdo/PM=;
-        b=SSnycrGmiIPSh0Cy0ZFQoE1xyejdjqyeqRWsvbJyRQ5ovVBMeCI8RHSnFHJouSLIyz
-         nBEXdO7/k8SQsdeenWU0G2EMd4yTOYnNQd/MSQwi9Oul7hJcLKtj2jg2fDVb0/7pVPwV
-         8thuaEPQsIKoKENSDRZ4knRBSSle7jHbmBtziaWiyqJxOV6UAtn5TsdM+S/lSasYPm37
-         yRy/0t2DEKdoRPffifAUZr1Jnh18Z2oR9o9ckJoyF/OHQ0gZSLmcQaV+xdOxBiH7etj7
-         dSW0nd6cSaO+Wl0LVivSc8+oO1zN/CeVcM8f8BLwYKMJi3FEW+tviI6/iGB4bb2v/IvO
-         f7Ow==;
+        bh=EN1cEQoe0e3LCZQ89Wmj7iyw49pEd9peoNHzrA2Y4aU=;
+        fh=RogepAoJ29M94i2QJxDki6x83+fdhQJsi9PripzXVhI=;
+        b=qoZInyNxGeiWRhbaWT/IKkcX50sedXZ94O8lLfxUu57hzLGcufMW7O6A2UnccGILbY
+         tSTulsb5fcjMWYdTwZvW135POYJse6redwcykuU0rS+PFFJChuxR8OsAZ1UJmUrofQTm
+         M1kYVtrPnu+tiaaje9uImedXhmAUy0Oc2bjVbuEI7zAv1aFAG3YtOVGny6UIwaFD/Pua
+         MkKUFmwIZ5pTLIxVI09IGjvALMYIwlv+sB0gY+uJLzQpiNBFK6jzKZS8TWX/7KrXqO6S
+         1MGVNziG9RhbjkZccXCquACe9Pq/rOM30BLm666UEDr22hA4YS3UharGtDwVNmNSCKIA
+         qbcw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790960386; x=1791565186; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790961339; x=1791566139; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=oTUdZg9mDghQf1o9x+wxMpJYTch+gpQ19dcPDYZue7Y=;
-        b=mpIzZ8Fewhzw18Tfl3XgkOPOU1uONme0BMiA89Cy0Ed9IromRZD2/aKV6/49tOojkt
-         GGflUKA/eaF3C19qoANFMP7tELK9jL2rH0AJG1lmNefizVTtwwjZwdzo8ZyMgz/I/M+B
-         KnQ/pZE7RI88BZBdzoO3pDZEPAt8toVzDjEzTCJHl6+5nWlRYvTdPq/3v+UH4K4TJNVc
-         AYHCmUjwexQBIbpRk+0ANUUfs7d4R5uQu8s8KBNwIsnjo77EyfVL6c+CJG2N2tLeDxHx
-         KtfgRIa1f3IDIyeh/vAF3V9IepbtNT88mQs5iCzsTglwrmcG/OmyTfV8Ge4JIzj/nDlL
-         dnTw==
+        bh=EN1cEQoe0e3LCZQ89Wmj7iyw49pEd9peoNHzrA2Y4aU=;
+        b=qPr7oCgbCmVmsVRGhY/mlyRZc7AnEiwwEDhns/GQw2KpwtMejOPlZtLG0t7EhUjJbX
+         riZCohM6eQUTfHAhxYJk2lZ7ZalM/rV50oooeLx2kQ70HuXzhYYqX19OIzoifElzz8f+
+         isrJZRN2131FEhhK7im8v5sTKr94UUXh/d0aMhcS3G9+74CxqXQxpRqgJTFEdEKyo/UR
+         fgFWoCsSoUaa29pDk4cYIYmrKlmyYC92ks3vOOSa9NlEdFgoPr3M+mrQNdpyZ1w2hvIs
+         eRrsrMnh0zNVBvJNOzCwc9EhXmxk5rEMuyMdmPbDByIettcZa3nvmijIciBfAEEnqlYm
+         GV3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790960386; x=1791565186;
+        d=1e100.net; s=20260707; t=1790961339; x=1791566139;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oTUdZg9mDghQf1o9x+wxMpJYTch+gpQ19dcPDYZue7Y=;
-        b=PJY+XFk+Kapp+Ah0w3ai1YVDchvoGnug4OMDDJR3+MITdwkCpQLeSjbAJcu9H09FZJ
-         J0FRnX2U7SiTIxx45pkOOahgmeZrUZTwj30KlGQ3YHaDqaO4CfZtW9adEtU+IvQFN7qH
-         go0mLvO9gWL8q+4oO3kLE+oNCqKTX0wI2suD95arDkyRmanERErUwU/BElqEHFMbDOos
-         yCDnQOU2eupzkD3/gV8z2sApNsVZvVnOeOfnX1T5HEi3hXOd7+q9/5AKyd9/hccUBJ1j
-         1cf7YDTVGkQg/QyJKv+1rn65LIFvnWIJx2R2jloJvcHww6PNeJag1vYjr8yZTu9CELdG
-         7h/A==
-X-Forwarded-Encrypted: i=1; AKwUvBw9gl8L+zkLcWftec69rYUOiHHZ0dMbb0S0Hqy9rwU2QtiXPO9WYkOOJwurRbC/EerSMvJueGnqUmUSiqaBwg==@vger.kernel.org
-X-Gm-Message-State: AFq9FYIpv7dVEbi3n8nDEus3p5rln1sDPe+8T7uobMmhVJVqixeqoWjA
-	Irz4rwlG8qe9E3NgQtUizVFwsleG+PUyjdmxYzxb/mhggm/O8gg6HtS2c9JXX0PWgn+tbnlUJXA
-	InDCDos/r/cmle3HHJ4EE8cVYlu7wJ6c=
-X-Gm-Gg: AYBFou3lmkzCUSy/x8vIlvAPGLji27sbUxhzpsezufQRYAcYYDJIOg6EafNP2KS7oEp
-	74O9Z5BMbPg2X/ROFMuvD1Svh77qofOjB0ImwiHr/CeHiqCTWwW3TqyKQ8R8gsCmRKB+mxY3ijd
-	8t7xQLXPetmn91y3klfia/DG2VJZqu+OgE3TEfvmD9PWq4DaLsJWU3SGmARBdV02OYMD/m/m45U
-	sOFPA5zEpuSj7dxz3VfInlolJkZ23Vyb7rRSojieQmpaaM+6RsZSvo9cw7gKQKH9XM79zBNXEKs
-	DoI9Wc6TLaCMC1JsgF1MAu2yU9NGXIS4VfXNKv/2dPjCoyZQRBlcMAb62B7YGj/PDOHHTYCTOq7
-	Je884egoP8QUycoxa7UwBbRXCSwT4i8Nd1v7F8vZULnhBu2n2uwipTbgV/K7/uE8Ibwpm26s8jX
-	VnFs9Ot9RwnjjGM378sWf/twnfo3ihPJVY37l4xfhDp+QVLMMcAAqYw9U2pBXB1Q==
-X-Received: by 2002:a05:7301:468a:b0:340:f698:fd56 with SMTP id
- 5a478bee46e88-34f1507015fmr4716231eec.2.1790960386330; Fri, 02 Oct 2026
- 09:59:46 -0700 (PDT)
+        bh=EN1cEQoe0e3LCZQ89Wmj7iyw49pEd9peoNHzrA2Y4aU=;
+        b=H3Nd94xXpDzoxra7cYxnXGdS4q7LBYCoZ0AOkPSrt/IUkgHNzfqdFNW56V9NBhhuR/
+         urIzTWmKvixhRLXpN45hmTOtXVJcHISWl2OBaQCZUTbHBSf0mBcSMD2QD/A/vFsoQ1Fi
+         AYhXXcr26weNbt/JCJ3apBX1gjcpEAsJ397bl88sZtOmOvUTvXSoHpjFWNbKnsKB11l6
+         r18jmIR+pq1Zkub7GNJqeuY8R1YVcChiv1kiG0m7zFuolBOCV49JJO0jTjGNK1PRkcKx
+         I5cqCsu/OvJmDz2qKuQXPDvHNi3urquEgOp7xjlb9eWe6L0U0oxyL5Xml9eV+jIPMVUo
+         seFg==
+X-Forwarded-Encrypted: i=1; AKwUvBxIQR5d0aqme2Bs686Tkd0Qs7UolEa8ZIfm79xZF+4kZYQEhLMoc/Rp7Hd9pGlVilS+fYX8u4Fbv88FwH8onA==@vger.kernel.org
+X-Gm-Message-State: AFq9FYLcPFa5P32pdmdCsD3vI5jlYEr906DAFXio2jb2v8xRwbCpky4B
+	w30FUWdNlDzIIbMGN2kWnRvjqUQvbd82L8qmbpyO4LUBcgbrEL6zsJZU3FpeWuSsUKXxui9p1Bl
+	ge6GKNS0SAD0Sac6DGUE8HaYQCJ+kHw8=
+X-Gm-Gg: AYBFou0OqaMrRZKOfADVgNK60XQVVx1fWS6ZA8w735Bq9Tgr/692Jpibd9ahxOWm0hd
+	PbJ+HG11R1V7tz0lz8lv/u0xGrlNLGE4Qef/FgoJKyeadARVYxwXZO1ok+MyS7lLqVaFkkS5UXu
+	s3Mr/FupQVGMrB7kETtwEJsjGT1uIc7c6OtLJ7VPHh0j/Mxayl6wfobP6XMNogssn5K+DnTxwGb
+	3m9HXVC1Gt5MFKPVzA739rJYL+YKkyMVylRJ+Lp+cZFRKjR02BS4OlKkOQ/LJru/I6vjWqbVb/z
+	ukhLoipIsl2380AsxvObVqf9GR1uSis8R/FiBVq6EHGweja/wDW0laS9v/ckxzNhQB/xy6LE48S
+	T6ZmSPnEUJtAavbGzaAlm47QjTrOIt5hq3n+vV0hjF9EM948KfRTTGQaO4uX7BZBQpT8MEz5WQB
+	JHzMFYSGAgfQBX1xPffGvjG2pUlCexnd8JjNNughw/6YtoxHOAJH8=
+X-Received: by 2002:a05:693c:8951:20b0:34c:15b5:b4e7 with SMTP id
+ 5a478bee46e88-34f1503d60cmr5903420eec.2.1790961339293; Fri, 02 Oct 2026
+ 10:15:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260917-cv-v4-0-547ef5727451@nvidia.com> <20260917-cv-v4-1-547ef5727451@nvidia.com>
-In-Reply-To: <20260917-cv-v4-1-547ef5727451@nvidia.com>
+References: <20260902-cv-v3-0-0f90659e711d@nvidia.com> <20260902-cv-v3-1-0f90659e711d@nvidia.com>
+ <DLFPWSS3LZSN.12G96EM0FI18C@nvidia.com> <DLHFKT44IHW9.2QWQB0O0LJHJJ@nvidia.com>
+In-Reply-To: <DLHFKT44IHW9.2QWQB0O0LJHJJ@nvidia.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 2 Oct 2026 18:59:31 +0200
-X-Gm-Features: AclHuK_QhqfJYiyMedO2piq5-wcrguEMff8QxYGEopB8UiRg5ASf89kljYpIsb8
-Message-ID: <CANiq72m0PLhT=-ODzQtX7k3jn6=XXpESDUbnHcAmR-1gFqR7uQ@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] rust: num: add cv! macro to create values from
+Date: Fri, 2 Oct 2026 19:15:27 +0200
+X-Gm-Features: AclHuK8WU7MmTRz2zVr217nxxpeT8qmaOpCUrJpN90HnuhJSuc8jn6MdcGDQfTo
+Message-ID: <CANiq72mrp7qw5jikznfRoWMjcWk3Vwm3dzPdWcC1AZ8jGzdibw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] rust: num: add cv! macro to create values from
  constant expressions
 To: Eliot Courtney <ecourtney@nvidia.com>
 Cc: Alexandre Courbot <acourbot@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
@@ -103,85 +104,19 @@ Cc: Alexandre Courbot <acourbot@nvidia.com>, Yury Norov <yury.norov@gmail.com>,
 	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, John Hubbard <jhubbard@nvidia.com>, 
 	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org
+	dri-devel@lists.freedesktop.org, 
+	dri-devel <dri-devel-bounces@lists.freedesktop.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 17, 2026 at 10:35=E2=80=AFAM Eliot Courtney <ecourtney@nvidia.c=
-om> wrote:
+On Thu, Sep 17, 2026 at 9:59=E2=80=AFAM Eliot Courtney <ecourtney@nvidia.co=
+m> wrote:
 >
-> from constants without a verbose turbofish syntax.
-> For example, `const { NonZero::new(1).unwrap() }` can be written as
+> Will send the next version based on drm-rust-next, but Miguel please let
+> us know if it's ok to take through drm-rust-next. Thanks!
 
-Word wrap or newline?
-
-> +/// Creates a value from an integer constant expression, with validity c=
-hecked at build time.
-
-Maybe:
-
-  ... a constant value ("cv") ...
-
-since we explain that in the commit message, but not in the actual
-documentation :)
-
-I would also say "at compile time", and possibly mention it is usable
-in const context (we use "build time" for things like `build_assert!`,
-which can be much later, e.g. link time).
-
-> +    };
-> +    // Using `FromConst<V>::VALUE` means const generic expressions can't=
- be used, since it requires
-
-Newline between these two lines?
-
-> +/// Types that can be created from an integer constant expression valida=
-ted at build time.
-
-Ditto (please see above).
-
-> +/// Implement this trait to make a type usable with [`cv!`]. Use the [`c=
-v`] macro, not this trait
-
-The second intra-doc link should also have a `!` for consistency.
-
-> +    /// Fails the build if `V` is not a valid value for `Self`.
-
-[`Self`]
-
-> +                // CAST: the macro is only used for types up to 64 bits =
-wide, so `MIN` and `MAX`
-
-"CAST: The"
-
-> +                // CAST: the assert above confirmed that `V` fits in `$t=
-ype`.
-
-Ditto.
-
-> +                // SAFETY: the assert above confirmed that `value` can b=
-e represented within `N`
-
-Ditto.
-
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-
-One thing before that, though: are these assertions expected to fail?
-
-    const X: i64 =3D 1 << 31;
-    const Y: i64 =3D cv!(1 << 31);
-    assert_eq!(X, Y);
-
-Or:
-
-    const X: u64 =3D 2 << 31;
-    const Y: u64 =3D cv!(2 << 31);
-    assert_eq!(X, Y);
-
-Because that is quite surprising, especially since we say "with the
-target type inferred from the context" in the documentation.
-
-I hope that helps & thanks Eliot for working on this!
+Ok, given the recent discussions, let's move this forward... I have
+replied in v4 with the Acked-by, although with some feedback.
 
 Cheers,
 Miguel
