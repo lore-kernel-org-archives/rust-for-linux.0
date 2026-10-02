@@ -1,91 +1,91 @@
 Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420DF2ECE86
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Oct 2026 05:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D89340400
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Oct 2026 05:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790917590; cv=none; b=O7hZM1zD4vMBTL7a/kOaYblS+VTrWAQRo6gp1vHKQnD8/b3OBqZyV7VYHdDgIAVIQcIFkiav0e94+uWiK1ytmrCeigRZ5hxbufD8eVdFig+yMhZ8fdqQofzh1xVa9UZ9bGNL0pXsYv3eEtjEfxj3nZwxBd0om2LNEZia4OioyY4=
+	t=1790917597; cv=none; b=CDHo4FZVFTnq66CyGiLSFCEDq/JQMCN9kzSYuxy6kTJ5vHWeOmFVHBq2DN0W6Urscfy7KglPDg1MyMDr4JgrZYYHa/jggDlPhJQJ4sH0SZyC4sML5+DBsDIJ12U6NmXZ4yG7EYHpWk/COwHayGIn1q2b7KfuAFa9FABAA8zv1Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790917590; c=relaxed/simple;
-	bh=0QFjA46Deaj2fQFLv7W2LComnHVxBJV2c8bQvsL2xvs=;
+	s=arc-20240116; t=1790917597; c=relaxed/simple;
+	bh=FaA0Hfez3PVVYu5ZeqOxk+aAXeZbbSV6YFjs+QyUwW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=buThKSwGIMbSie1PzsFtvn2hSZzuPR6RdK2p0uEISoiJ5SxTMnYQbIALV5NjjxIO1B6ZUJFPbvMx3s8NkcRVgj9lY9kxbiIQNSc16uEG1mew2R9KHRt28YDT3NvhTk0T8q1JZRm0tP53Bb2OarPA+KKSZP7K57eoefh5afh4rcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=WKeLICys; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZjEPk1nO; arc=none smtp.client-ip=103.168.172.153
+	 MIME-Version; b=HnO4C5A1BD5nNFy/nXDIKRoVe/vO4TYOpfii/nNCJSoKo4B/YEkBUBaCsSQiKj+kt3KCSWW2Bp/omZ9DW2xiRS7ywwEeGQ5I70ruc1KjX8xZmM2/M/zefjch7m5Ezd4y8AmPSYiHcJ5ZwhHAg6CEYVeOifUxKkxzlbH8/qxdHb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=FmgNlyYg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=q0+x1yNx; arc=none smtp.client-ip=103.168.172.153
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="WKeLICys";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZjEPk1nO"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 655C9140017E
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Oct 2026 01:06:28 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="FmgNlyYg";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="q0+x1yNx"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 43A7A140017E
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Oct 2026 01:06:35 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Fri, 02 Oct 2026 01:06:28 -0400
+  by phl-compute-11.internal (MEProxy); Fri, 02 Oct 2026 01:06:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1790917588; x=
-	1791003988; bh=/86SHfo9lWcwsLgl92eN2tKrt8qqh+eMZKjiFz1VpxU=; b=W
-	KeLICysflz8TxIg8rnoI4Gelts1vSwOv/lNT6FlyMCVgMXMAaSsO6wkwLyGR5TvM
-	lKyS46rixtf1eYcqPlANQxMw2U6FWSD+IIrrsB5kuI7/aKT/S59QVEzhWYT/dpVW
-	0y9PwLP1mi9tHS1NKkhmc4ZApEQDAlhVMSP2zbd19EHEItmsAheRfmso9fsQ4rQp
-	OQRIu8cVhnGAU6l0vsGA+055omExno6WMm/8hTQYCGeUewxTSFVc6db8mrqs/too
-	nhpvmCEoVflSDIcxL8nVPTh0E71xFcZKQSjFFYgH5/D3sqBLIFLrFgoVngFuCEes
-	04LktZwnemeaR6mD2+dIw==
+	:reply-to:subject:subject:to:to; s=fm3; t=1790917595; x=
+	1791003995; bh=BactBM1U7DR83PK5OQKplwPt31qm9it5Bdk9otG331E=; b=F
+	mgNlyYgeTWLvqBWjMpszpwfsUjuRIMWjRvLW42AhUjHYWEnmAebD9b9siRFi9PMD
+	VwwJJlKiS0QCys8IDBjHNXgO8WRUoY/b+8C+R+me+D5FaSO3wUCOxyBLcEE5rpUF
+	0TNF3YhxzSd3HKIjqg/CEGZwYHnxFkWZIHofSuug4jQwUaPrwoBjQoTigOGRY9A+
+	ZIXjZqUEQJYFKdhIGvrOhQr1tG+TPExMLa4NIKfKT0SHhxmyYpOl4u8kafEfOT8V
+	EqLiHn+Tys6FDjgYl+hxwPxX76bJtgkMv43b5P0pRAiQoSOqywOoyUChmLznQz74
+	0WTQ30QNYZ3wpjq/9sFpQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1790917588; x=1791003988; bh=/
-	86SHfo9lWcwsLgl92eN2tKrt8qqh+eMZKjiFz1VpxU=; b=ZjEPk1nOgKj2VPUFJ
-	8Ul35tQNoIK97CTL7fc28S66lPbVw3tod8nXdbpGcJrsDbpUJLvzRMK6zbz56qNb
-	EqIBrxPpYUgksstUHIhulDwumLrYgfebKNwvNZg6r19ss2cEtoNGUUWkUzRygnd/
-	S3VUEw2fUgY/gzP/HYwgDekBrkSUOx6QWxC01qO7bIcTRQTyQep04dgRB4e4cmo0
-	Tj8l4Opug1cslYPjkBak9n/SxSW8Mpc4/AXP6Q/3pHR+VP9b8S48BZzG6/XiPH1C
-	7+fu1eMUnTOJfdqPA1BZZ8t18FDwbXvI4RhIS7T/12Z/8mDR0USdMngSubU5n+6M
-	mIQJg==
+	:x-me-sender:x-sasl-enc; s=fm1; t=1790917595; x=1791003995; bh=B
+	actBM1U7DR83PK5OQKplwPt31qm9it5Bdk9otG331E=; b=q0+x1yNxoFglzbNxO
+	aQLTcAhQT0fC/jTMxGhGFveofS8O3gPh7QqtYkg63MYkupLmiIJ1fEstq4Hp+ulC
+	RGvnb0Lr408uDrljgO+kiy565JgdEblAjercNDr0dZ1rk7owqT0xM148ivaqCVee
+	7bPI9rIH1/5eA4KmQDzK0iAghVHWPiJ66ATzCxAce6uMk3aL4LKyqjbmi/gxf51Y
+	yGcsV6kSvua/dm2h8JXaLwxWRgk/4faVouLFrJ227MTJ54CF6EyKfXPcXyRcPKKR
+	b2yU/Kj+6kDhBVhoy2uGZKVi7EEUC1D/s/sfPo1395kXT81W/ORUAKG6R+Iwy3Mh
+	w8U0A==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
 	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
 	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1790917588; d=flapping.org;
+DKIM2-Signature: i=1; m=1; t=1790917595; d=flapping.org;
 	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
 	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm3:rsa-sha256:T93OVP1ELL9mhXx4PUz1nMmb3rqRziErHB3qs19k2uz5KBM
-	+PrOZIv/P8djtJLMyy426vwAuKl9nezGVS9Ibxxqwqe52J480gE33BGhbzBigwCS
-	prQKsFrrWxMhELsfVDHdoWGUKjLCDnL/jgKm/1C3Laaf/AdPXdi4a3uTINyj8TST
-	7EdKbYSetXrQNjgZ5jjsASB+Xwu2V+gVAUxmcJBYjxATvWD9TfbaiqKBcWDRv/pP
-	QJD5qB+wc0xQsxKFz5VGdbhyrLQjRJ41JkNRdGFWfZ170cTYegpbDMVklah0iXX1
-	xzVv6mYi3L54m3vBhTdgROmZbJEyb+XhegvPgyQ==;
+	s=fm3:rsa-sha256:crOtwZNe77ZLGunaxJJSfFy2DC9Fuvx89rxPf6aYiI2eeSb
+	bolsZdjituzh2Jg0eRQiYP7nhK50fuqVa53ELWbJAqRGyETJcGqbPyXULQV+a6Mb
+	rv5owAu8Q/TR9ijmIOnBZIctNQkgWmD5CEzGmLhE+avmb+8c9SxIa457Fu/dGDuV
+	LS4kyWVRGjbRbmd/oWuMNRB0nBgSNEv1yJAd2Fw4vULIvXrerUNoQ1ji7ylLH10c
+	hm7U+Vce2LJOE8SHMzFFeGSGY+t6PsEGbDi7XOovTPJl3lIpUQh/NZeUnv1WqD4A
+	ZgyAUY1zaXgM0k3V3jICxyReSQLy2j96o389SBQ==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
 	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
 	action=mi-m=1; hc=11;
 	hn=cc,content-transfer-encoding,date,feedback-id,from,
 	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:ptpFgO0YjVKYSGArsORnHWtXm7ofa40CeoMhq9Wsnhg=:0QFjA46Deaj2fQFLv7W2LComnHVxBJV2c8bQvsL2xvs=;
-X-ME-Sender: <xms:1Du_ag-FaANVPgt2gdfPbb1Ttkpeqmkt8SCCqg4Fo1R8zDmqYf_emQ>
-    <xme:1Du_agN5175Wo_LmnR3fE40Twh9lJJFmKfk-YMW2Ftl2nBBhi27sjv0cRsdPiFLM8
-    CjbQbA51GaqdRP3YXpyYWTs3lV9Q4rgn0Q5S-6qTGvEAx6lcqLjLv8>
-X-ME-Received: <xmr:1Du_asFO34rfrYhOsvlKnjBAOSElMqSiooPoQ94ZVT8zNPjP6M9kXZz-mRFGXr5j5CSqK1tGypw9O25EoHs>
-X-ME-Proxy-Cause: dmFkZTGobTblO5ghfhzqeIvxM5zSivTwE4tobvLBWTjAl2nJedd2S0jhQe1OVF3VKR7svR
-    0VTa+Gydwlyx1KxTwGn4OyVExZyywehkbgZfCwvaTP3plREPrdsoLFvSJEMRT8U4a7TY3v
-    vUp1z4rvSssHILavzjO/HctT5URLdkCoTlPaYNiNLunSeMVzjUHxMACeidbZGUh/y/9O/G
-    WpxVJFYNZxDogftMs/sPCIfawaZ9AevVXrNfB8riuoSoAMKFoJKykqeQn5imRKAUHG+5sb
-    srxe7moDNGHYyNPiZpw+uVdOrS7LmI7rWffnHA0l8YW6kBJBoFJ6Bgsm3UjXUEzeexxpBO
-    Til9hhMGX/MuihccWsaVv7Ptx975I36keHDoaWBqkiu3UnL06/nTHGHkkwASctIX+UVR+1
-    c6mjRcDn/RlEYiai7COIoWutQEVhTdEbKEZy6wzFoPv5XtBLTl5Mpw8WPPXO0/oz6slCxg
-    8GIy8fU1IQLeSBDhUyWEKTBsPNJs5jbxt657mpcUgCXa4VMZ92Hsc2LUgNthl9BVrcAnsA
-    g/2pLNKA6h969LIwdp3EkzS0irViOGACksSRpJgmRYiPGS4J/eVZR/XTAR+7hSeSSDb0Oq
-    3i6kBKDIc3q9J6EEy0B3LzYMo4aMk/UOVpFKlNyM7lMyPo34PWe3dcFyAsBg
-X-ME-Proxy: <xmx:1Du_auj3cglycybpmDhzev-HsKT-jf7Nf77HfkNm0PElGZtpOBYE1Q>
-    <xmx:1Du_agTfOwg02DsLOHm7AJzZ2niuyl9df1cjMYRBktHTBC3Rn-ArAA>
-    <xmx:1Du_au_frpjFu3Upztbx_uqSfchqOYLgC32S78TLnUa6RBKPe4CJ-Q>
-    <xmx:1Du_auT8tLZInrn7Fu3vbbyLXG5S5-9YB88LOoBiOq1rrZotzn-1pQ>
-    <xmx:1Du_anwWubHXKwaBzUVbtv86ZcZQdJFMOQFcZa2l-wLxbSS_glmhsbwd>
+Message-Instance: m=1; h=sha256:AbwAuAjlEv3B8kWuBG6NVDxMqPnaZwzHVWIgG4kx0/Y=:FaA0Hfez3PVVYu5ZeqOxk+aAXeZbbSV6YFjs+QyUwW4=;
+X-ME-Sender: <xms:2ju_akgYHTDop07jRl6dszw2_qb6xcWHPhgSUwcM3rmdpO3NeLvy9g>
+    <xme:2ju_akheiyqdz1ymWU8B0MaMSfxkGiX0JF_aq2km-AoWIuGdjqB1DMsJlts9nCnI2
+    nMdajVzO-6khRSqqAEMckLpSnOkta9gNmU_bIAq2BGYO3-mdkOksLW8>
+X-ME-Received: <xmr:2ju_aiLrDzgazrhaplw0sZAcsTI-jF73DJtYGQqvyBEgjrR3M-7zowTAwB8C_QbO88tiTSvr6cpQKKxJwvw>
+X-ME-Proxy-Cause: dmFkZTF14+7cl51OiefgKFaxdmJSc+p9NP9jbmRpPAjDkTktWdbXTXPPkXl4UtNAnH4eKo
+    buAVz+YPZkELZjwzPC2uoyaCdt/tmNXwWF01EGeBppSba8pN7/dN998VfOPx+YhnZy5ux/
+    7yt++pOhMam3HyiyWbuEzUHfodAODDVEvwx+frSonOmnvVRpbtlIbcQvB4TaLgGaOFX5BU
+    nQpDwpMmYOfA29pWEkQXMKbfHAaCyp6WfNjvivYuheETgNly+GD6XApD3jw373gNO/i4aC
+    M0mCylD66K1hmc3rfbut2RY4qjF30qNxR8JnW+HW/YzsHxDBsKB0GxbaDVOw8krBjpT/es
+    Q+rJaT8rxQxH5Kcjxfp9hZ0YHIAxWmbyJJGpS7zaduZI//5/k4teH/fjibR0+roKwH40rO
+    GSULJYCWu+4UpYAvsVazqq64rBAa/cNcjn0iHCEAyWRQu1k87T9j+z3zRImokgnlY/anzJ
+    4WwN0PKl4HWWKsahaN0tSE0lH4wrGl1M+biyMuDHDFcTZnA7Ocb7E9QUXHLST+XwHP9WHK
+    bzh5FJ7gPf7bc/ThYdZdZfgqGZMN7VXsoizeqk+iYbAJ43QtaQP9J6/cufO2lmojbht+u6
+    5F8t34wqE94Fs7xSVz/XoE0DUW1kTs195KFTOcslVCtDiaupnCSVvSbsgtuQ
+X-ME-Proxy: <xmx:2ju_ajWzELtWTBNg4VVUo9_kfYNZ8iQ7hJtF7Y_aX1g298jlM2PEug>
+    <xmx:2ju_as3Mp8-aP023Nkpjvne3DMzaR2PGrjo4FrZkKsz9rFifHhhkeQ>
+    <xmx:2ju_aoS0kfxJ98x0W1vBgTcx9Cd1DMjQj1YUTCIaod_y36Zba0vMGg>
+    <xmx:2ju_alVeozhO7FW9I3RpjADWnT3SCduG4InYc6ykya5oHy7rbmckDA>
+    <xmx:2zu_ar6tqnDf6EWb6fl35zlOIgj454QfNRlSgeWkH3-fVRgDAY5v1msP>
 Feedback-ID: i51fe4b43:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 2 Oct 2026 01:06:22 -0400 (EDT)
+ 2 Oct 2026 01:06:28 -0400 (EDT)
 From: FUJITA Tomonori <tomo@flapping.org>
 To: a.hindborg@kernel.org,
 	aliceryhl@google.com,
@@ -116,9 +116,9 @@ Cc: acourbot@nvidia.com,
 	jiangshanlai@gmail.com,
 	markus.probst@posteo.de,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v8 1/4] rust: time: make Delta::ZERO generic over the time unit
-Date: Fri,  2 Oct 2026 14:04:25 +0900
-Message-ID: <20261002050428.2746277-2-tomo@flapping.org>
+Subject: [PATCH v8 2/4] rust: time: add Delta::as_jiffies_unsigned()
+Date: Fri,  2 Oct 2026 14:04:26 +0900
+Message-ID: <20261002050428.2746277-3-tomo@flapping.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261002050428.2746277-1-tomo@flapping.org>
 References: <20261002050428.2746277-1-tomo@flapping.org>
@@ -132,71 +132,49 @@ Content-Transfer-Encoding: 7bit
 
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Delta::ZERO is defined only for Delta<Nsec>, so code that needs a zero
-Delta<Jiffy> has to write Delta::from_jiffies(0).
+Delta<Jiffy> is signed, but some C functions, such as
+queue_delayed_work_on(), take a span in jiffies as unsigned long. So
+each caller has to clamp a negative value to zero and cast it before
+it passes the value to C. Add a helper that does both.
 
-Define ZERO for every Delta<U> instead. An integer literal cannot be
-used for a generic U::Repr, so add ZERO to TimeUnit.
-
-Suggested-by: Markus Probst <markus.probst@posteo.de>
 Suggested-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- rust/kernel/time.rs | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ rust/kernel/time.rs | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
 diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index 5ae377e70dd8..9f231bf25ead 100644
+index 9f231bf25ead..b6a2aab12a50 100644
 --- a/rust/kernel/time.rs
 +++ b/rust/kernel/time.rs
-@@ -306,6 +306,9 @@ impl Sealed for super::Jiffy {}
- pub trait TimeUnit: private::Sealed {
-     /// The underlying representation of the time unit.
-     type Repr: Copy + Clone + PartialEq + PartialOrd + Eq + Ord + core::fmt::Debug;
+@@ -363,6 +363,27 @@ pub const fn from_jiffies(jiffies: isize) -> Self {
+     pub const fn as_jiffies(self) -> isize {
+         self.value
+     }
 +
-+    /// The zero value of [`Self::Repr`].
-+    const ZERO: Self::Repr;
++    /// Return the number of jiffies in the [`Delta`] as an unsigned value.
++    ///
++    /// If the number of jiffies is negative, zero is returned.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::time::Delta;
++    ///
++    /// // A negative span returns zero.
++    /// assert_eq!(Delta::from_jiffies(-1).as_jiffies_unsigned(), 0);
++    ///
++    /// // A positive span returns its value.
++    /// assert_eq!(Delta::from_jiffies(1).as_jiffies_unsigned(), 1);
++    /// ```
++    #[inline]
++    pub fn as_jiffies_unsigned(self) -> usize {
++        // CAST: `isize::max()` makes the value non-negative, so the cast keeps it.
++        isize::max(self.value, 0) as usize
++    }
  }
  
- /// A time unit of nanoseconds.
-@@ -317,6 +320,7 @@ pub enum Nsec {}
- 
- impl TimeUnit for Nsec {
-     type Repr = i64;
-+    const ZERO: Self::Repr = 0;
- }
- 
- /// A time unit of jiffies.
-@@ -328,6 +332,7 @@ pub enum Jiffy {}
- 
- impl TimeUnit for Jiffy {
-     type Repr = isize;
-+    const ZERO: Self::Repr = 0;
- }
- 
- /// A span of time.
-@@ -341,6 +346,11 @@ pub struct Delta<U: TimeUnit = Nsec> {
-     value: U::Repr,
- }
- 
-+impl<U: TimeUnit> Delta<U> {
-+    /// A span of time equal to zero.
-+    pub const ZERO: Self = Self { value: U::ZERO };
-+}
-+
- impl Delta<Jiffy> {
-     /// Create a new [`Delta`] from a number of jiffies.
-     #[inline]
-@@ -428,9 +438,6 @@ fn div(self, rhs: Self) -> Self::Output {
- }
- 
- impl Delta {
--    /// A span of time equal to zero.
--    pub const ZERO: Self = Self { value: 0 };
--
-     /// Create a new [`Delta`] from a number of nanoseconds.
-     #[inline]
-     pub const fn from_nanos(nanos: i64) -> Self {
+ impl ops::Add for Delta {
 -- 
 2.43.0
 
