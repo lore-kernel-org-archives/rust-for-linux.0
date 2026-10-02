@@ -1,104 +1,215 @@
-Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F7F46F4A7;
-	Thu,  1 Oct 2026 23:53:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.34.181.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0102823392D
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Oct 2026 01:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790898815; cv=none; b=uSK/Pqp+uDn5obRiRsaXySLeVoMReHci3Fzjay1stNUURx5pD9xWMLIT0TBP3w/W7weJ0QmWfkY1IPRwWSsZtGtHWW+Snzjd8q/DUrfIeNojKieMtr3H93GyDFW23aXxPUMWulEyLpGboCflasHYP12tlosVoT+Tu/hkKJgoOZY=
+	t=1790905670; cv=none; b=PRyF6kPH7OGUkhboQ1gzR9S+Nk0w5TiPAAgKP4dnFAgBvV8vQjc6GbjmU8aAbh7Vm6fXe5+E/QHe6RcVn2v30acjeO3VYtmKQHQ/h5ya7Ykr4eJp/BzXvGe+j1Sd9fQhGXZ02EWrJ1YzT7ummqEqxcXjKofp/YQ1wbtyESAFoU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790898815; c=relaxed/simple;
-	bh=sxgzWa7Pg4Vu0QV7HUff5HmJa7L8rhf32QKppY3kv4k=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OrXpwWOHgbI6jShMVXqPo0jj2t6jv9/GlUY6i+BhGCE/DsZlnIYfCPP3abXqBMgWY1pqbE6+Lh7PdJ3c5QVp+9DFYEcPFLIQ6EY6MKMaST85m+mEmoGPAcgGa4Um2KCVhlUOeniDN9D7ctwkvUuS9yViQhUKqxPWvvLAWuQx9Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=s71rMD84; arc=none smtp.client-ip=52.34.181.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1790905670; c=relaxed/simple;
+	bh=DPdu3pJVEUwAJ71acm/LHxruFuaLM/Xgx6UVmK0AT9I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gm8n2QKWVseTWfd5AytNjnDq0nvDDeKO2kjOLl3QtIwQk5mxfBx7TOMTkrBgszOvpj1O4oy7ga+SLIAMc4D/e2jGBIdB+MC2e8nxYnvT9IiwRbDmdq/5yYAlR1E9GV60HydLyKhmLAZ75H+YegHsBMax6VL/OkiLB7lnoXl8rjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=fq+PTczA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Lr7wA8it; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="s71rMD84"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1790898814; x=1822434814;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=aKYNDJBaF/a+oEVTdroRmzbc+8LBZqR2cnhVz8NN1Ws=;
-  b=s71rMD84CQ5rDgVgCGSOdYE4S42eN2FwBQYpn107AxEPWjjzWkOHLhlw
-   kJ0VEhrL10StCtGiV8FXgN9/Ewfs0ZmlMT4jeCHBNriUxMfRtyjb1phfu
-   DDMQOzrkRXDLvxv2/ma4iUtspdnxOu2+vSt4hZAAWGbhq/P9qhCU2827E
-   qaEKZxmvgqX04N8guw00xXF3g4/h/fACKhPWjS5u3l72NION/0hauNJFk
-   bj7yQFi/S4V7OCt0U6NS1Irzu+/nU3GRP3L+5xCn7LjLKDdv74c2YIRNo
-   fBb3CfdN5GQ8QXNDcNgzZg/dhpowpkCLn3mI8sw7UdNTiwhHJnj68Hg5S
-   g==;
-X-CSE-ConnectionGUID: Scd1Ez1gQp2utnFTzEvrxw==
-X-CSE-MsgGUID: rtNnwBb8RneFt1wqoso4Og==
-X-IronPort-AV: E=Sophos;i="6.27,135,1787011200"; 
-   d="scan'208";a="30178142"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 23:53:34 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.234:19497]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.47.21:2525] with esmtp (Farcaster)
- id edbeb6ac-af33-4878-a212-0ac95593aed5; Thu, 1 Oct 2026 23:53:33 +0000 (UTC)
-X-Farcaster-Flow-ID: edbeb6ac-af33-4878-a212-0ac95593aed5
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
- Thu, 1 Oct 2026 23:53:33 +0000
-Received: from dev-dsk-wanjay-2c-d25651b4.us-west-2.amazon.com (172.19.198.4)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
- Thu, 1 Oct 2026 23:53:33 +0000
-From: Jay Wang <wanjay@amazon.com>
-To: <bot+bpf-ci@kernel.org>, <bpf@vger.kernel.org>, <ast@kernel.org>,
-	<daniel@iogearbox.net>, <andrii@kernel.org>, <eddyz87@gmail.com>,
-	<memxor@gmail.com>
-CC: <alan.maguire@oracle.com>, <martin.lau@linux.dev>,
-	<yonghong.song@linux.dev>, <jolsa@kernel.org>, <nathan@kernel.org>,
-	<nsc@kernel.org>, <linux-kbuild@vger.kernel.org>, <mcgrof@kernel.org>,
-	<petr.pavlu@suse.com>, <samitolvanen@google.com>,
-	<linux-modules@vger.kernel.org>, <ojeda@kernel.org>,
-	<rust-for-linux@vger.kernel.org>, <arnd@arndb.de>,
-	<linux-kernel@vger.kernel.org>, <abuehaze@amazon.com>, <doebel@amazon.de>,
-	<mpohlack@amazon.de>, <jay.wang.upstream@gmail.com>, <martin.lau@kernel.org>,
-	<mason@kernel.org>, <ihor.solodrai@linux.dev>, <rostedt@goodmis.org>,
-	<mhiramat@kernel.org>, <linux-trace-kernel@vger.kernel.org>
-Subject: Re: [PATCH bpf-next v3 9/9] kbuild, bpf: allow building the vmlinux BTF as a module
-Date: Thu, 1 Oct 2026 23:53:32 +0000
-Message-ID: <20261001235332.8074-1-wanjay@amazon.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <6e565a3c5689de1d5ba05904e3d7f477373bca8e10be75fea4b6adc048ab6ac4@mail.kernel.org>
-References: <6e565a3c5689de1d5ba05904e3d7f477373bca8e10be75fea4b6adc048ab6ac4@mail.kernel.org>
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="fq+PTczA";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Lr7wA8it"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id ECA321400151
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Oct 2026 21:47:47 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 01 Oct 2026 21:47:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm3; t=1790905667; x=1790992067; bh=hbIyRtTdJRkJqSu6Gqw4q
+	Pd1cYYI3rJ5fFh8sQXTFRU=; b=fq+PTczAnKb/nc6BJ3RfKqn9PKeYMy2hMg/i4
+	3gph9zax/e9m7Ain1+Hxt4l3UiXUGKAZhMwWBXE9rqMGbFBNEWStwcGzkkjQWo3y
+	8AKO8ZyiDDZikw9U97+/pMIKDmnDheN9269RdZ7EVLPN4oa9fzdT060MZJ+m2DFb
+	XgK6ZPaEe1VsGZSZ9SVGifXhRSlgImJVo8p48kqwLJQwuhCoOYFpECBhBk4qyW3S
+	DmoiWzo3HRqbCCaNcqbG0JinrUZcDzYPXUF50nx6p6nwtTBenoc6Tl4L48KC8ylo
+	Dy+r6SOKpKhJUgqUotCJ5XUvZwJRcZW6Zh4lYFF7TjPDQwT+g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1790905667; x=1790992067; bh=hbIyRtTdJRkJqSu6Gqw4qPd1cYYI3rJ5fFh
+	8sQXTFRU=; b=Lr7wA8itvbS9I9UwD0tOqtcKHXeb76IOJ8p745Wu0Z8H0L5iHMT
+	dE5XG3VAw+L0/aSxP051gIQA7dhxhnppdxMq8mGysGk/Hd8KYQuCFL8wbOpN6Fwr
+	+hJrBFC/BsdV+XwubLpo6qjIcUI0B+mHGTdpnq72JLpTN3OCVmfh5GxcyZaUkJuY
+	dpybZ+kiSEpVIWQRAcOdkcZS1gTe4HbMtMRHvuVF3hdU1HoUMSO8jdwUDt0rP4Dx
+	YS9TJ4tONn7+h3+inoZXWMNCDqi+aanLm5IvlBwKxD1sNNWxWWepG12aLCTbFPqK
+	Sfc3V1va3kXjsoTOaNegqQVs5hMqJsTefVw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1790905667; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm3:rsa-sha256:hozrLR6yXBHhLcbr5fyCQKL4aunTEOK7impJErObuINZiNI
+	1ce4PqrWNwbOAh3ZVq1wY1vxc0fhlse8TWT5Ma9oizkCpaf+fxk9w7aHVRzi3xfJ
+	N/LWXY8nlpbITZGhuEbaZr4Fa0hhcGPNYRAdiX7Op1c3wYNwDcn+W4Dev2Ml/rN5
+	GPZPP/6eHd8CbEOpkFM51spzZoWCpHrJ4jkmy3UUV4mb2ZdBjwd8mV0cLtvDDgUH
+	MmENyCZtHd94J/qV8q6jp9P4LZaWvhhljvvv8C/dcd+qIchs3WG+EveCyQZudrqv
+	B5J4rYRT+uFWBocv++iVIzdzQxHGNOBSWo75SDw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=mi-m=1; hc=9;
+	hn=cc,content-transfer-encoding,date,feedback-id,from,
+	message-id,mime-version,subject,to;
+Message-Instance: m=1; h=sha256:g9tgzLcknEQDZJ6RKTbNUX7LCyIgKLoZJ+XH28U0gfg=:DPdu3pJVEUwAJ71acm/LHxruFuaLM/Xgx6UVmK0AT9I=;
+X-ME-Sender: <xms:Qw2_asdb2UUpR_nJLSHqdOCGSamy4iBIDBmUjaLWXngR2xy6bhVwLg>
+    <xme:Qw2_aqldVXR5qavXaku-lZIKTkqAVt7kiVyNqZ7jlT3NzSTo2M3CCVauMgu1x1tjS
+    G0-VpXiLQG1UAY64vMM_DeOHqxi3AACzRBItxM99_M0jzwADKxlC2M>
+X-ME-Received: <xmr:Qw2_ah9IBmPdBuesNo259UdFtGw67kR69XGeWFwUVmhrmfGh2_oU66wOSE6wHgZvo1qyMGgaO5b7d3S0-yo>
+X-ME-Proxy-Cause: dmFkZTGzGU0R+rjgEKU6+cCDqH+hH2IIPZDWGUS+km5KMCtkUAp1Hq+NaZ3RttrbMMDyPu
+    OytvIrfVvBuGizxwtyQohjmaFYfG1f38wRg4+e9eGPcdfuH7CbKxRX1s0tpB4028agKaYV
+    vUE2BkUkVtoEnmPpDrq24URLTdBl8FS3RLfkM9rViw08t5Numk8VEvNO28amQgkX5GXcl9
+    z48GXANEXm+eEjWYDjCB+DsiFXO6y0ea/yFGzQ2PRFH4J8dBC6dwjPxER6sCkkgXHGcVAw
+    B6CXhVQhD6Liw1HqQt+XWcQWREyfWxuldXa20Z5aVXsYZRb67wWmkb2o9Z4La7Kz3gWsrd
+    IRJ43ePxI4dNf1HTbH6i7gS77gDJzD+mToIew+fF7OSQ5ebkEfec2RogU4t56ch4N7V85E
+    asGmWN+ZsGx5Evbc/09noBnz3KtyK+zHb2j7iYtQnmQ86nyt4/fyfhxbCP7p6PjQ6arbLw
+    OHLsBYG71XP73YnqhhizE7yGy5okIN7pLUK7TVpmMEEK/P7UfVl2mxgrF7drC4xq/5X7YJ
+    erZXCmljC7nOSLXovuLxl1+4RM6RVZoq2pqOGRnQ6HJLw6CguBBkOLQuEOKB+2BdKdxZkD
+    kCdyUT0aPBbp/5AfZp4LeJ3e7FqZtk0SLa01fZ7LXIbGtTzmSGqwq/slxCVQ
+X-ME-Proxy: <xmx:Qw2_agGkQbTgcfzK-eU3dgQSlr16f8hCcS_7nwDlASypn_Iku8Hkwg>
+    <xmx:Qw2_alJa_nT0P-yjXGqPLH_9Zb0qxubbubAR03LX5PFMMtfhu_98xg>
+    <xmx:Qw2_aglFcdATVYrfExfwAaJdgmXiPH1E0GkVqWWWlK-EmGB3GGpl7g>
+    <xmx:Qw2_aux_t4pUuLnEbkr5MMgJgWilzVmPxoTPzU0cUsyHcYcPAV_zaA>
+    <xmx:Qw2_atUijZqZbJstpQzZnrNyGpkmUjRiX-svHpS88YD_lF6HTz6e8LbV>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 1 Oct 2026 21:47:44 -0400 (EDT)
+From: FUJITA Tomonori <tomo@flapping.org>
+To: ojeda@kernel.org
+Cc: a.hindborg@kernel.org,
+	acourbot@nvidia.com,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	tamird@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v1] rust: compiler_builtins: Fix silent trap in prohibited intrinsics
+Date: Fri,  2 Oct 2026 10:47:39 +0900
+Message-ID: <20261002014739.2566289-1-tomo@flapping.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D039UWB004.ant.amazon.com (10.13.138.57) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Transfer-Encoding: 7bit
 
-All three are addressed in v4:
-https://lore.kernel.org/bpf/20261001225214.12351-1-wanjay@amazon.com/
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-- The ftrace argument printer is a real problem: it can run from
-  ftrace_dump() with interrupts disabled.  print_function_args() now
-  only prints the arguments if the vmlinux BTF is already loaded
-  (bpf_peek_btf_vmlinux(), patch 5/12), like bpf_snprintf_btf(); in v4
-  the lookup it uses would not load the BTF anyway.  Tested with
-  func-args on and sysrq-z as the first thing touching BTF after boot,
-  on a kernel with CONFIG_DEBUG_ATOMIC_SLEEP.
+When core calls one of the stubs for builtins that should not be used,
+the stub runs a trap instruction that prints no message, and the Oops
+shows a wrong name. For example, when __rust__udivti3() is called on
+x86_64, the Oops shows:
 
-- The opening of the changelog now names the exceptions: BPF_PRELOAD,
-  users of kernel types that run before btf_vmlinux.ko can be loaded,
-  and code that assumes the vmlinux BTF has id 1.
+  Oops: invalid opcode: 0000 [#1] SMP
+  RIP: 0010:__rust__adddf3+0x0/0x10
 
-- btf.rst now lists the requests that load the BTF, including struct_ops
-  maps, kprobe events with BTF arguments, tracepoint btf_ids files and
-  bpffs delegate_* options.
+The stubs call panic!(), but since Rust 1.79, rustc does not allow code
+in a `#![compiler_builtins]` crate to link to functions in other crates,
+and it silently turns such calls that do not return into a trap [1]. In
+addition, all the stubs have the same code, so LLVM merges them into one
+function.
 
-PROBE_EVENTS_BTF_ARGS and FUNCTION_TRACE_ARGS do stay enabled with =m,
-which is intended: creating a probe with BTF arguments loads the BTF, in
-process context, and the argument printer uses it once it is there.
+Replace panic!() with _printk() and BUG(), as the panic handler in the
+kernel crate does. These are C functions, and rustc allows calls to
+them. Each stub passes its own name to _printk(), so the stubs are no
+longer merged:
 
-Jay
+  __udivti3 called: `u128` should not be used
+  kernel BUG at rust/helpers/bug.c:7!
+
+Link: https://github.com/rust-lang/rust/pull/122580 [1]
+Assisted-by: LLM
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+Another option to fix this is moving the stubs to a normal crate (not
+`#![compiler_builtins]`), so that panic!() works as usual.
+---
+ rust/compiler_builtins.rs | 39 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 36 insertions(+), 3 deletions(-)
+
+diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
+index fc6b54636dd5..9416ca4c23f5 100644
+--- a/rust/compiler_builtins.rs
++++ b/rust/compiler_builtins.rs
+@@ -9,8 +9,8 @@
+ //! At the moment, some builtins are required that should not be. For instance,
+ //! [`core`] has 128-bit integers functionality which we should not be compiling
+ //! in. We will work with upstream [`core`] to provide feature flags to disable
+-//! the parts we do not need. For the moment, we define them to [`panic!`] at
+-//! runtime for simplicity to catch mistakes, instead of performing surgery
++//! the parts we do not need. For the moment, we define them to print an error
++//! and call `BUG()` at runtime to catch mistakes, instead of performing surgery
+ //! on `core.o`.
+ //!
+ //! In any case, all these symbols are weakened to ensure we do not override
+@@ -25,13 +25,46 @@
+ #![no_builtins]
+ #![no_std]
+ 
++unsafe extern "C" {
++    #[cfg(CONFIG_PRINTK)]
++    fn _printk(fmt: *const u8, ...) -> core::ffi::c_int;
++    fn rust_helper_BUG() -> !;
++}
++
++// In a `#![compiler_builtins]` crate, code cannot link to functions in other
++// crates. `rustc` rejects such calls, except that it silently turns the ones
++// that do not return (e.g. `panic!`) into a trap.
++#[cold]
++#[inline(never)]
++#[cfg_attr(not(CONFIG_PRINTK), allow(unused_variables))]
++fn intrinsic_called(name: &str, reason: &str) -> ! {
++    #[cfg(CONFIG_PRINTK)]
++    // SAFETY: The format string is NUL-terminated. Each `%.*s` takes a
++    // `c_int` length and a pointer. `name.as_ptr()` is valid for reads of
++    // `name.len()` bytes, and so is `reason.as_ptr()` for `reason.len()`
++    // bytes.
++    unsafe {
++        _printk(
++            // "\x010" is `KERN_EMERG`.
++            c"\x010%.*s called: %.*s\n".to_bytes_with_nul().as_ptr(),
++            name.len() as core::ffi::c_int,
++            name.as_ptr(),
++            reason.len() as core::ffi::c_int,
++            reason.as_ptr(),
++        )
++    };
++
++    // SAFETY: FFI call.
++    unsafe { rust_helper_BUG() }
++}
++
+ macro_rules! define_panicking_intrinsics(
+     ($reason: tt, { $($ident: ident, )* }) => {
+         $(
+             #[doc(hidden)]
+             #[export_name = concat!("__rust", stringify!($ident))]
+             pub extern "C" fn $ident() {
+-                panic!($reason);
++                intrinsic_called(stringify!($ident), $reason)
+             }
+         )*
+     }
+
+base-commit: c82c75ae11fae66cf070562f9b5241a4663f30cb
+-- 
+2.43.0
+
