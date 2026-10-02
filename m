@@ -1,60 +1,51 @@
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EB83B47D0;
-	Fri,  2 Oct 2026 09:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D433B101C;
+	Fri,  2 Oct 2026 09:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790933092; cv=none; b=u6X625d8JNNH0lMAYpbPSFNfilcXxBCBjZHjbezCNNdGNxqI//SnAY+X1ti1zjbevAtnJ2RbR6IaU/Vlmrqz0UblDoLpp/uUadbipMeK5MS/eKg9NxU8T+vSKzB9kr/ktX5KAg1XDqSeeFUGWqRoxuwve1GiohugZglizrNmRaI=
+	t=1790934174; cv=none; b=dqYS6cqYfPxbVAHYKlMIDl7oKBpXPWcadNV7DefjKLBvN0tWuiemzabMrQxvHwKJoSKmo9XZuFd8lHBBM0VFLiPA3DrfSA6s4SaSLBqJugHannkBEFclBuifn8u7/glUcu9opYEzXNpI70i8SY3slsYwlRloxaUOoJwraCGrndw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790933092; c=relaxed/simple;
-	bh=w3Bjz9dcD6RI5n9PbwOBCd5YdLRwlzPVm58BVXg/OwM=;
+	s=arc-20240116; t=1790934174; c=relaxed/simple;
+	bh=nRNFUTnOqnuStRWVWyapWWZVFqiU43ifkPH1Agr9PWo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rOQ52WRBV4odyvRZwZIjhcR9iqlBY5GkhcSMVONfHzTmHvsRAfOJURXiX4XZluTv26/DsyN/3MM6ko9P9WMiAkaYxWwvRXkrBcApmPN85nzRF3TMHM4+vAM+EmfMojqANpq0Dx1KDhW1Lml1mZ1nLoBSzxEH7gQqynEw6+0P+G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=cCcm1OD3; arc=none smtp.client-ip=90.155.92.199
+	 Content-Type:Content-Disposition:In-Reply-To; b=UWvFCx52i71dUTU6o4tVko0QrwCl6pkmThjyP6AXVZkaSUW64kah0A53k41Acj/rLi2AMManxeoExoNS9T241f1NmWx7x3naNDDbD7Xp0z4OvccPHXMpna8PUoMIeP7qsOC3waDJmKYuWLrm3UHybBSxnfwI06fhepE5wWgUkFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=EH/5NKa4; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="cCcm1OD3"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="EH/5NKa4"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=UlTUJH7rhWUzuOb9A3DL5nJMQg8wjWfvtyqsGIW4Y9s=; b=cCcm1OD3i+DfaqBxAYj5dLOD8J
-	qDRGmLWUr6GHe0Nq9US7IpbNd2wHbnTDMMJhX5h3woU1nXgs4XDKAU96GVvrkoooVjiaNdH60M0Lx
-	A1gKe+u0c6NfVPyJmXXBBvyshsU2dx7XVDyhQ0FQSWssAbjj9T7mFl2Y56pGl1BVQjNjRDgiLSpQd
-	yeF4X2h9hHeDbKPUyaCt+a33V47AGt/0eubgyaJjFC06JfUfJx5D5juJgDA3tpuAym2o/WSf57JDq
-	ZkSzVwZQbRVmcolTG2E4K76brOy7/osc80jCJa1yqsHzl3EeO7pyWOYuXwgmudxGYstntCmTrkDhb
-	J9uUEoZQ==;
+	bh=PdYQrz2lFzS5ViOuB67QEy0q0NeCPXpDZXosNNAvECs=; b=EH/5NKa4Sx7EuP159P9R96g4GW
+	UtZ6NTijuRJ5hQ63rmJDFJ1vwisJjmInx1juCM4IJd6g+/Vm4joCJYVV9O+osgtvCSr/bhU+vCd2S
+	DmAPPJOPFd7I5MN5dB8mIZT3v2Pjp7BzYI9u4q3J2EfgP21wePzNJOzW9blCY3vdrq1D+F4MG7tbF
+	QvKBh2C9Icdg7AgacSLKZW8meyYQ6ByslKlnrzS7waffsu/v8K4ljv9afSIsb4Vav9Mr54V+itz7B
+	fg9XlazQCN+bcvWkPPIC3THCU2jwQ0CZcUmHy797Kqhcx+iVOo3o/2Cw7EjJUX6PP69sxg1aEszK1
+	ub//EnZw==;
 Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
 	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1xCZVP-00000005mok-34qb;
-	Fri, 02 Oct 2026 09:24:41 +0000
+	id 1xCZmv-00000005ny2-2ZTQ;
+	Fri, 02 Oct 2026 09:42:46 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A72C6300390; Fri, 02 Oct 2026 11:24:38 +0200 (CEST)
-Date: Fri, 2 Oct 2026 11:24:38 +0200
+	id B003B300390; Fri, 02 Oct 2026 11:42:44 +0200 (CEST)
+Date: Fri, 2 Oct 2026 11:42:44 +0200
 From: Peter Zijlstra <peterz@infradead.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
+To: Boqun Feng <boqun@kernel.org>
+Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
 	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Thomas Gleixner <tglx@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] rust: add a wrapper for the `num_possible_cpus` C
- function
-Message-ID: <20261002092438.GA2823843@noisy.programming.kicks-ass.net>
-References: <20260929-cpu-helpers-v3-0-e968ce5ee613@kernel.org>
- <20260929-cpu-helpers-v3-1-e968ce5ee613@kernel.org>
+Subject: Re: [PATCH v2 0/5] Improvements and fixes on SpinLockIrq patch series
+Message-ID: <20261002094244.GU88198@noisy.programming.kicks-ass.net>
+References: <20261001082519.16195-1-boqun@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,11 +54,17 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260929-cpu-helpers-v3-1-e968ce5ee613@kernel.org>
+In-Reply-To: <20261001082519.16195-1-boqun@kernel.org>
 
-On Tue, Sep 29, 2026 at 07:56:48PM +0200, Andreas Hindborg wrote:
-> This function returns the maximum number of CPUs that can be online.
+On Thu, Oct 01, 2026 at 10:25:14AM +0200, Boqun Feng wrote:
+> Hi Peter,
 > 
-> The wrapper is needed by the Rust null block driver.
+> I realized that v1 [1] was left on the list so I just want to respin it.
+> Just to refresh the memory, v1 was requested [2] as separate patches for
+> changes between v4 and v5 in the main series. I also include the
+> refcount_interrupt kunit test Kconfig change in this version as well.
+> Based on v7.3-rc5.
 
-What does it need it for?
+The first should now be in tip/locking/urgent, while all but the BPF one
+are in queue/locking/core, which will be promoted to tip/locking/core
+after the robot had a go at it.
