@@ -1,127 +1,158 @@
-Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F74A45563B
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Oct 2026 10:55:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790938504; cv=pass; b=hFe3bIUC7SrZI1pKQ+D25M5y6CvVhbXYhZr7bUpZjFWIdjEIb0TM1Y2r8XxQ3f85r8Da0VwqUU8SzMymhWax9hvCYNnXMVoQ5OTMDN95pJ6U3xuSlSf3IpMA3EnNeNpo7bm47/x0g29h7vBdX4xDOTN0e04faM3dq9rMoC/Pmg4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790938504; c=relaxed/simple;
-	bh=1BcgLlwIDQd7WDm8rTVE7lPjWHBuss1Gdr7b0jYHET0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cUfnfNXre6hq2ynSHjwhuyjMLyG+7SVk0lycxz8/l0qAbbcC7B2YGZ/+ttogcTSgEVZoFFa6t4N08Lpgna10xFAv2qHCP8fcTrilW2T6mrp/sgUo7Ho89fHwTfN+PqIcrBV8CthcZJ1cWCBS/P85lToZNFCf4ujuRR+YW8P0pfI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bmtWD75f; arc=pass smtp.client-ip=74.125.229.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2ED5488D84
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Oct 2026 11:05:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790939159; cv=none; b=bZ1mmQB5ouqpQ2d1XY8sDboUCZDjrH+YgcQR4L25SX0/RI0uX0h9EZ8nBAy8Fk146R/ZbEPCv3KVmQA297IM0sk7USxjB4ND/IIHpyFC8IhUtqhsTIetZYjjuC94dX1P1m1r/Ua7pZDAgUrnQ6mHJcAl1AZrx+nKy17q+prDI4w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790939159; c=relaxed/simple;
+	bh=7Z8sWXwwNJIxbNLxy5AX5UPsuMIafoov1tbsywJfsws=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=jmbOCe3qn1xmh6F/N/y6ETpxzLPyiWf4k554AYTA1Xs2eqkk15gspvohlrTAEr12/fMFlsj/Nb+K179tGQAYd0bjk8GsFexEegg7xQcTZqLrY+SOZ4lKrMmX5p8qqKTs4Gpk1s4OPuemgj1AWk+9bPTUx9b5iYFGR2JMS/B32tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=F/R8x1bm; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TLJN0k7k; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bmtWD75f"
-Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-350e6de7dfeso40487eec.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Oct 2026 03:55:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790938502; cv=none;
-        d=google.com; s=arc-20260327;
-        b=BCBTOc7JSHRlswBD5thwY3Ymgu4nyLCr8zwcm1p5NyidDvbY2+/0G2oIWyYa7zHo++
-         JExQipB2vPByEc4BtuyxGqo4eRBSA35KqwDfvwdxbSkDJdK4CYyF281MjlZkCYBO4Bbo
-         Wzt6K7uRwZgaYE6cV0EBzyRS8loMU2jV5nk4PyPcyWf8tr5p4Cx6TM4lZ+PFTlqL81ye
-         AM7QCJKGNlGLZzY8QG9OG1Oubl7BqXqql0XO8a1ZA9e/qZf67IYpapML5/guR73UlfED
-         9XsaP/6xaRu0AE8nBO+KkAVQg8SUp31bpzYfqYsLaQ5xc2wmDG6urOrhZ9P7SwaGM6QZ
-         tdGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1BcgLlwIDQd7WDm8rTVE7lPjWHBuss1Gdr7b0jYHET0=;
-        fh=sit1kXf5s4kOkPHE1lwfpWw3On1LRFTcnzL2Pp0pFRk=;
-        b=J1MnfLx6VG02j8h7+9GXSGYRt0iqoBi3vH26dz426iZsFrcIudR24J/N+NxJHF5ZfR
-         dvd1hBMHU7tCvtR8koocVpjghbzXhV60UqUcUlUxrn2YYx9C9K34v+S3i6b1eOzuhSOZ
-         KYnHZjLCwbExLht7nt/7bjwUgFhBC7VkMrn3O95nNU/ioOCmB1VGR14i9kfHO6Xts4PB
-         ipHoqS0nczcODCKL6fIRuKh1b6vkYFHBBeBHZaUGNvar21clRRvDtSbtMfMZ9b0YF8UX
-         Z8ZMqAk4Dia4rfSg+YSsziZ/liAL7DjmqbjO27/obI64dgNzz5uc939ttnYFaFbpUx6T
-         S9+w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790938502; x=1791543302; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1BcgLlwIDQd7WDm8rTVE7lPjWHBuss1Gdr7b0jYHET0=;
-        b=bmtWD75fuGSVhmnI0SBkjEQqMqlI1l6+xno/Md3rr43665rf4QkJtrJ11aReDVk6xk
-         mcW8U5oNaAxtqwHLehEoJYtRdaM06b7tHGBgmNOhG4MpHVaIWHo8irQd1kXEvZqB9BiA
-         HHVP31Iu58pUWQxjgbQ8S1fXLMmnxs/ZALeG4F/ghXvrAsZqIZ9+aeLuUaRFR6T8kvKn
-         LOSqP43kVUxPFe0BNIrOAoT7CjaemmMdMJM4xKJNh2dcMxx+Lax6uUl/W+ro9kVHo7ss
-         +Bpj+UjRWYsivqGU7H9R8kwMBzeFYD2utgbWC98Aw9D8KUOZZ/YJ4LB/p0LY6Rv3zwq7
-         I8KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790938502; x=1791543302;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1BcgLlwIDQd7WDm8rTVE7lPjWHBuss1Gdr7b0jYHET0=;
-        b=qUdm8hBaD3BvKbwzasyGZaiUTH5ziwrGOG78jH1EPvZgJ1qAjFeTz2tZ9qOoDAxXQF
-         E+0NwtuRfYtbvLBY3xBc1DGQ65K7wljeAmKvbFP1kgYqKuoMiFXhkHcCEi6hnZdZM5Vc
-         WJie3f3/JSaT0/hOnIOkf6uDalqoASmic1keu16Qe1kHEqimr0UMVYhhBdXjnU32rfDX
-         UdeS/xWTYn74IN+K16o7arjLTFHjwrqe6cluaGEsw13AEcuSXUZcWWsaEebyY+5M06qZ
-         ChORz3U57g5k0y3Y6aCVTxslG8WVvqV9HnSq7tW35nvZnqqYdLvL1EWi12HNCbJp0w9U
-         4+9A==
-X-Forwarded-Encrypted: i=1; AKwUvBzfmWd0JspTT4l0lE58TQfIIha/eatuqc17IJ3VQDf4nozrUPfJ76YHOysMLpkp+UHWYP+Z2mfGk/CjgQq3Eg==@vger.kernel.org
-X-Gm-Message-State: AFq9FYL/LrD70zuvFapE+4jBNz1zmnyRaEgLlXPVW/2ew+ldZDQbBDfA
-	cbkEVclqc7hNEaMbHEGj4jp9m15NVgK6k16yfuJEMKYF13LWz8dg7Xh4jhXn8nP7UGuXc7r11l1
-	rY+Ha+OyR+yUAo8bpDvpEV8oxqXguiJ0=
-X-Gm-Gg: AYBFou0AuYr8zxa0cnrl4fcKCYeTqIOd6E2DKLZGq6r6adZ2rXYlKXXYufA8t1WQ3NJ
-	Zfs+Dp1+ink6PmxwqMU8Uf46ZCqvT3sbLvZwKbR3VvXTWractPlAoZ4BUXDaxjbyz1TpKi4lOGN
-	WjNQFWjaFxd+N0m5AOYi12htxTjNQw7Oo6gGJzQBE5RwP2nOXDB8zlhIWc0o7CB6pV18EXTjfoF
-	Ng6EZdUUVf7fsKxjoCxrmaAzT3nzgsR216j4V9eiWS4aEkmr1ffUfSLj/xYg2FWYmeCOdnx4QLJ
-	aq3iKGVhQMzDeMthxTkdAD6TYWN0u10AN3yf0qOkm1qW9Ax9hidIKiPPp2fkRhMrMKNJRYeT5IW
-	7dYEu0PB1a8oOfwnqDzRcbSBWh4Nu1kNTDitWimuS7el4Rd7Rz/CBgzURos0gSRNzeKKTPtsp8H
-	J+WgrS6UWubgeteWTloEaEhVJTu2nrcNOXJojEEICd7K6+b7oBs1c=
-X-Received: by 2002:a05:693c:8951:20b0:34c:15b5:b4e7 with SMTP id
- 5a478bee46e88-34f1503d60cmr4177305eec.2.1790938501968; Fri, 02 Oct 2026
- 03:55:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="F/R8x1bm";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TLJN0k7k"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id D3B98EC02F5
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Oct 2026 07:05:56 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 02 Oct 2026 07:05:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1790939156;
+	 x=1791025556; bh=mHfIE1PdUETfcBRK2SrKTFbFBxMeRCpW8zHoPE8vrds=; b=
+	F/R8x1bmXcI+l4M+9aXt5uNsIHBO3TGoOYPiSyl7ld7ilWbFkh0ds7rl5wm/KVPk
+	+X0+SIFFJX4n31ZFjfOScMiCqvcgfHfPafAW67enW3yqPEcYbDumCVPSpNZezbAr
+	UAsWc+JRu9rKzXma22XanPQ/Igv0EI//dYZg7d4uhnykzWSFM+EebGhXLWShyUsW
+	G0WGrRuQp6T8FWAPg6PZKHltc/Hj8//bI/7XA8QkdnodnRbfWh1Yn83rjhfmuxcm
+	Na1NvqFx7Qpyvh7JmF6YNZyzUm2gNYh7lC3gL1eCZlhW31V26ElZIp8CZ200gM9A
+	xZZ3zUjH8cskiGeLE+T31w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790939156; x=
+	1791025556; bh=mHfIE1PdUETfcBRK2SrKTFbFBxMeRCpW8zHoPE8vrds=; b=T
+	LJN0k7kBrVygW731JX33hxJbMF37bhErk+LRCMTI4SnSdjS26ggofBNHz1w+l4nM
+	5sD91N/8+rWiBPFcfq4JIvkU+Hn93COR89jqaRFFxpNjaMwnShkvuHBYtTpgvElc
+	+av6Kd7h4gC5i/RNiGEEATo+bOq+NcVIZNo4LcZOXOdK1yDc/Xk+te4pFE/x3nej
+	0Tvy88W1VgTPsWjY8CSGQyCxKYEa4u2U1ikziq3KCbXyXEXOL6TtCMkh58RFwHbO
+	Z6KAhjs9QmtJME82WL4R7gN4h9C1nv2/FyEtgZWxUA98InQm7JUBN0mbKD4spK9J
+	x7yOmI1TU3n4F2M0QeoDw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1790939156; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm3:rsa-sha256:B6ueugDMiqMlczsb141CvBYQp/ak9p41kpuKvJkJT5SwgMu
+	kCzm/r5894+jMfNHmNujGSwIjZoIRNGmPrEUdJV5M2xZWvCB5aCF4WZ/Vn7EAdzz
+	+bp1zwz5xFLpzHJ8odnT2EsN5WYbgzKfHyfLE6DBuaD+V+8ird6JoTd/FwT9VwpP
+	zdY7rI13zI7htOpQBoCLBVbgU5X4KlqXUEp0AdszuUYUNjt1M08WpkKZlp7X6tvd
+	y1dhnZjM+GeXdcHWPo5XHmOMrL1jjt8PKZji3PrWbFDISa9q2Mub1jYRVXC4k+VX
+	allLIaEWtlDo16ZuKwcMdtKlx/aAKtOtL8CLtwA==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:23s8YZAz+n69FALscZECeLT231KsK1iXmmclqwBOEgw=:7Z8sWXwwNJIxbNLxy5AX5UPsuMIafoov1tbsywJfsws=;
+X-ME-Sender: <xms:FJC_ak9nfK31A9OGA2hOrUbZm6zywH2oRyLWxhcK5-G_ZRXoLU52mQ>
+    <xme:FJC_amV66N2Se-jjYhhadiQNidynd-itvoZ2TuHYwA6a0U62S2cmlD_6tM_Kfh_or
+    YK3J55tTYfujhSwKryUIhgbpAktLPPYF70rJXNS3X-M1qM3iTTmrfV9>
+X-ME-Received: <xmr:FJC_atdCdPGUJxdDxLQkDQacgnUAj9LtJXkx6Bphlo0HLYOIlTSWhHwg_VQ1-1vY-cEbrzrzN1LEQ0Y4pNA2jbxR>
+X-ME-Proxy-Cause: dmFkZTFcJxAJtgSPQGpwkrMGQfulNkO9fzKJz/g8Eqlz/ucHzERuzvRAsVlZkC33IsEHIw
+    U0D5F/d/sCJcQy+2p8F080G7EJ5XMz8IuRWSZND/yv02MXCLlGLlOPb7ZQAT5T9mVOM4Lx
+    vrKHU11d5Z1pvCSkl8q+CjcGIWXyYVRfqd19zTD0etNRass5MQ+cr8VcO0WVnuKTRelehI
+    YL2vB9VVz2T64LikzwgCuqS9MV3s1P483pkerbrqpAG2KoybTasSKEYo4nWvVeQZb2rw6y
+    KmFAcb5fcFT5na0BdazB4JMsRqHSfe6oIckgOpjHNAr4l6uUjHOyieWta9nGGM635B9iIr
+    BWAzHfbDWKQvM709Wg+r2XkLKwom04sAnZaPelPuwdPNHVTBGnHvDQyYpcVvMyzPO24Rfh
+    j0qo8z7fYDXZQlEm4zSJ+5Bo2gEMZhFqQXXD7cBwKoHtSgdBNdqTpRGCmGOkueZZJUnWgr
+    PZhiu3We55EO9OChyZUWmauzqHkE7K9hGxxvOrOH9px+SOBUi3fFLpZYUUP+dDgYIM/+3u
+    EDTN4s0e8DlXHzOr2DN0KQtiCJSGHqYnWK3OTS2F5bMF6CP3MwhRONbjt1n5Hr3Ebu21kU
+    uSMM3VvgqTTE09a/VtXKyiPBKWrSnxpA/74V1fKo/0luRdYWoT4s414ce5mw
+X-ME-Proxy: <xmx:FJC_arV_ycBZrpw3c_ypF05vKk4XT8K-eqHavBcC1rfl0edJgU08AQ>
+    <xmx:FJC_akVcOsqK1n6rjyFea6FC9WFMWcuYJez-2QQwP4bEgv9JbzZAXg>
+    <xmx:FJC_arOGUAPaKzdfBZOZ-3ilkfIKqMD43qXDNGWJCw4myh00Eh_pSQ>
+    <xmx:FJC_an7aa4PTLzpRUk1Rti1_zLLpjRhcn84rFY9fzJmwoluGXlRKng>
+    <xmx:FJC_au-Ps1_OsKFS-Q5IEJ0PwJ1pyy3dDvl8_Ohpwen76CZQxbfkV2H8>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 2 Oct 2026 07:05:49 -0400 (EDT)
+Date: Fri, 02 Oct 2026 20:05:45 +0900 (JST)
+Message-Id: <20261002.200545.48892805627139274.tomo@flapping.org>
+To: gary@garyguo.net
+Cc: tomo@flapping.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ arve@android.com, boqun@kernel.org, brauner@kernel.org,
+ cmllamas@google.com, gregkh@linuxfoundation.org, ojeda@kernel.org,
+ tj@kernel.org, tkjos@android.com, acourbot@nvidia.com,
+ anna-maria@linutronix.de, bjorn3_gh@protonmail.com, dakr@kernel.org,
+ daniel.almeida@collabora.com, frederic@kernel.org, jstultz@google.com,
+ lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
+ tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, jiangshanlai@gmail.com,
+ markus.probst@posteo.de, fujita.tomonori@gmail.com
+Subject: Re: [PATCH v8 4/4] rust: sync: condvar: use Delta<Jiffy> for
+ timeout and result
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <DLU9K3JPSWCD.36FZ6DPB6B3NQ@garyguo.net>
+References: <20261002050428.2746277-1-tomo@flapping.org>
+	<20261002050428.2746277-5-tomo@flapping.org>
+	<DLU9K3JPSWCD.36FZ6DPB6B3NQ@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20261002104550.2877930-1-tomo@flapping.org>
-In-Reply-To: <20261002104550.2877930-1-tomo@flapping.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 2 Oct 2026 12:54:47 +0200
-X-Gm-Features: AclHuK_EQJEqNSG0UyehlQ3uYP4G6dyInoK_YrzSm866R9UGablAYdj1wxvktZQ
-Message-ID: <CANiq72=i189z9iKtz0x8qR2YO_R1WEPLcRGr3q3aOTwXsEQN4A@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: bug: update the SAFETY comment for
- warn_slowpath_fmt() on UML
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: ojeda@kernel.org, a.hindborg@kernel.org, acourbot@nvidia.com, 
-	aliceryhl@google.com, anton.ivanov@cambridgegreys.com, 
-	bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org, 
-	daniel.almeida@collabora.com, david@davidgow.net, gary@garyguo.net, 
-	johannes@sipsolutions.net, linux-um@lists.infradead.org, lossin@kernel.org, 
-	richard@nod.at, tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
-	rust-for-linux@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 2, 2026 at 12:46=E2=80=AFPM FUJITA Tomonori <tomo@flapping.org>=
- wrote:
->
-> The SAFETY comment says that it is always safe to call
-> `warn_slowpath_fmt()` with a valid null-terminated string. This is not
-> true. The taint argument must also be a valid taint number.
-> Commit 951d09ca450c ("rust: bug: pass TAINT_WARN to warn_slowpath_fmt()
-> on UML") fixed a bug where it was not.
->
-> List each condition that the call meets: the file name, the taint
-> number, and the null `fmt`.
->
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Fri, 02 Oct 2026 11:00:40 +0100
+"Gary Guo" <gary@garyguo.net> wrote:
 
-Thanks Tomo!
+> On Fri Oct 2, 2026 at 6:04 AM BST, FUJITA Tomonori wrote:
+>> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-(By the way, you have been authoring all the work in this file -- we
-could have an entry for the file in `MAINTAINERS` if you want it)
+[...]
 
-Cheers,
-Miguel
+>> @@ -182,19 +185,29 @@ pub fn wait_interruptible_freezable<T: ?Sized, B: Backend>(
+>>      /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
+>>      /// thread to sleep. It wakes up when notified by [`CondVar::notify_one`] or
+>>      /// [`CondVar::notify_all`], or when a timeout occurs, or when the thread receives a signal.
+>> +    ///
+>> +    /// A negative timeout is treated as zero.
+>>      #[must_use = "wait_interruptible_timeout returns if a signal is pending, so the caller must check the return value"]
+>>      pub fn wait_interruptible_timeout<T: ?Sized, B: Backend>(
+>>          &self,
+>>          guard: &mut Guard<'_, T, B>,
+>> -        jiffies: Jiffies,
+>> +        delta: Delta<Jiffy>,
+>>      ) -> CondVarTimeoutResult {
+>> -        let jiffies = jiffies.try_into().unwrap_or(MAX_SCHEDULE_TIMEOUT);
+>> -        let res = self.wait_internal(TASK_INTERRUPTIBLE, guard, jiffies);
+>> +        let jiffies = delta.as_jiffies();
+>> +        let res = self.wait_internal(
+>> +            TASK_INTERRUPTIBLE,
+>> +            guard,
+>> +            jiffies.clamp(0, MAX_SCHEDULE_TIMEOUT),
+> 
+> I suppose this can be `delta.as_jiffies_unsigned()` too, although the clamp
+> makes it more explicit?
+
+wait_internal() takes isize, so with as_jiffies_unsigned() we
+need to cast the value back:
+
+| // CAST: `as_jiffies_unsigned()` returns at most `isize::MAX`, so the
+| // value fits in `isize`.
+| let jiffies = delta.as_jiffies_unsigned() as isize;
+| let res = self.wait_internal(TASK_INTERRUPTIBLE, guard, jiffies);
+
+The clamp needs no cast, so I'd keep it.
