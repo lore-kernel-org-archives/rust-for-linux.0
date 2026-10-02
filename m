@@ -1,144 +1,200 @@
-Received: from mail-pz2-f36.google.com (mail-pz2-f36.google.com [74.125.228.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021078.outbound.protection.outlook.com [52.101.95.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0164492E22
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Oct 2026 11:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.36
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790941727; cv=none; b=ns/zw11OhuwLH1pHgrL2VPqQH3khR2sPjS7K2Btbnp+L/7olto6M8f+QJka106dzyTxNfSYmTjQG3v5fhEE1NMUaMc+FIWaIGXjaSM2qxRd7K7p5fl8Bnv/P2KJovVPlLUv0khuFGaK60uE/PTrwNlNJRDFSYpg3+y3N0jS6Z+0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790941727; c=relaxed/simple;
-	bh=gAY+ry7XQppx5kZcg+BfzcVwDqxF38v68qrWhv2EpEU=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
-	 References:MIME-Version; b=Ih71oMVe+75p+RnhqpJpNqxosieULtrQ6xIDh+rZQrwct7UDpjO+MknXIljueeJPFMW/kNzHnBJdKzvsjdPJDIxF0QVEGDdkoDJFvpOcL1djiaPio6xJ7fzawyd3CgNL0G8MV9zgcHGEGyTCcXtjTnHr7T8VV/39R66o6o4RGV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MeyZIhmU; arc=none smtp.client-ip=74.125.228.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B2A493650
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Oct 2026 13:03:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790946222; cv=fail; b=LvKYO67z5iv8y0dbNdOc4CCO80wc8+nMDZ377ifdzvY/ukzVlAGpBX6uLAjEbezWsJs4XxQvRLSmiBVkV2/qsBpkk1HOiMlhFN/rtGgERxZo7wm8/vouaN1dSyFAuXqnmY23CadEvhVjiIXkZFSz9TIg3Rxx+3PerSbzOxZ1cXs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790946222; c=relaxed/simple;
+	bh=5Gb50U6ByGtBr6gyAhBPSzqc60YkYWq/JE/JSa2BkqY=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=YEhwPErehnrV9RIAd3nShtM37NEKwTfS5aiZ+KdrDIUlnyNSm03v/B3jGRM87Ny8zrsQau8/OsMlQtKyVAEVxYJYX73B43aSzwn3vCyynkXHpCEZE55Reb58qjnHN/w5ESa7mBHxpO5LW94tOUNwEsv4qt2b/ipZM0NE+VDVkQk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=czAXIixd; arc=fail smtp.client-ip=52.101.95.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MeyZIhmU"
-Received: by mail-pz2-f36.google.com with SMTP id 41be03b00d2f7-cc7e7717675so1207843a12.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Oct 2026 04:48:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790941724; x=1791546524; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jDgCZ93FbbC+h+9QAZpC0c3CaTDV4NHqwfDJ+8l3w7I=;
-        b=MeyZIhmU8tcw6SYtV+1UZ7tSerG+sxuHQGu95Sf+jXbAr1jEANi1Xr2UvlE2O8dFCC
-         Kz4XzfQuSc3KIwWpsVO1Wp9OmjeYf+k2zVFqFV8MrniXv/Iv8UCfKoVfgmpUA3BuiRNo
-         E09LSomNq7IqB2WCn+1NYu8sFOkvU0Cu6beoCzkTV3AHfDKdEtalVaFOtKnZkVt+FvBt
-         TdkVI6itaXRa85ogpErUJnSIghBnEdXTd3G62zvw8C3M2iygDKn2y0J1J0hsAnGP9hT8
-         3SVS+eFmQ2NIyY/3qTsvtmqitlyjb/IelUbO2q1DHTFsAfgRgFm+mHLNtvYT7EJfslZ4
-         pFVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790941724; x=1791546524;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jDgCZ93FbbC+h+9QAZpC0c3CaTDV4NHqwfDJ+8l3w7I=;
-        b=G9PKofIBM/n1PLIfxBjUZqJt+do93SsycZQDXkcaGgOXHsCWPbA6U1hoUk9MrGZVwV
-         LPuXmx0S71wD/cqfmxThkQBU0BfKZ6CBUUJr934L6vOC/iKJRQxGj3oIuGpW1On4F12Y
-         RrVN4Wyj+SZgS4ZZzM+83dlWO7/9w/PFb9seC7t7lNXKeClIp8a1rYoaEhNvs3/1xZdF
-         XyNiFzBoQjegH343Bzm0EjUdamhVIL/9UaiasWjgy+ArbOu9kZRUPw6tfE5iE+6KQ5wp
-         lmNVcBcdp1H+1SdxnusqpPC+qqD2QehoZmcGkSJl8tY3Aa+r3q7Gh92rQiHE6MRKrg5R
-         mgJA==
-X-Forwarded-Encrypted: i=1; AKwUvBxEgjl+5O3/qIbmsuXNtC4vSEzEGvTFBdG/dAbp1d9VwcJa5xj0k7pvRjxCs+TQzOy1RB84mXqZLSIx7AyqiA==@vger.kernel.org
-X-Gm-Message-State: AFuF++kkCgM4oKycAtDi+ZpzDABGMfzJcyIsGTU7trKeX8cH+uV3ZJZl
-	kibaT7RjGD4ry4pzmCa4/E/43YFyNJKnPSF9Uc3B5fxxjj/Pd+bVwTh3
-X-Gm-Gg: AYBFou0ve0JRwWc8QbdeSxS+7u2ldGTSfwhtx1N2CRDFIlS9nfS52FgFufVGvBSdz0B
-	v1/s+RZTnxQI1ao4UXV60RaVDzgYxL9F4XITnxX/IQpu7mTtH/Ft6adj12XLXHmicxsFRXVNWMe
-	KQPt8pZaQq/twp21OUrQT6dChT5gGetNbrp9LfIJIHfU9pZ2kWJP1u3YtSazS+aZiG1TZ4nJWJl
-	xnQX+FcgLKgeGlIV6gPRjF6+Vcrp6N5WvnyCdm1/jy0CfaYLeqeGDSNIZmBpdzFnm1d5xW4R2bN
-	XwR+Pb5jLyadzN7rEDr3+p2AJ1+Y1jmIFQusqneonl78wLVe2efgABfiAb/ovGsbsF9TwQs7/uc
-	GwuA+uNNWQJLgpVKFSUiUL9CI22LNb04tJeYmE/onDCFuPPinY7duZxGEN1iSohtVJKmMXopeib
-	w3LrMVEYlReK2t0xeBLisWz5c+CWPiw5Jln0Zeapq9qHB60VSIG5FqZAM1ckUll7S+wFcHT8Uwj
-	KVYlArakwyy0lkS+24YS+HLPSWUQF5NHBcFawwSMh4N2+XW6LVLXdf14oDS6YYSYI8ST6yz0JYe
-	+fw=
-X-Received: by 2002:a05:6300:210a:b0:3e0:b937:8844 with SMTP id adf61e73a8af0-3e0bd199342mr2548048637.44.1790941723843;
-        Fri, 02 Oct 2026 04:48:43 -0700 (PDT)
-Received: from localhost ([153.61.198.250])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-88b0d247dbcsm743396b3a.55.2026.10.02.04.48.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Oct 2026 04:48:43 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="czAXIixd"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=U/atya9LXS4NiYd2qwroyO7aRvR05vf5sicJx9YDW/EKy/QnfGkdyfm49n3i/ypGhMYHz+9+htJj9PycwLaib3P2Bqma7UStqjN/aWg94kOarMGb+G9Fx0nZxygwvrMhy12iEU/aZBUZkWLyw1ks3Co9LvXQ3gQ1be3hvJA7EmXVYShS2QG6paxu6XTwu6Z8Mq+btHCYjFRsQa+FIS1frPhyhdssIU7ghkUnsTwD7ddRnz3o16TvE/vgKo5rsCjQvbUG+mq9ZBx96L9ewVGkNgCGjvMLlYsegHRhREDxVItsdI4QRpm3jOmbYWx25Lo3MKNdIbeNUbBvMY08XBi5qA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fTa9vKzcp16ZmqWJdVCTT1WmM6ZAP0HlN6eFTQRcw6c=;
+ b=cfRMH4NE+QAecSdSidrI7GfXKKYEqyCYw/oM5nXM4ju7m/u8xfzD/2hl+hdtbcNy6TOeVXaxCR8yiQq+veZAj5y0M5taEPv16FyNgRFhWn7ICFRsr0x/yz6gjVxdRAS9SE72ntz6t5Adpgb30v44UHk5PxwSNg7sqUK55WBLYNqY74TtvZHmxY7bkMOM+Ce7C/QFF1z+DwFWEQi1kKuTnoiqZGjQR6fi7UnL8e/2cPI2J9WkLUxgVPcJP1ADDlzEATm+pZdGlCYLErojNZLpOem6La8aq2tTkSVDQMLCyxA2dgQAR6tfgmQ9a3e/LbBMVnJXrXsB2f7g27T9wM0+VQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fTa9vKzcp16ZmqWJdVCTT1WmM6ZAP0HlN6eFTQRcw6c=;
+ b=czAXIixd5ZZ1cwilkqK9R39K6Wwdmq9Ey3S8ylPeAY7s0KXjIyv5SY44l4XL5IFTiO4njBEDzCzachobzQ9UmVj+yQGfSboqLNUBiGaj94Zuay9+buqnGcuZxt7OvIANyEzahtEPcLR5hF6eYYck61EJh/gDd/FbuwwEqa4DMz0=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+ by CWXP265MB1941.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:7e::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.19; Fri, 2 Oct
+ 2026 13:03:30 +0000
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0472.016; Fri, 2 Oct 2026
+ 13:03:30 +0000
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 02 Oct 2026 11:48:42 +0000
-Message-Id: <DLUBUT40BBOG.1L6QS7A8CIE79@gmail.com>
-Cc: "Alan Maguire" <alan.maguire@oracle.com>, "Martin KaFai Lau"
- <martin.lau@linux.dev>, "Yonghong Song" <yonghong.song@linux.dev>, "Jiri
- Olsa" <jolsa@kernel.org>, "Ihor Solodrai" <ihor.solodrai@linux.dev>,
- "Quentin Monnet" <qmo@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>,
- "Nicolas Schier" <nsc@kernel.org>, <linux-kbuild@vger.kernel.org>,
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, "Christian
- Heusel" <christian@heusel.eu>, "Luis Chamberlain" <mcgrof@kernel.org>,
- "Petr Pavlu" <petr.pavlu@suse.com>, "Sami Tolvanen"
- <samitolvanen@google.com>, <linux-modules@vger.kernel.org>, "Steven
- Rostedt" <rostedt@goodmis.org>, "Masami Hiramatsu" <mhiramat@kernel.org>,
- "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
- <linux-trace-kernel@vger.kernel.org>, "Arnaldo Carvalho de Melo"
- <acme@kernel.org>, "Namhyung Kim" <namhyung@kernel.org>, "Ian Rogers"
- <irogers@google.com>, <linux-perf-users@vger.kernel.org>, "Jiri Kosina"
- <jikos@kernel.org>, "Benjamin Tissoires" <bentiss@kernel.org>,
- <linux-input@vger.kernel.org>, "Tejun Heo" <tj@kernel.org>, "David Vernet"
- <void@manifault.com>, "Andrea Righi" <arighi@nvidia.com>, "Changwoo Min"
- <changwoo@igalia.com>, <sched-ext@lists.linux.dev>, "Shuah Khan"
- <shuah@kernel.org>, <linux-kselftest@vger.kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, <rust-for-linux@vger.kernel.org>, "Arnd Bergmann"
- <arnd@arndb.de>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Hazem Mohamed Abuelfotoh"
- <abuehaze@amazon.com>, "Bjoern Doebel" <doebel@amazon.de>, "Martin Pohlack"
- <mpohlack@amazon.de>, <jay.wang.upstream@gmail.com>
-Subject: Re: [PATCH bpf-next v4 04/12] bpf: take the vmlinux BTF from the
- btf_vmlinux module
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Jay Wang" <wanjay@amazon.com>, <bpf@vger.kernel.org>, "Daniel Borkmann"
- <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>, "Eduard
- Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>
-In-Reply-To: <20261001225214.12351-5-wanjay@amazon.com>
-References: <20261001225214.12351-1-wanjay@amazon.com> <20261001225214.12351-5-wanjay@amazon.com>
-X-Mailer: mkdraft (claude review draft; edit before sending)
-Content-Transfer-Encoding: 8bit
+Date: Fri, 02 Oct 2026 14:03:30 +0100
+Message-Id: <DLUDG2TH77RI.ZQ0T5MH7Q573@garyguo.net>
+Subject: Re: [PATCH v8 4/4] rust: sync: condvar: use Delta<Jiffy> for
+ timeout and result
+From: "Gary Guo" <gary@garyguo.net>
+To: "FUJITA Tomonori" <tomo@flapping.org>, <gary@garyguo.net>
+Cc: <a.hindborg@kernel.org>, <aliceryhl@google.com>, <arve@android.com>,
+ <boqun@kernel.org>, <brauner@kernel.org>, <cmllamas@google.com>,
+ <gregkh@linuxfoundation.org>, <ojeda@kernel.org>, <tj@kernel.org>,
+ <tkjos@android.com>, <acourbot@nvidia.com>, <anna-maria@linutronix.de>,
+ <bjorn3_gh@protonmail.com>, <dakr@kernel.org>,
+ <daniel.almeida@collabora.com>, <frederic@kernel.org>,
+ <jstultz@google.com>, <lossin@kernel.org>, <lyude@redhat.com>,
+ <sboyd@kernel.org>, <tamird@kernel.org>, <tglx@kernel.org>,
+ <tmgross@umich.edu>, <work@onurozkan.dev>,
+ <rust-for-linux@vger.kernel.org>, <jiangshanlai@gmail.com>,
+ <markus.probst@posteo.de>, <fujita.tomonori@gmail.com>
+X-Mailer: aerc 0.22.0
+References: <20261002050428.2746277-1-tomo@flapping.org>
+ <20261002050428.2746277-5-tomo@flapping.org>
+ <DLU9K3JPSWCD.36FZ6DPB6B3NQ@garyguo.net>
+ <20261002.200545.48892805627139274.tomo@flapping.org>
+In-Reply-To: <20261002.200545.48892805627139274.tomo@flapping.org>
+X-ClientProxiedBy: LO4P123CA0199.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a5::6) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWXP265MB1941:EE_
+X-MS-Office365-Filtering-Correlation-Id: 395f6132-79f2-47c6-6d63-08df20858ec5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|23010399003|56012099006|4143699003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Cl6Sfs4BO60+v+ILBJ58lvA4xGYr8gAYZGDej5rplpfJBnxt/W1w6bF4YCY2qcy1Gb++V70kEyooOuasQw8PuN6UOq3wBSgmfogtnMT3WL0Cy0kjDvN+o9vD3yyqNsDzdFaC2ylrmqMrMgudEZQ7ENKPt/tah5Sk64a/tqylecZqQUiPPaYBhEx8z/HxtVcLqGA41GYQfLeLuu3rUe7FMWi0JB9qCc4n0YrJpQ5WeX81BoS2Bj4HAERv/7lqkRshcgLupfmxzXewhh9FJM2Q8fIwFiM66CIiQV6nFYiRx7uWST1t+/jdR4AaGW14o76mZw2IxCujJz2974aa4kgdpesXYlJiNO1Ze1wQWNV1z7x5rivAbCJqW+M/aIjGdPhogRz0ij0mqptB4hblVFutJ9pm7C1Oci73AJigYde9RZt5tsrncEYImgANVLMkbp6K/EG75dImXx6yo2l7KbB7BWYUXLRnZzJV/PPWvbT4hCESAtRrhKZ1VvQFwyU4lI2ODs8kICqTTuzPB9njPn7zzjPYCCLghv9UOq5XSOjsrGvd6hSH0mEF45KhH9Toz6FYcC/1eC9so7lDJzO/yYnTlePgOHTIJqJTl1Uny0Hfu632jQUDZTkV6JbB5S+Uy3/486MFZuGTbsm62eMmx59/iSMyyooqhW+dSBg4P0DoO00=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(23010399003)(56012099006)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Q0pSamZqOGRIWFRkRUUyc1YxV2dWZVRnU0d1aXVhWW0zZzFQeVdKUnFxMi9t?=
+ =?utf-8?B?ejVGUDAvSWsxT1lwQllkWTNPbCsyWVpEbWgvQ0d2eVA3NjlFMXVkQjlRUFNY?=
+ =?utf-8?B?MkFvNkhxUmk2TzAvSDlGQkJQSzlVTUJiYUlqMjliSnExZlprc3MvbHkwK1N0?=
+ =?utf-8?B?R3hrSHVWZE9uM0ZRMUxza0FDc0czVmpOMmJwb1FIS2JyODl1M0JqK1VYaWRP?=
+ =?utf-8?B?Z2pXNFVpQ1VWM3ZoS3Q5VWtkMS9iQ1IwMzB2TXFFNTJXbW9kbmIrYUJZb1Vl?=
+ =?utf-8?B?UGVlRjJ3czdDUWhOMGVwTXZhcFBWc2hpTjlpditUZkg5aVd1c2EzamYxVjB1?=
+ =?utf-8?B?aTFDNGtjSGVKTy9vYkkydEkvOEViSzkzV0N3WnlwT2NkM2dkOHQ0NWh4RERU?=
+ =?utf-8?B?d0FFbG5IRGkyZ1IwTzU3eFBaRXdPNW9Yc251Um1WdnNwU3FPeVg3a0p2ZEdm?=
+ =?utf-8?B?SUdRdE1ocFFXVWdJNDlvNkhkWGVpTHN6VEFXbDJRTklsRGFwemlmT2RQMHIz?=
+ =?utf-8?B?Ym5scGw0REZZOStka0gyTlhuR21mbEhUMnpDT0NhdElEbDRtK3VlWSs1R3NO?=
+ =?utf-8?B?ZjlmS0hRc204L0gwc2dmUExLbWcvVmhWQmpEd01pVkxXNVhuMkwyWWF0d2xh?=
+ =?utf-8?B?dHdUNVVEZGp3K2dCd3AyQ05lQ0xFRUFxRWdnNWlVbDFMQ2JRVmorS0Z4WTVr?=
+ =?utf-8?B?clpEcStXTERlZHRaVyttVVBJSm9hanFHcXdLMVRYbXI5M3JZRGRzR0lYZjI5?=
+ =?utf-8?B?YjBlR1NORDRqcjFTeUNFT0QwMTdTTk02WHlOOUkwSkMrNjFGNUtvZEtCcEE4?=
+ =?utf-8?B?Zk42NERZNkJKWVpwSFBSUHFDdFFMOTVTQ2dqdE04VmpRWVhxbTlsSEJUK1Zi?=
+ =?utf-8?B?dDF0RU51VkdqMjVnQnZ5ZUpUY2h3NEdUVDZYWDRQbzVoeXcrWjBsdVlDZGx0?=
+ =?utf-8?B?RmdhVWFuZUVlMXpXN2NqTG9JL0tXeW5SQzYrUUZRTEJWOUpTMkgwYXRvWWxs?=
+ =?utf-8?B?cEVvTmJIeG8yTDk3bFJsZUdCMWJpY0lSVC9GODFnVUZuSjdYakUvYmpnQmJl?=
+ =?utf-8?B?b0xRWkJjd0lPT0ppbFU4SU41UDlYdDZQT1MyNUk1ZlhEd1BjbVVETmQ1Sks5?=
+ =?utf-8?B?SVlTQWV5UTIyTmo1MUZ3a0FZMmk3aU9UczZ0T1FBSTZTemZSNFNWM2FMUXNC?=
+ =?utf-8?B?dEFmTE1CRkpQRlRXbU9IeEl1OGFELzJWNDYzVUlTTVFvL3ZFL2xEcHFkKzBX?=
+ =?utf-8?B?RVVUTjVha2tRWmorMzJ6ZGk2OElkelk3RjZ2cGU2T0ZxTUZ2UGpiR1BzVllS?=
+ =?utf-8?B?QlR5SVlqZjdTQW5tWGtHQ3hIVFRsM1hzczBnWnVvUGN6SmFyaVB4SG10M0p4?=
+ =?utf-8?B?aitJd2FmN0NhUFFzSkhsSnc0U3BDRlJVMldMcUg4VkYweXFsMktTUjdyT1NZ?=
+ =?utf-8?B?UnhsTEhvUjRPMVV2THhuTmduUE9hNWRpOHdvZHFxTWY4RzFmYzRhNjNIYVQw?=
+ =?utf-8?B?NkNyamZ5dG5WOVpYZWlwNUd5dlI3bTg3b3ZFVUtsMFgwQklqcnFFQlJJaXhP?=
+ =?utf-8?B?QWZpWk5EcnBrQ0hFVlhxZnVMVjdDUkFNL0VNMnArMHFlaDc3U244ajVWYlhi?=
+ =?utf-8?B?MGxrQlJ3ZDZmM2tiT2JaMFNKM3diTFVlZEp3YUZCRXY4bW92Sk9BaXhLN09m?=
+ =?utf-8?B?ZWFXVTlidGdvMklKUFROQ2NYYTU4dmtvYjF3UnRWK1FOeUVnK2J5Y0pkMWNO?=
+ =?utf-8?B?Vk5LOXJvT2xWK0t1L010S1FYazNRVUFJVDZCUmRqK1lhRGhUMmRqK3cvTVVN?=
+ =?utf-8?B?SUtHWmJHaGRKNEU4dWpNZFVUa0Fwd1RhV3J0NXlEejRucHB2Y1NYbWFrMjNr?=
+ =?utf-8?B?WWg5L3pkNlpsOUhNd2ZmTW5pUlltNDNMSVUyZHIwa2I0c3VzT2pyejdoQ3lo?=
+ =?utf-8?B?bkFQOFgva3pLa3cyMTlGZS9YZ09EUTRPU3JkWkhvelM1Qy9VRm52d1BwbzVt?=
+ =?utf-8?B?N3V2RnF0Mm9HQjdZdzUyZGJncjRlaVNMQzlKVXM4emlLdUZVUTQveGZhNE40?=
+ =?utf-8?B?Njl4Yit5NFhCRHliWk5iQTcxVXJoL0hIT0VleXRwTEhTRW1COGFJM3pUZlFt?=
+ =?utf-8?B?a0hxeFp3YVBVeGVoQXRtcWlxbEFmdlphTVZEUndXbzk3THVKTWhKUk5pczc3?=
+ =?utf-8?B?RzFPbm43KzNtKzd1RVVPSGVwdjJmRThseTBHOVFNMHpJbkFXbDErbTZxN00r?=
+ =?utf-8?B?MGk4ZXgxN1k3UXEzRmkrSHUybi82TjJvdzVEcVM4NUJSTTRKN3NSY1hMRkZP?=
+ =?utf-8?Q?AJph4TU0v60nkM05Hk?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 395f6132-79f2-47c6-6d63-08df20858ec5
+X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2026 13:03:30.8763
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: u4GKa5hJRPUVYcMos9iuT2bFYKICBylr1qHY2Ui5UNFEQHLpnzGC1K/FRvtBjvJ1K4rA/kk9+HpDrFiRI4a83w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB1941
 
-On Thu, Oct 01, 2026 at 10:52 PM Jay Wang <wanjay@amazon.com> wrote:
-> +	err = __sys_bpf(cmd, USER_BPFPTR(uattr), size, USER_BPFPTR(uattr_common), size_common);
-> +	if (IS_MODULE(CONFIG_DEBUG_INFO_BTF) && err < 0 && bpf_btf_vmlinux_retry(cmd, misses))
-> +		err = __sys_bpf(cmd, USER_BPFPTR(uattr), size, USER_BPFPTR(uattr_common),
-> +				size_common);
+On Fri Oct 2, 2026 at 12:05 PM BST, FUJITA Tomonori wrote:
+> On Fri, 02 Oct 2026 11:00:40 +0100
+> "Gary Guo" <gary@garyguo.net> wrote:
+>
+>> On Fri Oct 2, 2026 at 6:04 AM BST, FUJITA Tomonori wrote:
+>>> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>
+> [...]
+>
+>>> @@ -182,19 +185,29 @@ pub fn wait_interruptible_freezable<T: ?Sized, B:=
+ Backend>(
+>>>      /// Atomically releases the given lock (whose ownership is proven =
+by the guard) and puts the
+>>>      /// thread to sleep. It wakes up when notified by [`CondVar::notif=
+y_one`] or
+>>>      /// [`CondVar::notify_all`], or when a timeout occurs, or when the=
+ thread receives a signal.
+>>> +    ///
+>>> +    /// A negative timeout is treated as zero.
+>>>      #[must_use =3D "wait_interruptible_timeout returns if a signal is =
+pending, so the caller must check the return value"]
+>>>      pub fn wait_interruptible_timeout<T: ?Sized, B: Backend>(
+>>>          &self,
+>>>          guard: &mut Guard<'_, T, B>,
+>>> -        jiffies: Jiffies,
+>>> +        delta: Delta<Jiffy>,
+>>>      ) -> CondVarTimeoutResult {
+>>> -        let jiffies =3D jiffies.try_into().unwrap_or(MAX_SCHEDULE_TIME=
+OUT);
+>>> -        let res =3D self.wait_internal(TASK_INTERRUPTIBLE, guard, jiff=
+ies);
+>>> +        let jiffies =3D delta.as_jiffies();
+>>> +        let res =3D self.wait_internal(
+>>> +            TASK_INTERRUPTIBLE,
+>>> +            guard,
+>>> +            jiffies.clamp(0, MAX_SCHEDULE_TIMEOUT),
+>>=20
+>> I suppose this can be `delta.as_jiffies_unsigned()` too, although the cl=
+amp
+>> makes it more explicit?
+>
+> wait_internal() takes isize, so with as_jiffies_unsigned() we
+> need to cast the value back:
+>
+> | // CAST: `as_jiffies_unsigned()` returns at most `isize::MAX`, so the
+> | // value fits in `isize`.
+> | let jiffies =3D delta.as_jiffies_unsigned() as isize;
+> | let res =3D self.wait_internal(TASK_INTERRUPTIBLE, guard, jiffies);
+>
+> The clamp needs no cast, so I'd keep it.
 
-Running the command twice when it failed and a global counter moved
-is not going to fly.
-Missing BTF is not always an error.
-With =m and BTF not loaded yet take
-  int prog(struct xdp_md *ctx)
-with func_info. That is everything libbpf loads.
-do_check_common() calls btf_prepare_func_args(env, 0).
-find_canonical_prog_ctx_type() returns NULL, btf_is_prog_ctx_type()
-returns false, the arg becomes ARG_PTR_TO_MEM and
-func_info_aux[0].unreliable is set.
-The prog loads. err == 0. No retry.
-From then on freplace of that prog fails with
-"Cannot replace static functions" and fentry/fexit see its args
-as scalars, even after BTF is loaded.
-With =y both work.
+Right, sounds reasonable. This can also be `isize::max(delta.as_jiffies(), =
+0)` I
+suppose, but `clamp` reads fine too.
 
-That is the only reason why "a socket filter does not load it".
-In v3 such prog loaded BTF.
-systemd built with BPF_FRAMEWORK loads
-  int sd_bind4(struct bpf_sock_addr *ctx)
-from manager_setup_cgroup() at every boot.
+Best,
+Gary
 
-The result of the verification cannot depend on who touched BTF first.
-
-bpf-ci is right too. The first run writes into uattr.
-
-It's starting to feel that this is dead end.
-So much complexity to save few Mbyte.
-
-pw-bot: cr
