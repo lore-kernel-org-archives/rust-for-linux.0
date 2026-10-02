@@ -1,123 +1,71 @@
-Received: from mta0.migadu.com (out-144.mta0.migadu.com [91.218.175.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B1A4AAC46
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Oct 2026 13:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD89F4BEE3A;
+	Fri,  2 Oct 2026 13:55:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790949021; cv=none; b=UrDpiKxrkOlzn3xlzNuoOcOwgicJ/x2Lfl5l0kOcJEqLluDvGNXrFG2ynhYYtlFGuh1UFsRPjixQyX+NIrl8PakUdNVDKb8BTwQKiwkRxcgZoKOHV8fSKVCGOAmyy3BlimUsrGDWpa29c+oHQJePuEIrcj2O1Mu+iPsYdSqAN5w=
+	t=1790949343; cv=none; b=K2xroikkRkYdXmdUgI5gLVtWphhu6HAOktUGyO1ojJc6XNUT7WFTNh67o1icf2P1Q0B3uhCIDAsvRXGebtINmVTDQZsHjZl6mPlX58xcCiO9jy7waaMlZzHoDzM5H2YmLIH4imzQU7UTRWtt5AsCCRK41CArGeawb2WFfjakEmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790949021; c=relaxed/simple;
-	bh=C/wAt1LQIExSHw4S8KqSvpcjB37pdcwAu4E/VAWQEvg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ch/jhknnlD5EU65RGfH07YfL0RS0iwSNkD+O0AmmjCvQUM4oFRdWGatm17vrpCbkaF6GcGfFucVLWkQNVwun60f8U7TAaVGZYwNVVz0winI9FGldXf3QVquDoi2jVv6f6uSNg3hBHl3J7PF+dqUQotgjsEQR7YdoIMOPA2yICFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AMTmlkUp; arc=none smtp.client-ip=91.218.175.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790949343; c=relaxed/simple;
+	bh=XGl9/4B0AC4QzIfpy6TTmO8HFeANmnCZoqLfz2TLN7E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TgoUe/Bl7jcxwqxpu22pj4L3mce5lxabrFCw0fcIWP4nxYD/1mPXTS1iHisSvsBCasTTra4K31VR6uFlnFFiCw5Hun4php9XOgN0/IyKA9EbVnUdMF4j2zlXAsrtdFeajnkNy/iTpVW0GkJ/RTy4E7FZ16XhJVFXhcUNM494/Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5uzEsnN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AMTmlkUp"
-X-Envelope-To: rust-for-linux@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=C/wAt1LQIExSHw4S8KqSvpcjB37pdcwAu4E/VAWQEvg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790949016; v=1; x=1791553816;
- b=AMTmlkUpx3s0dwype5xvcZPoVwgrSXQNunrb3UhBHwGSiy5fMKP6BPbx67gjywiqYvQq986i
- avIaycSSnipJIOw4mUYE5VnSfC1U0eEV67m2ab9drsJXHwkXhN4AKlD9kx/Nga0OLKSfHXbUI+a
- 7ggToBwaeWkzBk1d4zkjbL54=
-X-Envelope-To: rust-for-linux@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 6242a16857386e04;
-	Fri, 02 Oct 2026 13:50:12 +0000
-X-Mizu-Trace-ID: 6242a16857386e04
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <da2773b2-1ed2-40ef-aefa-0e754cdb2f9d@linux.dev>
-Date: Fri, 2 Oct 2026 21:50:02 +0800
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5uzEsnN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA201F00893;
+	Fri,  2 Oct 2026 13:55:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1790949341;
+	bh=syRqJi39MobVuFgnAfjessK14/9PENQjEyrEnkPiu5g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=e5uzEsnNvq8Cn7XpTdV3MTPU3r4O7ZffJ6BaQd2x6EcEKW3E36rzW0PPJsEJAKPW6
+	 77/4ir6Wm4AQhdsRqXlBljYhVveR4HbkdQ757BrpXpb+6jFuYJygTXde113GtHquUN
+	 cfNe6vTMemhtD1ObRDliIvCPvZ6CjNdDD4lQ69I4=
+Date: Fri, 2 Oct 2026 15:55:34 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>, Arnd Bergmann <arnd@arndb.de>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] rust: misc: use `#[optional]` attribute of
+ `#[vtable]` macro
+Message-ID: <2026100227-ambiance-stellar-f378@gregkh>
+References: <20260811-vtable_macro-v1-0-50c5aab3c211@garyguo.net>
+ <20260811-vtable_macro-v1-3-50c5aab3c211@garyguo.net>
+ <CANiq72nU8LgH7jYtFRQGdwvNvbdmLNxcP0-5PgMWFUvQ26KRCA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] selftests/bpf: Use the new NMI_BITS definition
-To: Boqun Feng <boqun@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
- Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
- Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>, Shuah Khan <shuah@kernel.org>,
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Shrikanth Hegde <sshegde@linux.ibm.com>, Alexei Starovoitov <ast@kernel.org>
-References: <20261002102923.45846-1-boqun@kernel.org>
-Content-Language: en-US
-From: Leon Hwang <leon.hwang@linux.dev>
-In-Reply-To: <20261002102923.45846-1-boqun@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nU8LgH7jYtFRQGdwvNvbdmLNxcP0-5PgMWFUvQ26KRCA@mail.gmail.com>
 
-On 2026/10/2 18:29, Boqun Feng wrote:
-> The definition of NMI_BITS was out of sync after the introduction of
-> HAS_SEPARATE_PREEMPT_RESCHED_BITS, hence adjust it.
+On Fri, Oct 02, 2026 at 03:17:13PM +0200, Miguel Ojeda wrote:
+> On Tue, Aug 11, 2026 at 3:56 PM Gary Guo <gary@garyguo.net> wrote:
+> >
+> > Replace the `build_error!(VTABLE_DEFAULT_ERROR)` boilerplate with the
+> > `#[optional]` attribute.
+> >
+> > Signed-off-by: Gary Guo <gary@garyguo.net>
 > 
-> Reported-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-> Fixes: 3b0e2a22d408 ("preempt: Introduce HAS_SEPARATE_PREEMPT_RESCHED_BITS")
-> Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-> Cc: Leon Hwang <leon.hwang@linux.dev>
-> Cc: Alexei Starovoitov <ast@kernel.org>
-> Signed-off-by: Boqun Feng <boqun@kernel.org>
-
-lgtm,
-
-Acked-by: Leon Hwang <leon.hwang@linux.dev>
-
-One nit below.
-
-> ---
-> v2: https://lore.kernel.org/lkml/20261001082519.16195-4-boqun@kernel.org/
-> v2 -> v3:
+> Arnd, Greg: may I get a quick Acked-by on this patch?
 > 
-> * Add Fixes tag.
-> * Add CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS weak symbol because
->   CONFIG_* is not available in bpf programs.
-> 
-> 
->  tools/testing/selftests/bpf/bpf_experimental.h | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/bpf/bpf_experimental.h b/tools/testing/selftests/bpf/bpf_experimental.h
-> index 2893bf06ff25..a09448347966 100644
-> --- a/tools/testing/selftests/bpf/bpf_experimental.h
-> +++ b/tools/testing/selftests/bpf/bpf_experimental.h
-> @@ -367,11 +367,16 @@ extern int bpf_cgroup_read_xattr(struct cgroup *cgroup, const char *name__str,
->  extern int bpf_sock_read_xattr(struct socket *sock, const char *name__str,
->  			       struct bpf_dynptr *value_p) __weak __ksym;
->  
-> +extern bool CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS __kconfig __weak;
-> +
-> +/* A trivial macro to make NMI_BITS exactly the same as in <linux/preempt.h> */
-> +#define IS_ENABLED(cfg)	(cfg)
+> It is a change that simplifies boilerplate -- no "real" change for
+> you; miscdevice is just the example for the series.
 
-NIT: change this to ((cfg) ? 1 : 0) to match IS_ENABLED() semantics.
-
-Thanks,
-Leon
-
-> +
->  #define PREEMPT_BITS	8
->  #define SOFTIRQ_BITS	8
->  #define HARDIRQ_DISABLE_BITS	8
->  #define HARDIRQ_BITS	4
-> -#define NMI_BITS	1
-> +#define NMI_BITS	(1 + 3*IS_ENABLED(CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS))
->  
->  #define PREEMPT_SHIFT	0
->  #define SOFTIRQ_SHIFT	(PREEMPT_SHIFT + PREEMPT_BITS)
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
