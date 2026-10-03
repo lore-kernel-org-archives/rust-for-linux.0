@@ -1,128 +1,192 @@
-Received: from mail-pj2-f39.google.com (mail-pj2-f39.google.com [74.125.227.167])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA969425897
-	for <rust-for-linux@vger.kernel.org>; Sat,  3 Oct 2026 16:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7135348EC7A
+	for <rust-for-linux@vger.kernel.org>; Sat,  3 Oct 2026 17:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791046695; cv=none; b=IGL4Lh+pMqpbghRnCFEJLkBsUIYxaLMKws18vxtBXNU2yYbVaRtI0KjyZQm1eaXphiM3/6T3ehUWjRRjDRePHleKWhgkhFLPxmHouk5BXJ+xQW5tPhj1WNwSVS+zeO3PrwDiXgbanWO2UWI8/N6ThMVQf7F6Tv+/GEfExUyl9a8=
+	t=1791047251; cv=none; b=rdB7jae8yXbY3acpGdg7Fu2qwWRxbOLVP47HYYx8GiVS+o2BLzAKHAMidXs/rLjmuVATBYPD8yyzwmlDs02JC3IFICyHS68rNPhYwcnqtwFbqUiVndhdp0fU7IsfDlslvSCKlnEciUfWYnvio9R5XbHm/9mHjgU48eWBVQKUIY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791046695; c=relaxed/simple;
-	bh=tV68AEZfVUl2ePwMevpcFNFrGswYi8vmfdu1EZiJ9iU=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E/JsSS7TFLpQV+kAd1eLwmjXkXgQvG37UTYxWz2BgEWieXow6JyfyXtc8fSBpNgDfRlGEschco9QJVBEbnfRJhpUJHjQyeQLwaxNASE2zC8fIzKfAJ5t9iGCTf1ssBE1tp0d8W5c1Yw6zTfpGhRQ15tar1CwR1sj0S1jgFEdfOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EcSIiaBZ; arc=none smtp.client-ip=74.125.227.167
+	s=arc-20240116; t=1791047251; c=relaxed/simple;
+	bh=FzlyXPstQKA22LT8IX4LjRqLlPmdLdap5eNXvrcSaIs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NlIZgLyaYWVl/clrrfmJpTCR7tUAebspmqvKOe64z8WRWpO1LFMvfhpPvAQbQZ2WChjNkUAIEyP1nzRrDhSzyfwNdAhg9Jw3QxSgyVp8UPDJxG2AGrhCKWByI2IW2bB54NBtLVM6yBYxL2D2IXMnt0oSXutKcpcmizSUjJh99Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bISS3wm1; arc=none smtp.client-ip=74.125.225.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EcSIiaBZ"
-Received: by mail-pj2-f39.google.com with SMTP id 98e67ed59e1d1-3a49b6bb21eso223276a91.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 03 Oct 2026 09:58:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bISS3wm1"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cd5462b69so4121555e9.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 03 Oct 2026 10:07:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791046693; x=1791651493; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791047246; x=1791652046; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
-         :references:subject:cc:to:from:date:message-id:from:to:cc:subject
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=MLMhydZ/wyB/4hMugvVsF4Xnk66VRKTgxqNM58pVWT4=;
-        b=EcSIiaBZNQkOV5Q3S24HkwzJ55DoYFv5VXWOPk5GJv9BcRYW41F3TnwXkGPEYJZ1/i
-         HjJTNec5SaNr6xVqSF0xpf8BtnWtKCXLH79aXCahzUTBCV61Nlmklm6Ps+yku3WamTnq
-         SIXH/pgxwmcf5USpYreYTE+h3isy1XBC7WbLKHTgBYyezIG2P8pAUO6+ZHvOSC/CnNgO
-         iJtZ3cPH6sS8k1Pwd3MQ+knN8rDxyoiGoDKppK6Pklc2/gsRrGrLH6lLdiyaaXIo+SOL
-         iZIfLEoWIt4E28bXbykWcS7baEQUFHPP6+EhMinh2C+4k+v/AQnAPXOT1k9chewddYID
-         t6FA==
+        bh=3GGSdJzmN2dqwo1b/5Kfo2bKbnsN93Ci8hxqW9b45lI=;
+        b=bISS3wm1Rv/Fi+Np3/B5QtAvYhuG2Zm3fpIaw17tCGh36ZXE4H6+w9xUVgNq/xUpZR
+         cS2KitdgcBDnSt/nZwvrptn+xb+9y3hi3EpeXoLNh+hTrWJBvWv2se1eUlwtfDl/xmpX
+         GLlrR7D2uCw4lnzXmjV15+dLwyZZsiOlhjvkdgRYS7+OYCukjWWkD1lgwNGFUYqs368b
+         bIv9mMfzlz0M0bk6afVSXjlB2edkrK7yk619ZW5AJbbfjJkVQW525EkFM5cMNJixGFNb
+         rZlQtYqvww6TkhO78QBoiVdY89OSCAII5tYBoD8a3uXlBgr8x4o+KJMBvIoFZJeGrHUt
+         BEyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791046693; x=1791651493;
+        d=1e100.net; s=20260707; t=1791047246; x=1791652046;
         h=in-reply-to:content-disposition:content-type:mime-version
-         :references:subject:cc:to:from:date:message-id:x-gm-gg
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=MLMhydZ/wyB/4hMugvVsF4Xnk66VRKTgxqNM58pVWT4=;
-        b=HJUJ5vKgc7WDCgWy/nY0wIXd2To4Or6BkBugngNg9k4DzbzLdi9XEVXMJK41g7sMgt
-         4xCA4MfX/HNO96Hi3TgHpY8VeTJOQfYWI1pQMqztpD+pMEoAwBMERLjJeTGsbBStjp6n
-         ydgrINqG5cLbSo61a4CjTY4aR2opIPGY7yxAsWqzevNVeWYZqGies8/3QckjWoU9McCF
-         72R768zAylQMPkVT4jIsmy8xPKT0QRUCj/iqMalwih8v2uHqRUWflvbxB8p/OHwfVLt/
-         VzzFea1vS2RSy7kIQZ3Gs5SLbc/Qboy/DcwMK7459R3LHT87GpChDtE5pYaMNflefWyU
-         MxGg==
-X-Forwarded-Encrypted: i=1; AKwUvBwbZQv2uHDqw5iEZfMPK6szq9yzHg8QWQ5pZbcOwQrLKqGz4kBpPIraFV5pTQ2dE50m0p0HbiUcR1w3XtoO2w==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKuV2U72Q7lKHnrjdyTgzrdjsNQQvN3KvRuj04LtG7RIjtyY1r8
-	wcndXkko4YuqVZLp3icHLUosFQaeliP+jlejNDRpRsdadRBl14KC6V04
-X-Gm-Gg: AYBFou3HQTSrc7s/qwBn92bnglHqEaNt9OB4t7I8lHsDs/9GlRrY72ae36kxajFVF8G
-	uVlj9NfqmnK0BGtE8fCRis6LMBZYxBWdW6amQK1Hbg5qfO7VcRXbKaFvVcbnrB2OrRLaz9FxsBf
-	jrA19x4Fc4OS07QnQde6H3DEk0SqgnkxtZzl19r1c3/fr+ZbHEm7jCSQGpx4AMWh/XECpbTnZFj
-	i1lVDkKATwmIyr+EGonjpXUmLYsFVo8NlONXetunDu/gs5RRplmzok3+b3J5n97ueEjgIYIftN+
-	GvHefQnphECLO9Y4IeTYusFC18l6+94LfO5LKKd5gStmADi9nwA1JZbjN31zl/1zCJNTrW/Ui8L
-	MYAMuoWRevB3DTGMI8oUqi8MfqUoI65k+97cIFfX696jMxtnnGi0gwo+niw9fexRTgEsUoSSYaf
-	5gqT71++3P0WMxJlt9hDzOoirpVKmsqhmEvjhM5EnW/zuhKysg1PeCkd9TdR3nze55du4+O/1ad
-	z8XE/c/VvXfbYe3gQ==
-X-Received: by 2002:a17:90b:4ac1:b0:3a0:22bd:6ef6 with SMTP id 98e67ed59e1d1-3a6ce64fb77mr3278447a91.2.1791046692966;
-        Sat, 03 Oct 2026 09:58:12 -0700 (PDT)
-Received: from localhost (madb688426.ap.nuro.jp. [219.104.132.38])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78d7cd47csm3574222a91.17.2026.10.03.09.58.12
+        bh=3GGSdJzmN2dqwo1b/5Kfo2bKbnsN93Ci8hxqW9b45lI=;
+        b=gbKFXzN/40SCxc1WW4233FGKlAHiBNOTlv1XrdC0MmsY4jg25zkawXrRreKn3hd3ZL
+         FM6BnBNUK3JM5mxV3mwLH2gwb1JLwqFNp0dL/+7yoUwjPgcp/y/JSwuCJObtUigqBGbe
+         sv5QyPy8mafrGf5KKhbXE4lUkDkMhpIJ694J96ZAq3TbRbM38Shtqr4JwCXMl8/B+BdM
+         4c5deQb1rKwkVLx0RIXbXDGE2leZZV90E0NjW2CezhSCT71sg7D7K8mViR2Ksdq+k/x6
+         ENb/R0OMh31GjGRWIpxXEhfdoOrXcorB9WVLC5Osl5GHNZ2KWNXnMpuaB0E2pSJtE+4Z
+         RuxA==
+X-Forwarded-Encrypted: i=1; AKwUvBzTGEm2eYG3JLZOOY+A+njLpER9AQhM8qvd8fAk/QFcSxS66xNqwPDjI2BNUAb/HruzU9SQDtG+hEfqHuUbrg==@vger.kernel.org
+X-Gm-Message-State: AFuF++k5ZouRhzmSi/Be0I/aq8sWd/kjwlYaxJuSDV/Fu9RMWOb9sZ/C
+	L4bsPnJll4uu9HWsy1eTjqd6BfGTGrL8a8aZCX5QrhKkmfDVB2mKxJai
+X-Gm-Gg: AYBFou1m4Z5crShyD4duB6/Ex2q6irX/eSIMbzu6j+x5rAJ9Ir4Kwk5CCh3wDK87kjZ
+	cHzk33Vdfj/i59w2fEYqQug5Q1YWTlpZ8wP29Gd9XgVicJZ6nRerIeWCBXtNAEFnGbMz/zP2ouS
+	mYxPC4fn6IeHNfKTb95CvbQ59DbVFqSmhSOKPX0a4IRJ/szfkBg8/XmfuPSAflMa70v2RU+inuV
+	hlqo0IPjss41uUEWYZUnItU8xa1/34bhVCmdDC3tIixhFNIcapD0DMULHPiWBm+63cFh078wFdk
+	1vYvWg4htga2H/Nsvvfmad52xspmrhejlVhKknE9Ad8N+f0FzsM3Cvk/XP3GB+6Ny9GbIEG5sOs
+	EvrfC9r0ODOPE77q8J921hU9rkjTWtx0uCynVzPubOV63BP3KLMxtJRCXfGBmLBPl8FqePNUxAy
+	VwzjkcQajCrBDgcokttFJfyUYnXex/AF6HSRsqIhqC6M06n41Fd6MNS6+3HIoT3JLwBu5D3+fTj
+	wPP59e6eDMrz0M8KBhuws6KVwce/fWHkdwpoZDtf6zSOvkKO6Lskw6yv75o/gn/NDtNljT+felv
+	du7lSLZkfjKYX5QU2m+atOqVA3DSEXmvnXtJ8YM0o17eP/XsjnAZNn2jUnurC7t3J/oXuiF0uVd
+	S
+X-Received: by 2002:a05:600c:138b:b0:49f:ce78:3562 with SMTP id 5b1f17b1804b1-4a02759b46fmr107744155e9.19.1791047245976;
+        Sat, 03 Oct 2026 10:07:25 -0700 (PDT)
+Received: from unknown748F3CBA5068 (dynamic-2a02-3100-b2e2-2001-c47f-5a89-3d9a-cd2d.310.pool.telefonica.de. [2a02:3100:b2e2:2001:c47f:5a89:3d9a:cd2d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b380faaeesm12742668f8f.18.2026.10.03.10.07.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Oct 2026 09:58:12 -0700 (PDT)
-Message-ID: <6ac13424.00feb36c.a9616.9685@mx.google.com>
-X-Google-Original-Message-ID: <20261003165810.zgrm3r4jr76mkmq2@DESKTOP-1P5QNTF.>
-Date: Sun, 4 Oct 2026 01:58:10 +0900
-From: Kohei Ito <koheiito.dev@gmail.com>
-To: Bartosz Golaszewski <brgl@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-gpio@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-Subject: Re: [PATCH 3/3] sample: rust: Add GPIO consumer sample driver
-References: <20260906-add-rust-gpio-consumer-v1-0-24d192f93760@gmail.com>
- <20260906-add-rust-gpio-consumer-v1-3-24d192f93760@gmail.com>
- <CAMRc=Meei7Z1f1n0M_Hy1LdxG=NVhkFeEiT3=p5QVpw6BTv3EA@mail.gmail.com>
- <6aa662d7.0ca013b1.1575e3.0a60@mx.google.com>
- <DLENO35F39LL.2YNA66D9FCXYH@nvidia.com>
- <CAMRc=McV2YKgbmnknLZTSGoSa_9eCHDiOLzuPPyPHHnj=vRuvw@mail.gmail.com>
- <6ab12d24.a3d4836d.3b68e.d0f8@mx.google.com>
- <CAMRc=MfZckBMT-4PEDxr-PjRbUPO4FY3OZw8ks3w+uoEyixbAQ@mail.gmail.com>
- <DLLVT33ESJA5.1XE4J08AEZNMX@nvidia.com>
+        Sat, 03 Oct 2026 10:07:25 -0700 (PDT)
+Date: Sat, 3 Oct 2026 19:07:22 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Russell King <linux@armlinux.org.uk>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
+	Linus Walleij <linusw@kernel.org>, Christian Schrefl <chrisi.schrefl@gmail.com>, 
+	Bradley Morgan <brads@mainlining.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] ARM: rust: Enable Rust support for ARMv5TE
+Message-ID: <asEzZ1wOQ_MbgEsk@gmail.com>
+References: <20261003093827.77857-1-kmehltretter@gmail.com>
+ <20261003093827.77857-3-kmehltretter@gmail.com>
+ <33197b82-3eff-4c87-b370-c677ca31a02a@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DLLVT33ESJA5.1XE4J08AEZNMX@nvidia.com>
+In-Reply-To: <33197b82-3eff-4c87-b370-c677ca31a02a@app.fastmail.com>
 
-Hi Bartosz, Alexandre,
+On Sat, Oct 03, 2026 at 12:45:07PM +0100, Arnd Bergmann wrote:
 
-Thank you for your advice.
+Hi Arnd,
 
-> >> The best approach I think is a combination of a Rust consumer driver and
-> >> a C kunit module dedicated to testing the consumer driver. This is
-> >> almost the same as `drivers/gpio/gpiolib-kunit.c`, except that instead
-> >> of directly exercising the GPIO consumer APIs, the module I'm suggesting
-> >> exercises them indirectly, through the Rust consumer driver.
-> >>
-> >
-> > Can't you just call a C function registering the platform device from unsafe
-> > rust?
+> > Kernels that also contain ARMv4 or ARMv4T CPUs are built for the
+> > lowest architecture and stay excluded. CPU_32v5 also covers the ARMv5T
+> > ARM1020. C code is already built with -march=armv5te there, so Rust
+> > matches.
 > 
-> You should be able to. It's a but laborious, but better than not having
-> tests at all, and acceptable as a temporary solution IMHO.
+> None of this makes sense to me: The target should not control
+> the instruction set, that is what the -march= flag is needed for.
+> Does that not get passed for Rust?
+
+No. arch/arm/Makefile only passes --target=arm-unknown-linux-gnueabi,
+no CPU or feature flags. That target has "+v6" built in, so Rust code
+in an ARMv7 kernel is built as ARMv6 today.
+
+I tried the generic target with CPU flags (libcore for versatile on
+v7.3-rc1, rustc 1.99.0, CPU arch from the build attributes of core.o):
+
+  --target=arm-unknown-linux-gnueabi
+      ARMv6, uses uxtb/uxth/sxth/rev
+  --target=arm-unknown-linux-gnueabi -Ctarget-cpu=arm926ej-s
+      still ARMv6
+  --target=arm-unknown-linux-gnueabi -Ctarget-cpu=arm926ej-s
+  -Ctarget-feature=-v6
+      ARMv5TE, but every rustc call warns
+      "unstable feature specified for `-Ctarget-feature`: `v6`"
+  --target=armv5te-unknown-linux-gnueabi
+      ARMv5TE
+  --target=armv4t-unknown-linux-gnueabi
+      ARMv4T, no clz, no blx
+
+So -Ctarget-cpu can add features but does not remove the +v6. The
+generic target also declares 64-bit atomics, armv5te and armv4t only
+32 bit. Below ARMv6 I only see the separate targets.
+
 > 
-> Of course an even better solution would be to provide a safe abstraction
-> for registering platform devices. :) I don't know exactly how much work
-> that would be, but there is already a `platform` module, so supposedly
-> we wouldn't be starting from absolute scratch.
+> If an ARMv7 kernel includes ARMv6 instructions, that is broken
+> on ARMv8 CPUs that are lacking the CP15 barriers and swp style
+> atomics, so that needs to be fixed.
 
-Sure. I'll explore the Rust kunit approach by directly calling C
-functions to register `platform_device` and `software_node` from unsafe
-Rust. I'll also drop the sample driver. I'll let you know if I face
-problems.
+The Rust objects from the generic target have no swp and no CP15
+access. The atomics go through the C helpers.
 
-Best regards,
-Kohei Ito
+Building the Rust code of ARMv7 kernels as ARMv7 would be a separate
+change. I can look at that after this series.
+
+> 
+> I don't see what part of rust would depend on ARMv5 instructions,
+> it should just work on ARMv4T as well, though ARMv4 may be
+> trickier because missing bx instructions etc.
+
+Agreed. !CPU_32v4T only came from the armv5te target, which emits clz
+and blx. With the armv4t target it can go. ARMv4 has no rustc target.
+
+> 
+> > ==============================================
+> > -``arm``        Maintained        ARMv7 Little Endian only.
+> > +``arm``        Maintained        ARMv5TE and ARMv7, Little Endian only.
+> 
+> Here you exclude ARMv6K and ARMv8-A-aarch32...
+> [..] 
+> but here you allow it, so I think one of them should change,
+> 
+
+Right. A v6K+v7 kernel has CPU_32v7 and gets HAVE_RUST already, a
+v6K-only kernel does not. No technical reason. I have a patch for
+v6K-only that I held back until I have a Pi 1, but I guess QEMU
+suffices.
+
+> This looks wrong, the choice between armv5 and armv7 should work
+> the same way as the choice between armv6 and armv7/v8, if I read
+> the rustc docs correctly, this should be using the target-cpu=
+> argument on the generic arm-unknown-linux-gnueabi target.
+
+There is no choice between ARMv6 and ARMv7 today. Both get the generic
+target without flags and so ARMv6 code. And target-cpu= on the generic
+target does not get below ARMv6, see the table above. That is why I
+used a separate target for ARMv5.
+
+For a v2 of this I would
+
+- pick the rustc target next to the -march lines: armv4t for
+  CPU_32v4T, armv5te for CPU_32v5, the generic one from ARMv6K upwards
+- select HAVE_RUST for everything except CPU_32v4 and plain CPU_V6
+- make arch-support.rst say the same
+
+I have this running in QEMU on v7.3-rc1 with
+- sx1 (OMAP310, ARM925T, ARMv4T), omap1_defconfig
+- versatilepb (ARM926EJ-S), versatile_defconfig
+- raspi0 (ARM1176), bcm2835_defconfig without ARCH_MULTI_V7
+
+Would that be ok for you?
+
+Thanks
+Karl
