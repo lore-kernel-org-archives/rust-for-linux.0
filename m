@@ -1,72 +1,74 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-pj2-f39.google.com (mail-pj2-f39.google.com [74.125.227.167])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D42D355F47
-	for <rust-for-linux@vger.kernel.org>; Sat,  3 Oct 2026 16:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA969425897
+	for <rust-for-linux@vger.kernel.org>; Sat,  3 Oct 2026 16:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791046254; cv=none; b=f8kkrdNA/ay14JBunf8yMMcACdAnNtQ8nlPW44hLEl9fqmMO2BsyjlUI7zv2MsEjkEV8vtzkR9tpLlUpC20GH3C+eZHF3pXy7R5SuWnU6+6Ydlirsgd8J2bRTGHRNhwVU6TdB2NDBTQ10peOY7HePinQYjxN0Iv84fYXsP6Ay7s=
+	t=1791046695; cv=none; b=IGL4Lh+pMqpbghRnCFEJLkBsUIYxaLMKws18vxtBXNU2yYbVaRtI0KjyZQm1eaXphiM3/6T3ehUWjRRjDRePHleKWhgkhFLPxmHouk5BXJ+xQW5tPhj1WNwSVS+zeO3PrwDiXgbanWO2UWI8/N6ThMVQf7F6Tv+/GEfExUyl9a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791046254; c=relaxed/simple;
-	bh=rgmi8cN+SpzR1LZvYNcsfQI3YjDiUwkUJG5FRv+tXy8=;
+	s=arc-20240116; t=1791046695; c=relaxed/simple;
+	bh=tV68AEZfVUl2ePwMevpcFNFrGswYi8vmfdu1EZiJ9iU=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZaeBb0whch8Sk2cS5CmQ85XAUi0T9rS/OOxvD+wz2AbrYWuKyV4zKFPNxRkbRJdhQxfnetbbN0WP5Wl1p6ObehDsZH/DIl921n8FPSwAz5WQbcrEcHaxGFwA1NueAxV1LNAvhznslOUz32gnHuZLw740fJiMPj1ellGFeJpR5SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jgw5qt2x; arc=none smtp.client-ip=74.125.227.141
+	 Content-Type:Content-Disposition:In-Reply-To; b=E/JsSS7TFLpQV+kAd1eLwmjXkXgQvG37UTYxWz2BgEWieXow6JyfyXtc8fSBpNgDfRlGEschco9QJVBEbnfRJhpUJHjQyeQLwaxNASE2zC8fIzKfAJ5t9iGCTf1ssBE1tp0d8W5c1Yw6zTfpGhRQ15tar1CwR1sj0S1jgFEdfOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EcSIiaBZ; arc=none smtp.client-ip=74.125.227.167
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jgw5qt2x"
-Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2dd77300825so2162825ad.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 03 Oct 2026 09:50:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EcSIiaBZ"
+Received: by mail-pj2-f39.google.com with SMTP id 98e67ed59e1d1-3a49b6bb21eso223276a91.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 03 Oct 2026 09:58:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791046252; x=1791651052; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791046693; x=1791651493; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:subject:cc:to:from:date:message-id:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=o5nZhr5o/UkV60cwhqj+G+eK5fQZjsPv6PrbldXN5Gw=;
-        b=jgw5qt2xQtANLaCSCmRTBi2JHZLY5CA9UEC0EUZ296TrPmMkmXoJNDMn/hlQITYX3W
-         p3J0haqnVACBZngYnRd3ZjNJ3l1x8tTt71yB5L5DdvOlYDfdx0832kiO2o/qc1fvE1FH
-         aALBLxk1vGfl+4byTAiqsLbdqXizqH1L45pbF1gbI2hxr71yooL/gPz6x/wTz0P2jJ2G
-         ZW0hdEbtCJYyYy7j812Wka5gNOkP3clwR2iYdnnN+HqPy2q2jermruXXfD/a6hZT/EJM
-         cTs1ANU9y3hH4EyqPyXVb/RU512RIVz3Df80Dt3pfSfJY4MkUncP1ati19IKuR3HtOBC
-         wy3Q==
+        bh=MLMhydZ/wyB/4hMugvVsF4Xnk66VRKTgxqNM58pVWT4=;
+        b=EcSIiaBZNQkOV5Q3S24HkwzJ55DoYFv5VXWOPk5GJv9BcRYW41F3TnwXkGPEYJZ1/i
+         HjJTNec5SaNr6xVqSF0xpf8BtnWtKCXLH79aXCahzUTBCV61Nlmklm6Ps+yku3WamTnq
+         SIXH/pgxwmcf5USpYreYTE+h3isy1XBC7WbLKHTgBYyezIG2P8pAUO6+ZHvOSC/CnNgO
+         iJtZ3cPH6sS8k1Pwd3MQ+knN8rDxyoiGoDKppK6Pklc2/gsRrGrLH6lLdiyaaXIo+SOL
+         iZIfLEoWIt4E28bXbykWcS7baEQUFHPP6+EhMinh2C+4k+v/AQnAPXOT1k9chewddYID
+         t6FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791046252; x=1791651052;
+        d=1e100.net; s=20260707; t=1791046693; x=1791651493;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:subject:cc:to:from:date:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=o5nZhr5o/UkV60cwhqj+G+eK5fQZjsPv6PrbldXN5Gw=;
-        b=blTcif0/wFXUZUn+V4KKhwGNNvoPphfZEBQ46AtswogzuKHdJ5mVFWnGip+3W8tFiv
-         YKjrC7WT/af/IP0R/t9TqmVu8GjPGoBHPwR4qzaOrx73If0K7Hf6WyimLc2lhy0bghH5
-         sJ7HsU0y2JDTvx7RcZvk0ayOqE50ts/HRgiErqKpREk7+uU/WqhHtOAJbtvIDt6aVLbM
-         4pcAdZmN1e3dru2I7kEIewBq4jiM1Tl9Yog6tZvuGSKb2gY/9cPInHWFMrVz/bDWtIfQ
-         TATovJiRPYzMk6gHpqFCdl7hKZxT2BY2fcEEY2gPLuAXwqOeZlNG8YYsbD1YOtnwB5yT
-         GBaA==
-X-Forwarded-Encrypted: i=1; AKwUvBxWh7SNNauq7TXR+tGAaWlAHH51/vRQpgBAnCkU2M20yKPumXWs53/u5UyOD9JfLUZW5MHn1yYzKFSLWsCT3g==@vger.kernel.org
-X-Gm-Message-State: AFq9FYLKvV5lAjzVS29vSR8aVkqf5q2jDLPQ4oPGI7666pARc4Shn+gU
-	O2TdqOen5spCSj/YbPOoWgkVh68fRgnGdwNNxLhLS5YhLf2OV4OkFdkLmTAB7g==
-X-Gm-Gg: AYBFou03nJH7TlaAqQ3w0I9Qkm44owSw27Np6tbK2+5RRnK2TZjwgeE6BoPn13bR6bK
-	dAx3YU0JBTcg63fN4aPQg0DWqFLzzVs04HUg6/Odg0L8lfUj6Q8F7o1V9stCaW5FT8rHYv/DKvn
-	oTqI3GdIWRbNw5m9Bt1Bn02OCc56a2ZvEM+JzXsynUyO7B/Or8H0u9Lvmbm3xbhv6MvkppOdyk1
-	6bHOqmHtqWdDm4i1UMUdYabuMG4JABmuPX2LegUhx2obO1uyHs9gEPaPWtc6y3DnbxjYfx2Q8EV
-	8xgkrT487pqSWeLfqsRbjE0fPjfaTKESZBvD7ZBzpEWV4quCCXWCsqQnx7PYfDeTg47eUhRZGGL
-	VW0kLTxOLgaNcYl022OKJfUfldNJGPxc40EYUB05taTr8JoPvOL8JwQKUhqo+/kUMOS8YpiCQbh
-	c+adcIOB7qmnDjiWpaJxjkYEFnc2U167khMonkLbIjp9h4JRdGpA9D5P3++LRh4768ZfHWZvcCx
-	hFCBk/PsVumCKma3w==
-X-Received: by 2002:a17:902:cec4:b0:2dd:ad73:c93a with SMTP id d9443c01a7336-2e49b60bfa4mr53807145ad.27.1791046252208;
-        Sat, 03 Oct 2026 09:50:52 -0700 (PDT)
+        bh=MLMhydZ/wyB/4hMugvVsF4Xnk66VRKTgxqNM58pVWT4=;
+        b=HJUJ5vKgc7WDCgWy/nY0wIXd2To4Or6BkBugngNg9k4DzbzLdi9XEVXMJK41g7sMgt
+         4xCA4MfX/HNO96Hi3TgHpY8VeTJOQfYWI1pQMqztpD+pMEoAwBMERLjJeTGsbBStjp6n
+         ydgrINqG5cLbSo61a4CjTY4aR2opIPGY7yxAsWqzevNVeWYZqGies8/3QckjWoU9McCF
+         72R768zAylQMPkVT4jIsmy8xPKT0QRUCj/iqMalwih8v2uHqRUWflvbxB8p/OHwfVLt/
+         VzzFea1vS2RSy7kIQZ3Gs5SLbc/Qboy/DcwMK7459R3LHT87GpChDtE5pYaMNflefWyU
+         MxGg==
+X-Forwarded-Encrypted: i=1; AKwUvBwbZQv2uHDqw5iEZfMPK6szq9yzHg8QWQ5pZbcOwQrLKqGz4kBpPIraFV5pTQ2dE50m0p0HbiUcR1w3XtoO2w==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKuV2U72Q7lKHnrjdyTgzrdjsNQQvN3KvRuj04LtG7RIjtyY1r8
+	wcndXkko4YuqVZLp3icHLUosFQaeliP+jlejNDRpRsdadRBl14KC6V04
+X-Gm-Gg: AYBFou3HQTSrc7s/qwBn92bnglHqEaNt9OB4t7I8lHsDs/9GlRrY72ae36kxajFVF8G
+	uVlj9NfqmnK0BGtE8fCRis6LMBZYxBWdW6amQK1Hbg5qfO7VcRXbKaFvVcbnrB2OrRLaz9FxsBf
+	jrA19x4Fc4OS07QnQde6H3DEk0SqgnkxtZzl19r1c3/fr+ZbHEm7jCSQGpx4AMWh/XECpbTnZFj
+	i1lVDkKATwmIyr+EGonjpXUmLYsFVo8NlONXetunDu/gs5RRplmzok3+b3J5n97ueEjgIYIftN+
+	GvHefQnphECLO9Y4IeTYusFC18l6+94LfO5LKKd5gStmADi9nwA1JZbjN31zl/1zCJNTrW/Ui8L
+	MYAMuoWRevB3DTGMI8oUqi8MfqUoI65k+97cIFfX696jMxtnnGi0gwo+niw9fexRTgEsUoSSYaf
+	5gqT71++3P0WMxJlt9hDzOoirpVKmsqhmEvjhM5EnW/zuhKysg1PeCkd9TdR3nze55du4+O/1ad
+	z8XE/c/VvXfbYe3gQ==
+X-Received: by 2002:a17:90b:4ac1:b0:3a0:22bd:6ef6 with SMTP id 98e67ed59e1d1-3a6ce64fb77mr3278447a91.2.1791046692966;
+        Sat, 03 Oct 2026 09:58:12 -0700 (PDT)
 Received: from localhost (madb688426.ap.nuro.jp. [219.104.132.38])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e49f6d65bbsm18157495ad.54.2026.10.03.09.50.51
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78d7cd47csm3574222a91.17.2026.10.03.09.58.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Oct 2026 09:50:51 -0700 (PDT)
-Message-ID: <6ac1326b.0a67d0c9.2deb66.efb7@mx.google.com>
-X-Google-Original-Message-ID: <20261003165049.6hj23qszaetwiqu5@DESKTOP-1P5QNTF.>
-Date: Sun, 4 Oct 2026 01:50:49 +0900
+        Sat, 03 Oct 2026 09:58:12 -0700 (PDT)
+Message-ID: <6ac13424.00feb36c.a9616.9685@mx.google.com>
+X-Google-Original-Message-ID: <20261003165810.zgrm3r4jr76mkmq2@DESKTOP-1P5QNTF.>
+Date: Sun, 4 Oct 2026 01:58:10 +0900
 From: Kohei Ito <koheiito.dev@gmail.com>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
+To: Bartosz Golaszewski <brgl@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-gpio@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
 	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
@@ -74,14 +76,17 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-gpio@vger.kernel.org
-Subject: Re: [PATCH 1/3] rust: gpio: add GPIO module with common definitions
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+Subject: Re: [PATCH 3/3] sample: rust: Add GPIO consumer sample driver
 References: <20260906-add-rust-gpio-consumer-v1-0-24d192f93760@gmail.com>
- <20260906-add-rust-gpio-consumer-v1-1-24d192f93760@gmail.com>
- <CAD++jL=pZG1ddc+v3ebeTKe-ZTKOTh-L0uXshaZWqOqyuqAYxQ@mail.gmail.com>
+ <20260906-add-rust-gpio-consumer-v1-3-24d192f93760@gmail.com>
+ <CAMRc=Meei7Z1f1n0M_Hy1LdxG=NVhkFeEiT3=p5QVpw6BTv3EA@mail.gmail.com>
+ <6aa662d7.0ca013b1.1575e3.0a60@mx.google.com>
+ <DLENO35F39LL.2YNA66D9FCXYH@nvidia.com>
+ <CAMRc=McV2YKgbmnknLZTSGoSa_9eCHDiOLzuPPyPHHnj=vRuvw@mail.gmail.com>
+ <6ab12d24.a3d4836d.3b68e.d0f8@mx.google.com>
+ <CAMRc=MfZckBMT-4PEDxr-PjRbUPO4FY3OZw8ks3w+uoEyixbAQ@mail.gmail.com>
+ <DLLVT33ESJA5.1XE4J08AEZNMX@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -90,43 +95,34 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAD++jL=pZG1ddc+v3ebeTKe-ZTKOTh-L0uXshaZWqOqyuqAYxQ@mail.gmail.com>
+In-Reply-To: <DLLVT33ESJA5.1XE4J08AEZNMX@nvidia.com>
 
-Hi Linus,
+Hi Bartosz, Alexandre,
 
-thank you for your comments.
+Thank you for your advice.
 
-> > Add the top-level GPIO module with minimal common definitions. This
-> > module is the basis for future Rust GPIO extensions.
+> >> The best approach I think is a combination of a Rust consumer driver and
+> >> a C kunit module dedicated to testing the consumer driver. This is
+> >> almost the same as `drivers/gpio/gpiolib-kunit.c`, except that instead
+> >> of directly exercising the GPIO consumer APIs, the module I'm suggesting
+> >> exercises them indirectly, through the Rust consumer driver.
+> >>
+> >
+> > Can't you just call a C function registering the platform device from unsafe
+> > rust?
 > 
-> Describe what you want to enable by this patch.
+> You should be able to. It's a but laborious, but better than not having
+> tests at all, and acceptable as a temporary solution IMHO.
 > 
-> - Enabling in-kernel Rust code to use things from the
->   GPIO subsystem? (It looks like so.)
-> 
-> - Writing GPIO drivers in rust? (It seems like not.)
+> Of course an even better solution would be to provide a safe abstraction
+> for registering platform devices. :) I don't know exactly how much work
+> that would be, but there is already a `platform` module, so supposedly
+> we wouldn't be starting from absolute scratch.
 
-This patch is the first step to enable in-kernel Rust code to use things
-from the GPIO subsystem. I'll clarify this in the commit message. The
-patch series does not add Rust GPIO provider APIs or Rust GPIO provider
-drivers, but it is intended to be the basis for them.
-
-> > +/// Describes the raw GPIO level, i.e. the value of its physical line without regard for its
-> > +/// ACTIVE_LOW status.
-> > +#[derive(Clone, Copy, PartialEq, Eq)]
-> > +pub enum PhysicalLineLevel {
-> 
-> No thanks.
-> 
-> We want to hide the actual physical line level inside the
-> gpiolib (encapsulation).
-> 
-> We should not expose the physical line level at all
-> unless there is a consumer in the kernel that absolutely
-> needs this, and there is none.
-
-Sure. I have no need to use the physical line level right now, so I'll
-remove it and the related definitions.
+Sure. I'll explore the Rust kunit approach by directly calling C
+functions to register `platform_device` and `software_node` from unsafe
+Rust. I'll also drop the sample driver. I'll let you know if I face
+problems.
 
 Best regards,
 Kohei Ito
