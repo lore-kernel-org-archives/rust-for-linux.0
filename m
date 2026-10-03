@@ -1,135 +1,139 @@
-Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72EB42A7A8
-	for <rust-for-linux@vger.kernel.org>; Sat,  3 Oct 2026 12:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791030613; cv=pass; b=MkmN7g1PYlJ3pU4rtt0CqDu/8/IA3XgEdCVVZobNhe6l10qx33WTQE36S986yapCf4ULF+IQT0qe4mmxWE/RU1ZLXs4j0wpnYm8ELXUwd2tAcC9FuhjBdohvgFpHQXKyfsRAiKf+0/Q1mXL1az5TqHy8mffFV7rsQkWqcwGCCS0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791030613; c=relaxed/simple;
-	bh=hqSobSxH9p82Pc2pQrLeLMglXwWqgyXODZAnb8rNodY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q9L27ft4zqKpnonVw8+tw4AXl6oxXcL44nDv9LbM4j6LoQb/E7GiuRL8Krj2IlXAA2gCjPwFIMKf4YG8nOzIE/HQVGAZfFVhynfuxOgPw4eZIVtI3YtzfHCfwv0dGjkIbV3Rke6+94XHbBAvrNH0Yh0dtLsByPOo3a2EP2qeSK4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ICHEts7r; arc=pass smtp.client-ip=74.125.229.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6503AE704
+	for <rust-for-linux@vger.kernel.org>; Sat,  3 Oct 2026 12:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791031155; cv=none; b=dS0qi33HOskUcrwIaqW/ovZicy5zpzS+C29UWbKu9bIepSCJ1eyxR+YKhXH15HJIINzS1JDYKPUtgZY+mTZZSu79HvV/bfd2t/U4l57Q5IBUt5CuQdStoY8jcTArYpL8x6zu7eyG7kBl4NeXedka+dnyCRE0v0dSg8IT/nScuzc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791031155; c=relaxed/simple;
+	bh=scCUD/sdFUQqgrKb9zg7ud/R2S85w1MZd7AEn3HAl6E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k4vS3vvhNM3tPMI5Ma6WS2phLu8kHUrv3gYHH7CWfMo9TRpWWHZRj6Ya0sq5z5QAU0OWMJbwHZJUlhB/y79JACRvfyzCKwYZ7A1ZJOWPEoGtEsANiQaq4QiY6iiPint6tsUW3zA58SFINPBSSUKNFKAJaKd/m2DbdRhiUglbSsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=HjIj4Rvi; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DuFQUVPY; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ICHEts7r"
-Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-34ba85727b6so35860eec.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 03 Oct 2026 05:30:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791030611; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JEdRGdf96T3nkNc1NpZA5uNjQeApwzF+Y2SDw/E2pqRbIa2d+YTLNVwBlp8IAVz3Mo
-         E3YlduxTuT7REf613z0/PpLsi5M4UeHdRsA9tKAdcTysK7TCHweYLKHaSqOOxdVf7a/A
-         kEOZyda+80Zoi/+NHqGSWF68xN53/vrUHJoO54uIygu/fYQCKIngp2X6nS0OwEvBUdZr
-         odeZ03UQutbBEOuH10YEKdXpjEVL2yrWp8y1eK8mLK1+RraZEH032kaksve/8Zy7SRqB
-         5wbT1EdDCwLWV07SfTRbmPkqD7OS/DErPeztLW/UymAJP+nSWQqEX0aSgoAkqT59ayaC
-         6OlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1rcFnGwOBJPc4tgjdRKJpXz40Fnn5DOONKlluyZPLO0=;
-        fh=Z6GZptd5HvOxUdHJnqHpdBMwrViXyV+bgtBp3Xg5ZNU=;
-        b=gijowT3bTbPluhpDZ1mgV2qz4hOWoXNZIPGzTH/nb13rke4xvlD5AvekdCIyQxcE0I
-         ETYKRli1B+p7CQjbeLhcJlYwN/3NrZT+KoDOJ+kzM5qZvESUkWe2DuWsuJ9fqfdGR2OJ
-         xyTCYl/9HPVz0mOgR8sq4OiBCERIQdZ/FFzg5484QuIKgem4p9k/hNTqb0C/PNVUcTAf
-         J+JxRlpyKc1sW3VpQxI4Kq8ypTaObkP2WYirvsJCY88k2OZY+me8HCeKNZUsR2VF7zRw
-         DXCU8SrTfF1uWe9p86gPf+eQL69TuI/w4uFwk5VlaK0IA1+1tmQ9hMdvGe6OKEnqDTVI
-         W23A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791030611; x=1791635411; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1rcFnGwOBJPc4tgjdRKJpXz40Fnn5DOONKlluyZPLO0=;
-        b=ICHEts7rQtQJy0wzKvoy63vJRuKHGMZvxA/1+773lv+Wje2qAIntzJZowMRvWK9bD9
-         xc91ACmBEAjYCsj9MmZ9WSpnNEFjjWLSDfvt1A65R0pA3lyHHuU4XzfN5/Gmal03VR3b
-         zlDfz4c962Tbtd5jBkf1FfEdDnaJ9H/4zqRQ3HMPEo8bFqy1V8FKtJ5NQcZ+tM8iVmkJ
-         wjLD/TX931ywKtCMvWUHlMgxEdnJBRZb6hxNiKlVcgf4tryFaZrhUnqY7ypZK+IUsAe+
-         R20AFD46mJ97RndCDGviPtkAtXExMoHG+V2pPvneZP2gAJtbQHZA8TXlhg1tiKEyiZPB
-         yu8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791030611; x=1791635411;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1rcFnGwOBJPc4tgjdRKJpXz40Fnn5DOONKlluyZPLO0=;
-        b=ZQ6c9BP7YyhZ/gty2yOXr7y9E8wFyci79+MNttl20/Dl0/G1RSyWCZs4uZRcMIn+b0
-         qAE1vgX+52nQs6hm36fAQnmgjo1zAkydi1M6LCE6nRDU2mgDssrqxNvWBlMtrU8QHXQz
-         x/kbzl04bq+qduOBo2cHgs4EXzDS3nxAO0XGZNeK/x3IobtAeQTFUFhmqmaESRrJALgY
-         S3pZQOS9GjxdnDVq7vxr3hdvFGwnlHgbz3c7vvlVmtKmz/ZnHYe4lt8yMOz86606ZfxZ
-         TykVzbNLo6KsGHhZl0/1x+MIhhO8NZ81YGKvOoYnn/fweMOjcXFyvlLjueHR2HJ4vPns
-         nNjQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwr9lkAfCjXUUOL1hLpb1d6xFa4AiTEY5rg8atcIQyOz5mjdkD1HUWmZSY3Bep/qql2MrY2opp/u01/5ovaaQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJTvEFZc/TZiEszk3z14cgF+QMzDil+vzSJGbfY85LFe9+iz2N9
-	5KJ92Ed56Obmw7hffvHKy2+kFXqH7/MwL212qv64A93BKKUHzAB1PZOtHugdCYWM07GxK+Ag4/Y
-	CLcE700Fsisiw2lAIGeASQubQdft1+jc=
-X-Gm-Gg: AYBFou0UbbXE9hUj0yFfgLQ1nmCGUpb3T0ZWsXok7rIRhWVsyNQdntCMqY1AruRNXH5
-	RvCQj5PMG4GfqQT/6GOngZgG9cdIzdSDDoO9MZ0h57JAk1HVWG0HHAngSQeKGUoui01ISdUg/OZ
-	Sp5QYzeyqHaRgj+VMHb+A6lUE6zQkZHqZ3Err2gjUTZ67DvFK9ywNr04z13R3/Uv+fQq00aX0df
-	2cIHMxv6KLb3NQPiYHeib896v+gIsWes26O86DrTENZ3Uf8swKkMk9v44DObuXZRgN/1x2ow8Wt
-	mjR/Lr85cB3ncKUxZuHPeYYjw/LRJB9vC0Om7ohXygsP4gDQEKVB9DHwg9gQQhZ7Jmb2FGIZClH
-	xG+fmqvifvh4lr3VBzECWl9DN9aMd4jqiNLZ+0CyFd1tsEKrqzCK9MXSclkcXxrhULOSE4iLwKn
-	yVuyZ0w5N3LeZ2fiEuTF10d37zlHE88hmd1+AIFwz3FUpUH30XY9Y=
-X-Received: by 2002:a05:693c:6090:b0:351:18d3:dc3c with SMTP id
- 5a478bee46e88-35118d3dd9fmr2927720eec.0.1791030610865; Sat, 03 Oct 2026
- 05:30:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="HjIj4Rvi";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DuFQUVPY"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 71515140011E
+	for <rust-for-linux@vger.kernel.org>; Sat,  3 Oct 2026 08:39:12 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Sat, 03 Oct 2026 08:39:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm3; t=1791031152; x=1791117552; bh=hHLzV7NvB/FU1EuJOKXi0
+	LECqDfs336lfsk9ARBfruc=; b=HjIj4Rviafu+fgD3oGykL5B0m6I+9t7aB3Gkr
+	4I1RUJl0WSjuSshZ0MtXlFWWJcGUm5jVMPtOkLMOvguQe+kqJZudYruqadYfi0m8
+	G/BlWF67H/4m2PD1kbnzVhl7mBLE9TA/ykIZgI6QtzDDS4NkRuN9si7OEfKdZ3eZ
+	LgSXTbES3geJiy1TcEwne0sxo85OJqTiSN6dgEy8qx5Vu9stY8gBHyAHDL+lMT1q
+	XOXPyICduMv3LdkYQGHk1DRAsa+tWIN+4EVQhKwJHLytAiUqBnip01PN7crMxLbC
+	8JIu3kmNaTqtNIbQOftAMpD1M3ymyBsAbnCzjy0UCp3vdl+Qw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1791031152; x=1791117552; bh=hHLzV7NvB/FU1EuJOKXi0LECqDfs336lfsk
+	9ARBfruc=; b=DuFQUVPYPr5EkIS8AfsNmhaSYBAZJkzGvs2fxJKT1u0kIcduteR
+	bsGhTSJe2WQQs8pHARpxFyhNkNe7Y6Vvwh2UwjlOol69fd725vDBHKiT4Xw7aObN
+	6PsDUr7zfRI4Hx7TBfsWyGBcNa6Yt2wW6LxW+VzeWT2+rOGLpyNDhRpQJhxoT/Q/
+	ybufoktV5ZMWz+sV0ofc99haxleyUndmgD44/hBqZvQBmZs5fXEU4xUjLfCguKHu
+	5R8LXO+pmQfq3EFpIC0KrbcNYXZOiwDsbyp/4oWpQHNHw8t2Nikn0axWMJ95sLWl
+	YhfY6pHQjL/pz3ASnt1+tS07x6Y6HpgjV5A==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791031152; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm3:rsa-sha256:UaGDkylee4AQWkpw/vVkrV76Uj2fi/eTEb4lhqCkV94ajLW
+	jwgCVJTlfq/KNppanP3iCU/BcYg18I+6epI2nD2s+pSNP+Vbt+9wKV3k1kEiHYuC
+	2i9P9WuhEkepgjOaaCPnGqpD/zhAI8HkeIxdDQBkn0AkIPWdArBRpQIonhthA6/D
+	+S+ez/RAQNO+cf9L+D9ll4aSDkwzUZmsEzGBGunquTh6LL5xdSbw2Nq3cv1nOfVH
+	aSbiVC+lmx+v0qjJUdtEgGjhgoQvySdMIkNJJme6VO6LTJqIM1DJFg4mR8JWduEG
+	vKAZ2EgGSViAxJx5fHUEsDDKQJGBVaYlgvtLHdA==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=mi-m=1; hc=9;
+	hn=cc,content-transfer-encoding,date,feedback-id,from,
+	message-id,mime-version,subject,to;
+Message-Instance: m=1; h=sha256:6SEQdIx2lXDZi4R7CyWRWTN+VhjADSfi1rDurC68Lss=:scCUD/sdFUQqgrKb9zg7ud/R2S85w1MZd7AEn3HAl6E=;
+X-ME-Sender: <xms:b_fAatfgDAWfgvJLBrWenH7gLz7CFqNa6t88aRh0FYPhB2za-uFhJw>
+    <xme:b_fAanllkbFB8M4D8btV6a9lCxQk4XzrYewMYI2OCfLdCqGn_KqpNpPb0bkWscQTH
+    Q10wHLFSRQyb9BpTB6mK9--rIvX6Jojh0jDlO-fDSNh5QPYQRihknkJ>
+X-ME-Received: <xmr:b_fAaq97WvidzCht5HP44n_dmags6s6QOdwkj8DjS0XT4yz9XxAGhqg7LL0G42obfWT2N-Vh4Z7yBGFHSlM>
+X-ME-Proxy-Cause: dmFkZTEeVVkv5ctdFu8JaoBwn24MQOnb6QG5uVuMYPN3X0b+70bTK/1lcBiCTovVw3h0jZ
+    HsIgaTLVwNmGDmfD/eb9mGn1ELae+Lh+Bos+lWwef6/Q+KIzzok3Rc5BGqxMNVtC6LxS5o
+    yJqYhqNoXIfL6vYGkefcF3uNVcpsR1hL9jjMnvXZh7My9hxURth1xu5kd5uj6/oKjM6VNS
+    EqLlloxck7ADNFpShu40O7sNo9opCyF/UUCaKWh0y3GRbGj5QeDn2o9/E6d6Nnb7Znrdqr
+    8x7qPke8qLP6yUxnOOH9QSCpCgbBSsiKnbi5fa4isn76fNbbWOcYiwcnU9FOyFLYscN8Pp
+    5HpVRidnxQoc3PibSDi9tRNNmqTyXsJd7vULPnnhmJdL8XDx665yqwK7LSBSxyjttR5dQO
+    rcKj3TeBQLRNEpuSx5OBMefOj2KbAEwxbFDFsUsjAklhQjpNZiqYlC8sAXEMXd68ER9agS
+    pOW9VXsAOlcwaDa4NaA64LDZKjCLU9nMgQasH7xJAgl+ma7uiTXARRqmkSzZBhvoyDVxAG
+    WycEohdhrEukWXtDWhOgC0Irb/C6a5m3FieCPJAb3syMGOee8W9NfIA5gzsBR6yvcMStC8
+    XEmQSBedyz+Yd3DtK9hxRGK+JVaODcluKWGOnAezn4fglIFP+/6hyZynkJyQ
+X-ME-Proxy: <xmx:b_fAalH4Llg1SB0VxPsoKxzPrJVSAtUO4XwBnuMY4FRZpO4z_G4oAQ>
+    <xmx:b_fAamIgi5RRf-pp_QVUlVXyHQFtrkP9OP9tNkIU2ylk6U2Rt-DILQ>
+    <xmx:b_fAatn5EzDxwO3Yka9Y62Z4sNQCYVzaWIRrja9tUA1UDe9nkp4dDQ>
+    <xmx:b_fAanxcMYHmX3d71hvHb2xDoTB4iKGvSB0OS8StTQygoyRXZWM89w>
+    <xmx:cPfAaiXONkQ1GV0R2s02ad1JzrXHHn-0kf0PAWtO4xFDFRh4-hkYeag->
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 3 Oct 2026 08:39:08 -0400 (EDT)
+From: FUJITA Tomonori <tomo@flapping.org>
+To: ojeda@kernel.org
+Cc: a.hindborg@kernel.org,
+	acourbot@nvidia.com,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	tamird@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v1 0/2] rust: bug: add warn_once macro
+Date: Sat,  3 Oct 2026 21:39:01 +0900
+Message-ID: <20261003123903.113572-1-tomo@flapping.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260617-rust-kbuild-replace-procmacro-extension-v2-1-667bdc3a6435@fritz.com>
-In-Reply-To: <20260617-rust-kbuild-replace-procmacro-extension-v2-1-667bdc3a6435@fritz.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 3 Oct 2026 14:29:56 +0200
-X-Gm-Features: AclHuK8rsCn6lZolOMeCDhA0TDOEZE4YAnfFpck0egreN2YiZjMkFmzEgwJYFZY
-Message-ID: <CANiq72mqUDt23jBFr1YVf_5WdO8xcdX0cXpAA9wiawy-sdfcPg@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: kbuild: Replace and dissolve procmacro-extension variable
-To: Nicolas Schier <n.schier@fritz.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, Nicolas Schier <nsc@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 17, 2026 at 4:10=E2=80=AFPM Nicolas Schier <n.schier@fritz.com>=
- wrote:
->
-> Use make's $(basename) function [1] and substitution reference [2]
-> instead of $(patsubst) to extract crate names for rust procmacro
-> targets.  As there is only one user of the procmacro-extension variable,
-> do the crate name extraction in-place and remove procmacro-extension.
->
-> The procmacro-extension variable is used to record the binary file
-> suffix of dynamically loadable rust libraries -- which is 'so' on Linux
-> and others and 'dylib' in MacOS -- to remove that very suffix from a
-> target file name for reconstructing the corresponding crate name in
-> cmd_rustc_procmacro.  Extracting the crate name from the target name
-> in-place is shorter and reduces complexity.
->
-> Link: https://www.gnu.org/software/make/manual/html_node/File-Name-Functi=
-ons.html # [1]
-> Link: https://www.gnu.org/software/make/manual/html_node/Substitution-Ref=
-s.html # [2]
-> Reviewed-by: Tamir Duberstein <tamird@kernel.org>
-> Tested-by: Tamir Duberstein <tamird@kernel.org>
-> Signed-off-by: Nicolas Schier <n.schier@fritz.com>
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Applied to `rust-next` -- thanks everyone!
+This series adds `warn_once!`, the Rust version of C `WARN_ONCE()`.
 
-    [ Rebased. - Miguel ]
+Patch 1 documents when to use the WARN macros, based on the comment in
+include/asm-generic/bug.h. Patch 2 adds `warn_once!`.
 
-Cheers,
-Miguel
+Miguel, patch 2 moves the UML `warn_slowpath_fmt()` call into
+`warn_slowpath()` and updates its SAFETY comment, so [1] can be dropped
+if this series is applied.
+
+[1] https://lore.kernel.org/rust-for-linux/20261002104550.2877930-1-tomo@flapping.org/
+
+FUJITA Tomonori (2):
+  rust: bug: document when to use the WARN macros
+  rust: bug: add warn_once macro
+
+ rust/helpers/bug.c |  11 ++++
+ rust/kernel/bug.rs | 134 +++++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 135 insertions(+), 10 deletions(-)
+
+
+base-commit: d52549881e6777fdcc79a349028413b182a641d2
+-- 
+2.43.0
+
