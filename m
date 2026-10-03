@@ -1,107 +1,101 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91C6423A72
-	for <rust-for-linux@vger.kernel.org>; Sat,  3 Oct 2026 12:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0E43F1077;
+	Sat,  3 Oct 2026 12:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.242.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791029953; cv=none; b=bAx9vSKDcz9yiMrrPRA9cK2+3TQk7O+SdeOuYgbN1ahlJXbcYgS0kFhuar0Y/jy2q86w7hMe8ZXD8DkSZioHknPSQhLNmUe3siLDcd6NXVQ145rUsJFY4nVRxQGcySIxFgLCNwbitC7CWHvbMDQRUtBMwhfMIDRxFSc2owXQs6k=
+	t=1791030416; cv=none; b=mGGGyFfpknGB1Zgu0au9MN1SOGPTOjZyY4PKmGa8tEFlFm9dA7/S1Z4IlYIDBXBuiw3MVwT4U66mMdXGFNRrDCe82v58uDhLnIwQ8Hm3iLFMcxcbIKR7LHGEYOMsTJeJ01AbjgfveC/D8twOv+kIsae3foz97Q7GDy+2L0p2Kj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791029953; c=relaxed/simple;
-	bh=V0/7vUbzZ2WS3ekKYc+/9kx/XXTqOYvzaiHvHZHSBnk=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
-	 References:MIME-Version; b=RdvKgLz1SZnAdqqQWsmyFaMcuFR5tzr/F3fXXs/8bla4khNZw5TRmmNjwv8/PceI8A+/lvLuWkX88Kp/dDTF0Qr+BOJzRXbIg9nSrzHGL/1Zm3Dob8XJ17v3WGqLRTDxBwAEVplveWtHzbkUFGIwvsRf0bcdeFgjfezWz+muTrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ya1uPvVe; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ya1uPvVe"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cc4c02ddd62so161029a12.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 03 Oct 2026 05:19:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791029944; x=1791634744; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=V0/7vUbzZ2WS3ekKYc+/9kx/XXTqOYvzaiHvHZHSBnk=;
-        b=Ya1uPvVeeM6n17IR0e8tR+Fjn4A7Tt8xHAj2K4RCLwhM/hfRH2CLdq5KVXsqQ+7+x3
-         Bjh71FLm+eHABWYeuAqtB8u41rC6u3Gv0BBngTOtNGGVVoYenWZdoIx3EaA3DW/NqxEm
-         r1BZUyVLORTMFFEYNnrQzZPkAX5SzAzBvz9lKEZ3dm47fm7OGnnuU6Pf8eBH/fTDejMv
-         npC3Z2mnofQdhE53ZvxxScLXy/4abR1ig/Pap4sIskWXMbYdPYLxYYrtmb8UwcnIJNTw
-         789AGnYTn0CFfvhsFtKtHWJVNh1VUA9JUAmfn7mEfHa9u0CqKMUz5YKq5/iDP7QXZpvj
-         C1RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791029944; x=1791634744;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=V0/7vUbzZ2WS3ekKYc+/9kx/XXTqOYvzaiHvHZHSBnk=;
-        b=lVZHTD8BAMLKvR3PFMuMK52REJLvOCFlbVsRw3ltrLxTJYoesqjxJYyUtZvcHSxQBf
-         5FKA2UY1dd/2A7g9ZEtLspagAj9gwVtgEg01KRmJSh5H2iXTzfavjsQcjrCzRgTiIkxc
-         xQHveKgJul63dSTw9Z9dLqBey7cwv4RZI+4Iw+YSqR/xtbsucC7W6tnD98iLFot6FH/R
-         rX8mqdlLa8ASSN6ylmmTpCZyhsu1WNsbqGLC7VDmyuyCRXpA8bNwj5S7mVkhcav1lwtR
-         +iVZ0SqQ2cbvBNnYPb3WNFxW9ltgZ8ouOac1w4D4djZaMGyYQUtyU8W6xKMuaD8pHoFH
-         f2Fg==
-X-Forwarded-Encrypted: i=1; AKwUvBySHJNN00Z3VyNI583Pl8sMZLBjVpAhknbplu3kx4qI8bUm5IYxaGoac0gRU4yd0IwmIFYW72vCANRvyPxdVw==@vger.kernel.org
-X-Gm-Message-State: AFuF++n+1zB2ocsTow71yl+VUh+wOMmv6fUn5R0LWbIB5eGG3fxJzuh9
-	Ebx52N2FPSJg9fxMrFSDgoa+HxQ/NmOgNJOlQ0V1gMjM5DqZb7QafcEa
-X-Gm-Gg: AYBFou32JRPrf+RTm7ftmS2loIqoMlQCzS8V70M1R/ljPRRD+wJ6m59yU80E4y2R2aj
-	p0+jTmL+afSSYi/9dU3+Wv8iqdhyUZtUQNfC7zpTbGQnEcAOZpGyM2rF+EiIIzNsJjDUhpxhYHm
-	ynZs4NqolNhXZKcUR1pQLLyx6OYUo6KWg/BYhQHB9IaGUtOCAa+4FB2OqKIWk8axNGDMl07SJgo
-	ogSfIXejaSmVb4XI1briapYecqiX4FqcqFIaXCoaeEvzUPZa1XjKMmwascp1EZCDKP5EFGXOdLB
-	AQHq0qzQOMehcd3IkqVVXP9rKkrSYcaMfcL7G5sQkXrboW/8bnK+X/Lqt000haBbw5WMkG+iVpD
-	niCfKljubZVpawTboTD6voja+81vBXDNX0rR7dW/yJjSvSTYm5AAhcyb+4IgtVI5hqbYZmbF6bX
-	jh9qdJOqC3WTHylNR4ATN2UOiTWcRk1t2zFnSEey99eripnVEBnFbcc3PjRv5OUnDYUPrgaQCAw
-	BIHHeOtrBLAI8ehm6wC71TbxdBw2BM1VPJQVdhANSt4bkmwo6SJVDkD6UfKrL/O/7cuXl8ndf6u
-	5IU=
-X-Received: by 2002:a05:6a21:d89:b0:3dd:a197:7360 with SMTP id adf61e73a8af0-3e0d6d8ff80mr2052536637.57.1791029943830;
-        Sat, 03 Oct 2026 05:19:03 -0700 (PDT)
-Received: from localhost ([153.61.198.247])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cca561e9d1dsm1740373a12.6.2026.10.03.05.19.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 03 Oct 2026 05:19:03 -0700 (PDT)
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 03 Oct 2026 12:19:02 +0000
-Message-Id: <DLV74KRI1SBL.MYZVQAB3N6QG@gmail.com>
-Cc: <abuehaze@amazon.com>, <acme@kernel.org>, <andrii@kernel.org>,
- <arighi@nvidia.com>, <arnd@arndb.de>, <bentiss@kernel.org>,
- <bpf@vger.kernel.org>, <changwoo@igalia.com>, <christian@heusel.eu>,
- <daniel@iogearbox.net>, <doebel@amazon.de>, <eddyz87@gmail.com>,
- <ihor.solodrai@linux.dev>, <irogers@google.com>,
- <jay.wang.upstream@gmail.com>, <jikos@kernel.org>, <jolsa@kernel.org>,
- <linux-doc@vger.kernel.org>, <linux-input@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-modules@vger.kernel.org>,
- <linux-perf-users@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
- <linux@weissschuh.net>, <martin.lau@linux.dev>,
- <mathieu.desnoyers@efficios.com>, <mcgrof@kernel.org>, <memxor@gmail.com>,
- <mhiramat@kernel.org>, <mpohlack@amazon.de>, <namhyung@kernel.org>,
- <nathan@kernel.org>, <nsc@kernel.org>, <ojeda@kernel.org>,
- <petr.pavlu@suse.com>, <qmo@kernel.org>, <rostedt@goodmis.org>,
- <rust-for-linux@vger.kernel.org>, <samitolvanen@google.com>,
- <sched-ext@lists.linux.dev>, <shuah@kernel.org>, <tj@kernel.org>,
- <void@manifault.com>, <wanjay@amazon.com>, <yonghong.song@linux.dev>
-Subject: Re: [PATCH bpf-next v4 00/12] bpf: make the vmlinux BTF an
- on-demand loadable module (CONFIG_DEBUG_INFO_BTF=m) to save ~5.4 MB memory
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Alan Maguire" <alan.maguire@oracle.com>
-In-Reply-To: <7fe71959-1c58-4b6f-9019-6f886683530e@oracle.com>
-References: <DLUZVHOLSN1B.115EUX4KJBEA3@gmail.com> <7fe71959-1c58-4b6f-9019-6f886683530e@oracle.com>
-X-Mailer: mkdraft (claude review draft; edit before sending)
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1791030416; c=relaxed/simple;
+	bh=M65+BE89RRmf9gTuhSx9lzPxHh2SAUBuvp6CWfUjIVc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bTygX8fFllNrHLgN9fk1NNZbtYH7HHqQuqHPkfuK8JDdnAexq2RRN8bdYgHfAw08oghc94p/nv7z/XrSNL2P2WryhRSwI54eEvM46/A3k9E+80rsUQEUPIWOXV3YqMdCx2vYKdOQeK7Qsd37TOBUmk5AqYrmy52BdgQAIDcDgr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net; spf=pass smtp.mailfrom=davidgow.net; arc=none smtp.client-ip=203.29.242.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
+Received: by sphereful.davidgow.net (Postfix, from userid 119)
+	id 985772003C0; Sat,  3 Oct 2026 20:20:05 +0800 (AWST)
+X-Spam-Level: 
+Received: from [10.80.19.179] (unknown [103.137.210.79])
+	by sphereful.davidgow.net (Postfix) with ESMTPSA id C0A25200395;
+	Sat,  3 Oct 2026 20:19:55 +0800 (AWST)
+Message-ID: <baac1e91-4dd1-401c-833c-3702a90ab974@davidgow.net>
+Date: Sat, 3 Oct 2026 20:19:51 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] rust: bug: pass TAINT_WARN to warn_slowpath_fmt() on
+ UML
+To: FUJITA Tomonori <tomo@flapping.org>, ojeda@kernel.org
+Cc: a.hindborg@kernel.org, acourbot@nvidia.com, aliceryhl@google.com,
+ bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
+ daniel.almeida@collabora.com, gary@garyguo.net, lossin@kernel.org,
+ tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, richard@nod.at,
+ anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+ linux-um@lists.infradead.org, FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ stable@vger.kernel.org
+References: <20261001123103.2198104-1-tomo@flapping.org>
+Content-Language: en-US
+From: David Gow <david@davidgow.net>
+In-Reply-To: <20261001123103.2198104-1-tomo@flapping.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 03, 2026 at 12:45 PM Alan Maguire <alan.maguire@oracle.com> wrote:
-> The only overall cost is if when we wind up using vmlinux BTF with the compressed
-> .BTF section, since we have to do a full vmlinux BTF allocation (on top of the
-> spac taken up by the compressed .BTF section) right? So slight penalty if vmlinux
-> is used, but big gain if not.
+Le 01/10/2026 à 20:31, FUJITA Tomonori a écrit :
+> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> 
+> On UML, `warn_flags!` calls `warn_slowpath_fmt()` directly. Its third
+> argument is a taint number, but `warn_on!` passes its bug flags there.
+> 
+> As a result, `add_taint()` gets 2304 instead of 9 (`TAINT_WARN`). The
+> warning is not recorded: `/proc/sys/kernel/tainted` stays 0 after
+> `warn_on!` fires, where it should be 512. It also causes an
+> out-of-bounds write in `add_taint()`.
+> 
+> Pass `TAINT_WARN` directly, as C does on UML.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: dff64b072708 ("rust: Add warn_on macro")
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
 
-I think it can be copied compressed into vmalloc area and
-freed after decompress, so memory usage should be exactly the same.
+Nice catch!
+
+Reviewed-by: David Gow <david@davidgow.net>
+
+Cheers,
+-- David
+
+>   rust/kernel/bug.rs | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
+> index 3566f0234ca4..af8eba4563de 100644
+> --- a/rust/kernel/bug.rs
+> +++ b/rust/kernel/bug.rs
+> @@ -85,6 +85,7 @@ macro_rules! warn_flags {
+>       ($file:expr, $flags:expr) => {
+>           if false {
+>               _ = $file;
+> +            _ = $flags;
+>           }
+>   
+>           // SAFETY: It is always safe to call `warn_slowpath_fmt()`
+> @@ -93,7 +94,7 @@ macro_rules! warn_flags {
+>               $crate::bindings::warn_slowpath_fmt(
+>                   $crate::str::CStrExt::as_char_ptr($crate::c_str!(::core::file!())),
+>                   line!() as $crate::ffi::c_int,
+> -                $flags as $crate::ffi::c_uint,
+> +                $crate::bindings::TAINT_WARN,
+>                   ::core::ptr::null(),
+>               );
+>           }
+> 
+> base-commit: 551c722f40809618230001baccf219193e22fc5a
+
