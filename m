@@ -1,126 +1,292 @@
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C111446AEF2;
-	Sat,  3 Oct 2026 16:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371DA49552B
+	for <rust-for-linux@vger.kernel.org>; Sat,  3 Oct 2026 16:45:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791043438; cv=none; b=gBP9iYaBZKYyI14sHlMaFWVHtghvt3578Kjz3gieCpWWLf6rhTX3EZgnT9yll67QS/I8oB6xzfyOsSuBUXBRlCc1HEckePwmMsS0HBzKi9pt0YiTn4cGOvaWl8P8Yp45n/t7mfyU4cEFPokQFZnmfwezYCbDx6aJTyjnCNRfd88=
+	t=1791045936; cv=none; b=iYDQ8ruQV/a56Iy2l1ETD6w+OF1bCld0vU97ScKafdk0LbB1dPs8Mb1UIZqJCIbxT5c4Xb0WtToy+S2R6UDLDGW4xRIVXETYzT3wba4X443lllDgxFeDbPc+v4hIYGLp3sNou3254ex7jXvr47Unwt3+ymN17JqF4M3nn2pj4YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791043438; c=relaxed/simple;
-	bh=raScNH55YyHKO9o6R9zNWW+p8fAddrS2wh/1QF52HVQ=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=aPpxUEbsyeIOz8O6u3bTMl8Tkju1J1A7nLRQvTI/RUlZ3v4v2xiBWMjIoZHP8kpBlBG6NE5DWDA6V70GSrL8i+/bG3aINcXx92tL4GLiqKOQubK8tvtrFsyRZwFWSYZ0LLgpptuV0li/bRlIKEZkXIUgQEcQfNxsgWgjAFTFKPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.helo=mail.mainlining.org; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.helo=mail.mainlining.org
-Date: Sat, 03 Oct 2026 17:03:08 +0100
-From: Bradley Morgan <brads@mainlining.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Miguel Ojeda <ojeda@kernel.org>
-CC: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?ISO-8859-1?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?ISO-8859-1?Q?Onur_=D6zkan?= <work@onurozkan.dev>,
- Arnd Bergmann <arnd@arndb.de>, Linus Walleij <linusw@kernel.org>,
- Christian Schrefl <chrisi.schrefl@gmail.com>,
- "Paul E . McKenney" <paulmck@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>,
- Justin Stitt <justinstitt@google.com>, linux-arm-kernel@lists.infradead.org,
- rust-for-linux@vger.kernel.org, llvm@lists.linux.dev,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] ARM: rust: Enable Rust support for ARMv5TE
-In-Reply-To: <20261003093827.77857-1-kmehltretter@gmail.com>
-References: <20261003093827.77857-1-kmehltretter@gmail.com>
-Message-ID: <E4C8623E-CCCA-408F-A03E-1B2C7DFD0D75@mainlining.org>
+	s=arc-20240116; t=1791045936; c=relaxed/simple;
+	bh=Z5+z7hNiBBNdVlbXFF76RV5SnZkdJjiqvRRCBvSiz5M=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZL+RygwADHd5S5F1xxtI+oFxZoYG8MheV7JyC7pjXBOl4eVhyUpTmMHMaDWE6n/+V2HxGGLaoyKGF1JNpPz4cEX4gPFUJv970m+bcI9yH1gSnL0eaduPWit8Pz4tlavQyC97CgXcFFG4x+ttHJDdX0Ofhm9hH9U+Qs2WeHeowpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fFphFe5S; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fFphFe5S"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccb1a98dso223376a91.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 03 Oct 2026 09:45:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791045933; x=1791650733; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:subject:cc:to:from:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XwUxbbpJnDbzL/dxfGXuu2rEGUNZ/u1k+T1w6QXAexY=;
+        b=fFphFe5SokgvKiDThGaJO86hQ7NU1zNQpWyo7Viy3haREWJ9yV9Xnx55mBbQXgksuw
+         fnYpKGgGOoNpudSycsm5bwI+seS6ZwGvuUCJPWx3GxlQWvt47eK8PSFg++Dm1+ue6UTV
+         z88C0e3wXq+OtIHy8NBCVriVTJ/L/j4QPpXQEIW3Uh4j8Fmb+Pz6/Ds5eKenhO7RCVcH
+         SwlGAcvVjxmh8veyzgVMQSpzuAM6aVkRlwUE1JjT+mVrnztHCuBQq/0WNQZizZcGzt+6
+         wcf4g4vLqyOw/1/anbiNzRJCPc8dRHxs2MHIpxAYwVSiEXwqa84mLzUEjPD/vuRJhMpi
+         mYww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791045933; x=1791650733;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:subject:cc:to:from:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XwUxbbpJnDbzL/dxfGXuu2rEGUNZ/u1k+T1w6QXAexY=;
+        b=xuAGw0bMWT/UPtDX/K0VOgr8P6+j9wQL2wD/IjCoPKyn2WZIijk7r7DgVEVNJFUCSc
+         PeR/Ee45NwNLzrtBSlWSf+wJhZlJ+jbeydqHoI0I/I5rrI2IJZ/cW1VvbI92EQmKzU10
+         hS039mMEGTj6+8nKIfCamwfqT4HiJ48GKtjZpaYDKUBfOdsVFnjoAQ/JQD72UwHTmZ+J
+         00wVMlFT1I9+7jk4WRv2xrO75eIIcfok1AlDoqvaMgHdnij8WYd4gKeQCy0e6J9OToa1
+         ywifLSZHeY9iK8ewRh3lHtJiCSxLHFznU5Uclnyfzu9qn0c11osdR4GWOWW9mNIPioJw
+         cyww==
+X-Forwarded-Encrypted: i=1; AKwUvBxexlF60QAnZJZXWX8D1uxwFYyBuVABCMP0/SzAEIaPW+clBWk6ibLoiGCor3t9XFJUbYKUG6sS4ey/4R3vUg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKvfSFGqf7kmnh/cEBUWL2byjREVcPni4w5EbfwwtmXjkmqAeru
+	5KFli1Qv6A1Wo9FXQhkuU+25BLK/gJPR3CR7MMV/D7n9OAiUHMMFBVF6
+X-Gm-Gg: AYBFou1lDJzw0ESv1gQ1yxB8U4exoRscTE8MZRWyBcYZ5sjmvb79WkjHojJ6QSFTmLZ
+	4QzKIviJzB40fVIaZ4eMDzC48IDEcvMVpBEkIpQncr/ybMu1OP7oD77/thD1PA8953eqEZrBdhr
+	E+p9pb8SUFSzPeoD+p0kkvKXgOl+G2nLgRe1zVLf/BW17yfqLDTcDhsSvhR1nyQYiKFU/nmjaPG
+	WpXlHhNfFYarZ9sokVT/SkP6TmvVfRHtXRXImz3M1niALAWa1SpOA1Ihy2cNA7YpKnweJ7Ryhkk
+	KyIrOmFMYKOAHJUs6meDlh9hxSfAboKBd6UVUomhG0p9kqD/GiVImoIdQNbYyQ2Ic7jgZUcSN8L
+	tF8a2dhqa5pIdSKfHdq3aDZIqN8yyMt5q55kAFTgTRdcKE5DrsA1iybNp5XjpghP8mEduAca0Cn
+	ie5FA0gBVgNsE09ZBHrvE9vXGXuGQlFaqSeegXrv7IdAXA1Rwlk0t+hXrafpKGWexa9Bxret8A1
+	hEIR3ohXepWjC5b4w==
+X-Received: by 2002:a17:90a:a82:b0:3a6:e159:a233 with SMTP id 98e67ed59e1d1-3a6e159b3e8mr3430086a91.43.1791045933065;
+        Sat, 03 Oct 2026 09:45:33 -0700 (PDT)
+Received: from localhost (madb688426.ap.nuro.jp. [219.104.132.38])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78d6878d2sm3528085a91.8.2026.10.03.09.45.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Oct 2026 09:45:32 -0700 (PDT)
+Message-ID: <6ac1312c.ee551989.ce4ed.e56f@mx.google.com>
+X-Google-Original-Message-ID: <20261003164530.ay47jwe3xjuyfmsn@DESKTOP-1P5QNTF.>
+Date: Sun, 4 Oct 2026 01:45:30 +0900
+From: Kohei Ito <koheiito.dev@gmail.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Subject: Re: [PATCH 2/3] rust: gpio: Add basic consumer abstractions
+References: <20260906-add-rust-gpio-consumer-v1-0-24d192f93760@gmail.com>
+ <20260906-add-rust-gpio-consumer-v1-2-24d192f93760@gmail.com>
+ <DLE2CBE8FJ9B.23HDU37C95ROK@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <DLE2CBE8FJ9B.23HDU37C95ROK@nvidia.com>
 
-On 3 October 2026 10:38:25 BST, Karl Mehltretter <kmehltretter@gmail.com>
-wrote:
->Rust is currently limited to ARMv7 on 32-bit ARM. This series extends
->it to ARMv5TE.
->
->Linus Walleij asked for older ARM cores during review of the ARMv7
->support [1]. Christian Schrefl tried ARMv5 with the armv5te-none-eabi
->target at the time [2]. He hit missing core atomics, missing
->__aeabi_mem* symbols and a floating-point helper reached from
->pr_info!() formatting. None of these show up anymore. The kernel crate
->now implements atomics through the C helpers, and the
->armv5te-unknown-linux-gnueabi target used here keeps the Linux EABI.
->
->The only remaining problem was a link error. Pre-ARMv6 __arch_xchg()
->has no 2-byte case, which the Rust Atomic<i16> helpers need. Patch 1
->adds it the way the other pre-ARMv6 atomics work, with interrupts
->disabled. Patch 2 enables Rust for ARMv5TE.
->
->Bradley Morgan's two-byte cmpxchg() emulation series [3] does not
->overlap with this. Its ARMv6 part was dropped in v2 and it never
->covered xchg() or pre-ARMv6.
+Hi Alexandre,
 
-On purpose! It'll be dead code after one of ards changes
+thank you for your review.
 
->
->Tested on v7.3-rc1 with clang 22.1.8, rustc 1.99.0 and bindgen 0.73.2.
->
->- QEMU versatilepb (ARM926EJ-S). The Rust samples, all Rust KUnit
->  suites and 355 doctests pass.
->- Microchip SAM9X75 Curiosity board (ARM926EJ-S), at91_dt_defconfig
->  without the ARMv4T AT91RM9200. The samples, all Rust KUnit suites and
->  356 doctests pass. The Rust sample modules (rust_minimal, rust_print,
->  rust_misc_device, rust_driver_faux) load and unload cleanly.
->- Build test with every Rust driver, abstraction and sample that can be
->  selected on ARMv5TE (rnull, binder, the two PHY drivers, cpufreq-dt,
->  the DRM panic QR code). PWM_TH1520 is the exception. It uses a native
->  u64 division, which does not link on 32-bit ARM.
->
->As a further test I ported the Atmel PWM driver to Rust and ran it next
->to the C driver on the SAM9X75 board. The port is not part of this
->series. The comparison found a prescaler bug in the C driver for
->periods of 2^32 clock cycles or more [4].
->
->I plan to get a Raspberry Pi 1 Model B+ and then add ARMv6K support as
->a separate patch.
->
->The ARMv7 enablement went in through Russell's patch system as
->"ARM: 9441/1". Unless someone prefers another route I would submit
->this series there after review.
->
->[1]
->https://lore.kernel.org/rust-for-linux/CACRpkdYF0sVB2-qgy=GzETSR3+2sagVQPGdunDQDJrn8KqJorA@mail.gmail.com/
->[2]
->https://lore.kernel.org/rust-for-linux/b13d37bd-ec68-4713-94e5-e9ed4d6a6354@gmail.com/
->[3]
->https://lore.kernel.org/lkml/20260922173354.14404-1-brads@mainlining.org/
->[4]
->https://lore.kernel.org/linux-pwm/20261003083036.21584-1-kmehltretter@gmail.com/
->
->Karl Mehltretter (2):
->  ARM: cmpxchg: support 2-byte xchg() on pre-ARMv6 CPUs
->  ARM: rust: Enable Rust support for ARMv5TE
->
-> Documentation/rust/arch-support.rst |  2 +-
-> arch/arm/Kconfig                    |  2 +-
-> arch/arm/Makefile                   |  4 ++++
-> arch/arm/include/asm/cmpxchg.h      | 14 +++++++++++---
-> 4 files changed, 17 insertions(+), 5 deletions(-)
->
->
->base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
->
+> > Due to a bindgen issue that may generate the wrong type for enum types,
+> > `gpio/consumer.h` is included at the top of `bindings_helper.h` as a
+> > temporary workaround. Once the issue is resolved, it can be moved back
+> > to its proper alphabetical position.
+> 
+> Can you describe what the issue is, and share any relevant link?
 
---- Thanks!
-https://lore.kernel.org/all/EE579805-42F2-4C58-B752-F28779EEB717@grrlz.net/
+`bindgen` can generate the wrong type for the `enum`s when their
+forward declarations appear before the actual definitions. The details
+are described in [1].
+
+I haven't confirmed that `gpiod_flags` is actually affected. I placed
+the include at the top as a precaution, but if it isn't needed I'll drop
+the workaround.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8cbc95f983bcec7e042266766ffe0d68980e4290
+
+> > +/// The GPIO descriptor flags to configure its direction and output value.
+> > +///
+> > +/// Rust abstraction for the C [`enum gpiod_flags`].
+> > +///
+> > +/// They can be combined with the operators `|`, and `&`.
+> 
+> The C comment for `gpiod_flags` says "these values cannot be OR'd" so I
+> guess this comment isn't true. Besides, there is no `BitOr` impl for
+> `GpiodFlags` in the patch so it actually cannot be done.
+
+Good catch! I'll correct it.
+
+> > +    // Always inline to optimize out error path of `build_assert`.
+> > +    #[inline(always)]
+> > +    const fn new(value: bindings::gpiod_flags) -> Self {
+> > +        build_assert!(value as u64 <= bindings::gpiod_flags::MAX as u64);
+> 
+> Better to not use `build_assert` here as it inserts build-time
+> landmines.
+> 
+> Since you are only using this to build the constants above, you can just
+> do `Self(bindings::gpiod_flags_*)` on them. Adding an extra assert for
+> an bounded enum type doesn't add any extra protection.
+
+Sure. I'll remove it.
+
+
+> > +/// A reference-counted gpio descriptor.
+> 
+> Not really - the GPIO device is reference-counted, but descriptors are
+> not. Calling `gpiod_get` a second time returns `EBUSY`.
+
+Sure. I'll correct it.
+
+> > +/// ```
+> > +/// use crate::{
+> 
+> These doctests won't compile as they are supposed to use `kernel::`, not
+> `crate::`.
+> 
+> Please make sure to include the doctests when building
+> (`CONFIG_RUST_KERNEL_DOCTESTS` build option), and to also build the
+> `rustdoc` target as per the checklist [1].
+> 
+> [1] https://rust-for-linux.com/contributing#submit-checklist-addendum
+
+Sure. I'll fix it and make sure to run the doctests and build rustdoc.
+
+> > +// SAFETY: It is safe to call `gpiod_put` on another thread than where `gpiod_get` was called.
+> > +unsafe impl Send for GpioDesc {}
+> 
+> We should probably also implement `Sync` so GPIOs can be used in
+> interrupt context.
+
+I agree we want `Sync` so that GPIOs can be used from interrupt context.
+However, the direction setters are not safe to call concurrently on the
+same descriptor: gpiolib changes the hardware direction and then updates
+`GPIOD_FLAG_IS_OUT`, so the two can become inconsistent.
+
+I think we can add `Sync` if the direction setters take `&mut self` (or
+use the typestate approach). I'll look into this together with the
+typestate design.
+
+> > +
+> > +impl GpioDesc {
+> > +    /// Gets [`GpioDesc`] corresponding to a [`Device`] and a connection id.
+> > +    ///
+> > +    /// Equivalent to the kernel's [`gpiod_get`] API.
+> > +    ///
+> > +    /// [`gpiod_get`]: https://docs.kernel.org/driver-api/gpio/index.html#c.gpiod_get
+> > +    pub fn get(dev: &Device, name: Option<&CStr>, flags: GpiodFlags) -> Result<Self> {
+> 
+> `dev` here is only used as a lookup key, and the GPIO descriptor can
+> outlive the device being unbound (the GPIO can actually even be obtained
+> while the device is unbound!). This is because `dev` is not the provider
+> of the GPIO, but as the API name implies its consumer - i.e. the device
+> on which the GPIO is expected to have an effect.
+> 
+> This is what the GPIO API expects, but it looks a bit counterintuitive
+> when compared to most other Rust subsystems, where an obtained resource
+> is typically tied to the device given as parameter being bound. I think
+> it's worth mentioning in the comment.
+
+Sure. I'll add a note explaining how `dev` is used.
+
+> > +    /// Get the direction.
+> > +    ///
+> > +    /// Equivalent to the kernel's [`gpiod_get_direction`] API.
+> > +    ///
+> > +    /// [`gpiod_get_direction`]:
+> > +    /// https://docs.kernel.org/driver-api/gpio/index.html#c.gpiod_get_direction
+> > +    #[inline]
+> > +    pub fn get_direction(&self) -> Result<LineDirection> {
+> > +        // SAFETY: By the type invariants, self.as_raw() is a valid argument for
+> > +        // [`gpiod_get_direction`].
+> > +        let ret = unsafe { bindings::gpiod_get_direction(self.as_raw()) };
+> > +        if ret < 0 {
+> > +            Err(Error::from_errno(ret))
+> > +        } else {
+> > +            LineDirection::try_from(ret)
+> > +        }
+> > +    }
+> 
+> IIUC the direction of a GPIO at a given point in the code is always
+> statically known, and only a subset of the API really make sense for a
+> given direction (e.g. `gpiod_set_raw_value_commit` returns `EPERM` if
+> the direction is not output). So this is a prime candidate for using the
+> typestate pattern to store the direction in the type.
+> 
+> I.e. you would have `GpioDesc<Input>`, `GpioDesc<Output>`, and changing
+> the direction would consume the descriptor and return the new one with
+> the requested direction.
+> 
+> The regulator Rust API makes use of this pattern, you can check it out
+> for an example if needed.
+
+I haven't fully grasped the idea yet. I'll check the regulator Rust API
+implementation and explore a typestate implementation for GPIO consumer
+APIs.
+
+> > +    /// Test whether the GPIO is active-low or not.
+> > +    ///
+> > +    /// Equivalent to the kernel's [`gpiod_is_active_low`] API.
+> > +    ///
+> > +    /// [`gpiod_is_active_low`]:
+> > +    /// https://docs.kernel.org/driver-api/gpio/index.html#c.gpiod_is_active_low
+> > +    #[inline]
+> > +    pub fn is_active_low(&self) -> Result<bool> {
+> > +        // SAFETY: By the type invariants, self.as_raw() is a valid argument for
+> > +        // [`gpiod_is_active_low`].
+> > +        match unsafe { bindings::gpiod_is_active_low(self.as_raw()) } {
+> > +            0 => Ok(false),
+> > +            1 => Ok(true),
+> > +            err => Err(Error::from_errno(err)),
+> > +        }
+> 
+> In C this function cannot fail for a valid descriptor, so the Rust one
+> shouldn't either. Anything != 0 can be considered `true`.
+
+Sure. I'll correct it for `GpioDesc`. Should we return Result<bool> for
+OptionalGpioDesc? As I understand, NULL GPIO descriptors can't return
+the right state.
+
+> > +    /// Report whether gpio value access may sleep or not.
+> > +    ///
+> > +    /// Equivalent to the kernel's [`gpiod_cansleep`] API.
+> > +    ///
+> > +    /// [`gpiod_cansleep`]:
+> > +    /// https://docs.kernel.org/driver-api/gpio/index.html#c.gpiod_cansleep
+> > +    #[inline]
+> > +    pub fn cansleep(&self) -> Result<bool> {
+> > +        // SAFETY: By the type invariants, self.as_raw() is a valid argument for
+> > +        // [`gpiod_cansleep`].
+> > +        match unsafe { bindings::gpiod_cansleep(self.as_raw()) } {
+> > +            0 => Ok(false),
+> > +            1 => Ok(true),
+> > +            err => Err(Error::from_errno(err)),
+> > +        }
+> > +    }
+> 
+> Same here.
+
+Sure. I'll fix it in the same way.
+
+> Also, as a general guideline, it is good to have a concrete user for new
+> Rust abstractions. Do you have a project that will make use of this?
+
+No, I don't have a specific project that will use this. My motivation
+is that Rust drivers currently have no way to use GPIO lines, so I
+expect that providing a basic set of consumer APIs would make it easier
+for such drivers to appear.
+
+That said, I understand the concern about adding APIs without actual
+users. If you think it should wait until there is a concrete user,
+please let me know.
+
+Best regards,
+Kohei Ito
