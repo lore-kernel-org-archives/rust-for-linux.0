@@ -1,149 +1,118 @@
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A02156F45
-	for <rust-for-linux@vger.kernel.org>; Sun,  4 Oct 2026 12:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47E33F4118
+	for <rust-for-linux@vger.kernel.org>; Sun,  4 Oct 2026 18:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791117758; cv=none; b=pMMqkrIoQnoyNsq/DN2wB4ytln9U6/G9E4FlMBelrEMwukKTWbqtgoWJO/5MuknIMPqSZ1eW3cN9PjfjzbWt2ryR/kZbC+oMSiWPApwvtZNFC72N+BfoXIYJfQPKZuqpl6rnDKX7Wi9bg3PWpf4WhgUzmytM9GrjugWxxiPD7jg=
+	t=1791140210; cv=none; b=P9Yh6SZcrByTr349zA0yNpTVT5dgfzTgYJtAYzMtGfF/jhhsV1v/jkbSLgtYVIvGu94uFSdNFXZMvbUGOt2l0SULmk49+1MNa+QrC6Qex934sF+/nNkYOPk6+JRfLTWgvTY3h5vcPGLiAyBL3qNM+Hr0ICFwSRV8Dtzjrex6uys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791117758; c=relaxed/simple;
-	bh=Dd+2BEqIa465ilraaoAAjarjxSV0znclyVmX3mcRb2I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M9QkWdtlh2FbBeGkB93QLSAAhV+0eh4s3g/ro4OD44xWHmNfnS8RM8sFvBJ2aX1LQGBJwoUECVCgmq3E/+6QBf5zGQiwVH5Mj72U8U32tuKkaehG4lpnOjYGUszVnEitJ+83KvgkyBbtkcfEaH6SuaoSBEc3ySyxf8ZX394cnUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=K+XshUBJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=t08U2aVM; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	s=arc-20240116; t=1791140210; c=relaxed/simple;
+	bh=VTj3CjFmC5z/dk0JCaA0IK0lT5Ac/9t7urJwAwDbeYc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PRJPBQzV+9SdSclSgHXM1lkRd4c2URnRXrgRuDDQHIJm5IE8+hAEHQV0awsVxszUOfNhrHavxFOb8ggAojPo+ivfSdsIIVrEIMBf3l6m83l8l1BGsaW/cSXX+qIOticJhZmJkjUmENwahplqqG2WFjmuAPkzqJ4exm3MgCONPBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rs53PO8a; arc=none smtp.client-ip=74.125.225.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="K+XshUBJ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="t08U2aVM"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id D98527A0103
-	for <rust-for-linux@vger.kernel.org>; Sun,  4 Oct 2026 08:42:35 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Sun, 04 Oct 2026 08:42:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm3; t=1791117753; x=1791204153; bh=YWbP3c7GU8uWb72ZhjlB3
-	RaLMTR0nLW2fSS4hehTN28=; b=K+XshUBJgZYsWokDQVG3f0zlZ3+CXHQGoyWS7
-	AIErVrK1jpChONhrO/z1wBYBUq7r95jjdQsHUXWLjH2ExtsS1pSAUDtkv7Rd+DmP
-	IMuQp4jYLg0qGrPTZqZPTwYFbxS+0y4lihHbmxF0MrRuaFEmV2hj1bVWfsTguK6q
-	xB53hpL+rAVAdGv3ZbTA+20nZvY67dDhpnVDvu7htaoMZpuDtWuAeWtOREOSeKk3
-	+INFJGlASybh8sTREGq+66SAjEEfA7LI6ye5tzcGFasdVFG3XDEVS3720go9jJNN
-	jnqAAUB0KMCVetYP6W1Kv2xKoewEF3N3gI+qQlY5/cZdFN/3Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1791117753; x=1791204153; bh=YWbP3c7GU8uWb72ZhjlB3RaLMTR0nLW2fSS
-	4hehTN28=; b=t08U2aVMMSy8M2qTYD4L1L5U/sgbbY6LBSqBlB145/T7io9xRlB
-	hV/FEvmRKyOSrquId/TbRDWVM9vOsjAW9k+F6/sZUXWuwe+9vyzcM9uMHfwDLec8
-	z19cw0ioN5lQmVmv0CJYB+FJFmfSVXpHt9G9wBFh86aKVM7z7HL4/pbrvpvkFZ8d
-	g+9Q+uVPtB67PFhnsVAWGP7Z83oH6Kf3V4x2FAG0zE4BJZaZMpYopSGyjyaAkfeD
-	cPIpFPm7V3Tm163bed3UpXKCTyspvyCt6MA2U/CmKDbjVjLyhI3j0Ybo4KV7YRXO
-	D8HxE1Jh0hvLQM94iFACJ4QuCbYeVshHIhA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1791117753; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm3:rsa-sha256:eGw/hm3V/IJP6bjToXEKK41cpxQj03RpadAM4Co3ghbtybI
-	yjEnZwbw4Z9nkwRX+TM+M1JXSabxrF0p5hRgICAuNBE8p7eDCHm3X3PKb68FeOW0
-	3dn6aXz4Z+k/TuahpO3dTy5epJFiRzKDuEYRlO5LJipHKoWXzmOvNVuJXl1xatVD
-	i/wMrXO/6ZinplBHKFU802TVx0Ms3wa+m/Esw7TQ6gSZoiNT5bg3BsZuSySbZbqR
-	PQ+c7E1O5ZVDF0d8D4ltdZyRTo8dCzQIjp1cF0FevqSk8pmf7bu2SOCMpw52isHu
-	53b04GcRDSV2x9atmBssvcPkUrR0H7usLu+rO1A==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
-	action=mi-m=1; hc=9;
-	hn=cc,content-transfer-encoding,date,feedback-id,from,
-	message-id,mime-version,subject,to;
-Message-Instance: m=1; h=sha256:OVHRuLSuPF2GPzS4g2FZdby8ZR5B5NKPAZL60353VV4=:Dd+2BEqIa465ilraaoAAjarjxSV0znclyVmX3mcRb2I=;
-X-ME-Sender: <xms:uUnCalHKQ5MR5UVH0xus3tK6E6LEFanzkQ9mDE5oJez7A7bmk9nTpQ>
-    <xme:uUnCamtqLp3AyVZUEodrrP2k9NH5T8gSq8Fm0IlvBZT8QlNxpShakpBBG1RpZ5vHK
-    ms_3XiR28XDNcG9cKZbb3FsAJYtgxXY49F_O0f80fO-W4Lv3Nfs0g>
-X-ME-Received: <xmr:uUnCarkCv8c2j3aSOUJt4zYEn5EoGUXSTX-K_DeyqgQBPCECyNlx2JTjcs5TyNPheiqjVbQys-_HFnh3kDc>
-X-ME-Proxy-Cause: dmFkZTEfOoBmgHTunHDgPVQxTfoPH2DIwdPBQX6Ky1RYwlZJtP9lRXaiub192fV4i9ENfM
-    ifWriZTIqNq7eBZsS39zZPgTebDjK1sdN3m9IVC8wTixB+A+4P/eJ5HIyMelNXof8LG8jS
-    eoTA5gCVwtZIKCdJUEjSl2M97LVATitfjiy7xJfXKelvRYMo1D4KW2lCBmwYNDg9cdsJlp
-    x99mjwevvm8+HlBAqeRJpVzpr7hYYIfEjH9INRmvwiOQ5oTI4agybQgfslRQIyuNixISaU
-    k21I+x05bCrtjgy2PSJV7zJNwQfmWPGkWYdu59xUXMc2W7c1CI1EmBXlSQ/rQuOXtAW1Gr
-    W3hMPBW11cAER9vrnTktUI2LLI91U68LhjeaDXZLg0QT75gGbZBwpRQCqirbIV0sAoa6iS
-    DTDlTece267I62cIS3jSwLvXbYIF5K1orEssgHwM7OcVgB3DtVKO5Hfl020ZBapnd//kZe
-    VIP+Az6pXAjkdxxqf+iMFedNpVDp9J/xSxRdM5LtwMh6boATTF0I3rjEygBLg7f+W/1vUM
-    actY7p1WUkFOa8sILYnccjv5hxctD5zGNlm6FjzDGxPGePW1HZovg23yt2yLJs95VejCR9
-    0aRgNbEkeKSgIxWDahseCh5cHKygGvdK9+YLHapkoOtL5IL53dO8/0ztHHjw
-X-ME-Proxy: <xmx:uUnCapNzhyDtouh3QmkVYvcXoUKnUeJbeY0JjDYETgZpsRPwZCPnSw>
-    <xmx:uUnCanznzD29RMDk1jhhiGbaW0CHsxl7rZynJJj2eH6VCWuJ1JldrA>
-    <xmx:uUnCausb73GaOUalHPle3ppjz0U_h10cCNRvk-Sy7FG9ByfoN-_NpA>
-    <xmx:uUnCaiYKs3DV0sj-LuPGeLjfNToPSpzZjBYcvhwJjzAd4t5rz1Bh5A>
-    <xmx:uUnCasdiyYYW1ZFISaTFEIAQZ85VIAi8liMeysL-wpYugw8RT4cDW8ov>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 4 Oct 2026 08:42:30 -0400 (EDT)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: ojeda@kernel.org
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	lossin@kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v1] MAINTAINERS: add entry for the Rust `bug` module
-Date: Sun,  4 Oct 2026 21:42:11 +0900
-Message-ID: <20261004124211.381401-1-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rs53PO8a"
+Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-488811c9ebaso473169f8f.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 04 Oct 2026 11:56:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791140207; x=1791745007; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yLp7Ndo/7k4Ng8+ohcODGZItHn+YB7X4XQ/xgVicdsE=;
+        b=Rs53PO8aGtje+RESDecn/lmAHXtNqojJu8nzqQalVgLSX4H00TW/wvMbJCecyvLB4v
+         q9t8bY2emZpOPGa1h7F+9ij25uVvPaO3yl5lE2kSPQ6XLJUCzBpoZ1llZgfln5jLmRTK
+         VNypW6hrgWjmRPL3CYiDoSCwuSLqFu3Y/pjQRN58QSEBC886UYEs6uxuWvj9idcGtiAo
+         NS6wC10/8ngy8GvKFJwYkrXp245ZG6t1C3d79nqfTsbnsgyGNpDAH5TNdgVYZHwpp/LF
+         ZWSQAl3biIQ0zVkTFFJDdvM3TZuSeaC3PDpO8J5dvLeIF5K3eSFauR4Cdrr2I/r70KUd
+         BdDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791140207; x=1791745007;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=yLp7Ndo/7k4Ng8+ohcODGZItHn+YB7X4XQ/xgVicdsE=;
+        b=XaiP/ArKyusTlYrqpSddRBEc2BG/vSdHEk1cri9o0TMgH9sjStTgs26048y58dVONQ
+         yvrf2DAclKli6XS6opbXSmRz4ftmbKRn/vlkW5x735rQsf6oaXwnB3it5WipuDG4J61Z
+         J7nXwq+kD3+2Gc3FNKpD/7z/McmwqqOCc2Ux5iL/+fT17BwIDSrBwKwpeZFt3E9RYMR3
+         YDshZj4srT+Yo/dybBcBLxwn90Y/B+h1NsG4h4dkFTurNvQ9yRMZ8uAtD13JAKtLy4pP
+         q9Dv+j1a1pCo3AberV+1zCljNc/JSzVedOS8ADIAvVE11bDaZT29ImVeNUZaUlYVqQmL
+         8+TA==
+X-Forwarded-Encrypted: i=1; AKwUvBy/1wq/5APmzf2gisAvn4RkOXmwkTuUde0nVS/pQVlTBpUTd/PVVWEikOz03FILFOWtRT9iEXbktGHdFb7c9A==@vger.kernel.org
+X-Gm-Message-State: AFuF++nRPIv/WvcNsPXuaUhxxREQgvRRurGROTrVI++4npjUhXqNUU0T
+	svrsjfRx7pxSyTJG1qAJmO/Xh/LaJ13AM/3sY2+gFSsyiEFvjLZ2GEc2
+X-Gm-Gg: AYBFou1FotTybaC3xl8q47Hp9vfXHDgsxxrdRd7vavrYd4AXQow2cpURhaBl4idumsi
+	Oe/rc01EUoCv3MiPl+WujWfjlo9czd/xHyDcGbl2O4ARqhSocf5NIMYlFaSLw6lU6nEGAOEQoFX
+	nvwXZk/DyAB3InAG4AZVf53flUn6VJdfXQ9fjHwwEqTVdBu6tihEjaXshSCPtEwS55PiVAZegKe
+	Tez16iqUjEbgPKZe/IYxLDFcK7aYF9AVGj+Rq/sVfkLuNlBUfuk2rd9i2NIYranpBU6oNmzlAYh
+	cDjKeQLvbH9cKzgdc/oFL3u2tixq3k7/5rJqcUgBDP2EJhf4upuDr24oDF/i39tJX7Lt/mLu68Z
+	H2jddUDl2hnXoUtGtDILY3sPSAWxETjM4D7UK275VGfCOZGOwa29CVxgLbmXEr88fp9pSDK3Rdq
+	2CtTObBq5YBIYSfX7d7qNvjeXAveSafEcu3eZBb4HWx1NX4pOy8g/kYQ8X96KbvRwegCh5+Ygn5
+	wKoV0zsyViKVLJZWnZRPcQG4aMQF0iiAEcRNgZP1bVb6yg6ptLvAfk7fRm+QjPRiIVgIBml0CAe
+	ETE+s9rCat45shDjRrzmIkJ071RZmJl0qa+0IyTGC3mpbtSmpFAwzawVuH+2sYHGW+xu3OEb3wW
+	kuNp+sn0=
+X-Received: by 2002:a05:600c:6212:b0:49c:fa20:cbfc with SMTP id 5b1f17b1804b1-4a02758405cmr139001325e9.19.1791140206606;
+        Sun, 04 Oct 2026 11:56:46 -0700 (PDT)
+Received: from MacBook-Pro-von-Karl (dynamic-2a02-3100-a190-7401-a90c-9d77-a1b8-e6a2.310.pool.telefonica.de. [2a02:3100:a190:7401:a90c:9d77:a1b8:e6a2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0280bcf0fsm318633385e9.6.2026.10.04.11.56.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Oct 2026 11:56:46 -0700 (PDT)
+Date: Sun, 4 Oct 2026 20:56:43 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Russell King <linux@armlinux.org.uk>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
+	Arnd Bergmann <arnd@arndb.de>, Linus Walleij <linusw@kernel.org>, 
+	Christian Schrefl <chrisi.schrefl@gmail.com>, Bradley Morgan <brads@mainlining.org>, 
+	"Paul E . McKenney" <paulmck@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, linux-arm-kernel@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] ARM: rust: Enable Rust support for ARMv5TE
+Message-ID: <asKgtWX7q-mgvnOc@gmail.com>
+References: <20261003093827.77857-1-kmehltretter@gmail.com>
+ <20261003093827.77857-3-kmehltretter@gmail.com>
+ <CANiq72kGay03jqFOfFcJOjr9Poy+yc2u0=Ep_9LQ+KMy=1JtRQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72kGay03jqFOfFcJOjr9Poy+yc2u0=Ep_9LQ+KMy=1JtRQ@mail.gmail.com>
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Sat, Oct 03, 2026 at 12:24:35PM +0100, Miguel Ojeda wrote:
+> On Sat, Oct 3, 2026 at 11:38 AM Karl Mehltretter <kmehltretter@gmail.com> wrote:
+> >
+> > Tested on v7.3-rc1 with clang 22.1.8, rustc 1.99.0 and bindgen 0.73.2
+> 
+> Great to see more arch support! Just to confirm, are there any
+> toolchain requirements to be aware of?
+> 
+> If yes, then we should add them to Kconfig, `scripts/min-tool-version.sh` etc.
+> 
+> If not, then please test with the minimum versions too! :)
+> 
 
-Add a MAINTAINERS entry for the Rust `bug` module, which currently
-provides the `warn_on!` macro.
+Thanks for suggesting that! No extra requirements as far as I can tell.
+I now also test with the minimum versions (LLVM 17.0.1 and gcc 8.1.0,
+with rustc 1.85.0 and bindgen 0.71.1).
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+So far I found one small issue with gcc 8.1.0. A fix for that will be in
+the v2 series.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 72294ddfa5b7..89e6575430fb 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -23989,6 +23989,15 @@ L:	rust-for-linux@vger.kernel.org
- S:	Maintained
- F:	rust/kernel/bitfield.rs
- 
-+RUST [BUG]
-+M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
-+L:	rust-for-linux@vger.kernel.org
-+S:	Maintained
-+F:	rust/helpers/bug.c
-+F:	rust/kernel/bug.rs
-+F:	rust/kernel/generated_arch_reachable_asm.rs.S
-+F:	rust/kernel/generated_arch_warn_asm.rs.S
-+
- RUST [INTEROP]
- M:	Joel Fernandes <joelagnelf@nvidia.com>
- M:	Alexandre Courbot <acourbot@nvidia.com>
-
-base-commit: 2dee3d3adcadcc57d62ba6608cd02f50b0c10264
--- 
-2.43.0
-
+Karl
