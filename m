@@ -1,118 +1,128 @@
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.155.198.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47E33F4118
-	for <rust-for-linux@vger.kernel.org>; Sun,  4 Oct 2026 18:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B944040BCDB;
+	Sun,  4 Oct 2026 22:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.155.198.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791140210; cv=none; b=P9Yh6SZcrByTr349zA0yNpTVT5dgfzTgYJtAYzMtGfF/jhhsV1v/jkbSLgtYVIvGu94uFSdNFXZMvbUGOt2l0SULmk49+1MNa+QrC6Qex934sF+/nNkYOPk6+JRfLTWgvTY3h5vcPGLiAyBL3qNM+Hr0ICFwSRV8Dtzjrex6uys=
+	t=1791152503; cv=none; b=hP5NcYUQLz0SEAJoHtZvA/+7a3j3G/qmQopPJYb39DFEgyPypN20ETVfDg1uIp/diGfrAe7hPCIR1NLLN+wcOb68sjQn/gDsB1HA/GmrVbKT4HGbZ9V0y9nbsH4tXVONd3KkCZ4Y8fMnUmewpU9l91961IX0f729rgW2ZwPkD5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791140210; c=relaxed/simple;
-	bh=VTj3CjFmC5z/dk0JCaA0IK0lT5Ac/9t7urJwAwDbeYc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PRJPBQzV+9SdSclSgHXM1lkRd4c2URnRXrgRuDDQHIJm5IE8+hAEHQV0awsVxszUOfNhrHavxFOb8ggAojPo+ivfSdsIIVrEIMBf3l6m83l8l1BGsaW/cSXX+qIOticJhZmJkjUmENwahplqqG2WFjmuAPkzqJ4exm3MgCONPBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rs53PO8a; arc=none smtp.client-ip=74.125.225.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791152503; c=relaxed/simple;
+	bh=8MfZas74TP4bH2JkIBPs6F1Wj3cq6DvSuL/z6D0z5ro=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XMkpqibyn48tYhDvpD2uwRxOE32m5JsEQEzT5g3o3BwcH5c+hiC2XvWc9sP8vUr1qhDP1vGwhWhG1PR4/uHxitA0S/UmlWzxXkNwIIH903s0X2ePc5gZGzaJ6G3wzp0vNaKzDUDBF3AsBSyQ60Zm9au3e1s0xQowgkT5gDOZS0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=Af33HbjK; arc=none smtp.client-ip=35.155.198.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rs53PO8a"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-488811c9ebaso473169f8f.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 04 Oct 2026 11:56:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="Af33HbjK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791140207; x=1791745007; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yLp7Ndo/7k4Ng8+ohcODGZItHn+YB7X4XQ/xgVicdsE=;
-        b=Rs53PO8aGtje+RESDecn/lmAHXtNqojJu8nzqQalVgLSX4H00TW/wvMbJCecyvLB4v
-         q9t8bY2emZpOPGa1h7F+9ij25uVvPaO3yl5lE2kSPQ6XLJUCzBpoZ1llZgfln5jLmRTK
-         VNypW6hrgWjmRPL3CYiDoSCwuSLqFu3Y/pjQRN58QSEBC886UYEs6uxuWvj9idcGtiAo
-         NS6wC10/8ngy8GvKFJwYkrXp245ZG6t1C3d79nqfTsbnsgyGNpDAH5TNdgVYZHwpp/LF
-         ZWSQAl3biIQ0zVkTFFJDdvM3TZuSeaC3PDpO8J5dvLeIF5K3eSFauR4Cdrr2I/r70KUd
-         BdDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791140207; x=1791745007;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=yLp7Ndo/7k4Ng8+ohcODGZItHn+YB7X4XQ/xgVicdsE=;
-        b=XaiP/ArKyusTlYrqpSddRBEc2BG/vSdHEk1cri9o0TMgH9sjStTgs26048y58dVONQ
-         yvrf2DAclKli6XS6opbXSmRz4ftmbKRn/vlkW5x735rQsf6oaXwnB3it5WipuDG4J61Z
-         J7nXwq+kD3+2Gc3FNKpD/7z/McmwqqOCc2Ux5iL/+fT17BwIDSrBwKwpeZFt3E9RYMR3
-         YDshZj4srT+Yo/dybBcBLxwn90Y/B+h1NsG4h4dkFTurNvQ9yRMZ8uAtD13JAKtLy4pP
-         q9Dv+j1a1pCo3AberV+1zCljNc/JSzVedOS8ADIAvVE11bDaZT29ImVeNUZaUlYVqQmL
-         8+TA==
-X-Forwarded-Encrypted: i=1; AKwUvBy/1wq/5APmzf2gisAvn4RkOXmwkTuUde0nVS/pQVlTBpUTd/PVVWEikOz03FILFOWtRT9iEXbktGHdFb7c9A==@vger.kernel.org
-X-Gm-Message-State: AFuF++nRPIv/WvcNsPXuaUhxxREQgvRRurGROTrVI++4npjUhXqNUU0T
-	svrsjfRx7pxSyTJG1qAJmO/Xh/LaJ13AM/3sY2+gFSsyiEFvjLZ2GEc2
-X-Gm-Gg: AYBFou1FotTybaC3xl8q47Hp9vfXHDgsxxrdRd7vavrYd4AXQow2cpURhaBl4idumsi
-	Oe/rc01EUoCv3MiPl+WujWfjlo9czd/xHyDcGbl2O4ARqhSocf5NIMYlFaSLw6lU6nEGAOEQoFX
-	nvwXZk/DyAB3InAG4AZVf53flUn6VJdfXQ9fjHwwEqTVdBu6tihEjaXshSCPtEwS55PiVAZegKe
-	Tez16iqUjEbgPKZe/IYxLDFcK7aYF9AVGj+Rq/sVfkLuNlBUfuk2rd9i2NIYranpBU6oNmzlAYh
-	cDjKeQLvbH9cKzgdc/oFL3u2tixq3k7/5rJqcUgBDP2EJhf4upuDr24oDF/i39tJX7Lt/mLu68Z
-	H2jddUDl2hnXoUtGtDILY3sPSAWxETjM4D7UK275VGfCOZGOwa29CVxgLbmXEr88fp9pSDK3Rdq
-	2CtTObBq5YBIYSfX7d7qNvjeXAveSafEcu3eZBb4HWx1NX4pOy8g/kYQ8X96KbvRwegCh5+Ygn5
-	wKoV0zsyViKVLJZWnZRPcQG4aMQF0iiAEcRNgZP1bVb6yg6ptLvAfk7fRm+QjPRiIVgIBml0CAe
-	ETE+s9rCat45shDjRrzmIkJ071RZmJl0qa+0IyTGC3mpbtSmpFAwzawVuH+2sYHGW+xu3OEb3wW
-	kuNp+sn0=
-X-Received: by 2002:a05:600c:6212:b0:49c:fa20:cbfc with SMTP id 5b1f17b1804b1-4a02758405cmr139001325e9.19.1791140206606;
-        Sun, 04 Oct 2026 11:56:46 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl (dynamic-2a02-3100-a190-7401-a90c-9d77-a1b8-e6a2.310.pool.telefonica.de. [2a02:3100:a190:7401:a90c:9d77:a1b8:e6a2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0280bcf0fsm318633385e9.6.2026.10.04.11.56.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 11:56:46 -0700 (PDT)
-Date: Sun, 4 Oct 2026 20:56:43 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Russell King <linux@armlinux.org.uk>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
-	Arnd Bergmann <arnd@arndb.de>, Linus Walleij <linusw@kernel.org>, 
-	Christian Schrefl <chrisi.schrefl@gmail.com>, Bradley Morgan <brads@mainlining.org>, 
-	"Paul E . McKenney" <paulmck@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-arm-kernel@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] ARM: rust: Enable Rust support for ARMv5TE
-Message-ID: <asKgtWX7q-mgvnOc@gmail.com>
-References: <20261003093827.77857-1-kmehltretter@gmail.com>
- <20261003093827.77857-3-kmehltretter@gmail.com>
- <CANiq72kGay03jqFOfFcJOjr9Poy+yc2u0=Ep_9LQ+KMy=1JtRQ@mail.gmail.com>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1791152497; x=1822688497;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=gGkA92gKn6Umlg7Do4va51y7OdkAYyeZaeaCQws/E94=;
+  b=Af33HbjKYOCoaBHpbzVoHqqWybQPyWBlTj0a00UAD2IeqbAc3dpdQkBL
+   mh4WA9KlMwvATVJKClsCma4kaZvyhOSZmnydGJyi+AiB5AhirTES9AkYQ
+   Bl72vIFxnHNfYbAsPgH1GOuHcyRUSMDYBjuq29vnP4tVB5c9OyDTOzTox
+   dT/QMY1RX1/1ZdkuQGmEEWrRhyvs10S/rU8Ta/PeEVA/gaw1ffZkPsuR7
+   zZ+P9C+lTnTro5hq1CDTahhEnDh1GbFv9TRyjUihioWWtkcv/5u6Edvo3
+   0bXjSK8UAustB45O2nSHSJrLvOEWZLs3GVQMCXFtI0EX6dtSIEQkq8g4n
+   g==;
+X-CSE-ConnectionGUID: bhwPuL6iQoibWn7EKQVtmQ==
+X-CSE-MsgGUID: iF4tuhgNQbWGyCqDCfgFXA==
+X-IronPort-AV: E=Sophos;i="6.27,141,1787011200"; 
+   d="scan'208";a="30278872"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2026 22:21:32 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:21386]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.24.164:2525] with esmtp (Farcaster)
+ id 0691faea-dd80-4741-bdc2-6e25b9dd697c; Sun, 4 Oct 2026 22:21:32 +0000 (UTC)
+X-Farcaster-Flow-ID: 0691faea-dd80-4741-bdc2-6e25b9dd697c
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Sun, 4 Oct 2026 22:21:31 +0000
+Received: from dev-dsk-wanjay-2c-d25651b4.us-west-2.amazon.com (172.19.198.4)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Sun, 4 Oct 2026 22:21:31 +0000
+From: Jay Wang <wanjay@amazon.com>
+To: <ihor.solodrai@linux.dev>, <bpf@vger.kernel.org>, <ast@kernel.org>,
+	<daniel@iogearbox.net>, <andrii@kernel.org>, <eddyz87@gmail.com>,
+	<memxor@gmail.com>
+CC: <alan.maguire@oracle.com>, <martin.lau@linux.dev>,
+	<yonghong.song@linux.dev>, <jolsa@kernel.org>, <qmo@kernel.org>,
+	<nathan@kernel.org>, <nsc@kernel.org>, <linux-kbuild@vger.kernel.org>,
+	<linux@weissschuh.net>, <christian@heusel.eu>, <mcgrof@kernel.org>,
+	<petr.pavlu@suse.com>, <samitolvanen@google.com>,
+	<linux-modules@vger.kernel.org>, <rostedt@goodmis.org>,
+	<mhiramat@kernel.org>, <mathieu.desnoyers@efficios.com>,
+	<linux-trace-kernel@vger.kernel.org>, <acme@kernel.org>,
+	<namhyung@kernel.org>, <irogers@google.com>,
+	<linux-perf-users@vger.kernel.org>, <jikos@kernel.org>, <bentiss@kernel.org>,
+	<linux-input@vger.kernel.org>, <tj@kernel.org>, <void@manifault.com>,
+	<arighi@nvidia.com>, <changwoo@igalia.com>, <sched-ext@lists.linux.dev>,
+	<shuah@kernel.org>, <linux-kselftest@vger.kernel.org>, <ojeda@kernel.org>,
+	<rust-for-linux@vger.kernel.org>, <arnd@arndb.de>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<abuehaze@amazon.com>, <doebel@amazon.de>, <mpohlack@amazon.de>,
+	<jay.wang.upstream@gmail.com>
+Subject: Re: [PATCH bpf-next v4 00/12] bpf: make the vmlinux BTF an on-demand loadable module (CONFIG_DEBUG_INFO_BTF=m) to save ~5.4 MB memory
+Date: Sun, 4 Oct 2026 22:21:27 +0000
+Message-ID: <20261004222127.31128-1-wanjay@amazon.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <44315425-c505-46fe-8379-f19d78ff3abb@linux.dev>
+References: <44315425-c505-46fe-8379-f19d78ff3abb@linux.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72kGay03jqFOfFcJOjr9Poy+yc2u0=Ep_9LQ+KMy=1JtRQ@mail.gmail.com>
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWC004.ant.amazon.com (10.13.139.246) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On Sat, Oct 03, 2026 at 12:24:35PM +0100, Miguel Ojeda wrote:
-> On Sat, Oct 3, 2026 at 11:38 AM Karl Mehltretter <kmehltretter@gmail.com> wrote:
-> >
-> > Tested on v7.3-rc1 with clang 22.1.8, rustc 1.99.0 and bindgen 0.73.2
-> 
-> Great to see more arch support! Just to confirm, are there any
-> toolchain requirements to be aware of?
-> 
-> If yes, then we should add them to Kconfig, `scripts/min-tool-version.sh` etc.
-> 
-> If not, then please test with the minimum versions too! :)
-> 
+>    - If I know I don't need BPF on the workload, and these 5.4 MB
+>      bite me, I can just turn off BPF
 
-Thanks for suggesting that! No extra requirements as far as I can tell.
-I now also test with the minimum versions (LLVM 17.0.1 and gcc 8.1.0,
-with rustc 1.85.0 and bindgen 0.71.1).
+They cannot, even when they know they do not need it.  As the cover
+letter says, the cloud provider usually ships one kernel build to all of
+its customers.  Customers install their own packages and workloads around
+that kernel, but they do not build or customize the kernel.  Turning
+BPF off is not a switch they have.
 
-So far I found one small issue with gcc 8.1.0. A fix for that will be in
-the v2 series.
+> What I find strange is for a user of this scale *to not know* whether
+> BPF will be used in the workload or not, which is what lazy load may
+> solve.
 
-Karl
+They do know.  They run predictable workloads on a large number of
+small instances, and BPF is not part of them.  They spread the load by
+resource usage, so at that scale every byte matters: more free memory
+on each instance means fewer instances in total.
+
+>    * Compress it.
+[...]
+>      Keep zstd-compressed blob in the kernel image and decompress and
+>      parse it synchronously on first use.
+
+Thanks for putting this forward.  This compression approach is simpler 
+than loading a module.  I expect the overall code complexity to stay similar
+to v3, since both need to find the first user and defer the module BTF parsing
+until then, but it should be easier to merge into mainline because it avoids
+the request_module() deadlocks.
+
+Would you like to prepare it for a formal submission, or would you
+like me to do so?  Either works for me.  Ideally it lands in time for
+the next LTS kernel, so that we can adopt it there.
+
+From what I can see, most of the work left is in that deferral.
+Whoever needs the BTF first also parses the waiting module BTFs and
+replays the queued registrations, struct_ops ->init() included, under
+whatever locks it holds at that point, e.g. event_mutex or
+bpf_verifier_lock, or inside the module notifier.  So the
+cand_cache_mutex ABBA you found may not be the only deadlock.  Besides
+that, only x86_64 was touched so far, so it needs extending to the
+other architectures as well.
