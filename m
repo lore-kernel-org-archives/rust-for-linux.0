@@ -1,93 +1,90 @@
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC924248CE
-	for <rust-for-linux@vger.kernel.org>; Sun,  4 Oct 2026 12:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A02156F45
+	for <rust-for-linux@vger.kernel.org>; Sun,  4 Oct 2026 12:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791116000; cv=none; b=nLXb5ho97uQTYeXTjCyN9ZEyfc+lrRswCO3GIw1mnvaGvLe2UhQg/F7n5K2VRfrmDWPhEg+GywCeKvEoYwXkAcoQvcV7WqwbNIV9SL3GmENfaTxPigVA89A1HgkEgeNr+B6zT31P6io0G3VFJ6drLgSFbBYzYe6cCmw1QIZW2XU=
+	t=1791117758; cv=none; b=pMMqkrIoQnoyNsq/DN2wB4ytln9U6/G9E4FlMBelrEMwukKTWbqtgoWJO/5MuknIMPqSZ1eW3cN9PjfjzbWt2ryR/kZbC+oMSiWPApwvtZNFC72N+BfoXIYJfQPKZuqpl6rnDKX7Wi9bg3PWpf4WhgUzmytM9GrjugWxxiPD7jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791116000; c=relaxed/simple;
-	bh=ITA3OVcNcMjOC4ejeIYmsiFl6yGeCi0trPklszX/v3k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SBybYL97u1Ppb40hQsTTSb9jihmwhGq4Dc6HCqc/nPxzpCMcsmHFoHN0V1OdaJJtPLHT0jfBkrUHhL2ihgt2tG/Bz5rGHBMl+u/CelXrk5yqOWpMJro7c0iPMY7iaqt4VoKW127SSwnu6Pj7W9x3jTiJj5MsXr+L3KKE8nf/DXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=ddqMgXX8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FWhHOHp+; arc=none smtp.client-ip=202.12.124.146
+	s=arc-20240116; t=1791117758; c=relaxed/simple;
+	bh=Dd+2BEqIa465ilraaoAAjarjxSV0znclyVmX3mcRb2I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M9QkWdtlh2FbBeGkB93QLSAAhV+0eh4s3g/ro4OD44xWHmNfnS8RM8sFvBJ2aX1LQGBJwoUECVCgmq3E/+6QBf5zGQiwVH5Mj72U8U32tuKkaehG4lpnOjYGUszVnEitJ+83KvgkyBbtkcfEaH6SuaoSBEc3ySyxf8ZX394cnUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=K+XshUBJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=t08U2aVM; arc=none smtp.client-ip=202.12.124.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="ddqMgXX8";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FWhHOHp+"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 5F5DF1D0014C
-	for <rust-for-linux@vger.kernel.org>; Sun,  4 Oct 2026 08:13:17 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Sun, 04 Oct 2026 08:13:17 -0400
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="K+XshUBJ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="t08U2aVM"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id D98527A0103
+	for <rust-for-linux@vger.kernel.org>; Sun,  4 Oct 2026 08:42:35 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Sun, 04 Oct 2026 08:42:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm3; t=1791115994; x=1791202394; bh=1ZoTvrC2BNK9y0X6wptni
-	XwBXAUofHrlvUBugHQcQFc=; b=ddqMgXX8Kibiw2pP4eOHqsJTHOWHBl2KABsRN
-	XE9GqgnvNhK0c3LeLiiYsg9KRHDwCE5GBJPiuwDEPhiVL0vJ04FG34eyQ8CF7OBi
-	nw8CZin96d7BMIQOCVEijrDjhjMOK770vA1WrrxQWQcidQ9fxmXGN6AQSIkUkLIq
-	HFFf/rulJa9iFl7Tm4QvtJSn5vN89r/wACRIGNO2avTjTITMgddqutI+/2WnZIzj
-	NDXfPIC7ot4/8OeR6ZNVND3RU/ohBnOq2LY8AS7PLR/InEw/Y3afiUDla1199RfP
-	RP9e2Koxz229mTYiZgVd+jZH36DRCu9tGU0ADjofxZcnUYozg==
+	:to; s=fm3; t=1791117753; x=1791204153; bh=YWbP3c7GU8uWb72ZhjlB3
+	RaLMTR0nLW2fSS4hehTN28=; b=K+XshUBJgZYsWokDQVG3f0zlZ3+CXHQGoyWS7
+	AIErVrK1jpChONhrO/z1wBYBUq7r95jjdQsHUXWLjH2ExtsS1pSAUDtkv7Rd+DmP
+	IMuQp4jYLg0qGrPTZqZPTwYFbxS+0y4lihHbmxF0MrRuaFEmV2hj1bVWfsTguK6q
+	xB53hpL+rAVAdGv3ZbTA+20nZvY67dDhpnVDvu7htaoMZpuDtWuAeWtOREOSeKk3
+	+INFJGlASybh8sTREGq+66SAjEEfA7LI6ye5tzcGFasdVFG3XDEVS3720go9jJNN
+	jnqAAUB0KMCVetYP6W1Kv2xKoewEF3N3gI+qQlY5/cZdFN/3Q==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1791115994; x=1791202394; bh=1ZoTvrC2BNK9y0X6wptniXwBXAUofHrlvUB
-	ugHQcQFc=; b=FWhHOHp+XiWtM+JjL7EWZhjGeC8E3yrkEv4IgMwzC0g2UMyDhMB
-	pJ9e2bGOlQbTX3LkedDKLzhGfXCsGnkqrZK1Un5ie7Eg9T7qeodG21CKQxPVytq2
-	gnSrZgbUkYE2D1Em9jnvjj+Sh4ret2I7VGn9W+9o/GZgpKkTo1l5+EGyl1Otjldy
-	RgQVTdopRuKwkeTE49pDnwX3F6OxoAAnCTJzeL4EBVVt+UK60jqcUIxXZp06BUZi
-	eII7yk4BqSzNHoM1/4RABD2zJVOZUUQOldEnGV05Hff7bsVsdQG0043WCJzsashd
-	VjfjxkGcWL1ze8/w7JYGVM2n3CcZs8lEjzw==
+	1791117753; x=1791204153; bh=YWbP3c7GU8uWb72ZhjlB3RaLMTR0nLW2fSS
+	4hehTN28=; b=t08U2aVMMSy8M2qTYD4L1L5U/sgbbY6LBSqBlB145/T7io9xRlB
+	hV/FEvmRKyOSrquId/TbRDWVM9vOsjAW9k+F6/sZUXWuwe+9vyzcM9uMHfwDLec8
+	z19cw0ioN5lQmVmv0CJYB+FJFmfSVXpHt9G9wBFh86aKVM7z7HL4/pbrvpvkFZ8d
+	g+9Q+uVPtB67PFhnsVAWGP7Z83oH6Kf3V4x2FAG0zE4BJZaZMpYopSGyjyaAkfeD
+	cPIpFPm7V3Tm163bed3UpXKCTyspvyCt6MA2U/CmKDbjVjLyhI3j0Ybo4KV7YRXO
+	D8HxE1Jh0hvLQM94iFACJ4QuCbYeVshHIhA==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
 	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
 	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1791115994; d=flapping.org;
+DKIM2-Signature: i=1; m=1; t=1791117753; d=flapping.org;
 	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
 	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm3:rsa-sha256:AA5+obKOlIybRfogICLBWB+oy7sX2RlkZ3qOqbNRrVOnVMJ
-	Ewgpz+J/lroGWLvgKFENWJ+e4WM9/xev6qLjKYUkaXpm2ND/oOEpKz1H1mwkwk7R
-	3s/6MBGrJUGJhpx4lPM2WpjZM5YD2bkLfLtpAQfw6X5z6D2YxDKN08nabQAqVPvs
-	1tGcFSdkbrLEmq3Cu3R5B6UH7Rp4pd4x17rI3yPa1wtECZHILZLK7PEzr054aTgK
-	7wS4bzuyxTYYPtxn/Jh5j6k/j/3EYwSk+JixO/BFOR8czf4MfXWNDmH2yd2DqsP1
-	z7X04FQeVMPLGZHmbmBwfoWKyvAdll7O+DoDiOg==;
+	s=fm3:rsa-sha256:eGw/hm3V/IJP6bjToXEKK41cpxQj03RpadAM4Co3ghbtybI
+	yjEnZwbw4Z9nkwRX+TM+M1JXSabxrF0p5hRgICAuNBE8p7eDCHm3X3PKb68FeOW0
+	3dn6aXz4Z+k/TuahpO3dTy5epJFiRzKDuEYRlO5LJipHKoWXzmOvNVuJXl1xatVD
+	i/wMrXO/6ZinplBHKFU802TVx0Ms3wa+m/Esw7TQ6gSZoiNT5bg3BsZuSySbZbqR
+	PQ+c7E1O5ZVDF0d8D4ltdZyRTo8dCzQIjp1cF0FevqSk8pmf7bu2SOCMpw52isHu
+	53b04GcRDSV2x9atmBssvcPkUrR0H7usLu+rO1A==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
 	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
 	action=mi-m=1; hc=9;
 	hn=cc,content-transfer-encoding,date,feedback-id,from,
 	message-id,mime-version,subject,to;
-Message-Instance: m=1; h=sha256:sgwF9fJp3L4AUwDVUpiyd9Q4Zh0GR9FWPtAHGMc+C4k=:ITA3OVcNcMjOC4ejeIYmsiFl6yGeCi0trPklszX/v3k=;
-X-ME-Sender: <xms:2ELCai2cV2__1Fxr14RP_u_1U3B_VJvhbsCK6DNeC04XqR2qWMvEHg>
-    <xme:2ELCakUl0EKlaAW69hb57z6bGWZTjNnagOWRiZQhOryZgpTTEwu06BO2X2BuN0yxb
-    Qi5YrJSENMzVulLLMkktzXf2ltqlejwPxm8LTHimRz28xSvRQgZWi8>
-X-ME-Received: <xmr:2ELCatvQFsCLtcSHBxFqs5Wb6Z3gkDvLzzZoBQGNPGGA4ZdLyWXDwEZzl4LAVba7m0yjbvp0nDUJIxfALOw>
-X-ME-Proxy-Cause: dmFkZTGEuSIb/FcWHjK3MYkrM93FyPS1RQ9Xtbd0J1NdUnSn+NhtL8G6aG4ljq0tgZmAOS
-    NeiQk3VzgMLZ4cCu183M3FT7s0INEpjrCeS9qj1ViM3ovl8mdamj3YZuk+ruj4RYrmv6Tz
-    Zlzt0s+vvgidwlidQxPfRCNmghtmV4onxaikaG3wnbtS6BExD+mxrSlcxs3p6i4pvb26Ba
-    OnR7JKC4qghoHS+TauPbBqfkiFu0wEhPcT25R4wSei0e68xkS7mB0bdX9GZk1DJmbgKHr1
-    M1qMW5m6mmjLVt9d1hwfcYkL6rtJhP+TiHlht4l2Tv/NTU6CM8dITD3U/Ea4H0ZbG/pqX9
-    RD1Sn60J8E0BqIIoL9T6deRT8fNBY35qufAdNLTGdsS3DiHXnKRdNQQ/oV4UI/kfsaYx1D
-    WPwlBA7c2hSCx/rvR9zaxxFEcgJ49FtNoPVgFLzukFmOxb9uhnROnfdul1b+Y3oL2AGEg4
-    lCqbx1b/RIdmX8O6sA8+BBv5tFb1hiGnLcHsBD9u/wlxRG3jjpwzFn1IwAltZgfekvgoWV
-    VLoXZPoelQKLsfeGr4ENKN4Rt8dghROnOMS5rmSYaq5FH/6JbUt34wWxp+b/WffrIw0cun
-    4ZoNZOC3jEn7EoeLjJP0e/YHVhyJ0wacZ7+XnqoOut0/YyK3zIePLIyWP67w
-X-ME-Proxy: <xmx:2ELCarWGEToPV8Qa0oAPircw3QrVgJxuYPHF5jlJ7yp0c6fig8A1TA>
-    <xmx:2ELCapVBpdBD5-6GaJ1XADCc1h2SVhJ6Odne-Hc_t7ywZsDEsnVC7w>
-    <xmx:2ELCalcZqNbQPVINUw2i55Twpfbb7UL076r962gjI42f8wcFxqmF6A>
-    <xmx:2ELCag7bnkNG754p1UgWyiozInhyrfOflzVPwxVkHpKvArZsZLHuaA>
-    <xmx:2kLCauapzFyEbfLQFxoLiIetFSAy6ZTZEEPeEtM4PfmnkLJWgXb9_27x>
+Message-Instance: m=1; h=sha256:OVHRuLSuPF2GPzS4g2FZdby8ZR5B5NKPAZL60353VV4=:Dd+2BEqIa465ilraaoAAjarjxSV0znclyVmX3mcRb2I=;
+X-ME-Sender: <xms:uUnCalHKQ5MR5UVH0xus3tK6E6LEFanzkQ9mDE5oJez7A7bmk9nTpQ>
+    <xme:uUnCamtqLp3AyVZUEodrrP2k9NH5T8gSq8Fm0IlvBZT8QlNxpShakpBBG1RpZ5vHK
+    ms_3XiR28XDNcG9cKZbb3FsAJYtgxXY49F_O0f80fO-W4Lv3Nfs0g>
+X-ME-Received: <xmr:uUnCarkCv8c2j3aSOUJt4zYEn5EoGUXSTX-K_DeyqgQBPCECyNlx2JTjcs5TyNPheiqjVbQys-_HFnh3kDc>
+X-ME-Proxy-Cause: dmFkZTEfOoBmgHTunHDgPVQxTfoPH2DIwdPBQX6Ky1RYwlZJtP9lRXaiub192fV4i9ENfM
+    ifWriZTIqNq7eBZsS39zZPgTebDjK1sdN3m9IVC8wTixB+A+4P/eJ5HIyMelNXof8LG8jS
+    eoTA5gCVwtZIKCdJUEjSl2M97LVATitfjiy7xJfXKelvRYMo1D4KW2lCBmwYNDg9cdsJlp
+    x99mjwevvm8+HlBAqeRJpVzpr7hYYIfEjH9INRmvwiOQ5oTI4agybQgfslRQIyuNixISaU
+    k21I+x05bCrtjgy2PSJV7zJNwQfmWPGkWYdu59xUXMc2W7c1CI1EmBXlSQ/rQuOXtAW1Gr
+    W3hMPBW11cAER9vrnTktUI2LLI91U68LhjeaDXZLg0QT75gGbZBwpRQCqirbIV0sAoa6iS
+    DTDlTece267I62cIS3jSwLvXbYIF5K1orEssgHwM7OcVgB3DtVKO5Hfl020ZBapnd//kZe
+    VIP+Az6pXAjkdxxqf+iMFedNpVDp9J/xSxRdM5LtwMh6boATTF0I3rjEygBLg7f+W/1vUM
+    actY7p1WUkFOa8sILYnccjv5hxctD5zGNlm6FjzDGxPGePW1HZovg23yt2yLJs95VejCR9
+    0aRgNbEkeKSgIxWDahseCh5cHKygGvdK9+YLHapkoOtL5IL53dO8/0ztHHjw
+X-ME-Proxy: <xmx:uUnCapNzhyDtouh3QmkVYvcXoUKnUeJbeY0JjDYETgZpsRPwZCPnSw>
+    <xmx:uUnCanznzD29RMDk1jhhiGbaW0CHsxl7rZynJJj2eH6VCWuJ1JldrA>
+    <xmx:uUnCausb73GaOUalHPle3ppjz0U_h10cCNRvk-Sy7FG9ByfoN-_NpA>
+    <xmx:uUnCaiYKs3DV0sj-LuPGeLjfNToPSpzZjBYcvhwJjzAd4t5rz1Bh5A>
+    <xmx:uUnCasdiyYYW1ZFISaTFEIAQZ85VIAi8liMeysL-wpYugw8RT4cDW8ov>
 Feedback-ID: i51fe4b43:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 4 Oct 2026 08:13:08 -0400 (EDT)
+ 4 Oct 2026 08:42:30 -0400 (EDT)
 From: FUJITA Tomonori <tomo@flapping.org>
-To: anton.ivanov@cambridgegreys.com,
-	johannes@sipsolutions.net,
-	ojeda@kernel.org,
-	richard@nod.at
+To: ojeda@kernel.org
 Cc: a.hindborg@kernel.org,
 	acourbot@nvidia.com,
 	aliceryhl@google.com,
@@ -95,18 +92,16 @@ Cc: a.hindborg@kernel.org,
 	boqun@kernel.org,
 	dakr@kernel.org,
 	daniel.almeida@collabora.com,
-	david@davidgow.net,
 	gary@garyguo.net,
-	linux-um@lists.infradead.org,
 	lossin@kernel.org,
 	tamird@kernel.org,
 	tmgross@umich.edu,
 	work@onurozkan.dev,
 	rust-for-linux@vger.kernel.org,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v1] rust: arch/um: Fix loading Rust modules
-Date: Sun,  4 Oct 2026 21:12:30 +0900
-Message-ID: <20261004121230.373216-1-tomo@flapping.org>
+Subject: [PATCH v1] MAINTAINERS: add entry for the Rust `bug` module
+Date: Sun,  4 Oct 2026 21:42:11 +0900
+Message-ID: <20261004124211.381401-1-tomo@flapping.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -118,50 +113,35 @@ Content-Transfer-Encoding: 7bit
 
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Rust modules fail to load on x86_64 UML:
+Add a MAINTAINERS entry for the Rust `bug` module, which currently
+provides the `warn_on!` macro.
 
-  # insmod rnull_mod.ko
-  subarch: rnull_mod: Unknown rela relocation: 9
-  insmod: can't insert 'rnull_mod.ko': invalid module format
-
-arch/um/Makefile adds -Crelocation-model=pie to KBUILD_RUSTFLAGS. This
-comes after -Crelocation-model=static in the top-level Makefile, so all
-Rust code on UML, both built-in code and modules, is built as PIE. In
-PIE mode, rustc accesses statics in other crates through the GOT and
-emits R_X86_64_GOTPCREL (9) relocations. UML uses the x86 module loader,
-and it does not handle them.
-
-Remove the flag. Rust code, both built-in code and modules, then uses
-the static relocation model, the same as C code.
-
-Modules still fail to load with a larger mem=, such as mem=512M,
-because Rust code uses the small code model while C code uses
--mcmodel=large. This is a separate problem.
-
-Tested with clang 20 and rustc 1.90: vmlinux builds and boots, and
-rnull_mod.ko loads with mem=32M.
-
-Reported-by: Zigit Zo <zig@iorw.io>
-Link: https://lore.kernel.org/rust-for-linux/62F5EEA0B866E9E0+20240903130606.292935-1-zig@iorw.io/
-Assisted-by: LLM
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- arch/um/Makefile | 2 --
- 1 file changed, 2 deletions(-)
+ MAINTAINERS | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/um/Makefile b/arch/um/Makefile
-index 937639edc295..c4a99073f014 100644
---- a/arch/um/Makefile
-+++ b/arch/um/Makefile
-@@ -62,8 +62,6 @@ KBUILD_CFLAGS += $(CFLAGS) $(CFLAGS-y) -D__arch_um__ \
- 	-Din6addr_any=kernel_in6addr_any -Dstrrchr=kernel_strrchr \
- 	-D__close_range=kernel__close_range
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 72294ddfa5b7..89e6575430fb 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -23989,6 +23989,15 @@ L:	rust-for-linux@vger.kernel.org
+ S:	Maintained
+ F:	rust/kernel/bitfield.rs
  
--KBUILD_RUSTFLAGS += -Crelocation-model=pie
--
- KBUILD_AFLAGS += $(ARCH_INCLUDE)
- 
- USER_CFLAGS = $(patsubst $(KERNEL_DEFINES),,$(patsubst -I%,,$(KBUILD_CFLAGS))) \
++RUST [BUG]
++M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
++L:	rust-for-linux@vger.kernel.org
++S:	Maintained
++F:	rust/helpers/bug.c
++F:	rust/kernel/bug.rs
++F:	rust/kernel/generated_arch_reachable_asm.rs.S
++F:	rust/kernel/generated_arch_warn_asm.rs.S
++
+ RUST [INTEROP]
+ M:	Joel Fernandes <joelagnelf@nvidia.com>
+ M:	Alexandre Courbot <acourbot@nvidia.com>
 
 base-commit: 2dee3d3adcadcc57d62ba6608cd02f50b0c10264
 -- 
