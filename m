@@ -1,83 +1,148 @@
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3723D391E54;
-	Mon,  5 Oct 2026 21:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791234475; cv=none; b=ELPzwhMwr1VWcYc9cJVqIFAzwuPkL1GPsLnY8GrbUCAOd8B7guXBL5KHrfqaO3M/wAF0D6QPJEd3mMjelg7mWoJ6SWpivOxCXIIr/ZG3j9/k5sJFg3Z/tb5XNp93mRgksyz0ej3ONrJRKAcx8VbCSo0hZDqfMKlUwZHkrKzl9Og=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791234475; c=relaxed/simple;
-	bh=dq4i77jwsT+0KxBL4PRHrMvUgBFxnDzVUkzdfEKqMq8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h3Xpg9sEs8pA8TJoy7wumdhjeB6Qs5mBykqvBe2YXOCgDdTqS5IboTzRd9O+4q+0xAZxEmQ6klD3Wsw+g4LD4edbnQ35jmwTbYQoIqCBFa/kwIWNEDFUl6I1SjvAXKxzZrkvyJwsw3QyyxQfVmP2T2225g+mhfnw4Lb4gO+qS4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=XREvpsaQ; arc=none smtp.client-ip=199.89.1.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20389175A5;
+	Mon,  5 Oct 2026 22:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791240515; cv=pass; b=ZV2aTK4c9+2NFSb1mJLKRgcpbB3uYhRtmlDmoG1icORp9deSN5sf8owxvjGdmbGNf7jTM4HBJNenGRe/1cjRaZ3LIoM06/xtU1VwBTgCyD7A3TyEZdGWX24d/BFFNDYEPRTjM9jsD9wZy0mZvzPoIh0lXQr1U0wj54qS22W5E5o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791240515; c=relaxed/simple;
+	bh=Oc7ZCEJC07vBOB1HJ0m/snwbshv1AlJHcXiMyMnhnNc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ME8cVa+hJxvcRX3uzfn0eUDw4DnM3YoFufTA1Rm1gg+/DVToZtGeKzOoUxR9WvG/rQU2gfmJK9XnU9m6odZbkdTPDUe2GQ08DybO8SsIPfwR7nuLjdqMrYafT1ymXpTw2FQNoixH+CvSI+rWDWFf1GL0Gisf6m7TK12o9m09uTs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=BXEDuZi6; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="XREvpsaQ"
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4hzBmn3sPSzlfvpN;
-	Mon,  5 Oct 2026 21:07:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1791234466; x=1793826467; bh=dq4i77jwsT+0KxBL4PRHrMvU
-	gBFxnDzVUkzdfEKqMq8=; b=XREvpsaQPQtzw/FDcmSo16IHxb74YV8gj12H275H
-	25k+DwXs5j10/zVkLUjOA22E2kQii0Za/Koz3783Aqqokyi9k0+MV0GGLo0YeEz0
-	Dyw3660jcGYAH3laoeFT/kZUNlvBDycdPGPiVGGl3ZP6E0UIREcEALm5u6M6xWUo
-	XZZjdnhlvfdx0vUtxmLuFKlQWLK8W2nhmCWu960o9foPT2/Ym4QCrL9ScwwPcEB+
-	/Dx7Gw/y8XzhLwvxCdvBBigQhQoAyYkhjYtp1SMDChqI9MOzXWCdcm8JKcopfRGf
-	aOsIxQg/ldNRfzOv+dntQ2wzWdsvzll4FENKjant1gONbw==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id tqKjfMOei0EU; Mon,  5 Oct 2026 21:07:46 +0000 (UTC)
-Received: from [IPV6:2a00:79e0:2ed2:d:913:466d:8f79:f68e] (unknown [104.135.182.42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4hzBmX24XVzlfvpH;
-	Mon,  5 Oct 2026 21:07:39 +0000 (UTC)
-Message-ID: <0ca00d02-9abf-4740-9dcc-05a85d88df02@acm.org>
-Date: Mon, 5 Oct 2026 14:07:39 -0700
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="BXEDuZi6"
+ARC-Seal: i=1; a=rsa-sha256; t=1791240452; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=X11IIrfVm/W6vJNHgNGmMI3FAg8acPtfYHLjLzAfW6mpqTmFWqT6eUpg05wFriIEjBZk4RlAvUrSYlrouvpjj/u50L7yPoU4/NdBuJAD57GQpKYP0H5J9Tcn16NoZGH64VzCPQ04d2bG2LYReNzj7sFXCF4jzvHYAWQ57Mfh7Tg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1791240452; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=aDPLd6m9eaalIuU0euZ4duF8q18K96/gVEz/CFzsn0A=; 
+	b=Z0btMJ+uLUFkNgO958Usz1ssRX063i/YtURPBBb/LNYMvLpquTN/t9dkUbzNLRJ2lXvsFT1MeUev/x4iE7ic7rCE3nKHODFNNrc1VyT5md65CwZcpLCR0qM3E+8dtfjNBQjXIulT9gNuHpSd1jzvKc2qAC2UULofOYiXlnm5efw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791240452;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=aDPLd6m9eaalIuU0euZ4duF8q18K96/gVEz/CFzsn0A=;
+	b=BXEDuZi6Iea1wSlWGLMW/6HR+gxwHv5oW9L/ajt5MGOsR8HNv0t4iiWekyS8FL6i
+	S/qrvhpfQ57mlna6V2ElB/+NltSm4uNdqpcr4plD+y8BavgtEf81m0VsGVX5EiyxqNX
+	8tKW4h0xD8xdyCo9tfQG4s6ieE6oobLQDGoa7vJs=
+Received: by smtp.zohomail.com with SMTPS id 1791240450336816.4858411504894;
+	Mon, 5 Oct 2026 15:47:30 -0700 (PDT)
+Date: Mon, 5 Oct 2026 15:47:29 -0700
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] rust: uapi: add zerocopy/zerocopy_derive
+Message-ID: <asQpARWOjeJRjhq3@um790>
+References: <20260925-b4-gpu_info_intobytes-v3-0-e19bcb71980d@collabora.com>
+ <20260925-b4-gpu_info_intobytes-v3-1-e19bcb71980d@collabora.com>
+ <DLPD8RQKM8VU.3QWOV9RFLA8S6@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/2] block: Add post_release() operation
-To: Christoph Hellwig <hch@lst.de>
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
- Jens Axboe <axboe@kernel.dk>, Jan Kara <jack@suse.cz>,
- linux-block <linux-block@vger.kernel.org>, Al Viro
- <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>,
- Brian Foster <bfoster@redhat.com>, Damien Le Moal <dlemoal@kernel.org>,
- Hillf Danton <hdanton@sina.com>, Markus Elfring <Markus.Elfring@web.de>,
- Ming Lei <tom.leiming@gmail.com>, Qu Wenruo <wqu@suse.com>,
- Tao Cui <cui.tao@linux.dev>, kernel test robot <lkp@intel.com>,
- rust-for-linux@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Nilay Shroff <nilay@linux.ibm.com>
-References: <69960302-1535-441a-be4e-d652766d65c2@I-love.SAKURA.ne.jp>
- <472c3bcd-45d4-477b-9e81-3c68601dc18f@acm.org> <20261005084521.GA8879@lst.de>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20261005084521.GA8879@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DLPD8RQKM8VU.3QWOV9RFLA8S6@garyguo.net>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/291.236.60
 
-On 10/5/26 1:45 AM, Christoph Hellwig wrote:
-> No, adding magic out of lock extra ops is a no-go, and we've been
-> through that before.
+On Sat, Sep 26, 2026 at 04:50:37PM +0100, Gary Guo wrote:
+> On Sat Sep 26, 2026 at 1:26 AM BST, Deborah Brouwer wrote:
+> > Make the zerocopy and zerocopy_derive crates available for use when
+> > building the UAPI crate and its tests. Then attempt to derive most of
+> > the zerocopy traits for struct drm_panthor_gpu_info when generating its
+> > binding. This will be used by the Tyr driver that needs the traits
+> > IntoBytes and Immutable to safely copy the struct byte-for-byte to
+> > userspace.
+> >
+> > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> > ---
+> >  rust/Makefile           | 12 +++++++++---
+> >  rust/bindgen_parameters |  3 +++
+> >  2 files changed, 12 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/rust/Makefile b/rust/Makefile
+> > index da1a7409d984..bf02a1efd6f3 100644
+> > --- a/rust/Makefile
+> > +++ b/rust/Makefile
+> > @@ -365,8 +365,11 @@ rusttestlib-bindings: private rustc_target_flags = --extern ffi --extern pin_ini
+> >  rusttestlib-bindings: $(src)/bindings/lib.rs rusttestlib-ffi rusttestlib-pin_init FORCE
+> >  	+$(call if_changed,rustc_test_library)
+> >  
+> > -rusttestlib-uapi: private rustc_target_flags = --extern ffi --extern pin_init
+> > -rusttestlib-uapi: $(src)/uapi/lib.rs rusttestlib-ffi rusttestlib-pin_init FORCE
+> > +rusttestlib-uapi: private rustc_target_flags = --extern ffi --extern pin_init \
+> > +	--extern zerocopy=$(objtree)/$(obj)/test/libzerocopy.rlib \
+> > +	--extern zerocopy_derive=$(objtree)/$(obj)/test/$(libzerocopy_derive_name)
+> > +rusttestlib-uapi: $(src)/uapi/lib.rs rusttestlib-ffi rusttestlib-pin_init \
+> > +	rusttestlib-zerocopy rusttestlib-zerocopy_derive FORCE
+> >  	+$(call if_changed,rustc_test_library)
+> >  
+> >  quiet_cmd_rustdoc_test = RUSTDOC T $<
+> > @@ -782,11 +785,14 @@ $(obj)/bindings.o: $(src)/bindings/lib.rs \
+> >      $(obj)/bindings/bindings_helpers_generated.rs FORCE
+> >  	+$(call if_changed_rule,rustc_library)
+> >  
+> > -$(obj)/uapi.o: private rustc_target_flags = --extern ffi --extern pin_init
+> > +$(obj)/uapi.o: private rustc_target_flags = --extern ffi --extern pin_init \
+> > +	--extern zerocopy --extern zerocopy_derive
+> >  $(obj)/uapi.o: private skip_gendwarfksyms = 1
+> >  $(obj)/uapi.o: $(src)/uapi/lib.rs \
+> >      $(obj)/ffi.o \
+> >      $(obj)/pin_init.o \
+> > +    $(obj)/zerocopy.o \
+> > +    $(obj)/$(libzerocopy_derive_name) \
+> 
+> Please add these to `bindings` crate as well to avoid have it diverging with
+> `uapi`.
 
-Thanks Christoph for having provided feedback. Christoph and Tetsuo,
-please help with reviewing the just posted version six of this patch.
+Ack.
 
-Bart.
+> 
+> >      $(obj)/uapi/uapi_generated.rs FORCE
+> >  	+$(call if_changed_rule,rustc_library)
+> >  
+> > diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
+> > index 8402b0c93545..332bc8d6a9f7 100644
+> > --- a/rust/bindgen_parameters
+> > +++ b/rust/bindgen_parameters
+> > @@ -71,3 +71,6 @@
+> >  # Structs should implement `Zeroable` when all of their fields do.
+> >  --with-derive-custom-struct .*=MaybeZeroable
+> >  --with-derive-custom-union .*=MaybeZeroable
+> > +
+> > +# `drm_panthor_gpu_info` is copied byte-for-byte to userspace.
+> > +--with-derive-custom-struct '^drm_panthor_gpu_info$'=zerocopy_derive::most_traits
+> 
+> This is Tyr specific change and should be in patch 2.
 
+Ack, will update in next verion.
 
+> 
+> Best,
+> Gary
+> 
+> 
