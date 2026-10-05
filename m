@@ -1,128 +1,146 @@
-Received: from pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.155.198.111])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013038.outbound.protection.outlook.com [40.107.201.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B944040BCDB;
-	Sun,  4 Oct 2026 22:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.155.198.111
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791152503; cv=none; b=hP5NcYUQLz0SEAJoHtZvA/+7a3j3G/qmQopPJYb39DFEgyPypN20ETVfDg1uIp/diGfrAe7hPCIR1NLLN+wcOb68sjQn/gDsB1HA/GmrVbKT4HGbZ9V0y9nbsH4tXVONd3KkCZ4Y8fMnUmewpU9l91961IX0f729rgW2ZwPkD5Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791152503; c=relaxed/simple;
-	bh=8MfZas74TP4bH2JkIBPs6F1Wj3cq6DvSuL/z6D0z5ro=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XMkpqibyn48tYhDvpD2uwRxOE32m5JsEQEzT5g3o3BwcH5c+hiC2XvWc9sP8vUr1qhDP1vGwhWhG1PR4/uHxitA0S/UmlWzxXkNwIIH903s0X2ePc5gZGzaJ6G3wzp0vNaKzDUDBF3AsBSyQ60Zm9au3e1s0xQowgkT5gDOZS0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=Af33HbjK; arc=none smtp.client-ip=35.155.198.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BD3DF72;
+	Mon,  5 Oct 2026 01:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.38
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791164752; cv=fail; b=jhni8HjD8qsltwlv3sP06fJRZ4XLdm+fHYu77PacN8q8cy1DDnny5HH0UsilKJuGal0a6S2xk+FDeEHHGYWGgzA9A87tHlKgG9oQswaq/5nFak534W31tv0XZEXhSfGQk27qOBZVvph9v/GfpGYcNNjjLSrttrn6ZrVg5hFQFpg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791164752; c=relaxed/simple;
+	bh=pmOIuxfFrAwyyO1PCRpY5gXAtqLMMZ/O7BxDVjRR/tU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 Content-Type:MIME-Version; b=bSDhOIS8VIAedlcRJDHRAy65p5/iFs86UQ7s5NO/5S7Yl9nZNnhJHgFjyeSMoq7V9qGj87YFGhm5oJO1fWMYJQ4s+aVi8X+ov3BXjZBb28C0h+hn/J+7HmGrSuQxc4I4EGQmjj9wl3ka+KFew4OaVgckrmC8YBUT3XUiKN0VD+U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nvPyYFIe; arc=fail smtp.client-ip=40.107.201.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="Af33HbjK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1791152497; x=1822688497;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gGkA92gKn6Umlg7Do4va51y7OdkAYyeZaeaCQws/E94=;
-  b=Af33HbjKYOCoaBHpbzVoHqqWybQPyWBlTj0a00UAD2IeqbAc3dpdQkBL
-   mh4WA9KlMwvATVJKClsCma4kaZvyhOSZmnydGJyi+AiB5AhirTES9AkYQ
-   Bl72vIFxnHNfYbAsPgH1GOuHcyRUSMDYBjuq29vnP4tVB5c9OyDTOzTox
-   dT/QMY1RX1/1ZdkuQGmEEWrRhyvs10S/rU8Ta/PeEVA/gaw1ffZkPsuR7
-   zZ+P9C+lTnTro5hq1CDTahhEnDh1GbFv9TRyjUihioWWtkcv/5u6Edvo3
-   0bXjSK8UAustB45O2nSHSJrLvOEWZLs3GVQMCXFtI0EX6dtSIEQkq8g4n
-   g==;
-X-CSE-ConnectionGUID: bhwPuL6iQoibWn7EKQVtmQ==
-X-CSE-MsgGUID: iF4tuhgNQbWGyCqDCfgFXA==
-X-IronPort-AV: E=Sophos;i="6.27,141,1787011200"; 
-   d="scan'208";a="30278872"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2026 22:21:32 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:21386]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.24.164:2525] with esmtp (Farcaster)
- id 0691faea-dd80-4741-bdc2-6e25b9dd697c; Sun, 4 Oct 2026 22:21:32 +0000 (UTC)
-X-Farcaster-Flow-ID: 0691faea-dd80-4741-bdc2-6e25b9dd697c
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
- Sun, 4 Oct 2026 22:21:31 +0000
-Received: from dev-dsk-wanjay-2c-d25651b4.us-west-2.amazon.com (172.19.198.4)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
- Sun, 4 Oct 2026 22:21:31 +0000
-From: Jay Wang <wanjay@amazon.com>
-To: <ihor.solodrai@linux.dev>, <bpf@vger.kernel.org>, <ast@kernel.org>,
-	<daniel@iogearbox.net>, <andrii@kernel.org>, <eddyz87@gmail.com>,
-	<memxor@gmail.com>
-CC: <alan.maguire@oracle.com>, <martin.lau@linux.dev>,
-	<yonghong.song@linux.dev>, <jolsa@kernel.org>, <qmo@kernel.org>,
-	<nathan@kernel.org>, <nsc@kernel.org>, <linux-kbuild@vger.kernel.org>,
-	<linux@weissschuh.net>, <christian@heusel.eu>, <mcgrof@kernel.org>,
-	<petr.pavlu@suse.com>, <samitolvanen@google.com>,
-	<linux-modules@vger.kernel.org>, <rostedt@goodmis.org>,
-	<mhiramat@kernel.org>, <mathieu.desnoyers@efficios.com>,
-	<linux-trace-kernel@vger.kernel.org>, <acme@kernel.org>,
-	<namhyung@kernel.org>, <irogers@google.com>,
-	<linux-perf-users@vger.kernel.org>, <jikos@kernel.org>, <bentiss@kernel.org>,
-	<linux-input@vger.kernel.org>, <tj@kernel.org>, <void@manifault.com>,
-	<arighi@nvidia.com>, <changwoo@igalia.com>, <sched-ext@lists.linux.dev>,
-	<shuah@kernel.org>, <linux-kselftest@vger.kernel.org>, <ojeda@kernel.org>,
-	<rust-for-linux@vger.kernel.org>, <arnd@arndb.de>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<abuehaze@amazon.com>, <doebel@amazon.de>, <mpohlack@amazon.de>,
-	<jay.wang.upstream@gmail.com>
-Subject: Re: [PATCH bpf-next v4 00/12] bpf: make the vmlinux BTF an on-demand loadable module (CONFIG_DEBUG_INFO_BTF=m) to save ~5.4 MB memory
-Date: Sun, 4 Oct 2026 22:21:27 +0000
-Message-ID: <20261004222127.31128-1-wanjay@amazon.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <44315425-c505-46fe-8379-f19d78ff3abb@linux.dev>
-References: <44315425-c505-46fe-8379-f19d78ff3abb@linux.dev>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nvPyYFIe"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Swbm4/v6f2aLc9Exfz2HAkunU5voRwucE5YiynlexFjsYZNIhqROj5lwetuJe2pIWsI+3vg0EDFoG9BMQXAQd7UC3oUYppb7AfvqvCmWt68MGym5jgeusA42cov6HzzxOOUCtG1YYkoOEuWluHi+2lqLir3JC3WAWfBrb3BG6JeIkLUk03RuslbdZ4me3f9XbBVVycaMmXoZR4QhP9DRX6Uy8T1nW64ZrBoITcqQcRq48ywnOkNzXxQ76Gp3sIIHq1f2SkKirgm7B5JLM+rclQJrdSmKjkYFjqQxd4tSvuhG5f7AAw2Sotl9uV3IHReAQsmzuGuHKUM8CoUj9bXBdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vJlnmlEN29qGy4FoiV0wdjFKY9YN6mRxTY4Wj7e/kXQ=;
+ b=D3kmMGv2WHtgr03gs8NfHuAQ7AmTLorrv59tYlqRG8BvFY4AN7zcOnGjXa+HE66V98+yhxY+Z/TcGI9TLXr6FcF8tCWeYZCt3Mnl6osaFolNVyt5mvYO5fLd3OFEvlE0sEGTFj0Y4OT2hY4ODCZCxJiSOHqTK3VNWElniGjV9anzkmLVJFlH5NaodNowF+t0id0/SR06I0IA0sXdGit6fL/CqkHwwmcWMUrT/wdRqF/6osDiP/AvMQDbCYkxfoW/b058LEVk31zkOxgqEzEZQfrZUKpBCXHVJl9p3V4NB7lYxgct9YWvYF5RNEUxsDX1/3MroPZ+hVi+F0vhJ9PrHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vJlnmlEN29qGy4FoiV0wdjFKY9YN6mRxTY4Wj7e/kXQ=;
+ b=nvPyYFIeB0iClLWOWEUs0H4MfOthZYpQKelj6oAnMaP4pWsplRhGLHSIx06xPiM6JVsOP5O1i8E5tK0mwMPuukUHK7Y4dBiAG+oFife30GKdcTNUa9O/GSfY4muQ4KW+UWjoKW+uXuPndg/nw86IoC+JI7CO1P4JX215bkBzbDaNuFavGNhkXOzNOKZqRc0tc1V55wDcZ2SuABxqv90PrVFiCD6fd56u9YU5apg3i6U2LD9fPSya3ptgLrZdX5p1V6uPReOLi1LV1xGajGEtJCPk1Q/KoBkzQ33K9LkwgsZ5ag7sv/eAftNEqt1RuckWUu98Ddt58sik9Cz18W8p2w==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by DS2PR12MB432622.namprd12.prod.outlook.com (2603:10b6:8:70b::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Mon, 5 Oct
+ 2026 01:45:48 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0472.016; Mon, 5 Oct 2026
+ 01:45:48 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, John Hubbard <jhubbard@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>
+Cc: nova-gpu@lists.linux.dev, rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
+In-Reply-To: <20261004-nova-int-fixup-v1-1-9e4bce097f94@nvidia.com>
+References: <20261004-nova-int-fixup-v1-1-9e4bce097f94@nvidia.com>
+Subject: Re: [PATCH] gpu: nova-core: fix warning with NOVA_CORE_SELFTESTS disabled
+Message-Id: <179116465060.2110289.11293506958359500228.b4-ty@b4>
+Date: Mon, 05 Oct 2026 10:44:10 +0900
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: OS3P286CA0032.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:604:1f4::20) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWC004.ant.amazon.com (10.13.139.246) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|DS2PR12MB432622:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8eb56acf-1d2c-4402-6df6-08df22826121
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|23010399003|1800799024|376014|366016|10067099003|56012099006|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	MoLZ39EqCA2Jgc4PRyCLIihPixuey1x+abWroTVBuP8HZJWTetX21fKog8KgLntkc9CETrxouLHc2cekBYUaPy8BnYM/p8e184l+mgYI4iUAbD2zAEsepLF3luTXJ395AOZ5H0egZ2TmNYbjOQCVRncBL7B665KDknbrIcUWhYeDHl5JO/Hm2M1f2L8yzEtBNy+xfEJ71dJ+8bPqS0hXXTGDKKBUj6OOyQjV4+OyALKPBLB39R9qGo9USDyf9do7tZ9MTP4nx2CzGULqs2V+mE58rEdcQTs75cpXjLsZ9x2eUvJ3MZVBd+U5HtWrKbEDnkpM6vjnwuxZpSZEkmHi/XHNECtToWslJOJokaWuwXLU5Tn+XjtaNUpX71fmJmhRYmDskFczUO/fckx7qoGlnW9ORARhQqQPR74Y31HPdkpu10UFH6+I+dG8do6DROQVA300JzCfEg49M7Gt7ZFqBLywyXIV9ShrlfRZ5MHehH9pAihEwQ2JUVbj7KiZ+wDpN8OCLl/B8Fi9K+XOOehozpu9dSptVTsHXUJqkCjrXRpi2YyC3KwmhBrayUgeGKmcYjnjfM+DtKu9WgAD/GF5/kfw0t560L4469YkYNmDBC1ZhsRwvTO/9PHv3L/Iaubf3Bow8yZv1XJsRaajUST9cmmDh088gWUcJxa/dc2/qrg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(23010399003)(1800799024)(376014)(366016)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cGJtUVJzb1ArcnVCU0VpNnFoTmluRTZmRk84aEZOOHJnSjFMbERlclY5SkZl?=
+ =?utf-8?B?SVhDdTlNSExxTXkyYno2WHV6QUZvKzFHZXFpZ0FhamdUT3hXUllaWXhrd01w?=
+ =?utf-8?B?bm1FR1VMNEJEU0d1L0YzR2s2RWtlUU1yRno5YS9WR1YzMUVNNG5kZHVtcjhr?=
+ =?utf-8?B?YXh4YWNDUTh5NGJ0QkVaVmVDRHhaeHd3bFAzUVVJOEZvcG5uWitPcjNGNEZS?=
+ =?utf-8?B?dEEwNTBEdzM2RE9reUdLd08yUTZOc3hWV0o4SmFyVElFcUhCY1l1ajlRenRR?=
+ =?utf-8?B?NmpIMjRyQ0c1RDJTM0VHSTV2NlRhV0g1Ky9pcTBNRlE5SU80azJOVkp0T2dz?=
+ =?utf-8?B?Vnp3S3I5VWJxOEZJL0NOOHVRRXhocTdqYTM0U1NxTzhERHpya08waURNdDha?=
+ =?utf-8?B?OWhMbVlhMEpiU09INVBma09rTEhYSnB5NzRmbUlEcktwcENQR2NGRU90aWtV?=
+ =?utf-8?B?TExBQmI1OWNYdTBqQWlCdVZzYUZOcXQ5YVp3djExTGV4eE9Bb0VVclpCRlRp?=
+ =?utf-8?B?NytFTXF4Q1RpUU81RnR4a29VN2NjS2lpa1pWRjhWa1hTRmEyTkxNRGVYWVls?=
+ =?utf-8?B?b0tZQnpUanBrR2x2bys2SStacnZLK0NxYUFJT3QrQXY5TUNwdkoxS25CK1ow?=
+ =?utf-8?B?V00wTm1vMXlqMUVhYUFyTGFYQVZlZExGRXNsWTZVV3phWmc2a1p2S0w4dGh0?=
+ =?utf-8?B?Rm5lQkFLZWpFZHl4cUl0eUoxL0xnRGFUVlh6YXRVSm0wWjc3a0RxTGxCTE5H?=
+ =?utf-8?B?aHlnTEJRUlFqMFFUZG14VFV3RHZNcFZjakQyNFVvN1Q3NEQrRG80eXgxZjU5?=
+ =?utf-8?B?QkxhTHFxenlaUDBkZlAwKzFWV2JPOTAzSW5hNXlBWUJPU1B2WjROVExpQk1G?=
+ =?utf-8?B?bFBtSzd5SW0vd01Vai83UFAvN0xyYWNrQTkvRWtnUDlMNTM5ekNiRXZYNVJN?=
+ =?utf-8?B?SFFPV2ozTkdEc1VqNU1La0FrVE1MWlduU01WcHhSajFyWTdNNDlqSnFKd1h2?=
+ =?utf-8?B?UEJkMGUvazdDT3E5M0ZacFBKc21qZ1ZTOXVKRUNiejVISWNwc3V0b2lRaS9k?=
+ =?utf-8?B?SG9XanY4cVd2ZjJZVmRBOXJwcnN3eFdQcmhmNGRJeW1GMFRQVlB2Tksvak04?=
+ =?utf-8?B?L2pKc0IrL2s5dGRMYm5Bakh5dVdaenJubEs0VlppSHdhOUkwNm5ZNmxubzBp?=
+ =?utf-8?B?azVXeVVrSDFVSWlRWVpoalJFbWFsb05OTVRHZUpiUm84MTFuOG5Ka2dPeFhD?=
+ =?utf-8?B?WWVtQ0h1OTZucnVSNG9wK0RKci9NQm9XWlFUSDA2dWZqREoyK3hiUEpzcjIx?=
+ =?utf-8?B?Q3hLOTFuMDVPVXAzZUhFRk8yeWdxUi83aDlwR0FNb0dWSHlaWGI2QklJR0FF?=
+ =?utf-8?B?eW9kNWhZY2lIdTV5STVoZ3RONEREV1ZxSHlaRmk5WVkzZ05TN0k3TEp6OVF4?=
+ =?utf-8?B?OUtKb3VzT3VmK2lOMU9abXNKZHMzVnhpNWlpWWJ1V2tjUk85MWtLZ04xQ2dT?=
+ =?utf-8?B?czI1UUttOGM0UTNvbnFzeDEzdnE1aGFDSVMxRUE4YTIwMyszczlvSmFwdElx?=
+ =?utf-8?B?K3pIek5zM0JzajEzODBRWEZyRWNoVjlhREVNZ3BpMnkzUE85M1c5dHdKSE5I?=
+ =?utf-8?B?VTZyTEZoRThMVFdqd3lnV2NKTTlQWUNINVljTDZSWFZLR21TUE5leGlnV2tk?=
+ =?utf-8?B?RmpqRTlCTkxuQk92YS9yY08xRm8ydlJ5WHlWMEJTOVMyTGc3MDJQdXdRNXF2?=
+ =?utf-8?B?MUp5Rkk1T1FpQ0J0anJRU0NsN0h0UHVBampWM3ZQY2RjaWQ0R1JrM2g1MEdn?=
+ =?utf-8?B?VXcxOXAwSlM4MjJzcmZMTS8yUmlyNStuLzBLVzE0VGhVZVdRSkdPYmNjRHJX?=
+ =?utf-8?B?WXYvNzJja0pidGozZ1ZVUElEdVpJTG1vcWhGMjllTW0yVkpDdUhTWmw0RWtV?=
+ =?utf-8?B?cTdGLzJlbTZBTFRXMVJzT0R6cmZEOEpTMCtmVlFqcENyRFAzVXByMjVVdldP?=
+ =?utf-8?B?OFF0U2RBQ0pOZXhTNzhSN0VQMzVuL2VORW9qcnZCQmlTMHdSSmhlZjNDQlB1?=
+ =?utf-8?B?S1dpYTdnUEtzUU11d1hDVnN5YWMzZm9yOWtGT3dka01qSnZ6RWEwSEtsSVli?=
+ =?utf-8?B?UE81TU9hT3dSQ3Ewa1A4S2hrVFB2ZXBUK2VHTHQ2ZEU3SEt4RXJuSVdOb2M5?=
+ =?utf-8?B?SnUrK1JxTm44MUx5ckR6Y0gvaXFvaFlMUG8yTGxwemt1Rys3N2k5NXF3MjJv?=
+ =?utf-8?B?MmVvM0FnSnBlRVk2MGROaSthd0VQdVo5cVhQKzFxcG9vcTVrREJuTHRiYzlI?=
+ =?utf-8?B?a08yeHc4L2gxMEtBK3NiMU1iZkhjMWp6cS9mdW9oTGFKeDVXcEpGNFVsSC9Z?=
+ =?utf-8?Q?2Sg27okX8QDO6yu4xYCAkdC36qUFto73A+tRhU5MBGHFp?=
+X-MS-Exchange-AntiSpam-MessageData-1: u8TwFzOF6sycJg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8eb56acf-1d2c-4402-6df6-08df22826121
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2026 01:45:48.2688
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1OCg2pUJcDrysVxAbpQm/rmSklR1cAqf+tzB/VxlsMUv2pajAaNjOe029NYeIxGxzmFjjEFTeoVnyqXNbTqCrQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB432622
 
->    - If I know I don't need BPF on the workload, and these 5.4 MB
->      bite me, I can just turn off BPF
+On Sun, 04 Oct 2026 10:00:49 +0900, Alexandre Courbot wrote:
+> A module-wide new import becomes unused if the `NOVA_CORE_SELFTESTS`
+> config option is disabled:
+> 
+>     warning: unused import: `Spec`
+>       --> ../drivers/gpu/nova-core/driver.rs:29:9
+>        |
+>     29 |         Spec, //
+>        |         ^^^^
+>        |
+> 
+> [...]
 
-They cannot, even when they know they do not need it.  As the cover
-letter says, the cloud provider usually ships one kernel build to all of
-its customers.  Customers install their own packages and workloads around
-that kernel, but they do not build or customize the kernel.  Turning
-BPF off is not a switch they have.
+Applied to drm-rust-next, thanks!
 
-> What I find strange is for a user of this scale *to not know* whether
-> BPF will be used in the workload or not, which is what lazy load may
-> solve.
-
-They do know.  They run predictable workloads on a large number of
-small instances, and BPF is not part of them.  They spread the load by
-resource usage, so at that scale every byte matters: more free memory
-on each instance means fewer instances in total.
-
->    * Compress it.
-[...]
->      Keep zstd-compressed blob in the kernel image and decompress and
->      parse it synchronously on first use.
-
-Thanks for putting this forward.  This compression approach is simpler 
-than loading a module.  I expect the overall code complexity to stay similar
-to v3, since both need to find the first user and defer the module BTF parsing
-until then, but it should be easier to merge into mainline because it avoids
-the request_module() deadlocks.
-
-Would you like to prepare it for a formal submission, or would you
-like me to do so?  Either works for me.  Ideally it lands in time for
-the next LTS kernel, so that we can adopt it there.
-
-From what I can see, most of the work left is in that deferral.
-Whoever needs the BTF first also parses the waiting module BTFs and
-replays the queued registrations, struct_ops ->init() included, under
-whatever locks it holds at that point, e.g. event_mutex or
-bpf_verifier_lock, or inside the module notifier.  So the
-cand_cache_mutex ABBA you found may not be the only deadlock.  Besides
-that, only x86_64 was touched so far, so it needs extending to the
-other architectures as well.
+[1/1] gpu: nova-core: fix warning with NOVA_CORE_SELFTESTS disabled
+      commit: dc90f13368ac509b05189089bed178858234c050
