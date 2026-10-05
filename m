@@ -1,36 +1,48 @@
-Received: from mta0.migadu.com (out-27.mta0.migadu.com [91.218.175.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71720331A43
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 Oct 2026 19:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3723D391E54;
+	Mon,  5 Oct 2026 21:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791226895; cv=none; b=Sft5Ozmi73ArY1ysh0stKs6r3upFI+VDWutwfarPMGCVRUQoYYDXq/suR6q/xvXWYbkwgzkLMdLbnKVULjODULdEAkyxM3K8PwKdCBLOZNiolyYM9bt/ATgVPw36imVpd70bw/MzljvRgfkyB0l5qNfYhfKN4YyGdG2uYTBF+mA=
+	t=1791234475; cv=none; b=ELPzwhMwr1VWcYc9cJVqIFAzwuPkL1GPsLnY8GrbUCAOd8B7guXBL5KHrfqaO3M/wAF0D6QPJEd3mMjelg7mWoJ6SWpivOxCXIIr/ZG3j9/k5sJFg3Z/tb5XNp93mRgksyz0ej3ONrJRKAcx8VbCSo0hZDqfMKlUwZHkrKzl9Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791226895; c=relaxed/simple;
-	bh=rJT8G0sgga4UeEHY50WFHahh2k7AQRpW/V4C83LPcM4=;
+	s=arc-20240116; t=1791234475; c=relaxed/simple;
+	bh=dq4i77jwsT+0KxBL4PRHrMvUgBFxnDzVUkzdfEKqMq8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T++hxqVn/V8H76KlBdRyIxV0VGTzLhNgZRbvHyDElImvve90Wpl2vQD1/LpMHIRlRsZh/4n1ARWt/rXwEWrZp2EOQfhkP3lpwK5FDGvXiZ2dXQyJ57m0cbBWbkib9sLdz4B+/hZjxB81xq1CL9kBoPB6CmZjYhokc62ucKeXtxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rpgOxRCu; arc=none smtp.client-ip=91.218.175.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 In-Reply-To:Content-Type; b=h3Xpg9sEs8pA8TJoy7wumdhjeB6Qs5mBykqvBe2YXOCgDdTqS5IboTzRd9O+4q+0xAZxEmQ6klD3Wsw+g4LD4edbnQ35jmwTbYQoIqCBFa/kwIWNEDFUl6I1SjvAXKxzZrkvyJwsw3QyyxQfVmP2T2225g+mhfnw4Lb4gO+qS4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=XREvpsaQ; arc=none smtp.client-ip=199.89.1.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rpgOxRCu"
-X-Envelope-To: rust-for-linux@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=rJT8G0sgga4UeEHY50WFHahh2k7AQRpW/V4C83LPcM4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791226891; v=1; x=1791831691;
- b=rpgOxRCuBdRBG9Cruva0qem46KyAXqHLWajd0ZjIRz0kgD8tNqxyOJ2IoAc2uiVFYp0AWqwU
- fYK9s+nOEwPq6TEVKyQTb7ZG9spRm+B0UmWQ9BG569oC3jH+5BUQFc768yIcjo1AEuCsOtbT9Nt
- bjqyL+C+m3j1OwXepyyLRNU0=
-X-Envelope-To: rust-for-linux@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 3eee9485e3972e9f;
-	Mon, 05 Oct 2026 19:01:30 +0000
-X-Mizu-Trace-ID: 3eee9485e3972e9f
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <7844ef03-d9b2-4a10-8f14-1b498ada9043@linux.dev>
-Date: Mon, 5 Oct 2026 12:01:17 -0700
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="XREvpsaQ"
+Received: from localhost (localhost [127.0.0.1])
+	by 013.lax.mailroute.net (Postfix) with ESMTP id 4hzBmn3sPSzlfvpN;
+	Mon,  5 Oct 2026 21:07:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1791234466; x=1793826467; bh=dq4i77jwsT+0KxBL4PRHrMvU
+	gBFxnDzVUkzdfEKqMq8=; b=XREvpsaQPQtzw/FDcmSo16IHxb74YV8gj12H275H
+	25k+DwXs5j10/zVkLUjOA22E2kQii0Za/Koz3783Aqqokyi9k0+MV0GGLo0YeEz0
+	Dyw3660jcGYAH3laoeFT/kZUNlvBDycdPGPiVGGl3ZP6E0UIREcEALm5u6M6xWUo
+	XZZjdnhlvfdx0vUtxmLuFKlQWLK8W2nhmCWu960o9foPT2/Ym4QCrL9ScwwPcEB+
+	/Dx7Gw/y8XzhLwvxCdvBBigQhQoAyYkhjYtp1SMDChqI9MOzXWCdcm8JKcopfRGf
+	aOsIxQg/ldNRfzOv+dntQ2wzWdsvzll4FENKjant1gONbw==
+X-Virus-Scanned: by MailRoute
+Received: from 013.lax.mailroute.net ([127.0.0.1])
+ by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id tqKjfMOei0EU; Mon,  5 Oct 2026 21:07:46 +0000 (UTC)
+Received: from [IPV6:2a00:79e0:2ed2:d:913:466d:8f79:f68e] (unknown [104.135.182.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4hzBmX24XVzlfvpH;
+	Mon,  5 Oct 2026 21:07:39 +0000 (UTC)
+Message-ID: <0ca00d02-9abf-4740-9dcc-05a85d88df02@acm.org>
+Date: Mon, 5 Oct 2026 14:07:39 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -38,80 +50,34 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v4 00/12] bpf: make the vmlinux BTF an on-demand
- loadable module (CONFIG_DEBUG_INFO_BTF=m) to save ~5.4 MB memory
-To: Jay Wang <wanjay@amazon.com>, bpf@vger.kernel.org, ast@kernel.org,
- daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com
-Cc: alan.maguire@oracle.com, martin.lau@linux.dev, yonghong.song@linux.dev,
- jolsa@kernel.org, qmo@kernel.org, nathan@kernel.org, nsc@kernel.org,
- linux-kbuild@vger.kernel.org, linux@weissschuh.net, christian@heusel.eu,
- mcgrof@kernel.org, petr.pavlu@suse.com, samitolvanen@google.com,
- linux-modules@vger.kernel.org, rostedt@goodmis.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, linux-trace-kernel@vger.kernel.org,
- acme@kernel.org, namhyung@kernel.org, irogers@google.com,
- linux-perf-users@vger.kernel.org, jikos@kernel.org, bentiss@kernel.org,
- linux-input@vger.kernel.org, tj@kernel.org, void@manifault.com,
- arighi@nvidia.com, changwoo@igalia.com, sched-ext@lists.linux.dev,
- shuah@kernel.org, linux-kselftest@vger.kernel.org, ojeda@kernel.org,
- rust-for-linux@vger.kernel.org, arnd@arndb.de, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, abuehaze@amazon.com, doebel@amazon.de,
- mpohlack@amazon.de, jay.wang.upstream@gmail.com
-References: <44315425-c505-46fe-8379-f19d78ff3abb@linux.dev>
- <20261004222127.31128-1-wanjay@amazon.com>
+Subject: Re: [PATCH v5 1/2] block: Add post_release() operation
+To: Christoph Hellwig <hch@lst.de>
+Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+ Jens Axboe <axboe@kernel.dk>, Jan Kara <jack@suse.cz>,
+ linux-block <linux-block@vger.kernel.org>, Al Viro
+ <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>,
+ Brian Foster <bfoster@redhat.com>, Damien Le Moal <dlemoal@kernel.org>,
+ Hillf Danton <hdanton@sina.com>, Markus Elfring <Markus.Elfring@web.de>,
+ Ming Lei <tom.leiming@gmail.com>, Qu Wenruo <wqu@suse.com>,
+ Tao Cui <cui.tao@linux.dev>, kernel test robot <lkp@intel.com>,
+ rust-for-linux@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Nilay Shroff <nilay@linux.ibm.com>
+References: <69960302-1535-441a-be4e-d652766d65c2@I-love.SAKURA.ne.jp>
+ <472c3bcd-45d4-477b-9e81-3c68601dc18f@acm.org> <20261005084521.GA8879@lst.de>
 Content-Language: en-US
-From: Ihor Solodrai <ihor.solodrai@linux.dev>
-In-Reply-To: <20261004222127.31128-1-wanjay@amazon.com>
-Content-Type: text/plain; charset=UTF-8
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20261005084521.GA8879@lst.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 10/4/26 3:21 PM, Jay Wang wrote:
->>    - If I know I don't need BPF on the workload, and these 5.4 MB
->>      bite me, I can just turn off BPF
-> 
-> They cannot, even when they know they do not need it.  As the cover
-> letter says, the cloud provider usually ships one kernel build to all of
-> its customers. [...]
+On 10/5/26 1:45 AM, Christoph Hellwig wrote:
+> No, adding magic out of lock extra ops is a no-go, and we've been
+> through that before.
 
-Ah, I get it now. Thanks.
+Thanks Christoph for having provided feedback. Christoph and Tetsuo,
+please help with reviewing the just posted version six of this patch.
 
-So the constraint is that the cloud provider ships a single kernel
-revision to all users, and there is currently no mechanism to on/off
-BPF other than a kernel build flag.
+Bart.
 
-I'd be tempted to say "just ship two kernels", it's simpler than the
-upstream change. But I understand the downsides of that as well.
-
-And obviously a good upstream feature may benefit many more users.
-
-> [...]
->>      Keep zstd-compressed blob in the kernel image and decompress and
->>      parse it synchronously on first use.
-> 
-> Thanks for putting this forward.  This compression approach is simpler 
-> than loading a module.  I expect the overall code complexity to stay similar
-> to v3, since both need to find the first user and defer the module BTF parsing
-> until then, but it should be easier to merge into mainline because it avoids
-> the request_module() deadlocks.
-> 
-> Would you like to prepare it for a formal submission, or would you
-> like me to do so?  Either works for me.  Ideally it lands in time for
-> the next LTS kernel, so that we can adopt it there.
-
-Please go ahead and submit the compression approach. Looks like we are
-converging on that. Feel free to use the prototype code if it's
-useful, it uses parts of your series anyway.
-
-> 
-> From what I can see, most of the work left is in that deferral.
-> Whoever needs the BTF first also parses the waiting module BTFs and
-> replays the queued registrations, struct_ops ->init() included, under
-> whatever locks it holds at that point, e.g. event_mutex or
-> bpf_verifier_lock, or inside the module notifier.  So the
-> cand_cache_mutex ABBA you found may not be the only deadlock.  Besides
-> that, only x86_64 was touched so far, so it needs extending to the
-> other architectures as well.
-
-Yes, I think you are right that the hard part here is the deferral,
-because everything expects vmlinux BTF to just be there.  I don't
-think this is avoidable whatever memory saving approach we choose.
 
