@@ -1,114 +1,160 @@
-Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8672E975E
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 Oct 2026 03:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D2925B09E
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 Oct 2026 04:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791172582; cv=none; b=lUi2cHMCOykwdcikw/kRR+74UjKVOGOOMgCOoIRFiYVj26VaAoTdSrVNtl6AbozFdf13KA+OI1gRbI7ZpgtwxM3mof0rEk2Nwt6aD723/8Ji/wuUXfWiZh03IAXMDTPq6LO4af7glJAJWOGwjadwfvmis1zk2OvKLzPgk8/MIFQ=
+	t=1791174009; cv=none; b=TWvLQCrBGBlNXceXErtT4bBk8ZqTccfEKOLGZzewTL8twcr+JX7y2MbH3hPxpXXXxgWLPnUwRVahO44myd/ddvvu0EgwZunb+Vmt54867cCBsOzWPPLpWWi+fNxXhraw+KaIFeSVDrx+LVxd/FFhHJ7bP9xZU3/bNWNoBCl0Ulc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791172582; c=relaxed/simple;
-	bh=d9tN9DTYTvuWVcATgsyxcXj68fmoeMiRSaYaMZpJFYw=;
+	s=arc-20240116; t=1791174009; c=relaxed/simple;
+	bh=HoMA9XEjkkd65DXJKPcYLGl2KH3SaKVzwVNL3VSg7LE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VGnqSwVhnGdfiPZ751BacSKdt/D7jvtOTdrIXFwA5NJ0df3JE7HpCZhxRyxz8voUxcqL5cZw1t1Uhvf/zVhGvwaB6qiFlLi0JlFqZLJPf+VP19QKDzqk/kE9b6HNLrGdJeXxhY69mpDh6rMU7dXpHhQhuTqT5tCuLlNFPXoFnK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZbeF0tJN; arc=none smtp.client-ip=74.125.229.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=ACq9bFYfbA3YimjOp+3er+pi2B6VK1sS1yTuXsGgWhPo9dAtY8wP8lzrz1dOXCUScu/x54p/JaYDH6eQpjz15bLKebwBDNkrW3IziaK/QKUKiZ6GmykNuviCrYOTWltJlmJOQeesSp9IebCSZuYwbVQiU8TR7pq79OXawpl/g9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rjBINzSq; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZbeF0tJN"
-Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-34c4a0870d2so768056eec.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 04 Oct 2026 20:56:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rjBINzSq"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49ffbd83a92so11211645e9.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 04 Oct 2026 21:20:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1791172579; x=1791777379; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3Z6Qlp965hPUbBTzoATV44EgR0/hyg3NkRU9lRFO1Ok=;
-        b=ZbeF0tJNqENSNUz7zCh1QeelddA7a5yrzQHKGvXsFn2h8jYjzn6hlYTL35fs4Dn08E
-         /nwdaQpcmsbmeGBSKKu9snYlDbzwq1PYWX/WbAeyr79lymz/NA+reKZUO3IhhIzZ0CH5
-         FsPjO/uVWUlyANiZ52GZgFIeM0+fHI5aKJd+N1+WRaN09bKzvgw/OZNCrkLhxgVxrarb
-         tN/4/NPZTyLPTJxOEy1TL2rkNrT1MAUV6zlYXFLMoweL2qm3PmNhxMMGwUGvDzDRVAKT
-         +WOXLqmT4g/evZlcLVoDshOavZs8ZFA/VofuI01bf2/Izy47ang+ZuKr8dUNbODii7NW
-         aGpw==
+        d=gmail.com; s=20251104; t=1791174005; x=1791778805; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=znHr15ngoIrnyD0Loh8A8gjvgvi//2QapaxdSU8F3XU=;
+        b=rjBINzSqDWzLpbPoliBSwcjAWA2ygu0kAsPCf8pIokS39ABeOf7AG+vPwB48+ldof1
+         bVB6sBwMjBTrv2U9OShkJ7QgirhwRPMYYecTDh4iipckMjLP8TOotZekcia38+C+Pq+D
+         VDe+nH6VJT5b5Qetrr1SVy114LnKzECd9tXu9XNrBRVaPwcn2wLOCxrBSFbA0mESXVPT
+         2s0QMa77W805CZrxkoOTsOdIU//A7Azv5a7ydKsYevPzGRmvZkRRAywcovnGGy+dG9y8
+         FkzD4bpnkcsSAlpXTJEn9fb//dq739LgURrW0GLcrBL3Sml6U2kfaTuWBBJ5IPatxHtQ
+         GUTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791172579; x=1791777379;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=3Z6Qlp965hPUbBTzoATV44EgR0/hyg3NkRU9lRFO1Ok=;
-        b=MN87lNZ3IMO0TF0L02IwJ7se9HnAzTEIgwvZAi00dRceAAFpApA0LsCW+sWKJXfVSo
-         Rwn5EScLGOBS9wVEh0qvyG70SWF0K5eetsy0xodMaPbUiPqVoWUGAx27lfr5JxpRIsv9
-         ymdJFmZ9/kn467rw9lwOD06xiGKY4OKCZY1Scpnn83oNJezpPBS3O3IZSNR8KBgqsXrH
-         dfH7rEiImH4atS7nWM7EGGxKEgaGwySmSfQiLqkvNnngf74ppkbERfHVkRdezwfAnMQt
-         x57aytHyKblHukPeKYRrj7jUrHhJ7aRliJEiMwb9fnigE11bXKdIbRQytOXKSHUQw9zr
-         u/aA==
-X-Forwarded-Encrypted: i=1; AKwUvBxPzmmBkJK8V/48vtjzY1+haraun3L0uvYIZd09cbgxkuYSrbAI6/oq0gYxbzGbn98Mo4xkKXGQHysyOdhrcA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYI5nXXmEKjMidewTiMyegcY9OdS6KXEvr5U4jgElh1pxwtaRTsj
-	ZQ4cy/hQoJdfuhWZ8IciXFoH7NExqRYHssJFyGF9QQ7QteS0rKTl+vD4+U30bBKuqq4=
-X-Gm-Gg: AYBFou0QCYFXG/gvsWiEF/jGrb332+ibX+fzaWoU8ckaSvgMHmC/sI6UEC4xIaSX6dt
-	UqbhuX0FMHqYvVal4wlJ6GrwF5lIkRMBpXuPnH/ZZUGhcvthFnTKrOxIdaEj65v8ygMMhEo/LFy
-	p08uGKoesgJDCZZ4atP42dovFkR0Kh6m/RuRuxXmSJ/bL1Cg6cNvN5Pl3Hh4/Fz6Hkk9vhYVDyh
-	6AQcfWv5ly3kMOydA6ExdnwFJ9lqaqCGjyUf4GAJTwi4+Qd03G2aMh8GyKg4Wu4pOvdRn/wm2Kf
-	Y+WOkoDx091egWyYJg3UApY/WCnloTAtmNevU4RuFv/a3RLJqoW8T5mHOW/FiWb17wjE1fkBjl0
-	20z44TduAZdbK0SkdEKrxqKBsTrupfwg+0c3uLAnyxwURg3GIWISfOZdYRUqfnwp6momLswrD3R
-	TuURdcD64M/nhESH72AP/tRaSp+FCTytwqgj8GaBbSNXHannCEC+bKliwF0DiDtIWPWbiSoI+Z
-X-Received: by 2002:a05:7300:80c4:b0:328:3542:b73e with SMTP id 5a478bee46e88-34f150c28eamr16667594eec.15.1791172579370;
-        Sun, 04 Oct 2026 20:56:19 -0700 (PDT)
-Received: from localhost ([122.172.87.224])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-351272bb9basm9311939eec.24.2026.10.04.20.56.18
+        d=1e100.net; s=20260707; t=1791174005; x=1791778805;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=znHr15ngoIrnyD0Loh8A8gjvgvi//2QapaxdSU8F3XU=;
+        b=PfMX6K5YlTVVHUl9u7ask95j1hYV7kMuaneJ+RpDqF0H9o9co0QiCvimxvez4/3Z7s
+         ClxhBTwHA08uoZjf55wlSlUUVa/IybvxyLobF2xHhukAI5CujAb4RgWXLnGtBqtInrAw
+         GJ2Hib8/D1F3BKHp6irC9XmAiGeWoJ8RLrqJG3T63dtIfTyR0HDckQo1a82mRC5LitYx
+         FyXnnHhm1G/LmWHLFOwXzwEtIRqIKpEaX/ldXzrarq1tcfp+IVu1dv/G0k+Sg76Inb6A
+         opQdrFcValYQm8fH3uVtLDd+wwKnXQqjUxnmqmDAZAQJxMEtYNJZ+EnhJ40Azc1A2mMJ
+         7e6g==
+X-Forwarded-Encrypted: i=1; AKwUvBzBdy3jyZQNATu0mWFGWQYK0bQ2GNuyx9AfRYrHDrOBP91bGf6LtDyUQz8kSc2LqvkuZ7911H27/cbvUvEmRQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++l0ZtdDu5ndT+gfM4WbyLyXTiy3LPX0DVD9aFJ2oU9/DXI70oV+
+	z4hHnQBfP5YzeqthPnGdUjOoRBafx/pALgRS+7BdplJPa3mBvAv0seyr
+X-Gm-Gg: AYBFou1gsHKFpFDyOtYjiWdNLELU6T+Zdp9+N8mECbl+hKhMx7XVa9fu2HZRv9l3QxY
+	QU8QtqcjuJ5q4G00y9RbGzT2zHu6jCppyK1JJNjWdebFX5/xbLRjYxHVhDBe5lqi/34pwdI8mbU
+	8sTSMPKASGF7yV6uxm3g9jJzpAhg/CQougLM1XjCi7iA7yKpV9v+jj3D4qQEW0D0dmoENQOZpuE
+	9SIH6/x0sMGw7HME1oFwaaDLIeByfkULZUixMKTjk/MxKZK5JetN1N9rHmB9WYD2KJRfPlMzbqf
+	O+3MrnaE+vFxxgb8jmDz0CMh0zyjMGh4IOvzPSIXDysK/nGeEQED9PS673PqPHK0tctCoOfO9PQ
+	Cr4EcM/2C6NDJgir4KLGdeOUwAuK+s+plgU6XPLBknFeN5BvEvqjD1/+z0uh4EUuHxQjLKtI+up
+	3Cd6O+40koPVwmB/4E6awBuQt3vKDiG1IXFrw2uY/oX0mdsBoDdm+v94/EsEA2aYR6CEafptMlB
+	Z4LWI/aCyODTaL51zwyolJAb19zBYFGbd1ffPCoisYXJdXzr0HIpRKEF8gEX3caLoYZMqzCQiMh
+	2be0LAJMJj+c26+zNHq1jeBvvPWxl2iuA+AmakVEQ7DbnBhpfpbdDTrWIHch111Qrw==
+X-Received: by 2002:a05:600c:3e06:b0:4a1:6ad5:257d with SMTP id 5b1f17b1804b1-4a16d3d5c54mr77517745e9.29.1791174005080;
+        Sun, 04 Oct 2026 21:20:05 -0700 (PDT)
+Received: from MBP-von-Karl (dynamic-2a02-3100-b305-2001-39fa-3d24-821a-4eae.310.pool.telefonica.de. [2a02:3100:b305:2001:39fa:3d24:821a:4eae])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a027725c6asm355769085e9.8.2026.10.04.21.20.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 20:56:18 -0700 (PDT)
-Date: Mon, 5 Oct 2026 09:26:15 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Mehmet Koseoglu <mehmet.mkoseoglu@gmail.com>
-Cc: rafael@kernel.org, ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
-	daniel.almeida@collabora.com, tamird@kernel.org,
-	acourbot@nvidia.com, work@onurozkan.dev, linux-pm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	xuyiwen14@gmail.com, miguel.ojeda.sandonis@gmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4] rust: cpufreq: reject NULL from cpufreq_cpu_get()
-Message-ID: <asMf3xK5XiWdEiDA@vireshk-B250M-D3H>
-References: <20260829161013.102967-1-mehmet.mkoseoglu@gmail.com>
- <20261001102213.45437-1-mehmet.mkoseoglu@gmail.com>
+        Sun, 04 Oct 2026 21:20:04 -0700 (PDT)
+Date: Mon, 5 Oct 2026 06:20:01 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Russell King <linux@armlinux.org.uk>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
+	Linus Walleij <linusw@kernel.org>, Christian Schrefl <chrisi.schrefl@gmail.com>, 
+	Bradley Morgan <brads@mainlining.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] ARM: rust: Enable Rust support for ARMv5TE
+Message-ID: <asMj2D6_Zx4ZIfrw@gmail.com>
+References: <20261003093827.77857-1-kmehltretter@gmail.com>
+ <20261003093827.77857-3-kmehltretter@gmail.com>
+ <33197b82-3eff-4c87-b370-c677ca31a02a@app.fastmail.com>
+ <asEzZ1wOQ_MbgEsk@gmail.com>
+ <3436fcef-a052-4261-afb5-677b0bbf28c2@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261001102213.45437-1-mehmet.mkoseoglu@gmail.com>
+In-Reply-To: <3436fcef-a052-4261-afb5-677b0bbf28c2@app.fastmail.com>
 
-On 01-10-26, 13:19, Mehmet Koseoglu wrote:
-> cpufreq_cpu_get() returns either a referenced policy or NULL.
-> PolicyCpu::from_cpu() passed its return value to from_err_ptr(), which
-> rejects ERR_PTR values but accepts NULL.
-> 
-> If the lookup fails, Policy::from_raw_mut() therefore constructs a mutable
-> reference from NULL. Dropping the resulting PolicyCpu then passes the
-> invalid pointer to cpufreq_cpu_put(), causing an oops in kobject_put().
-> 
-> Reject NULL with NonNull before constructing the Policy reference. Return
-> ENODEV instead.
-> 
-> A KUnit negative-control run reproduced the oops with the original
-> conversion. The same test passed with this change. The reproducer is
-> available on request.
-> 
-> Fixes: 6ebdd7c93177 ("rust: cpufreq: Extend abstractions for policy and driver ops")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Mehmet Koseoglu <mehmet.mkoseoglu@gmail.com>
-> Reviewed-by: Onur Özkan <work@onurozkan.dev>
-> Reviewed-by: spidermana <xuyiwen14@gmail.com>
+On Sat, Oct 03, 2026 at 10:54:28PM +0100, Arnd Bergmann wrote:
+> How do you build ARMv7-A rust code in user space? If the default is
+> ARMv6, doesn't that rule out things like thumb2, vfpv3 and sensible
+> (inlined) atomics?
 
-Applied. Thanks.
+With another target, armv7-unknown-linux-gnueabi (soft-float ABI, no
+NEON). The kernel never used it. It fits the same scheme
 
--- 
-viresh
+  rust-target-$(CONFIG_CPU_32v7)   :=armv7-unknown-linux-gnueabi
+  rust-target-$(CONFIG_CPU_32v6)   :=arm-unknown-linux-gnueabi
+
+A v6K+v7 kernel stays ARMv6 like its C code. My planned v2 has this as
+last patch. It changes the Rust code of all ARMv7-only kernels from
+ARMv6 to ARMv7.
+
+> In the kernel, we don't normally allow neon code, but it sounds like
+> we may need to make rust depend on !CONFIG_THUMB2_KERNEL, as that
+> may be problematic when linking with v6 code.
+
+You are right, for modules. Built-in Rust code works on a Thumb-2
+kernel (Pi 400 and QEMU). Rust modules do not load
+
+  rust_minimal: section 8 reloc 24 sym 'rust_helper_krealloc_node_align': unsupported interworking call (ARM -> Thumb)
+
+Same on v7.3-rc1. rustc has no Thumb-2 target with the soft-float ABI.
+!THUMB2_KERNEL would also remove the built-in case, so v2 leaves it
+alone.
+
+I have a first module loader patch instead. bl to a Thumb function
+becomes blx, other branches go through a PLT veneer. Rust modules then
+load on a Thumb-2 kernel in QEMU. I would send it separately after more
+testing. Or do you prefer !(THUMB2_KERNEL && MODULES) for now?
+
+> >   --target=arm-unknown-linux-gnueabi -Ctarget-cpu=arm926ej-s
+> 
+> Ok, so I guess this is more like -mtune= in clang and gcc?
+
+More like -mcpu. 
+It adds features but does not override the +v6 of the target.
+
+> Maybe this should be "+v7-a" instead of "-v6" to allow allow the
+> compiler to use all ARMv7-A features instead? It would be surprising
+> if they added 32-bit Arm support to Rust without a way to target what
+> is in almost every single chip and Linux distro today.
+
+rustc does not know +v7-a. +v7 works but warns about an unstable
+feature. The separate target avoids that.
+
+On the CP15 barriers. With the generic target a fence(SeqCst) from
+core::sync::atomic becomes
+
+  mcr p15, #0, r0, c7, c10, #5
+
+and with the armv7 target dmb ish. No kernel Rust code does that today,
+the Rust objects I looked at have no CP15 access and no swp. But
+nothing prevents it.
+
+> I would leave out CPU_V7M as well, it's not worth trying to
+
+It is left out already. HAVE_RUST needs CPU_32v6K, CPU_32v5 or
+CPU_32v4T.
+
+Thanks
+Karl
