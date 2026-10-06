@@ -1,79 +1,74 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021132.outbound.protection.outlook.com [52.101.95.132])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012010.outbound.protection.outlook.com [52.101.48.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7091833123D;
-	Tue,  6 Oct 2026 15:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495E949F105;
+	Tue,  6 Oct 2026 16:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791300631; cv=fail; b=GHAF6Sxe74YyT1nOs9GtCpE/MnpgtM9jfxQlx2/33tj1F8LD03WZDfDb5XuzP++H3h7wd1LZRm/x1VGuAMHQh8ypbCy2117ThIQCnWbT85Xypg7B0Jxb8mCjHlw+UlYVLVxE0o+RD1hZu4Y23GWzTRglLPzU70X3KxmFp62GzqI=
+	t=1791303435; cv=fail; b=hns/gTx28jwrcipKVUvSZmJZDUZpMNWKDa74MXPacemvSUnB6nZpMPkGolDile+ByrpMvTpe8QRG0Fje5eTnoMRWn/BlsK5NIQ18+ZmjzXPCJeI+n2w0+pfLGpCPnD/wRLxugLnbQKMDC6SGePu+mEVEXaXwlOFc2yLoYIDGb/I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791300631; c=relaxed/simple;
-	bh=CbQ8pbfGT9zOMX5mupalBgOm0OGwbQ4qqriO5AE92Hc=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=Fv5+TOOK1w3Ie46o6cq1CaWMG10Do5UyXoK14jWsuAgh5aGU1S8cFyjdV2XfwLqOvUrq/Q1++2RMy7cv2i2yA7FHDi60AFWhRvU22UHO9hIP0Wih4vqxLHAJKCodVLNR1qDCeFe7kDDJnwSeIi9EqewT+K197AwEOtNCChZBBGA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Wcqxrika; arc=fail smtp.client-ip=52.101.95.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1791303435; c=relaxed/simple;
+	bh=qYdUqINX0uzLg3I2mqUfMy+VJnuarivIjrAea5F6peM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=LZND5JMjmVD+ufoP1S58+8yYs6pNg/7/IqopNETXODHMUHPmlY3PKKISXt8DLqL+W2kwmpzyb0H1xIUEeVkomRDxNDLwzwtTrlpHi/+8AHhtdzbvcBVcWuXe3ur9lMPP3OSz2fK1JMiJ93YiVq3nSKGuoGCC8PriKw7N+UYA6T8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Gb4OF7rx; arc=fail smtp.client-ip=52.101.48.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Wcqxrika"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Gb4OF7rx"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MX8B4tv4XxIEd5NZDTkurYOmQLCIj1RsKU8y97ja/N8OqzzHFlxDI65uN9tXDgSWpNbcYss0DpKMysOBp4G8jemEk/nqLLH3B6qGt3mT6VW4TbrNZYY2l/evKfKdkwu36sgq0pJV+5qeLgPeZvw04agIQ+j6s0kIAgA07RDgSFPrvGZgfW8LVGT1W7ZMmyA2wtwbbHFbhkUz+1/tEp407x0chvdkxuv4i36KzuXCagSqc3cOXgBon0LLJ9Eu5st1RlcQz0/nuaAV24XnZKCmTueESyXdrvqptOm5VM51Ndgj7UJMd6Q0ZPDVXbH0U9RHiSN5MpntC+yqG/vhiNJqnA==
+ b=Y4OUk99B6CrykWYOSwdKBYK6lEZ2PUwiHm4HYlSLU44FUFVqZAxh7pq9dw1K4+icSoYOUWsFUTJoGrUcRW7rNyDeQkLgYbIN9fZrpQLBRnBuKFcBbQIhz9NRHX6ULJESDZDh1LaG/yVjG5Gm+SWeRbenvHAgN2DfIuMX+uHaNZ/go/Rw8EiPyKQu9WNF1lyuaMGlgDXiXEFFbQhp1zsjyPz6rB2l7HaOia8wtimrXv22mf++4G/0Fk7+m6xae4UMGb5lLDqOGppVEKbzSqar+bCkZeWtlKZjbj0vCEVvFiEqepybYkLwNY/6QcWgR3V+VSKpzjrBXAfCr2elZ4Y4Eg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/5e72chmQpExU4FXIJUwHwXcMGDbxJ9SJl40gItkso4=;
- b=H2UabWhs9Bkhj0ToRCPMyIiWyYvjNNr/pzY+H4s/BLVfmy8NAGMl4tnXGF2xOZQrEjg+OxMaavHbtsdcCRt7SWIbAwwK9nZGcxBaJUzfRUrEV7c0HvSpfK7TQv3ndeguolpXQ+akqGKvlR0szxIFj9mJSr8dPYgMynZ1U4RDHcyXs4fXVWmqa+n2rZCkDm/iTG8if/jic+Quqe8nc8fg9lyEwGfbZZnKK32Pv0u4CS5kvwym9IxnYbDCBRzKFyn0XhPHps4mk4CB6NHj9jCUZNsOHpOxaoni/DLeOb9PHdNEewdwhs6kH3kOXLY9l5Qo9m+ZUIi+zU67mgtTN0s78A==
+ bh=sxUALd5G4Ij+v/nSYKX4JmksiQRQm9H5DyyIlBw3UcE=;
+ b=XuM71lpWS+f+ovrhRhY3qSuwkR0oY812TVFsWZUbfArhp0losaR7ptwwL4tHGgunq22MoxYMlQjfDg7Yx5A3lfYktzAm2xSl738pyTiAqPbgL6JNWt9Xic19O8kJ40qLaZsWDGTNFKjRURwhz9/uQwRFcDGpP8hJHg7oJJmR73JDhdK5X73FPqx4yrvltkm44VLnKHL58eMCPAgsiXC87iwigg7Zzf3PA80bvzQ1G23teCICQn66tvOpiJK2DjlAbaKKYRdngSD7yu5tPF8seG4CE3hFzouJQ2YqyyE9jGiocEj6ylAJNJ0NFT/pLjbSJB+a8lvr/4quZlvCRDkl8g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/5e72chmQpExU4FXIJUwHwXcMGDbxJ9SJl40gItkso4=;
- b=Wcqxrika3xPAiNy+cZk0Rnex+vy+sEe0X0gcdUxmBx9n5f/nnZMznYaxxLEmA5EkKx47jXWMZd4Flt34U6Y+7IU48FxNpeg011C98obUkKBOSqCR8aognp3GJnawiJkgXp8yJjjid63Fx7ik3Fd8TeVuF+EHEa673qCNQ3l9yck=
+ bh=sxUALd5G4Ij+v/nSYKX4JmksiQRQm9H5DyyIlBw3UcE=;
+ b=Gb4OF7rxnq0l07tFKIdhpA/qRyfdY0dXQDyHJ7GiX9xlwi3wok7Lx3v84rAHqB3bx4a9cVLc72ATfl3kFGT3zm/ou6iheYyKsxfbrBDlsiNArNSGz/lSWVvj+zEkMjCokKx6XaKXLsOm1gs7UP/tKToFwd1Kb1+51t+cLI8mIAGVO9y+aH6yZHEqhUpW8xDMZX9VbOfHPW7X5WBzxmw/p/DXyUut4EoG9mcaq1sl3ILxK4JaloOLo3scvQer3SbymTNfkAaPV8UaDQUxnb60Mac0H22nuRykxP5hZzNtHvrXPG1gYAmfdbhzLMOkpj6e0xJlcrv96v4wr/2Sr2j5zw==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LO3P265MB1817.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:f5::14) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
+ by CH3PR12MB8211.namprd12.prod.outlook.com (2603:10b6:610:125::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.19; Tue, 6 Oct
- 2026 15:29:54 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0472.016; Tue, 6 Oct 2026
- 15:29:54 +0000
-From: Gary Guo <gary@garyguo.net>
-Date: Tue, 06 Oct 2026 17:29:31 +0200
-Subject: [PATCH 1/8] rust: pin-init: internal: init: forget guards in
- reverse order
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261006-dev-selfref-dep-v1-1-da716f740d6d@garyguo.net>
-References: <20261006-dev-selfref-dep-v1-0-da716f740d6d@garyguo.net>
-In-Reply-To: <20261006-dev-selfref-dep-v1-0-da716f740d6d@garyguo.net>
-To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Gary Guo <gary@garyguo.net>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2088; i=gary@garyguo.net;
- h=from:subject:message-id; bh=CbQ8pbfGT9zOMX5mupalBgOm0OGwbQ4qqriO5AE92Hc=;
- b=owJ4nJvAy8zAJca/kLG6/oLwNsbTakkMWUeF397/HLZVI3VG0pauJ1tvG/82M1p1nfWvm/Dje
- tkfPAyfDid0lLIwiHExyIopsnh0M6ZtYpwte1mr/CXMHFYmkCEMXJwCMJGVcQz/k07Obv0Y4HXs
- ivO2qS4M9wQi1e9vdDYJZ/r1feFpIw7m5YwMm5vz30tnl3/o+SDt69CyxixuftqElpciuowW+re
- 2rVHkBgALt0fY
-X-Developer-Key: i=gary@garyguo.net; a=openpgp;
- fpr=E25A77AED6FDB55D05B304A09D8C6F14E3E60652
-X-ClientProxiedBy: VI4PEPF00000161.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:808:1::86e) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.21; Tue, 6 Oct
+ 2026 16:17:01 +0000
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0451.026; Tue, 6 Oct 2026
+ 16:17:01 +0000
+Date: Tue, 6 Oct 2026 12:16:59 -0400
+From: Yury Norov <ynorov@nvidia.com>
+To: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Burak Emir <burak.emir@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Yury Norov <yury.norov@gmail.com>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: id_pool: document panics in `find_unused_id`
+ and `release_id`
+Message-ID: <asUe-3wpbPA9TgN9@yury>
+References: <20260908203157.1271219-1-georgeandrout13@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260908203157.1271219-1-georgeandrout13@gmail.com>
+X-ClientProxiedBy: BL1PR13CA0090.namprd13.prod.outlook.com
+ (2603:10b6:208:2b8::35) To LV3PR12MB9356.namprd12.prod.outlook.com
+ (2603:10b6:408:20c::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -81,124 +76,121 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO3P265MB1817:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1637661f-2a71-4166-4f1e-08df23beaaba
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|CH3PR12MB8211:EE_
+X-MS-Office365-Filtering-Correlation-Id: 698b1193-8965-488e-927e-08df23c54091
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|23010399003|376014|921020|56012099006|10067099003|18002099003|11062099010|22082099003|6133799003|7136999003;
+	BCL:0;ARA:13230040|23010399003|7416014|10070799003|1800799024|366016|376014|10067099003|11063799006|4133799003|56012099006|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	3VRzBkRPW8vmfskflixzZ2meu1SiQ9Gt+Xn8ZVF/hWHg3QW/n1ekKH6O+6CUR9xhx3nT62b2iDeU/8VIa78LWvs0nhsw4V34t0ZqdzE914bY/ipkBqlZrkUxuNOdcduJ6jGzXfKGi3/kTCJ0cXyVJyGd61Vl0WNhxI/XTLegaWRBOn7zS42GAdwBQGidnMegsZLpEg/CFMyWt0CkvUMSnCdmviAfR0Owwnfd7EIoKLvM1x7ULNwqDplrJyStTa3FIVO7FN7UHPB1aeWSyK3hh6NJ0RbWL+OgsmUZfz9hm3gwTQrW+6LMPt3cpC/vNpbhfEYJWqp43a6wAyQd4v/I0Y0bjgCDin2Hn25mdn5DOzs6tYMjr1be03ZvxmEOFQQvqfW68ZGTgtD1ENooNZlgM/rTS2fD9ZPOD3GxfGicyWyHTX0vPOyQYY8JorO98NzMeHV109IBb2InvUfOC0UQ8g9CTqZ/pokJ53LmzCSIoz/Jpkp/ianKiZ0YYUcek23T2nfh2YlvHtrIOPk+xsPXgaiCWevqBV7M87CZZ7FBzcOSOkMJ2encSfKUs/FgNZTkZX32CkLQZW/xxejFPM27ArJ/vGCGxBSIYFTW7+z+mJfTVc+2a9M+fmZwMqhNmW2sNFYJaFdV7XE7xFstu3h9UgFWOhFLVOTQnHP7OvEwADEN4tpwBBAPXFBRU97LNQlLIzRu7ilI3UYeih2Bxzl2Sg==
+	QaHyqp1DUIkK1nvYMgKjaf8IFXLtPyQa+MmydMUQXfrovQ99WniV0wY0kkcM8WFikWwA9NfOLllfJNJczk3Yii/izS9cx3ec8EthcbM39o3bqGlYF7FeEOK7wWbIi75vGfpvvUU4g0CYybVHlfXW+7ZlmtoqviEHr3k9zVZB804h1308qDjkDhC7izJnCXcVCufjjC0dGwOfj2T3LBbZ0EoVTzTUGpUJZ5+WFIySz7KdK4YcAcMv3vbXAXQ85mHsQW6bH6pKMFqbriU7fxOfNdY3b68lRzJielaHZ/Bi53Afw5e5hq53d1P/kAVA3aXtAItkYauXtXeHEgN4KjPEiOs0SZ7fDufKZHHYSF38xo2O1G1Hs3rt1N3nuR/VXBwM3tn6BlHeU5raJdpGT6j/BSQR5KDfudngIE4FBPLhw5t6pjCgBLfgaJ85urjZF+sj/xIsF1leCVugsL0ngFzw+nH1zWxVm7DQq3D/4jKrP6u93fZ9MfhCagj9kqUQwLMQ39GT48Zph0tuY/yQpoKk7wbMAsgpWXKFD32OVmSFkSLxfSXiZKRfpkKZlFTG7T5u7DJL/6ugYrr+O8rBd0aTDLc9c4nzirwm7sW55qod4HqRgHk1oyBNNqnLfb5PQK2zqZfoR8tWGezEc5teHyZROjHAJTGpWxDGqHbn7JTy654=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(23010399003)(376014)(921020)(56012099006)(10067099003)(18002099003)(11062099010)(22082099003)(6133799003)(7136999003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(10070799003)(1800799024)(366016)(376014)(10067099003)(11063799006)(4133799003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?S1k0enJzanBWbDhON3d3djFLRU40SEZFMk9kUWxnR3U4UmFCNlVGWXRUa0Ji?=
- =?utf-8?B?ZXJSQ1dicmhTNTVaTi9ENTNYdnd5VEVYWWNYZjJRMEsrbkQ3aTErSlkyQjdi?=
- =?utf-8?B?OGNPYTMxZTBUV0ZYb3pBTkxNNzVkQkpMajhQZzVyN3lrUnhqRk1NdURUbEZH?=
- =?utf-8?B?WXhjcDBHNUR3TnFvcnZpZ0Mzb3U5SVJrRENNRHY2bWI2cExxbC9YWjFzSmto?=
- =?utf-8?B?dlYwaXZWNFJBTllWcnNESCtEYjk3QUZZWWJJZkZBTEdqbDVFSG5YNjJNZUVO?=
- =?utf-8?B?a01EYTRkS3R2N1V5YjUyVGdJZjlxZFlOT3YxK2laaW1BeWl3R2tlNjFYVGNW?=
- =?utf-8?B?ZDVFWmVzSVhiWWozWUUrRE5mS0RFSHY2Yk9HQ2NLZFpmejZyRVdDeENPWUsr?=
- =?utf-8?B?ck00RDBDT3VUcVFIUk5VdVJqWlE2L1JnTktpQVZ0dHlRM3c2Q2J3SktrZ3gv?=
- =?utf-8?B?UFhrL25TQ0RVeitQN1ZrbTV2UklaYS9tMTk2UHF1TXpwSWZhSGtxbUVuRzht?=
- =?utf-8?B?bDdSeE9zck1GTzRZZFUyd01mcE1FOWx4NWYzSDc0OHY4eVVzTEV3dDVxK3Za?=
- =?utf-8?B?Y1lqT3VvQW42eUtORStBR2hybEpjMWlZV2djeExHcFdpaHlJV3N3Y0NNd2Zs?=
- =?utf-8?B?SzRuNm14UGtqa0QybkRNK0VFWFdqYWJObXpCTzQ5YmZWdGFPYWFnN3hGUzNG?=
- =?utf-8?B?UEVYcUZVNGhoazlpK0I0OFZsaUN2Y1VLek0xcTJZTE9wTzExc1hobXdVdFA5?=
- =?utf-8?B?WjNuWThaU09NR2ZZTzJ3anZiUU10Mit5cG1ILzVObVYyeFVHekFyQ3lSTENv?=
- =?utf-8?B?ZmEzOExQb21jSzJFZWlld3RpeWFwS0dweUFKSTUwemkrNEF6OTlhbExZWUpP?=
- =?utf-8?B?MG4zaDcvTjcwckhEaVRDcHVxdUg0YlIwdkhJSGJZM2Yyd2cwZXltclBFWG1E?=
- =?utf-8?B?N2tJYkhPWUV3a2F1c21IUndSeW1lL3dzMExkRDVpR3NONzJnVnNPcEpKb2R1?=
- =?utf-8?B?WEFzUHE3Y20vVlZVSWhHZXY3aFpkazBzQUZCSWdZT1Fib3QrbVlaajBRSFN2?=
- =?utf-8?B?MGN6Y2xaZVJVQjdjMTIxVzU3YkUrbTVSeUJzUWl0czVnMWxNNDY5c1FITEJy?=
- =?utf-8?B?ZXhNVFJTb2lEcVFYL2I2R1BSZHlpUkFXMFV1cU92bURidVhHaXNnTGlWMHlM?=
- =?utf-8?B?WE0yeGh6bWplYzIwMVI0ZURTR1Bsb2hOQTBBTUowQXY5dlcxdnNWNWlBM2FC?=
- =?utf-8?B?VTc5QlVRMVphbStwaHFZeFJwQ2hFYjlJMWo0Y0gwZzBpcU9CNnRoM3lFWWQ3?=
- =?utf-8?B?SU1GazY3eVdJL3E1M0xBNTZyZk84Q3Z1ZUtLbE1tVTRDWmZ6bUYxS211VXRs?=
- =?utf-8?B?NThQQWlxeXV5UEQ5Snkwbm5udktsbHR6SWNmTVJQVTJ1bGkrRGFKTHJCbll6?=
- =?utf-8?B?ZTBJY2VybFhrSExXK3MrUUdJcGJyZ3ozcWE5ZnlWanptR3JHQ2ovVWlnTTZp?=
- =?utf-8?B?Z0RSR2dIdjBvaVlrNW1ubElVazErR00zd1l4VVg4bjdwYWV4QVVoeXBCd01R?=
- =?utf-8?B?RWR4Z1l6RXRheXhydnUwWU04OHpxTUlJdXhRd0JiRVJ1SjR5SjZ0UHdFOWN2?=
- =?utf-8?B?L1QzczdOa0wvN0Y2UjA1USszdE5qeCt5ZFZmNE5Na0tpQzZwcHBxK05xTmxr?=
- =?utf-8?B?SXJGdzJ6Rlo5MGRGR2JnYXZSaG83Z0I2dUhyaWQ3TEYvZVcwQ0JCeDNlN1pM?=
- =?utf-8?B?cmVUMGlrUkhodEdhRGNMVXM3TkJVMEhaaEVnVVpmRWlzWXBhMHJDRlBiYmpQ?=
- =?utf-8?B?SkdueDdqYWkwa05DdGZBTGNOb2tjeW13S2IrcE42MGxjVW1xNGdkWEtHc055?=
- =?utf-8?B?ak9odEJOdkcvUkpHbGxQa00xd1lNVE1GT3E4U1VzMVRESmkrWEpqOVR4dVpk?=
- =?utf-8?B?VE9kRnRhRTFzWmdJMWZXc2MwRktrNGlkUksrU0FGYWNUdVY2YXlGMzd5TGlF?=
- =?utf-8?B?d3hJYlpYdE5HN1B3Sy8rcndVTFl0WEJRN1ZLOWx5N1VNeXFCVU9iVTJGV3pn?=
- =?utf-8?B?NFcxdUlJRGFGcURvbHRKdGQyWEplMFhuSDBCMTRNQlIvM3hxdk5KWkdyMXRT?=
- =?utf-8?B?OUtpand0cmdtMCtZeXpRVndhQkUwUVFoQ0ROVlloSWo1c2tKdzFBelBFdWVz?=
- =?utf-8?B?NTVZNEN6YlJnRDFXcWgzMkJUK3djR2QwMGY2aGM2aVQ0Y25uaUlIdi92ZFdW?=
- =?utf-8?B?dUR0NjhiNk9ERHl2clNnU0c1UndBYm5NcVcxd3Q0NEZONi9OQ1dlQnBJUndU?=
- =?utf-8?Q?/bjCtH/OKw3GonRZoy?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1637661f-2a71-4166-4f1e-08df23beaaba
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+	=?us-ascii?Q?2Zs+L250fwzwtBUUPfKdiUPNlxUukleYoRPzIZgFawfpPZyqNVqqRnNnuyEu?=
+ =?us-ascii?Q?D4bT7SUxliMLg4ZoM/M9MSZCM3Mj+g9VLpRtAHvWe2nl1smVSIyVrGp/5J1e?=
+ =?us-ascii?Q?1ne6PPgh0OSlfE5gKubPeVHYbBVB2t/rBJqkpeqP54l30OH4YouvccgRkvHE?=
+ =?us-ascii?Q?rdFRhLmrNC2q9qZGAQ88q6x3RQlLLFsZskNaPGHmOnSAiIYGnRdDrtrto+BR?=
+ =?us-ascii?Q?4yZ+uSJFsU4q4gt69TXwQaIG6cr0dtRFtw1E/XlcWcWTyVNE67REnrRxeonD?=
+ =?us-ascii?Q?UvQYdYpsW0vvTQpMki+e7CsemjF6Y20jnKAXOGPizXSQCR1BsgCXbaI3Lvdq?=
+ =?us-ascii?Q?Wq+zpe9d858sSRs7OgXa3XD7Ki2b6xHOKLXZtBGWop5LoFVcYewgWF5TOq77?=
+ =?us-ascii?Q?U+O2tqKrOwqSadaNpWDm1ooIYzPHEVelwp6A3JXKY0FoImDdVcNheiTbhIQD?=
+ =?us-ascii?Q?ke7kEeRpjglaqErmyjCqSeQGFnwM+wNJGOMZdT7p/zOopymmyymsMJH8JBUD?=
+ =?us-ascii?Q?j5PzJ6hKaAqhsUtAAi1riNuiZdlWLw3WWfYcEIhDSd8uhmPv5C5ewJqC/KwP?=
+ =?us-ascii?Q?ylNX0gT5m73mIwKn7E81Js9iu31VyX4Ke0IfgM6i0pBVuDfS0MWCqyiy/yMA?=
+ =?us-ascii?Q?Q3Xy/QiyCBFyWe22MHeTMIOE4RxGtkq+Yuli4MvfEw45x6/k96FYrBsyy2q+?=
+ =?us-ascii?Q?Vb20AZ8r8NkJXjlxg0qotjESgKnLW6nDje3hTUyTtWnzpI55kYm9yk/38/TY?=
+ =?us-ascii?Q?Zwo9TEv1UNPJRn38SydS8J+ivndWeVqJHyZucekGCDf++Z/DVkY+whR7YZsz?=
+ =?us-ascii?Q?HlbX7/kf9lCR8CtbmqoM3uYKkMKtZGWAIZnZLYA9bND5C5KOdSM7B5TftzdW?=
+ =?us-ascii?Q?ERcCZIJWtHitAaYRUrhEbOiifsnFi3K7XgYHeSiK5bdRG9ZMgSNtScoHSYjQ?=
+ =?us-ascii?Q?6KAUEFiygNETPrlMN190amVePaUG+oHbtw7OUKs9fmymQyQ3Nx1mEOlBEKR1?=
+ =?us-ascii?Q?w31VxcLe7MJl7XGjQsfsyaTJjjepO3HvNClLID+5Jo43NYb83nws0qlAmqrP?=
+ =?us-ascii?Q?lY2KXziRdVX648oQqLb7jivflfox8oqAIBLce/4qx3VWL1dnCQBK/FBKtnpd?=
+ =?us-ascii?Q?/yz9qf+chqXgXtxSgrd7nUgG3XTdcwEJxR5mBBt1+Ot024GWgqdhxgfgYWMT?=
+ =?us-ascii?Q?OZGEBhGER2/HcYdQiK3dhzYTLDEwD0sJLPGzk44uMcz5j0OPiGF4jo1fbwNW?=
+ =?us-ascii?Q?CWUx4enirpSX1G4LyGsrcdYMLoqRupYH7EBP/358F5vkQ2Wm4dfX+4joXBtF?=
+ =?us-ascii?Q?UvB2uVQKtuS1gxjlCBSrKAyfzmoOwjUSE4+/XJToUJ40Ms5hFeX87nCQ5n02?=
+ =?us-ascii?Q?N57isapIFN4VSGDGJ2677OSnDPQfXCCXq2r017Z0ohGYJMTJw1hiGFXoe0N8?=
+ =?us-ascii?Q?thlYcRMkGYwfHnqTMGjmyMHpykgtcz//1MY53SetKBhvoRuqC7DwznJFEwF2?=
+ =?us-ascii?Q?sS2WRUH8KIXxTtb7zYCIK3SrwNkzQirOY9FKB/XhFXdkxSS1bnIVgHzpVg0C?=
+ =?us-ascii?Q?+L9KpTZQg1Lg+EZ6KOyVr55KKZUXgVNBHEOSMWpmANrI7idMwJ1XzTrgVTLm?=
+ =?us-ascii?Q?4fKlt7vtn8gr7mh5yUuIPWDjTkY0RXkbQOX7mmKYZOim8ogUM1WQkOtynL+o?=
+ =?us-ascii?Q?LVJRC/5SKyyT6CfgTnHe+WsUcYL0QV2MUswQyaO0dKTiGRMjBON5/IZcJ0zC?=
+ =?us-ascii?Q?VT9h3zgReKAf4ICv/elhfWC3rzx5n0R0darjNKut645ICY+VWGB3?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 698b1193-8965-488e-927e-08df23c54091
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 15:29:52.6002
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 16:17:01.0345
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qf3VvaSo1o35S0pHTluT6LVSo6EUJEnRx+6j7kNA2wKZXjKsUhlJcldExm3FQSQxpgIC+FKBPwJIP6jrki3p9A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB1817
+X-MS-Exchange-CrossTenant-UserPrincipalName: rzRJXfpxHz6t5yuZGCtKDa2E73KGtpRQS9GiJiCpzkvOWlq7yZA+tfYddmqnKQ948pY6DWRTigPvmjvreiyAsg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8211
 
-Currently, the forget order is the same as initialization order, this is
-the wrong way around compared to their drop order when going out-of-scope.
-The wrong order will cause borrow checker errors if there are lifetime
-dependencies between the guards. This does not matter for now because there
-cannot be any lifetime dependency; it would matter for self-referential
-borrows.
+On Tue, Sep 08, 2026 at 04:31:57PM -0400, Georgios Androutsopoulos wrote:
+> `find_unused_id()` calls `Bitmap::next_zero_bit()` and `release_id()`
+> calls `Bitmap::clear_bit()`, both of which panic when
+> `CONFIG_RUST_BITMAP_HARDENED` is enabled and the index is out of
+> bounds. Neither `IdPool` method documents this.
+> 
+> Add the missing `# Panics` sections and state the bounds requirement
+> on `offset` and `id`.
+> 
+> Fixes: 2cdae413cd3e ("rust: add dynamic ID pool abstraction for bitmap")
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> Signed-off-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
 
-Reverse the order to be consistent with their out-of-scope drop order.
+Applied both in bitmap-for-next. Thanks!
 
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
- rust/pin-init/internal/src/init.rs | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
-
-diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
-index 6605e04d49df..f0b23d0311ac 100644
---- a/rust/pin-init/internal/src/init.rs
-+++ b/rust/pin-init/internal/src/init.rs
-@@ -361,8 +361,7 @@ fn get_init_kind(rest: Option<(Token![..], Expr)>, dcx: &mut DiagCtxt) -> InitKi
- 
- /// Generate the code that initializes the fields of the struct using the initializers in `field`.
- fn init_fields(fields: &Punctuated<InitializerField, Token![,]>, pinned: bool) -> TokenStream {
--    let mut guards = vec![];
--    let mut guard_attrs = vec![];
-+    let mut forget_guards = vec![];
-     let mut res = TokenStream::new();
-     for InitializerField { attrs, kind } in fields {
-         let cfgs = {
-@@ -474,17 +473,19 @@ fn init_fields(fields: &Punctuated<InitializerField, Token![,]>, pinned: bool) -
-             #binding
-         });
- 
--        guards.push(guard);
--        guard_attrs.push(cfgs);
-+        forget_guards.push(quote_spanned! { span =>
-+            #(#cfgs)*
-+            ::core::mem::forget(#guard);
-+        });
-     }
-+
-+    forget_guards.reverse();
-+
-     quote! {
-         #res
-         // If execution reaches this point, all fields have been initialized. Therefore we can now
-         // dismiss the guards by forgetting them.
--        #(
--            #(#guard_attrs)*
--            ::core::mem::forget(#guards);
--        )*
-+        #(#forget_guards)*
-     }
- }
- 
-
--- 
-2.54.0
-
+> ---
+> Changes in v2:
+> - Use "within bounds" instead of "in bounds", following feedback from
+>   Alexandre Courbot.
+> - Add Fixes:, treating the documentation hole as a bug [1].
+> - Link to v1: https://lore.kernel.org/rust-for-linux/20260829153442.20799-1-georgeandrout13@gmail.com/
+> 
+> [1] https://lore.kernel.org/rust-for-linux/CANiq72mgZg-QBy4gwzHmD4gJm4wScktfpdDtyZt3Zijk83h2CA@mail.gmail.com/
+> ---
+>  rust/kernel/id_pool.rs | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/id_pool.rs b/rust/kernel/id_pool.rs
+> index 384753fe0e44..ae6960d7f638 100644
+> --- a/rust/kernel/id_pool.rs
+> +++ b/rust/kernel/id_pool.rs
+> @@ -224,7 +224,13 @@ pub fn grow(&mut self, mut resizer: PoolResizer) {
+>      /// Finds an unused ID in the bitmap.
+>      ///
+>      /// Upon success, returns its index. Otherwise, returns [`None`]
+> -    /// to indicate that a [`Self::grow_request`] is needed.
+> +    /// to indicate that a [`Self::grow_request`] is needed. `offset` must be
+> +    /// within bounds.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if `CONFIG_RUST_BITMAP_HARDENED` is enabled and `offset` is out
+> +    /// of bounds.
+>      #[inline]
+>      #[must_use]
+>      pub fn find_unused_id(&mut self, offset: usize) -> Option<UnusedId<'_>> {
+> @@ -236,6 +242,13 @@ pub fn find_unused_id(&mut self, offset: usize) -> Option<UnusedId<'_>> {
+>      }
+> 
+>      /// Releases an ID.
+> +    ///
+> +    /// The `id` must be within bounds.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if `CONFIG_RUST_BITMAP_HARDENED` is enabled and `id` is out of
+> +    /// bounds.
+>      #[inline]
+>      pub fn release_id(&mut self, id: usize) {
+>          self.map.clear_bit(id);
+> 
+> base-commit: 73e3f0710014fe6d4ed98cfc02292f6121db7558
+> --
+> 2.47.3
