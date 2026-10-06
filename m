@@ -1,155 +1,233 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010041.outbound.protection.outlook.com [52.101.61.41])
+Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8CE39795B;
-	Tue,  6 Oct 2026 06:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791267093; cv=fail; b=FD4VJrLLLjpe7m+w2kDCj9GuTudsdLFcn8m62nygp1ng00g1GHexcFOO0Pq/imjkhTig7VazmlHgWaTY4B8qzOCUs7QUgG40hRgT+Ha0dNG2E/aGn4OxHQwtSnD2z6kcIIPrDlB/QdNYEtx3HjroeMaVjb6hpkapoU2pfJyRq6E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791267093; c=relaxed/simple;
-	bh=IGblQ4pWXeddSqzWB0bstyUfk9nIDnBiHppYTzxtRh8=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=HDGQ3y8L5OwXYnOGx0JH4ICkt+PmkkezQBScGlHJvQU7eBw8fqSWO3RayNIWdX3ud5sPVmrAUv/892Uz3djGLfMwgWjlzyZWQAOeO3GkCzrCDflDsHzweOUkE7ItVHsdmA8lp43iq1USbhMnXkAXL+pBUA9UF3YeSlICRq5ff0c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=N7sObxPV; arc=fail smtp.client-ip=52.101.61.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="N7sObxPV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=diZ9Kkd/8LxuQ1FH03Lva3+bpA+XOulqD8lqJakQo2i1WGb4cpjw0qY58bYtyPpEUX0OCfYRxLzHL35dEapjZl6SO7srHboJjW+Ds/jzEs5G+SMZonETI/s6u3GBzAtNkOZM1k/hK60pTBcJD/b9wkptLwTqdGCb75xpGKP4+PczCWr3GJs0QFqMNBsUA8COxs35gDLRMcSEDcPN6aM4Y4HnTUJIuEcj17VVfI0k+UDq0IvGbdF5w74yerecJ0xWvF5SX4IHYP/2hBrH2DIWt4DOiB4XN0gTMGbkotobVEyMJFTJ2B+SNylVVYjc/DLuiEEVcIk8PaYzO2Ive8aRhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oj++YW5ntYZ7SOzeeINeIDSxf/8cbhA4KdkSINDFhdk=;
- b=AMn/MMHdvPGZzmLjbXHHmqmvd0rkAiIF5/46OQhfisrn6wsPYGZhlwPSjFws2jU5ZkRtyU6ZzbEexhxgoihl6Ee38HII6H/tJgs4MHj+szWb8Wyz/rxW2WWgXW7KAxq1164t8yRLV3yuVsxEQsmUtjOQGv8kuTN5+tDKdauDVswSQZfhsutdOkcYydBNyp7Z3shKzRJKFUFeigNIIRawYQ1bR8aCUiU4MQN4itrkfZrHWpdIFxgsNCvA8wIbwQtzQsLs2LvtaBjVmY/CQq8YFvKniCNSj1/QMIGDIkF6nA2HO+gn2x+Zy6h4sTirZrFqChqofVJmxFeRIKWIxrZNmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oj++YW5ntYZ7SOzeeINeIDSxf/8cbhA4KdkSINDFhdk=;
- b=N7sObxPVaVvjHDxoaMOotmTWHuVI7LeHNZQQtD3FJLSRKm7SrehxBQBKqIg7FQuYtA0xwwuuiiPZs3Y7yvr2aYgkvmrI7xvk9UtVI0McEWU8aF6vYdcqfgetuNf20RHd8pEnvwPENT2t/gvvzbNy6KaIlAppMspZAWpaw2Bxrx6HRPZANx5VoaC61MuHGiApJPCM+oZHBSVPAOc53fmRI7lR4OodlHoeAZx3OyeMvrK9ekaW/7RmVXY4MdIEByLgqb8OKXaerHofAHRFE40C96aXr/Ynhe3Uk35H09AsmnEF3eAT/DhokYaS9DBNt5ouGDDQjlci5a/8D7IPjj7o4Q==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by EAYPR12MB999179.namprd12.prod.outlook.com (2603:10b6:303:2bf::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Tue, 6 Oct
- 2026 06:10:40 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0472.016; Tue, 6 Oct 2026
- 06:10:40 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 06 Oct 2026 15:10:37 +0900
-Message-Id: <DLXJ64SVRMFW.NX53HBMT16K@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Lorenzo Stoakes"
- <ljs@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v3 2/8] rust: alloc: add Vec::push_init
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Eliot Courtney" <ecourtney@nvidia.com>
-Content-Transfer-Encoding: quoted-printable
-References: <20260928-b4-nvkv-v3-0-f04504c262c2@nvidia.com>
- <20260928-b4-nvkv-v3-2-f04504c262c2@nvidia.com>
-In-Reply-To: <20260928-b4-nvkv-v3-2-f04504c262c2@nvidia.com>
-X-ClientProxiedBy: TYCP286CA0262.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:455::9) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B23037757C;
+	Tue,  6 Oct 2026 06:47:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.242.92
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791269279; cv=none; b=kHyEib3GMXgOloYIjXX8mz7yPSYpx7niXqnbyR4k3vYGo2DmBgNgFO1tGjq9jy9n5qhXIfQsYoWwgNGkeaTwGl+BtXXYxIvD5CKvUB9ggta9e0hS9GulHtkOS+MUH4RY+fLZNGIk6XQnqe8pHCO9WMdqdmxVPDb1gZmTQ8/DgIo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791269279; c=relaxed/simple;
+	bh=8wKPfrIzI6GQxDMp2iaUjY0OL7Vf5zwGRNY9dkqBbdU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BjZQGmWU9N8BhEf9HMgwZ/qiPxLShgsUZRD5uINcWU1s9a2jlTBElGe7RSKSw6lDTyJIB31GzqANcfJfEqOfZCjbrdHamjWOMnBeGMbHDjVOpsbe5D4zgWASqHTkyEKwpqjcKKHQJX7tYZnefVRt4l/rb5530S4T5nZSnu7IFhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net; spf=pass smtp.mailfrom=davidgow.net; arc=none smtp.client-ip=203.29.242.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
+Received: by sphereful.davidgow.net (Postfix, from userid 119)
+	id 36F56200454; Tue,  6 Oct 2026 14:47:49 +0800 (AWST)
+X-Spam-Level: 
+Received: from [172.20.4.20] (unknown [193.85.242.110])
+	by sphereful.davidgow.net (Postfix) with ESMTPSA id 7571020043B;
+	Tue,  6 Oct 2026 14:47:36 +0800 (AWST)
+Message-ID: <f6cf93a1-8fce-4d7e-8f77-fd106a05647a@davidgow.net>
+Date: Tue, 6 Oct 2026 14:47:29 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|EAYPR12MB999179:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2edcf0ac-4751-4de9-d0dc-08df23708bc9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|10070799003|376014|23010399003|7416014|56012099006|11063799006|4143699003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	8IJMHO1qGXv9yx3Lw42hJmdfcY/cTArNmgrnpEeHtCwYiFJ3Z6DY4InsjJwrlIveYZabXAvB8BXEUlQRa33UyRpWt5p0A5cxmuk61f6kcn4XNBjWpLQfZXETFeT4Rwr0C+UVy/ojlKeuNjern7C+4fNq57yYY5DODQdbU2E+DUfgpHZQtSO4tMmDIBWs7F2CMY9ZItBVnlhUL8H7nuh08aAFFpIsVM5R1wImxUm4E7zsyQgGmUsuzLHWiESiIPknxm/vOGT6/wHR6wp+hPhkADMDpK/p28yZ5aX7VLsnoJ8H5UgM0OvjoteAuXBzIQsZXF2rcV25r2rbS4hD8eP1DDVf05OoWNUigqTtJEURwUYVOfrWHMh8yNQMqDeNwyfPJK5RGjaw9lwYpPQpEcEVWxFuHVvecRIx7fW5i4kixZGZqAtN9toZO4vaa/rmp632zR2XTQSV5er2yB7Xr/s5jh25vuZL9chziY6ud+51Ofd+EqOVcae0X9SEeIVyU7kkU01lJ2jOHuTiruEUrggfhHIAk6QWRCIKepJvRYR+Kx0FjYS96dFNAxYyV1mVfumHBaRjvJ5g1z8+z+PVN80cX8QFmUADTdzti78Dlmme1M45yyGj7AUDyeyYTSlOCQ70QdEfSDiDlC028nPrcZyVtsTXprWikjd5GUVR7Zq980k=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014)(23010399003)(7416014)(56012099006)(11063799006)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YWtLaWgwQ2c0bUNhRmUwUUFPMU9iNnhJdXpDKzRXZEdNaTBpTnhPWXh0dUZY?=
- =?utf-8?B?SDIyTFB6dmRJSGl2Y3dkRUtacTRtTlRkY3l5Wmwxak5HUzV1elJRWlcxQ21p?=
- =?utf-8?B?aThCT1lOcG12WFJqZjB5RFJ5UUVNandTcFZnYitzVWpMYnJUVjN4ak4rT3JI?=
- =?utf-8?B?aXZoL3RPYTRVb3pKei82TEdhOThXQkxFek9PZUxTcE9WNlZnRXBZeFVuenBa?=
- =?utf-8?B?UDJjSnNNdldzS2ZianlmeVZGMHJNdndqTDg1Z1lPbEtaSDlWOUlXNzZWNHBF?=
- =?utf-8?B?UFZWRjlYa0tRZVkvbzZjS0JVUEZIQ2xCbGxobTRWWVprMTh1YmhOaFpRRXZs?=
- =?utf-8?B?T1NVUVdJUFFnRGMycVZzRWdCZ2NHWDRCN2s3Rm1jUmZEVlBrcGFJRjRWQStv?=
- =?utf-8?B?Uk5ueGxpZ1YxT0ZFTEJmU0RIZVhwc3VhcEhRQlNiSE9mQ1BWTGpPazBOWUpX?=
- =?utf-8?B?d3c0V1NNMTlERmxPTGNZMlNMYXVsOHJwcndxM01KNXJLWnV2ZjRDQk9hb3Q1?=
- =?utf-8?B?c0Fuem9MMDdsSlhIL3plY0ZtN2xOU05aenhkVXJkYUlJWVplQTNCa2I0UEQ2?=
- =?utf-8?B?Y1hQQk1GRUFCWDU4S3Jua3Jrai9GRnNDTXpnS1RXWDN6LzhqQm9MaDJjaUlz?=
- =?utf-8?B?eTZHZ01jVWRtRVhtaktLTnRTbUhRd1g2aS9XQ0ZwMGNFMXBZeTRkRmIxZVFt?=
- =?utf-8?B?RjROck12aytwY3orbUlOWlVQQmZMRHBzY0tPeittVXZBTmFnSjJqV1lTY1pN?=
- =?utf-8?B?Nkx2bG8rRTg1UjU0UGZ6MytxSHlwZVQ2UWhWNXVYR1EwZWVIZ01nN2tvOWZE?=
- =?utf-8?B?MGxIbGliaDZWSnNqaWcrYk1OZmpOVCtoTVViWjdseUgrZzhjMGNuNkJFcTI2?=
- =?utf-8?B?UytMSzd1cmQwOHR5b1Z5bUZ5bmg0TUhsSEJUckxnd0JFSGZISGErK0FiUVhW?=
- =?utf-8?B?cWpKL0UyVk5uVTRRWkNRWEkwcE81cCtsSElXenFocTFNN3BteHg3eUpQNy9o?=
- =?utf-8?B?czFwSCtkUkRZYkRGMnRIejI4TS9WRHJrcFB2OXQyTXIveXloYWpPamNTUDVB?=
- =?utf-8?B?RGNtdmY1TnZNcjFvWml5NzhyMVZtdGdXZEthRlhQdmF6T2JwQ3JzSG9KZ2Na?=
- =?utf-8?B?Q3lxNWlJbmpOVTNScFV3a2U1RHQ5OTRLMXlzdSsvUDFJY3Y3dGZpQlQvaTM4?=
- =?utf-8?B?S1VEeFhYSmtZUGgrNUhReEF3a1RsSkFmVURtS0Ryb2d1ZXdYbVYyZVZQSGZz?=
- =?utf-8?B?L0YvY2FOZHFZck9hWVdWYVNWVkltejkyVkJGZ256KzNYNDJnSnk2aVdudGZl?=
- =?utf-8?B?ZE9TMkFBTGRuK00xVEI4VTZwa0lMR2ljVHNwYzU2YTRYRUt2OExnRFlIazds?=
- =?utf-8?B?eTNyOWY3NEZGNzR4N2RDU2t1c3lnZWh0WjNPTEEralBVeUZCU1doTXZTc0VM?=
- =?utf-8?B?TVY4TXJIWGNucmdXQXRCYzRrUGZOMFV3Nmtnd2FrTVE3eFRyTnZwMHFyd1hR?=
- =?utf-8?B?V21lazlFVDVoZDQ3aTdJdzFYUGR6YW56N1RxNzZHUHdSZXZCOVQyd3ZxRlFx?=
- =?utf-8?B?VEg5MFJEVXBScE56VXZKaHprcUdvWlRPcHNqbk5mNGpYdTl4b3Nvcm5RWXU3?=
- =?utf-8?B?UTRFWEpSUVk2NXVQYzBtUVN0bHY0ckR1c1BzZXJtUVhqQkhNL2pqSWxFa3BU?=
- =?utf-8?B?R0Fudi9WTEFkbDBJOGJMdzQ0ekFLMTRFL09CdytsSVFqRW1uYzZtVVZ3WXFL?=
- =?utf-8?B?MkJMdUN6Yko0VTZENm42ZEVtcSsxYktyTDIydHZwSGVYTzUzNGkyd3BBWU9F?=
- =?utf-8?B?WEg3L0tlZC9CUVFJK2drN3ZwbTd6bUdnRStYNXQ4S2syV1pZaG9wQ2UvOWho?=
- =?utf-8?B?NmhnYmhWVlZRbElnbTQvRzlRR2YvY05IKzREdkxsQlNFbnpjbW5yQ0F1bGVZ?=
- =?utf-8?B?U2NPOW5sZkFKa243UVlaSzlpM0FmYmF1bVc3Nm55MTdQR1NaM052WHBVaDEv?=
- =?utf-8?B?UDZhZVZvcjVadkNRSmJrd2IrZ3hTZDNXN1g0NHd6QXd4Z3BXSFBYQ1BDUVA4?=
- =?utf-8?B?aXRNVlVGTVo1Q2tnM0g0cmsyNDRVS3hFSXladWdrUmhFNHNMaGFnRXRNTGhY?=
- =?utf-8?B?VnZ0MHhaemlxL2tNNDR0bHNzQ0ViYzhuV1M1amR0bTRYamJGT0NoTDdTTnBo?=
- =?utf-8?B?c1d0NGUzbzFCeDBpZU9qTWtMZVhoR3VHS2lFYVNNVWRlVGFZYml3N0lMd3lC?=
- =?utf-8?B?Z2ZEb21JaWdjam1zYlZJVjFpWVBaejRQdlNqYzZ6QUlZNzhsNmZrSEIvMWRZ?=
- =?utf-8?B?Nkl4UktQT0lUTk5EZjNLYTRhMzNEMkQxWjkvYnBJN3dQYWorRW5Hcm5vK3F4?=
- =?utf-8?Q?s/2qJjEkdfJReD3G2PQmy/3UYQfqhp6L2kLL9FG1U3hGA?=
-X-MS-Exchange-AntiSpam-MessageData-1: RiVWC7ehl/LNSA==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2edcf0ac-4751-4de9-d0dc-08df23708bc9
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 06:10:40.0445
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nJ/F3eJ/3HbenyJTZyAJB3LE/lBO49s7CwcL4dSXpKNNnjGUnYO5oxZ3mO7NAPObThXkEQllToQL60NKTZZM7Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: EAYPR12MB999179
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] kunit: add KUnit test to assert kernel state
+ before KUnit suites are run
+To: Malte Wechter <maltewechter@gmail.com>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>,
+ Rae Moar <raemoar63@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20260824-lockdep-kunit-v2-0-36a6fec9f72e@gmail.com>
+ <20260824-lockdep-kunit-v2-2-36a6fec9f72e@gmail.com>
+ <205be33b-362d-45cb-b3a1-cadaba87b44a@davidgow.net>
+ <CAPB1BzeDC=V+jKZgX-2gucSZs8vOmZBvUgZLS8kTLvWa0x5S-Q@mail.gmail.com>
+Content-Language: en-US
+From: David Gow <david@davidgow.net>
+In-Reply-To: <CAPB1BzeDC=V+jKZgX-2gucSZs8vOmZBvUgZLS8kTLvWa0x5S-Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon Sep 28, 2026 at 5:42 PM JST, Eliot Courtney wrote:
-> Add `Vec::push_init` which is the init-infallible version of
-> `try_push_init`.
->
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-> ---
->  rust/kernel/alloc/kvec.rs | 19 ++++++++++++++++++-
->  1 file changed, 18 insertions(+), 1 deletion(-)
+Le 01/09/2026 à 19:02, Malte Wechter a écrit :
+> Den tirs. 25. aug. 2026 kl. 13.00 skrev David Gow <david@davidgow.net>:
+>>
+>> Le 24/08/2026 à 21:32, Malte Wechter a écrit :
+>>> add pre-defined KUnit test suite and test case that asserts both
+>>> `debug_locks` and `TAINT_WARN` prior to running any (user) KUnit tests.
+>>> This asserts integrity before tests are run.
+>>>
+>>> Signed-off-by: Malte Wechter <maltewechter@gmail.com>
+>>> ---
+>>
+>> I'm not quite as convinced by this as I am by the first patch. While
+>> ensuring the state of the system is good before tests are run is useful,
+>> this does seem a bit heavy-handed in some respects.
+>>
+>> This could probably use a more detailed description, particularly
+>> describing why such a test is useful, and why it would need to be
+>> implemented in a special way.
+>>
+>> And I do think the implementation here is a bit _too_ special-cased. One
+>> other possibility would be to prepend this suite using
+>> kunit_merge_suite_sets(), so we don't need to have any special handling
+>> of (e.g.) the test count. This could also allow this special suite to be
+>> filtered out (which has both advantages and disadvantages).
+>>
+>> It might also be nice to have this configurable independently from the
+>> other checks, and maybe at runtime (via a KUnit module / command-line
+>> parameter), particularly if this can't be filtered on. And, as before,
+>> this definitely needs to be documented. People need to know how to
+>> enable it, and where all of these extra results from tests they didn't
+>> enable came from.
+>>
+>> Thoughts?
+> I get your point, the purpose of this special test suite is to assert
+> that the kernel is in a "fine" state before any unit tests are run. If
+> this
+> check is left out the false positives could occur if the system is in
+> a bad state before the tests are run.
+> The reason that the case was handled differently compared to other was
+> because this assertion _must_ be run before any other tests,
+> and when kunit_merge_suite_sets() is called from kunit_run_all_tests()
+> it also filters the test suites, which would not give any guarentee
+> that this
+> special suite gets run first.
+> 
+> I do agree that this initial way is maybe a bit coarse, and i will see
+> if i can find a better fit for this assertion. But i dont want to
+> leave it out.
 
-This patch can probably be folded into patch 1 without making things
-harder to review.
+Had a chat with Andreas about this yesterday, and we think we've come up 
+with another possible option here: instead of doing one check to verify 
+the state before any KUnit tests are run, have an option to check the 
+taint before _every_ test, and to skip it if the kernel isn't clean.
+
+There are a few consequences of this:
+- You'd need to be able to mask out taints you don't care about, 
+especially TAINT_TEST (as without it all tests but the first would 
+fail). Of course, that might still be useful if you really want to 
+ensure isolation between tests (e.g. --run_isolated)
+- If the kernel is already tainted, and so all tests are skipped, 
+kunit.py should report 'no tests run' as an error. I think this actually 
+only reports an error if no tests are executed at the moment, so this 
+may need looking at.
+- This will trigger if the kernel is tainted by some other part of the 
+kernel either between KUnit tests, or in another kthread. However, in 
+this case, the results will look like a series of successful tests, 
+followed by skipped ones, with no failed tests. (And hence won't trigger 
+a failure exit code from kunit.py). This is likely to be incredibly 
+rare, but we could add a fail-on-skip option or similar if needed.
+
+Thoughts?
+
+Cheers,
+-- David
+
+>>
+>> Cheers,
+>> -- David
+>>
+>>>    lib/kunit/executor.c |  8 +++++++-
+>>>    lib/kunit/test.c     | 30 ++++++++++++++++++++++++++++++
+>>>    2 files changed, 37 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/lib/kunit/executor.c b/lib/kunit/executor.c
+>>> index b0f8a41d61d36..0db67fe7f09f9 100644
+>>> --- a/lib/kunit/executor.c
+>>> +++ b/lib/kunit/executor.c
+>>> @@ -290,9 +290,15 @@ void kunit_exec_run_tests(struct kunit_suite_set *suite_set, bool builtin)
+>>>        size_t num_suites = suite_set->end - suite_set->start;
+>>>        bool autorun = kunit_autorun();
+>>>
+>>> +     #ifdef CONFIG_KUNIT_EXTRA_ASSERTS
+>>
+>> Nit: Let's not indent the #ifdefs.
+>>
+>>> +     size_t num_suites_plus_extra = num_suites+1;
+>>> +     #else
+>>> +     size_t num_suites_plus_extra = num_suites;
+>>> +     #endif
+>>> +
+>>
+>> I'm not particularly happy with this way of adding an extra suite.
+>>
+>>>        if (autorun && (builtin || num_suites)) {
+>>>                pr_info("KTAP version 1\n");
+>>> -             pr_info("1..%zu\n", num_suites);
+>>> +             pr_info("1..%zu\n", num_suites_plus_extra);
+>>>        }
+>>>
+>>>        __kunit_test_suites_init(suite_set->start, num_suites, autorun);
+>>> diff --git a/lib/kunit/test.c b/lib/kunit/test.c
+>>> index 99773e000e1b7..e64c6d1575280 100644
+>>> --- a/lib/kunit/test.c
+>>> +++ b/lib/kunit/test.c
+>>> @@ -835,6 +835,30 @@ bool kunit_enabled(void)
+>>>        return enable_param;
+>>>    }
+>>>
+>>> +#ifdef CONFIG_KUNIT_EXTRA_ASSERTS
+>>> +#define DEBUG_LOCKS_OK 1
+>>> +#define TAINT_WARN_OK 0
+>>
+>> Not totally sold on these #defines: I think I'd prefer to just have the
+>> literal 1/0.
+>>
+>>> +
+>>> +static void pre_kunit_assert(struct kunit *test)
+>>> +{
+>>> +     KUNIT_EXPECT_EQ_MSG(test, debug_locks, DEBUG_LOCKS_OK,
+>>> +             "debug_locks are off before any test ran");
+>>> +     KUNIT_EXPECT_EQ_MSG(test, test_taint(TAINT_WARN), TAINT_WARN_OK,
+>>> +             "kernel already TAINT_WARN tainted before any test ran");
+>>> +}
+>>
+>> If we are going to generate a special suite, let's have the taint and
+>> lockdep checks as separate tests.
+>>
+>> This would also make it easier to have them be configurable separately.
+>>
+>>> +
+>>> +static struct kunit_case pre_kunit_assert_cases[] = {
+>>> +     KUNIT_CASE(pre_kunit_assert),
+>>> +     {}
+>>> +};
+>>> +
+>>> +static struct kunit_suite pre_kunit_assert_clean_state_suite = {
+>>> +     .name = "pre_kunit_extra_asserts",
+>>
+>> I think we could probably find a better name for this.
+>> "initial_system_state" or similar might be better?
+>>
+>>> +     .test_cases = pre_kunit_assert_cases,
+>>> +};
+>>> +
+>>> +#endif /* CONFIG_RUST_KUNIT_EXTRA_ASSERTS */
+>>> +
+>>>    int __kunit_test_suites_init(struct kunit_suite * const * const suites, int num_suites,
+>>>                             bool run_tests)
+>>>    {
+>>> @@ -857,6 +881,12 @@ int __kunit_test_suites_init(struct kunit_suite * const * const suites, int num_
+>>>        }
+>>>        static_branch_inc(&kunit_running);
+>>>
+>>> +     #ifdef CONFIG_KUNIT_EXTRA_ASSERTS
+>>> +     kunit_init_suite(&pre_kunit_assert_clean_state_suite);
+>>> +     if (run_tests)
+>>> +             kunit_run_tests(&pre_kunit_assert_clean_state_suite);
+>>> +     #endif
+>>> +
+>>>        for (i = 0; i < num_suites; i++) {
+>>>                kunit_init_suite(suites[i]);
+>>>                if (run_tests)
+>>>
+>>
+> Best regards,
+> Malte :)
+
