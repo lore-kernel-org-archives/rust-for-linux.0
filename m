@@ -1,97 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641923B3886
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Oct 2026 10:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7383D9DB1;
+	Tue,  6 Oct 2026 13:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791282743; cv=none; b=TLSpbqC6n5A05wjtuP7Le0J1jsYDeK/TybMIDYFwFEpEG8Lm8BS2xhBunamM+n30M+EFytATxDrAduy0sLcXEFBqIPHDKXj0o/DSzha6RacdfBjha/JmTZjYZm6U2kP5b5DO0yAr7itJp5ajXORY03x/+GUS4Sr3K5COENMZkIg=
+	t=1791293855; cv=none; b=OZOsX03MC5vELtl2k/3YvmXlLwJha6VzDkyggEAtZ37gUdK1k2RCr24x47bk50nhUh+Bc/vFVsIWfnZyeEWuFGkvum1XBOJgpSj31JNIUqb+BdagnBmOaITInP0XPQsI6ShqUS+X6kg5LtfB9TRph/xEaVYzMpHG/2HCLtPZmVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791282743; c=relaxed/simple;
-	bh=3mYh92seikXtUvt3y+ZqIQGGSNX/WiLcPh6JuuTEkkM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tSbVJfVNtAE67HgV+iRJ602ECa/ELYfWNKHohsnktoxHFK1bZV2XtGjf69eTFK6XZmMHXphc6ojoVAVXEhmXXsRzHfKXBYscNEK0oZJOjHsq+YHSpCvzQTTugKZZlUlsvDN0VvQdpe1eiG1YSMPXWDYQcU3OVI33N/QMouv2Duc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H66jlRVm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791293855; c=relaxed/simple;
+	bh=lQmcpeBJb7n1ORC0panr8ZuGG2wReezQhX/rqKnx08s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fWsw0eYYyHOobLb2x/6Q5hnKfTb7KjLq0u80pu2MejEb0/9xnyItmlcUBqGJjDgps9fgM7KrPCVqdNXCha9y6QDEvHEVH+CW4WTCKai2L0P1xuWEGdwMTleGn0/7d6Rmpj+CL5WRArQrPLn0NFuxmb/yL6xqDo/Q69dlnhq7WaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=eZ4QFt31; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H66jlRVm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF3B1F008A3
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Oct 2026 10:32:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791282742;
-	bh=vE01EV1zSfpVuJeSfikynDyyaUOUSSRxYC7VKoLHOYs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=H66jlRVmxbLAvCWY7wio83N91RBhaB+Fb/3/3PqyHazJQpe69u4eTmABkVeN50KIq
-	 HoUQKqSRDDJwsxkhN7ZWehR2OoeWLENhJTFBkQX0YdeYTeLiwDZqq8YBaSUQf0QYbL
-	 H8K23KqJp/N/KVbFTCXqWb1SpZiuR1FDQnJGUXyEksHIwfDFt8M6+8zQXLndkioLtn
-	 FseRdXTAlEF5xbuvzZN1jmKV+mqZIkLpBYsBK72cVIoqnVVzaxdqjmX8TjMIVQl2Wr
-	 T/s0JeXCD/kpoDa9sRJkMxHXWz0HwV5UxWTQ6rQrip1LKG7bleiPhG3BZWsx1o+gJT
-	 OYVcivpcUTc3w==
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-3a4a82aa383so22300751fa.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Oct 2026 03:32:21 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBy7dcAnCb6x65qu4t81O6H/0jcIJmD1UCR6c8EFWW4NK8GsrCIseBjpUPMD/e7sTYOB2JqIN/2YRYl74S19yA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKO1AlE7/f0pzWRKiNXTeEfyZyGOuWD8PXJ/x7KZmI6XiAsGq6Y
-	uBjOgYoa55yrSwZYvIEgM8t7jFhWv8nGyuJkJYUDppk4ezDbhx7WmuGYHWivGchE85ahcYUwchK
-	kzfwewyzzwroaITc7ebudSEX/tinsZWc=
-X-Received: by 2002:a2e:be1b:0:b0:3a6:636b:63c5 with SMTP id
- 38308e7fff4ca-3a99af27150mr2412711fa.16.1791282740735; Tue, 06 Oct 2026
- 03:32:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="eZ4QFt31"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=kHQF0W3m9sutLBx2DP4KV8QpdSfbTtfJc8r8atJ6tMQ=; b=eZ4QFt31dcGzTejEv+0uGBP6T5
+	b/lhH8slFH2B1FBEgstNIVMZX+g23rSsroiuLvKVjNKaemGxz1ha+8G+Ge+iKONwPAQcZ4VRxg7t9
+	BFzo6uUwtJAsjp+diTqcDXwP9A3+NhzbUAfDH/0tqWwyNpM4AMgVr3VtX2TiwLToAmt1ce9ck/Crn
+	dnhXybKGTRQok1sLdwWj03N6Sh738aAS4OBaplR32EFvRG8miwAYYaEhqaf8SVuziRsZhQzvO0b8M
+	LFtqMgQsGV5d4Wn2I6uBsaTnNs+j3qyZ6NMRvjmZRenn8kGtBt4238OzQNwHQTMrBMLlWSa5JIf/K
+	ZyWv+m1Q==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xE5M2-0000000ADkY-2m5c;
+	Tue, 06 Oct 2026 13:37:14 +0000
+Date: Tue, 6 Oct 2026 14:37:14 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Daniel Gomez <da.gomez@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Corinn Tiffany <corinn.tiffany@inria.fr>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Philipp Stanner <pstanner@redhat.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, Samsung GOST <gost.dev@samsung.com>,
+	Daniel Gomez <da.gomez@samsung.com>
+Subject: Re: [PATCH RFC v2] rust: rxarray: add rust xarray support
+Message-ID: <asT5inptTPITu2j1@casper.infradead.org>
+References: <20261005-rxarray-next-v2-1-187f689b52e4@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261003093827.77857-1-kmehltretter@gmail.com> <20261003093827.77857-2-kmehltretter@gmail.com>
-In-Reply-To: <20261003093827.77857-2-kmehltretter@gmail.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 6 Oct 2026 12:32:07 +0200
-X-Gmail-Original-Message-ID: <CAD++jLk=+WSou4RFoho3JvWxV+ok-0ZnNZWhwdOVK_J7R7AM3A@mail.gmail.com>
-X-Gm-Features: AclHuK8rkOnk1u1TfAFFALwn8ajDSse-J3apTnHTi28eDx-XnKGt_saLuoLvA5w
-Message-ID: <CAD++jLk=+WSou4RFoho3JvWxV+ok-0ZnNZWhwdOVK_J7R7AM3A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ARM: cmpxchg: support 2-byte xchg() on pre-ARMv6 CPUs
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Russell King <linux@armlinux.org.uk>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Arnd Bergmann <arnd@arndb.de>, Christian Schrefl <chrisi.schrefl@gmail.com>, 
-	Bradley Morgan <brads@mainlining.org>, "Paul E . McKenney" <paulmck@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261005-rxarray-next-v2-1-187f689b52e4@samsung.com>
 
-On Sat, Oct 3, 2026 at 11:38=E2=80=AFAM Karl Mehltretter <kmehltretter@gmai=
-l.com> wrote:
+On Mon, Oct 05, 2026 at 03:37:30PM +0200, Daniel Gomez wrote:
+> From: Daniel Gomez <da.gomez@samsung.com>
+> 
+> Add Rust XArray support.
+> 
+> This is the Rust implementation of the XArray lib/xarray.c. As of now,
+> it supports basic functionality: store, load, load_mut and erase.
+> 
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
+> ---
+> As discussed at LPC26, this is the version of the Rust XArray that is
+> ready to merge for testing and evaluating purposes following the Rust
+> reference implementation rule (experimental) [1]. Next, we will make
+> progress following the roadmap suggested in v1.
+> 
+> For the motivation, see v1 link below in the changelog.
+> 
+> A branch with the patches can be found here [2].
+> 
+> Link: https://rust-for-linux.com/rust-reference-drivers [1]
+> Link: https://git.kernel.org/pub/scm/linux/kernel/git/da.gomez/linux.git/log/?h=rxarray-next [2]
 
-> Pre-ARMv6 CPUs have no halfword swp, so __arch_xchg() only handles 1-
-> and 4-byte exchanges there and turns any other size into a link error
-> via __bad_xchg().
->
-> No C code needs a 16-bit xchg() on these CPUs, but the Rust atomic
-> helpers in rust/helpers/atomic_ext.c provide xchg() for Atomic<i16>
-> unconditionally, so building with CONFIG_RUST=3Dy for ARMv5 fails:
->
->   ld.lld: error: undefined symbol: __bad_xchg
->   >>> referenced by helpers.c
->   >>>               rust/helpers/helpers.o:(rust_helper_atomic_i16_xchg)
->
-> Implement the 2-byte case with interrupts disabled, as the pre-ARMv6
-> atomic_t operations already do. This is safe because SMP requires
-> ARMv6K or later.
->
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-
-All right this looks fair.
-
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-
-Yours,
-Linus Walleij
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
