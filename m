@@ -1,56 +1,56 @@
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E054756C3
-	for <rust-for-linux@vger.kernel.org>; Wed,  7 Oct 2026 14:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33EE846EF69
+	for <rust-for-linux@vger.kernel.org>; Wed,  7 Oct 2026 14:33:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791383620; cv=none; b=P0sOhR2ZcKLtqdV6UBUHGaLcxZEV5iju5fN6M+g5LID/8qHQEspK+i+WdFnmOodg4Fpo1LF93X3smwRdS6hhrqIO+kcBZ0u+msfPIeWQ95fb0otyVBxaegT8AaQag+qa+c5ZezF5CEpQT+06noBNK8fE3G2IAaV4dFnPNNJ+GlI=
+	t=1791383622; cv=none; b=kuUzPCKGqcAWanKxpGejtcek33eYzK8RRkj8wxC4RUGEdLayyfyqZj4jaBc/qA1trcJ+O/OZDXH+ynT+tdYX2yfzHDqgAoAPoGwVl6b+0zZSfXRbRM+WrJTJzJsBoDfkgowacVrZkJCCt4XhKuBCVUeVcN181Nc1Fk/bLsQjg5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791383620; c=relaxed/simple;
-	bh=7yYnTkDLzueMSUsYZysN1eVLm4bkwc3Fym28lNXfUtA=;
+	s=arc-20240116; t=1791383622; c=relaxed/simple;
+	bh=EwUjmYnuQ//X9EKW/t4Q/ebxEsVXNeEj57No9Cid7CE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FSLAHyeo00VeQNPTWmfSW8LVi/rJZXwN+Rmr6bMJYxQ8XeYHFGuY2hTw2tEt8lqSy/s4LyD8JN2NypIOEEdJM/XfksMCiVbzByJINeEVEUh/et7rLJDwaXd0aEoJevotK2cpPSADs5vlwKRITDppfsaYeYWBHap0/Cp+bkW8NnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=stQrNy6Z; arc=none smtp.client-ip=209.85.221.70
+	 To:Cc:Content-Type; b=ady/+CfFPirOVEz1YxknI6vcU9sVvY5zyAvu6u9z5L8t9HwwhsJqwaGJ8qFWEXXU5dgVsXi+kZJjHUTzectfOuIlTtsP6bt563FDTAgNs9IUKV35Kfd6zsG2CncFFsZ9/ym4RrslrEtJwmrKBE500PRqsbUKE+1QjOdf6FOFGC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EBU9mCDa; arc=none smtp.client-ip=209.85.218.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="stQrNy6Z"
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48c4f6f66dfso1844732f8f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 07 Oct 2026 07:33:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EBU9mCDa"
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c2e5d6c4e8fso532010566b.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 07 Oct 2026 07:33:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791383613; x=1791988413; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791383612; x=1791988412; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3eFBvcoNf1j+MWtzWga2AOfx4ORJ4p8JbpHFXtfrLRs=;
-        b=stQrNy6Zvlw48PZej0O4Qb42ZdugpJsqEt55BEz2FAxbth0GkVE02L4uP04/fHVoZg
-         wji/Nk//1vy9dGEU44Bx8qhdY/CSyMEMGigICRvzZPRXqnWtKZWLnLvdCI6G6rBSvpZD
-         y72bI074ARvvq2lrVs09JLRwbvOrpLtdejcQOnOJrui/LCNgLquAhnjO35jzMjhm1q8i
-         F4UgqUuLmNzeSxj3PCfXJuTdk9rnffIKkNUej3DgVttqvLQnGvl9NJalG9MvA4Dn1shP
-         CIqfkL9kt22PzLtp0m7tfsoA1WQT1Zfv2SK6yULb+811bajWuTSP5gyUaG3REIxiZ7zv
-         jsSA==
+        bh=t1MtxSCOR9kb8gOaLIm1mLFwbvU9p/enJ5fxVP9x/Ls=;
+        b=EBU9mCDanFlVT2RLQurlgBw0biT3os3UI3m4c1SNTI69LXR9hdeH59oYo+iFQSIrF1
+         B9iN5wsPRfiJeRFjlhoPiVohHFMYq7+ME5330/qXasGlnZ9NqS4dRz3HALddlHCFe30s
+         xpH8Yc+XRcglz35yB8eJL3WtJlcwW3HUe08LMT3GqjYMMqW4/nLzEFEeAceZBJKfvRpC
+         6p14b8LTnDhVSZ+2lX3wPdU4ta3NCHDEyM58QIITQ4CpYEZXf8/BBDrb869pJ6BwpHeK
+         071Soo6ojoExOAYoX5mEzW3fPOtno4lQHKwGz3SIATxYEdspBIkjNwkpRmgqXDzSYb4f
+         Tpfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791383613; x=1791988413;
+        d=1e100.net; s=20260707; t=1791383612; x=1791988412;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=3eFBvcoNf1j+MWtzWga2AOfx4ORJ4p8JbpHFXtfrLRs=;
-        b=sTQRiU578lhcSDktIio/vOdTUowwy09Rj3NkLFZ8Md/TRvz8mhN2QCmuW64V4eKkp3
-         ua9XLC7b5lS9iW+77TJOgzUiw5bul/23pX9Ff1kD7ZNharEuZVYN6Vy3GBpNYRSK9QCl
-         HmvbApzqSayA9psNDC33Eq/Nudw1M544CENzAdpnmDLpxfwIk3cEsJKit86k57d5huo8
-         JjCiT+1E9h1o2YVLdrSz1+kBAdJ70cJwrTTxAOw+e2oGEJWtx1sVYqxNV7OqJ8SA3Ics
-         qsNmFGBsw7fk6x6FFKy+Ht7c/hTvXju0x9K2eR9++jhf+XAL2QfILh0Z8hcUOPj8oBPn
-         u0bA==
-X-Forwarded-Encrypted: i=1; AKwUvBx2EOyIUcJXbm4BA90xzLqQ2QwxcbT549u74P2dGaeJPRE24G9GXUCquEPwLjM0saPZRkcPPw4f5dQs2W4GJg==@vger.kernel.org
-X-Gm-Message-State: AFuF++lroXHFKh1zYETvFd+7b7WKBypNteq34ZE0ezIFSwAfycYA/Zzp
-	QL7lto1pi9yGxpaC97h1ikmhakV5xJLUtPXuXS7q4C3HNdYkckCMjUgQ+bi1Z7KowFHSQYRw4eD
-	XWCtzSkRLCpMmn4qQkQ==
-X-Received: from wmpr35.prod.google.com ([2002:a05:600c:3223:b0:4a1:7ed0:848b])
+        bh=t1MtxSCOR9kb8gOaLIm1mLFwbvU9p/enJ5fxVP9x/Ls=;
+        b=Xg1gnQRIPDx3Ma8slq808AIPEf7plKVQof5izh0rYMQbeilKEgqUPZZPeqkvAFW+V2
+         b00EE++lZrGyGOen/2oh2jcT5GPVhyNuZSVzMwzUKoGz9lDjI5SKxFNscttwAg8cwKQe
+         DAA1ffCUqNFSPavRJmSAdhwt0QaguPt7WpjX/jMaGEXKCV37vCxFBPiCu95lXX162xwH
+         hXneJQtUY93KPfwgeBJIj/z5lCi8r2V1dvNAh+5Zns6nHJVssJ7XUKh4T6p0NigFk4AO
+         48C9q8zhGjrgpKMotczHoiyfma6qEG7+9MDSHrSLCsAxjYi5GIErI3mbXQzLNBD4NUD3
+         nM1A==
+X-Forwarded-Encrypted: i=1; AKwUvBx1yOlINKwfAdg36zSbVlPF09mSqZ8WR0jVFbhykfHEXM4zB2PQuG6juY6MGzSybrK5oqyKd6UHpJqEbRziqg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYIqz6Cd2z175LIfEUrTKvvbShv7Iq7WP+gyixJ+55xMLK/VvtIN
+	IkZo2Be/E2zEJN1Hvt4R+WyvH6Be+ACrsM06LI7ldvlypsv4e4pflSqxahr+JoxvIYq9qX74oUX
+	9EKyFWtwa/9UYt8+MaQ==
+X-Received: from edbbo27.prod.google.com ([2002:a05:6402:b3b:b0:6aa:eb31:a6ae])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:64c9:b0:4a1:6992:f861 with SMTP id 5b1f17b1804b1-4a1800d417dmr38827685e9.1.1791383613372;
- Wed, 07 Oct 2026 07:33:33 -0700 (PDT)
-Date: Wed, 07 Oct 2026 14:33:27 +0000
+ 2002:a05:6402:2809:b0:6a9:a5d6:622d with SMTP id 4fb4d7f45d1cf-6aff37566fcmr2349429a12.3.1791383611997;
+ Wed, 07 Oct 2026 07:33:31 -0700 (PDT)
+Date: Wed, 07 Oct 2026 14:33:26 +0000
 In-Reply-To: <20261007-binder-consolidate-txn-prints-v1-0-c1032ed3221f@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -60,22 +60,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261007-binder-consolidate-txn-prints-v1-0-c1032ed3221f@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2793; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=7yYnTkDLzueMSUsYZysN1eVLm4bkwc3Fym28lNXfUtA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqxlg5g83qZuMylpNIDat+dHdR6bJPs2va6ac08
- ZsG4+gQVXaJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCasZYOQAKCRAEWL7uWMY5
- RjsIEACbB8svpZNFa9U5Py17pB9wR8DWlzldpnGpY5hnhIy0cPiYkXYCBEYHocu+d97SBiixD7m
- 5eTZR65YfViawQ48eEt5ivy4AjDIV3PIzUMSbawBdvP5WSNSxOidD7z3oKwTSzOqUFise6qnNAQ
- cBZz/6t2LdWYmnfhovcvli8g2wScwN8UiP1gpqEAqhbtsKUOani+HJCg+AbWLXdn3OtrK3WBpH8
- 7XqfjsKZQcobkqGhPsGnMpL71m16wukor1jgcrgJr+yZMABb4v0miwOfUjQQE8UVzht+4a79cFM
- YrLEm6b4mlU60A+iaZRcARicyZXHcs9V0OjP0zFTif+IENB45Rwze2hXqMUKuhOg0nIa6FlLLrv
- 0+nDrzfan3LKj6u6qb9fxvRGHyqa7r5IV+hf8I6JYw9ONvWke6cJrRv9ZE0o05dgpDypnI5udIj
- uGFh6/FCfU6mR93Fi4/vEF4wN1C81ZTq3h9I+40Ux6O54eBFVU3AJEuRZBVjPfrnq9gkiK9brCW
- SQXzyaRByp8uLCMolt+iMdo3SSMD0k/VPCTnMtr7v5eftPYR/x+oVcHPC9S/unF3KgsnMTY+RLL
- fYPYSdA+6sZbuSTLgozGcl96Di/Qi7OeANUKm/mjOnhKJn00KFbK5aC8hj/hzTvJV0RAnQg4YqW ORGHVdpB66vgsVA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=947; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=EwUjmYnuQ//X9EKW/t4Q/ebxEsVXNeEj57No9Cid7CE=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqxlg4N2C2J3dmbvISPAFSJz/jL6SjVqAecKYLU
+ TdskIXwkYCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCasZYOAAKCRAEWL7uWMY5
+ RnyBD/4972kT97XeAaE7W9GdyJ2qeOoQpORPdwfAfx8YxW8xpxgk9kApIm+ObR1X42vpHQaRvEQ
+ nYwDZDHdRV6qQlVS/yKWAP8O5GVlOnr28D0HM5GX4TJqgtOWbPzsDgt3DUFYhbvZESPuCdt/Ymx
+ Fqv6IpH2/Y3x09SM0EcgGljmCHyYFR/O6gztpRoco+vHXL7pJtXPHwNX8BNX7S6O7T4G2+hJ3Jr
+ DvJAvFdSZPMuzYpv2xs95+dxuu8hbmv4PnAkMt33LX4PMLTgTZMip8Xe2DVaqo+beHKO1yNAgZV
+ aSsugBA/UO23GubN5aVrpeRVO2fyM09zT1IPa9xGu1eW+qZ4gu4LFHDWsahlJHfnEvfiwpvC5DY
+ wguT8axjOrPtfBLM0HXUA1mxISIRXsWB17GRd3vTPhB0/DHhsWTUEe/wShHOf55GdEbqxFKzn+j
+ nEEuCGJMDnFHHfUFpCzKpS4gqvB6vhXqBltloc8uq2tx5064CmVsg2uKE08Pje82G178wh1QgRJ
+ phjexcCSpnlRttIE26t33u4zlnhT2t7PqI/+tK7nF+iP7XZ8BjMgz0LzrvwhYSrHvIWC/1Duabq
+ GYjC2FvOeArc3pk+jMqI4SaWxirtWCdx6xsSR3ZqjlqGkmQ28GfqvDOLI04aS53QbWyGPYt7cAU WyUDXOmpQ+8765Q==
 X-Mailer: b4 0.14.3
-Message-ID: <20261007-binder-consolidate-txn-prints-v1-2-c1032ed3221f@google.com>
-Subject: [PATCH 2/3] rust_binder: store Option<Error> in TransactionInfo
+Message-ID: <20261007-binder-consolidate-txn-prints-v1-1-c1032ed3221f@google.com>
+Subject: [PATCH 1/3] rust: error: implement ZeroableOption for Error
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -87,66 +87,32 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <ga
 	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Store Option<Error> instead of a raw i32 errno in TransactionInfo so
-that the Error value can be used directly when formatting transaction
-failures without having to reconstruct it from the integer errno.
+Rust Binder wants to store an Option<Error> in TransactionInfo, which
+derives Zeroable. Implement ZeroableOption for Error so that
+Option<Error> implements Zeroable.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/binder/thread.rs      | 6 +++---
- drivers/android/binder/transaction.rs | 8 ++++++--
- 2 files changed, 9 insertions(+), 5 deletions(-)
+ rust/kernel/error.rs | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index e5ae3b0e56c5..5bb7ae2f7920 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -1333,8 +1333,8 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
-             if err.reply != BR_TRANSACTION_COMPLETE {
-                 info.reply = err.reply;
-                 info.error_line = Some(err.line);
--                if let Some(source) = &err.source {
--                    info.errno = source.to_errno();
-+                if let Some(source) = err.source {
-+                    info.errno = Some(source);
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index e52793f77196..81f32dc8715b 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -199,8 +199,12 @@ macro_rules! declare_err {
+ ///
+ /// The value is a valid `errno` (i.e. `>= -MAX_ERRNO && < 0`).
+ #[derive(Clone, Copy, PartialEq, Eq)]
++#[repr(transparent)]
+ pub struct Error(NonZeroI32);
  
-                     {
-                         let mut inner = self.inner.lock();
-@@ -1476,7 +1476,7 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
-             orig.from
-                 .deliver_reply(Err(BR_FAILED_REPLY), &orig, Some(ee));
-             info.reply = BR_FAILED_REPLY;
--            info.errno = param;
-+            info.errno = err.source;
-             info.error_line = Some(err.line);
-             err.reply = BR_TRANSACTION_COMPLETE;
-             err
-diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
-index e627522141b8..d934c6821b15 100644
---- a/drivers/android/binder/transaction.rs
-+++ b/drivers/android/binder/transaction.rs
-@@ -136,7 +136,11 @@ fn new(info: &TransactionInfo, ctx: &crate::Context) -> Self {
-             offsets_size: info.offsets_size,
-             return_error_line: if failed { info.error_line } else { None },
-             return_error: if failed { info.reply } else { 0 },
--            return_error_param: if failed { info.errno } else { 0 },
-+            return_error_param: if failed {
-+                info.errno.map_or(0, |e| e.to_errno())
-+            } else {
-+                0
-+            },
-             context_name,
-         }
-     }
-@@ -254,7 +258,7 @@ pub(crate) struct TransactionInfo {
-     pub(crate) offsets_size: usize,
-     pub(crate) buffers_size: usize,
-     pub(crate) target_handle: u32,
--    pub(crate) errno: i32,
-+    pub(crate) errno: Option<Error>,
-     pub(crate) reply: u32,
-     pub(crate) error_line: Option<ErrorLocation>,
-     pub(crate) oneway_spam_suspect: bool,
++// SAFETY: All zeros is equivalent to `None` according to the option layout optimization guarantee.
++unsafe impl pin_init::ZeroableOption for Error {}
++
+ impl Error {
+     /// Creates an [`Error`] from a kernel error code.
+     ///
 
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
