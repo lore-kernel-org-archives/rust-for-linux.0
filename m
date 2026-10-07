@@ -1,56 +1,56 @@
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E70A49A3B7
-	for <rust-for-linux@vger.kernel.org>; Wed,  7 Oct 2026 14:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E764B203E
+	for <rust-for-linux@vger.kernel.org>; Wed,  7 Oct 2026 14:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791383437; cv=none; b=ofi+VlgkUjehD/E2NjsduV8Q84ButD89aKT81733nL/6Si7q1xriEhpqQWiD5tJ7uMgQHIIpWKjM65cGsfY4YpHUDkFalI3tCIXXYz5BtnmRg8foqLd0jSWIG3MMtdyUtHEr6H0BcWL2XYpbNJ+nV940K0SRIDo0qQ4t0ffsvXk=
+	t=1791383442; cv=none; b=KNaKjgwqLVhaKb2vRXpoB1wA66hPNw6ZFU67tVSl1l4A11othZZSlatpT2A43eAjVetEqO0szmlPNj8R/Muemh8E4PlubG86BSqh2l8QeQ962nc3MBDFkAqEc/pScS3ugXCQlyoFCnJDpU6rAOx+HH2ukOZamGX5kn/MN28ID+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791383437; c=relaxed/simple;
-	bh=JV4/PMZ6Qtt6dKqcbmjdH6LkG0roW7BtzA3z3s9fqso=;
+	s=arc-20240116; t=1791383442; c=relaxed/simple;
+	bh=MoRjxpD+JyV+rVqti2R9GxB9P6mZVjH3OM2LR2hkBDc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iNmGx2ixW0/qVDcylnHfqzgfmq8ughHJz8Os/HrH2xI9247IAoHk/5pysPaBUceyrlZ8LetLF5j+/aMBuGuJZsWiJC0usolgqAVeQHxxLSy9ZqXvUnxPXWPedsSB2kIM9z6HdOKSVb8poKWPwVnoyM/Tbdzvh4/E+/dsdlIsI0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q41VB4jM; arc=none smtp.client-ip=209.85.128.71
+	 To:Cc:Content-Type; b=FoJklrZazaNBUsS/wBvsQBWwBGJ0+K2Qz5Tv6vFDYEZyO3Ie4SgaDoEWp5MdfZbT+xWNXuYWhi/vYFwo1hlCYbxkeypUOyJv9dKEmtcs/rtN47erGlzHvnlcROY0/AMPsoWw2I7hJjOR41PZZWsthJiM3UjyunxHM5ZdAo6FHfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L0Zkvh7e; arc=none smtp.client-ip=209.85.221.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q41VB4jM"
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a17b4c613fso10774475e9.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 07 Oct 2026 07:30:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L0Zkvh7e"
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48b0a199b20so3686926f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 07 Oct 2026 07:30:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791383427; x=1791988227; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791383428; x=1791988228; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=JWXAcmfB32d9GBcvB29QMhU4vBRy5jqckmELBbDhl6E=;
-        b=Q41VB4jMQaTcnzZfi1UwZ6WrqrcISrQ0VHVFWG6uer/O2nuj9uDq1HNdQMo+IDyrF9
-         YpgBRJWudeFagBdYtvJLMrm+oImBw8Vw+FCIO5RsTvPAC7dWnPr1fxCiu361Tz6f4NUF
-         xiSRTChqSzLRDoQaBKrNVFV2ojj1x+BwD4eYXPzQFgUNiHepx82xUKh3GW62TWIGwrFZ
-         BfXYIJvxxbSumbEluJcGvBzKfMk9JYCvlgLtg6yIVpPEp9UHwETTysMhOUud5XeRz3Ou
-         A86gbQqTtQEOvLpN5YSmoung5ocTcvsG1GAyB58zsmthcsoLqem1f8to4PYDRFryb9NV
-         jJNg==
+        bh=ZEemuqOoLAg1GJyV0hVnEXTws7WgG2Lzqw7NkIPeP7A=;
+        b=L0Zkvh7eB/9N9Y6Ct1v3E/WwqWg8VJeWk7tPhSFbyINT9pxclpzPNocV+Hch5OavrT
+         xCgEVKp1H8k5kojpcI8oMTxq2tE0BzmSzYIFb1LZ3zA/z3Zyv0rbN1rIiEHQcbgQnXFZ
+         jGZxT2LAl6U0vMkacvuMFYRZyqz+Cww1TbYwtoDg/nxTkrEjlsBFq5Q+pPExfpSXdCzX
+         +LuNWB++z14oYWis6PZJnXv1CsyJ8X1hWmOXx9mHJsQleMFhlX69FRF8H7lhetG8kIkr
+         Ffz95owGO4fteW0DEdFlh4/TXNKN1f96IUOF9AbGVUcO0T2OXsZZIsFA4z230PV0jJe/
+         zCSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791383427; x=1791988227;
+        d=1e100.net; s=20260707; t=1791383428; x=1791988228;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=JWXAcmfB32d9GBcvB29QMhU4vBRy5jqckmELBbDhl6E=;
-        b=ZDLrEFw8zJLzVLlpTnJWps8/5xid+IY5Y8zT1Dns+oYQ594oXqtboWrxsytfoYQtAy
-         6LmPi7G2DxzGYTGGHmlY//wfvXmUZf4hDvXkj9dTeMpXg4VkR9iqcIrFi/k+4peXxbeD
-         /YGpS9+TrKQSo81Iho5o1VEaGS8n9C/Hen82kQID6bZSgEzEIVajk0qIVv/PXZ403bXC
-         LD4APh3YnbPburw7+xMZJJiyDzJhTya9Ro4ubS7dGPN0LRyyU56P/D59XIZHsA2WcUSn
-         lPo8MWy4vkGsz/WHxTO7W42CLFZ/yuwr818uctPr5vHfm7d01C4heylehF+JcyHgHXIB
-         Hp2w==
-X-Forwarded-Encrypted: i=1; AKwUvByvekbLcDSRI2RrL5GMFyL3Wd4yyLvbYScsVI7a/CVj8dg7dg1ZzsB3TaBoHO0XHkzbeXdmhCkBLKiFHTom4A==@vger.kernel.org
-X-Gm-Message-State: AFuF++nPX1Cqi8vKTLqkkgI/dFApDlPFc6tuQ38nQ5u3aKGMZ3xaA06M
-	iPi9Vjy6Nr8+UXT8wULPpoQgxMJxiZDc/PXdZlbHO4LUum5ud+9xQljkkGU8segcV4UuRIqHnNU
-	kDIJVoM0GleMbP/6S8w==
-X-Received: from wmfv12.prod.google.com ([2002:a05:600c:15cc:b0:4a1:7f93:3bcf])
+        bh=ZEemuqOoLAg1GJyV0hVnEXTws7WgG2Lzqw7NkIPeP7A=;
+        b=Y9kcU37H6fCO0Fcy9I2WbeUFcrurz3mO1n6oX1qw2gFoEbozGFGgBTciGEutjzdYRB
+         h/LEsMr8SdJ5dO6jPXIggcd7xr4eYUK+uuNyPnZMy0U/+3SdRWvpsvcrh+vEv9Gk3j9z
+         4G0Hn9AyINbzTtcZCHfW5S1mZOGUPEh2gwwgQU8D/9jrLlOGVcF+ExY16GI2rwPMlhG4
+         37VE76zsdCfVHrpOET93wuFtqs/knSL5SdcOrlwIF5WpMHaZBk3jZ67vnUjbD5T/yTt0
+         s9zcl0aDBn0dCTKKDNchSLG7+mAl6S2GgLttVhvhLNmaYAVeBKZuBNAfzhK/lu7Sg3js
+         HT9A==
+X-Forwarded-Encrypted: i=1; AKwUvBzk+Am/YOfkzWM3dKf/6wm9/bFD5viXxjP2nMI+C54bu/9Y/RfukWpraWDbhGacFR/SdPf4+GsTxHgjzFDeAg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKShPYIGrvtWH53RAi4qaT9gaVWY73+thwPQgkgu7Wogp89Mcmb
+	3tNmdpGZebt25GwmBfh6G3fCAP2Zuj0x/P79I5dyY/3V9qe1eb9ZmdpKFkhXjbeysjmEvPH/+cO
+	jd6WEUkbQTe4j1fSvcg==
+X-Received: from wrwa1.prod.google.com ([2002:a5d:53c1:0:b0:48b:3f5:2676])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:6095:b0:4a0:da23:e06d with SMTP id 5b1f17b1804b1-4a1804192a4mr39138815e9.10.1791383426249;
- Wed, 07 Oct 2026 07:30:26 -0700 (PDT)
-Date: Wed, 07 Oct 2026 14:30:03 +0000
+ 2002:a05:6000:61e:b0:48c:4d74:d7d2 with SMTP id ffacd0b85a97d-48c727797b7mr5015706f8f.12.1791383427604;
+ Wed, 07 Oct 2026 07:30:27 -0700 (PDT)
+Date: Wed, 07 Oct 2026 14:30:04 +0000
 In-Reply-To: <20261007-pr-ratelimited-v6-0-f14accd4ea3b@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -60,22 +60,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261007-pr-ratelimited-v6-0-f14accd4ea3b@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10917; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=JV4/PMZ6Qtt6dKqcbmjdH6LkG0roW7BtzA3z3s9fqso=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqxld33kVQUou01eXxuBI42+V1hHiIcTbkR/nc0
- uDYPafw6aOJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCasZXdwAKCRAEWL7uWMY5
- RonqD/9SaOND/uaYWHgzSu9YkSY6ntSf4Y5FfrIaiqKOPuZxiuIQA0mLgssvCj2P0lNnU2d/DS3
- QwUk9Nz9Uv+877wpm31u0ZbP+wR0fzBab70AJopoN6dOwBCBl6Fwxh0R4aydOh30/pDtz84mrJV
- uZlu/p9krYLTZ4TmS/DMujUlIPYd+x4VvNMmr6PYiKNK8E7TjHpXG/U5C+jMBwxIrMxI1nngKPi
- Zsy7C/4J8OHGoPGBeNvB+ccJ10APDv/85saCt8Yeh9dzqARqUrMVLkKMPLTeDmAlE7AcILY3+k6
- iS8mF6eXDx9Oh78Rnb5j6LyMSrwAKcNkmUlQx3/yAlYnSR4gK7X1VN74w5U6RABJElkmZAcBAuT
- O1mPGUXMAN6YW1R2Qc74wkIxeaCd/BGiR8kqUz3m/UsGje7/DMmY+t3GegOiYK+UWBTcGdfcorX
- A4fKAhZ/94Dpw68bsTMLG4Nq0yazHJvJhqBf+VSlfHF5ghf/+IQ//taQ5wLD76ngc5gNt3Yx4KM
- ssjyZGAREj5z3ZprsbHUi+wSIt98tfixzMgyupVW9Bf60NfwQRxHGc0nmowUgc4deEM0/UVItz0
- PwODBJlWhNTH7JFoirorYo+qC/oJhxxE2LsnU8Kynsi3IiM/r1gf1ekcXIAEraJuVgsymU3DYQp VCVZaqyseHLvr2w==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=26742; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=MoRjxpD+JyV+rVqti2R9GxB9P6mZVjH3OM2LR2hkBDc=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqxld32e6EC0afYkEm+adZwQMxWDK6j/viKSXM+
+ 5MODJGAN32JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCasZXdwAKCRAEWL7uWMY5
+ Roh+D/0Sv6Qjgj9qPJjpC/LQmKUhQ8f38PB7SEma3Q3AH/3r1YjUCw4cCXFXeYAd1Hqmb/gFPjP
+ ncHMsGMLrb7sBWWRqeoQbA2PQ2gS6DwwgqzzG8OQDLg525FJLzOYRa6sUkZ86nPKpjp6NREoM2+
+ QGdH3lpsH3kRNJLsN3FpDuDHFTHwLbqp8L6snkCYNOjHM1tjNmT2JeF7+mH2m5xABnjpgfn92cV
+ lIygsop4a3wd3dRTGBFJIWgy+oNdf8oiBhBN6TgXq/KWftn6Z9t0xJImoqQzXNbw28gpKGw6Iwe
+ Tk2t9RzoJBUAEZO6bsSP5OV2qmgfFAuawNqIjWG0GYi8LNNE22UUYI8j/v20mDwyiNdsghcyfaC
+ 1C9pt+SG6m8rHX2afYP9tdl1L43tPUMMqiRFUCa0jJCBR4AojQ2ndN/uRfj7xLLsbYMKUYf+g4R
+ kNTv10K9TglBMfuL4tflw1NE0Lh1cBBVtH8zwkzsnLbmewdj///iXA366nwRdp5vH1J7pCIzW5A
+ mMrbeSMX5lEMc7PAr1A+wkZ4MMP3vRllHJzJpBnE2MZTT6F/mp8hPCi1oDpl/5wW1/fl8vkPE1M
+ GXBVGUWpkQPmZ/GQ1UJb190/RGmHppIYvXvFNOffpeZ82Rqk8IQhoKpA1ltzyB85+iyqClsR62T J9ezA3Us9VEtQIg==
 X-Mailer: b4 0.14.3
-Message-ID: <20261007-pr-ratelimited-v6-3-f14accd4ea3b@google.com>
-Subject: [PATCH v6 3/4] rust: add pr_*_ratelimit! macros for printing
+Message-ID: <20261007-pr-ratelimited-v6-4-f14accd4ea3b@google.com>
+Subject: [PATCH v6 4/4] rust_binder: use pr_*_ratelimited! for printing
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
 	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -87,334 +87,555 @@ Cc: "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, Andreas Hindborg <a.hind
 	Miguel Ojeda <ojeda@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
 	Trevor Gross <tmgross@umich.edu>, Waiman Long <longman@redhat.com>, Will Deacon <will@kernel.org>, 
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>, Alvin Sun <alvin.sun@linux.dev>
+	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Printing can be very expensive if it occurs often, so printing that can
-be triggered by userspace should be rate limited. For this purpose, add
-a Rust wrapper around `struct ratelimit_state` and use it in the new
-macros.
+To avoid DoS from printing too much, make printing in Binder rate
+limited.
 
-The new files will fall under the catch-all RUST maintainers entry.
+A big portion of these print statements have been updated to use
+binder_debug!, but some still remain to be converted. For now, just
+update them to use pr_*_ratelimited! until we get around to converting
+them to use binder_debug! too. While we're at it, fix the missing
+newlines at the end of some of those println statements.
 
-Tested-by: Alvin Sun <alvin.sun@linux.dev>
-Reviewed-by: Carlos Llamas <cmllamas@google.com>
-Link: https://github.com/Rust-for-Linux/linux/issues/122
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Four transaction failure pr_warn! calls in thread.rs and transaction.rs
+are not converted because they're being deleted by another patch
+series.
+
+Acked-by: Carlos Llamas <cmllamas@google.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/helpers/helpers.c            |   1 +
- rust/helpers/ratelimit.c          |  14 +++
- rust/kernel/lib.rs                |   1 +
- rust/kernel/prelude.rs            |   8 ++
- rust/kernel/ratelimit.rs          | 216 ++++++++++++++++++++++++++++++++++++++
- rust/kernel/sync/lock/spinlock.rs |   1 -
- 6 files changed, 240 insertions(+), 1 deletion(-)
+ drivers/android/binder/allocation.rs       |  4 +--
+ drivers/android/binder/context.rs          |  6 ++--
+ drivers/android/binder/debug.rs            |  4 +--
+ drivers/android/binder/freeze.rs           |  2 +-
+ drivers/android/binder/node.rs             |  4 +--
+ drivers/android/binder/page_range.rs       | 12 ++++----
+ drivers/android/binder/process.rs          | 22 +++++++-------
+ drivers/android/binder/range_alloc/tree.rs | 26 ++++++++--------
+ drivers/android/binder/thread.rs           | 48 +++++++++++++++++-------------
+ drivers/android/binder/transaction.rs      |  6 ++--
+ 10 files changed, 71 insertions(+), 63 deletions(-)
 
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 440fb7638e3c..d08958e69de7 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -85,6 +85,7 @@
- #include "processor.c"
- #include "property.c"
- #include "pwm.c"
-+#include "ratelimit.c"
- #include "rbtree.c"
- #include "rcu.c"
- #include "refcount.c"
-diff --git a/rust/helpers/ratelimit.c b/rust/helpers/ratelimit.c
-new file mode 100644
-index 000000000000..e5052f568b81
---- /dev/null
-+++ b/rust/helpers/ratelimit.c
-@@ -0,0 +1,14 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/ratelimit.h>
-+
-+__rust_helper void rust_helper_ratelimit_state_init(struct ratelimit_state *rs,
-+						    int interval, int burst)
-+{
-+	ratelimit_state_init(rs, interval, burst);
-+}
-+
-+__rust_helper void rust_helper_ratelimit_state_exit(struct ratelimit_state *rs)
-+{
-+	ratelimit_state_exit(rs);
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 7225abc64084..a4747f75b163 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -120,6 +120,7 @@
- pub mod ptr;
- #[cfg(CONFIG_RUST_PWM_ABSTRACTIONS)]
- pub mod pwm;
-+pub mod ratelimit;
- pub mod rbtree;
- pub mod regulator;
- pub mod revocable;
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index ca396f1f78a6..bcaa232205be 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -107,13 +107,21 @@
-     },
-     init::InPlaceInit,
-     pr_alert,
-+    pr_alert_ratelimited,
-     pr_crit,
-+    pr_crit_ratelimited,
-     pr_debug,
-+    pr_debug_ratelimited,
-     pr_emerg,
-+    pr_emerg_ratelimited,
-     pr_err,
-+    pr_err_ratelimited,
-     pr_info,
-+    pr_info_ratelimited,
-     pr_notice,
-+    pr_notice_ratelimited,
-     pr_warn,
-+    pr_warn_ratelimited,
-     str::CStrExt as _,
-     try_init,
-     try_pin_init,
-diff --git a/rust/kernel/ratelimit.rs b/rust/kernel/ratelimit.rs
-new file mode 100644
-index 000000000000..ea7253e84c38
---- /dev/null
-+++ b/rust/kernel/ratelimit.rs
-@@ -0,0 +1,216 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rate limiting support.
-+//!
-+//! C header: [`include/linux/ratelimit.h`](srctree/include/linux/ratelimit.h)
-+
-+use crate::{
-+    bindings,
-+    prelude::*,
-+    types::Opaque, //
-+};
-+
-+/// Defines a `static` containing a [`Ratelimit`].
-+#[macro_export]
-+macro_rules! ratelimit_state_init {
-+    ($name:ident, $interval:expr, $burst:expr $(,)?) => {
-+        static $name: $crate::ratelimit::Ratelimit = {
-+            let name = $crate::c_str!(::core::stringify!($name));
-+            let interval = $interval;
-+            let burst = $burst;
-+            // SAFETY: This will be stored in static memory.
-+            unsafe { $crate::ratelimit::Ratelimit::new_static(name, interval, burst) }
-+        };
-+    };
-+}
-+pub use ratelimit_state_init;
-+
-+/// Rate limiter state.
-+///
-+/// # Invariants
-+///
-+/// The `inner` field contains an initialized `struct ratelimit_state`.
-+#[pin_data(PinnedDrop)]
-+#[repr(transparent)]
-+pub struct Ratelimit {
-+    #[pin]
-+    inner: Opaque<bindings::ratelimit_state>,
-+}
-+
-+// SAFETY: `Ratelimit` is safe to be sent to any task.
-+unsafe impl Send for Ratelimit {}
-+
-+// SAFETY: `Ratelimit` is safe to be accessed concurrently as it is protected by an internal
-+// spinlock.
-+unsafe impl Sync for Ratelimit {}
-+
-+impl Ratelimit {
-+    /// Constructs a [`Ratelimit`] with the specified configuration.
-+    ///
-+    /// If `interval` is zero, then no rate limit is applied.
-+    #[inline]
-+    pub fn new(interval: i32, burst: i32) -> impl PinInit<Self> {
-+        // INVARIANT: This creates a `Ratelimit` containing an initialized `struct ratelimit_state`
-+        pin_init!(Self {
-+            inner <- Opaque::ffi_init(|slot: *mut bindings::ratelimit_state| {
-+                // SAFETY: `slot` is a valid pointer to an uninitialized `struct ratelimit_state`.
-+                // The memory is pinned so it remains valid until `ratelimit_state_exit` is called.
-+                unsafe { bindings::ratelimit_state_init(slot, interval, burst) };
-+            }),
-+        })
-+    }
-+
-+    /// Constructs a [`Ratelimit`] with the default configuration.
-+    #[inline]
-+    pub fn new_default() -> impl PinInit<Self> {
-+        Ratelimit::new(Ratelimit::DEFAULT_INTERVAL, Ratelimit::DEFAULT_BURST)
-+    }
-+
-+    /// Constructs a [`Ratelimit`] with the specified configuration.
-+    ///
-+    /// The name will be used for the lockdep name of the internal spinlock. See [`Self::new`] for
-+    /// the meaning of `interval` and `burst`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The resulting value must be stored in static memory.
-+    #[inline]
-+    pub const unsafe fn new_static(name: &'static CStr, interval: i32, burst: i32) -> Self {
-+        // INVARIANT: This creates a `Ratelimit` containing an initialized `struct ratelimit_state`.
-+        Self {
-+            inner: Opaque::new(bindings::ratelimit_state {
-+                lock: kernel::sync::lock::spinlock::raw_spin_lock_unlocked(name),
-+                interval,
-+                burst,
-+                ..pin_init::zeroed()
-+            }),
-+        }
-+    }
-+
-+    /// The default interval used for rate limiting.
-+    pub const DEFAULT_INTERVAL: i32 = bindings::DEFAULT_RATELIMIT_INTERVAL as i32;
-+
-+    /// The default burst size.
-+    pub const DEFAULT_BURST: i32 = bindings::DEFAULT_RATELIMIT_BURST as i32;
-+
-+    /// Check if an action should be rate-limited.
-+    ///
-+    /// Returns [`true`] if the action is allowed, and [`false`] if it should be suppressed.
-+    #[inline]
-+    pub fn ratelimit(&self, func: &CStr) -> bool {
-+        // SAFETY: `self.inner.get()` is a valid pointer to a `struct ratelimit_state`.
-+        // The lifetime of `func` ensures the pointer remains valid for the duration of the call.
-+        // The C function `___ratelimit` handles its own internal locking, so it is safe to call
-+        // concurrently.
-+        unsafe { bindings::___ratelimit(self.inner.get(), func.as_char_ptr()) != 0 }
-+    }
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for Ratelimit {
-+    #[inline]
-+    fn drop(self: Pin<&mut Self>) {
-+        // SAFETY: By the type invariants, this struct contains an initialized `struct
-+        // ratelimit_state`.
-+        unsafe { bindings::ratelimit_state_exit(self.inner.get()) };
-+    }
-+}
-+
-+/// Helper macro to implement ratelimited printing.
-+#[macro_export]
-+#[doc(hidden)]
-+macro_rules! print_ratelimited {
-+    ($print_macro:ident, $($arg:tt)*) => {{
-+        $crate::ratelimit::ratelimit_state_init!(
-+            _rs,
-+            $crate::ratelimit::Ratelimit::DEFAULT_INTERVAL,
-+            $crate::ratelimit::Ratelimit::DEFAULT_BURST,
-+        );
-+        let loc = $crate::c_str!(::core::concat!(::core::file!(), ":", ::core::line!()));
-+        if $crate::ratelimit::Ratelimit::ratelimit(&_rs, loc) {
-+            $crate::$print_macro!($($arg)*);
-+        }
-+    }};
-+}
-+
-+/// Prints an emergency-level message (level 0) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_emerg_ratelimited (
-+    ($($arg:tt)*) => (
-+        $crate::print_ratelimited!(pr_emerg, $($arg)*)
-+    )
-+);
-+
-+/// Prints an alert-level message (level 1) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_alert_ratelimited (
-+    ($($arg:tt)*) => (
-+        $crate::print_ratelimited!(pr_alert, $($arg)*)
-+    )
-+);
-+
-+/// Prints a critical-level message (level 2) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_crit_ratelimited (
-+    ($($arg:tt)*) => (
-+        $crate::print_ratelimited!(pr_crit, $($arg)*)
-+    )
-+);
-+
-+/// Prints an error-level message (level 3) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_err_ratelimited (
-+    ($($arg:tt)*) => (
-+        $crate::print_ratelimited!(pr_err, $($arg)*)
-+    )
-+);
-+
-+/// Prints a warning-level message (level 4) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_warn_ratelimited (
-+    ($($arg:tt)*) => (
-+        $crate::print_ratelimited!(pr_warn, $($arg)*)
-+    )
-+);
-+
-+/// Prints a notice-level message (level 5) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_notice_ratelimited (
-+    ($($arg:tt)*) => (
-+        $crate::print_ratelimited!(pr_notice, $($arg)*)
-+    )
-+);
-+
-+/// Prints an info-level message (level 6) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_info_ratelimited (
-+    ($($arg:tt)*) => (
-+        $crate::print_ratelimited!(pr_info, $($arg)*)
-+    )
-+);
-+
-+/// Prints a debug-level message (level 7) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_debug_ratelimited (
-+    ($($arg:tt)*) => (
-+        if cfg!(debug_assertions) {
-+            $crate::print_ratelimited!(pr_debug, $($arg)*)
-+        }
-+    )
-+);
-diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index 037fa63ebcac..6a71bb3a5c45 100644
---- a/rust/kernel/sync/lock/spinlock.rs
-+++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -468,7 +468,6 @@ fn spinlock_irq_condvar() -> Result {
- ///
- /// For use in statics containing raw spinlocks.
- #[doc(alias("__SPIN_LOCK_UNLOCKED", "DEFINE_SPINLOCK"))]
--#[expect(dead_code)]
- pub(crate) const fn raw_spin_lock_unlocked(name: &'static CStr) -> bindings::raw_spinlock_t {
-     // Silence unused variable warnings.
-     #[cfg(not(CONFIG_DEBUG_LOCK_ALLOC))]
+diff --git a/drivers/android/binder/allocation.rs b/drivers/android/binder/allocation.rs
+index 165cb797eb1e..8151ba3ea7f4 100644
+--- a/drivers/android/binder/allocation.rs
++++ b/drivers/android/binder/allocation.rs
+@@ -261,7 +261,7 @@ fn drop(&mut self) {
+                 let view = AllocationView::new(self, offsets.start);
+                 for i in offsets.step_by(size_of::<u64>()) {
+                     if view.cleanup_object(i).is_err() {
+-                        pr_warn!("Error cleaning up object at offset {}\n", i)
++                        pr_warn_ratelimited!("Error cleaning up object at offset {}\n", i)
+                     }
+                 }
+             }
+@@ -286,7 +286,7 @@ fn drop(&mut self) {
+ 
+             if info.clear_on_free {
+                 if let Err(e) = self.fill_zero() {
+-                    pr_warn!("Failed to clear data on free: {:?}", e);
++                    pr_warn_ratelimited!("Failed to clear data on free: {:?}\n", e);
+                 }
+             }
+         }
+diff --git a/drivers/android/binder/context.rs b/drivers/android/binder/context.rs
+index ddddb66b3557..431d6007a9b1 100644
+--- a/drivers/android/binder/context.rs
++++ b/drivers/android/binder/context.rs
+@@ -80,7 +80,7 @@ pub(crate) fn deregister(self: &Arc<Self>) {
+ 
+     pub(crate) fn register_process(self: &Arc<Self>, proc: Arc<Process>) -> Result {
+         if !Arc::ptr_eq(self, &proc.ctx) {
+-            pr_err!("Context::register_process called on the wrong context.");
++            pr_err_ratelimited!("Context::register_process called on the wrong context.\n");
+             return Err(EINVAL);
+         }
+         self.manager.lock().all_procs.push(proc, GFP_KERNEL)?;
+@@ -89,7 +89,7 @@ pub(crate) fn register_process(self: &Arc<Self>, proc: Arc<Process>) -> Result {
+ 
+     pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Arc<Process>) {
+         if !Arc::ptr_eq(self, &proc.ctx) {
+-            pr_err!("Context::deregister_process called on the wrong context.");
++            pr_err_ratelimited!("Context::deregister_process called on the wrong context.\n");
+             return;
+         }
+         let mut manager = self.manager.lock();
+@@ -110,7 +110,7 @@ pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Arc<Process>) {
+     pub(crate) fn set_manager_node(&self, node_ref: NodeRef) -> Result {
+         let mut manager = self.manager.lock();
+         if manager.node.is_some() {
+-            pr_warn!("BINDER_SET_CONTEXT_MGR already set");
++            pr_warn_ratelimited!("BINDER_SET_CONTEXT_MGR already set\n");
+             return Err(EBUSY);
+         }
+         security::binder_set_context_mgr(&node_ref.node.owner.cred)?;
+diff --git a/drivers/android/binder/debug.rs b/drivers/android/binder/debug.rs
+index 824b10c004c3..6d8dcddf4619 100644
+--- a/drivers/android/binder/debug.rs
++++ b/drivers/android/binder/debug.rs
+@@ -53,7 +53,7 @@ macro_rules! binder_debug {
+     // Rule to explicitly specify a PID (used in kworkers).
+     (pid=$pid:expr, $mask:ident, $($arg:tt)*) => {
+         if $crate::debug::debug_mask_enabled($crate::debug::DebugMask::$mask) {
+-            kernel::pr_info!(
++            kernel::pr_info_ratelimited!(
+                 "{}: {}\n",
+                 $pid,
+                 kernel::prelude::fmt!($($arg)*)
+@@ -65,7 +65,7 @@ macro_rules! binder_debug {
+     ($mask:ident, $($arg:tt)*) => {
+         if $crate::debug::debug_mask_enabled($crate::debug::DebugMask::$mask) {
+             let thread = kernel::current!();
+-            kernel::pr_info!(
++            kernel::pr_info_ratelimited!(
+                 "{}:{} {}\n",
+                 thread.tgid(),
+                 thread.pid(),
+diff --git a/drivers/android/binder/freeze.rs b/drivers/android/binder/freeze.rs
+index 66912b4cb527..7fbde3345ced 100644
+--- a/drivers/android/binder/freeze.rs
++++ b/drivers/android/binder/freeze.rs
+@@ -412,7 +412,7 @@ fn find_freeze_recipients(&self) -> Result<KVVec<(DArc<Node>, Arc<Process>)>, Al
+                 recipients
+                     .push_within_capacity(node_proc_pair)
+                     .map_err(|_| {
+-                        pr_err!(
++                        pr_err_ratelimited!(
+                             "push_within_capacity failed even though we checked the capacity\n"
+                         );
+                         AllocError
+diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
+index 0a82af14cda3..69b36951dbbe 100644
+--- a/drivers/android/binder/node.rs
++++ b/drivers/android/binder/node.rs
+@@ -405,7 +405,7 @@ pub(crate) fn update_refcount_locked(
+             !is_dead && !state.has_count
+         } else {
+             if state.count < count {
+-                pr_err!("Failure: refcount underflow!");
++                pr_err_ratelimited!("Failure: refcount underflow!\n");
+                 return None;
+             }
+             state.count -= count;
+@@ -693,7 +693,7 @@ pub(crate) fn remove_freeze_listener(&self, p: &Process) -> KVVec<Arc<Process>>
+             .freeze_list
+             .retain(|proc| !core::ptr::eq::<Process>(&**proc, p));
+         if len == inner.freeze_list.len() {
+-            pr_warn!(
++            pr_warn_ratelimited!(
+                 "Could not remove freeze listener for {}\n",
+                 p.pid_in_current_ns()
+             );
+diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+index 52ffbf3504e7..c1f4f635c2c0 100644
+--- a/drivers/android/binder/page_range.rs
++++ b/drivers/android/binder/page_range.rs
+@@ -212,7 +212,7 @@ unsafe fn set_page(me: *mut PageInfo, page: Page) {
+ 
+         // SAFETY: The pointer is valid for writing, so also valid for reading.
+         if unsafe { (*ptr).is_some() } {
+-            pr_err!("set_page called when there is already a page");
++            pr_err_ratelimited!("set_page called when there is already a page\n");
+             // SAFETY: We will initialize the page again below.
+             unsafe { ptr::drop_in_place(ptr) };
+         }
+@@ -300,11 +300,11 @@ pub(crate) fn register_with_vma(&self, vma: &virt::VmaNew) -> Result<usize> {
+         let num_pages = num_bytes >> PAGE_SHIFT;
+ 
+         if !ptr::eq::<Mm>(&*self.mm, &**vma.mm()) {
+-            pr_debug!("Failed to register with vma: invalid vma->vm_mm");
++            pr_debug_ratelimited!("Failed to register with vma: invalid vma->vm_mm\n");
+             return Err(EINVAL);
+         }
+         if num_pages == 0 {
+-            pr_debug!("Failed to register with vma: size zero");
++            pr_debug_ratelimited!("Failed to register with vma: size zero\n");
+             return Err(EINVAL);
+         }
+ 
+@@ -325,7 +325,7 @@ pub(crate) fn register_with_vma(&self, vma: &virt::VmaNew) -> Result<usize> {
+ 
+         let mut inner = self.lock.lock();
+         if inner.size > 0 {
+-            pr_debug!("Failed to register with vma: already registered");
++            pr_debug_ratelimited!("Failed to register with vma: already registered\n");
+             drop(inner);
+             return Err(EBUSY);
+         }
+@@ -380,7 +380,7 @@ pub(crate) fn use_range(&self, start: usize, end: usize) -> Result<()> {
+                 match unsafe { self.use_page_slow(i) } {
+                     Ok(()) => {}
+                     Err(err) => {
+-                        pr_warn!("Error in use_page_slow: {:?}", err);
++                        pr_warn_ratelimited!("Error in use_page_slow: {:?}\n", err);
+                         return Err(err);
+                     }
+                 }
+@@ -529,7 +529,7 @@ unsafe fn iterate<T>(&self, mut offset: usize, mut size: usize, mut cb: T) -> Re
+             // duration of this call to `iterate`, so nobody will change the page.
+             let page = unsafe { PageInfo::get_page(page_info) };
+             if page.is_none() {
+-                pr_warn!("Page is null!");
++                pr_warn_ratelimited!("Page is null!\n");
+             }
+             let page = page.ok_or(EFAULT)?;
+             cb(page, offset, available)?;
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 5372bfbd93b3..65f719e46c3e 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -324,7 +324,7 @@ pub(crate) fn death_delivered(&mut self, death: DArc<NodeDeath>) {
+         if let Some(death) = ListArc::try_from_arc_or_drop(death) {
+             self.delivered_deaths.push_back(death);
+         } else {
+-            pr_warn!("Notification added to `delivered_deaths` twice.");
++            pr_warn_ratelimited!("Notification added to `delivered_deaths` twice.\n");
+         }
+     }
+ 
+@@ -701,7 +701,7 @@ fn get_current_thread(self: ArcBorrow<'_, Self>) -> Result<Arc<Thread>> {
+         let id = {
+             let current = kernel::current!();
+             if self.task != current.group_leader() {
+-                pr_err!("get_current_thread was called from the wrong process.");
++                pr_err_ratelimited!("get_current_thread was called from the wrong process.\n");
+                 return Err(EINVAL);
+             }
+             current.pid()
+@@ -725,7 +725,7 @@ fn get_current_thread(self: ArcBorrow<'_, Self>) -> Result<Arc<Thread>> {
+                 Ok(ta)
+             }
+             rbtree::Entry::Occupied(_entry) => {
+-                pr_err!("Cannot create two threads with the same id.");
++                pr_err_ratelimited!("Cannot create two threads with the same id.\n");
+                 Err(EINVAL)
+             }
+         }
+@@ -861,7 +861,9 @@ pub(crate) fn insert_or_update_handle(
+                 match refs.by_handle.entry(res.as_u32()) {
+                     rbtree::Entry::Vacant(entry) => break (res, entry),
+                     rbtree::Entry::Occupied(_) => {
+-                        pr_err!("Detected mismatch between handle_is_present and by_handle");
++                        pr_err_ratelimited!(
++                            "Detected mismatch between handle_is_present and by_handle\n"
++                        );
+                         res.acquire();
+                         kernel::warn_on!(true);
+                         return Err(EINVAL);
+@@ -1101,7 +1103,7 @@ pub(crate) fn buffer_alloc(
+         ) {
+             Ok(()) => {}
+             Err(err) => {
+-                pr_warn!("use_range failure {:?}", err);
++                pr_warn_ratelimited!("use_range failure {:?}\n", err);
+                 return Err(err.into());
+             }
+         }
+@@ -1132,7 +1134,7 @@ pub(crate) fn buffer_raw_free(&self, ptr: usize) {
+             let freed_range = match mapping.alloc.reservation_abort(offset) {
+                 Ok(freed_range) => freed_range,
+                 Err(_) => {
+-                    pr_warn!(
++                    pr_warn_ratelimited!(
+                         "Pointer {:x} failed to free, base = {:x}\n",
+                         ptr,
+                         mapping.address
+@@ -1154,7 +1156,7 @@ pub(crate) fn buffer_make_freeable(&self, offset: usize, mut data: Option<Alloca
+         let mut inner = self.inner.lock();
+         if let Some(ref mut mapping) = &mut inner.mapping {
+             if mapping.alloc.reservation_commit(offset, &mut data).is_err() {
+-                pr_warn!("Offset {} failed to be marked freeable\n", offset);
++                pr_warn_ratelimited!("Offset {} failed to be marked freeable\n", offset);
+             }
+         }
+     }
+@@ -1516,7 +1518,7 @@ pub(crate) fn drop_outstanding_txn(&self) {
+         let wake = {
+             let mut inner = self.inner.lock();
+             if inner.outstanding_txns == 0 {
+-                pr_err!("outstanding_txns underflow");
++                pr_err_ratelimited!("outstanding_txns underflow\n");
+                 return;
+             }
+             inner.outstanding_txns -= 1;
+@@ -1836,7 +1838,7 @@ fn new(thread: &'a Arc<Thread>, guard: &mut Guard<'_, ProcessInner, SpinLockBack
+             // It is an error to hit this branch, and it should not be reachable. We try to do
+             // something reasonable when the failure path happens. Most likely, the thread in
+             // question will sleep forever.
+-            pr_err!("Same thread registered with `ready_threads` twice.");
++            pr_err_ratelimited!("Same thread registered with `ready_threads` twice.\n");
+         }
+         Self { thread }
+     }
+@@ -1861,7 +1863,7 @@ impl Drop for WithNodes<'_> {
+     fn drop(&mut self) {
+         core::mem::swap(&mut self.nodes, &mut self.inner.nodes);
+         if self.nodes.iter().next().is_some() {
+-            pr_err!("nodes array was modified while using lock_with_nodes\n");
++            pr_err_ratelimited!("nodes array was modified while using lock_with_nodes\n");
+         }
+     }
+ }
+diff --git a/drivers/android/binder/range_alloc/tree.rs b/drivers/android/binder/range_alloc/tree.rs
+index 48796fcdb362..3e3b452909ed 100644
+--- a/drivers/android/binder/range_alloc/tree.rs
++++ b/drivers/android/binder/range_alloc/tree.rs
+@@ -166,7 +166,7 @@ pub(crate) fn reserve_new(
+ 
+         let (found_size, found_off, tree_node, free_tree_node) = match self.find_best_match(size) {
+             None => {
+-                pr_warn!("ENOSPC from range_alloc.reserve_new - size: {}", size);
++                pr_warn_ratelimited!("ENOSPC from range_alloc.reserve_new - size: {}\n", size);
+                 return Err(ENOSPC);
+             }
+             Some(desc) => {
+@@ -208,8 +208,8 @@ pub(crate) fn reserve_new(
+ 
+     pub(crate) fn reservation_abort(&mut self, offset: usize) -> Result<FreedRange> {
+         let mut cursor = self.tree.cursor_lower_bound_mut(&offset).ok_or_else(|| {
+-            pr_warn!(
+-                "EINVAL from range_alloc.reservation_abort - offset: {}",
++            pr_warn_ratelimited!(
++                "EINVAL from range_alloc.reservation_abort - offset: {}\n",
+                 offset
+             );
+             EINVAL
+@@ -218,8 +218,8 @@ pub(crate) fn reservation_abort(&mut self, offset: usize) -> Result<FreedRange>
+         let (_, desc) = cursor.current_mut();
+ 
+         if desc.offset != offset {
+-            pr_warn!(
+-                "EINVAL from range_alloc.reservation_abort - offset: {}",
++            pr_warn_ratelimited!(
++                "EINVAL from range_alloc.reservation_abort - offset: {}\n",
+                 offset
+             );
+             return Err(EINVAL);
+@@ -230,15 +230,15 @@ pub(crate) fn reservation_abort(&mut self, offset: usize) -> Result<FreedRange>
+                 (None, Ok((reservation, free_node_res)))
+             }
+             None => {
+-                pr_warn!(
+-                    "EINVAL from range_alloc.reservation_abort - offset: {}",
++                pr_warn_ratelimited!(
++                    "EINVAL from range_alloc.reservation_abort - offset: {}\n",
+                     offset
+                 );
+                 (None, Err(EINVAL))
+             }
+             allocated => {
+-                pr_warn!(
+-                    "EPERM from range_alloc.reservation_abort - offset: {}",
++                pr_warn_ratelimited!(
++                    "EPERM from range_alloc.reservation_abort - offset: {}\n",
+                     offset
+                 );
+                 (allocated, Err(EPERM))
+@@ -327,8 +327,8 @@ pub(crate) fn reservation_commit(&mut self, offset: usize, data: &mut Option<T>)
+     /// Returns the size of the existing entry and the data associated with it.
+     pub(crate) fn reserve_existing(&mut self, offset: usize) -> Result<(usize, usize, Option<T>)> {
+         let desc = self.tree.get_mut(&offset).ok_or_else(|| {
+-            pr_warn!(
+-                "ENOENT from range_alloc.reserve_existing - offset: {}",
++            pr_warn_ratelimited!(
++                "ENOENT from range_alloc.reserve_existing - offset: {}\n",
+                 offset
+             );
+             ENOENT
+@@ -344,8 +344,8 @@ pub(crate) fn reserve_existing(&mut self, offset: usize) -> Result<(usize, usize
+                 )
+             }
+             other => {
+-                pr_warn!(
+-                    "ENOENT from range_alloc.reserve_existing - offset: {}",
++                pr_warn_ratelimited!(
++                    "ENOENT from range_alloc.reserve_existing - offset: {}\n",
+                     offset
+                 );
+                 (other, Err(ENOENT))
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index 18a14aa8a835..897c86188c96 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -160,8 +160,8 @@ fn validate_parent_fixup(
+         let sg_entry = match self.sg_entries.get(sg_idx) {
+             Some(sg_entry) => sg_entry,
+             None => {
+-                pr_err!(
+-                    "self.ancestors[{}] is {}, but self.sg_entries.len() is {}",
++                pr_err_ratelimited!(
++                    "self.ancestors[{}] is {}, but self.sg_entries.len() is {}\n",
+                     ancestors_i,
+                     sg_idx,
+                     self.sg_entries.len()
+@@ -170,8 +170,8 @@ fn validate_parent_fixup(
+             }
+         };
+         if sg_entry.fixup_min_offset > parent_offset {
+-            pr_warn!(
+-                "validate_parent_fixup: fixup_min_offset={}, parent_offset={}",
++            pr_warn_ratelimited!(
++                "validate_parent_fixup: fixup_min_offset={}, parent_offset={}\n",
+                 sg_entry.fixup_min_offset,
+                 parent_offset
+             );
+@@ -179,8 +179,8 @@ fn validate_parent_fixup(
+         }
+         let new_min_offset = parent_offset.checked_add(length).ok_or(EINVAL)?;
+         if new_min_offset > sg_entry.length {
+-            pr_warn!(
+-                "validate_parent_fixup: new_min_offset={}, sg_entry.length={}",
++            pr_warn_ratelimited!(
++                "validate_parent_fixup: new_min_offset={}, sg_entry.length={}\n",
+                 new_min_offset,
+                 sg_entry.length
+             );
+@@ -339,7 +339,7 @@ fn push_reply_work(&mut self, code: u32) -> PushWorkRes {
+             work.set_error_code(code);
+             self.push_work(work)
+         } else {
+-            pr_warn!("Thread reply work is already in use.");
++            pr_warn_ratelimited!("Thread reply work is already in use.\n");
+             PushWorkRes::Ok
+         }
+     }
+@@ -350,7 +350,7 @@ fn push_return_work(&mut self, reply: u32) {
+             // Not notifying: Reply to current thread.
+             let _ = self.push_work(work);
+         } else {
+-            pr_warn!("Thread return work is already in use.");
++            pr_warn_ratelimited!("Thread return work is already in use.\n");
+         }
+     }
+ 
+@@ -803,8 +803,8 @@ fn translate_object(
+                     let parent_entry = match sg_state.sg_entries.get_mut(info.parent_sg_index) {
+                         Some(parent_entry) => parent_entry,
+                         None => {
+-                            pr_err!(
+-                                "validate_parent_fixup returned index out of bounds for sg.entries"
++                            pr_err_ratelimited!(
++                                "validate_parent_fixup returned index out of bounds for sg.entries\n"
+                             );
+                             return Err(EINVAL.into());
+                         }
+@@ -850,8 +850,8 @@ fn translate_object(
+                 let parent_entry = match sg_state.sg_entries.get_mut(info.parent_sg_index) {
+                     Some(parent_entry) => parent_entry,
+                     None => {
+-                        pr_err!(
+-                            "validate_parent_fixup returned index out of bounds for sg.entries"
++                        pr_err_ratelimited!(
++                            "validate_parent_fixup returned index out of bounds for sg.entries\n"
+                         );
+                         return Err(EINVAL.into());
+                     }
+@@ -884,7 +884,9 @@ fn translate_object(
+                     .read_all(&mut fda_bytes, GFP_KERNEL)?;
+ 
+                 if fds_len != fda_bytes.len() {
+-                    pr_err!("UserSlice::read_all returned wrong length in BINDER_TYPE_FDA");
++                    pr_err_ratelimited!(
++                        "UserSlice::read_all returned wrong length in BINDER_TYPE_FDA\n"
++                    );
+                     return Err(EINVAL.into());
+                 }
+ 
+@@ -999,7 +1001,11 @@ pub(crate) fn copy_transaction_data(
+             let ctx = match security::SecurityCtx::from_secid(secid) {
+                 Ok(ctx) => ctx,
+                 Err(err) => {
+-                    pr_warn!("Failed to get security ctx for id {}: {:?}", secid, err);
++                    pr_warn_ratelimited!(
++                        "Failed to get security ctx for id {}: {:?}\n",
++                        secid,
++                        err
++                    );
+                     return Err(err.into());
+                 }
+             };
+@@ -1233,7 +1239,7 @@ fn top_of_transaction_stack(&self) -> Result<Option<DArc<Transaction>>> {
+         let inner = self.inner.lock();
+         if let Some(cur) = &inner.current_transaction {
+             if core::ptr::eq(self, cur.from.as_ref()) {
+-                pr_warn!("got new transaction with bad transaction stack");
++                pr_warn_ratelimited!("got new transaction with bad transaction stack\n");
+                 return Err(EINVAL);
+             }
+             Ok(Some(cur.clone()))
+@@ -1562,7 +1568,7 @@ fn read(self: &Arc<Self>, req: &mut BinderWriteRead, wait: bool) -> Result {
+         let mut has_noop_placeholder = false;
+         if req.read_consumed == 0 {
+             if let Err(err) = writer.write_code(BR_NOOP) {
+-                pr_warn!("Failure when writing BR_NOOP at beginning of buffer.");
++                pr_warn_ratelimited!("Failure when writing BR_NOOP at beginning of buffer.\n");
+                 return Err(err);
+             }
+             has_noop_placeholder = true;
+@@ -1585,7 +1591,7 @@ fn read(self: &Arc<Self>, req: &mut BinderWriteRead, wait: bool) -> Result {
+                 Err(err) => {
+                     // Propagate the error if we haven't written anything else.
+                     if err != EINTR && err != EAGAIN {
+-                        pr_warn!("Failure in work getter: {:?}", err);
++                        pr_warn_ratelimited!("Failure in work getter: {:?}\n", err);
+                     }
+                     if initial_len == writer.len() {
+                         return Err(err);
+@@ -1620,8 +1626,8 @@ pub(crate) fn write_read(self: &Arc<Self>, data: UserSlice, wait: bool) -> Resul
+             ret = self.write(&mut req);
+             crate::trace::trace_write_done(ret);
+             if let Err(err) = ret {
+-                pr_warn!(
+-                    "Write failure {:?} in pid:{}",
++                pr_warn_ratelimited!(
++                    "Write failure {:?} in pid:{}\n",
+                     err,
+                     self.process.pid_in_current_ns()
+                 );
+@@ -1637,8 +1643,8 @@ pub(crate) fn write_read(self: &Arc<Self>, data: UserSlice, wait: bool) -> Resul
+             ret = self.read(&mut req, wait);
+             crate::trace::trace_read_done(ret);
+             if ret.is_err() && ret != Err(EINTR) {
+-                pr_warn!(
+-                    "Read failure {:?} in pid:{}",
++                pr_warn_ratelimited!(
++                    "Read failure {:?} in pid:{}\n",
+                     ret,
+                     self.process.pid_in_current_ns()
+                 );
+diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
+index 245f1556b5db..66045547c23a 100644
+--- a/drivers/android/binder/transaction.rs
++++ b/drivers/android/binder/transaction.rs
+@@ -83,7 +83,7 @@ pub(crate) fn is_oneway(&self) -> bool {
+ 
+     pub(crate) fn report_netlink(&self, reply: u32, ctx: &crate::Context) {
+         if let Err(err) = self.report_netlink_inner(reply, ctx) {
+-            pr_warn!(
++            pr_warn_ratelimited!(
+                 "{}:{} netlink report failed: {err:?}\n",
+                 self.from_pid,
+                 self.from_tid
+@@ -183,7 +183,7 @@ pub(crate) fn new(
+         };
+         if info.is_oneway() {
+             if from_parent.is_some() {
+-                pr_warn!("Oneway transaction should not be in a transaction stack.");
++                pr_warn_ratelimited!("Oneway transaction should not be in a transaction stack.\n");
+                 return Err(EINVAL.into());
+             }
+             alloc.set_info_oneway_node(node_ref.node.clone());
+@@ -384,7 +384,7 @@ pub(crate) fn submit(self: DLArc<Self>, info: &mut TransactionInfo) -> BinderRes
+                     return Ok(());
+                 }
+             } else {
+-                pr_err!("Failed to submit oneway transaction to node.");
++                pr_err_ratelimited!("Failed to submit oneway transaction to node.\n");
+             }
+         }
+ 
 
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
