@@ -1,54 +1,54 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020111.outbound.protection.outlook.com [52.101.195.111])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021110.outbound.protection.outlook.com [52.101.95.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944EF4FD7A3;
-	Thu,  8 Oct 2026 19:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E56502550;
+	Thu,  8 Oct 2026 19:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.110
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791487644; cv=fail; b=Ok6HGOK7hBp8V6fM/D9PgCpi9QGCGX6MEaDT2kG5WPPkx8NCpv/4Z5FBP8luBmDR2qUMZUezAFDAwLhpzJMiOeYVGCJh9w6TRdNGg1yeSIlTeg96ywcJ5fQ+RdfSJe3oZ4c2EWgAOZ3ddMjvM0LVwM26bhl9uskAH4mieqdSQrM=
+	t=1791487646; cv=fail; b=K3ucKQ05PmgVvWUH7dwl2p5nrdmD62wXH+Qm9aMml45s7EzdQBp08smXEWRm5IsD5SHWpzj83C2cVhYG3zyxuk/HTH+AHtY2w3MyT5dwkRBbup4xehOoq3CXqIA/VZ9k50vtB7pH6kJqug7FbmWyOQgisvL/k98S/95YzAdZPSE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791487644; c=relaxed/simple;
-	bh=5piKxiaRfSTja18aU4BuW+ydcd7vasgW/SmBg2BDJ5w=;
+	s=arc-20240116; t=1791487646; c=relaxed/simple;
+	bh=WcK5HvRWIyAK1UjzMDXPNBbLLRr5THL1ZGtGUcSO+P0=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=q5/B7IGdFzN/s1f4GVSawIrjJVgse0WXF2/oC8rievHoNx7CsARkEGqzwXYvv80QqJoKbRQCqbHQbTRY5/4hQKva8WtGMLyXfiQp1Ep41B9xBjQV7BAVIQLcbmZPFLyOz06Zlu69O/dYHMl6p57/TTlOUDhxaR+7XBxctvTmJg4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=x/Fp4EVt; arc=fail smtp.client-ip=52.101.195.111
+	 To:Cc:MIME-Version; b=AvA0srT6qTc2tppJph4amm8/+mHAMTSuOMeTgU6PmzfuN8/ChzQ865ZtxzP1PeUmr5m3ULVOFLqPA1krwmz46g59Z0112dFFaI3anvKxiaP9fKGU5xf9SNphULfTEgnYUymE3Ltn0dQ9Apir3/NzcK8Qumzuv5S2dkipwNWmn4k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Ef2Fpy42; arc=fail smtp.client-ip=52.101.95.110
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="x/Fp4EVt"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Ef2Fpy42"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rBDIeUtUBgWmEyr7pJrtpqKTgk42ROzRQPTRruPqWaQZlN7DziGtqBk3VuAxjEEZETNmKMu7FviTY5ShyN/QsTigXDOQ73RSvj1Ke42RRei8e8nGhnnyw3kFqxCGyayMcXP6Idk1Y7Vri5kKdQfc2w+s5YdIarbzfwI3GsLkPk7k/Kg7fwkOqXfsCQ0vfz329LDuKIujUJmNhqL0kxcBMMryBzcHQ4G+zqvU8MmgljQVrPniLkjVnnRhWIIYI2GE5n1HV3FX1S5KOklysWB88V85rSRt3BWg5HPgrZ2GGJK3fJjhdqX6LNWqcW+F+FvMtUh+WxTDeJZTNCSMtiUQdA==
+ b=Zj2n+I9DCtYb2XU76nMgwF8ciBA18e9wrqzbAzpCFRJPhHS+A+HjstF/rvIQaoFCGFOWKJcIsZ8rU3DR5iT2Zdrj5y12d/dSzimSYEdRmCNhp5skAJQXExhCnGWas/UhIsA82RdI3rCnEV/UpEwi6/+3SkiIeLlCyln4sz7Ijqe1wsaY53woDJ5zpNwUNzPeeHWEzRiHCWTpTGzK5RInjsglBQQ4462kU4PZZgYi9WsuTCQjCSzNmh15sangFpErkeSgC/nQX9i6sUCO3P25LDtMDhF8bcdVjoq4QDFbOoRLYf+8yFS9AMMlNmlQ7mATba/iH3UTFD7XBHbjVnH/Rw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Thkl33RZFpMlH2TuxYk3mk9CLV679Ul6ggE9vbTkEvE=;
- b=u0AT9dZPZCp7WA2aZuKFqvzlmXwwXVhCTMRh3Czf5+C32zKXb7z31EV8kAnyvVHSHAQ+Tmv1lOoh3ZSZ97my94JZqVw7r0qAaA/xkp41zw8xsXjDfXzxAAKYXLMTHpC3QSxEaYGV9HLosROMM2NPQi/iujr/Dps/zIXehrYhNGbV7gFH5JWsjKGOx1v4Aq5qH2LyaUSFihlWJvRuxALHMtdK0YvmfQoVAwOOG8AhbB671CTGYhKB3fXkpfMInv55Za5yQe/vuUI8a4r6k8f7Ue8Km2MOoa6p/WZ0APDO065iEkIux6RBe2TAN4YVPlgGoBb4mgkPhgy/9gn2cU27qQ==
+ bh=TNztyUOE7VA2i2fuj/MVUjaofwu3ztCGJyQX0eNbpM0=;
+ b=WYmcipqu8nUIammB3oUaliwzTHAKwV3pPH1lqcc0Bhtr/kYLXJ7RZlfNcDGOzf0L9av3whCUOwHwOHEuT6q7hFSnDrXhZPhWQVxl/9KguvfhXwTMA9Md804JlS2yhyZE6NHxY/TkZFziiQcKCP+1pFJ6/TMcyA6hks10A5TwZCy1wHuwN3aCqtWUe1JIdNfpqplQuzlZYgq/5Amdbxv85Q/H+AsxKrhLcDKk1YLTyySoDYQjIX1eb2m9BZWOeNI2mElPzYs3LnNZo1y5VXvD8eh55XxDVKln3lwadmjnDSjgLuorBDXUqxJIQB77gcGvJLDixY8ts+GpyU6wAlfOeA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Thkl33RZFpMlH2TuxYk3mk9CLV679Ul6ggE9vbTkEvE=;
- b=x/Fp4EVtV0isYLkKtekak3928sqqEmS+gYN6t9ZRFha1wpX3XXBRO0RLScEUna9Wfjl+rUWuoXFN8h67ImuIsb2c5YuCrc3acOXXsjDg2D8oD0tV2dM42QxEdK5+LnylNzyAw4KjT9m0AmAF0fzEIXYBzpPb7TxduOR7yQf6FRk=
+ bh=TNztyUOE7VA2i2fuj/MVUjaofwu3ztCGJyQX0eNbpM0=;
+ b=Ef2Fpy42sWXQYXAetqRwDgvViCtWWzjgzP9L6BPkfjYOEUZKDTtQK73kPamVirCRq3mhpI6jAJjPTRVO9c7xXO3aY9b6ttNmiTCFrc0EZ31Ka+J3cMaXSP9Yt+5YPGZxFd0l6UjSFETxhGnZW5VvtMzlZvUJ6qDOx0nRR7ZOJJs=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LO7P265MB227702.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:608::23) with
+ by LO2P265MB5279.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:257::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Thu, 8 Oct
- 2026 19:26:54 +0000
+ 2026 19:26:47 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0496.015; Thu, 8 Oct 2026
- 19:26:54 +0000
+ 19:26:47 +0000
 From: Gary Guo <gary@garyguo.net>
-Date: Thu, 08 Oct 2026 20:24:44 +0100
-Subject: [PATCH v2 20/20] rust: pin-init: internal: pin_data: support
- existential lifetimes
+Date: Thu, 08 Oct 2026 20:24:37 +0100
+Subject: [PATCH v2 13/20] rust: pin-init: internal: pin_data: parse
+ explicit `#[borrowed]` annotation
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261008-dev-selfref-v2-20-e280b3c8fba5@garyguo.net>
+Message-Id: <20261008-dev-selfref-v2-13-e280b3c8fba5@garyguo.net>
 References: <20261008-dev-selfref-v2-0-e280b3c8fba5@garyguo.net>
 In-Reply-To: <20261008-dev-selfref-v2-0-e280b3c8fba5@garyguo.net>
 To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -63,12 +63,12 @@ To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Gary Guo <gary@garyguo.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=18547; i=gary@garyguo.net;
- h=from:subject:message-id; bh=5piKxiaRfSTja18aU4BuW+ydcd7vasgW/SmBg2BDJ5w=;
- b=owJ4nJvAy8zAJca/kLG6/oLwNsbTakkMWcffFTo+f5920sFl7Z8+zh1W9YWnGHozhdymfPsQt
- mVN6sb4G5EdpSwMYlwMsmKKLB7djGmbGGfLXtYqfwkzh5UJZAgDF6cATGSHLiPDsleZ3SJaBfGz
- shjNQ9lfzVSLqDys3OO3076w/V1PpDcXw/8on695vJc4drLJW17d6Xt3KdN1I9/yrPUcZ0pdd3S
- eMmMHAICIRgI=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2813; i=gary@garyguo.net;
+ h=from:subject:message-id; bh=WcK5HvRWIyAK1UjzMDXPNBbLLRr5THL1ZGtGUcSO+P0=;
+ b=owJ4nJvAy8zAJca/kLG6/oLwNsbTakkMWcffFew8atrcs9rdN39TfJ6O1ZIlhzvjrFL6Vs87c
+ VhvYwf/lRMdpSwMYlwMsmKKLB7djGmbGGfLXtYqfwkzh5UJZAgDF6cATMSDg+Gf4cXut6FenX+W
+ v4/qt3t4fuV8l70Pupk4LPfFcZ8tTbRsZWR4dPnIkcBmuX2cudJX5Ls1GiZPytu//yLXtP+Z9oH
+ h+76xAAAEqkoD
 X-Developer-Key: i=gary@garyguo.net; a=openpgp;
  fpr=E25A77AED6FDB55D05B304A09D8C6F14E3E60652
 X-ClientProxiedBy: LO4P123CA0308.GBRP123.PROD.OUTLOOK.COM
@@ -81,556 +81,149 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO7P265MB227702:EE_
-X-MS-Office365-Filtering-Correlation-Id: ff686472-8e9c-432f-fe2d-08df257219ae
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO2P265MB5279:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0c395b44-33b8-42e9-9d1b-08df25721815
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|10070799003|6133799003|22082099003|18002099003|10067099003|3023799007|921020|5023799004|56012099006;
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|10070799003|18002099003|10067099003|22082099003|921020|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	q0EmkSKUZ2PEUnbf2Cqvj6hMURtSeazCyNV/SZULpcMbbxrbMO9a1BkRphwOjEh+ZJcwuy3B/cMYQFfjTTUX4PgR7dfCE7VYvQH+9bXC/7StS1XousxcZDI+qkVQHJg9RjOP2xo9BoPgQU0tHdnakv2MKxdu2nU7E7qtEC+ZQw6e5O/ZWrs9uZKgdWlR8Dp/uJlZIUSiVucHy818xjIu61laQRrpC3UDsEs7AUujpN8LvlkwdP74hEK4QXOZw3s78ch0KS/NQsvNnQIY1QMtWj9yWb4KqWslJ2i0qrPCngoM1OAuVGpEyDQ8l9Q3HW28wlD0mc322XFYZx3NlLvk469KsmrbJvVOrD00qTNb8n2lPtIT1dBBDdf32EYvCCnwLi1aeB/UHUqoGwQ8qb3NzN+7Fl1cApsemAfDKQyp4tPKt4q5lSQlghmEjjmJN3ILOWDt5AporK1r9yk0GmZSp+WanZraJLac11M/QdK0aioh/UduTcJLejbKVgT0t6o9gKgDDJMpO8CDrNB/5XcGecMvFohy0VPX2Qc35nPE5z4vIUY7Lm/QVcJBPTUmDE406YZZ+4+yj1fcnT6xrHwtn8CCsHL4WyG9AhkjaJz7A0bKmWuYM1vHZzGvXKxI7qzmQqDs66xi1rOvJQzVU40lM7KT8P2B2TY7Bk3HyR6UnummWzTrQ0UiwPLc+OAtVsRL5PM0nNCTAiXIH0iItXPDtQ==
+	plYItfTir8mtpaoIJffv1eIh+UZDyg4qupGJGLqYd2eEHuNiZJIjjqcIuHEizC/vK80i6YXjVQ+gwI4cE0htUV+GmG/XHNNlabaMdDcK4d1gAdH6SDQkhoE3Ad0NiynVPSW2MP1EF6uv6576RtgqnVXgPCHwhM0bL2aXS/jA1yWzYppkcc2k/1a6TYO9FUjr6+XaHRLCIAmfAlWLZm5B1neXtqnxtM6W8erk8tNfL9Gl2muD0a+/9f8Kr1FLcguNmNQXnhb0s167G9JtvgYDRO4P/v+O4pmQ5GtHVG6pWLkoZVAiXOPCN7eBr/SyAvivD0QoGdxIWzuPT2I6RqMfcLd4Tt76/nsEWFHxjsSe1UUuyuJcarxrXzSbxU64Epyu9OaTJKiYCc/sb0RZFxijjsl8xTxefaN2e93kFTkYSE/IuuuYTc71BrwqfdhE/pBkA8M2ppnn+KGcPx8isETAlZmVXdkeFn0XoDBqS+qRHt3rUGitnkQlTrYx6fbn/74bXWgLSKKgivTKQy8Fi6Bhm0QIulIsS3yBBhWnyAbvoNUVLSeAZQ7fHNXw9EbwSD9rHMXn0lUS1aw5rCGEbpbowhDYdy0veH/6zEBLf5ZED9GqhDTaKxgrtSavq4L2DHHITTDf7xX1pyBlTH9YUhbpYl8M+df4hkQ3B6lPptc3QU/rY/c/3VuwH4vndVQ4Un1TMc+NDHQDcVZ29XuJ35Q+gA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(10070799003)(6133799003)(22082099003)(18002099003)(10067099003)(3023799007)(921020)(5023799004)(56012099006);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(10070799003)(18002099003)(10067099003)(22082099003)(921020)(56012099006);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZVY3TmhrYklBUUJBTEtLd2ZkOGdFRXBWd2ZkTzRrT0ZkZ2JZUk04REI4L29R?=
- =?utf-8?B?U0I0Q3IzbXpFWlFEdkErWWxBUGRUVTQvRnpvYnpYTFUreFlzdmIxN2h6OVlm?=
- =?utf-8?B?alRmTEFjeVZmY29iYmZObzJ3UXFvTmE4dkRHaGRnc0tYYjh6eUNoTmFsZ0kr?=
- =?utf-8?B?RXhDMndYY3htUjJ4eWtLZFNDV28rbW56NzUyVEJDY1ZpdnpZdGpEM1JEdHlt?=
- =?utf-8?B?WGJFZ0V3VUl5M2s0YTFaaHZWNlo3VGJNZjYzQVhWR3Bzd1ZWcENTZWNUR1NX?=
- =?utf-8?B?QTZDL2dwYUhGOGxDTStWTkxoYVg4VXJHN2QwRzhZMEYvT0RpU3MweXQrUkdC?=
- =?utf-8?B?T3Nud0FueEVGaGk2anZka25oTnU5bnJuRzlzOEk0eUk3V3lLdjN1MWI3N3Zh?=
- =?utf-8?B?bnUxcHE2cmtWb052NklXUVhjdGFtSTRvMG55dWN6bWxPNlk5NG4xTmZJTVNX?=
- =?utf-8?B?eEFzeTJMejBwMUwrQTMrR3BnYTQ1SHJST2FFclNZdlFXeDkyaUw0a0xVOGpt?=
- =?utf-8?B?NEpJRmYwdzlSWEJ4aGtmdVpqbk9pUEJyd0ludU1PVXRjSlZXVFFIUFlEYmRK?=
- =?utf-8?B?cnd6MGdLSHhwRW1IbzJ6aDdBWENXbjR2SDJia0srMVo4OXZLSUR3RkFFN3BQ?=
- =?utf-8?B?UmlHbEJFWkhydjZITnpYR01VYXludVRYamdoYlVuRTU4dFovcndMbS9heGE5?=
- =?utf-8?B?VXUvNXhqa0JPTkFyREo3bmdFZHliKzZlN01DRTlxMytJbk41U1J0NFRGamkr?=
- =?utf-8?B?dElLOTNQczFMZVlsZVV5M3puL0hxaWZKbXdNcFNkUEFuUlFsVkdRc0lqLzJE?=
- =?utf-8?B?T2JraXU3WWVBU2EwODl4NkU3aEd1RDFvYS9HZ2ZmQnN0Zkcrb2pUd2RqMzJl?=
- =?utf-8?B?RVFWWE1KcDFzaWYva05qZkRxaDFpbVRMdjd1SEhZSHRxaElFZDhodUdtZmF2?=
- =?utf-8?B?SVQxV3pZek81YjlJZktHTCtLTHJRQlhvbzhhQnZoa0x0NDlNRnFmck5Rc2Mw?=
- =?utf-8?B?amJObFV5cmR0Mk5kUWcrYlN4c1RuMDlmWm1PVTQvaWxCaUgwbVUrOEZCUU92?=
- =?utf-8?B?TVRITzhHd1hQc29LVVp6bjE4cG5aMHo1Q2JjOG9ZZXcyalYrakFmMy9IcUE0?=
- =?utf-8?B?QUxRRlYzcXloNy9kSDl2VGVrWFdqWCt6SkVKRzhUUlBPR01pUXNYQ2RGQlhm?=
- =?utf-8?B?Z1ZmUnFhQWN1RXpkVWdTVXYvUlI5VFc4ay9MZU16bVV5K1dvRVBobVJBUTRw?=
- =?utf-8?B?cmpJS2l0dHVpTVhMZU45NW1ob1gyNWUvWFBqTktxV1NIVWxpa0VOSUJoQ0N5?=
- =?utf-8?B?dmtnK0JIWUwyU0htT21MWG9CbzNCcGpIL0V4TXNFcXpCZERpckxxd0FOd2kw?=
- =?utf-8?B?U29KNnRnS2tjQndhUzFlWDlNMVZaNngzamZPb3BYYTA5bGJXOWJRTWNyQWZR?=
- =?utf-8?B?R0lhZWZmbmRSOElQREQ0ZmVudnBDSHFpcG5nOWljQkUxUkxoU2VpaVI0cWRQ?=
- =?utf-8?B?R2crODZoRzltcHkyRU9MSGFBZ1hMZ0xJNmFiWUhKYUY4RUt3NVl2TnNGbkd1?=
- =?utf-8?B?N0xYMEE5c0hoUzBOVkU1cmFqSzR3aVc5VEllaDdGdVh1aFhhS3hnMkY5a0FB?=
- =?utf-8?B?bFFLU0IycERybWR4b005bUcxOG5HU0R6WnZ3Y3FqbzcvK1VCM3RwR2QyaERr?=
- =?utf-8?B?cHEyS2s2ck45L0pMQWhISzlLOWVuVmZQeEdiQXBYdUNhc2tpbHh5VkRjQjBB?=
- =?utf-8?B?M2JzNVJmQVlyc0Zadk1pV2cvZDRSRE5OaXA4MXliSlZVWWQ1dHprMUJpa1lo?=
- =?utf-8?B?TzJWV2FWZ2JJZ25XOWpOMkx4S3RGdTRSNlR2SDVGMjc0Sk9NOW5GKzlITTBI?=
- =?utf-8?B?ZEpxS2xaRmdxRjFHWlptVHVlUWNEMFBRcWY5a05yOXFaVmZpQkRJMk1OQUxQ?=
- =?utf-8?B?U3E0aEVZOSt4d3BlM2dCSm1UWlUwdGdkWTJxRGFZWWs0c1FnRnBsbW91OHNa?=
- =?utf-8?B?cWFmTFJSN2NGNGNyc1MxTCt3MlVaVnYrcFJHeGliYkhCNlhmOGE4djJTZDdX?=
- =?utf-8?B?Nmt5MUp5d005ZjVRSno4V0RhNkRDVFV2R2RKYytwRk1NTzV5SnlFVTRmd0pJ?=
- =?utf-8?B?RnVaRGFGdUpjL05aRDZCcDJBNm5mZnA5Ly9jdW1zbVdrbVFFd09Vem9iYzFt?=
- =?utf-8?B?UGdmQ0lYcjNvRXdLZFpPU2ZHUkJsTEtjZ3BncktjQmsyQnZBMDdEaGJoTlUz?=
- =?utf-8?B?YWlmMHpSNGJVK1hJSEg3LzFMbzN2aDIyRVN4YkpKc2p1RmVpdUZaTDV1L3NT?=
- =?utf-8?B?N1RhL3l3WlB4aE1pbllvZDhka2U4T25jL1VsV0pwRmRLVy8va3RUYU12em11?=
- =?utf-8?Q?ZqexoCc6qx3REDNRcuSyPdl5DGn8M6Ku3T83H/tOa7CLy?=
-X-MS-Exchange-AntiSpam-MessageData-1: FOo+gOKtIe0YEQ==
+	=?utf-8?B?RUgvWTBIVlNEb3gvM2RjWmN4ejUzSXhkTlk3R2UrU0poOXExa09BK2RQaW8z?=
+ =?utf-8?B?ZzladDFPNnNtd28zcmhqQXlOWXQvNjQySTBQY2s3ck4vWnppMEhuWlpsMzNa?=
+ =?utf-8?B?cFBCblZTbWQzdXFGaFV0VVQ5U3UxbmpzQldhYVdjbkxFTHBUT3VkaGFWWXV6?=
+ =?utf-8?B?NjlYbGlzc3FhQlE0WDRvKzl5SllVaEJLSk9qQ0o2UmUrSXo4RjJCMlVCOXZ0?=
+ =?utf-8?B?c0dnVTc5ZGt2eUszM0NUMkxIZTZKVW1pSExJa0RVTDREYTJjNnhLY08rMTI1?=
+ =?utf-8?B?QlJxVUpDanF0bFpTQ0JOVHNPTW96cEFwOHpRRFFRRmlWZ3ZYS1FDTmZzU011?=
+ =?utf-8?B?a0JRamN4OVE5VmZGb0lvQ2NVUnFnR2I1N0ZkRmdJQ1dSZHNib0xscS9RQ2lk?=
+ =?utf-8?B?dFZqakdCNjM0UUhlYUROMjFPcThlWkcyM1Z3R1R2Q05NRlk2UHo4N3E3NWZ1?=
+ =?utf-8?B?bi83N0ZQSE5vVUFkYUYwckZvNXkzWjEvKy8rS3hMR0NpS3pnc0Y3WG9vanA0?=
+ =?utf-8?B?M0wwZXQ5Z0toL1BaWXN5b3hXNmc3ellLWEFFZHRhY1lDVXlyR0xtSVd1VXU5?=
+ =?utf-8?B?NFllSWdZdUFUZXFkeXRGTHJueGgwSmUvd24rSUlNcW9MMjBpeHY4YlFiK284?=
+ =?utf-8?B?ZmF1TEFqVytnQzFpNnorSUgwRDlIT1pGc3RsZ1ZOMmppQVV1a29rQXpHZmVo?=
+ =?utf-8?B?a25NTWlneEIyZHJXVjhabU1wVDAxRFVYME84ZHdBekxYbEMvY3BJdmZNR1V4?=
+ =?utf-8?B?UDhjQWZUTlBFSDN0RWw3QmVqczV2RVM2RzRQVjdqSm56SEpmUkVjdEJ6YTA5?=
+ =?utf-8?B?ODYyNDNqWjhXcUN2WHVXeUZ2a1VrM0ZrbnFST3VFazR6R3VZZHhlNG9UZkRF?=
+ =?utf-8?B?QkRTVHJFcDRmS2hybnJkeWQ1M0hUVVpBOWppNm9tUWd6WEEwanVGWEV2Wk91?=
+ =?utf-8?B?WFI0T0NFWGZJcDZYbnB4NVhoR2drWFYvYno1czd1U1RFK2RpeSthOXdSdXd4?=
+ =?utf-8?B?RVVqbVB2WkFiOFZyOGJkMkgwRXZUeElBeTE0b0Z5TWFHZTBqRHZ6MUFhUkVn?=
+ =?utf-8?B?UFFtNFhMN3hjV2JtcWk5OE56S0dYVjloOHBsM0d5YXRHTTN0allEL1c4ekhP?=
+ =?utf-8?B?TWpYalRIY3Y5Q3NSbmlqQ253Z1BOdkNHVVYzQ3Z1bE1kdHYwM3E4K1A2Sjls?=
+ =?utf-8?B?WmxUb2Y1L2VXNTM1NFo4eFI1ZldHdDNpeUJtY0JVcWtxVDFheFE1STBNeUZH?=
+ =?utf-8?B?ejBPd3RuS2RVQ2NJaWxCaUgvamlvcWZuS2FCMW5LWGVZTU41TDBaR05JSHlX?=
+ =?utf-8?B?NkxYQXVDenVhaXg5Sjh4VitVU1h3WERROXZneGdOelRnZkthN3pFTldyV0tm?=
+ =?utf-8?B?RnRFZHlURFBHQ1h1RG1uVk1UK3BCdTd1RXhPSk9yV2tXUUpndUdLTnpEMmgv?=
+ =?utf-8?B?SUhKdld6RE9NRFRJeHBRZ2NqOFNOZmVOMjZjaytabm4wcm50Q1ZCSnBESFpL?=
+ =?utf-8?B?d2xvN1E0OXczZEtUWUVPSEF3WjAyaVJnWTU3RGV5YXJ6Riszd0RaRkRBNmk3?=
+ =?utf-8?B?Qnk0YWJnUzhhSzFDU0dxNm5nWHZHV0xYSHJhQ3ZYc2hPRnpjOWFGclcyck82?=
+ =?utf-8?B?YlRsdFVQK0V6K3JoNW1SbXZ6UmxUb2hqUkxVN2JxeHpBOEVoT0syaUowRjRl?=
+ =?utf-8?B?Ynl1ZlJtSXEvWHlPTjB1N0RvL0VoNldKY0N2N0RvSGJpMXgySUZnQVdOY2V1?=
+ =?utf-8?B?Ry9yQlpKMU95Rmgwa3RBUXNYd1l5RVhqeGwveWlLYWtVWXlxR2hKWDQwN3RX?=
+ =?utf-8?B?bGQ0US9NcW0rcVBjN0l5cTBRQ3REK3BPZlY5NkxxcTM3MkNvYS9mcjk1YUhC?=
+ =?utf-8?B?RlJROGpjazJTTm9MSk9sQmdVZWkrSkF0MTVpcjZsZnIwemdEeitkYk1YUFI0?=
+ =?utf-8?B?N2FtcmlxSzU2eXE2SWVxellyS29wUWtkUElHOGhVdTdOT1ltcUh1NmZRYWVJ?=
+ =?utf-8?B?bDRRRHhITnRreDE3TldQMFRBYkx2T0RtcFdYc05mMUttMHRvdkMzM1NFeUw4?=
+ =?utf-8?B?a3dsTjhZSXhLQXQ0Z1RRTW5DdkQxWkJnaDhYN1NBSlh2UWFkNmIyZUN0NmNt?=
+ =?utf-8?B?TWJPS3ZZV29NRzdrM2ZjOTRORThCblN5UVFtUk9JNGFiRlcvaEZUc1F6VzJs?=
+ =?utf-8?B?QzgrWGZQVmZhaXhsdnY2MXB2cUFnSVBQVGVsMWhzNnhMLzZMT0pJNjdIdENt?=
+ =?utf-8?B?azNGVC9TTjdBVCtIK1pHam9QbWxqSjc3UTlSYk5jSXlkaWV1dHExUTVPR1pO?=
+ =?utf-8?B?ZFRzVzArbDFtUW1LRUxCZHVKOFIxaS9EREdWMDd6RzlmekxMZWRaK2p6U1RY?=
+ =?utf-8?Q?+IXbbcd78bqr+vs+KV1eATvAJJAhmmmLitbDDnnhhz0wY?=
+X-MS-Exchange-AntiSpam-MessageData-1: 5PsUtt233bPRoQ==
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff686472-8e9c-432f-fe2d-08df257219ae
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0c395b44-33b8-42e9-9d1b-08df25721815
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 19:26:49.7924
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 19:26:47.1141
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GcU/YIs9a4JjZaUFtXykz9726UQNA6qpKukp1nOJdNFKYTZYh49XaGErYX4CcMVoFL5dUdA8Zskl6o7sgofvYg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO7P265MB227702
+X-MS-Exchange-CrossTenant-UserPrincipalName: pPdzGS8s5yHtTudKtyK4utw4QdSwo9dIZwOgmvWNsqbSKnMPh+ELQQ8OWFwt96Fy06vj5jTzSpSByLspZeC3Ew==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5279
 
-There are many cases where structs that have interior mutability, but they
-do not need the invariance over captured lifetimes as the lifetime is
-captured upon construction, and new data of that particular lifetime does
-not flow back into the struct.
+`#[borrowed]` attribute explicitly marks a field as potentially being
+borrowed by other fields.
 
-For these use cases, the same mechanism as pin-init self-reference may be
-used. Add support for existential lifetimes, introduced by having where
-clauses such as
-
-    exists<'a>: 'b
-
-The lifetime `'a` above is minted similar to field lifetimes. Because `'a`
-is an erased lifetime living longer than `'b`, the only variance
-requirement that we have is that `'b` cannot be contravariant; that defense
-is fulfilled by adding `PhantomData<&'b ()>` so the struct is either
-covariant or invariant over `'b`.
-
+Acked-by: Benno Lossin <lossin@kernel.org>
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/pin-init/internal/src/pin_data.rs | 253 ++++++++++++++++++++++++++++++---
- rust/pin-init/src/__internal.rs        |  15 ++
- 2 files changed, 252 insertions(+), 16 deletions(-)
+ rust/pin-init/internal/src/pin_data.rs | 36 ++++++++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
 diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
-index 3d7726e12b3b..df2d2fc5aa2f 100644
+index 6af1f7ae0a08..c5b664349caf 100644
 --- a/rust/pin-init/internal/src/pin_data.rs
 +++ b/rust/pin-init/internal/src/pin_data.rs
-@@ -11,8 +11,9 @@
+@@ -11,8 +11,8 @@
      spanned::Spanned,
      visit::Visit,
      visit_mut::VisitMut,
--    Attribute, Field, Fields, GenericParam, Generics, Ident, Index, Item, ItemStruct, Lifetime,
--    LifetimeParam, Member, Meta, PathSegment, Token, Type, TypePath,
-+    Attribute, Field, Fields, GenericArgument, GenericParam, Generics, Ident, Index, Item,
-+    ItemStruct, Lifetime, LifetimeParam, Member, Meta, PathArguments, PathSegment, Token, Type,
-+    TypeParamBound, TypePath, WhereClause, WherePredicate,
+-    Field, Fields, GenericParam, Generics, Ident, Index, Item, ItemStruct, Lifetime, LifetimeParam,
+-    Member, PathSegment, Token, Type, TypePath,
++    Attribute, Field, Fields, GenericParam, Generics, Ident, Index, Item, ItemStruct, Lifetime,
++    LifetimeParam, Member, Meta, PathSegment, Token, Type, TypePath,
  };
  
  use crate::{
-@@ -183,6 +184,7 @@ fn parse_list(
-         dcx: &mut DiagCtxt,
-         attrs: &mut Vec<Attribute>,
-         bound_lifetimes: &BTreeSet<&Lifetime>,
-+        exist_lifetimes: &BTreeSet<ExistLt>,
-         field_idx_map: &BTreeMap<Ident, usize>,
-     ) -> Option<(BTreeSet<Capture>, Variance)> {
-         let attr = attrs.extract_single_attr(dcx, "uses")?;
-@@ -208,7 +210,10 @@ fn parse_list(
-                 continue;
-             }
- 
--            if lt.ident != "_" && !field_idx_map.contains_key(&lt.ident) {
-+            if lt.ident != "_"
-+                && !exist_lifetimes.contains(lt)
-+                && !field_idx_map.contains_key(&lt.ident)
-+            {
-                 dcx.error(lt, format!("`{lt}` is not a field name"));
-                 continue;
-             }
-@@ -240,11 +245,15 @@ struct StructInfo {
-     field_idx_map: BTreeMap<Ident, usize>,
-     is_tuple_struct: bool,
-     self_referential: bool,
-+    /// Existential lifetimes defined.
-+    exist_lts: BTreeSet<ExistLt>,
-     /// Field lifetime genercis with outlive chain.
-     field_lts_outlive_chain: Generics,
-     /// Field lifetime genercis with outlive chain, with one chain for covariant fields and one
-     /// chain for invariant fields.
-     field_lts_split_variance_outlive_chain: Generics,
-+    /// Existential lifetime with their outlives bounds.
-+    exist_lts_generics: Generics,
+@@ -55,11 +55,25 @@ fn to_tokens(&self, tokens: &mut TokenStream) {
+ /// Description of how a field is borrowed.
+ #[derive(Clone, Copy, Default, PartialEq, Eq)]
+ enum BorrowedKind {
+-    /// Implicitly inferreed.
++    /// `#[borrowed]`, or implicitly inferreed.
+     #[default]
+     Shared,
  }
  
- pub(crate) fn expand_with_cfg(
-@@ -334,6 +343,12 @@ fn expand(
- 
-     let is_tuple_struct = matches!(struct_.fields, Fields::Unnamed(_));
- 
-+    let exist_lts = if let Some(whr) = &mut struct_.generics.where_clause {
-+        ExistLt::parse(dcx, whr)
-+    } else {
-+        BTreeSet::new()
-+    };
++impl BorrowedKind {
++    fn parse(dcx: &mut DiagCtxt, attrs: &mut Vec<Attribute>) -> Option<Self> {
++        let attr = attrs.extract_single_attr(dcx, "borrowed")?;
 +
-     // Collect all bound lifetimes from generics.
-     let bound_lifetimes: BTreeSet<&Lifetime> =
-         struct_.generics.lifetimes().map(|x| &x.lifetime).collect();
-@@ -347,6 +362,16 @@ fn expand(
-         .filter_map(|(index, field)| Some((field.ident.clone()?, index)))
-         .collect();
- 
-+    for l in &exist_lts {
-+        let lt = &l.lifetime;
-+        if bound_lifetimes.contains(&lt) {
-+            dcx.error(
-+                lt,
-+                format!("existential `{lt}` conflicts with struct generics"),
-+            );
-+        }
++        Some(if let Meta::Path(_) = attr.meta {
++            BorrowedKind::Shared
++        } else {
++            // Swallow the error and recover by inferring shared.
++            dcx.error(attr.path(), "unexpected `#[borrowed]` attribute");
++            BorrowedKind::Shared
++        })
 +    }
++}
 +
-     // Keep track on fields being implicitly borrowed by being mentioned.
-     let mut implicitly_borrowed = BTreeSet::new();
- 
-@@ -370,9 +395,14 @@ fn expand(
-             };
- 
-             // Parse `#[uses]` attribute.
--            let (mut captures, wildcard_variance) =
--                Capture::parse_list(dcx, &mut field.attrs, &bound_lifetimes, &field_idx_map)
--                    .unwrap_or_default();
-+            let (mut captures, wildcard_variance) = Capture::parse_list(
-+                dcx,
-+                &mut field.attrs,
-+                &bound_lifetimes,
-+                &exist_lts,
-+                &field_idx_map,
-+            )
-+            .unwrap_or_default();
- 
-             let mut generic_lt_captures = BTreeSet::new();
-             let mut generic_ty_captures = BTreeSet::new();
-@@ -399,7 +429,7 @@ fn expand(
-                     return;
-                 }
- 
--                if !field_idx_map.contains_key(&lt.ident) {
-+                if !exist_lts.contains(lt) && !field_idx_map.contains_key(&lt.ident) {
-                     dcx.error(
-                         lt,
-                         format!("`{lt}` is neither a lifetime in generics nor a field name"),
-@@ -414,8 +444,10 @@ fn expand(
+ /// Information about a borrowed field.
+ struct BorrowedInfo {
+     kind: BorrowedKind,
+@@ -305,11 +319,25 @@ fn expand(
              })
              .visit_type(&field.ty);
  
--            for capture in captures.iter() {
--                implicitly_borrowed.insert(capture.lifetime.ident.clone());
-+            for capture in captures.iter(){
-+                if !exist_lts.contains(&capture.lifetime){
-+                    implicitly_borrowed.insert(capture.lifetime.ident.clone());
++            let borrowed = BorrowedKind::parse(dcx, &mut field.attrs).and_then(|kind| {
++                let lifetime = Lifetime::from_ident(&member.as_ident());
++
++                if bound_lifetimes.contains(&lifetime) {
++                    dcx.error(
++                        &lifetime,
++                        format!("`{lifetime}` appear in generics and would conflict with field lifetime"),
++                    );
++                    return None;
 +                }
-             }
- 
-             GenericParam::maybe_type_params_visitor(|ident| {
-@@ -495,6 +527,9 @@ fn expand(
-     let mut worklist = Vec::new();
-     for field in fields.iter() {
-         for borrow in field.captures.iter() {
-+            if exist_lts.contains(&borrow.lifetime) {
-+                continue;
-+            }
-             if let Variance::Invariant = borrow.variance {
-                 let Some(borrow_idx) = fields
-                     .iter()
-@@ -510,6 +545,9 @@ fn expand(
-     }
-     while let Some(field) = worklist.pop() {
-         for borrow in field.captures.iter() {
-+            if exist_lts.contains(&borrow.lifetime) {
-+                continue;
-+            }
-             let Some(borrow_idx) = fields
-                 .iter()
-                 .position(|f| f.member.as_ident() == borrow.lifetime.ident)
-@@ -581,6 +619,23 @@ fn expand(
-         }
-     }
- 
-+    let exist_lt_generics = Generics {
-+        lt_token: Some(Default::default()),
-+        params: exist_lts
-+            .iter()
-+            .map(|l| {
-+                GenericParam::Lifetime(LifetimeParam {
-+                    attrs: Vec::new(),
-+                    lifetime: l.lifetime.clone(),
-+                    colon_token: Default::default(),
-+                    bounds: l.bounds.iter().cloned().collect(),
-+                })
-+            })
-+            .collect(),
-+        gt_token: Some(Default::default()),
-+        where_clause: None,
-+    };
 +
-     let mut field_lts_split_variance_outlive_chain = Generics {
-         lt_token: Some(Default::default()),
-         params: borrowed_covariant_fields
-@@ -642,6 +697,16 @@ fn expand(
-                 .push(parse_quote!(#ty: #field_lt));
-         }
- 
-+        for borrow in field.captures.iter().rev() {
-+            let lt = &borrow.lifetime;
-+            if exist_lts.contains(lt) {
-+                field_lts_split_variance_outlive_chain
-+                    .make_where_clause()
-+                    .predicates
-+                    .push(parse_quote!(#lt: #field_lt));
-+            }
-+        }
-+
-         // If a field is invariant, then the invariance closure rule will make all borrowed fields
-         // to be invariant, so they're already captured in `field_lts_split_variance_outlive_chain`.
-         if borrowed.lt_variance != Variance::Covariant {
-@@ -681,8 +746,10 @@ fn expand(
-         fields,
-         field_idx_map,
-         is_tuple_struct,
-+        exist_lts,
-         field_lts_outlive_chain,
-         field_lts_split_variance_outlive_chain,
-+        exist_lts_generics: exist_lt_generics,
-     };
- 
-     for field in &info.fields {
-@@ -745,6 +812,129 @@ fn is_phantom_pinned(ty: &Type) -> bool {
-     }
- }
- 
-+struct ExistLt {
-+    lifetime: Lifetime,
-+    bounds: Vec<Lifetime>,
-+}
-+
-+impl std::borrow::Borrow<Lifetime> for ExistLt {
-+    fn borrow(&self) -> &Lifetime {
-+        &self.lifetime
-+    }
-+}
-+
-+impl PartialEq for ExistLt {
-+    fn eq(&self, other: &Self) -> bool {
-+        self.lifetime == other.lifetime
-+    }
-+}
-+
-+impl Eq for ExistLt {}
-+
-+impl PartialOrd for ExistLt {
-+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-+        Some(self.cmp(other))
-+    }
-+}
-+
-+impl Ord for ExistLt {
-+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-+        self.lifetime.cmp(&other.lifetime)
-+    }
-+}
-+
-+impl ExistLt {
-+    fn parse(dcx: &mut DiagCtxt, whr: &mut WhereClause) -> BTreeSet<ExistLt> {
-+        fn parse_one(
-+            dcx: &mut DiagCtxt,
-+            pred: &WherePredicate,
-+            result: &mut BTreeSet<ExistLt>,
-+        ) -> bool {
-+            let WherePredicate::Type(pred) = &pred else {
-+                return false;
-+            };
-+            let Type::Path(path) = &pred.bounded_ty else {
-+                return false;
-+            };
-+
-+            if path.qself.is_some()
-+                || path.path.leading_colon.is_some()
-+                || path.path.segments.len() != 1
-+            {
-+                return false;
-+            }
-+            let path_seg = &path.path.segments[0];
-+
-+            if path_seg.ident != "exists" {
-+                return false;
-+            };
-+
-+            let PathArguments::AngleBracketed(p) = &path_seg.arguments else {
-+                dcx.error(
-+                    path_seg,
-+                    "existential clauses require a single lifetime, e.g. `exists<'a>`",
-+                );
-+                return true;
-+            };
-+
-+            if p.args.len() != 1 {
-+                dcx.error(
-+                    path_seg,
-+                    "existential clauses require a single lifetime, e.g. `exists<'a>`",
-+                );
-+                return true;
-+            }
-+
-+            let GenericArgument::Lifetime(lt) = &p.args[0] else {
-+                dcx.error(
-+                    path_seg,
-+                    "existential clauses require a single lifetime, e.g. `exists<'a>`",
-+                );
-+                return true;
-+            };
-+
-+            if result.contains(lt) {
-+                dcx.error(
-+                    lt,
-+                    format!("an existential clause for `{lt}` already exists"),
-+                );
-+                return true;
-+            }
-+
-+            let mut bounds = Vec::new();
-+            for bound in pred.bounds.iter() {
-+                let TypeParamBound::Lifetime(lt) = bound else {
-+                    dcx.error(bound, "only lifetime can appear in existential clauses");
-+                    return true;
-+                };
-+                bounds.push(lt.clone());
-+            }
-+            if bounds.is_empty() {
-+                dcx.error(
-+                    pred.colon_token,
-+                    "existential clauses require at least one outlive bounds",
-+                );
-+                return true;
-+            }
-+
-+            result.insert(ExistLt {
-+                lifetime: lt.clone(),
-+                bounds: bounds.clone(),
++                Some(BorrowedInfo { kind, lifetime })
 +            });
 +
-+            true
-+        }
-+
-+        let mut result = BTreeSet::new();
-+        whr.predicates = std::mem::take(&mut whr.predicates)
-+            .into_pairs()
-+            .filter(|p| !parse_one(dcx, p.value(), &mut result))
-+            .collect();
-+
-+        result
-+    }
-+}
-+
- fn generate_struct_def(info: &StructInfo) -> TokenStream {
-     let ItemStruct {
-         attrs,
-@@ -783,12 +973,23 @@ fn generate_struct_def(info: &StructInfo) -> TokenStream {
-             // implementation and thus may be used inside `Erase`.
-             ty = quote!((#ty,));
- 
-+            let mut exist_lt_phantoms = Vec::new();
-             for borrow in field.captures.iter().rev() {
-                 let lt = &borrow.lifetime;
-                 ty = quote!(for<#lt> fn(&#lt()) -> #ty);
-+
-+                if let Some(exist_lt) = info.exist_lts.get(lt) {
-+                    for bound in &exist_lt.bounds {
-+                        exist_lt_phantoms.push(quote!(::pin_init::__internal::ExistLt<#bound>));
-+                    }
-+                }
-             }
- 
-             ty = quote!(::pin_init::__internal::Erase<#ty>);
-+
-+            if !exist_lt_phantoms.is_empty() {
-+                ty = quote!(::pin_init::__internal::WithPhantom<#ty, (#(#exist_lt_phantoms,)*)>);
-+            }
-         };
- 
-         if let Some(borrowed) = &field.borrowed {
-@@ -998,8 +1199,11 @@ fn generate_drop_order_check(dcx: &mut DiagCtxt, info: &StructInfo) -> TokenStre
-     // with known lifetime bounds as bounds on the function, and asks Rust to *prove* that the types
-     // are wellformed, given the bounds that we understand.
- 
--    let generics_with_field_lt =
--        CombinedGenerics(vec![&info.field_lts_split_variance_outlive_chain, generics]);
-+    let generics_with_field_lt = CombinedGenerics(vec![
-+        &info.exist_lts_generics,
-+        &info.field_lts_split_variance_outlive_chain,
-+        generics,
-+    ]);
- 
-     let (_, ty_generics, _) = generics.split_for_impl();
-     let (impl_generics_with_field_lt, _, whr_with_field_lt) =
-@@ -1143,20 +1347,25 @@ fn generate_projections(info: &StructInfo) -> TokenStream {
- 
-     // Wrap in `CombinedGenerics` because it's ty generics will always output `<>`, so it can be
-     // used with `for`.
--    let field_lts = CombinedGenerics(vec![&info.field_lts_outlive_chain]);
-+    let field_lts = CombinedGenerics(vec![
-+        &info.field_lts_outlive_chain,
-+        &info.exist_lts_generics,
-+    ]);
-     let generics_with_this_lt = CombinedGenerics(vec![&this_lt_generics, generics]);
-     let generics_with_this_field_lt = CombinedGenerics(vec![
-         &this_lt_generics,
-+        &info.exist_lts_generics,
-         &info.field_lts_outlive_chain,
-         generics,
-     ]);
-     let generics_with_this_field_ref_lt = CombinedGenerics(vec![
-         &this_lt_generics,
-+        &info.exist_lts_generics,
-         &info.field_lts_split_variance_outlive_chain,
-         generics,
-     ]);
--    let (impl_generics, ty_generics, whr) = generics.split_for_impl();
-     let (_, field_lt_ty_generics, _) = field_lts.split_for_impl();
-+    let (impl_generics, ty_generics, whr) = generics.split_for_impl();
-     let (_, ty_generics_with_this_lt, _) = generics_with_this_lt.split_for_impl();
-     let (_, ty_generics_with_this_field_lt, _) = generics_with_this_field_lt.split_for_impl();
-     let (_, ty_generics_with_this_field_ref_lt, _) =
-@@ -1670,10 +1879,19 @@ fn generate_the_pin_data(info: &StructInfo) -> TokenStream {
-     // Wrap in `CombinedGenerics` because it's ty generics will always output `<>`, so it can be
-     // used with `for`.
-     let field_lts = CombinedGenerics(vec![&info.field_lts_outlive_chain]);
--    let generics_with_field_lt = CombinedGenerics(vec![&info.field_lts_outlive_chain, generics]);
-+    let field_exist_lts = CombinedGenerics(vec![
-+        &info.field_lts_outlive_chain,
-+        &info.exist_lts_generics,
-+    ]);
-+    let generics_with_field_lt = CombinedGenerics(vec![
-+        &info.field_lts_outlive_chain,
-+        &info.exist_lts_generics,
-+        generics,
-+    ]);
- 
-     let (impl_generics, ty_generics, whr) = generics.split_for_impl();
-     let (_, field_lt_ty_generics, _) = field_lts.split_for_impl();
-+    let (_, field_exist_lt_ty_generics, _) = field_exist_lts.split_for_impl();
-     let (impl_generics_with_lt, ty_generics_with_field_lt, whr_with_field_lt) =
-         generics_with_field_lt.split_for_impl();
- 
-@@ -1783,6 +2001,7 @@ fn generate_the_pin_data(info: &StructInfo) -> TokenStream {
-         })
-         .collect::<TokenStream>();
- 
-+    let exist_lt_generics_params = info.exist_lts_generics.params.iter();
-     quote! {
-         // We declare this struct which will host all of the projection function for our type.
-         #[doc(hidden)]
-@@ -1838,7 +2057,7 @@ impl #impl_generics __ThePinData #ty_generics
-         {
-             /// Type inference helper function.
-             #[inline(always)]
--            #vis fn __make_closure<__F, __E>(self, f: __F) -> __F
-+            #vis fn __make_closure<#(#exist_lt_generics_params,)* __F, __E>(self, f: __F) -> __F
-             where
-                 __F: for #field_lt_ty_generics ::core::ops::FnOnce(
-                     *mut #struct_name #ty_generics,
-@@ -1849,7 +2068,9 @@ impl #impl_generics __ThePinData #ty_generics
-             }
- 
-             #[inline(always)]
--            #vis fn __with_lt #field_lts(self) -> __PinDataLt #ty_generics_with_field_lt {
-+            #vis fn __with_lt #field_exist_lt_ty_generics(self)
-+                -> __PinDataLt #ty_generics_with_field_lt
-+            {
-                 // Generate a zeroed to avoid naming all fields.
-                 // SAFETY: `__PinDataLt` only contains phantom fields.
-                 unsafe { ::core::mem::zeroed() }
-diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
-index 516dd893746e..b9aac6e4bd37 100644
---- a/rust/pin-init/src/__internal.rs
-+++ b/rust/pin-init/src/__internal.rs
-@@ -725,3 +725,18 @@ pub fn new() -> Self {
-         Self(PhantomData)
-     }
- }
-+
-+/// Marker type to capture outlive bounds coming from existential lifetimes.
-+pub struct ExistLt<'a>(PhantomData<&'a ()>);
-+
-+// Dummy `Drop`, same reason as `Borrowed`.
-+impl Drop for ExistLt<'_> {
-+    #[inline(always)]
-+    fn drop(&mut self) {}
-+}
-+
-+/// Type that allows additional `PhantomData` to be attached.
-+///
-+/// This allows changing variance of types without introducing additional fields.
-+#[repr(transparent)]
-+pub struct WithPhantom<T, P>(PhantomData<P>, T);
+             FieldInfo {
+                 field,
+                 member,
+                 pinned,
+-                borrowed: None,
++                borrowed,
+                 captures,
+                 generic_lt_captures,
+                 generic_ty_captures,
 
 -- 
 2.54.0
