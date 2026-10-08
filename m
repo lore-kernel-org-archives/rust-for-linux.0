@@ -1,49 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116B327E1DC
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Oct 2026 13:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2113BE172
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Oct 2026 13:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791464602; cv=none; b=YhYCAzQ6vtumgwGs1uiWVxQ4aAQuWR06R84ZI+Uy48JHeJjIIYEDWU6qB2q7ZNdVLUTLo+xVNKPoDrkOiXIG7BosQsQLg/9FNH0AbRydW/ADCJV1wF51MlvN64g54LLPfsjwLqo1ZIO6eREOB02YacbJ1R8wxHd6IjI2TTP4pGI=
+	t=1791464606; cv=none; b=W0KYtrJ0rPHZ8bf/KY4GkNTgs4ud70Yj0nHA02e5/Y9mXhe6jOoEm8u6hT7swJk4u3osMnh6jSCic8RrL6U5LBVEKeMI1J/t/Bl7jkNocsmIB5RnLPCrXNIYBkIca8UbpiPmBQ0vfKcVNBWWERvr8KR/iExzKgffZJksEn1i484=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791464602; c=relaxed/simple;
-	bh=0RF/b45Eh5A4GLj7mHxT6rql0iVH4AcT3x7MQDPVSYs=;
+	s=arc-20240116; t=1791464606; c=relaxed/simple;
+	bh=VV3gLTRHa9pyvn61Kb+5EhItjb3/hRgnC/hX0SUJY6Q=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=p23eiiQvQlsrbYVpT/elzgCBFwqN6hdsXj1miYmMczWFFzOLf0veamYjrT9UvjK/+t3J3pl+4sbEOKlSQlmouIU+LapKbz6nlvgO0SWFAKu232t6n5BNAuW/ukR+bln/YBFn9TLIH87kI1ShBGSaJcYeJ7AmVb3edezhfoyTpTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ipVw8qxS; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=MXhwBRhUmH3fRaOnUDfJPPGlUQEAHi4kDK/nJSbejt4hsKBI+cB7J9pg8b4txxW9qIC8VQqF4rgcS5xhRBeOyYiwqLn9HYHCQypWZwU+Y0MIXGopbFaHI+ARezVyuUH2cg8ns4IOWgDlLO/AFFPOVNGEKZGuy50QI7IiD5IXbmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PW/EvvWH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ipVw8qxS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C611F00893;
-	Thu,  8 Oct 2026 13:03:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PW/EvvWH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CF51F000FF;
+	Thu,  8 Oct 2026 13:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791464600;
-	bh=0RF/b45Eh5A4GLj7mHxT6rql0iVH4AcT3x7MQDPVSYs=;
+	s=k20260515; t=1791464605;
+	bh=SGGPpeQPnDJkHEciKcVt6lSLyvkk1F7BwAE03AHpf4k=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=ipVw8qxSRnyQq+QyMZBCuZXJRv0TYaErJbRyPY9N0ofL5Gx/R4rauCkmTuBjaDOvl
-	 RPQ0aw0yP60x8aAyX+bbw5auykBFUqsE33oZ6C1EJ/p320tdLifreKKiThSw4/2T/P
-	 TXtYBHAteNqkipHeL7ypKkUUkax2JFC5BLvpQ7p60pmfKy8kj6XgAzTv0uyMvDcIB8
-	 yTUabILnDV1EJUabtbOHqQjbYfwW3UoTDHqLGsrFpZgD2a4upnwcdtCinaF5R+r6c1
-	 9aKvmJQ6Nl/tQX0XbM1LcI1e/S8PVr7x32cS30yLIIoCRan3qCahb2nuZgkarKtw9M
-	 gw+DPzdu5g5zw==
+	b=PW/EvvWH315Tmw2bGvXMrZxK5C0OFVpZeFSp+0uXCbDWy8gqKfqzFXq7i/qyIWqJ6
+	 4AprFh5oK1+ulDxv6LWyT4KKs/6ZlzW5GpYtxyCorB/ZdfhHAgejbk1MhdbHP+nW9s
+	 tMsJ1Nu0XcUXw7dhWmXbN1tiZVen0NREssgzG2ecX+O4PP0MnfMk2WGS/Cf21bTEiG
+	 yCy08fGgM7NOYBmbvqK9d+1NmZIla7qTf9bSUHtJr24qvEqrmCKZ+9sYBID+OwcLV3
+	 AP7odOzq9SsBTb9ZX+0yNsHkXTzHO4mZ2n1P/V9x3wjW/KPjAm6sdzOC2wpsnMzerP
+	 CPrLpA6TmZRGw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <tomo@flapping.org>, aliceryhl@google.com,
- arve@android.com, boqun@kernel.org, brauner@kernel.org,
- cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org,
- ojeda@kernel.org, tj@kernel.org, tkjos@android.com
-Cc: acourbot@nvidia.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
- dakr@kernel.org, daniel.almeida@collabora.com, frederic@kernel.org,
- jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org,
- tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
- rust-for-linux@vger.kernel.org, jiangshanlai@gmail.com,
- markus.probst@posteo.de, FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: Re: [PATCH v8 0/4] rust: use Delta instead of raw jiffies for
- timeouts and delays
-In-Reply-To: <20261002050428.2746277-1-tomo@flapping.org>
-References: <uhEZnSETYdRTGg0YbynELBmOxAIhnGrslFSPb14RUm57hPflUhCWVyZ6zzbLwhu6_fx6hv9DSrHnMCGE3v4sIQ==@protonmail.internalid>
- <20261002050428.2746277-1-tomo@flapping.org>
-Date: Thu, 08 Oct 2026 14:57:04 +0200
-Message-ID: <871pa0e4f3.fsf@kernel.org>
+To: FUJITA Tomonori <tomo@flapping.org>, ojeda@kernel.org
+Cc: boqun.feng@gmail.com, fujita.tomonori@gmail.com, frederic@kernel.org,
+ lyude@redhat.com, tglx@linutronix.de, anna-maria@linutronix.de,
+ jstultz@google.com, sboyd@kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [GIT PULL] Rust timekeeping for v7.4-rc1
+In-Reply-To: <20261007.225501.2303547436453055941.tomo@flapping.org>
+References: <87ece1eirv.fsf@kernel.org>
+ <DOzJmBcnnVm3wwaMPJ41CK0g_4XXYhk_umLH7Q1T8fR4l957fWjO1gJ9OQvY055xk4UMyyrpcah5B_gQdRy5Bg==@protonmail.internalid>
+ <20261007.225501.2303547436453055941.tomo@flapping.org>
+Date: Thu, 08 Oct 2026 15:02:51 +0200
+Message-ID: <87y0c8cpl0.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -54,33 +48,76 @@ Content-Type: text/plain
 
 "FUJITA Tomonori" <tomo@flapping.org> writes:
 
-> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Hi Andreas,
 >
-> CondVar::wait_interruptible_timeout() and Queue::enqueue_delayed() use
-> a raw jiffies count (a plain c_ulong alias with no type safety).
-> Callers have to know on their own that the value means jiffies and
-> convert to/from it themselves, which is easy to get wrong (e.g.
-> passing a millisecond value where a jiffies value is expected).
+> On Wed, 07 Oct 2026 15:34:44 +0200
+> Andreas Hindborg <a.hindborg@kernel.org> wrote:
 >
-> Both APIs just take a span of time, so they can use Delta<Jiffy>
-> instead. The condvar patch also updates binder's ioctl_freeze(), the
-> only caller of wait_interruptible_timeout().
+>> Hi Miguel,
+>>
+>> Please pull these changes for rust timekeeping for v7.4-rc1.
+>>
+>> The following changes since commit df2908090cda368b01ff43709f51890076c56157:
+>>
+>>   Linux 7.3-rc2 (2026-09-06 15:07:20 -0700)
+>>
+>> are available in the Git repository at:
+>>
+>>   https://github.com/rust-for-linux/linux.git tags/rust-timekeeping-for-v7.4-rc1
+>>
+>> for you to fetch changes up to 2ea0119f72dba597aa8a98cbdb72c564bfc5cb38:
+>>
+>>   rust: hrtimer: document handle based design rationale (2026-09-29 09:22:30 +0200)
+>>
+>> ----------------------------------------------------------------
+>> Rust timekeeping changes for v7.4-rc1
+>>
+>> This time we have a few assorted changes:
+>>
+>>  - Warnings when passing out-of-range inputs to `fsleep` and `udelay`.
+>>  - Rename `ClockSource` to `ClockId` to better align with naming conventions in C kernel.
+>>  - Make `CONFIG_HZ` value available as `bindings::HZ`.
+>>  - Add a conversion method to convert `Delta` to `jiffies` for use in timeout arguments.
+>>  - Add implementation detail documentation for `HrTimer`.
+>>
+>> ----------------------------------------------------------------
+>> Andreas Hindborg (1):
+>>       rust: hrtimer: document handle based design rationale
+>>
+>> FUJITA Tomonori (3):
+>>       rust: time: rename ClockSource trait to ClockId
+>>       rust: bindings: set HZ to CONFIG_HZ
+>>       rust: time: add Delta::to_jiffies_timeout() for timeout conversion
+>>
+>> Sang-Heon Jeon (1):
+>>       rust: time: warn and assert out-of-range input in fsleep() and udelay()
 >
-> This series is based on timekeeping-next, because the binder change
-> uses Delta::to_jiffies_timeout(). The workqueue patch conflicts with
-> Danilo's workqueue series [1], which also changes the signature of
-> enqueue_delayed(). The conflict is trivial.
+> Would it be possible to also include the following two patches in this
+> pull request?
 >
-> Binder and workqueue maintainers, could you take a look at the changes
-> to your code? Andreas and Boqun, which tree should this series go
-> through?
+>   rust: time: make Delta::ZERO generic over the time unit
+>   rust: time: add Delta::as_jiffies_unsigned()
 >
+> https://lore.kernel.org/rust-for-linux/20261002050428.2746277-2-tomo@flapping.org/
+> https://lore.kernel.org/rust-for-linux/20261002050428.2746277-3-tomo@flapping.org/
+>
+> Three patches depend on them: the workqueue and condvar patches in the
+> same series, and the serdev patch. All three change code that is
+> merged through trees other than rust-next. If the two patches are in
+> v7.4-rc1, the three patches can go through those trees in the next
+> cycle without a dependency on the timekeeping tree.
+>
+> Both patches are small and straightforward, and Gary has already given
+> his Reviewed-by.
+>
+> If it is easier, Miguel could also apply them to rust-next directly
+> with your Acked-by. That would work for me too.
 
-For the future, I would prefer if you can submit timekeeping changes as
-a separate series.
+I'm not taking any more changes for timekeeping this cycle. Up to Miguel
+if he wants to take them directly. Otherwise wait for next cycle. Either
+is fine with me.
 
 Best regards,
 Andreas Hindborg
-
 
 
