@@ -1,54 +1,54 @@
 Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022078.outbound.protection.outlook.com [52.101.96.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439E4450410;
-	Thu,  8 Oct 2026 12:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F504379C37;
+	Thu,  8 Oct 2026 12:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.78
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791462268; cv=fail; b=KkND6SImJ5y2rtRcfYQJ4DnCHixNQGjbKGKmy/mQYtcEOaR00RqEpHwAQsbKw2TqLkzV4jPnDqUJXnuS9+r3l6pSEt18/+dPMNNPp/F3eD+jutO7RAeYyudvWO9WWd9O4Q51NLITK+mutwtjdZwBRNPLASZDcfth810DXqYDt9g=
+	t=1791462274; cv=fail; b=OSbGz7ZMp75WmH5uLg+wGEgW1+gRDUuS650K1abOKQNhl5caua5cD+Hyo2/xYgvTW/5gO/TmJeCuq1bcDrKNYcz4RibAPszEZaOYVD+MogTYV8gKsVmZ/qKGCc7lJSSHnepYtjneuAVGz2Nb8Q2ydVqOtXsumThGrCL/C8h/748=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791462268; c=relaxed/simple;
-	bh=klxmI1B8sW8+Ed4YtHf4d220s/OMeUCtJWOBb+gIQPU=;
+	s=arc-20240116; t=1791462274; c=relaxed/simple;
+	bh=47gBHe/ipR1CjED86HmW9Sugj3NerWAu+z6sNxK/kBc=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=UWiUCMu/ySvImq4qxXjpTv9c3sodRbAhrkVMQC4m+/xFvUJwjfvhUePhpzKYzvcpDgZtDanUBjkEBnMyT+fyGrOcOjJptFUp2jyHMpznBRPmji5fSEH7gU/aNiO9QVnCTHI7oRkfR3oQai0o4SZEJIbDDa1N7b3+BD+9NKXvhwQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=FHb8a4yy; arc=fail smtp.client-ip=52.101.96.78
+	 To:Cc:MIME-Version; b=RQnHMbUVwjhpRh4jAcbLE6x+HO6A/410DmjmCqJOJy5HJ+VdCuI5l4C7rtd2T0mGuys/HcRjbqZVudd+wJ3SCSTq480F9faXSM2mFhMhr4aw552o4dMmuW+W3MbreU3j2KTHpHaYEyexccx/BgurU/M5F87UJ9h3GHL549KROrY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=E8BdZijW; arc=fail smtp.client-ip=52.101.96.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="FHb8a4yy"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="E8BdZijW"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Cmy4Nl5dsE2ujetoRqKjdmXEI1V8se5UjW6tlZaCHBOko/737ArpSN0MLiOBJnxOVc/tlvuPdzqa6LgHb+uZCGEz4cDsCWzT7KhSXnmiC4vModKDslLAHzn/ZTqvlAaPJySNDtwAfLKfCNuavNC2YxFiGG7XrnLT+ERvMeL3ub0OBeNlKutdVOm1g9Ohldfb6pO8PQfU+8DKfKIrNldENd8gd24wbC9aHabjqt0rM0hpK3hYrXYQ5tk092ySFxgsjcbWcWbMvFwK6aCB9YJKB1vsElHezsAkdZ2NrtdbeyiWghSFKKNUoeLBmzA1tx5LxnZ/XiTYRpFSEzJAkyfDYw==
+ b=Da5U0qELdcCBUXAz2r/DkZO45RKxfJFEymqWeVGHN38foOHACrwTtCtM8JVUCEDDtCj7dR9qzoB46xvsgXK8hST8J2mHMqIjXDN2mY9Sg0OV6Pl8FQdlyki8H6ICEV3grUy9Z4vj0pbEbmR/zbiKsSa87FwdEH3Anbv+5lmZAWyuRUxBMiOGDCeLQ92p20uX0TIXTT1GvW0RFLw7ayFCvdaRFS4GY0pZI/Ukuv+9NRuyxcyUmtpdXN8dm28/fg3xEcj7yHxefTcAU//p8Fj6L0KbKqtbKhj37C2a6lQHavAxD5boR8NmSx70LvMIx3gehjgC1E3GG+BGljLzluhSmg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oLvcLd3faH9QZdGQxa/VZAFOG0rqIL1FDxoPC5QboAM=;
- b=p4qdui96ppG+xzbKAtWczZZDRMZcgPxwALU2R4POldHWBfMgS17VIQtb7O7AkLXwUCuE34RNLFOkvvSOiSUDTMDYxcc2rzgMZJtNKV0kaaUYhhBlF9FVsUlbn6v7IMkwmPzIVa1vDrRqJ3OOwtGBZhUQEFGNtV5NzE2ikuXgHqYPE132m4pzzmMMZAjL8T+m9lUgWlNjYVWPL7uKFZs+BkaJzNtrgci3OGUx1CTFG+543C+43GFOT4cT69Y9AX/YGYeLGJA5aN2spwpM6YPJu1YGjO0LLCdAY/9vTL5z6Auu/mkOiCSolJ0zmpeofCNUfAW4DS3XIppwKZqMxdyPMg==
+ bh=+QaVTshEkn/Tq++lWspoIYTDzBPdGvVpJYbZbRNv7w4=;
+ b=Q6S2WGosl8y7aKWixQxgNBL7m4FEBBcsxVncO2+jdf2t4X3JzkidUF2xEEQMUWQLGUyr2BMzjL+ACw3Z04as+GDO1GbegotTy8yx1IDeYv4SNotJm0muX0R2inMFgWumels+JQsOKtZw+Cu6n82ze0G/9qP9yAlCfZLL0SgRTedFMDXPZfJ1i9XBUyDS7Og9mflsmr03BPVNmp+ssfNJgcfIMWoWx6sLxMCf427DPR0J1qQZQwUqSKS3+Zr7Th+WIIQKh7LvbaPNlbfaHJi//xkotHvxFQGY/hE5+uUs4CTVeb/70wV4xUNDSoOKmPOarchvT7md/dE/yx4+NMlZ8w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oLvcLd3faH9QZdGQxa/VZAFOG0rqIL1FDxoPC5QboAM=;
- b=FHb8a4yyi/u/3oHWbXGEd9c87oF1UDMNyroQP9J8K+mldbb7uywATmlkKpRxUr3152z95ddclcu3SI8YyX3hJ5kDqq4n1/TtybEJW+mhCst42MZMhq1NK/Q3ZnuEmr9quAhs4b3lDEgRxLTLkDGTTbMCWAot/X/nBoO3a2j2LHg=
+ bh=+QaVTshEkn/Tq++lWspoIYTDzBPdGvVpJYbZbRNv7w4=;
+ b=E8BdZijWiFPlHJ4Si45Xz44PG6O/GEAU7nBynQP8tohqInBWSbHmmiO+WRde4hGHXOD0UwAhzR395yn2ZHGZd1Fgh/QA+aMYvF6unLj4rPf6CZ/h1o0h1/Y3AhRh0hHax3vPLA4ymD59l20534hbOlDKEo5f4aB2elEblIQ9zfM=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
  by LO2P265MB5471.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:25e::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Thu, 8 Oct
- 2026 12:24:22 +0000
+ 2026 12:24:24 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0496.015; Thu, 8 Oct 2026
- 12:24:22 +0000
+ 12:24:24 +0000
 From: Gary Guo <gary@garyguo.net>
-Date: Thu, 08 Oct 2026 14:23:51 +0200
-Subject: [PATCH 04/20] rust: pin-init: internal: pin_data: pin borrowed
- fields with wrapper
+Date: Thu, 08 Oct 2026 14:23:52 +0200
+Subject: [PATCH 05/20] rust: pin-init: internal: pin_data: teach drop check
+ about generics that cannot dangle
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261008-dev-selfref-v1-4-6c1eb269fe57@garyguo.net>
+Message-Id: <20261008-dev-selfref-v1-5-6c1eb269fe57@garyguo.net>
 References: <20261008-dev-selfref-v1-0-6c1eb269fe57@garyguo.net>
 In-Reply-To: <20261008-dev-selfref-v1-0-6c1eb269fe57@garyguo.net>
 To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -63,12 +63,12 @@ To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Gary Guo <gary@garyguo.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3749; i=gary@garyguo.net;
- h=from:subject:message-id; bh=klxmI1B8sW8+Ed4YtHf4d220s/OMeUCtJWOBb+gIQPU=;
- b=owJ4nJvAy8zAJca/kLG6/oLwNsbTakkMWce70yRbctSlmgxy7H5PrF71dKr3954lnt1hMg/01
- E7XZOyq3tNRysIgxsUgK6bI4tHNmLaJcbbsZa3ylzBzWJlAhjBwcQrARGx4GBlm7joRd+v134n+
- 9Ru/zxdaueRU2Da+KruCtwWp3K6v/PqAKpbHp5Ue2f7RZH4jr7lKyaTn8w4rGm88+Sg1Ybmemnj
- /DUYA71lG5w==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3241; i=gary@garyguo.net;
+ h=from:subject:message-id; bh=47gBHe/ipR1CjED86HmW9Sugj3NerWAu+z6sNxK/kBc=;
+ b=owJ4nJvAy8zAJca/kLG6/oLwNsbTakkMWce700ordR5+cLjmfvHl9S/PFiSGdjMmJ+ufsjPvC
+ 1LguRn/YkVHKQuDGBeDrJgii0c3Y9omxtmyl7XKX8LMYWUCGcLAxSkAE0mSZWSY4CU+pfTUxdMx
+ OvaNNfH8T17+qZ4ssk3G+FOhZWzXO4ejjAzPzhrHbnjD5/lUYabpjc0vZOeW6DKvLF0kn/qMr0T
+ tLjMHAGkoRnQ=
 X-Developer-Key: i=gary@garyguo.net; a=openpgp;
  fpr=E25A77AED6FDB55D05B304A09D8C6F14E3E60652
 X-ClientProxiedBy: LO4P123CA0578.GBRP123.PROD.OUTLOOK.COM
@@ -82,165 +82,141 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO2P265MB5471:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7a7f5130-ea4d-4a36-1b28-08df2537159a
+X-MS-Office365-Filtering-Correlation-Id: 1ad260e5-9cdd-43ba-32b1-08df253716a2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|921020|5023799004|260925021311599003|10067099003|260925021911599003|56012099006|260925022911599003|22082099003|18002099003|3023799007;
+	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|921020|5023799004|10067099003|56012099006|22082099003|18002099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	qRmSf/7Pi+aolGkQLdbitUmjn1v8KW6QqOoUzc22oZxvLolgtA0B7jJXlYpOWdIfCHUkaz1PmwdPUzPeVvRQYwFAdStkGqDoKljPVhaIOZmIhC7rI9WvZY07nROPVbqIEorW9yjezfaaXK/IgWK1jWxrwLmUHv/UqmgggMlG4bc8MoEPDdxu/fZIVsxpBznlT3Y5UJWtqDVF/KPHxaJL4ANxSSMIg3ZZ0SUtRsxQr0ZQA0R4fw9HOH5FFTLhSiHPGaCDf1Qpt6mCqazR/Df+/js2KyLlLR2cHEZFVtuGIOAFvydngawFlrJm92rVKenjVDdwThiEUDSK1dBWJJq0a4rVV74gIbXzNELkzbG5cJBcE2CvsO5RfZxg6iJ1Kb7VbuI3YCvTDPiXj3T5SlDdzh+jUjhAzgxSS0Dkm9P5A5Su5VyslUNlweeC1JKJgbai7I8SIDerHq5zo5xWq889YvgFI97AK3nff2Uwl+QWS2bbGHPRqNbRwK2b3biNzkSRAPc4P+BL+MjY0/szhQ928p0I7Y/QrZBw7V0DgWigR8ptlQRx1GLSCdwAsswWCzme0n6mXHSD0g3sFq4bSfQWr1fulHARH0e7gB9m185AlJZLkl+pZviw2dhVGiKgZGEuMf65XFpg8dLh0mVPeRqAZLahiKcZuHDiBf+svJjAXe1XC6e4iwkbjS3fVVW7/Kdg3eRkLvBSdmJPf7V/47uNQA==
+	fSeNjj+9mwDF+sGtjXr1watpaHRl88QUa4f5di5FsfUgO+teVsfyRKALNQHz+XjhkqTHy0G4kJlGU2IGgoJGrawXB8sVkwxxcjl3t8vnqm81jO6KTVjZVNbkhGy1H31IixmuZMyzhmisfsY10/g3Qi+qvfJ+BKM/F+/lrDNTkQuUiLcXDoZGIJ4sLQ9rSOBTH9uFbELFITUWj6edq3SWYvJ7Qu5MYKi71LldXDmYsdyE0iPbGQ6RjrU4AYJ6MqJ3bM7sKqE8oo6NynnGdjVk91+fO0eCS58GqKWJeuu8gRK825QpfnCiuh9EG4HBX3iuJdFQw5PjHMpXiMdsR4SVnQ6tpYnAXU9Kn8+a2NsdivUF8R5/m0lYJ3IIXDGeaTpThJ9PrJ7pXZ9OdWjbfz9zdKs/ml0v9+ZQbpQu/SeRVpXfpGGEmEFJcX/+9Zy67Ttyhb0rvNa7Ylw4mF2cFyCU8GjI8wAVnUw3zkCHBr9rE8wUju5pcH0U/j35DNNjcUOg+J+QFk0Z6O2vd5nImVsfYTErkCLIHADmHJza2APyZZfCRSWKUYXbJyQiRzg1BioTMZlAUlrSPEAvkUMMQtPqwc+1uvDZkIZfqa7RAwYd7cLvfKt6v1hnLanayYF7OxZUFmvx6b7u8vDPmVqAyiFQWr//dCNrg5BuKYrxNkuQZxYnli+u1UYGrUW++1dbKsbWJxT+QwHvqCZ57W8Ydtw9Nw==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(921020)(5023799004)(260925021311599003)(10067099003)(260925021911599003)(56012099006)(260925022911599003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(921020)(5023799004)(10067099003)(56012099006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UFJWMm1BZkJkTXdnakZOS3MwaTNUM3RkSENac1FjbnlVREJ3Y1FxRzc1MUFG?=
- =?utf-8?B?OU5iN084MXpPaFd2SnE1dHZ6R3hxbGkxK3Y2bG5RejYvaW9KRG51UXdscWZq?=
- =?utf-8?B?MXQveUFFSnRicGdBZmk5REJFYzlsTDlwL3doSDdhc1NTUlJiWjBSeEtXY1Jz?=
- =?utf-8?B?b3V4SDVsbGpZQWxMK0VyNTJ4cXZhYjBERTVxRExuRUdGVTNVSmRWYjJDUitU?=
- =?utf-8?B?RlBnVnlYV1BvajZHTWtrajN6Qjh1NjVCR1d3Mmt3WWJlMGl3WlYzcFFwUUs3?=
- =?utf-8?B?dGNhb01UZnRqKzBQUGFzTGNRcmhzMm9zUnhoRVhDRFVTQ0pQU28zb09oenhM?=
- =?utf-8?B?b0ZKM2MyUElmNnptd3dFbFF4ZlhnQTRFYXFxVmt3RDZaeUk3R0RhUmhpY3lC?=
- =?utf-8?B?a2VlQmR5S3ZZM1NEM09WMmRtQTVwcmZscENCNWo1VVdMckwzVlVZUVk1UUt3?=
- =?utf-8?B?Y3VyV3V0bmFmdUhNNVpOUHp3d3FuUzA3VFI3bXZxQzZBbFNpdFRYd0xBUU02?=
- =?utf-8?B?cTlhNjl3emtPT0xXOHEvMnhVSFJLcVNWZ215aVYvSnZXNThwYkpLVzdiVHo5?=
- =?utf-8?B?Z0k4RmtKUENNeitQbTcrRnR1NFNCUHdTNmZSZDczSnlvOGFZbEpYQUViQVpE?=
- =?utf-8?B?VUxlT1ZOVVh1alVvMFlZYk1BYnNpdERtNk9kcFk5Um4vVEpZam11Z3NjNnY4?=
- =?utf-8?B?Q3Q4dGZZRmNpN0pZd1J1WFg0d0ROY1NaNGZzRTJLa1V5ZDAzR254dUZZbTdC?=
- =?utf-8?B?ZUd1L2JGVDliTlRBVnZwTWZvd21KMVQvSTBLSXlxbm9uWDlJMm9penRVb0dQ?=
- =?utf-8?B?ZlBSbk5YdHJjcTVTZkxPNnRldVhaZWJLS29YaHNZcnlicHY3Q1RXKzRDTU9y?=
- =?utf-8?B?dnNscm5MNTJrY1RVOHpBbVlmVjFHSTlTdTBCTmwzMFBlaVJiR3ZnNmhmVk9E?=
- =?utf-8?B?cU5adHV0VVFXS1p1YUQ2OUpTWjZVTEZrSmNIOWVwZWtmaUxyV05pZ3FoRXp6?=
- =?utf-8?B?SU02ck4xVk84SWl0TkxXRE9xeG94SklnRXRWK0J5M1k1WkFEZDNkeEVIRFBM?=
- =?utf-8?B?Rk9SazZiZlZ2NDkybnc3QVNDZitUcDJuSHRaRFRXTS9ucDd2U203QXFUZEJX?=
- =?utf-8?B?eCt1bzZIUW9Kbm50cjdYZmkzbGlrNlVISHZhOW9XbE5WUWxHYnUrNWRZdVN3?=
- =?utf-8?B?UEJqaWhrRkx1emh3bXN5eFdIVXRzN0VDcEZwVGZScUN4TXlQd0FmaU1OaGNW?=
- =?utf-8?B?UnRPeWkxMFVud2V1MmlJb2JoOHVkc2RYT2ZzeklKQzI5U2JCd09Gc1FxTXRp?=
- =?utf-8?B?QVI0Smc4RnhIZ1BJV05Ocmc4V0lUTXpWcy9CemZabFJSZGhPSjlDZnFnMnlk?=
- =?utf-8?B?L0RNQTFlbzBnMWlHU2FTMDdvNnIwRktQeEdaOFZKM1M5c2E1eG9zSEh3S1l4?=
- =?utf-8?B?RWg3NEl6anFFOGJ3L1ZTN0VGNEUrV2wzaXlnUm9mWWtrOGxCZzc2aC80Y28y?=
- =?utf-8?B?NjgwbE5MOURzdXo2dnJ5eSticTQrWE1FWDhVeUVaWDk0WjBjVno2Qk1iU2Vl?=
- =?utf-8?B?NWkyWFIrM0wyK2FjWitwck04N2V6NEFQejEwZy9BUnFFTm91aGsrV3h6Mkly?=
- =?utf-8?B?UWpBWm1rRStpaXQzVmw0YkhJUGxtaURLRWZPOXdCMUt4WXB3Sy9rZXpqUjQ1?=
- =?utf-8?B?Uzk4c2dwRkN4ZkZ5dFlGaXFOcHZGT2dDQUJOMzB6ZUNiMUtTb2UvUDlrUktD?=
- =?utf-8?B?dWhYZFBTUklrSGt6WkNyOUFyVEJUeFB0NisyUlR1dll6UW9YdDVNZXVzTUVh?=
- =?utf-8?B?MFRGK0JzeW9SOHYzSVkrQUpBbDRIYzJUUS9Vc21UK2VCTnBoLzFHdk5VOG9B?=
- =?utf-8?B?OG1ibkk5NWV1SjFaNGlrbDI4ZzNiWXUrMTd5NGlTY0FYUkRtYXVwa0w3WmlP?=
- =?utf-8?B?Q0UvY1RZZkNkUUFPZHRrTE1uVmUvdWxWdVJOd3B0UE00SHhIdElkc1lyYjAv?=
- =?utf-8?B?aFJlTW5GRUo5Ty9ZOVNyMnREaHBPRGFZMzFlZkN4YlhDQkJzNEc3bjFBTWoz?=
- =?utf-8?B?NzlhUEZFNTlhS2JTa3ZsTnN2Tm1LLysxekZRZFVPVWhVUkJmYlh4allrZDFI?=
- =?utf-8?B?WU11USt3b2hBUmtGcGdmdEVvNTJaZzNjcEhCMVBpS09pQXowZkxNbnpiTGpQ?=
- =?utf-8?B?RkRxT014dnczTWNyVXZJbERQUFpoZGZEOHZRQ0ZSeWlaL090UFdtQXg1U09F?=
- =?utf-8?B?NVRvM3ZwNU5IME1BaFdGMWk1L1laZk9Oak9veTZlcUhMNjQ3Z25sWTVpZDFu?=
- =?utf-8?B?MnZvZ0xHRy9wT2FQbnBRNVo5YjVjVjdJMWQ3MHIycEVBUTV5UXU4Zz09?=
+	=?utf-8?B?alUrUDU1R3ExcVdVb3ZyRjE1K1dXSWd6V0REOUR0Z1d1QkRWanRhSjRIS3h1?=
+ =?utf-8?B?VG5jeEJJUEZDdDc1bWxtYjQ5Y2RkUDRZYmF3djVvRi82YklCQzh4Yit2ZGZI?=
+ =?utf-8?B?T2ZnOEMvaHhGMEV1dzZFWFlXMTRaMnIwUWNQdGN0d3NvRU1LVmFzUUtoWWpZ?=
+ =?utf-8?B?SC9WZEQ0Ymd5YysrRnZ2dlBkRHRDMm82bGJTdHNjcnJ6dllIZ0RiYlRCaU9w?=
+ =?utf-8?B?cmJOekk2azhsOUphR25MT2VpcGFKdEdOTGFGQUZQa1RreFZJeWpnRFBSNi9D?=
+ =?utf-8?B?a0tJOW0vazhXbDFQbnRxTTdNL3ZGclhyOTJMSlNQZFkwWlREMDZrTHpnKzV0?=
+ =?utf-8?B?QktsWWZqRjJJdEZWWUdsZUxIWWNmd0RjWU9rUkpKemQzR1V5OUowc3U1aGM2?=
+ =?utf-8?B?SWVRZ3V2Y3gwRHZIckFLR3c1SWdMVElyNVJQa3I3bUZoNmhoY3RHR2JsUHI2?=
+ =?utf-8?B?a0h5Rk9vV0ZxUDFqSHlBVUowdkszK0RNalJxRFJpWkF1bGltRXUvSWdSVVpL?=
+ =?utf-8?B?ZjJ5MGUwZ2cvOTNsMEhVZE0zQm5jL1lhZVhlWktodFkzODJycERsdndUNTU1?=
+ =?utf-8?B?UU5kUVhqTTQyemZTSGZwaWdtMm5ySzNCMnZkY2FBd01CVk81QjBjNVQxNGIv?=
+ =?utf-8?B?d254YjBRWlhUQkNPZlNCSTBsOE5CY08yMUpNVnZLblpLQ0gyWnN4MGMyWE40?=
+ =?utf-8?B?eXZwSEJSVThnSjdxbzZwa0UxbXZYU0ZhVnV5MStwb29PMUQxVW9taGozTURS?=
+ =?utf-8?B?UkNxK1RrcUFBMFJNcm9EYmkzd2FmQ2pUWjBnMlN6VzAzRGNEZ2JDR3E1eG9r?=
+ =?utf-8?B?b1EzNjFNam4yLzFKQVhTd1dHazJzWDJOT2FDUENKeEUwU3pScVplcVZpRjVs?=
+ =?utf-8?B?dllnMHh1bGJGZ3lPeGNSai9aaVhneWJzcTRNcGRjZkd4cE55OCtwOTNLYnBv?=
+ =?utf-8?B?NDkzZk1WNEdnTExHT2ptcjVBUS8zUG5iQnBRVVVCTnhPMTNOWVpnMUVLNE9J?=
+ =?utf-8?B?NTZkS2Nsa2toUjlieGVmQ2dCeEFxYkxmWjJIdkl0N0ZaNU9IY1hzNkw2cVkw?=
+ =?utf-8?B?ZGZJNjBCWkE0ZUZuZUY3UVRMeHJGSXZRQlIrQ2paaTliWnErcGdFZjB2MHhU?=
+ =?utf-8?B?NE1sanUwM0hDeGJmUmx0NEN1SFlMeVdGQzV0NWhNL2l4bjlVeURNWEhyTDlV?=
+ =?utf-8?B?TzV5U1VaUXN2andRbFpDNWxtOVpiRkNVdUtNWmUxLzBxaXVkd1BBV0c4bWFV?=
+ =?utf-8?B?R2o2QWt3K2N5SDdTbHV5cThZUnJvQXFORUh5NU1QRzVKYkZLNFoyVGo4UXVx?=
+ =?utf-8?B?QzVhWnBsL3FXL3h0SDVDL0VkUVlJU2d6SDJoQmlhR0pDRXg3T0M2a09tRFVt?=
+ =?utf-8?B?dnR4eXJab0p5MkFvRW0vdjZiR2ZtSTlQQlNVR1pxVTBxeG01LzUrWVN1eTVX?=
+ =?utf-8?B?WURQQmZOdEpjRFFnMG9HTzF0OEpkdmFtUHJPcnp5cHNORVJCU0duQkRtZUVR?=
+ =?utf-8?B?WGlnRzFrMTgralE4S3RHOFp5cWhIL083bzBhYmk4Y3hXZ0pLL0NBcWNsRnBj?=
+ =?utf-8?B?aGpMV3lRbFlDN0FvaE40VGpQUUNSU0dMU1NTbHpCMU1TM1lHeHdabC9jempn?=
+ =?utf-8?B?TFovK0EyRTNaV3hoWWIzeFVTcXBxeVl3UU1hMW1xS0xuRkEyU2x1Z2ZzTU9F?=
+ =?utf-8?B?T0pCekdZbENKc1hDblR6OW5JU21CRXEwNThySFNXb3JCR2lXK2VXbUlwMSsz?=
+ =?utf-8?B?ck9Tdm9EZXZiTDhPN01lcVloTi9xbUlEM1dPSmUyOHR0RXJEVExwQWdkZzN1?=
+ =?utf-8?B?ZnRkNzlZZjlvaDRoZ2dmUFhoU01IZUJ0cHFKN0ZaSDlwRDd2SUNEaDZpT2RD?=
+ =?utf-8?B?b0RJTlNBK2NpK2d1WTFFZk5YeFppZVZnTHNaS25aUWp2QTFacDk2Q3RmVnUy?=
+ =?utf-8?B?ZkxIWVM1YzA1MU5jZllPS0ZOUTQxcUMzODdMQnNXYTR0WXJneVlOUFNBUE1t?=
+ =?utf-8?B?UXYvays3dDlLSmJEclhSQ2N3K0ltNTB6OGhGVXN4aFFyUkE0bkI3RUEyYTEr?=
+ =?utf-8?B?bGJmZGJvTTRveldhUDA4SzZGc0hjeDJza3hYaFVvSTRTaDMydGdheWRZOUU3?=
+ =?utf-8?B?M0ZISnlLRkpZS0FrZVJjRUxGRGtrWjBnK2JIYmxtQlJjYmtNZWJNZ0FNRWhN?=
+ =?utf-8?B?WWpTdTFPUmRXTmRCaEsxN3Rsb0VJV21ZajdJSXZ3Rjh5Ti9EWjk0dGYvY1FZ?=
+ =?utf-8?B?WER4YjhlZ3VQSzlCREtSUU5Ga0k3ZGhIV284NGdCRk0rUUx4MC84bU1tdjBU?=
+ =?utf-8?B?RGxYcGtkK0kvekpLWjU3TFRMMHlER0djaEdKY29BaVRnd1FwOE01QT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a7f5130-ea4d-4a36-1b28-08df2537159a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1ad260e5-9cdd-43ba-32b1-08df253716a2
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 12:24:22.6360
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 12:24:24.3625
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UFiqDt1xKi+/tdNlwo6Y5p8W5n/vnD7Ra1Mzhiw6GLp4NNOrH2+jywPxSecG9wug1NM0BS2ha53p5N8YL5JPtQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: rCAPx3UdbUsMC96ithsxtpBkPHJr9EanE3JhC8+ZwFdWp8PLliQHoN4dAJsYl8SnPhGUy8kEXGmq0t9zFkJPdA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5471
 
-For fields that are borrowed, a mutable reference to the struct no longer
-mean that it has the permission to access these fields. Therefore, the
-memory that they refer to must be pinned.
+Lifetimes not needed by drop glue are considered by Rust's drop check to be
+considered `#[may_dangle]`. In case for a self-referential struct, we may
+have fields which need lifetime of borrowed fields in their drop glue, so
+compiler's automatic check is insufficient.
 
-Wrap these fields inside a `Borrowed` struct which pins it. They may be
-accessed directly (if they're not themselves referencing other struct
-fields), so implement a `Deref`.
+Code like this:
 
-As such fields are always pinned, there is no need to generate a
-conditional `Unpin` implementations that implements `Unpin` when all fields
-are. Simply generate a never satisfiable `Unpin` implementation to prevent
-user from adding their own.
+    #[pin_data]
+    struct SelfRef<'a> {
+        borrow: PrintOnDrop<&'owner str>,
+        owner: &'a str,
+    }
+
+may access `owner` during the drop, however Rust will determine that since
+`'a` only is used in `owner`, the `'a` lifetime may dangle during drop.
+
+This is undesirable for pin-init self references, because `&'a str` could
+be coerced to `&'owner str` and this could further coerce if there're
+implied outlives, e.g. `&'earlier_field &'owner ()` would allow `&'owner
+str` to further coerce to `&'earlier_field`.
+
+Thus, if any self-referential field require field lifetime access in `Drop`
+impl, we would need to ensure that the all generic parameters visible by
+self-referential fields would strictly outlive the struct. And this can be
+done by a simple `Drop` impl that does nothing. Without a dropck eye patch,
+presence of `Drop` impl, albeit empty, tells the drop check that the strict
+outlive relation is needed.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/pin-init/internal/src/pin_data.rs | 19 +++++++++++++++++++
- rust/pin-init/src/__internal.rs        | 19 +++++++++++++++++++
- 2 files changed, 38 insertions(+)
+ rust/pin-init/src/__internal.rs | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
-index 868701c9a986..dc8f530e00fb 100644
---- a/rust/pin-init/internal/src/pin_data.rs
-+++ b/rust/pin-init/internal/src/pin_data.rs
-@@ -433,6 +433,10 @@ fn generate_struct_def(info: &StructInfo) -> TokenStream {
-             ty = quote!(::pin_init::__internal::Erase<#ty>);
-         };
- 
-+        if field.borrowed.is_some() {
-+            ty = quote!(::pin_init::__internal::Borrowed<#ty>);
-+        }
-+
-         quote! {
-            #(#attrs)* #vis #ident #colon_token #ty
-         }
-@@ -468,6 +472,20 @@ fn generate_unpin_impl(info: &StructInfo) -> TokenStream {
-         .map(|x| &x.predicates)
-         .unwrap_or(const { &Punctuated::new() });
- 
-+    if info.self_referential {
-+        // Self-referential structs must always be pinned.
-+        return quote! {
-+            #[doc(hidden)]
-+            impl #impl_generics ::core::marker::Unpin for #ident #ty_generics
-+            where
-+                // the `for<'__dummy>` HRTB makes this not error without the `trivial_bounds`
-+                // feature <https://github.com/rust-lang/rust/issues/48214#issuecomment-2557829956>.
-+                for<'__dummy> ::core::marker::PhantomPinned: ::core::marker::Unpin,
-+                #predicates
-+            {}
-+        };
-+    }
-+
-     let pinned_fields = info.fields.iter().filter(|f| f.pinned).map(|f| {
-         let ident = f.member.as_ident();
-         let ty = &f.field.ty;
-@@ -475,6 +493,7 @@ fn generate_unpin_impl(info: &StructInfo) -> TokenStream {
-             #ident: #ty
-         )
-     });
-+
-     quote! {
-         // This struct will be used for the unpin analysis. It is needed, because only structurally
-         // pinned fields are relevant whether the struct should implement `Unpin`.
 diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
-index 80c5624d78c9..c0a57101da61 100644
+index c0a57101da61..276b14a02d17 100644
 --- a/rust/pin-init/src/__internal.rs
 +++ b/rust/pin-init/src/__internal.rs
-@@ -5,6 +5,9 @@
- //! These items must not be used outside of this crate and the pin-init-internal crate located at
- //! `../internal`.
+@@ -473,6 +473,35 @@ unsafe impl<F: EraseLt> Sync for Erase<F>
+ #[repr(transparent)]
+ pub struct Borrowed<T: ?Sized>(PhantomPinned, T);
  
-+use core::marker::PhantomPinned;
-+use core::ops::Deref;
-+
- use super::*;
- 
- /// Zero-sized type used to mark a type as invariant.
-@@ -462,3 +465,19 @@ unsafe impl<F: EraseLt> Sync for Erase<F>
-     for<'a> Erase<<F as FnOutput<(&'a (),)>>::Output>: Sync,
- {
- }
-+
-+/// Wrapper for borrowed fields.
-+///
-+/// This should be switched to `UnsafePinned` when it is stable.
-+/// NOTE: This type needs to be covariant; Rust's 1.89+'s `UnsafePinned` is invariant.
-+#[repr(transparent)]
-+pub struct Borrowed<T: ?Sized>(PhantomPinned, T);
-+
-+impl<T: ?Sized> Deref for Borrowed<T> {
-+    type Target = T;
-+
++// Lifetimes not needed by drop glue are considered by Rust's drop check to be considered
++// `#[may_dangle]`. In case for a self-referential struct, we may have fields which need lifetime of
++// borrowed fields in their drop glue, so compiler's automatic check is insufficient.
++//
++// Code like this:
++// ```
++// #[pin_data]
++// struct SelfRef<'a> {
++//     borrow: PrintOnDrop<&'owner str>,
++//     owner: &'a str,
++// }
++// ```
++// may access `owner` during the drop, however Rust will determine that since `'a` only is used in
++// `owner`, the `'a` lifetime may dangle during drop.
++//
++// This is undesirable for pin-init self references, because `&'a str` could be coerecd to
++// `&'owner str` and this could further coerce if there're implied outlives, e.g.
++// `&'earlier_field &'owner ()` would allow `&'owner str` to further coerce to `&'earlier_field`.
++//
++// Thus, if any self-referential field require field lifetime access in `Drop` impl, we would need
++// to ensure that the all generic parameters visible by self-referential fields would strictly
++// outlive the struct. And this can be done by a simple `Drop` impl that does nothing. Without a
++// dropck eye patch, presence of `Drop` impl, albeit empty, tells the drop check that the strict
++// outlive relation is needed.
++impl<T: ?Sized> Drop for Borrowed<T> {
 +    #[inline(always)]
-+    fn deref(&self) -> &T {
-+        &self.1
-+    }
++    fn drop(&mut self) {}
 +}
++
+ impl<T: ?Sized> Deref for Borrowed<T> {
+     type Target = T;
+ 
 
 -- 
 2.54.0
