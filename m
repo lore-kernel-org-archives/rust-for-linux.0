@@ -1,54 +1,54 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021079.outbound.protection.outlook.com [52.101.95.79])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022078.outbound.protection.outlook.com [52.101.96.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4FE49892C;
-	Thu,  8 Oct 2026 12:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A354915BF;
+	Thu,  8 Oct 2026 12:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.78
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791462261; cv=fail; b=e7Ip8AMBVmVQnZHhk0LiJVMN0vcL8uL3zkaeQgv5uParcfz9Gt+vdMEy4caoOYqCsUxhJHMws+cRY12pZdtnqib7AJU3RcPhRvheMGLvUUytBPmUN9LDwo4xvSDtuq4QJCkhScafH/B0c8MGLgrHRd4eEctxc4NNu6IA6fUeV6Y=
+	t=1791462265; cv=fail; b=kY7ygW4lpOzrKIljavWhKikD/PrkEnnMnnFGi38tDUO53GApbkbSJ63In9hkSb46hERsLkawX7N6lvZQpbUn7tpMA62s0w2Pic/drCSu5vfbPxhu9g42aMpcwNxu2uLk0f40h0e9Hpt6D0ZDtOB8GjYBQ1DEY9MeMd2QL57S4HU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791462261; c=relaxed/simple;
-	bh=umz5dI693yqE8aaqdo1tjCnmy18+Sysw/gODqA+oMmo=;
+	s=arc-20240116; t=1791462265; c=relaxed/simple;
+	bh=ce27vOStqyTnGiDdZN+dt5FFHnwPbwprresNWlmfJIk=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=KLAKrzARCOiVBXuMOWfzaNURwzac9fYQc1siZdbXh5tU/incFS68z6EPb5eFOIg3sm22gGd6IxKUz8Ep9Ts2CkI93PePJzfgZg8y7qnnyIE0DiEPWE+GRTsSAJbs5LK+EYHR+uEr3p8ylD8khhv8RFyvGzyPuTFljHx2W7lJsIc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=LbHqX/KL; arc=fail smtp.client-ip=52.101.95.79
+	 To:Cc:MIME-Version; b=DMKZjzkli9Mo356K7NRL213xHi+gklZmWU5HcoMoPasXpz34l/CuQaj6kQUjfvBCIDXGUIMP8Nc9LTXW5fF+JVOt5STstJf14gl9l70XubrUtJCPgtbWZ3Zo0gcXfOzx0MrQRjc4F1D6thwcbdrGM6TK+/FScTkgsnXggcwUoDg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=KfbMe2Po; arc=fail smtp.client-ip=52.101.96.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="LbHqX/KL"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="KfbMe2Po"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C9j62YYXGjO/JkoO6x3WmhWtajecwLA3WfUDFYn13Cn6HgMcs+6nvjLoWDur4CZJzCS1ApZrr6TyrxbhM+M4ZeO7/BJoiNd4NM2Xn81wW66J23PNye56m197QvDa1YN9EK90OJgxkY4BZ3ysrdkqRUncdp6Uy0iARGou9CFqTk2+IksQF/LLBkb6yfCWBTfc5FKylx7tEAE3AOVu54U7kHvjbulNN7Iho06/CeYLrGFeirK6IAZGWCuYOTtQItQQ3DhWG47Us5xMoYhblxtQYx8b+ZyYM5/kuK3EKQNinTJEwl9MaqL7jN0Bv6jvmf44fxkhsfcGl0bcAVxxbfTrog==
+ b=ABnZIwOTx0vpVxJ+l9uSd/VZOFUJsGitDoId4bMH2L/PHQVMF3HKK/AXX6Ig4BmBKAM99TJtU+rdggLn7SDDLNoH1MLDFWoV2w1fFb9tMqYptnq7PoYG/50FOc1bTjSnzaWENV/jG0cfWplmlVhnWIqojVp1Nhqsx+Q7DQ8Ym9rG7KB9RlTFkR10IqK4qPNWaNIOcK1HSARNi8PIGSDiK9UNGjtpVgnvxvY6hLmcpG5TQpzCLQZM66psCduc7sHDomjr4eet43nXsdxm0MRaHf69hqBswCp12EnH9pK/wLI5yFMEATPwf+NhkMb/thg0gCW1E2bw1aVj/ta/Gbf93g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WtrHN6NZUfw5AU/JWZO1jkQDG/NS3Vr71hTFdIJz5YY=;
- b=CTue9dyMubMPUKCt33Js/6vy21QnEbRSS0LEsxfkEBzy5gMpZBfEtAW5REEDQIrDd1Urv1Jk6412Cd0gG3Eu2lG6zyfoEQKoIiIXfP9C4j1j3W/iqGcO5sP5fsuzrvZbhBt2IgYQVb797OHFdgPs0MPy7GI8aGAF7cngS568QLSq57/fj+csGq6eNG6VxvdM3wBKRyX4zclsQKhOVS70KXFGXTD2evKSiJ/gKG5ZBnzW5dE3ruxUHzb1GAT3DBzcp+3el7XOmpcyQ9ieMnHIEXXbI2R3idkEFz7490H4ZemvFU1pQLEw93RBFC9bhfHiQiD3rG1BD2jcSZrxVkBekA==
+ bh=KpI/FbcqJaStcSLvJ3wj+/PeYm+K8iV9LNflUUdWM1E=;
+ b=Mb4LwJDsL9M95Om8AFHL6+O3NDTsrOD6FcLl98I6M3k2zivVT95vOWu1RC1N0z9S+bKWEngTKt3zcYg1TBeOEgLtfyhcyZiM1jBzje+I4W1m9w3eNOd+nkGAvVg3mCbzigxNyfwysH06mDSJuDEa0a7ejgqqV96C9VRsoOFkCEy2ncN/KP3t0rG7ndgqgBSdvfb0ML5OWP86jkdWF3xuWAut5Ui6kl1ox51U+I0Xpot/9I2FGUOJ9/IcgG9uUHskhvpUh836SFpNz2bQkCtoR1mqBYWK4yfNcEGO4Fp4XTLcEARjrzyY8ADPf7nq27aP+LQE8XlItr//5epo6MFubg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WtrHN6NZUfw5AU/JWZO1jkQDG/NS3Vr71hTFdIJz5YY=;
- b=LbHqX/KL140QuGs5VxdXK0jvZidzHXIeni/YMeDDXHto+eVQQn9kxHxnuJExuU86ShG9dugQ0O3pD2Wm2u3QY0c/9STLD0TdAVyjZPSw4qiVnMQp6ZeUz36B5z9gkhCifL09TF66oZSsdhECeGhyy89LDgoD57MDLY4oNGKOee0=
+ bh=KpI/FbcqJaStcSLvJ3wj+/PeYm+K8iV9LNflUUdWM1E=;
+ b=KfbMe2PowCPM2ygwyxDgITxri8U+s3xynimNmk7rxuEfiLOcf9+EdN5w5HF2bWpYGqli+061VCjNRoCiQKSoCIvnHuTD20/rHz9evXKS0BZsWxEsp9G0eBcMKtS3PbAyW1XHTvDg9zAVNH1dsWo6C+Cg+BAMx/V8tn6PdYsbsJk=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
  by LO2P265MB5471.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:25e::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Thu, 8 Oct
- 2026 12:24:16 +0000
+ 2026 12:24:18 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0496.015; Thu, 8 Oct 2026
- 12:24:16 +0000
+ 12:24:18 +0000
 From: Gary Guo <gary@garyguo.net>
-Date: Thu, 08 Oct 2026 14:23:48 +0200
-Subject: [PATCH 01/20] kbuild: rust: allow `clippy::comparison_chain`
- globally
+Date: Thu, 08 Oct 2026 14:23:49 +0200
+Subject: [PATCH 02/20] rust: pin-init: internal: pin_data: infer
+ self-referential struct
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261008-dev-selfref-v1-1-6c1eb269fe57@garyguo.net>
+Message-Id: <20261008-dev-selfref-v1-2-6c1eb269fe57@garyguo.net>
 References: <20261008-dev-selfref-v1-0-6c1eb269fe57@garyguo.net>
 In-Reply-To: <20261008-dev-selfref-v1-0-6c1eb269fe57@garyguo.net>
 To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -63,12 +63,12 @@ To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Gary Guo <gary@garyguo.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1486; i=gary@garyguo.net;
- h=from:subject:message-id; bh=umz5dI693yqE8aaqdo1tjCnmy18+Sysw/gODqA+oMmo=;
- b=owJ4nJvAy8zAJca/kLG6/oLwNsbTakkMWce7Ux3nHpvbsrn1zTT1tqRbIWqzpxllPPkkvGjrl
- r9LrVfeUFjUUcrCIMbFICumyOLRzZi2iXG27GWt8pcwc1iZQIYwcHEKwET+bWZkWLtqnY/q1nWF
- gaF7Jtw7ymzAf2gpX3V8SCNr5vNIlY7FEQx/hYSqTmv4P0/bIl6m3tPs1f8oc7OVnfeNjU03nmS
- uCw3nAgAKvEik
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10762; i=gary@garyguo.net;
+ h=from:subject:message-id; bh=ce27vOStqyTnGiDdZN+dt5FFHnwPbwprresNWlmfJIk=;
+ b=owJ4nJvAy8zAJca/kLG6/oLwNsbTakkMWce70075rXIOdjcM/FIfUfn6Q4NFyrF5e1oZBUS/R
+ rxl9JzR59BRysIgxsUgK6bI4tHNmLaJcbbsZa3ylzBzWJlAhjBwcQrARKS1Gf6puDR7KhsVF6nX
+ Tpn3SunqvrNuhRePKHf31jT2R9qkLHZn+CuSVhzFtaT043vXRNsgRwFf/pZglz/v1xq3KUclHmX
+ Yyw8AXfNDyQ==
 X-Developer-Key: i=gary@garyguo.net; a=openpgp;
  fpr=E25A77AED6FDB55D05B304A09D8C6F14E3E60652
 X-ClientProxiedBy: LO4P123CA0578.GBRP123.PROD.OUTLOOK.COM
@@ -82,103 +82,420 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO2P265MB5471:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0b738714-943b-4448-0f96-08df253711b6
+X-MS-Office365-Filtering-Correlation-Id: 3638326b-0eb5-41aa-2fd1-08df253712e7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|921020|6133799003|10067099003|56012099006|22082099003|18002099003;
+	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|921020|10067099003|56012099006|22082099003|18002099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	znFdwz1DGFLberpvreJJD9u9JCXg7uvyuI91NFQVvw0ME9RHWwr3+8lOU5u1BuN+d0Jcu3UBR6vwG9yf5KFY1d6+DI1KFy/K9inhvTltKWAC8I2CNqRfrzynpUdAq8x6fvr5Z6XzC8JGECxxycnoQDJfaxL1yjhZ21ki2YQpKj7FAQhTXFeIO9xXHrw9TOJICX+4YzUs6sj7WLuTP4UJYuOs8ECd7/yVDR3/BO+toTwRqN6znDUQgEWTUl8NeDEIsoaNQlQCaBiN2Ms9P3t2rXUjZckoiq37HaJC7UZuZoXa8PzFjJdhNXIoWarZAn6IXBPmuHC/ECKElqIEGnzntKk5qDNNsCLk3fCgwLWmgnVuU4JysR8gJ6ukm0Vy0DPFrQdg1tpIT4+0yVZ10MXMCUIjZ/1AGiQd77UhIY4Vuweb+wFqPfwPT5DkHW/ZHBBNK0UNmFpNJuk2qpOtNX+UDrcGYHTERMn5DwOiUID+w1o5HnWALn9ys+Kl9RRrK0PlvB32lbCdalevLpv3IuJlMknTKVlJ5unqUoxZQ5yguBvRK/qVj1SP+du7fc4NvBAynTpFbDhtdT2MwHRJYdFo6SNwlqkmTRdz2AiybyMwj3uLi41cMXGmMz6X1kl/OJgCq8AwPFzyQjRci9WyIl/tRfwa1uh9ntFOzK3t9DrbAbASu0tCKKHCyhF6n02a8EPWZLdIhP7iWtJqRA/lg9BUpg==
+	WrHaXuUSSWyQ5Mpo9/vkjXiTQHiOxoWHOW/jHub7/MdU/fJG5q5WgJGuXMsxLtowl9MqPzwebnBDHtNRVSmZCF8QKDv118hwSoq9zlLmtTv+UgLTNDOz9rBobIHtIHJoGuGQ8JS/glWpxB2nOkv2H8oH13P+6hUZQ+3DVohf/JHomDkcbHWDrM+fAHZAtMx8atycK7BoYpIE7NzxCmfU8kiektwSiln+ocN7mZ79FFaQBf4OfRxI4eWuoRT9YTuTBCypU5+OJOcPklOIKEm7xI1e4yTrjsjiMNFbW437hs6DGKhjHz9yYMYPC2ycOQfjAqW0xnNQ1KtsmJuse7kpJT0L5Ym7PtSBajMvp3tg8Can90gjEZ+BnPo2nikZnXnwd8e4d2Yjv9yMOThUrxWvGuZEybeH+pyYMfImIyKpDw7eWMk1wb4dpwTfmu2Bh34PI/O+pOstqcn8L5f3njXow2UAc14boJiVQNsIkiQ4DF4ibR2wMibPUWPzPMNt2aKeI73gfKht249uZgFJ4kJDlPVuB2ix22t4+zscXF4RiYZl3IldkosP28AE24JxnacbnjmFV69nmkhf8H9YIpH86LImnUrey5KSoi1e6DxrXErXkI/3jmdhV8DTT1ZR5jl+rXLJsTXYOjSiIblh3jEpXD1eQhQrs6s8eTIFRlt6R9b56GdCELARDgJYt5Jj9hspU2mkOMWFog7yPFshn2DbyA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(921020)(6133799003)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(921020)(10067099003)(56012099006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UlIxb2t2L29zNXlweERNdExDTm10ZTFrZ2owUUkyNVkycnVYK3RWdUZFcGk1?=
- =?utf-8?B?MUkxek1rNTF2U3NqUnJ1NXhxZGo0empDS3hnZHdjNXpodnRnSnVYS0gzbzNR?=
- =?utf-8?B?d0loZzVnbFNnazFPSXo4RTJLS05JbktKMUpmdzRsMWluR0dBWGsrbjlOYXdq?=
- =?utf-8?B?cFBNSVVIRGJaeGVzWWRXZS9Ha1ZXTm1uQUxMOTJNQTJvTzE3eFdRVTljQ2Uw?=
- =?utf-8?B?OFg1ZFJGYUtyNnFQbWdWaWk0NGFLd3hDUjRSZ1BGc0VCdWEyQTJLaFZvYnI5?=
- =?utf-8?B?b0U4dDRjMytNTmtWNjZpNEE4VVp2TldpakVOWm1zVDJpYVA0Z0JiYks5dVJp?=
- =?utf-8?B?Y2FEZUVwT0hYSk5UaUpaYUpreUpES29EbTdLNWZEakJEYlZTUkxHRlRid244?=
- =?utf-8?B?NTAwN1dpYlhvNXozODUvWkl3TlB6eXluWVFiSUZkYUIzaitMMFQweE5wTTVz?=
- =?utf-8?B?dEJRVDJQeVhuLzhCdUFIdHI2aGxGcXM3K3JQb0Q5elhXcEVCRUVPRVpyQmRI?=
- =?utf-8?B?alpEaFVzcE9yYzZOSXJsS3BBRnlYajFzcTQvYklyWlFRMEI4RmFrOEpRVUhI?=
- =?utf-8?B?U1R6QzNYUWtKblgyMDhBejNkWmRsNnpSV2swaFRuZW1ybFFMbklGL0VFaTMr?=
- =?utf-8?B?UEcyN0tHR2RLSWlEQ1JHQ0Z2QW9BMUpDZHJDZVZ4bjFUaXVDZEFvQzZnOWxI?=
- =?utf-8?B?TmR4YkRrM283S3QweHQ4N1FjZkVqVG10MnAyaVI5bExPdkRUUGtnd0ZQcURC?=
- =?utf-8?B?Vzl6dXMzaGd3V01BKzVINWtsZ0V4UElna1gvUXl4VnFLeHBtQWZFa2dkQkNl?=
- =?utf-8?B?dnF4UVZ1TEdla2lya1J2c2VYZnZtd1VJS2JLQkxrQXJjTG1kbzd6SUE3enlJ?=
- =?utf-8?B?cDd0a0dQK0QvV00yd1BMVEgxUFRYRHJXRmI1L3hPN09GUWVsdU53dzhxQ2la?=
- =?utf-8?B?eUc3dDM0YWp0bFBnL1NKcVZSOE9hdXBQVXY5QkNPM0EwSDNPczJUTk4xNzk5?=
- =?utf-8?B?Q0c0dytCbHJja1RLS0ZLZ0cxK0oxd3VDYXRxMERheXJiU0t0QmZEelB6ZFV2?=
- =?utf-8?B?S1JQTUZsSW1BMHJoVTVkM2Z6SXkwWE9YWTEwYU4xQ25VOC9aR2lVd24vcDVZ?=
- =?utf-8?B?UWk3bFR3YjF3WHorMEo1c3hoTnNHU3QzdmRiZDlvWjljK3lSRmlpaWtrQ3Vp?=
- =?utf-8?B?dmJMYmVJSm5CcHdJRnFoRU1VazlSejZzOURyWWVWZVRjM2h0YnVFcW9ZMEFO?=
- =?utf-8?B?RkdXbW52UjhVSEpSbmNDbmFKMU9tbnV6S3o4OVViS0laZXRSa0J5YVIyS0w2?=
- =?utf-8?B?SkxDWDA5U3J5c1c4VTgyS2hRUzlQMDNSYUNkTW1wd1JmbU1LOVlMRFRWaXh2?=
- =?utf-8?B?ZnVEdjFvUnRmS3NLb0VUS3NudTY2SDF3dDM4dHhjdGdjMkFPMFA4alhDcjBs?=
- =?utf-8?B?TTBqaEx3SGcrc0xQYlFnTnFKTTRqeDcreFBOSGt0Si9Cb2RHUTZsckEwSUho?=
- =?utf-8?B?TzVWOW4xd0ZtTC9pdHVEYkZ1ak5rcmE2dER6a1JIZmt4R1V0cTJGYkJqZ2lt?=
- =?utf-8?B?N24wdlMzbW1YYzFSc2FmWU0yMWJYT2g0L09EN08rbGJnSzVsT2hnTGwzOTdy?=
- =?utf-8?B?c1VVdWlub1lYNC9sL0dBazJTaG1VckxjMHM1TFVISEVkQVA5ZDFOWkdXYnJ3?=
- =?utf-8?B?TGN5Zk12Smk3c1pIazR3QjJHTnRudzRCT3pHZFMvb3pCRHJxTVJEUm9tUy9Y?=
- =?utf-8?B?a2U3dEZQQ0JiWDczeTQ0MnRlMldhamZRUk9WZ3d2TlUvVkpnUkNaRURuNUtV?=
- =?utf-8?B?eGpEVk1wNk5US2ZlM1dJejcxaURJODZTR3A0MEhpUkFybllxV2FtMkErWXR6?=
- =?utf-8?B?YWxnNGE3VHZsemlFSjMrcFNQYTJIOEltRkJ0K1dOOVZDeVNDV1RodVMwby9F?=
- =?utf-8?B?My9yNmMvY0dFaFY2M2hSUSt4M2wyaWVMMi9sS2xwSTJla2JPUUhnTU5qbkoz?=
- =?utf-8?B?RUROWE9CclVsemRlM1I3OHIrVGJkbmVCTVpxOEZyeWdReWZHQjlqazFpb0tY?=
- =?utf-8?B?OUh1VWtHZk9yb3A2bFM1dHBHTnk3Q2p4NGpxcW54bzE1U2UrVDc4ZmhXQTNR?=
- =?utf-8?B?c3JqdnM1WUR4Mjg1US9tWnR6ak1OeWkrTnpPZ2JSSm4xTTZERkJBbWVLdEZw?=
- =?utf-8?B?MEhrY2ZpNWlDYmNkRnpuMkR1TWVxOE8yUExWdnRwMFNFb1QvclFVNGZwVUVF?=
- =?utf-8?B?QlZ6Z0RDTmEyVHhiZEp4U093UWJxemxxdHBualhWeWRHRmhlbGExQXM1Qi9P?=
- =?utf-8?B?RTJMNHRsMWZJekRHNE8xRis0d1IwbGVuUTFEckRScHpRdi9aTXpsZz09?=
+	=?utf-8?B?OXRsc2h1aHZnVWlMSnNtdmFkSk5rQ2lqNm54YkhuYTNoaVc0OWJocngrYVZE?=
+ =?utf-8?B?a2dWcW1BMzdLdG9Iak42SC9QVkZNMkt3U3ZrNFBTTFJieHU2V0cyN1lEVEVj?=
+ =?utf-8?B?MUtmKy94YkN4YTczUkZiM0xpMzV0WlRsL0dGbFRBbFltQW9GLzR2SWhHUHJ5?=
+ =?utf-8?B?TzNWaS95WkdNRXpGMzlGd21aWGRxRW5TUVBXSURjZy9EMDdzZ3ZzV0xWVEYr?=
+ =?utf-8?B?ZHZjM0p5NkdjQ2RuKzRjR2gwQXpZcVBJeDJyekJxK3c2WWZDaDdBQkViNWxS?=
+ =?utf-8?B?UmpLakV2Tjd1YkR2dndaU3pQSmh6KytTdFk0My9JMU5XemxQSmJDSG9yODV5?=
+ =?utf-8?B?aGVFd2VSWDJ1aHVGMzBPS3hiZHQxUEFKdEFYWCtrWkdZMTlLRXJldnY1YXNz?=
+ =?utf-8?B?d3FjanQwKzFtSVhpWHZvNVN1MVNhemFrdmtXTUM4YkRDdFJGWDdBdW14Vm1M?=
+ =?utf-8?B?Qll1bGp0RkxqNjhzQlF6QmFlc05YVDhVajhSQ0J2TU0wSEZzS25TaUduNXhF?=
+ =?utf-8?B?Q3FUcEx5emlZNjAxZWtaVHpXeGxFZ2RybGhDMWt0V0dDOFF3WWZuK25rR0s3?=
+ =?utf-8?B?aTF1ZVYxaU1CREQ5aWJ4MXIzNFY0THF4ZStMTHg3bjUzbHRWQmR6bnkwNEQ2?=
+ =?utf-8?B?OXFOeGJqMUZ2MExkZ3dDYm0vMG1zT3VUc1p4VTlnY1FQREt2cUtaNzAycmxy?=
+ =?utf-8?B?OCtHWlVlUjVxdFZwQ210RFdHalRPanQvc3BiL0RnOEJ3VHdrOEdZa1g3Qkto?=
+ =?utf-8?B?VkpydCt1MFI2MzY4OFNtT0cvdW5yYzZKUTlRVWpTdlhucnFJMHF6VEN4b29k?=
+ =?utf-8?B?WjUwZUpkTlNRMVBlb1pmRE9VYkJkblE2UW55d3p3MFM0QXZVbHRUZ1BDSWxV?=
+ =?utf-8?B?SCtBR3FvMDA3a0Qvb1RqbFJpK1c2bHhTVkNxRnNNVjBTZlpSTlQ1Q3ZPeVZ4?=
+ =?utf-8?B?NTFjN3pwdjljRWUrcnk4S0RWNWZMVTIvMWRIQm1NQlppdUt4TzIwRk01ZEtH?=
+ =?utf-8?B?cmxxTDl1MGVyeDYxOE1VbGpkK3diL2tKS0UzSzVoMVFkRlVsV0dTSkFXZ0Jz?=
+ =?utf-8?B?aWtKVkUxYTlaa3dkcU1Td01lZ1UwK09ERnl6M2ovQ2huU1NUaFBYNkhDV1pT?=
+ =?utf-8?B?RmpDaUt0dkFmQ1JqMnd0cXJCRzF3djJEOUhDWFJqMmpvUXdnbk5zNkJiRDkr?=
+ =?utf-8?B?UjdIUm5PWm15Szh1ckVyRllpdTJJM2tPbGs2eElDZ2RyenNXTm9KeE1FWnhZ?=
+ =?utf-8?B?NityWVZzTXVsVFZuRWhqREFVYnNkS1hrSGVBeUdqMEJnS2NMa3loT0JRdkRn?=
+ =?utf-8?B?Q1J3Z0J4S2dnMXk1NzJ4NDhLTGJCaVFXS1FLcDlRaVJVcXY0a0tRa3I2YVVB?=
+ =?utf-8?B?eGZuRjduY1RpN0hJOEk5dVVqR2l6OEhpMzdka3BjYUg0emE5dW5aMG9mbFVt?=
+ =?utf-8?B?U3U4Rm1sN2pTZFpuTTJYeVhXMFgwS3k0UlFXdVl6S1Q4TTJSbWdjVGN2M3kx?=
+ =?utf-8?B?b0d3SHpaWVA3cUFpZ3JDU3owZ243ZzJUeGFTMzZPMGlRMFJrZTEwRlN3RUZz?=
+ =?utf-8?B?UnlHVmFhWmhqaEFkU3JBbjRBVzFiWlZDUEJRK2k2c0ZPUitlMmdMbkxvWXFN?=
+ =?utf-8?B?THc2U25PR1oxZUZRNERUblRLd25LOHpCY2xOQWlJMXM2clB5WERuTCt4RXlp?=
+ =?utf-8?B?WEJDTzFtbmJRNit3VnpGeG5ERXJGaXJWQU92WnlmRTYrSkZrU0s2ODZobkFI?=
+ =?utf-8?B?Q3R2enNERnNkOGdQeTJoWEJ5TkVMd0tVSDgrdVorNFM1cjBZMExlNHVHcWVm?=
+ =?utf-8?B?TjM5dzYrMWdONGMxSXdhSEM2WHU4eTNTc2lyU2dqY21WVzhsSUl5enhSNnR0?=
+ =?utf-8?B?OTRpSTZIbkVkN1k0S0RYN3hXK1FoaHVlZnhuVS8zNFlKbmxaT1Jla2JIREJs?=
+ =?utf-8?B?UVNad3lQYXRnOXc1Nk5NRThRUDlUaG9CSEkzUWZ5V1hocm54ZlVMUk1OaWE5?=
+ =?utf-8?B?alVwN2ZQd3RYd2hiOVpTdllDYWdnR1FsWjZ6WU14ajVYc0l6NUJkVFlOUUJQ?=
+ =?utf-8?B?T0ZxRmsydSs4SzVqblpYekVTYm1BdktpSDNpQXpzZ0ZvNU9FcXVRUnBEZWZB?=
+ =?utf-8?B?UkpFK2d3dXI3TjZscDRDKzFiR2gvMGdvWGU0cFhqaFV4NWRLOUJDS2I4eWZY?=
+ =?utf-8?B?Rkt5UHdLaVI1WC9kb3BEYWVMcE1EMlFBaVROR3o3UWg0cXhpdXRJUUZtT1Jy?=
+ =?utf-8?B?LytkUXg4UlR2RVFsVitvVW15VGlzOWRwckxLaGlHbUZ5YU9rdUxNTjB3UXZI?=
+ =?utf-8?B?SzNWQm5lOGVuUTkwcFl1emF1L2YzbjBRMGJJdXhMUHBOd08xUy9kZz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b738714-943b-4448-0f96-08df253711b6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3638326b-0eb5-41aa-2fd1-08df253712e7
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 12:24:16.1215
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 12:24:18.1096
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: q9br9bgVfmrutm9WXW6T5o52mSQQLj7nwPXwnWTY0T1XkYgxulaSG4UZmQw0S5k0eDt8uVLg9RLoumyfDQd41A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: d09fYcd0Y8pqnCzzw6GV/kkObIjLfrW+kHJfnYdYwmgcLfvH6qL8vq/X9q/1+7p7t4O7S3EKoltdNG9OwxWWuQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5471
 
-The lint would suggest comparison chains to be converted to match on
-`Ordering` instead. The suggestions do not always produce more readable
-code, and also it can produce false-positive when not all ordering has a
-branch.
+As a first step towards adding self-referential data structures in
+pin-init, add parsing support.
 
-The issue is known upstream and thus it has been downgraded from style
-lints to pedantic lints, which makes it allow-by-default since Rust 1.87.0.
-The current kernel MSRV is 1.85.0, and thus the lint still triggers; allow
-it globally to match the updated upstream behaviour.
+Scan all field types for unbounded lifetimes, and if the names that of
+fields, it is inferred as a self-referential field lifetime. No explicit
+annotations are supported yet.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+ rust/pin-init/internal/src/pin_data.rs | 162 ++++++++++++++++++++++++++++++++-
+ rust/pin-init/internal/src/util.rs     |  94 ++++++++++++++++++-
+ 2 files changed, 253 insertions(+), 3 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 0f1b80100b47..2839c6c5045b 100644
---- a/Makefile
-+++ b/Makefile
-@@ -476,6 +476,7 @@ KBUILD_USERLDFLAGS := $(USERLDFLAGS)
- # These flags apply to all Rust code in the tree, including the kernel and
- # host programs.
- #
-+# `-Aclippy::comparison_chain`: the lint has been demoted since 1.87.
- # `-Aclippy::unwrap_or_default`: the lint is buggy [1] and ignores our
- # MSRV. It can trigger depending on the optimization level.
- # [1] https://github.com/rust-lang/rust-clippy/issues/17379
-@@ -494,6 +495,7 @@ export rust_common_flags := --edition=2021 \
- 			    -Wclippy::cast_lossless \
- 			    -Aclippy::collapsible_if \
- 			    -Aclippy::collapsible_match \
-+			    -Aclippy::comparison_chain \
- 			    -Wclippy::ignored_unit_patterns \
- 			    -Aclippy::incompatible_msrv \
- 			    -Wclippy::mut_mut \
+diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
+index 03e893cf5475..cf6142cd656d 100644
+--- a/rust/pin-init/internal/src/pin_data.rs
++++ b/rust/pin-init/internal/src/pin_data.rs
+@@ -1,5 +1,7 @@
+ // SPDX-License-Identifier: Apache-2.0 OR MIT
+ 
++use std::collections::{BTreeMap, BTreeSet};
++
+ use proc_macro2::TokenStream;
+ use quote::{format_ident, quote, ToTokens};
+ use syn::{
+@@ -7,8 +9,10 @@
+     parse_quote, parse_quote_spanned,
+     punctuated::Punctuated,
+     spanned::Spanned,
++    visit::Visit,
+     visit_mut::VisitMut,
+-    Field, Fields, Generics, Index, Item, ItemStruct, Member, PathSegment, Type, TypePath,
++    Field, Fields, Generics, Ident, Index, Item, ItemStruct, Lifetime, Member, PathSegment, Type,
++    TypePath,
+ };
+ 
+ use crate::{
+@@ -48,10 +52,69 @@ fn to_tokens(&self, tokens: &mut TokenStream) {
+     }
+ }
+ 
++/// Description of how a field is borrowed.
++#[derive(Clone, Copy, Default, PartialEq, Eq)]
++enum BorrowedKind {
++    /// Implicitly inferreed.
++    #[default]
++    Shared,
++}
++
++/// Information about a borrowed field.
++#[expect(unused)]
++struct BorrowedInfo {
++    kind: BorrowedKind,
++    /// Field lifetime for this field.
++    lifetime: Lifetime,
++}
++
++#[derive(Clone, Copy, Default, PartialEq, Eq)]
++enum Variance {
++    /// Implicitly inferred variance.
++    #[default]
++    Covariant,
++}
++
++/// Information about field lifetimes captured in a type.
++#[expect(unused)]
++struct Capture {
++    variance: Variance,
++    /// Lifetime to be captured.
++    lifetime: Lifetime,
++}
++
++impl std::borrow::Borrow<Lifetime> for Capture {
++    fn borrow(&self) -> &Lifetime {
++        &self.lifetime
++    }
++}
++
++impl PartialEq for Capture {
++    fn eq(&self, other: &Self) -> bool {
++        self.lifetime == other.lifetime
++    }
++}
++
++impl Eq for Capture {}
++
++impl PartialOrd for Capture {
++    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
++        Some(self.cmp(other))
++    }
++}
++
++impl Ord for Capture {
++    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
++        self.lifetime.cmp(&other.lifetime)
++    }
++}
++
+ struct FieldInfo {
+     field: Field,
+     member: Member,
+     pinned: bool,
++    borrowed: Option<BorrowedInfo>,
++    captures: BTreeSet<Capture>,
+ }
+ 
+ struct StructInfo {
+@@ -59,6 +122,7 @@ struct StructInfo {
+     struct_: ItemStruct,
+     fields: Vec<FieldInfo>,
+     is_tuple_struct: bool,
++    self_referential: bool,
+ }
+ 
+ pub(crate) fn expand_with_cfg(
+@@ -147,7 +211,22 @@ fn expand(
+     replacer.visit_fields_mut(&mut struct_.fields);
+ 
+     let is_tuple_struct = matches!(struct_.fields, Fields::Unnamed(_));
+-    let fields: Vec<FieldInfo> = struct_
++
++    // Collect all bound lifetimes from generics.
++    let bound_lifetimes: BTreeSet<&Lifetime> =
++        struct_.generics.lifetimes().map(|x| &x.lifetime).collect();
++    // Collect all fields.
++    let field_idx_map: BTreeMap<Ident, usize> = struct_
++        .fields
++        .iter()
++        .enumerate()
++        .filter_map(|(index, field)| Some((field.ident.clone()?, index)))
++        .collect();
++
++    // Keep track on fields being implicitly borrowed by being mentioned.
++    let mut implicitly_borrowed = BTreeSet::new();
++
++    let mut fields: Vec<FieldInfo> = struct_
+         .fields
+         .into_iter()
+         .enumerate()
+@@ -166,16 +245,88 @@ fn expand(
+                 }),
+             };
+ 
++            let mut captures = BTreeSet::new();
++            let wildcard_variance = Variance::default();
++
++            // Infer lifetime based on the field referenced.
++            // Bound lifetimes from struct generics take priority.
++            //
++            // For example,
++            // ```
++            // struct Foo<'a> {
++            //     bar: &'a (),
++            //     a: u32,
++            // }
++            // ```
++            // would not be inferred as self-referential because `'a` is already bound by the
++            // struct generics.
++            Lifetime::visitor(|lt| {
++                if bound_lifetimes.contains(lt) || captures.contains(lt) {
++                    return;
++                }
++
++                if !field_idx_map.contains_key(&lt.ident) {
++                    dcx.error(
++                        lt,
++                        format!("`{lt}` is neither a lifetime in generics nor a field name"),
++                    );
++                    return;
++                }
++
++                captures.insert(Capture {
++                    variance: wildcard_variance,
++                    lifetime: lt.clone(),
++                });
++            })
++            .visit_type(&field.ty);
++
++            for capture in captures.iter() {
++                implicitly_borrowed.insert(capture.lifetime.ident.clone());
++            }
++
+             FieldInfo {
+                 field,
+                 member,
+                 pinned,
++                borrowed: None,
++                captures,
+             }
+         })
+         .collect();
+ 
++    for field_name in implicitly_borrowed.into_iter() {
++        let field = &mut fields[field_idx_map[&field_name]];
++
++        // If field is not explicit marked as borrowed, infer a shared borrow.
++        if field.borrowed.is_none() {
++            field.borrowed = Some(BorrowedInfo {
++                kind: BorrowedKind::Shared,
++                // Obtaining from `field` instead of `field_name` for the correct span.
++                lifetime: Lifetime::from_ident(&field.member.as_ident()),
++            });
++        }
++    }
++
++    // Check that field lifetimes do not appear in the bounds.
++    Lifetime::visitor(|lt| {
++        if bound_lifetimes.contains(&lt) {
++            return;
++        }
++
++        if field_idx_map.contains_key(&lt.ident) {
++            // Forbid the use of field lifetimes within bounds.
++            dcx.error(lt, "field lifetimes cannot be used in bounds");
++        }
++
++        // Otherwise this is completely unbound. Let Rust compiler produce that error instead.
++    })
++    .visit_generics(&struct_.generics);
++
+     struct_.fields = Fields::Unit;
+     let info = StructInfo {
++        self_referential: fields
++            .iter()
++            .any(|f| !f.captures.is_empty() || f.borrowed.is_some()),
+         args,
+         struct_,
+         fields,
+@@ -195,6 +346,13 @@ fn expand(
+         }
+     }
+ 
++    if info.self_referential {
++        dcx.error(
++            &info.struct_.ident,
++            "self-referential support is not fully implemented",
++        );
++    }
++
+     let struct_def = generate_struct_def(&info);
+     let unpin_impl = generate_unpin_impl(&info);
+     let drop_impl = generate_drop_impl(&info);
+diff --git a/rust/pin-init/internal/src/util.rs b/rust/pin-init/internal/src/util.rs
+index 3ce498cea754..67ebb333710f 100644
+--- a/rust/pin-init/internal/src/util.rs
++++ b/rust/pin-init/internal/src/util.rs
+@@ -1,8 +1,12 @@
+ // SPDX-License-Identifier: Apache-2.0 OR MIT
+ 
++use std::collections::BTreeSet;
++
+ use proc_macro2::{Ident, TokenStream};
+ use quote::{format_ident, ToTokens};
+-use syn::{Attribute, GenericParam, Generics, Index, Member, Token};
++use syn::{
++    visit::Visit, Attribute, BoundLifetimes, GenericParam, Generics, Index, Lifetime, Member, Token,
++};
+ 
+ use crate::DiagCtxt;
+ 
+@@ -237,3 +241,91 @@ fn to_tokens(&self, tokens: &mut TokenStream) {
+             .to_tokens(tokens);
+     }
+ }
++
++pub(crate) trait LifetimeExt {
++    /// Get a visitor that call the provided function for all unbound lifetimes.
++    fn visitor<'a>(f: impl FnMut(&'a Lifetime)) -> impl Visit<'a>;
++
++    /// Obtain a lifetime from a identifier.
++    ///
++    /// The created lifetime has the same span.
++    fn from_ident(ident: &Ident) -> Self;
++}
++
++impl LifetimeExt for Lifetime {
++    fn visitor<'a>(f: impl FnMut(&'a Lifetime)) -> impl Visit<'a> {
++        LifetimeVisitor {
++            bound: BTreeSet::new(),
++            visit: f,
++        }
++    }
++
++    fn from_ident(ident: &Ident) -> Self {
++        Lifetime {
++            apostrophe: ident.span(),
++            ident: ident.clone(),
++        }
++    }
++}
++
++struct LifetimeVisitor<'a, F> {
++    bound: BTreeSet<&'a Lifetime>,
++    visit: F,
++}
++
++impl<'a, F> LifetimeVisitor<'a, F> {
++    fn with_bound_lifetimes(
++        &mut self,
++        bound: Option<&'a BoundLifetimes>,
++        f: impl FnOnce(&mut Self),
++    ) {
++        // In case the type includes a lifetime binder, e.g. `dyn for<'a> Foo`,
++        // the lifetimes in the binder are bound and should not be visited.
++
++        let mut to_remove = Vec::new();
++        if let Some(bound) = bound {
++            for lt in &bound.lifetimes {
++                let GenericParam::Lifetime(lt) = lt else {
++                    continue;
++                };
++                if !self.bound.contains(&&lt.lifetime) {
++                    self.bound.insert(&lt.lifetime);
++                    to_remove.push(&lt.lifetime);
++                }
++            }
++        }
++
++        f(self);
++
++        for lt in to_remove {
++            self.bound.remove(lt);
++        }
++    }
++}
++
++impl<'a, F: FnMut(&'a Lifetime)> Visit<'a> for LifetimeVisitor<'a, F> {
++    fn visit_lifetime(&mut self, lt: &'a Lifetime) {
++        if lt.ident == "static" {
++            return;
++        }
++
++        if !self.bound.contains(lt) {
++            (self.visit)(lt);
++        }
++    }
++
++    fn visit_trait_bound(&mut self, bound: &'a syn::TraitBound) {
++        self.with_bound_lifetimes(bound.lifetimes.as_ref(), |this| {
++            this.visit_path(&bound.path)
++        });
++    }
++
++    fn visit_type_bare_fn(&mut self, bare_fn: &'a syn::TypeBareFn) {
++        self.with_bound_lifetimes(bare_fn.lifetimes.as_ref(), |this| {
++            for input in bare_fn.inputs.iter() {
++                this.visit_bare_fn_arg(input);
++            }
++            this.visit_return_type(&bare_fn.output);
++        });
++    }
++}
 
 -- 
 2.54.0
