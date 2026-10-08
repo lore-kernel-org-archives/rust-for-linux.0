@@ -1,338 +1,240 @@
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021079.outbound.protection.outlook.com [52.101.95.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD2E483BD8
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Oct 2026 11:48:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791460099; cv=none; b=ZSL+EAK/kt4xVMSdpY14OJLS/tn2BrR03v2gKQAhvXDC8t8AcTKpNjCPzbkfsCa5UwbYOzuD8f336hQRk31ii1pWr7hLiOewLJLLvZOxvb75a9lbznA5bT2c3dOEtpKHpj58MXr+TZJQwTD+WSOPwSbMufzdbEmstlPAXtgV3u0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791460099; c=relaxed/simple;
-	bh=BCQOWLZ218qx8/5w5/9Fla7F1gBnB+2ZxFrDEiEWsII=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gyDkMEzx+XOy3yn2m5uRkb5DOq9E8OH0StIjyNActWxFnDOUwZrStfvNrdplas5VuBrrm7qpp1rbNBkJ9FGMMuB7Lgn/6nKiA0NympGcxH/LAgqkUmxwe5qVoaFz+2XHHuqSYWvHetiBXQEfMVgTgP4SktU9TzqlDsJ3Pbx9f6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=GXbriTRT; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=xPxe5Fvt; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2173749252E;
+	Thu,  8 Oct 2026 12:24:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791462259; cv=fail; b=PmdvtGIkzahCLh2wTGrWHfbhiQ7rG8cQ5cZe8j4zbSFy625QHxKDLD7LVwlJvEorMP+o1G9HKnedPfDwHaOwb2XWbM1YBldpgALwxfioDvoJ1IK0IJLb5IvIOZXn1kFHclPEgfIAfMyyBsLmzksJ4d+mKZrNaxhO15ycFXZI8kw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791462259; c=relaxed/simple;
+	bh=j+QSvrNhOO8K9E4dclxH4fhgLa8PwyoQLLfUb4cpi0U=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=c706MirjhG1zY/GEHWTJa/cHUkGajK49yL07vH1jgtgLN5fTomsfwyjTocPf439FL+w4kjJTP2IYrkPa86/S0GdujUIdPkPiMp0CTxFOXlgt5J8bH1qdxY67f4x1boKthO8bODO7trdiN6hogePwmE4qVx3vIn5NC0da8Ut/vEo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=k1Km7Co0; arc=fail smtp.client-ip=52.101.95.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="GXbriTRT";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="xPxe5Fvt"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 69EBEEC0294
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Oct 2026 07:48:16 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 08 Oct 2026 07:48:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm3; t=1791460096; x=1791546496; bh=9q+nP+Y11nDh4ABB6lC+6
-	jgyxF4hu4cR2s5LXG47gA4=; b=GXbriTRT8ee6HN7L1rIaAybzbRXWUoVK/sxtr
-	bQYNNsUtyAU/B2wpffMxijTfYU0IVlIQnwsPIluteXIjrSQgz0bVlIAoHRunoA82
-	s4Iu8qMp2G8FZaF7xO2a/S9mEFECIQz0OkrJZBZ7xm+iL5G0dVz6El0Ky9VNnTMd
-	jOq4FSx7XUgwnFMFvDu5PutPHdq9Y3dL3Zf5tL1mXPRhmv29hwmL6Vim0UcNBqHq
-	cLYKZyO0FJp4qg4jLVT7TIJDcDqfxIqY4+TCHVz65FriyaO9z5h3C4rEZUwwjnD2
-	va2ExZjQ8Q1eohKUzbL3QkV+vOHbp3NQeVhnlQNXdNhlxAyow==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1791460096; x=1791546496; bh=9q+nP+Y11nDh4ABB6lC+6jgyxF4hu4cR2s5
-	LXG47gA4=; b=xPxe5FvtHsim/ZSfNSdQXTWCez4+uimJFerJSpc+l+6p7tRELnl
-	pOqM895bPLpqf0KkEduhE0NBknVzzv5u6D7+viorJ7slmZNUm9HsxPD5RQMBQidh
-	MqL0YjvcTiumlgaOZ7law2YAY4mleu73ajWyotQuRh42YzycSQwIzBIjH8ptiDfq
-	zrRf2eMeTCedKMXOTH49hBy7QS5aRjz49ETuLgLeNq+aspp6KUsVuW0NQDdBhywS
-	UcUN4xuFSKXX6+1ozGsyFR/DCBx689wWiZXsT4zwcKuEBJ31eYc7BcAt3auRnOWN
-	ag0EGdERVQaLps6cwU8RZmGsFlQrzMuTpmg==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1791460096; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm3:rsa-sha256:h3/Hxsm5y2tFQ9PXTl05iRwjAATfseP5bHC/aCD5N03Buhy
-	TV/6MjLzOmGsok8vXtHIWdJ2l7iA7wfx1EqX6OI27SQBASI0zskmBWNA4fSrjxZP
-	dRhktXp4RbmtmDmUjFQjZE+Bm5IIrWqt+RIyyip0Xfn741E1vROcfOspnXHEIaFp
-	SJtEAsejJwGuc56GByekzZMabWNBt+MGpf+gFJG77QMQviv31iM4iMHFN6ad5Ozy
-	BRlQfyyggPDtSH4qGChpOuj7lRVil/nkZd4LAuPQebyrG/8YHIL38qIq3pa5rA85
-	TJxgDBvZWXvJqHs6D37DKniPL3qWMWbBJvjJ/Eg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=mi-m=1; hc=9;
-	hn=cc,content-transfer-encoding,date,feedback-id,from,
-	message-id,mime-version,subject,to;
-Message-Instance: m=1; h=sha256:eyykGbnCys/M/EpJ1uB8LQROFJ+hlpvYWCMOGfAS22s=:BCQOWLZ218qx8/5w5/9Fla7F1gBnB+2ZxFrDEiEWsII=;
-X-ME-Sender: <xms:_4LHaqYywFl9nuBK7iZuria1juDRSHPgLcZlicsXwR3oN81xftoqTw>
-    <xme:_4LHapw0P8ryp723Jih75sKZcPsY8tjmxG_TuWl3B9wBF8OBq9jL7kCF1rZao3kqH
-    374oNXzbT_f_eNjo5Q57VyUuYtK7AlRlSs_gsh3vseRKU_7rjrawYAE>
-X-ME-Received: <xmr:_4LHapYfufA3PV_K4yj8kOcc4H7SWnoPrC33sQ3CgfdKsbwddIglC3T4IhrA_GCI6Nt-zoL86JKKTtDn4mk>
-X-ME-Proxy-Cause: dmFkZTFT33974HUsTd2KoweDixSBpwTjRdv4nrqYHSQ4XxrdY/f+QldXqoe0rPPVAB6zm8
-    IhP3ePgDQSOqqT10D9S0gfdMzCe2J7EHk2efGna/EOplJ4r8XnEqbDgr95PHy65syaJEzP
-    v9fPuEsv65zvlf2KgNAjUmDu6jEorjYY++MrY7sAHdxp3AAOiyoKzDJXajsqCEJpGdXPMh
-    aQDnPcU6hUIPDYTG3H+PSfb722J2arQlq27qtztzvhIatObC+OO5yxPNdMsERhzOTlXqOx
-    hzM3kfuU8SSUssnUN8/ZZFRLYHejqcPb+DWAFDUd3Kdu34SZw7iz+xmQzWQH63KwcmmPjH
-    f0UamqmF1mkCJcb5hLzpcnHcNnFc/kTYFz9py4YYyDcg/8nrXHWSTmz5I1tWhM1aLmIys/
-    LbP9cKU29DrPV/yEFrxjmQ66lPtcqBXcc+FN7UK06GugShlrUOctoMmn/AVpmcCJ06+rtk
-    E+ToK0FZJ9LDX5BChMqi2MgXIwAhrOJwUG1QZUui703bVs5Wx1/+J2NYWGFGVp+VekXEvc
-    q8Px+mGTr4hvIkR9OVBNyEgqlrnKwt90tfeIMnffr1j2JIG33uemRLO+TZfaPqcc9YoSdf
-    3dXjwEoJksA/OwcxT5MW47V9ZpIK9fAMSJj0dAosLhA5Car76576Hh/wttKQ
-X-ME-Proxy: <xmx:_4LHaqxLsIrY9jVmP5YDPlhqTSt84Azp_Jb3gyLrsUkKAgb9GdbE3A>
-    <xmx:_4LHaiFgYwgYkSubt_DANAnxFkCU6HlymU7c7FiJY0w5hiklhC8Zhw>
-    <xmx:_4LHaiy4gDIrsLGapZLULlJvqfxo-Zke96Zr5JCyA48h-Gh03zbqMg>
-    <xmx:_4LHatP3AKts48ui3G4J6vL5jqHXKJnbzhDaxE9LNWGZlyK4RUR4Gw>
-    <xmx:AIPHalTuzWe29qt9mMD42CvVoM0QMVR2MkwQKF-exme0X05-691VABtQ>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 8 Oct 2026 07:48:12 -0400 (EDT)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: ojeda@kernel.org
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	lossin@kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v3] rust: compiler_builtins: Fix silent trap in prohibited intrinsics
-Date: Thu,  8 Oct 2026 20:47:17 +0900
-Message-ID: <20261008114717.992497-1-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="k1Km7Co0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=M0UQdX/qzTPvK6YlpPAsutmV2EtbN8AFtj45rQzrkQ48mSiQ0SrkY3CrvA7ZbNfxFqU3VJWyXBcRAurEG7ifsm22JBMmXlnvjXRoKlCWTGLE6vmzv3PyBjQKIn9Wv5ota7YPX8lRodFHexYrarlTaJS29okwgyWexh1UIfxkRqYF1ZMO1wENji3fHVQdxrQ6TQrmfYJE1pIdVZJlcwTjkz2dd7sTzrymKLVFl6Yz2gEGj2F8THmjF5YoxFb6GxbBDRbm3AfGRbZA53IEqN0K1Y9SbPGbWtkdh2GvuOSW8jMIRVUyuVdmIxLR7Ofl9jhZeqn0OEGxT2iLXOdQNzou1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=js8ZJoK68spfAMn7s8XsRKRSmpTpQl4TG1DEbEZTCsg=;
+ b=NiZh5iehpq9531z6v0WAJG+joYA51vBRqj4b/fZ9GIbK/NEeX9dIiCuAHEzlh84qs6ZTTqOF6Cm/VcpkHJ3JDJxpfTc1/bBZKEXFqz8AcgWaLrUYtjKXjz3+YNMTKUdcD7JrEgGmrEkib4VCNBvaeP8hTJlTZPWDvaiXUzQCP4yr/cH5ptPG2WnKiSFIR47Q7RQghMjL6glrvDvyWbXb8oCNfwPZXXLiDA301I7QvP9naVjHWz60WaofYAbBjGA4uPZXjmFbxVCZfGHEJLW3LhksmmWGjaLCpTzmShOVS3Rhw2bCfHPJWfWRtnrNB+a0UuwYh6bkmrH7CSBv7zA0JA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=js8ZJoK68spfAMn7s8XsRKRSmpTpQl4TG1DEbEZTCsg=;
+ b=k1Km7Co0b6EttIkn16G4ARJABj7zsQSiDzvZ20pNCc4LQq0vB4DoKHBlLceKJH4G/CWyXJ0kPirwW0uAIr28bM26HieM6icKYEvIuLKPmC+hKHIxuZtIkW2VyX6LnPAj3mUXfAMoYvWk+u7QcXQaJDVojoZf6p4PO9YgISd3fPI=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+ by LO2P265MB5471.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:25e::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Thu, 8 Oct
+ 2026 12:24:11 +0000
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0496.015; Thu, 8 Oct 2026
+ 12:24:11 +0000
+From: Gary Guo <gary@garyguo.net>
+Subject: [PATCH 00/20] rust: pin-init: create self references safely
+Date: Thu, 08 Oct 2026 14:23:47 +0200
+Message-Id: <20261008-dev-selfref-v1-0-6c1eb269fe57@garyguo.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFOLx2oC/yXMyw5AMBCF4VeRWWtSJW6vIhZVU0YE6dBIxLsrl
+ t9Jzn8BoyNkqKMLHHpiWpeAJI7AjHoZUFAfDEqqPJEyFz16wThbh1aowqSF7qwuswrCYwsjnV+
+ taX/z0U1o9jcB9/0AB7zI128AAAA=
+X-Change-ID: 20261006-dev-selfref-27c37abfa849
+To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Gary Guo <gary@garyguo.net>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4598; i=gary@garyguo.net;
+ h=from:subject:message-id; bh=j+QSvrNhOO8K9E4dclxH4fhgLa8PwyoQLLfUb4cpi0U=;
+ b=owJ4nJvAy8zAJca/kLG6/oLwNsbTakkMWce7Iz4e/7PnlXG2leKSA8vPBu+dePriMvfTCSxun
+ mXR7MHhcQUdpSwMYlwMsmKKLB7djGmbGGfLXtYqfwkzh5UJZAgDF6cATCRvMcM/bXXzR02rHmQc
+ XX9L+1T02sPsum7fUhPnf7CxbD8kp9PjzvBX7NvMCU1Xl7z8pV2w+HTGu4sdV/cfePsiNOB0q8v
+ 7LTe1eAAerk2J
+X-Developer-Key: i=gary@garyguo.net; a=openpgp;
+ fpr=E25A77AED6FDB55D05B304A09D8C6F14E3E60652
+X-ClientProxiedBy: LO4P123CA0578.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:276::8) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO2P265MB5471:EE_
+X-MS-Office365-Filtering-Correlation-Id: 79f50807-176c-4022-710d-08df25370ed9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|921020|260925021311599003|6133799003|10067099003|260925021911599003|56012099006|260925022911599003|11062099010|18002099003|7136999003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	0LaIIcF1XazOCvvocBS/KUHN+S6R+DVBWA1wGVmHpmQN4dIig+CANWDrGRBnS/PBD03CAuToxDNr1eEjqJIw22d4mwQFr1TR6uu7+/zhxfmsKhX5VmrDhmGKN4PuIKVV6BZeUmk7T/BnuM2+ZHrNe25ufCcZbAU/+pxPtWrcWGu4H3oh54nj6A6S1S0CNxQMLId3O5vkK+7ktP0j6Mrr+juc+i6wLDgAqKI61rNNhlpRewBD42UvsVUbpyCG/rw8yXvfcFI9xAuuXr1MsNRFZWYm94FC//P81v7HP0hqFlVTHJjHML+vqRA40ynnBn43BXirbyL40ebOWzV3M6kNL2GiIRM548KmO57Y56cTF6vKobsRSKhvrpHvHa6khrVEqq1UybAmrA5/ZXMy9Czs/hu+oFJfgu9mpp6+dWsqupj5R0aPmMFITIR8F8Y22YUfNqzPGgsst0/wfEAnOHKBCNKcXIcSSdc8OImk38NOhwZDmipduLl6DMngOXl6zY1WGAnEPGOzuRFZUj8yqlT+wkcJWbtS4J3FkX9A04kCMXbO+OXOHVzOjnSS9YzDYUlkWYBGxVx0KHvwV+q2ScYcsBSTzIlqqhFhDDsjR/tHC4OKplIywDbIWXQS+oyBInUqPA2VXCiXOnMRkJG95yjoduvLOPjLXZCE/C/eA5Nm07k=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(921020)(260925021311599003)(6133799003)(10067099003)(260925021911599003)(56012099006)(260925022911599003)(11062099010)(18002099003)(7136999003)(3023799007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TnZRbGRDVzNlUXlVR0NZVWdmYkRwMStkVzN3QlNmeW1Tc1hGdXpuT2cwWDZK?=
+ =?utf-8?B?dHdYSHdXOGVMeUVVb2VEcCtqM0M3WEVhaXA3alRkakVXUHpqNk9qTHJybG5N?=
+ =?utf-8?B?MjZwb1BtbzNqVGxrVFZ4YW5iSjVlcTRta3BSQmFSN1dZN0NFdUtPUmpHT1Ji?=
+ =?utf-8?B?blYrbjBLaGEyZUVXL1hWRkcvUXRsWFhkRGtxNS8waEVGTWhuOWc4eEFnSVZF?=
+ =?utf-8?B?N0JpUkg3VExJNE9LQ096amhpYkY1NnhYSGZqV2Qxb2lBSjlhTzg1cjQyZ05a?=
+ =?utf-8?B?cktuOWlnU25xNTFSUldMYUdmTnlGNmQvQnc2MkhNZFh6dXJ2cHYyMk1vN2o3?=
+ =?utf-8?B?UHZmWVB3dWZheFJSYVlBcHAvKzFPZkxCNUZIM3VDR1Jkc1hUOE5vbFhiQklH?=
+ =?utf-8?B?aG1OanRtT3hlUEVhNmtkUmJtaXJyU3JkaWRDV2tJL0NldHMvc0xDZzhML2py?=
+ =?utf-8?B?YkJPSnZRcDRlUUVxZm92Y0Q5em9URElsaUtNcmVsTTBHUUZtTDZtV1VIOWFZ?=
+ =?utf-8?B?U2xzT3d3RC9xNStXRFgxQ0tiTDRUaC9pUXVTWGo4MXlzVlVxVFUrNlBvTHhG?=
+ =?utf-8?B?cGFzS1dSd3o1Q01SZUhwaDZyZU9uWkVUY25GR0lhRjNURU5UM3l3N0ZXQVN5?=
+ =?utf-8?B?V3N0T2wzQ2ZnbUU0cjQ0SnNUY0c3WnU3OVRQcFhJWWZWRDE3QkZrc1pjU0J6?=
+ =?utf-8?B?eFFEaVNTcXo1VnRoSmM5SWI5MkdYVmluZjNuL1JNVUozUmdtcWM4SWI0bXFT?=
+ =?utf-8?B?b0xYN09FUWdqZFBkYnlCd3NVVkVCdTJUUC9YL2o5NGYvODU0SW1NNloxTklV?=
+ =?utf-8?B?UlFhcC9aNWdWSkQxdVBlQ2FZUTVxaCsrdFNzSmpCUnZsUFhWTkUyUzV5S0V2?=
+ =?utf-8?B?aDRwMG9uL1hveDhnSzRmd3VrL3VrcktnMTB0aDM1bGs3N2pkTEZYcHN0S1dy?=
+ =?utf-8?B?UUhqWkg4L3NVR1pEeDJka3ZUa0J1OFQ2UVR2MElYdklPZTZQU3UvVHY0UldG?=
+ =?utf-8?B?bjBid1cxZm1OSi92bUxQTFl1eW0ranBpMjg3bE9NN3dqeVZrRlhab0hjcmgv?=
+ =?utf-8?B?RDY3K2tHNmFhU0NwVEN5dnJHMkFGL29XZEpia2NTUVh5OTJ6RE1ibFRwS0Rt?=
+ =?utf-8?B?V0hudGpFRE1YaWJnODBSMXlSczRrbjJXMnNocUxqRWNCeHp3ZVM2UFhaR0Nk?=
+ =?utf-8?B?Szg3eWFYTDdmVm9nd2ZqenhXSGc1aElqTnRGUXFDLytlODduM0paMGJSUWtt?=
+ =?utf-8?B?cGxIalMwQjIzR2dib3hvNW1QRTJTTTExbkpOZEJUN2RUYVRxb3FtWHZUMXNt?=
+ =?utf-8?B?SXIrRjhnWk84bzVNa01OUGI4WklBcCtXWm9iL01BcnZsbDM3S2JLOGRMbm9v?=
+ =?utf-8?B?dGU2R3p3VUFYNTBvaDZuSUtNM0huZmJydmZ2M2EvdDl0ckZhSmtqUk85UlhQ?=
+ =?utf-8?B?ZVpWRlFWM2swSzFqejFvbk8rQVRRVVM4SmpkRVlQOHNMcTl2c05TeXdXRlcx?=
+ =?utf-8?B?S1B0TDYyUXY2V040TGFtaTAyYjRFS3c3cTk5aEJybFZWRWZEcFU0cDFSK1lm?=
+ =?utf-8?B?ZWZpREZ6NnVFTDFSUUs1cWc4bjhsZllOWjFJMmYwT3p1U2VEaXdtSWpzUkls?=
+ =?utf-8?B?NkdQOVovaGM2c3RSTC9qazZWSlVzWVVpQnk3QUZXWmdtbjE4SUFRSjNGU0Q5?=
+ =?utf-8?B?UUY0MnhXUGhMQUN4MzhrVjl2Y2twWjdoSFJrRDR6UG1RTjE5ampFajB0VFJF?=
+ =?utf-8?B?cXh3eGxCdDZZUk9GQWJ5cDhPcEFPSkZpM2tSREdkcE9wNzdERmRsQTAySkNT?=
+ =?utf-8?B?RVN4ZmtaVEhLcTZrQmFubGlMTzA0WDR5Y3RURm1ObXA5VDNPUlo4VWpKUVdX?=
+ =?utf-8?B?bE5RN00vcm5YM3I3akprWGpRSjVKOTNRVnBEM3RhTndBR1lmNm01aW52UzZB?=
+ =?utf-8?B?UUM0M05NNVl1TDVVcGVWMERIWFk5NWtacVdkSU1iUncvQWY1SmlMU1o1QjBG?=
+ =?utf-8?B?R21rN1dCWDlwdURIdHBFc2Q0Qjc4YkpGMmw3RjF5Q3FSU2E3dHZ0ZkxlT2Nx?=
+ =?utf-8?B?MXc1THNibEEwdWpUQ1JUT2JFeEFoeFZieHEwcDRYb09LUy9PZWNQRHZLSHZk?=
+ =?utf-8?B?aXFab1puUUdxdUltc2xKNXdLUHpNc3JwSTJ5dzFPY0IwL2xxNGsyMEZYRU5x?=
+ =?utf-8?B?Tzd0Wjh5OVNpcXdxaXBGUTlCblFwVTZEY2RyQmRoSlhocjlDMW9KTFBSNkZn?=
+ =?utf-8?B?VUszbFhieEhjWHJMbmFwS3pMdzFTaEF5RVZzUEZLTm1Md25ocElpR1I2aHQ1?=
+ =?utf-8?Q?RwYW64b0fvmjzMTdYJ?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 79f50807-176c-4022-710d-08df25370ed9
+X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 12:24:11.4011
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7yNs9YDmK0pbOWieS8+19TMpFJff1n8qpe8wm2q4gCXInfRFLJlZdqAslk31zO8aVBLhMnZAyeslSodyUzS0gA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5471
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+This is a big series that add support for one field to reference a sibling
+field in a safe and ergnonomic way. Unlike many other crates in the
+userspace Rust ecosystem, no additional allocation is required, thus it
+requires the struct to be pinned, which is exactly what pin-init provides.
 
-When core calls one of the stubs for builtins that should not be used,
-the stub runs a trap instruction that prints no message, and the Oops
-shows a wrong name. For example, when __rust__udivti3() is called on
-x86_64, the Oops shows:
+This is a very powerful feature, and thus can raise concerns about whether
+it is sound. I spent a lot of time studying the rules to make this sound,
+and presented durirng Kangrejos [1].
 
-  Oops: invalid opcode: 0000 [#1] SMP
-  RIP: 0010:__rust__adddf3+0x0/0x10
+The simple use case looks like this:
 
-The stubs call panic!(), but since Rust 1.79, rustc does not allow code
-in a `#![compiler_builtins]` crate to link to functions in other crates,
-and it silently turns such calls that do not return into a trap [1]. In
-addition, all the stubs have the same code, so LLVM merges them into one
-function.
+    #[pin_data]
+    struct MyDriver<'bound> {
+        dev: &'bound Device,
+        #[pin]
+        irq: irq::Registration<'bound, MyIrqHandler<'bound, 'bar>>,
+        bar: Bar<'bound, BAR_SIZE>,
+    }
 
-Move the stubs to the kernel crate, where panic!() works as usual. Add
-the name of each stub to the panic message, so the stubs are no longer
-merged:
+You simply need to mention a lifetime that shares the name with the field.
+There are more advanced use cases which require annotations like
 
-  rust_kernel: panicked at rust/kernel/core_builtins.rs:56:1:
-  __udivti3 called: `u128` should not be used
-  kernel BUG at rust/helpers/bug.c:7!
+    #[uses('bar: invariant)]
 
-compiler_builtins.rs is now empty, but the crate is still needed because
-rustc requires a `#![compiler_builtins]` crate.
+to explicitly declare that the lifetime is used in invariant manner, and
+also
 
-Link: https://github.com/rust-lang/rust/pull/122580 [1]
-Assisted-by: LLM
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+    where
+        exists<'dev>: 'a
+
+to create new existential lifetimes as a way to erase invariant lifetimes
+that would otherwise bubble up to users. More info can be seen in my
+Plumbers slide [2]. Note that the syntax for explicit variance annotation
+has changed following discussions during Plumbers.
+
+The initial plan was to upstream the simple use case only and iron out the
+advanced features subsequently; however it turns out that DRM jobqueue
+would need the variance annotation feature, and Nova `Cmdq` would need to
+use the existential lifetime feature.
+
+During Plumbers the upstream schedule is discussed, and instead it was
+agreed that all the features should be upstreamed at once, but the usage of
+the advanced feature usage limited to the pre-agreed users only to limit
+the blast radius in case the feature needs to be reworked.
+
+Detailed documentation about the pin-init self-reference feature would be
+added the following cycle, when the usage of them become more clear.
+
+The pull request on GitHub [3] has a bunch of test suites, which are not
+synchronized to kernel tree.
+
+Link: https://kangrejos.com/2026/Self%20referential%20pin-init.pdf [1]
+Link: https://lpc.events/event/20/contributions/2498/attachments/2200/4855/presentation.pdf [2]
+Link: https://github.com/Rust-for-Linux/pin-init/pull/181 [3]
+Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
-v3:
-- Rename rust/kernel/intrinsics.rs to rust/kernel/core_builtins.rs (Gary)
-- Reword the doc of compiler_builtins.rs (Gary)
-v2: https://lore.kernel.org/rust-for-linux/20261003124828.119912-1-tomo@flapping.org/
-- Move the stubs to the kernel crate and use panic!() there (Gary)
-v1: https://lore.kernel.org/rust-for-linux/20261002014739.2566289-1-tomo@flapping.org/
+Gary Guo (20):
+      kbuild: rust: allow `clippy::comparison_chain` globally
+      rust: pin-init: internal: pin_data: infer self-referential struct
+      rust: pin-init: internal: pin_data: rewrite fields that borrow others
+      rust: pin-init: internal: pin_data: pin borrowed fields with wrapper
+      rust: pin-init: internal: pin_data: teach drop check about generics that cannot dangle
+      rust: pin-init: internal: pin_data: self-referential drop order checks
+      rust: pin-init: internal: pin_data: check covariance of self-referential fields
+      rust: pin-init: internal: pin_data: implement initialization of borrowed structs
+      rust: pin-init: internal: pin_data: project self-referential fields
+      rust: pin-init: internal: pin_data: add `with_project` method
+      rust: pin-init: internal: pin_data: enable self-referential support
+      rust: pin-init: internal: pin_data: allow lifetime to be shortened per field drop order
+      rust: pin-init: internal: pin_data: parse explicit `#[borrowed]` annotation
+      rust: pin-init: internal: pin_data: support mutable borrows
+      rust: pin-init: internal: pin_data: parse explicit `#[uses]` annotation
+      rust: pin-init: internal: pin_data: make field lifetime invariance imply type invariance
+      rust: pin-init: internal: pin_data: complete invariant borrow support
+      rust: pin-init: internal: pin_data: perform AST lifetime replacement if possible
+      rust: pin-init: internal: pin_data: support shared projection
+      rust: pin-init: internal: pin_data: support existential lifetimes
+
+ Makefile                               |    2 +
+ rust/pin-init/examples/selfref.rs      |   60 ++
+ rust/pin-init/internal/src/init.rs     |   42 +-
+ rust/pin-init/internal/src/pin_data.rs | 1556 +++++++++++++++++++++++++++++++-
+ rust/pin-init/internal/src/util.rs     |  268 +++++-
+ rust/pin-init/src/__internal.rs        |  357 +++++++-
+ rust/pin-init/src/lib.rs               |    1 +
+ 7 files changed, 2238 insertions(+), 48 deletions(-)
 ---
- rust/compiler_builtins.rs                     | 97 +------------------
- .../core_builtins.rs}                         | 26 ++---
- rust/kernel/lib.rs                            |  2 +
- 3 files changed, 13 insertions(+), 112 deletions(-)
- copy rust/{compiler_builtins.rs => kernel/core_builtins.rs} (74%)
+base-commit: 0d9aa4b994379c6e0099737221ed421deb7e1a31
+change-id: 20261006-dev-selfref-27c37abfa849
 
-diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
-index fc6b54636dd5..65476a7c87ae 100644
---- a/rust/compiler_builtins.rs
-+++ b/rust/compiler_builtins.rs
-@@ -3,18 +3,10 @@
- //! Our own `compiler_builtins`.
- //!
- //! Rust provides [`compiler_builtins`] as a port of LLVM's [`compiler-rt`].
--//! Since we do not need the vast majority of them, we avoid the dependency
--//! by providing this file.
--//!
--//! At the moment, some builtins are required that should not be. For instance,
--//! [`core`] has 128-bit integers functionality which we should not be compiling
--//! in. We will work with upstream [`core`] to provide feature flags to disable
--//! the parts we do not need. For the moment, we define them to [`panic!`] at
--//! runtime for simplicity to catch mistakes, instead of performing surgery
--//! on `core.o`.
--//!
--//! In any case, all these symbols are weakened to ensure we do not override
--//! those that may be provided by the rest of the kernel.
-+//! Since we do not need the vast majority of them, we avoid the dependency.
-+//! But `rustc` still needs a `#![compiler_builtins]` crate for every crate it
-+//! builds, so this crate is provided and left empty. The few builtins that
-+//! `core` needs are in the `kernel` crate (`rust/kernel/core_builtins.rs`).
- //!
- //! [`compiler_builtins`]: https://github.com/rust-lang/compiler-builtins
- //! [`compiler-rt`]: https://compiler-rt.llvm.org/
-@@ -24,84 +16,3 @@
- #![compiler_builtins]
- #![no_builtins]
- #![no_std]
--
--macro_rules! define_panicking_intrinsics(
--    ($reason: tt, { $($ident: ident, )* }) => {
--        $(
--            #[doc(hidden)]
--            #[export_name = concat!("__rust", stringify!($ident))]
--            pub extern "C" fn $ident() {
--                panic!($reason);
--            }
--        )*
--    }
--);
--
--define_panicking_intrinsics!("`f32` should not be used", {
--    __addsf3,
--    __eqsf2,
--    __extendsfdf2,
--    __gesf2,
--    __lesf2,
--    __ltsf2,
--    __mulsf3,
--    __nesf2,
--    __truncdfsf2,
--    __unordsf2,
--});
--
--define_panicking_intrinsics!("`f64` should not be used", {
--    __adddf3,
--    __eqdf2,
--    __ledf2,
--    __ltdf2,
--    __muldf3,
--    __unorddf2,
--});
--
--define_panicking_intrinsics!("`i128` should not be used", {
--    __ashrti3,
--    __muloti4,
--    __multi3,
--});
--
--define_panicking_intrinsics!("`u128` should not be used", {
--    __ashlti3,
--    __lshrti3,
--    __udivmodti4,
--    __udivti3,
--    __umodti3,
--});
--
--#[cfg(target_arch = "arm")]
--define_panicking_intrinsics!("`f32` should not be used", {
--    __aeabi_fadd,
--    __aeabi_fmul,
--    __aeabi_fcmpeq,
--    __aeabi_fcmple,
--    __aeabi_fcmplt,
--    __aeabi_fcmpun,
--});
--
--#[cfg(target_arch = "arm")]
--define_panicking_intrinsics!("`f64` should not be used", {
--    __aeabi_dadd,
--    __aeabi_dmul,
--    __aeabi_dcmple,
--    __aeabi_dcmplt,
--    __aeabi_dcmpun,
--});
--
--#[cfg(target_arch = "arm")]
--define_panicking_intrinsics!("`u64` division/modulo should not be used", {
--    __aeabi_uldivmod,
--});
--
--#[cfg(target_arch = "powerpc")]
--define_panicking_intrinsics!("`u64` division/modulo should not be used", {
--    __udivdi3,
--    __umoddi3,
--});
--
--// NOTE: if you are adding a new intrinsic here, you should also add it to
--// `redirect-intrinsics` in `rust/Makefile`.
-diff --git a/rust/compiler_builtins.rs b/rust/kernel/core_builtins.rs
-similarity index 74%
-copy from rust/compiler_builtins.rs
-copy to rust/kernel/core_builtins.rs
-index fc6b54636dd5..b147475156b4 100644
---- a/rust/compiler_builtins.rs
-+++ b/rust/kernel/core_builtins.rs
-@@ -1,10 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--//! Our own `compiler_builtins`.
--//!
--//! Rust provides [`compiler_builtins`] as a port of LLVM's [`compiler-rt`].
--//! Since we do not need the vast majority of them, we avoid the dependency
--//! by providing this file.
-+//! Builtins that `core` needs.
- //!
- //! At the moment, some builtins are required that should not be. For instance,
- //! [`core`] has 128-bit integers functionality which we should not be compiling
-@@ -13,25 +9,17 @@
- //! runtime for simplicity to catch mistakes, instead of performing surgery
- //! on `core.o`.
- //!
--//! In any case, all these symbols are weakened to ensure we do not override
--//! those that may be provided by the rest of the kernel.
--//!
--//! [`compiler_builtins`]: https://github.com/rust-lang/compiler-builtins
--//! [`compiler-rt`]: https://compiler-rt.llvm.org/
--
--#![allow(internal_features)]
--#![feature(compiler_builtins)]
--#![compiler_builtins]
--#![no_builtins]
--#![no_std]
-+//! The stubs are here and not in `compiler_builtins`, because code in a
-+//! `#![compiler_builtins]` crate cannot link to functions in other crates.
-+//! There, `rustc` turns a call to [`panic!`] into a trap that prints no
-+//! message.
- 
- macro_rules! define_panicking_intrinsics(
-     ($reason: tt, { $($ident: ident, )* }) => {
-         $(
--            #[doc(hidden)]
-             #[export_name = concat!("__rust", stringify!($ident))]
--            pub extern "C" fn $ident() {
--                panic!($reason);
-+            extern "C" fn $ident() {
-+                panic!(concat!(stringify!($ident), " called: ", $reason));
-             }
-         )*
-     }
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 7225abc64084..b4fdba2a3eb0 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -57,6 +57,8 @@
- pub mod clk;
- #[cfg(CONFIG_CONFIGFS_FS)]
- pub mod configfs;
-+#[cfg(not(testlib))]
-+mod core_builtins;
- pub mod cpu;
- #[cfg(CONFIG_CPU_FREQ)]
- pub mod cpufreq;
-
-base-commit: 2dee3d3adcadcc57d62ba6608cd02f50b0c10264
--- 
-2.43.0
+Best regards,
+--  
+Gary Guo <gary@garyguo.net>
 
