@@ -1,54 +1,54 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021091.outbound.protection.outlook.com [52.101.95.91])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020109.outbound.protection.outlook.com [52.101.195.109])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFAD49BD68;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DC249B45F;
 	Thu,  8 Oct 2026 12:25:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.91
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.109
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791462305; cv=fail; b=Wloj3Ec8wzdo9pZytEyEaoYTgD5mIJX/q2vK/ioAdqRYi5IVrJBeS5TAOngdnEEoB39o8yHpLNJaa6FGoMYPWOK4SsZDksadMQcDHm6XOG62c1b2KIZXhAvaBEuE/peOOi51aZXyMGDflvl2zYfC1/61EAm4lROBRPurRxcPH5Y=
+	t=1791462308; cv=fail; b=cPDC1+mFZ0Acn8y8KuDsAeEKHzUGIra+bKS2Ao9dHDgsJnMlMFS4hM1LDqOIJGPJySye9e63n6zq7kc1MJ3SSy+71LlFjaQCd8Yu7X5PD/+Hi2GA+ectSdbgUPaN5xynBQTQipl02YW324GfsyxAcCxt8TjtVLnwrF651ZVpaJE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791462305; c=relaxed/simple;
-	bh=uTHCwi+L8zO3k3qY933mrxLfpJzGteG6gj6Ocpe0ZqE=;
+	s=arc-20240116; t=1791462308; c=relaxed/simple;
+	bh=ahbqmNDAsEhenCopuE4KhWrxOmwHZeceMqgWKtmZuHI=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=PAo/dzCpHmMxjkrfNjZiiZAk6iuur11SYgts+MPwhvMdpS9z2dg2NgrUvoCdIkKkcPoFQgGLe63N7QbAh31dSFKpvgQwR5a4tYt8LKdq4dtnnIqMY/pZ6r30cxKSOo0Vs3JwTYkMjpYQt1fzGAWyJgBbHGWdDoMmlbsp9W43o+I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=BkimzqRO; arc=fail smtp.client-ip=52.101.95.91
+	 To:Cc:MIME-Version; b=mdFr9GsyVETKeddeqvAyhdxOV8Xn9ecwxIOqd+pf6xTFazAQV42xXxxavimazNAEWaRj3cQoUtY7YeO362lFSEq8Th9aY0PoN6CwTSlwRZc9gS3OpoLQ/om4rtyoZIfE+f7AgiiWZxZznY6/+aqiKZymT84eK0/q110x9aFV8xY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=HApeCP9U; arc=fail smtp.client-ip=52.101.195.109
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="BkimzqRO"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="HApeCP9U"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=enYs4THCSgCtkVTDIJ2uGERPWm8kF1O8dtW2Ws9GCWnBIIpE3LkUeCbrkQ9WNKss8dA4cCPrenHb0hwZthv4fvFVX3Llr+QqFIMLjFwfurLNKAYkJx94jWsYQ6oLxthm+dNeosUv2wVdH095kevw52TZxbt+r8KIT8XvT1qZDt6ZpG3Tm7Fmc7qdFyJdoEJ92QjVj4Bli3ts2Qsr0YqR/s48Hok1avNoU7gl41jfHmjObr7q9EC/2Wo8ZsjlWBZTLCdnSVx6LScz59u9PerhndpYFvxy0bmXM+Xwpk/qcOzFANnlAaCdp2DSCXnPODjaN9BhyuxDjib2Bot0QuhmBQ==
+ b=y4Cuc4+cd/iS6Q3wCSdE/t95HvXhSs7Bzs+TOKVceyTNmoEl77FGuK2UqibyMDdBrqr6vsno/Jre79bUC22IxwYbftQ93G45ORbcBxuxGPgMg04m7TCwqUEoEK4NWGCWHZUZDTDoJmFVV4HvXD/5LoEwr6ZM7BuQJuLce/RdKB2TY29CpfzLWCLNOAJ8E/ZIDQYUd5XZzy3AH/D1pI7hj/fzFjYEn1oINgybDpMHzyJDZVLf+ilB/of5QeBR/g4x2Y1CduAU9/2OqntqmZNA/oMx7/IWweWovFy87bxiLcVpd8Elfg75kwWkNP5SPLF3Ce18MfzmaBQSt6NnNTyziA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lCI2qGMLblAfPoKVbzo4VpawIkUqkbmcgDJwcEPlh0U=;
- b=K7/zcv3+ZIedC+hvzv67kcOECXGeifoAshtJWFHpPdlAbiOlfkowTcMEurxHIjvop1LFUn+awokpp2ZMyDOG4y6H1oZkmxgN9/uypXATG56vqtG8J7t4pq+Y75sIHVAe6GvKSnMt/P4SZ/i726q5NhpoTKQtF3sNygX24iOa30bLUq5LVLLStu4FstVzjx56IYkmI8A1lvA5ZmMffY3yG6C8pSYrG5I38n3LfyDgpLMksMTDJ/Hi7gHET6X4Ycjp3U/LI2947oO5HYHdrU5AjOnnAtrEkRsxhmgFXsMiIYxS3uDf1VhYKK3TXVlvByfzLQpBfkgj6a4DGto3Gc7rMg==
+ bh=wCNDSOFTigOayc+11QvTEDOItGIB2ui2Ax0qQP9W0lo=;
+ b=cofQ6aU3lQ024Obs+vezowCqxTDlMFBuNB5NWLIXMzp4MT0r/5eTKIO0LERiMSPyrBZB7v6oAIqmFqyKBNfirD6Z6fWiOYxG0hTCT1oMt9/6b4gMajGVTfGVMfRCU5Ys21W0oVgzL4UbxWCQpt0/fb2PQXAtMRxC4GN5D2a/ILEwj/wCngbDNw60Ov6t23suk//9+DwMkx30gEkKJ9l5rG/ejoP9X4om8lm8SVYpxAwkeBxFK7V7EiOcVxnaRHKx256aPEP3nMZ1/7PV4YHlFUB1yb0s0azsfNdEbYl0qw/gQH83YW/o00gpHK3dE1bPSrFUi4/X3l2QpMhiGjrNEg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lCI2qGMLblAfPoKVbzo4VpawIkUqkbmcgDJwcEPlh0U=;
- b=BkimzqROBJq5ltjvugd0AgFOz7jnCsJIobi5lIpUCfjwZjfoqlAb2S5tatAIMWJ6QboKzlr+3//jkdIbqywY+NYj5EoI4jKGgP9gMlDXWIzshokmEgkDD8ZexxOLtXL0ERveMxlqmPUxJ7HZy5dNOBO+loZIYlo2lR4EZD7sJMc=
+ bh=wCNDSOFTigOayc+11QvTEDOItGIB2ui2Ax0qQP9W0lo=;
+ b=HApeCP9UKXG8uGAmIzWYzO3er2qqbru4nQnOaqO/cPzD/C1xwUrj3bMQWc47nE8ThbOZCG6KPt+knUREg2PhHUMXnPJ/5vPvSHqyYN/GNskg76jcXak6s5kGzAhfKBTCMiDnf9a3EDSaEogtVIGlCOKF8lXcixSY1SCsj3jbWAE=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LO2P265MB5471.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:25e::9) with
+ by LO6P265MB7245.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:343::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Thu, 8 Oct
- 2026 12:24:55 +0000
+ 2026 12:24:59 +0000
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0496.015; Thu, 8 Oct 2026
- 12:24:55 +0000
+ 12:24:59 +0000
 From: Gary Guo <gary@garyguo.net>
-Date: Thu, 08 Oct 2026 14:24:02 +0200
-Subject: [PATCH 15/20] rust: pin-init: internal: pin_data: parse explicit
- `#[uses]` annotation
+Date: Thu, 08 Oct 2026 14:24:03 +0200
+Subject: [PATCH 16/20] rust: pin-init: internal: pin_data: make field
+ lifetime invariance imply type invariance
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261008-dev-selfref-v1-15-6c1eb269fe57@garyguo.net>
+Message-Id: <20261008-dev-selfref-v1-16-6c1eb269fe57@garyguo.net>
 References: <20261008-dev-selfref-v1-0-6c1eb269fe57@garyguo.net>
 In-Reply-To: <20261008-dev-selfref-v1-0-6c1eb269fe57@garyguo.net>
 To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -63,12 +63,12 @@ To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Gary Guo <gary@garyguo.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5340; i=gary@garyguo.net;
- h=from:subject:message-id; bh=uTHCwi+L8zO3k3qY933mrxLfpJzGteG6gj6Ocpe0ZqE=;
- b=owJ4nJvAy8zAJca/kLG6/oLwNsbTakkMWce7M/T+nHk67UT0lgu9XpenvWeILv928KVK4EIXU
- ZUV+x3epcZ2lLIwiHExyIopsnh0M6ZtYpwte1mr/CXMHFYmkCEMXJwCMJGfHYwMr5iPev6pXfSu
- 5vK59X8Wz3D6tm+NhqPimeWy4oE/YoMusTIyrLNrb+C9d0BAS+Xv3p9199/tnrM6OJ8t5YNv0//
- oy8tMeQHFxEyZ
+X-Developer-Signature: v=1; a=openpgp-sha256; l=15276; i=gary@garyguo.net;
+ h=from:subject:message-id; bh=ahbqmNDAsEhenCopuE4KhWrxOmwHZeceMqgWKtmZuHI=;
+ b=owJ4nJvAy8zAJca/kLG6/oLwNsbTakkMWce7M7q/VPocM+NjmGViZrd8pgCLtbzObf2ZFx+b7
+ 6o6V/qyyqSjlIVBjItBVkyRxaObMW0T42zZy1rlL2HmsDKBDGHg4hSAiaw8wPC/Ymv+601qkfqi
+ E0U8P3nlnq9/XvB8fkz/0ZCG75aLTu4oZfgrduMsx9xT7l/erP76d/Nf5aigNXc8+aPvTD7w8WP
+ svZWXeADtWUy+
 X-Developer-Key: i=gary@garyguo.net; a=openpgp;
  fpr=E25A77AED6FDB55D05B304A09D8C6F14E3E60652
 X-ClientProxiedBy: LO4P123CA0578.GBRP123.PROD.OUTLOOK.COM
@@ -81,220 +81,426 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO2P265MB5471:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2c563186-37f6-4eb0-a509-08df25372932
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO6P265MB7245:EE_
+X-MS-Office365-Filtering-Correlation-Id: feb6b85b-f99c-4a5b-9b00-08df25372b5b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|921020|10067099003|56012099006|22082099003|18002099003;
+	BCL:0;ARA:13230040|7416014|376014|23010399003|366016|1800799024|921020|56012099006|5023799004|18002099003|10067099003|22082099003|6133799003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	k1d39DrF83Y9ejRGuSi6XQQVTwEMqVibAYC5OCVg51FfIOESsfEUgFtEHzA6PuLxe8mqMgQ3xrDX3mY3Z5r36na5mRdV7zeNSAczMqmZ5FCuLRheeC0GC6KC1l/MjieB96kEBp+0KzoNKHZtwE6DrdTt0i5ehJds/AT0e2AwKSjE7SEbPNt+xcTxKViw7gQY9fVE6lO7qQaeU6MYrwKH7a6aaXvmO/o/b1GqijiG7gpmhYlpIC5o6QHsDNDffEG+HkaMZS9kHfqwaI0w880hvajA25SHEUTrAOM0RkbzE5wJKIbzClQX6DGtCnhCPkhucJAl38NLUW5fHNVPezmbD9UcDL20QUH8p+uuFVXIrXrNG8cw6dZB17m16pitJ9JtcCgzM0zj+wyLWMYb00eLTAQl95yq3dhESHnbXTBusNnbx9iIraVJJ6ERl31kTN41lIvHXbLQzqcEkb1D7E7/nspCywLPkp48eTAkyWwt9A7z5x7LtVqg/r+VIvRMjnC7za3V+oTP95hcMqmHzq+fIpmxVKCJAEAQdkLngQnXzz9wTFgYRgYwuP/M3g2zr2lZngXcgy5Pf0C64NU0aLxmYXgvUItenGaSoYkzuP6NvXvVdH5iKd0qlX4JSiPTVBNLLza4o2u9DB4RKWFxJ5GN76qqNLWYJn0ST7k/MkwZMoXe4cTk3LKA41KkZtbiJjX6WaS/rGkEHk0XBep5F2SgYA==
+	O+wNqgbAN2XeUzZzG0CUdpxXw9Rj1tSRWgJIG5i2u6AS5483etH9K/i2288Rh2nL1dGGIK6zKRHitjlabheUqYFWwHrKH3uEsSefYvettJ0PXsnDk0Y6dJSDsvy1yah8Gukf/kDnTMAM4sRVF1Oopm85aTmeoNsKkNKz+bG6CGo39P6FGVgoAkMjRMP/VV+Tg8tO3SOrx/CXFDS046H4OOvEfkdltatmxmVwOPaQCGACqDC8X0fSO2oxsu8OWIlMd6DCoMyGWGiCFWbFPfzYjxKxZzdnrnjyZzeM7S3gZLdCt8Bsr9nYOtqoPQypMuPYV/3urR57JKek6+WkGOXK7aVr2ULTGcpB5L/OInTjRmCY41Y/CN7idnPek3oN7OXA9wWYJPFWFU92WyNrV7ID1zS+oj4egBCAjCLh6GE1ZbW9RWyQZNhfOcn5dSr0MPXh11HXwmnR5xMnPfi2Dc8pqrBRZFFkv+aGuqFJzCo0Ccx5BEfdF/i+P+AVOSmTRtSPKd9vvc1TjJeDXQHeVT5ymQxk+ixobFMTtMbdUILE16hfxTExpI0+EG6h1F42KmEPIzSltKoJMI82RQMS45ONOPKQzA+QWBOE2cV7vKhyP1onzOQY7Rp2iQcdztWAuy6cOglFBJ1Ms2CkU/TctGyZfQ0qCJuZUJBX9nUPDrzKpzc1Vaifeo0YMJrluJEhPrgLN66DU8jTlH1Lw5Ib0u0h7g==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(921020)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(366016)(1800799024)(921020)(56012099006)(5023799004)(18002099003)(10067099003)(22082099003)(6133799003)(3023799007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NmJhTi9OSFRTTnJsQkpIZ05YcTNWNWh6RkpwL1UveDV2b1ZzanhhS2NDMnZD?=
- =?utf-8?B?T2oyRncxa3gxLzhKa1pNYTZsb3lkNVYrK1JLZ0w5NlVwZzVmZ29odFNZNXBT?=
- =?utf-8?B?WjNEODhSRU03QnNDWWllOHZRYXdwanREY28vOGpVaFh0dEV3czFxbCt1Y1Rw?=
- =?utf-8?B?MlVZUzQ2aTNCZFVQL3M2YmE2aFkzeDA1YUgrd1k3b0pQK0VVNkNzN0s1Nk13?=
- =?utf-8?B?WFlPTGRETGh3U3NMTFoxS3Q0SDFDeGdYTHdweUYwTFAydlpkaXcvdzBhT2F1?=
- =?utf-8?B?aHZjSnQ5TEE4TlRYZHJreEVHUlhuU1lvWkJ1Q2I0bTVJM1R3Nnh1NllWSTZw?=
- =?utf-8?B?NE5uMUNmQWhpb2dBVkIwYjBPdXg3WHFncG1JYW9aWnpNQlJ2MTdlRXlKTDhG?=
- =?utf-8?B?cDJoL3p2VWx0Rk5YSm95cFluY1VoeEY2WENwRlRKbTZ1bTVHSlZpQ1NrSWNE?=
- =?utf-8?B?dVdIdTFFcVQvdDI4Y3NQRDFEczlVNWRCVVRiVVNHMllvUFcrOTJ2YlpxRUpO?=
- =?utf-8?B?KzZRaVNXMlJ4K3ZudjA4VlloT1A5TVRLMmdWejJuTUpwL0VxcGhtWVF0TURZ?=
- =?utf-8?B?NnYvWG9zaGRSQmFpSmNLMmF5cFlxbk9qczI3NXZZYnpXaUhHWHFxaHZ1TXpv?=
- =?utf-8?B?UkxFcVBZNy9GOVBiTUt0cENjVGo0YkN4aFlIdTZzci9xRmxLK0pmK3AzQlNN?=
- =?utf-8?B?N2o2UmVZbGhHK3ZhWkVDWjIwY3pOdmpZa0FWSUlGbUdGN3BkU0ZmWDVIb0dT?=
- =?utf-8?B?dUJCbTB2eFZta25CbExBblZRNXQzcUdQdklFRTlFYWVBR0FiTm5TUzRSSmVn?=
- =?utf-8?B?SytBdzRDRDRYenorYzh3STlENldodU1JS0tCbnJ6bW0zNUk4cm04S1RVbkFF?=
- =?utf-8?B?S0lNMlB2QW9XVnFvdUtSbTJadDVWNDRvL3hUREcrSDBlaEJpMFduV0hCaWFm?=
- =?utf-8?B?WHJLUDNoWVYrdy84ekNGVUk3ZUw1OVFVeUN6dHQyUXl3UXNTSjBMVElxZXZX?=
- =?utf-8?B?VHBLMlgwTXZnVHJWRVVqcmxYNVcrQ1VJdzBKOWh3bjJDUXNSVC9ZTnpXeVVl?=
- =?utf-8?B?QzNkRllDL0pmSGtoWEw2eFUvVTBQLzBsT1BBK09sajU5S1VCdndFY3FWaXlW?=
- =?utf-8?B?UTlQRzhiTGhHSDVVTnVmQ0xib3lQQ1BkRGZXdjlxUVREWWRVQklhZkI4b09X?=
- =?utf-8?B?RVlyc1FRZFloN3Y5S0NEbmhpNTlDNUh6a0NHQmI1Y3VsVVNQekVzTXo2cWdT?=
- =?utf-8?B?NzdoMStGMjR1NEpHNkdtSS90d0tIUG5MU3M5ekdEa3J4Zk1nUndtamdzbnZS?=
- =?utf-8?B?ZFd4TWFONytoWm5uQlhWNGszY0FKVy85azhZRUJDUDhXZHNhZFRNNzBHMklP?=
- =?utf-8?B?RjgybE9QUkcrRHowbEsvcmpBaUFXMFErNWczbjRMV1gvWXhXT2pKRUZrZk5M?=
- =?utf-8?B?eEpzL0s1U2lxWHJ3b2J1UlVGUGRidVFGSVBadFM0dm1xMmRLc1EzamkvZ0ZK?=
- =?utf-8?B?ZDkyRE4wZFdEbXBqMExOd3FaWUN0elBaT1BTamhBQ1RwZWlnUWNnV1ZzLzlC?=
- =?utf-8?B?U2RScG9VblpYdVZia1EvWVZsbzY4QjVCdHpFcVQxMzl1cDNNaW1Ra2RuTmlU?=
- =?utf-8?B?MXFxTTdKNVRlNjRBOVNmZzFFeUVCemM4SFdBUXA3MHJHV01pb091ei9JTWpH?=
- =?utf-8?B?WjNEUXgyMnU5NDA1ckoxOURsMmxjU01GVVUzOFlnM2lCRFppVXZ3ODhwMGxT?=
- =?utf-8?B?Umx2VEJVMU1UR2tiTGFGZGhSTXEyaDdyUlRPenRUU0FUYVMvRExSTTc3c2FN?=
- =?utf-8?B?bFdOOElHNi95bVUzZjA0S2RUVllQL0hpWkZiZ3ZPRjNCa3RKSkc5YUp0blVE?=
- =?utf-8?B?VUk4RGQ5a3hucjd3NGNaUmpsVy9YL2hhaWdmOCtQUUVOUkJXaDdrWjJuNTMy?=
- =?utf-8?B?SHljWnZ5R09HVVgxSS8wMXUyNmFuL25WUWkzOHlHdUlXTStHdVRIYTAwWnNk?=
- =?utf-8?B?eU5lR2R0OUZkVGtDYzlXa2ZDODhldnMrdzVoeVZyR09KNHFUMThyekxqd1BK?=
- =?utf-8?B?R3V2djJZMXlPZ2tVOUQra2psSmltUXNBdGhVSjIrd0pNVmw3T3dmOUhkS01w?=
- =?utf-8?B?WG0rWGhRNnBYRWhtaG9zdDZQYmJTbnZNNWNrNTE4VTQwaXVKclUzOURMa0tz?=
- =?utf-8?B?NzFkcUp6ZGU1b0xRU01RTDNZQ0hDUlRMS21SWjJWbENJOWg5bzhsTmZ3RXpt?=
- =?utf-8?B?bThJbktTYUpURGlSVTZlN0dvRHJqaUNqbGVDMGNYZVkyVzFwVjlMdUQwUGl4?=
- =?utf-8?B?d2k0TnlxTmpaak5IbXNzdjhFM2p3azIrV2pVWTFUeHpRTTB5Z3RxQT09?=
+	=?utf-8?B?SEUrT2FBcFd2MlJ3cFpFSkVVQVA2bytjay85bVBRYjYzOUhQcUZDeVdSTFhx?=
+ =?utf-8?B?WEpIeFRJZHgzNlZaQWwyU3VFYWFmWlkrRDZoL2pRU1NZWlJOc1hVdWdzS2RE?=
+ =?utf-8?B?WVJRTENUZ0UrMHhjTCt0ZFlrWGVmUDgrWXZMVmxSMlUvK0R5Rkl3NmQ1MnRM?=
+ =?utf-8?B?ZlFnMUo4Yi9pV2VzMWM3cWxEVmlNRXM5TFFBVmJlVVB6NE1Ib1JJTnBFU2Jy?=
+ =?utf-8?B?RWpZcUF4QW0zc0w5ZndDUGsyVFE2cnpUblhzYUQ4ZFlYUzJsanFsNUxUR1RJ?=
+ =?utf-8?B?WDBkTmdtVFg3SEl5RnFxOVNTWmNRcSs5MG1nKzFZK014UDY2d0t3bXgwbUw3?=
+ =?utf-8?B?Slkyb2txSlc5RHZEWjZZb0VvTDBpdmlPbkdYdmhoa3Ftb09xdEU3MEVpeGlP?=
+ =?utf-8?B?SldDa3hLd0c4Smcvamtub3hMZHBLcVcxcG8xNWFTWEdJK290cGlwVTlhSzM2?=
+ =?utf-8?B?ci94OXJZZGh3YWw2U2RSV3RxaG9tYXVvM1c5N3JWT1VyUE1MZGFGVm5NTkJD?=
+ =?utf-8?B?REVqb2VNZmc3NGVwdDBBYjdUNjZoQWgwd3dwTzdzSlV5enpJQytub3VYNDM2?=
+ =?utf-8?B?ZGtDUTN2NENheElSYlRXS1ZNZm02MlkyVmNoUXI2Qi9vdCt0TnZSM2JxcHJX?=
+ =?utf-8?B?YitmQVR0OVRneGdnNkRidlVBYS8ybHZEcGsvS3VMd1VWa2lreFc3bjV4L0RP?=
+ =?utf-8?B?VDY5dzVsamJuN0lVUGdQM2cvYkl2QTVNdXR4djNVRFhEb09RS1R6MFBJQmFw?=
+ =?utf-8?B?TlpMNWNkU0JHTCtabDJiMlJCYnVGcVVKM2pvdmRkWng3cnVIU0s4RUxEQStK?=
+ =?utf-8?B?RmVhMHEwRE0wM0NsdnZaU3NyM2NlVE53MllHbXNjRzB3TXJ0UmZ3bW5iMXJB?=
+ =?utf-8?B?V0JqcDZvZ2s1cmQ5V242cFpVdFNYN0VNK1U1ZXZqSVJBWE9tdlhaRUhlbFNK?=
+ =?utf-8?B?Z0tJNWk2SGIxbzN3ZEhFK3ZoTjROS1FnTW9Ld3ZHKzIwdmQ1dmtOTU1aNC8y?=
+ =?utf-8?B?UDVjNGROMHhPSDVEVlZOQm4vdnI4NXpKVnEyL0w0MThsTkYvcXZSd0JGRklI?=
+ =?utf-8?B?QUtRVCtxZTA2Tzk4TWo3THdMWFpQZ0JXUXJzV0MwbjUxWWl6aHh5dDJ3YTUy?=
+ =?utf-8?B?NGgwb0NsZzY3b2owV2pZOENTNm42YkxNaWRuOVJHZ0FJNXJwT3lXYlRnU1FE?=
+ =?utf-8?B?MmV0THpNVE9pL1FZbTVlNTdmNDJXZGJ3WXpLdE1uVTRoTU1PbHg5TkJJOUJh?=
+ =?utf-8?B?R0JvWlVWS3EwQjRqOVhXK3hpejVVUmZlVi9sWlpDT1kwdWFweU9rWDZGVWwv?=
+ =?utf-8?B?L2YwZ0hBcmNkMktZT0wvT28yWC9hekZQWXB5dEIyT2l1V0Nqa1dwdENjSE5s?=
+ =?utf-8?B?aFVtU283T2QvYzk0Z0lBZ0xqVnBidXlaMTFNK0pZNUtFMzJSUzNwTFFJN3dX?=
+ =?utf-8?B?OERsVll2UFNuRVlKaUdFR1hmelQ4SGVCZ3Z0d0VtOTdVVm15cjN0bStXYloy?=
+ =?utf-8?B?cW93bG0zSW5Od0RsQXlIOVBJajlEV2JhV3ZRRVdLeTY0dWg1eXNwaVBUazNn?=
+ =?utf-8?B?c1N0eTB5UFhGTGY3QURtSmlOb2RidDc1K1pUblFoL0hyM0tNMUpGRW51Zmxj?=
+ =?utf-8?B?WFMvWlNoekt4MzVHL1VmVUxVYmFPQTVuYnpmSXNkbnl1dWUyelBqRTJTdnMw?=
+ =?utf-8?B?TWtEOUlSM2xoMjlJMHN2b2N2cGZ4ZURzeGZIRmY1T1lqTis2ci9CV1RvQ1Vp?=
+ =?utf-8?B?bXdYWW1HK0VzL013T2wxbkhSekxidWhBRmRIWTRqUld6aGx3UGRZUlduZ3lz?=
+ =?utf-8?B?Q0lvUGVnYUQ2a1lxR3JlRnlPeXdlY1BWZ0I5aXE1RTV5WDkxRWRUYVVBR3VZ?=
+ =?utf-8?B?ckhEZktDOUx0VFJLYnJPQ2syZlNMSGhYUTRkZkZvR2MvQmFSNWxjbHhEZWVh?=
+ =?utf-8?B?TEMvU3l2TFlLRFFpejBIdzJsZ1ZpNW1MbjBKaDZXeURqK2lWb1ZEZFdRb2dB?=
+ =?utf-8?B?RDJkcUJPaWJCQmU1MDFJaXBaRmNkTTdLK3hGL29wS2dvaWY2MVlZVEtvN09J?=
+ =?utf-8?B?ZDlSWk9yd2YzeHhDUXp3OVJ2U3RQaVVWWDMybGt1UXRMcVlMb1BETkFBR3Fa?=
+ =?utf-8?B?V0c5NEhjL3k3QklidVZRa1dVSy91L0o1MzVFNUZaNnJ5K0RMb0VsNVdmYVo0?=
+ =?utf-8?B?aDVIZDlzckxTcmFJSVhaK040L1AzUW5PSmI1NmZvck5PWDVzckVaY2xzSWRn?=
+ =?utf-8?B?UjMwL3N0S1BtRFh4Tmlqc1VoSU9VN2VBays1a2xaclZGb0h1T0diT2o0eHNj?=
+ =?utf-8?B?ckVJRnc5QWJ6Z2tBUFlxeUtYdG50YXVpMUNleEpsWVFDNXl2QXp2UT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c563186-37f6-4eb0-a509-08df25372932
+X-MS-Exchange-CrossTenant-Network-Message-Id: feb6b85b-f99c-4a5b-9b00-08df25372b5b
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 12:24:55.5422
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 12:24:59.1410
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TxB42x0lqSIvCXQ7R0YLh5iTaln99hkaCxVhipgkGV0v3cu5MM7CBVuuaOIrpEQLWiXTZ7t0kUaghbYBnQUACg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5471
+X-MS-Exchange-CrossTenant-UserPrincipalName: nzCwEeytX+xD5yc9YKzqtQPNp2d+xiUxbISoru0L9pCkmb/9/mXPOOwnttHnVXftud3sw1sqhFOx90qr6njFjw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB7245
 
-Add support for explicit self-referential annotations.
+If invariant field captures a field lifetime, then we also need to make
+sure that field is also invariant. Imagine this struct:
 
-`#[uses]` attribute is used to mark what other field lifetimes are
-captured by this field, and also the variance of the type in respect to the
-field lifetimes. For example,
+    #[pin_data]
+    struct SelfRef<'a> {
+        #[uses('outer: invariant)]
+        part: Mutex<&'outer str>,
+        outer: &'a String,
+    }
 
-    #[uses('a: covariant, 'b: invariant)]
+    fn new<'a>(str: &'a String) -> impl PinInit<SelfRef<'a>, Infallible> {
+        pin_init!(SelfRef {
+            outer: str,
+            part: Mutex::new(*outer),
+        })
+    }
 
-indicates that the field captures the field lifetime `'a` covariantly, and
-field lifetime `'b` invariantly. Many types are covariant, so this is the
-default variance if the variance is omitted (e.g. `#[uses('a)]`),
-consistent with the automatically inferred borrow.
+If we make this struct covariant over `'a`, then we can have the following
+case:
+
+    let mut long = "hello world".to_owned();
+    let s = Box::pin_init(new(&long)).unwrap();
+    {
+        let mut short = "hello world".to_owned();
+        // If `s` is covariant, this would be okay, because we shorten from
+        // `SelfRef<'long>` to `SelfRef<'short>`.
+        s.with_project_ref(|p| {
+            *p.part.lock().unwrap() = &short;
+        });
+    }
+
+Conceptually, a field's type must outlive the field's lifetime, so if we
+have a covariant `'a`, we can have a shortened `SelfRef<'short_a>` where
+`'outer` outlives `'short_a`. But the wellformedness requirement of the
+field will imply `'short_a: 'outer`, which enables the `&'short_a` to
+`'outer` coercion, effectively making the field lifetime `'f` behave
+covariantly, too, breaking the requirement that it is invariant.
+
+Therefore, compute an invariant closure and use an additional generics on
+`Borrowed` to allow capturing things invariantly. Note that we do capture
+all parameters explicitly rather than capture the field type invariantly,
+because if type aliases are involved, we might be syntactically determining
+that the field uses a type parameter but actually not, causing the
+invariance enforcement to be missed.
+
+Outlive bounds between field lifetimes can also cause the same issue (an
+invariant field lifetime cannot be a lower bound of a covariant field
+lifetime). Since we cannot deduce whether any implied bounds from type
+wellformness would create such outlive relationships, prevent such bounds
+from happening by using a split outlive chain.
+
+Note that this is not a soundness hole in itself in absence of
+`with_project_ref`, because with single field accessors only, the field
+lifetimes of the fields are not connected; in methods like `with_project`
+lifetimes are invariant so shortening cannot happen. However, such method
+is likely desirable, so include the variance rule before it has been
+heavily relied upon.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/pin-init/internal/src/pin_data.rs | 99 ++++++++++++++++++++++++++++++++--
- 1 file changed, 95 insertions(+), 4 deletions(-)
+ rust/pin-init/internal/src/pin_data.rs | 175 ++++++++++++++++++++++++++++++++-
+ rust/pin-init/src/__internal.rs        |   8 +-
+ 2 files changed, 174 insertions(+), 9 deletions(-)
 
 diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
-index 54f0efef3226..d42d86ffd853 100644
+index d42d86ffd853..b35d32ff2bb2 100644
 --- a/rust/pin-init/internal/src/pin_data.rs
 +++ b/rust/pin-init/internal/src/pin_data.rs
-@@ -21,6 +21,9 @@
- };
- 
- pub(crate) mod kw {
-+    syn::custom_keyword!(covariant);
-+    syn::custom_keyword!(invariant);
-+    syn::custom_keyword!(contravariant);
-     syn::custom_keyword!(PinnedDrop);
+@@ -92,6 +92,8 @@ struct BorrowedInfo {
+     kind: BorrowedKind,
+     /// Field lifetime for this field.
+     lifetime: Lifetime,
++    // Variance of the field lifetime, as captured by other fields.
++    lt_variance: Variance,
  }
- 
-@@ -93,9 +96,37 @@ struct BorrowedInfo {
  
  #[derive(Clone, Copy, Default, PartialEq, Eq)]
- enum Variance {
--    /// Implicitly inferred variance.
-+    /// `covariant` annotation, or implicitly inferred.
-     #[default]
-     Covariant,
-+    // `invariant` annotation.
-+    Invariant,
-+}
-+
-+impl Parse for Variance {
-+    fn parse(input: ParseStream<'_>) -> syn::Result<Self> {
-+        let lh = input.lookahead1();
-+        Ok(if lh.peek(kw::covariant) {
-+            let _: kw::covariant = input.parse()?;
-+            Variance::Covariant
-+        } else if lh.peek(kw::invariant) {
-+            let _: kw::invariant = input.parse()?;
-+            Variance::Invariant
-+        } else if lh.peek(kw::contravariant) {
-+            // Field lifetimes are inherently covariant, so combining with contravariance,
-+            // we would constrain it to be invariant.
-+            let token: kw::contravariant = input.parse()?;
-+            DiagCtxt::current(|dcx| {
-+                dcx.error(
-+                    token,
-+                    "field lifetimes cannot be `contravariant`; use `invariant` instead",
-+                )
-+            });
-+            Variance::Invariant
-+        } else {
-+            Err(lh.error())?
-+        })
-+    }
+@@ -238,8 +240,11 @@ struct StructInfo {
+     field_idx_map: BTreeMap<Ident, usize>,
+     is_tuple_struct: bool,
+     self_referential: bool,
+-    /// Field lifetime generics with outlive chain.
++    /// Field lifetime genercis with outlive chain.
+     field_lts_outlive_chain: Generics,
++    /// Field lifetime genercis with outlive chain, with one chain for covariant fields and one
++    /// chain for invariant fields.
++    field_lts_split_variance_outlive_chain: Generics,
  }
  
- /// Information about field lifetimes captured in a type.
-@@ -131,7 +162,65 @@ fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+ pub(crate) fn expand_with_cfg(
+@@ -431,7 +436,7 @@ fn expand(
+                     return None;
+                 }
+ 
+-                Some(BorrowedInfo { kind, lifetime })
++                Some(BorrowedInfo { kind, lifetime, lt_variance: Variance::default() })
+             });
+ 
+             FieldInfo {
+@@ -455,6 +460,7 @@ fn expand(
+                 kind: BorrowedKind::Shared,
+                 // Obtaining from `field` instead of `field_name` for the correct span.
+                 lifetime: Lifetime::from_ident(&field.member.as_ident()),
++                lt_variance: Variance::Covariant,
+             });
+         }
+     }
+@@ -474,8 +480,63 @@ fn expand(
+     })
+     .visit_generics(&struct_.generics);
+ 
++    // Obtain an closure of invariant fields.
++    //
++    // If a field lifetime is used invariantly, we also need to make sure that
++    // for each generic parameter `T: 'field` bound, `T` is also captured
++    // invariantly (same is true for lifetime parameters). For example, say we
++    // have a struct `SelfRef<'a>` and a field `f: &'a ()`. For wellformedness,
++    // we would have `'a: 'f`. If we have a covariant `'a`, we can observe a
++    // shortened `SelfRef<'short_a>` where `'f` outlives `'short_a`, conflicting
++    // with the wellformedness bound `'short_a: 'f`. This will enable the
++    // `&'short_a ()` to `&'f ()` coercion, which effectively shortens `'f` too,
++    // so we shortened the field lifetime despite it being invariant.
++    let mut invariant_field_idx = BTreeSet::new();
++    let mut worklist = Vec::new();
++    for field in fields.iter() {
++        for borrow in field.captures.iter() {
++            if let Variance::Invariant = borrow.variance {
++                let Some(borrow_idx) = fields
++                    .iter()
++                    .position(|f| f.member.as_ident() == borrow.lifetime.ident)
++                else {
++                    continue;
++                };
++                if invariant_field_idx.insert(borrow_idx) {
++                    worklist.push(&fields[borrow_idx]);
++                }
++            }
++        }
++    }
++    while let Some(field) = worklist.pop() {
++        for borrow in field.captures.iter() {
++            let Some(borrow_idx) = fields
++                .iter()
++                .position(|f| f.member.as_ident() == borrow.lifetime.ident)
++            else {
++                continue;
++            };
++            let borrow = &fields[borrow_idx];
++            if invariant_field_idx.insert(borrow_idx) {
++                worklist.push(borrow);
++            }
++        }
++    }
++    for idx in invariant_field_idx {
++        fields[idx].borrowed.as_mut().unwrap().lt_variance = Variance::Invariant;
++    }
++
+     // Create a lifetime parameter for each field.
+     let borrowed_fields: Vec<_> = fields.iter().filter_map(|f| f.borrowed.as_ref()).collect();
++    let borrowed_covariant_fields: Vec<_> = borrowed_fields
++        .iter()
++        .filter(|f| f.lt_variance == Variance::Covariant)
++        .collect();
++    let borrowed_invariant_fields: Vec<_> = borrowed_fields
++        .iter()
++        .filter(|f| f.lt_variance == Variance::Invariant)
++        .collect();
++
+     let mut field_lts_outlive_chain = Generics {
+         lt_token: None,
+         params: borrowed_fields
+@@ -520,6 +581,96 @@ fn expand(
+         }
+     }
+ 
++    let mut field_lts_split_variance_outlive_chain = Generics {
++        lt_token: Some(Default::default()),
++        params: borrowed_covariant_fields
++            .iter()
++            .zip(std::iter::once(None).chain(borrowed_covariant_fields.iter().map(Some)))
++            .map(|(borrowed, prev)| {
++                GenericParam::Lifetime(LifetimeParam {
++                    attrs: Vec::new(),
++                    lifetime: borrowed.lifetime.clone(),
++                    colon_token: None,
++                    bounds: prev
++                        .iter()
++                        .map(|borrowed| borrowed.lifetime.clone())
++                        .collect(),
++                })
++            })
++            .chain(
++                borrowed_invariant_fields
++                    .iter()
++                    .zip(std::iter::once(None).chain(borrowed_invariant_fields.iter().map(Some)))
++                    .map(|(borrowed, prev)| {
++                        GenericParam::Lifetime(LifetimeParam {
++                            attrs: Vec::new(),
++                            lifetime: borrowed.lifetime.clone(),
++                            colon_token: None,
++                            bounds: prev
++                                .iter()
++                                .map(|borrowed| borrowed.lifetime.clone())
++                                .collect(),
++                        })
++                    }),
++            )
++            .collect(),
++        gt_token: Some(Default::default()),
++        where_clause: None,
++    };
++
++    // For `field_lts_split_variance_outlive_chain`, we may need to insert some additional bounds
++    // for types to be WF.
++    for field in fields.iter() {
++        let Some(borrowed) = &field.borrowed else {
++            continue;
++        };
++        let field_lt = &borrowed.lifetime;
++
++        // For each borrowed field that references a generic, we also need to insert their outlive
++        // bounds so they can refer to generics.
++        for lt in field.generic_lt_captures.iter() {
++            field_lts_split_variance_outlive_chain
++                .make_where_clause()
++                .predicates
++                .push(parse_quote!(#lt: #field_lt));
++        }
++
++        for ty in field.generic_ty_captures.iter() {
++            field_lts_split_variance_outlive_chain
++                .make_where_clause()
++                .predicates
++                .push(parse_quote!(#ty: #field_lt));
++        }
++
++        // If a field is invariant, then the invariance closure rule will make all borrowed fields
++        // to be invariant, so they're already captured in `field_lts_split_variance_outlive_chain`.
++        if borrowed.lt_variance != Variance::Covariant {
++            continue;
++        }
++
++        for capture in field.captures.iter() {
++            let Some(&idx) = field_idx_map.get(&capture.lifetime.ident) else {
++                continue;
++            };
++
++            let prev_borrowed = fields[idx].borrowed.as_ref().unwrap();
++
++            // If borrowed field is covariant, it's already captured in
++            // `field_lts_split_variance_outlive_chain`.
++            if prev_borrowed.lt_variance == Variance::Invariant {
++                // Covariant field borrowing an invariant field. This is not captured in the chain
++                // so we need to add additional bound. This bound is okay, as the invariant lifetime
++                // is the longer living one, so arbitrary shortening of the covariant one does not
++                // violate their relation.
++                let param = field_lts_split_variance_outlive_chain
++                    .lifetimes_mut()
++                    .find(|l| l.lifetime == prev_borrowed.lifetime)
++                    .unwrap();
++                param.bounds.push(borrowed.lifetime.clone());
++            }
++        }
++    }
++
+     struct_.fields = Fields::Unit;
+     let info = StructInfo {
+         self_referential: fields
+@@ -531,6 +682,7 @@ fn expand(
+         field_idx_map,
+         is_tuple_struct,
+         field_lts_outlive_chain,
++        field_lts_split_variance_outlive_chain,
+     };
+ 
+     for field in &info.fields {
+@@ -639,8 +791,18 @@ fn generate_struct_def(info: &StructInfo) -> TokenStream {
+             ty = quote!(::pin_init::__internal::Erase<#ty>);
+         };
+ 
+-        if field.borrowed.is_some() {
+-            ty = quote!(::pin_init::__internal::Borrowed<#ty>);
++        if let Some(borrowed) = &field.borrowed {
++            let mut invariance_capture = Vec::new();
++            if borrowed.lt_variance == Variance::Invariant {
++                for lt in &field.generic_lt_captures {
++                    invariance_capture.push(quote!(&#lt ()));
++                }
++
++                for ty in &field.generic_ty_captures {
++                    invariance_capture.push(quote!(::core::marker::PhantomData<#ty>));
++                }
++            }
++            ty = quote!(::pin_init::__internal::Borrowed<#ty, (#(#invariance_capture,)*)>);
+         }
+ 
+         quote! {
+@@ -836,7 +998,8 @@ fn generate_drop_order_check(dcx: &mut DiagCtxt, info: &StructInfo) -> TokenStre
+     // with known lifetime bounds as bounds on the function, and asks Rust to *prove* that the types
+     // are wellformed, given the bounds that we understand.
+ 
+-    let generics_with_field_lt = CombinedGenerics(vec![&info.field_lts_outlive_chain, generics]);
++    let generics_with_field_lt =
++        CombinedGenerics(vec![&info.field_lts_split_variance_outlive_chain, generics]);
+ 
+     let (_, ty_generics, _) = generics.split_for_impl();
+     let (impl_generics_with_field_lt, _, whr_with_field_lt) =
+@@ -1399,6 +1562,7 @@ fn generate_the_pin_data(info: &StructInfo) -> TokenStream {
+                 Some(BorrowedInfo {
+                     kind: BorrowedKind::Shared,
+                     lifetime,
++                    ..
+                 }) => (
+                     // For borrowed fields, create a `SelfRefSlot`, which after initialization
+                     // turns into a `SelfRefDropGuard` instead of `DropGuard`.
+@@ -1418,6 +1582,7 @@ fn generate_the_pin_data(info: &StructInfo) -> TokenStream {
+                 Some(BorrowedInfo {
+                     kind: BorrowedKind::Mutable,
+                     lifetime,
++                    ..
+                 }) => (
+                     // For borrowed fields, create a `SelfRefSlot`, which after initialization
+                     // turns into a `SelfRefDropGuard` instead of `DropGuard`.
+diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
+index ada07197acd9..f548f59b9b74 100644
+--- a/rust/pin-init/src/__internal.rs
++++ b/rust/pin-init/src/__internal.rs
+@@ -676,7 +676,7 @@ unsafe impl<F: EraseLt> Sync for Erase<F>
+ /// This should be switched to `UnsafePinned` when it is stable.
+ /// NOTE: This type needs to be covariant; Rust's 1.89+'s `UnsafePinned` is invariant.
+ #[repr(transparent)]
+-pub struct Borrowed<T: ?Sized>(PhantomPinned, T);
++pub struct Borrowed<T: ?Sized, P>(PhantomInvariant<P>, PhantomPinned, T);
+ 
+ // Lifetimes not needed by drop glue are considered by Rust's drop check to be considered
+ // `#[may_dangle]`. In case for a self-referential struct, we may have fields which need lifetime of
+@@ -702,17 +702,17 @@ unsafe impl<F: EraseLt> Sync for Erase<F>
+ // outlive the struct. And this can be done by a simple `Drop` impl that does nothing. Without a
+ // dropck eye patch, presence of `Drop` impl, albeit empty, tells the drop check that the strict
+ // outlive relation is needed.
+-impl<T: ?Sized> Drop for Borrowed<T> {
++impl<T: ?Sized, P> Drop for Borrowed<T, P> {
+     #[inline(always)]
+     fn drop(&mut self) {}
+ }
+ 
+-impl<T: ?Sized> Deref for Borrowed<T> {
++impl<T: ?Sized, P> Deref for Borrowed<T, P> {
+     type Target = T;
+ 
+     #[inline(always)]
+     fn deref(&self) -> &T {
+-        &self.1
++        &self.2
      }
  }
  
--#[expect(unused)]
-+impl Parse for Capture {
-+    fn parse(input: ParseStream<'_>) -> syn::Result<Self> {
-+        let lifetime = input.parse()?;
-+        let variance = if input.peek(Token![:]) {
-+            let _: Token![:] = input.parse()?;
-+            input.parse()?
-+        } else {
-+            // If variance is not explicitly specified, infer covariance by default.
-+            Variance::Covariant
-+        };
-+        Ok(Capture { variance, lifetime })
-+    }
-+}
-+
-+impl Capture {
-+    fn parse_list(
-+        dcx: &mut DiagCtxt,
-+        attrs: &mut Vec<Attribute>,
-+        bound_lifetimes: &BTreeSet<&Lifetime>,
-+        field_idx_map: &BTreeMap<Ident, usize>,
-+    ) -> Option<(BTreeSet<Capture>, Variance)> {
-+        let attr = attrs.extract_single_attr(dcx, "uses")?;
-+        let punctuated: Punctuated<Capture, Token![,]> = attr
-+            .parse_args_with(Punctuated::parse_terminated)
-+            .map_err(ErrorGuaranteed::from)
-+            .ok()?;
-+
-+        // Check for misuses inside attribute.
-+        let mut set = BTreeSet::new();
-+        for borrow in punctuated {
-+            let lt = &borrow.lifetime;
-+            if set.contains(&borrow) {
-+                dcx.error(lt, format!("lifetime `{lt}` is mentioned more than once"));
-+                continue;
-+            }
-+
-+            if bound_lifetimes.contains(lt) {
-+                dcx.error(
-+                    lt,
-+                    format!("`{lt}` is a struct generics and cannot be used in `#[uses]`"),
-+                );
-+                continue;
-+            }
-+
-+            if lt.ident != "_" && !field_idx_map.contains_key(&lt.ident) {
-+                dcx.error(lt, format!("`{lt}` is not a field name"));
-+                continue;
-+            }
-+
-+            set.insert(borrow);
-+        }
-+
-+        let wildcard = Lifetime::new("'_", Span::mixed_site());
-+        let wildcard_variance = set.take(&wildcard).map(|b| b.variance).unwrap_or_default();
-+        Some((set, wildcard_variance))
-+    }
-+}
-+
-+#[allow(unused)]
- struct FieldInfo {
-     field: Field,
-     member: Member,
-@@ -275,8 +364,10 @@ fn expand(
-                 }),
-             };
- 
--            let mut captures = BTreeSet::new();
--            let wildcard_variance = Variance::default();
-+            // Parse `#[uses]` attribute.
-+            let (mut captures, wildcard_variance) =
-+                Capture::parse_list(dcx, &mut field.attrs, &bound_lifetimes, &field_idx_map)
-+                    .unwrap_or_default();
- 
-             let mut generic_lt_captures = BTreeSet::new();
-             let mut generic_ty_captures = BTreeSet::new();
 
 -- 
 2.54.0
