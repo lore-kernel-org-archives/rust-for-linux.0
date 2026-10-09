@@ -1,242 +1,218 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840764F5E0A;
-	Fri,  9 Oct 2026 18:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32893370ADF;
+	Fri,  9 Oct 2026 19:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791571929; cv=none; b=pisHiONOTopULPzsJejqTyIb59JbxfLUwBn6q0REIf6U3SiszOoGRdA1v3HIKOhrr4g6ZH0IuZBwr1JxCisKYQczwEYVm68U29vOuxA7GSDWugMmgBYW9t0eyxpZfQ82QlkEX2fzoZdRJjB0j3uP16n7Dn2oYbPpHMvTFQ7Unrs=
+	t=1791573263; cv=none; b=euyecMQJ+GEg+WAFqC7HOQ46N8uPDbr9ql6ZGm0uhHWEogGO0upI7s973a09I8/12r8V6gobN2psR/+qFjhzeucyeP6bmzbuYC1zdNeUd4q/HOMuEXIeQDX/A+5Ea6rg33TiNuPYsVC+SBU5LtT+B1Mg3shOCVtZeZ7Hy5n8Y/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791571929; c=relaxed/simple;
-	bh=CGsSouXbLNX0cRECIXyTMJVcjhnhpLk543IpFYJZEVY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FLvokrjbZuutv8dNON63mIgk+b9D51NkXktKQ3LnS1WJsgdKgHvYj5cexEoJJ1HJZ+oQy8iNBE4EtLr0nly2/ffVpC5R6gZMCz//b8jn/4MT1Q2y1YfnutN5RQ7pt07etFQnK8yh58lV0U01WdLG3Jdu77of+LYu54OK84ugRdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pw9HgPss; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791573263; c=relaxed/simple;
+	bh=PaJ+bjf5cXPQt8v2NED6VlP2B10dezo8OtC8JhgSl8g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WGPiGuS+nk6Bblze+poLnSgi/zSvBLpvG6uC3UiEVfdmPfeJBBr9FS1HZ1G6P+NMM2CJNCn3BDfh2Y4dmJHJtdNDmFE7ES+7z+eWyyGERhr+OnXBT+EQJabXKmLNfFbmxphKIWU+2NqSDofFObuAkAvYQiUiz84RMWk+14u0N78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ummxtshc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pw9HgPss"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793671F000FF;
-	Fri,  9 Oct 2026 18:52:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ummxtshc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB661F000FF;
+	Fri,  9 Oct 2026 19:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791571928;
-	bh=LEA3p4YPwgQaoGr6H4RcIZE6g5/a+camPePCa7aAZ78=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Pw9HgPsspP48wV7BVNpVmRR56d68n8WQ55lK/S3rR6goaqLV08BeVhhqBhYE7n6tp
-	 appP3/ALXjR1KG/ULAgWLLR9NQenFm5b6Ze8sMy/GugKvMmNj/2fOX/OljDr9B2QVB
-	 Jplk8VI14fISzg5nq3mZTl2lXL1zaJ7Qq1ZeIbWtSOvILMWyzXqB+0BUVduOXt3EGQ
-	 gR3BQDw0CQQYTxyEbLGZKB1TYLuHfBuNrQoFDky6c85jfpvVKawJ3q0NXmSk7a/BU9
-	 y3b0IqpCIaWgbKiMxY5B3AX9ZeicuWsyliUBseviZNO+PWrf45Z2HGAHbPeozTiIwd
-	 jbntiXNVq9K3Q==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id A995AF40066;
-	Fri,  9 Oct 2026 14:52:06 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Fri, 09 Oct 2026 14:52:06 -0400
-X-ME-Sender: <xms:1jfJakpum0cC20jCa4W-Dz0Za_nVbceS9IiEJACnTfUO0Bq2OUbTjQ>
-    <xme:1jfJaiLJc7JcAMI_MC6AMq1_kTJ69iQJA6nO3t3MkPJ89POuW7et0SuSbcYWbgWmx
-    1hXY4HsNfEwqaSffGGW2aEXK4WR1yHofP6F09laCsD0pazpUFfd2B4>
-X-ME-Received: <xmr:1jfJavRF_XIUSd7Sjl-eV3cBxb2Qm0rsqS8-6MS0wLL5FSyHNO4o21aDJ6RigaYZkGd2cOzxNYj9Wx0IBdZQFhhjzgn-etzH>
-X-ME-Proxy-Cause: dmFkZTFpqUGWu6p6hPoGOpiRsskvvc3k8f41nkcj5ENIrSq8Ynb4Aw0OOXTw3K1Iw8tu4C
-    7lx4kE/mx9ryewefxm5meTOcI98ZqN43LAKkq+qxYAvVZMNcNyhP5r0R5eaSOYgyLEa3jS
-    7UZPBh/0wfBQAru08UCKTVkcE+51cRBwMXzpHAeDnwYX2KjWSkta1Bz3pXWehgtTAgr7Oa
-    g5fQNzdabEK1H9Es7QQqDLZxPGqQvuo2iI25vtxadjnPWMJxyaBDPOOz8a6rj0pRDgWdxR
-    wNIfOW9tknd7//uzN6loAaWKgztgK4tvWdkoXNIbJhIgxvVj+gKAgDpBhWwkwMQQTR3SST
-    qMvq2FmDdD3ku0453iDzQi17qDJuIB7KGcrjQ5IxtHZTSyaGyFbFQW9pNIPGN0GW5pWRno
-    hqWWzNBtg08SN+D78yHRoxIGS2iBLr1otHsR3pw/ZDzz00AkxuNWsDTfhLSIubq6VCJdHC
-    aSSo2KZBlpgtxDCMDMQ68XVKyJnwobxl4BEhccOPDOoYYiXL/ZEH/jD9TPbUADZT2e7RfI
-    awnevonEjrhYf+WSExUKeElu+AlU3jU2Fb6lPfHtsVL3UVL6GblRB7As3/zIG6WLe56CFS
-    S1VqA7aR8+9JPHwY3B9mSO4Fjm9gJOYlilPNHoffVNxt+JkXSVQpxQs/JJnw
-X-ME-Proxy: <xmx:1jfJap8KUefmaYMMluy0Ec75oT4hLqHaqed__w5HSh0vOBMUllDGRg>
-    <xmx:1jfJau9ATvd_xHRFppJtjNLdKGbOhQX8bCeIJsZz7dnHXIQfk6xijA>
-    <xmx:1jfJav6yH_YMlHq7CpMjJ6vkRkq0pFVCPx8cc5tSbIBepDZom91Zug>
-    <xmx:1jfJakdUMnFgV3Zyv4YkTnQX0mKlufYKvBSxgp0tB2UBFEjdxSGpxQ>
-    <xmx:1jfJav0v5SlYu3QyfXSQIRBSNWFQLbZRu6ttGTpoKFCzi_WkPXi5AdJ->
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 9 Oct 2026 14:52:05 -0400 (EDT)
-Date: Fri, 9 Oct 2026 11:52:04 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Markus Probst <markus.probst@posteo.de>
-Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	s=k20260515; t=1791573261;
+	bh=rzSDMH69NxsZdNIquyU3ZY3vMVEbvlrwHE+qRvxpOMc=;
+	h=From:To:Cc:Subject:Date;
+	b=UmmxtshcNAxTTdjud/u87Thw45aFVt8fpAK0hwEZ1RWKWibNrh1UzZNfRUtGTR8FP
+	 IyoKunbuqT9ESuGgFGt3JlNuOHsqyn4oOuIoVe3xsB+MDIFkrcMGKdZzr0zyLf9wfg
+	 YXhluaHTz1db4D3+Xg4fvN3pe8oUh/VDxkv4/6T6pDX6rmh2TE9u2rkmOrENW+RBg7
+	 eoLpHTrkg3r6XnneSBCZh1DPezUS2s4o/Usn2484+8s42s92n6JCYC3p97OuU4s6Vi
+	 j/Xp/bvYmJvajOYXIsII86i+/vC8Pxs9bq1PmMyW47jJMU1au3YE5rbAueqJRuHa+b
+	 DJLOWDb2i+2xg==
+From: Philipp Stanner <phasta@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?iso-8859-1?Q?Wilczy=B4nski?= <kwilczynski@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Ira Weiny <iweiny@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v26 3/4] rust: leds: Add multicolor classdev abstractions
-Message-ID: <ask31EX01lSL9QJ9@tardis.local>
-References: <20260930-rust_leds-v26-0-83837331020e@posteo.de>
- <20260930-rust_leds-v26-3-83837331020e@posteo.de>
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	John.harrison@igalia.com,
+	da.gomez@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org
+Subject: [RFC PATCH v5 0/6] rust: Add drm::JobQueue
+Date: Fri,  9 Oct 2026 21:11:18 +0200
+Message-ID: <20261009191124.1022902-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260930-rust_leds-v26-3-83837331020e@posteo.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 30, 2026 at 01:05:32PM +0000, Markus Probst wrote:
-> Implement the abstractions needed for multicolor led class devices,
-> including:
-> 
-> * `led::MultiColor` - the led mode implementation
-> 
-> * `MultiColorSubLed` - a safe wrapper arround `mc_subled`
-> 
-> * `led::MultiColorDevice` - a safe wrapper around `led_classdev_mc`
-> 
-> * `led::DeviceBuilder::build_multicolor` - a function to register a new
->   multicolor led class device
-> 
-> Signed-off-by: Markus Probst <markus.probst@posteo.de>
-> ---
->  rust/bindings/bindings_helper.h |   1 +
->  rust/kernel/led.rs              |  34 ++-
->  rust/kernel/led/multicolor.rs   | 445 ++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 479 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index 4b31aa7f432f..81a03985322a 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -69,6 +69,7 @@
->  #include <linux/iosys-map.h>
->  #include <linux/jiffies.h>
->  #include <linux/jump_label.h>
-> +#include <linux/led-class-multicolor.h>
->  #include <linux/mdio.h>
->  #include <linux/mm.h>
->  #include <linux/miscdevice.h>
-> diff --git a/rust/kernel/led.rs b/rust/kernel/led.rs
-> index c17f8ef75006..4b66fe41a80c 100644
-> --- a/rust/kernel/led.rs
-> +++ b/rust/kernel/led.rs
-> @@ -30,8 +30,16 @@
->      types::Opaque, //
->  };
->  
-> +#[cfg(CONFIG_LEDS_CLASS_MULTICOLOR)]
-> +mod multicolor;
->  mod normal;
->  
-> +#[cfg(CONFIG_LEDS_CLASS_MULTICOLOR)]
-> +pub use multicolor::{
-> +    MultiColor,
-> +    MultiColorDevice,
-> +    MultiColorSubLed, //
-> +};
->  pub use normal::{
->      Device,
->      Normal, //
-> @@ -233,7 +241,24 @@ pub enum Color {
->      Violet = bindings::LED_COLOR_ID_VIOLET,
->      Yellow = bindings::LED_COLOR_ID_YELLOW,
->      Ir = bindings::LED_COLOR_ID_IR,
-> +    #[cfg_attr(
-> +        CONFIG_LEDS_CLASS_MULTICOLOR,
-> +        doc = "Use this color for a [`MultiColor`] led."
-> +    )]
-> +    #[cfg_attr(
-> +        not(CONFIG_LEDS_CLASS_MULTICOLOR),
-> +        doc = "Use this color for a `MultiColor` led."
-> +    )]
-> +    /// If the led supports RGB, use [`Color::Rgb`] instead.
->      Multi = bindings::LED_COLOR_ID_MULTI,
-> +    #[cfg_attr(
-> +        CONFIG_LEDS_CLASS_MULTICOLOR,
-> +        doc = "Use this color for a [`MultiColor`] led with rgb support."
-> +    )]
-> +    #[cfg_attr(
-> +        not(CONFIG_LEDS_CLASS_MULTICOLOR),
-> +        doc = "Use this color for a `MultiColor` led with rgb support."
-> +    )]
->      Rgb = bindings::LED_COLOR_ID_RGB,
->      Purple = bindings::LED_COLOR_ID_PURPLE,
->      Orange = bindings::LED_COLOR_ID_ORANGE,
-> @@ -274,7 +299,14 @@ fn try_from(value: u32) -> core::result::Result<Self, Self::Error> {
->  ///
->  /// Each led mode has its own led class device type with different capabilities.
->  ///
-> -/// See [`Normal`].
-> +#[cfg_attr(
-> +    CONFIG_LEDS_CLASS_MULTICOLOR,
-> +    doc = "See [`Normal`] and [`MultiColor`]."
-> +)]
-> +#[cfg_attr(
-> +    not(CONFIG_LEDS_CLASS_MULTICOLOR),
-> +    doc = "See [`Normal`] and `MultiColor`."
-> +)]
->  pub trait Mode: private::Sealed {
->      /// The class device for the led mode.
->      type Device<'bound, T: LedOps<Mode = Self> + 'bound>: Deref<Target = T>;
-> diff --git a/rust/kernel/led/multicolor.rs b/rust/kernel/led/multicolor.rs
-> new file mode 100644
-> index 000000000000..309487bdf38a
-> --- /dev/null
-> +++ b/rust/kernel/led/multicolor.rs
-> @@ -0,0 +1,445 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Led mode for the `struct led_classdev_mc`.
-> +//!
-> +//! C header: [`include/linux/led-class-multicolor.h`](srctree/include/linux/led-class-multicolor.h)
-> +
-> +use core::{
-> +    cell::UnsafeCell,
-> +    num::NonZero,
-> +    ptr, //
-> +};
-> +
-> +use crate::types::ScopeGuard;
-> +
-> +use super::*;
-> +
-> +/// The led mode for the `struct led_classdev_mc`. Leds with this mode can have multiple colors.
-> +pub enum MultiColor {}
-> +impl Mode for MultiColor {
-> +    type Device<'bound, T: LedOps<Mode = Self> + 'bound> = MultiColorDevice<'bound, T>;
-> +}
-> +impl private::Sealed for MultiColor {}
-> +
-> +/// The multicolor sub led info representation.
-> +///
-> +/// This structure represents the Rust abstraction for a C `struct mc_subled`.
-> +#[repr(C)]
-> +#[derive(Debug)]
-> +#[non_exhaustive]
-> +pub struct MultiColorSubLed {
-> +    /// The color of the sub led
-> +    pub color: Color,
-> +    brightness: UnsafeCell<u32>,
-> +    intensity: UnsafeCell<u32>,
+Changes in v5:
+  - Add back the Revocable<JobQueueInner…> from my earliest RFCs. Reason
+    is still the same: JQ dropping while dependency fences signal could
+    deadlock. Similarly, this solves a dependency kicking of the work
+    item again while drop() is running.
+  - Do not call run_job() with a lock held, since run_job() might sleep.
+    AFAICS, this also makes the proposed XArray solution impossible and
+    demands that we use a list.
+  - Re-add the earlier credit-count-system, so that run_job() is
+    infallible. Simplifies the design quite a bit. (Danilo)
+  - Drop jobs in a deferred manner through the work item so that job
+    payload data can do atomic-hostile stuff.
+  - Because of the point above, I suggest that we stop dropping a
+    DriverFence on signal (Danilo's and my idea). It has no real
+    advantage, and getting rid of it allows for better controlling what
+    drops when through JobQueue. For fence it's only relevant that there
+    is an RCU grace period, thus:
+  - Replace DriverFence::drop()'s call_rcu() with synchronize_rcu(). We
+    would, therefore, demand that everyone who's got a problem with the
+    delay drops via work item.
 
-These should be `Atomic<u32>`, or am I missing something here? Using
-`Atomic<u32>` should resolve sashiko's comment on this patch.
+This can still not be tested as I'm blocked by pin-init vs self-ref.
+Just FYI.
+
+I would appreciate confirmation of these following thoughts on locking
+design:
+
+1.
+I believe that callers of jq.new_job() and jq.submit_job() do not need
+an outer serialization mutex. Reason is that JQ serializes with its
+internal lock. Sequence numbers cannot take over older seqnos because it
+is submit_job() who sets the seqno.
+
+2.
+I, furthermore, believe that a driver will not need to hold a
+driver-lock while calling jq.complete_jobs_up_to_seqno().
+
+IOW, I am suggesting that a driver can always safely use JQ without an
+outer lock, and actually *should* do so to avoid potential locking
+issues.
+
+Reason:
+
+let driver_stuff = foo.lock();
+let current_gpu_seqno = driver_stuff.get_seqno();
+drop(driver_stuff);
+jq.complete_jobs_up_to_seqno(current_gpu_seqno);
+
+Thus, I believe that it is OK for me to take the JQ lock in
+jq.complete_jobs_up_to_seqno().
+
+Please correct me if I'm missing something.
+
+Should I be wrong and a lock inversion could occur, then we could
+hypothetically add a fence Signaler object, with which we could signal
+fences with a different lock. Similar to how drm_sched does it with the
+hardware_fence.
+
+
+Regards
+P.
+
+
+====
+
+Cover letter from v4:
+
+As the commit messages and code comments detail, progressing JobQueue is
+currently somewhat blocked because of an issue with self-referential
+PinInit, which Gary generously offered to investigate.
+
+This code compiles, but the example does not because of the
+aformentioned issue. Nevertheless, I wanted to provide another RFC here
+so that we can move our discussions forward in the meantime, especially
+since very much about JobQueue has changed.
+
+Our, now upstreamed, DmaFence abstractions informed some of the notable
+changes in JobQueue. Most notably, JobQueue now owns the FenceContext,
+Jobs are created on the queue and own the DriverFence. Jobs, again, are
+owned by the JobQueue. We hope to enforce correct behavior that way,
+having FenceContext, JobQueue and firmware ring all correspond with each
+other 1:1:1.
+
+I suspect that a potential deadlock on JQ drop still exists. I
+previously solved that with Revocable, which I tend to think will also
+be the way to go here.
+
+(One very great news btw is that we almost magically solved a number of
+issues with the new DmaFence design – in combination with this JobQueue
+design, for the first time it would be possible to fully support the
+dma_fence backend_ops. The driver-unload-problem previously had most
+users use intermediate fences, like the drm_sched_fence, which means
+that callbacks, e.g. from userspace, could not be passed through to the
+driver. Now, with FenceContextOps <-> JobQueueOps, we can theoretically
+support all of them)
+
+The differences between this draft and Daniel / Tyr's prototype which
+probably are most noteworthy are the different lock design
+("Philipp"-JobQueue has one big lock, wheres Tyr-JobQueue has 2, 3 if
+you count the XArray lock) and the used data structure.
+
+The presented solution uses lists over XArray because:
+  1. XArray is semantically more complex and has an additional lock.
+  2. An Xarray-as-ringbuffer needs own algorithms for index tracking,
+     wrapp around etc. With list you enqueue into a waiting list, and
+     for running you move into the running_list.
+  3. The memory reservations we need for pre-allocating everything for
+     our job-submission path are solved in one go with list, because a
+     job simply contains a list head.
+  4. Most notably, it is unclear how XArray behaves for ever-increasing
+     indices with a sliding window, whereas the list semantic is well
+     understood and deterministic.
+
+I obviously don't claim to own all the wisdom in that regard; it's just
+that I still propose this solution because these arguments make me
+believe that it is the right one.
+
+Since all the list handling is done with iterators, there is currently
+no unsafe needed.
+
+
+I hope we can discuss many things here before we, hopefully soon, can
+address the lifetime issue and move to a v1.
+
+
+This is based on drm-rust-next (10a6623a24a8), plus Danilo's ScopedWork
+[1] and my patches [2][3] regarding 'static and lock errors.
 
 Regards,
-Boqun
+Philipp
 
-> +    /// The maximum supported intensity value.
-> +    ///
-> +    /// If None the maximum intensity equals to [`LedOps::MAX_BRIGHTNESS`].
-> +    pub max_intensity: Option<NonZero<u32>>,
-> +    /// Arbitrary data for the driver to store.
-> +    pub channel: u32,
-> +}
-> +
-[...]
+[1] https://lore.kernel.org/rust-for-linux/20260807165252.3849875-1-dakr@kernel.org/
+[2] https://lore.kernel.org/rust-for-linux/20260922083631.444614-2-phasta@kernel.org/
+[3] https://lore.kernel.org/rust-for-linux/20260924085523.2620704-2-phasta@kernel.org/
+
+Philipp Stanner (6):
+  rust: DmaFence: remove static lifetime
+  rust: DmaFence: Implement Deref for FenceContext
+  rust: DmaFence: Don't drop on signal
+  rust: DmaFence: [RFC] Add Signaler
+  rust: DmaFence: Replace call_rcu() with synchronize_rcu()
+  rust: drm: Add JobQueue
+
+ rust/kernel/dma_buf/dma_fence.rs | 139 ++++----
+ rust/kernel/drm/job_queue.rs     | 525 +++++++++++++++++++++++++++++++
+ rust/kernel/drm/mod.rs           |   4 +
+ 3 files changed, 606 insertions(+), 62 deletions(-)
+ create mode 100644 rust/kernel/drm/job_queue.rs
+
+-- 
+2.55.0
+
