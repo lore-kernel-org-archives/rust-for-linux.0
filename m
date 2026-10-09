@@ -1,356 +1,253 @@
-Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012033.outbound.protection.outlook.com [52.101.53.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0057B44F57C;
-	Fri,  9 Oct 2026 13:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791553246; cv=none; b=J++in0c4lYE2KJC6x/IOyop3dcT2yjZQ1tGR1sdU89NAidJUxnCNSuIme4F4o1hznAgOIuMIgV0+YiSaSTQ0yzOVBYm+bnRG70SAI8CFj9Qb/5mxBGj8FtqED1RyU4y1SCyncXXYNU70Kq0pWAHaik/SFTHpqKZmz99khpztWg8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791553246; c=relaxed/simple;
-	bh=Xlus4qYO+0N7umQrZuhOKoq6nvuWBIJjxVyKZ6sPHTQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VOT/etBjfbRgp9ee/ZcEBwfT286KYxmwzCVcKfKFlpZw54HniRAN5Ear2789hOsRcS8osnF/OjU3D8vYtiQUA0rbB98qn0QAm5mURzucX9fwCs887is8BBT3yB6vi5DwZ9gOioZdn/UpdFN9GXIjHSZpLad7v3PzIfawfzZPW9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=FNxZGWoY; arc=none smtp.client-ip=79.135.106.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9703847126D;
+	Fri,  9 Oct 2026 14:07:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791554883; cv=fail; b=mIRzEJcQ0dJUou69BK17pIHMt7g/E2KYoNfZAnNBoHgvAko8pz8juNPofYEksyXiyU+Grl7uKTZi4dzI2Qdm8wEM1Rw0hPxKrqXUO2/lyU062prycWqj2spvWcfm/5JL1WLkQiZ8Dt4In9rxNZNrFcmllwsKFClIeegJ8gJ/YMQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791554883; c=relaxed/simple;
+	bh=L+R7/BCkFBQLRMQT2xeYSj5M0IOJEqhocZQJjd5MT64=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=pvgZdL2P4S4B6htU+g3RmOSlPVV2y0HAo/1U39eVnuP2DtEpHs4Cl2r55DBw+49jmLG/tB8AbRw77thK2Sh/o7mG9Ta962EJH5eRd70p9F/BIdX+pztBgoXBrOrqClZTmxiWWia7xijrctsij4GGASxQJ3s7Sptz+Zc3a89Czfg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=H4RnMgwr; arc=fail smtp.client-ip=52.101.53.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="FNxZGWoY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail2; t=1791553237; x=1791812437;
-	bh=Wo9vi5+V4wJvCUyGT81k9xriIhL8Sz6oi0qP3s0zXW4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=FNxZGWoYp4VZ8duUUF+3PjKjb9+hFYA7SAGpkS/a75MfwVl5njIv0AawcLISXsfMn
-	 deCS4sIr7y0aTrEoiqgHs5z58sY40c4q5Yen+h9/Dw430MoFFvpRnEV+nIU/2HD3YR
-	 GPjZoI3XBihhrnd10+ligzP8PLUMpExe8XN6Nrux/qDn1MCZI3M3jy9FEgn+t/dxwH
-	 AgEfS0/ZKEZcnWsQ6JB8bF8Zjv6KinhgZ10YjQnX97AgE/GC0cAZ8BW5YvLWTN9tJb
-	 OFzzysQnFLf2BWaOWc5HGkuk2AbeF8Q2ZVrbZEYAKKbsulEDoNzsSzWUa/kwd+Od80
-	 4O1gqYZpYqbow==
-X-Pm-Submission-Id: 4j1Sfm5DX1z1DFgd
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: rust-for-linux@vger.kernel.org,
-	lossin@kernel.org,
-	lyude@redhat.com,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	peterz@infradead.org,
-	mingo@redhat.com,
-	will@kernel.org,
-	longman@redhat.com,
-	felipe_life@live.com,
-	daniel@sedlak.dev,
-	thomas.hellstrom@linux.intel.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 5/7] rust: ww_mutex: add Mutex, AcquireCtx and MutexGuard
-Date: Fri,  9 Oct 2026 16:40:29 +0300
-Message-ID: <20261009134031.314551-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <21E654F4-884E-4027-B9DF-8BF0F2BE1DC9@collabora.com>
-References: <20260103073554.34855-1-work@onurozkan.dev> <20260103073554.34855-6-work@onurozkan.dev> <21E654F4-884E-4027-B9DF-8BF0F2BE1DC9@collabora.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="H4RnMgwr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=luiFhoVgz6/8tvMXI6WPEYUxZmV1PxeZy8JlPmvYKKAbpmswViS8GcB8n/kqTMnJk9g9/Rr5hhO2mehNtKT7uD7WyHkqnUyJJvaobOCja0V6HW5YI1nbSwDV9uaRkPrC24RoZqskKu5oBgJREyCaKMrzPi3rQkEhhzEsJo0k82DtcgB29XlHFcgYbAnXFJzPc0cm7q6LBB14V/weOmehH+maFFIH3ljXnSSnkYfDqLjxtlkF1ScWqZMk4DY1+ibpg/Zo9IW8MY/QNXnesH2cq0jUFkNE2oTIa68m5mFXULxoqABsCj4dvmH0eS3dXGRF78jhM+K0E3LZBfPwVypvSA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=L+R7/BCkFBQLRMQT2xeYSj5M0IOJEqhocZQJjd5MT64=;
+ b=t3B6ONrjN4bTBMNEm0RcpAKqoVrEGdH1Dlw3FQ0hJ+jmqFROu82D+WGpexr/o2uo4NoTts9a+k0bOjZvsk7dxNzCCHoPjgSxjBJx6TkOTzN8IOA/bI6bI1u25HrM5D+fPPs9oYkU4Bgu0aHn6s3OChXeIjm0uhD/K9Z9wax7Pi7hIQ0i6McoqPf+KlHjVI61siP1FOtfFLnLJC+D9PXhWKjpcvCL8MOGYmh9GnKaTAluyPmG8R09bIBwUTEO4eFV0S0MC6tQKK5hR9HPzEtxPdH3z3UJe8gCE54e1fLNOgKLDLVSf9qTma1+DPlCVW+TZXzJkOCn+GHLOfc8kDHswg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=L+R7/BCkFBQLRMQT2xeYSj5M0IOJEqhocZQJjd5MT64=;
+ b=H4RnMgwr3JYLbUTP0g8fTPs6QTozMuLGpBiYFnjTcNHbSd89qCNMAGA2BUUjIV1C4+ojXieZc1R617me3K+grFiM+KqIM6DuSuF9wHOIj6o9eUiUQo6PLx7GCyoqO8LGcRVmNvlmYyxg65aH4Vivmg9JAmPcuN3GsemgBJVnigA0wRdgTYuyShpibwWSgkhsiJfc/H8EF65mA58boyxMxVqenOhMxL1ptxjWXE2Abw6qj31DZhve9Q6QwGOqzs8lFNr3tKPGqFryb0mxg8hRfO72O6bKN34qTDpbaEghbKaJV9cqd54m1NgJsnt2beeySosWXfBbiKQsj2d6rokBHQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by IA3PR12MB362669.namprd12.prod.outlook.com (2603:10b6:208:700::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Fri, 9 Oct
+ 2026 14:07:54 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0472.016; Fri, 9 Oct 2026
+ 14:07:54 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 09 Oct 2026 23:07:51 +0900
+Message-Id: <DM0D75ZTTQXJ.2XADVI38UGH7C@nvidia.com>
+Cc: "Eliot Courtney" <ecourtney@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Burak Emir" <burak.emir@gmail.com>, "Yury Norov"
+ <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v9 8/9] rust: id_pool: do not round capacity up to
+ BitmapVec::MAX_INLINE_LEN
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Yury Norov" <ynorov@nvidia.com>
+Content-Transfer-Encoding: quoted-printable
+References: <20260930-chid-v9-0-0d6cca376cff@nvidia.com>
+ <20260930-chid-v9-8-0d6cca376cff@nvidia.com> <aryYkkB9j14xnWo3@yury>
+ <DLTA93JE6VF2.37UGB3SWU6ID6@nvidia.com> <ase7IBtZjQsPVWSN@yury>
+In-Reply-To: <ase7IBtZjQsPVWSN@yury>
+X-ClientProxiedBy: TYCP286CA0040.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:29d::15) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|IA3PR12MB362669:EE_
+X-MS-Office365-Filtering-Correlation-Id: 34c308cd-44ef-4e0a-ff98-08df260eb668
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|10070799003|23010399003|366016|1800799024|56012099006|4143699003|11063799006|5023799004|10067099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	rrmxczRkmfS5JBI7oHSpz/7ptWLMvCW6LLCAF3OmN8clvBkx/CihcjY3eIqkeZc+kF6ZpP3ItuwxydwEu53J5XRiXoqwv9OEvuJ6T+c2+zjZ8HBFYRbcmSG14RALribvaFumWfLl8F2ZrT+ZtePkY9WPKIbYQbaNfM6NBe8QUWJzoYs0nHW1Lb1Pzf53tJmbguNzQYEK0eWNF0xJZr4zkFP7hyouZw2Pa9d+ME+JmwF3lvTFCqudWQ9rZaQPlwRyZ/dfAunTKyPMB9xG1vI+Yp71ve3r2OgdFBWjm+HtGpIQtq1vtg8nh4T1McIlXivJ2RBykSvHkaHuHV+ZVreEReoI3HxW1KGJKa80ar/BDgLLX4kSMwpH6R6YYS29wGUbpfoMLa5+PUWlgz394ThRa0G2507YGn4+uOwojVJ6xZcfzBAVp6X1hdDEN2UrCOPqGfLzntXrI8yXsGLxhJ+PUIdvSPz9ghX9gXaDwfKREfKFGv7CY0vm10jsxSBrg2890tzhpuDF2/0COayLRK9Vd9gbypR2Q3S8Ys3TdEx88zxNsWgmpRqSpooBBSiPDHQl+qmwsFd7ox/iOknN153pkRujIbFSSLWehl8cYRTdhuSjAKoWan+7vj+8PUjDM2Lnlz3FsO5WlQcJUAFSlaCcyZthL2BNHCJJAygHVa3ghuo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(23010399003)(366016)(1800799024)(56012099006)(4143699003)(11063799006)(5023799004)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VGZsQlBjSHdTSS9heVlBUFlNdXV5Z1NXa0JpdkZ5QlVCeVBwWnh1UEk2MjBY?=
+ =?utf-8?B?cEI1VUpXUTdFQ2JvUlA2Q0xxMlpXSG5PWmROVTVjdUROS0tYTEUxTG5tUkVI?=
+ =?utf-8?B?Tkt0SGFaTVgydEVRV2xxcmR3TEFEWmIyaG5Cd0FTY3JpcjVsa0FwTmc4YkhE?=
+ =?utf-8?B?ZE1YWXU0bmI0bnJRcXJqaWRLcHo2Z3pIa2laK1RidnNkU0pidzlxU0RmMlFu?=
+ =?utf-8?B?YUZGdWkvSlM5Z1BNcmw0Y1J2TTlMaDdUOVAya3RHaVJETHJuSHdsVnJEcHdS?=
+ =?utf-8?B?VzV1bjM1a3FRdDBlUWxYNjIvTTNvbCtYeWZ1SGErdGs3cW5VTmJ4M2Foa0x0?=
+ =?utf-8?B?dWxIWHU5cXZDcGJXSENnTlRNeTdVQWhLR3NVaWM3QmVHWlRTL2tQTzY1SVBV?=
+ =?utf-8?B?RC91VzJLa1c0OE81T3VHelcreG1ybG02WlhhY2NQbEtjK0tEaUU4OUEzVUlu?=
+ =?utf-8?B?a0grYkUvQlFRTndmVDBWd1MwWCtZWE1NWW5CRXZYaERIMUFZNE9pUDltNkg2?=
+ =?utf-8?B?VjFqc01XdFdEbnoyK3ltbm1LVVdMZ3dEUU5SL3FKRE14V3ZSbzRvemdVdGdy?=
+ =?utf-8?B?VDR6QUJiS1NLVkdLNFpleVQ0RFo1cU1lNE9sMWFRd2M1Y3pkUzRGcTZhZ1V6?=
+ =?utf-8?B?VHpvRXdFMkJOZG9PNWxUMVN4NWlSYWI2UCtOaEFtL3dlVTJmTjUzUWphWUNK?=
+ =?utf-8?B?cFJLV1ZDWktGaHpXUXlzSCtiTzJBbWg4Y1ptNXVPbWJsd1JnaFF6SDcvM3NQ?=
+ =?utf-8?B?L25vNHhPbnpiYktaMlY3cDJhUnU0Z2lCMUdLUGJmTXBPNUxGaUVYUkRYd3ZJ?=
+ =?utf-8?B?TTMyMnAvMndXMnd3UlZhZ2dkbDFVRTMxanhOYTZEaVg1SmxLckFTcSt4dU5u?=
+ =?utf-8?B?ZHRWaWoraGRINDhSTFhGSllIaTlzR05IcFFsL1FLT1JaVTBuczJYUGo3WUZi?=
+ =?utf-8?B?dEJ0Nzc0QXFnblJiKy9lV1VhTXdnN2ZhV2xVdVR2YTBKd1V6dVNFbFVQaWEx?=
+ =?utf-8?B?eVhXbTVacWZxbUhaeHlpRkFlUVlGWEFiVVR3czkwR0MrU3dsZWY1M2pPVTcx?=
+ =?utf-8?B?Q1o0Sk1NYjVpNzNta2lBSWtxbkNzS2JhS01heGRWS0t1TFBFaFpKNU5yWWJp?=
+ =?utf-8?B?S1Bta3ZjV09VcGlGLzZqM1Fnd0gvVXdUVlFidzMxSjQvOWpIVVB4ZVV4R2xY?=
+ =?utf-8?B?akkySkwvcWxjaDBZZWFmS2gyOE5LYUVZY1JDRElRV2l3S05XZmNmNlkvRnFa?=
+ =?utf-8?B?Wjg3OE9PTHJKWDZ6SWZwUVQ3MHdtUktUR05IcHYyTEdxaklOUjJQS3QrS0J0?=
+ =?utf-8?B?VjdZL3dHSVFmS2txZS9WK3BZT0E1MkhFVzhpcnhwclNCRkcwQjhHZ2pqaytm?=
+ =?utf-8?B?WDNiRlIrMWVnOUgwK1dlMXI0a1F5N0VSdWswOTdBUGFwSDE3U2Z3bzcraUVC?=
+ =?utf-8?B?UVdNZUVINk5MRnhRdSsyTWFRT2p6R01NdjNMNVo0aCtaZlpSLzFMNFBPS25G?=
+ =?utf-8?B?ZEsvVTBDRjJIdVlFQlZFbExrOU5rOHJSSjZnTnpiU00vc3B0TjhDQS9qZGNh?=
+ =?utf-8?B?UFFqMTBrR0dwK2gxYWgyN3JkVDhDTzJFZHlWbTN5SHJkM2dPM0ZxZlM2azJZ?=
+ =?utf-8?B?RUNrYm5TelI4ZnBzaGFHZ3BwWW9oWW1UaFlqVEk0VkN5cjlPUEZxcnNLdUxP?=
+ =?utf-8?B?aGJac2dJMk5OUk1ZMHRacndPRlNFaWRNNjdWUXJXTDlPeWovamZQbUsrNy8z?=
+ =?utf-8?B?Y0EzTC9DRjhRODRzdXBCb1cwQitqUzJPUUxJZU91MHg4WjZRNTFqWm56OTVI?=
+ =?utf-8?B?OVNkN1dmTU5Gd2xsSW90TXoxdmNBYzJzdmdxQm1ldUQxTnF6UVNsY3lKSWtR?=
+ =?utf-8?B?K2R6TDNqQU5OYldnRVZrM1YrblhKK2RhUmxDdnJONDlXTmZMcS9wT2lFSSsr?=
+ =?utf-8?B?dFdiRG53VVBKTk51Wlc0RENYY0FoSkd1Q3lzMFZ5VTQxTktrbzVrbkNRZ20v?=
+ =?utf-8?B?NEFwdGdsbVZlUlgvQ0FOT0g2Vm5lWTBMbHdXdVBMdUh5RHN6TmFlbndtVVZx?=
+ =?utf-8?B?U1JSR0tycWhRcUFUUnJjeU5yOHdIMDIremRtL2pnVlVkelVTSFJDelg3aVZv?=
+ =?utf-8?B?K29XaUFjRjlvM0pIN2lFMkY0ck9rWVByMHFsOEllUUQ1bHJBcmtIV0NMQms0?=
+ =?utf-8?B?UVlBWXoyZ3R0aVZwZFI1d3dlNGh0WXFKRVFHLzNIdVd2RFZOK1BFcmg5Y0pp?=
+ =?utf-8?B?aDRmRXV0M2lWVFM1SFdqQ1llaHBpMGx2RHdMVlpncUZ6SlRiOGwwdXViUzRX?=
+ =?utf-8?B?T1NtSXVNeUk4WlZ3UHFvVXdEWXIzZlNmbnp3MjRERXEwdTRGUnhuYVp4MWZY?=
+ =?utf-8?Q?PPeihhiSJ54vDS4UhWHuwo1tdgfs33Px9oK9rSATu77/w?=
+X-MS-Exchange-AntiSpam-MessageData-1: v3IsaoptcpfUrA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 34c308cd-44ef-4e0a-ff98-08df260eb668
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2026 14:07:54.3124
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ODepU7BN6ZOayFqNSQuiWf1zqu7+Xxzs8/Sx4lP6wYXZSkNHXQ4o65ie8YYgPSm1JpDzH7ggIBuQufZWmpeOCQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR12MB362669
 
-On Wed, 30 Sep 2026 18:52:47 -0300=0D
-Daniel Almeida <daniel.almeida@collabora.com> wrote:=0D
-=0D
-> Hi Onur,=0D
-> =0D
-> > +impl<'class, T: ?Sized> Mutex<'class, T> {=0D
-> > +    /// Checks if this [`Mutex`] is currently locked.=0D
-> > +    ///=0D
-> > +    /// The returned value is racy as another thread can acquire=0D
-> > +    /// or release the lock immediately after this call returns.=0D
-> > +    pub fn is_locked(&self) -> bool {=0D
-> > +        // SAFETY: It's safe to call `ww_mutex_is_locked` on=0D
-> > +        // a valid mutex.=0D
-> > +        unsafe { bindings::ww_mutex_is_locked(self.inner.get()) }=0D
-> > +    }=0D
-> > +=0D
-> > +    /// Locks this [`Mutex`] without [`AcquireCtx`].=0D
-> > +    pub fn lock(&self) -> Result<MutexGuard<'_, T>> {=0D
-> > +        lock_common(self, None, LockKind::Regular)=0D
-> > +    }=0D
-> > +=0D
-> > +    /// Similar to [`Self::lock`], but can be interrupted by signals.=
-=0D
-> > +    pub fn lock_interruptible(&self) -> Result<MutexGuard<'_, T>> {=0D
-> > +        lock_common(self, None, LockKind::Interruptible)=0D
-> > +    }=0D
-> > +=0D
-> > +    /// Locks this [`Mutex`] without [`AcquireCtx`] using the slow pat=
-h.=0D
-> > +    ///=0D
-> > +    /// This function should be used when [`Self::lock`] fails (typica=
-lly due=0D
-> > +    /// to a potential deadlock).=0D
-> > +    pub fn lock_slow(&self) -> Result<MutexGuard<'_, T>> {=0D
-> > +        lock_common(self, None, LockKind::Slow)=0D
-> > +    }=0D
-> > +=0D
-> > +    /// Similar to [`Self::lock_slow`], but can be interrupted by sign=
-als.=0D
-> > +    pub fn lock_slow_interruptible(&self) -> Result<MutexGuard<'_, T>>=
- {=0D
-> > +        lock_common(self, None, LockKind::SlowInterruptible)=0D
-> > +    }=0D
-> =0D
-> ^ Let's remove the slow path, this is equivalent to a normal lock(),=0D
-> except that it also contains this dereference:=0D
-> =0D
-> static inline void=0D
-> ww_mutex_lock_slow(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)=0D
-> {=0D
->     int ret;=0D
-> #ifdef DEBUG_WW_MUTEXES=0D
->     DEBUG_LOCKS_WARN_ON(!ctx->contending_lock); <-----=0D
-> #endif=0D
->     ret =3D ww_mutex_lock(lock, ctx);=0D
->     (void)ret;=0D
-> }=0D
-> =0D
-> But we (and most of the C API) allow null ctxs:=0D
-> =0D
->     let ctx_ptr =3D match ctx {=0D
->         Some(acquire_ctx) =3D> {=0D
->             let ctx_ptr =3D acquire_ctx.inner.get();=0D
-> =0D
->             // SAFETY: `ctx_ptr` is a valid pointer for the entire=0D
->             // lifetime of `ctx`.=0D
->             let ctx_class =3D unsafe { (*ctx_ptr).ww_class };=0D
-> =0D
->             // SAFETY: `mutex_ptr` is a valid pointer for the entire=0D
->             // lifetime of `mutex`.=0D
->             let mutex_class =3D unsafe { (*mutex_ptr).ww_class };=0D
-> =0D
->             // `ctx` and `mutex` must use the same class.=0D
->             if ctx_class !=3D mutex_class {=0D
->                 return Err(EINVAL);=0D
->             }=0D
-> =0D
->             ctx_ptr=0D
->         }=0D
->         None =3D> core::ptr::null_mut(), <----=0D
->     };=0D
-> =0D
-> IOW, to call the slow path correctly, the Rust side would already have=0D
-> to know the thing the slow path checks, and then the slow path adds=0D
-> nothing.=0D
-> =0D
-> Even the docs say:=0D
-> =0D
->  * Note that the slowpath lock acquiring can also be done by calling=0D
->  * ww_mutex_lock directly. This function here is simply to help w/w mutex=
-=0D
->  * locking code readability by clearly denoting the slowpath.=0D
-> =0D
-> By the way, LockSet itself does not use it, so let's drop that. It also=0D
-> solves some problems in the other patches too.=0D
-> =0D
-> > // SAFETY: `Mutex` can be shared across threads if the protected=0D
-> > // data `T` can be.=0D
-> > unsafe impl<T: ?Sized + Send + Sync> Sync for Mutex<'_, T> {}=0D
-> =0D
-> I don't exactly remember why this has to be different than sync::Lock?=0D
-> i.e.:=0D
-> =0D
-> // SAFETY: `Lock` serialises the interior mutability it provides, so it i=
-s `Sync` as long as the=0D
-> // data it protects is `Send`.=0D
-> unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}=0D
-> =0D
-> Why does one require Send + Sync and the other just Send?=0D
-> =0D
-> > +impl<'a> MutexGuard<'a, ()> {=0D
-> > +    /// Creates a [`MutexGuard`] from a raw pointer.=0D
-> > +    ///=0D
-> > +    /// If the given pointer refers to a mutex that is not locked,=0D
-> > +    /// returns [`EINVAL`].=0D
-> > +    ///=0D
-> > +    /// This function is intended for interoperability with C code.=0D
-> > +    ///=0D
-> > +    /// # Safety=0D
-> > +    ///=0D
-> > +    /// The caller must ensure that:=0D
-> > +    ///=0D
-> > +    /// - `ptr` is a valid pointer to a `ww_mutex`.=0D
-> > +    /// - `ptr` must remain valid for the lifetime `'b`.=0D
-> > +    /// - The `ww_class` associated with the `ww_mutex` must be valid =
-for the lifetime `'b`.=0D
-> > +    pub unsafe fn from_raw<'b>(ptr: *mut bindings::ww_mutex) -> Result=
-<MutexGuard<'b, ()>> {=0D
-> > +        // SAFETY: By this function's safety contract, the caller guar=
-antees that `ptr` points to a=0D
-> > +        // valid `ww_mutex` which is the `inner` field of a `Mutex`. T=
-he caller also guarantees=0D
-> > +        // that both `ptr` and the associated `ww_class` are valid for=
- the lifetime `'b`.=0D
-> > +        let mutex =3D unsafe { Mutex::from_raw(ptr) };=0D
-> > +=0D
-> > +        if !mutex.is_locked() {=0D
-> > +            return Err(EINVAL);=0D
-> > +        }=0D
-> > +=0D
-> > +        Ok(MutexGuard::new(mutex))=0D
-> > +    }=0D
-> > +}=0D
-> =0D
-> The caller must also guarantee that the current task holds this lock,=0D
-> and that it won't unlock it itself afterwards. Otherwise we may release=0D
-> someone else's lock, or release it twice.=0D
-> =0D
-> > +        LockKind::Slow =3D> {=0D
-> > +            // SAFETY: `Mutex` is always pinned. If `AcquireCtx` is `S=
-ome`, it is pinned,=0D
-> > +            // if `None`, it is set to `core::ptr::null_mut()`. Both c=
-ases are safe.=0D
-> > +            unsafe { bindings::ww_mutex_lock_slow(mutex_ptr, ctx_ptr) =
-};=0D
-> > +        }=0D
-> > +        LockKind::SlowInterruptible =3D> {=0D
-> > +            // SAFETY: `Mutex` is always pinned. If `AcquireCtx` is `S=
-ome`, it is pinned,=0D
-> > +            // if `None`, it is set to `core::ptr::null_mut()`. Both c=
-ases are safe.=0D
-> > +            let ret =3D unsafe { bindings::ww_mutex_lock_slow_interrup=
-tible(mutex_ptr, ctx_ptr) };=0D
-> > +=0D
-> > +            to_result(ret)?;=0D
-> > +        }=0D
-> =0D
-> Also remove the slowpath in AcquireCtx, but for a different reason:=0D
-> ww_mutex_lock_slow() throws away the return value of ww_mutex_lock().=0D
-> That is only fine in C because they "require" that the caller not hold=0D
-> any other lock of the context. Here nothing enforces that, so=0D
-> ctx.lock(&m) followed by ctx.lock_slow(&m) returns Ok with a second=0D
-> guard for m.=0D
-> =0D
-> =0D
-> > +    /// Marks the end of the acquire phase.=0D
-> > +    ///=0D
-> > +    /// Calling this function is optional. It is just useful to docume=
-nt=0D
-> > +    /// the code and clearly designated the acquire phase from actuall=
-y=0D
-> > +    /// using the locked data structures.=0D
-> > +    ///=0D
-> > +    /// After calling this function, no more mutexes can be acquired w=
-ith=0D
-> > +    /// this context.=0D
-> > +    ///=0D
-> > +    /// # Safety=0D
-> > +    ///=0D
-> > +    /// The caller must ensure that this function is called only once=
-=0D
-> > +    /// and after calling it, no further mutexes are acquired using=0D
-> > +    /// this context.=0D
-> > +    pub unsafe fn done(&self) {=0D
-> > +        // SAFETY: By the safety contract, the caller guarantees that =
-this=0D
-> > +        // function is called only once.=0D
-> > +        unsafe { bindings::ww_acquire_done(self.inner.get()) };=0D
-> > +    }=0D
-> =0D
-> ^ Are we sure that this needs to be unsafe? The function itself merely=0D
-> sets a flag:=0D
-> =0D
-> /**=0D
->  * ww_acquire_done - marks the end of the acquire phase=0D
->  * @ctx: the acquire context=0D
->  *=0D
->  * Marks the end of the acquire phase, any further w/w mutex lock calls u=
-sing=0D
->  * this context are forbidden.=0D
->  *=0D
->  * Calling this function is optional, it is just useful to document w/w m=
-utex=0D
->  * code and clearly designated the acquire phase from actually using the =
-locked=0D
->  * data structures.=0D
->  */=0D
-> static inline void ww_acquire_done(struct ww_acquire_ctx *ctx)=0D
-> {=0D
-> #ifdef DEBUG_WW_MUTEXES=0D
->     lockdep_assert_held(ctx);=0D
-> =0D
->     DEBUG_LOCKS_WARN_ON(ctx->done_acquire);=0D
->     ctx->done_acquire =3D 1;=0D
-> #endif=0D
-> }=0D
-> =0D
-> This is even a no-op if DEBUG_WW_MUTEXES is not set.=0D
-> =0D
-> > +    /// Locks the given [`Mutex`] on this [`AcquireCtx`].=0D
-> > +    pub fn lock<'a, T>(&'a self, mutex: &'a Mutex<'a, T>) -> Result<Mu=
-texGuard<'a, T>> {=0D
-> > +        lock_common(mutex, Some(self), LockKind::Regular)=0D
-> > +    }=0D
-> > +=0D
-> > +    /// Similar to [`Self::lock`], but can be interrupted by signals.=
-=0D
-> > +    pub fn lock_interruptible<'a, T>(=0D
-> > +        &'a self,=0D
-> > +        mutex: &'a Mutex<'a, T>,=0D
-> > +    ) -> Result<MutexGuard<'a, T>> {=0D
-> > +        lock_common(mutex, Some(self), LockKind::Interruptible)=0D
-> > +    }=0D
-> > +=0D
-> > +    /// Locks the given [`Mutex`] on this [`AcquireCtx`] using the slo=
-w path.=0D
-> > +    ///=0D
-> > +    /// This function should be used when [`Self::lock`] fails (typica=
-lly due=0D
-> > +    /// to a potential deadlock).=0D
-> > +    pub fn lock_slow<'a, T>(&'a self, mutex: &'a Mutex<'a, T>) -> Resu=
-lt<MutexGuard<'a, T>> {=0D
-> > +        lock_common(mutex, Some(self), LockKind::Slow)=0D
-> > +    }=0D
-> > +=0D
-> > +    /// Similar to [`Self::lock_slow`], but can be interrupted by sign=
-als.=0D
-> > +    pub fn lock_slow_interruptible<'a, T>(=0D
-> > +        &'a self,=0D
-> > +        mutex: &'a Mutex<'a, T>,=0D
-> > +    ) -> Result<MutexGuard<'a, T>> {=0D
-> > +        lock_common(mutex, Some(self), LockKind::SlowInterruptible)=0D
-> > +    }=0D
-> > +=0D
-> > +    /// Tries to lock the [`Mutex`] on this [`AcquireCtx`] without blo=
-cking.=0D
-> > +    ///=0D
-> > +    /// Unlike [`Self::lock`], no deadlock handling is performed.=0D
-> > +    pub fn try_lock<'a, T>(&'a self, mutex: &'a Mutex<'a, T>) -> Resul=
-t<MutexGuard<'a, T>> {=0D
-> > +        lock_common(mutex, Some(self), LockKind::Try)=0D
-> > +    }=0D
-> > +}=0D
-> =0D
-> These  suffer from the same mem::forget() issue that plagued a similar=0D
-> patch recently.=0D
-> =0D
-> When you lock, the C side will remember the ctx in a field. If you=0D
-> mem::forget() the Guard, the borrow on AcquireCtx is gone, and ctx can=0D
-> drop, and lock->ctx dangles.=0D
-> =0D
-> My preferred solution is to make the locking functions unsafe fn if they=
-=0D
-> take a context, with the requirement that the lock is released before=0D
-> the context goes away.=0D
-=0D
-Yeah, sounds reasonable since we have LockSet, a safe API anyway.=0D
-=0D
-> =0D
-> -- Daniel=0D
+On Fri Oct 9, 2026 at 12:47 AM JST, Yury Norov wrote:
+> On Thu, Oct 01, 2026 at 03:20:40PM +0900, Alexandre Courbot wrote:
+>> On Wed Sep 30, 2026 at 2:05 PM JST, Yury Norov wrote:
+>
+> ...
+>
+>> > Allocating a pool with 0-bit capacity is wrong. Please don't put it
+>> > in the examples. I recall I pointed that this object would panic the
+>> > kernel if, for example, you call pool.next_zero_bit(0) immediately
+>> > after this. Sorry, but NAK.
+>> >
+>> > This .with_capacity() should take num_ids: NonZero, after all...
+>>=20
+>> This panic is not specific to the size zero, any size triggers the same
+>> behavior when accessed out of bounds.
+>
+> In C, malloc(0) is implementation defined behavior, i.e. it can return
+> a pointer valid for free(), or NULL (which is also valid for free).
+>
+> This is a very old legacy coming from K&R implementation, then rejected
+> in C89, and later this all became an impl-def, mostly for compatibility
+> reasons. See 7.20.3 in
+>
+> https://www.open-std.org/jtc1/sc22/wg14/www/docs/n937.pdf
+>
+> Rust adopted C bitmaps, thus creating 0-bit bitmap may go through, and
+> hit that questionable behavior. You add this example without any
+> discussion about all that possible complications, and with no
+> protection for users.
+>
+> Interestingly, you're doing it for the reason that has been considered
+> a bad practice for over 30 years ago - malloc(0) with the immediate
+> realloc(). See the above link for details.
+>
+> To me it looks like pulling legacy with a potential of undefined behavior
+> into Rust.
+>
+> Bitmaps is a way more simple case than the generic malloc(). There's the
+> only user of bitmaps - the Linux kernel, so we know exactly all users and
+> their user patterns. I'm not aware of any in-tree user allocating 0-lengt=
+h
+> bitmap for whatever reason, and such a coding style is highly unwelcome
+> nowadays (30+ years).
+>
+> When it comes to rust, things are even simpler. Rust has much stricter
+> memory policy - no undefined behavior, no implementation-defined behavior
+> is allowed, no 50-years old legacy has to be considered.
+>
+> Rust community decided to take the existing in-kernel implementation of
+> bitmaps written in C, for a reason. But with that it pulls all undefined
+> and poorly defined behavior associate to C language. We did quite well
+> spotting such places and fencing them with safety checks.
+>
+> The 0-length bitmaps is just another case that should be resolved.
+
+As it turns out we would never perform a zero-sized malloc, even for a
+zero-sized bitmap. `IdPool` is backed by a `BitmapVec`, which up to
+`usize::BITS` uses an inline member as backing storage. So we would
+never call `bitmap_zalloc` with a value of 0, making the safety concern
+moot.
+
+>
+> If you still think that you need 0-length bitmaps in Rust, can you please
+> give the clear and thorough explanation why rust needs those 0-length
+> bitmaps. Are there any in-kernel examples? Any language concepts requirin=
+g
+> it? If not, it's still a NAK.
+
+I don't know of an in-kernel example, but please look at the
+`bitmap_vec_new` test which has been here since the API was initially
+merged last year: the first thing it does is create a zero-sized bitmap.
+
+It is also easy to imagine a user starting with an empty pool and
+growing it on-demand. Having the ability to create a zero-sized pool is
+convenient to avoid special-casing user code, and in this case I'd say
+expected, just like you can create a zero-sized vector. Again a size of
+zero does not trigger anything that a larger capacity cannot trigger, so
+I don't see a reason to forbid it.
+
+>
+>> A size of zero has nothing special
+>> in that respect, so why make an exception and forbid it? We had this
+>> discussion some time ago [1][2], and I'd recommend instead making e.g.
+>> `next_zero_bit` return `None` on out-of-bounds accesses, which is
+>> semantically correct.
+>
+> No. out-of-bound access should panic because every caller of bitmap
+> API knows the length of that bitmap.
+
+Right now out-of-bound accesses are allowed if
+`CONFIG_RUST_BITMAP_HARDENED` is not set. The Kconfig documentation for
+that option even says "if unsure, say N", which suggests that not
+panicking (and thus the behavior I described above for `next_zero_bit`)
+is the default. If out-of-bound accesses should panic, then the Kconfig
+does not reflect that.
+
+>
+> But if you make that 0-length bitmap a valid case, we need to revisit
+> every function and make sure it returns ENOENT or something instead of
+> panicking. That, again, must be very well explained and justified, and
+> all this has to be done before adding 0-length bitmap support in code
+> and examples.
+
+With hardening off, every function already behaves in that way, and
+existing user code is already written to not trigger that condition
+anyway (because of the possibility of a panic), so that would be a
+pretty innocuous change.
