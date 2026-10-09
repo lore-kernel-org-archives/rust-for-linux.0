@@ -1,350 +1,214 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021143.outbound.protection.outlook.com [52.101.95.143])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D454650256A
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Oct 2026 22:11:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791583885; cv=none; b=Bk1zwL2fkZOxUSzf0b5G4kvZOz6r/kEgsnZ+a3O2WG6PwniLhZI6t4jqGEQn6rB+CHWA3H0CQcZS3sPef1gH4jM0HnKrOkour9yrahzkFaRTYaM/Q9zTc8mzFFrJ6QGPIIptrP7zF0yKKzL/YeL3r03Y9feBsR9I5QXRT1iFmfY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791583885; c=relaxed/simple;
-	bh=+8Pd2kEwbTqrNWCyuUQ1CP2kNPpqhPSRr1YnfV6HsuI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ntDy0LrsD8RJcgcM+jAplN5JXtRvUvqZ/l2K2QHPyH7GkSQxUpjUCc/sWTDAbnXSf5mO+VhgXXebrVF7XOop+8DQrTVKKwV7ozsyRqt4DgeoWeQRiaHsiFeQhZ/kmseDtYHWRiCuiXpEuBtQ0bTZV8DAPSuUka3hb7N2FmetnJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=L8hsZxT5; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206F335C68E
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Oct 2026 22:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.143
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791584144; cv=fail; b=pHijG7g/ab1PhrL+/xBLfFJ/5Q9VO+fENfSIaXi+p1B3p06SQn1yveE4hElfOyKxhdV3Da6As/WXi9qkqgd2yKJ8h3cdChpH5w8FTc3oRW5NuEsD+Q+X160kVOnl3Ou898yl5hXcwiV1/YBHRrDLgEKOv8Svp2eCFdEE+RWQS50=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791584144; c=relaxed/simple;
+	bh=BvSzTwbvKIjaIYd7wGxQR5++GwCTyZtA0Lb8F1Vj8us=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=icohqGxTAbjlsyDPdUcFblini3GEGJUYxExXkR14GD19n8nc9oEqHLxH7AVKHxBrefR71W982mrItKiQGkHwsz1RX38k7hqF3FOVR4/UNa2uyxpn3qs+Fqwu3sy+ixJkRrYKWKRHPIGw1jwA4zdysQ0HpWOxGk5zRPzvFk/WoOU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Yy2k2h/7; arc=fail smtp.client-ip=52.101.95.143
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="L8hsZxT5"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 9AC1D240104
-	for <rust-for-linux@vger.kernel.org>; Sat, 10 Oct 2026 00:11:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1791583881;
-	bh=N5dL7jTHIc0W/mPlRe2UP0O2mkpgxQBMxpFx4wu2gho=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=L8hsZxT5+MP9QRb6Y33uzWLoevVMU1Jz+dRPQrJE3tYeZ0TswDsPstn/DkzVn8LCw
-	 0HW1S5qlOThxJXyCGWput2WNJ3uCp4xp9LxIDEtL2L4TfC1tNsTB8U9ubw92lTCJLa
-	 OCH52YYxJaQPL6CxfraEZZtJd9nsnZ16m+uJgdvbhC8zAnFufmxh+fUX05tgP+ymRx
-	 lArNLI6nKkPVIDzpa75e0HZI2R6HpomNnnp8oQod9koiKD8DesXl0kjYJBEu9xe1bW
-	 7VafsNAGiZAfpsiv57MrM5yARjHXoD76gqAG2uDeX0DjmddjRoblL82ISju8NMiElx
-	 gEV3yZB+jZFwg==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4j1h061c9nz6v1d;
-	Sat, 10 Oct 2026 00:11:18 +0200 (CEST)
-Message-ID: <1c414e776b56ae215d2d07b73a384ed4542c963e.camel@posteo.de>
-Subject: leds: KCSAN report
-From: Markus Probst <markus.probst@posteo.de>
-To: Boqun Feng <boqun@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman
- <david.m.ertman@intel.com>, Leon Romanovsky	 <leon@kernel.org>, Miguel
- Ojeda <ojeda@kernel.org>, Alex Gaynor	 <alex.gaynor@gmail.com>, Gary Guo
- <gary@garyguo.net>,  =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- "Rafael J. Wysocki"	 <rafael@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Krzysztof =?ISO-8859-1?Q?Wilczy=B4nski?=	
- <kwilczynski@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein	 <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=	 <work@onurozkan.dev>,
- Ira Weiny <iweiny@kernel.org>, 	rust-for-linux@vger.kernel.org,
- linux-leds@vger.kernel.org, 	linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org
-Date: Fri, 09 Oct 2026 22:11:20 +0000
-In-Reply-To: <aslJ1ISONL9ojP-3@tardis.local>
-References: <20260930-rust_leds-v26-0-83837331020e@posteo.de>
-	 <20260930-rust_leds-v26-3-83837331020e@posteo.de>
-	 <ask31EX01lSL9QJ9@tardis.local>
-	 <81e1aa92ebc389468eb6f493393a1c58a79373e7.camel@posteo.de>
-	 <aslB3lFUKpMEWOiM@tardis.local>
-	 <7174e1f95dcbeb8802d9e9c9715afa32784f0c20.camel@posteo.de>
-	 <aslJ1ISONL9ojP-3@tardis.local>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-1WJ7yHW5rBGYh6PJ8FMK"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Yy2k2h/7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SY33HBku4stXedodFIdQcqdyUr00TnY4hKqSJKkGyUG7Ck33vxnxwFq3RWDGTbRqUGPa/zb7xrdHHP5enV85lstxs+IWLeqDu3+ynaXq+zoDP/cqsnWFsGgtWGpVORGCqicyLZxOkhsYezv/6G2FFx51/us0BiBJxhd+GfUeg8yyv/CCuuJdNQujaPB3GYiSFad/HMFOIU1Y2FRuXOdPPjLMikiiLVGcFsGCGcJ23xb+bkgINqD0x3ZVWw9bvn1uj36zPbT+XmWHdSARapcLv3YKnS3+0urkHoM3osupspYkQj2IO1FiyTzJ3LcEuUNo9qj7jNwQQA9BfldBYy4n7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BlaPNqOFiY/SV/fQJa8Td8L7S+3Vm7RUWUQ5hLsE/JI=;
+ b=CmXSnoOOjrWNobdZ0HXho9HFWJ1gyvyej8k/OXPTP8kc+EgIUUGHk9T4x+EDlqh8eD4QPa/Sj53Qtcw8uONePQyDyAobQA5WONzDX6mLJqBiTPJO1gt9LBs9r+7abXW3Jb2RmpsPIyPbjVrNGP3k2fDKbNuznjrjAqWtAenq0pu+hvwhkCJrvTtUbz50CgY5A3ao6O9JjLSvsWjXZIWC2flbEr9bgcsGwqTkhz0ja0AKo7yWCDKOZg4gGInWPAbhTkAe3SWJ+lan3CTv3OiXjYTF5UvqdJjoh8I7WsCMTH/UiIjdRreUoOeQNFgXk+Iwd3P9wOI66AeZqgTMPfz1iA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BlaPNqOFiY/SV/fQJa8Td8L7S+3Vm7RUWUQ5hLsE/JI=;
+ b=Yy2k2h/70W2PQ4NIR0QKQ+F7W3moDUzsH3IN+Dp7ARWmfYqnPIHSKEr1q62OZppNr//E+xrsmR+lN6ockQVfuG6NzYVu8ZqkTtd06kuR2tC51glGzwkxa+FEIPd7F9aQRcZcErbjupzYgn1J0JtsJjmIkUYdX+A9k5dIDexB9qs=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+ by LO0P265MB3115.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:155::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.18; Fri, 9 Oct
+ 2026 22:15:39 +0000
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0496.015; Fri, 9 Oct 2026
+ 22:15:39 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 09 Oct 2026 23:15:37 +0100
+Message-Id: <DM0NKMDE2IVW.18JVM92P0V6D7@garyguo.net>
+Cc: <boqun@kernel.org>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <dakr@kernel.org>,
+ <daniel.almeida@collabora.com>, <tamird@kernel.org>, <acourbot@nvidia.com>,
+ <work@onurozkan.dev>, <rust-for-linux@vger.kernel.org>, <ardalan@uci.edu>,
+ <zhiyunq@cs.ucr.edu>, <dzueck@uci.edu>, <ojeda@kernel.org>
+Subject: Re: [PATCH 0/1] rust: configfs: Fix reference creation from
+ uninitialized data in `Attribute::show`
+From: "Gary Guo" <gary@garyguo.net>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, "Priya Bala Govindasamy" <pgovind2@uci.edu>, "Breno
+ Leitao" <leitao@debian.org>
+X-Mailer: aerc 0.22.0
+References: <cUqSvTsTaMYu_TRrAABCYTNz0HZf5JeFdIq_Vv4e_-GFMgI5NwVfZJDcy8CTgc4fH_1OoiiMg2I2LIzQX1y3Rg==@protonmail.internalid> <cover.1790981219.git.pgovind2@uci.edu> <87v77bcg0m.fsf@kernel.org> <87se2fca48.fsf@kernel.org> <3RuaIprV4H3e3FnKKFRDbFLoX28Pw2JicqOEgLLCMKEKZgl1LnWvQ6lYh-fgzYC2fgCEnRLhsmFWgq9opqQNEg==@protonmail.internalid> <DM0BMX11TPKW.3SXBKY2XRLHQJ@garyguo.net> <87mrsmd37t.fsf@kernel.org>
+In-Reply-To: <87mrsmd37t.fsf@kernel.org>
+X-ClientProxiedBy: LO4P123CA0268.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:194::21) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO0P265MB3115:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4c76e0e7-4aec-4991-413a-08df2652d9d5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|56012099006|4143699003|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	tVPA1N770lixLax4OQ68TVfQ6WNkg3Wic4m3a6x4tFirfN5sR2USOvK5zgqixT1aF/7UfLRYr8Crqt3WtGlGksSjIQM+9HnpPBxLMRFdOXMl8Uah2ydxAfmpBzLbUHPlOCLZfegiiFZ4hljvmDTNNCYJmZ1qoD4vjVJuFsHA8wPSOTaHpyUJKbU1VysYic/fZGpLCPyuoXqYy/6AfUydnISioleKQCo3lc28ovyC780mvHzmtqsLFK2i+5AOppei18Bfanl7ULQXSF3oc6BRHuZtfC1xY721PZ/RSKbwDl5x1D/apYX9+wmN2qrwfG3hDBkdL2cP80Vm47OSOz6aW8elWWHLANg5pFgV95Fb4BY3qz5MvFceKLIh393bffvDvEMD/kP210VXsydtCcE9p9/OQcB90P65dRhbfO4fKZ07JcXb7x+UFa5XLFEroAy81UdgQTlsCXOdLbUfmBLZ5FqxVS79cv1rSYQZV938T+5Gqlphp0nvmBIPx63G0abFDQn08llLsXUuj5zvMHRSShGYooUUMCPnP1b/q8VkykRqRdebJ+Etqp3lthTgbo5kW96UPzU9ekhE86FOiSDFpgjAr63d9gOZpnnntppsRDtfoNfj23kgUG3loC9Yk7H4
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(56012099006)(4143699003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b1NZdmhWNW1MNFgwc20yOEM4UzUrUGNiOTd0TEo5eGgzYVNzblY4dVBXSHpG?=
+ =?utf-8?B?Vi94emw2SkZsdUtCRGhBMWRlVjY5eXhSL2J0L3p0cVJ6RkF1by9GTjlrc2xM?=
+ =?utf-8?B?TUtsTFJQbjlmUXptMkZEcGdsbXBQMWdQMjNETnJ1QzlIU0UyMHI2K2U0VG1h?=
+ =?utf-8?B?RVhjak9xaENTaWdIYW92MjVOdEpsVFp4cElEc1FoR3ZZdnhOdksrMHg1R2h0?=
+ =?utf-8?B?N3RzdWN1VFMzSjZrSXVBNXVOUVA4d21rcWZoSXZxTitIT2h6SU1wTWcvMjBY?=
+ =?utf-8?B?cjl2MzV3bzh6T21RcElKYXVqOVRxcDFGSHZIVHZwc2hHY212SXdieWNqU0lj?=
+ =?utf-8?B?QXJpVENrUCs1QkNKUUc4ZUJJTU1FNWgxRDhJbXpxQTBMT1RKdE5pazdTbldF?=
+ =?utf-8?B?Ly9SY21CV05DSHpKS1hadlp1ZjBNVzhlRTQzZTdCTDlGSFhQZnpDeDBuWGk4?=
+ =?utf-8?B?ajgyNFkrKy9WS1gxRGU3NHEyYTNqVnhTNkJ1N3Zwa1ZBSExSekF3OEJlMGZ2?=
+ =?utf-8?B?SDVIMHVKTSthMVhYN2t5ZHlLT2pTaVllRW1SR3ZMWEZJSjRpQ01TNXF3SVdY?=
+ =?utf-8?B?STJyUWxmVHRMS2lWbkJNR3NIMUxHNXAwU1BBUDhiUlJydHgyMy8rWDlUbFdD?=
+ =?utf-8?B?R2hySzdOWDNaRWt1QzF0ajJVaThoRGRCMXo5bjlsb3JhMlJRbnV6Sk5nNVRE?=
+ =?utf-8?B?WmlyVXl2QTBhWXhwdENFdFB3ZENyUHh0Q0M0ZW4yZGlJZDkyRkc0QlA5aDQ5?=
+ =?utf-8?B?UkQvczgwbFlhYXp0allmdjlHUHVtbFJodkVzQlBkdThBUFVJUFJuZ3hkUDAz?=
+ =?utf-8?B?ZTlKU3YydGVvK3kraEpRSmMxYU1Hc1BXNlNEcHVnTFRhS2hEaUdVK3dsbm1z?=
+ =?utf-8?B?RG9IaE5aS2FUeks4NGRSdk1oNFc4T2FHeWJ5N245d0RWdFAySXVjcDlFTTB6?=
+ =?utf-8?B?YkwyMUoyNS9GTmt2aExSVmZmalQxM3JITEo2ZHFxV25OZkp1bWpCRUhvak12?=
+ =?utf-8?B?eXlQWVk4K3lsTlFkaHN4RjNkc2FWMWd0WjkxZ0JGNDYwVEtrZmVFbkY5ck03?=
+ =?utf-8?B?M3lsRjBOSXh6czFLMHR0Qis4K25xZmJScHZzc1gvK2pnRmRqOU5NVlNqMmRP?=
+ =?utf-8?B?ZjV2ajFVaGJPZUxieGZ4S2ZsZGEycHMxMzlXbTd0VWEvSkRvdGNMZ1FFUnVa?=
+ =?utf-8?B?Y0RlSVlqc0hHVmZ4cmNkK1d1TzlvangxbnI5TjRLZ21lcm1aNGJmQUkzY2Fy?=
+ =?utf-8?B?U3lHL3JuWEVqOGZkMzNvNFRhSEUrbUxKb3lBN012WUptSE1DbmlIMGxWWjNr?=
+ =?utf-8?B?SWxrbHF0RWp1NEgwZ1J3eHFjaDJyY3FzMXExZDg1UGxXbStGNHIyNWlKWWo3?=
+ =?utf-8?B?RGV3YXNwVkRybWM0VkdsTWx6SkQ3dEhxRldYUEFXM1Zta2J2Witsc2U0Q1BW?=
+ =?utf-8?B?SDlNdllvVzFWa3JwSitYZFpRTkdIcXJuZ1hzdEVBYVFVZzNaRnM0TlF6N2Vk?=
+ =?utf-8?B?a3phcXpyUkVSWG5JaE1wbEU4Z2JoQWw1OEEySVFqTFdyYzdCLzU0Ny8xNExK?=
+ =?utf-8?B?V25EUzVNZ2FycmdkZExWZW9kVWpMMUpOMjVUbmJwbVlzb0ZGZGl0aTN1dUly?=
+ =?utf-8?B?NnY1U2FQS0M5OFBRY2lsQXVkc3BXZTY5L2g4SDQ2Z3FnM1ZJcDV1Vjd6Umtr?=
+ =?utf-8?B?bEZJYXNOK2d4WTR3Q21oRDRzUi9BOFlEVFd4a1R4K0YxMHYxWVFWd0ViMFBJ?=
+ =?utf-8?B?cWdVSGMzV1hMVGJWbUMrUnFRUjhKRUlyOHBobXhURUZKUmZETnhGOHU4N1Js?=
+ =?utf-8?B?Y1NrN1I0NGRqd0lGSUdOdnVEVGd0cTI5RjhaME1majA4NXBiOFdoa010SEZu?=
+ =?utf-8?B?b2d6MkxtbzZaR3c5d2lFT3hNMjF0R1pUcmJTZTJZWld4NjJQa3YrZHkwNVJx?=
+ =?utf-8?B?cno4TEFsZXBZbENLQ3pFd1pENEtrS3drYUZ5cnNsOUdjQU1DVit2Ny9aUUR4?=
+ =?utf-8?B?bHMySTV6cXlpQldobGlwL2dGYzZFZ0RJZ1JwYktjdTFIZCtDM1lSbDcwQ2Fa?=
+ =?utf-8?B?RW10MFBsVncwcTdTcE85U00yR1BpR0dBN1pnZEtKZWZQUEt4c01oeWdhT3RY?=
+ =?utf-8?B?Y1dqRVJmTkM1MlVQb0JLQlFZOUYvY0ZrMjdYWjFjYzN0RFRHOUNJWllKVldE?=
+ =?utf-8?B?U1ljZDFEYXJjNDA0bFo2dzBQZHJMRW9SSVJOT20wcEk2MSt6OGdxNFBObXNt?=
+ =?utf-8?B?ZWRSYmJVNzd2MDZCdzA4b2hBV2Zaakx5bHppQVlNaUxVTWI4R245eGw3RXc1?=
+ =?utf-8?Q?9Uk/eUwxHk284iZ8fE?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4c76e0e7-4aec-4991-413a-08df2652d9d5
+X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2026 22:15:39.4384
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DjJkJuNPYFFZJTbKi3D9SJqIsNDBB08WFJ3lPnlucSvdCFCdSIqo9neKfDXIax0qTLbaLv6MIeGjTZvN1CsAJw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB3115
 
+On Fri Oct 9, 2026 at 9:32 PM BST, Andreas Hindborg wrote:
+> "Gary Guo" <gary@garyguo.net> writes:
+>
+>> On Fri Oct 9, 2026 at 1:49 PM BST, Andreas Hindborg wrote:
+>>> Andreas Hindborg <a.hindborg@kernel.org> writes:
+>>>
+>>> Actually there may be a problem, but I think it may be in C configfs. I=
+f
+>>> you take a look at the function that reads data from the iov_iter:
+>>>
+>>>   static int fill_write_buffer(struct configfs_buffer *buffer,
+>>>             struct iov_iter *from)
+>>>   {
+>>>     int copied;
+>>>
+>>>     if (!buffer->page)
+>>>       buffer->page =3D kmalloc(PAGE_SIZE, GFP_KERNEL); // <- HERE
+>>>     if (!buffer->page)
+>>>       return -ENOMEM;
+>>>
+>>>     copied =3D copy_from_iter(buffer->page, SIMPLE_ATTR_SIZE - 1, from)=
+;
+>>>     buffer->needs_read_fill =3D 1;
+>>>     /* if buf is assumed to contain a string, terminate it by \0,
+>>>     * so e.g. sscanf() can scan the string easily */
+>>>     buffer->page[copied] =3D 0;
+>>>     return copied ? : -EFAULT;
+>>>   }
+>>>
+>>> This function does not zero the page that is written into. This,
+>>> combined with the buffer being per file handle means that you can read
+>>> the original data in the page. The `kmalloc` should be probably be
+>>> replaced with a `kzalloc`. This should be a problem for C modules as
+>>> well.
+>>
+>> Why is this an issue? The extra uninitialized bytes should not be used.
+>
+> I guess you are right. In C, a driver just promise to not read beyond
+> the write count. At any rate, it is a cheap defensive mechanism to
+> kzalloc this buffer. It would prevent leaking uninitialized data to user
+> space under a wrong length returned by the `show` implementation after a
+> `store` operation.
+>
+> In rust it is an issue because the *driver* _may_ read the uninitialized
+> bytes.
 
---=-1WJ7yHW5rBGYh6PJ8FMK
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Well, the driver shouldn't read the bytes at all. It is supposed to *write*=
+ to
+the slice. We probably want something like
+https://docs.rs/tokio/latest/tokio/io/struct.ReadBuf.html=20
+instead of a raw slice.
 
-On Fri, 2026-10-09 at 13:08 -0700, Boqun Feng wrote:
-> On Fri, Oct 09, 2026 at 07:59:02PM +0000, Markus Probst wrote:
-> [..]
-> > > > > > +/// The multicolor sub led info representation.
-> > > > > > +///
-> > > > > > +/// This structure represents the Rust abstraction for a C `st=
-ruct mc_subled`.
-> > > > > > +#[repr(C)]
-> > > > > > +#[derive(Debug)]
-> > > > > > +#[non_exhaustive]
-> > > > > > +pub struct MultiColorSubLed {
-> > > > > > +    /// The color of the sub led
-> > > > > > +    pub color: Color,
-> > > > > > +    brightness: UnsafeCell<u32>,
-> > > > > > +    intensity: UnsafeCell<u32>,
-> > > > >=20
-> > > > > These should be `Atomic<u32>`, or am I missing something here? Us=
-ing
-> > > > > `Atomic<u32>` should resolve sashiko's comment on this patch.
-> > > > Snippet of the `Atomic::from_ptr` rustdoc:
-> > > >=20
-> > > > "
-> > > > For the duration of 'a, other accesses to *ptr must not cause data
-> > > > races (defined by LKMM) against atomic operations on the returned
-> > > > reference. Note that if all other accesses are atomic, then this sa=
-fety
-> > > > requirement is trivially fulfilled.
-> > > > "
-> > > >=20
-> > > > This safety requirement is likely not met if I see this correctly,
-> > > > because the led subsystem does not use atomic accesses.
-> > > >=20
-> > >=20
-> > > Then the C side has a data race that needs some fix (or they use
-> > > READ_ONCE() or WRITE_ONCE() which are *atomic* to avoid the data race=
-).
-> > They don't use READ_ONCE or WRITE_ONCE.
-> >=20
-> > Writes to "intensity" can happen at anytime by `multi_intensity_store`.
-> > It does lock the `led_access` mutex on write. It is not locked on read
-> > and `grep "READ_ONCE" -r drivers/leds/` has no matches in drivers
-> > either.
-> >=20
->=20
-> I wonder whether KCSAN will report an issue of this (w/o
-> CONFIG_KCSAN_ASSUME_PLAIN_WRITES_ATOMIC).
-First of all, thats a pretty noticable performance impact on desktop
-here. Gotta recompile my kernel very soon.
+(Also, the name "page" for variable name is a bad one, it leaks the
+implementation detail of configfs. This is just a buffer to avoid having dr=
+ivers
+dealing with iov itself.)
 
-Second of all, it does.
-(Also like every second reports with something else, e.g. vfs, tty,
-_find_next_bit, btrfs and more).
+>
+> So we can fix it on the Rust side with this patch from Priya. Or we can
+> initialize the buffer on allocation in C.
 
-Reproduced with:
-- Software to write random values to "multi_intensity":
-https://gist.github.com/0xIO32/2ec10e7521fc80e96f700e1f6fe219c4
-- Self-written low-quality multicolor led driver (to not overload real
-led hardware for this test)
-https://gist.github.com/0xIO32/1b46b8965a9d52f6e3ec5355c1f054a7
-- the timer led trigger with delay_on =3D 1 and delay_off =3D 1 has been
-enabled, so there is concurrent access.
+Not really, we can just "declare" all bytes allocated by kmalloc is initial=
+ized,
+but to unpredictable values.
 
-Tainted because nvidia drivers, external module: v4l2loopback.
-Gentoo Kernel, running on desktop. Its on 6.18, but as far as I know,
-this logic hasn't changed (and fixed would be backported).
+>
+> For the record, I did not notice that the buffer is per file open, which
+> is why the bug is here in the first place.
+>
+> @Breno, should we zero this buffer on initialization on the C side, or
+> do we just zero the buffer before calling into Rust driver code?
 
-[  273.080793] Reported by Kernel Concurrency Sanitizer on:
-[  273.080805] CPU: 1 UID: 0 PID: 4070 Comm: write_intensity Tainted: P
-O        6.18.54 #1 PREEMPT(lazy)
-[  273.080826] Tainted: [P]=3DPROPRIETARY_MODULE, [O]=3DOOT_MODULE
-[  273.080836] Hardware name: Micro-Star International Co., Ltd. MS-
-7C56/MPG B550 GAMING PLUS (MS-7C56), BIOS 1.K0 09/02/2025
-[  273.080847]
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-[  275.913835]
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-[  275.913855] BUG: KCSAN: data-race in led_mc_calc_color_components /
-multi_intensity_store
+Of course, leaking any bytes to userspace is bad because this is kernel mem=
+ory.
+So one can argue that zeroing it would be a good hardening measure.
 
-[  275.913883] write to 0xffff8a84e71d1c70 of 4 bytes by task 4067 on
-cpu 8:
-[  275.913896]  multi_intensity_store+0x1a4/0x2b0
-[  275.913912]  dev_attr_store+0x41/0x60
-[  275.913931]  sysfs_kf_write+0x192/0x1d0
-[  275.913948]  kernfs_fop_write_iter+0x1cb/0x400
-[  275.913964]  vfs_write+0x5ad/0x650
-[  275.913977]  __x64_sys_pwrite64+0xaf/0x100
-[  275.913992]  x64_sys_call+0x206c/0x24c0
-[  275.914006]  do_syscall_64+0x89/0x390
-[  275.914022]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Best,
+Gary
 
-[  275.914043] read to 0xffff8a84e71d1c70 of 4 bytes by interrupt on
-cpu 3:
-[  275.914056]  led_mc_calc_color_components+0x87/0xf0
-[  275.914072]  led_set_brightness_nopm+0x2f/0xd0
-[  275.914093]  led_timer_function+0x1f5/0x2c0
-[  275.914106]  call_timer_fn+0x32/0x1e0
-[  275.914126]  __run_timer_base+0x7b3/0x980
-[  275.914146]  run_timer_softirq+0x31/0x60
-[  275.914166]  handle_softirqs+0x157/0x400
-[  275.914181]  __irq_exit_rcu+0xb9/0x200
-[  275.914195]  sysvec_apic_timer_interrupt+0x7a/0x90
-[  275.914212]  asm_sysvec_apic_timer_interrupt+0x1a/0x20
-[  275.914228]  osq_lock+0x121/0x260
-[  275.914246]  __mutex_lock+0x172/0xf70
-[  275.914261]  __mutex_lock_slowpath+0xf/0x20
-[  275.914278]  mutex_lock+0x9f/0xb0
-[  275.914293]  kernfs_fop_write_iter+0x11b/0x400
-[  275.914310]  vfs_write+0x5ad/0x650
-[  275.914322]  __x64_sys_pwrite64+0xaf/0x100
-[  275.914337]  x64_sys_call+0x206c/0x24c0
-[  275.914351]  do_syscall_64+0x89/0x390
-[  275.914367]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-[  275.914389] value changed: 0x000000f8 -> 0x00000034
-
-Thanks
-- Markus Probst
-
->=20
-> > Writes to "brightness" are on the C-side handled by the driver by
-> > calling `led_mc_calc_color_components`. This rust abstraction always
-> > calles it in `brightness_set_callback`. So on the C-side, this at least
-> > is less of an issue, as writes and reads are controlled by the C
-> > driver.
-> >=20
->=20
-> Thank you for taking a look into this.
->=20
-> > >=20
-> > > The general rule is: if C side has a data race, they should fix it, i=
-f C
-> > > side doesn't care ("the compiler should not data race on this code"),
-> > > then the Rust side treat it as atomic operations. This is the only wa=
-y
-> > > to better code regarding data races.
-> > It probably should use WRITE_ONCE and READ_ONCE, but it also shouldn't
-> > create any issues if its not used. There is no load tearing on a 32-bit
-> > integer and memory ordering is not required. Not sure if its worth the
->=20
-> I think some people would disagree with you on "no load tearing"
-> (because data race =3D UB =3D anything can happen), but..
->=20
-> > trouble changing every existing multicolor led driver.
-> >=20
->=20
-> I agree it's probably not worth doing this at the moment.
->=20
-> > >=20
-> > > > Ofc, this function won't be used, but I think given that the same
-> > > > struct is also accessed by the C-side, it should also apply here.
-> > > >=20
-> > > > Like Sashiko suggests, "core::ptr::read_volatile()" might be a bett=
-er
-> > > > option to prevent certain compiler optimizations.
-> > > >=20
-> > >=20
-> > > No, please don't over-use read_volatile(). The reason that READ_ONCE(=
-)
-> > > and WRITE_ONCE() are safe to use for synchronization is because
-> > > semantics-wise they are atomic on certain types (if aligned), and the
-> > > them being volatile is just an implementation detail.
-> > Ok.
-> >=20
-> > I will need to make .get_mut() const for this.
-> >=20
->=20
-> Sounds good to me.
->=20
-> Regards,
-> Boqun
->=20
-> > >=20
-> > > Regards,
-> > > Boqun
-> >=20
-> > Thanks
-> > - Markus Probst
-> >=20
-> > >=20
-> > > > Thanks
-> > > > - Markus Probst
-> > > >=20
-> > > > >=20
-> > > > > Regards,
-> > > > > Boqun
-> > > > >=20
-> > > > > > +    /// The maximum supported intensity value.
-> > > > > > +    ///
-> > > > > > +    /// If None the maximum intensity equals to [`LedOps::MAX_=
-BRIGHTNESS`].
-> > > > > > +    pub max_intensity: Option<NonZero<u32>>,
-> > > > > > +    /// Arbitrary data for the driver to store.
-> > > > > > +    pub channel: u32,
-> > > > > > +}
-> > > > > > +
-> > > > > [...]
-> > >=20
->=20
-
---=-1WJ7yHW5rBGYh6PJ8FMK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmrJZngbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSjMkQAJwIQc2FYnss1BvBr6pc
-1XapqAEqKEkpXGMSoWWOEY7mzmZMIQkncZ+2Po88YpjJ4GTZIez0VzTQFYfkEWHf
-EZHJNy4h65JaG6uEXc1oryz+xIk3exEj1u+9zw5mDhaRfCYhMf9as5R66KpRylin
-ovGZ63TxjMbo73cczmnlYsgAB3zC0xLzxEziAUpq3skZ1AYV5TfQelb5J5i35iVV
-f6LZGOjw/xWuBrg/zDfCwaC4bcIw0d6ByZduvUp7ocY6jREian3z+02rDZPwHkOG
-qtUZAWT1YBe03NAXyeheWxZZbwk9Jr7Z9LibzDMwqSHOeIVTRJr9xybXvB9edSJq
-4gBqEVMdHlEgnwOOxFAlL4MwaGAW+ItY/o+e6QIlb5OTEYJgpOED9J9lrb5RYDdr
-i7ZTn+XdcgPLm8zHyicL8Bo10ts9uBV84DQk5jOxwPBDonRw2c9UOWGgw/kH634Y
-/VfspedtiKRqxTTe2HV+AQwcPoyo0KHiziA653qrl04SgsRRLTyBJsd2xTUYw4KO
-EpWUWrtqJtsE4r5wi9CDbPr95D9HGUlka+na9aj6qcOsBmKnfE0uJZyCWUkKKnqa
-PpyGZXcKoVcGGQO3okwVybTu5zf8uTduEoNvdroGNGmI5BrJVe9IZoeZgB/P1eCq
-CVPCSdpM+APMhoGMGduUwBDv
-=4GjR
------END PGP SIGNATURE-----
-
---=-1WJ7yHW5rBGYh6PJ8FMK--
