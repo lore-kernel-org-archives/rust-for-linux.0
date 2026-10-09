@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32893370ADF;
-	Fri,  9 Oct 2026 19:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F62F34EF03;
+	Fri,  9 Oct 2026 19:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791573263; cv=none; b=euyecMQJ+GEg+WAFqC7HOQ46N8uPDbr9ql6ZGm0uhHWEogGO0upI7s973a09I8/12r8V6gobN2psR/+qFjhzeucyeP6bmzbuYC1zdNeUd4q/HOMuEXIeQDX/A+5Ea6rg33TiNuPYsVC+SBU5LtT+B1Mg3shOCVtZeZ7Hy5n8Y/s=
+	t=1791573269; cv=none; b=M3Vgoc2tCKx3glgOCUV2FYpOXKr1MZ7QyaROX/4q8uGv1nfTByXsjiNZs+9n3XtuBsZmffdyKSxfC/7uXcDRFxNJ0Unkk1coV4s+MGUf7M6jD+n6S/kvzC8Ws38k5/ethAG/xvzfYl2rit7uJlheq4zXajIl80NZSqkRP6ke2Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791573263; c=relaxed/simple;
-	bh=PaJ+bjf5cXPQt8v2NED6VlP2B10dezo8OtC8JhgSl8g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WGPiGuS+nk6Bblze+poLnSgi/zSvBLpvG6uC3UiEVfdmPfeJBBr9FS1HZ1G6P+NMM2CJNCn3BDfh2Y4dmJHJtdNDmFE7ES+7z+eWyyGERhr+OnXBT+EQJabXKmLNfFbmxphKIWU+2NqSDofFObuAkAvYQiUiz84RMWk+14u0N78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ummxtshc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791573269; c=relaxed/simple;
+	bh=rRO0QPvIaMf5zTQzxf3K03LESvu0PgXC4aLW0BhAiiM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fiuVKGcnMejAXfdt+jtAZ/YeVraeUtA7QpoApj6GmhD+l/TiJHjSfxuN77TNzEWtDm6iW8CbmioLqOZyZRhDJ9g15WnCqDK00Vumeia4W3Hy9JTHUIsBbLAsIl1ORtH/OKdJoEU4MgaK6BpYgtfUUY/GHERgEkmoMemPugxc5Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e3Vwptr9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ummxtshc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB661F000FF;
-	Fri,  9 Oct 2026 19:14:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e3Vwptr9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A84B1F00893;
+	Fri,  9 Oct 2026 19:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791573261;
-	bh=rzSDMH69NxsZdNIquyU3ZY3vMVEbvlrwHE+qRvxpOMc=;
-	h=From:To:Cc:Subject:Date;
-	b=UmmxtshcNAxTTdjud/u87Thw45aFVt8fpAK0hwEZ1RWKWibNrh1UzZNfRUtGTR8FP
-	 IyoKunbuqT9ESuGgFGt3JlNuOHsqyn4oOuIoVe3xsB+MDIFkrcMGKdZzr0zyLf9wfg
-	 YXhluaHTz1db4D3+Xg4fvN3pe8oUh/VDxkv4/6T6pDX6rmh2TE9u2rkmOrENW+RBg7
-	 eoLpHTrkg3r6XnneSBCZh1DPezUS2s4o/Usn2484+8s42s92n6JCYC3p97OuU4s6Vi
-	 j/Xp/bvYmJvajOYXIsII86i+/vC8Pxs9bq1PmMyW47jJMU1au3YE5rbAueqJRuHa+b
-	 DJLOWDb2i+2xg==
+	s=k20260515; t=1791573267;
+	bh=QiQ3oCtAQFVoZ8VpJPXCtOe7WLKhJFhUDIDS4+CUyCg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=e3Vwptr9TOnPRk34rFAeylua9RcmP2d3gdWMlllmJFO/3udD73ieVsAoisNz4K9+a
+	 VQk5TGUEJzmqisNsefaen+IJ1jS1TdKTa4Wn5obrUvH8iq67P8/FXDcVijczmEWe2+
+	 I3ypqolbExdPhgHMa2foSkVgn2AkM+LaZVuBhTU3spOkVTzwHT6dZMxiVZyqOi//sG
+	 q/cVXSTouaEkzmm4PI95C/Lma9j/HR1oebkXNm7xs1bbaEY2VQAgh9RiYoKDhofvNE
+	 L79eKbgRM4dp6M2a4mSU4QyCn/J8flBduK8N7xBB551/QapAQO+HMEZoI0FKgFWG30
+	 kh0j+fVudHiGA==
 From: Philipp Stanner <phasta@kernel.org>
 To: Danilo Krummrich <dakr@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
@@ -51,168 +52,68 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-media@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org
-Subject: [RFC PATCH v5 0/6] rust: Add drm::JobQueue
-Date: Fri,  9 Oct 2026 21:11:18 +0200
-Message-ID: <20261009191124.1022902-2-phasta@kernel.org>
+Subject: [RFC PATCH v5 1/6] rust: DmaFence: remove static lifetime
+Date: Fri,  9 Oct 2026 21:11:19 +0200
+Message-ID: <20261009191124.1022902-3-phasta@kernel.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261009191124.1022902-2-phasta@kernel.org>
+References: <20261009191124.1022902-2-phasta@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Changes in v5:
-  - Add back the Revocable<JobQueueInner…> from my earliest RFCs. Reason
-    is still the same: JQ dropping while dependency fences signal could
-    deadlock. Similarly, this solves a dependency kicking of the work
-    item again while drop() is running.
-  - Do not call run_job() with a lock held, since run_job() might sleep.
-    AFAICS, this also makes the proposed XArray solution impossible and
-    demands that we use a list.
-  - Re-add the earlier credit-count-system, so that run_job() is
-    infallible. Simplifies the design quite a bit. (Danilo)
-  - Drop jobs in a deferred manner through the work item so that job
-    payload data can do atomic-hostile stuff.
-  - Because of the point above, I suggest that we stop dropping a
-    DriverFence on signal (Danilo's and my idea). It has no real
-    advantage, and getting rid of it allows for better controlling what
-    drops when through JobQueue. For fence it's only relevant that there
-    is an RCU grace period, thus:
-  - Replace DriverFence::drop()'s call_rcu() with synchronize_rcu(). We
-    would, therefore, demand that everyone who's got a problem with the
-    delay drops via work item.
+(will be upstreamed separately)
 
-This can still not be tested as I'm blocked by pin-init vs self-ref.
-Just FYI.
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+---
+ rust/kernel/dma_buf/dma_fence.rs | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-I would appreciate confirmation of these following thoughts on locking
-design:
-
-1.
-I believe that callers of jq.new_job() and jq.submit_job() do not need
-an outer serialization mutex. Reason is that JQ serializes with its
-internal lock. Sequence numbers cannot take over older seqnos because it
-is submit_job() who sets the seqno.
-
-2.
-I, furthermore, believe that a driver will not need to hold a
-driver-lock while calling jq.complete_jobs_up_to_seqno().
-
-IOW, I am suggesting that a driver can always safely use JQ without an
-outer lock, and actually *should* do so to avoid potential locking
-issues.
-
-Reason:
-
-let driver_stuff = foo.lock();
-let current_gpu_seqno = driver_stuff.get_seqno();
-drop(driver_stuff);
-jq.complete_jobs_up_to_seqno(current_gpu_seqno);
-
-Thus, I believe that it is OK for me to take the JQ lock in
-jq.complete_jobs_up_to_seqno().
-
-Please correct me if I'm missing something.
-
-Should I be wrong and a lock inversion could occur, then we could
-hypothetically add a fence Signaler object, with which we could signal
-fences with a different lock. Similar to how drm_sched does it with the
-hardware_fence.
-
-
-Regards
-P.
-
-
-====
-
-Cover letter from v4:
-
-As the commit messages and code comments detail, progressing JobQueue is
-currently somewhat blocked because of an issue with self-referential
-PinInit, which Gary generously offered to investigate.
-
-This code compiles, but the example does not because of the
-aformentioned issue. Nevertheless, I wanted to provide another RFC here
-so that we can move our discussions forward in the meantime, especially
-since very much about JobQueue has changed.
-
-Our, now upstreamed, DmaFence abstractions informed some of the notable
-changes in JobQueue. Most notably, JobQueue now owns the FenceContext,
-Jobs are created on the queue and own the DriverFence. Jobs, again, are
-owned by the JobQueue. We hope to enforce correct behavior that way,
-having FenceContext, JobQueue and firmware ring all correspond with each
-other 1:1:1.
-
-I suspect that a potential deadlock on JQ drop still exists. I
-previously solved that with Revocable, which I tend to think will also
-be the way to go here.
-
-(One very great news btw is that we almost magically solved a number of
-issues with the new DmaFence design – in combination with this JobQueue
-design, for the first time it would be possible to fully support the
-dma_fence backend_ops. The driver-unload-problem previously had most
-users use intermediate fences, like the drm_sched_fence, which means
-that callbacks, e.g. from userspace, could not be passed through to the
-driver. Now, with FenceContextOps <-> JobQueueOps, we can theoretically
-support all of them)
-
-The differences between this draft and Daniel / Tyr's prototype which
-probably are most noteworthy are the different lock design
-("Philipp"-JobQueue has one big lock, wheres Tyr-JobQueue has 2, 3 if
-you count the XArray lock) and the used data structure.
-
-The presented solution uses lists over XArray because:
-  1. XArray is semantically more complex and has an additional lock.
-  2. An Xarray-as-ringbuffer needs own algorithms for index tracking,
-     wrapp around etc. With list you enqueue into a waiting list, and
-     for running you move into the running_list.
-  3. The memory reservations we need for pre-allocating everything for
-     our job-submission path are solved in one go with list, because a
-     job simply contains a list head.
-  4. Most notably, it is unclear how XArray behaves for ever-increasing
-     indices with a sliding window, whereas the list semantic is well
-     understood and deterministic.
-
-I obviously don't claim to own all the wisdom in that regard; it's just
-that I still propose this solution because these arguments make me
-believe that it is the right one.
-
-Since all the list handling is done with iterators, there is currently
-no unsafe needed.
-
-
-I hope we can discuss many things here before we, hopefully soon, can
-address the lifetime issue and move to a v1.
-
-
-This is based on drm-rust-next (10a6623a24a8), plus Danilo's ScopedWork
-[1] and my patches [2][3] regarding 'static and lock errors.
-
-Regards,
-Philipp
-
-[1] https://lore.kernel.org/rust-for-linux/20260807165252.3849875-1-dakr@kernel.org/
-[2] https://lore.kernel.org/rust-for-linux/20260922083631.444614-2-phasta@kernel.org/
-[3] https://lore.kernel.org/rust-for-linux/20260924085523.2620704-2-phasta@kernel.org/
-
-Philipp Stanner (6):
-  rust: DmaFence: remove static lifetime
-  rust: DmaFence: Implement Deref for FenceContext
-  rust: DmaFence: Don't drop on signal
-  rust: DmaFence: [RFC] Add Signaler
-  rust: DmaFence: Replace call_rcu() with synchronize_rcu()
-  rust: drm: Add JobQueue
-
- rust/kernel/dma_buf/dma_fence.rs | 139 ++++----
- rust/kernel/drm/job_queue.rs     | 525 +++++++++++++++++++++++++++++++
- rust/kernel/drm/mod.rs           |   4 +
- 3 files changed, 606 insertions(+), 62 deletions(-)
- create mode 100644 rust/kernel/drm/job_queue.rs
-
+diff --git a/rust/kernel/dma_buf/dma_fence.rs b/rust/kernel/dma_buf/dma_fence.rs
+index 18a43e1bb442..eef2b9e93f35 100644
+--- a/rust/kernel/dma_buf/dma_fence.rs
++++ b/rust/kernel/dma_buf/dma_fence.rs
+@@ -291,7 +291,7 @@ fn from(e: AllocError) -> Self {
+ ///     }
+ /// }
+ /// ```
+-pub trait FenceCallback: Send + 'static {
++pub trait FenceCallback: Send {
+     /// Called when the fence is signaled.
+     ///
+     /// This is called from the fence signaling path, which may be in interrupt
+@@ -310,7 +310,7 @@ pub trait FenceCallback: Send + 'static {
+ /// When this object is dropped, the callback is automatically removed if it
+ /// hasn't been called yet.
+ #[pin_data(PinnedDrop)]
+-pub struct FenceCallbackRegistration<T: FenceCallback + 'static> {
++pub struct FenceCallbackRegistration<T: FenceCallback> {
+     #[pin]
+     callback_foreign: Opaque<bindings::dma_fence_cb>,
+     callback: ManuallyDrop<T>,
+@@ -326,7 +326,7 @@ impl<T: FenceCallback> FenceCallbackRegistration<T> {
+     /// On success the callback is pinned in place and will fire when the fence
+     /// signals. On `AlreadySignaled` the callback is returned to the caller so
+     /// that owned resources can be reclaimed.
+-    pub fn new<'a>(fence: &'a Fence, callback: T) -> impl PinInit<Self, CallbackError<T>> + 'a
++    pub unsafe fn new<'a>(fence: &'a Fence, callback: T) -> impl PinInit<Self, CallbackError<T>> + 'a
+     where
+         T: 'a,
+     {
+@@ -693,7 +693,8 @@ struct DriverFenceData<'a, T: Send + Sync + FenceContextOps> {
+ ///
+ /// let cb_data = CallbackData { };
+ /// let waiting_fence = ARef::from(fence.as_fence());
+-/// let cb_reg = FenceCallbackRegistration::new(&waiting_fence, cb_data);
++/// // SAFETY: `cb_data`'s content is not forgotten.
++/// let cb_reg = unsafe { FenceCallbackRegistration::new(&waiting_fence, cb_data) };
+ /// let cb_reg = KBox::pin_init(cb_reg, GFP_KERNEL)?;
+ ///
+ /// // TODO signalling guards
 -- 
 2.55.0
 
