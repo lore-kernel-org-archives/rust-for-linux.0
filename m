@@ -1,265 +1,149 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012029.outbound.protection.outlook.com [40.93.195.29])
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B784E7806;
-	Fri,  9 Oct 2026 11:55:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.29
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791546921; cv=fail; b=Ba2MGrMgUKfxw/oXFYgipFhe4kRsA8vG01yFPwQD38K0oeZnnhG9roVsjqW+N5FElFNGLF3Gzafin8Sh3B6Yh/ZdfaUu4QlSDvALWejOgQEEis7RAL6bm9RgZFcfkFEPxSZahjDC+HGDhtnNGSJP6pJz4PvPvfWA+xQcCBxl+Go=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791546921; c=relaxed/simple;
-	bh=c+GteJC1QiEqSz3Y8/ZWlqB7Hs4KZqzBxf/xHOnSMTQ=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=CIkCGw4jIFgaqlNWG+NztPG9BlBiJlgwrC5DkgCaRK7B8dpOQJPhC/lmSyN/TTGklS9xP2v3+N/CNJ+1Cap+W1piyrlIE5u1YJTizRosqMQudTIxr6Wn4+/2rgzSDfBqE61/BXFmLpainB7TdL6UPq0UIj8wNk+WYjt+PmhgBFA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NoG1DYQL; arc=fail smtp.client-ip=40.93.195.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4433B0ADC
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Oct 2026 12:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791549707; cv=none; b=nDwa/Diono9/FNmove1P1n7JZLD9mFW7q6hVPq1pFXozKPzMz2rIK9YIsESFVRkD2y1k5r8TyL9w6y0m1xMdV6Ix7aWt702K1RiPvM6eJ8fDykij3LLCL2QfbJrynZ/V7n3iNBeFAD6XvLDcwMd/1J4ZVwT85ft7vJTuBTkb/+4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791549707; c=relaxed/simple;
+	bh=cXQ2uYAXnsF0HDpHNFrfOB3H/gD/xL/ZzjSSAwTMiTA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NrLIJ+GJrXyfwLVCQlOSwJ76JRhVQNyV2MsUF9aUWlXV3RIy+UdQGbsPc5g2CN0qWp4kFIjRouZIz2jbTvltfzPphvDxYIAgWcqsgT6DUYeCCR1MCs796gvMBa/B2EQVa+aVKJWYR/IWYqwZ+ot1bYG2Fj8qa03piUTqWuPQ+WI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=JdWyUYvw; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=RhyEEt2U; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NoG1DYQL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bt/XoK0mbXN3GUUzXStI+G1Wy7acToi7nEU3KGQ/Wl4u9dmWRVQAcP05gUlk9e8jvz/2SVl9xFAHCxrZxczGYNAxL6x43OZ+1nkn01tVf8G06sMsFL+fuOqZEf/QKr5dmjWJmVUrDQxe+FGJ/e+IUahDjcQt3mkZbsXz+zX4Im/zsqgG7ZpWfnYBmPzBiV9icKwbtVMkQwwMLnR+byZJLehqc3XBukAR34weqlTd0nTlh2bsNwBzZhOnXfIq0JAFeWcWb/VLK5FC4IT1m9ton82iFi3x3zwgSBFtq1sfsjfGbNOjYW1QDsLWtkqamsNhXWJCIBjbiQpF04OhDqxbOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PXngZ1HrfM31JYoD40aY2U7f/IoFZAAdi0DjUgW0qRI=;
- b=GFRxIznk3LUwYKFjNdIXAnYW5Ams49km4ibiZEjn9r6xIASW+hNH8uwCqbYu16GYUiReLoBkdTsQQCf4x+OCXDrNh4zXbYR8RC0VRfNHx0AtI7aZ4fnIqBZDnSGQAaUtOpD0vygvtHn6TcTWzIrACyqdgKvSm8ArCAr8nE77LFBQSIOGcjWPGhUo7D7eE1+FrC+18UyXdvkDCuSIgsXrl/pX3CuaEHYkUMasKssJ24/NdPFjtt+MbejNxQ/z1nserjek+xEceXpticvS2yVsN9ZEhEmOe2lZioj6VDSrX/RM6tbANbSNAzqtrDfAohDIWAKKxBOWFL/PUyGQn4ghJw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PXngZ1HrfM31JYoD40aY2U7f/IoFZAAdi0DjUgW0qRI=;
- b=NoG1DYQLjLNnaZvd1jvXhs0WQ4H23+Z2FgD+XF0I+Eb3DKoRPHUyCO4vtFu30NdQjypQDVDNWdPuKeXSniR9q61MAsF49bOr+Gkpb3unpCeVfvh+al9NmPPMl/aHK5681mvuXHJ7AlLCa6M9XVw34JELosL9LbiNOaI58KERSVVAvxKAwCRcz4+/Rh8mUz0oPDI9GuWKsvPs8FTmnIrsxzYz2TdsfuumMmduuI9wMESXjr43aC19ghI1kUu9FahP9XFl8Pfi7dURemNXSN7N84JtzSlsuGS8Tw8cC+BbMJ4JDoh2Ue7SHlUZcDbAYSEe4u+ckASuuV2tpE7kqyd8vw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by DS2PR12MB473522.namprd12.prod.outlook.com (2603:10b6:8:400::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Fri, 9 Oct
- 2026 11:54:50 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0472.016; Fri, 9 Oct 2026
- 11:54:50 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Fri, 09 Oct 2026 20:54:06 +0900
-Subject: [PATCH v4 10/10] gpu: nova-core: gsp: add `rpc` to RPC message
- send/receive methods
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261009-cmdq-rpc-v4-10-c9ab8de1d3f2@nvidia.com>
-References: <20261009-cmdq-rpc-v4-0-c9ab8de1d3f2@nvidia.com>
-In-Reply-To: <20261009-cmdq-rpc-v4-0-c9ab8de1d3f2@nvidia.com>
-To: John Hubbard <jhubbard@nvidia.com>, Danilo Krummrich <dakr@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Benno Lossin <lossin@kernel.org>, 
- Gary Guo <gary@garyguo.net>
-Cc: Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
- Eliot Courtney <ecourtney@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
- nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: TY6P301CA0029.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:3ba::19) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="JdWyUYvw";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="RhyEEt2U"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 5130B1400108
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Oct 2026 08:41:40 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Fri, 09 Oct 2026 08:41:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm3; t=1791549699; x=1791636099; bh=kpVSr9gHlQi0GopQP3kB8
+	p9/+gPvh4wfr7Vzvl6zPoM=; b=JdWyUYvwHFb42I9cfl2d9QowaFLwR8ej6oX7+
+	hrcLuVU4Vpq090HIqnJaQhZ5Xg3Qyio0A38dUZMYCGlvrMRLfD42xstLBdwomRCe
+	T53alrp+sgqCv2vxNb6PdGEIAymIRmio21VHDM+yXDaPTQk1u5D/yI53wkb1VxS8
+	rvIQ+Fq5cWabZLSJwiU4W1JmDGZwmV5/PXnxhv1/MEqC49yqyR+AXAtT2o8fIhhi
+	3Ywrb6QAlQcmco+YPQXH11ymRB0dYsjYsusEn1wiGoD56ehssROBAk3g15yfX+Xx
+	1QQjJcqiD9y0aC8vav5NvufwxSl7IS2XBV1kV9nRoc/ZciIrw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1791549699; x=1791636099; bh=kpVSr9gHlQi0GopQP3kB8p9/+gPvh4wfr7V
+	zvl6zPoM=; b=RhyEEt2Ul+VRfX/Jw1SC3uniCJQb7SzsaIc2qrFVshjiLXVK87S
+	+kC7Q6SJ+RpzJ2j/5Vc/6/e//dVLZmWNAe/ziLZn0b3vj1awd+FX/Y0lWrWmbdaz
+	HAQkW/ZsVyJQAk5ITFovQzD2QkveMu7a2juqreoQd+xtoeW1C8opyfIr3iHz/auU
+	quOcaq2Lm9Ml44cIwreXCmClZyPHU8nE6SWGyXHJdiq7v6Rbf4lYNMdHkXIdrNW/
+	GsHFhXyy25FoPkyjwxn/6Sw5GSmOKZrAMi8DGTLa8AcF2783XkqQRD4Iz01YI4T1
+	Nl6bKJzkDhgUhBY21nIXwp3abP/W8WeTR2w==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791549699; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm3:rsa-sha256:acmkurZmxbivhvDrKuLZljACmJr4MIGrhCOFGE/HAeTmc7I
+	HSEIIqcWQyJX+RtJk/nW1oAO2DObMVAvuOQuJoggpxLIw/9YI1egF+uKw2jk/bnV
+	J5MYmNcJAyQZhE7qams9wbn4gxS2xel2UTDfom1eRQVKSZndsMOzLJXcPMvRAIqK
+	T8/V/4KvSYzmjph19v/pg7qnKakxPU0/hXOrEvEsgBinr0mED5C7W5QZaBkGSwZt
+	1jQvSrLsFLn5Pn9p7oexsFLYmx93xGAaOP29/CGOFGNdnYEpzhcd7v3vr0QUYxNq
+	e0WR8YU04AzfHhET92YvX9gihoTDkHCbE6FUQLQ==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=9;
+	hn=cc,content-transfer-encoding,date,feedback-id,from,
+	message-id,mime-version,subject,to;
+Message-Instance: m=1; h=sha256:WZc1wECgbzrGt/wLnVTxc8T9coIzO2SfGqRrjpr8lkY=:cXQ2uYAXnsF0HDpHNFrfOB3H/gD/xL/ZzjSSAwTMiTA=;
+X-ME-Sender: <xms:AuHIaj2_g7AekfpslRQcSf4hb9sCa3MRzlQFCeDx8EPV82TRrXhs8w>
+    <xme:AuHIaqDxG7w-8VvdR9hVYMKXhoVo9b6U_hTTuGEzcWkHdPvNBrHQJPhPdvn5gP9S8
+    KoQnuBYzFnXPZZhualdFn49yj8BH660ZInnTOfBQG-Vx7AXO1tVxmjh>
+X-ME-Received: <xmr:AuHIarGqIcjPICvlPXRh99S6U0Zwm_N3dWGkKetTaveJ3U2hKlyVM1dnV3tPkLUF8JMnTUaq9GXo214Fw6Y>
+X-ME-Proxy-Cause: dmFkZTF6x2cjlzKKOSSvIWXSsvMOZAaN/idE1zYMJYrdOvj3LXGcW/lyX3XLLCMERjEK9d
+    JnVXPixAAlK83HvcO/8QX5QDKa6KmGj8WzDr91w234Mtl98JxuG6xawl4GJ+xAB6ItpKV6
+    tGuWY0euMN+6pWAlcH34MBKSYSjvYJkR5uSOyZ7OZb36+wqVLzzqU1r3zGz2ljssBbTGJQ
+    e8oqGVC6IOAlDshwVp58mY/bBfofdv4EIP55bhieA2SpDMyWL09S/xkKCPhea8FDf//5Dp
+    qs34sWTMOwMkJEQdyJ+eOunVC45c2QYeBGbedQM3yWIeAUVf3atT5RiMMXTrwG6NKDMztm
+    qEinbhnvanR6yQpPubg9X6g9TKNWtqiaqchumrCfxrzN/lqaJbH0QJmUBIWzrdCewCrQw5
+    uJ8UWeEVSrUlwlpcPmCTQcQCjxcW7XJJoWu8WBHWjmyT8wgPoiVp6+OORFVvawRGFjWy/S
+    zlZn2GRrGRXJYoL7JEtXUSa8gLglCnjC8kBzSfUTHSgl7SBjW6dc+FQ02XUPX0UGpVR677
+    VctBVuC9Vy8L5XwyumeGJdxFZYrg5VOpa6eTa+RPt6kyLiDuXoJybO8J366jY648+TcjFP
+    NKTyuKsGgq3pvlIrtYV4FbyNzYUkobyDk9u8+11TBm1yfFS3oSAOqx6y2sDQ
+X-ME-Proxy: <xmx:AuHIavQQwGORNEiKrcjec9aKMv7lxcTz_FXw5ZrSLfQpD9oFD77V0g>
+    <xmx:AuHIaiPC4fI3zZQdxNd43YrHr-b-_tdJ4Nhs_xdUYz6ET_MiISqyEg>
+    <xmx:AuHIagNThbUaFyVIdNcfRPcZEoyzfTyoSAtoMufyjVsm1FTAuICwJA>
+    <xmx:AuHIasH-e03IUaELJrTfj-9CONJxXK5PRc_0GF4DCfT6jXvNgMTbnw>
+    <xmx:A-HIav6Ni-WOoex-aSvNFPa2TTAKBcrYMl83yz5eloBys05Ccr6O2l_f>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 9 Oct 2026 08:41:34 -0400 (EDT)
+From: FUJITA Tomonori <tomo@flapping.org>
+To: linux@armlinux.org.uk,
+	ojeda@kernel.org
+Cc: ardb@kernel.org,
+	chrisi.schrefl@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	a.hindborg@kernel.org,
+	acourbot@nvidia.com,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	tamird@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v1] ARM: rust: Generate unwind tables for Rust code with ARM_UNWIND
+Date: Fri,  9 Oct 2026 21:41:24 +0900
+Message-ID: <20261009124124.1176706-1-tomo@flapping.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|DS2PR12MB473522:EE_
-X-MS-Office365-Filtering-Correlation-Id: c284d605-18a8-49f0-7070-08df25fc1fb8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|366016|376014|7416014|23010399003|56012099006|11063799006|10067099003|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	vsaDd+Tnn7WrNiodnekmVbHfldTTWgwpAuvJkYcVML9CM+boQWSOjfbuMonTE/F3Vs5vom06S/7M/JqtXnb4ExhekS4RAgSAAZdqacuTfwptof0gPU26kGUxBFniykpOvyrk4G5P7F5c/OfGugsywJ81BBr3oa8/jYGir70CS/YCBWtnIEzTb3jE/f6V269kTQW+0xcIztCsdS1Bql/qvQAdN9/f++BDHNzZKq8120Vp29i8fKXK0bFD9+FjLDK1HZOQTsliwb3sILvAz54P43SPSYolOlju/ExL3sk3Ml2I+xNBw4bHOTtzg7+iK4cDLBici8LP66wFTS2QhoRrng/kg4uEYkNEahVj3MazBINgFxZHLmu+G1eZ5qYcro4dPE555ARsVg3WFUz2RVacdX5WXVOuUk9nPh3Yt7W7LIsvnBg3209k1R9679d1rxYzjVJL0eqpZZbM0uneGkjFQ2mlgpbONPby4kogBMwNd/mtThettI2gKQ4EzrTTdWy+qWvHTJBB2qOOIp80GZwMpNftcpIBLpOW6rFSYGMQIQwQNUDxw6k7v/4Zp8ZSOx2Ar7NBcKO0EG+MYxNFgfrB1F3M2vcqB8QBUXrGms/QYeO30s/nJzBwUcaI9QhsRc9PgKj6lgmhT4iMu/LUVqTyvcoGH5t4RDYojE+LAX7CACs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014)(7416014)(23010399003)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cDV5NmhvNUZLQkVRcUE1Qlh0anBpSGNzRElLQ1RtSkdHY29kSE1uc2RVRDA3?=
- =?utf-8?B?b2loWjEzWTliak1qaXo1eVc5Q1UxWHFWTVZPNC9ObXdnOWpYcVhIZkJOWmtt?=
- =?utf-8?B?d2NGcE9UaWF6aGRqdXdGS3RUYkJ6RUdVYjN5TStsR1JQUmFxam0wMVVSQnkr?=
- =?utf-8?B?Nm81SGhmWTM1QngxNG9TUTY0MDc2aGNxc3JnREc0Tml4eE13K1dMcXlFaXA4?=
- =?utf-8?B?UXJhTmlrWXVFUlhXT1BuYVdiRllwVDhPWlBEYmdzZTA0VDJLbzVIOE4yMDB4?=
- =?utf-8?B?R1ZjQXh3dmxzOWVSdVJZM2VpSjV5eWl2WnQzUCtTM1MwYnZ6UUxsb2cvdzlH?=
- =?utf-8?B?eDVaMzhYUmhxRGtKMEEzbC96WENic3ViVkErdGtoUkFIVWVPNVovUkpCazcy?=
- =?utf-8?B?U2R2RmgxR0FUaWdwcjM5aEtqRm80bmtEbE5aRnlLcnVCdUllVWtxK1ByZTYy?=
- =?utf-8?B?ZitDdzRTZjVQZHAreVI3UVNUUHgxeEttL3NWVnNCSmVCQVBUSUhXWGNsQUUx?=
- =?utf-8?B?S2xxYjNaOVlnYmtHNm41UkNwWGZFZWtmbnJKN0pGejRNSzFXaks2REw1bjhI?=
- =?utf-8?B?MjNWVG12MTR1cjExN2h5Znh4RzhldUdlUjRpM0NkeW91WWxKZTlSU1FMc0NX?=
- =?utf-8?B?aVNxN3IzeXBlSWQxZkFxQVNTYXBCRXV3NE52N3VFVGhLSUxacEFrWWVsb1Vn?=
- =?utf-8?B?WEh3MUYvMFl2eXFXbHZGSEo2SHdCdzJvMElTUmowSWU4RU9TYU9taUFDcUdh?=
- =?utf-8?B?UklpeGZvdFdFTklkQ3Zqcm1rZjIyb2dyUVBrcjRBbys1SjRCbWpOQzMyUzQw?=
- =?utf-8?B?QzZzTlRWdFlKZG1PNWhudS9UWGRNb2tHZTlLYkFjUXVHR2xnWnJLWXUxak9o?=
- =?utf-8?B?SkxFTjlBS0FGelF5K0dMVFMwT3pDb09VOXFMTitnK2R3bXNvdVRTS2dPSXhh?=
- =?utf-8?B?aUxMcUhZZHlPbllTaVVkWFhSeGlrV1dabXBwNzN2OG9iejRzNmNqL0VIcjRG?=
- =?utf-8?B?SjhGL1kwdXNjd0hqSnUrd3BTMVJZMnc2dVZNc2dVY0lLYi9wWmhmL3NvdWU3?=
- =?utf-8?B?bHVaOGNqQXUzZzRNU0xFTVdPdVFOaDJVMjA5UDdNYmxPanNMUHp4eEtvNHpF?=
- =?utf-8?B?OE5FZGF5ZXk5OU1DVlZnZEN4LzN5OXFkWkpOUjYrRmlCcTBNUGtNcHdDZHk2?=
- =?utf-8?B?TkIrbC9ScTFjSEh2d3g2OTNKR2sxQURrd1ZyNmlIbi9IT1FyTkt5dDBnbHZR?=
- =?utf-8?B?ZkJUNm9IQ1NvazdXakVLMEZpcjAvK2M1ajRDMnM2T2lkRHV2Q241eWl4ZXhP?=
- =?utf-8?B?QmNnV2dQeE5Sbjk5NEc2RnZxTUZ1bnJQbC9RNmZxMTg1REZmWk11VkYwUnlN?=
- =?utf-8?B?UFR6MTZQTHRoRmZ6c0J5NThqRCt2R0MyNmxlLy95VTJZUEZrU3dNMUVObWlS?=
- =?utf-8?B?NGJYZUpHQU9LamhGUC9FcnNycWoyeU16VDhpWHN6SW95ZXZRMno4SGNrUmdJ?=
- =?utf-8?B?OThuQ01lVVFidnZXb3hweVp1ZmlEV1Q1Z1BjWkxONVpjTzNaWEc5cHNiWW5Q?=
- =?utf-8?B?ZE1JbGtCN1J4R2p0MVRnYzNZUldQZlBIaTEzZmk4cGJpR0QxbE8zbTRzQjFG?=
- =?utf-8?B?a3MxZWZ4K0FHaWVDd2FjeVJuaWlObGVKL3JxbkpwbFdEcTNFMjVpRWdPUExJ?=
- =?utf-8?B?QjhyTytmRlZTdGxFSDRNaDJoR1hzQTJFbElRSmwvQnI2T0Q4TTdhcWRFMmZC?=
- =?utf-8?B?aFJ1TEFrQ2licWJQaFkrVE9lQkxrQUk1S3cyWFgvWGUyZVJQZWFtbTVTZTd5?=
- =?utf-8?B?eExNQzh1Z2RsWjVjMXhFL2tkQVc0M1RsK3I2cGZXN1VwVG5ZZC8vNmhsYlZj?=
- =?utf-8?B?MHg0STEvN0w1K0pvYUYvRDRyVklUZUhoeW5qUFkwZW04NEhERmIzSWgxajlI?=
- =?utf-8?B?dGlOOU1KSFF6ODNrTVRHUzE5T1hrZnc2ZVh4dXBxU3VHWXlBamczR3ozRkll?=
- =?utf-8?B?TFBURkJwUDJaOEpCa2pneXNNM3V0R2NtV2dnS0hkOEplQ01WaGV4VnRoSDVs?=
- =?utf-8?B?NjRjMjBiQWhGV1BOSUVKS2F5aXlQblloK25mMEFvNXVIVklZcmk3d3hIZlQ4?=
- =?utf-8?B?QSttVVZ6RUxVRFlaQ0paVHBzNTBoMC9Ic0ZSdjhVU3NkMkg5MG5OTTFJSElW?=
- =?utf-8?B?NStuSkIyRGhMM1ZnbGlCRUdtUlR2MzVzOXAxUXJ0Q0tDRXhYWmpyeDAybGdB?=
- =?utf-8?B?OFh6OThpMUlIK2lBUjgxVk5USCtnVFpmL0VEUTN3aStqd3c4YSsvOEpoRHBP?=
- =?utf-8?B?N0IwQ3VHUmdSYkJSa3p5R09NSWFGY1RHZVplOHdMMWJpdVc4TnlYZTY4RDhw?=
- =?utf-8?Q?YfRpZbKU7dnrhFK5zzUYwWZve/2KCrE8vTnoQ6ywiLoVr?=
-X-MS-Exchange-AntiSpam-MessageData-1: FGqV6VRPpMZ3qg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c284d605-18a8-49f0-7070-08df25fc1fb8
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2026 11:54:50.5506
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JYKhVX3oUUfeaetpXmZlNaOZsX8ZXksIB7DxlQB8frE3Bb8tLA3Uols+T+2GjSjEj7eMm++VMQ04aknoyR8IzA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB473522
+Content-Transfer-Encoding: 7bit
 
-Since we are going to introduce a second type of message, add `rpc` to
-the names of the relevant command queue methods so we can distinguish
-between the two.
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-No functional change intended.
+When CONFIG_ARM_UNWIND=y, C code is built with -funwind-tables, but
+Rust code is built with -Cforce-unwind-tables=n. As a result, the
+unwinder stops at the first Rust frame.
 
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
+Pass -Cforce-unwind-tables=y to rustc in that case, as arm64 does.
+
+Fixes: ccb8ce526807 ("ARM: 9441/1: rust: Enable Rust support for ARMv7")
+Assisted-by: LLM
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- drivers/gpu/nova-core/gsp.rs          |  2 +-
- drivers/gpu/nova-core/gsp/boot.rs     |  6 +++---
- drivers/gpu/nova-core/gsp/cmdq.rs     |  2 +-
- drivers/gpu/nova-core/gsp/cmdq/rpc.rs | 14 +++++++-------
- 4 files changed, 12 insertions(+), 12 deletions(-)
+ arch/arm/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
-index 75a3ba7d50f4..ed7eef21e8f9 100644
---- a/drivers/gpu/nova-core/gsp.rs
-+++ b/drivers/gpu/nova-core/gsp.rs
-@@ -221,7 +221,7 @@ pub(crate) fn new(
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 573813ef5e77..d59b8daf4f4e 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -117,6 +117,7 @@ endif
  
-     /// Query the GSP for the static GPU information.
-     pub(crate) fn get_static_info(&self) -> Result<commands::rpc::GetGspStaticInfoReply> {
--        self.cmdq.send_command(commands::rpc::GetGspStaticInfo)
-+        self.cmdq.send_rpc_command(commands::rpc::GetGspStaticInfo)
-     }
- }
+ ifeq ($(CONFIG_ARM_UNWIND),y)
+ CFLAGS_ABI	+=-funwind-tables
++KBUILD_RUSTFLAGS += -Cforce-unwind-tables=y
+ endif
  
-diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/boot.rs
-index 8e446ad1eac2..0d0b07fafd4f 100644
---- a/drivers/gpu/nova-core/gsp/boot.rs
-+++ b/drivers/gpu/nova-core/gsp/boot.rs
-@@ -43,9 +43,9 @@ pub(crate) fn boot(
-         let gsp_fw = KBox::pin_init(GspFirmware::new(dev, chipset), GFP_KERNEL)?;
- 
-         self.cmdq
--            .send_command_no_wait(commands::rpc::SetSystemInfo::new(pdev, chipset))?;
-+            .send_rpc_command_no_wait(commands::rpc::SetSystemInfo::new(pdev, chipset))?;
-         self.cmdq
--            .send_command_no_wait(commands::rpc::SetRegistry::new(ctx.vgpu.state())?)?;
-+            .send_rpc_command_no_wait(commands::rpc::SetRegistry::new(ctx.vgpu.state())?)?;
- 
-         // Perform the chipset-specific boot sequence, and retrieve the unload bundle.
-         let unload_bundle = hal.boot(&self, &mut ctx, &gsp_fw)?.or_else(|| {
-@@ -91,7 +91,7 @@ fn shutdown_gsp(
-         mode: commands::rpc::PowerStateLevel,
-     ) -> Result {
-         // Command to shut the GSP down.
--        cmdq.send_command(commands::rpc::UnloadingGuestDriver::new(mode))?;
-+        cmdq.send_rpc_command(commands::rpc::UnloadingGuestDriver::new(mode))?;
- 
-         // Wait until GSP signals it is suspended.
-         const LIBOS_INTERRUPT_PROCESSOR_SUSPENDED: u32 = bits::bit_u32(31);
-diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
-index c7deb1ae58f4..3ddde743f73c 100644
---- a/drivers/gpu/nova-core/gsp/cmdq.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq.rs
-@@ -58,7 +58,7 @@
- use super::regs;
- 
- /// Marker type representing the absence of a reply for a command. Commands using this as their
--/// reply type are sent using [`Cmdq::send_command_no_wait`].
-+/// reply type are sent using [`Cmdq::send_rpc_command_no_wait`].
- pub(crate) struct NoReply;
- 
- /// Trait implemented by types that can be sent as a single command queue element.
-diff --git a/drivers/gpu/nova-core/gsp/cmdq/rpc.rs b/drivers/gpu/nova-core/gsp/cmdq/rpc.rs
-index 39fc3a9e61fe..f334327f97c1 100644
---- a/drivers/gpu/nova-core/gsp/cmdq/rpc.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq/rpc.rs
-@@ -162,8 +162,8 @@ fn write(&self, dev: &device::Device, seq: u32, dst: &mut GspCommand<'_>) -> Res
- 
- /// Trait representing messages received from the GSP.
- ///
--/// A reply that [`Cmdq::send_command`] waits for, or an event that [`Cmdq::await_msg`] waits for.
--/// The receiver matches a message's function code against [`Self::FUNCTION`] and decodes the
-+/// A reply that [`Cmdq::send_rpc_command`] waits for, or an event that [`Cmdq::await_msg`] waits
-+/// for. The receiver matches a message's function code against [`Self::FUNCTION`] and decodes the
- /// message with [`Self::read`].
- pub(crate) trait MessageFromGsp: Sized {
-     /// Function identifying this message from the GSP.
-@@ -327,7 +327,7 @@ impl Cmdq<'_> {
-     ///   written to by its [`CommandToGsp::init_variable_payload`] method.
-     ///
-     /// Error codes returned by the command and reply initializers are propagated as-is.
--    pub(crate) fn send_command<M>(&self, command: M) -> Result<M::Reply>
-+    pub(crate) fn send_rpc_command<M>(&self, command: M) -> Result<M::Reply>
-     where
-         M: CommandToGsp,
-         M::Reply: MessageFromGsp,
-@@ -335,7 +335,7 @@ pub(crate) fn send_command<M>(&self, command: M) -> Result<M::Reply>
-         Error: From<<M::Reply as MessageFromGsp>::InitError>,
-     {
-         let mut inner = self.inner.lock();
--        inner.send_command(command)?;
-+        inner.send_rpc_command(command)?;
- 
-         inner.await_msg()
-     }
-@@ -349,12 +349,12 @@ pub(crate) fn send_command<M>(&self, command: M) -> Result<M::Reply>
-     ///   written to by its [`CommandToGsp::init_variable_payload`] method.
-     ///
-     /// Error codes returned by the command initializers are propagated as-is.
--    pub(crate) fn send_command_no_wait<M>(&self, command: M) -> Result
-+    pub(crate) fn send_rpc_command_no_wait<M>(&self, command: M) -> Result
-     where
-         M: CommandToGsp<Reply = NoReply>,
-         Error: From<M::InitError>,
-     {
--        self.inner.lock().send_command(command)
-+        self.inner.lock().send_rpc_command(command)
-     }
- 
-     /// Waits for an unsolicited GSP event of type `M`. Events that arrive before it are logged and
-@@ -391,7 +391,7 @@ impl CmdqInner<'_> {
-     ///   written to by its [`CommandToGsp::init_variable_payload`] method.
-     ///
-     /// Error codes returned by the command initializers are propagated as-is.
--    fn send_command<M>(&mut self, command: M) -> Result
-+    fn send_rpc_command<M>(&mut self, command: M) -> Result
-     where
-         M: CommandToGsp,
-         Error: From<M::InitError>,
+ ifeq ($(CONFIG_CC_IS_CLANG),y)
 
+base-commit: a90ee4305c4a5df72c11b31dacfdc76e00fcf78a
 -- 
-2.56.0
+2.43.0
 
