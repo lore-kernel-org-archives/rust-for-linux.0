@@ -1,41 +1,41 @@
 Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4CC3CFF51;
-	Fri,  9 Oct 2026 17:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3C94F797A;
+	Fri,  9 Oct 2026 18:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791567834; cv=pass; b=XVEr8taQoQfPOjG4ymoCKpTQno0rot/8ukb7ZnQHl3FSUU+Wg6QBHlDfshPCYzc1+LKDpJ85BzlPv5ULL06evliKlk9+O4HFwUiVUBAMvsJjYlbfcbcQ319gpTLwUJ6sc6Bps8AqNF4gT7ojl5X3DQGRmlk+2zuYg54aUaiWWoE=
+	t=1791569321; cv=pass; b=QFqODUwhDRfrLezmR0CrXf2U688o06QapB884Ux2fY/Kfoai5PZlHXd+YMVKHGFttPvdLEdzllfDGU+2lOWpAg/9ZspRK09ZruENLNtbOIv1dFPvr/Da0lYZjCxmhER+ua7lphStHkxAFjzcADwvFk8F4Xsptb8RgSH9SfWU3jc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791567834; c=relaxed/simple;
-	bh=2USrELN0j9xjAwY+/mGGtPdliAWR0A+x4t3JgPpnkkc=;
+	s=arc-20240116; t=1791569321; c=relaxed/simple;
+	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=gT8MbKZCsOF53sjD0P8N1/9rxyT7aiIQE3rIGRt3/Sz8h8KMlX9xnAzIPSb4DE31n60iOPM8wtKi8v03ZhgavpK1kaGHCgzPsqc8BzVAvYP7LnKGA+cR2YDpJ15RiJWNfs3IYRGd93daOIZHK6td/WysmJRA8cxIHCPBAm43Mcc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=IcWKAHyk; arc=pass smtp.client-ip=165.173.180.11
+	 Message-Id:References:To; b=ajsqbBjT8cgtAjmFus5DL+upoMNdE6K7wqcNJxYk93wfNBSzGO0mm3672p6/CLkfFlVpxPK3RO5jzL0ZTWPJVMDzO4hQDWQwiEA9FnY696GO81Ywd//RRIsYWrf45nSAOrV7Ccz8VzMFgypwj05Nnk36gOXWL/DvyM4QFJLMBJ4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=JpQ7O9UT; arc=pass smtp.client-ip=165.173.180.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="IcWKAHyk"
-ARC-Seal: i=1; a=rsa-sha256; t=1791567799; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="JpQ7O9UT"
+ARC-Seal: i=1; a=rsa-sha256; t=1791569281; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=g3lMuIJlU5myjBeFh5StRCLz5OuShmhh2kujR0XJxKpacLwXUfjuTNkd/cw3J9t97El+u97tMfwSPmOHV3JzDowzCbWseNOlaZeI1QyTKNLu3zPkHkL9lVa9iI3cPpP0lQvVQeOs1f/qds/FoukeV9kaXwOmkltaGO8O6ZJ07s4=
+	b=clme1yHpoHM+G6HOjxsv8j0Im65+8ioMiQ4PVBiExb32hj1KRvJxq97YBnk54Iwp+UUkkENU8h0VfGQHRkiEMJ6Ry7oYZ1X41iQODgbw+XspaIuOqOXwlnf4lPvY++5c4rromdieBx2A8+pkI4ZILrpiooafMoQBO6YuBnFWwAU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1791567799; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=2USrELN0j9xjAwY+/mGGtPdliAWR0A+x4t3JgPpnkkc=; 
-	b=T2SqrsCVVbzz0caauPWDtySNc788Z7nLCbAaPagojusYfSU1vZtTgppqhRmqlNOb8WqAtA6NJit30HDyhZ3enS9RHPl4pRFWiTHs07GfCBS3EycV5BTc2i63PkvxzVzrOBj2Sp18XEJtY9/pECb/YsI5V8PVi+QBxZWpFtLTFMM=
+	t=1791569281; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=; 
+	b=DO8VZn4+az+xFVqJIr+HbfpIcbj6/fIdzvGtNdrgxXCNPbxZmdBlAPFvh05VHWQYPS0tKBx6AUlDax3v2P/Zr5r3aY/oaNf27Nf99VYERiiHTMeS0Ye8Kt8GJJlEo5fQNTgu7NscCFM2YEAAc6WviGNMf54jagVr2Zil5YXN43E=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791567799;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791569281;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=2USrELN0j9xjAwY+/mGGtPdliAWR0A+x4t3JgPpnkkc=;
-	b=IcWKAHykQ90adxjIX4R8u1h3dhdvXqpxsc7KWIaOIA9o6v8qjlvqTnAJEyosBRfT
-	NMFlgtITRsQwZVQyLRPRJfFhzPm/HM2kVT3Rn0lBaZr4gIGvrNG6FLYLd81sqjyC6uG
-	Oa865Z1qL+ug4uohLwJm/jVxA4jDbGWcB6NqDtXY=
-Received: by smtp.zohomail.com with SMTPS id 1791567797840227.23013293258816;
-	Fri, 9 Oct 2026 10:43:17 -0700 (PDT)
+	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=;
+	b=JpQ7O9UTstpCzFaN6DKHwo1CUZkqiojs6iemZ9KZxF+YBkTF2ePlGd6VZo//+Thi
+	EHIDQEc2mX2E92WGN/647ran3b4+BbJMHP8YBYj+47SWqGYYZ8zO0Gjv65KJuc4a16H
+	CtbeOxOJuXyytKlUhFpFdieshDO1yibhoQaw/MUU=
+Received: by smtp.zohomail.com with SMTPS id 1791569280936665.7129691219392;
+	Fri, 9 Oct 2026 11:08:00 -0700 (PDT)
 Content-Type: text/plain;
 	charset=us-ascii
 Precedence: bulk
@@ -44,10 +44,10 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
-Subject: Re: [PATCH 4/7] rust: fs: add iminor() helper
+Subject: Re: [PATCH 5/7] rust: drm: wrap fops open with RegistrationGuard
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260814230923.1292966-5-dakr@kernel.org>
-Date: Fri, 9 Oct 2026 14:43:01 -0300
+In-Reply-To: <20260814230923.1292966-6-dakr@kernel.org>
+Date: Fri, 9 Oct 2026 15:07:42 -0300
 Cc: aliceryhl@google.com,
  acourbot@nvidia.com,
  ojeda@kernel.org,
@@ -70,46 +70,12 @@ Cc: aliceryhl@google.com,
  dri-devel@lists.freedesktop.org,
  rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6395D58C-F3CC-4B2E-8B20-6EEEB92070DC@collabora.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <8C194765-DD59-4C6E-BD9C-88C012513296@collabora.com>
 References: <20260814230923.1292966-1-dakr@kernel.org>
- <20260814230923.1292966-5-dakr@kernel.org>
+ <20260814230923.1292966-6-dakr@kernel.org>
 To: Danilo Krummrich <dakr@kernel.org>
 X-Mailer: Apple Mail (2.3901.100.1.1.11)
 X-ZohoMailClient: External
 
-
-
-> On 14 Aug 2026, at 20:09, Danilo Krummrich <dakr@kernel.org> wrote:
->=20
-> Add a Rust helper for iminor(), which extracts the minor number from a
-> struct inode. This is a static inline function in the C headers, so
-> bindgen does not generate a binding for it.
->=20
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
-> rust/helpers/fs.c | 5 +++++
-> 1 file changed, 5 insertions(+)
->=20
-> diff --git a/rust/helpers/fs.c b/rust/helpers/fs.c
-> index 789d60fb8908..d6f9782db178 100644
-> --- a/rust/helpers/fs.c
-> +++ b/rust/helpers/fs.c
-> @@ -10,3 +10,8 @@ __rust_helper struct file =
-*rust_helper_get_file(struct file *f)
-> {
-> return get_file(f);
-> }
-> +
-> +__rust_helper unsigned int rust_helper_iminor(const struct inode =
-*inode)
-> +{
-> + return iminor(inode);
-> +}
-> --=20
-> 2.55.0
->=20
->=20
-
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
