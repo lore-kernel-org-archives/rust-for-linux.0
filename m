@@ -1,675 +1,328 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4853F9294;
-	Fri,  9 Oct 2026 19:14:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C482A3054E4
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Oct 2026 19:18:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791573301; cv=none; b=uPBBlRS/Y2WRSnZzIIEoOAUxIe/iub6FELBs5Uug23XAcnK/vjpAhQ8JP1mGFg5J70yc8z0gs/+JENFp9PPenByMSPmGwzAXy5b4aSfEGbqgkHSwfbpUseVwl19uNadmedahGcyu5AAHsRbMIZoMvzy+OJD/JHtowsjysGVuuUk=
+	t=1791573502; cv=none; b=Q235foaS6VMy2IZrva0lIALb5CemZrzcQ23W0vb9syIcqLUUuJuhCByp0LTG0RDayDtWhiGKAFQs12fj5oWAruLhTf3OlKpDrKZSVbyEpKX6xAWCopzWyIlzJm1KBSP+kC/tKAVo+Ujfsi3JpFTEZ7wGYNCDm3t2wMqbEorGYgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791573301; c=relaxed/simple;
-	bh=kWlgAZcKZeu9ab12tFQvv8MevwIHPkzZgbqwGDOQpec=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kkDvoJJW4/qlyQ1TwCFDccj/2wwPy7FigSi3JzZo4zAC/rcANqhVRDS9lzpQtgOGu4MqNJHAbxdR17f9xgFIzzDO+ZJBPpWcUpiSZ4FvEjEJd/iYY5T6cDDHAlTvDw5grIjCI9UubhC4XC/exvQ2omZjQ0Hd9Joos+lEK9gMDWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fIstdx/Z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791573502; c=relaxed/simple;
+	bh=QJNnLTWbPIc0IRk3LBCKNNqgIK8CqMpv7T7NZvSxuks=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=q6CPZkLYSi4QQPv4DlxHwLjj0xCsXK8mo6Hkfxh2/7CKVEk65wTeGpASljTaOFqE83PokPjXaRrc7U0A+shKSWNDhEviooBxZkHJ3ujYUi/ll5v9p3BivPXKbaluUH/BK61ZRVQxmE1JhB2Wy6lmMK7lOPDEoWVocXdypVy6aAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=nm7Ex7gY; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fIstdx/Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAFDC1F000FF;
-	Fri,  9 Oct 2026 19:14:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791573298;
-	bh=YdUOuicLgqQU2RqlJunP0Guxj52QNgrq8QK2vLYlLQI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fIstdx/ZWjr3ZuMdTmgaGUqJVFC3wZb08v/BVZv+Wv8q9Bcf8288/anOZoGGq3+dy
-	 nZ0aAWhyrtGHbOaJlHZSzx9o/JCL63zH1bmr28rkvz1iPUCN3cj1JcZuzJzhhilZgg
-	 BcA6CtsKFMG01xeZuji2jP/EYmPP9fyxSeACZla1nrPVq8sAFItfn82ih4A0oXWsBs
-	 tnmcFUWpQiKp+ccYGQn+QqDy3EameV2gxjcl5UcT+GDNif+fD15JbbQPd8N0AU/tGO
-	 eI8TqTLX3jUCEubliJ1efeflIZWKj47AXWkkef+wrNSNUfMV3tdhOFJrcsJlWjQDsO
-	 oNZvtGz8ygZLg==
-From: Philipp Stanner <phasta@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	John.harrison@igalia.com,
-	da.gomez@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Subject: [RFC PATCH v5 6/6] rust: drm: Add JobQueue
-Date: Fri,  9 Oct 2026 21:11:24 +0200
-Message-ID: <20261009191124.1022902-8-phasta@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261009191124.1022902-2-phasta@kernel.org>
-References: <20261009191124.1022902-2-phasta@kernel.org>
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="nm7Ex7gY"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id F28DD240104
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Oct 2026 21:18:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
+	s=1984.8680eb; t=1791573497;
+	bh=FNjC8CQdezjbjbIN10GIqhnKvMIJQ0qM8m+UWFEtdXg=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=nm7Ex7gYZOsJ42vAFuqWTGKoOBuqVmc0zIQ4TygFWzCP6QGveqzs17CKAKbcOauIk
+	 FVc2wJryW1hgPoki8WkDtxJ6ZxthDdZyZd3cghvObzGxvT13WYfVQOkvHnKfa8H4uW
+	 bb06VdVNTnFTL7onBTF2WIF/GH4OFhmgBE4yIlM6lPmCdDNMv7jULuaCWnBQ3L4j5d
+	 MHs56Sm4aVkN3pbqzRA7gYDDgMvPuPClm6ihbYM2oC19JxDjmh6AY2Dl+lypVL0R+n
+	 2bMRMefAer1Uj0O2o5SeVTwa5I1aZoK5glsBUw6e9Q61kw2OsAzFpIOOYmTym1vlgo
+	 n4V2lvdvIozlw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4j1c8Q0hVrz9rxD;
+	Fri,  9 Oct 2026 21:18:13 +0200 (CEST)
+Message-ID: <81e1aa92ebc389468eb6f493393a1c58a79373e7.camel@posteo.de>
+Subject: Re: [PATCH v26 3/4] rust: leds: Add multicolor classdev abstractions
+From: Markus Probst <markus.probst@posteo.de>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman
+ <david.m.ertman@intel.com>, Leon Romanovsky	 <leon@kernel.org>, Miguel
+ Ojeda <ojeda@kernel.org>, Alex Gaynor	 <alex.gaynor@gmail.com>, Gary Guo
+ <gary@garyguo.net>,  =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ "Rafael J. Wysocki"	 <rafael@kernel.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Krzysztof =?ISO-8859-1?Q?Wilczy=B4nski?=	
+ <kwilczynski@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein	 <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=	 <work@onurozkan.dev>,
+ Ira Weiny <iweiny@kernel.org>, 	rust-for-linux@vger.kernel.org,
+ linux-leds@vger.kernel.org, 	linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org
+Date: Fri, 09 Oct 2026 19:18:16 +0000
+In-Reply-To: <ask31EX01lSL9QJ9@tardis.local>
+References: <20260930-rust_leds-v26-0-83837331020e@posteo.de>
+	 <20260930-rust_leds-v26-3-83837331020e@posteo.de>
+	 <ask31EX01lSL9QJ9@tardis.local>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-y8/PBsqchvqDf6iK4n7Q"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-JobQueue is a pure Rust component that handles job submissions for GPUs
-with firmware scheduling, i.e., GPUs that support one exclusive ring per
-execution context.
 
-JobQueue's primary task is dependency handling, where the user can set
-dependencies, each in the form of a `dma_buf::Fence`, on a job and then
-submit it to the queue.
+--=-y8/PBsqchvqDf6iK4n7Q
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Jobs are being executed in order, following the FIFO principle. Only
-jobs whose dependencies are all fullfilled get executed, otherwise the
-JobQueue pauses.
+On Fri, 2026-10-09 at 11:52 -0700, Boqun Feng wrote:
+> On Wed, Sep 30, 2026 at 01:05:32PM +0000, Markus Probst wrote:
+> > Implement the abstractions needed for multicolor led class devices,
+> > including:
+> >=20
+> > * `led::MultiColor` - the led mode implementation
+> >=20
+> > * `MultiColorSubLed` - a safe wrapper arround `mc_subled`
+> >=20
+> > * `led::MultiColorDevice` - a safe wrapper around `led_classdev_mc`
+> >=20
+> > * `led::DeviceBuilder::build_multicolor` - a function to register a new
+> >   multicolor led class device
+> >=20
+> > Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> > ---
+> >  rust/bindings/bindings_helper.h |   1 +
+> >  rust/kernel/led.rs              |  34 ++-
+> >  rust/kernel/led/multicolor.rs   | 445 ++++++++++++++++++++++++++++++++=
+++++++++
+> >  3 files changed, 479 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_h=
+elper.h
+> > index 4b31aa7f432f..81a03985322a 100644
+> > --- a/rust/bindings/bindings_helper.h
+> > +++ b/rust/bindings/bindings_helper.h
+> > @@ -69,6 +69,7 @@
+> >  #include <linux/iosys-map.h>
+> >  #include <linux/jiffies.h>
+> >  #include <linux/jump_label.h>
+> > +#include <linux/led-class-multicolor.h>
+> >  #include <linux/mdio.h>
+> >  #include <linux/mm.h>
+> >  #include <linux/miscdevice.h>
+> > diff --git a/rust/kernel/led.rs b/rust/kernel/led.rs
+> > index c17f8ef75006..4b66fe41a80c 100644
+> > --- a/rust/kernel/led.rs
+> > +++ b/rust/kernel/led.rs
+> > @@ -30,8 +30,16 @@
+> >      types::Opaque, //
+> >  };
+> > =20
+> > +#[cfg(CONFIG_LEDS_CLASS_MULTICOLOR)]
+> > +mod multicolor;
+> >  mod normal;
+> > =20
+> > +#[cfg(CONFIG_LEDS_CLASS_MULTICOLOR)]
+> > +pub use multicolor::{
+> > +    MultiColor,
+> > +    MultiColorDevice,
+> > +    MultiColorSubLed, //
+> > +};
+> >  pub use normal::{
+> >      Device,
+> >      Normal, //
+> > @@ -233,7 +241,24 @@ pub enum Color {
+> >      Violet =3D bindings::LED_COLOR_ID_VIOLET,
+> >      Yellow =3D bindings::LED_COLOR_ID_YELLOW,
+> >      Ir =3D bindings::LED_COLOR_ID_IR,
+> > +    #[cfg_attr(
+> > +        CONFIG_LEDS_CLASS_MULTICOLOR,
+> > +        doc =3D "Use this color for a [`MultiColor`] led."
+> > +    )]
+> > +    #[cfg_attr(
+> > +        not(CONFIG_LEDS_CLASS_MULTICOLOR),
+> > +        doc =3D "Use this color for a `MultiColor` led."
+> > +    )]
+> > +    /// If the led supports RGB, use [`Color::Rgb`] instead.
+> >      Multi =3D bindings::LED_COLOR_ID_MULTI,
+> > +    #[cfg_attr(
+> > +        CONFIG_LEDS_CLASS_MULTICOLOR,
+> > +        doc =3D "Use this color for a [`MultiColor`] led with rgb supp=
+ort."
+> > +    )]
+> > +    #[cfg_attr(
+> > +        not(CONFIG_LEDS_CLASS_MULTICOLOR),
+> > +        doc =3D "Use this color for a `MultiColor` led with rgb suppor=
+t."
+> > +    )]
+> >      Rgb =3D bindings::LED_COLOR_ID_RGB,
+> >      Purple =3D bindings::LED_COLOR_ID_PURPLE,
+> >      Orange =3D bindings::LED_COLOR_ID_ORANGE,
+> > @@ -274,7 +299,14 @@ fn try_from(value: u32) -> core::result::Result<Se=
+lf, Self::Error> {
+> >  ///
+> >  /// Each led mode has its own led class device type with different cap=
+abilities.
+> >  ///
+> > -/// See [`Normal`].
+> > +#[cfg_attr(
+> > +    CONFIG_LEDS_CLASS_MULTICOLOR,
+> > +    doc =3D "See [`Normal`] and [`MultiColor`]."
+> > +)]
+> > +#[cfg_attr(
+> > +    not(CONFIG_LEDS_CLASS_MULTICOLOR),
+> > +    doc =3D "See [`Normal`] and `MultiColor`."
+> > +)]
+> >  pub trait Mode: private::Sealed {
+> >      /// The class device for the led mode.
+> >      type Device<'bound, T: LedOps<Mode =3D Self> + 'bound>: Deref<Targ=
+et =3D T>;
+> > diff --git a/rust/kernel/led/multicolor.rs b/rust/kernel/led/multicolor=
+.rs
+> > new file mode 100644
+> > index 000000000000..309487bdf38a
+> > --- /dev/null
+> > +++ b/rust/kernel/led/multicolor.rs
+> > @@ -0,0 +1,445 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Led mode for the `struct led_classdev_mc`.
+> > +//!
+> > +//! C header: [`include/linux/led-class-multicolor.h`](srctree/include=
+/linux/led-class-multicolor.h)
+> > +
+> > +use core::{
+> > +    cell::UnsafeCell,
+> > +    num::NonZero,
+> > +    ptr, //
+> > +};
+> > +
+> > +use crate::types::ScopeGuard;
+> > +
+> > +use super::*;
+> > +
+> > +/// The led mode for the `struct led_classdev_mc`. Leds with this mode=
+ can have multiple colors.
+> > +pub enum MultiColor {}
+> > +impl Mode for MultiColor {
+> > +    type Device<'bound, T: LedOps<Mode =3D Self> + 'bound> =3D MultiCo=
+lorDevice<'bound, T>;
+> > +}
+> > +impl private::Sealed for MultiColor {}
+> > +
+> > +/// The multicolor sub led info representation.
+> > +///
+> > +/// This structure represents the Rust abstraction for a C `struct mc_=
+subled`.
+> > +#[repr(C)]
+> > +#[derive(Debug)]
+> > +#[non_exhaustive]
+> > +pub struct MultiColorSubLed {
+> > +    /// The color of the sub led
+> > +    pub color: Color,
+> > +    brightness: UnsafeCell<u32>,
+> > +    intensity: UnsafeCell<u32>,
+>=20
+> These should be `Atomic<u32>`, or am I missing something here? Using
+> `Atomic<u32>` should resolve sashiko's comment on this patch.
+Snippet of the `Atomic::from_ptr` rustdoc:
 
-A core design principle, just like with DmaFence, is to avoid all
-allocations in job submission paths, since this runs danger of
-deadlocking.
+"
+For the duration of 'a, other accesses to *ptr must not cause data
+races (defined by LKMM) against atomic operations on the returned
+reference. Note that if all other accesses are atomic, then this safety
+requirement is trivially fulfilled.
+"
 
-Another design principle, new when compared to the older drafts, is the
-ownership relationship with fences:
+This safety requirement is likely not met if I see this correctly,
+because the led subsystem does not use atomic accesses.
 
-  1. The JobQueue owns the FenceContext exclusively.
-  2. Jobs are created on the JobQueue, ensuring correct fence sequence
-     number ordering.
-  3. Jobs own the respective DriverFence.
-  4. Jobs are owned by the JobQueue.
+Ofc, this function won't be used, but I think given that the same
+struct is also accessed by the C-side, it should also apply here.
 
-Consequently, a driver can only interact with fences and FenceContext
-indirectly through the JobQueue, and can also only complete jobs (and,
-hence, signal fences) through the JobQueue.
+Like Sashiko suggests, "core::ptr::read_volatile()" might be a better
+option to prevent certain compiler optimizations.
 
-Unfortunately, since jobs need a reference to the JobQueue for their
-fence dependency objects (DependencyWaker), this code can currently not
-be used in this form because some work on self-referential PinInit is
-required. See the respective comments in the Example.
+Thanks
+- Markus Probst
 
-When a job shall be run, both its JobQueue::data and Job::data get
-borrowed back to it, together with the sequence number of this job, so
-that the driver can perform the appropriate interaction with the
-hardware.
+>=20
+> Regards,
+> Boqun
+>=20
+> > +    /// The maximum supported intensity value.
+> > +    ///
+> > +    /// If None the maximum intensity equals to [`LedOps::MAX_BRIGHTNE=
+SS`].
+> > +    pub max_intensity: Option<NonZero<u32>>,
+> > +    /// Arbitrary data for the driver to store.
+> > +    pub channel: u32,
+> > +}
+> > +
+> [...]
 
-The submit_worker runs all ready jobs based on a credit count system, so
-that run_job() can be infallible. The same worker drops jobs (and their
-fences) that are already completed. Should this proof to be a
-performance issue, a second worker could trivially be added for this.
+--=-y8/PBsqchvqDf6iK4n7Q
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
----
- rust/kernel/drm/job_queue.rs | 525 +++++++++++++++++++++++++++++++++++
- rust/kernel/drm/mod.rs       |   4 +
- 2 files changed, 529 insertions(+)
- create mode 100644 rust/kernel/drm/job_queue.rs
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/rust/kernel/drm/job_queue.rs b/rust/kernel/drm/job_queue.rs
-new file mode 100644
-index 000000000000..b5c7f4ecb3f4
---- /dev/null
-+++ b/rust/kernel/drm/job_queue.rs
-@@ -0,0 +1,525 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2026 Red Hat Inc.
-+ * Author: Philipp Stanner <pstanner@redhat.com>
-+ */
-+
-+//! DRM's job dependency manager and load balancer for GPUs with firmware
-+//! scheduling, i.e., GPUs that spawn one ring per user context.
-+//!
-+//! JobQueue abstracts the entire handling of [`dma_buf::FenceContext`] and its
-+//! associated fences for the user.
-+//!
-+//! Jobs created on the JobQueue take over ownership of userspace provided data
-+//! and prepare all memory allocations. A later job submission sets up the fence
-+//! and performs no fallible operations. A fence sequence number always
-+//! corresponds 1:1 with the job sequence number.
-+//!
-+//! Before jobs are submitted, dependencies in the form of [`dma_buf::Fence`]
-+//! can be set on them. Jobs get submitted by the JobQueue in process context
-+//! through a work item in FIFO order. Only jobs whose dependency fences have
-+//! all been signaled get submitted. If the front job's dependency is not yet
-+//! fullfilled, the JobQueue pauses until that's the case.
-+//!
-+//! The driver tells the JobQueue which jobs are finished through
-+//! [`JobQueue::complete_jobs_up_to_seqno`].
-+//!
-+//! This is pure Rust code that does not directly abstract C.
-+
-+use crate::prelude::*;
-+
-+use core::{
-+    convert::Infallible,
-+    ops::Deref, //
-+};
-+
-+use kernel::{
-+    dma_buf::dma_fence::{
-+        DriverFence,
-+        DriverFenceAllocation,
-+        Fence,
-+        FenceContext,
-+        FenceCallback,
-+        FenceCallbackRegistration,
-+        FenceContextOps, //
-+    },
-+    list::*,
-+    revocable::Revocable,
-+    str::CString,
-+    sync::{
-+        aref::ARef,
-+        SpinLockIrq,
-+        new_spinlock_irq,
-+        atomic::{
-+            Atomic,
-+            Relaxed, //
-+        }, //
-+    }, //
-+    workqueue::{
-+        self,
-+        new_scoped_work,
-+//        ScopedQueue,
-+        ScopedWork,
-+        ScopedWorkItem,
-+        ScopedWorkRef,
-+    }, //
-+};
-+
-+struct DependencyWaker<'b, T: JobQueueOps + Send + Sync> {
-+    nr_of_deps: &'b Atomic<u32>,
-+    jq: &'b JobQueue<'b, T>,
-+}
-+
-+impl<'b, T: JobQueueOps + Send + Sync> FenceCallback for DependencyWaker<'b, T> {
-+    fn on_signal(&mut self) {
-+        // Last dependency kicks off the worker.
-+        if self.nr_of_deps.fetch_sub(1, Relaxed) == 1 {
-+            if let Some(jq) = self.jq.inner.try_access() {
-+                let mut jq = jq.deref().lock();
-+                jq.as_mut().check_start_submit_worker();
-+            }
-+        }
-+    }
-+}
-+
-+/// A JobQueue job before it has been submitted.
-+///
-+/// This is only useful for registering dependencies on and for submitting it.
-+pub struct Job<'a, T: JobQueueOps + Send + Sync> {
-+    inner: ListArc<JobInternal<'a, T>>,
-+}
-+
-+impl<'a, T: JobQueueOps + Send + Sync> Job<'a, T> {
-+    /// Add `fence` as a dependency for this job.
-+    ///
-+    /// A JobQueue will only push a job once all dependency fences have been
-+    /// signaled.
-+    pub fn add_dependency(&'a mut self, fence: &Fence) -> Result {
-+        let nr_of_deps = &raw const self.inner.nr_of_deps;
-+
-+        let waker = DependencyWaker {
-+            // SAFETY: `nr_of_deps` lives as long as the job.
-+            // TODO RFC: Is there a better way to do it? The mutable-immutable references
-+            // otherwise run into conflict when `nr_of_deps` is used below.
-+            nr_of_deps: unsafe { &*nr_of_deps },
-+            jq: self.inner.jq,
-+        };
-+
-+        let job = &mut self.inner;
-+
-+        job.dependencies().reserve(1, GFP_KERNEL)?;
-+
-+        // If the registration below gets registered successfully, a signaling
-+        // fence will decrement the atomic. That could race. Thus, increment in
-+        // advance. Ordering is ensured thanks to the dma_fence backend.
-+        job.nr_of_deps.fetch_add(1, Relaxed);
-+
-+        // SAFETY: The `registration` is not forgotten. It drops with JobQueue.
-+        let registration = unsafe { FenceCallbackRegistration::new(fence, waker) };
-+        match KBox::pin_init(registration, GFP_KERNEL) {
-+            Err(e) => {
-+                let _ = job.nr_of_deps.fetch_sub(1, Relaxed);
-+                if e == ENOENT {
-+                    // Was already signaled. No reason to bother the caller.
-+                    return Ok(());
-+                }
-+                return Err(e);
-+            },
-+            Ok(dep) => {
-+                if let Err(e) = job.dependencies().push_within_capacity(dep) {
-+                    // Impossible because of the reservation.
-+                    pr_err!("Job::add_dependency(): reserved memory not available.\n");
-+                    return Err(e.into());
-+                }
-+            },
-+        }
-+
-+        Ok(())
-+    }
-+}
-+
-+#[pin_data]
-+#[repr(C)]
-+struct JobInternal<'b, T: JobQueueOps + Send + Sync> {
-+    #[pin]
-+    links: ListLinks,
-+    cost: u32,
-+    fence_allocation: ListArcField<Option<DriverFenceAllocation<'b, DriverDataWrapper<T>>>, 0>,
-+    fence: ListArcField<Option<DriverFence<'b, DriverDataWrapper<T>>>>,
-+    dependencies: ListArcField<KVec<Pin<KBox<FenceCallbackRegistration<DependencyWaker<'b, T>>>>>>,
-+    nr_of_deps: Atomic<u32>,
-+    jq: &'b JobQueue<'b, T>,
-+}
-+
-+impl_list_arc_safe! {
-+    impl{'b, T: JobQueueOps + Send + Sync} ListArcSafe<0> for JobInternal<'b, T> { untracked; }
-+}
-+impl_list_item! {
-+    impl{'b, T: JobQueueOps + Send + Sync} ListItem<0> for JobInternal<'b, T> { using ListLinks { self.links }; }
-+}
-+
-+
-+impl<'b, T: JobQueueOps + Send + Sync> JobInternal<'b, T> {
-+//    const LIST_JOB_ID: u64 = 0xe7e445f2bb9e97fc;
-+
-+    kernel::list::define_list_arc_field_getter! {
-+        pub(crate) fn fence_allocation(&mut self<0>) -> &mut Option<DriverFenceAllocation<'b, DriverDataWrapper<T>>> { fence_allocation }
-+        pub(crate) fn fence(&mut self<0>) -> &mut Option<DriverFence<'b, DriverDataWrapper<T>>> { fence }
-+        pub(crate) fn dependencies(&mut self<0>) -> &mut KVec<Pin<KBox<FenceCallbackRegistration<DependencyWaker<'b, T>>>>> { dependencies }
-+    }
-+}
-+
-+#[pin_data]
-+struct SubmitWorker<'a, T: JobQueueOps + Send + Sync> {
-+    #[pin]
-+    jq: &'a JobQueue<'a, T>,
-+}
-+
-+impl<T: JobQueueOps + Send + Sync> ScopedWorkItem for SubmitWorker<'_, T> {
-+    fn run(work: &ScopedWorkRef<Self>) {
-+        let Some(jq_accessor) = work.jq.inner.try_access() else {
-+            return;
-+        };
-+
-+        let mut jq = jq_accessor.lock();
-+
-+        while let Some(mut job) = jq.as_mut().project().waiting_jobs.pop_front() {
-+            let new_capacity = jq.capacity as i64 - job.cost as i64;
-+            if new_capacity < 0 {
-+                break;
-+            }
-+            *jq.as_mut().project().capacity = new_capacity as u64;
-+
-+            let runnable_job = JobRunnable {
-+                seqno: job.fence().as_ref().expect("fence not present").as_fence().seqno(),
-+                data: job.fence().as_ref().expect("fence not present").deref(),
-+            };
-+
-+            let jq_data = work.jq.fctx.deref().deref();
-+
-+            drop(jq);
-+            T::run_job(jq_data, runnable_job);
-+            // The driver could now have taken the lock here and try to complete
-+            // this very job. It would then not get signaled because it was not
-+            // yet in the running list. However, since the driver completes jobs
-+            // by sequence number, its subsequent calls to jq.complete_jobs_up_to_seqno()
-+            // will signal this job, because then it will be in the running_jobs
-+            // list.
-+            // We accept this race because it makes the implementation much
-+            // simpler and avoids locking issues. Otherwise, complete_jobs_up_to_seqno()
-+            // would need a distinct signaler-object-list to avoid races between
-+            // this work item and said function.
-+            jq = jq_accessor.lock();
-+
-+            jq.as_mut().project().running_jobs.push_back(job);
-+        }
-+
-+        // Now clean up all already-signaled jobs, dropping their fences.
-+        let mut jq = jq.as_mut().project();
-+
-+        let mut cursor = jq.running_jobs.cursor_front();
-+
-+        while let Some(job) = cursor.peek_next() {
-+            let mut job = job.remove();
-+
-+            if !job.fence().as_mut().expect("fence not present").as_fence().is_signaled() {
-+                jq.running_jobs.push_front(job);
-+                // Jobs complete in order. No point in checking the rest.
-+                break;
-+            }
-+        }
-+
-+        *jq.submit_worker_active = false;
-+    }
-+}
-+
-+#[pin_data]
-+struct JobQueueInner<'a, T: JobQueueOps + Send + Sync> {
-+    submit_worker_active: bool,
-+    #[pin]
-+    submit_worker: ScopedWork<SubmitWorker<'a, T>>,
-+    #[pin]
-+    waiting_jobs: List<JobInternal<'a, T>>,
-+    #[pin]
-+    running_jobs: List<JobInternal<'a, T>>,
-+    capacity: u64,
-+}
-+
-+impl<T: JobQueueOps + Send + Sync> JobQueueInner<'_, T> {
-+    fn check_start_submit_worker(self: Pin<&mut Self>) {
-+        if self.submit_worker_active {
-+            return;
-+        }
-+
-+        // TODO this shouldn't be the system wq
-+        // SAFETY: The worker is carried by the JobQueue and, thus, cannot be
-+        // forgotten.
-+        unsafe { workqueue::system_dfl().enqueue_scoped(&*self.submit_worker) };
-+
-+        *self.project().submit_worker_active = true;
-+    }
-+
-+}
-+
-+/// A JobQueue.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use core::ops::Deref;
-+///
-+/// use kernel::{
-+///     str::CString,
-+///     dma_buf::*,
-+///     drm::{
-+///         JobQueue,
-+///         JobQueueOps,
-+///         JobRunnable,
-+///     },
-+/// };
-+///
-+/// let driver_name = CString::try_from_fmt(fmt!("dummy_driver"))?;
-+/// let timeline_name = CString::try_from_fmt(fmt!("dummy_timeline"))?;
-+///
-+/// #[pin_data]
-+/// struct JqData {}
-+///
-+/// impl JqData {
-+///     fn new() -> impl PinInit<Self> {
-+///         pin_init!(Self {})
-+///     }
-+/// }
-+///
-+/// struct JobData {
-+///     data: CString,
-+/// }
-+///
-+/// impl JobQueueOps for JqData {
-+///     type JobDataType = JobData;
-+///
-+///     fn run_job<'a>(&self, job: JobRunnable<'a, JobData>) {
-+///
-+///     }
-+/// }
-+///
-+/// let jq_data = JqData::new();
-+/// let jq = KBox::pin_init(JobQueue::new(0, driver_name, timeline_name, 1000, jq_data), GFP_KERNEL)?;
-+///
-+/// struct Callback {}
-+///
-+/// impl FenceCallback for Callback {
-+///     fn on_signal(&mut self) {
-+///
-+///     }
-+/// }
-+///
-+/// let data = CString::try_from_fmt(fmt!("hello there!"))?;
-+/// let data = JobData { data };
-+///
-+/// // TODO RFC:
-+/// // This is the problem where self-references come into play.
-+/// // Jobs need a reference to the JobQueue due to their DependencyWaker
-+/// // callbacks. At the same time, the JobQueue owns the jobs.
-+/// // So the following outcommented code would not compile.
-+/// // Gary is working on a solution for that.
-+///
-+/// //let job = jq.new_job(data)?;
-+/// //jq.submit(job);
-+///
-+/// //drop(job);
-+/// //drop(jq);
-+///
-+/// Ok::<(), Error>(())
-+/// ```
-+#[pin_data(PinnedDrop)]
-+pub struct JobQueue<'a, T: JobQueueOps + Send + Sync> {
-+    #[pin]
-+    // Revocable to prevent a DependencyWaker firing in the moment of JQ-drop
-+    // from deadlocking.
-+    inner: Revocable<SpinLockIrq<JobQueueInner<'a, T>>>,
-+    #[pin]
-+    fctx: FenceContext<DriverDataWrapper<T>>,
-+}
-+
-+// SAFETY: The JobQueue is locked and pinned.
-+unsafe impl<T: JobQueueOps + Send + Sync> Sync for JobQueue<'_, T> {}
-+// SAFETY: The JobQueue is locked and pinned.
-+unsafe impl<T: JobQueueOps + Send + Sync> Send for JobQueue<'_, T> {}
-+
-+/// Object passed to the driver to run a job.
-+pub struct JobRunnable<'a, T> {
-+    /// The job's sequence number.
-+    pub seqno: u64,
-+    /// The associated job data.
-+    pub data: &'a T,
-+}
-+
-+/// Ops for the JobQueue.
-+pub trait JobQueueOps {
-+    /// The type of the data passed over in [`JobQueue::new_job`].
-+    type JobDataType: Send + Sync;
-+
-+    /// Instructs the driver to run this job.
-+    ///
-+    /// Returns true if the job was run, false if there was no capacity.
-+    /// In case of an other error, the driver's callback implementation likely
-+    /// wants to trigger termination of the ring and, thus, dropping of the
-+    /// respective [`JobQueue`].
-+    fn run_job<'a>(&self, job: JobRunnable<'a, Self::JobDataType>);
-+}
-+
-+#[pin_data]
-+struct DriverDataWrapper<T: JobQueueOps + Send + Sync> {
-+    #[pin]
-+    data: T,
-+}
-+
-+impl<T: JobQueueOps + Send + Sync> Deref for DriverDataWrapper<T> {
-+    type Target = T;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.data
-+    }
-+}
-+
-+impl<T: JobQueueOps + Send + Sync> DriverDataWrapper<T> {
-+    fn new<E>(data: impl PinInit<T, E>) -> impl PinInit<Self, E>
-+        where
-+            Error: From<E>,
-+            E: From<Infallible>,
-+    {
-+        try_pin_init!(Self {
-+            data <- data,
-+        }? E)
-+    }
-+}
-+
-+impl<T: JobQueueOps + Send + Sync> FenceContextOps for DriverDataWrapper<T> {
-+    type FenceDataType = T::JobDataType;
-+}
-+
-+impl<'a, T: JobQueueOps + Send + Sync> JobQueue<'a, T> {
-+    /// Create a new JobQueue.
-+    pub fn new<E>(
-+        initial_seqno: u64,
-+        // TODO: pass these as &CStr. Figure out how to get the lifetimes for PinInit right.
-+        driver_name: CString,
-+        timeline_name: CString,
-+        capacity: u64,
-+        data: impl PinInit<T, E>,
-+    ) -> impl PinInit<Self, Error>
-+    where
-+        Error: From<E>,
-+        E: From<Infallible>,
-+    {
-+        try_pin_init!(&this in Self {
-+            inner <- Revocable::new(new_spinlock_irq!(try_pin_init!(JobQueueInner {
-+                submit_worker_active: false,
-+                // SAFETY: `this` is valid. The lifetimes ensure that the reference remains valid.
-+                submit_worker <- new_scoped_work!("JobQueueSubmitWorker", Ok(SubmitWorker { jq: unsafe { &*this.as_ptr() } })),
-+                waiting_jobs: List::new(),
-+                running_jobs: List::new(),
-+                capacity,
-+            }))),
-+            fctx <- FenceContext::new(initial_seqno, &driver_name, &timeline_name, DriverDataWrapper::new(data)),
-+        })
-+    }
-+
-+    /// Create a new job.
-+    pub fn new_job(&'a self, cost: u32, data: T::JobDataType) -> Result<Job<'a, T>> {
-+        let fence_allocation = self.fctx.new_fence_allocation(data)?;
-+        let job = try_pin_init!(JobInternal {
-+            links <- ListLinks::new(),
-+            cost,
-+            fence_allocation: ListArcField::new(Some(fence_allocation)),
-+            fence: ListArcField::new(None),
-+            nr_of_deps: Atomic::new(0),
-+            dependencies <- ListArcField::new(KVec::new()),
-+            jq: &self,
-+        });
-+
-+        let inner = ListArc::pin_init(job, GFP_KERNEL)?;
-+
-+        Ok(Job { inner })
-+    }
-+
-+    // TODO RFC the lifetime ensures that only jobs can be submitted that were
-+    // actually created on this JQ, right?
-+    /// Submit a job that has previously been created with [`JobQueue::new_job()`].
-+    ///
-+    /// Returns a [`dma_buf::Fence`] on which the user can register callbacks.
-+    /// The fence will be signaled once the job is completed through
-+    /// [`JobQueue::complete_jobs_up_to_seqno`], which can happen immediately
-+    /// after the job has been submitted.
-+    ///
-+    /// This function does all fence initialization under the JobQueue lock in
-+    /// one go, including setting of the fence sequence numbers. Thus, it is
-+    /// typically unnecessary (and advaised against) calling this function with
-+    /// a driver lock held.
-+    // Mutable `self` so that the user is forced to ensure synchronization.
-+    // That's a bit better so that the fence sequence numbers stay ordered.
-+    pub fn submit(&mut self, job: Job<'a, T>) -> ARef<Fence> {
-+        // unwrap() can't fire because `self` is valid.
-+        let jq = self.inner.try_access().unwrap();
-+        // The lock orders setting of the sequence number, so no driver lock is needed.
-+        let mut jq = jq.lock();
-+        let mut job = job.inner;
-+        let fence = job.fence_allocation().take().expect("fence_allocation not present").new_fence();
-+
-+        let ret_fence = ARef::from(fence.as_fence());
-+
-+        *job.fence() = Some(fence);
-+
-+        jq.as_mut().project().waiting_jobs.push_back(job);
-+        jq.as_mut().check_start_submit_worker();
-+
-+        ret_fence
-+    }
-+
-+    /// Complete all the jobs in the queue's running_list, up to `seqno`.
-+    ///
-+    /// This signals the jobs' fences and drops both job and fence.
-+    ///
-+    /// This function tells the implementation that there is now more capacity
-+    /// for more jobs to be pushed into the GPU ring.
-+    pub fn complete_jobs_up_to_seqno(&self, seqno: u64, status: Result) {
-+        // unwrap() can't fire because `self` is valid.
-+        let jq = self.inner.try_access().unwrap();
-+        let mut jq_locked = jq.lock();
-+        let mut jq = jq_locked.as_mut().project();
-+
-+        let mut cursor = jq.running_jobs.cursor_front();
-+
-+        while let Some(job) = cursor.peek_next() {
-+            let mut job = job.remove();
-+
-+            if job.fence().as_mut().expect("fence not present").as_fence().seqno() > seqno {
-+                jq.running_jobs.push_front(job);
-+                break;
-+            }
-+
-+            *jq.capacity += job.cost as u64;
-+
-+            if let Some(fence) = job.fence() {
-+                fence.signal(status);
-+            } else {
-+                panic!("fence not present.");
-+            }
-+        }
-+
-+        jq_locked.as_mut().check_start_submit_worker();
-+    }
-+}
-+
-+#[pinned_drop]
-+impl<T: JobQueueOps + Send + Sync> PinnedDrop for JobQueue<'_, T> {
-+    fn drop(self: Pin<&mut Self>) {
-+        // Prevent all dependency callbacks (and the submit_worker) from running
-+        // into `self.inner`. Drops the DependencyWaker objects, deregistering
-+        // their events on foreign fences. Thus, this revoke also protects against
-+        // deadlock since deregistering takes the fence locks in reverse order
-+        // to the JobQueue lock, which we would need here without the Revocable
-+        // for said deregistering.
-+        let _ = self.inner.revoke();
-+    }
-+}
-diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
-index fd6ed35bc35a..f2b7fbbce5bb 100644
---- a/rust/kernel/drm/mod.rs
-+++ b/rust/kernel/drm/mod.rs
-@@ -8,6 +8,7 @@
- pub mod gem;
- pub mod gpuvm;
- pub mod ioctl;
-+pub mod job_queue;
- 
- pub use self::device::Device;
- pub use self::device::DeviceContext;
-@@ -20,6 +21,9 @@
- pub use self::driver::DriverInfo;
- pub use self::driver::Registration;
- pub use self::file::File;
-+pub use self::job_queue::JobQueue;
-+pub use self::job_queue::JobQueueOps;
-+pub use self::job_queue::JobRunnable;
- 
- pub(crate) mod private {
-     pub trait Sealed {}
--- 
-2.55.0
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmrJPe8bFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPS4aUP/R/DLeYIdqUXlPuo2jqy
+kuQ7hx8WN9Y1iTNTOAn/GE8vuViEUL1fsEsNG3Uz1JzPQ5kCeWpyX1JXs229Bygt
+yWmwE+AAg35U/pAzAfOzFcFScgRuczxfMH3DynPqSoh3AhKg1XHHJJFnBk8KytO0
+GWIsw7ygpwxDAMqirniroLCpFmjyIccZ/dKKunVlFXLw9M3JAOyXIK++JTnNtWtH
+ai88NG3GoX6AQoO30hmntuV88bTmPkupGAnOtOeaDNPiFiqdqmG4GcKAoCepiwsu
+/DMYos3IYBJuiFx1tg+ou/3FiCp4yoHMoXKjHW588GR3HBlescX3EpQACDyxi2HS
+sQWA8sEp2I5FfZO0oes4WbdOqCW9e1p24I8a5Rnc0BmoX9z4+RUlgpOK/xqRupTY
+JYBc46VWOakXHXpMgrS0Um6m8oDSsR9DmfqYuIpUAgM5Ex/bUUFWooeXqAPLAGWg
+mBVrYSJpSsRz2ojkPSOKmv26/UZPDEDl67Cyccc2ioOCOlq7LwCjYZn9BT7aqJRg
+6t+WLiSvA7OjAhGJyPgb1iFBTtWOAKxnJ9T5ydFDkEiH3LLaqXvredIm4WuoI8AY
+7WuEpfR2P4QOxKzOQCVeItEYzDwX8CnLiCCQ1WFe0ygs6RBPY3wghAWZXAXLIFva
+Y9kc1CNmAR+Rj1eFm+r51kOt
+=CPoW
+-----END PGP SIGNATURE-----
 
+--=-y8/PBsqchvqDf6iK4n7Q--
