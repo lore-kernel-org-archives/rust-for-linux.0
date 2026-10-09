@@ -1,135 +1,132 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83C6443C27
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Oct 2026 23:42:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2ECB22D7A9
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Oct 2026 01:17:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791502940; cv=none; b=aBdGZPjsWUPQPIYgeyiQG0NJ6SPdo9nOuzIxPSsH/h9bQe4OyTeHcMYazwzNr3/we2Kka3a6PETdisCdn7M0rcL9ihbWbSa5SXiZv/Eet2klR8E/Y8BqQLsvxY2zX2h6WhLaoEYdozVvQ1ZUTXs0YSxOgiYZy7Qedo8XuhR2hZE=
+	t=1791508628; cv=none; b=M0OsgvhhJdTd7gwLV/GPrflkj8BmefVkWpfaEBykI+4EF13wMdyJLMMCa8xATqb1F2AML2Yx6RRS6slAvFEjbvegmvS0s5cMzD8t3fHHaJoVIBf3LAeVaK/NZM7KyBGlmkHPfmuJbFJ1lmN8weEldvSssV/VyG7980zk8u6CJyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791502940; c=relaxed/simple;
-	bh=+vej+9871giPRJbvbCo4LpvhWgXeuYpPrYqnj/zi/gg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uxQLJr1Gtcw9/iRvncCxemVQRLWvJ9lwgumpoWUCJne4mfS+KlWS35Hq2Elpbdifnta83cA47V2yeWfJ3M4szl+tOep40cpFBmXf2DNEmMyxcmjqnmv7BhG5uHrzoVzSjs3BURQ6V3Ba7zuOR9TCWtCU0NWtubUQ+HyP5Nyy9gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu; spf=pass smtp.mailfrom=uci.edu; dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b=IcOEXjeE; arc=none smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
+	s=arc-20240116; t=1791508628; c=relaxed/simple;
+	bh=MMzdOh6zuM2zcV+/w8InyvA3igLjaY5u/Frz2zXgL3s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CgHdjEjbxHBByJXS99fWv3tO7EtVzpe1z1VsK5txf6D049JRsTfMYhKoBp4n1sbNxCyNSR8RnG80/X7rQxwsuPB5FAzXLCYwxQiV4sOGjbIcYoSsCLhvttcgIcSf+Hv0WAWCIPu4e7CF7giEhnKeOaTaU7Tgy8/f84cWYD9wvLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JLrrcMOT; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b="IcOEXjeE"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-14129667240so4036703c88.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 08 Oct 2026 16:42:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JLrrcMOT"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a02753c04fso20291705e9.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 08 Oct 2026 18:17:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=uci.edu; s=google; t=1791502938; x=1792107738; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ty3aggzINGexD0CpWAiQ9OLpBPWfuLnh74sRAfhheq0=;
-        b=IcOEXjeEmQ1Af2SB5IPW7KaVjRjj8lkcQ9cpf2xc9+XeOqrj32i8oex+rD1Z2zIpG2
-         C1lEuKc00uK3tDsTUv6baTMxVHhYTirjzAKHY/TYZKKB9mHonelFEhb/Ug8PN7Nl9G+l
-         2Lu4FgGycwMRoU3+0AJV/BglvQqLcd0od1rpR52VWI6ZSZC4NY5NpkbX+k9/ZGbypkBN
-         IrCXKbWlQA2kNZHkZkRSsVz0yLXqDG+u7wET1MLxJ1aTPxPO1irHsBw0CZr4irIsgH8Y
-         AgrG7+BjrA1kKvyRiKnLhviacqUAFkrXpdbzWmfHLqcuyZ3LQHIj58gAC0ignu2H3rfW
-         UVoA==
+        d=gmail.com; s=20251104; t=1791508626; x=1792113426; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4zJZcyCxNs35dQHZgRkxwA5yHjhyI7WkTssIiSVzh8w=;
+        b=JLrrcMOTngnLsBw23pBiZS2VFeSuc8n1rtA7C6pcban8tKqmqTJsKT2thlSV6RM4r3
+         STedjtAXLbwfkOvWSfGBa74tiJYjTgC6C2W15XAK46Pd84yEpMlHfMEQ3qtYgyGEnma1
+         tDJLPCNcIZPkZ9vFTca8Sw+rYYe2BKqa1gi0nzf0P+qhuPk+ShNTjT7N0v4XrBj/HeeV
+         wJ8n+IV5ZpjfoBBJPUJqsTErZZztP6UWvOYT16ktdT6AFpKbk7xeR080K0El6taASICQ
+         G9v7bW38UjiFdCzorztyH36Vx9LQwgGHhxo/BvtjSNv9zKMiGjdQiOlDAedKEwS/9uZA
+         IrcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791502938; x=1792107738;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ty3aggzINGexD0CpWAiQ9OLpBPWfuLnh74sRAfhheq0=;
-        b=CAEraPZMwMzbrDmbECRHChO4vHeW1uLUegnNph/b/hUBb/QvZGvIiSQaDN3IvrO0OL
-         7n/yWxtCPgQEUtB/zNLbXgNVLYXdvqeUGh8ONPBTLa/Z71znda5s5XkSwZMYPrtjjA2/
-         2jPffL/EPoSm8iYx8Sr5rF4Er7+eND7iH+GLWgsvpk89HlEhzY75Jrsxcb+gYZFs20VR
-         /fCAqeyXo4wlWTbQqV97ODCKb9haurdTEPsoUF4kQuU+qTUzWYjJ/fOd8mt6dc9Pxk+u
-         OSBtQGRb+GcVHSX0Q7FqAfVeAItx4B8d7XLOoRTdVwJODR8p2qfhzlG0C3rP4JCIf6It
-         Kc8Q==
-X-Forwarded-Encrypted: i=1; AKwUvBw1CGFSD5cP0mr4oobM1Ajj4Rb2f0Aj8sOd+rNBVJYOSm20DlwCv0XY2OaexQlWJ5RkGm7UGOgXKNFPSVVkxg==@vger.kernel.org
-X-Gm-Message-State: AFuF++luY5DaLV6NmJUz88qnp8OvOiuekWFdmROOPxXkAmwEKAWzTRrV
-	oYjn+9WGBFTUeX/0oEGdmCx5nC/hFzX5hQ/Cnsg2Ajo3z7V1hoLTJzLMH1oBox7R26c=
-X-Gm-Gg: AYBFou0cTg0ec5dX+yxqr/vMIi/OY/8CKakgG88n/gMMsY9c6Ak50+5tD1oJ/km/I60
-	jzl4h1T1w4UAgnEnxSlaAWchHRejNLgcxGlLN8udydZCqY7OFnQY/hkKzJEdBqBrGOgPNxnDmDt
-	9outblrWrAGIHxVHLQ2YYr7Ntk5xtgrfHRMt0qy99bs6pgLLwrPwTZY9DI1r0cvuIuAO1Z3XUvZ
-	BwIbO1NpBzHQNuMI3JR6rKvLUWzIU1VKQB1fCF2SY+IKdmDC8yqBcLcQE6zKED4eGoNLmd7+/iW
-	kCo1+5VbFiFPPXyVf6r+QKrAMEJ3Qy0umeZubc09FEw804d8+FveLac/pdsxnlM/oUm+GRnLpWu
-	nmk1KcTlwWrzERR9LK+EfhLqQ4AA4a8snRm74ra3tEStt0f+av7WPq917eduSCUib+mCXRWe6tH
-	mDNaGyBYQljzazQHwli9fhtYXP5HAEwBb/AoSqxvDyTXp2CLiAUBbULP+8BlyCcGmcAcXS6mnW9
-	hQSaTU+VI6Z9GHtsJt6ww2FGRxSMjWJfQY=
-X-Received: by 2002:a05:701b:4553:20b0:14d:5a09:5cd0 with SMTP id a92af1059eb24-16a5ed3d9aamr167116c88.42.1791502937829;
-        Thu, 08 Oct 2026 16:42:17 -0700 (PDT)
-Received: from guest1.. (charm.ics.uci.edu. [128.195.4.118])
-        by smtp.googlemail.com with ESMTPSA id a92af1059eb24-1699718c547sm1483557c88.3.2026.10.08.16.42.16
+        d=1e100.net; s=20260707; t=1791508626; x=1792113426;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4zJZcyCxNs35dQHZgRkxwA5yHjhyI7WkTssIiSVzh8w=;
+        b=u5W1GHJwFfnOZdOvgmpl8Ey8TFaQELdqWxdBWKhuSC5Go9gpas0ESvHptNuSKDO5nT
+         /hiW/1q8YVybi3bovZ3oeYAeW2z4z7mbpg8e24iZfw7IMj7ze/g05kVqkJeGA7ss3Xo0
+         3MldYEWTFfYIRUAP0GRa5DQ8lTs5L3WIRgq9CSRk4AXBNEEXPpwqpexA67UD66y49Mf9
+         VST4N1zsL0al4yLxPh34jteG9u54LWQU1Cye1C26c0GarnTNgs4CzslYxpOwqVRSFY2A
+         HKPlNNKZ0YS8EShJ7K+o6HUXrunKDKoVtTBCH03ZMY6+wBLgJq6Edkkvzw6f8Y71nfpe
+         j1Wg==
+X-Forwarded-Encrypted: i=1; AKwUvBx4mjM/C7LlBqqbRaHUB4FPzfrVfa2y5Qs/a5LGCDet7cux++iRU//JD4DLkgaErU1Vh1Fnol93rJm1eOVozw==@vger.kernel.org
+X-Gm-Message-State: AFuF++mzG2eTv19Jv15wFTUy9sxPVbz0L/pRCL/GkGaQvTdYCWQ8Tv8U
+	deeK50H5CEoBXQHQDRJSj7DERLjduA3H6HcjxqNdwPRgJ8TZLxv/xoom
+X-Gm-Gg: AYBFou3PV/0WRpuVSHd+9zbJwkiShRa0kFxlm72dYjR+yo4vFOALxvIfuhn5PeN4T4C
+	1On4p51xMEP+KvsSby8hxA5HeyAtwd6G7WTJC24FuXnFMh9tv1+/YcHOk3chSttvH9TlUtvlAnw
+	9xs03Hm8Xpe64hE7pansct8XhjXx9n0awMOJiZiLNVlSdV/nEidPWV/zniPhJ8O/1/moKVIgnqv
+	4rcxPZN80XC0diWuecIlpKKKM/AIrteyRfjwnz7nZMv2ICn6nir4k66VzwdDCg7EJ5twvw9EuR8
+	ORqs+glMH6CcYSarafwT/ptpF2TTxm13QqYpxocN8U8EhnQj1lIr9Wl+Stk8+ArNWCWyZspKTix
+	G/pX4cyTVm7RnCIGfTuDfQQtsPdN667bQYOxRGfWOqstvrk7vrZu9loHYGuGSBtIH62BwqweXp8
+	xbYR7UWF6YV3gj6RK9pwa3wt65Seb4XasNIqHcDRRgP3mYEBWPcVQBenZVzOanUznS3ejZ/H74K
+	x3hf2DVLNKqnmeip4373e9/EG1V24srhw5M/ZTJ1L1QLgjaty+AB7xZvptlUzI/xaNlk02CYMyn
+	V5NdJZl+Z38HBQiLoGS5NBwbD+8eIzsg8SckLKXFeL3/g/0gJz+sPL0C114ednhDuSRWk5J3h53
+	+7t8H8+8RyN3Hjd485KclCA==
+X-Received: by 2002:a05:600c:19ca:b0:4a0:2484:2800 with SMTP id 5b1f17b1804b1-4a18e4464famr4244415e9.3.1791508625763;
+        Thu, 08 Oct 2026 18:17:05 -0700 (PDT)
+Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-a128-aa01-297a-7094-853e-a20c.310.pool.telefonica.de. [2a02:3100:a128:aa01:297a:7094:853e:a20c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18be8c601sm19861285e9.3.2026.10.08.18.17.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 16:42:17 -0700 (PDT)
-From: Priya Bala Govindasamy <pgovind2@uci.edu>
-To: a.hindborg@kernel.org,
-	ojeda@kernel.org
-Cc: boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	ardalan@uci.edu,
-	zhiyunq@cs.ucr.edu,
-	dzueck@uci.edu,
-	pgovind2@uci.edu
-Subject: [PATCH] rust: configfs: Fix reference creation from uninitialized data in `Attribute::show`
-Date: Thu,  8 Oct 2026 23:42:14 +0000
-Message-Id: <687438f7767b2c65d9782d92a6e96387e63adc99.1791501243.git.pgovind2@uci.edu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1790981219.git.pgovind2@uci.edu>
-References: <cover.1790981219.git.pgovind2@uci.edu>
+        Thu, 08 Oct 2026 18:17:02 -0700 (PDT)
+Date: Fri, 9 Oct 2026 03:17:00 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Russell King <linux@armlinux.org.uk>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Arnd Bergmann <arnd@arndb.de>, Linus Walleij <linusw@kernel.org>, 
+	Christian Schrefl <chrisi.schrefl@gmail.com>, Bradley Morgan <brads@mainlining.org>, 
+	"Paul E . McKenney" <paulmck@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, linux-arm-kernel@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/6] ARM: cmpxchg: always inline __arch_xchg() and
+ __cmpxchg()
+Message-ID: <asg-nSs2cg7O-znd@gmail.com>
+References: <20261008053746.49631-1-kmehltretter@gmail.com>
+ <20261008053746.49631-2-kmehltretter@gmail.com>
+ <DLZC239PAA53.3S5GIQRJNU1V2@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DLZC239PAA53.3S5GIQRJNU1V2@garyguo.net>
 
-When a configfs attribute is written and then read through the
-same open file, the read reuses the buffer allocated for the write.
-This buffer is not zero-initialized. Writes to the attribute go
-through `fill_write_buffer()`, which allocates
-the buffer with `kmalloc`, and initializes only the input bytes
-and a trailing NUL byte.
-The read in `Attribute::show` callback creates an `&mut [u8; PAGE_SIZE]`
-to the buffer. This is unsound because the reference may include
-uninitialized bytes.
+On Thu, Oct 08, 2026 at 11:01:32AM +0100, Gary Guo wrote:
+> > v6.19 links. Commit ab717dd98bee ("rust: helpers: Add i8/i16 atomic
+> > xchg_acquire helpers") in v7.0 triggers __bad_xchg. Commit
+> > ac8f06ade38a ("rust: sync: atomic: Add Atomic<*{mut,const} T> support")
+> > in v7.1 also triggers __bad_cmpxchg.
+> 
+> I think the issue is that when you get multiple function calls in a function,
+> GCC starts to think that not inlining can result in code deduplication where
+> that is not actually true.
+> 
+> But I am surprised that it hasn't been seen in the past, perhaps there're only
+> calls with single size from any translation unit previously?
 
-Fix this by initializing the contents of the buffer to 0 in the
-`Attribute::show` callback before creating a
-reference to it.
+The sizes were already mixed. It is the number of callers.
 
-Fixes: 446cafc295bf ("rust: configfs: introduce rust support for configfs")
-Reported-by: Dylan Zueck <dzueck@uci.edu>
-Assisted-by: LLM
-Signed-off-by: Priya Bala Govindasamy <pgovind2@uci.edu>
----
- rust/kernel/configfs.rs | 5 +++++
- 1 file changed, 5 insertions(+)
+Commit 5dbc0a692459 ("rust: helpers: Add i8/i16 atomic xchg helpers")
+has 1-, 2- and 4-byte xchg() in helpers.c and no __bad_xchg. The next
+commit, ab717dd98bee, adds two more callers of the same sizes, the
+xchg_acquire helpers, and has it.
 
-diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
-index cd082b83e9e7..3a404e0c54da 100644
---- a/rust/kernel/configfs.rs
-+++ b/rust/kernel/configfs.rs
-@@ -559,6 +559,11 @@ impl<const ID: u64, O, Data> Attribute<ID, O, Data>
-         // the conditions for this call.
-         let data: &Data = unsafe { get_group_data(c_group) };
- 
-+        // SAFETY: The callback's page is writable for PAGE_SIZE bytes.
-+        unsafe {
-+            core::ptr::write(page.cast::<[u8; PAGE_SIZE]>(), [0u8; PAGE_SIZE]);
-+        }
-+
-         // SAFETY: By function safety requirements, `page` is writable for `PAGE_SIZE`.
-         let ret = O::show(data, unsafe { &mut *(page.cast::<[u8; PAGE_SIZE]>()) });
- 
--- 
-2.34.1
+> The fix LGTM, but Sashiko's report is worth looking into.
 
+It's a valid concern. __generic_cmpxchg_local() has the same weakness
+and patch 1 does not touch it. No file in the tree fails today. A test
+file triggers it on ARMv5 with gcc 8.1.0 and CC_OPTIMIZE_FOR_SIZE:
+
+- 12 valid cmpxchg_local() callers link
+- 24 leave an undefined reference to wrong_size_cmpxchg
+- __always_inline on __generic_cmpxchg_local() removes it
+
+helpers.c stays below that. The ARMv4T and ARMv5TE kernels of this
+series link with gcc 8.1.0. I will send this asm-generic change as a
+separate patch.
+
+Thanks,
+Karl
