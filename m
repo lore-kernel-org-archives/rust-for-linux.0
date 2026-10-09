@@ -1,191 +1,100 @@
-Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1252C0F6D
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Oct 2026 14:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791557610; cv=pass; b=kI+rLotgRcJp3E6Lu8d0cT2+VUhbRkv/CA6QOaWml3RMJ0cLxI+mXQ/63/hGpGAOIWYbmLKfkeUMOnIB+Z6ptG6XGShfiUgtOYxaPayjTSnK6wfNH41WX5oOMuBaZ3CRc5YVJIf3dfTs3EK6thuxmEuqoxX2OD+dKU/p1lMlqbA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791557610; c=relaxed/simple;
-	bh=p6VdHD3sMCb043UL2HIadwZQIBlmNBL7224t5/m3rdU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=r7EIieYIykfc1uVDX0jyXlHKbeLOn7TdnRusgB7raTvcRIPTo/TnbNlhULBZnS6JaMXL5H8vHSnQsp8ux2vcNo106SzF2YJcQmGleokZE/5cHW/cj+bN7DIYZ136rxnmVkHVFMn6Uu7JuBFPtS+isZNNzUzPqL0itMF7/GCWPDA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=DXubZqbr; arc=pass smtp.client-ip=165.173.180.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E8C4ED1A3
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Oct 2026 16:21:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791562866; cv=none; b=MYjtSpESX49NLURMwFh3F9N7vwTc2jXjj8DDYdzAyrk0lg8UbzvWtx9CWZ7pGGCq9jJ/ss/r0HOc8qznb1WZWPvZRnqrUxP1DSAJKmaLELLVILArZgcj8GmtDU0/Fru/Mjb8sI3qKArozLQYClfr4ZSuy66MNBO8x8P0s5KNnhQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791562866; c=relaxed/simple;
+	bh=gsJ/8HUiw+/ntCHZuU0jjeW3L80Z+FUKEdpD7y86gqw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tkaM7Gi55QiSKTuUYu8rMBPn4O4anywTHcPkUsXI1JHe5TEn9NRlH5yaJckVa/SMufXncoPczCGehYYKHonsvDj7TS0QQD2BnQRRJPSuDtooeTYh2faGcp3IQWcNIG3o+s+NzpTz75SBNTUCdXxg6VWT3x67Axx3RuA65OIvEVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dW8tbKG2; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="DXubZqbr"
-ARC-Seal: i=1; a=rsa-sha256; t=1791557553; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Z+z6z0ksLMfonBhun8oeR7/DSVjnafMXHhyl6IGgTwbRwCHnhp4BxXnVi0JOquxAiGVhvgSetsOJfNXjSOGyxQxsJ1l7YmzXWPSjANhra8npyQu/nDGCS69CQxB63sDlvdzUpatOQvOTnzVtZa3yy6ZVBGGMGgeKbD8SH5s2QY8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1791557553; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=EiLsH5UA/UAiT8EVhaZCRrPJfE6J/JG41Rfbvq9F6Jk=; 
-	b=dVa8fOIknUAnhPupZPxBXcpw5NN+mrT2WN9dy/0/Pq7lV7P2TdSl7GEv4K0QXIgk8szcH/LHspkdsvFugW//uRfkatqjxx2IEYG+QEOB9HVsMT/mkPldckPULk3kYovkyFcwbq6xhw6GP71fr5DWIlecO0yilkgEV2/kDnbBrkE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791557553;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=EiLsH5UA/UAiT8EVhaZCRrPJfE6J/JG41Rfbvq9F6Jk=;
-	b=DXubZqbrnPnNjo75oU8CUkmCxU5WEW7U137kdql6G/TvUin3a9mIBQ01dcF3Jyvw
-	zXysVlnWfi8tPmxV4UWfqAX/MVUX5EZDadwk0cr8eOCfVfNdEDysgtm0r1IimXErtue
-	NKF66Fi2yzMoVjB3dE+xlGimuCzQ1UfNdYeaXsPI=
-Received: by smtp.zohomail.com with SMTPS id 1791557552056367.49141307442665;
-	Fri, 9 Oct 2026 07:52:32 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dW8tbKG2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791562862; x=1823098862;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gsJ/8HUiw+/ntCHZuU0jjeW3L80Z+FUKEdpD7y86gqw=;
+  b=dW8tbKG2r5UNRZGQPiPeQIhl0Lh24ELQGTjrgex5dhGAmyqVG64uMBWn
+   1SwOIHUHcqBa3cLVX5uZonG5058eh2pKmKdPwfcTzBRhgOt4/qFytjYrY
+   9SOwgwh+LhSCi/4ewHaKea/snjuEXSk4fDIOdFA1IOSlcL1aI19CMl96w
+   gsjbl7K7emMGi7PvMY4NHAtxqZAkAHR2m4dnL+sJe4x6HOi4uEvWvZwS1
+   K9hJCunCJLV39LDsYyD/INMrpVFncpgbjiugtDktqY8eXogs3gVyC1HN3
+   dfoZ7ML9NGM87GktLMlLHje5blj3AOnT6Dqtu1kuX7Ek8g072XpH55aTv
+   Q==;
+X-CSE-ConnectionGUID: x03dlj0KQxWh6FEKyR9O8Q==
+X-CSE-MsgGUID: 1HS5ur6TTkORbQ3plpPe7w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="369139"
+X-IronPort-AV: E=Sophos;i="6.27,148,1787036400"; 
+   d="scan'208";a="369139"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 09:21:01 -0700
+X-CSE-ConnectionGUID: dn6Xe7yeQyqvBT75D8pYAA==
+X-CSE-MsgGUID: Jt+nk3KNRQK7ishZzw2+7A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,148,1787036400"; 
+   d="scan'208";a="290053"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 09 Oct 2026 09:20:58 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xFDL5-000000005zY-0JHI;
+	Fri, 09 Oct 2026 16:20:55 +0000
+Date: Sat, 10 Oct 2026 00:20:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: FUJITA Tomonori <tomo@flapping.org>, ojeda@kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	a.hindborg@kernel.org, acourbot@nvidia.com, aliceryhl@google.com,
+	bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
+	daniel.almeida@collabora.com, gary@garyguo.net, lossin@kernel.org,
+	tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH v3] rust: compiler_builtins: Fix silent trap in
+ prohibited intrinsics
+Message-ID: <202610100054.UyoZyPQ5-lkp@intel.com>
+References: <20261008114717.992497-1-tomo@flapping.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
-Subject: Re: [PATCH v3 08/11] drm/tyr: add BO-related ioctls
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260929-tyr-ioctls-v3-8-26955fb111d5@kylinos.cn>
-Date: Fri, 9 Oct 2026 11:52:12 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Lyude Paul <lyude@redhat.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Sami Tolvanen <samitolvanen@google.com>,
- rust-for-linux@vger.kernel.org,
- linux-mm@kvack.org,
- dri-devel@lists.freedesktop.org,
- driver-core@lists.linux.dev,
- Alvin Sun <alvin.sun@linux.dev>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <419B635B-1C89-4004-98CB-9127875CA043@collabora.com>
-References: <20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn>
- <20260929-tyr-ioctls-v3-8-26955fb111d5@kylinos.cn>
-To: sunke@kylinos.cn
-X-Mailer: Apple Mail (2.3901.100.1.1.11)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261008114717.992497-1-tomo@flapping.org>
 
-Hi Alvin,
+Hi FUJITA,
 
-Same comment about dev_err vs dev_dbg.
+kernel test robot noticed the following build warnings:
 
-> On 28 Sep 2026, at 23:15, Ke Sun via B4 Relay =
-<devnull+sunke.kylinos.cn@kernel.org> wrote:
->=20
-> From: Alvin Sun <alvin.sun@linux.dev>
->=20
-> Implement BO_CREATE and BO_MMAP_OFFSET so userspace can allocate GPU
-> buffers and obtain a DRM mmap offset for the generic mmap path.
-> BO_CREATE page-aligns the requested size; BO_MMAP_OFFSET rejects
-> NO_MMAP objects, which must never be CPU-mapped.
->=20
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-> ---
-> drivers/gpu/drm/tyr/driver.rs |  2 ++
-> drivers/gpu/drm/tyr/file.rs   | 73 =
-+++++++++++++++++++++++++++++++++++++++++++
-> drivers/gpu/drm/tyr/gem.rs    |  8 ++++-
-> 3 files changed, 82 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/tyr/driver.rs =
-b/drivers/gpu/drm/tyr/driver.rs
-> index 9a7f147935e29..8baf88aee96ad 100644
-> --- a/drivers/gpu/drm/tyr/driver.rs
-> +++ b/drivers/gpu/drm/tyr/driver.rs
-> @@ -224,6 +224,8 @@ impl drm::Driver for TyrDrmDriver {
->         (PANTHOR_VM_DESTROY, drm_panthor_vm_destroy, =
-ioctl::RENDER_ALLOW, TyrDrmFileData::vm_destroy),
->         (PANTHOR_VM_BIND, drm_panthor_vm_bind, ioctl::RENDER_ALLOW, =
-TyrDrmFileData::vm_bind),
->         (PANTHOR_VM_GET_STATE, drm_panthor_vm_get_state, =
-ioctl::RENDER_ALLOW, TyrDrmFileData::vm_get_state),
-> +        (PANTHOR_BO_CREATE, drm_panthor_bo_create, =
-ioctl::RENDER_ALLOW, TyrDrmFileData::bo_create),
-> +        (PANTHOR_BO_MMAP_OFFSET, drm_panthor_bo_mmap_offset, =
-ioctl::RENDER_ALLOW, TyrDrmFileData::bo_mmap_offset),
->     }
-> }
->=20
-> diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-> index 2c037b136406c..e98eb0a46877f 100644
-> --- a/drivers/gpu/drm/tyr/file.rs
-> +++ b/drivers/gpu/drm/tyr/file.rs
-> @@ -248,6 +248,79 @@ pub(crate) fn vm_get_state(
->             Ok(0)
->         })
->     }
-> +
-> +    pub(crate) fn bo_create(
-> +        ddev: &TyrDrmDevice<Registered>,
-> +        _reg_data: &TyrDrmRegistrationData<'_>,
-> +        bocreate: &mut uapi::drm_panthor_bo_create,
-> +        file: &TyrDrmFile,
-> +    ) -> Result<u32> {
-> +        if bocreate.size =3D=3D 0
-> +            || bocreate.pad !=3D 0
-> +            || bocreate.flags & =
-!uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP !=3D 0
-> +        {
-> +            dev_err!(
-> +                ddev.as_ref(),
-> +                "Invalid BO_CREATE params: size=3D{}, pad=3D{}, =
-flags=3D{:#x}\n",
-> +                bocreate.size,
-> +                bocreate.pad,
-> +                bocreate.flags
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        if bocreate.exclusive_vm_id !=3D 0 {
-> +            dev_err!(ddev.as_ref(), "BO_CREATE: exclusive_vm_id not =
-supported\n");
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let size =3D usize::try_from(bocreate.size).map_err(|_| {
-> +            dev_err!(
-> +                ddev.as_ref(),
-> +                "BO_CREATE size {:#x} too large\n",
-> +                bocreate.size
-> +            );
-> +            EINVAL
-> +        })?;
-> +        let bo =3D crate::gem::new_object(ddev, size, =
-bocreate.flags)?;
-> +        bocreate.handle =3D bo.create_handle(file)?;
-> +        bocreate.size =3D bo.size() as u64;
+[auto build test WARNING on 2dee3d3adcadcc57d62ba6608cd02f50b0c10264]
 
-Why is the sg_table() call only added later? As it stands, this patch
-introduces a silent (and extremely confusing) issue.
+url:    https://github.com/intel-lab-lkp/linux/commits/FUJITA-Tomonori/rust-compiler_builtins-Fix-silent-trap-in-prohibited-intrinsics/20261008-204717
+base:   2dee3d3adcadcc57d62ba6608cd02f50b0c10264
+patch link:    https://lore.kernel.org/r/20261008114717.992497-1-tomo%40flapping.org
+patch subject: [PATCH v3] rust: compiler_builtins: Fix silent trap in prohibited intrinsics
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20261010/202610100054.UyoZyPQ5-lkp@intel.com/config)
+compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
+rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261010/202610100054.UyoZyPQ5-lkp@intel.com/reproduce)
 
-I=E2=80=99d prefer if the call were to be here instead. You can just =
-call it
-unconditionally for now. IIUC it is harmless for coherent systems
-and in any case, we only support non-coherent systems atm.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610100054.UyoZyPQ5-lkp@intel.com/
 
+All warnings (new ones prefixed by >>):
 
+>> vmlinux.o: warning: objtool: _RNvNtNtCsjYlAz7NZ3Sw_4core3fmt3num8exp_u128+0x7d: __rust__udivti3() missing __noreturn in .c/.h or NORETURN() in noreturns.h
 
-With the changes above:
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-
-=E2=80=94 Daniel
-
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
