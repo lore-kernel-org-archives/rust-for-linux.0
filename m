@@ -1,178 +1,242 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56DE751AEE2
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Oct 2026 18:48:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791571726; cv=pass; b=HM3VYwPae9xIHVouBmY/vICvthgv9v36gCJX0+xSN5sxxSXwKXW/9j7vcj34juTMKrfUM1EgLfLpC+nouV1UvJfzS/eHZOkqVbP2uP1oPeSaw+t34QaQlLwTbGzf5ea8wSGFSN4euxVQ8CRhGubTK+ypGeqxgskpCirAjVCIjrQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791571726; c=relaxed/simple;
-	bh=0l4CaaLZ9zgaLsOego2cb1kl3aoONQoA1AOZZaKe/2Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nHy6KR/PDUAlNM+Z8gnIhDw9+HU7zRCOS5NXanQMet+P77l+XKViD+Uyurs2SGADnWDJRpPAl6IPJCANjGwiyDt3C7ehYNTj/4C7Vb1i3WKpnlnZNlEUeWXK3ydjoOBx80ekBgUNVcX8koBSKtq7uL/SyWG8SqQUuzsn1ccwM34=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VYIyd12E; arc=pass smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840764F5E0A;
+	Fri,  9 Oct 2026 18:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791571929; cv=none; b=pisHiONOTopULPzsJejqTyIb59JbxfLUwBn6q0REIf6U3SiszOoGRdA1v3HIKOhrr4g6ZH0IuZBwr1JxCisKYQczwEYVm68U29vOuxA7GSDWugMmgBYW9t0eyxpZfQ82QlkEX2fzoZdRJjB0j3uP16n7Dn2oYbPpHMvTFQ7Unrs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791571929; c=relaxed/simple;
+	bh=CGsSouXbLNX0cRECIXyTMJVcjhnhpLk543IpFYJZEVY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FLvokrjbZuutv8dNON63mIgk+b9D51NkXktKQ3LnS1WJsgdKgHvYj5cexEoJJ1HJZ+oQy8iNBE4EtLr0nly2/ffVpC5R6gZMCz//b8jn/4MT1Q2y1YfnutN5RQ7pt07etFQnK8yh58lV0U01WdLG3Jdu77of+LYu54OK84ugRdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pw9HgPss; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VYIyd12E"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-351767ef18cso4258278eec.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 09 Oct 2026 11:48:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791571724; cv=none;
-        d=google.com; s=arc-20260327;
-        b=og1fj8QtTmIGbMiF+CWIzt9GNDYFkqS+bd/ZxouvG8/yQI7kVC0T0DAplzaoaof4AP
-         Ey33IWji1V69YQre5uZlHet2p/NvaIdEpRpmmZV/u3vvLdW9F8fxceCsSuq5EQlaV4+J
-         1RIX8S6YIWY41pseAnEnRxlu85R15ItM50S9es9+kxDIAuF/ljmFXdPOyuWzr9vNqDDQ
-         9o6HWTIwI1uvWYEImp1L9R8eKQHTn+L//3yL9eS7nzrL9Jml/hfq84NzTEdceFN/pAWO
-         BNda5dHY0cJt7k0M85mVZ6BV9BuMPqbqWKYE2vYqcyeOHDOJxRs/7xarE58tDreuZ8FP
-         giDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0l4CaaLZ9zgaLsOego2cb1kl3aoONQoA1AOZZaKe/2Y=;
-        fh=WYt0WqLN7Mbxf8RFIhIR8N0yvrvAI8ufaPvhrKUPuac=;
-        b=pd7cyVF5MlmBNDfRxZBcicG1EaNGTKd2LBAAxQiipG7MxPBgI8QgBUfCjuJRRWNDjB
-         TNoENdj7YE1mX1AimJRODfUSynMJ/JbT3R27AlybH3m/GUaWU+9KGE+SWDB/QDmWxz5w
-         gBiRT6rP0bkP1Yvjs9C2bZ6h5VJSo7v+q4a1qWcYZb959Eov63Ov7Qp/r7ELUGOWV2Zn
-         ga1MgtwjcvHl3KVHxn9ejW4s4Ysw2ZWGn7FUaBxI3+o6UCl/7+dGx48BF6dJ0e07OA6C
-         J+wiM9OG8xCBOoR62oy/FyQ6D6gYGOrLTUqqj0ArrwELocOOpd/RljKh0eygM4thIs2Y
-         vL8A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791571724; x=1792176524; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0l4CaaLZ9zgaLsOego2cb1kl3aoONQoA1AOZZaKe/2Y=;
-        b=VYIyd12EnUDdnT8Z1l/1WPnqE7Yb+8klPqGIIwI4kuh6EPw3QcIIJRFvazsgALnMkd
-         yJvbatXkT3wu7SUFr7gYQRqB7fbeRl2tYDuTGVWCG+NyDA65AX4GVx0GTMLO1RCvjPzh
-         Rw5l1kfI8QnOdHFVmlQEF1a0bsSltITJdOQ90G1Cv+sKhDaGPbj7H0a3UAqTqYTfdTYE
-         nB5sMaXOU0BIkT+z4+hYzboyHnBRV4Vv4UgiJewaNqKcTNG1hTNuG2XxrkShNwYNsaDr
-         hQBOP5k3ZkZj4S0WADuxQTGqcppmki6jcqdDy0E552ja1K4Ei87e8+Yhx0+g7o6kZmkh
-         +R/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791571724; x=1792176524;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0l4CaaLZ9zgaLsOego2cb1kl3aoONQoA1AOZZaKe/2Y=;
-        b=k7xiWJwYRoAAMvRWOpd9exFmMRpOpRzBdakI95XqiFT9LMIqOSSzFqTdPusbzTLeGn
-         LkuT3N2iaBb0zKrEuHU3MyEhChjnUL5alD6QvaCZKuGA/pU0FX2vFDRO+TNVK+C5bWoB
-         cUDdEUrxnin2vQfwVZMNhQrHd0W87wvdzxP3yMdcjD0Z1ZUU7kn94P9EYIXn1nrtFvZR
-         fmmhH7O5ZE6ufsZRHd7a8RA9zIyMJHwpJzfUP+DCllc7RgXHl5+Md6F9zdzB81m2fHNk
-         zzWaP6APNPDM290WQ5f1T3oIJQA7ePpayfC+Kns05qja11ZHsRfSwk0d/9p7q8lfWlVJ
-         Omag==
-X-Forwarded-Encrypted: i=1; AKwUvBx4WxY1sX997/yuxSy+qyB3SlKP0Wxg0zjoruAxT9BFW/MZSL/PpiQ5tWNVEQg1wtviWxQWiAxINWy5CoILEg==@vger.kernel.org
-X-Gm-Message-State: AFq9FYL2iX/b1Qxwm3Tq25f1OFAFa6u5wMpeGpJXsjwEd88pTS8JU6Qu
-	bIAKsEUWMKl4TGm58lPCGlVRvoyq/BwPEKtbeli/eSmYG8uEVWk1JJfn/fBeKhNpqpVhYqoNvl8
-	RK7qKPsNx2g7TbY/zRhmSClCRzDYZzN0=
-X-Gm-Gg: AYBFou0dbxaqag58wpH4c/qwIyR/TcSNkx8Ewuj5AbOjhSYwQdooLrFgEWHVZMDovAM
-	jmWcvuL4T64btZC4kmgrBay9uGIZrVL0z72R1kFp7W04jDpiTrb9HlS3JTYySehd0Yy8nBxrDgU
-	+fjb4lupb2XmPtSlbPwAZ9c4btwHHAs2j8YenuNkaiCSjMRtCf9DlfKbOKxvSWI+ajQodn+HTve
-	O3RRE+cI9cXT41Xv95aYloC2PwJSIyp35XzAvUaC8OHGQqdJUfjVTNuQ9VlIlf6uh3PnRVQH3O9
-	jer9N391xGCvqdePOu+b8m5kT2FsZIsASf8B3w4ZTv83MuWINwuCun6BckR/Kvk47Nv4/P/gXCX
-	PlJyNE7YUtcuxH0Kpsvv6t8fHBkVWRkaAmdNaSJ8eHg==
-X-Received: by 2002:a05:7301:77cb:b0:356:b370:a0ee with SMTP id
- 5a478bee46e88-356b370a395mr1072744eec.20.1791571724058; Fri, 09 Oct 2026
- 11:48:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pw9HgPss"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793671F000FF;
+	Fri,  9 Oct 2026 18:52:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791571928;
+	bh=LEA3p4YPwgQaoGr6H4RcIZE6g5/a+camPePCa7aAZ78=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Pw9HgPsspP48wV7BVNpVmRR56d68n8WQ55lK/S3rR6goaqLV08BeVhhqBhYE7n6tp
+	 appP3/ALXjR1KG/ULAgWLLR9NQenFm5b6Ze8sMy/GugKvMmNj/2fOX/OljDr9B2QVB
+	 Jplk8VI14fISzg5nq3mZTl2lXL1zaJ7Qq1ZeIbWtSOvILMWyzXqB+0BUVduOXt3EGQ
+	 gR3BQDw0CQQYTxyEbLGZKB1TYLuHfBuNrQoFDky6c85jfpvVKawJ3q0NXmSk7a/BU9
+	 y3b0IqpCIaWgbKiMxY5B3AX9ZeicuWsyliUBseviZNO+PWrf45Z2HGAHbPeozTiIwd
+	 jbntiXNVq9K3Q==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A995AF40066;
+	Fri,  9 Oct 2026 14:52:06 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Fri, 09 Oct 2026 14:52:06 -0400
+X-ME-Sender: <xms:1jfJakpum0cC20jCa4W-Dz0Za_nVbceS9IiEJACnTfUO0Bq2OUbTjQ>
+    <xme:1jfJaiLJc7JcAMI_MC6AMq1_kTJ69iQJA6nO3t3MkPJ89POuW7et0SuSbcYWbgWmx
+    1hXY4HsNfEwqaSffGGW2aEXK4WR1yHofP6F09laCsD0pazpUFfd2B4>
+X-ME-Received: <xmr:1jfJavRF_XIUSd7Sjl-eV3cBxb2Qm0rsqS8-6MS0wLL5FSyHNO4o21aDJ6RigaYZkGd2cOzxNYj9Wx0IBdZQFhhjzgn-etzH>
+X-ME-Proxy-Cause: dmFkZTFpqUGWu6p6hPoGOpiRsskvvc3k8f41nkcj5ENIrSq8Ynb4Aw0OOXTw3K1Iw8tu4C
+    7lx4kE/mx9ryewefxm5meTOcI98ZqN43LAKkq+qxYAvVZMNcNyhP5r0R5eaSOYgyLEa3jS
+    7UZPBh/0wfBQAru08UCKTVkcE+51cRBwMXzpHAeDnwYX2KjWSkta1Bz3pXWehgtTAgr7Oa
+    g5fQNzdabEK1H9Es7QQqDLZxPGqQvuo2iI25vtxadjnPWMJxyaBDPOOz8a6rj0pRDgWdxR
+    wNIfOW9tknd7//uzN6loAaWKgztgK4tvWdkoXNIbJhIgxvVj+gKAgDpBhWwkwMQQTR3SST
+    qMvq2FmDdD3ku0453iDzQi17qDJuIB7KGcrjQ5IxtHZTSyaGyFbFQW9pNIPGN0GW5pWRno
+    hqWWzNBtg08SN+D78yHRoxIGS2iBLr1otHsR3pw/ZDzz00AkxuNWsDTfhLSIubq6VCJdHC
+    aSSo2KZBlpgtxDCMDMQ68XVKyJnwobxl4BEhccOPDOoYYiXL/ZEH/jD9TPbUADZT2e7RfI
+    awnevonEjrhYf+WSExUKeElu+AlU3jU2Fb6lPfHtsVL3UVL6GblRB7As3/zIG6WLe56CFS
+    S1VqA7aR8+9JPHwY3B9mSO4Fjm9gJOYlilPNHoffVNxt+JkXSVQpxQs/JJnw
+X-ME-Proxy: <xmx:1jfJap8KUefmaYMMluy0Ec75oT4hLqHaqed__w5HSh0vOBMUllDGRg>
+    <xmx:1jfJau9ATvd_xHRFppJtjNLdKGbOhQX8bCeIJsZz7dnHXIQfk6xijA>
+    <xmx:1jfJav6yH_YMlHq7CpMjJ6vkRkq0pFVCPx8cc5tSbIBepDZom91Zug>
+    <xmx:1jfJakdUMnFgV3Zyv4YkTnQX0mKlufYKvBSxgp0tB2UBFEjdxSGpxQ>
+    <xmx:1jfJav0v5SlYu3QyfXSQIRBSNWFQLbZRu6ttGTpoKFCzi_WkPXi5AdJ->
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 9 Oct 2026 14:52:05 -0400 (EDT)
+Date: Fri, 9 Oct 2026 11:52:04 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Markus Probst <markus.probst@posteo.de>
+Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?iso-8859-1?Q?Wilczy=B4nski?= <kwilczynski@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Ira Weiny <iweiny@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v26 3/4] rust: leds: Add multicolor classdev abstractions
+Message-ID: <ask31EX01lSL9QJ9@tardis.local>
+References: <20260930-rust_leds-v26-0-83837331020e@posteo.de>
+ <20260930-rust_leds-v26-3-83837331020e@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260930-chid-v9-0-0d6cca376cff@nvidia.com> <20260930-chid-v9-8-0d6cca376cff@nvidia.com>
- <aryYkkB9j14xnWo3@yury> <DLTA93JE6VF2.37UGB3SWU6ID6@nvidia.com>
- <ase7IBtZjQsPVWSN@yury> <DM0D75ZTTQXJ.2XADVI38UGH7C@nvidia.com>
-In-Reply-To: <DM0D75ZTTQXJ.2XADVI38UGH7C@nvidia.com>
-From: Burak Emir <burak.emir@gmail.com>
-Date: Fri, 9 Oct 2026 20:48:30 +0200
-X-Gm-Features: AclHuK8Xj8QHFk5-TbzyPwVsH20KRa9KXwlVq0lwopsd7qnglTdkhqow-XI0c1A
-Message-ID: <CABwQupMVzUOsqP_fTZQdwUU+xEO1k2Q4=RQQuq2qd5HCYY0ZUg@mail.gmail.com>
-Subject: Re: [PATCH v9 8/9] rust: id_pool: do not round capacity up to BitmapVec::MAX_INLINE_LEN
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Yury Norov <ynorov@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Yury Norov <yury.norov@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, John Hubbard <jhubbard@nvidia.com>, 
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260930-rust_leds-v26-3-83837331020e@posteo.de>
 
-On Fri, Oct 9, 2026 at 4:07=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.c=
-om> wrote:
->
-> On Fri Oct 9, 2026 at 12:47 AM JST, Yury Norov wrote:
+On Wed, Sep 30, 2026 at 01:05:32PM +0000, Markus Probst wrote:
+> Implement the abstractions needed for multicolor led class devices,
+> including:
+> 
+> * `led::MultiColor` - the led mode implementation
+> 
+> * `MultiColorSubLed` - a safe wrapper arround `mc_subled`
+> 
+> * `led::MultiColorDevice` - a safe wrapper around `led_classdev_mc`
+> 
+> * `led::DeviceBuilder::build_multicolor` - a function to register a new
+>   multicolor led class device
+> 
+> Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> ---
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/kernel/led.rs              |  34 ++-
+>  rust/kernel/led/multicolor.rs   | 445 ++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 479 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index 4b31aa7f432f..81a03985322a 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -69,6 +69,7 @@
+>  #include <linux/iosys-map.h>
+>  #include <linux/jiffies.h>
+>  #include <linux/jump_label.h>
+> +#include <linux/led-class-multicolor.h>
+>  #include <linux/mdio.h>
+>  #include <linux/mm.h>
+>  #include <linux/miscdevice.h>
+> diff --git a/rust/kernel/led.rs b/rust/kernel/led.rs
+> index c17f8ef75006..4b66fe41a80c 100644
+> --- a/rust/kernel/led.rs
+> +++ b/rust/kernel/led.rs
+> @@ -30,8 +30,16 @@
+>      types::Opaque, //
+>  };
+>  
+> +#[cfg(CONFIG_LEDS_CLASS_MULTICOLOR)]
+> +mod multicolor;
+>  mod normal;
+>  
+> +#[cfg(CONFIG_LEDS_CLASS_MULTICOLOR)]
+> +pub use multicolor::{
+> +    MultiColor,
+> +    MultiColorDevice,
+> +    MultiColorSubLed, //
+> +};
+>  pub use normal::{
+>      Device,
+>      Normal, //
+> @@ -233,7 +241,24 @@ pub enum Color {
+>      Violet = bindings::LED_COLOR_ID_VIOLET,
+>      Yellow = bindings::LED_COLOR_ID_YELLOW,
+>      Ir = bindings::LED_COLOR_ID_IR,
+> +    #[cfg_attr(
+> +        CONFIG_LEDS_CLASS_MULTICOLOR,
+> +        doc = "Use this color for a [`MultiColor`] led."
+> +    )]
+> +    #[cfg_attr(
+> +        not(CONFIG_LEDS_CLASS_MULTICOLOR),
+> +        doc = "Use this color for a `MultiColor` led."
+> +    )]
+> +    /// If the led supports RGB, use [`Color::Rgb`] instead.
+>      Multi = bindings::LED_COLOR_ID_MULTI,
+> +    #[cfg_attr(
+> +        CONFIG_LEDS_CLASS_MULTICOLOR,
+> +        doc = "Use this color for a [`MultiColor`] led with rgb support."
+> +    )]
+> +    #[cfg_attr(
+> +        not(CONFIG_LEDS_CLASS_MULTICOLOR),
+> +        doc = "Use this color for a `MultiColor` led with rgb support."
+> +    )]
+>      Rgb = bindings::LED_COLOR_ID_RGB,
+>      Purple = bindings::LED_COLOR_ID_PURPLE,
+>      Orange = bindings::LED_COLOR_ID_ORANGE,
+> @@ -274,7 +299,14 @@ fn try_from(value: u32) -> core::result::Result<Self, Self::Error> {
+>  ///
+>  /// Each led mode has its own led class device type with different capabilities.
+>  ///
+> -/// See [`Normal`].
+> +#[cfg_attr(
+> +    CONFIG_LEDS_CLASS_MULTICOLOR,
+> +    doc = "See [`Normal`] and [`MultiColor`]."
+> +)]
+> +#[cfg_attr(
+> +    not(CONFIG_LEDS_CLASS_MULTICOLOR),
+> +    doc = "See [`Normal`] and `MultiColor`."
+> +)]
+>  pub trait Mode: private::Sealed {
+>      /// The class device for the led mode.
+>      type Device<'bound, T: LedOps<Mode = Self> + 'bound>: Deref<Target = T>;
+> diff --git a/rust/kernel/led/multicolor.rs b/rust/kernel/led/multicolor.rs
+> new file mode 100644
+> index 000000000000..309487bdf38a
+> --- /dev/null
+> +++ b/rust/kernel/led/multicolor.rs
+> @@ -0,0 +1,445 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Led mode for the `struct led_classdev_mc`.
+> +//!
+> +//! C header: [`include/linux/led-class-multicolor.h`](srctree/include/linux/led-class-multicolor.h)
+> +
+> +use core::{
+> +    cell::UnsafeCell,
+> +    num::NonZero,
+> +    ptr, //
+> +};
+> +
+> +use crate::types::ScopeGuard;
+> +
+> +use super::*;
+> +
+> +/// The led mode for the `struct led_classdev_mc`. Leds with this mode can have multiple colors.
+> +pub enum MultiColor {}
+> +impl Mode for MultiColor {
+> +    type Device<'bound, T: LedOps<Mode = Self> + 'bound> = MultiColorDevice<'bound, T>;
+> +}
+> +impl private::Sealed for MultiColor {}
+> +
+> +/// The multicolor sub led info representation.
+> +///
+> +/// This structure represents the Rust abstraction for a C `struct mc_subled`.
+> +#[repr(C)]
+> +#[derive(Debug)]
+> +#[non_exhaustive]
+> +pub struct MultiColorSubLed {
+> +    /// The color of the sub led
+> +    pub color: Color,
+> +    brightness: UnsafeCell<u32>,
+> +    intensity: UnsafeCell<u32>,
 
-> > If you still think that you need 0-length bitmaps in Rust, can you plea=
-se
-> > give the clear and thorough explanation why rust needs those 0-length
-> > bitmaps. Are there any in-kernel examples? Any language concepts requir=
-ing
-> > it? If not, it's still a NAK.
->
-> I don't know of an in-kernel example, but please look at the
-> `bitmap_vec_new` test which has been here since the API was initially
-> merged last year: the first thing it does is create a zero-sized bitmap.
+These should be `Atomic<u32>`, or am I missing something here? Using
+`Atomic<u32>` should resolve sashiko's comment on this patch.
 
-Well, yeah: I wanted the behavior that the implementation rounds up
-documented so it can be recognized as intentional.
-Later, the `new_inline` method was added, which is a clearer way to
-get the largest non-allocating BitmapVec.
+Regards,
+Boqun
 
-I think the problem in this discussion is that we want to treat
-capacity like length, which is maybe suggested by the BitmapVec name
-and its len method.
-
-With the minimum capacity behavior documented, it is as if we have a
-specification right now that no IdPool instances can ever have less
-capacity than BitmapVec::MAX_INLINE_LEN bits. This patch here proposes
-to change that.
-
-It is not clear though why client code would be happy about *less capacity*=
-?
-
-In other words, why should the client of the IdPool have the right to
-control the *exact* initial capacity, even if it is below documented,
-free-of-charge minimum capacity?
-
-The IdPool, despite being backed by a BitmapVec, is not meant to be
-used like a vector: it does not grow by itself but client code calls
-grow and shrink explicitly, and client code has no control over how
-much that growing and shrinking happens.
-
-Like, you cannot grow to 65 and expect to get a capacity 65. So why
-insist on exact small sizes?
-
-> It is also easy to imagine a user starting with an empty pool and
-> growing it on-demand. Having the ability to create a zero-sized pool is
-> convenient to avoid special-casing user code, and in this case I'd say
-> expected, just like you can create a zero-sized vector. Again a size of
-> zero does not trigger anything that a larger capacity cannot trigger, so
-> I don't see a reason to forbid it.
-
-With an initial capacity of minimum MAX_INLINE_LEN capacity, it is not
-about forbidding, it is that the added capacity already comes for
-free.
-You could say "not enabling" instead of "forbidding", but pretending
-that the capacity is somehow not there does not seem to buy us
-anything.
-
-Do the other patches in this series need this, or can we just drop this pat=
-ch?
-If they do, maybe a demonstration of how significant the special-case
-handling is that can be avoided with the exact small capacity could be
-part of the commit message?
-
-Cheers,
-Burak
+> +    /// The maximum supported intensity value.
+> +    ///
+> +    /// If None the maximum intensity equals to [`LedOps::MAX_BRIGHTNESS`].
+> +    pub max_intensity: Option<NonZero<u32>>,
+> +    /// Arbitrary data for the driver to store.
+> +    pub channel: u32,
+> +}
+> +
+[...]
