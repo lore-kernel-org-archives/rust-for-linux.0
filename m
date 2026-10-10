@@ -1,269 +1,89 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3783535FF6C
-	for <rust-for-linux@vger.kernel.org>; Sat, 10 Oct 2026 09:50:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E830E353A8E;
+	Sat, 10 Oct 2026 13:38:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791625820; cv=none; b=BGEks6EbfJsHbX20EEIubN1v5lXySnKIjsrACSGC5/rAFP4IexgbH9urkWEIVUYNVQ3ql9VRn5cGN96OiLWywpIZAS9kPmTr4OIoGVEOgZskt+zfZ7Q8o45E273M3NkEp0VE1QPviZTzzc/QGhuG4ALxBAtIyWfaVtOui0IVWnY=
+	t=1791639509; cv=none; b=Gg+kKt4cTw06cetXODhqTyuj/r/wDVn8q0F3eLFvqpFLn38ZB9fDA290O0gQ+TvF6V4X8OCTbAtOiRaeDcfoSq4SKoKAeykurBVBozaHsH/V5sXl06he+HQwvvvi6glR6lCJv6JZQc9M2Kkof0zAC8YbZUfdJDAvCVTstaFpwIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791625820; c=relaxed/simple;
-	bh=Pz9mjQaWBvzyAjmLpF1JmG7U6qn2e1XO0gz8PWDrPd4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Me6qCYZ0cXqfFEdRnGmiA82RpBk0X81m9yx8nvFFWmJvzdDHUgW4rOmCeuuL6skr2Bplid5uwsNAmOP+h1hVbwG7lwcMoKpyHc9wsh9mL22O8PBRLSW3HZlpJ6VV/lxbo2amkwbDhrdlFmWZmsvMdzRFfihZj7z/wYsb0V1oGbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZZ0YiM91; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791639509; c=relaxed/simple;
+	bh=sxpN53QpS1/8j6faCeXwrYyBxIT523DYJjn7a4VKuhI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From; b=dQCnvmTplWegCxXMUWVRLXt7Z5MkMu8PrQ40uTxjJdMQ2ltCFUZI7whxraLhR7IeBY/ZZkcvdsPjuTHBYCGB2zW98PvwKWt22/MT6O/Pblx4yIknp8V2afz5FrUkxoVUPs4l6V8jLuowRk2qttHfUqRJWs65uPmRKvvWJug5cp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kCS8k2Wz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZZ0YiM91"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a0213948d3so3012445e9.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Oct 2026 02:50:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791625817; x=1792230617; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jYxpsTzHFlYPOtsBqibfHOX9Q66IxX+cTOR1n+n+0sY=;
-        b=ZZ0YiM91iI/JIGvhtoj998S+7gYK+f2OM2180bFhffJKwiOg2VG9atNbJb0g3GJsX9
-         2ltaJm6EChNfC2vBbBhVVlpDTTbOjR823KiSzqokYK26VbSp9pHpGy7U9/Q9bGpqzjaZ
-         zILS8nEORU0sOgE8JOK4IHdnm9te6O93rf8weptyn2Xq8VU/0Rbn8U/2ZntQ23thgq1p
-         w6mxjrH+goqU2UldWL+ftWKFsZP1+pSlAnLKgwHet81LAEXs5O1iN4UQL3r9bQApgblw
-         zhReVIImwTNez0AxuwIuyMoV2KpI3PktXk3NAVdQEORCkVAB++FEBbbeuGEQfx4/5CJe
-         HNZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791625817; x=1792230617;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jYxpsTzHFlYPOtsBqibfHOX9Q66IxX+cTOR1n+n+0sY=;
-        b=PDC9fFQSoTcyo2QKyg9Pq9Jxic4sDGjPwOgtBDip1gvQBkkA/N4Ym1GY5g9TsMzaKh
-         0k0H+FiEzVPDW2bGHwtMT9cqKQ9RKDfNBjfql5eSzkb162i4mvk6kdpwIRYh8kCIt+SB
-         iQte9f/DrPBvZrF4HoZcBBsja0CDLZfnd76N4uGPmgChOlCLI+mm5s2+Wr+UL+JGV9Yw
-         LtrHl9WfYh95C4Lwlc2eJ40NbsthWLs7B9T6HCluGJ9c9fUF+OcwmqiHoGWNWPkOs982
-         7/ffltndYzPIUbHDBExw/faJaMovUczB/kPEB+L99MtlBw0DzPGxP7+hVcjY4czJ6v02
-         bi9A==
-X-Forwarded-Encrypted: i=1; AKwUvBzYXo+rGk3icT1z6yV9CAFSaXIkYdHVuaYJCbTuKT6VRy5obe3J7AztY6RohW2HtnqLn9K4eph3TYW7UwPmeA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKEs9iQ2J/FJ3Fa/V2upj+FUBHiR4UlAlK8rjSpxsuk6TaRiWH8
-	gliE7EoDPtc0I8xHFbaXmYYzYpagzytuvfQU9wcGZ/Mu9vv9XsobB7G0
-X-Gm-Gg: AYBFou3EckFaH1puaB/3I2sBrYUMXaQY75Cmtvg6Z7DktQ3WRiRT+BHkPhyNBbaszLd
-	NJF2ALSKsaVOp8LTD1D7K9gwfTBECc5CAm0BRxfJJWHqsHFwArxrm/daQBTQL/QC66dn0WaRnfx
-	ROj3ngNp6r4ZHqkbjVfw41XGVwcWfML3dSTV+M6VHM6h/kV3gfTN6YjSdlJKHWZKOmundHO6e9K
-	Rixquns5nKNjhCUaeLH3lsqK71w5AEVgfaChLL3M8zfig7Ep/fRSszhWm396dQ+nyR4NM1wncx4
-	KDRpfbY6o1hPQNMeE/ZvpjiVbiFyt9R6gjAnzeUNuLP+VsNrxtu1FeKy785chxSjCq1i6a2dRP7
-	37YQ9Nn0f4CB7PgfAY3sc4GlMlg2O9je9WJXulwiRBPgJOeVgl3d7TJsV+xY19bNE9Pqdxlkdjr
-	2BgvixKtC5qhK9kX64CJBMZ5pa7ge9jsqgXFC7wnFtalLS8lSgMKTZcGkTV56tc+KF3TY4rZ2W/
-	CeDu9YfQgVVafNrGIOcJr0TXB/xb40=
-X-Received: by 2002:a05:600c:8b82:b0:49f:fd2d:23c7 with SMTP id 5b1f17b1804b1-4a18e4b887amr84139465e9.27.1791625817058;
-        Sat, 10 Oct 2026 02:50:17 -0700 (PDT)
-Received: from nixos-office ([81.0.251.149])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bf15691sm119149615e9.6.2026.10.10.02.50.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 02:50:16 -0700 (PDT)
-Sender: Julian Braha <julian.braha@gmail.com>
-From: Julian Braha <julianbraha@gmail.com>
-To: nathan@kernel.org,
-	nsc@kernel.org
-Cc: ojeda@kernel.org,
-	a.hindborg@kernel.org,
-	nico@fluxnic.net,
-	rdunlap@infradead.org,
-	grahamr@qti.qualcomm.com,
-	jakub.git@horky.net,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Julian Braha <julianbraha@gmail.com>
-Subject: [PATCH] kconfig: wrap long expressions in menuconfig
-Date: Sat, 10 Oct 2026 10:50:01 +0100
-Message-ID: <20261010095001.265759-1-julianbraha@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kCS8k2Wz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56CC1F000FF;
+	Sat, 10 Oct 2026 13:38:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791639507;
+	bh=Se+RnHSUYH4aZZm71yLMg+oaEpojuMfuRniLE+KM1Tw=;
+	h=Date:Subject:Cc:To:From;
+	b=kCS8k2Wznka06fAj4+JoLkoC0RWjwlaGHNnKZfvQGv7h9S6/qV5IwQTskJ9KLPjBK
+	 GCLE5uwmkVXE2YMGmQ0J/XMKheblWP6bxkgovKnG/N5NJbd63AXc6RYVAf4Che22Sf
+	 oDRecwiBuL2vslzRpBHioTC3Q2h9CMUSlrhUn01eIek3+7V7Gv1zBHtzbYG39EIBps
+	 MC2L8ZtCPnXMGaZs2uT3diY3vheL1Vma5fG9WGMTqcN+QrsF8QPKYGz+HX7aNKt7d+
+	 LIYvS1a4DyrJ7UK3GFpinlhxEHi/njYsQ3mV6wiGOVfgAiB65SjU+Zl2jhdKASCHp3
+	 PQmllQtyuQRfg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 10 Oct 2026 15:38:22 +0200
+Message-Id: <DM1774SH56A5.136OP30FCYTK4@kernel.org>
+Subject: [GIT PULL] Alloc changes for 7.4-rc1
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Lorenzo Stoakes" <ljs@kernel.org>,
+ "Vlastimil Babka" <vbabka@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Miguel Ojeda" <ojeda@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
 
-In an offline conversation, Miguel Ojeda reported that scrolling
-horizontally in menuconfig's search to read RUST's dependencies has been
-slowing down debugging.
+The following changes since commit cee9395acd8043be0644b25c34bfa86623f2b935=
+:
 
-Let's wrap expressions (like in the 'Depends on', 'Selected by', or
-'Range' sections) between tokens at the end of the window, such that each
-line begins with the same indentation. Ensure the '!' negation stays
-attached to the left side of the option symbol, and keep the value
-annotation attached to the right side when wrapping.
+  Linux 7.3-rc1 (2026-08-30 13:34:40 -0700)
 
-Note that the 'help' textbox uses the same expression printer as search,
-so this has the side effect of improving the formatting in 'help', too.
+are available in the Git repository at:
 
-In the future, we should consider a larger revamp that would wrap all text
-in the search window, allowing us to safely disable horizontal scrolling.
+  https://github.com/Rust-for-Linux/linux.git tags/alloc-7.4-rc1
 
-Assisted-by: LLM
-Signed-off-by: Julian Braha <julianbraha@gmail.com>
----
- scripts/kconfig/expr.c  | 24 ++++++++++++++++--------
- scripts/kconfig/lkc.h   |  5 ++++-
- scripts/kconfig/mconf.c |  2 +-
- scripts/kconfig/menu.c  |  7 ++++++-
- scripts/kconfig/nconf.c |  2 +-
- scripts/kconfig/util.c  |  1 +
- 6 files changed, 29 insertions(+), 12 deletions(-)
+for you to fetch changes up to 6e8339118040f24ebcc21db22c9c1b7398b7e39e:
 
-diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
-index 2b91d16bf14f..f1e100c3c755 100644
---- a/scripts/kconfig/expr.c
-+++ b/scripts/kconfig/expr.c
-@@ -1155,21 +1155,28 @@ static void expr_print_gstr_helper(void *data, struct symbol *sym, const char *s
- 	if (sym)
- 		sym_str = sym_get_string_value(sym);
- 
--	if (gs->max_width) {
-+	if (gs->max_width && !strchr(str, '\n')) {
- 		unsigned extra_length = strlen(str);
- 		const char *last_cr = strrchr(gs->s, '\n');
- 		unsigned last_line_length;
--
--		if (sym_str)
-+		/* Ensure the value annotation stays attached to the symbol on wrap */
-+		if (sym_str && sym->type != S_UNKNOWN)
- 			extra_length += 4 + strlen(sym_str);
- 
--		if (!last_cr)
--			last_cr = gs->s;
-+		last_line_length = strlen(last_cr ? last_cr + 1 : gs->s);
- 
--		last_line_length = strlen(gs->s) - (last_cr - gs->s);
-+		if (last_line_length > gs->indent &&
-+		    last_line_length + extra_length > gs->max_width) {
-+			/* Ensure '!' stays attached to the symbol on wrap */
-+			char *last = gs->s + strlen(gs->s) - 1;
-+			bool negated = *last == '!';
- 
--		if ((last_line_length + extra_length) > gs->max_width)
--			str_append(gs, "\\\n");
-+			if (negated)
-+				*last = '\0';
-+			str_printf(gs, "\n%*s%s", gs->indent, "",
-+					   negated ? "!" : "");
-+			str += strspn(str, " ");
-+		}
- 	}
- 
- 	str_append(gs, str);
-@@ -1209,5 +1216,6 @@ static void expr_print_revdep(struct expr *e,
- void expr_gstr_print_revdep(struct expr *e, struct gstr *gs,
- 			    tristate pr_type, const char *title)
- {
-+	gs->indent = strlen("  - ");
- 	expr_print_revdep(e, expr_print_gstr_helper, gs, pr_type, &title);
- }
-diff --git a/scripts/kconfig/lkc.h b/scripts/kconfig/lkc.h
-index bbc99f75b416..f5fe3731db0c 100644
---- a/scripts/kconfig/lkc.h
-+++ b/scripts/kconfig/lkc.h
-@@ -65,6 +65,8 @@ struct gstr {
- 	* wrapped not to exceed the max_width value
- 	*/
- 	int max_width;
-+	/* Indentation of wrapped expression lines. */
-+	int indent;
- };
- struct gstr str_new(void);
- void str_free(struct gstr *gs);
-@@ -101,7 +103,8 @@ const char *menu_get_prompt(const struct menu *menu);
- struct menu *menu_get_parent_menu(struct menu *menu);
- struct menu *menu_get_menu_or_parent_menu(struct menu *menu);
- int get_jump_key_char(void);
--struct gstr get_relations_str(struct symbol **sym_arr, struct list_head *head);
-+struct gstr get_relations_str(struct symbol **sym_arr, struct list_head *head,
-+				int max_width);
- void menu_get_ext_help(struct menu *menu, struct gstr *help);
- void menu_dump(void);
- 
-diff --git a/scripts/kconfig/mconf.c b/scripts/kconfig/mconf.c
-index b8b7bba84a65..fb87f944d3f9 100644
---- a/scripts/kconfig/mconf.c
-+++ b/scripts/kconfig/mconf.c
-@@ -431,7 +431,7 @@ static void search_conf(void)
- 		struct jump_key *pos, *tmp;
- 
- 		jump_key_char = 0;
--		res = get_relations_str(sym_arr, &head);
-+		res = get_relations_str(sym_arr, &head, getmaxx(stdscr) - 10);
- 		set_subtitle();
- 		dres = show_textbox_ext("Search Results", str_get(&res), 0, 0,
- 					&vscroll, &hscroll,
-diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
-index bda3e2650216..31f12cfe981b 100644
---- a/scripts/kconfig/menu.c
-+++ b/scripts/kconfig/menu.c
-@@ -668,6 +668,7 @@ static void get_dep_str(struct gstr *r, const struct expr *expr,
- {
- 	if (!expr_is_yes(expr)) {
- 		str_append(r, prefix);
-+		r->indent = strlen(prefix);
- 		expr_gstr_print(expr, r);
- 		str_append(r, "\n");
- 	}
-@@ -743,6 +744,7 @@ static void get_symbol_props_str(struct gstr *r, struct symbol *sym,
- 	bool hit = false;
- 	struct property *prop;
- 
-+	r->indent = strlen(prefix);
- 	for_all_properties(sym, prop, tok) {
- 		if (!hit) {
- 			str_append(r, prefix);
-@@ -772,6 +774,7 @@ static void get_symbol_str(struct gstr *r, struct symbol *sym,
- 			prop = sym_get_range_prop(sym);
- 			if (prop) {
- 				str_printf(r, "Range : ");
-+				r->indent = strlen("Range : ");
- 				expr_gstr_print(prop->expr, r);
- 				str_append(r, "\n");
- 			}
-@@ -810,12 +813,14 @@ static void get_symbol_str(struct gstr *r, struct symbol *sym,
- 	str_append(r, "\n\n");
- }
- 
--struct gstr get_relations_str(struct symbol **sym_arr, struct list_head *head)
-+struct gstr get_relations_str(struct symbol **sym_arr, struct list_head *head,
-+			int max_width)
- {
- 	struct symbol *sym;
- 	struct gstr res = str_new();
- 	int i;
- 
-+	res.max_width = max_width;
- 	for (i = 0; sym_arr && (sym = sym_arr[i]); i++)
- 		get_symbol_str(&res, sym, head);
- 	if (!i)
-diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
-index 521700ed7152..fc39830a850b 100644
---- a/scripts/kconfig/nconf.c
-+++ b/scripts/kconfig/nconf.c
-@@ -741,7 +741,7 @@ static void search_conf(void)
- 			.target = NULL,
- 		};
- 		jump_key_char = 0;
--		res = get_relations_str(sym_arr, &head);
-+		res = get_relations_str(sym_arr, &head, 0);
- 		dres = show_scroll_win_ext(main_window,
- 				"Search Results", str_get(&res),
- 				&vscroll, &hscroll,
-diff --git a/scripts/kconfig/util.c b/scripts/kconfig/util.c
-index 0809aa061b6a..1de072e45ca3 100644
---- a/scripts/kconfig/util.c
-+++ b/scripts/kconfig/util.c
-@@ -77,6 +77,7 @@ struct gstr str_new(void)
- 	gs.s = xmalloc(sizeof(char) * 64);
- 	gs.len = 64;
- 	gs.max_width = 0;
-+	gs.indent = 0;
- 	strcpy(gs.s, "\0");
- 	return gs;
- }
--- 
-2.55.0
+  rust: alloc: add `NumaNode::id()` accessor (2026-09-29 21:05:08 +0200)
 
+----------------------------------------------------------------
+Alloc changes for 7.4-rc1
+
+- Add Alice Ryhl as co-maintainer for Rust [ALLOC]
+
+- Allow different error types in KBox::pin_slice(), enabling use of
+  infallible initializers
+
+- Add NumaNode::id() accessor to retrieve the underlying NUMA node
+  identifier
+
+----------------------------------------------------------------
+Andreas Hindborg (2):
+      rust: alloc: allow different error types in `KBox::pin_slice`
+      rust: alloc: add `NumaNode::id()` accessor
+
+Danilo Krummrich (1):
+      MAINTAINERS: add Alice Ryhl as co-maintainer for Rust [ALLOC]
+
+ MAINTAINERS               | 1 +
+ rust/kernel/alloc.rs      | 6 ++++++
+ rust/kernel/alloc/kbox.rs | 7 ++++---
+ 3 files changed, 11 insertions(+), 3 deletions(-)
