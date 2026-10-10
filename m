@@ -1,415 +1,220 @@
-Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011058.outbound.protection.outlook.com [52.101.52.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E32C1E5B9A
-	for <rust-for-linux@vger.kernel.org>; Sat, 10 Oct 2026 00:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.139
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791593558; cv=none; b=nJZN4x3dxs7xFy5M3HwxSDulS1RT1R1l1+d6h0VJNV896O9mVu5+36LQ/hUpIlmiMFcLp3AjaSkA/IDJKjYNeUk3Wk3aUtiCKS32FSQCmvn/5MIurLECCOo0RqH+ZrNXf4VHkqhCOOCj/pnzfwTiMa5IaVb+PtiYgiT4hzqCYVQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791593558; c=relaxed/simple;
-	bh=hm4bF6UTpInUG6tKa2h6eAFUkcFgdtBnKfgaoaSDPy8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cOjYVZ26/B7U2tiYe1i5tmNMQsWpSD/DF8VZk4WzRVUsXpT/JJT0x43Cilp9bgv+xRlm8Mvz3hqc6tf6v9oKhCqqvigHAhxxghY83QE/bK9r8dgiyTKtutz9HK2sJZ5cnaInMKkcHdL3OUO1/wdMLG230z/cXyvmgS3vzdUw61w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alanderk.com; spf=pass smtp.mailfrom=alanderk.com; dkim=pass (2048-bit key) header.d=alanderk.com header.i=@alanderk.com header.b=KN2rBOdV; arc=none smtp.client-ip=74.125.227.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alanderk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alanderk.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45060285061;
+	Sat, 10 Oct 2026 02:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791600041; cv=fail; b=jXUkPjr8EqxgKEwdTG0CBCynczIQIx4J1IlvEv2dkcDa50pQoka5FZGtmxfNnaVOMJVtfLkutZ30LL5e+4bcjmYL3j8wkVL345fzIve0We8pptwN5ue8fjM0983rDe6v6xVaQhZsA0gZtLmVVseFn2PVpjK72JsmaQCVVgSm6n0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791600041; c=relaxed/simple;
+	bh=ofUMyENCcRr1dpEBAWXw89C0tOa5Yr+Jy+hfUp/2zSM=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=U9SLu3AOemCydrbYKmBpvjsr3/ZTmftOEHeAEbZkwEVPkFrkxkgXUaJK+fxP9Jbxbwg01SlfCWAjLU/CmULNhNyMiMjQwWwg7D3JcIr5I8oWBjfNfT8TdDiywLzrfPg62m38BZL0JWrZhyYjGGchhM9fpFYCmd92azvh1WwdeOM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ctUqT6cr; arc=fail smtp.client-ip=52.101.52.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alanderk.com header.i=@alanderk.com header.b="KN2rBOdV"
-Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-3a0aa5e2b20so44274a91.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 09 Oct 2026 17:52:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=alanderk.com; s=googol; t=1791593555; x=1792198355; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=V/AM8O9CHJtX62I5NgY34KmbH4WPnu861vwy2c/kGu4=;
-        b=KN2rBOdVYSLb8NiEyk+tsvgv//sQOR184XKV9y5FYbskQ8a4UMRhccNu0AnyVzCxN6
-         lCL4qL201jDRZVfwNxA6u3ePAhBLwNK1tPfXJfr37xxP0IuxqJnrMO8lyh2LAqeqPmzy
-         XtKQczvYPT1ksWY3YDCnWiMY3Z0tQDUzNYo7jh7l2R/13ie72Za1vWqkB8a1ffUU+3RK
-         TNs9VRpMWMZaGBnxXEfDr46cd8YMjri7udhvenegFZQMmx4XlLLOn7WBVUNONjkXZAF/
-         qUs+0Xo9qa+b+4KNGv8Z1VpJkebRawizwTeKoO4jH6rWDJGGBb7q3I6HfuEXold7lz9T
-         f2CA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791593555; x=1792198355;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=V/AM8O9CHJtX62I5NgY34KmbH4WPnu861vwy2c/kGu4=;
-        b=aos6xRsszFbxwFtSmqaOGsZhjZj0/bkRvZmjUOsm6xln4m9U8a3T2UPIqO9Q3qwrse
-         j0B1z20IMUW/8qef7FGWXPjqtn8TPEJKsM7KWkyqPCmFPUzHSbNbs36QOxxldzRxNiVy
-         IGjJ4nhyWRu4PiEnm6k3weojjnLniM47a+re5jsebXEJfzGqZ9MDLoqzcUurNxWAWWi0
-         3NZ6svgUiwN/MPBDcaABHLlpOrzczNpxUTa3bBQzwg4etjFgC+UkL2+gCtj8n/Gc/dnN
-         ybdIl/DKOATq+4xNPeJZsKkzYgo6UqaGaoVESBaAg4/DOYps7ZluyolEokUssTsSdEwX
-         iwdw==
-X-Forwarded-Encrypted: i=1; AKwUvByzkv4PRGbB+aBDrNbM6+Jfljvd1JgLmR8HFpOGRoSvj8zU+Nsv75ABbKQj0xEHiQW0DLxdM5gsSOH23Ph7Zg==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJGBlwC7wPuKOssxL1P2GPV3o+ke42X6SH0GZpKS/Wjri6LqQ4X
-	ztHEtLHUybNGA9M1EtoJIO4PnkrBIkJXqCg7pwIg75Qgh15ILbf0+t5Q1iHVkTweEBU=
-X-Gm-Gg: AYBFou1UbsdzJMvLTfyvtXCYLMs4fPrAaSVEC0WRAIQYu0IzygsN+K6aKnmdqWzrSj7
-	cZNB2BDooyspcO5Cy/WfCjbO3jc3vx6pYHds4BkEa47F5r5K2x3kF3y/YEgTTAhxFfLw8d70Lw4
-	TEbdZCToDBCuFncb7Q/KNVwMkzfmnQMUcTjWLcXQ8qe4nd6JEu5Qhobfd8EzyZLifirjH7+0eUG
-	CQUQ6gP6HqTUv3UWJYBy/iRgYKNcwA7hqF6bdSP8CEqla+C4k0uh5k1i8gA3HhUY8TrF+cdPIpI
-	s+SGXAUhG55CErCWbexFD+LQ05q5kShHxmwrHeazJEhRHkAVNCSyQZs9nv2ePR1tDkowXF4hzgx
-	HlsBaqbQ7dA3i/4xTejci06knK/RKr3zhTbFVPVwiI/aGgWr3iMyOY7XNS6lePGAJzStlWNx39b
-	RB20fz/8bbS7oBGT94oGqOWsog+Yo11n+1Kp/dpvhXVtxbw8WJCFTxxBAX/8vvQCI1+18mf0k4o
-	VISAPdPJP6woJIbsdGF+2iPV03jgJ/Jcw==
-X-Received: by 2002:a17:90b:224c:b0:3a6:f1d2:57f8 with SMTP id 98e67ed59e1d1-3ab3a23c95bmr3158692a91.2.1791593555370;
-        Fri, 09 Oct 2026 17:52:35 -0700 (PDT)
-Received: from macmini4.tapir-palermo.ts.net ([138.199.43.94])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab50ce9d98sm4078226a91.9.2026.10.09.17.52.34
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 09 Oct 2026 17:52:34 -0700 (PDT)
-From: Alan Derk <linux@alanderk.com>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Alan Maguire <alan.maguire@oracle.com>
-Cc: dwarves@vger.kernel.org,
-	bpf@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH dwarves v2 2/2] dwarf_loader: Load types that kept CUs use from excluded CUs
-Date: Sat, 10 Oct 2026 00:52:27 +0000
-Message-ID: <20261010005227.976-3-linux@alanderk.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261010005227.976-1-linux@alanderk.com>
-References: <20261010005227.976-1-linux@alanderk.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ctUqT6cr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=otToe7kCqCjKZ0NsK7nstRyXCEQgK8n2WCnmIAiI0JJqQ8VlKuAxvfKuBWCX+XJGyoF92kLHfZeJJIhlEkTA/kVQiS5UAUYAtljheKQwLaaAAxF5DHhYSgoEzonEJyqjmuAXSI6/jJiw8HkeT0Cc3rlJEj808G4qhq/n7tZG011gmS7ky63KlAh/7UIdmNmoM4Z0fnHCtDf2n5Q8o7IWE6RN/dV/jmXQ9TDDKmKEu2y2Ra5V0fNA3Iacuyf1HpEiFiVmoDoVY5L7Wntl1JTz93oPrqX/fUfcaFmC7PozOmQDWI2lln8IGJdTKJ0gjRpRu9qw2T8v56aNBWhKyFLgiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=L2bargDDIKPKExO8l6qZW3tyFqlpuCW29J7GnfHysUA=;
+ b=lz6zHQf2wUqWblb+RE1oi2beg80M4qZ8TdpN/0sJAwxE8vH5WcWSZXGrWABDjEUjA4CH9dA850h8NY/xjFvOUQGwgxn+6gttgXOC++rbB2QoxVTr76IYB3nsOyfzAV8tl5gdaFAPu7OBWD2LsnfkYSb3nqESXAu1KlHBhrAmcn7kbrcwqPw4m5pAMI0UAhTlY8PcBjX5lgrgTffNqNPTQo6VclNuw7urBPQfVdcy5M86NX+/0WrxR8tC+fgebb8s68CuDfXTnAVjAU8QmTwUUdkQbht8BmEaNdukutVCgJGyaoTadaK1dgaL/jmnZ61vAydOcAdC5m+McsdDfL2UwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=L2bargDDIKPKExO8l6qZW3tyFqlpuCW29J7GnfHysUA=;
+ b=ctUqT6crlJkYlUj6TmbkKPOydCgHJDThHFXOttQUIGamm+pgXvM98Cga5HLhyZQLAbKRv+rGnBo2ZqHguHZ0cHDe0ccPL899Hf15CrNyAzDeinz+acoXyeqP+wlnVXVP5qR3mYPGzl5ntkeI5FyI/b1QqLBYh3l0oIEhOnb8r2k3ynxsMZlUU7s6t+8cd4JwdSHKhx1K0r8Te7rpx6662BAi7GfWOhr77Jy69kdq7J0r6XuCR9WVsYYVaX2HhP4ANPDS2503qtMAPdHCG3q0UqojX9ih3lC2M7sLmtmUisw6ERAWN9PyyCn6nOMgxvnycl9fJQkfCBg4qmfqOJYTQQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by PH7PR12MB7114.namprd12.prod.outlook.com (2603:10b6:510:1ed::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Sat, 10 Oct
+ 2026 02:40:33 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0496.017; Sat, 10 Oct 2026
+ 02:40:33 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 10 Oct 2026 11:40:30 +0900
+Message-Id: <DM0T7FHCSQUD.2SEUSVP1QJUXQ@nvidia.com>
+Subject: Re: [PATCH] rust: uaccess: avoid unsafe unwrap_unchecked() in
+ strcpy_into_buf()
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Gary Guo" <gary@garyguo.net>
+Cc: "Thorsten Blum" <blum@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Boqun Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20261008061326.177841-2-blum@kernel.org>
+ <DLZHGS3GBIT9.16N0JVOTMONZO@nvidia.com> <asflx_blsGkQ7Obn@kernel.org>
+ <DLZPAM0YRU3L.2TDZ2GLI7AS6S@garyguo.net>
+ <DM0C9ZEJA9EF.12IOGM4R4QG3E@nvidia.com>
+ <DM0D9TERQAM3.2Y3HV6P68E2N8@garyguo.net>
+In-Reply-To: <DM0D9TERQAM3.2Y3HV6P68E2N8@garyguo.net>
+X-ClientProxiedBy: OS7PR01CA0239.jpnprd01.prod.outlook.com
+ (2603:1096:604:25d::17) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|PH7PR12MB7114:EE_
+X-MS-Office365-Filtering-Correlation-Id: b3333357-e05b-4094-3fa1-08df2677db1b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024|23010399003|11063799006|56012099006|5023799004|4143699003|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	CRSw0hSZlRzm+VcTy8lx/T+Xaa+078320essgB4DhW/aIDTAAfH/P8RbjMZtBU2RlpR0c+xIJTMxXQ5PbwIhuuRGFPZITGClXxAvmPeUXAU2OuRStwsm0l9E4q6EDypURdrc4DFcWlUH3XtGQcGX1GFs8geVWRfNo5oAoPdadbQ81oR4kyprQ9ldj8u6wajs2V3Go7AWTkotZZ7YrjoZnpAideHsJvFVe8GYabToWhPCHUYETkiFmsCthEcxT+tQx28KDqa3aeLkgSAM9YP53EBErv5RA9Cmlw9aspaqioeVA5AdLnqzE2WxtHlADJmOFUxP+dtpdXffb24EQgfknZwqrHvkuuNTEufxkfp3P5fwK7bLuDQb79XKm5sXcK3goL61CjjOMG96Z8BW3dY3KR+PvKTP97ug6X5gL5l2FrAawWPppWIy4ckMHX9rzPT8Rq+6sn0lKiZiqF3cQRpXwo2Lqgc8rg5lBA31hWT0v8ziRbura+FFbijDR5dXrOngGwdkc03ps2QEi1rNQRLc7EM12LKcyhLXEV4cpVNuhJ+tSC0Q+nOpmlaLysrk2x8aazuvyhppL6Ad2BJygQFU/JvbLKaAQDOSko6S6uJpdlUUvtlNi/EVOCFNldsdXuFlVpn34grGjrOkibmRCOR+/ZJGEMy+Sj0FGaztjra1PTg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024)(23010399003)(11063799006)(56012099006)(5023799004)(4143699003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZDhOUGJDQndDanVud1JGVmxKYmsySnRHbGpVeENPblJTdnFNK242U3J2L3Ba?=
+ =?utf-8?B?T0pyZ3hjTlR6bWJGMkFBQWxNWUQramJIeG1GbEQydmE4aHFFeC94bEVkMk9L?=
+ =?utf-8?B?blNoQ0NUeEZBWE9zT1I2ZmhaKzdHeVA4QzdDaS9vaXpERjU3VHJoYlpraVI0?=
+ =?utf-8?B?cG5NVkRXcytqaWV3bFNOVWRvaTBpc2ViQmJ5OHEwd2Zjc1NmYStVWFJHeDU1?=
+ =?utf-8?B?VUlqMit0QXB5NVVjVFArMGhIN0xZeWxSbjhWbXJoTkdmS0JXM2xGWGlXcGc3?=
+ =?utf-8?B?UmZ0RmtyVFZQUW1mZFp4OVBlMHRoaTRNYmMvRStZVmxYMVdJRTZmSVcvQVc5?=
+ =?utf-8?B?MkxrL3Q4R202V3FtL0lYQy9keTZiQ2xaQVlVQkxNZEV5NkNxQlFHVjNnSksz?=
+ =?utf-8?B?blFTN21qSUgxTk9XbHdRbE12ZXVRMUdhWEIyeHhLYmNieGcrVDNNMFZtNE0z?=
+ =?utf-8?B?VlVYM2c4dE9qcklTaEJIdHVEUUxiMDZrNmszTWNYa3VWazJERU5WVGRZc21U?=
+ =?utf-8?B?Z0lLclRjNTFVdjd5Z2hHM29qbXA0QmZqbGFmODFPQ0dOcDFXLzdRQzlNa1R1?=
+ =?utf-8?B?WnFCQm4xc2VsVTh1V1JNQUxsUmRjU1FNcGxJZ1hsU0lRY296MDVQdTIrNTlj?=
+ =?utf-8?B?SzNMamQ1eFFyY2FLb1FyalQ0RkVQdVhNL1pzajBzRFhRZDVzVWFGT3AwbG9K?=
+ =?utf-8?B?eHpIWW1qMVp6QkhpeWRybGdCemthUFFlTWZRQmNZZVdrelRZNnNpTFRDSDFi?=
+ =?utf-8?B?elNiN3hTOGpwd3hZVzJSYURZaTU5ait5VThSV2V0ZklzYjlyMFNJUGhYSmVq?=
+ =?utf-8?B?WnNiQjBab0x6RHAwdlF0ZTQxYzhaMFFJRFVHMHg2Tm5PdXpXZUd6MFYrRFRF?=
+ =?utf-8?B?SzAzNHVrcUErLzU3NGNYVDBhZXQzQThtRVcrcFFua094dXhUUmVPalNMeUdm?=
+ =?utf-8?B?NU9oRlBlay9nRmRlUUFFWXdGUmVqd010bmgxSGNETVlRWUZsRHl5akpKQ1BD?=
+ =?utf-8?B?NndOUTlhdDRIVnJMUlhBNmhoZ0hnQkh0RHQ3VVFKc01rWnFIRzc3N3NxQXlt?=
+ =?utf-8?B?dVdDM1JIUmVra1ZGbEJDYU1iTW03OGFlWlFadVdNNUNVS1NSUWRHVElVSHln?=
+ =?utf-8?B?UDVsdi9sSnhoeFo2MDJnYndSRHZaQkZhdGQzYXR5SHlzZm56UEErV0EyRzN4?=
+ =?utf-8?B?SFhFNjNjY2RMdnZaSCtzK2VuSmgzT25jQThhTmFyUTRHUE4rMU1qak4rMG9O?=
+ =?utf-8?B?aHRreUo1T1NDUFNtL1Z6SEJ6S3QrNnM3ZElYbTExeFh5eE9PT2RRckQ3YWNR?=
+ =?utf-8?B?NGcrQk8zdS91Y3A4SVoveTFCVThObDhZZkJUdWw1TkFEK1RpT3YrQzlUSUlQ?=
+ =?utf-8?B?Ti9pWXBUS0o3TmU2c2ZEcDhVQlJCeFFnWVhraFE0VXJYWWRib0Q1c2RiaWhp?=
+ =?utf-8?B?QkVxODBWNndVQlZCWkcvK0trLzZaQnZReUNWR3htWkFBLzFYT2J0TlVKMXJG?=
+ =?utf-8?B?RjNBYWMxdDhqR0xOaDVPcW1WSmdWRWdFMnpPbmF6aDZkUGNZQWIzUEFJeGh4?=
+ =?utf-8?B?YjdkYkJVbURocXgyV2pMdko0dmpRQ1ZFV0NhMEN2R2oyQWYwQURPS1ErRUkw?=
+ =?utf-8?B?ZTlSTmR3bDJEZURFVk15ZE00bkxIZkNINXpHS3V0dDduQnNiMHQ3c3E4QjlZ?=
+ =?utf-8?B?NTc1cFlvMDQvNUYwUWJpT0Vnb2VKckxYRTJQeXZObVJ4cEk5QURBeTBhU0tO?=
+ =?utf-8?B?OTJSdlRFZXhJaDN6eERmeUQ0dnlSd09jaGlyVWNEVk9FdTdML0xRZTRtSGtt?=
+ =?utf-8?B?VUQ4SU5CcHBwNTVNZ3lNeENKNStrVlJwaW1lbmhvUXY1NWw5ZU1UMDgwZWts?=
+ =?utf-8?B?ZkpkdWlXTVBZT0xTL2dualk0a3plMzh5Tm5VUnVSRW54aEpRVUppUVk4S0Nx?=
+ =?utf-8?B?OStqRitrVUJoZmhwcktIUnR6ZVZiMGxScVZxUDFUZDM4cC83WElIanpZb2J2?=
+ =?utf-8?B?UTlaelBaZno3YTBWTmgremI1Z3ZVYjllZVgwSzdKbHgyZWFYMXIvNWJxc21N?=
+ =?utf-8?B?Um1DM0djWGxXOVBaVU54cWIydWMxd2t4ampicVdwcnNZaHRaWC9yWTJqaXVU?=
+ =?utf-8?B?SElxSGpoZFVYVnRsZFpNSDI2NzBRYldkTjQ1bnF5bmxvTENsb3NtQUo4dk1n?=
+ =?utf-8?B?c1B2WXVCdmRrbUQyVWIycmo2OXJwb1Y0a3RuYWp4S1FGc2U1cjUxVTRzRTFU?=
+ =?utf-8?B?dnBRZ2UwcVlZOVJMV1ZWdVNMSEkzc2xDOFlqWXBNbVBsRlVKZkp0V2JiS0lZ?=
+ =?utf-8?B?ZjZ0ZFIvRk1OeGh6c0h3S0tPcnI4Y0gwTVhnN0NQeTJoNGFwRUozenVhaEYy?=
+ =?utf-8?Q?Go0fors/BJ/eJYlDNVVEF31TfiLoA84n66QqyiKg8EWQq?=
+X-MS-Exchange-AntiSpam-MessageData-1: 8ijuIDYmq6o2aw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3333357-e05b-4094-3fa1-08df2677db1b
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2026 02:40:33.1572
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qJjZeeTko9fX5kwxXGsRoyKOFiH3XwuZYcVbmZdzAwatjSGz9/Tvy4C0zA6AnzH5GZmQwT+UwLvU3DuVWyqf/g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7114
 
-With clang LTO, LLVM emits a type such as int once, in the first CU
-that uses it, and other CUs refer to it with DW_FORM_ref_addr. Since
-commit b98565e7b17ec24d ("dwarf_loader: Honour --lang_exclude when
-merging LTO built CUs") the DIEs of the CUs that --lang_exclude filters
-out are skipped when merging, so a kept CU that uses a type from one of
-them is left with a dangling reference. Members that use such a type
-end up typed void: pahole crashes printing them, and -J encodes them
-with type_id 0 and exits 0.
+On Fri Oct 9, 2026 at 11:11 PM JST, Gary Guo wrote:
+> On Fri Oct 9, 2026 at 2:24 PM BST, Alexandre Courbot wrote:
+>> On Fri Oct 9, 2026 at 4:23 AM JST, Gary Guo wrote:
+>>> On Thu Oct 8, 2026 at 7:49 PM BST, Thorsten Blum wrote:
+>>>> On Thu, Oct 08, 2026 at 10:15:49PM +0900, Alexandre Courbot wrote:
+>>>>> On Thu Oct 8, 2026 at 3:13 PM JST, Thorsten Blum wrote:
+>>>>> > Since strcpy_into_buf() already rejects empty buffers, use ok_or()
+>>>>> > instead of unwrap_unchecked() when NUL-terminating the buffer.
+>>>>> >
+>>>>> > Signed-off-by: Thorsten Blum <blum@kernel.org>
+>>>>> > ---
+>>>>> >  rust/kernel/uaccess.rs | 4 +---
+>>>>> >  1 file changed, 1 insertion(+), 3 deletions(-)
+>>>>> >
+>>>>> > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+>>>>> > index 5f6c4d7a1a51..2a0af795e75d 100644
+>>>>> > --- a/rust/kernel/uaccess.rs
+>>>>> > +++ b/rust/kernel/uaccess.rs
+>>>>> > @@ -422,9 +422,7 @@ pub fn strcpy_into_buf<'buf>(self, buf: &'buf m=
+ut [u8]) -> Result<&'buf CStr> {
+>>>>> >              // This means that we filled the buffer exactly. In th=
+is case, we add a NUL-terminator
+>>>>> >              // and return it. Unlike the `len < dst.len()` branch,=
+ don't modify `len` because it
+>>>>> >              // already represents the length including the NUL-ter=
+minator.
+>>>>> > -            //
+>>>>> > -            // SAFETY: Due to the check at the beginning, the buff=
+er is not empty.
+>>>>> > -            unsafe { *buf.last_mut().unwrap_unchecked() =3D 0 };
+>>>>> > +            *buf.last_mut().ok_or(EINVAL)? =3D 0;
+>>>>>=20
+>>>>> I am not sure this gives us much - we are trading an unsafe statement
+>>>>> that is well-controlled (enforced by the first two lines of the metho=
+d)
+>>>>> for a runtime check. I'd say this is working as intended here.
+>>>>
+>>>> I checked the generated code before and after the patch and it is
+>>>> identical since the compiler is able to remove the additional check.
+>>>> Therefore, this removes an unsafe block without adding runtime cost.
+>>>>
+>>>> It also avoids relying on the buf.is_empty() check to prevent undefine=
+d
+>>>> behavior.
+>>>
+>>> Adding an error returning path is worse for something that cannot happe=
+n is
+>>> worse than invoking unsafe in my opinion.
+>>>
+>>> Why not just unwrap?
+>>>
+>>>     *buf.last_mut().unwrap() =3D 0;
+>>
+>> I guess the author of the code decided to avoid `unwrap` for the same
+>> reason they avoided a runtime error: the first two lines of the method
+>> guarantee that the access is valid. Now I wish we could keep the
+>> enforcing statement closer to the unsafe block relying it, but I cannot
+>> find a better way to write that method. `unwrap` would just switch the
+>> `SAFETY` statement for a `PANIC` one.
+>>
+>> Honestly I think this code is fine as it is.
+>
+> A `NonEmptySlice<T>` which is `[T]` but `first`/`last` can just not retur=
+n
+> `Option`?
 
-  $ head zero.c first.cpp second.c
-  ==> zero.c <==
-  char zero_c;
+I looked it up hoping it already existed. :)
 
-  ==> first.cpp <==
-  int cpp_int;
+That would definitely be an elegant way to solve this issue (and IMHO
+should eventually become part of the standard library). This example is
+actually a great illustration of the panic/unsafe/result dilemma we
+discussed during Kangrejos (and yes, I'll follow-up with a proposal for
+guidelines soon, sorry about the delay).
 
-  ==> second.c <==
-  struct c_only { int b; } c_var;
-  $ clang -flto -g -c zero.c second.c; clang++ -flto -g -c first.cpp
-  $ clang -flto -fuse-ld=lld -shared -o three.so zero.o first.o second.o
-  $ pahole --lang_exclude=c++14 three.so
-  namespace__recode_dwarf_types: couldn't find 0x57 type for 0x8a (member)!
-  struct c_only {
-  	<ERROR(__class__fprintf:1838): 0 not found!>
-  Segmentation fault
-
-Remember the offsets of the CUs that the filter skips, and when a type
-lookup misses an offset in one of them, load that DIE if it is a type.
-The types it refers to are looked up when it is recoded, so they are
-loaded too. As this adds types while recoding, cu__recode_dwarf_types()
-now repeats its passes until no new tags show up.
-
-After:
-
-  $ pahole --lang_exclude=c++14 three.so
-  struct c_only {
-  	int                        b;                    /*     0     4 */
-  ...
-
-Only types are loaded. References to functions and variables in
-excluded CUs, such as the abstract origin of a function inlined across
-CUs or the function that a C++ using declaration names, still print
-"couldn't find", as loading them would add functions in the excluded
-language to the output. A nested C++ type that a kept CU refers to
-directly is loaded as a top-level type.
-
-Without --lang_exclude, or when no kept CU refers to an excluded one,
-nothing is loaded and the output does not change.
-
-Add tests/lang_exclude_lto_refs.sh for this.
-
-Tested with clang 21 full LTO and ThinLTO builds of a C++/C program
-in both link orders. Only base types (int, char, long) were loaded, and
-apart from the order of the types the output matches that of the other
-link order: text and BTF with C++ excluded, text with C excluded. Two
-C++ objects built with -std=c++11 and -std=c++17 that include <cstdio>
-give the same text with c++11 excluded in either order; there the C
-library types they share, such as FILE, are loaded too. ASan reports no
-errors on these apart from a leak with -J that predates this series.
-gcc 16 LTO, Rust+C ThinLTO and Debian debuginfo processed by dwz load
-nothing and do not change, and neither does the BTF of 7.2.9 x86_64 and
-arm64 ThinLTO kernels with Rust enabled.
-
-Fixes: b98565e7b17ec24d ("dwarf_loader: Honour --lang_exclude when merging LTO built CUs")
-Assisted-by: LLM
-Signed-off-by: Alan Derk <linux@alanderk.com>
----
- dwarf_loader.c                 | 95 +++++++++++++++++++++++++++++++---
- tests/lang_exclude_lto_refs.sh | 76 +++++++++++++++++++++++++++
- 2 files changed, 164 insertions(+), 7 deletions(-)
- create mode 100755 tests/lang_exclude_lto_refs.sh
-
-diff --git a/dwarf_loader.c b/dwarf_loader.c
-index fbed36e..10ab37a 100644
---- a/dwarf_loader.c
-+++ b/dwarf_loader.c
-@@ -169,6 +169,11 @@ struct alt_pu {
- 	bool	  hit;		/* referenced by main CUs? */
- };
- 
-+struct excluded_cu {
-+	Dwarf_Off start;
-+	Dwarf_Off end;
-+};
-+
- struct dwarf_cu {
- 	struct hlist_head *hash_tags;	/* tags (functions, etc.) keyed by DWARF offset */
- 	struct hlist_head *hash_types;	/* types keyed by DWARF offset */
-@@ -183,6 +188,10 @@ struct dwarf_cu {
- 	uint32_t  nr_alt_pus;
- 	uint32_t  allocated_alt_pus;
- 	bool	  processing_alt;	/* true while processing alt-file DIEs */
-+	struct excluded_cu *excluded_cus;	/* skipped by early_cu_filter when merging */
-+	uint32_t  nr_excluded_cus;
-+	Dwarf	  *dw;
-+	struct conf_load *conf;
- };
- 
- static int dwarf_cu__init(struct dwarf_cu *dcu, struct cu *cu)
-@@ -215,6 +224,8 @@ static int dwarf_cu__init(struct dwarf_cu *dcu, struct cu *cu)
- 	dcu->alt_pus = NULL;
- 	dcu->nr_alt_pus = 0;
- 	dcu->allocated_alt_pus = 0;
-+	dcu->excluded_cus = NULL;
-+	dcu->nr_excluded_cus = 0;
- 	/*
- 	 * processing_alt is per-merged-CU state, not thread-safe.
- 	 * The merged-CU path (cus__merge_and_process_cu) is
-@@ -249,6 +260,7 @@ static void dwarf_cu__delete(struct cu *cu)
- 
- 	zfree(&dcu->imported_units);
- 	zfree(&dcu->alt_pus);
-+	zfree(&dcu->excluded_cus);
- 	if (dcu->alt) {
- 		cu__free(cu, dcu->alt->hash_tags);
- 		cu__free(cu, dcu->alt->hash_types);
-@@ -475,6 +487,8 @@ static struct dwarf_tag *__dwarf_cu__find_tag_by_ref(const struct dwarf_cu *cu,
- 				    dtag->from_types_section.field, \
- 				    dtag->from_alt.field)
- 
-+static struct dwarf_tag *dwarf_cu__load_excluded_type(struct dwarf_cu *dcu, Dwarf_Off ref);
-+
- /* Same as __dwarf_cu__find_tag_by_ref but for type lookups (hash_types). */
- static struct dwarf_tag *__dwarf_cu__find_type_by_ref(struct dwarf_cu *dcu,
- 						      const Dwarf_Off ref,
-@@ -497,6 +511,8 @@ static struct dwarf_tag *__dwarf_cu__find_type_by_ref(struct dwarf_cu *dcu,
- 
- 	struct dwarf_tag *dtag = hashtags__find(dcu->hash_types, ref);
- 
-+	if (dtag == NULL)
-+		dtag = dwarf_cu__load_excluded_type(dcu, ref);
- 	if (dtag)
- 		dcu->last_type_lookup = dtag;
- 
-@@ -3693,6 +3709,62 @@ static int die__process_unit(Dwarf_Die *die, struct cu *cu, struct conf_load *co
- 	return 0;
- }
- 
-+static int dwarf_cu__add_excluded_cu(struct dwarf_cu *dcu, Dwarf_Off start, Dwarf_Off end)
-+{
-+	struct excluded_cu *cus = realloc(dcu->excluded_cus,
-+					  (dcu->nr_excluded_cus + 1) * sizeof(*cus));
-+
-+	if (cus == NULL)
-+		return -ENOMEM;
-+
-+	cus[dcu->nr_excluded_cus++] = (struct excluded_cu){ .start = start, .end = end };
-+	dcu->excluded_cus = cus;
-+	return 0;
-+}
-+
-+static bool dwarf_cu__in_excluded_cu(const struct dwarf_cu *dcu, Dwarf_Off offset)
-+{
-+	for (uint32_t i = 0; i < dcu->nr_excluded_cus; i++)
-+		if (offset >= dcu->excluded_cus[i].start && offset < dcu->excluded_cus[i].end)
-+			return true;
-+	return false;
-+}
-+
-+/*
-+ * With LTO, LLVM emits a type such as int once, in the first CU that uses it,
-+ * and other CUs refer to it with DW_FORM_ref_addr. So the CUs kept when merging
-+ * can refer to types in CUs that early_cu_filter excluded. Load those types
-+ * when they are looked up, and nothing else from the excluded CUs.
-+ */
-+static struct dwarf_tag *dwarf_cu__load_excluded_type(struct dwarf_cu *dcu, Dwarf_Off ref)
-+{
-+	struct tag *tag, die_tag = {};
-+	uint32_t id = 0;
-+	Dwarf_Die die;
-+
-+	if (!dwarf_cu__in_excluded_cu(dcu, ref) || dwarf_offdie(dcu->dw, ref, &die) == NULL)
-+		return NULL;
-+
-+	/*
-+	 * A using declaration can name a function, and processing a function
-+	 * adds its parameters to the CU's tables, so check the tag first.
-+	 */
-+	die_tag.tag = dwarf_tag(&die);
-+	if (!tag__is_tag_type(&die_tag))
-+		return NULL;
-+
-+	tag = die__process_tag(&die, dcu->cu, 1, dcu->conf);
-+	if (tag == NULL || tag == &unsupported_tag)
-+		return NULL;
-+
-+	/* As in die__process_unit(). */
-+	if (tag->tag != DW_TAG_unspecified_type)
-+		cu__add_tag(dcu->cu, tag, &id);
-+	cu__hash(dcu->cu, tag);
-+	tag__dwarf(tag)->small_id = id;
-+	return tag__dwarf(tag);
-+}
-+
- static void ftype__recode_dwarf_types(struct tag *tag, struct cu *cu);
- 
- static int namespace__recode_dwarf_types(struct tag *tag, struct cu *cu)
-@@ -4497,10 +4569,10 @@ static int cu__resolve_func_ret_types_optimized(struct cu *cu, struct conf_load
- 
- static int cu__recode_dwarf_types_table(struct cu *cu,
- 					struct ptr_table *pt,
--					uint32_t i)
-+					uint32_t *i)
- {
--	for (; i < pt->nr_entries; ++i) {
--		struct tag *tag = pt->entries[i];
-+	for (; *i < pt->nr_entries; ++*i) {
-+		struct tag *tag = pt->entries[*i];
- 
- 		if (tag != NULL) /* void, see cu__new */
- 			if (tag__recode_dwarf_type(tag, cu))
-@@ -4512,10 +4584,15 @@ static int cu__recode_dwarf_types_table(struct cu *cu,
- 
- static int cu__recode_dwarf_types(struct cu *cu)
- {
--	if (cu__recode_dwarf_types_table(cu, &cu->types_table, 1) ||
--	    cu__recode_dwarf_types_table(cu, &cu->tags_table, 0) ||
--	    cu__recode_dwarf_types_table(cu, &cu->functions_table, 0))
--		return -1;
-+	uint32_t types = 1, tags = 0, functions = 0;
-+
-+	/* Recoding can add tags, see dwarf_cu__load_excluded_type(). */
-+	do {
-+		if (cu__recode_dwarf_types_table(cu, &cu->types_table, &types) ||
-+		    cu__recode_dwarf_types_table(cu, &cu->tags_table, &tags) ||
-+		    cu__recode_dwarf_types_table(cu, &cu->functions_table, &functions))
-+			return -1;
-+	} while (types < cu->types_table.nr_entries || tags < cu->tags_table.nr_entries);
- 	return 0;
- }
- 
-@@ -5366,6 +5443,8 @@ static int cus__merge_and_process_cu(struct cus *cus, struct conf_load *conf,
- 
- 			dcu->cu = cu;
- 			dcu->type_unit = type_dcu;
-+			dcu->dw = dw;
-+			dcu->conf = conf;
- 			cu->priv = dcu;
- 			cu->dfops = &dwarf__ops;
- 
-@@ -5451,6 +5530,8 @@ static int cus__merge_and_process_cu(struct cus *cus, struct conf_load *conf,
- 			};
- 
- 			filtered = conf->early_cu_filter(&unmerged_cu) == NULL;
-+			if (filtered && dwarf_cu__add_excluded_cu(dcu, off, noff))
-+				goto out_abort;
- 		}
- 
- 		/*
-diff --git a/tests/lang_exclude_lto_refs.sh b/tests/lang_exclude_lto_refs.sh
-new file mode 100755
-index 0000000..56bcb7b
---- /dev/null
-+++ b/tests/lang_exclude_lto_refs.sh
-@@ -0,0 +1,76 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# Test --lang_exclude on clang LTO objects, where a kept CU refers to a type
-+# in an excluded CU: LLVM emits int once, in the first CU that uses it.
-+
-+. "$(dirname "$0")/test_lib.sh"
-+outdir=$(make_tmpdir)
-+
-+trap cleanup EXIT
-+
-+title_log "Language filtering of LTO CUs that refer to excluded CUs."
-+
-+for tool in clang clang++ ld.lld; do
-+	if ! command -v $tool > /dev/null 2>&1; then
-+		info_log "skip: $tool not available"
-+		test_skip
-+	fi
-+done
-+
-+echo 'char zero_c;' > "$outdir/zero.c"
-+
-+cat > "$outdir/first.cpp" << 'EOF'
-+struct cpp_only {
-+	int	a;
-+};
-+
-+struct cpp_only cpp_var;
-+EOF
-+
-+cat > "$outdir/second.c" << 'EOF'
-+struct c_only {
-+	int	b;
-+};
-+
-+struct c_only c_var;
-+EOF
-+
-+obj="$outdir/lto.so"
-+
-+if ! clang -flto -g -c -o "$outdir/zero.o" "$outdir/zero.c" 2>/dev/null ||
-+   ! clang++ -flto -g -c -o "$outdir/first.o" "$outdir/first.cpp" 2>/dev/null ||
-+   ! clang -flto -g -c -o "$outdir/second.o" "$outdir/second.c" 2>/dev/null ||
-+   ! clang -flto -fuse-ld=lld -shared -o "$obj" "$outdir/zero.o" \
-+	"$outdir/first.o" "$outdir/second.o" 2>/dev/null; then
-+	error_log "FAIL: compilation failed"
-+	test_fail
-+fi
-+
-+lang_exclude=c++,c++03,c++11,c++14
-+btf="$outdir/lto.btf"
-+
-+check()
-+{
-+	if [ $1 -ne 0 ]; then
-+		error_log "FAIL: $2: pahole failed"
-+		test_fail
-+	fi
-+	if echo "$3" | grep -q "struct cpp_only"; then
-+		error_log "FAIL: $2: --lang_exclude=c++ kept the C++ CU"
-+		test_fail
-+	fi
-+	if ! echo "$3" | grep -Eq "^[[:space:]]+int[[:space:]]+b;"; then
-+		error_log "FAIL: $2: c_only.b lost its type, int from the C++ CU"
-+		test_fail
-+	fi
-+}
-+
-+output=$(pahole -F dwarf --lang_exclude=$lang_exclude "$obj" 2>/dev/null)
-+check $? "DWARF" "$output"
-+
-+pahole -J --btf_encode_detached="$btf" --lang_exclude=$lang_exclude "$obj" > /dev/null 2>&1
-+output=$(pahole -F btf "$btf" 2>/dev/null)
-+check $? "BTF" "$output"
-+
-+test_pass
--- 
-2.55.0
-
+Until we have `NonEmptySlice`, I'd say the current unsafe or having a
+panic are morally equivalent, so I don't see a strong justification for
+this patch.
