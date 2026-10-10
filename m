@@ -1,357 +1,130 @@
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f6.google.com (mail-pj2-f6.google.com [74.125.227.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC5E22157B
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Oct 2026 22:46:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2280F1D5CFE
+	for <rust-for-linux@vger.kernel.org>; Sat, 10 Oct 2026 00:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791586003; cv=none; b=Yly41/g2iRwjt7lae3NiLaQNbqQrSPLCp/t8dR49JbhPwhQdz7QW/kQj9jf763z4/oRiuSDIMIf8GCRuwi49Ih1Vc30Vdl9uKcc0Jgj9zlC9JKQ+/6WxlCSCjWVoURv83XomzXJxqc765mrTZoi5QGrqlH1mSf0ejRfNBRmd4+I=
+	t=1791593554; cv=none; b=Bn2SW49TWpHLPLU1RwJ2LdQHyqiuim60hHdBnKjDN2jVgXSqW7CzWUyc/+FFcnTY1nIg+18G05/05hOLpaW229QkYSsKvBH4jga2oxBk7WxLaniGKB2hrCGm0AIemn5gNQj0B515yZ13dQ7xQgGngTPB+T7hIBECSg2YsUthod4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791586003; c=relaxed/simple;
-	bh=bKtGtaIhQCInA14eqbTuf4/QjoVboCz61Bz4uoSDKr4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f7zxjS+xSXvWn1xLLffzy2j1Fq+pyQp8JBZFyIzDhKhsUPEf9Juapfk+6tnJeH7gTwKp4iU1Ka4dEf/n5NzJ2fltwERbLHyBY+xUlxVJurtgeIzMqtAFIHjo8PJjUP93r25VafINn9FGCC4tL2kRwz8KBmtHmNShkVoYeSfvTCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=X7fsPPco; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hJqVCTiI; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	s=arc-20240116; t=1791593554; c=relaxed/simple;
+	bh=D+QBlXfaJAUuhqc0hqAKzFkFktZSCD48uzIGapZcrPQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CjvrjObph2rehEIgtatvsm0Upv+M/HK46a2dSaL0R/Ad/Umn2iAG0GdHlr6hDcYdINx+pI4fjJ/VG31P36miMOmEyVFp+IjGv05uQFrrTLXhBJIPSngUgrHbtXPOZ0jrvI+L5DgL7MoWo6OLYGy3kn36BDT4VoWbSwJdyN63A6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alanderk.com; spf=pass smtp.mailfrom=alanderk.com; dkim=pass (2048-bit key) header.d=alanderk.com header.i=@alanderk.com header.b=yoVF+14X; arc=none smtp.client-ip=74.125.227.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alanderk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alanderk.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="X7fsPPco";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hJqVCTiI"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 1D1F5EC0B24
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Oct 2026 18:46:40 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Fri, 09 Oct 2026 18:46:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm3; t=1791585999; x=1791672399; bh=mkIP42VHgwkmIE+UPnGp1
-	Vt0ihKOvnDp1H3eWjrWOEg=; b=X7fsPPcoSjPVaQGCv+0UhPruuOUjareYoKliH
-	Fqf8NTJTxUa8F2cYoUEOaygbse4sywTO6hY8OZ266DrFzd87EmLTuhS/Jooo2lae
-	BkL8dVMXhvV6+tlCJOiGLiNxAEeuGUmLtJEBA8/OVluXJFbWaAzRUPajwul0VKVy
-	7R67t92wlvU75YGUZeMJRDVfmIVznHdcaGmz2LDGjZ7YynD5QfCnJW0vVfU22eM0
-	ZSigZ/vfHkpryNdn0vH3I17rw2NA9llLRxEHxAd6wWk196/JMoLosdCapLjs28tJ
-	ePlc7+y/GJ0dOU52+cwgi2N7YMVbK9wrpRUZQfKNNrNKcnW+Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1791585999; x=1791672399; bh=mkIP42VHgwkmIE+UPnGp1Vt0ihKOvnDp1H3
-	eWjrWOEg=; b=hJqVCTiIjLZ25BsLcubJWuopXJpPXr9XYXyD8ZYA8ZxXOIPEWQz
-	BvT9pUpTyzp83RJbhLba3+LrgZQXagsSKxgFA0h1fVKbdxEnLam70XbAzpUyoFrS
-	yz1mqR2ARweAoA+me2Mds6Sxilf1tAR5EaI4yOPxUfBxjw1K1PuHTVpPORMll8yj
-	3NvViV9BaRukuk/qwdrCWDFpWov8pPfiJ1rx1WBW6+gPTcQNToEnoN2mEeyRIAFS
-	rucjIiINwGMY54LNBXWwNC/H11yZCIUdomVOgU+kca8LbBSDaeHboiAYfJr4On3c
-	yAtPj90mtYOmuqV2p4PcFbE3StuxEAga/og==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1791585999; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm3:rsa-sha256:WA5Z2v7q5hUxJcTO9Us2L1AplDLzxOihmfwttwU+JaGGTuq
-	ZEPKP5GdBtCbQAUr2lx6i1VDx4m3a1wOz9mTl1Zf2U6O47X8sgRtQRK4rMDzq+z3
-	wgOUFzXbaiWoDCPFOWLib+krAup1zN57GIPK1GiU5DI2NHDmenxdGVpao4sDS7SM
-	Q6CnhRcVuTWHgT3Ibmc95ZHBGt6HuO6183fiv15CSlt6BZX/J/tNqyno7n8WTmhn
-	lDZAV5/0Wpn4kCQOAblUgdyGG1pdPp+CIgkzYn3jdL5b74YPbuNLbcOAF+RWWuCL
-	pcSY0W9SEpUGUDk883YMGIkgpsstF0FCcvQ3+YA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=mi-m=1; hc=9;
-	hn=cc,content-transfer-encoding,date,feedback-id,from,
-	message-id,mime-version,subject,to;
-Message-Instance: m=1; h=sha256:FuoV4HKgnjhPBmGA16/VoatgFClQyk1RpaZfG3T8ob8=:bKtGtaIhQCInA14eqbTuf4/QjoVboCz61Bz4uoSDKr4=;
-X-ME-Sender: <xms:z27JahMiyPvINyWxu0R6oCPCJp4wl_jbV-Xw3t63HgQYmwQu1L1glA>
-    <xme:z27JagUUOCdmCkp6Fd54q4Wh_naK3XvfYo1u2gwd0OB5mQYk0E93STh1Mzs_Crqef
-    baZytj9glWO8i00OfFOlXGJmJbyOFadGabFD-Z5cIvYujldz3W-q0E>
-X-ME-Received: <xmr:z27JakuVNCLwhiQ3RCBRBOhvGM19wh6r954_OygjQ7FP_jfmq3KkeZb-RbVpHZ-3eVhqbVU5ZPoKgAeskb0>
-X-ME-Proxy-Cause: dmFkZTFWd/oDNjY0V4fT1DDe+102nGtXLgTQmKRWsYdL6Kl5HDEEkYTR0XwqqW/jy9FP4f
-    HA6oGkdXzkxr79WPfC4cL3B9DolTvh+QU8H7LkvB/3DFcNfVMqcXxO7cJ0ifJprmAl9g1o
-    cXgKy4/Uw3moogJpC1o1T+H18ytJzTX7huj4SUQK7obHEFGbeYkxPPXJoeG6OeZrQepJ98
-    mnkGV59Ohe6h3vDGWtv+NjOXd5ytkh2ZA2IZnI8Hu03bwF/Qhg3gD2J58csZFCL4SlaBW6
-    JN1GatCKmT875h30gcqqRiHGrS0vJvdfVFNBur+rqWmd89448xDYkfIBajQlmOYNOYG7Fb
-    w+sllDh+DDMUvqtbaIo97rAGXupuwv6SmaN7iwONW+0ItAz4OwC4z2L1UDB0MU/CMoZmKF
-    APPM8RcF5zXW85u2vGen96NXQvAqXtU8fe4sL+5pyssWyORJXaYfVfxk8CYZyLiyROxmyy
-    DnuHxnqL+fqmRQLsXBjvS2Kgpg4P6+w+lYqB1pR3hVnMOKZJhBftcLgAGkGQJMXexfLpVY
-    5aV+MwkMr2u+QRkq181lBw5PovAiV7GNhcdgzdmi06YM3IPWi/78bgoAI5oSg14sHYeMZE
-    BFGC7KQnBfxNVPPdNEN5jtm6LYR8S7QDjZmZ0uEXe3NxfCDhzlT8ts2fEATA
-X-ME-Proxy: <xmx:z27Jar0H3gBGuS8tXHq80zIAyP6L5z_kyz0r6MVhLDw7moIIYaF2ew>
-    <xmx:z27Jal65f46wvffjr1N3QphQ5zy_Vi9bNRcP81LEtWL-rzNi_OOELw>
-    <xmx:z27JaiWF--412KgaTOTJJwXVkoGiuhKk1q7bueEww2DYL6QPMRoGvQ>
-    <xmx:z27Jatjz_SKVt1pdIAnEjrYU6HmREY-TF3QdVaGgmr9L2l2k_wugbQ>
-    <xmx:z27JatHfivmCHIQG1VSku7FhChG4Tb6CqYsp0KDGhPhxeeiQEzV3xL7m>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 9 Oct 2026 18:46:35 -0400 (EDT)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: ojeda@kernel.org
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	lossin@kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v4] rust: compiler_builtins: Fix silent trap in prohibited intrinsics
-Date: Sat, 10 Oct 2026 07:46:26 +0900
-Message-ID: <20261009224626.1331914-1-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=alanderk.com header.i=@alanderk.com header.b="yoVF+14X"
+Received: by mail-pj2-f6.google.com with SMTP id 98e67ed59e1d1-3964e7720afso182523a91.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 09 Oct 2026 17:52:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=alanderk.com; s=googol; t=1791593551; x=1792198351; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=b+nv/ahniPVLz5y7JEZBuVoxLuh0JYLRNflwWsXXIGk=;
+        b=yoVF+14XteZRFdXLE7G1aOL0rU6FjbWpcvH+rp/ofbc0zbTQzDbYqfWBJz2bX4NfHx
+         oKh+mRolm4Nn+fvL/M5CuZLBwH+lZiSKNGEYJwFIDX9E9Tnr2DHElEKI7mUFdKJJl0IX
+         n+zTVOBP4P/LCg/sE+43RlTIqZgHGzT5LX9Tzck/eEt6qZ5JLMfBACq9hU1hacvZYRk2
+         8wMHzqvNw6QNEy7grVR1UG1zji2BH7mYEC14TvGXqIVnZ5cVAMZ8poguzx7Mc9/iR4aK
+         9REhRFCrGu5AlwGP3e5TdBUQD9VyWtYH9fwsZykA/eklVaorzaHqaPMa7WQKBmqeKOcf
+         x5SA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791593551; x=1792198351;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=b+nv/ahniPVLz5y7JEZBuVoxLuh0JYLRNflwWsXXIGk=;
+        b=boIhx49izcdXi1+EmRlevidAilI2ZcDIyGHqgpBHcZdVrsIEH5IRWo053DTz/Nng3X
+         VcDECjkbKf5eQNDtWiiLo8LJH1MJKOBlOWF/eSYMwTSSE3XNMyr6qo/j/1JIOsyeeaSP
+         bxzNTl5k9jJhYKjLB8yfJxRk1XvaxLFTHNCAtwt7HCyuI2yTKcOBLdVIfRcJOMwFatqX
+         gK2Y5WydyiUYsF//SBNK67390+jHLciTRGfVlgAx1pswz8nsjrLZRVicxBfNfVWkueE8
+         BJQO1Ashx2+iK0fPqH9Iw5xJ4g/NjBlhUkklMXZ17QSoTsDFSB07qAaAwJpTARyK5OGo
+         U/7Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxL6kZVECFl819yVm1n59eNYLQQxu0lvZbtJLPSooqlkYQRTLr9yjRYCIlFgaf2jYNXgKixOgr6sEY6SUM/Xg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYK8cBXf2hxX1yEDi/r1nxtIJhTtoueLUvffXyy/W/Yjv7LZWoWx
+	iSjnN3NRne47G0VbG1km26k3J3YQ5fzoGjavfvbFoQ2SQoRNM630c31JDz9FH5VB5qFxKrf+FF8
+	QUxvFb82xx7+vSXA=
+X-Gm-Gg: AYBFou3q1GLsxWhLdEKIShaSJvnybj8e28bzK2S/MjPa/iZndlRoLyHwFyQXDry9ETW
+	6vyFRn+32XEaI4CxuuI/90cfdmEvfe2Ly4z1fBaPjyPhv2fh3o0RWoQXchEAM6B+SIUwu4/7nHH
+	ga9OPxxd1NjvAlazixgM7r/nEr1MLRiM05YbvyBmJfSd2rqdr8+GpTQA9nn0yO+Rw179VQRz8hW
+	OsykJBxMMoAtCDe+thXk61HDICySg8uHD83yC1xDbFPtYTcwuaeURWU11MNPNAvGsBeeDEMZVmy
+	ytPFHsOq8/Z7Q+JRQIv1wTYKIwhsY5VAKup3VbhYcEvv/dwbK15PGkTPZ0hTxTaj4bG59vlqa49
+	GXkiVzRbBeQny8fx6pE4Vsa4cNimutPyYfvsQpAnvAjqnBcGYLTdRxXNiYf5mBEiE5a3oCF59R4
+	aqM4UhLcOC4rALkfOqFA1XTWmt+6LKvrHQnrLp5ih2LOlylNh53at8GCXOy39mlmEqng3raz6DL
+	p1NocOA1/Zbcdy0vk4L+fdKFOyNXd/zMA==
+X-Received: by 2002:a17:90b:48c7:b0:3ab:8b2:72bf with SMTP id 98e67ed59e1d1-3ab3a928525mr3305305a91.50.1791593551362;
+        Fri, 09 Oct 2026 17:52:31 -0700 (PDT)
+Received: from macmini4.tapir-palermo.ts.net ([138.199.43.94])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab50ce9d98sm4078226a91.9.2026.10.09.17.52.29
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 09 Oct 2026 17:52:30 -0700 (PDT)
+From: Alan Derk <linux@alanderk.com>
+To: Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Alan Maguire <alan.maguire@oracle.com>
+Cc: dwarves@vger.kernel.org,
+	bpf@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH dwarves v2 0/2] dwarf_loader: Fix --lang_exclude on merged CUs
+Date: Sat, 10 Oct 2026 00:52:25 +0000
+Message-ID: <20261010005227.976-1-linux@alanderk.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Two fixes for --lang_exclude when CUs are merged, as for LTO objects.
 
-When core calls one of the stubs for builtins that should not be used,
-the stub runs a trap instruction that prints no message, and the Oops
-shows a wrong name. For example, when __rust__udivti3() is called on
-x86_64, the Oops shows:
+Patch 1 takes the merged CU's language from a CU that is kept, so that
+excluding the language of the first CU no longer drops the whole
+object. With LTO, this is what makes BTF generation fail for kernel
+modules that mix Rust and C.
 
-  Oops: invalid opcode: 0000 [#1] SMP
-  RIP: 0010:__rust__adddf3+0x0/0x10
+Patch 2 fixes a second bug from the same commit, which I found while
+testing userspace LTO objects after sending v1. With clang LTO, a type
+such as int is emitted once and shared through DW_FORM_ref_addr, so
+skipping the excluded CUs left references into them dangling: pahole
+crashed printing such members, and -J encoded them as void. Patch 2
+loads the types that kept CUs use from the excluded CUs. Output without
+--lang_exclude does not change, and neither does the BTF of the LTO
+kernels I tested.
 
-The stubs call panic!(), but since Rust 1.79, rustc does not allow code
-in a `#![compiler_builtins]` crate to link to functions in other crates,
-and it silently turns such calls that do not return into a trap [1]. In
-addition, all the stubs have the same code, so LLVM merges them into one
-function.
+Patch 1 exposes this bug in one more link order. For a C++ object
+linked before a C one, pahole used to drop the C types without any
+error; with patch 1 alone it keeps them, and then crashes printing them,
+or encodes them as void with -J. Please apply the two together.
 
-Move the stubs to the kernel crate, where panic!() works as usual. Add
-the name of each stub to the panic message, so the stubs are no longer
-merged:
+As far as I know, patch 1 removes the last thing that keeps the kernel's
+RUST option off when LTO and BTF are both on. Once these fixes are in a
+release, I'd like to propose relaxing that dependency to something like:
 
-  rust_kernel: panicked at rust/kernel/core_builtins.rs:56:1:
-  __udivti3 called: `u128` should not be used
-  kernel BUG at rust/helpers/bug.c:7!
+  depends on !DEBUG_INFO_BTF || (PAHOLE_HAS_LANG_EXCLUDE && (!LTO || PAHOLE_VERSION >= 133))
 
-Weaken the stubs in kernel.o, as was done in compiler_builtins.o.
-Otherwise objtool treats them as noreturn functions and warns.
+assuming they land in 1.33. The kernel tests in patch 1 ran with
+"&& !LTO" dropped from that line, hence the Cc to rust-for-linux.
 
-compiler_builtins.rs is now empty, but the crate is still needed because
-rustc requires a `#![compiler_builtins]` crate.
+Changes in v2:
+- Add patch 2.
+- Patch 1 is unchanged; its note about the Kconfig follow-up moved here.
 
-Link: https://github.com/rust-lang/rust/pull/122580 [1]
-Assisted-by: LLM
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
-v4:
-- Weaken the stubs in kernel.o to fix an objtool warning
-  https://lore.kernel.org/oe-kbuild-all/202610100054.UyoZyPQ5-lkp@intel.com/
-v3: https://lore.kernel.org/rust-for-linux/20261008114717.992497-1-tomo@flapping.org/
-- Rename rust/kernel/intrinsics.rs to rust/kernel/core_builtins.rs (Gary)
-- Reword the doc of compiler_builtins.rs (Gary)
-v2: https://lore.kernel.org/rust-for-linux/20261003124828.119912-1-tomo@flapping.org/
-- Move the stubs to the kernel crate and use panic!() there (Gary)
-v1: https://lore.kernel.org/rust-for-linux/20261002014739.2566289-1-tomo@flapping.org/
----
- rust/Makefile                                 |  1 +
- rust/compiler_builtins.rs                     | 97 +------------------
- .../core_builtins.rs}                         | 26 ++---
- rust/kernel/lib.rs                            |  2 +
- 4 files changed, 14 insertions(+), 112 deletions(-)
- copy rust/{compiler_builtins.rs => kernel/core_builtins.rs} (74%)
+v1: https://lore.kernel.org/all/20261009201032.40105-1-linux@alanderk.com/
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 320ab6bb36c4..80bf698353a0 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -789,6 +789,7 @@ $(obj)/uapi.o: $(src)/uapi/lib.rs \
-     $(obj)/uapi/uapi_generated.rs FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
-+$(obj)/kernel.o: private rustc_objcopy = -w -W '__rust__*'
- $(obj)/kernel.o: private rustc_target_flags = --extern ffi --extern pin_init \
-     --extern build_error --extern macros --extern bindings --extern uapi \
-     --extern zerocopy --extern zerocopy_derive
-diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
-index fc6b54636dd5..65476a7c87ae 100644
---- a/rust/compiler_builtins.rs
-+++ b/rust/compiler_builtins.rs
-@@ -3,18 +3,10 @@
- //! Our own `compiler_builtins`.
- //!
- //! Rust provides [`compiler_builtins`] as a port of LLVM's [`compiler-rt`].
--//! Since we do not need the vast majority of them, we avoid the dependency
--//! by providing this file.
--//!
--//! At the moment, some builtins are required that should not be. For instance,
--//! [`core`] has 128-bit integers functionality which we should not be compiling
--//! in. We will work with upstream [`core`] to provide feature flags to disable
--//! the parts we do not need. For the moment, we define them to [`panic!`] at
--//! runtime for simplicity to catch mistakes, instead of performing surgery
--//! on `core.o`.
--//!
--//! In any case, all these symbols are weakened to ensure we do not override
--//! those that may be provided by the rest of the kernel.
-+//! Since we do not need the vast majority of them, we avoid the dependency.
-+//! But `rustc` still needs a `#![compiler_builtins]` crate for every crate it
-+//! builds, so this crate is provided and left empty. The few builtins that
-+//! `core` needs are in the `kernel` crate (`rust/kernel/core_builtins.rs`).
- //!
- //! [`compiler_builtins`]: https://github.com/rust-lang/compiler-builtins
- //! [`compiler-rt`]: https://compiler-rt.llvm.org/
-@@ -24,84 +16,3 @@
- #![compiler_builtins]
- #![no_builtins]
- #![no_std]
--
--macro_rules! define_panicking_intrinsics(
--    ($reason: tt, { $($ident: ident, )* }) => {
--        $(
--            #[doc(hidden)]
--            #[export_name = concat!("__rust", stringify!($ident))]
--            pub extern "C" fn $ident() {
--                panic!($reason);
--            }
--        )*
--    }
--);
--
--define_panicking_intrinsics!("`f32` should not be used", {
--    __addsf3,
--    __eqsf2,
--    __extendsfdf2,
--    __gesf2,
--    __lesf2,
--    __ltsf2,
--    __mulsf3,
--    __nesf2,
--    __truncdfsf2,
--    __unordsf2,
--});
--
--define_panicking_intrinsics!("`f64` should not be used", {
--    __adddf3,
--    __eqdf2,
--    __ledf2,
--    __ltdf2,
--    __muldf3,
--    __unorddf2,
--});
--
--define_panicking_intrinsics!("`i128` should not be used", {
--    __ashrti3,
--    __muloti4,
--    __multi3,
--});
--
--define_panicking_intrinsics!("`u128` should not be used", {
--    __ashlti3,
--    __lshrti3,
--    __udivmodti4,
--    __udivti3,
--    __umodti3,
--});
--
--#[cfg(target_arch = "arm")]
--define_panicking_intrinsics!("`f32` should not be used", {
--    __aeabi_fadd,
--    __aeabi_fmul,
--    __aeabi_fcmpeq,
--    __aeabi_fcmple,
--    __aeabi_fcmplt,
--    __aeabi_fcmpun,
--});
--
--#[cfg(target_arch = "arm")]
--define_panicking_intrinsics!("`f64` should not be used", {
--    __aeabi_dadd,
--    __aeabi_dmul,
--    __aeabi_dcmple,
--    __aeabi_dcmplt,
--    __aeabi_dcmpun,
--});
--
--#[cfg(target_arch = "arm")]
--define_panicking_intrinsics!("`u64` division/modulo should not be used", {
--    __aeabi_uldivmod,
--});
--
--#[cfg(target_arch = "powerpc")]
--define_panicking_intrinsics!("`u64` division/modulo should not be used", {
--    __udivdi3,
--    __umoddi3,
--});
--
--// NOTE: if you are adding a new intrinsic here, you should also add it to
--// `redirect-intrinsics` in `rust/Makefile`.
-diff --git a/rust/compiler_builtins.rs b/rust/kernel/core_builtins.rs
-similarity index 74%
-copy from rust/compiler_builtins.rs
-copy to rust/kernel/core_builtins.rs
-index fc6b54636dd5..b147475156b4 100644
---- a/rust/compiler_builtins.rs
-+++ b/rust/kernel/core_builtins.rs
-@@ -1,10 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--//! Our own `compiler_builtins`.
--//!
--//! Rust provides [`compiler_builtins`] as a port of LLVM's [`compiler-rt`].
--//! Since we do not need the vast majority of them, we avoid the dependency
--//! by providing this file.
-+//! Builtins that `core` needs.
- //!
- //! At the moment, some builtins are required that should not be. For instance,
- //! [`core`] has 128-bit integers functionality which we should not be compiling
-@@ -13,25 +9,17 @@
- //! runtime for simplicity to catch mistakes, instead of performing surgery
- //! on `core.o`.
- //!
--//! In any case, all these symbols are weakened to ensure we do not override
--//! those that may be provided by the rest of the kernel.
--//!
--//! [`compiler_builtins`]: https://github.com/rust-lang/compiler-builtins
--//! [`compiler-rt`]: https://compiler-rt.llvm.org/
--
--#![allow(internal_features)]
--#![feature(compiler_builtins)]
--#![compiler_builtins]
--#![no_builtins]
--#![no_std]
-+//! The stubs are here and not in `compiler_builtins`, because code in a
-+//! `#![compiler_builtins]` crate cannot link to functions in other crates.
-+//! There, `rustc` turns a call to [`panic!`] into a trap that prints no
-+//! message.
- 
- macro_rules! define_panicking_intrinsics(
-     ($reason: tt, { $($ident: ident, )* }) => {
-         $(
--            #[doc(hidden)]
-             #[export_name = concat!("__rust", stringify!($ident))]
--            pub extern "C" fn $ident() {
--                panic!($reason);
-+            extern "C" fn $ident() {
-+                panic!(concat!(stringify!($ident), " called: ", $reason));
-             }
-         )*
-     }
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 7225abc64084..b4fdba2a3eb0 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -57,6 +57,8 @@
- pub mod clk;
- #[cfg(CONFIG_CONFIGFS_FS)]
- pub mod configfs;
-+#[cfg(not(testlib))]
-+mod core_builtins;
- pub mod cpu;
- #[cfg(CONFIG_CPU_FREQ)]
- pub mod cpufreq;
+Alan Derk (2):
+  dwarf_loader: Take the merged CU language from a CU that is kept
+  dwarf_loader: Load types that kept CUs use from excluded CUs
 
-base-commit: 2dee3d3adcadcc57d62ba6608cd02f50b0c10264
+ dwarf_loader.c                  | 129 +++++++++++++++++++++++++++-----
+ tests/lang_exclude_lto_refs.sh  |  76 +++++++++++++++++++
+ tests/lang_exclude_merged_cu.sh |  67 +++++++++++++++++
+ 3 files changed, 253 insertions(+), 19 deletions(-)
+ create mode 100755 tests/lang_exclude_lto_refs.sh
+ create mode 100755 tests/lang_exclude_merged_cu.sh
+
+
+base-commit: 1e342ac44979748bcf5bb37f84ea055e7f4d7184
 -- 
-2.43.0
+2.55.0
 
