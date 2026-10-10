@@ -1,220 +1,269 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011058.outbound.protection.outlook.com [52.101.52.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45060285061;
-	Sat, 10 Oct 2026 02:40:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791600041; cv=fail; b=jXUkPjr8EqxgKEwdTG0CBCynczIQIx4J1IlvEv2dkcDa50pQoka5FZGtmxfNnaVOMJVtfLkutZ30LL5e+4bcjmYL3j8wkVL345fzIve0We8pptwN5ue8fjM0983rDe6v6xVaQhZsA0gZtLmVVseFn2PVpjK72JsmaQCVVgSm6n0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791600041; c=relaxed/simple;
-	bh=ofUMyENCcRr1dpEBAWXw89C0tOa5Yr+Jy+hfUp/2zSM=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=U9SLu3AOemCydrbYKmBpvjsr3/ZTmftOEHeAEbZkwEVPkFrkxkgXUaJK+fxP9Jbxbwg01SlfCWAjLU/CmULNhNyMiMjQwWwg7D3JcIr5I8oWBjfNfT8TdDiywLzrfPg62m38BZL0JWrZhyYjGGchhM9fpFYCmd92azvh1WwdeOM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ctUqT6cr; arc=fail smtp.client-ip=52.101.52.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3783535FF6C
+	for <rust-for-linux@vger.kernel.org>; Sat, 10 Oct 2026 09:50:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791625820; cv=none; b=BGEks6EbfJsHbX20EEIubN1v5lXySnKIjsrACSGC5/rAFP4IexgbH9urkWEIVUYNVQ3ql9VRn5cGN96OiLWywpIZAS9kPmTr4OIoGVEOgZskt+zfZ7Q8o45E273M3NkEp0VE1QPviZTzzc/QGhuG4ALxBAtIyWfaVtOui0IVWnY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791625820; c=relaxed/simple;
+	bh=Pz9mjQaWBvzyAjmLpF1JmG7U6qn2e1XO0gz8PWDrPd4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Me6qCYZ0cXqfFEdRnGmiA82RpBk0X81m9yx8nvFFWmJvzdDHUgW4rOmCeuuL6skr2Bplid5uwsNAmOP+h1hVbwG7lwcMoKpyHc9wsh9mL22O8PBRLSW3HZlpJ6VV/lxbo2amkwbDhrdlFmWZmsvMdzRFfihZj7z/wYsb0V1oGbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZZ0YiM91; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ctUqT6cr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=otToe7kCqCjKZ0NsK7nstRyXCEQgK8n2WCnmIAiI0JJqQ8VlKuAxvfKuBWCX+XJGyoF92kLHfZeJJIhlEkTA/kVQiS5UAUYAtljheKQwLaaAAxF5DHhYSgoEzonEJyqjmuAXSI6/jJiw8HkeT0Cc3rlJEj808G4qhq/n7tZG011gmS7ky63KlAh/7UIdmNmoM4Z0fnHCtDf2n5Q8o7IWE6RN/dV/jmXQ9TDDKmKEu2y2Ra5V0fNA3Iacuyf1HpEiFiVmoDoVY5L7Wntl1JTz93oPrqX/fUfcaFmC7PozOmQDWI2lln8IGJdTKJ0gjRpRu9qw2T8v56aNBWhKyFLgiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L2bargDDIKPKExO8l6qZW3tyFqlpuCW29J7GnfHysUA=;
- b=lz6zHQf2wUqWblb+RE1oi2beg80M4qZ8TdpN/0sJAwxE8vH5WcWSZXGrWABDjEUjA4CH9dA850h8NY/xjFvOUQGwgxn+6gttgXOC++rbB2QoxVTr76IYB3nsOyfzAV8tl5gdaFAPu7OBWD2LsnfkYSb3nqESXAu1KlHBhrAmcn7kbrcwqPw4m5pAMI0UAhTlY8PcBjX5lgrgTffNqNPTQo6VclNuw7urBPQfVdcy5M86NX+/0WrxR8tC+fgebb8s68CuDfXTnAVjAU8QmTwUUdkQbht8BmEaNdukutVCgJGyaoTadaK1dgaL/jmnZ61vAydOcAdC5m+McsdDfL2UwA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L2bargDDIKPKExO8l6qZW3tyFqlpuCW29J7GnfHysUA=;
- b=ctUqT6crlJkYlUj6TmbkKPOydCgHJDThHFXOttQUIGamm+pgXvM98Cga5HLhyZQLAbKRv+rGnBo2ZqHguHZ0cHDe0ccPL899Hf15CrNyAzDeinz+acoXyeqP+wlnVXVP5qR3mYPGzl5ntkeI5FyI/b1QqLBYh3l0oIEhOnb8r2k3ynxsMZlUU7s6t+8cd4JwdSHKhx1K0r8Te7rpx6662BAi7GfWOhr77Jy69kdq7J0r6XuCR9WVsYYVaX2HhP4ANPDS2503qtMAPdHCG3q0UqojX9ih3lC2M7sLmtmUisw6ERAWN9PyyCn6nOMgxvnycl9fJQkfCBg4qmfqOJYTQQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by PH7PR12MB7114.namprd12.prod.outlook.com (2603:10b6:510:1ed::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Sat, 10 Oct
- 2026 02:40:33 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0496.017; Sat, 10 Oct 2026
- 02:40:33 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 10 Oct 2026 11:40:30 +0900
-Message-Id: <DM0T7FHCSQUD.2SEUSVP1QJUXQ@nvidia.com>
-Subject: Re: [PATCH] rust: uaccess: avoid unsafe unwrap_unchecked() in
- strcpy_into_buf()
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>
-Cc: "Thorsten Blum" <blum@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Timur Tabi"
- <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20261008061326.177841-2-blum@kernel.org>
- <DLZHGS3GBIT9.16N0JVOTMONZO@nvidia.com> <asflx_blsGkQ7Obn@kernel.org>
- <DLZPAM0YRU3L.2TDZ2GLI7AS6S@garyguo.net>
- <DM0C9ZEJA9EF.12IOGM4R4QG3E@nvidia.com>
- <DM0D9TERQAM3.2Y3HV6P68E2N8@garyguo.net>
-In-Reply-To: <DM0D9TERQAM3.2Y3HV6P68E2N8@garyguo.net>
-X-ClientProxiedBy: OS7PR01CA0239.jpnprd01.prod.outlook.com
- (2603:1096:604:25d::17) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZZ0YiM91"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a0213948d3so3012445e9.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Oct 2026 02:50:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791625817; x=1792230617; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jYxpsTzHFlYPOtsBqibfHOX9Q66IxX+cTOR1n+n+0sY=;
+        b=ZZ0YiM91iI/JIGvhtoj998S+7gYK+f2OM2180bFhffJKwiOg2VG9atNbJb0g3GJsX9
+         2ltaJm6EChNfC2vBbBhVVlpDTTbOjR823KiSzqokYK26VbSp9pHpGy7U9/Q9bGpqzjaZ
+         zILS8nEORU0sOgE8JOK4IHdnm9te6O93rf8weptyn2Xq8VU/0Rbn8U/2ZntQ23thgq1p
+         w6mxjrH+goqU2UldWL+ftWKFsZP1+pSlAnLKgwHet81LAEXs5O1iN4UQL3r9bQApgblw
+         zhReVIImwTNez0AxuwIuyMoV2KpI3PktXk3NAVdQEORCkVAB++FEBbbeuGEQfx4/5CJe
+         HNZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791625817; x=1792230617;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jYxpsTzHFlYPOtsBqibfHOX9Q66IxX+cTOR1n+n+0sY=;
+        b=PDC9fFQSoTcyo2QKyg9Pq9Jxic4sDGjPwOgtBDip1gvQBkkA/N4Ym1GY5g9TsMzaKh
+         0k0H+FiEzVPDW2bGHwtMT9cqKQ9RKDfNBjfql5eSzkb162i4mvk6kdpwIRYh8kCIt+SB
+         iQte9f/DrPBvZrF4HoZcBBsja0CDLZfnd76N4uGPmgChOlCLI+mm5s2+Wr+UL+JGV9Yw
+         LtrHl9WfYh95C4Lwlc2eJ40NbsthWLs7B9T6HCluGJ9c9fUF+OcwmqiHoGWNWPkOs982
+         7/ffltndYzPIUbHDBExw/faJaMovUczB/kPEB+L99MtlBw0DzPGxP7+hVcjY4czJ6v02
+         bi9A==
+X-Forwarded-Encrypted: i=1; AKwUvBzYXo+rGk3icT1z6yV9CAFSaXIkYdHVuaYJCbTuKT6VRy5obe3J7AztY6RohW2HtnqLn9K4eph3TYW7UwPmeA==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKEs9iQ2J/FJ3Fa/V2upj+FUBHiR4UlAlK8rjSpxsuk6TaRiWH8
+	gliE7EoDPtc0I8xHFbaXmYYzYpagzytuvfQU9wcGZ/Mu9vv9XsobB7G0
+X-Gm-Gg: AYBFou3EckFaH1puaB/3I2sBrYUMXaQY75Cmtvg6Z7DktQ3WRiRT+BHkPhyNBbaszLd
+	NJF2ALSKsaVOp8LTD1D7K9gwfTBECc5CAm0BRxfJJWHqsHFwArxrm/daQBTQL/QC66dn0WaRnfx
+	ROj3ngNp6r4ZHqkbjVfw41XGVwcWfML3dSTV+M6VHM6h/kV3gfTN6YjSdlJKHWZKOmundHO6e9K
+	Rixquns5nKNjhCUaeLH3lsqK71w5AEVgfaChLL3M8zfig7Ep/fRSszhWm396dQ+nyR4NM1wncx4
+	KDRpfbY6o1hPQNMeE/ZvpjiVbiFyt9R6gjAnzeUNuLP+VsNrxtu1FeKy785chxSjCq1i6a2dRP7
+	37YQ9Nn0f4CB7PgfAY3sc4GlMlg2O9je9WJXulwiRBPgJOeVgl3d7TJsV+xY19bNE9Pqdxlkdjr
+	2BgvixKtC5qhK9kX64CJBMZ5pa7ge9jsqgXFC7wnFtalLS8lSgMKTZcGkTV56tc+KF3TY4rZ2W/
+	CeDu9YfQgVVafNrGIOcJr0TXB/xb40=
+X-Received: by 2002:a05:600c:8b82:b0:49f:fd2d:23c7 with SMTP id 5b1f17b1804b1-4a18e4b887amr84139465e9.27.1791625817058;
+        Sat, 10 Oct 2026 02:50:17 -0700 (PDT)
+Received: from nixos-office ([81.0.251.149])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bf15691sm119149615e9.6.2026.10.10.02.50.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Oct 2026 02:50:16 -0700 (PDT)
+Sender: Julian Braha <julian.braha@gmail.com>
+From: Julian Braha <julianbraha@gmail.com>
+To: nathan@kernel.org,
+	nsc@kernel.org
+Cc: ojeda@kernel.org,
+	a.hindborg@kernel.org,
+	nico@fluxnic.net,
+	rdunlap@infradead.org,
+	grahamr@qti.qualcomm.com,
+	jakub.git@horky.net,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Julian Braha <julianbraha@gmail.com>
+Subject: [PATCH] kconfig: wrap long expressions in menuconfig
+Date: Sat, 10 Oct 2026 10:50:01 +0100
+Message-ID: <20261010095001.265759-1-julianbraha@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|PH7PR12MB7114:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3333357-e05b-4094-3fa1-08df2677db1b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024|23010399003|11063799006|56012099006|5023799004|4143699003|10067099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	CRSw0hSZlRzm+VcTy8lx/T+Xaa+078320essgB4DhW/aIDTAAfH/P8RbjMZtBU2RlpR0c+xIJTMxXQ5PbwIhuuRGFPZITGClXxAvmPeUXAU2OuRStwsm0l9E4q6EDypURdrc4DFcWlUH3XtGQcGX1GFs8geVWRfNo5oAoPdadbQ81oR4kyprQ9ldj8u6wajs2V3Go7AWTkotZZ7YrjoZnpAideHsJvFVe8GYabToWhPCHUYETkiFmsCthEcxT+tQx28KDqa3aeLkgSAM9YP53EBErv5RA9Cmlw9aspaqioeVA5AdLnqzE2WxtHlADJmOFUxP+dtpdXffb24EQgfknZwqrHvkuuNTEufxkfp3P5fwK7bLuDQb79XKm5sXcK3goL61CjjOMG96Z8BW3dY3KR+PvKTP97ug6X5gL5l2FrAawWPppWIy4ckMHX9rzPT8Rq+6sn0lKiZiqF3cQRpXwo2Lqgc8rg5lBA31hWT0v8ziRbura+FFbijDR5dXrOngGwdkc03ps2QEi1rNQRLc7EM12LKcyhLXEV4cpVNuhJ+tSC0Q+nOpmlaLysrk2x8aazuvyhppL6Ad2BJygQFU/JvbLKaAQDOSko6S6uJpdlUUvtlNi/EVOCFNldsdXuFlVpn34grGjrOkibmRCOR+/ZJGEMy+Sj0FGaztjra1PTg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024)(23010399003)(11063799006)(56012099006)(5023799004)(4143699003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZDhOUGJDQndDanVud1JGVmxKYmsySnRHbGpVeENPblJTdnFNK242U3J2L3Ba?=
- =?utf-8?B?T0pyZ3hjTlR6bWJGMkFBQWxNWUQramJIeG1GbEQydmE4aHFFeC94bEVkMk9L?=
- =?utf-8?B?blNoQ0NUeEZBWE9zT1I2ZmhaKzdHeVA4QzdDaS9vaXpERjU3VHJoYlpraVI0?=
- =?utf-8?B?cG5NVkRXcytqaWV3bFNOVWRvaTBpc2ViQmJ5OHEwd2Zjc1NmYStVWFJHeDU1?=
- =?utf-8?B?VUlqMit0QXB5NVVjVFArMGhIN0xZeWxSbjhWbXJoTkdmS0JXM2xGWGlXcGc3?=
- =?utf-8?B?UmZ0RmtyVFZQUW1mZFp4OVBlMHRoaTRNYmMvRStZVmxYMVdJRTZmSVcvQVc5?=
- =?utf-8?B?MkxrL3Q4R202V3FtL0lYQy9keTZiQ2xaQVlVQkxNZEV5NkNxQlFHVjNnSksz?=
- =?utf-8?B?blFTN21qSUgxTk9XbHdRbE12ZXVRMUdhWEIyeHhLYmNieGcrVDNNMFZtNE0z?=
- =?utf-8?B?VlVYM2c4dE9qcklTaEJIdHVEUUxiMDZrNmszTWNYa3VWazJERU5WVGRZc21U?=
- =?utf-8?B?Z0lLclRjNTFVdjd5Z2hHM29qbXA0QmZqbGFmODFPQ0dOcDFXLzdRQzlNa1R1?=
- =?utf-8?B?WnFCQm4xc2VsVTh1V1JNQUxsUmRjU1FNcGxJZ1hsU0lRY296MDVQdTIrNTlj?=
- =?utf-8?B?SzNMamQ1eFFyY2FLb1FyalQ0RkVQdVhNL1pzajBzRFhRZDVzVWFGT3AwbG9K?=
- =?utf-8?B?eHpIWW1qMVp6QkhpeWRybGdCemthUFFlTWZRQmNZZVdrelRZNnNpTFRDSDFi?=
- =?utf-8?B?elNiN3hTOGpwd3hZVzJSYURZaTU5ait5VThSV2V0ZklzYjlyMFNJUGhYSmVq?=
- =?utf-8?B?WnNiQjBab0x6RHAwdlF0ZTQxYzhaMFFJRFVHMHg2Tm5PdXpXZUd6MFYrRFRF?=
- =?utf-8?B?SzAzNHVrcUErLzU3NGNYVDBhZXQzQThtRVcrcFFua094dXhUUmVPalNMeUdm?=
- =?utf-8?B?NU9oRlBlay9nRmRlUUFFWXdGUmVqd010bmgxSGNETVlRWUZsRHl5akpKQ1BD?=
- =?utf-8?B?NndOUTlhdDRIVnJMUlhBNmhoZ0hnQkh0RHQ3VVFKc01rWnFIRzc3N3NxQXlt?=
- =?utf-8?B?dVdDM1JIUmVra1ZGbEJDYU1iTW03OGFlWlFadVdNNUNVS1NSUWRHVElVSHln?=
- =?utf-8?B?UDVsdi9sSnhoeFo2MDJnYndSRHZaQkZhdGQzYXR5SHlzZm56UEErV0EyRzN4?=
- =?utf-8?B?SFhFNjNjY2RMdnZaSCtzK2VuSmgzT25jQThhTmFyUTRHUE4rMU1qak4rMG9O?=
- =?utf-8?B?aHRreUo1T1NDUFNtL1Z6SEJ6S3QrNnM3ZElYbTExeFh5eE9PT2RRckQ3YWNR?=
- =?utf-8?B?NGcrQk8zdS91Y3A4SVoveTFCVThObDhZZkJUdWw1TkFEK1RpT3YrQzlUSUlQ?=
- =?utf-8?B?Ti9pWXBUS0o3TmU2c2ZEcDhVQlJCeFFnWVhraFE0VXJYWWRib0Q1c2RiaWhp?=
- =?utf-8?B?QkVxODBWNndVQlZCWkcvK0trLzZaQnZReUNWR3htWkFBLzFYT2J0TlVKMXJG?=
- =?utf-8?B?RjNBYWMxdDhqR0xOaDVPcW1WSmdWRWdFMnpPbmF6aDZkUGNZQWIzUEFJeGh4?=
- =?utf-8?B?YjdkYkJVbURocXgyV2pMdko0dmpRQ1ZFV0NhMEN2R2oyQWYwQURPS1ErRUkw?=
- =?utf-8?B?ZTlSTmR3bDJEZURFVk15ZE00bkxIZkNINXpHS3V0dDduQnNiMHQ3c3E4QjlZ?=
- =?utf-8?B?NTc1cFlvMDQvNUYwUWJpT0Vnb2VKckxYRTJQeXZObVJ4cEk5QURBeTBhU0tO?=
- =?utf-8?B?OTJSdlRFZXhJaDN6eERmeUQ0dnlSd09jaGlyVWNEVk9FdTdML0xRZTRtSGtt?=
- =?utf-8?B?VUQ4SU5CcHBwNTVNZ3lNeENKNStrVlJwaW1lbmhvUXY1NWw5ZU1UMDgwZWts?=
- =?utf-8?B?ZkpkdWlXTVBZT0xTL2dualk0a3plMzh5Tm5VUnVSRW54aEpRVUppUVk4S0Nx?=
- =?utf-8?B?OStqRitrVUJoZmhwcktIUnR6ZVZiMGxScVZxUDFUZDM4cC83WElIanpZb2J2?=
- =?utf-8?B?UTlaelBaZno3YTBWTmgremI1Z3ZVYjllZVgwSzdKbHgyZWFYMXIvNWJxc21N?=
- =?utf-8?B?Um1DM0djWGxXOVBaVU54cWIydWMxd2t4ampicVdwcnNZaHRaWC9yWTJqaXVU?=
- =?utf-8?B?SElxSGpoZFVYVnRsZFpNSDI2NzBRYldkTjQ1bnF5bmxvTENsb3NtQUo4dk1n?=
- =?utf-8?B?c1B2WXVCdmRrbUQyVWIycmo2OXJwb1Y0a3RuYWp4S1FGc2U1cjUxVTRzRTFU?=
- =?utf-8?B?dnBRZ2UwcVlZOVJMV1ZWdVNMSEkzc2xDOFlqWXBNbVBsRlVKZkp0V2JiS0lZ?=
- =?utf-8?B?ZjZ0ZFIvRk1OeGh6c0h3S0tPcnI4Y0gwTVhnN0NQeTJoNGFwRUozenVhaEYy?=
- =?utf-8?Q?Go0fors/BJ/eJYlDNVVEF31TfiLoA84n66QqyiKg8EWQq?=
-X-MS-Exchange-AntiSpam-MessageData-1: 8ijuIDYmq6o2aw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3333357-e05b-4094-3fa1-08df2677db1b
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2026 02:40:33.1572
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qJjZeeTko9fX5kwxXGsRoyKOFiH3XwuZYcVbmZdzAwatjSGz9/Tvy4C0zA6AnzH5GZmQwT+UwLvU3DuVWyqf/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7114
+Content-Transfer-Encoding: 8bit
 
-On Fri Oct 9, 2026 at 11:11 PM JST, Gary Guo wrote:
-> On Fri Oct 9, 2026 at 2:24 PM BST, Alexandre Courbot wrote:
->> On Fri Oct 9, 2026 at 4:23 AM JST, Gary Guo wrote:
->>> On Thu Oct 8, 2026 at 7:49 PM BST, Thorsten Blum wrote:
->>>> On Thu, Oct 08, 2026 at 10:15:49PM +0900, Alexandre Courbot wrote:
->>>>> On Thu Oct 8, 2026 at 3:13 PM JST, Thorsten Blum wrote:
->>>>> > Since strcpy_into_buf() already rejects empty buffers, use ok_or()
->>>>> > instead of unwrap_unchecked() when NUL-terminating the buffer.
->>>>> >
->>>>> > Signed-off-by: Thorsten Blum <blum@kernel.org>
->>>>> > ---
->>>>> >  rust/kernel/uaccess.rs | 4 +---
->>>>> >  1 file changed, 1 insertion(+), 3 deletions(-)
->>>>> >
->>>>> > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
->>>>> > index 5f6c4d7a1a51..2a0af795e75d 100644
->>>>> > --- a/rust/kernel/uaccess.rs
->>>>> > +++ b/rust/kernel/uaccess.rs
->>>>> > @@ -422,9 +422,7 @@ pub fn strcpy_into_buf<'buf>(self, buf: &'buf m=
-ut [u8]) -> Result<&'buf CStr> {
->>>>> >              // This means that we filled the buffer exactly. In th=
-is case, we add a NUL-terminator
->>>>> >              // and return it. Unlike the `len < dst.len()` branch,=
- don't modify `len` because it
->>>>> >              // already represents the length including the NUL-ter=
-minator.
->>>>> > -            //
->>>>> > -            // SAFETY: Due to the check at the beginning, the buff=
-er is not empty.
->>>>> > -            unsafe { *buf.last_mut().unwrap_unchecked() =3D 0 };
->>>>> > +            *buf.last_mut().ok_or(EINVAL)? =3D 0;
->>>>>=20
->>>>> I am not sure this gives us much - we are trading an unsafe statement
->>>>> that is well-controlled (enforced by the first two lines of the metho=
-d)
->>>>> for a runtime check. I'd say this is working as intended here.
->>>>
->>>> I checked the generated code before and after the patch and it is
->>>> identical since the compiler is able to remove the additional check.
->>>> Therefore, this removes an unsafe block without adding runtime cost.
->>>>
->>>> It also avoids relying on the buf.is_empty() check to prevent undefine=
-d
->>>> behavior.
->>>
->>> Adding an error returning path is worse for something that cannot happe=
-n is
->>> worse than invoking unsafe in my opinion.
->>>
->>> Why not just unwrap?
->>>
->>>     *buf.last_mut().unwrap() =3D 0;
->>
->> I guess the author of the code decided to avoid `unwrap` for the same
->> reason they avoided a runtime error: the first two lines of the method
->> guarantee that the access is valid. Now I wish we could keep the
->> enforcing statement closer to the unsafe block relying it, but I cannot
->> find a better way to write that method. `unwrap` would just switch the
->> `SAFETY` statement for a `PANIC` one.
->>
->> Honestly I think this code is fine as it is.
->
-> A `NonEmptySlice<T>` which is `[T]` but `first`/`last` can just not retur=
-n
-> `Option`?
+In an offline conversation, Miguel Ojeda reported that scrolling
+horizontally in menuconfig's search to read RUST's dependencies has been
+slowing down debugging.
 
-I looked it up hoping it already existed. :)
+Let's wrap expressions (like in the 'Depends on', 'Selected by', or
+'Range' sections) between tokens at the end of the window, such that each
+line begins with the same indentation. Ensure the '!' negation stays
+attached to the left side of the option symbol, and keep the value
+annotation attached to the right side when wrapping.
 
-That would definitely be an elegant way to solve this issue (and IMHO
-should eventually become part of the standard library). This example is
-actually a great illustration of the panic/unsafe/result dilemma we
-discussed during Kangrejos (and yes, I'll follow-up with a proposal for
-guidelines soon, sorry about the delay).
+Note that the 'help' textbox uses the same expression printer as search,
+so this has the side effect of improving the formatting in 'help', too.
 
-Until we have `NonEmptySlice`, I'd say the current unsafe or having a
-panic are morally equivalent, so I don't see a strong justification for
-this patch.
+In the future, we should consider a larger revamp that would wrap all text
+in the search window, allowing us to safely disable horizontal scrolling.
+
+Assisted-by: LLM
+Signed-off-by: Julian Braha <julianbraha@gmail.com>
+---
+ scripts/kconfig/expr.c  | 24 ++++++++++++++++--------
+ scripts/kconfig/lkc.h   |  5 ++++-
+ scripts/kconfig/mconf.c |  2 +-
+ scripts/kconfig/menu.c  |  7 ++++++-
+ scripts/kconfig/nconf.c |  2 +-
+ scripts/kconfig/util.c  |  1 +
+ 6 files changed, 29 insertions(+), 12 deletions(-)
+
+diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
+index 2b91d16bf14f..f1e100c3c755 100644
+--- a/scripts/kconfig/expr.c
++++ b/scripts/kconfig/expr.c
+@@ -1155,21 +1155,28 @@ static void expr_print_gstr_helper(void *data, struct symbol *sym, const char *s
+ 	if (sym)
+ 		sym_str = sym_get_string_value(sym);
+ 
+-	if (gs->max_width) {
++	if (gs->max_width && !strchr(str, '\n')) {
+ 		unsigned extra_length = strlen(str);
+ 		const char *last_cr = strrchr(gs->s, '\n');
+ 		unsigned last_line_length;
+-
+-		if (sym_str)
++		/* Ensure the value annotation stays attached to the symbol on wrap */
++		if (sym_str && sym->type != S_UNKNOWN)
+ 			extra_length += 4 + strlen(sym_str);
+ 
+-		if (!last_cr)
+-			last_cr = gs->s;
++		last_line_length = strlen(last_cr ? last_cr + 1 : gs->s);
+ 
+-		last_line_length = strlen(gs->s) - (last_cr - gs->s);
++		if (last_line_length > gs->indent &&
++		    last_line_length + extra_length > gs->max_width) {
++			/* Ensure '!' stays attached to the symbol on wrap */
++			char *last = gs->s + strlen(gs->s) - 1;
++			bool negated = *last == '!';
+ 
+-		if ((last_line_length + extra_length) > gs->max_width)
+-			str_append(gs, "\\\n");
++			if (negated)
++				*last = '\0';
++			str_printf(gs, "\n%*s%s", gs->indent, "",
++					   negated ? "!" : "");
++			str += strspn(str, " ");
++		}
+ 	}
+ 
+ 	str_append(gs, str);
+@@ -1209,5 +1216,6 @@ static void expr_print_revdep(struct expr *e,
+ void expr_gstr_print_revdep(struct expr *e, struct gstr *gs,
+ 			    tristate pr_type, const char *title)
+ {
++	gs->indent = strlen("  - ");
+ 	expr_print_revdep(e, expr_print_gstr_helper, gs, pr_type, &title);
+ }
+diff --git a/scripts/kconfig/lkc.h b/scripts/kconfig/lkc.h
+index bbc99f75b416..f5fe3731db0c 100644
+--- a/scripts/kconfig/lkc.h
++++ b/scripts/kconfig/lkc.h
+@@ -65,6 +65,8 @@ struct gstr {
+ 	* wrapped not to exceed the max_width value
+ 	*/
+ 	int max_width;
++	/* Indentation of wrapped expression lines. */
++	int indent;
+ };
+ struct gstr str_new(void);
+ void str_free(struct gstr *gs);
+@@ -101,7 +103,8 @@ const char *menu_get_prompt(const struct menu *menu);
+ struct menu *menu_get_parent_menu(struct menu *menu);
+ struct menu *menu_get_menu_or_parent_menu(struct menu *menu);
+ int get_jump_key_char(void);
+-struct gstr get_relations_str(struct symbol **sym_arr, struct list_head *head);
++struct gstr get_relations_str(struct symbol **sym_arr, struct list_head *head,
++				int max_width);
+ void menu_get_ext_help(struct menu *menu, struct gstr *help);
+ void menu_dump(void);
+ 
+diff --git a/scripts/kconfig/mconf.c b/scripts/kconfig/mconf.c
+index b8b7bba84a65..fb87f944d3f9 100644
+--- a/scripts/kconfig/mconf.c
++++ b/scripts/kconfig/mconf.c
+@@ -431,7 +431,7 @@ static void search_conf(void)
+ 		struct jump_key *pos, *tmp;
+ 
+ 		jump_key_char = 0;
+-		res = get_relations_str(sym_arr, &head);
++		res = get_relations_str(sym_arr, &head, getmaxx(stdscr) - 10);
+ 		set_subtitle();
+ 		dres = show_textbox_ext("Search Results", str_get(&res), 0, 0,
+ 					&vscroll, &hscroll,
+diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
+index bda3e2650216..31f12cfe981b 100644
+--- a/scripts/kconfig/menu.c
++++ b/scripts/kconfig/menu.c
+@@ -668,6 +668,7 @@ static void get_dep_str(struct gstr *r, const struct expr *expr,
+ {
+ 	if (!expr_is_yes(expr)) {
+ 		str_append(r, prefix);
++		r->indent = strlen(prefix);
+ 		expr_gstr_print(expr, r);
+ 		str_append(r, "\n");
+ 	}
+@@ -743,6 +744,7 @@ static void get_symbol_props_str(struct gstr *r, struct symbol *sym,
+ 	bool hit = false;
+ 	struct property *prop;
+ 
++	r->indent = strlen(prefix);
+ 	for_all_properties(sym, prop, tok) {
+ 		if (!hit) {
+ 			str_append(r, prefix);
+@@ -772,6 +774,7 @@ static void get_symbol_str(struct gstr *r, struct symbol *sym,
+ 			prop = sym_get_range_prop(sym);
+ 			if (prop) {
+ 				str_printf(r, "Range : ");
++				r->indent = strlen("Range : ");
+ 				expr_gstr_print(prop->expr, r);
+ 				str_append(r, "\n");
+ 			}
+@@ -810,12 +813,14 @@ static void get_symbol_str(struct gstr *r, struct symbol *sym,
+ 	str_append(r, "\n\n");
+ }
+ 
+-struct gstr get_relations_str(struct symbol **sym_arr, struct list_head *head)
++struct gstr get_relations_str(struct symbol **sym_arr, struct list_head *head,
++			int max_width)
+ {
+ 	struct symbol *sym;
+ 	struct gstr res = str_new();
+ 	int i;
+ 
++	res.max_width = max_width;
+ 	for (i = 0; sym_arr && (sym = sym_arr[i]); i++)
+ 		get_symbol_str(&res, sym, head);
+ 	if (!i)
+diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
+index 521700ed7152..fc39830a850b 100644
+--- a/scripts/kconfig/nconf.c
++++ b/scripts/kconfig/nconf.c
+@@ -741,7 +741,7 @@ static void search_conf(void)
+ 			.target = NULL,
+ 		};
+ 		jump_key_char = 0;
+-		res = get_relations_str(sym_arr, &head);
++		res = get_relations_str(sym_arr, &head, 0);
+ 		dres = show_scroll_win_ext(main_window,
+ 				"Search Results", str_get(&res),
+ 				&vscroll, &hscroll,
+diff --git a/scripts/kconfig/util.c b/scripts/kconfig/util.c
+index 0809aa061b6a..1de072e45ca3 100644
+--- a/scripts/kconfig/util.c
++++ b/scripts/kconfig/util.c
+@@ -77,6 +77,7 @@ struct gstr str_new(void)
+ 	gs.s = xmalloc(sizeof(char) * 64);
+ 	gs.len = 64;
+ 	gs.max_width = 0;
++	gs.indent = 0;
+ 	strcpy(gs.s, "\0");
+ 	return gs;
+ }
+-- 
+2.55.0
+
