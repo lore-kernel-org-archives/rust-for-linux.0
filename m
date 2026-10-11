@@ -1,33 +1,33 @@
 Received: from mail-106111.protonmail.ch (mail-106111.protonmail.ch [79.135.106.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD0A3BCD0E
-	for <rust-for-linux@vger.kernel.org>; Sun, 11 Oct 2026 18:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A00B3B9D98
+	for <rust-for-linux@vger.kernel.org>; Sun, 11 Oct 2026 18:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791744043; cv=none; b=o0fmtzoi0t5NIRJl3lLXB9MKTokM0u8O9iATPJny/p34Wt4ygwYWYds3+1Fk4JUJi1jwCduWDjJUcQmtYH+hN4XohcmIxzIpB29/DPghJIsmtuL7dl4s+F4mHcJZ0hCGo4HunUABw6O1d+TM9USVuFuF+WY7pzb4VXGAS8fXgG4=
+	t=1791744047; cv=none; b=EimTEGvLSeKzZObWaISOcwAFYPk2/T/1vqteAN7V0YEHRs/OZO/NTAcqWndMMia2xCcKFGRWvImbCmxejf82HXOb+n6lvFDA3s5DFHy+0i9xmUUgpfwMPkl4g4C+0magbcUWckyv3jiv/qp1X/2f7sXXqWIteNI4+Yo8qTrFPwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791744043; c=relaxed/simple;
-	bh=uAh75fzfa7VEzl6xBmXowS6tsy/jRrP/wCbAOngqrGU=;
+	s=arc-20240116; t=1791744047; c=relaxed/simple;
+	bh=4IhjcplZBqzDWi0D/wmN5vHZTfp3nXxeocxH+Z3azZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sZrAUBsC+AzeTCEo7Tg4cGMNcCxb+DXjkgQIoCMKBGtlpD05VEPHFPPKv9naZ9cEzzJ+iRBUD++iRuI5fFgX/8jNXWriUGPSpf4IbNkjoyztaepK1nAPoF9kyh0GkmykmvPHri1I4O3N8dGd7AL0C+K1COF41exxQWMW7J9fICU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=puRlDibl; arc=none smtp.client-ip=79.135.106.111
+	 MIME-Version:Content-Type; b=Nvg14Ym027Hr+6Z+pq/cLVwUhn0doy9k46E4eMyAtSwSCn1Nv0G5pJrb/2RS1nJJXfHDWWSRmeoD0x6/UDbdy2K3kH7OWDPO2Iseh2i8WW5vdJuv8G1Uk4maEB6kAWjPykvyBRrlQMQJPt72Ey8nMwxyR2a3hwgeATQOw3+JyC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=OmMbmqBG; arc=none smtp.client-ip=79.135.106.111
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="puRlDibl"
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="OmMbmqBG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail2; t=1791744035; x=1792003235;
-	bh=qh1Q5lB7uRZZxwixOEeRcaEJAZKhFFRNT4vzlfm4czw=;
+	s=protonmail2; t=1791744040; x=1792003240;
+	bh=HqwrntehHhSGQCqP6IPz3nS7yq1buc4NvWhzyooHCKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=puRlDiblLvLDoR9QBuTyS43TZUgOXT+6+fm28jsYZ6WBtefbDCPA5OlZnR2k8FWbf
-	 aUDVJsUnj7ERPVSEAqDT/+Wn7amkWTvrAXr7V3kRseuTHJRi6w5gEITfr6tJ06Q8DR
-	 nARX9FXztSi3PGms4ABVu2bR+a/5wGBcZH+FHbj0o1s0wSShdBH1ThHLwKa55yESvi
-	 ykz2gBlXftZCsR53G6e+XBR6eLsjiiAoO94tolQ67Y7+uZWBuDFJpvrEQrxLB0sJYf
-	 2iiwZ9TsGZ9zZkKX5oAwlGAdaFU5rKyxFDpF6PokmqGR972jrFoKaPKG9fz73HnyXj
-	 K2SGGz/9yXJfA==
-X-Pm-Submission-Id: 4j2qD02pYSz2ScPd
+	b=OmMbmqBG9NyBkX4Xw1WNBIoa+tgxR7bBuYbDqfKcMF7FQcpQNqoa0W8ohM+XRQv5o
+	 DPZIxmkfocnX3+tlcQ2fcgRHEyRWN2mZAgLSV5QwoUi7/15sg893pGyxjasD1p8Xqb
+	 Q1pIQA3o9vU3S9P8dUsKz1cLGNzZTguzG9ShE6BhsIkcGeXSnpuRy4KXhya2pWmrAN
+	 GArHuoXKBomGgfvYZg4AbnmMb/r1vmtVLWBoIAlx/d2r2J2qZx2MEoRxAObCb2vB+v
+	 IV+SVCf6u4OUXSyEYNicgDKzoucKdjAsICAe4r94nTPEr3ZxzfciSNYk96WOqP5Zi7
+	 +ntrAGRDOpmmg==
+X-Pm-Submission-Id: 4j2qD34XHvz2ScPh
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
 To: rust-for-linux@vger.kernel.org
 Cc: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
@@ -50,9 +50,9 @@ Cc: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
 	daniel.almeida@collabora.com,
 	thomas.hellstrom@linux.intel.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v11 4/6] rust: ww_mutex: add Mutex, AcquireCtx and MutexGuard
-Date: Sun, 11 Oct 2026 21:39:22 +0300
-Message-ID: <293fbbc0bcc0ff5b9bb3aa682bf4c23a378e3167.1791743500.git.work@onurozkan.dev>
+Subject: [PATCH v11 5/6] rust: ww_mutex: implement LockSet
+Date: Sun, 11 Oct 2026 21:39:23 +0300
+Message-ID: <d085c15ba9da4343148287a57abc7e6c4e0fe70f.1791743500.git.work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <cover.1791743500.git.work@onurozkan.dev>
 References: <cover.1791743500.git.work@onurozkan.dev>
@@ -65,339 +65,307 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Covers the low-level locking API (lock, try_lock and
-interruptible variants) and integration with kernel bindings.
+LockSet is a high-level and safe API built on top of
+ww_mutex which provides a safe and easy to use API
+while keeping the ww_mutex semantics.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+When EDEADLK is hit it drops all held locks and waits for the
+contended mutex. It then retries the given (by the user)
+locking algorithm with that mutex held and the same acquire
+context until it succeeds.
+
 Signed-off-by: Onur Özkan <work@onurozkan.dev>
 ---
- rust/kernel/sync/lock/ww_mutex.rs             | 430 ++++++++++++++++++
- rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs | 148 ++++++
- 2 files changed, 578 insertions(+)
- create mode 100644 rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs
+ rust/kernel/sync/lock/ww_mutex.rs          |   6 +
+ rust/kernel/sync/lock/ww_mutex/lock_set.rs | 448 +++++++++++++++++++++
+ 2 files changed, 454 insertions(+)
+ create mode 100644 rust/kernel/sync/lock/ww_mutex/lock_set.rs
 
 diff --git a/rust/kernel/sync/lock/ww_mutex.rs b/rust/kernel/sync/lock/ww_mutex.rs
-index 727c51cc73af..1626ec811a83 100644
+index 1626ec811a83..99b5a32d033d 100644
 --- a/rust/kernel/sync/lock/ww_mutex.rs
 +++ b/rust/kernel/sync/lock/ww_mutex.rs
-@@ -1,7 +1,437 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- //! Rust abstractions for the kernel's wound-wait locking primitives.
+@@ -6,6 +6,10 @@
+ //! that belong to the same [`Class`]. Each lock acquisition uses an
+ //! [`AcquireCtx`] to track ordering and ensure forward progress.
+ //!
++//! It is recommended to use [`LockSet`] as it provides safe high-level
++//! interface that automatically handles deadlocks, retries and context
++//! management.
 +//!
-+//! It is designed to avoid deadlocks when locking multiple [`Mutex`]es
-+//! that belong to the same [`Class`]. Each lock acquisition uses an
-+//! [`AcquireCtx`] to track ordering and ensure forward progress.
-+//!
-+//! See srctree/Documentation/locking/ww-mutex-design.rst for more details.
+ //! See srctree/Documentation/locking/ww-mutex-design.rst for more details.
  
+ use crate::{
+@@ -25,9 +29,11 @@
+ 
+ pub use acquire_ctx::AcquireCtx;
+ pub use class::Class;
++pub use lock_set::LockSet;
+ 
+ mod acquire_ctx;
+ mod class;
++mod lock_set;
+ 
+ /// A wound-wait (ww) mutex that is powered with deadlock avoidance
+ /// when acquiring multiple locks of the same [`Class`].
+diff --git a/rust/kernel/sync/lock/ww_mutex/lock_set.rs b/rust/kernel/sync/lock/ww_mutex/lock_set.rs
+new file mode 100644
+index 000000000000..7099de30243d
+--- /dev/null
++++ b/rust/kernel/sync/lock/ww_mutex/lock_set.rs
+@@ -0,0 +1,448 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Provides [`LockSet`] which automatically detects [`EDEADLK`],
++//! releases all locks, waits for the contended mutex and retries the user
++//! supplied locking algorithm with the same acquire context.
++
++use super::{
++    AcquireCtx,
++    Class,
++    Mutex, //
++};
 +use crate::{
 +    bindings,
-+    container_of,
-+    error::to_result,
 +    prelude::*,
-+    types::{
-+        NotThreadSafe,
-+        Opaque, //
-+    }, //
++    types::NotThreadSafe, //
 +};
-+use core::{
-+    cell::UnsafeCell,
-+    marker::PhantomData, //
-+};
++use core::ptr::NonNull;
 +
-+pub use acquire_ctx::AcquireCtx;
- pub use class::Class;
- 
-+mod acquire_ctx;
- mod class;
-+
-+/// A wound-wait (ww) mutex that is powered with deadlock avoidance
-+/// when acquiring multiple locks of the same [`Class`].
++/// A tracked set of [`Mutex`] locks acquired under the same [`Class`].
 +///
-+/// Each mutex belongs to a [`Class`], which the wound-wait algorithm
-+/// uses to figure out the order of acquisition and prevent deadlocks.
++/// It ensures proper cleanup and retry mechanism on deadlocks and provides
++/// safe access to locked data via [`LockSet::with_locked`].
 +///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::{
-+///     define_ww_class,
-+///     sync::{
-+///         lock::ww_mutex::{
-+///             AcquireCtx,
-+///             Class,
-+///             Mutex, //
-+///         },
-+///         Arc,
-+///     },
-+/// };
-+/// use pin_init::stack_pin_init;
-+///
-+/// define_ww_class!(SOME_WW_CLASS);
-+///
-+/// let mutex = Arc::pin_init(Mutex::new(42, &SOME_WW_CLASS), GFP_KERNEL)?;
-+/// let ctx = KBox::pin_init(AcquireCtx::new(&SOME_WW_CLASS), GFP_KERNEL)?;
-+///
-+/// // SAFETY: The guard is dropped before `ctx`.
-+/// let guard = unsafe { ctx.lock(&mutex) }?;
-+/// assert_eq!(*guard, 42);
-+///
-+/// # Ok::<(), Error>(())
-+/// ```
-+#[pin_data]
-+#[repr(C)]
-+pub struct Mutex<'a, T: ?Sized> {
-+    _p: PhantomData<&'a Class>,
-+    #[pin]
-+    inner: Opaque<bindings::ww_mutex>,
-+    data: UnsafeCell<T>,
++/// Typical usage is through [`LockSet::lock_all`], which retries a
++/// user supplied locking algorithm until it succeeds without deadlock.
++pub struct LockSet<'a> {
++    acquire_ctx: Pin<KBox<AcquireCtx<'a>>>,
++    taken: KVec<RawGuard>,
++    // Set by `lock()` on `EDEADLK`; the mutex remains valid for `'a`.
++    contended: Option<NonNull<bindings::ww_mutex>>,
 +}
 +
-+impl<'class, T> Mutex<'class, T> {
-+    /// Initializes [`Mutex`] with the given `data` and [`Class`].
-+    pub fn new(data: T, class: &'class Class) -> impl PinInit<Self> {
-+        let class_ptr = class.inner.get();
-+        pin_init!(Mutex {
-+            inner <- Opaque::ffi_init(|slot: *mut bindings::ww_mutex| {
-+                // SAFETY: `class` is valid for the lifetime `'class` captured by `Self`.
-+                unsafe { bindings::ww_mutex_init(slot, class_ptr) }
-+            }),
-+            data: UnsafeCell::new(data),
-+            _p: PhantomData
-+        })
-+    }
-+}
-+
-+impl<'class, T: ?Sized> Mutex<'class, T> {
-+    /// Checks if this [`Mutex`] is currently locked.
-+    ///
-+    /// The returned value is racy as another thread can acquire
-+    /// or release the lock immediately after this call returns.
-+    pub fn is_locked(&self) -> bool {
-+        // SAFETY: It's safe to call `ww_mutex_is_locked` on
-+        // a valid mutex.
-+        unsafe { bindings::ww_mutex_is_locked(self.inner.get()) }
-+    }
-+
-+    /// Locks this [`Mutex`] without [`AcquireCtx`].
-+    pub fn lock(&self) -> Result<MutexGuard<'_, T>> {
-+        lock_common(self, None, LockKind::Regular)
-+    }
-+
-+    /// Similar to [`Self::lock`], but can be interrupted by signals.
-+    pub fn lock_interruptible(&self) -> Result<MutexGuard<'_, T>> {
-+        lock_common(self, None, LockKind::Interruptible)
-+    }
-+
-+    /// Tries to lock this [`Mutex`] with no [`AcquireCtx`] and without blocking.
-+    ///
-+    /// Unlike [`Self::lock`], no deadlock handling is performed.
-+    pub fn try_lock(&self) -> Result<MutexGuard<'_, T>> {
-+        lock_common(self, None, LockKind::Try)
-+    }
-+}
-+
-+impl<'class> Mutex<'class, ()> {
-+    /// Creates a [`Mutex`] from a raw pointer.
-+    ///
-+    /// This function is intended for interoperability with C code.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that:
-+    ///
-+    /// - `ptr` is a valid pointer to a `ww_mutex`.
-+    /// - `ptr` must remain valid for the lifetime `'a`.
-+    /// - ww_class associated with this mutex must be valid for
-+    ///   the lifetime `'class`.
-+    pub unsafe fn from_raw<'a>(ptr: *mut bindings::ww_mutex) -> &'a Self {
-+        // SAFETY: By the safety contract, the caller guarantees that `ptr`
-+        // points to a valid `ww_mutex` which is the `inner` field of `Mutex`,
-+        // that it remains valid for the lifetime `'a` and the associated
-+        // ww_class outlives `'class`.
-+        //
-+        // Because [`Mutex`] is `#[repr(C)]`, the `inner` field sits at a
-+        // stable offset that `container_of!` can safely rely on.
-+        unsafe { &*container_of!(Opaque::cast_from(ptr), Self, inner) }
-+    }
-+}
-+
-+// SAFETY: `Mutex` can be sent to another thread if the protected
-+// data `T` can be.
-+unsafe impl<T: ?Sized + Send> Send for Mutex<'_, T> {}
-+
-+// SAFETY: `Mutex` serialises access to the protected data, so it is
-+// `Sync` as long as the data is `Send`.
-+unsafe impl<T: ?Sized + Send> Sync for Mutex<'_, T> {}
-+
-+/// A guard that provides exclusive access to the data protected
-+/// by a [`Mutex`].
++/// Used by [`LockSet`] to track acquired locks.
 +///
-+/// # Invariants
-+///
-+/// The guard holds an exclusive lock on the associated [`Mutex`]. The lock is held
-+/// for the entire lifetime of this guard and is automatically released when the
-+/// guard is dropped.
-+#[must_use = "the lock unlocks immediately when the guard is unused"]
-+pub struct MutexGuard<'a, T: ?Sized> {
-+    mutex: &'a Mutex<'a, T>,
++/// This type is strictly crate-private and must never be exposed
++/// outside this crate.
++struct RawGuard {
++    mutex_ptr: NonNull<bindings::ww_mutex>,
 +    _not_send: NotThreadSafe,
 +}
 +
-+impl<'a, T: ?Sized> MutexGuard<'a, T> {
-+    /// Creates a new guard for the given [`Mutex`].
-+    fn new(mutex: &'a Mutex<'a, T>) -> Self {
-+        assert!(mutex.is_locked());
-+
-+        Self {
-+            mutex,
-+            _not_send: NotThreadSafe,
-+        }
++impl Drop for RawGuard {
++    fn drop(&mut self) {
++        // SAFETY: `mutex_ptr` originates from a locked `Mutex` and remains
++        // valid for the lifetime of this guard, so unlocking here is sound.
++        unsafe { bindings::ww_mutex_unlock(self.mutex_ptr.as_ptr()) };
 +    }
 +}
 +
-+impl<'a> MutexGuard<'a, ()> {
-+    /// Creates a [`MutexGuard`] from a raw pointer.
++impl<'a> Drop for LockSet<'a> {
++    fn drop(&mut self) {
++        self.release_all_locks();
++    }
++}
++
++impl<'a> LockSet<'a> {
++    /// Creates a new [`LockSet`] with the given [`Class`].
 +    ///
-+    /// If the given pointer refers to a mutex that is not locked,
-+    /// returns [`EINVAL`].
-+    ///
-+    /// This function is intended for interoperability with C code.
++    /// All locks taken through this [`LockSet`] must belong to the
++    /// same [`Class`].
++    pub fn new(class: &'a Class) -> Result<Self> {
++        Ok(Self {
++            acquire_ctx: KBox::pin_init(AcquireCtx::new(class), GFP_KERNEL)?,
++            taken: KVec::new(),
++            contended: None,
++        })
++    }
++
++    /// Creates a new [`LockSet`] using an existing [`AcquireCtx`].
 +    ///
 +    /// # Safety
 +    ///
-+    /// The caller must ensure that:
++    /// The caller must ensure that `acquire_ctx` is properly initialized
++    /// and holds no [`Mutex`]es.
++    pub unsafe fn new_with_acquire_ctx(acquire_ctx: Pin<KBox<AcquireCtx<'a>>>) -> Self {
++        Self {
++            acquire_ctx,
++            taken: KVec::new(),
++            contended: None,
++        }
++    }
++
++    /// Attempts to lock the given [`Mutex`] and stores a guard for it.
 +    ///
-+    /// - `ptr` is a valid pointer to a `ww_mutex`.
-+    /// - `ptr` must remain valid for the lifetime `'b`.
-+    /// - The `ww_class` associated with the `ww_mutex` must be valid for the lifetime `'b`.
-+    /// - The current task holds the mutex.
-+    /// - The caller transfers responsibility for unlocking the mutex to the returned guard
-+    ///   and must not unlock it separately (including through another guard).
-+    /// - Any associated acquire context remains valid until the mutex is unlocked,
-+    ///   even if the returned guard is forgotten. The context must not be finalized or
-+    ///   reinitialized before then.
-+    pub unsafe fn from_raw<'b>(ptr: *mut bindings::ww_mutex) -> Result<MutexGuard<'b, ()>> {
-+        // SAFETY: By this function's safety contract, the caller guarantees that `ptr` points to a
-+        // valid `ww_mutex` which is the `inner` field of a `Mutex`. The caller also guarantees
-+        // that both `ptr` and the associated `ww_class` are valid for the lifetime `'b`.
-+        let mutex = unsafe { Mutex::from_raw(ptr) };
-+
-+        if !mutex.is_locked() {
-+            return Err(EINVAL);
++    /// Returns success if the mutex is already held by this set.
++    pub fn lock<T>(&mut self, mutex: &'a Mutex<'a, T>) -> Result {
++        // Preserve the first contended mutex until deadlock recovery has completed.
++        if self.contended.is_some() {
++            return Err(EDEADLK);
 +        }
 +
-+        Ok(MutexGuard::new(mutex))
-+    }
-+}
-+
-+impl<T: ?Sized> core::ops::Deref for MutexGuard<'_, T> {
-+    type Target = T;
-+
-+    fn deref(&self) -> &Self::Target {
-+        // SAFETY: self.mutex is locked, so we have exclusive access.
-+        unsafe { &*self.mutex.data.get() }
-+    }
-+}
-+
-+impl<T: ?Sized + Unpin> core::ops::DerefMut for MutexGuard<'_, T> {
-+    fn deref_mut(&mut self) -> &mut Self::Target {
-+        // SAFETY: self.mutex is locked, so we have exclusive access.
-+        unsafe { &mut *self.mutex.data.get() }
-+    }
-+}
-+
-+impl<T: ?Sized> Drop for MutexGuard<'_, T> {
-+    fn drop(&mut self) {
-+        // SAFETY: self.mutex is locked and are about to release it.
-+        unsafe { bindings::ww_mutex_unlock(self.mutex.inner.get()) };
-+    }
-+}
-+
-+// SAFETY: `MutexGuard` can be shared between threads if the data can.
-+unsafe impl<T: ?Sized + Sync> Sync for MutexGuard<'_, T> {}
-+
-+/// Locking kinds used by [`lock_common`] to unify the internal
-+/// locking logic.
-+///
-+/// It's best not to expose this type (and [`lock_common`]) to the
-+/// kernel, as it allows internal API changes without worrying
-+/// about breaking external compatibility.
-+#[derive(Copy, Clone, Debug)]
-+enum LockKind {
-+    /// Blocks until lock is acquired.
-+    Regular,
-+    /// Blocks but can be interrupted by signals.
-+    Interruptible,
-+    /// Does not block, returns immediately if busy.
-+    Try,
-+}
-+
-+/// Internal helper that unifies the different locking kinds.
-+///
-+/// Returns [`EINVAL`] if the [`Mutex`] has a different [`Class`].
-+fn lock_common<'a, T: ?Sized>(
-+    mutex: &'a Mutex<'a, T>,
-+    ctx: Option<&AcquireCtx<'_>>,
-+    kind: LockKind,
-+) -> Result<MutexGuard<'a, T>> {
-+    let mutex_ptr = mutex.inner.get();
-+
-+    let ctx_ptr = match ctx {
-+        Some(acquire_ctx) => {
-+            let ctx_ptr = acquire_ctx.inner.get();
-+
-+            // SAFETY: `ctx_ptr` is a valid pointer for the entire
-+            // lifetime of `ctx`.
-+            let ctx_class = unsafe { (*ctx_ptr).ww_class };
-+
-+            // SAFETY: `mutex_ptr` is a valid pointer for the entire
-+            // lifetime of `mutex`.
-+            let mutex_class = unsafe { (*mutex_ptr).ww_class };
-+
-+            // `ctx` and `mutex` must use the same class.
-+            if ctx_class != mutex_class {
-+                return Err(EINVAL);
++        // SAFETY: All tracked locks are released before the context is dropped.
++        // Forgetting the set leaks the context.
++        let guard = match unsafe { self.acquire_ctx.lock(mutex) } {
++            Ok(guard) => guard,
++            Err(e) if e == EDEADLK => {
++                self.contended = NonNull::new(mutex.inner.get());
++                return Err(e);
 +            }
++            // The mutex acquired during backoff is encountered again on retry.
++            Err(e) if e == EALREADY => return Ok(()),
++            Err(e) => return Err(e),
++        };
 +
-+            ctx_ptr
-+        }
-+        None => core::ptr::null_mut(),
-+    };
++        let raw_guard = RawGuard {
++            // SAFETY: We just locked it above so it's a valid pointer.
++            mutex_ptr: unsafe { NonNull::new_unchecked(guard.mutex.inner.get()) },
++            _not_send: NotThreadSafe,
++        };
 +
-+    match kind {
-+        LockKind::Regular => {
-+            // SAFETY: `Mutex` is always pinned. If `AcquireCtx` is `Some`, it is pinned,
-+            // if `None`, it is set to `core::ptr::null_mut()`. Both cases are safe.
-+            let ret = unsafe { bindings::ww_mutex_lock(mutex_ptr, ctx_ptr) };
++        // Transfer unlocking to `raw_guard` before the fallible push, so failure
++        // drops only one guard and unlocks the mutex exactly once.
++        core::mem::forget(guard);
++        self.taken.push(raw_guard, GFP_KERNEL)?;
 +
-+            to_result(ret)?;
-+        }
-+        LockKind::Interruptible => {
-+            // SAFETY: `Mutex` is always pinned. If `AcquireCtx` is `Some`, it is pinned,
-+            // if `None`, it is set to `core::ptr::null_mut()`. Both cases are safe.
-+            let ret = unsafe { bindings::ww_mutex_lock_interruptible(mutex_ptr, ctx_ptr) };
++        Ok(())
++    }
 +
-+            to_result(ret)?;
-+        }
-+        LockKind::Try => {
-+            // SAFETY: `Mutex` is always pinned. If `AcquireCtx` is `Some`, it is pinned,
-+            // if `None`, it is set to `core::ptr::null_mut()`. Both cases are safe.
-+            let ret = unsafe { bindings::ww_mutex_trylock(mutex_ptr, ctx_ptr) };
++    /// Runs `locking_algorithm` until success with retrying on deadlock.
++    ///
++    /// `locking_algorithm` must acquire all needed locks and immediately propagate
++    /// any error from [`Self::lock`] unchanged (e.g. using `?`).
++    /// If [`Self::lock`] returns [`EDEADLK`], this function releases all held locks
++    /// and waits to acquire the contended mutex. It then retries with that mutex
++    /// held, preserving the acquire context's original ticket.
++    ///
++    /// Once all locks are acquired successfully, `on_all_locks_taken` is
++    /// invoked for exclusive access to the locked values. It must not acquire
++    /// additional locks through this set. Afterwards, all locks are released.
++    ///
++    /// # Example
++    ///
++    /// ```
++    /// use kernel::{
++    ///     alloc::KBox,
++    ///     define_ww_class,
++    ///     prelude::*,
++    ///     sync::{
++    ///         lock::ww_mutex::{
++    ///             LockSet,
++    ///             Mutex, //
++    ///         },
++    ///         Arc,
++    ///     },
++    /// };
++    /// use pin_init::stack_pin_init;
++    ///
++    /// define_ww_class!(SOME_WOUND_WAIT_CLASS);
++    ///
++    /// let mutex1 = Arc::pin_init(Mutex::new(0, &SOME_WOUND_WAIT_CLASS), GFP_KERNEL)?;
++    /// let mutex2 = Arc::pin_init(Mutex::new(0, &SOME_WOUND_WAIT_CLASS), GFP_KERNEL)?;
++    /// let mut lock_set = KBox::pin_init(LockSet::new(&SOME_WOUND_WAIT_CLASS)?, GFP_KERNEL)?;
++    ///
++    /// lock_set.lock_all(
++    ///     // `locking_algorithm` closure
++    ///     |lock_set| {
++    ///         lock_set.lock(&mutex1)?;
++    ///         lock_set.lock(&mutex2)?;
++    ///
++    ///         Ok(())
++    ///     },
++    ///     // `on_all_locks_taken` closure
++    ///     |lock_set| {
++    ///         // Safely mutate both values while holding the locks.
++    ///         lock_set.with_locked(&mutex1, |v| *v += 1)?;
++    ///         lock_set.with_locked(&mutex2, |v| *v += 1)?;
++    ///
++    ///         Ok(())
++    ///     },
++    /// )?;
++    ///
++    /// # Ok::<(), Error>(())
++    /// ```
++    pub fn lock_all<T, Y, Z>(
++        &mut self,
++        mut locking_algorithm: T,
++        mut on_all_locks_taken: Y,
++    ) -> Result<Z>
++    where
++        T: FnMut(&mut LockSet<'a>) -> Result,
++        Y: FnMut(&mut LockSet<'a>) -> Result<Z>,
++    {
++        loop {
++            match locking_algorithm(self) {
++                Ok(()) => {
++                    // All locks in `locking_algorithm` succeeded.
++                    // The user can now safely use them in `on_all_locks_taken`.
++                    let res = on_all_locks_taken(self);
++                    self.release_all_locks();
 +
-+            if ret == 0 {
-+                return Err(EBUSY);
-+            } else {
-+                to_result(ret)?;
++                    return res;
++                }
++                Err(e) if e == EDEADLK => {
++                    self.cleanup_on_deadlock()?;
++                    continue;
++                }
++                Err(e) => {
++                    self.release_all_locks();
++                    return Err(e);
++                }
 +            }
 +        }
-+    };
++    }
 +
-+    Ok(MutexGuard::new(mutex))
++    /// Executes `access` with a mutable reference to the data behind [`Mutex`].
++    ///
++    /// Fails with [`EINVAL`] if the [`Mutex`] was not locked in this [`LockSet`].
++    pub fn with_locked<T: Unpin, Y>(
++        &mut self,
++        mutex: &'a Mutex<'a, T>,
++        access: impl for<'b> FnOnce(&'b mut T) -> Y,
++    ) -> Result<Y> {
++        let mutex_ptr = mutex.inner.get();
++
++        if self
++            .taken
++            .iter()
++            .any(|guard| guard.mutex_ptr.as_ptr() == mutex_ptr)
++        {
++            // SAFETY: We hold the lock corresponding to `mutex`, so we have
++            // exclusive access to its protected data.
++            let value = unsafe { &mut *mutex.data.get() };
++            Ok(access(value))
++        } else {
++            // `mutex` isn't locked in this `LockSet`.
++            Err(EINVAL)
++        }
++    }
++
++    /// Releases all currently held locks in this [`LockSet`].
++    fn release_all_locks(&mut self) {
++        // `Drop` implementation of the `RawGuard` takes care of the unlocking.
++        self.taken.clear();
++    }
++
++    /// Releases all locks and acquires the contended mutex with the same context.
++    fn cleanup_on_deadlock(&mut self) -> Result {
++        self.release_all_locks();
++
++        // A callback may return `EDEADLK` without a failed lock acquisition.
++        let contended = self.contended.take().ok_or(EDEADLK)?;
++
++        // SAFETY: `lock()` recorded this pointer from a mutex borrowed for `'a`,
++        // so both the mutex and its class remain valid for that lifetime.
++        let mutex = unsafe { Mutex::from_raw(contended.as_ptr()) };
++
++        // With no locks held, regular locking waits for this mutex to become available.
++        self.lock(mutex)
++    }
 +}
 +
-+#[kunit_tests(rust_kernel_ww_mutex)]
++#[kunit_tests(rust_kernel_lock_set)]
 +mod tests {
 +    use super::*;
 +    use crate::{
@@ -410,266 +378,188 @@ index 727c51cc73af..1626ec811a83 100644
 +    define_wd_class!(TEST_WAIT_DIE_CLASS);
 +
 +    #[test]
-+    fn test_ww_mutex_basic_lock_unlock() -> Result {
-+        let mutex = Arc::pin_init(Mutex::new(42, &TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
-+        let ctx = KBox::pin_init(AcquireCtx::new(&TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
++    fn test_lock_set_basic_lock_unlock() -> Result {
++        let mutex = Arc::pin_init(Mutex::new(10, &TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
++        let mut lock_set = KBox::pin_init(LockSet::new(&TEST_WOUND_WAIT_CLASS)?, GFP_KERNEL)?;
 +
-+        // SAFETY: The guard is dropped before `ctx`.
-+        let guard = unsafe { ctx.lock(&mutex) }?;
-+        assert_eq!(*guard, 42);
++        lock_set.lock(&mutex)?;
++        lock_set.lock(&mutex)?;
++        assert_eq!(lock_set.taken.len(), 1);
 +
-+        // Drop the lock.
-+        drop(guard);
++        lock_set.with_locked(&mutex, |v| {
++            assert_eq!(*v, 10);
++        })?;
 +
-+        // SAFETY: The guard is dropped before `ctx`.
-+        let mut guard = unsafe { ctx.lock(&mutex) }?;
-+        *guard = 100;
-+        assert_eq!(*guard, 100);
-+
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn test_ww_mutex_trylock() -> Result {
-+        let mutex = Arc::pin_init(Mutex::new(123, &TEST_WAIT_DIE_CLASS), GFP_KERNEL)?;
-+        let ctx = KBox::pin_init(AcquireCtx::new(&TEST_WAIT_DIE_CLASS), GFP_KERNEL)?;
-+
-+        // `try_lock` on unlocked mutex should succeed.
-+        // SAFETY: The guard is dropped before `ctx`.
-+        let guard = unsafe { ctx.try_lock(&mutex) }?;
-+        assert_eq!(*guard, 123);
-+
-+        // Now it should fail immediately as it's already locked.
-+        // SAFETY: Any returned guard is dropped immediately, before `ctx`.
-+        assert!(unsafe { ctx.try_lock(&mutex) }.is_err());
-+
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn test_ww_mutex_is_locked() -> Result {
-+        let mutex = Arc::pin_init(Mutex::new("hello", &TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
-+        let ctx = KBox::pin_init(AcquireCtx::new(&TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
-+
-+        // Should not be locked initially.
-+        assert!(!mutex.is_locked());
-+
-+        // SAFETY: The guard is dropped before `ctx`.
-+        let guard = unsafe { ctx.lock(&mutex) }?;
-+        assert!(mutex.is_locked());
-+
-+        drop(guard);
++        lock_set.release_all_locks();
 +        assert!(!mutex.is_locked());
 +
 +        Ok(())
 +    }
 +
 +    #[test]
-+    fn test_ww_acquire_context_done() -> Result {
-+        let mutex1 = Arc::pin_init(Mutex::new(1, &TEST_WAIT_DIE_CLASS), GFP_KERNEL)?;
-+        let mutex2 = Arc::pin_init(Mutex::new(2, &TEST_WAIT_DIE_CLASS), GFP_KERNEL)?;
-+        let ctx = KBox::pin_init(AcquireCtx::new(&TEST_WAIT_DIE_CLASS), GFP_KERNEL)?;
++    fn test_lock_set_with_locked_mutates_data() -> Result {
++        let mutex = Arc::pin_init(Mutex::new(5, &TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
++        let mut lock_set = KBox::pin_init(LockSet::new(&TEST_WOUND_WAIT_CLASS)?, GFP_KERNEL)?;
 +
-+        // Acquire multiple mutexes with the same context.
-+        // SAFETY: The guard is dropped before `ctx`.
-+        let guard1 = unsafe { ctx.lock(&mutex1) }?;
-+        // SAFETY: The guard is dropped before `ctx`.
-+        let guard2 = unsafe { ctx.lock(&mutex2) }?;
++        lock_set.lock(&mutex)?;
 +
-+        assert_eq!(*guard1, 1);
-+        assert_eq!(*guard2, 2);
++        lock_set.with_locked(&mutex, |v| {
++            assert_eq!(*v, 5);
++            // Increment the value.
++            *v += 7;
++        })?;
 +
-+        ctx.done();
-+
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn test_mutex_without_ctx() -> Result {
-+        let mutex = Arc::pin_init(Mutex::new(100, &TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
-+        let guard = mutex.lock()?;
-+
-+        assert_eq!(*guard, 100);
-+        assert!(mutex.is_locked());
-+
-+        drop(guard);
-+
-+        assert!(!mutex.is_locked());
++        lock_set.with_locked(&mutex, |v| {
++            // Check that mutation took effect.
++            assert_eq!(*v, 12);
++        })?;
 +
 +        Ok(())
 +    }
 +
 +    #[test]
-+    fn test_guard_from_raw_unlocks_mutex() -> Result {
-+        let mutex = Arc::pin_init(Mutex::new((), &TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
-+        let guard = mutex.lock()?;
++    fn test_lock_all_success() -> Result {
++        let mutex1 = Arc::pin_init(Mutex::new(1, &TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
++        let mutex2 = Arc::pin_init(Mutex::new(2, &TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
++        let mut lock_set = KBox::pin_init(LockSet::new(&TEST_WOUND_WAIT_CLASS)?, GFP_KERNEL)?;
 +
-+        // Keep the mutex locked without leaving another guard responsible for unlocking it.
-+        core::mem::forget(guard);
++        let res = lock_set.lock_all(
++            // `locking_algorithm` closure
++            |lock_set| {
++                lock_set.lock(&mutex1)?;
++                lock_set.lock(&mutex2)?;
++                Ok(())
++            },
++            // `on_all_locks_taken` closure
++            |lock_set| {
++                lock_set.with_locked(&mutex1, |v| *v += 10)?;
++                lock_set.with_locked(&mutex2, |v| *v += 20)?;
++                Ok((
++                    lock_set.with_locked(&mutex1, |v| *v)?,
++                    lock_set.with_locked(&mutex2, |v| *v)?,
++                ))
++            },
++        )?;
 +
-+        // SAFETY: `mutex` and its class remain valid for this test. The current task holds
-+        // the mutex, and forgetting the previous guard lets this guard take over unlocking it.
-+        let guard = unsafe { MutexGuard::from_raw(mutex.inner.get()) }?;
-+        assert!(mutex.is_locked());
-+
-+        drop(guard);
-+        assert!(!mutex.is_locked());
++        assert_eq!(res, (11, 22));
++        assert!(!mutex1.is_locked());
++        assert!(!mutex2.is_locked());
 +
 +        Ok(())
 +    }
-+}
-diff --git a/rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs b/rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs
-new file mode 100644
-index 000000000000..827604d6b413
---- /dev/null
-+++ b/rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs
-@@ -0,0 +1,148 @@
-+// SPDX-License-Identifier: GPL-2.0
 +
-+//! Provides [`AcquireCtx`] for managing multiple wound/wait
-+//! mutexes from the same [`Class`].
++    #[test]
++    fn test_with_different_input_type() -> Result {
++        let mutex1 = Arc::pin_init(Mutex::new(1, &TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
++        let mutex2 = Arc::pin_init(Mutex::new("hello", &TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
++        let mut lock_set = KBox::pin_init(LockSet::new(&TEST_WOUND_WAIT_CLASS)?, GFP_KERNEL)?;
 +
-+use super::{
-+    lock_common,
-+    Class,
-+    LockKind,
-+    Mutex,
-+    MutexGuard, //
-+};
-+use crate::{
-+    bindings,
-+    prelude::*,
-+    types::Opaque, //
-+};
-+use core::marker::PhantomData;
++        lock_set.lock_all(
++            // `locking_algorithm` closure
++            |lock_set| {
++                lock_set.lock(&mutex1)?;
++                lock_set.lock(&mutex2)?;
 +
-+/// Groups multiple [`Mutex`]es for deadlock avoidance when acquired
-+/// with the same [`Class`].
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::{
-+///     define_ww_class,
-+///     sync::{
-+///         lock::ww_mutex::{
-+///             AcquireCtx,
-+///             Class,
-+///             Mutex, //
-+///         },
-+///         Arc,
-+///     },
-+/// };
-+/// use pin_init::stack_pin_init;
-+///
-+/// define_ww_class!(SOME_WW_CLASS);
-+///
-+/// // Create mutexes.
-+/// let mutex1 = Arc::pin_init(Mutex::new(1, &SOME_WW_CLASS), GFP_KERNEL)?;
-+/// let mutex2 = Arc::pin_init(Mutex::new(2, &SOME_WW_CLASS), GFP_KERNEL)?;
-+///
-+/// // Create acquire context for deadlock avoidance.
-+/// let ctx = KBox::pin_init(AcquireCtx::new(&SOME_WW_CLASS), GFP_KERNEL)?;
-+///
-+/// // SAFETY: The guard is dropped before `ctx`.
-+/// let guard1 = unsafe { ctx.lock(&mutex1) }?;
-+/// // SAFETY: The guard is dropped before `ctx`.
-+/// let guard2 = unsafe { ctx.lock(&mutex2) }?;
-+///
-+/// // Mark acquisition phase as complete.
-+/// ctx.done();
-+///
-+/// # Ok::<(), Error>(())
-+/// ```
-+#[pin_data(PinnedDrop)]
-+#[repr(transparent)]
-+pub struct AcquireCtx<'a> {
-+    #[pin]
-+    pub(super) inner: Opaque<bindings::ww_acquire_ctx>,
-+    _p: PhantomData<&'a Class>,
-+}
++                Ok(())
++            },
++            // `on_all_locks_taken` closure
++            |lock_set| {
++                lock_set.with_locked(&mutex1, |v| assert_eq!(*v, 1))?;
++                lock_set.with_locked(&mutex2, |v| assert_eq!(*v, "hello"))?;
++                Ok(())
++            },
++        )?;
 +
-+impl<'class> AcquireCtx<'class> {
-+    /// Initializes a new [`AcquireCtx`] with the given [`Class`].
-+    pub fn new(class: &'class Class) -> impl PinInit<Self> {
-+        let class_ptr = class.inner.get();
-+        pin_init!(AcquireCtx {
-+            inner <- Opaque::ffi_init(|slot: *mut bindings::ww_acquire_ctx| {
-+                // SAFETY: `class` is valid for the lifetime `'class` captured
-+                // by `AcquireCtx`.
-+                unsafe { bindings::ww_acquire_init(slot, class_ptr) }
-+            }),
-+            _p: PhantomData
-+        })
++        Ok(())
 +    }
 +
-+    /// Creates a [`AcquireCtx`] from a raw pointer.
-+    ///
-+    /// This function is intended for interoperability with C code.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that `ptr` is a valid pointer to the `inner` field
-+    /// of [`AcquireCtx`] and that it remains valid for the lifetime `'a`.
-+    pub unsafe fn from_raw<'a>(ptr: *mut bindings::ww_acquire_ctx) -> &'a Self {
-+        // SAFETY: By the safety contract, `ptr` is valid to construct `AcquireCtx`.
-+        unsafe { &*ptr.cast() }
++    #[test]
++    fn test_lock_all_retries_on_deadlock() -> Result {
++        let first = Arc::pin_init(Mutex::new(1, &TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
++        let mutex = Arc::pin_init(Mutex::new(99, &TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
++        let mut lock_set = KBox::pin_init(LockSet::new(&TEST_WOUND_WAIT_CLASS)?, GFP_KERNEL)?;
++        let mut first_try = true;
++        let ctx = lock_set.acquire_ctx.inner.get();
++        // SAFETY: The set owns this initialized context throughout the test.
++        let stamp = unsafe { (*ctx).stamp };
++
++        let res = lock_set.lock_all(
++            // `locking_algorithm` closure
++            |lock_set| {
++                if first_try {
++                    first_try = false;
++                    lock_set.lock(&first)?;
++                    // Simulate a failed acquisition with its contended mutex recorded.
++                    lock_set.contended = NonNull::new(mutex.inner.get());
++                    return Err(EDEADLK);
++                }
++
++                assert!(!first.is_locked());
++                // Backoff must acquire the contended mutex before retrying this callback.
++                lock_set.with_locked(&mutex, |v| assert_eq!(*v, 99))?;
++                lock_set.lock(&mutex)?;
++                assert_eq!(lock_set.taken.len(), 1);
++                Ok(())
++            },
++            // `on_all_locks_taken` closure
++            |lock_set| {
++                lock_set.with_locked(&mutex, |v| {
++                    *v += 1;
++                    *v
++                })
++            },
++        )?;
++
++        assert_eq!(res, 100);
++        assert!(!first.is_locked());
++        assert!(!mutex.is_locked());
++        // SAFETY: The context is still owned by the set and remains initialized.
++        assert_eq!(unsafe { (*ctx).stamp }, stamp);
++        Ok(())
 +    }
 +
-+    /// Marks the end of the acquire phase.
-+    ///
-+    /// Calling this function is optional. It is just useful to document
-+    /// the code and clearly designated the acquire phase from actually
-+    /// using the locked data structures.
-+    ///
-+    /// After calling this function, no more mutexes can be acquired with
-+    /// this context.
-+    pub fn done(&self) {
-+        // SAFETY: `self.inner` contains a valid, initialized acquire context.
-+        unsafe { bindings::ww_acquire_done(self.inner.get()) };
++    #[test]
++    fn test_lock_all_deadlock_without_contended_mutex() -> Result {
++        let mutex = Arc::pin_init(Mutex::new(1, &TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
++        let mut lock_set = KBox::pin_init(LockSet::new(&TEST_WOUND_WAIT_CLASS)?, GFP_KERNEL)?;
++        let mut attempts = 0;
++
++        let res = lock_set.lock_all(
++            |lock_set| {
++                attempts += 1;
++                lock_set.lock(&mutex)?;
++                // Return a different error on an unexpected retry to avoid an endless loop.
++                Err(if attempts == 1 { EDEADLK } else { EINVAL })
++            },
++            |_| Ok(()),
++        );
++
++        assert_eq!(res, Err(EDEADLK));
++        assert_eq!(attempts, 1);
++        assert!(!mutex.is_locked());
++        Ok(())
 +    }
 +
-+    /// Locks the given [`Mutex`] on this [`AcquireCtx`].
-+    ///
-+    /// # Safety
-+    ///
-+    /// On success, the caller must keep this context valid until the mutex is unlocked,
-+    /// even if the returned guard is forgotten. The context must not be finalized or
-+    /// reinitialized while the mutex remains locked.
-+    pub unsafe fn lock<'a, T>(&'a self, mutex: &'a Mutex<'a, T>) -> Result<MutexGuard<'a, T>> {
-+        lock_common(mutex, Some(self), LockKind::Regular)
++    #[test]
++    fn test_with_locked_on_unlocked_mutex() -> Result {
++        let mutex = Arc::pin_init(Mutex::new(5, &TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
++        let mut lock_set = KBox::pin_init(LockSet::new(&TEST_WOUND_WAIT_CLASS)?, GFP_KERNEL)?;
++
++        let ecode = lock_set.with_locked(&mutex, |_v| {}).unwrap_err();
++        assert_eq!(EINVAL, ecode);
++
++        Ok(())
 +    }
 +
-+    /// Similar to [`Self::lock`], but can be interrupted by signals.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The same requirements as [`Self::lock`] apply.
-+    pub unsafe fn lock_interruptible<'a, T>(
-+        &'a self,
-+        mutex: &'a Mutex<'a, T>,
-+    ) -> Result<MutexGuard<'a, T>> {
-+        lock_common(mutex, Some(self), LockKind::Interruptible)
-+    }
++    #[test]
++    fn test_with_different_classes() -> Result {
++        let mutex = Arc::pin_init(Mutex::new(5, &TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
++        let mut lock_set = KBox::pin_init(LockSet::new(&TEST_WAIT_DIE_CLASS)?, GFP_KERNEL)?;
 +
-+    /// Tries to lock the [`Mutex`] on this [`AcquireCtx`] without blocking.
-+    ///
-+    /// Unlike [`Self::lock`], no deadlock handling is performed.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The same requirements as [`Self::lock`] apply.
-+    pub unsafe fn try_lock<'a, T>(&'a self, mutex: &'a Mutex<'a, T>) -> Result<MutexGuard<'a, T>> {
-+        lock_common(mutex, Some(self), LockKind::Try)
-+    }
-+}
++        let ecode = lock_set.lock(&mutex).unwrap_err();
++        assert_eq!(EINVAL, ecode);
 +
-+#[pinned_drop]
-+impl PinnedDrop for AcquireCtx<'_> {
-+    fn drop(self: Pin<&mut Self>) {
-+        // SAFETY: The locking methods require callers to release all acquired locks
-+        // before this context is dropped.
-+        unsafe { bindings::ww_acquire_fini(self.inner.get()) };
++        Ok(())
 +    }
 +}
 -- 
