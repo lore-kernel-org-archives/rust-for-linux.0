@@ -1,97 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E858F3ED3CE;
-	Sun, 11 Oct 2026 11:46:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328333B42D8;
+	Sun, 11 Oct 2026 12:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791719215; cv=none; b=DqBq6mm98XZAEMrE6kDHJ0JZNKPXXiDJgg2GHNhTW6lPaBw7guyXqCs06hyJhn9CSSH0WOcarHRFvzA+5tleeGVzQs1p1WrIGu0quqQNlKuJYNBLithiikYYN/2xGZGCQGu9/ZiQb07DJJUCUyd04+gWz/dG3KhC5HlTDnufzOM=
+	t=1791723189; cv=none; b=Zsn2dT5yvDZmuLbrvfASPK9lQsfukME7EH/b/xUGSHYjee5R1RsaYfSLBXLhGJQEq6+q5l+ABjgMKDjfOShbxAt8wFj9nRprVKozMFbb+CKV661pGwuEaS+t4iOYlztx72dey/HAaAswTi/0DtXAxVQbSSWntR7+5AqQp6mZebY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791719215; c=relaxed/simple;
-	bh=if83QpuxXD2wuvygk4m8ZjtnKJ1SJ8PN3cLrf5hIdM4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=s27Nrwpp6m3yjG1kGPfim45NcObS3mL/IYhqsIxyDj+8e1cAFGN8uQgCaqV7MQLZRevk9R1wTJKP6oOZLnitu79cikYHo4sqx21aa6ERcZFvdUiY1S1Y0IJKnQMZTm4lEGsHG/MlFJQeZsfecwxPQxpZxNxLBXcxXoHZyFRFyeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rs9RtDmA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791723189; c=relaxed/simple;
+	bh=IqCUcdQLLWXLndFjUP+cU38OwLPS7I0T/PoPMv9nNI4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WzhoPIJF9BOtIkMeK4b5vcgYVlJU6zokSqI0mjhdgsmNLwiMOEohwEzRbbwrue0WoqMpPQr9x6sby2UHkpRcRUaxkCiGM8n5FmhUJK1XeAGWAXkiVNtVbTXqkkMECNaftSrHd3h8foOqO4Ch+hin2yDpPdY+rzXHMgV880++5Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=ECj9kWu8; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rs9RtDmA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A051F0089B;
-	Sun, 11 Oct 2026 11:46:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791719213;
-	bh=EksMomUM0XvjMupNdRmeLnH/WvpmBF/A4W5NiyrgMMw=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To;
-	b=Rs9RtDmAxVjAknicAd0vXc2Fz+yH219Fh1x/o4cjAr6SDakRkuMsmakDcOZeav9FH
-	 4oPg9zThwRv2GMWvgyywOfc+sL6lVAskEmt8l7OLNKF0R4OvtTbTdxuE7YJMmaHJeF
-	 u7YdEsubDO9mDAoESBG5H7e2zK/7zYTJGzaocKyBplY2jIrljbD9FQqI7eJ61lspPT
-	 L+bvKgH6O5JFOjQUDEXsQ6K2JQWxv4eCQwBfrDXdL0wTvaJMZuBxR/UXxJsL5vauMz
-	 tCxNL+gyoDOdknbB2aCN5GBJKYyr2eNR2HEoziY5KhIdOYsTJ7GtARl++ElKWBOeXk
-	 tMoOh6yPWgjqQ==
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="ECj9kWu8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1791723178;
+	bh=IqCUcdQLLWXLndFjUP+cU38OwLPS7I0T/PoPMv9nNI4=;
+	h=From:Subject:Date:To:Cc:From;
+	b=ECj9kWu8F1xrzw3c2uBsMTNOvfPUd/PCkhoCYCVMLzD/EN833xgW1h9D5hpD2eVWU
+	 +TaV1818mFx2WenqDIBHQ82F0Wy8MSMdtJq+jQW+KNph+0rig2l3xRJfQZ1iNBrce0
+	 b9l8DcU6y+ns4iaVsffznAkMqrvNr29B9gEhcV28=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Subject: [PATCH RFC 00/11] rust: add support for dynamic debug
+Date: Sun, 11 Oct 2026 14:52:24 +0200
+Message-Id: <20261011-rust-dyndbg-v1-0-832e4039b71f@weissschuh.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 11 Oct 2026 13:46:47 +0200
-Message-Id: <DM1ZG8WZJOE7.C6W4AHB6H2CX@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH] drm/gpuvm: skip setting kernel_alloc_node range on
- overflow
-Cc: "Matthew Brost" <matthew.brost@intel.com>,
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Boris Brezillon"
- <boris.brezillon@collabora.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-References: <20261011-gpuvm-reserve-overflow-v1-1-9c0cb23d7409@google.com>
-In-Reply-To: <20261011-gpuvm-reserve-overflow-v1-1-9c0cb23d7409@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDSyND3aLS4hLdlMq8lKR0XUPzJAsjozQjEwtLEyWgjoKi1LTMCrBp0Up
+ Bbs5KsRDB4tKkrNTkEpA5SrW1AMpaGK50AAAA
+X-Change-ID: 20260921-rust-dyndbg-17b822f24894
+To: Jason Baron <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Lyude Paul <lyude@redhat.com>, Yury Norov <yury.norov@gmail.com>, 
+ Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+ Aaron Tomlin <atomlin@atomlin.com>, 
+ Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, 
+ Rae Moar <raemoar63@gmail.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-modules@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ kunit-dev@googlegroups.com, driver-core@lists.linux.dev, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791723177; l=2065;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=IqCUcdQLLWXLndFjUP+cU38OwLPS7I0T/PoPMv9nNI4=;
+ b=LcSTC/xPdg7Dd09K6Habc7At6xUGJineOIOy7I/rsFAzbdjB7aIfukWTcugU9qQpTHjbNzJ7A
+ dOz8kM/8WQfC6Xlpk/k50W+8jO1h4jL45HaF27Pge24ik0Ruz51iZnq
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-On Sun Oct 11, 2026 at 9:22 AM CEST, Alice Ryhl wrote:
-> When the reserved VA range overflows in drm_gpuvm_init(), insertion of
-> kernel_alloc_node is skipped, leaving its vm pointer NULL. However,
-> va.range is still set to a non-zero value, which causes drm_gpuvm_fini()
-> to dereference the NULL vm pointer when removing the node. Thus, only
-> initialize kernel_alloc_node's address and range when the overflow check
-> succeeds.
->
-> Note that this fixes unsoundness in the Rust GpuVm::new() abstraction:
-> passing a backwards reserve_range (start > end) when overflow checks are
-> disabled causes `end - start` to wrap around, triggering the overflow in
-> drm_gpuvm_init() and dereferencing NULL when the GpuVm is dropped.
->
-> Fixes: e6303f323b1a ("drm: manager to keep track of GPUs VA mappings")
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Add the Rust infrastructure to integrate with the dynamic debug
+infrastructure.
 
-Good catch! Please also add Cc: stable.
+Static keys are not used for now, as the full bindings are missing
+for those. A follow-up series will add that.
+Also custom classes are not supported yet, but could be added on top.
 
-> @@ -1127,12 +1127,12 @@ drm_gpuvm_init(struct drm_gpuvm *gpuvm, const cha=
-r *name,
-> =20
->  	memset(&gpuvm->kernel_alloc_node, 0, sizeof(struct drm_gpuva));
->  	if (reserve_range) {
-> -		gpuvm->kernel_alloc_node.va.addr =3D reserve_offset;
-> -		gpuvm->kernel_alloc_node.va.range =3D reserve_range;
-> -
->  		if (likely(!drm_gpuvm_warn_check_overflow(gpuvm, reserve_offset,
-> -							  reserve_range)))
-> +							  reserve_range))) {
-> +			gpuvm->kernel_alloc_node.va.addr =3D reserve_offset;
-> +			gpuvm->kernel_alloc_node.va.range =3D reserve_range;
->  			__drm_gpuva_insert(gpuvm, &gpuvm->kernel_alloc_node);
-> +		}
->  	}
+Patches 1-4: Generic Rust preparation patches.
+Patches 5-7: C dynamic debug preparation patches.
+Patches 8: Rust Dynamic debug infrastructure.
+Patches 9-11: Rust Dynamic debug enablement.
 
-Please collapse this to a single if statement.
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+---
+Thomas Weißschuh (11):
+      rust: print: use CStr for __LOG_PREFIX
+      rust: sync: atomic: Add Atomic<u{8,16}>
+      rust: num: Add Bounded::USABLE_BITS
+      samples: rust_print: add debug messages
+      dyndbg: use u32 for struct _ddebug bitfields
+      dyndbg: make _ddebug::flags its own field
+      dyndbg: use READ_ONCE()/WRITE_ONCE() to access descriptor flags
+      rust: add support for dynamic debug
+      rust: print: enable dynamic debug for pr_debug!()
+      rust: device: remove logging methods
+      rust: device: enable dynamic debug for dev_dbg!()
 
-Thanks,
-Danilo
+ MAINTAINERS                          |   1 +
+ include/linux/dynamic_debug.h        |  13 +-
+ lib/dynamic_debug.c                  |  24 ++--
+ rust/bindings/bindings_helper.h      |   1 +
+ rust/kernel/device.rs                | 175 +++++++++++------------
+ rust/kernel/dynamic_debug.rs         | 264 +++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs                   |   6 +-
+ rust/kernel/num/bounded.rs           |   3 +
+ rust/kernel/print.rs                 |  21 +--
+ rust/kernel/sync/atomic/predefine.rs |  44 ++++--
+ rust/macros/module.rs                |   4 +-
+ samples/rust/Makefile                |   2 +
+ samples/rust/rust_print_main.rs      |   2 +
+ scripts/rustdoc_test_gen.rs          |   4 +-
+ 14 files changed, 428 insertions(+), 136 deletions(-)
+---
+base-commit: 2dee3d3adcadcc57d62ba6608cd02f50b0c10264
+change-id: 20260921-rust-dyndbg-17b822f24894
+
+Best regards,
+--  
+Thomas Weißschuh <linux@weissschuh.net>
+
