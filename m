@@ -1,63 +1,67 @@
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1491367B8E
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 13:42:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A007F378838
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 13:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791812529; cv=none; b=fEs0fDq1WfO5mcZDcEKAS9d62fFqu2CuVaC1C371UtdqSE6OYoiWOcmC8gQN53NL+OwMBtpNqtgDVlJ3HM45yhOPZy6+1BQxAn9S2ITLrM2ATyhx+E5tZ7Too3eNpr9c09bWXwW7YRowbc/7KSBH8MxKDVQuGH//iyzICQEraFI=
+	t=1791812530; cv=none; b=dHsm7UH8rXYWMa+w79R0kHtl3imZj84dDsBzKPWq3riT1tFiCfaMfzqmxR/VjKP22aRLwbz3qj1AiyN0CY1iUFIZa/Fy+aOmvLR1FSeNNWm9IHvnx7Ih2YClW/yEyzq0nTd2Jl7mZS6GfMiiFYAIDaoC5u8tROKoVLN0+hLCydI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791812529; c=relaxed/simple;
-	bh=834HCsT+yG6FoiMCNmsSF0KuEbbYNjXGWtFDC+r4/lU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Un0wAE6QvNuvPKsC4rWEB3f6qdnMiqHAenW0lI+BbCXP/Wh+XYtfw5FJ8U+ja6gKyLid16jFnEbpzkOYEjCGdkSqRA/xg39uDPD5eQhTulaX0Jl7IuSy/3cZYwtRkof3Fi7HQ50rZJKqy+x1nPo8iVqtZtC/eAZtlG7XL2VSrs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elver.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Eb39Srie; arc=none smtp.client-ip=209.85.128.70
+	s=arc-20240116; t=1791812530; c=relaxed/simple;
+	bh=Rg6cJAv6ZUUI6IKmwS6DVaUEOkrHublyHQ8IOYSpW4E=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=UgusH+LWi3tU16DvJtHMFr6lWnqCxtOvCDAhfqI68QYf4H9md+fQTes1oWz7wZH4SlFIKb25BAtvBnl83+zZSy9iHvDHLBpyduTK6vKC89GOR2p4X984nUxVZpgbkkFZXhyhJ4z/69pwu/q58mPI0iOXOlOEty2vgZoS55+e8As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elver.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oCsBICku; arc=none smtp.client-ip=209.85.221.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--elver.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Eb39Srie"
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a01c621dc2so14244025e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 06:42:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oCsBICku"
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48c69bdeaacso1550843f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 06:42:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791812525; x=1792417325; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PWBgbU9wWHlrfBumGJ2ey37GLEs4mFig313aUL/JPgY=;
-        b=Eb39SrieM2VN8EUYaupyNNf9VeJz8sjpvBwzh0Z3WF1FZj7preYnnUWsAPShS7Z1o3
-         LLcv/p9iXUBTe7RFmpwvL3ymN8ImGk5dO5qcsOVVLnfCmj9dLYjze9KQUrlI72omimMB
-         lVLRoilW4GVWbAp+IWm2TFYZ9mQ/I7wa6bSBpawH9zdWZkXFejnDh0k2fIpuybOgmDHq
-         /o2WaWslW/8IPuSvt4WEULtpVP84i/1ihZgm2LTilsww7GrG6XzTuh4q+RZIBNOUY/L7
-         IbjLk0+5p+/FjfZ/ro54yTshz6Hm1WrzupbqhOMLnskAH8YFCMSF8CiQdx1xJeGKlj6R
-         Nhyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791812525; x=1792417325;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1791812526; x=1792417326; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=PWBgbU9wWHlrfBumGJ2ey37GLEs4mFig313aUL/JPgY=;
-        b=fhQVOCmTiUjOao3ejZkUatQtIg34sB0Cvh/XoIsANkwu0Cec3F/yVFzyfweWRZjgUN
-         1UpKj+fDO5IClC0HZpO7PQyh1vuUvnqCoiwrKCjt6HZ2qoinXc5wtBq17tgjf02Pmu91
-         yr4Jh7xrVTJOz55zj6I5tu3BZPmYpyr2l3+bXyjklE3d6StvBGahS7NvIqofXfqjMCqm
-         BR2mDVD8nWe/0mppDImiI8OxQhnpHuBBEr1YMNi/BcFFx1CAyMzyloNFUUinrbRRatMN
-         WzrnIGGIA1WY3bMwDpNyh4UHfl7yOlBaEjPHylKY8HGwMmbaZ/8hb3NoM9+vK9HuKKUv
-         J/0A==
-X-Forwarded-Encrypted: i=1; AKwUvBzOlPvC9xTdWb/5KtQ4ABIAEItFrw+YI4xHjAkmvtLzObvlfU73pj2raIoDAtJkqvOI1YTUTrFB/uBGduQWtw==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJTBVCyB6ecFbwqeeZq55DYDaR/s31oZOIDVX37/D9mir2Jtlfs
-	97WllcpGcxyLFs9R3DHAr0gB5K3VfWsrENJtv09Q6tMdf22VkfKoXn/j8yv+rmSwWFIWDrp02oa
-	QKA==
-X-Received: from wmrp18.prod.google.com ([2002:a05:600c:8a92:b0:4a1:9311:9d1d])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:8518:b0:49f:cbf3:551c
- with SMTP id 5b1f17b1804b1-4a18e4a8ca6mr166715615e9.12.1791812524523; Mon, 12
- Oct 2026 06:42:04 -0700 (PDT)
-Date: Mon, 12 Oct 2026 13:39:14 +0000
+        bh=VXSOc9CMrvtsfjOt0Sddq/wNROQxYDyqZfPwUsE1PWU=;
+        b=oCsBICkuWl77QUtELk4WrEKBMqEtlVNqz6aktoWUshxqZB+fVVJnii8fDbHN+jPBge
+         jN3YyPGzKAvbA9qn6an/eDA/5H1ksSHygF9Z2WE5+g/cDcXvs7TzXAU3HgFtPmkbflHe
+         FfLG4zIhLVrHVAe+xXU/7c0Waz2JZpMMaLtbHH85oLoHZfMeIU+3aZ/SbD1HT2+xfiVf
+         7e2JkOPBaIYJ9BxOuHtcHQmRHfi3gqsQJyXvsXmyrmxZFiCBoT0j2P3O1eKhw/zD1dfV
+         xEEbiqqIoIFuLK0SMurepNYF2t6iq4aPII53g22ZPTQwv7xEzn93MxlvHIBJRIV/LhId
+         4mMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791812526; x=1792417326;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=VXSOc9CMrvtsfjOt0Sddq/wNROQxYDyqZfPwUsE1PWU=;
+        b=KrHSplSLq8j2uhHb8Ysb46j2Wht7CxOkXmQQ1kDoYbvfVdcQXP7zG8IXz7Gs/Sxcbs
+         3KVZZ7ipgQ4fZy4Mr+9t2Eu23iLXJQg9kn/ffmgj7v3nLGXxKzo+D/7G1i/z/LfIOS6J
+         N+paox7KXnksygAm1pQ3WOSf0dM0Xu2wdid/leMKIgiRg+bJBCKH1//L/M2uItAS9o+c
+         VeqxOd5kiF7k0ALOK1KuL7Dm+5RAR519k1n2FO+E6JT2zHr9HKSDIVqIsd/lYE6IfGu+
+         2n9tssZuS7PcXkA/fvuYa5/mxSY/zU6MH9AEs7Zo8T3MkddEg3dygoHLcIekR4W0QQR0
+         oxHQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzGlQlrzc3cc//MGHITOEGgKyY7ahhF7yOEMPh/WmS71yTjgv6kt6Tgr5za1kkUql/0xa5rQru4oucpdAJ0fQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJeUYCNiafRW5eWq2bwzioHnL5lBaan6GcxCEvI41sMS/QDSjDc
+	uVXkkR852Gj+aahpe8AY0kKuMhn1qshH8kizpY/iGLodoAwRFFPVzMwTLgBUYr/2psrjjCFnopB
+	otg==
+X-Received: from wrvb8.prod.google.com ([2002:a5d:5508:0:b0:48c:4566:c9eb])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a5d:5590:0:b0:48c:6cdd:ba89
+ with SMTP id ffacd0b85a97d-48dbaaefa6emr12665508f8f.36.1791812525412; Mon, 12
+ Oct 2026 06:42:05 -0700 (PDT)
+Date: Mon, 12 Oct 2026 13:39:15 +0000
+In-Reply-To: <20261012134159.912183-1-elver@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20261012134159.912183-1-elver@google.com>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261012134159.912183-1-elver@google.com>
-Subject: [PATCH 1/2] kbuild: rust: enable KCSAN support
+Message-ID: <20261012134159.912183-2-elver@google.com>
+Subject: [PATCH 2/2] rust: kcsan: add KUnit test for data race detection
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
 	Gary Guo <gary@garyguo.net>
@@ -79,128 +83,231 @@ Cc: Alexander Potapenko <glider@google.com>, kasan-dev@googlegroups.com,
 	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-Rust supports ThreadSanitizer instrumentation via LLVM, which is what
-KCSAN relies on; however, Rust code is not currently instrumented.
+Add a minimal KUnit test that checks that KCSAN detects data races in
+Rust code: two threads concurrently increment a shared counter without
+synchronization, and a probe on the console tracepoint waits for the
+KCSAN report (similar to kcsan_test.c):
 
-Pass -Zsanitizer=thread and the same TSan backend options used for C
-code to rustc. Wire up KCSAN_SANITIZE in scripts/Makefile.lib for parity
-with C (though rustc currently rejects linking crates with mismatched
-instrumentation).
+| BUG: KCSAN: data-race in _RNvNtNtCskctMpSfuwL9_6kernel10kcsan_test5tests8racy_inc / _RNvNtNtCskctMpSfuwL9_6kernel10kcsan_test5tests8racy_inc
+|
+| read-write to 0xffffffffb751ae28 of 8 bytes by task 116 on cpu 5:
+|  _RNvNtNtCskctMpSfuwL9_6kernel10kcsan_test5tests8racy_inc+0x1c/0x30
+|  _RNvNtNtCskctMpSfuwL9_6kernel10kcsan_test5tests28kunit_rust_wrapper_data_race+0x28c/0x850
+|  kunit_try_run_case+0xdf/0x2a0
+|  kunit_generic_run_threadfn_adapter+0x48/0x80
+|  kthread+0x234/0x280
+|  ret_from_fork+0xf8/0x280
+|  ret_from_fork_asm+0x1a/0x30
+|
+| read-write to 0xffffffffb751ae28 of 8 bytes by task 12 on cpu 3:
+|  _RNvNtNtCskctMpSfuwL9_6kernel10kcsan_test5tests8racy_inc+0x1c/0x30
+|  _RNvXsb_NtCskctMpSfuwL9_6kernel9workqueueINtNtCs1G77UTwpz6o_4core3pin3PinINtNtNtB7_5alloc4kbox3BoxINtB5_11ClosureWorkNCNvNtNtB7_10kcsan_test5tests9data_races_0ENtNtB1d_9allocator7KmallocEEINtB5_15WorkItemPointerKy0_E3runB7_+0x55/0x120
+|  process_scheduled_works+0x4cd/0x970
+|  worker_thread+0x4de/0x6e0
+|  kthread+0x234/0x280
+|  ret_from_fork+0xf8/0x280
+|  ret_from_fork_asm+0x1a/0x30
+|
+| value changed: 0x000000000000022b -> 0x00000000000005a2
+| [...]
 
-rustc only accepts -Zsanitizer=thread for targets that declare support
-for it. Of the targets used by the kernel, this is only possible for the
-generated x86_64 target specification, so restrict instrumentation of
-Rust code to x86_64 for now via HAVE_KCSAN_RUSTC. On other architectures
-Rust code remains uninstrumented as before.
+The test is intentionally kept minimal; comprehensive tests of KCSAN's
+runtime behaviour are in kernel/kcsan/kcsan_test.c.
 
-All TSan options used are supported by the LLVM versions of the minimum
-supported rustc, so no rustc-option checks are needed (they would also
-fail, because x86_64-unknown-none used for option checks does not
-support -Zsanitizer=thread).
-
-With this enabled we can detect data races in kernel Rust code and
-between Rust and C code.
-
+Assisted-by: Antigravity
 Signed-off-by: Marco Elver <elver@google.com>
 ---
- Documentation/dev-tools/kcsan.rst |  7 +++++++
- lib/Kconfig.kcsan                 |  7 +++++++
- scripts/Makefile.kcsan            | 13 +++++++++++++
- scripts/Makefile.lib              |  3 +++
- scripts/generate_rust_target.rs   |  2 +-
- 5 files changed, 31 insertions(+), 1 deletion(-)
+ MAINTAINERS                     |   1 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/Kconfig.test        |  11 +++
+ rust/kernel/kcsan_test.rs       | 120 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   2 +
+ 5 files changed, 135 insertions(+)
+ create mode 100644 rust/kernel/kcsan_test.rs
 
-diff --git a/Documentation/dev-tools/kcsan.rst b/Documentation/dev-tools/kcsan.rst
-index 8575178aa87f..3bb8754f844b 100644
---- a/Documentation/dev-tools/kcsan.rst
-+++ b/Documentation/dev-tools/kcsan.rst
-@@ -14,6 +14,9 @@ Usage
- KCSAN is supported by both GCC and Clang. With GCC we require version 11 or
- later, and with Clang also require version 11 or later.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index cc3cae2e378b..3fbbfbb31f5d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14089,6 +14089,7 @@ F:	Documentation/dev-tools/kcsan.rst
+ F:	include/linux/kcsan*.h
+ F:	kernel/kcsan/
+ F:	lib/Kconfig.kcsan
++F:	rust/kernel/kcsan_test.rs
+ F:	scripts/Makefile.kcsan
  
-+Rust code is instrumented as well on architectures whose Rust target supports
-+it (currently only x86_64; see ``CONFIG_HAVE_KCSAN_RUSTC``).
-+
- To enable KCSAN configure the kernel with::
+ KDUMP
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 4b31aa7f432f..b06d5142d6e1 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -97,6 +97,7 @@
+ #include <linux/xarray.h>
+ #include <net/genetlink.h>
+ #include <net/netlink.h>
++#include <trace/events/printk.h>
+ #include <trace/events/rust_sample.h>
  
-     CONFIG_KCSAN = y
-@@ -121,6 +124,10 @@ the below options are available:
+ /*
+diff --git a/rust/kernel/Kconfig.test b/rust/kernel/Kconfig.test
+index e6a5c7a795f0..caf98a23de76 100644
+--- a/rust/kernel/Kconfig.test
++++ b/rust/kernel/Kconfig.test
+@@ -83,4 +83,15 @@ config RUST_BITFIELD_KUNIT_TEST
  
-     KCSAN_SANITIZE := n
+ 	  If unsure, say N.
  
-+  Note that ``rustc`` rejects linking crates built with and without KCSAN
-+  instrumentation, so ``KCSAN_SANITIZE`` and ``KCSAN_SANITIZE_<target>.o``
-+  cannot currently be used for Rust code.
-+
- .. _"Marking Shared-Memory Accesses" in the LKMM: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/memory-model/Documentation/access-marking.txt
- 
- Furthermore, it is possible to tell KCSAN to show or hide entire classes of
-diff --git a/lib/Kconfig.kcsan b/lib/Kconfig.kcsan
-index 4ce4b0c0109c..f0096e1c8b61 100644
---- a/lib/Kconfig.kcsan
-+++ b/lib/Kconfig.kcsan
-@@ -10,6 +10,13 @@ config HAVE_KCSAN_COMPILER
- 	  For the list of compilers that support KCSAN, please see
- 	  <file:Documentation/dev-tools/kcsan.rst>.
- 
-+config HAVE_KCSAN_RUSTC
-+	def_bool RUST && X86_64
++config RUST_KCSAN_KUNIT_TEST
++	bool "KUnit test for KCSAN instrumentation of Rust code" if !KUNIT_ALL_TESTS
++	depends on KCSAN && HAVE_KCSAN_RUSTC && TRACEPOINTS
++	default KUNIT_ALL_TESTS
 +	help
-+	  rustc only accepts -Zsanitizer=thread for targets that declare
-+	  support for it; of the kernel's Rust targets, only x86_64 does.
-+	  Elsewhere, Rust code is not instrumented.
++	  This option enables a KUnit test checking that KCSAN detects data
++	  races in Rust code. The test needs at least 2 CPUs to reliably
++	  observe a data race.
 +
- menuconfig KCSAN
- 	bool "KCSAN: dynamic data race detector"
- 	depends on HAVE_ARCH_KCSAN && HAVE_KCSAN_COMPILER
-diff --git a/scripts/Makefile.kcsan b/scripts/Makefile.kcsan
-index 19f693b68a96..01af6fd71006 100644
---- a/scripts/Makefile.kcsan
-+++ b/scripts/Makefile.kcsan
-@@ -24,3 +24,16 @@ kcsan-cflags += $(call cc-option,$(call cc-param,tsan-instrument-func-entry-exit
++	  If unsure, say N.
++
  endif
- 
- export CFLAGS_KCSAN := $(kcsan-cflags)
+diff --git a/rust/kernel/kcsan_test.rs b/rust/kernel/kcsan_test.rs
+new file mode 100644
+index 000000000000..5ddc9090cd6e
+--- /dev/null
++++ b/rust/kernel/kcsan_test.rs
+@@ -0,0 +1,120 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+ifdef CONFIG_HAVE_KCSAN_RUSTC
-+# The minimum supported rustc's LLVM supports all of these options.
-+rustc-param = -Cllvm-args=-$(1)
-+kcsan-rustflags := -Zsanitizer=thread \
-+	$(call rustc-param,tsan-compound-read-before-write=1) \
-+	$(call rustc-param,tsan-distinguish-volatile=1)
-+ifndef CONFIG_KCSAN_WEAK_MEMORY
-+kcsan-rustflags += $(call rustc-param,tsan-instrument-func-entry-exit=0)
-+endif
-+endif
++//! KUnit test checking that KCSAN detects data races in Rust code.
 +
-+export RUSTFLAGS_KCSAN := $(kcsan-rustflags)
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 0a4fdd8bd975..78f1c23e54be 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -98,6 +98,9 @@ ifeq ($(CONFIG_KCSAN),y)
- _c_flags += $(if $(patsubst n%,, \
- 	$(KCSAN_SANITIZE_$(target-stem).o)$(KCSAN_SANITIZE)$(is-kernel-object)), \
- 	$(CFLAGS_KCSAN))
-+_rust_flags += $(if $(patsubst n%,, \
-+	$(KCSAN_SANITIZE_$(target-stem).o)$(KCSAN_SANITIZE)$(is-kernel-object)), \
-+	$(RUSTFLAGS_KCSAN))
- # Some uninstrumented files provide implied barriers required to avoid false
- # positives: set KCSAN_INSTRUMENT_BARRIERS for barrier instrumentation only.
- _c_flags += $(if $(patsubst n%,, \
-diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
-index 7687b0dd5474..4b02bffa6b46 100644
---- a/scripts/generate_rust_target.rs
-+++ b/scripts/generate_rust_target.rs
-@@ -231,7 +231,7 @@ fn main() {
-         }
-         ts.push("features", features);
-         ts.push("llvm-target", "x86_64-linux-gnu");
--        ts.push("supported-sanitizers", ["kcfi", "kernel-address"]);
-+        ts.push("supported-sanitizers", ["kcfi", "kernel-address", "thread"]);
-         if cfg.rustc_version_atleast(1, 91, 0) {
-             ts.push("target-pointer-width", 64);
-         } else {
++#[macros::kunit_tests(rust_kcsan)]
++mod tests {
++    use crate::{
++        bindings,
++        error::to_result,
++        ffi::{c_char, c_void},
++        prelude::*,
++        sync::{
++            atomic::{Atomic, Relaxed},
++            Arc, Completion,
++        },
++        time::{Delta, Instant, Monotonic},
++        types::ScopeGuard,
++        workqueue,
++    };
++    use core::{cell::UnsafeCell, ptr, slice};
++
++    struct Racy(UnsafeCell<u64>);
++
++    // SAFETY: Not actually safe: unsynchronized concurrent access is the point of this test.
++    unsafe impl Sync for Racy {}
++
++    static RACY: Racy = Racy(UnsafeCell::new(0));
++
++    /// Set by [`probe_console`] once KCSAN reported a data race in [`racy_inc`].
++    static OBSERVED: Atomic<bool> = Atomic::new(false);
++
++    #[inline(never)]
++    fn racy_inc() {
++        let p = RACY.0.get();
++        // SAFETY: `p` is valid; the data race is intentional. `wrapping_add()` keeps the load and
++        // store in one basic block, so that the access is instrumented as a compound access (plain
++        // writes may be assumed atomic with `CONFIG_KCSAN_ASSUME_PLAIN_WRITES_ATOMIC=y`).
++        unsafe { *p = (*p).wrapping_add(1); }
++    }
++
++    fn contains(haystack: &[u8], needle: &[u8]) -> bool {
++        haystack.windows(needle.len()).any(|w| w == needle)
++    }
++
++    /// Probe for the `console` tracepoint.
++    ///
++    /// # Safety
++    ///
++    /// `buf` must be non-null and valid for reads of `len` bytes.
++    unsafe extern "C" fn probe_console(_data: *mut c_void, buf: *const c_char, len: usize) {
++        // SAFETY: By the safety requirements of this function.
++        let line = unsafe { slice::from_raw_parts(buf.cast::<u8>(), len) };
++
++        if contains(line, b"BUG: KCSAN: data-race in ") && contains(line, b"racy_inc") {
++            OBSERVED.store(true, Relaxed);
++        }
++    }
++
++    #[pin_data]
++    struct Ctx {
++        stop: Atomic<bool>,
++        #[pin]
++        done: Completion,
++    }
++
++    #[test]
++    fn data_race() -> Result {
++        // Do not pass on a report from a previous run of this suite.
++        OBSERVED.store(false, Relaxed);
++
++        let ctx = Arc::pin_init(
++            pin_init!(Ctx {
++                stop: Atomic::new(false),
++                done <- Completion::new(),
++            }),
++            GFP_KERNEL,
++        )?;
++
++        // SAFETY: `probe_console` has the signature expected by the `console` tracepoint. Being
++        // part of the kernel image, it and `OBSERVED` outlive the registration, so there is no
++        // need to synchronize with in-flight probes after unregistering.
++        to_result(unsafe {
++            bindings::tracepoint_probe_register(
++                &raw mut bindings::__tracepoint_console,
++                probe_console as *mut c_void,
++                ptr::null_mut(),
++            )
++        })?;
++        let _unregister = ScopeGuard::new(|| {
++            // SAFETY: The probe was registered above.
++            unsafe {
++                bindings::tracepoint_probe_unregister(
++                    &raw mut bindings::__tracepoint_console,
++                    probe_console as *mut c_void,
++                    ptr::null_mut(),
++                );
++            }
++        });
++
++        let worker = ctx.clone();
++        workqueue::system_unbound().try_spawn(GFP_KERNEL, move || {
++            while !worker.stop.load(Relaxed) {
++                racy_inc();
++            }
++            worker.done.complete_all();
++        })?;
++
++        let start = Instant::<Monotonic>::now();
++        while !OBSERVED.load(Relaxed) && start.elapsed() < Delta::from_secs(10) {
++            racy_inc();
++        }
++
++        ctx.stop.store(true, Relaxed);
++        ctx.done.wait_for_completion();
++        drop(_unregister);
++
++        assert!(OBSERVED.load(Relaxed));
++        Ok(())
++    }
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 4d5c96ddc49c..009efda9e7a4 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -94,6 +94,8 @@
+ pub mod iov;
+ pub mod irq;
+ pub mod jump_label;
++#[cfg(CONFIG_RUST_KCSAN_KUNIT_TEST)]
++mod kcsan_test;
+ #[cfg(CONFIG_KUNIT)]
+ pub mod kunit;
+ pub mod list;
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
