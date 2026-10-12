@@ -1,173 +1,162 @@
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4323.protonmail.ch (mail-4323.protonmail.ch [185.70.43.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247AC4B95C1
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 19:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791833117; cv=pass; b=kCRT9an33aqAorl9hBY8YWl8jfdu1MKBGHMBYAqVZT0UsbZsgctqVz4MRavJ+Fy5Q037clZChb1vw6O/sE4TLFn5egU/dvnTJH77oNgwM6q4b9d4VA48qYy6iHp7v/f8YaJsHqsZe/kEUO9SdY30EWozfwU2PmDrATiDCIJ8ohA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791833117; c=relaxed/simple;
-	bh=yDSpUhnuU5c/mZx/ipi9jv3/2siultKoiXhvFv8pW34=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kMOeiE5cfoPf8kZM1HLtdhaB7WDBfF5D+iUZObUxBH3QgpTsxiQ1mFo7KQ240zCYrW+eUhwEIwU/+Xkz4oNGiV5EwjwZzlpxYjVpHllJpOlb0/IZB+to7GjxJ6gAbImKZ3XBo3PMLoWuoEmYjwVN9XojCV7LxTaNAcVY7H75tmw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=awdK40MV; arc=pass smtp.client-ip=74.125.82.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37ED4E06E2;
+	Mon, 12 Oct 2026 19:46:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.23
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791834391; cv=none; b=ChCfgeLqPY85I+3tyKWFxctZkmis5lEHpdxp5CKgwnqvjx2Qll5/GmC/gMkJUqQDRRA5ngKrlQYfz9lZjR+uHl7vgXEiIBhupsJdXDqU7pMB4Lpdb/e9DmbsocQTHhVnFPHKC2MgzgkrF0f6+/GyydVU8ZGepZioRMhCgj85P10=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791834391; c=relaxed/simple;
+	bh=SN53F77NdYCtAEJZRRSye0TNxqG5SZP+TUKigpp+ovg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Jn5QxHIDb+IQUSuyWTJryoLIE1fwDL3vkBN33g71pDdsUysMOW1eANruOKe3Kqzj+aC7eOCG9UdFg9s7bnAe0TVCfnpLWtVefPoHDbyrH59suWmssePWBNTmeHl2cuX/joGSv2akirp7BoJ6GN0NIHSaxfyTKWrqBGIU6DBb3Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=midirus.com; spf=pass smtp.mailfrom=midirus.com; dkim=pass (2048-bit key) header.d=midirus.com header.i=@midirus.com header.b=uZIdrEW9; arc=none smtp.client-ip=185.70.43.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=midirus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=midirus.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="awdK40MV"
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3535aa147d8so142605eec.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 12:25:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791833115; cv=none;
-        d=google.com; s=arc-20260327;
-        b=D9pHnuFg80K6MUQUJgY+12Sh4BdVcCwMdfY4UCUbNV6Wt9HRzGiykjPU7tIiwzOxwN
-         3e1fzInSG40Gj4Zz0fvrSL48kbkmW8Hsd4wHb2bheRIzqYcTO++B/4SjuzPKB3LQW+Pk
-         BfYRbVURFTOMdbAiY3ehgqNJSFI8l4Cmr90GzlZipwhNkLtKa5QIstnE3CkVbCTmBQt0
-         w1ptEklnQulJhdoo0tl4Ya0pCU3eQn+UFRO72gypM//kLQjZ6/A9rKeEcRR+OoMKvTUZ
-         gXRRdkq4KNNlro5kWIDRulJ3y9LHghXInlOeTjJ2gSb+yoqaOYymHa8tWUHZ6aBzmyUU
-         eWYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cP/IMy/IkF4nvLd9S1eEPD25v1RZ1+mCGCjmCnmzoBw=;
-        fh=h1kIvcel8VqVYqZssBauTxWuc/2CrJR/YtnenW6NDCA=;
-        b=j8q6Hn2c+q8/X/fWGTe24hl4Ed0gTpimygrqgo+TAtDykd+XqgcS+KO4CfqAoVCFYa
-         ol9aj8GgAzns12JNhImA12opeA8LEU8NPMl6Vi4vvfivhyyIvmqxsqOZN6pHbO6fTD8R
-         W5WrQszcHf3oL6sgHK766fC2OjVm45nSPHeT90JJknmKSdw4OgVSm2oqIIsp5CNVXp3X
-         JZxM969DpGx4j5PpsSMLY6Bsj1wuyWnYQFq9GY4LLWKV0RPMLgml6VkxqQxnYZY6kDMT
-         wauVuQmLdPEK3L4QV2Vah2PeVtqL/SqAC6plXKVp1Zpoxba8PwpL2uPTq5efwWhP/2Yp
-         NM4w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791833115; x=1792437915; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cP/IMy/IkF4nvLd9S1eEPD25v1RZ1+mCGCjmCnmzoBw=;
-        b=awdK40MVDmH95iXJHU/D6QC4vl6rRROsq0bNnTgFgDV/zQG222gnf8Jm2j2CsmMEP9
-         rhuqel4Mugj6mPsrqN3zTQJJR69dajX0l6Sv6fOBldyW0jqlh4eexfMbxOnoFdTEoO0M
-         VGM1iWF+nXZcrWiveGXN0hUR/T5oWPMCal3adguNRtKDEQakXvaYXR/qiX2z8RuFWi/s
-         fJuK6X8ciDwwzK8+q/8PvDLVcxR3t3tIV5K/GkNgpKXCO75HaWpUqhbdUT5136efZjBy
-         Y39fqd4KyithEzWQzH0qsC//FArBwOedd2ZHztkpSyZQNvEOC1WIDeN1oNnAXlVy+/2w
-         A1Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791833115; x=1792437915;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cP/IMy/IkF4nvLd9S1eEPD25v1RZ1+mCGCjmCnmzoBw=;
-        b=zOxYtqKzCMDD9LIHd5LoaZnOI5l8XuVYrz5wuc5YYWPD1mj0Xuyc3dWTq5baIGYRrM
-         bzXAsyLRESHTXj3SqUxFISD7209qqIGkSThVMQpMuYBfEaHTgxzUye9p9HmVWI/DEJ96
-         C31V8fXbBHV41gJmjpwGYC0nU5+nMgbjf2fAP9BF0op/NyuL/ZRCSSjzY1mzCHQCC3Ba
-         C2wmMdHIsRX4eSxri8C8mWS3ZGq+Mrnuomz1pzqHGvy4UGYyHj2Gsrp1zILglVt5s/z7
-         Du5Frfr8JovCKcUWJ22lvcGZxWOW9mRnffu5G5VrdY2RWDlOBo8ANvlO2TtmfCi+4I4L
-         nf9w==
-X-Forwarded-Encrypted: i=1; AKwUvBxx0MhR6IUzJUli5DRGI1Vt3FOYLVDCKee1x8p5VxOaXVBXyQmyMg8JSTC08IvgH1BeIVTEEgRLMu0Pn7gkHg==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJQw0/1PDKguES9qleqGoriKHml/kpD3QTG1g3xlPqO7YwxE4RA
-	08a1/3obhn7RLKpXDiSqZYFbgF5pUWsLvEN+6T8kxREQCEA3+JXQ718NvOIAiAq9TaPPNTUobX6
-	7XlsxVMcSb58NOmFDQHIfz1OKtaLskms=
-X-Gm-Gg: AYBFou0C36W3chfaMgv0Oy8JyoVLxDYwHkq8/Axo5WgyMFc7QLcHLfO4eOSGlNN13dJ
-	qkG4fvuAqFqVLqP6KVNlFyywyN4wwcELSN4UzHlrLmTdJRx0KbrFTUrDtMC4Vo8Jmeky7GvY/FV
-	HBdqUKJaFfZ+RnCS2iJ5MiWMO1Rgix3UoHjVUJhNWB0Rj502qoA7IVok/NCGuYA2iHseYzgR8iy
-	W5M1f5pdOpdgGsAXGu4hOZDj/RtlN17pSc+KtWEhxpbOuXIpkfG6orDVwYyu+8gc9lGWMLOendG
-	DAuY1mfzjAGvbIQi2y1d2eiwQL9uVW/PMMeNN1r2hNDvxQOEafu2QtQd7qIT/6rmUS+3BLw3kbR
-	rNoyCEGk4D0aT3QrCsRYV0Sn9btWtxSWsveks6jhHAWIHCiz87LjSTRw0P0gEwryDDbxLEtf2Ni
-	Mvzqute48MvWrqMGoPiXetzqVlqqvlgzJOSrqOoJ6GCU+LouXhA7E=
-X-Received: by 2002:a05:7300:c8c5:b0:351:7e15:9c59 with SMTP id
- 5a478bee46e88-3537dc89f58mr22053188eec.0.1791833115144; Mon, 12 Oct 2026
- 12:25:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=midirus.com header.i=@midirus.com header.b="uZIdrEW9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=midirus.com;
+	s=protonmail; t=1791834377; x=1792093577;
+	bh=7eUeVZarUBPNmnvtSEi9wLI7Tja8/hA2NLZl7ky89hg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=uZIdrEW9/NrOscsimbd7pG+xUT2o7srorJk7pgFnRU86hHCZu/x02wMEPTT5Vr4KZ
+	 WmwE3JhfQctmCTaYcUBg0CgODbbGi4fPb/oC9qibI7e+9vrD7yaZHgdEhZswWsePzv
+	 dhgM/mrY2o27M+rpKVWZTFCMwGGf/Hf+giErG7kxHjUvzyAVH5asEBeKtulP4knObu
+	 ujEcxTjB8CnWTW1Dz+un1ECzhGh4Pfi093im+VeYl+FxlxpdWKY/VJ99esjbBILPr7
+	 +wdJEWTJ8YXcQSYrsXvvD9D1MD45lDGlQD8YKAfFDTrR7A9hDst0cN9asJ03mWd2bM
+	 mFsML3WdRRRlA==
+Date: Mon, 12 Oct 2026 19:46:11 +0000
+To: Takashi Iwai <tiwai@suse.de>
+From: Tristan de Cacqueray <tristan@midirus.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, linux-sound@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC 0/3] rust: snd: Introduce experimental ALSA rawmidi abstractions
+Message-ID: <87ik36em81.fsf@midirus.com>
+In-Reply-To: <87ld83gl9g.wl-tiwai@suse.de>
+References: <20261011-rust-snd-v1-0-7974ecdcd345@midirus.com> <87ld83gl9g.wl-tiwai@suse.de>
+Feedback-ID: 135030709:user:proton
+X-Pm-Message-ID: 7553b34d4b22bd294f68b24f3dd9bb1a0aaae7e5
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012184429.1613374-1-gary@kernel.org>
-In-Reply-To: <20261012184429.1613374-1-gary@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 12 Oct 2026 21:25:01 +0200
-X-Gm-Features: AclHuK_tms9nBWcObQWyRv4qFcrX3Gjx8prRIikz21n8Ap83zlEf_zb8Ec7SUyI
-Message-ID: <CANiq72=urvred0g4NHSeiXu8tXvGTMSxf+kbBcPvVLjZaPMWow@mail.gmail.com>
-Subject: Re: [GIT PULL] pin-init changes for v7.4-rc1
-To: Gary Guo <gary@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 12, 2026 at 8:44=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
->
-> Hi Miguel,
->
-> This is a cycle packed with feature updates. Two of the most anticipated
-> features, tuple struct support and safe self reference creation, has been
-> included in this pull request.
->
-> Safe self reference is a big one and is pushed a bit late in the cycle. T=
-he
-> initial plan was to include a minimum subset for this cycle because I was
-> worried about potential soundness issues; however during Plumbers it was =
-agreed
-> that the features should be upstreamed at once. This is because the initi=
-al
-> users (Nova, JobQueue) would all need the advanced features, so it is bet=
-ter to
-> ensure that the feature get put into use for real, and it can iterate wit=
-h
-> users, rather than being fully designed on paper. The existing safety che=
-cks
-> are already very comprehensive, and Benno and I are confident that if new=
- ones
-> are discovered, it wouldn't affect the overall design.
->
-> That said, the the usage of the advanced features (invariance, existentia=
-l
-> lifetime) shall be limited to the pre-agreed users only, so even in case =
-where
-> the feature needs to be reworked, the blast radius is limited.
->
-> Another theme in this cycle is to improve the developer experience when t=
-hings
-> are used wrongly. A lot of work has been done to use proper spans from
-> user-provided tokens so error message point to things that cause them. Ma=
-ny
-> common misuse scenarios also gain additional custom diagnostics.
->
-> All commits have been included in linux-next as of next-20261012.
->
-> Best,
-> Gary
->
-> The following changes since commit fd73f4a6659897191fa0d40695fe370925dd37=
-80:
->
->   Linux 7.3-rc3 (2026-09-13 14:38:02 -0700)
->
-> are available in the Git repository at:
->
->   https://github.com/Rust-for-linux/linux.git tags/pin-init-v7.4
->
-> for you to fetch changes up to b7218f1996f8491dbe28632b70f444cb73f554df:
->
->   rust: pin-init: internal: suppress `explicit_outlives_requirements` (20=
-26-10-12 00:27:53 +0100)
 
-Merged into `rust-next` -- thanks!
+On Mon, Oct 12, 2026 at 14:23 Takashi Iwai wrote:
+> On Sun, 11 Oct 2026 15:02:11 +0200,
+> Tristan de Cacqueray wrote:
+>>
+>> Hi Takashi and the Rust for Linux maintainers.
+>>
+>> I just noticed your mail about an early Rust prototype for the sound
+>> subsystem right before I was about to submit this RFC!
+>>   https://lore.kernel.org/alsa-devel/878q48579z.wl-tiwai@suse.de/
+>>
+>> Nevertheless, please allow me to share what I had in mind through this
+>> small proof of concept for the `rawmidi` API. I am looking for feedback =
+on
+>> the scope, coordination, and the ownership model rather than a detailed
+>> review for merging.
+>>
+>> My use case is a new hardware controller using a custom serial protocol.
+>> While developing its Rust driver, I needed an interface to ALSA rawmidi.
+>> I'm particularly interested in handling rawmidi substream safely to avoi=
+d
+>> issues like the one fixed by
+>>   221253723dc5 ("ALSA: bcd2000: Fix race between rawmidi and disconnect"=
+)
+>>
+>> So, I wrote some bindings to see how that would look like. This series a=
+dds
+>> experimental snd_card and snd_rawmidi wrappers, input/output callback
+>> traits, and a sample rawmidi faux device using delayed work to simulate
+>> incoming MIDI data.
+>>
+>> This is not merge-ready. In particular, the prototype does not yet enfor=
+ce
+>> the devres lifetime of the card or the lifetime of its rawmidi wrapper. =
+The
+>> substream helper also relies on the driver clearing it before close
+>> returns.
+>>
+>> Here are my questions:
+>>
+>>   1. Does this rawmidi experiment overlaps with your prototype?
+>>      If so, I would be happy to coordinate or adapt this experiment to i=
+t.
+>
+> No, my patchset doesn't contain rawmidi support yet.
+> The sound card abstraction would conflict quite, sure, but it wouldn't
+> be too hard to adapt, I guess.
+>
 
-I have quoted part of your message above into the merge commit, since
-it was great context to keep, in my opinion (but if you really prefer
-not to include it, please let me know).
+That's great, I can rebase my rawmidi abstraction onto your branch.
 
-(There were a few typos that could be fixed, but I kept it verbatim
-since I was quoting.)
+>>   2. Is rawmidi a useful initial target for ALSA Rust abstraction?
+>
+> Sure, why not, if it's actually needed? :)
+>
 
-Cheers,
-Miguel
+I think Rust could help make midi_ops implementation safer. Would it make
+sense to port the virmidi driver as a demonstration, or would you
+recommend a different driver as a starting point?
+
+>>   3. Does your prototype mirror the C API 1:1, or for example, does it h=
+ide
+>>      the substream lifecycle? That's the design choice I'm least sure ab=
+out.
+>
+> It's mostly a straightforward wrapping of C API, but there are a few
+> twists to adapt Rust-way.  The card can be managed in RAII style, too,
+> for example.
+>
+> I haven't prepared for submission, but you can find the current
+> changes in test/sound-rust branch of sound git tree (either kernel.org
+> or github.com):
+>   https://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git/log/?h=
+=3Dtest/sound-rust
+>   https://github.com/tiwai/sound/tree/test/sound-rust
+>
+> Those are over 50 commits on top of 7.3-rc5, and I'll likely rebase a
+> bit to rearrange before submission, so beware of changes in future.
+>
+> The commits begin with a few Rust kernel changes for fixing and
+> addition for the sound support, including the PM support from Beata
+> Michalska (just took what have been posted), followed by ALSA core
+> abstractions for the card, PCM and controls.
+>
+> Then it continues to the implementations of 3 actual sound drivers for
+> PCM/control: the dummy driver (with platform and hrtimer), and the
+> ens1370 and intel8x0 drivers for PCI devices to be run on VM.
+>
+> After that, the extension to USB abstraction follows, including the
+> isochronous support patches by Colin Braun, and then the USB-audio
+> driver implementation (that can run on an actual bare metal), as well
+> as the USB runtime PM support.
+>
+
+Thank you for sharing the branch. I'll take a look.
+
+>
+> BTW, until now, I haven't planned for any serious consideration to
+> merge Rust stuff yet.  Partly because the above was a pure experiment
+> for me, but another big obstacle is that the whole Rust C binding is
+> limited to built-in vmlinux.  With a distribution kernel maintainer
+> hat on, this is absolutely NO-GO -- we really want to avoid built-in.
+> (Graphics is a kind of exception nowadays because of boot support,
+> though.)  Can this be worked out soon...?
+>
+
+Wow, that sounds like a major limitation that I wasn't aware of. I'm not
+familiar with the status of this issue, but I'd be happy to help if
+there's something I can contribute.
+
+Thank you for the prompt reply Takashi. I really appreciate it!
+-Tristan
+
