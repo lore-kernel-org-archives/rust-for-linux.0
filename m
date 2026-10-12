@@ -1,568 +1,126 @@
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C71723C51D
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 00:39:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791765547; cv=none; b=ooWqhi5ovS1+ysIluAvIJsGiNJjEscPEVOZlTTWeXIuVf83M9MiZ+mgvBpYFG2SplD6piFNlR5tBliGKfLSsfj/U4gQL29fOCCEzBHtWDBnVeXuTn0u/T0D9imieWKxPpNwD2/vb0QfgAootR8XLC4vUXVoQdX4ZPRLYUHrs8Vg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791765547; c=relaxed/simple;
-	bh=wGH+NZ0GIZQPUckcNWXKQ7cx6lhqtWmsWCGnFM1X7Y8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QrIwC3CDmjTrAamX3SQfd+McFlhWzewib644b1cvq8hdemGizt2MCL4lUFKI+Aaq1mR4rb5Rwj0TjCm9Pyoa8diyu1O0T6VxQ87MLXijcF7Z3kOYPY9WxmRr/pexnnNeBNN6Nd61pkaWmsxuwn4C4oPrWqeyTApfc68Us02c/oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SUgXuW2v; arc=none smtp.client-ip=74.125.82.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ECAE2DC789
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 05:09:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791781775; cv=pass; b=g8Pz3Xe/rsaeNnpMkEyaRxaegCtuPnth91S9h4D7wi1tTXe59XI/WjSYKP6OZnczdNbUiYPSeggxRgz4t6tGefBTQ69Hxq/9s1Xw7oxdEQUjU+zT8+r4lqvJ9LEPferfjoginLaBIBIo4hsec2Evlks1koy3EthdA97G+4q1eT0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791781775; c=relaxed/simple;
+	bh=7S/sjZ0z+yBZGs5Ta6UfTAs/YBp6b6ofkZEfI2Oj4jM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QHEPUkyyHN2qo++Rwiy06pnj3Xb953TQ0UJLf+cllb9WwXSRQCF3d3OMJE+8DeMRMkhT95wsUszkGsAxELgOnOfOJgH532tVYHdwgGPM+bUj7ZPmzEffov5/wQ+pdL+j54ItDpI5gieSSgana6W4kAliCNbhA1nGPyhd5D32mzY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bJ5mNG+G; arc=pass smtp.client-ip=74.125.82.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SUgXuW2v"
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-359d729379fso631069eec.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 11 Oct 2026 17:39:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bJ5mNG+G"
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-33e623bd651so168825eec.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 11 Oct 2026 22:09:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791781772; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CnX/qFIEIkQkDuTHULh/rl1F/Cf5/kn2I+D7LCXoJm5kuugNIkA3vX6BRCgj13oZfx
+         Nt4MU4cOlESe6ITfBoVkgKChauM7ttfLSn0UbOEHVCecMJKRoDgGMHqGu4cxBb3yUw3Y
+         oGdcgZpQqbF8COvsDyVlw5DKPLb15Y1o/UUQ7B+CSN+/GL7Dr5rBI9k03IMSBMAcvXiC
+         LfjM7kUcBGUeKhjR0gccdZN+2qA2WocZkzMkbviHGSRKelptS6SnoJ4Du1GVH06oE58j
+         wG/tvZrIhNF1kFW1UICNJdls4B/e9YuDHi4ZH6nmL5dCWvykBdxKEnZP475xJQflnBCh
+         y85w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/lLLLclL22w++ZhVf6oeIW0i9eibJmDwV660dbwM+rA=;
+        fh=Hpm5K9wMjnrR8hL1WghK4DVxhYlWXe5topYHoaciRBY=;
+        b=Wk1CgL9260UEApxH7A92zolPwStVXw2LQIR8Aqrsf2jTYHCo7UejqCV7fwqZC9UA6b
+         3GnnHAGr9xMC2OJWIyAL56q0NJ8TtzVnIj2QK0qb1o5O9pwYeUQ0vQO2vnNeXAD7p6ET
+         ADkX6cFtTA7PEQL2/mpPdP8v2IwjHkfNFAr1GCaGb+fNNnkiLvzBM51t+Sl/3B49MLia
+         P5G1NQFMO8Jl6gVznpour9RWUnVP5BhihHa5Sk9jlcZZbR5WAwAeXs0Q12NbgUzugDe2
+         ijUkMiSmWW8O8b+TOOnlFdDjIK8bszvDlXTStTfju6fxvuh1RM99qxA2PUvDsRFpR+16
+         7LJw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791765544; x=1792370344; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PZ/4P5lLlF7Jtec+KVnTS8DnnrJNScsgTst4HFDBHfY=;
-        b=SUgXuW2vXoqQc8tWSsYEhCjLfk8PN7EEDdBJcOeZVI87pxc4o7WfHLVn6N/Dh2G36u
-         e6KmzB8E15KDmA/7dTsuB8KaKGuJf01PeDLoqRu0LTuxkRdFQxwAJbZyXZ3NEP4lGjB0
-         gNgXwGc7m0PQXjh7yQfHw37eKhNQ0busOzh9PkZZQSdAi5T1SYTUrcGvXJFtBQoBozjo
-         xXmmyzp7Z639uw0nyQCsQIXXC46j15eVkHoSN0whSUXIlgs3Br1ykQzMr8SBhqH8kTyU
-         OSX46UMTdc25Kf+EUr5VDEcX/xGwYZAblVQ41gl8mwJb0fosY8gSpiiNy8KblhVDbNRQ
-         A1lw==
+        d=gmail.com; s=20251104; t=1791781772; x=1792386572; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/lLLLclL22w++ZhVf6oeIW0i9eibJmDwV660dbwM+rA=;
+        b=bJ5mNG+GOenZk+PaIqC95W3SKglsI4LX62Ow5JQt3xPGvMseB0nteJa8jSg+mrt3O5
+         Dc9jrQxn4ycoyok5CdLXrczrXzGQEt9u2DoeguGFuZpqxFqza3EjL9gN7QDBHhcqnlpS
+         pWmP41WgnW1OO0lNrrZVuzsUukt4nvasbIx+MtLbgeA6LNVDx3N7JIMmbLYYCJ9V08Zh
+         5rqK9KAtNpmd/nFeesLHr5jHkD8ORwkpYKZzRXBmG+4pshkedfONraI5A6IVrK2QGmd2
+         e3EyQlqBMaZBCWLk8cD7IX7GLGkma+DzsPIwXI9KOFzfaPK/k9EhgkEcVE/dbOLFLToE
+         pUPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791765544; x=1792370344;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PZ/4P5lLlF7Jtec+KVnTS8DnnrJNScsgTst4HFDBHfY=;
-        b=M3n9immdYCLNAaDJ+BvwMABpm90/d+l6OdSvJsoiQ3hL9WTwz2gPUWrSs/rB2x0Nus
-         Fa3Kqpf0LCiKv7KUu6F9u7Kiso0RneEqsZa6iAHB98wEecNP58UCNufh3qKmR7XoEFIN
-         jgJESKCsWi0RkeKRFlJ+Xuje1PDzViF1ubjuTt5qvk1hcxk5Rzmpe2o/0PcV5d7fd6xP
-         gWj2G6cgbxUez4EkX74yXaLpZld08XUP6f/trK8D4XragDucWiDAFnDuaGrEhULdbRnS
-         Ry1dvBjQx15v95yD/OtwmXgJtRnUHSIh6T0cQvtGiBrT/iei14QO67a+jfFtQ1/Zi/CQ
-         3ekA==
-X-Forwarded-Encrypted: i=1; AKwUvBwdQfY2yxNgYMvPAUZmn93WeLmnceJgOM6EOR7Q8Ff6bLarwAZNOMlbN1He66aay3dejJlqLFda4L//8o8kEQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYLGwAIyz4EV5mzsEQkQqsawcCQJDDn7FWlhrlwuNWm3vWvgGuQ0
-	YJudy75kbIpyubMVSi+DhKVEK4krSnoTtrbAWUTOOCwntrjWaeh6siI3
-X-Gm-Gg: AYBFou1pUW2g38EkjfR1fN4p6Lmj5khIyHGMNyRBeZLtNuv3wEEcLUdduU+rfpKNt1o
-	mAVj837jS6D1qV7YyImdIN2xIukAwlAmaeX9dQVmFhY099wJAyEVhdNetGouq61UOU/KjDqp6/s
-	GzFQFDHHMshjRdoDvuCJWXYqpFmHsHzy0ViZ9kqEOlRb+Txdidp9QvOEiAMIlbK74+5cU8LdQgT
-	6t85Ed+9l8shRHNKghO5OrYHeOUHuUHSczNxoXWA0vVNdCO4/r13x05MuIiBvyUHrepd3OSwf5D
-	kHqMN37rgy3k0S9dcGk5R/bfUCz3UbC2SqKeggiruA6+1M7WG3ZK/Aa89Zi7hbr6Fq36jS5MHMb
-	Jaj/JHYkNhSmcA5puit8HHfox8lX/ldcUa6vhaONddWLjFPwEzAeDA6jFfoYnYxHHqfinuI+neb
-	kWDsNEu49coDleTph+JGW5i1JG8xsIeM5/mWVH5QjzTjVW0Kf0YWrig/B7Ek3l8oIQsAmtyF+0P
-	yDVCNwln4i95JJTyqCx/ssm3ua7I0I42mkjW9ANlWbNmWrTYlIUIanS7o4/kBlkU0uzV9TLDz9U
-	1kxIT+eXjibihjcEmlx1s9mAM2EfiJZxoy1gMkXEEiB+jg==
-X-Received: by 2002:a05:7300:22de:b0:351:68e8:4646 with SMTP id 5a478bee46e88-3537e0ce0fcmr12801388eec.37.1791765544273;
-        Sun, 11 Oct 2026 17:39:04 -0700 (PDT)
-Received: from ututo.. ([2803:9810:87dd:de10:bbff:b31a:c9d8:9231])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cb1e02asm29305676eec.27.2026.10.11.17.38.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Oct 2026 17:39:03 -0700 (PDT)
-From: Lucas Costa <2000.costalucas@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Cc: Lucas Costa <2000.costalucas@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH] samples: rust: add QEMU EDU sample driver
-Date: Sun, 11 Oct 2026 21:38:43 -0300
-Message-ID: <20261012003849.82315-1-2000.costalucas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20260707; t=1791781772; x=1792386572;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/lLLLclL22w++ZhVf6oeIW0i9eibJmDwV660dbwM+rA=;
+        b=pI0RpBVWQDEPIYuZ4bEnBCh/nEQnNutmBYKOhjHliFhPl5rhcMcYcpj1t2KSyv42m6
+         0RWI9qQa+cM4vy2xl+MS/KAHWLe+G2b6v6HoNzkbtwco/Nq8lhY+pjp2HGp42qkm2uwr
+         r7H7cLWPJfDh2gRMNf4hu87im0+FBcisfNCdOV9KMQ/XzCyE4JREP5Fov2iiSNtnbESe
+         DlLis3v9Q/zzx6Q4vzPRkosrP5RnrVyfZut9byVbbdYKRuNF3eCVisxm8kC6/YCJHy+s
+         vjcMv2ffLz21RiEFIHlXR7rrtltohPzdePgg8IXM0WHlcAQRm6yN/IXurc03s9DiMNqv
+         98pQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzZyyjzert2+s8K/7VerU/bri2De2GW9Mzg/BeaHeeCaeKYF+v+wGUimY1+eyWgbhzEtI77++9wKVm/qI3iGw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKDBK3nTc8AASMXf9zT6umGpZFgQBiIXhTI1KeU8elfQiOkfCpy
+	RFKr16lDJi0AlYd+Be6e/BGew+EoYtSi1A2SnfM6HRfVkiUHtETFraAcfdBKuAO3Oh9j35cB5aQ
+	5WlmO1xd4erCYrDPbO3asb15L5Pey6Ao=
+X-Gm-Gg: AYBFou0mSnp1I9LCIAM6pxajKn4ABhJJWUAmbnn/AGBi7iulJjIVB4P4uNyvpSB/9zx
+	jS0llgTF6Ni7SnzJbXih7Svgxv6dtfZS3/BY7Ku2G2NnQIQNTWR0DxjhruECoMZxpJQUx0EzyxJ
+	ijewhtV7t1CBJaid6bCCiuY7zq3GL5+Lxupjua+wFEZIFr+4yK33Vl7PuKKcsR80DL03SUKJ1D/
+	qdUj19fT/1UAtm6KBl+ZOkKlThElc44YYMXC0y/MP7EB9vkT/6PkdxA0Nom+FijUxhJaDySXs2m
+	wh25O2NGd4RxliiUhSVYEs5nagsT4FndQomjrNbifAB9eg4O8FVZiEdDvKiYw4A1+6EkTpA+0Q5
+	FThxv5GN2GGjni9ZrBiXTdFv0h09qhjwUIb1NPEtpIMC3DRepy1lH7h0nLO6wm0gojuIEQHvpFo
+	ECw1xES88cDda9Crnl9glT3lyFhHKpdj2pa+2zrP1EGtA3Ul+CCQk=
+X-Received: by 2002:a05:7300:ea0e:b0:351:6d7f:e2bc with SMTP id
+ 5a478bee46e88-3537e04ce24mr18178021eec.2.1791781772328; Sun, 11 Oct 2026
+ 22:09:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <DM1774SH56A5.136OP30FCYTK4@kernel.org>
+In-Reply-To: <DM1774SH56A5.136OP30FCYTK4@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 12 Oct 2026 07:09:19 +0200
+X-Gm-Features: AclHuK8FyNO76XBT-aFJhzI666atCoeFIAiNv_EYP3smCOzwM8fZIHSmXpX9zm0
+Message-ID: <CANiq72=e=L1KYCGG+hu_p8YdU17kTKFqanKy9H7SDGKC1zUapw@mail.gmail.com>
+Subject: Re: [GIT PULL] Alloc changes for 7.4-rc1
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a sample PCI driver, written in Rust, for QEMU's educational
-("edu") device. The edu device is a simple emulated PCI device meant
-for teaching device-driver concepts; this sample serves as a worked
-example that exercises the Rust PCI, IRQ and DMA abstractions in a
-single, self-contained driver.
+On Sat, Oct 10, 2026 at 3:38=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> The following changes since commit cee9395acd8043be0644b25c34bfa86623f2b9=
+35:
+>
+>   Linux 7.3-rc1 (2026-08-30 13:34:40 -0700)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/Rust-for-Linux/linux.git tags/alloc-7.4-rc1
+>
+> for you to fetch changes up to 6e8339118040f24ebcc21db22c9c1b7398b7e39e:
+>
+>   rust: alloc: add `NumaNode::id()` accessor (2026-09-29 21:05:08 +0200)
 
-On probe(), the driver walks through the edu device's feature set:
+Merged into `rust-next` -- thanks!
 
-  - identification and liveness checks over MMIO (reading the ID
-    register, and verifying the device's bitwise-NOT mirror register);
-
-  - the interrupt status/raise/ack registers at the MMIO level;
-
-  - an MSI interrupt: arm "raise IRQ on completion", start a factorial
-    computation, wait on a Completion signalled by the IRQ handler,
-    then verify the result;
-
-  - a full DMA round-trip (RAM -> device buffer -> RAM) using the
-    coherent DMA API with a 28-bit DMA mask;
-
-  - a few PCI configuration-space reads.
-
-To make the driver probe, QEMU must be run with `-device edu`.
-
-Signed-off-by: Lucas Costa <2000.costalucas@gmail.com>
----
- rust/kernel/pci/id.rs           |   8 +-
- samples/rust/Kconfig            |  11 +
- samples/rust/Makefile           |   1 +
- samples/rust/rust_driver_edu.rs | 382 ++++++++++++++++++++++++++++++++
- 4 files changed, 400 insertions(+), 2 deletions(-)
- create mode 100644 samples/rust/rust_driver_edu.rs
-
-diff --git a/rust/kernel/pci/id.rs b/rust/kernel/pci/id.rs
-index dbaf301666e7..2747d92be91b 100644
---- a/rust/kernel/pci/id.rs
-+++ b/rust/kernel/pci/id.rs
-@@ -154,9 +154,13 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
- 
- /// Once constructed, a `Vendor` contains a valid PCI Vendor ID.
- impl Vendor {
--    /// Create a Vendor from a raw 16-bit vendor ID.
-+    /// Create a [`Vendor`] from a raw 16-bit vendor ID.
-+    ///
-+    /// Prefer one of the named [`Vendor`] constants where one exists. This is intended for
-+    /// vendor IDs that have no dedicated constant, e.g. test or emulated devices whose IDs
-+    /// are not shared between multiple drivers and thus do not belong in `pci_ids.h`.
-     #[inline]
--    pub(super) fn from_raw(vendor_id: u16) -> Self {
-+    pub const fn from_raw(vendor_id: u16) -> Self {
-         Self(vendor_id)
-     }
- 
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index 31d62533ef25..b654751041fa 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -190,4 +190,15 @@ config SAMPLE_RUST_HOSTPROGS
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_DRIVER_EDU
-+	tristate "QEMU EDU Driver"
-+	depends on PCI
-+	help
-+	  This option builds the Rust QEMU EDU PCI driver sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_driver_edu.
-+
-+	  If unsure, say N.
-+
- endif # SAMPLES_RUST
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index b986b681cde5..57d944baa781 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -17,6 +17,7 @@ obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+= rust_driver_auxiliary.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_SERDEV)		+= rust_driver_serdev.o
- obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+= rust_configfs.o
- obj-$(CONFIG_SAMPLE_RUST_SOC)			+= rust_soc.o
-+obj-$(CONFIG_SAMPLE_RUST_DRIVER_EDU) += rust_driver_edu.o
- 
- rust_print-y := rust_print_main.o rust_print_events.o
- 
-diff --git a/samples/rust/rust_driver_edu.rs b/samples/rust/rust_driver_edu.rs
-new file mode 100644
-index 000000000000..e9e5593bb89a
---- /dev/null
-+++ b/samples/rust/rust_driver_edu.rs
-@@ -0,0 +1,382 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust QEMU EDU driver sample (based on QEMU's edu device).
-+//!
-+//! To make this driver probe, QEMU must be run with `-device edu`.
-+
-+use kernel::{
-+    device::{
-+        Bound,
-+        Core, //
-+    },
-+    dma::{
-+        Coherent,
-+        CoherentBox,
-+        Device as _,
-+        DmaMask, //
-+    },
-+    io::{
-+        poll::read_poll_timeout,
-+        register,
-+        register::Array,
-+        Io, //
-+    },
-+    irq::{
-+        self,
-+        Flags,
-+        Registration, //
-+    },
-+    pci,
-+    prelude::*,
-+    sync::Completion,
-+    time::Delta, //
-+};
-+
-+mod regs {
-+    use super::*;
-+
-+    register! {
-+        pub(super) IDENTIFICATION(u32) @ 0x0 {
-+            31:0 version;
-+        }
-+
-+        pub(super) LIVENESS(u32) @ 0x4 {
-+            31:0 value;
-+        }
-+
-+        pub(super) FACTORIAL(u32) @ 0x8 {
-+            31:0 value;
-+        }
-+
-+        pub(super) STATUS(u32) @ 0x20 {
-+            7:7 irq_on_done;     // 0x80: raise an IRQ when the factorial is done
-+            0:0 computing;       // 0x01: set while a factorial is being computed
-+        }
-+
-+        pub(super) INTERRUPT_STATUS(u32) @ 0x24 {
-+            31:0 status;
-+        }
-+
-+        pub(super) INTERRUPT_RAISE(u32) @ 0x60 {
-+            31:0 raise;
-+        }
-+
-+        pub(super) INTERRUPT_ACK(u32) @ 0x64 {
-+            31:0 ack;
-+        }
-+
-+        // The EDU DMA registers are documented as 64-bit, but QEMU's edu device
-+        // accepts 4-byte accesses to these registers and zero-extends the
-+        // written value, and this driver only uses addresses/counts that fit in
-+        // 32 bits (a 28-bit DMA mask), so a single `u32` access per register is
-+        // correct and sufficient here.
-+        pub(super) DMA_SRC_ADDR(u32) @ 0x80 {
-+            31:0 src;
-+        }
-+
-+        pub(super) DMA_DST_ADDR(u32) @ 0x88 {
-+            31:0 dst;
-+        }
-+
-+        pub(super) DMA_CNT(u32) @ 0x90 {
-+            31:0 size;
-+        }
-+
-+        pub(super) DMA_CMD(u32) @ 0x98 {
-+            31:0 cmd;
-+        }
-+    }
-+
-+    pub(super) const END: usize = 0x9C;
-+}
-+
-+type Bar0<'bound> = pci::Bar<'bound, { regs::END }>;
-+
-+struct SampleDriverData<'bound> {
-+    pdev: &'bound pci::Device,
-+    // Held for the lifetime of the bound device so the BAR mapping stays alive;
-+    // all register access happens during probe, so the field is never read again.
-+    #[expect(dead_code)]
-+    bar: Bar0<'bound>,
-+}
-+
-+struct SampleDriver;
-+
-+// The QEMU EDU device's PCI IDs. These are specific to this emulated device and are not
-+// shared with any other driver, so they are kept local here rather than in `pci_ids.h`.
-+// `0x1234` is QEMU's conventional vendor ID, which has no dedicated `pci::Vendor` constant.
-+const VENDOR_ID_QEMU: u16 = 0x1234;
-+const DEVICE_ID_EDU: u32 = 0x11e8;
-+
-+kernel::pci_device_table!(
-+    PCI_TABLE,
-+    <SampleDriver as pci::Driver>::IdInfo,
-+    [(
-+        pci::DeviceId::from_id(pci::Vendor::from_raw(VENDOR_ID_QEMU), DEVICE_ID_EDU),
-+        ()
-+    )]
-+);
-+
-+impl SampleDriverData<'_> {
-+    /// The value the EDU device reports from its `IDENTIFICATION` register.
-+    const EDU_ID: u32 = 0x010000ed;
-+
-+    /// Confirm we are really talking to an EDU device by reading its ID register.
-+    fn identification(bar: &Bar0<'_>) -> Result {
-+        if bar.read(regs::IDENTIFICATION).version().get() != Self::EDU_ID {
-+            return Err(ENODEV);
-+        }
-+
-+        Ok(())
-+    }
-+
-+    /// Liveness check: the EDU device inverts (bitwise NOT) whatever we write to the
-+    /// `LIVENESS` register, so writing `x` and reading back `!x` proves MMIO works.
-+    fn liveness(bar: &Bar0<'_>) -> Result {
-+        let pattern: u32 = 0xdead_beef;
-+
-+        bar.write_reg(regs::LIVENESS::zeroed().with_value(pattern));
-+
-+        let readback = bar.read(regs::LIVENESS).value().get();
-+
-+        if readback != !pattern {
-+            return Err(EIO);
-+        }
-+
-+        Ok(())
-+    }
-+
-+    /// Exercise the interrupt registers at the MMIO level.
-+    ///
-+    /// Writing a bitmask to `INTERRUPT_RAISE` asserts those bits in
-+    /// `INTERRUPT_STATUS` (and, if an IRQ is enabled, makes the device raise an
-+    /// interrupt); writing the same bitmask to `INTERRUPT_ACK` clears them
-+    /// again. Here we raise a test bit, confirm the status register reflects it,
-+    /// then acknowledge it and confirm it clears -- all without registering a
-+    /// handler. Wiring up MSI and an actual IRQ handler is a later step.
-+    fn interrupt_status(bar: &Bar0<'_>) -> Result {
-+        let pattern: u32 = 0x0000_0001;
-+
-+        bar.write_reg(regs::INTERRUPT_RAISE::zeroed().with_raise(pattern));
-+
-+        if bar.read(regs::INTERRUPT_STATUS).status().get() != pattern {
-+            return Err(EIO);
-+        }
-+
-+        bar.write_reg(regs::INTERRUPT_ACK::zeroed().with_ack(pattern));
-+
-+        if bar.read(regs::INTERRUPT_STATUS).status().get() != 0 {
-+            return Err(EIO);
-+        }
-+
-+        Ok(())
-+    }
-+
-+    /// Make the edu device compute a factorial and inform the cpu
-+    /// of completion via an IRQ
-+    fn factorial_irq(pdev: &pci::Device<Bound>, bar: &Bar0<'_>) -> Result {
-+        let operand: u32 = 6;
-+
-+        let msi = pci::IrqTypes::default().with(pci::IrqType::Msi);
-+        let vectors = pdev.alloc_irq_vectors(1, 1, msi)?;
-+
-+        let registration = KBox::pin_init(
-+            unsafe {
-+                Registration::new(
-+                    vectors.index(0)?.into(),
-+                    Flags::SHARED,
-+                    c"rust_driver_edu",
-+                    try_pin_init!(EduIrq {
-+                        done <- Completion::new(),
-+                    }? Error),
-+                )
-+            },
-+            GFP_KERNEL,
-+        )?;
-+
-+        // Arm the "raise an IRQ when done" bit, then start the computation.
-+        bar.write_reg(regs::STATUS::zeroed().with_irq_on_done(true));
-+        bar.write_reg(regs::FACTORIAL::zeroed().with_value(operand));
-+
-+        // Sleep until the handler calls `complete_all()` from IRQ context.
-+        registration.handler().done.wait_for_completion();
-+
-+        // Acknowledge whatever the device raised so it lowers the interrupt.
-+        let pending = bar.read(regs::INTERRUPT_STATUS).status().get();
-+        bar.write_reg(regs::INTERRUPT_ACK::zeroed().with_ack(pending));
-+
-+        let result = bar.read(regs::FACTORIAL).value().get();
-+
-+        if result != factorial_helper(operand) {
-+            return Err(EIO);
-+        }
-+
-+        Ok(())
-+    }
-+
-+    /// Tests a full DMA round-trip, writing from RAM -> device buffer,
-+    /// and then from device buffer -> RAM
-+    fn dma_test(pdev: &pci::Device<Core<'_>>, bar: &Bar0<'_>) -> Result {
-+        const DEV_BUF: u32 = 0x40_000;
-+        const LEN: usize = 512;
-+        const CMD_START: u32 = 1 << 0;
-+        const CMD_TO_RAM: u32 = 1 << 1;
-+
-+        unsafe { pdev.dma_set_mask_and_coherent(DmaMask::new::<28>())? };
-+
-+        let mut src: CoherentBox<[u8]> = CoherentBox::zeroed_slice(pdev.as_ref(), LEN, GFP_KERNEL)?;
-+        src.fill(0xa5);
-+
-+        let src: Coherent<[u8]> = src.into();
-+
-+        let dst: Coherent<[u8]> =
-+            CoherentBox::<[u8]>::zeroed_slice(pdev.as_ref(), LEN, GFP_KERNEL)?.into();
-+
-+        let src_dma = src.dma_address() as u32;
-+        let dst_dma = dst.dma_address() as u32;
-+
-+        let wait_dma = || {
-+            read_poll_timeout(
-+                || Ok(bar.read(regs::DMA_CMD).cmd().get()),
-+                |cmd| *cmd & CMD_START == 0,
-+                Delta::from_millis(10),
-+                Delta::from_secs(1),
-+            )
-+        };
-+
-+        // 1) RAM -> device internal buffer. CMD is written last: it triggers the transfer.
-+        bar.write_reg(regs::DMA_SRC_ADDR::zeroed().with_src(src_dma));
-+        bar.write_reg(regs::DMA_DST_ADDR::zeroed().with_dst(DEV_BUF));
-+        bar.write_reg(regs::DMA_CNT::zeroed().with_size(LEN as u32));
-+        bar.write_reg(regs::DMA_CMD::zeroed().with_cmd(CMD_START));
-+        wait_dma()?;
-+
-+        // 2) device internal buffer -> RAM, landing in `dst`.
-+        bar.write_reg(regs::DMA_SRC_ADDR::zeroed().with_src(DEV_BUF));
-+        bar.write_reg(regs::DMA_DST_ADDR::zeroed().with_dst(dst_dma));
-+        bar.write_reg(regs::DMA_CNT::zeroed().with_size(LEN as u32));
-+        bar.write_reg(regs::DMA_CMD::zeroed().with_cmd(CMD_START | CMD_TO_RAM));
-+        wait_dma()?;
-+
-+        // Transfer completed, check dst is the expected value
-+        let out = unsafe { dst.as_ref() };
-+        if out.iter().any(|&b| b != 0xa5) {
-+            return Err(EIO);
-+        }
-+
-+        Ok(())
-+    }
-+
-+    fn config_space(pdev: &pci::Device<Bound>) {
-+        let config = pdev.config_space();
-+
-+        // Some PCI configuration space registers.
-+        register! {
-+            VENDOR_ID(u16) @ 0x0 {
-+                15:0 vendor_id;
-+            }
-+
-+            REVISION_ID(u8) @ 0x8 {
-+                7:0 revision_id;
-+            }
-+
-+            BAR(u32)[6] @ 0x10 {
-+                31:0 value;
-+            }
-+        }
-+
-+        dev_info!(
-+            pdev,
-+            "edu config space read8 rev ID: {:x}\n",
-+            config.read(REVISION_ID).revision_id()
-+        );
-+
-+        dev_info!(
-+            pdev,
-+            "edu config space read16 vendor ID: {:x}\n",
-+            config.read(VENDOR_ID).vendor_id()
-+        );
-+
-+        dev_info!(
-+            pdev,
-+            "edu config space read32 BAR 0: {:x}\n",
-+            config.read(BAR::at(0)).value()
-+        );
-+    }
-+}
-+
-+impl pci::Driver for SampleDriver {
-+    type IdInfo = ();
-+    type Data<'bound> = SampleDriverData<'bound>;
-+
-+    const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
-+
-+    fn probe<'bound>(
-+        pdev: &'bound pci::Device<Core<'_>>,
-+        _info: Option<&'bound Self::IdInfo>,
-+    ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
-+        dev_dbg!(
-+            pdev,
-+            "Probe Rust QEMU EDU driver sample (PCI ID: {}, 0x{:x}).\n",
-+            pdev.vendor_id(),
-+            pdev.device_id()
-+        );
-+
-+        pdev.enable_device_mem()?;
-+        pdev.set_master();
-+
-+        let bar = pdev.iomap_region_sized::<{ regs::END }>(0, c"rust_driver_edu")?;
-+
-+        SampleDriverData::identification(&bar)?;
-+        SampleDriverData::liveness(&bar)?;
-+        SampleDriverData::interrupt_status(&bar)?;
-+        SampleDriverData::factorial_irq(pdev, &bar)?;
-+        SampleDriverData::dma_test(pdev, &bar)?;
-+        SampleDriverData::config_space(pdev);
-+
-+        dev_info!(pdev, "EDU device probed: all checks passed.\n");
-+
-+        Ok(SampleDriverData { pdev, bar })
-+    }
-+}
-+
-+impl Drop for SampleDriverData<'_> {
-+    fn drop(&mut self) {
-+        dev_dbg!(self.pdev, "Remove Rust QEMU EDU driver sample.\n");
-+    }
-+}
-+
-+/// Per-interrupt state shared between process context and IRQ context.
-+///
-+/// The factorial computation signals `done` from the IRQ handler; the process
-+/// context that started it waits on the same [`Completion`].
-+#[pin_data]
-+struct EduIrq {
-+    #[pin]
-+    done: Completion,
-+}
-+
-+impl irq::Handler for EduIrq {
-+    // Runs in IRQ context when the EDU device raises its interrupt.
-+    fn handle(&self) -> irq::IrqReturn {
-+        self.done.complete_all();
-+        irq::IrqReturn::Handled
-+    }
-+}
-+
-+// Helper functions
-+fn factorial_helper(n: u32) -> u32 {
-+    if n <= 1 {
-+        return 1;
-+    }
-+
-+    n * factorial_helper(n - 1)
-+}
-+
-+kernel::module_pci_driver! {
-+    type: SampleDriver,
-+    name: "rust_driver_edu",
-+    authors: ["Lucas Costa"],
-+    description: "Rust QEMU EDU driver",
-+    license: "GPL v2",
-+}
--- 
-2.43.0
-
+Cheers,
+Miguel
