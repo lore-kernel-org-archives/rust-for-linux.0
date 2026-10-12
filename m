@@ -1,117 +1,199 @@
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58093486438
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 12:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791807743; cv=pass; b=A9A6r/OTmlfsFyLuNJ17U+7vsdNIVtcFX1Rr14VjiicIKx35r2KuOeITMqWNlXYWXLWBa336VGW+CKUWVaKDlhusNgg7GAmDkfoKa/VnpjVg+H4Y1o4LoE3KNrUU6aFw/3oHO+5OnHztAvPCrHfOF5i+NjLEJOeVkVBdipZVYQY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791807743; c=relaxed/simple;
-	bh=W0/B6G2xceZ/TEBz6rYStoJyGubm7Za/8bijy2O6/uQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dlepOFXKZbw+QqHQro5CwXgwDmHXNxP3fIc6hBRZ5KJtkIhK5rumhsaKKm4uetQntwdsv/J3XP099kRaz4RYDiRGzlB1VQe8uCwgdONupfh+Wp7WxRJ3M38PUg9MgbGz54KuBXXSuQeDC4aJuCGy8PwSkigbdRhMCZZ9T9nxnpk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ixe4Q0Xt; arc=pass smtp.client-ip=74.125.82.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C662F486423;
+	Mon, 12 Oct 2026 12:23:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791807840; cv=none; b=fl0/rMDB5CE1lEEHfdmcUxcYIJ1Wb+jLzMytZIJJXNsN0Nyf7g5Tgv48JfFIJjc+bulHKHa2RwEzlQ8W2/pAa44ITY405w+4bVL5SZBvZfa/eIWoJHn7EXUyMm1U9JoN3bzd78S7nfz7cCHdi29YO0FtLJl7FZSvR+KR+0ZAgqM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791807840; c=relaxed/simple;
+	bh=wy9Gx+N/9S1JDwhcoZEbyNCZkKNsAOAUmmRjdUAAMV4=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LNafBSifsMJp1sxltySKz4c4D59iOsC1VSMpoH+cH9UbeXPFGzJ72sWrgqweKaz3Do4QEVJIDfJeiqfKRrBdBkcwErJSaCfNiQikDciesfewmwjc03UeZozXjYgP13QRMCt8AWzr1Q91wjH9TY/2SU2HjwFspHXg7H9E4GtVutw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=yLEPUquB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=FYvAa7Jx; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=yLEPUquB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=FYvAa7Jx; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ixe4Q0Xt"
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-33c30fcf33fso239757eec.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 05:22:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791807740; cv=none;
-        d=google.com; s=arc-20260327;
-        b=oZSD3ybOW4AGEO9dsOEicDsjBzoQFlKHFuDpSm3/FupjWnYutEgUlfxt3vwDqKemgB
-         IGOjSengFhqN0taGLgNtTrj4pBwrF45+yXMweImruyFamF3go4CF3K+sWs8Bkkc5qTuQ
-         708MG5z4R9HkTZZccCLVf2etRQ3Y5Yu7W5Uv+njnr0d1OgbE9Lb3bOpyMxLYkT97os5c
-         9zq9GhKY3L+F2KmajwqA9acuzq1vP7X+hXOzJecJzHYnvUdjJJG8h+Pkz/UpJ0x4R8FN
-         ngObvaGBFZ2daSYjjtXpVkQ7vKgHuMjYdZivOXUQRd43eRoj4uZSAKbqCKJ/n22qSsCX
-         sO+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=W0/B6G2xceZ/TEBz6rYStoJyGubm7Za/8bijy2O6/uQ=;
-        fh=OZ1fn3Xq/jcfvW1ZUV0TOybebwcBsNE54PcR9Qv/nzw=;
-        b=p6EzljEbNw2qXHantS8sEFXBnRzkM6xYflIMFZQOLWZOMthNIl3GUVnAcMT6aoZuw7
-         0F6nXsOMxfSLz+3l62YekT4iJrtEMeYgfHHwhS5BUM98x7RMDjRclm6RDsa2vsYmTIyj
-         NyyGHcH+QxtyE/piyU0Fjp/INivxfcnLn5xE47sEjYGk2R/xPfCeQ4k8GZzTodLZB5Td
-         iA9Vp6JAW9Xs+GNTeClzEobg7iDUBDZ6fGyC9G65yXtDZpU/RZJJTPBRSk/2ZOujih/C
-         VNadXMPC5ZaTX1Pcmlfep+S5zdWMzliyHGojOPka4zIEUnyR/ZMzNb5EbdS8A+ippEup
-         utxg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791807740; x=1792412540; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=W0/B6G2xceZ/TEBz6rYStoJyGubm7Za/8bijy2O6/uQ=;
-        b=Ixe4Q0XteuS/ZDj6nzR105B59owKRYEi9tU1pIPBR4fZaqn9sFJGpvnit+2GRZmJ2w
-         h6jKEF+5VV3wI9H39XIXycHCOweGWgRlfEtoJIZi8wOKJHJapj46A2EiWTInogeK8LWt
-         AUbFnRH/O+TdKU0sMkuoSavXFT/RWHi9cIIjfumQBzxF7xi85K3DLukaQKTwUpb9Q/2A
-         jFRrkbiyasDRrxLpdQxsMkFmo2FB5h97zW5e0CCpxxT+b4A2RevLd7SDjh6JrDb7JjUA
-         z0ViJFnL+PgetMb9JHeDma/6On2a81vYbBn9NirLWI58nw99oaam6Mjg3ocBP2ujscSx
-         0QVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791807740; x=1792412540;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=W0/B6G2xceZ/TEBz6rYStoJyGubm7Za/8bijy2O6/uQ=;
-        b=G7oInIMT7gqW81kVovnL76S+bG7zQ5FqbFrbICVB+WPTaKaKUdfX8sug1+2fqAfX7h
-         sNWIAC0fMsmPaqigLWak8dt2Y+/oIfxQUz3JmnyaVXRb4fP7wLGQ8qT+8NNNxoCARdo/
-         izYRp/PkD1MXWCQrL0N0E2tvRWw51p5jq6Bj4ppEHlnRL6fgBsGUidj1zbZ4iUrtLk5g
-         7UHl9hl9ref7Hh3D6WpMy9Rm+EN9teQ8sevHiWS5fV/v7wwyYUQNSR+sgph4JY1VOA7w
-         WU61E7wAL1prfdAzzm+qg7rOypMvjGi0ap/TOJAmHbEP1LGnhRUdYJXhsNjYcrvdxtro
-         /HNQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxwSBfYD00+hrJVaM+XWHuA4sK+vL6QV7C/OJj0i0eiAm/HEkd6IgukQ0/YWKshIIQpD5GJYPIkGdfllVLuTg==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKoDS+zM3F9kR/iw50dFgeJ/nSr/uJvucJEF2+THszxKTgzwsk8
-	6hvjWd1QMCJKaBIMmt97Ctwx8cRxgcou2o4zdvxxRxFYhSAwNCVO05in4EbNtJVmC4deDO8tZyr
-	inoVtRypRQ3DlCgyv2fKnnFBCo3HeFSx/n7tTxeo=
-X-Gm-Gg: AYBFou04PWbQOs/ofLipZ7I9iJWrhM/EWx2Mvo+ekP8861yn5VaJv1igJn+yuIhVCmM
-	GIhoc4sNrB0Y5TqE6wdbAUHrx0PEdKAY+SRPP0Arw79/UuBt//004tbJWcQ2jqgmtsPUkh6vuV8
-	zbh//XTB1TADN7EkQtOtoEt+94MYjtJJD1nDCE8MKOjIybZMmhqCm6m1vHxzS1dkfGK1W18uq4w
-	kzoB69kg82exrhJ93e33eTTn2zDp9yMuPVMgAEVztMWcXVtQfcpg7atdYWyfIy5ZG8QSAS/FNty
-	D/mPyfw8tKUC9dnUz9fW5z10yKgba68usf/9LBjLZuKJZzSxcQzYHhUF/Lz49It+k3HtLOWe902
-	H9rVVky5utULaO8XOqO4UL4+FrRHp1sN34ZM5kZDZr0F2ssSvNKgv2v6Gy2T6XojCaiprirBU+K
-	DelNBsdLGm/d4macl9p9AVpdw8uNYoEFKUSbS+5jgOhVoS7i5zlGs=
-X-Received: by 2002:a05:693c:8810:20b0:35b:cb5b:c71e with SMTP id
- 5a478bee46e88-35bcb6b1c6cmr666843eec.1.1791807740051; Mon, 12 Oct 2026
- 05:22:20 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="yLEPUquB";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="FYvAa7Jx";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="yLEPUquB";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="FYvAa7Jx"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id CCADA1F7B6;
+	Mon, 12 Oct 2026 12:23:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791807836; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=do7J0AtXisbauE+W5p3gF+8pETJEin+2Aakr3SiTWQQ=;
+	b=yLEPUquBvLevShf4PrvZQPt4psHAPdlG8/Qps8ynDIBlYxWRkOqDdASPqect7jtIvHMswN
+	qdupi6yYg2HCVGpOTlGJjke7f8CHonm7g+7b5ZxMlYXTvkOSnba8ViHq6TNIX7ThAog5dZ
+	PQ1aX73a+ddyEGCaqj1lGJN02bdSNhY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791807836;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=do7J0AtXisbauE+W5p3gF+8pETJEin+2Aakr3SiTWQQ=;
+	b=FYvAa7Jxcfd3YVu1A/CFlb+IuJtR0MohZYWL9Q+SBnng357FXJq89s/upt9H5fKrK6VVWt
+	S6ujFZYRzdf3xCDQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791807836; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=do7J0AtXisbauE+W5p3gF+8pETJEin+2Aakr3SiTWQQ=;
+	b=yLEPUquBvLevShf4PrvZQPt4psHAPdlG8/Qps8ynDIBlYxWRkOqDdASPqect7jtIvHMswN
+	qdupi6yYg2HCVGpOTlGJjke7f8CHonm7g+7b5ZxMlYXTvkOSnba8ViHq6TNIX7ThAog5dZ
+	PQ1aX73a+ddyEGCaqj1lGJN02bdSNhY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791807836;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=do7J0AtXisbauE+W5p3gF+8pETJEin+2Aakr3SiTWQQ=;
+	b=FYvAa7Jxcfd3YVu1A/CFlb+IuJtR0MohZYWL9Q+SBnng357FXJq89s/upt9H5fKrK6VVWt
+	S6ujFZYRzdf3xCDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 80D7B13314;
+	Mon, 12 Oct 2026 12:23:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DjQFE1zRzGolKQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Mon, 12 Oct 2026 12:23:56 +0000
+Date: Mon, 12 Oct 2026 14:23:55 +0200
+Message-ID: <87ld83gl9g.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Tristan de Cacqueray <tristan@midirus.com>
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	linux-sound@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC 0/3] rust: snd: Introduce experimental ALSA rawmidi abstractions
+In-Reply-To: <20261011-rust-snd-v1-0-7974ecdcd345@midirus.com>
+References: <20261011-rust-snd-v1-0-7974ecdcd345@midirus.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20261012-nonempty-slice-v1-0-37d1fecff82c@proton.me> <20261012-nonempty-slice-v1-2-37d1fecff82c@proton.me>
-In-Reply-To: <20261012-nonempty-slice-v1-2-37d1fecff82c@proton.me>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 12 Oct 2026 14:22:06 +0200
-X-Gm-Features: AclHuK_JfArOQC24q8bhqpYHyF8WB4LrV3JCNgqOFmRVvHpNftv_1MS-eocclDw
-Message-ID: <CANiq72niDTiewxWGC=PTCoG1xeb6hVmeKT+5N8DDHV2bQdQ0Ug@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: uaccess: use NonEmpty in strcpy_into_buf()
-To: Lorenzo Delgado <lnsdev@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Thorsten Blum <blum@kernel.org>, Francis Laniel <laniel_francis@npnm.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -3.30
+X-Spam-Level: 
+X-Spam-Flag: NO
 
-On Mon, Oct 12, 2026 at 1:54=E2=80=AFPM Lorenzo Delgado <lnsdev@proton.me> =
-wrote:
->
-> Turn the buffer into a `NonEmpty<[u8]>` at the start instead. The
+On Sun, 11 Oct 2026 15:02:11 +0200,
+Tristan de Cacqueray wrote:
+> 
+> Hi Takashi and the Rust for Linux maintainers.
+> 
+> I just noticed your mail about an early Rust prototype for the sound
+> subsystem right before I was about to submit this RFC!
+>   https://lore.kernel.org/alsa-devel/878q48579z.wl-tiwai@suse.de/
+> 
+> Nevertheless, please allow me to share what I had in mind through this
+> small proof of concept for the `rawmidi` API. I am looking for feedback on
+> the scope, coordination, and the ownership model rather than a detailed
+> review for merging.
+> 
+> My use case is a new hardware controller using a custom serial protocol.
+> While developing its Rust driver, I needed an interface to ALSA rawmidi.
+> I'm particularly interested in handling rawmidi substream safely to avoid
+> issues like the one fixed by
+>   221253723dc5 ("ALSA: bcd2000: Fix race between rawmidi and disconnect")
+> 
+> So, I wrote some bindings to see how that would look like. This series adds
+> experimental snd_card and snd_rawmidi wrappers, input/output callback
+> traits, and a sample rawmidi faux device using delayed work to simulate
+> incoming MIDI data.
+> 
+> This is not merge-ready. In particular, the prototype does not yet enforce
+> the devres lifetime of the card or the lifetime of its rawmidi wrapper. The
+> substream helper also relies on the driver clearing it before close
+> returns.
+> 
+> Here are my questions:
+> 
+>   1. Does this rawmidi experiment overlaps with your prototype?
+>      If so, I would be happy to coordinate or adapt this experiment to it.
 
-Hmm... I thought the idea was to request a `NonEmpty` in the signature.
+No, my patchset doesn't contain rawmidi support yet.
+The sound card abstraction would conflict quite, sure, but it wouldn't
+be too hard to adapt, I guess.
 
-Is it not possible for some reason?
+>   2. Is rawmidi a useful initial target for ALSA Rust abstraction?
 
-Cheers,
-Miguel
+Sure, why not, if it's actually needed? :)
+
+>   3. Does your prototype mirror the C API 1:1, or for example, does it hide
+>      the substream lifecycle? That's the design choice I'm least sure about.
+
+It's mostly a straightforward wrapping of C API, but there are a few
+twists to adapt Rust-way.  The card can be managed in RAII style, too,
+for example.
+
+I haven't prepared for submission, but you can find the current
+changes in test/sound-rust branch of sound git tree (either kernel.org
+or github.com):
+  https://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git/log/?h=test/sound-rust
+  https://github.com/tiwai/sound/tree/test/sound-rust
+  
+Those are over 50 commits on top of 7.3-rc5, and I'll likely rebase a
+bit to rearrange before submission, so beware of changes in future.
+
+The commits begin with a few Rust kernel changes for fixing and
+addition for the sound support, including the PM support from Beata
+Michalska (just took what have been posted), followed by ALSA core
+abstractions for the card, PCM and controls.
+
+Then it continues to the implementations of 3 actual sound drivers for
+PCM/control: the dummy driver (with platform and hrtimer), and the
+ens1370 and intel8x0 drivers for PCI devices to be run on VM.
+
+After that, the extension to USB abstraction follows, including the
+isochronous support patches by Colin Braun, and then the USB-audio
+driver implementation (that can run on an actual bare metal), as well
+as the USB runtime PM support.
+
+
+BTW, until now, I haven't planned for any serious consideration to
+merge Rust stuff yet.  Partly because the above was a pure experiment
+for me, but another big obstacle is that the whole Rust C binding is
+limited to built-in vmlinux.  With a distribution kernel maintainer
+hat on, this is absolutely NO-GO -- we really want to avoid built-in.
+(Graphics is a kind of exception nowadays because of boot support,
+though.)  Can this be worked out soon...?
+
+
+thanks,
+
+Takashi
