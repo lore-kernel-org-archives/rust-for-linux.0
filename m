@@ -1,199 +1,206 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C662F486423;
-	Mon, 12 Oct 2026 12:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1491367B8E
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 13:42:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791807840; cv=none; b=fl0/rMDB5CE1lEEHfdmcUxcYIJ1Wb+jLzMytZIJJXNsN0Nyf7g5Tgv48JfFIJjc+bulHKHa2RwEzlQ8W2/pAa44ITY405w+4bVL5SZBvZfa/eIWoJHn7EXUyMm1U9JoN3bzd78S7nfz7cCHdi29YO0FtLJl7FZSvR+KR+0ZAgqM=
+	t=1791812529; cv=none; b=fEs0fDq1WfO5mcZDcEKAS9d62fFqu2CuVaC1C371UtdqSE6OYoiWOcmC8gQN53NL+OwMBtpNqtgDVlJ3HM45yhOPZy6+1BQxAn9S2ITLrM2ATyhx+E5tZ7Too3eNpr9c09bWXwW7YRowbc/7KSBH8MxKDVQuGH//iyzICQEraFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791807840; c=relaxed/simple;
-	bh=wy9Gx+N/9S1JDwhcoZEbyNCZkKNsAOAUmmRjdUAAMV4=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LNafBSifsMJp1sxltySKz4c4D59iOsC1VSMpoH+cH9UbeXPFGzJ72sWrgqweKaz3Do4QEVJIDfJeiqfKRrBdBkcwErJSaCfNiQikDciesfewmwjc03UeZozXjYgP13QRMCt8AWzr1Q91wjH9TY/2SU2HjwFspHXg7H9E4GtVutw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=yLEPUquB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=FYvAa7Jx; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=yLEPUquB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=FYvAa7Jx; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1791812529; c=relaxed/simple;
+	bh=834HCsT+yG6FoiMCNmsSF0KuEbbYNjXGWtFDC+r4/lU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Un0wAE6QvNuvPKsC4rWEB3f6qdnMiqHAenW0lI+BbCXP/Wh+XYtfw5FJ8U+ja6gKyLid16jFnEbpzkOYEjCGdkSqRA/xg39uDPD5eQhTulaX0Jl7IuSy/3cZYwtRkof3Fi7HQ50rZJKqy+x1nPo8iVqtZtC/eAZtlG7XL2VSrs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elver.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Eb39Srie; arc=none smtp.client-ip=209.85.128.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--elver.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="yLEPUquB";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="FYvAa7Jx";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="yLEPUquB";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="FYvAa7Jx"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CCADA1F7B6;
-	Mon, 12 Oct 2026 12:23:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791807836; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=do7J0AtXisbauE+W5p3gF+8pETJEin+2Aakr3SiTWQQ=;
-	b=yLEPUquBvLevShf4PrvZQPt4psHAPdlG8/Qps8ynDIBlYxWRkOqDdASPqect7jtIvHMswN
-	qdupi6yYg2HCVGpOTlGJjke7f8CHonm7g+7b5ZxMlYXTvkOSnba8ViHq6TNIX7ThAog5dZ
-	PQ1aX73a+ddyEGCaqj1lGJN02bdSNhY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791807836;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=do7J0AtXisbauE+W5p3gF+8pETJEin+2Aakr3SiTWQQ=;
-	b=FYvAa7Jxcfd3YVu1A/CFlb+IuJtR0MohZYWL9Q+SBnng357FXJq89s/upt9H5fKrK6VVWt
-	S6ujFZYRzdf3xCDQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791807836; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=do7J0AtXisbauE+W5p3gF+8pETJEin+2Aakr3SiTWQQ=;
-	b=yLEPUquBvLevShf4PrvZQPt4psHAPdlG8/Qps8ynDIBlYxWRkOqDdASPqect7jtIvHMswN
-	qdupi6yYg2HCVGpOTlGJjke7f8CHonm7g+7b5ZxMlYXTvkOSnba8ViHq6TNIX7ThAog5dZ
-	PQ1aX73a+ddyEGCaqj1lGJN02bdSNhY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791807836;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=do7J0AtXisbauE+W5p3gF+8pETJEin+2Aakr3SiTWQQ=;
-	b=FYvAa7Jxcfd3YVu1A/CFlb+IuJtR0MohZYWL9Q+SBnng357FXJq89s/upt9H5fKrK6VVWt
-	S6ujFZYRzdf3xCDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 80D7B13314;
-	Mon, 12 Oct 2026 12:23:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DjQFE1zRzGolKQAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 12 Oct 2026 12:23:56 +0000
-Date: Mon, 12 Oct 2026 14:23:55 +0200
-Message-ID: <87ld83gl9g.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Tristan de Cacqueray <tristan@midirus.com>
-Cc: Takashi Iwai <tiwai@suse.de>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	linux-sound@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC 0/3] rust: snd: Introduce experimental ALSA rawmidi abstractions
-In-Reply-To: <20261011-rust-snd-v1-0-7974ecdcd345@midirus.com>
-References: <20261011-rust-snd-v1-0-7974ecdcd345@midirus.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Eb39Srie"
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a01c621dc2so14244025e9.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 06:42:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791812525; x=1792417325; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PWBgbU9wWHlrfBumGJ2ey37GLEs4mFig313aUL/JPgY=;
+        b=Eb39SrieM2VN8EUYaupyNNf9VeJz8sjpvBwzh0Z3WF1FZj7preYnnUWsAPShS7Z1o3
+         LLcv/p9iXUBTe7RFmpwvL3ymN8ImGk5dO5qcsOVVLnfCmj9dLYjze9KQUrlI72omimMB
+         lVLRoilW4GVWbAp+IWm2TFYZ9mQ/I7wa6bSBpawH9zdWZkXFejnDh0k2fIpuybOgmDHq
+         /o2WaWslW/8IPuSvt4WEULtpVP84i/1ihZgm2LTilsww7GrG6XzTuh4q+RZIBNOUY/L7
+         IbjLk0+5p+/FjfZ/ro54yTshz6Hm1WrzupbqhOMLnskAH8YFCMSF8CiQdx1xJeGKlj6R
+         Nhyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791812525; x=1792417325;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PWBgbU9wWHlrfBumGJ2ey37GLEs4mFig313aUL/JPgY=;
+        b=fhQVOCmTiUjOao3ejZkUatQtIg34sB0Cvh/XoIsANkwu0Cec3F/yVFzyfweWRZjgUN
+         1UpKj+fDO5IClC0HZpO7PQyh1vuUvnqCoiwrKCjt6HZ2qoinXc5wtBq17tgjf02Pmu91
+         yr4Jh7xrVTJOz55zj6I5tu3BZPmYpyr2l3+bXyjklE3d6StvBGahS7NvIqofXfqjMCqm
+         BR2mDVD8nWe/0mppDImiI8OxQhnpHuBBEr1YMNi/BcFFx1CAyMzyloNFUUinrbRRatMN
+         WzrnIGGIA1WY3bMwDpNyh4UHfl7yOlBaEjPHylKY8HGwMmbaZ/8hb3NoM9+vK9HuKKUv
+         J/0A==
+X-Forwarded-Encrypted: i=1; AKwUvBzOlPvC9xTdWb/5KtQ4ABIAEItFrw+YI4xHjAkmvtLzObvlfU73pj2raIoDAtJkqvOI1YTUTrFB/uBGduQWtw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJTBVCyB6ecFbwqeeZq55DYDaR/s31oZOIDVX37/D9mir2Jtlfs
+	97WllcpGcxyLFs9R3DHAr0gB5K3VfWsrENJtv09Q6tMdf22VkfKoXn/j8yv+rmSwWFIWDrp02oa
+	QKA==
+X-Received: from wmrp18.prod.google.com ([2002:a05:600c:8a92:b0:4a1:9311:9d1d])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:8518:b0:49f:cbf3:551c
+ with SMTP id 5b1f17b1804b1-4a18e4a8ca6mr166715615e9.12.1791812524523; Mon, 12
+ Oct 2026 06:42:04 -0700 (PDT)
+Date: Mon, 12 Oct 2026 13:39:14 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -3.30
-X-Spam-Level: 
-X-Spam-Flag: NO
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
+Message-ID: <20261012134159.912183-1-elver@google.com>
+Subject: [PATCH 1/2] kbuild: rust: enable KCSAN support
+From: Marco Elver <elver@google.com>
+To: elver@google.com, Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Gary Guo <gary@garyguo.net>
+Cc: Alexander Potapenko <glider@google.com>, kasan-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun@kernel.org>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Asahi Lina <lina+kernel@asahilina.net>, 
+	Yury Norov <ynorov@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, workflows@vger.kernel.org, 
+	linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 11 Oct 2026 15:02:11 +0200,
-Tristan de Cacqueray wrote:
-> 
-> Hi Takashi and the Rust for Linux maintainers.
-> 
-> I just noticed your mail about an early Rust prototype for the sound
-> subsystem right before I was about to submit this RFC!
->   https://lore.kernel.org/alsa-devel/878q48579z.wl-tiwai@suse.de/
-> 
-> Nevertheless, please allow me to share what I had in mind through this
-> small proof of concept for the `rawmidi` API. I am looking for feedback on
-> the scope, coordination, and the ownership model rather than a detailed
-> review for merging.
-> 
-> My use case is a new hardware controller using a custom serial protocol.
-> While developing its Rust driver, I needed an interface to ALSA rawmidi.
-> I'm particularly interested in handling rawmidi substream safely to avoid
-> issues like the one fixed by
->   221253723dc5 ("ALSA: bcd2000: Fix race between rawmidi and disconnect")
-> 
-> So, I wrote some bindings to see how that would look like. This series adds
-> experimental snd_card and snd_rawmidi wrappers, input/output callback
-> traits, and a sample rawmidi faux device using delayed work to simulate
-> incoming MIDI data.
-> 
-> This is not merge-ready. In particular, the prototype does not yet enforce
-> the devres lifetime of the card or the lifetime of its rawmidi wrapper. The
-> substream helper also relies on the driver clearing it before close
-> returns.
-> 
-> Here are my questions:
-> 
->   1. Does this rawmidi experiment overlaps with your prototype?
->      If so, I would be happy to coordinate or adapt this experiment to it.
+Rust supports ThreadSanitizer instrumentation via LLVM, which is what
+KCSAN relies on; however, Rust code is not currently instrumented.
 
-No, my patchset doesn't contain rawmidi support yet.
-The sound card abstraction would conflict quite, sure, but it wouldn't
-be too hard to adapt, I guess.
+Pass -Zsanitizer=thread and the same TSan backend options used for C
+code to rustc. Wire up KCSAN_SANITIZE in scripts/Makefile.lib for parity
+with C (though rustc currently rejects linking crates with mismatched
+instrumentation).
 
->   2. Is rawmidi a useful initial target for ALSA Rust abstraction?
+rustc only accepts -Zsanitizer=thread for targets that declare support
+for it. Of the targets used by the kernel, this is only possible for the
+generated x86_64 target specification, so restrict instrumentation of
+Rust code to x86_64 for now via HAVE_KCSAN_RUSTC. On other architectures
+Rust code remains uninstrumented as before.
 
-Sure, why not, if it's actually needed? :)
+All TSan options used are supported by the LLVM versions of the minimum
+supported rustc, so no rustc-option checks are needed (they would also
+fail, because x86_64-unknown-none used for option checks does not
+support -Zsanitizer=thread).
 
->   3. Does your prototype mirror the C API 1:1, or for example, does it hide
->      the substream lifecycle? That's the design choice I'm least sure about.
+With this enabled we can detect data races in kernel Rust code and
+between Rust and C code.
 
-It's mostly a straightforward wrapping of C API, but there are a few
-twists to adapt Rust-way.  The card can be managed in RAII style, too,
-for example.
+Signed-off-by: Marco Elver <elver@google.com>
+---
+ Documentation/dev-tools/kcsan.rst |  7 +++++++
+ lib/Kconfig.kcsan                 |  7 +++++++
+ scripts/Makefile.kcsan            | 13 +++++++++++++
+ scripts/Makefile.lib              |  3 +++
+ scripts/generate_rust_target.rs   |  2 +-
+ 5 files changed, 31 insertions(+), 1 deletion(-)
 
-I haven't prepared for submission, but you can find the current
-changes in test/sound-rust branch of sound git tree (either kernel.org
-or github.com):
-  https://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git/log/?h=test/sound-rust
-  https://github.com/tiwai/sound/tree/test/sound-rust
-  
-Those are over 50 commits on top of 7.3-rc5, and I'll likely rebase a
-bit to rearrange before submission, so beware of changes in future.
+diff --git a/Documentation/dev-tools/kcsan.rst b/Documentation/dev-tools/kcsan.rst
+index 8575178aa87f..3bb8754f844b 100644
+--- a/Documentation/dev-tools/kcsan.rst
++++ b/Documentation/dev-tools/kcsan.rst
+@@ -14,6 +14,9 @@ Usage
+ KCSAN is supported by both GCC and Clang. With GCC we require version 11 or
+ later, and with Clang also require version 11 or later.
+ 
++Rust code is instrumented as well on architectures whose Rust target supports
++it (currently only x86_64; see ``CONFIG_HAVE_KCSAN_RUSTC``).
++
+ To enable KCSAN configure the kernel with::
+ 
+     CONFIG_KCSAN = y
+@@ -121,6 +124,10 @@ the below options are available:
+ 
+     KCSAN_SANITIZE := n
+ 
++  Note that ``rustc`` rejects linking crates built with and without KCSAN
++  instrumentation, so ``KCSAN_SANITIZE`` and ``KCSAN_SANITIZE_<target>.o``
++  cannot currently be used for Rust code.
++
+ .. _"Marking Shared-Memory Accesses" in the LKMM: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/memory-model/Documentation/access-marking.txt
+ 
+ Furthermore, it is possible to tell KCSAN to show or hide entire classes of
+diff --git a/lib/Kconfig.kcsan b/lib/Kconfig.kcsan
+index 4ce4b0c0109c..f0096e1c8b61 100644
+--- a/lib/Kconfig.kcsan
++++ b/lib/Kconfig.kcsan
+@@ -10,6 +10,13 @@ config HAVE_KCSAN_COMPILER
+ 	  For the list of compilers that support KCSAN, please see
+ 	  <file:Documentation/dev-tools/kcsan.rst>.
+ 
++config HAVE_KCSAN_RUSTC
++	def_bool RUST && X86_64
++	help
++	  rustc only accepts -Zsanitizer=thread for targets that declare
++	  support for it; of the kernel's Rust targets, only x86_64 does.
++	  Elsewhere, Rust code is not instrumented.
++
+ menuconfig KCSAN
+ 	bool "KCSAN: dynamic data race detector"
+ 	depends on HAVE_ARCH_KCSAN && HAVE_KCSAN_COMPILER
+diff --git a/scripts/Makefile.kcsan b/scripts/Makefile.kcsan
+index 19f693b68a96..01af6fd71006 100644
+--- a/scripts/Makefile.kcsan
++++ b/scripts/Makefile.kcsan
+@@ -24,3 +24,16 @@ kcsan-cflags += $(call cc-option,$(call cc-param,tsan-instrument-func-entry-exit
+ endif
+ 
+ export CFLAGS_KCSAN := $(kcsan-cflags)
++
++ifdef CONFIG_HAVE_KCSAN_RUSTC
++# The minimum supported rustc's LLVM supports all of these options.
++rustc-param = -Cllvm-args=-$(1)
++kcsan-rustflags := -Zsanitizer=thread \
++	$(call rustc-param,tsan-compound-read-before-write=1) \
++	$(call rustc-param,tsan-distinguish-volatile=1)
++ifndef CONFIG_KCSAN_WEAK_MEMORY
++kcsan-rustflags += $(call rustc-param,tsan-instrument-func-entry-exit=0)
++endif
++endif
++
++export RUSTFLAGS_KCSAN := $(kcsan-rustflags)
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 0a4fdd8bd975..78f1c23e54be 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -98,6 +98,9 @@ ifeq ($(CONFIG_KCSAN),y)
+ _c_flags += $(if $(patsubst n%,, \
+ 	$(KCSAN_SANITIZE_$(target-stem).o)$(KCSAN_SANITIZE)$(is-kernel-object)), \
+ 	$(CFLAGS_KCSAN))
++_rust_flags += $(if $(patsubst n%,, \
++	$(KCSAN_SANITIZE_$(target-stem).o)$(KCSAN_SANITIZE)$(is-kernel-object)), \
++	$(RUSTFLAGS_KCSAN))
+ # Some uninstrumented files provide implied barriers required to avoid false
+ # positives: set KCSAN_INSTRUMENT_BARRIERS for barrier instrumentation only.
+ _c_flags += $(if $(patsubst n%,, \
+diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+index 7687b0dd5474..4b02bffa6b46 100644
+--- a/scripts/generate_rust_target.rs
++++ b/scripts/generate_rust_target.rs
+@@ -231,7 +231,7 @@ fn main() {
+         }
+         ts.push("features", features);
+         ts.push("llvm-target", "x86_64-linux-gnu");
+-        ts.push("supported-sanitizers", ["kcfi", "kernel-address"]);
++        ts.push("supported-sanitizers", ["kcfi", "kernel-address", "thread"]);
+         if cfg.rustc_version_atleast(1, 91, 0) {
+             ts.push("target-pointer-width", 64);
+         } else {
+-- 
+2.56.0.385.gd3acb90ef8-goog
 
-The commits begin with a few Rust kernel changes for fixing and
-addition for the sound support, including the PM support from Beata
-Michalska (just took what have been posted), followed by ALSA core
-abstractions for the card, PCM and controls.
-
-Then it continues to the implementations of 3 actual sound drivers for
-PCM/control: the dummy driver (with platform and hrtimer), and the
-ens1370 and intel8x0 drivers for PCI devices to be run on VM.
-
-After that, the extension to USB abstraction follows, including the
-isochronous support patches by Colin Braun, and then the USB-audio
-driver implementation (that can run on an actual bare metal), as well
-as the USB runtime PM support.
-
-
-BTW, until now, I haven't planned for any serious consideration to
-merge Rust stuff yet.  Partly because the above was a pure experiment
-for me, but another big obstacle is that the whole Rust C binding is
-limited to built-in vmlinux.  With a distribution kernel maintainer
-hat on, this is absolutely NO-GO -- we really want to avoid built-in.
-(Graphics is a kind of exception nowadays because of boot support,
-though.)  Can this be worked out soon...?
-
-
-thanks,
-
-Takashi
