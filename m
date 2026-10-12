@@ -1,214 +1,148 @@
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93024477F1;
-	Mon, 12 Oct 2026 08:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E2E44A708
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 09:22:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791793092; cv=none; b=O4KmJNYowMghFiijWS4t9cbDT0Zkw6glwuRB5jNklfYA+UsdsO6cAqSMdZVmu1updF0mjfNw9NWHYIm2xyeuvV2iQPLIIHBl/h9z2Ih6Wu4GfpHEsgWAc6ZkfF2wxaT1tq+3G3Va8MVV+hzQpeV8lWKM7TA+nipkXkQ/pZCbdXw=
+	t=1791796938; cv=none; b=BCu9dPCKVF+lavJ7rtmDUiR51qnEDC7XDW11iLXR163nLzIr648evbXlpjBNDOIzodNBvmbcTRqXd+FW15Rg+k1Pbpar0BIHLFlhSyA5EDKncX4XFNkdmWao6DZ7XHnrdxV09WPCmTX4qWe09iXAxHmexIbkOA5SAzsHEvbGFEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791793092; c=relaxed/simple;
-	bh=z/lN3bdEWK4vKXWPBUIZM295/d1FC17NSqu8RfgoQkI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bWW/HjZRdQg6zRFzKeO2tTY3bdSydz2zqjCqpCBeZLtLI8APJ26DD5iRnZOdEVoRzrVSmng5MO18hhauDIXO4ijARILb1EwbQtiNLQGuquSNZCrw9cEHnzwwQecPAE3kfnlEny8R2wXsB4J7DRL6n9TMmr3bCB1mCAmhH35Od0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=b0/65HId; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1791796938; c=relaxed/simple;
+	bh=qZdH4O7AYhrATR5UPQCOt1R0Dm2794679njvxbHtNZs=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=diR/68FcBiWRp4XEZ2Pt8uYPYvU7bNWXXLhBP2hKMsgQfivkf7gN4YAHDIHHLIDrjEe1R2O8LJeP5leUZm/NcU1yapkd7acP8PEsYMm9/zLPOOyeEYS7hKPQUcnXynknas8uHLQ0y+WpjDl/IC4J8UZuIZkcGU473run0Z+3ec0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M9FE6G7p; arc=none smtp.client-ip=209.85.218.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="b0/65HId"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4j39MJ4NJ3zKpDj;
-	Mon, 12 Oct 2026 10:18:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1791793084; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AorKVAymubQ0em8KS7yftkf1mZWNaB5OzkWMcun9Dsk=;
-	b=b0/65HIdkmGeeRlNauoUzK9EsuMqwLdNZ+YnkFvrpO1RcvO7vmhcILZugMIspOUrWdWRB6
-	2boupsKeI5QieNxavknH6QpntGV9SPsi3OsHNPfUCWW+KLNQy3omRuJOiKh9/MPlmYBxpO
-	/q9Xw/aN3F13tXodL3vsFCYV8wB0zD8UnvsBncgvIvaiyBBxhhV6JyRayagFo6C54+7up8
-	8/PENomwXjcYCnvwIWYKdE+lqmptRdJApbSEGcHl7SC/DJkKWiymxixPEjZNywn0k+CC3K
-	ABiwTvQVZnrDAAr1MC7xnEqTCQKIGGQPqtFDlwcQXgKJWLfi0+NXlNW/sVrRrg==
-Message-ID: <48e62f95f7c3bd5515d0b0d83971346056837403.camel@mailbox.org>
-Subject: Re: [RFC PATCH v5 0/6] rust: Add drm::JobQueue
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Daniel Almeida <daniel.almeida@collabora.com>, Philipp Stanner
-	 <phasta@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Sumit Semwal <sumit.semwal@linaro.org>, Christian =?ISO-8859-1?Q?K=F6nig?=
- <christian.koenig@amd.com>,  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,  =?ISO-8859-1?Q?Bj=F6rn?=
- Roy Baron	 <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg	 <a.hindborg@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Tamir Duberstein	 <tamird@kernel.org>, Alexandre
- Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=	
- <work@onurozkan.dev>, David Airlie <airlied@gmail.com>, Simona Vetter	
- <simona@ffwll.ch>, Boris Brezillon <boris.brezillon@collabora.com>, 
-	John.harrison@igalia.com, da.gomez@kernel.org,
- linux-kernel@vger.kernel.org, 	linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, 	rust-for-linux@vger.kernel.org, Janne
- Grunau <j@jannau.net>
-Date: Mon, 12 Oct 2026 10:17:57 +0200
-In-Reply-To: <F09C7397-AF97-4947-89D5-759498BCF7B0@collabora.com>
-References: <20261009191124.1022902-2-phasta@kernel.org>
-	 <F09C7397-AF97-4947-89D5-759498BCF7B0@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M9FE6G7p"
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c25edb54d22so215606666b.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 02:22:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791796935; x=1792401735; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Pr1oOrP9lLyuo1XWNgakeB/AtMIvjuEaKOp04OdVG9s=;
+        b=M9FE6G7pm8+JQd7clGgJSMQMsHxG4FcsTzhC7xf8q/wAea2vSXvhl3dQ6rmF7y9t3F
+         Svbsbadms2mVaXgv7cURU42AiwopSy2H7beGohRfrPZKw9qfYpgXQIK+jbzEtsKXb/G3
+         zYTXqrrL2GlXQXL3jx7d9d8TTwYkv+awzRYxjdAiwIkKiffSsFyjzzHs0Yt+v/Dmaftr
+         pakbLAcECSxNWlPtK7/cu7mFhMMcxyc24Qhkz1q4esMDKLcu34y3KUDrf4aLaKcYT249
+         gwA/irJQwwkEdHLxkR8yh/Wn6Gqlw6Ix/CBZg7dpE96m9vRF4d734BpQM9qnXnJ5NVYD
+         gGYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791796935; x=1792401735;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Pr1oOrP9lLyuo1XWNgakeB/AtMIvjuEaKOp04OdVG9s=;
+        b=huOCDEkDmWfwSRGK45QMl+NHTt/0NZdtdPZqEh90su9WV5rVJ5NO66PGydUNUGk0Bv
+         maFdD4dE+TI/FyTquzY7VNWXFVCZ7DxVxKfC/haw443/Ss/uP2IyG9/meap0k64UNxsD
+         jUCqawLe4+9CttzH3SaBH8ACCBWucpKvAwVTVpXWR6N7KfzOmZZ6eVbIi/ne129vGI32
+         C/yN5K6wwRTsrTUUUd9jF2U2ETG3elrI7qK9U6DPzk4qNMK6/l4y3CQUjuY9HJLznKe+
+         XtTkD+ADKN591whs2uxNRLLRy77MTcGxet0sLIYZcrh1NtcJCFbLyHPtw4kG2XPP/nBS
+         VKGw==
+X-Forwarded-Encrypted: i=1; AKwUvBxjmVkr9txOxUiRz+C+229v/HxyDRZMp67iPCrCHxjJOiQKiA38ii9DQxV1wlKfhm3wItfZOGkwGwBdBoHWnQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYI3yNIeR/fEJixG85BDG0Oql92y4SQH9S6NUtDsnRiGeKDsAVgL
+	Tj+QS5XfC2byvIUAD0yE0yLs1DRXsgJk5aTzIcGJ87WetjI8HyFtgXaSmOg/Fg4GJEZgqGldP/z
+	gMRyZJGPg2DRbsRUclQ==
+X-Received: from edgi18-n2.prod.google.com ([2002:a05:6402:a592:20b0:6b1:d06e:c41d])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:4007:b0:6b1:bc9f:8ff9 with SMTP id 4fb4d7f45d1cf-6b1bc9fbad6mr2241822a12.19.1791796934924;
+ Mon, 12 Oct 2026 02:22:14 -0700 (PDT)
+Date: Mon, 12 Oct 2026 09:22:05 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MBO-RS-META: qbp939n4yhzmrx5bq3xkb6exkanmqfnw
-X-MBO-RS-ID: 15191c5d53db699b10a
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIALymzGoC/4WNTQ6CMBBGr0Jm7Zi2yp8r72FYSDuUJsCQVquG9
+ O5WLuDyfcl73waBvKMAl2IDT9EFx0sGdShAj/fFEjqTGZRQlRRSol2fcUZP2YuEHMkPE7+w7Es
+ lTF01TUuQ5dXT4N57+NZlHl14sP/sP1H+1r/JKFFiq4Xu1cnUZ9FeLbOd6Kh5hi6l9AWvxMlIv QAAAA==
+X-Change-Id: 20261011-gpuvm-reserve-overflow-5b520d76889e
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2158; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=qZdH4O7AYhrATR5UPQCOt1R0Dm2794679njvxbHtNZs=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqzKbAZCxgbuvZpmzhGqCkC+sxMkw/LXH8lC89s
+ sFjPoV/2hCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCasymwAAKCRAEWL7uWMY5
+ RgoGD/9etRZnhqzgz4+aTvIsG5m4qctxSa/0Jc0d4vNdp+pVJVCoB7mzqZKsEx4FcdqcBH1yibL
+ xDx/r4o9rS2J5/fs1iRdK5hlHbmRwgSeSJQ7tjroVofepWKRvffMc8OPptts9JPZuARG/tHBOjO
+ sLqoKfdhs0IfMZ24Vk+h22l9+K2vNrlL8GWKlbhj2morTQUohh2bjhY0VsWIqwTQ9jdNb5+/VsP
+ RvP4sP0kbFmczBwp2iCue3WHMppqaPrzIep+8+xnINKJZd7vxhQEtdjQqdGmN3obDbEQNuYI8Up
+ b2X0F6dLw9iHZ2Qq9Uxb0VlwNkgqIe/+gMVSxHHZwkBSo8Qe5oZBcsQ7qgy7zHO8qJqmBv2FDO5
+ 4XevzMinvfWp7xNV0SGOp2mkuJ3tNJV1FZBoos/YFUDfbF/0C68y5PMpWbKBfn6X3EYVAw6Een/
+ k8+IFUvx92Ct1FubBoPL0rIW08/+I1tU+ku9At+BUoSdSPxAfU+syYvWu8HBC9e42RU0aOKfmy1
+ 5HUaakBQjOmFtDYzknjjEr8VVZzkoBIXacN1Z20Vrk20dqvVMAcahmWt/yYUPF3hiZhoOPhWwlt
+ ew/BoLBNIXjMCx3/19vUL2Ov+C+cmQCwjd393SaECGXLfMd9paXYbRuRShn8+XztT7EcSmXYQOT BFfZxCBC1bPwdbw==
+X-Mailer: b4 0.14.3
+Message-ID: <20261012-gpuvm-reserve-overflow-v2-1-519ef15e2172@google.com>
+Subject: [PATCH v2] drm/gpuvm: skip setting kernel_alloc_node range on overflow
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	"=?utf-8?q?Thomas_Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	stable@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-+Cc Janne
+When the reserved VA range overflows in drm_gpuvm_init(), insertion of
+kernel_alloc_node is skipped, leaving its vm pointer NULL. However,
+va.range is still set to a non-zero value, which causes drm_gpuvm_fini()
+to dereference the NULL vm pointer when removing the node. Thus, only
+initialize kernel_alloc_node's address and range when the overflow check
+succeeds.
 
-On Sat, 2026-10-10 at 21:22 -0300, Daniel Almeida wrote:
-> Hi Philipp,
->=20
-> > On 9 Oct 2026, at 16:11, Philipp Stanner <phasta@kernel.org> wrote:
-> >=20
-> > Changes in v5:
-> > =C2=A0- Add back the Revocable<JobQueueInner=E2=80=A6> from my earliest=
- RFCs. Reason
-> > =C2=A0=C2=A0 is still the same: JQ dropping while dependency fences sig=
-nal could
-> > =C2=A0=C2=A0 deadlock. Similarly, this solves a dependency kicking of t=
-he work
-> > =C2=A0=C2=A0 item again while drop() is running.
->=20
-> Can you expand a bit on this? IIUC the problem is introduced by trying to=
- take
-> the jq lock on signal? If so, this could be avoided by queuing the worker=
- from
-> that path instead?
+Note that this fixes unsoundness in the Rust GpuVm::new() abstraction:
+passing a backwards reserve_range (start > end) when overflow checks are
+disabled causes `end - start` to wrap around, triggering the overflow in
+drm_gpuvm_init() and dereferencing NULL when the GpuVm is dropped.
 
-That's a good point, but I'm not entirely sure if it would result in
-well-defined behavior in Rust. Let's say we design it like this:
+Cc: stable@vger.kernel.org
+Fixes: e6303f323b1a ("drm: manager to keep track of GPUs VA mappings")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Collapse the two if statements into one.
+- Add Cc: stable.
+- Link to v1: https://lore.kernel.org/r/20261011-gpuvm-reserve-overflow-v1-1-9c0cb23d7409@google.com
+---
+ drivers/gpu/drm/drm_gpuvm.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-struct JobQueue {
-  inner: Lock<JobQueueInner<=E2=80=A6>>, // <- contains job lists with dep =
-wakers who want to start 'work'
-  work: ScopedWork, // <- tries to access 'inner'
-}
+diff --git a/drivers/gpu/drm/drm_gpuvm.c b/drivers/gpu/drm/drm_gpuvm.c
+index d1c80ad3dead..8e74d171125b 100644
+--- a/drivers/gpu/drm/drm_gpuvm.c
++++ b/drivers/gpu/drm/drm_gpuvm.c
+@@ -1126,13 +1126,12 @@ drm_gpuvm_init(struct drm_gpuvm *gpuvm, const char *name,
+ 	gpuvm->mm_range = range;
+ 
+ 	memset(&gpuvm->kernel_alloc_node, 0, sizeof(struct drm_gpuva));
+-	if (reserve_range) {
++	if (reserve_range &&
++	    likely(!drm_gpuvm_warn_check_overflow(gpuvm, reserve_offset,
++						  reserve_range))) {
+ 		gpuvm->kernel_alloc_node.va.addr = reserve_offset;
+ 		gpuvm->kernel_alloc_node.va.range = reserve_range;
+-
+-		if (likely(!drm_gpuvm_warn_check_overflow(gpuvm, reserve_offset,
+-							  reserve_range)))
+-			__drm_gpuva_insert(gpuvm, &gpuvm->kernel_alloc_node);
++		__drm_gpuva_insert(gpuvm, &gpuvm->kernel_alloc_node);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(drm_gpuvm_init);
 
-Now:
+---
+base-commit: a90ee4305c4a5df72c11b31dacfdc76e00fcf78a
+change-id: 20261011-gpuvm-reserve-overflow-5b520d76889e
 
-JQ drops -> jq.inner drops -> takes lock -> iterates over jobs,
-deregistering all dep fences
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-Simultaneously, a job that the iteration has not yet reached gets
-ready, schedules 'work'. The Workqueue backend runs 'work' right away,
-it starts spinning on Lock<JobQueueInner>
-
-Dropping of jq.inner releases the Lock around inner. Thus, now the work
-item can take the lock, right when 'work' is about to drop and, thus,
-before it could be canceled.
-
-So this would be UAF, wouldn't it? Correct me if I'm wrong.
-
-I still use the system_wq (will be changed, TODO). Could we solve the
-problem with the right drop order if we have a distinct wq?
-
->=20
-> > =C2=A0- Do not call run_job() with a lock held, since run_job() might s=
-leep.
-> > =C2=A0=C2=A0 AFAICS, this also makes the proposed XArray solution impos=
-sible and
-> > =C2=A0=C2=A0 demands that we use a list.
->=20
-> Can you expand on this a bit?
-
-That run_job() might sleep was AFAIK proposed in our workshop at LPC. I
-think it can't allocate because of the fence critical section path,
-though.
-
-Anyways, we have to borrow a job to the driver in run_job(), but
-simultaneously we cannot / should not hold the lock of the data
-structure (no matter whether XArray or list or ringbuf) in which the
-job resides.
-
-So what you effectively have to do is take $DATA_STRUCTURE's lock, pull
-out the job, release the lock, call run_job() to borrow the job, and
-after running take the lock again to update the data structure.
-
-AFAIU this issue was what you were describing in our workshop when you
-were trying to protect xarray's tip-job with a distinct lock?
-
-
-Note in my last patch that this opens up a race path with
-jq.complete_jobs() which we want to address, but that is solvable.
-
->=20
-> > =C2=A0- Re-add the earlier credit-count-system, so that run_job() is
-> > =C2=A0=C2=A0 infallible. Simplifies the design quite a bit. (Danilo)
->=20
-> What is AGX=E2=80=99s position on this? IIRC, this credit system could no=
-t represent
-> their submission model exactly, like it can for others.
-
-Let's ask them :)
-@Janne, WDYT?
-
-[=E2=80=A6]
-
-> > 1.
-> > I believe that callers of jq.new_job() and jq.submit_job() do not need
-> > an outer serialization mutex. Reason is that JQ serializes with its
-> > internal lock. Sequence numbers cannot take over older seqnos because i=
-t
-> > is submit_job() who sets the seqno.
->=20
-> I guess this makes sense, so long as submit_job() doesn=E2=80=99t take &m=
-ut self?
-
-It can be &self now. Earlier we wanted `&mut self` to enforce locking
-by the driver, but as I said I don't see a reason for that anymore.
-
-> >=20
-
-[=E2=80=A6]
-
-> > 2.
-> > I, furthermore, believe that a driver will not need to hold a
-> > driver-lock while calling jq.complete_jobs_up_to_seqno().
->=20
-> In tyr, we hold _no_ locks.
->=20
-
-Huh? I understood that very differently at LPC. My understanding was
-that you had to work hard to get around locking issues between driver-
-lock and JQ-lock.
-
-
->  The driver signals the fences, and this will
-> enqueue the worker thread.
-
-That is not our intended design anymore, because we want the Job to
-hold the DriverFence, the JobQueue to hold the FenceContext, and the
-JobQueue to hold the jobs.
-
-Thereby, the DriverFence's data: T is also the Job's data: T, which IMO
-is the only thing that makes sense, because the job's data is what will
-be relevant for the fence backend_ops, and, therefore, is what needs to
-be protected by the RCU grace period (see above).
-
-The consequence is that jobs are to be completed with sth like
-
-JobQueue::complete_jobs_up_to(seqno: u64, state: Result)
-
-
->=20
-
-Thanks for your input, appreciated!
-
-Philipp
