@@ -1,20 +1,21 @@
 Received: from linkmauve.fr (linkmauve.fr [82.65.109.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7031D4DE720;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701384D4871;
 	Mon, 12 Oct 2026 19:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791834747; cv=none; b=paZ1JDFySXGyTcOs/THxbYi5Sw1fPNXF3LL0ZkqP1vUamVPCBn/tVQLnGQPeb8nAoQ02ZVL1n0P93dtonaDQ6Uqg9H7xkFP4LJ5d/j5ltOxO3MiHWTmVch916hFhgp53k/mFXT3yMVFWleSG+wXfgfli1J7W2HKbZ8qGeWdGcKA=
+	t=1791834748; cv=none; b=XyvNsT1AEPoc8878wACZ1Fe3TCQvwJ8DCbWTeJ2TE+pt4t0qi+MJiOhIPOm+Ta0XFVWsNUV4/5L/qZxjmFQzTSe2r5thteuT6rQlIC+2XCb4CYq+pARG2WaREF6/EJBKAM4DE1PKv0qQHQlxgKf4t/4MnR9x48MRHDqSb1tfJOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791834747; c=relaxed/simple;
-	bh=GbHzRCvJ23VBbQd++Hm/+p/9qBqgUKEezUL9PKFi1T0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fZuJ4bF7NpGhUV+pt4SfUxYYIbP5uNBG9+vOgRaPXg2kJAmq+KI9SRuE70vJqecPx6FosfcQtFyml8FA0bhs+Uzdasxca8vVcqVQUKw+R6FB7lfTiU3qvGtO0ELbOQaPL7XQ1xeC6HG5DZ7EMM0KZKIkMguyQHzo2i6BH0xN7ck=
+	s=arc-20240116; t=1791834748; c=relaxed/simple;
+	bh=2Zjm6BZDvKO6SHZVAkCsxH/TywQRjnavCRzQi35j4IM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UTr33yMCWxpiuBDw682zTfNrAdNYeJp8yn/On+7ZrsODbTxJzrqUgGSmWdPkmXsQOIEvRxlclG1TX8WjtTEyimIQaxcTZypWBRKEzOzVCzac3AclTC2KW0yo6fiJZUiD1qlM2LJdzWZvphuPXaSV0iE1k1a21esCLLD9uOBm/Ck=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
 Received: by linkmauve.fr (Postfix, from userid 1000)
-	id 1AC0F71FB393; Mon, 12 Oct 2026 21:52:16 +0200 (CEST)
+	id 2515A71FB39B; Mon, 12 Oct 2026 21:52:16 +0200 (CEST)
 From: Link Mauve <linkmauve@linkmauve.fr>
 To: Srinivas Kandagatla <srini@kernel.org>
 Cc: Link Mauve <linkmauve@linkmauve.fr>,
@@ -64,17 +65,18 @@ Cc: Link Mauve <linkmauve@linkmauve.fr>,
 	linux-arm-msm@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v7 0/3] nvmem: migrate to const void * in reg_write
-Date: Mon, 12 Oct 2026 21:52:07 +0200
-Message-ID: <20261012195213.875403-1-linkmauve@linkmauve.fr>
+Subject: [PATCH v7 2/3] nvmem: core: deprecate reg_write callback with reg_write_const
+Date: Mon, 12 Oct 2026 21:52:09 +0200
+Message-ID: <20261012195213.875403-3-linkmauve@linkmauve.fr>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261012195213.875403-1-linkmauve@linkmauve.fr>
+References: <20261012195213.875403-1-linkmauve@linkmauve.fr>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 This callback used to take a mutable void * for no reason, which causes
@@ -83,105 +85,147 @@ by the callback.
 
 This was found while drafting the nvmem-provider Rust abstraction.
 
-Thanks to the guidance of Andy Shevchenko, this now introduces a new
-callback and deprecates the existing one, with the goal of renaming the
-new one into the old one once no user remains in the kernel.
+Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+---
+ drivers/nvmem/core.c           | 26 +++++++++++++++++---------
+ drivers/nvmem/internals.h      |  1 +
+ include/linux/nvmem-provider.h |  6 +++++-
+ 3 files changed, 23 insertions(+), 10 deletions(-)
 
-Changes since v6:
-- Link to v6:
-  https://lore.kernel.org/rust-for-linux/20260920111000.2404131-1-linkmauve@linkmauve.fr/T/
-- Rebase on top of linux-next 20261012, which had a few changes in
-  core.c.
-- Drop the fourth patch, the COMPILE_TEST fix, since it was unreviewed
-  and can go into its own series.
-- Fix a potential bug found by a bot, in the reported name of the
-  dev_warn().
-- Add the collected Reviewed-by tag.
-
-Changes since v5:
-- Link to v5:
-  https://lore.kernel.org/rust-for-linux/20260804135940.2378737-1-linkmauve@linkmauve.fr/T/
-- Add a dev_warn() when registering a nvmem driver with a deprecated
-  reg_write callback.
-- Add a fourth patch enabling COMPILE_TEST on three more nvmem drivers,
-  which forgot to depend on that config.
-- Remove a few unneeded (void *) and (const void *) casts in core.c.
-
-Changes since v4:
-- Link to v4:
-  https://lore.kernel.org/rust-for-linux/20260726131724.15299-1-linkmauve@linkmauve.fr/T/
-- Rebase on top of linux-next 20260803, the previous series didn’t apply
-  any more due to changes in core.c.
-- Also convert the at24, at25, eeprom_93xx46 and m24lr drivers to the
-  new reg_write_const callback, these were missed because they got moved
-  to the nvmem directory in linux-next between v3 and v4.
-
-Changes since v3:
-- Link to v3:
-  https://lore.kernel.org/rust-for-linux/20260716142415.28718-1-linkmauve@linkmauve.fr/T/
-- Drop Apple SPMI patch, which had already been independently included
-  in linux-next as 7089170e1df160f5f8fb395bc5aa2e2697b4e896.
-- Reword the cover letter’s subject.
-- Reorder the meson firmware patch before the other ones, so that every
-  commit is always working correctly.
-
-Changes since v2:
-- Link to v2:
-  https://lore.kernel.org/rust-for-linux/aljAqBNVXV1aVJqx@luna/T/
-- Rebase on top of linux-next/master.
-- Fix logic error which made all devices read-only.
-- Remove a blanket cast of function pointers to void * in
-  apple-spmi-nvmem (patch 3).
-- Also fix constness of write buffer in firmware: meson, which is used
-  exclusively by meson-efuse (patch 4).
-- Re-review all changes to make sure the passed types are more correct
-  than they were before.
-- Actually test with COMPILE_TEST, which I forgot to enable before…
-
-Changes since v1:
-- Link to v1:
-  https://lore.kernel.org/rust-for-linux/20260715175229.24672-1-linkmauve@linkmauve.fr/
-- Removed all changes to other subsystems than nvmem.
-- Added a new reg_write_const callback instead of changing the exisitng
-  reg_write.
-- Deprecated the existing reg_write callback, it will get removed once
-  all users in the kernel will be done migrating to the new one.
-
-Link Mauve (3):
-  firmware: meson: pass a const buffer to meson_sm_call_write()
-  nvmem: core: deprecate reg_write callback with reg_write_const
-  nvmem: make all reg_write callbacks take const void *
-
- drivers/firmware/meson/meson_sm.c       |  2 +-
- drivers/nvmem/apple-spmi-nvmem.c        |  4 ++--
- drivers/nvmem/at24.c                    |  6 +++---
- drivers/nvmem/at25.c                    |  4 ++--
- drivers/nvmem/bcm-ocotp.c               |  8 ++++----
- drivers/nvmem/core.c                    | 26 ++++++++++++++++---------
- drivers/nvmem/eeprom_93xx46.c           |  6 +++---
- drivers/nvmem/imx-ocotp-scu.c           |  6 +++---
- drivers/nvmem/imx-ocotp.c               |  6 +++---
- drivers/nvmem/internals.h               |  1 +
- drivers/nvmem/lan9662-otpc.c            |  6 +++---
- drivers/nvmem/lpc18xx_eeprom.c          |  6 +++---
- drivers/nvmem/m24lr.c                   |  4 ++--
- drivers/nvmem/max77759-nvmem.c          |  4 ++--
- drivers/nvmem/meson-efuse.c             |  8 ++++----
- drivers/nvmem/qcom-spmi-sdam.c          |  6 +++---
- drivers/nvmem/qfprom.c                  |  6 +++---
- drivers/nvmem/rave-sp-eeprom.c          |  6 +++---
- drivers/nvmem/snvs_lpgpr.c              |  4 ++--
- drivers/nvmem/sprd-efuse.c              |  6 +++---
- drivers/nvmem/stm32-bsec-optee-ta.c     |  2 +-
- drivers/nvmem/stm32-bsec-optee-ta.h     |  4 ++--
- drivers/nvmem/stm32-romem.c             | 10 +++++-----
- drivers/nvmem/zynqmp_nvmem.c            |  6 +++---
- include/linux/firmware/meson/meson_sm.h |  2 +-
- include/linux/nvmem-provider.h          |  6 +++++-
- 26 files changed, 84 insertions(+), 71 deletions(-)
-
-
-base-commit: 4eb2586bd40db27d77cc5b724ca9386ed0c71d53
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index 7d4cce8e2742..df36ad5e9695 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -71,7 +71,7 @@ static int __nvmem_reg_read(struct nvmem_device *nvmem, unsigned int offset,
+ }
+ 
+ static int __nvmem_reg_write(struct nvmem_device *nvmem, unsigned int offset,
+-			     void *val, size_t bytes)
++			     const void *val, size_t bytes)
+ {
+ 	struct nvmem_operations *ops;
+ 	int ret, wr_ok;
+@@ -81,14 +81,17 @@ static int __nvmem_reg_write(struct nvmem_device *nvmem, unsigned int offset,
+ 	if (!ops)
+ 		return -ENODEV;
+ 
+-	if (!ops->reg_write)
++	if (!ops->reg_write && !ops->reg_write_const)
+ 		return -EOPNOTSUPP;
+ 
+ 	ret = gpiod_set_value_cansleep(nvmem->wp_gpio, 0);
+ 	if (ret)
+ 		return ret;
+ 
+-	wr_ok = ops->reg_write(nvmem->priv, offset, val, bytes);
++	if (ops->reg_write_const)
++		wr_ok = ops->reg_write_const(nvmem->priv, offset, val, bytes);
++	else
++		wr_ok = ops->reg_write(nvmem->priv, offset, (void *)val, bytes);
+ 
+ 	ret = gpiod_set_value_cansleep(nvmem->wp_gpio, 1);
+ 	if (ret)
+@@ -309,7 +312,7 @@ static umode_t nvmem_bin_attr_get_umode(struct nvmem_device *nvmem)
+ 	if (!nvmem->read_only)
+ 		mode |= 0200;
+ 
+-	if (!ops->reg_write)
++	if (!ops->reg_write && !ops->reg_write_const)
+ 		mode &= ~0200;
+ 
+ 	if (!ops->reg_read)
+@@ -346,13 +349,13 @@ static umode_t nvmem_attr_is_visible(struct kobject *kobj,
+ 	struct nvmem_operations *ops = rcu_dereference_raw(nvmem->ops);
+ 
+ 	/*
+-	 * If the device has no .reg_write operation, do not allow
+-	 * configuration as read-write.
++	 * If the device has no .reg_write or .reg_write_const operation, do
++	 * not allow configuration as read-write.
+ 	 * If the device is set as read-only by configuration, it
+ 	 * can be forced into read-write mode using the 'force_ro'
+ 	 * attribute.
+ 	 */
+-	if (attr == &dev_attr_force_ro.attr && !ops->reg_write)
++	if (attr == &dev_attr_force_ro.attr && !ops->reg_write && !ops->reg_write_const)
+ 		return 0;	/* Attribute not visible */
+ 
+ 	return attr->mode;
+@@ -904,7 +907,7 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
+ 	if (!config->dev)
+ 		return ERR_PTR(-EINVAL);
+ 
+-	if (!config->reg_read && !config->reg_write)
++	if (!config->reg_read && !config->reg_write && !config->reg_write_const)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	nvmem = kzalloc_obj(*nvmem);
+@@ -960,6 +963,7 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
+ 
+ 	ops->reg_read = config->reg_read;
+ 	ops->reg_write = config->reg_write;
++	ops->reg_write_const = config->reg_write_const;
+ 
+ 	nvmem->owner = config->owner;
+ 	if (!nvmem->owner && config->dev->driver)
+@@ -994,8 +998,12 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
+ 	if (rval)
+ 		goto err_put_device;
+ 
++	if (ops->reg_write)
++		dev_warn(&nvmem->dev, "Usage of reg_write in nvmem is deprecated, please "
++		                      "migrate to reg_write_const.\n");
++
+ 	nvmem->read_only = device_property_present(config->dev, "read-only") ||
+-			   config->read_only || !ops->reg_write;
++			   config->read_only || (!ops->reg_write && !ops->reg_write_const);
+ 
+ #ifdef CONFIG_NVMEM_SYSFS
+ 	nvmem->dev.groups = nvmem_dev_groups;
+diff --git a/drivers/nvmem/internals.h b/drivers/nvmem/internals.h
+index bc7a99f5aefb..14243d44815d 100644
+--- a/drivers/nvmem/internals.h
++++ b/drivers/nvmem/internals.h
+@@ -12,6 +12,7 @@
+ struct nvmem_operations {
+ 	nvmem_reg_read_t	reg_read;
+ 	nvmem_reg_write_t	reg_write;
++	nvmem_reg_write_const_t	reg_write_const;
+ };
+ 
+ struct nvmem_device {
+diff --git a/include/linux/nvmem-provider.h b/include/linux/nvmem-provider.h
+index 6063fe5b7784..e944530999b4 100644
+--- a/include/linux/nvmem-provider.h
++++ b/include/linux/nvmem-provider.h
+@@ -20,6 +20,8 @@ typedef int (*nvmem_reg_read_t)(void *priv, unsigned int offset,
+ 				void *val, size_t bytes);
+ typedef int (*nvmem_reg_write_t)(void *priv, unsigned int offset,
+ 				 void *val, size_t bytes);
++typedef int (*nvmem_reg_write_const_t)(void *priv, unsigned int offset,
++				       const void *val, size_t bytes);
+ /* used for vendor specific post processing of cell data */
+ typedef int (*nvmem_cell_post_process_t)(void *priv, const char *id, int index,
+ 					 unsigned int offset, void *buf,
+@@ -93,7 +95,8 @@ struct nvmem_cell_info {
+  * @root_only:	Device is accessibly to root only.
+  * @of_node:	If given, this will be used instead of the parent's of_node.
+  * @reg_read:	Callback to read data; return zero if successful.
+- * @reg_write:	Callback to write data; return zero if successful.
++ * @reg_write:	**DEPRECATED** - please use reg_write_const instead.
++ * @reg_write_const:	Callback to write data; return zero if successful.
+  * @size:	Device size.
+  * @word_size:	Minimum read/write access granularity.
+  * @stride:	Minimum read/write access stride.
+@@ -128,6 +131,7 @@ struct nvmem_config {
+ 	struct device_node	*of_node;
+ 	nvmem_reg_read_t	reg_read;
+ 	nvmem_reg_write_t	reg_write;
++	nvmem_reg_write_const_t	reg_write_const;
+ 	int	size;
+ 	int	word_size;
+ 	int	stride;
 -- 
 2.56.0
 
