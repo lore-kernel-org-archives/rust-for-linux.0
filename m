@@ -1,132 +1,117 @@
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6469CCA4E
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 05:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A4427FD74
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 05:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.173
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791781819; cv=pass; b=jx+e5EervGrOcLyt5gvhPZsWtatycZxU5EcNRvG5z8sqxgz/Ua4aGaA2qoWCDeEETkouU/zby2TDfetmX/wyZcsdfJaTuYNd/+BJ8GpV1niUc+mrFmCcmHzLzyqz4pRCWl4o/DCKnQ/ueghhc3V0la6mrfdkke7e8VPD2ppu1vk=
+	t=1791783745; cv=pass; b=ZvJfj8GYocZFgAwqOGQKA3Tvy6lV5AsWatbq9CeS9jpeSuJrV1uffyzY1sAY4lfn/YuQmTXtitcI2xuIC+ZD6nHSxd700lwuLMshympDPWbtY1YfSrZsovO5cbTRHOfCHnnjktVuYYNgwGHKJfE0j8Ol3VReU60Pw623qjhAhiI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791781819; c=relaxed/simple;
-	bh=Jsd3T2hjnvl243+w6J1SRDGT60HX/0ppGEwueKKSe/U=;
+	s=arc-20240116; t=1791783745; c=relaxed/simple;
+	bh=6LL1a/xp3TkYG1GpP8CMecojNv/eyeWnnOqmxx/wOvk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I5/COTRfbxeGXZE+nancvZktCI/jr7DczV2B/CAJgcQae5VTgiqTa/EAOjsMr4wIxaBhV5JotMah8cA1DJZjeNcN0ea09WJA+EjcWe4tKw9/wH68NnWpfDtCfYYmA0koY430qUIpk1mDNOxtYLEAAxlbNj9n/Ud/PvPe5yWlvBc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hMQxCCKD; arc=pass smtp.client-ip=74.125.82.180
+	 To:Cc:Content-Type; b=Z8Nrl7YAljJIGZq9Ecown9U8ygdbODWf2+vXEaIcLuVq/MiEZXjpfbdeArkCSSM3yfv8B9sGri4CNidWnP+wz5hF0aJ0cXA068MlAvNZ8+JU8fsU2RKYHDVndejRWOmKeofC1HwUyp3iWA0SpX+S4yZuKPUvGU/CkbxFuWapwpY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LLRseE7S; arc=pass smtp.client-ip=74.125.82.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hMQxCCKD"
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-313bab9cfe7so146381eec.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 11 Oct 2026 22:10:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791781816; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LLRseE7S"
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-3535dd9a601so106583eec.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 11 Oct 2026 22:42:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791783743; cv=none;
         d=google.com; s=arc-20260327;
-        b=JZDq93fCXT4vw6VemgrgzQViAPk7W8FtcXDbtH7MF7MovF8RyDr/r9sCs9119NCdds
-         wr5y/jzuLrfhCUg46djrHZAe40b1UFo+ogZNUxrw7vEY+QYsnyBc2/Sh5UBfCM6VdW9g
-         vTty/yyQ0OKiLKBtXnp+KLunERxqKo+GW+KGzDOHxv5RdfXjVSnB/9OwxRLZTxdc5E9v
-         jBNRq/LhPn044uUwwD7l+cZT7iS07CVA3H/ZWu4L9l914a8GiAWp3hgMKbTB3V4si7hq
-         dK7GYbWzpL6sG825Mf8CCxMp5DvMuT5oXUvUD/68xwPg1rvFM5rjJJI82Kj7nf4NKqRT
-         1Ydg==
+        b=CEkmWRYNRyrc0TLUNs6a982OaDDqTlFtwphssuaH11iBRi0bQgx83r9xftwmCs0bY1
+         gkS13XEvjPQqVKNoVlNH/1VD2rYZRBA89nnrlhZLsIV4cp58cpVRhKIaLoUdAxwtYYgf
+         0Bxp4COwBuvd+ZqNYSbTCQ/yzmUO1aWbFIgiCHWFouCQLPiu4z1MGcEZ0QMbYMApbV3g
+         vvZi5MUNo3LqgEUmUqSnhBIMLSlzAOIjtY1zIBmvofIN412mlTYm0LjBt/hHgklwylWB
+         t0PTdgeBEqau7nj6wibUrYEnM2rXGAyhliIPQcAlJ0j4kHcBWfRKov+d77OxPdoo/0V+
+         NoeQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=X8MIw/22Vrj04Q0rO0vVGzttNISASYLhkJUm2E7UKC0=;
-        fh=I5i0UdqQ4Zqp/3kd/ZQnRkXfDGgOEcXGHylJIGGxTxc=;
-        b=msBuYXwjhP/jI5EqrFRK5HZOwyOyXvD2sTtqYmwioAsjVDoWYkY2dSvk7LQ8dz/UYw
-         Rs3ObH2m5z5fkW5MI0PKiFJdsliWKkeZvVHpcwkBzoPVMVH4h3Uwnzp8ZzgStI9BRpt4
-         mIgMR7tzLAF2dyj2K/urmyvFN0x/yHLFDlw0hC/O4afjovXwhHL9wPNHon69Mu4c2SfA
-         Vj/vLwWl2P1P3lO9N34yiSUQIMAfDh19JyuuPIAZlOd8Ty86oXJi6agu3alMpwDjXLYm
-         fPpuanGblyFEMG1Lt3VFZuM9FcsRpAsW6u8Ryx9f94zHb2l9KUDd03bbl6HgZ0Cen6e7
-         IEKw==;
+        bh=tO0Gj6J7SxgSnTqcFChLQGBhVeV6b8Pa8VP8hJKaoBI=;
+        fh=K0slhjL2IAeLBC4oI7n3vwjhXnoI72VF+CPb3eTrWz0=;
+        b=cLUTUYTfEk9DsyuaP6gxPj8l2NMqr33+baCsZwcLu5l9MeLxoZQSDzyWvdYmF90+CW
+         ubU5AJU2QnwLS7CByjwiEVScdx6uMU08mtQCz/LlOj7iZ91VJf4Midp9oLauBiQCtSAy
+         5o5LA4a1B2fjO/1VBOk4hEoGZvHS5st/xkCUq1xO7FnKTjebNjyt2jnl4z4n/Or3YA9w
+         u95px458YjgbeunhTm9TbyJ47Vnn8aRHR+eKFuR/jgP78vtGb3wOTmfTbuRK/1Wi5Xfy
+         nF1mLfSxisvwXCmcc0U6KfKwavOM7iJoGMt9ZMrjyyATIRksl6Zxt/5r+YrYjwLtlHV9
+         KI5Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791781816; x=1792386616; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791783743; x=1792388543; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=X8MIw/22Vrj04Q0rO0vVGzttNISASYLhkJUm2E7UKC0=;
-        b=hMQxCCKDDGw+AnLPylMR7C+k/E6QpJrWxSycxdgcD9+MEko7f+CnkxAhHjgC2HFA2o
-         tHf91GUaeihmMDixe90QrYrn0Z8dqBGWsusurRGnRMvrhIPVuCdZ9VfxtyPOCzh6bGCP
-         QsVZ+HJiMXgPCTrScE46C5gw1vLUgTiLkyirix4ovVSDQTasvZ+tzwvM6+ZSMlYvL0lQ
-         QLapyi0h+p8lNqdXWefV21qwPvHZOYV716/WjZNCFiV2sIayNu4ZgxvrKHtZ7FNQ6AGB
-         85w8eCmfrmfSLaGLDtEA7B8V1wLv4LNEQB40GG0Z9xnTfsEiuIHA2jpkRhCbT764cfOY
-         jq6A==
+        bh=tO0Gj6J7SxgSnTqcFChLQGBhVeV6b8Pa8VP8hJKaoBI=;
+        b=LLRseE7SDIUy0zgcoGUGvbU9dYSDNbSVLVe+QSEFGspJrlmf1Tm7dbjdRWIwjXv83V
+         uwjhvrgZd8SskmHIN+/0KFFYPS9fKxhjZ/0fJmcoEfZxezp/cBP6alqUzCj34+YGLK8R
+         kZSnOk2Rn725feMEbcxPRJrb2RomkWQbCLKPdkAYksaIfPlu2WYCJc62x7Xv7pvkWM3d
+         VT8CDbmdfv0MJABPYP0zXrEKUU7i5imjr56/bYssN8epe0AVXoPbyf/TjnFvj9QlEpHH
+         RUZZVQn6P7c//M9eS7fuaeu5Uo4DBUfctVulDSz93eSLpPpBHWe0xA7v35x9cc/LD07k
+         L0xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791781816; x=1792386616;
+        d=1e100.net; s=20260707; t=1791783743; x=1792388543;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=X8MIw/22Vrj04Q0rO0vVGzttNISASYLhkJUm2E7UKC0=;
-        b=WrBhLXjas7y4s1ofUECevohEau2lXyvn+Gfv4zWg93igTSeMkhVjJjpBIaIHO0rAXe
-         e7u3k4wghBPhWj9BHm7hGYxPNzJLCxJK+Ry129YImkUB5jOqQ5eRVTUfJC0AJSuvjnBC
-         1mC9XeVPiqeKSGoTvlO4ljcFa4fbLcEs8IQsqr8gTKzjXrsMwaMR/avaAHsy2sw7c+JA
-         J+LEH7VybzAMv/clZ1c6YGX0vEGPckO7hBS916BrofwR1DNerc50XeFnXGoeNGmqCENd
-         UZftAKNVuxV0OQVhryJNrmk6I6Sud4Vv6QsAemzGyVus4w0lKiuWp2odZPX/AwyN+ge2
-         VLTg==
-X-Forwarded-Encrypted: i=1; AKwUvBzTIzhIoiRam0MuXaGyxyn0xJcDGZ2psxz9IXfdnAR4Pe5CUkIauh9kv4SmgvbzPRm0mzcWSunWw7opotvfog==@vger.kernel.org
-X-Gm-Message-State: AFq9FYLTku4PFrGCZ90yibAo5BJepKycAZXA5eGP6PNhSGx4Mv777Ynm
-	rsn52ycrREJB91rwt8lCJqe/dZXsTvnxvN9M6bjpzFoVVnaY0+Y98TlvfInLKkFoJSlogCcGpBZ
-	xvXcWndL6YwrxcigruTzq2ke9jYUsFXE=
-X-Gm-Gg: AYBFou1AcmPjgRsq5w54bvhK4xfo5Z9hTqRVnRESOyJkPYm+6uXzOn9DFFL/AgMQT7s
-	qmbcBjMM7Lwk2m4xRZ3bquZymh0cJlkyhbsWsoE7/sM8ia+YQJ50CzdUDVbCyQVrzTPbe+pQH6Z
-	Ze9bVLq4nRvOHHtFuqpCp5gQVDZpNG4CuwplqFvfDG9DqYPZc0vuxk/RCRLeINZxJeA0EzIQZZq
-	ui6JYmqpNnNdTJbWbQxjNYMyHtWT6+k1QW+RUJGBFMBog9zlwUflVb+xB1IjZvUlKYHkdTbOwH4
-	CwDP7Gf+Dr1lmA0WIMGknC++uT5mQiBUBJHHjE0jzCGZSUHHJ6mGFHFu/MX41uuu7V8zQX66yzU
-	9AeC/CXLPdUQ/jSmYhpS63wwuE4gdtOhghIB4wio85P80S3UZ/kJuhqYSqHBG2XuObXeha2/1m0
-	PLoaH3Mr9aLyAUG8S4/B9cjqLe/WSl9QVaZho057PCB8STSTaTlcbe
-X-Received: by 2002:a05:7300:f3c8:b0:351:7883:bf47 with SMTP id
- 5a478bee46e88-3537dc8e9c0mr19543281eec.0.1791781816392; Sun, 11 Oct 2026
- 22:10:16 -0700 (PDT)
+        bh=tO0Gj6J7SxgSnTqcFChLQGBhVeV6b8Pa8VP8hJKaoBI=;
+        b=Z8GYqhCFxBXlBBlHFJIJ9ZlHNESaQGDKo7qXrF0rzaz1qCFTmbitUSkAeVDm4plmtP
+         zuwYjnn2fbObDBN5w0xZF9uFaIUEtZMqsu8a/0P43wrCURw1EuE762IcyEGSSrVuY1LQ
+         aU+TOebSx/T3HOHuW73xHe/GCDigkCSidZa4K2OcNnycCyDlnZIf6a/TTSJ0J633/4ZT
+         3rAmGyobhCh6nhlu6wTXQUzx8SfGU0DQ30XLwvCmvKLjUvZCd5hZc46TwLBhChqY9zM+
+         E1XiE9T3O/IltMMJWzrEwlg0W9uQVtj6oHKgrxhI6lOX6iu5/DkDzkrB7OOjq0adv/uX
+         nieA==
+X-Forwarded-Encrypted: i=1; AKwUvBzp9si2xwLxrZ1d5DtvEYv57hyHss+M7bm+XBHAq6GVqTANRacb+T+5ZKqrETWcLQcKezYXGJW1Zh+Zs3LFsQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJEkHxOmc0qDV3oJ8ORG16Ph7q2lsRIi2KghXYuZQ17E7RjvIZH
+	5StiUj79KA7LbqH8A/1zePyp8rmZOk2Z1mt0g7LhRKrBS94noqkWK+Y2wXOlnBNk/SPSJfsg8rI
+	t/uWSerToUCy8qyjI/GUCHS0f3AogfkM=
+X-Gm-Gg: AYBFou32miTPf0ZM0qxSr4OBCV+HCDbPFrbHxlEW0AWbXisDxBGsvEfrSUAd5mZm8Mh
+	gBrP6mR6BM3rDLB7hLt8u99R/aRFMYbrOGQ20MD3xbezq+xYCiNC913+Y1w6f3d0aFI2jNhjpRB
+	mOJuwzwYXGsKb0fh+9oYIwdgRvIV5+7dMTXRvy4wRseS/4n4OB/oANcOLHd4HFAx4S4fMiX6Oit
+	kzIPGqcM1PeH1vBNMsk3roTS0E1guUUn5uuKysbYk1E8x7JBrimsMFPm1+nzsO/g+lo3y+PMnZx
+	BCU9QF2S11siakt9pAmaJwXb19BQ1AHn5UNpI+Ffc+IQmBCMbgts/gpEEG0+l/7JEBRfYdLAd69
+	O1OC6HHVEi4XJ5kIjW0SBBTgteMVxJZLpVHk02Bqzc88XX7qpoIceiuRHswz/rBp1p0/S6A5bs/
+	WuzEkHQi7sQ7LEvn7VldiWO/wNxMGLNs8JCe0to4ftBsHlg9U1C1w=
+X-Received: by 2002:a05:7300:d18a:b0:340:f698:fd56 with SMTP id
+ 5a478bee46e88-3537e04365dmr19355936eec.2.1791783743309; Sun, 11 Oct 2026
+ 22:42:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261007-pr-ratelimited-v6-0-f14accd4ea3b@google.com>
-In-Reply-To: <20261007-pr-ratelimited-v6-0-f14accd4ea3b@google.com>
+References: <20261002050428.2746277-1-tomo@flapping.org>
+In-Reply-To: <20261002050428.2746277-1-tomo@flapping.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 12 Oct 2026 07:10:03 +0200
-X-Gm-Features: AclHuK-Bo9taeBjxP17FN4p4L1pLyEmLZ22aTNxXFsCT_jeXK5HxzXpnPIQBRGw
-Message-ID: <CANiq72=+wYHy-DhWNAxek2jXmbmW7_wh2EH1SLT7yqJxygokkg@mail.gmail.com>
-Subject: Re: [PATCH v6 0/4] Rate limited printing for Rust
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Lyude Paul <lyude@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Trevor Gross <tmgross@umich.edu>, 
-	Waiman Long <longman@redhat.com>, Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
+Date: Mon, 12 Oct 2026 07:42:09 +0200
+X-Gm-Features: AclHuK8QxxeaTvf_HCT9o-2EsD6x53Y-J31HTLBBlbKcrB7C31SxiuwHgP27Vsw
+Message-ID: <CANiq72=Qhu4tEbujQk9gVTpNxwgRYCEfeQNrAYMrb4et0L+7ug@mail.gmail.com>
+Subject: Re: [PATCH v8 0/4] rust: use Delta instead of raw jiffies for
+ timeouts and delays
+To: FUJITA Tomonori <tomo@flapping.org>
+Cc: a.hindborg@kernel.org, aliceryhl@google.com, arve@android.com, 
+	boqun@kernel.org, brauner@kernel.org, cmllamas@google.com, gary@garyguo.net, 
+	gregkh@linuxfoundation.org, ojeda@kernel.org, tj@kernel.org, 
+	tkjos@android.com, acourbot@nvidia.com, anna-maria@linutronix.de, 
+	bjorn3_gh@protonmail.com, dakr@kernel.org, daniel.almeida@collabora.com, 
+	frederic@kernel.org, jstultz@google.com, lossin@kernel.org, lyude@redhat.com, 
+	sboyd@kernel.org, tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu, 
+	work@onurozkan.dev, rust-for-linux@vger.kernel.org, jiangshanlai@gmail.com, 
+	markus.probst@posteo.de, FUJITA Tomonori <fujita.tomonori@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 7, 2026 at 4:30=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
+On Fri, Oct 2, 2026 at 7:06=E2=80=AFAM FUJITA Tomonori <tomo@flapping.org> =
+wrote:
 >
-> To avoid DoS on the kernel log, the Rust Binder driver is being switched
-> to rate limited printing. But before we can do that, we must first
-> implement rate limited printing for Rust. Thus, do that.
->
-> However, it turns out that before we can implement rate limited
-> printing, we must first implement the ability declare a raw_spinlock_t
-> in a global variable. Thus, do that too.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>   rust: time: make Delta::ZERO generic over the time unit
+>   rust: time: add Delta::as_jiffies_unsigned()
 
-Applied to `rust-next` -- thanks everyone!
-
-    [ Used the "kernel vertical" imports style. - Miguel ]
-
-    [ Removed unused link reference definitions. On the `static`, allowed
-      the `non_upper_case_globals` lint so that `kernel` users (and users
-      providing their own name) do not warn. Reworded title for typo.
-        - Miguel ]
+Applied as requested to `rust-next` -- thanks everyone!
 
 Cheers,
 Miguel
