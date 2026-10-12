@@ -1,91 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB420493D50
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 14:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A698A48C8CE;
+	Mon, 12 Oct 2026 14:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791816646; cv=none; b=Mgt+hgKgFJUFdXndNPUNaA1MQv6nKqSphHrwGj74iN3T5tPqTSDVCyzavizQhKIs4raCsktNS3nsKgJwjJqWQ2NidIe3+KIUTiDAB3TWorrIJB/II8MuiiB927v2STjo76dvaBmEwPfaDhZbWaKLwNib2xvUVMseDYwP1chSBzs=
+	t=1791816766; cv=none; b=YlkfKJ3KlsAG0OE1ARV6HRcxATm79MGVMqEa/NBapFe2UCd6TNCnANo77dZJYNV3XLchdyTwH2/PgNrCFtAG/bLst3Rnn08d14S0l7Pk7hJ8ie41xVsaMMHcthkcGjBEkY1f6gtqA1BOJT5I7VjHitUTJP+a/Nxy4/GCQPWPGB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791816646; c=relaxed/simple;
-	bh=9/a4GtDSJgIKnq+PHDcdGLyfvIsIi6jNZ2Wj3gemz9U=;
+	s=arc-20240116; t=1791816766; c=relaxed/simple;
+	bh=IleSOSNkSFAO9MhUZ0KKM8eTKL6/bDq63SCpXAlXqmU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uqkFtZIOaT91WF7u/C5FyKS7eSL3C1mggT0F8Ew7ZD4Mz7jOxZsudV88bX6m/9+0o/gLOMx5kV5+4fJCtyvQNq4Y+cFHcyOu2JUlqn0yTesSts+bfZ2AzoDAQd2Ld8jKSKDejfoBAgLEH3UhYyUt/bUshLBL24TKHAT8hxXhBQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IEgrSBYa; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=bsbtMU04p/60uL3YV6D89atWz+n/9dCfp+bidPqb+LVXnkU4Cjf23wPMGC6fmEiv8H6Pe4AVUWB2Kjwt9I5oFWUDfypBEFFuTnWPOAxRRpnxw/4oNmg9Xyx7hm+QSwiBS+8sggtu84cwIkp3K4JPzBxzHPhyikXCYdxY2NTSvKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HSVxTkFO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IEgrSBYa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D3E1F0089D;
-	Mon, 12 Oct 2026 14:50:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HSVxTkFO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8961F0089B;
+	Mon, 12 Oct 2026 14:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791816644;
-	bh=OnMHe5dXcqTc5v2OsRfJDhhba3wwXmp+sAVt9h94tR0=;
+	s=k20260515; t=1791816763;
+	bh=++9/kUt44kAUgHENKZc+rwCY2UCiq7Jqb/ANO3lupso=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IEgrSBYa/Cu+FGu4IXUohks7fiOVrMl9oGd+cC+cRLt9nk90c/LtRrC7OsVEzeL+p
-	 3oGtXt1PSVmvO5piuRlp/6/wWGZgVS/9tgDt2GlrT1yLGtZCgprfX93EN3Ctk40gQj
-	 B0gEsbCNQ/nES4hllcCOWhff8viaq8woPbX/YMeq8ZoVVrLgAKt5zPw3+OEl8TJXMa
-	 vdQv/eWb5ff8mPSpM2gucGm944UHJCgoZbKtScc430qd+bC2IWX4Exa3pqzRvNoVpq
-	 Ny1cW9DMGtkImCRHkpesBAHqEJtQgy3WyGjXPcKeabIAO+GKxLgFYRdIH/uJstc87H
-	 4QtB/XrJFdb+g==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D38D1F40068;
-	Mon, 12 Oct 2026 10:50:42 -0400 (EDT)
+	b=HSVxTkFOyak1+9V3vwKcDUyTRL1TKOR617BBD8k5GFmRXY+TbCZrIU+72FXhnuFlc
+	 OzOIGB3eJ8iXNIR1orYDS5BLsHZMDEz01fl3XfwJ+XxzzIs3SlHhRO2bLMCW4dDNyE
+	 T3vPWLdgPHJ4yVOM4kSKbk0E1WMSp27xEXTmWG0YPZ2hFLT+mb/71fsQXEYtkLq/JK
+	 ovEBAqdL/0Ty7MSeD6IB7R1lua5FOS0LabXl1bv50OGhvAJNU/Ptj9OLBJw2vD4x0Q
+	 3E2TeSySXmAOSwX1ym4XwoH1VRRnX+u/7sY5DZ8tv0QmaiAM6jif46suGU3nSamhda
+	 dEZIojbrENgWw==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id D52F4F40068;
+	Mon, 12 Oct 2026 10:52:41 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Mon, 12 Oct 2026 10:50:42 -0400
-X-ME-Sender: <xms:wvPMalFsBQ5YGdMWYxVa6QIC6pwu3hgFyIeNuTALRvJVjxkuyrJgrA>
-    <xme:wvPMah08Q6gQDvvS_7OH7WF3E-VxJwfYsa7kzUjbYoObG75N-J8-N8gjS0ylYmABP
-    J6suPrHXr9eQRiGx90oUzkKsCDqM2sha2vMa_8PX93FSFocl8aEF6qa>
-X-ME-Received: <xmr:wvPMatO8AidNv5JLhkEME9vBnyml-fYf5xZ1-1IBKx_4wZqV6Ia58fxStaN3l1NaItcQBHsv6Ym7OlC7jKb1Y7v8kGnsn-I5>
-X-ME-Proxy-Cause: dmFkZTEJ5fBHj3ZE/whec/dIgXoSMWDPDe2NuyMizwmDQk/pueXv6evpgNyw+I0Gh43Blh
-    I4M5VA/i04E9vIzksBOxpmPwjlx+0vm2O2jxHpWuotQr4QwBx4yhEnwv+0mco2N3V4OfBV
-    OPWz8IZGDF95dze9i4BTU4aBJuuvecc9JQNmYbcrkJYmmm2ClQQ3sraLBQA48WMMkX2d6a
-    J0KuEGF9necxhBEPOwCVcnIMeQQXK8Q2sowCEW3buLPpNvH32Mi72AamY9MoCuq5ox2Zrs
-    MDPWJl7tyMKyQshVplGIwG5Apx3g9vll4Gq1dBpJIZqoEEBS4rAkzG6cfbcufE4f2KcVk7
-    Zldf/7Kd7FSM2K/X12Ueg4V8KTDSIeTVmkjFYSh40aNl+drp/RQHzR/AbMpyOI7AN48Dn5
-    zH4HoZyu87c1wq+Y52RNHFKEgu3BKA4aaVkvCaC1NmvW1My6uL3L1OajS9q1eJp6Onbm/8
-    wqi8sXsjwUXzOLGULteWtBfJHnbrQEcPxJgZnfai6Kz95WKBchi2w1DApgvxyq+AjhF0A2
-    NjJheitzwRdMC9fMKeMfivLmvjcD+Og8yohp36aa+GUjkPUGfCsjvefBaaPWRPz/9rfruZ
-    puexGXL6DWvqgTblOIa7An7ElJgeYcZtJ8Sm9i7JFqx9PmkCQoovNTsKqjdQ
-X-ME-Proxy: <xmx:wvPMapIBBW5SbsC8JiFGzTK9dBpoP3MaYgptSA_ZmlQzS7DSbICuJA>
-    <xmx:wvPMama40GNRYSWZsOkXRKP0DT6q_gKHQraof0tpCyyvjS2ck3tBxQ>
-    <xmx:wvPMaql6tbQoRjHODBnohohMXHzjeuOJWUYE20iP2pkD8B5lsZ4hpQ>
-    <xmx:wvPMahb6_4NO-FoZFtW8IZotsYU3HyFaCC9jtCEZiOae-PtwWh7qaw>
-    <xmx:wvPMaiDDQEs0VWbkA0JfY8yhf0_bYuH6TfAhV4b8rB53QiAr4lbZ8GIy>
+  by phl-compute-01.internal (MEProxy); Mon, 12 Oct 2026 10:52:41 -0400
+X-ME-Sender: <xms:OfTMajBWKskVBuGg79BTiDfE7EbczDnyxJiPMhj__eBi9N6oN2C-0w>
+    <xme:OfTMarY6pCcWT5d1adHw3hN7BLdRNONuIww05zLVlfQmuRwLtHO1C4cru9gLHUc8b
+    go74c9GnBj0aicJFbZF6apU_VT5ZTNM88LwfAu_4apauS4LaENlTdU>
+X-ME-Received: <xmr:OfTMajPANGzigbKa33CraD4qUnpWrnXG6E8qAgOlFXwB6K8Wd-SwW8E21TJgSBM-TWEd7PpQOnJ_wuEEpoHeLUiYklj28e_z>
+X-ME-Proxy-Cause: dmFkZTGQjzbzJkrc7kB2sAZm2TSI5woc2yhK2Xfz2IIuCAGi5DSZcyK1DRZSIf/kmJRhhF
+    J2uW2YGXri8vW6rG7Ahqs0OIrtoJQYhzqRJkGnMdavN0NUTCtc21sPb9qIqMyYQVnfTfgZ
+    /bXcuUzlHJ0U6IsSizwDu64O66SV/yBX8Cy898G2rViBgiC+1W0BD80G8TuwFhqvSpahI4
+    HJEfkX2GBHV0zJ5Rie2gekpZbMHCpoXfExf+WnnkUDPfjymgZXxx9KXofcUY8nOr3WcCDi
+    +tWKpA9ZVoP+hOKoMRd8eByv4BFox3nlIroHd5V1iaWXVSzCRd2yO7ub+gsD4mSAKElHr7
+    ARJ7mZM0TcpHoLP8JpljAn28/sHET6vNolUrvFmf4NPRgXRvEFvC7Gp3Vn1sCFUv+4JMIf
+    ZJQ3zaPJRZHS1EsvqM6bAX/x38hKdOQAUfPZ7DkH6LZ6ekY+LsT+JJMCM8JqGV8UyJGcOI
+    EXWBzC5saSoFhyLMuZpPcCnikMr7hhjXFX+jYmbyFQW/qxYJhXucD1yQKmBLq1lkfkfcCC
+    bYMs8fEaxNQDVLsq0qAvzB4UaXLWa6Tc7hrvLZiFxdUsgM/2M9YG1QHTXhiQqos2oRiiSk
+    o6To78wEf+rhFVuJB0+SXCun/YWLPmrUeHDpI0rTO2h8/DPErNIF3lRmb6eQ
+X-ME-Proxy: <xmx:OfTMakTwkHOHjoTmqOy8ONA9OkX9jien3EuoRiHvFR_ra6GimNMd6A>
+    <xmx:OfTMaoTaz9TpyOPVskP2VIWl8U9qmTHTlzWZ8KTu-uW67ht9lsekoA>
+    <xmx:OfTMalBDf6NrYowKVLnrh-c1Mc7d1yos6bEW3IrJAaZCYAg9_jKBOA>
+    <xmx:OfTMaiAeyp-M2tDkHAQw9VS7MG90baQijArva_mpQXP6CTCv7e48dg>
+    <xmx:OfTMamzMkMHHdl8okQfas7YL9YFrnuxxtQhqrLrsiSWBUED9XOeVGtdn>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 12 Oct 2026 10:50:41 -0400 (EDT)
-Date: Mon, 12 Oct 2026 07:50:40 -0700
+ 12 Oct 2026 10:52:40 -0400 (EDT)
+Date: Mon, 12 Oct 2026 07:52:40 -0700
 From: Boqun Feng <boqun@kernel.org>
-To: Markus Probst <markus.probst@posteo.de>
-Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+To: Marco Elver <elver@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Gary Guo <gary@garyguo.net>,	Alexander Potapenko <glider@google.com>,
+ kasan-dev@googlegroups.com,	linux-kernel@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>,	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?iso-8859-1?Q?Wilczy=B4nski?= <kwilczynski@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
 	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Ira Weiny <iweiny@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: leds: KCSAN report
-Message-ID: <aszzwEPkfPjAYNLQ@tardis.local>
-References: <20260930-rust_leds-v26-0-83837331020e@posteo.de>
- <20260930-rust_leds-v26-3-83837331020e@posteo.de>
- <ask31EX01lSL9QJ9@tardis.local>
- <81e1aa92ebc389468eb6f493393a1c58a79373e7.camel@posteo.de>
- <aslB3lFUKpMEWOiM@tardis.local>
- <7174e1f95dcbeb8802d9e9c9715afa32784f0c20.camel@posteo.de>
- <aslJ1ISONL9ojP-3@tardis.local>
- <1c414e776b56ae215d2d07b73a384ed4542c963e.camel@posteo.de>
+	Nathan Chancellor <nathan@kernel.org>,	Nicolas Schier <nsc@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,	Justin Stitt <justinstitt@google.com>,
+	Asahi Lina <lina+kernel@asahilina.net>,	Yury Norov <ynorov@nvidia.com>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>, workflows@vger.kernel.org,
+	linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH 1/2] kbuild: rust: enable KCSAN support
+Message-ID: <asz0OM48dedfuQY0@tardis.local>
+References: <20261012134159.912183-1-elver@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -94,217 +90,141 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1c414e776b56ae215d2d07b73a384ed4542c963e.camel@posteo.de>
+In-Reply-To: <20261012134159.912183-1-elver@google.com>
 
-On Fri, Oct 09, 2026 at 10:11:20PM +0000, Markus Probst wrote:
-> On Fri, 2026-10-09 at 13:08 -0700, Boqun Feng wrote:
-> > On Fri, Oct 09, 2026 at 07:59:02PM +0000, Markus Probst wrote:
-> > [..]
-> > > > > > > +/// The multicolor sub led info representation.
-> > > > > > > +///
-> > > > > > > +/// This structure represents the Rust abstraction for a C `struct mc_subled`.
-> > > > > > > +#[repr(C)]
-> > > > > > > +#[derive(Debug)]
-> > > > > > > +#[non_exhaustive]
-> > > > > > > +pub struct MultiColorSubLed {
-> > > > > > > +    /// The color of the sub led
-> > > > > > > +    pub color: Color,
-> > > > > > > +    brightness: UnsafeCell<u32>,
-> > > > > > > +    intensity: UnsafeCell<u32>,
-> > > > > > 
-> > > > > > These should be `Atomic<u32>`, or am I missing something here? Using
-> > > > > > `Atomic<u32>` should resolve sashiko's comment on this patch.
-> > > > > Snippet of the `Atomic::from_ptr` rustdoc:
-> > > > > 
-> > > > > "
-> > > > > For the duration of 'a, other accesses to *ptr must not cause data
-> > > > > races (defined by LKMM) against atomic operations on the returned
-> > > > > reference. Note that if all other accesses are atomic, then this safety
-> > > > > requirement is trivially fulfilled.
-> > > > > "
-> > > > > 
-> > > > > This safety requirement is likely not met if I see this correctly,
-> > > > > because the led subsystem does not use atomic accesses.
-> > > > > 
-> > > > 
-> > > > Then the C side has a data race that needs some fix (or they use
-> > > > READ_ONCE() or WRITE_ONCE() which are *atomic* to avoid the data race).
-> > > They don't use READ_ONCE or WRITE_ONCE.
-> > > 
-> > > Writes to "intensity" can happen at anytime by `multi_intensity_store`.
-> > > It does lock the `led_access` mutex on write. It is not locked on read
-> > > and `grep "READ_ONCE" -r drivers/leds/` has no matches in drivers
-> > > either.
-> > > 
-> > 
-> > I wonder whether KCSAN will report an issue of this (w/o
-> > CONFIG_KCSAN_ASSUME_PLAIN_WRITES_ATOMIC).
-> First of all, thats a pretty noticable performance impact on desktop
-> here. Gotta recompile my kernel very soon.
+On Mon, Oct 12, 2026 at 01:39:14PM +0000, Marco Elver wrote:
+> Rust supports ThreadSanitizer instrumentation via LLVM, which is what
+> KCSAN relies on; however, Rust code is not currently instrumented.
+> 
+> Pass -Zsanitizer=thread and the same TSan backend options used for C
+> code to rustc. Wire up KCSAN_SANITIZE in scripts/Makefile.lib for parity
+> with C (though rustc currently rejects linking crates with mismatched
+> instrumentation).
+> 
+> rustc only accepts -Zsanitizer=thread for targets that declare support
+> for it. Of the targets used by the kernel, this is only possible for the
+> generated x86_64 target specification, so restrict instrumentation of
+> Rust code to x86_64 for now via HAVE_KCSAN_RUSTC. On other architectures
+> Rust code remains uninstrumented as before.
+> 
+> All TSan options used are supported by the LLVM versions of the minimum
+> supported rustc, so no rustc-option checks are needed (they would also
+> fail, because x86_64-unknown-none used for option checks does not
+> support -Zsanitizer=thread).
+> 
+> With this enabled we can detect data races in kernel Rust code and
+> between Rust and C code.
 > 
 
-:) Yes, but it helps find data races. In general, it should run in a
-test environment.
+Help has finally arrived! :)
 
-> Second of all, it does.
-> (Also like every second reports with something else, e.g. vfs, tty,
-> _find_next_bit, btrfs and more).
-> 
-> Reproduced with:
-> - Software to write random values to "multi_intensity":
-> https://gist.github.com/0xIO32/2ec10e7521fc80e96f700e1f6fe219c4
-> - Self-written low-quality multicolor led driver (to not overload real
-> led hardware for this test)
-> https://gist.github.com/0xIO32/1b46b8965a9d52f6e3ec5355c1f054a7
-> - the timer led trigger with delay_on = 1 and delay_off = 1 has been
-> enabled, so there is concurrent access.
-> 
-> Tainted because nvidia drivers, external module: v4l2loopback.
-> Gentoo Kernel, running on desktop. Its on 6.18, but as far as I know,
-> this logic hasn't changed (and fixed would be backported).
-> 
+Thank you for looking into this, for both patches:
 
-Right, so generally, this data races should be fixed (via marked
-accesses [1]). See also [2].
-
-In practice whether these need to be fixed usually depends on the
-maintainers, and back to my original point, we should at least make Rust
-side "data race free" if C side can be treated as "data race free".
-
-[1]: tools/memory-model/Documentation/access-marking.txt
-[2]: tools/memory-model/Documentation/explanation.txt (Section 25. PLAIN
-     ACCESS AND DATA RACES).
+Acked-by: Boqun Feng <boqun@kernel.org>
 
 Regards,
 Boqun
 
-> [  273.080793] Reported by Kernel Concurrency Sanitizer on:
-> [  273.080805] CPU: 1 UID: 0 PID: 4070 Comm: write_intensity Tainted: P
-> O        6.18.54 #1 PREEMPT(lazy)
-> [  273.080826] Tainted: [P]=PROPRIETARY_MODULE, [O]=OOT_MODULE
-> [  273.080836] Hardware name: Micro-Star International Co., Ltd. MS-
-> 7C56/MPG B550 GAMING PLUS (MS-7C56), BIOS 1.K0 09/02/2025
-> [  273.080847]
-> ==================================================================
-> [  275.913835]
-> ==================================================================
-> [  275.913855] BUG: KCSAN: data-race in led_mc_calc_color_components /
-> multi_intensity_store
+> Signed-off-by: Marco Elver <elver@google.com>
+> ---
+>  Documentation/dev-tools/kcsan.rst |  7 +++++++
+>  lib/Kconfig.kcsan                 |  7 +++++++
+>  scripts/Makefile.kcsan            | 13 +++++++++++++
+>  scripts/Makefile.lib              |  3 +++
+>  scripts/generate_rust_target.rs   |  2 +-
+>  5 files changed, 31 insertions(+), 1 deletion(-)
 > 
-> [  275.913883] write to 0xffff8a84e71d1c70 of 4 bytes by task 4067 on
-> cpu 8:
-> [  275.913896]  multi_intensity_store+0x1a4/0x2b0
-> [  275.913912]  dev_attr_store+0x41/0x60
-> [  275.913931]  sysfs_kf_write+0x192/0x1d0
-> [  275.913948]  kernfs_fop_write_iter+0x1cb/0x400
-> [  275.913964]  vfs_write+0x5ad/0x650
-> [  275.913977]  __x64_sys_pwrite64+0xaf/0x100
-> [  275.913992]  x64_sys_call+0x206c/0x24c0
-> [  275.914006]  do_syscall_64+0x89/0x390
-> [  275.914022]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> diff --git a/Documentation/dev-tools/kcsan.rst b/Documentation/dev-tools/kcsan.rst
+> index 8575178aa87f..3bb8754f844b 100644
+> --- a/Documentation/dev-tools/kcsan.rst
+> +++ b/Documentation/dev-tools/kcsan.rst
+> @@ -14,6 +14,9 @@ Usage
+>  KCSAN is supported by both GCC and Clang. With GCC we require version 11 or
+>  later, and with Clang also require version 11 or later.
+>  
+> +Rust code is instrumented as well on architectures whose Rust target supports
+> +it (currently only x86_64; see ``CONFIG_HAVE_KCSAN_RUSTC``).
+> +
+>  To enable KCSAN configure the kernel with::
+>  
+>      CONFIG_KCSAN = y
+> @@ -121,6 +124,10 @@ the below options are available:
+>  
+>      KCSAN_SANITIZE := n
+>  
+> +  Note that ``rustc`` rejects linking crates built with and without KCSAN
+> +  instrumentation, so ``KCSAN_SANITIZE`` and ``KCSAN_SANITIZE_<target>.o``
+> +  cannot currently be used for Rust code.
+> +
+>  .. _"Marking Shared-Memory Accesses" in the LKMM: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/memory-model/Documentation/access-marking.txt
+>  
+>  Furthermore, it is possible to tell KCSAN to show or hide entire classes of
+> diff --git a/lib/Kconfig.kcsan b/lib/Kconfig.kcsan
+> index 4ce4b0c0109c..f0096e1c8b61 100644
+> --- a/lib/Kconfig.kcsan
+> +++ b/lib/Kconfig.kcsan
+> @@ -10,6 +10,13 @@ config HAVE_KCSAN_COMPILER
+>  	  For the list of compilers that support KCSAN, please see
+>  	  <file:Documentation/dev-tools/kcsan.rst>.
+>  
+> +config HAVE_KCSAN_RUSTC
+> +	def_bool RUST && X86_64
+> +	help
+> +	  rustc only accepts -Zsanitizer=thread for targets that declare
+> +	  support for it; of the kernel's Rust targets, only x86_64 does.
+> +	  Elsewhere, Rust code is not instrumented.
+> +
+>  menuconfig KCSAN
+>  	bool "KCSAN: dynamic data race detector"
+>  	depends on HAVE_ARCH_KCSAN && HAVE_KCSAN_COMPILER
+> diff --git a/scripts/Makefile.kcsan b/scripts/Makefile.kcsan
+> index 19f693b68a96..01af6fd71006 100644
+> --- a/scripts/Makefile.kcsan
+> +++ b/scripts/Makefile.kcsan
+> @@ -24,3 +24,16 @@ kcsan-cflags += $(call cc-option,$(call cc-param,tsan-instrument-func-entry-exit
+>  endif
+>  
+>  export CFLAGS_KCSAN := $(kcsan-cflags)
+> +
+> +ifdef CONFIG_HAVE_KCSAN_RUSTC
+> +# The minimum supported rustc's LLVM supports all of these options.
+> +rustc-param = -Cllvm-args=-$(1)
+> +kcsan-rustflags := -Zsanitizer=thread \
+> +	$(call rustc-param,tsan-compound-read-before-write=1) \
+> +	$(call rustc-param,tsan-distinguish-volatile=1)
+> +ifndef CONFIG_KCSAN_WEAK_MEMORY
+> +kcsan-rustflags += $(call rustc-param,tsan-instrument-func-entry-exit=0)
+> +endif
+> +endif
+> +
+> +export RUSTFLAGS_KCSAN := $(kcsan-rustflags)
+> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> index 0a4fdd8bd975..78f1c23e54be 100644
+> --- a/scripts/Makefile.lib
+> +++ b/scripts/Makefile.lib
+> @@ -98,6 +98,9 @@ ifeq ($(CONFIG_KCSAN),y)
+>  _c_flags += $(if $(patsubst n%,, \
+>  	$(KCSAN_SANITIZE_$(target-stem).o)$(KCSAN_SANITIZE)$(is-kernel-object)), \
+>  	$(CFLAGS_KCSAN))
+> +_rust_flags += $(if $(patsubst n%,, \
+> +	$(KCSAN_SANITIZE_$(target-stem).o)$(KCSAN_SANITIZE)$(is-kernel-object)), \
+> +	$(RUSTFLAGS_KCSAN))
+>  # Some uninstrumented files provide implied barriers required to avoid false
+>  # positives: set KCSAN_INSTRUMENT_BARRIERS for barrier instrumentation only.
+>  _c_flags += $(if $(patsubst n%,, \
+> diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+> index 7687b0dd5474..4b02bffa6b46 100644
+> --- a/scripts/generate_rust_target.rs
+> +++ b/scripts/generate_rust_target.rs
+> @@ -231,7 +231,7 @@ fn main() {
+>          }
+>          ts.push("features", features);
+>          ts.push("llvm-target", "x86_64-linux-gnu");
+> -        ts.push("supported-sanitizers", ["kcfi", "kernel-address"]);
+> +        ts.push("supported-sanitizers", ["kcfi", "kernel-address", "thread"]);
+>          if cfg.rustc_version_atleast(1, 91, 0) {
+>              ts.push("target-pointer-width", 64);
+>          } else {
+> -- 
+> 2.56.0.385.gd3acb90ef8-goog
 > 
-> [  275.914043] read to 0xffff8a84e71d1c70 of 4 bytes by interrupt on
-> cpu 3:
-> [  275.914056]  led_mc_calc_color_components+0x87/0xf0
-> [  275.914072]  led_set_brightness_nopm+0x2f/0xd0
-> [  275.914093]  led_timer_function+0x1f5/0x2c0
-> [  275.914106]  call_timer_fn+0x32/0x1e0
-> [  275.914126]  __run_timer_base+0x7b3/0x980
-> [  275.914146]  run_timer_softirq+0x31/0x60
-> [  275.914166]  handle_softirqs+0x157/0x400
-> [  275.914181]  __irq_exit_rcu+0xb9/0x200
-> [  275.914195]  sysvec_apic_timer_interrupt+0x7a/0x90
-> [  275.914212]  asm_sysvec_apic_timer_interrupt+0x1a/0x20
-> [  275.914228]  osq_lock+0x121/0x260
-> [  275.914246]  __mutex_lock+0x172/0xf70
-> [  275.914261]  __mutex_lock_slowpath+0xf/0x20
-> [  275.914278]  mutex_lock+0x9f/0xb0
-> [  275.914293]  kernfs_fop_write_iter+0x11b/0x400
-> [  275.914310]  vfs_write+0x5ad/0x650
-> [  275.914322]  __x64_sys_pwrite64+0xaf/0x100
-> [  275.914337]  x64_sys_call+0x206c/0x24c0
-> [  275.914351]  do_syscall_64+0x89/0x390
-> [  275.914367]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> 
-> [  275.914389] value changed: 0x000000f8 -> 0x00000034
-> 
-> Thanks
-> - Markus Probst
-> 
-> > 
-> > > Writes to "brightness" are on the C-side handled by the driver by
-> > > calling `led_mc_calc_color_components`. This rust abstraction always
-> > > calles it in `brightness_set_callback`. So on the C-side, this at least
-> > > is less of an issue, as writes and reads are controlled by the C
-> > > driver.
-> > > 
-> > 
-> > Thank you for taking a look into this.
-> > 
-> > > > 
-> > > > The general rule is: if C side has a data race, they should fix it, if C
-> > > > side doesn't care ("the compiler should not data race on this code"),
-> > > > then the Rust side treat it as atomic operations. This is the only way
-> > > > to better code regarding data races.
-> > > It probably should use WRITE_ONCE and READ_ONCE, but it also shouldn't
-> > > create any issues if its not used. There is no load tearing on a 32-bit
-> > > integer and memory ordering is not required. Not sure if its worth the
-> > 
-> > I think some people would disagree with you on "no load tearing"
-> > (because data race = UB = anything can happen), but..
-> > 
-> > > trouble changing every existing multicolor led driver.
-> > > 
-> > 
-> > I agree it's probably not worth doing this at the moment.
-> > 
-> > > > 
-> > > > > Ofc, this function won't be used, but I think given that the same
-> > > > > struct is also accessed by the C-side, it should also apply here.
-> > > > > 
-> > > > > Like Sashiko suggests, "core::ptr::read_volatile()" might be a better
-> > > > > option to prevent certain compiler optimizations.
-> > > > > 
-> > > > 
-> > > > No, please don't over-use read_volatile(). The reason that READ_ONCE()
-> > > > and WRITE_ONCE() are safe to use for synchronization is because
-> > > > semantics-wise they are atomic on certain types (if aligned), and the
-> > > > them being volatile is just an implementation detail.
-> > > Ok.
-> > > 
-> > > I will need to make .get_mut() const for this.
-> > > 
-> > 
-> > Sounds good to me.
-> > 
-> > Regards,
-> > Boqun
-> > 
-> > > > 
-> > > > Regards,
-> > > > Boqun
-> > > 
-> > > Thanks
-> > > - Markus Probst
-> > > 
-> > > > 
-> > > > > Thanks
-> > > > > - Markus Probst
-> > > > > 
-> > > > > > 
-> > > > > > Regards,
-> > > > > > Boqun
-> > > > > > 
-> > > > > > > +    /// The maximum supported intensity value.
-> > > > > > > +    ///
-> > > > > > > +    /// If None the maximum intensity equals to [`LedOps::MAX_BRIGHTNESS`].
-> > > > > > > +    pub max_intensity: Option<NonZero<u32>>,
-> > > > > > > +    /// Arbitrary data for the driver to store.
-> > > > > > > +    pub channel: u32,
-> > > > > > > +}
-> > > > > > > +
-> > > > > > [...]
-> > > > 
-> > 
-
-
