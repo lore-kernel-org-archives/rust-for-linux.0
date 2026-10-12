@@ -1,180 +1,124 @@
-Received: from smtpout9.mo537.mail-out.ovh.net (smtpout9.mo537.mail-out.ovh.net [51.210.91.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9BB495501
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 15:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.210.91.28
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791817894; cv=none; b=E+00ES8d4QsjbH0so4K4XLlZg9TSYPbgOiHzvLvbNvJyt02PGB2bQR+oGLIhzJik7GiHY0Y1VrpWG68npxVN/tliyAQxrg/pgiPXcdegcXQEwGdm+FAew1Y1do1wYZ9zmX41Gp7tugLUQKMiMyQmisoS/+dZVGmLQK+TjM1tQrY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791817894; c=relaxed/simple;
-	bh=CPlAnu68KgJG1/Q2pJmORv/Jmj62gE29CTA1Bt1CF5A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BOZyLDUPQIpPTO/r6TZh8qKylMwVq+rcUE34YSDNtYptk5nGDa5XdA/xJIa5hjuLXnJM+q7CYzVtWUGh1RfvUEth3IOxkVv0+xYQhNe3HnWapcAvovACR0jhB69FklSYiynxwP6qhZznLM5021ftFEJYOWZH7byo2o7zfV/+RNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=npnm.eu; spf=pass smtp.mailfrom=npnm.eu; dkim=pass (2048-bit key) header.d=npnm.eu header.i=@npnm.eu header.b=TWi9J4DX; arc=none smtp.client-ip=51.210.91.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=npnm.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=npnm.eu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45894497B8F
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 15:16:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791818166; cv=pass; b=aigmiU0wN3i6e4iDsSruMwYDD2po2nehdXHAceD1Qd4ABZm+alJRVUCoHUsMv2uJUr9Bl5IXMnwsTZGzcl53GITZbVOLUC7Xjhgg1dmAi7PDRiAmOhsjq/Yy2txUVMDUUA1HIMbyLz/nyKGWauf/8UJ6LwI0EjHubh+wd8oHTVA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791818166; c=relaxed/simple;
+	bh=Qh8/jPpdQb1uoYLtiV+P2F0fMSrInIfSg+J+6byfOcI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VtRrmp0eHWMlVavxrdDJQHo7LAulLLhXF8ioIc6dGaETyNllSzG9WLjJX2lMRI8Mt13FKvoXc+JQ4s0AFRKvDb6RbXEEPR9Dg0hzTXy6RDYXDjFI6t7eKMhPqpt751L1mdcUponVi+D2jxU/ITZPSdfmBJwK/lxcGkp3UV/90pI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H0BgTGEn; arc=pass smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=npnm.eu header.i=@npnm.eu header.b="TWi9J4DX"
-Received: from director5.derp.mail-out.ovh.net (director5.derp.mail-out.ovh.net [79.137.60.225])
-	by mo537.mail-out.ovh.net (Postfix) with ESMTPS id 4j3LXG1kPzz49M4;
-	Mon, 12 Oct 2026 15:11:26 +0000 (UTC)
-Received: from director5.derp.mail-out.ovh.net (director5.derp.mail-out.ovh.net. [127.0.0.1])
-        by director5.derp.mail-out.ovh.net (inspect_sender_mail_agent) with SMTP
-        for <lina+kernel@asahilina.net>; Mon, 12 Oct 2026 15:11:26 +0000 (UTC)
-Received: from mta3.priv.ovhmail-u1.ea.mail.ovh.net (unknown [10.110.0.128])
-	by director5.derp.mail-out.ovh.net (Postfix) with ESMTPS id 4j3LXG12Dkz6MbC;
-	Mon, 12 Oct 2026 15:11:26 +0000 (UTC)
-Received: from npnm.eu (unknown [10.1.6.8])
-	(Authenticated sender: laniel_francis@npnm.eu)
-	by mta3.priv.ovhmail-u1.ea.mail.ovh.net (Postfix) with ESMTPSA id BC8B4941F72;
-	Mon, 12 Oct 2026 15:11:22 +0000 (UTC)
-Authentication-Results:garm.ovh; auth=pass (GARM-108S002f470ca45-326a-4bf6-824e-d9953fc7b011,
-                    49321548602EDEEB7E8F78B99E4F89B1D2AE6B16) smtp.auth=laniel_francis@npnm.eu
-X-OVh-ClientIp:149.102.245.162
-From: Francis Laniel <laniel_francis@npnm.eu>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>,
- Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>,
- Asahi Lina <lina+kernel@asahilina.net>,
- Joel Fernandes <joelagnelf@nvidia.com>, Alvin Sun <alvin.sun@linux.dev>,
- Thorsten Blum <blum@kernel.org>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH v1 1/2] rust: add NonEmptySlice
-Date: Mon, 12 Oct 2026 18:11:21 +0300
-Message-ID: <5110602.GXAFRqVoOG@pmachine>
-In-Reply-To: <DM2XOVH1P1FU.2FHNOM9U66YPS@nvidia.com>
-References:
- <20261011191540.56199-1-laniel_francis@npnm.eu>
- <20261011191540.56199-2-laniel_francis@npnm.eu>
- <DM2XOVH1P1FU.2FHNOM9U66YPS@nvidia.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H0BgTGEn"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-8ad98c3fb15so13615817b3.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 08:16:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791818164; cv=none;
+        d=google.com; s=arc-20260327;
+        b=EnNoDCkql+HpSgGSZ3ZJoFM1j6IggyDxY0sctzp25gtob9Z3KHfNH0SMdzQ3KHC7Zd
+         NdCSASOIqsNe2kG4xPvY3F6VLOqyMDr876eK9evICUf6lmM9XR0mEp/6hbvFmaBDTRVi
+         zPecKcuOVmKHZajn/SJFApuka0hbx3b6PyTYiEwwbEop/hcxx2gfUoCNUI/6jRvlZ+Ja
+         GiT9MZBlCjmrcTow+491iFig3mi4XEwZvQttaoPrW0Yx3ZbM38BhI6XP7A7q6CwLYyl2
+         c8oJUI2DgsVNSmii2MV03xe9NAZKJbONBrNPrszORY82QAhYHbZZAZVYE8H7xmkz6l5U
+         Geug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=cioAlEV1QQbacYFfypcvEatBdbBuNNB06BtQiQCYi0c=;
+        fh=ThQjajn1TauNmNKaIIZJcIO0Q04jbjMUiLPCrEfhOPM=;
+        b=rWL/zOCgiHLDkIaGwFlBerSLTqQBQlmFCze8jt6bSG8POiFYHYBlqHQL4Keo0t3ttx
+         NSk0MPx1Zy/EUAoi7UlYDh6jJEjlMJ79+U/5LXWEHxCsiFaoyyexPoo5pm12/Pdy+W6B
+         fBxgEl/6xmZTnEV1CLHFFHIygoHsuiKhqc4gK4cB0HtZ06Foohgvr7O0+BJsensSP9FN
+         kkaKIiwpEILNgH6F2VsLtw6/3n3kADam8qoN3hGT8nPyk/tlGcm+CZKbiev3LFfUdpUH
+         DAmrxZnv1lXBQdeT4QaTsU4PiIxg5GjD5pDELcLGww8v4wpCnS3Jma22Mp7/UbOxhW47
+         as6Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791818164; x=1792422964; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cioAlEV1QQbacYFfypcvEatBdbBuNNB06BtQiQCYi0c=;
+        b=H0BgTGEnjHPsOpry8zM372M3cPbee1W5JIY+k1KGqv8WNzGyYlMWruUcNGXNpqKqHv
+         qAht/Fg1XEZo8JjFRoEHFhUiRD8Q5cYqy8MKiZYc5LQtEbtjmhvyhG/D2J4elSaSnKUV
+         ZM8MXqxhRXUvbFnlIr9rEEaR8zAMYY5wS09xL9mUt1dlIaceViENwfpBgQUtW3eVOGlU
+         pDKwvkrYloE/6nhq3HRdIEjN85hfMhGmgpxKiemxr8Ipgmoo4uHaSrLyQls+oGGVrOtN
+         wPBentZQM0axYBEPhSU6pemvJTTbrMwGD/WXXj/XHgW/LcIPOfUMxG79B8fdKd97k9XK
+         U3Nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791818164; x=1792422964;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=cioAlEV1QQbacYFfypcvEatBdbBuNNB06BtQiQCYi0c=;
+        b=AmcrMVBD5m+Mwu4S2+hUl0D1CmwxztHxuSYdFm+0q57MMid2WpuhnjynQS0j7zooDR
+         pi+Rl3TWUZG+G9zjIRe346siyLKJsD7CA4Y5s/1mlOl6kHTtdEfW2sbC52IChW/Hw1gh
+         F0DRmmfgI+NJcZjC26wwBfW16RwxnJ2YgT8WdXzfrhqL2rVD0gYWqVqJp0f5MniZ/+Ah
+         NzBsybJ0wR3LQ8Cr1EvskQmo5S9jrJxixFwA8eUqZKgDEnNnol7vuSsnClrD0nMCbIVS
+         fSZePBWTaMeB/DF6bql2Q+sSascvB6ncF+EHgpEiIU+JpxDlrM0LNJQioOz2tyNLR/+b
+         gA7A==
+X-Forwarded-Encrypted: i=1; AKwUvBwJ2pybvDONMzCxrg3U7mdiqPL+EHW3l/74vHL6ixrUciW/xNtLJDNgtomOa24uI/7eMtSI/3rTZIU2lON7vw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJBKmfmqPCpCZgZWCBaXjXgZHdI6rB+GBDL9sFdAVvymJt4e70/
+	7b1AGgekE5PzRsV2rNTI2DKvyovfz2eKDqHowc+z69XitFnR6W+CcLz+9VezGc6u5pF5JIlD7P9
+	Oyl1t2Nmd4//JXa3WXpffAry8JfySxD30aKHzTBlJ
+X-Gm-Gg: AYBFou1YVeuvncaIQCjGZhAdV4gSRIsvXMAx1kfD/XzyZfltuuAK1clN6YJAlkXA7cF
+	Wcz5kMb44bgMjYng3inoUgZCvArMIso+8Hd01VsR1kpMtv10bgMQ3t80GLR2ly1R3W2EI8m4YUY
+	wC8aw2OUQWfwepzd0/FSt5m4whg8WJmov0NZWaLHzvxE/fDroXmkHZqr0Z3fiPy8ZdEMNXQD/eb
+	u/E1HSM2qLFtTX9HX08ArmZrTylVayPBM+Spk1xEV0amrFj/L1oFzX+GOIWvSfmae3vogUOvNMB
+	zqe5d6/iTLygsyal8AeA/YucZiAuDRZgwFuqRcT6XjShS0c+QQ6vdA+u553pM0UpEJU/Zf3Z7FU
+	cx0PtarvvlgdMnkrdAWVl
+X-Received: by 2002:a05:690c:f04:b0:8ae:b617:713d with SMTP id
+ 00721157ae682-8b07edfaf6amr35969547b3.19.1791818163556; Mon, 12 Oct 2026
+ 08:16:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-x-ovh-tracer-id: 17914756370403829206
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTF9kbe/x9crAR3MRR44rUkHfU3Bx+kvnEMzS9rjmZeKPQB8xgg7VpgcNb+ANv9U3cKTiPEVovxH+4ne/Ui2OEGGC3+qls/Pe8//+u40UvbQiOI/hqgwfxDyZ5fHlTbi1m5iqBdy5UzlxS+th7hx8gGqO4w0KcrQod8hXG3ZALy8TMazUUUV8Wx/CKgSGh4m6y+kIhvYpb+0eFfZ/zrbiGM7L/zYuOxwyyaiHcI2lFG3TzL6iVYrgdNhjMzvx5nOXGPOGy651DvLcNh34v2lRS88nEvpHPaPbdQcu++2tKf6qXOjX8BIl6ZT8Rne/ztlSJS3HIRrJ7JNZll9zk3W1vKbOX5P5ItmUuX9E4eEmXFhC5XVIvQbdtnOym+4XJohsmleH0mrWgZqBx/SPLRdmBase/1+xjmWSal0B3+PJvMP9C3okWDxAdKe0boCr5j3ln5WPXyeXz3D0I2ZmzbPLVIyMBvLeFl3iYup7BYKPZC+7owisl0vZWvN4ha8trOqlhhZyBDmgn6mPu3cQrvHjq5ACQjrVz5hq2hFg0qRH3RaHgsGm3PBXsUXgpOyaAyA5veAZhAjTMfqJI+nXK6YVKbFU3/4t3uNhWhZDpGoKp+fRprFyzqwXjkXlxqrQw82u7gYZhHwOdhFMxu1JFvwAQPZ/u36Rfoz2/hR+PPixhqhhA
-DKIM-Signature: a=rsa-sha256; bh=h55Ndr1nS/cHrREZaSiFP4v+8EE4HBb66jFaa8FVUSc=;
- c=relaxed/relaxed; d=npnm.eu; h=From; s=ovhmo-selector-1; t=1791817886;
- v=1;
- b=TWi9J4DXlYm2xRXAn1P5wj2pLPpScmAaPGIYUqtTboLEEoVnpB9MRVX8pTftUtBXUN5IKzMc
- BG1bqSPteh+ui+EQuDFo0OspTG8JIVAv+sYoKxKvmUj2B1X+WYCIf202fXO76R8kuPH739khQ7g
- dntnLVjqWwxuBp57hNTSYn7xrpZd0yHtU0uoVbNppm1Cmn+6IZouIEAx4iHDujCYqLVFSNduDVE
- qoXYtsmj1+Hzqx9CGqtFqqc5HozmzMUF/viU2HfxAqmEBFTA8BQXUQlL3Hs8BzkVR0JTkP9a9D4
- STLU0x+pmuj7avym5T3DZSLl97Ky3+TM/0wCY+c/LsSKQ==
+References: <20261012134159.912183-1-elver@google.com> <20261012134159.912183-2-elver@google.com>
+ <CAG_fn=Umb8c1yjp-wEPPFSNXfNdr5UHb5BBd4tV=iwNSehCxxQ@mail.gmail.com>
+In-Reply-To: <CAG_fn=Umb8c1yjp-wEPPFSNXfNdr5UHb5BBd4tV=iwNSehCxxQ@mail.gmail.com>
+From: Marco Elver <elver@google.com>
+Date: Mon, 12 Oct 2026 17:15:25 +0200
+X-Gm-Features: AclHuK-ngdayfpaG9DdBIWGDrVoRKwhiuwWtMtaRRkzMdsYW60BnSKb-GUjELAE
+Message-ID: <CANpmjNPBoS7SUTMVboZPGdgXbhY_sz2LhzZqEU=EPojVWkqWHA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: kcsan: add KUnit test for data race detection
+To: Alexander Potapenko <glider@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Asahi Lina <lina+kernel@asahilina.net>, 
+	Yury Norov <ynorov@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, workflows@vger.kernel.org, 
+	linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+On Mon, 12 Oct 2026 at 17:04, Alexander Potapenko <glider@google.com> wrote:
+>
+> >  rust/bindings/bindings_helper.h |   1 +
+> >  rust/kernel/Kconfig.test        |  11 +++
+> >  rust/kernel/kcsan_test.rs       | 120 ++++++++++++++++++++++++++++++++
+> >  rust/kernel/lib.rs              |   2 +
+> >  5 files changed, 135 insertions(+)
+> >  create mode 100644 rust/kernel/kcsan_test.rs
+>
+> FWIW `make rustfmtcheck` fails for me on kcsan_test.rs
 
-Le lundi 12 octobre 2026, 17:36:41 heure d=E2=80=99=C3=A9t=C3=A9 d=E2=80=99=
-Europe de l=E2=80=99Est Alexandre Courbot a =C3=A9crit :
-> Looks like we are converging towards the series sent by Lorenzo, but
-> wanted to share a couple a quick comments nonetheless:
-
-Thanks for the feedback!
-
-> On Mon Oct 12, 2026 at 4:15 AM JST, Francis Laniel wrote:
-> > Add NonEmptySlice<T>, a [T] wrapper that is guaranteed to contain at
-> > least one element.
-> > This lets methods such as last_mut() return a plain reference instead
-> > of an Option, so callers that have already checked for emptiness no
-> > longer need unwrap() or unwrap_unchecked().
-> >
-> > Suggested-by: Gary Guo <gary@garyguo.net>
-> > Signed-off-by: Francis Laniel <laniel_francis@npnm.eu>
-> > ---
-> >  rust/kernel/lib.rs   |  1 +
-> >  rust/kernel/slice.rs | 76 ++++++++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 77 insertions(+)
-> >  create mode 100644 rust/kernel/slice.rs
-> >
-> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > index 7225abc64084..8cc01aceb3b2 100644
-> > --- a/rust/kernel/lib.rs
-> > +++ b/rust/kernel/lib.rs
-> > @@ -130,6 +130,7 @@
-> >  #[cfg(CONFIG_RUST_SERIAL_DEV_BUS_ABSTRACTIONS)]
-> >  pub mod serdev;
-> >  pub mod sizes;
-> > +pub mod slice;
-> >  #[cfg(CONFIG_SOC_BUS)]
-> >  pub mod soc;
-> >  #[doc(hidden)]
-> > diff --git a/rust/kernel/slice.rs b/rust/kernel/slice.rs
-> > new file mode 100644
-> > index 000000000000..7e467cb952c3
-> > --- /dev/null
-> > +++ b/rust/kernel/slice.rs
-> > @@ -0,0 +1,76 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Slice abstractions to ease development.
-> > +
-> > +use core::ops::{Deref, DerefMut};
-> > +
-> > +/// A slice that is guaranteed to contain at least one element.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// `self.0` is not empty.
-> > +#[repr(transparent)]
-> > +pub struct NonEmptySlice<T>([T]);
-> > +
-> > +impl<T> NonEmptySlice<T> {
-> > +    /// Returns `None` if `s` is empty.
->=20
-> This is not a standard doccomment. Doccomments first start by stating
-> what the function does before explaining the return value.
->=20
-> > +    pub fn new(s: &mut [T]) -> Option<&Self> {
->=20
-> It looks strange to take a `&mut` and return a `&Self`. There should be
-> no reason to take a mutable reference here, and you can use
-> `ptr::from_ref` to create the reference.
-
-Indeed, this sounds weird! I will keep it consistant for future contributio=
-ns.
-
-> > +        if s.is_empty() {
-> > +            return None;
-> > +        }
-> > +        // SAFETY: `Self` is `repr(transparent)` over `[T]`, so the ca=
-st keeps the slice length.
-> > +        // INVARIANT: `s` is not empty, checked above.
-> > +        Some(unsafe { &*(core::ptr::from_mut(s) as *const Self) })
-> > +    }
-> > +
-> > +    /// Returns `None` if `s` is empty.
-> > +    pub fn new_mut(s: &mut [T]) -> Option<&mut Self> {
-> > +        if s.is_empty() {
-> > +            return None;
-> > +        }
-> > +        // SAFETY: `Self` is `repr(transparent)` over `[T]`, so the ca=
-st keeps the slice length.
-> > +        // INVARIANT: `s` is not empty, checked above.
-> > +        Some(unsafe { &mut *(core::ptr::from_mut(s) as *mut Self) })
-> > +    }
-> > +
-> > +    /// Returns a reference to the first element.
-> > +    pub fn first(&mut self) -> &T {
->=20
-> Same here, `first` and `last` should take a non-mutable reference as
-> their standard library counterparts do. They do not allow to mutate the
-> slice.
->=20
-
-Best regards,
-
-
+Oops. I guess we'll make a v2.
