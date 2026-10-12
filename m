@@ -1,119 +1,131 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88208496D4A
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 15:04:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E445749503A
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 15:04:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791817455; cv=pass; b=o94sWfBPRUPa9E1D+PT8Oj2omPDVX64PjMUsR0DaPVqLyqCPOW8n6shx7Zs8UoACzPBTLdPqe6MU1s5wcxj0rHIUzNZH6oR86v1ggVfgGseAYL1KUXcRu8ykTEi7/54cjmxk70innF/PS+b8BzQTvqG+hbnjx9EsH3D8k5bcXjs=
+	t=1791817490; cv=pass; b=eOCma9FNocHMLC137IV4HXSwrJJmSBAbXrBObr1m8+8tsvMNma1vRj0+EZR2mHZRRfovWHERNwEM6Io3gvhN4pFOIDwdJGkUZrnadROpqvo7w0QUKXspTnXBoaY7K0+U5OF8IOQ6s/J9TVNlILw5oLQeknWwOze1haIKJHm8DbI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791817455; c=relaxed/simple;
-	bh=ct2YHHtAR1NATrFfSOMu/0HJEb3d5oH3R82Bkhe1BMs=;
+	s=arc-20240116; t=1791817490; c=relaxed/simple;
+	bh=weLDaF45D5gfbSr+gWQVb1K25MVNkySML0rAhgC7w2M=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BrJO2JywRsBTv+wutKXF4IcS4PlkBfT1YiF5CDWe/nzESSb7voK4bo1W013mmd6Oj9JdAIAcWuMkAP7EYRomK6vdnbRnnbg5KOxqSS+bmPTBPywzxO3CP2GU8dhG0hLWdJqXPPwDj3bhWCq5RRK6yiahLZ3npHKA1d/jsfNlkW0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UQLNkKpx; arc=pass smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=POorDYgKmy5a1VRtXovP51vqLvAd+NkqXyrC2w146H70KRT+8XRiOZJVOIWaY1c8lIAnmIdY/U5BTTgaTIaVBNiIakwsLqGFwvCvprLjvG3ItGCtoisf8Ys+DZz6eQyCsFq2PXN8dyqozBBlBVgTaM3Zl7RCv7wrLB/pCKlOB/I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h2cJcnjo; arc=pass smtp.client-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UQLNkKpx"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-141395927feso3522158c88.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 08:04:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791817453; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h2cJcnjo"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-313bab9cfe7so205415eec.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 08:04:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791817489; cv=none;
         d=google.com; s=arc-20260327;
-        b=h07myS+xaQIPA5qec8mqJSKTBeySlP/KGJmIteqcPdwuWEz33Yipcp/NJwsowibYIJ
-         4exHyeoG0OWpdMTck3QiSu59FT+65NPNhHTvRLOHJO7HWjsDHOm9uiMAwSNe3s5BzYYC
-         klM3xzV0FT0x/d76QsK0Jnx6I+LWiNqNHFCMeJovk5VE+cbI6aOSN9adH5HyiqGvz57s
-         IulLL+UyJ/gRt0eV3KBNXSF3f7+QHZQitrpDWVTdj896r+L0Fx/VHgz+Z2U56x4hVwYL
-         iPHBT1i1P4Zo0Igpa6HVH/YPx082CadHhEGY70sBlMEjNy7SXEhX4tUu7c1CvsD0OGHt
-         nGjw==
+        b=Cg3Uzdi7gNHwQYxNBAyHjTG8iPWAJWdxIvQlIUEBdbraAs3PJzsMSQK8DCbFiVh6nt
+         MRv5rtsC6mRkONXjM8rCC5pkvctas+1SgCBkq2nGiM6dJhoxq7Ae6VBGJnL1Rz+KwF+Q
+         moxGHEYJYCX87hr/4Bu0nV0AtnzIeib4/s0UHb3KgwdH1m5ATXnTkRMfm7QNusVDJ+a8
+         YwNsoOA3x+zvq8d0NHIbtHn6QeY1X7vb1FcLQ5juxzdgFZEaDBqcBEPhJdzuS19fF0ka
+         N6zq5ss8i1Dumb/mYhKfwg9r4gcEEz1Z2RqqdJIBoUuxFrjLot8cFO6qHbyUqH2//AAD
+         8vOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=4QUJm2y7YWLZYYR5r6CyKB7wSH0Mitj4c5bG4qa2oPc=;
-        fh=V0I4O8yx1tjBtmnuM1VYgzayfu83o6Z6A0REt2+Hyig=;
-        b=Wit8lIS6SqYM3jugkIZgHNuIqPHBtZEjFT3ohBUewHS45skVAcaX26aQy5Rp6an3Le
-         3/t3b08v1cYm+IfZXPKwzW0Eg/Qqwg+/Iolr5K1qm2VTU00bryc/h4yQ2e7XDLzv/7R9
-         efl21YP+N1n1wDOIZQONSoeLXrGBVsvlaETL5KJLB22edFbIcTfO7XqyL9wfDQwXJ2SY
-         eS38e3IA5wo6hnNzVV4GolGoDTc9Kh1MEXLGQQ02CWdpz0Oeuw8JjYegStNofK5IRi9R
-         QDRbjhJlGnqVIJd4vwKGLnpIZ69anMBrks6XQGK2i82gdmCe5NKLmaR+BfubO+TL2lnj
-         /h9A==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=weLDaF45D5gfbSr+gWQVb1K25MVNkySML0rAhgC7w2M=;
+        fh=iLV4rosL1UrqdXD7mQORWqduls3lXSLRpukoOTvkzic=;
+        b=fx8h06NsuWvYOtjU5xF/hbD7+t9iFGE+Q/hRKf9zjWCgcCdV2eMIH4Ix1yDsWP/kYM
+         nouWtfMkFdIC/9CdXYPjEO8PN/GMJbaSwSxil+fLmCXtel9c/6N2NfnsG0x2p8m0ja7I
+         iudZt2aoZ87kjt1JuotRDW9FUZWTpQhZqsn7bP5w+1cfJZe3xGs0dzqwrWyw07EwfMZZ
+         T1PQfMMkUaD0Zur0LvTyX1iM8CKcQQAqgJ/J544yXSILjtFGFCdCUTk2FH4evw9pqlav
+         xS3u7n115UqVgcaU+56Ispx8xPW4XcG+lEAqyJaSClveJfnoEhzw3TsslnFlZKPnfArh
+         E7/A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791817453; x=1792422253; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4QUJm2y7YWLZYYR5r6CyKB7wSH0Mitj4c5bG4qa2oPc=;
-        b=UQLNkKpxiED/3rLDebPPzHQNo9S3ltEPBplVVPqpzbHizDWYA18vZS57QxXxP1A6z2
-         tyuekghDEz3bo7p7G/cSFNt00HHb016Bn1itsOfrdUyNqZUHGfu/KnTCtzke+KLD1VM6
-         2viGgAdDy38b8jdj1JNHDGxyVHjgmzBHbBksNjVQzaVs8R3w33HIaqghQxOjxCQrmFYS
-         cqSbGPzzamv6t7esSOGN9mc7d5yu6dOcBNGQR6QqjcMaPXBqYA3fbvsvKgj0U0vZqdRI
-         P1a1D8+JShgoN81aBsRd5iaCpEUZM/oNlhA23Pl3oWtJYJ6+QQUuDCqLLn0pAiyczeGJ
-         bHMQ==
+        d=gmail.com; s=20251104; t=1791817489; x=1792422289; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=weLDaF45D5gfbSr+gWQVb1K25MVNkySML0rAhgC7w2M=;
+        b=h2cJcnjoK7KPnNOYtTw8p9ogrjKw/aAYzRzXqarHkUxgkShk3UOD1BOvEKTUmvKo/p
+         Z0WtF4EJyN//37B69pbySmNmn+xEPLzVLD/kckHT2+pc+iGYmQizTLW6BdGxNOX8+Kp3
+         TTOHHTD/zvZq2/fUWqlDy8hUqBA9tDm97Js9V5B1ndQfOfpscPVrUIhPAUas0GD73wbO
+         a2CWIsqBVmlsQZiHsgDDB3jvKVx+ehT/gQtj3KrWzlk82mcplXnurc4o6h7cKSiQn7Iu
+         lraaZ2cdXktMWNVSUSOTMKipzO/XRnBcDgpGsf28DqW2Af6rkaZCSj/92RLkNF1x9e1r
+         5v1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791817453; x=1792422253;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=4QUJm2y7YWLZYYR5r6CyKB7wSH0Mitj4c5bG4qa2oPc=;
-        b=MOqL/njuG/7K4T5aXHyhaHWF+1hNLWWx/dE1yhs/FxlbS7eyWoRf5nxBvkHmSFLf81
-         GarDbj8MkOO7XhylRx5lms/+AYETdvwRoQNkcmlC6lii7s0sVq53TVl7o+REO6n/R6VT
-         Sov5U7cG6e8u7sn/289GJUTyRNiZf3zMOq5RouvvqOIEG9Qw6MAhRk3DZGtnczIVmxi0
-         Y8PC07y6JZByr45HvLr0g476Lhuec7jnEYtKGjvOFWAuCYDpxMo+I5VlkNsEHbMnTrVS
-         FuetKhDir/kqD4w2x/3E3fb5OBw9WXwK4DWfM0GFZ0Sjn9ivrW/NiW7oKNY3y59Sdx8i
-         kQNQ==
-X-Forwarded-Encrypted: i=1; AKwUvByFQA0vZgMCc70kbmHtD/vuCfdk7VNTUCWv7fUMBnwi9AknmVbiXUuV5KFZJ54xOsu3a9sWwfB1Fmn0so5CNQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKx6jdCG9GCIglzEwxyQIF6aCKbzMPmrOvSZja1RFo1Vf0r9Apw
-	m5JTS+PpDD/b83fnQ9m4AbATyNoGpC4xhWr7ZnbfRodClKktNeplWSulZAvM9IrTDfObYbqT0Jn
-	J9hgqtyoTu79BS1OmVyMhtBmuwiSP3tH/XGnxNawM
-X-Gm-Gg: AYBFou1vJRb2/agB/qHPUU1y4JsGFOtdUPS0iR/r8FnP73nep1gfP9jAyrMr3+JCXpv
-	UPpt92ZmZuCaG0wc5DQ5ZboMh4Cku4v2iprfuNnu7TiSAGAog6hn5mugwZ30O2AEeU8KWBA65Z1
-	Nn5cAmgGesrPEgHVpQpUdZcVIKwuDprqW8f9LvAnUnzSv/T1H3Hcfyh9tp89UvN+jfZ/wd/9Bjr
-	GMOeFKm525dV42LW4K2yANxzxbssQuOTbdH6g6ZF3NzlcWA9/HZD1y9sSFmVi+vuSPeduibWwo3
-	WxVsZA21arDXxYu7MHfw129bbBvD75Qcvwa6VVMhiXZ/UFGzAR2R0lUzd9dd40BoJaUGejk53eb
-	HK73irzmuBQ==
-X-Received: by 2002:a05:7022:3f0c:b0:168:3243:c91a with SMTP id
- a92af1059eb24-16a5dbfde08mr14809417c88.13.1791817451365; Mon, 12 Oct 2026
- 08:04:11 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791817489; x=1792422289;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=weLDaF45D5gfbSr+gWQVb1K25MVNkySML0rAhgC7w2M=;
+        b=EU4lM5gdsMZ2uZXgQX86y6NnvQ2kd2Z7ACPncCA3mhXud/pmUf8pPzPNus6RVMz91P
+         HqtBjQn9FL/PKsCuW6RtWmuHTVJ/MuwLxbFfQIq7YncVZHZN7+o3TVsbElkKlftcZTvW
+         e7j0XFEjMjMRq0yT0lY7m36vmXZbqtd/qc2eS3GRAa8MiKudll/8tysTYSxaggo3R7Bq
+         sM1+M1PxfmhtUjCtwpeTcG653Kp8UdjfhDQdd353CltMZJzQfbVvue23orPgyggaDCQc
+         uMnmYE/VIgRuiS+VypWe3jv5k2CIZFpxf11tBBhMroiKJgQHH4F5QkVuL1A5kVBfzrOp
+         3jTg==
+X-Forwarded-Encrypted: i=1; AKwUvByVGVzJ23xcdu5IR8RPI2/ZlU9ljWL2RzG3ijvcTs6+6ohZ2n1L3nNP/yhx3b8kaKQEinrNuvuk+43KQjeI8A==@vger.kernel.org
+X-Gm-Message-State: AFq9FYISahwZO/K8NgZBr3o7/DosyTLTc6WxlnoDjhAOKJrMnpuGSN3D
+	omUYtDM0qIdBERogoDNnuvLyC70+X9dIvfAXuYM74t8dWCSUczuSUiMphIaNeJtxEeijoI/LPEG
+	kQdvB5g6/hDGLwGgWCpaKg+zlexcQbz4=
+X-Gm-Gg: AYBFou37Jjh04xxbFdRKGU91ldfNVWkp/Y34X8Dziz4NjLM6k5EWevDrJRzx3Oy26ds
+	M06m3rbSio/zuf2wA+2vp3xdb5pA6xiU9W5R1FBA9JBu0GajoqO/2TotZs1gPClcUKXIEQrvad5
+	cAqbORkLvED2km2gCnwAnji9p8VjXT4Mk5MdP6KyizsFSh1g6j11O8PsbBLz9tZgEAlYOYKSC9r
+	C7RylDcHPQF0AlZQOLHOhKr4FCdLUDkQHfVFTKnk0XNRl+3wjpT9UC9+HLtiK8/DMhRXihbLfPO
+	0aZzCU3LDExU3IHMGZZ0ObjJp2g39p7EakB8AjDzxGBO1IYV/f2hYgBfpvDo8ZEaD9DreypNCxD
+	OioGA0VFLNbJywloVc+k9DzOAXZ+T92OqYIBOwow7X5tmmQ8yw8e8V18e1bu2SxGQ23TqpRR6I+
+	nTVBvzByQglH1a3T3fO+4Gw1D1WPn+4iojZKn/QJyJ9nGMrIpZlTM=
+X-Received: by 2002:a05:693c:8810:20b0:35b:cb5b:c71e with SMTP id
+ 5a478bee46e88-35bcb6b1c6cmr1408019eec.1.1791817488630; Mon, 12 Oct 2026
+ 08:04:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012134159.912183-1-elver@google.com> <20261012134159.912183-2-elver@google.com>
-In-Reply-To: <20261012134159.912183-2-elver@google.com>
-From: Alexander Potapenko <glider@google.com>
-Date: Mon, 12 Oct 2026 17:03:34 +0200
-X-Gm-Features: AclHuK88gg1MNQf0tKC3CQVs4jdrfXCck0NjLOHXH7T1xUhHlrbtWu0XiGM6pmY
-Message-ID: <CAG_fn=Umb8c1yjp-wEPPFSNXfNdr5UHb5BBd4tV=iwNSehCxxQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: kcsan: add KUnit test for data race detection
-To: Marco Elver <elver@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Asahi Lina <lina+kernel@asahilina.net>, 
-	Yury Norov <ynorov@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, workflows@vger.kernel.org, 
-	linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
+References: <20260929-cpu-helpers-v3-0-e968ce5ee613@kernel.org> <20260929-cpu-helpers-v3-2-e968ce5ee613@kernel.org>
+In-Reply-To: <20260929-cpu-helpers-v3-2-e968ce5ee613@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 12 Oct 2026 17:04:35 +0200
+X-Gm-Features: AclHuK9wzT4BzJuJCArQ1hZV1Y7wL2rurxN8icBv3GPL7rh5gvUSjCGJZPgPXPU
+Message-ID: <CANiq72moeX-F-XkOWewwSEJHX6F5j+7NxNis7qhPU4aDOFRRpA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] rust: add a wrapper for the `nr_online_nodes` C function
+To: Andreas Hindborg <a.hindborg@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Linux-MM <linux-mm@kvack.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->  rust/bindings/bindings_helper.h |   1 +
->  rust/kernel/Kconfig.test        |  11 +++
->  rust/kernel/kcsan_test.rs       | 120 ++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs              |   2 +
->  5 files changed, 135 insertions(+)
->  create mode 100644 rust/kernel/kcsan_test.rs
+On Tue, Sep 29, 2026 at 7:58=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
+>
+> +//! NUMA topology utilities.
+> +//!
+> +//! C header: [`include/linux/nodemask.h`](srctree/include/linux/nodemas=
+k.h)
 
-FWIW `make rustfmtcheck` fails for me on kcsan_test.rs
+Cc'ing Yury and Rasmus since it refers to this file.
+
+`page_alloc.c` also has the definition of the variable in the
+`MAX_NUMNODES > 1` case, so I guess the MM page alloc folks should
+also be Cc'd -- doing it too here.
+
+In any case, I am happy to pick this one up if they are OK with it.
+
+Thanks!
+
+Cheers,
+Miguel
