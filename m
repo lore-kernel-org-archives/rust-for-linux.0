@@ -1,179 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34D92EEE7C
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 18:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791830684; cv=none; b=kJu9sjdFGfm9whGxNAfKM/yiK8uSVEQAOay3rCRDby48U+dLCu9SCEJqRMxJIYFlRVg1K8ykUGQBm4nMCmeBUyl5A0lbEH7frLqEGii+5n+qmiORsQmryOrIwgwd233gbMj7KjjZlGqz8fCYAxLl0l3MT8IoJPFA1SFk75jmVh0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791830684; c=relaxed/simple;
-	bh=+mLt3K4du/Z5zoNHv/u9i+nxNYPFvFYjM8qECV1Bdms=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=osO7cRHb5iRY73VGycC1sNxCFqeo7qEHdKhidRidiyMu+GiCHkOxZw8TuLQe3MvpRt1hNTkaRIPFGPHGdH2/Mh6Q6u6bYIlUdS5PBeMLZV4HKsYAQ++M707pIzAtpYR+Ex06tx7I8RV+Rr2G5stMx4XJZsacH9DRPpP5SyHjExg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VEI6LA9j; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247AC4B95C1
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 19:25:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791833117; cv=pass; b=kCRT9an33aqAorl9hBY8YWl8jfdu1MKBGHMBYAqVZT0UsbZsgctqVz4MRavJ+Fy5Q037clZChb1vw6O/sE4TLFn5egU/dvnTJH77oNgwM6q4b9d4VA48qYy6iHp7v/f8YaJsHqsZe/kEUO9SdY30EWozfwU2PmDrATiDCIJ8ohA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791833117; c=relaxed/simple;
+	bh=yDSpUhnuU5c/mZx/ipi9jv3/2siultKoiXhvFv8pW34=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kMOeiE5cfoPf8kZM1HLtdhaB7WDBfF5D+iUZObUxBH3QgpTsxiQ1mFo7KQ240zCYrW+eUhwEIwU/+Xkz4oNGiV5EwjwZzlpxYjVpHllJpOlb0/IZB+to7GjxJ6gAbImKZ3XBo3PMLoWuoEmYjwVN9XojCV7LxTaNAcVY7H75tmw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=awdK40MV; arc=pass smtp.client-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VEI6LA9j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5ACD1F0089B;
-	Mon, 12 Oct 2026 18:44:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791830682;
-	bh=EUiPPZhtCnPGX326b/6dcDEBGk6eeN8ffcSusU2cF2o=;
-	h=From:To:Cc:Subject:Date;
-	b=VEI6LA9jdfLkYoxVQ8v/OVJixDtDzvV45ea9VSrr82Dz9XHezl+9k+H8Zn455vhRy
-	 OGjEPSRDYjl5Gu8vDVaQaPM4lff9k9dcIb/6XAZf1ZyNX/7/643PvqEwFk13X+3ZvC
-	 evk1E4O6eSNqVJGJcly0/8xaxu/VGriFBKM/lCHQKm0CRTODD7pKaOPfaNSrklFbP0
-	 449uDUuXUqbFSAewvCyD0zu6XGH9Fkuf0u41x9L5hJlVZ6D17WVIbR4z+dqXOFBtNi
-	 pk+z/jGeerA1kKXYKzMqzQG6mdU/pCsiAZj0fJGaBmVujulCwVwbJJ/6BdhQW2i9Lf
-	 rpxFJwaXpFj/A==
-From: Gary Guo <gary@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org
-Subject: [GIT PULL] pin-init changes for v7.4-rc1
-Date: Mon, 12 Oct 2026 19:44:28 +0100
-Message-ID: <20261012184429.1613374-1-gary@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="awdK40MV"
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3535aa147d8so142605eec.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 12:25:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791833115; cv=none;
+        d=google.com; s=arc-20260327;
+        b=D9pHnuFg80K6MUQUJgY+12Sh4BdVcCwMdfY4UCUbNV6Wt9HRzGiykjPU7tIiwzOxwN
+         3e1fzInSG40Gj4Zz0fvrSL48kbkmW8Hsd4wHb2bheRIzqYcTO++B/4SjuzPKB3LQW+Pk
+         BfYRbVURFTOMdbAiY3ehgqNJSFI8l4Cmr90GzlZipwhNkLtKa5QIstnE3CkVbCTmBQt0
+         w1ptEklnQulJhdoo0tl4Ya0pCU3eQn+UFRO72gypM//kLQjZ6/A9rKeEcRR+OoMKvTUZ
+         gXRRdkq4KNNlro5kWIDRulJ3y9LHghXInlOeTjJ2gSb+yoqaOYymHa8tWUHZ6aBzmyUU
+         eWYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cP/IMy/IkF4nvLd9S1eEPD25v1RZ1+mCGCjmCnmzoBw=;
+        fh=h1kIvcel8VqVYqZssBauTxWuc/2CrJR/YtnenW6NDCA=;
+        b=j8q6Hn2c+q8/X/fWGTe24hl4Ed0gTpimygrqgo+TAtDykd+XqgcS+KO4CfqAoVCFYa
+         ol9aj8GgAzns12JNhImA12opeA8LEU8NPMl6Vi4vvfivhyyIvmqxsqOZN6pHbO6fTD8R
+         W5WrQszcHf3oL6sgHK766fC2OjVm45nSPHeT90JJknmKSdw4OgVSm2oqIIsp5CNVXp3X
+         JZxM969DpGx4j5PpsSMLY6Bsj1wuyWnYQFq9GY4LLWKV0RPMLgml6VkxqQxnYZY6kDMT
+         wauVuQmLdPEK3L4QV2Vah2PeVtqL/SqAC6plXKVp1Zpoxba8PwpL2uPTq5efwWhP/2Yp
+         NM4w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791833115; x=1792437915; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cP/IMy/IkF4nvLd9S1eEPD25v1RZ1+mCGCjmCnmzoBw=;
+        b=awdK40MVDmH95iXJHU/D6QC4vl6rRROsq0bNnTgFgDV/zQG222gnf8Jm2j2CsmMEP9
+         rhuqel4Mugj6mPsrqN3zTQJJR69dajX0l6Sv6fOBldyW0jqlh4eexfMbxOnoFdTEoO0M
+         VGM1iWF+nXZcrWiveGXN0hUR/T5oWPMCal3adguNRtKDEQakXvaYXR/qiX2z8RuFWi/s
+         fJuK6X8ciDwwzK8+q/8PvDLVcxR3t3tIV5K/GkNgpKXCO75HaWpUqhbdUT5136efZjBy
+         Y39fqd4KyithEzWQzH0qsC//FArBwOedd2ZHztkpSyZQNvEOC1WIDeN1oNnAXlVy+/2w
+         A1Mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791833115; x=1792437915;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cP/IMy/IkF4nvLd9S1eEPD25v1RZ1+mCGCjmCnmzoBw=;
+        b=zOxYtqKzCMDD9LIHd5LoaZnOI5l8XuVYrz5wuc5YYWPD1mj0Xuyc3dWTq5baIGYRrM
+         bzXAsyLRESHTXj3SqUxFISD7209qqIGkSThVMQpMuYBfEaHTgxzUye9p9HmVWI/DEJ96
+         C31V8fXbBHV41gJmjpwGYC0nU5+nMgbjf2fAP9BF0op/NyuL/ZRCSSjzY1mzCHQCC3Ba
+         C2wmMdHIsRX4eSxri8C8mWS3ZGq+Mrnuomz1pzqHGvy4UGYyHj2Gsrp1zILglVt5s/z7
+         Du5Frfr8JovCKcUWJ22lvcGZxWOW9mRnffu5G5VrdY2RWDlOBo8ANvlO2TtmfCi+4I4L
+         nf9w==
+X-Forwarded-Encrypted: i=1; AKwUvBxx0MhR6IUzJUli5DRGI1Vt3FOYLVDCKee1x8p5VxOaXVBXyQmyMg8JSTC08IvgH1BeIVTEEgRLMu0Pn7gkHg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJQw0/1PDKguES9qleqGoriKHml/kpD3QTG1g3xlPqO7YwxE4RA
+	08a1/3obhn7RLKpXDiSqZYFbgF5pUWsLvEN+6T8kxREQCEA3+JXQ718NvOIAiAq9TaPPNTUobX6
+	7XlsxVMcSb58NOmFDQHIfz1OKtaLskms=
+X-Gm-Gg: AYBFou0C36W3chfaMgv0Oy8JyoVLxDYwHkq8/Axo5WgyMFc7QLcHLfO4eOSGlNN13dJ
+	qkG4fvuAqFqVLqP6KVNlFyywyN4wwcELSN4UzHlrLmTdJRx0KbrFTUrDtMC4Vo8Jmeky7GvY/FV
+	HBdqUKJaFfZ+RnCS2iJ5MiWMO1Rgix3UoHjVUJhNWB0Rj502qoA7IVok/NCGuYA2iHseYzgR8iy
+	W5M1f5pdOpdgGsAXGu4hOZDj/RtlN17pSc+KtWEhxpbOuXIpkfG6orDVwYyu+8gc9lGWMLOendG
+	DAuY1mfzjAGvbIQi2y1d2eiwQL9uVW/PMMeNN1r2hNDvxQOEafu2QtQd7qIT/6rmUS+3BLw3kbR
+	rNoyCEGk4D0aT3QrCsRYV0Sn9btWtxSWsveks6jhHAWIHCiz87LjSTRw0P0gEwryDDbxLEtf2Ni
+	Mvzqute48MvWrqMGoPiXetzqVlqqvlgzJOSrqOoJ6GCU+LouXhA7E=
+X-Received: by 2002:a05:7300:c8c5:b0:351:7e15:9c59 with SMTP id
+ 5a478bee46e88-3537dc89f58mr22053188eec.0.1791833115144; Mon, 12 Oct 2026
+ 12:25:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261012184429.1613374-1-gary@kernel.org>
+In-Reply-To: <20261012184429.1613374-1-gary@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 12 Oct 2026 21:25:01 +0200
+X-Gm-Features: AclHuK_tms9nBWcObQWyRv4qFcrX3Gjx8prRIikz21n8Ap83zlEf_zb8Ec7SUyI
+Message-ID: <CANiq72=urvred0g4NHSeiXu8tXvGTMSxf+kbBcPvVLjZaPMWow@mail.gmail.com>
+Subject: Re: [GIT PULL] pin-init changes for v7.4-rc1
+To: Gary Guo <gary@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Miguel,
+On Mon, Oct 12, 2026 at 8:44=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
+>
+> Hi Miguel,
+>
+> This is a cycle packed with feature updates. Two of the most anticipated
+> features, tuple struct support and safe self reference creation, has been
+> included in this pull request.
+>
+> Safe self reference is a big one and is pushed a bit late in the cycle. T=
+he
+> initial plan was to include a minimum subset for this cycle because I was
+> worried about potential soundness issues; however during Plumbers it was =
+agreed
+> that the features should be upstreamed at once. This is because the initi=
+al
+> users (Nova, JobQueue) would all need the advanced features, so it is bet=
+ter to
+> ensure that the feature get put into use for real, and it can iterate wit=
+h
+> users, rather than being fully designed on paper. The existing safety che=
+cks
+> are already very comprehensive, and Benno and I are confident that if new=
+ ones
+> are discovered, it wouldn't affect the overall design.
+>
+> That said, the the usage of the advanced features (invariance, existentia=
+l
+> lifetime) shall be limited to the pre-agreed users only, so even in case =
+where
+> the feature needs to be reworked, the blast radius is limited.
+>
+> Another theme in this cycle is to improve the developer experience when t=
+hings
+> are used wrongly. A lot of work has been done to use proper spans from
+> user-provided tokens so error message point to things that cause them. Ma=
+ny
+> common misuse scenarios also gain additional custom diagnostics.
+>
+> All commits have been included in linux-next as of next-20261012.
+>
+> Best,
+> Gary
+>
+> The following changes since commit fd73f4a6659897191fa0d40695fe370925dd37=
+80:
+>
+>   Linux 7.3-rc3 (2026-09-13 14:38:02 -0700)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/Rust-for-linux/linux.git tags/pin-init-v7.4
+>
+> for you to fetch changes up to b7218f1996f8491dbe28632b70f444cb73f554df:
+>
+>   rust: pin-init: internal: suppress `explicit_outlives_requirements` (20=
+26-10-12 00:27:53 +0100)
 
-This is a cycle packed with feature updates. Two of the most anticipated
-features, tuple struct support and safe self reference creation, has been
-included in this pull request.
+Merged into `rust-next` -- thanks!
 
-Safe self reference is a big one and is pushed a bit late in the cycle. The
-initial plan was to include a minimum subset for this cycle because I was
-worried about potential soundness issues; however during Plumbers it was agreed
-that the features should be upstreamed at once. This is because the initial
-users (Nova, JobQueue) would all need the advanced features, so it is better to
-ensure that the feature get put into use for real, and it can iterate with
-users, rather than being fully designed on paper. The existing safety checks
-are already very comprehensive, and Benno and I are confident that if new ones
-are discovered, it wouldn't affect the overall design.
+I have quoted part of your message above into the merge commit, since
+it was great context to keep, in my opinion (but if you really prefer
+not to include it, please let me know).
 
-That said, the the usage of the advanced features (invariance, existential
-lifetime) shall be limited to the pre-agreed users only, so even in case where
-the feature needs to be reworked, the blast radius is limited.
+(There were a few typos that could be fixed, but I kept it verbatim
+since I was quoting.)
 
-Another theme in this cycle is to improve the developer experience when things
-are used wrongly. A lot of work has been done to use proper spans from
-user-provided tokens so error message point to things that cause them. Many
-common misuse scenarios also gain additional custom diagnostics.
-
-All commits have been included in linux-next as of next-20261012.
-
-Best,
-Gary
-
-The following changes since commit fd73f4a6659897191fa0d40695fe370925dd3780:
-
-  Linux 7.3-rc3 (2026-09-13 14:38:02 -0700)
-
-are available in the Git repository at:
-
-  https://github.com/Rust-for-linux/linux.git tags/pin-init-v7.4
-
-for you to fetch changes up to b7218f1996f8491dbe28632b70f444cb73f554df:
-
-  rust: pin-init: internal: suppress `explicit_outlives_requirements` (2026-10-12 00:27:53 +0100)
-
-----------------------------------------------------------------
-User visible changes:
-
-- Support tuple structs.
-
-- Allow safe creation of self references.
-
-- Vastly improve diagnostics for common misuse scenarios.
-
-Other changes:
-
-- Use `mixed_site` hygiene consistently.
-
-----------------------------------------------------------------
-Gary Guo (47):
-      rust: pin-init: internal: extract utility code to new module
-      rust: pin-init: internal: init: emit `slot` using mixed site hygiene
-      rust: pin-init: internal: init: use `slot` identifier directly with mixed site
-      rust: pin-init: internal: init: provide span for slot projection
-      rust: pin-init: internal: use span of `Index` for generated identifiers
-      rust: pin-init: internal: pin_data: use HRTB to work around `trivial_bounds` for `Unpin`
-      rust: pin-init: internal: make `__init_data` and `__pin_data` safe
-      rust: pin-init: internal: remove associated type of `HasInitData`
-      rust: pin-init: internal: use `HasInitData` to provide inference help only
-      rust: pin-init: internal: add custom diagnostic when `#[pin_data]` is not implemented
-      rust: pin-init: add diagnostic attribute for `PinInit` and `Init`
-      rust: pin-init: internal: handle item and expr diagnostics differently
-      rust: pin-init: internal: make `DiagCtxt` available inside parser
-      rust: pin-init: internal: improve diagnostics robustness against panicking
-      rust: pin-init: internal: init: allow reborrow of `Pin<&mut T>` bindings
-      rust: pin-init: internal: init: improve diagnostics from field checks
-      rust: pin-init: internal: init: use span of `<-` or `:` for the init/write call.
-      rust: proc-macro2: enable `proc_macro_span` feature
-      rust: pin-init: internal: init: forget guards in reverse order
-      rust: pin-init: internal: init: set span location of guards
-      rust: pin-init: internal: add utility to handle generics merging
-      rust: pin-init: internal: add utility for extract a single attribute
-      rust: pin-init: internal: pin_data: move projection struct into `const _: ()` block
-      rust: pin-init: internal: pin_data: extract `#[cfg]` processing to its own function
-      rust: pin-init: internal: pin_data: rename `'__pin` lifetime to `'__this`
-      rust: pin-init: internal: pin_data: parse into `StructInfo` before generating
-      kbuild: rust: allow `clippy::comparison_chain` globally
-      rust: pin-init: internal: pin_data: infer self-referential struct
-      rust: pin-init: internal: pin_data: rewrite fields that borrow others
-      rust: pin-init: internal: pin_data: pin borrowed fields with wrapper
-      rust: pin-init: internal: pin_data: teach drop check about generics that cannot dangle
-      rust: pin-init: internal: pin_data: self-referential drop order checks
-      rust: pin-init: internal: pin_data: check covariance of self-referential fields
-      rust: pin-init: internal: pin_data: implement initialization of borrowed structs
-      rust: pin-init: internal: pin_data: project self-referential fields
-      rust: pin-init: internal: pin_data: add `with_project` method
-      rust: pin-init: internal: pin_data: enable self-referential support
-      rust: pin-init: internal: pin_data: allow lifetime to be shortened per field drop order
-      rust: pin-init: internal: pin_data: parse explicit `#[borrowed]` annotation
-      rust: pin-init: internal: pin_data: support mutable borrows
-      rust: pin-init: internal: pin_data: parse explicit `#[uses]` annotation
-      rust: pin-init: internal: pin_data: make field lifetime invariance imply type invariance
-      rust: pin-init: internal: pin_data: complete invariant borrow support
-      rust: pin-init: internal: pin_data: perform AST lifetime replacement if possible
-      rust: pin-init: internal: pin_data: support shared projection
-      rust: pin-init: internal: pin_data: support existential lifetimes
-      rust: pin-init: internal: suppress `explicit_outlives_requirements`
-
-Mohamad Alsadhan (3):
-      rust: pin-init: internal: pin_data: support tuple struct projections
-      rust: pin-init: internal: init: support tuple structs in `[pin_]init!`
-      rust: pin-init: internal: init: support tuple struct constructor syntax
-
- Makefile                                  |    2 +
- rust/Makefile                             |    1 +
- rust/pin-init/examples/selfref.rs         |   60 +
- rust/pin-init/internal/src/diagnostics.rs |  153 ++-
- rust/pin-init/internal/src/init.rs        |  683 ++++++++--
- rust/pin-init/internal/src/lib.rs         |   41 +-
- rust/pin-init/internal/src/pin_data.rs    | 2013 +++++++++++++++++++++++++----
- rust/pin-init/internal/src/util.rs        |  500 +++++++
- rust/pin-init/src/__internal.rs           |  417 +++++-
- rust/pin-init/src/lib.rs                  |   83 +-
- rust/proc-macro2/README.md                |    3 +-
- rust/proc-macro2/probe/proc_macro_span.rs |    9 -
- 12 files changed, 3511 insertions(+), 454 deletions(-)
- create mode 100644 rust/pin-init/examples/selfref.rs
- create mode 100644 rust/pin-init/internal/src/util.rs
+Cheers,
+Miguel
