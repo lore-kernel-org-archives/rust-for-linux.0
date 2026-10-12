@@ -1,123 +1,125 @@
-Received: from mail-106120.protonmail.ch (mail-106120.protonmail.ch [79.135.106.120])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996CD48C3E3
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 11:54:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0443E399340;
+	Mon, 12 Oct 2026 11:55:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791806046; cv=none; b=aYOvllqm8/xBHe1VdTgpn8D5moLwNxr6MPViU9ASMM4gTzAndAQ0CL6PS9x6Gv5mRNGBqKAqegaiN7GBvNSSL4qHaMfDEnYIRgF4m4X/2RYoecWt7DTtFcjafp5mRwE5ZLAwhcru27eSKvf+x2xCAK1ovnDpep7b3YXeWz1Ht4s=
+	t=1791806121; cv=none; b=WcoVzIWkkiH+kEUUrr8OmnezYIDAea7+8SKXCYTq4EmoEWAtRFvVgKUrKTh77QvMkuoB6mIiWU6FxW2CWvy2lonILQuFURHT6E2O4g7iLWu4CuV1ZQM4gPm0f6/IA+72GIVVEKW3sIy4pBLKcjKePmekVhRP0x0EYc0+DdxLa4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791806046; c=relaxed/simple;
-	bh=qg2kWZvPlSbWNuKIgIh67XXUmjLFLlX5xpSn6IOlvcA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cLBXI4SSQFOAMW+MtfzczHtCWspgtdgkr/EaeRS85N6at0ZP0yfGne8EpSUAgDFKVcVM9M5N0+CF+z3xG4XS74EfPRpqlC6DOvnuGZSns2dG4qAL/5MMs+gc0bCN5ipEX98m8UkdQbWGBi+RCBdtB0bzMp2AruChnTb7ZiLrWWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=onGoc9nh; arc=none smtp.client-ip=79.135.106.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1791806121; c=relaxed/simple;
+	bh=ATvL8+jGoCFF+CbvlDbPWvSLChLAja5Ob6x7FC9QxVA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NABDbrnyw2EmXkwDMWjmSIrHXeDPzLorm/6rZSlT4ZeG0pf/L1TDWf7LVZHU3o5v2kAc1t8NgIXsl+Ky4C0hUfILAaP/vzsNXkU1t29IT26lVRXxCB3iZKOXJTCp9KXDN6iKeOTJ+GxQs2QIZLwePckRFnLf3tTL/+b+V9I0X7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n43wZqvk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="onGoc9nh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail2; t=1791806034; x=1792065234;
-	bh=PrdO5L8pvJ0DBb3zbDMTPL8321B89dA6obo2DiA0aCI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=onGoc9nhF5/yiGQY0aaHiUyH3JhqJcm1IPg/3Irbeta5/4hxMyEqBIsKqS3+I/l6F
-	 Q9mET/yEKMLpIdBdsKhu3dIJWESA+2opRKhxyq8KtOPQxC/sZ9o/ZDD9bMLbeVCcYx
-	 KPy9JSj1Mn4CyJi2fH39yxZ6LUGatrHyqDaB0lXDu6PJa4/6Nuz3j6s35p9N/Y6BLu
-	 /L9fkpz4rJw3Ay1urygTCak9ikd8RmYim0oLzdG+wqtTBLqDHsk3IPNIR2VaYIpoB2
-	 nSbGJ+EYkvEQiS1x1WxuHE+ijZJznacfKY6JnlzIIjD27PSh29dT/NFxvHErFm+L99
-	 j+gT7dHddKeWw==
-Date: Mon, 12 Oct 2026 11:53:49 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-From: Lorenzo Delgado <lnsdev@proton.me>
-Cc: Lorenzo Delgado <lnsdev@proton.me>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Thorsten Blum <blum@kernel.org>, Francis Laniel <laniel_francis@npnm.eu>
-Subject: [PATCH 2/2] rust: uaccess: use NonEmpty in strcpy_into_buf()
-Message-ID: <20261012-nonempty-slice-v1-2-37d1fecff82c@proton.me>
-In-Reply-To: <20261012-nonempty-slice-v1-0-37d1fecff82c@proton.me>
-References: <20261012-nonempty-slice-v1-0-37d1fecff82c@proton.me>
-Feedback-ID: 53083996:user:proton
-X-Pm-Message-ID: 4e875e24c75ded22800616ebaffd2938e2763405
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n43wZqvk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBB01F0089B;
+	Mon, 12 Oct 2026 11:55:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791806119;
+	bh=EFBfQFk5/U3oNT5PftLrBoxKpWYLq06VaTtaCGifA+Q=;
+	h=From:To:Cc:Subject:Date;
+	b=n43wZqvkpRiBHTT8srVSaSF0QkmteVpPPVz/AjMHgwTfz2Hhd0T8eeE5NQjiOdjcU
+	 p8tgxSiKBAyVs9/yTPLNCJLwyvV9diis+mZSfSgX0foXGNit0XJ5Mvw7k6f7nD/Akd
+	 62rLWO5ZY8lH0rIcmp+ZYjidpWABrGpE3ZSEFu0GE2ZnQmwmy1K7CbwiuoBwssBKok
+	 jGXcHbMh3mf2ZR9xabtXfJRDYToLQa0Atye5wmuRnNaXO+Shlb8VEV6ZysUnORPkkX
+	 ZFQp6ClSZrEsUcFjePPmIMOafuD419/ZMuBV5siF5ynAtyw3yq5R3SAjYc/gIl54DE
+	 lhPI+9KfMuuRg==
+From: Daniel Gomez <da.gomez@kernel.org>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Daniel Gomez <da.gomez@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Corinn Tiffany <corinn.tiffany@inria.fr>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Philipp Stanner <pstanner@redhat.com>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Samsung GOST <gost.dev@samsung.com>
+Subject: [GIT PULL] Rust XArray for v7.4
+Date: Mon, 12 Oct 2026 13:50:26 +0200
+Message-ID: <20261012115028.73246-1-da.gomez@kernel.org>
+X-Mailer: git-send-email 2.56.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-`strcpy_into_buf()` returns `EINVAL` for an empty buffer and later
-writes the NUL terminator through `last_mut().unwrap_unchecked()`,
-relying on that earlier check.
+Hi Matthew,
 
-Turn the buffer into a `NonEmpty<[u8]>` at the start instead. The
-emptiness check and its `EINVAL` stay the same, but `last_mut()` now
-returns the element directly, so the `unsafe` block goes away.
+I'm sending the Rust XArray for the current v7.4 cycle, although it is
+probably too late for it. Just let me know if you need me to resend it
+later, rebased or under a different tag.
 
-The `MaybeUninit` cast still starts from `[u8]`, so its SAFETY comment
-does not depend on the layout of the wrapper.
+Thanks,
+Daniel
 
-Suggested-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/rust-for-linux/DM0D9TERQAM3.2Y3HV6P68E2N8@gar=
-yguo.net/
-Link: https://github.com/Rust-for-Linux/linux/issues/1262
-Signed-off-by: Lorenzo Delgado <lnsdev@proton.me>
----
- rust/kernel/uaccess.rs | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+The following changes since commit cee9395acd8043be0644b25c34bfa86623f2b935:
 
-diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-index 5f6c4d7a1a51..044c20e87ee6 100644
---- a/rust/kernel/uaccess.rs
-+++ b/rust/kernel/uaccess.rs
-@@ -11,6 +11,7 @@
-     error::Result,
-     ffi::{c_char, c_void},
-     fs::file,
-+    non_empty::NonEmpty,
-     prelude::*,
-     ptr::KnownSize,
-     transmute::{AsBytes, FromBytes},
-@@ -390,13 +391,11 @@ pub fn read_all<A: Allocator>(mut self, buf: &mut Vec=
-<u8, A>, flags: Flags) -> R
-     /// copied).
-     #[doc(alias =3D "strncpy_from_user")]
-     pub fn strcpy_into_buf<'buf>(self, buf: &'buf mut [u8]) -> Result<&'bu=
-f CStr> {
--        if buf.is_empty() {
--            return Err(EINVAL);
--        }
-+        let buf =3D NonEmpty::try_from_mut(buf).ok_or(EINVAL)?;
-=20
-         // SAFETY: The types are compatible and `strncpy_from_user` doesn'=
-t write uninitialized
-         // bytes to `buf`.
--        let mut dst =3D unsafe { &mut *(core::ptr::from_mut(buf) as *mut [=
-MaybeUninit<u8>]) };
-+        let mut dst =3D unsafe { &mut *(core::ptr::from_mut::<[u8]>(buf) a=
-s *mut [MaybeUninit<u8>]) };
-=20
-         // We never read more than `self.length` bytes.
-         if dst.len() > self.length {
-@@ -422,9 +421,7 @@ pub fn strcpy_into_buf<'buf>(self, buf: &'buf mut [u8])=
- -> Result<&'buf CStr> {
-             // This means that we filled the buffer exactly. In this case,=
- we add a NUL-terminator
-             // and return it. Unlike the `len < dst.len()` branch, don't m=
-odify `len` because it
-             // already represents the length including the NUL-terminator.
--            //
--            // SAFETY: Due to the check at the beginning, the buffer is no=
-t empty.
--            unsafe { *buf.last_mut().unwrap_unchecked() =3D 0 };
-+            *buf.last_mut() =3D 0;
-         }
-=20
-         // This method consumes `self`, so it can only be called once, thu=
-s we do not need to
+  Linux 7.3-rc1 (2026-08-30 13:34:40 -0700)
 
---=20
-2.55.0
+are available in the Git repository at:
 
+  git://git.kernel.org/pub/scm/linux/kernel/git/da.gomez/linux.git tags/rxarray-v7.4
 
+for you to fetch changes up to 4ce73d98a0a6e5bba46ed1fc9a61511bdccea776:
+
+  rust: rxarray: add rust xarray support (2026-10-12 08:36:28 +0200)
+
+----------------------------------------------------------------
+Rust XArray for v7.4
+
+Add a Rust implementation of the XArray (rust/kernel/rxarray.rs),
+introduced as an experimental Rust reference implementation [1] of
+lib/xarray.c, as discussed at LPC26 [2]. This lets Rust users, such as
+the null block driver and possibly Tyr (under evaluation), experiment
+with and evaluate both implementations.
+
+The goal is to evaluate whether Rust helps with the most common class of
+XArray bugs, misuse of the API by its callers, such as the long-dormant
+page cache corruption that almost blocked the LBS work [3]. The RFC v1
+cover letter has the full motivation, benchmark baseline and
+roadmap [4].
+
+This initial version supports store, load, load_mut and erase. It has
+been tested with the included KUnit tests and doctests.
+
+Outside of rust/kernel/rxarray.rs, this touches:
+ - MAINTAINERS: new XARRAY [RUST] entry, maintained by Daniel Gomez and
+   Matthew Wilcox, with Andreas Hindborg as reviewer.
+ - lib/Kconfig: new XARRAY_RUST option.
+ - rust/kernel/lib.rs: register the rxarray module.
+The C XArray implementation is unchanged.
+
+Link: https://rust-for-linux.com/rust-reference-drivers/ [1]
+Link: https://lore.kernel.org/all/20261009212431.0-da.gomez@kernel.org/ [2]
+Link: https://lore.kernel.org/all/A5A976CB-DB57-4513-A700-656580488AB6@flyingcircus.io/ [3]
+Link: https://lore.kernel.org/all/20260923-rxarray-next-v1-0-92eedf185649@samsung.com/ [4]
+----------------------------------------------------------------
+Daniel Gomez (1):
+      rust: rxarray: add rust xarray support
+
+ MAINTAINERS            |   12 +
+ lib/Kconfig            |   11 +
+ rust/kernel/lib.rs     |    2 +
+ rust/kernel/rxarray.rs | 1407 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 1432 insertions(+)
+ create mode 100644 rust/kernel/rxarray.rs
