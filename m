@@ -1,227 +1,510 @@
-Received: from linkmauve.fr (linkmauve.fr [82.65.109.163])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF423CF1F2;
-	Mon, 12 Oct 2026 20:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8190237F320;
+	Mon, 12 Oct 2026 21:56:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791835338; cv=none; b=TwMxg0DlnLxqIEarH+4/X26ILHTSlwQhBCidRgjGXWMM7Xu/OQAqdkLHMWGcDI+xrEQ7fn/iIpaod3EFzKH25l2Hr3waAziS0WKqfjcR+2FBg+9AMYkaC/pBm8cV4fz3alOzliebWR1Bk2xpGUDQnNqtS+fNqyI1/03DDNs4uDo=
+	t=1791842205; cv=none; b=c7k35mUoWhnQcYaE25ZY+NdDernU6iQNtA9zZt5VLoXYUjoaQM6kCcwFpMB2ToDs5L/X7sBZlz4LCykGKHV+b78ReaF1dJI6jFmAuAolu0uMwmHEe8FZmko01YH0xK6x2aD+s2Uf5T1I0jOY2u/jqHknGD8iY2MYnRAI/lpoC7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791835338; c=relaxed/simple;
-	bh=UZJmQyoOEzNKd5kGl1abVvzLnK/BMe4Hx4zRaDS3W5k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SKzdkZYAEb2/+tXFaItmsxKMwywyO65IS54jBjhvRsQYH35L/5FKWl45OmEY4s39jYIhEYxUNHs29+WMzrJO940iatjRI/wT+MxqO4JJGLZc/VvijkIWvjBZgjh4NJCi0fta1JE8wuImsDVvIHyk0s2/xVhEeYT8WLjEaVu4zFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
-Received: by linkmauve.fr (Postfix, from userid 1000)
-	id 71B8071FB3CE; Mon, 12 Oct 2026 22:02:10 +0200 (CEST)
-Date: Mon, 12 Oct 2026 22:02:10 +0200
-From: Link Mauve <linkmauve@linkmauve.fr>
-To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-	chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
-	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
-	daniel.almeida@collabora.com, tamird@kernel.org,
-	acourbot@nvidia.com, work@onurozkan.dev, linkmauve@linkmauve.fr,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, FUJITA Tomonori <tomo@flapping.org>
-Subject: Re: [PATCH V6] powerpc/bug: Add ARCH_WARN_ASM and refactor
- _EMIT_BUG_ENTRY for Rust support
-Message-ID: <as08wgiYOGOx5Jzo@desktop>
-References: <20260922054311.906816-1-mkchauras@gmail.com>
+	s=arc-20240116; t=1791842205; c=relaxed/simple;
+	bh=3sXLOttWLRxn6JUcQk4yxhHXxIlgqD5QPK5gXNvfjcA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From; b=YXf1ff/Je649GmRK4U40cO0BYbqbmLdnHOqRJDshSQj3W3stn0BRQSG0DHA2c/uGwBL8ctoFBZQhrpJjfBAcdKnJ/OcRENmgR7/sYf12T8ITmY2Sxu6pEovhnSAxga+squdwfB1XrK3uNlw+puk/829w9lj4TvJZhh+9NssywhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fjnfqSu0; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fjnfqSu0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DA41F0089B;
+	Mon, 12 Oct 2026 21:56:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791842200;
+	bh=M+IJG2U4CeSv8MsUsauANPoR18MwnQB7+rfIUvqSwlI=;
+	h=Date:Subject:Cc:To:From;
+	b=fjnfqSu04UbgVqRUWHyX73QZ2s3slB8YbYK4uSatGFs099GRHWvqwQyb//99lkG8i
+	 Ued6PxJHwIAgwuIBpAx+HnWwfDZvYy7oAEhlSCGWzC+aR52R7QHluHzT5nN9kz/XUU
+	 YnsbxH/kaU0nHl2TP/SCuEfCF/Z9VoXqkGO95OZ23uXaI0UgizxDEIa6UT8gIBwQcG
+	 eEUa5hs0iP4qaPe9TWa1fRRzgZz+jH937OvZJt2lR7+vhmFZUIyxiow4tW1Vhi6tir
+	 r1EYoNAzQGrbyJU65lI5Obbea13VZoy7GnekM6v3ofn/c1//D/OX8fKA9TH7T7JTPs
+	 bo7/dHHZCrIow==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260922054311.906816-1-mkchauras@gmail.com>
-Jabber-ID: linkmauve@linkmauve.fr
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 12 Oct 2026 23:56:37 +0200
+Message-Id: <DM371PN4TBJT.3LY1B0EYWSI4@kernel.org>
+Subject: [GIT PULL] DRM Rust changes for v7.4-rc1
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ <dri-devel@lists.freedesktop.org>, <nova-gpu@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>
+To: "Dave Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona.vetter@ffwll.ch>
+From: "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
 
-Hi,
+Hi Dave and Sima,
 
-With 7.3 close to release, and this patch still not merged, the kernel
-will still fail to build with CONFIG_RUST=y on PowerPC.
+Please pull these DRM Rust changes.
 
-Should the Rust support for this architecture get disabled as an
-emergency measure before 7.3?  Should this patch get in instead?  Should
-we ignore the issue as not many people will use this architecture
-anyway?  Is there another solution I’m not seeing?
+The highlights are DMA fence abstractions on the DRM side; a cross-module N=
+ova
+API with an extensible INFO ioctl, GPU memory management with MMU v2/v3 pag=
+e
+tables, BAR1 VRAM access, and GIN interrupt-driven GSP event handling for N=
+ova;
+and minor Tyr fixes.
 
-Sorry I haven’t made it known sooner, I was busy with things.
+There are two external dependencies: shared signed tags from the driver-cor=
+e
+tree for the register!() proc-macro rework and for DMA bound-lifetime
+enforcement.
 
-As an aside, this patch does fix building Rust drivers for a Wii, so it
-gets my:
-Tested-by: Link Mauve <linkmauve@linkmauve.fr>
+(I plan to send an early driver-core PR to Linus for this cycle.)
 
-On Tue, Sep 22, 2026 at 11:13:11AM +0530, Mukesh Kumar Chaurasiya (IBM) wrote:
-> The Rust kernel infrastructure generates inline asm for WARN() via
-> ARCH_WARN_ASM(file, line, flags, size), expanding it through a C
-> preprocessor pass (generated_arch_warn_asm.rs.S) to produce an
-> arch-specific asm template string for use in Rust's core::arch macros.
-> 
-> powerpc currently lacks ARCH_WARN_ASM and ARCH_WARN_REACHABLE, causing
-> Rust builds to fail on powerpc with
-> ```
-> error: no rules expected `ARCH_WARN_ASM`
->    --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_warn_asm.rs:1:28
->     |
->   1 | ::kernel::concat_literals!(ARCH_WARN_ASM("{file}", "{line}", "{flags}", "{size}"))
->     |                            ^^^^^^^^^^^^^ no rules expected this token in macro call
->     |
->    ::: ../rust/kernel/lib.rs:279:1
->     |
-> 279 | macro_rules! concat_literals {
->     | ---------------------------- when calling this macro
->     |
->     = note: while trying to match sequence start
-> 
-> error: no rules expected `ARCH_WARN_REACHABLE`
->    --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_reachable_asm.rs:1:28
->     |
->   1 | ::kernel::concat_literals!(ARCH_WARN_REACHABLE)
->     |                            ^^^^^^^^^^^^^^^^^^^ no rules expected this token in macro call
->     |
->    ::: ../rust/kernel/lib.rs:279:1
->     |
-> 279 | macro_rules! concat_literals {
->     | ---------------------------- when calling this macro
->     |
->     = note: while trying to match sequence start
-> 
-> error: aborting due to 2 previous errors
-> ```
-> 
-> To add ARCH_WARN_ASM, _EMIT_BUG_ENTRY first needs to be refactored.
-> The old definition was a bare macro with no parameters, relying on
-> positional asm operand references (%0-%3), hardcoding the backward
-> reference to local label 1b, and including .org/.previous directives
-> inline. That made it impossible to compose as a plain string outside of
-> an asm operand context, and left an invisible contract that callers must
-> always emit their trap at label 1:.
-> 
-> Refactor _EMIT_BUG_ENTRY to take explicit (bug_entry, trap, file, line, flags)
-> string arguments via string concatenation. This removes the dependency
-> on asm operand numbering and makes the labels an explicit argument,
-> so the caller's intent is visible at the call site and a future caller
-> using a different label cannot silently produce a wrong bug table entry.
-> 
-> Move the .org and .previous directives out of _EMIT_BUG_ENTRY and into
-> each call site, so BUG_ENTRY() can still pass sizeof(struct bug_entry)
-> as an asm operand while ARCH_WARN_ASM can supply its own size string
-> independently.
-> 
-> Add ARCH_WARN_REACHABLE as an empty define, matching the arm64
-> convention, indicating that no additional reachability annotation is
-> needed after a WARN on powerpc.
-> 
-> Reported-by: FUJITA Tomonori <tomo@flapping.org>
-> Closes: https://lore.kernel.org/all/anG67Q6Y59kDqh-c@desktop
-> Fixes: 73b741adb264 ("rust: Add PowerPC support")
-> Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
-> ---
-> Changelog:
-> V5 -> V6:
->  - Dropped KUit tests from this series. It will be sent separately.
-> V5: https://lore.kernel.org/all/20260915090453.1227034-1-mkchauras@gmail.com/
-> 
-> V4 -> V5:
->  - Fixed a build error with DEBUG_BUGVERBOSE=n
->  - Added a label for bug entry
-> V4: https://lore.kernel.org/all/20260912065902.24017-1-mkchauras@gmail.com/
-> 
-> V3 -> V4:
->  - Fix Label with appending b at end
->  - Add KUnit test patch
->  - Tested on ppc64le pseries: pass:5 fail:0 skip:0
->  - Tested on ppc32 QEMU mac99 G4: pass:5 fail:0 skip:0
->  - Tested on ppc64le QEMU pseries: pass:5 fail:0 skip:0
-> V3: https://lore.kernel.org/all/20260910100801.2159785-2-mkchauras@gmail.com
-> 
-> V2 -> V3:
->  - Add label argument in _EMIT_BUG_ENTRY
-> V2: https://lore.kernel.org/all/20260910071252.1950488-2-mkchauras@gmail.com
-> 
-> V1 -> V2:
->  - commit message now has error, fixes tag and closes tag
-> V1: https://lore.kernel.org/all/20260819084825.969116-1-mkchauras@gmail.com
-> 
->  arch/powerpc/include/asm/bug.h | 46 ++++++++++++++++++----------------
->  1 file changed, 25 insertions(+), 21 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
-> index 0db48977c70c..bf31ee1e902a 100644
-> --- a/arch/powerpc/include/asm/bug.h
-> +++ b/arch/powerpc/include/asm/bug.h
-> @@ -32,34 +32,38 @@
->  #endif /* verbose */
->  
->  #else /* !__ASSEMBLER__ */
-> -/* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
-> -   sizeof(struct bug_entry), respectively */
->  #ifdef CONFIG_DEBUG_BUGVERBOSE
-> -#define _EMIT_BUG_ENTRY				\
-> -	".section __bug_table,\"aw\"\n"		\
-> -	"2:	.4byte 1b - .\n"		\
-> -	"	.4byte %0 - .\n"		\
-> -	"	.short %1, %2\n"		\
-> -	".org 2b+%3\n"				\
-> -	".previous\n"
-> +#define _EMIT_BUG_ENTRY(bug_entry, trap, file, line, flags)	\
-> +	".section __bug_table,\"aw\"\n"				\
-> +	#bug_entry ":	.4byte " #trap " - .\n"			\
-> +	"		.4byte " file " - .\n"			\
-> +	"		.short " line ", " flags "\n"
->  #else
-> -#define _EMIT_BUG_ENTRY				\
-> -	".section __bug_table,\"aw\"\n"		\
-> -	"2:	.4byte 1b - .\n"		\
-> -	"	.short %2\n"			\
-> -	".org 2b+%3\n"				\
-> -	".previous\n"
-> +#define _EMIT_BUG_ENTRY(bug_entry, trap, file, line, flags)	\
-> +	".section __bug_table,\"aw\"\n"				\
-> +	#bug_entry ":	.4byte " #trap " - .\n"			\
-> +	"		.short " flags "\n"
->  #endif
->  
-> -#define BUG_ENTRY(cond_str, insn, flags, ...)		\
-> -	__asm__ __volatile__(				\
-> -		"1:	" insn "\n"			\
-> -		_EMIT_BUG_ENTRY				\
-> +#define BUG_ENTRY(cond_str, insn, flags, ...)			\
-> +	__asm__ __volatile__(					\
-> +		"1:	" insn "\n"				\
-> +		_EMIT_BUG_ENTRY(2, 1b, "%0", "%1", "%2")	\
-> +		".org 2b+%3\n"					\
-> +		".previous\n"					\
->  		: : "i" (WARN_CONDITION_STR(cond_str) __FILE__), "i" (__LINE__),	\
-> -		  "i" (flags),				\
-> -		  "i" (sizeof(struct bug_entry)),	\
-> +		  "i" (flags),					\
-> +		  "i" (sizeof(struct bug_entry)),		\
->  		  ##__VA_ARGS__)
->  
-> +#define ARCH_WARN_ASM(file, line, flags, size)			\
-> +		"1:	twi 31, 0, 0\n"				\
-> +		_EMIT_BUG_ENTRY(2, 1b, file, line, flags)	\
-> +		".org 2b+" size "\n"				\
-> +		".previous\n"
-> +
-> +#define ARCH_WARN_REACHABLE
-> +
->  /*
->   * BUG_ON() and WARN_ON() do their best to cooperate with compile-time
->   * optimisations. However depending on the complexity of the condition
-> -- 
-> 2.55.0
-> 
+Thanks,
+Danilo
 
--- 
-Link Mauve
+The following changes since commit cee9395acd8043be0644b25c34bfa86623f2b935=
+:
+
+  Linux 7.3-rc1 (2026-08-30 13:34:40 -0700)
+
+are available in the Git repository at:
+
+  https://gitlab.freedesktop.org/drm/rust/kernel.git tags/drm-rust-next-202=
+6-10-11
+
+for you to fetch changes up to d511064b2e732b7152a542d589d07a4814c1b674:
+
+  rust: drm: Remove unused flags argument from Registration::new() (2026-10=
+-10 23:25:27 +0200)
+
+----------------------------------------------------------------
+DRM Rust changes for v7.4-rc1
+
+- Cross-subsystem:
+
+  - I/O (shared from driver-core tree via signed tag rust-io-7.4-rc1):
+
+    - Reimplement register!() as a procedural macro, require matching
+      base types for register access, and replace relative registers
+      with typed I/O projections. Convert Nova, Tyr and the PCI sample
+
+    - Add AsRepr/AsReprMut conversions for I/O on compatible wrapper
+      types and transmute helpers with deferred size checks
+
+  - DMA (shared from driver-core tree via signed tag rust-dma-7.4-rc1):
+
+    - Tie Coherent, CoherentBox and CoherentHandle to the device's bound
+      lifetime, and allow scoped debugfs files backed by non-'static
+      data
+
+  - Allow auxiliary registration-data closures to return covariant
+    sub-fields and add UserSliceWriter::write_truncated()
+
+  - Implement Send and Sync for MapleTree
+
+  - Add PCI resource_flags() and IORESOURCE_MEM_64, and convert PCI IRQ
+    flags to impl_flags!()
+
+  - Add I/O view cast() with compile-time size and alignment checks
+
+- DRM:
+
+  - Add Rust dma_fence abstractions with separate producer (DriverFence)
+    and consumer (Fence) types, per-context sequencing, signal callbacks
+    and preallocation. Additional backend operations remain follow-up
+    work.
+
+  - Initialize DRM registrations and their data in place, removing a
+    separate allocation
+
+  - Drop the unused flags argument from drm::Registration::new()
+
+- Nova:
+
+  - UAPI and Cross Module API:
+    - Add NovaCoreApi and a lifetime-bound handle for auxiliary child
+      drivers, carried in nova-drm registration data
+    - Expose a render node and extensible INFO ioctl reporting GPU
+      architecture, opaque chip ID, usable VRAM and VRAM BAR sizes,
+      full and short GPU names, and GID, with size discovery and
+      truncation to the userspace buffer size
+    - Move BAR-size queries into GPU info, removing GETPARAM and
+      changing the UAPI
+
+  - PRAMIN access:
+    - Add typed CPU access to VRAM through the movable 1 MiB BAR0
+      PRAMIN window, with per-architecture support from Turing through
+      Blackwell
+    - Add GpuMm centralized memory manager, VramAddress type, aperture
+      documentation and optional probe-time self-tests under
+      CONFIG_NOVA_CORE_SELFTESTS
+
+  - GPU virtual memory and BAR1:
+    - Add VRAM buddy allocation, TLB flushing, MMU v2/v3 page-table
+      types with trait-based generics (PteOps, PdeOps, DualPdeOps,
+      MmuConfig) and a generic walker
+    - Add maple-tree virtual address tracking and multi-page mapping,
+      separating allocation from mapping execution
+    - Add CPU access to mapped VRAM through BAR1 and memory-management
+      self-tests; handle 64-bit BAR0 when locating BAR1
+
+  - GPU interrupts and GSP events:
+    - Add GIN (GPU Interrupt and Notification) interrupt-tree support
+      with MSI-X, MSI fallback and per-architecture rearming
+    - Drain GSP events between commands via a threaded SWGEN0 handler
+    - Report OS errors, robust-channel notifications and unknown
+      messages without aborting command waits; hold the queue lock and
+      use one deadline per wait
+    - Disable GSP event interrupts on persistent falcon faults or
+      drain errors
+    - Add a delivery/rearm self-test, interrupt-tree KUnit coverage
+      and interrupt-controller documentation
+
+  - GSP messaging fixes:
+    - Queue setup RPCs before GSP-RM boot
+    - Correct DMA barriers in both queue directions
+
+  - Firmware and transport:
+    - Extract a reusable radix3 buffer mapper; zero-pad page-table
+      levels to whole pages to prevent booter reads of stale padding
+    - Correct GSP-FMC naming and boot-flow documentation
+    - Set MCTP header version 1 for FSP messages and retain the
+      command queue's BAR0 reference
+
+  - Resource handling:
+    - Replace unnecessary BarUser reference counting with in-place
+      ownership and borrowed access; consolidate probe initialization
+    - Declare an unlimited DMA maximum segment size
+
+- Tyr:
+
+  - Use bitfield!() for firmware section flags and memory attributes
+    that do not describe registers
+
+  - Zero unsupported and newly added GPU-info fields, and limit the
+    doorbell array to 17 entries to fit the mapped register region
+
+----------------------------------------------------------------
+Alexandre Courbot (2):
+      gpu: nova-core: fix incorrect naming/framing of GSP-FMC firmware
+      gpu: nova-core: fix warning with NOVA_CORE_SELFTESTS disabled
+
+Alistair Popple (14):
+      rust: auxiliary: let registration_data_with() closures return covaria=
+nt sub-fields
+      gpu: nova-core: Add public driver API to nova-core
+      drm: nova: Add DRM registration data
+      drm: nova: Add GPU architecture enum to nova-drm UAPI
+      drm: nova: Add chipid enum to nova-drm UAPI
+      rust: uaccess: add UserSliceWriter::write_truncated()
+      drm: nova: Add an info ioctl
+      drm: nova: Add usable VRAM size to GPU info
+      drm: nova: Use nova-core to read VRAM_BAR_SIZE parameter
+      drm: nova: Expose a render node
+      drm: nova: Report GPU name in GPU info
+      drm: nova: Report GPU short name in GPU info
+      drm: nova: Report GPU GID in GPU info
+      gpu: nova-core: Use bar1_resource_index() in NovaCoreApi::bar1_size()
+
+Antonin Malzieu Ridolfi (1):
+      gpu: nova-core: Extract PMC registers definitions
+
+Danilo Krummrich (15):
+      Merge tag 'v7.3-rc1' into drm-rust-next
+      rust: debugfs: drop 'static bound from ScopedDir file creation method=
+s
+      rust: dma: tie CoherentHandle to the device's bound lifetime
+      samples: rust_dma: separate driver type from driver data
+      rust: dma: tie Coherent and CoherentBox to the device's bound lifetim=
+e
+      Merge tag 'rust-io-7.4-rc1' of git://git.kernel.org/pub/scm/linux/ker=
+nel/git/driver-core/driver-core into drm-rust-next
+      Merge tag 'rust-dma-7.4-rc1' of git://git.kernel.org/pub/scm/linux/ke=
+rnel/git/driver-core/driver-core into drm-rust-next
+      gpu: nova-core: align Bar1 alias with Bar0
+      gpu: nova-core: remove unnecessary Arc around BarUser
+      gpu: nova-core: mm: get rid of Arc<BarUser> in BarUserAccess
+      gpu: nova-core: mm: fix lifetime name in BarUser
+      gpu: nova-core: use a single try_pin_init!() block in probe()
+      drm: nova: Move VRAM BAR size query to GPU info
+      rust: drm: Return impl PinInit from drm::Registration::new()
+      rust: drm: Remove unused flags argument from Registration::new()
+
+Deborah Brouwer (3):
+      drm/tyr: gpu_info: zero out new/unused fields
+      MAINTAINERS: add rust-for-linux list for Tyr
+      drm/tyr: reduce size of doorbell array
+
+Edwin Peer (1):
+      rust: dma_fence: gate abstractions on CONFIG_DMA_SHARED_BUFFER
+
+Eliot Courtney (3):
+      gpu: nova-core: mm: Implement Alignable and Debug for VramAddress
+      gpu: nova-core: mm: Add the memory management HAL
+      gpu: nova-core: Add self-test assertion macros and config option
+
+Gary Guo (20):
+      gpu: nova-core: fix barrier usage in CPU->GSP messaging path
+      gpu: nova-core: fix barrier usage in GSP->CPU messaging path
+      rust: io: register: reimplement as proc macro
+      rust: mem: add `transmute` with deferred size check
+      rust: mem: add `AsRepr` and `AsReprMut`
+      rust: io: perform conversions using `AsRepr`
+      rust: io: support register projections
+      rust: io: register: allow explicit base type specification
+      gpu: nova-core: specify base type for registers
+      drm/tyr: specify base type for registers
+      samples: rust: pci: specify base type for registers
+      rust: io: register: make register have a typed base
+      rust: io: register: support fixed offset register without bitfield
+      gpu: nova-core: use projection for PFALCON and PFALCON2 registers
+      gpu: nova-core: convert hshub0 from relative register to projection
+      rust: io: register: remove relative registers
+      rust: io: register: remove `Register` trait and cleanup macro
+      rust: io: register: unify handling of register with/without bitfields
+      rust: io: add static `cast()` method for views
+      drm/tyr: use `bitfield!` instead of `register!` for non-registers
+
+Joel Fernandes (25):
+      gpu: nova-core: mm: Add VramAddress type
+      gpu: nova-core: mm: Add PRAMIN window registers
+      gpu: nova-core: mm: Add support to use PRAMIN windows to write to VRA=
+M
+      docs: gpu: nova-core: Document the PRAMIN aperture mechanism
+      gpu: nova-core: mm: Add GpuMm centralized memory manager
+      gpu: nova-core: mm: Add PRAMIN aperture self-tests
+      rust: maple_tree: implement Send and Sync for MapleTree
+      rust: pci: add resource_flags accessor
+      gpu: nova-core: mm: Add common types for virtual memory management
+      gpu: nova-core: mm: Add buddy allocator and TLB to GpuMm
+      gpu: nova-core: mm: Add common types for all page table formats
+      gpu: nova-core: mm: pagetable: Add PteOps trait
+      gpu: nova-core: mm: pagetable: Add PdeOps trait
+      gpu: nova-core: mm: pagetable: Add DualPdeOps trait
+      gpu: nova-core: mm: Add MMU v2 page table types
+      gpu: nova-core: mm: Add MMU v3 page table types
+      gpu: nova-core: mm: pagetable: Add MmuConfig trait
+      gpu: nova-core: mm: Add page table walker for MMU v2/v3
+      gpu: nova-core: mm: Add Virtual Memory Manager
+      gpu: nova-core: mm: Add virtual address range tracking to VMM
+      gpu: nova-core: mm: Add multi-page mapping API to VMM
+      gpu: nova-core: Add BAR1 aperture type and size constant
+      gpu: nova-core: mm: Add BAR1 user interface
+      gpu: nova-core: mm: Add BAR1 memory management self-tests
+      gpu: nova-core: add the GIN interrupt tree and allocate its vectors
+
+John Hubbard (22):
+      gpu: nova-core: gsp: fix a broken doc link on GspMessage
+      gpu: nova-core: extract radix3 page table into its own module
+      gpu: nova-core: generalize radix3 buffer names
+      gpu: nova-core: revise radix3 documentation and comments
+      gpu: nova-core: zero-pad radix3 page table levels to page boundary
+      gpu: nova-core: rename the FbRanges elf field to fw_image
+      gpu: nova-core: set MCTP transport header version to 1
+      gpu: nova-core: gsp: give the command queue its own BAR0 mapping
+      gpu: nova-core: restore the "Probe Nova Core GPU driver" debug print
+      rust: pci: declare IrqType and IrqTypes with impl_flags
+      gpu: nova-core: add the GIN vector, leaf and subtree types
+      gpu: nova-core: add the GIN CPU interrupt tree and MSI EOI registers
+      gpu: nova-core: add the per-architecture GIN CPU interrupt HAL
+      gpu: nova-core: move wait for GFW boot code to associated function
+      gpu: nova-core: add an interrupt delivery self-test
+      gpu: nova-core: log GSP events instead of discarding them
+      gpu: nova-core: return ENOMSG for an unmatched GSP message
+      gpu: nova-core: bound a GSP wait by a single deadline
+      gpu: nova-core: add the falcon interrupt registers and HAL methods
+      gpu: nova-core: service GSP events from the SWGEN0 interrupt
+      gpu: nova-core: add KUnit tests for the interrupt tree
+      gpu: nova-core: document the GIN interrupt controller and GSP events
+
+Manuel Ebner (1):
+      Documentation: nova: Fix bracket
+
+Matteo Kloiber (1):
+      gpu: nova-core: declare unlimited DMA max segment size
+
+Philipp Stanner (2):
+      rust: Add dma_fence abstractions
+      MAINTAINERS: Add entry for Rust dma-buf
+
+Thorsten Blum (2):
+      gpu: nova-core: gsp: use KVVec::zeroed() for payload buffers
+      gpu: nova-core: fsp: use KVec::zeroed() in recv_msg()
+
+Timur Tabi (1):
+      gpu: nova-core: write initial RPCs before booting GSP-RM
+
+ Documentation/gpu/nova/core/fsp.rst                   |    2 +
+ Documentation/gpu/nova/core/interrupts.rst            |  603 +++++++++++++=
+++++++++++++++++++++++++++++++++++++++++++++
+ Documentation/gpu/nova/core/pramin.rst                |  128 ++++++++++++
+ Documentation/gpu/nova/core/todo.rst                  |    2 +-
+ Documentation/gpu/nova/index.rst                      |    2 +
+ MAINTAINERS                                           |    7 +
+ drivers/gpu/drm/nova/driver.rs                        |   37 +++-
+ drivers/gpu/drm/nova/file.rs                          |  127 +++++++++---
+ drivers/gpu/drm/tyr/driver.rs                         |  138 ++++++-------
+ drivers/gpu/drm/tyr/fw.rs                             |    7 +-
+ drivers/gpu/drm/tyr/gpu.rs                            |    6 +-
+ drivers/gpu/drm/tyr/regs.rs                           |   57 +++++-
+ drivers/gpu/nova-core/Kconfig                         |   15 ++
+ drivers/gpu/nova-core/api.rs                          |   73 +++++++
+ drivers/gpu/nova-core/driver.rs                       |  125 +++++++++---
+ drivers/gpu/nova-core/falcon.rs                       |  164 +++++++------=
+---
+ drivers/gpu/nova-core/falcon/fsp.rs                   |   67 ++++---
+ drivers/gpu/nova-core/falcon/gsp.rs                   |   98 +++++++---
+ drivers/gpu/nova-core/falcon/hal.rs                   |   22 ++-
+ drivers/gpu/nova-core/falcon/hal/ga102.rs             |   76 ++++----
+ drivers/gpu/nova-core/falcon/hal/tu102.rs             |   55 +++++-
+ drivers/gpu/nova-core/falcon/sec2.rs                  |   37 ++--
+ drivers/gpu/nova-core/fb.rs                           |   22 +--
+ drivers/gpu/nova-core/fb/hal/gb100.rs                 |   59 +++---
+ drivers/gpu/nova-core/fb/regs.rs                      |   34 +++-
+ drivers/gpu/nova-core/firmware.rs                     |    3 +-
+ drivers/gpu/nova-core/firmware/booter.rs              |    2 +-
+ drivers/gpu/nova-core/firmware/fwsec/bootloader.rs    |   30 ++-
+ drivers/gpu/nova-core/firmware/gsp.rs                 |  117 ++---------
+ drivers/gpu/nova-core/firmware/{fsp.rs =3D> gsp_fmc.rs} |   59 +++---
+ drivers/gpu/nova-core/firmware/radix3.rs              |  144 +++++++++++++=
++
+ drivers/gpu/nova-core/firmware/riscv.rs               |    8 +-
+ drivers/gpu/nova-core/fsp.rs                          |   45 +++--
+ drivers/gpu/nova-core/gpu.rs                          |  354 +++++++++++++=
++++++++++++++-------
+ drivers/gpu/nova-core/gpu/regs.rs                     |   86 ++++++++
+ drivers/gpu/nova-core/gsp.rs                          |   39 ++--
+ drivers/gpu/nova-core/gsp/boot.rs                     |   26 ++-
+ drivers/gpu/nova-core/gsp/cmdq.rs                     |  264 +++++++++++++=
++++++-------
+ drivers/gpu/nova-core/gsp/cmdq/continuation.rs        |    6 +-
+ drivers/gpu/nova-core/gsp/commands.rs                 |   48 +++--
+ drivers/gpu/nova-core/gsp/fw.rs                       |   18 +-
+ drivers/gpu/nova-core/gsp/fw/commands.rs              |   28 +++
+ drivers/gpu/nova-core/gsp/hal.rs                      |   16 +-
+ drivers/gpu/nova-core/gsp/hal/gh100.rs                |   16 +-
+ drivers/gpu/nova-core/gsp/hal/tu102.rs                |   41 ++--
+ drivers/gpu/nova-core/gsp/regs.rs                     |    9 +-
+ drivers/gpu/nova-core/gsp/sequencer.rs                |   14 +-
+ drivers/gpu/nova-core/irq.rs                          |   29 +++
+ drivers/gpu/nova-core/irq/doorbell_test.rs            |  251 +++++++++++++=
++++++++++++
+ drivers/gpu/nova-core/irq/gsp.rs                      |  195 +++++++++++++=
+++++++
+ drivers/gpu/nova-core/irq/hal.rs                      |   67 +++++++
+ drivers/gpu/nova-core/irq/hal/gh100.rs                |   40 ++++
+ drivers/gpu/nova-core/irq/hal/tu102.rs                |   43 ++++
+ drivers/gpu/nova-core/irq/interrupt_tree.rs           |  682 +++++++++++++=
++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/gpu/nova-core/irq/regs.rs                     |   88 +++++++++
+ drivers/gpu/nova-core/mctp.rs                         |   16 +-
+ drivers/gpu/nova-core/mm.rs                           |  335 +++++++++++++=
++++++++++++++++++++
+ drivers/gpu/nova-core/mm/bar_user.rs                  |  420 +++++++++++++=
++++++++++++++++++++++++++++
+ drivers/gpu/nova-core/mm/hal.rs                       |   56 ++++++
+ drivers/gpu/nova-core/mm/hal/gb100.rs                 |   35 ++++
+ drivers/gpu/nova-core/mm/hal/gh100.rs                 |   35 ++++
+ drivers/gpu/nova-core/mm/hal/tu102.rs                 |   37 ++++
+ drivers/gpu/nova-core/mm/pagetable.rs                 |  424 +++++++++++++=
++++++++++++++++++++++++++++
+ drivers/gpu/nova-core/mm/pagetable/map.rs             |  345 +++++++++++++=
+++++++++++++++++++++
+ drivers/gpu/nova-core/mm/pagetable/ver2.rs            |  275 +++++++++++++=
++++++++++++++
+ drivers/gpu/nova-core/mm/pagetable/ver3.rs            |  421 +++++++++++++=
++++++++++++++++++++++++++++
+ drivers/gpu/nova-core/mm/pagetable/walk.rs            |  244 +++++++++++++=
+++++++++++
+ drivers/gpu/nova-core/mm/pramin.rs                    |  312 +++++++++++++=
++++++++++++++++++
+ drivers/gpu/nova-core/mm/regs.rs                      |   70 +++++++
+ drivers/gpu/nova-core/mm/tlb.rs                       |  120 ++++++++++++
+ drivers/gpu/nova-core/mm/vmm.rs                       |  346 +++++++++++++=
+++++++++++++++++++++
+ drivers/gpu/nova-core/nova_core.rs                    |    5 +
+ drivers/gpu/nova-core/num.rs                          |    2 +-
+ drivers/gpu/nova-core/regs.rs                         |  326 +++++++++++++=
++++++++-----------
+ drivers/gpu/nova-core/selftest.rs                     |   64 ++++++
+ drivers/gpu/nova-core/vbios.rs                        |   11 +-
+ include/uapi/drm/nova_drm.h                           |  146 ++++++++++++-=
+-
+ rust/bindings/bindings_helper.h                       |    1 +
+ rust/helpers/dma_fence.c                              |   49 +++++
+ rust/helpers/helpers.c                                |    1 +
+ rust/helpers/pci.c                                    |    6 +
+ rust/kernel/auxiliary.rs                              |   17 +-
+ rust/kernel/bitfield.rs                               |    9 +
+ rust/kernel/debugfs.rs                                |   26 +--
+ rust/kernel/debugfs/entry.rs                          |    4 +-
+ rust/kernel/debugfs/file_ops.rs                       |   29 ++-
+ rust/kernel/device_id.rs                              |    3 +-
+ rust/kernel/dma.rs                                    |  141 +++++++------=
+-
+ rust/kernel/dma_buf/dma_fence.rs                      | 1022 +++++++++++++=
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
+++++++++
+ rust/kernel/dma_buf/mod.rs                            |   14 ++
+ rust/kernel/drm/driver.rs                             |   77 ++++----
+ rust/kernel/io.rs                                     |  220 +++++++++++++=
+++------
+ rust/kernel/io/register.rs                            |  759 +++++++++++++=
++++-------------------------------------------------------
+ rust/kernel/io/resource.rs                            |    8 +
+ rust/kernel/lib.rs                                    |    3 +
+ rust/kernel/maple_tree.rs                             |   30 ++-
+ rust/kernel/mem.rs                                    |  234 +++++++++++++=
++++++++++
+ rust/kernel/pci.rs                                    |   14 ++
+ rust/kernel/pci/irq.rs                                |   68 ++-----
+ rust/kernel/sync/atomic.rs                            |    4 +-
+ rust/kernel/uaccess.rs                                |   18 +-
+ rust/macros/io/mod.rs                                 |    3 +
+ rust/macros/io/register.rs                            |  296 +++++++++++++=
++++++++++++++++
+ rust/macros/lib.rs                                    |    9 +
+ samples/rust/rust_dma.rs                              |   30 +--
+ samples/rust/rust_driver_pci.rs                       |    4 +
+ 106 files changed, 10046 insertions(+), 1829 deletions(-)
+ create mode 100644 Documentation/gpu/nova/core/interrupts.rst
+ create mode 100644 Documentation/gpu/nova/core/pramin.rst
+ create mode 100644 drivers/gpu/nova-core/api.rs
+ rename drivers/gpu/nova-core/firmware/{fsp.rs =3D> gsp_fmc.rs} (67%)
+ create mode 100644 drivers/gpu/nova-core/firmware/radix3.rs
+ create mode 100644 drivers/gpu/nova-core/gpu/regs.rs
+ create mode 100644 drivers/gpu/nova-core/irq.rs
+ create mode 100644 drivers/gpu/nova-core/irq/doorbell_test.rs
+ create mode 100644 drivers/gpu/nova-core/irq/gsp.rs
+ create mode 100644 drivers/gpu/nova-core/irq/hal.rs
+ create mode 100644 drivers/gpu/nova-core/irq/hal/gh100.rs
+ create mode 100644 drivers/gpu/nova-core/irq/hal/tu102.rs
+ create mode 100644 drivers/gpu/nova-core/irq/interrupt_tree.rs
+ create mode 100644 drivers/gpu/nova-core/irq/regs.rs
+ create mode 100644 drivers/gpu/nova-core/mm.rs
+ create mode 100644 drivers/gpu/nova-core/mm/bar_user.rs
+ create mode 100644 drivers/gpu/nova-core/mm/hal.rs
+ create mode 100644 drivers/gpu/nova-core/mm/hal/gb100.rs
+ create mode 100644 drivers/gpu/nova-core/mm/hal/gh100.rs
+ create mode 100644 drivers/gpu/nova-core/mm/hal/tu102.rs
+ create mode 100644 drivers/gpu/nova-core/mm/pagetable.rs
+ create mode 100644 drivers/gpu/nova-core/mm/pagetable/map.rs
+ create mode 100644 drivers/gpu/nova-core/mm/pagetable/ver2.rs
+ create mode 100644 drivers/gpu/nova-core/mm/pagetable/ver3.rs
+ create mode 100644 drivers/gpu/nova-core/mm/pagetable/walk.rs
+ create mode 100644 drivers/gpu/nova-core/mm/pramin.rs
+ create mode 100644 drivers/gpu/nova-core/mm/regs.rs
+ create mode 100644 drivers/gpu/nova-core/mm/tlb.rs
+ create mode 100644 drivers/gpu/nova-core/mm/vmm.rs
+ create mode 100644 drivers/gpu/nova-core/selftest.rs
+ create mode 100644 rust/helpers/dma_fence.c
+ create mode 100644 rust/kernel/dma_buf/dma_fence.rs
+ create mode 100644 rust/kernel/dma_buf/mod.rs
+ create mode 100644 rust/kernel/mem.rs
+ create mode 100644 rust/macros/io/mod.rs
+ create mode 100644 rust/macros/io/register.rs
