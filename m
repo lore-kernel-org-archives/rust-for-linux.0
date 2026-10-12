@@ -1,42 +1,39 @@
-Received: from mail-244122.protonmail.ch (mail-244122.protonmail.ch [109.224.244.122])
+Received: from mail-43100.protonmail.ch (mail-43100.protonmail.ch [185.70.43.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E1E474258
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 11:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9434A455605
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 Oct 2026 11:53:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791805608; cv=none; b=Iu1gwAYzkNRaGdqu6Y9kuXdA42yfgIiiiweb/vyM/mkJhcz6EJk168J283bBSzbXzlSOXjZCPoXNo0dumz84g4NZ1uGYV+/3QIWiexdGQzRmy0rdygpiaUwPOaRHoAd07un+TI9yITQV0LjroHr7SX80mzThsP48DWDckQ2tIuE=
+	t=1791806030; cv=none; b=YzCKP50zgyJfu+F1puZzEkkrr2Ikj7iCXtrdHMXaNTpgBxmTn5iCtZlEhVX2w5n/0ZZQy7ySNMSAlgdsbtnG6rbx61X3iib8HKaKDRuxtXX/tig4b8UfWz32ZkClH7b9oDUeAMnImyM7lovgeDNGYHrAG+BQZH0fZIQ7K42A1A8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791805608; c=relaxed/simple;
-	bh=qg2kWZvPlSbWNuKIgIh67XXUmjLFLlX5xpSn6IOlvcA=;
-	h=Date:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ky3svmfSBBbBjcvoZJjHbE4O3yFvG1DeorM4Cr19YOGXb3ATyB6UXZGI1lghHgVcl8U7vUPlg5qbV4hMyrAP+izlK2toMXy8Fvkh7N9rxYh8FJvBXDKqkzYPVKpDqfjnMI8aLncojVAnmT18+LuSqGuo3NDrKS2iIRE8oSE3juA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=hVXJmfxj; arc=none smtp.client-ip=109.224.244.122
+	s=arc-20240116; t=1791806030; c=relaxed/simple;
+	bh=X0ePI32qL/GQUdiC0e62EoMks2cf7eHsTOs9T6f49ME=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=BC2DZkm6dCtUAHKkWnSTafDirJs3lWpqfx+0Ph+Yex96yqtHwPUw8PfQCUH+9MueTt3EKGE7KqZ3l7IekfGW/dbgnDgLCb2Wihl22hGK+tKcBdFFMwm/xflmwbAIZIqL3aIzvA4me2Obw7J3qpaagVTIc8EYMS7/GuRzH0prp40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=PUDNaO37; arc=none smtp.client-ip=185.70.43.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="hVXJmfxj"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="PUDNaO37"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail2; t=1791805594; x=1792064794;
-	bh=PrdO5L8pvJ0DBb3zbDMTPL8321B89dA6obo2DiA0aCI=;
-	h=Date:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=hVXJmfxjvANV3nXfWOZnaMHF8Vg3E9nymB2HdTPFznYr+C7IGdnj83dA7pW+sSx02
-	 La+7y0Ui92ZEHVP4EfW6YgLYkUJyEfgbOWVyJYfT1LMhCod9x/s7JM0I//SeYPP7di
-	 g7R7czXYh91XaYRDYB3ltQZouhUeksdPzzGYXMUJKlUOWpqrdlKtxdzKo2Hz3Dg/to
-	 Jv+qbbtBvHEFPcXUj868/ip9U7qwKLqnDjYTTiFKpOzwqhD2Rm3uMSZrk7TpRA/NiD
-	 s6GI2qZuCPj/jHAay6D3j80i3j/sivC1a07ADtGX1+4A9hHedjmjgRbtRu9RUwyoDx
-	 AgmzypvvK4kyw==
-Date: Mon, 12 Oct 2026 11:46:30 +0000
+	s=protonmail2; t=1791806017; x=1792065217;
+	bh=+1duduwAsdAgbn1vhkGBkkYyb+Q7YBrqNpv4O8QYepA=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=PUDNaO37H1OHQzmdYjAQebWUwE6lMkdcYrHO1nLBhtzmZS1KP2GS2lxgXWU9ykq52
+	 k2tcE6cXQcD/c/UmHVgudFtnh5dmqD3AIQD3gQX6uuOH0R0MzFPrxmaBGycJm8Vpg6
+	 xo0Hp4Pc3BPCE0sqO62epSAzLY8dbrwY5BqJMix44F57tt8SQqVX4k+coqSLQrg18b
+	 irOwKSjdWjY6UdX02SlY/m+z7X4Z16SIY7cnij+nlGVCqkhlEYXHmsD2gEWfzxPinw
+	 MwL3M38OnBP4KE2Z7bk/7WCTShDttpiduJBpVQkboGIroaWMmDK4L5j6y1jA/p0sSo
+	 FB3cSyR8wjf5A==
+Date: Mon, 12 Oct 2026 11:53:30 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
 From: Lorenzo Delgado <lnsdev@proton.me>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Thorsten Blum <blum@kernel.org>, Francis Laniel <laniel_francis@npnm.eu>, Lorenzo Delgado <lnsdev@proton.me>
-Subject: [PATCH 2/2] rust: uaccess: use NonEmpty in strcpy_into_buf()
-Message-ID: <20261012-nonempty-slice-v1-2-4a15dee398dd@proton.me>
-In-Reply-To: <20261012-nonempty-slice-v1-0-4a15dee398dd@proton.me>
-References: <20261012-nonempty-slice-v1-0-4a15dee398dd@proton.me>
+Cc: Lorenzo Delgado <lnsdev@proton.me>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Thorsten Blum <blum@kernel.org>, Francis Laniel <laniel_francis@npnm.eu>
+Subject: [PATCH 0/2] rust: add NonEmpty
+Message-ID: <20261012-nonempty-slice-v1-0-37d1fecff82c@proton.me>
 Feedback-ID: 53083996:user:proton
-X-Pm-Message-ID: 57759cb844c5fc63bc054c2e0881f1d5dfe8c3c9
+X-Pm-Message-ID: 633d226a81599ddc5e45b3f1fe9ca13f9b3356d1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,77 +43,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-`strcpy_into_buf()` returns `EINVAL` for an empty buffer and later
-writes the NUL terminator through `last_mut().unwrap_unchecked()`,
-relying on that earlier check.
+Some functions check that a container is not empty and later rely on it
+through `unwrap_unchecked()`, `unwrap()` or an error path that can't be
+taken. Gary suggested a non-empty type for this while reviewing Thorsten
+Blum's uaccess patch [1], and Miguel filed it as #1262 [2].
 
-Turn the buffer into a `NonEmpty<[u8]>` at the start instead. The
-emptiness check and its `EINVAL` stay the same, but `last_mut()` now
-returns the element directly, so the `unsafe` block goes away.
+Patch 1 adds `NonEmpty<C>` in `kernel::non_empty`, with only what the
+first user needs: slices, `try_from_mut()` and `last_mut()`. Patch 2
+uses it in `strcpy_into_buf()`, which drops an `unsafe` block.
 
-The `MaybeUninit` cast still starts from `[u8]`, so its SAFETY comment
-does not depend on the layout of the wrapper.
+Some notes:
 
-Suggested-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/rust-for-linux/DM0D9TERQAM3.2Y3HV6P68E2N8@gar=
-yguo.net/
-Link: https://github.com/Rust-for-Linux/linux/issues/1262
+- `IsEmpty` is a safe trait. Unsafe code only relies on the
+  implementations in `kernel::non_empty`, and the docs require the
+  result not to change while the container is only reachable through a
+  shared reference. If a generic accessor ever needs to rely on it, it
+  can become an `unsafe trait` then.
+
+- Since APIs aren't added without users, other accessors (`first()`,
+  `try_from_ref()`, ...) and containers are left for later. I plan to
+  send follow-ups for `net/phy.rs` and `scatterlist.rs`, which both
+  reject an empty slice and then rely on it.
+
+- I put it in its own `kernel::non_empty` module. Would a broader home
+  like `kernel::collections` be better?
+
+Francis Laniel posted a slice-only RFC [3]. Following Gary's suggestion
+on the issue, this version is generic over the container.
+
+[1] https://lore.kernel.org/rust-for-linux/DM0D9TERQAM3.2Y3HV6P68E2N8@garyg=
+uo.net/
+[2] https://github.com/Rust-for-Linux/linux/issues/1262
+[3] https://lore.kernel.org/rust-for-linux/20261011191540.56199-1-laniel_fr=
+ancis@npnm.eu/
+
 Signed-off-by: Lorenzo Delgado <lnsdev@proton.me>
 ---
- rust/kernel/uaccess.rs | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+Lorenzo Delgado (2):
+      rust: non_empty: add NonEmpty
+      rust: uaccess: use NonEmpty in strcpy_into_buf()
 
-diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-index 5f6c4d7a1a51..044c20e87ee6 100644
---- a/rust/kernel/uaccess.rs
-+++ b/rust/kernel/uaccess.rs
-@@ -11,6 +11,7 @@
-     error::Result,
-     ffi::{c_char, c_void},
-     fs::file,
-+    non_empty::NonEmpty,
-     prelude::*,
-     ptr::KnownSize,
-     transmute::{AsBytes, FromBytes},
-@@ -390,13 +391,11 @@ pub fn read_all<A: Allocator>(mut self, buf: &mut Vec=
-<u8, A>, flags: Flags) -> R
-     /// copied).
-     #[doc(alias =3D "strncpy_from_user")]
-     pub fn strcpy_into_buf<'buf>(self, buf: &'buf mut [u8]) -> Result<&'bu=
-f CStr> {
--        if buf.is_empty() {
--            return Err(EINVAL);
--        }
-+        let buf =3D NonEmpty::try_from_mut(buf).ok_or(EINVAL)?;
-=20
-         // SAFETY: The types are compatible and `strncpy_from_user` doesn'=
-t write uninitialized
-         // bytes to `buf`.
--        let mut dst =3D unsafe { &mut *(core::ptr::from_mut(buf) as *mut [=
-MaybeUninit<u8>]) };
-+        let mut dst =3D unsafe { &mut *(core::ptr::from_mut::<[u8]>(buf) a=
-s *mut [MaybeUninit<u8>]) };
-=20
-         // We never read more than `self.length` bytes.
-         if dst.len() > self.length {
-@@ -422,9 +421,7 @@ pub fn strcpy_into_buf<'buf>(self, buf: &'buf mut [u8])=
- -> Result<&'buf CStr> {
-             // This means that we filled the buffer exactly. In this case,=
- we add a NUL-terminator
-             // and return it. Unlike the `len < dst.len()` branch, don't m=
-odify `len` because it
-             // already represents the length including the NUL-terminator.
--            //
--            // SAFETY: Due to the check at the beginning, the buffer is no=
-t empty.
--            unsafe { *buf.last_mut().unwrap_unchecked() =3D 0 };
-+            *buf.last_mut() =3D 0;
-         }
-=20
-         // This method consumes `self`, so it can only be called once, thu=
-s we do not need to
+ rust/kernel/lib.rs       |   1 +
+ rust/kernel/non_empty.rs | 100 +++++++++++++++++++++++++++++++++++++++++++=
+++++
+ rust/kernel/uaccess.rs   |  11 ++----
+ 3 files changed, 105 insertions(+), 7 deletions(-)
+---
+base-commit: 2dee3d3adcadcc57d62ba6608cd02f50b0c10264
+change-id: 20261011-nonempty-slice-022084ba9a5a
 
---=20
-2.55.0
+Best regards,
+-- =20
+Lorenzo Delgado <lnsdev@proton.me>
 
 
