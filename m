@@ -1,56 +1,56 @@
 Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE174FC329
-	for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 12:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCAF4FDA4F
+	for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 12:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791895083; cv=none; b=EVwPO1lkD6afth01QoUGVB0Us49cKq8zxpTdLoraLpTibPJleiyvEi3GpQG5ANjN2zEVv1qfcFNF9H/nqsgW6Fz+7mpY7F/nd4sVf6hdKj9K8IH7xUy6nXPbzwEoNDSBaLbrdfTF8x8kuuGomWWEOYue7V0FDbp/NbQsclV/1xM=
+	t=1791895087; cv=none; b=c+9fZopHcASG/EtTnHDx4kTrHZnh/Kr8ko2+RI9kUyF0cRDly0ktBFRgN/RB3SElnwnbOZ7rkHr+V3Op1WN/N0AgP8YZkEpZGkfrsqYjnXVCxwQOrrmVEDoyL5hSZp+fyryEDnEuexzoEXQkMlUIppIPC13GFqV0Xu1Yu/0LmHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791895083; c=relaxed/simple;
-	bh=iowhCacAK2V4dX8SDv7KjqwhUjEA0e42Z48+3/gEqvI=;
+	s=arc-20240116; t=1791895087; c=relaxed/simple;
+	bh=VTf/NXYjc8H/9QTD6PmEu2SPvP7P4c1EO6ptCXjgTy8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RKP25OVQJYknv+mKFxpgT3DWNlq3Nlc8rOheiLCaUCW2+wpeE9Ky0ivfS/KeJh3EB8tMBSRhkd1ACOUVMYew9WY02iIDe33OGBvpooqSfJmaTzSe6yvk3LjdrXhOsYeqofkXaSsxgz1KNCaeYog178XflYRqTnMcVHLVgJnV97I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CmrcVk9t; arc=none smtp.client-ip=209.85.128.70
+	 To:Cc:Content-Type; b=Li9rIIRYae7Egu5vQl5XIo7xaQdwfm8LMOgsz2uyRzygR2B8kKW0+vvir1Y1Pz1rsnJdYlU8oVEZDukPhzIpWzfV6S6F5/NZHZGR3lP4no8LB2ieIuhWGvczkjGfSSpK3S3TeDHAfhocDf+XTwFupejeidjt0rqR+3i7odzbGE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Kbzg2osW; arc=none smtp.client-ip=209.85.128.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CmrcVk9t"
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a01d1fb07bso34328505e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 05:38:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Kbzg2osW"
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a0228f4a1bso16906035e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 05:38:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791895080; x=1792499880; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791895084; x=1792499884; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4ZSwHr1dc/2t65+3ouAeLrzr/54Ej8/Nu3EILLvl0ys=;
-        b=CmrcVk9tdkAny+U20n2XKrUT2T1Zm6jrDgjARANGTHev/KR59040crOdcPzH2UfkKn
-         ebo8J+vv/jvG0Z9ePxNmMDP+7k8nq7GcGQ2qFYZmcAB+xMJrxXewGW9opCOB6Wivujeu
-         3qeosbcZWP7dbo0E7Hj/yEPorZTouEkq+Z1DYeKTX/DaI9OBPh3/yZ9gYf0sSRLrEKGP
-         MV9hoZs+3gtSZiM+f/seXZZ/qdhQAZm0NnA0jdZWknx+fImBuxL5AACMBG+aBX28TTzx
-         H1f2inZHRYilh9j0itfGxbnLBTgsMbv0ZV1ha0FN6GrtjZBnLaUY7T0+DbFASZQ8V/c4
-         p1WQ==
+        bh=/k2+io2rHynNSaY9Gu5miaGgXdOUtzLwmEF/+pw2tU4=;
+        b=Kbzg2osWi+G7ShDiD2EE7jHD3AkqPed1xSIu5hmBE5/qkvK7eJ5bepe7HyjKF7fb+G
+         fUDUit/YyNvBya2KxcxcQx7KEKoNyEWfCxFnAk64w1PQDy2kbcAkdhu/hjPjEF9/uEoF
+         mnGjRN1W8X17DR0ljQZfHeHAWuqgQBLhazHjQ63aa3DTJKqrK2+cjyr2BWdT/bzb/ZSr
+         u3PJyMHkUc0h//N+VLnSkMBBd924BR9+JLnyaglSb4FgyqjUK/k65pAfaZPUaSioJZku
+         AvshENmoJMcZyA9x0+AhMTL7fi9PXXZqG+04Dfwzq2quGHb9K8HuV2/lYVdcwhNzHNRD
+         Z33g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791895080; x=1792499880;
+        d=1e100.net; s=20260707; t=1791895084; x=1792499884;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4ZSwHr1dc/2t65+3ouAeLrzr/54Ej8/Nu3EILLvl0ys=;
-        b=FYdFI9VVrzuxvxkTIVHzda4TMSdEREWpI5RJrpqv638j0+mLHEyJbKvdRG3UN2Nhpf
-         9PeE8VVIp+QDFRnHYy2lGy/EXC+LtdngwU3/jovjf4ZPZ/Do5kkHV/VUG2V8ZzJoy/IV
-         ONxxAyhMrdEu34RHWB/emr2D7aqLRs+ChYM0JWTeYDPXvc8/Yi2MGVhHv91OJtY31tbX
-         ++nrZ3rXGLcKIuiHaCdS77U8L+v70hrjHl/aREx5I6sJtqP+tApIwOBwsYdBXpJ7/H34
-         tZqiPL2X1yDQAk9AZDoUQPfLq+l/oLHX6zAmvXTIPRiX13ilfRC2UXfnbxeqPqrWfNr4
-         v2Vg==
-X-Forwarded-Encrypted: i=1; AKwUvBzhHLxXg7eGVZz+7B6l//OU6D/lpd7f5ML3PMNoo7RhnJbYJ0NiXLyBgR8ywhKQWKUZia366pGYWpZ/6RTlPQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYIsuS0AkrnqoOOj7A7JPVObe6HG2dQlYHqJabf6YeJxdw7vBzQN
-	qyIUPKWPrmnyv8GhMbCUlzS61EALqpI+bBlyP84AK4ZtsSbxaCTrtJk5uyIGGGZUaE4J/H6QTss
-	dc1U0s3ZWWvbFNfpnpw==
-X-Received: from wmog7.prod.google.com ([2002:a05:600c:3107:b0:4a1:8dc9:744a])
+        bh=/k2+io2rHynNSaY9Gu5miaGgXdOUtzLwmEF/+pw2tU4=;
+        b=z52dmktU/yS2wFNLoX6kzOG2dkzEVII9JlIprmSLrXzFsg7aeAVvBiLz6co8zfo7uN
+         tFlXFYpEZlYt3Jh3Nk+3vm3F3Ec2qf1l2O0825zn9cxJxLpmEFVyIZlTVLPXW5WHwyYd
+         phOcu3526RMBRYilLVtBacPYLZUWvirH3yYR+XS5XfOZ/3+yg52Jx5XLhwPBArzL8c+M
+         htt0uy5BHPpT/xDGwKa/FqPJc7cSsIHF95paepx0gc/Ndz+g5I8FP3geySbhoU+LRGGx
+         IjOC5h0NyDxkfkXYagY8mHQbQ3DhdMEu3GJVLjTN37jZp2st/8s4qEoiBf3TTKiIQC/y
+         sv/A==
+X-Forwarded-Encrypted: i=1; AKwUvBy8ZrE3o9qj4mYtCkRT50zqME89fuuMQqANKMdi8CRy1b5ZyBPR/01yFEz+bAEdEgEMWgmwDKpirGWXUjcQNg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ5L83PA8ugx1iNncYK1n4nAUhvhuEGwdUL0k67TGCDgI33yOIR
+	aIIjq/0dcA0K41f7LjeYmrCNw9dTLoxrKZpk7YUXEHsW4f6fXP4KN0aWOLJhH3By5ZJpVsGJfdH
+	J8rmb9lABfQvbz9Hotw==
+X-Received: from wmbbi26.prod.google.com ([2002:a05:600c:3d9a:b0:4a1:6b33:bb47])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5391:b0:4a1:ac66:6ac8 with SMTP id 5b1f17b1804b1-4a1ac6671c7mr37454675e9.4.1791895080202;
- Tue, 13 Oct 2026 05:38:00 -0700 (PDT)
-Date: Tue, 13 Oct 2026 12:37:55 +0000
+ 2002:a05:600c:3ba8:b0:4a0:174:579e with SMTP id 5b1f17b1804b1-4a18e4ab221mr280918715e9.28.1791895083831;
+ Tue, 13 Oct 2026 05:38:03 -0700 (PDT)
+Date: Tue, 13 Oct 2026 12:37:56 +0000
 In-Reply-To: <20261013-binder-consolidate-txn-prints-v2-0-cf78927dab23@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -60,22 +60,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261013-binder-consolidate-txn-prints-v2-0-cf78927dab23@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2789; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=iowhCacAK2V4dX8SDv7KjqwhUjEA0e42Z48+3/gEqvI=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqziYj8TJIYQl2pxY+fbHRHM0GIVONcWTpaNLAp
- ppJ0dnfFQWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCas4mIwAKCRAEWL7uWMY5
- RvQHEACNoXZiEwD2Kzq8rxiL9RhRrtgJKWsHnP0zVEgZvASV18KUExmJkt6+wW9wfLPKOYtKpgo
- CHfunQQgHhiGYsavklxyV9zkEiNdh5sJS7L/lOe44LTFWgQftZhbx3Rficar6wlbHXF88xckOO5
- 55udFeSaHyS1oPK9Kukd5qiMYEZJVpOPcuPHhdAwRYyzYk7qyf10CWr8g8pidzrITMMM1UQrV6B
- C1+ACuLBKp+bpvUICNVLvxYrWKwne9MNJQwIVsIET+4W9AIwjxSb/dbDU/FKvBdeHtVA5PFOEjy
- bM9eIqhd4Ib5q1h4SFetgYO35IxXtvI72Se2H3qvhPXVmd/x2kR+5ogupjsHuesneeAepBVyfpQ
- eyRzoftnzKBGuaaw7Uco8Llk9UXh8stICrtXnREaJWhlRO9nrhLhsXRlejw6qYn/haydtzDSixL
- d5LnSEkPDjHhBVioiVqPzP3vlYpwqGkheoE6McTOzmHD6lhK5XEBZkpXk3qHIjA6cs9q9A2nwLI
- c6Nt3k3hlgUffBC7jz5y5zMCVivL0xWqzVHi9y23eYT393M46T9uh7RjmkJQlFG/+xamfVHe9VD
- xYue1Sa0vh42EG8yyYANlDeHmjtwvAnj4N2ex4v/Sa9Q4aV6mb9oOEd8aw6u5PTxCgTbWG/7nsK nuY03LNCpmMekiw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7976; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=VTf/NXYjc8H/9QTD6PmEu2SPvP7P4c1EO6ptCXjgTy8=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqziYjbr9XDzSaKBiZyjtC8y/D0eh1yrVMCM3cC
+ WImnewRLKGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCas4mIwAKCRAEWL7uWMY5
+ RjJ2D/97oXys64apHkNnmlmxfYMGrIksWa8+1zpcRmo79hjU4kpPr4nuYsbF+lW6usN0qqjZfQl
+ AJQAPwZlyfyWKGTIIL2NfGk16VYxHJSfXdDES4OVJYqc3neNOvU+naw8fuvvFp3l0/TNe9nMfut
+ SN7LpJ5VdgYq9LLFXSzoLHq3WQoqKglc+FTasMrjgkU0P2dlYfgMxb566/Ptr48g3E2+PjCMWn0
+ i7Lxi82lzDDYgnt5E4G0kBPbo7CXslJLuT5/UQnav+RuD9tBPRc9c9vx5UY8k/Fp4rFfeSrXYIB
+ TTh28ae5FGKgeNi3sjvwmZdvLUO4EeoZhj+T3T+zfIhcaV6rJ4Fh0qNu56ndMD1nk8GSsgAD0lH
+ 6KDRtP7nRXrOVpFNtocWtN7BGqoXN9XhhS8c9qk/8v6TdkmihkzGtB5XMWiwJbSjTWz0rBgxUa4
+ OCd87T823HHsVGtQpxvuDgFkd5d8yGmpFgpfsDcFYwAYVLj6zcClRPwnsP9PBUO+sIPDQ4PyBXr
+ 63Eda0as2mU3r4JIP2RQDm6NCt57NLk+VJ6bBF0izOpBARN6klqw4dSMnJzYFx4tfcIwrLwXyGC
+ LibT/wq/rGxDWR5bFgg4H53V6fduc2ZOQapxf5ODUBOL26RvwmaxOwaa78lbzI6+Wd0TdA/dzh9 xp/sCAoXRFKh9Kg==
 X-Mailer: b4 0.14.3
-Message-ID: <20261013-binder-consolidate-txn-prints-v2-2-cf78927dab23@google.com>
-Subject: [PATCH v2 2/3] rust_binder: store Option<Error> in TransactionInfo
+Message-ID: <20261013-binder-consolidate-txn-prints-v2-3-cf78927dab23@google.com>
+Subject: [PATCH v2 3/3] rust_binder: consolidate transaction failure prints
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
 	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
@@ -89,66 +89,190 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <ga
 	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Store Option<Error> instead of a raw i32 errno in TransactionInfo so
-that the Error value can be used directly when formatting transaction
-failures without having to reconstruct it from the integer errno.
+When a transaction fails, it currently hits multiple print statements
+meaning that a single failure can result in several lines in the kernel
+log. This is unnecessary, so consolidate them into one print used for
+all transaction failures.
 
+Acked-by: Carlos Llamas <cmllamas@google.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/binder/thread.rs      | 6 +++---
- drivers/android/binder/transaction.rs | 8 ++++++--
- 2 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/android/binder/error.rs       |  4 --
+ drivers/android/binder/thread.rs      | 72 +++++++++++++++--------------------
+ drivers/android/binder/transaction.rs | 20 ++--------
+ 3 files changed, 34 insertions(+), 62 deletions(-)
 
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index e5ae3b0e56c5..5bb7ae2f7920 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -1333,8 +1333,8 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
-             if err.reply != BR_TRANSACTION_COMPLETE {
-                 info.reply = err.reply;
-                 info.error_line = Some(err.line);
--                if let Some(source) = &err.source {
--                    info.errno = source.to_errno();
-+                if let Some(source) = err.source {
-+                    info.errno = Some(source);
- 
-                     {
-                         let mut inner = self.inner.lock();
-@@ -1476,7 +1476,7 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
-             orig.from
-                 .deliver_reply(Err(BR_FAILED_REPLY), &orig, Some(ee));
-             info.reply = BR_FAILED_REPLY;
--            info.errno = param;
-+            info.errno = err.source;
-             info.error_line = Some(err.line);
-             err.reply = BR_TRANSACTION_COMPLETE;
-             err
-diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
-index e627522141b8..d934c6821b15 100644
---- a/drivers/android/binder/transaction.rs
-+++ b/drivers/android/binder/transaction.rs
-@@ -136,7 +136,11 @@ fn new(info: &TransactionInfo, ctx: &crate::Context) -> Self {
-             offsets_size: info.offsets_size,
-             return_error_line: if failed { info.error_line } else { None },
-             return_error: if failed { info.reply } else { 0 },
--            return_error_param: if failed { info.errno } else { 0 },
-+            return_error_param: if failed {
-+                info.errno.map_or(0, |e| e.to_errno())
-+            } else {
-+                0
-+            },
-             context_name,
+diff --git a/drivers/android/binder/error.rs b/drivers/android/binder/error.rs
+index 41b07d687b30..89077c5baeaf 100644
+--- a/drivers/android/binder/error.rs
++++ b/drivers/android/binder/error.rs
+@@ -71,10 +71,6 @@ pub(crate) fn new_frozen_oneway() -> Self {
+             line: ErrorLocation::caller(),
          }
      }
-@@ -254,7 +258,7 @@ pub(crate) struct TransactionInfo {
-     pub(crate) offsets_size: usize,
-     pub(crate) buffers_size: usize,
-     pub(crate) target_handle: u32,
--    pub(crate) errno: i32,
-+    pub(crate) errno: Option<Error>,
-     pub(crate) reply: u32,
-     pub(crate) error_line: Option<ErrorLocation>,
-     pub(crate) oneway_spam_suspect: bool,
+-
+-    pub(crate) fn is_dead(&self) -> bool {
+-        self.reply == BR_DEAD_REPLY
+-    }
+ }
+ 
+ /// Convert an errno into a `BinderError` and store the errno used to construct it. The errno
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index 5bb7ae2f7920..bcb2038b7550 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -1065,17 +1065,7 @@ pub(crate) fn copy_transaction_data(
+             size_of::<u64>(),
+         );
+         let secctx_off = aligned_data_size + offsets_size + buffers_size;
+-        let mut alloc = match to_process.buffer_alloc(debug_id, len, info) {
+-            Ok(alloc) => alloc,
+-            Err(err) => {
+-                pr_warn!(
+-                    "Failed to allocate buffer. len:{}, is_oneway:{}",
+-                    len,
+-                    info.is_oneway(),
+-                );
+-                return Err(err);
+-            }
+-        };
++        let mut alloc = to_process.buffer_alloc(debug_id, len, info)?;
+ 
+         trace_transaction_alloc_buf(debug_id, data_size, offsets_size, buffers_size);
+ 
+@@ -1328,6 +1318,9 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
+             self.transaction_inner(&mut info)
+         };
+ 
++        // This runs when return work is passed to the caller. This is not
++        // always the same as the transaction failing, as reply errors are
++        // delivered to the remote process.
+         if let Err(err) = ret {
+             self.push_return_work(err.reply);
+             if err.reply != BR_TRANSACTION_COMPLETE {
+@@ -1336,30 +1329,8 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
+                 if let Some(source) = err.source {
+                     info.errno = Some(source);
+ 
+-                    {
+-                        let mut inner = self.inner.lock();
+-                        inner.extended_error =
+-                            ExtendedError::new(info.debug_id as u32, err.reply, source.to_errno());
+-                    }
+-
+-                    binder_debug!(
+-                        FailedTransaction,
+-                        "transaction {} to {}:{} failed {:?}, code {} size {}-{} line {}",
+-                        if info.is_reply {
+-                            "reply"
+-                        } else if info.is_oneway() {
+-                            "async"
+-                        } else {
+-                            "call"
+-                        },
+-                        info.to_pid,
+-                        info.to_tid,
+-                        err,
+-                        info.code,
+-                        info.data_size,
+-                        info.offsets_size,
+-                        err.line
+-                    );
++                    self.inner.lock().extended_error =
++                        ExtendedError::new(info.debug_id as u32, err.reply, source.to_errno());
+                 }
+             }
+         }
+@@ -1371,8 +1342,33 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
+             // useful in case the transaction failed with BR_TRANSACTION_PENDING_FROZEN.
+             info.report_netlink(BR_ONEWAY_SPAM_SUSPECT, &self.process.ctx);
+         }
++        // This runs when the transaction failed.
+         if info.reply != 0 {
+             info.report_netlink(info.reply, &self.process.ctx);
++            if let Some(errno) = info.errno {
++                let error_line: &dyn kernel::fmt::Display = match &info.error_line {
++                    Some(line) => line,
++                    None => &0,
++                };
++                binder_debug!(
++                    FailedTransaction,
++                    "transaction {} to {}:{} failed {:?}, code {} size {}-{} line {}",
++                    if info.is_reply {
++                        "reply"
++                    } else if info.is_oneway() {
++                        "async"
++                    } else {
++                        "call"
++                    },
++                    info.to_pid,
++                    info.to_tid,
++                    errno,
++                    info.code,
++                    info.data_size,
++                    info.offsets_size,
++                    error_line
++                );
++            }
+         }
+ 
+         Ok(())
+@@ -1465,12 +1461,6 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
+             // At this point we only return `BR_TRANSACTION_COMPLETE` to the caller, and we must let
+             // the sender know that the transaction has completed (with an error in this case).
+ 
+-            pr_warn!(
+-                "{}:{} reply to {} failed: {err:?}",
+-                info.from_pid,
+-                info.from_tid,
+-                info.to_pid
+-            );
+             let param = err.source.as_ref().map_or(0, |e| e.to_errno());
+             let ee = ExtendedError::new(info.debug_id as u32, err.reply, param);
+             orig.from
+diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
+index d934c6821b15..22558bdeef16 100644
+--- a/drivers/android/binder/transaction.rs
++++ b/drivers/android/binder/transaction.rs
+@@ -365,21 +365,13 @@ pub(crate) fn new(
+         let txn_security_ctx = node_ref.node.flags & FLAT_BINDER_FLAG_TXN_SECURITY_CTX != 0;
+         let mut txn_security_ctx_off = if txn_security_ctx { Some(0) } else { None };
+         let to = node_ref.node.owner.clone();
+-        let mut alloc = match from.copy_transaction_data(
++        let mut alloc = from.copy_transaction_data(
+             to.clone(),
+             info,
+             info.debug_id,
+             allow_fds,
+             txn_security_ctx_off.as_mut(),
+-        ) {
+-            Ok(alloc) => alloc,
+-            Err(err) => {
+-                if !err.is_dead() {
+-                    pr_warn!("Failure in copy_transaction_data: {:?}", err);
+-                }
+-                return Err(err);
+-            }
+-        };
++        )?;
+         if info.is_oneway() {
+             if from_parent.is_some() {
+                 pr_warn!("Oneway transaction should not be in a transaction stack.");
+@@ -420,13 +412,7 @@ pub(crate) fn new_reply(
+         allow_fds: bool,
+     ) -> BinderResult<DLArc<Self>> {
+         let mut alloc =
+-            match from.copy_transaction_data(to.clone(), info, info.debug_id, allow_fds, None) {
+-                Ok(alloc) => alloc,
+-                Err(err) => {
+-                    pr_warn!("Failure in copy_transaction_data: {:?}", err);
+-                    return Err(err);
+-                }
+-            };
++            from.copy_transaction_data(to.clone(), info, info.debug_id, allow_fds, None)?;
+         if info.flags.contains(TransactionFlag::ClearBuf) {
+             alloc.set_info_clear_on_drop();
+         }
 
 -- 
 2.56.0.385.gd3acb90ef8-goog
