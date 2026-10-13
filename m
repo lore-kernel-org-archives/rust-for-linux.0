@@ -1,83 +1,82 @@
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE8B40B11C
-	for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 10:32:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5605247CA69
+	for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 11:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.179
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791887543; cv=pass; b=n1Sf804dSyzv5QsAEuT1yzl5Vv0juKMuhF0n0/WC66M8NLcpMF4X4uXyGWCdzkOI1V4uVN04I9xdPf1MA0Ug9PUcqnIgbxgrbEsUiJ79VsIv4vj/TFKLjauHh21+V6+64e949j/0NrHzQwrE1MK3vB3FMJumI5YgLQKGXscpEl4=
+	t=1791890212; cv=pass; b=inP+Jo8fZlU2Jp+w7KUbb8V2oaoshTsBUJk55FcglnnQbf/qxan8sTio8qHMXAl9QsJToNkCnKYQ0RotCjjcN4kPYJyI8pde5VYL8izxy/pFZvhKMuGxF50utlJjwt4TWX3MJ2ehe1L6B/r1cnbvXJW94aEblb8qdv8MM2nknGs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791887543; c=relaxed/simple;
-	bh=IAfkKA0U+QL1NU6vVqFogpbTbIovJwScmPrSbAdsIoU=;
+	s=arc-20240116; t=1791890212; c=relaxed/simple;
+	bh=rc9KLx7EvkpoTqaPj95lDAq+Pysu5EXwOszhQEsLWbQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GFikFp3gGAXvQmvdxOOI60BnDxx7yeKhyvEtRivJi0MQoXGn3l/tVZA2Fa59NiI+dZtOY/kOLAqLcEPhbwx1K4YrOJ++N1hpIKotphmfHKqKLFTdm8Vu9yIaeTUZHDewBuTD9rXMq9sPaGgYsV3LAQei0PrPLvb0N/VujohOM/Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y/tLEpBd; arc=pass smtp.client-ip=74.125.82.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=TiDTemCl3MNAvqRseKC9vBR0Q4ZdNoIbx8l6oN8lz8hhMOTaCIJ+9aNwXlyFHYhdQFpyYaxC6yKSpDymkfJtAkeNfhc5LV6cuyffRPjSbvsurbQw3te3D7DTlnWOFXJcrXc/aBbKuOJ2Hgoet6V860tKFg/MID3mqyOitWYexcY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A3ZlYpbr; arc=pass smtp.client-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y/tLEpBd"
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-3535aa147d8so199104eec.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 03:32:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791887540; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A3ZlYpbr"
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-35834f72d94so4992460eec.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 04:16:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791890210; cv=none;
         d=google.com; s=arc-20260327;
-        b=i70IPrR05VVzfYlVe6xbLxlDoz7KgISppyqNFKktwCRuZ3AlEmDnUnyF9CM3/1/642
-         qwxzd5Vgrtbl5L50pSFDN+ybncOEhL2hPeWsxU9biQuMvxaFuD6zpXr4HEhaLX7FyyLN
-         EEOFfsfjjDAfnDtP/ULMRbpdoEXhyZ2Lnn85w0uRlSZYG0ngKGYjdod5ofuxhRhHak7O
-         UVciQkC5zv5kKZmmHKhwR263Nngt9oahqrFBas0lSgqyV8PHay+re+EphPY7lAllDnjD
-         9kDBhfki+tUBfRyX1elTeOZng4lUQ4/WtZzLtp/NGlXN1HbEyIwLWOybLCvdnIdsSqXT
-         49gw==
+        b=KquExaVqktYdVJUao9/pnziekat4WB4EAogFR/Onm8DotTSV3M/NC332Q0HMb2qrLH
+         2AxC60pumY50xO356iLrIKuLp/mEAOTYi2DZifhuPMaUdzW7cscpIx0kx318Sz4Gnj6f
+         1xGFjLCmDmLK4uAizegdyyIaaYp+bWwhGDnZjBWyYiEEOvUBK2Z+ev6hSeEbEWI0fPZY
+         iHubnlLuJp0gHOjYGq/ryAIX+c+kyB2yXvvEcQ4F0NzstTe/IM0ZqbjYQ1pohKnZZm9p
+         q5ShmYUfkbGkyHZa3g0B1zxnW5EXZqFQw0Jy4XgukdngXkQQPyhVMkw2LFK0nl7CgVZy
+         gDRg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=SYwDmHP5gC698Sj67HNGApHy2r5CrxT42QNJMV7RL6o=;
-        fh=gth6DyRkFjptbMmfi25KFewkFo0lw+e46EBtwVPTddA=;
-        b=iVB/b0oVLa7UoUpcMyAxIAeutvi+dArOa9pqX65KXwwu3qoJf4ZkfoSPp88xRVRXZL
-         XmSKg4q5FwrcKeK7psWdPveQI7+OnRBeyegHl52bU2RWh0zmPrf0hWAgDql2N7BRp/1N
-         TaNE5J0jzNoehnPrFMo/WfhKF+dIHJYjkhp60vitg0YLKHoyQrcYxyGvYdJms51bfuIL
-         FUxVjzULDUHdGLE1GYybKTvd6etnYjTGAKXwgevWTZTJ18+H8kzb2eHVgKYisfREIFiX
-         RNdg2KmrIdS07XRaNcMCQ0sedhMY/1cLQt2GDEMLJWs0XVxTwCt+s7GbimITm6xzfw9y
-         L8oA==;
+        bh=1Pk1PNEkQwFyLoSgGMUVJrjEgd7crJB7H/ePjfgBSkQ=;
+        fh=nA/ixBxVXwOWq1gDTp9aavcSkYL0zycG6kbW29ZfGqM=;
+        b=iq9CyW4f9aUCJR+Juw3voLKm3nQYB4Qih1TOIFaZazHrgA9X24hZW16Rwlen9PhfMy
+         atln1pZI2ObBYX01ixaCk/WxnnEUnJbs9QKbfilRZ4U2/dZlBQLimRWtdCF0XSOmlm6Q
+         ofO2rZUAkFPPdii/MCy8oZhiLrfqgRJ+N7YQ7L/9jVDnYXdkkvlszZzeXjz3BDtoC19I
+         EBedElli/D0c85GcUu5l+N7BxNq7P9+CwvEqXkdsMlQSEGgOf0LzBTyLzhEbI9wayjtG
+         E6L+XIkQzCWOHy8bQXvIY7UqFkgfJr7tXHnNiDx/cozTmMUZNgNBgxg7chSEJ4fVSDfV
+         G+5Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791887540; x=1792492340; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791890210; x=1792495010; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=SYwDmHP5gC698Sj67HNGApHy2r5CrxT42QNJMV7RL6o=;
-        b=Y/tLEpBdP24lKTF7jvb/dKv6TxqZVNFs2Pj2CuqXfO5HRD5Aw3vsmFxQcyBhBQqIYR
-         6VD893zgvpKQyC6jITbu+iO/lTmW2wNinSIm3iwrbo9Bzh+Jy7pf8SLCtAkmC8UO/2rj
-         1WfajpWd1PMk08oyfSh/2BRM1CLPz9VY8hyxJi+v/GzeH1q4XQ81JbnU4WwZwMMC8IvA
-         s5799Wvbj8ILnxG54laGxLd7PtbjP+1QgTjRr1yMdxJAVLbyKa9Lp95VhByaHTuAZSOV
-         pYSN3xFzmqHDUpvJx4c84viFlMPH8qAK71b7LVrKoNeyNqe03FpwDiPelUrxVEvFuBRQ
-         jG9Q==
+        bh=1Pk1PNEkQwFyLoSgGMUVJrjEgd7crJB7H/ePjfgBSkQ=;
+        b=A3ZlYpbrCMhPs5+cCvMHyG4Dt/GJNOSkar8RTlB/eYtos4nF2wpMS1UCuqjKTnHVJj
+         zeJRM+sfSBzkl1cA8brd97RyiXeyHGY1pUI8wMNAG0JH+N9fSkcoG7bF9kGGq221BP4t
+         Hkiq5QoArAlinOIdSCY8ND9zOYpvpuhmfcNq98ge/eIfBt0nH87mTlEPsBYjQ/xCrloU
+         vCeSLYikfo7Z00MdQtd1JUW+6P4GQb/R+ZI9FSmmXowwHldsG0WbOgvyEYUpM95bJRGn
+         WwD8Z/7C+bEeOvnAuP7YwIoX5GH7G2prBYapdc4slS5neEVGihIvYBlbK6Y4yqroW0Of
+         poAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791887540; x=1792492340;
+        d=1e100.net; s=20260707; t=1791890210; x=1792495010;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SYwDmHP5gC698Sj67HNGApHy2r5CrxT42QNJMV7RL6o=;
-        b=u9Olgtj2YOs7JT0oeQ+hx2Jcu2inSYVWaWAy17QCreiqtcIKzdR0h608yZars2dtfO
-         THVUPr0tLXhs/WPLQ76rqozdz1m5hO8kV9EyVnEtB8FtdwzSEpTAc0/yNrFxuZadknMr
-         aiCITY6Unce6Yg4EZ2o75PFZAWlI30cusRJ+M3JGyo43CAFnzWnEm66Q/C/FyS7hdBRs
-         5uYNh1HgpKdtWE5I3SwxLB0Oz1PwDUk1N6AaOgYgscLqcL2UKHOvdsQgHvuMr9ZGe0kn
-         oetAhNI4h0m+4qPFTqU5aEoCnB3XVQfdjtHQ8NZLmrrTexImM/oG3NweYNNHooUzKrFw
-         heMg==
-X-Forwarded-Encrypted: i=1; AKwUvByl019Sv5HplPMN7ZZEesaDARnweJxBm6H9yJj0nvGf2ns5WCnnG1g8F8Ajd+oed/kw1JNGWa/UFxzabDIDfw==@vger.kernel.org
-X-Gm-Message-State: AFq9FYLsfiIv28zLmsjDuqdm3DYOn4WyYQtQCLLxS62iWLR3SngLoCtR
-	30AnN2qQcYnpEUBG1EfG8lh3p1y0Ve0+F0o5xu1JukcDLUTQ9Dgn5hHB3RERg++D6rzehweu9AA
-	39BIiJEdTeTFv83ShgxLNRedB+/CbEWY=
-X-Gm-Gg: AYBFou3ZpCES1pK/JZzS2s2YkLJt4Ooz//7fNG3ksf42suaeucvtic3v/Gnobi4djm1
-	4lRKgdhCJEA9Hiqj6QpNQF16LRvR8ssZtwEHGCXx8s5eBvHx1C+kaIUtJZ7Kc5exg5NZFmamjqy
-	VxLVhnb0ByExCHdi0ejYo8IqB3xrD0jvFYosczwJTDsH+iB+UgYGghtwyg1ch5kOdAh3Fh7l2Jb
-	1EAcCTrfqlqvr+o4EBwkZgYaE2/6UvmuOT7LoxJWylvQl+9+DeW423mv9HICcwzsrGdihfcfRe+
-	Bx8DKBvPUSRkV4UR7UvxdQZc8Em1Fo5E2jPsetVyXOhC12jAm8uifnRlRfCJb6uboHvBuax1Mk6
-	9xTA0eXy5rhFWXCqknFg2u6/tc7SIHzIyHREZ4/bA5J8aoGHwsMuj93JfpJSnXoFjZcETmzqtIc
-	34tw56dg9Dh8L51pSR54ar9YUajMwKuULdVRHA7FZtmKWBECx74hiazCRhkVeUqg==
-X-Received: by 2002:a05:7300:c8c5:b0:351:7e15:9c59 with SMTP id
- 5a478bee46e88-3537dc89f58mr25702764eec.0.1791887539654; Tue, 13 Oct 2026
- 03:32:19 -0700 (PDT)
+        bh=1Pk1PNEkQwFyLoSgGMUVJrjEgd7crJB7H/ePjfgBSkQ=;
+        b=1kX6d31agv/3JGGD/e7n/g9Mul/oiWFBjS1f16LiED9S9uTE2uAW+eQnsclZbo6v5e
+         5u9gl8BMuKVFnrpqLVbKEOJO4go+FS2OxdEQ05vkj8HoNMMiQ/uOBxMZ4REI5jelxEGV
+         IOi0DTFeWUA5YzW/nhwZY/EdUU8uxjUitcDJftgSlivxMYRdsCTTKwTOycd1R6aMbhYB
+         zG1kW7klu0FR5qxCuQj1Rq7d6apUUlzRm7f37Wqmd9RcRwvw3kirWF8TcfFjOnvlQnr4
+         F8TR7YPfKQS0MRuEM0/KVaLssaSWz9oLcJDtE2pwK5k6551hjVKJwuVUkKv+ctqNCmev
+         /z/w==
+X-Forwarded-Encrypted: i=1; AKwUvBw7wEzXE2zvS35IRBFGBUy7hcr/cz9ZsPyUuLtgy70km/rEPk/5CiEVDeemFXLpY6FZDaqvoH+NZWQp2uHlAA==@vger.kernel.org
+X-Gm-Message-State: AFq9FYIiZjIG3eP5N3ldVfBSEm9IR9KF8w8tgWqA4I4Vz/A2R1/VVVkp
+	Jn5ariIgIUj5XvUu7lwH8qXS07skE8CA8DvdpFxnaGPSXfqOkhNn7/crVQGxPbKJetGoIdD+0v2
+	GYkxHbH8qXko7nSI5n/O1pDiAf6hHwxnIM4g95/Iq
+X-Gm-Gg: AYBFou1kwqM2/0hjq7dWeB7TNeRCS04DTACSfEe9djYihZQYaxRHkPGvb6ghEN9Xs+t
+	FmRSUVJKP2X96HcEHMUaoEv/KQW6mFY4PzsqPfazUS/Pbiib9C5+jS21QNIysVLJNE49YRM7VZR
+	kBsVwzrknF/inIJmWN9v/Is//GQ/dZ0PRf1fCOUhMDsiANwDs+3EkxkUcPoXiH4YPAWnMDGgzDu
+	yrT5k2qdYc0v0NdQZ5CQB+PWcAJFZtP7N8Jw/l/ezy9CHwoziOkxISRKsMxjoFc7eaAKqbmT6Of
+	tQTMUo5XdqrS53Dn8wmnZcJTvtk6uhFGRGhpqbGJb9BnlSvbknFOgS9YyqobE2yDHU0/rE3WtIo
+	hYOarM77olA==
+X-Received: by 2002:a05:7022:f50a:b0:17c:393d:a0c8 with SMTP id
+ a92af1059eb24-17c393da495mr248774c88.5.1791890209700; Tue, 13 Oct 2026
+ 04:16:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -85,16 +84,17 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20261012134159.912183-1-elver@google.com> <20261012134159.912183-2-elver@google.com>
- <CAG_fn=UbARgkMYOHY9kbqvkCEE532_wnkKkv50H-JkuKWtCe=g@mail.gmail.com> <as4DdRqFKxuJNDnS@elver.google.com>
-In-Reply-To: <as4DdRqFKxuJNDnS@elver.google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 13 Oct 2026 12:32:07 +0200
-X-Gm-Features: AclHuK-e9pojF-4-sUhcctzSu2Lj9dg88Qjibnm7E2u4bDLqEx7YvHBlJNvxTnE
-Message-ID: <CANiq72kQ0XggO9K44aprg1yLWZFj=zb3M+T4pRKnKbBwnoy13g@mail.gmail.com>
+ <CAG_fn=UbARgkMYOHY9kbqvkCEE532_wnkKkv50H-JkuKWtCe=g@mail.gmail.com>
+ <as4DdRqFKxuJNDnS@elver.google.com> <CANiq72kQ0XggO9K44aprg1yLWZFj=zb3M+T4pRKnKbBwnoy13g@mail.gmail.com>
+In-Reply-To: <CANiq72kQ0XggO9K44aprg1yLWZFj=zb3M+T4pRKnKbBwnoy13g@mail.gmail.com>
+From: Marco Elver <elver@google.com>
+Date: Tue, 13 Oct 2026 13:16:12 +0200
+X-Gm-Features: AclHuK_P6PU5CrwSXdVV6i-xG77HwukstjFkP0Kjvw_NwxgzqD24Q_xKBYjksY0
+Message-ID: <CANpmjNNu6VEXtr5zUWAiAP4rPiM9jgE-1ai91+Fpxg2ABeKYFQ@mail.gmail.com>
 Subject: Re: [PATCH 2/2] rust: kcsan: add KUnit test for data race detection
-To: Marco Elver <elver@google.com>, Tejun Heo <tj@kernel.org>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Alexander Potapenko <glider@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Alexander Potapenko <glider@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, kasan-dev@googlegroups.com, 
 	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
 	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
@@ -115,68 +115,73 @@ Cc: Alexander Potapenko <glider@google.com>, Boqun Feng <boqun.feng@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 13, 2026 at 12:10=E2=80=AFPM Marco Elver <elver@google.com> wro=
-te:
+On Tue, 13 Oct 2026 at 12:32, Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Looks like it, and we need this patch to use system_dfl_wq:
+> On Tue, Oct 13, 2026 at 12:10=E2=80=AFPM Marco Elver <elver@google.com> w=
+rote:
+> >
+> > Looks like it, and we need this patch to use system_dfl_wq:
+> >
+> >
+> > From: Marco Elver <elver@google.com>
+> > Date: Tue, 13 Oct 2026 10:05:52 +0000
+> > Subject: [PATCH] rust: workqueue: add system_dfl()
+> >
+> > The C kernel deprecated system_unbound_wq in favor of system_dfl_wq
+> > (commit 64d8eae3f895 ("workqueue: Add warnings and fallback if
+> > system_{unbound}_wq is used")).
+> >
+> > Add `system_dfl()` to provide a safe wrapper around `system_dfl_wq`.
+> >
+> > Signed-off-by: Marco Elver <elver@google.com>
+> > ---
+> >  rust/kernel/workqueue.rs | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> >
+> > diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> > index 7e253b6f299c..e46d3acf903d 100644
+> > --- a/rust/kernel/workqueue.rs
+> > +++ b/rust/kernel/workqueue.rs
+> > @@ -1063,6 +1063,16 @@ pub fn system_unbound() -> &'static Queue {
+> >      unsafe { Queue::from_raw(bindings::system_unbound_wq) }
+> >  }
+> >
+> > +/// Returns the system default work queue (`system_dfl_wq`).
+> > +///
+> > +/// Workers are not bound to any specific CPU, not concurrency managed=
+, and all queued work items
+> > +/// are executed immediately as long as `max_active` limit is not reac=
+hed and resources are
+> > +/// available.
+> > +pub fn system_dfl() -> &'static Queue {
+> > +    // SAFETY: `system_dfl_wq` is a C global, always available.
+> > +    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
+> > +}
+> > +
+> >  /// Returns the system freezable work queue (`system_freezable_wq`).
+> >  ///
+> >  /// It is equivalent to the one returned by [`system`] except that it'=
+s freezable.
+> > --
+> > 2.56.0.385.gd3acb90ef8-goog
 >
+> This is:
 >
-> From: Marco Elver <elver@google.com>
-> Date: Tue, 13 Oct 2026 10:05:52 +0000
-> Subject: [PATCH] rust: workqueue: add system_dfl()
+>   https://lore.kernel.org/rust-for-linux/20260807165252.3849875-2-dakr@ke=
+rnel.org/
 >
-> The C kernel deprecated system_unbound_wq in favor of system_dfl_wq
-> (commit 64d8eae3f895 ("workqueue: Add warnings and fallback if
-> system_{unbound}_wq is used")).
+> i.e. we have had a warning like that in one of our current tests for a
+> while, it would be nice to clean it up:
 >
-> Add `system_dfl()` to provide a safe wrapper around `system_dfl_wq`.
+>     workqueue: work func
+>     _RNvXs8_NtCs5lxGbhOOw2k_6kernel9workqueueINtNtNtB7_4sync3arc3ArcNtNtN=
+tNtBH_4lock8spinlock5tests4TestEINtB5_15WorkItemPointerKy0_E3runB7_
+>     enqueued on deprecated workqueue. Use system_{percpu|dfl}_wq instead.
 >
-> Signed-off-by: Marco Elver <elver@google.com>
-> ---
->  rust/kernel/workqueue.rs | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index 7e253b6f299c..e46d3acf903d 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -1063,6 +1063,16 @@ pub fn system_unbound() -> &'static Queue {
->      unsafe { Queue::from_raw(bindings::system_unbound_wq) }
->  }
->
-> +/// Returns the system default work queue (`system_dfl_wq`).
-> +///
-> +/// Workers are not bound to any specific CPU, not concurrency managed, =
-and all queued work items
-> +/// are executed immediately as long as `max_active` limit is not reache=
-d and resources are
-> +/// available.
-> +pub fn system_dfl() -> &'static Queue {
-> +    // SAFETY: `system_dfl_wq` is a C global, always available.
-> +    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
-> +}
-> +
->  /// Returns the system freezable work queue (`system_freezable_wq`).
->  ///
->  /// It is equivalent to the one returned by [`system`] except that it's =
-freezable.
-> --
-> 2.56.0.385.gd3acb90ef8-goog
+> Cc'ing workqueue: Tejun and Lai.
 
-This is:
+But I take it that the series above is not yet merged?
 
-  https://lore.kernel.org/rust-for-linux/20260807165252.3849875-2-dakr@kern=
-el.org/
-
-i.e. we have had a warning like that in one of our current tests for a
-while, it would be nice to clean it up:
-
-    workqueue: work func
-    _RNvXs8_NtCs5lxGbhOOw2k_6kernel9workqueueINtNtNtB7_4sync3arc3ArcNtNtNtN=
-tBH_4lock8spinlock5tests4TestEINtB5_15WorkItemPointerKy0_E3runB7_
-    enqueued on deprecated workqueue. Use system_{percpu|dfl}_wq instead.
-
-Cc'ing workqueue: Tejun and Lai.
-
-Cheers,
-Miguel
+So I'll keep the previous interface for my test to avoid introducing
+conflicting patches.
