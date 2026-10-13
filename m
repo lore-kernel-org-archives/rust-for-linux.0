@@ -1,183 +1,187 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288BC3D3D07
-	for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 10:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D1A4BA1D3
+	for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 10:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791886207; cv=none; b=S1qhW35dQiKSwwrCSYxgudNlPzO9rUHq/5Q7acqhWVm5NlIIPDcuUSQTuIypRZWt59rFzGuuKbu7b6ZkCDbXcJBhUsNgvlSdLMNJndqsMdYeypanrXxl/DXl+9gWe0scUA9YvcdVXOgHwzLkP9Vb1bdK9QS7GDKrNvE6YGWXWIc=
+	t=1791886950; cv=none; b=LRWoJqP0FXAJmtOGQ6YqOFI/eZFgjwSJwuuCWr1sfIvHAf56HAokf7W36mDZlBDD/eGEGRkDqEB3HebsvKwxn354lB/hlgUk9PA7zKERaTtrxZHZeIeDtL/iY6qx7ZyiqmQ/lYAgF7Kzk4ITvcy+I7vqE32QHQv6Fg6mRmgBJ9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791886207; c=relaxed/simple;
-	bh=wx1YOW8KjXNuf+3dwHeKK50OdpSvPEga59yBXcRepkA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qaZ8CppxI3PCG1kt/KIylGpjS3CbJzXWkUxYr8V96URipUXayMXoILWUziY1zXQm1NN/0lq4zRFTpKzg4DgxAMqLi15NCjwWjJk53dz2/50j0Frz2MYw9BOpqaIGdwEAScp+EDOFWoquesxgW25H4nX3hsPqSS4Qxa1PfyoPAiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l1K6GBq0; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1791886950; c=relaxed/simple;
+	bh=QoEj15VW5Rz/BMW3IO7hDxn+DIbOJK1iyO5Ue5ss1Cs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=nA/jqvQ/mly+i7zja1GJTgjLsa4oQVNZecexHA2RBkKQRLlpuacqEKuaXxm3zUIZotWQsWqqmpkyELiWK6SlTZIR2BzpQRAVbLjwy0mQPosFOQzgGk+6yVBEjVrh2keKUpbDA9WNMyB6ZPOyrICZYPHX6O7ze0cTQ7OAK1wo+kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e1gtat1U; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l1K6GBq0"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6b1f31c63ebso557389a12.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 03:10:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e1gtat1U"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c2e4df2e26fso362673066b.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 03:22:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791886203; x=1792491003; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=LzdhV9lB9qXueovv0WwaiOHszHStN4aVPEcvSiAOmLE=;
-        b=l1K6GBq0UkNEm/tTOZqs50Uj4F8fYlTGnOJCudGEnuWEOZzxmnarLD6HtVCelfgjQn
-         JD1kr1mltkKl0NJNzmj83kzhuvIjGBiBDWv8nqEbBlmY/9/cSMQkhn+B2FJafdJfsCVE
-         aSlFwH72dz3dlQzX6QukWa7mOjQ6YMvsozCrwY4b8M0IGnoYusU+zpilKWFKzZ75DCNl
-         MF6XpjCX2l1B7QVhbNXFPBWUR5D1pxVjT8as4VxbHDJW/kIHQoQtZFQetBlWdMmQeyPI
-         HzOv2hGE1hf0Zwbqn7UAVScJxkqkdaQOez2PylJC4zIt1/CsXmrBVnaLuja5mD47v0SQ
-         6eQw==
+        d=gmail.com; s=20251104; t=1791886947; x=1792491747; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Jof7IVRuzH/+jDJxaXeOI9qqOFJlE7BBc0KXq3UCoT4=;
+        b=e1gtat1UroLRRcxrsVgi37cBpcWnug0mH3kSjpDho26Mfz/FaFcxYvyEOJiNdINTWq
+         ZmIOzGUyDDy5ZZm8HsF5TaUSPGpCrgNkCJ+WvUvS9uaB0AGn4dLI+dvY99hBbZD2/q0b
+         2zCd2hZiO8ijMbJv05Y7OoXlTY/cvJa3X+klzbVDYiumMkODxuHna5u4f21elZojmh1N
+         /E7ln/HOgPmM3vsmqAhZ5eQJ4vkIr6LSPkxQizqkJJf3KAa1EDCh+q3jgeOIZHe9BY+2
+         DHRQpZu2MBbsMCal1g4Hd3+vxhFtn39IbylkkJhXFdbLbVNPcrV98CaiCXbhijrfTvdw
+         nO7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791886203; x=1792491003;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LzdhV9lB9qXueovv0WwaiOHszHStN4aVPEcvSiAOmLE=;
-        b=X23AA/S2XYIfmjaMcd1Lbv4SXLhQJLejnAnosoaqiU+xolYUfGsARe1O/txxCgQDzk
-         alpmgPJbQgnT4EXs/IJhOUc6xQvkyKntsAOtv+wf/WGZeS0shyZJNqoEpH+togrOqisS
-         8G3Sv4Fc7Gp6B8Y+XYrF7G6T3cMrm/+9Vuf/NRnjWAIfb9x0uL69TLUSlrc5wigi9mAt
-         ElEYZGW2xojUExNjk6vdXFSo8xVpZUzgi8/HlUnuiTcGXlEVc/91hwZmDaKkA8whYH7t
-         QvOUR5i3mH9LIUH/jZ1KuIQ3u9tdUC+RaQqigkBViLa7F3/IyEPC0J3KIf/oo8IsMEzO
-         wXbg==
-X-Forwarded-Encrypted: i=1; AKwUvBytbyMYRLRedCdKtq8T01kn6Yb5MhSvlj5ZQogN26rxDrJOmOjKz9If32amcgFX4zavRshnOYn8bTwtVZq7Tg==@vger.kernel.org
-X-Gm-Message-State: AFq9FYLOnKGuCkm88Am06n7+MeIQ1Oar5Jsfbxnjui3ss+p0O9iCAZj4
-	h+fd5G0z6UT8EWCaWKMOv6IUUCQwPgm0mQOaYpZDNdRhXboo21RzenCp4MN5ezAh6Q==
-X-Gm-Gg: AYBFou1dctfrR8nd9pOo5TKbPII1u3as5viZ5aZIju3/oGTM92LQmiTns05uKY1xyhl
-	oqXVJ4HgZpCyqxmT+Lesw6fWCvoWkQjeQPYsSlo8K3MyOAQ9epeeIoLTx+29gKMAE69kym2J6dP
-	GjhQ80M90yKjjgeVioHLeyZsWouVN+eDvs991Lx+kIrklNdE2DPCR5X5A7qdlwsQFs6AzHKCCuS
-	BTdwVaODze9mQe8OJ0zHm2beXUUwbXjHhgIOFVySiCn5ZXLgJBBcX2nuUQTJnEmyRuGk97aOsh/
-	/XbwqrlufJ5zZfSeQ2YFJnGvU4DpZ1/mI+ObpzD8YqVAV3z671TICWM+xBupkdqX92RQ+ZPXUrO
-	Q8+/QSw8ijQtw9WKMDWf2jqY+SJo2T6MMr0H39qyKhcDcl/1fVSd53WpVFOYa99ZPA7pTUR8P2n
-	VBSPZR77hznKld/E9AyCBnx/HzN+pr/eroCzKMe8/sjmgdlsjmOSXhAdcp6nHbuZuxkEDyRaovP
-	6S+MOIu2BEG58GH1gaVN80liMD5RQn155DOdNzgEOAp
-X-Received: by 2002:a17:907:7f86:b0:c2d:cdc6:8271 with SMTP id a640c23a62f3a-c31a702da86mr1287920466b.13.1791886202849;
-        Tue, 13 Oct 2026 03:10:02 -0700 (PDT)
-Received: from elver.google.com (124.100.205.35.bc.googleusercontent.com. [35.205.100.124])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b179dffb9fsm6059106a12.31.2026.10.13.03.10.01
+        d=1e100.net; s=20260707; t=1791886947; x=1792491747;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Jof7IVRuzH/+jDJxaXeOI9qqOFJlE7BBc0KXq3UCoT4=;
+        b=jUJQNo/hZj7IdR8ONuJjvVC/UmQ3ua9EFoTxJZzB/op/VTj3om9PTF5sUPB/d0G1UA
+         pJ0FFJIomyLl71+KjkSZhD4auO7OzW0AOJOS4CjQObMt7KAeUsEt0Vxk/EfTdr7Rwnla
+         u6+Mm5Li0QYM8WCGPfgS/wJmsmkpVC8c6npelkUbwLUEn0j0e1lXAszVi4l7CSuF8J3Y
+         eXBQGhp6yQwZJouOdgxIFbyQVb2PM3uSh1PCbYbhTVZui4I7oRvP+PG67IL+F+HwpBke
+         1qElLXvlO7Cx+H8tUCrZa60x7uYdA5fGnEEbu2F8BAYMpLhgl8oiPJYlXE+WOuv7Xj8i
+         6sTQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxIg8Ds0+PAvwK/QgrjZZjFmie74HqWEYLrPJS86iwzg0AU5ufLN22D2fjxz3L5epnDKCM0OSrJyrs4iZqJWg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYLuQsAiac38BJLL2tyrkcTjXQld+hYTQDSc95vriP9+fIsF7Ybz
+	1F1bjenv6J6ubRZYCH8HMoOv5PWd2uWJQaITAmj4tS1aEajoTYVNWHJY
+X-Gm-Gg: AYBFou22BSbFW2Y046Kx0EGhyizRTtQ3U8hCPDgkvHcp1UE5OrpfMPCGoovEpvC1Nea
+	tb5ex8OINLAIBB1JV1aM2hr8rzbICa9WJrFZA3R042YEfXHy1Ute2FGPFiZB34a43fEPDKteBzz
+	lPQakkO2ox8mtR/lghfZFDHVrXfwRVW0nFPNOgflt3lT1Ibe0+MEBBLZiEFPDE90CSwV0W955w/
+	W25ldOwhlXmVZ4Yc8+LJHo058s01fjAtu4XH++vpXsbO9PFB0tvPIS+2J/utjV58l54TNZSzvNM
+	i3oDA8MD/wGRgchT0gjj+6GXyzmAMMpiIUk2ok95Quy/bC8EuyZluHjSo94AfBYzseXNxPyOKH0
+	vAqh83P9TKWF1axbl3qF6cJxoRFvFlJ28td3yTLr1ErkJt+DsO3msRiosRt21W5txk3aH5ADkJR
+	lWHugjVEqzJdK5JcWXA1D5nJ2IpjykCe4HJAaLsl7/eGOW09fUKtloJO8+aD2QVWR14byQkF4yC
+	qNcvdDZHFCIYz4qqOtGbA8+rrCNW8kJUg==
+X-Received: by 2002:a17:907:3fa9:b0:c26:1649:47af with SMTP id a640c23a62f3a-c31a9fb6451mr1167409166b.37.1791886946440;
+        Tue, 13 Oct 2026 03:22:26 -0700 (PDT)
+Received: from [127.0.0.2] ([2a05:f6c4:d34b:0:eb4c:5610:e9e4:9d1e])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c34d011dfccsm230739766b.42.2026.10.13.03.22.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 03:10:01 -0700 (PDT)
-Date: Tue, 13 Oct 2026 10:09:57 +0000
-From: Marco Elver <elver@google.com>
-To: Alexander Potapenko <glider@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Gary Guo <gary@garyguo.net>, kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Boqun Feng <boqun@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Yury Norov <ynorov@nvidia.com>,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>, workflows@vger.kernel.org,
-	linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH 2/2] rust: kcsan: add KUnit test for data race detection
-Message-ID: <as4DdRqFKxuJNDnS@elver.google.com>
-References: <20261012134159.912183-1-elver@google.com>
- <20261012134159.912183-2-elver@google.com>
- <CAG_fn=UbARgkMYOHY9kbqvkCEE532_wnkKkv50H-JkuKWtCe=g@mail.gmail.com>
+        Tue, 13 Oct 2026 03:22:25 -0700 (PDT)
+From: Malte Wechter <maltewechter@gmail.com>
+Subject: [PATCH v3 0/4] kunit: add optional assertions to catch taint and
+ lockdep warnings
+Date: Tue, 13 Oct 2026 12:22:20 +0200
+Message-Id: <20261013-lockdep-kunit-v3-0-cdb8ff720c1f@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAG_fn=UbARgkMYOHY9kbqvkCEE532_wnkKkv50H-JkuKWtCe=g@mail.gmail.com>
-User-Agent: Mutt/2.3.2 (2026-04-26)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAF0GzmoC/12NywqDMBQFf0Wybkq8Sqpd9T9KFzHeaOojkmhoE
+ f+9iaUgXQ6cmbMSh1ajI9dkJRa9dtqMAbJTQmQrxgaprgMTYMBZkQLtjexqnGi3jHqmJYdC5ZU
+ UdclIcCaLSr/23v3xZbdUT5RzjMRFq91s7Hs/9Gnc/drFX9unlFHOJVapgAtgdmsGofuzNAOJb
+ Q8HG/J/G4KdccEVylIF/Whv2/YBkM+OPvoAAAA=
+X-Change-ID: 20260812-lockdep-kunit-9628f4bcad90
+To: Brendan Higgins <brendan.higgins@linux.dev>, 
+ David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ workflows@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Malte Wechter <maltewechter@gmail.com>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791886944; l=4206;
+ i=maltewechter@gmail.com; s=20260812; h=from:subject:message-id;
+ bh=QoEj15VW5Rz/BMW3IO7hDxn+DIbOJK1iyO5Ue5ss1Cs=;
+ b=5b/OOvl+ou89Y7VAUHkdAROHOd7sy7qPnBmX0MwIedktH3o0E+/260Bci5yCZKa921lNtpGTO
+ lPb9LFujY44Dczuh1DGcB4tJ90xjfyYOJ9HcHVqhrBELZYJjM/uwx8n
+X-Developer-Key: i=maltewechter@gmail.com; a=ed25519;
+ pk=Ta/JQQMOW0Cbxp+yEwWqWFEyKFRyuQeSoYicwD7yvWI=
 
-On Tue, Oct 13, 2026 at 11:38AM +0200, Alexander Potapenko wrote:
-> > +        // SAFETY: `probe_console` has the signature expected by the `console` tracepoint. Being
-> > +        // part of the kernel image, it and `OBSERVED` outlive the registration, so there is no
-> > +        // need to synchronize with in-flight probes after unregistering.
-> > +        to_result(unsafe {
-> > +            bindings::tracepoint_probe_register(
-> > +                &raw mut bindings::__tracepoint_console,
-> > +                probe_console as *mut c_void,
-> > +                ptr::null_mut(),
-> > +            )
-> > +        })?;
-> > +        let _unregister = ScopeGuard::new(|| {
-> > +            // SAFETY: The probe was registered above.
-> > +            unsafe {
-> > +                bindings::tracepoint_probe_unregister(
-> > +                    &raw mut bindings::__tracepoint_console,
-> > +                    probe_console as *mut c_void,
-> > +                    ptr::null_mut(),
-> > +                );
-> > +            }
-> > +        });
-> > +
-> > +        let worker = ctx.clone();
-> > +        workqueue::system_unbound().try_spawn(GFP_KERNEL, move || {
-> 
-> I ran this locally and got the following warning:
-> 
-> [  623.232012] workqueue: work func
-> _RNvXsb_NtCskctMpSfuwL9_6kernel9workqueueINtNtCs1G77UTwpz6o_4core3pin3PinINtNtNtB7_5alloc4kbox3BoxINtB5_11ClosureWorkNCNvNtNtB7_10kcsan_test5tests9data_races_0ENtNtB1d_9allocator7KmallocEEINtB5_15WorkItemPointerKy0_E3runB7_
-> enqueued on deprecated workqueue. Use system_{percpu|dfl}_wq instead.
-> 
-> Do we need to use a different workqueue?
+This series extends KUnit to use existing kernel diagnostics to catch
+certain locking-related bugs. Specifically, it adds assertions for
+`debug_locks` from lockdep and the `TAINT_WARN` flag from panic. This
+aims to catch bugs such as circular locking dependencies and sleeping
+functions called from invalid context, by highlighting them when they
+are triggered by a KUnit test.
 
-Looks like it, and we need this patch to use system_dfl_wq:
+Add CONFIG_KUNIT_FAIL_TEST_ON_WARN and CONFIG_KUNIT_FAIL_TEST_ON_LOCKDEP,
+which enable the `TAINT_WARN` and `debug_locks` assertions respectively.
+The assertions are run in two places:
 
+    1. Before a test case is run: this ensures that no tests are run if
+       the kernel is tainted and/or `debug_locks` has been turned off.
 
-From: Marco Elver <elver@google.com>
-Date: Tue, 13 Oct 2026 10:05:52 +0000
-Subject: [PATCH] rust: workqueue: add system_dfl()
+    2. After each test case: this checks whether `debug_locks` has been
+       turned off or `TAINT_WARN` has been set between the start and the
+       end of the test.
 
-The C kernel deprecated system_unbound_wq in favor of system_dfl_wq
-(commit 64d8eae3f895 ("workqueue: Add warnings and fallback if
-system_{unbound}_wq is used")).
+It is important to note that if assertion 1 fails, something other than
+the KUnit test case turned off `debug_locks` or tainted the kernel. This
+is not investigated further, but the kernel is treated as 'unreliable',
+and all subsequent test cases are forcefully skipped.
+For assertion 2, there is no guarantee that it was the thread
+executing the test case that made the kernel 'unreliable'. This is not
+investigated further either, but as with assertion 1, all subsequent
+test cases are forcefully skipped and the KUnit log is shown.
 
-Add `system_dfl()` to provide a safe wrapper around `system_dfl_wq`.
+Tests that trigger a `WARN()` on purpose are expected to use the warning
+suppression added in commit 85347718ab0d ("bug/kunit: Core support for
+suppressing warning backtraces"). Suppressed warnings do not taint the
+kernel, so with `CONFIG_KUNIT_FAIL_TEST_ON_WARN` only unexpected
+warnings fail a test. Running all KUnit tests with
+`CONFIG_KUNIT_FAIL_TEST_ON_WARN` enabled currently fails `Log base 2 of
+0` in `intlog2_test`, because it deliberately triggers a `WARN()`
+without suppressing it, which force-skips all subsequent tests. Running
+all tests with `CONFIG_KUNIT_FAIL_TEST_ON_LOCKDEP` enabled does not
+change any existing test results.
 
-Signed-off-by: Marco Elver <elver@google.com>
+The new options depend only on `CONFIG_KUNIT` (and `CONFIG_LOCKDEP` for
+CONFIG_KUNIT_FAIL_TEST_ON_LOCKDEP) and can be enabled independently.
+
+Signed-off-by: Malte Wechter <maltewechter@gmail.com>
 ---
- rust/kernel/workqueue.rs | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Changes in v3:
+- rebase onto v7.3-rc6
+- add forced_skip logic to kunit, enabling marking tests as forcefully skipped
+- split CONFIG_KUNIT_EXTRA_ASSERTS into two sepperate configs.
+- extend kunit_parser.py and kunit_printer.py to handle forcefully skipped test cases
+- make forcefully skipped tests be marked as failed in kunit_json
+- add new section to kunit documention at Documentation/dev-tools/kunit/failing_on_warnings.rst
+- Link to v2: https://patch.msgid.link/20260824-lockdep-kunit-v2-0-36a6fec9f72e@gmail.com
 
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 7e253b6f299c..e46d3acf903d 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -1063,6 +1063,16 @@ pub fn system_unbound() -> &'static Queue {
-     unsafe { Queue::from_raw(bindings::system_unbound_wq) }
- }
- 
-+/// Returns the system default work queue (`system_dfl_wq`).
-+///
-+/// Workers are not bound to any specific CPU, not concurrency managed, and all queued work items
-+/// are executed immediately as long as `max_active` limit is not reached and resources are
-+/// available.
-+pub fn system_dfl() -> &'static Queue {
-+    // SAFETY: `system_dfl_wq` is a C global, always available.
-+    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
-+}
-+
- /// Returns the system freezable work queue (`system_freezable_wq`).
- ///
- /// It is equivalent to the one returned by [`system`] except that it's freezable.
--- 
-2.56.0.385.gd3acb90ef8-goog
+Changes in v2:
+- Implement changes directly in C KUnit instead of Rust KUnit wrapper
+- Remove rust specific configs and add general CONFIG_KUNIT_EXTRA_ASSERTS config
+- Link to v1: https://patch.msgid.link/20260818-lockdep-kunit-v1-0-66ceb1a272e3@gmail.com
+
+---
+Malte Wechter (4):
+      kunit: add logic for tracking forcefully skipped test cases/suites
+      kunit: add assertions for lockdep inside of kunit
+      kunit: add assertions for TAINT_WARN inside of kunit
+      Documentation: kunit: add documentation and examples to kunit documentation
+
+ .../dev-tools/kunit/failing_on_warnings.rst        |  78 ++++++++++++
+ Documentation/dev-tools/kunit/index.rst            |   1 +
+ include/kunit/test.h                               |   4 +
+ lib/kunit/Kconfig                                  |  23 ++++
+ lib/kunit/test.c                                   | 135 ++++++++++++++++++---
+ rust/kernel/kunit.rs                               |   1 +
+ tools/testing/kunit/kunit_json.py                  |   2 +
+ tools/testing/kunit/kunit_parser.py                |  36 +++++-
+ tools/testing/kunit/kunit_printer.py               |   3 +
+ 9 files changed, 258 insertions(+), 25 deletions(-)
+---
+base-commit: a90ee4305c4a5df72c11b31dacfdc76e00fcf78a
+change-id: 20260812-lockdep-kunit-9628f4bcad90
+
+Best regards,
+--  
+Malte Wechter <maltewechter@gmail.com>
 
