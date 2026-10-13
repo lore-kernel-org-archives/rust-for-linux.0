@@ -1,507 +1,471 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AF24FDE66
-	for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 12:02:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A433B1BD
+	for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 12:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791892957; cv=none; b=uJ27wBnlZM1F40Ew5/3icun9OIkULXQg4d8+it1Krboqnok/m9OkczKblZyhqp0/PxfLIhZ+zbbyY/EyvGobXrXMKzk+EiERJawpMm5wD9sasItwhVYvbrBoir2QDMQMeP4S5zVEvqGtHz8nimXvDndabZgM2ss5CLpFwehIBcY=
+	t=1791894561; cv=none; b=NaAH2BPLHl1q6jNrjPBOxZIn8DGflzS3BI+HcS8cmy3/h2L0FfyLBNXL+4ys1SYMk7Pn9gnta6pG80a4z88YVM8z7k0BTq936Qf4hiVw44fSaPt8Ykb4Yg5+zd/lmUtnWkRONp/wtjZx8U6QX8uCJ2DhEzjosK/mugFzTbegA6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791892957; c=relaxed/simple;
-	bh=nGsxjhbx9MCg96U4aqm0eCBgu16yp0S0WMMfG5atNeA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TXfC+f76Cxjs4fx2++ZvA/2DMk+y5sEwH6hWhL8lvOa8uDMZWh3lY45vxLIP/9Bsmdp1Kq/1LNZX+d1eHxDvZJHyEihyyBRE9cppKCiQwIXD0naX7LYUwjX8bbHOcPV4a/48qBtn9upDs5FyhEJI4dYKyA0TyS+iAeTaugulf4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard.org header.i=@beagleboard.org header.b=GiN3WJwc; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
+	s=arc-20240116; t=1791894561; c=relaxed/simple;
+	bh=0VfHI99mjbV2FxjU9pgiKgFoWso8sMbEw/GYHNs7kfA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ki0KzEWl0QxBFQ1L9plYkd8zKGciTwIsCfvK1ngCDQsiTpSWWtnB+cV3Fz3pCY12iyet6OH79Cp+L490XirxqbWzJ7N5sm0CoEUguoMUGyW9e5uo4MrJpChEiE06z55Zx1FI/3x+Emh+08khrJqW1BMWzTKfFn9UxjNnH2zNSt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nMIo0/d2; arc=none smtp.client-ip=209.85.128.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard.org header.i=@beagleboard.org header.b="GiN3WJwc"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3ab3260b35dso1745200a91.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 05:02:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nMIo0/d2"
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a0761224e1so26829925e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 05:29:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard.org; s=google; t=1791892955; x=1792497755; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cPDQk+Pu7w11VvyfHDoih/RXZuCuiRsJufRNeX6GVn0=;
-        b=GiN3WJwctbdqC/cb5+kEb7F48CXYrcHDs9qYaSj4k6fvno6Ygt7122XroKhY8qJL50
-         0ylY5Q8CL67n4W+enHrrVcrPj4QR/jMgwFSl8J7o9DEpiWVqbNT4caJUyXX7aGoAPLyp
-         RLoNQGjsM5MsDLO7mlwkHNfzo0kU0SaL1oYpO3qY3RxoQPvKtBGJcuxK6W8fW9g3NHTa
-         X1e6JlkfdxVNbL+GdzPZb7em61HVLLnSo92HjrFqyW1zv/AgjLgiX0ULkFJTNE2ckh5T
-         XngW/Hj1DCY7M2wwpZsedUFBq+tKxCbY3cMTgFI/c+xHW2PTFylK3iCsdBME5YBulii3
-         MhVw==
+        d=google.com; s=20251104; t=1791894557; x=1792499357; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=U+ILcrewVHhOsLOTzQWydUELGX8n+kxmBpJfSUA6g3Y=;
+        b=nMIo0/d2IKiY+n0Zfp6tGu5xvlYcz3bt3ue+beN43bj1AxZoROn0R5F4ajzeYOl1qX
+         WNJf8NeU6rHQYiN4tF09bFtVRy4W41ZeDMXqpMiwL16PTuF6f0fqzjUV6a52MISag192
+         0WErNFnHCg4p75YmWseR96IBOn/BhrDsZ6S5R3xyk8XF4oDoS8UZHmKNd0HwqMNo+ZJC
+         hTCbGcAjRn176PWYCPCu6FQ1bbwxG393d3fI00Di+lzVI1YwgvcjcYToQhotJBoAbdCy
+         lr/dCdJ7okmwq9jHVlMCCb1YuLLAliK6lv4LAnizNRTfwFEBQect+7kB9UczIwglcaMC
+         IReg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791892955; x=1792497755;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1791894557; x=1792499357;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=cPDQk+Pu7w11VvyfHDoih/RXZuCuiRsJufRNeX6GVn0=;
-        b=AMiZKT//KQsf1M6K3Ly4aephUwblzfTXx5maHHPUTH/TT3XTV5ABRIlIx+CRnR4C8c
-         bk1e0WuihDdXOl8WWynbTpn5+WJrSACieTMiN/7rsVy6U/b5MLKgddow3M8Gh+LERuiy
-         9mbrB+LRWqTYQU725V6FKNvD+NIQu6z0s6hk6d4w/jotARiAtruvMNPgyMif3/mxTcRE
-         utVyxXmgx90CEw4B69rzYaw0Ds3tnkSf6S/OURAxvPlQhxHHXNXECuCZDv2hD5NSGJrD
-         yivYonkn9Qy/5pAp9Fbu1E3BCOUkTN/zI1BediWiosejwxDSRhKEBnEI2HW1lV9kGHHu
-         k2PQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzCsTNrs9P0MKIhNH6hOxhR0B5jocMbJwWZld2njq5krHsFjJA/Z0BWogQm9Rat34NDkkvlfCcPSYzt/cOHhA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJpaAsrLFyd0Shlu+wR6Ywn37E01zpivjvXzfvB5tW0bnySC9tT
-	K6eOll/r2Ef+7B8HB4bXGNSkoqLK/nxeOruMw2N+sMgzAI9HffHcILFtWIwpaCg5iw==
-X-Gm-Gg: AYBFou37w/FWrGlLvaTWU3A+bARr6eGpyGxK3waZta0bVOn44wFOICqH3GVqXpMMt81
-	6IF1uRVgSyVXL5U86JrlCBkJ5y+nXmXfqGYLXmcxMgboVd9GvAfVnDg8CIGtJokx6855qaSMhAT
-	MABGcfFvwFXwLQXFnQAVE6AAS4nPJ0DomwbWcjyIR9HCFBzQ1edO02IDeiCt8bFbi3CNwrt5D0b
-	g8NPbegEz4MZxwQdAp2VC238lhACSdZ3PbzzCLf/9HjK4E9t7wUOLk1MjEa2cPio2okNs6XpsLg
-	RPWWHKjciZ575tUQTb3VUKInri7xVJ5/bjKd3vZsQWBU5oqI3/BLVnpddNb3vV0gKrXW8iuLD1G
-	8P80DK4IRuKQ4uaOL8V9RAq/mBBRTk2wHmRM+PSR/iCcApZpSlHndG7nJy+pMbiqsj4gC7UqZ8w
-	cg11ZMhWlmJK+xKdmD3I6kMQwUhop3JRzKZdGSmMZn37ies9GQV24P5CrtxERKIVvQkJtr0EDpG
-	t245IE3/w==
-X-Received: by 2002:a17:90b:2644:b0:3ab:d45c:59da with SMTP id 98e67ed59e1d1-3abd45c5a6amr5432086a91.40.1791892955192;
-        Tue, 13 Oct 2026 05:02:35 -0700 (PDT)
-Received: from [192.168.29.54] ([2405:201:4019:32fc:3c55:6b24:5147:322b])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab8a393666sm16566838a91.15.2026.10.13.05.02.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 05:02:33 -0700 (PDT)
-From: Ayush Singh <ayush@beagleboard.org>
-Date: Tue, 13 Oct 2026 17:30:45 +0530
-Subject: [PATCH v3 7/7] greybus: Add Rust UART node driver
+        bh=U+ILcrewVHhOsLOTzQWydUELGX8n+kxmBpJfSUA6g3Y=;
+        b=ZDRaYQFSzjWBtYUPxLEzVHrVK/TEkMO6dOd0Q/9QfqJ7GIiOtlEh2FLQbqJ1ZuhK+6
+         CvAHDPu85SYvhF+iLfSmo1PcEQhi/QHS7ybOeYVJclsp+eojQCUUc5ODHm5huhU1sfXg
+         nJ26bWbCE0qoLT1to12/vCrQCGV7nOXyq1R1SsLZzLUlF9LmztjZqFn9SZzZrrP3VWjn
+         pYXGm9cbOyU89KzC7CuibpIwVwryskfcOsognhLupeUTcmuuYl2kxWwQq8vaaRNJpAnj
+         5YiU0XeEOk+hmAxhh2cTVPvBq+j3yrGUzmYRDS/IvFJK5dC6rAcaNespHdC0P6cjUxb6
+         M+qQ==
+X-Forwarded-Encrypted: i=1; AKwUvByfUoK4ZQeaA0x43iFxRK3ZxSJO/F6QRgRXv33ASr/SA/LZ1QNSVym6Mr7iYUR11SeXzdHO4asScqyBiaxjFg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKqBDSbmk4c9jWoWjBdDYqnev7HYlbVLNEJbVld7leWeAMxSjGs
+	p9Z9Z8LqkUJJae42VaSmpooLJF4BUN/W8DvSTr2dBlHR9+uANHRUMbig261J9twqkCJ9H2oaT46
+	7OguL94ed3jm2wVlrjA==
+X-Received: from wmbjd18.prod.google.com ([2002:a05:600c:68d2:b0:4a1:95d4:bb4b])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3144:b0:4a1:70b2:8dbb with SMTP id 5b1f17b1804b1-4a18e4b0347mr230265515e9.19.1791894554836;
+ Tue, 13 Oct 2026 05:29:14 -0700 (PDT)
+Date: Tue, 13 Oct 2026 12:29:02 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261013-gb-uart-transport-v3-7-81d0a8a1acf7@beagleboard.org>
-References: <20261013-gb-uart-transport-v3-0-81d0a8a1acf7@beagleboard.org>
-In-Reply-To: <20261013-gb-uart-transport-v3-0-81d0a8a1acf7@beagleboard.org>
-To: Jason Kridner <jkridner@beagleboard.org>, robertcnelson@gmail.com, 
- Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
- Ayush Singh <ayush@beagleboard.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Uladzislau Rezki <urezki@gmail.com>, 
- Markus Probst <markus.probst@posteo.de>
-Cc: greybus-dev@lists.linaro.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-crypto@vger.kernel.org, 
- devicetree@vger.kernel.org, Ayush Singh <ayush@beagleboard.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAA0kzmoC/3WNzQ6CMBCEX4Xs2Zr+oCWefA/DoWzXsolQ0pJGQ
+ 3h3K3eP32Tmmw0yJaYMt2aDRIUzx7mCPjWAo5sDCfaVQUt9lZ20YuKMvhaRhHerE1ah1Za6QdM F6mpJ9OT3YXz0lUfOa0yf46CoX/rfVZRQojXYamNIDtLcQ4zhRWeME/T7vn8BUIhg168AAAA=
+X-Change-Id: 20260807-miscdevice-data-71c727e8b2e5
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=16519; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=0VfHI99mjbV2FxjU9pgiKgFoWso8sMbEw/GYHNs7kfA=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqziQQDqIYM32dtFfrP0UhY+Cngvhoyb7Eac8CI
+ GdvY+gzTgyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCas4kEAAKCRAEWL7uWMY5
+ Rt17D/96NGE17ns+bsMkZ7G2eax1D+ePCwBeZN3reUv4z1nSN2wCLi1tWb2eWGQpfpDl7MJt3rL
+ a/25z1yfpHWgHtBAfXZEB4EuWGe63WbDvXO2dCRfCKQF6oB88prLtEy91pLMeDerFTkAtpL5KTL
+ NoO+FFmHfYI6Xtq3FbpAkms3iBHXLDoj++ZBXHPXPPsHYBeuRrdVYqGa9kTDYz7kldOoAhLCRaW
+ gl5IO71UqfvrUmXsyjZKM6e8UV242gfShUHeZSH0/+wW8v+U2whem8wwpvDenVV76CyI30k9Vpm
+ E4bPCh+DMpefA9SskKtR23eOmbtIygpH5v9x0L8pGm/Esnbn6wR1DaJ4b+Ivq/D9z+Oov4AyPbY
+ 9x41wEXrg8QwTvCGGs+f/ah1icWWvgcUsznwrK2Kth8YtXdeftOfT41krodLuT7+8oSxcBC+icn
+ XRBu32Vl+WD+ylqIgA9WWZG8di7Sxk8FgQGAfb9gg5ylO7s/Vu6qsRgOkiEj/HQku57zrI9fXWF
+ eTSmn5CCwapDaD7l/0BpNZBKR9GAizcLtyEXhCfuAXRAY5CT5S957PMddmIHO6Bs9/D7vY12KLi
+ mMzIRt3JIwGox39co1phL2Vir+hfg2RZvzmT90C+W1koUup7AdqlDsxxMtZ4drm1QJytAdGeT3k S2fpE2xAa/vp/kg==
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12749;
- i=ayush@beagleboard.org; h=from:subject:message-id;
- bh=nGsxjhbx9MCg96U4aqm0eCBgu16yp0S0WMMfG5atNeA=;
- b=owEBbQKS/ZANAwAKAQXO9ceJ5Vp0AcsmYgBqzh2D5HR3YnxQ03GSS/difzCuGHAxgC3R3phEv
- pFwr8cu6FSJAjMEAAEKAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCas4dgwAKCRAFzvXHieVa
- dEyUEADerXJcu4asewB4uMzuiXmET0pnKTeeQRTEXjtXeinE+SEaO1rmdL2e7XZo0M90R3yWsD1
- iavKmWCc8pH8YhfMPYvyKn+xV9Rb1chkigfBDjZiavV+vtWI84UWxFzNdGn/85VpRYKpcOSgiUX
- KpIP7J5OqnibmEgz1yo/yc7fmMwxchfzV7fsHC36xxykFkDOOosPkFQV25Pmh5McaNH+B48khfd
- QGzfUkw0Ux6A5MNU6LQjYLNFMSY9ptR+IowCcnZshftpO7n+HoVn5TBa7AfcGUKCgSCrERq7Zno
- f6QOmeJeiSfq9GbRgyXl5j4/Y/UdkcJi2rAckP8FkPGpajd/+E+VJ2jjOr39laaypqcHIkhoQES
- mUJLGe0A5vJ1c3RjQCy9uiJriGFfagF5SqjSrsGJNWAZngSJvRNJetXfnPtcd3exReRGRdaPrj6
- z8KyzgYw2/DRoRgY/27FacrkStOnOL3AIadYsyvo6AivqQI6OiUYoWpZAaaqjImB950iaJxzPOu
- SAcOCFqEgQr9yVuCBVScaeheul8jdDx4YEkiw/UQv8Z3wm5Kz1KCFpBH6gMpTL03eBQyS7kbomg
- vqYUoisqroHkozCHnFz/9cQ2CC9DBJ2WWxnmN1WPCDOngRKrByjbdzDtr8ETA5Ourf7KxgToHGG
- 5n7Z/7OroUx+koQ==
-X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
- fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
+Message-ID: <20261013-miscdevice-data-v2-1-d727496ed705@google.com>
+Subject: [PATCH v2] rust: miscdevice: add registration data to MiscDevice
+From: Alice Ryhl <aliceryhl@google.com>
+To: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-Add a driver for Greybus nodes attached over a plain serial port. The
-node is registered with the software SVC (gb-softsvc), which handles the
-SVC protocol on behalf of the AP, so no dedicated coprocessor running
-SVC firmware is needed.
+Currently when fds for a miscdevice are opened, the only "global" data
+they are given access to is the MiscDeviceRegistration value. However,
+this value doesn't let you store any user-provided data, so there is no
+way for different fds from the same miscdevice to interact with each
+other. Thus, let the user specify a type to be stored in the
+MiscDeviceRegistration in which the user can store whichever data they
+would like.
 
-Greybus messages are carried over HDLC framing on the wire. Each frame
-carries a one-byte address (0x01 for Greybus) and control byte, followed
-by the 16-bit CPort ID and the Greybus message itself.
+The intended user of this patch is Rust course material. MiscDevice is a
+nice and relatively easy to use API for someone's first driver, and
+being able to persist data from fd to fd allows the student to interact
+with their driver using 'cat' and 'echo', even though each call opens a
+new fd.
 
-Port parameters are taken from the firmware node: "baudrate" if
-present, otherwise 115200, with flow control and parity disabled.
-
-Since gb-uart-node imports types from gb-softsvc, Rust to Rust calling
-setup from nova-core [0] is being used.
-
-[0]: https://lore.kernel.org/all/20260622-nova-exports-v5-0-6191773fc977@nvidia.com/
-
-Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- MAINTAINERS                     |   1 +
- drivers/greybus/.gitignore      |   1 +
- drivers/greybus/Kconfig         |  15 +++
- drivers/greybus/Makefile        |  48 ++++++++
- drivers/greybus/gb_uart_node.rs | 253 ++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 318 insertions(+)
+Changes in v2:
+- Store `T` directly in `MiscDeviceRegistration<T>` instead of adding a `RegistrationData` associated type.
+- Make `MiscDeviceRegistration::register` `unsafe` (requiring `Drop` to run) so `T` does not need to be `'static`.
+- Rename `MiscDevice::Ptr` to `MiscDevice::File`.
+- Use `container_of!` and `Opaque::cast_from` in `MiscdeviceVTable::open`.
+- Rebase on `char-misc-next`.
+- Link to v1: https://lore.kernel.org/r/20260807-miscdevice-data-v1-1-43c4233e0b03@google.com
+---
+ rust/kernel/miscdevice.rs        | 100 ++++++++++++++++++++++++++-------------
+ samples/rust/rust_misc_device.rs |  29 ++++++++----
+ 2 files changed, 87 insertions(+), 42 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 521bc6c67979..5bdd500ef63e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11527,6 +11527,7 @@ M:	Ayush Singh <ayush@beagleboard.org>
- L:	greybus-dev@lists.linaro.org (moderated for non-subscribers)
- S:	Maintained
- F:	Documentation/devicetree/bindings/beagle/beagle,beagleconnect-freedom.yaml
-+F:	drivers/greybus/gb_uart_node.rs
+diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+index 8d4b719bd83f..ecc142a1b7ea 100644
+--- a/rust/kernel/miscdevice.rs
++++ b/rust/kernel/miscdevice.rs
+@@ -10,6 +10,7 @@
  
- GREYBUS SUBSYSTEM
- M:	Johan Hovold <johan@kernel.org>
-diff --git a/drivers/greybus/.gitignore b/drivers/greybus/.gitignore
-new file mode 100644
-index 000000000000..ff9c4a3539b4
---- /dev/null
-+++ b/drivers/greybus/.gitignore
-@@ -0,0 +1 @@
-+exports_gb_softsvc_generated.h
-diff --git a/drivers/greybus/Kconfig b/drivers/greybus/Kconfig
-index 709563f8c0ad..ce2030161f30 100644
---- a/drivers/greybus/Kconfig
-+++ b/drivers/greybus/Kconfig
-@@ -61,5 +61,20 @@ config GREYBUS_SOFTSVC
- 	  To compile this code as a module, choose M here: the module
- 	  will be called gb-softsvc.ko
- 
-+config GREYBUS_UART_NODE
-+	tristate "Greybus UART node transport"
-+	depends on GREYBUS_SOFTSVC
-+	depends on RUST_SERIAL_DEV_BUS_ABSTRACTIONS
-+	depends on RUST_GREYBUS_ABSTRACTIONS
-+	select RUST_CRC_CCITT_ABSTRACTIONS
-+	help
-+	  Select this option if you have a Greybus node connected over a
-+	  serial port. The node is registered with the software SVC, which
-+	  handles the SVC protocol on behalf of the AP, so no dedicated
-+	  coprocessor running SVC firmware is required.
-+
-+	  To compile this code as a module, choose M here: the module
-+	  will be called gb-uart-node.ko
-+
- endif	# GREYBUS
- 
-diff --git a/drivers/greybus/Makefile b/drivers/greybus/Makefile
-index e6f594128802..bf4d08f728fe 100644
---- a/drivers/greybus/Makefile
-+++ b/drivers/greybus/Makefile
-@@ -28,3 +28,51 @@ obj-$(CONFIG_GREYBUS_ES2)	+= gb-es2.o
- obj-$(CONFIG_GREYBUS_SOFTSVC)	+= gb-softsvc.o
- gb-softsvc-y			+= gb_softsvc.o gb_softsvc_exports.o
- 
-+obj-$(CONFIG_GREYBUS_UART_NODE)	+= gb-uart-node.o
-+gb-uart-node-y			+= gb_uart_node.o
-+
-+# Export Rust symbols from gb-softsvc only if gb-uart-node actually references them.
-+gb-softsvc-export-deps := $(if $(CONFIG_GREYBUS_UART_NODE),$(obj)/gb_uart_node.o)
-+
-+rust_needed_exports = \
-+	{ $(if $(strip $(2)),$(NM) -u $(2);,) echo "__DEFINED_RUST_SYMBOLS__"; \
-+	  $(NM) -p --defined-only $(1); } | \
-+	awk -v fmt='$(3)' ' \
-+		/^__DEFINED_RUST_SYMBOLS__$$/ { defs = 1; next } \
-+		!defs { if ($$NF ~ /^_R/) needed[$$NF] = 1; next } \
-+		defs && $$2 ~ /(T|R|D|B)/ && $$3 ~ /^_R/ && \
-+			$$3 !~ /_(init|cleanup)_module$$/ && \
-+			$$3 !~ /__(pfx|cfi|odr_asan)/ && \
-+			$$3 in needed { printf fmt, $$3 } \
-+	'
-+
-+quiet_cmd_exports = EXPORTS $@
-+      cmd_exports = \
-+	$(call rust_needed_exports,$<,$(gb-softsvc-export-deps),EXPORT_SYMBOL_RUST_GPL(%s);\n) > $@
-+
-+$(obj)/exports_gb_softsvc_generated.h: $(obj)/gb_softsvc.o $(gb-softsvc-export-deps) FORCE
-+	$(call if_changed,exports)
-+
-+targets += exports_gb_softsvc_generated.h
-+
-+$(obj)/gb_softsvc_exports.o: $(obj)/exports_gb_softsvc_generated.h
-+CFLAGS_gb_softsvc_exports.o := -I $(objtree)/$(obj)
-+
-+ifdef CONFIG_MODVERSIONS
-+# The C export shim declares Rust symbols as `extern int`, so reuse its export
-+# list but generate symbol CRCs from the Rust object instead of the shim's DWARF.
-+$(obj)/gb_softsvc_exports.o: private cmd_gensymtypes_c = \
-+	$(call getexportsymbols,\1) | \
-+	$(objtree)/scripts/gendwarfksyms/gendwarfksyms \
-+		$(if $(KBUILD_GENDWARFKSYMS_STABLE), --stable) \
-+		$(if $(KBUILD_SYMTYPES), --symtypes $(@:.o=.symtypes),) \
-+		$(obj)/gb_softsvc.o
-+endif
-+
-+# Output gb_softsvc's crate metadata for use by gb_uart_node at compile time.
-+RUSTFLAGS_gb_softsvc.o += \
-+	--emit=metadata=$(objtree)/$(obj)/libgb_softsvc.rmeta
-+
-+# Allow nova-drm to import nova-core's types.
-+$(obj)/gb_uart_node.o: $(obj)/gb_softsvc.o
-+RUSTFLAGS_gb_uart_node.o := -L $(objtree)/$(obj) --extern gb_softsvc
-diff --git a/drivers/greybus/gb_uart_node.rs b/drivers/greybus/gb_uart_node.rs
-new file mode 100644
-index 000000000000..f719ee35e8f3
---- /dev/null
-+++ b/drivers/greybus/gb_uart_node.rs
-@@ -0,0 +1,253 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Greybus UART Node driver
-+
-+use kernel::{
-+    alloc::Flags,
-+    crc_ccitt::crc_ccitt,
-+    device::{
-+        AsBusDevice,
-+        Bound,
-+        Core, //
-+    },
-+    error::code,
-+    new_spinlock,
-+    of, //
-+    prelude::*,
-+    serdev,
-+    sync::{
-+        aref::ARef,
-+        Arc,
-+        SpinLock, //
-+    },
+ use crate::{
+     bindings,
++    container_of,
+     device::Device,
+     error::{
+         to_result,
+@@ -32,7 +33,10 @@
+         Opaque, //
+     }, //
+ };
+-use core::marker::PhantomData;
++use core::{
++    marker::PhantomData,
++    ops::Deref, //
 +};
-+
-+use zerocopy::little_endian;
-+use zerocopy_derive::{FromBytes, Immutable, KnownLayout};
-+
-+const HDLC_MAX_FRAME_LEN: usize = 256;
-+
-+const HDLC_FRAME: u8 = 0x7E;
-+const HDLC_ESC: u8 = 0x7D;
-+const HDLC_XOR: u8 = 0x20;
-+const HDLC_EXPECTED_CRC: u16 = 0xf0b8;
-+
-+const ADDRESS_GREYBUS: u8 = 0x01;
-+
-+#[repr(C, packed)]
-+#[derive(FromBytes, Immutable, KnownLayout)]
-+struct GreybusFrame {
-+    cport: little_endian::U16,
-+    msg: [u8],
-+}
-+
-+struct HdlcRx {
-+    rx_buf: KVec<u8>,
-+    rx_in_esc: bool,
-+    rx_overflow: bool,
-+    sdev: ARef<serdev::Device>,
-+    node: gb_softsvc::Module,
-+}
-+
-+impl HdlcRx {
-+    fn new(sdev: ARef<serdev::Device>, node: gb_softsvc::Module) -> Result<Self> {
-+        Ok(Self {
-+            node,
-+            sdev,
-+            rx_buf: KVec::with_capacity(HDLC_MAX_FRAME_LEN, GFP_KERNEL)?,
-+            rx_in_esc: false,
-+            rx_overflow: false,
-+        })
-+    }
-+
-+    fn frame_finish(&self) -> Result<()> {
-+        if self.rx_buf.len() < 4 {
-+            return Err(code::EFAULT);
-+        }
-+
-+        let crc = crc_ccitt(0xffff, &self.rx_buf);
-+        if crc != HDLC_EXPECTED_CRC {
-+            dev_warn!(self.sdev.as_ref(), "CRC failed {}", crc);
-+            return Ok(());
-+        }
-+
-+        let addr = self.rx_buf[0];
-+        let _ctrl = self.rx_buf[1];
-+        let payload = &self.rx_buf[2..self.rx_buf.len() - size_of::<u16>()];
-+
-+        match addr {
-+            ADDRESS_GREYBUS => {
-+                let frame = GreybusFrame::ref_from_bytes(payload).map_err(|_| code::EINVAL)?;
-+                self.node.submit_message(0, frame.cport.into(), &frame.msg)
-+            }
-+            _ => Err(code::EINVAL),
-+        }
-+    }
-+
-+    fn rx(&mut self, data: &[u8]) -> usize {
-+        for i in data.iter() {
-+            match *i {
-+                HDLC_FRAME => {
-+                    if !self.rx_buf.is_empty() {
-+                        if let Err(e) = self.frame_finish() {
-+                            dev_warn!(self.sdev.as_ref(), "bad frame: {e:?}\n");
-+                        }
-+                    }
-+
-+                    self.rx_buf.clear();
-+                    self.rx_in_esc = false;
-+                    self.rx_overflow = false;
-+                }
-+                HDLC_ESC => self.rx_in_esc = true,
-+                // Skip data if buffer has overflown.
-+                _ if self.rx_overflow => {}
-+                _ => {
-+                    let c = if self.rx_in_esc { *i ^ HDLC_XOR } else { *i };
-+                    self.rx_in_esc = false;
-+
-+                    if self.rx_buf.push_within_capacity(c).is_err() {
-+                        dev_warn!(self.sdev.as_ref(), "buffer overflow. Dropping frame");
-+
-+                        self.rx_overflow = true;
-+                        self.rx_buf.clear();
-+                    }
-+                }
-+            }
-+        }
-+
-+        data.len()
-+    }
-+}
-+
-+struct GbNode {
-+    sdev: ARef<serdev::Device>,
-+}
-+
-+impl GbNode {
-+    const fn new(sdev: ARef<serdev::Device>) -> Self {
-+        Self { sdev }
-+    }
-+
-+    fn fill_buf(mut crc: u16, data: &[u8], buf: &mut KVec<u8>) -> Result<u16> {
-+        for i in data {
-+            crc = crc_ccitt(crc, &[*i]);
-+            if *i == HDLC_ESC || *i == HDLC_FRAME {
-+                buf.push_within_capacity(HDLC_ESC)?;
-+                buf.push_within_capacity(i ^ HDLC_XOR)?;
-+            } else {
-+                buf.push_within_capacity(*i)?;
-+            }
-+        }
-+
-+        Ok(crc)
-+    }
-+}
-+
-+impl gb_softsvc::InterfaceOps for GbNode {
-+    fn write(&self, data: &[u8], cport: u16, gfp_mask: Flags) -> Result<()> {
-+        // SAFETY: `GbNode` only exists while its serdev driver is bound, so the device is in the
-+        // `Bound` state for the duration of this call.
-+        let bound: &serdev::Device<Bound> =
-+            unsafe { serdev::Device::from_device(self.sdev.as_ref().as_bound()) };
-+
-+        let mut buf = KVec::with_capacity(HDLC_MAX_FRAME_LEN, gfp_mask)?;
-+
-+        let mut crc = 0xffff;
-+
-+        buf.push_within_capacity(HDLC_FRAME)?;
-+
-+        crc = Self::fill_buf(crc, &[ADDRESS_GREYBUS, 0x03], &mut buf)?;
-+        crc = Self::fill_buf(crc, &cport.to_le_bytes(), &mut buf)?;
-+        crc = Self::fill_buf(crc, data, &mut buf)?;
-+
-+        crc ^= 0xffff;
-+        Self::fill_buf(crc, &crc.to_le_bytes(), &mut buf)?;
-+
-+        buf.push_within_capacity(HDLC_FRAME)?;
-+
-+        bound.write_all(&buf, 0)?;
-+
-+        Ok(())
-+    }
-+}
-+
-+#[pin_data]
-+struct GbUartNode {
+ 
+ /// Options for creating a misc device.
+ #[derive(Copy, Clone)]
+@@ -63,37 +67,56 @@ pub const fn into_raw<T: MiscDevice>(self) -> bindings::miscdevice {
+ /// - Deregistration occurs exactly once in [`Drop`] via `misc_deregister()`.
+ /// - `inner` wraps a valid, pinned `miscdevice` created using
+ ///   [`MiscDeviceOptions::into_raw`].
+-#[repr(transparent)]
++#[repr(C)]
+ #[pin_data(PinnedDrop)]
+ pub struct MiscDeviceRegistration<T> {
+     #[pin]
+     inner: Opaque<bindings::miscdevice>,
+-    _t: PhantomData<T>,
 +    #[pin]
-+    rx: SpinLock<Option<HdlcRx>>,
-+}
-+
-+impl GbUartNode {
-+    fn init(sdev: &serdev::Device<Core<'_>>) -> Result<HdlcRx> {
-+        if sdev
-+            .set_baudrate(
-+                sdev.as_ref()
-+                    .fwnode()
-+                    .and_then(|fwnode| fwnode.property_read(c"baudrate").optional())
-+                    .unwrap_or(115200),
-+            )
-+            .is_err()
-+        {
-+            return Err(EINVAL);
-+        }
-+        sdev.set_flow_control(false);
-+        sdev.set_parity(serdev::Parity::None)?;
-+
-+        let node = gb_softsvc::Module::new(&[Arc::new(GbNode::new(sdev.into()), GFP_KERNEL)?])?;
-+
-+        HdlcRx::new(sdev.into(), node)
++    data: T,
+ }
+ 
+ // SAFETY: It is allowed to call `misc_deregister` on a different thread from where you called
+-// `misc_register`.
+-unsafe impl<T> Send for MiscDeviceRegistration<T> {}
++// `misc_register`, and `T` is `Send`.
++unsafe impl<T: Send> Send for MiscDeviceRegistration<T> {}
+ // SAFETY: All `&self` methods on this type are written to ensure that it is safe to call them in
+-// parallel.
+-unsafe impl<T> Sync for MiscDeviceRegistration<T> {}
++// parallel, and `T` is `Sync`.
++unsafe impl<T: Sync> Sync for MiscDeviceRegistration<T> {}
+ 
+ impl<T: MiscDevice> MiscDeviceRegistration<T> {
+     /// Register a misc device.
+-    pub fn register(opts: MiscDeviceOptions) -> impl PinInit<Self, Error> {
++    ///
++    /// # Safety
++    ///
++    /// The caller must not `mem::forget()` the returned [`MiscDeviceRegistration`] or otherwise
++    /// prevent its [`Drop`] implementation from running.
++    pub unsafe fn register<'a>(
++        opts: MiscDeviceOptions,
++        data: impl PinInit<T, Error> + 'a,
++    ) -> impl PinInit<Self, Error> + 'a
++    where
++        T: 'a,
++    {
+         try_pin_init!(Self {
++            data <- data,
+             inner <- Opaque::try_ffi_init(move |slot: *mut bindings::miscdevice| {
+                 // SAFETY: The initializer can write to the provided `slot`.
+                 unsafe { slot.write(opts.into_raw::<T>()) };
+ 
+                 // SAFETY: We just wrote the misc device options to the slot. The miscdevice will
+                 // get unregistered before `slot` is deallocated because the memory is pinned and
+-                // the destructor of this type deallocates the memory.
++                // the caller guarantees that the destructor of this type will run.
++                //
++                // The `data` field is already initialized and is only dropped after
++                // `misc_deregister` in `PinnedDrop::drop`. Since `T: Sync` and the caller
++                // guarantees that `Drop` will run before `T` becomes invalid, it is sound for the
++                // `open` callback to access `&MiscDeviceRegistration<T>` until `misc_deregister`
++                // returns.
++                //
+                 // INVARIANT: If this returns `Ok(())`, then the `slot` will contain a registered
+                 // misc device.
+                 to_result(unsafe { bindings::misc_register(slot) })
+             }),
+-            _t: PhantomData,
+         })
+     }
+ 
+@@ -113,6 +136,14 @@ pub fn device(&self) -> &Device {
+     }
+ }
+ 
++impl<T> Deref for MiscDeviceRegistration<T> {
++    type Target = T;
++    #[inline]
++    fn deref(&self) -> &T {
++        &self.data
 +    }
 +}
 +
-+kernel::of_device_table!(
-+    OF_TABLE,
-+    <GbUartNode as serdev::Driver>::IdInfo,
-+    [(of::DeviceId::new(c"beagle,beagleconnect-freedom"), ())]
-+);
+ #[pinned_drop]
+ impl<T> PinnedDrop for MiscDeviceRegistration<T> {
+     fn drop(self: Pin<&mut Self>) {
+@@ -121,19 +152,23 @@ fn drop(self: Pin<&mut Self>) {
+     }
+ }
+ 
+-/// Trait implemented by the private data of an open misc device.
++/// Trait implemented by the data stored in a [`MiscDeviceRegistration`].
+ #[vtable]
+-pub trait MiscDevice: Sized {
+-    /// What kind of pointer should `Self` be wrapped in.
+-    type Ptr: ForeignOwnable + Send + Sync;
++pub trait MiscDevice: Sized + Sync {
++    /// The type of the data stored in each file for this miscdevice.
++    ///
++    /// This type must be pointer-sized, so it will usually be a [`KBox`] or [`Arc`].
++    ///
++    /// [`Arc`]: crate::sync::Arc
++    type File: ForeignOwnable + Send + Sync + 'static;
+ 
+     /// Called when the misc device is opened.
+     ///
+     /// The returned pointer will be stored as the private data for the file.
+-    fn open(_file: &File, _misc: &MiscDeviceRegistration<Self>) -> Result<Self::Ptr>;
++    fn open(_file: &File, _misc: &MiscDeviceRegistration<Self>) -> Result<Self::File>;
+ 
+     /// Called when the misc device is released.
+-    fn release(device: Self::Ptr, _file: &File) {
++    fn release(device: Self::File, _file: &File) {
+         drop(device);
+     }
+ 
+@@ -146,7 +181,7 @@ fn release(device: Self::Ptr, _file: &File) {
+     /// error, the kernel will complete initialization of the VMA according to the properties of
+     /// `vma`.
+     fn mmap(
+-        _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
++        _device: <Self::File as ForeignOwnable>::Borrowed<'_>,
+         _file: &File,
+         _vma: &VmaNew,
+     ) -> Result {
+@@ -154,12 +189,12 @@ fn mmap(
+     }
+ 
+     /// Read from this miscdevice.
+-    fn read_iter(_kiocb: Kiocb<'_, Self::Ptr>, _iov: &mut IovIterDest<'_>) -> Result<usize> {
++    fn read_iter(_kiocb: Kiocb<'_, Self::File>, _iov: &mut IovIterDest<'_>) -> Result<usize> {
+         build_error!(VTABLE_DEFAULT_ERROR)
+     }
+ 
+     /// Write to this miscdevice.
+-    fn write_iter(_kiocb: Kiocb<'_, Self::Ptr>, _iov: &mut IovIterSource<'_>) -> Result<usize> {
++    fn write_iter(_kiocb: Kiocb<'_, Self::File>, _iov: &mut IovIterSource<'_>) -> Result<usize> {
+         build_error!(VTABLE_DEFAULT_ERROR)
+     }
+ 
+@@ -169,7 +204,7 @@ fn write_iter(_kiocb: Kiocb<'_, Self::Ptr>, _iov: &mut IovIterSource<'_>) -> Res
+     ///
+     /// [`kernel::ioctl`]: mod@crate::ioctl
+     fn ioctl(
+-        _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
++        _device: <Self::File as ForeignOwnable>::Borrowed<'_>,
+         _file: &File,
+         _cmd: u32,
+         _arg: usize,
+@@ -186,7 +221,7 @@ fn ioctl(
+     /// provided, then `compat_ptr_ioctl` will be used instead.
+     #[cfg(CONFIG_COMPAT)]
+     fn compat_ioctl(
+-        _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
++        _device: <Self::File as ForeignOwnable>::Borrowed<'_>,
+         _file: &File,
+         _cmd: u32,
+         _arg: usize,
+@@ -196,7 +231,7 @@ fn compat_ioctl(
+ 
+     /// Show info for this fd.
+     fn show_fdinfo(
+-        _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
++        _device: <Self::File as ForeignOwnable>::Borrowed<'_>,
+         _m: &SeqFile,
+         _file: &File,
+     ) {
+@@ -220,13 +255,14 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
+         }
+ 
+         // SAFETY: The open call of a file can access the private data.
+-        let misc_ptr = unsafe { (*raw_file).private_data };
++        let misc_ptr = Opaque::cast_from(unsafe { (*raw_file).private_data }.cast());
+ 
+         // SAFETY: This is a miscdevice, so `misc_open()` set the private data to a pointer to the
+-        // associated `struct miscdevice` before calling into this method. Furthermore,
+-        // `misc_open()` ensures that the miscdevice can't be unregistered and freed during this
+-        // call to `fops_open`.
+-        let misc = unsafe { &*misc_ptr.cast::<MiscDeviceRegistration<T>>() };
++        // associated `struct miscdevice` (which is the `inner` field of a valid
++        // `MiscDeviceRegistration<T>`) before calling into this method. Furthermore, `misc_open()`
++        // ensures that the miscdevice can't be unregistered and freed during this call to
++        // `fops_open`, and `T: Sync` allows sharing `&MiscDeviceRegistration<T>` across threads.
++        let misc = unsafe { &*container_of!(misc_ptr, MiscDeviceRegistration<T>, inner) };
+ 
+         // SAFETY:
+         // * This underlying file is valid for (much longer than) the duration of `T::open`.
+@@ -257,7 +293,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
+         // SAFETY: The release call of a file owns the private data.
+         let private = unsafe { (*file).private_data };
+         // SAFETY: The release call of a file owns the private data.
+-        let ptr = unsafe { <T::Ptr as ForeignOwnable>::from_foreign(private) };
++        let ptr = unsafe { <T::File as ForeignOwnable>::from_foreign(private) };
+ 
+         // SAFETY:
+         // * The file is valid for the duration of this call.
+@@ -320,7 +356,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
+         // SAFETY: This is a Rust Miscdevice, so we call `into_foreign` in `open` and
+         // `from_foreign` in `release`, and `fops_mmap` is guaranteed to be called between those
+         // two operations.
+-        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private.cast()) };
++        let device = unsafe { <T::File as ForeignOwnable>::borrow(private) };
+         // SAFETY: The caller provides a vma that is undergoing initial VMA setup.
+         let area = unsafe { VmaNew::from_raw(vma) };
+         // SAFETY:
+@@ -341,7 +377,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
+         // SAFETY: The ioctl call of a file can access the private data.
+         let private = unsafe { (*file).private_data };
+         // SAFETY: Ioctl calls can borrow the private data of the file.
+-        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
++        let device = unsafe { <T::File as ForeignOwnable>::borrow(private) };
+ 
+         // SAFETY:
+         // * The file is valid for the duration of this call.
+@@ -366,7 +402,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
+         // SAFETY: The compat ioctl call of a file can access the private data.
+         let private = unsafe { (*file).private_data };
+         // SAFETY: Ioctl calls can borrow the private data of the file.
+-        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
++        let device = unsafe { <T::File as ForeignOwnable>::borrow(private) };
+ 
+         // SAFETY:
+         // * The file is valid for the duration of this call.
+@@ -387,7 +423,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
+         // SAFETY: The release call of a file owns the private data.
+         let private = unsafe { (*file).private_data };
+         // SAFETY: Ioctl calls can borrow the private data of the file.
+-        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
++        let device = unsafe { <T::File as ForeignOwnable>::borrow(private) };
+         // SAFETY:
+         // * The file is valid for the duration of this call.
+         // * There is no active fdget_pos region on the file on this thread.
+diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
+index 41e26c825060..f5b2b00b933a 100644
+--- a/samples/rust/rust_misc_device.rs
++++ b/samples/rust/rust_misc_device.rs
+@@ -156,7 +156,11 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+         };
+ 
+         try_pin_init!(Self {
+-            _miscdev <- MiscDeviceRegistration::register(options),
++            // SAFETY: `_miscdev` is stored in `RustMiscDeviceModule` and dropped when the module
++            // is unloaded; `mem::forget()` is never called on it.
++            _miscdev <- unsafe {
++                MiscDeviceRegistration::register(options, try_pin_init!(RustMiscDevice {}))
++            },
+         })
+     }
+ }
+@@ -166,8 +170,13 @@ struct Inner {
+     buffer: KVVec<u8>,
+ }
+ 
++/// Data shared by all open files for the same instance of this miscdevice.
++#[pin_data]
++struct RustMiscDevice {}
 +
-+#[vtable]
-+impl serdev::Driver for GbUartNode {
-+    type IdInfo = ();
-+    type Data<'bound> = Self;
-+    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+
-+    fn probe<'bound>(
-+        sdev: &'bound serdev::Device<Core<'_>>,
-+        _info: Option<&'bound Self::IdInfo>,
-+    ) -> impl PinInit<Self, Error> + 'bound {
-+        dev_dbg!(sdev.as_ref(), "Probe gb_uart_node.\n");
-+
-+        try_pin_init!(Self {
-+            rx <- new_spinlock!(Some(Self::init(sdev)?), "gb_uart_node::rx"),
-+        }? Error)
-+    }
-+
-+    fn receive<'bound>(
-+        _sdev: &'bound serdev::Device<Bound>,
-+        this: Pin<&Self>,
-+        data: &[u8],
-+    ) -> usize {
-+        if let Some(mut guard) = this.rx.try_lock() {
-+            if let Some(ref mut hdlc_rx) = *guard {
-+                return hdlc_rx.rx(data);
-+            }
-+        }
-+
-+        0
-+    }
-+
-+    fn unbind<'bound>(_: &'bound serdev::Device<Core<'_>>, this: Pin<&Self::Data<'bound>>) {
-+        // Getting a bound device is not possible after this point. So drop HdlcRx.
-+        // This also drops HdlcRx::node, which should ensure that GbNode::write will not be called
-+        // after this point.
-+        let _ = this.rx.lock().take();
-+    }
-+}
-+
-+kernel::module_serdev_device_driver! {
-+    type: GbUartNode,
-+    name: "gb_uart_node",
-+    authors: ["Ayush Singh <ayush@beagleboard.org>"],
-+    description: "Greybus node connected over UART",
-+    license: "GPL v2",
-+}
++/// Data that is stored per file for this miscdevice.
+ #[pin_data(PinnedDrop)]
+-struct RustMiscDevice {
++struct RustMiscDeviceFile {
+     #[pin]
+     inner: Mutex<Inner>,
+     dev: ARef<Device>,
+@@ -175,16 +184,16 @@ struct RustMiscDevice {
+ 
+ #[vtable]
+ impl MiscDevice for RustMiscDevice {
+-    type Ptr = Pin<KBox<Self>>;
++    type File = Pin<KBox<RustMiscDeviceFile>>;
+ 
+-    fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Self>>> {
++    fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Self::File> {
+         let dev = ARef::from(misc.device());
+ 
+         dev_info!(dev, "Opening Rust Misc Device Sample\n");
+ 
+         KBox::try_pin_init(
+             try_pin_init! {
+-                RustMiscDevice {
++                RustMiscDeviceFile {
+                     inner <- new_mutex!(Inner {
+                         value: 0_i32,
+                         buffer: KVVec::new(),
+@@ -196,7 +205,7 @@ fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Se
+         )
+     }
+ 
+-    fn read_iter(mut kiocb: Kiocb<'_, Self::Ptr>, iov: &mut IovIterDest<'_>) -> Result<usize> {
++    fn read_iter(mut kiocb: Kiocb<'_, Self::File>, iov: &mut IovIterDest<'_>) -> Result<usize> {
+         let me = kiocb.file();
+         dev_info!(me.dev, "Reading from Rust Misc Device Sample\n");
+ 
+@@ -207,7 +216,7 @@ fn read_iter(mut kiocb: Kiocb<'_, Self::Ptr>, iov: &mut IovIterDest<'_>) -> Resu
+         Ok(read)
+     }
+ 
+-    fn write_iter(mut kiocb: Kiocb<'_, Self::Ptr>, iov: &mut IovIterSource<'_>) -> Result<usize> {
++    fn write_iter(mut kiocb: Kiocb<'_, Self::File>, iov: &mut IovIterSource<'_>) -> Result<usize> {
+         let me = kiocb.file();
+         dev_info!(me.dev, "Writing to Rust Misc Device Sample\n");
+ 
+@@ -223,7 +232,7 @@ fn write_iter(mut kiocb: Kiocb<'_, Self::Ptr>, iov: &mut IovIterSource<'_>) -> R
+         Ok(len)
+     }
+ 
+-    fn ioctl(me: Pin<&RustMiscDevice>, _file: &File, cmd: u32, arg: usize) -> Result<isize> {
++    fn ioctl(me: Pin<&RustMiscDeviceFile>, _file: &File, cmd: u32, arg: usize) -> Result<isize> {
+         dev_info!(me.dev, "IOCTLing Rust Misc Device Sample\n");
+ 
+         // Treat the ioctl argument as a user pointer.
+@@ -245,13 +254,13 @@ fn ioctl(me: Pin<&RustMiscDevice>, _file: &File, cmd: u32, arg: usize) -> Result
+ }
+ 
+ #[pinned_drop]
+-impl PinnedDrop for RustMiscDevice {
++impl PinnedDrop for RustMiscDeviceFile {
+     fn drop(self: Pin<&mut Self>) {
+         dev_info!(self.dev, "Exiting the Rust Misc Device Sample\n");
+     }
+ }
+ 
+-impl RustMiscDevice {
++impl RustMiscDeviceFile {
+     fn set_value(&self, mut reader: UserSliceReader) -> Result<isize> {
+         let new_value = reader.read::<i32>()?;
+         let mut guard = self.inner.lock();
 
+---
+base-commit: 79e5797d243a466138f641932f81dc69f796060c
+change-id: 20260807-miscdevice-data-71c727e8b2e5
+
+Best regards,
 -- 
-2.56.0
+Alice Ryhl <aliceryhl@google.com>
 
