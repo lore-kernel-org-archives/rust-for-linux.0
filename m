@@ -1,629 +1,238 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C223CF04C
-	for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 16:56:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791910614; cv=none; b=HZShBxAiC47ggStt3f+0qym2E2ISxv97Ubqy17wPA9ek5CZVhWR8zEtkt6dXq0OFOucCVEBnbTrwwmHRE/SJAWI4jtKFIaTOhu75mqy4uT1UpzKPQDhLsQ73Xo1+RkolPNIHA6pi2tzrHkjtc3lCgPMSHYCqDcU5ktwzw+QmzQw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791910614; c=relaxed/simple;
-	bh=mJHqwcgSVpk5DTKtY14oLAv+WKBo5mqYQNIS5dMW+c4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=F/IC7WKNOfefbvM74JSIrMW4xCBPUTrVSg45mP2L+36p9qANv/VvE7CMnYTkNKFFMaPd36WV2R/hkA7jaM84dedMXW841eGXMNrqpdJzsND5Z/5QiwUXD0axSdEzVGSfqRX7aSNzMYPjASuR/GniTXrVxpcTTYhr8/SP7LmdFfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=kY42KNp5; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7D628850E;
+	Tue, 13 Oct 2026 17:09:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.182.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791911346; cv=pass; b=S2M2Rrl0BoU7IJtU6BNbf5PzvIDDoU4Xzd7ecqdGl6zPxGUvESGDYy/ZZEzASaGK6JSJSHFJRqcYodmW6o29shwLT42xdk4KSBH2YdmyJO4wI+7UX1ynI2L41V+No/oLMiHwC0zgsUR6Hn3fy8mgYDRHeYCpSC2dzmUoRi+Mijw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791911346; c=relaxed/simple;
+	bh=IpWmyPQgsVDGSNt6llldAaDS55/CjrI5G8XAEbzytUY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=R4tTKU2NrL4PzmcMaaaLGvxWwsRxhzXN0W4+T4+stsnUc1IlSM5T8ILBLt0zs5pi73iNEvdG8Vy3DrGWYZEsI9jdJK4L16MYjgSLsYGx87xXuZNjlQN4SQOFY5xFQBFgdJEERftxiTkb7RAaM/RNNJELeACeRU4zpHpULRk2RtA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=crV1fo8Y; arc=pass smtp.client-ip=165.173.182.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="kY42KNp5"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 9511F240027
-	for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 18:56:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1791910609;
-	bh=84UAUybAcmHwu6PdtmUeT5FxMfPcwDy64JHXJjt4vm4=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=kY42KNp56C5Nva02G8fDyJ/kF7y+j5oHcxnKd9pvILxEDJ43YiOUVBOVZVqJLNH5g
-	 6rdDYejx6JPOkbinOPnen+DImuW9HXvL16Mh8eLHV2Kzkw8JNIvu6cw6tnWZxgM6Ix
-	 kCd6EzayfUzGpxTK0VLGCkIweqlyu0rWmkFJ7bHc+uEJUdlfqA4T3rGKP2uS5VVoeH
-	 lCQlbftUlOhCd3lO8veYi/P/2IVqettlor7rHVcOKOZOGa0iVLedEuOS0UeUS5Al2P
-	 6RoxwUS2rlK3Gp2dBC9qFjDl22oePPEs4dPWFXPGnO67nIpgcw61Rg9GGTC49mG6/d
-	 NUrYMiV+AzfZA==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4j40qK2nhHz6ty0;
-	Tue, 13 Oct 2026 18:56:45 +0200 (CEST)
-Message-ID: <7c5619f34cdf696a8be2215ee8a4120e3f0ff1a9.camel@posteo.de>
-Subject: Re: [PATCH v3 7/7] greybus: Add Rust UART node driver
-From: Markus Probst <markus.probst@posteo.de>
-To: Ayush Singh <ayush@beagleboard.org>
-Cc: Jason Kridner <jkridner@beagleboard.org>, robertcnelson@gmail.com, Johan
- Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>, Greg
- Kroah-Hartman	 <gregkh@linuxfoundation.org>, Miguel Ojeda
- <ojeda@kernel.org>, Boqun Feng	 <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Daniel Almeida	 <daniel.almeida@collabora.com>, Tamir Duberstein
- <tamird@kernel.org>,  Alexandre Courbot <acourbot@nvidia.com>, Onur
- =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>, Eric Biggers	
- <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Ayush Singh	
- <ayush@beagleboard.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Lorenzo Stoakes	
- <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett"	
- <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	greybus-dev@lists.linaro.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	devicetree@vger.kernel.org
-Date: Tue, 13 Oct 2026 16:56:47 +0000
-In-Reply-To: <87y0c14l8b.fsf@beagleboard.org>
-References: <20261013-gb-uart-transport-v3-0-81d0a8a1acf7@beagleboard.org>
-		<20261013-gb-uart-transport-v3-7-81d0a8a1acf7@beagleboard.org>
-		<037d7460eae92dd00f9283dd5595a3257212f0b9.camel@posteo.de>
-	 <87y0c14l8b.fsf@beagleboard.org>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-UqXBVxT8d+O+osTm5faS"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="crV1fo8Y"
+ARC-Seal: i=1; a=rsa-sha256; t=1791911289; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=mfIrgCehaFLWkqQlKS3VGS/pVkr8f/IJcq+kyeJFupdLA1r+8xcHckG/fObYTQ8XyHlM64BmsjHJgCfbyq4yxP2Ydgjdb1Movyux++039RQqCJlW2ueM5uzWFHv8Eb8D1VPaut857b7B7brqUCN2Cg4Ao3zI82XPexP75WRQNk4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1791911289; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=CPCHlzrectKcVe5zKVmVCz7i/1K/BPfs+kZWr+grD+A=; 
+	b=HVqKbb/RCQM8ErQ8SuUyStdNgAQ9Tez0WDXfTA9MV8jqN14HgG7kXGe94U4bsR/kZXgHfIFFnjTy0GtBC9/FKz1Y1ZCOtnMt4YaADnM3M/nyKFvu3XC6PKGpiS5gM4YcRdKpqGgtdAJIKpnyhA1/VCk/tdSWm+ezAzxXKdzrHWM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791911289;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=CPCHlzrectKcVe5zKVmVCz7i/1K/BPfs+kZWr+grD+A=;
+	b=crV1fo8YbkJbpb35sFsOE8gBHoQlUgv538AH1dZ2xwJ0KF1074KXwAM42FxwOV7E
+	XDZkD681c73S0ZTkE4fBSpttwlB4yLpcmE04VmTNgqsFGcU2HoxjzVWzG40dyHriE8X
+	4/xXjyHD5nMYBQeLOAGtPnp9sOXidkuMCasolZeE=
+Received: by smtp.zohomail.com with SMTPS id 1791911287188743.1518436996159;
+	Tue, 13 Oct 2026 10:08:07 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH v6 0/7] Clk improvements
+Date: Tue, 13 Oct 2026 14:07:39 -0300
+Message-Id: <20261013-clk-type-state-v6-0-a5e9977b3509@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6XRTW7DIBAF4KtErEs1A+HHWfUeVReAxzVqElJMr
+ UaR716ctLIUZ9flW7wPRu/CBsqRBrbbXFimMQ4xHWvQTxsWend8Jx7bmpkAoaCBhof9By/nE/G
+ huEI8ADpn2lYpbFktnTJ18fsKvr7V3OV04KXP5BbGiBUzIkduG+2VtKg7419C2u+dT9k9h3SY5
+ T4OJeXz9aejmP3/aLd7EFZVwYGjb0xA9F5LvKvON43y73UNCGZFyEoY00qSRKoJ4hGxXQiNdkV
+ sK2E9gRXGarDwiFALYUCvCFUJbYLqpNAOdbgnpttamT6/6urld7Jp+gEsdWizEwIAAA==
+X-Change-ID: 20250909-clk-type-state-c01aa7dd551d
+To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Michal Wilczynski <m.wilczynski@samsung.com>, 
+ Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
+ Fu Wei <wefu@redhat.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
+ Jerome Brunet <jbrunet+clk@baylibre.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>
+Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-riscv@lists.infradead.org, 
+ linux-pwm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, 
+ Boris Brezillon <boris.brezillon@collabora.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Maurice Hieronymus <mhi@mailbox.org>
+X-Mailer: b4 0.15.2
+X-ZohoMailClient: External
 
+This series contains a few improvements that simplify clock handling for
+drivers.
 
---=-UqXBVxT8d+O+osTm5faS
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Patch 1 converts clk.rs to the kernel-vertical style for imports.
 
-On Tue, 2026-10-13 at 21:59 +0530, Ayush Singh wrote:
-> Markus Probst <markus.probst@posteo.de> writes:
->=20
-> > On Tue, 2026-10-13 at 17:30 +0530, Ayush Singh wrote:
-> > > Add a driver for Greybus nodes attached over a plain serial port. The
-> > > node is registered with the software SVC (gb-softsvc), which handles =
-the
-> > > SVC protocol on behalf of the AP, so no dedicated coprocessor running
-> > > SVC firmware is needed.
-> > >=20
-> > > Greybus messages are carried over HDLC framing on the wire. Each fram=
-e
-> > > carries a one-byte address (0x01 for Greybus) and control byte, follo=
-wed
-> > > by the 16-bit CPort ID and the Greybus message itself.
-> > >=20
-> > > Port parameters are taken from the firmware node: "baudrate" if
-> > > present, otherwise 115200, with flow control and parity disabled.
-> > >=20
-> > > Since gb-uart-node imports types from gb-softsvc, Rust to Rust callin=
-g
-> > > setup from nova-core [0] is being used.
-> > >=20
-> > > [0]: https://lore.kernel.org/all/20260622-nova-exports-v5-0-6191773fc=
-977@nvidia.com/
-> > >=20
-> > > Signed-off-by: Ayush Singh <ayush@beagleboard.org>
-> > > ---
-> > >  MAINTAINERS                     |   1 +
-> > >  drivers/greybus/.gitignore      |   1 +
-> > >  drivers/greybus/Kconfig         |  15 +++
-> > >  drivers/greybus/Makefile        |  48 ++++++++
-> > >  drivers/greybus/gb_uart_node.rs | 253 ++++++++++++++++++++++++++++++=
-++++++++++
-> > >  5 files changed, 318 insertions(+)
-> > >=20
-> > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > index 521bc6c67979..5bdd500ef63e 100644
-> > > --- a/MAINTAINERS
-> > > +++ b/MAINTAINERS
-> > > @@ -11527,6 +11527,7 @@ M:	Ayush Singh <ayush@beagleboard.org>
-> > >  L:	greybus-dev@lists.linaro.org (moderated for non-subscribers)
-> > >  S:	Maintained
-> > >  F:	Documentation/devicetree/bindings/beagle/beagle,beagleconnect-fre=
-edom.yaml
-> > > +F:	drivers/greybus/gb_uart_node.rs
-> > > =20
-> > >  GREYBUS SUBSYSTEM
-> > >  M:	Johan Hovold <johan@kernel.org>
-> > > diff --git a/drivers/greybus/.gitignore b/drivers/greybus/.gitignore
-> > > new file mode 100644
-> > > index 000000000000..ff9c4a3539b4
-> > > --- /dev/null
-> > > +++ b/drivers/greybus/.gitignore
-> > > @@ -0,0 +1 @@
-> > > +exports_gb_softsvc_generated.h
-> > > diff --git a/drivers/greybus/Kconfig b/drivers/greybus/Kconfig
-> > > index 709563f8c0ad..ce2030161f30 100644
-> > > --- a/drivers/greybus/Kconfig
-> > > +++ b/drivers/greybus/Kconfig
-> > > @@ -61,5 +61,20 @@ config GREYBUS_SOFTSVC
-> > >  	  To compile this code as a module, choose M here: the module
-> > >  	  will be called gb-softsvc.ko
-> > > =20
-> > > +config GREYBUS_UART_NODE
-> > > +	tristate "Greybus UART node transport"
-> > > +	depends on GREYBUS_SOFTSVC
-> > > +	depends on RUST_SERIAL_DEV_BUS_ABSTRACTIONS
-> > > +	depends on RUST_GREYBUS_ABSTRACTIONS
-> > > +	select RUST_CRC_CCITT_ABSTRACTIONS
-> > > +	help
-> > > +	  Select this option if you have a Greybus node connected over a
-> > > +	  serial port. The node is registered with the software SVC, which
-> > > +	  handles the SVC protocol on behalf of the AP, so no dedicated
-> > > +	  coprocessor running SVC firmware is required.
-> > > +
-> > > +	  To compile this code as a module, choose M here: the module
-> > > +	  will be called gb-uart-node.ko
-> > > +
-> > >  endif	# GREYBUS
-> > > =20
-> > > diff --git a/drivers/greybus/Makefile b/drivers/greybus/Makefile
-> > > index e6f594128802..bf4d08f728fe 100644
-> > > --- a/drivers/greybus/Makefile
-> > > +++ b/drivers/greybus/Makefile
-> > > @@ -28,3 +28,51 @@ obj-$(CONFIG_GREYBUS_ES2)	+=3D gb-es2.o
-> > >  obj-$(CONFIG_GREYBUS_SOFTSVC)	+=3D gb-softsvc.o
-> > >  gb-softsvc-y			+=3D gb_softsvc.o gb_softsvc_exports.o
-> > > =20
-> > > +obj-$(CONFIG_GREYBUS_UART_NODE)	+=3D gb-uart-node.o
-> > > +gb-uart-node-y			+=3D gb_uart_node.o
-> > > +
-> > > +# Export Rust symbols from gb-softsvc only if gb-uart-node actually =
-references them.
-> > > +gb-softsvc-export-deps :=3D $(if $(CONFIG_GREYBUS_UART_NODE),$(obj)/=
-gb_uart_node.o)
-> > > +
-> > > +rust_needed_exports =3D \
-> > > +	{ $(if $(strip $(2)),$(NM) -u $(2);,) echo "__DEFINED_RUST_SYMBOLS_=
-_"; \
-> > > +	  $(NM) -p --defined-only $(1); } | \
-> > > +	awk -v fmt=3D'$(3)' ' \
-> > > +		/^__DEFINED_RUST_SYMBOLS__$$/ { defs =3D 1; next } \
-> > > +		!defs { if ($$NF ~ /^_R/) needed[$$NF] =3D 1; next } \
-> > > +		defs && $$2 ~ /(T|R|D|B)/ && $$3 ~ /^_R/ && \
-> > > +			$$3 !~ /_(init|cleanup)_module$$/ && \
-> > > +			$$3 !~ /__(pfx|cfi|odr_asan)/ && \
-> > > +			$$3 in needed { printf fmt, $$3 } \
-> > > +	'
-> > > +
-> > > +quiet_cmd_exports =3D EXPORTS $@
-> > > +      cmd_exports =3D \
-> > > +	$(call rust_needed_exports,$<,$(gb-softsvc-export-deps),EXPORT_SYMB=
-OL_RUST_GPL(%s);\n) > $@
-> > > +
-> > > +$(obj)/exports_gb_softsvc_generated.h: $(obj)/gb_softsvc.o $(gb-soft=
-svc-export-deps) FORCE
-> > > +	$(call if_changed,exports)
-> > > +
-> > > +targets +=3D exports_gb_softsvc_generated.h
-> > > +
-> > > +$(obj)/gb_softsvc_exports.o: $(obj)/exports_gb_softsvc_generated.h
-> > > +CFLAGS_gb_softsvc_exports.o :=3D -I $(objtree)/$(obj)
-> > > +
-> > > +ifdef CONFIG_MODVERSIONS
-> > > +# The C export shim declares Rust symbols as `extern int`, so reuse =
-its export
-> > > +# list but generate symbol CRCs from the Rust object instead of the =
-shim's DWARF.
-> > > +$(obj)/gb_softsvc_exports.o: private cmd_gensymtypes_c =3D \
-> > > +	$(call getexportsymbols,\1) | \
-> > > +	$(objtree)/scripts/gendwarfksyms/gendwarfksyms \
-> > > +		$(if $(KBUILD_GENDWARFKSYMS_STABLE), --stable) \
-> > > +		$(if $(KBUILD_SYMTYPES), --symtypes $(@:.o=3D.symtypes),) \
-> > > +		$(obj)/gb_softsvc.o
-> > > +endif
-> > > +
-> > > +# Output gb_softsvc's crate metadata for use by gb_uart_node at comp=
-ile time.
-> > > +RUSTFLAGS_gb_softsvc.o +=3D \
-> > > +	--emit=3Dmetadata=3D$(objtree)/$(obj)/libgb_softsvc.rmeta
-> > > +
-> > > +# Allow nova-drm to import nova-core's types.
-> > > +$(obj)/gb_uart_node.o: $(obj)/gb_softsvc.o
-> > > +RUSTFLAGS_gb_uart_node.o :=3D -L $(objtree)/$(obj) --extern gb_softs=
-vc
-> > > diff --git a/drivers/greybus/gb_uart_node.rs b/drivers/greybus/gb_uar=
-t_node.rs
-> > > new file mode 100644
-> > > index 000000000000..f719ee35e8f3
-> > > --- /dev/null
-> > > +++ b/drivers/greybus/gb_uart_node.rs
-> > > @@ -0,0 +1,253 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +
-> > > +//! Greybus UART Node driver
-> > > +
-> > > +use kernel::{
-> > > +    alloc::Flags,
-> > > +    crc_ccitt::crc_ccitt,
-> > > +    device::{
-> > > +        AsBusDevice,
-> > > +        Bound,
-> > > +        Core, //
-> > > +    },
-> > > +    error::code,
-> > > +    new_spinlock,
-> > > +    of, //
-> > > +    prelude::*,
-> > > +    serdev,
-> > > +    sync::{
-> > > +        aref::ARef,
-> > > +        Arc,
-> > > +        SpinLock, //
-> > > +    },
-> > > +};
-> > > +
-> > > +use zerocopy::little_endian;
-> > > +use zerocopy_derive::{FromBytes, Immutable, KnownLayout};
-> > > +
-> > > +const HDLC_MAX_FRAME_LEN: usize =3D 256;
-> > > +
-> > > +const HDLC_FRAME: u8 =3D 0x7E;
-> > > +const HDLC_ESC: u8 =3D 0x7D;
-> > > +const HDLC_XOR: u8 =3D 0x20;
-> > > +const HDLC_EXPECTED_CRC: u16 =3D 0xf0b8;
-> > > +
-> > > +const ADDRESS_GREYBUS: u8 =3D 0x01;
-> > > +
-> > > +#[repr(C, packed)]
-> > > +#[derive(FromBytes, Immutable, KnownLayout)]
-> > > +struct GreybusFrame {
-> > > +    cport: little_endian::U16,
-> > > +    msg: [u8],
-> > > +}
-> > > +
-> > > +struct HdlcRx {
-> > > +    rx_buf: KVec<u8>,
-> > > +    rx_in_esc: bool,
-> > > +    rx_overflow: bool,
-> > > +    sdev: ARef<serdev::Device>,
-> > > +    node: gb_softsvc::Module,
-> > > +}
-> > > +
-> > > +impl HdlcRx {
-> > > +    fn new(sdev: ARef<serdev::Device>, node: gb_softsvc::Module) -> =
-Result<Self> {
-> > > +        Ok(Self {
-> > > +            node,
-> > > +            sdev,
-> > > +            rx_buf: KVec::with_capacity(HDLC_MAX_FRAME_LEN, GFP_KERN=
-EL)?,
-> > > +            rx_in_esc: false,
-> > > +            rx_overflow: false,
-> > > +        })
-> > > +    }
-> > > +
-> > > +    fn frame_finish(&self) -> Result<()> {
-> > > +        if self.rx_buf.len() < 4 {
-> > > +            return Err(code::EFAULT);
-> > > +        }
-> > > +
-> > > +        let crc =3D crc_ccitt(0xffff, &self.rx_buf);
-> > > +        if crc !=3D HDLC_EXPECTED_CRC {
-> > > +            dev_warn!(self.sdev.as_ref(), "CRC failed {}", crc);
-> > > +            return Ok(());
-> > > +        }
-> > > +
-> > > +        let addr =3D self.rx_buf[0];
-> > > +        let _ctrl =3D self.rx_buf[1];
-> > > +        let payload =3D &self.rx_buf[2..self.rx_buf.len() - size_of:=
-:<u16>()];
-> > > +
-> > > +        match addr {
-> > > +            ADDRESS_GREYBUS =3D> {
-> > > +                let frame =3D GreybusFrame::ref_from_bytes(payload).=
-map_err(|_| code::EINVAL)?;
-> > > +                self.node.submit_message(0, frame.cport.into(), &fra=
-me.msg)
-> > > +            }
-> > > +            _ =3D> Err(code::EINVAL),
-> > > +        }
-> > > +    }
-> > > +
-> > > +    fn rx(&mut self, data: &[u8]) -> usize {
-> > > +        for i in data.iter() {
-> > > +            match *i {
-> > > +                HDLC_FRAME =3D> {
-> > > +                    if !self.rx_buf.is_empty() {
-> > > +                        if let Err(e) =3D self.frame_finish() {
-> > > +                            dev_warn!(self.sdev.as_ref(), "bad frame=
-: {e:?}\n");
-> > > +                        }
-> > > +                    }
-> > > +
-> > > +                    self.rx_buf.clear();
-> > > +                    self.rx_in_esc =3D false;
-> > > +                    self.rx_overflow =3D false;
-> > > +                }
-> > > +                HDLC_ESC =3D> self.rx_in_esc =3D true,
-> > > +                // Skip data if buffer has overflown.
-> > > +                _ if self.rx_overflow =3D> {}
-> > > +                _ =3D> {
-> > > +                    let c =3D if self.rx_in_esc { *i ^ HDLC_XOR } el=
-se { *i };
-> > > +                    self.rx_in_esc =3D false;
-> > > +
-> > > +                    if self.rx_buf.push_within_capacity(c).is_err() =
-{
-> > > +                        dev_warn!(self.sdev.as_ref(), "buffer overfl=
-ow. Dropping frame");
-> > > +
-> > > +                        self.rx_overflow =3D true;
-> > > +                        self.rx_buf.clear();
-> > > +                    }
-> > > +                }
-> > > +            }
-> > > +        }
-> > > +
-> > > +        data.len()
-> > > +    }
-> > > +}
-> > > +
-> > > +struct GbNode {
-> > > +    sdev: ARef<serdev::Device>,
-> > > +}
-> > > +
-> > > +impl GbNode {
-> > > +    const fn new(sdev: ARef<serdev::Device>) -> Self {
-> > > +        Self { sdev }
-> > > +    }
-> > > +
-> > > +    fn fill_buf(mut crc: u16, data: &[u8], buf: &mut KVec<u8>) -> Re=
-sult<u16> {
-> > > +        for i in data {
-> > > +            crc =3D crc_ccitt(crc, &[*i]);
-> > > +            if *i =3D=3D HDLC_ESC || *i =3D=3D HDLC_FRAME {
-> > > +                buf.push_within_capacity(HDLC_ESC)?;
-> > > +                buf.push_within_capacity(i ^ HDLC_XOR)?;
-> > > +            } else {
-> > > +                buf.push_within_capacity(*i)?;
-> > > +            }
-> > > +        }
-> > > +
-> > > +        Ok(crc)
-> > > +    }
-> > > +}
-> > > +
-> > > +impl gb_softsvc::InterfaceOps for GbNode {
-> > > +    fn write(&self, data: &[u8], cport: u16, gfp_mask: Flags) -> Res=
-ult<()> {
-> > > +        // SAFETY: `GbNode` only exists while its serdev driver is b=
-ound, so the device is in the
-> > > +        // `Bound` state for the duration of this call.
-> > > +        let bound: &serdev::Device<Bound> =3D
-> > > +            unsafe { serdev::Device::from_device(self.sdev.as_ref().=
-as_bound()) };
-> > > +
-> > > +        let mut buf =3D KVec::with_capacity(HDLC_MAX_FRAME_LEN, gfp_=
-mask)?;
-> > > +
-> > > +        let mut crc =3D 0xffff;
-> > > +
-> > > +        buf.push_within_capacity(HDLC_FRAME)?;
-> > > +
-> > > +        crc =3D Self::fill_buf(crc, &[ADDRESS_GREYBUS, 0x03], &mut b=
-uf)?;
-> > > +        crc =3D Self::fill_buf(crc, &cport.to_le_bytes(), &mut buf)?=
-;
-> > > +        crc =3D Self::fill_buf(crc, data, &mut buf)?;
-> > > +
-> > > +        crc ^=3D 0xffff;
-> > > +        Self::fill_buf(crc, &crc.to_le_bytes(), &mut buf)?;
-> > > +
-> > > +        buf.push_within_capacity(HDLC_FRAME)?;
-> > > +
-> > > +        bound.write_all(&buf, 0)?;
-> > > +
-> > > +        Ok(())
-> > > +    }
-> > > +}
-> > > +
-> > > +#[pin_data]
-> > > +struct GbUartNode {
-> > > +    #[pin]
-> > > +    rx: SpinLock<Option<HdlcRx>>,
-> > > +}
-> > > +
-> > > +impl GbUartNode {
-> > > +    fn init(sdev: &serdev::Device<Core<'_>>) -> Result<HdlcRx> {
-> > > +        if sdev
-> > > +            .set_baudrate(
-> > > +                sdev.as_ref()
-> > > +                    .fwnode()
-> > > +                    .and_then(|fwnode| fwnode.property_read(c"baudra=
-te").optional())
-> > > +                    .unwrap_or(115200),
-> > > +            )
-> > > +            .is_err()
-> > > +        {
-> > > +            return Err(EINVAL);
-> > > +        }
-> > > +        sdev.set_flow_control(false);
-> > > +        sdev.set_parity(serdev::Parity::None)?;
-> > > +
-> > > +        let node =3D gb_softsvc::Module::new(&[Arc::new(GbNode::new(=
-sdev.into()), GFP_KERNEL)?])?;
-> > > +
-> > > +        HdlcRx::new(sdev.into(), node)
-> > > +    }
-> > > +}
-> > > +
-> > > +kernel::of_device_table!(
-> > > +    OF_TABLE,
-> > > +    <GbUartNode as serdev::Driver>::IdInfo,
-> > > +    [(of::DeviceId::new(c"beagle,beagleconnect-freedom"), ())]
-> > > +);
-> > > +
-> > > +#[vtable]
-> > > +impl serdev::Driver for GbUartNode {
-> > > +    type IdInfo =3D ();
-> > > +    type Data<'bound> =3D Self;
-> > > +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> =3D Some(&O=
-F_TABLE);
-> > > +
-> > > +    fn probe<'bound>(
-> > > +        sdev: &'bound serdev::Device<Core<'_>>,
-> > > +        _info: Option<&'bound Self::IdInfo>,
-> > > +    ) -> impl PinInit<Self, Error> + 'bound {
-> > > +        dev_dbg!(sdev.as_ref(), "Probe gb_uart_node.\n");
-> > > +
-> > > +        try_pin_init!(Self {
-> > > +            rx <- new_spinlock!(Some(Self::init(sdev)?), "gb_uart_no=
-de::rx"),
-> > > +        }? Error)
-> > > +    }
-> > > +
-> > > +    fn receive<'bound>(
-> > > +        _sdev: &'bound serdev::Device<Bound>,
-> > > +        this: Pin<&Self>,
-> > > +        data: &[u8],
-> > > +    ) -> usize {
-> > > +        if let Some(mut guard) =3D this.rx.try_lock() {
-> > > +            if let Some(ref mut hdlc_rx) =3D *guard {
-> > > +                return hdlc_rx.rx(data);
-> > > +            }
-> > > +        }
-> > > +
-> > > +        0
-> > > +    }
-> > > +
-> > > +    fn unbind<'bound>(_: &'bound serdev::Device<Core<'_>>, this: Pin=
-<&Self::Data<'bound>>) {
-> > > +        // Getting a bound device is not possible after this point. =
-So drop HdlcRx.
-> > > +        // This also drops HdlcRx::node, which should ensure that Gb=
-Node::write will not be called
-> > > +        // after this point.
-> > > +        let _ =3D this.rx.lock().take();
-> > Not exactly.
-> >=20
-> > e.g.
-> > ```
-> > struct SerdevDriver<'bound> {
-> >   dev: &'bound serdev::Device<Bound>,
-> > }
-> >=20
-> > impl<'bound> Drop for SerdevDriver<'bound> {
-> >=20
-> >   fn drop(&mut self) {
-> >     // Access to a bound device should still be possible here.
-> >   }
-> >=20
-> > }
-> > ```
-> >=20
-> > So afaik there should be no advantage of manually dropping it here.
-> > Drop of `GbUartNode` should automatically drop the spinlock and the
-> > data contained. The bound serial device is still valid at this point.
-> >=20
-> > This would likely make the usage of Option<> obsolete too.
-> >=20
-> > Thanks
-> > - Markus Probst
->=20
-> My understanding was that the state of serdev device is unknown between
-> unbind and Drop calls. That would make the unsafe Bound device conversion
-> in GbNode::write unsound.
->=20
-> If I don't need to do the early drop, yes, that would remove the Option
-> which would be great.
+Patch 2 replaces OptionalClk with Clk::get_optional(). There is no struct
+optional_clk in C, and Clk already allows a NULL pointer.
 
-.write is still valid inside Drop.
+Patch 3 implements the same typestate pattern that has been used
+successfully for Regulators. This is needed because otherwise drivers
+will be responsible for unpreparing and disabling clocks themselves and
+ultimately handling the reference counts on their own. This is
+undesirable. The patch automatically encodes this information using the
+type system so that no misuse can occur.
 
-Currently there is a small difference between unbind and Drop though
-(that shouldn't matter here):
+Patch 4 adds guards that prepare and/or enable a clock for the lifetime
+of the guard without consuming the Clk, so that a driver can keep a
+long-lived Clk<Prepared> and enable it for scoped sections.
 
-while unbind, data can still be received.
-while Drop, data can only be sent. No data will be received (Drop and
-receive never runs concurrently).
+Patch 5 makes things more convenient by offering devres-managed APIs. This
+lets drivers set clock parameters once and forget about lifetime
+management.
 
-Thanks
-- Markus Probst
+Patch 6 adds ExclusiveClk<T>, which holds rate exclusivity over a Clk<T>
+in any state until it is dropped.
 
+Patch 7 uses it in pwm-th1520 to lock the clock rate for the lifetime of
+the driver data.
 
->=20
-> >=20
-> > > +    }
-> > > +}
-> > > +
-> > > +kernel::module_serdev_device_driver! {
-> > > +    type: GbUartNode,
-> > > +    name: "gb_uart_node",
-> > > +    authors: ["Ayush Singh <ayush@beagleboard.org>"],
-> > > +    description: "Greybus node connected over UART",
-> > > +    license: "GPL v2",
-> > > +}
-> >=20
->=20
->=20
-> Best Regards,
-> Ayush Singh
+---
+Changes in v6:
+- Rebased onto the latest clk-next.
+- Moved the import style conversion to the front (Alexandre, Onur).
+- Kept Alexandre's and Onur's Reviewed-by on the imports patch, and
+  Alexandre's on the devres patch. Dropped Alexandre's Reviewed-by on the
+  type-state patch, which changed too much since v5.
+- Split the OptionalClk removal into its own patch (Gary).
+- Replaced "rust: clk: implement Clone for Clk<T>" with EnabledGuard,
+  PreparedGuard and PrepareEnabledGuard (Alexandre, Gary). Clones shared
+  a single struct clk, so per-consumer state such as the rate
+  exclusivity taken by clk_rate_exclusive_get() was shared between them.
+- Dropped Clk::<Prepared>::with_enabled(), superseded by EnabledGuard.
+- Named the ClkState constants ENABLED and PREPARED from the start
+  (Alexandre).
+- Implemented Debug for Error<State> (Alexandre).
+- Documented that dropping a prepared or enabled Clk may sleep
+  (Alexandre).
+- Used a different connection id for the second clock in the example
+  (Alexandre).
+- Used `?` in the per-state get() and get_optional() shortcuts.
+- Dropped the trailing `//` from doctest imports (Alexandre).
+- Removed the intra-doc links from SAFETY comments (Onur) and reworded
+  the devm_enable_optional() documentation (Alexandre).
+- Expanded the devres commit message (Gary).
+- Added ExclusiveClk and its pwm-th1520 user, based on Maurice
+  Hieronymus's series [1], with ExclusiveClk made generic over the clock
+  state, ExclusiveClk::new() in place of Clk::rate_exclusive_get(), and
+  a new ExclusiveClk::into_inner().
+- Link to v5: https://patch.msgid.link/20260706-clk-type-state-v5-0-67c5f326a16c@collabora.com
 
---=-UqXBVxT8d+O+osTm5faS
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+[1] https://lore.kernel.org/rust-for-linux/20260711-rate-exclusive-get-th1520-v4-0-8244a0666a71@mailbox.org/
 
------BEGIN PGP SIGNATURE-----
+Changes in v5:
+- Rebased onto the latest clk-next.
+- New patch: "rust: clk: implement Clone for Clk<T>". Each clone is an
+  independent view of the same underlying clock, owning its own
+  prepare/enable counts; the raw pointer is shared through an Arc so
+  clk_get()/clk_put() stay balanced. Follows the v3 discussion with
+  Boris Brezillon and Gary Guo.
+- Moved rate() and set_rate() from Clk<Enabled> to all states; the C API
+  does not restrict these to enabled clocks, and some clocks can only
+  change rate before being prepared.
+- Made Clk::<Enabled>::disable() infallible, matching unprepare() and
+  the void C API (Onur).
+- Fixed a typo in the "# Invariants" section, fixed SAFETY comments
+  that referred to the non-existent `self.0` field, and added missing
+  INVARIANT comments on the state transitions.
+- Added the missing rustdoc link definitions for clk_unprepare and
+  clk_put (Maurice).
+- Dropped the redundant `Result` import and the `use
+  kernel::error::Result;` lines from the doctests; the prelude already
+  provides it (Miguel).
+- Added #[inline] to the devm_* helpers.
+- Link to v4: https://patch.msgid.link/20260618-clk-type-state-v4-0-8be082786080@collabora.com
 
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmrOYr0bFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSI+cP/RuVl+xdxJtdCnt/p3NA
-DLBfxnTSo79NYIOowgE/fES/7vwnt3sWWJ5csSUGuPuIdu6eOvl8+WIOiEDHruJM
-UpV1hoBlBgqHAVwYs+aMJRmJ1ZIYTVskWEyqG5EW2/PjrqQ1DAO7z3950LUNEnQd
-x2yFKskDvvfeU4Jfrtcqv8nYD48APJtvaSK0Q0nuFl8c/4zMJpUXpvSoeRSqxFO9
-27ZP2UzgJPbRAvvgF3mcmhYJs7TJO29PXJDQIZdO2dRR+qkJ9T/afA0cBEMbnYQo
-B+Vw9I8JKD75CICJeK5h5Y4akCauBFPjKZDPJIhwOo+7jZy9qqT4FuUnTZBxaXGn
-ijZo4nP1EmQ623cygDqXZubtjsm5P1prBFqF7pz0oW4iTit/wPJO9CNvPO1Uw54o
-GepcRaTdIaK9yTTei3yH5GAoGFOqQ/GPoanfN78itXMalAv4n3+cKb+u6NgY4RDE
-N7oo6dpeDm5lOsO/33nvoVOF856cZeP+bvE/C7H2T05M5unPNaDzX2KOvd5lS9nu
-UnO+RihOqLI9B3GoQ4p7FqnAyytsz3vqWGtlpnq7uSBS2hXJA8b+yF1E/I9oM19S
-wSeVv/FTX1dWs4E91h7m/idZG/DAjb/G4mHC88XQSBmnjGqFA2gdmz8gZZzai+6S
-WSMuFxoSHmTdBoes/NeojKFp
-=N4cC
------END PGP SIGNATURE-----
+Changes in v4:
+- Rebased onto clk-next. Alice Ryhl's "rust: clk: implement Send and Sync"
+  series is now merged upstream, so it is no longer carried as a dependency.
+- Fixed the build with CONFIG_CPUFREQ_DT_RUST=y. The generic DT cpufreq
+  driver only has the (unbound) per-CPU device, so it cannot hand a
+  &Device<Bound> to Policy::set_clk(). Added a pub(crate) Clk::get_unbound()
+  for the few in-tree abstractions that operate on a device outside a bind
+  scope; set_clk() now takes &Device and uses it. Clk::get()/get_optional()
+  and the devm_* helpers still require &Device<Bound>.
+- Added impl From<Error<State>> for kernel::error::Error, so the fallible
+  state transitions can be used with `?` (and chained) instead of
+  .map_err(|e| e.error).
+- Added Clk::<Prepared>::with_enabled(), which runs a closure with the clock
+  temporarily enabled, scoping the Enabled state without giving up the
+  prepared clock.
+- Documented how to change a clock's state at runtime via an enum, for
+  drivers that enable/disable across resume/suspend.
+- Link to v3: https://lore.kernel.org/r/20260107-clk-type-state-v3-0-77d3e3ee59c2@collabora.com
 
---=-UqXBVxT8d+O+osTm5faS--
+Changes in v3:
+- Rebased on top of 6.19-rc4
+- Dropped patch 1 (from Alice), added her series as a dependency instead
+- Fixed Tyr, PWM_TH1520 drivers
+- Changed clk.rs imports to kernel-vertical style
+- Added support get_optional shortcut for Prepared and Enabled (i.e.:
+  Clk::<Enabled>::get_optional())
+- Fixed misplaced #[inline] tag
+
+Thanks, Danilo {
+  - Moved the devres changes into its own patch
+  - Require &Device<Bound> for all functions where a &Device is used
+  - Account for con_in in SAFETY comments where applicable
+  - Added backticks
+}
+
+- Link to v2: https://lore.kernel.org/r/20250910-clk-type-state-v2-0-1b97c11bb631@collabora.com
+
+Changes in v2:
+- Added Alice's patch as patch 1, since it is a dependency.
+- Added devm helpers (like we did for Regulator<T>)
+- Fixed missing clk_put() call in Drop (Danilo)
+- Fixed missing parenthesis and wrong docs (Viresh)
+- Removed extra "dev" parameter from "shutdown" example (Danilo)
+- Removed useless type annotation from example (Danilo)
+- Link to v1: https://lore.kernel.org/rust-for-linux/20250729-clk-type-state-v1-1-896b53816f7b@collabora.com/#r
+
+---
+Daniel Almeida (6):
+      rust: clk: use 'kernel vertical style' for imports
+      rust: clk: replace `OptionalClk` with `Clk::get_optional()`
+      rust: clk: use the type-state pattern
+      rust: clk: add guards for scoped prepare and enable
+      rust: clk: add devres-managed clks
+      rust: clk: add `ExclusiveClk`
+
+Maurice Hieronymus (1):
+      pwm: th1520: Lock clock rate with clk_rate_exclusive_get
+
+ drivers/cpufreq/rcpufreq_dt.rs |   7 +-
+ drivers/gpu/drm/tyr/driver.rs  |  32 +-
+ drivers/pwm/pwm_th1520.rs      |  25 +-
+ rust/kernel/clk.rs             | 834 +++++++++++++++++++++++++++++++++++------
+ rust/kernel/cpufreq.rs         |   8 +-
+ 5 files changed, 748 insertions(+), 158 deletions(-)
+---
+base-commit: d3645b43ad60fe1ab3b4a869f6908414d5831a65
+change-id: 20250909-clk-type-state-c01aa7dd551d
+
+Best regards,
+--  
+Daniel Almeida <daniel.almeida@collabora.com>
+
