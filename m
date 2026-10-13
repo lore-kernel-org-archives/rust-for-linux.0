@@ -1,320 +1,589 @@
-Received: from fraori-sdnproxy-3.icoremail.net (fraori-sdnproxy-3.icoremail.net [132.226.202.154])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8413C4B64;
-	Tue, 13 Oct 2026 14:17:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=132.226.202.154
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69B1517BA7
+	for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 14:48:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791901069; cv=none; b=MbJJwWnaygJWpaMBoV2AdqP5Oo+G9c7VptjQleOJCH2xo6FqVN2TNqHlQPnjxgIUpJivvzeAkgfQzfl15up54d3+x+Y/zlFhCIhqpA0++fDgUT2a3QqtHSb81Ogv9saqHxUZCKlWtbfF4UwNl8aRnmlybffkqAbbAmUjI/U44us=
+	t=1791902935; cv=none; b=i1GwjB6mj5O1Q1VvP/scLKR/k1zqGOYodm+mEhue4eB1+tb97puNYQBwQd1ysWTTjriynxSzk5OhIU2DRLlr8x6/1cWtngvNvDx5OOkgQK2WaGK+t8PveCmFfHv9mRGfqpnvqWbXIoLpVhdePfT+MH0pipBQYg48/juOKXw8iYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791901069; c=relaxed/simple;
-	bh=rD+l7/yTL+2zXi0Sc4MvyDWAcyjPW8oDjR3dZ5I49P8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=owEU578Q2o1Q8IwcxwgiP58nntCyl+2Kbl//uQKTCDqsPCxEKbZfbgcNmT4dfZhDE8iwPDhKK/+HvkNqe5C8vgfPs1br7JJqZrAC64BO56JlwFOOQdcM6e1Ad6gcbkofdmI6+LwnuTNYdmIj/TUetj4w1dCRjgOUw2Sz9Jr5ThM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=132.226.202.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
-Received: from hust.edu.cn (unknown [172.16.0.52])
-	by app1 (Coremail) with UTF8SMTP id IAEQrMBmrqR+Pc5qrBPDAA--.31410S2;
-	Tue, 13 Oct 2026 22:17:34 +0800 (CST)
-Received: from [100.81.40.43] (unknown [10.12.191.55])
-	by gateway (Coremail) with SMTP id _____wBnYCd2Pc5qZq4bAA--.47606S2;
-	Tue, 13 Oct 2026 22:17:29 +0800 (CST)
-Message-ID: <40ffea3e-a3f0-4949-9f7d-331490c29e36@hust.edu.cn>
-Date: Tue, 13 Oct 2026 22:17:26 +0800
+	s=arc-20240116; t=1791902935; c=relaxed/simple;
+	bh=jecSrd243OkE+xvCf0loTXnPVSMa5n4vGB/geb2zZQg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mbYJ0xgEcPBC4S8wW9Jsfh/fM7eHtL62Q3z+WVSJqzqahXeqUGXUzsDQi6ShbmT1gfGhHUTRO0vhUNlAHQb4kS0509fYeBrG1yg28UX8BvmOIw1i+2Ovr5WQB6m0S3cpryGnhsLv5xzr3Lj1TuW1PSgT9d+F/5w6r4sD4itCwb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=kW4fu0f/; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="kW4fu0f/"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 8824F240101
+	for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 16:48:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
+	s=1984.8680eb; t=1791902926;
+	bh=BBc5dj2dLxJ0POZlwzfm/Ymo+AZOtKIHWvZq7eFdmtM=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=kW4fu0f/PG2VgdTSO0tsTa23yTuyOgo3flTLWWawVnJHpwlZ0qhx2n2oLqY//A/cq
+	 KzBJh30qNHTw/2VPgQu4lxmrUgxUiJWt6sRHsOWKsNKTbeNc9/jlu/7QXeEgrwDc9Z
+	 vHKGTxbzKsaZ9zTvdWWJ9/SriDzev74a4MP1KdaNVLlhyp4v2HsyNGuZZHCPZVpWTI
+	 hHAC4d3lhZrYa8NXxGbqY7E1pPRz1lzdkE+4X7RG/kBcte4i0/OAOoHP3aPqtX6ze1
+	 nsqNB5m23UFbG+iLQWR3ZirPmHYvp3Iv63yusA2CG9ErAL8pt7Cbcf52ckrPCXE3vG
+	 EsaOyvPQDCEtg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4j3xzX6Yz3z6txm;
+	Tue, 13 Oct 2026 16:48:40 +0200 (CEST)
+Message-ID: <037d7460eae92dd00f9283dd5595a3257212f0b9.camel@posteo.de>
+Subject: Re: [PATCH v3 7/7] greybus: Add Rust UART node driver
+From: Markus Probst <markus.probst@posteo.de>
+To: Ayush Singh <ayush@beagleboard.org>, Jason Kridner	
+ <jkridner@beagleboard.org>, robertcnelson@gmail.com, Johan Hovold	
+ <johan@kernel.org>, Alex Elder <elder@kernel.org>, Greg Kroah-Hartman	
+ <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng	
+ <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, Daniel Almeida	 <daniel.almeida@collabora.com>, Tamir
+ Duberstein <tamird@kernel.org>,  Alexandre Courbot <acourbot@nvidia.com>,
+ Onur =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>, Eric Biggers	
+ <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Ayush Singh	
+ <ayush@beagleboard.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Lorenzo Stoakes	
+ <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett"	
+ <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>
+Cc: greybus-dev@lists.linaro.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	devicetree@vger.kernel.org
+Date: Tue, 13 Oct 2026 14:48:45 +0000
+In-Reply-To: <20261013-gb-uart-transport-v3-7-81d0a8a1acf7@beagleboard.org>
+References: <20261013-gb-uart-transport-v3-0-81d0a8a1acf7@beagleboard.org>
+	 <20261013-gb-uart-transport-v3-7-81d0a8a1acf7@beagleboard.org>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-s2hQlaWvxNeAQBzcR+8c"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: workqueue: replace deprecated system_wq with
- system_{percpu,dfl}_wq
-To: Alice Ryhl <aliceryhl@google.com>, Tejun Heo <tj@kernel.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Alex Shi <alexs@kernel.org>,
- Yanteng Si <si.yanteng@linux.dev>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Carlos Llamas <cmllamas@google.com>,
- Marco Crivellari <marco.crivellari@suse.com>,
- rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261013-rust-workqueue-system-fix-v1-1-e9ec616e402b@google.com>
-From: Dongliang Mu <dzm91@hust.edu.cn>
-In-Reply-To: <20261013-rust-workqueue-system-fix-v1-1-e9ec616e402b@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:IAEQrMBmrqR+Pc5qrBPDAA--.31410S2
-Authentication-Results: app1; spf=neutral smtp.mail=dzm91@hust.edu.cn;
-X-Coremail-Antispam: 1UD129KBjvJXoWfXr1rJr4rXFyxCw4kKryUZFb_yoWkJF4kpr
-	WrA34jqa18JF4UA39Iga1xJFyxWws7uw47W34xAw17Ar4qvrZ0gryftr15WFWUZr95uasx
-	tFW0ka9rZw1jvrDanT9S1TB71UUUU1DqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQKb7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
-	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
-	1q6r43M2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI
-	12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxV
-	W8Jr0_Cr1UMcIj6x8ErcxFaVAv8VW8uFyUJr1UMcIj6xkF7I0En7xvr7AKxVW8Jr0_Cr1U
-	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCY1x0262kKe7AKxVW8ZVWrXwCY02
-	Avz4vE-syl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8uFyUJr1UMxC20s02
-	6xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r1q6r43MI8I3I0E5I8CrVAFwI0_Jr0_Jr
-	4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxG
-	rwCI42IY6xIIjxv20xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJw
-	CI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2
-	z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUO6MNUUUUUU==
-X-CM-SenderInfo: asqsiiirqrkko6kx23oohg3hdfq/
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
 
-On 10/13/26 9:51 PM, Alice Ryhl wrote:
-> From: Danilo Krummrich <dakr@kernel.org>
->
-> system_wq is deprecated and triggers a runtime warning:
->
-> 	[    0.857414] workqueue: work func ...WorkItemPointerKy0_E3runB7_ enqueued on deprecated workqueue. Use system_{percpu|dfl}_wq instead.
->
-> Replace system() with system_percpu() and system_dfl(), to match the
-> previous behavior of the deprecated system() and convert doc examples
-> and tests to system_dfl().
->
-> Fixes: 64d8eae3f895 ("workqueue: Add warnings and fallback if system_{unbound}_wq is used")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+--=-s2hQlaWvxNeAQBzcR+8c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, 2026-10-13 at 17:30 +0530, Ayush Singh wrote:
+> Add a driver for Greybus nodes attached over a plain serial port. The
+> node is registered with the software SVC (gb-softsvc), which handles the
+> SVC protocol on behalf of the AP, so no dedicated coprocessor running
+> SVC firmware is needed.
+>=20
+> Greybus messages are carried over HDLC framing on the wire. Each frame
+> carries a one-byte address (0x01 for Greybus) and control byte, followed
+> by the 16-bit CPort ID and the Greybus message itself.
+>=20
+> Port parameters are taken from the firmware node: "baudrate" if
+> present, otherwise 115200, with flow control and parity disabled.
+>=20
+> Since gb-uart-node imports types from gb-softsvc, Rust to Rust calling
+> setup from nova-core [0] is being used.
+>=20
+> [0]: https://lore.kernel.org/all/20260622-nova-exports-v5-0-6191773fc977@=
+nvidia.com/
+>=20
+> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
 > ---
-> This patch was previously sent as part of other workqueue series [1][2].
-> However it's a fix that is independent of those series, so it's sent on
-> its own here.
->
-> [1] https://lore.kernel.org/all/20260726223613.1242940-3-dakr@kernel.org
-> [2] https://lore.kernel.org/all/20260807165252.3849875-2-dakr@kernel.org
->
-> Changes since [2]:
->    - Rebase on v7.3-rc7 and also convert the new SpinLockIrq KUnit test,
->      which calls workqueue::system() and otherwise fails to build.
->    - Add Fixes: tag for the commit that made system_wq warn.
->    - Collect Reviewed-by from Daniel.
-> ---
->   Documentation/rust/testing.rst                    |  2 +-
->   Documentation/translations/zh_CN/rust/testing.rst |  2 +-
->   drivers/android/binder/process.rs                 |  4 +--
->   rust/kernel/sync/completion.rs                    |  2 +-
->   rust/kernel/sync/lock/spinlock.rs                 |  2 +-
->   rust/kernel/workqueue.rs                          | 42 +++++++++++++++--------
->   6 files changed, 33 insertions(+), 21 deletions(-)
->
-> diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
-> index e3943aceceb9..73046523a9a2 100644
-> --- a/Documentation/rust/testing.rst
-> +++ b/Documentation/rust/testing.rst
-> @@ -97,7 +97,7 @@ operator are also supported as usual, e.g.:
->   
->   	/// ```
->   	/// # use kernel::{spawn_work_item, workqueue};
-> -	/// spawn_work_item!(workqueue::system(), || pr_info!("x\n"))?;
-> +	/// spawn_work_item!(workqueue::system_dfl(), || pr_info!("x\n"))?;
->   	/// # Ok::<(), Error>(())
->   	/// ```
->   
-
-
-LGTM in terms of documentation part.
-
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-
-
-> diff --git a/Documentation/translations/zh_CN/rust/testing.rst b/Documentation/translations/zh_CN/rust/testing.rst
-> index 6747d0012991..fdd88fa2fe40 100644
-> --- a/Documentation/translations/zh_CN/rust/testing.rst
-> +++ b/Documentation/translations/zh_CN/rust/testing.rst
-> @@ -93,7 +93,7 @@ KUnit 测试即文档测试
->   
->   	/// ```
->   	/// # use kernel::{spawn_work_item, workqueue};
-> -	/// spawn_work_item!(workqueue::system(), || pr_info!("x\n"))?;
-> +	/// spawn_work_item!(workqueue::system_dfl(), || pr_info!("x\n"))?;
->   	/// # Ok::<(), Error>(())
->   	/// ```
->   
-> diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-> index 5372bfbd93b3..de5bca7f9fc7 100644
-> --- a/drivers/android/binder/process.rs
-> +++ b/drivers/android/binder/process.rs
-> @@ -1728,7 +1728,7 @@ pub(crate) fn release(this: Arc<Process>, _file: &File) {
->           if should_schedule {
->               // Ignore failures to schedule to the workqueue. Those just mean that we're already
->               // scheduled for execution.
-> -            let _ = workqueue::system().enqueue(this);
-> +            let _ = workqueue::system_percpu().enqueue(this);
->           }
->   
->           drop(binderfs_file);
-> @@ -1745,7 +1745,7 @@ pub(crate) fn flush(this: ArcBorrow<'_, Process>) -> Result {
->           if should_schedule {
->               // Ignore failures to schedule to the workqueue. Those just mean that we're already
->               // scheduled for execution.
-> -            let _ = workqueue::system().enqueue(Arc::from(this));
-> +            let _ = workqueue::system_percpu().enqueue(Arc::from(this));
->           }
->           Ok(())
->       }
-> diff --git a/rust/kernel/sync/completion.rs b/rust/kernel/sync/completion.rs
-> index 35ff049ff078..1771bfc0ade2 100644
-> --- a/rust/kernel/sync/completion.rs
-> +++ b/rust/kernel/sync/completion.rs
-> @@ -38,7 +38,7 @@
->   ///             done <- Completion::new(),
->   ///         }), GFP_KERNEL)?;
->   ///
-> -///         let _ = workqueue::system().enqueue(this.clone());
-> +///         let _ = workqueue::system_dfl().enqueue(this.clone());
->   ///
->   ///         Ok(this)
->   ///     }
-> diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-> index aafc80125f59..92ad133262b6 100644
-> --- a/rust/kernel/sync/lock/spinlock.rs
-> +++ b/rust/kernel/sync/lock/spinlock.rs
-> @@ -450,7 +450,7 @@ fn run(this: Arc<Self>) {
->       fn spinlock_irq_condvar() -> Result {
->           let testdata = Test::new()?;
->   
-> -        let _ = workqueue::system().enqueue(testdata.clone());
-> +        let _ = workqueue::system_dfl().enqueue(testdata.clone());
->   
->           // Let the updater know when we're ready to wait
->           let mut state = testdata.state.lock();
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index 7e253b6f299c..7bc07ccd1ebb 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -67,7 +67,7 @@
->   //! /// This method will enqueue the struct for execution on the system workqueue, where its value
->   //! /// will be printed.
->   //! fn print_later(val: Arc<MyStruct>) {
-> -//!     let _ = workqueue::system().enqueue(val);
-> +//!     let _ = workqueue::system_dfl().enqueue(val);
->   //! }
->   //! # print_later(MyStruct::new(42).unwrap());
->   //! ```
-> @@ -121,11 +121,11 @@
->   //! }
->   //!
->   //! fn print_1_later(val: Arc<MyStruct>) {
-> -//!     let _ = workqueue::system().enqueue::<Arc<MyStruct>, 1>(val);
-> +//!     let _ = workqueue::system_dfl().enqueue::<Arc<MyStruct>, 1>(val);
->   //! }
->   //!
->   //! fn print_2_later(val: Arc<MyStruct>) {
-> -//!     let _ = workqueue::system().enqueue::<Arc<MyStruct>, 2>(val);
-> +//!     let _ = workqueue::system_dfl().enqueue::<Arc<MyStruct>, 2>(val);
->   //! }
->   //! # print_1_later(MyStruct::new(24, 25).unwrap());
->   //! # print_2_later(MyStruct::new(41, 42).unwrap());
-> @@ -171,13 +171,13 @@
->   //! /// This method will enqueue the struct for execution on the system workqueue, where its value
->   //! /// will be printed 12 jiffies later.
->   //! fn print_later(val: Arc<MyStruct>) {
-> -//!     let _ = workqueue::system().enqueue_delayed(val, 12);
-> +//!     let _ = workqueue::system_dfl().enqueue_delayed(val, 12);
->   //! }
->   //!
->   //! /// It is also possible to use the ordinary `enqueue` method together with `DelayedWork`. This
->   //! /// is equivalent to calling `enqueue_delayed` with a delay of zero.
->   //! fn print_now(val: Arc<MyStruct>) {
-> -//!     let _ = workqueue::system().enqueue(val);
-> +//!     let _ = workqueue::system_dfl().enqueue(val);
->   //! }
->   //! # print_later(MyStruct::new(42).unwrap());
->   //! # print_now(MyStruct::new(42).unwrap());
-> @@ -1024,20 +1024,32 @@ unsafe impl<T, const ID: u64> RawDelayedWorkItem<ID> for ARef<T>
->   {
->   }
->   
-> -/// Returns the system work queue (`system_wq`).
-> +/// Returns the system per-cpu work queue (`system_percpu_wq`).
->   ///
->   /// It is the one used by `schedule[_delayed]_work[_on]()`. Multi-CPU multi-threaded. There are
->   /// users which expect relatively short queue flush time.
->   ///
->   /// Callers shouldn't queue work items which can run for too long.
-> -pub fn system() -> &'static Queue {
-> -    // SAFETY: `system_wq` is a C global, always available.
-> -    unsafe { Queue::from_raw(bindings::system_wq) }
-> +#[inline]
-> +pub fn system_percpu() -> &'static Queue {
-> +    // SAFETY: `system_percpu_wq` is a C global, always available.
-> +    unsafe { Queue::from_raw(bindings::system_percpu_wq) }
+>  MAINTAINERS                     |   1 +
+>  drivers/greybus/.gitignore      |   1 +
+>  drivers/greybus/Kconfig         |  15 +++
+>  drivers/greybus/Makefile        |  48 ++++++++
+>  drivers/greybus/gb_uart_node.rs | 253 ++++++++++++++++++++++++++++++++++=
+++++++
+>  5 files changed, 318 insertions(+)
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 521bc6c67979..5bdd500ef63e 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -11527,6 +11527,7 @@ M:	Ayush Singh <ayush@beagleboard.org>
+>  L:	greybus-dev@lists.linaro.org (moderated for non-subscribers)
+>  S:	Maintained
+>  F:	Documentation/devicetree/bindings/beagle/beagle,beagleconnect-freedom=
+.yaml
+> +F:	drivers/greybus/gb_uart_node.rs
+> =20
+>  GREYBUS SUBSYSTEM
+>  M:	Johan Hovold <johan@kernel.org>
+> diff --git a/drivers/greybus/.gitignore b/drivers/greybus/.gitignore
+> new file mode 100644
+> index 000000000000..ff9c4a3539b4
+> --- /dev/null
+> +++ b/drivers/greybus/.gitignore
+> @@ -0,0 +1 @@
+> +exports_gb_softsvc_generated.h
+> diff --git a/drivers/greybus/Kconfig b/drivers/greybus/Kconfig
+> index 709563f8c0ad..ce2030161f30 100644
+> --- a/drivers/greybus/Kconfig
+> +++ b/drivers/greybus/Kconfig
+> @@ -61,5 +61,20 @@ config GREYBUS_SOFTSVC
+>  	  To compile this code as a module, choose M here: the module
+>  	  will be called gb-softsvc.ko
+> =20
+> +config GREYBUS_UART_NODE
+> +	tristate "Greybus UART node transport"
+> +	depends on GREYBUS_SOFTSVC
+> +	depends on RUST_SERIAL_DEV_BUS_ABSTRACTIONS
+> +	depends on RUST_GREYBUS_ABSTRACTIONS
+> +	select RUST_CRC_CCITT_ABSTRACTIONS
+> +	help
+> +	  Select this option if you have a Greybus node connected over a
+> +	  serial port. The node is registered with the software SVC, which
+> +	  handles the SVC protocol on behalf of the AP, so no dedicated
+> +	  coprocessor running SVC firmware is required.
+> +
+> +	  To compile this code as a module, choose M here: the module
+> +	  will be called gb-uart-node.ko
+> +
+>  endif	# GREYBUS
+> =20
+> diff --git a/drivers/greybus/Makefile b/drivers/greybus/Makefile
+> index e6f594128802..bf4d08f728fe 100644
+> --- a/drivers/greybus/Makefile
+> +++ b/drivers/greybus/Makefile
+> @@ -28,3 +28,51 @@ obj-$(CONFIG_GREYBUS_ES2)	+=3D gb-es2.o
+>  obj-$(CONFIG_GREYBUS_SOFTSVC)	+=3D gb-softsvc.o
+>  gb-softsvc-y			+=3D gb_softsvc.o gb_softsvc_exports.o
+> =20
+> +obj-$(CONFIG_GREYBUS_UART_NODE)	+=3D gb-uart-node.o
+> +gb-uart-node-y			+=3D gb_uart_node.o
+> +
+> +# Export Rust symbols from gb-softsvc only if gb-uart-node actually refe=
+rences them.
+> +gb-softsvc-export-deps :=3D $(if $(CONFIG_GREYBUS_UART_NODE),$(obj)/gb_u=
+art_node.o)
+> +
+> +rust_needed_exports =3D \
+> +	{ $(if $(strip $(2)),$(NM) -u $(2);,) echo "__DEFINED_RUST_SYMBOLS__"; =
+\
+> +	  $(NM) -p --defined-only $(1); } | \
+> +	awk -v fmt=3D'$(3)' ' \
+> +		/^__DEFINED_RUST_SYMBOLS__$$/ { defs =3D 1; next } \
+> +		!defs { if ($$NF ~ /^_R/) needed[$$NF] =3D 1; next } \
+> +		defs && $$2 ~ /(T|R|D|B)/ && $$3 ~ /^_R/ && \
+> +			$$3 !~ /_(init|cleanup)_module$$/ && \
+> +			$$3 !~ /__(pfx|cfi|odr_asan)/ && \
+> +			$$3 in needed { printf fmt, $$3 } \
+> +	'
+> +
+> +quiet_cmd_exports =3D EXPORTS $@
+> +      cmd_exports =3D \
+> +	$(call rust_needed_exports,$<,$(gb-softsvc-export-deps),EXPORT_SYMBOL_R=
+UST_GPL(%s);\n) > $@
+> +
+> +$(obj)/exports_gb_softsvc_generated.h: $(obj)/gb_softsvc.o $(gb-softsvc-=
+export-deps) FORCE
+> +	$(call if_changed,exports)
+> +
+> +targets +=3D exports_gb_softsvc_generated.h
+> +
+> +$(obj)/gb_softsvc_exports.o: $(obj)/exports_gb_softsvc_generated.h
+> +CFLAGS_gb_softsvc_exports.o :=3D -I $(objtree)/$(obj)
+> +
+> +ifdef CONFIG_MODVERSIONS
+> +# The C export shim declares Rust symbols as `extern int`, so reuse its =
+export
+> +# list but generate symbol CRCs from the Rust object instead of the shim=
+'s DWARF.
+> +$(obj)/gb_softsvc_exports.o: private cmd_gensymtypes_c =3D \
+> +	$(call getexportsymbols,\1) | \
+> +	$(objtree)/scripts/gendwarfksyms/gendwarfksyms \
+> +		$(if $(KBUILD_GENDWARFKSYMS_STABLE), --stable) \
+> +		$(if $(KBUILD_SYMTYPES), --symtypes $(@:.o=3D.symtypes),) \
+> +		$(obj)/gb_softsvc.o
+> +endif
+> +
+> +# Output gb_softsvc's crate metadata for use by gb_uart_node at compile =
+time.
+> +RUSTFLAGS_gb_softsvc.o +=3D \
+> +	--emit=3Dmetadata=3D$(objtree)/$(obj)/libgb_softsvc.rmeta
+> +
+> +# Allow nova-drm to import nova-core's types.
+> +$(obj)/gb_uart_node.o: $(obj)/gb_softsvc.o
+> +RUSTFLAGS_gb_uart_node.o :=3D -L $(objtree)/$(obj) --extern gb_softsvc
+> diff --git a/drivers/greybus/gb_uart_node.rs b/drivers/greybus/gb_uart_no=
+de.rs
+> new file mode 100644
+> index 000000000000..f719ee35e8f3
+> --- /dev/null
+> +++ b/drivers/greybus/gb_uart_node.rs
+> @@ -0,0 +1,253 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Greybus UART Node driver
+> +
+> +use kernel::{
+> +    alloc::Flags,
+> +    crc_ccitt::crc_ccitt,
+> +    device::{
+> +        AsBusDevice,
+> +        Bound,
+> +        Core, //
+> +    },
+> +    error::code,
+> +    new_spinlock,
+> +    of, //
+> +    prelude::*,
+> +    serdev,
+> +    sync::{
+> +        aref::ARef,
+> +        Arc,
+> +        SpinLock, //
+> +    },
+> +};
+> +
+> +use zerocopy::little_endian;
+> +use zerocopy_derive::{FromBytes, Immutable, KnownLayout};
+> +
+> +const HDLC_MAX_FRAME_LEN: usize =3D 256;
+> +
+> +const HDLC_FRAME: u8 =3D 0x7E;
+> +const HDLC_ESC: u8 =3D 0x7D;
+> +const HDLC_XOR: u8 =3D 0x20;
+> +const HDLC_EXPECTED_CRC: u16 =3D 0xf0b8;
+> +
+> +const ADDRESS_GREYBUS: u8 =3D 0x01;
+> +
+> +#[repr(C, packed)]
+> +#[derive(FromBytes, Immutable, KnownLayout)]
+> +struct GreybusFrame {
+> +    cport: little_endian::U16,
+> +    msg: [u8],
 > +}
 > +
-> +/// Returns the system default (unbound) work queue (`system_dfl_wq`).
-> +///
-> +/// Workers are not bound to any specific CPU, not concurrency managed, and all queued work items
-> +/// are executed immediately as long as `max_active` limit is not reached and resources are
-> +/// available.
-> +#[inline]
-> +pub fn system_dfl() -> &'static Queue {
-> +    // SAFETY: `system_dfl_wq` is a C global, always available.
-> +    unsafe { Queue::from_raw(bindings::system_dfl_wq) }
->   }
->   
->   /// Returns the system high-priority work queue (`system_highpri_wq`).
->   ///
-> -/// It is similar to the one returned by [`system`] but for work items which require higher
-> +/// It is similar to the one returned by [`system_percpu`] but for work items which require higher
->   /// scheduling priority.
->   pub fn system_highpri() -> &'static Queue {
->       // SAFETY: `system_highpri_wq` is a C global, always available.
-> @@ -1046,8 +1058,8 @@ pub fn system_highpri() -> &'static Queue {
->   
->   /// Returns the system work queue for potentially long-running work items (`system_long_wq`).
->   ///
-> -/// It is similar to the one returned by [`system`] but may host long running work items. Queue
-> -/// flushing might take relatively long.
-> +/// It is similar to the one returned by [`system_percpu`] but may host long running work items.
-> +/// Queue flushing might take relatively long.
->   pub fn system_long() -> &'static Queue {
->       // SAFETY: `system_long_wq` is a C global, always available.
->       unsafe { Queue::from_raw(bindings::system_long_wq) }
-> @@ -1065,7 +1077,7 @@ pub fn system_unbound() -> &'static Queue {
->   
->   /// Returns the system freezable work queue (`system_freezable_wq`).
->   ///
-> -/// It is equivalent to the one returned by [`system`] except that it's freezable.
-> +/// It is equivalent to the one returned by [`system_percpu`] except that it's freezable.
->   ///
->   /// A freezable workqueue participates in the freeze phase of the system suspend operations. Work
->   /// items on the workqueue are drained and no new work item starts execution until thawed.
-> @@ -1078,7 +1090,7 @@ pub fn system_freezable() -> &'static Queue {
->   ///
->   /// It is inclined towards saving power and is converted to "unbound" variants if the
->   /// `workqueue.power_efficient` kernel parameter is specified; otherwise, it is similar to the one
-> -/// returned by [`system`].
-> +/// returned by [`system_percpu`].
->   pub fn system_power_efficient() -> &'static Queue {
->       // SAFETY: `system_power_efficient_wq` is a C global, always available.
->       unsafe { Queue::from_raw(bindings::system_power_efficient_wq) }
-> @@ -1097,7 +1109,7 @@ pub fn system_freezable_power_efficient() -> &'static Queue {
->   
->   /// Returns the system bottom halves work queue (`system_bh_wq`).
->   ///
-> -/// It is similar to the one returned by [`system`] but for work items which
-> +/// It is similar to the one returned by [`system_percpu`] but for work items which
->   /// need to run from a softirq context.
->   pub fn system_bh() -> &'static Queue {
->       // SAFETY: `system_bh_wq` is a C global, always available.
->
-> ---
-> base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
-> change-id: 20261013-rust-workqueue-system-fix-5f9020c90f27
->
-> Best regards,
+> +struct HdlcRx {
+> +    rx_buf: KVec<u8>,
+> +    rx_in_esc: bool,
+> +    rx_overflow: bool,
+> +    sdev: ARef<serdev::Device>,
+> +    node: gb_softsvc::Module,
+> +}
+> +
+> +impl HdlcRx {
+> +    fn new(sdev: ARef<serdev::Device>, node: gb_softsvc::Module) -> Resu=
+lt<Self> {
+> +        Ok(Self {
+> +            node,
+> +            sdev,
+> +            rx_buf: KVec::with_capacity(HDLC_MAX_FRAME_LEN, GFP_KERNEL)?=
+,
+> +            rx_in_esc: false,
+> +            rx_overflow: false,
+> +        })
+> +    }
+> +
+> +    fn frame_finish(&self) -> Result<()> {
+> +        if self.rx_buf.len() < 4 {
+> +            return Err(code::EFAULT);
+> +        }
+> +
+> +        let crc =3D crc_ccitt(0xffff, &self.rx_buf);
+> +        if crc !=3D HDLC_EXPECTED_CRC {
+> +            dev_warn!(self.sdev.as_ref(), "CRC failed {}", crc);
+> +            return Ok(());
+> +        }
+> +
+> +        let addr =3D self.rx_buf[0];
+> +        let _ctrl =3D self.rx_buf[1];
+> +        let payload =3D &self.rx_buf[2..self.rx_buf.len() - size_of::<u1=
+6>()];
+> +
+> +        match addr {
+> +            ADDRESS_GREYBUS =3D> {
+> +                let frame =3D GreybusFrame::ref_from_bytes(payload).map_=
+err(|_| code::EINVAL)?;
+> +                self.node.submit_message(0, frame.cport.into(), &frame.m=
+sg)
+> +            }
+> +            _ =3D> Err(code::EINVAL),
+> +        }
+> +    }
+> +
+> +    fn rx(&mut self, data: &[u8]) -> usize {
+> +        for i in data.iter() {
+> +            match *i {
+> +                HDLC_FRAME =3D> {
+> +                    if !self.rx_buf.is_empty() {
+> +                        if let Err(e) =3D self.frame_finish() {
+> +                            dev_warn!(self.sdev.as_ref(), "bad frame: {e=
+:?}\n");
+> +                        }
+> +                    }
+> +
+> +                    self.rx_buf.clear();
+> +                    self.rx_in_esc =3D false;
+> +                    self.rx_overflow =3D false;
+> +                }
+> +                HDLC_ESC =3D> self.rx_in_esc =3D true,
+> +                // Skip data if buffer has overflown.
+> +                _ if self.rx_overflow =3D> {}
+> +                _ =3D> {
+> +                    let c =3D if self.rx_in_esc { *i ^ HDLC_XOR } else {=
+ *i };
+> +                    self.rx_in_esc =3D false;
+> +
+> +                    if self.rx_buf.push_within_capacity(c).is_err() {
+> +                        dev_warn!(self.sdev.as_ref(), "buffer overflow. =
+Dropping frame");
+> +
+> +                        self.rx_overflow =3D true;
+> +                        self.rx_buf.clear();
+> +                    }
+> +                }
+> +            }
+> +        }
+> +
+> +        data.len()
+> +    }
+> +}
+> +
+> +struct GbNode {
+> +    sdev: ARef<serdev::Device>,
+> +}
+> +
+> +impl GbNode {
+> +    const fn new(sdev: ARef<serdev::Device>) -> Self {
+> +        Self { sdev }
+> +    }
+> +
+> +    fn fill_buf(mut crc: u16, data: &[u8], buf: &mut KVec<u8>) -> Result=
+<u16> {
+> +        for i in data {
+> +            crc =3D crc_ccitt(crc, &[*i]);
+> +            if *i =3D=3D HDLC_ESC || *i =3D=3D HDLC_FRAME {
+> +                buf.push_within_capacity(HDLC_ESC)?;
+> +                buf.push_within_capacity(i ^ HDLC_XOR)?;
+> +            } else {
+> +                buf.push_within_capacity(*i)?;
+> +            }
+> +        }
+> +
+> +        Ok(crc)
+> +    }
+> +}
+> +
+> +impl gb_softsvc::InterfaceOps for GbNode {
+> +    fn write(&self, data: &[u8], cport: u16, gfp_mask: Flags) -> Result<=
+()> {
+> +        // SAFETY: `GbNode` only exists while its serdev driver is bound=
+, so the device is in the
+> +        // `Bound` state for the duration of this call.
+> +        let bound: &serdev::Device<Bound> =3D
+> +            unsafe { serdev::Device::from_device(self.sdev.as_ref().as_b=
+ound()) };
+> +
+> +        let mut buf =3D KVec::with_capacity(HDLC_MAX_FRAME_LEN, gfp_mask=
+)?;
+> +
+> +        let mut crc =3D 0xffff;
+> +
+> +        buf.push_within_capacity(HDLC_FRAME)?;
+> +
+> +        crc =3D Self::fill_buf(crc, &[ADDRESS_GREYBUS, 0x03], &mut buf)?=
+;
+> +        crc =3D Self::fill_buf(crc, &cport.to_le_bytes(), &mut buf)?;
+> +        crc =3D Self::fill_buf(crc, data, &mut buf)?;
+> +
+> +        crc ^=3D 0xffff;
+> +        Self::fill_buf(crc, &crc.to_le_bytes(), &mut buf)?;
+> +
+> +        buf.push_within_capacity(HDLC_FRAME)?;
+> +
+> +        bound.write_all(&buf, 0)?;
+> +
+> +        Ok(())
+> +    }
+> +}
+> +
+> +#[pin_data]
+> +struct GbUartNode {
+> +    #[pin]
+> +    rx: SpinLock<Option<HdlcRx>>,
+> +}
+> +
+> +impl GbUartNode {
+> +    fn init(sdev: &serdev::Device<Core<'_>>) -> Result<HdlcRx> {
+> +        if sdev
+> +            .set_baudrate(
+> +                sdev.as_ref()
+> +                    .fwnode()
+> +                    .and_then(|fwnode| fwnode.property_read(c"baudrate")=
+.optional())
+> +                    .unwrap_or(115200),
+> +            )
+> +            .is_err()
+> +        {
+> +            return Err(EINVAL);
+> +        }
+> +        sdev.set_flow_control(false);
+> +        sdev.set_parity(serdev::Parity::None)?;
+> +
+> +        let node =3D gb_softsvc::Module::new(&[Arc::new(GbNode::new(sdev=
+.into()), GFP_KERNEL)?])?;
+> +
+> +        HdlcRx::new(sdev.into(), node)
+> +    }
+> +}
+> +
+> +kernel::of_device_table!(
+> +    OF_TABLE,
+> +    <GbUartNode as serdev::Driver>::IdInfo,
+> +    [(of::DeviceId::new(c"beagle,beagleconnect-freedom"), ())]
+> +);
+> +
+> +#[vtable]
+> +impl serdev::Driver for GbUartNode {
+> +    type IdInfo =3D ();
+> +    type Data<'bound> =3D Self;
+> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> =3D Some(&OF_TA=
+BLE);
+> +
+> +    fn probe<'bound>(
+> +        sdev: &'bound serdev::Device<Core<'_>>,
+> +        _info: Option<&'bound Self::IdInfo>,
+> +    ) -> impl PinInit<Self, Error> + 'bound {
+> +        dev_dbg!(sdev.as_ref(), "Probe gb_uart_node.\n");
+> +
+> +        try_pin_init!(Self {
+> +            rx <- new_spinlock!(Some(Self::init(sdev)?), "gb_uart_node::=
+rx"),
+> +        }? Error)
+> +    }
+> +
+> +    fn receive<'bound>(
+> +        _sdev: &'bound serdev::Device<Bound>,
+> +        this: Pin<&Self>,
+> +        data: &[u8],
+> +    ) -> usize {
+> +        if let Some(mut guard) =3D this.rx.try_lock() {
+> +            if let Some(ref mut hdlc_rx) =3D *guard {
+> +                return hdlc_rx.rx(data);
+> +            }
+> +        }
+> +
+> +        0
+> +    }
+> +
+> +    fn unbind<'bound>(_: &'bound serdev::Device<Core<'_>>, this: Pin<&Se=
+lf::Data<'bound>>) {
+> +        // Getting a bound device is not possible after this point. So d=
+rop HdlcRx.
+> +        // This also drops HdlcRx::node, which should ensure that GbNode=
+::write will not be called
+> +        // after this point.
+> +        let _ =3D this.rx.lock().take();
+Not exactly.
 
+e.g.
+```
+struct SerdevDriver<'bound> {
+  dev: &'bound serdev::Device<Bound>,
+}
+
+impl<'bound> Drop for SerdevDriver<'bound> {
+
+  fn drop(&mut self) {
+    // Access to a bound device should still be possible here.
+  }
+
+}
+```
+
+So afaik there should be no advantage of manually dropping it here.
+Drop of `GbUartNode` should automatically drop the spinlock and the
+data contained. The bound serial device is still valid at this point.
+
+This would likely make the usage of Option<> obsolete too.
+
+Thanks
+- Markus Probst
+
+> +    }
+> +}
+> +
+> +kernel::module_serdev_device_driver! {
+> +    type: GbUartNode,
+> +    name: "gb_uart_node",
+> +    authors: ["Ayush Singh <ayush@beagleboard.org>"],
+> +    description: "Greybus node connected over UART",
+> +    license: "GPL v2",
+> +}
+
+--=-s2hQlaWvxNeAQBzcR+8c
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmrORMgbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPShvQP/RgPwh2sXkj8Wwfjp2VD
+ALdPBLJjaqiua/gz40bnNHcUuJi48E26eIHMQeY//Cyo+ofEPggwum55EzqoRC8Z
+n3COhoW6MaALYaijS09rtzDpGV/MSPgYJkizBExcwZ8AZmMAG8OY/+6kGkXsehbK
+kwU6RWNizq9JCSh2rY3GcR0GttnIV0Zt4W7VmRn595ecTfXdxb2wp5sS+kn6SxHN
+ShgGAf8j2nYXrMrACIYAf/DSkuo8oEHHO2zeNJwA+N7DOxQ1vGrzpgj00+Qaw+Sv
+ORR+C3Z/pOyCVaVRNi3T2D27GgG+94wTx1OM2U7fdSgh1xW9IoIzSRZdD0jw4wof
+gEQ+o6chqw2yRSyN4MDKMMf5Fi9HnI/EuAhD6/RNhbmJT8m+Gw2iRS12ioBrNNgM
+gMDONU435I4FFhMEHMhQjBb7jQaBTFk1iCj5V0+pU1aLWJd65/wiGsqNmqxby24h
+VeRenVFB72AUBqT3fheiQiEEEdjpf+i1jg6/GXcPCvkDk5rnvY2+oFOnZuWOy3fX
+oqVasPFXe/EaJ7EWJXC1LoK8ycI5PVT5b1/4nMFY9tAzGxqihboJjccFuNqT7lc+
+RiXMPGFz9MydTQAGBAUXGSyHfNlW/evD4uQ1N0HgIroi897WJG7N8vGXYNWfj9xI
+wrJvxgMMsTXnjAylHsyMuwxy
+=5QyA
+-----END PGP SIGNATURE-----
+
+--=-s2hQlaWvxNeAQBzcR+8c--
