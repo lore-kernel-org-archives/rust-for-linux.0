@@ -1,112 +1,193 @@
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010061.outbound.protection.outlook.com [52.101.46.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC09337E5D4;
-	Tue, 13 Oct 2026 08:42:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791880967; cv=none; b=XLuMNeu96n5iiYnGAaAlqXbuMPQ42M6A4nEyb9ArpqHC0kfKmm61giU+16pka056fUNacv1PqsgH/OTpQnIXRLg3jVpZzApNzhevWdNcn8MXsy1bO7s3D5X396epaP8yOMMaOQKiTaPaBPwEJ/9fSo7c8oaaaiwiwh2iKbJf7PA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791880967; c=relaxed/simple;
-	bh=5eHJuGLuYPGt8+pS1pJ5qomf1WR0etqQ6ZIMJt2QHrY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BQXzrDwVz18wiI4wDBrWePervEvDTT4cof36IimcvuQ94wn/Cxp8FCL9rqenYKdf3+Ovd0TaRozlHUpPLx0jyQBK6hj/a+OKlwdR/y6H6yrBY7t1xHMgO654LcH/JZ5dEUnOvPGe83Fn+I1rjO/gSCuPu9piR2xm3GWw1E3uq3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=CfN6ACZD; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41EE73D6CD4;
+	Tue, 13 Oct 2026 09:13:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791882805; cv=fail; b=YlR/R5ENa/xtmSXpxxgl+peSqKcZLxeAlupLXnaHLZWfyIM95y7cSaiZgtIHut7u5ZAmTHzo3jfUXmDZTPL+bjW6y5Ydb90LweaSRlhjgPXEnim7fWuqkUgo9N2a7E+UcWku6kHvX3YdGzJnbg7GHrTiogdOTjRRxqsXbv6O50A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791882805; c=relaxed/simple;
+	bh=QASz/rzpOfK1Og5qnF3lLS8piEn45TsB9HUODH9BAgQ=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=S7Xtf8lkDaPqCYJDWjHjXqZy6zZpkK4zerHra/oaZ/HDEiOdMGNuSR6z2zg0YgFoNUoW6JO4tecp21E0sutqr8ZAPANVsDX/9NHNsVkUQLk0NOqw5KPEyPqSViV4qMSeJCdJ117teeEi0+qD2HwOCM95P9yTg0Q2p+gr9hoafFg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UoLRPNqi; arc=fail smtp.client-ip=52.101.46.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="CfN6ACZD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1791880956;
-	bh=5eHJuGLuYPGt8+pS1pJ5qomf1WR0etqQ6ZIMJt2QHrY=;
-	h=From:Date:Subject:To:Cc:From;
-	b=CfN6ACZDq7A9+fM3naGjDKFwwWbiLKlV6ddzlUzI/TKuehsgSXltJTM0nlHckzchA
-	 Xgj+7QK4QSOde0ImUK6QQNOb0lx3uEqY1MBoKJNkwThwofxFOG9yDjWIa9CXsWLd42
-	 EDnNlbfKn2+oHlGUqG9f/g7bt9FMfqp7ghQulA6Y=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Tue, 13 Oct 2026 10:42:26 +0200
-Subject: [PATCH] x86/rust: avoid duplication of RETPOLINE_RUSTFLAGS in
- recursive kbuild
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UoLRPNqi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Uq2ifRhJiwvmmuU+3kB0Xt1NXjghI58fNHUeBm2MCSEERgyMoT7xjoz1qSM03rt/Cuv4BvlcBR8XTgpHlYZo9ZZuB11ZIuH8dpvLwuIKx/T56LG6yeTFMBArHzl/zy3YsCoSYdvn4h1BGwiU64XNkKoedQH5Ir7efvt8uIVSO82mjn/N8o7TrT/nf7ZysFpBTkizQG4LzqbZ+7ZNeniY9zgkxH8KuwufghIbDOK+tu+ju5vfhWK9bhTqeva0kwVDSaE6mxLScmtxxfUfxuRjtqFiedqZUC1KmPCJxYV8hw/TL/7a7FnmcwLcToT3620bR0FnyYf9F+7ogSdfhI/wcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=db/JgfUiVH8DktDGinWYTooI6dM3qbtSKiZQt0XKV8g=;
+ b=F9n2g4Y06i+hM7EiuRgqtvjIRH17QP85A/6c9lZ/S6BxL29TASGwDLw92cNKfweQwGk9FAllwyDcpqJicvrFqBGssp3HCvBF40tYdvx2UPIXOaX68crp9EVpSnJYKXTK6Yx4TqULDDW8xNk3i+ywMTM1oG49nmghNNa/wk6wRFdkR3kOwe75NmzftBEPi1DIokF67Gh5QbU6S1ShR8LQLBcw3y4kWuuTndcmsAUuW1ZpaK9sEgkp9bcQLbtAj8O28g37vSEepRI32OZy+fUhVwLJkV6HcaNJAjk4QM1E5PrxUIWcGedMq92Mw7xFSeEstM5lsBF6iKP1TlLJ9ZfM9g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=db/JgfUiVH8DktDGinWYTooI6dM3qbtSKiZQt0XKV8g=;
+ b=UoLRPNqisdi6U7SkVHph1j6Yb/uIODkDWQOasphbX2XvrQ1M1+g45UxhaTMWmUZJRAVkDg7RPkbcOY5VqbglcjPz8U+2J8YPXp36GTV+dvN0WT0pOk+1USmMyzVQQwCsUpgEgd/IiNhjyiWc3DSj5ZsGIVElJLqwoiHW2uAiub/bFaq4JdlvB6EpWZOumtXAE/WDVgHQoKTe1Tf+W7srHu48T0jr5Czy+fNh3XWBx46AOXrlxdAG0fev9XulkKOsc1ty0ZN/I4m6Q/TohnCFpLTxt3xoyag4dFsNaHVNtxZIz+lnP5jSWyVMYk5PPM12aWKIc4NjjCYSCR5qX1UkRA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
+ PH7PR12MB7139.namprd12.prod.outlook.com (2603:10b6:510:1ef::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
+ 2026 09:13:21 +0000
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa%5]) with mapi id 15.21.0496.021; Tue, 13 Oct 2026
+ 09:13:21 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 13 Oct 2026 18:13:18 +0900
+Message-Id: <DM3LFTAG2MSP.WQLXM00XA0ND@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Lorenzo Stoakes"
+ <ljs@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, "dri-devel"
+ <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH v3 3/8] rust: alloc: add ArrayVec
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>
+X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
+References: <20260928-b4-nvkv-v3-0-f04504c262c2@nvidia.com>
+ <20260928-b4-nvkv-v3-3-f04504c262c2@nvidia.com>
+ <DLYE5UBDLFYU.3RTMUE90DJPDK@nvidia.com>
+In-Reply-To: <DLYE5UBDLFYU.3RTMUE90DJPDK@nvidia.com>
+X-ClientProxiedBy: TY4P301CA0074.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:36f::17) To DS0PR12MB6413.namprd12.prod.outlook.com
+ (2603:10b6:8:ce::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261013-rust-x86-rethunk-rebuilds-v1-1-d2042a72640b@weissschuh.net>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2NwQrCMBBEf6Xs2YUkpaH6K+LBJqtdlai7iRRK/
- 71RexoezLyZQUmYFA7NDEIfVn6mCnbXQBjP6UrIsTI447w1tkUpmnHqPQrlsaR7zaHwIyr2Lhh
- r9m3no4O6fwldePq5j6c/axluFPJXuDWE3qWe5q22LCtXezVakgAAAA==
-X-Change-ID: 20261013-rust-x86-rethunk-rebuilds-82c0109356d2
-To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1791880954; l=1731;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=5eHJuGLuYPGt8+pS1pJ5qomf1WR0etqQ6ZIMJt2QHrY=;
- b=lfMKaxqzlEeIb9R1D21SzJr3xDwGBhL8ZYbaKovGhwzdNOxrUVNkMnXCyRj8C5Phl15DD1c4k
- bRZxaWZ5slIDhUj70ZSXvg4n5chLWq+M6X/ExLERo6Zud+XFgh44bpx
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|PH7PR12MB7139:EE_
+X-MS-Office365-Filtering-Correlation-Id: fa4cca5e-0cb3-44f9-afb6-08df290a39de
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|7416014|376014|1800799024|23010399003|56012099006|11063799006|4143699003|10067099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	IMRLTUJtwMozvyCcbwenpmiqUDxmJtQUZPMBfTI3VGti5NMbV1LBCN5MsT6uhICzw+ANjfv2Vjy3i/TQR3K7qYaJzEnvPUrts7kcnbxhBIfl4O1yV+ysaECq2foU07mEwo0cydghZNJdE90lsXaHeb1eDS01nxn7gy46VI3wmwChIN59IY7fyw6h1WT8tvzXvy8IH86nAyDJ4iH3c+6jrXHxtuHf4NdDmpBrG6yeVl0OGWZR8qRLnhxpwBxQ0pKOdrrYJOUhFiRRu4jhaAQYELaljqM+1zk8Xtry9jW39nqfYkWGEDNRh+Ofluhr9XiATaDCifJsqMHwJj3i/XPkhJu/pdQiGRlFciQ9lBAiFC88gAmItnUroSiib5bgPv/P9RCKiv5uXcHYU1SvTiZMiYFANtoRU+vRYYZR2YQ3z+/yjgDQXwn9x+dlNtt8F3BXR8K4XtPZ3MWi6RmscrHHy0q2iUL799AXWLfNq8Gef/pPjg7JllmqL+R81JVnQjUM4jFrNlIXK/5YQbuPmepicWxJjTGQS16zUO1n+doHPtLu1ZMUpiduXGA3BrSqLwPMVM8K1wpFeQOOkyErXo1HfEPphYrtdosaDpjgcWmpaVJHBsQUe3R64mrUgBhojFhQl0wEu036hOpdocOUkx6HRogqfEvEb2iR11+iezvZnA8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(7416014)(376014)(1800799024)(23010399003)(56012099006)(11063799006)(4143699003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NTVkTlYwOWd0N0V2QVIzT1ZMZmd2d0d2SFd0cDgyaDdaendLS0FRZTdpN1Ez?=
+ =?utf-8?B?NFY2RFhBS1hmV2RIWXlZMmRBWXdTamI5Sks5RTBNTFZQcXlyZzRtWXZNVm1R?=
+ =?utf-8?B?dnQ0SVozbk1FNi9LK2VnK2pmUDhOUlNON3VaWkZqaHEyUVgvcHdiTDBnU2F5?=
+ =?utf-8?B?Z1JVdkJaRDl3M1N2blFmUTAxZXEyUTFDNXJWa1h2ZXJ1N3hUblhqVmpTR3BU?=
+ =?utf-8?B?N1BEZTJqWXNzNC9RT2VYek5kVXpEV25OUWRHRFgvSkUvNjFrajRSTjRnd0lI?=
+ =?utf-8?B?bnVHRjdRanNiQzQ3TTRURHN6a2UrM0hKYVdDaVI0T0d2eWhXRFBKYllOcUY1?=
+ =?utf-8?B?bW9pZ24vU1lWcUd4ZklWL3Bod2VuS24ra0x3Q0VFQ3VMTmk1RjBvcVcrdGZN?=
+ =?utf-8?B?SnYySnFJZVFqSVlVa05KcG1MMHNSaTNTSzljc1I2VjBBeFN6MXJaS2x3dzdl?=
+ =?utf-8?B?cGROQ2V3MWw0ODZUa2xVYmY1WjZ1NXF2Z2F5WTFCUWcwMjlmeU0wbm1FZFds?=
+ =?utf-8?B?dFk5MytSWjRrckY1NXY4S2gvNWJib0lSdERYc0pqd3JhNGw5eGtWTmhNck9Q?=
+ =?utf-8?B?KzRwWHQ3UDkwbjJ3dWN2Q21ubDYzUnJSSWtUd3I1a0pmVDdkdlJsV01EODRa?=
+ =?utf-8?B?dFg4bW9HUmF4OWRsQ2Zrd05hTGdTYTJ3QlczU2tDR0RnMmtlNXhVajR1dUl6?=
+ =?utf-8?B?Z3dnRCsyalhvYi9ETVdKL2NjNzh1UWpmV3JpcWVLYTVhV0Z4ZG1DM0JpVUxo?=
+ =?utf-8?B?YXR1QVlJMUhHczhQRzIyT2VXOG1KaVpYSmJXa01rMkM1YWlDM2xlajRnNU1O?=
+ =?utf-8?B?RUtRckU1NXVjZ1JFdmltcHk4UnV6bGNUazlnRUNQUHhvMEZndVB3MW81eHlt?=
+ =?utf-8?B?RHZnRWYrL3h0T2p2TG5JSjRkSFVnQ1JyTjllN1krOUJNUlZPNDc1TnNLS0pW?=
+ =?utf-8?B?d3BBSmMyOEhsRG9RY2R3K1RhWEVsTFBpTGFwK3c2KzhxTzBXK21qUTd2K3Ra?=
+ =?utf-8?B?aFVNb0R1RDBDT0hoNGUreGpiRG9PTFhhQU5LYTUwMnp5RnFKSmEyRW9wNXdw?=
+ =?utf-8?B?K1pQSUc0L1pUV1BaRXFJbEVpKzB0VXdlMHRLVDdaK21kdEhqb3hZYm4zUWVZ?=
+ =?utf-8?B?Vi9DRWU4SThkZVBsVDlaU1Zqc0hkS1RSK0xtcWRndnQ5YlFoR0ZpTE0vcmhv?=
+ =?utf-8?B?c3ZkL043NkVlbWhqWGdiamV6aFlxVXZRRG9GNzBzYWVFWk9BQ3FMLzJOd0dO?=
+ =?utf-8?B?RERqSU85SWNuNHh2OEtsKy9zQVhidGVlaXQ3YjBkUHN5b1JlckdmNVRjdStu?=
+ =?utf-8?B?ZUtwdjNrK3RpMW5UREw0eEx5SnMxbjJHVUo5bG5QWjltWGhxcFMwZllJaEdh?=
+ =?utf-8?B?c20yTkZzSXNxTU5nc0JiZlRXTGIyWU4zYVNtWDRNUTQ0bURJa3YxQ2FnSXBC?=
+ =?utf-8?B?Si9VQVdBaW9UaEtFRGNSVGtBeTVyTHYwWE92cDhmUFJPOTAza0xvL0M0Wm5y?=
+ =?utf-8?B?MklZdDRBWTFiZ0VlY2c2QjB0d1E2Z01NWnZXZmd6bEpkQk10bjdvb1B4c25Z?=
+ =?utf-8?B?TE5jTGtXd29nZTV3MnJPZG5mM3FLYVV1bktMSE55QjlsOTExV3dZanVTblZp?=
+ =?utf-8?B?Nzk5NE5PU2JJV3JxVEdRZTdWRkN5TDlWUGYzaVNBSmJvaERWN0E3NUdjVVph?=
+ =?utf-8?B?QlhEZGJvUlNCS3ExVEFJYjdXSWZXQlYrOTdoMzBEWTdpQ3JoeGROY0ZtMU5N?=
+ =?utf-8?B?aVNFSFRjUU5rY1RkWkJUSUk0bm5YNFl0SGgxclFqYTd4NW9EVUMrWGh2RU1F?=
+ =?utf-8?B?dzBwZUd2ZWI5YzRDQkpXOEpQWHNpSk50ZHhVa1JuYWFhV1N4ZUU5NzJQNElt?=
+ =?utf-8?B?Qk81YXBnVE1ubjRTbVZuWlFla0MwOWpuT3VFN1BOby9WdmVwd2ZHQk9McExO?=
+ =?utf-8?B?NDdkZy9LbHNwSUdNSmtrdjBjK1k4QlJ1QzNvVFd0MFVKR0pMWm52Rko2YTkz?=
+ =?utf-8?B?SE5iT2hvdGt6SzRCVElPNTZrNG1KL0tYWUNOSTRlRTArZGhIK0xLazFjUEF1?=
+ =?utf-8?B?RWpDZXBVRWw5NzFCcVdGMXBOV0VrbGF5b1BxZTBVcmV6eGRXSmNOSFFuNHFm?=
+ =?utf-8?B?THMzcGV5MkdGSG8rVVM3UDA1L29BWW0vRXBtaGk3TlMyQXdOY3ovSlkwU1BK?=
+ =?utf-8?B?MnFGUkg5bDFTSDR5SE9Mb3RwS3dsWkM4V200Y096MEVPSUNsWU54aG1ZbHQy?=
+ =?utf-8?B?UjU5MTZNY0pZckJSS0lTKy9JQ3NPVkFDMWZPblpZTm1ibGtpamtPZHJTZ1NF?=
+ =?utf-8?B?blhyYzMyYlhWNVBGRGdjZTRCYWF2OEdJTmFZVVRBdVh6TVJNTm1NYVMzbUJi?=
+ =?utf-8?Q?Ca0w31mxbrV/S8NCLQ48cLa6AxTQvEePccTknAiYE+tdz?=
+X-MS-Exchange-AntiSpam-MessageData-1: s9gAFMmjIVlNlg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa4cca5e-0cb3-44f9-afb6-08df290a39de
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 09:13:20.9176
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LwDcDmeN4kZLX7pOzvUea7SjxTRWVZC+JQw2efTGbc9wkaoNHJzhToK8IiyHzOaVNhpqErpfFTg+ib1DBgQiDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7139
 
-Currently the only modificiation of REPTOLINE_RUSTFLAGS is an append.
-There is no initial (re)set of the value. When kbuild is invoked
-recursively, for example through a top-level `make pacman-pkg`
-invocation, then the inner instance of kbuild will inherit the value
-from the outer one and append the same values again.
+On Wed Oct 7, 2026 at 3:27 PM JST, Alexandre Courbot wrote:
+> On Mon Sep 28, 2026 at 5:42 PM JST, Eliot Courtney wrote:
+> <...>
+>> +impl<T, const N: usize> ArrayVec<T, N> {
+>> +    /// Creates an empty [`ArrayVec`].
+>> +    #[inline]
+>> +    pub const fn new() -> Self {
+>> +        // Clippy triggers this even if the enclosing function is never=
+ called, so skip if clippy is
+>> +        // on.
+>> +        const_assert!(
+>> +            cfg!(clippy) || size_of::<Self>() <=3D 512,
+>
+> Let's make this `512` a defined constant.
+>
+> <...>
+>> +impl<I, E> From<PushInitError<I, E>> for Error
+>> +where
+>> +    Error: From<E>,
+>> +{
+>> +    #[inline]
+>> +    fn from(e: PushInitError<I, E>) -> Error {
+>> +        match e {
+>> +            PushInitError::Full(_) =3D> EINVAL,
+>> +            PushInitError::InitError(e) =3D> Error::from(e),
+>> +        }
+>> +    }
+>> +}
+>> +
+>> +/// Error type for [`ArrayVec::push_init`].
+>> +pub struct FullError;
+>
+> This error type covers exactly the same pattern as `kvec::PushError`
+> (even the debug message is identical), can we somehow reuse that
+> instead? Or at least align the names by making this `PushInitError` and
+> `PushInitError` becoming `TryPushInitError` to reflect the actual names
+> of the methods using them.
+>
+> Overall there are quite a few methods here that are still unused by the
+> end of the series, so this patch could technically have been smaller. I
+> think it's fine to keep these methods as they will inevitably become
+> useful, but it would be nice if we could simplify the error handling a
+> bit, or at least harmonize it.
 
-Switching between recursive and non-recursive invocations of kbuild in
-the same build tree the command line changes and Rust code is rebuilt.
-While this is harmless, it is slow and unnecessary.
-
-Replace the append operation with a regular assignment. This avoids the
-duplicated values in a recursive kbuild invocation and therefore also
-the spurious rebuilds.
-
-RETPOLINE_CFLAGS is not affected as it is always reset to a fixed value
-further up in the Makefile.
-
-Fixes: d7868550d573 ("x86/rust: support MITIGATION_RETHUNK")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
-This is the only instance of this problem in my kernel configuration.
----
- arch/x86/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 8af6b80cffdd..0973b0262661 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -26,7 +26,7 @@ ifdef CONFIG_MITIGATION_RETHUNK
- RETHUNK_CFLAGS		:= -mfunction-return=thunk-extern
- RETHUNK_RUSTFLAGS	:= -Zfunction-return=thunk-extern
- RETPOLINE_CFLAGS	+= $(RETHUNK_CFLAGS)
--RETPOLINE_RUSTFLAGS	+= $(RETHUNK_RUSTFLAGS)
-+RETPOLINE_RUSTFLAGS	:= $(RETHUNK_RUSTFLAGS)
- endif
- 
- export RETHUNK_CFLAGS
-
----
-base-commit: 7704c4c5bb127673b4f0ead839919db573559e38
-change-id: 20261013-rust-x86-rethunk-rebuilds-82c0109356d2
-
-Best regards,
---  
-Thomas Weißschuh <linux@weissschuh.net>
-
+Both suggestions (re-use pusherror, rename pushiniterror) sgtm, thanks!
