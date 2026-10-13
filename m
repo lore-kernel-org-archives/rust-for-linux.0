@@ -1,43 +1,52 @@
-Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEB74FDE69
-	for <rust-for-linux@vger.kernel.org>; Tue, 13 Oct 2026 15:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4CA4AEBCE;
+	Tue, 13 Oct 2026 15:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791904317; cv=none; b=QEYCcA++3prLgKOysWzZ/VVWqj5+99XnKsNx6EtnwxfSDh0Lt3N9e2uBKoYIgkfF06pu1mW5xaLq8Oaj9JbvzIxahN0qmrXiZBk5Rh8B/aRpciKdHmepfN78zUoKTwyKpyg9BoFUmCClIPyTmcYaCYcCBOPxHlkEYeoxYhgcESk=
+	t=1791906012; cv=none; b=FX46ixcAQlvlLv9lYasJAc9Fu0Z8BXFBsXTL3gv6qURHl+LjbIzdqHPlB0S+3hg6TfCtWLD1Wbqfplns5AK5cRc0hz5yIgsd7l6bWdAPwoeRS/mXbguplsn3U1UI/E3YBjZAaFmd4FIQlrlqxZYz0XriwmVjYmNDwIAQkwDMD0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791904317; c=relaxed/simple;
-	bh=MqSDcGOkJmVNdHaMovCKHWahNpT2nQ3Qj7Ia69PZvS0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U+S7zeViil/LEaDFAzrO+AsBh7AzrUTNt4Sd46eGEjlwwIuVyGevSzXgaHmy5lUdLdBU2wkGXUT/9CW8z4ImiIEi4Gstp5mkjTAMgJiUPcsltwnrdp/A52LlGFO28dGJfh/SN0zO1FToe/rUjMmnq5uWc3uHoDzIxBTrI+0lJ+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=agpRySHi; arc=none smtp.client-ip=79.135.106.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1791906012; c=relaxed/simple;
+	bh=7ituCDYQZcb9BmrS6zWtB4ozB09nWmEmSUX4U1kwARs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XbS+Yok6HQwjv+FKnUxaua04FGG78ozyRbpLxTuTOLqtphOJ5Hl26ZUkACe1VBwdHrrgpALWyGG3ZEOe8AimAVLUZRKd5msCNY7FIC+a+qqDITLdKh5dtdP9sj+Urcv+kapmUySkVss2gJY1D55+UVbGxvJro7oLC3kdcWifH3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHbshVy/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="agpRySHi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail2; t=1791904304; x=1792163504;
-	bh=Vqu0VfD2TSaDVWLsO2jZ2m+epvLHQW8tE6hQ9rNg7II=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=agpRySHi0J918b/TpFUyAc5riNXNYUAhRgAUtl30kXLX1WbuoyoXJQXFHitwqhqJs
-	 FnTUUbuXNmsbq5Fwt/CGdNdOBqB//22F4qWccAtBhxXzRyoLfluLszzYF+Y95TPxF4
-	 solujKqVf8aFGjIs6DRbaBl1w9A+NuizEF4iCkWh9eKEDjSscpBXQubW1PlY2Z6uSO
-	 9TdSrslY0yaHJcW5YyaeSDn9SA83N/FgeaRbrVit+dMQIA7eWxV15XV+9TLkon9E/m
-	 4OaK2J+h8i7jJL+BJtO0GC3N8A9xRo1Nf9SV8mSGfmLWU6TaSJvSrDpxjf82iDhnh1
-	 2LMq7wKW+uCYg==
-Date: Tue, 13 Oct 2026 15:11:37 +0000
-To: Gary Guo <gary@garyguo.net>
-From: Lorenzo Delgado <lnsdev@proton.me>
-Cc: Lorenzo Delgado <lnsdev@proton.me>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Thorsten Blum <blum@kernel.org>, Francis Laniel <laniel_francis@npnm.eu>
-Subject: Re: [PATCH v2 1/2] rust: non_empty: add NonEmpty
-Message-ID: <20261013151131.725271-1-lnsdev@proton.me>
-In-Reply-To: <DM3RF8H2M4WU.1CB0H9Z2A6WQY@garyguo.net>
-References: <20261012-nonempty-slice-v2-0-0f2b67d9463e@proton.me> <20261012-nonempty-slice-v2-1-0f2b67d9463e@proton.me> <DM3RF8H2M4WU.1CB0H9Z2A6WQY@garyguo.net>
-Feedback-ID: 53083996:user:proton
-X-Pm-Message-ID: abc0a03f3ab1a461b693a6e600e9fd7243e8765a
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHbshVy/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF1C1F0089D;
+	Tue, 13 Oct 2026 15:40:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1791906011;
+	bh=WPJo+6dPMNengqbwJKLwGzFib4PCMTtJCzbNuPBqzbU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mHbshVy/ILGwVFobY0mgFNsu4NM1yzJagYI1kLZLljkIM1QBtmnia92SyMwto5vBQ
+	 kdSGZtvde6JWg95FEkIzIXjGKweM3yjmHnG6Ubw+6TZ36fJMW1aJkmtkH0K/prGxD2
+	 pmGL2sP+/x4Ld7gjzfoHkmc2jk6zm7zpwD1wm1Ec=
+Date: Tue, 13 Oct 2026 17:40:16 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Carlos Llamas <cmllamas@google.com>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] rust: error: implement ZeroableOption for Error
+Message-ID: <2026101306-unlimited-pasted-e039@gregkh>
+References: <20261013-binder-consolidate-txn-prints-v2-0-cf78927dab23@google.com>
+ <20261013-binder-consolidate-txn-prints-v2-1-cf78927dab23@google.com>
+ <CANiq72mfVY7a9+GyHsO_MWXiXhjS-Nj7ki54HJrMCqnQ-RgOmg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,20 +54,21 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mfVY7a9+GyHsO_MWXiXhjS-Nj7ki54HJrMCqnQ-RgOmg@mail.gmail.com>
 
-On Tue Oct 13, 2026 at 2:54 PM BST, Gary Guo wrote:
->> +    pub fn from_array_mut<const N: usize>(array: &mut [T; N]) -> &mut S=
-elf {
->
-> Construction of array should be of form
->
->     &&mut [T; N] --construct--> &mut NonEmpty<[T; N]> --unsize coercion--=
-> &mut NonEmpty<[T]>
+On Tue, Oct 13, 2026 at 02:44:13PM +0200, Miguel Ojeda wrote:
+> On Tue, Oct 13, 2026 at 2:38 PM Alice Ryhl <aliceryhl@google.com> wrote:
+> >
+> > Rust Binder wants to store an Option<Error> in TransactionInfo, which
+> > derives Zeroable. Implement ZeroableOption for Error so that
+> > Option<Error> implements Zeroable.
+> >
+> > Acked-by: Miguel Ojeda <ojeda@kernel.org>
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> 
+> Greg: if you don't plan to pick this series this cycle, then I am
+> happy to pick this one (#1) this cycle if that helps.
 
-Good point, no need to go through the slice then. I'll make it a
-`from_mut()` on `NonEmpty<[T; N]>` in v3.
-
-Thanks,
-Lorenzo
-
+Already grabbed it :)
