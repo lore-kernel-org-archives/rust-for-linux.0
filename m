@@ -1,124 +1,149 @@
-Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013032.outbound.protection.outlook.com [40.93.196.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C80B35975
-	for <rust-for-linux@vger.kernel.org>; Wed, 14 Oct 2026 00:12:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A043A61FCE;
+	Wed, 14 Oct 2026 01:00:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791936758; cv=pass; b=mhA7JsbezhjL9NC5L4GQdNo9ojC+MczOK8PBmV8fHj2tHpEKD6A++5mWHV4JosZtYlWQM2yJ8XORlH2b0+n2AZFOw0mTcluuRmYTvf5Ay0dAo1UbJGReWB4ptZ7rS21lDGlgj8kXxRUA1VFSpeBhpfisI0Ugf+iLIF4QziAS//A=
+	t=1791939627; cv=fail; b=OabazXqk6R+Kt2blFHkOGziXW5Cdza9yugmfkOHCKRtEfOhuIdqMATINgpfCn4TEWg0s2hOP3ICzjSvS6mqAhPJsxPevynYwmgvFoRm2b9GFfXD8yTSMaFdBfS9yRPZRCJbdA9BbPhE67flie9v7LjIPqlRQR+8uPXTEGsfdAMg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791936758; c=relaxed/simple;
-	bh=TFE7eNVuvgFJKUzhNoVt2fdEGgUgl9qAnfc7UJiQoUw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RLPu16te299Z0eLJDAG5OXon969BjjjOrfUzf4M5qMansDy1eIuzaH9xeQI1LDUvzptnenOtAUlpBkdKhkA+E1RQ2s9RHzZlAzEfYiRqfo0q8MIrR4xsaALxLKnaJq1ntuRCjJeyGWnPJaa4pFtiVb7ffeS/JrSnERooO7kheec=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=AFjnC2fx; arc=pass smtp.client-ip=165.173.180.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1791939627; c=relaxed/simple;
+	bh=CNdRuNd3tqxkuhBr8GZMs7d5vGORbSmUvGEwMq29WdI=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=VEEMOO8qoOXwwH5sN1UoMce22J183hQRM+cNDCG815xdRpg198YyrY66uCtS8LBrEmDhXVro++F1d/sstWK/EuHsXvdsaRGrt8mfQAtHXWeY4h+dDZ0h7lkLth1Hh4C5YW1uzCzgsrHOoX94T5Y+mLrL75JmfKiYNpKqZ8s3Mco=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VBvK9FbC; arc=fail smtp.client-ip=40.93.196.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="AFjnC2fx"
-ARC-Seal: i=1; a=rsa-sha256; t=1791936687; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=A5vSWpTRbU3aybI2eZ4bWu31FH9JMEUvPl1dx5fSyhofvK3W8OpljKkSYaK78zCWDgFL3r2OM6ft+wKXk3R67v8IJ3JVQWlI3Wz+9z6nlPCEIk2GYghIM+QUW1WOtdAq5L/619w5bEGHMOe5BSjWYqHm0isecrG1rzra007nc/s=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1791936687; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=31RYT1NeKYC/yx5MWS0uypGHxzMJAgXasfC8mMXP0jU=; 
-	b=l8OGgWMFz0yalA9cBHXEzxupyUm0purbkguZeQxHCIsDEOtgbzkvfX71GC1TT9ybz/q56ibzhyUSsWbxYkXY1lNLY6ucP++ULrA8NhG2Pa3n7sgeggv2eDDrypQ6e432gBEQKFFocb0hvOewW8lPGI0pN9jnh2ijmKxQSe2H88Y=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791936686;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=31RYT1NeKYC/yx5MWS0uypGHxzMJAgXasfC8mMXP0jU=;
-	b=AFjnC2fxNenyy/0OM0XTvcgpC5e4cGZr/A/vDN4Vy2BPywkWgmEkU3EsvwGVlDVx
-	Ep0ttlN1eh8/22xHZ7sH2oFMYWlA4cvJ6Bsef5O+W1ueGNxTSJXrNdubaN2HPRMLhb1
-	x/HF+IPuSAYQQNvbbRe5ZxbqmEMXSmK8gLuJrW2w=
-Received: by smtp.zohomail.com with SMTPS id 179193668404267.12973937554386;
-	Tue, 13 Oct 2026 17:11:24 -0700 (PDT)
-Date: Tue, 13 Oct 2026 17:11:22 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Ke Sun <sunke@kylinos.cn>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org,
-	dri-devel@lists.freedesktop.org, driver-core@lists.linux.dev,
-	Alvin Sun <alvin.sun@linux.dev>
-Subject: Re: [PATCH v3 04/11] drm/tyr: add per-file VM pool
-Message-ID: <as7IqjINtIURG4yi@um790>
-References: <20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn>
- <20260929-tyr-ioctls-v3-4-26955fb111d5@kylinos.cn>
- <aspyoBHaSaJpMxJv@um790>
- <B20D93F5-4950-4E9C-8E3B-E2DC476DA539@collabora.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VBvK9FbC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uo+jJnCHJtnLHrFsXvGSNgfDbSukYvQQRUVxWigIGhLnLEL3j81fGXfefHix2meyUF0LUwV+u5k4bX8Y3pKLFmtoGL5PHClG95JVAyUFDmQYuZJmLy5xvR5Oq8Lpv3EjkFPvNdodtIerv3A8qzTQqowQBDDvNds56nCuc18SrXMjLJzH3R+ZpfpPVEo1BpLezwxVgEcw1h2FM0NfHp6RPJ9i2jArQRO0eZ01lmDs+eSmoNK2jCVFyqtvoRL69SH7hKf3n0zvR1hjksqwBV2PDcF4v6aAPX7nOWzOea54LCfEMBDAe2gzFYiZf9s/YpfGjeD8K9ooT9PMWYKDVk/ueQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CNdRuNd3tqxkuhBr8GZMs7d5vGORbSmUvGEwMq29WdI=;
+ b=IGNZltVbYhr9k58ON4G8X/q5urbdj3s4eKLZ3fNIrp3A/ayoCr27F88U6wsxB6dU5dTw5NqaXI4BOFO2+pvsq/xJ38+/ClN6oRqZtPmiPNlsQKGviU/SvZtRtlWLEqieI6GVTtQRBWVk+ag4cYOGZDXZM7f19uJmIbP/a/epZ5WF2LYV3OhswA+ps6xIRYMFUoMVtMf4mVc504GZjvP7cMOnm6KmEnwTjH0VkVDMRCgMShgtUyKJnjso60B2R8itJFthrisoqLZ3WxGUvncuzb4qfYTtVmdg2k0icN+nSf/uULWe6v7nbKhF6AalhvNg9gCg/3LyeabhtnMP+7PhXw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CNdRuNd3tqxkuhBr8GZMs7d5vGORbSmUvGEwMq29WdI=;
+ b=VBvK9FbC8evOGcyLJzckEuxq2a8QifRrXkR8iDQo3SW81BQNdRnX5wJH7DkF5OfGaY524ydt7LhxTN/ftbU2X00+GTJYj2+GaltFIGjil0TcV/v6Zj3ZSpYcgasEy5X/hwBBG8MkYWWA2FG8xGY+ma2V23LQhRRYPrmXvqPG7ul8QnND8gw9WxDCzaDHcprc3cHv4aKWXAiaNY7KiSWK06il5fu2Yorg7rcXCwKGaaWKrTR0i//gIyQWOeE/5hdJVTxzRbbuKQv/By1tYFQKmGE0z+RAfda/QAsRkopTxBEh8fB20MGgc1nsD+MDVdwPyk6H2G1I/tPAAGj3w1BsRg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
+ SJ0PR12MB6926.namprd12.prod.outlook.com (2603:10b6:a03:485::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.496.23; Wed, 14 Oct 2026 01:00:19 +0000
+Received: from DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
+ ([fe80::e82a:6673:4142:37fa%5]) with mapi id 15.21.0496.021; Wed, 14 Oct 2026
+ 01:00:19 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 14 Oct 2026 10:00:15 +0900
+Message-Id: <DM45KUU32XJY.3SEO01811QCUP@nvidia.com>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Benno Lossin" <lossin@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>
+Cc: "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH v4 06/10] gpu: nova-core: gsp: cmdq: move RPC message
+ logging to RpcMessage
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
+References: <20261009-cmdq-rpc-v4-0-c9ab8de1d3f2@nvidia.com>
+ <20261009-cmdq-rpc-v4-6-c9ab8de1d3f2@nvidia.com>
+In-Reply-To: <20261009-cmdq-rpc-v4-6-c9ab8de1d3f2@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0122.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:2b6::8) To DS0PR12MB6413.namprd12.prod.outlook.com
+ (2603:10b6:8:ce::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <B20D93F5-4950-4E9C-8E3B-E2DC476DA539@collabora.com>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/291.928.13
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|SJ0PR12MB6926:EE_
+X-MS-Office365-Filtering-Correlation-Id: c3d5989c-ffae-46da-e566-08df298e8423
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|10070799003|23010399003|56012099006|4143699003|11063799006|22082099003|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	k8dlGE20726L0zT5Ubin2268XHzT/l9g1QD2y7pDQMKXOyaXO+s2reBS6vVfBw+vH2U39cxkEF4ha2PUlUS2YFJmsWgFx/nPb944aq+cukvDwGesSxnlQnXVmkPErtQ5mmumx5Q63Eow9c5uxfBG9fOBuYyy/deI2sUfaRkgYRTc4392RgZ+uzL4jJp8OZ5iSNny46el6dw7rjG3njN8bv/UjoepRYCZ2GI6RhH9o9V8fm9U+Uls3j/h4yLeT+ZYMhp2O8nWEFvFf0J56h0mLv2It0kCyLn7Fojy6+E63HzSi4qM6zWclQUWc8lC4Kq7ylxFY3MpQUzUfJKHZkHhILvLYWIhaeSXjctipVoowG9MAb6/BTvvmhqCLRQblFUImp7uLHccRH4rjH8886iIS4yynxbCID3zQ0YJ1huLWSVijoYsUQUpVWrFuJ8rht3T8of13xXFxVDC1pUtZGZg1BQOSqlLzqYKdKVnVkvInDUZzsT24ZUkcVyK9KIjNeSXmE68RPO21ln3mkO669ttn5hw0Njb3HxtDwfOuQGO0qLu4frAcyGVoexBf08pLc3zFC+m0peHZRzD9Tpwf72YsdtJvu1Bomp+n6iaZ3zew9yMCgWJQSyuRcxJ5vOY0Y+5UT+/4oh9fry99nRuQmspMLPrB30ywBoBukiLyhSdNFA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(10070799003)(23010399003)(56012099006)(4143699003)(11063799006)(22082099003)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T1prTlNZN0UzN1hBZzhtUnE0MVgyd2cxTUVZaFdsTVJJQkZadHB6RXAwZWtt?=
+ =?utf-8?B?Z3ZPTXlMYmFYc3JMb3UxeXdRZ0NpeEZNWExsNjBiTFRlOUx2TTdoVVZvdEtP?=
+ =?utf-8?B?OXlYQzRpdzlMbFZjZTZFRW9ZQUlwNk1SSm1GQWI0TXlxL2wrcy8xQXF4QnlU?=
+ =?utf-8?B?RXpZNUwwc05ESFRXd05RdVVGeExGMWxQaFBWY3AxYUY5dnNwTGdFcHhYbHMv?=
+ =?utf-8?B?cStjNFc3WktyTXJWN2RFeGtUQ0hYVmJZWG02VUI1Z2I4TWhHZHFkdHBXL0xD?=
+ =?utf-8?B?MlRZcExUQnF5MXZIRHpETGFOWVU3Vk9veHlXcjgxekNOaW9kamFqVDZuLzFl?=
+ =?utf-8?B?U0FaaHhLS0lzZHpCeEZmNDBiQTB6dTlzb0dTejdUNC8xc0w2bVF5N3JSczJh?=
+ =?utf-8?B?bFh2VkhUZTBGbUswSllLdGo2bDV5b0xGYzRtYkdQbHBWbVllR2thK0l2aE54?=
+ =?utf-8?B?U2F3OGtRQWdiR2ZmUnVkK0ZNZ1paK2NWaEkvdG00eU1LdTg5cWJNUFFCTklO?=
+ =?utf-8?B?alczYmhENTlaR1hsYTVxaEhjbnlwcHAyS2JKUmExNkxRQ0FnTTFnaENDNDBl?=
+ =?utf-8?B?MWdINUtXa2NKblQ1ZnZrMTBnY1gxaUY2NzEzOUdVV2hrTkpBYUlvUWYxRHEx?=
+ =?utf-8?B?ZUE5NlNYakh0c2VrOStLeWlSTlpDNWFVQzJ6TllmVTF6Z1dDUU4vTzVkMEI0?=
+ =?utf-8?B?S3lkUG5MU3lMOFFQUU9oTGlvMC9DWUQ5djVGL204UkQ3dU1MMDlSVlg2K2g3?=
+ =?utf-8?B?QU5sOG45RlhSRTdhQjREM1JzMEQ0V0VKRVNPQzJjNkZpZVBCUmFyK0tXQUto?=
+ =?utf-8?B?VVVHbUtwbFcxTFgwUXp0ZDZ3dGlXYXJkOXhlYllEczNwVVIwajg1amlockRm?=
+ =?utf-8?B?NWpJT3NsclZzaEpBNDZqM2cxdHJRbDFCalVmMkVJQTF2TkxmQ1ZxWjUyNUJp?=
+ =?utf-8?B?K1h0TmhYbUhUWUUvckFnVWRCbEJmTWZZQUd5c3RjT0FiM2lVR0hnZ3djZmhi?=
+ =?utf-8?B?R2ZMMDM4UEQxRm5POVUyZk53R2VKcTNtbG1IVkYxb0IyWjBmcHJFRkpnYWZL?=
+ =?utf-8?B?UlBhRGtjeTRId3d2dG1HZ0s1S0hlcnNVcDRwcUFmMm5qcmMzME1DMytBM1Jr?=
+ =?utf-8?B?TDJtTDl1OXNwcHZuWEp2WS9nRXphc2Zpb3JURlo5ekVpK0ZBUmZrZFBhaThO?=
+ =?utf-8?B?YXJ4ZERVSGcwTDJjZitRL1hJeW01dkYyZ29lTmprby92U3RLRFVZN0JwSXFz?=
+ =?utf-8?B?NnFuWGt4WkdDaWlSNDBhSkhScWp6QXZQdzIwbFY3SDROTVBLRnlyUDNkR1lM?=
+ =?utf-8?B?MmVkQVFIeEdaN1hDd1o1ak5PMmxKSDFiRXV5Nk5WWXJweVRCM0t1M3QxZ2NM?=
+ =?utf-8?B?Q1U2N08ydXhvYVFyVHpQekhvYVViWjVuODZiTHA0RzJxU3VseXV3SVFCcjZY?=
+ =?utf-8?B?a24yOEZnOWhhaVBrSGozN3NYRlgyR1hLSnBQdEVXdXhWbGQ4T3lOQkRuQ29y?=
+ =?utf-8?B?M25PUlJ0QTBTd0pXRVlqZHhsZnZRWGh1V2ZPRjhNR0hQbU1FV0RwL2ZpL0JP?=
+ =?utf-8?B?ZktQNmZxaGRxdFBNZkhQQWRMWjErSWFIWXpQRUs2OFNIVFVBRk1DVEFJc05D?=
+ =?utf-8?B?MFMzcnVMRkJSQm84ejI2NjFPM2x2U1VnYXl6MXFmUmdWZUNSUXlBNEJkZFdS?=
+ =?utf-8?B?K0FaTC90anR6cUxrRjdUY0h2YzdXMDZDR1ZYa0JnVCtyMEkwcDRBYmZrUE5k?=
+ =?utf-8?B?VmFWeGdOS1Z4YlZiMDJ2VDVUQmNlMm5Pa1FMZ1kyb1paQ21wajR1MXM4aUhO?=
+ =?utf-8?B?anlDNmkwMWNqTEtSYlhGODdFT2ErelhBQTdkemVjOC9Ld2hKYkRxRFRzM0FI?=
+ =?utf-8?B?R2labktxSjdlVXhTNHg0M2RNK1FRaW4zaW5VTVdoTWJvMTBmb3ppYmpIRks5?=
+ =?utf-8?B?S0ZraXpMSVkrYUszbUVkQkZ4OWpia1BJbFBtajBxOW9qK1diWHVwQWlXakZT?=
+ =?utf-8?B?eGFzMXBiQTFqL3M1SnYvTkRkUm5xL1BvdXdQcFQvUXNkWjNHTW5TdzdqZFg5?=
+ =?utf-8?B?Yk5jU3ZIK2FCbTZIOWVJTmNGcFd1eXlZRDRtWVZFb0dQaGlGcWNZQlRjWU1N?=
+ =?utf-8?B?bVN3Y0RNYU0rTCs5a3BiUU1SaWpUcVc5NWxJTGdweXZDbU5la2lPSytOTG5M?=
+ =?utf-8?B?NS9XalBacUU3Y09iYThsY2UwN1Nsdi81TDJGWlA4c2J3OTY3MWtTL0pBRHly?=
+ =?utf-8?B?RWJNT0d4dWtDdkpYU0h0eHFkTmRpZFBvQVY1RGlIbEZUZ1RFd1dwclJjcmxP?=
+ =?utf-8?B?aFdHdTN3c1JGWkw4UC8xZlVqZkNXVEJERjZOZW4vdHdPTzZqTEdoSDFRVTdG?=
+ =?utf-8?Q?Q787mEC6jZmE57wWfqD05BKbhliBFk6axSgVelTt+ZmKj?=
+X-MS-Exchange-AntiSpam-MessageData-1: k9MeAd2FCCUpFg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3d5989c-ffae-46da-e566-08df298e8423
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 01:00:19.0992
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: H+mwZ7CXOpQp7/Qah7xBYnF5Wd31Ky0+OTQKdTYybDc4Z2uT4YtskPNYHfIjcxNoXOaXms/SoS/1TYS1tUxoTA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6926
 
-On Sat, Oct 10, 2026 at 04:33:32PM -0300, Daniel Almeida wrote:
-> Hi Deb,
-> 
-> I find it unidiomatic to have containers destroy an item if addition fails. A
-> more common pattern is to return the item in an error. Something like:
-> 
-> pub(crate) struct AddError<'drm> {
->     pub(crate) error: Error,
->     pub(crate) vm: Arc<Vm<'drm>>,
-> }
-> 
-> This would not convert automatically to Error, so callers could not simply "?"
-> it, they have to handle it:
-> 
-> pool.add(vm).map_err(|e| {
->     e.vm.kill();
->     e.error
-> })?;
+On Fri Oct 9, 2026 at 8:54 PM JST, Alexandre Courbot wrote:
+> The `RpcMessage` type is the right container for the `log_event` method,
+> since it contains all the data we passed to it. Move it there so callers
+> don't need to extract the required data themselves.
+>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
 
-Interesting, I see what you mean because it would give the caller control
-over the vm and managing its tear down. And it would be nice to separate
-the creation of the vm from inserting it into the pool. I implemented this
-myself and that's fine if you want to go with adding a custom VmAddError
-or something like that.
+Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
 
-But, would you also consider going the other way and actually creating
-the vm inside VmPool::add()?
-
-One advantage of this approach is that we don't have to create the vm at
-all if there are no ids available so we can just return ENOSPC.
-
-And, since we have to kill a prev_vm if store unexpectedly returns a vm,
-then this would centralize vm creation, registration, and failure cleanup
-all in a single place. It would also be consistent with planned revisions
-to VmPool::remove() which is going to take responsibility for tearing
-down the vm.
-
-> 
-> Don't worry, I plan to remove the need to manually call kill() soon, so this
-> subject will become outdated in the near future.
-> 
-> Paths where the Vm is already in the pool can call kill() though, this includes
-> remove().
-> 
-> -- Daniel
