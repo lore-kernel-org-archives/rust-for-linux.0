@@ -1,118 +1,199 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020128.outbound.protection.outlook.com [52.101.195.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCBA44C661
-	for <rust-for-linux@vger.kernel.org>; Wed, 14 Oct 2026 09:21:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791969665; cv=none; b=tb5gdraewKgfJHs2BzWjPaWLSFThddyZ85zn3Da6XkjIrm8a6rS+AJ8ng7VHtBj+hyNiDY8qxCPRkLUyDzX5nDC92v7H83iFenC5zzPoKLKeIidZxN5oQA2kHGB/FTA+vcxS+UF1t2O0WaqpDT3gx7bEk3vCB963HSWs5e/b3k4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791969665; c=relaxed/simple;
-	bh=Rpc3GO4+UP1CHtIfgBK47jOXKC7qTbuFu6HBwt4WZ3s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dNBoLn8mIRe1uTLUZaOuj7tpA5CxYxpU9LhTGXp668OZDF9fiVWGVu/xcJi0ZG5AkIxcD+xucLTnZOtKAXbKi1FnM7VZuAHFZbVGpYdFZ87eyT9Fl1PKdqR1TYO2b6VOv+B+XctQ3Papos3ftLfIWhCLRAohnvNmPezCF+XxoJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=DT9Zx0IB; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98314D990C;
+	Wed, 14 Oct 2026 09:21:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.128
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791969683; cv=fail; b=X5c52+krA5V+Uu/NBrPKwVw2uLenuRWWJVTFR1Jetw+rx4+mu1kzW/gXyq4gl9XIlsFxhhJOoWLtmhs1JvJArvHyLvMRGOYtKjmvRA9GCo/1zSrKP8BZPUKlGQUfrf3TzMKctVq/mMBZaYBlbg9/1b5kS9xLZax6upU2joRDVIo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791969683; c=relaxed/simple;
+	bh=XqQb4Oy2+9Kxgd3ypo6o7o9NxE+wpUNMOWVTv5aY3Xo=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=j9rMhqPyPrZmAubg/CJc4QrQsb27G0i6v5mJVgHxhC3LuqHVQ+sXZq2/TXEDamhJQKJUJjKhcG6y70E8t41PYdS6xCmzotFvzwZBsgEWdjpYKUX7O/L4T4JPT/oHEWrS3AgLySJ8C6dIETTSXf2ewScoywZpu8+cCsnhLQcei+c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=nB8MqsM/; arc=fail smtp.client-ip=52.101.195.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="DT9Zx0IB"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a16aaf2067so9249435e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Oct 2026 02:21:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1791969662; x=1792574462; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EyNMPvZIEMwn3spMNOwO+2v61MNWwL1mBLifJHjtoWY=;
-        b=DT9Zx0IBufXfkL251NXbgBb5YlsSOGQwY+xRoHEFTf4ZEZ9qA9FzkYBXmALqwOzS4P
-         Qy/6snrp/OjE6XmBT2T4A1EsGOmTqS0u75imTIirp7YeJax7EDQmahgKD0SojH5tWAMg
-         vRtgdGL4L1k2o89mTK5GFxPIzZ26CgnxVJX8CteDAo46xZolXHPaMITBE5dnOgWXiOHS
-         3/ClCvktlRsg7Zet15h9f9q+T0BONV4mJdzxkIUJOm/DqPknCV2oNrAQWLw+LUPgG/Ps
-         VmQjTaWyM6aZNcPY67yhsacBgj/p1ouHCasS22c965ZxzxOW3pp6jplsvJbsAbh9RK2Q
-         7Iew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791969662; x=1792574462;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EyNMPvZIEMwn3spMNOwO+2v61MNWwL1mBLifJHjtoWY=;
-        b=fcQ/kQABsOJTXx+gZd/WuUZuJpssbTLDRKpJ0edhMKBiHrF+G5BJ0P78eTaKgiXtfj
-         afBPDbSBISLZh8vXVHSYbMSDU+ZdmqY9qWamSZ9FV6piUDveAGIBJG0asl0klTjPmeQB
-         EYmgxjUOjtNIPu+edcNchjerEWo7K4nfcHyVBW8Tlo1xsFYqje8AXXIR7XPTdcoR8ZVA
-         tkJDlALTZ3QFbKULn1l5X7IvFH6U+j/NdOFtKEb9YVfpblZUDu9FUfH8hbUCFS7WDnis
-         3knZXFIV/8O85UK0MzmeDylMgy1kZHTKcvPM0DeIpjmtEagzWdy5Z4ajPWCsR9rGx8+M
-         hbag==
-X-Forwarded-Encrypted: i=1; AKwUvBzyKyvkec+cuFHdk1FPXiGvItvxh3vBegCvg8F1VZyLwA3+RtWCKV0klkXaH0MbMO9CiRN6pYO3aGVHeNmx5Q==@vger.kernel.org
-X-Gm-Message-State: AFq9FYIOl7FtCF6Z58u7905QjaV+lG2PtFj+Z21Z1Kd+VXr4PrGL9C6g
-	q7oGmRhBlmkWre6Lnhpin59VH1OfvgRcgTzQaw9fdGMbiBNj6iBkp1EATy6zvoOp5H4=
-X-Gm-Gg: AYBFou3jdXhThxoFFlTdE/pnZVBuLMHuZxWt2Djsp5n0AfHYRuf+TOFcjhpV9siEawE
-	507sdrhE6exZb6nEL6EpZOzIXdB1OfIaRYCQNAPs3MaVfeqO2n8k3HNAGiwxeC8O77mtfWs6d6G
-	hbGue8uNbBjN5m01iZeA4GpXf5zFvxpUlDgOzh+Jp/EEwHv0X9JaZksl7CEE6HS3oG+u2cZ6UPO
-	jGGle0e667XhdSm9CUcghQdLfCGLXyLYKshLscDCUZky/0jDZia349LWbSdXjZkwjihzphLvTy7
-	NnmA5Tpq4Cf/qH+qCwoIRkxkxVOa/J0+jBnhjZTEr34iWNOleBUwlqNIbOnetuFUqJBOX1lAgO4
-	bC04er6NX2TQTtxlUz7uXtbFx2wEtErnqymoXSdu+h4zngXGeQaCuLRz+xGD8Gtz0F4czmarj0L
-	1oA/pdwwtDOPJAt3Tg8gRQ60PhuRcqBh5KoeGrgXsuDuZLMYFk47yH+/RXVcZ1pwq/UpnCo2ETs
-	Y9sqI6qs55caqsKjHPDuqIRUW5V5tc5SNMtsJgad26PnYNO86mMJUn+Ea0mcuNxOiWtUSWCpDvQ
-	Lu8NZ/cqzvBrJAJwij7GCOQ+nSProIbrZFHdJFNM
-X-Received: by 2002:a05:600c:3b2a:b0:4a0:2540:b46 with SMTP id 5b1f17b1804b1-4a18e4aca94mr281842445e9.12.1791969661826;
-        Wed, 14 Oct 2026 02:21:01 -0700 (PDT)
-Received: from ?IPV6:2a00:1028:838d:271e:8e3b:4aff:fe4c:a100? (dynamic-2a00-1028-838d-271e-8e3b-4aff-fe4c-a100.ipv6.o2.cz. [2a00:1028:838d:271e:8e3b:4aff:fe4c:a100])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bea0f1csm617261045e9.9.2026.10.14.02.21.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Oct 2026 02:21:01 -0700 (PDT)
-Message-ID: <6ebcb36b-8d0a-43cc-a47a-5b4a8af02833@suse.com>
-Date: Wed, 14 Oct 2026 11:20:59 +0200
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="nB8MqsM/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oNVxIXaKwdmPuHxjuTklFnfNckIaiocZvjbkdr8yinu2m+nmmFk5/YWM6NR0RFxJUOXMhYPykSQmwbl5HOA+erG1/XXQq6dUvgY/VWkTNrcG4nBkyqDQcI1ed0vP3qa+5dn2Khks8X42Euxe0y7jxenlB1C+CDZ5xvZ3TcdzxwYmjX2gjLxFl+LBL5tnki5tTMu23AE+2sSteqyyui74IsVbybESXzKdIgurATizT/NkGl9id2lmU+MQTiFADQkiBztQw4u1+s4Ju4+9ByCUlFgzj0/84BGYZxE6+PdfeGlRTTw8wm2uX4/SBBRxGUIxgjgf+aajLia3IEsKLmp8/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=B/8oNiASt4ZCq8fvxfS3W3Iv7pp6xRqGdGXxKptLLsg=;
+ b=wJ2Si42vTFI3zPE3BXbdakpTEUeJB58LuKQO3FPxQbnJc67g4Y9eSHrjYbA2DmPusv6Grnd2FN0fUU/ipBnIy4LuRUgud2keCAJr9vXbhUCAk7FlrlUNNdnHCXmVD18J+kvrzHFhbIMrOvxppd/AEjf9PQgOzmjHq2+OBe2EFv9XRKFOL6ZFHBwBPMmpeqQRI7uA5oaebiud+XF77I7KfdFUIoUDhjliJCbz33K1Bu9xHbJwFx0lijiTyahn+EBSl/je+7m/Tc3nUkIXyecy3HxOqwass0hB2Hwxd8ekEiONGXqfhOhIREU4X5Oo5mdymNL7cURVofeh6n120M8AJw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=B/8oNiASt4ZCq8fvxfS3W3Iv7pp6xRqGdGXxKptLLsg=;
+ b=nB8MqsM/MkR/iBpNZC/lW8LY4ue1L3V4oU39IRdeGqkkb/A1mV14PCxIot6S5NSOXuh8kPpJmgKwEYefNAqrs3/uekX7syTRo8gX7BCaMEcwUe5sq9R2nKFXFVztU0Vbx1GaHTHoBdb0G8hR+oWXiOOz1YfxihXZWOfw/pIDG4E=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+ by LO7P265MB8605.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4a9::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Wed, 14 Oct
+ 2026 09:21:18 +0000
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0522.011; Wed, 14 Oct 2026
+ 09:21:17 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 14 Oct 2026 10:21:16 +0100
+Message-Id: <DM4G8GOS4MGC.2HZWOWO0Q2X3H@garyguo.net>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Tejun Heo" <tj@kernel.org>, "Lai
+ Jiangshan" <jiangshanlai@gmail.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan"
+ <skhan@linuxfoundation.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Alex
+ Shi" <alexs@kernel.org>, "Yanteng Si" <si.yanteng@linux.dev>, "Dongliang
+ Mu" <dzm91@hust.edu.cn>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Carlos Llamas" <cmllamas@google.com>, "Marco Crivellari"
+ <marco.crivellari@suse.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] rust: workqueue: replace deprecated system_wq with
+ system_{percpu,dfl}_wq
+From: "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.22.0
+References: <20261014-rust-workqueue-system-fix-v2-1-c018b8f870f9@google.com>
+In-Reply-To: <20261014-rust-workqueue-system-fix-v2-1-c018b8f870f9@google.com>
+X-ClientProxiedBy: LO4P265CA0268.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:37a::20) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] rust: module_param: Fix potentially incorrect access
- of `SetOnce<T>`
-To: Priya Bala Govindasamy <pgovind2@uci.edu>
-Cc: mcgrof@kernel.org, da.gomez@kernel.org, samitolvanen@google.com,
- ojeda@kernel.org, atomlin@atomlin.com, boqun@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
- daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
- work@onurozkan.dev, linux-modules@vger.kernel.org,
- rust-for-linux@vger.kernel.org, stable@vger.kernel.org, ardalan@uci.edu,
- zhiyunq@cs.ucr.edu, dzueck@uci.edu
-References: <cover.1789426258.git.pgovind2@uci.edu>
- <20260923203145.18714-1-pgovind2@uci.edu>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20260923203145.18714-1-pgovind2@uci.edu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO7P265MB8605:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4da24dac-9410-4ab2-dcdc-08df29d4802e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|7416014|10070799003|366016|23010399003|56012099006|261009223027099003|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	YMwTG5PDaBM/RotGO16iRhIYySdHDHQfN4WHlWj83/ylughvgU4JloLcWafvRi4MPsUK6BMYP7kvUocnwJZ3MM8TbVzHm6fumgFaDXSLAKT188q+F92g7+E88dis2s+kej4okpQhv0pA838qG6+TmP7SwCZb9qBH9MgywRlTjea6YWyR1Q7Kcb8Mi9AR93bsBCdV5XbRQx5TkaR/rs1BkjjtGDybHyoP89azn4/KRGmFsbSmyNeVuuMX5qTGtn0sNcFy3/dcZ1y8/NxtDP4jXBI5it4OzbxddhDdTtYA9zEwtf8rbOEeThBNPOnSjkDJCdExZWVrt4ak6Wz/AnyvR7dFBkexjih/aba81Fxm2FOkRaEdh6qArz5CXHF124snp9wr/BijZGrhx5DwVMVL4WWLMbPqo6uA8LByEt/Z8nUz4otMbqbIVn47uL0wez3wgBRhFfi+d/u8u6scutjXzD88Q02BvtvGkkZOPEO+T1JL5U4N0u3K51nLAbaQElLi1yUqJqMhsr3Dy1ngg4QIDHnZGm6Fts3j7MF+e8YGGT5qfDvjJbWLe/dMKHx2puhBWfpPmez5u0L6v9mg1HsnPUO4AB7c+MZnLhDUYl/liW58pWhjh5g3TDmufPfPyt9B
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(10070799003)(366016)(23010399003)(56012099006)(261009223027099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T1ZjTmdMaldlQndValBlYjIvU2t0TGpjNVhpbkg3SFRxWlZSbjJSbHBqeVRY?=
+ =?utf-8?B?cVpkUll3UEVIM0NydDJzNlRrSUI2NEEzbFlWV2FiODFqeUFLWmIwTWdlUzkr?=
+ =?utf-8?B?WkxOcFk4WElFN1JEeEIrai9HdFR2bHBrNGRWUEkrVjNDNVZZUjVkTUhYUWZh?=
+ =?utf-8?B?eThZTXVEWkM1Q1ROWUdic2NYdWxzVnhBUHFFS3huUjNwRVdxVHc1ZHk0b1FE?=
+ =?utf-8?B?Y1FXWW43bVJNZkZmcU5NR0o0dDlKL2p0UjUzb1dwVjRWQ0owM09SMVpIV1R4?=
+ =?utf-8?B?SDFMdWV1UkxtNUk3WTV1ekFsM3dlYk51dDJuRTlYV2RFWFpiamVWSU9sVkJt?=
+ =?utf-8?B?YVRXYkF5clB2YnRmMGpnTC9qYnRPc2w4dmU5ekZMTEwxK3d3bFkvTXNJMFZN?=
+ =?utf-8?B?VTkvSHJHZ2NOVFZrRVpzZld0MnZTdUwwUXRTWU9PeXRtZUNCNWg4T1FkRmFv?=
+ =?utf-8?B?Y25IVkxKV2tGMkw1dnZ1aDdkdkNpN3J3WlZGaHd3dy9tREpPQVdGaVQzNlRD?=
+ =?utf-8?B?ODZsRnYwTDhzNUtpWk10Vmlpa2tTUGdyTW1PcWcwS25EaTNHUHJmNGZLQUIx?=
+ =?utf-8?B?YVRheHlTZHRQQmt3WjIrZG5xOUN3ZnBZVjR4VHlJWnUxWW0yY0pyS25VOC9h?=
+ =?utf-8?B?Ync4UnkzS1BFczZxTnVha0gyS1hSVEZpd2pMYmRDNDQ5Ti8yQlQ3SEI4N2R4?=
+ =?utf-8?B?QmEwb25sVG8rOURuUk9YZElvRllNRDg3Q1pFTHY0eldVTEUvY09TaE5mcWls?=
+ =?utf-8?B?djlUMUZiTk1lcW1RcVJYdnVJbEJoTXlKZXlkZVFieGlvdHZBNnRESnhOakpJ?=
+ =?utf-8?B?VlBvVHhsaHUwZzU2bGdnK093RVBRMUZQQzdBbUlZVFkyZkdtb2ZaTER0U01K?=
+ =?utf-8?B?SzFXMHhTd29HWnFKRzQvMkVZcUl1b1FmQTRxdStZQmtwZFF6WmZaKy9rL1hx?=
+ =?utf-8?B?SG1aSlFodkdScm15a2hWcDhYZU5IdVZRNlo4UkR3R2ZlSnhveUZnN1JOZ3c3?=
+ =?utf-8?B?NEkrU2FnRnRHTHNEWTF2ZnF1c0pucVhRbG5zQWt4c2JUSEFpVElhc0RwVE5x?=
+ =?utf-8?B?RDl6UGk5UTdLWDFvTVRFZ05QeCttMnVlaWcrdWc3YytoOUcwbXpnanlJRVdk?=
+ =?utf-8?B?V0pVM3VXZm1sNDJpZTJJamc4TDdzb3FzU3hnM04rT3BuUGFLdlRTOVVheTZH?=
+ =?utf-8?B?bEJnNU5aYjZka01KU2hTRVFQNllxSTJVYUtUUTVzVE5JczJlK2VjUUI3dit6?=
+ =?utf-8?B?cjdFbEVzL1E1R1hCRGEySXY3Wkc5YmdMOGxDb2tibHFhSTdocllhK0J0Q3Vj?=
+ =?utf-8?B?WHdqcUw2WVFJeHpGRzBhR3g2WDBtNzdvWDZ5U04vMEJxMHREQWlnSUpnWE5Q?=
+ =?utf-8?B?TnBtZFBtU3o2dmtDQStuNk1JYlQwRlRLOHhrSitZQjV5eDR2QVFxVmJ2UG5z?=
+ =?utf-8?B?UHpiR2ZscndQOEhLOGhLMU1oWW1yYWpDb0gzN3J5bFVmQzBLYkxyYWNoakty?=
+ =?utf-8?B?Y1FhbmVtdUJFakdISG9zaEFJTUlqN2pFaENra3MzU3VCQUIrbTU2SEFxcno4?=
+ =?utf-8?B?YngvUVgyS1BCUTBvdDFKT0IvRDFETHBiT21tMCtKTExEOXdhbWZwL3VPaEg4?=
+ =?utf-8?B?OHNwQVowbGt3aVBnWlN1K2F1WWxld2hDSVVnOWowVkZEV3FJUkdQdXJnRWw4?=
+ =?utf-8?B?UW84dndQQVV1K0o4N2xFa0RVN3BrbTAyQkhmWGp0dFpWUjYxd2ZiVWM1R0Rm?=
+ =?utf-8?B?SkFOclRrcDFjQmFnMmZ1eEJncVJhZ3RZNW9vemtpTTdVY2hKWSt0bCtUOFBl?=
+ =?utf-8?B?cy9UWlhPVXlJNDlkTExsS3NpK3FSUTZFcjVxVjFJbWZaNGZjU29jNy9JbUpF?=
+ =?utf-8?B?RHVCdjl6T1JZdGZUbzRCZFVhY1FMejIzUEo1RFp2RnYvbmpVYVZsQ0ZKc2hJ?=
+ =?utf-8?B?MkJOaEFHSjRtL0tQWVFOeGViQTIxUDZRS2cvVWh4RURGNHhRRDZ2MzM2K2JH?=
+ =?utf-8?B?NnlMYlZHeGQ0S05iL0JrTzdYUWpLNGpWSHNrTEZpek03dmpjYzdxM0NWRFNP?=
+ =?utf-8?B?ZFJXYnFyWHRkc0o0Y0tpNndZVVZ3YVgvZDhDTWpFWDRNN2FCVzdBME43S0xU?=
+ =?utf-8?B?TlQxSWRmYWR6dWlFZmdjcFJkYTFTditjdld0dlBhc1hzZEw2NGlFODkzRWg3?=
+ =?utf-8?B?aHF2SDgzT3pZVXFrMk9GcUc2OHVpb1NYN3Y5M1pvWWZLRjV3MjEva2hvLzdZ?=
+ =?utf-8?B?WkdKTXR4enhIMzRCcEhVelphWUtELzdvbHdZU2pPNlJWM25yOTQ0T0dEbnU3?=
+ =?utf-8?B?bFFmdGU4bjRibEV3Tm05ejBocjhSR2xhN3QxNExyaFI4YnlpWTJnQT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4da24dac-9410-4ab2-dcdc-08df29d4802e
+X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 09:21:17.1548
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UrlPcqs4L2wHCTT6lec/s2tlnK4H3MUnjPRYnFskXvGz9U263kBZ7T7VCw73pWLnmRab1GCjDytCyVCLDmBe/w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO7P265MB8605
 
-On 9/23/26 10:31 PM, Priya Bala Govindasamy wrote:
-> The `set_param` function casts `kernel_param.arg` to `*const SetOnce<T>`
-> But the Rust module macro in rust/macros/module.rs initializes `arg` with
-> `#param_name.as_void_ptr()`, and `#param_name` is a `ModuleParamAccess<T>`,
-> not a `SetOnce<T>`.
-> 
-> ModuleParamAccess<T> has default Rust layout but `set_param` accesses its
-> first field SetOnce<T> assuming it to be at offset 0. This is not
-> guaranteed by Rust and could cause type confusion leading to data
-> corruption.
-> 
-> Fix this by casting `kernel_param.arg` to `ModuleParamAccess<T>` and
-> then accessing the `value: SetOnce<T>` field.
-> 
-> Fixes: 0b08fc292842 ("rust: introduce module_param module")
-> Cc: stable@vger.kernel.org
-> Reported-by: Dylan Zueck <dzueck@uci.edu>
-> Assisted-by: LLM
-> Suggested-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Priya Bala Govindasamy <pgovind2@uci.edu>
+On Wed Oct 14, 2026 at 10:08 AM BST, Alice Ryhl wrote:
+> From: Danilo Krummrich <dakr@kernel.org>
+>=20
+> system_wq is deprecated and triggers a runtime warning:
+>=20
+> 	[    0.857414] workqueue: work func ...WorkItemPointerKy0_E3runB7_ enque=
+ued on deprecated workqueue. Use system_{percpu|dfl}_wq instead.
+>=20
+> Replace system() with system_percpu() and system_dfl(), to match the
+> previous behavior of the deprecated system() and convert doc examples
+> and tests to system_dfl().
+>=20
+> system_unbound_wq is deprecated in the same way, in favor of
+> system_dfl_wq. Since system_unbound() has no users, just remove it as
+> well.
+>=20
+> Fixes: 64d8eae3f895 ("workqueue: Add warnings and fallback if system_{unb=
+ound}_wq is used")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Reviewed-by: Boqun Feng <boqun@kernel.org>
+> Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-I've queued the patch (v2) on modules-next for v7.4-rc1.
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
--- 
-Thanks,
-Petr
+> ---
+> This patch was previously sent as part of other workqueue series [1][2].
+> However it's a fix that is independent of those series, so it's sent on
+> its own here.
+>=20
+> [1] https://lore.kernel.org/all/20260726223613.1242940-3-dakr@kernel.org
+> [2] https://lore.kernel.org/all/20260807165252.3849875-2-dakr@kernel.org
+> ---
+> Changes in v2:
+> - Also remove system_unbound(), which is deprecated in the same way
+>   and has no users. (Gary)
+> - Collect Reviewed-by from Boqun and Dongliang.
+> - Link to v1: https://lore.kernel.org/r/20261013-rust-workqueue-system-fi=
+x-v1-1-e9ec616e402b@google.com
+>=20
+> Changes since [2]:
+> - Rebase on v7.3-rc7 and also convert the new SpinLockIrq KUnit test,
+>   which calls workqueue::system() and otherwise fails to build.
+> - Add Fixes: tag for the commit that made system_wq warn.
+> - Collect Reviewed-by from Daniel.
+> ---
+>  Documentation/rust/testing.rst                    |  2 +-
+>  Documentation/translations/zh_CN/rust/testing.rst |  2 +-
+>  drivers/android/binder/process.rs                 |  4 +-
+>  rust/kernel/sync/completion.rs                    |  2 +-
+>  rust/kernel/sync/lock/spinlock.rs                 |  2 +-
+>  rust/kernel/workqueue.rs                          | 52 ++++++++++++-----=
+------
+>  6 files changed, 33 insertions(+), 31 deletions(-)
+
