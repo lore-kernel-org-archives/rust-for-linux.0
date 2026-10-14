@@ -1,43 +1,43 @@
 Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D22D4A206F
-	for <rust-for-linux@vger.kernel.org>; Wed, 14 Oct 2026 08:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E85D49B1E5;
+	Wed, 14 Oct 2026 08:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791966635; cv=none; b=EfnCdl4P0nGmVIOwuZRfPGqXKrXM9d1KKwjWATvKhpJRVHBE9L8G7MpKi9XW7jBIxMhhXv5hWQpFoFDOdHvqq8GCWTuOkABw7LWkwk+W/0tLm5sMPBNKhTg2U7072ObYbmn0oxnVYeLdaFSOjRKb6Ss9Bq9EvC/hc/U7melFMDQ=
+	t=1791966642; cv=none; b=BQyYN+bU0pWUgy82ZLxMYCo5zsc0KCSq+JG/M2/WmV/yDOjX3c6Y+VGHcc2Q7i5tiIKopwF3bHN46JQ5LdS3nirGhXSmOgfNQY4DBMy+shU9WdsUH6rgODgorW+RpsnLOueLSTVehpaTYFnYaiLyiaQh6CEi173iz0lEbUvdeRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791966635; c=relaxed/simple;
-	bh=CRGNd6AdWngmPVn+rLpuSNpTPHNgmS3ELwk6FAQt0eY=;
+	s=arc-20240116; t=1791966642; c=relaxed/simple;
+	bh=Pd6hPfYOxhDoz6f8d83lF522bEeXBTN7VFKw/aLAgGo=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LHXNlKkbdg+NTBNgV4PznAOQDFXZft9thrS/Cuu2A/IneUdjPI0lNaNWFjkfhCZyBwLiq/HwnxWLw2aHCxYkQGDrBi/EUiuMrlymHazM8tT4LeSQES3ZIlFziwSyoqu8lkDec7Vh/+iOy0OlfW8jSEcOFZiuZS5TqwuOxXSYIOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=mcRu5AtZ; arc=none smtp.client-ip=79.135.106.28
+	 MIME-Version:Content-Type; b=TkaTITCjmFUzPXEiWEYDWqgDxt9PJQ/6fhnlHxQwKr21HI1aeEWfwtqNLD+oS+hhHTWG8XtNTLrDJ+9shm5xwc4xlReJKnpLDtXdrZusdlic2pzSUfmp0qbCAky78kM2pqUDSeQyw8YbyJ9FFsYLrYbG3Fp7+x2vUw4B3SbPFfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Z7rszobh; arc=none smtp.client-ip=79.135.106.28
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="mcRu5AtZ"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Z7rszobh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=ffmdeeo6nbeerhetyg45nvglyu.protonmail2; t=1791966628;
-	x=1792225828; bh=zS13lC//sDJzv9LZnZcLr3nqKd1FhOddrZQrqYGzasM=;
+	s=protonmail2; t=1791966633; x=1792225833;
+	bh=xqfnnbza4W5QBgqcKoZ501uM3WgY3pys7WChvCB1Rtg=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=mcRu5AtZVw1HX2hAGHR22wAuZwRJ6KoXJt+60OSGNKn12fMcbvljI/aBnptiqMu/I
-	 T3BPiUNE1KZpZseOZjvndBqE+O2tPgHVd65bwU3gAYoqFDPhbNpan6Z4WXOInMtLw0
-	 mBmR2+qIhBVrOk8SnFWuhbyMpDrFjZEQ6GczfgD4e8j+V6ghcp9GevxacR3Zp/ZHKB
-	 FkkGXUr3MSWGzTK+P0LyqFvUzhkKM4eRsL6IgbhDazLZfN+NhQMZdrftALDQb4GC1J
-	 gXNQ2uiSO5r7bncy/c1nUj6CGDrESyM0f6PgHKlF4h29OUxG7LeA97N6GoyND1c8ZM
-	 lL0ddoRWaxooA==
-Date: Wed, 14 Oct 2026 08:30:22 +0000
+	b=Z7rszobhRrUwLs2tsvBjRxl2IDhIZ3qFR4Z0+9aGvhdv7jq+q/miysnEkSSYklMM2
+	 2lxYkeEej5zZA7BWSxf7uMrS9rskw1th9RRPNFomvYQQwUs7G/7I+kX1LjQ64LwFw4
+	 Rl+Zg5HBc43KxF2Nnwj8o2Vxp62Nz5dk/5pOuA4K+Hyq0dxhgDp1v8pWQgdQkelhxT
+	 t8ZoJJ13WF/LFJ+rX58V7IfqxmlegYyNBuX8aSI7RpyfsK7exn9k/+94AYCr8CWwqA
+	 KQ6DGhTrIzxXdeferHCpBk0XV9sH+VR2JHcry4pnmozfr9nOwx6wP8k9Gf+in26FFF
+	 VjPndsygRCQ3Q==
+Date: Wed, 14 Oct 2026 08:30:28 +0000
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
 From: Lorenzo Delgado <lnsdev@proton.me>
 Cc: Lorenzo Delgado <lnsdev@proton.me>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Thorsten Blum <blum@kernel.org>, Francis Laniel <laniel_francis@npnm.eu>
-Subject: [PATCH v3 1/2] rust: non_empty: add NonEmpty
-Message-ID: <20261013-nonempty-slice-v3-1-4463cc0338f8@proton.me>
+Subject: [PATCH v3 2/2] rust: uaccess: use NonEmpty in strcpy_into_buf()
+Message-ID: <20261013-nonempty-slice-v3-2-4463cc0338f8@proton.me>
 In-Reply-To: <20261013-nonempty-slice-v3-0-4463cc0338f8@proton.me>
 References: <20261013-nonempty-slice-v3-0-4463cc0338f8@proton.me>
 Feedback-ID: 53083996:user:proton
-X-Pm-Message-ID: aee2185bc7cab387a35f3d0868002dca655f3fb9
+X-Pm-Message-ID: e51d3631fc60c352ed93c6f5aa244c43066a5455
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,29 +47,18 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Some functions reject an empty container up front and later rely on it
-having at least one element. The type system does not see that check,
-so the later access ends up as an `unwrap_unchecked()` with a SAFETY
-comment pointing back at it, or as an `unwrap()` or an error path that
-can never be taken. `strcpy_into_buf()` in uaccess is one such case.
+`strcpy_into_buf()` returns `EINVAL` for an empty buffer and later
+writes the NUL terminator through `last_mut().unwrap_unchecked()`,
+relying on that earlier check.
 
-Add `NonEmpty<C>`, a transparent wrapper whose constructors check that
-the container is not empty. It dereferences to the container, and a
-method whose `Option` only exists for the empty case can be shadowed by
-a version that returns the value directly.
+Take the buffer as a `NonEmpty<[u8]>` instead, so the requirement is in
+the signature. The `EINVAL` case goes away, and `last_mut()` returns
+the element directly, which removes the `unsafe` block. There are no
+callers to convert. A caller with an array buffer can pass it through
+`NonEmpty::from_mut()` without a runtime check.
 
-`DerefMut` is implemented per container, only where a mutable reference
-cannot change the length. For a growable container it would let
-`clear()` break the invariant.
-
-For now only slices and arrays are supported. A slice of unknown
-length goes through `try_from_mut()`, which returns `None` if it is
-empty. An array goes through `from_mut()`, which checks the length at
-compile time instead of returning an `Option`. The resulting
-`&mut NonEmpty<[T; N]>` coerces to `&mut NonEmpty<[T]>`, so a caller
-with a fixed-size buffer needs no runtime check and no extra cast. The
-only accessor is `last_mut()`, which uaccess needs. Other containers
-and accessors can follow with their users.
+The `MaybeUninit` cast still starts from `[u8]`, so its SAFETY comment
+does not depend on the layout of the wrapper.
 
 Suggested-by: Gary Guo <gary@garyguo.net>
 Link: https://lore.kernel.org/rust-for-linux/DM0D9TERQAM3.2Y3HV6P68E2N8@gar=
@@ -77,172 +66,71 @@ yguo.net/
 Link: https://github.com/Rust-for-Linux/linux/issues/1262
 Signed-off-by: Lorenzo Delgado <lnsdev@proton.me>
 ---
- rust/kernel/lib.rs       |   1 +
- rust/kernel/non_empty.rs | 123 +++++++++++++++++++++++++++++++++++++++++++=
-++++
- 2 files changed, 124 insertions(+)
+ rust/kernel/uaccess.rs | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 7225abc64084..8e1928deac35 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -105,6 +105,7 @@
- pub mod module_param;
- #[cfg(CONFIG_NET)]
- pub mod net;
-+pub mod non_empty;
- pub mod num;
- pub mod of;
- #[cfg(CONFIG_PM_OPP)]
-diff --git a/rust/kernel/non_empty.rs b/rust/kernel/non_empty.rs
-new file mode 100644
-index 000000000000..5eec67a4f8a7
---- /dev/null
-+++ b/rust/kernel/non_empty.rs
-@@ -0,0 +1,123 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Containers that are known not to be empty.
-+
-+use crate::build_assert::const_assert;
-+use core::ops::{
-+    Deref,
-+    DerefMut, //
-+};
-+
-+/// A container that can report whether it holds any element.
-+///
-+/// The result must not change while the container is only reachable throu=
-gh a shared reference.
-+///
-+/// Unsafe code may only rely on the result for a container type whose imp=
-lementation it trusts,
-+/// such as the ones in this module, since a safe implementation can retur=
-n anything.
-+pub trait IsEmpty {
-+    /// Returns `true` if the container holds no element.
-+    fn is_empty(&self) -> bool;
-+}
-+
-+impl<T> IsEmpty for [T] {
-+    #[inline]
-+    fn is_empty(&self) -> bool {
-+        <[T]>::is_empty(self)
-+    }
-+}
-+
-+/// A container that holds at least one element.
-+///
-+/// [`NonEmpty`] dereferences to the container it wraps, so the container'=
-s API stays available.
-+/// Methods whose result is only optional because the container could be e=
-mpty can be shadowed by
-+/// versions that return the result directly. They are added as users need=
- them. For now that is
-+/// only [`NonEmpty::last_mut`] on a slice, which returns `&mut T` instead=
- of `Option<&mut T>`.
-+///
-+/// # Invariants
-+///
-+/// The wrapped container is not empty. Unsafe code may rely on this only =
-for arrays and for
-+/// container types whose [`IsEmpty`] implementation is in this module.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::non_empty::NonEmpty;
-+///
-+/// let mut buf =3D [1u8, 2, 3];
-+/// let slice: &mut NonEmpty<[u8]> =3D NonEmpty::from_mut(&mut buf);
-+/// *slice.last_mut() =3D 0;
-+/// assert_eq!(slice.len(), 3);
-+/// assert_eq!(buf, [1, 2, 0]);
-+///
-+/// let mut buf =3D [1u8, 2, 3];
-+/// let slice =3D NonEmpty::try_from_mut(&mut buf[..2]).ok_or(EINVAL)?;
-+/// *slice.last_mut() =3D 0;
-+/// assert_eq!(buf, [1, 0, 3]);
-+///
-+/// let mut empty: [u8; 0] =3D [];
-+/// assert!(NonEmpty::try_from_mut(&mut empty[..]).is_none());
-+/// # Ok::<(), Error>(())
-+/// ```
-+#[repr(transparent)]
-+#[derive(Debug)]
-+pub struct NonEmpty<C: ?Sized>(C);
-+
-+impl<C: ?Sized + IsEmpty> NonEmpty<C> {
-+    /// Creates a [`NonEmpty`] from a mutable reference to a container, or=
- returns [`None`] if the
-+    /// container is empty.
-+    #[inline]
-+    pub fn try_from_mut(container: &mut C) -> Option<&mut Self> {
-+        if container.is_empty() {
-+            return None;
-+        }
-+
-+        // INVARIANT: `container` was checked to be non-empty above.
-+        // SAFETY: `NonEmpty<C>` is transparent to `C`, so the cast keeps =
-both the layout and the
-+        // pointer metadata, and the pointer comes from a valid `&mut C` w=
-ith the same lifetime.
-+        Some(unsafe { &mut *(core::ptr::from_mut(container) as *mut Self) =
-})
-+    }
-+}
-+
-+impl<T, const N: usize> NonEmpty<[T; N]> {
-+    /// Creates a [`NonEmpty`] array from a mutable reference to an array.
-+    ///
-+    /// Unlike [`NonEmpty::try_from_mut`], this does not return an [`Optio=
-n`]: the array length is
-+    /// checked at compile time, and using it with an empty array is a bui=
-ld error. The result
-+    /// coerces to a [`NonEmpty`] slice, which is where its accessors are.
-+    #[inline]
-+    pub const fn from_mut(array: &mut [T; N]) -> &mut Self {
-+        const_assert!(N > 0);
-+
-+        // INVARIANT: `array` has `N` elements, and `N > 0` was checked at=
- compile time.
-+        // SAFETY: `NonEmpty<[T; N]>` is transparent to `[T; N]`, so the c=
-ast keeps the layout, and
-+        // the pointer comes from a valid `&mut [T; N]` with the same life=
-time.
-+        unsafe { &mut *core::ptr::from_mut(array).cast::<Self>() }
-+    }
-+}
-+
-+impl<T> NonEmpty<[T]> {
-+    /// Returns a mutable reference to the last element of the slice.
-+    #[inline]
-+    pub fn last_mut(&mut self) -> &mut T {
-+        // SAFETY: By the type invariant, the slice is not empty, so it ha=
-s a last element.
-+        unsafe { self.0.last_mut().unwrap_unchecked() }
-+    }
-+}
-+
-+impl<C: ?Sized> Deref for NonEmpty<C> {
-+    type Target =3D C;
-+
-+    #[inline]
-+    fn deref(&self) -> &C {
-+        &self.0
-+    }
-+}
-+
-+// `DerefMut` is only sound for containers whose length cannot change thro=
-ugh a mutable
-+// reference. For a growable container such as `KVec`, `clear()` would emp=
-ty it.
-+impl<T> DerefMut for NonEmpty<[T]> {
-+    #[inline]
-+    fn deref_mut(&mut self) -> &mut [T] {
-+        &mut self.0
-+    }
-+}
+diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+index 5f6c4d7a1a51..1cc5c7580d3a 100644
+--- a/rust/kernel/uaccess.rs
++++ b/rust/kernel/uaccess.rs
+@@ -11,6 +11,7 @@
+     error::Result,
+     ffi::{c_char, c_void},
+     fs::file,
++    non_empty::NonEmpty,
+     prelude::*,
+     ptr::KnownSize,
+     transmute::{AsBytes, FromBytes},
+@@ -383,20 +384,16 @@ pub fn read_all<A: Allocator>(mut self, buf: &mut Vec=
+<u8, A>, flags: Flags) -> R
+     /// Read a NUL-terminated string from userspace and return it.
+     ///
+     /// The string is read into `buf` and a NUL-terminator is added if the=
+ end of `buf` is reached.
+-    /// Since there must be space to add a NUL-terminator, the buffer must=
+ not be empty. The
++    /// Since there must be space to add a NUL-terminator, `buf` is a [`No=
+nEmpty`] slice. The
+     /// returned `&CStr` points into `buf`.
+     ///
+     /// Fails with [`EFAULT`] if the read happens on a bad address (some d=
+ata may have been
+     /// copied).
+     #[doc(alias =3D "strncpy_from_user")]
+-    pub fn strcpy_into_buf<'buf>(self, buf: &'buf mut [u8]) -> Result<&'bu=
+f CStr> {
+-        if buf.is_empty() {
+-            return Err(EINVAL);
+-        }
+-
++    pub fn strcpy_into_buf<'buf>(self, buf: &'buf mut NonEmpty<[u8]>) -> R=
+esult<&'buf CStr> {
+         // SAFETY: The types are compatible and `strncpy_from_user` doesn'=
+t write uninitialized
+         // bytes to `buf`.
+-        let mut dst =3D unsafe { &mut *(core::ptr::from_mut(buf) as *mut [=
+MaybeUninit<u8>]) };
++        let mut dst =3D unsafe { &mut *(core::ptr::from_mut::<[u8]>(buf) a=
+s *mut [MaybeUninit<u8>]) };
+=20
+         // We never read more than `self.length` bytes.
+         if dst.len() > self.length {
+@@ -422,9 +419,7 @@ pub fn strcpy_into_buf<'buf>(self, buf: &'buf mut [u8])=
+ -> Result<&'buf CStr> {
+             // This means that we filled the buffer exactly. In this case,=
+ we add a NUL-terminator
+             // and return it. Unlike the `len < dst.len()` branch, don't m=
+odify `len` because it
+             // already represents the length including the NUL-terminator.
+-            //
+-            // SAFETY: Due to the check at the beginning, the buffer is no=
+t empty.
+-            unsafe { *buf.last_mut().unwrap_unchecked() =3D 0 };
++            *buf.last_mut() =3D 0;
+         }
+=20
+         // This method consumes `self`, so it can only be called once, thu=
+s we do not need to
 
 --=20
 2.55.0
