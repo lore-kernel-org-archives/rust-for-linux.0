@@ -1,131 +1,143 @@
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8FA489FBC
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 09:19:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.69
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792055995; cv=none; b=eSl7Hbx2pCoLaue4Vs5rvCviNY6b2VU7n6HmJEKfu7ZJchdD6ElWIsAWUzRb//I7VXR9Z1XwFqO4i3tNlVDDaPsO99kDFmM0hrmUOEx80CL9yALI1/54b1SlYg4cp65PlQdQ1IxMjuFKDtmXn8T8VhZKhvooJehhTM8y1u5ngEA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792055995; c=relaxed/simple;
-	bh=g93epIcW60azoLDx3yp4OIFZSLVEl2jasHWiFTB7pJM=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=JY4Jo5BVekuj/xVWasnlJQzdWOKWklI9lp/i2Qs8a9DtVGAOBykX64WxRbecd+RK2T9oXzF9iUhzPQ3m5mxvoyDBFROEYeSBmkkBeBUorfb7gnxp+wgKIjTSeAeMpTIdQfzGIY3261DdPG3wgjCJFKdAXOI44/cCUmE/8Hsi0fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jvQ2aZ40; arc=none smtp.client-ip=209.85.128.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E2050E58A
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 09:46:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792057616; cv=pass; b=VVpdVtBAKd9kcuPjPUWDPXDy+vtT5DcDK3AmzvujEXgNipErTSJN54ldt7IaNUYqAxGLKKpyHhfrAFfcz1SGkY2RENUeT5HeVoL6hB6+vwl1i5qIuqYeqLRbGhnE1y2R6SzjQENRFMkQEGTlfHvsSvXX4NfW8s4czrzlW30Yo2Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792057616; c=relaxed/simple;
+	bh=ICrTBQhAcFMBle4ZO3IusjWW50Bxu9MMe+LD1licGqo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L7u/HJMDScX0Qr0Rj3hhe47+b73QxRyV/jKhoCyBCAZOQsVmY4jGnZPsekm6Ki0IJp2IBVZJMr47owBY7fAe8oDhYlzYjFeeoVrFj0q/FGG4rB2lxey+t88xnomVURtbwyQutrhWpcKukhtQN9zRHkwAdmX2Fk5tJdAXKe2S8EQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=P8s3zewn; arc=pass smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jvQ2aZ40"
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-495689bfcc8so43835765e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 02:19:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="P8s3zewn"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5bcf21cfbdaso346440e87.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 02:46:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792057612; cv=none;
+        d=google.com; s=arc-20260327;
+        b=juHVmkuBFm68pgv/ZJ/7EUnh6xnyNA03hvvNJkCypv8s6lrNBVCR7orZAJOvOsGFB6
+         ibYdZfXRQRVvdtMEIFduPkVOhVatEwa2JspOjEQDwZgDhp74N5CMiHRs/wqZ6h9opK00
+         8Q54acoIZrNE2lskap2SEK5xB0u5f8FYbuPK+/BnPTNqpHNNSMpce/Z3SMFlzxPWgLXg
+         5iBKvIg8C/QE5LLvtGvg5MYIryhyTnn8bOe21rhJslnKBHYQA9PRCBCGCjNcLZtyFrk1
+         7lRdy22ImbNHwdStaS5I0fgMj2lZnVN+3ffakjH6ieoydUHURm9tctlocypy49hIpY8K
+         kfxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KZ5hcI7sSvmMGW83CeAYEeOw/S5ozCHpu45O4BxP46g=;
+        fh=bBusiG3VGRRyy12GrizfILg7U1SEkv9HjnUJrnL8AO0=;
+        b=o/hYylzquY6yVyHTq6+bCDUEh8JJ17vI+dsWcLbRvfYJ9kxIH0Q13XxdzG7VayHu4Y
+         9BKqeiBIlKrPar9hi9dXVd9Oulzp2+PmMKkWopX71TGbNppaH51Gut2n3iwKSa2VGcZZ
+         72ZGAh7zhHDfqM1Ue5/c25KwreazJgoCG0nHgTp70TTEaaBqcloEt8ll+BY1IiYbVp0u
+         1OfLsQ6meG9Uq0F/jA8ycY8TR8R6Ff41dXU1IA4hq1IrDm2bSInmEoZ80dmOZry+tbdj
+         DhNwBBVFLBywJJmLnNw6GkcFnQMhReYYTRHeGQ/jkRWsYkLSov2ifA15z4DzViDeeP2E
+         ceiw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792055992; x=1792660792; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Y9496zxWZi8AybW6ybbmgSCnzw0yLTx4Cx4ZgtgWlH0=;
-        b=jvQ2aZ40kJBxMpz/TLbq/m7BcH8i/zVHWwbYPajvZGdK9dRJaCWcHEMs0h9ooI5xTC
-         SHG/0KQqmm1tgDPyCw5WzCHRpA4fCshvCFkRtFHlCvdZjUTfpk1deePbyYDdA0KqhCGo
-         KVO0bEHCZtWCJeWTu2/XzfDJ3HwQGfFU5+EjG3yGiVCxHz9Lj5rx6bUmoglHmrTmBHql
-         eJU5z8gnWfiAyDXHloRviaCOOw+4kE1woWCXLZOZb3PEa2L3VZ0HAfsAGhU+/BntOu6h
-         kOI2C6wSmNDA0JBGMQCHWNQRScUN79kPP4q9lRsezgLMRu3uP7mpXk/coJaZCTWS5+2M
-         Q5iw==
+        d=suse.com; s=google; t=1792057612; x=1792662412; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KZ5hcI7sSvmMGW83CeAYEeOw/S5ozCHpu45O4BxP46g=;
+        b=P8s3zewnfLUipatq+GqLCGSvx1i+EJ7DV6ToSXJXwViWZ5+6/8kf8sUXAmHYA0WqF5
+         dOGILgLTSYULGBXFCZaNARNcqmTUgIZZkHroeS1typd4X1bbk13RmWviU1ePgAhFRBpg
+         EdOqKN4VwLFl0wNQbBTtDQbOicOqSBAJ8TWFBAVl6EG5RhHG6RWYWGhEtir9/DYxKXP1
+         MGKazALbGicfMHQyJGxpTs4luLDCo0j62vDl87NXtfOUhnO6JNVZZTX3AuEZpV+ejq18
+         vcbh4Rm5+MZ/+513KO5SxXN0Su6jVTq8fJCvIckEb6F48Z2/HeS3ATacZI9Dse5YgjvH
+         GCIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792055992; x=1792660792;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20260707; t=1792057612; x=1792662412;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Y9496zxWZi8AybW6ybbmgSCnzw0yLTx4Cx4ZgtgWlH0=;
-        b=BazrEI4al6YWFRdOaDjZ+W4y0xIr0JTE9leRJQYJuxmc1rva5VCqJmoOQCLk9rEmb7
-         QegItLn3gmt31ArT8SmRYFrFnLSO85ARq0a9O1gXB4nTZ+RHwO1Np7mC8vzt8dIT2xl8
-         sGFdRGyk32CZ2++mL+NZfD+iNsl28OIe2K79nZhNMXwx0WaVemllFo88dCcHVaOGuj/b
-         /zaoOGs9csoBBnE4AzEE0MaSalWrjMjsAqFIRb3uy4sp+B1fPQozdFCcRZ6OYjTOb1DI
-         H+RanUZid0DFdkEUObbfxZR33Q/5Cidnxz+O3wDDquHvFB8mKON7Ma1R3ieedGmHYAC3
-         PTuA==
-X-Forwarded-Encrypted: i=1; AKwUvBxG+dLDWKRr2+nx//YzhUTA0n0HpLolnDR0//FiYweNGkJ1wf/PZ0fqATVH28wjDCUANTLRRd8rkI3cB6h6IA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYLlNX3MzrG8cwPC8pvotvXqb4a2gPKiaDKqLyGKtsO/T9hOdop9
-	D37S+xYwoJ7Of864+/aijd0UKcMhbieHJZuFyWdJvJPL0oVr4yWLdRq/7m8fqfHxW4Sil/jH/hF
-	LUvmGvGj6Jp/S5+PbdA==
-X-Received: from wmik5.prod.google.com ([2002:a7b:c405:0:b0:4a1:96ee:9879])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600d:849a:10b0:4a1:bd69:526f with SMTP id 5b1f17b1804b1-4a1bd695448mr36444035e9.4.1792055991818;
- Thu, 15 Oct 2026 02:19:51 -0700 (PDT)
-Date: Thu, 15 Oct 2026 09:19:41 +0000
+        bh=KZ5hcI7sSvmMGW83CeAYEeOw/S5ozCHpu45O4BxP46g=;
+        b=x0R+FMtrwpHx/bb1aFLWmGJfkuVrakLcxAAYkgsmP25qmbr5a/HZZB24OdlYc53YmA
+         XwqRrLinPTTkeYYsrlib3Bk3g37U+zVtNvO9M4tAEYmgwVCTAOla+0dlpMdsj22k6ltj
+         XKjj2V4Ug9nliHhSiyyRMxgjg+dDY9/i/R7lEDvsamxa5TwoOpbRdRRqJgjdysbhwg6a
+         AmfEdPGHH+PPzkEyHt7ECZXQdMpcPx0ED0yfuybtHCPcfzbUyCORnuT4mP/bqP3lP9Bi
+         S07Gl6vYgQl0oPx0SILshOSgMpRZE1QXNiuiWiYTr5OT0zFwJm4bboHRuImxNidp8QMv
+         izwQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwHtWbsiJYZwMezNdkBRMqa16rOcOzVYt1dfEJNkvBgnZS2J9Oce7B48g73cDe0wd4Ilp9Y4CEWdGraI+YFzg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKkPux0a11+HEVkaj6wnH5yBO956Jn4TFnDgU+uIJ/CI3dwxJy0
+	HwvUPjYAep5g4I42V2a4wAfQ4dyZBeT6/+r8nxbxMHQSrIDVLQrtOK4yE25EgP0aT3ZOc5o4NXM
+	ne89PzfxvyGhFdLseEOlJGqIr7LtMrgVsaJv7NVRjCQ==
+X-Gm-Gg: AYBFou1el14nnGbNV0e8WgQYOjPYQflOEKZHxjLzpUMkvRWKSMnytAy1pyyUZkigxEI
+	zhKNgE6wfP39jT1+fAJnEKeOQGFstUVm+W7MVTr53bmpAuBL45u919yx/UTVs8SSbmRQEmPdSkV
+	bp2Gmuu+ToXxGoaO96uS928WtJdRfHQiKmeLWtSy4leULcyeb1uhku8bfCTRgD4EbIhSB65LsoJ
+	F+SjVcvpvAiQPLysXaqLOEsHTvasN/73blDzdciFEP6MeScO2+aQ8E8DTy122MFoZLD9oLXus2/
+	yLGiRRFOV5PwsNFmwSGrqaepD+KnXQLse9guc5KAbA8ZIDcbfZ922eRRLERa5yJOW2/PgGXXiYw
+	gAnMDZJ6r7YIZa8/ntepl+59s
+X-Received: by 2002:a05:6512:3b8a:b0:5bc:cbe1:8ac4 with SMTP id
+ 2adb3069b0e04-5bcde35d84cmr7124226e87.4.1792057611692; Thu, 15 Oct 2026
+ 02:46:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAKya0GoC/x3MSQqAMAwAwK9IzgZs3dCviAdrUw1IKykuIP7d4
- nEu80AkYYrQZw8InRw5+ASVZzCvk18I2SaDLnSjClWjYW9J0JI5FmTvAoaTxG3hwrJrjbaNmuq ughTsQo7vPx/G9/0AZrVeXGwAAAA=
-X-Change-Id: 20261015-binder-debug-info-overflow-397b2d61a594
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1871; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=g93epIcW60azoLDx3yp4OIFZSLVEl2jasHWiFTB7pJM=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBq0Jqxtq6wI+7UOyDbevffhsg1lE1T/nUBhnZ3C
- av2B+5vmDWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCatCasQAKCRAEWL7uWMY5
- RnhZEAC6byVOvpchPmSPOeCXSPI2bI4mUSio58DU6DFA7cCIBOHcLUgtKWSV0S4D3Q1etQNrYww
- eC+r5rARxhSqM5i/nzhVE8fP1WEfiarsGYrXX4gYNPe785Tg2wen+hxDv7xLdQFTG6x88fgrFeA
- luQcyEdreGXqJARHRpXcfNqZv08QyjB/hbdNUJTxG8UIsgGbyyzXLhWMDjpLHYhIHbM5498L/ok
- UG6qcbrDkXcBwXg33rpXUTkaWL9aeD6qQxAa1Hn4f/GGfTmZiNs4OXDVkL6cdez8ugYnUq17LKH
- qOtHH0GHUDC7kAOUewPP3Dfshrti4Ch2o6WBeuHSuElTyX2faRS/ubWlQLXjDfak3BI19wrbRAN
- 1ZtkqvAirNYoMhrNCLwNAEgvqTE8yH8fGVB41FB2H/DdVnyaiaO9jTzsMQsjtr9bKLkT3wyAIQU
- x03lI2k/z3jdQeKwRKzvsaonYcU+ERsejZxuDDCBaN6P08zw8nLEjCo/CX4Ti2VKq6aD8NNmyfV
- y/Y8zrZYBd+AeLlJM4eRCu9zfLa8/Fij9rpHI474jmxSNR9ZpLTkoEGcfAoYrgVc6EddU0tLx/i
- CNcceq85rN9X/oJNGrzvSW0qSHc0RZwLMuktL+MfTCmvhV9AYUqCYaRFBjDeVyxyPAji0SgDvqW 9d8bFa7OZHOrkIg==
-X-Mailer: b4 0.14.3
-Message-ID: <20261015-binder-debug-info-overflow-v1-1-81fffb74d288@google.com>
-Subject: [PATCH] rust_binder: avoid overflow in get_node_debug_info()
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Rafael Passos <rafael@rcpassos.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+MIME-Version: 1.0
+References: <20261014-rust-workqueue-system-fix-v2-1-c018b8f870f9@google.com>
+In-Reply-To: <20261014-rust-workqueue-system-fix-v2-1-c018b8f870f9@google.com>
+From: Marco Crivellari <marco.crivellari@suse.com>
+Date: Thu, 15 Oct 2026 11:46:40 +0200
+X-Gm-Features: AclHuK-V4MMe-c4XgIPiZC8N9eZ4vEYkszRRk_SEIQzq_Xg0na_JHo_eBAyU_j8
+Message-ID: <CAAofZF4m3Fus+SizDwAdDEMr9V8RSgybveMhNg=nbM3dZj=JNw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: workqueue: replace deprecated system_wq with system_{percpu,dfl}_wq
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
 	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	syzbot+d39ca51f29c6b944a4f0@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="utf-8"
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Alex Shi <alexs@kernel.org>, 
+	Yanteng Si <si.yanteng@linux.dev>, Dongliang Mu <dzm91@hust.edu.cn>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-To find the first node whose address is strictly greater than the
-userspace-supplied pointer, get_node_debug_info() currently searches for
-a lower bound of `ptr + 1`. When userspace passes `u64::MAX`, this
-addition overflows and triggers a kernel panic when overflow checks are
-enabled, or wraps around to zero otherwise. Thus, use checked_add() and
-skip the lookup if `ptr + 1` overflows.
+On Wed, Oct 14, 2026 at 11:08=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+>
+> From: Danilo Krummrich <dakr@kernel.org>
+>
+> system_wq is deprecated and triggers a runtime warning:
+>
+>         [    0.857414] workqueue: work func ...WorkItemPointerKy0_E3runB7=
+_ enqueued on deprecated workqueue. Use system_{percpu|dfl}_wq instead.
+>
+> Replace system() with system_percpu() and system_dfl(), to match the
+> previous behavior of the deprecated system() and convert doc examples
+> and tests to system_dfl().
+>
+> system_unbound_wq is deprecated in the same way, in favor of
+> system_dfl_wq. Since system_unbound() has no users, just remove it as
+> well.
+>
+> Fixes: 64d8eae3f895 ("workqueue: Add warnings and fallback if system_{unb=
+ound}_wq is used")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Reviewed-by: Boqun Feng <boqun@kernel.org>
+> Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Fixes: f344930a163d ("rust_binder: speed up get_node_debug_info using lower_bound iter")
-Reported-by: syzbot+d39ca51f29c6b944a4f0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d39ca51f29c6b944a4f0
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/process.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Acked-by: Marco Crivellari <marco.crivellari@suse.com>
 
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 64960857bcdc..75e1c1b3e454 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -1214,10 +1214,10 @@ fn get_node_debug_info(&self, data: UserSlice) -> Result {
-         let ptr = reader.read::<BinderNodeDebugInfo>()?.ptr;
-         let mut out = BinderNodeDebugInfo::default();
- 
--        {
-+        if let Some(start_ptr) = ptr.checked_add(1) {
-             let inner = self.inner.lock();
-             // cursor_lower_bound retrieves the "key" passed or the next existing larger key
--            if let Some(cursor) = inner.nodes.cursor_lower_bound(&(ptr + 1)) {
-+            if let Some(cursor) = inner.nodes.cursor_lower_bound(&start_ptr) {
-                 let (_, node) = cursor.current();
-                 node.populate_debug_info(&mut out, &inner);
-             }
+Thanks!
+--=20
 
----
-base-commit: 7e170600b36298cba2ba7a0c63d1cebea7970708
-change-id: 20261015-binder-debug-info-overflow-397b2d61a594
+Marco Crivellari
 
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
-
+SUSE Labs
