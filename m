@@ -1,142 +1,144 @@
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C054A3F0E
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 08:12:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792051972; cv=pass; b=T3cLEdNqPgsVRkZeJYvpKEWUTd8RHcE3fX/nvfgkhwQ1LQ0EmDtcG9HkA2Mt1sKXF8XXjHpMBCW50pvASf3qbvpjj4qqxS4SuToDle3n9TZ/b/LSWSg6BwqlRLl0RlANYZ9WB8Mnvbrm1o5Gwc7AXBIhaZD5F+CSBqkJa2DwjHE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792051972; c=relaxed/simple;
-	bh=hERLV2oDnGYQ65m8SRllqSlefpn+X2q6W7ExBrm5XDI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GBLuxtNh8aEtSfvzZGo684QiysAcenQ3GknPfGQKE6GM13TEq6neUTQKzmW8sOEqaG3Ggh8jlN7MA/oFZri0wo72IyffOIRKcuKOS81rW8tx4sJY2VzlKvS3MvJk9ZSX3QizfivaOeLJc+DPlJDvnNQCsspuoEi3I0JRUMOw43I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PJgVl10P; arc=pass smtp.client-ip=74.125.82.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEFA4B1D0E
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 08:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.70
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792052239; cv=none; b=WKorkwZKvHgGtN2p71nyIXjxyUe+NlRi/RI4ItYviX9gNWpi8ACXDhCy3xD173PHSwNgnTuK6z8scw62Y0j8Y4lHjbhS4USYucFHcXKL4xFy+jdJd7P/e5HQ/14iZBNQXjM22wYUZBSt8aTz1OKRPnyoCAwdURv8jQTvubabncU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792052239; c=relaxed/simple;
+	bh=E7PZ6N0FszxLMMdaYgjXFBu8QGf6U3lNuUd7q+Uemus=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ro78o0pfMJiR+LiLjTOCvlOihmOgspOp2bsSBbtjGuXcKhMad1uF17PeXjBw1TWircEZMhIHbbkIvxlbU8lGmzfN6uj33+rifnOKtR1IEKoQjIe7cQraef4O+DVDNPmc6arf2u8ZrkeOIOilaLLV1SYd6tKXcCdXyaTNlp2aJzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EmTSgeQc; arc=none smtp.client-ip=209.85.221.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PJgVl10P"
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-33c30fcf33fso605324eec.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 01:12:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792051970; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RXZsOdq2H+QyRTA1KJ1fsP7nG83iqp8bEt2tyYsJ0yc0BZ5N5vqRzUAb0c7+fETkue
-         9oCX5bev4VEF4mXgPVqsjvN9fYhzZ2qH5YlDNH56c1BpV30R2Dfx68dOXBiO5SmJwcej
-         Js6wu11WJS/Pb3kNgBaOf2SsIKr00LZdK3JSLj4goDGn8C+BN60UGnjJf9auOqDAvrp6
-         o+LTHDGsaMbmpHwYBHH6YV/jIvKmTIc/r8EZlspgtJhczpZJp+mlHuG3g+gVJWz2HK6P
-         pdqZKweWsmo8YcFtnBMK7khiTzC0uwUwv1FT7meec0wAh99kzRYi6hedwyxPH6vXT9vG
-         cKmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hERLV2oDnGYQ65m8SRllqSlefpn+X2q6W7ExBrm5XDI=;
-        fh=WaG7/4zDpUhHMAf8MScwYlB5tkdefh5aESR3YPd/cYQ=;
-        b=VjCwcbSikx4LJ+e+GhQxySYYpQnjTW4s76SDLr0bSAg81VmOXhDv536ZCi95Rx1xwj
-         IwNbufQwmcU2WY92icd1uYWrHQuYnSESG3SsZlgF3aXRPyBO53n0TdyyPnOWRM9EwxL9
-         0vH/2m/mn2wPYAgc9Zt9Mqet/5ASTre192ti6P/Z4/Qnb6Q0Ku41Cz+On2stuA8LtGs4
-         1yLFXmQfjUY14YqagWscKIhVyK4d6lvx61HvC8O/IgBlAnu5L+GwbRAdw0zTjcHgSywL
-         H/NOfOoc+V9MWixalPA4ZT7tYgVmelFR6VxafmuHaPT9DwheKymrbl2ues6iwl5pWmyf
-         b5FA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EmTSgeQc"
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48c437ae81eso921600f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 01:17:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792051970; x=1792656770; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hERLV2oDnGYQ65m8SRllqSlefpn+X2q6W7ExBrm5XDI=;
-        b=PJgVl10PGKHHb7/AJ0V//6cljTpG0aTS0iTBVgob58ocDfkNxG+N79VvTQGUxwugB0
-         JHNsZ4U5RyseqxQGrJcLqHMwqyoQzlvVtcKQs8XWstiXPiFC1rUmocBR7UTnkwRVi2iB
-         ySwpgB/9Elxn2hM8DMKf6s3C2yfJAI//Dn04K1vy1JzDZCcOBzA2Rcy5m113oB+Ov8nM
-         Ee2QIwrAZf9yALzN/YwR/vP5S7cnGhWN2zGHDshQbD7dHeeclDOMFWdoH7oiNy5hW9Xm
-         65+Y9D6Gpm/SLNm1DtQAravbemcyBUFuqrpHTasfWrpkcMEcyqCPnZYom1jNXy/0teKN
-         8XDg==
+        d=google.com; s=20251104; t=1792052235; x=1792657035; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qX7Lg8nlPzyAAsaFZtEahUdsTQmoqhdq+zOHN21G2HM=;
+        b=EmTSgeQcmOPgZbudvDM5YK601HW2rXW5xDB0m8AXDOTxntsugs2csqxdLrlgiwhe/3
+         n4cZg2o8EQnO86ojJPs/YXnK21XbtYU7q1JBUGycMhA0cFz5KkRfHlEAlL/sN26qCxLX
+         ayRyW6v1tVXTWXatTwvQDU2iYYufNLHU3BneJZ+jcDDlNtojmeYXtsqOaWihcnyNbALc
+         1FWHCZD5WviZ07ttCNN09UBPcf3mhE/va3ddG7Mb5h/xslD52ecdYqU2us1qoM7Lifkb
+         Zf5qM5nLvwW60WOVL9PWfI1mg4TsldjdZ3lwHrbh4wQmbT9F9ZOsTApAktzuzQdr+Kie
+         Cbfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792051970; x=1792656770;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1792052235; x=1792657035;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hERLV2oDnGYQ65m8SRllqSlefpn+X2q6W7ExBrm5XDI=;
-        b=PKxoznf239mGfrDcokKMPJTicScRZalFXuLt/aqGAQSbDmzSssSh7kV/30c1o5Yrrs
-         brRpDUMFtDVYN5uCIUkc+0sPyY6e7LGo0SjrbsvDRpXlU6n4jfSNJQdK5NctvPER0Rx4
-         ki1EX7IQPiS7L4U8aNCrxvHbeseRNpGrwk1Cmdhsyyobl9fEuf/VKuVILoL3947zBS3d
-         hh0mLiMQKJTNg9PFTVeZQcWL3t+iAUKet/eys0JG2RWS5P3m9Xmx4n0VB2q8e/M7tgZw
-         5K90v/kALBWK6oxC7Ue9bihe5+En3bqc5IzFpwZr8hNB/7HDZGYhsojtzNy3rOwUW9oD
-         p5hw==
-X-Forwarded-Encrypted: i=1; AKwUvBy3t79hZp+iyBoIlo4ycwa2ty6LOIv1rpbKXmnEKEs0jFATwkl34U8srVSVHUVUINdEByivf4eGhbzi+rYrQg==@vger.kernel.org
-X-Gm-Message-State: AFq9FYILFRID+22xkUnFLMJbviKGTnJUWlUQuHMGgW+yupuNyssfU5bT
-	IJ+Z6TNQESNy5fIf8eGYFhaqiXLkSH48xvjJP1q5f1ZvDySOZX6sqdZ1QNZQhKoMUD+H1pH5WOI
-	Vxyetdb542Bf4vY+SBF5TyUo/eQifWq4=
-X-Gm-Gg: AYBFou26f8b0DWBBe8ljdHEv4Psm7cvhQs2y5vjH+Iil8N922UqqpIUmch6JBYV0zV2
-	/ecJFeP8Qzpzrw7jkVhKFK7TP8ofLqN+Esmx/0sexmSaNoPDQSycdaHBIsC8rUSPhbj51BxF/ee
-	U2SPPoRKVd4yEkb3KpUKJm0/mstojRcpzPxteWUhBJg3Imrm7/i17gb7AllkAJNv1BS/rBX47sv
-	ozEm65wwglPIle82oKgCqa1M56R9Ky1/wcTheXEPdIeorSQhcVRIxG0+ANKL6mS8Ig0fl1iw4ec
-	7WiL+BbxqvYj7iZpd2gPlrwHrKGJ91hXZ4ZqCGVONgffZaJfgLonWcygSx11bGyovZQEg0Te9gd
-	h1VbkvwJYHaVQT8nVYROEQ/GNJkvENQ1g+VgbLo7gFSN+MEcCSaLM4Dt+LBhmkHVd72bDQQB0IY
-	Ipb/5UDrVM8L6qgTdbTIHcvHqAVti8298NZkaRHBXccsTmKxLy/DnSdGqlxhMqPg==
-X-Received: by 2002:a05:7300:f3c8:b0:351:7883:bf47 with SMTP id
- 5a478bee46e88-3537dc8e9c0mr38736177eec.0.1792051969948; Thu, 15 Oct 2026
- 01:12:49 -0700 (PDT)
+        bh=qX7Lg8nlPzyAAsaFZtEahUdsTQmoqhdq+zOHN21G2HM=;
+        b=wjJ3B9GXbIjCEhRiArozr5xGvd2vw8/2FFHRdaNnsRe0k3yKf190vlvUA2VrP2kIKj
+         5VzJLZgXVdZ++/cWTSnGj9BOwg5acMM+Bixsww1gEJeCthTpQIyLddALQZ6cwOhCB8H1
+         PoTMsnqVfbjkgEtzrVGx2IvA0tZOjpzFi0KuF70KNgCssZLoqXnfATUn5tVhSbQfTVHd
+         RU7zO17v3Dh7KhwHe6zurRK53LBQvGkp4FxGlD2qdgu9Fbi4RUNaIkqIeaipGHOAEHvs
+         BdfcJ7SxyHVvcSje0EJQG7eeIWi9nNSfMjnYgw3jpyDfRPn3xTo2P2U7GsNLFY1YFZCm
+         P8yw==
+X-Forwarded-Encrypted: i=1; AKwUvBxgNJwsXlvDCX1vTidAU1VKYxSZdCc3DEXtylfawUvBQIAFbqNoW+Z/5h7n5qby0De7TDDiDZx880U8HycO7Q==@vger.kernel.org
+X-Gm-Message-State: AFq9FYIvDLVWkuDIeJ5VJ5P8NpP+f8itQPs99jidV6tYAqexeEfDxgvv
+	EF3HKxa04qQNV06GU24Y9mR29WmK6yVXG6xUplq4RrZVHJtFc2t7OFVn4SmTs2efnMSRxKOdvFO
+	kI4qYcsMvnfbDGY1P6g==
+X-Received: from wroy15.prod.google.com ([2002:adf:f14f:0:b0:48d:f52d:93ac])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:46ca:b0:48d:f14a:9188 with SMTP id ffacd0b85a97d-48df14a92b1mr4100690f8f.17.1792052235100;
+ Thu, 15 Oct 2026 01:17:15 -0700 (PDT)
+Date: Thu, 15 Oct 2026 08:16:26 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20261013184809.35143-1-ojeda@kernel.org>
-In-Reply-To: <20261013184809.35143-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 15 Oct 2026 10:12:37 +0200
-X-Gm-Features: AclHuK-Ovd7eCup_NCIhuKLIB2g9L6osq22nnjuLIywgHYYYtz_K9zuPifQKcLA
-Message-ID: <CANiq72=o8OsB62Yr-kNMR_qThB_JEg0kheZxNSW_u0tcjt9UtQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: zerocopy: fix link to upstream `README.md`
-To: Miguel Ojeda <ojeda@kernel.org>, Joshua Liebow-Feeser <joshlf@google.com>, Jack Wrenn <jswrenn@google.com>
-Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIANqL0GoC/x3MQQrDIBBA0auEWXfEscXaXiVkUXWaDC0mUQgJk
+ rtXunyL/ysUzsIFnl2FzJsUmVMDXToI0yuNjBKbwWhjSdMVyyLpO4cPSl7RIjl83I0O0dPNs4X WLZnfsv+fPVhFTh0wnOcPRFahxWsAAAA=
+X-Change-Id: 20261013-spinlock-irq-6-18-9720cdb14be6
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2178; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=E7PZ6N0FszxLMMdaYgjXFBu8QGf6U3lNuUd7q+Uemus=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBq0IwERFzAhp1VNXrBknz/Gt2WAq3AYCiFa2d8Q
+ rh8yHyRBHCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCatCMBAAKCRAEWL7uWMY5
+ RvYfD/41o14648yaQad597iJTkzJ9ic6n9ykRuUWrHM5caQsBVoLm6StqOROvoTMoPXnxoDwVt8
+ k+D6HHmT/Wfp5hXMBLBh8cBcPN91UDml/04cVLMsEAr4Gnt/zqgdj9pVJQOiD/y2oB2SmfDGV1B
+ uIZxlPed2k8dFNl6c//nCBihgeX4Sv8cUkdSNBIdb7vOjhJB+ow5dZ2KOZX/kdeh2OBdPWK3yeN
+ grJYZcTDmPA+CYyBJ8ayGWC2DfYIDtZ9IAoh+cMFVPAUopLkk/fQRcBNw/A8sZv8Rb1i6MTDHEp
+ xNpnYnjPt+dKy3/xrqrdwDptf5s8eZBI9OoA2A1ft7e+2nkssL9RsYVeLAFykln2kcE6U6vIEKA
+ TdmDXspxrEvizz0/x6B5TVhlP0z193iwzxTkAPIM9qZIsDdgVrDqRkD+3gTMSVwqnkplynWTVh5
+ cfn2ofzRe6Vf4r5nGF1lr5Hhc/cy9UTZ8asPTITVssTbSBmSCSiUe8vVGPmqn6tJaEl6VY4DIgp
+ 3kFj70It4GLkTW0tbmTDLRkXFKmHqAZEXWpe5JAmREWwYYuldOQ/qXV5Wskz16N+oOocFPOBWhK
+ FXJN7R3/IMuW0HEz0s2iThER18f+0JnhewIDaEbuZI/FGy9meYTtSZeg0d8inU+N6EM9przq8Kj 61sj3bwXiV9QOCg==
+X-Mailer: b4 0.14.3
+Message-ID: <20261015-spinlock-irq-6-18-v1-0-72c58975994e@google.com>
+Subject: [PATCH 6.18.y 0/6] Backport spin_lock_irq_disable() to 6.18.y
+From: Alice Ryhl <aliceryhl@google.com>
+To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Sasha Levin <sashal@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Gary Guo <gary@garyguo.net>
+Cc: Boqun Feng <boqun@kernel.org>, Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@redhat.com>, 
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Oct 13, 2026 at 8:48=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Upstream moved the `zerocopy` crate into a `zerocopy/` subdirectory
-> of their repository in v0.8.51 [1]. However, in our v0.8.52 update,
-> the link was not updated.
->
-> Fix it by adding the subdirectory.
->
-> Fixes: 2808a3963988 ("rust: zerocopy: update to v0.8.52")
-> Link: https://github.com/google/zerocopy/pull/3434 [1]
-> Assisted-by: LLM
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+This series backports the new spin_lock_irq_disable() API, as well as
+the new SpinLockIrq API for Rust to 6.18.y. This means that any upstream
+code using these APIs can be backported cleanly to 6.18.y without
+needing adjustment to work using the old APIs.
 
-Applied (both) to `rust-next` -- thanks everyone!
+The first commit uses a different implementation than upstream commit
+e901c1510e24 ("irq,spin_lock: Add counted interrupt
+disabling/enabling"). In mainline, `local_interrupt_enable()` works by
+carving `HARDIRQ_DISABLE_BITS` out of `preempt_count`, which requires
+reworking the `preempt_count` layout and arch-specific accessors across
+x86, arm64, and s390. Instead of backporting those invasive changes to
+6.18.y, patch 1 implements the same refcounted interrupt disabling API
+using a dedicated per-CPU nesting counter and saved irqflags word. This
+is slightly less efficient, but is much less invasive. Patches 2-6 are
+clean cherry-picks of the upstream patches.
 
-As mentioned yesterday in the call, I fixed Jack's Cc address and Josh
-already fixed upstream my SPDX report for .63, so that is fine.
-Upstream even has now an SPDX check so that we don't hit it again,
-which is nice, thanks! :)
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Alice Ryhl (1):
+      irq: Add refcounted local interrupt disabling
 
-By the way, we also discussed a concern after the call regarding the
-size of the updates -- it is indeed a bit scary to see the number of
-lines changed, even if the actual commits on our side are mostly
-mechanical, and even if many of those changed lines are for things we
-don't actually use in practice (e.g. Kani, Miri, tests, benches, new
-gated features, etc.). I still think we should still take regularly
-these bumps, since they contain fixes, and since we don't want to get
-too behind upstream anyway given the support they are giving us, but I
-thought I would mention it.
+Boqun Feng (1):
+      rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
 
-We also discussed what will happen when the kernel may want to move to
-`syn` 3 in the medium-term -- it could be nice to talk about it in one
-of the next calls.
+Lyude Paul (4):
+      rust: Introduce interrupt module
+      rust: sync: Use super::* in spinlock.rs
+      rust: sync: Add SpinLockIrq
+      rust: sync: Introduce SpinLockIrq::lock_with() and friends
 
-Cheers,
-Miguel
+ include/linux/interrupt_rc.h      |  26 +++
+ include/linux/spinlock.h          |  61 +++++++
+ kernel/softirq.c                  |  63 ++++++++
+ rust/helpers/helpers.c            |   1 +
+ rust/helpers/interrupt.c          |  13 ++
+ rust/helpers/spinlock.c           |  15 ++
+ rust/helpers/sync.c               |   5 +
+ rust/kernel/interrupt.rs          |  89 +++++++++++
+ rust/kernel/lib.rs                |   1 +
+ rust/kernel/sync.rs               |   9 +-
+ rust/kernel/sync/lock/global.rs   |   3 +
+ rust/kernel/sync/lock/spinlock.rs | 329 +++++++++++++++++++++++++++++++++++++-
+ 12 files changed, 609 insertions(+), 6 deletions(-)
+---
+base-commit: 17ad2612c11a748b50d32eefc681344b26fea946
+change-id: 20261013-spinlock-irq-6-18-9720cdb14be6
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
