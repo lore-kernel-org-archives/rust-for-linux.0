@@ -1,217 +1,248 @@
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB825326CC
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 14:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBCE4C14EC
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 15:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792076256; cv=none; b=P+vBw9JWqjeYvCl+WwReKnLGgRAZPhlxzodTTraYAIScShLQBgcvXwVxKEX4Jc6xyd4YivpjBE3NUNLpw86THzX03GNMAqHNG9SXDNLFLaJC7G9YbMJb5KymV2lf7sqZvfyLUTnNqrUbl9KeeewOZsbsHy2RdSRIMPCyCbJstIY=
+	t=1792078982; cv=none; b=O+eGLDMisSpT88cbe5nQGf1vOW7P7e7twEdznnhAufdvysf1vw83bdk/bviwRU1+CF2BxpkDaMNRtU88LFWoxcFwg099dCf1x9F+HLU3igvCBUu6hm1N1Ubkz0C4fR89z0l88JtSQBlovDGKU3subFF91dp7aW622SN9tIRF/GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792076256; c=relaxed/simple;
-	bh=nbtf2aJFUaL/4iH/qLfpXzTeoJ6Tlhbj6DaOj27+188=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=n3QZHmqL6kJMGjxkD08g4Wys5UENgWLgpJ7VvSvMXg3jVb10Eiqoo1rBuNLnsPhXcijiXrMDMb/Y/d9yRTURUpZoHBM5UcDIekEbkoQFVdCNrnygadGF2JcZdPdRpZnIOfAKM5LfUTQBhSxA1gQOUh0XrOfjYJh6Dd34M0bEM1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elver.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EZasvRAj; arc=none smtp.client-ip=209.85.128.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--elver.bounces.google.com
+	s=arc-20240116; t=1792078982; c=relaxed/simple;
+	bh=1fUOi+Usxn2LQcFzjoDicMxQvfperVSbtfIS6t3a0mM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gpBzFTeqHQ+85wOmg3iSv4FePW8PwYZ+L+COgFewECgnWOWQqBBjiY6qsgTWRF+0fuV1xBlWS8UMzVYOTVlfyX0KadJxzOzoNj0/ML4/9SnWtghZG3DtqScZbrcNNOMY4u42ppcCLP3VY/wFVdpGWtX+mEsEXy7RWupzZncDN6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=R0UR9SXf; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EZasvRAj"
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a019d53f46so17262835e9.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 07:57:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="R0UR9SXf"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a16af2a232so43164715e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 08:42:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792076250; x=1792681050; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gOPLD1Nk0xD9uDIf10OzE40FWH2sqAvdDlcLSS3lQok=;
-        b=EZasvRAjos5Z9twr/kI65YM9wdYqGfB5UoPJL2pol/ju2uoTKdBPr1nyQUP/ZLLMIH
-         MBnG3IlODF05yBX1GwZnYJyGhJrnycv6DNblJkwzq6+/QaCwQph7gA1Z1xwFj6WXVcef
-         W+raxletovlSkMJaiylCjoiSQKMYcaZ5XmQT/jk294q+1UgkPGArMzrVkyjoJec0N+tc
-         /HaDgv+NV1EuwfpLLJtOorWdwscXBr4aPN1447opaOPfFN6R51vLspa4th4Xc24J3BqZ
-         1Mjs8Rt01sA+voKP7UkAyrGoDlmYdL5WZqdP9FsFWko60LE0zw/gH0WHPloWplgHccUx
-         UI9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792076250; x=1792681050;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=suse.com; s=google; t=1792078967; x=1792683767; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gOPLD1Nk0xD9uDIf10OzE40FWH2sqAvdDlcLSS3lQok=;
-        b=KwnnPGfCVaBEGz/ZBWnLxlfGvU4CJ/uxu1xpVjOSPtmsjh683evycv1ITYNUhFgG77
-         BRt3i9f/9UZR6jym8ZAq1K50zjUJFNe8NVyeroAccuKgk6ZqQCRGnRE7EqBG0LWuTdkW
-         suhzIKgT05ZGKFr7z/9s8ael6UPWuiDY5S+7NltdumTOAc2diEdyexRGYc0FuAQrNpHe
-         MAzH0+3PVyk6BH6qBvJKMeqcbyGp7F8X4bibO2sK6KFJJUa9XTCvs9ZJdgQwcAdr58dN
-         JDII1CIR2DKxT2+2SVzfilNVfFb/LDY6hwxfSJ+uJKTS43MTiS7cO17/xpuPKwNPFPEw
-         9TPg==
-X-Forwarded-Encrypted: i=1; AKwUvBz8+PEKvzNwrSw+0QKxWl+7m+Vs30nIJGbUFWzdDoTQDI5lyt7+pv6n+s3xZcJ6iR50FPfSMhRr0FutvItDpw==@vger.kernel.org
-X-Gm-Message-State: AFq9FYIvkegB5oGBUbmn7SnqOeqi5ATMQppkecvek6YRvaOmKcB4pLka
-	CDzoIA10sIE2aJzXNpeyaVmF8XMVhGZpX+IN3tLunitBgWn3qJVXBSLTqGrJbVcHMFL8iXrGCz1
-	QGQ==
-X-Received: from wmbgx18.prod.google.com ([2002:a05:600c:8592:b0:4a1:7fbd:344d])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3f16:b0:4a0:2150:55fb
- with SMTP id 5b1f17b1804b1-4a18e44395bmr382529505e9.4.1792076250083; Thu, 15
- Oct 2026 07:57:30 -0700 (PDT)
-Date: Thu, 15 Oct 2026 14:56:14 +0000
+        bh=8EVUVXTF9B/pmjVEVo0zfJaBGiZoNVg7V5lse2RyO7M=;
+        b=R0UR9SXfSdLRKN8vgsjzhyd81oaEz7tHTwslAVD4uu2yocB8iyTzeaX91HJfAF2HSZ
+         zfyNFy9tY2rveIy5HSk4kHu6cou98Mmm65Nw/ib9mtV2wnXWSnap0yORcKiRn9+bhNLb
+         /HvkgPwk8c21B4vfdeFwnATqt/tKh7V1N6JFjc1GswxG79FMaIisTlhabNQRTkYz/AAi
+         A1KK2BSF7pJOfDu8sLbpi305mh4DqIdXIenAOtLPi3roSTwyU1GWiEULVpymwqlkfLkZ
+         ApWTy1oTpVVOcfy57kt0RsQYUZoCNCDNc0yb16GC0j95gqwCT6HKnJMFBD1/29NWON5y
+         v/Mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792078967; x=1792683767;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8EVUVXTF9B/pmjVEVo0zfJaBGiZoNVg7V5lse2RyO7M=;
+        b=kQah0OE3IFGKFzKxN2jm6Ys/MCsfS6j+S23g9DrkrbFwvJgSxhamNqyPRA8fUpINar
+         3XoTSwXWGrCE5gZNXgFoUSrl9GRPDD2BQyGQ0ikIn+dx8jDuDJIq345PAM6YZ4Ou+swZ
+         oJpRl0HlBrjEBjPZ6mE9fc88jhszi4fRu/Iy1RsexjRRMqcFkDZ99mgzoSS4rgxDIu/p
+         DGpzUT7SxbkN1/k5vjzJObLxMcW90CbYV1DbNoULzLTzXVXWs9XOwMNxwkhbpp0A1WX0
+         LKUnd5wgi75UMU39GNxz7vFT89jDdfd5g9aCHzM5Oo0yQCmqk6IzLdWc//DA1DrdiUyD
+         69Bg==
+X-Forwarded-Encrypted: i=1; AKwUvBxalh815Q4wrOk5np9yX1DPm0VGALRxeDrdjd22vrdwFlO77mtIgiqX1fp5FeYFopwoAeAK66+F33v200MEWg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYIcs+aI2GajeYFlvysCrOl+z9FEEECGC1hILdax1ED8pCCCIHgc
+	Y2G7oy0AjGDLTjRGDjMKZUmJ3BYFrP1+skelW4rqCQkcyCDTL+qmGH2P+MtQ81mgS+A=
+X-Gm-Gg: AYBFou2cIFHytZZS5I+VE7i2mhO4Jnc7XAMmsoBDfkDxkG4sO1RQoluDdL8K3SCbuoe
+	zwafy5iujK3qMjDsnasq3TJ3fSBabYHbsAtB6hRelKsLc131OTtnrNNfK5vIbjrZRRcxlRKTvlr
+	Ko/ow747e2mgOFMQZlU/29Qt1FgI3qIT/rbOlS+xpBziQlXJAajC7/Ap3JklqzsqHE72O4qEJ4Y
+	JSzSzV2bO24MJWxV3UnWBhYm4RSFLmM2ZTE6HpFzYgx69gEAJmCUW3lJWSwqya0DSqMLzjQZ6Qz
+	CHs8TAvuMSbOkh6mnzl6gk7Ztmd2vYqbWpJqNR5lXLAOnO4/mBZuW2wba47qOPI1ReSgmI46wbz
+	wEJxqPbdNfoILRau0DTAMrX7BKFMMk4BYGNOIuyBZPvzv3AtL5LeNL7o9zLFNBK1R191MoXfttV
+	gq/Sn1MuMMMXyBeJFT3SDD+0Zumk5VJiwQNRAWgECNEmzJoIhcISPogmZusqDhMMemuyvQnCLmA
+	FI0544ujygIQQHr/5nyh65eIED/Sri6ALj9OwhMsgUytA==
+X-Received: by 2002:a05:600c:8b82:b0:49f:fd2d:23c7 with SMTP id 5b1f17b1804b1-4a18e4b887amr354993855e9.27.1792078967287;
+        Thu, 15 Oct 2026 08:42:47 -0700 (PDT)
+Received: from ?IPV6:2a07:de40:8100:0:89a9:fd0e:583d:4a53? ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bd66c5e6sm52172585e9.2.2026.10.15.08.42.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 Oct 2026 08:42:46 -0700 (PDT)
+Message-ID: <d17b00f9-2a6c-425f-9697-6bc8f31f7a7a@suse.com>
+Date: Thu, 15 Oct 2026 17:42:45 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261015145714.3327543-1-elver@google.com>
-Subject: [PATCH v2 1/2] kbuild: rust: enable KCSAN support
-From: Marco Elver <elver@google.com>
-To: elver@google.com
-Cc: Alexander Potapenko <glider@google.com>, Boqun Feng <boqun.feng@gmail.com>, kasan-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, Dmitry Vyukov <dvyukov@google.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, "=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Asahi Lina <lina+kernel@asahilina.net>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Yury Norov <ynorov@nvidia.com>, David Gow <david@davidgow.net>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Alvin Sun <alvin.sun@linux.dev>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Petr Mladek <pmladek@suse.com>, workflows@vger.kernel.org, 
-	linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 13/22] modpost: cache section relocation mismatch state
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
+ <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, Alexey Gladkov <legion@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Arnd Bergmann <arnd@arndb.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Ard Biesheuvel <ardb@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>,
+ Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev, linux-riscv@lists.infradead.org,
+ linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+ linux-hardening@vger.kernel.org
+References: <20260923-build-speedup-v4-0-73128809a4a4@kernel.org>
+ <20260923-build-speedup-v4-13-73128809a4a4@kernel.org>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20260923-build-speedup-v4-13-73128809a4a4@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Rust supports ThreadSanitizer instrumentation via LLVM, which is what
-KCSAN relies on; however, Rust code is not currently instrumented.
+On 9/23/26 7:18 PM, Lorenzo Stoakes (ARM) wrote:
+> For every relocation modpost invokes check_section_mismatch() to determine
+> whether there is any kind of mismatch between the source and destination,
+> and if so which classification applies.
+> 
+> Each time it does this it invokes section_mismatch() which iterates
+> through the sectioncheck[] array every time it's called.
+> 
+> When walked a relocation section the source is fixed and there aren't many
+> targets, so the same names are looked up over and over again.
+> 
+> Therefore cache not only mismatch categorisation but also whether a
+> mismatch even exists for a given section and look up the sections in the
+> cache.
+> 
+> Special indices (undefined, absolute, common) take the uncached path as
+> before.
+> 
+> This results in very significant speed ups for allmodconfig incremental
+> builds.
+> 
+> modpost is on the serial tail of every build that links vmlinux.
+> 
+> Whole build, 128-thread Threadripper 9980X, best of N runs:
+> 
+>                                          before   after     delta
+>                                          -------------------------------
+>   x86 defconfig, touch mm/vma.c, gcc        8.5s     8.3s    -0.14s (-2%)
+>   x86 defconfig, touch mm/vma.c, clang      7.7s     7.6s    -0.13s (-2%)
+>   x86 allmodconfig, touch mm/vma.c, gcc    33.9s    29.4s     -4.5s (-13%)
+>   x86 allmodconfig, touch mm/vma.c, clang  31.9s    27.9s     -4.0s (-13%)
+> 
+> Assisted-by: LLM
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Pass -Zsanitizer=thread and the same TSan backend options used for C
-code to rustc. Wire up KCSAN_SANITIZE in scripts/Makefile.lib for parity
-with C (though rustc currently rejects linking crates with mismatched
-instrumentation).
+This looks mostly ok to me. Below are some nits you might want to
+consider addressing.
 
-rustc only accepts -Zsanitizer=thread for targets that declare support
-for it. Of the targets used by the kernel, this is only possible for the
-generated x86_64 target specification, so restrict instrumentation of
-Rust code to x86_64 for now via HAVE_KCSAN_RUSTC. On other architectures
-Rust code remains uninstrumented as before.
+> ---
+>  scripts/mod/modpost.c | 66 +++++++++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 64 insertions(+), 2 deletions(-)
+> 
+> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+> index 75374c64b8cc..0fd43c8a89ea 100644
+> --- a/scripts/mod/modpost.c
+> +++ b/scripts/mod/modpost.c
+> @@ -1155,12 +1155,67 @@ static void check_export_symbol(struct module *mod, struct elf_info *elf,
+>  			 name);
+>  }
+>  
+> +/*
+> + * mismatch_cache[section index] ->
+> + *   0 - uncached.
+> + *  -1 - no mismatch.
+> + *  >0 - mismatch index + 1.
+> + */
+> +static int *mismatch_cache;
 
-All TSan options used are supported by the LLVM versions of the minimum
-supported rustc, so no rustc-option checks are needed (they would also
-fail, because x86_64-unknown-none used for option checks does not
-support -Zsanitizer=thread).
+It might be cleaner to maintain this cache per elf_info, since it
+logically belongs to the processing of an individual ELF file. This
+would also be consistent with the existing symsearch cache, which uses
+elf::symsearch.
 
-Unlike Clang and GCC, an equivalent to -fno-optimize-sibling-calls is
-omitted for Rust because rustc provides no corresponding option. While
-disabling tail-call optimizations helps preserve complete stacks traces
-in reports, it is optional and not required for KCSAN to function.
+The description could use 'to_secndx' instead of 'section index' to
+clarify whether it refers to the source or destination section of
+a relocation.
 
-With this enabled we can detect data races in kernel Rust code and
-between Rust and C code.
+> +
+> +static void init_mismatch_cache(unsigned int num_sections)
+> +{
+> +	mismatch_cache = xcalloc(num_sections, sizeof(*mismatch_cache));
+> +}
+> +
+> +static void reset_mismatch_cache(unsigned int num_sections)
+> +{
+> +	memset(mismatch_cache, 0, num_sections * sizeof(*mismatch_cache));
+> +}
+> +
+> +static void free_mismatch_cache(void)
+> +{
+> +	free(mismatch_cache);
+> +	mismatch_cache = NULL;
+> +}
+> +
+> +static const struct sectioncheck
+> +*cache_mismatch(unsigned int secndx, const struct sectioncheck *mismatch)
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Acked-by: Boqun Feng <boqun@kernel.org>
-Signed-off-by: Marco Elver <elver@google.com>
----
-v2:
-* Add note on -fno-optimize-sibling-calls to commit message.
----
- Documentation/dev-tools/kcsan.rst |  7 +++++++
- lib/Kconfig.kcsan                 |  7 +++++++
- scripts/Makefile.kcsan            | 13 +++++++++++++
- scripts/Makefile.lib              |  3 +++
- scripts/generate_rust_target.rs   |  2 +-
- 5 files changed, 31 insertions(+), 1 deletion(-)
+Similarly here, s/secndx/to_secndx/.
 
-diff --git a/Documentation/dev-tools/kcsan.rst b/Documentation/dev-tools/kcsan.rst
-index 8575178aa87f..3bb8754f844b 100644
---- a/Documentation/dev-tools/kcsan.rst
-+++ b/Documentation/dev-tools/kcsan.rst
-@@ -14,6 +14,9 @@ Usage
- KCSAN is supported by both GCC and Clang. With GCC we require version 11 or
- later, and with Clang also require version 11 or later.
- 
-+Rust code is instrumented as well on architectures whose Rust target supports
-+it (currently only x86_64; see ``CONFIG_HAVE_KCSAN_RUSTC``).
-+
- To enable KCSAN configure the kernel with::
- 
-     CONFIG_KCSAN = y
-@@ -121,6 +124,10 @@ the below options are available:
- 
-     KCSAN_SANITIZE := n
- 
-+  Note that ``rustc`` rejects linking crates built with and without KCSAN
-+  instrumentation, so ``KCSAN_SANITIZE`` and ``KCSAN_SANITIZE_<target>.o``
-+  cannot currently be used for Rust code.
-+
- .. _"Marking Shared-Memory Accesses" in the LKMM: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/memory-model/Documentation/access-marking.txt
- 
- Furthermore, it is possible to tell KCSAN to show or hide entire classes of
-diff --git a/lib/Kconfig.kcsan b/lib/Kconfig.kcsan
-index 4ce4b0c0109c..f0096e1c8b61 100644
---- a/lib/Kconfig.kcsan
-+++ b/lib/Kconfig.kcsan
-@@ -10,6 +10,13 @@ config HAVE_KCSAN_COMPILER
- 	  For the list of compilers that support KCSAN, please see
- 	  <file:Documentation/dev-tools/kcsan.rst>.
- 
-+config HAVE_KCSAN_RUSTC
-+	def_bool RUST && X86_64
-+	help
-+	  rustc only accepts -Zsanitizer=thread for targets that declare
-+	  support for it; of the kernel's Rust targets, only x86_64 does.
-+	  Elsewhere, Rust code is not instrumented.
-+
- menuconfig KCSAN
- 	bool "KCSAN: dynamic data race detector"
- 	depends on HAVE_ARCH_KCSAN && HAVE_KCSAN_COMPILER
-diff --git a/scripts/Makefile.kcsan b/scripts/Makefile.kcsan
-index 19f693b68a96..01af6fd71006 100644
---- a/scripts/Makefile.kcsan
-+++ b/scripts/Makefile.kcsan
-@@ -24,3 +24,16 @@ kcsan-cflags += $(call cc-option,$(call cc-param,tsan-instrument-func-entry-exit
- endif
- 
- export CFLAGS_KCSAN := $(kcsan-cflags)
-+
-+ifdef CONFIG_HAVE_KCSAN_RUSTC
-+# The minimum supported rustc's LLVM supports all of these options.
-+rustc-param = -Cllvm-args=-$(1)
-+kcsan-rustflags := -Zsanitizer=thread \
-+	$(call rustc-param,tsan-compound-read-before-write=1) \
-+	$(call rustc-param,tsan-distinguish-volatile=1)
-+ifndef CONFIG_KCSAN_WEAK_MEMORY
-+kcsan-rustflags += $(call rustc-param,tsan-instrument-func-entry-exit=0)
-+endif
-+endif
-+
-+export RUSTFLAGS_KCSAN := $(kcsan-rustflags)
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 0a4fdd8bd975..78f1c23e54be 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -98,6 +98,9 @@ ifeq ($(CONFIG_KCSAN),y)
- _c_flags += $(if $(patsubst n%,, \
- 	$(KCSAN_SANITIZE_$(target-stem).o)$(KCSAN_SANITIZE)$(is-kernel-object)), \
- 	$(CFLAGS_KCSAN))
-+_rust_flags += $(if $(patsubst n%,, \
-+	$(KCSAN_SANITIZE_$(target-stem).o)$(KCSAN_SANITIZE)$(is-kernel-object)), \
-+	$(RUSTFLAGS_KCSAN))
- # Some uninstrumented files provide implied barriers required to avoid false
- # positives: set KCSAN_INSTRUMENT_BARRIERS for barrier instrumentation only.
- _c_flags += $(if $(patsubst n%,, \
-diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
-index 7687b0dd5474..4b02bffa6b46 100644
---- a/scripts/generate_rust_target.rs
-+++ b/scripts/generate_rust_target.rs
-@@ -231,7 +231,7 @@ fn main() {
-         }
-         ts.push("features", features);
-         ts.push("llvm-target", "x86_64-linux-gnu");
--        ts.push("supported-sanitizers", ["kcfi", "kernel-address"]);
-+        ts.push("supported-sanitizers", ["kcfi", "kernel-address", "thread"]);
-         if cfg.rustc_version_atleast(1, 91, 0) {
-             ts.push("target-pointer-width", 64);
-         } else {
+> +{
+> +	if (!mismatch) {
+> +		mismatch_cache[secndx] = -1;
+> +		return NULL;
+> +	}
+> +
+> +	mismatch_cache[secndx] = (mismatch - sectioncheck) + 1;
+> +	return mismatch;
+> +}
+> +
+> +static const struct sectioncheck *get_section_mismatch(const char *fromsec,
+> +		const struct elf_info *elf, unsigned int secndx)
+
+s/secndx/to_secndx/, and the fromsec and elf arguments could be swapped
+for consistency with the rest of the code.
+
+> +{
+> +	int cached;
+> +
+> +	if (secndx >= elf->num_sections)
+> +		return section_mismatch(fromsec, sec_name(elf, secndx));
+> +
+> +	cached = mismatch_cache[secndx];
+> +	if (cached < 0)
+> +		return NULL;
+> +	if (cached > 0)
+> +		return &sectioncheck[cached - 1];
+> +
+> +	return cache_mismatch(secndx,
+> +			      section_mismatch(fromsec, sec_name(elf, secndx)));
+> +}
+> +
+>  static void check_section_mismatch(struct module *mod, struct elf_info *elf,
+>  				   Elf_Sym *sym,
+>  				   unsigned int fsecndx, const char *fromsec,
+>  				   Elf_Addr faddr, Elf_Addr taddr)
+>  {
+> -	const char *tosec = sec_name(elf, get_secindex(elf, sym));
+> +	const unsigned int to_secndx = get_secindex(elf, sym);
+
+The const qualifier can be dropped from the to_secndx definition to
+match the usual kernel style.
+
 -- 
-2.56.0.385.gd3acb90ef8-goog
-
+Thanks,
+Petr
