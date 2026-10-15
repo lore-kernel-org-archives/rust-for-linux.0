@@ -1,160 +1,335 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012045.outbound.protection.outlook.com [40.107.200.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FA149E139;
-	Thu, 15 Oct 2026 14:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792074916; cv=fail; b=vC8LTMl5MdqGDJ9y0/XP3VN5KFHPqA9GqciXjkf6bcvpfO/FyT4Y4GClOzbk2TnwGfGxuCWuXnIG7htrGkV4tKKeQMWi2LebORLSr99196cTTmfToOIP7gbul8IxCZHG87KLU2lNvrlwE6TvzD9RTwGnuOLHeFx8mg/Er9m3uKE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792074916; c=relaxed/simple;
-	bh=Z64kWoQ/h8lZmGsh3c7ShyejSyDo7ngqowWXtqDiCkM=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=KaDkuJfmpDTxZ34rOrIgzjr0a20bc7fd2HmFd3XPcCJIrTjRm7c05cpt1svt1JuXlZEpXRmbKQNvriWcVd97ufLp+S3w2lmPjNsqKCDAUCuWXEWrBsA8Uh6ktVsTgNdUv0tc+v/+H7a9JLJONUlq1POea18NLAN8XePlmu0r2oE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=smrYSaxR; arc=fail smtp.client-ip=40.107.200.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A2A37BE6C
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 14:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.70
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792076256; cv=none; b=t7QilQfUDz++XRMYwtcKwDAPahumCPEsJFDI0EzltRAKkdZnLT+YIIu/TBH6cEzi3VX3posvm5RnofBi06gP6//EfRewVkV/g3C3JIND1mXkR/DvYqppB7do6PZOw8TNwiMuUfbinsNoQbkKlSV+/LfH47VeT+gaH5P8taGQL4k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792076256; c=relaxed/simple;
+	bh=QAyeiaW7+aIN5evILupFJmKAY783tUHdvKx8n3lMW0Q=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=JTUVs3MhI94RZusHSWjGeX8eFNT1c56XvYfHeK4oMu4z2GmYQ052TeobtbUw6ehPh/tlerbogJ4dg9kvEH9WSqRZ6Mtx5yxW//s6AXH8eG4SjN2Ug0tgLcFeYaALRrEsH8APDVa7YBepPSmkJOww9vnEg7QVE2C+PEg18sLfmLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elver.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Sx+9/T30; arc=none smtp.client-ip=209.85.208.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--elver.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="smrYSaxR"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IuHGJR/ZfUSpFp6XX8IEtixsP38Lm32cUWDMqiV7fCuSRE8Wm816RbxbYpoKiTtq/zjHIuw7kOiHuF3oZh4Th0uEtA/r8zdhw1WjJR+CgzL40YsDY1bszZMTEfihFbvc9JAEzeE3ytBLOUtWNAFI4vGCJJwwQ0eKNcQhhKcywatDvlxt4udtQGemUDiV5/c55uRVDaZSlkwQMlg1VctNV70FdW4tjeoIL042UYp5hY8a9scJatVBQGPV5Fcqng6SpvyS5FUMv2va4vbm2uFQvT5cVtuGNjcDxKVTRLuPNljBZOPy/6T5AkKrHnbtKQS4LAsN+8ptGArLGcdhNj5bfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z64kWoQ/h8lZmGsh3c7ShyejSyDo7ngqowWXtqDiCkM=;
- b=G/FCiOkliGm6KgMycCW/yqqgC7MBZDMc/Z/YPk6X/duSRBWLsl7m53Ixgv3PO80nF3X06D7pS4AplzF1WAsE0SAjWTP69Hn+SrbPc/RFxIoL2HtmnJbocPeqU0KJuXwDlQ0mEsZq5CvXMX7b0y8ZVqwgCKVo6e6P0G9MIY0OTLvZrksoLZnp9Xq26c4Q3Q7Uf7MC3HVjCwoMnaqv/ROnx3Gse/2FCdtw15ktOHTPIy1pTmq9VVtRIeOn6D7pNUkQZ0TJ5L/n8oGs93W1sokfO1pyYJgogQOMUcFqLu+7X9qGqfNDwksRygSpHKQH6w0Boziuey7mCQd0Qp0Bhq7rSQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z64kWoQ/h8lZmGsh3c7ShyejSyDo7ngqowWXtqDiCkM=;
- b=smrYSaxRxUyRz9IECH6fTC5hFv25SxGKJkOvtt+JKsh6XEUhIUKwtrHQBb8v296AhIJsVrrE0c2WSs+kc1IcpMzDmoOt6jf0hj0n/zs8E3vH7+fK8O0JeN1wNuNGl6eFPX++cvmzy7a8+kpcitVhE3+oyh/vmUvw9E5Z9xbZp6AtSkD/NhXFAIkMU06l3WuHYFiLdGZvAqAkQ7jecCfGYzeXrX5V58Tx/e2dMrW8GdsV9gXZzTYRe1RDvezcu0Mr9brzbHBSm4ANDpzFsxyvbDAScWpihgSU0u3pvNOqHKgmkiT1iwFwMQ7+Lwh5swSWgZIyJvnmwk7e0rKt0m5QzQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by LY0PR12MB461782.namprd12.prod.outlook.com (2603:10b6:404:233::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Thu, 15 Oct
- 2026 14:35:12 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0522.011; Thu, 15 Oct 2026
- 14:35:12 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 Oct 2026 23:35:08 +0900
-Message-Id: <DM5HJBMA4G8R.373NEPOZPLTD6@nvidia.com>
-Cc: "Gary Guo" <gary@garyguo.net>, "Lorenzo Delgado" <lnsdev@proton.me>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Thorsten
- Blum" <blum@kernel.org>, "Francis Laniel" <laniel_francis@npnm.eu>
-Subject: Re: [PATCH v3 0/2] rust: add NonEmpty
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-References: <20261013-nonempty-slice-v3-0-4463cc0338f8@proton.me>
- <DM5FG6VMG3U7.1XMZW8RJI2KLM@nvidia.com>
- <DM5GYU1H0Q9I.308S84Y1RV33P@garyguo.net>
- <CANiq72mBAAQaJkL1Yji9hbPjWd9Nm48j6i1G1uE7+KP1kKSHrQ@mail.gmail.com>
-In-Reply-To: <CANiq72mBAAQaJkL1Yji9hbPjWd9Nm48j6i1G1uE7+KP1kKSHrQ@mail.gmail.com>
-X-ClientProxiedBy: OS3P301CA0049.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:604:21c::10) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Sx+9/T30"
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6b1e4a24fe5so3000268a12.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 07:57:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792076251; x=1792681051; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CQz4nxc0KCuE74ESb77Z4+pfRphjcREbEdzXeMwHKGc=;
+        b=Sx+9/T30yySGGOy1Fxet0M5hABBMMMNpSbLMF4KJ98WHCM4L6ILL8szqq//s4zuapG
+         QsTEWiYmZiwbQbTwSHb2r7A8pKipxA0HF46GKNYZWEiOaWJ+cHMBqHLQw82KxX2s+aM7
+         cRD47wMfjkwSLg0h8A2+O/kWEll723WZw1Kkej05jDt++31f3ioZKb3rJeOlw98933Ec
+         wJYcbRvSRO4JvxPZnomnQbU0JY7AxYXkY0pDTryki13fK6oofYTNOu/kBWuzjS+PmP6s
+         5AIbiiuHJo/dpg3625mJNftqsFO+00URXpvNDwVmhurzslWc2eFFw3JxkwWJcRKLCTR4
+         AAIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792076251; x=1792681051;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CQz4nxc0KCuE74ESb77Z4+pfRphjcREbEdzXeMwHKGc=;
+        b=zxIUiKpW0EicJmQKUL2rn3f6VooYTxE8+tvdWv3dhkxSrHLZeoSZ5xiCDDxABqbW4L
+         411LLIyuIOxKvtG+DLuKSo0gTaNgO9C7cyuP987mz0FhRpxkpU7sTRgJdt5MAY6fqydz
+         m1cccb6MfvVpuW6H4UAGpjPX0imW9vF4vmsM6EhOky59/++T8A5sf16kDTEGmxTxMIOw
+         6/J5HHDz3TltwRXXi6vQDX8CQMpAaUMpd1v/QZ1NkQ40xDfGwij8+xVsQfH9SiQo24v/
+         7Y3a4eoyKm2aoINZvJKmhxkqs/GjldoEqTck51bhvj5MTkPjr+ythHXZccymmJX2w9iu
+         GwPw==
+X-Forwarded-Encrypted: i=1; AKwUvBxFP184McnkOame2MSdyMPmZhfHGdmh31tU1ODdtKfWQEMsj0moiZfSCUfgo3mj3sR3bISLLq7JPTWWKdLqGQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ9esJ3kjZNLr0MH/Ce1zFarJxs2GGxxNflyS5EWc1BRgUdrTad
+	QmzEopkWYFjNssPcJGgbLkk7cJw+TGIIl/Jt5fjanHXks/68Yfuukv/7wIJp+tNjckzVM0VuGgE
+	lbA==
+X-Received: from edev15-n2.prod.google.com ([2002:a05:6402:a2cf:20b0:6ae:1a0f:68be])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:c4d6:10b0:6ac:a1e1:3f88
+ with SMTP id 4fb4d7f45d1cf-6b17c23e892mr11643306a12.14.1792076251124; Thu, 15
+ Oct 2026 07:57:31 -0700 (PDT)
+Date: Thu, 15 Oct 2026 14:56:15 +0000
+In-Reply-To: <20261015145714.3327543-1-elver@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|LY0PR12MB461782:EE_
-X-MS-Office365-Filtering-Correlation-Id: 01d529ff-6615-4a96-37b4-08df2ac984fa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|10070799003|376014|366016|1800799024|6133799003|10067099003|18002099003|22082099003|3023799007|11063799006|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	M4/htS8YvuTHTtlTDmoDPIQqFqAJXj0iM5yZt8nUdEcElNuKPhMXA8iPTAHuhap1mDqvxUSR6VmUeCTT6w6rm92JkEam4PSx3iDWZJNxLjkVOCZHjjaE5FOFGFvcSAaRkiYbisn2FRjexqdvG0LKSsb29/Ikmx7/Qq5ZD51a+Nln7NT9rfQWHKrHiYXD9NQQ+IeWvFba26QOoQWG5o4EFyZW6rMnedWhOF5e/VX+lOrLBGNj7soHVDyRIAM4riUJHA8e/dEaoBEF9pHTkZoEXT6QkM9HWQ1z8PcUVRbxNH+5bsUxYxtHQRpH8pNQJtREI1DjRy8zDMb4fzcQ/4z6Q+EsVaeOKZNEblvHhdT3kUqrpNKUo4mu/fdxlDFbtGiabwS3A7350e0HeNmszXala9Rvh0tkWId+dJbQiJ/AbdVJXGPAhbmtgqvahE2b6IJGYAM7JEmqtHsoCo89AfOSmHkfzrwiZDt5UiTH7y2Rmn8SZig/AxwD+wPpQsRXyEfra37zY5Dby+1nqp241E7J/U+1ijp3/6edzEz+DMryLgsEFQskKQH1XfGtGabludjwxGYmytM5fP3loyBRbu6cLyUDn/i19EWJkfw8UOS4iE1XZJ/hkX0e+oeObIl+mobOgtUedi9ZlXnhx73VzIqS+/RmII3jBRk+gqdipDY7qH0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(10070799003)(376014)(366016)(1800799024)(6133799003)(10067099003)(18002099003)(22082099003)(3023799007)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VnJsWjEzY0hOQ1R5dlN3TWFKbVN5L3RNSDQyV0NiazNSWEN5eEdHR1ErT3lh?=
- =?utf-8?B?N3Ryb0lMbUJ6K1pKS1Y4WHFieGovdmh1Mm1vZDdMTEQ1VUxPeTRQU2ZxL1Fi?=
- =?utf-8?B?K0FwcURKUmN4RitpSEk5SlowU2lqcmdEaExiWmUycXgyalRMTytnaUdUeEJ4?=
- =?utf-8?B?RW9WcmRLWGttbXRuejhCYkJxZ3pJN3gzQXI5NThQNm1UVDlzOEhqbDYybmtj?=
- =?utf-8?B?aUVBK1FLVkRwM3F2d09zYTlUc1VRbmh6ekZBR1lrcFpzSys3YWtSRm85Y0Rz?=
- =?utf-8?B?V0JMSHp6bzBOMzBtS3B2UjB6VGdzU1AwM1ZORGxSRFJOVkgyREtidlR4VzNM?=
- =?utf-8?B?VXdZWGpRU1htRlRzaGFDamFrRjN4VlRDY0J2Z2VHZjVFVWY5RnYyaXgzSGFE?=
- =?utf-8?B?ZDVMWGlLeFZBajlHMkdacUl4SDhlSnl0SHJVZVBiNUdZT3I3WlN2eDgxWFY4?=
- =?utf-8?B?RXZGSTdVZnAwcEJSOFBIS1NNa1N6bldLZzdYRFBOdllMbG9EOS9KeUE4M1Uw?=
- =?utf-8?B?YWtvNWl6bjlJSjJWbXUvSXlYbjlQQmJobkZyMkl3dllhSVQ5NkV0SlY0cnFr?=
- =?utf-8?B?Tm5PaUJSTU8vMnJ0SUQ3T2ZWZDh2QW1jcHJCbEIzQ1V1Y2hKZVhPamk0Rjdm?=
- =?utf-8?B?dUM2ZWFoL3lPZHAxZkRnM0Zycnh0T0F5TCtsUUVMM1d6bC9kblpsa3RMMWZS?=
- =?utf-8?B?WFFud2ZRTE1DRS9DWTcrVndoSnB0S1dpRnl6RVgvOFY3cThENHUvRlpEcS9T?=
- =?utf-8?B?azhrOE1hZFJkckNGdmUxczE4bnpjZnJGenN2OUpFYjlPMGFPcENSV0h2Ykwx?=
- =?utf-8?B?M2Jod3RGRkE5RFJpVjRhSWU4bUY2ek12ckRmeHJNOS90UytEdVVRYURIV1lj?=
- =?utf-8?B?RmFIS2lYQ2hIdkVQTlpSejVubWQ4dkVER1FwSmxYc2M5RkZ6a0JuczFjc1Nz?=
- =?utf-8?B?NHk4bWpCU0pSMHg3TGlNRUtnTy9xdzZ1cUFUN0Rvdmh0cHVCMWhNcGk3dmVz?=
- =?utf-8?B?TE5OMjdZTHp2S1d2VlBUUzdobjh4d2w0UjhWd2dZMFB0NFZTS1NNVnlhUS9K?=
- =?utf-8?B?Vm15YWh3bHphSFNMalJqekdmamlMemNjY3dQMm9rQkJLN2JtUm9QZVBnajg4?=
- =?utf-8?B?OFdDZEkyMVNONkhVM3JnY1lmT2hzazlGdlhHZElFMmhVUHAzMUxVUjNFaHI4?=
- =?utf-8?B?Wnkrd2JZMEJQUnNSRGJqZWlsYnUxdFJzQ0JYZTM4MEpySGQzV2FpRUhqVFY4?=
- =?utf-8?B?NjExbGFGUHFxR1dHOEx4cUk5Z05QSVlGakUzV2xTTkgrZUx5YmJJT29oRFRk?=
- =?utf-8?B?ZjVDQkVaQVVLbDFibkQvUTI2Y1FnOG1wbnpPdlVUQ1dQRERDSlJXb0U2Nk9h?=
- =?utf-8?B?NlpaOUxpMHU3Y01NTHM1VVNzVzB3dkw3UjV0NUtjMk5MNUVGT3lNN0E5ZzE3?=
- =?utf-8?B?eWZHVFNJTnVUM2xYMTdoa1VBODlHajJvRitDeDhUUDB3OUlGNjI1SXUzallj?=
- =?utf-8?B?QXRxRnVRSm5qckMya25KMTg2YUMwVTlCWHpZMDNBMFNXRXFnRFBEZ3FuS2dr?=
- =?utf-8?B?T3BBcnFHR0JGbERpWU4xL2FCRVpVR0xIZnU4aUlyalErN09mcWM4eTNTWWJ5?=
- =?utf-8?B?Y2pBMjJsN3YwOVd5ekxpdDh4QmFuVTZzUDRvUGxNMDM2Lzh1N3QvVU8ybm0v?=
- =?utf-8?B?UmlEaE1mUWJxc05GcEp5VGpTZnZmemNuZTB6OEs5RU1PNkJuQVhKWFYvU2R3?=
- =?utf-8?B?dFZyMTIwOUllbklja0hmWnFjZm90TlhidjRvUGRxL0RvMnRJVmxzTFNaM0JO?=
- =?utf-8?B?bTBtTEpNejRFaU56aGxOeUhrVVIyT0tyY2VVZFdwWWk1eUtCZHRyK1lrQUlZ?=
- =?utf-8?B?SXFxVllsRGdVckg3Tk9OT2ViVi9TZGh2TC9DRDA0Y1lPcEk3QzI3YitYS0lq?=
- =?utf-8?B?RExhc0VaZjVGNVZpRU5Na3JrVXNvb1VqTTIrMU5UOEdpa0piNEtEMi8wbXo5?=
- =?utf-8?B?YzJSK3pFN3I5bFFOVUxhdGdkQi96aDJMQzAwLzhEUm5ucFU2WStBVWFuK25X?=
- =?utf-8?B?bjJXb1VUMzJ5U1pidERFR0dpYXMrNzIxYzZMZnJnTlQ4TjNHZkxCOHE5ZWQr?=
- =?utf-8?B?Yy9OSHkyZlRMZmlQUWViWFVzcCtxS3N5SmdXTng2WmhkcnJ0cjMwMnlrVjJM?=
- =?utf-8?B?NUs0a0cxR1JwT0w3b1BPbXZEV1M5ZGh2VnB1Qkx1bDFGOFh3STk4MSt1dXRv?=
- =?utf-8?B?dHVZcnpCZUtlQXA3RmJNam4xRlB0ZDVzVUN3UjlWRXR2TzlKclZ2MFZxdVRX?=
- =?utf-8?B?a0crMHQxSExiNi9SZ3laR0tVMWx6RklSYno4ZnNQdkgwMFFPb3l5RzBWTkt5?=
- =?utf-8?Q?tksuzLu+5xr1tVFL0D+qmKYVVOey9eBHho5+BPgd3g7FT?=
-X-MS-Exchange-AntiSpam-MessageData-1: /EM15mP78EryJg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 01d529ff-6615-4a96-37b4-08df2ac984fa
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 14:35:12.2383
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 32escHO9FnFOKDOemOykhpPk0JmUFjWiULqX70gNd1ARKGikvNRXWg9wAJST9Cu4mH2TpOrmKghZYkkf2b3qkA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LY0PR12MB461782
+Mime-Version: 1.0
+References: <20261015145714.3327543-1-elver@google.com>
+X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
+Message-ID: <20261015145714.3327543-2-elver@google.com>
+Subject: [PATCH v2 2/2] rust: kcsan: add KUnit test for data race detection
+From: Marco Elver <elver@google.com>
+To: elver@google.com
+Cc: Alexander Potapenko <glider@google.com>, Boqun Feng <boqun.feng@gmail.com>, kasan-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, Dmitry Vyukov <dvyukov@google.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Asahi Lina <lina+kernel@asahilina.net>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Yury Norov <ynorov@nvidia.com>, David Gow <david@davidgow.net>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Alvin Sun <alvin.sun@linux.dev>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Petr Mladek <pmladek@suse.com>, workflows@vger.kernel.org, 
+	linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu Oct 15, 2026 at 11:11 PM JST, Miguel Ojeda wrote:
-> On Thu, Oct 15, 2026 at 4:08=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote=
-:
->>
->> `kernel::types` is too generic and becomes a dumping ground of things. I=
- wonder
->> if we should group things that are new types with just range restriction=
-s
->> (together things like NonZero, Bounded, and perhaps eventually Range, No=
-nNeg and
->> others).
->
-> Yeah, we indeed had that problem, which is why nowadays as you say we
-> prefer things to be more split than less, because going into the
-> "grouping" direction is usually easier (i.e. it is easier to comer up
-> with better hierarchies when we have more types around, but it is
-> annoying to have a big file growing with no boundaries meanwhile).
+Add a minimal KUnit test that checks that KCSAN detects data races in
+Rust code: two threads concurrently increment a shared counter without
+synchronization, and a probe on the console tracepoint waits for the
+KCSAN report (similar to kcsan_test.c):
 
-In this case maybe we can resurrect the `kernel::slice` module for this?
+| BUG: KCSAN: data-race in _RNvNtNtCskctMpSfuwL9_6kernel10kcsan_test5tests8racy_inc / _RNvNtNtCskctMpSfuwL9_6kernel10kcsan_test5tests8racy_inc
+|
+| read-write to 0xffffffffb751ae28 of 8 bytes by task 116 on cpu 5:
+|  _RNvNtNtCskctMpSfuwL9_6kernel10kcsan_test5tests8racy_inc+0x1c/0x30
+|  _RNvNtNtCskctMpSfuwL9_6kernel10kcsan_test5tests28kunit_rust_wrapper_data_race+0x28c/0x850
+|  kunit_try_run_case+0xdf/0x2a0
+|  kunit_generic_run_threadfn_adapter+0x48/0x80
+|  kthread+0x234/0x280
+|  ret_from_fork+0xf8/0x280
+|  ret_from_fork_asm+0x1a/0x30
+|
+| read-write to 0xffffffffb751ae28 of 8 bytes by task 12 on cpu 3:
+|  _RNvNtNtCskctMpSfuwL9_6kernel10kcsan_test5tests8racy_inc+0x1c/0x30
+|  _RNvXsb_NtCskctMpSfuwL9_6kernel9workqueueINtNtCs1G77UTwpz6o_4core3pin3PinINtNtNtB7_5alloc4kbox3BoxINtB5_11ClosureWorkNCNvNtNtB7_10kcsan_test5tests9data_races_0ENtNtB1d_9allocator7KmallocEEINtB5_15WorkItemPointerKy0_E3runB7_+0x55/0x120
+|  process_scheduled_works+0x4cd/0x970
+|  worker_thread+0x4de/0x6e0
+|  kthread+0x234/0x280
+|  ret_from_fork+0xf8/0x280
+|  ret_from_fork_asm+0x1a/0x30
+|
+| value changed: 0x000000000000022b -> 0x00000000000005a2
+| [...]
+
+The test is intentionally kept minimal; comprehensive tests of KCSAN's
+runtime behaviour are in kernel/kcsan/kcsan_test.c.
+
+Assisted-by: Antigravity
+Acked-by: Boqun Feng <boqun@kernel.org>
+Signed-off-by: Marco Elver <elver@google.com>
+---
+v2:
+* Fix formatting.
+---
+ MAINTAINERS                     |   1 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/Kconfig.test        |  11 +++
+ rust/kernel/kcsan_test.rs       | 137 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   2 +
+ 5 files changed, 152 insertions(+)
+ create mode 100644 rust/kernel/kcsan_test.rs
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index cc3cae2e378b..3fbbfbb31f5d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14089,6 +14089,7 @@ F:	Documentation/dev-tools/kcsan.rst
+ F:	include/linux/kcsan*.h
+ F:	kernel/kcsan/
+ F:	lib/Kconfig.kcsan
++F:	rust/kernel/kcsan_test.rs
+ F:	scripts/Makefile.kcsan
+ 
+ KDUMP
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 4b31aa7f432f..b06d5142d6e1 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -97,6 +97,7 @@
+ #include <linux/xarray.h>
+ #include <net/genetlink.h>
+ #include <net/netlink.h>
++#include <trace/events/printk.h>
+ #include <trace/events/rust_sample.h>
+ 
+ /*
+diff --git a/rust/kernel/Kconfig.test b/rust/kernel/Kconfig.test
+index e6a5c7a795f0..caf98a23de76 100644
+--- a/rust/kernel/Kconfig.test
++++ b/rust/kernel/Kconfig.test
+@@ -83,4 +83,15 @@ config RUST_BITFIELD_KUNIT_TEST
+ 
+ 	  If unsure, say N.
+ 
++config RUST_KCSAN_KUNIT_TEST
++	bool "KUnit test for KCSAN instrumentation of Rust code" if !KUNIT_ALL_TESTS
++	depends on KCSAN && HAVE_KCSAN_RUSTC && TRACEPOINTS
++	default KUNIT_ALL_TESTS
++	help
++	  This option enables a KUnit test checking that KCSAN detects data
++	  races in Rust code. The test needs at least 2 CPUs to reliably
++	  observe a data race.
++
++	  If unsure, say N.
++
+ endif
+diff --git a/rust/kernel/kcsan_test.rs b/rust/kernel/kcsan_test.rs
+new file mode 100644
+index 000000000000..24810cf2970a
+--- /dev/null
++++ b/rust/kernel/kcsan_test.rs
+@@ -0,0 +1,137 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! KUnit test checking that KCSAN detects data races in Rust code.
++
++#[macros::kunit_tests(rust_kcsan)]
++mod tests {
++    use crate::{
++        bindings,
++        error::to_result,
++        ffi::{
++            c_char,
++            c_void, //
++        },
++        prelude::*,
++        sync::{
++            atomic::{
++                Atomic,
++                Relaxed, //
++            },
++            Arc,
++            Completion, //
++        },
++        time::{
++            Delta,
++            Instant,
++            Monotonic, //
++        },
++        types::ScopeGuard,
++        workqueue, //
++    };
++    use core::{
++        cell::UnsafeCell,
++        ptr,
++        slice, //
++    };
++
++    struct Racy(UnsafeCell<u64>);
++
++    // SAFETY: Not actually safe: unsynchronized concurrent access is the point of this test.
++    unsafe impl Sync for Racy {}
++
++    static RACY: Racy = Racy(UnsafeCell::new(0));
++
++    /// Set by [`probe_console`] once KCSAN reported a data race in [`racy_inc`].
++    static OBSERVED: Atomic<bool> = Atomic::new(false);
++
++    #[inline(never)]
++    fn racy_inc() {
++        let p = RACY.0.get();
++        // SAFETY: `p` is valid; the data race is intentional. `wrapping_add()` keeps the load and
++        // store in one basic block, so that the access is instrumented as a compound access (plain
++        // writes may be assumed atomic with `CONFIG_KCSAN_ASSUME_PLAIN_WRITES_ATOMIC=y`).
++        unsafe {
++            *p = (*p).wrapping_add(1);
++        }
++    }
++
++    fn contains(haystack: &[u8], needle: &[u8]) -> bool {
++        haystack.windows(needle.len()).any(|w| w == needle)
++    }
++
++    /// Probe for the `console` tracepoint.
++    ///
++    /// # Safety
++    ///
++    /// `buf` must be non-null and valid for reads of `len` bytes.
++    unsafe extern "C" fn probe_console(_data: *mut c_void, buf: *const c_char, len: usize) {
++        // SAFETY: By the safety requirements of this function.
++        let line = unsafe { slice::from_raw_parts(buf.cast::<u8>(), len) };
++
++        if contains(line, b"BUG: KCSAN: data-race in ") && contains(line, b"racy_inc") {
++            OBSERVED.store(true, Relaxed);
++        }
++    }
++
++    #[pin_data]
++    struct Ctx {
++        stop: Atomic<bool>,
++        #[pin]
++        done: Completion,
++    }
++
++    #[test]
++    fn data_race() -> Result {
++        // Do not pass on a report from a previous run of this suite.
++        OBSERVED.store(false, Relaxed);
++
++        let ctx = Arc::pin_init(
++            pin_init!(Ctx {
++                stop: Atomic::new(false),
++                done <- Completion::new(),
++            }),
++            GFP_KERNEL,
++        )?;
++
++        // SAFETY: `probe_console` has the signature expected by the `console` tracepoint. Being
++        // part of the kernel image, it and `OBSERVED` outlive the registration, so there is no
++        // need to synchronize with in-flight probes after unregistering.
++        to_result(unsafe {
++            bindings::tracepoint_probe_register(
++                &raw mut bindings::__tracepoint_console,
++                probe_console as *mut c_void,
++                ptr::null_mut(),
++            )
++        })?;
++        let _unregister = ScopeGuard::new(|| {
++            // SAFETY: The probe was registered above.
++            unsafe {
++                bindings::tracepoint_probe_unregister(
++                    &raw mut bindings::__tracepoint_console,
++                    probe_console as *mut c_void,
++                    ptr::null_mut(),
++                );
++            }
++        });
++
++        let worker = ctx.clone();
++        workqueue::system_unbound().try_spawn(GFP_KERNEL, move || {
++            while !worker.stop.load(Relaxed) {
++                racy_inc();
++            }
++            worker.done.complete_all();
++        })?;
++
++        let start = Instant::<Monotonic>::now();
++        while !OBSERVED.load(Relaxed) && start.elapsed() < Delta::from_secs(10) {
++            racy_inc();
++        }
++
++        ctx.stop.store(true, Relaxed);
++        ctx.done.wait_for_completion();
++        drop(_unregister);
++
++        assert!(OBSERVED.load(Relaxed));
++        Ok(())
++    }
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 4d5c96ddc49c..009efda9e7a4 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -94,6 +94,8 @@
+ pub mod iov;
+ pub mod irq;
+ pub mod jump_label;
++#[cfg(CONFIG_RUST_KCSAN_KUNIT_TEST)]
++mod kcsan_test;
+ #[cfg(CONFIG_KUNIT)]
+ pub mod kunit;
+ pub mod list;
+-- 
+2.56.0.385.gd3acb90ef8-goog
+
