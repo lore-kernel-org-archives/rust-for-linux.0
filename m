@@ -1,248 +1,149 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBCE4C14EC
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 15:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792078982; cv=none; b=O+eGLDMisSpT88cbe5nQGf1vOW7P7e7twEdznnhAufdvysf1vw83bdk/bviwRU1+CF2BxpkDaMNRtU88LFWoxcFwg099dCf1x9F+HLU3igvCBUu6hm1N1Ubkz0C4fR89z0l88JtSQBlovDGKU3subFF91dp7aW622SN9tIRF/GA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792078982; c=relaxed/simple;
-	bh=1fUOi+Usxn2LQcFzjoDicMxQvfperVSbtfIS6t3a0mM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gpBzFTeqHQ+85wOmg3iSv4FePW8PwYZ+L+COgFewECgnWOWQqBBjiY6qsgTWRF+0fuV1xBlWS8UMzVYOTVlfyX0KadJxzOzoNj0/ML4/9SnWtghZG3DtqScZbrcNNOMY4u42ppcCLP3VY/wFVdpGWtX+mEsEXy7RWupzZncDN6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=R0UR9SXf; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F0A411A18;
+	Thu, 15 Oct 2026 18:35:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792089356; cv=pass; b=FwSSDuF9U1Hn6MjojBcWu1kGYj7XmbdWvkOXdC6L5d5A1+pDZiooNcc4gzS0eDK50aXnNq1FL8CK9ypC1553Qn43G27eLU7jc02q8tY5Jw483em2QcYIgC6gJeWxrP959JE5yJ4L6YZS6uORKAEmKhgbs3GryJlkeD6tiESq7Po=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792089356; c=relaxed/simple;
+	bh=hYDch1u6JEQvhaBu2Dh0SadSLCQSA1fv8tX/aw2U3vo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=FcrllnNsxmbR1Om6LwOIOHC9sBllCE3p/lUCmBUbLY6PcgcaGTny3odxNlGuRVlfXpT0iuEuN04GJpxGNC+C2RrIOZZwfnKlMfEvOb+3D22r/UdImIvfc/urLp2BGxPKcid7Uv+G+ESvYyFbydEiC0s9oQON6a4cgvVjBSjqVw8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=OUiKFCMR; arc=pass smtp.client-ip=165.173.180.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="R0UR9SXf"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a16af2a232so43164715e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 08:42:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1792078967; x=1792683767; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8EVUVXTF9B/pmjVEVo0zfJaBGiZoNVg7V5lse2RyO7M=;
-        b=R0UR9SXfSdLRKN8vgsjzhyd81oaEz7tHTwslAVD4uu2yocB8iyTzeaX91HJfAF2HSZ
-         zfyNFy9tY2rveIy5HSk4kHu6cou98Mmm65Nw/ib9mtV2wnXWSnap0yORcKiRn9+bhNLb
-         /HvkgPwk8c21B4vfdeFwnATqt/tKh7V1N6JFjc1GswxG79FMaIisTlhabNQRTkYz/AAi
-         A1KK2BSF7pJOfDu8sLbpi305mh4DqIdXIenAOtLPi3roSTwyU1GWiEULVpymwqlkfLkZ
-         ApWTy1oTpVVOcfy57kt0RsQYUZoCNCDNc0yb16GC0j95gqwCT6HKnJMFBD1/29NWON5y
-         v/Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792078967; x=1792683767;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8EVUVXTF9B/pmjVEVo0zfJaBGiZoNVg7V5lse2RyO7M=;
-        b=kQah0OE3IFGKFzKxN2jm6Ys/MCsfS6j+S23g9DrkrbFwvJgSxhamNqyPRA8fUpINar
-         3XoTSwXWGrCE5gZNXgFoUSrl9GRPDD2BQyGQ0ikIn+dx8jDuDJIq345PAM6YZ4Ou+swZ
-         oJpRl0HlBrjEBjPZ6mE9fc88jhszi4fRu/Iy1RsexjRRMqcFkDZ99mgzoSS4rgxDIu/p
-         DGpzUT7SxbkN1/k5vjzJObLxMcW90CbYV1DbNoULzLTzXVXWs9XOwMNxwkhbpp0A1WX0
-         LKUnd5wgi75UMU39GNxz7vFT89jDdfd5g9aCHzM5Oo0yQCmqk6IzLdWc//DA1DrdiUyD
-         69Bg==
-X-Forwarded-Encrypted: i=1; AKwUvBxalh815Q4wrOk5np9yX1DPm0VGALRxeDrdjd22vrdwFlO77mtIgiqX1fp5FeYFopwoAeAK66+F33v200MEWg==@vger.kernel.org
-X-Gm-Message-State: AFq9FYIcs+aI2GajeYFlvysCrOl+z9FEEECGC1hILdax1ED8pCCCIHgc
-	Y2G7oy0AjGDLTjRGDjMKZUmJ3BYFrP1+skelW4rqCQkcyCDTL+qmGH2P+MtQ81mgS+A=
-X-Gm-Gg: AYBFou2cIFHytZZS5I+VE7i2mhO4Jnc7XAMmsoBDfkDxkG4sO1RQoluDdL8K3SCbuoe
-	zwafy5iujK3qMjDsnasq3TJ3fSBabYHbsAtB6hRelKsLc131OTtnrNNfK5vIbjrZRRcxlRKTvlr
-	Ko/ow747e2mgOFMQZlU/29Qt1FgI3qIT/rbOlS+xpBziQlXJAajC7/Ap3JklqzsqHE72O4qEJ4Y
-	JSzSzV2bO24MJWxV3UnWBhYm4RSFLmM2ZTE6HpFzYgx69gEAJmCUW3lJWSwqya0DSqMLzjQZ6Qz
-	CHs8TAvuMSbOkh6mnzl6gk7Ztmd2vYqbWpJqNR5lXLAOnO4/mBZuW2wba47qOPI1ReSgmI46wbz
-	wEJxqPbdNfoILRau0DTAMrX7BKFMMk4BYGNOIuyBZPvzv3AtL5LeNL7o9zLFNBK1R191MoXfttV
-	gq/Sn1MuMMMXyBeJFT3SDD+0Zumk5VJiwQNRAWgECNEmzJoIhcISPogmZusqDhMMemuyvQnCLmA
-	FI0544ujygIQQHr/5nyh65eIED/Sri6ALj9OwhMsgUytA==
-X-Received: by 2002:a05:600c:8b82:b0:49f:fd2d:23c7 with SMTP id 5b1f17b1804b1-4a18e4b887amr354993855e9.27.1792078967287;
-        Thu, 15 Oct 2026 08:42:47 -0700 (PDT)
-Received: from ?IPV6:2a07:de40:8100:0:89a9:fd0e:583d:4a53? ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bd66c5e6sm52172585e9.2.2026.10.15.08.42.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Oct 2026 08:42:46 -0700 (PDT)
-Message-ID: <d17b00f9-2a6c-425f-9697-6bc8f31f7a7a@suse.com>
-Date: Thu, 15 Oct 2026 17:42:45 +0200
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="OUiKFCMR"
+ARC-Seal: i=1; a=rsa-sha256; t=1792089331; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=JTKir0wWoyOUlyrGDsjuJthIrocwMLvMIOxvKlSViBNOs/4tC++uWxn7uCU48OChsto7OBGmRlUQOLPDzpPt1dgPWqGqdG4g1j+XGR1tZqVDVYBr0GgULW1qx6fYnw4pv/CBwucN+Ghl6ga8RsConYqFzdyPB0NoG/PjKmnO2Rw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1792089331; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=iih9xPBNnnJLDskp43dgX+2eXZajDQnQevePJrRcsA8=; 
+	b=axoDtagnsjJvlf+RYYdnIDQmtLJvDwPb2NvS/0zN0tBhjArhj2Sd8Um40l3i+4018C05e3mdigr+6DlXguAki2dPq9Uhe2TnMVBR/kE82V2ljJlBw7gFzt0MdpTNzhDG87EMY3nEqeHujPH+xNvvsN6SKoTnI3yyCaTL+kqLloU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792089331;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:In-Reply-To:To:To:Cc:Cc:Reply-To;
+	bh=iih9xPBNnnJLDskp43dgX+2eXZajDQnQevePJrRcsA8=;
+	b=OUiKFCMRaSsq/MF0vSncMX4RhtG0NCIrtvYmAa52Kf6A8+/bG+JClVpcvBeXbACg
+	CQSmi05EkeLdmdfFmYp/aUB7HqmIBtBjZejKMY7dbHn7aZbbzAo+64/Y8AjO0rLM6qg
+	pTo+Qy3Pj6yfI9p7iIf67PQlU/1de/ZYWNK1lW7M=
+Received: by smtp.zohomail.com with SMTPS id 1792089330488961.5839121729349;
+	Thu, 15 Oct 2026 11:35:30 -0700 (PDT)
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+Date: Thu, 15 Oct 2026 11:35:20 -0700
+Subject: [PATCH v2 1/2] rust: uaccess: add UserSliceWriter::clear()
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 13/22] modpost: cache section relocation mismatch state
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Masahiro Yamada <masahiroy@kernel.org>, Alexey Gladkov <legion@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Arnd Bergmann <arnd@arndb.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Ard Biesheuvel <ardb@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>,
- Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev, linux-riscv@lists.infradead.org,
- linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
- linux-hardening@vger.kernel.org
-References: <20260923-build-speedup-v4-0-73128809a4a4@kernel.org>
- <20260923-build-speedup-v4-13-73128809a4a4@kernel.org>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20260923-build-speedup-v4-13-73128809a4a4@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20261015-b4-dev_query_fixes-v2-1-e3e6d25050cb@collabora.com>
+References: <20261015-b4-dev_query_fixes-v2-0-e3e6d25050cb@collabora.com>
+In-Reply-To: <20261015-b4-dev_query_fixes-v2-0-e3e6d25050cb@collabora.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, 
+ Deborah Brouwer <deborah.brouwer@collabora.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2433;
+ i=deborah.brouwer@collabora.com; h=from:subject:message-id;
+ bh=hYDch1u6JEQvhaBu2Dh0SadSLCQSA1fv8tX/aw2U3vo=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFkXZd5tDJnP2Jxd+aBP9eXOl1FTXnp4NWouO5e/pHf2n
+ cdS66s3dZSyMIhxMciKKbKctTfqEa96b6Q7/38zzBxWJpAhDFycAjARjceMDB1/97+N3LFZw+qR
+ fpCPl/u6ENVpT1ZavDVoLV5SImqj3cfI8G+71oyOdWlPG64WMvRbzfBx+5mn+fnUrOgDhd8C7gf
+ a8gIA
+X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
+ fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-On 9/23/26 7:18 PM, Lorenzo Stoakes (ARM) wrote:
-> For every relocation modpost invokes check_section_mismatch() to determine
-> whether there is any kind of mismatch between the source and destination,
-> and if so which classification applies.
-> 
-> Each time it does this it invokes section_mismatch() which iterates
-> through the sectioncheck[] array every time it's called.
-> 
-> When walked a relocation section the source is fixed and there aren't many
-> targets, so the same names are looked up over and over again.
-> 
-> Therefore cache not only mismatch categorisation but also whether a
-> mismatch even exists for a given section and look up the sections in the
-> cache.
-> 
-> Special indices (undefined, absolute, common) take the uncached path as
-> before.
-> 
-> This results in very significant speed ups for allmodconfig incremental
-> builds.
-> 
-> modpost is on the serial tail of every build that links vmlinux.
-> 
-> Whole build, 128-thread Threadripper 9980X, best of N runs:
-> 
->                                          before   after     delta
->                                          -------------------------------
->   x86 defconfig, touch mm/vma.c, gcc        8.5s     8.3s    -0.14s (-2%)
->   x86 defconfig, touch mm/vma.c, clang      7.7s     7.6s    -0.13s (-2%)
->   x86 allmodconfig, touch mm/vma.c, gcc    33.9s    29.4s     -4.5s (-13%)
->   x86 allmodconfig, touch mm/vma.c, clang  31.9s    27.9s     -4.0s (-13%)
-> 
-> Assisted-by: LLM
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Add a method to zero the remaining bytes in a UserSliceWriter.
 
-This looks mostly ok to me. Below are some nits you might want to
-consider addressing.
+If userspace provides a buffer that is larger than necessary, provide
+a method to zero out the remaining UserSliceWriter buffer. This avoids
+userspace consuming potentially uninitialized memory and/or mistaking it
+for data intentionally provided by the kernel.
 
-> ---
->  scripts/mod/modpost.c | 66 +++++++++++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 64 insertions(+), 2 deletions(-)
-> 
-> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-> index 75374c64b8cc..0fd43c8a89ea 100644
-> --- a/scripts/mod/modpost.c
-> +++ b/scripts/mod/modpost.c
-> @@ -1155,12 +1155,67 @@ static void check_export_symbol(struct module *mod, struct elf_info *elf,
->  			 name);
->  }
->  
-> +/*
-> + * mismatch_cache[section index] ->
-> + *   0 - uncached.
-> + *  -1 - no mismatch.
-> + *  >0 - mismatch index + 1.
-> + */
-> +static int *mismatch_cache;
+Use the #[inline] annotation to make this clear() method available for
+inlining outside of the kernel crate.
 
-It might be cleaner to maintain this cache per elf_info, since it
-logically belongs to the processing of an individual ELF file. This
-would also be consistent with the existing symsearch cache, which uses
-elf::symsearch.
+Since clear_user() is architecturally defined and may be a macro or inline
+function, add a rust helper to make clear_user() callable from rust.
 
-The description could use 'to_secndx' instead of 'section index' to
-clarify whether it refers to the source or destination section of
-a relocation.
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+---
+ rust/helpers/uaccess.c |  6 ++++++
+ rust/kernel/uaccess.rs | 24 ++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
-> +
-> +static void init_mismatch_cache(unsigned int num_sections)
-> +{
-> +	mismatch_cache = xcalloc(num_sections, sizeof(*mismatch_cache));
-> +}
-> +
-> +static void reset_mismatch_cache(unsigned int num_sections)
-> +{
-> +	memset(mismatch_cache, 0, num_sections * sizeof(*mismatch_cache));
-> +}
-> +
-> +static void free_mismatch_cache(void)
-> +{
-> +	free(mismatch_cache);
-> +	mismatch_cache = NULL;
-> +}
-> +
-> +static const struct sectioncheck
-> +*cache_mismatch(unsigned int secndx, const struct sectioncheck *mismatch)
-
-Similarly here, s/secndx/to_secndx/.
-
-> +{
-> +	if (!mismatch) {
-> +		mismatch_cache[secndx] = -1;
-> +		return NULL;
-> +	}
-> +
-> +	mismatch_cache[secndx] = (mismatch - sectioncheck) + 1;
-> +	return mismatch;
-> +}
-> +
-> +static const struct sectioncheck *get_section_mismatch(const char *fromsec,
-> +		const struct elf_info *elf, unsigned int secndx)
-
-s/secndx/to_secndx/, and the fromsec and elf arguments could be swapped
-for consistency with the rest of the code.
-
-> +{
-> +	int cached;
-> +
-> +	if (secndx >= elf->num_sections)
-> +		return section_mismatch(fromsec, sec_name(elf, secndx));
-> +
-> +	cached = mismatch_cache[secndx];
-> +	if (cached < 0)
-> +		return NULL;
-> +	if (cached > 0)
-> +		return &sectioncheck[cached - 1];
-> +
-> +	return cache_mismatch(secndx,
-> +			      section_mismatch(fromsec, sec_name(elf, secndx)));
-> +}
-> +
->  static void check_section_mismatch(struct module *mod, struct elf_info *elf,
->  				   Elf_Sym *sym,
->  				   unsigned int fsecndx, const char *fromsec,
->  				   Elf_Addr faddr, Elf_Addr taddr)
->  {
-> -	const char *tosec = sec_name(elf, get_secindex(elf, sym));
-> +	const unsigned int to_secndx = get_secindex(elf, sym);
-
-The const qualifier can be dropped from the to_secndx definition to
-match the usual kernel style.
+diff --git a/rust/helpers/uaccess.c b/rust/helpers/uaccess.c
+index 6e59cc9c665c..e799d9ac9804 100644
+--- a/rust/helpers/uaccess.c
++++ b/rust/helpers/uaccess.c
+@@ -27,3 +27,9 @@ unsigned long rust_helper__copy_to_user(void __user *to, const void *from, unsig
+ 	return _inline_copy_to_user(to, from, n);
+ }
+ #endif
++
++__rust_helper unsigned long
++rust_helper_clear_user(void __user *to, unsigned long n)
++{
++	return clear_user(to, n);
++}
+diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+index f1aecda7a90c..8e18285ec44b 100644
+--- a/rust/kernel/uaccess.rs
++++ b/rust/kernel/uaccess.rs
+@@ -638,6 +638,30 @@ pub fn write<T: AsBytes>(&mut self, value: &T) -> Result {
+     pub fn write_truncated<T: AsBytes>(&mut self, value: &T) -> Result<usize> {
+         self.write_slice_partial(value.as_bytes(), 0)
+     }
++
++    /// Zeros remaining bytes in the userspace buffer.
++    ///
++    /// Fails with [`EFAULT`] if the userspace memory cannot be cleared.
++    #[inline]
++    pub fn clear(&mut self) -> Result {
++        let len = self.length;
++
++        if len == 0 {
++            return Ok(());
++        }
++        // SAFETY: `clear_user` checks the userspace address and range and handles
++        // faults when accessing userspace memory
++        let res = unsafe { bindings::clear_user(self.ptr.as_mut_ptr(), len) };
++
++        if res != 0 {
++            return Err(EFAULT);
++        }
++
++        self.ptr = self.ptr.wrapping_byte_add(len);
++        self.length = 0;
++
++        Ok(())
++    }
+ }
+ 
+ /// Reads a nul-terminated string into `dst` and returns the length.
 
 -- 
-Thanks,
-Petr
+2.56.0
+
