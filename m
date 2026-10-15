@@ -1,332 +1,100 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1825C2DF12F
-	for <rust-for-linux@vger.kernel.org>; Wed, 14 Oct 2026 21:41:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792014096; cv=none; b=l1v+j/LZUh7SYXf3U0UIvDHfDFPBbH/e0uYLBY10+uOpu+BFH4h4aIfYy8DxUYq19e8wqdt9AATiyApW5FTeiBkXnSRnSgSOtV0O9vAsHrmmqO3nPQRxeN5wBC800s8DU5ae6DCBXEEQnViU0E24/J/1pcwE4gXufDj57c55/74=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792014096; c=relaxed/simple;
-	bh=sVm/VzWYRlIdoOGnFMc4kZShp+aPm0Es1WH9x9pY9us=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cZycc2Wv5Cm81PtDKTfNGysPBMJvPPctA2VIinUXRjeY2kN4ctXTKbiDutGfDBACr/14qCl777wkyXb4kPns6lzAztBnovWpqhlAB9nw0j0WBTpfIN6pHqJOaMW9g1ZYqALnMN82ubmFLIsgOGjj362q8tCFOWwllY9QKtc22R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu; spf=pass smtp.mailfrom=uci.edu; dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b=D+xYB0Ey; arc=none smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C722EEE66;
+	Thu, 15 Oct 2026 01:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792026183; cv=pass; b=k+xoGasAcHmHJZOoFj7yz+r+oqGgMaFGbSdAcihT9HOwaEfbtLJPcbO8Ere1lN3xz4LWdI14GloRutuPXkweGigLR/ffLn+y6TXEcEgi4/Q3NA47y0XtDq4QC1NHpQHv/Xddjz5q2QnV/440UUq8YJpvk/FntfgpKr7SoiSI0H0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792026183; c=relaxed/simple;
+	bh=OwWdTR3XhajPl3U4zGrx0KdjDKksTiLlAAPouO5QtDA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=I59PiILKGsNfwGknCVYfZcrvFAVm9jxwAqhmfYiWWTc23Cu5TmpRmHAuK+Uqmp6Oc+ECzGW9nLloCYabO/xQgcJMhbqhbmgtUFRdlK1UPWoKNscz21bfRuG1qkeJlSxtMr+bjg68ayCfgewlNRL9siYsyeBP+b3ja7R0RFPo1YQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=W2W55KxJ; arc=pass smtp.client-ip=165.173.180.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b="D+xYB0Ey"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-154e9d2d979so1455294c88.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Oct 2026 14:41:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=uci.edu; s=google; t=1792014094; x=1792618894; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yfb2eXWa5FVD78V6JsxorvtqimLPEUt9gRIR+Xqt4ZE=;
-        b=D+xYB0EyYhb2ifMMHNBercAWmzP3I9W+bAgY75qWDmCFqzJcux/PMyaTG0pQb4d46d
-         RWKiDfSsToAJT411B50V461Rk8MKOOeZsWiix7YKzsnbvCa9Rb9Sq9W5FQIvM1M+05E7
-         8Kw9UxBI4P6AHkLffr9eMRqLj8GmmBT8UFKOWfKxeWXpEMV62pjr++MbTyvz7HvdOdL3
-         lhgOYFQdqYX/VD50CO+m/6+6WL+LaC4UNhaNXfa+33zX2zn0pqCN1KbrEKRYWLF0WmLQ
-         TpSoLNARSvKcSLzL4Gpf9slLt4vc28frsFtTFnfsdsknQXF3JeNrTbkqt7x5GEzilnvY
-         eFKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792014094; x=1792618894;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yfb2eXWa5FVD78V6JsxorvtqimLPEUt9gRIR+Xqt4ZE=;
-        b=R/4f+9ntrUhWAb59osvLJx39mPo+Vpx0rcf0hAS4PXMTUwC0q7mv33GWxRQ3E4w++M
-         WYotoHQQvtSY1CzHtJCBCJleSOkSxw4PX+qLvSFC1SmXZaLuFPpEiCp6KEEpslkUMmTF
-         2nnM6QmA6tRI+mCdcHHKWcTJ80O5DAqDqPXWYaT5oKNOqelW0DNsEbU1xxbAShMDZGrG
-         DF8rk2A0K+NgCk9/s73DjuGBiHlklVcuxFUQLVF4fLN6Z3YVUovE2RghCeh6JV7BaHxM
-         QcBfNmz2cYFAJN8+i2MDWnbRrSOrM53wThKG/zfjDyhYNKjvOaBXLoPMGGQ7VXH3y3Vu
-         qWLA==
-X-Forwarded-Encrypted: i=1; AKwUvByR1qMSBYNej/pT6x17ecN92D0zLU8eAzZPQeaXwsxm7TnBYrPXitpXgquEaEpncT5VXZORkD5qwurGGDkpLQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJH2c+JI+BjWnldWrEHhG/r7kawhi96+YdarKcmrxOZGmuF5mvH
-	o9eK6nbdFjFr55CQD9orPZoGc5B4dzukLGOj26GcMzm7F77dQqjHvy25dz5xluvwclo=
-X-Gm-Gg: AYBFou2M4McvyvSo51QtMIhLldtaCorOdWxKpjznJ8JeRv1hXkNDgVbeyg55xQ9Uj6u
-	YGDrWqXt8JE/SixnVqQy3Mc6k83XVi5X6za3CaB6DjGslBXGZn1lzhtbeBROM2o5p/OT4aM9PF5
-	bXyfhSQCOdTHwJcCVPAwULvPfrq8adGSEPC7LrJv721GZmWDv5h259nNfh05VLODANAdOlur70G
-	hgCyq9jiWw69tvO67sDB6UoIjavCtcc5nIk7K5sn1PpQE/obbZxWweNALbfVRsDgHiXOUQOHcNA
-	TS0aMDRwenpw5TTiOPcAMs2gDC4qtrAG5E3BR/kaI9Kq406BzQuY44OfJhhb2EkIhyQi/CJn1XZ
-	ErqQlTkUq4nqPI5d08PmvB8/65dDQSltAZ7/Oyu9NWlf8r2DeN5/bSJDbtp8TM7ttJ8OAT3OM1k
-	P8tMBZ8so7FaIhpGmPRR0erbT+F0F/n8GeBWMQf7sFj1jDyUZKTIZTJWZulwza6KWSZ1JRcf5dF
-	bEgSRvZUea+xYKTAZDLSt+mEIG9y1YB93E=
-X-Received: by 2002:a05:7023:885:b0:152:97a1:dd36 with SMTP id a92af1059eb24-16a12539614mr22210658c88.10.1792014091902;
-        Wed, 14 Oct 2026 14:41:31 -0700 (PDT)
-Received: from guest1.. (charm.ics.uci.edu. [128.195.4.118])
-        by smtp.googlemail.com with ESMTPSA id a92af1059eb24-169a1becb11sm46752536c88.4.2026.10.14.14.41.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 14:41:31 -0700 (PDT)
-From: Priya Bala Govindasamy <pgovind2@uci.edu>
-To: dakr@kernel.org,
-	aliceryhl@google.com,
-	daniel.almeida@collabora.com,
-	ojeda@kernel.org
-Cc: boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	me@kloenk.dev,
-	driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	ardalan@uci.edu,
-	zhiyunq@cs.ucr.edu,
-	dzueck@uci.edu,
-	pgovind2@uci.edu
-Subject: [PATCH v2] rust: io: Fix `Region::drop` trying to release nested  resources  from the wrong parent
-Date: Wed, 14 Oct 2026 21:41:29 +0000
-Message-Id: <090cb71b6e4800936fa172b6c3ebec52b80de28c.1791928238.git.pgovind2@uci.edu>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="W2W55KxJ"
+ARC-Seal: i=1; a=rsa-sha256; t=1792026143; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=GP1L/jtP7DrJ7QJoSmSnld9D3L43R/tNhAM9W/r4Xs0UHMPa2Ztvif9AdMxaFb5icU8njM4rQrhWkILeSIuoIzuUdeAkO/EEsONDd/JKQJI5XM9507+2rwThihvC/ICDwg2GT2ofol9ZS/M5HI7emtgxZgnERZ8c41dJ8AuyW68=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1792026143; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ZLfGeZI4u4aHgotCmZSC6LpPADowbtpwUTlXNmQWkQE=; 
+	b=eurUnNzCYxqcjgZnQldpNDJWyVu5JsCdh1Lw0iu6LY1/CLonuN6Ssro+Fy0JfrHQTdSvnXFdmzWMFOAn6cfkGgOG3W50M8dk0UnCSS4pMiv5dB/sel+uMXTA4BNPFcyxZ7R9utgFG9IyxoGd79J231tdk3/J4pDxZKbftNbPRBA=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792026143;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=ZLfGeZI4u4aHgotCmZSC6LpPADowbtpwUTlXNmQWkQE=;
+	b=W2W55KxJRiaSzB//Go80ZKTV+gVE5rwv9llz5CWkOxQ+fjdjfoS3VR2KAPL0pAmP
+	qXNlBPEDEDIn09AexRQXaoTIkWtzob72lRV17Vdp9mOaIuhZCrO8KRuOpPeqyGzY4CR
+	fr8k3igjmiV+m3gwo1jTQ6Tfl6/Q8OGmEfJYiD+s=
+Received: by smtp.zohomail.com with SMTPS id 1792026141942704.1542737296895;
+	Wed, 14 Oct 2026 18:02:21 -0700 (PDT)
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+Subject: [PATCH 0/2] drm/tyr: allow mismatched buffers for dev_query
+Date: Wed, 14 Oct 2026 18:02:02 -0700
+Message-Id: <20261014-b4-dev_query_fixes-v1-0-92043100b472@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3L0QpAMBSH8VfRubba1knxKpKGP87NsEW0vLvl8
+ tfXlygiCCI1RaKAS6JsPsOUBY2r8wuUTNlkta2MNqwGVhOu/jgRnn6WG1ExtBu0ZVuzozzuAX/
+ IX9u97wd1NiNeZAAAAA==
+X-Change-ID: 20261014-b4-dev_query_fixes-4e0ab024294a
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, 
+ Deborah Brouwer <deborah.brouwer@collabora.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=809;
+ i=deborah.brouwer@collabora.com; h=from:subject:message-id;
+ bh=OwWdTR3XhajPl3U4zGrx0KdjDKksTiLlAAPouO5QtDA=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFkX1GQUfvdOYrezyPhlaiAt/PXFcknOybM/lHDeWJpjV
+ 7V0HbdaRykLgxgXg6yYIstZe6Me8ar3Rrrz/zfDzGFlAhnCwMUpABOpzWb477hMxbZx0fwL09u4
+ I0unVKyZf3Z1b+f5e0t/c5u5riiy7GNkOMvscvumt6FwxLa2EPPwu+uPZKubPTuwqG2D3pMl4ZF
+ f+QE=
+X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
+ fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-Io resource regions can be requested beneath a specified parent
-resource.
-But `Region::drop` does not consider the parent resource.
-It releases regions relative to the global resource root.
-For nested regions, it may fail to find and release the child region.
-This can lead to resource leaks and leaving the name pointer dangling.
+Panthor UAPI for DRM_IOCTL_TYR_DEV_QUERY allows userspace to provide
+a smaller or larger buffer than the kernel needs. Revise Tyr's
+implementation to match the expected UAPI behaviour.
 
-Fix this by storing a reference to the parent resource in `Region`.
-This ensures that the parent remains valid for the lifetime of the
-child region.
-The `Region::drop` implementation is updated to use the parent
-resource when releasing the region.
-
-Fixes: 493fc33ec252 ("rust: io: add resource abstraction")
-Reported-by: Dylan Zueck <dzueck@uci.edu>
-Assisted-by: LLM
-Signed-off-by: Priya Bala Govindasamy <pgovind2@uci.edu>
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
-Changelog:
- - Edit safety comments to document that resources passed
-   to IoRequest::new must remain valid through devres release.
- - Document Region's parent invariant and update the
-  covariance and Send/Sync safety comments.
- - Link to v1: https://lore.kernel.org/all/a71c5593cfc66e21f24d9c07ae3469fc4f8ea501.1788901318.git.pgovind2@uci.edu/
----
- rust/kernel/io/mem.rs      | 27 ++++++++++++++------
- rust/kernel/io/resource.rs | 51 +++++++++++++++++++++-----------------
- rust/kernel/platform.rs    |  8 +++---
- 3 files changed, 51 insertions(+), 35 deletions(-)
+Deborah Brouwer (2):
+      rust: uaccess: add UserSliceWriter::clear()
+      drm/tyr: allow userspace buffers to be mismatched
 
-diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
-index 32a919099dcd..8160a09c9c21 100644
---- a/rust/kernel/io/mem.rs
-+++ b/rust/kernel/io/mem.rs
-@@ -27,6 +27,11 @@
- };
- 
- /// An IO request for a specific device and resource.
-+///
-+/// # Invariants
-+///
-+/// `resource` is valid for `device` through the release of the device's
-+/// managed resources.
- pub struct IoRequest<'a> {
-     device: &'a Device<Bound>,
-     resource: &'a Resource,
-@@ -37,8 +42,9 @@ impl<'a> IoRequest<'a> {
-     ///
-     /// # Safety
-     ///
--    /// Callers must ensure that `resource` is valid for `device` during the
--    /// lifetime `'a`.
-+    /// Callers must ensure that `resource` is valid for `device` through the
-+    /// release of the device's managed resources. Note that the `resource`
-+    /// may outlive the [`IoRequest`].
-     pub(crate) unsafe fn new(device: &'a Device<Bound>, resource: &'a Resource) -> Self {
-         IoRequest { device, resource }
-     }
-@@ -165,6 +171,8 @@ pub fn iomap_exclusive(self) -> Result<ExclusiveIoMem<'a, 0>> {
- /// # Invariants
- ///
- /// - [`ExclusiveIoMem`] has exclusive access to the underlying [`IoMem`].
-+/// - The parent resource held by `_region` remains valid through the release
-+///   of the device's managed resources.
- pub struct ExclusiveIoMem<'a, const SIZE: usize> {
-     /// The underlying `IoMem` instance.
-     iomem: IoMem<'a, SIZE>,
-@@ -173,15 +181,16 @@ pub struct ExclusiveIoMem<'a, const SIZE: usize> {
-     /// range represented by the underlying `iomem`.
-     ///
-     /// This field is needed for ownership of the region.
--    _region: Region,
-+    _region: Region<'a>,
- }
- 
- impl<const SIZE: usize> ForLt for ExclusiveIoMem<'static, SIZE> {
-     type Of<'a> = ExclusiveIoMem<'a, SIZE>;
- }
- 
--// SAFETY: `ExclusiveIoMem<'a, SIZE>` is covariant over `'a`; it holds an `IoMem<'a, SIZE>`,
--// which holds `&'a Device<Bound>`, which is covariant.
-+// SAFETY: `ExclusiveIoMem<'a, SIZE>` is covariant over `'a`: `IoMem<'a, SIZE>` holds
-+// `&'a Device<Bound>`, and `Region<'a>` holds `&'a Resource`. Both references
-+// are covariant, and the other fields do not depend on `'a`.
- unsafe impl<const SIZE: usize> CovariantForLt for ExclusiveIoMem<'static, SIZE> {}
- 
- /// A device-managed exclusive I/O memory region.
-@@ -191,7 +200,7 @@ unsafe impl<const SIZE: usize> CovariantForLt for ExclusiveIoMem<'static, SIZE>
- 
- impl<'a, const SIZE: usize> ExclusiveIoMem<'a, SIZE> {
-     /// Creates a new `ExclusiveIoMem` instance.
--    fn ioremap(dev: &'a Device<Bound>, resource: &Resource) -> Result<Self> {
-+    fn ioremap(dev: &'a Device<Bound>, resource: &'a Resource) -> Result<Self> {
-         let start = resource.start();
-         let size = resource.size();
-         let name = resource.name().unwrap_or_default();
-@@ -219,8 +228,10 @@ fn ioremap(dev: &'a Device<Bound>, resource: &Resource) -> Result<Self> {
-     /// driver data. Access to the I/O memory is revoked automatically when the device is unbound.
-     pub fn into_devres(self) -> Result<DevresExclusiveIoMem<SIZE>> {
-         let dev = self.iomem.dev;
--        // SAFETY: `ExclusiveIoMem` only holds a device reference and an I/O mapping, both of
--        // which remain valid for the device's full bound scope, not just for `'a`.
-+        // SAFETY: `iomem` owns its I/O mapping and refers to the bound device.
-+        // `_region.parent` refers to the resource supplied to `IoRequest::new`,
-+        // whose safety contract guarantees that it remains valid through devres
-+        // release. Thus `self` remains valid for the device's full bound scope.
-         unsafe { DevresLt::new(dev, self) }
-     }
- }
-diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
-index 17b0c174cfc5..7d16600913b0 100644
---- a/rust/kernel/io/resource.rs
-+++ b/rust/kernel/io/resource.rs
-@@ -25,17 +25,24 @@
- ///
- /// # Invariants
- ///
--/// - `self.0` points to a valid `bindings::resource` that was obtained through
-+/// - `resource` points to a valid `bindings::resource` that was obtained through
- ///   `bindings::__request_region`.
--pub struct Region {
-+/// - `parent` is the exact resource passed to `bindings::__request_region`
-+///   when `resource` was obtained, and remains valid until this region is
-+///   released.
-+pub struct Region<'a> {
-     /// The resource returned when the region was requested.
-     resource: NonNull<bindings::resource>,
-+    /// Parent supplied to `__request_region`.
-+    /// The reference also prevents a parent `Region` from being dropped
-+    /// before this child.
-+    parent: &'a Resource,
-     /// The name that was passed in when the region was requested. We need to
-     /// store it for ownership reasons.
-     _name: CString,
- }
- 
--impl Deref for Region {
-+impl Deref for Region<'_> {
-     type Target = Resource;
- 
-     fn deref(&self) -> &Self::Target {
-@@ -44,31 +51,28 @@ fn deref(&self) -> &Self::Target {
-     }
- }
- 
--impl Drop for Region {
-+impl Drop for Region<'_> {
-     fn drop(&mut self) {
--        let (flags, start, size) = {
-+        let (start, size) = {
-             let res = &**self;
--            (res.flags(), res.start(), res.size())
-+            (res.start(), res.size())
-         };
- 
--        let release_fn = if flags.contains(Flags::IORESOURCE_MEM) {
--            bindings::release_mem_region
--        } else {
--            bindings::release_region
--        };
--
--        // SAFETY: Safe as per the invariant of `Region`.
--        unsafe { release_fn(start, size) };
-+        // SAFETY:
-+        // - `parent` is the resource passed to `__request_region`.
-+        // - Its lifetime is tied to this `Region`, so it remains valid.
-+        // - `start` and `size` identify the region owned by `self`.
-+        unsafe { bindings::__release_region(self.parent.0.get(), start, size) };
-     }
- }
- 
--// SAFETY: `Region` only holds a pointer to a C `struct resource`, which is safe to be used from
--// any thread.
--unsafe impl Send for Region {}
-+// SAFETY: The region pointer can be used from any thread. `parent` is a shared
-+// reference to `Resource`, which is `Sync`, and `_name` is `Send`.
-+unsafe impl Send for Region<'_> {}
- 
--// SAFETY: `Region` only holds a pointer to a C `struct resource`, references to which are
--// safe to be used from any thread.
--unsafe impl Sync for Region {}
-+// SAFETY: The region pointer can be shared across threads. `parent` is a shared
-+// reference to `Resource`, which is `Sync`, and `_name` is `Sync`.
-+unsafe impl Sync for Region<'_> {}
- 
- /// A resource abstraction.
- ///
-@@ -98,13 +102,13 @@ impl Resource {
-     /// Exclusive access will be given and the region will be marked as busy.
-     /// Further calls to [`Self::request_region`] will return [`None`] if
-     /// the region, or a part of it, is already in use.
--    pub fn request_region(
--        &self,
-+    pub fn request_region<'a>(
-+        &'a self,
-         start: PhysAddr,
-         size: ResourceSize,
-         name: CString,
-         flags: Flags,
--    ) -> Option<Region> {
-+    ) -> Option<Region<'a>> {
-         // SAFETY:
-         // - Safe as per the invariant of `Resource`.
-         // - `__request_region` will store a reference to the name, but that is
-@@ -122,6 +126,7 @@ pub fn request_region(
- 
-         Some(Region {
-             resource: NonNull::new(region)?,
-+            parent: self,
-             _name: name,
-         })
-     }
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index ac0a012ae1bb..8ba143a53ff6 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -311,16 +311,16 @@ impl Device<Bound> {
-     /// Returns an `IoRequest` for the resource at `index`, if any.
-     pub fn io_request_by_index(&self, index: u32) -> Option<IoRequest<'_>> {
-         self.resource_by_index(index)
--            // SAFETY: `resource` is a valid resource for `&self` during the
--            // lifetime of the `IoRequest`.
-+            // SAFETY: `resource` belongs to this platform device. Its resource
-+            // array remains stable while bound and outlives devres release.
-             .map(|resource| unsafe { IoRequest::new(self.as_ref(), resource) })
-     }
- 
-     /// Returns an `IoRequest` for the resource with a given `name`, if any.
-     pub fn io_request_by_name(&self, name: &CStr) -> Option<IoRequest<'_>> {
-         self.resource_by_name(name)
--            // SAFETY: `resource` is a valid resource for `&self` during the
--            // lifetime of the `IoRequest`.
-+            // SAFETY: `resource` belongs to this platform device. Its resource
-+            // array remains stable while bound and outlives devres release.
-             .map(|resource| unsafe { IoRequest::new(self.as_ref(), resource) })
-     }
- }
+ drivers/gpu/drm/tyr/file.rs | 45 +++++++++++++++++++++++++++++++++++++--------
+ rust/helpers/uaccess.c      |  6 ++++++
+ rust/kernel/uaccess.rs      | 23 +++++++++++++++++++++++
+ 3 files changed, 66 insertions(+), 8 deletions(-)
+---
+base-commit: 5a1b7121a6c4db6c0239d3ac3fd1c2bb33a40025
+change-id: 20261014-b4-dev_query_fixes-4e0ab024294a
+
+Best regards,
 -- 
-2.34.1
+Deborah Brouwer <deborah.brouwer@collabora.com>
 
