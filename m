@@ -1,178 +1,475 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013003.outbound.protection.outlook.com [40.107.201.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD841322C73;
-	Thu, 15 Oct 2026 01:33:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A733E314A
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 03:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792027998; cv=fail; b=BISQ0GhoWDebrFxEQk7y0BJNQd9vpc7/nHfGmnQSgDF8bd/zVvtF8mbm7RJqmHfUavHgfNArybTXH23NXI9I0sUDc3tXKF6+Cly3ml2QrTPXAz8gytABWaq05ToPcNq6NOqqhQbP2anon7QNDwa2GGNO0vREgFKxo9YnLi5xUz8=
+	t=1792033594; cv=pass; b=luZ0j7WLtyz27N/CtV0NNLaglgVEnJbPEQN5GMfOsv4bl29O2n8NR4Iy2sP4kx7ObOiN+B5XiwGq9aXA4tyKiRdATL2lpPlx5/S4HG03VxkYEoqtOrvzIRCY53pHBISjQLOP07f/EWf9Ph8AVPXHQFE81tijMClw+FupC4ExnCw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792027998; c=relaxed/simple;
-	bh=vfrwwN3OP8R4lyjy65cew9aMEpoD5KejD9PiZUTNlIo=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=ONFb7dZ48iJhlZ8G47XwsoHzHpbDLsjittRUeIcKxQ8ROOMXKjtwdZSwal9zqhvjgOSXl1n/RPLSQr+RsSO3Rp2/+lyG9i78KYjTXlqV5pVTsDerkjPk0yr5kCZJDLoXxDJo4oqPW0hNebRrilSmHZFrgnZUF8EYaQd3cFt2QrU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DhveExgt; arc=fail smtp.client-ip=40.107.201.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1792033594; c=relaxed/simple;
+	bh=a/6f4QF1Wsww9ttIAYJYc9lLbaHe4jO/w79IMMKFNWg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EYYQVq7AOnOvBEdPb4L9FPKUddBZanw87Qxb7P+KHb3AOO5dAkIMNj5D0F7tUPVGkChFpAVzFLYqy2jDGQTtMFh+oNzR2EuMVCQskQs9eoCt5T0cBavjHBWyn///0tJfi2Qq4+aYD24M/tFKZ98UJHqgeTAGqfeQjnGAIb7ru1A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lnC6fRcK; arc=pass smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DhveExgt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=agTpnnZgoNiLLTbqsRrs94BRwzqTz4kQB6XVKOMIxAJegqZ/3WJvmWAaYWBoaqWc3ptwaokXKl1Ev9vYJaiyUT70danSGQ+5+ADfUmClFTHav8L1d28eqZGFvZ9bW0iPU4JMYMHGRedRMCAS51yPUibFnYgRIRpiMDHiw8aHTCJInso/IjQi8tbHAUmqKXmWASplB+aNQ3CiQj4d+o4VJZB20ubrGcAR2v+Q5WDtnLcBZ45ai1PILASaUl3+ujfyI55Eo+9uy0Lt99LSxFlo38GXCaXxYyedlHkcEVO4JUO3YynYWyCt9M/yfW5cGtraVhT8UDd6EtTACh1FxlNihA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0py5ZYysNLER5TCYw/drBkHoJiFxfW5uxO7/toLiW/Q=;
- b=uuPbRYcdZy/fZ6YrlkpE16uBYA0QhhfShlXx2NYeXKFd0boW5C1PDt+dZm8uKQ3GUYi9476lOZoyBGsML5ged/s8PyQlt0TlvEw9u9nWerVtzXPcmwccxVekraIKa/IxXCPHioefaYx2+LC26c/f5DDu2qpjWBVQ3uOT5NBPMsSDkHaVjI/9ZjSGGlF8h0Tqlbz1YqZWMsPuXK+Q8UVyIWlsotFr9yQ5x/BeKWqkSVlTSqpNRAQ3ImZbXU8TqK6rNWaFxvhj5tURnLAOy2dVjc0FDCnioS/caBGREaLTjRDsc8IYe/R/mfz5pNTHGUr7F8e9lniW+UNsgNUj/W/Crg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0py5ZYysNLER5TCYw/drBkHoJiFxfW5uxO7/toLiW/Q=;
- b=DhveExgtO+uYtC3Ii+vB/1vtTvfIB7XaQkZJEY3aFtdiAsy94O3ECFUN2KqZO+md+1ZyIzg6/jt0pHrIm3ABztWxHZKuCHChNOXiVV7PJGOpejhZQNENern2mb4QCniOQGdm9JKce8TxO7qmCp/Pe/WBe82SHVVfbmCCqqulTCeIzSW3S8SsO7piXXsvJX71XLPFOU4fYWvr7oWVnnv74kt/rVBLpzb8IB5qN/a1xsqfUCCAVOafUIxcz5wVch2TSMn+Nk7/Gv3BxEtU6gikri1RvwnDZn3FB+UmeRMy0BdpZvFOo7PKpGbkzvysHOmgtnkJ3WqEEFVpxNvdxmNx7w==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
- CH2PR12MB9542.namprd12.prod.outlook.com (2603:10b6:610:27d::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Thu, 15 Oct
- 2026 01:33:10 +0000
-Received: from DS0PR12MB6413.namprd12.prod.outlook.com
- ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
- ([fe80::e82a:6673:4142:37fa%5]) with mapi id 15.21.0496.021; Thu, 15 Oct 2026
- 01:33:10 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 Oct 2026 10:33:06 +0900
-Message-Id: <DM50WK54LKD7.1YGZ0JEZ9KMG6@nvidia.com>
-Subject: Re: [PATCH v3 6/8] gpu: nova-core: add NVKV typed encoding
-From: "Eliot Courtney" <ecourtney@nvidia.com>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Lorenzo Stoakes"
- <ljs@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20260928-b4-nvkv-v3-0-f04504c262c2@nvidia.com>
- <20260928-b4-nvkv-v3-6-f04504c262c2@nvidia.com>
- <DLYE7KKATCU6.CUH7GIJJJ9PW@nvidia.com>
-In-Reply-To: <DLYE7KKATCU6.CUH7GIJJJ9PW@nvidia.com>
-X-ClientProxiedBy: TYWPR01CA0028.jpnprd01.prod.outlook.com
- (2603:1096:400:aa::15) To DS0PR12MB6413.namprd12.prod.outlook.com
- (2603:10b6:8:ce::10)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lnC6fRcK"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b2237b596cso851218a12.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Oct 2026 20:06:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792033590; cv=none;
+        d=google.com; s=arc-20260327;
+        b=O4taxtuvBArLmUqrEiY1I+ZXCovIGs/DHMdPMIz+SEBQV1SoWEjT4B1yVa2/XOlOoo
+         oEVRID3Srn2gDzVGiqHhTAV5q6jdsl9bw4bFmfH4wb/869Q/Ui01UdgjF/DAVi+tfJ08
+         uMN5AxT0xA4JYg2bZw3p43exbVVYuzGsJYnqoHP+tI7g4F5gTqEdS38tKu+CE9Qizetg
+         6QI+cp78kfuwIdF3Dfz4wruwraHn+agP9tCYPfA82Mp2I9J4jogR8LizjI7o53OLf41A
+         HhLsz3dIROZ7m3XLyeowd5v/SiSKFE1mm8gshz/n9y6hCgYYH8VgyVat27vVaHPZ1vLW
+         7edA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+dvlObEQLQudKXYWPDBhDHwG3kWaespOtx9QvaoDVJs=;
+        fh=YrAvt2aMwNrzh2UyzH8s1XqcCUxsgkC1ioP1ZbK7myo=;
+        b=auy4sVGoOGkPepZ7nZOo6CoYmNRhKxNkuI5DgRiXvivm2RQaf88TsVE+U2z54QCCGo
+         gie3ZxPbVXyyi6slqX6rpAbLYS14ngSP0SjVVZYbm63JHxKvK9b/cnTCR7wqecLweN21
+         Kl8kgwHr0kRdHqz3TQAnpAp5PvBv9pa6wBG6hLkadt0eqYeG8qeD1wqti9HODRQ8WyoK
+         qCAvmiZ+DUulrFdlehoTx3lQJbT/XBWAlzAusu9GmdonM7QgSksj7RO7X3iVsStRlq6m
+         HRjla1Dt84MU4QuITG6Wp+a2oIwAj2sJgC6mVrRPuk4znyI5KwXvCX39WqcOsubd4muM
+         Pe8Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792033590; x=1792638390; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+dvlObEQLQudKXYWPDBhDHwG3kWaespOtx9QvaoDVJs=;
+        b=lnC6fRcKpTml7l4+wwdWnuUnrCwhPhuSUR5PuEhTWEp3H4d098V1NXv+1xOsGgoDeu
+         SUf/XYdvyGUU2DUchE3TQFGeXzgBYWtIRN5BTQbtEnCY5IQ6jF1hQY/VXPRxuDzSXHpH
+         auQVT1Z07Gvac4NchPjV0DKzchfrjhTKemjkZQRSlJIJmvgPk+afqvMDr23Nz7ol/m3u
+         GIig0txhMVOAnzsj6zKJ7oAYqkafGbDML92v1uaNyng1uQOr83fxAdRznH1c6NZdfbwz
+         NqJe2Yjm3HyAmDd7eugsJo4mLO3T2G38RzhJ8AOIKspMXSTbUTxf8nOHNZ7+aNXCKOCC
+         PWZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792033590; x=1792638390;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+dvlObEQLQudKXYWPDBhDHwG3kWaespOtx9QvaoDVJs=;
+        b=SLXrfxC+unbiQJm3g1dc+UC1Gy1QVsT9hZUx/vTuy/9CTfjaMaf6d4JsXf7Y68uKxq
+         v1zZItR9whizvXpyH6SYqN3e38ZzCorFEB0aGZbfB9HRG2iROmpkT7tLcIJ3VsFpZQL3
+         pdU6QkVZ42ToWLKnMMRY9O1EaLOTAKDYcOhR3aJuv/+YUNtOIx8a37ieE5WUPohaPvsp
+         muSFxnFM4vnSuxzNkVdHjZMyvBoUOyPWYlRj1JwljcHp1lCzKtKFs8kFG7KyW455b//k
+         vCnYN+CKBBRXQeq8kdQ8rWvpa64HXr/UOaG0kpkaFW0rTWeNaB3v7IRrfIHnZH36huVP
+         I4mg==
+X-Forwarded-Encrypted: i=1; AKwUvByZwRzBV6pTLA+yx4VWhyPWIpQTD2OnpzLzm/tP/1BNgiJ3UAT7RBMvfB6wldwtm9s9R9jLpvXZsIIYJC7MEA==@vger.kernel.org
+X-Gm-Message-State: AFq9FYL2/DMa3EpI/uMSlwC7qaPMVuzhFGCAXaTT1PPezUIR3xWdwcId
+	89YscjwTk/7/jQuejL7zFp61bCXQbysflKK92T/CBpfiMN+1cAoHN3+2OFhXv/wzltxKzLvYwO4
+	txZyjZDyK8HsUUvTThy1I20B1OWNhA/k=
+X-Gm-Gg: AYBFou02EecGksONFEy8+Ja+njg6Vy2GLrJhCl4Sh3qYubJ7Xu446q52n8ITzK9mCGR
+	CcT+3mVQMoJhKbQfTfHRk9DEfriBK11u1P8Lvn6RiBwB/2VcF3rp7OGcW8e8UwDRt5JojDn73Ux
+	MDdooz3mpB329jQrMKPhlubZrdRLnTFIRiLv0ZCg283fzm7WqyA5YnlLBVH4bHkOsg1TWrF/Dq7
+	KY218YbolPReCSTEhQtji0r+IPoyPE0cAqLXGEKtNyVyaMEJdW8OpBn5IBjVP4qoV/AadQNk+KT
+	tqnvraH3ktBY5NJT8pUnZGA48yKlmcVnWKYbe+LJrD81W/mhaOx4wzbjykS6RjOM2ArA78Z/qmc
+	Mh3JmUdKdyg==
+X-Received: by 2002:a05:6402:2115:b0:6a9:f88d:c092 with SMTP id
+ 4fb4d7f45d1cf-6b17c164de5mr14448573a12.0.1792033590058; Wed, 14 Oct 2026
+ 20:06:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|CH2PR12MB9542:EE_
-X-MS-Office365-Filtering-Correlation-Id: 315038e9-41fd-4126-cff1-08df2a5c459c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|10070799003|7416014|1800799024|23010399003|56012099006|11063799006|4143699003|18002099003|10067099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	4J+nQlEfqKROK/2YPlGDKRDeqFIQgizy9qUHF1S88tSzdp9fwR62oWYLTBwjhwNVr7DgkkbN4ZMFjhfvqPuGT2shRna0oFeC7bdiAUoy4yKjbm4CGFWhf1gM5RDBV7Of2w2vIB6Nd3+ArY3NsCCT5c7x8bTkY2pqs3aFtaqH8k5kqtgVY7gF0YS6tUJgEObuXAf+eq2jVlyJ1qmndmIT3L7cqDrxVi/13IfnCwryVpABz7POec39lv6XrR+ajs3Oy9ZCEfJeSlh70KqbVySGmf3z39roEHKJ+zZCikMzevgyIq4t5hAIyDNQvmUKUSXq5BU21fUbyIJI5qWhc4/tYNkRJUEIbgj8A4nudumir+IGYmMK1nB90akY7VvLj9lcceJvsVfmXJZ87te3ge608NO9vzTFVBzuLgUlrRpSAKhtqLrD8Rn1/vOJUhS/zz3s2rsG5Okk7Wwkj6rWFOnSvWCTfz9b8KnvycYa7KANfLLM13J3l5UD6NwhZLvLNNo4XaCm+UUvJkvWxBaPpKmP+yhogvHUCJcvblaR1Z9GglownkxEVVd9hqU8iZWT7ZE6501tCFaLcTVwzJkZKK25BHPqRnDM/Z2zHfAy2rQ900qBu8F0igilVP9Lu+i38SpO9KVX0JENgIaHSnCWTiI99+BpDY8qirYGkymeOuuv+tU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(10070799003)(7416014)(1800799024)(23010399003)(56012099006)(11063799006)(4143699003)(18002099003)(10067099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cWREcGMyNURoRE9xQnBuR3dvRVVJNUZCVUZuY3RYamRFcDJjQUxZVjRZaUtJ?=
- =?utf-8?B?RFJxamZVV2ZYM2VyQlkvM3E1VkpIYTNGYmxCNHJManR3RW0weTNYbTg2NlhD?=
- =?utf-8?B?RE92OUdxUXZ4TUdQdytQdVErTkJQWk43VjAzdExaK0xIckJYdnBwMHUwQ00z?=
- =?utf-8?B?K21VWncrTTNGREZlTzZaWTAvbmpTNzMvSGtIRkNOVG1DcGpGTkltRGFocG04?=
- =?utf-8?B?NkJLeHc3UnNCUHpNRFk4T3h1Zm01MGp5WHdWVUdSVUdGMU11Vzc4OVIwR0lv?=
- =?utf-8?B?eU1Sa3FNeTcvZ3JMeDZ2QWQvak5ENzlqdmpmQzB0V09JR0pieWVxbFowWVl6?=
- =?utf-8?B?dFNtYXByTzhOTzZxQTcxMitQdGY0UUcwRndmdXF5SWR2Y0NnN3dUUEJmNTRZ?=
- =?utf-8?B?aW52Nit0MWpuY1h5eEwydC9NTjd0NG9DQUdMWFBCTjIrOHRyUTFvMm9pYWh5?=
- =?utf-8?B?LytWZTZRKzJJTGhxS0V3ZmZ3eVlCUnIvVzE0QW81TThjTXQwbFBQYnNsNlNn?=
- =?utf-8?B?cWRza1JmM20reWZtS1hUcXM2WDlrRjhjOGw0dEZIaGdKaC9kNm1LQWY0SXVI?=
- =?utf-8?B?TUtkN3laM1Vta05JVTNZOGdsSnBoMmRnR0k5WHRXdGc5OUR5OXlmQ1VGcFBq?=
- =?utf-8?B?OGxYbnRDejJEVWhpRGJueUZ2VnI0VmlsMFpFaTUyUFkrN1Rtdkx5UnRwZWFY?=
- =?utf-8?B?bytGU1paYTFIbVEzYitJRGVMMEtLeGc5UWx3dno3emR0NGVJWGpGU0VUZ0Uv?=
- =?utf-8?B?UG9IY2VKOGEzN3lIMjRSNi9pd0ZxTjcyTHd4RC9yTTBMYklGa3RSKzg3Y09K?=
- =?utf-8?B?VUdXSkNaUWQwZmZZOFVteURTT0JEbk9WQURqTkdmaEQ2VlEyQ3dSMC9vSDhF?=
- =?utf-8?B?aktRSGF2ajEvNjcvWVg4azlBL0JiUkJtcndLSFlmcG8zRWs4RUIzeTVGTDFI?=
- =?utf-8?B?TzVRM0tORi95ZWRFNHltZVN6dTUxUkJVOWJ1UGFrOVlhTG8vYjlmTlMxYVY3?=
- =?utf-8?B?Y1IyVStUb0Y3SUdBVWdzUVFOL2lRbjc0N1ovYlM1K042TU53WEdqLzdaLzFl?=
- =?utf-8?B?MW5DS1dtZ1NQQ2tPMHFlenE0VnVjWFB2ZlRSS0NYMWNjbVZDcUVRNzl1ZGNm?=
- =?utf-8?B?bUhraEdNcWphclJ5MjVvT2RHcTRtYm1UZUdJdWh1RG1SWXVlYytuRXcraTVt?=
- =?utf-8?B?V2x1TDRLNlNyT01LcEw5V3BWSXphQlB1VFJtaDRmOU95WHdIZ1JzZU1ab0xC?=
- =?utf-8?B?cmovSTNQOEgralpycm9OcWZPaXFoVDBRRDkwdEs3YW5VMEpMMTNwQmhCemor?=
- =?utf-8?B?bkJnYlkzbVFWZGNrcGF3VHRHenlLby9zZ2RSK1dUaDZYcjB0aDVQREI3YVBB?=
- =?utf-8?B?MForbGoxTGx5a3lwdzBidi9DZEs5SGF2czMrNU1DakN2Ky9YbUpIQTBwdVFN?=
- =?utf-8?B?YmI2Q1BRemhScUFsUjh4WWp1QUVUb2p1UGRGYTlCcWdkT2twMFVsaldBSjcx?=
- =?utf-8?B?TDRHaHptcG0ydGd1Ym8wYUpxekdabUZGbFkvbU1KeEErUUZqZ01Fc290enFB?=
- =?utf-8?B?Q3dwUGhONHdCWXpTUDJ6ZFNDVnlxa3BlUERWazZDdTdFQnBad3IrODh6Nmsw?=
- =?utf-8?B?SStTY2RKS3RiTDduZ0NGdE9EOEtyRVQreEJyVjdLWnZrek1CUGpUd2RuaUs3?=
- =?utf-8?B?OERjSmNuWkExOG95YnprTFhjM1d5cERoMW5zam9uSERJejM1SlFaeHhIcEs5?=
- =?utf-8?B?aUR2TjlKVWdUM0FDNEdCdHJMcE14QXBwZTZvYk1rM3c4MElkZjMzWjNKa0l0?=
- =?utf-8?B?VkdxYm9GRnR0UmxDOU1RZXc1M1JqOG1hSkNBVWYyYS9nR2N3VWFRc3lZWXA5?=
- =?utf-8?B?MVYrbWJxTWNRN3NiaDBzQURBZVFtVjFKVzdxVWIxZWJyMjdSYk03Nzl6Ry9p?=
- =?utf-8?B?VllFaDRWNzlVckRaVUp6ZStnV2cvMkUzaHBGOS9Lc3RmQk9CM2NQZlhPYnRi?=
- =?utf-8?B?bjBkOE9Cb1hzeFV6M2dFcytRMVkrNjgyQmNEMC9IQmM4NWcwNHQyb1dzbDZs?=
- =?utf-8?B?VThwcU1tamVUU0JkZERjV3I5UWgrZDJIVHBKWEJnZ3Rua3l2VnMxTDRWWjYw?=
- =?utf-8?B?dnBabDh6Q1ptTndGbDVxOUFTZTV6MFNKeHhZUCtNa2t3b1pGUWcvQ1NkUWlT?=
- =?utf-8?B?bVZPLys4ZGtZY2tad3hXRUN2UnlpVzBNdmVFeFdGZVJSUERYekJNSGRNb3Ny?=
- =?utf-8?B?YkxsY203cTkzMGJLcVNyUU9BVEpRcHVYUWFGa1dRQnJmcXVjaEFZc3FxdmJJ?=
- =?utf-8?B?SUdoQjBCVXNld1VaYTljT2tvLzRqSERMZzAxbXY5K0pzUE4rc0MvT3RpMUpq?=
- =?utf-8?Q?g6+92rXH+ZIppZGNNy6Eh3TlV6ZDxHjs1e788BzJekpp0?=
-X-MS-Exchange-AntiSpam-MessageData-1: FxO3gMRTnsluRg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 315038e9-41fd-4126-cff1-08df2a5c459c
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 01:33:10.5180
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OSkPWYYmDArAS+1+Aa0wfWNAbTKxQ789wuz1OYFvWhygrCW6uhSwEgvV35kwo/AOAjjfR7IQjjeifp28GFjDDA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB9542
+References: <20260928011123.450800-1-alistair.francis@wdc.com>
+ <20260928011123.450800-11-alistair.francis@wdc.com> <DM4NT7TFX4X9.1GFI128LI5ZQ4@nvidia.com>
+In-Reply-To: <DM4NT7TFX4X9.1GFI128LI5ZQ4@nvidia.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 15 Oct 2026 13:06:01 +1000
+X-Gm-Features: AclHuK_848dEWLvQB2EkuYfPoUwZxvDK0SarfXUUCm147LPc2u1MU8LpiLVD7tI
+Message-ID: <CAKmqyKNEup=x+bwmPD_8x0s4ssPkqFnQtSGqJ_82z9oDP=A6cA@mail.gmail.com>
+Subject: Re: [PATCH v4 10/22] lib: rspdm: Initial commit of Rust SPDM
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: lukas@wunner.de, linux-cxl@vger.kernel.org, akpm@linux-foundation.org, 
+	Jonathan.Cameron@huawei.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, jic23@kernel.org, bhelgaas@google.com, 
+	alistair@alistair23.me, djbw@kernel.org, linux-pci@vger.kernel.org, 
+	wilfred.mallawa@wdc.com, a.hindborg@kernel.org, gregkh@linuxfoundation.org, 
+	alex.gaynor@gmail.com, aliceryhl@google.com, benno.lossin@proton.me, 
+	boqun.feng@gmail.com, bjorn3_gh@protonmail.com, tmgross@umich.edu, 
+	gary@garyguo.net, ojeda@kernel.org, 
+	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed Oct 7, 2026 at 3:30 PM JST, Alexandre Courbot wrote:
-> On Mon Sep 28, 2026 at 5:42 PM JST, Eliot Courtney wrote:
-> <...>
->> +    // Tests that encoding via the `nvkv_encode!` macro works correctly=
-.
->> +    #[test]
->> +    fn encode_typed_struct() -> Result {
->> +        const U32_KEY: KeyId =3D 0x0001;
->> +        const U64_KEY: KeyId =3D 0x0002;
->> +        const NAME_KEY: KeyId =3D 0x0003;
->> +        const FIXED_KEY: KeyId =3D 0x0004;
->> +        const OPT_KEY: KeyId =3D 0x0005;
->> +        const INDEXED_KEY: KeyId =3D 0x0006;
->> +
->> +        nvkv_encode! {
->> +            struct TypedRequest {
->> +                a: Key<u32, U32_KEY>,
->> +                b: Key<u64, U64_KEY>,
->> +                name: Key<&'static [u8], NAME_KEY>,
->> +                fixed: Key<[u8; 4], FIXED_KEY>,
->> +                opt: Option<Key<u32, OPT_KEY>>,
->> +                indexed: IndexedKey<u32, INDEXED_KEY>,
+On Thu, Oct 15, 2026 at 1:17=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.=
+com> wrote:
 >
-> API question: `IndexedKey` is module-private, but this use of
-> `nvkv_encode` looks like something that driver code could very well do.
-> Should it be crate-visible? If so, why not move it next to `Key` in
-> `nvkv.rs`?
+> On Mon Sep 28, 2026 at 10:11 AM JST, alistair23 wrote:
+> > From: Alistair Francis <alistair@alistair23.me>
+> >
+> > This is the initial commit of the Rust SPDM library.
+>
+> This commit message deserves to be a bit more verbose. :)
+>
+> <...>
+> > diff --git a/lib/rspdm/consts.rs b/lib/rspdm/consts.rs
+> > new file mode 100644
+> > index 000000000000..9709f51849d7
+> > --- /dev/null
+> > +++ b/lib/rspdm/consts.rs
+> > @@ -0,0 +1,92 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +// Copyright (C) 2026 Western Digital
+> > +
+> > +//! Constants used by the library
+> > +//!
+> > +//! Rust implementation of the DMTF Security Protocol and Data Model (=
+SPDM)
+> > +//! <https://www.dmtf.org/dsp/DSP0274>
+> > +
+> > +use kernel::error::{code::EINVAL, Error};
+>
+> This can just be `use kernel::prelude::*;`.
+>
+> > +
+> > +// SPDM versions supported by this implementation
+> > +pub(crate) const SPDM_VER_10: u8 =3D 0x10;
+> > +
+> > +pub(crate) const SPDM_MIN_VER: u8 =3D SPDM_VER_10;
+> > +
+> > +#[allow(dead_code)]
+> > +pub(crate) const SPDM_REQ: u8 =3D 0x80;
+> > +#[allow(dead_code)]
+> > +pub(crate) const SPDM_ERROR: u8 =3D 0x7f;
+> > +
+> > +#[derive(Clone, Copy)]
+> > +#[repr(u8)]
+> > +pub(crate) enum SpdmErrorCode {
+>
+> This is in `consts.rs` but is not a const... Actually everything in this
+> module looks like it should be in `lib.rs`, and by doing so you could
+> also remove the `pub(crate)` visibility.
+>
+> <...>
+> > diff --git a/lib/rspdm/lib.rs b/lib/rspdm/lib.rs
+> > new file mode 100644
+> > index 000000000000..1010bd38df6d
+> > --- /dev/null
+> > +++ b/lib/rspdm/lib.rs
+> > @@ -0,0 +1,96 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +// Copyright (C) 2026 Western Digital
+> > +
+> > +//! Top level library for SPDM
+> > +//!
+> > +//! Rust implementation of the DMTF Security Protocol and Data Model (=
+SPDM)
+> > +//! <https://www.dmtf.org/dsp/DSP0274>
+> > +//!
+> > +//! Top level library, including C compatible public functions to be c=
+alled
+> > +//! from other subsytems.
+> > +
+> > +use crate::bindings::{
+> > +    spdm_state,
+> > +    EPROTONOSUPPORT, //
+> > +};
+> > +use core::ffi::{
+> > +    c_int,
+> > +    c_void, //
+> > +};
+> > +use core::ptr;
+> > +use kernel::prelude::*;
+> > +use kernel::{
+> > +    alloc::flags,
+> > +    bindings,
+> > +    new_mutex,
+> > +    sync::Mutex,
+> > +    types::ForeignOwnable, //
+> > +};
+> > +
+> > +use crate::state::SpdmState;
+> > +
+> > +const __LOG_PREFIX: &[u8] =3D b"spdm\0";
+> > +
+> > +mod consts;
+> > +mod state;
+> > +mod validator;
+> > +
+> > +/// spdm_create() - Allocate SPDM session
+> > +///
+> > +/// `dev`: Responder device
+> > +/// `transport`: Transport function to perform one message exchange
+> > +/// `transport_priv`: Transport private data
+> > +/// `transport_sz`: Maximum message size the transport is capable of (=
+in bytes)
+> > +/// `validate`: Function to validate additional leaf certificate requi=
+rements
+> > +///  (optional, may be %NULL)
+> > +///
+> > +/// Return a pointer to the allocated SPDM session state or NULL on er=
+ror.
+>
+> The commenting style is a bit all over the place in this series,
+> sometimes using the Rust style, sometimes the C kernel style, sometimes
+> apparently something else.
+>
+> For Rust items, please follow the Rustdoc style. These functions though
+> are the C FFI interface though, so they are useful to the C callers and
+> as such I think their documentation belongs to the interface file (i.e.
+> `include/linux/spdm.h`).
+>
+> <...>
+> > diff --git a/lib/rspdm/state.rs b/lib/rspdm/state.rs
+> > new file mode 100644
+> > index 000000000000..c894cf30bb87
+> > --- /dev/null
+> > +++ b/lib/rspdm/state.rs
+> > @@ -0,0 +1,241 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +// Copyright (C) 2026 Western Digital
+> > +
+> > +//! The `SpdmState` struct and implementation.
+> > +//!
+> > +//! Rust implementation of the DMTF Security Protocol and Data Model (=
+SPDM)
+> > +//! <https://www.dmtf.org/dsp/DSP0274>
+> > +
+> > +use core::ffi::c_void;
+> > +use kernel::prelude::*;
+> > +use kernel::{
+> > +    bindings,
+> > +    error::{
+> > +        code::EINVAL,
+> > +        to_result,
+> > +        Error, //
+> > +    },
+> > +    validate::Untrusted,
+> > +};
+> > +
+> > +use crate::consts::{
+> > +    SpdmErrorCode,
+> > +    SPDM_ERROR,
+> > +    SPDM_MIN_VER,
+> > +    SPDM_REQ, //
+> > +};
+> > +use crate::validator::{
+> > +    SpdmErrorRsp,
+> > +    SpdmHeader, //
+> > +};
+> > +
+> > +/// The current SPDM session state for a device.
+> > +///
+> > +/// Concurrent access is serialised by wrapping the whole struct in a
+> > +/// `Mutex<SpdmState>` at the FFI boundary, so `spdm_authenticate()` c=
+allers
+> > +/// run one at a time and the locked `&mut SpdmState` is the only way =
+to
+> > +/// reach the inner fields.
+> > +///
+> > +/// `dev`: Responder device.  Used for error reporting and passed to @=
+transport.
+> > +/// `transport`: Transport function to perform one message exchange.
+> > +/// `transport_priv`: Transport private data.
+> > +/// `transport_sz`: Maximum message size the transport is capable of (=
+in bytes).
+> > +///  Used as DataTransferSize in GET_CAPABILITIES exchange.
+> > +/// `validate`: Function to validate additional leaf certificate requi=
+rements.
+> > +///
+> > +/// `version`: Maximum common supported version of requester and respo=
+nder.
+> > +///  Negotiated during GET_VERSION exchange.
+>
+> Field documentation should be their own doccomments before each
+> individual field (see [1] for an example and general good practices when
+> writing Rust doccomments).
+>
+> [1] https://doc.rust-lang.org/rust-by-example/meta/doc.html
+>
+> > +#[expect(dead_code)]
+> > +pub(crate) struct SpdmState {
+> > +    pub(crate) dev: *mut bindings::device,
+>
+> This makes me very nervous. I see this is passed to C callbacks. We need
+> to maintain the guarantee that the device still exists, so an
+> `ARef<Device>`, from which you obtain a pointer to pass to the C
+> callbacks, should be the minimum here. Does the device also need to be
+> bound? Looking at `drivers/pci/cma.c` it seems to be. Then this needs to
+> be a `&Device<Bound>`, with a lifetime to `SpdmState` so callers only
+> use it while the device is bound.
 
-It's not used immediately, but I think it's fine for it to be crate
-visible since it is fair game to use it.
+Good point, I have converted this to use a `&Device<Bound>`
+
+>
+> Just storing a C pointer and passing it whenever a function needs it
+> cancels the purpose of using Rust and make the safety requirements of
+> the callback you pass it to impossible to guarantee, as nothing enforces
+> that the device still exists or is in a valid state when they are
+> invoked.
+>
+> > +    pub(crate) transport: bindings::spdm_transport,
+> > +    pub(crate) transport_priv: *mut c_void,
+>
+> Here I also suspect we want to define some kind of ownership model for
+> the private data instead of hoping that the pointer is still valid when
+> we use it.
+
+Any ideas here? It's just a pointer that we pass back to C when
+calling the `transport_function()`, I'm not clear on what we could do
+to ensure it's still valid.
+
+>
+> > +    pub(crate) transport_sz: u32,
+> > +    pub(crate) validate: bindings::spdm_validate,
+> > +
+> > +    // Negotiated state
+> > +    pub(crate) version: u8,
+> > +}
+> > +
+> > +impl SpdmState {
+> > +    pub(crate) fn new(
+> > +        dev: *mut bindings::device,
+> > +        transport: bindings::spdm_transport,
+> > +        transport_priv: *mut c_void,
+> > +        transport_sz: u32,
+> > +        validate: bindings::spdm_validate,
+> > +    ) -> Self {
+> > +        SpdmState {
+> > +            dev,
+> > +            transport,
+> > +            transport_priv,
+> > +            transport_sz,
+> > +            validate,
+> > +            version: SPDM_MIN_VER,
+> > +        }
+> > +    }
+> > +
+> > +    #[allow(dead_code)]
+> > +    fn spdm_err(&self, rsp: &SpdmErrorRsp) -> Result<(), Error> {
+>
+> `&self` is never used - this should probably be a method of
+> `SpdmErrorRsp`.
+>
+> > +        match rsp.error_code {
+> > +            SpdmErrorCode::InvalidRequest =3D> {
+> > +                pr_err!("Invalid request\n");
+> > +                Err(EINVAL)
+> > +            }
+> > +            SpdmErrorCode::InvalidSession =3D> {
+> > +                if rsp.version =3D=3D 0x11 {
+> > +                    pr_err!("Invalid session {:#x}\n", rsp.error_data)=
+;
+> > +                    Err(EINVAL)
+> > +                } else {
+> > +                    pr_err!("Undefined error {:#x}\n", rsp.error_code)=
+;
+> > +                    Err(EINVAL)
+> > +                }
+> > +            }
+> > +            SpdmErrorCode::Busy =3D> {
+> > +                pr_err!("Busy\n");
+> > +                Err(EBUSY)
+> > +            }
+> > +            SpdmErrorCode::UnexpectedRequest =3D> {
+> > +                pr_err!("Unexpected request\n");
+> > +                Err(EINVAL)
+>
+> These blocks are getting repetitive. Instead you can implement `Debug`
+> on `SpdmErrorCode` and `From<SpdmErrorCode> for Error`, and get rid of
+> this method entirely as callers will be able to print the error directly
+> and have it automatically converted to the kernel error type.
+>
+> <...>
+> > +    /// Start a SPDM exchange
+> > +    ///
+> > +    /// The data in `request_buf` is sent to the device and the respon=
+se is
+> > +    /// stored in `response_buf`.
+> > +    #[allow(dead_code)]
+> > +    pub(crate) fn spdm_exchange(
+> > +        &self,
+> > +        request_buf: &mut [u8],
+>
+> This shouldn't need to be mutable?
+
+Nope, it doesn't need to be. That's just leftover from earlier versions.
+
+>
+> > +impl<'a, 'c> Validate<'c, Untrusted<&'a [u8]>> for SpdmHeader {
+> > +    type Err =3D Error;
+> > +
+> > +    type Context =3D &'c SpdmState;
+> > +
+> > +    fn validate(unvalidated: &[u8], _context: &'c SpdmState) -> Result=
+<Self, Self::Err> {
+> > +        Ok(SpdmHeader {
+> > +            version: *unvalidated.get(0).ok_or(EIO)?,
+> > +            code: *unvalidated.get(1).ok_or(EIO)?,
+> > +            param1: *unvalidated.get(2).ok_or(EIO)?,
+> > +            param2: *unvalidated.get(3).ok_or(EIO)?,
+> > +        })
+>
+> Here you will definitely want to leverage zerocopy's `FromBytes` trait.
+
+I was hoping not too actually.
+
+The SPDM responses are a bit complex. For example NegotiateAlgsRsp has
+multiple dynamically sized arrays, and the fields change based on the
+version.
+
+Using zerocopy means we need packed structs and even then I'm not
+clear on how we can handle the KVec<u32> or even the
+KVec<RespAlgStruct> nicley.
+
+The current approach has the obvious downside of copying the data, but
+as the data is pretty small in the scheme of things and not part of a
+hot path, I think the tradeoff of copying the data with much cleaner
+and easier to understand code is worth it.
+
+Maybe in the future zerocopy could be a performance improvement, but I
+think right now it's a large complexity overhead in this case.
+
+Note that obviously SpdmHeader is not complex, but I think they should
+all follow the same pattern.
+
+Alistair
+
+>
+> > +    }
+> > +}
+> > +
+> > +#[expect(dead_code)]
+> > +pub(crate) struct SpdmErrorRsp {
+> > +    pub(crate) version: u8,
+> > +    /// This will always be SPDM_ERROR (0x7F)
+> > +    pub(crate) code: u8,
+> > +    pub(crate) error_code: SpdmErrorCode,
+> > +    pub(crate) error_data: u8,
+> > +}
+> > +
+> > +impl<'a, 'c> Validate<'c, Untrusted<&'a [u8]>> for SpdmErrorRsp {
+> > +    type Err =3D Error;
+> > +
+> > +    type Context =3D &'c SpdmState;
+> > +
+> > +    fn validate(unvalidated: &[u8], _context: &'c SpdmState) -> Result=
+<Self, Self::Err> {
+> > +        Ok(SpdmErrorRsp {
+> > +            version: *unvalidated.get(0).ok_or(EIO)?,
+> > +            code: *unvalidated.get(1).ok_or(EIO)?,
+> > +            // `try_from` rejects unknown `SpdmErrorCode` discriminant=
+s.
+> > +            error_code: SpdmErrorCode::try_from(*unvalidated.get(2).ok=
+_or(EIO)?)?,
+> > +            error_data: *unvalidated.get(3).ok_or(EIO)?,
+> > +        })
+> > +    }
+>
+> Same here.
