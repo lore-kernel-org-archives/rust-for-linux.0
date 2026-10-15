@@ -1,208 +1,127 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012057.outbound.protection.outlook.com [40.107.200.57])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808C03CFF4A;
-	Thu, 15 Oct 2026 13:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792071068; cv=fail; b=VVFzC1M3/dya3LvYr6OFTV5ilmf2bw51z+ooI6yH0c7UNWfz3kaZ1WolmW/HrmY/3AFktxAgpUabFBGdBDVfyxrAQ3ra5F+84PssARZSqTISr6gJ4bF755pHKmZ1iiyCHujchisKxhugd/WT86h9aWFTzYZiXfoHpodNqVMHncU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792071068; c=relaxed/simple;
-	bh=RcEouppmZHHIYaAjCzP97fql1LHjL198Pf50YwlLwj0=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=j4KKbERjuL+MlJF1+e1UOh58oqEdWJCJixM9NskCIU0X/AAAaOGKXkUJTxzRlwPSXnW0BLmEjU9BAWjxUx/uuYxBBmirAzO8inwVVvSqroWRQE/Up+26WRs2xAb0aGdw1SRzQES3u5ecz8ydCpiGZH3f0hAsTwPMPh8TTTqrTSM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=M2zfBuO+; arc=fail smtp.client-ip=40.107.200.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E593033D8;
+	Thu, 15 Oct 2026 13:33:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792071201; cv=none; b=YjI742fD2xagG4JN0GpSHOxf6UoRKM9ouS2+xpPGvG3ocCROdgNocYouFSOj1KY8hEZgpglpPsTjQf8refwvCuHHhqQFijtStJJwG0PBHCe5o3BI7MZqdNv/e/tWg8CHkrdWCAIBxIcJWdFtvBSf3QJJpne1K9Y5vPT9f3fQa5w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792071201; c=relaxed/simple;
+	bh=5BgxENS6U6in+i4rqcWgX7H59IRDjvgj1GlaKeyU1Ig=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mXVbGFanclX/DJiRc0t3anuVTCCt2zcO5vwxbyyPbzWeM0fdohCOrNLVSqI0BI9b+jj/zdRmHuGvSIff3TTgMkgKYDGHGxhKl9XcTkLC6ks/HzS7+NODiJmwCmYvnP/qeboHj+ArhhZr9KkRbPPjZYxyg0ME4wlH+07KtGEu1JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=ZIHsI0h+; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="M2zfBuO+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DPsgi+OU1dKaVdDLfHe7gy2lVHpi7D/pFFZ2csmPKR11nghhVoAn/6eirR3pkRundAy40Y9VE6LOMC1pUjJ1kePyLWAnbDjugzeM+vfUt2/hfMBFmlH21llOT8Jt+uFZFPmn64SpUK5Dzx93JgjFhcmALlspszpWaFVvcUq1uqI19jcf5nsoLQYzoMF4odUx2cgAxgrEtqE2iMB/zvuTx+OwtDfts9F6+P9JD89L/kgxXJhO2YoqtOhi3c7ysJosLVMLEYDMRie2yRXlq1QXFUHpNop0zkRaMw+SRpeI0hG4vN6orlmEbV70xkYAIl8QrNNPKFwqqyxyvRUVeHQHWA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KwrFxm2bVOQx8Pla9I8K1louVvYRUrC7pWAca7kXEJE=;
- b=PK3+35/ZG6HXR+bTkR/VjDOzOt1i2csu2kAenpNnrUGKbhTrjfU13bu9prkWBH/xNEYZaqqbiKszAjNYCUl9HSJGNG4gmHHOTfw8ymfpqdPYjiO8A7jxRM1mALU2EpS0b79cVk/KND2WhBv1xa6mQnnRFVlhY8nTe6V1unz0PmMN330syktX85Yxh+L08aMxITAKdu/o+jOwXG8aJvYDwDUxq8D0+vHSGeDMor8o5k7/q0rJu1E08kApvE9bNeV11nB7bL/hZ1UrJgjvc7kfiHylQEnVZpgFcTUnov77EZCM5V1I8YFPu/CPzYxM0UCc4jDGNsC0f5XJc8fo9Egdxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KwrFxm2bVOQx8Pla9I8K1louVvYRUrC7pWAca7kXEJE=;
- b=M2zfBuO+ZZZTQoxxTfKvgTAC8kGPaOjDCCG8Y72fP0G38glPJOukdaRNw8UVK651tEfa1fMASwNTcwqVraopjIEf85GyVAXi+mLHVKoqSbRf+t9Fy8xSX8FJMlUjwt8o9c+3kI9sOBera3VfAyNv8IPQKxHm/Uvo9B3wbIDHhBx1eYZ7S69Ci/kfuaHh/FW0gQyvJFevKITvaGmPm0QdAfWA7jMdw935MBZKimhhaFj8K0pDBe8M8zhO9Am9CByFjVAXigoZPlSXqxsBkKsIUD275ROfYCMZPcSZgpR1wrMs780Tw6Z+W6/uE2vlsW5G7KUXRdenNlWWKB5XT9QYxA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by PH0PR12MB8773.namprd12.prod.outlook.com (2603:10b6:510:28d::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Thu, 15 Oct
- 2026 13:31:00 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0522.011; Thu, 15 Oct 2026
- 13:30:59 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 Oct 2026 22:30:56 +0900
-Message-Id: <DM5G660SFQ0S.QNZ3KFM5I1WF@nvidia.com>
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Burak Emir" <burak.emir@gmail.com>
-Cc: "Yury Norov" <ynorov@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, "Alice Ryhl" <aliceryhl@google.com>, "Yury Norov"
- <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v9 8/9] rust: id_pool: do not round capacity up to
- BitmapVec::MAX_INLINE_LEN
-References: <20260930-chid-v9-0-0d6cca376cff@nvidia.com>
- <20260930-chid-v9-8-0d6cca376cff@nvidia.com> <aryYkkB9j14xnWo3@yury>
- <DLTA93JE6VF2.37UGB3SWU6ID6@nvidia.com> <ase7IBtZjQsPVWSN@yury>
- <DM0D75ZTTQXJ.2XADVI38UGH7C@nvidia.com>
- <CABwQupMVzUOsqP_fTZQdwUU+xEO1k2Q4=RQQuq2qd5HCYY0ZUg@mail.gmail.com>
- <DM46Y905AJVV.1K0F8AK1ZP4IO@nvidia.com>
- <CABwQupOYBBev5WkQry3oOoX5tGCs-ggDE4L_nK8BBYvrO=81bA@mail.gmail.com>
-In-Reply-To: <CABwQupOYBBev5WkQry3oOoX5tGCs-ggDE4L_nK8BBYvrO=81bA@mail.gmail.com>
-X-ClientProxiedBy: OSTP286CA0120.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:225::15) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="ZIHsI0h+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=XDiPejxR1lgMFrxkIRsl7SfT4Fx5u6WjBTcNmbbgPsA=; b=ZIHsI0h+nJgbkM4vgDRxtJ0BO3
+	FrPxFLoxVW/per4eKKTEctzfsAipZL/g2g37C0iNLatQ51JPC4z41NjkQQ5VQ4B2U91tMUuhhot+z
+	4UEzayurmYRN9UD8jDRW7Jjxjl8Hx5Ju+EL3VAFFqbBtnV6sjhhqbM1PxE3o8CgZ9yVaWL0eYATpj
+	n0KsTRywdM7qlupF8FxYu1Yvcw2rdKD8qjZrMOqwKucwQmI9wZdZTJ//GEQbxpKZZ952DOAucqmJw
+	HGdBQinq13okJeJqu0wOCvmV0RozGsQ0rjbhkh0Emfn6mspbRzYt6QYo8A2MEqPDA0qLv67Jrzj/x
+	u3/iYdSQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xHLZu-005E8d-2n;
+	Thu, 15 Oct 2026 13:33:03 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Thu, 15 Oct 2026 06:20:38 -0700
+Subject: [PATCH] configfs: zero the write buffer on allocation
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|PH0PR12MB8773:EE_
-X-MS-Office365-Filtering-Correlation-Id: 34b3e96b-e064-4c49-0f7f-08df2ac08cd6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|10070799003|366016|56012099006|4143699003|11063799006|261009223027099003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	aMhKSGAGdnxbw3J/OnBQWZwm3QI7YBjBtBsa05LwzCTh04Vl9yAvpFClnxgNyRdIkQJHlOireWgbgQNZH8VUKNpIgnBTQWYhMrx7mlS4FceURNicw+7X41Dv0g6vL44VbVWbY63ak1aQhSn3qzVpMzOurSCzkHzCtNh2VepUzdj2J8h7sia6cfLiXekoocuImfe04PL5XhIj82eNVKP71dygmQ+MUjeDClOR1LFH+3Qkrb93TM/W/KfGodnuhjPZ3zOBhQwFQeRMBkHxEy1h6yYN0eAchCvnIGq/i+fjJUrtp9ZhQw64ztwWbk/7RQecwkERH1Xz4xVFNSqVTt7DYh6vDGBp62aHFMPyOwtC6g5DTd+O5+OGc/sLwM1VMYAfveM1th4yMffgx71eG8xq1j7RPUaSpZsQeIGkC71dTGpfCMHOunpFVsHTiu4RwHwkId7HA0hZLg0pvTbXT8rg8gSIo5amtGqhRjtJe3oTevd6W+MnN326/xEjdZWVXCb10vm0cMMRPZ5qQKPm+KL8GvtBTPvNIhiVMcdj+l7+H/fPT1PHVgcLi4sQE6VFodBKEvuvfFEzxQrKU3p6dYLgt7WEGQiCADhS1lKbnpPkLNCbqoeorLimD8A9i0eN9l0TIhU+Pl+gjrWvHXJolMQjFu3Yf4UHCjasO6VCEFB7nrI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(10070799003)(366016)(56012099006)(4143699003)(11063799006)(261009223027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Z1ZNSDJ1QnBCRUpkUW9BUW91VlV1cWQzTDVFN3ppY09jUlJ5RVpBejAvbWw2?=
- =?utf-8?B?SW9ZYk5uNFFlSlNNZXZZL1FNMVY5VVRUWGxqSzIzZW4zMkR0OEE0cWxWS2pS?=
- =?utf-8?B?d3J0K0h6R2tsajV5YTdkZnB0WEMvSGdoeFJ1KzFlejJQSzJXUGRSU3htR0U5?=
- =?utf-8?B?UzU5ZnB4a21mSWJIdW0rQ3JwVHZWQ01XbDlZZ0djRUpwcmU5cE9tUFQ1YXIw?=
- =?utf-8?B?R2p2SFg4SVZlWFF4NitzbXBmbjVDWVRib0tubktCcit3OEt0b3k1WUI2WFNh?=
- =?utf-8?B?Rk8zbnBtOTJSUE9VUHVSdTdxaUptSTBzdkg0VFozZkk4aC83QldoeVVYUExO?=
- =?utf-8?B?Q0xFOGRHR0FHaWdBNEFRZXI3MTlXUm5rNmIzSi96NU9uYU9peVpIN2RXemY5?=
- =?utf-8?B?MitGdG4zWXhnZWZHWEpJNDFkU3I4OHMzUjRjNExJNnMranJDS1VoMVJZaHhJ?=
- =?utf-8?B?ZnFpQUZCME1LNjlxZ2F4VnBRN0Z0RDM4VUlkOHpkNnlrc3lUK0E1aUpMd0U1?=
- =?utf-8?B?S1VlN3FTMER6MmN1U2NIb1RzaGtzdWVrbmlWcVNwcjhyZUd2bkpac2NtcHIy?=
- =?utf-8?B?bkpMM1BKZG50M0FSOVAwbVFWWDFKMERBV0lUWXN3NWdzNHRWTXdaZnlITXpu?=
- =?utf-8?B?SXZ6WGc0ajVmWWIzLzhUMFBVRzdvdmhRUDBBU3d3S2JYRDVNclEvdlpSNTND?=
- =?utf-8?B?WGF6Y01OeHdkbDJZN0w4TzZoUWMxWU1XZW1INE9Ka3NIU2hKRVFKTVlXRXR5?=
- =?utf-8?B?WjQyd1RmZEdmcVBod3l1Z0NJN3pnMWFQRTBuTGxaTjRJWGRtQzJrYU1SVnBY?=
- =?utf-8?B?TC9mSTBIWHNKalc1MVhkRDFSdDN1b3pkNnJhKy8rS244UWxzMGZ5Z2Y2YW56?=
- =?utf-8?B?SGlUOXJyZkRpN1J1YSsvMnZBZnFWTUxDSWdvaTg2UGlqV1I4SDdaMUFkbVl2?=
- =?utf-8?B?MFpYNU41cnMrL2lsOU8wbW1DY3lHa0h3aHhrNzR6ZzVjTEFFM1RjWmdGWWhv?=
- =?utf-8?B?MXhVL3JqTHlPc2dsRmVXcWxNSE9senQ3Z1Z5RFhHNUxabFdlQWFtZWh2TzJN?=
- =?utf-8?B?RnNTV1Y4UENDaFNkRkg5dVhBakVUL2t6V1hGQmpsbTFOVHRsa3pxSWovY2N1?=
- =?utf-8?B?Mk05SjZTMzVDMVd5MFg3RkhLU2Z6cTlNaWFTSzF2MlAwdnZiZk9PQzRBdjdi?=
- =?utf-8?B?MEJYV21KRkJhUUFEcG03eHBqWFA1NmhZaWQ2SXNFUE0yUFZvWGJseVkrdU5v?=
- =?utf-8?B?bWJNTko0NlhxZlpGQ1JNOWxyeEJLWjZRZ1ZFK0hXQjBFM1U5WkdEWmpUeUd4?=
- =?utf-8?B?b1dib1Q2ZmVqU1ZwRFYxOUJMT3piUTloT1U0eW1FNTRZdXFlZ2c3NGx2VENw?=
- =?utf-8?B?L0VWbmpaVnIrandPdUlSUUh0aFZXN1A3eUE3bVo2VVo5bnlJK0ZScytvSkNj?=
- =?utf-8?B?WXkwM0FkaThFOXhaOEp2a2EzOU1WUldjR25EeGlkanplNXZNT0ZzaXY2cW44?=
- =?utf-8?B?T25GQXU1NXc0Tk5pTFRsMEt4ZzBXSk1VVXhJOUtuQnUxbGhiYkovdGQ3d2J3?=
- =?utf-8?B?em5yOG50aFNRRFBtRWVVRzRkN01LVmtwTEJ5YlAyZ3lJdGdqUERVNzMvMXlK?=
- =?utf-8?B?MTFERGdaM3lSeWtyTUNsTTBrd1hMbVVZMkhjNndQZkszdmVWQUJEUHdCcGIz?=
- =?utf-8?B?QUs3SmdPYzV5Qk9JUENUMjh0R1VPM3JGbnJ6UDIxRkJsTHpOVWloVUo1RmI0?=
- =?utf-8?B?T01JUTViUDNoODNwV3JtVG9jdisvNzBoQUUzWkRXNDJYODBtKy9FclczQ2ZO?=
- =?utf-8?B?a1RwNTBsYXhvTEgyVUVFVWttL2h2VlV6WnZwY3JpZzM1R3lVeWJKak9Lb1da?=
- =?utf-8?B?QTdMOG5aSXo4RVl5Z1VhM0VPZDQ5ZHp1SEdQSzVhWEVBUkdEZEsvSlhoU1lv?=
- =?utf-8?B?UmhwQlR6dXZTbURIRWVES1NKY3Q5cTFURTl0WCtjbUZSN3JYYXM5T3VqK2NE?=
- =?utf-8?B?V1IwOUlFb0dSdzJncjJ1TWI0SXZUdjN1Q3pzb1p1N1cyayt4UlBVa1VWSk95?=
- =?utf-8?B?SzdjSmtRWDNRSGJ5cStQV1ZKNFN5d2hCSE93dlExUW9DYlpCNEVwdWFhb09Q?=
- =?utf-8?B?SHRtNkVlUG5Ea0hNQ2tXbElRaVlzdzBHa211bTduczlldzcxV015eDNsREx4?=
- =?utf-8?B?bm9zUXoyWVhLY0tOb2srODR1ZUNrZ3JMRmhUYzlhQnU2My94MWFpY0xJWDF2?=
- =?utf-8?B?MmlSLzlVZWxUUnBnNVdDZHNwNVVFZjlYM2ZEb293dmdZYjFUbXpiTktQMmNa?=
- =?utf-8?B?SjRWa2lKRVF5ZUh0VzhkVWI3Qkx5aE50ODRNRVp2cloxaFIwd0pHMm4yeTlF?=
- =?utf-8?Q?svlBcxhsJBlgM2HcG7kvWiY7MnHMGeiRl0K/V0c7KMIUu?=
-X-MS-Exchange-AntiSpam-MessageData-1: 0jWGaSa6b2AA5A==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34b3e96b-e064-4c49-0f7f-08df2ac08cd6
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 13:30:59.7997
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HlRGF3Jp5Q3DAoMXAQ6pjO9WkMobHmRz5+mXCprQByiyBOvHsEm6GSbYuRHUACQGFO6qdfxMu872kcgLfdwa6g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8773
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261015-b4-configfs_kzalloc-v1-1-17c1ba6db062@debian.org>
+X-B4-Tracking: v=1; b=H4sIACXT0GoC/yXMUQ6CMAwA0Ks0/WYJAxWyqxhjttJhlWxkVUIk3
+ N2on+/nbahchBUdbFh4EZWc0IGtAOnm08hGBnSATd2cbG2PJhwM5RRljHp9vP00ZTLk27bru54
+ GClgBzoWjrL/1fPlbX+HO9PxWuO8fWikNsncAAAA=
+X-Change-ID: 20261015-b4-configfs_kzalloc-ca337878cdcb
+To: Andreas Hindborg <a.hindborg@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: Gary Guo <gary@garyguo.net>, Priya Bala Govindasamy <pgovind2@uci.edu>, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ kernel-team@meta.com, Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.16-dev-f8e9d
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1700; i=leitao@debian.org;
+ h=from:subject:message-id; bh=5BgxENS6U6in+i4rqcWgX7H59IRDjvgj1GlaKeyU1Ig=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq0NYJFB9C/ov8B9GlBNmNZA/V7i5vD8br0M8yb
+ vv3tXQ4P/qJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCatDWCQAKCRA1o5Of/Hh3
+ bfCOEACsxjqSz1B2EKFZOZcNOCLMfv7bsba8IRiykXe4kZHP88x753mSODuI9dygTRhdjpchlfF
+ Xyhe2nmej4TBJXLtJZZB3xWKZAca2IblWs851eR7/2uf4qt7ABdw91rXx7qSoLdFJBdAJ+FnDL9
+ wC6C2z2iX0PviaW+4O4gULKIUDf2vUi1bBUT2MPykC2Gr0A43mjtVBMxMe4ZlbkprNodYacKvnD
+ mYz3PVCwwxbhLDvMDiAX+HGZHsLH3uD0ZN9U8aYjRj+yaDrHYbaT2uqzQRg3RMFPzYb0Efxypyl
+ uN6mk7tW05UZYlbB2F0IHpDn5qHR9hVLtCmNeytYg3CQCvzkBVPEYiOWFd8oiCtjW4p5wz++vg9
+ /j0jtKt1FE3DcUaMF9stKay/EAytAmy5Qe4Hb1JQ69qN+HLi6TfxXYEpwZJc9hmS5EJ2CLMMYkI
+ srgfLkDQWBpiLHZ3UrrVbj5KvRFSSee3sZoHVGAwFyjmNvNLoM+S6km7XOWKzKWm2bETsI4vqHF
+ 2jgIMczVG++cpcU9oHftPnWl1o14BOaXD7RvGqTkQmq57EL2I68kpcr3ov4CabFgPuuybjfapkw
+ 1bXqwr/GIgxzISQ8P77StZM1HdLp9HSFXw7mnY5CFUTo4QrNXRrvgn+Zxkkg+2XuY58OzUqdNmt
+ QtWY+PYE3AQBiWQ==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 
-Hi Burak!
+fill_write_buffer() allocates the per-open buffer page with kmalloc()
+and initializes only the bytes copied from userspace plus the
+terminating NUL. fill_read_buffer() reuses that page if it is already
+allocated.
 
-On Wed Oct 14, 2026 at 4:20 PM JST, Burak Emir wrote:
-<...>
->> >
->> > Do the other patches in this series need this, or can we just drop thi=
-s patch?
->> > If they do, maybe a demonstration of how significant the special-case
->> > handling is that can be avoided with the exact small capacity could be
->> > part of the commit message?
->>
->> The next patch in this series needs this to implement `ChannelIdPool`.
->> The alternative would be to track the actual length of the pool and
->> return an error if `IdPool` returns an ID after that value, which is
->> what v5 [1] was doing (see `num_chids` in the v5 code).
->>
->> That's the special-case handling that this patch is designed to avoid,
->> and I hope we can agree that it isn't a satisfying workaround,
->> especially when the backing `BitmapVec` *does* support exact sizes and
->> that artificial limitation is introduced by `IdPool` itself.
->>
->> [1] https://lore.kernel.org/all/20260812-chid-v5-5-6c767770b3f4@nvidia.c=
-om/
->
-> Thanks for the link.
-> To me, having IdPool support exact size seems nice-to-have.
->
-> We are changing the design in light of different requirements, it is a
-> defensible but not critical generalization.
-> I was worried that we may need to have proper separate length and
-> capacity fields (which contradicts the binder use case), but that is
-> not the case.
->
-> I checked the grow_request and grow dance now, it seems that even with
-> exact small sizes we avoid allocating a bitmap.
-> So I am not opposed. Like Yury, I find the 0 case slightly odd, but
-> unlike Yury, I find that tolerable.
->
-> The phrasing as "dropping an artificial limitation" does not
-> adequately reflect that IdPool was done for a specific use case where
-> the design made sense and is not actually a limitation.
->
-> I wanted to highlight this perspective, because notwithstanding the
-> name, IdPool was not meant to join the set of kernel's dedicated
-> supported ID allocation mechanisms.
+After a write, a read on the same file descriptor therefore passes
+->show() a page that still holds stale heap data. A ->show() that
+returns only what it wrote never notices, but one that returns a length
+covering bytes it did not write leaks that data to userspace.
 
-Given its name and location, I guess it was inevitable. :) But thanks
-for clarifying its history, that helps understand the current design.
+The Rust bindings are exposed more directly: ->show() receives the page
+as an &mut [u8; PAGE_SIZE], so a driver can read the uninitialized
+bytes.
 
-This also means we have two different use styles for this now:
+fill_read_buffer() already allocates the same page with kzalloc(). Do
+the same here, so the page is initialized whichever path allocates it.
+The cost is zeroing one page the first time a file is written.
 
-- The binder style, where the pool grows as needed and we don't care
-  about its exact size,
-- The Nova (and likely others in the future) style, where we manage a
-  set of finite resources that is not supposed to grow.
+Link: https://lore.kernel.org/r/cover.1790981219.git.pgovind2@uci.edu
+Suggested-by: Andreas Hindborg <a.hindborg@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ fs/configfs/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Which is what this patch tried to prepare for. Does it look acceptable
-to you? I think we still want to merge it or something close to it.
+diff --git a/fs/configfs/file.c b/fs/configfs/file.c
+index 6460b000c593..a4b58616352c 100644
+--- a/fs/configfs/file.c
++++ b/fs/configfs/file.c
+@@ -184,7 +184,7 @@ static int fill_write_buffer(struct configfs_buffer *buffer,
+ 	int copied;
+ 
+ 	if (!buffer->page)
+-		buffer->page = kmalloc(PAGE_SIZE, GFP_KERNEL);
++		buffer->page = kzalloc(PAGE_SIZE, GFP_KERNEL);
+ 	if (!buffer->page)
+ 		return -ENOMEM;
+ 
+
+---
+base-commit: 21671ce5ad38e0543331604bd96144d4d0d3b421
+change-id: 20261015-b4-configfs_kzalloc-ca337878cdcb
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
