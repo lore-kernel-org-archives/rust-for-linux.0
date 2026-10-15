@@ -1,289 +1,131 @@
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690304BD7B8
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 08:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8FA489FBC
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 09:19:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792052256; cv=none; b=t6UwJoYmq8LqdqmStHlX5vwNI9UicHLNRbgySCTQiNpSeo1KP4DqTFk6sHcd3HWzlIrTSHhmAhylZkb2NcNxesl4gSvmBqNu0gDxgFwnLTJhysjRk0o9Xqf+KvS5pSE36DzwFThpaxN6bOXJp6N5GQHyz1H4wPObF33vwXm/gxY=
+	t=1792055995; cv=none; b=eSl7Hbx2pCoLaue4Vs5rvCviNY6b2VU7n6HmJEKfu7ZJchdD6ElWIsAWUzRb//I7VXR9Z1XwFqO4i3tNlVDDaPsO99kDFmM0hrmUOEx80CL9yALI1/54b1SlYg4cp65PlQdQ1IxMjuFKDtmXn8T8VhZKhvooJehhTM8y1u5ngEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792052256; c=relaxed/simple;
-	bh=/PApresEYMKTPx7+96hME775C7u75MRj1fk2LTRZk/w=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Kv6oBjXJ1YQPYtoEFw/2eqZl/7F1fmW3zhIaK2CDEg4mPjm8tvI8BMKa6gk/GQITiLtyTQrz5V3vgMPl4Sdd9haWHLE22vd/nHTXXoEjKP0T+GS6Ulggt/bNg81yxnDlXU48qq44l6RzsvUzThQgVq9R8lkNQJvHQ6+PQsrN0kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D/MKckIi; arc=none smtp.client-ip=209.85.128.71
+	s=arc-20240116; t=1792055995; c=relaxed/simple;
+	bh=g93epIcW60azoLDx3yp4OIFZSLVEl2jasHWiFTB7pJM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=JY4Jo5BVekuj/xVWasnlJQzdWOKWklI9lp/i2Qs8a9DtVGAOBykX64WxRbecd+RK2T9oXzF9iUhzPQ3m5mxvoyDBFROEYeSBmkkBeBUorfb7gnxp+wgKIjTSeAeMpTIdQfzGIY3261DdPG3wgjCJFKdAXOI44/cCUmE/8Hsi0fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jvQ2aZ40; arc=none smtp.client-ip=209.85.128.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D/MKckIi"
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a01c621dc2so39035795e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 01:17:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jvQ2aZ40"
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-495689bfcc8so43835765e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 02:19:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792052249; x=1792657049; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NfI4genE6WXRM1srM58rq6uT6KKgMmKfLXV/7bwQ18s=;
-        b=D/MKckIiBeafUn9PCoJJ5ZFd/OBT/oyf5NJKn086qlaaV057cFFaeMT/ufWXNYcqG0
-         a/wmoRzy8AMcQcUuxGLpwNcsuwcC1Rq7af6im7BUxuXqb9e9v7rvZFTJQ4X2NjbybB8C
-         EfC+ELWSiEFYppGrZIH1erfdCvkfSzOEXKt49/4epZ84ehjJyYoxjg8LLLsmmpQBdRbO
-         s1BdJwjQDuMDqUWqghCFubwbfszYJPj9sCXjM/hxgbTk1p+0BaW+VqXmmRAFEkdhTV9C
-         VIsqjPEhRMXJDHIgWG/D2Ony/2ANkOKekpC0zaeCfBIfQ1uI3tZIHyZU1oJEptdRAvly
-         H3mQ==
+        d=google.com; s=20251104; t=1792055992; x=1792660792; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Y9496zxWZi8AybW6ybbmgSCnzw0yLTx4Cx4ZgtgWlH0=;
+        b=jvQ2aZ40kJBxMpz/TLbq/m7BcH8i/zVHWwbYPajvZGdK9dRJaCWcHEMs0h9ooI5xTC
+         SHG/0KQqmm1tgDPyCw5WzCHRpA4fCshvCFkRtFHlCvdZjUTfpk1deePbyYDdA0KqhCGo
+         KVO0bEHCZtWCJeWTu2/XzfDJ3HwQGfFU5+EjG3yGiVCxHz9Lj5rx6bUmoglHmrTmBHql
+         eJU5z8gnWfiAyDXHloRviaCOOw+4kE1woWCXLZOZb3PEa2L3VZ0HAfsAGhU+/BntOu6h
+         kOI2C6wSmNDA0JBGMQCHWNQRScUN79kPP4q9lRsezgLMRu3uP7mpXk/coJaZCTWS5+2M
+         Q5iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792052249; x=1792657049;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NfI4genE6WXRM1srM58rq6uT6KKgMmKfLXV/7bwQ18s=;
-        b=f1T0BhOiVE0lNTAvnaV/fONpChvnr9/2FOqs2/gSt63eakgpLPLHBTiiahFGptLBLc
-         XNTldxQNS3uF+xyMe8u0ufWnYYKoQ/W37r8FZ01lVUUtLY0wXuCQMuKXAWu++qh5xJAH
-         VTvW+KtLEiDX1DEmFPZTTTjmDYN76ZIraoQmEivI6IdqObVTYYQaTxvoBr4OmGQsnLc8
-         CBwPeIlpUgGM1j1+9h8JcvXkVl8t/qdgC+CUYwvU2FWq5SA3f2fW3iZcJmVIcvE6IHrL
-         Zm7kbPJaCDXENwmhyYvaJ66YAqeWKtZKx7k5c/uTsYHMr69eLVltAo5KqBNPR1vJwbMd
-         Q8mA==
-X-Forwarded-Encrypted: i=1; AKwUvBx2yQxVWRV4QvIHvoScphCfndyS5Vl7PhFYr/m6lbwgq6p3uEHj0A59YiLGnsK8YZ8zGjhcB1U/x5/mhEJ3vQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKcZMLmNF9HsSYXJ1fTdPDHLz/GKveR8wsA7SCBrVWG3JTY9Izy
-	zO6AlqeD8VFJv79mfEWTMy5t+MWkdNMhS/lj3dM5BJPxzxfY94nVz5qrj2LAA6nChk5iSW54ZsS
-	YsQeC9GsCpSvWlWa6Aw==
-X-Received: from wmbz11.prod.google.com ([2002:a05:600c:c08b:b0:4a1:88e2:2dde])
+        d=1e100.net; s=20260707; t=1792055992; x=1792660792;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Y9496zxWZi8AybW6ybbmgSCnzw0yLTx4Cx4ZgtgWlH0=;
+        b=BazrEI4al6YWFRdOaDjZ+W4y0xIr0JTE9leRJQYJuxmc1rva5VCqJmoOQCLk9rEmb7
+         QegItLn3gmt31ArT8SmRYFrFnLSO85ARq0a9O1gXB4nTZ+RHwO1Np7mC8vzt8dIT2xl8
+         sGFdRGyk32CZ2++mL+NZfD+iNsl28OIe2K79nZhNMXwx0WaVemllFo88dCcHVaOGuj/b
+         /zaoOGs9csoBBnE4AzEE0MaSalWrjMjsAqFIRb3uy4sp+B1fPQozdFCcRZ6OYjTOb1DI
+         H+RanUZid0DFdkEUObbfxZR33Q/5Cidnxz+O3wDDquHvFB8mKON7Ma1R3ieedGmHYAC3
+         PTuA==
+X-Forwarded-Encrypted: i=1; AKwUvBxG+dLDWKRr2+nx//YzhUTA0n0HpLolnDR0//FiYweNGkJ1wf/PZ0fqATVH28wjDCUANTLRRd8rkI3cB6h6IA==@vger.kernel.org
+X-Gm-Message-State: AFq9FYLlNX3MzrG8cwPC8pvotvXqb4a2gPKiaDKqLyGKtsO/T9hOdop9
+	D37S+xYwoJ7Of864+/aijd0UKcMhbieHJZuFyWdJvJPL0oVr4yWLdRq/7m8fqfHxW4Sil/jH/hF
+	LUvmGvGj6Jp/S5+PbdA==
+X-Received: from wmik5.prod.google.com ([2002:a7b:c405:0:b0:4a1:96ee:9879])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3e83:b0:4a1:6d35:779a with SMTP id 5b1f17b1804b1-4a18e446880mr335103755e9.3.1792052248269;
- Thu, 15 Oct 2026 01:17:28 -0700 (PDT)
-Date: Thu, 15 Oct 2026 08:16:32 +0000
-In-Reply-To: <20261015-spinlock-irq-6-18-v1-0-72c58975994e@google.com>
+ 2002:a05:600d:849a:10b0:4a1:bd69:526f with SMTP id 5b1f17b1804b1-4a1bd695448mr36444035e9.4.1792055991818;
+ Thu, 15 Oct 2026 02:19:51 -0700 (PDT)
+Date: Thu, 15 Oct 2026 09:19:41 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20261015-spinlock-irq-6-18-v1-0-72c58975994e@google.com>
+X-B4-Tracking: v=1; b=H4sIAKya0GoC/x3MSQqAMAwAwK9IzgZs3dCviAdrUw1IKykuIP7d4
+ nEu80AkYYrQZw8InRw5+ASVZzCvk18I2SaDLnSjClWjYW9J0JI5FmTvAoaTxG3hwrJrjbaNmuq ughTsQo7vPx/G9/0AZrVeXGwAAAA=
+X-Change-Id: 20261015-binder-debug-info-overflow-397b2d61a594
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8106; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=zVnF3eKmulblrtu2mdx3tgcrgHC4aOCqG48rTPtzHMo=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBq0IwK8hFKMgZsqs7m9CCq4TSD7+yz1TOK+Yu7Y
- r0qFPNg0g2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCatCMCgAKCRAEWL7uWMY5
- RsrsD/9ecevBXs5lR7ZzI8YbFvphIWUzSiMvvgVj+AKoaZQ78k69kgHMgLJU1e5B5KmvofPssbU
- +/eH5xFUcBTXGXlby8jFWT/v5QgjIh1Fm7lM9r9fIHZPLWZzLDMbcD+vjrYurKDXoe8QiUuUxdg
- rayfS2JeiB1eKirdLcHbNoPL+v0V8PXE/n0L5EcliiyBKk57f+Ut17DwOzYUWt26Hjgjjt39uoY
- ZAPrA6ruHbRTnHAxhu5malyBQJb4AeSoP/bzjT9u5dNEVFXli5p90I4C0DgwYGWjdGtkX1Dvm4D
- gmZNvdEaJo6aQFhoaZAt/74AzXQ99K44br0/XP5TNA9eZKS8aAL8Yu1E8NEV40Xs2kXJSZVXUwo
- Rn+6tu3pSJq2YBOBMQNc8ESBooeJvLSOOl/TVCgXIlSrcd3rWm/QeZ7a3kpDnQhhl+8fEVoG9mg
- 99VzPYvjuqJhwd60l/zakO51AvXWGtqEsuN2x/a5A3N1b1LNivWkM06PRtRTn4/fqf8j0rgf28G
- D0CI/IiGcZOIOAlSt+T/py5cGCe01rwe6Ecg2iJxOdve1b9JFQRaTlwFYxgv1HU4g2Pjy4EEzHn
- uBFOH61ZEaSglGUbbUQxWXoxoSBQFNg+ArbMCKHqSkygYE5lu+sHNkC2UjPT6c7FvXNYHSWi/7H dgXi69bhjQfztsw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1871; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=g93epIcW60azoLDx3yp4OIFZSLVEl2jasHWiFTB7pJM=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBq0Jqxtq6wI+7UOyDbevffhsg1lE1T/nUBhnZ3C
+ av2B+5vmDWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCatCasQAKCRAEWL7uWMY5
+ RnhZEAC6byVOvpchPmSPOeCXSPI2bI4mUSio58DU6DFA7cCIBOHcLUgtKWSV0S4D3Q1etQNrYww
+ eC+r5rARxhSqM5i/nzhVE8fP1WEfiarsGYrXX4gYNPe785Tg2wen+hxDv7xLdQFTG6x88fgrFeA
+ luQcyEdreGXqJARHRpXcfNqZv08QyjB/hbdNUJTxG8UIsgGbyyzXLhWMDjpLHYhIHbM5498L/ok
+ UG6qcbrDkXcBwXg33rpXUTkaWL9aeD6qQxAa1Hn4f/GGfTmZiNs4OXDVkL6cdez8ugYnUq17LKH
+ qOtHH0GHUDC7kAOUewPP3Dfshrti4Ch2o6WBeuHSuElTyX2faRS/ubWlQLXjDfak3BI19wrbRAN
+ 1ZtkqvAirNYoMhrNCLwNAEgvqTE8yH8fGVB41FB2H/DdVnyaiaO9jTzsMQsjtr9bKLkT3wyAIQU
+ x03lI2k/z3jdQeKwRKzvsaonYcU+ERsejZxuDDCBaN6P08zw8nLEjCo/CX4Ti2VKq6aD8NNmyfV
+ y/Y8zrZYBd+AeLlJM4eRCu9zfLa8/Fij9rpHI474jmxSNR9ZpLTkoEGcfAoYrgVc6EddU0tLx/i
+ CNcceq85rN9X/oJNGrzvSW0qSHc0RZwLMuktL+MfTCmvhV9AYUqCYaRFBjDeVyxyPAji0SgDvqW 9d8bFa7OZHOrkIg==
 X-Mailer: b4 0.14.3
-Message-ID: <20261015-spinlock-irq-6-18-v1-6-72c58975994e@google.com>
-Subject: [PATCH 6.18.y 6/6] rust: sync: Introduce SpinLockIrq::lock_with() and friends
+Message-ID: <20261015-binder-debug-info-overflow-v1-1-81fffb74d288@google.com>
+Subject: [PATCH] rust_binder: avoid overflow in get_node_debug_info()
 From: Alice Ryhl <aliceryhl@google.com>
-To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Sasha Levin <sashal@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Gary Guo <gary@garyguo.net>
-Cc: Boqun Feng <boqun@kernel.org>, Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@redhat.com>, 
-	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, 
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Rafael Passos <rafael@rcpassos.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	syzbot+d39ca51f29c6b944a4f0@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="utf-8"
 
-From: Lyude Paul <lyude@redhat.com>
+To find the first node whose address is strictly greater than the
+userspace-supplied pointer, get_node_debug_info() currently searches for
+a lower bound of `ptr + 1`. When userspace passes `u64::MAX`, this
+addition overflows and triggers a kernel panic when overflow checks are
+enabled, or wraps around to zero otherwise. Thus, use checked_add() and
+skip the lookup if `ptr + 1` overflows.
 
-commit ec4fad7c2bdc80c62fa73f799b77ad299f73dcc3 upstream.
-
-`SpinLockIrq` and `SpinLock` use the exact same underlying C structure,
-with the only real difference being that the former uses the
-irq_disable() and irq_enable() variants for locking/unlocking. These
-variants can introduce some minor overhead in contexts where we already
-know that local processor interrupts are disabled, and as such we want a
-way to be able to skip modifying processor interrupt state in said
-contexts in order to avoid some overhead - just like the current C API
-allows us to do.
-
-In order to do this, we add some special functions for SpinLockIrq:
-lock_with() and try_lock_with(), which allow acquiring the lock without
-changing the interrupt state - as long as the caller can provide a
-LocalInterruptDisabled reference to prove that local processor
-interrupts have been disabled.
-
-In some hacked-together benchmarks we ran, most of the time this did
-actually seem to lead to a noticeable difference in overhead:
-
-  From an aarch64 VM running on a MacBook M4:
-    lock() when irq is disabled, 100 times cost Delta { nanos: 500 }
-    lock_with() when irq is disabled, 100 times cost Delta { nanos: 292 }
-    lock() when irq is enabled, 100 times cost Delta { nanos: 834 }
-
-    lock() when irq is disabled, 100 times cost Delta { nanos: 459 }
-    lock_with() when irq is disabled, 100 times cost Delta { nanos: 291 }
-    lock() when irq is enabled, 100 times cost Delta { nanos: 709 }
-
-  From an x86_64 VM (qemu/kvm) running on a i7-13700H
-    lock() when irq is disabled, 100 times cost Delta { nanos: 1002 }
-    lock_with() when irq is disabled, 100 times cost Delta { nanos: 729 }
-    lock() when irq is enabled, 100 times cost Delta { nanos: 1516 }
-
-    lock() when irq is disabled, 100 times cost Delta { nanos: 754 }
-    lock_with() when irq is disabled, 100 times cost Delta { nanos: 966 }
-    lock() when irq is enabled, 100 times cost Delta { nanos: 1227 }
-
-    (note that there were some runs on x86_64 where lock() on irq
-    disabled vs. lock_with() on irq disabled had equivalent benchmarks,
-    but it very much appeared to be a minority of test runs.)
-
-While it's not clear how this affects real-world workloads yet, let's
-add this for the time being so we can find out.
-
-This makes it so that a `SpinLockIrq` will work like a `SpinLock` if
-interrupts are disabled. So a function:
-
-        (&'a SpinLockIrq, &'a LocalInterruptDisabled) -> Guard<'a, .., SpinLockBackend>
-
-makes sense. Note that due to `Guard` and `LocalInterruptDisabled`
-having the same lifetime, interrupts cannot be enabled while the Guard
-exists.
-
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Boqun Feng <boqun@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260807070218.27144-19-boqun@kernel.org
+Fixes: f344930a163d ("rust_binder: speed up get_node_debug_info using lower_bound iter")
+Reported-by: syzbot+d39ca51f29c6b944a4f0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d39ca51f29c6b944a4f0
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/sync/lock/spinlock.rs | 92 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 91 insertions(+), 1 deletion(-)
+ drivers/android/binder/process.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index e566f223c649..b3a0d7a3de04 100644
---- a/rust/kernel/sync/lock/spinlock.rs
-+++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -4,7 +4,10 @@
- //!
- //! This module allows Rust code to use the kernel's `spinlock_t`.
- use super::*;
--use crate::prelude::*;
-+use crate::{
-+    interrupt::LocalInterruptDisabled,
-+    prelude::*, //
-+};
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 64960857bcdc..75e1c1b3e454 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -1214,10 +1214,10 @@ fn get_node_debug_info(&self, data: UserSlice) -> Result {
+         let ptr = reader.read::<BinderNodeDebugInfo>()?.ptr;
+         let mut out = BinderNodeDebugInfo::default();
  
- /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
- ///
-@@ -155,6 +158,16 @@ macro_rules! new_spinlock_irq {
- 
- /// A variant of `SpinLock` that ensures interrupts are disabled in the critical section.
- ///
-+/// This lock can be acquired in two ways:
-+///
-+/// - Using [`lock()`] like any other type of lock, in which case the bindings will modify the
-+///   interrupt state to ensure that local processor interrupts remain disabled for at least as
-+///   long as the [`SpinLockIrqGuard`] exists.
-+/// - Using [`lock_with()`] in contexts where a [`LocalInterruptDisabled`] token is present and
-+///   local processor interrupts are already known to be disabled, in which case the local
-+///   interrupt state will not be touched. This method should be preferred if a
-+///   [`LocalInterruptDisabled`] token is present in the scope.
-+///
- /// For more info on spinlocks, see [`SpinLock`]. For more information on interrupts,
- /// [see the interrupt module](kernel::interrupt).
- ///
-@@ -208,7 +221,47 @@ macro_rules! new_spinlock_irq {
- /// # Ok::<(), Error>(())
- /// ```
- ///
-+/// The next example demonstrates locking a [`SpinLockIrq`] using [`lock_with()`] in a function
-+/// which can only be called when local processor interrupts are already disabled.
-+///
-+/// ```
-+/// use kernel::sync::{new_spinlock_irq, SpinLockIrq};
-+/// use kernel::interrupt::*;
-+///
-+/// struct Inner {
-+///     a: u32,
-+/// }
-+///
-+/// #[pin_data]
-+/// struct Example {
-+///     #[pin]
-+///     inner: SpinLockIrq<Inner>,
-+/// }
-+///
-+/// impl Example {
-+///     fn new() -> impl PinInit<Self> {
-+///         pin_init!(Self {
-+///             inner <- new_spinlock_irq!(Inner { a: 20 }),
-+///         })
-+///     }
-+/// }
-+///
-+/// // Accessing an `Example` from a function that can only be called in no-interrupt contexts.
-+/// fn noirq_work(e: &Example, interrupt_disabled: &LocalInterruptDisabled) {
-+///     // Because we know interrupts are disabled from interrupt_disable, we can skip toggling
-+///     // interrupt state using lock_with() and the provided token
-+///     assert_eq!(e.inner.lock_with(interrupt_disabled).a, 20);
-+/// }
-+///
-+/// # let e = KBox::pin_init(Example::new(), GFP_KERNEL)?;
-+/// # let interrupt_guard = local_interrupt_disable();
-+/// # noirq_work(&e, &interrupt_guard);
-+/// #
-+/// # Ok::<(), Error>(())
-+/// ```
-+///
- /// [`lock()`]: SpinLockIrq::lock
-+/// [`lock_with()`]: SpinLockIrq::lock_with
- pub type SpinLockIrq<T> = super::Lock<T, SpinLockIrqBackend>;
- 
- /// A kernel `spinlock_t` lock backend that can only be acquired in interrupt disabled contexts.
-@@ -273,6 +326,43 @@ unsafe fn assert_is_held(ptr: *mut Self::State) {
-     }
- }
- 
-+impl<T: ?Sized> Lock<T, SpinLockIrqBackend> {
-+    /// Casts the lock as a `Lock<T, SpinLockBackend>`.
-+    #[inline]
-+    fn as_lock_in_interrupt<'a>(&'a self, _context: &'a LocalInterruptDisabled) -> &'a SpinLock<T> {
-+        // SAFETY:
-+        // - `Lock<T, SpinLockBackend>` and `Lock<T, SpinLockIrqBackend>` both have identical data
-+        //   layouts.
-+        // - As long as local interrupts are disabled (which is proven to be true by _context), it
-+        //   is safe to treat a lock with SpinLockIrqBackend as a SpinLockBackend lock.
-+        unsafe { core::mem::transmute(self) }
-+    }
-+
-+    /// Acquires the lock without modifying local interrupt state.
-+    ///
-+    /// This function should be used in place of the more expensive [`Lock::lock()`] function when
-+    /// possible for [`SpinLockIrq`] locks.
-+    #[inline]
-+    pub fn lock_with<'a>(&'a self, context: &'a LocalInterruptDisabled) -> SpinLockGuard<'a, T> {
-+        self.as_lock_in_interrupt(context).lock()
-+    }
-+
-+    /// Tries to acquire the lock without modifying local interrupt state.
-+    ///
-+    /// This function should be used in place of the more expensive [`Lock::try_lock()`] function
-+    /// when possible for [`SpinLockIrq`] locks.
-+    ///
-+    /// Returns a guard that can be used to access the data protected by the lock if successful.
-+    #[must_use = "if unused, the lock will be immediately unlocked"]
-+    #[inline]
-+    pub fn try_lock_with<'a>(
-+        &'a self,
-+        context: &'a LocalInterruptDisabled,
-+    ) -> Option<SpinLockGuard<'a, T>> {
-+        self.as_lock_in_interrupt(context).try_lock()
-+    }
-+}
-+
- #[kunit_tests(rust_spinlock_irq_condvar)]
- mod tests {
-     use super::*;
+-        {
++        if let Some(start_ptr) = ptr.checked_add(1) {
+             let inner = self.inner.lock();
+             // cursor_lower_bound retrieves the "key" passed or the next existing larger key
+-            if let Some(cursor) = inner.nodes.cursor_lower_bound(&(ptr + 1)) {
++            if let Some(cursor) = inner.nodes.cursor_lower_bound(&start_ptr) {
+                 let (_, node) = cursor.current();
+                 node.populate_debug_info(&mut out, &inner);
+             }
 
+---
+base-commit: 7e170600b36298cba2ba7a0c63d1cebea7970708
+change-id: 20261015-binder-debug-info-overflow-397b2d61a594
+
+Best regards,
 -- 
-2.56.0.385.gd3acb90ef8-goog
+Alice Ryhl <aliceryhl@google.com>
 
