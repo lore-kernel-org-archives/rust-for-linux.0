@@ -1,143 +1,140 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-43172.protonmail.ch (mail-43172.protonmail.ch [185.70.43.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E2050E58A
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 09:46:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792057616; cv=pass; b=VVpdVtBAKd9kcuPjPUWDPXDy+vtT5DcDK3AmzvujEXgNipErTSJN54ldt7IaNUYqAxGLKKpyHhfrAFfcz1SGkY2RENUeT5HeVoL6hB6+vwl1i5qIuqYeqLRbGhnE1y2R6SzjQENRFMkQEGTlfHvsSvXX4NfW8s4czrzlW30Yo2Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792057616; c=relaxed/simple;
-	bh=ICrTBQhAcFMBle4ZO3IusjWW50Bxu9MMe+LD1licGqo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L7u/HJMDScX0Qr0Rj3hhe47+b73QxRyV/jKhoCyBCAZOQsVmY4jGnZPsekm6Ki0IJp2IBVZJMr47owBY7fAe8oDhYlzYjFeeoVrFj0q/FGG4rB2lxey+t88xnomVURtbwyQutrhWpcKukhtQN9zRHkwAdmX2Fk5tJdAXKe2S8EQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=P8s3zewn; arc=pass smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A346E4DA9CC
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 11:26:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792063590; cv=none; b=NR4/Of/THG5Q+kti7sKWtDQ1i/cHlDQONnnoJ470N03sCnC7I7yoTA/Ok1BVdHWh9lPmWkKuwVUJm8CRl105cqts/Q3m0zU7YW5BxiuKm/xVITc3UmAczVfKFu434WuUK6ydL3+KELguu2uv4QK9V0o4VQmD4Y9KV9E1CbJBpH4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792063590; c=relaxed/simple;
+	bh=lI/tePJrBFVT9SL+m5HYE7IsTsP2AEvX1IIa4r6QHjo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Q+U5VwDwvHDgZ0LyS1TdDYba1B5pOr0PExTHHmc/p0M5b/shHUuJKqK1+aT9JlOvrOAEmPw5xnNrI9f+b1zTBBLj+TvDP1WLXwDdxUKLrHO8YU9X2V/g24eunQAx9cl3KOFH5TbfQeHCES6s7bwgOZgzJEywlTqzw/YUSobJt+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=JREqItV/; arc=none smtp.client-ip=185.70.43.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="P8s3zewn"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5bcf21cfbdaso346440e87.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Oct 2026 02:46:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792057612; cv=none;
-        d=google.com; s=arc-20260327;
-        b=juHVmkuBFm68pgv/ZJ/7EUnh6xnyNA03hvvNJkCypv8s6lrNBVCR7orZAJOvOsGFB6
-         ibYdZfXRQRVvdtMEIFduPkVOhVatEwa2JspOjEQDwZgDhp74N5CMiHRs/wqZ6h9opK00
-         8Q54acoIZrNE2lskap2SEK5xB0u5f8FYbuPK+/BnPTNqpHNNSMpce/Z3SMFlzxPWgLXg
-         5iBKvIg8C/QE5LLvtGvg5MYIryhyTnn8bOe21rhJslnKBHYQA9PRCBCGCjNcLZtyFrk1
-         7lRdy22ImbNHwdStaS5I0fgMj2lZnVN+3ffakjH6ieoydUHURm9tctlocypy49hIpY8K
-         kfxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KZ5hcI7sSvmMGW83CeAYEeOw/S5ozCHpu45O4BxP46g=;
-        fh=bBusiG3VGRRyy12GrizfILg7U1SEkv9HjnUJrnL8AO0=;
-        b=o/hYylzquY6yVyHTq6+bCDUEh8JJ17vI+dsWcLbRvfYJ9kxIH0Q13XxdzG7VayHu4Y
-         9BKqeiBIlKrPar9hi9dXVd9Oulzp2+PmMKkWopX71TGbNppaH51Gut2n3iwKSa2VGcZZ
-         72ZGAh7zhHDfqM1Ue5/c25KwreazJgoCG0nHgTp70TTEaaBqcloEt8ll+BY1IiYbVp0u
-         1OfLsQ6meG9Uq0F/jA8ycY8TR8R6Ff41dXU1IA4hq1IrDm2bSInmEoZ80dmOZry+tbdj
-         DhNwBBVFLBywJJmLnNw6GkcFnQMhReYYTRHeGQ/jkRWsYkLSov2ifA15z4DzViDeeP2E
-         ceiw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1792057612; x=1792662412; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=KZ5hcI7sSvmMGW83CeAYEeOw/S5ozCHpu45O4BxP46g=;
-        b=P8s3zewnfLUipatq+GqLCGSvx1i+EJ7DV6ToSXJXwViWZ5+6/8kf8sUXAmHYA0WqF5
-         dOGILgLTSYULGBXFCZaNARNcqmTUgIZZkHroeS1typd4X1bbk13RmWviU1ePgAhFRBpg
-         EdOqKN4VwLFl0wNQbBTtDQbOicOqSBAJ8TWFBAVl6EG5RhHG6RWYWGhEtir9/DYxKXP1
-         MGKazALbGicfMHQyJGxpTs4luLDCo0j62vDl87NXtfOUhnO6JNVZZTX3AuEZpV+ejq18
-         vcbh4Rm5+MZ/+513KO5SxXN0Su6jVTq8fJCvIckEb6F48Z2/HeS3ATacZI9Dse5YgjvH
-         GCIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792057612; x=1792662412;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KZ5hcI7sSvmMGW83CeAYEeOw/S5ozCHpu45O4BxP46g=;
-        b=x0R+FMtrwpHx/bb1aFLWmGJfkuVrakLcxAAYkgsmP25qmbr5a/HZZB24OdlYc53YmA
-         XwqRrLinPTTkeYYsrlib3Bk3g37U+zVtNvO9M4tAEYmgwVCTAOla+0dlpMdsj22k6ltj
-         XKjj2V4Ug9nliHhSiyyRMxgjg+dDY9/i/R7lEDvsamxa5TwoOpbRdRRqJgjdysbhwg6a
-         AmfEdPGHH+PPzkEyHt7ECZXQdMpcPx0ED0yfuybtHCPcfzbUyCORnuT4mP/bqP3lP9Bi
-         S07Gl6vYgQl0oPx0SILshOSgMpRZE1QXNiuiWiYTr5OT0zFwJm4bboHRuImxNidp8QMv
-         izwQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwHtWbsiJYZwMezNdkBRMqa16rOcOzVYt1dfEJNkvBgnZS2J9Oce7B48g73cDe0wd4Ilp9Y4CEWdGraI+YFzg==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKkPux0a11+HEVkaj6wnH5yBO956Jn4TFnDgU+uIJ/CI3dwxJy0
-	HwvUPjYAep5g4I42V2a4wAfQ4dyZBeT6/+r8nxbxMHQSrIDVLQrtOK4yE25EgP0aT3ZOc5o4NXM
-	ne89PzfxvyGhFdLseEOlJGqIr7LtMrgVsaJv7NVRjCQ==
-X-Gm-Gg: AYBFou1el14nnGbNV0e8WgQYOjPYQflOEKZHxjLzpUMkvRWKSMnytAy1pyyUZkigxEI
-	zhKNgE6wfP39jT1+fAJnEKeOQGFstUVm+W7MVTr53bmpAuBL45u919yx/UTVs8SSbmRQEmPdSkV
-	bp2Gmuu+ToXxGoaO96uS928WtJdRfHQiKmeLWtSy4leULcyeb1uhku8bfCTRgD4EbIhSB65LsoJ
-	F+SjVcvpvAiQPLysXaqLOEsHTvasN/73blDzdciFEP6MeScO2+aQ8E8DTy122MFoZLD9oLXus2/
-	yLGiRRFOV5PwsNFmwSGrqaepD+KnXQLse9guc5KAbA8ZIDcbfZ922eRRLERa5yJOW2/PgGXXiYw
-	gAnMDZJ6r7YIZa8/ntepl+59s
-X-Received: by 2002:a05:6512:3b8a:b0:5bc:cbe1:8ac4 with SMTP id
- 2adb3069b0e04-5bcde35d84cmr7124226e87.4.1792057611692; Thu, 15 Oct 2026
- 02:46:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="JREqItV/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail2; t=1792063583; x=1792322783;
+	bh=MLWjRkWsuEhV4xjZ82qNWkdlxPiGotLBkrXjhxnMXfY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=JREqItV/BQQQ5m3osb8QWZl6xaocCp+fYVuDMT5F4J6pdazOQAVB8Sbg2fn5bRlOh
+	 5qPt7/y9x729V1hxQ8jBDZGYM3OQqb73Zm3Sa27CYBofzScRwWaFUsPxuXvF9NuQC9
+	 qwh6c8n0XTzVE47zgmcIhS8Gzqom3SNu8ySdqQd0kD9nteVWuFdDgiUuklL2JZ6S6N
+	 0NBd2/cvFHOZv3xFiGeKswiorAotP3LBcSBz0CDZvpvnSURAbBHlc5VoNPtFnCDmWs
+	 9VAATgac7UAzaqWfRyeoYDrQCVXxZB0qOJWxKdWx/9GoBR6E1tpT+QEeOVpzSSQXBA
+	 EeY+5XyQALGCA==
+X-Pm-Submission-Id: 4j55P632nVz1DDL8
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Gary Guo <gary@garyguo.net>
+Cc: rust-for-linux@vger.kernel.org,
+	lossin@kernel.org,
+	lyude@redhat.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	peterz@infradead.org,
+	mingo@redhat.com,
+	will@kernel.org,
+	longman@redhat.com,
+	felipe_life@live.com,
+	daniel@sedlak.dev,
+	daniel.almeida@collabora.com,
+	thomas.hellstrom@linux.intel.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v12 5/6] rust: ww_mutex: implement LockSet
+Date: Thu, 15 Oct 2026 14:26:06 +0300
+Message-ID: <20261015112611.60966-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <DM2UEMVP195X.WA9QG4BY453P@garyguo.net>
+References: <cover.1791799751.git.work@onurozkan.dev> <8a3e94391fcee2b7e95a1f93a43c98ba385940c0.1791799752.git.work@onurozkan.dev> <DM2UEMVP195X.WA9QG4BY453P@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261014-rust-workqueue-system-fix-v2-1-c018b8f870f9@google.com>
-In-Reply-To: <20261014-rust-workqueue-system-fix-v2-1-c018b8f870f9@google.com>
-From: Marco Crivellari <marco.crivellari@suse.com>
-Date: Thu, 15 Oct 2026 11:46:40 +0200
-X-Gm-Features: AclHuK-V4MMe-c4XgIPiZC8N9eZ4vEYkszRRk_SEIQzq_Xg0na_JHo_eBAyU_j8
-Message-ID: <CAAofZF4m3Fus+SizDwAdDEMr9V8RSgybveMhNg=nbM3dZj=JNw@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: workqueue: replace deprecated system_wq with system_{percpu,dfl}_wq
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Alex Shi <alexs@kernel.org>, 
-	Yanteng Si <si.yanteng@linux.dev>, Dongliang Mu <dzm91@hust.edu.cn>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 14, 2026 at 11:08=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
->
-> From: Danilo Krummrich <dakr@kernel.org>
->
-> system_wq is deprecated and triggers a runtime warning:
->
->         [    0.857414] workqueue: work func ...WorkItemPointerKy0_E3runB7=
-_ enqueued on deprecated workqueue. Use system_{percpu|dfl}_wq instead.
->
-> Replace system() with system_percpu() and system_dfl(), to match the
-> previous behavior of the deprecated system() and convert doc examples
-> and tests to system_dfl().
->
-> system_unbound_wq is deprecated in the same way, in favor of
-> system_dfl_wq. Since system_unbound() has no users, just remove it as
-> well.
->
-> Fixes: 64d8eae3f895 ("workqueue: Add warnings and fallback if system_{unb=
-ound}_wq is used")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Reviewed-by: Boqun Feng <boqun@kernel.org>
-> Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-
-Acked-by: Marco Crivellari <marco.crivellari@suse.com>
-
-Thanks!
---=20
-
-Marco Crivellari
-
-SUSE Labs
+On Mon, 12 Oct 2026 13:02:15 +0100=0D
+Gary Guo <gary@garyguo.net> wrote:=0D
+=0D
+> On Mon Oct 12, 2026 at 11:26 AM BST, Onur =C3=96zkan wrote:=0D
+> > LockSet is a high-level and safe API built on top of=0D
+> > ww_mutex which provides a safe and easy to use API=0D
+> > while keeping the ww_mutex semantics.=0D
+> >=0D
+> > When EDEADLK is hit it drops all held locks and waits for the=0D
+> > contended mutex. It then retries the given (by the user)=0D
+> > locking algorithm with that mutex held and the same acquire=0D
+> > context until it succeeds.=0D
+> =0D
+> Do we really need this, or this can be achieved by simple retry loops?=0D
+> =0D
+>     fn retry_if_deadlock<R>(f: impl FnOnce() -> Result<R>) -> Result<R> {=
+=0D
+>         loop {=0D
+>             match f() {=0D
+>                 Err(EDEADLK) =3D> (),=0D
+>                 e =3D> return e,=0D
+>             }=0D
+>         }=0D
+>     }=0D
+> =0D
+>     stack_pin_init!(let acq_ctx =3D AcquireCtx::new(&class));=0D
+>     retry_if_deadlock(|| {=0D
+>         let mut gaurd1 =3D acq_ctx.lock(&mutex1)?;=0D
+>         let mut guard2 =3D acq_ctx.lock(&mutex2)?;=0D
+> =0D
+>         acq_ctx.done();=0D
+> =0D
+>         *guard1 +=3D 1;=0D
+>         *guard2 +=3D 1;=0D
+>     });=0D
+> =0D
+> I think the only difference is that the `LockSet` acquires the contending=
+ mutex=0D
+> first. However, I imagine we can solve this by having a wrapped `AcquireC=
+tx`=0D
+> that provides that.=0D
+=0D
+That's what LockSet already is. How would you design that wrapped AcquireCt=
+x and=0D
+what would we gain by replacing LockSet with another wrapper?=0D
+=0D
+You need to remember the contended mutex, release all acquired locks before=
+=0D
+waiting for it and retry with that mutex held and the same acquire context.=
+ Also=0D
+for a dynamic set, you also need to keep the acquired locks held across loo=
+p=0D
+iterations and helper calls and handle repeated objects. With ordinary guar=
+ds,=0D
+that bookkeeping falls on the caller unless the wrapper handles it. LockSet=
+=0D
+already does all this.=0D
+=0D
+Thanks,=0D
+Onur=0D
+=0D
+> =0D
+> Best,=0D
+> Gary=0D
+> =0D
+> >=0D
+> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
+> > ---=0D
+> >  rust/kernel/sync/lock/ww_mutex.rs          |   6 +=0D
+> >  rust/kernel/sync/lock/ww_mutex/lock_set.rs | 449 +++++++++++++++++++++=
+=0D
+> >  2 files changed, 455 insertions(+)=0D
+> >  create mode 100644 rust/kernel/sync/lock/ww_mutex/lock_set.rs=0D
+> =0D
