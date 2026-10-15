@@ -1,71 +1,70 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010046.outbound.protection.outlook.com [52.101.61.46])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011039.outbound.protection.outlook.com [52.101.57.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12292480357;
-	Thu, 15 Oct 2026 07:30:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B2A47AF61;
+	Thu, 15 Oct 2026 08:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.39
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792049430; cv=fail; b=rKeKweae6gVYnox4JpriCP7CjmDm2uYi/dgydrG7YzpcHOWifzBuubyeuvRG89qzRroGgRv46+ar5t8C4HGPcVicfeaPE7iewrtIg//uaL6SI866HAi19LoslOV+xqLwZuf/vv0yHwZFAWkL2xvZBSoyKZv1Ck2rEjqllz+VaQc=
+	t=1792051369; cv=fail; b=Ve9wpyaRRwFiJU40UjB6LtdEJJtJrDmUq9ZGHKu7OC0dsIPkH4wSgMfvf85//eAB2JT4U422xXc0bjCg53Q6x3fpd6lSRpWUypLERRA9ScswNYkMexy4anaK6VdaaCI8DyFjms9U9P4pPrdjztDjfHvOkEBkiXXwScuhBCIkqQQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792049430; c=relaxed/simple;
-	bh=WHFYA26PdBO4rxCLMX9ZPJ2GpyyrMXOYuP8NBacAlFI=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=SHP4ReMkzab9R3rrscYS1auAv7ohUG5NUQilnHKPeXdM4FWg4PGmyC/3dHnxknllIffYCjVjedQoRj+XvrSbbITkmt6lwlfRdBSFScph71LTJh+hfSjGpNr8AVipTfSlgtfyAqbyrkGr5vfF6LQmw5SEh5L7n90sIVtgp1DtiXM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QuJwfzR9; arc=fail smtp.client-ip=52.101.61.46
+	s=arc-20240116; t=1792051369; c=relaxed/simple;
+	bh=8minJOdYvsS1PIpF5/bEHOulAkh6vtCN2uHIshhZDI8=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=GVVt/ZhFRxydkFGyhvflTrwn1bpqvq+ecdXjVDF2yRVRsseLY5aO9oOcn5JMjcnktYGHqJLoLsPmvzVosNRANK2kV6dMPqU8T/r0sTGgKPHjCNAXU3fNqPRvUeTawDnWbo8sp9r03ffCPduIZYhtSw3Nv2htBC/GMvKLVAOaQrc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=G94AkJY4; arc=fail smtp.client-ip=52.101.57.39
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QuJwfzR9"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="G94AkJY4"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OcPVWQ2yTEQ9XCifH0b/wuz3tQjGB0qijlVWlg/LhCks6rMK+gTIsjWED6oojfpTJw10ncFzkMDqD64wWdO0OWBXUbYWSE9FbkpEQp7wyb5IuFGVPzuF24B/6S8jh9BLowyAh7dPAFCoiW7JSgLnviFcY71jO87MkYeK+WF0QmbLg/utVmkPXcYtNHwEIz1iZw4ztIAn72of4boKcOSpk/LAyHjNgeCFcpyVftacmoGLFK0iYLFcfuTdSAd8Myaty2piL4FTB8yF7/UtX8lIaUMSWf97OouK9Y9Fmu/JVY5hlbaEWo4BZXKwfETsFPHCcqQajOWfGcclJZ2uUGcjNw==
+ b=gWXBKYyELH5SWKsigdbxcsyN6oIV5qXTOtiD5vZLSV0fHQIXREGKTIGsSq/Wgmb+ZmJ+HrjwDy5YEUkx/wppCxLpTuNnxqnZu0D0ccc8UkVDSMUZ0U6Fqlstwa+vvC9tcGOM06RYpFHmQSvOKy44XVeVC6VHE+xRHOpy/+IDBGwtgn15LgVDmH30iy+54VbBlHRrkhMzPGgWd3bpB77Lao6cTd/6w5CipmWt1mBnCNkopQpX6fL3d8Sqwcfz0q7HvqMvgj6eV9t3SW5yCOGIYHTaWje8h+9HF+BPZ2P3e6cWSK4f8wcdmz8vrOdeSOfIEoOb6yhj3jg4XxfhoL+Ifw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dgLy7FZ7WJYLJTgnNpR6bZfZHSS1LFJQbVTXmR5d8LI=;
- b=pWgTlYjbA1ZYh1YY1HeMbhS/NDBolrwxWvNz540mcFPFXjAe3QmKYRjx6o/hAPlmWwtLw/XZr3YfIIJRMh0cqDUsMxgulhlde/Y5MNOifZey4nFgtTrQQhJ9HW1BISqT7s1CqFuPRkUPQk0Xxgg2sr/lKX5RYi80M1Rz906qE8WPPn8gLD+8md44y1mHMjn3aDu+PL/T3ANkpCTmPVedvd0X39Qd0FGDVe9WfkPIb9dDHT0DTxIO9jGoJSqVIJw28Wz4yqwVZ8wClf3AxmjGJkNUyJF2spaFa9PNExqO5FlrAQCfUQ9KAz/KkcDDPizax9O35K/spQj8I+yR/5zGHA==
+ bh=8minJOdYvsS1PIpF5/bEHOulAkh6vtCN2uHIshhZDI8=;
+ b=hh+jmDCx5P2VhQIaL11oGAWdfX90zAmOrBzNkqhVREaxTDtihX5aJYFXrWeghRmVbDjZfaBZ9UONZ5psVNSuEJNNazn5chHVI5CcgMvdH7VtYOFxCVWSS5t2JVFTRYKiwMq7emXKfYJhs0rYE1pBe7jPfBwWfxwgNtepnmRxfdeBI5seTmQpUuB51w9HTroVq12Ij6R2RI4ArnoVCh+JFrDG/gvlxpTcfche+Jo5yiv1TGjBCpgSfji6PXK2sSvNjSlFR4wetF+1fs7f9oygxTDad/vdpvHhUgyUo9PGC7zNWJ2AC3VzRH54+HCmSeZW2/ZWVsmeO4LVojvdqm2YWg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dgLy7FZ7WJYLJTgnNpR6bZfZHSS1LFJQbVTXmR5d8LI=;
- b=QuJwfzR9H2ia0YB7SDW8pfeD//BTJ++jVgENJqNRUnmmWlU8CwrGiidfPOxpAT4zUNkHzV1ZfrH24Mgwg1lr8zzzAAp3hg2YWaT536yh7qFuJpmKzu4HI6rZQ5IaW+X7CsWsWYGq2QfI9FUJ6sWOeKPq7+U1U5o9trRWfL12tXR2rsDvlv0Ddu4CdiouBCRLJnNW2LQSm55l+8XZUq1/gew8TlH8mJ/ZupKwpEN3kix2B26CxmG7A0POHcrUFewZre0uulgvQOS3iwXjFuRplBHYgM4gI+7v2IdxiRQACQ7qzjGbkpdKgbzBUK4KweNO+/avawMt2m1m8Yr0hzpI5A==
+ bh=8minJOdYvsS1PIpF5/bEHOulAkh6vtCN2uHIshhZDI8=;
+ b=G94AkJY4QTeiUMNqGtNKg+pAvDdUMYW7CBrh/fyhXgZdl4lHr6ahEPYV11POPrQ0IpjOLRx5C8j+AaJNV1KJr2ByNr8LD+jaMAbqvxTp4hBzymxztmkcViBcR/YoyDih7MYca/eLuQ3NPUEJwPwjlXeBCMjrnqY2zg2vb7SD3L26fp9UUhnfp7C3xFZkwwsBY1lqOkmMSE4OGkvaVjTD0mAKJHr6Z5487s+K31VjGIWP9TZixusiL0NrFqDwOrnxLZHHQ2piA01S/hsrWIdgUrbrKG7TjAObl01FULd5cOkkAjP70KayOy4HB1VnVClfjSoAYaM5nXjU+JN8FcwEJg==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by CHAPR12MB999225.namprd12.prod.outlook.com (2603:10b6:610:2fe::11) with
+ by CYYPR12MB8870.namprd12.prod.outlook.com (2603:10b6:930:bb::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Thu, 15 Oct
- 2026 07:29:58 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Thu, 15 Oct
+ 2026 08:02:43 +0000
 Received: from MW4PR12MB6873.namprd12.prod.outlook.com
  ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
  ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0522.011; Thu, 15 Oct 2026
- 07:29:58 +0000
+ 08:02:43 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 Oct 2026 16:29:55 +0900
-Message-Id: <DM58HRC3DHSS.1YC0E53ZXANT4@nvidia.com>
+Date: Thu, 15 Oct 2026 17:02:40 +0900
+Message-Id: <DM596TT7E841.1U05OKY9N6I6C@nvidia.com>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, <lukas@wunner.de>,
+ <linux-cxl@vger.kernel.org>, <akpm@linux-foundation.org>,
+ <Jonathan.Cameron@huawei.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <jic23@kernel.org>, <bhelgaas@google.com>,
+ <alistair@alistair23.me>, <djbw@kernel.org>, <linux-pci@vger.kernel.org>,
+ <wilfred.mallawa@wdc.com>, <a.hindborg@kernel.org>,
+ <gregkh@linuxfoundation.org>, <alex.gaynor@gmail.com>,
+ <benno.lossin@proton.me>, <boqun.feng@gmail.com>,
+ <bjorn3_gh@protonmail.com>, <tmgross@umich.edu>, <gary@garyguo.net>,
+ <ojeda@kernel.org>, "Alistair Francis" <alistair.francis@wdc.com>
+Subject: Re: [PATCH v4 00/22] lib: Rust implementation of SPDM
 From: "Alexandre Courbot" <acourbot@nvidia.com>
 To: "Alistair Francis" <alistair23@gmail.com>
-Cc: <lukas@wunner.de>, <linux-cxl@vger.kernel.org>,
- <akpm@linux-foundation.org>, <Jonathan.Cameron@huawei.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <jic23@kernel.org>, <bhelgaas@google.com>, <alistair@alistair23.me>,
- <djbw@kernel.org>, <linux-pci@vger.kernel.org>, <wilfred.mallawa@wdc.com>,
- <a.hindborg@kernel.org>, <gregkh@linuxfoundation.org>,
- <alex.gaynor@gmail.com>, <aliceryhl@google.com>, <benno.lossin@proton.me>,
- <boqun.feng@gmail.com>, <bjorn3_gh@protonmail.com>, <tmgross@umich.edu>,
- <gary@garyguo.net>, <ojeda@kernel.org>, "Jonathan Cameron"
- <jonathan.cameron@oss.qualcomm.com>
-Subject: Re: [PATCH v4 10/22] lib: rspdm: Initial commit of Rust SPDM
 References: <20260928011123.450800-1-alistair.francis@wdc.com>
- <20260928011123.450800-11-alistair.francis@wdc.com>
- <DM4NT7TFX4X9.1GFI128LI5ZQ4@nvidia.com>
- <CAKmqyKNEup=x+bwmPD_8x0s4ssPkqFnQtSGqJ_82z9oDP=A6cA@mail.gmail.com>
-In-Reply-To: <CAKmqyKNEup=x+bwmPD_8x0s4ssPkqFnQtSGqJ_82z9oDP=A6cA@mail.gmail.com>
-X-ClientProxiedBy: TY6PR01CA0011.jpnprd01.prod.outlook.com
- (2603:1096:405:3bc::18) To MW4PR12MB6873.namprd12.prod.outlook.com
+ <as_r8n7p_wdbChuQ@google.com>
+ <CAKmqyKOkmwompJqaP2k-oJicmXmqHY4E0wuLcrvkHLx+oauQ2Q@mail.gmail.com>
+In-Reply-To: <CAKmqyKOkmwompJqaP2k-oJicmXmqHY4E0wuLcrvkHLx+oauQ2Q@mail.gmail.com>
+X-ClientProxiedBy: TYCP286CA0127.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:2b6::9) To MW4PR12MB6873.namprd12.prod.outlook.com
  (2603:10b6:303:20c::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -74,211 +73,147 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|CHAPR12MB999225:EE_
-X-MS-Office365-Filtering-Correlation-Id: b1923a2d-c8cc-4e7a-27ea-08df2a8e1dd2
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|CYYPR12MB8870:EE_
+X-MS-Office365-Filtering-Correlation-Id: e47b8bab-94cf-40b4-ab50-08df2a92b0dd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|7416014|366016|10070799003|376014|6133799003|18002099003|10067099003|22082099003|5023799004|11063799006|261009223027099003|4143699003|56012099006;
+	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|10070799003|6133799003|22082099003|3023799007|10067099003|18002099003|11063799006|4143699003|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	/z0J1ntoJFxh83ayabCfBpBWzKnZdOcSGa4R76M4TWBvoXpLDnvAvjf8BIBBEq7Ea8H9riOqcZt1qgnUzFyo2rjkA2o/8HZcxo/ALNgRKSX9Mp0h3/45hgBrxjQpnm/N3H9EVavIBTPGtyJLWkT+KEivRigZ7GFU/127eOR6RGYWv2lI2wViTwMWQhfBr89W/NrNeWu6HyUn9djcBfp0EmEWsj+KvoYnkfGTpyX+zbjCA8wBCedyyn1D46RCL37d3hkl27uXVyPbQA/w7cWwauC04IxAtdPMU5e/Bh2w+2WfsG8hY4nDImb/KMyp+72DdJiSmOhuXCxfLEOwhZtqpDT6CB1oP1QGF4lBLCDwbnqTcDO7ZadNE4piLrNCKE35fi8mTMCHnIUy2vo72lHmSU/nM/z995B5Nqz0bwoi4gXWapZiXCNALU4cRFMXAc6MZ6t4mByXrFCRKUA/WQQz2PgPKL5Qggk8xLtztRFS+W+4k2K4NDrKaNlM51ZPXrqv7YZFZKb2xFDWg5RlSdgLBKQtdN2fLOPnm9k3AjkGTttuCt4HFpCpGTQ4xi1RLCeDm4EdkmpoQSPjNjtboT1fyRBbNCW3mVIO7cyK14WSygDvyfiGGWY0JRSm0Oo1n3aRqpyPN9kX7qLo9APhQphO4sHZjTf4LYS/llDaRTP4b0Q=
+	xuRrFT6CIRfPU7mW1l7j3Y9sbhBklN5WdzJSsdvkD/EYr0mkPrTrrBWML+kLzzqu9CVQj64OCUH4aofCq3rWFovikriIbiDmDEfc7vi0A+ZZ/gelB2vDTeASdY9k+2jaZpTLtxEucD98x5dvUW9sDVWHyqRAVkoCpD/w9EKJchV0kcoF1pGKWFaHgYNPXakjNwDyUXRdTFfQGPNH3cSPs4XJlg6KHJQif8ZU/WXw5Hof4N5NivwaZyQd0/nKAbyqO0IpFjky1QcYl/CM50DdNMzt4FFCfAZJtS7yTX0GoupBW4dBfZozUjHqGTfShGl4hhzXzYq2d0CF0/LxRbv6Hu05AeNqVTiQkC7t/x6eGnJoxS/qfUhTpMfPysizYkuDEJcS7GIMJNl5gvOuIa8D255ufgFMSe72xtAm4M3s7fh9hng4Nuxva75VcbPoaMYnwXDVxzQrCjmt2RQOfJ2+RHjYFTUwRg1P6bcoCQeFKHAOvmB9PyMfVWNBSW6BQZ48h+d1kvOe0m8UJuNEyUTyWu++1suFCk5YIYzv9McmmbVRlSYOvSY0vVsDfG25VN4Yq4Jh1kiEtt8AkfyaKkojrbRAMPNygkV2nFPIyCHmPmOmkRBrGX4U60bm2zMhTaWhZb6V8vE92r/535GemLpdNb9VvMsgFQdUYo2vsoiuzWA=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(366016)(10070799003)(376014)(6133799003)(18002099003)(10067099003)(22082099003)(5023799004)(11063799006)(261009223027099003)(4143699003)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(10070799003)(6133799003)(22082099003)(3023799007)(10067099003)(18002099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?T3VaUHl3L2h1YllaTTBWREZPTENRVnVZQmRKNGZRY0h5UnhyWGF2S3RHSmFt?=
- =?utf-8?B?Y2s1VWRhTVlRNXJ4RTZndWNXbGdYOEozb2tUbHlNYjVWQUZiK1B0bHdRQkR3?=
- =?utf-8?B?UytKMDZvdXg1QUNMQ3VFamNZdFR1ampiSW5zT2s5eTZNUEw5R2tEWStWd1dp?=
- =?utf-8?B?aWdKeDlxOTBIYzRyeVArM2NKeWVDMUtKMFhzSFFRbm5xRDlnNVN2S0VhMVpu?=
- =?utf-8?B?NmRYODFOb2pFQ0hOeHFnSEx6cHpSbFdod2N2VG5qdjBXYW1WVjJJdHptazJQ?=
- =?utf-8?B?Rk1OS1RxT2h0RlRJQndMYUdpYnZ0b0xFMGdUbVdidk1JaXhPSzJtbndnL3Jx?=
- =?utf-8?B?Wkx0TlpnakJHYmtVem9WMCtCV3diQS8xZmtITjRwc3F0enN6K1pBb2dGaVJN?=
- =?utf-8?B?U256UXhQM2NxazlZeThtUndVaExGYUxVZGtobFkyK3B5UU92Z2xnNTJQOFNZ?=
- =?utf-8?B?dkMyazRPaUlPTzFBd0JZSUtWZ3pDWWlDM3VFai9YVGtuNGNiMURhUVNuLzF5?=
- =?utf-8?B?U3plYmZTcDZ0bWhyQnRTMHB3WG45MEw3YzJFL2liYlh0SW50d0krQzRNQmRr?=
- =?utf-8?B?N3JqSUJNWDRvTTJBRXluMUpNdlpVY21uRlRzYnp4OUtVdFdhU1R3dUhaSkhG?=
- =?utf-8?B?ZVJXRjQvY2N4bTFWZUVZTGJXTERNV0FVMWY1WTJWQ29NYzFibXkxVU1oQlY4?=
- =?utf-8?B?Zy9DeHFwTVJhVDhiNFBlYWVubENXNWVzWDZuL0QxT0QyR2xJS3c2ZUlHQ094?=
- =?utf-8?B?cGVsSUNDTk5yV01KY2IyQXcrYmpoUm01K3doc1o3RER2YmlIV1Uxd0R1YTZB?=
- =?utf-8?B?eTRaWjZMN2tTSEJJZ1ZWR0UvczlwMXU3ZTJtVVVMVlA2ejBldUlTU0dHZkpG?=
- =?utf-8?B?U1lRcFIzSVhQeXoyVzBTQXRUSFBkalJaNGZUQWljTXdPUHc5N3FsUmZaQi9a?=
- =?utf-8?B?SnVMUkV6Y3p5dThuMElsN1k1L01tajJxQ3gxZXpqK0NnVXRudktUSDlNQXNv?=
- =?utf-8?B?VEFSd1h0ai8xaTVhUlBoM3E1b3Rkb0c4RnB1NGQxb2NDQzZXd1Mzd085bEV2?=
- =?utf-8?B?UTA2bWdBdDNPK0V3QXBtS2RqV1N1R1U5TW14NUdXZDdjN01qUHRlRG1qN29M?=
- =?utf-8?B?KzlJbzQwRDh2aDhTZk9UVk8ySms5MTBtRlhhVkhQMEVZMzFJSVNwQjVBdHhD?=
- =?utf-8?B?Lyt2MW1saVpXdlRmQkNoZk45a0JOQmkxZUR6ZExMWUNrUzdZOGhHVFNqNGh4?=
- =?utf-8?B?SjlPTUhybTdRcHVCV0ovYWluOENTU0xpaytmNmJYVThPUGphSXF0dWFrUGRw?=
- =?utf-8?B?RlFOMWtzNVRTV01McTdtUU5UUUJOajY5UUtNQlAzV25EZm15N0Vnbm1Gemky?=
- =?utf-8?B?WjlnL203eHRiNzNzWGxWUDFWTUhSNkFhMXlLZ3dtaDN5V1M2ZHNnd2F6UnhP?=
- =?utf-8?B?OG9ZNVp0K0Z2QndCNDl6K3VSM29FNU9NLzFnVFo2UTBuY2wxVmdFZG0zeTdQ?=
- =?utf-8?B?cm9Xc2VCM1l0NFo1MnZEODI5S01BRmluUHhMZU5JOHovVWs2am94Q1BxY1Y2?=
- =?utf-8?B?bEtnS2R5UTEvWFo3ZEZVaFV4UUNHWW12S0VMREZaYVBkMlZhZC9XbkFsT3hI?=
- =?utf-8?B?QnM5aXlNbzhKdjYzMU1LMkx6d1RwZ1E3YzRLRU9QY1ZIeFBYS21HU2NEMW92?=
- =?utf-8?B?M01HMjFxeGhoeDlsa3ZRN1k1OGFtN1JNVG1jeW1qeWtpNHRqbFZmSWRscmk1?=
- =?utf-8?B?VHNDNHdoY2ltd3U2N0tYbDlmTWlVSUVyMGoya0JLeE1UbDVpc2t5bTJkbHZm?=
- =?utf-8?B?U0VsMFlUaDVWTmtVM1BuNnpjWUNma2RTWTRQYndPTGNtT2ZDemE1YnZLWUx6?=
- =?utf-8?B?UVY1WWZrTWlzTC9KMk0xWk1ISUJTelEwTFU2UHhVT0dGRldYUi9Oc210eDRQ?=
- =?utf-8?B?a0QwYjFjeTc5V0RudytkMXlzMzhsaEt5bzZhdllRQmFmZDRSa01weHNhK1lp?=
- =?utf-8?B?Qk1aUFJHUWo4OGNhNDU1Q2tnL0VtdlFmSkEzblkzUVlyK0QvN2JQMmNrZmVV?=
- =?utf-8?B?Ym1hVjhvVXBlSjlWNG1rQTczVFJqVjVWZVc5TElyckQvUENMRXZOanJBYnJn?=
- =?utf-8?B?cHE4SjNJNVYwN3RlZ1Y5TzBKckswUk05WS80cjE1N0RiWjJyOFpPb3dQL0pp?=
- =?utf-8?B?RmMwWmlOU2pLSWJyZE5EcmJ4WGhGNE04Ujlvd2FEMkdyNWhMVm5VU2RzaUEx?=
- =?utf-8?B?czY5aG9VQzJPSFJtSWw5Z01zQW0vRnhsUEVBUnNnSlhrckd5SGlodDZHOExn?=
- =?utf-8?B?bkx1RnpDWHBjZU1RNUhVM0w2cFJueDMyNy9QRjloTS9rVk9Zdm1oVEdKZzlw?=
- =?utf-8?Q?EUktAXRuNtnhV8Yoq7oAtIlPXpu2IlJHTIaukpOXl8xCR?=
-X-MS-Exchange-AntiSpam-MessageData-1: cjbgwN6BjPBboA==
+	=?utf-8?B?VUxOdEJ3NFBHK24vcnQzU3BDV2NsMXVhZFdScUJJbTlVQ1NsRE5nK2Z4czR3?=
+ =?utf-8?B?SkZxSWRjZ2lIMFpnaThtSUlFby94Nm1VS3RWRXlzZVFnK1QrN1dzZVJJWFdx?=
+ =?utf-8?B?MjB1bzU5MjlCUVFKZ0JVbTIwUURIaUlMdFRTNFZkYVdwcXJDZUQrdnhGT1JD?=
+ =?utf-8?B?NUlYYmlLSnBud2JvRmdtYTRTK01JTldpMEhCaURRZVcxUVAzYWRSQTAyTlBk?=
+ =?utf-8?B?Z2kzbUhaWGVJZitkNHU0U056S29SVUpSSTJGQ0N2Z2oxSVN5ejNrbHFKdFZP?=
+ =?utf-8?B?WjJYQ001Z1VUTTNHSlNyU055cFg1V2hEQWc3bmF6c09hQkRxV2hVTU1ueklO?=
+ =?utf-8?B?dkV6QXpLQVFaQU15c1h3MkFwcHZXYTVxYUE2eUtoUHhSb01pOGdYRVQ1ZGxL?=
+ =?utf-8?B?WSsvNGRhMjhTYVhlRmt3RjJmOVhTdndnanpuSUZpSHBvZWJIU3BrbmxGSVlP?=
+ =?utf-8?B?MUdxbXJYZGhRV0V2K1ZyZFEzZU1wbUVEbzc4Vml6Mmt1MDhXUUdIdmcydTRh?=
+ =?utf-8?B?azY1UVRFSHBzWjJ3ZFp0TG8zR2xMMTAzKzY2OXpUUkt5V2dNUkZlcC9mN1I0?=
+ =?utf-8?B?eEN1ZkMzaGJwZkdkdU5qc3ZlRmhVSkJrdFdMbmNGVGRHQXlFVWFjNjBVQVh0?=
+ =?utf-8?B?N3ZnOXZkdmoydXIxRGFXYzRJd3V6VWlHWWlYR3o2MjZKV25sa0FQZENOVHdK?=
+ =?utf-8?B?SFJ0NjFLREtBQkZEZUE2U1BzdGNpdTRqRW9EamkwUHdPczNhcGRzdE4zVkI0?=
+ =?utf-8?B?TnFhRUx5allXVkNEMEMxNHRvMGlyakk0UGZmQkJpL0NGenE3c0d6bXoycmta?=
+ =?utf-8?B?di9BTzYwU1c0ZG1QVENiM3JaSXgyVmRab2NaNDBtNXVkWWxPOGFmYUp0Qmtu?=
+ =?utf-8?B?RzBMVFhaKzB2VU9pcnpzcWJsTWpjRnJ1Q0lDaDZhRUhCbnpCM3FFY0RVb0xI?=
+ =?utf-8?B?T1hDbDdHYzBFTksramxwbnlGSHlRd3hER3ExRlMyYjlXajcwZ3hhTUREN2hr?=
+ =?utf-8?B?SFpaTnRqRTNQRGQyMEpIVElNaVFKUzF5alR5Q0w3MkhqOVZYZ1lJa290dkJi?=
+ =?utf-8?B?cSs0SlpsMGhBTXdIRnZpUS9DTHA3UnYwQ0Q1aXpkNGw0TG81OWthTTg2MmFy?=
+ =?utf-8?B?cStoMjVLMXNBV21qRW1saTAwTlo4bGNmNVk4NHFFMjRFck9jUzJXSWFRSzEw?=
+ =?utf-8?B?ZzR4Q0RVbXdjZVdNeHRRMjhlWGhWRFlEV2JsYUFTRGdPMWl5ZnhxRlFmWWdY?=
+ =?utf-8?B?cU40NE5nRjNKS1g2c1g2UFFBblNSM3lDaElpRGlwcS9EelljWjZESm5oMU1R?=
+ =?utf-8?B?RzhOTGZlM3ljdU9lckhTQVlIYUJxNDQyOG1BZU45QzYzTFJCWTZXVDdHZkFt?=
+ =?utf-8?B?NUR3bmpVbDBBRGowbU5VdHVrdmw1TnhueW5pOFJJVkVQNVdoajdwaE5TT1Ba?=
+ =?utf-8?B?U1l2RE9pUHp2NVY4ZDF5NmFORVVOYmx4dXNmUGZOeVFCL25ESE5oSDIrRHZZ?=
+ =?utf-8?B?cU5weTJkY0M0ckdSOXNudDRzZUIvWERya1ZnT2VkWVNBRFVROUx4aGdNVlRP?=
+ =?utf-8?B?d1k1MURUdzY3SjkzSTNxU0ZtTkp1Y1BvbFMzMi9ORE5qM0IwZU0wSGhCR1RW?=
+ =?utf-8?B?cElsRjNhY0N2Tm1GM1lvZUNwdG44czhoOThLcjNrRWhmNEg1QjNJaHVxUHNO?=
+ =?utf-8?B?eFc0Ulk4UktUNkU5QjBocUpCUlFtbFlJV1hUVjdLRWd5b3dmMVB0WWVrOVBY?=
+ =?utf-8?B?enpMRVB1NXRBOUk4NkMwNTBrdGF6VmQ4ZlI2U04rcXE0QVpXeXdIcCt4SE5k?=
+ =?utf-8?B?Y2h4aGcrYUZ0a0NKSVM4WmhVTVFNMDFBNFkrOW5Kc2VVUllXYS82eE5nMEVx?=
+ =?utf-8?B?NEwwb2F4STFPclM3bk5XaTZtMVdweUx6aWl0V1puNHVjTFphK3V5cVk0d3N0?=
+ =?utf-8?B?SjU5ekFQN0M3SWJPWkc2T29ralRXUjBvUGtGSVRVU2JaUHovZSszSURzc2Zk?=
+ =?utf-8?B?SEFUL1BPNlRDSE03Smdkc0RpR0diVElzWXJ1QU0vNHBhVS9pS0JrUHJEdk1h?=
+ =?utf-8?B?UVRTdUhpY3JNWG5DUjVad2Nrd3dsV1Y5NjNJU1drUEZndWZaZ3ZCYlRQVEpM?=
+ =?utf-8?B?Rk43Yy9TcUN5eHhsTC9XQURVS2dXbWNHeHFOQmQ2NXdZeXlSTUltQk84WHYz?=
+ =?utf-8?B?MWd5V1piRGsvOC9JSEdnT1V6WTd4Y0F2L285eFdlSTVqU1JYVDFoMG4xam4z?=
+ =?utf-8?B?WmxVd3ViV3N2S2d5TElWR2Q3bDd2azlQL1BoN25qbE54MEw1d01PWERVRC9q?=
+ =?utf-8?B?K2xvcXhwbExIZlRDSzBSeHQ3UG1UNFhoUU83ZjA3N3p4UUwvVmhJZTdqODkz?=
+ =?utf-8?Q?/qhMAkbAs88dIYrEgJdOsYQhf39HLWc+51vPnosWHZ15/?=
+X-MS-Exchange-AntiSpam-MessageData-1: ovZRbiyw6EgBng==
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1923a2d-c8cc-4e7a-27ea-08df2a8e1dd2
+X-MS-Exchange-CrossTenant-Network-Message-Id: e47b8bab-94cf-40b4-ab50-08df2a92b0dd
 X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 07:29:58.5376
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 08:02:43.2450
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: plz4JJos9oB4DEtRTH3ya4plMfIRhtSvKHaH4xaPnmdeVgrDWHy0Uiew82dNgPDqSuCdYNjsjt2UV/+ZpYAitw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CHAPR12MB999225
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6A1c93L/hRAanpANKDUVvitWCw0Mo7FxPmLheUhxFgQr+2sLZmZT6QatHGOBhlCVuqOFD2Z0VHLzqFDyYpIQAA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8870
 
-On Thu Oct 15, 2026 at 12:06 PM JST, Alistair Francis wrote:
-<...>
->> > +/// The current SPDM session state for a device.
->> > +///
->> > +/// Concurrent access is serialised by wrapping the whole struct in a
->> > +/// `Mutex<SpdmState>` at the FFI boundary, so `spdm_authenticate()` =
-callers
->> > +/// run one at a time and the locked `&mut SpdmState` is the only way=
- to
->> > +/// reach the inner fields.
->> > +///
->> > +/// `dev`: Responder device.  Used for error reporting and passed to =
-@transport.
->> > +/// `transport`: Transport function to perform one message exchange.
->> > +/// `transport_priv`: Transport private data.
->> > +/// `transport_sz`: Maximum message size the transport is capable of =
-(in bytes).
->> > +///  Used as DataTransferSize in GET_CAPABILITIES exchange.
->> > +/// `validate`: Function to validate additional leaf certificate requ=
-irements.
->> > +///
->> > +/// `version`: Maximum common supported version of requester and resp=
-onder.
->> > +///  Negotiated during GET_VERSION exchange.
+On Thu Oct 15, 2026 at 2:23 PM JST, Alistair Francis wrote:
+> On Thu, Oct 15, 2026 at 6:54=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
 >>
->> Field documentation should be their own doccomments before each
->> individual field (see [1] for an example and general good practices when
->> writing Rust doccomments).
+>> On Mon, Sep 28, 2026 at 11:11:01AM +1000, alistair23@gmail.com wrote:
+>> > From: Alistair Francis <alistair.francis@wdc.com>
+>> >
+>> > Security Protocols and Data Models (SPDM) [1] is used for authenticati=
+on,
+>> > attestation and key exchange. SPDM is generally used over a range of
+>> > transports, such as PCIe, MCTP/SMBus/I3C, ATA, SCSI, NVMe or TCP.
+>> >
+>> > From the kernels perspective SPDM is used to authenticate and attest d=
+evices.
+>> > In this threat model a device is considered untrusted until it can be =
+verified
+>> > by the kernel and userspace using SPDM. As such SPDM data is untrusted=
+ data
+>> > that can be mallicious.
+>> >
+>> > The SPDM specification is also complex, with the 1.2.1 spec being almo=
+st 200
+>> > pages and the 1.3.0 spec being almost 250 pages long.
+>> >
+>> > As such we have the kernel parsing untrusted responses from a complex
+>> > specification, which sounds like a possible exploit vector. This is th=
+e type
+>> > of place where Rust excels!
+>> >
+>> > This series implements a SPDM requester in Rust.
 >>
->> [1] https://doc.rust-lang.org/rust-by-example/meta/doc.html
+>> So I looked a bit at this, and here are some comments. I will not repeat
+>> what Alexandre has already said.
 >>
->> > +#[expect(dead_code)]
->> > +pub(crate) struct SpdmState {
->> > +    pub(crate) dev: *mut bindings::device,
+>> First, I'd like to say that it's good to see that all wire-format
+>> parsing in lib/rspdm/validator.rs is written in completely safe Rust.
+>> That's exactly what we want to see for parsing in Rust. We want the code
+>> to have basically no unsafe code whatsoever so that we really get to
+>> rely on the bullet-proof guarantees about bugs being caught at compile
+>> time, or at least at runtime.
 >>
->> This makes me very nervous. I see this is passed to C callbacks. We need
->> to maintain the guarantee that the device still exists, so an
->> `ARef<Device>`, from which you obtain a pointer to pass to the C
->> callbacks, should be the minimum here. Does the device also need to be
->> bound? Looking at `drivers/pci/cma.c` it seems to be. Then this needs to
->> be a `&Device<Bound>`, with a lifetime to `SpdmState` so callers only
->> use it while the device is bound.
+>> Unfortunately it looks like the same cannot be said for the state
+>> machine in lib/rspdm/state.rs, which has way too much unsafe code in its
+>> interaction with the rest of the kernel. There needs to be more
+>> intermediate Rust abstractions here. This file should not have *any*
+>> unsafe code, except maybe 1-2 blocks for using the C transport and
+>> validate function pointers.
 >
-> Good point, I have converted this to use a `&Device<Bound>`
-
-Another related point of feedback is that this code seems to be
-designed to interact with C drivers exclusively - i.e. I don't see a
-publicly exported Rust API.
-
-That's probably what has guided the current design of storing pointers,
-as that's what the C functions expect; and the C side is also
-responsible for taking care of lifetime and bound device status, so in
-that context using a `&Device<Bound>` will be of little help as it will
-need to be forged by trusting that the calling C code knows what it is
-doing.
-
-I think it would be helpful on the contrary to design things around a
-Rust API, on top of which the C FFI is built. That way you would have to
-work with properly bound references, and have a proof that the model is
-viable before exposing it to C. Also I guess Rust drivers will want to
-use this at some point, so better design with that in mind from the
-get-go.
-
-Also related, what is the reason for having this code in `lib`? Why not
-make this a regular kernel module?
-
+> Yeah, it's the crypto functions. There are currently no bindings, so
+> it's just directly calling the C functions.
 >
->>
->> Just storing a C pointer and passing it whenever a function needs it
->> cancels the purpose of using Rust and make the safety requirements of
->> the callback you pass it to impossible to guarantee, as nothing enforces
->> that the device still exists or is in a valid state when they are
->> invoked.
->>
->> > +    pub(crate) transport: bindings::spdm_transport,
->> > +    pub(crate) transport_priv: *mut c_void,
->>
->> Here I also suspect we want to define some kind of ownership model for
->> the private data instead of hoping that the pointer is still valid when
->> we use it.
+> Without the crypto functions it's just a single unsafe call to
+> `transport_function()` in `state.rs` and a few in `lib.rs` to handl
+> the C <-> FFI boundy.
 >
-> Any ideas here? It's just a pointer that we pass back to C when
-> calling the `transport_function()`, I'm not clear on what we could do
-> to ensure it's still valid.
+> I was trying to avoid adding crypto and X.509 bindings in this series,
+> as that's a few more subsystems this ends up touching. We need to add
+> PQC as well, so crypto bindings are next on the todo list once this is
+> merged.
+>
+> Is this going to stall on adding crypto bindings?
 
-I suspect something close to what `fwctl` does? Basically `SpdmState`
-would store a reference to a generic type, which outlives the SPDM
-driver bound time. That's also why having the Rust API first is helpful,
-as it will provide the lifetime that needs to be outlived.
+So without going all the way to fully-fledged crypto bindings, you will
+spare yourself and your reviewers quite a bit of pain if you at least
+implement a safe and lightweight crypto wrapper that is local to SPDM
+and could eventually grow into official crypto bindings as a future
+effort. As it is the code is very hard to review: for instance
+`crypto_free_shash` is always called after `free_desc`, and looks like
+it could/should be part of it, but that's hard to assess as the crypto
+code is mixed with the rest and called here and there. I just cannot
+tell whether all these unsafe blocks are safe of not, which is a problem
+since the goal of writing this in Rust is to prevent exploits.
 
-Looking at the example in `cma.c`, the private data appears to be
-`host.doe_mb`, which exists before `spdm_create` is called and is still
-there after `spdm_destroy`, so that seems to be the correct model, i.e.
-there should be no need to transfer full ownership of the private data
-to the SPDM driver - a reference should be sufficient.
-
-Actually thinking some more about it seems like the `fwctl` Rust
-bindings could be a good model to follow. They are simple and adopt a
-similar pattern of a sub-component of a larger driver that never
-outlives its parent.
-
-<...>
->>
->> > +impl<'a, 'c> Validate<'c, Untrusted<&'a [u8]>> for SpdmHeader {
->> > +    type Err =3D Error;
->> > +
->> > +    type Context =3D &'c SpdmState;
->> > +
->> > +    fn validate(unvalidated: &[u8], _context: &'c SpdmState) -> Resul=
-t<Self, Self::Err> {
->> > +        Ok(SpdmHeader {
->> > +            version: *unvalidated.get(0).ok_or(EIO)?,
->> > +            code: *unvalidated.get(1).ok_or(EIO)?,
->> > +            param1: *unvalidated.get(2).ok_or(EIO)?,
->> > +            param2: *unvalidated.get(3).ok_or(EIO)?,
->> > +        })
->>
->> Here you will definitely want to leverage zerocopy's `FromBytes` trait.
->
-> I was hoping not too actually.
->
-> The SPDM responses are a bit complex. For example NegotiateAlgsRsp has
-> multiple dynamically sized arrays, and the fields change based on the
-> version.
->
-> Using zerocopy means we need packed structs and even then I'm not
-> clear on how we can handle the KVec<u32> or even the
-> KVec<RespAlgStruct> nicley.
->
-> The current approach has the obvious downside of copying the data, but
-> as the data is pretty small in the scheme of things and not part of a
-> hot path, I think the tradeoff of copying the data with much cleaner
-> and easier to understand code is worth it.
->
-> Maybe in the future zerocopy could be a performance improvement, but I
-> think right now it's a large complexity overhead in this case.
->
-> Note that obviously SpdmHeader is not complex, but I think they should
-> all follow the same pattern.
-
-For more complex structures sure, but in the case of `SpdmHeader`
-zerocopy looks like it would work nicely? It also supports performing a
-copy (see `read_from_bytes` and `read_from_prefix`).
+A self-contained crypto module exposing a safe interface would remove
+that burden, reduce the number of `unsafe` blocks, and make the series
+easier to review globally while not necessarily resulting in more code.
+You just need to store the relevant pointers into a new data structure,
+enforce the required invariants at construction time, and codify the
+actions that SPDM is already doing in the form of methods.
