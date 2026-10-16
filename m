@@ -1,94 +1,334 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D9347ACE0;
-	Fri, 16 Oct 2026 12:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A685476CED
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 12:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792152649; cv=none; b=apeVDHDKrMDGVZ+lArpPgxCLJJJNdcg9R/t+TdggqVtGb07akT2n3rBn/oKWJaFpf3Da4SDCkv0ikJPieD2mVBLyRdyd3Yk1QgTXWsTL2kTYRWDOMHImmxwau9gp5dVq9e+HWMOP7GbsOk6AMaTu/ciS2rYl8q6Q06fQtaPITzs=
+	t=1792152755; cv=none; b=XyEGkrGnxJzWVEK3XZk8puBLiX3eXjXVmqvIqE+LGL2W4cV1w5Qqo7IhavApktbzse7LYfZvyUpYYkurhD2pDW3m7tXX8RFIMV2uYTcVj8LR14Bybh/LIiPpeHvBr7JowpFA8bj9157sGem2yl6u/kXchFEa+NJY/vn49qozzY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792152649; c=relaxed/simple;
-	bh=I2EOVYSWSibnwSbvmZ9Icl3P9UW6LIJ9IuDIZoFx5OQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uGwIpfzcjvpgqbMEPbfmliXa8I2EJryfm5/5qc/M65k5oILYW4t8uciN5m/1XRjX++8wp6tJLwQgl2skx47ktF7tVO3jtwN3HbZbwvuExhujmYrZonjugRrAujhMRybEAstyVGpTn0JtXfzlbrQPY3grQ1BvKSfhlzMAfk2ftKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=BxhsRove; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1792152755; c=relaxed/simple;
+	bh=FqH0bdEQPmPJbirwxtsgL2Ei9yv+vqHf2QbfzRnaG+Q=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=KzfcaC0GaNYNjHVsvzlv39kmazigMlUmOqF2k7QSaqo6uFTUzRQshOOrJOC3uas5yHGelr0qTIi13+tN84ARdzzE1+C+lVwmw9FZWdSWNtKRb1QifMO9Yt57J7em+MQJPh6P8bQ903oEYq8/LMfgyhnRqzHtbRmFygprzUGmAeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gYudvH1x; arc=none smtp.client-ip=209.85.128.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="BxhsRove"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4j5kKw0wrjzMkvn;
-	Fri, 16 Oct 2026 14:10:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1792152644; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I2EOVYSWSibnwSbvmZ9Icl3P9UW6LIJ9IuDIZoFx5OQ=;
-	b=BxhsRovexkzm/j03lF7h8T81J+DaEDb1vPJQtAM/gNEHwDsm5043EAIs2QqxTKLqu50co3
-	PBv7W2zK06FB8aCQ+r+iii7RNBqV64XIhwz+phUXjB4W8oXOaLVnkOIL/gCmb8aXfslnmW
-	7a4PdVrFg3q+s3+SYFpEbzcZnSWmsLPTQM1mjAFlcwEgEYTqX0ZQRLPiJ0VeXUiHrd7cvU
-	lQZifTf11q6ZiAkCXmpLqcAVd5aDR+ETBDW7pZqSxUAFHnafbZtEEdDLgMRQGGDwA4sRuC
-	86ZzN+NDLu5uJPYqOKryEi+/M08ekEcDs5wIJwptXbDGtm5KrF5dK1O40tSP+g==
-Message-ID: <3cda8a87bb8c243f9409b260853c98de2ff78b63.camel@mailbox.org>
-Subject: Re: [PATCH v2] rust: DmaFence: Remove static lifetime
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Philipp Stanner <phasta@kernel.org>, Sumit Semwal
- <sumit.semwal@linaro.org>,  Christian =?ISO-8859-1?Q?K=F6nig?=	
- <christian.koenig@amd.com>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl	
- <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng	
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg	 <a.hindborg@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Daniel Almeida	 <daniel.almeida@collabora.com>, Tamir
- Duberstein <tamird@kernel.org>,  Alexandre Courbot <acourbot@nvidia.com>,
- Onur =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 16 Oct 2026 14:10:38 +0200
-In-Reply-To: <20260930122755.1657820-2-phasta@kernel.org>
-References: <20260930122755.1657820-2-phasta@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gYudvH1x"
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a028616bebso46744295e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 05:12:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792152752; x=1792757552; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YNQ5s//J8IJmFZANY5I3f9Gqs72fdd1AkgujEl+yjSY=;
+        b=gYudvH1xwO3ySY3u+HB8wlm8hINlJLiHVaJJCRVdeyGrpjqs3RwpSL05th1bYlsmvP
+         ps1aaycbNSXuvVpygi+LNfu/ZFa+o5k7dQfU+DsM1kbycIgfg45EcqcKYig3q/VEb21H
+         Vai/uDWFpD+N6HRqpzsyNkMHcX4NA6A3E8oWCOvB7Nd4X054lzkA6DqQSQU+W4MlYLOf
+         FhczboyXYqzxv3DQl0MOFpvfWV7ah38WHLa3Z5dwWKWFpkbQ9gon3jrYMnPJElo7l6xq
+         Hk2RAoCz6WjwJanMmCqTKl6/KsW2xUsiDOxErjQcRL1NGOoOtOyaT+GyL4iaZxFZ3rLI
+         RywQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792152752; x=1792757552;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YNQ5s//J8IJmFZANY5I3f9Gqs72fdd1AkgujEl+yjSY=;
+        b=wvozwadE2aRMHJCgDFVvbfOlG3FG9xSOJHfe+YintAQ+cdj9xbKBWS1qz527k9RkTu
+         uUaLwIo3rSNWY41fiO/9Gj2EHkUZvGT+Zde+V2jKoxf2gI5QY4uGjzvHh1muFlq9Oxzz
+         vbfQ8N5FcGwehsdTQC9WQHyFZp87iO1j3cfYRpTkV8CuR5oeStGKPU1UI9NZMUUSoZhT
+         SNeNZ+9qbgurf9X6lXpNBtz4O3FNWUKO1F6/8LoMatIdffNPRySlC7xVaoSreBvvOA3X
+         qZQKPbpZfxg3+IzLvdUOY2UPPo1BbngtN1iGc2k5IBM7bWYIezglhsJxu88LGstKPBiB
+         AtQQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwtzkGlf9EkKbyMhg1nMj9NOY8SPrOSdQS9jsYwkvmG4IteiYWIkEWdI0XQSr8o4OhxnoEs1MX7C1Zx0HHpCg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYLYn0j/lDyehyRHUIFGDSqwDkh9hCfFnzZfAICdylRkOEcC3LUU
+	NiPaiTFDdSDUGlJyoJqRNtlLN74iFUKsoNZ6UwEkBOMlWgLA1Lu3GB05lMnyov0DAtVJqlCgWzX
+	ZDzWC9EmrHQOuvBXDYw==
+X-Received: from wmbjr14.prod.google.com ([2002:a05:600c:560e:b0:4a1:d05f:3f13])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3488:b0:49f:e941:d6e with SMTP id 5b1f17b1804b1-4a18e4c05d9mr443132905e9.21.1792152751449;
+ Fri, 16 Oct 2026 05:12:31 -0700 (PDT)
+Date: Fri, 16 Oct 2026 12:12:29 +0000
+In-Reply-To: <20261005133857.1572243-2-beata.michalska@arm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MBO-RS-ID: be247911bdc56e199d3
-X-MBO-RS-META: m7p3i7kbreozqwrixqa9tkw7omxdfiem
+Mime-Version: 1.0
+References: <20261005133857.1572243-1-beata.michalska@arm.com> <20261005133857.1572243-2-beata.michalska@arm.com>
+X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
+Message-ID: <20261016121230.3724323-1-aliceryhl@google.com>
+Subject: Re: [PATCH v4 1/3] rust: add runtime PM support
+From: Alice Ryhl <aliceryhl@google.com>
+To: Beata Michalska <beata.michalska@arm.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, ojeda@kernel.org, dakr@kernel.org, 
+	gregkh@linuxfoundation.org, rafael@kernel.org, boqun@kernel.org, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, tmgross@umich.edu, daniel.almeida@collabora.com, 
+	boris.brezillon@collabora.com, work@onurozkan.dev, samitolvanen@google.com, 
+	acourbot@nvidia.com, rust-for-linux@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 2026-09-30 at 14:27 +0200, Philipp Stanner wrote:
-> A FenceCallbackRegistration can stem from another party than the one
-> that has created a Fence. Should that party forget the registration
-> object (for example through a refcount cycle) and then unload the
-> module, a fence signaling would run into the unloaded module, causing
-> UAF bugs.
->=20
-> So far, this has been solved by demanding that the payload data of the
-> registration object demanding static lifetime.
->=20
-> It turns out, however, that this is harmful because the static lifetime
-> bubbles up to all users, ultimately potentially causing a large amount
-> of driver data to be static, which renders the lifetime obsolete.
->=20
-> Solve this issue instead through an unsafe requirement which demands
-> that the user does not forget the registration object. This is also the
-> solution chosen by ScopedWork.
->=20
-> Suggested-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Philipp Stanner <phasta@kernel.org>
-> Reviewed-by: Onur =C3=96zkan <work@onurozkan.dev>=20
+On Mon, Oct 05, 2026 at 03:37:39PM +0200, Beata Michalska wrote:
+> diff --git a/drivers/base/base.h b/drivers/base/base.h
+> index a5b7abc10ff0..538cbb104254 100644
+> --- a/drivers/base/base.h
+> +++ b/drivers/base/base.h
+> @@ -119,6 +119,9 @@ struct device_private {
+>  	const struct device_driver *async_driver;
+>  	char *deferred_probe_reason;
+>  	struct device *device;
+> +#ifdef CONFIG_RUST
+> +	void *rust_private;
+> +#endif
+>  	u8 dead:1;
+>  };
 
-Gentle ping about the merge since we need this to upstream
-drm::JobQueue
+`scripts/kernel-doc -none drivers/base/base.h` warns that `rust_private` is
+not described in the kernel-doc comment for `struct device_private`.
 
+> +/// Device's runtime power management status
+> +#[repr(i32)]
+> +pub enum RuntimePMState {
+> +    /// Runtime PM has not been initialized for this device yet.
+> +    Unknown = bindings::rpm_status_RPM_INVALID,
+> +    /// The device is expected to be runtime active and in its normal operating state
+> +    Resumed = bindings::rpm_status_RPM_ACTIVE,
+> +    /// The device is expected to be suspended, unavailable for normal operations
+> +    Suspended = bindings::rpm_status_RPM_SUSPENDED,
+> +}
 
-P.
+Is `RuntimePMState::Unknown` needed? The only place that takes
+`RuntimePMState` is `PMContext::enable()`, which rejects `Unknown` with
+`EINVAL`. Removing `Unknown` would avoid having to handle an invalid state in
+`enable()`.
+
+> +impl<'a> ResumeScope<'a> {
+...
+> +    fn release_inner(&self) -> Result {
+> +        let scope_mode = self.0.mode & !ModeFlag::Idle;
+> +
+> +        match self.0.mode {
+> +            mode if mode.contains(ModeFlag::Idle) => Request::idle(
+> +                self.0.dev,
+> +                scope_mode & (ModeFlag::Async | ModeFlag::Nowait),
+> +            ),
+> +            mode if mode.contains(ModeFlag::Auto) => {
+> +                Request::mark_last_busy(self.0.dev);
+> +                Request::suspend(self.0.dev, scope_mode)
+> +            }
+> +            _ => Request::suspend(self.0.dev, scope_mode),
+> +        }
+> +    }
+...
+> +impl<'a> AwakeScope<'a> {
+> +    fn new(dev: &'a device::Device<device::Bound>, mode: Mode) -> Result<Self> {
+> +        if !mode.contains(ModeFlag::Acquire) {
+> +            return Err(EINVAL);
+> +        }
+> +        // ModeFlag::Idle is internal so strip it off before passing further
+> +        match Request::resume(dev, mode & !ModeFlag::Idle) {
+> +            Ok(()) => {}
+> +            // For async/nowait requests, `EINPROGRESS` means the resume is in
+> +            // flight and the usage reference already keeps the device active.
+> +            Err(e) if e == EINPROGRESS && mode.contains_any(ModeFlag::Async | ModeFlag::Nowait) => {
+> +            }
+> +            Err(e) => {
+> +                Request::put_noidle(dev);
+> +                return Err(e);
+> +            }
+> +        }
+> +
+> +        Ok(Self(Scope::<Awake> {
+> +            dev,
+> +            mode,
+> +            _tag: PhantomData,
+> +        }))
+> +    }
+> +
+> +    fn release_inner(&self) -> Result {
+> +        let scope_mode = self.0.mode & !ModeFlag::Idle;
+> +        match self.0.mode {
+> +            mode if mode.contains(ModeFlag::Idle) => Request::idle(self.0.dev, scope_mode),
+
+In `ResumeScope::release_inner()`, the `ModeFlag::Idle` arm masks out
+`ModeFlag::Auto` (`scope_mode & (ModeFlag::Async | ModeFlag::Nowait)`),
+whereas here in `AwakeScope::release_inner()` it passes `scope_mode` unmasked.
+Should this also strip `ModeFlag::Auto`?
+
+Also, in `AwakeScope::new()`, when `ModeFlag::Nowait` is set without
+`ModeFlag::Async`, `__pm_runtime_resume()` returns `-EINPROGRESS` if a
+concurrent suspend or resume is in progress without queueing an async resume.
+Swallowing `EINPROGRESS` when only `Nowait` is set means `get()` returns
+`Ok(AwakeScope)` even though the device is not resumed (and might be
+suspending). Should `EINPROGRESS` only be treated as `Ok(())` for
+`ModeFlag::Async`?
+
+> +impl<'a> RetainScope<'a> {
+...
+> +    fn release_inner(&self) {
+> +        Request::put_noidle(self.0.dev);
+> +    }
+
+In the v3 discussion with Sami [1], you agreed that `RetainScope` should call
+`put` rather than `put_noidle` on release so that dropping the last reference
+triggers idle/suspend handling, looks like this was missed in v4.
+
+[1]: https://lore.kernel.org/r/apaYNvQSSUCkMTjn@arm.com
+
+> +#[cfg(not(CONFIG_PM))]
+> +impl Request {
+> +    #[inline]
+> +    fn active(_dev: &device::Device<device::Bound>) -> bool {
+> +        false
+> +    }
+
+`include/linux/pm_runtime.h` already provides `!CONFIG_PM` stub
+implementations for all of these functions. If you add `#ifndef CONFIG_PM`
+helpers in `rust/helpers/pm_runtime.c` for the functions that are `extern`
+under `CONFIG_PM` and `static inline` under `!CONFIG_PM`, you can drop the
+`#[cfg(not(CONFIG_PM))]` `Request` block and the `#[cfg(CONFIG_PM)]` guards in
+`apply_config()` altogether.
+
+> +struct PMPayload<P> {
+> +    in_flight: AtomicFlag,
+> +    inner: UnsafeCell<Option<P>>,
+> +}
+
+Thanks for removing `Option` from the public `PMOps` trait methods! You can
+still use `ManuallyDrop<P>` instead of `Option<P>` inside `PMPayload` too,
+which avoids the extra discriminant and the unreachable `None` check in
+`transition()`.
+
+> +    /// Enable runtime PM
+> +    pub fn enable(&self, state: RuntimePMState) -> Result {
+> +        self.inner.state
+> +            .cmpxchg(
+> +                PMContextState::Disabled,
+> +                PMContextState::Enabled,
+> +                ordering::Full
+> +            )
+> +            .map_err(|old| match old {
+> +                PMContextState::Dead => ENODEV,
+> +                PMContextState::Enabled => EBUSY,
+> +                _ => EINVAL, // unreachable
+> +            })?;
+> +
+> +        Self::apply_config(self.inner.dev, &self.inner.configs);
+> +
+> +        match state {
+> +            RuntimePMState::Resumed => Request::mark_active(self.inner.dev),
+> +            RuntimePMState::Suspended => Request::mark_suspended(self.inner.dev),
+> +            _ => Err(EINVAL),
+> +        }.inspect_err(|_| {
+> +            self.inner.state.store(PMContextState::Disabled, ordering::Release);
+> +        })?;
+> +
+> +        Request::runtime_enable(self.inner.dev);
+> +        Ok(())
+> +    }
+
+If `match state` fails (for instance if `mark_active()` or `mark_suspended()`
+returns an error), `Self::apply_config()` has already run and its side effects
+(such as `pm_runtime_irq_safe()` incrementing the parent's usage count or
+`pm_runtime_no_callbacks()`) are not undone. Could `mark_active()` /
+`mark_suspended()` be called before `apply_config()`?
+
+> +    /// Runs a closure while holding a `ResumeScope`.
+> +    pub fn with_resume<R>(&self, profile: PMProfile, f: impl FnOnce() -> Result<R>) -> Result<R> {
+> +        if profile.0.contains(ModeFlag::Async) {
+> +            return Err(EINVAL);
+> +        }
+> +        let _scope = self.resume(profile)?;
+> +        f()
+> +    }
+> +    /// Runs a closure while holding an `AwakeScope`.
+> +    pub fn with_get<R>(&self, profile: PMProfile, f: impl FnOnce() -> Result<R>) -> Result<R> {
+> +        if profile.0.contains_any(ModeFlag::Async | ModeFlag::Nowait) {
+> +            return Err(EINVAL);
+> +        }
+> +        let _scope = self.get(profile)?;
+> +        f()
+> +    }
+
+Should `with_resume()` also reject `ModeFlag::Nowait` like `with_get()` does?
+
+> +    fn apply_config(dev: &device::Device<device::Bound>, opts: &[PMConfig]) {
+> +        #[cfg(not(CONFIG_PM))]
+> +        let _ = opts;
+> +        let _ = dev;
+
+`let _ = dev;` is outside `#[cfg(not(CONFIG_PM))]` here (though as noted
+above, using C helpers for `!CONFIG_PM` removes the need for `#[cfg]` here
+entirely).
+
+> +#[repr(C)]
+> +#[pin_data]
+> +struct RegistrationData<'a, T: PMOps> {
+> +    #[pin]
+> +    data: PMPayload<T::RuntimePayloadType>,
+> +    _marker: PhantomData<&'a mut T>,
+> +}
+
+Does `RegistrationData` need `#[pin_data]`? `PMPayload` moves the payload in
+and out by value and doesn't use structural pinning, so a plain `KBox::new()`
+should suffice.
+
+> +impl<'a, T: PMOps> Registration<'a, T> {
+> +    /// Creates a runtime PM registration for `dev`.
+> +    ///
+> +    /// The provided profiles and configuration are stored in the associated
+> +    /// [`PMContext`]. The `payload` is stored as a Registration data
+> +    /// and is used to service PM transitions.
+> +    ///
+> +    /// The device must use the callback represented by `ops`, generated
+> +    /// for the same bus adapter and driver pair `(D, T)`.
+> +    pub fn new(
+> +        dev: &'a device::Device<device::Core<'_>>,
+> +        ops: &'static DevPMOps<T>,
+> +        profiles: Option<KVec<PMProfile>>,
+> +        configs: Option<KVec<PMConfig>>,
+> +        payload: T::RuntimePayloadType,
+> +    ) -> Result<Self> {
+...
+> +        unsafe {
+> +            let ptr = (*(*dev.as_raw()).p).rust_private;
+> +            if !ptr.is_null() {
+> +                return Err(EBUSY);
+> +            }
+> +            (*(*dev.as_raw()).p).rust_private = payload.into_foreign();
+> +        }
+> +
+> +        Ok(Self {
+> +            ctx: PMContext { inner: inner_ctx },
+> +        })
+> +    }
+
+What happens if a driver calls `core::mem::forget(pm_reg)` (which is safe in
+Rust)?
+
+If `Registration::drop` never runs when the driver unbinds:
+1. Runtime PM remains enabled on the device (and `pm_runtime_reinit()` in
+   `device_unbind_cleanup()` is a no-op while runtime PM is enabled).
+2. `rust_private` remains non-null, pointing to `RegistrationData<'a, T>`
+   after `'a` has ended and after the device has unbound from `T`.
+
+Other registrations tied to `'bound` (such as `drm::Registration::new()` and
+`irq::Registration::new()`) make `Registration::new()` an `unsafe fn` with the
+safety requirement that the caller must not `mem::forget()` the returned
+`Registration` or otherwise prevent its `Drop` implementation from running
+before `'a` ends. Doing the same here would also allow `RuntimePayloadType<'a>`
+to be non-`'static`, so drivers can hold `'bound`-scoped resources like
+`IoMem<'bound>` in the runtime PM payload.
+
+Also, there are a few leftover `#[allow(unused)]` attributes in this file (on
+`mark_active`, `mark_suspended`, `runtime_resume_callback`,
+`runtime_suspend_callback`, `DevPMOps`, and `PayloadGuard`) that can be
+removed.
+
+Alice
