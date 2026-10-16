@@ -1,101 +1,132 @@
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48A03B893C
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 08:41:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AD640F724;
+	Fri, 16 Oct 2026 08:42:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792140089; cv=none; b=Zsw2TWOo9ILSa/7vjwZQwvWNBcLXj9a6E8NPI0RTHuv1vsZ+s2bcjmamys460OSQ9aCmYuS8W6ByvXaB8eZjL8+PA4J328IRTB6Q6536n+4iga22m7chHH1Utcsem/74KAHjjcMkau4Rji0V6ah0M4S00vhkRb2o6wwiqQFpG+w=
+	t=1792140175; cv=none; b=MdLHYQi7OTw4K4Ho8NCcjHy4QHrBFllZFWfGfP4Iclz6elBBm9QViubwuiiDCQ8Hawjh0T3eUouleRxchzLAVYGxxPm2ap8Tt6Eh4AGiFB8mSSwOv1HkQIHqHWbHnXSfxL6e8Q5ZmXYwIMrQf3rdOsLVj913RmhpcJtKu3p9gZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792140089; c=relaxed/simple;
-	bh=tlShirYKzbDTebhekpL3cgO9QBzPxjzfz9kaCC0cM0s=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FyxzL+hzp9yjVLhqmwEtbgGjMyuuXDpuRaE+wO9d/q6R5/WTwgiDIgo3IgP86hwfrgPp0S0gg80QBX/AMKIzuN9DIse7OjHAq6i7FsY0bBYWJWhR3ysg01eVYBlLJpX0Uezv+qz120ebwAs3JOpMYzwcu0VMFQ4/nmazZol3GdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E3m4dyT+; arc=none smtp.client-ip=209.85.128.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1792140175; c=relaxed/simple;
+	bh=3rbOJU1iFVVApKsSPtz/G7fuEZPLRtV/KP/+IGlxAIs=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=m06kyny+OU1ypDnZIEPtINAmGBJN22MEk/CsoF2sAvtjjmoXLvt+rT0psHmuAfRf27lGcX39eZUl5bTzK38KCzuIAfGsygu3Poq2/3gbkhXYk+rWVi/8xjWHlS0Ao3W7mJL/W+6sMnD0TjV2kI8PQCwP0/RfyqAPHnAjgY0pj/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=faR1OGUI; arc=none smtp.client-ip=43.163.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E3m4dyT+"
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a17b4c613fso31456725e9.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 01:41:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792140086; x=1792744886; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+xIS+Gcugri6/aPL8Lav1QyB3S08Ua53KHtkO8xQT/4=;
-        b=E3m4dyT++AADWy85dAqZ9rdqfblZ4q5M0XWMVJg5xjNEIxV05WESdByuOycycV6tgx
-         j3lKvfA9IEEM9sWdvIVyCsFcVx8YB3VRm9QSetMU/rhauM9fVPhk8isug9fvR7MlkpVb
-         8mzrcDbDelxgh1vmm9bsntMFvi1V5xkxYJwpFoJLn7p8apgMWwjHJyJ8JvqX50s/roox
-         EUlhdt4LPBTy55HndpQ+zvQyHBpL8vTrGyvfmjtnnCfcPdd9uJlgnUlQyDDh03tUQXxY
-         FZ3LYjnJ96DI0jcXQim0oBe2K4ZkyxyqN5RMfcpTSmJJQdwIaRXIeV4BhUmv/h7JRphf
-         T9DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792140086; x=1792744886;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+xIS+Gcugri6/aPL8Lav1QyB3S08Ua53KHtkO8xQT/4=;
-        b=yeXbnn1x+QlfYsBBfN4eAu4rj/I9G57lg+CI5YxUmQAx6ffY4MKss60gI4PE+XqtzT
-         JpJSVG+HMnr43EbtZJTWAvzxlfKbY6FTnuyvP96GqkOA7LY2plEqyvMx/+x0otThw9r4
-         OyGGv6ltZp7Agx+zCqxCfKe0pRB3kK5umM2KcTqXrr7QBSA/p8IF12eZLefGaYRgtG7+
-         GLubPKILjHYrsUyaT4Hd6Z6B/Jf0Nk0PXdXA5tfpM3NQMQDT4s1d8Rb1UilerlFZ8qWg
-         lQgWUMKNNIUPCnQMUvhQyzHuonwpg7d7T02BXpIHj/kDC0MZdt4GGnEVJ0OF1w8RElOf
-         RS5g==
-X-Forwarded-Encrypted: i=1; AKwUvBySFGctI2CDblQyDy4y3VuJjeXoQtamoLK3Gbaconj+oAUvstCIwaHb4l+TfZyzvkFm2nSquoEtRv0zrcIIng==@vger.kernel.org
-X-Gm-Message-State: AFq9FYIuXzmmPpNIqX6PXIfj1dljU6g4fj6BrI/U/uJCavwDDlcOhGaj
-	ducuNvygzLoeXKiIgMDKUwCq9A5UUcTnPUstMECyXWbuRPEYu5zrkAwDR6x31aJGrD4C18KiHJh
-	D/MUM/UHgFc9RtkJWMw==
-X-Received: from wmbe6.prod.google.com ([2002:a05:600c:5906:b0:4a1:93c0:d3c4])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d0e:b0:49f:ec98:f030 with SMTP id 5b1f17b1804b1-4a18e4e9db3mr429156145e9.33.1792140085578;
- Fri, 16 Oct 2026 01:41:25 -0700 (PDT)
-Date: Fri, 16 Oct 2026 08:41:24 +0000
-In-Reply-To: <20261001145940.1077801-6-zhiw@nvidia.com>
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="faR1OGUI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1792140168; bh=3rbOJU1iFVVApKsSPtz/G7fuEZPLRtV/KP/+IGlxAIs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=faR1OGUIEXqyudze+/rlXhjJOm9SouE9CAzMUCOfVVYQfrJ+HeCID4Ymx2wwJwuyc
+	 o+k4gXNkD08P9h2gFOLZ2SganIhqtwrA2DOTo+tKQhk8ucGH5IwNPlT4/Ej1lxb8ea
+	 K9W94jSj+Rq/18omhjCcXJYfPqXq/pqfWiSn+THg=
+Received: from [172.24.48.1] ([2409:8951:a22:b25:d1a1:62d3:eb69:e679])
+	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
+	id AAD22012; Fri, 16 Oct 2026 16:42:45 +0800
+X-QQ-mid: xmsmtpt1792140165tdx1v56y9
+Message-ID: <tencent_4F803EA6BD452898DAAF75EE74A20EF07F05@qq.com>
+X-QQ-XMAILINFO: OVFdYp27KdlJfwZITd6fr7SnRvjrd9me4hJGfU0DLueOQ9LmSLDg7GZv8O25uU
+	 XfbwJ2nYms+kEoWJEgpBC9XaxzNW5canrgt4aJ4hXBJP0ZJL6iHW9xRb/PPg29Ng+8U6luqTb9Py
+	 kTE8+OOly1DlVzfrojmzjkYOk7TtukcP3XjkRXf8ScxLQkUFG2miyWQY5/ZgH6/CL6ki9JAy7qSi
+	 Y5NOsw0l3U/xICoQACUfnwLTyCLUXIBZrJqBaNtOPBzdUWqQKq9M6+AhzAa2LqWJ6s42zM538EUh
+	 62S08zXFLmYD+nmf3/73MVoQRwEVMNnhB3UWfdEP5FV8viFrRBj/rSEkD+bAG3MsXKphOofgTE8J
+	 zOqR8auNeNNyTAKXjT+ueUstpd3V1/ctOJMhAWBGlUi9bQdf9cigac+8ZwSzdQdNssqr8Dyapgrm
+	 xLCtFGivbqKOfs+3PrAdeaXYpG89FxJCartwGYh0AWbQDZzNhb4vIYV2HPn8ba4jwATNoJRxFiFr
+	 w2yGM8vOiunNwgIdGX3SVZKvUCCcDOTEQvRdvbIfBWwLLQA9FOcVIWVEXAg6nsrABxsHpoZxzfY6
+	 Jc4j5hBAEVpmqO7d5WyPO6e3nfvK1z/9XnJuigM4HBrAO6uXf7iKCCl8DqUQChGWof1L9P2n0Ioz
+	 fBQvGkse4Js+MXPpuyvE1OnyPpht3lK/G5dnmb4XANqiZOfnfVOFYgApj7L5+BjLE7l61uv3S/NU
+	 I+1uxs0MPvGFaci0KF5XnJi96WxrwX+bHnVA2qOd7cVD2ErVXKyGDLeJ9VNXCZD65u0IsPebvHKI
+	 uoeAZle2eSi+tyTOwxAVeLtEiHXByHej68h1dOBit1xLrCvbRn2NHLJ7xJ9WoveSgP6NV31ldZp4
+	 RDtqDUgDBZ0nMXw/JbcKduNRmTMzAomEgpsQfsuMi6uIh0YxHQl33+WRVOUlCKTFZBUbXkfoQxwo
+	 iflH+sv/7qsRinDjWfRcTVMiBTjQ17M1zaKjlqvq/0jdY1iUZ15X+rOaIEjCuxp/sRaRYr9jRO0X
+	 w6NmviBKi+rItApyjqgSznb+ot8xY=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+From: skxby <2374604267@qq.com>
+To: Donjuanplatinum <donplat@barrensea.org>
+Cc: Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject:
+ Re: [PATCH 0/2] rust: hwmon: rework hwmon abstractions, add TMP108 driver
+Date: Fri, 16 Oct 2026 16:42:45 +0800
+X-OQ-MSGID: <179214016501.15268.642738678844764524@qq.com>
+In-Reply-To: <87se26dpzf.fsf@barrensea.org>
+References: <20260512155747.10136-1-donplat@barrensea.org>
+ <9c2fa543-525a-4e43-9f73-7caf13b98039@roeck-us.net>
+ <tencent_576573331343805F032731492D63C12D7E08@qq.com>
+ <87se26dpzf.fsf@barrensea.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20261001145940.1077801-1-zhiw@nvidia.com> <20261001145940.1077801-6-zhiw@nvidia.com>
-X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-Message-ID: <20261016084124.3495380-1-aliceryhl@google.com>
-Subject: Re: [PATCH v3 5/5] rust: device: add dynamic debug support to dev_dbg!
-From: Alice Ryhl <aliceryhl@google.com>
-To: Zhi Wang <zhiw@nvidia.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, andrewjballance@gmail.com, 
-	daniel.almeida@collabora.com, dakr@kernel.org, ojeda@kernel.org, 
-	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, cjia@nvidia.com, 
-	smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com, 
-	kwankhede@nvidia.com, targupta@nvidia.com, kjaju@nvidia.com, 
-	alkumar@nvidia.com, acourbot@nvidia.com, jhubbard@nvidia.com, 
-	zhiwang@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
 
-On Thu, Oct 01, 2026 at 05:59:40PM +0300, Zhi Wang wrote:
-> +__rust_helper void rust_helper_ddebug_dev_print(struct _ddebug *descriptor,
-> +						const struct device *dev,
-> +						const void *args)
-> +{
-> +	__dynamic_dev_dbg(descriptor, dev, "%pA", args);
-> +	if (descriptor->flags & _DPRINTK_FLAGS_INCL_STACK)
-> +		dump_stack();
-> +}
+Hi Donjuanplatinum,
 
-Nit (also applies to `rust_helper_ddebug_print` in patch 4/5): if patch 3/5
-also exposes `__dynamic_dump_stack` under `#ifdef CONFIG_DYNAMIC_DEBUG_CORE`,
-both helpers can use `__dynamic_dump_stack((*descriptor))` instead of
-open-coding the `_DPRINTK_FLAGS_INCL_STACK` check.
+Thank you for taking the time to look at this - and for replying at all.
+Let me answer each point.
 
-> +    pub unsafe fn dev_print<Ctx: DeviceContext>(
-> +        descriptor: *mut Self,
-> +        dev: &Device<Ctx>,
-> +        args: fmt::Arguments<'_>,
-> +    ) {
+1. AI involvement
 
-Please add `#[inline]` here too.
+Fair question, and I should have stated it up front. The work was
+developed with AI assistance: I run a multi-agent setup (a scheduler
+plus several model-backed agents) that produced code drafts, ran the
+build/regression/stress-test cycles and drafted the commit messages and
+cover letter. Every patch was reviewed by me, and I built and tested
+each change myself; the two bugs we found during this round (an i2c
+client leak on the registration error path, and a missing null
+terminator in chip_config) were both found by the lifecycle stress tests
+I ran and reproduced before fixing. I signed off on the series and I
+take responsibility for it.
 
-Alice
+For v2 I will add an "Assisted-by: LLM" tag as described in
+Documentation/process/coding-assistants.html. Please tell me if you want
+the tool names listed there as well.
+
+2. Cc Rust-for-Linux
+
+Agreed - I did not Cc rust-for-linux on v1, and I should have. v2 will
+Cc rust-for-linux@vger.kernel.org.
+
+3. "?"
+
+I am not sure what this referred to - could you say a little more about
+what you were questioning there? I would rather ask than guess.
+
+4. Legal name in sign-off
+
+You are right that "skxby <2374604267@qq.com>" is not a legal name.
+The series will be re-signed with my real name and address in v2.
+
+5. Maintainership and interest
+
+I am not asking anyone to take this over, and I am not claiming
+maintainership. The point of posting was to have the shape of the
+abstraction and one real driver on top of it looked at, and to find out
+whether that shape is the right one at all - which your reply and the
+review have already started to do.
+
+On that note: Sashiko's review of patch 1 found issues that are real,
+and I agree with the ones I have checked so far. In particular it
+flagged the missing null terminator in chip_config - which we had
+already found and fixed ourselves through stress testing, and which is a
+good sign the review is looking at the right things - and it flagged
+that chip_read/chip_write are called unconditionally in the read/write
+callbacks, which would break any driver that does not implement those
+optional methods. That second one is a genuine design flaw in the
+abstraction, not in the driver, and I am fixing it in v2 along with the
+name lifetime issue and the locking documentation.
+
+So: is there enough interest to keep going? That is exactly what I am
+trying to establish too, and your answer - either way - is the most
+useful input available. If the answer is "not yet", I would rather hear
+it now than keep posting revisions.
+
+Thanks again for looking.
+
+<SENDER REAL NAME>
+
