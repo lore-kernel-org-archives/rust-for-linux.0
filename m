@@ -1,215 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA7B30DECE;
-	Fri, 16 Oct 2026 12:09:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D9347ACE0;
+	Fri, 16 Oct 2026 12:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792152587; cv=none; b=n39/OccFPI1l2dblSBoma7XTcR90oUnrm5MJr9gUpdLHSjlugQ7FtSZZkqOWi4Zx/sNa5Uat4nOy8R1qOrAa2TUBi6fIHQ0MA72WRY7Oukm+QrnWdNd3BWwZYpTWyaqDZ7mYjjjKVB9M7f+IioyZqn4NjnyjpLtayoqjBiIvEaM=
+	t=1792152649; cv=none; b=apeVDHDKrMDGVZ+lArpPgxCLJJJNdcg9R/t+TdggqVtGb07akT2n3rBn/oKWJaFpf3Da4SDCkv0ikJPieD2mVBLyRdyd3Yk1QgTXWsTL2kTYRWDOMHImmxwau9gp5dVq9e+HWMOP7GbsOk6AMaTu/ciS2rYl8q6Q06fQtaPITzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792152587; c=relaxed/simple;
-	bh=RBTwr5PmgkJ+fqzubKNpPBBYwULXMq9PYYWa8ZxfymU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JF1u/H4oABL6PymiBdaQUMGjV4mg1qE1Q3Q4vOuUKRVp5KIA84QEzweNhPUXugQglUV70D7LbYCRvEQrSwbA8dj3bDy56+U07nGcMx65SI6KdDqmYaYq0kyiReT8MwtOxEdx4YUW/lPcqC32xF9zFx33fdDE7ncS4b4xMRzCeFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=og6w/HXZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792152649; c=relaxed/simple;
+	bh=I2EOVYSWSibnwSbvmZ9Icl3P9UW6LIJ9IuDIZoFx5OQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=uGwIpfzcjvpgqbMEPbfmliXa8I2EJryfm5/5qc/M65k5oILYW4t8uciN5m/1XRjX++8wp6tJLwQgl2skx47ktF7tVO3jtwN3HbZbwvuExhujmYrZonjugRrAujhMRybEAstyVGpTn0JtXfzlbrQPY3grQ1BvKSfhlzMAfk2ftKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=BxhsRove; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="og6w/HXZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7147B1F000C4;
-	Fri, 16 Oct 2026 12:09:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792152586;
-	bh=2MbaYbwmwg63b75Gi668lUo6iHTDnNr2/fOWj847oSs=;
-	h=From:To:Cc:Subject:Date;
-	b=og6w/HXZ087NW3f1p7iWDFIMQsQ452pNxErpzibZWHz9g7t9fXwnHT5s2goJiNbTP
-	 la0aE1Wr8FcZ2FTXH+jGD0FNblEOOoBlilAxOSUybMO1agpu2ciClHRBWU1Z/nJZKa
-	 jrsUpuNfRp+NcAFjzzPkrYvBIPfc3HyzUnisLsBVMyK+HaVA4Ol2zKY0gTbFZwLJs0
-	 LRAWJtGln+N9peok5sfcmGXjRJa+B/cT6XPpHsWmApLwgkJF9vqto+mlfE71xh3aEm
-	 BY6ioy4YaA1Zj2A1cZiyZ3xZn2f32/kQGmHNzm363hi1Aw7hVoLd6hwdMN6y+pwJZz
-	 0IvWPr2TdAfZA==
-From: Philipp Stanner <phasta@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH v3] rust: sync: Accept errors for Lock payload data
-Date: Fri, 16 Oct 2026 14:09:27 +0200
-Message-ID: <20261016120926.1213105-2-phasta@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="BxhsRove"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4j5kKw0wrjzMkvn;
+	Fri, 16 Oct 2026 14:10:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1792152644; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I2EOVYSWSibnwSbvmZ9Icl3P9UW6LIJ9IuDIZoFx5OQ=;
+	b=BxhsRovexkzm/j03lF7h8T81J+DaEDb1vPJQtAM/gNEHwDsm5043EAIs2QqxTKLqu50co3
+	PBv7W2zK06FB8aCQ+r+iii7RNBqV64XIhwz+phUXjB4W8oXOaLVnkOIL/gCmb8aXfslnmW
+	7a4PdVrFg3q+s3+SYFpEbzcZnSWmsLPTQM1mjAFlcwEgEYTqX0ZQRLPiJ0VeXUiHrd7cvU
+	lQZifTf11q6ZiAkCXmpLqcAVd5aDR+ETBDW7pZqSxUAFHnafbZtEEdDLgMRQGGDwA4sRuC
+	86ZzN+NDLu5uJPYqOKryEi+/M08ekEcDs5wIJwptXbDGtm5KrF5dK1O40tSP+g==
+Message-ID: <3cda8a87bb8c243f9409b260853c98de2ff78b63.camel@mailbox.org>
+Subject: Re: [PATCH v2] rust: DmaFence: Remove static lifetime
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Philipp Stanner <phasta@kernel.org>, Sumit Semwal
+ <sumit.semwal@linaro.org>,  Christian =?ISO-8859-1?Q?K=F6nig?=	
+ <christian.koenig@amd.com>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl	
+ <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng	
+ <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg	 <a.hindborg@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Daniel Almeida	 <daniel.almeida@collabora.com>, Tamir
+ Duberstein <tamird@kernel.org>,  Alexandre Courbot <acourbot@nvidia.com>,
+ Onur =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Fri, 16 Oct 2026 14:10:38 +0200
+In-Reply-To: <20260930122755.1657820-2-phasta@kernel.org>
+References: <20260930122755.1657820-2-phasta@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: be247911bdc56e199d3
+X-MBO-RS-META: m7p3i7kbreozqwrixqa9tkw7omxdfiem
 
-The `Lock` baseclass currently does not allow for fallible user-data.
-This can cause conflicts when used with other primitives, for example
-when a lock shall be pin-initialized with payload data that is fallible.
+On Wed, 2026-09-30 at 14:27 +0200, Philipp Stanner wrote:
+> A FenceCallbackRegistration can stem from another party than the one
+> that has created a Fence. Should that party forget the registration
+> object (for example through a refcount cycle) and then unload the
+> module, a fence signaling would run into the unloaded module, causing
+> UAF bugs.
+>=20
+> So far, this has been solved by demanding that the payload data of the
+> registration object demanding static lifetime.
+>=20
+> It turns out, however, that this is harmful because the static lifetime
+> bubbles up to all users, ultimately potentially causing a large amount
+> of driver data to be static, which renders the lifetime obsolete.
+>=20
+> Solve this issue instead through an unsafe requirement which demands
+> that the user does not forget the registration object. This is also the
+> solution chosen by ScopedWork.
+>=20
+> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Philipp Stanner <phasta@kernel.org>
+> Reviewed-by: Onur =C3=96zkan <work@onurozkan.dev>=20
 
-Add support for the lock base class so that it works with
-try_pin_init!(). Adjust spinlock and mutex accordingly.
+Gentle ping about the merge since we need this to upstream
+drm::JobQueue
 
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
----
-Changes in v3:
-  - Vertical formatting for imports
 
-Changes in v2:
-  - Don't import prelude in doctests. (Gary)
-  - Keep using pin_init! over try_pin_init! in Lock::new(). (Gary)
----
- rust/kernel/sync/lock.rs          | 23 +++++++++++++++++------
- rust/kernel/sync/lock/mutex.rs    |  6 +++---
- rust/kernel/sync/lock/spinlock.rs | 17 +++++++----------
- 3 files changed, 27 insertions(+), 19 deletions(-)
-
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 10b6b5e9b024..5bff5228ac16 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -7,11 +7,17 @@
- 
- use super::LockClassKey;
- use crate::{
--    str::{CStr, CStrExt as _},
-+    str::CStr,
-     types::{NotThreadSafe, Opaque, ScopeGuard},
- };
- use core::{cell::UnsafeCell, marker::PhantomPinned, pin::Pin};
--use pin_init::{pin_data, pin_init, PinInit, Wrapper};
-+use pin_init::{
-+    pin_data,
-+    PinInit,
-+    Wrapper, //
-+};
-+
-+use kernel::prelude::*;
- 
- pub mod mutex;
- pub mod spinlock;
-@@ -126,13 +132,18 @@ unsafe impl<T: ?Sized + Send, B: Backend> Send for Lock<T, B> {}
- // data it protects is `Send`.
- unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}
- 
-+use core::convert::Infallible;
-+
- impl<T, B: Backend> Lock<T, B> {
-     /// Constructs a new lock initialiser.
--    pub fn new(
--        t: impl PinInit<T>,
-+    pub fn new<E>(
-+        t: impl PinInit<T, E>,
-         name: &'static CStr,
-         key: Pin<&'static LockClassKey>,
--    ) -> impl PinInit<Self> {
-+    ) -> impl PinInit<Self, E>
-+    where
-+        E: From<Infallible>,
-+    {
-         pin_init!(Self {
-             data <- UnsafeCell::pin_init(t),
-             _pin: PhantomPinned,
-@@ -141,7 +152,7 @@ pub fn new(
-             state <- Opaque::ffi_init(|slot| unsafe {
-                 B::init(slot, name.as_char_ptr(), key.as_ptr())
-             }),
--        })
-+        }? E)
-     }
- }
- 
-diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
-index cda0203efefb..38d8fb9dad5d 100644
---- a/rust/kernel/sync/lock/mutex.rs
-+++ b/rust/kernel/sync/lock/mutex.rs
-@@ -49,8 +49,8 @@ macro_rules! new_mutex {
- /// }
- ///
- /// impl Example {
--///     fn new() -> impl PinInit<Self> {
--///         pin_init!(Self {
-+///     fn new() -> impl PinInit<Self, Error> {
-+///         try_pin_init!(Self {
- ///             c: 10,
- ///             d <- new_mutex!(Inner { a: 20, b: 30 }),
- ///         })
-@@ -58,7 +58,7 @@ macro_rules! new_mutex {
- /// }
- ///
- /// // Allocate a boxed `Example`.
--/// let e = KBox::pin_init(Example::new(), GFP_KERNEL)?;
-+/// let e = KBox::try_pin_init(Example::new(), GFP_KERNEL)?;
- /// assert_eq!(e.c, 10);
- /// assert_eq!(e.d.lock().a, 20);
- /// assert_eq!(e.d.lock().b, 30);
-diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index 6a71bb3a5c45..f50750ddff55 100644
---- a/rust/kernel/sync/lock/spinlock.rs
-+++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -4,10 +4,7 @@
- //!
- //! This module allows Rust code to use the kernel's `spinlock_t`.
- use super::*;
--use crate::{
--    interrupt::LocalInterruptDisabled,
--    prelude::*, //
--};
-+use crate::interrupt::LocalInterruptDisabled;
- 
- /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
- ///
-@@ -52,8 +49,8 @@ macro_rules! new_spinlock {
- /// }
- ///
- /// impl Example {
--///     fn new() -> impl PinInit<Self> {
--///         pin_init!(Self {
-+///     fn new() -> impl PinInit<Self, Error> {
-+///         try_pin_init!(Self {
- ///             c: 10,
- ///             d <- new_spinlock!(Inner { a: 20, b: 30 }),
- ///         })
-@@ -199,8 +196,8 @@ macro_rules! new_spinlock_irq {
- /// }
- ///
- /// impl Example {
--///     fn new() -> impl PinInit<Self> {
--///         pin_init!(Self {
-+///     fn new() -> impl PinInit<Self, Error> {
-+///         try_pin_init!(Self {
- ///             c <- new_spinlock_irq!(Inner { a: 0, b: 10 }),
- ///             d <- new_spinlock_irq!(Inner { a: 20, b: 30 }),
- ///         })
-@@ -244,8 +241,8 @@ macro_rules! new_spinlock_irq {
- /// }
- ///
- /// impl Example {
--///     fn new() -> impl PinInit<Self> {
--///         pin_init!(Self {
-+///     fn new() -> impl PinInit<Self, Error> {
-+///         try_pin_init!(Self {
- ///             inner <- new_spinlock_irq!(Inner { a: 20 }),
- ///         })
- ///     }
-
-base-commit: 7c306f00835a237a70024a8f968dbc3bc8db8fcf
--- 
-2.55.0
-
+P.
