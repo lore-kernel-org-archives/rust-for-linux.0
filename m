@@ -1,85 +1,53 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FBA416853
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 15:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE15531AE5;
+	Fri, 16 Oct 2026 16:24:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792165744; cv=none; b=uDP8l5Q17e71SeJDNNyrq0qLfbkr/hIu3PWb0OE6GyzHiC5ExevSPpeus6Pio7T9FPvAD/v2MFaFgke3j3neoo0oAHpP814T2uIfMgpH7UIAsnG3PVvZ1dxLjqm03CIlwhURMMdogDUfn3Uynq9tEjw67VpsaLyIsS1ZZDrqpHo=
+	t=1792167902; cv=none; b=sD6ubcoKVvaMHYW35sK5SsqZWiFBMk/sv46ivFu5oSkh2q3+vShCADlc8biLm5HkkCXL1Z4LikhLNYeHJ91TM02GMYSuqhwoDOzBcO3Pypgui23ap+IjUhS7e17Z8e9CbkkkLK08DrYT6th9IYRT6mmDg5KmJ398Qv/f1WnPnAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792165744; c=relaxed/simple;
-	bh=ZOpuVxu/kULGJ+VOcTuckG//XM6UeL0Np1mFx6ntkGg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFNBQlCHBZ0Y8L+YnmnKY5EkEJtqkLGYqFBAdjf5Xbocq8fALI0wLoIUMeoKVxewUhW/CMQQDRJMRsD5H1Kmthve5kbkXuQSVhmEwg0GvxZWlud4uhhe+3J56oaXKMUdZ85gmuu6uxxBWLvKty5vm/mN25qoM7u/t26scFyIYxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EuJJH64B; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792167902; c=relaxed/simple;
+	bh=mZpW+60wwlUtmET5MzQNCtl0ej+kiRbnUimDHtPmbhU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=afMKx87azKhjvMBcd7D2mF+uixYyFhBmIOebYM+BT17K8tjOdMr5qQmcGu+AmdUaaIWHy05F0OufSt8GWuIiXIgEACBCp7h3JEU33m5d2lBs2Rn/1WiMfUqrkaOICZNiONYAEN/iWD7rqzLEv3gTmUJRrwuGsNBdUVLaRYGi/ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O4bYZ7bK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EuJJH64B"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-8b0d63f60bcso448447b3.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 08:48:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792165731; x=1792770531; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yXO8Pfx1V/MvWfozdYJmpTkdBIQMuHsAurvABJvdB4c=;
-        b=EuJJH64BceXP6y609JH8ti5wepSr6Gd9YlUOCFbn3ZDBJM0cqNReWAbyshtpaCMx1W
-         Bk4fcLEDuTZ+8RsnUMnG38fJx8fo5E7Zaj5c8aeL+t2LbytDZp8+vf5cqKCut1nvQ+Kn
-         eXzOD8EooSUnucW+eaDCFhbWuDcKpURo1glsyf1o7W7Cj7uxFk7FYHY+2/zUefstpRB/
-         bn5PIgHoHpeP408fX7g9RpnBaa0X9vt7m1w7cYUGLijSGd4n8OFW3wyXuoOBUBZuj2gp
-         GC2mj5sY4TQUqF6dcw/iCqY5GRuZwqQIFIQQMd8hMlujS3sHebCS2yw+if/IuVCRoIqo
-         Ejig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792165731; x=1792770531;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yXO8Pfx1V/MvWfozdYJmpTkdBIQMuHsAurvABJvdB4c=;
-        b=EOCxzGdh1qQ4eGCw+1TYvOVp5CkWohq/1/BjWYvzORDhLGEaLbMfKZcp1LkvYlu1qw
-         jhuzPEHaDUUG2TFfvtksTyv1v0kx6I2FDwcmGe6Q0CxnpUqEWrgi9j2KLVKjVPQ+26zY
-         Pp5Tw3DVFs7zWNMvGr5DOqVNO+5DFUMJ7Nmv9k3xYN3Ir3vqok8A4YgbCG5a54NmrJPa
-         ghHKQJjGNVXV4iGqEfOIwro8dOr92w4M6TcSG2014OYvQIS9uVc7HX1gMX74QvW37ezI
-         vWPmZ+qoCmIb30TZ4kP24/eQN46N/U870fxNyxpzCRZSDNY3T+QnOaiw6OBJ7sYfhHsn
-         SIsA==
-X-Forwarded-Encrypted: i=1; AKwUvBzZ/vcf2rUkf+ea5KlRWv/3H59H4nyWAD8vpp/8NOmarMiQZ3+wIbEGhK20Nokc+sofs/Byo65h2JVJK5viVA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJyFi5akbp3ePIglQFiGskdW9aevA13H0qFqjUYT8LLGuY+EbZU
-	sMNRg0IaX7SLH/eeQ7cTVnQfpTPPEfjfg0JNFB9tcctjBS2dxZbJ68+z
-X-Gm-Gg: AYBFou2mlhC/3K+GMtL6+NgLAV/UgRaKpt5AuBpFhCHJqJLHGIcMdZuFXyO3KsCRAGH
-	MCylBthnmrIKKLP4npYEGY82UqTftw8AjcUDVF6QjPM9enB1AcDcf0lP4XdxP6+bEyyQx1MxWw0
-	jPptMZOvWWFbtLHXeiqdgBKW+ZHiynjiQlVNive+AB94e9q+LKuT0yfQW2o4R1jAdMfmsnWsCo6
-	CVAftan5lE/xDZE8yNnFx19QNonNPZ6AZJVuRFP7p/iR3YCrXFqKdsNkfsQzuq6DI2jObYz8o0c
-	OxEtej2VSls7RZPq4uNZk8vDTMuVEZJe3nmk3jbnOeTs1pkzO1yoeHsc3brggBt7mNkaYtkWxE3
-	2fUQ+jXSz0HjhQbW5dVNcfH4IlybVazdB1D4C/zSRZTlzLqoerQj1yzgxuMHAGydBL2+pI/8ftI
-	BjsWKnGQpNZryyEjsDmxc/s1bQ/IUwdTGLeVi7GpGK4/koJ2GozqEJz9anXNbWaQjuiM8pwa2hm
-	RrB/6FOwquCIVEUmfxOMlZVnJET0vAOSlYWUfc=
-X-Received: by 2002:a05:690c:89:b0:8b0:d75a:9cf8 with SMTP id 00721157ae682-8b0f21e08admr1721857b3.41.1792165731215;
-        Fri, 16 Oct 2026 08:48:51 -0700 (PDT)
-Received: from localhost.localdomain ([180.243.241.21])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b0e593c65bsm10882167b3.38.2026.10.16.08.48.46
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 16 Oct 2026 08:48:50 -0700 (PDT)
-From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Igor Korotin <igor.korotin@linux.dev>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O4bYZ7bK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4197A1F000C4;
+	Fri, 16 Oct 2026 16:24:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792167898;
+	bh=Rm4u+qRGGIqZlcsNn/N/M2BE0iir8BZS4bhQe6SA5eo=;
+	h=From:To:Cc:Subject:Date;
+	b=O4bYZ7bKis2JJ39409LuneJNdGzAT9/Acm/2lKs6/anoZ7fydIZfR26X2Mp2Uwubp
+	 hzOIcMYwruxBmUVoGs8tMZqVMtP1gfpwkyAtr+hXy5IX+prIXZEbFiKIK1ZhrHE1DT
+	 i38xA9pd7u9NdqCJq+WR66NPHhkxCuWwsVY4sdAOdcKOcWSNnI6k2bViby+ep6BUUH
+	 ZAge7LnOh+P5ZB5bPTNVtcaXVAknQ2vJoLmy2GeoZRZVzuUO+mdYVQRIeZ5PqwpU3X
+	 vHouarUa7e3n7/8FqqwLy9kflUwZ2eNVdh37Bxj5yuT9c/JLTFQt2/49SXPRXo/OOR
+	 mP/qsF3NHpoNQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Mark Brown <broonie@kernel.org>,
-	Brandon StJohn <branstj@gmail.com>,
-	linux-iio@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
 	rust-for-linux@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v6 4/4] iio: position: add Rust driver for ams AS5600
-Date: Fri, 16 Oct 2026 22:48:19 +0700
-Message-ID: <20261016154819.17936-5-muchamadcoirulanwar@gmail.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20261016154819.17936-1-muchamadcoirulanwar@gmail.com>
-References: <20261016154819.17936-1-muchamadcoirulanwar@gmail.com>
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	llvm@lists.linux.dev
+Subject: [PATCH v3 1/2] rust: std_vendor: add `likely()`, `unlikely()` and `cold_path()`
+Date: Fri, 16 Oct 2026 18:24:45 +0200
+Message-ID: <20261016162446.121509-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -88,287 +56,278 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a Rust driver for the ams AS5600 12-bit magnetic rotary position
-sensor.
+`{un,}likely()` are commonly used macros on the C side -- there are
+more than 25k occurrences in the tree. Rust is likely going to provide
+functions (not macros) for the same purpose: `core::hint::{un,}likely()`.
+Currently they are unstable under `feature(likely_unlikely)` [1].
 
-Expose the raw angle and scale through the IIO sysfs interface in direct
-mode. Read the status register before each angle sample and return
-ENODATA when the magnet-detected bit is clear. Serialize the status and
-angle transaction sequence with a mutex and propagate I2C transport
-errors directly to userspace.
+For instance, given:
 
-The AS5600 stores the raw angle with the high byte at register 0x0c.
-Use the byte-swapped SMBus word helper and mask the result to 12 bits.
+    fn f1(a: i32) -> i32 {
+        if a < 0 {
+            return 123;
+        }
 
-Signed-off-by: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+        42
+    }
+
+    fn f2(a: i32) -> i32 {
+        if likely(a < 0) {
+            return 124;
+        }
+
+        42
+    }
+
+    fn f3(a: i32) -> i32 {
+        if unlikely(a < 0) {
+            return 125;
+        }
+
+        42
+    }
+
+LLVM emits code equivalent to the one it would for similar C functions:
+
+    f1:
+            test   %edi,%edi
+            mov    $0x7b,%ecx
+            mov    $0x2a,%eax
+            cmovs  %ecx,%eax
+            ret
+
+    f2:
+            mov    $0x7c,%eax
+            test   %edi,%edi
+        /-- jns    <f2+0xa>
+        |   ret
+        \-> mov    $0x2a,%eax
+            ret
+
+    f3:
+            mov    $0x2a,%eax
+            test   %edi,%edi
+        /-- js     <f3+0xa>
+        |   ret
+        \-> mov    $0x7d,%eax
+            ret
+
+Thus vendor (essentially) the `core` library code to provide the same
+API (so that we may use `core`'s directly in the future).
+
+We do so by implementing `{un,}likely()` like `core`'s `intrinsics` do
+(to save a layer) and based on calling our own `cold_path()` instead of
+using `core`'s (which is stable since 1.95.0 [2][3]).
+
+It turns out that simply using `#[cold]` to emulate `cold_path()`,
+suggested by Gary [4], works in the cases I tested across all supported
+versions so far, so we can avoid the complexity of having one more Kconfig
+and conditionally enabling the feature in callers (since `cold_path()`
+was added in Rust 1.86.0 [5]).
+
+We could optionally call `cold_path()` for Rust >= 1.86.0 within our own
+`cold_path()`, but it seems that it is not needed, and anyway since Rust
+1.98.0 `cold_path()` is itself `#[cold]` so that it works even if the
+MIR inliner can't inline it [6].
+
+Even if we find that it is not optimal in some cases, it can be improved,
+and meanwhile we will have the means to annotate these cases already.
+
+Apart from that, the only differences with `core`'s version are the
+usual changes (`pr_*!` calls and their `\n`, imports, attributes, lint
+cleanup), plus a fix for a polarity typo (I sent a fix upstream [7])
+and removal of unneeded code documentation.
+
+In addition, add them to the prelude (inlined, so that the documentation
+is rendered at least there, until we can use `core`'s).
+
+Link: https://github.com/rust-lang/rust/issues/151619 [1]
+Link: https://github.com/rust-lang/rust/issues/136873 [2]
+Link: https://github.com/rust-lang/rust/pull/151576 [3]
+Link: https://lore.kernel.org/rust-for-linux/DGA6GUR58QJ7.1XZZ0P4VZNW86@garyguo.net/ [4]
+Link: https://github.com/rust-lang/rust/pull/133695 [5]
+Link: https://github.com/rust-lang/rust/pull/156863 [6]
+Link: https://github.com/rust-lang/rust/pull/164374 [7]
+Assisted-by: LLM
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- drivers/iio/position/Kconfig   |  11 ++
- drivers/iio/position/Makefile  |   1 +
- drivers/iio/position/as5600.rs | 177 +++++++++++++++++++++++++++++++++
- rust/kernel/bits.rs            |  29 ++++++
- 4 files changed, 218 insertions(+)
- create mode 100644 drivers/iio/position/as5600.rs
+v3: I used Gary's `#[cold]` suggestion, and thus removed the Kconfig.
+I rebased and made sure the code is up to date with `core`, tested a
+bunch of things, compared again with C and the assembly generated, found
+a strange behavior on Clang I will report separately, a polarity typo in
+`core` (fixed here) and inlined the docs in the prelude to get it
+rendered somewhere until we bump the MSRV. I think the potential issue
+I found in v2's discussion may have been with `-Os`, but it happens the
+same way with `core`'s, so it does not matter.
 
-diff --git a/drivers/iio/position/Kconfig b/drivers/iio/position/Kconfig
-index 1576a6380b53..14ed4bef82e1 100644
---- a/drivers/iio/position/Kconfig
-+++ b/drivers/iio/position/Kconfig
-@@ -6,6 +6,17 @@
- 
- menu "Linear and angular position sensors"
- 
-+config AS5600
-+	tristate "ams AS5600 magnetic rotary position sensor"
-+	depends on I2C=y && RUST
-+	help
-+	  Support for the ams OSRAM AS5600 12-bit magnetic rotary
-+	  position sensor. Provides in_angl_raw (0-4095) and
-+	  in_angl_scale (radians per LSB) via sysfs.
+Alice, Gary: I removed your Reviewed-by's just in case. It is pretty
+similar to last time, but the commit message is reworded, and the commit
+is simpler.
+
+ rust/kernel/prelude.rs    |   7 ++
+ rust/kernel/std_vendor.rs | 136 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 143 insertions(+)
+
+diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+index edaf1e4c174b..de5a5aad16a1 100644
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -133,3 +133,10 @@
+ // `super::std_vendor` is hidden, which makes the macro inline for some reason.
+ #[doc(no_inline)]
+ pub use super::dbg;
 +
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called as5600.
-+
- config IQS624_POS
- 	tristate "Azoteq IQS624/625 angular position sensors"
- 	depends on MFD_IQS62X || COMPILE_TEST
-diff --git a/drivers/iio/position/Makefile b/drivers/iio/position/Makefile
-index d70902f2979d..2d26f6d6ace3 100644
---- a/drivers/iio/position/Makefile
-+++ b/drivers/iio/position/Makefile
-@@ -4,5 +4,6 @@
- 
- # When adding new entries keep the list in alphabetical order
- 
-+obj-$(CONFIG_AS5600) += as5600.o
- obj-$(CONFIG_HID_SENSOR_CUSTOM_INTEL_HINGE) += hid-sensor-custom-intel-hinge.o
- obj-$(CONFIG_IQS624_POS)	+= iqs624-pos.o
-diff --git a/drivers/iio/position/as5600.rs b/drivers/iio/position/as5600.rs
-new file mode 100644
-index 000000000000..b72775241e81
---- /dev/null
-+++ b/drivers/iio/position/as5600.rs
-@@ -0,0 +1,177 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// Copyright (C) 2026 Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-+//! Driver for ams AS5600 12-bit magnetic rotary position sensor.
-+//!
-+//! Exposes `in_angl_raw` and `in_angl_scale` through the IIO sysfs interface
-+//! in `INDIO_DIRECT_MODE`.
-+//!
-+//! Datasheet: AS5600, document DS000365.
-+
-+use kernel::{
-+    bindings::{
-+        iio_chan_info_enum_IIO_CHAN_INFO_RAW,
-+        iio_chan_info_enum_IIO_CHAN_INFO_SCALE,
-+        iio_chan_spec,
-+        iio_chan_type_IIO_ANGL,
-+        INDIO_DIRECT_MODE, //
-+    },
-+    bits::{
-+        bit_u8,
-+        bit_usize,
-+        genmask_u16, //
-+    },
-+    device::{
-+        Bound,
-+        Core, //
-+    },
-+    error::code::ENODATA,
-+    i2c::{
-+        DeviceId,
-+        Driver,
-+        I2cClient,
-+        IdTable, //
-+    },
-+    i2c_device_table,
-+    iio::{
-+        Device,
-+        IioChanInfo,
-+        IioDriver,
-+        IioVal, //
-+    },
-+    io::Io,
-+    module_i2c_driver,
-+    of,
-+    of_device_table,
-+    prelude::*,
-+    sync::{
-+        new_mutex,
-+        Mutex, //
-+    }, //
++#[doc(inline)]
++pub use super::std_vendor::{
++    cold_path,
++    likely,
++    unlikely, //
 +};
+diff --git a/rust/kernel/std_vendor.rs b/rust/kernel/std_vendor.rs
+index abbab5050cc5..8738c387fb4a 100644
+--- a/rust/kernel/std_vendor.rs
++++ b/rust/kernel/std_vendor.rs
+@@ -162,3 +162,139 @@ macro_rules! dbg {
+         ($($crate::dbg!($val)),+,)
+     };
+ }
 +
-+const AS5600_REG_STATUS: u8 = 0x0B;
-+const AS5600_REG_RAW_ANGLE_H: u8 = 0x0C;
-+
-+const AS5600_STATUS_MD: u8 = bit_u8(5);
-+const AS5600_RAW_ANGLE_MASK: u16 = genmask_u16(0..=11);
-+
-+module_i2c_driver! {
-+    type: As5600,
-+    name: "as5600",
-+    authors: ["Muchamad Coirul Anwar"],
-+    description: "I2C Driver for ams OSRAM AS5600 Magnetic Rotary Position Sensor",
-+    license: "GPL",
-+}
-+
-+i2c_device_table!(
-+    I2C_TABLE,
-+    MODULE_I2C_TABLE,
-+    <As5600 as Driver>::IdInfo,
-+    [(DeviceId::new(c"as5600"), ())]
-+);
-+
-+of_device_table!(
-+    OF_TABLE,
-+    MODULE_OF_TABLE,
-+    <As5600 as Driver>::IdInfo,
-+    [(of::DeviceId::new(c"ams,as5600"), ())]
-+);
-+
-+struct As5600Channels([iio_chan_spec; 1]);
-+
-+// SAFETY: `iio_chan_spec` is a plain C struct with no interior mutability.
-+// All pointer fields (`event_spec`, `ext_info`, `extend_name`, etc.) are
-+// NULL - set via `zeroed()` and never reassigned - so no shared mutable
-+// state exists behind them. The static is a compile-time constant with no
-+// `&mut` access path, making concurrent shared access safe.
-+unsafe impl Sync for As5600Channels {}
-+
-+static AS5600_CHANNELS: As5600Channels = As5600Channels({
-+    // SAFETY: `iio_chan_spec` is a repr(C) struct where all-zeroes is valid
-+    // (integers default to 0, pointers to NULL).
-+    let mut chan: iio_chan_spec = unsafe { core::mem::zeroed() };
-+    chan.type_ = iio_chan_type_IIO_ANGL;
-+    chan.info_mask_separate = bit_usize(iio_chan_info_enum_IIO_CHAN_INFO_RAW)
-+        | bit_usize(iio_chan_info_enum_IIO_CHAN_INFO_SCALE);
-+    [chan]
-+});
-+
-+#[pin_data]
-+struct As5600Priv {
-+    #[pin]
-+    io_lock: Mutex<()>,
-+}
-+
-+// SAFETY: AS5600_CHANNELS contains one valid, immutable IIO_ANGL channel
-+// exposing only RAW and SCALE. It has no event or extension callbacks,
-+// and all optional pointer fields are null.
-+unsafe impl IioDriver for As5600Priv {
-+    fn read_raw(
-+        &self,
-+        parent: &kernel::device::Device<Bound>,
-+        _chan: *const iio_chan_spec,
-+        info: IioChanInfo,
-+    ) -> Result<IioVal> {
-+        match info {
-+            IioChanInfo::Raw => {
-+                let _guard = self.io_lock.lock();
-+                let client: &I2cClient<Bound> = parent.try_into()?;
-+
-+                let io = client.smbus_io();
-+                // Read status register to verify magnet presence before
-+                // reading the angle.
-+                let status = io.try_read8(AS5600_REG_STATUS as usize)?;
-+
-+                if (status & AS5600_STATUS_MD) == 0 {
-+                    return Err(ENODATA);
-+                }
-+
-+                // Word read at register 0x0C returns big-endian data.
-+                // smbus_read_word_swapped() handles the byte swap.
-+                let raw = client.smbus_read_word_swapped(AS5600_REG_RAW_ANGLE_H)?;
-+                let angle = raw & AS5600_RAW_ANGLE_MASK;
-+                Ok(IioVal::Int(angle as i32))
-+            }
-+            // Scale factor: radians per LSB = 2*pi / 4096 ~= 0.001533981
-+            IioChanInfo::Scale => Ok(IioVal::IntPlusNano(0, 1533981)),
-+        }
-+    }
-+
-+    fn channels(&self) -> &'static [iio_chan_spec] {
-+        &AS5600_CHANNELS.0
++/// Hints to the compiler that a branch condition is likely to be true.
++/// Returns the value passed to it.
++///
++/// It can be used with `if` or boolean `match` expressions.
++///
++/// When used outside of a branch condition, it may still influence a nearby branch, but
++/// probably will not have any effect.
++///
++/// It can also be applied to parts of expressions, such as `likely(a) && unlikely(b)`, or to
++/// compound expressions, such as `likely(a && b)`. When applied to compound expressions, it has
++/// the following effect:
++/// ```text
++///     likely(!a) => !unlikely(a)
++///     likely(a && b) => likely(a) && likely(b)
++///     likely(a || b) => a || likely(b)
++/// ```
++///
++/// See also the function [`cold_path()`] which may be more appropriate for idiomatic Rust code.
++///
++/// # Examples
++///
++/// ```
++/// fn foo(x: i32) {
++///     if likely(x > 0) {
++///         pr_info!("this branch is likely to be taken\n");
++///     } else {
++///         pr_info!("this branch is unlikely to be taken\n");
++///     }
++///
++///     match likely(x > 0) {
++///         true => pr_info!("this branch is likely to be taken\n"),
++///         false => pr_info!("this branch is unlikely to be taken\n"),
++///     }
++///
++///     // Use outside of a branch condition may still influence a nearby branch
++///     let cond = likely(x != 0);
++///     if cond {
++///         pr_info!("this branch is likely to be taken\n");
++///     }
++/// }
++/// ```
++#[inline(always)]
++pub const fn likely(b: bool) -> bool {
++    if b {
++        true
++    } else {
++        cold_path();
++        false
 +    }
 +}
 +
-+#[pin_data]
-+struct As5600 {
-+    _registration: (),
-+}
-+
-+impl Driver for As5600 {
-+    type IdInfo = ();
-+    type Data<'bound> = As5600;
-+
-+    const I2C_ID_TABLE: Option<IdTable<Self::IdInfo>> = Some(&I2C_TABLE);
-+    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+
-+    // `try_pin_init!` returns a concrete anonymous type that may expose more
-+    // bounds than the trait signature declares (e.g. auto-traits like `Send`).
-+    // This refinement of the RPITIT return type is intentional.
-+    #[allow(refining_impl_trait)]
-+    fn probe<'bound>(
-+        dev: &'bound I2cClient<Core<'_>>,
-+        _id_info: Option<&'bound Self::IdInfo>,
-+    ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
-+        try_pin_init!(As5600 {
-+            _registration: {
-+                let priv_init = pin_init!(As5600Priv {
-+                    io_lock <- new_mutex!(()),
-+                });
-+
-+                Device::build_device(dev.as_ref(), c"as5600", INDIO_DIRECT_MODE, priv_init)?
-+                    .register(&crate::THIS_MODULE)?;
-+                dev_dbg!(dev.as_ref(), "AS5600 magnetic position sensor ready\n");
-+            }
-+        })
++/// Hints to the compiler that a branch condition is unlikely to be true.
++/// Returns the value passed to it.
++///
++/// It can be used with `if` or boolean `match` expressions.
++///
++/// When used outside of a branch condition, it may still influence a nearby branch, but
++/// probably will not have any effect.
++///
++/// It can also be applied to parts of expressions, such as `likely(a) && unlikely(b)`, or to
++/// compound expressions, such as `unlikely(a && b)`. When applied to compound expressions, it has
++/// the following effect:
++/// ```text
++///     unlikely(!a) => !likely(a)
++///     unlikely(a && b) => a && unlikely(b)
++///     unlikely(a || b) => unlikely(a) || unlikely(b)
++/// ```
++///
++/// See also the function [`cold_path()`] which may be more appropriate for idiomatic Rust code.
++///
++/// # Examples
++///
++/// ```
++/// fn foo(x: i32) {
++///     if unlikely(x > 0) {
++///         pr_info!("this branch is unlikely to be taken\n");
++///     } else {
++///         pr_info!("this branch is likely to be taken\n");
++///     }
++///
++///     match unlikely(x > 0) {
++///         true => pr_info!("this branch is unlikely to be taken\n"),
++///         false => pr_info!("this branch is likely to be taken\n"),
++///     }
++///
++///     // Use outside of a branch condition may still influence a nearby branch
++///     let cond = unlikely(x != 0);
++///     if cond {
++///         pr_info!("this branch is unlikely to be taken\n");
++///     }
++/// }
++/// ```
++#[inline(always)]
++pub const fn unlikely(b: bool) -> bool {
++    if b {
++        cold_path();
++        true
++    } else {
++        false
 +    }
 +}
-diff --git a/rust/kernel/bits.rs b/rust/kernel/bits.rs
-index 2daead125626..a6537a668dd6 100644
---- a/rust/kernel/bits.rs
-+++ b/rust/kernel/bits.rs
-@@ -41,6 +41,7 @@ pub const fn [<bit_ $ty>](n: u32) -> $ty {
- impl_bit_fn!(u32);
- impl_bit_fn!(u16);
- impl_bit_fn!(u8);
-+impl_bit_fn!(usize);
- 
- macro_rules! impl_genmask_fn {
-     (
-@@ -203,3 +204,31 @@ pub const fn [<genmask_ $ty>](range: RangeInclusive<u32>) -> $ty {
-     /// assert_eq!(genmask_u8(0..=7), u8::MAX);
-     /// ```
- );
 +
-+impl_genmask_fn!(
-+    usize,
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # #![expect(clippy::reversed_empty_ranges)]
-+    /// # use kernel::bits::genmask_checked_usize;
-+    /// assert_eq!(genmask_checked_usize(0..=0), Some(0b1));
-+    /// assert_eq!(genmask_checked_usize(0..=3), Some(0b1111));
-+    /// assert_eq!(genmask_checked_usize(1..=3), Some(0b1110));
-+    ///
-+    /// // `200` is out of the supported bit range on all platforms.
-+    /// assert_eq!(genmask_checked_usize(0..=200), None);
-+    ///
-+    /// // Invalid range where the start is bigger than the end.
-+    /// assert_eq!(genmask_checked_usize(5..=2), None);
-+    /// ```
-+    ,
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::bits::genmask_usize;
-+    /// assert_eq!(genmask_usize(0..=0), 0b1);
-+    /// assert_eq!(genmask_usize(0..=3), 0b1111);
-+    /// assert_eq!(genmask_usize(1..=3), 0b1110);
-+    /// ```
-+);
--- 
-2.50.0
++/// Hints to the compiler that given path is cold, i.e., unlikely to be taken. The compiler may
++/// choose to optimize paths that are not cold at the expense of paths that are cold.
++///
++/// Note that like all hints, the exact effect to codegen is not guaranteed. Using `cold_path`
++/// can actually *decrease* performance if the branch is called more than expected. It is advisable
++/// to perform benchmarks to tell if this function is useful.
++///
++/// # Examples
++///
++/// ```
++/// fn foo(x: &[i32]) {
++///     if let Some(first) = x.first() {
++///         // this is the fast path
++///     } else {
++///         // this path is unlikely
++///         cold_path();
++///     }
++/// }
++///
++/// fn bar(x: i32) -> i32 {
++///     match x {
++///         1 => 10,
++///         2 => 100,
++///         3 => { cold_path(); 1000 }, // this branch is unlikely
++///         _ => { cold_path(); 10000 }, // this is also unlikely
++///     }
++/// }
++/// ```
++///
++/// See also the [`likely()`] and [`unlikely()`] functions, which are similar to the C side macros.
++#[inline(always)]
++#[cold]
++pub const fn cold_path() {}
 
+base-commit: 7c306f00835a237a70024a8f968dbc3bc8db8fcf
+--
+2.56.0
