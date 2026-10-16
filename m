@@ -1,132 +1,248 @@
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AD640F724;
-	Fri, 16 Oct 2026 08:42:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888A337882A
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 08:50:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792140175; cv=none; b=MdLHYQi7OTw4K4Ho8NCcjHy4QHrBFllZFWfGfP4Iclz6elBBm9QViubwuiiDCQ8Hawjh0T3eUouleRxchzLAVYGxxPm2ap8Tt6Eh4AGiFB8mSSwOv1HkQIHqHWbHnXSfxL6e8Q5ZmXYwIMrQf3rdOsLVj913RmhpcJtKu3p9gZc=
+	t=1792140649; cv=none; b=OJcczkuMNtBgXCvzO3npk5KyQuXMKLB6YJWPw0CdQSwp10zv58EDlil5FUcvZLriBcBMVBrLZfmWKRLxqdzKcHhr+8FrBPFDIQMB88Cf4UGdU1CgTmlAs2beQl1Rjbc/AMwT3FS+GyBo+aEinyZYNz1dx0MpQsBfGlQGh1Zofx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792140175; c=relaxed/simple;
-	bh=3rbOJU1iFVVApKsSPtz/G7fuEZPLRtV/KP/+IGlxAIs=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=m06kyny+OU1ypDnZIEPtINAmGBJN22MEk/CsoF2sAvtjjmoXLvt+rT0psHmuAfRf27lGcX39eZUl5bTzK38KCzuIAfGsygu3Poq2/3gbkhXYk+rWVi/8xjWHlS0Ao3W7mJL/W+6sMnD0TjV2kI8PQCwP0/RfyqAPHnAjgY0pj/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=faR1OGUI; arc=none smtp.client-ip=43.163.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1792140649; c=relaxed/simple;
+	bh=v3cVT4VRZtVSHr3ccC/StOZDkykK/u7xHqCfsu6zTjo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=j9Ts5nPj0v/kMqMMGKPH1Z0ayCuXSwUeTEFpJkjX3rtbjLSgeFsmw/svAy1BGKiL+CUkGeQ3KFHwm59z/vpb0QyfAfHma4CrGLXgU6Dci5+u8PF9+naC0tmpI+e4JCh8jEmlcC3Gv4t0IeLRufIeIM9im2pfNAcxORo3nLyiRO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Iu7leCJy; arc=none smtp.client-ip=209.85.128.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="faR1OGUI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1792140168; bh=3rbOJU1iFVVApKsSPtz/G7fuEZPLRtV/KP/+IGlxAIs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=faR1OGUIEXqyudze+/rlXhjJOm9SouE9CAzMUCOfVVYQfrJ+HeCID4Ymx2wwJwuyc
-	 o+k4gXNkD08P9h2gFOLZ2SganIhqtwrA2DOTo+tKQhk8ucGH5IwNPlT4/Ej1lxb8ea
-	 K9W94jSj+Rq/18omhjCcXJYfPqXq/pqfWiSn+THg=
-Received: from [172.24.48.1] ([2409:8951:a22:b25:d1a1:62d3:eb69:e679])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id AAD22012; Fri, 16 Oct 2026 16:42:45 +0800
-X-QQ-mid: xmsmtpt1792140165tdx1v56y9
-Message-ID: <tencent_4F803EA6BD452898DAAF75EE74A20EF07F05@qq.com>
-X-QQ-XMAILINFO: OVFdYp27KdlJfwZITd6fr7SnRvjrd9me4hJGfU0DLueOQ9LmSLDg7GZv8O25uU
-	 XfbwJ2nYms+kEoWJEgpBC9XaxzNW5canrgt4aJ4hXBJP0ZJL6iHW9xRb/PPg29Ng+8U6luqTb9Py
-	 kTE8+OOly1DlVzfrojmzjkYOk7TtukcP3XjkRXf8ScxLQkUFG2miyWQY5/ZgH6/CL6ki9JAy7qSi
-	 Y5NOsw0l3U/xICoQACUfnwLTyCLUXIBZrJqBaNtOPBzdUWqQKq9M6+AhzAa2LqWJ6s42zM538EUh
-	 62S08zXFLmYD+nmf3/73MVoQRwEVMNnhB3UWfdEP5FV8viFrRBj/rSEkD+bAG3MsXKphOofgTE8J
-	 zOqR8auNeNNyTAKXjT+ueUstpd3V1/ctOJMhAWBGlUi9bQdf9cigac+8ZwSzdQdNssqr8Dyapgrm
-	 xLCtFGivbqKOfs+3PrAdeaXYpG89FxJCartwGYh0AWbQDZzNhb4vIYV2HPn8ba4jwATNoJRxFiFr
-	 w2yGM8vOiunNwgIdGX3SVZKvUCCcDOTEQvRdvbIfBWwLLQA9FOcVIWVEXAg6nsrABxsHpoZxzfY6
-	 Jc4j5hBAEVpmqO7d5WyPO6e3nfvK1z/9XnJuigM4HBrAO6uXf7iKCCl8DqUQChGWof1L9P2n0Ioz
-	 fBQvGkse4Js+MXPpuyvE1OnyPpht3lK/G5dnmb4XANqiZOfnfVOFYgApj7L5+BjLE7l61uv3S/NU
-	 I+1uxs0MPvGFaci0KF5XnJi96WxrwX+bHnVA2qOd7cVD2ErVXKyGDLeJ9VNXCZD65u0IsPebvHKI
-	 uoeAZle2eSi+tyTOwxAVeLtEiHXByHej68h1dOBit1xLrCvbRn2NHLJ7xJ9WoveSgP6NV31ldZp4
-	 RDtqDUgDBZ0nMXw/JbcKduNRmTMzAomEgpsQfsuMi6uIh0YxHQl33+WRVOUlCKTFZBUbXkfoQxwo
-	 iflH+sv/7qsRinDjWfRcTVMiBTjQ17M1zaKjlqvq/0jdY1iUZ15X+rOaIEjCuxp/sRaRYr9jRO0X
-	 w6NmviBKi+rItApyjqgSznb+ot8xY=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
-From: skxby <2374604267@qq.com>
-To: Donjuanplatinum <donplat@barrensea.org>
-Cc: Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject:
- Re: [PATCH 0/2] rust: hwmon: rework hwmon abstractions, add TMP108 driver
-Date: Fri, 16 Oct 2026 16:42:45 +0800
-X-OQ-MSGID: <179214016501.15268.642738678844764524@qq.com>
-In-Reply-To: <87se26dpzf.fsf@barrensea.org>
-References: <20260512155747.10136-1-donplat@barrensea.org>
- <9c2fa543-525a-4e43-9f73-7caf13b98039@roeck-us.net>
- <tencent_576573331343805F032731492D63C12D7E08@qq.com>
- <87se26dpzf.fsf@barrensea.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Iu7leCJy"
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1c7025d8dso5006035e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 01:50:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792140646; x=1792745446; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=2/UBdI9P0FC4JKA54j7nOy5LwjpD7g9ywzmZnD86QTg=;
+        b=Iu7leCJy12KIhhXYHe6tH7TL3EGwFxSjn7PSgM9gsH56BkXJhdEguluu3jFDOJHyCx
+         9X+EetlTuLDtw0vZ0RrZ8GIwA2pYMvx0uAtyewkgb+OucbRJuOhCRGbeRlh9ObVpj/Nd
+         zuZkJ5PKZ0Gd31g3YUVPbX+CYcHHzxrTpZ/2yOY+hg8nyIsbIy22z3ZGhyWx+YZlI7G3
+         JUSqulOZF1KuFH5ZoYqPsIK0dl2viRKDFQQRhJR2/UCGAWIy6+cQCZ5CQGIIy2hOi8/r
+         yHqF9czw+zVTBkwF9Ksr9KBhawbD22clGEG+gb7oVDdWoZQdtL4E90L75Meo4kVJ0Ewq
+         A2ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792140646; x=1792745446;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2/UBdI9P0FC4JKA54j7nOy5LwjpD7g9ywzmZnD86QTg=;
+        b=UzoW6NTX8Gk6f9UH1sxTT/pfuqsTqF2rDoiRd3AIQUY0G0y0euzQudXuDzAeogILi+
+         o/Cy4bnSxFb8tCN9HvKKqgECSuZt9CZP3Idn25Gah65vzUYxb1G5IOVd2xXXFfP2JP1G
+         rr4DPbtQcYN0Dj0QwQ3dJqjk6wwBj+KsRx89UNIZ51VdLCt8zxFzNMUfgGGzPAWBDtW1
+         pGDDPG6SDnL36B05vql0Ji2ksZkD3AdWAxAJbfzPnReOY3EoiEHjhPbncQAOWaIq/Vr0
+         vZsjTiT/s7TFrP8fLHQnoFQIKqRM463iLi2yzmkmP+ibsGlKLhffVdoWZC4ekZ8SDCDw
+         6hag==
+X-Forwarded-Encrypted: i=1; AKwUvBx0lvsWA6ePjnk14dqrZPQLBSd1OK5D2WusTUfVo2wz9lJQTmLbxFWz3GT8D+wS5BGog38mBJ62+pOohNrLhQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJyYpURMSJUiALXcjnP/T4vX05trwyM2+qAdops162BHGZbPNon
+	o+KzVzJ5ci8cjSr+uSSXjM9I0cD+X5LOlX/D/VPtMlKsbWrsomkcprzdxC29NVSTx6ZcJtDJlqA
+	QEGw3e/1leEBAQ5LHNQ==
+X-Received: from wmkz7.prod.google.com ([2002:a7b:c7c7:0:b0:4a1:9e7b:11b2])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:83c9:b0:4a1:70f0:ac2 with SMTP id 5b1f17b1804b1-4a18e4ce9cfmr439668265e9.24.1792140645760;
+ Fri, 16 Oct 2026 01:50:45 -0700 (PDT)
+Date: Fri, 16 Oct 2026 08:50:44 +0000
+In-Reply-To: <20261001145940.1077801-5-zhiw@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20261001145940.1077801-1-zhiw@nvidia.com> <20261001145940.1077801-5-zhiw@nvidia.com>
+X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
+Message-ID: <20261016085045.3517539-1-aliceryhl@google.com>
+Subject: Re: [PATCH v3 4/5] rust: print: add dynamic debug support to pr_debug!
+From: Alice Ryhl <aliceryhl@google.com>
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, andrewjballance@gmail.com, 
+	daniel.almeida@collabora.com, dakr@kernel.org, ojeda@kernel.org, 
+	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, cjia@nvidia.com, 
+	smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com, 
+	kwankhede@nvidia.com, targupta@nvidia.com, kjaju@nvidia.com, 
+	alkumar@nvidia.com, acourbot@nvidia.com, jhubbard@nvidia.com, 
+	zhiwang@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Donjuanplatinum,
+On Thu, Oct 01, 2026 at 05:59:39PM +0300, Zhi Wang wrote:
+> +/// A dynamic debug callsite descriptor.
+> +///
+> +/// The [`crate::dynamic_debug!`] macro places descriptors at stable add=
+resses in `__dyndbg`.
+> +#[repr(transparent)]
+> +pub struct Descriptor {
+> +    /// The C descriptor, exposed for static-branch field addressing.
+> +    pub inner: bindings::_ddebug,
+> +}
 
-Thank you for taking the time to look at this - and for replying at all.
-Let me answer each point.
+Should this be #[repr(C, align(8))] to match how C adds __aligned(8) in=20
+DEFINE_DYNAMIC_DEBUG_METADATA_CLS?
 
-1. AI involvement
+> +impl Descriptor {
+> +    /// Creates an initially disabled descriptor.
+> +    pub const fn new(
+> +        module: &'static CStr,
+> +        file: &'static CStr,
+> +        format: &'static CStr,
+> +        line: u32,
+> +    ) -> Self {
+> +        // SAFETY: `_ddebug` contains raw pointers, integers and, with j=
+ump labels, a static key.
+> +        // All accept zero; the pointers and bitfields are filled in bef=
+ore publication.
+> +        let mut descriptor: bindings::_ddebug =3D unsafe { core::mem::ze=
+roed() };
+> +        descriptor.modname =3D as_char_ptr_in_const_context(module);
+> +        descriptor.function =3D as_char_ptr_in_const_context(c"<unknown>=
+");
+> +        descriptor.filename =3D as_char_ptr_in_const_context(file);
+> +        descriptor.format =3D as_char_ptr_in_const_context(format);
+> +
+> +        // C packs `lineno:18`, `class_id:6` and `flags:8` into an unsig=
+ned int. Bindgen's setters
+> +        // are not const, so encode the target's bitfield ordering expli=
+citly. Truncate line numbers
+> +        // as the C bitfield assignment does.
+> +        let line =3D line & ((1 << 18) - 1);
+> +        let class =3D bindings::_DPRINTK_CLASS_DFLT;
+> +        let flags =3D bindings::_DPRINTK_FLAGS_NONE;
+> +        #[cfg(target_endian =3D "little")]
+> +        let bits =3D (line | (class << 18) | (flags << 24)).to_le_bytes(=
+);
+> +        #[cfg(target_endian =3D "big")]
+> +        let bits =3D ((line << 14) | (class << 8) | flags).to_be_bytes()=
+;
+> +        descriptor._bitfield_1 =3D bindings::__BindgenBitfieldUnit::new(=
+bits);
+> +
+> +        #[cfg(CONFIG_JUMP_LABEL)]
+> +        // An all-zero key is `STATIC_KEY_INIT_FALSE`.
+> +        static_assert!(bindings::JUMP_TYPE_FALSE =3D=3D 0);
+> +
+> +        Self { inner: descriptor }
+> +    }
 
-Fair question, and I should have stated it up front. The work was
-developed with AI assistance: I run a multi-agent setup (a scheduler
-plus several model-backed agents) that produced code drafts, ran the
-build/regression/stress-test cycles and drafted the commit messages and
-cover letter. Every patch was reviewed by me, and I built and tested
-each change myself; the two bugs we found during this round (an i2c
-client leak on the registration error path, and a missing null
-terminator in chip_config) were both found by the lifecycle stress tests
-I ran and reproduced before fixing. I signed off on the series and I
-take responsibility for it.
+Two comments here:
 
-For v2 I will add an "Assisted-by: LLM" tag as described in
-Documentation/process/coding-assistants.html. Please tell me if you want
-the tool names listed there as well.
+1. Instead of hardcoding `c"<unknown>"` for `descriptor.function`, how
+   about passing `$crate::c_str!(module_path!())` from `dynamic_debug!`
+   (an idea from Thomas Wei=C3=9Fschuh's RFC series [1])? Even though Rust
+   doesn't have a `function_name!()` macro, recording `module_path!()`
+   makes the `+f` prefix flag useful and allows `func` queries in
+   `/proc/dynamic_debug/control` to filter by Rust module path within a
+   multi-file crate.
 
-2. Cc Rust-for-Linux
+   [1] https://lore.kernel.org/rust-for-linux/20261011-rust-dyndbg-v1-8-832=
+e4039b71f@weissschuh.net/
 
-Agreed - I did not Cc rust-for-linux on v1, and I should have. v2 will
-Cc rust-for-linux@vger.kernel.org.
+2. The inline bitfield manipulation and `unsafe { core::mem::zeroed() }`
+   is pretty ugly. Please use the same strategy as `FamilyFlags` in
+   `rust/kernel/net/netlink.rs` to handle bitfields in `const` context:
 
-3. "?"
+   - Move the bitfield construction into a dedicated helper struct with a
+     `const fn into_bitfield(self) -> bindings::__BindgenBitfieldUnit<[u8; =
+4]>`
+     method.
+   - Construct `bindings::_ddebug` directly using struct literal syntax
+     with `..pin_init::zeroed()`, avoiding `unsafe { core::mem::zeroed() }`
+     and field-by-field mutation.
+   - Add a kunit test (like `test_family_flags_bitfield`) that verifies
+     `into_bitfield()` against bindgen's generated `set_lineno`,
+     `set_class_id`, and `set_flags` (or `bindings::_ddebug::new_bitfield_1=
+`).
 
-I am not sure what this referred to - could you say a little more about
-what you were questioning there? I would rather ask than guess.
+> +    /// Prints arguments with the crate's log prefix and the dynamic deb=
+ug prefixes.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `descriptor` must point to an initialized descriptor valid for t=
+his call, whose string
+> +    /// pointers refer to valid NUL-terminated C strings. Concurrent acc=
+ess must follow the C
+> +    /// dynamic debug and jump label synchronization rules, without conf=
+licting Rust accesses.
+> +    pub unsafe fn print(descriptor: *mut Self, prefix: &CStr, args: fmt:=
+:Arguments<'_>) {
+> +        // SAFETY: The descriptor is valid by the caller's guarantee. Th=
+e helper uses the C string
+> +        // `prefix` and consumes `args` through `%pA` synchronously, so =
+their borrows remain valid.
+> +        unsafe {
+> +            bindings::ddebug_print(
+> +                &raw mut (*descriptor).inner,
+> +                prefix.as_char_ptr(),
+> +                core::ptr::from_ref(&args).cast(),
+> +            )
+> +        };
+> +    }
 
-4. Legal name in sign-off
+`Descriptor::print` (and `Descriptor::dev_print` in patch 5/5) should be
+marked `#[inline]`, just like `Descriptor::enabled`.
 
-You are right that "skxby <2374604267@qq.com>" is not a legal name.
-The series will be re-signed with my real name and address in v2.
+> +macro_rules! dynamic_debug {
+> +    ($descriptor:ident, ($($arg:tt)*), $body:block) =3D> {{
+> +        // Keep item names out of the user's scope, including implicit f=
+ormat captures.
+> +        let (descriptor, enabled) =3D {
+> +            // `used(compiler)` avoids `SHF_GNU_RETAIN`, which the modul=
+e loader interprets as
+> +            // `SHF_RO_AFTER_INIT`.
+> +            #[used(compiler)]
+> +            #[unsafe(link_section =3D "__dyndbg")]
+> +            static mut DESCRIPTOR: $crate::print::dynamic_debug::Descrip=
+tor =3D
+> +                $crate::print::dynamic_debug::Descriptor::new(
+> +                    $crate::c_str!(env!("RUST_MODNAME")),
+> +                    $crate::c_str!(file!()),
+> +                    $crate::dynamic_debug_format!($($arg)*),
+> +                    line!(),
+> +                );
 
-5. Maintainership and interest
+Is `#[used(compiler)]` needed here at all?
 
-I am not asking anyone to take this over, and I am not claiming
-maintainership. The point of posting was to have the shape of the
-abstraction and one real driver on top of it looked at, and to find out
-whether that shape is the right one at all - which your reply and the
-review have already started to do.
+When the `pr_debug!` / `dev_dbg!` statement is reachable, `DESCRIPTOR`
+is already referenced by `static_branch_unlikely!(DESCRIPTOR, ...)` and
+by `&raw mut DESCRIPTOR` passed to `Descriptor::print`. And if the
+callsite is optimized out (for example, inside an unused function or
+dead branch), we *want* the static `DESCRIPTOR` to be deleted as well
+rather than leaving an orphan entry in `__dyndbg`. This would match C's
+`DEFINE_DYNAMIC_DEBUG_METADATA_CLS`, which does not use `__used`.
 
-On that note: Sashiko's review of patch 1 found issues that are real,
-and I agree with the ones I have checked so far. In particular it
-flagged the missing null terminator in chip_config - which we had
-already found and fixed ourselves through stress testing, and which is a
-good sign the review is looking at the right things - and it flagged
-that chip_read/chip_write are called unconditionally in the read/write
-callbacks, which would break any driver that does not implement those
-optional methods. That second one is a genuine design flaw in the
-abstraction, not in the driver, and I am fixing it in v2 along with the
-name lifetime issue and the locking documentation.
+For instance, with `#[used(compiler)]` present, the uncalled `fn example`
+in the `dev_dbg!` doctest still emits a dead `DESCRIPTOR` into `vmlinux`'s
+`__dyndbg` section.
 
-So: is there enough interest to keep going? That is exactly what I am
-trying to establish too, and your answer - either way - is the most
-useful input available. If the answer is "not yet", I would rather hear
-it now than keep posting revisions.
+> +/// Stub for host doctests, matching [`crate::print_macro!`].
+> +#[cfg(testlib)]
+> +#[macro_export]
+> +macro_rules! dynamic_debug {
+> +    ($descriptor:ident, ($($arg:tt)*), $body:block) =3D> {
+> +        ()
+> +    };
+> +}
 
-Thanks again for looking.
+If `dynamic_debug!` drops `$body` under `#[cfg(testlib)]`, any variables
+used only inside `pr_debug!` or `dev_dbg!` will trigger `unused_variables`
+warnings under `testlib`, and `$body` won't be type-checked. How about:
 
-<SENDER REAL NAME>
+    if false {
+        let $descriptor: *mut $crate::print::dynamic_debug::Descriptor =3D
+            ::core::ptr::null_mut();
+        $body
+    }
 
+Alice
