@@ -1,62 +1,64 @@
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E028312815
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 15:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951984E534B
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 15:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792165713; cv=none; b=dWef/pXho+Qd0UepZwpskf3HAikUanhVCcTuX/nEcSlVin7ZpwWTdMpjOTytdR2Frag84dSBUxioSRtfMsTAmLJ9GMCkbPlPfZ2LOoBqdAGvbgx/fjGNgY8pfmDpBPV72wFBJl86BLtyOcpJ9AE0ox5icf9q5PPraOi/hm4MXvM=
+	t=1792165718; cv=none; b=bOXu0OdtKLGZNWsL/X2VTNA4NYqe+vPzsXduvoNUPKK/ok8cvcFCVU5mAEBYD37UNMZkzR4tL6W6rdZCM0lev6L6LD/QSbjGrrKhG2S0W6iuyLa8jDw/UQSH+0d+UevRPyv+4EfTCPx+fvC4ksvRA8QmNvBjzGa7b6wRhsKCFIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792165713; c=relaxed/simple;
-	bh=V1jRKmCQFL7EqhgtKwrUFCiu8eMFT9qwVk/G17OwXZ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cfwVVxTGZysLXlqpITHlMIrmoyZEznFUx07d1BtT+GYj5uSlFFE5lBhHfVpaXN8LgT2kim0CJfpjZchPu8suiN03HccSV2LxOLNmGL7/HZnJUMv85Ktd9sUbLwFzMBUJVMCu3HqZsgaNefRvQ1ZReRts+J3Bfjx900ZPw2o36Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FTAQnOHg; arc=none smtp.client-ip=209.85.128.177
+	s=arc-20240116; t=1792165718; c=relaxed/simple;
+	bh=17tedGYcRNdDnq1dKIJYkX8tB8XKf3YAkAWYjfskwm4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pUgmrunJRUfyL/xiFKMDu44RqRb12rEj/eKryKw/RMQUqFP5/ovLz23CSPiwrgxfs7Emhcf68pXjYrF/niuctgBpcvwF+M32B7wZU2DqY7Hzm5sX+UmiUWS8Nz7xV89od381EYWNuGcXSuzh1xyIzTdcH/5f1W1LgP8opa34/K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E7XHSded; arc=none smtp.client-ip=209.85.128.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FTAQnOHg"
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-8b0d63f60bcso442437b3.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 08:48:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E7XHSded"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-8b0cf2c0785so396157b3.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 08:48:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792165708; x=1792770508; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8Ear117DJjn2hMVG10i+yEJqY+WZsqWtPeHsEomSMN0=;
-        b=FTAQnOHg8eLnJByhEyrjDiEcwDlm6nNvNCL8gdewgO9cIiTOEYRb8us2E28u1EiDWm
-         tKBXafitMx/dHnXFPB262I+sZZo+YaxkwUaaHCDlUYjALYrujT5QDdqLMXsbcvxNzGMp
-         5Tp4VbZGrhAv6DS7PlCMCEKobopHQvpJnAFB1+yNt19KNGWdeWhJlHGDIdzr44rI6f5U
-         Xi02du8UQDyh/sAy3x6b9xgX+ucwJRyz4bphcdkc+pBkFD6or7uB++IYhn/s1ez8YXxd
-         ahfABQsFv4ZrhsauGzvCynP8KfrGKkRxJS+JivmlDevSDfN8rIRSJqhWKFCl/fR6ctFb
-         /PBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792165708; x=1792770508;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1792165713; x=1792770513; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=8Ear117DJjn2hMVG10i+yEJqY+WZsqWtPeHsEomSMN0=;
-        b=F3jD23J+MBpOS+ZL/wmjPMI0PiJ68IbKQvueCMVgpJ2MIKHNPqiuQYbTA5kiue/MgA
-         yNEqvYQ3Rb5O3sGzOcx4d2KkXFqqPdYPYYKHZkFIBTJLD4ieo3xkf4IDrIKzYX9wTCEK
-         ZAyJf4geu1EXQZ5hf9qEepyucNYKWDcEw9Wlxb+CeFtK4alD2QR3iTcO66Jy1vpksBcD
-         xDV1mTSAsZSbNjVf/1k0tFimQjBOEXkPloQ04snAW+DP4O90LxCgyf2squrIqOwN/tlQ
-         K7DLgxStV3GhqE/XTSQCaJzeIb7ve+Yzgjf2ajUXljMMoUptkKYAwIcf5HqCskA8tFGL
-         BkNA==
-X-Forwarded-Encrypted: i=1; AKwUvBwZaMiPdJg3hY7swSY8tL642Hvy9pvSl+g30LCrZ8xHlEcLHMeSu+I5WVqhtKD3qu/zK6J82k41Kab9ppt8Hg==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJXaOx3pdFxxt+9posJiHZ/4X8XpbyxfLxrJnGyOTTE1wrZqG2W
-	xdjVxc0INyZB5vNOHLq/4GJfDYyyLJQm69K4t5Xywh8F27A/aJ7uHemW
-X-Gm-Gg: AYBFou0pTRaaPh23tB55IZiqxiGynz9AMsgJnQz0kiZb0LTIttK1UkVwoEc5zdd8Rso
-	aXQEuwdJ5DO9eWzhRTZAZPwxCR4N5I22HdE/92tEWfnPj/lE+w+yxK7SMqVPj9l8LymmbfPhtxl
-	kB9uK4TVQzDqS3SPaYdXNtsVnC3XABoIQJht8BAXM+88JEayec96EQoIPW2R/D/xO5NySnxdw28
-	YoBUH6ULVwftVKAoxAtOt2TWMg3JtfiOvwmLgaPfiosLpmLmf876N/uZpabpFdjBfKtAu2NwUyB
-	2nR/P3rBqquMVT/Jb8DYHFMFC403GgzhEwNuqobDBb73gdv6n8rzJ4ejznVInN9eGuOAOcTj9DO
-	e79lsyyKRfpgW9pCEf1wB6znFKfeprW+l/PYxebk1evZEMuJ128bmETE0CyPC+iMDy/PovWZDkf
-	OV/NPoIB3sJJ9UHhUnW9giG4U7GaPe5CjlzomMvSWnqQweEcyVBawx5BZkJdLBgrH/cBC6buKXq
-	8h/Qq+2iHWwSActINwsJ+lfDEMPKPxO4ZpSsVU=
-X-Received: by 2002:a05:690c:581:b0:8b0:ab62:c636 with SMTP id 00721157ae682-8b0f21e9dc9mr1812167b3.45.1792165708302;
-        Fri, 16 Oct 2026 08:48:28 -0700 (PDT)
+        bh=plcoVhgmwxTvzaBDkme5sEgwM7GIbrXBdBohLzMS+Gs=;
+        b=E7XHSdedTdBbfvbXhK7qDQOcR00m0b8Q8VQmxbETZCxXEFgViVnzU7V+RRj8k4Osd+
+         KupMFLy1C5WlNrkcZ/M5q9pe+NTwG0hIsOHSCqvgAIKag44xFGHhrGDgLZbAl6J6Mzin
+         WlkgtR0wNvZH+ydGIdAq3gQOPFyUFDlcb0xKYdKwXVNNF3nSiAiBIFkegMpTK74JNatp
+         r9C8ae/QRAJ3sEHRDB8OKsLRgUeL2d0R8K2wcEAGjgRo24H0ZmwTxQquL7j165gl2dEx
+         stnWS7aaeFeo6S74b2vrzgtO/Xbxlxnzge5kmqjP1Q/n1MP7ZZP6/I1iq9NIGBXziI/k
+         bHmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792165713; x=1792770513;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=plcoVhgmwxTvzaBDkme5sEgwM7GIbrXBdBohLzMS+Gs=;
+        b=VqAEOLk8MlEHhhV/KUapBFUm4JBmhLC2+g5jj8QWKRipLA7mCaoQaySQCa/8FgWCtW
+         M+rCGSGLwQ09R+NsnAl68xwQQItXMmm/PCFLVqDshvDurH48RjUxrQKn/jqRimigJWZ4
+         jno270ScQAgWJ86uKRhpLqwwaTT4XuV/3fkKgW7GQwaaLFuBMW7J6tRT+zBzP8OCvZ8+
+         zTXcFKomEnfpd6PicJhO1XehPk5jk4WvkPijTJ8IHdSEORQCTpfnM8bCMzUJ0RcF5LKm
+         8D2mlZjFNxvC/+TWCym8B/myE3RBEyFql+1NCZHIUlsvOKYyAgWnn1LbGs5s2dRzL/QA
+         7rLw==
+X-Forwarded-Encrypted: i=1; AKwUvBzPxFSls21anyxTlhGziXyD+OBjmsbeWnelOdyiYykDO3z4bG3cz+ujwy+U9PeHIvCTzLwhR61ufHRKgHmMjQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKVWYLbjYtGhUoRjpRF8KSNMO78iyY6FMd66hyOMoaTEpV4y0oS
+	3el4zjyHzTrDCcA2g7VhR2nhOHFsBxOREvgOJlLRMtC0YKbBBaik1awH
+X-Gm-Gg: AYBFou0MNXRNRfg/jqhgs/w2iMVqqwBN+SuGRZPwYZsjylrBPMgQuoPUgjclNmHEzZC
+	8NB0Of1FDlfL5xD5Jbzt5HyFrCljSxa656yOFvvGCxv5uTmOqGQGp3xgV9gluyb9TfkB8vN/qJu
+	QJnkzMsfzMFb1vxLiIrPy/dNXev0I75tcrxG7gNE/XJrsn7FSvq9+6Pk5l0OTDHV+hlys8Vt2T7
+	g0RoxW3jKxP+KK/NnHzWWCVehdLycwTBlsGUfgvdRzMr8oxAuUkwMlIpsgNUEifpHfVnmUa/mjQ
+	SGBh8VTSX+y8GtCwfyI+XONJMyrsntdV3h67qZgxtbjfymyzW0sVABVPTBpbSay6CXUuttwwZRM
+	gDXfqF2oFldrJDttnCRbDipoDpjc4jWo5T62fxKiYCQxQdNK6W4xd0iwL+q7B8EpYxGV1KxGnuu
+	ueOYtjQOtHL+tpz++oEMIkUpJ1CL3JnQR2izdhs6/snMroEqQak8mCUEmz+eBZ2tgt6kIKVBHmh
+	KO6b28KHy/ezWip3yFJfqWripLRNxXB6sU4LNU=
+X-Received: by 2002:a05:690c:e68e:b0:8b0:6617:e241 with SMTP id 00721157ae682-8b0f20752cfmr1168687b3.4.1792165713522;
+        Fri, 16 Oct 2026 08:48:33 -0700 (PDT)
 Received: from localhost.localdomain ([180.243.241.21])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b0e593c65bsm10882167b3.38.2026.10.16.08.48.23
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b0e593c65bsm10882167b3.38.2026.10.16.08.48.28
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 16 Oct 2026 08:48:27 -0700 (PDT)
+        Fri, 16 Oct 2026 08:48:33 -0700 (PDT)
 From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
@@ -72,10 +74,12 @@ Cc: Alice Ryhl <aliceryhl@google.com>,
 	rust-for-linux@vger.kernel.org,
 	driver-core@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v6 0/4] iio: position: add Rust driver for ams AS5600
-Date: Fri, 16 Oct 2026 22:48:15 +0700
-Message-ID: <20261016154819.17936-1-muchamadcoirulanwar@gmail.com>
+Subject: [RFC PATCH v6 1/4] rust: io: add FallibleIoCapable
+Date: Fri, 16 Oct 2026 22:48:16 +0700
+Message-ID: <20261016154819.17936-2-muchamadcoirulanwar@gmail.com>
 X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20261016154819.17936-1-muchamadcoirulanwar@gmail.com>
+References: <20261016154819.17936-1-muchamadcoirulanwar@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -84,97 +88,193 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a Rust driver for the ams AS5600 12-bit magnetic rotary position
-sensor.
+Add a fallible I/O capability for backends whose accesses may fail
+independently of address validation.
 
-The series adds generic fallible I/O support, SMBus access, a minimal
-read-only Rust IIO abstraction, and the AS5600 driver. The driver exposes
-raw angle and scale through IIO sysfs.
+Route try_read, try_write, try_write_reg, and try_update through the
+fallible capability. Provide a blanket implementation for infallible
+IoCapable backends so existing users retain their current behavior.
 
-Reviews of the lifetime, concurrency, and teardown contracts in the Rust
-I2C and IIO abstractions would be especially helpful. Danilo and Igor, if
-you have time, I would appreciate your help reviewing those parts.
+This allows transport-backed implementations such as I2C to expose only
+fallible access while keeping infallible operations unavailable.
 
-The Region-based view models byte-addressed registers and is not a
-general model for command-indexed 16-bit registers. The standalone
-word-read helpers accept any SMBus command byte.
-
-The current interface is intentionally limited while a Rust regmap
-abstraction is unavailable. Feedback on whether this is an appropriate
-interim approach, or whether the work should wait for regmap, would be
-appreciated.
-
-This series is based on commit 3fadfb9362cf
-("rust: firmware: avoid UB in example by passing parameter"), which
-contains Gary Guo's io_projection-v6 infrastructure. It also depends on
-rust-next commit b93fb6e76ec1
-("rust: error: add remaining error codes") for ENODATA; that commit is
-not included in this series.
-
-Previous version:
-
-  https://lore.kernel.org/linux-iio/20260822062725.60519-1-muchamadcoirulanwar@gmail.com/
-
-Changes since RFC v5:
-
-- Split FallibleIoCapable and the generic fallible try_* routing into a
-  prerequisite patch.
-- Require CONFIG_I2C=y because kernel::i2c is currently exported only
-  when I2C is built in.
-- Keep a bound parent borrow in the unregistered IIO builder and transfer
-  registration ownership to parent devres.
-- Derive the bound I2C client from the parent during read_raw instead of
-  storing an ARef<I2cClient<Bound>> in the driver.
-- Make IioDriver unsafe and document the validity requirements for raw
-  channel specifications and the unsupported channel features.
-- Reject operating modes other than INDIO_DIRECT_MODE.
-- Use the external error-code dependency for ENODATA instead of adding
-  the error code in this series.
-- Clarify the writable-storage contract for read_raw output pointers.
-- Replace the stale datasheet URL with the stable document identifier.
-
+Link: https://lore.kernel.org/all/DJVQ852J7SOH.26YBIJTQ9B66G@kernel.org/
+Suggested-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
 ---
+ rust/kernel/io.rs | 66 +++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 46 insertions(+), 20 deletions(-)
 
-Testing:
-
-Built for ARM with Rust enabled, I2C built in, and AS5600 built as a
-module. Tested on a BeagleBone Black with an AS5600 on i2c-2 at 0x36,
-running kernel 7.2.0-rc1-as5600-debug+.
-
-Raw angle and scale reads passed with the magnet detected. With the
-magnet-detected bit clear, 10 consecutive reads returned ENODATA. I2C
-transport errors were propagated during a physical bus disconnect, and
-reads recovered after reconnection.
-
-Concurrency testing used 10 parallel readers and repeated reads during
-20 bind/unbind cycles. Lifecycle testing covered 50 bind/unbind cycles,
-50 module load/unload cycles, module removal during active reads, module
-removal with an open sysfs file descriptor, and module removal while the
-I2C bus was in an error state.
-
-KFENCE, UBSAN, lockdep, and kmemleak reported no issues. KASAN was not
-enabled because 32-bit ARM currently selects HAVE_RUST only when KASAN
-is disabled.
-
-Muchamad Coirul Anwar (4):
-  rust: io: add FallibleIoCapable
-  i2c: rust: implement SMBus access via IoBackend
-  rust: add minimal IIO subsystem abstractions
-  iio: position: add Rust driver for ams AS5600
-
- drivers/iio/position/Kconfig    |  11 +
- drivers/iio/position/Makefile   |   1 +
- drivers/iio/position/as5600.rs  | 177 ++++++++++++
- include/linux/iio/iio.h         |   6 +-
- rust/bindings/bindings_helper.h |   2 +
- rust/kernel/bits.rs             |  29 ++
- rust/kernel/i2c.rs              | 248 +++++++++++++++++
- rust/kernel/iio.rs              | 480 ++++++++++++++++++++++++++++++++
- rust/kernel/io.rs               |  66 +++--
- rust/kernel/lib.rs              |   2 +
- 10 files changed, 1000 insertions(+), 22 deletions(-)
- create mode 100644 drivers/iio/position/as5600.rs
- create mode 100644 rust/kernel/iio.rs
-
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index 95f46bb75f9e..516895ca2082 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -276,6 +276,36 @@ pub trait IoCapable<T>: IoBackend {
+     fn io_write<'a>(view: Self::View<'a, T>, value: T);
+ }
+ 
++/// Fallible counterpart of [`IoCapable`] for I/O backends where operations can fail at the
++/// transport level (e.g. I2C, SPI).
++///
++/// Infallible backends ([`IoCapable`] implementors) get this for free via blanket implementation.
++/// Fallible-only backends implement this trait directly without implementing [`IoCapable`]; the
++/// infallible [`Io::read`], [`Io::write`], and [`Io::update`] methods will then be unavailable,
++/// enforcing that callers use the `try_*` variants instead.
++pub trait FallibleIoCapable<T>: IoBackend {
++    /// Performs an I/O read of type `T` at `view` and returns the result, or an error if the
++    /// transport-level operation fails.
++    fn io_try_read<'a>(view: Self::View<'a, T>) -> Result<T>;
++
++    /// Performs an I/O write of `value` at `view`, or returns an error if the transport-level
++    /// operation fails.
++    fn io_try_write<'a>(view: Self::View<'a, T>, value: T) -> Result;
++}
++
++impl<B: IoCapable<T>, T> FallibleIoCapable<T> for B {
++    #[inline(always)]
++    fn io_try_read<'a>(view: Self::View<'a, T>) -> Result<T> {
++        Ok(Self::io_read(view))
++    }
++
++    #[inline(always)]
++    fn io_try_write<'a>(view: Self::View<'a, T>, value: T) -> Result {
++        Self::io_write(view, value);
++        Ok(())
++    }
++}
++
+ /// Trait indicating that an I/O backend supports memory copy operations.
+ pub trait IoCopyable: IoBackend {
+     /// Copy contents of `view` to `buffer`.
+@@ -645,7 +675,7 @@ fn copy_to_slice(self, data: &mut [u8])
+     fn try_read8(self, offset: usize) -> Result<u8>
+     where
+         usize: IoLoc<Self::Target, u8, IoType = u8>,
+-        Self::Backend: IoCapable<u8>,
++        Self::Backend: FallibleIoCapable<u8>,
+     {
+         self.try_read(offset)
+     }
+@@ -655,7 +685,7 @@ fn try_read8(self, offset: usize) -> Result<u8>
+     fn try_read16(self, offset: usize) -> Result<u16>
+     where
+         usize: IoLoc<Self::Target, u16, IoType = u16>,
+-        Self::Backend: IoCapable<u16>,
++        Self::Backend: FallibleIoCapable<u16>,
+     {
+         self.try_read(offset)
+     }
+@@ -665,7 +695,7 @@ fn try_read16(self, offset: usize) -> Result<u16>
+     fn try_read32(self, offset: usize) -> Result<u32>
+     where
+         usize: IoLoc<Self::Target, u32, IoType = u32>,
+-        Self::Backend: IoCapable<u32>,
++        Self::Backend: FallibleIoCapable<u32>,
+     {
+         self.try_read(offset)
+     }
+@@ -675,7 +705,7 @@ fn try_read32(self, offset: usize) -> Result<u32>
+     fn try_read64(self, offset: usize) -> Result<u64>
+     where
+         usize: IoLoc<Self::Target, u64, IoType = u64>,
+-        Self::Backend: IoCapable<u64>,
++        Self::Backend: FallibleIoCapable<u64>,
+     {
+         self.try_read(offset)
+     }
+@@ -685,7 +715,7 @@ fn try_read64(self, offset: usize) -> Result<u64>
+     fn try_write8(self, value: u8, offset: usize) -> Result
+     where
+         usize: IoLoc<Self::Target, u8, IoType = u8>,
+-        Self::Backend: IoCapable<u8>,
++        Self::Backend: FallibleIoCapable<u8>,
+     {
+         self.try_write(offset, value)
+     }
+@@ -695,7 +725,7 @@ fn try_write8(self, value: u8, offset: usize) -> Result
+     fn try_write16(self, value: u16, offset: usize) -> Result
+     where
+         usize: IoLoc<Self::Target, u16, IoType = u16>,
+-        Self::Backend: IoCapable<u16>,
++        Self::Backend: FallibleIoCapable<u16>,
+     {
+         self.try_write(offset, value)
+     }
+@@ -705,7 +735,7 @@ fn try_write16(self, value: u16, offset: usize) -> Result
+     fn try_write32(self, value: u32, offset: usize) -> Result
+     where
+         usize: IoLoc<Self::Target, u32, IoType = u32>,
+-        Self::Backend: IoCapable<u32>,
++        Self::Backend: FallibleIoCapable<u32>,
+     {
+         self.try_write(offset, value)
+     }
+@@ -715,7 +745,7 @@ fn try_write32(self, value: u32, offset: usize) -> Result
+     fn try_write64(self, value: u64, offset: usize) -> Result
+     where
+         usize: IoLoc<Self::Target, u64, IoType = u64>,
+-        Self::Backend: IoCapable<u64>,
++        Self::Backend: FallibleIoCapable<u64>,
+     {
+         self.try_write(offset, value)
+     }
+@@ -827,10 +857,10 @@ fn write64(self, value: u64, offset: usize)
+     fn try_read<T, L>(self, location: L) -> Result<T>
+     where
+         L: IoLoc<Self::Target, T>,
+-        Self::Backend: IoCapable<L::IoType>,
++        Self::Backend: FallibleIoCapable<L::IoType>,
+     {
+         let view = io_view::<Self, L::IoType>(self, location.offset())?;
+-        Ok(Self::Backend::io_read(view).into())
++        Ok(Self::Backend::io_try_read(view)?.into())
+     }
+ 
+     /// Generic fallible write with runtime bounds check.
+@@ -860,12 +890,11 @@ fn try_read<T, L>(self, location: L) -> Result<T>
+     fn try_write<T, L>(self, location: L, value: T) -> Result
+     where
+         L: IoLoc<Self::Target, T>,
+-        Self::Backend: IoCapable<L::IoType>,
++        Self::Backend: FallibleIoCapable<L::IoType>,
+     {
+         let view = io_view::<Self, L::IoType>(self, location.offset())?;
+         let io_value = value.into();
+-        Self::Backend::io_write(view, io_value);
+-        Ok(())
++        Self::Backend::io_try_write(view, io_value)
+     }
+ 
+     /// Generic fallible write of a fully-located register value.
+@@ -905,7 +934,7 @@ fn try_write_reg<T, L, V>(self, value: V) -> Result
+     where
+         L: IoLoc<Self::Target, T>,
+         V: LocatedRegister<Self::Target, Location = L, Value = T>,
+-        Self::Backend: IoCapable<L::IoType>,
++        Self::Backend: FallibleIoCapable<L::IoType>,
+     {
+         let (location, value) = value.into_io_op();
+ 
+@@ -938,16 +967,13 @@ fn try_write_reg<T, L, V>(self, value: V) -> Result
+     fn try_update<T, L, F>(self, location: L, f: F) -> Result
+     where
+         L: IoLoc<Self::Target, T>,
+-        Self::Backend: IoCapable<L::IoType>,
++        Self::Backend: FallibleIoCapable<L::IoType>,
+         F: FnOnce(T) -> T,
+     {
+         let view = io_view::<Self, L::IoType>(self, location.offset())?;
+-
+-        let value: T = Self::Backend::io_read(view).into();
++        let value: T = Self::Backend::io_try_read(view)?.into();
+         let io_value = f(value).into();
+-        Self::Backend::io_write(view, io_value);
+-
+-        Ok(())
++        Self::Backend::io_try_write(view, io_value)
+     }
+ 
+     /// Generic infallible read with compile-time bounds check.
 -- 
 2.50.0
+
