@@ -1,246 +1,275 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4021953FD51;
-	Fri, 16 Oct 2026 17:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B1A55D89E
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 17:19:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792170397; cv=none; b=G/VRubjwY/HpHTAjO2mxmgnBtbwskRD7rSbcP0kwdGhGCpI8w2g28WsGet6NiEBsWZAgkA54oHZJcUc6SMg2JuN2VykUgg5UH58NErtM9THJ4HdSauvFAmabKybOrXonRdPUMmMR8O21JdHhOzAMNbTuY+cEXIoLtdanEzwsTek=
+	t=1792171142; cv=none; b=PA7y1iZ6cFY4sxyXEiWM6dcRESwCkGw5NQC0IIjeAZYmI3YuYz1PAFMtW9ZQV3iHpK5nvDawYVpezvIfguirvb9CFpu00IiEZ4jUzYjev8kFXiGw4uA7fnNfjh22b7924ja6nagA3ctBA775VrwCi0vXbWlgo/LL6maAjiGSz2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792170397; c=relaxed/simple;
-	bh=cq+dFtbOvjF5bRDFpILdaqjX9inVYxdxNGz98Swem/E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OVkdlXWycLamckJPKOsIdTM7qR5G3fDwaF9fwWMb4d4RoBImbbS55voBAnkgZ9uVwnlY+CrLP0o1LQqAgPDDTRm+5ibX5R8jfzaoIGpqyW097JZmCijFFsonxc2zPEczdP5sqdedWDHwG6GqbZWzeSmzFmPOzlB3B0RonwFCpLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dAEwm+Ll; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792171142; c=relaxed/simple;
+	bh=p296wWzG81mB0U61JcZUSzy8NUNJlvUNPBagkr1+eKI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=izI0wUtedOkQr/hBH+313QDnIr9QbYtrtiEaYpS0RyZkwMm1JEpN+7J3eyGEOLIIrt+lG/7BEihhpKL5YLxw4xcylpUzZMcyqtdk+uVhOTJk6yZB2uCKWssGlU3tkurdP7vBBr8Ys6DtPzeTA8Qw3daCvBXrczJb1CoWEkiLBho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu; spf=pass smtp.mailfrom=uci.edu; dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b=ir/a525m; arc=none smtp.client-ip=74.125.82.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dAEwm+Ll"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601221F000C5;
-	Fri, 16 Oct 2026 17:06:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792170396;
-	bh=BSEXDWNORjZsXLCu9GysuRDNJRkpmKxIZz1Z4Vu8yyc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dAEwm+Ll7zWYzg0O2/opPmRwyuEcN5vqyx3FOLNDe47i4s7xuUix1uZgX/dlo2aoM
-	 gtUuBpX6Fvsl5QjvcsgAZ5oPtoDo+OMgyE8aK8spLzAERzLCaFNIJs6/Qvzl0qnuim
-	 CshJT9OrW+ZwAkEtWFTxheF0/JtB2cxxYCtpVciK8lXHSLiNWUSX1zG+Hn6EYDT6Hz
-	 MgQ0bQbHhTXuIQ+rz+pxCsR4iOPyrfRvk0p9omqb6aOluXTdX6TMvIUYLozs+lZt/Z
-	 CMVPW48qhmbZqUwBF2LfXpAqSNHOd5zr0FRgTctbs4uLs/WeE4Pk21uIXN24Gk11u6
-	 dZVi7zkFQbQoA==
-Date: Fri, 16 Oct 2026 18:06:21 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Alexey Gladkov <legion@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Arnd Bergmann <arnd@arndb.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Jonathan Corbet <corbet@lwn.net>, 
-	Randy Dunlap <rdunlap@infradead.org>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v4 14/22] modpost: emit module descriptors as assembly
-Message-ID: <atJVYDgv8ejLoIrA@gremlin>
-References: <20260923-build-speedup-v4-0-73128809a4a4@kernel.org>
- <20260923-build-speedup-v4-14-73128809a4a4@kernel.org>
- <b17e9924-ca92-4cdf-b5e6-54164039e09a@suse.com>
+	dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b="ir/a525m"
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-15ea896ddc8so139762c88.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 10:19:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=uci.edu; s=google; t=1792171140; x=1792775940; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ODyKqipWGtxVK+aNRjwbobnihO9iwJvaEgWs23/B/o4=;
+        b=ir/a525mw0G00IPOeTBfOdXuNJOpzOziZUs18RGW4CYaGFHtK7m81hab956+BDXSXi
+         Y+iOuLX57vvHrIgPW/45PhFw/idXNbjNdGfjLrN/NiBjphjjpzFQpcuS2PX03SR+K7cP
+         SXFccWsWePJ1A1qVLFOEQS4MWLkJZk6xvnC/ufD+p6gQvtw83kdUQ9nvI6PTu5Axue7L
+         KNd5tMzEnz9JGO598aOsOdRRtw1jMkK4/FwyQXDkUUwNzUi9movw+nDhbnFBgC90WQgx
+         pdSy1ykRQHsc3a+r5bnkKMpm9Fgg4UPg5WEG2WAi74lbNVFYKhmt74mawD9R/FP3WLev
+         u+WA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792171140; x=1792775940;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ODyKqipWGtxVK+aNRjwbobnihO9iwJvaEgWs23/B/o4=;
+        b=DdqwgilgLa0+sKeKcLhYz4hGU+Ywu07QMFoaIa74XAlF8CnMiV4KYOhBLjKbA34jFF
+         l2IMeD6xe3/ndn1L8TT4xgogHqGm/2jJd7PSLB7EKZR9teVsglNAIsxYmusEyarERVyU
+         tNMyNF4p/D2JlUKm9/kZklLonBHr6xYBJ4Aoon6sz4qW2DvdQcnb+ixcMED7xweBLs1u
+         OBjF1S25WwhzbvH0++AGjMyfKccQhAWVdsoRkpzBIWBzUNSvkd8PKwk2of6B60ma7ftZ
+         jpax2d/Tfm+7NHEN7G/5C2NUQ+3ggcn5CUxcZ3IzAJizQAl1e1gQTsBduDyh/srOe9fO
+         XJLw==
+X-Forwarded-Encrypted: i=1; AKwUvBzEG6yImHqy+oJl0U/I9KG175OHJEUu+HLrx73sYVVfEXSy5tqpVp+TbpKRek5JVH6JwnKVUi+p6CZmOVhvxQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJI3TWqnyB30ea6I9ZLy2VBh+6loLFVXQy/N66Ex4PuCrtgVbqR
+	QqqLAv3K03Am6rJ9Hnf+0PF6MrShzjyWlgGEHjyuJmhlLCXA/Qi1hQNL48mk9h+1jig=
+X-Gm-Gg: AYBFou28tn0LZ827+QPo6/mxdXruRBrBCtAHylgoscZ5A1qiU3YIe1WEojihrtDsGnE
+	EXcV5gB5WAjliVQJwL7jO04HnSMzq6skecMwWas+ssU5s+Hb/z4fw+EsqVFDy5J+7PrmX3eem3V
+	t4BwodRCMr4FCDlNzjrJ/e9sql4It4PCMEBuTERerDfKkcWmB35RiUbrhtGnFU10bXnqSIgv/us
+	l+oGcQ9dpeB9Ft7dIoCI9VMyyV46gFTiZ5RpshEr6dka9tK6e+hsr7JCsIOny8rDNxTSJZKVP9b
+	kntuWTAcUj9eJ6L5g7tRLlGoPX+RnZHRnvrFVK0fhEvxxlsZ0MMjdvlAmJcsBRGCCUhmSgaJdDj
+	TX6AcThh6EZlzsURfFKiAriyuTXaXE+FfbRUb79w0RLYaLOMQaSUAPe5e6HukaEWzYk6nJWQKCr
+	VNOqn6iT6UF5Tc/SXPlzbM7O85UOt1LYacFHe+9DShsyICKH4ZmfI6cTLi5HyK3FDi/k0mNZImO
+	Jr/ue9Gp8Gcxja+Vh6pxwZBoZAY5SDrK6sJ
+X-Received: by 2002:a05:701b:4309:b0:163:fd28:5658 with SMTP id a92af1059eb24-18512d2c812mr643227c88.22.1792171139313;
+        Fri, 16 Oct 2026 10:18:59 -0700 (PDT)
+Received: from guest1.. (charm.ics.uci.edu. [128.195.4.118])
+        by smtp.googlemail.com with ESMTPSA id a92af1059eb24-1831b75be5esm10373726c88.16.2026.10.16.10.18.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Oct 2026 10:18:58 -0700 (PDT)
+From: Priya Bala Govindasamy <pgovind2@uci.edu>
+To: peterz@infradead.org,
+	mingo@redhat.com,
+	will@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	aliceryhl@google.com,
+	ojeda@kernel.org
+Cc: longman@redhat.com,
+	lyude@redhat.com,
+	daniel.almeida@collabora.com,
+	work@onurozkan.dev,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	tamird@kernel.org,
+	acourbot@nvidia.com,
+	rust-for-linux@vger.kernel.org,
+	ardalan@uci.edu,
+	zhiyunq@cs.ucr.edu,
+	dzueck@uci.edu,
+	pgovind2@uci.edu
+Subject: [PATCH 0/1]  rust: sync: Make `GlobalLockedBy::as_ref` unavailable if T is not Sync
+Date: Fri, 16 Oct 2026 17:18:55 +0000
+Message-Id: <cover.1791594262.git.pgovind2@uci.edu>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b17e9924-ca92-4cdf-b5e6-54164039e09a@suse.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 16, 2026 at 02:14:16PM +0200, Petr Pavlu wrote:
-> This version looks mostly ok to me, from a modules perspective. Below
-> are a few nits plus one more useful comment about handling
-> MODULE_ARCH_INIT.
+Dear Linux kernel maintainers,
 
-Ack thanks :)
+We are developing a tool called FerroLens to detect potential
+unsound behavior in Rust code in the Linux kernel. The tool
+internally uses an LLM to detect bugs.
+We then perform manual analysis to verify these reports.
+FerroLens reported the following bug in rust/kernel/sync/lock/global.rs:
 
->
-> > diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-> > index 0fd43c8a89ea..9d96459e492c 100644
-> > --- a/scripts/mod/modpost.c
-> > +++ b/scripts/mod/modpost.c
-...
-> > +/* The equivalent of KSYMTAB_FUNC()/KSYMTAB_DATA(). */
-> > +static void add_asm_ksymtab(struct buffer *buf, const struct symbol *sym)
-> > +{
-> > +	const char *name = sym->name;
-> > +
-> > +	add_asm_kstrtab(buf, sym);
-> > +
-> > +	buf_printf(buf, "\t.section \"___ksymtab+%s\", \"a\"\n", name);
-> > +	buf_printf(buf, "\t.balign %d\n", KSYM_ALIGN);
-> > +	buf_printf(buf, "__ksymtab_%s:\n", name);
-> > +	add_asm_ksym_ref(buf, sym->is_func ? MOD_FUNC_PREFIX : "", name);
-> > +	add_asm_ksym_ref(buf, "__kstrtab_", name);
-> > +	add_asm_ksym_ref(buf, "__kstrtabns_", name);
-> > +	buf_printf(buf, "\t.previous\n");
-> > +
-> > +	add_asm_kflagstab(buf, sym);
-> > +}
->
-> add_asm_kstrtab() and add_asm_kflagstab() are only called from
-> add_asm_ksymtab() and their logic is fairly short. I suggest merging
-> these functions.
+The `GlobalLockedBy::as_ref` method allows `&T` to be obtained from 
+mutliple threads even if `T` is not Sync. 
 
-Ack, done for v5.
+This happens because `GlobalLockedBy<T, B>` is Sync if 
+`LockedBy<T, B::item>` is Sync. `LockedBy<T, B>` is Sync if `T` is Send. 
+Since there is no requirement that `T` also implements Sync, it is 
+possible for multiple threads to simultaneously obtain references to a 
+`GlobalLockedBy<T, B>` and then acquire `&T` through 
+`GlobalLockedBy::as_ref`. This can lead to undefined behavior if `T` does 
+not implement Sync.
 
->
-> > +
-> > +/* The equivalent of SYMBOL_CRC(). */
-> > +static void add_asm_crc(struct buffer *buf, const struct symbol *sym)
-> > +{
-> > +	buf_printf(buf, "\t.section \"___kcrctab+%s\",\"a\"\n", sym->name);
-> > +	buf_printf(buf, "\t.balign 4\n");
-> > +	buf_printf(buf, "__crc_%s:\n", sym->name);
-> > +	buf_printf(buf, "\t.long 0x%08x\n", sym->crc);
-> > +	buf_printf(buf, "\t.previous\n");
-> > +}
-> > +
-> > +static bool export_is_kept(const struct symbol *sym)
-> > +{
-> > +	return !trim_unused_exports || sym->used;
-> > +}
->
-> export_is_kept() is only called once from add_asm_exported_symbols().
-> The condition can be inlined directly there.
+Note that a reference to `GlobalGuard<B>` is required as an argument to 
+`GlobalLockedBy::as_ref`. Therefore, this issue requires that 
+`GlobalGuard<B>` is `Sync` which happens if `B::item` is `Sync` 
+(for example, ()).
 
-Ack done.
+Here is a PoC kernel module demonstrating the issue.
 
-> > +/*
-> > + * The equivalent of:
-> > + *
-> > + *	__visible struct module __this_module __section(".gnu.linkonce.this_module")
-> > + *		= { .name = KBUILD_MODNAME, .init = init_module, .exit = cleanup_module,
-> > + *		    .arch = MODULE_ARCH_INIT };
-> > + *
-> > + * Everything not listed is zero, MODULE_ARCH_INIT included, except on m68k.
-> > + */
-> > +static void add_asm_this_module(struct buffer *buf, const struct module *mod,
-> > +				const char *modname)
-> > +{
-> > +	struct this_module_field fields[THIS_MODULE_MAX_FIELDS];
-> > +	const unsigned int nr_fields = get_this_module_fields(mod, modname, fields);
->
-> The const qualifier can be removed from the nr_fields definition to
-> match the usual kernel style.
+    use core::cell::Cell;
+    use kernel::{
+        bindings, c_str,
+        error::from_err_ptr,
+        prelude::*,
+        sync::{Completion, GlobalGuard, GlobalLockedBy},
+    };
+    use pin_init::stack_pin_init;
 
-Ack done.
+    module! {
+        type: LockedByPoc,
+        name: "locked_by_poc",
+        authors: ["Priya Govindasamy"],
+        description: "PoC for GlobalLockedBy::as_ref on a non-Sync value",
+        license: "GPL",
+    }
 
-> > +/*
-> > + * The equivalent of:
-> > + *	static const u32 ____version_ext_crcs[] __section("__version_ext_crcs") = { crc, ... };
-> > + *	static const char ____version_ext_names[] __section("__version_ext_names") = "name\0" ...;
-> > + *
-> > + * for unresolved symbols.
-> > + */
-> > +static void add_asm_extended_versions(struct buffer *buf, struct module *mod)
-> > +{
-> > +	struct symbol *sym;
-> > +
-> > +	if (!extended_modversions)
-> > +		return;
-> > +
-> > +	buf_printf(buf, "\n\t.section __version_ext_crcs,\"a\",%%progbits\n");
-> > +	buf_printf(buf, "\t.balign 4\n");
-> > +	list_for_each_entry(sym, &mod->unresolved_symbols, list) {
-> > +		if (skip_unversioned(mod, sym))
-> > +			continue;
-> > +
-> > +		buf_printf(buf, "\t.long 0x%08x\n", sym->crc);
-> > +	}
-> > +
-> > +	/*
-> > +	 * A symbol without a CRC was warned about above, and is skipped here
-> > +	 * too so that the names line up with the CRCs.
-> > +	 */
-> > +	buf_printf(buf, "\t.section __version_ext_names,\"a\",%%progbits\n");
-> > +	list_for_each_entry(sym, &mod->unresolved_symbols, list) {
-> > +		if (!sym->module || !sym->crc_valid)
-> > +			continue;
->
-> This condition must match the logic in skip_unversioned(). It would be
-> clearer to keep it only in one place by calling skip_unversioned() here
-> and adding a "silent" parameter to the function.
+    kernel::sync::global_lock! {
+        // SAFETY: Initialized exactly once in `LockedByPoc::init`, before use.
+        unsafe(uninit) static POC_LOCK: Mutex<()> = ();
+    }
 
-Ack done.
+    struct LockedByPoc;
 
->
-> > diff --git a/scripts/mod/module-offsets.c b/scripts/mod/module-offsets.c
-> > new file mode 100644
-> > index 000000000000..a336dd47aa33
-> > --- /dev/null
-> > +++ b/scripts/mod/module-offsets.c
+    // `Cell<u32>` is `Send` but not `Sync`, so this type is also `Send` but not `Sync`.
+    struct SendButNotSync {
+        value: Cell<u32>,
+    }
 
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * Layout of the structures modpost emits into *.mod.S, extracted from the
-> > + * target headers as devicetable-offsets.c does for the device tables.
-> > + */
->
-> The second part of the comment, after the comma, is superfluous. It is
-> expected that the various parts of modpost use consistent mechanisms
-> where appropriate.
+    fn assert_sync<T: Sync>() {}
 
-Ack done.
+    #[pin_data]
+    struct ThreadContext<'a> {
+        protected: &'a GlobalLockedBy<SendButNotSync, POC_LOCK>,
+        guard: &'a GlobalGuard<POC_LOCK>,
+        thread_id: u32,
+        #[pin]
+        done: Completion,
+    }
 
-> > +int main(void)
-> > +{
-> > +	DEFINE(MOD_SIZEOF_LONG, sizeof(long));
-> > +	DEFINE(MOD_PREL32_RELOCATIONS, IS_ENABLED(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS));
-> > +	DEFINE(MOD_FUNC_PLABEL, IS_ENABLED(CONFIG_PARISC) && IS_ENABLED(CONFIG_64BIT));
-> > +
-> > +	DEFINE(MOD_SIZEOF_struct_module, sizeof(struct module));
-> > +	DEFINE(MOD_ALIGNOF_struct_module, __alignof__(struct module));
-> > +	OFFSET(MOD_OFF_module_name, module, name);
-> > +	OFFSET(MOD_OFF_module_init, module, init);
-> > +#ifdef CONFIG_MODULE_UNLOAD
-> > +	OFFSET(MOD_OFF_module_exit, module, exit);
-> > +#endif
-> > +#if defined(CONFIG_M68K) && defined(CONFIG_MMU)
-> > +	/* MODULE_ARCH_INIT: the only architecture where it is not all zeroes. */
-> > +	OFFSET(MOD_OFF_module_arch_fixup_start, module, arch.fixup_start);
-> > +	OFFSET(MOD_OFF_module_arch_fixup_end, module, arch.fixup_end);
-> > +#endif
->
-> I feel it is a bit of a layering violation for modpost to know how
-> individual architectures need to initialize module::arch.
+    unsafe extern "C" fn thread_main(data: *mut kernel::ffi::c_void) -> i32 {
+        // SAFETY: `data` points to a pinned `ThreadContext` in `init`. `init` waits for this thread
+        // to run and then joins it before dropping the context or either borrowed reference.
+        let ctx = unsafe { &*data.cast::<ThreadContext<'_>>() };
 
-Yeah that is kinda gross :)
+        // This is accepted despite `SendButNotSync: !Sync`. 
+        let value = ctx.protected.as_ref(ctx.guard);
+        pr_info!(
+            "thread {} acquired &SendButNotSync through GlobalLockedBy::as_ref (value={})\n",
+            ctx.thread_id,
+            value.value.get()
+        );
+        ctx.done.complete_all();
+        0
+    }
 
->
-> For now, this is probably ok. I would just remove MODULE_ARCH_INIT from
-> include/linux/module.h and arch/m68k/include/asm/module.h, along with
-> the comment referring to it in scripts/mod/modpost.c.
+    fn spawn_thread(ctx: &ThreadContext<'_>) -> Result<*mut bindings::task_struct> {
+        let task = match from_err_ptr(unsafe {
+            bindings::kthread_create_on_node(
+                Some(thread_main),
+                (ctx as *const ThreadContext<'_>).cast_mut().cast(),
+                bindings::NUMA_NO_NODE,
+                c_str!("locked_by_thread/%u").as_char_ptr(),
+                ctx.thread_id,
+            )
+        }) {
+            Ok(task) => task,
+            Err(err) => return Err(err),
+        };
 
-ack done.
+        // SAFETY: `task` is the sleeping kthread returned by `kthread_create_on_node`.
+        unsafe { bindings::wake_up_process(task) };
+        Ok(task)
+    }
 
->
-> In the future, this could be avoided by having the m68k module support
-> look up the .m68k_fixup section at runtime, as other architectures
-> typically do for similar sections.
+    impl kernel::Module for LockedByPoc {
+        fn init(_module: &'static ThisModule) -> Result<Self> {
+            // SAFETY: Module initialization executes once for this static global lock.
+            unsafe { POC_LOCK.init() };
 
-Yes, arch stuff should live with the arch-specific stuff.
+            // `SendButNotSync` is not `Sync`, but this assertion currently compiles because
+            // `GlobalLockedBy` only requires its protected value to be `Send` to implement `Sync`.
+            assert_sync::<GlobalLockedBy<SendButNotSync, POC_LOCK>>();
+            pr_info!("GlobalLockedBy<SendButNotSync, POC_LOCK> is Sync\n");
+            assert_sync::<GlobalGuard<POC_LOCK>>();
+            pr_info!("GlobalGuard<POC_LOCK> is Sync\n");
 
---
-Cheers, Lorenzo
+            let protected = GlobalLockedBy::<SendButNotSync, POC_LOCK>::new(SendButNotSync {
+                value: Cell::new(0),
+            });
+            let guard = POC_LOCK.lock();
+            let protected_ref = &protected;
+            let guard_ref = &guard;
+
+            stack_pin_init!(let thread_a = pin_init!(ThreadContext {
+                protected: protected_ref,
+                guard: guard_ref,
+                thread_id: 1,
+                done <- Completion::new(),
+            }));
+            stack_pin_init!(let thread_b = pin_init!(ThreadContext {
+                protected: protected_ref,
+                guard: guard_ref,
+                thread_id: 2,
+                done <- Completion::new(),
+            }));
+
+            let task_a = spawn_thread(thread_a.as_ref().get_ref())?;
+            let task_b = match spawn_thread(thread_b.as_ref().get_ref()) {
+                Ok(task) => task,
+                Err(err) => {
+                    thread_a.done.wait_for_completion();
+                    // SAFETY: The callback has already run; this joins it before its context dies.
+                    unsafe { bindings::kthread_stop(task_a) };
+                    return Err(err);
+                }
+            };
+
+            // Each callback prints before signalling. Wait for both callbacks to run, then join
+            // their kthreads before the stack contexts or their borrowed values are dropped.
+            thread_a.done.wait_for_completion();
+            thread_b.done.wait_for_completion();
+            unsafe {
+                bindings::kthread_stop(task_a);
+                bindings::kthread_stop(task_b);
+            }
+
+            Ok(Self)
+        }
+    }
+
+    impl Drop for LockedByPoc {
+        fn drop(&mut self) {
+            pr_info!("locked_by_poc unloaded\n");
+        }
+    }
+
+
+Output:
+[91306.702534] locked_by_poc: GlobalLockedBy<SendButNotSync, POC_LOCK> is Sync
+[91306.702563] locked_by_poc: GlobalGuard<POC_LOCK> is Sync
+[91306.706793] locked_by_poc: thread 1 acquired &SendButNotSync through GlobalLockedBy::as_ref (value=0)
+[91306.707231] locked_by_poc: thread 2 acquired &SendButNotSync through GlobalLockedBy::as_ref (value=0)
+
+
+Priya Bala Govindasamy (1):
+  rust: sync: Make `GlobalLockedBy::as_ref` unavailable if T is not Sync
+
+ rust/kernel/sync/lock/global.rs | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+-- 
+2.34.1
+
