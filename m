@@ -1,225 +1,261 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2189A494299;
-	Fri, 16 Oct 2026 18:08:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792174088; cv=none; b=OV/aZ6ZQQ2ZFqzncjCs9iBkyYjBDknbzCiOYEPyW+IYXKeo2n85r5oLXsmsSzYIHtL0x/9WwNgiHseC2oeJJJIYajYOGe3ikN7doKK4bmShN8bnfMteVbFOFuHcTHCINoqhxNwk9nK4zK+4/Uj9iNj+lpjxbwbuMqD0blgVogSg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792174088; c=relaxed/simple;
-	bh=cuXXWcKApSYi8idG8I3CY1fSknjNP3FY1dJN+DkO1AE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oW+UEe0TAZcd9+i6jxtQZSy2iPUSFD70GYOpno49B1RtZRlCVqMOABd7mAar9jgXqbnNvUixQUK75uaf21nLVhs+JnQS6AQGfpXkNJOwYT16iGZOXcseFNKFIrwFeebUGgnDGJ0xDUD17PFtp3a/s5fpOdKWZhOrOVtuobp0iZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SU8cXl89; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3084C49BB63
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 18:42:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792176124; cv=pass; b=bWzFge6RW5dSv8a+tHfH5hiNTS0Fp+4EeC+ko/w5of2b+GuEFu1SUMiJQDvBTmdDLR8TwblvqsgZPZwX96vpDuh449Ju43BwuFKb7etcmohh1DKFGIwwf2vVsc/OxdnFs077+8LjKJ+1+DuKxoyLDZQ+HLAP2eP+jEfhtKN1zJc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792176124; c=relaxed/simple;
+	bh=CMHgJrH9XVdYO4T4rQoWxXZzZma1VoOICvB9CRktih0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KZNfJQIRa8yA72qokDMsj/ktY4r/VgW+PxouKs6HwuxLlIVf4jVQhZd+9DoIaUv/7MpCN/7JWocRLc04sNTFF7iMxr1AXzasJDIdJuf0/1/33ozslFdZbWrK2XAzA4eiw1JBM6d1bHBW+XmSKnofXnWdjEBgOpz73NtoVp1uYwE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ccfFf5Ra; arc=pass smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SU8cXl89"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C245DC2BD00;
-	Fri, 16 Oct 2026 18:08:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1792174087;
-	bh=cuXXWcKApSYi8idG8I3CY1fSknjNP3FY1dJN+DkO1AE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=SU8cXl898XubSbG94veKS22aiqx5PTfseS8ONT/7cWzb8Xs6QgNNCEea9o2lI6I1p
-	 i5/TA6NEKa6UQhJ76QFnWq7fBypVJ7nh8OMexkoPQYQLNrZv8wqQMOoSz+f1cQhUTV
-	 wXNWMnha5oFi07T5gW3R/xq/e6+xJQX2hxz9J7Sito6Mn8RoixdEMutrpE7DefBOkw
-	 3qXPVV3O2bcqlWEax7oshGTHgOQfeKjhKqyyV8I0PC6JioHVD4sFpyCyrLxAVocZRI
-	 YZ07JGb9YdTzUBraYbhqtEBqcU73RiJnmTo9R/A08ju/+bJ9MCO7snQLkTSr8qFaDq
-	 lVlGkRMyItXRA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F273CCF2C2;
-	Fri, 16 Oct 2026 18:08:07 +0000 (UTC)
-From: Markus Probst via B4 Relay <devnull+markus.probst.posteo.de@kernel.org>
-Date: Fri, 16 Oct 2026 20:08:03 +0200
-Subject: [PATCH v27 2/4] rust: leds: Add Mode trait
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ccfFf5Ra"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a018493d57so9145e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Oct 2026 11:42:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792176121; cv=none;
+        d=google.com; s=arc-20260327;
+        b=VV0e7QyH0fBHSUAx8OSR00sBUu69z0UlTYvUu19AKoD53l4borkowJ1zegA7OJmKWX
+         qnKuQ4YA4RVOJ9U9hXSTK0DEq/gRCNkGOLBGWa+u6DqpsVdBaoaeUAKdLLtEX7ir8XbH
+         TyMc5Wln9vSfO2aTG42ZaPiltnPzalwAAbis7SIiSM1H9QMPtOizXbs/QoNm3IL1tr8O
+         VFlkJxutwoUavSbDaroTr7oSKjqfia8y38fY6thMZzT9bH66Q9VZ0gMKEjjt7ygQZSZ3
+         A+iowakKN4yXlUuu8c9KhnS4gkKCfUV6cnzXsgDye5ohFAJg2N/jKg4LQWA/1sduHgRx
+         Hdpg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4MGdpuHW/L5Zmmr4IQf9JmPKDG4lNfOLKsaZahdnDXI=;
+        fh=7k9yYghDoBPXH1fwFZLPTfpx0aq/tKDxSL9kAUTOqmA=;
+        b=Kd1BaUVkB7j/eyCJ8MJyRGeCd6z1PEwKO0fiNYwSJidE5CwxVsYJ5qdV/LnolZ6AHN
+         FMZvIKkrdtQqyf5aiGLf8NjBw6gGX1c+28NO0hqtnMGrdryLQbJGxUssSYnRupwp5XZ5
+         6GIS/KhqhDliNn+jXKnzQMkKYe7bAJ3ikxCx+JHpSQ7SEL9Ggj4mngJ9462+4gooqkhU
+         RH82sGVABgFj0gf4AzxrLYbqroMUK5NfnzYUehOnxU1Fzexjop9fl7i/dF6a3lXrd8GH
+         GpuQmi5EXuIxBXaaBVQYEkf/CWj46mh9NGLHGZdfWC7FfB3n+MNp8IuD+DQc61xusJ1N
+         cUdw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792176121; x=1792780921; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4MGdpuHW/L5Zmmr4IQf9JmPKDG4lNfOLKsaZahdnDXI=;
+        b=ccfFf5RaYmHUw+upk/3xQTf7BTM6YNxO4FozswEmV45ducckNecEzl+w6dtcArzptf
+         O5tkO0ZFdoGyneotoWg82ZKVF+V8hJ3/iLpJgBxjq9ADya0LucwrdE7EDrTgcW93RWi4
+         bMTL5HV8I6oU7E5vtxLcGOViyzaFClbd7T+LVm9YFdmgjO9mgcykm//lpvzVaz0ur99m
+         ch0fUSKroo+HT+ksSsPcqJzEI8Evxr0XFri6wuoxcaXKOPWTs2Cy1jhrN6oqbd2eDi0Y
+         WtktJSzfkZ7EVyfXJlVYqQqdsbZeG71Pe9l5edSABfIb16qCzk2E2WcPj58P+vlLGUBm
+         BbrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792176121; x=1792780921;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4MGdpuHW/L5Zmmr4IQf9JmPKDG4lNfOLKsaZahdnDXI=;
+        b=jCaZ54HengpIOF8/PasNl+dBe59b5OLBzhcO2VYg5TGAViqwmPSS9l/mnm57qdsbTk
+         WGXLohY/ml3gtkWJ4lq7njjI+6WHkRW/pZ91iW0OiYdDlO5CBhq1P94TDROamG3TC6u8
+         Xr5qzsOIbITg4KHYuqU5pPe+ba0vsk1biyIGcAiZIdCyaOgQ6Fn/Oj/WUMbNciAsqPMl
+         0eKJLkJl1aXsLFPcXqTwT/MTVJrOBVoHPBEvIcQynptxrifnu4M7jeW5akzPRqJoTl9i
+         eHmKhOPvJDMteZUGYV+a8xzCMwQlGRAJ91TbAjB625FgkvLZttH/Y6Pd/x5rU+dL9Pt8
+         Ybrw==
+X-Forwarded-Encrypted: i=1; AKwUvBxO8YdLVunw2ee8BkjIsxWCKeuJfvLg6Lb95z1KnSJqxoIGXLnEytuWnA1v/V/ElB4Vjs44qgZtcwTPldjc2w==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKYYLdCDTpTUSfBcjnQFJAdZAofjKB1NJnGPO6SXKYRZUBAXxBF
+	B7vK47eozmFGk4+d95a8tuvCSZzTivfzWsUf25IeaLlowbJbzUMmmWgPrlSGGUWeL4DIkEeY/c7
+	EJ6Gge1mWCGRzeUWO0xRf04RNXmCs5s864ElWp0rl
+X-Gm-Gg: AYBFou17NYs/sjtr2aKTb0BIT0fmdoYDXfmK/ATqJc0ap5bUcAYFSDypWUqEFtJv4hp
+	M16K9O5vlAuho0HQXB9QacHdsnESHD2FCeQQuJEt3XNmC0oBypHgUjJrBS5qFEhuMnedVjZ76VL
+	zr0n8A0GYnUHxgQ7wJf535NPCEf4LhLpvDJ68mXnbNs6Zt74bHpUxH8ozXZN8UuqaF0sjwdI6Ks
+	6cc2aG0YZG89xsK5e5/GdPU0WID1n+IpAhieJ3n8eRYixnEQZvbVNsG8NkJb39atNFxfyTurwUJ
+	n/xeC9ThJ/3+JjQ3FCmrd4G2q4ODFn5pKw4PEEUwhin4incbeTw9J7OnCZQnmvbzD/nXfUukkCE
+	XIIzXJ2VcP6p3O0m9ujXOcA6iPfh37y10DesgvHpjpQ==
+X-Received: by 2002:a7b:c3d1:0:b0:4a1:d373:5759 with SMTP id
+ 5b1f17b1804b1-4a1d89362c4mr66215e9.8.1792176120903; Fri, 16 Oct 2026 11:42:00
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-rust_leds-v27-2-2c296d8a8e5b@posteo.de>
-References: <20261016-rust_leds-v27-0-2c296d8a8e5b@posteo.de>
-In-Reply-To: <20261016-rust_leds-v27-0-2c296d8a8e5b@posteo.de>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Ira Weiny <iweiny@kernel.org>, Boqun Feng <boqun@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
- Markus Probst <markus.probst@posteo.de>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4103;
- i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=T5jFSZhnJXyl8J1nAaebPNgFMg1/74G8qletYMXyqFc=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBq0mgFWc/4vVj1smifRSMEWAs169P8StA5fMJBh
- yQ+cIXHM5qJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCatJoBRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9KswhAAuuk+TRejynPCTcrPhj9ASdkWFIAiw0b
- oDbcI6sEhsqygJUexRBrtHJxKvGTbmUM5el8cxRHa4DGBmRKSxHV2VjyLKrZQUfRcDy0+3H2vgl
- yacKuB+TCV/S9WlSRqfiqUy9fk5RQ5QUyeJadqR4cNK/Y4JtdKW8ciY9NkdXs9EWnVkJ/cXWPmy
- e6/FuB8PlwiVps2q/aFI4mdAipoms6pu5/gFFU20FkX8wSCvfMOs6tb7psWWcW1Nvdm821twzT5
- qugZaHR7sgsVMIOJA6M5CQQ4N/cHbvkvB3KWtArdP0bQwc0PA1JhKWLzYcitCzpDsbrH2X+I8hH
- xEIZbVhEIR4vymK4Amh0GRJuzQZ9jrDzDrjObMBULAEfP4yJ68uTlyWa2GuSKauy+SYwoJ0EBXq
- dObEiI4saXWNec2GbUK3F1ykN0OVX9DZjyJUs801bRSZ8YwbXgW9L/f2oSWv4NMKz/aMa10wloS
- HMdHgqYnaYyofgZK0mSiEAw0pGeyrjTuErAWuOG1SbJaJGiKPlMU/X02EmwHegsBaxq8r3WadXK
- h1CgAOCoO2qy+LDfZcc/F6BrqXk8PooIFd9pV3yglU5wUufjT1qgAiyoMHqAgC/O6ZYtbHhlnTm
- WTw/P0l2d9SbAzT/eu5vmEv8B5XCGcupiAg8IyFdixvyBEKZbToM=
-X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
- fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
-X-Endpoint-Received: by B4 Relay for markus.probst@posteo.de/default with
- auth_id=680
-X-Original-From: Markus Probst <markus.probst@posteo.de>
-Reply-To: markus.probst@posteo.de
+References: <20261016-binder-memcg-v1-0-d659b8ae088b@google.com> <20261016-binder-memcg-v1-1-d659b8ae088b@google.com>
+In-Reply-To: <20261016-binder-memcg-v1-1-d659b8ae088b@google.com>
+From: "T.J. Mercier" <tjmercier@google.com>
+Date: Fri, 16 Oct 2026 11:41:47 -0700
+X-Gm-Features: AclHuK9APEBKrgB4cPVdNX9-JhNjIO32BvrHhv1beJHZa-WfokICUu6lsS8CM-4
+Message-ID: <CABdmKX1L36W0aZmhmOgTJTJwoMA+t4PG4ok3++G6Ggfg-RvfFA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: page: add Page::alloc_page_memcg()
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Markus Probst <markus.probst@posteo.de>
+On Fri, Oct 16, 2026 at 6:30=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> Pages allocated on behalf of a userspace process and mapped into its
+> address space should be accounted to the process's memory cgroup. Thus,
+> add `Page::alloc_page_memcg()` to charge newly allocated pages using
+> `mem_cgroup_charge()`, and switch `Page::drop()` from `__free_pages()`
+> to `put_page()` so that charged folios are uncharged when freed.
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/helpers/page.c | 17 +++++++++++++++++
+>  rust/kernel/page.rs | 50 +++++++++++++++++++++++++++++++++++++++++++++++=
+++-
+>  2 files changed, 66 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/helpers/page.c b/rust/helpers/page.c
+> index f8463fbed2a2..145758a8a954 100644
+> --- a/rust/helpers/page.c
+> +++ b/rust/helpers/page.c
+> @@ -2,6 +2,7 @@
+>
+>  #include <linux/gfp.h>
+>  #include <linux/highmem.h>
+> +#include <linux/memcontrol.h>
+>  #include <linux/mm.h>
+>
+>  __rust_helper struct page *rust_helper_alloc_pages(gfp_t gfp_mask,
+> @@ -10,6 +11,22 @@ __rust_helper struct page *rust_helper_alloc_pages(gfp=
+_t gfp_mask,
+>         return alloc_pages(gfp_mask, order);
+>  }
+>
+> +__rust_helper void rust_helper_put_page(struct page *page)
+> +{
+> +       put_page(page);
+> +}
+> +
+> +__rust_helper struct folio *rust_helper_page_folio(struct page *page)
+> +{
+> +       return page_folio(page);
+> +}
+> +
+> +__rust_helper int rust_helper_mem_cgroup_charge(struct folio *folio,
+> +                                               struct mm_struct *mm, gfp=
+_t gfp)
+> +{
+> +       return mem_cgroup_charge(folio, mm, gfp);
+> +}
+> +
+>  __rust_helper void *rust_helper_kmap_local_page(struct page *page)
+>  {
+>         return kmap_local_page(page);
+> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+> index 1c0796ea229f..7a36b7dd6c9c 100644
+> --- a/rust/kernel/page.rs
+> +++ b/rust/kernel/page.rs
+> @@ -10,8 +10,10 @@
+>      bindings,
+>      error::{
+>          code::*,
+> +        Error,
+>          Result, //
+>      },
+> +    mm::Mm,
+>      uaccess::UserSliceReader, //
+>  };
+>  use core::{
+> @@ -195,6 +197,28 @@ pub fn alloc_page(flags: Flags) -> Result<Self, Allo=
+cError> {
+>          Ok(Self { page })
+>      }
+>
+> +    /// Allocates a new page and charges it to the memory cgroup of `mm`=
+.
+> +    #[inline]
+> +    pub fn alloc_page_memcg(flags: Flags, mm: &Mm) -> Result<Self, Memcg=
+AllocError> {
+> +        let page =3D Self::alloc_page(flags)?;
+> +        // Note: Charging the folio with `mem_cgroup_charge()` only work=
+s because `Page::drop` uses
+> +        // `put_page()` (which uncharges the folio before freeing it) ra=
+ther than `__free_pages()`.
+> +        //
+> +        // SAFETY: `page` was just allocated, so we hold the only refere=
+nce to it and it is not
+> +        // yet charged to any memcg. `mm.as_raw()` is a valid pointer to=
+ an `mm_struct`.
+> +        let ret =3D unsafe {
+> +            bindings::mem_cgroup_charge(
+> +                bindings::page_folio(page.as_ptr()),
+> +                mm.as_raw(),
+> +                flags.as_raw(),
 
-Add the `led::Mode` trait to allow for other types of led class devices
-in `led::LedOps`.
-
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
----
- rust/kernel/led.rs        | 32 ++++++++++++++++++++++++++------
- rust/kernel/led/normal.rs | 12 ++++++++++--
- 2 files changed, 36 insertions(+), 8 deletions(-)
-
-diff --git a/rust/kernel/led.rs b/rust/kernel/led.rs
-index deda8cc548a8..c17f8ef75006 100644
---- a/rust/kernel/led.rs
-+++ b/rust/kernel/led.rs
-@@ -7,6 +7,7 @@
- use core::{
-     marker::PhantomData,
-     mem::transmute,
-+    ops::Deref,
-     ptr::NonNull, //
- };
- 
-@@ -31,7 +32,10 @@
- 
- mod normal;
- 
--pub use normal::Device;
-+pub use normal::{
-+    Device,
-+    Normal, //
-+};
- 
- /// The name of the led is determined by the driver.
- pub enum Named {}
-@@ -156,6 +160,7 @@ pub fn name(self, name: &'init CStr) -> Self {
- ///
- /// #[vtable]
- /// impl led::LedOps for MyLedOps {
-+///     type Mode = led::Normal;
- ///     const BLOCKING: bool = false;
- ///     const MAX_BRIGHTNESS: u32 = 255;
- ///
-@@ -176,16 +181,21 @@ pub trait LedOps: Send + Sync + Sized {
-     const BLOCKING: bool;
-     /// The max brightness level.
-     const MAX_BRIGHTNESS: u32;
--
-     /// Sets the brightness level.
-     ///
-     /// See also [`LedOps::BLOCKING`].
--    fn brightness_set<'bound>(self: &Device<'bound, Self>, brightness: u32) -> Result<()>;
--
-+    fn brightness_set<'bound>(
-+        self: &<Self::Mode as Mode>::Device<'bound, Self>,
-+        brightness: u32,
-+    ) -> Result<()>;
-     /// Gets the current brightness level.
--    fn brightness_get<'bound>(self: &Device<'bound, Self>) -> Result<u32> {
-+    fn brightness_get<'bound>(self: &<Self::Mode as Mode>::Device<'bound, Self>) -> Result<u32> {
-         build_error!(VTABLE_DEFAULT_ERROR)
-     }
-+    /// The led mode to use.
-+    ///
-+    /// See [`Mode`].
-+    type Mode: Mode;
- 
-     /// Activates hardware accelerated blinking.
-     ///
-@@ -196,7 +206,7 @@ fn brightness_get<'bound>(self: &Device<'bound, Self>) -> Result<u32> {
-     ///
-     /// See also [`LedOps::BLOCKING`].
-     fn blink_set<'bound>(
--        self: &Device<'bound, Self>,
-+        self: &<Self::Mode as Mode>::Device<'bound, Self>,
-         delay_on: &mut usize,
-         delay_off: &mut usize,
-     ) -> Result<()> {
-@@ -260,6 +270,16 @@ fn try_from(value: u32) -> core::result::Result<Self, Self::Error> {
-     }
- }
- 
-+/// The led mode.
-+///
-+/// Each led mode has its own led class device type with different capabilities.
-+///
-+/// See [`Normal`].
-+pub trait Mode: private::Sealed {
-+    /// The class device for the led mode.
-+    type Device<'bound, T: LedOps<Mode = Self> + 'bound>: Deref<Target = T>;
-+}
-+
- mod private {
-     pub trait Sealed {}
- }
-diff --git a/rust/kernel/led/normal.rs b/rust/kernel/led/normal.rs
-index a22c29cfd262..992353319522 100644
---- a/rust/kernel/led/normal.rs
-+++ b/rust/kernel/led/normal.rs
-@@ -8,6 +8,14 @@
- 
- use super::*;
- 
-+/// The led mode for the `struct led_classdev`. Leds with this mode can only have a fixed color.
-+pub enum Normal {}
-+
-+impl Mode for Normal {
-+    type Device<'bound, T: LedOps<Mode = Self> + 'bound> = Device<'bound, T>;
-+}
-+impl private::Sealed for Normal {}
-+
- /// The led class device representation.
- ///
- /// This structure represents the Rust abstraction for a led class device.
-@@ -22,7 +30,7 @@ pub struct Device<'bound, T: 'bound = ()> {
- 
- impl<'init, S: DeviceBuilderState> DeviceBuilder<'init, S> {
-     /// Registers a new [`Device`].
--    pub fn build<'bound: 'init, T: LedOps + 'bound>(
-+    pub fn build<'bound: 'init, T: LedOps<Mode = Normal> + 'bound>(
-         self,
-         parent: &'bound device::Device<Bound>,
-         ops: impl PinInit<T, Error> + 'init,
-@@ -120,7 +128,7 @@ struct Adapter<T: LedOps> {
-     _p: PhantomData<T>,
- }
- 
--impl<T: LedOps> Adapter<T> {
-+impl<T: LedOps<Mode = Normal>> Adapter<T> {
-     /// # Safety
-     /// `led_cdev` must be a valid pointer to a `led_classdev` embedded within a
-     /// `led::Device`.
-
--- 
-2.55.0
+I wonder if we should we mask out __GFP_ACCOUNT from flags? It's not
+provided by the new caller in the next patch, but it could be included
+inadvertently in a future call elsewhere. The VM_BUG_ON_FOLIO that
+checks if the page would be double charged only happens when
+CONFIG_DEBUG_VM=3Dy. Without it on production builds, folio->memcg_data
+just gets overwritten. We'd probably catch that eventually in a
+CONFIG_DEBUG_VM build, but not sure if we should rely on that. I don't
+feel strongly, just
 
 
+> +            )
+> +        };
+> +        if ret !=3D 0 {
+> +            return Err(MemcgAllocError::Memcg);
+> +        }
+> +        Ok(page)
+> +    }
+> +
+>      /// Returns a raw pointer to the page.
+>      pub fn as_ptr(&self) -> *mut bindings::page {
+>          self.page.as_ptr()
+> @@ -376,7 +400,31 @@ pub unsafe fn copy_from_user_slice_raw(
+>  impl Drop for Page {
+>      #[inline]
+>      fn drop(&mut self) {
+> +        // We need to use `put_page()` instead of `__free_pages()` to pr=
+operly handle memcg
+> +        // accounting.
+> +        //
+>          // SAFETY: By the type invariants, we have ownership of the page=
+ and can free it.
+> -        unsafe { bindings::__free_pages(self.page.as_ptr(), 0) };
+> +        unsafe { bindings::put_page(self.page.as_ptr()) };
+> +    }
+> +}
+> +
+> +/// Error returned by [`Page::alloc_page_memcg`].
+> +#[derive(Copy, Clone, PartialEq, Eq, Debug)]
+> +pub enum MemcgAllocError {
+> +    /// Allocating the page failed.
+> +    Alloc,
+> +    /// Charging the page to the memory cgroup failed.
+> +    Memcg,
+> +}
+> +
+> +impl From<AllocError> for MemcgAllocError {
+> +    fn from(_: AllocError) -> Self {
+> +        Self::Alloc
+> +    }
+> +}
+> +
+> +impl From<MemcgAllocError> for Error {
+> +    fn from(_: MemcgAllocError) -> Error {
+> +        ENOMEM
+>      }
+>  }
+>
+> --
+> 2.56.0.212.g129ede20d9-goog
+>
