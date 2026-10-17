@@ -1,97 +1,110 @@
-Received: from out203-205-221-242.mail.qq.com (out203-205-221-242.mail.qq.com [203.205.221.242])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBE837A844;
-	Sat, 17 Oct 2026 01:38:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.242
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CF41FCFFC;
+	Sat, 17 Oct 2026 07:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792201114; cv=none; b=YzecYn2TniYB0TjJgBORby+jCNiK5Vb2TlcRgT1lNHBZPxjZLMwzq9+B8dgXhetpxsFP8sho6QueAzRvTxxkuAKgulE90XqkjgMeL+HKKC6PdtZ4eWLP/h6rwGid8JwZnsW9weajL/E4wbxaF9miImdfqiVXHeOjt6SSr9CyKdg=
+	t=1792223637; cv=none; b=dVV/OQZc3jkoJSTRvzkuBkqonpu2aQ14S2qUOpMx+jNI1qDFgNkBMXqUB6na92Px1FPw+HKfj+cKnZXSdlkBb6oA7jiLBgKcmYWd4l5d/qXL43PxYkK8nWtJ8GJpHztty1q4BYz9o3tAQ2HmxiqBTPRcLiUmSVBN1BAtL2pownc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792201114; c=relaxed/simple;
-	bh=nhxZw5A5qxAznYentzn20vtaOKditdgoWk5VJ9PoAys=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=C0GLX+MvI/vR9bd9OqoDLU+h+t46UF1G/LZysOET9yXkYEj5GpnnJd3r18zPZWijfcs81rQA09iTKtCUSZFGTZfxTA08JJ1votDlLKe4XRwc6PIEvjID7J4byR+9Ej58DHoJRLrmxzRwY85ttEYx6jPTFyPJWgeQNoRnQjqLR1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=OZsltyiK; arc=none smtp.client-ip=203.205.221.242
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1792223637; c=relaxed/simple;
+	bh=zlr2BEUFDbhQ4XjmrjsWL9T1nu95OyHippgy/GRORY0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O09VmkE09iW5Zy8/uQGlLW8loPtI7GtHJlOCgUN528KHuWNGlBH7EEGMq+iyzGEiyV0h4MVuxAzgEOJpmcopG1+DQgkCUhs3O0phQcfh3PnREGNd1Fyaixdk+E70Pr2dSEDWvwWaQXQQ7XTDluvJV118D+2KkqW+6SfiATKIKRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gomFtb2s; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="OZsltyiK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1792201107; bh=nhxZw5A5qxAznYentzn20vtaOKditdgoWk5VJ9PoAys=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OZsltyiK3OFWrT/JuNoHPz81TwTZquA5szRnYm7PP7ymS0WoWQ3DYBo1oii0kD2T3
-	 JbzF+76bohzX/TX0O8Qiwy5H+0PBZrehrckbHM5S9LWQT2FE4Y2AAFRCYR1A+cFXNG
-	 4uJqWDY4sweBM3lSEMaVAsk2qDxFcyIJB65OEHww=
-Received: from [192.168.30.1] ([2408:8452:a80:146f:11d2:bd8e:de50:4c99])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id 996326FE; Sat, 17 Oct 2026 09:38:22 +0800
-X-QQ-mid: xmsmtpt1792201102tgjl4kcjs
-Message-ID: <tencent_3A4DA800AA0FC8C76CB748048FFA0DCC210A@qq.com>
-X-QQ-XMAILINFO: MDbayGdXPuoe4GWJEEkHbDNRxtytg3T4/qnjYXQGpxmzvdSV8fR0iIqAJNk05R
-	 NBDUYebg4+pX4+QtSE7tEksDEDVyCIyLsUhQafCyOgDLOVx9Mpkz1zV8xK+Vbrj7yOlOfxO6PALF
-	 sDVyF7FLeA6/XQjWl/VI+tZMQIEZLE5TXLn0h5PYjMpMj9KJDX/GLFOR1zLyrD3qowsisFspauym
-	 ZafcTSx3LnoqevCvJQmgztoGz9f62wXcFSUP/xvslQAvezOXB/IOSkLFfoo/KEAAbE00CgcBIBXq
-	 PDaPY7N/cC4fL98K2g5mmCH/cquNMTQHVvosfkhgMqwP1idvyKh+fcAeZHjLNFSSz/2CMQ5NqnOQ
-	 rRGuUa1a2fBGH06DccJfCYgc0wAwzhVB87zPVMZ7CGoqft8t+wIDrhMnElTignoMXvl+kNVOp3gG
-	 lM7YesLon1I+FokY7NlaIAORW+f9wUmgak126uhbaNqEbnhBB26egysx6e3iT6E/AKwLd4AENOeu
-	 Ah64ERWMTXeosycWzW4Jcl7i1vZM5PTPczDCW6/BfJduuB9TdTie0bqxO3veC+8P9PowvOO4chRZ
-	 NLa+Rr2mxuDXTe+aQ+jxyqA6XUHFDKdKtdipQOsaY1HMLH7sE/DtggvLcxJ89F7FNoV0xzRjXiB1
-	 oqEc124sjmHEC3Df2k12/7OdF6dzvV0T5fhtW2SE3zYc/wAaZJqTD1h33fapiMvfQWZakvUwHMrn
-	 0BG9CAE8ZMEnswAMtgkI+ye9w13ymHWXjtrTnKCGlOKoINuslxWOYWFTbWTaMTJHk3cc5bcqI0Nr
-	 vZncxITlDDjRu+7O5Z7dACVgUICLUlTTcwsHCeAeSVD1szC4WpS0SkcD247NPznkWr0nG6PpQPBO
-	 DPgPKKaI+c5HTkfWdmjUz+EOiQnO5g73HHxd/26L8LHdwhb/16OJgtRYy/t914P325zcy9PTDbcD
-	 0V152SJQLNbVunk/rymBPAFagGIIoDAvckzl7dX60UuTVvZ/5qc98EiG7RQpSLitBPkXGex2rW5Z
-	 fQMLI2qifsnOFjyPD2
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-From: skxby <2374604267@qq.com>
-To: Donjuanplatinum <donplat@barrensea.org>
-Cc: Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject:
- Re: [PATCH 0/2] rust: hwmon: rework hwmon abstractions, add TMP108 driver
-Date: Sat, 17 Oct 2026 09:38:20 +0800
-X-OQ-MSGID: <179220110051.19044.14406267695678410421@qq.com>
-In-Reply-To: <818d5dd7-4b8f-488d-ad99-3ce114027262@roeck-us.net>
-References: <20260512155747.10136-1-donplat@barrensea.org>
- <9c2fa543-525a-4e43-9f73-7caf13b98039@roeck-us.net>
- <tencent_576573331343805F032731492D63C12D7E08@qq.com>
- <87se26dpzf.fsf@barrensea.org>
- <179214016501.15268.642738678844764524@qq.com>
- <121A8A5C-E782-4959-B1EF-F6F09E5842D5@barrensea.org>
- <818d5dd7-4b8f-488d-ad99-3ce114027262@roeck-us.net>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gomFtb2s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDE71F000C4;
+	Sat, 17 Oct 2026 07:53:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1792223636;
+	bh=A+Rvbj3Y0hrsl690BetdCOZ7NOyL6lYrFiPiwcsUCjQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gomFtb2svMy2XJeZq8TKGJOHojmaqIsSID4ozs4DLKblG2lJnhk0mtebgxfikS57f
+	 V9Gzvdce9Xw+UoYdJ4OmyEQXezCCviVPSEzX1h42+MpjwGRMbaQgfDjl4cdZWwSqAP
+	 h0MdZyMszS7I010sEuMikUfyXG/TSxgVnvM9e3hc=
+Date: Sat, 17 Oct 2026 09:53:52 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Markus Probst <markus.probst@posteo.de>
+Cc: Ayush Singh <ayush@beagleboard.org>, Johan Hovold <johan@kernel.org>,
+	Alex Elder <elder@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	greybus-dev@lists.linaro.org, linux-serial@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	driver-core@lists.linux.dev
+Subject: Re: [PATCH v4 1/4] tty: serdev: Add mutex lock
+Message-ID: <2026101758-confidant-comprised-e1c0@gregkh>
+References: <20261016-rust_serdev_probe_refactor-v4-0-46832e034757@posteo.de>
+ <20261016-rust_serdev_probe_refactor-v4-1-46832e034757@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261016-rust_serdev_probe_refactor-v4-1-46832e034757@posteo.de>
 
-Hi Donjuanplatinum, hi Guenter,
+On Fri, Oct 16, 2026 at 06:00:32PM +0000, Markus Probst wrote:
+> Besides more predictable behaviour, this allows for several hardened
+> behaviour changes:
+> 
+> Return -EALREADY in `serdev_device_open` if the device is already open
+> instead of causing undefined behaviour.
+> 
+> Allow calling `serdev_device_close`, even if the device is already
+> closed instead of causing a null pointer dereference.
+> 
+> If the device is left open by the driver after remove, close it and warn
+> instead of leaving it in a invalid state.
+> 
+> Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> ---
+>  drivers/tty/serdev/core.c           | 10 +++++---
+>  drivers/tty/serdev/serdev-ttyport.c | 46 +++++++++++++++++++++++++++++++------
+>  include/linux/serdev.h              |  2 +-
+>  3 files changed, 47 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/tty/serdev/core.c b/drivers/tty/serdev/core.c
+> index 7500efcdfc21..77e8e1d4d2a6 100644
+> --- a/drivers/tty/serdev/core.c
+> +++ b/drivers/tty/serdev/core.c
+> @@ -142,6 +142,11 @@ void serdev_device_remove(struct serdev_device *serdev)
+>  	struct serdev_controller *ctrl = serdev->ctrl;
+>  
+>  	device_unregister(&serdev->dev);
+> +
+> +	/* Warn if driver did not close the serial device. */
+> +	if (ctrl->ops->close && WARN_ON(ctrl->ops->close(ctrl)))
 
-An apology first: the AI-written reply in this thread was sent without my
-review. That was a mistake, and I am sorry. Nothing further goes out from
-here without going through me first.
+I understand the want to give a big "splat" if this happens, but if it
+does somehow, you just crashed the box due to panic-on-warn, which will
+result in a CVE being given :)
 
-Your "?" was about the "<SENDER NAME>" line at the end of our cover letter.
-That was a placeholder in our sending template that should have been
-replaced before posting -- there is nothing hidden behind it.
+So, if this ever can happen, we should recover like you do:
 
-Guenter, on runtime testing: every patch in this series was built and run.
-The lifecycle stress tests (100x load/unload cycles), a 22-case sysfs
-regression, and extreme-value writes were part of the work from the start;
-they are how the chip_config terminator and the i2c client leak on the
-registration error path were pinned down, and they were used to reproduce
-and verify every fix. The defects the review raised that the tests had not
-caught were handled the same way: reproduce first, then fix, then re-run.
+> +		pm_runtime_put(&ctrl->dev);
 
-v2 is being finalized: it addresses all review findings, will Cc
-rust-for-linux, and carries an "Assisted-by: LLM" tag per
-Documentation/process/coding-assistants.html.
+And you can warn about it in the kernel log, but just not with WARN_ON()
+please.
 
-Before posting it: are the two of you still willing to take a look? If the
-answer is no, I would rather hear that now.
+thanks,
 
-skxby
-
+greg k-h
