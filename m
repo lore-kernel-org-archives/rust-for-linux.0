@@ -1,122 +1,177 @@
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BEE13FAE09
-	for <rust-for-linux@vger.kernel.org>; Sun, 18 Oct 2026 16:45:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792341957; cv=pass; b=AZvkJJ8b8pum9Pz9zm9zwf/5HJThvjvjEPF8tHbbBUgrsjAfszQe0Gb7up7GVFQHEjQMF1Nl6OemPmfz52VjKHieNj0Ca+7x53Y9kDB0qPhTGFoKb9v+Up+1+bBKaXhz1rLHoBoHNAzYsUZ5iWoDqeE0jwH6B8oQbpj5+veputQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792341957; c=relaxed/simple;
-	bh=/OOWdJntfE5bSPgQas5XocqfmzGwqA/LTtLzB3LqaWc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E1OzEQV/74XDHtjdmVtoKNf0cLNQcLDr0t2ZIBYg9vRLgVgxIQuO0Dm3RejHFR7h+BdC05izMTSPDodzsnMz3Ife/zWTDM8beIeJP6k6fmco4C+FznbzkbpmHhfX4ToWICYUiGrUdXeftkZsQqQJqDD5eOBmdI4lV4vQ7ACWxTk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hLidCGf0; arc=pass smtp.client-ip=74.125.82.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11BE3DB319;
+	Sun, 18 Oct 2026 17:55:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792346121; cv=none; b=KLKg3Zm0h/N9tbhyklpVXc3SCfeXiOXurSTrUMqTgs4Dtm1VeSJJlrwVOirVug5SctWJuF5dmWYULOYwFtqL+DhNiOsDotxGycXY8fRpOVEBVcQSs3NsZCt2yDpkSRPYNBT5ip049Sq6DcBbA1geQMauEKb9jirCv1xxIHXvsq0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792346121; c=relaxed/simple;
+	bh=7l2sFAOA+riNLnQy8/2UhOtgqkntq568HwEiS8C5NOo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZV6DYXLASMIXub/O9pCKZJIDTqQuZ0lIxonNFg/3C2odCNEkHGs1tUS7cuAZrlpJIfOx5VEtkvkbjsyqUxRrv9EOQ6Wunrp7IYSuNUO2nB3fj8wPbpqx4S3bz8Ku0VU2GUcAAPFbpsw5hDJMwnIvGV7llUT4wsWqhUJTFVBoJSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=USjHVZ9k; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hLidCGf0"
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-33bb5afa736so159753eec.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 18 Oct 2026 09:45:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792341953; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Sa2fS9KRfA7aNh9VI62mqU1m2cQCVWXpo8u8jlmqga2c354TWWduR4ntkLkrra1ZYP
-         B5zkYrlQzjxi4yTAPeyJuSf8TvVaZwiY4iubj6T6d73Y6ItlhXyY5B0q9i4dn8GFMN6w
-         EZYZdsS+y9/GbiBCfn9CO/IUj0tJDc8GNGj3NC5cb7BJ71ppgF6iL6pQ87Lg1qxgmdwL
-         bROIjMNpLbMQ0IVZiOcej16r/v1CcqGSPexvDn/iTsZPgBawzyZYGGiWUSRx2Wp4ADLP
-         pEMZXS0SjDpZNYd/R22a+Pi3oLjPGLk2fXfIJgIPNirWtXBzX3S9CP1qa/MR7dTFvnoL
-         JRJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=K2nyBACqj6iF5BhULoV19NEeW9GfDUgukWkDmcax0/M=;
-        fh=OB8HwmKoQ1kWmm9gwr8G7+O46Plbajw5k0evHQ57nnM=;
-        b=EhsXmTVjnFX5gp0SRbeYL+VdT0CqDgY3uWqbtCyRMLNF1iApvl2LmVS0jK9p36KeYH
-         MwYV9qtaKAMHE3XnqNlDBv4zTHJgLupve1tSXUHW9gmObS0KSxkT1r/qVMbGurUEdxk8
-         u+Q+zeireWkvOmuUSvI+zU0hLFmaCQCdg/mWwrh2qJ5wutkomi83PhVDn3Ob8Lu7ltCA
-         QyGmDdSK/Y29KlprS4Mls9nQd+OknM03/WbC6OkfUjS6VUyeL/kp7lkxWsfTEAotmwY2
-         iYhTaizkFXYbVE4YLskPkIZux/kYD23Z9tnvfC15SipbJkWBfyBLORhk3ANP9bKmR8zN
-         X1ag==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792341953; x=1792946753; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=K2nyBACqj6iF5BhULoV19NEeW9GfDUgukWkDmcax0/M=;
-        b=hLidCGf0anbFySUixak3EAm9Ll76fUY6G6jugYLIAJv++Dnl5tPLEqck6gJP17LDao
-         k2xb0TiKTO9qibgsxHdlPUxSHylDxVA53Ibq4WkE1ClK597fJt0JzzA3zNGQY+1jxPy0
-         kmE147wnm+Goab0GCrBA0iBe6VIiyiF4TPExYW1YMOW2aDT5ABtFClQKjyx+w7I1iluz
-         f0y9z4pB+V0+UEkzNTj2JNEdAFwVvARK5W2wAVsck9v0MzLjkaDUvY3cs79PG/GrO40r
-         8bH2YeJXwKLA/8bTOfc+0WbM1ZTKP0ANxo3Lt9IKrVz8zmVhrLUlg0CPBAO850ni/OuT
-         vDCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792341953; x=1792946753;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=K2nyBACqj6iF5BhULoV19NEeW9GfDUgukWkDmcax0/M=;
-        b=uXCBIcSFSyDC874qAXx1oJhOqnzM/wgBOBv5xcFUbUssMSFT+VR+6LNr28vb14YhGK
-         C5R4UPbOLwTA9FGvmMgOVu6uuQQolNwCHfGJ9/EySDjiMPYbp4O5VYxs1IrR+3ISeAOh
-         kLYZfuuHXi4dQf9hXcJ/lRQeycyq1XJeZeHJs02b5MUyPkD3Wewvi16q8kG/nGyXGFTz
-         buvjJqR4u+EsoAbVf2TbsjagqID2r7XkW2F+WTBogwFbWbspeiVZ+SUVGlolOWM6oP0I
-         SVmHl4Oy4SeZLP2+/DVktuM2u7dHQiiu2V+4hEYzaDRnnPkfj3UMb+N8Xqq9mNVUhsqt
-         nvSg==
-X-Forwarded-Encrypted: i=1; AKwUvByFvCfPsZ/a8riG0GqmVlkfidEjG6jnFSbV7x/bYnNCyl8DUydNKb5ORvvCsyCSAnOe/rNAMMOvRHrYxHIw0A==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ6WMNYs61pbWLJhamcCuoCvBEmIKVmCGBcIVxoTeI7g9lahcvn
-	NzIyDMGs/Ee4q2me0tKHmBJIList0LIkfJyDjUz1oe3CFUUF2mqhqTzkno2Crix3BYFfHJZKtHb
-	VDxQfe2kBrb6om/flQCM55kkQZGnEPe8=
-X-Gm-Gg: AYBFou2czt0IErZAPT/p+XluZ7UqaLw+hWdkzMKLuo0KxlI5zmluBuvJGujGmW8WOUw
-	tM/ekkPxsb439kmf1oUYL5e6guV8xSAI+JNOSrpS5KosPlwSAhUfpZv0Xxb35Uqj+Z0VJtNAUrz
-	gKmgVMyivssmzdgItFRr9RrFyk2bkCo2GOVolq2UbvCkBWv9UEJk0R/D1Pn5qwb8xrncCAUvG6Y
-	pO2lw18yazUtinEcZaHjPcpEf1nkH2pGh71sK3J+hlN9ElUm18e/+aCECWdOr+vcwwvodop63uP
-	9ZjdA9X2nf6ZH7xxWAOpKjKV7/ipNskkSve0QHGzdgVNBlae0u4d9ZvU1sSN0s1dWkYnLSSw+yz
-	nd1gNduCA8qL4tghMkB4EEI9Av3AtVK1QVI1VcWKSkOuhLt38IRjChPeJkJ+5P2EItFXQEHC1Qn
-	PyVwIj8890wQzCzAM04Vg/fsWQEqzTcNYQbkn34m8LimzdH1kV9Q4=
-X-Received: by 2002:a05:7301:1c99:b0:358:c9f3:b055 with SMTP id
- 5a478bee46e88-361a02b6dfamr10734323eec.1.1792341948734; Sun, 18 Oct 2026
- 09:45:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="USjHVZ9k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538241F000C4;
+	Sun, 18 Oct 2026 17:55:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792346116;
+	bh=GJPWC7Dv/8Zu9VFBB9DaMsNp4lUWVw8pVcd4e33MU34=;
+	h=From:To:Cc:Subject:Date;
+	b=USjHVZ9kTGj8Lgd/AJ577Xvr7miuvKYM/INRj98JRpTI81yvkGFt0XpBeeMVBfNXS
+	 Lgz371uasIFIk9Xb5/7m/EocWeAL2O9BBO+us4H39uKGCalyaMUM4R+GyQe5RdjBol
+	 qYUmph1i0LIuSHCpPIte82PAUEdDpMWLdlQ5zr1K5psmuTBkEEIMJa4ExJ/LvdTs5Z
+	 BprFel0+mFWzgRGcqQ2Zzg1zCCiiKydsgv9Cn/KdSueeSiyTpJVdsnxfm1Gf6NNCqm
+	 KHR0p+3PNHWpmCWf1pvOYgCM3x0l8PIctdN5fuWLoR5jCYxKexSn7GhDMbZkWCPakz
+	 dpgJrZ1MOP1SA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Thomas Gleixner <tglx@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>
+Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	stable@vger.kernel.org,
+	Kent Overstreet <kent.overstreet@linux.dev>
+Subject: [PATCH] x86/rust: use `-Zindirect-branch-cs-prefix` for RETPOLINE builds
+Date: Sun, 18 Oct 2026 19:54:57 +0200
+Message-ID: <20261018175457.87803-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261018163719.81691-1-ojeda@kernel.org>
-In-Reply-To: <20261018163719.81691-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 18 Oct 2026 18:45:36 +0200
-X-Gm-Features: AclHuK-IVlxiwyPmjYT3Tt3VR7rUJ4jd9dZdNoJBNKLdaTx_K8cRCnx26TODSAQ
-Message-ID: <CANiq72mMpqFFkS9DQJonCZ=-0ck43SNKPXUPMpAtQrQiezjYOA@mail.gmail.com>
-Subject: Re: [PATCH] rust: cpufreq: fix `undocumented_unsafe_blocks` in `PolicyCpu::from_cpu()`
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Oct 18, 2026 at 6:37=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> +        let ptr =3D NonNull::new(
-> +            // SAFETY: It is safe to call `cpufreq_cpu_get` for any vali=
-d CPU.
-> +            unsafe { bindings::cpufreq_cpu_get(u32::from(cpu)) },
-> +        )
-> +        .ok_or(ENODEV)?;
+The C compiler is asked to add a `cs` prefix to the `call` and `jmp`
+instructions that go through the indirect thunks for the `r8`-`r15`
+registers, which makes them 6 bytes long instead of 5. That gives
+`patch_retpoline()` enough room to inline them, e.g. as `lfence; call
+*%r11` for `spectre_v2=retpoline,lfence`.
 
-The other option is to split the statements in two, which probably
-looks better, but this shows how to do it without changing the shape
-of the code.
+However, Rust code does not get the prefix, e.g. for a
+`CONFIG_MITIGATION_RETPOLINE=y` build:
 
-Cheers,
-Miguel
+    $ objdump -dr rust/kernel.o
+    ...
+      e2b: e8 00 00 00 00        call   e30 <...>
+                e2c: R_X86_64_PLT32  __x86_indirect_thunk_r11-0x4
+
+Moreover, since commit 4a1e02b15ac1 ("x86,retpoline: Optimize
+patch_retpoline()"), `emit_indirect()` assumes there is enough room
+for the inlined sequence -- e.g. with `spectre_v2=retpoline,lfence`,
+the kernel warns and dies while patching a site inside `core`:
+
+    WARNING: arch/x86/kernel/alternative.c:736 at apply_retpolines+0x2ee/0x400, CPU#0: swapper/0/0
+    ...
+    Call Trace:
+     <TASK>
+     ? _RNvMs6_NtNtCshS2CUL9MEDn_4core3fmt8buildersNtB5_9DebugList21finish_non_exhaustive+0x5b/0xd0
+     ...
+     alternative_instructions+0x1d/0x60
+     arch_cpu_finalize_init+0x5a/0xb0
+     start_kernel+0x1f4/0x280
+
+Similarly, paranoid FineIBT rewrites each kCFI call site into a fixed
+20-byte sequence, i.e. the 14 bytes of the kCFI check plus a 6-byte
+call. For a 5-byte call, that overwrites the first byte of the next
+instruction, corrupting Rust code:
+
+    SMP alternatives: Using paranoid FineIBT CFI
+    ...
+    Oops: double fault: 0000 [#1]
+    ...
+    RIP: 0010:_RNvNtCsdVypMZsLRAh_4core3fmt5write+0x1e9/0x210
+    Code: ... b8 68 81 16 9f 41 3b 43 f5 2e 4d 8d 5b f0 75 fd 41 ff e3 <cc> c0 eb 02 b0 01 ...
+    ...
+    Kernel panic - not syncing: Fatal exception in interrupt
+
+Non-paranoid FineIBT is not affected, since it only rewrites the kCFI
+check and leaves the call itself to `apply_retpolines()`.
+
+We added support for `-Zindirect-branch-cs-prefix` [1][2] in Rust 1.91.0
+[3]. Thus pass it for `RETPOLINE` builds when possible, which makes all
+sites indeed get the prefix:
+
+      e3c: 2e e8 00 00 00 00     cs call e42 <...>
+                e3e: R_X86_64_PLT32  __x86_indirect_thunk_r11-0x4
+
+The kernel above boots fine with `spectre_v2=retpoline,lfence`, inlining
+the Rust sites as well.
+
+For older Rust compilers, set the LLVM module flag instead, which
+has the same code-generation effect. This means that every Rust version
+that the kernel supports gets the prefix, that the kernel boots fine with
+`spectre_v2=retpoline,lfence`, and that paranoid FineIBT no longer
+corrupts.
+
+In addition, add it to our target modifier workaround for `rustdoc`.
+
+Cc: stable@vger.kernel.org # 6.18.y+
+Link: https://github.com/rust-lang/rust/issues/116852 [1]
+Link: https://github.com/rust-lang/compiler-team/issues/899 [2]
+Link: https://github.com/rust-lang/rust/pull/140740 [3]
+Reported-by: Kent Overstreet <kent.overstreet@linux.dev>
+Assisted-by: LLM
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ arch/x86/Makefile | 1 +
+ rust/Makefile     | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 8af6b80cffdd..01c848855f99 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -21,6 +21,7 @@ RETPOLINE_CFLAGS	:= -mretpoline-external-thunk
+ RETPOLINE_VDSO_CFLAGS	:= -mretpoline
+ endif
+ RETPOLINE_CFLAGS	+= $(call cc-option,-mindirect-branch-cs-prefix)
++RETPOLINE_RUSTFLAGS	+= $(if $(call rustc-min-version,109100),-Zindirect-branch-cs-prefix,-Zllvm_module_flag=indirect_branch_cs_prefix:u32:1:override)
+ 
+ ifdef CONFIG_MITIGATION_RETHUNK
+ RETHUNK_CFLAGS		:= -mfunction-return=thunk-extern
+diff --git a/rust/Makefile b/rust/Makefile
+index da1a7409d984..35868a47e18b 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -167,7 +167,7 @@ pin_init-flags := \
+ rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18)
+ 
+ # Similarly, for doctests (https://github.com/rust-lang/rust/issues/146465).
+-doctests_modifiers_workaround := $(rustdoc_modifiers_workaround)$(if $(call rustc-min-version,109100),$(comma)sanitizer)
++doctests_modifiers_workaround := $(rustdoc_modifiers_workaround)$(if $(call rustc-min-version,109100),$(comma)sanitizer$(comma)indirect-branch-cs-prefix)
+ 
+ quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
+       cmd_rustdoc = \
+
+base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+-- 
+2.56.0
+
