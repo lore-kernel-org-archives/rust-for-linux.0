@@ -1,111 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.44
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792426455;
-	b=EaXwVvwfpbO6s3/62+2WwcjPJY1wmKvqVPpS/lB6mx1j4VK7fjWHaBzXBHlpHuNfLy0s
-	 vMDkRSfx/rhcAr42N6qKCoKzH/4l35Velffhc2Ul9dY3JkfKZXrRhLTHr+76uic658Bjv
-	 H8bdp2EWsrQ/ATeLrke3gJdiUoNFUid2mIJGarEumHFSo4BCtrdumcXn4MetFVT0maCZ1
-	 JdXXgan28ehQw/4CN0sQopX45X2eS11k0nAQqC6EIepGAMVj+6oWaGXroBGWNsMfYD9/F
-	 WVpA+DC+wo5zB/K0Lp0VBjOGNj0/11MQGsiNpsakfo3q5ax/KMmOt72p5H1J9i8oPZw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792426455;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=WeESGS5MMsFAlGW0P+2tNMhoNZouoPlkfPyiKA/uXkA=;
-	b=R4VVN8TaBUuQZkNpKFrCeQToGItlPVoUCViESRimi/P4e4wr5m3aRr5pqy7pa+Kkhi8R
-	 oPGeuqCV7dqi1/NFDJJpjs9WL0nmIQedhjoWnrx0Lut5P39bKWkky20oJehx7Altk50EC
-	 kDquqeIfY87aQwk+bKH5rwS3xEqmzKItKLFjdbfh0q6vEuBzumrBYmVoVL1Ova8vYFh6Y
-	 9nfBU5Xg4xX+X9dnk1AhhvS3HSdJhMcOt3jXwQToKwrtJlP0KQ+FFEYY6N16IcRUVCkPn
-	 Wazpkgge5DbZvu21uiv9OWSzg3brAQCVP426hBPJBHLJg9Zw8030OBRB18Z8fUDa93g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=TAq7zZJ9;
-	arc=none smtp.remote-ip=209.85.217.44
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.101.102
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792426605;
+	b=Hes7ykfOmKrr68YLndN9PNxT/J4v9Pld915UHNQB8XUZHNP/fvVppEbUe3XvEaWuehon
+	 HINZVADz/5RGkyLm4SPhiOwFJxVBHlWU/+sEFt+qFJ5eI2MC+yPCqAZmPALPLh8JbFLJ5
+	 3gMkb+plfnVDRYvpt/fySGfnbjtLdMLZgebYIbM+MjTgBL8f50daRLPrWjHT48FKvzlM9
+	 HpxXpSMZAxpU7taodk0I9tEeqKqguQjX3TSEbvNrbeX8P9DQv7Xq7nuBGB7a6r9gsZnYu
+	 nWpWGgTWkbDg1Ed9+jhHcOMHnoG8Mlia2NbfFJdFtyL3aLoMhKBfueDBhMo0IN3zk0g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792426605;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=Ydt0CLyOsOCLEfdPC6Vanczhg6KWP8Ljp09RX5WLWNU=;
+	b=c5AkLOm3Lsb7ZjF+14/Pp7aJYI97ouiXrjZb0je/PHS/8qDGWREcyiOEmCdt7lCz884d
+	 /pUVXQXR2BdfosdbUXR487zhbVrH7I6H8d+UgB+9iQsVi1nrfx4nE4z2e5bwZ6s9r2RMM
+	 r8sUUlJUPpdy3iYeyPzi4TwGJQsnGx9lRCT34dgp0LGY+MWpFfrO1bJMFlcjDvBQzgSn6
+	 ydmqBAmvDlrBse5IZeuSxCzkyp+FtTXiRyH/sKD4f2efhMKtuXp/3f48VfPm8p0HSnUO0
+	 M7MZ3DLHUej68FeSS/MfYS+b1qX69l1g9U4xrNph2SfCOwddEmEC8Ds8V48uFkjrKcg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=garyguo.net;
+	spf=pass smtp.mailfrom=garyguo.net;
+	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=KnYqLxjG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.101.102
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022102.outbound.protection.outlook.com [52.101.101.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED535606AF82
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 16:14:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ED535606AF82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9DC606A319;
+	Mon, 19 Oct 2026 16:16:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F9DC606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=TAq7zZJ9
-Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-74ab6c88052so625167137.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 09:14:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792426454; x=1793031254; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WeESGS5MMsFAlGW0P+2tNMhoNZouoPlkfPyiKA/uXkA=;
-        b=TAq7zZJ9gPJlhVCynuRETKr89Jk5qC7BTe9Oy7drLE18eRWb9LXMolkUeTOAdwmswc
-         uErrwmqxxrLXUyAGuilAOmIkQYmmBh7B9YGo2k+8Zz8yzGBIgOPQmiLAwmoPKoaBIwEA
-         RzXtDC2YAx1bKFQ3NTskNn1m03Z6p2so8srCyNUBkSFTl0CUGaxhuYLMLRZ3yReoVH+7
-         FOHp53NR2WCeM1iOc/80H9KxWLu/bgY/k+XNRYzr/7xsOC6fgXxS+aQSaJiUq09SJoQo
-         t5mbfC8zSnPBiaPbgniFi3zD5QSCRNUVtYFXfqA5pMe2pNUjlmrieKjEbPwoKH0bpFyj
-         9GSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792426454; x=1793031254;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WeESGS5MMsFAlGW0P+2tNMhoNZouoPlkfPyiKA/uXkA=;
-        b=y4hvCmFFPX8WBXqW0dwesUHI9u4w/ZxGLHVDI0RpGwbocr01N6XTUqWbJPQTuncp7s
-         WTw7P1GtJDkID7ZfbbjC0FMfOuHXULo52r69yEnmad72BmIbfKuFYB8bmHOzghQ3zzpM
-         wcDQ6HOWwHE40WjsB8W+NDwoZiG+5M6tL9zz9Kr94B5iP5vE7hWU7fRrG9pYE0LWHDK4
-         2IBcAMqG7eT9f9cNQFuKu5uofEyD5BpXQDciJCrSnLNDGQ4b9tAjGcvCPfmnPkvH2lmF
-         ewWG31SMqw4Ol86JQXvOJNIWyWl2la5ny+s5HBJSJfAJ1ll6SCeqVdqahm6izBxJ1WXQ
-         rO0w==
-X-Forwarded-Encrypted: i=1; AKwUvBy4zovYQQ8tTkGAKDG4asHRr9FFiLY/XjkTntlnzwdcgFhBHxMjFnVNrod5f1tC5wIcM5MspGkMdh3V3Sg2Kw==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJHkqJnzJSj0rkjgOX6TSjqAIHq0OXin73NsjbTF+/qHddjxbP1
-	/MJPCfAnn1v/pQ/PShQdd+bMxMEIIhM0RJ4M5dKMFYfJEsxfwyPsg50=
-X-Gm-Gg: AYBFou08NvVf974dEwrsyNXoOZOb3CEZ6PgytxGVDGIZfzvQtCDwxlXsRxDWq9Ksrqg
-	63iqTwIANAostgHIgw8FP9NPZIp74j80DTliZAheswM9M3VpEWGM+vB8Tv/ao4dKD9ctsD8wwfA
-	qNsZpPNp+aJZ9RNg+3URG4SoMxpBjS2RIetGn/7GoXiKb9EMhLBD9trefD1aSNumM6hoyJetPxi
-	QhKnc9PGy9n8bL8RWYPzymBznrfsn5/OtGxfe7PUMDhyx4sUVy9cX0/YAh6dQB0nE6whUI8/Pf1
-	8KGGypPwFbp3D1BfzPXDQ1VwNZsPFIh/VWPWn5qdJGmwXGnP1Z3hVzVXrzqGC751fOoJfenaV0I
-	+zbhm/sVrrhj8Y+ZwDuBPoz6Qsc1f7IcdZyCIK8AmDbgP0ftJhcWhO47Clyx4M88mMZbKMiPk55
-	qcOcGFnfnHWz9rzix6kIXtXbXnxS4PCbeJfvTxsChifCf1ueuxNU/qTdV73vISsBKE112Z714jY
-	HOZpa1RpRsf7lmLRl3S03uvi6OnJURHabHBKIh76eHaAVpEaw==
-X-Received: by 2002:a05:6102:f08:b0:7c3:8ae6:d7ae with SMTP id ada2fe7eead31-7cc367321e3mr1998561137.1.1792426453769;
-        Mon, 19 Oct 2026 09:14:13 -0700 (PDT)
-Received: from localhost.localdomain ([186.158.238.108])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-990bb38f7f1sm525062241.10.2026.10.19.09.14.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 09:14:13 -0700 (PDT)
-From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Brigham Campbell <me@brighamcampbell.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Gary Guo <gary@garyguo.net>,
-	Jori Koolstra <jkoolstra@xs4all.nl>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev
-Subject: [PATCH 2/2] rust: platform: remove TryFrom<&Device> implementation for &platform::Device
-Date: Mon, 19 Oct 2026 13:13:38 -0300
-Message-ID: <9a53f75cf2d607bbcbcf54777e75caf99dcf6318.1792417858.git.nico.antinori.7@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1792417858.git.nico.antinori.7@gmail.com>
-References: <cover.1792417858.git.nico.antinori.7@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=KnYqLxjG
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bdKQ3Q/Icx7HB7bzceLGWxrawHdpOZUgy2aOpAikIx3600lyKdWoKFDgAR2bxaT0xgx4m3/nO0oVRoMKS+RcgVLkO9tByg2kCUdA2gK3OZxnuRT6Rnvh8BBV8RubPUsUsN2x+2NK8lf1XPagturl9LVgxKmktQe8yy1VLntLzJX8ZVJTcXuuHEzcv8qgzCwUxqJjIi2ino2a3pLbclu8Z+rDgDMRFNzI7uZajoppesumHIvTRh+OXr8O0470l5VlJ9uf8grEtKHVWF/w00Vx+jqk90loJxeYRUHKObiTDhobLzN8Icc+Mp9Hp4B6Flsz1LvXBTZLx5gP9acFH+m7QA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ydt0CLyOsOCLEfdPC6Vanczhg6KWP8Ljp09RX5WLWNU=;
+ b=Z1xS2kMg7E0NMOUNCbDwInl0CkWQeEnbUFBKK3ijCy/3pclLftZw6emOLYz13dw4Uoo9/vjqEqWQUbZaXqpNvKfMOifmyTPqmExskp7tX2QuIiRomwxLU3T3dK7bhqzIkD3QAOLPYccu0vnpdRgnn14rpFi/GJjbGXp62RRzTaG3giusjVHh1cCC4WPU9PIj5UoiFk2Oy8gDiES3p3YSEcqTE+dVQbw3cR1CyUeAJ0axUY8T0yJjlDNszelmjZ9ZuG+IpFt8aHhGYWq2LWegET+gDQvf6cZCjOYb6Maln3MA25nfoPQKKQgYZjm/hvaqDYHB0gOeS+TCaP4DdcwpLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ydt0CLyOsOCLEfdPC6Vanczhg6KWP8Ljp09RX5WLWNU=;
+ b=KnYqLxjGF0FWk9jfCRprW1g83qR8ghyQqWgwJEFqG/vf8jApigQVLWp/FmQjn9rRjqfh0R2TiRa456UUqxzswKqxN2Xv3DzIz7uS3yNIiqH6a2+TLVaaPEoEQ+4h41mjayPjx08oR8Fpop1lNXCI8YrsT7pVMKysIHtL58EMWlI=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+ by CWLP265MB3138.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:bd::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
+ 2026 16:16:41 +0000
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
+ 16:16:41 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 19 Oct 2026 17:16:40 +0100
+Message-Id: <DM8Y78VGDXM5.36K23TMPY8ZVZ@garyguo.net>
+Cc: "M Henning" <mhenning@darkrefraction.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Benno
+ Lossin" <lossin@kernel.org>, "Eliot Courtney" <ecourtney@nvidia.com>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v6 01/13] rust: auxiliary: let registration_data_with()
+ closures return covariant sub-fields
+From: "Gary Guo" <gary@garyguo.net>
+To: "Gary Guo" <gary@garyguo.net>, "Alistair Popple" <apopple@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, "nova-gpu" <nova-gpu@lists.linux.dev>
+X-Mailer: aerc 0.22.0
+References: <20260909064506.910162-1-apopple@nvidia.com>
+ <20260909064506.910162-2-apopple@nvidia.com>
+ <DM8Y4G5JMZ64.9PYKH079V51H@garyguo.net>
+In-Reply-To: <DM8Y4G5JMZ64.9PYKH079V51H@garyguo.net>
+X-ClientProxiedBy: LO4P123CA0436.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a9::9) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -115,59 +105,114 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWLP265MB3138:EE_
+X-MS-Office365-Filtering-Correlation-Id: 88f95707-a234-40a9-9215-08df2dfc5c42
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|10070799003|366016|1800799024|376014|7416014|4143699003|56012099006|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	4dkEeSEGbbBARXMWLun48gYxcgPFwqKOK2netXgs4s8zbwiVEC0R57Rvbld2dw9ibSD9f/TP7Ti8ovtt4Zq4aGT7gSxjcl9jiAWkEsBLjOcCYulRaMZw09tvEYUzB3Huy0ivjKTtmtSZ8XU5d0+xavDrQrOiRgkxqS20BTHW4BnjlTRO4ZLLTbzD8uv+OkkEobrQ3EaJEk28zTruFi3IHBNzPXTHehtCjKY0/CVOGmGq5ugpalfKTqlf2c200sdwY+J5sQOZTyOmloAJ7KR3a+QAzps3WdP2QvhF5tNe895xzM+CN5FEwG/hNoNIKN6OEgPQ4svIN8JD8FmdICdePlgzg5KffiF4tA4qwewvYoohLVVq3nb5nF+YPZONU01n42KlJlztADZynVWRoFb/hRZNvYZRsN5liciW5CU8j1ILpCuTZseBTMzyGxB2DSFBOOEKKHzF3SGa3NcPOmGbxzZ7i+fmbJ7KVtQUWPdEtlaQjoi3LrIfM/eRr1+iR3icpESfpB6j+xUbaXDeF3jY2o8cUQXh4BaZJ96nDPCochY6BXrnN7Swsdtt2Yrnvfi6f9GDb1TGZHf+Su9o2bFI74CzqJJm2FBDfs2+tgPhfuywBhnuknxK3b55ZVeyjd+zJdcDKILX7p3iX3KRUWglM4LSyB5CPpRUeeQaY3Mram8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(366016)(1800799024)(376014)(7416014)(4143699003)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aXllNndMV1NMR2paME9EL1FuU1RaWS85SDE2SXNmckVyNlp1TjNNTDRPSEEz?=
+ =?utf-8?B?WklpTHd2My9iekxVcmZLdHFJYUowdGJWN05aZmhic1lpSVhoVU0rbG1zUFJI?=
+ =?utf-8?B?dTVOOWgxMThRdmt0N3NSS2pGVDhTYVdQa21RekJLU1Bhd1JaQm1Sb2p6WHVp?=
+ =?utf-8?B?WGdyL3M0Z2UvZy9vMWY2eTlIbTNkVTkwaXZYRElvdmlRWFRFSm40ZzVSV1ky?=
+ =?utf-8?B?dm5tWU1UY1hTOEpMZWJlU0dzQmZWZi9weWZicGN4NkdNeWpPaks0M1VvdWFp?=
+ =?utf-8?B?aE1YSS9rZGxOWnlSTWFMNEJCRmpBNUJuaVVNVWx0Y3FoYzFFSjY5T3hDeHV6?=
+ =?utf-8?B?L3hxU0RHZ0hiek1IWExRNkhRemJKNkxIZ0MrV2N3SW5rejFzZ0tqblRxbEtj?=
+ =?utf-8?B?QkRwSllVWTB4UUdSSzVBZlU0WXZpVzU1Q1A0TXREUE92RER0YVI0Q3VFWXJN?=
+ =?utf-8?B?MWNxcllReG9zUlgzU1M0eGRzVkJiWkhwajhGb1VGNnVkUHhMY0MzN3RCY0Zu?=
+ =?utf-8?B?L2ZIczNzdjBQWEl5WmU1ZFRPK0NGTVhkckZWL3RYZ0ZwWldSMGFrU2pWcm04?=
+ =?utf-8?B?TElPQWc0VTZOeEhkTmpoS21QcWVVT0pyM3NyZXhaaGJHS2RrV0tMVURQZVRD?=
+ =?utf-8?B?aFpBNFJDZ2NMdUxjWkw2RE50cWR3MTFxbnlrb3ZSZ2dkOFJleU9Rajh5czhM?=
+ =?utf-8?B?Y3kvRDFCbjVBTDJHSVdNS05NdFluMkVlMkVIcXZjQWpqM0lWajlEcW1qNEFr?=
+ =?utf-8?B?SjQ2WDlVZXpPQ0FWam9PMFAxVUVRQzZkT2RWZ3FFNm9ncnhXN3RrQlRaSXZ5?=
+ =?utf-8?B?UWhqcXUwckdYbXZWTHZKcUswYjlxUER6Zkl4NlMrZGlJRElFa3ZjN05rZlV0?=
+ =?utf-8?B?VXFyd2g2bE54SlNNckI4aHVlQllLYWdpVWU4VEMxcTI5WmJHRCtsYnJ1Mi9n?=
+ =?utf-8?B?SUZEK00yNHdkRWdFbWNRRTEydjg4c0JDSERSRFlFL1NkTE5vNGs3T3dFT28v?=
+ =?utf-8?B?ZTQ3L3cxSm14ZWVXT2pieEtoa2NzQm9qdlJwb1VzemhpZTIxR1pmblAyMUQr?=
+ =?utf-8?B?UDVpR0NoSk1FM0htVTBWQjV6UHQxZTJqQXYrMGNHTWRYa0I1b2FRdm8zZklu?=
+ =?utf-8?B?ZzFqVHJKa2xNOWpSSGo0bmNMYjBVSW5vb0YzUytYb2l5Mm8wWGh5STJ2UE5o?=
+ =?utf-8?B?ZjNGTmxXN0k1eTRRQjY0RGMycGxycDVaVk16SGM5VWJtZ24zZThhL25OemR6?=
+ =?utf-8?B?N0RXUHl0V2xjN2ExaS9IZERFNmNGR0FLODZ4bEJyWDBkckRRY0svL0ZSMWFP?=
+ =?utf-8?B?TXcydmw5RUlYMTQzb1BOUXJicXFBSXZZaU5SYUE4QlJuR0g0Rmp6K0x4UWZ0?=
+ =?utf-8?B?RmRZeXlwVnh0TUgyWjBCUE9wV3AyQ2dpY1JIRmZpbFp4K0Jxd1dPQmRndHI0?=
+ =?utf-8?B?SFprN2FXTzNHeEpjQS9XZncrSldENXBTdHF6Qjc4UlhULzUzVzFhWTFWYXh4?=
+ =?utf-8?B?Z2F4azh0aERpa2l4clF5TFk1V2FGaGd3bjB4R0taTXFIemc0QjdaYTZyNnUw?=
+ =?utf-8?B?OVpXQjFWZXpvYlF3dU9obC9XYVVxWVpnYlYreUs1QUptL2RTRFlNQTAzYjF5?=
+ =?utf-8?B?YllmS2ZMTmRHUFl2bXhoOUEyZkhqVHl2UmpLa2xHSjNjMitTRzlHMU1zamtk?=
+ =?utf-8?B?d05NUDNZMmJxcVg3Mm5XMDRZcXRDVEFvak1udWsrZ1hvUmxBQXhGc1Vtd0N5?=
+ =?utf-8?B?bVlXUEdCSi9zb2d1ODJmRjNWQlNNWkg3MTVjc09NL3pFU01aeG41WXhQUnFN?=
+ =?utf-8?B?bFJ5T3dxbW5zS0xsR3JHODlSSE9iN1hnWm92UTZDTWl0a1Y3NHVGb0JNZ0wv?=
+ =?utf-8?B?S2NvOFFGd1piVWJ5Y1RnYnVIQ2t0d3Y3NW8zNGxxQlRxVC9KVVZubGNOWXg3?=
+ =?utf-8?B?QXFFSW9UUWp0MUFqYTg1UUU2WjVNUDFEUzFTT2J0azZnSFd3TmUyTEQ5MFJW?=
+ =?utf-8?B?dmZ0ckE1UzZ0aGNXc2cyYklIZWE3NGxEb2ZBWmljSUQ4RzZ1dnVYazBXOStU?=
+ =?utf-8?B?cHJvUWVjU1ZVdDFHbWlvSmtkZ2VyN1NzU2pqQ1dvUUNVaTVwdEZwY1hZNmJ4?=
+ =?utf-8?B?alV6UVZUZ3dUUjRuN1BIcThReW10RUJzOVJTR0d6NkNHdFpYMCtXV1VnbmRM?=
+ =?utf-8?B?V1Z4blhoSDRDZUVFNVQ5NldkVm1LbTExSUtveU9uVGJqaWtSLzFwdUNSelF2?=
+ =?utf-8?B?THpRRUtQVXpyNmMwTm85RUJ4d3MwdXlBWkxHR1V4N2hIQWFhbk90L09ZZkg4?=
+ =?utf-8?B?ZWFISjA1aDV5aytqQnNJaTJKMERZeXNHcTdtWnU5WWp6TmNDb1l5Zz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 88f95707-a234-40a9-9215-08df2dfc5c42
+X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 16:16:41.3399
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kLvRrPBXI7NI9t8lqbgk/OPUsw7/lQgM4A8NepfURExlYQD+qxG0Uj5hG2fum6SLv7Agv82a7FVNPJvu/6gg0Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB3138
 
-Remove the `TryFrom<&device::Device<Ctx>>` implementation for
-`&Device<Ctx>` since it has had no users since its introduction.
+On Mon Oct 19, 2026 at 5:13 PM BST, Gary Guo wrote:
+> On Wed Sep 9, 2026 at 7:44 AM BST, Alistair Popple wrote:
+>> The closure passed to registration_data_with() currently receives
+>> `Pin<&'a F::Of<'a>>` with `'a` universally quantified. This prevents the
+>> closure from returning references derived from the registration data,
+>> even for sub-fields that are covariant in their lifetime, because the
+>> compiler cannot relate `'a` to any lifetime the caller knows about.
+>>
+>> Tie the outer reference to the `&self` lifetime instead, i.e. pass
+>> `Pin<&'this F::Of<'a>>`. This gives the closure the implied bound
+>> `'a: 'this`, so covariant sub-fields such as `&'a T` can be coerced to
+>> `'this` and returned directly, while invariant fields still cannot be
+>> coerced and therefore cannot escape with an incorrect lifetime.
+>>
+>> This allows auxiliary child drivers to project covariant data out of
+>> invariant registration data without having to wrap every use in a
+>> closure.
+>
+> Looking at this again I think the current API might be unsound where this=
+ patch
+> becomes fix rather than just a feature update.
+>
+> For an invariant `&'b F::Of<'a>`, it's actually a requirement that `'a` s=
+trictly
+> outlive `'b`. With the current API surface, we can obtain a `&'a F::Of<'a=
+>`,
+> then we can store it inside `F::Of<'a>` (because, well, F::Of<'a> being
+> invariant, it can internally have a `Mutex<Option<F::Of<'a>>`), and then =
+we're
+> able to UAF within the destruction code of `F::Of<'a>`.
+>
+> The fix, is, well, this patch.
+>
+> Would you might pulling this patch out, rework the commit message a bit a=
+nd send
+> as a standalone fix?
+>
+> Best,
+> Gary
 
-Fixes: a38dfd60fe53 ("rust: platform: impl TryFrom<&Device> for &platform::Device")
-Reported-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1264
-Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
----
- rust/kernel/platform.rs | 21 ---------------------
- 1 file changed, 21 deletions(-)
+Ah, I am looking at an old thread, this has been merged now.
 
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index ac0a012ae1bb..f49aedcc94b1 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -7,7 +7,6 @@
- use crate::{
-     acpi,
-     bindings,
--    container_of,
-     device::{
-         self,
-         Bound, //
-@@ -557,26 +556,6 @@ fn as_ref(&self) -> &device::Device<Ctx> {
-     }
- }
+Ignore the message please.
 
--impl<Ctx: device::DeviceContext> TryFrom<&device::Device<Ctx>> for &Device<Ctx> {
--    type Error = kernel::error::Error;
--
--    fn try_from(dev: &device::Device<Ctx>) -> Result<Self, Self::Error> {
--        // SAFETY: By the type invariant of `Device`, `dev.as_raw()` is a valid pointer to a
--        // `struct device`.
--        if !unsafe { bindings::dev_is_platform(dev.as_raw()) } {
--            return Err(EINVAL);
--        }
--
--        // SAFETY: We've just verified that the bus type of `dev` equals
--        // `bindings::platform_bus_type`, hence `dev` must be embedded in a valid
--        // `struct platform_device` as guaranteed by the corresponding C code.
--        let pdev = unsafe { container_of!(dev.as_raw(), bindings::platform_device, dev) };
--
--        // SAFETY: `pdev` is a valid pointer to a `struct platform_device`.
--        Ok(unsafe { &*pdev.cast() })
--    }
--}
--
- // SAFETY: A `Device` is always reference-counted and can be released from any thread.
- unsafe impl Send for Device {}
-
---
-2.47.3
+Best,
+Gary
 
