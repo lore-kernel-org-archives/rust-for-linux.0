@@ -1,244 +1,183 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010000.outbound.protection.outlook.com [52.101.56.0])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.52
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792423421;
+	b=QIpbdxY8D9tw/DYt26ugBOAbZmejSkpcnTKgWIB+GeE4ItxjXijBJkIL8R3imkUD0otq
+	 cEXq1U0K6RV07EY0JLpQ9PMqYwWE0DSk+f8mipH9M52m9mYtZOJAEXfmbztvsrX7f+1f7
+	 p6sInnsl4sxgTlgJbGuTYx8J8LMm9wuuKOIHKtuQgOUhWyxYyGJufSz9o4lHdP06aUkZH
+	 8GrN4VACaqhm53AeEjlZEmTksrTI6E4JmRDkr0fHWXT7TaiWJVekX4+DYuVIRib5WNApM
+	 kPyKX/l5It4dfKys8/xcYz2c2/N9zq5dh986Umt3MEK5I+Mg/4I+bvUyuZtSeE4VgAw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792423421;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=TB5WC1uvayakjtGRBbN56iOi71cVu/uajHIAhyzork8=;
+	b=URk4EHHzpvRBdZ7TKG12n6uRTKp/kF0gN5yRZQu3nlUN4u9312dlLqv/5KspVCqDJw42
+	 NS6JxLX0RNDI+nxfsFjOUj8ehTvOs5WtMODyWjh1dCx6mYVSLU0dVB/skcF69fTa5pEpV
+	 MdBIMe+bX85wbnyHoRxHYNOluDy2Wqax/6nnnYayC6KNH+QioMp6i32luQjKBDuwv8low
+	 QHntIX7FIHVLU5L+H0lJGKnM7wDBb7rHMpowdSy9XL8y/6OKB2f/0nGzufiFurluD+iel
+	 HdzQlBwCkYrHrqLhkYxAH6Jag39M8/yOqJqvPKV9pHdJyWRqneMH+j3mDijWZ3AyhXA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=amID5UL4;
+	arc=none smtp.remote-ip=209.85.222.52
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA2552606D;
-	Mon, 19 Oct 2026 14:51:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.0
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792421486; cv=fail; b=ZNixvUK6L1V97m1/wYZCShmG4sTpqEQfSYfpjRZmiCWhWBDvHNVaZvidKdZ4++1/8XIbCz7i/nTKROKi9fh4u+wlSFVJlCBQ8v3jHvhkPmbV9LwitlbjMPBTtU+dNA+/jjFhSXW+W8wYtB0CKNGwC5Dlt3zo/qrer9XGA54B2dM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792421486; c=relaxed/simple;
-	bh=Qih2SFlq8R6xQ0R58gGaoAic/kw4Lia8ucS12Htn6zU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=uwwy/e65x7ecyTFpg6SVfSMbo6oHgwtFaR8FYAdDqKOu+AyvDNGuSQ8yQbruEXCJnijuGK9D9Fpd212VWlWO8h8uWUUWqZIZ8yNj3qSveuz2CelP40PjHRR4jlHQ2TzS36dtxVZrgpm1TewmC0iwtWKKOYVHVt04xnsVgCPkq48=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oPgVCzJu; arc=fail smtp.client-ip=52.101.56.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DBB60ACCE9
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 15:23:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03DBB60ACCE9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oPgVCzJu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KN3EuGXuNgG9HPGHD6T3gmIo49oGlzCvhJuEgotWbPJPEwksfge7qqZPxjq6cdFUZpdKculV6SVhfztWxr3Z7E/tD6Gi831kmJypoBw/fP9wFTcH6eNVQXYPnq7hpCVu7qUvbatLrZqazK9zgnrZ5MZMxFVbSwEPf5CtyAlEH79zgVaNtPLhHrICA5YSNzFXSGsE+ft0j4OR8jb/v10ehO4ZupD2RFfyrluC3R4+0oOuXlij3YvHkg3EO9weyT2GMhIOZ4ZKVJmBrM3OU1i2T+N6YQXxzavLcsi3woTHMqX8rvWFh/KzO7bBnIByskxuSYZKwhXLFlYMWv0iJdC7Jw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tWc95+Inm2vmeEbwL26KkbzoXFZIokOmb5ZLxk33u9k=;
- b=avX2yoavXN4KihG0sNvarzOmywTHR4x8uKYScAdtH8Ye+xIBjvhkaA84vFMp2thDJKscpS/3ar4rb3JuBvCFVFG0umYfbhoOMevOQb/m8r5CgN9aYiEOxH2F270O0N7VJRUc1U2BplRpYMExWRHYANJnEgms+3Li1HgurQR7fxlQ2TWytuPIDH77APzicGAbZlhspQTU1lIDrdwkIuF6RpbCedYBXhRhVd20dqZiUSommjJQQoY0WyUlk82EZ1YOxJHbcY6n//7xbfWlxdoJTXU4NL+iAcvQvaEXbHCW6AR7YzdgBVGD5lPOBM6LaiFfzj2bpbAYD6Fei4+qwjvbUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tWc95+Inm2vmeEbwL26KkbzoXFZIokOmb5ZLxk33u9k=;
- b=oPgVCzJuebfvonEAZNzjZHvzl48A+5Kh0MLNvQu6PwVPiOheSr5njNoLroOakRJ6aOjYxqHHrp9mKJyq92dmALI7Gso/nzeYNEQ0T/wDQ0t/rWdf+sfvx4BdmbBB1UAM8sGUsF4ZmBobs08ueegOd0v2dDSrQYnRcCB02v8w4GNR8HCyWk91MddGkNCSClj4QpBJ4MXmB8a8NyTdFGlaJTyoMyeAMP1kxgdmJ5++1kL8gHGinkuSQQje1KgrYtSJPbZHOSbzVLqK8S9ZCQCPEU49lH6Gb0/YqJu0OIbJr9m6M3dTEV9en4J44Hbgl/V1xUpgEHbVRtCRlNOfHBxlWg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
- by DS0PR12MB7703.namprd12.prod.outlook.com (2603:10b6:8:130::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 14:51:19 +0000
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0496.015; Mon, 19 Oct 2026
- 14:51:17 +0000
-Date: Mon, 19 Oct 2026 10:51:15 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: Link Mauve <linkmauve@linkmauve.fr>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	Yury Norov <yury.norov@gmail.com>, rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=amID5UL4
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-990a39ba4fbso231726241.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 08:23:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792423420; x=1793028220; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TB5WC1uvayakjtGRBbN56iOi71cVu/uajHIAhyzork8=;
+        b=amID5UL4oXgN2w3QpNshWz8S3hujZxJ9MR4VBu06GHjgko5FygdPkAxZwfXKgMCwry
+         YuVILTkEunVHZWkCmzaRtv3M5bxJOVERp674cByKUZUjQev9Esvej04i0K1nE1BugUPr
+         6qsfWeztU62IUCEUcL03iAJdtK7I33wfsCljb/0uP4CmorynANmX4lapU3I5ta2vUPjU
+         G9DVnlIyhbMjhqo9kiIzUr34HINGxpkKHa5Sat/rlADIkx9bWeDlzft+MrnKNEZaitVK
+         Sg5x916X45FNuCxnpG7KBxtwzWrT5bN9NWpXH+tVT8pMgVz0n+BZ9Vj3C3H8FXUuQzDj
+         s5PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792423420; x=1793028220;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=TB5WC1uvayakjtGRBbN56iOi71cVu/uajHIAhyzork8=;
+        b=FzB7t6uk64Xdq4GOn53vd5nwQDJFwMjGZlpdRoB8VmXjK/oYYputjRLXs4DYk4Fbtm
+         5EHVfN+d1adcIcKJO0XQwJBjkoHsx66+9z8CeeoqCBiQ8sW1m0UIzQTxHYmIFUKdipdv
+         jfneWoTDgRLLWfK7h9f7SyvE7OV5Qi1xoFVAabDoMu9uAq+WFALegnkc+jl57XTKS4cT
+         6f2SpZu1gFEpC6dKwMIJXgay+U13B/8sJXFJtIiguqB/p0Bu/BU8tE+QlfGrBnZs/Ent
+         eueJcqyzuN+LDH6p6dOKqAKpLHjlFfFsRNLK+iJ8/2b5QTdrK8Tv6/mLxl7gWZ73lNeT
+         epng==
+X-Forwarded-Encrypted: i=1; AKwUvByX9kmVifvl2RukHP/YMoITVgztfbnHqT+H1uaF7PBTmjJJ1bcNu1mGf+6CMwNqKaIiafTJ+mO/dBN5DmSRQQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYIiZHOPUPP5oiX8/PuYtAnxK4O5cWovKFCkJsEjhH97og0Pcr3E
+	Z6xQ5ql6/6itBxGVO844jBduiVkzglYa6XCfrVJjw95kcsznshpzsLk=
+X-Gm-Gg: AYBFou3nLHistgIC5o6MyUQk23fTmLznbVT3vE1MqElTHUqDRs/+hTN6jr4NOblurbH
+	9yFChnIonVPSa39dBFNeI6BbWlnXTKDrghvHZBElaxajxjnPme5zvcE5LHgcL0efvFkuzysHlHi
+	GrSCXbxqgS1if2dLdwhon4FNhlaUznqKV/4W4/k7QZ8MYTv8NH7K0xm9bvOo5wrFy2Kq0mAlWcZ
+	hc0no6cA/sWu5epONMsKx8KA2lDnw5IE6Xb0PfzCIfFMESVOdSUOQvWCXzp3luOnR68pPNWOSw3
+	23cidkpxU6CUnpjKiUHTfJJrRl8O1Cf4TJZ1zI3JF0l9uIk60JyRgdfSQw2/B0Elgv+stqMJuxl
+	BcL7QT7lm5ZmSx8uBeDC7lpTBWc+XeSDKDS9HMwzw7lSe8g+GDzaVoG8sZP1g5A2wbv15X5H2A1
+	uXoUGZuEyNXMYx55ek0sg8szUkrmXD5qWYcjPppVYmfdhRf6yKEOMSTFQMm6k5cLtRQE90TLeCp
+	YAFzaYs/3pbkNr45U4TWNOG8UwswaDqKnnRkjLwKzDBnA3ulQ==
+X-Received: by 2002:a05:6102:5127:b0:7c0:1d48:b2a2 with SMTP id ada2fe7eead31-7cc36aed490mr1758525137.31.1792423419903;
+        Mon, 19 Oct 2026 08:23:39 -0700 (PDT)
+Received: from localhost.localdomain ([186.158.238.108])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7cc77198ec5sm453357137.4.2026.10.19.08.23.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 08:23:38 -0700 (PDT)
+From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
+To: Igor Korotin <igor.korotin@linux.dev>,
 	Danilo Krummrich <dakr@kernel.org>,
+	Georgios Androutsopoulos <georgeandrout13@gmail.com>
+Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun@kernel.org>,
+	Brigham Campbell <me@brighamcampbell.com>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
+	Gary Guo <gary@garyguo.net>,
+	Jori Koolstra <jkoolstra@xs4all.nl>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Tamir Duberstein <tamird@kernel.org>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: num: Add inline annotation to Bounded methods
-Message-ID: <atYuY1ExPAqZywrr@yury>
-References: <20261019105744.2943249-1-linkmauve@linkmauve.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261019105744.2943249-1-linkmauve@linkmauve.fr>
-X-ClientProxiedBy: BL1PR13CA0298.namprd13.prod.outlook.com
- (2603:10b6:208:2bc::33) To LV3PR12MB9356.namprd12.prod.outlook.com
- (2603:10b6:408:20c::21)
-Precedence: bulk
+	Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev
+Subject: [PATCH] rust: i2c: remove TryFrom<&Device> implementation for &I2cClient
+Date: Mon, 19 Oct 2026 12:23:15 -0300
+Message-ID: <20261019152329.620610-1-nico.antinori.7@gmail.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
+List-Post: <mailto:rust-for-linux@vger.kernel.org>
+List-Help: <mailto:rust-for-linux+help@vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
+Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|DS0PR12MB7703:EE_
-X-MS-Office365-Filtering-Correlation-Id: 96ef208f-98a9-4bce-40a7-08df2df06e0f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|10070799003|56012099006|260925022911599003|260925021311599003|260925021911599003|11063799006|261009223027099003|10067099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	NpqKEDZsksAwq01y+4mMfedjp0XKW7XS2NZhV7b7Yq6eHK2BUOPLUPs4YwpxjOIUtKSFaYDJLmYEmAZp81OrzTVmwUgY6gZo/8eJpeoGgCMbEP/UwzRuRYe/mfDyWb9DO9C9ufiVEI2cBsXR47KSFFgvj14xuobiSWzvWnMCYQJwnUZjN34S+DmcvH0P9uVQEkNxAB618IFC9zXGVjie5DM/kPyhMdAPxsIigkbW+20qZ+2YAsZK1swqJtbVYd5v6AgNeZU+mkVem6WmNIGKfxeFCxV0Dorl2NHGvlQOVjIHwouz7l0OlX/X8klN4M3192u2xWB35JPfzwk6boahX/0Xf17qpNHgGC3YzkbXebH2I7DFDp3d9Y4mi3WqEf/S/J534k+i/iw9i4ulRII8bIZdF1nZUfXBxkdpLQMq5Pl85FqNKPG1LOlib7rUJ/ITBLcpAEhGnrz8aeZVKO8YuBXiRniTlQrVVRvOOrFfNmonu6AhnfIFdxIaRpsIUGsL1HeK5kHSHSlcwuU9l2B78+Wsl1QfsAOvrS33SSnv2SQ/ndhhUYLqkE0B3xDwl+0H7TLGmZp2Pjvp2SSuPBFTZhqeKF4LH1htGcucdBHtYVX6dynGtWjHvQCR31ygwJn+K7vfA7ZKld/ITeha48Az02UFX0JPSkmHQKBCvCyT/DM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(10070799003)(56012099006)(260925022911599003)(260925021311599003)(260925021911599003)(11063799006)(261009223027099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MDdob3dzMmdYVXJiSzU5WXNWbC9TeG5tWTAzTDAyYW9ucUQ5eHAybmlKNzVS?=
- =?utf-8?B?VjEzb1k0b1UwOXRCWlNHeXVLM1dZM2NrUnZlVngxTWNla2dLS3JZQzZGY1Np?=
- =?utf-8?B?SUxNczRORFhqbmIzZ2tsaEE0UzdKckVoSjhUWU1mcE5ROGI2YjJyN0lLa3Zz?=
- =?utf-8?B?YTJCd3RnRzRZZE80ZWxaZGZlZnNrZkFvVHMrdHcwK3Vhc1B5RHJhYjVhbXdV?=
- =?utf-8?B?UmNlSWJ3NFNUeXo3WEtxbmhJT2VhZk9OYmVoeTRVYk9BT21rNG5vUTVPR1JJ?=
- =?utf-8?B?RVNRVmVMV2RKWXpmWHdObDlNNGJQbGozTUQ1ZmkxOXphRkI4UldJc3JjL1c4?=
- =?utf-8?B?YmRVaC9CbC9UeGZwWW11ZFZORFp1STVZelk4NFNPZyswbVN3bFR1RkVXWjRZ?=
- =?utf-8?B?UGFHRFpXaDY0dDk1Q2FsZUdqT0xPSytKUVJ0ZHAvL05XZTJjL2daNXVBQnRm?=
- =?utf-8?B?ODkvamIya0VDUXVjemlxakZxV0hZNWxPUTROa1oxY0ZiWEQrbWVURTdZTWpq?=
- =?utf-8?B?YnJZVGd1WTRuOStZeGg1RktnMVJkYnNJaisxMzhrNEZzSlNoSGh4Z2FKckRY?=
- =?utf-8?B?cnhBSFhobkdXRS8vWUpWR0M1STJBMXlTVEZRamxERC83NFZvMUNkUVRSN2sr?=
- =?utf-8?B?b0tiaEFJbVM2Zi92SjdpYTZKQTR1L2NlWDdraVVReVkxTVNCaTBsOEdKS0s0?=
- =?utf-8?B?ZHNleXNkQnBqM0dpODNtWlVxRnNkekJOZCs3NnJFbCtEL3M2Y0I1VlQ1Tml0?=
- =?utf-8?B?bGFjdE14eTN6eFZXc1loV3NmMTlIK08wc3NEZ2oxbVVvM2hxajZBM0R6UWc2?=
- =?utf-8?B?MzhnbDdiNXNnajNVNzRUM1pidzdUb1R2TldPcXdlTW00UmFiQVNSanVXbUZU?=
- =?utf-8?B?R2k5NkdCZ1ducVJ5SWp5bTZFeHNTVTZkNWxaVGdSRlVyQnk3WnBiQ0VhOElV?=
- =?utf-8?B?bE11ZlZyWUMydW9YUHVERHF5WEFCcXkwVHRCNHNNMjFxNTBKK0NSZnZMY0VN?=
- =?utf-8?B?QmFtNldVbFhsbm0xYk9zWGc1TGJSNU9MZlVETnQ2SU9NMVpBaVNqTVYxZ2hJ?=
- =?utf-8?B?TmZFVjAweGdHcDNCZ1dTeU5MZTVGb0pYeUYzT05aY2ZFY281WWlVa0VaaWd4?=
- =?utf-8?B?STVLeE4vUW92d0JBVnpvWnFhSUtaZUQ0Y2VLRkc0bFpOQVJ5dTh3ZzJYY0hZ?=
- =?utf-8?B?OFNNUnM1azZMQWp2UjNCa0ZpWmtCUlYwdTE2a2VkMmVpRlRFNEUwR1FnbXRV?=
- =?utf-8?B?RERTMTRhazcrdC9hVk5YMXNieVN6L0JENmxScHU4dDNLdDNGRUZUZXdCM1gr?=
- =?utf-8?B?M0daSnBSajNla01uNmhXZVZGY1VEWUZaNUpNZm93TSs4M3lESkdTdFIwTFBJ?=
- =?utf-8?B?cEJoNThHUFNPZXMyem9NUFNIbUFZOFJtdHBmQnZSZjUxOURrclFyTFUzSE1P?=
- =?utf-8?B?cDZ4K0w2SzlWQjdobmE5WUh4cDd1WXdmQ0QydjNYbDNaK2h1c0tTUEFoN3dP?=
- =?utf-8?B?RnBHSDlFVUpWQmV0eEdTOU5ZZURYQi96K0dlRTltRkpwQmRCbzBXNSszN3FW?=
- =?utf-8?B?RDExZmNsL0t6SUhCSFczQ0xOaUROS1J0aVJuVnkvTnFqb0xoRkh1MWFyL2JC?=
- =?utf-8?B?cmtCb3MwY2hQTGFwK3crRUhwQ3FpWXk3bERQRW9vaTJmZnVoKzdSb1VtRlBt?=
- =?utf-8?B?TWwvSWdJamFuWjlqR2FyWHppMitYMWtBWlVsYVFJTHYrTmVlYzYxWE1Oemx4?=
- =?utf-8?B?dGJPYkJEUC9YdWtxRDRtYko4NXQrVFdzS2U0bWpYNi9vUWsxR1lFR2kwSEw0?=
- =?utf-8?B?aVNXV1NhNkJQZVdBYVZhNEhycFVtejRjUnBXSlk0UTgzakd2ZStvQm1lVno2?=
- =?utf-8?B?bjA2OHFDbjJRK1o4S0FRaHlhbU1YU00rb0Vta0M2VStid0I5TFVPWG8zbHA0?=
- =?utf-8?B?UkQyQ0dKV0NrTmlRQlVvU2ZsMlpXaEpJOFV1WGZxajdIa0NqajFhT2NFc3Uw?=
- =?utf-8?B?YWVNUFcxYWxoc3ZWakRueUdhbU9Cb2E2K0laMWNaV051OFU4Q2Vpbjc1eWZU?=
- =?utf-8?B?a0JSMjRXeHNmWGwxVVhsTENSK3JtUkdRUUEyc2JPTE9sN2NNU1o5OHNQdS8r?=
- =?utf-8?B?ZW13M2lneXE4bFN5Rm5iaENSbXVvejZOdWJlUDhhbExHU3A4bE9KRHd4bkVh?=
- =?utf-8?B?UzBFUTA5OGlZYUJBTzM3NElJazZnUDQwSUNYSkpSV2xra0tuaFJkWjA3bHk0?=
- =?utf-8?B?VVIrYk51dGI5Mm9FTXI0UVVyaXJTR0Z5NVhCT1JCTlJkV3JmZDVFYkVUZXRz?=
- =?utf-8?B?R0EvYms2U2lRZG9XNlR0K0tNUWFSV3dWcEEwODFKODFVNVc1UTZPeXVQRWtU?=
- =?utf-8?Q?7v8sToIeVganvms5LpIYORFlYufivWLcOWoZQ?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 96ef208f-98a9-4bce-40a7-08df2df06e0f
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 14:51:17.3773
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mXtfVwwIKg4PaYOUdNef4WJL6c3dni2MG14rqj5TWO8EPkC4WchyeeEkHxqnpjWUlEJ7U5EcwNF/wyIBWoXU8w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7703
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 19, 2026 at 12:57:38PM +0200, Link Mauve wrote:
-> It was previously generating a ton of very short functions, such as
-> <<kernel::num::bounded::Bounded<u32, 32>>::shr::<17, 15>> or
-> <<kernel::num::bounded::Bounded<u16, 16>>::new::<16384>> on use.
-> 
-> These are obviously better inlined, although I wasn’t completely sure
-> between #[inline] and #[inline(always)], but the former worked fine in
-> my setup so I went for it, we can always adjust it later.
-> 
-> Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
+Remove the `TryFrom<&device::Device<Ctx>>` implementation for
+`&I2cClient<Ctx>` since it has had no users since its introduction.
 
-Reviewed-by: Yury Norov <ynorov@nvidia.com>
+Fixes: 57c5bd9aee94 ("rust: i2c: add basic I2C device and driver abstractions")
+Reported-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1264
+Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
+---
+To make sure that there were no remaining users, I checked for usages of
+the `try_from` method and the `I2cClient` struct using rust analyzer,
+activated the modules that were using `I2cClient`, removed the
+implementation and compiled the kernel (did not trust entirely in rust
+analyzer because it does not find usages that depend on this
+implementation like the `try_into()` automatic implementation).
 
-Do you want me to take the patch with the bitops branch, or you've
-a better route in mind?
+I also checked for usages in all major versions in most recent versions
+until the introduction of the trait implementation (from 7.3-rc7 to
+6.19), rust-next and linux-next to find the last usage and mark the
+commit in the `Fixes:` tag.
 
-Thanks,
-Yury
+ rust/kernel/i2c.rs | 21 ---------------------
+ 1 file changed, 21 deletions(-)
 
-> ---
->  rust/kernel/num/bounded.rs | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
-> index 0b32f4343922..d3486675046a 100644
-> --- a/rust/kernel/num/bounded.rs
-> +++ b/rust/kernel/num/bounded.rs
-> @@ -264,6 +264,7 @@ impl<const N: u32> Bounded<$type, N> {
->                  ", 4>::new::<7>();")]
->              /// assert_eq!(v.get(), 7);
->              /// ```
-> +            #[inline]
->              pub const fn new<const VALUE: $type>() -> Self {
->                  // Statically assert that `VALUE` fits within the set number of bits.
->                  const_assert!(fits_within!(VALUE, $type, N));
-> @@ -309,6 +310,7 @@ impl<T, const N: u32> Bounded<T, N>
->      /// # Safety
->      ///
->      /// The caller must ensure that `value` can be represented within `N` bits.
-> +    #[inline]
->      const unsafe fn __new(value: T) -> Self {
->          // Enforce the type invariants.
->          // `N` cannot be zero.
-> @@ -350,6 +352,7 @@ impl<T, const N: u32> Bounded<T, N>
->      /// let v = Bounded::<i8, 4>::try_new(8);
->      /// assert_eq!(v, None);
->      /// ```
-> +    #[inline]
->      pub fn try_new(value: T) -> Option<Self> {
->          fits_within(value, N).then(|| {
->              // SAFETY: `fits_within` confirmed that `value` can be represented within `N` bits.
-> @@ -412,6 +415,7 @@ pub fn from_expr(expr: T) -> Self {
->      /// let v = Bounded::<u32, 4>::new::<7>();
->      /// assert_eq!(v.get(), 7u32);
->      /// ```
-> +    #[inline]
->      pub const fn get(self) -> T {
->          self.0
->      }
-> @@ -430,6 +434,7 @@ pub const fn get(self) -> T {
->      /// // The contained values are equal even though `larger_v` has a bigger capacity.
->      /// assert_eq!(larger_v, v);
->      /// ```
-> +    #[inline]
->      pub const fn extend<const M: u32>(self) -> Bounded<T, M> {
->          const_assert!(
->              M >= N,
-> @@ -459,6 +464,7 @@ pub const fn extend<const M: u32>(self) -> Bounded<T, M> {
->      /// // ... but doesn't fit within `2` bits.
->      /// assert_eq!(v.try_shrink::<2>(), None);
->      /// ```
-> +    #[inline]
->      pub fn try_shrink<const M: u32>(self) -> Option<Bounded<T, M>> {
->          Bounded::<T, M>::try_new(self.get())
->      }
-> @@ -482,6 +488,7 @@ pub fn try_shrink<const M: u32>(self) -> Option<Bounded<T, M>> {
->      /// // This won't build: a `u8` is smaller than the required 12 bits.
->      /// // let _: Bounded<u8, 12> = v.cast();
->      /// ```
-> +    #[inline]
->      pub fn cast<U>(self) -> Bounded<U, N>
->      where
->          U: TryFrom<T> + Integer,
-> @@ -510,6 +517,7 @@ pub fn cast<U>(self) -> Bounded<U, N>
->      ///
->      /// assert_eq!(v_shifted.get(), 0xff);
->      /// ```
-> +    #[inline]
->      pub fn shr<const SHIFT: u32, const RES: u32>(self) -> Bounded<T, RES> {
->          const_assert!(SHIFT < T::BITS);
->          const_assert!(RES + SHIFT >= N);
-> @@ -563,6 +571,7 @@ pub fn shr_exact<const SHIFT: u32, const RES: u32>(self) -> Option<Bounded<T, RE
->      ///
->      /// assert_eq!(v_shifted.get(), 0xff00);
->      /// ```
-> +    #[inline]
->      pub fn shl<const SHIFT: u32, const RES: u32>(self) -> Bounded<T, RES> {
->          const_assert!(RES >= N + SHIFT);
->  
-> 
-> base-commit: 2efb7a11f1aa4d2dc285fe2680cca22cb9f72f64
-> -- 
-> 2.56.0
+diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
+index 0487bae811fb..b4ff25c830fc 100644
+--- a/rust/kernel/i2c.rs
++++ b/rust/kernel/i2c.rs
+@@ -5,7 +5,6 @@
+ // I2C Driver abstractions.
+ use crate::{
+     acpi,
+-    container_of,
+     device,
+     device_id::{
+         RawDeviceId,
+@@ -517,26 +516,6 @@ fn as_ref(&self) -> &device::Device<Ctx> {
+     }
+ }
+
+-impl<Ctx: device::DeviceContext> TryFrom<&device::Device<Ctx>> for &I2cClient<Ctx> {
+-    type Error = kernel::error::Error;
+-
+-    fn try_from(dev: &device::Device<Ctx>) -> Result<Self, Self::Error> {
+-        // SAFETY: By the type invariant of `Device`, `dev.as_raw()` is a valid pointer to a
+-        // `struct device`.
+-        if unsafe { bindings::i2c_verify_client(dev.as_raw()).is_null() } {
+-            return Err(EINVAL);
+-        }
+-
+-        // SAFETY: We've just verified that the type of `dev` equals to
+-        // `bindings::i2c_client_type`, hence `dev` must be embedded in a valid
+-        // `struct i2c_client` as guaranteed by the corresponding C code.
+-        let idev = unsafe { container_of!(dev.as_raw(), bindings::i2c_client, dev) };
+-
+-        // SAFETY: `idev` is a valid pointer to a `struct i2c_client`.
+-        Ok(unsafe { &*idev.cast() })
+-    }
+-}
+-
+ // SAFETY: A `I2cClient` is always reference-counted and can be released from any thread.
+ unsafe impl Send for I2cClient {}
+
+--
+2.47.3
+
