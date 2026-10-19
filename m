@@ -1,136 +1,177 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F394E433F
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 13:05:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792415123; cv=pass; b=rIhk9UbrJGUskv+CcJfJXxXJlTdZaBVawLqVuguiwo/4LJn86M+FflgA0DLcViWfO76sUBqxbZm3Q04Moa6qxkHWGeI635c+CUJ9Z7sqVHNS6kdzIeLrb0dqaiUePzZ7P4RnuPvOZK667tgsvbXN9RqPvtQSkSsq7KZCF4E3uII=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792415123; c=relaxed/simple;
-	bh=mysYr6A8Sr788QG2Uz+xMwHs9QNcHlODUZov9aP5+dA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jDAz4lUjmsk+EniCOTDVhSK12+Bs75IhmLKG5JBwRcnlTwl9yn3TYRC86qOoiMT1szpIlZlov9knTUov99NYOGYE7Rytw9kWMSqARdE1noF3fIqFc/QWeI/TVzSROAvrrfkWfbC2/EQB+YYZsdorfyMxVwgj9d60MJ7h0DRnzfE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h06ZJxSy; arc=pass smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA62B4F55B5;
+	Mon, 19 Oct 2026 13:37:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792417058; cv=none; b=P/INRwdI6oNxZhGPMq9oBsfa6zfZGAsuEhFTOq9xmcCc6AkbjhqplQBqoLcWJ9bdRcqf4pxP6EFaVJD4EuB8wo24GfKAFJdNJ/AvCXOSlRv59u3xZTs76PN4shy6rY8izmp5Cnw/yfow4no3Uqg6tNtiuDv+9nwk34VM+qvpNVc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792417058; c=relaxed/simple;
+	bh=NaMBwv69l//KZ+WTms7GdtNyyEZa8sDtob4pvIpqSMU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IoTrUlApsN2aS+sTTe7ihQZU27OFfMzvDslGSpI67iCkGXGBUspX2boqYkd3GAvBhJckoxhqSso2onI7wnjp2qmNZTrMwn+YwiVz4ARYKgJlVZOCvHspGKnHHqX5d2nBwWUOyFG9lxNY7HSWV6xFK8cTJKUrzmUJRcyL6pCLBIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=epofOUUl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h06ZJxSy"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48afcd7ba9bso1169221f8f.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 06:05:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792415120; cv=none;
-        d=google.com; s=arc-20260327;
-        b=a7V0/IwoNsenqfS+98xcj37biJTu3RMBT2eH1OcNY6UqORXocrMCJDd0/wpGOK0jeN
-         RBEnT+xNvYHZgvAhglbbsQ6ZlJnFDW8YVkrzEO9DKLokYjqknorpw7gipdXJhrVcUW5Q
-         eBLdpAU/jeXdrvbv3vlrtwquBOF5a1Qb4WLINqBCxq03Wk3AxiAKjITtqQKqg6wW7aQt
-         gOyosnqqdiozVzdXQwejaJgplsIJQ+7APpqqh3QaOLOSgHvxDZxb8SHAORe+vjD2VxFW
-         U36R85wjnvmcQNhtjSoH1pcspvp+6bnYzEp2QzzzLzvQcC3Vb+q0TXwZGtceiYfH1Ey/
-         3WqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LP568MdjFLUoc9cCkTY7fbjg57xRLci7XApvAwiXZXw=;
-        fh=RuPwNsJ82pd6YpwqXdj/7YkyYRyjiDjFMU0qdxNCY00=;
-        b=JTyHi3x/jhdOohTe+rqV+7OXy5mnTjYLBM4phGfQ8ur2HavMXHuBRtE9kLL09rVUvC
-         6IlMy4bF8teqBPUUl+8kmPtgwoJI/HQV4j81r9UBeojnlXKzv4HQh21QsX2VnvgTmBx+
-         tIBv5EA3CFQWkGk7RTS9sBgUHquVsXiq6y1h97ps0KpGH/y06tlDgvZYwuhXnJRzQH9x
-         uYm33STx/zkgkuE3B5d3SMbenT7I2tBpRTY9EGEex+CfVddpUJA3SsE86nm2AEFIi34m
-         14uXIxgN2umL8PqVStJtvtC9RYMFQ/KT4Rb4Tm05GAsfZTgbp/xgiPnvd2Ni7gVsqyjf
-         8Udw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792415120; x=1793019920; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LP568MdjFLUoc9cCkTY7fbjg57xRLci7XApvAwiXZXw=;
-        b=h06ZJxSyJzHBkIkdcJrxbNDVG+79WZnYHCG7CZghSHyk3JuncPcIX0DSVEo2rZirWI
-         RntnJqrfhocZDDvG3ouVtrToUHIOwWxe5uPTlGvA8bpmrthXIDs3h6cPB13yJoRQzi9f
-         fW+ugKZE7rVU2oTunNnRhJ6rijSpb+J4erCw4AWiva4/Dz/PTsFyDoRQxGtEVHDy5iA5
-         7Qia34acg7wD10Usz1LMGHCuDDSYWXVaX+UjtEgBxgHeSwaRfQJawzdio8Q2lZbvnl5O
-         JVsZY9jRlggtPesKO6coon5Gs/JQlscflXNzt40MXIJySv+GYrU9WC8beZ+X3b1cQ4lC
-         2a4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792415120; x=1793019920;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LP568MdjFLUoc9cCkTY7fbjg57xRLci7XApvAwiXZXw=;
-        b=b71Dk52t3oGXnJqSn0xldwBJwNO0XsBcbjpg5rM5M1Cv1yYVpaZvZVyVwqppjmA41e
-         kqyDdZILI99RBhTiBQ6zlRcHXkDY8KidzPAzH2IoozrLTSfw3wrmsZT+2aP4s5taM+fW
-         rWGXJ6E1WtEJQSTsgR9fi2alEHMynCzYOKP5NmBmSoR+quex6MHTstb8yBvG9uX6gPxJ
-         Y8+iNJrcHkc5ex8TX2Tw5Zgdu4XjwJ6iPc4uljMRqPq75ApPebgrqHDA39Sp7NafTqxE
-         Glc+Mdpgy3ESOpXadP3q4mdf4tMyEnYgYHbsD9WkqJOn7oQM+Dp3/C21kxgB6l8WGh9A
-         0jeg==
-X-Forwarded-Encrypted: i=1; AKwUvBweFRz+NegmocHgINMtKGmhMQHYF+XPglLHE6br+ED4XbY1vB/HGGOeluuo6OwBh9L5BgLWG9NNSD6BMFwboA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJDHAdG8X87v9DSFdhDzhKJ66bZ3+PMN/Zcpj7HfWb3jsSo1wyC
-	nMxdU4gAtbNAitS06mmtWhdBSn72vhKIraQunSmLkjoUQvVLFkyJFlYFUUQVCJnJjJdv6K/N6zH
-	cJqshgGkYhyA7qIu32jaNswZG4Wn/Rm7ZZyePDbGi
-X-Gm-Gg: AYBFou2l/FRg740AX3CQbLzf2epzvce0xPkBAGs6akzFdNsl3A7S9aERkdk7U+zU4Cj
-	ZqbJhvTEwrLCs37xFBfT0A8VfWOQ8vx6EJTqG5iIdbQ4gooj3jlqZz6Jd9qgmGqjT10LcPuDavP
-	DQzs91oUpxI/8a2lPnG+AShTkGMOAgsSwnX/ZyOeH6Te5+MubY4Y0DoeOfO9NWDe8yw8oTrKszx
-	vVcgikGyu0uguC77g8JFHKVVVkRRFtha0lFclTfX05sUwANWsR/rv2krlBDZpw/xhSwQqGcJwes
-	LRqRMBAQfU4GCrwSOYNoaJuRdbwqUllO01h8w4WQ9vZDIRRDWQ4K84pIokN95z1SEVl5pu39VL5
-	vt4B4kpvXewA+sTTdQLQftnor4juaQzaOG4xU30m28WH+s4agGyqI
-X-Received: by 2002:a05:6000:4025:b0:485:8c17:9764 with SMTP id
- ffacd0b85a97d-48e07fad8c4mr14437246f8f.38.1792415118156; Mon, 19 Oct 2026
- 06:05:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="epofOUUl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA721F000C4;
+	Mon, 19 Oct 2026 13:37:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792417056;
+	bh=3eRADoTLOXkqjjrw/UrGjAry3gq+uCsNvBDP+KQWRL8=;
+	h=From:To:Cc:Subject:Date:Reply-To;
+	b=epofOUUlKo52JU0CYFCw5QqNLKgjIsXBRtpERVJaBqRpr4pokpXWYb9bMAR07RrqX
+	 cs1q+A3FSzqXmauxMMf1rWcQTLn543/iLuE6htDD8RRgMdaln1stcdznNgMa4gJOY7
+	 A8djYpl2eqftIqvYs7Tgd3AN0YGoVt0W9QuX+y5SJS4yLu1hxzFr9x82iRFb1K2pZ/
+	 iJmCCkQvC/5HSW8aMblM0fQCPEYDfYBMW4h/4k7H/K6tRR6cCDmgfDkQbZWKtR2vty
+	 6AwEIk44HPkdU47lnAH2aj1jqn4WCUFOeO8t5/wC3mw7n3cWNaIqLQNhxqFEH0D/As
+	 vBuU/4AbblyeA==
+From: Gary Guo <gary@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>
+Cc: nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH] gpu: nova-core: replace unsafe pointer cast with pin-init self-reference
+Date: Mon, 19 Oct 2026 14:36:45 +0100
+Message-ID: <20261019133647.1279779-1-gary@kernel.org>
+X-Mailer: git-send-email 2.54.0
+Reply-To: Gary Guo <gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261005133857.1572243-1-beata.michalska@arm.com>
- <20261005133857.1572243-3-beata.michalska@arm.com> <20261016121230.3724323-2-aliceryhl@google.com>
- <atYKvHQm9qJ9wY-e@arm.com>
-In-Reply-To: <atYKvHQm9qJ9wY-e@arm.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 19 Oct 2026 15:04:43 +0200
-X-Gm-Features: AclHuK_TBh9nrF6wdCskikKjrKbXbBPQNYzprNDJUvoT1849kJ0giuue1RmdKZk
-Message-ID: <CAH5fLgjcqHJs-mVsmUVwatyap7BOKU+k6LiAPFkqOcqC3soB3A@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] rust: platform: wire runtime PM callbacks
-To: Beata Michalska <beata.michalska@arm.com>
-Cc: ojeda@kernel.org, dakr@kernel.org, gregkh@linuxfoundation.org, 
-	rafael@kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, daniel.almeida@collabora.com, 
-	boris.brezillon@collabora.com, work@onurozkan.dev, samitolvanen@google.com, 
-	acourbot@nvidia.com, rust-for-linux@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 19, 2026 at 2:19=E2=80=AFPM Beata Michalska <beata.michalska@ar=
-m.com> wrote:
->
-> On Fri, Oct 16, 2026 at 12:12:30PM +0000, Alice Ryhl wrote:
-> > On Mon, Oct 05, 2026 at 03:37:40PM +0200, Beata Michalska wrote:
-> > > @@ -223,6 +225,14 @@ pub trait Driver {
-> > >      /// The table of ACPI device ids supported by the driver.
-> > >      const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> =3D Non=
-e;
-> > >
-> > > +    /// Provides driver's PM callbacks, if any.
-> > > +    fn dev_pm_ops() -> Option<crate::pm::DevPMOpsRef<'static, Adapte=
-r<Self>>>
-> > > +    where
-> > > +        Self: Sized,
-> > > +    {
-> > > +        None
-> > > +    }
-> >
-> > Since `DevPMOps::pm_ops()` is a `const fn`, can this be an associated c=
-onstant
-> > `const DEV_PM_OPS: Option<crate::pm::DevPMOpsRef<'static, Adapter<Self>=
->> =3D None;`
-> > to match `OF_ID_TABLE` and `ACPI_ID_TABLE` right above it?
-> >
-> It can, as long as no one would mind making the Driver trait sized.
+From: Gary Guo <gary@garyguo.net>
 
-That seems fine to me
+Nova core's driver data makes use of a few unsafe self-references for
+device resources. Replace them with pin-init's self reference feature
+instead.
 
-Alice
+`auxiliary::Registration` is only allowed to capture a single lifetime, but
+it needs to capture `&'gpu Gpu<'bar>`. However, we cannot use coercion here
+as `Gpu` is invariant over `'bar`. As we know that `'bar` outlives `'gpu`,
+use pin-init's existential lifetime to erase the `'bar` lifetime in
+`NovaCoreApi`.
+
+Swap bar1 and bar0's drop order to make pin-init happy.
+
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+ drivers/gpu/nova-core/api.rs    | 15 ++++++++++-----
+ drivers/gpu/nova-core/driver.rs | 27 ++++++++-------------------
+ 2 files changed, 18 insertions(+), 24 deletions(-)
+
+diff --git a/drivers/gpu/nova-core/api.rs b/drivers/gpu/nova-core/api.rs
+index 29207c4bb743..62b1c8fe7125 100644
+--- a/drivers/gpu/nova-core/api.rs
++++ b/drivers/gpu/nova-core/api.rs
+@@ -22,9 +22,14 @@
+ };
+ 
+ /// API handle for the auxiliary bus child drivers to interact with nova-core.
+-pub struct NovaCoreApi<'bound> {
+-    pub(crate) gpu: Pin<&'bound Gpu<'bound>>,
+-    pub(crate) pdev: &'bound pci::Device<Bound>,
++#[pin_data]
++pub struct NovaCoreApi<'gpu>
++where
++    exists<'bar>: 'gpu,
++{
++    #[uses('bar: invariant)]
++    pub(crate) gpu: Pin<&'gpu Gpu<'bar>>,
++    pub(crate) pdev: &'gpu pci::Device<Bound>,
+ }
+ 
+ impl NovaCoreApi<'_> {
+@@ -36,12 +41,12 @@ pub fn of(adev: &auxiliary::Device<Bound>) -> Result<NovaCoreApiHandle<'_>> {
+ 
+     /// Returns the GPU [`GetGspStaticInfoReply`].
+     pub fn gsp_static_info(&self) -> &GetGspStaticInfoReply {
+-        &self.gpu.gsp_static_info
++        self.with_gpu(|gpu| &gpu.gsp_static_info)
+     }
+ 
+     /// Returns the GPU [`Spec`].
+     pub fn spec(&self) -> &Spec {
+-        &self.gpu.spec
++        self.with_gpu(|gpu| &gpu.spec)
+     }
+ 
+     /// Returns the size of the PCIe BAR used for accessing VRAM, typically
+diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
+index 560a70c4f5a7..7ddde686879f 100644
+--- a/drivers/gpu/nova-core/driver.rs
++++ b/drivers/gpu/nova-core/driver.rs
+@@ -33,11 +33,13 @@
+ #[pin_data]
+ pub(crate) struct NovaCore<'bound> {
+     #[allow(clippy::type_complexity)]
+-    _reg: auxiliary::Registration<'bound, ForLt!(NovaCoreApi<'_>)>,
++    #[uses('gpu: invariant)]
++    _reg: auxiliary::Registration<'gpu, ForLt!(NovaCoreApi<'_>)>,
+     #[pin]
+-    pub(crate) gpu: Gpu<'bound>,
+-    bar: pci::Bar<'bound, BAR0_SIZE>,
++    #[uses('bar1: invariant, 'bar: invariant)]
++    pub(crate) gpu: Gpu<'bar1>,
+     bar1: pci::Bar<'bound>,
++    bar: pci::Bar<'bound, BAR0_SIZE>,
+ }
+ 
+ pub(crate) struct NovaCoreDriver;
+@@ -129,13 +131,10 @@ fn probe<'bound>(
+                 crate::irq::doorbell_test::run_selftest(pdev, bar, spec.chipset)?;
+             },
+ 
+-            // TODO: Use self-referential pin-init syntax once available.
+             gpu <- Gpu::new(
+                 pdev,
+-                // SAFETY: `bar` is initialized above, pinned, and outlives `gpu`.
+-                unsafe { &*core::ptr::from_ref(bar) },
+-                // SAFETY: `bar1` is initialized above, pinned, and outlives `gpu`.
+-                unsafe { &*core::ptr::from_ref(bar1) },
++                bar,
++                bar1,
+             ).pin_chain(|_gpu| {
+                 #[cfg(CONFIG_NOVA_CORE_SELFTESTS)]
+                 _gpu.run_selftests(pdev);
+@@ -143,16 +142,6 @@ fn probe<'bound>(
+             }),
+ 
+             _reg: {
+-                // TODO: Use `&gpu` self-referential pin-init syntax once available.
+-                //
+-                // SAFETY: `gpu` is initialized before this expression is evaluated
+-                // (`try_pin_init!()` initializes fields in initializer order), lives at
+-                // a pinned stable address, and is dropped after `_reg` (struct field
+-                // drop order).
+-                let gpu = unsafe {
+-                    Pin::new_unchecked(&*core::ptr::from_ref(gpu.as_ref().get_ref()))
+-                };
+-
+                 // SAFETY: `NovaCore` is dropped when the device is unbound;
+                 // i.e. `mem::forget()` is never called on it.
+                 unsafe {
+@@ -164,7 +153,7 @@ fn probe<'bound>(
+                         // never recycles IDs.
+                         AUXILIARY_ID_COUNTER.fetch_add(1, Relaxed),
+                         crate::MODULE_NAME,
+-                        NovaCoreApi { gpu, pdev },
++                        pin_init!(NovaCoreApi { gpu, pdev }),
+                     )?
+                 }
+             },
+
+base-commit: 2efb7a11f1aa4d2dc285fe2680cca22cb9f72f64
+-- 
+2.54.0
+
