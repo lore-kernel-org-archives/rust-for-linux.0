@@ -1,63 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792453112;
-	b=Qp56qTa9RrGuDdC+2S7g9FlchP+/a5gmvp5L1HnLurIbtUOTz2jzxUmIMQi9KGA4HBgP
-	 AHXSjacbtim1S6nr0z7givaqpmA/6tSOg/bPmxffw4qCD2SRNXjLUmBwyDQg3XgwWTd3p
-	 tnLOMBOIAtXlRPH3p5Ha8w9lYocExpLnUi5PscNF1glzc19LmlXKIELYqmlPkkN2y8ph+
-	 QMjV3uf5re2NlZwKc9hfHwKduoCKQXp1bnOQM1PA9ybVY7EAkRitOXB/Ny+fxACEQ20BE
-	 sSbAhXRlLpcNTlJ3YT2IBzhxCNQ03iuBpyFBFUCbF9WdJInsIG2B205dkHSq4IAHjDg==
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1792453602;
+	b=OyfofnNF9GpZ2oZZjO2K+R+2K72q7sqjQJ9EvYFnoNTqEpwHpm8EEVlh31ZxbWabz51V
+	 AridFz0gsQ6fR/CB7mtp77V7LvvgiGQzULVVpgLjkPvSUkXwdFycif3W/c5uqkVFe9kSZ
+	 h9ir/cbEQRS0REtqdU5RlUaqChY8KbW0nOFB0zDxkPlfoneAhAwTJFENxvP4ZCi/hFQv2
+	 3/pXNIOmm7G9JoAhraV5J29zdqd9MrLjjeoazTL6QwiBBmsOLcBUve5G3JJcRkofnbu7k
+	 IzHr/5DvQ9qg7EJyjy0Ku/O50SVudvyYzsCdBMFguInDRzI5FKz2e8prDtHbKXaMXXg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792453112;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792453602;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To:X-Zoho-Virus-Status:X-Zoho-AV-Stamp;
-	bh=uShKQUWFwgSh7DQhGWBd/23uQd+cee0N/l3UrzJ2TbM=;
-	b=ue7iutMKuL1UQo5BxIL9TEF64uZqaeMjCT79+O0VZJLvl6YDNN7hudEZSEAHrBTEjaWH
-	 kXD+Lz9eIkM4J1Br/veOhus4xLQTQjJgOjUje6DpA5tupNGeglSSBA3o2WP58i4sQV5wk
-	 +7RkM01Vux/ikpdZy0IEN4hPUEVQ+uIPX9DymHbVqmi7k2elu4GkRYptfYs/G71e5o4ko
-	 nXoyRoTqjebKaoYp2GFo9o87/CfFdtRR+0MrBF+vx4RWrKwJzs6rHw99phIoRInhbcOPw
-	 aNOlMBRwebgsz73zsPb3ctJ/yssWHRA9dzOLibJ8Tg292pSWRDccsWkAMBsCHwfGGmA==
+	bh=onuj2J6Sp1nzMr+n0/d2KIqzuI4vHkm2dSFnJgrZrn0=;
+	b=DsknevXSL+qGsCDlHbYSbimEEzJGwkaDMtmdEt3KgnYjnvjK5N5ToIyTLXQDRg7MqGK5
+	 ObZLJf53whmtcPZ8TkqVb3yBDnnjsR+AyM/rn3tq968nvWPZOdtCB+OmKNWk3BDQsMlgH
+	 xZEMNL4OWiGhbIA+pNuIM2rSjW4LrjuppGrWCF+2pkaoPj/BFjuKRRa2er0GErjBb7Anb
+	 qUX0ZWMNbJAtZiYfM1cma0xjncbZ7TIKDVyyKRfHOrmDdilN7VxEc14kOUxE4oNylqJiE
+	 a+BsLy6uquhaDdu2sA3pp96f8U4GKgk7LZkVNYjPjO5gQanQMi5ifTBuJ8JcKRoQZ2g==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Lp19sFVn;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
-Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+	dkim=pass header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=TqLUt9K2;
+	arc=fail smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF9E606A319;
-	Mon, 19 Oct 2026 23:38:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FF9E606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB28D606A31C;
+	Mon, 19 Oct 2026 23:46:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB28D606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Lp19sFVn
-ARC-Seal: i=1; a=rsa-sha256; t=1792453082; cv=none; 
+	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=TqLUt9K2
+ARC-Seal: i=1; a=rsa-sha256; t=1792453569; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=Q9CIDi9fCUFgqY0uS/7OL+qn0attrEAh+92cX9w2dXPDS5L50EU7mdVCwH0gyCzRSqdKm6rrOydq/zo6ycMb8RoIEYvcxZ63KCz5N1xdC4YG0m79L8znzwLkr3UAVCVO3qA3octqrGU4lRH22zxPUqSkaYFA58ATFzjygiObAdg=
+	b=Pm8RCnbSmW42Zm4mUc39fL8ACyz3UOg9Y49HC0FdyqaTld3VMQBsYHQNgyYFJio8UiJ+tdU8jr8ujad5PYYc2oL39/AqpDWLa7P5ZRdP0P33p350XTXPI2bUhv8FbIwQWZLme4ZVUyYAMi5n9wgkSAy03qOhZ3W495CCim7XVMc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1792453082; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=uShKQUWFwgSh7DQhGWBd/23uQd+cee0N/l3UrzJ2TbM=; 
-	b=GJv5x3O+WvZfrEs869ebbE9Whj6fpT1145jHXp2L4SIQL2excS35tYrKU26xrvU+BBksWK4tNv9lHVKMWfIKBG7YcgtIbG/421iwRScHe5GAFuEdvMIY3TwTmqQVNhj8dl3b8qaHRdk8LEalrQsaecPW0WD62nYlpkJ8ppS4Jp8=
+	t=1792453569; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=onuj2J6Sp1nzMr+n0/d2KIqzuI4vHkm2dSFnJgrZrn0=; 
+	b=UCWdiYMt9ie/kifUQ1PSVr3qLwdMnxKUyNBT7/hUaGlkKI5ajJTZNwPdUVr6GyP8XdxRgLFln8oGqmD3oFeu0EBNsGd2JTlUTloff5x8CMYHVCL3uMh24h+JhDSBR1XSAPKzj5x7teVO3afsSrZwO0gVonTwqd5wm00vjQSb/UM=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792453082;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792453569;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=uShKQUWFwgSh7DQhGWBd/23uQd+cee0N/l3UrzJ2TbM=;
-	b=Lp19sFVndvpCIPXLe+5AZvSQ1xqq6gEgf2f8k1LTFRHKDJZhUC4jYcLdZYhPDmnk
-	FREedBJW9fofhlel8bZOO8PHOHxx495zSLyR4CKn3YqaIGOAMrK7d66Fgoaifo4n83L
-	5yxT2zPpuO1+Y5y8+zBI0OpoNXHgDKdZ7BquMvXo=
-Received: by smtp.zohomail.com with SMTPS id 1792453080386614.7316189103576;
-	Mon, 19 Oct 2026 16:38:00 -0700 (PDT)
-Date: Mon, 19 Oct 2026 16:37:59 -0700
+	bh=onuj2J6Sp1nzMr+n0/d2KIqzuI4vHkm2dSFnJgrZrn0=;
+	b=TqLUt9K2fqcHxAbZkMh+UgfJVlD3MR4NaDZuoROmNvkdM1kGH4NTpLSITY8jBgzr
+	GZ75sDSegBP+dpOfpGGk2BYDMJl1sAVzPzynrJF1gKXFggsRJkQFpmnxpLBsBNyC+Fn
+	iVvTxLdtXXHxbJEHsBNihgXNRRRpVC5/aW5PF5IY=
+Received: by smtp.zohomail.com with SMTPS id 1792453568024484.06943358185936;
+	Mon, 19 Oct 2026 16:46:08 -0700 (PDT)
+Date: Mon, 19 Oct 2026 16:46:07 -0700
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
@@ -65,16 +65,16 @@ Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
 	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
 	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v2 2/2] drm/tyr: allow userspace buffers to be mismatched
-Message-ID: <atap18Uo7U2OY92b@um790>
-References: <20261015-b4-dev_query_fixes-v2-0-e3e6d25050cb@collabora.com>
- <20261015-b4-dev_query_fixes-v2-2-e3e6d25050cb@collabora.com>
- <atHwZg245MM7l9Ty@google.com>
- <DM6Q8HOV2J6Z.19M92D448I2JQ@nvidia.com>
+Subject: Re: [PATCH v3 2/2] drm/tyr: allow userspace buffers to be mismatched
+Message-ID: <atarvxFKYYuHhXGQ@um790>
+References: <20261016-b4-dev_query_fixes-v3-0-f8071cda3515@collabora.com>
+ <20261016-b4-dev_query_fixes-v3-2-f8071cda3515@collabora.com>
+ <atXOd-EeFkdA-trn@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -86,36 +86,78 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DM6Q8HOV2J6Z.19M92D448I2JQ@nvidia.com>
+In-Reply-To: <atXOd-EeFkdA-trn@google.com>
 X-Zoho-Virus-Status: 1
 X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/292.448.41
 
-On Sat, Oct 17, 2026 at 10:36:49AM +0900, Alexandre Courbot wrote:
-> On Fri Oct 16, 2026 at 6:37 PM JST, Alice Ryhl wrote:
-> > On Thu, Oct 15, 2026 at 11:35:21AM -0700, Deborah Brouwer wrote:
-> >> +// If the user buffer is at least the minimum required size, then
-> >> +// copy as much of the kernel object as will fit into the user buffer.
-> >> +// Don't fail if the user buffer is smaller than the kernel object.
-> >> +// If the user buffer is bigger than needed, zero out the remainder.
-> >> +fn set_uobj<T: AsBytes>(usr_dst: u64, size: u32, min_size: usize, src_obj: &T) -> Result {
-> >> +    if (size as usize) < min_size {
-> >> +        return Err(EINVAL);
-> >
-> > Use `kernel::num::casts::u32_as_usize` here.
-> >
-> >> +    }
-> >> +
-> >> +    let mut writer = UserSlice::new(UserPtr::from_addr(usr_dst as usize), size as usize).writer();
-> >
-> > Avoid casting to usize twice.
-> >
-> > 	let size = kernel::num::casts::u32_as_usize(size);
+On Mon, Oct 19, 2026 at 08:01:59AM +0000, Alice Ryhl wrote:
+> On Fri, Oct 16, 2026 at 01:44:21PM -0700, Deborah Brouwer wrote:
+> > Allow userspace to provide a buffer that is smaller or larger than the
+> > object that the kernel expects to write into it.
+> > 
+> > Set a minimum buffer size to match those in PANTHOR_UOBJ_MIN_SIZE. If
+> > userspace provides at least the minimum buffer size, then simply write
+> > until the buffer is full.
+> > 
+> > If userspace provides a larger buffer than necessary, then zero out the
+> > remaining buffer.
+> > 
+> > This ensures UAPI compatibility with Panthor.
+> > 
+> > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> > ---
+> >  drivers/gpu/drm/tyr/file.rs | 47 +++++++++++++++++++++++++++++++++++++--------
+> >  1 file changed, 39 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+> > index 9f60a90d4948..a153aa453ed1 100644
+> > --- a/drivers/gpu/drm/tyr/file.rs
+> > +++ b/drivers/gpu/drm/tyr/file.rs
+> > @@ -1,11 +1,18 @@
+> >  // SPDX-License-Identifier: GPL-2.0 or MIT
+> >  
+> > +use core::mem::{
+> > +    offset_of,
+> > +    size_of_val, //
+> > +};
 > 
-> Or `usize::from_safe_cast(size)` after importing `FromSafeCast` -
-> `u32_as_usize` is useful in const context, but for regular conversions
-> the `FromSafeCast` trait looks slightly better.
+> size_of_val is present in kernel::prelude::* and does not need explicit
+> import.
 
-Yes, since we aren't using this in a const context I will switch over to
-usize::from_safe_cast(size) in the next version, thanks.
+Ack, will fix in next version.
 
 > 
+> > +    transmute::AsBytes,
+> 
+> Usie the trait from zerocopy instead.
+
+If this other series making zerocopy available to Tyr gets merged,
+then I could rebase this series on it and switch over to IntoBytes:
+
+https://lore.kernel.org/rust-for-linux/20261019-b4-gpu_info_intobytes-v4-0-0bc04df46549@collabora.com/T/#m9a9a24e0cf1ae10451e3fc84955873b405d0da0b
+
+> 
+> > +    let mut writer = UserSlice::new(UserPtr::from_addr(usr_dst as usize), size).writer();
+> 
+> On 32-bit this will truncate upper bits. I guess that probably matches
+> what Panthor does. Is it what we want?
+
+Yes, that's what Panthor does; it uses the "u64_to_user_ptr()" macro to do
+this deliberately.
+
+Since UserPtr only accepts a usize argument, I have to cast in Tyr,
+but instead, what do you think if I added another method to UserPtr
+to accept a u64 address and cast it to usize just like in the C macro.
+Something like:
+
+    /// Create a `UserPtr` from a u64 userspace address.
+    ///
+    /// Deliberately truncate upper bits for 32-bit systems.
+    #[doc(alias = "u64_to_user_ptr")]
+    #[inline]
+    pub fn from_u64(addr: u64) -> Self {
+        Self::from_addr(addr as usize)
+    }
+
+> 
+> Alice
