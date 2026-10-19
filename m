@@ -1,101 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.101.140
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792426386;
-	b=djXgh877VHzG81fBrk3RRhMuswRKjVKnCe4ir0hoQdwJZLHILneMXb+eEbm88dUZrYeS
-	 VtA4VYeTMhQcWEhu8kig7CnQHCNB0H1LpovepiZLVqLAanAnhVxZz2GZV2lC82Hou4gSP
-	 fI0YMTdqMEUWnS7NOz0K/1KEQNN+oFipTPGupVH5hpBqsbuozw6jmY76FsSwXI2rScSuN
-	 ObNAfaGv6KXmPxIC1M4oaQ2B+djLMHU+ZZCWqkVKK9Kb/VSpAMaPo6BkXgAoNqxz9pavh
-	 WQa228iX07BoJxqx5shlWGSGLKtea9TrstbnrmtWJ6zdypi8y0dgWRwvh4zl84UUqZQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792426386;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=9xHq6YTiiR3fqLM+iZfaW09pYscwJBUnSi7WkmQCZXI=;
-	b=XFFIG7YWiGNxpROxDJFFkoUUEHmzbDSKAxJKY2NtM9zhEqIP4HXB+kJFWNCKtWzkWdZ3
-	 BagPAZ7/X1aXa9/V+qqxPtDq2wUyVnW+L8IKjV3qHXyRybxnJKXVSeQXh4TXIKVKc9cwq
-	 aOdfFt5mtOojhd0HF7KTLpnEVeSYqj7afMqxCV3o35wAWwu7EsdyR1iqx9jcjifCO47Ca
-	 DK6VNwG9R/nF8lIhwTezchyrIZesaID02MYZGsVFew/QGyyw1saLUL2xsJ7+OsdBgM5cK
-	 ko4a2pukXAsh3tvFvQwowZvhuUKzcQ9r9LU2Qd3G+VF0jhXJwVbotWnjzDNXKS3TaHg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=garyguo.net;
-	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=N2iD3960;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.101.140
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022140.outbound.protection.outlook.com [52.101.101.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.45
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792426440;
+	b=rT5gsiBQh/NZr9cZTuzXtKBDEHKki0v6Z/WVVt0OXQFeLhXAuOy27e/NB9GZC5gzTXgc
+	 oP970D0lGVILsAN6Wntg3Lvv2t15QfCr/Zs90cFRRutRxbgCpYPwjWJUL+aKFO9uTYni7
+	 pTVt8LtmPRzNpbChNUd0GxqbYFB/l25TDkCN5vHvCY3bqAMP+F6sEaZsHGRV7B9bGpzIG
+	 trJEAllshKwft5eOf6cJz6kWzeSv49/keANvbKPPPmRK1tpD902OWh1z+1h7mSJTdbFKW
+	 Jk9d7qEpb/0zPuV14JVQmPIu45fJpmaafqLmIDyrhMnd5jiHsn6H/RlZMDtfOZjLy8Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792426440;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=wE8DD8N71MQfznU3Ft9s/Hf8dnnaSHV9fDu9XrNDJAk=;
+	b=xOAi5Bt5H4OXsTmcs6gChHYJyDArCvmbhf9z+eti64nBbKgdgYgI10DoTMpBjeaGq7Mj
+	 8iFJIuhH+SzdpG/LWDa+lfuSdNo1K0U1mMTgbV584h7Tab0Io8SGYO3CMlb6m0hf1w4Ar
+	 ukb7DzoOKu4mqYeQkfSBz85qAoBxed4Xpyc+f7IHRCXSeaXG6rMOd1eXJl9KpQudBPJ/O
+	 YHQtCpd0bAY/kfRiQUh6CnAnuFupu/XdPx0jSuZKajfYrj4CxyWOzxWxIseC59LiV3cBC
+	 LJILDVjwSYpBiPc+c+ZJ0ia7iitLNksZqgMqAjx2ljTWw2hDh4cHi02L6/Pn/silztw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=TGCix4OS;
+	arc=none smtp.remote-ip=209.85.217.45
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96BD606A31B;
-	Mon, 19 Oct 2026 16:13:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B96BD606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED87606A333
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 16:13:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DED87606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=N2iD3960
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O9r+e9wI69I2waFmI1ddQ7gQFeJbzlBYkX31m09JBMXQMaidfD9Z8o3bKXPVNHCbnaKN3qTaMzbP0Gu6lb5+4nd1gtSo54tvcFaaGS0Pg0WPnx6Wc9P7nesovpQtq/FqPMC7rnj6ECJB4AUuSCTOvT4b8w7eb7kETxmeN9Ry1sN7w0Cl4tz1+MtrpNGtYL9pJ0sPg0dTgj/Lg8GCBwfd5cAys5EwEF9ziGJL+LcKnwRRDI2DF8Sa9fkFds6QgRsjezoKcC4koYiS0U9eygIk4KuWiY1q9jLBNRIGfZ+xQRR7aHh3dCkUXaSHa/kxXufWA+BKLgaqeAgbU7+SSml2hw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9xHq6YTiiR3fqLM+iZfaW09pYscwJBUnSi7WkmQCZXI=;
- b=wxOD5/uwB19Aehvfrr7zxIB0JhmNYu08DtoTUZp/gijN78d9d1v0vXDMCyvbwULGNMsAzidUAon76KIBpCkH5gZuT8xoWCxE15xokzXJK0lcyXRWdeBvwYY2dUSvwk4jafjr+ZQNtFMbygZb5DUsRXcqnbJkK1oLPUsv7ODOP9XIL1ctZjaFvi4QO0lOUQAcxr/NbXZcLXGNVSWprhDewcn/Z6F8zqGcQyo3CYzdeRg9p1rOGery/v/NkEnNCffNebn6Rt1/yXEnP5NlbNWOFMTCbBmvqhnLlTRp5rd+8Ja27jGGSKHtUIizktoK8YYFgbBA2VECU4gFP/Xmq+DtAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9xHq6YTiiR3fqLM+iZfaW09pYscwJBUnSi7WkmQCZXI=;
- b=N2iD3960HViSVf82fD/CvlEXnHNUIAo5DUH4lnqumCLKbb9kkQ13gP6EyOYcE0NZXKjFrTBf514CYOKHC6vfZbyXmPZRaxL0uBYPGlhJl3mnZ56RgP8w7N52tk38PkBICOqufH2PM+vTPbWwP6iuODK4BZG1tQxFqmkKRGsa8/M=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LOEP265MB828591.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:501::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 16:13:02 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 16:13:02 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 Oct 2026 17:13:01 +0100
-Message-Id: <DM8Y4G5JMZ64.9PYKH079V51H@garyguo.net>
-Cc: "M Henning" <mhenning@darkrefraction.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
- <airlied@gmail.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Benno
- Lossin" <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Eliot
- Courtney" <ecourtney@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, <linux-kernel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v6 01/13] rust: auxiliary: let registration_data_with()
- closures return covariant sub-fields
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alistair Popple" <apopple@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, "nova-gpu" <nova-gpu@lists.linux.dev>
-X-Mailer: aerc 0.22.0
-References: <20260909064506.910162-1-apopple@nvidia.com>
- <20260909064506.910162-2-apopple@nvidia.com>
-In-Reply-To: <20260909064506.910162-2-apopple@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0211.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a5::18) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=TGCix4OS
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-7cc2bb73cd9so610389137.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 09:13:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792426439; x=1793031239; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wE8DD8N71MQfznU3Ft9s/Hf8dnnaSHV9fDu9XrNDJAk=;
+        b=TGCix4OSFUVd2foLkH/AQ3yvxD1aX1OJPmYZ7YehqJhxPdSPXmXPixodwvOoqXvR5k
+         ds0P+wHXh4/5EGpnSs9+gF7w68GF7tlvLHhrUsK4fmGTF+bjxwhK29DwnQfdwvzkTFDH
+         PUZiIvyZG5PX45NXM662AbBKlUVMK/mLq4KsrBME26k98B8kVKz+LN2MyhRjVjp69J7J
+         P0nyleuKq+3hDm5xPzXOCHCAQLrSMT4wUWfOjFHrxxTKmPNCYOP/s6iqvHLlYTGO9w2d
+         ni8ag7nItDl2SaLCiOD86eAVjcC9MmHA7+ts2eUv92XMBJ5UyvDlVHTn0yUe2SAj1TPB
+         ZjYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792426439; x=1793031239;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wE8DD8N71MQfznU3Ft9s/Hf8dnnaSHV9fDu9XrNDJAk=;
+        b=iNOlOUJeWep67JvxUw8x5QmQgbC7hscg5Dfn1+mkoBIDBnos4mUgfPiY7bbyfk9ahX
+         08Rj/lP3qr6jNvP/XB5/n9mEa6+BS9St0BVK2eOSp1zSSXfeV4TwD2ghDQ1Htmekuu+s
+         F91ZDmGHm9MffWC3yyZ8UCsTgF5JFOYQG3z71XTosPNyi9PIc+olJcBmBV07I4pohQu+
+         6Zurc/qnEwirJSsK9oOwiJY8P7iHrd3oPwuMs5mM7IUMeg0kqMGySymmBiyo/8K/EnNq
+         VpwDGeSndkksqxwVU2Dt/w8caH2cySit2t/LzX0HZa9VjD79yrtj+uYsNwBBhT+wDctF
+         oSlg==
+X-Forwarded-Encrypted: i=1; AKwUvBxdT2/id+MxdqmVyAkAFyZhvXAUmiJ+0vnDfAPZkRVRZui1zfvfkg5ymMoP8qBhJNdks1L/taiWKnVW2gEg7Q==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJSpGq6XRu73y6tqoAOQdti7m1mnOJH+2xIb6MSVZ9d8eLnDZ4k
+	hQoVndWVMcboBmRPUGQML9JuGaELUXTXF4ylox2vukCK6Vg827J0bzo=
+X-Gm-Gg: AYBFou3yuYLZjIOtY1K43UWMA2d/4APCPrFwCMe7AUkgq/yIGdTAdFk+/wmr47+6rmh
+	tOOWfNDD4qYnvFrVktxCrk9EjgR4vCLssArdCPyeDke2LhvYSVUNMC2ETvxvWm5qzPbULOfU3YI
+	L6JTGOOlskOdRS+jO7ra+KqNo9FQKqO0Oxi3mf/zk+TPLF/DA1usCwGtGtS0L8LBzJ9TWUb7Zb9
+	1W2rNKspgWTVMlLbjfpGU7kl0clRaN1FmfLhu8Zn/gOWj0HGHZKwp8tX1y17CvtCy06nv57kXud
+	5KIweqRZWuVBveNDABicxpF9GvDo6Bz92yLln3c1+GZVdaE+sdDUTFlnth9RX1jzlGu+B8FPl4U
+	+zhwrKm4yyhzoOmTBD41i/4OqPWchzQT44MpfG5g0WnO5BHznYYnVUni2MtYWVdQCa5r9d4XUf4
+	Qv9sUl1YaDKIHtlBL/Dp3CElKjB/SZp0QR+/cXKivN5NDu3OQEGGZjyFzS227xnItSc6C6IIWqy
+	pI4zw0D5yyjKIWp10AdFC/3fSA0Fd8z/ubdNhDyeaSZ5h/l4A==
+X-Received: by 2002:a05:6102:5113:b0:7cb:bc5e:7dad with SMTP id ada2fe7eead31-7cc368f6cdemr2108176137.10.1792426438620;
+        Mon, 19 Oct 2026 09:13:58 -0700 (PDT)
+Received: from localhost.localdomain ([186.158.238.108])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-990bb38f7f1sm525062241.10.2026.10.19.09.13.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 09:13:57 -0700 (PDT)
+From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>,
+	Georgios Androutsopoulos <georgeandrout13@gmail.com>
+Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun@kernel.org>,
+	Brigham Campbell <me@brighamcampbell.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Gary Guo <gary@garyguo.net>,
+	Jori Koolstra <jkoolstra@xs4all.nl>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev
+Subject: [PATCH 0/2] remove TryFrom<&Device> implementation for pci and platform
+Date: Mon, 19 Oct 2026 13:13:36 -0300
+Message-ID: <cover.1792417858.git.nico.antinori.7@gmail.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -105,174 +112,53 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LOEP265MB828591:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9bd1a282-f98e-451f-0d02-08df2dfbd99d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|23010399003|10070799003|1800799024|261009223027099003|10067099003|56012099006|6133799003|18002099003|22082099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	4o+Jvkuw9HawK+Nf7wZ2SyDfr71gg3TlnsFT0b1hblkgmCkp8bDXQeb5QgQNZrHscfZ+hR83oywuCOgsIQjol4cmN9etz3lDK04HxFXexw+7BL9Jn8xIBVJDYjYi7zMLNhCrAyto4QSw28DXWz47FsolWu7lBUjgedyvfSmKysqa3nLo6SDP0qE2xw6BZre2xEvMCLr5qECDobMW93WSSJc63HhxEiR40plziUts7GXGpqWzfcoQJ3TgiZ+APCdeOJ0eR1bgTn4wmRA/bWJUQKXjV2SvCGVY7x1l5EoFXOJrW8m2R7h02yolM19B2A4gohzkjdeI4/ZOUCmttvqC9IuHO1fhJRa3bdofrZvK+hVQRkHtys9yZlkiIFt4M05vnKx/9isjYgxM1UFhJs6VGxARH17vzSImHoJshkpDG9MjuQ5L9qFLkzaRG8E9pfNeZFiRW6AdtWxjBkxRLVYgNiQ7wiGOczRkVeLNlXfityes4Sx9zRzigqMtj6zBtFiAZsDvDuHdpKa0ygSjeq7vfDgdkzddEcGHZo0Sj2tvE5l2L1nBDs16c3jt3k71E5NavDhr5+qkftKNwpPj+cJwiKunUao0FXVwEJnZWgJxGQ7oFyOS2rFY19FlBUsu2h5p
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(10070799003)(1800799024)(261009223027099003)(10067099003)(56012099006)(6133799003)(18002099003)(22082099003)(4143699003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?b1daWUJmaS9ndVhUUGkzaDdxanppZXFvNlMzMlFCTkRYRTRBT1BGRlRlL2ZJ?=
- =?utf-8?B?c2htbUtjNHNNcDFmK1M5M1NTR0lUMVpJd00vZXFHeUVHMHdYY3d3V2dBS2pj?=
- =?utf-8?B?d1p2L3hKT0k2bnVuaGxVdEY1eUt1VVpEWEFTS2R3Rk5NYWdSb0xValUvc3hE?=
- =?utf-8?B?cGp3V1NHSWJIeVY0UEdZejdEK29RUEJMNlF0dVNXYy9yRGU1cmdRY2FCNHQx?=
- =?utf-8?B?ZDZNb0R4S0hLV0tXT05ReVhYRHRQYm5SY3AyektFaDlDVVBobndGVnhGL0xY?=
- =?utf-8?B?aDJmWUpFR0U3N3ZTVWlKSUFZVFRCZnRRdmFUTzV4bGpZYXhVU1p5ZEhhOUZV?=
- =?utf-8?B?dHdSaFNmS0JLaXpFWDZ3MUpvYlB3aVhyc2ZRTlZSSkpUUlR3Y0xLYnlHcStO?=
- =?utf-8?B?UENQeEQxcEVJUmJGaDBEdFUyY1Q5YXpqM1VqT3E4VFlaMXR2TFEzOFdDa2xw?=
- =?utf-8?B?STJUcitZVkNJMjhhU0pnL29aeUJ6VDhDUDJOaWRlR3FkUzJGRyswUThWVGpy?=
- =?utf-8?B?SjhLT1BYK2daRjhLOEhLRGpROXdJSC9ZcXkwdWpnOHdDcUFaSW4ycUpHQzMr?=
- =?utf-8?B?bDU1SEVLYUVRd0FmcURjV2w2anZ1VTV4Y1pEN3J0eERSK3EwZGI0OU15cGZQ?=
- =?utf-8?B?a2lrSkY5YWZKU0d3bVF6R0N6T0o3V3o1T2lUV3gzaDE5MG9QeGFBMXdZbVh5?=
- =?utf-8?B?d2s5cm82Ym1xT0pxQml6UGhId1NCVUo1SkozbDNnem1nZFdKRzQvUXBRS0I3?=
- =?utf-8?B?UU93N0xFMHRkTkZKelVaVnhOaWViNko1ekdUUFBtSHdYNkQ3QlphaDBrdEI3?=
- =?utf-8?B?UHRDM1ZpcjZGa1dERVcvUS9NcG10SURkbmwwRER3UE1VelhmSnhGcGRwelBk?=
- =?utf-8?B?dnRFekErL0pKamJuZDJTcCtDWlN6YmpIK01sYjIyWmZTZlNPd0Z3QzFJV29k?=
- =?utf-8?B?blVpc1ZyRUozYWNzY2JuU0pZYUV2V0d3ektCaWV0Ykl6RGN2bHNpZ0plK0tq?=
- =?utf-8?B?NSt2Y2o4RGRMUlVUd2sySnc5NmVoK1Z2NDJIRE1vamVUcEs3ME5rM2I2Ukcv?=
- =?utf-8?B?bS9sd2w4NE1ndlBmNzJLck91TEwrS0J4WWM2WDEya3c4Y0drY0MrWnlTWXVm?=
- =?utf-8?B?Tkwrc2xjeDRMRXhIaEZMSTFJc3B1RnN5b2V4STFvVDhSaExGUXFMcGJXeUtO?=
- =?utf-8?B?YmhBeDJsazI3SXA2N3BidVpIRk9qTVlkMDFCU0lBYmplTEJTdzI5aVY4SFgy?=
- =?utf-8?B?RnlUY3JDcHV1cUpwTnhJRUFWZjFSQVRaekJ3ZkNBeDdtZWxvYTY5TnBhcEp6?=
- =?utf-8?B?MVF2UzVleCtxclpEOStGUlJSTjNXWURRb0hsL3owNUQrMjBYUis5QjR6LzlG?=
- =?utf-8?B?c0tqaDhWSHh4UTFWbzJ5TGNmTFBGNGNQNWN4SEVwZTJmcFpvUncvQStqUEVE?=
- =?utf-8?B?ZzE3WGljZ0kyY0FOK1I4RXpnYThVS2QrYlp5OXd0OWg1aGRibzE1WW45dXQx?=
- =?utf-8?B?UzVtUTFqSDUwWDJsNnAwTjZzVVlBRWVOZXNDTmJGTXppRTRzQnNyVmJVSFZC?=
- =?utf-8?B?SnFzQmNsL0YyUVJFQ2NQa093blhKTVdubVNDVkljTzUwT3lwclhrZUxqeUt6?=
- =?utf-8?B?eXBHYXhEUnkwcGVOY1hvQkF1TWp0RklyOFY3UFdMRXRBUGkwVGpzRzlaVG9w?=
- =?utf-8?B?MW5WbmtUK2lmb2tGaGVyQzFDQTg5a2w5VnphcytPUnhlT3JmazdGeE0zUEJZ?=
- =?utf-8?B?ZHBXN05ha3Fyd08ydkFCM2VscFZBTGJtaTVLYlNKRjRvcmhrNnpSTzBKM1lw?=
- =?utf-8?B?ZzB2ZUo3QW8zeTFHZ3M2a3EyY2pwcTFMY0IxdVJZME9WWm4rcDN5NllxQ0FG?=
- =?utf-8?B?SzR3NS9JOGVGdFRsWVdOYXVPa241V2ovZ3ppSEhQcDNoZEEzWnNIQkQydVBC?=
- =?utf-8?B?TDN3SHlMaW04V2tRcS85VmovSmNxci9hQWtVRWwwU2J0YUxTeFBJSXd0Sk1W?=
- =?utf-8?B?S293ck04YlVGWFZ4b0VoTXJYSi9yOTFTSlNQalpua0lVZmY5Zit4cHY0UFhS?=
- =?utf-8?B?V0tsRU9UdFdEVUE1SHJOWjM1MmdrUk52cFZxS3g2aWZmM2VZRnF6aW0yMU1q?=
- =?utf-8?B?bkxSOVFnbSs1UFBiUjVDVzArV1l3bUFQckRmZnRuNXZ1YTFnbDRSZlJiaDU5?=
- =?utf-8?B?VEVwYUZXL2VKNkJlM2s0WGRHTXZ2RzlLM05VVlY1Tm55MVhzbkpHTllhYndV?=
- =?utf-8?B?OWJ3ZmxoYTM3enpXNTFGNXArSkhwK0IyOVdGWWdJS0ZsNHA3aHVUWlltNmh3?=
- =?utf-8?B?TnZVZHZDYnlsekc0M0lWWUdhYUVpWWtwdWs0eFE4QXlOQW4zOXp4Zz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9bd1a282-f98e-451f-0d02-08df2dfbd99d
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 16:13:02.1994
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: d2c++JvB991yrwA0hPbGiS301Y/8NnIrTopDih3lh5b2scGWBytdzceKUh62mzwEXBqyRkvW2EqmvIgTUYSf9g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOEP265MB828591
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed Sep 9, 2026 at 7:44 AM BST, Alistair Popple wrote:
-> The closure passed to registration_data_with() currently receives
-> `Pin<&'a F::Of<'a>>` with `'a` universally quantified. This prevents the
-> closure from returning references derived from the registration data,
-> even for sub-fields that are covariant in their lifetime, because the
-> compiler cannot relate `'a` to any lifetime the caller knows about.
->
-> Tie the outer reference to the `&self` lifetime instead, i.e. pass
-> `Pin<&'this F::Of<'a>>`. This gives the closure the implied bound
-> `'a: 'this`, so covariant sub-fields such as `&'a T` can be coerced to
-> `'this` and returned directly, while invariant fields still cannot be
-> coerced and therefore cannot escape with an incorrect lifetime.
->
-> This allows auxiliary child drivers to project covariant data out of
-> invariant registration data without having to wrap every use in a
-> closure.
+Hello,
 
-Looking at this again I think the current API might be unsound where this p=
-atch
-becomes fix rather than just a feature update.
+This patch series removes `TryFrom<&Device<Ctx>>` implementations for
+pci and platform's `Device` struct.
 
-For an invariant `&'b F::Of<'a>`, it's actually a requirement that `'a` str=
-ictly
-outlive `'b`. With the current API surface, we can obtain a `&'a F::Of<'a>`=
-,
-then we can store it inside `F::Of<'a>` (because, well, F::Of<'a> being
-invariant, it can internally have a `Mutex<Option<F::Of<'a>>`), and then we=
-'re
-able to UAF within the destruction code of `F::Of<'a>`.
+To make sure that there were no remaining users, I checked for usages of
+the `try_from` method and the structs implementing `TryFrom` using rust
+analyzer, activated the modules that were using the structs, removed the
+implementation and compiled the kernel (did not trust entirely in rust
+analyzer because it does not find usages that depend on this
+implementation like the `try_into()` in fact, the last usage of the
+trait was a `try_into()` in pci).
 
-The fix, is, well, this patch.
+I did what I described above from the most recent changes (rust-next,
+linux-next, drm-rust-next) down to the introduction of the
+implementation, stopping in all major versions (7.3-rc7 to 6.19) to find
+the last usage and mark the commit in the `Fixes:` tag. I found no
+usages for the platform implementation.
 
-Would you might pulling this patch out, rework the commit message a bit and=
- send
-as a standalone fix?
+If applied to current rust-next, commit 7c306f00835a ("rust: zerocopy:
+update to v0.8.62"), nova driver will fail to build, drm-rust-next and
+linux-next are ok.
 
-Best,
-Gary
+This series, along with the i2c patch [1], closes:
+https://github.com/Rust-for-Linux/linux/issues/1264
 
->
-> Link: https://lore.kernel.org/nova-gpu/DL3WPTVM033J.33RWYCZOC67Z1@kernel.=
-org/
-> Suggested-by: Gary Guo <gary@garyguo.net>
-> Co-developed-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Alistair Popple <apopple@nvidia.com>
->
-> ---
->
-> Changes since v5:
->
->  - New for v6
-> ---
->  rust/kernel/auxiliary.rs | 17 +++++++++++------
->  1 file changed, 11 insertions(+), 6 deletions(-)
->
-> diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
-> index 60dfbec8f330..06f816420790 100644
-> --- a/rust/kernel/auxiliary.rs
-> +++ b/rust/kernel/auxiliary.rs
-> @@ -305,6 +305,10 @@ unsafe fn registration_data_pinned<F: ForLt + 'stati=
-c>(&self) -> Result<Pin<&F::
->      /// `F` is the [`ForLt`](trait@ForLt) encoding of the data type. The=
- closure receives a pinned
->      /// reference to the registration data.
->      ///
-> +    /// The outer reference carries the `&self` lifetime while the inner=
- type carries the HRTB
-> +    /// lifetime `'a`, implying `'a` outlives `&self`. This allows the c=
-losure to coerce covariant
-> +    /// sub-fields (e.g. `&'a T` to the caller's lifetime) and return th=
-em directly in `R`.
-> +    ///
->      /// For covariant types that implement [`trait@CovariantForLt`], pre=
-fer
->      /// [`registration_data`](Self::registration_data) which returns a d=
-irect reference.
->      ///
-> @@ -314,13 +318,14 @@ unsafe fn registration_data_pinned<F: ForLt + 'stat=
-ic>(&self) -> Result<Pin<&F::
->      /// Returns [`ENOENT`] if no registration data has been set, e.g. wh=
-en the device was
->      /// registered by a C driver.
->      #[inline]
-> -    pub fn registration_data_with<F: ForLt + 'static, R>(
-> -        &self,
-> -        f: impl for<'a> FnOnce(Pin<&'a F::Of<'a>>) -> R,
-> +    pub fn registration_data_with<'this, F: ForLt + 'static, R>(
-> +        &'this self,
-> +        f: impl for<'a> FnOnce(Pin<&'this F::Of<'a>>) -> R,
->      ) -> Result<R> {
-> -        // SAFETY: The HRTB closure prevents the caller from smuggling i=
-n references with a
-> -        // concrete short lifetime, making the round-trip from `'static`=
- sound regardless of
-> -        // variance.
-> +        // SAFETY: The HRTB on the inner type prevents the caller from e=
-xploiting a specific
-> +        // choice of `'a`. Covariant sub-fields can be safely coerced to=
- `'this`, while
-> +        // invariant fields cannot be coerced and thus cannot escape wit=
-h an incorrect
-> +        // lifetime.
->          let pinned =3D unsafe { self.registration_data_pinned::<F>()? };
-> =20
->          Ok(f(pinned))
+I made this a series because both TryFrom implementations were
+introduced in a series:
+https://lore.kernel.org/all/20250321214826.140946-1-dakr@kernel.org/
 
+[1] https://lore.kernel.org/rust-for-linux/20261019152329.620610-1-nico.antinori.7@gmail.com/T/#u
+
+Best regards,
+Nicolás
+
+Nicolás Antinori (2):
+  rust: pci: remove TryFrom<&Device> implementation for &pci::Device
+  rust: platform: remove TryFrom<&Device> implementation for
+    &platform::Device
+
+ rust/kernel/pci.rs      | 21 ---------------------
+ rust/kernel/platform.rs | 21 ---------------------
+ 2 files changed, 42 deletions(-)
+
+--
+2.47.3
 
