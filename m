@@ -1,99 +1,99 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.180
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792447154;
-	b=JQPevbniwF7zaXQvQoplzKEudAUI2hcqaaRIkjMxzW6io+yuh/DrR21jLitD/zLUCo2S
-	 K9IKEdmxzRViL0xIAJGYzB2tZXB3Ix0BBMmVFbdwtOGRj7iV8nEadkmwRnAlgzK0fbB/N
-	 U07CL/7Eb/+IbWbmXWN9sO1wDMhLoT++BStujU6L2h0VhBqVa5i+lWMpWU1qqZxtzXVeY
-	 Mnirefzpu42pMmdrXqD2tdrYSu3IO43+TqcPjddGZBFQNzTypknW6uGpwFOqIcNE+k4lO
-	 7nXDreZDyqvei7EPghTzPjVbkhsgPIyBZfZtCiSFYVy7/ZjcH8uFGbwwFDuPpzigzDA==
+	t=1792447719;
+	b=CufbvuHEFFTlIeuVRXi9MbvoyQFIIsAPnIXD65YMK/mnhbTxg2DXwMmR6z5qoe0K6qkd
+	 ScORUnX9+DcxmTXGPhfPbcVmtGRi7KtA220PrBHpPzeVXR/s1/O38uYHBh96pIOIYqSfK
+	 i0K6zPdn+mb56zDO2Shy/wbRwqFQQpj+36u7QoGEd+k35bTjmWLLlix9EAhG7awZZyuNE
+	 8zdGHd64xaH3orXYb5G+YgrPezxHfR17tzPcwzd9X+n5LomaCYzbUjdNJWQJBvaHsSOt9
+	 g4WUp9INPgxY0/23mY+baefIE7LYDLClMg5GW48v6UKjHrM2OJ13xmYLLUQxGXXyf9w==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792447154;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792447719;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=jctDokCQpU+5f4McBmCcNrit0g75bLIuZ0vnR/79ocM=;
-	b=G6ZqV7IO5NpZN0ThJ07r/GkxmNpMk2FTZXymRy93b17CXxfMoxYs+YMiorAv01WAQ6qG
-	 tJ1llb2NFUcKbbX3fh1dxUIA6geC31HN4TlMqL7kbVE9iCHtDFITP3gyOV0KY/AHIi7jf
-	 y6BGM109HQkhBREkQ5Jftt2W4iJTIfhDpB6Q4Rygye93utGEDIkqjilEgCpJM/W1G25YS
-	 hOQKZ26kviAGLyBfRGdFp8mdpWxXwktNPbN4wViVdUwS0zxFwQWFYnwaBPaSLuCmUj8cR
-	 r1gcNOlQBTxy4NjHsVUR0WVigMOqTQFxisJ7EYK16LPAbMU9KQuFOn7qSM4seSj6HHQ==
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=3DPcsrrlKcBIHFVOp6oadvhLVxLBnBkXH0jtrDtGcjo=;
+	b=a4idECn6xt8b2z4TM1vv8osx6g1sG8G5GBm+JDvbb/Da/brU1rBnG7c5hvtJcy1a1v4o
+	 2AML6lVOcWekPmOJtdn6/ns0QGuK7/osRyICcFkHC2lLj+2tOgSC80Ia89QroJqpnBJ3k
+	 f5ATEDEqxEwcokEuRY4CVaZY8zUbl6IWZWatTjS3sc4f8hM1jhXtnQZ+qIAHN1kHh36Gw
+	 bpwkv5GHxPNYaFiFDjFxVIq5TkauZUBeRLKWDQc0DbPdmvfTAvjMEJhYq9G1FAbEha4D2
+	 rWK8KzMlgbE3pX8e2YQm21SsjvT6jsAOX6QacwaZTA/a+tiyZbcO937FaXnMtawVkIA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=tuJUcM+r;
+	dmarc=none header.from=gfxstrand.net;
+	spf=fail smtp.mailfrom=gfxstrand.net;
+	dkim=pass header.d=gfxstrand-net.20251104.gappssmtp.com header.i=@gfxstrand-net.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=puXpIIaF;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.180
 Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA1C606A31B
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 21:59:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BEA1C606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B4C606A319
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 22:08:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 98B4C606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gfxstrand.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gfxstrand.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=tuJUcM+r
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-3514b90bb89so6768954eec.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 14:59:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792447153; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=gfxstrand-net.20251104.gappssmtp.com header.i=@gfxstrand-net.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=puXpIIaF
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-35f036b17easo1260829eec.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 15:08:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792447716; cv=none;
         d=google.com; s=arc-20260327;
-        b=SzMS0H96igl1Q38HTMKP40ubrsP3/ZMNxTkKxt9MzJNId1+RCWvHJy0dMWls5pZRhU
-         HqBS9dsvoaCm/Xc0vd5TLY4LzP9l4m++Nsl7UPqPOx/s+SNJPbZjUELuGlcqyiyTsL/I
-         /P9n9iRVPD5L3w/if9Y2SRBW4XCs5+6A9m0z+UwgrLx/Qk59bsbg+n+101TALgs//gTO
-         sEWhk/JGIm3O1vXRcHM7USaABjqfQoOneO2pisVbP9apVgQgHb6iC4Rc0spZls0ufrXu
-         XcuiIONTFP6vOGtylxkfa4AK2XULnsDDQAI2F/ToIyDfsqW5oCo+623h3E5KPwYziaeQ
-         +NNg==
+        b=lhwzCMFW42Muopq5r3wlrPM087NCFx8/OkSIODzsnqqnuV81s6T0wkaGIc5ha5mMiA
+         dP66GWyna1rmOyGT2c+pVeTLc4gXZSvAjhRuDk6MSHeOx5n1zaGuwf2MMXhUjNI4+Mnv
+         zua9LUqhrmxmrQa+v2HavDRtcZ4UexQERAs4iubBpFJFegvmlPvaOTt8MpgRQifh4Zjs
+         ftLrNKBuhwH3IV1dBXUOqv9b7lWDzPvAT6oGbugezuk31CHB9JxEhTttdGBQdHR+wV6o
+         tiiaC+B9U9Bjc14ELxKAxnaszU5c3Hc/Zy2eRlFl/ulu1TXTkedKml2/VHk1gF92x3Kh
+         8XRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=jctDokCQpU+5f4McBmCcNrit0g75bLIuZ0vnR/79ocM=;
-        fh=rWmU00LCvzCjJSexlome6JngWgCCcm/q6OlAOLquoQg=;
-        b=YGHyypRckgciVP/rGbj2E50jn9ex4ezIdfjIhfHdK/y9VufeeX5mx3lyFQiBFw3H9P
-         eT93zy1u7zRt0dinWrUkC/iLfsWgCAS+V4y3TD7Rggg6TOSD0USFSc0t5l0EdGnNuw3y
-         Q/3GJZZzCAaAqm0twzF4HfLOmhDFdwHAwxNqOH8owtH9odpupipK+lkyjStWChbkX2w0
-         Ytgx3QMtw+sl0iMe2IiLgb9XOgiiVJ6ghMwNlei9YbZj/xncQZxwQhqyeRLxm3YH0lkJ
-         6OPexiCNvXpxAsGFUnsFVZfkZU7XN8h4PyoweVBSOZ4SZe7w2gGbUW8woKJkaBsbFROw
-         WA7A==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3DPcsrrlKcBIHFVOp6oadvhLVxLBnBkXH0jtrDtGcjo=;
+        fh=uLAkVuLMFfh4qNblnvnX+3lsv/hdPXjsKrgkS7MaBuI=;
+        b=h2eOxQzR7KPky1JUSMHCNZvWnL5ciz34FUKqlK8vvOCCjaax4QZzs+mI/JhZOSFvMC
+         D+7Q5y5zXR/TAYdMdXUhea2bC6gNwGB7no9xSEVD8EpTdXCfmq7AZ1lmnyZs4UI5UyBr
+         MPtFWKgTee0S9Y2/z9yFsCs+oxXfEVNlaDo49+3fFv9VEyasIxlQ4HheKKU78118Hs9p
+         +Vs9c65FujsWdevtmRMSk7bLtZrsruhCHqCUAtgQMW6Y4AQUiKCMqhEfzVBXxsLw48Be
+         heYZ040OOOrhyrkd8sa2EVvAEEeA4YiBCi4Oj+RtV9Y5KFCe7LsAYJOBfsXuTLhza+jy
+         8jfQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792447153; x=1793051953; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jctDokCQpU+5f4McBmCcNrit0g75bLIuZ0vnR/79ocM=;
-        b=tuJUcM+rzbY1T3hPy151XGwtTm9pe5er0cE5XFCuBgpHlWmauyO44hNPXyaOBU2k5A
-         mmnJCszVpsv0Pq9bmMtXp97kD/V8Cp+eTXquX1wdjYCLd+spKFDiaRse4g6thtSfryQ1
-         1dWDYpOJeSVm9jBtwKEOpeJxe2u9AETKpgzKcf5Pgu0AjuDvAUSl2GUhJ72CVGdWQTzW
-         5/omJaVlPyPmaUUn3+CHecWeNSW0adLhpRVsOlg1CaWGFUs1q2rqEaOvNodzMDrJHuBD
-         SyKst/DGammFWm5vbEb+djqB1R3xDPZ4GXpLWq6wyrPlCKvc++5OmGrDG/dV9HqrNCEY
-         9yGA==
+        d=gfxstrand-net.20251104.gappssmtp.com; s=20251104; t=1792447716; x=1793052516; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3DPcsrrlKcBIHFVOp6oadvhLVxLBnBkXH0jtrDtGcjo=;
+        b=puXpIIaFddOR3wfP1rDZYT2UzxZkNA6qG0O9xLrJXEpN0mSWkOvRb/zfAugwhi7x1Q
+         C6cGVaJEYhBpWOuEFDzFINS9cKDjgQhW2zkgz/HVvMu2v9JAxfNOf4qNDze2WCfapDyz
+         EduWUAxn/2m7n5eDiVS6b44ytEYQtK9vue9VaQx4nBaJfaChQpr15SiqC7xieeqqsZjL
+         Q5yl3eTzhGP959UuWlrL0Y9rNxVpXwZfP7GtLH50xZDjp4Slmtrx4AyoeCBSbjXrSYhI
+         vPidB+77GyzS/RBF6kNnF1gXWeb3ZQh/w+sJgbvSrqr7XLg5uGxkgwg+JWu5DellBUtx
+         qZwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792447153; x=1793051953;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=jctDokCQpU+5f4McBmCcNrit0g75bLIuZ0vnR/79ocM=;
-        b=QtVjoBub9Kfh3OcHk4FZdvD9A76NoPIgASkiO88LKmzr0SWohx3Nbn9KY7jTtoFxxw
-         hZHR+xivkwTMX20kv0F6IxC9NtCxrG/KwzGL+FJWAVT3iYqc/uLJn/SWtLsU4aaHWPJC
-         DjCpk4plWpDxlyjqUuntZLikoFrrrTSutfV/4+XMUT0/NyP4kB7Mm0lke5Qs7W+Tj/ex
-         vgBMYUsd5l3rSXmq/Qd4BWBfEPt3RpkEXVMkBMmkXfLWdvMoYwfZJxm7ml31i5xXGtM4
-         6j0fd8n+TkSNUwKj/Sk532+T0Z59VGqDEfvGBUfrrMc8EW+iZ6dyFUPL7rGdzhXzF+9U
-         B5mw==
-X-Forwarded-Encrypted: i=1; AKwUvBwA2FqhQCiselejZbc99qycnc2SdLOCvvnb8MoMxnz+Dkrn6bfampVDRtyvY+dHegY13mDa8rjkfJknmP0GJA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYIJB27fKoG4zybZEEzug8ayZS2Q5cxBbnH81ktE94ZdLFM0DacZ
-	j4V6gmBrEw04tA86o1u796GIkmpt2qRVpv8hu/m/77mXoYBHxxfYShjDYXv12QxFOaTzIoqBlRv
-	+3YfsMFpgxbozCc8qX5yk6gp4/tomFaT9EXyAv52X
-X-Gm-Gg: AYBFou33iDCPJF/PU691j6F1DvzG859Wru8ulAD0aDbP+WnS8JrbxDpfzgxvrf6wdsz
-	Pz5vNCXVvJ6ztj5B7DYgnPK1RZ04ImqnhetrroNC5WUES8yxIqvWuc4liiH0o3tjvGon5sLd0C6
-	jU/33g9N3Z6TCqL14Bc7HKW5vE9H8dvIi5LLWxEhDHzSDicUWXJFc/WwPqXhsbEqKy89Ug67xoK
-	3AQMAX74f4KRo2utdKHPvWymNz7I9+cxjNx8P52Hrb0YCM3/d3rs5qBpSmh+xZ6SLKslQHOi3LO
-	9vLLYyZiAnUiIvD1Rl99mC47DI055adr4wwC+t46RwRiCrFK8qtd4lYoQKaUCnnDZLuKp93+0t4
-	ojxEMfAdf6qA=
-X-Received: by 2002:a05:701b:2207:b0:136:c443:80e5 with SMTP id
- a92af1059eb24-1876658f6c4mr9237879c88.6.1792447152061; Mon, 19 Oct 2026
- 14:59:12 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792447716; x=1793052516;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3DPcsrrlKcBIHFVOp6oadvhLVxLBnBkXH0jtrDtGcjo=;
+        b=CAwxQ5hS0a/+PuEo3rDga5I+KG+KV21VHWCmSoJVJUXfpOCk33avCkPITjFteRN99T
+         zRJYFd/Jg6mDjvVRSrM7PQ0HVwG9WbRvlpOcmrvPZ/q58AA0sHmVcLyzwMbfEMYiwA1D
+         pF49H3qPPEJGO5VOnzmKT6uUB2nZLjhm8OCiIAQLDCHzducgtZQDsuNZoHkIipcd42QC
+         Cuuscvl4/6qHvseZSYy8lpBEYl0ROTUmsI+XTFSaYox8P75K9Epr2wQhR+w8l1hbGI35
+         NAWId9eV/gur32QC/VMGcRljvAerAQLtWVlEPq9B8PEydwftz3NuXYtJSwYZDvr4m2Hg
+         6a8w==
+X-Forwarded-Encrypted: i=1; AKwUvBxjlkjU3i0OMWP+Yc1Nys0LJFF1PQTA7+TUPjhjmLG5t981R1jvq1T9tm3U7gos60YQh/2oAVCBdQcDrNvuDw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJtM4uaHrREYiWeiJbWl33Eyuc/wUPYwac0TXO7dEJm5PRjz7Zd
+	2UujuNjnyevlQ9JzF+8/a+uU+CvI5aU8t1/ywbVcpFRVPZWu9SrRSZpMRopVXZQR4pZa9TDazhg
+	N79X7NiK0DT9ucYrtwQHSynw0VIzSAF/v3E6AhjCvNQ==
+X-Gm-Gg: AYBFou3KRrIoKKH1milzXmgoyJWR+qnyq4Nba+t78iicMwg8x55FI5hyEQLT8WKKK3j
+	8bwbpMO9X5h8T7naZ55XtnxEFVgFpZjjggdxlFRaxK+apQEgD1EtRzXlLPOUEo+VJZtA/MWGIxy
+	sbP9f0xyZV4dCTU2sCNbMMXzpMBB7NHZq5l3Jgcnc9ri+5J9xZqGgUoW7v8qVP8v0X3JdAUGb9+
+	C1N/7bIOQ6YSctFCwfhp1EoFs/qPOiRzvOAgETKa4JDe+peZq7sUCjIRwRQTOE1GYQJaaNZUFNW
+	JGgF4RW3pYl9lFVc5KJHH8Asc7wgwStjqUVMXEspbR1VCblFjYLS
+X-Received: by 2002:a05:7022:f512:b0:16b:fa6d:b11f with SMTP id
+ a92af1059eb24-1850ce9b5a2mr12535516c88.6.1792447716400; Mon, 19 Oct 2026
+ 15:08:36 -0700 (PDT)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -103,72 +103,526 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261015145714.3327543-1-elver@google.com> <DM8X51YCN6AA.1HV7J3R3PIYY9@garyguo.net>
-In-Reply-To: <DM8X51YCN6AA.1HV7J3R3PIYY9@garyguo.net>
-From: Marco Elver <elver@google.com>
-Date: Mon, 19 Oct 2026 23:58:26 +0200
-X-Gm-Features: AclHuK_qWUQb64XA37ScTQq_ZMKUMtenjdgDmPfnErmCHixLBqORRUjuSE_XZSQ
-Message-ID: <CANpmjNPALPJQDZFfNAqo8v0eu_0uNvj+rJ5xqeC3ZZSvs9zQwA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] kbuild: rust: enable KCSAN support
-To: Gary Guo <gary@garyguo.net>
-Cc: Alexander Potapenko <glider@google.com>, Boqun Feng <boqun.feng@gmail.com>, kasan-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, Dmitry Vyukov <dvyukov@google.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Asahi Lina <lina+kernel@asahilina.net>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Yury Norov <ynorov@nvidia.com>, David Gow <david@davidgow.net>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Alvin Sun <alvin.sun@linux.dev>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Petr Mladek <pmladek@suse.com>, workflows@vger.kernel.org, 
-	linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
+References: <20261019212535.88390-1-dakr@kernel.org> <20261019212535.88390-2-dakr@kernel.org>
+In-Reply-To: <20261019212535.88390-2-dakr@kernel.org>
+From: Faith Ekstrand <faith@gfxstrand.net>
+Date: Mon, 19 Oct 2026 18:08:24 -0400
+X-Gm-Features: AclHuK-qE8LmEGdwibwHGL6oFYAXR5b0DqizYeAXVyUgVX--Coo1a8MpQKVbO6Q
+Message-ID: <CAOFGe95z69uc802-DWwhBqED9VB9ZSts2GL3UZ93frgOHc0akQ@mail.gmail.com>
+Subject: Re: [PATCH 1/3] drm/nova: mark the uAPI header as unstable
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: aliceryhl@google.com, airlied@gmail.com, simona@ffwll.ch, ojeda@kernel.org, 
+	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, 
+	work@onurozkan.dev, jhubbard@nvidia.com, apopple@nvidia.com, 
+	ecourtney@nvidia.com, lyude@redhat.com, kherbst@redhat.com, 
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 19 Oct 2026 at 17:27, Gary Guo <gary@garyguo.net> wrote:
+On Mon, Oct 19, 2026 at 5:26=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
 >
-> On Thu Oct 15, 2026 at 3:56 PM BST, Marco Elver wrote:
-> > Rust supports ThreadSanitizer instrumentation via LLVM, which is what
-> > KCSAN relies on; however, Rust code is not currently instrumented.
-> >
-> > Pass -Zsanitizer=thread and the same TSan backend options used for C
-> > code to rustc. Wire up KCSAN_SANITIZE in scripts/Makefile.lib for parity
-> > with C (though rustc currently rejects linking crates with mismatched
-> > instrumentation).
-> >
-> > rustc only accepts -Zsanitizer=thread for targets that declare support
-> > for it. Of the targets used by the kernel, this is only possible for the
-> > generated x86_64 target specification, so restrict instrumentation of
-> > Rust code to x86_64 for now via HAVE_KCSAN_RUSTC. On other architectures
-> > Rust code remains uninstrumented as before.
-> >
-> > All TSan options used are supported by the LLVM versions of the minimum
-> > supported rustc, so no rustc-option checks are needed (they would also
-> > fail, because x86_64-unknown-none used for option checks does not
-> > support -Zsanitizer=thread).
-> >
-> > Unlike Clang and GCC, an equivalent to -fno-optimize-sibling-calls is
-> > omitted for Rust because rustc provides no corresponding option. While
-> > disabling tail-call optimizations helps preserve complete stacks traces
-> > in reports, it is optional and not required for KCSAN to function.
-> >
-> > With this enabled we can detect data races in kernel Rust code and
-> > between Rust and C code.
-> >
-> > Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> > Acked-by: Boqun Feng <boqun@kernel.org>
-> > Signed-off-by: Marco Elver <elver@google.com>
+> The header already documents that its uAPI is unstable and intended for
+> development. It may change incompatibly as it is developed upstream.
+> Rename it to nova_drm_unstable.h and move it out of include/uapi/ to
+> make this more explicit.
 >
-> Acked-by: Gary Guo <gary@garyguo.net>
+> As individual interfaces become stable, move them to
+> include/uapi/drm/nova_drm.h.
+>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Thanks!
+Acked-by: Faith Ekstrand <faith.ekstrand@collabora.com>
 
-Which tree should this go through? The Rust tree? Probably too late
-for this cycle.
+> ---
+>  drivers/gpu/drm/nova/nova_drm_unstable.h | 212 +++++++++++++++++++++++
+>  include/uapi/drm/nova_drm.h              | 204 +---------------------
+>  rust/uapi/uapi_helper.h                  |   2 +
+>  3 files changed, 217 insertions(+), 201 deletions(-)
+>  create mode 100644 drivers/gpu/drm/nova/nova_drm_unstable.h
+>
+> diff --git a/drivers/gpu/drm/nova/nova_drm_unstable.h b/drivers/gpu/drm/n=
+ova/nova_drm_unstable.h
+> new file mode 100644
+> index 000000000000..3577dede15a6
+> --- /dev/null
+> +++ b/drivers/gpu/drm/nova/nova_drm_unstable.h
+> @@ -0,0 +1,212 @@
+> +/* SPDX-License-Identifier: MIT */
+> +
+> +#ifndef __NOVA_DRM_UNSTABLE_H__
+> +#define __NOVA_DRM_UNSTABLE_H__
+> +
+> +#include <drm/drm.h>
+> +
+> +/* DISCLAIMER: Do not use, this is not a stable uAPI.
+> + *
+> + * This uAPI serves only testing purposes as long as this driver is stil=
+l in
+> + * development. It is required to implement and test infrastructure whic=
+h is
+> + * upstreamed in the context of this driver. See also [1].
+> + *
+> + * The uAPI in this file may change incompatibly. Stable interfaces shou=
+ld
+> + * be moved to include/uapi/drm/nova_drm.h.
+> + *
+> + * [1] https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/
+> + */
+> +
+> +#if defined(__cplusplus)
+> +extern "C" {
+> +#endif
+> +
+> +/**
+> + * enum drm_nova_architecture - GPU architecture identifier
+> + */
+> +enum drm_nova_architecture {
+> +       NOVA_DRM_ARCHITECTURE_TURING            =3D 0x16,
+> +       NOVA_DRM_ARCHITECTURE_AMPERE            =3D 0x17,
+> +       NOVA_DRM_ARCHITECTURE_HOPPER            =3D 0x18,
+> +       NOVA_DRM_ARCHITECTURE_ADA               =3D 0x19,
+> +       NOVA_DRM_ARCHITECTURE_BLACKWELL_GB10X   =3D 0x1a,
+> +       NOVA_DRM_ARCHITECTURE_BLACKWELL_GB20X   =3D 0x1b,
+> +};
+> +
+> +/**
+> + * enum drm_nova_chipid - opaque GPU chip identifier
+> + *
+> + * These values identify the chip a GPU is based on. They are otherwise
+> + * opaque: userspace must not assume the values carry any particular mea=
+ning
+> + * or encoding, only that they may be compared against this enum.
+> + */
+> +enum drm_nova_chipid {
+> +       /* Turing */
+> +       NOVA_DRM_CHIPID_TU102                   =3D 0x162,
+> +       NOVA_DRM_CHIPID_TU104                   =3D 0x164,
+> +       NOVA_DRM_CHIPID_TU106                   =3D 0x166,
+> +       NOVA_DRM_CHIPID_TU117                   =3D 0x167,
+> +       NOVA_DRM_CHIPID_TU116                   =3D 0x168,
+> +       /* Ampere */
+> +       NOVA_DRM_CHIPID_GA100                   =3D 0x170,
+> +       NOVA_DRM_CHIPID_GA102                   =3D 0x172,
+> +       NOVA_DRM_CHIPID_GA103                   =3D 0x173,
+> +       NOVA_DRM_CHIPID_GA104                   =3D 0x174,
+> +       NOVA_DRM_CHIPID_GA106                   =3D 0x176,
+> +       NOVA_DRM_CHIPID_GA107                   =3D 0x177,
+> +       /* Hopper */
+> +       NOVA_DRM_CHIPID_GH100                   =3D 0x180,
+> +       /* Ada */
+> +       NOVA_DRM_CHIPID_AD102                   =3D 0x192,
+> +       NOVA_DRM_CHIPID_AD103                   =3D 0x193,
+> +       NOVA_DRM_CHIPID_AD104                   =3D 0x194,
+> +       NOVA_DRM_CHIPID_AD106                   =3D 0x196,
+> +       NOVA_DRM_CHIPID_AD107                   =3D 0x197,
+> +       /* Blackwell GB10x */
+> +       NOVA_DRM_CHIPID_GB100                   =3D 0x1a0,
+> +       NOVA_DRM_CHIPID_GB102                   =3D 0x1a2,
+> +       /* Blackwell GB20x */
+> +       NOVA_DRM_CHIPID_GB202                   =3D 0x1b2,
+> +       NOVA_DRM_CHIPID_GB203                   =3D 0x1b3,
+> +       NOVA_DRM_CHIPID_GB205                   =3D 0x1b5,
+> +       NOVA_DRM_CHIPID_GB206                   =3D 0x1b6,
+> +       NOVA_DRM_CHIPID_GB207                   =3D 0x1b7,
+> +};
+> +
+> +/**
+> + * struct drm_nova_gem_create - create a new DRM GEM object
+> + */
+> +struct drm_nova_gem_create {
+> +       /**
+> +        * @handle: The handle of the new DRM GEM object.
+> +        */
+> +       __u32 handle;
+> +
+> +       /**
+> +        * @pad: 32 bit padding, should be 0.
+> +        */
+> +       __u32 pad;
+> +
+> +       /**
+> +        * @size: The size of the new DRM GEM object.
+> +        */
+> +       __u64 size;
+> +};
+> +
+> +/**
+> + * struct drm_nova_gem_info - query DRM GEM object metadata
+> + */
+> +struct drm_nova_gem_info {
+> +       /**
+> +        * @handle: The handle of the DRM GEM object to query.
+> +        */
+> +       __u32 handle;
+> +
+> +       /**
+> +        * @pad: 32 bit padding, should be 0.
+> +        */
+> +       __u32 pad;
+> +
+> +       /**
+> +        * @size: The size of the DRM GEM object.
+> +        */
+> +       __u64 size;
+> +};
+> +
+> +/**
+> + * struct drm_nova_info - query device information
+> + */
+> +struct drm_nova_info {
+> +       /**
+> +        * @id: The identifier of the information to query.
+> +        */
+> +       __u32 id;
+> +
+> +       /**
+> +        * @size: The amount of space allocated by userspace at @data. Th=
+e kernel
+> +        * will return the number of bytes it wrote, or the size of the q=
+ueried
+> +        * information structure if @data is NULL.
+> +        */
+> +       __u32 size;
+> +
+> +       /**
+> +        * @data: Pointer to the userspace buffer into which the queried
+> +        * information will be written. May be NULL, in which case nothin=
+g is
+> +        * written and @size is set to the size of the information struct=
+ure so
+> +        * userspace can allocate a suitably sized buffer.
+> +        */
+> +       __u64 data;
+> +};
+> +
+> +/**
+> + * DRM_NOVA_INFO_GPU
+> + *
+> + * Query GPU information. The result is returned in a
+> + * &struct drm_nova_info_gpu.
+> + */
+> +#define DRM_NOVA_INFO_GPU              0x00
+> +
+> +/**
+> + * struct drm_nova_info_gpu - GPU information
+> + */
+> +struct drm_nova_info_gpu {
+> +       /**
+> +        * @architecture: GPU architecture identifier.
+> +        *
+> +        * See &enum drm_nova_architecture for currently known architectu=
+res.
+> +        */
+> +       __u32 architecture;
+> +
+> +       /**
+> +        * @chipid: Opaque GPU chip identifier.
+> +        *
+> +        * See &enum drm_nova_chipid for currently known chips.
+> +        */
+> +       __u32 chipid;
+> +
+> +       /**
+> +        * @vram_size: Amount of usable FB, excluding GSP carveouts and p=
+rotected
+> +        * regions.
+> +        */
+> +       __u64 vram_size;
+> +
+> +       /**
+> +        * @vram_bar_size: Size of the PCI BAR aperture used to access VR=
+AM, in bytes.
+> +        */
+> +       __u64 vram_bar_size;
+> +
+> +       /**
+> +        * @gpu_name: NUL-terminated full GPU name.
+> +        */
+> +       __u8 gpu_name[64];
+> +
+> +       /**
+> +        * @gpu_short_name: NUL-terminated short GPU name.
+> +        */
+> +       __u8 gpu_short_name[64];
+> +
+> +       /**
+> +        * @gpu_gid: 16-byte SHA-1 GPU identifier supplied by GSP-RM.
+> +        */
+> +       __u8 gpu_gid[16];
+> +};
+> +
+> +#define DRM_NOVA_INFO                  0x00
+> +#define DRM_NOVA_GEM_CREATE            0x01
+> +#define DRM_NOVA_GEM_INFO              0x02
+> +
+> +/* Note: this is an enum so that it can be resolved by Rust bindgen. */
+> +enum {
+> +       DRM_IOCTL_NOVA_INFO             =3D DRM_IOWR(DRM_COMMAND_BASE + D=
+RM_NOVA_INFO,
+> +                                                  struct drm_nova_info),
+> +       DRM_IOCTL_NOVA_GEM_CREATE       =3D DRM_IOWR(DRM_COMMAND_BASE + D=
+RM_NOVA_GEM_CREATE,
+> +                                                  struct drm_nova_gem_cr=
+eate),
+> +       DRM_IOCTL_NOVA_GEM_INFO         =3D DRM_IOWR(DRM_COMMAND_BASE + D=
+RM_NOVA_GEM_INFO,
+> +                                                  struct drm_nova_gem_in=
+fo),
+> +};
+> +
+> +#if defined(__cplusplus)
+> +}
+> +#endif
+> +
+> +#endif /* __NOVA_DRM_UNSTABLE_H__ */
+> diff --git a/include/uapi/drm/nova_drm.h b/include/uapi/drm/nova_drm.h
+> index d7017ed17143..ad362301e3b1 100644
+> --- a/include/uapi/drm/nova_drm.h
+> +++ b/include/uapi/drm/nova_drm.h
+> @@ -3,207 +3,9 @@
+>  #ifndef __NOVA_DRM_H__
+>  #define __NOVA_DRM_H__
+>
+> -#include "drm.h"
+> -
+> -/* DISCLAIMER: Do not use, this is not a stable uAPI.
+> - *
+> - * This uAPI serves only testing purposes as long as this driver is stil=
+l in
+> - * development. It is required to implement and test infrastructure whic=
+h is
+> - * upstreamed in the context of this driver. See also [1].
+> - *
+> - * [1] https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/=
+#u
+> - */
+> -
+> -#if defined(__cplusplus)
+> -extern "C" {
+> -#endif
+> -
+> -/**
+> - * enum drm_nova_architecture - GPU architecture identifier
+> - */
+> -enum drm_nova_architecture {
+> -       NOVA_DRM_ARCHITECTURE_TURING            =3D 0x16,
+> -       NOVA_DRM_ARCHITECTURE_AMPERE            =3D 0x17,
+> -       NOVA_DRM_ARCHITECTURE_HOPPER            =3D 0x18,
+> -       NOVA_DRM_ARCHITECTURE_ADA               =3D 0x19,
+> -       NOVA_DRM_ARCHITECTURE_BLACKWELL_GB10X   =3D 0x1a,
+> -       NOVA_DRM_ARCHITECTURE_BLACKWELL_GB20X   =3D 0x1b,
+> -};
+> -
+> -/**
+> - * enum drm_nova_chipid - opaque GPU chip identifier
+> - *
+> - * These values identify the chip a GPU is based on. They are otherwise
+> - * opaque: userspace must not assume the values carry any particular mea=
+ning
+> - * or encoding, only that they may be compared against this enum.
+> - */
+> -enum drm_nova_chipid {
+> -       /* Turing */
+> -       NOVA_DRM_CHIPID_TU102                   =3D 0x162,
+> -       NOVA_DRM_CHIPID_TU104                   =3D 0x164,
+> -       NOVA_DRM_CHIPID_TU106                   =3D 0x166,
+> -       NOVA_DRM_CHIPID_TU117                   =3D 0x167,
+> -       NOVA_DRM_CHIPID_TU116                   =3D 0x168,
+> -       /* Ampere */
+> -       NOVA_DRM_CHIPID_GA100                   =3D 0x170,
+> -       NOVA_DRM_CHIPID_GA102                   =3D 0x172,
+> -       NOVA_DRM_CHIPID_GA103                   =3D 0x173,
+> -       NOVA_DRM_CHIPID_GA104                   =3D 0x174,
+> -       NOVA_DRM_CHIPID_GA106                   =3D 0x176,
+> -       NOVA_DRM_CHIPID_GA107                   =3D 0x177,
+> -       /* Hopper */
+> -       NOVA_DRM_CHIPID_GH100                   =3D 0x180,
+> -       /* Ada */
+> -       NOVA_DRM_CHIPID_AD102                   =3D 0x192,
+> -       NOVA_DRM_CHIPID_AD103                   =3D 0x193,
+> -       NOVA_DRM_CHIPID_AD104                   =3D 0x194,
+> -       NOVA_DRM_CHIPID_AD106                   =3D 0x196,
+> -       NOVA_DRM_CHIPID_AD107                   =3D 0x197,
+> -       /* Blackwell GB10x */
+> -       NOVA_DRM_CHIPID_GB100                   =3D 0x1a0,
+> -       NOVA_DRM_CHIPID_GB102                   =3D 0x1a2,
+> -       /* Blackwell GB20x */
+> -       NOVA_DRM_CHIPID_GB202                   =3D 0x1b2,
+> -       NOVA_DRM_CHIPID_GB203                   =3D 0x1b3,
+> -       NOVA_DRM_CHIPID_GB205                   =3D 0x1b5,
+> -       NOVA_DRM_CHIPID_GB206                   =3D 0x1b6,
+> -       NOVA_DRM_CHIPID_GB207                   =3D 0x1b7,
+> -};
+> -
+> -/**
+> - * struct drm_nova_gem_create - create a new DRM GEM object
+> - */
+> -struct drm_nova_gem_create {
+> -       /**
+> -        * @handle: The handle of the new DRM GEM object.
+> -        */
+> -       __u32 handle;
+> -
+> -       /**
+> -        * @pad: 32 bit padding, should be 0.
+> -        */
+> -       __u32 pad;
+> -
+> -       /**
+> -        * @size: The size of the new DRM GEM object.
+> -        */
+> -       __u64 size;
+> -};
+> -
+> -/**
+> - * struct drm_nova_gem_info - query DRM GEM object metadata
+> - */
+> -struct drm_nova_gem_info {
+> -       /**
+> -        * @handle: The handle of the DRM GEM object to query.
+> -        */
+> -       __u32 handle;
+> -
+> -       /**
+> -        * @pad: 32 bit padding, should be 0.
+> -        */
+> -       __u32 pad;
+> -
+> -       /**
+> -        * @size: The size of the DRM GEM obejct.
+> -        */
+> -       __u64 size;
+> -};
+> -
+> -/**
+> - * struct drm_nova_info - query device information
+> +/*
+> + * Stable Nova uAPI. Interfaces should be moved here from
+> + * drivers/gpu/drm/nova/nova_drm_unstable.h as they become stable.
+>   */
+> -struct drm_nova_info {
+> -       /**
+> -        * @id: The identifier of the information to query.
+> -        */
+> -       __u32 id;
+> -
+> -       /**
+> -        * @size: The amount of space allocated by userspace at @data. Th=
+e kernel
+> -        * will return the number of bytes it wrote, or the size of the q=
+ueried
+> -        * information structure if @data is NULL.
+> -        */
+> -       __u32 size;
+> -
+> -       /**
+> -        * @data: Pointer to the userspace buffer into which the queried
+> -        * information will be written. May be NULL, in which case nothin=
+g is
+> -        * written and @size is set to the size of the information struct=
+ure so
+> -        * userspace can allocate a suitably sized buffer.
+> -        */
+> -       __u64 data;
+> -};
+> -
+> -/**
+> - * DRM_NOVA_INFO_GPU
+> - *
+> - * Query GPU information. The result is returned in a
+> - * &struct drm_nova_info_gpu.
+> - */
+> -#define DRM_NOVA_INFO_GPU              0x00
+> -
+> -/**
+> - * struct drm_nova_info_gpu - GPU information
+> - */
+> -struct drm_nova_info_gpu {
+> -       /**
+> -        * @architecture: GPU architecture identifier.
+> -        *
+> -        * See &enum drm_nova_architecture for currently known architectu=
+res.
+> -        */
+> -       __u32 architecture;
+> -
+> -       /**
+> -        * @chipid: Opaque GPU chip identifier.
+> -        *
+> -        * See &enum drm_nova_chipid for currently known chips.
+> -        */
+> -       __u32 chipid;
+> -
+> -       /**
+> -        * @vram_size: Amount of usable FB, excluding GSP carveouts and p=
+rotected
+> -        * regions.
+> -        */
+> -       __u64 vram_size;
+> -
+> -       /**
+> -        * @vram_bar_size: Size of the PCI BAR aperture used to access VR=
+AM, in bytes.
+> -        */
+> -       __u64 vram_bar_size;
+> -
+> -       /**
+> -        * @gpu_name: NUL-terminated full GPU name.
+> -        */
+> -       __u8 gpu_name[64];
+> -
+> -       /**
+> -        * @gpu_short_name: NUL-terminated short GPU name.
+> -        */
+> -       __u8 gpu_short_name[64];
+> -
+> -       /**
+> -        * @gpu_gid: 16-byte SHA-1 GPU identifier supplied by GSP-RM.
+> -        */
+> -       __u8 gpu_gid[16];
+> -};
+> -
+> -#define DRM_NOVA_INFO                  0x00
+> -#define DRM_NOVA_GEM_CREATE            0x01
+> -#define DRM_NOVA_GEM_INFO              0x02
+> -
+> -/* Note: this is an enum so that it can be resolved by Rust bindgen. */
+> -enum {
+> -       DRM_IOCTL_NOVA_INFO             =3D DRM_IOWR(DRM_COMMAND_BASE + D=
+RM_NOVA_INFO,
+> -                                                  struct drm_nova_info),
+> -       DRM_IOCTL_NOVA_GEM_CREATE       =3D DRM_IOWR(DRM_COMMAND_BASE + D=
+RM_NOVA_GEM_CREATE,
+> -                                                  struct drm_nova_gem_cr=
+eate),
+> -       DRM_IOCTL_NOVA_GEM_INFO         =3D DRM_IOWR(DRM_COMMAND_BASE + D=
+RM_NOVA_GEM_INFO,
+> -                                                  struct drm_nova_gem_in=
+fo),
+> -};
+> -
+> -#if defined(__cplusplus)
+> -}
+> -#endif
+>
+>  #endif /* __NOVA_DRM_H__ */
+> diff --git a/rust/uapi/uapi_helper.h b/rust/uapi/uapi_helper.h
+> index 489748ef642c..44fb6203c0ad 100644
+> --- a/rust/uapi/uapi_helper.h
+> +++ b/rust/uapi/uapi_helper.h
+> @@ -6,6 +6,8 @@
+>   * Sorted alphabetically.
+>   */
+>
+> +#include "../../drivers/gpu/drm/nova/nova_drm_unstable.h"
+> +
+>  #include <uapi/drm/drm.h>
+>  #include <uapi/drm/nova_drm.h>
+>  #include <uapi/drm/panthor_drm.h>
+> --
+> 2.56.0
+>
