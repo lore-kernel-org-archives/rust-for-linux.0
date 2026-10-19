@@ -1,109 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792423421;
-	b=QIpbdxY8D9tw/DYt26ugBOAbZmejSkpcnTKgWIB+GeE4ItxjXijBJkIL8R3imkUD0otq
-	 cEXq1U0K6RV07EY0JLpQ9PMqYwWE0DSk+f8mipH9M52m9mYtZOJAEXfmbztvsrX7f+1f7
-	 p6sInnsl4sxgTlgJbGuTYx8J8LMm9wuuKOIHKtuQgOUhWyxYyGJufSz9o4lHdP06aUkZH
-	 8GrN4VACaqhm53AeEjlZEmTksrTI6E4JmRDkr0fHWXT7TaiWJVekX4+DYuVIRib5WNApM
-	 kPyKX/l5It4dfKys8/xcYz2c2/N9zq5dh986Umt3MEK5I+Mg/4I+bvUyuZtSeE4VgAw==
+	t=1792423440;
+	b=prGcGsp7T3fvHkNt4Ozv4etnHCxJ35G7tZLv741Vq9YAwRUkcKMVGMYc3hzPTN/lV2e8
+	 Dw07IE910MOGPPL7yMSvU5E+rgUHqeVBBYrfROoUpygvrzksgO+TyqWRvpwCitq0GFaiI
+	 8DfcSAIJbBjrW65jGK4THWfWeTEq6e03rv31py7DLU4o+qRDdzSC1agangJN0kJwlC6EC
+	 pRLgveR0x/6tcHA9+HzemIarhAwnnd0L/HkXgfOLtlSzn+O6VMC3gNtfIRYb9zJ4MTTrK
+	 6YM0P0fcCqRhEWh9FUi2HnZmVFrlOPMRa6w5hy8MyNpzuaWoQTvfVPGx3wyYXkIwBUQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792423421;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=TB5WC1uvayakjtGRBbN56iOi71cVu/uajHIAhyzork8=;
-	b=URk4EHHzpvRBdZ7TKG12n6uRTKp/kF0gN5yRZQu3nlUN4u9312dlLqv/5KspVCqDJw42
-	 NS6JxLX0RNDI+nxfsFjOUj8ehTvOs5WtMODyWjh1dCx6mYVSLU0dVB/skcF69fTa5pEpV
-	 MdBIMe+bX85wbnyHoRxHYNOluDy2Wqax/6nnnYayC6KNH+QioMp6i32luQjKBDuwv8low
-	 QHntIX7FIHVLU5L+H0lJGKnM7wDBb7rHMpowdSy9XL8y/6OKB2f/0nGzufiFurluD+iel
-	 HdzQlBwCkYrHrqLhkYxAH6Jag39M8/yOqJqvPKV9pHdJyWRqneMH+j3mDijWZ3AyhXA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792423440;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=4eLFyGKiPJMtTIXftX4CvV1KoAV13HYov222ZjSdPFg=;
+	b=2P/zjaxnFduFP1HHquUdvpA1LU6lSydxPmYUErK+Ybm/4TOqafd65EA9lPOvLu+0Q9sM
+	 An7Lw/OPufA0LOjxjQPc5iNqdN8EHxZBflEnfb/tJ1vutKeEBN9ohxnX6iJK5uym+pfqj
+	 ZHTftNOycQf4VVqe0nBE3IBWe0MQ3CVWWM7T8r6VWB1vVevkxbUlpUnwiml5kdEcu03hl
+	 kYHz8YIzEMit3HEgG9HbBDCuyHg+sf5gkfctVKVsQs25ytkxAhF+XLwR0Q9foIwHxIPU8
+	 VIFx/H1i2Ai+dk1vINFLdUJQJBMhUSMZ2bQFZa/0D9ii+keMabQqECV7Kr3jIxwbzVQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=amID5UL4;
-	arc=none smtp.remote-ip=209.85.222.52
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L9ewDfpJ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DBB60ACCE9
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 15:23:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03DBB60ACCE9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF1460AE2C6;
+	Mon, 19 Oct 2026 15:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=amID5UL4
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-990a39ba4fbso231726241.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 08:23:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792423420; x=1793028220; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TB5WC1uvayakjtGRBbN56iOi71cVu/uajHIAhyzork8=;
-        b=amID5UL4oXgN2w3QpNshWz8S3hujZxJ9MR4VBu06GHjgko5FygdPkAxZwfXKgMCwry
-         YuVILTkEunVHZWkCmzaRtv3M5bxJOVERp674cByKUZUjQev9Esvej04i0K1nE1BugUPr
-         6qsfWeztU62IUCEUcL03iAJdtK7I33wfsCljb/0uP4CmorynANmX4lapU3I5ta2vUPjU
-         G9DVnlIyhbMjhqo9kiIzUr34HINGxpkKHa5Sat/rlADIkx9bWeDlzft+MrnKNEZaitVK
-         Sg5x916X45FNuCxnpG7KBxtwzWrT5bN9NWpXH+tVT8pMgVz0n+BZ9Vj3C3H8FXUuQzDj
-         s5PA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792423420; x=1793028220;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TB5WC1uvayakjtGRBbN56iOi71cVu/uajHIAhyzork8=;
-        b=FzB7t6uk64Xdq4GOn53vd5nwQDJFwMjGZlpdRoB8VmXjK/oYYputjRLXs4DYk4Fbtm
-         5EHVfN+d1adcIcKJO0XQwJBjkoHsx66+9z8CeeoqCBiQ8sW1m0UIzQTxHYmIFUKdipdv
-         jfneWoTDgRLLWfK7h9f7SyvE7OV5Qi1xoFVAabDoMu9uAq+WFALegnkc+jl57XTKS4cT
-         6f2SpZu1gFEpC6dKwMIJXgay+U13B/8sJXFJtIiguqB/p0Bu/BU8tE+QlfGrBnZs/Ent
-         eueJcqyzuN+LDH6p6dOKqAKpLHjlFfFsRNLK+iJ8/2b5QTdrK8Tv6/mLxl7gWZ73lNeT
-         epng==
-X-Forwarded-Encrypted: i=1; AKwUvByX9kmVifvl2RukHP/YMoITVgztfbnHqT+H1uaF7PBTmjJJ1bcNu1mGf+6CMwNqKaIiafTJ+mO/dBN5DmSRQQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYIiZHOPUPP5oiX8/PuYtAnxK4O5cWovKFCkJsEjhH97og0Pcr3E
-	Z6xQ5ql6/6itBxGVO844jBduiVkzglYa6XCfrVJjw95kcsznshpzsLk=
-X-Gm-Gg: AYBFou3nLHistgIC5o6MyUQk23fTmLznbVT3vE1MqElTHUqDRs/+hTN6jr4NOblurbH
-	9yFChnIonVPSa39dBFNeI6BbWlnXTKDrghvHZBElaxajxjnPme5zvcE5LHgcL0efvFkuzysHlHi
-	GrSCXbxqgS1if2dLdwhon4FNhlaUznqKV/4W4/k7QZ8MYTv8NH7K0xm9bvOo5wrFy2Kq0mAlWcZ
-	hc0no6cA/sWu5epONMsKx8KA2lDnw5IE6Xb0PfzCIfFMESVOdSUOQvWCXzp3luOnR68pPNWOSw3
-	23cidkpxU6CUnpjKiUHTfJJrRl8O1Cf4TJZ1zI3JF0l9uIk60JyRgdfSQw2/B0Elgv+stqMJuxl
-	BcL7QT7lm5ZmSx8uBeDC7lpTBWc+XeSDKDS9HMwzw7lSe8g+GDzaVoG8sZP1g5A2wbv15X5H2A1
-	uXoUGZuEyNXMYx55ek0sg8szUkrmXD5qWYcjPppVYmfdhRf6yKEOMSTFQMm6k5cLtRQE90TLeCp
-	YAFzaYs/3pbkNr45U4TWNOG8UwswaDqKnnRkjLwKzDBnA3ulQ==
-X-Received: by 2002:a05:6102:5127:b0:7c0:1d48:b2a2 with SMTP id ada2fe7eead31-7cc36aed490mr1758525137.31.1792423419903;
-        Mon, 19 Oct 2026 08:23:39 -0700 (PDT)
-Received: from localhost.localdomain ([186.158.238.108])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7cc77198ec5sm453357137.4.2026.10.19.08.23.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2026 08:23:38 -0700 (PDT)
-From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
-To: Igor Korotin <igor.korotin@linux.dev>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Brigham Campbell <me@brighamcampbell.com>,
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L9ewDfpJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17421F000C6;
+	Mon, 19 Oct 2026 15:23:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792423439;
+	bh=4eLFyGKiPJMtTIXftX4CvV1KoAV13HYov222ZjSdPFg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=L9ewDfpJ/rXX/VusF6ChIIgdlRr4Mu2B6zySEt7rPafwX9G0O1uxQ4Y7TcXRPaTGY
+	 qAtRiYvkDNpm/yMGv6i5xw9izYikkFlhNQU3tGt8I/2wDBhb84fsSwDG3SV8Gbjlcp
+	 M83ca4OfJiG5/3t9bVjwIVtxCet/Yq7UVeU4nqcycgt2lkhFla8FZvmeqbKKnUsJpS
+	 EtJOZzlpu1KLBa67Lc5FnOwWLTj294uTR34Mjzrg9JlIWo9AHGt9Z/vpzIy964euEc
+	 5WmBSvKgAd8sg4N8gXBfWwWEugVP1hChxUFQE+AHA3RLsa6Ek38Y/nDkyvVWWrzdT9
+	 XOe2DsKSyrOqQ==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 02B55F4006C;
+	Mon, 19 Oct 2026 11:23:58 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 19 Oct 2026 11:23:58 -0400
+X-ME-Sender: <xms:DTbWartuLlGuZo2dtWjtN0OHMsF-bdCWW_0uZCCOmE9QTUHQcbpTlQ>
+    <xme:DTbWalSXuN05qoS5nOPgUua_UGSpxuW9s6jCRCfnOdKsDgMbrs0YtV0EAOQVAH71y
+    jxKC1mSMzBc3ihS2wUX5iXmKtJ_STKgwPuVYI0BJxKqc4t2JKJoSw>
+X-ME-Received: <xmr:DTbWaluh0poHqK9Mt4s6gO5yxWobYkbm-RLre7kC32cz7Slt8Po_b5YC9usQOM5k9y3bMYH64pZuxBDXd79nwCehhRAEbGh6>
+X-ME-Proxy-Cause: dmFkZTFxUJdm5wwDentUf4q7O59iYNdwqKMnixhSgaLkk1fmocLKobKbM+RyRhTm3kqbdq
+    GZz1WNVgJ4bDjAKGKvmLqSew2Px0JG93axkc4pJiL2hDyhQLeVD0oK976RrFzwNrD8BGUB
+    k9eETPX0MopLAArJxEBE50QEp1+eOrzpGrqCPlJrnOzmFKtzUP5P/pmVNrzV9PFhWnZcjT
+    JRsPBHli9gBJ/NPuYbhLRHsFOoiYmLsy/TZpVX7tp5vj25GVMyy6B9k1tw5KNWEmZRjkiM
+    GAnqDGAkEW/7RQMK7IMUucuyTUFH13h1YK10BRSQQeHASU32MqLno9keSqAb8xdY5ob/k4
+    GKm6jVCUbKizvaFI7aUs9IoKa8fpHdYlKaXmWDV5mSp/cGIpAs3hVBsPeJn+/CBGmgUXqP
+    /54AXE1q8ATTSpcar2rHW43nQG2IFOs7btol4I1wWJCrTvH/YYlfb5jlZ2lzQVQogUQCKB
+    CAHgA4nSiFb6MNJWQUZh+LU0qgoriSl3Gt5YQLIlFxeKzFS4pczKyPN4bSZPAm7kxNY4fr
+    bCHNg70cJtniqHnw+YwZJivITsCpII5auLOaebI3DZRmoPhey1PCIn7EGSQ5gCLcIQOn9W
+    qXEKvMf2zDkkVfX2XiJX9p+tfOalan7a9dTWceqHB+jXf0KMBbTXlgdHLZuw
+X-ME-Proxy: <xmx:DTbWajyr_ZzqWGmZfzfijrnq4uME813kGVFi8SNBW8MS2cdLbt00yA>
+    <xmx:DTbWak3I9_9gBqgsLk-Peu6j2xslkVV-qtNDo__0nYpB9nXUTqNO6w>
+    <xmx:DTbWaoxZ_uQiYZdXGu-aaRx7Mwg2UsmwrFVJPBgm1m4ebsPEnr89ew>
+    <xmx:DTbWasMpMflFqTSh23j0pmDFu4ozJUjwi-LV9Fr_6e7_kIryrfCNKA>
+    <xmx:DTbWal4YOe-vTzbp5n4oqfMxwvBIjsx9tWMyVBFzH8AUUCBKo62CBUO7>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 19 Oct 2026 11:23:57 -0400 (EDT)
+Date: Mon, 19 Oct 2026 08:23:55 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Leon Hwang <leon.hwang@linux.dev>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
+	Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
+	Lyude Paul <lyude@redhat.com>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
-	Gary Guo <gary@garyguo.net>,
-	Jori Koolstra <jkoolstra@xs4all.nl>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev
-Subject: [PATCH] rust: i2c: remove TryFrom<&Device> implementation for &I2cClient
-Date: Mon, 19 Oct 2026 12:23:15 -0300
-Message-ID: <20261019152329.620610-1-nico.antinori.7@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Shuah Khan <shuah@kernel.org>, bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: Re: [PATCH v3] selftests/bpf: Use the new NMI_BITS definition
+Message-ID: <atY2C77fARQNgWp3@tardis.local>
+References: <20261002102923.45846-1-boqun@kernel.org>
+ <da2773b2-1ed2-40ef-aefa-0e754cdb2f9d@linux.dev>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -113,71 +106,72 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <da2773b2-1ed2-40ef-aefa-0e754cdb2f9d@linux.dev>
 
-Remove the `TryFrom<&device::Device<Ctx>>` implementation for
-`&I2cClient<Ctx>` since it has had no users since its introduction.
+On Fri, Oct 02, 2026 at 09:50:02PM +0800, Leon Hwang wrote:
+> On 2026/10/2 18:29, Boqun Feng wrote:
+> > The definition of NMI_BITS was out of sync after the introduction of
+> > HAS_SEPARATE_PREEMPT_RESCHED_BITS, hence adjust it.
+> > 
+> > Reported-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+> > Fixes: 3b0e2a22d408 ("preempt: Introduce HAS_SEPARATE_PREEMPT_RESCHED_BITS")
+> > Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+> > Cc: Leon Hwang <leon.hwang@linux.dev>
+> > Cc: Alexei Starovoitov <ast@kernel.org>
+> > Signed-off-by: Boqun Feng <boqun@kernel.org>
+> 
+> lgtm,
+> 
+> Acked-by: Leon Hwang <leon.hwang@linux.dev>
+> 
+> One nit below.
+> 
+> > ---
+> > v2: https://lore.kernel.org/lkml/20261001082519.16195-4-boqun@kernel.org/
+> > v2 -> v3:
+> > 
+> > * Add Fixes tag.
+> > * Add CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS weak symbol because
+> >   CONFIG_* is not available in bpf programs.
+> > 
+> > 
+> >  tools/testing/selftests/bpf/bpf_experimental.h | 7 ++++++-
+> >  1 file changed, 6 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/tools/testing/selftests/bpf/bpf_experimental.h b/tools/testing/selftests/bpf/bpf_experimental.h
+> > index 2893bf06ff25..a09448347966 100644
+> > --- a/tools/testing/selftests/bpf/bpf_experimental.h
+> > +++ b/tools/testing/selftests/bpf/bpf_experimental.h
+> > @@ -367,11 +367,16 @@ extern int bpf_cgroup_read_xattr(struct cgroup *cgroup, const char *name__str,
+> >  extern int bpf_sock_read_xattr(struct socket *sock, const char *name__str,
+> >  			       struct bpf_dynptr *value_p) __weak __ksym;
+> >  
+> > +extern bool CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS __kconfig __weak;
+> > +
+> > +/* A trivial macro to make NMI_BITS exactly the same as in <linux/preempt.h> */
+> > +#define IS_ENABLED(cfg)	(cfg)
+> 
+> NIT: change this to ((cfg) ? 1 : 0) to match IS_ENABLED() semantics.
+> 
 
-Fixes: 57c5bd9aee94 ("rust: i2c: add basic I2C device and driver abstractions")
-Reported-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1264
-Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
----
-To make sure that there were no remaining users, I checked for usages of
-the `try_from` method and the `I2cClient` struct using rust analyzer,
-activated the modules that were using `I2cClient`, removed the
-implementation and compiled the kernel (did not trust entirely in rust
-analyzer because it does not find usages that depend on this
-implementation like the `try_into()` automatic implementation).
+Seems reasonable.
 
-I also checked for usages in all major versions in most recent versions
-until the introduction of the trait implementation (from 7.3-rc7 to
-6.19), rust-next and linux-next to find the last usage and mark the
-commit in the `Fixes:` tag.
+Regards,
+Boqun
 
- rust/kernel/i2c.rs | 21 ---------------------
- 1 file changed, 21 deletions(-)
-
-diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
-index 0487bae811fb..b4ff25c830fc 100644
---- a/rust/kernel/i2c.rs
-+++ b/rust/kernel/i2c.rs
-@@ -5,7 +5,6 @@
- // I2C Driver abstractions.
- use crate::{
-     acpi,
--    container_of,
-     device,
-     device_id::{
-         RawDeviceId,
-@@ -517,26 +516,6 @@ fn as_ref(&self) -> &device::Device<Ctx> {
-     }
- }
-
--impl<Ctx: device::DeviceContext> TryFrom<&device::Device<Ctx>> for &I2cClient<Ctx> {
--    type Error = kernel::error::Error;
--
--    fn try_from(dev: &device::Device<Ctx>) -> Result<Self, Self::Error> {
--        // SAFETY: By the type invariant of `Device`, `dev.as_raw()` is a valid pointer to a
--        // `struct device`.
--        if unsafe { bindings::i2c_verify_client(dev.as_raw()).is_null() } {
--            return Err(EINVAL);
--        }
--
--        // SAFETY: We've just verified that the type of `dev` equals to
--        // `bindings::i2c_client_type`, hence `dev` must be embedded in a valid
--        // `struct i2c_client` as guaranteed by the corresponding C code.
--        let idev = unsafe { container_of!(dev.as_raw(), bindings::i2c_client, dev) };
--
--        // SAFETY: `idev` is a valid pointer to a `struct i2c_client`.
--        Ok(unsafe { &*idev.cast() })
--    }
--}
--
- // SAFETY: A `I2cClient` is always reference-counted and can be released from any thread.
- unsafe impl Send for I2cClient {}
-
---
-2.47.3
-
+> Thanks,
+> Leon
+> 
+> > +
+> >  #define PREEMPT_BITS	8
+> >  #define SOFTIRQ_BITS	8
+> >  #define HARDIRQ_DISABLE_BITS	8
+> >  #define HARDIRQ_BITS	4
+> > -#define NMI_BITS	1
+> > +#define NMI_BITS	(1 + 3*IS_ENABLED(CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS))
+> >  
+> >  #define PREEMPT_SHIFT	0
+> >  #define SOFTIRQ_SHIFT	(PREEMPT_SHIFT + PREEMPT_BITS)
+> 
