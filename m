@@ -1,90 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792432856;
-	b=rC4UWKkDAzA5bUCG1qgewZ9GHq9DCI6JtPQ/CncJnyBdcU0GWASx9n/J1Nk+x5NqZdty
-	 KVxWr9sR4dy6H1cfZmfMjAa0YpBVBzQ1OMhKJUZ7mKXOPuOhpUqOjW57Q5AWfIOP/xOsc
-	 ZQrKZllCvTwoJSRowK02NB+NRxYjI5VnAuioORmugO83xCS6Y2/7FO6PAesFg2qzis1D9
-	 n5736SCe9bYWvurvVkQdxk0mQs/8uNp0LZAgT63e0FUkn8K4Pmbk9svjqv/vH9K3hKsmr
-	 DVp+ZsdV7iYRrqIxLtNlXCNfOWLvIfWbEzP0WUqJSzpHyY6FQS3O79clwuSNlSQ65eQ==
+	t=1792434272;
+	b=BQhMcPCJegtjb6vEcEhgiW9pF3D2rXVf0xHuN2NwhGEwcWlucl8XTvS4/YPULPVDg7Xd
+	 rJv7ll6FEaoVvEaoElvaTBcv0FWwhxSULFyjXGZBj6nYwvDRmONVj4PMHcHz6RbC7m4vD
+	 30B+6tkfj/IamNASnlktEX1buytqzyXAkxqHbz/eSAfySp3QlwN4KqVg/oj7YJfsJnhAg
+	 A+xwYIKY2ImOdRCZMyPpqCm9Wf2817uNrUFr6ljCPKMLcbvrbHIrcmnSjb3RMe/8YHwLp
+	 fe2jIaWOIAbx3pEBro2qTHKfw3TGmU/koW/eQJwnzN4HA4GkXkzz7ZENHty7rdkNXww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792432856;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
-	bh=OOGAPa56kulzPMYmeT21MA0H+ZTEk8QKVOQrCKhESoY=;
-	b=MZwAcBg5wQA179xUF56lBYtQhSbBGWt4s8/TpMnWWzbS58Upxu/Td8EsIA2C2kb2S/Bb
-	 h5PWcBVwRk8PaSz01yMsb9oyTLXLDsUR0tdWmxl+L+C2efp6unFjXFFgO7KzhGjt1UYS4
-	 5owwdgZSO3t4qZYucRnuyGuEggft7OHLc7Iz/4deQsgDeDZ9nva85IBQ9zuF3MgNwr8Ak
-	 BIsTMrPbr5i/+DZKF7LGOOfn0IlMOduKGne/Ufs55YxLxCmwEoT8WI4pTBYMZzMu4ZI45
-	 0NQzIkA+CD0cRfpKWqXv4l95l3bW4yxUrlIRh05qnKuwoGPSjCiRjk6Lu0gRDx5naoA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792434272;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=kVQzCHWMhDAXGaFSs/w45J/x4L4pGUMMFJgDsU1GON8=;
+	b=rRznAkUFcfoRAE8zv87uAcMtQF+ac8tcT5d0Ck51csxloF1J9adw4rFCjwjo7k21Or+O
+	 +WUYRA0GrwD1kOSk6mTJ5uImP5gO6EI2j17vC89SYdAmVEiK9LWy6UV8YRfrbKlm0G7QP
+	 OhKuWZOaGhq0RfmFYtSE0iFt+oFrVS/z+XwY1wkBP1I9J/9QsUXA/JCsr7Chlcxof656+
+	 dbDB9zXo0hVTamCqOoBfrIdy29LasJFoPHFOQso4X49suaZ8wGYTBLqXqIPT3kOxVLJ+F
+	 JyvNzpqlsIK8qaiaJg/nuviM5HePRnsK3VGs3buyCp6/ka5oGZyuav/OKtkw+Udsk1Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VjgcjWYh;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b="mHr/B30u";
+	arc=none smtp.remote-ip=209.85.222.48
+Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F319606A319
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 18:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A978606A31A
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 18:24:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A978606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VjgcjWYh
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D61E1F000C5;
-	Mon, 19 Oct 2026 18:00:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792432856;
-	bh=OOGAPa56kulzPMYmeT21MA0H+ZTEk8QKVOQrCKhESoY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VjgcjWYhxRtmx6ciWT389ic47DcSaC9xLvuWiECYzHCU7SRRh3LZHhm5bN6SOst+E
-	 LACmY9SjuuUup9+tr4ugL2AVPNJUs+N8LlSd/Ua4f5N7ZojjvKzjbv42qj74VShh/2
-	 IfXR94f1elyOImMrjIgpZDBwYjaYijlzn/RxHrR/f2esAQRcvHYk2wx+CrFsdq4QcM
-	 LgT5kwPVzhwwaDBtTEFHFMdhEH9BL9o/AuGgNATMKd5eyq4C1IM/XzTCPy3b8w9wT8
-	 Hp63/oo6oENcgcIGqedAofhmgExjcHdZuO/UbbAushrDaeAiFG6m75Tf8QW55vIHzx
-	 KXF4Di9uyDr1g==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id A723AF40069;
-	Mon, 19 Oct 2026 14:00:54 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Mon, 19 Oct 2026 14:00:54 -0400
-X-ME-Sender: <xms:1lrWar2OQAi4fFtSlnPFCsPhiaBPApWpATiBdkXco0_pIPz32MSw9g>
-    <xme:1lrWanTrLhYKIfklcDDx3I0RLLLVw_tC-5U4Mo7_GLrxC0EqZAfaIUrsJz4Bw7t6I
-    K5p-KMQzu6v9hYWAe3jAZ8Iwohp7L2n7aicM5kY2VNRRVgYvRhaSg>
-X-ME-Received: <xmr:1lrWagbxKzg_ReZ3G0EG4uTUZ9hUix9xYLDQX2O6fcEXmCD0cdn9Gl9FhCxuKqC2ZiwCryEV6yg-i3RIuXy2PUMcBZapgLD1>
-X-ME-Proxy-Cause: dmFkZTEPWlSE2hza4oy8ZGI5UeVgccCGd1k4VVU/Wr3Kbo25gIp72RK+CIxlBWqdmeICf1
-    /FnT0B/X1YNFNE6mINY61pCxJQGJZOVYDvNTsDShR0q+EFQnUA2lIDQHqMMmTaavBoA+a9
-    AiSNDM6DpzxuD/EvD907oH3iiNRJHc3PppCtYhXeerIrAqQsYzkxvGo6ktuP57VwgZV+7+
-    Oj9V4Smlsr/TiYnh6OxWh4uqv5EAvgm25KC0lzJe5py9AjUD9b5cgxHfa7QdKLmyL+uT85
-    P1b0qBGJ7US/bXdmmef0lQpovypeeSlEMqltWc8x5PfGtrClg5AzALsMfeGEQ//3HG32hx
-    Lq7BchLEwFIjlGdoGd++wQMECbaUP/8JqEJv/qROZEODUff1GHBzVCfQ7O2oCkZN4yGuAD
-    cZeRX1SQ3RaHtGs6WJYnj2VaZyeOxuLOdkVLcGw0faTDDPmF+znu4+HwHzrRqcpGsd56Kl
-    pGAOHFamBuYl7Z4wk44dgQu9cpz82hlltL9zgIG4xunYM/jcAvnqZCamsuv531m47DYbsd
-    2s5MQpigzZ2SCEXhtV++Go9s0fhuLbk52ERYr8T8WlMQ0rHUZDWGBF/OXlLJTKrMXCAo+X
-    T0Qgt78xzO9j1DMNS3s6R8xv0Jc1Eg5UHPrtekaUf8KR23Mnqm2cRki8Hffw
-X-ME-Proxy: <xmx:1lrWatAKkuC_NnTQIk3c1CGzbsDToCO2-KLolhsRI2EDCDPh28VleQ>
-    <xmx:1lrWavBfZ5L-1LdKWa7Ql-EKgBYsXFFqVQUwMxDEn9DCZP4uKkb5rQ>
-    <xmx:1lrWahEgh41ySv7OtMz9zp5Pk8tjptvccP2oI4MIx6XXwNqA-iKDDg>
-    <xmx:1lrWaqmJ_sSfRDl0VcqDUQcE8O_-nz_BuMokPwgZyHUFlKqqCIEEiw>
-    <xmx:1lrWamtmKwgePXLdXk4on_anozJek70SIhLj-gU-2B1mJ9ZqaJrp7_aU>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 19 Oct 2026 14:00:53 -0400 (EDT)
-Date: Mon, 19 Oct 2026 11:00:52 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Priya Bala Govindasamy <pgovind2@uci.edu>, peterz@infradead.org,
-	mingo@redhat.com, will@kernel.org, gary@garyguo.net,
-	ojeda@kernel.org, longman@redhat.com, lyude@redhat.com,
-	daniel.almeida@collabora.com, work@onurozkan.dev,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	tmgross@umich.edu, dakr@kernel.org, tamird@kernel.org,
-	acourbot@nvidia.com, rust-for-linux@vger.kernel.org,
-	ardalan@uci.edu, zhiyunq@cs.ucr.edu, dzueck@uci.edu
-Subject: Re: [PATCH 1/1] rust: sync: Make `GlobalLockedBy::as_ref`
- unavailable if T is not Sync
-Message-ID: <atZa1L5nsoyKtwNf@tardis.local>
-References: <cover.1791594262.git.pgovind2@uci.edu>
- <b3cd79f567b83712155bec1a32a0e1fe174e9b1a.1791594262.git.pgovind2@uci.edu>
- <CAH5fLgh7_vpfuU7wLrgO4ZfW=bxvdL7aRhwW20bBK0Y0PURz_w@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=mHr/B30u
+Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-97ca72f2cd9so1690961241.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 11:24:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792434270; x=1793039070; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=kVQzCHWMhDAXGaFSs/w45J/x4L4pGUMMFJgDsU1GON8=;
+        b=mHr/B30uJCg+9dz8ifw1Ei5OItcuSEN2zojt85n/IH88as3hIjQ6PGxkyo+lJp3HeE
+         LRKJahdu0insr50PFyPMoz5QXci5S9pbZV31y6/KtW4nd2PfSltB1urFDw6ZPGGr/73u
+         qmjDNT+oCaq9viasnov5gdvHummk2luG4MASYbGTgJe2RnVmA4KB+FtsU9nB1Z3jLv1X
+         OcvpWv1hzah9CIEiMpFy2DhG2onQbZh/wOVk8EqhWdv8ByVVLjcVbl/OoMzePN7yfmNO
+         at/YzyAvlHaTrxvvj54fFjKmyeYl7HyQKhCC3ShStXGePbZ/b/ZQxHSFGM6dB2j1BK9t
+         1v/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792434270; x=1793039070;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kVQzCHWMhDAXGaFSs/w45J/x4L4pGUMMFJgDsU1GON8=;
+        b=zrYaNKQgXTmOsXt8F2AWETXt2M/uk1TTNlRIA132WM6yGUXFJur3o0SFF6ADo+s9HZ
+         GZVEuPmWwUxgGKmUEqCr5Rjjb2hXTFigwdi7+54UIsPIQCsrcSWvsbt7fcNtJYru25sX
+         zrTcZ6B5DXSYtgc0XOtbfIosRBj0eyWKHIzY/TfCmFpy4Itu4nXocOpHs9bWygndleD9
+         OniAu+Qh5XVJF+CXueV4OKlMq3nGZziUdW94PD5AE3Sdc0H8vqArh2Q4tSfhp18VTqGG
+         Xz37vx+wwdBffrRS4VPxmn8mlGqEYRYQO3drgmHf+VtIQFO/0mikqnCKosABbEDESlb8
+         lGVA==
+X-Forwarded-Encrypted: i=1; AKwUvBybSOyEMhtxsYImoq2mNEQipiZus5ue7LgkiZGk11F2ALTlE7TxiMGxhHxg4+JlHQK0YUwLEbN4k1u/lM8kGQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYL3PZFWlAD+FsqPsMOovZQhlNmk06NKap6BGC8MvisL5/ZVd5Sn
+	tiiR3OFpbH3v74MLxrK3lKwv88eBcMjLjfQSOP+SwQNdlOsyKeblBpo=
+X-Gm-Gg: AYBFou1goVh7Z0KAxCvFnukcyc6JV0uEmiuaqoCOitvjahgKWI9MJNTeM+I5Vqd0GYz
+	NC2xMOHy6USCJzORaMSX0Cd+H9MgqV6P/JTiNm1kMnq+kOFH8R4DqTeM/Gs19PDRiSSv4Fr252C
+	PUwcrCR85dqdQ+Qtgk5Gmg90joHQLsAHH3+0Ivens38EeYdXKgcmZ8h1VUIxZKucLthKYWOuA4N
+	zgmsnAVyDklk8B0JjeSUFlIv0ZGmzjgu9WEq9Fy5ID0Qe5hm00VsugzzyNk/leeYXTQv+cuY7uP
+	FYUC6OyVUiiaWM/fBxxJdgxk0NudAj4LuFlYpqVa63ZP40oREFom1L0mtvo7D54yqa3/5AAyf5P
+	dFmUfGVIIADUyvmK5SFxwZVl+YbOf4yO4KDpeuhQkZMTZw0LB9qrgRpUzL4Fk2KaWdtKgbDUK+T
+	rIgXPzolaMjO2d30yww4kBO9BsE3S54kS3qf1Axu/rqy3Bvx7CPxoMSDjCVpWBVAGbibeCJnXe3
+	hm7w9dW+OpftaJJAceXbExW1jCm+9ZD9g==
+X-Received: by 2002:a05:6102:26d0:b0:7cc:1192:5636 with SMTP id ada2fe7eead31-7cc36905d1emr2860017137.12.1792434269987;
+        Mon, 19 Oct 2026 11:24:29 -0700 (PDT)
+Received: from localhost ([186.158.238.108])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-990bb3642b1sm853242241.8.2026.10.19.11.24.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Oct 2026 11:24:29 -0700 (PDT)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -93,44 +86,81 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgh7_vpfuU7wLrgO4ZfW=bxvdL7aRhwW20bBK0Y0PURz_w@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 19 Oct 2026 15:24:22 -0300
+Message-Id: <DM90X0PTA682.3UJMZH614WU9V@gmail.com>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Benno
+ Lossin" <lossin@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Boqun Feng" <boqun@kernel.org>, "Brigham
+ Campbell" <me@brighamcampbell.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Gary Guo" <gary@garyguo.net>, "Jori
+ Koolstra" <jkoolstra@xs4all.nl>, "Miguel Ojeda" <ojeda@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Shuah Khan"
+ <skhan@linuxfoundation.org>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel-mentees@lists.linux.dev>
+Subject: Re: [PATCH 1/2] rust: pci: remove TryFrom<&Device> implementation
+ for &pci::Device
+From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
+To: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Georgios Androutsopoulos"
+ <georgeandrout13@gmail.com>
+X-Mailer: aerc 0.20.0
+References: <cover.1792417858.git.nico.antinori.7@gmail.com>
+ <d128d86b751a51fff46a1702b636de74a4807097.1792417858.git.nico.antinori.7@gmail.com>
+In-Reply-To: <d128d86b751a51fff46a1702b636de74a4807097.1792417858.git.nico.antinori.7@gmail.com>
 
-On Mon, Oct 19, 2026 at 09:49:22AM +0200, Alice Ryhl wrote:
-> On Fri, Oct 16, 2026 at 7:19 PM Priya Bala Govindasamy <pgovind2@uci.edu> wrote:
-> >
-> > The `GlobalLockedBy::as_ref` method allows `&T` to be obtained from
-> > mutliple threads even if `T` is not Sync.
-> >
-> > This happens because `GlobalLockedBy<T, B>` is Sync if
-> > `LockedBy<T, B::item>` is Sync. `LockedBy<T, B>` is Sync if `T` is Send.
-> > Since there is no requirement that `T` also implements Sync, it is
-> > possible for multiple threads to simultaneously obtain references to a
-> > `GlobalLockedBy<T, B>` and then acquire `&T` through
-> > `GlobalLockedBy::as_ref`. This can lead to undefined behavior if `T` does
-> > not implement Sync.
-> >
-> > Note that a reference to `GlobalGuard<B>` is required as an argument to
-> > `GlobalLockedBy::as_ref`. Therefore, this issue requires that
-> > `GlobalGuard<B>` is `Sync` which happens if `B::item` is `Sync`
-> > (for example, ()).
-> >
-> > Fix this by adding a trait bound to `GlobalLockedBy::as_ref` requiring
-> > `T: Sync`.
-> >
-> > Fixes: 8eea62ff94f4 ("rust: sync: add global lock support")
-> > Reported-by: Dylan Zueck <dzueck@uci.edu>
-> > Assisted-by: LLM
-> > Signed-off-by: Priya Bala Govindasamy <pgovind2@uci.edu>
-> 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Hello,
 
-Queued for more review and testing.
+On Mon Oct 19, 2026 at 1:13 PM -03, Nicol=C3=A1s Antinori wrote:
+> Remove the `TryFrom<&device::Device<Ctx>>` implementation for
+> `&Device<Ctx>` since it has no remaining users.
+>
+> Fixes: 7edc491f6fca ("drm: nova: Use nova-core to read VRAM_BAR_SIZE para=
+meter")
+> Reported-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1264
+> Signed-off-by: Nicol=C3=A1s Antinori <nico.antinori.7@gmail.com>
 
-Thank you both!
+I got two reviews from Sashiko [1]
 
-Regards,
-Boqun
+> [Severity: Low]
+> Does removing this TryFrom implementation break the build when
+> CONFIG_DRM_NOVA is enabled?
+>
+> The commit message references commit 7edc491f6fca ("drm: nova: Use
+> nova-core to read VRAM_BAR_SIZE parameter"), which is not present in
+> this baseline branch. Without that commit applied first, File::get_param(=
+)
+> in drivers/gpu/drm/nova/file.rs still relies on this conversion:
+
+This is true for the rust-next branch in the R4L tree, but the named
+commit is present in linux-next [2] and drm-rust-next [3], and the patch
+application and compilation were tested in those too.
+
+I am pretty sure the patches were created based on the master branch of
+linux-next tree (because of the discussion in [4]).
+
+> [Severity: Low]
+> Since TryFrom::try_from() was the only caller of bindings::dev_is_pci(),
+> should rust_helper_dev_is_pci() in rust/helpers/pci.c also be removed
+> along with it?
+
+I didn't see this. I apologize for the oversight. I can send a separate
+patch or a v2 of this patch alone, since the patches of the series are
+related but can be applied independently.
+
+Best regards,
+Nicol=C3=A1s=20
+
+[1] https://sashiko.dev/#/patchset/cover.1792417858.git.nico.antinori.7@gma=
+il.com?part=3D1
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/com=
+mit/?id=3D7edc491f6fca8e22f51e37a16d74914cd959274d
+[3] https://gitlab.freedesktop.org/drm/rust/kernel/-/commit/7edc491f6fca8e2=
+2f51e37a16d74914cd959274d
+[4] https://github.com/Rust-for-Linux/linux/issues/1264#issuecomment-619469=
+5910
