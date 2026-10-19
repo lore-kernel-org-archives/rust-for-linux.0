@@ -1,177 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA62B4F55B5;
-	Mon, 19 Oct 2026 13:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB76D6513ED
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 14:07:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792417058; cv=none; b=P/INRwdI6oNxZhGPMq9oBsfa6zfZGAsuEhFTOq9xmcCc6AkbjhqplQBqoLcWJ9bdRcqf4pxP6EFaVJD4EuB8wo24GfKAFJdNJ/AvCXOSlRv59u3xZTs76PN4shy6rY8izmp5Cnw/yfow4no3Uqg6tNtiuDv+9nwk34VM+qvpNVc=
+	t=1792418840; cv=none; b=Y+T02cEkoPS+PFvcWj/toZ44nWXqt0WR8Nbi2Q2RNKFHwXGHk49VNN8VtTxxjm/KbMp54iRPxbEMBVtmvynYs/FZoSpbIPsSmhgBTZ4v0cHiDBLYizWgjwlxQZ9BVwJvlZQ8Dxwo9pwClKWvkKM2HkTI7tgrssq1uc4WooHceaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792417058; c=relaxed/simple;
-	bh=NaMBwv69l//KZ+WTms7GdtNyyEZa8sDtob4pvIpqSMU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IoTrUlApsN2aS+sTTe7ihQZU27OFfMzvDslGSpI67iCkGXGBUspX2boqYkd3GAvBhJckoxhqSso2onI7wnjp2qmNZTrMwn+YwiVz4ARYKgJlVZOCvHspGKnHHqX5d2nBwWUOyFG9lxNY7HSWV6xFK8cTJKUrzmUJRcyL6pCLBIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=epofOUUl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792418840; c=relaxed/simple;
+	bh=TCT4Yq30WAJeEOMR6S3DAdC6oiFVO3WCmLbbkASuAhI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Hm35tq0s2r0b3urB3QB8oOikKY+mq4Zm835XjhlaG8aPBjjubD56nBwHg1+pnLsRaa95aVePe7smav+e7aGoa0bqUoSzzEI+aXO+YmPRdCtO/aM2JI6XZeqmrPDYMqxxSgRbMOn6qP7mbDCxQb5M2AIT3xKJ2s845suL6YeC5qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qC6zEoJE; arc=none smtp.client-ip=209.85.128.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="epofOUUl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA721F000C4;
-	Mon, 19 Oct 2026 13:37:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792417056;
-	bh=3eRADoTLOXkqjjrw/UrGjAry3gq+uCsNvBDP+KQWRL8=;
-	h=From:To:Cc:Subject:Date:Reply-To;
-	b=epofOUUlKo52JU0CYFCw5QqNLKgjIsXBRtpERVJaBqRpr4pokpXWYb9bMAR07RrqX
-	 cs1q+A3FSzqXmauxMMf1rWcQTLn543/iLuE6htDD8RRgMdaln1stcdznNgMa4gJOY7
-	 A8djYpl2eqftIqvYs7Tgd3AN0YGoVt0W9QuX+y5SJS4yLu1hxzFr9x82iRFb1K2pZ/
-	 iJmCCkQvC/5HSW8aMblM0fQCPEYDfYBMW4h/4k7H/K6tRR6cCDmgfDkQbZWKtR2vty
-	 6AwEIk44HPkdU47lnAH2aj1jqn4WCUFOeO8t5/wC3mw7n3cWNaIqLQNhxqFEH0D/As
-	 vBuU/4AbblyeA==
-From: Gary Guo <gary@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>
-Cc: nova-gpu@lists.linux.dev,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH] gpu: nova-core: replace unsafe pointer cast with pin-init self-reference
-Date: Mon, 19 Oct 2026 14:36:45 +0100
-Message-ID: <20261019133647.1279779-1-gary@kernel.org>
-X-Mailer: git-send-email 2.54.0
-Reply-To: Gary Guo <gary@garyguo.net>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qC6zEoJE"
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1e3efca9aso15032955e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 07:07:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792418836; x=1793023636; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=TCT4Yq30WAJeEOMR6S3DAdC6oiFVO3WCmLbbkASuAhI=;
+        b=qC6zEoJEKUZn86jSiPz6PvfVYSHEXKaueFhcEB+GANODZhNkkhZtLZb8KtfRG9wSi+
+         a6qsPrI41b8GH0o2p1v0krD2o3Nr7faQ6hJ9voXqCRszw+RP8yty8o+zV/+qnw+17U8i
+         3/HP5a6TsjVc+q7YA2p/1+6pej/5Vf0+0aEPaPb2Cr1D9Ay7sZA/v/qTFniaOL8KSh/3
+         L84zclu4YnT5wfJmxdjF71BTvhC/+bTsWAQjHPJgDaeNe21llwrSyZO11mEwsxCVRamC
+         92fuyt2Pi0gtomDIBmdlghopMBi6vlGrcN13rkleyMIkT1Z0whmt8kimxOp7c6e1Qj3N
+         CHZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792418836; x=1793023636;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TCT4Yq30WAJeEOMR6S3DAdC6oiFVO3WCmLbbkASuAhI=;
+        b=Z1tpfvpacD7ddaxsJJ990tjLC2gJi7kGOtyWBIUSsIc37pl49YFaB102mz4LU9BdEu
+         yEudbeaIp0sBu/8lhuj1B6BnOAqzTkQGa0sYLx70UovB+GEurGPRV6WDnGWmq633vvSW
+         7jYTh0ssfGlM/H+qJDvhbO+itEhhBcPo3Cd+Zt/MV7QXF9w0liRWEkX3b5DB7FaPC9XZ
+         D5y2YwWg7ef8VLzEvAhe8DLjwgiGr7/YkBNLSZcOo8D6i5XRFcDhi4DpzJ21achdiZj6
+         rF7uGwpfxClzgl7HPNOSNYiDU0vszm//ogNVmRGVZZtnLGgiaEkbF396h3brFwNM+702
+         S5eg==
+X-Forwarded-Encrypted: i=1; AKwUvBwdeCbhuYWclKTYyOTr+fmqMyo3AfRn1wuOjr8kGqteznla5i2vYgANY59AkLK/iqx3XD1paJENmkfOAyMcXw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ0ZvH1H71Y7nTsUFebV907L7hz4IqkxwlKoGnxpaA++D8zpZHM
+	qshfxAtbrNDSkgYdE3OVrG/wM83OKbMyguQeLBOERHjDJ59CXxG+6Lr+pV/Alfz9H9zohs4mh+J
+	Xx9DEY378MRExjKLUkg==
+X-Received: from wmkz7.prod.google.com ([2002:a7b:c7c7:0:b0:4a1:9e7b:11b2])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600d:82c5:b0:4a1:e575:33dd with SMTP id 5b1f17b1804b1-4a1e57533efmr85001955e9.18.1792418835770;
+ Mon, 19 Oct 2026 07:07:15 -0700 (PDT)
+Date: Mon, 19 Oct 2026 14:07:14 +0000
+In-Reply-To: <20261019105744.2943249-1-linkmauve@linkmauve.fr>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20261019105744.2943249-1-linkmauve@linkmauve.fr>
+Message-ID: <atYkEo0iTU3vnKCi@google.com>
+Subject: Re: [PATCH] rust: num: Add inline annotation to Bounded methods
+From: Alice Ryhl <aliceryhl@google.com>
+To: Link Mauve <linkmauve@linkmauve.fr>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Gary Guo <gary@garyguo.net>
+On Mon, Oct 19, 2026 at 12:57:38PM +0200, Link Mauve wrote:
+> It was previously generating a ton of very short functions, such as
+> <<kernel::num::bounded::Bounded<u32, 32>>::shr::<17, 15>> or
+> <<kernel::num::bounded::Bounded<u16, 16>>::new::<16384>> on use.
+>=20
+> These are obviously better inlined, although I wasn=E2=80=99t completely =
+sure
+> between #[inline] and #[inline(always)], but the former worked fine in
+> my setup so I went for it, we can always adjust it later.
+>=20
+> Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
 
-Nova core's driver data makes use of a few unsafe self-references for
-device resources. Replace them with pin-init's self reference feature
-instead.
+I agree with using #[inline] here. You only want #[inline(always)] when
+you are using build_assert!() in a way that depends on function
+arguments.
 
-`auxiliary::Registration` is only allowed to capture a single lifetime, but
-it needs to capture `&'gpu Gpu<'bar>`. However, we cannot use coercion here
-as `Gpu` is invariant over `'bar`. As we know that `'bar` outlives `'gpu`,
-use pin-init's existential lifetime to erase the `'bar` lifetime in
-`NovaCoreApi`.
-
-Swap bar1 and bar0's drop order to make pin-init happy.
-
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
- drivers/gpu/nova-core/api.rs    | 15 ++++++++++-----
- drivers/gpu/nova-core/driver.rs | 27 ++++++++-------------------
- 2 files changed, 18 insertions(+), 24 deletions(-)
-
-diff --git a/drivers/gpu/nova-core/api.rs b/drivers/gpu/nova-core/api.rs
-index 29207c4bb743..62b1c8fe7125 100644
---- a/drivers/gpu/nova-core/api.rs
-+++ b/drivers/gpu/nova-core/api.rs
-@@ -22,9 +22,14 @@
- };
- 
- /// API handle for the auxiliary bus child drivers to interact with nova-core.
--pub struct NovaCoreApi<'bound> {
--    pub(crate) gpu: Pin<&'bound Gpu<'bound>>,
--    pub(crate) pdev: &'bound pci::Device<Bound>,
-+#[pin_data]
-+pub struct NovaCoreApi<'gpu>
-+where
-+    exists<'bar>: 'gpu,
-+{
-+    #[uses('bar: invariant)]
-+    pub(crate) gpu: Pin<&'gpu Gpu<'bar>>,
-+    pub(crate) pdev: &'gpu pci::Device<Bound>,
- }
- 
- impl NovaCoreApi<'_> {
-@@ -36,12 +41,12 @@ pub fn of(adev: &auxiliary::Device<Bound>) -> Result<NovaCoreApiHandle<'_>> {
- 
-     /// Returns the GPU [`GetGspStaticInfoReply`].
-     pub fn gsp_static_info(&self) -> &GetGspStaticInfoReply {
--        &self.gpu.gsp_static_info
-+        self.with_gpu(|gpu| &gpu.gsp_static_info)
-     }
- 
-     /// Returns the GPU [`Spec`].
-     pub fn spec(&self) -> &Spec {
--        &self.gpu.spec
-+        self.with_gpu(|gpu| &gpu.spec)
-     }
- 
-     /// Returns the size of the PCIe BAR used for accessing VRAM, typically
-diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
-index 560a70c4f5a7..7ddde686879f 100644
---- a/drivers/gpu/nova-core/driver.rs
-+++ b/drivers/gpu/nova-core/driver.rs
-@@ -33,11 +33,13 @@
- #[pin_data]
- pub(crate) struct NovaCore<'bound> {
-     #[allow(clippy::type_complexity)]
--    _reg: auxiliary::Registration<'bound, ForLt!(NovaCoreApi<'_>)>,
-+    #[uses('gpu: invariant)]
-+    _reg: auxiliary::Registration<'gpu, ForLt!(NovaCoreApi<'_>)>,
-     #[pin]
--    pub(crate) gpu: Gpu<'bound>,
--    bar: pci::Bar<'bound, BAR0_SIZE>,
-+    #[uses('bar1: invariant, 'bar: invariant)]
-+    pub(crate) gpu: Gpu<'bar1>,
-     bar1: pci::Bar<'bound>,
-+    bar: pci::Bar<'bound, BAR0_SIZE>,
- }
- 
- pub(crate) struct NovaCoreDriver;
-@@ -129,13 +131,10 @@ fn probe<'bound>(
-                 crate::irq::doorbell_test::run_selftest(pdev, bar, spec.chipset)?;
-             },
- 
--            // TODO: Use self-referential pin-init syntax once available.
-             gpu <- Gpu::new(
-                 pdev,
--                // SAFETY: `bar` is initialized above, pinned, and outlives `gpu`.
--                unsafe { &*core::ptr::from_ref(bar) },
--                // SAFETY: `bar1` is initialized above, pinned, and outlives `gpu`.
--                unsafe { &*core::ptr::from_ref(bar1) },
-+                bar,
-+                bar1,
-             ).pin_chain(|_gpu| {
-                 #[cfg(CONFIG_NOVA_CORE_SELFTESTS)]
-                 _gpu.run_selftests(pdev);
-@@ -143,16 +142,6 @@ fn probe<'bound>(
-             }),
- 
-             _reg: {
--                // TODO: Use `&gpu` self-referential pin-init syntax once available.
--                //
--                // SAFETY: `gpu` is initialized before this expression is evaluated
--                // (`try_pin_init!()` initializes fields in initializer order), lives at
--                // a pinned stable address, and is dropped after `_reg` (struct field
--                // drop order).
--                let gpu = unsafe {
--                    Pin::new_unchecked(&*core::ptr::from_ref(gpu.as_ref().get_ref()))
--                };
--
-                 // SAFETY: `NovaCore` is dropped when the device is unbound;
-                 // i.e. `mem::forget()` is never called on it.
-                 unsafe {
-@@ -164,7 +153,7 @@ fn probe<'bound>(
-                         // never recycles IDs.
-                         AUXILIARY_ID_COUNTER.fetch_add(1, Relaxed),
-                         crate::MODULE_NAME,
--                        NovaCoreApi { gpu, pdev },
-+                        pin_init!(NovaCoreApi { gpu, pdev }),
-                     )?
-                 }
-             },
-
-base-commit: 2efb7a11f1aa4d2dc285fe2680cca22cb9f72f64
--- 
-2.54.0
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
