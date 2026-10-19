@@ -1,161 +1,142 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from linkmauve.fr (linkmauve.fr [82.65.109.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D926B4A3F26;
-	Mon, 19 Oct 2026 09:58:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C99349B456;
+	Mon, 19 Oct 2026 10:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792403925; cv=none; b=eV39/RbRn1misYnksZfw3PT2Tgj6pwRpw3GJMnrK7nwGdXwJyF8HBtlQgrPZ6J2zwmaInQFZdqXJHAiqO7d/uQJGcv8nbXh31mPdSg/0b3GrZnMEUalvWRPrYA63E6fUZmwmRc1ZAJpytRlBYBLeiJ4uns497wdMVbQmltLLBQA=
+	t=1792407479; cv=none; b=XoMb7CKD2CN3zI+celORp1/hEQqEU2m9MFn2rQvmrsaSmE16ld7+82QE9Yc+zllijOTM+gs+tUrHvS7zYrVlZ966jZU8brsYsxHKAO15yIi0OkcxS80iN1XBElgegydwhqnFMAo0SR5GBk5clnIyA81ndtf9c0Ni38mZdkLFd68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792403925; c=relaxed/simple;
-	bh=GW8/0uoNT92TX4Jm2XL1p10F/geIT3Pftx8oGPFQ9k0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WG9uis6N0V0MTPzO0Z98RDTMWvl2JOFLLR1Rb/RsuXuY3CwKqpzyiiNA4WYlhI1Txwr3+akqAw3ruXSySG9yZ2b9NT1UQkxVQfjL2bIX/RUplSE2JuRZtYS7SbRbtI+nCSz6fJ1dko58H89fE9kPKGLhqVHJoCsJE22orUA9lws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Rzm9lCHz; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Rzm9lCHz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=yo
-	aSTyIAZlCf7IrpG6xDvxi5QR2YUjffz80uNqfSkNw=; b=Rzm9lCHznLFy0tG85c
-	poBlbcT9hLNfj2VxP/ZUBuwA788L5ksZeIW1EcZMCCKbDrO8HgUhgSQ47n/mF+iC
-	qbu4RL0uxpwDoCdEcSKdejehGyQ541a7FghNpxTqCy/hvQXnpM3842P7gr92ugPW
-	S05gHfejdwqpkSWPe4aIM+Krw=
-Received: from pc.localdomain (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgD3VECx6dVqUUgcAw--.30679S2;
-	Mon, 19 Oct 2026 17:58:10 +0800 (CST)
-From: Jiale Yao <yaojiale02@163.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>,
+	s=arc-20240116; t=1792407479; c=relaxed/simple;
+	bh=opH950SuKwOKJTrlUbTFeedkdIPWn4W8U1UYKGiUkRY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JEu4gxMjlEThQwb5XljCWsr73nl32qUX6LYBooOtZNG5/0h6gki9oqXzlVzb7kPWK/ERVAyppQ68QJUDP/tfVycj+OLQpLKHXeD3/sp4C+hkv+VmV1W3prQri5vu3NHvZEscYd9HuK8xyok3d+b0RFsOpdhSFQbepXL80ido/Wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
+Received: by linkmauve.fr (Postfix, from userid 1000)
+	id AC5CA720C634; Mon, 19 Oct 2026 12:57:46 +0200 (CEST)
+From: Link Mauve <linkmauve@linkmauve.fr>
+To: Alexandre Courbot <acourbot@nvidia.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	rust-for-linux@vger.kernel.org
+Cc: Link Mauve <linkmauve@linkmauve.fr>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
-	linux-block@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
 	linux-kernel@vger.kernel.org
-Cc: Jiale Yao <jiale.yao@example.com>,
-	Jiale Yao <yaojiale02@163.com>
-Subject: [PATCH] rnull: serialize configfs updates with power changes
-Date: Mon, 19 Oct 2026 17:58:07 +0800
-Message-Id: <20261019095807.1906316-1-yaojiale02@163.com>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCH] rust: num: Add inline annotation to Bounded methods
+Date: Mon, 19 Oct 2026 12:57:38 +0200
+Message-ID: <20261019105744.2943249-1-linkmauve@linkmauve.fr>
+X-Mailer: git-send-email 2.56.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgD3VECx6dVqUUgcAw--.30679S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGrW7Ar47AryfJF15GF15urg_yoW5WFW5pF
-	W5Kw1jyF45GFyfXr47t347uF13Xwn7CFW7GrZ7Wa1Sgr15Crya9rnYqryUWw1rur9aq3Wa
-	vr4FqFy7uay7Cw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piAwIDUUUUU=
-X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbC8BK28GrV6bJYkwAA3L
 
-From: Jiale Yao <jiale.yao@example.com>
+It was previously generating a ton of very short functions, such as
+<<kernel::num::bounded::Bounded<u32, 32>>::shr::<17, 15>> or
+<<kernel::num::bounded::Bounded<u16, 16>>::new::<16384>> on use.
 
-The configuration stores check whether the device is powered before
-parsing the new value, then take the mutex again to update the field.
-A concurrent power-on can complete between these lock acquisitions,
-allowing a live device configuration to be changed.
+These are obviously better inlined, although I wasn’t completely sure
+between #[inline] and #[inline(always)], but the former worked fine in
+my setup so I went for it, we can always adjust it later.
 
-Parse the input before taking the mutex, then check powered and update
-the configuration while holding the same lock.
-
-Fixes: d969d504bc13 ("rnull: enable configuration via `configfs`")
-Signed-off-by: Jiale Yao <yaojiale02@163.com>
+Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
 ---
- drivers/block/rnull/configfs.rs | 42 ++++++++++++++++++++-------------
- 1 file changed, 25 insertions(+), 17 deletions(-)
+ rust/kernel/num/bounded.rs | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index 32c10c3f4d0f..1808fcacfd55 100644
---- a/drivers/block/rnull/configfs.rs
-+++ b/drivers/block/rnull/configfs.rs
-@@ -174,15 +174,17 @@ impl configfs::AttributeOperations<1> for DeviceConfig {
+diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
+index 0b32f4343922..d3486675046a 100644
+--- a/rust/kernel/num/bounded.rs
++++ b/rust/kernel/num/bounded.rs
+@@ -264,6 +264,7 @@ impl<const N: u32> Bounded<$type, N> {
+                 ", 4>::new::<7>();")]
+             /// assert_eq!(v.get(), 7);
+             /// ```
++            #[inline]
+             pub const fn new<const VALUE: $type>() -> Self {
+                 // Statically assert that `VALUE` fits within the set number of bits.
+                 const_assert!(fits_within!(VALUE, $type, N));
+@@ -309,6 +310,7 @@ impl<T, const N: u32> Bounded<T, N>
+     /// # Safety
+     ///
+     /// The caller must ensure that `value` can be represented within `N` bits.
++    #[inline]
+     const unsafe fn __new(value: T) -> Self {
+         // Enforce the type invariants.
+         // `N` cannot be zero.
+@@ -350,6 +352,7 @@ impl<T, const N: u32> Bounded<T, N>
+     /// let v = Bounded::<i8, 4>::try_new(8);
+     /// assert_eq!(v, None);
+     /// ```
++    #[inline]
+     pub fn try_new(value: T) -> Option<Self> {
+         fits_within(value, N).then(|| {
+             // SAFETY: `fits_within` confirmed that `value` can be represented within `N` bits.
+@@ -412,6 +415,7 @@ pub fn from_expr(expr: T) -> Self {
+     /// let v = Bounded::<u32, 4>::new::<7>();
+     /// assert_eq!(v.get(), 7u32);
+     /// ```
++    #[inline]
+     pub const fn get(self) -> T {
+         self.0
      }
- 
-     fn store(this: &DeviceConfig, page: &[u8]) -> Result {
--        if this.data.lock().powered {
--            return Err(EBUSY);
--        }
--
-         let text = core::str::from_utf8(page)?.trim();
-         let value = text.parse::<u32>().map_err(|_| EINVAL)?;
- 
-         GenDiskBuilder::validate_block_size(value)?;
--        this.data.lock().block_size = value;
-+        let mut guard = this.data.lock();
-+
-+        if guard.powered {
-+            return Err(EBUSY);
-+        }
-+
-+        guard.block_size = value;
-         Ok(())
+@@ -430,6 +434,7 @@ pub const fn get(self) -> T {
+     /// // The contained values are equal even though `larger_v` has a bigger capacity.
+     /// assert_eq!(larger_v, v);
+     /// ```
++    #[inline]
+     pub const fn extend<const M: u32>(self) -> Bounded<T, M> {
+         const_assert!(
+             M >= N,
+@@ -459,6 +464,7 @@ pub const fn extend<const M: u32>(self) -> Bounded<T, M> {
+     /// // ... but doesn't fit within `2` bits.
+     /// assert_eq!(v.try_shrink::<2>(), None);
+     /// ```
++    #[inline]
+     pub fn try_shrink<const M: u32>(self) -> Option<Bounded<T, M>> {
+         Bounded::<T, M>::try_new(self.get())
      }
- }
-@@ -204,11 +206,14 @@ impl configfs::AttributeOperations<2> for DeviceConfig {
-     }
+@@ -482,6 +488,7 @@ pub fn try_shrink<const M: u32>(self) -> Option<Bounded<T, M>> {
+     /// // This won't build: a `u8` is smaller than the required 12 bits.
+     /// // let _: Bounded<u8, 12> = v.cast();
+     /// ```
++    #[inline]
+     pub fn cast<U>(self) -> Bounded<U, N>
+     where
+         U: TryFrom<T> + Integer,
+@@ -510,6 +517,7 @@ pub fn cast<U>(self) -> Bounded<U, N>
+     ///
+     /// assert_eq!(v_shifted.get(), 0xff);
+     /// ```
++    #[inline]
+     pub fn shr<const SHIFT: u32, const RES: u32>(self) -> Bounded<T, RES> {
+         const_assert!(SHIFT < T::BITS);
+         const_assert!(RES + SHIFT >= N);
+@@ -563,6 +571,7 @@ pub fn shr_exact<const SHIFT: u32, const RES: u32>(self) -> Option<Bounded<T, RE
+     ///
+     /// assert_eq!(v_shifted.get(), 0xff00);
+     /// ```
++    #[inline]
+     pub fn shl<const SHIFT: u32, const RES: u32>(self) -> Bounded<T, RES> {
+         const_assert!(RES >= N + SHIFT);
  
-     fn store(this: &DeviceConfig, page: &[u8]) -> Result {
--        if this.data.lock().powered {
-+        let value = kstrtobool_bytes(page)?;
-+        let mut guard = this.data.lock();
-+
-+        if guard.powered {
-             return Err(EBUSY);
-         }
- 
--        this.data.lock().rotational = kstrtobool_bytes(page)?;
-+        guard.rotational = value;
- 
-         Ok(())
-     }
-@@ -225,14 +230,15 @@ impl configfs::AttributeOperations<3> for DeviceConfig {
-     }
- 
-     fn store(this: &DeviceConfig, page: &[u8]) -> Result {
--        if this.data.lock().powered {
--            return Err(EBUSY);
--        }
--
-         let text = core::str::from_utf8(page)?.trim();
-         let value = text.parse::<u64>().map_err(|_| EINVAL)?;
-+        let mut guard = this.data.lock();
- 
--        this.data.lock().capacity_mib = value;
-+        if guard.powered {
-+            return Err(EBUSY);
-+        }
-+
-+        guard.capacity_mib = value;
-         Ok(())
-     }
- }
-@@ -248,14 +254,16 @@ impl configfs::AttributeOperations<4> for DeviceConfig {
-     }
- 
-     fn store(this: &DeviceConfig, page: &[u8]) -> Result {
--        if this.data.lock().powered {
--            return Err(EBUSY);
--        }
--
-         let text = core::str::from_utf8(page)?.trim();
-         let value = text.parse::<u8>().map_err(|_| EINVAL)?;
-+        let value = IRQMode::try_from(value)?;
-+        let mut guard = this.data.lock();
-+
-+        if guard.powered {
-+            return Err(EBUSY);
-+        }
- 
--        this.data.lock().irq_mode = IRQMode::try_from(value)?;
-+        guard.irq_mode = value;
-         Ok(())
-     }
- }
+
+base-commit: 2efb7a11f1aa4d2dc285fe2680cca22cb9f72f64
 -- 
-2.34.1
+2.56.0
 
