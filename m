@@ -1,103 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E4E4DA9B4;
-	Mon, 19 Oct 2026 11:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899A348FF8F;
+	Mon, 19 Oct 2026 12:19:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792410512; cv=none; b=oc7ascoxBK8YyLmHl7zwmPm7sGwBPm6KTCVFA7AqARvfh7ZaZK4aSo/U1TAAlph3MXSHBVLjUog9IEjOlVKJbebpK1dz3J2pWcGtgRUsOI9OrrnACHTaR5fpPiUiu8L8yr1VXMxRXDDCGVmGBi0DZieFpcyHG+iSU0CQuWPwNLw=
+	t=1792412359; cv=none; b=nLyBO6JBt2g6FDH+ifRT/uklot/GJjSTetqKo/u8Y/PWmKrR4iT5B2Si1Erk+HuAmkMINLWrf3cRfHSFhqych5Hysmc6EBQKhCC5PvcJVPbbmq/850LmJnDD9O5hB8MsiSovxIUquME+Md0s/8IuuVVoXSiILmCTMy9FxQSyk3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792410512; c=relaxed/simple;
-	bh=cavO+vB9WQqPaTpm76RGrFLQ0nYmnIVBpjnQrvt4MSo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vAertQNVRBfCdPDQ9QRJjcU1CvlvBcRz8pfD36Fsp9FD1FnAB3aebmOXPdkt26YUgNnk6ktdZZ06/bZfojsWlrWuHHoav/aZsUxqtkdmIQYHoSZcfhgsHh0dFtNQjxvogIyPDHbOpVOQLsFrvsv9qYqILiCenDU+/lrRkWT7Lq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ECDVeieu; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792412359; c=relaxed/simple;
+	bh=1fsh4TpkJEGlEhvht3UddIEVTuU0bNGX+p6qreMvSv8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AAkhpHbozg40HS5e980Bc1BzMcjBYJjD6+Qo5FdkLzasbtnOHE43tICiQ/GYa2vPQZU3bj+Yd9zSo/1dRhQTLIl50OUuoJ4+6uax8u3+jygq8dFaLVrmj5UHGukROOd+pgcWAfFNDfuCj/mrakSedHm5XgAouzn+p9b/SG+VUk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=vlqhqKf5; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ECDVeieu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEDB61F000C4;
-	Mon, 19 Oct 2026 11:48:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792410510;
-	bh=qqw66inKRUTRV7Z7B1eVJRip5F//bCyfpe2WMmXcebs=;
-	h=From:To:Cc:Subject:Date:Reply-To;
-	b=ECDVeieuAw36mJSmpXp6A720fvr1iq8ofNi5mt7BTouXFKgxvK27GqTGO33dneXUC
-	 GAPbyo8EwdceBgOW0LP6HFLxRSsYpG822b1LpoZtL+sqso16MAHI61SbM+h6smbEX0
-	 cqkwThYnNDLjQtrcSNTMpZ1KyDbIIeU9kjZwI+cGwe35xmqlSMkcSZnxdhcFSIqA88
-	 BU2Yq4nIq9CV4FoDR5m9gMXG8OEqqAX3gDIqhEOFeTcoCowdqGXZyVQtKmU9XKpphU
-	 USW/JkjbMmvGyTf13dmWe8VwE5Vi2x7Cdk+JDAUeBlroCIMkuRfWPOcVO6cKCC9BAc
-	 apkiywYOvw2lw==
-From: Gary Guo <gary@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Cc: driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: doc: mark `Io` as notable trait
-Date: Mon, 19 Oct 2026 12:48:10 +0100
-Message-ID: <20261019114811.1105192-1-gary@kernel.org>
-X-Mailer: git-send-email 2.54.0
-Reply-To: Gary Guo <gary@garyguo.net>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="vlqhqKf5"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 97C181682;
+	Mon, 19 Oct 2026 05:19:12 -0700 (PDT)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A6E553F673;
+	Mon, 19 Oct 2026 05:19:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1792412355; bh=1fsh4TpkJEGlEhvht3UddIEVTuU0bNGX+p6qreMvSv8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vlqhqKf5M0g4+9Gbo+GEqbLta+7Rzl9bRMuBJxBYDkRZ4dtN0Ft1MMCQN5Qow6BAa
+	 I94/ZjeITqG3/3pkXdMd7faMAeQLxfxT4CzXwB097UvohvE5qz26Iirw5jQN7IQWQM
+	 CO9o29i1iqFHRTAV/BOJ0jj+WFp9iZfYcvDqBnRk=
+Date: Mon, 19 Oct 2026 14:19:08 +0200
+From: Beata Michalska <beata.michalska@arm.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: ojeda@kernel.org, dakr@kernel.org, gregkh@linuxfoundation.org,
+	rafael@kernel.org, boqun@kernel.org, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	tmgross@umich.edu, daniel.almeida@collabora.com,
+	boris.brezillon@collabora.com, work@onurozkan.dev,
+	samitolvanen@google.com, acourbot@nvidia.com,
+	rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH v4 2/3] rust: platform: wire runtime PM callbacks
+Message-ID: <atYKvHQm9qJ9wY-e@arm.com>
+References: <20261005133857.1572243-1-beata.michalska@arm.com>
+ <20261005133857.1572243-3-beata.michalska@arm.com>
+ <20261016121230.3724323-2-aliceryhl@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261016121230.3724323-2-aliceryhl@google.com>
 
-From: Gary Guo <gary@garyguo.net>
+On Fri, Oct 16, 2026 at 12:12:30PM +0000, Alice Ryhl wrote:
+> On Mon, Oct 05, 2026 at 03:37:40PM +0200, Beata Michalska wrote:
+> > @@ -223,6 +225,14 @@ pub trait Driver {
+> >      /// The table of ACPI device ids supported by the driver.
+> >      const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
+> >  
+> > +    /// Provides driver's PM callbacks, if any.
+> > +    fn dev_pm_ops() -> Option<crate::pm::DevPMOpsRef<'static, Adapter<Self>>>
+> > +    where
+> > +        Self: Sized,
+> > +    {
+> > +        None
+> > +    }
+> 
+> Since `DevPMOps::pm_ops()` is a `const fn`, can this be an associated constant
+> `const DEV_PM_OPS: Option<crate::pm::DevPMOpsRef<'static, Adapter<Self>>> = None;`
+> to match `OF_ID_TABLE` and `ACPI_ID_TABLE` right above it?
+>
+It can, as long as no one would mind making the Driver trait sized.
 
-`Io` trait is the primary way of interacting with a bunch of types, e.g.
-`Mmio` and `Coherent`. It is hidden in "blanket impl" section which is not
-very discoverable.
-
-Use nightly feature to mark `Io` as a notable trait, so it is highlighted
-at the top of the rustdoc page.
-
-Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/kernel/io.rs  | 1 +
- rust/kernel/lib.rs | 3 +++
- 2 files changed, 4 insertions(+)
-
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index a877df11a03e..377c95dda04b 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -486,6 +486,7 @@ pub trait IoBase<'a>: Copy {
- /// - Fallible (runtime checked) accessors for different data widths
- ///
- /// Which I/O methods are available depends on the associated [`IoBackend`] implementation.
-+#[doc(notable_trait)]
- pub trait Io<'a>: IoBase<'a> {
-     /// Returns the size of this I/O region.
-     #[inline]
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 1ab41129d557..f7f720b9888a 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -29,6 +29,9 @@
- // To be determined.
- #![feature(used_with_arg)]
- //
-+// For documentation purpose only.
-+#![feature(doc_notable_trait)]
-+//
- // `feature(file_with_nul)` is stable since Rust 1.92.0. Before Rust 1.89.0, it did not exist, so
- // enable it conditionally.
- #![cfg_attr(CONFIG_RUSTC_HAS_FILE_WITH_NUL, feature(file_with_nul))]
-
-base-commit: d419d682257d813f6cb7a28e42b35d0edf4ad038
--- 
-2.54.0
-
+BR
+Beata
+> Alice
