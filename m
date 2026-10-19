@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792452395;
-	b=jGbgeo2eodLubfHR/FMBzY4I6kSo7VO8MMliHTrtz7YSHr53gaqL6YvT+Z27D1V2v6Rq
-	 cP0IOPFaS/U7HRbNRHkj0Pwsts9tbw0UrXNNHKMQpbQNAQ1hSOrqBGmzo6wNn7HG8baKd
-	 jIa46UmBLIj8xQtUlszqcPRrD63uQY+hf4tEVOkR2iVpc/gIZwqEJJyyjgP/InPZNdhSi
-	 yGLG/SIhOgaeRrd5UsWWBM/5HWaz9r8/DCpD1tWDwFOERiunHAwThiCScvOoJmhgQn3kl
-	 F1hy8WJJyRXcRCA5pb/cVQcegobLfkA2e48mYeqmAiwGnKYcvCB0aak8Mk5CW/+N1GA==
+	t=1792452390;
+	b=MOwysq92AbUdBmNfOzHyhNYdJzCQhEA9rFT4cwnNl/ejaZ01QyhsVxXF7AEoJy0Xm6RX
+	 g/iIwnRjbT/FUAFTAW1cLlTltHzO4IKC4NPUDKDr919dfFbOSBHpJi/h7Vv1HkMw6s4VO
+	 V1i7BhLJ2VlnXaxnU3Bj0c2HQb+AOf7oIHQL4inwfWEzGZ3GrpGUObk15UTnSLTa68tC1
+	 oz8yAY2mEbEjDoEk1mISXk6F9R4APvZk5XQ/F925iA3qlTXUWi8c6EZ01MA9w4/xUNPTz
+	 fE9YMB3NvmibHr4n4/pBmuYjJ7X9nqKJZ1zi7GqR5/vBRJqEbfmvXNfGgDhSgAm9Tfg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792452395;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792452390;
 	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=moqLdOiXIDJEjW3F803DCdqiZDaCP8DoGvvPaOoz/Ac=;
-	b=wgNmBTIyRZn+iU82gQZ5z7gnpAKY+ImCTQiutiG7TVNmB1k+FuVSoZLkbYHX6RgRM2SX
-	 QQNVd8Trr6nk2S27iR8hXGmTe1X4IxeRkbtAUsMwBjHFvnXAi7SknW0DhbmNp/cwiNG6+
-	 UU9lYobSe/rwj2t4aNQkQpnu7a/UNM0/3C/WwQ/f7C5ZJczxNZw7UZEtwNIUjXoh+Drz0
-	 Nqymmn61M7stH+xGNpFVoELBH2QbDBrTSlX2yodrBEZ63rN830QAShO5dlkzTq2I67X8x
-	 0pRzzoaw0Kh7ow7b2Pz5yRyGelHtye9KPhjytDDH8RzUsPMyDFp+ykHsc/p1z/x44LQ==
+	bh=YGaGcmA5s3rLvx2IfexTcXmFWu/hCy7f2gX18xxTm4Q=;
+	b=r8S8IMn40sxrc36mLoP34/VGZMHQ7YCrfag79KBxBS1mdhR04NERQGH90YLE4jZHvk2M
+	 tbAGL3d/zNUmsOTGW6lqYaLZS2GS6owsK4lkVdwhq3FPay8qosbLdK2z+Noo4Td2L9+4m
+	 e2APGmaK+XSm4hprBnS8OHBQC3uIl7+ATJOw/cgZpOrAZ3xyhWiVBe3A+QwAmSJe+/SY2
+	 X9wO/1sJnEmjiVI05pcmv9nvH6qRRs1JnKNkpMPTb0GptNhdRxmDHwUgni43dPowVcO5g
+	 xjR4ftlo6B5bsmfSgafmyRf+JfOjKV8XC+rxJQ/kl6THCIeay4WdkLMMEe7KCmFv0TA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=DH2nIci1;
+	dkim=pass header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=bAbp0kvc;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
 Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C22606A321;
-	Mon, 19 Oct 2026 23:26:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 26C22606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD01606A31A;
+	Mon, 19 Oct 2026 23:26:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6DD01606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=DH2nIci1
+	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=bAbp0kvc
 ARC-Seal: i=1; a=rsa-sha256; t=1792452365; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=U8ld6WWX3mcb1RV1pJIc+LCY7QkKDA7/ldPaGJ4ETA4Sx8/tv+SOPpdvRE9v1EdDAuB4DwosKrSZ8r450gB9OwdogHmP3QIj9Sq07/JW8+ztCyQAQg9Gv/UFmcVuS3qQOmyDp7UNH+1+t/aJhNDeXlvAiew3C9IT5J37vGiy8ek=
+	b=e4aDcG3RP8uWGuly63TN9VfZ+2OD6O1DNeXP5TVlqk2KCZBV964woBMEkOiGvOknXFaunIedHxhXnBOFmCDKukk/gmssODYODe6dTdw6EQjpSgMvzfgFivyq46fRwU9zAu/ef7YZjxyXwMQPNU1jCY+FlQj3z0jiYDBmR/ZQNWI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
 	t=1792452365; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=moqLdOiXIDJEjW3F803DCdqiZDaCP8DoGvvPaOoz/Ac=; 
-	b=AGk1lyzQf56GLIEct82TwJjEWQ8RKEPq30/uJ6/lDJfginva/Z9ZtCCP92VUixucNAHB2UMngkFI/8S4Jr35l5/yo+39lo5gJvfVluAUswNxhFStAIekYwT/kcs7n7Cd9Q1QD8JeNqAvJxxZHbaqcUcWIs+NOtwdhayHFfcUK9c=
+	bh=YGaGcmA5s3rLvx2IfexTcXmFWu/hCy7f2gX18xxTm4Q=; 
+	b=fMDE5jkQCZep9TcOXNkOTeflkmt4X+qbgzVMKfruAy21VYJHlZ6h5S7cnkBpd9maAkV3XTGqYHD6/TOhK6c65mKX+6ANq4OxrQ1DTXNZn6L2htMF6fubUOwMD62ALhjua8wJqKpgeKQjm07XwIpoASVwlwrZyHDgb7/ba/PSmJU=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
@@ -47,15 +47,15 @@ ARC-Authentication-Results: i=1; mx.zohomail.com;
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792452365;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=moqLdOiXIDJEjW3F803DCdqiZDaCP8DoGvvPaOoz/Ac=;
-	b=DH2nIci1Vbqc9fQt9bi+uL3AHYkQknniCaILc/ecHByIla5MuB7apuNwah+P/2vQ
-	bVkdu31EG7nYy/OgjzDVYJ36CG4gbrmpkhd77S29K5M2rZ3l7Vore6IDOpOOe+Vjxxc
-	h8rkrG4mlGyj96lmMMHj3sQfhR+FQIAeJoiKIkoo=
-Received: by smtp.zohomail.com with SMTPS id 17924523640151015.6731131646758;
-	Mon, 19 Oct 2026 16:26:04 -0700 (PDT)
+	bh=YGaGcmA5s3rLvx2IfexTcXmFWu/hCy7f2gX18xxTm4Q=;
+	b=bAbp0kvcllYTjk024qWXAktfkbLVxSiXOexuveTITj4H9jWug4zhBnxR//MuNePP
+	iZoxiz/dgGFi6nbvgQC5zv5LmbzXGsqMde9XkGlSrHNcBfFyLU/z29jtoW95Rypb4tL
+	uv9q9Dutth6sfmsR1SyCS2zxEqKXX/Ega0Dt/TFo=
+Received: by smtp.zohomail.com with SMTPS id 179245236269923.82180997951889;
+	Mon, 19 Oct 2026 16:26:02 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Mon, 19 Oct 2026 16:26:00 -0700
-Subject: [PATCH v4 2/2] drm/tyr: safely write GpuInfo to userspace
+Date: Mon, 19 Oct 2026 16:25:59 -0700
+Subject: [PATCH v4 1/2] rust/Makefile: add zerocopy and zerocopy_derive
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -67,7 +67,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261019-b4-gpu_info_intobytes-v4-2-0bc04df46549@collabora.com>
+Message-Id: <20261019-b4-gpu_info_intobytes-v4-1-0bc04df46549@collabora.com>
 References: <20261019-b4-gpu_info_intobytes-v4-0-0bc04df46549@collabora.com>
 In-Reply-To: <20261019-b4-gpu_info_intobytes-v4-0-0bc04df46549@collabora.com>
 To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
@@ -84,118 +84,82 @@ Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3790;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3187;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=q6p6zlWWJ8BQv6wAOLNRbYzWEvvkZCGR72/7FruQfKg=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFnXlnOEz58s0h7nzWKiF6wcOl/URqpNeFfS8ckRcTs0X
- p2rbUnuKGFhEONikBVTZDlrb9QjXvXeSHf+/2aYOaxMIEMYuDgFYCLT5Bh+zPlWtGXT/Lxn+89V
- nfj9Krx7yoRLZquN15wRrJ5mOdvtOiPDgaBJsxpnOR3x/PU0ps34j5aIxgRdrjdKlzifH7751Ia
- ZFwA=
+ bh=EiejWXSZctCvsEqsl++99TpZc3z0JAszVm9cJejzUMI=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFnXlnPUp3n8lH+gEDZtiliQEYdf8jMhtsuMqnZ7plf2r
+ pZg7YrsKGVhEONikBVTZDlrb9QjXvXeSHf+/2aYOaxMIEMYuDgFYCL7jjP8s71vKMthWrL7/R1v
+ 7+fvzUW/aCuf3vA4rEHWQfPA5LnXRBkZrpRWB816YxW55udW/zmfOUWKfDmkZc3Mq+KUHksY+O9
+ iAwA=
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-Tyr creates the struct drm_panthor_gpu_info from the Panthor UAPI
-bindings. It initializes this struct by querying the gpu and then writes
-the struct into userspace memory faithfully byte-by-byte.
+Make the zerocopy and zerocopy_derive crates available for use when
+building the bindings and uapi crates and their tests.
 
-Currently, the struct drm_panthor_gpu_info does not have any implicit
-padding, but if implicit padding were added in the future Rust does not
-guarantee that it would be initialized. Then when Tyr writes the struct
-back to userspace it could expose uninitialized kernel memory.
+This will be used by the Tyr driver that needs the traits IntoBytes and
+Immutable to safely copy the struct byte-for-byte to userspace.
 
-Tyr implements the unsafe trait AsBytes for GpuInfo whereby the developer
-guarantees that struct drm_panthor_gpu_info does not include implicit
-padding, pointers, or interior mutability. This allows Tyr to safely copy
-the struct into userspace memory. However, relying on the unsafe trait
-AsBytes is fragile because if the Panthor UAPI changes, the SAFETY
-guarantees may no longer be accurate.
-
-Instead, use the derive macro `zerocopy_derive::most_traits` for struct
-drm_panthor_gpu_info. This macro will attempt to implement the zerocopy
-traits for struct drm_panthor_gpu_info. If the Panthor UAPI changes so
-that the traits IntoBytes or Immutable can no longer be implemented, Tyr
-will no longer compile.
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/file.rs |  2 +-
- drivers/gpu/drm/tyr/gpu.rs  | 16 +++-------------
- rust/bindgen_parameters     |  3 +++
- 3 files changed, 7 insertions(+), 14 deletions(-)
+ rust/Makefile | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-index 9f60a90d4948..ceadde976502 100644
---- a/drivers/gpu/drm/tyr/file.rs
-+++ b/drivers/gpu/drm/tyr/file.rs
-@@ -54,7 +54,7 @@ pub(crate) fn dev_query(
-                     )
-                     .writer();
+diff --git a/rust/Makefile b/rust/Makefile
+index da1a7409d984..f59815fac293 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -361,12 +361,18 @@ rusttestlib-kernel: $(src)/kernel/lib.rs rusttestlib-bindings rusttestlib-uapi \
+     $(obj)/bindings.o rusttestlib-zerocopy rusttestlib-zerocopy_derive FORCE
+ 	+$(call if_changed,rustc_test_library)
  
--                    writer.write(&reg_data.gpu_info)?;
-+                    writer.write_slice(reg_data.gpu_info.as_bytes())?;
+-rusttestlib-bindings: private rustc_target_flags = --extern ffi --extern pin_init
+-rusttestlib-bindings: $(src)/bindings/lib.rs rusttestlib-ffi rusttestlib-pin_init FORCE
++rusttestlib-bindings: private rustc_target_flags = --extern ffi --extern pin_init \
++	--extern zerocopy=$(objtree)/$(obj)/test/libzerocopy.rlib \
++	--extern zerocopy_derive=$(objtree)/$(obj)/test/$(libzerocopy_derive_name)
++rusttestlib-bindings: $(src)/bindings/lib.rs rusttestlib-ffi rusttestlib-pin_init \
++	rusttestlib-zerocopy rusttestlib-zerocopy_derive FORCE
+ 	+$(call if_changed,rustc_test_library)
  
-                     Ok(0)
-                 }
-diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-index e1b04a0c5159..4808bcbcc3b9 100644
---- a/drivers/gpu/drm/tyr/gpu.rs
-+++ b/drivers/gpu/drm/tyr/gpu.rs
-@@ -16,7 +16,6 @@
-     },
-     prelude::*,
-     time::Delta,
--    transmute::AsBytes,
-     uapi, //
- };
+-rusttestlib-uapi: private rustc_target_flags = --extern ffi --extern pin_init
+-rusttestlib-uapi: $(src)/uapi/lib.rs rusttestlib-ffi rusttestlib-pin_init FORCE
++rusttestlib-uapi: private rustc_target_flags = --extern ffi --extern pin_init \
++	--extern zerocopy=$(objtree)/$(obj)/test/libzerocopy.rlib \
++	--extern zerocopy_derive=$(objtree)/$(obj)/test/$(libzerocopy_derive_name)
++rusttestlib-uapi: $(src)/uapi/lib.rs rusttestlib-ffi rusttestlib-pin_init \
++	rusttestlib-zerocopy rusttestlib-zerocopy_derive FORCE
+ 	+$(call if_changed,rustc_test_library)
  
-@@ -28,6 +27,8 @@
-     }, //
- };
+ quiet_cmd_rustdoc_test = RUSTDOC T $<
+@@ -774,19 +780,25 @@ $(obj)/ffi.o: private skip_gendwarfksyms = 1
+ $(obj)/ffi.o: $(src)/ffi.rs $(obj)/compiler_builtins.o FORCE
+ 	+$(call if_changed_rule,rustc_library)
  
-+use zerocopy_derive::Immutable;
-+
- /// Struct containing information that can be queried by userspace. This is read from
- /// the GPU's registers.
- ///
-@@ -35,7 +36,7 @@
- ///
- /// - The layout of this struct is identical to the C `struct drm_panthor_gpu_info`.
- #[repr(transparent)]
--#[derive(Clone, Copy)]
-+#[derive(Clone, Copy, IntoBytes, Immutable)]
- pub(crate) struct GpuInfo(pub(crate) uapi::drm_panthor_gpu_info);
+-$(obj)/bindings.o: private rustc_target_flags = --extern ffi --extern pin_init
++$(obj)/bindings.o: private rustc_target_flags = --extern ffi --extern pin_init \
++	--extern zerocopy --extern zerocopy_derive
+ $(obj)/bindings.o: $(src)/bindings/lib.rs \
+     $(obj)/ffi.o \
+     $(obj)/pin_init.o \
++    $(obj)/zerocopy.o \
++    $(obj)/$(libzerocopy_derive_name) \
+     $(obj)/bindings/bindings_generated.rs \
+     $(obj)/bindings/bindings_helpers_generated.rs FORCE
+ 	+$(call if_changed_rule,rustc_library)
  
- impl GpuInfo {
-@@ -134,17 +135,6 @@ fn deref_mut(&mut self) -> &mut Self::Target {
-     }
- }
+-$(obj)/uapi.o: private rustc_target_flags = --extern ffi --extern pin_init
++$(obj)/uapi.o: private rustc_target_flags = --extern ffi --extern pin_init \
++	--extern zerocopy --extern zerocopy_derive
+ $(obj)/uapi.o: private skip_gendwarfksyms = 1
+ $(obj)/uapi.o: $(src)/uapi/lib.rs \
+     $(obj)/ffi.o \
+     $(obj)/pin_init.o \
++    $(obj)/zerocopy.o \
++    $(obj)/$(libzerocopy_derive_name) \
+     $(obj)/uapi/uapi_generated.rs FORCE
+ 	+$(call if_changed_rule,rustc_library)
  
--// SAFETY: `GpuInfo`'s invariant guarantees that it is the same type that is
--// already exposed to userspace by the C driver. This implies that it fulfills
--// the requirements for `AsBytes`.
--//
--// This means:
--//
--// - No implicit padding,
--// - No kernel pointers,
--// - No interior mutability.
--unsafe impl AsBytes for GpuInfo {}
--
- struct GpuModels {
-     name: &'static str,
-     arch_major: u32,
-diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-index 8402b0c93545..332bc8d6a9f7 100644
---- a/rust/bindgen_parameters
-+++ b/rust/bindgen_parameters
-@@ -71,3 +71,6 @@
- # Structs should implement `Zeroable` when all of their fields do.
- --with-derive-custom-struct .*=MaybeZeroable
- --with-derive-custom-union .*=MaybeZeroable
-+
-+# `drm_panthor_gpu_info` is copied byte-for-byte to userspace.
-+--with-derive-custom-struct '^drm_panthor_gpu_info$'=zerocopy_derive::most_traits
 
 -- 
 2.56.0
