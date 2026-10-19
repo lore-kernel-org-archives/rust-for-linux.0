@@ -1,73 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792452891;
-	b=5HgD8j/JnGRcW3n4ACZDp0cLyjs6OEKbJ4uw7ZWn6u26vcfFb1d0yQFypz3BYighxGX5
-	 pqg7eKtaV/n+1ALYQvXmCb5AkEXvNqEDgZbHyjGGYYgtFBY6ib+1dGAJPCQqnBOFugirk
-	 B7AsK4ow5tgaP9Shyu567200HzHXyNvKwktj5/IgiSJ9Uw5WjT4o9LKITUqrj5xMYeiRY
-	 Vx014LhVJjtYiXQaDBGb1IentKRhoPkGuSdPktHU414nKNfOhNmFwu8JwfGvw5Lj0D0l6
-	 GDqOx9YXL8hONIunyokrXmh2Y9sNwZK8UnH6GYWYT6AiP/9MaUkTKRYOMi903GXSp1Q==
+	t=1792452894;
+	b=yKMx9663LPo1jeKwLZCXeX0hmBR/S+v3B4aJK5YtLSe8HndpccIVJFXhJ4UHxHZa6pfj
+	 wBiDn+V5ZvbItaqod75dq0/f/GUo2uBhYhLn6MDspkGYxhwb0SHBV+Jend3XM6trs6XlL
+	 xZOYcSwAKSnweyk8eODptvzHMBdqrxpx91SKqGKV/+ZyZfuom1tuRQjaE5DFC2h4Xi2BQ
+	 fiDeSL96YwkOJMfbxX0Fz5mmTiZVAG4lATi+QpCvFpzeMTOUrEvvfHnoiDnvIm1NAJkSO
+	 x18Bnbm6FK3Z+6/ik4z3tbR8BmDp0POgO3avrwmjW2/56YY+zlwcSpm/qznnxY69bug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792452891;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792452894;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
 	 References:X-Developer-Key:X-Developer-Signature:X-Mailer:Message-ID:
 	 Subject:From:To:Cc:Content-Type;
-	bh=yYgGBwtoModPOWWXIECz8dwnr/MeNeZyXwpagOjeJf4=;
-	b=Vq4t8GNHXz8dAt90cWli4FARDieqDYgr5sm8o7S2X+RkJOcb/G57wm+fxCSlCCMeXFFt
-	 2E7xXa2aGXzW7KeNVdHRw3ZsCRXE3WoyCWOTAfyuglSF7EcghoPfnlia/wVd88OjIfv2p
-	 fwpUJyUqAhbXPZ+0y+LtgyFhjH8S9RdY307v8dPNKojOA6louu6xbWiX9Ye8+BkhEGdDL
-	 oDm0tfDzQkFZX5L9t9IG0zXrosc2qx2t25b6vgNHXzdjuspNYuiEfL/24Gu9xVeLwzGB7
-	 QTZpwC4xlLuJ8IAMve4aqunV6PpMBXwtw2o+3HICCScGQKafuyiMbMHAIJMRhABEnqg==
+	bh=hL9z3sxmqPHu6DZpQKLBUOtEfTvn2OY05fH87pUmBmw=;
+	b=ZP6EH3anjMK8dwEO0o2IpAA4R8SvaIYbmGcfP3IkMO43ZqDJUHpvWEt9+FY9oY5C1WBL
+	 sDcQS7M7XGghm0g7dPjGlpEYdBgtD9HKObHs340epciebAQkWh1HEsqViF3ISEKwYCRjo
+	 ga6s93x/nL2U3fZOe1NLjyZ+z9Sq+eA+iMKCZM5yLlULZiTF55i+h4xFulhmyaJS30d6M
+	 xz7R/dCv7S63mL1qvnEivwKheN24GhD2uxJ9hCt7nikmS/pI1YHFtxZc4o7P6TvXeXxR6
+	 GuTifgMgfFYI8AYVNcbu3b1n6vtam4RUxa6V9r5JBBYwwaRLaW+5chjVLWSBCQB4Lzw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=QTPIdIow;
-	arc=none smtp.remote-ip=74.125.82.199
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=orLK+din;
+	arc=none smtp.remote-ip=74.125.82.198
+Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588CB606A32C
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 23:34:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 588CB606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D949E606A31A
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 23:34:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D949E606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=QTPIdIow
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-33c35f5ca6cso5482021eec.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 16:34:51 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=orLK+din
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-35c3c370b17so5235531eec.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 16:34:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792452890; x=1793057690; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792452893; x=1793057693; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=yYgGBwtoModPOWWXIECz8dwnr/MeNeZyXwpagOjeJf4=;
-        b=QTPIdIowpXQnzvD8GbDaYnYvCPJIbbKCLQuaTHe0vY6Ba07DHG/K++i/RA+gdyeBX4
-         N9XNPeJvtzqQBa/THtfMFQKuRf5IfUR5Z3mVC2MCmQrWPM2BQ/p4IouiDV7Um2C0tD+E
-         tWBXf3RPhP9cg7SYKcS5o9O7EviqoLMObDIsnp7aLEtdrxYewBoi3bq1MgOgl6br3/60
-         wwIy+LaHKMebn8eCStvKdDOV1hoUYh44NG+IB3Wwss96CoUgEBAuFJ4JX2ASwpmw6/ui
-         pXwYXufqH+DdCpbZPzBPK4g4cta6JBU3Vkc/Mr0SmF85cb+YeDiNHdGf+LnnlJELvX8n
-         xrJQ==
+        bh=hL9z3sxmqPHu6DZpQKLBUOtEfTvn2OY05fH87pUmBmw=;
+        b=orLK+dindxJMUSaNtTwwlimiW4FxCTJdbtJDVOcpZq1tCufIfWB9RKuUSVzqvYJh5x
+         5uuPOSlvknCExmqKXQwaU7piZjcWpSl7QnP4rfQuZFixxWAIZmX1S6U/CDq3UQsQ8/yA
+         WzzAf8XmCj5CjjqoqAZDkKKDftDusldDduaia85ngyHKi4vGrloaAjcPfH5MtTX153WM
+         p+xQl9/5UsvPQiooH+ExmAY3p8sOpE0+yZTh4T53t4hJ+1QjYg1xFes3BYHTMoPCm12F
+         r7F5k5LjZxXbPZPgdxvVDyw+PQlgudcKg66I/HHhUK5LVxRc+/gZvBPUUYNMYpstGk1y
+         Fi5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792452890; x=1793057690;
+        d=1e100.net; s=20260707; t=1792452893; x=1793057693;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=yYgGBwtoModPOWWXIECz8dwnr/MeNeZyXwpagOjeJf4=;
-        b=oujWoH/PP6bdqyU2JDfQJYU3ugSpyylmgm+PRZDJpA4UAcuBApjf8B/IrrvAwB7UDi
-         XPXQvuuMGPYsZM8ymrzYx/dlcMi81EM9xaRofZ9g44/sWYxhuGjcfwYMmU5t2ZZUo0Zf
-         +ctU4MjbrCg5HRRnJLlmWJUGaKgoBAu+fseowRtAuOumQWwxcO4aTElDrYNS9QGhvm7c
-         fMLHh0JXLHXwjLbtaehlx6WeJsdJX21kTrp9EIUI9LW0gPCH4IgXbSoOxebBGhY7BaL6
-         sTW3bks+g7O2ObUSPRmTy21F0DHH267uP3NJTWhGP0wHydfg/oM+id74pnDUtAFXIB9b
-         I+vw==
-X-Gm-Message-State: AFq9FYL35SUD0STSVyLodKda4r3vSaAH+fvpbbkOuT76uobYqZNn7dbg
-	nQsuK7cgQ8N9byPDGkAiqXJUYv+++J4LRnweohDTw2/OU0KqI0/HSZXeA7+JQiNeFC5MlnRj0hA
-	NvlcN20LYrCXjZW7UtwVw1mwHM1JbbQ==
-X-Received: from dyru33.prod.google.com ([2002:a05:7300:4fa1:b0:35b:4bd1:e0fb])
+        bh=hL9z3sxmqPHu6DZpQKLBUOtEfTvn2OY05fH87pUmBmw=;
+        b=FlHqCH/9aNcMFQVdutu33fdpkZcT/aBoqYjaXLVmUijKD4ZWtybaQwQH8phDKzXZfu
+         lxM/5vX352ixlmS3DmDjUdnLWV9uSnUFVXciljErJO5tsAnkcHTHeunJhddl9WgLqagA
+         0NDpJVOknmxDnyffBmudRc/x63xd4EqW2bWYectgKjFA1cM0dslRME+Qom1/xq73sJZM
+         pnk3Q0C8lt502Hn2wmkiNn2mtv+lZlGjRlkaOHnMZYQA4RALRUGwHvHpytW/nLaYh9Dz
+         siHY6tl82pL/htvPhdBhYwlqODkWcmMrQWFg7n8yQiPgFweLLQ3UHY79imNZYOtDwoz8
+         GLCA==
+X-Gm-Message-State: AFq9FYJFDgO6ozbxJ9ZS1Y5c6CbSgskW8Cm+WHFB8juQrpmvbQ+z5CYz
+	FswaHLL8CD5PAJpU1maRfXah/7kBTFvQiR8gsfFdGSJeEMjR0r4dEJXINC2+8yvb3tuJGu19ClE
+	W1fMfcmqMg+hnqM9CZ1kZvSxcYVd2fA==
+X-Received: from dldyq17-n2.prod.google.com ([2002:a05:701b:4551:20b0:14e:8121:6eda])
  (user=samitolvanen job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7300:7aa3:b0:35d:74f7:3b9 with SMTP id 5a478bee46e88-361a224ccf0mr11856161eec.33.1792452889848;
- Mon, 19 Oct 2026 16:34:49 -0700 (PDT)
-Date: Mon, 19 Oct 2026 23:34:37 +0000
+ 2002:a05:701b:2414:b0:18d:2a:370b with SMTP id a92af1059eb24-18d002a3854mr1805095c88.9.1792452892724;
+ Mon, 19 Oct 2026 16:34:52 -0700 (PDT)
+Date: Mon, 19 Oct 2026 23:34:39 +0000
 In-Reply-To: <20261019-rust-cfi-fixes-v1-0-9503472ba738@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -80,14 +80,14 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261019-rust-cfi-fixes-v1-0-9503472ba738@google.com>
 X-Developer-Key: i=samitolvanen@google.com; a=openpgp; fpr=35CCFB63B283D6D3AEB783944CB5F6848BBC56EE
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4533; i=samitolvanen@google.com;
- h=from:subject:message-id; bh=uXHdbixwLcNi6iBpIxcP3Mxix2cxByC1MLC5WD58JuQ=;
- b=kA0DAAoWWgclqzmhp3oByyZiAGrWqRaiZJeszthblBaAnEB9HD3z7C0uIlr+EVlzkAOL4TKoB
- oh1BAAWCgAdFiEEhPWrtbv3QmXq83IYWgclqzmhp3oFAmrWqRYACgkQWgclqzmhp3ofpAEAvbBx
- TqUhXZQDkt25mUO+xCmdfAuf4hD++/eCuHyQR6gBAIH2CiYt/Ce4sMAG3QhYfARKs7grPvSLM9v IY6W2fhMK
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4650; i=samitolvanen@google.com;
+ h=from:subject:message-id; bh=JwJNlGuBiQ8g6xhZrLGYDfrsZ7obgLAdDp/5rBj/R3w=;
+ b=owGbwMvMwCUWxa662nLh8irG02pJDFnXVoqpNN3YtdNaKtPpfNf8v2pbOA2L7kS4XOWS+3y+6
+ ca3TNYrHaUsDGJcDLJiiiwtX1dv3f3dKfXV5yIJmDmsTCBDGLg4BWAit1cy/Pdz9JgoqsF//5WP
+ /8kXnHIfMktTw3VL/ul8bz6xSPPHTEaG/+UPS0RPqF6LKwmKPy5dsOvXipQri4xiTrnO33daUuX 8Sl4A
 X-Mailer: b4 0.14.3
-Message-ID: <20261019-rust-cfi-fixes-v1-1-9503472ba738@google.com>
-Subject: [PATCH 1/3] rust: irq: declare cfi_encoding for irqreturn
+Message-ID: <20261019-rust-cfi-fixes-v1-3-9503472ba738@google.com>
+Subject: [PATCH 3/3] rust: dma: declare cfi_encoding for dma_data_direction
 From: Sami Tolvanen <samitolvanen@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
@@ -104,117 +104,96 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 	driver-core@lists.linux.dev, Sami Tolvanen <samitolvanen@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-The IRQ callbacks return c_uint. C calls them through irq_handler_t,
-which returns enum irqreturn. kCFI encodes enum types by name even with
-integer normalization, so the type ids never match and every call fails
-the CFI check.
+bindgen generates bindings::dma_data_direction as an integer by default,
+while C callback tables such as dma_buf_ops declare the parameter as
+enum dma_data_direction. kCFI encodes enum types by name even with
+integer normalization, so the type ids would not match when C calls into
+a Rust callback taking bindings::dma_data_direction.
 
-Generate irqreturn as a newtype with a cfi_encoding, as is done for
-lru_status, and return bindings::irqreturn_t from the callbacks.
+Generate dma_data_direction as a newtype with a cfi_encoding, as is done
+for lru_status, and convert DataDirection through the newtype's
+constants.
 
-Fixes: 0851d34a8cc3 ("rust: irq: add support for non-threaded IRQs and handlers")
-Fixes: 135d40523244 ("rust: irq: add support for threaded IRQs and handlers")
 Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 ---
- rust/bindgen_parameters    |  2 ++
- rust/kernel/irq/request.rs | 28 +++++++++++++++++-----------
- 2 files changed, 19 insertions(+), 11 deletions(-)
+ rust/bindgen_parameters |  2 ++
+ rust/kernel/dma.rs      | 21 +++++++++++----------
+ 2 files changed, 13 insertions(+), 10 deletions(-)
 
 diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-index 8402b0c93545..5059cc74cb3c 100644
+index 6003d5127676..8577e7663e02 100644
 --- a/rust/bindgen_parameters
 +++ b/rust/bindgen_parameters
 @@ -27,6 +27,8 @@
  --opaque-type spinlock
  
  # enums that appear in indirect function calls should specify a cfi type
-+--newtype-enum irqreturn
-+--with-attribute-custom-enum=irqreturn='#[cfi_encoding="9irqreturn"]'
- --newtype-enum lru_status
- --with-attribute-custom-enum=lru_status='#[cfi_encoding="10lru_status"]'
++--newtype-enum dma_data_direction
++--with-attribute-custom-enum=dma_data_direction='#[cfi_encoding="18dma_data_direction"]'
+ --newtype-enum hrtimer_restart
+ --with-attribute-custom-enum=hrtimer_restart='#[cfi_encoding="15hrtimer_restart"]'
+ --newtype-enum irqreturn
+diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+index 2ce09f8e90c6..2ec5fe7d56bc 100644
+--- a/rust/kernel/dma.rs
++++ b/rust/kernel/dma.rs
+@@ -310,25 +310,25 @@ pub enum DataDirection {
+     ///
+     /// This is used when the buffer can be both read from and written to by the device.
+     /// The cache for the corresponding memory region is both flushed and invalidated.
+-    Bidirectional = Self::const_cast(bindings::dma_data_direction_DMA_BIDIRECTIONAL),
++    Bidirectional = Self::const_cast(bindings::dma_data_direction::DMA_BIDIRECTIONAL),
  
-diff --git a/rust/kernel/irq/request.rs b/rust/kernel/irq/request.rs
-index c1c6525a676a..1afa9fcaad1f 100644
---- a/rust/kernel/irq/request.rs
-+++ b/rust/kernel/irq/request.rs
-@@ -25,10 +25,10 @@
- #[repr(u32)]
- pub enum IrqReturn {
-     /// The interrupt was not from this device or was not handled.
--    None = bindings::irqreturn_IRQ_NONE,
-+    None = bindings::irqreturn::IRQ_NONE.0,
+     /// The DMA mapping is for data transfer from memory to the device (write).
+     ///
+     /// The CPU has prepared data in the buffer, and the device will read it.
+     /// The cache for the corresponding memory region is flushed before device access.
+-    ToDevice = Self::const_cast(bindings::dma_data_direction_DMA_TO_DEVICE),
++    ToDevice = Self::const_cast(bindings::dma_data_direction::DMA_TO_DEVICE),
  
-     /// The interrupt was handled by this device.
--    Handled = bindings::irqreturn_IRQ_HANDLED,
-+    Handled = bindings::irqreturn::IRQ_HANDLED.0,
+     /// The DMA mapping is for data transfer from the device to memory (read).
+     ///
+     /// The device will write data into the buffer for the CPU to read.
+     /// The cache for the corresponding memory region is invalidated before CPU access.
+-    FromDevice = Self::const_cast(bindings::dma_data_direction_DMA_FROM_DEVICE),
++    FromDevice = Self::const_cast(bindings::dma_data_direction::DMA_FROM_DEVICE),
+ 
+     /// The DMA mapping is not for data transfer.
+     ///
+     /// This is primarily for debugging purposes. With this direction, the DMA mapping API
+     /// will not perform any cache coherency operations.
+-    None = Self::const_cast(bindings::dma_data_direction_DMA_NONE),
++    None = Self::const_cast(bindings::dma_data_direction::DMA_NONE),
  }
  
- /// Callbacks for an IRQ handler.
-@@ -240,25 +240,28 @@ fn drop(self: Pin<&mut Self>) {
- /// # Safety
- ///
- /// This function should be only used as the callback in `request_irq`.
--unsafe extern "C" fn handle_irq_callback<T: Handler>(_irq: i32, ptr: *mut c_void) -> c_uint {
-+unsafe extern "C" fn handle_irq_callback<T: Handler>(
-+    _irq: i32,
-+    ptr: *mut c_void,
-+) -> bindings::irqreturn_t {
-     let ptr = ptr.cast_const().cast::<Registration<'_, T>>();
-     // SAFETY: `ptr` is a pointer to `Registration<'_, T>` set in `Registration::new()`.
-     let registration = unsafe { &*ptr };
+ impl DataDirection {
+@@ -340,7 +340,7 @@ const fn const_cast(val: bindings::dma_data_direction) -> u32 {
+         // CAST: The C standard allows compilers to choose different integer types for enums.
+         // To safely check the value, we cast it to a wide signed integer type (`i128`)
+         // which can hold any standard C integer enum type without truncation.
+-        let wide_val = val as i128;
++        let wide_val = val.0 as i128;
  
--    T::handle(&registration.handler) as c_uint
-+    bindings::irqreturn_t(T::handle(&registration.handler) as c_uint)
+         // Check if the value is outside the valid range for the target type `u32`.
+         // CAST: `u32::MAX` is cast to `i128` to match the type of `wide_val` for the comparison.
+@@ -358,11 +358,12 @@ const fn const_cast(val: bindings::dma_data_direction) -> u32 {
+ impl From<DataDirection> for bindings::dma_data_direction {
+     /// Returns the raw representation of [`enum dma_data_direction`].
+     fn from(direction: DataDirection) -> Self {
+-        // CAST: `direction as u32` gets the underlying representation of our `#[repr(u32)]` enum.
+-        // The subsequent cast to `Self` (the bindgen type) assumes the C enum is compatible
+-        // with the enum variants of `DataDirection`, which is a valid assumption given our
+-        // compile-time checks.
+-        direction as u32 as Self
++        match direction {
++            DataDirection::Bidirectional => Self::DMA_BIDIRECTIONAL,
++            DataDirection::ToDevice => Self::DMA_TO_DEVICE,
++            DataDirection::FromDevice => Self::DMA_FROM_DEVICE,
++            DataDirection::None => Self::DMA_NONE,
++        }
+     }
  }
  
- /// The value that can be returned from [`ThreadedHandler::handle`].
- #[repr(u32)]
- pub enum ThreadedIrqReturn {
-     /// The interrupt was not from this device or was not handled.
--    None = bindings::irqreturn_IRQ_NONE,
-+    None = bindings::irqreturn::IRQ_NONE.0,
- 
-     /// The interrupt was handled by this device.
--    Handled = bindings::irqreturn_IRQ_HANDLED,
-+    Handled = bindings::irqreturn::IRQ_HANDLED.0,
- 
-     /// The handler wants the handler thread to wake up.
--    WakeThread = bindings::irqreturn_IRQ_WAKE_THREAD,
-+    WakeThread = bindings::irqreturn::IRQ_WAKE_THREAD.0,
- }
- 
- /// Callbacks for a threaded IRQ handler.
-@@ -461,23 +464,26 @@ fn drop(self: Pin<&mut Self>) {
- unsafe extern "C" fn handle_threaded_irq_callback<T: ThreadedHandler>(
-     _irq: i32,
-     ptr: *mut c_void,
--) -> c_uint {
-+) -> bindings::irqreturn_t {
-     let ptr = ptr.cast_const().cast::<ThreadedRegistration<'_, T>>();
-     // SAFETY: `ptr` is a pointer to `ThreadedRegistration<'_, T>` set in
-     // `ThreadedRegistration::new()`.
-     let registration = unsafe { &*ptr };
- 
--    T::handle(&registration.handler) as c_uint
-+    bindings::irqreturn_t(T::handle(&registration.handler) as c_uint)
- }
- 
- /// # Safety
- ///
- /// This function should be only used as the callback in `request_threaded_irq`.
--unsafe extern "C" fn thread_fn_callback<T: ThreadedHandler>(_irq: i32, ptr: *mut c_void) -> c_uint {
-+unsafe extern "C" fn thread_fn_callback<T: ThreadedHandler>(
-+    _irq: i32,
-+    ptr: *mut c_void,
-+) -> bindings::irqreturn_t {
-     let ptr = ptr.cast_const().cast::<ThreadedRegistration<'_, T>>();
-     // SAFETY: `ptr` is a pointer to `ThreadedRegistration<'_, T>` set in
-     // `ThreadedRegistration::new()`.
-     let registration = unsafe { &*ptr };
- 
--    T::handle_threaded(&registration.handler) as c_uint
-+    bindings::irqreturn_t(T::handle_threaded(&registration.handler) as c_uint)
- }
 
 -- 
 2.56.0.212.g129ede20d9-goog
