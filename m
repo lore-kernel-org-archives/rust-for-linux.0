@@ -1,101 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.101.102
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792426605;
-	b=Hes7ykfOmKrr68YLndN9PNxT/J4v9Pld915UHNQB8XUZHNP/fvVppEbUe3XvEaWuehon
-	 HINZVADz/5RGkyLm4SPhiOwFJxVBHlWU/+sEFt+qFJ5eI2MC+yPCqAZmPALPLh8JbFLJ5
-	 3gMkb+plfnVDRYvpt/fySGfnbjtLdMLZgebYIbM+MjTgBL8f50daRLPrWjHT48FKvzlM9
-	 HpxXpSMZAxpU7taodk0I9tEeqKqguQjX3TSEbvNrbeX8P9DQv7Xq7nuBGB7a6r9gsZnYu
-	 nWpWGgTWkbDg1Ed9+jhHcOMHnoG8Mlia2NbfFJdFtyL3aLoMhKBfueDBhMo0IN3zk0g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792426605;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=Ydt0CLyOsOCLEfdPC6Vanczhg6KWP8Ljp09RX5WLWNU=;
-	b=c5AkLOm3Lsb7ZjF+14/Pp7aJYI97ouiXrjZb0je/PHS/8qDGWREcyiOEmCdt7lCz884d
-	 /pUVXQXR2BdfosdbUXR487zhbVrH7I6H8d+UgB+9iQsVi1nrfx4nE4z2e5bwZ6s9r2RMM
-	 r8sUUlJUPpdy3iYeyPzi4TwGJQsnGx9lRCT34dgp0LGY+MWpFfrO1bJMFlcjDvBQzgSn6
-	 ydmqBAmvDlrBse5IZeuSxCzkyp+FtTXiRyH/sKD4f2efhMKtuXp/3f48VfPm8p0HSnUO0
-	 M7MZ3DLHUej68FeSS/MfYS+b1qX69l1g9U4xrNph2SfCOwddEmEC8Ds8V48uFkjrKcg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=garyguo.net;
-	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=KnYqLxjG;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.101.102
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022102.outbound.protection.outlook.com [52.101.101.102])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792432856;
+	b=rC4UWKkDAzA5bUCG1qgewZ9GHq9DCI6JtPQ/CncJnyBdcU0GWASx9n/J1Nk+x5NqZdty
+	 KVxWr9sR4dy6H1cfZmfMjAa0YpBVBzQ1OMhKJUZ7mKXOPuOhpUqOjW57Q5AWfIOP/xOsc
+	 ZQrKZllCvTwoJSRowK02NB+NRxYjI5VnAuioORmugO83xCS6Y2/7FO6PAesFg2qzis1D9
+	 n5736SCe9bYWvurvVkQdxk0mQs/8uNp0LZAgT63e0FUkn8K4Pmbk9svjqv/vH9K3hKsmr
+	 DVp+ZsdV7iYRrqIxLtNlXCNfOWLvIfWbEzP0WUqJSzpHyY6FQS3O79clwuSNlSQ65eQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792432856;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
+	bh=OOGAPa56kulzPMYmeT21MA0H+ZTEk8QKVOQrCKhESoY=;
+	b=MZwAcBg5wQA179xUF56lBYtQhSbBGWt4s8/TpMnWWzbS58Upxu/Td8EsIA2C2kb2S/Bb
+	 h5PWcBVwRk8PaSz01yMsb9oyTLXLDsUR0tdWmxl+L+C2efp6unFjXFFgO7KzhGjt1UYS4
+	 5owwdgZSO3t4qZYucRnuyGuEggft7OHLc7Iz/4deQsgDeDZ9nva85IBQ9zuF3MgNwr8Ak
+	 BIsTMrPbr5i/+DZKF7LGOOfn0IlMOduKGne/Ufs55YxLxCmwEoT8WI4pTBYMZzMu4ZI45
+	 0NQzIkA+CD0cRfpKWqXv4l95l3bW4yxUrlIRh05qnKuwoGPSjCiRjk6Lu0gRDx5naoA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VjgcjWYh;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9DC606A319;
-	Mon, 19 Oct 2026 16:16:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F9DC606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F319606A319
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 18:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=KnYqLxjG
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bdKQ3Q/Icx7HB7bzceLGWxrawHdpOZUgy2aOpAikIx3600lyKdWoKFDgAR2bxaT0xgx4m3/nO0oVRoMKS+RcgVLkO9tByg2kCUdA2gK3OZxnuRT6Rnvh8BBV8RubPUsUsN2x+2NK8lf1XPagturl9LVgxKmktQe8yy1VLntLzJX8ZVJTcXuuHEzcv8qgzCwUxqJjIi2ino2a3pLbclu8Z+rDgDMRFNzI7uZajoppesumHIvTRh+OXr8O0470l5VlJ9uf8grEtKHVWF/w00Vx+jqk90loJxeYRUHKObiTDhobLzN8Icc+Mp9Hp4B6Flsz1LvXBTZLx5gP9acFH+m7QA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ydt0CLyOsOCLEfdPC6Vanczhg6KWP8Ljp09RX5WLWNU=;
- b=Z1xS2kMg7E0NMOUNCbDwInl0CkWQeEnbUFBKK3ijCy/3pclLftZw6emOLYz13dw4Uoo9/vjqEqWQUbZaXqpNvKfMOifmyTPqmExskp7tX2QuIiRomwxLU3T3dK7bhqzIkD3QAOLPYccu0vnpdRgnn14rpFi/GJjbGXp62RRzTaG3giusjVHh1cCC4WPU9PIj5UoiFk2Oy8gDiES3p3YSEcqTE+dVQbw3cR1CyUeAJ0axUY8T0yJjlDNszelmjZ9ZuG+IpFt8aHhGYWq2LWegET+gDQvf6cZCjOYb6Maln3MA25nfoPQKKQgYZjm/hvaqDYHB0gOeS+TCaP4DdcwpLQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ydt0CLyOsOCLEfdPC6Vanczhg6KWP8Ljp09RX5WLWNU=;
- b=KnYqLxjGF0FWk9jfCRprW1g83qR8ghyQqWgwJEFqG/vf8jApigQVLWp/FmQjn9rRjqfh0R2TiRa456UUqxzswKqxN2Xv3DzIz7uS3yNIiqH6a2+TLVaaPEoEQ+4h41mjayPjx08oR8Fpop1lNXCI8YrsT7pVMKysIHtL58EMWlI=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by CWLP265MB3138.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:bd::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.19; Mon, 19 Oct
- 2026 16:16:41 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0522.017; Mon, 19 Oct 2026
- 16:16:41 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 Oct 2026 17:16:40 +0100
-Message-Id: <DM8Y78VGDXM5.36K23TMPY8ZVZ@garyguo.net>
-Cc: "M Henning" <mhenning@darkrefraction.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
- <airlied@gmail.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Benno
- Lossin" <lossin@kernel.org>, "Eliot Courtney" <ecourtney@nvidia.com>, "John
- Hubbard" <jhubbard@nvidia.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v6 01/13] rust: auxiliary: let registration_data_with()
- closures return covariant sub-fields
-From: "Gary Guo" <gary@garyguo.net>
-To: "Gary Guo" <gary@garyguo.net>, "Alistair Popple" <apopple@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, "nova-gpu" <nova-gpu@lists.linux.dev>
-X-Mailer: aerc 0.22.0
-References: <20260909064506.910162-1-apopple@nvidia.com>
- <20260909064506.910162-2-apopple@nvidia.com>
- <DM8Y4G5JMZ64.9PYKH079V51H@garyguo.net>
-In-Reply-To: <DM8Y4G5JMZ64.9PYKH079V51H@garyguo.net>
-X-ClientProxiedBy: LO4P123CA0436.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a9::9) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VjgcjWYh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D61E1F000C5;
+	Mon, 19 Oct 2026 18:00:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792432856;
+	bh=OOGAPa56kulzPMYmeT21MA0H+ZTEk8QKVOQrCKhESoY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VjgcjWYhxRtmx6ciWT389ic47DcSaC9xLvuWiECYzHCU7SRRh3LZHhm5bN6SOst+E
+	 LACmY9SjuuUup9+tr4ugL2AVPNJUs+N8LlSd/Ua4f5N7ZojjvKzjbv42qj74VShh/2
+	 IfXR94f1elyOImMrjIgpZDBwYjaYijlzn/RxHrR/f2esAQRcvHYk2wx+CrFsdq4QcM
+	 LgT5kwPVzhwwaDBtTEFHFMdhEH9BL9o/AuGgNATMKd5eyq4C1IM/XzTCPy3b8w9wT8
+	 Hp63/oo6oENcgcIGqedAofhmgExjcHdZuO/UbbAushrDaeAiFG6m75Tf8QW55vIHzx
+	 KXF4Di9uyDr1g==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A723AF40069;
+	Mon, 19 Oct 2026 14:00:54 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Mon, 19 Oct 2026 14:00:54 -0400
+X-ME-Sender: <xms:1lrWar2OQAi4fFtSlnPFCsPhiaBPApWpATiBdkXco0_pIPz32MSw9g>
+    <xme:1lrWanTrLhYKIfklcDDx3I0RLLLVw_tC-5U4Mo7_GLrxC0EqZAfaIUrsJz4Bw7t6I
+    K5p-KMQzu6v9hYWAe3jAZ8Iwohp7L2n7aicM5kY2VNRRVgYvRhaSg>
+X-ME-Received: <xmr:1lrWagbxKzg_ReZ3G0EG4uTUZ9hUix9xYLDQX2O6fcEXmCD0cdn9Gl9FhCxuKqC2ZiwCryEV6yg-i3RIuXy2PUMcBZapgLD1>
+X-ME-Proxy-Cause: dmFkZTEPWlSE2hza4oy8ZGI5UeVgccCGd1k4VVU/Wr3Kbo25gIp72RK+CIxlBWqdmeICf1
+    /FnT0B/X1YNFNE6mINY61pCxJQGJZOVYDvNTsDShR0q+EFQnUA2lIDQHqMMmTaavBoA+a9
+    AiSNDM6DpzxuD/EvD907oH3iiNRJHc3PppCtYhXeerIrAqQsYzkxvGo6ktuP57VwgZV+7+
+    Oj9V4Smlsr/TiYnh6OxWh4uqv5EAvgm25KC0lzJe5py9AjUD9b5cgxHfa7QdKLmyL+uT85
+    P1b0qBGJ7US/bXdmmef0lQpovypeeSlEMqltWc8x5PfGtrClg5AzALsMfeGEQ//3HG32hx
+    Lq7BchLEwFIjlGdoGd++wQMECbaUP/8JqEJv/qROZEODUff1GHBzVCfQ7O2oCkZN4yGuAD
+    cZeRX1SQ3RaHtGs6WJYnj2VaZyeOxuLOdkVLcGw0faTDDPmF+znu4+HwHzrRqcpGsd56Kl
+    pGAOHFamBuYl7Z4wk44dgQu9cpz82hlltL9zgIG4xunYM/jcAvnqZCamsuv531m47DYbsd
+    2s5MQpigzZ2SCEXhtV++Go9s0fhuLbk52ERYr8T8WlMQ0rHUZDWGBF/OXlLJTKrMXCAo+X
+    T0Qgt78xzO9j1DMNS3s6R8xv0Jc1Eg5UHPrtekaUf8KR23Mnqm2cRki8Hffw
+X-ME-Proxy: <xmx:1lrWatAKkuC_NnTQIk3c1CGzbsDToCO2-KLolhsRI2EDCDPh28VleQ>
+    <xmx:1lrWavBfZ5L-1LdKWa7Ql-EKgBYsXFFqVQUwMxDEn9DCZP4uKkb5rQ>
+    <xmx:1lrWahEgh41ySv7OtMz9zp5Pk8tjptvccP2oI4MIx6XXwNqA-iKDDg>
+    <xmx:1lrWaqmJ_sSfRDl0VcqDUQcE8O_-nz_BuMokPwgZyHUFlKqqCIEEiw>
+    <xmx:1lrWamtmKwgePXLdXk4on_anozJek70SIhLj-gU-2B1mJ9ZqaJrp7_aU>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 19 Oct 2026 14:00:53 -0400 (EDT)
+Date: Mon, 19 Oct 2026 11:00:52 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Priya Bala Govindasamy <pgovind2@uci.edu>, peterz@infradead.org,
+	mingo@redhat.com, will@kernel.org, gary@garyguo.net,
+	ojeda@kernel.org, longman@redhat.com, lyude@redhat.com,
+	daniel.almeida@collabora.com, work@onurozkan.dev,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	tmgross@umich.edu, dakr@kernel.org, tamird@kernel.org,
+	acourbot@nvidia.com, rust-for-linux@vger.kernel.org,
+	ardalan@uci.edu, zhiyunq@cs.ucr.edu, dzueck@uci.edu
+Subject: Re: [PATCH 1/1] rust: sync: Make `GlobalLockedBy::as_ref`
+ unavailable if T is not Sync
+Message-ID: <atZa1L5nsoyKtwNf@tardis.local>
+References: <cover.1791594262.git.pgovind2@uci.edu>
+ <b3cd79f567b83712155bec1a32a0e1fe174e9b1a.1791594262.git.pgovind2@uci.edu>
+ <CAH5fLgh7_vpfuU7wLrgO4ZfW=bxvdL7aRhwW20bBK0Y0PURz_w@mail.gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -105,114 +94,43 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWLP265MB3138:EE_
-X-MS-Office365-Filtering-Correlation-Id: 88f95707-a234-40a9-9215-08df2dfc5c42
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|10070799003|366016|1800799024|376014|7416014|4143699003|56012099006|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	4dkEeSEGbbBARXMWLun48gYxcgPFwqKOK2netXgs4s8zbwiVEC0R57Rvbld2dw9ibSD9f/TP7Ti8ovtt4Zq4aGT7gSxjcl9jiAWkEsBLjOcCYulRaMZw09tvEYUzB3Huy0ivjKTtmtSZ8XU5d0+xavDrQrOiRgkxqS20BTHW4BnjlTRO4ZLLTbzD8uv+OkkEobrQ3EaJEk28zTruFi3IHBNzPXTHehtCjKY0/CVOGmGq5ugpalfKTqlf2c200sdwY+J5sQOZTyOmloAJ7KR3a+QAzps3WdP2QvhF5tNe895xzM+CN5FEwG/hNoNIKN6OEgPQ4svIN8JD8FmdICdePlgzg5KffiF4tA4qwewvYoohLVVq3nb5nF+YPZONU01n42KlJlztADZynVWRoFb/hRZNvYZRsN5liciW5CU8j1ILpCuTZseBTMzyGxB2DSFBOOEKKHzF3SGa3NcPOmGbxzZ7i+fmbJ7KVtQUWPdEtlaQjoi3LrIfM/eRr1+iR3icpESfpB6j+xUbaXDeF3jY2o8cUQXh4BaZJ96nDPCochY6BXrnN7Swsdtt2Yrnvfi6f9GDb1TGZHf+Su9o2bFI74CzqJJm2FBDfs2+tgPhfuywBhnuknxK3b55ZVeyjd+zJdcDKILX7p3iX3KRUWglM4LSyB5CPpRUeeQaY3Mram8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(366016)(1800799024)(376014)(7416014)(4143699003)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aXllNndMV1NMR2paME9EL1FuU1RaWS85SDE2SXNmckVyNlp1TjNNTDRPSEEz?=
- =?utf-8?B?WklpTHd2My9iekxVcmZLdHFJYUowdGJWN05aZmhic1lpSVhoVU0rbG1zUFJI?=
- =?utf-8?B?dTVOOWgxMThRdmt0N3NSS2pGVDhTYVdQa21RekJLU1Bhd1JaQm1Sb2p6WHVp?=
- =?utf-8?B?WGdyL3M0Z2UvZy9vMWY2eTlIbTNkVTkwaXZYRElvdmlRWFRFSm40ZzVSV1ky?=
- =?utf-8?B?dm5tWU1UY1hTOEpMZWJlU0dzQmZWZi9weWZicGN4NkdNeWpPaks0M1VvdWFp?=
- =?utf-8?B?aE1YSS9rZGxOWnlSTWFMNEJCRmpBNUJuaVVNVWx0Y3FoYzFFSjY5T3hDeHV6?=
- =?utf-8?B?L3hxU0RHZ0hiek1IWExRNkhRemJKNkxIZ0MrV2N3SW5rejFzZ0tqblRxbEtj?=
- =?utf-8?B?QkRwSllVWTB4UUdSSzVBZlU0WXZpVzU1Q1A0TXREUE92RER0YVI0Q3VFWXJN?=
- =?utf-8?B?MWNxcllReG9zUlgzU1M0eGRzVkJiWkhwajhGb1VGNnVkUHhMY0MzN3RCY0Zu?=
- =?utf-8?B?L2ZIczNzdjBQWEl5WmU1ZFRPK0NGTVhkckZWL3RYZ0ZwWldSMGFrU2pWcm04?=
- =?utf-8?B?TElPQWc0VTZOeEhkTmpoS21QcWVVT0pyM3NyZXhaaGJHS2RrV0tMVURQZVRD?=
- =?utf-8?B?aFpBNFJDZ2NMdUxjWkw2RE50cWR3MTFxbnlrb3ZSZ2dkOFJleU9Rajh5czhM?=
- =?utf-8?B?Y3kvRDFCbjVBTDJHSVdNS05NdFluMkVlMkVIcXZjQWpqM0lWajlEcW1qNEFr?=
- =?utf-8?B?SjQ2WDlVZXpPQ0FWam9PMFAxVUVRQzZkT2RWZ3FFNm9ncnhXN3RrQlRaSXZ5?=
- =?utf-8?B?UWhqcXUwckdYbXZWTHZKcUswYjlxUER6Zkl4NlMrZGlJRElFa3ZjN05rZlV0?=
- =?utf-8?B?VXFyd2g2bE54SlNNckI4aHVlQllLYWdpVWU4VEMxcTI5WmJHRCtsYnJ1Mi9n?=
- =?utf-8?B?SUZEK00yNHdkRWdFbWNRRTEydjg4c0JDSERSRFlFL1NkTE5vNGs3T3dFT28v?=
- =?utf-8?B?ZTQ3L3cxSm14ZWVXT2pieEtoa2NzQm9qdlJwb1VzemhpZTIxR1pmblAyMUQr?=
- =?utf-8?B?UDVpR0NoSk1FM0htVTBWQjV6UHQxZTJqQXYrMGNHTWRYa0I1b2FRdm8zZklu?=
- =?utf-8?B?ZzFqVHJKa2xNOWpSSGo0bmNMYjBVSW5vb0YzUytYb2l5Mm8wWGh5STJ2UE5o?=
- =?utf-8?B?ZjNGTmxXN0k1eTRRQjY0RGMycGxycDVaVk16SGM5VWJtZ24zZThhL25OemR6?=
- =?utf-8?B?N0RXUHl0V2xjN2ExaS9IZERFNmNGR0FLODZ4bEJyWDBkckRRY0svL0ZSMWFP?=
- =?utf-8?B?TXcydmw5RUlYMTQzb1BOUXJicXFBSXZZaU5SYUE4QlJuR0g0Rmp6K0x4UWZ0?=
- =?utf-8?B?RmRZeXlwVnh0TUgyWjBCUE9wV3AyQ2dpY1JIRmZpbFp4K0Jxd1dPQmRndHI0?=
- =?utf-8?B?SFprN2FXTzNHeEpjQS9XZncrSldENXBTdHF6Qjc4UlhULzUzVzFhWTFWYXh4?=
- =?utf-8?B?Z2F4azh0aERpa2l4clF5TFk1V2FGaGd3bjB4R0taTXFIemc0QjdaYTZyNnUw?=
- =?utf-8?B?OVpXQjFWZXpvYlF3dU9obC9XYVVxWVpnYlYreUs1QUptL2RTRFlNQTAzYjF5?=
- =?utf-8?B?YllmS2ZMTmRHUFl2bXhoOUEyZkhqVHl2UmpLa2xHSjNjMitTRzlHMU1zamtk?=
- =?utf-8?B?d05NUDNZMmJxcVg3Mm5XMDRZcXRDVEFvak1udWsrZ1hvUmxBQXhGc1Vtd0N5?=
- =?utf-8?B?bVlXUEdCSi9zb2d1ODJmRjNWQlNNWkg3MTVjc09NL3pFU01aeG41WXhQUnFN?=
- =?utf-8?B?bFJ5T3dxbW5zS0xsR3JHODlSSE9iN1hnWm92UTZDTWl0a1Y3NHVGb0JNZ0wv?=
- =?utf-8?B?S2NvOFFGd1piVWJ5Y1RnYnVIQ2t0d3Y3NW8zNGxxQlRxVC9KVVZubGNOWXg3?=
- =?utf-8?B?QXFFSW9UUWp0MUFqYTg1UUU2WjVNUDFEUzFTT2J0azZnSFd3TmUyTEQ5MFJW?=
- =?utf-8?B?dmZ0ckE1UzZ0aGNXc2cyYklIZWE3NGxEb2ZBWmljSUQ4RzZ1dnVYazBXOStU?=
- =?utf-8?B?cHJvUWVjU1ZVdDFHbWlvSmtkZ2VyN1NzU2pqQ1dvUUNVaTVwdEZwY1hZNmJ4?=
- =?utf-8?B?alV6UVZUZ3dUUjRuN1BIcThReW10RUJzOVJTR0d6NkNHdFpYMCtXV1VnbmRM?=
- =?utf-8?B?V1Z4blhoSDRDZUVFNVQ5NldkVm1LbTExSUtveU9uVGJqaWtSLzFwdUNSelF2?=
- =?utf-8?B?THpRRUtQVXpyNmMwTm85RUJ4d3MwdXlBWkxHR1V4N2hIQWFhbk90L09ZZkg4?=
- =?utf-8?B?ZWFISjA1aDV5aytqQnNJaTJKMERZeXNHcTdtWnU5WWp6TmNDb1l5Zz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 88f95707-a234-40a9-9215-08df2dfc5c42
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2026 16:16:41.3399
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kLvRrPBXI7NI9t8lqbgk/OPUsw7/lQgM4A8NepfURExlYQD+qxG0Uj5hG2fum6SLv7Agv82a7FVNPJvu/6gg0Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB3138
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgh7_vpfuU7wLrgO4ZfW=bxvdL7aRhwW20bBK0Y0PURz_w@mail.gmail.com>
 
-On Mon Oct 19, 2026 at 5:13 PM BST, Gary Guo wrote:
-> On Wed Sep 9, 2026 at 7:44 AM BST, Alistair Popple wrote:
->> The closure passed to registration_data_with() currently receives
->> `Pin<&'a F::Of<'a>>` with `'a` universally quantified. This prevents the
->> closure from returning references derived from the registration data,
->> even for sub-fields that are covariant in their lifetime, because the
->> compiler cannot relate `'a` to any lifetime the caller knows about.
->>
->> Tie the outer reference to the `&self` lifetime instead, i.e. pass
->> `Pin<&'this F::Of<'a>>`. This gives the closure the implied bound
->> `'a: 'this`, so covariant sub-fields such as `&'a T` can be coerced to
->> `'this` and returned directly, while invariant fields still cannot be
->> coerced and therefore cannot escape with an incorrect lifetime.
->>
->> This allows auxiliary child drivers to project covariant data out of
->> invariant registration data without having to wrap every use in a
->> closure.
->
-> Looking at this again I think the current API might be unsound where this=
- patch
-> becomes fix rather than just a feature update.
->
-> For an invariant `&'b F::Of<'a>`, it's actually a requirement that `'a` s=
-trictly
-> outlive `'b`. With the current API surface, we can obtain a `&'a F::Of<'a=
->`,
-> then we can store it inside `F::Of<'a>` (because, well, F::Of<'a> being
-> invariant, it can internally have a `Mutex<Option<F::Of<'a>>`), and then =
-we're
-> able to UAF within the destruction code of `F::Of<'a>`.
->
-> The fix, is, well, this patch.
->
-> Would you might pulling this patch out, rework the commit message a bit a=
-nd send
-> as a standalone fix?
->
-> Best,
-> Gary
+On Mon, Oct 19, 2026 at 09:49:22AM +0200, Alice Ryhl wrote:
+> On Fri, Oct 16, 2026 at 7:19 PM Priya Bala Govindasamy <pgovind2@uci.edu> wrote:
+> >
+> > The `GlobalLockedBy::as_ref` method allows `&T` to be obtained from
+> > mutliple threads even if `T` is not Sync.
+> >
+> > This happens because `GlobalLockedBy<T, B>` is Sync if
+> > `LockedBy<T, B::item>` is Sync. `LockedBy<T, B>` is Sync if `T` is Send.
+> > Since there is no requirement that `T` also implements Sync, it is
+> > possible for multiple threads to simultaneously obtain references to a
+> > `GlobalLockedBy<T, B>` and then acquire `&T` through
+> > `GlobalLockedBy::as_ref`. This can lead to undefined behavior if `T` does
+> > not implement Sync.
+> >
+> > Note that a reference to `GlobalGuard<B>` is required as an argument to
+> > `GlobalLockedBy::as_ref`. Therefore, this issue requires that
+> > `GlobalGuard<B>` is `Sync` which happens if `B::item` is `Sync`
+> > (for example, ()).
+> >
+> > Fix this by adding a trait bound to `GlobalLockedBy::as_ref` requiring
+> > `T: Sync`.
+> >
+> > Fixes: 8eea62ff94f4 ("rust: sync: add global lock support")
+> > Reported-by: Dylan Zueck <dzueck@uci.edu>
+> > Assisted-by: LLM
+> > Signed-off-by: Priya Bala Govindasamy <pgovind2@uci.edu>
+> 
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-Ah, I am looking at an old thread, this has been merged now.
+Queued for more review and testing.
 
-Ignore the message please.
+Thank you both!
 
-Best,
-Gary
-
+Regards,
+Boqun
