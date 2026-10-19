@@ -1,95 +1,95 @@
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C916B4F3EAC
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 12:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2554F475D
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 12:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.171
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792412915; cv=pass; b=ucWJqCUfonS5KdQu/3wGgcyQLrTGce7me/82tVED/YRMrQl/POWyFDfgcxsaSNKN+HF9bvCfuHM/BtBSWHmvozxSul2/NGY08GPpk9L/JyCH3HkWqw0xfVK78kAHOehIexx0kkliQZ6luqxBIO9H3ahVO1A5DCcwKTNkOS6PoVo=
+	t=1792413330; cv=pass; b=KeWSviTs/gkNO7XdZoJr5/QlhosrFj9R+xvug3xLJy+mArau0GROfdBJfEoi+r4BfpYE66GPoF/1/42K/Tx/qmRrIRBPu+9pWfOl+3u7enybRBlgFeu3nyvM8GLj9ttsZPxTuSXNlkAi+4qTYznJr2DicM5jnTWoIl8QiegMsG0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792412915; c=relaxed/simple;
-	bh=U7umcPnTuetUb61c0kax6ahrM+gWE7/8BH+V2Fuxksw=;
+	s=arc-20240116; t=1792413330; c=relaxed/simple;
+	bh=kHYzzrv0/FqkmbWY/rN/GxGNCP9TcRC3pY9kk8aXaeE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cHICurLJV+Se1vxz0d2O3znuRK4zxhbaW7ws0L0Dm4rVePLu7qXo4sVhVOcYEEM153h6uxmQJoZWweQ1SJNoqf8+FJyoAjDpePSVq8LWtM2RllaB4kXZESK4DUQZUmVqh+6TAWFTuEZAueaTjBIEyFyq1YBniVzhvex6IPRXZyo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kNZs5CpF; arc=pass smtp.client-ip=74.125.82.180
+	 To:Cc:Content-Type; b=gVnFTpotIINoGOyoa9aFiTPau2IC4hD8pIerq84iAhdOxf9Yowp/LMdMiBZ/CeGI32NBmyv4BsRNfdHzytgfFYcnldndfdGWTRlY+zthYjTYaiIDzdAckI/d2NOnWdGnpCteG9QSREwjKLpyAZ6KEPGQkpdATP5Pycl5SXbzlhw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PqWQ+m4S; arc=pass smtp.client-ip=74.125.82.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kNZs5CpF"
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-360bd1d1f9bso218118eec.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 05:28:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792412906; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PqWQ+m4S"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-355724d032fso231458eec.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 05:35:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792413316; cv=none;
         d=google.com; s=arc-20260327;
-        b=at9BMvo0mUqdpjf+i7JG3ZBWG403PeWPMYP21NsjClPc9Ex+kAXYBQiElIBuiVnkqP
-         4YcIPyMG7L3jTWfjd+1v4afpPzQRGOvtXtSt6NX3dcSzDdcD398dIRvVNAv+eVi2BCnN
-         yQpQ9W2I237APoT0TQb//sfxIc/Iei+kGSQ12iiEYSd3hAY4y1Y9ornI+ddLJJ7LZT1V
-         JxHql6vt1CgaWytFsDJqqfV3qp7vo9IwRKaHRdA8cTkRSzrSDogdcVuqtqVW0Sjt2Jc7
-         PE7ZQMd6fHHfQXkXo2SjDzfSe3Anqj+hk2XXceNC0vOb9z7SjOELwiQyvKPAOq/K3yeH
-         fRiA==
+        b=kiyPhbEifVlyxyt4oEmzjGSCkEcihVR0kWnPQX4a9qV3+zioQqR8VBQ7qfCt6v3hGV
+         cSTOi9jvc1gS5o0Wpbxo8ZeDmsqykU+j/laEwcOpFrxtE4lvKI+aMSNDBUG2vFN1dx1P
+         INR/fW0t3bIkxOaKrlAcEIAqVQMWuiw/PLq5ZqlAbkHkVOa+JrxyKK0I8I6qYhqVK5U4
+         4QL4bB2L04Zn0glYFNNJuxHo3dcTDvIHKb1GPMarjIbcfyFCRCfedbdGhFnWX6Wp+dB6
+         0yPeJcB97Xg1lXM7qaaPzw1Z8aUwq3AQG4YkDLZPCyhqXFkSh4iI5eWzuQTOPAtQWlW8
+         rImA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=U7umcPnTuetUb61c0kax6ahrM+gWE7/8BH+V2Fuxksw=;
-        fh=t+tbL6n1R7prS8lSZKvaF7PsOuVi+CxnJGmNYi1OYbU=;
-        b=Zbw2D9BRfoP0mLqFkUo8oOHyQb5R24+m6htgUjB2g6pGQiRn6KHtxw9Ms81iESMGWa
-         P34Sz0eLZJDFVRjhlnpktvdTllYPWTly0Nn0sTFpkHCtjdjHCDUiDyDzE03Y7uystt16
-         1rTcIctzYUTm50Nfwb55P/r/1iEMonw74ql8RaxvMEf9iUxu+9w89QaMX9cmC1t/Vwr9
-         7yWLB3C8NuXBcfdWaITEELDgSrqNp5qcg6M01K4rcTQUhY7roHR57eAStB8xOWDZOfSS
-         1VAQaX1hRDXmr4nAs+v+H9A7YtCQhgS2pBFcvq74pz5WMSyXGgHH0sYEYwkloqiHZtVj
-         T9/A==;
+        bh=z4G6BdTXSrvUBkKrtgqJe7ik23iqNQYFU8yzcfGukx8=;
+        fh=vzLdMSifRySnbDijZULOpqsKSJ0xO/ZEoBlMxZpk5WY=;
+        b=Kefg0qMsoqt+L9FCSNRBT1mkZkndr1u7Rivq+0hS5YGZAJCgLQuGIfIvGgGtMh5aLE
+         JVbDn2niu/+hKAj+hEf4uYeIzpsZ7/V92PzppXNQbk+xw5GsPLrJlRKbkm9fykIMPJwH
+         oIf9sTqgFvmYh1Ks6vs6pZnXWLfJ+b9e88SqYXv0UV98zT4gEWshTHRkVzY1lUTVaVmI
+         uXZMlECd3OiFP22dW9ANbjHD2wpi9tH+KNvJ+kR8aUh15cTxhcNXyO+qmPU/0r3ZLvXh
+         FNIKsou1a2otwqXsFwY0VY+MrdYJL2XQIMjpA4g2W+7nHIV/UeGAMbXBOxFciWzEPTpy
+         6fbA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792412906; x=1793017706; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792413316; x=1793018116; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=U7umcPnTuetUb61c0kax6ahrM+gWE7/8BH+V2Fuxksw=;
-        b=kNZs5CpFk3vX3oFVIWFX9GONdsns+IJu+gIV0vwvz0xWDGpCF2RG4Gypwa4r56Ympa
-         30KHUZUSfehrZESyKhEYDHQaapDtManDmIuDnE0/lbXGM3DPpX6GdtIKOTIHTatkeLjb
-         OuMKdkgDP2T6e/tjMhJQezLpdEDk61DqgTSpjpfm5ZB/UfzAKl+zpgxr4YdYkAzLTWK3
-         YMc0OGS8IOwIQvJCVpKc4IjFYzGb2Sr/2Cbw1A++CrdgTHRQOXtS5S8mkXeYn5ed/r+G
-         cvfVpxEhZ3AQoZ5jsN9NGRzSi3qKCKPvVdcOoxBY/sUNKRvj6dhkt5krBO+yF/fcSljd
-         NFsw==
+        bh=z4G6BdTXSrvUBkKrtgqJe7ik23iqNQYFU8yzcfGukx8=;
+        b=PqWQ+m4SQXb5p1luT6Xo/1a5Zh9owOvO4Ow3l75XTih1nogRAv0NA7PQz4JCuFdADY
+         NWHNut0xxXnMDFAIZhK6pytQPe/k72REb+3X3t6BBnQo14NKshg8sLFf9suqxA/GQVhr
+         A+qLkiAhs92R/VUgPkNcyPY1iORN9KuNjg3agAcYF3HCHww6SFhgbm1G5Mn6zlefUQ8R
+         7yubMiOdam74pa1AYQQVopKsxyM3okQ9qVKRfbrkYx9WteKzb9C9XKEjHTVqq3xttz32
+         gE9rmn+pEgIMFUY+P6WVdfYOHzpOvCceBoRUNYSExVB0B2HiEzD7uqmGGpPQwBrFFAIO
+         iHew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792412906; x=1793017706;
+        d=1e100.net; s=20260707; t=1792413316; x=1793018116;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=U7umcPnTuetUb61c0kax6ahrM+gWE7/8BH+V2Fuxksw=;
-        b=eNwBWa5KyFDBnDugSUoMtZgmkheU2PVhatUnpggiLNMImOGM5eZe4QpLncW7xS1N1D
-         XvB5NREE0aaxyY0C0lpL5oFtKQpxkQnqlhtVMRQ2v1CwDH712ICEhACJJUEtwLTtA2Kh
-         W7uhV+ljn4yGwkIIyhfV+t4tpJYJ7EWQmKZ7oEtu9SO8N3WJLFYvSP778dR0ZZ6uC/mY
-         VM7nsCzCYLSHcU7SutDY0DX/tGbf4e0uPp1hrcmdi9bS7R/HV3VJEwYV8C2etkg50cm6
-         eZknaWhnJ25PgRGgA2127Hf6zvk42O9KriJcVqSTRqkIU7PpKGpWy9y6CX5R79b7/GHy
-         LEpw==
-X-Forwarded-Encrypted: i=1; AKwUvBzSXk4rfdul0/oaLZBVabxIB5dT98QBZjWuPySMYkxkOmJHvBpqrbfZk2qFcS/Bo12TeNkN26aokeZVK827eg==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKgGO1Gq4EYs2FPs0plPC2TcioZh9rb1glYaAr8uyG8K/Yg3j0B
-	W0CfCGPog0Fa72CD47h94VdoG66BTY3TXuhDQQjBeUp7ubxgmmS3p5p8lBHn+quig8Geo8fr7EC
-	0AeVsFKHjQLi2aUU6DkoFysGwcMwemBI=
-X-Gm-Gg: AYBFou3uchMDnQCvzbWvnYuqWMY7ru6ATmGeyc6oZNn0QDg0EHEJjCOr6kJOamEPwW/
-	b3P8ON8MpSDYUJJ56/1VgOvSKfmJCQBFHsdI7N90fQyaMyh/4EUkRAIoSNcDukZGJL0rexF5wpa
-	1T5+46Ir0BWG6R1NjvdqB9hW+1eyK/F3jEsz6mo+zP6t0U1mnExtA8waewZWaVGbvutWGWZjUzr
-	aJo64Y3ovNeUnpvTsep7HMpBkxEJCZ7CfjgYJMduY/+P2VxtIxdgtNRdnR0A3Qu3yEKE0J2yOsY
-	IQXksE2bboVf6/WOHORHuAlo9wtyByVDQp0ExR3mX9fjdi6DGKRLSxl6YKy8FJe8TAkoWg+S39P
-	bxUYTFbCypyNY6u4vVR0wzcYB9By93GksbUkpkFpUAwKxV737aSVOo1/SWgAz631BJtT9vt46l/
-	ma/5komJG9310b1qE0MUjvbrt/4RW+xkkgfJnzTm8DgBP1w2B+sEw=
-X-Received: by 2002:a05:693c:65cc:b0:35e:9cb2:b88a with SMTP id
- 5a478bee46e88-361a136a601mr16547289eec.2.1792412905593; Mon, 19 Oct 2026
- 05:28:25 -0700 (PDT)
+        bh=z4G6BdTXSrvUBkKrtgqJe7ik23iqNQYFU8yzcfGukx8=;
+        b=VjRtogCHzmMdejK5GqnU3vynNIIjXyBnWyHoEQLOUhVD14CR9wOGQUAohwnLACN/Xe
+         EMKuZUajtfLY87IUDU/6VVOITfVA8RHUKb3tXJ+/uGaNXQmPDBQ4pXM7+M2D3bCrzLuB
+         z+oyUQXHG0MZTdgd5rjLeY2029rmX1Ypn9ezksi5fv4xZ5WdvoFyIvIdTkGHIc4Vn3RX
+         eEuiZBI/Sd2Gx3wm8DZar8WIBExHUcwcnQr6T1GEFfMDuEjsAg5TfJn0AVVBBuM8xH5H
+         P5ahQTh1YBr8m5NvwEVtR2zDPfAAr6UVY3ecbVl2rIdAiGNLLcrcuAVY8YQ5/UM8c6fG
+         rueQ==
+X-Forwarded-Encrypted: i=1; AKwUvByvy/GkYpucEddRLlzA7w73/Yj9P6xXnaTMNcvV14YoLG62MAl90Ll2D9IJoYydn/I8fWhz59Q+3dY38V4ojw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYI/6ZPzqWMp8ywcUL0X8GikgnLqT2k9zfih9c6waI8aPuuPnG+t
+	J8ATWQwWB6DgT/E6e+NosLfH+0i09UgBAYgMxwC28vIkA5S0JRCrKvP1iLXeIx4bnkqU3wRU5by
+	VegZDF67FIZVpLhmId3UZeq+yiJHgvMA=
+X-Gm-Gg: AYBFou3fQIcP4XEKBLzkKbskFITPHHMItzxwBKBOwvQ2HXO2ZSRXYSjgg5fMlTAHYg4
+	IzvIRmOzfA56FhGOSwS9RtpPcAuDaLGy2b2bQgQx2gSVui2Q1DS3yO6jKQkSZluEd97oo4dTldn
+	QrcDSqaihdtFz6F9mn/gCW1cNPu8W+/87so8htBWQXb22AfwHGWZdxjlMcZ17MfJt7AwuttkNqv
+	3aSj616paLyWx4makx6hIzVSMRIa5hmO9Jy9ZP4vfIIGaXHrOC0o1Md+48nx0UweUgqhU0e1fW0
+	4Hb0enjTrC0uhtt0DMjqbi6sM/oj+u2U1KrvWU6wc2pAWxPDYphQS7SFPt0XUOxfGLRMBiw+bKG
+	1R4GMEzdZNcUS8stB7ZZtC5YCx5ngcnR+1cXJamitwK8+IHOoXQDrdphkJF/Qlziboc/pPtG/ci
+	1OUrZCuIxfRzLyiQE5IOUwywXGjKyG1gMasiVvpjuVgUtQWLGTNoiK
+X-Received: by 2002:a05:693c:20d2:10b0:35f:8c5d:5938 with SMTP id
+ 5a478bee46e88-3619ffc5b52mr18422794eec.1.1792413316441; Mon, 19 Oct 2026
+ 05:35:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261019114811.1105192-1-gary@kernel.org>
-In-Reply-To: <20261019114811.1105192-1-gary@kernel.org>
+References: <20261019114811.1105192-1-gary@kernel.org> <CANiq72kzVouV2GmeFpmZS1PNPDo6gZsmG8MMrrovvETUxVSVsA@mail.gmail.com>
+In-Reply-To: <CANiq72kzVouV2GmeFpmZS1PNPDo6gZsmG8MMrrovvETUxVSVsA@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 19 Oct 2026 14:28:10 +0200
-X-Gm-Features: AclHuK9vRqGefEm-YOizNzCmm-q741mpOyzFUsHDlEPJyQMscn_rCkwuXTkP7bk
-Message-ID: <CANiq72kzVouV2GmeFpmZS1PNPDo6gZsmG8MMrrovvETUxVSVsA@mail.gmail.com>
+Date: Mon, 19 Oct 2026 14:35:02 +0200
+X-Gm-Features: AclHuK8NqyayzMi_L0qJx39DKhIVVz2vRnMPPzA4fngWVWW2n2x20pZjM2meo0E
+Message-ID: <CANiq72kxe2f1cO+yypVW9LY4pAHO29wn+O3sUECvHXPnLu2hdA@mail.gmail.com>
 Subject: Re: [PATCH] rust: doc: mark `Io` as notable trait
 To: Gary Guo <gary@garyguo.net>, Guillaume Gomez <contact@guillaume-gomez.fr>
 Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
@@ -103,29 +103,64 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 19, 2026 at 1:48=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
+On Mon, Oct 19, 2026 at 2:28=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> From: Gary Guo <gary@garyguo.net>
+> The attribute has been there under that name since 1.53, so it should
+> be fine, and we can always rename it or remove it.
 >
-> `Io` trait is the primary way of interacting with a bunch of types, e.g.
-> `Mmio` and `Coherent`. It is hidden in "blanket impl" section which is no=
-t
-> very discoverable.
+> Having said that, let's mention it in this week's call with upstream
+> Rust. Cc'ing Guillaume so that he is aware too.
 >
-> Use nightly feature to mark `Io` as a notable trait, so it is highlighted
-> at the top of the rustdoc page.
+> Unless they say they really want us to not use it at all:
 >
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-The attribute has been there under that name since 1.53, so it should
-be fine, and we can always rename it or remove it.
+I added it to our usual live list in the "Nice to have" section:
 
-Having said that, let's mention it in this week's call with upstream
-Rust. Cc'ing Guillaume so that he is aware too.
+  https://github.com/Rust-for-Linux/linux/issues/2
 
-Unless they say they really want us to not use it at all:
+By the way, for the commit:
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/rust-lang/rust/issues/45040
 
+Cheers,
+Miguel
+
+On Mon, Oct 19, 2026 at 2:28=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Mon, Oct 19, 2026 at 1:48=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
+> >
+> > From: Gary Guo <gary@garyguo.net>
+> >
+> > `Io` trait is the primary way of interacting with a bunch of types, e.g=
+.
+> > `Mmio` and `Coherent`. It is hidden in "blanket impl" section which is =
+not
+> > very discoverable.
+> >
+> > Use nightly feature to mark `Io` as a notable trait, so it is highlight=
+ed
+> > at the top of the rustdoc page.
+> >
+> > Signed-off-by: Gary Guo <gary@garyguo.net>
+>
+> The attribute has been there under that name since 1.53, so it should
+> be fine, and we can always rename it or remove it.
+>
+> Having said that, let's mention it in this week's call with upstream
+> Rust. Cc'ing Guillaume so that he is aware too.
+>
+> Unless they say they really want us to not use it at all:
+>
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+>
+> Cheers,
+> Miguel
+
+
+
+--=20
 Cheers,
 Miguel
