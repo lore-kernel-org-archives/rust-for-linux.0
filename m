@@ -1,99 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792453030;
-	b=SKshRbitsPx07m+lr6IKcAAVbHjvW4nIMv6ZIv+LF2ENO4GqAJ2TKE6uehmW2TGuSyuK
-	 8NR6gvmg9Rb8tLoirzEpu+PTMatKE+c+diS+FIJ4Aqw5+wL5JS3sHjfhPY134+y/x86Qe
-	 CHtbN32qrU8HDB9GvepyTVinXbEU4xEjU8Lq8diiSCON1MikqK0EzBQdvqSEUBWrtycDQ
-	 yTbwt8UqO7cgN/+aHDnpZBDGSCQP24FpUzwZh+t+7PQpgwYwGJyFckqyFlABBfdxIWRlE
-	 sMkNmZfD53D8ay7ksBSWKxjPjRY7P9NMeMi+xLH9eHOF6AMqBuLaEk7UhEuahiEN4kw==
+	t=1792453112;
+	b=Qp56qTa9RrGuDdC+2S7g9FlchP+/a5gmvp5L1HnLurIbtUOTz2jzxUmIMQi9KGA4HBgP
+	 AHXSjacbtim1S6nr0z7givaqpmA/6tSOg/bPmxffw4qCD2SRNXjLUmBwyDQg3XgwWTd3p
+	 tnLOMBOIAtXlRPH3p5Ha8w9lYocExpLnUi5PscNF1glzc19LmlXKIELYqmlPkkN2y8ph+
+	 QMjV3uf5re2NlZwKc9hfHwKduoCKQXp1bnOQM1PA9ybVY7EAkRitOXB/Ny+fxACEQ20BE
+	 sSbAhXRlLpcNTlJ3YT2IBzhxCNQ03iuBpyFBFUCbF9WdJInsIG2B205dkHSq4IAHjDg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792453030;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=MK8gOPYVfT5VqSmtMrhhTQt8Rw9PxMYlaejGmJfPUyg=;
-	b=pncg04ePUbBhk6xxYbyMC423mwjID/FVQR2HyQ7etb3lQevOs6p+p1AJKeS6lFhtCltG
-	 Tc6+aZS2CblA5N46UaNfnDjX7EHMIZC5lGkGsK1c5O7mCvHz6MprIyLikr6n3PanEcMIz
-	 q/W5VERe+2QCedzTwev15TctWDTPXkzT9BQ4CkrDNqexSuZaFgbAdzgqxTC7FkLt+/x7W
-	 W1FqVeTuWDRikPrIegfVVQ0WDwGcDoDL8F3XkDkTNbVi3hwNgrMEbdZKXAZGvVkKmnujw
-	 KL3OKeLbDqPBUK5NpyZe0ZckKdRXodjwHhs1TDWX+uRZDrRAlAhJX05LxWT9Zg45Q7A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792453112;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Zoho-Virus-Status:X-Zoho-AV-Stamp;
+	bh=uShKQUWFwgSh7DQhGWBd/23uQd+cee0N/l3UrzJ2TbM=;
+	b=ue7iutMKuL1UQo5BxIL9TEF64uZqaeMjCT79+O0VZJLvl6YDNN7hudEZSEAHrBTEjaWH
+	 kXD+Lz9eIkM4J1Br/veOhus4xLQTQjJgOjUje6DpA5tupNGeglSSBA3o2WP58i4sQV5wk
+	 +7RkM01Vux/ikpdZy0IEN4hPUEVQ+uIPX9DymHbVqmi7k2elu4GkRYptfYs/G71e5o4ko
+	 nXoyRoTqjebKaoYp2GFo9o87/CfFdtRR+0MrBF+vx4RWrKwJzs6rHw99phIoRInhbcOPw
+	 aNOlMBRwebgsz73zsPb3ctJ/yssWHRA9dzOLibJ8Tg292pSWRDccsWkAMBsCHwfGGmA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=hNXjva9A;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.47
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Lp19sFVn;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8170A606A31A
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 23:37:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8170A606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF9E606A319;
+	Mon, 19 Oct 2026 23:38:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FF9E606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=hNXjva9A
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a018493d57so27225e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Oct 2026 16:37:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792453028; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZneZDkLldROPS9YDfZY24XkXc4hJ9c8bB91JKqmQwGOAefCi2L1Me8/dBjNU9u/gQ9
-         fclLtXwDehxjwLHmLNM2DpswFAW2xBPmAqqEmp8K8ihiUwxozoCSZEvwEmhg7GAQEJq7
-         yzLZc0hRmVye+l1OP5mj9sKTXWtL8Whn1pZom03T/kjdi/J2DZmvOuH9NVblwFzk+9vB
-         PI+viSPWNClOW0xNf1BrOvg4BbGQ9ERRtRHOMH5wm1xet8GI5KsNbNGKvKqbaExw4wQu
-         LQJeDUrIkbYod8tkcixJQw58UMAc1sAetf3vZNaUvTErYC1ERmzZtaX6Az+wjPyuWJNP
-         hNtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MK8gOPYVfT5VqSmtMrhhTQt8Rw9PxMYlaejGmJfPUyg=;
-        fh=zl6wIf5jK1tQX9/VxO9tQPnJtsB5s4CMX6O6Sn+MOAM=;
-        b=Am41DmgCGphirAZgi3DuK9zp7ItkBmbMCkNF6dw5y18eG07hYvpl3D4ikHggu2a+DB
-         ObModiRBt4rOI2C8xcb/xBNjLG1qzETE3t/sWxmm+TgxzoM+KE4VfWxx7N+zihvjnIR2
-         N/rVg5FrtHgIuGzIHzy+rAZC4YIqUcvSTJxdvs4qR/g69L1CkLFLf8x79SMOD6IR9dqT
-         fZS9Ykjj+WqKKHzO2Ei0prQPhAI/kv4JAwUS+96EbWZ5lL+zFsK+gtNVl45wkPusC+zf
-         uu95rvJKeT/bqbxhofQb9xDTnZysyTPkEBskfwzvDMtOVXmS7n4hvgcn7KKOGFOmjWN6
-         FKeA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792453028; x=1793057828; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MK8gOPYVfT5VqSmtMrhhTQt8Rw9PxMYlaejGmJfPUyg=;
-        b=hNXjva9AuReiGmDqhlkICFvjeCxEzLbBtwZ5E4X15NzRgwvehw7dMASIa8RSj+DBbK
-         R0qRvC7LPQrlq0icq1iXo4VtHdUTs9RLrPhgQEktxEe0vP4WiGGil2ED3orirh9L63D9
-         3Y8v5h2KdVD9r4GBO0du+nxI9Fd1FcS3KLAwdsauNAQf9GriY1YMt64GcA70hLIfLQLY
-         4lIEdN9ncpspafiLIPPKrWIM+vJuSRsrqv29g9a31AVF8y2LZuC4GkqxmuUoVsC+xtxt
-         9jUQK/+ckuk8p5qkTQtpmNbGPImAGBUaxyT1lHukZr1oPFCZrCdMUt1bCG1bq/2oGZha
-         2xlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792453028; x=1793057828;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MK8gOPYVfT5VqSmtMrhhTQt8Rw9PxMYlaejGmJfPUyg=;
-        b=gDORxu/+/a85sZ8/d+b2Dxa4PS0Vi03l/eEK8G+lRt+Gk3m4SEUuD7enC/clqXBau9
-         FZvXbaT0FQJ57eopyMw/2SjlfhpAQ7g4Gp8EXP7AtKuDjtA82D77W1i1VThYZpVHWGCn
-         YFJ8pc1lsAF7d/jgDtTTRq6sqwIxZZlH1d0thf7m+WKl04ncrCo6+/2R1KzcMb4gU7q1
-         VKh3rS/ZolHL/ZFjYex1XSXJPnQH58qvmN6fB9F+Ke2uFlhZ3FfWGSvnM6t1jTLtjrOK
-         ArjQxiqiLuQluXdulkILk419tIgPfSXMZg/X6k9mED9lSbg+P35SFHoiEnQw2YIJuCXd
-         xQ3A==
-X-Forwarded-Encrypted: i=1; AKwUvByLU8ChLL0vfzyWATS1wQV+TaT/FiWumcHbgNgXKwnRyCQPv3SbkN1mpkegagzQY6+C4TPWcmvK2Iom0I3HTw==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKS2fNlABPetOH6qsmu7zdvO0BTlyLay2gwXmudfefAyIpHk7zz
-	PN23gfCvxT8KCN8bjaFBO5SaaZi6Nm3yhtLoqyqD2vkxTolppGwc+6zFI8H2eBHibR605scmAL6
-	V0Xt+BBJV1EKU4rKl+m4cSdx3cSrI4H60xJ6u6u7n
-X-Gm-Gg: AYBFou2pV6W5662InE8FoNORnO5Q6wUMC7gsxoGkIvh//oLKNW73noQinBE9UjcpIjq
-	Gjl4HYbLLgbp0JlwvHLkwJZEaokjY2dvd4UaeQ0AJp9s4XrffKbnd8SD9BPgYdoFYZlHR1Njo1d
-	VoV/kXBabWqVFlagHoz8xlBlYWWnGirvVF8z+PDrgzj+JsRnNTxGLjHtK/q1joLlIzq5sxV6686
-	2cV4Q85irXsHzb6a3oU7JMVzOHHU2GVzJFK8QtJuCLEAZJVz5uESMUw56spoM4p6NCH1IdvRCNB
-	nR1djp46mzneR4s7sQeZRUeXSbLx37DUz4+Yv4KRTPW32AY7Zqbr
-X-Received: by 2002:a05:600c:4f48:b0:4a1:7a69:8f27 with SMTP id
- 5b1f17b1804b1-4a1f384e61emr198185e9.4.1792453028060; Mon, 19 Oct 2026
- 16:37:08 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Lp19sFVn
+ARC-Seal: i=1; a=rsa-sha256; t=1792453082; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Q9CIDi9fCUFgqY0uS/7OL+qn0attrEAh+92cX9w2dXPDS5L50EU7mdVCwH0gyCzRSqdKm6rrOydq/zo6ycMb8RoIEYvcxZ63KCz5N1xdC4YG0m79L8znzwLkr3UAVCVO3qA3octqrGU4lRH22zxPUqSkaYFA58ATFzjygiObAdg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1792453082; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=uShKQUWFwgSh7DQhGWBd/23uQd+cee0N/l3UrzJ2TbM=; 
+	b=GJv5x3O+WvZfrEs869ebbE9Whj6fpT1145jHXp2L4SIQL2excS35tYrKU26xrvU+BBksWK4tNv9lHVKMWfIKBG7YcgtIbG/421iwRScHe5GAFuEdvMIY3TwTmqQVNhj8dl3b8qaHRdk8LEalrQsaecPW0WD62nYlpkJ8ppS4Jp8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792453082;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=uShKQUWFwgSh7DQhGWBd/23uQd+cee0N/l3UrzJ2TbM=;
+	b=Lp19sFVndvpCIPXLe+5AZvSQ1xqq6gEgf2f8k1LTFRHKDJZhUC4jYcLdZYhPDmnk
+	FREedBJW9fofhlel8bZOO8PHOHxx495zSLyR4CKn3YqaIGOAMrK7d66Fgoaifo4n83L
+	5yxT2zPpuO1+Y5y8+zBI0OpoNXHgDKdZ7BquMvXo=
+Received: by smtp.zohomail.com with SMTPS id 1792453080386614.7316189103576;
+	Mon, 19 Oct 2026 16:38:00 -0700 (PDT)
+Date: Mon, 19 Oct 2026 16:37:59 -0700
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v2 2/2] drm/tyr: allow userspace buffers to be mismatched
+Message-ID: <atap18Uo7U2OY92b@um790>
+References: <20261015-b4-dev_query_fixes-v2-0-e3e6d25050cb@collabora.com>
+ <20261015-b4-dev_query_fixes-v2-2-e3e6d25050cb@collabora.com>
+ <atHwZg245MM7l9Ty@google.com>
+ <DM6Q8HOV2J6Z.19M92D448I2JQ@nvidia.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -103,60 +84,38 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019151243.1595858-1-gprocida@google.com>
-In-Reply-To: <20261019151243.1595858-1-gprocida@google.com>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Mon, 19 Oct 2026 16:36:30 -0700
-X-Gm-Features: AclHuK9KKccht0LTphkjEe9VOUDvKx0_Jrumhajjler9MUZc4WeHWNdfkMKuz-0
-Message-ID: <CABCJKudpnWmkths4YczDuXzAaV0A3YMtHHztUPbBTpUAdh5bng@mail.gmail.com>
-Subject: Re: [PATCH] rust: exports: emit ___EXPORT_SYMBOL without C declarations
-To: Giuliano Procida <gprocida@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM6Q8HOV2J6Z.19M92D448I2JQ@nvidia.com>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/292.448.41
 
-On Mon, Oct 19, 2026 at 8:13=E2=80=AFAM Giuliano Procida <gprocida@google.c=
-om> wrote:
->
-> Previously, `EXPORT_SYMBOL_RUST_GPL(sym)` declared `extern int sym;` so
-> that it could invoke `EXPORT_SYMBOL_GPL(sym)`, which required `sym` to
-> be a declared C identifier for `typeof(sym)`, `__ADDRESSABLE(sym)`, and
-> (when `CONFIG_GENDWARFKSYMS` is enabled) `__GENDWARFKSYMS_EXPORT(sym)`.
->
-> This resulted in the compiler emiting DWARF debug information in
-> `rust/exports.o` describing every exported Rust symbol=E2=80=94functions =
-and
-> data alike, as a C `int` variable.
->
-> Although `rust/Makefile` sets `skip_gendwarfksyms =3D 1` on `exports.o`,
-> the bogus `int` DWARF entries were still present in `vmlinux`, where
-> they conflicted with the true DWARF types emitted by `rustc` and
-> confused DWARF consumers such as debuggers and ABI analysis tools.
->
-> This change defines `EXPORT_SYMBOL_RUST_GPL(sym)` using
-> `___EXPORT_SYMBOL` directly:
->
->         asm(__stringify(___EXPORT_SYMBOL(sym, "GPL", "")))
->
-> matching the `__ASSEMBLY__` path in `include/linux/export.h`.
->
-> Omitting the C-level wrappers from `__EXPORT_SYMBOL` is safe because:
-> - `__GENDWARFKSYMS_EXPORT(sym)` is unneeded because `gendwarfksyms` runs
->   directly on the defining Rust and helper object files and is already
->   disabled for `rust/exports.o`.
-> - `extern int sym;`, `extern typeof(sym) sym;`, and `__ADDRESSABLE(sym)`
->   have no effect in `rust/exports.c`: the symbols are already emitted in
->   separate translation units (scraped via `nm --defined-only`), the fake
->   `extern int` declaration never produced kCFI function type IDs, and
->   `___EXPORT_SYMBOL` already emits a `.quad`/`.long` reference to `sym`
->   in `.export_symbol` that satisfies both ELF linking and LTO module-asm
->   symbol resolution.
-> - `DEFAULT_SYMBOL_NAMESPACE`, `__DISABLE_EXPORTS`, `__PKVM_HYP__`, and
->   `__GENKSYMS__` are not used by `rust/exports.c`.
->
-> Signed-off-by: Giuliano Procida <gprocida@google.com>
+On Sat, Oct 17, 2026 at 10:36:49AM +0900, Alexandre Courbot wrote:
+> On Fri Oct 16, 2026 at 6:37 PM JST, Alice Ryhl wrote:
+> > On Thu, Oct 15, 2026 at 11:35:21AM -0700, Deborah Brouwer wrote:
+> >> +// If the user buffer is at least the minimum required size, then
+> >> +// copy as much of the kernel object as will fit into the user buffer.
+> >> +// Don't fail if the user buffer is smaller than the kernel object.
+> >> +// If the user buffer is bigger than needed, zero out the remainder.
+> >> +fn set_uobj<T: AsBytes>(usr_dst: u64, size: u32, min_size: usize, src_obj: &T) -> Result {
+> >> +    if (size as usize) < min_size {
+> >> +        return Err(EINVAL);
+> >
+> > Use `kernel::num::casts::u32_as_usize` here.
+> >
+> >> +    }
+> >> +
+> >> +    let mut writer = UserSlice::new(UserPtr::from_addr(usr_dst as usize), size as usize).writer();
+> >
+> > Avoid casting to usize twice.
+> >
+> > 	let size = kernel::num::casts::u32_as_usize(size);
+> 
+> Or `usize::from_safe_cast(size)` after importing `FromSafeCast` -
+> `u32_as_usize` is useful in const context, but for regular conversions
+> the `FromSafeCast` trait looks slightly better.
 
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Yes, since we aren't using this in a const context I will switch over to
+usize::from_safe_cast(size) in the next version, thanks.
 
-Sami
+> 
