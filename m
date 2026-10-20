@@ -1,110 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792504914;
-	b=aavbytNwHKobEtSuCMPMLalKic/QchZ08hrCVZX9nD5NMsHz/6BBOUksUfrVdJeKrxie
-	 WzbXAefKHkIsGr4lzxNwoUzN0ewFOfLEKrTtFzRsyWfJWgvzal5Q8ghXW1J4p5QpITZrh
-	 WUQPigW/9J4DVJFgvx1E5U3auvTgckNsv5Q/Y0CZKa3kGQf4y169dUPpKwatB87sTDDo8
-	 XQlHSBGzSqBz3ypznPxXI9wZpFlpR2+MD7uOPJEK6mCoDAdDW+nK9kfhdpRgCluGOHHi0
-	 s0doBbcuMe0OkuN0UHYwN4y6GkW6FEDNUqMQeJuIqus3gLZb88PH6sobfxauU/SNrRw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792504914;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792507040;
+	b=5W8E54DeEhtZbHVmJnpxwR9BgOYe3HAIil8TjkcGE3iaBgCUJpZ+ZVpDa0i0lgyPz5/z
+	 y6QTQ57XaSyP2c39bl54C/ZTya41DGM3cikh/+1rtP0HSJdtvpu3TPQa04RV5IjngIfvi
+	 5TUNRvTVk9rB6bXth9wI2L6l68umkFGoseDhwksFHWIuBAjArqKh1LKmCDax4w/0nzg5/
+	 jdUshjTsHDfA+TFs5I/rzQ1Reofnd68qTfjy3jWo6goh7ORMZA5c4yr6/4kKZNLhHj5eC
+	 4yljsTjDH1R4XbusO11/HXWL+pCsOSC+TwglDYM2DiUDOOyGbnqLepAySc12gmiMRug==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792507040;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=4WqTnmYwNtZuc8yE6m3Wj6x4W67f77rHRf4agpevk0c=;
-	b=spzJe73k8+5tRqnAU4cRWB/6p30dkhBoi92rezeZ5VSRGFLZoh0/OxHolpmObBDn66e8
-	 02Z7kTe7fxqr6nJLxq66PqcWzEXq/N4QYMkoPo+BpGRKUhQqvHmkHQf0vWXOCNCeoYl4M
-	 xa70ke31ve+19ZUNyRsiHbB8eCzwT2S3Rb1/NqHDn+tDjJdqissEuj+p+r4GBoIAe8Ub4
-	 P4UD73LS3SkD8L3UzWhXrG1DgCpxVIoz29N54RvID6iHMSaQj4+E05VcND6Z7j5NGrVKo
-	 Pt4IpaX9mqp0yDEUXdorkNj5R/ZwCnE9yGr9SGB5/pZyCfQWQfjaf/Eij6GSSNMhg7w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=de5rgw+k;
-	arc=none smtp.remote-ip=209.85.128.50
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=Th2n2oDQlswuf1BVeMTn3nKsEA75XKAvSzInb/NsZ8c=;
+	b=s91/IwiKMZ+ArcawREPX+XiooEGipy910moFuTTDWroMcJZfTki5c2LteVLsKwsqBJPE
+	 gylqFwpsDQoQSGiEzACsgORj5YbrlmCJKwye0p8qaXmZmSM/6jPHzZBgZNTrZzXnkVXYx
+	 /sCApq9hTt/cG2XRTAXTS5dwauGgEqDKwY2cIBgJOrQB5mtclC6oBfehnCDcdxKEcd8Bt
+	 GpUPFJk5FEmMonSuAmiwZqlrqVai/5/+DpFibhiYjOz6nmiJ6P43twpaqVXMuw0P924Z6
+	 wNso6wV5kUUkt5qKSX+rwIIQ42sHW+tCw3orDgr8dCS2SA6Iohu2yWPU8SjWUlRiTfQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=darkrefraction.com;
+	spf=none smtp.mailfrom=darkrefraction.com;
+	dkim=pass header.d=darkrefraction-com.20251104.gappssmtp.com header.i=@darkrefraction-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=BVV+jDr3;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F65606A31A
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 14:01:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86F65606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D730606A327
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 14:37:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D730606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=darkrefraction.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=darkrefraction.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=de5rgw+k
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a1dede3c2cso38667825e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 07:01:53 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=darkrefraction-com.20251104.gappssmtp.com header.i=@darkrefraction-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=BVV+jDr3
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6afafc89b48so4731770a12.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 07:37:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792507038; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gFuxbfy/wyJqjvAvUnooF+xo7Vid5fkNvbClRniKAfFjC+Rda/CDPlUIEkEx7up620
+         O3uOw5KiqQBoMfLh19sVXajk3SSitF60fBUwdNr4XyG9gvRzDhu7nFxgH/nDHdqNcHh6
+         hYV39ld+hzxUp8MfLVs1cAVYgQceOLUTIinxVu2Pcgr/oNTjShMA6si7YNP+zgLxex1S
+         ZT3rCKj4h5aK9gMf+v47nGN4XEA/0lX6aS3yUx352EYH4qRT8m5653q6B+yFNMP8vzaz
+         P5WMAaYnfhM4UM3UIHxza1PvfyEUC1+sfXxEuMLvb0lZdgJRIggR4sbl7QbQ/WRVAbbe
+         XC3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Th2n2oDQlswuf1BVeMTn3nKsEA75XKAvSzInb/NsZ8c=;
+        fh=eV3J6vvzaCqd5kIcCCHdhRQw9GurY5eYjAhB/7p1oxo=;
+        b=SsPlQKir4olLK8iLuWOMadfIrbcyj8BkaYouZ6ofvm7i3zRAIIDhc89wOV2ro0ECwP
+         Shve+YvVLeGNL/D819WjZo2fPXrxznmUCO77o+7ZgTiigmlGmtoaYop6tnVB36G1EJtv
+         VVJ98wp3y2gqguRDX7jVUJ4mWYa+0xhuT1Yy+REJ1K2VQQljNykSyEsgCzkSxujhR/eB
+         r53pvCOqiNum0Khvg+T3S9fv1qxWFmUtcKgEOvckK9495PbVhxy5mWMvhjK7SxNO4txt
+         adaerb9UBu2gAehYngEBw0UJaOzeG+AVW29NFaCOON8iUms6OIhZBUmAp7nUB0VB7nY0
+         NKcA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792504912; x=1793109712; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=darkrefraction-com.20251104.gappssmtp.com; s=20251104; t=1792507038; x=1793111838; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=4WqTnmYwNtZuc8yE6m3Wj6x4W67f77rHRf4agpevk0c=;
-        b=de5rgw+k1ip+RCToB/0zFGwdEzw6BeOZ2hldM8GnpgRW5HItuajq1CB2OZ12a91oI6
-         UbLuHxn5jG14aXCRRM2hRvhkbFsnaoZeb57mzykK3ZGVKe3/1iwEJOSKW7vIihvIRF1d
-         YgVrEbUv9Yi7Cm/Hkol9PQmqddnBUf9JHCU2gTuKaLvuebg+LYdywGrBaMs6MjzfJ+GV
-         mUfZdnZZ07tRCgpvR5t2zQ0IcTcNepxuwJBYf6YGe6Me6Mqs129kb81o+AwlwePxrqRx
-         8HBQHf9hjJ49kJtPAZPJ3gDhEMzLFqRVHeORumP5l0zcoxyah1mMb/yN+6f07egIszKm
-         Lp8A==
+        bh=Th2n2oDQlswuf1BVeMTn3nKsEA75XKAvSzInb/NsZ8c=;
+        b=BVV+jDr39kq9xQAt4zW9F4V4MqWNkPYTmB8dBYlAz9dfsgsrgWyEXmHbyt6ce7UQ6Y
+         uRRcJdnQn/gj3BaS37nMG4XQ0bjxP5ab5Qod9r5Tw9OR1BZEiBt01MOdEacnKLrZkuG2
+         dCNgRuN1J0rxMYC227whOuYb9CAzSmB/Pzf1iyBpAr+9OMxz3JIZEfN5L9yaUqtXAFBG
+         Fb8pM8vXtGoKrFI5fCSYIOIKyXAheJ38Y3x6K/Q1Cjl9pn0d0o2hjgqnX3Qu1WF106Et
+         sZRt8Ss8H+gYdp4J0T0XyJAFc6td/4MRg3XCULQbphN7311/dh/+cZ5h9NxBiI6G7/5u
+         l+NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792504912; x=1793109712;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1792507038; x=1793111838;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4WqTnmYwNtZuc8yE6m3Wj6x4W67f77rHRf4agpevk0c=;
-        b=vgobLm7afHjP47ggyOESIZd22ORGn97L97XQmtYoI7CoDNRewZX03oOQC+vm7lBRWY
-         SDIMrZzlqZjMvG9SKt+wLKn4sob6LzpfTrmrogNXOjQYtWgHYoz0XfsZlIRvGCwsFW7l
-         W/HpfhkUf9kSY9IV2D+hDqH4Y/QmXSP9/Ecua3p9dRQPRxJ5nTK48NrnMXX0d/0sMlLO
-         qeKBfyzbb7XdhCYOMQdQYo9szMpL/1gA2MOPmitqGFibby4+CQAwWQ7G3LMb7ubxN0Ma
-         sRc8EkyhDzfVHId+V/qNIruv2JIu8Lus2ddvZIVTGAEu3WMT32Mle1bybRSQXLp/mmaS
-         +eHg==
-X-Forwarded-Encrypted: i=1; AKwUvBzwh0IRBxShKhP/f2G3Eix76QxgwKDdJD0P05iyzBq40impC33x9uOW3qT3xGsdMx642YfxCAAdqNXPv7msLw==@vger.kernel.org
-X-Gm-Message-State: AFq9FYIla4FLU9BVsPz+zDWRJ7GlKi5a8zYtnCI+b5H/2RmTM5FWOFH6
-	Ebief4sydfBob9el1eeZLg1w9mZfOKIWXSuWnKi+Cx5sXfHT/MQP+Ysi
-X-Gm-Gg: AYBFou0/gcF2Dla66LzVPZ6DS0wKhPVjYMXDWI2MapSuQqMhZL/28JirrwySmAP0WrN
-	pZUq+TBKZ4XPx4VF9Mvq+0/02//d6VNXWltX/EOKcmLJtj/iq1T56h+T7CzUY2wqH37R5Crftif
-	tDDwVQlj5Pezvt1fSfPAPUrdFA5mGfM5C5aemfmZ0qmY2GTywG5P1FI98wx/rxfFh/QrKQLVfke
-	MSYFapAgK00KEx3wpoJHrV39QdF+m1yvuYZVACTnbfcsSHf21pGCqNnATPs0rXe/ktPKsvStxqW
-	pHfSzu7ojV3Ijal6Y1kfnm66B0BFTYAfEAdp8MwhZcj3hlAVIgLU/NM6PdaXV9kNrJ/VaXsxuq9
-	ZcZ9BGRo10jLtTEwp/af6Qg/8IGVsBOz3l7I4UddOZlWd9YA8jF9nHWhVwOzIOsxpRF308o6lpA
-	fHcaihBNdFuZ8fDcjRxX2nmQF7ezb6mphb1+cYQKALyNdf1Ss+OfuuJnVTyeBlhJYidQzxOhaBF
-	H7inb4CnGPhJ7TEubh9fjWuFmtOOZLIrEkdxGi2ihyO6up4cAucJVap6dU=
-X-Received: by 2002:a05:600c:4f95:b0:4a1:7bae:d80a with SMTP id 5b1f17b1804b1-4a1d75e3c9amr244362825e9.9.1792504911471;
-        Tue, 20 Oct 2026 07:01:51 -0700 (PDT)
-Received: from C422HJQPQG-Fractile ([150.251.170.8])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1f2d324f8sm67581075e9.6.2026.10.20.07.01.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 07:01:50 -0700 (PDT)
-Date: Tue, 20 Oct 2026 15:01:46 +0100
-From: "Vishal Moola (Fractile)" <vishal.moola@gmail.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?iso-8859-1?Q?Wilczy=B4nski?= <kwilczynski@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH 1/7] rust: io: split IoCapable into IoReadable and
- IoWritable
-Message-ID: <atd0SnEL1ZLXHxVU@C422HJQPQG-Fractile>
-References: <20261015-io-access-modes-v1-0-93611b84b5e3@collabora.com>
- <20261015-io-access-modes-v1-1-93611b84b5e3@collabora.com>
- <DM9NGD5R8AP9.C4K59HIUYFDQ@garyguo.net>
+        bh=Th2n2oDQlswuf1BVeMTn3nKsEA75XKAvSzInb/NsZ8c=;
+        b=ij2DUBn0yI8Xo391JlcWEVI8goC+0D8LKwodYvDbmAhBD2I94/UuMVgNFdZn3l1eUY
+         hVhCpKycGoxxEyj1Chk3eLLQmQ107d1O7QLuYtPduIZkpuDMImTulTSWfs8KrS9OlLdL
+         tbEcRUn4eXTeLXIZlxQBO2wbeDq/4UPQtZtCMIaiMPddAo1EcnxpVNM20AbAxnFlweqH
+         a8qXvzzHY3DijF1XAOLDCHXQ7G1PACGlmfnzSGAE9Lmn9OCrTCutNBOHopg+SCuN/+Ml
+         grqCM2TV1E9Ga3mNxMlTzkJer5Z6HjFKlAPdELzMpP59orl4yIp8Wzth00Wn+vsIBy8j
+         bFuw==
+X-Forwarded-Encrypted: i=1; AKwUvBzrS+X393+LxrudF59b+qAq0+dNd9JsNPy0oG+uyc1kdp5GsJ1tlmF1tCkrRI72aj51AH1RWPum8JaBFuuycA==@vger.kernel.org
+X-Gm-Message-State: AFq9FYLqMxq/xNP0jR0BcLZSFHpKBA6Sx7zpbaokRVczvM1f1Zv7vS0N
+	2Gc5oOrB/XDxkq5jrhktQenr4xVuZGJ02TMDxx6s+aoSKjKeRxjOiLzWU87q2//FMjnA5vmP8U/
+	4/iasrom4CD5pmBg+5vmMYzVDJ5XyId/9e1bkKPicdw==
+X-Gm-Gg: AYBFou1u1Ur9/c2JrU+T7+ngGGU+WRgt3teNRA7OuWzDiIIH1Hl42+FblPwE2E2/1Fe
+	UPTp5QWAOkCP0HAEnWmGJgWhzN/qxzIm+BITtVWuDcVAqdIqfChGKOzCwUwoY9+uwpB20XTDVx2
+	QVx0bjSYVVgV2aaTtzSq9dWodckFQDnxlWZHP1syiEZR4o/6UnL/UrNbS3GYZGVQXixeUZ2L4z7
+	onsAd1R4qSmTUC5xIYbb/RpQMdbKJil1sN6GDb7ycjPSztG3Dk6O8USYGi9BITfW3zfmEbjvsH1
+	8OCqdvminShmK+XxhYhjkA/HvS63k0cldWGKco0+5aQdW5ShzlEyRu/ANe1q1Nwe5rV18dxuCuY
+	7cWyi00niGfXI
+X-Received: by 2002:a05:6402:46c3:b0:6ac:a1e1:3f88 with SMTP id
+ 4fb4d7f45d1cf-6b3e479af2cmr1805659a12.14.1792507038070; Tue, 20 Oct 2026
+ 07:37:18 -0700 (PDT)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -114,50 +104,36 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DM9NGD5R8AP9.C4K59HIUYFDQ@garyguo.net>
+References: <20261019212535.88390-1-dakr@kernel.org> <20261019212535.88390-2-dakr@kernel.org>
+In-Reply-To: <20261019212535.88390-2-dakr@kernel.org>
+From: M Henning <mhenning@darkrefraction.com>
+Date: Tue, 20 Oct 2026 10:36:52 -0400
+X-Gm-Features: AclHuK-6VS79fqbsrkK5l4dmV47FN6lL1AdlVauDg0y-CgJGi7jnOJDni7bx-HA
+Message-ID: <CAAgWFh30UryzqyU0As6qi8AaHzQbO=pp-Y+gWMs0ap7i1D4qKw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] drm/nova: mark the uAPI header as unstable
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: aliceryhl@google.com, airlied@gmail.com, simona@ffwll.ch, ojeda@kernel.org, 
+	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, 
+	work@onurozkan.dev, jhubbard@nvidia.com, apopple@nvidia.com, 
+	ecourtney@nvidia.com, lyude@redhat.com, kherbst@redhat.com, 
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 20, 2026 at 01:04:03PM +0100, Gary Guo wrote:
-> On Thu Oct 15, 2026 at 1:39 PM BST, Daniel Almeida wrote:
-> > `IoCapable<T>` provides both `io_read` and `io_write`, so a backend that
-> > supports accesses of type `T` supports them in both directions, and every
-> > (non-copy) `Io` method that reads or writes a value requires both. There
-> > is no way to express a backend, or a view, that can only be read or only
-> > be written.
-> >
-> > Thus, replace `IoCapable<T>` with an `IoReadable<T>` trait holding
-> > `io_read` and an `IoWritable<T>` trait holding `io_write`, and implement
-> > both for all existing backends. The non-copy `Io` methods that read a
-> > value now require `IoReadable` and those that write one require
-> > `IoWritable`. `update` and `try_update` read and then write, so they
-> > require both.
-> >
-> > The copy methods use `IoCopyable` and are not changed here.
-> >
-> > No functional change intended. This prepares for read-only and write-only
-> > views, added in a following patch.
-> 
-> I think by Rust convention these should be named `IoRead`/`IoWrite`, but we've
-> aleady named this `IoCapable` and I further made the mistake of adding
-> `IoCopyable`...
-> 
-> So I guess I'm not in a good position to ask for name change, but we should
-> consider it. Apart from the name:
+On Mon, Oct 19, 2026 at 5:25=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> The header already documents that its uAPI is unstable and intended for
+> development. It may change incompatibly as it is developed upstream.
+> Rename it to nova_drm_unstable.h and move it out of include/uapi/ to
+> make this more explicit.
+>
+> As individual interfaces become stable, move them to
+> include/uapi/drm/nova_drm.h.
+>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-IMO the -able part is quite important. As a reader, seeing `IoRead`/`IoWrite`
-doesn't tell me enough about what they actually mean on their own.
-
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> 
-> Best,
-> Gary
-> 
-> >
-> > Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> > ---
-> >  rust/kernel/dma.rs    |  12 ++++--
-> >  rust/kernel/io.rs     | 101 +++++++++++++++++++++++++++++---------------------
-> >  rust/kernel/pci/io.rs |  10 +++--
-> >  3 files changed, 75 insertions(+), 48 deletions(-)
-> 
+Acked-by: Mel Henning <mhenning@darkrefraction.com>
