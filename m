@@ -1,90 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792510608;
-	b=bEKMbkKa31dWjaHP6Klwa9I9PokNh2x+WSnmvnNILzxuXMBCQ8vUxltuYrJok4glEODk
-	 LGCWmBMb5M98lYC/tsmO6K8rs+rycptrj5O8mNZ0yis/XTSZAAK5Y22OULlrdrFOQMsuE
-	 7Z02kV7C2lLUoWNja/aqFBkg+RrH02cxYw7G56/RfUd26FR7dWKo0mBTHatFAUT5/vGLb
-	 sYjK17m7jqtgg5mClCz4JW1yEV0IkDvwuIJyNBnFh2Hgc/DekuMPhz6qgIxf8MDYW03Bk
-	 mLhC4EfoahvuMOi48NpiB3E4A2EG+B8lNyiv5Pz4nSUX/kNiYAfBN2IpMzdeDuIqXKQ==
+	t=1792511434;
+	b=0l8KKNggJm5MvGteZZp2vjz58Gsvqdd1K0QzR0I6qgD0LzjLZJJ+SAOYdFgCL7MuoF4p
+	 UCqXZmKPQDI/adN+iYxV5qjCPyIIbvaUOhivL7bhFhQcPV3QzYZgRkXirhIZY0svyUz3/
+	 gRgBad0P+d1DExVrAf9QcemZln0cpSDJy07vN+eTkycl0P6A5k/zCeNv1VRQGejZQADLF
+	 P784CFrQ/ClpwfK0LrPljNxu271hCf72VxyZTKCHsT6bf1p2z1hxJ5fsb24i620E2kvlu
+	 E0BNKDW+YU3ZBUTJbVtFrB90WsoQw8Mv9ic+sGLNoe0tRrifrm+yj6I3jPGlZiyOgjw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792510608;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Subject:From:
-	 Reply-To:To:Cc:Date:In-Reply-To:References:Content-Type:
-	 Content-Transfer-Encoding:User-Agent:MIME-Version:X-MBO-RS-ID:
-	 X-MBO-RS-META;
-	bh=Yh+jXE2+lBWIpXl4CuFT/FWpTnGLk8SkwfDgjsSI1pI=;
-	b=Ksh1Y3L0at170wUOOsh98NAapsJfVouSR73VsEpyglX1AmTQWjTfd/igE+6fBTotBHi9
-	 LSqaCbk2DCiNJKuSmwsUjhEcM7iAytBMw/ypy48UavvVExrNmPXWrIcgMLLvUSpWeNI53
-	 Z4GqKp0qMvn/Cox+LxzZhFn5dRn1FlxmvQgFfcilbKiGM1sUJ5VfsARsoNlkgaq4W69dy
-	 atNwQEgyJMR/GSU/A2LgqavW8cWjqBiP/2cWwI1dA/r5b3Z7515TDw/Ws9zOnUCYBX/0P
-	 0VrQMAO4qe6PqEupe6oWPbjawuqaxBtnAQtZjgPv8dgtdx15FHvFgu1hDY1i7Np2dpw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792511434;
+	h=Received:Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=t0bi4tUQr/an9lqfPaXouTWkicH+9GlX4LzyE5eMtI0=;
+	b=yWyB4ikmB3Fi+bqZoOMMlhq2y0nCsZevMvFzIKyBWsSNiC0osu0TvxU1BmuNMRI81rKC
+	 hQqegD6f/3UFiatv70q8mySLph4shJsUtYHtB+7jlBFgDrvyqPt3gTMRUGcKs6J9HsZXP
+	 R4l7ZQFeWuxFAyTcQhwB2A90v7Y7ehpA1scy7kcZM/0XhfZ1TLyA5L/HqKDOpkNlVBpdo
+	 FbVwfvf+5M8lMCgrs3ZTp0PdklbFBqaQU5dj2WygyCmLytnCSbWQIVldp4D0iGwP4TO2T
+	 +aZrvwXrbFF6FBiZT3BDh6IgsYjZxxx15TJmRdLeiZ5HdgbDp0oMzM+feJqMHyK7kAA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=mailbox.org;
-	spf=pass smtp.mailfrom=mailbox.org;
-	dkim=pass header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=EtpsssLR;
-	arc=none smtp.remote-ip=80.241.56.172
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787AA606A323;
-	Tue, 20 Oct 2026 15:36:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 787AA606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=EtpsssLR
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4j8Gjl1SPmzMltS;
-	Tue, 20 Oct 2026 17:36:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1792510603; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Yh+jXE2+lBWIpXl4CuFT/FWpTnGLk8SkwfDgjsSI1pI=;
-	b=EtpsssLREdhha6u+FTlxRw9InWvYReNP+6y8AWy+2wedIiJhHJBP3Kf58xuSuToHOL/d4h
-	xrZ0euzCKdgFIUegwG0suaq7SHWoEgr6y3mnW9jD8rspOFLigJC3bxraqbro1v7qQ0wl3D
-	/9yzuP0QI3YhM2nKYOHGy2O+eMcEDnq4PxnskVL/nBPsdj+MknrRWdStHSdfaCd+SjHPyu
-	HfUwcES9fwJ6WdAZx5x939e2COHqlPOeuWll/oyrzhHcj8lYq0CZBR5upiJDJ6RGt1ZHFs
-	SZZmKPre3vN9fAdloUqb1/we+jSbFTc1QA4GuwAmd5OuS5l3D+x9ra/WKJ3fCA==
-Message-ID: <4a7294da65c8744ba6355730e304b5250d0ca351.camel@mailbox.org>
-Subject: Re: [RFC PATCH v2 0/3] Solve dma_fence's problems by locking
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, 
-	phasta@kernel.org, Sumit Semwal <sumit.semwal@linaro.org>, Jani Nikula	
- <jani.nikula@linux.intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>,  Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,  Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun
- Feng <boqun@kernel.org>,  Gary Guo <gary@garyguo.net>,
- =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  Benno
- Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Daniel Almeida	
- <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=
- <work@onurozkan.dev>, Boris Brezillon	 <boris.brezillon@collabora.com>,
- Alex Deucher <alexdeucher@gmail.com>
-Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
-	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Date: Tue, 20 Oct 2026 17:36:35 +0200
-In-Reply-To: <ed2728bd-1df4-478e-9e6f-a96dfd172b48@amd.com>
-References: <20261020100034.759183-2-phasta@kernel.org>
-	 <3e8bc11d-6f90-47a4-ae63-cf2ff37f1ff6@amd.com>
-	 <ca78cdb7c24a9be9b640db782168cdcc5fe30b60.camel@mailbox.org>
-	 <ed2728bd-1df4-478e-9e6f-a96dfd172b48@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB9C606A31E;
+	Tue, 20 Oct 2026 15:50:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55091F000C4;
+	Tue, 20 Oct 2026 15:50:33 +0000 (UTC)
+Date: Tue, 20 Oct 2026 05:50:02 -1000
+Message-ID: <72dfeedcd55b27783c86f1a3ab461865@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Alex Shi <alexs@kernel.org>,
+	Yanteng Si <si.yanteng@linux.dev>,
+	Dongliang Mu <dzm91@hust.edu.cn>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: workqueue: replace deprecated system_wq with system_{percpu,dfl}_wq
+In-Reply-To: <20261014-rust-workqueue-system-fix-v2-1-c018b8f870f9@google.com>
+References: <20261014-rust-workqueue-system-fix-v2-1-c018b8f870f9@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -94,168 +67,34 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MBO-RS-ID: 9b1f1927d5e8646b2c1
-X-MBO-RS-META: fuxnfzpkekdedxcod5h8gys5pduiy8tm
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2026-10-20 at 17:07 +0200, Christian K=C3=B6nig wrote:
-> On 10/20/26 16:41, Philipp Stanner wrote:
-> > On Tue, 2026-10-20 at 14:02 +0200, Christian K=C3=B6nig wrote:
-> > > On 10/20/26 12:00, Philipp Stanner wrote:
-> > > > In our Rust code bases, I'm currently experiencing what we also
-> > > > experience in C at many places: that the dma_fence contract's RCU
-> > > > requirements make the API more fragile and put an unnecessary burde=
-n on
-> > > > the API user. Most notably, in C the API behaving correctly now dep=
-ends
-> > > > on the API *user* waiting before free()s, waiting before unloads =
-=E2=80=93 all
-> > > > because dma_fence is not properly synchronized.
-> > > >=20
-> > > > The patches commit messages give more details about where I want to=
- go
-> > > > with this particular RFC.
-> > > >=20
-> > > > My rough "vision" for dma_fence, where I think it should develop to=
-, can
-> > > > be described like this:
-> > > >=20
-> > > > 1. All users should use inline-lock.
-> > > > 2. The fence-signaled state should be our decoupling point.
-> > > > 3. The fence state must be consistently locked.
-> > >=20
-> > >=20
-> > > > 4. This means all callbacks are only invoked for unsignaled fences,=
- and
-> > > > =C2=A0=C2=A0 the fence cannot signal while a callback runs.
-> > >=20
-> > > First of all that prevents concurrent execution of the callbacks
-> > > which for a lot of use cases is a must have.
-> >=20
-> > Currently only set_deadline() can execute in parallel.
->=20
-> Especially the is_signaling() callback is executed in parallel by tons of=
- use cases.
+On Wed, Oct 14, 2026 at 09:08:35AM +0000, Alice Ryhl wrote:
+> From: Danilo Krummrich <dakr@kernel.org>
+>
+> system_wq is deprecated and triggers a runtime warning:
+>
+> 	[    0.857414] workqueue: work func ...WorkItemPointerKy0_E3runB7_ enqueued on deprecated workqueue. Use system_{percpu|dfl}_wq instead.
+>
+> Replace system() with system_percpu() and system_dfl(), to match the
+> previous behavior of the deprecated system() and convert doc examples
+> and tests to system_dfl().
+>
+> system_unbound_wq is deprecated in the same way, in favor of
+> system_dfl_wq. Since system_unbound() has no users, just remove it as
+> well.
+>
+> Fixes: 64d8eae3f895 ("workqueue: Add warnings and fallback if system_{unbound}_wq is used")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Reviewed-by: Boqun Feng <boqun@kernel.org>
+> Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-ops->signaled() you mean.
+Acked-by: Tejun Heo <tj@kernel.org>
 
-Anyways, only one will succeed at having the fence marked as signaled
-anyways, and then all other callers of dma_fence_is_signaled() will be
-guarded by the fastpath bit-check (which btw is also broken; but we
-want to address that in a different patch. For now my series proposes
-keeping the fastpath).
+Thanks.
 
->=20
-> >=20
-> > IIUC in our past discussions, your wish has been that the driver can
-> > take its own locks with free locking-order in the callbacks.
-> >=20
-> > Thus, the callback is invoked under lock in any case, just a few
-> > instructions earlier or later. Thus, no callback ever truly executes
-> > concurrently.
->=20
-> And that is fine. Taking the look when you actually need it to
-> protect data structures is perfectly correct.
->=20
-> But what you propose here is to abuse the look as a barrier, e.g. to
-> find out if something has finished or not and that is a completely
-> different story.
-
-Nope, I want to protect shared data, which is the signaled-state. Which
-is currently a race-condition worked around with RCU (and sometimes
-with manually doing the right thing (locking!)) [1], stemming from the
-fact that the fence's spinlock is not used consistently.
-
->=20
-> > >=20
-> > > Then as I pointed out before the second problem is that this again
-> > > makes the existing lock inversion between the signaling by polling
-> > > and signaling by interrupts even worse than it already is.
-> >=20
-> > We asked for examples in our last discussions, and the only one ever
-> > presented was the list-access requiring the fctx-lock in
-> > nouveau_fence_no_signaling(). Nouveau is often not a good example.
-> >=20
-> > Can you provide examples in the kernel where deadlock would occur?
->=20
-> Just exercise the simple example of a driver supporting both pull and int=
-errupt:
->=20
-> Interrupt: Handler takes lock protecting a linked list, finds fence
-> and signals it.
->=20
-> Polling: is_signaled is called with fence lock held, can't take list
-> lock and so needs to work around that somehow.
-
-signaled() neither needs a list lock nor any other lock.
-
-It needs to read a sequence number from somewhere, so a u64. And then
-it returns true or false to the fence_backend.
-
-The u64 can easily be an atomic. Also ioremaped reads should work
-locklessly.
-
-No need for any lock.
-
->=20
-> This pattern repeats multiple times all over the different dma_fence
-> implementation. Nouveu is just the tip of the iceberg, we have cases
-> of this in amdgpu as well as i915 as well as XE.
-
-I guess my question then becomes what complicated locked tasks someone
-has to do within its callback that locks are required, locks that
-cannot be partitioned in a smart way to avoid that.
-
-We have 3 callbacks that are relevant and not deprecated (the name-
-functions are trivially solved by copying the data):
-
-- is_signaled() =E2=87=92 solved, see above
-- enable_signaling()
-- set_deadline()
-
-The latter two might want to talk to their hardware, either enabling an
-interrupt or telling it to clock the frequency up (see MSM). They might
-need a driver-lock for that, fair enough.
-
-Where does such a driver-lock need to be held while operating on a
-fence, opening the deadlock-path?
-
-
-Note that, as I pointed out many times, all callbacks are already
-called under lock-protection. Especially enable_signaling(), and
-is_signaled() must be lock-resistant, proven by
-dma_fence_is_signaled_locked() existing.
-
-Regardless, what I propose would only make a potential difference for
-*new* users, with inline-lock, who can then cleanly design to avoid
-locking problems.
-
-
->=20
-> > Note that I pointed out that all callbacks are already invoked with the
-> > lock taken, which proofs that it's doable.
->=20
-> Again, no it isn't. The shared lock was invented exactly because
-> drivers ran into this problem.
->=20
-> The common pattern is the same, implementations just dance around the
-> fact that the callbacks are called with the fence lock held by
-> delegating cleanup work and/or using lockless containers etc...
-
-I suspect more that drivers attempt to do unnecessarily many things in
-their callbacks which are not supposed to be done there.
-
-> A common component like dma_fence should never enforce users to do
-> such workarounds just to solve it's own lifetime issues.
-
-Our common component forces all users to take our locks manually and
-plaster everything with RCU. If they forget an RCU delay, outside our
-API, things explode :(
-
-
-P.
-
-
-[1] https://elixir.bootlin.com/linux/v7.3/source/drivers/gpu/drm/amd/amdgpu=
-/amdgpu_vm.c#L2787
-
->=20
+--
+tejun
