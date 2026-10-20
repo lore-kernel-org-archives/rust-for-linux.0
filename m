@@ -1,102 +1,129 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.76
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792499468;
-	b=DoqX3dKA7igePXboTu8RggUDTOB0cyr/btoI6vCiPO1c62J3+mhVzX2N7BvBbdxjI7Do
-	 WOFUu67k1zeIsi75kOoZiLesI2la7tkoy8WKlHT8KtApPOoaay1jxsz9Gft9QYFcK6HkZ
-	 1QxE18sA6KEQqG9yg7DS1vPIOcfcuchYUQ1M9QOps3hz3WgvAQRTuew/T0Otf0X9I5V8G
-	 0PSXUve8DVEEBxGUSqGY7TRiWx+kKtTJf1smojGoyDK69+UfNEM+5aR7khfZMWRBYnfD2
-	 Vewbx1rQGs0KV81sMF9u/Hwee6uVT97ppi9WPSxJT8pBkmDkd9pNV8oNdF+Rqlo9cOQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792499468;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:To:Cc:Subject:
-	 From:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=izr1WTaXhNiPHO/7L5HZmaUpwDQ6br2cj7eXARkXX0A=;
-	b=pG7mEDkyCLi3m7RjS8C/F0xIZhRbiOTHKdhlh0OzBJuWwJ7F5+FVO5T++j+rwyq/vCpo
-	 TuffMf0oVFxwldVveQi8KqGygNq9TUXPmATB/hb61tIb+vsN78uIvyhA72Gl8OhavIkXO
-	 B/vyqf7sCIQT6lwG05lPQ7dPfh+RnobkxmkGNOHAB4OyBsngivegyefIECYF0Q4YdUw7r
-	 KROcImyUtTUArnHNGFH4B+B6dSF75j58vrWYQUlpYzzsBS8eGyVyWQi8uuMXEcXq75DrM
-	 FuWLI9obnJCCol5AzEVd7ROQnSqpr5Qvu51PHeJCBx4VdrALNTXtRw2xWcmS5DPm14w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=garyguo.net;
-	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=JwIG4zFE;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.96.76
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022076.outbound.protection.outlook.com [52.101.96.76])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.156
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792500633;
+	b=IGM6YjsBKXwwFWp/Ldp4ZYedYS/g2qia8XsZ6rAcQDYnD0L93Svf7xPAgMlMvXwmq9X8
+	 prIBZuhiBFfSMa9WqlDP5kit88zztOaWm8tYwH/Kvkz47BCyprr/NsIzhC6nbyESY5k6V
+	 XAU/daZd+8Jz1jaO9lNbOr6hwLFhhjMLOX7alnF9RdZaVbHmMehCqegb8flYXVZHh1e9p
+	 ynwXUAJgVdSJxcTIwHVALcyhr8ojcctd8TnDr+9R0JfEkaNEfQgd+ksJpmOayzN6bcnAv
+	 vGV82E9UqQWCTxeGnqTbuEZrGZQHoGk4pEHDmprZnAsGGH7nh4gfzNEAerHDgEcjyWA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792500633;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type:Content-Transfer-Encoding;
+	bh=KpSvEb1ZmSOewVyzZaYexwDFI9NVYIxSu0bLN4vULYs=;
+	b=S9VpgYwEUwrWzKStZ20uffHQb6MFOV99IM9jASofFlrBVPF2iV46L9ZCLxl5R8tQxh3R
+	 THnsJvUskjuof8lfj4chfelTxdTxD+lP2kyM8W/W8aC7UPvMOFawDC20+R88xY+vvZ8KY
+	 HbDgxVIsHOctuKMkt3S3CTT8ZS0XC8450F0+bZartshm5AVRD0uk+j82X0CGxe+2bm+7g
+	 CgyWpc5BuL1Jrb+muUQlsq9yQ5p8e1BsEWw+ZF7mOzOJlArIU1QRaDql00wi7gp49fsdl
+	 2vkQuqrprS4yle0xRdo8iW4cyXjdMTP4W0w/fLJT4qXTIynZyJ3lXxfaZywBx8ID0Hw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=flapping.org;
+	spf=pass smtp.mailfrom=flapping.org;
+	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b="C+/fZsuX";
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Srk91qOQ;
+	arc=none smtp.remote-ip=103.168.172.156
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63F6606A31A;
-	Tue, 20 Oct 2026 12:31:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D63F6606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65D7606A32D
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 12:50:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A65D7606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=JwIG4zFE
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=N8WvqGCTywxl744jPEMwNrAM5KHZhkypjYhHiFsD9UnDd7yXAPRwlgapsKu+Ld977VxWQllnWdFvBjH+ntxQCpiEBBL0ZyuAVDIzWW5eVO62djMlutsqgVuxGpxwIospnD+L/P9hsvIYJFoo2l3b37Z8/kl6QgvjGFEdyVkgdJWZyeQu7/KLlkQcQ/RcB6XQQVLz/GTv3i53SI3xKkloJcFMd88jJ7E08c31/5LCleKS2Y/Mmplwvgcmr4Nb7qZSp3smVutOdktmSTTGha7sGmV4y76ohmx9q+6oLzylBBLgeRXyYP3O75JC+ZLUYTegBLifO1brmJSPAehDNys3EA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=izr1WTaXhNiPHO/7L5HZmaUpwDQ6br2cj7eXARkXX0A=;
- b=BeqyPVhjVLxaiyNg9QB2Clx7OBZypYzRKxX1OfDFiMBOMXnjoywHo5mWGEp5i7PIEb7XmFa8H/z7/zDzD7+G9YWnxkb47cbVoSPvJ/tJnVhq8OXPCC1eSIzZD/ptF19T3Z+WooRQiax/vDT8yfmEVGj8r1gr8vvAP9XbtPFnwc59MvWoHjlDowM08NwA+XKcGzC6qfNsjDjLo5fpz22EoKHhkCGBTS8ZScubUeh2ft/QsUmDO3EGZy+kzwT5LLesqjRAbedHbBJ+o39f6Tz1TSy/jeNKthPhUYjP6nFohihrCIyNGYYncpXPyN4Y1jheO/ceCq+Q4hAtd8Fjpz1/ig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=izr1WTaXhNiPHO/7L5HZmaUpwDQ6br2cj7eXARkXX0A=;
- b=JwIG4zFEwJyx82RbeDTnuRiW5SRynLUOIJhvhP7eFsVquRxxWozm7S/AtcN0g2FKu1VqstKi4ANmEfwADzkG3+RJlqhKsUc02w+0cSmh68FMC9y4ME7uTZMNahIDIGtDNpxJ4Ik3pZgvTMF/cmBTg8A5nX4cUXN6eHSdmS7lTyY=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by CWLP265MB5187.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1c8::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Tue, 20 Oct
- 2026 12:31:04 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0522.017; Tue, 20 Oct 2026
- 12:31:04 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Oct 2026 13:31:03 +0100
-Message-Id: <DM9O11JY63Q2.1U3PB5GL0JYOQ@garyguo.net>
-To: <samitolvanen@google.com>, "David Airlie" <airlied@gmail.com>, "Simona
- Vetter" <simona@ffwll.ch>, "Danilo Krummrich" <dakr@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "Lyude Paul" <lyude@redhat.com>
-Cc: <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: drm: gem: shmem: do not leak pages when
- sg_table() fails
-From: "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.22.0
-References: <20261019-rust-shmem-fixes-v1-1-3f7f6de5b5e7@google.com>
-In-Reply-To: <20261019-rust-shmem-fixes-v1-1-3f7f6de5b5e7@google.com>
-X-ClientProxiedBy: LO4P123CA0297.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:196::14) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=C+/fZsuX;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Srk91qOQ
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 00DA0140012C
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 08:50:32 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Tue, 20 Oct 2026 08:50:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1792500631;
+	 x=1792587031; bh=KpSvEb1ZmSOewVyzZaYexwDFI9NVYIxSu0bLN4vULYs=; b=
+	C+/fZsuXU060k6/s7dA9jM6XcTcVilUWUX/jyaYNcv9MYe0Tgr5eJjpQPogb6sWb
+	+QV1ajue5HvpKe8PiM8lXKvMYzqXq+XeXzC6crJhUvs88iVCUsHFQsc4+TDW2ZQc
+	YYJA22LOvnYmjYIkA3K5NhHa46P8sfvW5sigl3ucojRtEYhYfIcrsqF1g30liTmh
+	WnjUeufI5/i4Vp0HmsH/wHTRtrjKitcnmzHdWgDZ8MXGKfTtXCd+ft0LQ5+xGlxt
+	iYdhNvDPr8Fp0Mk5e2xXq4QF2/RrOOCd6JG/f7kAQWNbOEJGQ0YEuf5tLGsApngC
+	fYvPE8jcEmr/piJ6kH8bpw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792500631; x=
+	1792587031; bh=KpSvEb1ZmSOewVyzZaYexwDFI9NVYIxSu0bLN4vULYs=; b=S
+	rk91qOQR8BrawTth/rYIaPGAJJxaYRjeDgW61xfDD/b9UfbUcSe0iJV7okQYUW49
+	RZcKrRxidtW3s2bqWte5e7ECqbFcExp0577D+4uCsMySG4ay/5r5tMXgeLveRcso
+	0xhhuR6CxqFQ4LX5c7IvhdQvRMd7jFieqOM8jDyILeM419C6aEwKjVhzI/Hp8esy
+	MS9bY2mrtC+iaRDo+PkOkPb/tjJjPvLeI0MrdywixPxA1cbtaBVr3kWp/BHEanwK
+	6ia6UX58DI5Z3Jp8gGzF2gxZwqsuJm+OX4B6rgDsV3r25VOBxHXAyh631ryc7Kix
+	RK2xirDmOwwM++SLryC8A==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1792500631; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm1:rsa-sha256:DcmsRa5jbnNg+1yulb2R80YHEZpuK5XRWhRr+Txzmi+F9eU
+	jhvKMfrsVL83MHom8C64G6obVx6HaBix90g2JYrJlm4GbxHxBimpeYe2shuRFV2Q
+	qJdhm6UiUOLgCuFRCuN01q/Kwu69ghzC+E2y2LWsu3T7h8r6NZraJI/H27Op6fZe
+	W4RJktPkpJmD+TGwp3h68gW7Uz6AstLrI3jXzxq4ltc3XWhYRd7e6l9Ip2L2pOeN
+	06NrFPiv00dBjlrvms+7xAP1bczHbrGNOsGT5Xpew3aJdxtgYbwqFnKbbOpmRcYl
+	YbMnO72tcupso5HRk+A4YEvvAhnNJ3/bOVuc2Ww==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:s2UGIG31dVFUg3IePb3OGKYWRiFAu1bRFyBtld4V9rk=:fCMs0Pv52oKfJdphB7XHmJehRsKvOrbbtcXx2K/iuPU=;
+X-ME-Sender: <xms:lmPXaqvm6TsRdD7Rk8n7lXyo4RcWWU07K9mGyQsghorgzAJhk-6U1A>
+    <xme:lmPXaojO5_BmGqNx20cIDnR7yTyjvi3KrpAE4SdPxp5RbX8QBU0UBhKKDBts3z4m1
+    jAVdosNltlNp8EkvIYEQ-uAdnrbJ17u9wIp3dIeV3iWACVXqkLQq6Q1>
+X-ME-Received: <xmr:lmPXau18DTCQ3SlZ1PG7G4DI6j3kQono1KoGjwaSQSG_KhfRdscYMwwaWyZrMPVgfOsoDrnJ1nx3a-DIaUrECO9I>
+X-ME-Proxy-Cause: dmFkZTE2Du0we4KvtkwYGASTx0hsJNnuyBM3jUnEi/7RiemtGh+Gi0SLRw0/E5muq2rj5U
+    BDAFL3o8mLH4+ktrQxfXyDWU5V/1tUk4UxTY4LeN0jAH8Zb/xWk9hzgwE2ZDxDluGf6Hrv
+    RSxQxazp/9a0nqUgmKSSDk9xluPL/KvCZ4J/CrVBUdjkdifEVky7xSWmza9/3vURTQ8bvH
+    CNzXdcwkDR7FT2ENYBkIxO0hK0srKpVTmaqskyiHfdL8bY+hToKretRYCrDogijKG86zLj
+    m94QHMmk6HCu7iMtfNc88kpN+Q2Xc7SESlfdfmTg3Q8ATafFxKkvtSmzVxxfvK4xw3N6eC
+    oBmVmuvYx9GCYkb6t0IixCLfUJKcOkZ0vVcG6V5HT7viNYzwheW8pnMwIB46hqQmLstf/l
+    4j7O2XSKEj/lqlBm/K9j6SsKpawo1L75ZIWV5yTmkSjRLqOQKFnqddXcPELFJND9rTQJnu
+    yTBTCPpWYjWzeQCbLrhYIdDzKjygdPMdLi9lmEE/vLVnFZ8z9IHqixRn9NnA8LAPd43Osz
+    1dmcVr52wuCiFY0BS1MgxHGz1k4Y5rSqToCO+fs4DL+P5rciXnuu5N7b/Q9Y4wYqRE5IuG
+    cCt3/EAtOhTZS8TlOST85YLRfLBMiauEeOYhjMsavRkk0lE3RY82/+VWskdQ
+X-ME-Proxy: <xmx:lmPXag-eWWXNxbItODDt9kzZIknDUPOuxeVjmHg6Akm_2rXQZpkWrw>
+    <xmx:lmPXakPN1bkDIfsF-QIkjDZHkqAl5qkO5Bn7LmBQ9PR3w6YOpDEX8g>
+    <xmx:lmPXasBO53G1DjDOsrA94AueZWKWqMYm1a7BgA3221no_14u2VJwqQ>
+    <xmx:lmPXauPcxJ-yrGxSHB4C6kpDfaKjq32eSqxw0_ZP2fWRV-3Q5g6rEw>
+    <xmx:l2PXakcnVJ8i7xP0jAilcp_hwDF8i58YOhPIozmeGkyM1U8svR6Hm1w9>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 20 Oct 2026 08:50:25 -0400 (EDT)
+Date: Tue, 20 Oct 2026 21:50:22 +0900 (JST)
+Message-Id: <20261020.215022.576606933901583722.tomo@flapping.org>
+To: samitolvanen@google.com
+Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
+ daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
+ work@onurozkan.dev, fujita.tomonori@gmail.com, frederic@kernel.org,
+ lyude@redhat.com, tglx@kernel.org, anna-maria@linutronix.de,
+ jstultz@google.com, sboyd@kernel.org, abdiel.janulgue@gmail.com,
+ robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
+Subject: Re: [PATCH 2/3] rust: hrtimer: declare cfi_encoding for
+ hrtimer_restart
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <20261019-rust-cfi-fixes-v1-2-9503472ba738@google.com>
+References: <20261019-rust-cfi-fixes-v1-0-9503472ba738@google.com>
+	<20261019-rust-cfi-fixes-v1-2-9503472ba738@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -105,141 +132,32 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWLP265MB5187:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3639d91-0a45-4c76-3dab-08df2ea601da
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|10070799003|1800799024|366016|7416014|376014|6133799003|10067099003|22082099003|18002099003|921020|261009223027099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	wbfEP3ww70YkKoGov/Ati+9beVWSM5tW3d+zbwVvvjBzlSHDSTfL96SasI/QFO0KePOA+vqDyJZdATn8IvfV1GXKFu0oWs8tWCi2THsF7mZXblrQcVi2kDdmH45lIAc+pwLeREcd75uC+OT4xmj2GVOrX/FxfrUXEZg29YFnGGDimIKY/rZvXPyVvO+SAilVIRR4MR/AGGe+1uGuB23q58qn8nrpTxp5l7UoUUYLcxsKTGEKFYLT0ny47gd/LATlY+EUXZATjuM9G2lKE8n7BnA29lg8ttL9C0PPnbIbZQxHBOxEARzvl9d0QE1uu0L6G8lkMEp7vT9eWL885IseOwAuRKdmbaRREdl3iiSrb11Fd7cm0QaUBNuEolCO1NzCEZeij9f96UaOguGeqNe16Q8Y8km03+K2586rzxa9i/leLopyRaMpAOKNxhCj9sgUSSTu1J0YWurICBtotXUn6J0PfmkEUaf8N7k2NHuq83M5j5P0L4C4IT9yd8GcYELY9H6Pl2ZprfuNP0M+9Ycg3jOAHv0S3h211w0vMbfgpZlsjPIOXWwMfm3r/6op5OIF5p1Mr5S5BhFaXwVF1alw6YpuxVghL1Ta1fSaQQBQeAUl6XbSY0NQgXA/61LVydL4bIRMUUtJjGxNlpT6VEMX45x3wpuCagVUXat4GA7y0bO4+IbM79yjOKWXu6pad3Qus7ITccpQzWAfZmFUjnzLMw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(1800799024)(366016)(7416014)(376014)(6133799003)(10067099003)(22082099003)(18002099003)(921020)(261009223027099003)(56012099006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aEpyamdtYWJDYTFNVXBnZ1UwdnJrZ0dMUmJMcDlDZjZDMkUrTFRtTmlpSnZw?=
- =?utf-8?B?aG5TZ1paZHYrZ0lMeGhsTU9pNXJTQkg0TFRVUTFNOTV0bm1hZThDZ2kvNnlC?=
- =?utf-8?B?b09KQ2srMDVJME9OeVNUWHlyRC80ZW0rVTl4S3EvUHhCTC9VWW9CRk1XNW5z?=
- =?utf-8?B?Zit2VHB4QmdRbk9YN05zME91S3ZsNFlocTlQamtLRW5FcHpBQThkY25renFO?=
- =?utf-8?B?VVg3ZGJTajJ4ZzdkQmJRNzg1Mm9CWGtSemtyYzNBS201U0t3Skw2djFmNUsz?=
- =?utf-8?B?TzU2clVhM3ZDUlVRcUFtemRrenJRRWR5bVIvUkVsaVB1YnRDS3R1YS9JdFlR?=
- =?utf-8?B?dC94aytSa09UaW5JUzhxSHNGdjZlSzQ0TiszZU1WZVRWT2cxSGdUQThNWXdu?=
- =?utf-8?B?WC9QVFJzbWV1aUI4N2pMOElVazZiY2NrYXhxYUx3eWVzcnVZcCtNcjBHenpN?=
- =?utf-8?B?S0Z6aFdjdDhxUW9iblNEdW5Lckw5Tmw1MG05aDQ4ZzVOMEo2R0dQeXU2aVhC?=
- =?utf-8?B?a3dLSkh5Z2xMOEd5TzBBNUtwN0I4OFJoamUvVHgxa09xaWpGdDVKR0lraTF2?=
- =?utf-8?B?NnZITGJsalB2RnBnbURUT0VNWUJvZExHekpJWXNtSnphelN2aVhxbittVmdL?=
- =?utf-8?B?UVFoY05jSFVwOVdMaEZvZHRDeUVST2NObWZrRVJFZWY1Tm55NlEwdS9CQWcv?=
- =?utf-8?B?MytjTDRTWXBhQ1F6d091dGpSdGlWbWpCYU5LdldTOHN6Y2ZsYWJGalhDTDZY?=
- =?utf-8?B?MFpxZkxxbENMUFpVL2tZcHcwODdMNk5NM3lCekFSeE15Y0hhbm9ibVhNNTBj?=
- =?utf-8?B?WHovSVVlMFE0NG9mbzNRNWpDUnI5bUJqQSt6VnJ6U1ZJanV1TUMvbUloUjhk?=
- =?utf-8?B?RzBZWDdTZGxadUFBdHVGT1BIOGk5KzJMK2NZZkxoZG9TNEYrRGxKRUw5YnM5?=
- =?utf-8?B?azRjODZrZkVDTWJRWDVMbnQrc2hjU054S0tzL0R0Y0VDQkt6citrWkFBMGtE?=
- =?utf-8?B?alFZVjZhTmFySnpzMC9Ob1REeHpmQ1M0MWIyNEJ2cGpXTEUxRTdCWG1Dd0xT?=
- =?utf-8?B?SHA1VENHZkpsb3J4TGt2NVY1WlAzd0FJYVdZbkVXUnhuYW1FNlV2a1lHcHgw?=
- =?utf-8?B?MVI5Q1YxcFZ4T0dkYnE2V2QwSmxqazBaZFdwS3hUV1FCKytjN3ZORldEV2VG?=
- =?utf-8?B?WHh3bTB0bnJtNHRGaDRZOGFSRS92WTRQcWpNN3pxdzkxU1gzSE9jNXlIbHFw?=
- =?utf-8?B?Yk9RdnU5R0NGOGprNSt1T2lkVTdIdXIwSTJTUm5rVmw0L1BHZXhFbnpVTFBq?=
- =?utf-8?B?OExuUXJaL0l3K1RjbERlZEtYdVNhV3BJY2thUGQ5RXJwblovRWxBMFAxUjBH?=
- =?utf-8?B?RllDWnQ4eTRHZWIwRXpvYlQ5MFBwWmorbXY1MWNPZUNhTUlMQW5aTG1qanVn?=
- =?utf-8?B?Rk93akNKdjU1TXUwZkoxZExtWU1PeVAyQVNlZWtta0dpRStvR3Z3eWZJNDg2?=
- =?utf-8?B?M2w2UHRzNDErNlBlKzhUVGpmM3VaczRlZFZEYkJ1RGhpUzdIeHcrOGVmd2FK?=
- =?utf-8?B?ZERya2M2c0xweTJlc0tYbWVEaE9OcFZ6U1ZRSndjdjVLaHIyOXVjejE0UGVk?=
- =?utf-8?B?ajJWamZ4NXBFdXloa2d6U1RLNTlaNDE0Z1h6dFpmcDhhQ1lvdDg4UG1rSzlr?=
- =?utf-8?B?bExIdkNxTTR5OFdHK3ZqRlFoVTlkcEpFd085TW5JMERzUGJtUnJWem1BN3lX?=
- =?utf-8?B?ME5XbjVBOThkTTQxTmF4azlueDlQL2FrOHNtUUN2aFpaVFhiaWQ5QjJCZW5q?=
- =?utf-8?B?Q1Fya0daSGV3cFVWVGhseXdTY1RkWjFZMVBYZnQyUWd1Tm1HSzNMM0l2TCtP?=
- =?utf-8?B?aTgyUkpGWkpJWVJxenIzbURjU0RKSE1IZEo4RC84bVZ4NWhxdkcrUDJJYXpt?=
- =?utf-8?B?NTFEV0pqanppbVc2bytwc1RFdGRDbWs5MndsNUt3RDhaVUY0a2lsUjJjbnVj?=
- =?utf-8?B?b0UraHpzd0pWTVJ5Qy9ROUZMdDYrWCs3MEhkYTdqK3lEcEJUMFQ3QmJYK3BL?=
- =?utf-8?B?Mk5taEFmUEZxRTJHTDVWRVc4MFVuREE4akxucnB3OTg2QzQrRlFXaVZKNTRr?=
- =?utf-8?B?S202RTNKdlRKOFlqbTBtUlJLSjNYaC9FWG5rOVZaUTg2WVd3U2FNeUp4aVlJ?=
- =?utf-8?B?QmpGd0tPbGJMYXVYWFFWRldYMmFwZzR2RnNzblVSNG9JTXRTNnVBVk5sWGZC?=
- =?utf-8?B?cGQ5anNqbGE1eDBDWmZlK1RpeUU1TkplY3VDZGFSZTdvYzJPSnZCQVFudEF4?=
- =?utf-8?B?T2dWM3pUb1lwTi9pRjhQWjRJOVUzQ1RMUDNwVnEycGxHMHRPU0NNUT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3639d91-0a45-4c76-3dab-08df2ea601da
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2026 12:31:04.1177
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qBYYo3do1yhMDKB6ZfC0E3hOsOQCMeTvntqoKmfhLleTv8dhwQ/Ljax5D97n378K3LvRExc0pDdPCW3X054kWg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5187
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Mon Oct 19, 2026 at 9:21 PM BST, Sami Tolvanen via B4 Relay wrote:
-> From: Sami Tolvanen <samitolvanen@google.com>
->
-> `SGTableMap::new()` takes a pages reference and maps the table before
-> `Devres::new()` allocates. If the allocation fails, dropping the map
-> frees the table but keeps the reference, and the next `sg_table()`
-> takes another one. `drm_gem_shmem_release()` puts only one, so the
-> pages leak.
+On Mon, 19 Oct 2026 23:34:38 +0000
+Sami Tolvanen <samitolvanen@google.com> wrote:
 
-Sorry, could you explain it in more detail?
-
-Creating a SGTableMap and dropping it doesn't restore the state? If so, it
-sounds like an API design issue.
-
-Best,
-Gary
-
->
-> Take the pages in the initializer, after the allocation.
->
-> Fixes: 616c229ab010 ("rust: drm: gem: Introduce shmem::Object::sg_table()=
-")
+> The hrtimer callbacks return bindings::hrtimer_restart, which bindgen
+> generates as c_uint. C calls them through hrtimer->function, which
+> returns enum hrtimer_restart. kCFI encodes enum types by name even with
+> integer normalization, so the type ids never match and every call fails
+> the CFI check.
+> 
+> Generate hrtimer_restart as a newtype with a cfi_encoding, as is done
+> for lru_status, and adapt HrTimerRestart to the newtype.
+> 
+> Fixes: 8a8afe9349fb ("rust: hrtimer: introduce hrtimer support")
 > Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 > ---
->  rust/kernel/drm/gem/shmem.rs | 21 ++++++++++++---------
->  1 file changed, 12 insertions(+), 9 deletions(-)
->
-> diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
-> index a687d46d170d..72e4af3b0503 100644
-> --- a/rust/kernel/drm/gem/shmem.rs
-> +++ b/rust/kernel/drm/gem/shmem.rs
-> @@ -555,15 +555,18 @@ fn drop(&mut self) {
->  }
-> =20
->  impl<T: DriverObject> SGTableMap<T> {
-> -    fn new(obj: &Object<T>) -> impl Init<Self, Error> {
-> -        // INVARIANT:
-> -        // - We call drm_gem_shmem_get_pages_sgt below and check whether=
- or not it succeeds,
-> -        //   fulfilling the invariant of SGTableMap that the object's `s=
-gt` field is initialized.
-> -        // SAFETY:
-> -        // - `obj` is fully initialized, making this function safe to ca=
-ll.
-> -        from_err_ptr(unsafe { bindings::drm_gem_shmem_get_pages_sgt(obj.=
-as_raw_shmem()) })?;
-> -
-> -        Ok(Self { obj: obj.into() })
-> +    fn new(obj: &Object<T>) -> impl Init<Self, Error> + '_ {
-> +        pin_init::init_scope(move || {
-> +            // SAFETY:
-> +            // - `obj` is fully initialized, making this function safe t=
-o call.
-> +            from_err_ptr(unsafe { bindings::drm_gem_shmem_get_pages_sgt(=
-obj.as_raw_shmem()) })?;
-> +
-> +            // INVARIANT:
-> +            // - We call drm_gem_shmem_get_pages_sgt above and check whe=
-ther or not it succeeds,
-> +            //   fulfilling the invariant of SGTableMap that the object'=
-s `sgt` field is
-> +            //   initialized.
-> +            Ok(try_init!(Self { obj: obj.into() }))
-> +        })
->      }
->  }
-> =20
->
-> ---
-> base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
-> change-id: 20261019-rust-shmem-fixes-3a838ada39bf
+>  rust/bindgen_parameters     | 2 ++
+>  rust/kernel/time/hrtimer.rs | 6 +++---
+>  2 files changed, 5 insertions(+), 3 deletions(-)
 
+Tested the hrtimer doctests on x86_64 QEMU with CONFIG_CFI=y. Without
+this patch they hit a CFI failure in __hrtimer_run_queues, and with it
+they pass.
 
+Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Tested-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
