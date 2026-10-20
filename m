@@ -1,100 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.48
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792527408;
-	b=Kot/tEm1evvtbXowIxcb2F+i27tXz1jSRnAY0975g6VFBfxobeQbSO5lohtXrbuHCCJH
-	 FAc5Tae0lnT8r3W5shs69IRp7VI8M6fxJ3Wr4CjZ6sRg58StjEej953B8MSL5AaZDYucO
-	 iIfzbo7aiho38XVwGpwDMzfC2IAjkFDmSd4682W+h8kusNBYcDrdKst4pjdbpph3GBxTS
-	 tGo7eNyF+DahbmBRfDqk7cu2IYd2kp98IyYq0fTUWaStQKrFCQO68zuTX1ELt1/tKt49U
-	 g/b15NEpD6SCasenFrrBWUjmad3va3Dt/jS2PHVjHQvgw/ZxmbvaVYdtvmEs0LncNqQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792527408;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=0h9M3TYjYg/Zu0GFYIpY3pxrKT9v+m/rFawThlx/TC8=;
-	b=1kc07agN7SDQYSsRvDm5YPqofm/5IufAtkgYPpfjv0ChoBpS0E2a3W+Td8Mzw2R01VBQ
-	 d61I+ltmryYcGS7njvgIvHIO/fxFRxh8N3T8ipsyzdQLNx97mneHz81GaKh2kvunn2m4z
-	 RIJz8u/DH1er4/FpQ22s9iTAqwTBsnK/yoS8FY7TigPQ5etemxNOxV0C4N0UyZ9FJc9VN
-	 4Va08cEK6oAXB40wdE5tTqcwSb4T9cLmhOvlmAkoihqCaF3F834ujul3coZJ3JL/DlmRK
-	 vHUQXUBQZZWt3JcX5DW8hBqUajV6Ang85qmkcE0vmZLo4QXC7wz1FDar9jJQr0Zyr0A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Rro8dZY6;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.48
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.69.126.157
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792532220;
+	b=gZnDJqhUt16jvIyBgUrG9+8dtod+IFlmBmkYLXwyF+p/EiScZW3HVhZTl51wOZ/+0j2Z
+	 BQnQLFfS1mTnS4gAuOaa/Ce/sVX8SLidCmoOl277pyjwbMRqIIhVJlLTdWgDChLgtvqEw
+	 q4WSVP2O+4q10PyKlVatyCmmWYB4i/xA7Sz0fePv3SDjqGafmSSkjRcnR95QJlZymZHBd
+	 GAh9lVJTLmFT7+YB4NEEDcW/fORfdBEOsTML4Y4Dwpoz3bsPf8Yk/5snbMHKrr+ThnOvl
+	 pj5lAb8jjnqUmHvmwyy2ynBKsvDRVWMEkijiO4Ibu2CHW4A3/N79UocF4hWyZDWlzRA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792532220;
+	h=DMARC-Filter:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=DniO7GTUvw7bqTyFUYAZgt74jqpmOaAIKPkBtG5q2Gk=;
+	b=KXuVmH7vf6SeonReslLLvNHG7t1ACs5bbzkWZAiR9WUr2t4RXME3TpZo3KFzYmt3dieN
+	 HN+tTULB81qp3EIU7WVBy5rMbvRvkLzQWB71eddazBsX+IC6bBfrK3k7oZ5LNUGmDmb9M
+	 FXA2axKDZukYb5iCUmZs1I9AAUhgrt15DYiBSImQLsCV71ZU3pfCheeNFdMwrvxwjjyQW
+	 r/7FGQGX5YKLzJlEaoS3hrD1n6oIOFACAx5KgNTidBrJeHVQwbjbBFMOJBFdxuQd5T6Kj
+	 7g+koEybe4snDvS866KMJTQMBp1CW0hwTTGZiUNpkniRHRLTeDcvLi5s3IjqSyBlpag==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=weissschuh.net;
+	spf=pass smtp.mailfrom=weissschuh.net;
+	dkim=pass header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=IKuIkBXf;
+	arc=none smtp.remote-ip=159.69.126.157
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CB0606A31A
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 20:16:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19CB0606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F295606A31A;
+	Tue, 20 Oct 2026 21:36:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F295606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Rro8dZY6
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a1de789b63so17305e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 13:16:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792527406; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GItzbjOhbqHCfbs5JAgx942sfYFgTjPf9J0pVcaZa+tZnkGqn6rGOQVvJRv//nPtHj
-         oOhL63JVEjrEDWsKXSv8cJQVLqF4EVjZCZ61m+jrd+M39r2Kw/V+bEtCn4bgEFDnhUZR
-         v6rqOW9NU50glcMLzILlU2VjK8B0jtC1yF+EPkvI/WdSqpndUfOyV/+kXdaWBjBMOY6N
-         T9v/uey9QIx3MNxuJpBEW6XQVNlDnD3gY0/sZ0baNYtqD5hO3zCS0PcMaiQ7w9RCNz47
-         DhHFMQ6z3xzl9OIh9HSUYxbtMTeEjUqrgSvrfSB4Q+7dDEzUfy18fU0+p/fSoC45qcin
-         Tuyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0h9M3TYjYg/Zu0GFYIpY3pxrKT9v+m/rFawThlx/TC8=;
-        fh=rb06ez0JMpakl9e2XoGworLabi4fdFH6M9MVlZJ23GY=;
-        b=mx3aucZVNRLioApa1Q6zSR7xXdxuzE6tNLcePqA7Je8hJVO3tnXwNihsH8/WogfVX2
-         owf64oXohZUWzZTD1SR3jL2el2fZqEM9rgzY1cIW3ogRLQ6jnBvwdJQJdx+Q3m611Vx6
-         2u/0Qn8eHMuefV0f80y00QWyqUREWDJUIj7kjBKWFaYMypUNv6mF3E3uhYdZlhg0bUXq
-         GuqmKwH3+yDUeqITV283dvcLyLcmSUaJL/Tfrw3ki7XUY7LhXB4VnBb9jCMIvgSBt6yL
-         M3qObUOP+/jEaKKE3EJk7d1hHkXTyX+sGH2wICPvpzflVu1TLdbK9vV1M1tX+4dRv7Qk
-         qwmw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792527406; x=1793132206; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0h9M3TYjYg/Zu0GFYIpY3pxrKT9v+m/rFawThlx/TC8=;
-        b=Rro8dZY6yl4AHc9wo5Vrysgk0rLLxepPlokWbH7DrBnLl6SRbHNoIpkulMS/zFx7By
-         7cUJqZl00HgcjU9wPtT+KSCBuJKGhzsR1j5ZSRYKDALp0WbhQb9/HFhn7ly32KT05JY0
-         tb/2IhrCHwfBNGd2eFvtPEh4fDDv/Hs9fL1prF410NMVNWshdLZfHyqG5Rfn9LWFboTZ
-         g8C5Xg+XFUJh3e5ZQAWX6zV+f/A4B4iZk6ygUpCf2ZifapmvtmqckX44jGxW8T8H7H8G
-         zqmqXhYmZO7nIaxnuk6u5YPZA0kE//bfkR8csgK3A60yNWn0lGE55iq6lZVT1Mapf3xN
-         aZqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792527406; x=1793132206;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0h9M3TYjYg/Zu0GFYIpY3pxrKT9v+m/rFawThlx/TC8=;
-        b=mcaiBR75cGkKVskjZ41QCk0Ejy7FYfofinnrT92lXPWzeGkKkFMQwCLW1XedIl+Asl
-         hklNSifUjdoeyyegycVfNGEoWxH3W3ZeRAGgCbQjZ119aoLVnIlgTNmtAkoHldPoVE8X
-         nSEmeCEcxfpDs4MK0UwcgU66q4C5lbvsSb2qAr3jZgFptvlrVs+SMi1QVTq+udKRIHy7
-         AFQjsyjPmBXKcK7X7Kk32bl5Tzsnm4QsMmSdoTjuI04Lt9FhE3zFFZ/yVcDq3/QocJ6x
-         CId98xFVEd0liAD8lLckYP84VkAix7oUXNmQHYcSISHmxfYlaQkEc+rM+qeLawb2ooCe
-         dd/g==
-X-Forwarded-Encrypted: i=1; AKwUvBw876pR1IUke2T+DSz1l/ytmA17EnlMVYzQjuNTmBCZey/xB86/bhRNNGYUHOK+3GN1bAoyD3o5niMnMOyW6g==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKLU5t1b/9zBtZS6J5HiYd6t6x8+1+pNsfPV4qPlnrzx039S39a
-	l3bicwLAn9fasqOhUwEOtDFzJJT3E6N1c3NGr/81yRJn6mZX5VPJ23YwamlW3UCKoI8YImFMG7C
-	MJGVDCXlZ6kkV6JG+F/VWY5h3zv1UWvzyC7KZMXZb
-X-Gm-Gg: AYBFou21L6NfWgRkSlylAKpD5UxwsMIT6C6mgT/DIG8bcCg/bDERrwPPkwdeSRyV3lB
-	xqBuMCeqiYF7q4nVIXn/yOilgm2dR3W8NT7DWGpKTQf2vf/qffD+vTE9dxfP/WD1YDngswF8/GN
-	Xf357DQwyFwin8zQaMCv62TbQGaetc+eJFOQHOUiYt1NSPHVBSTbBAl3bNoAfY4+WrRz+HjRc+g
-	haSu5v+NXPecvnC+nMKJhCZgOsp2r9itnpt+AwtxyQp3muH/akopZ2rHCR8lRKGlyuDcUCINlAf
-	PtQUPgaNLVt/SLT462OWjn5oUL0DVTIr3evnQ4VHuGmKV7qbJMiMZdTHUSLohED1fhDDdvFjwYv
-	7tX2I8TaLgQ==
-X-Received: by 2002:a05:600c:a402:b0:4a0:1ca4:2741 with SMTP id
- 5b1f17b1804b1-4a1f598682bmr1067665e9.9.1792527406013; Tue, 20 Oct 2026
- 13:16:46 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=IKuIkBXf
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1792532217;
+	bh=PyZDwwkl589eMcugJzYk5y9RrjeAtVDA2rA8OJ4cCWM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IKuIkBXfYbTxMiG93vM1wcRM3MaxqlK22grQXBNdYTbTlJMjoj9HuH2Gw4EIilORU
+	 BAPCqnsTj5dJg3ozea2Z0O5yuIgrdkkj4f4clQDyhDUJKTxEeiI5K8ELoOGorn+l8k
+	 WTwxjqyekY0t4jB0Jyl2rLTb3az1y84bQlgmcyuY=
+Date: Tue, 20 Oct 2026 23:36:56 +0200
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, 
+	Jason Baron <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Lyude Paul <lyude@redhat.com>, Yury Norov <yury.norov@gmail.com>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Aaron Tomlin <atomlin@atomlin.com>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, driver-core@lists.linux.dev
+Subject: Re: [PATCH RFC 00/11] rust: add support for dynamic debug
+Message-ID: <ffe50a28-72d7-4b88-b7db-b7a590aacbc4@t-8ch.de>
+References: <20261011-rust-dyndbg-v1-0-832e4039b71f@weissschuh.net>
+ <DM9OY2QIU84D.2T3QX6SJJI6VH@nvidia.com>
+ <310ae622-20e8-42ac-b501-4315c4cd4d14@t-8ch.de>
+ <20261020212542.2e3331c4@inno-dell>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -104,49 +75,127 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019-rust-shmem-fixes-v1-1-3f7f6de5b5e7@google.com> <DM9O11JY63Q2.1U3PB5GL0JYOQ@garyguo.net>
-In-Reply-To: <DM9O11JY63Q2.1U3PB5GL0JYOQ@garyguo.net>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Tue, 20 Oct 2026 13:16:08 -0700
-X-Gm-Features: AclHuK-3k8j6k-bTltQ8cEj3qPss7TOR1d3Ms0fv42pBRizgtolJ9QhEZUGBs_k
-Message-ID: <CABCJKuf=7aVKfC14cXymn-BBfvA--3cfWjpTnBY0orkic5NzRQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: drm: gem: shmem: do not leak pages when sg_table() fails
-To: Gary Guo <gary@garyguo.net>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Lyude Paul <lyude@redhat.com>, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261020212542.2e3331c4@inno-dell>
 
-On Tue, Oct 20, 2026 at 5:31=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
->
-> On Mon Oct 19, 2026 at 9:21 PM BST, Sami Tolvanen via B4 Relay wrote:
-> > From: Sami Tolvanen <samitolvanen@google.com>
-> >
-> > `SGTableMap::new()` takes a pages reference and maps the table before
-> > `Devres::new()` allocates. If the allocation fails, dropping the map
-> > frees the table but keeps the reference, and the next `sg_table()`
-> > takes another one. `drm_gem_shmem_release()` puts only one, so the
-> > pages leak.
->
-> Sorry, could you explain it in more detail?
->
-> Creating a SGTableMap and dropping it doesn't restore the state? If so, i=
-t
-> sounds like an API design issue.
+On 2026-10-20 21:25:42+0300, Zhi Wang wrote:
+> On Tue, 20 Oct 2026 19:30:33 +0200
+> Thomas Weißschuh <linux@weissschuh.net> wrote:
+> 
+> > +To: Zhi Wang
+> > 
+> 
+> Thanks Alex for bridge the threads together!
+> 
+> Hey Thomas,
+> 
+> Thanks for the comparison! As a user of this feature, I'm happy to
+> combine the two series and see this making progress.
+> 
+> The Bounded types, bitfield tests, and module_path!() fallback look
+> like useful additions. One clarification: with CONFIG_JUMP_LABEL, our
+> disabled path already has no FFI call. static_branch_unlikely!() is
+> sufficient for our initially disabled callsites, including enabling
+> them at runtime.
 
-Correct, SGTableMap::new() increments pages_use_count, but
-__drm_gem_shmem_free_sgt_locked() doesn't decrement it in
-SGTableMap::drop(). The count is only decremented when the object is
-freed, in drm_gem_shmem_release(). This works unless Devres::new()
-fails here and sg_table() is called again. I'm not sure if there's
-some background that led to this design, but I do agree that it
-probably could be more intuitive.
+Ack. Although adding jump label support as a later step would make the
+patches smaller and easier to review.
 
-Sami
+> For the combined series, I'd like to retain these behaviors:
+> 
+> - Debug logging is independent of debug_assertions, starts disabled,
+>   and is controlled through dynamic debug. IMHO, fewer distro kernels
+>   are compiled with CONFIG_RUST_DEBUG_ASSERTIONS=y nowadays. (At least,
+>   Arch and Fedora are compiled with N)
+
+Ack. It would still be useful to also support default-enabled callsites,
+like the C version does. What about '--cfg DEBUG'?
+
+> - Disabled pr_debug!()/dev_dbg!() calls do not evaluate their
+>   arguments. IMHO, it seems the current dev_dbg!() in your patch
+>   evaluates the params before checking the switch on/off. (pr_debug()!
+>   looks fine though)
+
+As far as I understand, fmt!() itself does not yet evaluate the
+expressions passed as arguments. It only typechecks and
+creates the precompiled Arguments<'_> structure. The parameters' Display
+traits are only executed when the Arguments<'_> is written somewhere.
+IMO the typechecking should be done even if the code is going to be
+compiled out. Similar to no_printk() on the C side.
+
+> - The dynamic-debug prefix flags remain supported. (I use the C version
+>   of dynamic debug to support e.g. +m, +l and _t)
+
+Absolutely, this is a bug in my v1. It is fixed in v2.
+
+> Could you share your pending encapsulation/Opaque and static-branch
+> wip patches? We can then work out how they fit together, incorporate
+> Alice's review feedback, and preserve attribution for Andrew's work.
+
+Here:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/thomas.weissschuh/linux.git/log/?h=b4/rust-dyndbg
+
+> Thanks,
+> Zhi.
+> 
+> > Hi Alexandre,
+> > 
+> > On 2026-10-20 22:14:12+0900, Alexandre Courbot wrote:
+> > > On Sun Oct 11, 2026 at 9:52 PM JST, Thomas Weißschuh wrote:  
+> > > > Add the Rust infrastructure to integrate with the dynamic debug
+> > > > infrastructure.
+> > > >
+> > > > Static keys are not used for now, as the full bindings are missing
+> > > > for those. A follow-up series will add that.
+> > > > Also custom classes are not supported yet, but could be added on
+> > > > top.
+> > > >
+> > > > Patches 1-4: Generic Rust preparation patches.
+> > > > Patches 5-7: C dynamic debug preparation patches.
+> > > > Patches 8: Rust Dynamic debug infrastructure.
+> > > > Patches 9-11: Rust Dynamic debug enablement.  
+> > > 
+> > > Were you aware of this series [1]?  
+> > 
+> > I was was told about the original work from Andrew back at Kangrejos.
+> > However I was unable to find it on LKML and it was not clear how far
+> > along that series has come along. The posting of Zhi's v3 only
+> > happened after I started on my variant, and I did not see it until
+> > you mentioned it. So my development is completely independent from
+> > Andrew's and Zhi's.
+> > 
+> > > There seems to be quite a bit of overlap.  
+> > 
+> > Indeed. I see pros for both serieses:
+> > 
+> > Mine:
+> > * No FFI in the fastpath.
+> > * No need for RUST_MODNAME.
+> > * Use of Bounded.
+> > * Tests for the flag encoding.
+> > * modname!() as function name.
+> >   (As discussed with Benno and Gary and LPC)
+> > * Better encapsulation of 'struct Descriptor' (partially not yet
+> > posted)
+> > * Use of Opaque<> to wrap bindings::_ddebug (not yet posted).
+> > * Use of !cv() (not yet posted).
+> > 
+> > Andrew/Zhi:
+> > * Better docs.
+> > * Static branch support.
+> >   * static_branch_likely!() support is missing however.
+> >   * I also have follow-up patches to enable static_branch_likely!().
+> > * host doctest support.
+> > 
+> > I am perfectly fine with merging both serieses.
+> > 
+> > 
+> > Thomas
+> > 
+> > > [1]
+> > > https://lore.kernel.org/all/20261001145940.1077801-1-zhiw@nvidia.com/
+> > >  
+> 
