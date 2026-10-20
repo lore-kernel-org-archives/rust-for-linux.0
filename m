@@ -1,79 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792484752;
-	b=XIvO67E5aIWKRooauREw6Y+BkRX0Wd4lrwyi4w3n3p6MkXNX5xbFIcwc0gNECPzIghLy
-	 kZQBTf2/TJ91ECqyFgghCLqfPRcytHlReYMhH8tEEoAb5IOAwxJzhenjxN8pVWZPrpATv
-	 g8Nww50lMYXxgjEiCOFImpYJl/N3bDApPVdVu62mSIjAGY3HakkZIiV9RUuun3f4hQmzW
-	 +xa7GX5H8c8CpVf2RUsh0xO4etqqXFdBTwoDnFTZ7iIeruRy5Jo9qz5M8rbivQUY92imB
-	 nEVgE58z3rjH4YCLY+zDbyVukRLBOP8DtcLcNNnraFMvtxsEk83/j01M+jM6e469Pqw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792484752;
-	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=e+6nVyZLjebD5QCGUBHeGP+gzXckIy/LBOsLfc7yS0k=;
-	b=M20xG+UF8DGUojHn5Iv61bV5J5111ks2V+QNeGP74YPji45HPuAFzO7KuXL2fAgew5j2
-	 1JdRr11xsJrUTnVI+BYAc2+lKZun3VDvZ/zYdkEDXfx8maQ1HE1ttYS+xudYF88/u0wCp
-	 WcXJqbaK4CF1r0SBp4YFMCvwFkX0uxgXkAqae/jDmRsS7h0B2vg5NC2Zi4NVMDPJFUsVD
-	 kZj5qGLGK5rN/MWQWjHfV1VVGk6WytZcrTDRaBSV4AqF+TOXQoFRp8TmEM1Pu7h1tfmrP
-	 XPBCmLg79gFKK9w5tof4TKQTfee1BIMuMVoi58SZ1wq0Fu0yekhs2H3IfRTvYV12XMA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FupvrTXL;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB99560A2619;
-	Tue, 20 Oct 2026 08:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FupvrTXL
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792484750;
-	b=zWaNAvCmp5xdHjoFVqp/S2tloPsgzZO/3AUQQLGH6vRbHIQAIitTaf3p5sKbxWq0DoKF
-	 WN56UFKdp4tNTSiRwtSIhoAv1JHDirBq1fP8FvCeL6AJyP27G0BYuzegVmPUq/zdGJvK7
-	 1qHJVF6G72GF4Kt8HiBuqFsspsMW/ZiCjI7EbSkeHRxPLvMqSzFMtv+s1GBiBYhzJuSBK
-	 ydQjDARS9RJG5IfgNEC7fdXqF+Trem4hejZvCt3WXf2bNIZNaVeq5V7wctm6TGUCykVxg
-	 lNVgtRQzQwX91/xclFRFNYddKRv0QK9CRzKo97U5PcAHSOFGA/oHJGspLngg9V9kg2Q==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792484750;
-	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=e+6nVyZLjebD5QCGUBHeGP+gzXckIy/LBOsLfc7yS0k=;
-	b=pqlQPlQ7VIlPFmsp1K1e8pkIf3iIOOBtoagTpqL90lfUy5BsjEz3dGEsrY2UnJaduBwP
-	 gJm/RBH/jpzrHiPsUPrRlsZoQYSsFYDYd96KlORE3saqTfHgquCl0YSIBAUe/rTgU1/lO
-	 46mTxToN2A7FUqrPLhmr0iulRztQvRP8Rmqcolbi5kRHszVSF+Myp7XZ0AJbq4Xerrevn
-	 Td/bdlUrIjEtyIZD50pyFsbAi6UsXr/5LiTclocerpBN2Y43TRIpsIbq3gUwc7XZLzkUD
-	 1egnirFHAu7hRHraX6zdLvij9x9GVGml1Q4qpeiq4MPamaS/WL8QOQslOJtOZJgR54A==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.69
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792484931;
+	b=UAdOmMm4bKoKbo2pAaYvTVidNtRKLhB331kYpe/jRfKlAFxBvA2+/wsRnkdRtEEYjIqb
+	 JKpKPPdgYHZUF6/VdyLc99qa7J0S4gn3oW2f+baTgimiPxwMgglSLb/wqF4+vqVp+j1ZL
+	 LCedSeOqCh5kTj1KmXyW/TMyteKEFNCT8Zsw/myZ74i99Lb/gReDSGmsMiTBXFowVI+Lv
+	 qqXSWcl1JZQZvy7hoDwI8gLrxuIRfSCBEB1XAv9ZFc8BlHrOixO2Wct5MfWlu6PLuXiPO
+	 Rdm5qktw3G1d12O/kFElAvAAVSdPuhEL3DLULAJ90Awy0Pobb3mTPM9WxriYfGloytQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792484931;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-B4-Tracking:
+	 X-Change-Id:X-Developer-Key:X-Developer-Signature:X-Mailer:Message-ID:
+	 Subject:From:To:Cc:Content-Type;
+	bh=V2g7pl//bRYOezc7U12uFpcQJT5vXcVW3O60hvJjYx8=;
+	b=GNcIvQyugss6ro62AaDkaTenY9SD60ArKqQG0Ev2x/2PDoW9UKyDv0kXcV6scIOB8JIu
+	 jMZz/tXlDo+pAaKqLdn01H+9p1JUIgIdcsweXPPvu8odGXNFUn/NRkLdDeS3v+IWP6CkX
+	 hCQtqFOQoCVYX3WBxeIlrbLnTQlPIiwuSTjRYhP0jSL7it/C46J/mXZIHU3s43muRzsGp
+	 wjyVMYAoCffOSleDNbZK1CBNdgke7ls/xPPwnTk34vYa2WyuOc+SscCEv4lPG6UUG+Py8
+	 BJaKqF6MvxUpFEijXMhLp5z2gSMXDo+3i89sKZvGn0CstALTlrIOK0nWtwLSTCYnzRw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=aWx7wiq+;
+	arc=none smtp.remote-ip=209.85.218.69
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 44FC21F000C5;
-	Tue, 20 Oct 2026 08:25:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792484750;
-	bh=e+6nVyZLjebD5QCGUBHeGP+gzXckIy/LBOsLfc7yS0k=;
-	h=From:Subject:Date:To:Cc:Reply-To;
-	b=FupvrTXLH0LyxcAiC5Xh4k52MGgHqL2LniyJyWZ3PTCjp8d3Rv9FXaQ+1BpKr2mwM
-	 kQcOFNxiqR7+OMcHRCW8JXZvIcIEd0DQIdq3SVvFepgYZcJ06gREA9H4Y6frdJvra3
-	 dBZN7IlJOLNY8Rqj6lLZbTRf2nBiD64foNGx20h02Ldl8q+MNiDd7SmpRTP3xvxL7s
-	 cCt5lX/dnp4GzNJITqXbrRehsFezw5U1YVLruqNu5le80gesEpUUTwjqwqdXYdE4WI
-	 fR/sb16vDxlokb+/uRFztXbJxX9yiRrmuVfWhjfH1zJsoowLXhYNsFadmxhckCSTxR
-	 cXbPrNogiANuw==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 9371A430CE;
-	Tue, 20 Oct 2026 08:25:45 +0000 (UTC)
-From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Subject: [PATCH v4 00/11] drm/tyr: add VM and BO ioctl support
-Date: Tue, 20 Oct 2026 16:25:17 +0800
-Message-Id: <20261020-tyr-ioctls-v4-0-704de77da223@kylinos.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACF0606A31C
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 08:28:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CACF0606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=aWx7wiq+
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c449a3223e9so84480766b.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 01:28:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792484929; x=1793089729; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=V2g7pl//bRYOezc7U12uFpcQJT5vXcVW3O60hvJjYx8=;
+        b=aWx7wiq+/DasFoQT5M8519XstD7g7rHGmFqLXXHdq8UD18VN9WqjYyA34BoF3bviQk
+         B4vvUdvpU1nBOVOREmo/lGovnmsq5GOEYTlp0gi0+dCNgmjND/0tELpEXF5B6CaDrOzf
+         6GyOIQnac4Qor8u0mLpD7RGet+FS+RdigYT7YL8G1kXru0m6uwW7tYVoApw+/OUZP23T
+         2YEeef/FlcNPtoqsCNMdJ8DYahu+lJYagijueQiyz3REb+omSUsWSIy1dn2sIZHMIbV6
+         achWG0sNI5isjwq+U6cbpUGIycUIMLysuIq7Nje8co+27sgva0Rmu4jk29uFVT3Fwr+B
+         mk3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792484929; x=1793089729;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=V2g7pl//bRYOezc7U12uFpcQJT5vXcVW3O60hvJjYx8=;
+        b=wShQbvUuCtVGbf8ygXUtLYoNwwjLzihIPhO/dqiVhUwgM8r1a6FvydnrUtZ9vxhmWi
+         eYkFV9rwGH+ay42dgCUfcchpdYShSv1lvULM7d135NhJiUxyi5FX+FSiBdXO0grOpMWs
+         5dvn1KR5RFFkbRikhnVUxzcVOCdCuIk2ennFSIkD8hZgyOC6MxG5RWuV4DxG1xx0dwoD
+         lAesHicqK0pWA7lKMVHvzVbEx0AnqJLY1qRyObnPjUQtdbTwMxsOQ5VSeo+CMqfuvKgh
+         NHfgeW/jXJhqFiYgpn5669lxyYyy1DpmK9LawoXiHRx8WrNNvalKmJkrpF78h7Rjn3s1
+         etNQ==
+X-Gm-Message-State: AFq9FYL3qvc/UvEUa7kD9vUR68gzhuRujAkRSO2X9BchmW7y/SdAaSW4
+	aJXBhRqE9oIwrivtBXMQmcl4DLo0r6u5jt9rXVQZ+kdlWv3p/PwEgt5kmh5WFnqul/nOziCOMVF
+	q/nZWUh/trxE7gJ3erw==
+X-Received: from edqi6.prod.google.com ([2002:aa7:c706:0:b0:6ae:1861:6a4b])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:906:f583:b0:c2e:52d6:1fb7 with SMTP id a640c23a62f3a-c419e63d14fmr694939266b.22.1792484927900;
+ Tue, 20 Oct 2026 01:28:47 -0700 (PDT)
+Date: Tue, 20 Oct 2026 08:28:37 +0000
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -82,161 +75,112 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIADQm12oC/x3MMQqAMAxA0auUzAZihQpeRRxKTDUgVVpRQXp3i
+ +Mb/n8hS1LJMJgXklyadY8VbWOAVx8XQZ2rwZJ1LVnCcPO5IQdFibzPGhfsqXeOhTx1Hmp4JAn 6/NNxKuUDO8/rdmQAAAA=
+X-Change-Id: 20261020-fwctl-cfi-encoding-70766ce0a03a
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3125; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Rk+J0lAUscPPohWGJvG/cv0f/YYZw8raSTrEMula37c=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBq1yY6KvWn2YmrQl+P2uToSiXlz+Tw9B8f8Vp2f
+ JJ4S+QCG+eJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCatcmOgAKCRAEWL7uWMY5
+ RmKpD/9vmUdmYXdWFu4sxnhmjYGpEa/8KUAAPN5eTas3arHAO6iEHKznNk2FbhezzCVJ+g51T1y
+ tqavjmoRtuwFxTQiSSsMKuWrS22j9AjOZIrbIGc5whhovmn4ZgSIXl62woNPbtd6xhAzU67u/ag
+ TYAa1bgpObC1VJyQfVuPIFKkpF0QyUnGI8pEYvUIWyJnQ6KrfpzK7zTD2rWGIEMQH56IdGWqVjD
+ vmS06VZGJ4aLLuNwfxLv81UbJLp/yVDoB0+nvbzRLXwgHAk6n1uaRLPSCrLiEcmVMIM+eYlIy5Z
+ MnAbuv+95H4EWHTQuyrADqknsijLkCoaN3Mwaw154jKjxMqZmpI7H8CrpxXgJzfZc3LQatk/Uci
+ YXwA7tO/eiWxGGzusDNnL8BAEkmJpat2f/I0OI+YdcKCFgoVtv930Wh2UGT9IY8rDAHUbQLcojW
+ JfFbCXJnhA34sq/tInGOpTWYNNdCJiFO/gTbxvEUQyGPfguALE0PIcE2VCct1jBK/rNg9nQphLF
+ WIe8S5uSBIVEs5P60gf0ICdy54Y6uFRLF3vuVzD3xIKytasfcvYN7D51cxxoL5gc3bgx2kYgvEU
+ jc+eQzDxXXf3ZmkzDW4l3G7vk8ipfZFJWCox2JKuaaGDYWXy1nuVGA/tO4E8aGHThjUSaI74UCl 19zcIugQEmSgilw==
+X-Mailer: b4 0.14.3
+Message-ID: <20261020-fwctl-cfi-encoding-v1-1-ebb30d1500df@google.com>
+Subject: [PATCH] rust: fwctl: declare cfi_encoding for fwctl_rpc_scope
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	"=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, Dave Jiang <dave.jiang@intel.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Saeed Mahameed <saeedm@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
+	Jonathan Cameron <jic23@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Sami Tolvanen <samitolvanen@google.com>, stable@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAG0l12oC/02Nyw6CMBBFf4V07Zi2CAmu/A/Doo+pNGJrppVAC
- P9uIS5cnntzclaWkDwmdq1WRjj55GMocDlVzAwqPBC8Lcwkly3vuIC8EPho8pjACY6OW6Odalk
- RtEoImlQww65YegF9UoaAc97/N6Hz8xG794UHn3Kk5WhP9b7+MrL7z0w1cJBt1zROCyFsc3suo
- w8xnU1g/bZtX1s/RDLFAAAA
-X-Change-ID: 20260901-tyr-ioctls-f10ef0dcbfa6
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org, 
- linux-mm@kvack.org, dri-devel@lists.freedesktop.org, 
- driver-core@lists.linux.dev, Ke Sun <sunke@kylinos.cn>, 
- linux-kernel@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792484721; l=4895;
- i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=0W/Zzd3YJxNeZ/dKwlzvsYXdPOz5NCl/hBwAO8KxQJc=;
- b=ZCt+HemY9ZaAgV5qL4JXMw4PoShS3j9pE/9zTZikxUtm+7rqPO/xfi9uboxExmsU0kTCg74MU
- gOX+ht0Cji7BgDZkLM5fZzFZylhpPfO6T9gA38oJuHNgYfFVa4c2MgP
-X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
- pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
-X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
- auth_id=950
-X-Original-From: Ke Sun <sunke@kylinos.cn>
-Reply-To: sunke@kylinos.cn
 
-Add the VM and BO ioctls to the Tyr driver, aligning its userspace
-interface with panthor.
+Currently, VTable::fw_rpc_callback() takes scope as a u32, whereas C
+calls fwctl_ops::fw_rpc with enum fwctl_rpc_scope. With kCFI enabled,
+enum types are encoded distinctly from integers, causing every fw_rpc
+indirect call into a Rust fwctl driver to trip a CFI failure. Thus,
+generate fwctl_rpc_scope as a newtype with a cfi_encoding attribute and
+use it in fw_rpc_callback().
 
-The series is based on Danilo's `drm-file` series on
-`drm-rust-next`. It also carries Sami Tolvanen's buffer
-cache-management patches from
-https://gitlab.freedesktop.org/panfrost/linux sami/tyr/7.3/dev.
-
-The panthor IGT tests pass on an RK3588S device.
-
-A branch with the full series and all prerequisites applied is
-available at:
-https://gitlab.freedesktop.org/alvinsun039/linux.git tyr-ioctls
-
-Link: https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/64
-Signed-off-by: Ke Sun <sunke@kylinos.cn>
+Cc: stable@vger.kernel.org
+Fixes: e052daab94ee ("rust: introduce abstractions for fwctl")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Changes in v4:
-- Rework VmPool teardown: add() returns an AddError the caller owns,
-  a conflicting stored VM is killed with EBUSY, and remove() kills
-  before the ID is reused (Daniel, Deborah).
-- Wrap dev_dma_attr in a DmaAttr type with dma_attr()/is_coherent()
-  and rename the patch accordingly (Danilo).
-- Fetch the sg_table unconditionally in new_object() and drop the
-  conditional flush call (Daniel).
-- Use dev_dbg!() instead of dev_err!() for user-input validation and
-  EOPNOTSUPP for the async VM_BIND path (Daniel).
-- Drop the pr_err!() calls from the VM specification patch (Daniel).
-- Link to v3: https://patch.msgid.link/20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn
+ rust/bindgen_parameters |  2 ++
+ rust/kernel/fwctl.rs    | 12 ++++++------
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-Changes in v3:
-- Drop the VmOwner wrapper and kill VMs explicitly on destroy and
-  file close (Deborah).
-- Add Sami Tolvanen's buffer cache-management patches: coherent
-  devices map buffers cached, write-combine buffers flush at
-  creation, and BO_CREATE accepts WB_MMAP.
-- Drop the new_dummy_object refactor; the dummy object stays a direct
-  Bo::new since new_object now fetches the sgtable for write-combine
-  buffers.
-- Document the LargeSizeConstants trait in the sizes patch (Miguel).
-- Misc commit message and comment cleanups.
-- Link to v2: https://lore.kernel.org/r/20260908-tyr-ioctls-v2-0-88bea777df67@kylinos.cn
-
-Changes in v2:
-- Fold the VM pool into vm.rs and cap it at 32 VMs per file (Deborah).
-- Add VmOwner so a VM is killed exactly once on drop, regardless of
-  remaining references (Daniel).
-- Replace the VmSpec enum with new_for_fw()/new_for_user()
-  constructors (Daniel).
-- Parse VM_BIND op types via VmBindOpType and use the kernel
-  Atomic<bool> for the unusable flag (Daniel).
-- Use PAGE_SIZE for the dummy object size (Daniel).
-- Rename BoData::create_flags() to flags() (Daniel).
-- Report VA-split failures with dev_err! at the caller.
-- Link to v1: https://lore.kernel.org/r/20260902-tyr-ioctls-v1-0-e0fdbf8bd108@kylinos.cn
-
-To: Miguel Ojeda <ojeda@kernel.org>
-To: Boqun Feng <boqun@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-To: Björn Roy Baron <bjorn3_gh@protonmail.com>
-To: Benno Lossin <lossin@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-To: Trevor Gross <tmgross@umich.edu>
-To: Danilo Krummrich <dakr@kernel.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-To: Tamir Duberstein <tamird@kernel.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-To: Onur Özkan <work@onurozkan.dev>
-To: Lorenzo Stoakes <ljs@kernel.org>
-To: "Liam R. Howlett" <liam@infradead.org>
-To: Lyude Paul <lyude@redhat.com>
-To: David Airlie <airlied@gmail.com>
-To: Simona Vetter <simona@ffwll.ch>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: driver-core@lists.linux.dev
+diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
+index 8402b0c93545..e4f8c07743a8 100644
+--- a/rust/bindgen_parameters
++++ b/rust/bindgen_parameters
+@@ -27,6 +27,8 @@
+ --opaque-type spinlock
+ 
+ # enums that appear in indirect function calls should specify a cfi type
++--newtype-enum fwctl_rpc_scope
++--with-attribute-custom-enum=fwctl_rpc_scope='#[cfi_encoding="15fwctl_rpc_scope"]'
+ --newtype-enum lru_status
+ --with-attribute-custom-enum=lru_status='#[cfi_encoding="10lru_status"]'
+ 
+diff --git a/rust/kernel/fwctl.rs b/rust/kernel/fwctl.rs
+index f29244fb0d1d..b7778e4d5ee0 100644
+--- a/rust/kernel/fwctl.rs
++++ b/rust/kernel/fwctl.rs
+@@ -53,13 +53,13 @@ pub enum DeviceType {
+ #[derive(Copy, Clone, Debug, Eq, PartialEq)]
+ pub enum RpcScope {
+     /// Read/write access to device configuration.
+-    Configuration = bindings::fwctl_rpc_scope_FWCTL_RPC_CONFIGURATION,
++    Configuration = bindings::fwctl_rpc_scope::FWCTL_RPC_CONFIGURATION.0,
+     /// Read-only access to debug information.
+-    DebugReadOnly = bindings::fwctl_rpc_scope_FWCTL_RPC_DEBUG_READ_ONLY,
++    DebugReadOnly = bindings::fwctl_rpc_scope::FWCTL_RPC_DEBUG_READ_ONLY.0,
+     /// Write access to lockdown-compatible debug information.
+-    DebugWrite = bindings::fwctl_rpc_scope_FWCTL_RPC_DEBUG_WRITE,
++    DebugWrite = bindings::fwctl_rpc_scope::FWCTL_RPC_DEBUG_WRITE.0,
+     /// Full read/write access to all debug information (requires `CAP_SYS_RAWIO`).
+-    DebugWriteFull = bindings::fwctl_rpc_scope_FWCTL_RPC_DEBUG_WRITE_FULL,
++    DebugWriteFull = bindings::fwctl_rpc_scope::FWCTL_RPC_DEBUG_WRITE_FULL.0,
+ }
+ 
+ impl TryFrom<u32> for RpcScope {
+@@ -539,12 +539,12 @@ impl<T: Operations> VTable<T> {
+     /// - `out_len` must be valid for reading and writing an initialised `usize`.
+     unsafe extern "C" fn fw_rpc_callback(
+         uctx: *mut bindings::fwctl_uctx,
+-        scope: u32,
++        scope: bindings::fwctl_rpc_scope,
+         rpc_in: *mut ffi::c_void,
+         in_len: usize,
+         out_len: *mut usize,
+     ) -> *mut ffi::c_void {
+-        let scope = match RpcScope::try_from(scope) {
++        let scope = match RpcScope::try_from(scope.0) {
+             Ok(s) => s,
+             Err(e) => return Error::to_ptr(e),
+         };
 
 ---
-Alvin Sun (8):
-      rust: sizes: add SZ_4G constant
-      rust: mm: add `task_size` helper
-      rust: sync: arc: relax `ForeignOwnable` for `Arc<T>`
-      drm/tyr: add per-file VM pool
-      drm/tyr: add user and MCU VM specifications
-      drm/tyr: add BO creation and lookup helpers
-      drm/tyr: add VM-related ioctls
-      drm/tyr: add BO-related ioctls
-
-Sami Tolvanen (3):
-      rust: device: expose the device DMA attribute
-      drm/tyr: gem: flush write-combine BOs from probe-time coherence
-      drm/tyr: gem: map cached BOs for DRM_PANTHOR_BO_WB_MMAP
-
- drivers/gpu/drm/tyr/driver.rs   |  24 ++-
- drivers/gpu/drm/tyr/file.rs     | 407 +++++++++++++++++++++++++++++++++++++++-
- drivers/gpu/drm/tyr/fw.rs       |  21 ++-
- drivers/gpu/drm/tyr/gem.rs      |  76 +++++++-
- drivers/gpu/drm/tyr/vm.rs       | 357 +++++++++++++++++++++++++++++++++--
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/device.rs           |  24 +++
- rust/kernel/mm.rs               |   7 +
- rust/kernel/sizes.rs            |  12 ++
- rust/kernel/sync/arc.rs         |  12 +-
- 10 files changed, 891 insertions(+), 50 deletions(-)
----
-base-commit: 015bdd5eb1e4a1a35673727f294a88fb0969c77c
-change-id: 20260901-tyr-ioctls-f10ef0dcbfa6
+base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
+change-id: 20261020-fwctl-cfi-encoding-70766ce0a03a
 
 Best regards,
---  
-Ke Sun <sunke@kylinos.cn>
-
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
