@@ -1,73 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792500770;
-	b=nXAfPLk78ZRrFGCFMHBdB2QS5izyd+loT9GtCGh2abO3rQtcXsn/lebCX3cmjQp69TXf
-	 vflSXub671whqUKZJGa6bIz7dNQP50kgvDTN9T5uOrt/n2qmliMpxWHRa0/SOVhSyL/u+
-	 vHPR+SGUTOJ5z23Hp2YZTJTfCJYZ6vFzJTxqbKMjqEFcR7rLBNLs/sjoROrE0qhjESWMP
-	 H7ImZFXT3+PoF7Jtz3dnq7ndRcbRdA1XjgSxbG9EWmYycCsHpSfCdIkscTpePwTxUWimL
-	 2XRW2/42I+8Yvqfac+6wjbpGk846nSTu0Dj6kLok0ws7i2Ie4YinVPHYHdG9uDc8D+g==
+	t=1792500772;
+	b=kr6pn75WyrRmK8uY3a59U9fbJ4AlHB87cIO3DFrhX9jK53U3HOuidx0x1SB2wdB2Jg74
+	 qkJ9l/EV6Tgw8TodnB/A0LzA5EO9uSynknc7ji0mvw8EriU4TecMYkUghKWOHkyN6/J+d
+	 ckMMFXXQKauJAfXwyc6mBinFA2tQraRvlSNlbgDajzCz4gxmX0IviDPZVXcxc2uq1L48V
+	 NJO3YzBzaNy+w+PeBT3UoJHq/6Q6z/m4OAdGqjd+5g+cjp87IdvIDaTDE5H0Flct+z2bJ
+	 p2iFtc7uP7QH32RJZizVvzuWdB6WBtKIu5jYl9dpObFyfhENR2uWr5HrJvxatEVh8lg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792500770;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792500772;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-B4-Tracking:X-Change-Id:X-Developer-Key:X-Developer-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Developer-Key:X-Developer-Signature:
 	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=h4dSeWA0TZhH/a30MaXIOvSiMoTtdnOH3PXIJsbEBS0=;
-	b=sMAJirIri0H3NTCzRm5Djed1xlodEZwFH1YXgW/268DyjauX9y+YebwlwtZ8iy1Ik8fE
-	 44KvwVyt5c6dkjBf8xnasYdbBt0hqMbFwFVKQtUY66oayU9Wlcn+wPlEdfv1p4xgGVmUt
-	 LRlwLggIISYKTXR/nuzhqwY1snOinvrJ3TfVFmdygMouJbRQ0iVKbVj3sV+IAKGzETShV
-	 g6NLvKkAsecPOt65CjV9ZvS0dtbR9U6DRwj3C1GyRw6cHW3wxfMATgpx2YD0XMVNVAivP
-	 bXhJsLvwo1xZgPB86EVp7PgHjy4uw6EGHcOXgUvG0Ys6pvKx8RYH5aM98ytAL3eKZ0w==
+	bh=twTTzwJyohkqmY5h5Pq5sCK9c2e3ondYs5MKDMe3E9g=;
+	b=MXhDSt0a565FjlOsjJ6UozeJ6OXleahIXRfj4Px26SoeEc/tC4ZIxa3vtxTSh9rZYEvU
+	 fKWzAlwhoZE3uWUCLg3swreQ0Z9INLYaazW74GdDdiE7zZvrMVcP+//f84ynY5w3Z8Nsp
+	 Nu9coqyePWmteM54XB5QX+oru5czVDCtKgs/63cakbkgbrZDpvl6cWQkzIhfpuQz503T5
+	 a3wB37mVIpn6IndWsBsGQ+z9VGnAc4WH6npIOSmlUphdBWzS0nM4gD4tFEh4jS8SNup9n
+	 7PtqLUO2JuiOJpZPBzXf391MEttdWvuvxdwO1wVhkQeX+OKp1uy0Cmfw/yt8C/U79PQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Hb+sXrL1;
-	arc=none smtp.remote-ip=209.85.221.69
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=rAZBy4Rw;
+	arc=none smtp.remote-ip=209.85.128.72
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB035606A31F
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 12:52:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB035606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9869E60A2619
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 12:52:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9869E60A2619
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Hb+sXrL1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48dfaaea30cso2186715f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 05:52:49 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=rAZBy4Rw
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a1e295b702so25087425e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 05:52:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792500768; x=1793105568; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=h4dSeWA0TZhH/a30MaXIOvSiMoTtdnOH3PXIJsbEBS0=;
-        b=Hb+sXrL1A3qp3CXvy3N9jCrBC5c3n2L0LCYOi4aQCCOwzOBOLLKtI+Cb+2wEAJic7q
-         z4Eh88dX83J1XOnNYjkokMHB7EtKTFAbmD5nU4Qz0aWWoF5bhAXteoCiHccPTbxAkHqu
-         r8ypT+pIzoxy8JjciI2kd1H2ZNblq/U/WiwinrBi49ydTZeBdqLJrkY1t5RiKWYq+VYp
-         3rJudVa24glVh17W9LujSWf0DbUSMyBwAFjsMccAqdX6inVKWATsYroU35IIWbOoNGyA
-         fY2MqmIQ0pghdDSQjuNPwxYlvPA7cmr467yR8eGxjYn2HHlSAhT7syN6C546thNm0y7t
-         RsXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792500768; x=1793105568;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1792500770; x=1793105570; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=h4dSeWA0TZhH/a30MaXIOvSiMoTtdnOH3PXIJsbEBS0=;
-        b=bZQ8Uy3ocyOVyKLFEXjaLwbIklu2dCEjI5dldFvfPAW8DN46rwsg0w1nGPsVhdxaUG
-         jmLIVDZVucsutM6PEK8qTBzd1H49/oGYqKfMvR2WezOtRMYbZmADcWDqEoIQyjzD818v
-         XxUWDKowetUJNE+oDO9eeIGtsvtwj2nOYZRb9p6l+lFdalESWA1KwyyoXWFaCZX5lNYB
-         OAP6YL2tHzVe5ZtK4pR5+J53icfBPh7imiTVn+rX3bKyJ35GAo2aI1/LSJw6iN3HDuKv
-         xmIsh7DR+CmJMzZBfpthPCt5ak/Jsqcg40hScqHvirMB8vClnRwpB4o3z+lfQPM0Vjfg
-         3hyQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxFH9ifhM7EO2gjYEw6OFImMsy/tuLby6OaPILjLXL2z6sjtKGl8MJjQuSyjrnXRnUL5fHmx1CN1uYqVs93+w==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJKeqSjR38wKXRoBHGZSNMf48bgHvh9pXFW4SG+2x+sV8nktCBK
-	siGdSgLsadNXV6gZdUmIYbwodVtE75Oif4EuPaRPeFyg388EpGEshbYtaI7pNmn3TE1OqbHWx3c
-	TUOC6lv+5jofqT3C8rg==
-X-Received: from wraz5.prod.google.com ([2002:a05:6000:4685:b0:48d:f161:cdaf])
+        bh=twTTzwJyohkqmY5h5Pq5sCK9c2e3ondYs5MKDMe3E9g=;
+        b=rAZBy4RwI2oKKRFrXuJb9L5Y5sqTLhVxwh7q9vKAAEUAcjYluTMdtPkFntyadElm99
+         wS6n0q1gE7DvTDlkL4DvT/xysRy0hD3jrYfSnDnp0S8SEz5SibK5yPkI9LD+uu2xUX5r
+         /25UkjAwX0Wa2oyxEW9bJ9qcT54oDSUQ94Rrtl54adKGfIt8UDLwq4/s8oafXO93AEa2
+         x7v0gKJzXuacA+zJ3edFCeJiwjOwylCIMW82y/EtImV4ZXzEfCEsGjzrkE3sBffyPZ+Q
+         EEQfoG6mOsMI59Y2wjMRRH777yQO4auWwZZoS5EFanm7fsl7eXd2XHqyz2dY4QZEASzW
+         g8DQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792500770; x=1793105570;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=twTTzwJyohkqmY5h5Pq5sCK9c2e3ondYs5MKDMe3E9g=;
+        b=iq1iJdNIyqwxAeScUfj8UG+umS1TUxO1XBA9NYF6+6ltuBupdu8Hz1sPVM/bV4jv2g
+         AoreOeGx+IvyrAujmknFNa8XpTJZvD2NrinajgSC8l+u85Bdoh2VEvaQ7jejbQWr2rKQ
+         x/XmotkcW08KSbjzs3iS/RUXrxYCANyiLB7tKHWMF/68HYgDgpRWGiFEOsVnZl4s23WW
+         qxJCw4He+ELWM8MD+B8kSDVjUcD1A2HUSZS+R2GrRyY2xvy8z/YuWeY7rAHys3akZqWP
+         YAFh/u6GLUQRpRHN9GaXMMn+5AleqLv/TdZa53zspxNd4r40HEMQd1/4SE76DvisxN9T
+         b2Uw==
+X-Forwarded-Encrypted: i=1; AKwUvBzDV5zSYDiHcVV77COTLuPnv+OMvsrnd5CJi6cbpQ0eoyJYMdqhp6DaSxHiXrLb3x3PVJfsnFyJMkJOaYWVxw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYLgbYTiXBv6ef5QS4x1v8iLr4uSHfZ69/0C4q9sq3Znj4oMg9AF
+	Mont3IcgU9hcWqvfOeogK1YAq8FEbcHCQ+Rp2xyqte9cf3oQmiCMX+uwii9Ut/VrOwm8P5bGteb
+	GnhUJX9ySYDgpQoKklQ==
+X-Received: from wmbjl20.prod.google.com ([2002:a05:600c:6a94:b0:4a1:b6ba:c116])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:4694:b0:487:b4a:3f54 with SMTP id ffacd0b85a97d-48e07f9da3amr16892672f8f.29.1792500767961;
- Tue, 20 Oct 2026 05:52:47 -0700 (PDT)
-Date: Tue, 20 Oct 2026 12:52:35 +0000
+ 2002:a05:600c:c166:b0:4a1:f736:79f3 with SMTP id 5b1f17b1804b1-4a1f7367b83mr29948805e9.5.1792500769489;
+ Tue, 20 Oct 2026 05:52:49 -0700 (PDT)
+Date: Tue, 20 Oct 2026 12:52:36 +0000
+In-Reply-To: <20261020-rust-workqueue-v3-0-ea7c74d02068@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -77,27 +79,24 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIABNk12oC/z3OSw6CMBSF4a2Qjr2kLfYhI/dhHCC9QINSuaVqQ
- ti7jSEO/8H5clYWkTxGVhcrI3z56MOUozoUrB2aqUfwLjeTXGrBhQRKcYF3oHFOmBC0sq3j3Q2
- N4SyPnoSd//zAyzV3R+EBy0DY/BluuRFaSSXLyh5P1igQ4JqRziPShPcyUL9ThHPKl5bd27Yvw 3h11rAAAAA=
-X-Change-Id: 20261012-rust-workqueue-658cd0fbe770
+References: <20261020-rust-workqueue-v3-0-ea7c74d02068@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3393; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=YrUDzBvba3x+3LL60N6o4S9VKs85idwu0qTHG71exFU=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBq12QZrkSDCsbkM2IX5DEGwRjx/zHb9Od523ya1
- 3XI8gry9hSJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCatdkGQAKCRAEWL7uWMY5
- RoBfEACiWD0gE1O0ceXwL9CpqVv8XFZCxtiaC8q3opv8DXffNsmlHiTwX9t3gu1d2PnsimZiX/J
- xRXEmLvsTQihvJRGkI8BLiw+MB+EGfpWbp8bVlmS9UkHLnY4OoNH41NEsV4RKz5RVglf5DXV4m+
- I2RQTDrB7EdjbWHR/Pf4KHVHkwSFNkG+KlFb1RLTwmUDMOFo0OhT/CpX/1z5Ody6yYVLGuuBgn6
- xvrsiFWPN2xW18EJ/ZE+IzfeSvTLHPKx3ypx9bA6qUc2EvxvEy6gLKTzt3Eza3Sv3oTdaUNl6Em
- z0N+Y5R7KU3Zy7W7sxKPCyFldpmqgo+2NkA0lzXgSyTd4PGgsZDUDXpyNTKupCQO5Hlc1xqiw1k
- XZWD8xYbYnfzK3V9Ysh++FH3YI6Bdfbqq9ZX8dijM+S70wCC4Biy11xB1rQcm7nOI3qfGaWIxtT
- jflXXxPY6hueGgZY26K9ClhXjpGoETj/KVFnY4kbDcD/azMte5yrux6XpqtP+9mzyDLyKB38x3D
- u2WVj53xlkxHxAcBJqHfpQkZInayArnmGke2Ghl2k89avYmneMftOltaeASHkMjPX46zeqG8NrV
- k5gVY6oqgYLa8sq9vnGaOM1jatiaZ8yKit/grQGO9nkZBH2h/Ay469VwgjejNx6avmzxGw7FRIc m0nsqlMabHT3GoA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1874; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=cu9swDUAudCFGY8DwC8UzyHKwP4kDBpF+chMRvCQCzM=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBq12QexbxCjcu2Wo2ay7NV5FNOmmXPmHBuNFLAj
+ tSKLW6Qk4CJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCatdkHgAKCRAEWL7uWMY5
+ RrHcEACW50D0Z9gpH08aYI8t659J1oF0nr1u8qkpdLSJiypTSr8j9G5EizatBWz7lKOknLXDSky
+ vdqeQi7Y2psQH7h17PWdgscmq491wvrGNoTJvjgcdomUdmYJHic6q6uTY4XRH0x8ppJC10YORNB
+ wNVh27niy+f3fGhrxJxS4rD6vouZeA1fCiKgX+iVtZCoe11yUxZHxzqyWv/cFXTOMjx7StcSZbu
+ Y1RDWk6Uij3Yn9QaUGsZDDcYKeCTjA+elzh+Z4yUpCsC1RsYyyowd0pwZxe4oh2oRuuIIxKollV
+ P+XqHK1DMhHKB5u11B0LFCxHQzoJLhlgwL3Qw/mEINi7h58GMOc7j39Tp8WqduQsQjeSE9Myls9
+ GR1Uog8fOeVv1djYPy/OU6KD+Pg06cSWrUkdSVnDAE4f8xzXGvAmpMnkToq3UT2ntF0UL8nJdnL
+ WbODwXiE7FFKeaMkSx63vjfZcEa9ULbqnGopB00nX09uEZtpcui2J5Im3DvAG67Wr5JaCPRpsPq
+ kEZCR5weFnUauKBXEss1kYmPNActmBbx7aKFBJZK1KRWzw+1Vv6R0yuQzwCeOu8IXwtEFQaU5+8
+ Jv/WRCE56rfhXEzRlGnDyUTRnTiiiawidJYVUuoVRD6v6P/WKudX9iZ42FdCOJYURZZQ+gKj6Ej XZ0yDan7yX+M3eQ==
 X-Mailer: b4 0.14.3
-Message-ID: <20261020-rust-workqueue-v3-0-ea7c74d02068@google.com>
-Subject: [PATCH v3 0/4] workqueue: OwnedQueue and ScopedWork
+Message-ID: <20261020-rust-workqueue-v3-1-ea7c74d02068@google.com>
+Subject: [PATCH v3 1/4] rust: workqueue: restrict delayed work to global wqs
 From: Alice Ryhl <aliceryhl@google.com>
 To: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
 	Danilo Krummrich <dakr@kernel.org>
@@ -111,75 +110,48 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <ga
 	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-This series extends the Rust workqueue bindings with the ability to create
-custom workqueues (OwnedQueue), and introduces ScopedWork, a work item
-type that cancels synchronously on drop, allowing drivers to use
-workqueues with lifetime-bound data.
+When a workqueue is shut down, delayed work that is pending but not
+scheduled does not get properly cleaned up, so it's not safe to use
+`enqueue_delayed` on a workqueue that might be destroyed. To fix this,
+restricted `enqueue_delayed` to static queues.
 
-This is a continuation of Danilo's v2 [4], which picked up my earlier
-series [1] and Onur's ScopedQueue work [2].
+This may be fixed in the future by an approach along the lines of [1].
 
-Patch 1/6 of v2, "rust: workqueue: replace deprecated system_wq with
-system_{percpu,dfl}_wq", is a fix and has been sent separately [3]. This
-series no longer depends on it.
-
-[1] https://lore.kernel.org/all/20260312-create-workqueue-v4-0-ea39c351c38f@google.com
-[2] https://lore.kernel.org/all/20260617144645.253444-1-work@onurozkan.dev
-[3] https://lore.kernel.org/all/20261014-rust-workqueue-system-fix-v2-1-c018b8f870f9@google.com
-[4] https://lore.kernel.org/all/20260807165252.3849875-1-dakr@kernel.org
-
-Changes in v3:
-  - Rebase on v7.3-rc7
-  - Split out the system_wq patch and send it separately as a fix [3];
-    this series no longer depends on it
-  - Drop ScopedQueue: with the ScopedWork changes below it is no longer
-    needed to enqueue non-'static work items, and it has no other user
-  - ScopedWork: make ScopedWork::new() unsafe instead of
-    Queue::enqueue_scoped(), which is now a safe method accepting
-    &ScopedWork<T> on any queue
-  - ScopedWork: drop the WorkItem/WorkItemPointer/HasWork impls and the
-    public ScopedWorkRef type; embed the work_struct directly with a
-    dedicated callback, and keep the Opaque-wrapped payload private
-  - ScopedWork: drop T on drop (Opaque does not run destructors)
-  - ScopedWork: propagate the initializer's error type from new()
-  - Builder: new_power_efficient() uses WQ_PERCPU | WQ_POWER_EFFICIENT;
-    remove the now pointless percpu() modifier
-  - Pick up Reviewed-by tags from Daniel
-  - Link to v2: https://lore.kernel.org/all/20260807165252.3849875-1-dakr@kernel.org
-
-Changes in v2:
-  - Merge scoped_work.rs and scoped_queue.rs into scoped.rs
-  - Introduce ScopedWorkRef<T> and wrap it in Opaque inside ScopedWork to avoid
-    &mut aliasing in drop
-  - Pass &ScopedWorkRef<Self> to ScopedWorkItem::run to enable self-re-enqueue
-  - Add Deref<Target = Queue> for ScopedQueue; remove duplicate enqueue_scoped()
-  - Add Send + Sync for OwnedQueue
-  - Fix stale workqueue::system() references in docs
-  - Drop Work::cancel_work_sync()
-  - Make sysfs() available on ordered workqueues
-  - Add #[inline] annotations throughout
-
+Cc: stable@vger.kernel.org
+Fixes: 7c098cd5eaae ("workqueue: rust: add delayed work items")
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Link: https://lore.kernel.org/r/20250423-destroy-workqueue-flush-v1-1-3d74820780a5@google.com [1]
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Alice Ryhl (3):
-      rust: workqueue: restrict delayed work to global wqs
-      rust: workqueue: create workqueue subdirectory
-      rust: workqueue: add creation of workqueues
+ rust/kernel/workqueue.rs | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-Danilo Krummrich (1):
-      rust: workqueue: add ScopedWork for non-'static work items
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 7e253b6f299c..aa8a472f4547 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -302,8 +302,15 @@ pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::EnqueueOutput
+     ///
+     /// This may fail if the work item is already enqueued in a workqueue.
+     ///
++    /// This is only valid for global workqueues (with static lifetimes) because those are the only
++    /// ones that outlive all possible delayed work items.
++    ///
+     /// The work item will be submitted using `WORK_CPU_UNBOUND`.
+-    pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Jiffies) -> W::EnqueueOutput
++    pub fn enqueue_delayed<W, const ID: u64>(
++        &'static self,
++        w: W,
++        delay: Jiffies,
++    ) -> W::EnqueueOutput
+     where
+         W: RawDelayedWorkItem<ID> + Send + 'static,
+     {
 
- MAINTAINERS                                    |   1 +
- rust/helpers/workqueue.c                       |   7 +
- rust/kernel/workqueue/builder.rs               | 370 +++++++++++++++++++++++++
- rust/kernel/{workqueue.rs => workqueue/mod.rs} | 108 +++++++-
- rust/kernel/workqueue/scoped.rs                | 342 +++++++++++++++++++++++
- 5 files changed, 823 insertions(+), 5 deletions(-)
----
-base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
-change-id: 20261012-rust-workqueue-658cd0fbe770
-
-Best regards,
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.56.0.212.g129ede20d9-goog
 
