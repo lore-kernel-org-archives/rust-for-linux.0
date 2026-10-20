@@ -1,78 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.106
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.241.56.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792510309;
-	b=iR2EIIVF5zvJv42k+aW8uyOn/4VX95/jtzhQ2bscAnjPmCsMHpJ96E5NPaAnfuW/hwYW
-	 sO04DfTQSEbSjHMKmkkNOkCzycW+YO2IMXsGA+5ttjzoFMvqT65ZOT64hfDArtjXf+MYW
-	 CR7xVbU6vGqdwINIO91GE4BtbPztNspArBTUKU/zLYya0CYMPxVkBpoeAOSzHBpKhS+2B
-	 59ohWmpGgRpFil/FNsM/gS37S1HaWZKMl7TGy8IYuj12VJhcYkQ0HFsdEBJDvAYz/hVIx
-	 gGiY7jrKGxfxLlTO5gGppJfOFdzGYSWaO7JKxudVBENcy95X1yXKIwr6wfogX6bfIRQ==
+	t=1792510608;
+	b=bEKMbkKa31dWjaHP6Klwa9I9PokNh2x+WSnmvnNILzxuXMBCQ8vUxltuYrJok4glEODk
+	 LGCWmBMb5M98lYC/tsmO6K8rs+rycptrj5O8mNZ0yis/XTSZAAK5Y22OULlrdrFOQMsuE
+	 7Z02kV7C2lLUoWNja/aqFBkg+RrH02cxYw7G56/RfUd26FR7dWKo0mBTHatFAUT5/vGLb
+	 sYjK17m7jqtgg5mClCz4JW1yEV0IkDvwuIJyNBnFh2Hgc/DekuMPhz6qgIxf8MDYW03Bk
+	 mLhC4EfoahvuMOi48NpiB3E4A2EG+B8lNyiv5Pz4nSUX/kNiYAfBN2IpMzdeDuIqXKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792510309;
-	h=DMARC-Filter:DKIM-Signature:X-Pm-Submission-Id:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=BmEta96ZCFVJAawFGIowoZ+NqGcNynRMIFjNrGXaO30=;
-	b=zFSw4z0MI05Jh192kGeDHMOsV+eOuJrCvxGgcUP5ij38RqkM2Y74MRyhg4fDQcxpLaFI
-	 p6TXVm1JCyWoY+JhNLO73o6VVc/r88p5c3r8Nq2l1ZOFtMuN2TvyBFTu+qMka7rqDpp29
-	 hXTs84lm2Qji4jPbYcWkBwE0cZLBJ3fQf3ZPPjDCSjG2JQh2k9M3dE5LaU34YznQQ3gRD
-	 8U2YYJH7IQqz53V5taEQvthPz59g9vQOt9bTBv3cmEi0xoomMwc4QVVqNbkVUVPHbbT64
-	 qdmLfaujcCOriQvFu4NUUYZ1IarJgU4xxhngzCD+YfPpsV9RpT06BuJo4ZWkIM5kpXA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792510608;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Subject:From:
+	 Reply-To:To:Cc:Date:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version:X-MBO-RS-ID:
+	 X-MBO-RS-META;
+	bh=Yh+jXE2+lBWIpXl4CuFT/FWpTnGLk8SkwfDgjsSI1pI=;
+	b=Ksh1Y3L0at170wUOOsh98NAapsJfVouSR73VsEpyglX1AmTQWjTfd/igE+6fBTotBHi9
+	 LSqaCbk2DCiNJKuSmwsUjhEcM7iAytBMw/ypy48UavvVExrNmPXWrIcgMLLvUSpWeNI53
+	 Z4GqKp0qMvn/Cox+LxzZhFn5dRn1FlxmvQgFfcilbKiGM1sUJ5VfsARsoNlkgaq4W69dy
+	 atNwQEgyJMR/GSU/A2LgqavW8cWjqBiP/2cWwI1dA/r5b3Z7515TDw/Ws9zOnUCYBX/0P
+	 0VrQMAO4qe6PqEupe6oWPbjawuqaxBtnAQtZjgPv8dgtdx15FHvFgu1hDY1i7Np2dpw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=onurozkan.dev;
-	spf=pass smtp.mailfrom=onurozkan.dev;
-	dkim=pass header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b=JAVIuQ5X;
-	arc=none smtp.remote-ip=109.224.244.106
-Received: from mail-244106.protonmail.ch (mail-244106.protonmail.ch [109.224.244.106])
+	dmarc=pass header.from=mailbox.org;
+	spf=pass smtp.mailfrom=mailbox.org;
+	dkim=pass header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=EtpsssLR;
+	arc=none smtp.remote-ip=80.241.56.172
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7150260A2634
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 15:31:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7150260A2634
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787AA606A323;
+	Tue, 20 Oct 2026 15:36:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 787AA606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b=JAVIuQ5X
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail2; t=1792510304; x=1792769504;
-	bh=BmEta96ZCFVJAawFGIowoZ+NqGcNynRMIFjNrGXaO30=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=JAVIuQ5XsLVrafuRVQXhVcGCfFqo3zlpGGF+Vi0kBaAC6K6le54gmQo2mZadWzQ2W
-	 WD9Ea2SeE41xudGEsp6ycNjPYKumtYKaHpguXf9qVwZigTHrrIU06A1Zm81f8B5qi3
-	 /tVy1QtFP3MngszmfmlH9aCIRfSFd2vBzuWRpWg+are34QDDn1ZvfJC7pDd+oAYj7O
-	 ZWcQPzKgEa9Uw9uIvkK9aDIvYB6SgTEJbYMdxDq6nhviYCluyjT0uifflCa4dAQaRu
-	 w+TZF/oQ4/QygZjrMUWP/4M8kwC3+4P12n4FM/zJgAQByISY9OlArED4+lq63cPIC6
-	 BI06eL7Y+qVdQ==
-X-Pm-Submission-Id: 4j8Gbx0XBPz2ScPc
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org
-Cc: lossin@kernel.org,
-	lyude@redhat.com,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	peterz@infradead.org,
-	mingo@redhat.com,
-	will@kernel.org,
-	longman@redhat.com,
-	felipe_life@live.com,
-	daniel@sedlak.dev,
-	daniel.almeida@collabora.com,
-	thomas.hellstrom@linux.intel.com,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v13 6/7] rust: ww_mutex: implement DynLockSet
-Date: Tue, 20 Oct 2026 18:29:42 +0300
-Message-ID: <20261020153112.299745-7-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20261020153112.299745-1-work@onurozkan.dev>
-References: <20261020153112.299745-1-work@onurozkan.dev>
+	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=EtpsssLR
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4j8Gjl1SPmzMltS;
+	Tue, 20 Oct 2026 17:36:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1792510603; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Yh+jXE2+lBWIpXl4CuFT/FWpTnGLk8SkwfDgjsSI1pI=;
+	b=EtpsssLREdhha6u+FTlxRw9InWvYReNP+6y8AWy+2wedIiJhHJBP3Kf58xuSuToHOL/d4h
+	xrZ0euzCKdgFIUegwG0suaq7SHWoEgr6y3mnW9jD8rspOFLigJC3bxraqbro1v7qQ0wl3D
+	/9yzuP0QI3YhM2nKYOHGy2O+eMcEDnq4PxnskVL/nBPsdj+MknrRWdStHSdfaCd+SjHPyu
+	HfUwcES9fwJ6WdAZx5x939e2COHqlPOeuWll/oyrzhHcj8lYq0CZBR5upiJDJ6RGt1ZHFs
+	SZZmKPre3vN9fAdloUqb1/we+jSbFTc1QA4GuwAmd5OuS5l3D+x9ra/WKJ3fCA==
+Message-ID: <4a7294da65c8744ba6355730e304b5250d0ca351.camel@mailbox.org>
+Subject: Re: [RFC PATCH v2 0/3] Solve dma_fence's problems by locking
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, 
+	phasta@kernel.org, Sumit Semwal <sumit.semwal@linaro.org>, Jani Nikula	
+ <jani.nikula@linux.intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>,  Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,  Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>,  Gary Guo <gary@garyguo.net>,
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  Benno
+ Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Daniel Almeida	
+ <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=
+ <work@onurozkan.dev>, Boris Brezillon	 <boris.brezillon@collabora.com>,
+ Alex Deucher <alexdeucher@gmail.com>
+Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
+	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Date: Tue, 20 Oct 2026 17:36:35 +0200
+In-Reply-To: <ed2728bd-1df4-478e-9e6f-a96dfd172b48@amd.com>
+References: <20261020100034.759183-2-phasta@kernel.org>
+	 <3e8bc11d-6f90-47a4-ae63-cf2ff37f1ff6@amd.com>
+	 <ca78cdb7c24a9be9b640db782168cdcc5fe30b60.camel@mailbox.org>
+	 <ed2728bd-1df4-478e-9e6f-a96dfd172b48@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -82,593 +94,168 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: 9b1f1927d5e8646b2c1
+X-MBO-RS-META: fuxnfzpkekdedxcod5h8gys5pduiy8tm
 
-DynLockSet is a high-level and safe API built on top of ww_mutex
-for dynamically discovered locks. It keeps acquired locks held,
-handles repeated objects and provides access to their data.
+On Tue, 2026-10-20 at 17:07 +0200, Christian K=C3=B6nig wrote:
+> On 10/20/26 16:41, Philipp Stanner wrote:
+> > On Tue, 2026-10-20 at 14:02 +0200, Christian K=C3=B6nig wrote:
+> > > On 10/20/26 12:00, Philipp Stanner wrote:
+> > > > In our Rust code bases, I'm currently experiencing what we also
+> > > > experience in C at many places: that the dma_fence contract's RCU
+> > > > requirements make the API more fragile and put an unnecessary burde=
+n on
+> > > > the API user. Most notably, in C the API behaving correctly now dep=
+ends
+> > > > on the API *user* waiting before free()s, waiting before unloads =
+=E2=80=93 all
+> > > > because dma_fence is not properly synchronized.
+> > > >=20
+> > > > The patches commit messages give more details about where I want to=
+ go
+> > > > with this particular RFC.
+> > > >=20
+> > > > My rough "vision" for dma_fence, where I think it should develop to=
+, can
+> > > > be described like this:
+> > > >=20
+> > > > 1. All users should use inline-lock.
+> > > > 2. The fence-signaled state should be our decoupling point.
+> > > > 3. The fence state must be consistently locked.
+> > >=20
+> > >=20
+> > > > 4. This means all callbacks are only invoked for unsignaled fences,=
+ and
+> > > > =C2=A0=C2=A0 the fence cannot signal while a callback runs.
+> > >=20
+> > > First of all that prevents concurrent execution of the callbacks
+> > > which for a lot of use cases is a must have.
+> >=20
+> > Currently only set_deadline() can execute in parallel.
+>=20
+> Especially the is_signaling() callback is executed in parallel by tons of=
+ use cases.
 
-When EDEADLK is hit it drops all held locks and waits for the
-contended mutex. It then retries the given (by the user)
-locking algorithm with that mutex held and the same acquire
-context until it succeeds.
+ops->signaled() you mean.
 
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- rust/kernel/sync/lock/ww_mutex.rs             |   4 +
- .../sync/lock/ww_mutex/acquire_ctx_backoff.rs | 138 ++++++-
- .../kernel/sync/lock/ww_mutex/dyn_lock_set.rs | 351 ++++++++++++++++++
- 3 files changed, 489 insertions(+), 4 deletions(-)
- create mode 100644 rust/kernel/sync/lock/ww_mutex/dyn_lock_set.rs
+Anyways, only one will succeed at having the fence marked as signaled
+anyways, and then all other callers of dma_fence_is_signaled() will be
+guarded by the fastpath bit-check (which btw is also broken; but we
+want to address that in a different patch. For now my series proposes
+keeping the fastpath).
 
-diff --git a/rust/kernel/sync/lock/ww_mutex.rs b/rust/kernel/sync/lock/ww_mutex.rs
-index 2249214959b1c..fea2603d1bd1f 100644
---- a/rust/kernel/sync/lock/ww_mutex.rs
-+++ b/rust/kernel/sync/lock/ww_mutex.rs
-@@ -7,6 +7,8 @@
- //! [`AcquireCtx`] to track ordering and ensure forward progress.
- //!
- //! [`ww_transaction`] provides automatic deadlock recovery for ordinary guards.
-+//! Use [`DynLockSet::ww_transaction`] for dynamically discovered locks and
-+//! separate acquisition and work callbacks.
- //!
- //! See srctree/Documentation/locking/ww-mutex-design.rst for more details.
- 
-@@ -28,10 +30,12 @@
-     AcquireCtxBackoff, //
- };
- pub use class::Class;
-+pub use dyn_lock_set::DynLockSet;
- 
- mod acquire_ctx;
- mod acquire_ctx_backoff;
- mod class;
-+mod dyn_lock_set;
- 
- /// A wound-wait (ww) mutex that is powered with deadlock avoidance
- /// when acquiring multiple locks of the same [`Class`].
-diff --git a/rust/kernel/sync/lock/ww_mutex/acquire_ctx_backoff.rs b/rust/kernel/sync/lock/ww_mutex/acquire_ctx_backoff.rs
-index 71ad1cba37192..c6d213f74635f 100644
---- a/rust/kernel/sync/lock/ww_mutex/acquire_ctx_backoff.rs
-+++ b/rust/kernel/sync/lock/ww_mutex/acquire_ctx_backoff.rs
-@@ -8,13 +8,17 @@
-     Mutex,
-     MutexGuard, //
- };
--use crate::prelude::*;
-+use crate::{
-+    bindings,
-+    prelude::*, //
-+};
- use core::cell::Cell;
- 
- /// An [`AcquireCtx`] that remembers the contended mutex.
- ///
- /// After [`Self::lock`] returns [`EDEADLK`], release all guards and call
--/// [`Self::backoff`] before retrying. [`ww_transaction`] handles this retry loop.
-+/// [`Self::backoff`] before retrying. [`ww_transaction`] and
-+/// [`super::DynLockSet::ww_transaction`] handle this retry loop.
- ///
- /// Mutexes must outlive this wrapper so they remain valid for retry.
- ///
-@@ -109,11 +113,36 @@ pub fn done(&self) {
-     }
- 
-     #[inline]
--    fn assert_no_locks_held(&self) {
-+    pub(super) fn take_contended_guard(&self) -> Option<MutexGuard<'_, ()>> {
-+        self.backoff_guard.take()
-+    }
-+
-+    #[inline]
-+    pub(super) fn assert_no_locks_held(&self) {
-         // SAFETY: This initialized context belongs to the current task.
-         let acquired = unsafe { (*self.ctx.inner.get()).acquired };
-         assert_eq!(acquired, 0, "ww transaction still holds caller-owned locks");
-     }
-+
-+    #[inline]
-+    pub(super) fn clear_backoff(&self) {
-+        drop(self.backoff_guard.take());
-+        self.contended.set(None);
-+    }
-+
-+    pub(super) fn restart(&self) {
-+        self.clear_backoff();
-+        self.assert_no_locks_held();
-+        let ptr = self.ctx.inner.get();
-+        // SAFETY: This wrapper exclusively borrows the initialized, pinned context.
-+        // No acquired locks remain, so it can be finalized and reinitialized with
-+        // its static class.
-+        unsafe {
-+            let class = (*ptr).ww_class;
-+            bindings::ww_acquire_fini(ptr);
-+            bindings::ww_acquire_init(ptr, class);
-+        }
-+    }
- }
- 
- impl Drop for AcquireCtxBackoff<'_, '_> {
-@@ -164,7 +193,7 @@ pub fn ww_transaction<'a, R>(
-     retry(&ctx, || transaction(&ctx))
- }
- 
--fn retry<R>(
-+pub(super) fn retry<R>(
-     ctx: &AcquireCtxBackoff<'_, '_>,
-     mut transaction: impl FnMut() -> Result<R>,
- ) -> Result<R> {
-@@ -178,6 +207,7 @@ fn retry<R>(
- 
- #[kunit_tests(rust_kernel_ww_transaction)]
- mod tests {
-+    use super::super::DynLockSet;
-     use super::*;
-     use crate::define_ww_class;
-     use pin_init::stack_pin_init;
-@@ -280,4 +310,104 @@ fn test_deadlock_without_contention() -> Result {
-         assert!(!mutex.is_locked());
-         Ok(())
-     }
-+
-+    #[test]
-+    fn test_dynamic_retry() -> Result {
-+        stack_pin_init!(let first = Mutex::new(10, &TEST_TRANSACTION_CLASS));
-+        stack_pin_init!(let second = Mutex::new(20, &TEST_TRANSACTION_CLASS));
-+        stack_pin_init!(let acquire_ctx = AcquireCtx::new(&TEST_TRANSACTION_CLASS));
-+        let ctx = AcquireCtxBackoff::new(acquire_ctx.as_mut());
-+        let mut set = DynLockSet::new(&ctx);
-+        let mut attempts = 0;
-+        let mut identity = None;
-+
-+        let result = set.ww_transaction(
-+            |set| {
-+                attempts += 1;
-+                let ptr = ctx.ctx.inner.get();
-+                // SAFETY: The pinned context is initialized and used only by
-+                // this task throughout the transaction.
-+                let stamp = unsafe { (*ptr).stamp };
-+                if attempts == 1 {
-+                    identity = Some((ptr, stamp));
-+                    set.lock(&first)?;
-+                    // SAFETY: `second` is initialized, pinned, and outlives the transaction.
-+                    let mutex = unsafe { Mutex::from_raw(second.inner.get()) };
-+                    ctx.contended.set(Some(mutex));
-+                    return Err(EDEADLK);
-+                }
-+
-+                assert_eq!(attempts, 2);
-+                assert_eq!(identity, Some((ptr, stamp)));
-+                assert!(!first.is_locked());
-+                // Backoff makes the contended mutex available before lock().
-+                assert_eq!(set.with_locked(&second, |v| *v)?, 20);
-+                set.lock(&second)?;
-+                set.lock(&first)
-+            },
-+            |set| {
-+                set.with_locked(&first, |v| *v += 1)?;
-+                set.with_locked(&second, |v| {
-+                    *v += 2;
-+                    *v
-+                })
-+            },
-+        )?;
-+
-+        assert_eq!(result, 22);
-+        assert_eq!(attempts, 2);
-+        assert!(!first.is_locked());
-+        assert!(!second.is_locked());
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn test_dynamic_error_cleanup() -> Result {
-+        stack_pin_init!(let first = Mutex::new(1, &TEST_TRANSACTION_CLASS));
-+        stack_pin_init!(let contended = Mutex::new(2, &TEST_TRANSACTION_CLASS));
-+        stack_pin_init!(let acquire_ctx = AcquireCtx::new(&TEST_TRANSACTION_CLASS));
-+        let ctx = AcquireCtxBackoff::new(acquire_ctx.as_mut());
-+        let mut set = DynLockSet::new(&ctx);
-+
-+        for swallow in [false, true] {
-+            let mut work_ran = false;
-+            let result = set.ww_transaction(
-+                |set| {
-+                    set.lock(&first)?;
-+                    // A swallowed or mapped EDEADLK must not poison the next call.
-+                    // SAFETY: `contended` is initialized, pinned, and outlives the transaction.
-+                    let mutex = unsafe { Mutex::from_raw(contended.inner.get()) };
-+                    ctx.contended.set(Some(mutex));
-+                    assert_eq!(set.lock(&first), Err(EDEADLK));
-+                    if swallow {
-+                        Ok(())
-+                    } else {
-+                        Err(EINVAL)
-+                    }
-+                },
-+                |set| {
-+                    work_ran = true;
-+                    ctx.done();
-+                    set.with_locked(&first, |v| *v += 1)
-+                },
-+            );
-+
-+            assert_eq!(result, if swallow { Ok(()) } else { Err(EINVAL) });
-+            assert_eq!(work_ran, swallow);
-+            assert!(ctx.contended.get().is_none());
-+            assert!(!first.is_locked());
-+            assert!(!contended.is_locked());
-+
-+            set.ww_transaction(
-+                |set| {
-+                    set.lock(&contended)?;
-+                    set.lock(&first)
-+                },
-+                |set| set.with_locked(&contended, |v| *v += 1),
-+            )?;
-+            assert!(!first.is_locked());
-+            assert!(!contended.is_locked());
-+        }
-+        Ok(())
-+    }
- }
-diff --git a/rust/kernel/sync/lock/ww_mutex/dyn_lock_set.rs b/rust/kernel/sync/lock/ww_mutex/dyn_lock_set.rs
-new file mode 100644
-index 0000000000000..d82da83839ffb
---- /dev/null
-+++ b/rust/kernel/sync/lock/ww_mutex/dyn_lock_set.rs
-@@ -0,0 +1,351 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Wound/wait locking for a set of objects discovered at runtime.
-+//!
-+//! [`DynLockSet`] keeps locks held while the caller inspects objects and finds
-+//! more locks to acquire. It handles repeated mutexes and provides access to
-+//! their protected data. [`DynLockSet::ww_transaction`] handles deadlock retries
-+//! and runs the work callback once all locks are held.
-+
-+use super::{
-+    acquire_ctx_backoff::retry,
-+    AcquireCtxBackoff,
-+    Mutex,
-+    MutexGuard, //
-+};
-+use crate::{
-+    bindings,
-+    prelude::*,
-+    types::NotThreadSafe, //
-+};
-+use core::ptr::NonNull;
-+
-+/// Used by [`DynLockSet`] to track acquired locks.
-+///
-+/// This type is strictly crate-private and must never be exposed
-+/// outside this crate.
-+struct RawGuard {
-+    mutex_ptr: NonNull<bindings::ww_mutex>,
-+    _not_send: NotThreadSafe,
-+}
-+
-+impl Drop for RawGuard {
-+    #[inline]
-+    fn drop(&mut self) {
-+        // SAFETY: `mutex_ptr` originates from a locked `Mutex` and remains
-+        // valid for the lifetime of this guard, so unlocking here is sound.
-+        unsafe { bindings::ww_mutex_unlock(self.mutex_ptr.as_ptr()) };
-+    }
-+}
-+
-+/// A tracked set of [`Mutex`] locks acquired with the same [`AcquireCtxBackoff`].
-+///
-+/// Keeps locks held across loops and helper calls, handles repeated mutexes and
-+/// provides access to their data through [`Self::with_locked`].
-+pub struct DynLockSet<'ctx, 'm> {
-+    ctx: &'ctx AcquireCtxBackoff<'ctx, 'm>,
-+    taken: KVec<RawGuard>,
-+}
-+
-+impl<'ctx, 'm> DynLockSet<'ctx, 'm> {
-+    /// Creates an empty set using the given acquire context.
-+    #[inline]
-+    pub fn new(ctx: &'ctx AcquireCtxBackoff<'ctx, 'm>) -> Self {
-+        Self {
-+            ctx,
-+            taken: KVec::new(),
-+        }
-+    }
-+
-+    /// Attempts to lock the given [`Mutex`] and stores a guard for it.
-+    ///
-+    /// Returns success if the mutex is already held by this set, unless deadlock
-+    /// recovery is pending.
-+    pub fn lock<T>(&mut self, mutex: &'m Mutex<T>) -> Result {
-+        match self.ctx.lock(mutex) {
-+            Ok(guard) => self.add_guard(guard),
-+            Err(e) if e == EALREADY => {
-+                // The context may hold a guard owned outside this set.
-+                if self
-+                    .taken
-+                    .iter()
-+                    .any(|guard| guard.mutex_ptr.as_ptr() == mutex.inner.get())
-+                {
-+                    Ok(())
-+                } else {
-+                    Err(e)
-+                }
-+            }
-+            Err(e) => Err(e),
-+        }
-+    }
-+
-+    /// Acquires a dynamic set, retrying on deadlock then runs `work` once.
-+    ///
-+    /// Each call releases existing locks and starts a new transaction. Retries keep
-+    /// the same ticket. The set retains its allocation across retries and calls.
-+    ///
-+    /// `work` runs once after acquisition and must not acquire more locks. Its errors
-+    /// are returned without retrying. All locks and pending backoff state are released
-+    /// on return. The callbacks must not change the set's context or nest transactions
-+    /// on that context.
-+    ///
-+    /// # Panics
-+    ///
-+    /// Panics if the context holds caller-owned locks outside this set at a transaction
-+    /// boundary, including forgotten guards.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::{
-+    ///     define_ww_class,
-+    ///     prelude::*,
-+    ///     sync::lock::ww_mutex::{
-+    ///         AcquireCtx,
-+    ///         AcquireCtxBackoff,
-+    ///         DynLockSet,
-+    ///         Mutex, //
-+    ///     }, //
-+    /// };
-+    /// use pin_init::stack_pin_init;
-+    ///
-+    /// define_ww_class!(CLASS);
-+    ///
-+    /// stack_pin_init!(let first = Mutex::new(1, &CLASS));
-+    /// stack_pin_init!(let second = Mutex::new(2, &CLASS));
-+    ///
-+    /// stack_pin_init!(let acquire_ctx = AcquireCtx::new(&CLASS));
-+    /// let ctx = AcquireCtxBackoff::new(acquire_ctx.as_mut());
-+    /// let mut set = DynLockSet::new(&ctx);
-+    ///
-+    /// set.ww_transaction(
-+    ///     |set| {
-+    ///         set.lock(&first)?;
-+    ///
-+    ///         if set.with_locked(&first, |value| *value > 0)? {
-+    ///             set.lock(&second)?;
-+    ///         }
-+    ///
-+    ///         Ok(())
-+    ///     },
-+    ///     |set| set.with_locked(&first, |value| *value += 1),
-+    /// )?;
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    pub fn ww_transaction<R>(
-+        &mut self,
-+        mut acquire: impl FnMut(&mut Self) -> Result,
-+        work: impl FnOnce(&mut Self) -> Result<R>,
-+    ) -> Result<R> {
-+        let ctx = self.ctx;
-+        self.clear();
-+        ctx.restart();
-+
-+        let result = retry(ctx, || {
-+            if let Some(guard) = self.ctx.take_contended_guard() {
-+                self.add_guard(guard)?;
-+            }
-+
-+            let result = acquire(self);
-+            if result.is_err() {
-+                self.clear();
-+            }
-+
-+            result
-+        });
-+
-+        let result = result.and_then(|()| work(self));
-+
-+        self.clear();
-+        ctx.clear_backoff();
-+        ctx.assert_no_locks_held();
-+
-+        result
-+    }
-+
-+    fn add_guard<T: ?Sized>(&mut self, guard: MutexGuard<'ctx, T>) -> Result {
-+        let raw_guard = RawGuard {
-+            // SAFETY: The guard holds this mutex which remains valid for `'ctx`.
-+            mutex_ptr: unsafe { NonNull::new_unchecked(guard.mutex.inner.get()) },
-+            _not_send: NotThreadSafe,
-+        };
-+
-+        // Transfer unlocking to `raw_guard` before the fallible push so failure
-+        // drops only one guard and unlocks the mutex exactly once.
-+        core::mem::forget(guard);
-+        self.taken.push(raw_guard, GFP_KERNEL)?;
-+
-+        Ok(())
-+    }
-+
-+    /// Executes `access` with a mutable reference to the data behind [`Mutex`].
-+    ///
-+    /// Fails with [`EINVAL`] if the [`Mutex`] was not locked in this set.
-+    pub fn with_locked<T: Unpin, Y>(
-+        &mut self,
-+        mutex: &'m Mutex<T>,
-+        access: impl for<'b> FnOnce(&'b mut T) -> Y,
-+    ) -> Result<Y> {
-+        let mutex_ptr = mutex.inner.get();
-+
-+        if self
-+            .taken
-+            .iter()
-+            .any(|guard| guard.mutex_ptr.as_ptr() == mutex_ptr)
-+        {
-+            // SAFETY: We hold the lock corresponding to `mutex` so we have
-+            // exclusive access to its protected data.
-+            let value = unsafe { &mut *mutex.data.get() };
-+
-+            Ok(access(value))
-+        } else {
-+            // `mutex` isn't locked in this set.
-+            Err(EINVAL)
-+        }
-+    }
-+
-+    /// Releases all locks in the set.
-+    #[inline]
-+    pub fn clear(&mut self) {
-+        // `Drop` implementation of the `RawGuard` takes care of the unlocking.
-+        self.taken.clear();
-+    }
-+}
-+
-+impl Drop for DynLockSet<'_, '_> {
-+    #[inline]
-+    fn drop(&mut self) {
-+        self.clear();
-+    }
-+}
-+
-+#[kunit_tests(rust_kernel_dyn_lock_set)]
-+mod tests {
-+    use super::super::AcquireCtx;
-+    use super::*;
-+    use crate::{
-+        define_wd_class,
-+        define_ww_class, //
-+    };
-+    use pin_init::stack_pin_init;
-+
-+    define_ww_class!(TEST_WOUND_WAIT_CLASS);
-+    define_wd_class!(TEST_WAIT_DIE_CLASS);
-+
-+    #[test]
-+    fn test_lock_and_clear() -> Result {
-+        stack_pin_init!(let mutex = Mutex::new(10, &TEST_WOUND_WAIT_CLASS));
-+        stack_pin_init!(let acquire_ctx = AcquireCtx::new(&TEST_WOUND_WAIT_CLASS));
-+        let ctx = AcquireCtxBackoff::new(acquire_ctx.as_mut());
-+        let mut set = DynLockSet::new(&ctx);
-+
-+        assert_eq!(set.taken.capacity(), 0);
-+
-+        set.lock(&mutex)?;
-+        set.lock(&mutex)?;
-+        assert_eq!(set.taken.len(), 1);
-+
-+        set.with_locked(&mutex, |v| *v += 7)?;
-+        assert_eq!(set.with_locked(&mutex, |v| *v)?, 17);
-+
-+        let capacity = set.taken.capacity();
-+        assert!(capacity > 0);
-+
-+        set.clear();
-+        assert!(!mutex.is_locked());
-+        assert_eq!(set.taken.len(), 0);
-+        assert_eq!(set.taken.capacity(), capacity);
-+
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn test_drop_unlocks() -> Result {
-+        stack_pin_init!(let first = Mutex::new(1, &TEST_WOUND_WAIT_CLASS));
-+        stack_pin_init!(let second = Mutex::new(2, &TEST_WOUND_WAIT_CLASS));
-+        stack_pin_init!(let acquire_ctx = AcquireCtx::new(&TEST_WOUND_WAIT_CLASS));
-+        let ctx = AcquireCtxBackoff::new(acquire_ctx.as_mut());
-+
-+        {
-+            let mut set = DynLockSet::new(&ctx);
-+
-+            set.lock(&first)?;
-+            set.lock(&second)?;
-+        }
-+
-+        assert!(!first.is_locked());
-+        assert!(!second.is_locked());
-+
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn test_context_reuse() -> Result {
-+        stack_pin_init!(let mutex = Mutex::new(5, &TEST_WOUND_WAIT_CLASS));
-+        let mut acquire_ctx = KBox::pin_init(AcquireCtx::new(&TEST_WOUND_WAIT_CLASS), GFP_KERNEL)?;
-+
-+        {
-+            let ctx = AcquireCtxBackoff::new(acquire_ctx.as_mut());
-+            let mut set = DynLockSet::new(&ctx);
-+
-+            set.ww_transaction(
-+                |set| set.lock(&mutex),
-+                |set| set.with_locked(&mutex, |value| *value += 1),
-+            )?;
-+
-+            assert!(!mutex.is_locked());
-+        }
-+
-+        let guard = acquire_ctx.lock(&mutex)?;
-+        assert_eq!(*guard, 6);
-+
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn test_reject_external_guard() -> Result {
-+        stack_pin_init!(let mutex = Mutex::new(5, &TEST_WOUND_WAIT_CLASS));
-+        stack_pin_init!(let acquire_ctx = AcquireCtx::new(&TEST_WOUND_WAIT_CLASS));
-+        let ctx = AcquireCtxBackoff::new(acquire_ctx.as_mut());
-+        let guard = ctx.lock(&mutex)?;
-+        let mut set = DynLockSet::new(&ctx);
-+
-+        assert_eq!(set.lock(&mutex), Err(EALREADY));
-+        assert_eq!(set.with_locked(&mutex, |v| *v), Err(EINVAL));
-+
-+        set.clear();
-+        assert!(mutex.is_locked());
-+        assert_eq!(*guard, 5);
-+
-+        drop(guard);
-+        assert!(!mutex.is_locked());
-+
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn test_access_without_lock() -> Result {
-+        stack_pin_init!(let mutex = Mutex::new(5, &TEST_WOUND_WAIT_CLASS));
-+        stack_pin_init!(let acquire_ctx = AcquireCtx::new(&TEST_WOUND_WAIT_CLASS));
-+        let ctx = AcquireCtxBackoff::new(acquire_ctx.as_mut());
-+        let mut set = DynLockSet::new(&ctx);
-+
-+        assert_eq!(set.with_locked(&mutex, |v| *v), Err(EINVAL));
-+
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn test_class_mismatch() -> Result {
-+        stack_pin_init!(let mutex = Mutex::new(5, &TEST_WOUND_WAIT_CLASS));
-+        stack_pin_init!(let acquire_ctx = AcquireCtx::new(&TEST_WAIT_DIE_CLASS));
-+        let ctx = AcquireCtxBackoff::new(acquire_ctx.as_mut());
-+        let mut set = DynLockSet::new(&ctx);
-+
-+        assert_eq!(set.lock(&mutex), Err(EINVAL));
-+        assert!(!mutex.is_locked());
-+
-+        Ok(())
-+    }
-+}
--- 
-2.51.2
+>=20
+> >=20
+> > IIUC in our past discussions, your wish has been that the driver can
+> > take its own locks with free locking-order in the callbacks.
+> >=20
+> > Thus, the callback is invoked under lock in any case, just a few
+> > instructions earlier or later. Thus, no callback ever truly executes
+> > concurrently.
+>=20
+> And that is fine. Taking the look when you actually need it to
+> protect data structures is perfectly correct.
+>=20
+> But what you propose here is to abuse the look as a barrier, e.g. to
+> find out if something has finished or not and that is a completely
+> different story.
 
+Nope, I want to protect shared data, which is the signaled-state. Which
+is currently a race-condition worked around with RCU (and sometimes
+with manually doing the right thing (locking!)) [1], stemming from the
+fact that the fence's spinlock is not used consistently.
+
+>=20
+> > >=20
+> > > Then as I pointed out before the second problem is that this again
+> > > makes the existing lock inversion between the signaling by polling
+> > > and signaling by interrupts even worse than it already is.
+> >=20
+> > We asked for examples in our last discussions, and the only one ever
+> > presented was the list-access requiring the fctx-lock in
+> > nouveau_fence_no_signaling(). Nouveau is often not a good example.
+> >=20
+> > Can you provide examples in the kernel where deadlock would occur?
+>=20
+> Just exercise the simple example of a driver supporting both pull and int=
+errupt:
+>=20
+> Interrupt: Handler takes lock protecting a linked list, finds fence
+> and signals it.
+>=20
+> Polling: is_signaled is called with fence lock held, can't take list
+> lock and so needs to work around that somehow.
+
+signaled() neither needs a list lock nor any other lock.
+
+It needs to read a sequence number from somewhere, so a u64. And then
+it returns true or false to the fence_backend.
+
+The u64 can easily be an atomic. Also ioremaped reads should work
+locklessly.
+
+No need for any lock.
+
+>=20
+> This pattern repeats multiple times all over the different dma_fence
+> implementation. Nouveu is just the tip of the iceberg, we have cases
+> of this in amdgpu as well as i915 as well as XE.
+
+I guess my question then becomes what complicated locked tasks someone
+has to do within its callback that locks are required, locks that
+cannot be partitioned in a smart way to avoid that.
+
+We have 3 callbacks that are relevant and not deprecated (the name-
+functions are trivially solved by copying the data):
+
+- is_signaled() =E2=87=92 solved, see above
+- enable_signaling()
+- set_deadline()
+
+The latter two might want to talk to their hardware, either enabling an
+interrupt or telling it to clock the frequency up (see MSM). They might
+need a driver-lock for that, fair enough.
+
+Where does such a driver-lock need to be held while operating on a
+fence, opening the deadlock-path?
+
+
+Note that, as I pointed out many times, all callbacks are already
+called under lock-protection. Especially enable_signaling(), and
+is_signaled() must be lock-resistant, proven by
+dma_fence_is_signaled_locked() existing.
+
+Regardless, what I propose would only make a potential difference for
+*new* users, with inline-lock, who can then cleanly design to avoid
+locking problems.
+
+
+>=20
+> > Note that I pointed out that all callbacks are already invoked with the
+> > lock taken, which proofs that it's doable.
+>=20
+> Again, no it isn't. The shared lock was invented exactly because
+> drivers ran into this problem.
+>=20
+> The common pattern is the same, implementations just dance around the
+> fact that the callbacks are called with the fence lock held by
+> delegating cleanup work and/or using lockless containers etc...
+
+I suspect more that drivers attempt to do unnecessarily many things in
+their callbacks which are not supposed to be done there.
+
+> A common component like dma_fence should never enforce users to do
+> such workarounds just to solve it's own lifetime issues.
+
+Our common component forces all users to take our locks manually and
+plaster everything with RCU. If they forget an RCU delay, outside our
+API, things explode :(
+
+
+P.
+
+
+[1] https://elixir.bootlin.com/linux/v7.3/source/drivers/gpu/drm/amd/amdgpu=
+/amdgpu_vm.c#L2787
+
+>=20
