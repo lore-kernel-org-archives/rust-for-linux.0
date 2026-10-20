@@ -1,50 +1,50 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.106
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.70.43.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792510290;
-	b=4woU8C4obvO5zNmrl2aPuw5WHIqoRNiyoOr4i5+ccaszKXsPS2naGUoZ9LykCNTPUNv0
-	 Llg9oBnvEk75L4G6Qpkn6mLxj5qV0zsEKZb+9G2fcBM6kXPTn5V54gZsPgMHSFHsTeQUI
-	 XDH3YI6xfVVXe6hqzGhFuMh1WIiYczgCedcx0Ckgdv37WDdrqNMjbSVzUqoBLFJwCEbj9
-	 8nbg8XbgVn3BeFim3VO0zWZZq4KKxVMM2jIhixTjjZE5wRpV48JiPigKJd9zCL8lXP0Co
-	 mQeduDfB3hZbK3xOjHhk0jl4TDNugAR3OyiXiDkEqO+Zi5yVyINtxGWJotx++WChjfQ==
+	t=1792510286;
+	b=Bneu81LRpM4CBFk0Pr/imEYTjEzlN+mp8pVT/J3PjgOH/0VUjrRAhmYY6Oyf9LQgdwK3
+	 tJkjSqVkysP2F8ix89//3rGow3APS+y006ERsZNomo1UbatmVvehr7d8ZfqnV9DlCZJpa
+	 nFmEDxZ7nOhEiZEjWith2VHq/apyMrs2C7gJVv1oxqAmJ3k8IZtYvjcczJEtkBZKZOs5G
+	 ksBvVj9h1S/kGDyPwYuJGyZUuj9oqhNoluMTaJhomHAPi9JyhIcU32BZELY8AxHHOZ+4/
+	 Rtsu8qnigMh/QgxhT69eAINhOSzzKHcO5EpyFFN7blVG7OILR4xqXnzVVgVPrLQiqUw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792510290;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792510286;
 	h=DMARC-Filter:DKIM-Signature:X-Pm-Submission-Id:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=m6aEaT0CjR3fe+SONkIOdkGfxxDGCs2scfVlFjChNIE=;
-	b=iPdSzmR8ynyFL9bCuyWgMm/Lhl4PFS3U9eaMPTolOKZ/AUky6gmxiOuPymcimnXUgkJF
-	 Ywg45Hu31lyrNKTEKi9zuWBaY815Pay91yLhgVuOBkU+1gO4x05NLj+eEyTFtFaR6TPC6
-	 ApzJPc6OAg3ZPYvcCrwwL4k4Aha9fqJwk0r3p91MEUr12HYRdyPnmNQ2RKTkwyO2cDs8j
-	 TQPsMvf3WS8lk3epZ54KltNlsy9tjlBbBOnIWV4oolPx8pYMVJwwNMGA8i7BZwrMl52xK
-	 +0tk9kkox2sqi/Xc73J4ID11FiXI+VRQji0WMyoKS/Qyqlt79BPwAvO6+Uc1lruqaeA==
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=VgGcNNRu5ieTR0Ko1HQUd57pN40sF3ITd5hrvhdgaCQ=;
+	b=ikJmQ2FjlCHxslRNpvfYCnN4LS17eKpacG+au5iL1QtWkfgyvoYznnPF4UC2NpI9mYw/
+	 SoAPz+kPde0Yu0JzlQHG0bJW4YEMhFJFzk9OUBw7Y18vaPn+Rk8CoiBXsKYYfTYg+841F
+	 bpHGEnaKBXiII/qWbEmS86Yx4dpe2qoDgjfMAFDSvh7bQ8/cETRBEExtRvsA14UekO1bG
+	 bV6FcfKWrXlgP50dqqQmejR9SoiSjrlyrk+JJX5ftkrI2f8Bwzw5JLF4rUYJZdzro6XYL
+	 Rsa16JemMKqfEB78bxt1WKn5bxaoV9YmtLNspwCiYxF6pLDpc6Ul/l7WE955szaLZYA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=onurozkan.dev;
 	spf=pass smtp.mailfrom=onurozkan.dev;
-	dkim=pass header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b=pQX1af0h;
-	arc=none smtp.remote-ip=109.224.244.106
-Received: from mail-244106.protonmail.ch (mail-244106.protonmail.ch [109.224.244.106])
+	dkim=pass header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b=KmJ7XHIK;
+	arc=none smtp.remote-ip=185.70.43.171
+Received: from mail-43171.protonmail.ch (mail-43171.protonmail.ch [185.70.43.171])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC5B606A33D;
-	Tue, 20 Oct 2026 15:31:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7AC5B606A33D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A746606A325;
+	Tue, 20 Oct 2026 15:31:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A746606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b=pQX1af0h
+	dkim=pass (2048-bit key, unprotected) header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b=KmJ7XHIK
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail2; t=1792510286; x=1792769486;
-	bh=m6aEaT0CjR3fe+SONkIOdkGfxxDGCs2scfVlFjChNIE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=pQX1af0hBheMCTSLROPPUEtfPIo1TsM3aIFQIwbAwlT8edXu39fuX9gGS67lVktsO
-	 pCdmG/nlzHzKyGFV/oAEcQsOPR31wSnmAYKX4KMsjMkM6tk5i280Vr828ersBHx09h
-	 vmqXe3TsL06Gr9SqzFtwYZu10X5zgv+V3AjnzA3GHdxCGzHG45sJSzPbM9GygqqjQM
-	 Itjwd6xJ/SbvsfQxf4txqL8k+3oEqEgT9262ahXojlrjro/del36MULhCrYses/AV7
-	 YH/kCNTJ3Es/zXEBKkPz3Km7J0N1m9QFTfByKBTezhfFdyI0r7wUXHoW4a1yjX6SIB
-	 3jZ4et4r6Ol6Q==
-X-Pm-Submission-Id: 4j8GbZ5gVYz2ScPc
+	s=protonmail2; t=1792510281; x=1792769481;
+	bh=VgGcNNRu5ieTR0Ko1HQUd57pN40sF3ITd5hrvhdgaCQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
+	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=KmJ7XHIKqQHxNfM4XxFWez3nUojMdbSgQJfpa4XgPk9zDCpGS9itT+wl0Rlcda8XT
+	 /KChiw9OeHSocpboRzK54Zlwr12JebAVBYYDVZMg96vzmWiGUJwjFEo4U4mofFwXIq
+	 Yj20AXPnEuzndwQULs1zBE7yiKWzq58N29spN98LKteGbrFcSIkimpoh90zzJ35zcu
+	 M/hxJ2+RkVzfzg6aoU5vF7cSGM7nvVr47s7jdtkfl9Rp4czwu0tlF/cPkhsL6e22Ak
+	 XcoLLhyLKOoyAiFMBOdofobU5wJJaZO2gwvapQaHyWkwHISKx5gsaZ198jy+M9osvQ
+	 yyZgLBwT+vhsw==
+X-Pm-Submission-Id: 4j8GbQ6Qhfz2ScPL
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
 To: rust-for-linux@vger.kernel.org
 Cc: lossin@kernel.org,
@@ -67,12 +67,10 @@ Cc: lossin@kernel.org,
 	thomas.hellstrom@linux.intel.com,
 	linux-kernel@vger.kernel.org,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v13 2/7] ww_mutex: add ww_class field unconditionally
-Date: Tue, 20 Oct 2026 18:29:38 +0300
-Message-ID: <20261020153112.299745-3-work@onurozkan.dev>
+Subject: [PATCH v13 0/7] rust: add ww_mutex support
+Date: Tue, 20 Oct 2026 18:29:36 +0300
+Message-ID: <20261020153112.299745-1-work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20261020153112.299745-1-work@onurozkan.dev>
-References: <20261020153112.299745-1-work@onurozkan.dev>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -85,68 +83,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Removes DEBUG_WW_MUTEXES guard around the ww_class field
-in struct ww_mutex and struct ww_acquire_ctx to always
-initialize it.
+This series adds Rust abstractions for ww_mutex, including Class, Mutex,
+AcquireCtx and MutexGuard. AcquireCtxBackoff and ww_transaction handle
+deadlock recovery with ordinary guards. DynLockSet tracks dynamically
+discovered locks and provides separate acquisition and work callbacks.
 
-Keeping the class pointer available unconditionally allows
-Rust abstractions to keep from_raw() simple on Mutex and
-AcquireCtx and validate Mutex and AcquireCtx class pairing
-in much simpler way.
+Changes in v13:
+  - Require static classes and remove the class lifetime parameters from
+    Mutex and AcquireCtx.
+  - Make AcquireCtx's locking methods safe. Panic on context drop if any
+    acquired locks remain and check for acquired-lock count overflow
+    before entering C.
+  - Tighten AcquireCtx::from_raw()'s safety contract to cover forgotten
+    guards.
+  - Return Option from try_lock().
+  - Split LockSet into AcquireCtxBackoff and DynLockSet in separate
+    patches. Add ww_transaction() for allocation-free retries with
+    ordinary guards.
+  - Start each DynLockSet transaction with a new ticket, keep it unchanged
+    across retries and clear pending backoff state on return.
 
-Link: https://lore.kernel.org/all/ECC0425A-8B18-4626-8EA8-2F843C45E0A1@collabora.com/
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- include/linux/ww_mutex.h | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+Dropped Alice's Reviewed-by from the Mutex/AcquireCtx patch because the
+locking API and safety contracts changed.
 
-diff --git a/include/linux/ww_mutex.h b/include/linux/ww_mutex.h
-index 0c95ead5a2977..c955824aa5d48 100644
---- a/include/linux/ww_mutex.h
-+++ b/include/linux/ww_mutex.h
-@@ -48,9 +48,7 @@ struct ww_class {
- context_lock_struct(ww_mutex) {
- 	struct WW_MUTEX_BASE base;
- 	struct ww_acquire_ctx *ctx;
--#ifdef DEBUG_WW_MUTEXES
- 	struct ww_class *ww_class;
--#endif
- };
- 
- context_lock_struct(ww_acquire_ctx) {
-@@ -59,9 +57,9 @@ context_lock_struct(ww_acquire_ctx) {
- 	unsigned int acquired;
- 	unsigned short wounded;
- 	unsigned short is_wait_die;
-+	struct ww_class *ww_class;
- #ifdef DEBUG_WW_MUTEXES
- 	unsigned int done_acquire;
--	struct ww_class *ww_class;
- 	void *contending_lock;
- #endif
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
-@@ -111,9 +109,7 @@ static inline void ww_mutex_init(struct ww_mutex *lock,
- {
- 	ww_mutex_base_init(&lock->base, ww_class->mutex_name, &ww_class->mutex_key);
- 	lock->ctx = NULL;
--#ifdef DEBUG_WW_MUTEXES
- 	lock->ww_class = ww_class;
--#endif
- }
- 
- /**
-@@ -149,8 +145,8 @@ static inline void ww_acquire_init(struct ww_acquire_ctx *ctx,
- 	ctx->acquired = 0;
- 	ctx->wounded = false;
- 	ctx->is_wait_die = ww_class->is_wait_die;
--#ifdef DEBUG_WW_MUTEXES
- 	ctx->ww_class = ww_class;
-+#ifdef DEBUG_WW_MUTEXES
- 	ctx->done_acquire = 0;
- 	ctx->contending_lock = NULL;
- #endif
+Previous version: https://lore.kernel.org/all/cover.1791799751.git.work@onurozkan.dev
+
+Onur Özkan (7):
+  rust: add C wrappers for ww_mutex inline functions
+  ww_mutex: add ww_class field unconditionally
+  rust: implement Class for ww_class support
+  rust: ww_mutex: add Mutex, AcquireCtx and MutexGuard
+  rust: ww_mutex: add AcquireCtxBackoff
+  rust: ww_mutex: implement DynLockSet
+  MAINTAINERS: add Onur Özkan as WW MUTEX maintainer
+
+ MAINTAINERS                                   |   2 +
+ include/linux/ww_mutex.h                      |   8 +-
+ rust/helpers/helpers.c                        |   1 +
+ rust/helpers/ww_mutex.c                       |  33 ++
+ rust/kernel/sync/lock.rs                      |   1 +
+ rust/kernel/sync/lock/ww_mutex.rs             | 449 ++++++++++++++++++
+ rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs | 179 +++++++
+ .../sync/lock/ww_mutex/acquire_ctx_backoff.rs | 413 ++++++++++++++++
+ rust/kernel/sync/lock/ww_mutex/class.rs       | 130 +++++
+ .../kernel/sync/lock/ww_mutex/dyn_lock_set.rs | 351 ++++++++++++++
+ 10 files changed, 1561 insertions(+), 6 deletions(-)
+ create mode 100644 rust/helpers/ww_mutex.c
+ create mode 100644 rust/kernel/sync/lock/ww_mutex.rs
+ create mode 100644 rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs
+ create mode 100644 rust/kernel/sync/lock/ww_mutex/acquire_ctx_backoff.rs
+ create mode 100644 rust/kernel/sync/lock/ww_mutex/class.rs
+ create mode 100644 rust/kernel/sync/lock/ww_mutex/dyn_lock_set.rs
+
+
+base-commit: 47324d3a5b3abd781295044d01d92d09f184e872
 -- 
 2.51.2
 
