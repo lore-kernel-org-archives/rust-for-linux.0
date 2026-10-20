@@ -1,50 +1,50 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.113
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.111
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792510304;
-	b=wnPmu4B+/m5UuJ8evxqsaGu2chRdnwr1bGzgmqdKTFeJohzxR89q+pIJK+OMgvE5dUna
-	 WQWpL1mnSYqp7kmYQsnbXF+R6n+nqiQJfN3juQJEqSgr8QBaV12/q8sqYysZWzxF8Ihq1
-	 hD1XBdtMLUa1+plLhuKwDMkAwxdWAin51iwDRENuBOb68Vesv3tKiDJUPRcrWpzDl2Dl/
-	 zjewcmWI/J5oA5yYJORxt/YkKiM0hDD7dMFqpcX5ex+12MVvX67pypKF+oI0kTdfXnQeT
-	 v4DFINTq8uRkLpbBIvKcnR/7wIvHznewTe92wKp12kn4Vs8hU1EvflSwQ8SW3om7ItA==
+	t=1792510297;
+	b=O9wkM7OL8MBkEpPpY1Du8syy8eSAP/frY888k4wRqcLr0bKfPBWFUv4Vw0n8RtNTIXkI
+	 O1xEUjnUQ7iJBrWkRTT5373nkXW38Y1Zhp4w/9qXOzTrjRyevaWYVeoHaYTtTk3DjLjAv
+	 L37wJGM/aRdB67MYsBmyVNZfCEfaA0w4hrhEyCRr4vpzo2/K200zIU9aJn2GksEkGnUVr
+	 qZF7yqhcSazjTaJeS4m/+BQb8Ug3fBVr2Cpt9N36qTTQsGAg54JZP23esNKgsY9RvAPPd
+	 CHB+u/r/HyfAsMT/VInOU70Of3FSZh7UxcQ1jXyvbXOyZSzHgCRiwURb2UpLyT0yQlQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792510304;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792510297;
 	h=DMARC-Filter:DKIM-Signature:X-Pm-Submission-Id:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=GhFpatQuguB0Qy+Ol1F7HVOmuK/PMM91MwO3mEyvWcQ=;
-	b=mW6AL+wy1GmEmqZN66/SGA7Jcfe/IYXFKi5o+NroIlTxsi/0bVBBWCTDZG3JjPrmCT71
-	 8y2uQJYv7u9BHRw9OxNY4DIMon+7JF+xoNthQUzxodYtwNSpdR9TIYeaVsusE4z2Rzu/+
-	 DvzzhvzkSzjJZTcRmcVdYgRAnkpexwcaqbAoyimIOFIIy34+W/ZD6tI1obKx2KqBjdDjR
-	 wxRJ7+onL1ds2jTSTeDnw1youhzrz2D4NkM/posyECWkAXoMowsLx4vHx4r5PUKXIbD9Y
-	 jL+C6q3YCdMGOmN+rHAjjRiv5BHcWxVyJ3srYo9fzYjRHOFB1vdBaAVEto5XcxzHO0w==
+	bh=ozMRWgTmERbTm7OTdn+HlrOHvH/CkZpAs4fZ5ypYxgk=;
+	b=J23LTKZAN9SM3tgOEslUePySYkR24Ac6xcrjf36DO28ugbut/90HwSzTTMNEx9r+jpBs
+	 eAr7lqZHurJYv7Tz4eWK9rE+iIOm0SCFMxE/cGglFPwmHH2fz+R69puQyTm6JKI8KWTRI
+	 +Nk3/COOJuw/DcviL+Cgw2RG1OUwQFaGA1j7WCXPX19JwMUMHM+u5tbdxRTUyK+ZFzV8s
+	 4yaO/XvvDZljF+6gWKifkcRw0UnF6YO6NP7xvn9OkG4R+LjnnKJosWcgRF37EZ5LhGqGX
+	 nSTF5byiRiYfDC0xF/A3KS2pvdvaFUbMOhToLDPqBHw/3xqKQLQnNqQcYe0voLWHQYg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=onurozkan.dev;
 	spf=pass smtp.mailfrom=onurozkan.dev;
-	dkim=pass header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b="ABvE/TnH";
-	arc=none smtp.remote-ip=79.135.106.113
-Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
+	dkim=pass header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b=ftu16uXZ;
+	arc=none smtp.remote-ip=79.135.106.111
+Received: from mail-106111.protonmail.ch (mail-106111.protonmail.ch [79.135.106.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA6960A262C
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 15:31:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BA6960A262C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B82606A335;
+	Tue, 20 Oct 2026 15:31:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B5B82606A335
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b=ABvE/TnH
+	dkim=pass (2048-bit key, unprotected) header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b=ftu16uXZ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail2; t=1792510301; x=1792769501;
-	bh=GhFpatQuguB0Qy+Ol1F7HVOmuK/PMM91MwO3mEyvWcQ=;
+	s=protonmail2; t=1792510294; x=1792769494;
+	bh=ozMRWgTmERbTm7OTdn+HlrOHvH/CkZpAs4fZ5ypYxgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=ABvE/TnHdAfD4t5kvxE/A9kFlODbsiOEN/4nSIc0oyS93VbByZFdK1bwnqrl7+BB3
-	 CGISk7uZCHMzn6pl8D89c2MGomR4M574WhlEiE3dYj6bSeDMIFlIhVbSV+47DDFDnV
-	 ev0r7aoHcs4pIRRNamQa75g+RsIzWEPrTHLsQ/2PiftIVBlW8EglE6KxQXXV4j5gBP
-	 G+JR9rm7fAnERr2dD+0aO20fHf+oweU0/yXrBI6/MeJNgDQQGAdQFRwpT7MK9amr6u
-	 gDk+iXdyGA082YzB/1PxCmY9e/+NkgtbyaUTuXBJqm3ARIXjjUO8CyDrt7f/7cwd7T
-	 30Io1uu7PQktw==
-X-Pm-Submission-Id: 4j8Gbr0yxcz2ScPL
+	b=ftu16uXZHrnYCNUW+rKuptAMdPJUPvl5lOooz/n8/BGbP95mB2vmjxUKkB1G2yIwS
+	 wmv99Uvb3Icx1D/nWvuL5ZkK2TAS2yB1bHsCBW/uR8ac/QkpxzFexKGU5Nu6ZcPw0+
+	 5OMacfqM8qJqSLtsoDKiT1TMXBTSEKMGEPO4ETj+vv8rv9pghazpsK20XRtW6qaM17
+	 8N+h1QKnKnM3pZTEz+8BrtzCkpV0sul4U9+k4Op7pRW0QxyxyejTO+fIy2OEcR8Izi
+	 9r7k+9s3nPzM6MAm2XLkTR2ppDP9nMGbzj3Zgrt5P8mXdTosnJyMIvOlJGrruF3Cq1
+	 rA/WneWgSBCuQ==
+X-Pm-Submission-Id: 4j8Gbf4TMCz2ScPL
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
 To: rust-for-linux@vger.kernel.org
 Cc: lossin@kernel.org,
@@ -67,9 +67,9 @@ Cc: lossin@kernel.org,
 	thomas.hellstrom@linux.intel.com,
 	linux-kernel@vger.kernel.org,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v13 5/7] rust: ww_mutex: add AcquireCtxBackoff
-Date: Tue, 20 Oct 2026 18:29:41 +0300
-Message-ID: <20261020153112.299745-6-work@onurozkan.dev>
+Subject: [PATCH v13 3/7] rust: implement Class for ww_class support
+Date: Tue, 20 Oct 2026 18:29:39 +0300
+Message-ID: <20261020153112.299745-4-work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20261020153112.299745-1-work@onurozkan.dev>
 References: <20261020153112.299745-1-work@onurozkan.dev>
@@ -85,337 +85,186 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-AcquireCtxBackoff wraps AcquireCtx to remember the contended mutex.
-The ww_transaction helper provides deadlock retries with ordinary
-guards.
+Adds the Class type, the first step in supporting ww_mutex in Rust.
+Class represents ww_class, used for deadlock avoidance for supporting
+both wait-die and wound-wait semantics.
 
-After the caller releases its guards, backoff waits for the contended
-mutex. Retries keep the same acquire context and ticket.
+Also adds the define_ww_class and define_wd_class macros for safely
+declaring static instances.
 
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 Signed-off-by: Onur Özkan <work@onurozkan.dev>
 ---
- rust/kernel/sync/lock/ww_mutex.rs             |   7 +
- .../sync/lock/ww_mutex/acquire_ctx_backoff.rs | 283 ++++++++++++++++++
- 2 files changed, 290 insertions(+)
- create mode 100644 rust/kernel/sync/lock/ww_mutex/acquire_ctx_backoff.rs
+ rust/kernel/sync/lock.rs                |   1 +
+ rust/kernel/sync/lock/ww_mutex.rs       |   7 ++
+ rust/kernel/sync/lock/ww_mutex/class.rs | 130 ++++++++++++++++++++++++
+ 3 files changed, 138 insertions(+)
+ create mode 100644 rust/kernel/sync/lock/ww_mutex.rs
+ create mode 100644 rust/kernel/sync/lock/ww_mutex/class.rs
 
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index 10b6b5e9b024f..f509250822c55 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -15,6 +15,7 @@
+ 
+ pub mod mutex;
+ pub mod spinlock;
++pub mod ww_mutex;
+ 
+ pub(super) mod global;
+ pub use global::{GlobalGuard, GlobalLock, GlobalLockBackend, GlobalLockedBy};
 diff --git a/rust/kernel/sync/lock/ww_mutex.rs b/rust/kernel/sync/lock/ww_mutex.rs
-index 91eaa6cf2a189..2249214959b1c 100644
---- a/rust/kernel/sync/lock/ww_mutex.rs
-+++ b/rust/kernel/sync/lock/ww_mutex.rs
-@@ -6,6 +6,8 @@
- //! that belong to the same [`Class`]. Each lock acquisition uses an
- //! [`AcquireCtx`] to track ordering and ensure forward progress.
- //!
-+//! [`ww_transaction`] provides automatic deadlock recovery for ordinary guards.
-+//!
- //! See srctree/Documentation/locking/ww-mutex-design.rst for more details.
- 
- use crate::{
-@@ -21,9 +23,14 @@
- use core::cell::UnsafeCell;
- 
- pub use acquire_ctx::AcquireCtx;
-+pub use acquire_ctx_backoff::{
-+    ww_transaction,
-+    AcquireCtxBackoff, //
-+};
- pub use class::Class;
- 
- mod acquire_ctx;
-+mod acquire_ctx_backoff;
- mod class;
- 
- /// A wound-wait (ww) mutex that is powered with deadlock avoidance
-diff --git a/rust/kernel/sync/lock/ww_mutex/acquire_ctx_backoff.rs b/rust/kernel/sync/lock/ww_mutex/acquire_ctx_backoff.rs
 new file mode 100644
-index 0000000000000..71ad1cba37192
+index 0000000000000..727c51cc73af8
 --- /dev/null
-+++ b/rust/kernel/sync/lock/ww_mutex/acquire_ctx_backoff.rs
-@@ -0,0 +1,283 @@
++++ b/rust/kernel/sync/lock/ww_mutex.rs
+@@ -0,0 +1,7 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! Contended-lock backoff and transaction helpers for wound/wait mutexes.
++//! Rust abstractions for the kernel's wound-wait locking primitives.
 +
-+use super::{
-+    AcquireCtx,
-+    Class,
-+    Mutex,
-+    MutexGuard, //
++pub use class::Class;
++
++mod class;
+diff --git a/rust/kernel/sync/lock/ww_mutex/class.rs b/rust/kernel/sync/lock/ww_mutex/class.rs
+new file mode 100644
+index 0000000000000..36c7e87d72660
+--- /dev/null
++++ b/rust/kernel/sync/lock/ww_mutex/class.rs
+@@ -0,0 +1,130 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Provides [`Class`] to group wound/wait mutexes to be acquired together
++//! and specifies which deadlock avoidance algorithm to use (e.g., wound-wait
++//! or wait-die).
++//!
++//! The [`define_ww_class!`] and [`define_wd_class!`] macros provide safe
++//! ways to create classes.
++
++use crate::{
++    bindings,
++    prelude::*,
++    types::Opaque, //
 +};
-+use crate::prelude::*;
-+use core::cell::Cell;
 +
-+/// An [`AcquireCtx`] that remembers the contended mutex.
++/// Defines a static wound-wait [`Class`].
 +///
-+/// After [`Self::lock`] returns [`EDEADLK`], release all guards and call
-+/// [`Self::backoff`] before retrying. [`ww_transaction`] handles this retry loop.
++/// # Examples
 +///
-+/// Mutexes must outlive this wrapper so they remain valid for retry.
++/// ```
++/// use kernel::define_ww_class;
 +///
-+/// # Invariants
-+///
-+/// `backoff_guard`, when present, is the sole guard for a mutex locked with `ctx`.
-+/// It is released before the context borrow ends. If this wrapper is forgotten,
-+/// `AcquireCtx`'s destructor checks for remaining locks.
-+pub struct AcquireCtxBackoff<'ctx, 'a> {
-+    ctx: Pin<&'ctx mut AcquireCtx>,
-+    // The cells also make `'a` invariant: recorded mutexes must outlive retries.
-+    contended: Cell<Option<&'a Mutex<()>>>,
-+    backoff_guard: Cell<Option<MutexGuard<'a, ()>>>,
++/// define_ww_class!(SOME_WW_CLASS);
++/// ```
++#[macro_export]
++macro_rules! define_ww_class {
++    ($name:ident) => {
++        static $name: $crate::sync::lock::ww_mutex::Class =
++            // SAFETY: This is `static`, so address is fixed and won't move.
++            unsafe {
++                $crate::sync::lock::ww_mutex::Class::new_unpinned(
++                    $crate::c_str!(::core::concat!(::core::stringify!($name), "_acquire")),
++                    $crate::c_str!(::core::concat!(::core::stringify!($name), "_mutex")),
++                    false,
++                )
++            };
++    };
 +}
 +
-+impl<'ctx, 'a> AcquireCtxBackoff<'ctx, 'a> {
-+    /// Creates a wrapper for an existing [`AcquireCtx`].
-+    ///
-+    /// Preserves the context's state and ticket.
-+    ///
-+    /// # Panics
-+    ///
-+    /// Panics if the context still holds any locks, including forgotten guards.
-+    #[inline]
-+    pub fn new(ctx: Pin<&'ctx mut AcquireCtx>) -> Self {
-+        // INVARIANT: There is no acquired backoff lock yet.
-+        let this = Self {
-+            ctx,
-+            contended: Cell::new(None),
-+            backoff_guard: Cell::new(None),
-+        };
-+        this.assert_no_locks_held();
-+        this
-+    }
-+
-+    /// Locks `mutex`, remembering it if the acquisition returns [`EDEADLK`].
-+    ///
-+    /// Further acquisitions return [`EDEADLK`] until [`Self::backoff`] succeeds.
-+    /// A mutex already acquired by the caller returns [`EALREADY`].
-+    pub fn lock<'b, T>(&'b self, mutex: &'a Mutex<T>) -> Result<MutexGuard<'b, T>> {
-+        if self.contended.get().is_some() {
-+            return Err(EDEADLK);
-+        }
-+
-+        if let Some(guard) = self.backoff_guard.take() {
-+            if guard.mutex.inner.get() == mutex.inner.get() {
-+                // Transfer ownership of the backoff lock.
-+                core::mem::forget(guard);
-+                return Ok(MutexGuard::new(mutex));
-+            }
-+            self.backoff_guard.set(Some(guard));
-+        }
-+
-+        match self.ctx.lock(mutex) {
-+            Err(e) if e == EDEADLK => {
-+                // SAFETY: `mutex` is initialized, remains valid for `'a`, and
-+                // its class is static. Only the C mutex is accessed through this view.
-+                let mutex = unsafe { Mutex::from_raw(mutex.inner.get()) };
-+                self.contended.set(Some(mutex));
-+                Err(e)
-+            }
-+            result => result,
-+        }
-+    }
-+
-+    /// Acquires the contended mutex after the caller's guards are released.
-+    ///
-+    /// The next [`Self::lock`] for this mutex returns its guard without locking
-+    /// it again. The context and its ticket are preserved.
-+    /// Returns [`EDEADLK`] if no failed acquisition was recorded.
-+    ///
-+    /// # Panics
-+    ///
-+    /// Panics if any caller-owned locks are still held, including forgotten guards.
-+    pub fn backoff(&self) -> Result {
-+        drop(self.backoff_guard.take());
-+        self.assert_no_locks_held();
-+        let mutex = self.contended.take().ok_or(EDEADLK)?;
-+
-+        // With no locks held, regular locking waits for this mutex to become available.
-+        // INVARIANT: The guard stays in this wrapper until transferred or dropped,
-+        // and `Drop` releases it before the borrow of the context ends.
-+        let guard = super::lock(mutex, Some(&self.ctx))?;
-+        self.backoff_guard.set(Some(guard));
-+        Ok(())
-+    }
-+
-+    /// Marks acquisition complete; no more locks may be acquired with this context.
-+    #[inline]
-+    pub fn done(&self) {
-+        self.ctx.done();
-+    }
-+
-+    #[inline]
-+    fn assert_no_locks_held(&self) {
-+        // SAFETY: This initialized context belongs to the current task.
-+        let acquired = unsafe { (*self.ctx.inner.get()).acquired };
-+        assert_eq!(acquired, 0, "ww transaction still holds caller-owned locks");
-+    }
-+}
-+
-+impl Drop for AcquireCtxBackoff<'_, '_> {
-+    #[inline]
-+    fn drop(&mut self) {
-+        // Release the backoff lock before ending the context borrow.
-+        drop(self.backoff_guard.take());
-+    }
-+}
-+
-+/// Runs a locking algorithm, backing off and retrying on [`EDEADLK`].
++/// Defines a static wait-die [`Class`].
 +///
-+/// The callback must immediately propagate acquisition errors and drop its guards
-+/// on return. It may use the protected data once all needed locks are acquired.
-+/// The context is stack allocated, and retries keep the same ticket. Mutexes must
-+/// outlive the transaction. Do not nest transactions on the same context.
++/// # Examples
++///
++/// ```
++/// use kernel::define_wd_class;
++///
++/// define_wd_class!(SOME_WD_CLASS);
++/// ```
++#[macro_export]
++macro_rules! define_wd_class {
++    ($name:ident) => {
++        static $name: $crate::sync::lock::ww_mutex::Class =
++            // SAFETY: This is `static`, so address is fixed and won't move.
++            unsafe {
++                $crate::sync::lock::ww_mutex::Class::new_unpinned(
++                    $crate::c_str!(::core::concat!(::core::stringify!($name), "_acquire")),
++                    $crate::c_str!(::core::concat!(::core::stringify!($name), "_mutex")),
++                    true,
++                )
++            };
++    };
++}
++
++/// Used to group mutexes together for deadlock avoidance.
++///
++/// All mutexes that might be acquired together should use the same class.
 +///
 +/// # Examples
 +///
 +/// ```
 +/// use kernel::{
-+///     define_ww_class,
-+///     prelude::*,
-+///     sync::lock::ww_mutex::{
-+///         ww_transaction,
-+///         Mutex, //
-+///     }, //
++///     define_wd_class,
++///     define_ww_class, //
 +/// };
-+/// use pin_init::stack_pin_init;
 +///
-+/// define_ww_class!(CLASS);
-+/// stack_pin_init!(let first = Mutex::new(1, &CLASS));
-+/// stack_pin_init!(let second = Mutex::new(2, &CLASS));
-+/// ww_transaction(&CLASS, |ctx| {
-+///     let mut first = ctx.lock(&first)?;
-+///     let mut second = ctx.lock(&second)?;
-+///     core::mem::swap(&mut *first, &mut *second);
-+///     Ok(())
-+/// })?;
++/// define_ww_class!(SOME_WW_CLASS);
++/// define_wd_class!(SOME_WD_CLASS);
++///
 +/// # Ok::<(), Error>(())
 +/// ```
-+pub fn ww_transaction<'a, R>(
-+    class: &'static Class,
-+    mut transaction: impl FnMut(&AcquireCtxBackoff<'_, 'a>) -> Result<R>,
-+) -> Result<R> {
-+    pin_init::stack_pin_init!(let acquire_ctx = AcquireCtx::new(class));
-+    let ctx = AcquireCtxBackoff::new(acquire_ctx.as_mut());
-+    retry(&ctx, || transaction(&ctx))
++#[pin_data]
++#[repr(transparent)]
++pub struct Class {
++    #[pin]
++    pub(super) inner: Opaque<bindings::ww_class>,
 +}
 +
-+fn retry<R>(
-+    ctx: &AcquireCtxBackoff<'_, '_>,
-+    mut transaction: impl FnMut() -> Result<R>,
-+) -> Result<R> {
-+    loop {
-+        match transaction() {
-+            Err(e) if e == EDEADLK => ctx.backoff()?,
-+            result => return result,
++impl Class {
++    /// Creates an unpinned [`Class`].
++    ///
++    /// # Safety
++    ///
++    /// Caller must guarantee that the returned value must be pinned before
++    /// its first use.
++    #[doc(hidden)]
++    pub const unsafe fn new_unpinned(
++        acquire_name: &'static CStr,
++        mutex_name: &'static CStr,
++        is_wait_die: bool,
++    ) -> Self {
++        Class {
++            inner: Opaque::new(bindings::ww_class {
++                stamp: bindings::atomic_long_t { counter: 0 },
++                acquire_name: crate::str::as_char_ptr_in_const_context(acquire_name),
++                mutex_name: crate::str::as_char_ptr_in_const_context(mutex_name),
++                is_wait_die: is_wait_die as u32,
++                ..pin_init::zeroed()
++            }),
 +        }
 +    }
-+}
 +
-+#[kunit_tests(rust_kernel_ww_transaction)]
-+mod tests {
-+    use super::*;
-+    use crate::define_ww_class;
-+    use pin_init::stack_pin_init;
-+
-+    define_ww_class!(TEST_TRANSACTION_CLASS);
-+
-+    #[test]
-+    fn test_transaction_retry() -> Result {
-+        stack_pin_init!(let first = Mutex::new(10, &TEST_TRANSACTION_CLASS));
-+        stack_pin_init!(let second = Mutex::new(20, &TEST_TRANSACTION_CLASS));
-+        let mut attempts = 0;
-+        let mut identity = None;
-+
-+        let values = ww_transaction(&TEST_TRANSACTION_CLASS, |ctx| {
-+            attempts += 1;
-+            let ptr = ctx.ctx.inner.get();
-+            // SAFETY: The transaction owns this initialized context throughout
-+            // the callback, and this task is its only user.
-+            let stamp = unsafe { (*ptr).stamp };
-+
-+            if attempts == 1 {
-+                identity = Some((ptr, stamp));
-+                let _guard = ctx.lock(&first)?;
-+                // Simulate a failed acquisition with its contended mutex recorded.
-+                // SAFETY: `second` is initialized, pinned, and outlives the transaction.
-+                let mutex = unsafe { Mutex::from_raw(second.inner.get()) };
-+                ctx.contended.set(Some(mutex));
-+                return Err(EDEADLK);
-+            }
-+
-+            assert_eq!(attempts, 2);
-+            assert_eq!(identity, Some((ptr, stamp)));
-+            assert!(!first.is_locked());
-+            assert!(second.is_locked());
-+
-+            // Request the contended mutex after acquiring another lock.
-+            let mut a = ctx.lock(&first)?;
-+            let mut b = ctx.lock(&second)?;
-+            assert_eq!(ctx.lock(&second).err(), Some(EALREADY));
-+            core::mem::swap(&mut *a, &mut *b);
-+            Ok((*a, *b))
-+        })?;
-+
-+        assert_eq!(attempts, 2);
-+        assert_eq!(values, (20, 10));
-+        assert!(!first.is_locked());
-+        assert!(!second.is_locked());
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn test_backoff_lock_cleanup() -> Result {
-+        stack_pin_init!(let first = Mutex::new(1, &TEST_TRANSACTION_CLASS));
-+        stack_pin_init!(let contended = Mutex::new(2, &TEST_TRANSACTION_CLASS));
-+
-+        // Release the unclaimed backoff lock on both success and error.
-+        for fail in [false, true] {
-+            let mut attempts = 0;
-+            let result = ww_transaction(&TEST_TRANSACTION_CLASS, |ctx| {
-+                attempts += 1;
-+                let _guard = ctx.lock(&first)?;
-+                if attempts == 1 {
-+                    // SAFETY: `contended` is initialized, pinned, and outlives the transaction.
-+                    let mutex = unsafe { Mutex::from_raw(contended.inner.get()) };
-+                    ctx.contended.set(Some(mutex));
-+                    return Err(EDEADLK);
-+                }
-+
-+                assert_eq!(attempts, 2);
-+                assert!(contended.is_locked());
-+                if fail {
-+                    Err(EINVAL)
-+                } else {
-+                    Ok(())
-+                }
-+            });
-+
-+            assert_eq!(result, if fail { Err(EINVAL) } else { Ok(()) });
-+            assert_eq!(attempts, 2);
-+            assert!(!first.is_locked());
-+            assert!(!contended.is_locked());
-+        }
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn test_deadlock_without_contention() -> Result {
-+        stack_pin_init!(let mutex = Mutex::new(5, &TEST_TRANSACTION_CLASS));
-+        let mut attempts = 0;
-+
-+        let result: Result = ww_transaction(&TEST_TRANSACTION_CLASS, |ctx| {
-+            attempts += 1;
-+            let _guard = ctx.lock(&mutex)?;
-+            // A callback-generated EDEADLK cannot identify a lock to wait for.
-+            Err(if attempts == 1 { EDEADLK } else { EINVAL })
-+        });
-+
-+        assert_eq!(result, Err(EDEADLK));
-+        assert_eq!(attempts, 1);
-+        assert!(!mutex.is_locked());
-+        Ok(())
++    /// Creates a [`Class`] from a raw pointer.
++    ///
++    /// This function is intended for interoperability with C code.
++    ///
++    /// # Safety
++    ///
++    /// The caller must ensure that `ptr` points to the `inner` field of
++    /// [`Class`] and that it remains valid for the lifetime `'a`.
++    #[inline]
++    pub const unsafe fn from_raw<'a>(ptr: *mut bindings::ww_class) -> &'a Self {
++        // SAFETY: By the safety contract, `ptr` is valid to construct `Class`.
++        unsafe { &*ptr.cast() }
 +    }
 +}
++
++// SAFETY: [`Class`] is immutable except for its atomic stamp. It's fine to share it across threads.
++unsafe impl Sync for Class {}
++// SAFETY: Doesn't hold anything thread-specific. It's safe to send to other threads.
++unsafe impl Send for Class {}
 -- 
 2.51.2
 
