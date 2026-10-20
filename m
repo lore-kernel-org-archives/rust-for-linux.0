@@ -1,75 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792483967;
-	b=ce7YUBWa35qWIKwqoUmiPvCBJ+SmfXsFx7trqZd6jjTJqlHeqXuPt/kWFBimG1e7gAKd
-	 CKLVlJt5xgAw0RjdhX7d3nTOR4LfEzLH5ltoOGetRcNYuKRF1rm0AwQGYqhngbrd0z27o
-	 Q2cjKrpoSRUjRaKI0ejppo6gG81lyuSVkqtsnHx++MRPFdC3uxrPhqOP613eTKd1PKaPq
-	 2HONr0SzS4nW9w1TA8FRVPPz7bF7qEla+E1IpvCVWdOPbCsnHg/V/0SVUyQg+b9cyOrY+
-	 JiuKo8SfxIU41r9gF2vq6/ll9E/dXHaBSRFwEXusZ5RcJ/B4iPh9gSxfStlUGONZ5Lw==
+	t=1792483973;
+	b=ae94BkgTOO44VOdOlhbzcOf0+wRy7mGF5UqmtF19cespDH8UDe4w3OIfVHuCPT2mXijD
+	 BuHmQaYR2NvtmZawVWdKcnVXDavqc9RxfyRgxvIV97Flsv39rAoOl/iIrQxT+pZWQW9/6
+	 3hDdOsa9v5s1TJ6wkES3sKKVNQ6vnTBs0soq9Tnf22WZNjhA4nVY//q5Pki5+3qmwlppL
+	 VcN/racmnZwxf/A5lXoNR8wRfaixu8DjFC80ImbQzaOnlXwuisRlSgYxeHGrcTfel1MOd
+	 44HozhWQsji7I6JwG4UjN8nZYS/Xn5Wh5y8Kgd45yHbjGkeJuPrQwK1eK6LtQthOi4w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792483967;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792483973;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=k2rmoy9HDSiKDp3Ez25S7rh7RAY7znXw3hMbNjmmj3M=;
-	b=jxppVnwrW5iy1QuwTvqs4hktM1T+DH1a6cExAi6mdhWVjbUMzn50kEwiw7jdJQLU9RFd
-	 kdQeK5FK2h1HgKym0JfhZ1vSj9tUOIMpa2ancZqabdCmuhOoh+0tXRWV8aYoZJLdCC0oS
-	 2vJ7x1oWwh17omSNAoV3qc2Q5Iy0M+60HkoFKnmjzQMb7v7p4RaSvMkquXhXpM1EIyZEj
-	 avTptYgICFabkkf/XgU1Mulbge/JY6vukYI0NaAYsRU+5vZ9HYu+GyGKEJ+mtqpWdCeDg
-	 jKu+PRgNGfPn5UYvwnlDrkvMQqwVIcoZaVi4KyDqW/3t/3p55Z6hQiJWE+Dvrxy6POw==
+	bh=f63bQLBXHYlw5Kr7m+qCxUpgsrgXJgF6I45Lwx8IJPk=;
+	b=vKPpdgcJfNXLn0fIuUCyaEKvZVVQCkQtUGon4USBHc/LfQ/PVMCeDhWA2WR82XFp20ik
+	 FUSzymXr0Xtv7DZKdPrkCbux1tHH+YLOh17T54M4UdjCCUwJEWJ8wd+O5Yqdt4KWfz1gS
+	 7eexAc6AGcAgEy4VWZTnpkL43YfLvP11oB9WQE2qtAwRxL7G0UOB8WkkSoAJPKm2Z+Mfj
+	 dGs10eFmF66au4zFINzrPqeoHo4AlRNyW5EV1wcxniQAAX18ItvdXdtTH5Ul97SOOw8fg
+	 Iv0/3gZc69oG41qmuUR4CRda4vvuZkRCVknnOrPNO3hHwwYgVs/sRAlGvBsZZSjyn5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=BTrWJCfe;
-	arc=none smtp.remote-ip=209.85.208.72
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=a40gpPl6;
+	arc=none smtp.remote-ip=209.85.208.71
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD4D606A338
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 08:12:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDD4D606A338
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46585606A31D
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 08:12:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 46585606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=BTrWJCfe
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6b1bc2e62d5so3381671a12.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 01:12:46 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=a40gpPl6
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-6aff6a8ee69so2966507a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 01:12:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792483965; x=1793088765; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792483972; x=1793088772; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=k2rmoy9HDSiKDp3Ez25S7rh7RAY7znXw3hMbNjmmj3M=;
-        b=BTrWJCfe4vtpLX9/tBT8Omu7n5z6WJ7BgaGAwnDcycshXzIGqXU0l/7MavafAWaMhe
-         r+q4tClOg4XlppqbBhJP71NZlm4zqBVvyLmjIS2iBqH7E2hN0d6nU5IzFApXEBF1U1In
-         vjn6cPCDuC50O8t0rv2zKyps6x5AVEO1TBlrh27IcefltwI/ddVxIZr6XJCocDk7IIuG
-         m+p2HTLxYMNv6NoVi29Ti6ebdGJEaPLkycX0dlQrPYeu2v2HuZ0/WB0FU0U9f9gf90MH
-         qpZqTnKI20XCtZNVLp63Z6SXKjlghwmgFRC0ScT1vI2h5OS6xdUap1ZBL5R/K/LhfeB4
-         1Krw==
+        bh=f63bQLBXHYlw5Kr7m+qCxUpgsrgXJgF6I45Lwx8IJPk=;
+        b=a40gpPl6nb84gRGaHDyLyseH1rKf9XvqazhUQr308l6gpVfX7u0oAJ6sTcYOWvrYvM
+         1vmjZ+zVpGPik/gHWAaKncXiplB0NsVN2jIpDVg4FvwsuCw/neMrE5KFiATFg5Qvwa0p
+         I0AOVCGnZ9LQrtLPmfP4fPB+cYZHYR/bGnlsqGSkXO/6v+tBcu8pkwSSPD+LLybkDC4A
+         yixFr35nnUPDBdQDDSNiZNrtQmQYPzHShpY+UMxGz1+dQcs8XO5PEj2GP9vbKR0K0Ltn
+         8xaXVX59MIpqKyqzpk54LfT0ls+xf4gVORO/OK9fZen9czPIBHfGZFskF7s07fRj5D9i
+         kwZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792483965; x=1793088765;
+        d=1e100.net; s=20260707; t=1792483972; x=1793088772;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=k2rmoy9HDSiKDp3Ez25S7rh7RAY7znXw3hMbNjmmj3M=;
-        b=HYYzZxYurhW61mMiWowu7n48J6IjX6Rg/Ua8091QpeCXMbYKaBNj7XYkJ2hY6bV4aA
-         XXkrrmJ5K5DXwuVY+8g+KnWcBhXtPdICtGRDNm+SmcOBR185JpVNEDQ8IbW3B3Z9tpjX
-         L688OgjT0S0qOAadY2oIOx/IR/I0sYoKA6zrAB1kpAdocLYVIUjmDPfteU5lsQDzZEYt
-         gmHw259Hhkn0f/Ajqou16KSa3ZfCJjZzHLbwHM294nNNyw4ROBfnpWes4G4QfMxjmfdv
-         m/lrVTBkThyS9JFWHo69edp2gEUl/IXjNt+xY0FA/gh2EqMoOZ7rd2F1FljfxGv1E/oQ
-         v8wA==
-X-Forwarded-Encrypted: i=1; AKwUvBwha+z84/c7VTTr/tFZpdOgVNFEJ7U9sX8w+gADjo2NKsU1zycb2mDid8Cb6sPyQmVO0US/UASusSYdrTxvhQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYL3VgLgX1nDZahd0TEuU7KXjqfx2YcSSlhjlY2ScHldRkH5tiAP
-	OKVLB8xXDZo1XjvxJrvu0obY5vfzdzaILtKZMaNLFWJBnjXGpwojCikzjfxGM4+nW//PDfRO9CZ
-	wqthkfOamhl6EDRmYJA==
-X-Received: from eduf17.prod.google.com ([2002:a05:6402:51:b0:6ac:c627:c778])
+        bh=f63bQLBXHYlw5Kr7m+qCxUpgsrgXJgF6I45Lwx8IJPk=;
+        b=WCjng4FqF7ZC7OOYC4QfrRdqtXOLgA7aJgmO8zWwDRYx8jj4wjMwvlccTXQ0HzFmfi
+         ZHUqZNGl2et8BWuVX6Z0oB4e1W0UYXHs81JxE13fcxEl7na+XbAW1Mj7doVwcbde/Um/
+         jQ/gJZlwQMGL+wQwafaWRSJX+TStfjiZ4QmYoSHvK5vxryGRmaB8pQz0pWMWrD7xUUm/
+         dULWCnhAPrroehiFFaTp5u3l9yDOvj2sdBgd7GfAynCJXxp1hl7CFWnDmnHMblLyLSUT
+         k8zOBWHZnpaZcJMPs/41eWGFHSy6fSf4TTmV2M1r7y5PXCy1OR47MJhyDJUExDt8tsJN
+         qXoA==
+X-Forwarded-Encrypted: i=1; AKwUvByuz1j8TR5bIxzlIvS65Z7nR528d+r35WJbYeFDAFDI4jjSLEX62Sa/NCp8i2opUPZdEMjwv+7KAl30xLqRiw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYL4EbFqJQHZRekA8RINQrfBJO0kruAdMqTb4m9nIdCH6shTCeUm
+	RDUNyH7XH0f0rJSvCVq8CA0CjrFW7dE/HrXYEFnCmfQvGBJAGSf4RPoaL8ct4OtCCyjseiVD0xe
+	K+7S1rjGmz3nJpQikmg==
+X-Received: from edwg15.prod.google.com ([2002:a05:6402:114f:b0:6ac:c84f:3304])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:4344:b0:6b1:8818:1090 with SMTP id 4fb4d7f45d1cf-6b3a815d5admr6666189a12.22.1792483963442;
- Tue, 20 Oct 2026 01:12:43 -0700 (PDT)
-Date: Tue, 20 Oct 2026 08:12:34 +0000
-In-Reply-To: <20261019-rust-cfi-fixes-v1-1-9503472ba738@google.com>
+ 2002:a05:6402:51d4:b0:6b1:b9da:2047 with SMTP id 4fb4d7f45d1cf-6b3a816fac9mr6710522a12.16.1792483971098;
+ Tue, 20 Oct 2026 01:12:51 -0700 (PDT)
+Date: Tue, 20 Oct 2026 08:12:47 +0000
+In-Reply-To: <20261019-rust-cfi-fixes-v1-2-9503472ba738@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -79,10 +79,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261019-rust-cfi-fixes-v1-0-9503472ba738@google.com> <20261019-rust-cfi-fixes-v1-1-9503472ba738@google.com>
+References: <20261019-rust-cfi-fixes-v1-0-9503472ba738@google.com> <20261019-rust-cfi-fixes-v1-2-9503472ba738@google.com>
 X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-Message-ID: <20261020081236.1760816-1-aliceryhl@google.com>
-Subject: Re: [PATCH 1/3] rust: irq: declare cfi_encoding for irqreturn
+Message-ID: <20261020081248.1761160-1-aliceryhl@google.com>
+Subject: Re: [PATCH 2/3] rust: hrtimer: declare cfi_encoding for hrtimer_restart
 From: Alice Ryhl <aliceryhl@google.com>
 To: Sami Tolvanen <samitolvanen@google.com>
 Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -100,17 +100,17 @@ Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
 	driver-core@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Oct 19, 2026 at 11:34:37PM +0000, Sami Tolvanen wrote:
-> The IRQ callbacks return c_uint. C calls them through irq_handler_t,
-> which returns enum irqreturn. kCFI encodes enum types by name even with
+On Mon, Oct 19, 2026 at 11:34:38PM +0000, Sami Tolvanen wrote:
+> The hrtimer callbacks return bindings::hrtimer_restart, which bindgen
+> generates as c_uint. C calls them through hrtimer->function, which
+> returns enum hrtimer_restart. kCFI encodes enum types by name even with
 > integer normalization, so the type ids never match and every call fails
 > the CFI check.
 > 
-> Generate irqreturn as a newtype with a cfi_encoding, as is done for
-> lru_status, and return bindings::irqreturn_t from the callbacks.
+> Generate hrtimer_restart as a newtype with a cfi_encoding, as is done
+> for lru_status, and adapt HrTimerRestart to the newtype.
 > 
-> Fixes: 0851d34a8cc3 ("rust: irq: add support for non-threaded IRQs and handlers")
-> Fixes: 135d40523244 ("rust: irq: add support for threaded IRQs and handlers")
+> Fixes: 8a8afe9349fb ("rust: hrtimer: introduce hrtimer support")
 > Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 
 Missing
