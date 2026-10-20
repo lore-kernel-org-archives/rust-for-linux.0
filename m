@@ -1,129 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792500633;
-	b=IGM6YjsBKXwwFWp/Ldp4ZYedYS/g2qia8XsZ6rAcQDYnD0L93Svf7xPAgMlMvXwmq9X8
-	 prIBZuhiBFfSMa9WqlDP5kit88zztOaWm8tYwH/Kvkz47BCyprr/NsIzhC6nbyESY5k6V
-	 XAU/daZd+8Jz1jaO9lNbOr6hwLFhhjMLOX7alnF9RdZaVbHmMehCqegb8flYXVZHh1e9p
-	 ynwXUAJgVdSJxcTIwHVALcyhr8ojcctd8TnDr+9R0JfEkaNEfQgd+ksJpmOayzN6bcnAv
-	 vGV82E9UqQWCTxeGnqTbuEZrGZQHoGk4pEHDmprZnAsGGH7nh4gfzNEAerHDgEcjyWA==
+	t=1792500770;
+	b=nXAfPLk78ZRrFGCFMHBdB2QS5izyd+loT9GtCGh2abO3rQtcXsn/lebCX3cmjQp69TXf
+	 vflSXub671whqUKZJGa6bIz7dNQP50kgvDTN9T5uOrt/n2qmliMpxWHRa0/SOVhSyL/u+
+	 vHPR+SGUTOJ5z23Hp2YZTJTfCJYZ6vFzJTxqbKMjqEFcR7rLBNLs/sjoROrE0qhjESWMP
+	 H7ImZFXT3+PoF7Jtz3dnq7ndRcbRdA1XjgSxbG9EWmYycCsHpSfCdIkscTpePwTxUWimL
+	 2XRW2/42I+8Yvqfac+6wjbpGk846nSTu0Dj6kLok0ws7i2Ie4YinVPHYHdG9uDc8D+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792500633;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding;
-	bh=KpSvEb1ZmSOewVyzZaYexwDFI9NVYIxSu0bLN4vULYs=;
-	b=S9VpgYwEUwrWzKStZ20uffHQb6MFOV99IM9jASofFlrBVPF2iV46L9ZCLxl5R8tQxh3R
-	 THnsJvUskjuof8lfj4chfelTxdTxD+lP2kyM8W/W8aC7UPvMOFawDC20+R88xY+vvZ8KY
-	 HbDgxVIsHOctuKMkt3S3CTT8ZS0XC8450F0+bZartshm5AVRD0uk+j82X0CGxe+2bm+7g
-	 CgyWpc5BuL1Jrb+muUQlsq9yQ5p8e1BsEWw+ZF7mOzOJlArIU1QRaDql00wi7gp49fsdl
-	 2vkQuqrprS4yle0xRdo8iW4cyXjdMTP4W0w/fLJT4qXTIynZyJ3lXxfaZywBx8ID0Hw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792500770;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-B4-Tracking:X-Change-Id:X-Developer-Key:X-Developer-Signature:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=h4dSeWA0TZhH/a30MaXIOvSiMoTtdnOH3PXIJsbEBS0=;
+	b=sMAJirIri0H3NTCzRm5Djed1xlodEZwFH1YXgW/268DyjauX9y+YebwlwtZ8iy1Ik8fE
+	 44KvwVyt5c6dkjBf8xnasYdbBt0hqMbFwFVKQtUY66oayU9Wlcn+wPlEdfv1p4xgGVmUt
+	 LRlwLggIISYKTXR/nuzhqwY1snOinvrJ3TfVFmdygMouJbRQ0iVKbVj3sV+IAKGzETShV
+	 g6NLvKkAsecPOt65CjV9ZvS0dtbR9U6DRwj3C1GyRw6cHW3wxfMATgpx2YD0XMVNVAivP
+	 bXhJsLvwo1xZgPB86EVp7PgHjy4uw6EGHcOXgUvG0Ys6pvKx8RYH5aM98ytAL3eKZ0w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=flapping.org;
-	spf=pass smtp.mailfrom=flapping.org;
-	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b="C+/fZsuX";
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Srk91qOQ;
-	arc=none smtp.remote-ip=103.168.172.156
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Hb+sXrL1;
+	arc=none smtp.remote-ip=209.85.221.69
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65D7606A32D
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 12:50:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A65D7606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB035606A31F
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 12:52:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB035606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=C+/fZsuX;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Srk91qOQ
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 00DA0140012C
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 08:50:32 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Tue, 20 Oct 2026 08:50:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1792500631;
-	 x=1792587031; bh=KpSvEb1ZmSOewVyzZaYexwDFI9NVYIxSu0bLN4vULYs=; b=
-	C+/fZsuXU060k6/s7dA9jM6XcTcVilUWUX/jyaYNcv9MYe0Tgr5eJjpQPogb6sWb
-	+QV1ajue5HvpKe8PiM8lXKvMYzqXq+XeXzC6crJhUvs88iVCUsHFQsc4+TDW2ZQc
-	YYJA22LOvnYmjYIkA3K5NhHa46P8sfvW5sigl3ucojRtEYhYfIcrsqF1g30liTmh
-	WnjUeufI5/i4Vp0HmsH/wHTRtrjKitcnmzHdWgDZ8MXGKfTtXCd+ft0LQ5+xGlxt
-	iYdhNvDPr8Fp0Mk5e2xXq4QF2/RrOOCd6JG/f7kAQWNbOEJGQ0YEuf5tLGsApngC
-	fYvPE8jcEmr/piJ6kH8bpw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792500631; x=
-	1792587031; bh=KpSvEb1ZmSOewVyzZaYexwDFI9NVYIxSu0bLN4vULYs=; b=S
-	rk91qOQR8BrawTth/rYIaPGAJJxaYRjeDgW61xfDD/b9UfbUcSe0iJV7okQYUW49
-	RZcKrRxidtW3s2bqWte5e7ECqbFcExp0577D+4uCsMySG4ay/5r5tMXgeLveRcso
-	0xhhuR6CxqFQ4LX5c7IvhdQvRMd7jFieqOM8jDyILeM419C6aEwKjVhzI/Hp8esy
-	MS9bY2mrtC+iaRDo+PkOkPb/tjJjPvLeI0MrdywixPxA1cbtaBVr3kWp/BHEanwK
-	6ia6UX58DI5Z3Jp8gGzF2gxZwqsuJm+OX4B6rgDsV3r25VOBxHXAyh631ryc7Kix
-	RK2xirDmOwwM++SLryC8A==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1792500631; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm1:rsa-sha256:DcmsRa5jbnNg+1yulb2R80YHEZpuK5XRWhRr+Txzmi+F9eU
-	jhvKMfrsVL83MHom8C64G6obVx6HaBix90g2JYrJlm4GbxHxBimpeYe2shuRFV2Q
-	qJdhm6UiUOLgCuFRCuN01q/Kwu69ghzC+E2y2LWsu3T7h8r6NZraJI/H27Op6fZe
-	W4RJktPkpJmD+TGwp3h68gW7Uz6AstLrI3jXzxq4ltc3XWhYRd7e6l9Ip2L2pOeN
-	06NrFPiv00dBjlrvms+7xAP1bczHbrGNOsGT5Xpew3aJdxtgYbwqFnKbbOpmRcYl
-	YbMnO72tcupso5HRk+A4YEvvAhnNJ3/bOVuc2Ww==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:s2UGIG31dVFUg3IePb3OGKYWRiFAu1bRFyBtld4V9rk=:fCMs0Pv52oKfJdphB7XHmJehRsKvOrbbtcXx2K/iuPU=;
-X-ME-Sender: <xms:lmPXaqvm6TsRdD7Rk8n7lXyo4RcWWU07K9mGyQsghorgzAJhk-6U1A>
-    <xme:lmPXaojO5_BmGqNx20cIDnR7yTyjvi3KrpAE4SdPxp5RbX8QBU0UBhKKDBts3z4m1
-    jAVdosNltlNp8EkvIYEQ-uAdnrbJ17u9wIp3dIeV3iWACVXqkLQq6Q1>
-X-ME-Received: <xmr:lmPXau18DTCQ3SlZ1PG7G4DI6j3kQono1KoGjwaSQSG_KhfRdscYMwwaWyZrMPVgfOsoDrnJ1nx3a-DIaUrECO9I>
-X-ME-Proxy-Cause: dmFkZTE2Du0we4KvtkwYGASTx0hsJNnuyBM3jUnEi/7RiemtGh+Gi0SLRw0/E5muq2rj5U
-    BDAFL3o8mLH4+ktrQxfXyDWU5V/1tUk4UxTY4LeN0jAH8Zb/xWk9hzgwE2ZDxDluGf6Hrv
-    RSxQxazp/9a0nqUgmKSSDk9xluPL/KvCZ4J/CrVBUdjkdifEVky7xSWmza9/3vURTQ8bvH
-    CNzXdcwkDR7FT2ENYBkIxO0hK0srKpVTmaqskyiHfdL8bY+hToKretRYCrDogijKG86zLj
-    m94QHMmk6HCu7iMtfNc88kpN+Q2Xc7SESlfdfmTg3Q8ATafFxKkvtSmzVxxfvK4xw3N6eC
-    oBmVmuvYx9GCYkb6t0IixCLfUJKcOkZ0vVcG6V5HT7viNYzwheW8pnMwIB46hqQmLstf/l
-    4j7O2XSKEj/lqlBm/K9j6SsKpawo1L75ZIWV5yTmkSjRLqOQKFnqddXcPELFJND9rTQJnu
-    yTBTCPpWYjWzeQCbLrhYIdDzKjygdPMdLi9lmEE/vLVnFZ8z9IHqixRn9NnA8LAPd43Osz
-    1dmcVr52wuCiFY0BS1MgxHGz1k4Y5rSqToCO+fs4DL+P5rciXnuu5N7b/Q9Y4wYqRE5IuG
-    cCt3/EAtOhTZS8TlOST85YLRfLBMiauEeOYhjMsavRkk0lE3RY82/+VWskdQ
-X-ME-Proxy: <xmx:lmPXag-eWWXNxbItODDt9kzZIknDUPOuxeVjmHg6Akm_2rXQZpkWrw>
-    <xmx:lmPXakPN1bkDIfsF-QIkjDZHkqAl5qkO5Bn7LmBQ9PR3w6YOpDEX8g>
-    <xmx:lmPXasBO53G1DjDOsrA94AueZWKWqMYm1a7BgA3221no_14u2VJwqQ>
-    <xmx:lmPXauPcxJ-yrGxSHB4C6kpDfaKjq32eSqxw0_ZP2fWRV-3Q5g6rEw>
-    <xmx:l2PXakcnVJ8i7xP0jAilcp_hwDF8i58YOhPIozmeGkyM1U8svR6Hm1w9>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 20 Oct 2026 08:50:25 -0400 (EDT)
-Date: Tue, 20 Oct 2026 21:50:22 +0900 (JST)
-Message-Id: <20261020.215022.576606933901583722.tomo@flapping.org>
-To: samitolvanen@google.com
-Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
- daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
- work@onurozkan.dev, fujita.tomonori@gmail.com, frederic@kernel.org,
- lyude@redhat.com, tglx@kernel.org, anna-maria@linutronix.de,
- jstultz@google.com, sboyd@kernel.org, abdiel.janulgue@gmail.com,
- robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
-Subject: Re: [PATCH 2/3] rust: hrtimer: declare cfi_encoding for
- hrtimer_restart
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <20261019-rust-cfi-fixes-v1-2-9503472ba738@google.com>
-References: <20261019-rust-cfi-fixes-v1-0-9503472ba738@google.com>
-	<20261019-rust-cfi-fixes-v1-2-9503472ba738@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=Hb+sXrL1
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48dfaaea30cso2186715f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 05:52:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792500768; x=1793105568; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=h4dSeWA0TZhH/a30MaXIOvSiMoTtdnOH3PXIJsbEBS0=;
+        b=Hb+sXrL1A3qp3CXvy3N9jCrBC5c3n2L0LCYOi4aQCCOwzOBOLLKtI+Cb+2wEAJic7q
+         z4Eh88dX83J1XOnNYjkokMHB7EtKTFAbmD5nU4Qz0aWWoF5bhAXteoCiHccPTbxAkHqu
+         r8ypT+pIzoxy8JjciI2kd1H2ZNblq/U/WiwinrBi49ydTZeBdqLJrkY1t5RiKWYq+VYp
+         3rJudVa24glVh17W9LujSWf0DbUSMyBwAFjsMccAqdX6inVKWATsYroU35IIWbOoNGyA
+         fY2MqmIQ0pghdDSQjuNPwxYlvPA7cmr467yR8eGxjYn2HHlSAhT7syN6C546thNm0y7t
+         RsXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792500768; x=1793105568;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=h4dSeWA0TZhH/a30MaXIOvSiMoTtdnOH3PXIJsbEBS0=;
+        b=bZQ8Uy3ocyOVyKLFEXjaLwbIklu2dCEjI5dldFvfPAW8DN46rwsg0w1nGPsVhdxaUG
+         jmLIVDZVucsutM6PEK8qTBzd1H49/oGYqKfMvR2WezOtRMYbZmADcWDqEoIQyjzD818v
+         XxUWDKowetUJNE+oDO9eeIGtsvtwj2nOYZRb9p6l+lFdalESWA1KwyyoXWFaCZX5lNYB
+         OAP6YL2tHzVe5ZtK4pR5+J53icfBPh7imiTVn+rX3bKyJ35GAo2aI1/LSJw6iN3HDuKv
+         xmIsh7DR+CmJMzZBfpthPCt5ak/Jsqcg40hScqHvirMB8vClnRwpB4o3z+lfQPM0Vjfg
+         3hyQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxFH9ifhM7EO2gjYEw6OFImMsy/tuLby6OaPILjLXL2z6sjtKGl8MJjQuSyjrnXRnUL5fHmx1CN1uYqVs93+w==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJKeqSjR38wKXRoBHGZSNMf48bgHvh9pXFW4SG+2x+sV8nktCBK
+	siGdSgLsadNXV6gZdUmIYbwodVtE75Oif4EuPaRPeFyg388EpGEshbYtaI7pNmn3TE1OqbHWx3c
+	TUOC6lv+5jofqT3C8rg==
+X-Received: from wraz5.prod.google.com ([2002:a05:6000:4685:b0:48d:f161:cdaf])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:4694:b0:487:b4a:3f54 with SMTP id ffacd0b85a97d-48e07f9da3amr16892672f8f.29.1792500767961;
+ Tue, 20 Oct 2026 05:52:47 -0700 (PDT)
+Date: Tue, 20 Oct 2026 12:52:35 +0000
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -133,31 +77,109 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABNk12oC/z3OSw6CMBSF4a2Qjr2kLfYhI/dhHCC9QINSuaVqQ
+ ti7jSEO/8H5clYWkTxGVhcrI3z56MOUozoUrB2aqUfwLjeTXGrBhQRKcYF3oHFOmBC0sq3j3Q2
+ N4SyPnoSd//zAyzV3R+EBy0DY/BluuRFaSSXLyh5P1igQ4JqRziPShPcyUL9ThHPKl5bd27Yvw 3h11rAAAAA=
+X-Change-Id: 20261012-rust-workqueue-658cd0fbe770
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3393; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=YrUDzBvba3x+3LL60N6o4S9VKs85idwu0qTHG71exFU=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBq12QZrkSDCsbkM2IX5DEGwRjx/zHb9Od523ya1
+ 3XI8gry9hSJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCatdkGQAKCRAEWL7uWMY5
+ RoBfEACiWD0gE1O0ceXwL9CpqVv8XFZCxtiaC8q3opv8DXffNsmlHiTwX9t3gu1d2PnsimZiX/J
+ xRXEmLvsTQihvJRGkI8BLiw+MB+EGfpWbp8bVlmS9UkHLnY4OoNH41NEsV4RKz5RVglf5DXV4m+
+ I2RQTDrB7EdjbWHR/Pf4KHVHkwSFNkG+KlFb1RLTwmUDMOFo0OhT/CpX/1z5Ody6yYVLGuuBgn6
+ xvrsiFWPN2xW18EJ/ZE+IzfeSvTLHPKx3ypx9bA6qUc2EvxvEy6gLKTzt3Eza3Sv3oTdaUNl6Em
+ z0N+Y5R7KU3Zy7W7sxKPCyFldpmqgo+2NkA0lzXgSyTd4PGgsZDUDXpyNTKupCQO5Hlc1xqiw1k
+ XZWD8xYbYnfzK3V9Ysh++FH3YI6Bdfbqq9ZX8dijM+S70wCC4Biy11xB1rQcm7nOI3qfGaWIxtT
+ jflXXxPY6hueGgZY26K9ClhXjpGoETj/KVFnY4kbDcD/azMte5yrux6XpqtP+9mzyDLyKB38x3D
+ u2WVj53xlkxHxAcBJqHfpQkZInayArnmGke2Ghl2k89avYmneMftOltaeASHkMjPX46zeqG8NrV
+ k5gVY6oqgYLa8sq9vnGaOM1jatiaZ8yKit/grQGO9nkZBH2h/Ay469VwgjejNx6avmzxGw7FRIc m0nsqlMabHT3GoA==
+X-Mailer: b4 0.14.3
+Message-ID: <20261020-rust-workqueue-v3-0-ea7c74d02068@google.com>
+Subject: [PATCH v3 0/4] workqueue: OwnedQueue and ScopedWork
+From: Alice Ryhl <aliceryhl@google.com>
+To: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, 
+	John Hubbard <jhubbard@nvidia.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
+	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, 19 Oct 2026 23:34:38 +0000
-Sami Tolvanen <samitolvanen@google.com> wrote:
+This series extends the Rust workqueue bindings with the ability to create
+custom workqueues (OwnedQueue), and introduces ScopedWork, a work item
+type that cancels synchronously on drop, allowing drivers to use
+workqueues with lifetime-bound data.
 
-> The hrtimer callbacks return bindings::hrtimer_restart, which bindgen
-> generates as c_uint. C calls them through hrtimer->function, which
-> returns enum hrtimer_restart. kCFI encodes enum types by name even with
-> integer normalization, so the type ids never match and every call fails
-> the CFI check.
-> 
-> Generate hrtimer_restart as a newtype with a cfi_encoding, as is done
-> for lru_status, and adapt HrTimerRestart to the newtype.
-> 
-> Fixes: 8a8afe9349fb ("rust: hrtimer: introduce hrtimer support")
-> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-> ---
->  rust/bindgen_parameters     | 2 ++
->  rust/kernel/time/hrtimer.rs | 6 +++---
->  2 files changed, 5 insertions(+), 3 deletions(-)
+This is a continuation of Danilo's v2 [4], which picked up my earlier
+series [1] and Onur's ScopedQueue work [2].
 
-Tested the hrtimer doctests on x86_64 QEMU with CONFIG_CFI=y. Without
-this patch they hit a CFI failure in __hrtimer_run_queues, and with it
-they pass.
+Patch 1/6 of v2, "rust: workqueue: replace deprecated system_wq with
+system_{percpu,dfl}_wq", is a fix and has been sent separately [3]. This
+series no longer depends on it.
 
-Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Tested-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+[1] https://lore.kernel.org/all/20260312-create-workqueue-v4-0-ea39c351c38f@google.com
+[2] https://lore.kernel.org/all/20260617144645.253444-1-work@onurozkan.dev
+[3] https://lore.kernel.org/all/20261014-rust-workqueue-system-fix-v2-1-c018b8f870f9@google.com
+[4] https://lore.kernel.org/all/20260807165252.3849875-1-dakr@kernel.org
+
+Changes in v3:
+  - Rebase on v7.3-rc7
+  - Split out the system_wq patch and send it separately as a fix [3];
+    this series no longer depends on it
+  - Drop ScopedQueue: with the ScopedWork changes below it is no longer
+    needed to enqueue non-'static work items, and it has no other user
+  - ScopedWork: make ScopedWork::new() unsafe instead of
+    Queue::enqueue_scoped(), which is now a safe method accepting
+    &ScopedWork<T> on any queue
+  - ScopedWork: drop the WorkItem/WorkItemPointer/HasWork impls and the
+    public ScopedWorkRef type; embed the work_struct directly with a
+    dedicated callback, and keep the Opaque-wrapped payload private
+  - ScopedWork: drop T on drop (Opaque does not run destructors)
+  - ScopedWork: propagate the initializer's error type from new()
+  - Builder: new_power_efficient() uses WQ_PERCPU | WQ_POWER_EFFICIENT;
+    remove the now pointless percpu() modifier
+  - Pick up Reviewed-by tags from Daniel
+  - Link to v2: https://lore.kernel.org/all/20260807165252.3849875-1-dakr@kernel.org
+
+Changes in v2:
+  - Merge scoped_work.rs and scoped_queue.rs into scoped.rs
+  - Introduce ScopedWorkRef<T> and wrap it in Opaque inside ScopedWork to avoid
+    &mut aliasing in drop
+  - Pass &ScopedWorkRef<Self> to ScopedWorkItem::run to enable self-re-enqueue
+  - Add Deref<Target = Queue> for ScopedQueue; remove duplicate enqueue_scoped()
+  - Add Send + Sync for OwnedQueue
+  - Fix stale workqueue::system() references in docs
+  - Drop Work::cancel_work_sync()
+  - Make sysfs() available on ordered workqueues
+  - Add #[inline] annotations throughout
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Alice Ryhl (3):
+      rust: workqueue: restrict delayed work to global wqs
+      rust: workqueue: create workqueue subdirectory
+      rust: workqueue: add creation of workqueues
+
+Danilo Krummrich (1):
+      rust: workqueue: add ScopedWork for non-'static work items
+
+ MAINTAINERS                                    |   1 +
+ rust/helpers/workqueue.c                       |   7 +
+ rust/kernel/workqueue/builder.rs               | 370 +++++++++++++++++++++++++
+ rust/kernel/{workqueue.rs => workqueue/mod.rs} | 108 +++++++-
+ rust/kernel/workqueue/scoped.rs                | 342 +++++++++++++++++++++++
+ 5 files changed, 823 insertions(+), 5 deletions(-)
+---
+base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+change-id: 20261012-rust-workqueue-658cd0fbe770
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
