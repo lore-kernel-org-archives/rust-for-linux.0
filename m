@@ -1,100 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792507040;
-	b=5W8E54DeEhtZbHVmJnpxwR9BgOYe3HAIil8TjkcGE3iaBgCUJpZ+ZVpDa0i0lgyPz5/z
-	 y6QTQ57XaSyP2c39bl54C/ZTya41DGM3cikh/+1rtP0HSJdtvpu3TPQa04RV5IjngIfvi
-	 5TUNRvTVk9rB6bXth9wI2L6l68umkFGoseDhwksFHWIuBAjArqKh1LKmCDax4w/0nzg5/
-	 jdUshjTsHDfA+TFs5I/rzQ1Reofnd68qTfjy3jWo6goh7ORMZA5c4yr6/4kKZNLhHj5eC
-	 4yljsTjDH1R4XbusO11/HXWL+pCsOSC+TwglDYM2DiUDOOyGbnqLepAySc12gmiMRug==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792507040;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=Th2n2oDQlswuf1BVeMTn3nKsEA75XKAvSzInb/NsZ8c=;
-	b=s91/IwiKMZ+ArcawREPX+XiooEGipy910moFuTTDWroMcJZfTki5c2LteVLsKwsqBJPE
-	 gylqFwpsDQoQSGiEzACsgORj5YbrlmCJKwye0p8qaXmZmSM/6jPHzZBgZNTrZzXnkVXYx
-	 /sCApq9hTt/cG2XRTAXTS5dwauGgEqDKwY2cIBgJOrQB5mtclC6oBfehnCDcdxKEcd8Bt
-	 GpUPFJk5FEmMonSuAmiwZqlrqVai/5/+DpFibhiYjOz6nmiJ6P43twpaqVXMuw0P924Z6
-	 wNso6wV5kUUkt5qKSX+rwIIQ42sHW+tCw3orDgr8dCS2SA6Iohu2yWPU8SjWUlRiTfQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=darkrefraction.com;
-	spf=none smtp.mailfrom=darkrefraction.com;
-	dkim=pass header.d=darkrefraction-com.20251104.gappssmtp.com header.i=@darkrefraction-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=BVV+jDr3;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.241.56.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792507284;
+	b=4kkxI6TZkZDhm2mqmGRLOFPwejyW54yKg1jMtXQKmnp6+/FTJUfU2ufLjvbS9pfQkeLu
+	 tkDqA1il1WCDGwr6gpTd9+WPhBRB+yP+ucvaemj3DfnPwE/CyLnP2TMoiSR7ZEN9cy/wD
+	 cM5Unp4k9ePIt36gR7tGk7kiadjS4ZfUyJDk3/64+5mUv2zj4bFONIGWjs0322Hjmb2x5
+	 gc1BEEKQeXNp82b5bQ6Fjd85IepjiXoeF692W5Z6+FR2ujqUGSA2GX5cVYun4Fk5C1tW1
+	 yadxTrp0Bui1+7yJHf+j9BWPX0EEjR3HExakfsMpgin40GC6hLM2eqtZ9EwDAFEgumQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792507284;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Subject:From:
+	 Reply-To:To:Cc:Date:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version:X-MBO-RS-ID:
+	 X-MBO-RS-META;
+	bh=dsyyGWxhNBOvel5G5C2yuF7bzkrNytpvfSZfEsf6afo=;
+	b=ukS9gHoFeFMjtqfeUdkfqOXaFTx+W2CdgtvYDf7bMWCskwDBCCocwi6rdM3rXvBH/9l6
+	 W0pKYr/k+vMiGAB7mHYSlMwf1D/igPDZAD5YRuLVkxEZQ3rE7xIa6xrB3UZMNK0L71H3Q
+	 J2T7YCf3cx6awkOa0XoC/MyBmzpiEMp9qEt6TGlFxtLwMrYtnuVmfrjWEMJ20RHgAHWcU
+	 zihQ3A5J9W7QBO0e7H4IVT0zzmP6MtBYPzNtyoLl3CJR2P4YEaWdxJV7Nc2czFSdE6S+M
+	 WE+QVFSuXkuNf9x01thSsLMlUoauiNJ7sG5yh/BExmYXnl14DlkBibtPLnZdB2Tkfxw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=mailbox.org;
+	spf=pass smtp.mailfrom=mailbox.org;
+	dkim=pass header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=Ad8rZ1sX;
+	arc=none smtp.remote-ip=80.241.56.172
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D730606A327
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 14:37:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D730606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=darkrefraction.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=darkrefraction.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA217606A334;
+	Tue, 20 Oct 2026 14:41:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA217606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=darkrefraction-com.20251104.gappssmtp.com header.i=@darkrefraction-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=BVV+jDr3
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6afafc89b48so4731770a12.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 07:37:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792507038; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gFuxbfy/wyJqjvAvUnooF+xo7Vid5fkNvbClRniKAfFjC+Rda/CDPlUIEkEx7up620
-         O3uOw5KiqQBoMfLh19sVXajk3SSitF60fBUwdNr4XyG9gvRzDhu7nFxgH/nDHdqNcHh6
-         hYV39ld+hzxUp8MfLVs1cAVYgQceOLUTIinxVu2Pcgr/oNTjShMA6si7YNP+zgLxex1S
-         ZT3rCKj4h5aK9gMf+v47nGN4XEA/0lX6aS3yUx352EYH4qRT8m5653q6B+yFNMP8vzaz
-         P5WMAaYnfhM4UM3UIHxza1PvfyEUC1+sfXxEuMLvb0lZdgJRIggR4sbl7QbQ/WRVAbbe
-         XC3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Th2n2oDQlswuf1BVeMTn3nKsEA75XKAvSzInb/NsZ8c=;
-        fh=eV3J6vvzaCqd5kIcCCHdhRQw9GurY5eYjAhB/7p1oxo=;
-        b=SsPlQKir4olLK8iLuWOMadfIrbcyj8BkaYouZ6ofvm7i3zRAIIDhc89wOV2ro0ECwP
-         Shve+YvVLeGNL/D819WjZo2fPXrxznmUCO77o+7ZgTiigmlGmtoaYop6tnVB36G1EJtv
-         VVJ98wp3y2gqguRDX7jVUJ4mWYa+0xhuT1Yy+REJ1K2VQQljNykSyEsgCzkSxujhR/eB
-         r53pvCOqiNum0Khvg+T3S9fv1qxWFmUtcKgEOvckK9495PbVhxy5mWMvhjK7SxNO4txt
-         adaerb9UBu2gAehYngEBw0UJaOzeG+AVW29NFaCOON8iUms6OIhZBUmAp7nUB0VB7nY0
-         NKcA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=darkrefraction-com.20251104.gappssmtp.com; s=20251104; t=1792507038; x=1793111838; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Th2n2oDQlswuf1BVeMTn3nKsEA75XKAvSzInb/NsZ8c=;
-        b=BVV+jDr39kq9xQAt4zW9F4V4MqWNkPYTmB8dBYlAz9dfsgsrgWyEXmHbyt6ce7UQ6Y
-         uRRcJdnQn/gj3BaS37nMG4XQ0bjxP5ab5Qod9r5Tw9OR1BZEiBt01MOdEacnKLrZkuG2
-         dCNgRuN1J0rxMYC227whOuYb9CAzSmB/Pzf1iyBpAr+9OMxz3JIZEfN5L9yaUqtXAFBG
-         Fb8pM8vXtGoKrFI5fCSYIOIKyXAheJ38Y3x6K/Q1Cjl9pn0d0o2hjgqnX3Qu1WF106Et
-         sZRt8Ss8H+gYdp4J0T0XyJAFc6td/4MRg3XCULQbphN7311/dh/+cZ5h9NxBiI6G7/5u
-         l+NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792507038; x=1793111838;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Th2n2oDQlswuf1BVeMTn3nKsEA75XKAvSzInb/NsZ8c=;
-        b=ij2DUBn0yI8Xo391JlcWEVI8goC+0D8LKwodYvDbmAhBD2I94/UuMVgNFdZn3l1eUY
-         hVhCpKycGoxxEyj1Chk3eLLQmQ107d1O7QLuYtPduIZkpuDMImTulTSWfs8KrS9OlLdL
-         tbEcRUn4eXTeLXIZlxQBO2wbeDq/4UPQtZtCMIaiMPddAo1EcnxpVNM20AbAxnFlweqH
-         a8qXvzzHY3DijF1XAOLDCHXQ7G1PACGlmfnzSGAE9Lmn9OCrTCutNBOHopg+SCuN/+Ml
-         grqCM2TV1E9Ga3mNxMlTzkJer5Z6HjFKlAPdELzMpP59orl4yIp8Wzth00Wn+vsIBy8j
-         bFuw==
-X-Forwarded-Encrypted: i=1; AKwUvBzrS+X393+LxrudF59b+qAq0+dNd9JsNPy0oG+uyc1kdp5GsJ1tlmF1tCkrRI72aj51AH1RWPum8JaBFuuycA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYLqMxq/xNP0jR0BcLZSFHpKBA6Sx7zpbaokRVczvM1f1Zv7vS0N
-	2Gc5oOrB/XDxkq5jrhktQenr4xVuZGJ02TMDxx6s+aoSKjKeRxjOiLzWU87q2//FMjnA5vmP8U/
-	4/iasrom4CD5pmBg+5vmMYzVDJ5XyId/9e1bkKPicdw==
-X-Gm-Gg: AYBFou1u1Ur9/c2JrU+T7+ngGGU+WRgt3teNRA7OuWzDiIIH1Hl42+FblPwE2E2/1Fe
-	UPTp5QWAOkCP0HAEnWmGJgWhzN/qxzIm+BITtVWuDcVAqdIqfChGKOzCwUwoY9+uwpB20XTDVx2
-	QVx0bjSYVVgV2aaTtzSq9dWodckFQDnxlWZHP1syiEZR4o/6UnL/UrNbS3GYZGVQXixeUZ2L4z7
-	onsAd1R4qSmTUC5xIYbb/RpQMdbKJil1sN6GDb7ycjPSztG3Dk6O8USYGi9BITfW3zfmEbjvsH1
-	8OCqdvminShmK+XxhYhjkA/HvS63k0cldWGKco0+5aQdW5ShzlEyRu/ANe1q1Nwe5rV18dxuCuY
-	7cWyi00niGfXI
-X-Received: by 2002:a05:6402:46c3:b0:6ac:a1e1:3f88 with SMTP id
- 4fb4d7f45d1cf-6b3e479af2cmr1805659a12.14.1792507038070; Tue, 20 Oct 2026
- 07:37:18 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=Ad8rZ1sX
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4j8FTq6gPDzMlpm;
+	Tue, 20 Oct 2026 16:41:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1792507279; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dsyyGWxhNBOvel5G5C2yuF7bzkrNytpvfSZfEsf6afo=;
+	b=Ad8rZ1sXZAjqL0R25aIKLX8FW58VDQ1i78ist/YmNQAbhtQf+Q/FKy8g47hTqo28Ya9pYW
+	JF6ObwLvGTTO1yfoeYnnFVu4wgTK2Al+u/eAHJsD6z9ESP+c/TufRO+8eW80xINo+5hY1m
+	+Cx7F16V8NYWahH86YAdb4Lca42qNIvNTSD6NRhz46TuiJTM9kfqWdIpvVZOUgnFKfIyu7
+	IWR7B+u+M6120Po1MnIQcdxXY7gKy/SYc/w2jgkMXcG9peJll2fDtWV6lB2pfjLCMXzNJ+
+	gxwLJj2ydZl0r/AA7lve4bGAOVMfuDiKfdaKTqDDpTyHEvNBulzhK8K4n/rAjw==
+Message-ID: <ca78cdb7c24a9be9b640db782168cdcc5fe30b60.camel@mailbox.org>
+Subject: Re: [RFC PATCH v2 0/3] Solve dma_fence's problems by locking
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Philipp
+ Stanner <phasta@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, Jani
+ Nikula	 <jani.nikula@linux.intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>,  Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,  Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>,  Gary Guo <gary@garyguo.net>,
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  Benno
+ Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Daniel Almeida	
+ <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=
+ <work@onurozkan.dev>, Boris Brezillon	 <boris.brezillon@collabora.com>,
+ Alex Deucher <alexdeucher@gmail.com>
+Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
+	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Date: Tue, 20 Oct 2026 16:41:12 +0200
+In-Reply-To: <3e8bc11d-6f90-47a4-ae63-cf2ff37f1ff6@amd.com>
+References: <20261020100034.759183-2-phasta@kernel.org>
+	 <3e8bc11d-6f90-47a4-ae63-cf2ff37f1ff6@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -104,36 +92,99 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019212535.88390-1-dakr@kernel.org> <20261019212535.88390-2-dakr@kernel.org>
-In-Reply-To: <20261019212535.88390-2-dakr@kernel.org>
-From: M Henning <mhenning@darkrefraction.com>
-Date: Tue, 20 Oct 2026 10:36:52 -0400
-X-Gm-Features: AclHuK-6VS79fqbsrkK5l4dmV47FN6lL1AdlVauDg0y-CgJGi7jnOJDni7bx-HA
-Message-ID: <CAAgWFh30UryzqyU0As6qi8AaHzQbO=pp-Y+gWMs0ap7i1D4qKw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] drm/nova: mark the uAPI header as unstable
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: aliceryhl@google.com, airlied@gmail.com, simona@ffwll.ch, ojeda@kernel.org, 
-	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
-	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, 
-	work@onurozkan.dev, jhubbard@nvidia.com, apopple@nvidia.com, 
-	ecourtney@nvidia.com, lyude@redhat.com, kherbst@redhat.com, 
-	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MBO-RS-ID: b9048a7d9fe97d9beaf
+X-MBO-RS-META: qigaa9aksrimhrpqmxh7stqras399i54
 
-On Mon, Oct 19, 2026 at 5:25=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> The header already documents that its uAPI is unstable and intended for
-> development. It may change incompatibly as it is developed upstream.
-> Rename it to nova_drm_unstable.h and move it out of include/uapi/ to
-> make this more explicit.
->
-> As individual interfaces become stable, move them to
-> include/uapi/drm/nova_drm.h.
->
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On Tue, 2026-10-20 at 14:02 +0200, Christian K=C3=B6nig wrote:
+> On 10/20/26 12:00, Philipp Stanner wrote:
+> > In our Rust code bases, I'm currently experiencing what we also
+> > experience in C at many places: that the dma_fence contract's RCU
+> > requirements make the API more fragile and put an unnecessary burden on
+> > the API user. Most notably, in C the API behaving correctly now depends
+> > on the API *user* waiting before free()s, waiting before unloads =E2=80=
+=93 all
+> > because dma_fence is not properly synchronized.
+> >=20
+> > The patches commit messages give more details about where I want to go
+> > with this particular RFC.
+> >=20
+> > My rough "vision" for dma_fence, where I think it should develop to, ca=
+n
+> > be described like this:
+> >=20
+> > 1. All users should use inline-lock.
+> > 2. The fence-signaled state should be our decoupling point.
+> > 3. The fence state must be consistently locked.
+>=20
+>=20
+> > 4. This means all callbacks are only invoked for unsignaled fences, and
+> > =C2=A0=C2=A0 the fence cannot signal while a callback runs.
+>=20
+> First of all that prevents concurrent execution of the callbacks
+> which for a lot of use cases is a must have.
 
-Acked-by: Mel Henning <mhenning@darkrefraction.com>
+Currently only set_deadline() can execute in parallel.
+
+IIUC in our past discussions, your wish has been that the driver can
+take its own locks with free locking-order in the callbacks.
+
+Thus, the callback is invoked under lock in any case, just a few
+instructions earlier or later. Thus, no callback ever truly executes
+concurrently.
+
+>=20
+> Then as I pointed out before the second problem is that this again
+> makes the existing lock inversion between the signaling by polling
+> and signaling by interrupts even worse than it already is.
+
+We asked for examples in our last discussions, and the only one ever
+presented was the list-access requiring the fctx-lock in
+nouveau_fence_no_signaling(). Nouveau is often not a good example.
+
+Can you provide examples in the kernel where deadlock would occur?
+
+Note that I pointed out that all callbacks are already invoked with the
+lock taken, which proofs that it's doable. Future users with inline-
+lock could employ various techniques for dealing with the lock-order.
+
+Only exception currently is set_deadline(). The only user, MSM,
+acquires the lock manually and then nevertheless triggers work on a
+kthread, examplifying just one technique.
+
+>=20
+> What we could use is an SRCU, but a spinlock or any kind of lock is
+> clearly the wrong approach.
+>=20
+> So as far as I can see that is a big no-go and we should really just
+> use RCU for everything and remove leaking the fence look into the
+> callbacks like I outlined before.
+
+Look at patch 3. We might want to add some legacy support for shared-
+lock, but it is evident how much more simple the code gets.
+
+Also:
+
+> >=20
+> > Point =E2=84=966 means that this:
+> >=20
+> > dma_fence_lock_irqsave(=E2=80=A6);
+
+I even forgot that you also need a
+
+if (!dma_fence_is_signaled_locked(=E2=80=A6))
+
+here
+
+> > dma_fence_set_error(f, err);
+> > dma_fence_signal_locked(f);
+> > dma_fence_unlock_irqrestore(=E2=80=A6);
+> > synchronize_rcu();
+> > kfree(driver_foo);
+> >=20
+> > should simply become this:
+> >=20
+> > dma_fence_signal(f, err);
+> > kfree(driver_foo);
+
+
+:)
