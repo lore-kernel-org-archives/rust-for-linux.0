@@ -1,78 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792484750;
-	b=dhSFo+LObv4u/Q9gwbKno1OVL3abdJZqp+xtBzAFjYFQIuwwHjzZZdr3/5uL1beUmIJ7
-	 T2TLHy5gWCMgEbesI5YA+6aP2z5vqevOwUdXsrEO9eYWqfXk8MM0kNYHp9pYKjyDq/cYV
-	 phHr9o7WLydfDSRYWyKUhML8WEbIG3CN+Cct2KdVp977OtXhLcboFFx0V+bmUM7W0spxv
-	 Kb1EHsi4aobjZsb3cVLNvSO3ItR8HPk+RjcAy3RJMm4/SLqpp9CoOt5avvqcEmOt18bmt
-	 WzDNPjYwG8/kac8+LcVWi6Ii2SXvZTmf+joadV5HP2icdZ9xVhVWrQqoVijjA+Vm9IA==
+	t=1792484751;
+	b=nvDTxmKIhEQ5Ga+SrErE+oGoVcGmA6bV8AeYJ0TdWR5Zp7vMst0uBlGlAEzZ2ulPz1/q
+	 nec7x12AG+Fq4GaExUe2ASje/BvTo8EQQtGQw0EAr7JJmXvcez80WkgKHoe2O+QR04WMG
+	 4X26SsDSggvtY6GW6KypACr9/E5S9b+sslIgsyA2ywb/df4swTYMOBh+8lq/StRLafbD2
+	 mMP2FB0XdY9DIq6elFkVCYlzvd2Mxp36gcF51SVUKyKvHAt9gfWzYPuywlA90X+F6SKPu
+	 Q1JmBy5/FHZZT2Uw7PrK6e5XEk+gvbwZ9qtyZ9hK8oRZYez7rfFxZDVI5hyyyklpcQQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792484750;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792484751;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
 	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=KqRn1n5iORX+7EiqCp1P4Y8MwIEiz+RAzWKAWH8qI0I=;
-	b=G8BI+SiYIzavx3EF3euA6byDTqieucC4BSaQZnO4iOuOapA3iUV05yJYMTah68SX0jv+
-	 CsVnELT4XcL3T6VhZafkoJ+ndx15DjYzkVh3tn9go9UeFB1pgbhB+HaaAbUvSF91Mecyt
-	 6IWDHsRljVXX24V9uSCf1PUWRLGanxVNdrr1XgN3vmeFah60K8wwKfenIRGoD9AxvKmWW
-	 BHfcGoOBABrdThsxZikyJaoSUFEX/633Lwj+As6DDzz3Tm7YKVKLIJEFtNVVsBRA/8A9U
-	 qSpK1eJwY1KI546p8uZs/BLLkD+9hQYO9NDZw9hbWHD+uINNS6Wh/kMfBweycLjzJBQ==
+	bh=xZSBbpXCPPOyIW5DCM93p6opBVKDT+z+pzOs0o8DC6c=;
+	b=oYX5s9F9CSvwUyLhxgEgenhINeoGHF1hWyHCYfs6Eww2eDTpx729rLHyBqbFf3lfJiKs
+	 vI53ux4WUX9Gfdvkrw8JXwDatreQhdVjQBg6H+m96pYChu/+VuFJ7SuRjj0YJQA3yGQEx
+	 te/kx2+OZnXJg/4aiTpTJymvgcyq/Uc8bnDTBY+Ys8NIlEkCdfPj6FFC+M6KCxD1dzfMt
+	 hBJVwzuwRIY5PX0lSxTLxV334o5C1K1gp8SnLaPww2ALkGaOvdxL9rrFlOZqV7TFeJGJu
+	 aZ8Dwr7rq3/LahE1+dv+1V7Y5JUCy2ZaVY/gYaQv/43yF1Q/6UVwR4hbQb4hVzFOGyg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KqTv+ULb;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ID1sc0xC;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70FF606A31F;
-	Tue, 20 Oct 2026 08:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250F160A261E;
+	Tue, 20 Oct 2026 08:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KqTv+ULb
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ID1sc0xC
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792484749;
-	b=fYhJ2e7N9xjNk2kZLDdM+R/d6h+D5u4tp/fw78bWJ1JeBbWmUKtbnad3ryVqRgdVZo04
-	 nAhKSogmzhkp6oCb1zA/cmUxdegyOx0kHnMes+5SqxNtwFEJ3nNNc0RKZcjN7QeokhVpe
-	 HkyRyTdHym3WmlnFI4PJc/4zg7dwvZcIZrzrOOFNufIHPC4ygcNZFC9qktejXoZH5QT57
-	 3/7mTrXQ0ub+UWjmEuqnnwxBr+mSggHQD287ZQaS3wCF2SZrWMoKW+A/SSFlPNkGybtcw
-	 HhFTrs+NqYfzDGAhqOlzHlYht+WDBCkxNkk7Jti1GhH8i2kLHy2ynYq54VK1Gc1AI5A==
+	t=1792484751;
+	b=2+sWqdBEVEqwS98+UfXbmW1x53BaAWnZHW6m8mfmrEWwww0royRNnJRTlcT6K4ZDVk2T
+	 IZN74obuheuPlwiQXscpGDrLn92xd9qe3+tcQmDc6n4qQWdwWXFNVcXH4wfkk3eI56VSG
+	 loVZKf245sLcNDmMwzIz9AoP16Nj9vcuPZe7LI9qh0CxdNYx1Chb46FpBviiwJDaG45YF
+	 pq5lCZmcI5fMuG2O18Ql/1qVT5zZT0izHSjQxQLMrbGQM49DmlN7gO1CVUE/HzgPHceuw
+	 rFUfSmpzepDiJFAdRNE1WhobRKpqJ+QhFM0Pgnnifh/s03/f9JPtr7zeBRtYaPHNCbQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792484749;
+	c=relaxed/relaxed; t=1792484751;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To;
-	bh=KqRn1n5iORX+7EiqCp1P4Y8MwIEiz+RAzWKAWH8qI0I=;
-	b=ZzE0L5HhCA4AW8cgbaGiMqySEw4dLwF8+xPE65ayS5tXOdEb5xF/pCC0+H4Vxxfscrab
-	 r59kZc4drC+b3B3MYC8SEaehgkkYtFwFAVUQIIRMLN/wd+v7j9uA72Nb20vTPF4BBDUZ0
-	 A+x8i9zwIJ9bw0IjUmdXSaxfE9dWO0WsZxqtQXy2fIs75cHa8tmo1dpFRBsyW+12CPuUr
-	 fS4hilIzPocXLnBUgA3g6+gAHAakcJnzNv81BGgK9Emc/2xmEO4/x4EPaIxYYdh0oDnKA
-	 ufd2IKnWNobBuNmLbQ+Yc4U73cFc0lmBHWtERlsqEgty943HvGcUraXzKTKzMgE8B9w==
+	bh=xZSBbpXCPPOyIW5DCM93p6opBVKDT+z+pzOs0o8DC6c=;
+	b=i745tetahXk71ccIgXrUKULdVcJFIvTT8MnSU7TCZEk23aIudMDEjAx3SwI5ycusk2iv
+	 bTQyNG1Ee9YPPQZB5s7LpNIlxYxj4lgoQ35FWRaKPdPiMW2xKIA566C1aqUn686HruYI6
+	 t0Fr/H1+QUinhsmcD840Eg8Dn6C2pFfvp1RJ1eilr2R2Vn/kQW3AZ2BZM1w12P+KQBT3q
+	 p7TsNW/bpX3fAogRmfSTzyoSfheCR+mVO95SsdDv0FCc88HSCg3LxS64T7xOlvOj8T6xc
+	 WiV1ebUzF+XW/Pd6//F7mw4COOiynXhO7snX/3MPUfeZkB/x9aeOzgATk4V8s1MmnTA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 0A44C1F000CD;
+	by smtp.kernel.org (Postfix) with ESMTPS id 8576D1F000D3;
 	Tue, 20 Oct 2026 08:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792484749;
-	bh=KqRn1n5iORX+7EiqCp1P4Y8MwIEiz+RAzWKAWH8qI0I=;
+	s=k20260515; t=1792484751;
+	bh=xZSBbpXCPPOyIW5DCM93p6opBVKDT+z+pzOs0o8DC6c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=KqTv+ULbYH+nbvMaNbO/lzPrEjm1NPnJFUBfc0obhL54Os4lr2i67o7iM9KBGcnXj
-	 6iP59DpFpoKeEJnYMW3UgSifmTMr3/VhAlV7eXwHEBgf5USz6IZdO52gPAeeYRRf/Z
-	 6N2ofku10uKxyBpXVyJEkZ7F+YEk+oTJ8XH6qf+7kvGw/PX4O11hT669d3g+RySLBV
-	 5zygcaKfUK3fFzwTQVEJ71Dmmu9pfcAkYSUtKrzA+fKcTFJ5bWGfYOlZyRDH7MsSMy
-	 3hOGr83WddE4i60uTKPzoFulBUe6eLZkjuVUQTSWRi2EFrd/CWrxCmDeezl/EW7fgW
-	 DNf9IdNbFGJrQ==
+	b=ID1sc0xCpIZ0+cEFmUoZhiYhgf0mcGT9I2MmfVZgpTpR7lCJ3ljnqAKOj9Yor5bmz
+	 7OVYMEa4gyKLa0lGNUBAnOJrqhjUjSzQ7QvwVPOU/eDXmNS3GTQgfDe+y85K1y6MFt
+	 ayRpV0u+rPhMrP5CLabhhfZlE0p3MIQNVD3DfA+5Ey9XCV1aayHG3/eQcrjUdVsrJo
+	 LlRJLzRc1GwfOiYuaeNtLXQLeEuruaV+4MkierkzI8xOkgZAdQPPXSan2EcoPwXTKg
+	 7kxWwRZuphYAFxdNG2oJbXWcV6arI16S9AdmJb62Y0czScayAOcODUIs0N2dKHKPOS
+	 l5cXOxhEUjk4w==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id D8419430EF;
+	by lkml.kernel.org (Postfix) with ESMTP id E6665430F8;
 	Tue, 20 Oct 2026 08:25:45 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Tue, 20 Oct 2026 16:25:25 +0800
-Subject: [PATCH v4 08/11] drm/tyr: add BO-related ioctls
+Date: Tue, 20 Oct 2026 16:25:27 +0800
+Subject: [PATCH v4 10/11] drm/tyr: gem: flush write-combine BOs from
+ probe-time coherence
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -84,7 +85,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261020-tyr-ioctls-v4-8-704de77da223@kylinos.cn>
+Message-Id: <20261020-tyr-ioctls-v4-10-704de77da223@kylinos.cn>
 References: <20261020-tyr-ioctls-v4-0-704de77da223@kylinos.cn>
 In-Reply-To: <20261020-tyr-ioctls-v4-0-704de77da223@kylinos.cn>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -107,11 +108,11 @@ Cc: Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org,
  driver-core@lists.linux.dev, Ke Sun <sunke@kylinos.cn>, 
  linux-kernel@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792484721; l=5835;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792484721; l=9726;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=pPJLhN0cYhR6VLbdNYY1nEjJlXnDPH5ZSxoTT9flAXo=;
- b=4+bx5X5R13d+0MIbrPuiXx1LMwCdGrOJ+z7MxGsNiqAAJ8ZGr+AnZU3sfr7SO4qTlr2knh1FU
- 4o9YpH3Vox0DP8PAiCLlMKJh35BKTRYhWnGWPHHU/GotEfMl7DnccCX
+ bh=PQV8IyoWvZ/wyECdqBdD8j2r1IHBGqizGurXR8lStHE=;
+ b=REKwwK8R4sMhKtXMMVYYhVgSvD8opzYGeEZPHRLY+PWA1inGXX2jmzz83q0cgKEgTIWVzQM9G
+ 0Rale4/IdsnDXeyY3A8eAmffpPKAlS801yvWeWEg7Ld/Ng9vi8hZW9a
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -119,167 +120,263 @@ X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
 
-From: Alvin Sun <alvin.sun@linux.dev>
+From: Sami Tolvanen <samitolvanen@google.com>
 
-Implement BO_CREATE and BO_MMAP_OFFSET so userspace can allocate GPU
-buffers and obtain a DRM mmap offset for the generic mmap path.
-BO_CREATE page-aligns the requested size; BO_MMAP_OFFSET rejects
-NO_MMAP objects, which must never be CPU-mapped.
+Tyr maps shmem-backed buffers write-combine, but the shmem layer
+zero-inits new pages through a cached mapping. On a non-coherent device
+those stale cache lines can land over later uncached writes, so the GPU
+or userspace reads a freshly written value back as zero.
 
+Read the device's coherence once at probe and map buffers write-back
+when it's coherent, write-combine otherwise. BO_CREATE fetches the
+sgtable at creation time so dma_map_sgtable() flushes the zeroed pages
+before anyone accesses them uncached.
+
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+[ Drop the map_wc-conditional sg_table call, now fetched
+  unconditionally in BO_CREATE. - Alvin ]
+Co-developed-by: Alvin Sun <alvin.sun@linux.dev>
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- drivers/gpu/drm/tyr/driver.rs |  2 ++
- drivers/gpu/drm/tyr/file.rs   | 73 +++++++++++++++++++++++++++++++++++++++++++
- drivers/gpu/drm/tyr/gem.rs    | 18 +++++++++--
- 3 files changed, 90 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/tyr/driver.rs | 10 ++++++++++
+ drivers/gpu/drm/tyr/file.rs   |  5 +++--
+ drivers/gpu/drm/tyr/fw.rs     |  4 +++-
+ drivers/gpu/drm/tyr/gem.rs    | 34 +++++++++++++++++++++++++---------
+ drivers/gpu/drm/tyr/vm.rs     |  9 ++++++---
+ 5 files changed, 47 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index c0f17bc4ce2c9..f4f31b24180b4 100644
+index f4f31b24180b4..633d1cab3cea9 100644
 --- a/drivers/gpu/drm/tyr/driver.rs
 +++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -227,6 +227,8 @@ impl drm::Driver for TyrDrmDriver {
-         (PANTHOR_VM_DESTROY, drm_panthor_vm_destroy, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_destroy),
-         (PANTHOR_VM_BIND, drm_panthor_vm_bind, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_bind),
-         (PANTHOR_VM_GET_STATE, drm_panthor_vm_get_state, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_get_state),
-+        (PANTHOR_BO_CREATE, drm_panthor_bo_create, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_create),
-+        (PANTHOR_BO_MMAP_OFFSET, drm_panthor_bo_mmap_offset, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_mmap_offset),
-     }
+@@ -88,6 +88,12 @@ pub(crate) struct TyrDrmRegistrationData<'drm> {
+ 
+     /// GPU information read from hardware during probe.
+     pub(crate) gpu_info: GpuInfo,
++
++    /// Whether the device is reported as DMA-coherent by firmware.
++    ///
++    /// Cached at probe via `device_get_dma_attr()`. Drives the BO
++    /// cacheability policy in `crate::gem::should_map_wc`.
++    pub(crate) coherent: bool,
  }
  
+ fn issue_soft_reset(dev: &Device, iomem: &IoMem<'_>) -> Result {
+@@ -152,6 +158,8 @@ fn probe<'bound>(
+             // other threads of execution.
+             unsafe { pdev.dma_set_mask_and_coherent(DmaMask::try_new(pa_bits)?)? };
+ 
++            let coherent = pdev.as_ref().dma_attr().is_coherent();
++
+             let unreg_dev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, Ok(()))?;
+ 
+             let mmu = Mmu::new(pdev.as_ref(), iomem.as_arc_borrow(), &gpu_info)?;
+@@ -162,6 +170,7 @@ fn probe<'bound>(
+                 &unreg_dev,
+                 mmu.as_arc_borrow(),
+                 &gpu_info,
++                coherent,
+             )?;
+ 
+             firmware.boot()?;
+@@ -187,6 +196,7 @@ fn probe<'bound>(
+                         }),
+                         iomem,
+                         gpu_info,
++                        coherent,
+                     }),
+                 )},
+                 _: { dev_dbg!(pdev, "Tyr initialized correctly.") },
 diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-index 22a74b4abf3de..9ffb42f0d8851 100644
+index 9ffb42f0d8851..d4d6a6742b2e1 100644
 --- a/drivers/gpu/drm/tyr/file.rs
 +++ b/drivers/gpu/drm/tyr/file.rs
-@@ -250,6 +250,79 @@ pub(crate) fn vm_get_state(
-             Ok(0)
-         })
-     }
-+
-+    pub(crate) fn bo_create(
-+        ddev: &TyrDrmDevice<Registered>,
-+        _reg_data: &TyrDrmRegistrationData<'_>,
-+        bocreate: &mut uapi::drm_panthor_bo_create,
-+        file: &TyrDrmFile,
-+    ) -> Result<u32> {
-+        if bocreate.size == 0
-+            || bocreate.pad != 0
-+            || bocreate.flags & !uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0
-+        {
-+            dev_dbg!(
-+                ddev.as_ref(),
-+                "Invalid BO_CREATE params: size={}, pad={}, flags={:#x}\n",
-+                bocreate.size,
-+                bocreate.pad,
-+                bocreate.flags
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        if bocreate.exclusive_vm_id != 0 {
-+            dev_dbg!(ddev.as_ref(), "BO_CREATE: exclusive_vm_id not supported\n");
-+            return Err(EINVAL);
-+        }
-+
-+        let size = usize::try_from(bocreate.size).map_err(|_| {
-+            dev_dbg!(
-+                ddev.as_ref(),
-+                "BO_CREATE size {:#x} too large\n",
-+                bocreate.size
-+            );
-+            EINVAL
-+        })?;
-+        let bo = crate::gem::new_object(ddev, size, bocreate.flags)?;
-+        bocreate.handle = bo.create_handle(file)?;
-+        bocreate.size = bo.size() as u64;
-+
-+        Ok(0)
-+    }
-+
-+    pub(crate) fn bo_mmap_offset(
-+        ddev: &TyrDrmDevice<Registered>,
-+        _reg_data: &TyrDrmRegistrationData<'_>,
-+        bommap: &mut uapi::drm_panthor_bo_mmap_offset,
-+        file: &TyrDrmFile,
-+    ) -> Result<u32> {
-+        if bommap.pad != 0 {
-+            dev_dbg!(
-+                ddev.as_ref(),
-+                "BO mmap offset pad not zero: {}\n",
-+                bommap.pad
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let bo = crate::gem::lookup_handle(file, bommap.handle).inspect_err(|_| {
-+            dev_dbg!(ddev.as_ref(), "Invalid BO mmap handle: {}\n", bommap.handle);
-+        })?;
-+        if bo.flags() & uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0 {
-+            dev_dbg!(ddev.as_ref(), "BO mmap offset on NO_MMAP object\n");
-+            return Err(EPERM);
-+        }
-+        bommap.offset = bo.create_mmap_offset().inspect_err(|_| {
-+            dev_err!(
-+                ddev.as_ref(),
-+                "Failed to create mmap offset for handle {}\n",
-+                bommap.handle
-+            );
-+        })?;
-+
-+        Ok(0)
-+    }
- }
+@@ -113,6 +113,7 @@ pub(crate) fn vm_create(
+                 pfile.reg.mmu.as_arc_borrow(),
+                 &pfile.reg.gpu_info,
+                 UserVaRequest::from_uapi(vmcreate.user_va_range),
++                pfile.reg.coherent,
+             )?;
+             let user_va_range = vm.layout.user.end;
+             let id = pfile.vm_pool.add(vm).map_err(|e| {
+@@ -253,7 +254,7 @@ pub(crate) fn vm_get_state(
  
- fn vm_bind_exec_op(vm: &Vm<'_>, file: &TyrDrmFile, op: &VmBindOp) -> Result {
+     pub(crate) fn bo_create(
+         ddev: &TyrDrmDevice<Registered>,
+-        _reg_data: &TyrDrmRegistrationData<'_>,
++        reg_data: &TyrDrmRegistrationData<'_>,
+         bocreate: &mut uapi::drm_panthor_bo_create,
+         file: &TyrDrmFile,
+     ) -> Result<u32> {
+@@ -284,7 +285,7 @@ pub(crate) fn bo_create(
+             );
+             EINVAL
+         })?;
+-        let bo = crate::gem::new_object(ddev, size, bocreate.flags)?;
++        let bo = crate::gem::new_object(ddev, size, bocreate.flags, reg_data.coherent)?;
+         bocreate.handle = bo.create_handle(file)?;
+         bocreate.size = bo.size() as u64;
+ 
+diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
+index 81e8103368bc2..b24560ae10a4e 100644
+--- a/drivers/gpu/drm/tyr/fw.rs
++++ b/drivers/gpu/drm/tyr/fw.rs
+@@ -217,8 +217,9 @@ pub(crate) fn new(
+         ddev: &TyrDrmDevice,
+         mmu: ArcBorrow<'_, Mmu<'drm>>,
+         gpu_info: &GpuInfo,
++        coherent: bool,
+     ) -> Result<Firmware<'drm>> {
+-        let vm = Vm::new_for_fw(dev, ddev, mmu, gpu_info)?;
++        let vm = Vm::new_for_fw(dev, ddev, mmu, gpu_info, coherent)?;
+         vm.activate()?;
+ 
+         let sections = (|| -> Result<KVec<Section<'drm>>> {
+@@ -235,6 +236,7 @@ pub(crate) fn new(
+                     size,
+                     KernelBoVaAlloc::Explicit(va),
+                     parsed.vm_map_flags,
++                    coherent,
+                 )?;
+ 
+                 let section_start = parsed.data_range.start as usize;
 diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index 60f6363995a5a..14f3e182b98e2 100644
+index 14f3e182b98e2..fad0720ce7123 100644
 --- a/drivers/gpu/drm/tyr/gem.rs
 +++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -38,6 +38,13 @@ pub(crate) struct BoData {
-     flags: u32,
- }
- 
-+impl BoData {
-+    /// Returns the flags the BO was created with.
-+    pub(crate) fn flags(&self) -> u32 {
-+        self.flags
-+    }
-+}
-+
- /// Provides a way to pass arguments when creating BoData
- /// as required by the gem::DriverObject trait.
- pub(crate) struct BoCreateArgs {
-@@ -57,7 +64,6 @@ fn new(_dev: &TyrDrmDevice, _size: usize, args: BoCreateArgs) -> impl PinInit<Se
+@@ -63,19 +63,35 @@ fn new(_dev: &TyrDrmDevice, _size: usize, args: BoCreateArgs) -> impl PinInit<Se
+ /// Type alias for Tyr GEM buffer objects.
  pub(crate) type Bo = gem::shmem::Object<BoData>;
  
++/// Returns whether a BO should be mapped write-combine given the device's
++/// DMA coherence.
++pub(crate) fn should_map_wc(coherent: bool) -> bool {
++    if coherent {
++        return false;
++    }
++
++    true
++}
++
  /// Create a new GEM buffer object.
--#[expect(dead_code)]
- pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result<ARef<Bo>> {
+-pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result<ARef<Bo>> {
++pub(crate) fn new_object(
++    ddev: &TyrDrmDevice,
++    size: usize,
++    flags: u32,
++    coherent: bool,
++) -> Result<ARef<Bo>> {
      if size == 0 {
          return Err(EINVAL);
-@@ -65,7 +71,7 @@ pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result
+     }
  
      let aligned_size = size.checked_next_multiple_of(PAGE_SIZE).ok_or(EINVAL)?;
  
--    Bo::new(
-+    let bo = Bo::new(
++    let map_wc = should_map_wc(coherent);
+     let bo = Bo::new(
          ddev,
          aligned_size,
          shmem::ObjectConfig {
-@@ -73,7 +79,13 @@ pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result
+-            map_wc: true,
++            map_wc,
              parent_resv_obj: None,
          },
          BoCreateArgs { flags },
--    )
-+    )?;
-+
-+    // SAFETY: `ddev` is bound for the duration of this call.
-+    let dev = unsafe { ddev.as_ref().as_ref().as_bound() };
-+    bo.sg_table(dev)?;
-+
-+    Ok(bo)
+@@ -94,18 +110,17 @@ pub(crate) fn lookup_handle(file: &TyrDrmFile, handle: u32) -> Result<ARef<Bo>>
  }
  
- /// Look up a GEM object by handle for a DRM file.
+ /// Creates a dummy GEM object to serve as the root of a GPUVM.
+-pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> Result<ARef<Bo>> {
+-    let bo = Bo::new(
++pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice, coherent: bool) -> Result<ARef<Bo>> {
++    // FIXME: use a Rust resv-object abstraction once available, rather than a real BO.
++    Bo::new(
+         ddev,
+         4096,
+         shmem::ObjectConfig {
+-            map_wc: true,
++            map_wc: should_map_wc(coherent),
+             parent_resv_obj: None,
+         },
+         BoCreateArgs { flags: 0 },
+-    )?;
+-
+-    Ok(bo)
++    )
+ }
+ 
+ /// Specifies how to choose a GPU virtual address for a [`KernelBo`].
+@@ -143,6 +158,7 @@ pub(crate) fn new(
+         size: u64,
+         va_alloc: KernelBoVaAlloc,
+         flags: VmMapFlags,
++        coherent: bool,
+     ) -> Result<Self> {
+         if size == 0 {
+             dev_err!(vm.dev(), "Cannot create KernelBo with size 0");
+@@ -158,7 +174,7 @@ pub(crate) fn new(
+             ddev,
+             bo_size,
+             shmem::ObjectConfig {
+-                map_wc: true,
++                map_wc: should_map_wc(coherent),
+                 parent_resv_obj: None,
+             },
+             BoCreateArgs { flags: 0 },
+diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
+index 597e35f864f64..576b2123a08ae 100644
+--- a/drivers/gpu/drm/tyr/vm.rs
++++ b/drivers/gpu/drm/tyr/vm.rs
+@@ -474,13 +474,14 @@ pub(crate) fn new_for_fw(
+         ddev: &TyrDrmDevice,
+         mmu: ArcBorrow<'_, Mmu<'drm>>,
+         gpu_info: &GpuInfo,
++        coherent: bool,
+     ) -> Result<Arc<Vm<'drm>>> {
+         // As in panthor: the CSF MCU is a Cortex-M7 and can only address 4G.
+         let layout = VmLayout {
+             full: 0..u64::SZ_4G,
+             user: 0..0u64,
+         };
+-        Self::new_internal(dev, ddev, mmu, gpu_info, layout)
++        Self::new_internal(dev, ddev, mmu, gpu_info, layout, coherent)
+     }
+ 
+     /// Creates a user VM, splitting the GPU VA range per `user_va`.
+@@ -490,6 +491,7 @@ pub(crate) fn new_for_user(
+         mmu: ArcBorrow<'_, Mmu<'drm>>,
+         gpu_info: &GpuInfo,
+         user_va: UserVaRequest,
++        coherent: bool,
+     ) -> Result<Arc<Vm<'drm>>> {
+         let mmu_features = MMU_FEATURES::from_raw(gpu_info.mmu_features);
+         let va_bits = mmu_features.va_bits().get();
+@@ -503,7 +505,7 @@ pub(crate) fn new_for_user(
+                 range.end
+             );
+         })?;
+-        Self::new_internal(dev, ddev, mmu, gpu_info, layout)
++        Self::new_internal(dev, ddev, mmu, gpu_info, layout, coherent)
+     }
+ 
+     /// Initializes a VM with the given layout.
+@@ -513,6 +515,7 @@ fn new_internal(
+         mmu: ArcBorrow<'_, Mmu<'drm>>,
+         gpu_info: &GpuInfo,
+         layout: VmLayout,
++        coherent: bool,
+     ) -> Result<Arc<Vm<'drm>>> {
+         let mmu_features = MMU_FEATURES::from_raw(gpu_info.mmu_features);
+         let va_bits = mmu_features.va_bits().get();
+@@ -521,7 +524,7 @@ fn new_internal(
+         let reserve_range = 0..0u64;
+ 
+         // dummy_obj is used to initialize the GPUVM tree.
+-        let dummy_obj = gem::new_dummy_object(ddev).inspect_err(|e| {
++        let dummy_obj = gem::new_dummy_object(ddev, coherent).inspect_err(|e| {
+             dev_err!(dev, "Failed to create dummy GEM object: {:?}", e);
+         })?;
+ 
 
 -- 
 2.43.0
