@@ -1,101 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792539549;
-	b=hTNKUP/DUGhkCPn7Z8UfOa60xbBQH1QZXwQ4QIeUxQzytceGFoLffFRahKsDaAVmJKUJ
-	 sTxSjp4FNjT8lavrHxgIlg+UW520XyGiFQMVu1BTA0krTekQYYdbUilXAtEoOKaDQ6Mf5
-	 iUko+eWrBbfL/CxRyWfBTMPd52BFKxl84Gx2dPURmXW1hkrayRgVx+HlLnsW/IeoKKVLk
-	 PCfpySbEmSR4Zub/Gc/R/OwEsU2Wh8KBou8Cfo/8J3y/Kt7+uZPJad7kFtIPgWvrUVFuz
-	 Zuh2OMoupbw0fufFwersPZuwoE2Oz3FwAd26T9ajLV1aCgUI5bJH8mBGE2cBtbwXjqA==
+	t=1792540103;
+	b=cY67XbbRgwoubH5JKKBNoQYWkbUWBaI6ZdE5fFH3PqzHqmkHeGm3Gl0hs97fm+5JO8hM
+	 Y5AyCNHVWLrvPl++OR58uKB246TecvEpHMQwsMxIqR53BZNiAcwPgtbxKYa62LOqrEa41
+	 hvM/bP76ifr5hJvpHwlTdzbisqdicjrwImBcmUaJw3WaR3FNFMircmseo18+bAfO+cwAW
+	 YonPFlAYCSbyyOD1Ehas7X3RrHFy3kY9qhsxb0IHGz4PQtiAQj6ERTWO5r/rxHO5sWcbB
+	 H+O8++m79k+SYYgSpTNMHRRYgU1LC2fPk019gknkT9LsEaP+1uDsYdSq24wC49UW5nw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792539549;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=0QsbV+4eS5sDEhfqWeQ1tQuP/vIQExpdlAmYVuAUHhs=;
-	b=KVSy531Uql3KI/FdaOtk72JSYbFdpYX1MnAi1q86D2M72lHE4b9TXe57GPlzl4b0Zt9+
-	 dIk0IbM/O2Azo4A4lW1+Fqyrpt+1RTdYvsrXnVBB4ntmgwj4JMSkUPQU0rGcqCBypewop
-	 n4qG51zzH26tR+hPVe77NvQQleKHG4LfRzM78kuN0+6LbL9drdBnRKJ3FdgUHmdo9USmD
-	 qXTfCAjrsO8e45ZMXtxzHS6ERcfutzGaaTPR4aw3COoYoCCXYMlVcFz4/ju8ORV4fAHV2
-	 N7XFiUpksjM3pqvDvc4QNdZ+FN7LtgVKMbo5h0Zdk4AfeLy1i4ILJ/OtZN/2VUd/RWw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792540103;
+	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=YmHrXWU3qMwB9b2uAxX6OMWoxOJoFBDFFfj/j0paiqk=;
+	b=Kw/o3G7O8lyifwL0kHIPwo776eUMkutDgaTyALIQrM5/OgtiNui97UwYJf0T/xTxbIEv
+	 qnY9q0bNZKy8jHuB4q7dnabWLZYwHAyv/4evPkWOU16DrS0vKO80AJugIYZw0wOmr7Yjt
+	 TAp79IkbOB8YSltCm9n7vbzunFJWtOD4hq/c0fYPCje5JMWVpiPKWQ5l8q68hIQ1IGR7S
+	 kq/OyznbxZrcLWEy9vieTTnEbKSEDcVDxHBWE5q6PCZep8FC2OUrWL/PstwPYD/gb5u9a
+	 WIPgoI8+sQawGkCToiICYO1YELUaSKHuBrEtoa4wSMjLzgsUJf4D5ZczvD5BXUd3YJg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hIfeR7ek;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.178
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=curye+Pz;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0599606A31B
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 23:39:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0599606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539DC606A319;
+	Tue, 20 Oct 2026 23:48:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 539DC606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hIfeR7ek
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-3667e94418bso11172eec.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 16:39:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792539548; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kI754kahvX9uUukq1agceeDx0cvG2ZIyoWvvRCjkGz+3VgHb7tdGCyeQpMQieQhjQe
-         eAHgGH2btJI7bTgWVvH05wogqAk1JfdkLOS0adDYW6IhTu8whcNDwIbJ/Z6dwjAl7++/
-         kdyXP6C2UxTo0iADa+yuszlHhY0mPPZsvi8UZOE/wOoAdjvnzWP/qnfNJa02bNyXxBuw
-         /Uc5ISVNvM0qbODGaK6jzwajzehXZr7lmIG3VMEirlrR2wGuxplr/LjnsQ/YVitg5evw
-         5g3V7oG69LtnB276c3T/yjvTqwtxL4qp70FcEuM8bD2h3egg+1ANh0BjJKcPhh7Gay8J
-         jwHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0QsbV+4eS5sDEhfqWeQ1tQuP/vIQExpdlAmYVuAUHhs=;
-        fh=Pq2V8ZLrO08M9cbG1kQLVafaxBqnIsYMa+5m25G/Qrk=;
-        b=eJ3ltHQIJM/b9e9nSpuAUNLNYLYtZ2/VsNgXi4R+HbgnebK0jpptL2SA/HTQa6pgsB
-         c/VkGTFSYSpncx7tSvpE9QCIKJ83ChJVoZ2fqOhxSjVDnALFkkcgE5zMxf3LlMP6hFHn
-         04n+Sp/JARKVe5Nc0faHJNyxwWDTjKqw/vN89Pvt6toTwxvZ5K8cLIO/llFJN9Ev2iTg
-         qP/sPxRXbosO/Dp4tuHhmPyDhYUbhV3q4tMzdDPnAxQ8QJEA1grsgR6Y8d8w2o9K/AE2
-         fSOQlVchfi+U+yzEYYZPrgLn3v+EIcdn8IxVUj3U88kkklhHGMrb60asJ1nlZqN90dEk
-         wxEA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792539548; x=1793144348; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0QsbV+4eS5sDEhfqWeQ1tQuP/vIQExpdlAmYVuAUHhs=;
-        b=hIfeR7eko7mYwPUSSYNG76Jw1jM5Rf5GMf8HvzVDyJDFldyrw/5Q0O0MBXeqNWYcrI
-         NRVNT468KlBZIEwn1GByUSToEzMQgRiSsApmz/sjdu37KaEH7jcjTEj3zntFGiJLY+m2
-         CBePTmAuZ4PqoA9HZqM3ccV/ouerEa9LygyMy4pjYyH7OzJiNHm0b4EfrHrI66rOuVAi
-         soyawgK4BX6PXtzXjARtbd4cF/KRc2KaKFnSHAIkm1fIXMysmGzfOgdyurnjX8JphMIW
-         jw8h95fbE2O/s3CzSXMWavSIFJ/ccuq9hZ/5gc8vaSWxjwiOSK/UIk6tvPiUF0fhgDa6
-         589Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792539548; x=1793144348;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0QsbV+4eS5sDEhfqWeQ1tQuP/vIQExpdlAmYVuAUHhs=;
-        b=Ipcq9/wIACMM5a/5IvXyZBG4PfIQzFk+mBaXBIM713zQOwc9MS8al3Rd0gwrAdW2zh
-         IGTX1Npsn/15RRti6KqYML0doUuRAiIdricrKEy3lc+FH7rpcfcnyz68c0U5jIo1cQF2
-         203/n80YZjqW86p+66Eq6GlQBv2ezrC8GsTkOVd4IYcMPI4mt+CB4somhthoF1nMk5AL
-         KqVG4BVv/f2/kUDFHTET/B9V9a7KGDgny5UWcULaN4bcxBuTS4l3v8t/IVXx3JKjQjN+
-         PsTyVXOKmBOjwM7nyoAOPyq8/iu+3aRyjntyg22lKL4Q7VHIBlHvCMxUg2aX7kd0RPSB
-         S6Ww==
-X-Forwarded-Encrypted: i=1; AKwUvBxA7+wt0jdPBDh5uf7y+iTZmzkAWm4+sY0bBwUaxqUp7hXCep7me/rUqQxMXzq6zEJgvi1EnWc0C2Rc/zHXJg==@vger.kernel.org
-X-Gm-Message-State: AFq9FYL3xS7WC7WMGnPotLd7Z+XZKK2Z5eBEzdgIMgfgWFupTG+62Ptt
-	icIpxmNR6+5LcfGwHdJaLJP1d6/x9wdFd5jI+3iLboE5nsaJirPEXSYSeo7lnaI1TGwFFgcSzM/
-	mcZWIy+9ecRXRzx21pFCA70WVlEv/Nc0=
-X-Gm-Gg: AYBFou1pNASASmNWRpgfX+d3zjQygADD2updVcHGz0LAHGDm8VH2IWnR6CU4uWS40wS
-	xcu4EnViMMjip7JTGAJHA+3hcuZNmCGiyU9jZmrIn54FJKF8wogDECl09jJZobgcwYKAb85h+HF
-	iEzaBrb/CybN19FWArPQhn3psku42t904rNGwR48Bi0iX8GE7IRXx/3xO3saGC7sZJAqoGdg9Bo
-	c4B1AQxU9wjiienKDTJdWjWqIojumqIV9rIv+zcJW9QTKLd8KjUwRGQzszqFCGPYLD0bax0y/u6
-	KmqD4b/59DijQ99s1lUSLnwcZ6mZpr04NM2pxf7x1jA/8CXMO2HyrN7W3cMcvbQq0+dpBl9gNRQ
-	7Y4BCHANa6JHqreDevn8qJ9yrR4HnY0ZCmHwUsrDxtAuS1CFtjDizdTAa8mL7M3Y9vShvYS7Q4/
-	IWbt/9cPpXVmahE5OwjTFNMBAgYr1rVT3IFJQR8gv+5x74n1ytdMQ=
-X-Received: by 2002:a05:7301:18a5:b0:35c:492b:e310 with SMTP id
- 5a478bee46e88-3674866f609mr1510231eec.0.1792539547565; Tue, 20 Oct 2026
- 16:39:07 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=curye+Pz
+ARC-Seal: i=1; a=rsa-sha256; t=1792540074; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=LBu7GexQf4uyuZKE8Hmsguyxg6btlq1xjlYOov/whde8TdHkQ8BYxMovYdgzp7JWvzs3PzI7F8QQYu92qRx8hZ8FMeWdtyUepRdw5QaDGXCeiz7Ky1s3j1Ux0uVVBFxQWWgq3D9rUwSU8T6c7JD7EjMTN4jrSoWwTH1/CUFSPE0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1792540074; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=YmHrXWU3qMwB9b2uAxX6OMWoxOJoFBDFFfj/j0paiqk=; 
+	b=aHHCV9nEN6yGYpbnGttwkFYkE+x7kZ48lLB5eZVHZVtudycQEzHClYXObazs5BVzPorw/RAIVLAuTGNYjHYpg32vNB4kLbCLA4TtWPG8LJzYGVvCfUpliISkvsQT7b4pnwI3hiG2Z3IugaojrAE7ddR74iftMSHssO+GtTlLCr0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792540074;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:In-Reply-To:To:To:Cc:Cc:Reply-To;
+	bh=YmHrXWU3qMwB9b2uAxX6OMWoxOJoFBDFFfj/j0paiqk=;
+	b=curye+PzcNaYM1m8osNL+K+/wnECKiC7OjnUfmgV5AwrfNTYc+bLtv9eUEY1Y/EB
+	wKaSbW/owLurT23yRFrvNNI3ZwwTboofkBu7+QWrAWIaU9r3aVDcXFQojC/QHpJmEXy
+	3BcbRUj8aLXUlrQCWyqbmNzvRcA/QqdLoT+rmXKY=
+Received: by smtp.zohomail.com with SMTPS id 1792540072479813.6681805514874;
+	Tue, 20 Oct 2026 16:47:52 -0700 (PDT)
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+Date: Tue, 20 Oct 2026 16:47:48 -0700
+Subject: [PATCH v5 1/2] rust: add zerocopy to bindings and uapi
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -105,58 +65,121 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261018131313.59391-1-ojeda@kernel.org>
-In-Reply-To: <20261018131313.59391-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 21 Oct 2026 01:38:53 +0200
-X-Gm-Features: AclHuK8yYamw4gnf0-K8VwIxz8gbaA14LOonPBIXFXHfecsWiw-2OkqdsYTLYA8
-Message-ID: <CANiq72mJs3=z86wp2kNLJv1iUOiqxWnGt2KDhnwrwOCSkOUY1A@mail.gmail.com>
-Subject: Re: [PATCH] objtool/rust: add one more `noreturn` Rust function for
- Rust 1.101.0
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261020-b4-gpu_info_intobytes-v5-1-3e0c7c93223c@collabora.com>
+References: <20261020-b4-gpu_info_intobytes-v5-0-3e0c7c93223c@collabora.com>
+In-Reply-To: <20261020-b4-gpu_info_intobytes-v5-0-3e0c7c93223c@collabora.com>
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Jesung Yang <y.j3ms.n@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Deborah Brouwer <deborah.brouwer@collabora.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4236;
+ i=deborah.brouwer@collabora.com; h=from:subject:message-id;
+ bh=ksUdZjJLS9NRl0QqnesGr43vVVUDSiP4F76anxruEjA=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFnX/y5NSJrI5vJzr66YxOPuH9z7Os3PMigz30m8tO3og
+ QUvZ8wT6ChlYRDjYpAVU2Q5a2/UI1713kh3/v9mmDmsTCBDGLg4BWAipqyMDDMTTtzMye6fO99Q
+ b5LNBZZZUe6tctsenFQQPHHarveA7z2G/8Ebdq5kN+7p267t6C595t2B0Go+z3yBXf3pNn2ak7U
+ 38gAA
+X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
+ fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-On Sun, Oct 18, 2026 at 3:13=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Starting with Rust 1.101.0 (expected 2026-12-24), `objtool` may report:
->
->     rust/kernel.o: warning: objtool: _R..._4core6result13unwrap_failed...=
-()
->     falls through to next function _R..._4core6result13unwrap_failed...()
->
-> (and others) due to calls to the `noreturn` symbol:
->
->     core::result::unwrap_failed::unwrap_failed_inner
->
-> Rust introduced this helper when making `unwrap_failed` generic [1]. The
-> existing entry for `unwrap_failed` does not match the new helper.
->
-> Thus add the mangled one to the list so that `objtool` knows it is
-> actually `noreturn`.
->
-> See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-> for more details.
->
-> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
-n older LTSs).
-> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Assisted-by: LLM
-> Link: https://github.com/rust-lang/rust/pull/164059 [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Make the zerocopy and zerocopy_derive crates available to use when
+building the bindings and uapi crates and their tests. Also make the
+zerocopy and zerocopy_derive crates available to rust-analyzer when it
+runs on the bindings and uapi crates.
 
-Applied to `rust-fixes` -- tags still welcome!
+This will be used by the Tyr driver that needs the traits IntoBytes and
+Immutable to safely copy the struct byte-for-byte to userspace.
 
-Cheers,
-Miguel
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+---
+ rust/Makefile                     | 24 ++++++++++++++++++------
+ scripts/generate_rust_analyzer.py |  4 ++--
+ 2 files changed, 20 insertions(+), 8 deletions(-)
+
+diff --git a/rust/Makefile b/rust/Makefile
+index da1a7409d984..a182c0e96974 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -361,12 +361,18 @@ rusttestlib-kernel: $(src)/kernel/lib.rs rusttestlib-bindings rusttestlib-uapi \
+     $(obj)/bindings.o rusttestlib-zerocopy rusttestlib-zerocopy_derive FORCE
+ 	+$(call if_changed,rustc_test_library)
+ 
+-rusttestlib-bindings: private rustc_target_flags = --extern ffi --extern pin_init
+-rusttestlib-bindings: $(src)/bindings/lib.rs rusttestlib-ffi rusttestlib-pin_init FORCE
++rusttestlib-bindings: private rustc_target_flags = --extern ffi --extern pin_init \
++    --extern zerocopy=$(objtree)/$(obj)/test/libzerocopy.rlib \
++    --extern zerocopy_derive=$(objtree)/$(obj)/test/$(libzerocopy_derive_name)
++rusttestlib-bindings: $(src)/bindings/lib.rs rusttestlib-ffi rusttestlib-pin_init \
++    rusttestlib-zerocopy rusttestlib-zerocopy_derive FORCE
+ 	+$(call if_changed,rustc_test_library)
+ 
+-rusttestlib-uapi: private rustc_target_flags = --extern ffi --extern pin_init
+-rusttestlib-uapi: $(src)/uapi/lib.rs rusttestlib-ffi rusttestlib-pin_init FORCE
++rusttestlib-uapi: private rustc_target_flags = --extern ffi --extern pin_init \
++    --extern zerocopy=$(objtree)/$(obj)/test/libzerocopy.rlib \
++    --extern zerocopy_derive=$(objtree)/$(obj)/test/$(libzerocopy_derive_name)
++rusttestlib-uapi: $(src)/uapi/lib.rs rusttestlib-ffi rusttestlib-pin_init \
++    rusttestlib-zerocopy rusttestlib-zerocopy_derive FORCE
+ 	+$(call if_changed,rustc_test_library)
+ 
+ quiet_cmd_rustdoc_test = RUSTDOC T $<
+@@ -774,19 +780,25 @@ $(obj)/ffi.o: private skip_gendwarfksyms = 1
+ $(obj)/ffi.o: $(src)/ffi.rs $(obj)/compiler_builtins.o FORCE
+ 	+$(call if_changed_rule,rustc_library)
+ 
+-$(obj)/bindings.o: private rustc_target_flags = --extern ffi --extern pin_init
++$(obj)/bindings.o: private rustc_target_flags = --extern ffi --extern pin_init \
++    --extern zerocopy --extern zerocopy_derive
+ $(obj)/bindings.o: $(src)/bindings/lib.rs \
+     $(obj)/ffi.o \
+     $(obj)/pin_init.o \
++    $(obj)/zerocopy.o \
++    $(obj)/$(libzerocopy_derive_name) \
+     $(obj)/bindings/bindings_generated.rs \
+     $(obj)/bindings/bindings_helpers_generated.rs FORCE
+ 	+$(call if_changed_rule,rustc_library)
+ 
+-$(obj)/uapi.o: private rustc_target_flags = --extern ffi --extern pin_init
++$(obj)/uapi.o: private rustc_target_flags = --extern ffi --extern pin_init \
++    --extern zerocopy --extern zerocopy_derive
+ $(obj)/uapi.o: private skip_gendwarfksyms = 1
+ $(obj)/uapi.o: $(src)/uapi/lib.rs \
+     $(obj)/ffi.o \
+     $(obj)/pin_init.o \
++    $(obj)/zerocopy.o \
++    $(obj)/$(libzerocopy_derive_name) \
+     $(obj)/uapi/uapi_generated.rs FORCE
+ 	+$(call if_changed_rule,rustc_library)
+ 
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index dc1219736f77..6255a81591eb 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -313,8 +313,8 @@ def generate_crates(
+         }
+         return register_crate(crate_with_generated)
+ 
+-    bindings = append_crate_with_generated("bindings", [core, ffi, pin_init])
+-    uapi = append_crate_with_generated("uapi", [core, ffi, pin_init])
++    bindings = append_crate_with_generated("bindings", [core, ffi, pin_init, zerocopy, zerocopy_derive])
++    uapi = append_crate_with_generated("uapi", [core, ffi, pin_init, zerocopy, zerocopy_derive])
+     kernel = append_crate_with_generated(
+         "kernel", [core, macros, build_error, pin_init, ffi, bindings, uapi, zerocopy, zerocopy_derive]
+     )
+
+-- 
+2.56.0
+
