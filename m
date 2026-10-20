@@ -1,71 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.69.126.157
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792532220;
-	b=gZnDJqhUt16jvIyBgUrG9+8dtod+IFlmBmkYLXwyF+p/EiScZW3HVhZTl51wOZ/+0j2Z
-	 BQnQLFfS1mTnS4gAuOaa/Ce/sVX8SLidCmoOl277pyjwbMRqIIhVJlLTdWgDChLgtvqEw
-	 q4WSVP2O+4q10PyKlVatyCmmWYB4i/xA7Sz0fePv3SDjqGafmSSkjRcnR95QJlZymZHBd
-	 GAh9lVJTLmFT7+YB4NEEDcW/fORfdBEOsTML4Y4Dwpoz3bsPf8Yk/5snbMHKrr+ThnOvl
-	 pj5lAb8jjnqUmHvmwyy2ynBKsvDRVWMEkijiO4Ibu2CHW4A3/N79UocF4hWyZDWlzRA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792532220;
-	h=DMARC-Filter:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=DniO7GTUvw7bqTyFUYAZgt74jqpmOaAIKPkBtG5q2Gk=;
-	b=KXuVmH7vf6SeonReslLLvNHG7t1ACs5bbzkWZAiR9WUr2t4RXME3TpZo3KFzYmt3dieN
-	 HN+tTULB81qp3EIU7WVBy5rMbvRvkLzQWB71eddazBsX+IC6bBfrK3k7oZ5LNUGmDmb9M
-	 FXA2axKDZukYb5iCUmZs1I9AAUhgrt15DYiBSImQLsCV71ZU3pfCheeNFdMwrvxwjjyQW
-	 r/7FGQGX5YKLzJlEaoS3hrD1n6oIOFACAx5KgNTidBrJeHVQwbjbBFMOJBFdxuQd5T6Kj
-	 7g+koEybe4snDvS866KMJTQMBp1CW0hwTTGZiUNpkniRHRLTeDcvLi5s3IjqSyBlpag==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=weissschuh.net;
-	spf=pass smtp.mailfrom=weissschuh.net;
-	dkim=pass header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=IKuIkBXf;
-	arc=none smtp.remote-ip=159.69.126.157
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.172
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792539542;
+	b=nZrLIAHwEJNSVUOlCAU3PqN9SpiC57wFrJWrdUSd48ZeW0ILMx+3CHBeRFgwWVAhSZHX
+	 O4aqzYPOV2hamXxNgWXuYP+Ez5G9K6/hdgHAGk3V4p8ebjknbFjKpw8BnAky1DFiyaNh3
+	 wVvNiXceVRihxZqOYZyJP2FF2oYBy6+/mpzNkLbu6FK+pEuUjQNkeR8gXLHlmu4DYjTAX
+	 8kA4ivn+9ImdbozNbfDjgt0RoB2/Kroex67f+QkPmA0zpILMBU9WQNfZXbNYz42doWlt3
+	 z22OCuz7vixa6bVLkadIlNSV7dAessh1TloLtkCUJ9YJhHsx9/dwTkZUDPRg6ZyFEAw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792539542;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=k877884f6bo0kF5Og+iuIz1jesf5GeJuYHSM9YhWG/o=;
+	b=Jnm1E9bz1M5ARFjXY/kW2YlMki1tosZ/kuiXXemRneGA2lc0snUZhBWzhrUHxgiVuxNO
+	 8P5kaiMl+5arepiPnGxO7eDyKWWyk0WfPiCu8hsgH283MSP/D3niDDnhx8jzvzl5eIvb6
+	 /OidFfT7jCji7YXhmm34udXW55+cuJ94chkJCLuJCju86fYQOUPE/zjWITZcssLeqRqNs
+	 PjB7rFCu21zeZOS1Qqr+1Ngtc/hQjZfYVmpeys8vDGQWpqNXEnY/obDey3Zg73sxpiPkH
+	 IJ51mpRLAJLwfbKu2KZyv72oBStTeFeybwF7nAmjkzhZ+U6jCnXit49M2m1fGXk4TFA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Bgzntr+m;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.172
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F295606A31A;
-	Tue, 20 Oct 2026 21:36:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F295606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6503C606A31A
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 23:39:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6503C606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=IKuIkBXf
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1792532217;
-	bh=PyZDwwkl589eMcugJzYk5y9RrjeAtVDA2rA8OJ4cCWM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IKuIkBXfYbTxMiG93vM1wcRM3MaxqlK22grQXBNdYTbTlJMjoj9HuH2Gw4EIilORU
-	 BAPCqnsTj5dJg3ozea2Z0O5yuIgrdkkj4f4clQDyhDUJKTxEeiI5K8ELoOGorn+l8k
-	 WTwxjqyekY0t4jB0Jyl2rLTb3az1y84bQlgmcyuY=
-Date: Tue, 20 Oct 2026 23:36:56 +0200
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: Zhi Wang <zhiw@nvidia.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, 
-	Jason Baron <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Lyude Paul <lyude@redhat.com>, Yury Norov <yury.norov@gmail.com>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, driver-core@lists.linux.dev
-Subject: Re: [PATCH RFC 00/11] rust: add support for dynamic debug
-Message-ID: <ffe50a28-72d7-4b88-b7db-b7a590aacbc4@t-8ch.de>
-References: <20261011-rust-dyndbg-v1-0-832e4039b71f@weissschuh.net>
- <DM9OY2QIU84D.2T3QX6SJJI6VH@nvidia.com>
- <310ae622-20e8-42ac-b501-4315c4cd4d14@t-8ch.de>
- <20261020212542.2e3331c4@inno-dell>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Bgzntr+m
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-3584f70a5aaso11018eec.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 16:39:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792539541; cv=none;
+        d=google.com; s=arc-20260327;
+        b=eA13JdRCk1bvaO8EhxmlVjpNMrAMCwuPC42iXr9LUS6RiOyZPKrXsDj7mJ1n0lPaFn
+         cLTXhTG/Tj35Sl35yKuEzg2PlSgbwh/R+/Vz/4m7AEWBeILj9zKA5Y/QTyJuiCZG3+Uj
+         MVXI8zyNEjMNVX/HuOF8JlodRKK7QSUWM1uMxezzM01w/WXN9U6EvE+Xufkl4jzcJBKR
+         eFMqVgdlJvP6qp5fTixjYGwDl3DtIE+THCrzqSey2KrHhAG4dZu6bFmVQcaZ1HwWuklK
+         UlvHA2oN7y8wG/bcFzi2DDvFPbOF9y8vG8lQVB8PdZZDSajYuEmMSylvcQHWHFZ8T3FM
+         eI2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=k877884f6bo0kF5Og+iuIz1jesf5GeJuYHSM9YhWG/o=;
+        fh=2s/jHq2KNAogYfqblMzerz0dwOA0CI9hgk2jf1J/H98=;
+        b=a5XQbgynYr9QEbdVNrPsIj5lNE//lutLBuTsVct7Rk/vPiTWSLMRF65Buc3hAViG0y
+         /M8pvxDQjGTTAOXjF8o1gcm9Ht0ac+ZAfYF2dSLhp4EGIQuPyksgSIBM1SWnd6FxVZQr
+         4FbjgVDQcLJgQz+QOmU1RVurlD/B/bt6qgyxuXNL/cHCP4vfu9wiLgThdu1kc9NBE+83
+         oP2H0fo8+ImCUERn4BBxrpHZ/Y736GwlIlHhCK4Ez1jLMessbr+whWgCqNfO4ymCN6qr
+         7g9UhXqOKY2oKUzRWhownkbMddOQa+8haBSO6xv7Q/MXy9xkSRLH2RdMqOevaHjZ+98F
+         colg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792539541; x=1793144341; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=k877884f6bo0kF5Og+iuIz1jesf5GeJuYHSM9YhWG/o=;
+        b=Bgzntr+mTq/MYRdA0vDX01hYOFuHOkjfr+4ZTyvXjpCpqA6YQL8OesCpTivlbCO3M5
+         QLrNcPkQuu4f7nSljhd+EfMSskX1pDwzgDgpFbEb3F7gvSqx4xvsqhRAo2d9Z/VUlau+
+         TQWiXzY3jhHLdmwdGYHb2lNYXe9tl5FVQNzlKuQL/RPEWmJDPxNx6Y7EEgecSXzniz5F
+         6SBRogJ4XtbD2CxvQ+AswQLUubKAqNHdzT6OlKsgdzdOYAeiPusiU/XUA4PABalcp1Jd
+         9nwfKUoXOgZdmty5Y3fbNMnj3f74JoMZbWWSmdjfJCvJ5kG5jlw8UguMEGYzTrNiOZRf
+         lrgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792539541; x=1793144341;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=k877884f6bo0kF5Og+iuIz1jesf5GeJuYHSM9YhWG/o=;
+        b=a07Vkh013L7APbY/GTHxkAEACUCO0EISCJDiatBfmOtHOcB5C9DsrmjuDGb7Ij86dc
+         PZOdsI6cdEpJFe1UVZ1DqGNFAPockOIqpe6TAj/29QiHhXK9qhnX2QOQtN5p9LeHZlaL
+         GPNpUSgw0Fd3LGkXJBFFPu2cQJFIa3NmTGx9Xg+ddb+fjE6Q+l0TIBFlm6ufyofrR/J1
+         vdURn343Fi2U+8O5HmQJrqhibyyJI3HIxf+iSv+XeJRzMipd9dJg3dZgbEfCFOrk4XIO
+         fjVRfrkf+3NS9VeOuMWUmVTIzcUQhP2FBowBOP551M0imkqC3jzN+2hX1TALKq+We1wg
+         qalQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwDGkdHBifm48XypR0nw/NYRlkAd/YaGoOPR6orSeBLZKONW06r54K+kPlPdcKkCYJYvQDfreivWo41WaxlgA==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJxrrSL8uL9c4SIX0TWehGZubjU1c2IJovuJaJq2VFMxqwEDPG3
+	+Y6QyOJ7cRsr5HSwdbfg096+OV5r7oao8s7HpFs5rVhOudv912iUGngSl3iuFKBDsU1AqcPfWu4
+	VN2yvQRB7feyCDRI4irUZ80LV8bI2QQY=
+X-Gm-Gg: AYBFou06DlizFMvfJjY2Zsb1ASjgyLpyS/AbItdQarGKk2iluMFZaxEF6kW5cT0mm2p
+	9EuvwbDxSb5eApF/DVtU9ulSvl0jNzS6LVPD3h2UKXhW7oe2ZxN7vG/vtlbnZcuTc+fgRp8vn6o
+	JBZkVn62Mr9Mb8kpTG83Ia2zyc8qOUwsZ3vEr3lSCB+8tyTifCtlt8qbALg8fnAgJyJ7z/5QhK/
+	ayKj/XR7TdX3xzgo+3k9Di1R1SDPBb06ESVcDxYaVc2bk2QGBkKXLtJPncfbXVCyoxq1+ypWWth
+	VFNce1YFjOmCCzqRHjoNMIrpyz0P0cimP0IvxC1odLUnWTM5nFiT1RdBGcBUA8p/WLB32cxfTqZ
+	V+3JJ16N+TlnrZCLPc6SWgoms9kmFDpW+JeQUqBfkIXEDV+u9w/OhmYvhTWk2BezDRHxLsaaptL
+	NB+Tq0T++j6t/AY20gOtQg7HhrrOXNke0xkUmtBUHVyJKPdK11LuYN+8HLs3Rhpg==
+X-Received: by 2002:a05:7301:6192:20b0:33e:6714:3945 with SMTP id
+ 5a478bee46e88-3674c43a7dfmr1490822eec.2.1792539541506; Tue, 20 Oct 2026
+ 16:39:01 -0700 (PDT)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -75,127 +105,57 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261020212542.2e3331c4@inno-dell>
+References: <20261014-rust-workqueue-system-fix-v2-1-c018b8f870f9@google.com>
+In-Reply-To: <20261014-rust-workqueue-system-fix-v2-1-c018b8f870f9@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 21 Oct 2026 01:38:47 +0200
+X-Gm-Features: AclHuK9F_7aaAg0X585zfZoDOcg5-Ci0Oo6j4hvWMoH5Rdsf4VtUyCtDgPceqfs
+Message-ID: <CANiq72kACdJ+yaKd81TxnQTfYoc1drNMxv-4pdWMty8dSkwxyw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: workqueue: replace deprecated system_wq with system_{percpu,dfl}_wq
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Alex Shi <alexs@kernel.org>, 
+	Yanteng Si <si.yanteng@linux.dev>, Dongliang Mu <dzm91@hust.edu.cn>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Marco Crivellari <marco.crivellari@suse.com>, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-10-20 21:25:42+0300, Zhi Wang wrote:
-> On Tue, 20 Oct 2026 19:30:33 +0200
-> Thomas Weißschuh <linux@weissschuh.net> wrote:
-> 
-> > +To: Zhi Wang
-> > 
-> 
-> Thanks Alex for bridge the threads together!
-> 
-> Hey Thomas,
-> 
-> Thanks for the comparison! As a user of this feature, I'm happy to
-> combine the two series and see this making progress.
-> 
-> The Bounded types, bitfield tests, and module_path!() fallback look
-> like useful additions. One clarification: with CONFIG_JUMP_LABEL, our
-> disabled path already has no FFI call. static_branch_unlikely!() is
-> sufficient for our initially disabled callsites, including enabling
-> them at runtime.
+On Wed, Oct 14, 2026 at 11:08=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+>
+> From: Danilo Krummrich <dakr@kernel.org>
+>
+> system_wq is deprecated and triggers a runtime warning:
+>
+>         [    0.857414] workqueue: work func ...WorkItemPointerKy0_E3runB7=
+_ enqueued on deprecated workqueue. Use system_{percpu|dfl}_wq instead.
+>
+> Replace system() with system_percpu() and system_dfl(), to match the
+> previous behavior of the deprecated system() and convert doc examples
+> and tests to system_dfl().
+>
+> system_unbound_wq is deprecated in the same way, in favor of
+> system_dfl_wq. Since system_unbound() has no users, just remove it as
+> well.
+>
+> Fixes: 64d8eae3f895 ("workqueue: Add warnings and fallback if system_{unb=
+ound}_wq is used")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Reviewed-by: Boqun Feng <boqun@kernel.org>
+> Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Ack. Although adding jump label support as a later step would make the
-patches smaller and easier to review.
+Applied to `rust-fixes` -- thanks everyone!
 
-> For the combined series, I'd like to retain these behaviors:
-> 
-> - Debug logging is independent of debug_assertions, starts disabled,
->   and is controlled through dynamic debug. IMHO, fewer distro kernels
->   are compiled with CONFIG_RUST_DEBUG_ASSERTIONS=y nowadays. (At least,
->   Arch and Fedora are compiled with N)
-
-Ack. It would still be useful to also support default-enabled callsites,
-like the C version does. What about '--cfg DEBUG'?
-
-> - Disabled pr_debug!()/dev_dbg!() calls do not evaluate their
->   arguments. IMHO, it seems the current dev_dbg!() in your patch
->   evaluates the params before checking the switch on/off. (pr_debug()!
->   looks fine though)
-
-As far as I understand, fmt!() itself does not yet evaluate the
-expressions passed as arguments. It only typechecks and
-creates the precompiled Arguments<'_> structure. The parameters' Display
-traits are only executed when the Arguments<'_> is written somewhere.
-IMO the typechecking should be done even if the code is going to be
-compiled out. Similar to no_printk() on the C side.
-
-> - The dynamic-debug prefix flags remain supported. (I use the C version
->   of dynamic debug to support e.g. +m, +l and _t)
-
-Absolutely, this is a bug in my v1. It is fixed in v2.
-
-> Could you share your pending encapsulation/Opaque and static-branch
-> wip patches? We can then work out how they fit together, incorporate
-> Alice's review feedback, and preserve attribution for Andrew's work.
-
-Here:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/thomas.weissschuh/linux.git/log/?h=b4/rust-dyndbg
-
-> Thanks,
-> Zhi.
-> 
-> > Hi Alexandre,
-> > 
-> > On 2026-10-20 22:14:12+0900, Alexandre Courbot wrote:
-> > > On Sun Oct 11, 2026 at 9:52 PM JST, Thomas Weißschuh wrote:  
-> > > > Add the Rust infrastructure to integrate with the dynamic debug
-> > > > infrastructure.
-> > > >
-> > > > Static keys are not used for now, as the full bindings are missing
-> > > > for those. A follow-up series will add that.
-> > > > Also custom classes are not supported yet, but could be added on
-> > > > top.
-> > > >
-> > > > Patches 1-4: Generic Rust preparation patches.
-> > > > Patches 5-7: C dynamic debug preparation patches.
-> > > > Patches 8: Rust Dynamic debug infrastructure.
-> > > > Patches 9-11: Rust Dynamic debug enablement.  
-> > > 
-> > > Were you aware of this series [1]?  
-> > 
-> > I was was told about the original work from Andrew back at Kangrejos.
-> > However I was unable to find it on LKML and it was not clear how far
-> > along that series has come along. The posting of Zhi's v3 only
-> > happened after I started on my variant, and I did not see it until
-> > you mentioned it. So my development is completely independent from
-> > Andrew's and Zhi's.
-> > 
-> > > There seems to be quite a bit of overlap.  
-> > 
-> > Indeed. I see pros for both serieses:
-> > 
-> > Mine:
-> > * No FFI in the fastpath.
-> > * No need for RUST_MODNAME.
-> > * Use of Bounded.
-> > * Tests for the flag encoding.
-> > * modname!() as function name.
-> >   (As discussed with Benno and Gary and LPC)
-> > * Better encapsulation of 'struct Descriptor' (partially not yet
-> > posted)
-> > * Use of Opaque<> to wrap bindings::_ddebug (not yet posted).
-> > * Use of !cv() (not yet posted).
-> > 
-> > Andrew/Zhi:
-> > * Better docs.
-> > * Static branch support.
-> >   * static_branch_likely!() support is missing however.
-> >   * I also have follow-up patches to enable static_branch_likely!().
-> > * host doctest support.
-> > 
-> > I am perfectly fine with merging both serieses.
-> > 
-> > 
-> > Thomas
-> > 
-> > > [1]
-> > > https://lore.kernel.org/all/20261001145940.1077801-1-zhiw@nvidia.com/
-> > >  
-> 
+Cheers,
+Miguel
