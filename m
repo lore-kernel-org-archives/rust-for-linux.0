@@ -1,75 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792500777;
-	b=CR+mAov45tyC5ma7H2AdNNp3K7Mmb1ATGHPHc9c8OoRYGNSVMg49dFJ2qbhdVXIbuykb
-	 RA9YYm0lGuyRKXJ9QgSq5l3HVKDyUuZPqZG8bmapGYgc45svOZ+npJQezjqz/6YjiGx3z
-	 2fUBzOQde9GTbGV1tIKOPDS06cD/+pvntwXMOdaH2RgccXdasZNLRFHuYIvWq0qxPEo7O
-	 RRX+r/IIbM6h8dHnvSu/NvhPZ5ipm/gTv9bvt9R+rOGyezmOVyq3VGjZ2gdN303+B7QyY
-	 6+h3XyAd3Qr6vUJjNsMEZVtib/v5i3oKtIxNExSuaEkkqnGu07G3QDoqVLxj69OqJ6g==
+	t=1792501193;
+	b=1Wu/kyI8l5VRAvYhssBUMT+5iKWRH9M1s8iCdj7wLYIjSoTn8TXE61Int0KWxexRVHRq
+	 TEG3Aea6hQn5r7fAI3UKaDHFlnDJPUdM160B3Whiq1PHBtIHfk0L458s5FDO9i6NCQvJW
+	 6Czv7UcJaW5f3fK9fjcryP+TT4YRORfN27LnX4JsY238lFr8INAAYfGBGMJXdPlr4lpgb
+	 lSob+v85i6rRlrPHstwftTWOxt5N9DTQMFiITeeya6LoWAej93Dbgom3EhRPKhiq/YFLF
+	 /Op2oBB514NrdFulbQF5FulixzChEr7yP8Qs6HiXSjsnZ2uyY1HcUNNqw+ucuu7TiEQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792500777;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Developer-Key:X-Developer-Signature:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=wxmEz/CK+OAfk+vdzvHdXAndOrVUAuRsR691a5B0+lA=;
-	b=4S22Rxrb55TbdRpaQr+sSUyLa6AH8Rt7IYI4KHcC9nHdXuOW419OJs1QtQAtVyVSahxg
-	 17yt6svj+ohHucSvxWV1QdGiLj68Ue2HYcSN334EENZZPTduyah7UJmeDeiL31JCZQPuA
-	 03DsR5N0kJCdZsi7Zx3JF+4ndn6zAl97RgUPmVU5r9z1ub5msKfeu/yAPRqUsW5xaHLwf
-	 6qOpUJeZbTkJJG+7MWGlu2vemFNa/xe+yjMbCATGOjOM6WNU144h8ZjjrfwayVsHC0uoN
-	 0dXhUaEhVAjSszdTEVOCdPbA2xdBbQ/m7LZQF5astQNYHjcTxpQVhEIB4uK3coyqhLA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792501193;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=k0+4gEKlMvz76fZS5IB16e4OUeVhhk9lshGuR0b8QYw=;
+	b=JvFnxV/Sh+dHFDNlYqqvURwHv6jjtxrtrPqGOZugwLoXpWdoEVzNx36WYTc9Mrylt6Q2
+	 yoIDGlwfIBn0FFv2V0JPoMPJE1g9brWdvmsazkmq9M6MYZ61wrnYTjmJmmlKx3AnLxnVN
+	 LjPMQZfz1vEdnRnZPVk9Y+BFqV+3PaPNhInmhIDccd9EhxjVpE+pt80tK3EkzIOd2kdXk
+	 03t1ENr/wGiay/2omfp3JdwAOdPBYnEmIRkVsU6sXVBBrMgraI4l2hidCmFSpvENCyjIq
+	 5UUVKMOUgNBRVXXPEv/S1R0OAW6gcyrZ+NPlhS6wiqcfxI3rfXPFse8fU687BFxjOPA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=sPuEgIK+;
-	arc=none smtp.remote-ip=209.85.128.72
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kDqzQ90E;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B380860A4AF3
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 12:52:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B380860A4AF3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 08EF8606A31F;
+	Tue, 20 Oct 2026 12:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=sPuEgIK+
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a1e295b702so25088265e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 05:52:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792500774; x=1793105574; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wxmEz/CK+OAfk+vdzvHdXAndOrVUAuRsR691a5B0+lA=;
-        b=sPuEgIK+98czDktbzUvIPBkndx989j5su5BzrAv0TFL7yzVx5TL8/TcbzNEy/f5QIR
-         gPeOFTVLFcqYk95GAz8IWOojfks1tRZTZLq3DciYSUWx/Lo8yyF28FkPfcXdG62i9LXg
-         nM9qdVsTKqH4DdAlRwj/aQNFL5SmAUZueIyT3iw/BFJxQxzuHjKON7mQS4IQ7AK6hEHV
-         WwPEluNA9ufw4o4P80IuuklPyfv0sGFl+GQftMqYV6M4AJvo558hqkxIzMZrOxcwNv9i
-         6lw21SiPCE2rEPvJSf3qo/n/Pj8MO8lvbbR8m6JmqqRxng4XJuacgaS/DPgUMB2JhQYk
-         eqPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792500774; x=1793105574;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wxmEz/CK+OAfk+vdzvHdXAndOrVUAuRsR691a5B0+lA=;
-        b=PIFqBx28shKOKm9Zu1Mwz33aiIaL5+3wiRLANZC4L9xjkGVMtMEmjGSYszDFGcxuy6
-         Iv+zOf+WX4Ab0ViKT5jG8IbQphloUMFOpriy8M0sJT1bglZrDKkvpo275KshRhwEiEOh
-         VJRt4JyL1XNQjAg7R5TL8ysjnse27xOSHr4BNCqYMwYQrF6D9r+BoB6JB6B4uVsHzr57
-         sJLP9ODhoMinZ1q/pAk99KkeH++7mcjcGxBu5sp9Waxa4bfJQup7mKk1UVykEix7QzI9
-         kUEcrwpovdky9RihEY/MH9tNP/Kf58JXzf/ADbrQuVPZj+7yqEYT3gwfytPPa+jAPnaZ
-         hMow==
-X-Forwarded-Encrypted: i=1; AKwUvBz+Jy7dTl5mJxoNncLfp8qlg8iaiIz21ZTFf6o+VxfP4L0hMhpOuDeMYHCnJ0ZBwLQl1l/Oyg9wZeLIQFO8nQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYIgCX3brbpg2J0vM3lNUNGZNamEmSQrSzhno8if+cQaDOH6VbAh
-	hcSFa2CPB40Kh7Ov/K7xzwmX7GD0G44S94AW1Ed6rbN8RBLFeM3NnbCdorUQ3B7s2EXY2AY8F68
-	Mio+otzVDw3m+IuuQpg==
-X-Received: from wroy18.prod.google.com ([2002:adf:f152:0:b0:48c:7ee7:2c6f])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1da1:b0:4a1:ac66:6059 with SMTP id 5b1f17b1804b1-4a1d7614eefmr242597465e9.26.1792500773711;
- Tue, 20 Oct 2026 05:52:53 -0700 (PDT)
-Date: Tue, 20 Oct 2026 12:52:39 +0000
-In-Reply-To: <20261020-rust-workqueue-v3-0-ea7c74d02068@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kDqzQ90E
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 1CCBC1F000C4;
+	Tue, 20 Oct 2026 12:59:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792501192;
+	bh=k0+4gEKlMvz76fZS5IB16e4OUeVhhk9lshGuR0b8QYw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kDqzQ90E/2qjc/LA3bApPh8dVKMVfASrKa9PJMx9YGKFySr4hzgPpjrpQokFF4qHL
+	 138dOc+99/D/l8ttbTE/vIbIbB+Fkn4wPl1RUtfvRir2zuGTqdcBnLbIByWFpsDJiy
+	 KMmEGcPGRh2+brvL4UdzD0d7EhrEHTs7jgKDxbxGZL5TaSB1IYtEwM4JNdWnloH2/+
+	 IGDKgZVp0AMZTrGUkMmTDDAjT2UEM6R+rKGk6m4jP0ltp1MuODqfmN6tibAElPAi23
+	 IsWF0zqfl6FFjoA3cZtuGnGLDtKO27KCInu289v0qHAwhv5ejxnpEmi8BrX60t3uzd
+	 mrNxfDGRu4mDg==
+Date: Tue, 20 Oct 2026 14:59:50 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Maurice Hieronymus <mhi@mailbox.org>
+Cc: Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
+	Fu Wei <wefu@redhat.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
+	Brian Masney <bmasney@redhat.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] rust: clk: Add ExclusiveClk and use it in
+ pwm-th1520
+Message-ID: <atdlfNRiza3gA1iD@monoceros>
+References: <20260711-rate-exclusive-get-th1520-v4-0-8244a0666a71@mailbox.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,488 +64,69 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261020-rust-workqueue-v3-0-ea7c74d02068@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=17149; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=oDrOybZ5GyeEV00KNLPrW81TDHW0BndIwgF6Sr82ykQ=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBq12QeC6MGSF3kc+DxsiClC22vl0ytW1kgupgfH
- GWWGH6tSH2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCatdkHgAKCRAEWL7uWMY5
- Rq/xEACr5kuaCof+Q662nrAz6sm05Pj9zjPnF/uZOE5JL07RWzJsbcGsOFljs6QigNYEgUTIOkW
- SPsy3cONR/ZI8UQooEo0v040fho/oW67yHSO8IoFr0SCrp74sDe1Z1U2h3UQaO5ikKzget1Tcgf
- CQRqCjKJFHopsjlgSW+8CjCgczEzWKWezmxaxpMYf9iibdwbc8uV4+hWoUI9p/Tbnuhx3pODKi4
- 7rabh6kT/P8EXHL1jVzWwjhqMlvPYRjXK7nw2+MGvrNKvueDNMOZRz0eZsPn7jQL+ZfjhBbmyST
- hVgPuAQ270MpIUkamAtQmAPo+KwDwfM6eibBhRo4YGIrt8nB5gTfLv2BhGY1GBtjTLpNDwwTm7N
- t7Xi6U4GMKTscyE6d3IBLEcXVcZBa12s5s8LxyGzk7FQn8OUmUV3/24fCGPedIjVOZ89SkWJ4td
- f8x83ZnAny3+itsp/t0s/dgyUXKRM0jwqOMtFQPf+EQ6sGrBjh4LAbo60VoxjlH3SNfv5PkP3rV
- KzZdipVqBlrRuvJPt5qXSvFu4DbbvO6GZ32s2Y5ddyeG2kj1FDLNpIewpXxioH0eOypU2Dzt5bs
- 0GLNYSgD2qzexvafVV4USYk4QCR6unD9cKcryvDIlZyjpNbBQ+86sWpPDXDsQyqIFlD2xi6GmJP gBTgndqKY828LnQ==
-X-Mailer: b4 0.14.3
-Message-ID: <20261020-rust-workqueue-v3-4-ea7c74d02068@google.com>
-Subject: [PATCH v3 4/4] rust: workqueue: add ScopedWork for non-'static work items
-From: Alice Ryhl <aliceryhl@google.com>
-To: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, 
-	John Hubbard <jhubbard@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ltyb7jaz4sulinat"
+Content-Disposition: inline
+In-Reply-To: <20260711-rate-exclusive-get-th1520-v4-0-8244a0666a71@mailbox.org>
 
-From: Danilo Krummrich <dakr@kernel.org>
 
-Add ScopedWork<T>, a work item wrapper whose destructor calls
-cancel_work_sync(), allowing T to carry non-'static lifetimes. Ownership
-of the data is not transferred to the workqueue; instead, the
-synchronous cancellation on drop guarantees the work function is not
-running when the data is freed.
+--ltyb7jaz4sulinat
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v4 0/2] rust: clk: Add ExclusiveClk and use it in
+ pwm-th1520
+MIME-Version: 1.0
 
-Because that guarantee only holds if the destructor actually runs,
-ScopedWork::new() (and thus new_scoped_work!) is unsafe and requires
-that the resulting value is never forgotten. In return,
-Queue::enqueue_scoped() is a safe method that accepts a &ScopedWork<T>
-on any queue, including the system queues.
+Hello,
 
-ScopedWork does not use the Work/WorkItem machinery: it embeds the
-work_struct directly and registers its own C callback, which recovers
-the &ScopedWork<T> via container_of!() and passes it to
-ScopedWorkItem::run(). The work_struct and the user data live in a
-private Inner<T> that is wrapped in Opaque as a whole, so that the &mut
-Self held by the destructor while cancel_work_sync() waits does not
-claim uniqueness over memory (including padding) that a worker thread
-may still be reading through &ScopedWork<T>.
+On Sat, Jul 11, 2026 at 12:16:28PM +0200, Maurice Hieronymus wrote:
+> Add a Rust binding for clk_rate_exclusive_get() / clk_rate_exclusive_put()
+> and use it in pwm-th1520, which previously carried a TODO noting the
+> missing binding.
+>=20
+> Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
+> ---
+> [...]
+> ---
+> Maurice Hieronymus (2):
+>       rust: clk: Add `ExclusiveClk` wrapper for `clk_rate_exclusive_get`
+>       pwm: th1520: Lock clock rate with clk_rate_exclusive_get
+>=20
+>  drivers/pwm/pwm_th1520.rs | 18 ++++++++-----
+>  rust/kernel/clk.rs        | 67 +++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  2 files changed, 79 insertions(+), 6 deletions(-)
+> ---
+> base-commit: 92010229c4b38897f1319d260162d2f96925ed17
+> change-id: 20260526-rate-exclusive-get-th1520-764a949de18e
+> prerequisite-change-id: 20250909-clk-type-state-c01aa7dd551d:v5
+> prerequisite-patch-id: 2d3dc45c241d9062a0d2546ec649eec7970fa50a
+> prerequisite-patch-id: 67ad535fe110207ebc79045ba022ebb7137b0309
+> prerequisite-patch-id: 3d1d8ee5c2a4957edd0807b7a5cb65dabab345b5
+> prerequisite-patch-id: e2659037b8aaf51831da099cc568ad5b3c24a4dd
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/workqueue/mod.rs    |  48 +++++-
- rust/kernel/workqueue/scoped.rs | 342 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 389 insertions(+), 1 deletion(-)
+I didn't track these dependencies, but the change looks fine for me. Who
+is supposed to merge it? I can take it via pwm, but I guess a rust tree
+is more appropriate?!
 
-diff --git a/rust/kernel/workqueue/mod.rs b/rust/kernel/workqueue/mod.rs
-index 78e6a7bb960a..73fa0bea4220 100644
---- a/rust/kernel/workqueue/mod.rs
-+++ b/rust/kernel/workqueue/mod.rs
-@@ -212,6 +212,13 @@
- mod builder;
- pub use self::builder::Builder;
- 
-+mod scoped;
-+pub use self::scoped::{
-+    new_scoped_work,
-+    ScopedWork,
-+    ScopedWorkItem, //
-+};
-+
- /// Creates a [`Work`] initialiser with the given name and a newly-created lock class.
- #[macro_export]
- macro_rules! new_work {
-@@ -283,11 +290,50 @@ pub unsafe fn from_raw<'a>(ptr: *const bindings::workqueue_struct) -> &'a Queue
-     pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::EnqueueOutput
-     where
-         W: RawWorkItem<ID> + Send + 'static,
-+    {
-+        // SAFETY: `W: 'static`, so everything borrowed by `W` remains valid forever.
-+        unsafe { self.enqueue_raw(w) }
-+    }
-+
-+    /// Enqueues a [`ScopedWork`] item.
-+    ///
-+    /// Unlike [`Queue::enqueue`], this does not require the work item to be `'static`. This is
-+    /// sound because a [`ScopedWork`] cancels itself synchronously when it is dropped, and
-+    /// [`ScopedWork::new`] requires that this destructor runs before any lifetime in `T` expires.
-+    ///
-+    /// This may fail if the work item is already enqueued in a workqueue.
-+    ///
-+    /// The work item will be submitted using `WORK_CPU_UNBOUND`.
-+    #[inline]
-+    pub fn enqueue_scoped<T>(&self, w: &ScopedWork<T>) -> bool
-+    where
-+        T: ScopedWorkItem + Sync,
-+    {
-+        // SAFETY: The `ScopedWork` destructor calls `cancel_work_sync()`, and `ScopedWork::new`
-+        // guarantees that this destructor runs before any lifetime in `T` expires. Hence everything
-+        // borrowed by `T` remains valid until the work item has run to completion or has been
-+        // cancelled.
-+        unsafe { self.enqueue_raw(w) }
-+    }
-+
-+    /// Enqueues a work item without requiring it to be `'static`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Everything borrowed by `W` must remain valid until the work item has run to completion or
-+    /// has been cancelled.
-+    #[inline]
-+    unsafe fn enqueue_raw<W, const ID: u64>(&self, w: W) -> W::EnqueueOutput
-+    where
-+        W: RawWorkItem<ID> + Send,
-     {
-         let queue_ptr = self.0.get();
- 
-         // SAFETY: We only return `false` if the `work_struct` is already in a workqueue. The other
--        // `__enqueue` requirements are not relevant since `W` is `Send` and static.
-+        // `__enqueue` requirements are not relevant since `W` is `Send` and the caller guarantees
-+        // that everything borrowed by `W` remains valid until the work item has run to completion
-+        // or has been cancelled, so the function pointer is never called after a lifetime in `W`
-+        // expires.
-         //
-         // The call to `bindings::queue_work_on` will dereference the provided raw pointer, which
-         // is ok because `__enqueue` guarantees that the pointer is valid for the duration of this
-diff --git a/rust/kernel/workqueue/scoped.rs b/rust/kernel/workqueue/scoped.rs
-new file mode 100644
-index 000000000000..e490ac752423
---- /dev/null
-+++ b/rust/kernel/workqueue/scoped.rs
-@@ -0,0 +1,342 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Scoped work items.
-+//!
-+//! Provides [`ScopedWork`] for work items that may borrow data with some non-`'static` lifetime.
-+//!
-+//! Unlike [`Work`]-based items, ownership of a [`ScopedWork`] is not transferred to
-+//! the workqueue. Instead, its destructor calls `cancel_work_sync()`, which guarantees that the
-+//! work function is not running (and will not run) once the destructor returns. This is what
-+//! allows the inner data to carry non-`'static` lifetimes.
-+//!
-+//! Creating a [`ScopedWork`] is `unsafe`, because the above guarantee only holds if the destructor
-+//! actually runs: the value must not be forgotten. Once created, a [`ScopedWork`] can be enqueued
-+//! on any queue using the safe [`Queue::enqueue_scoped`].
-+//!
-+//! # Examples
-+//!
-+//! ```
-+//! use kernel::workqueue::{
-+//!     new_scoped_work,
-+//!     Queue,
-+//!     ScopedWork,
-+//!     ScopedWorkItem,
-+//! };
-+//!
-+//! struct MyWork {
-+//!     value: u32,
-+//! }
-+//!
-+//! impl ScopedWorkItem for MyWork {
-+//!     fn run(work: &ScopedWork<Self>) {
-+//!         pr_info!("value = {}\n", work.value);
-+//!     }
-+//! }
-+//!
-+//! let work = KBox::pin_init(
-+//!     // SAFETY: `work` is not forgotten.
-+//!     unsafe { new_scoped_work!("MyWork", MyWork { value: 42 }) },
-+//!     GFP_KERNEL,
-+//! )?;
-+//!
-+//! let queue = Queue::new_unbound().build(c"my-wq")?;
-+//! queue.enqueue_scoped(&work);
-+//!
-+//! // Dropping `queue` first drains it, so the work item is guaranteed to have run by the time
-+//! // `work` is dropped.
-+//! drop(queue);
-+//! # Ok::<(), Error>(())
-+//! ```
-+
-+use crate::{
-+    bindings,
-+    container_of,
-+    prelude::*,
-+    sync::LockClassKey,
-+    types::Opaque,
-+    workqueue::RawWorkItem, //
-+};
-+
-+#[cfg(doc)]
-+use super::{
-+    Queue,
-+    Work, //
-+};
-+
-+use pin_init::Wrapper;
-+
-+use core::ops::Deref;
-+
-+/// Trait for types that can be used as scoped work items.
-+///
-+/// Implementers define the work function that executes when the item is dequeued by a workqueue
-+/// thread. The callback receives a reference to the containing [`ScopedWork`], which provides
-+/// access to the inner data via [`Deref`] and can be passed to [`Queue::enqueue_scoped`] to
-+/// re-enqueue the work item from within the work function.
-+pub trait ScopedWorkItem: Sized {
-+    /// Called when the work item is executed.
-+    fn run(work: &ScopedWork<Self>);
-+}
-+
-+/// The payload of a [`ScopedWork`].
-+///
-+/// # Invariants
-+///
-+/// `work` is an initialized `work_struct` whose work function is [`ScopedWork::<T>::run`]. An
-+/// `Inner<T>` only ever exists inside a [`ScopedWork<T>`].
-+#[pin_data]
-+struct Inner<T: ScopedWorkItem> {
-+    #[pin]
-+    work: Opaque<bindings::work_struct>,
-+    #[pin]
-+    data: T,
-+}
-+
-+/// A scoped work item that cancels synchronously on drop.
-+///
-+/// `ScopedWork<T>` contains a `work_struct` and the user data `T`. Its destructor calls
-+/// `cancel_work_sync()`, guaranteeing the work function is not running when the data is dropped.
-+///
-+/// This allows `T` to carry non-`'static` lifetimes.
-+///
-+/// Construct via [`new_scoped_work!`], which returns an `impl PinInit` suitable for embedding
-+/// in-place inside other pinned structs. Because the soundness of [`Queue::enqueue_scoped`]
-+/// relies on the destructor running, [`ScopedWork::new`] is `unsafe` and requires that the
-+/// resulting value is never forgotten.
-+///
-+/// # Examples
-+///
-+/// Self-re-enqueueing from within the work function:
-+///
-+/// ```
-+/// # use kernel::sync::atomic::{Atomic, Relaxed};
-+/// # use kernel::time::{Delta, delay::fsleep};
-+/// use kernel::workqueue::{
-+///     self,
-+///     new_scoped_work,
-+///     Queue,
-+///     ScopedWork,
-+///     ScopedWorkItem,
-+/// };
-+///
-+/// struct RequeueWork<'a> {
-+///     counter: Atomic<u32>,
-+///     queue: &'a Queue,
-+/// }
-+///
-+/// impl ScopedWorkItem for RequeueWork<'_> {
-+///     fn run(work: &ScopedWork<Self>) {
-+///         if work.counter.fetch_add(1u32, Relaxed) < 2 {
-+///             work.queue.enqueue_scoped(work);
-+///         }
-+///     }
-+/// }
-+///
-+/// let queue = Queue::new_ordered().build(c"requeue_wq")?;
-+///
-+/// let work = KBox::pin_init(
-+///     // SAFETY: `work` is not forgotten.
-+///     unsafe {
-+///         new_scoped_work!(
-+///             "RequeueWork",
-+///             RequeueWork {
-+///                 counter: Atomic::new(0u32),
-+///                 queue: &queue,
-+///             }
-+///         )
-+///     },
-+///     GFP_KERNEL,
-+/// )?;
-+///
-+/// queue.enqueue_scoped(&work);
-+/// # fsleep(Delta::from_millis(300));
-+///
-+/// assert_eq!(work.counter.load(Relaxed), 3);
-+/// # Ok::<(), Error>(())
-+/// ```
-+#[pin_data(PinnedDrop)]
-+#[repr(transparent)]
-+pub struct ScopedWork<T: ScopedWorkItem> {
-+    /// The whole payload is wrapped in [`Opaque`] on purpose: while the destructor waits in
-+    /// `cancel_work_sync()`, a worker thread may still be executing [`ScopedWorkItem::run`] with a
-+    /// shared reference to this value, concurrently with the `&mut Self` held by `drop`. [`Opaque`]
-+    /// opts out of the uniqueness guarantee of that `&mut`. Wrapping individual fields would not be
-+    /// enough, since the `&mut Self` would still claim exclusive access to the padding bytes.
-+    ///
-+    /// # Invariants
-+    ///
-+    /// `inner` is always initialized.
-+    #[pin]
-+    inner: Opaque<Inner<T>>,
-+}
-+
-+// SAFETY: A `&ScopedWork<T>` only hands out `&T` (via `Deref`) and a pointer to the `work_struct`,
-+// which is only ever accessed through the C workqueue API. Hence sharing it is safe when `T: Sync`.
-+unsafe impl<T: ScopedWorkItem + Sync> Sync for ScopedWork<T> {}
-+
-+// SAFETY: The `work_struct` is only ever accessed through the C workqueue API, which is safe to
-+// use from any thread. Sending the contained `T` requires `T: Send`.
-+unsafe impl<T: ScopedWorkItem + Send> Send for ScopedWork<T> {}
-+
-+impl<T: ScopedWorkItem> Deref for ScopedWork<T> {
-+    type Target = T;
-+
-+    #[inline]
-+    fn deref(&self) -> &T {
-+        // SAFETY: `inner` is always initialized (type invariant), and `data` is only ever accessed
-+        // through shared references.
-+        unsafe { &(*self.inner.get()).data }
-+    }
-+}
-+
-+impl<T: ScopedWorkItem> ScopedWork<T> {
-+    /// Creates a pin-initializer for a new scoped work item.
-+    ///
-+    /// Use [`new_scoped_work!`] to automatically provide the lock class key.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that the destructor of the initialized `ScopedWork<T>` runs before
-+    /// the memory it lives in is reused or any lifetime in `T` expires. In particular, the value
-+    /// must not be leaked, e.g. via [`core::mem::forget`] or by leaking the allocation that
-+    /// contains it.
-+    #[inline]
-+    pub unsafe fn new<E>(
-+        name: &'static CStr,
-+        key: Pin<&'static LockClassKey>,
-+        init: impl PinInit<T, E>,
-+    ) -> impl PinInit<Self, E> {
-+        try_pin_init!(Self {
-+            inner <- Opaque::pin_init(try_pin_init!(Inner::<T> {
-+                work <- Opaque::try_ffi_init(|slot| {
-+                    // SAFETY: `slot` is a valid pointer to uninitialized memory for a
-+                    // `work_struct`, and `Self::run` is a valid work function for a `work_struct`
-+                    // embedded in an `Inner<T>` that is embedded in a `ScopedWork<T>`.
-+                    unsafe {
-+                        bindings::init_work_with_key(
-+                            slot,
-+                            Some(Self::run),
-+                            false,
-+                            name.as_char_ptr(),
-+                            key.as_ptr(),
-+                        )
-+                    };
-+                    Ok::<(), E>(())
-+                }),
-+                data <- init,
-+            }? E)),
-+        }? E)
-+    }
-+
-+    /// Returns a raw pointer to the `work_struct`.
-+    #[inline]
-+    fn raw_work(&self) -> *mut bindings::work_struct {
-+        // SAFETY: `inner` is always initialized (type invariant).
-+        unsafe { Opaque::cast_into(&raw const (*self.inner.get()).work) }
-+    }
-+
-+    /// The work function registered with the C workqueue.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `ptr` must point to the `work` field of the `Inner<T>` of a live `ScopedWork<T>`.
-+    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
-+        // SAFETY: `Opaque<T>` is `#[repr(transparent)]`, and by the safety requirements `ptr`
-+        // points to the `work` field of an `Inner<T>`.
-+        let inner =
-+            unsafe { container_of!(ptr.cast::<Opaque<bindings::work_struct>>(), Inner<T>, work) };
-+
-+        // SAFETY: `Inner<T>` only ever exists inside a `ScopedWork<T>` (type invariant), and both
-+        // `Opaque` and `ScopedWork` are `#[repr(transparent)]`, so `inner` is also a valid pointer
-+        // to the containing `ScopedWork<T>`. By the safety requirements it is live; its destructor
-+        // calls `cancel_work_sync()` before the memory is released, so it stays live for the
-+        // duration of this call.
-+        T::run(unsafe { &*inner.cast::<Self>() });
-+    }
-+}
-+
-+// SAFETY: `&ScopedWork<T>` points to a `work_struct` whose work function is
-+// `ScopedWork::<T>::run` (type invariant), so passing it to `queue_work_on` is sound. The pointer
-+// stays valid until the work function has run or the item is cancelled, because the `ScopedWork`
-+// destructor calls `cancel_work_sync()` and `ScopedWork::new` requires that destructor to run.
-+unsafe impl<'a, T: ScopedWorkItem + Sync> RawWorkItem<0> for &'a ScopedWork<T> {
-+    type EnqueueOutput = bool;
-+
-+    unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
-+    where
-+        F: FnOnce(*mut bindings::work_struct) -> bool,
-+    {
-+        queue_work_on(self.raw_work())
-+    }
-+}
-+
-+#[pinned_drop]
-+impl<T: ScopedWorkItem> PinnedDrop for ScopedWork<T> {
-+    #[inline]
-+    fn drop(self: Pin<&mut Self>) {
-+        // SAFETY: `raw_work()` returns a valid `work_struct`. After `cancel_work_sync()` returns,
-+        // the work function is guaranteed to not be running.
-+        unsafe { bindings::cancel_work_sync(self.raw_work()) };
-+
-+        // SAFETY: `inner` is initialized (type invariant), no longer accessed by the work
-+        // function, and never accessed again after this point. `Opaque` does not drop its
-+        // contents, so we have to do it here.
-+        unsafe { core::ptr::drop_in_place(self.inner.get()) };
-+    }
-+}
-+
-+/// Creates a [`ScopedWork`] pin-initializer with a new lock class.
-+///
-+/// This macro expands to a call to [`ScopedWork::new`], which is `unsafe`, so the invocation must
-+/// be wrapped in an `unsafe` block.
-+///
-+/// # Safety
-+///
-+/// The caller must uphold the safety requirements of [`ScopedWork::new`]: the destructor of the
-+/// initialized `ScopedWork` must run before the memory it lives in is reused or any lifetime in
-+/// the inner type expires.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::workqueue::{
-+///     new_scoped_work,
-+///     ScopedWork,
-+///     ScopedWorkItem,
-+/// };
-+///
-+/// struct MyWork {
-+///     value: u32,
-+/// }
-+///
-+/// impl ScopedWorkItem for MyWork {
-+///     fn run(work: &ScopedWork<Self>) {
-+///         pr_info!("value = {}\n", work.value);
-+///     }
-+/// }
-+///
-+/// #[pin_data]
-+/// struct MyData {
-+///     #[pin]
-+///     work: ScopedWork<MyWork>,
-+/// }
-+///
-+/// fn init_data() -> impl PinInit<MyData> {
-+///     pin_init!(MyData {
-+///         // SAFETY: `MyData` is only ever pin-initialized, so its `work` field is dropped
-+///         // whenever `MyData` is.
-+///         work <- unsafe { new_scoped_work!("MyWork", MyWork { value: 7 }) },
-+///     })
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! new_scoped_work {
-+    ($name:literal, $init:expr) => {
-+        $crate::workqueue::ScopedWork::new(
-+            $crate::c_str!($name),
-+            $crate::static_lock_class!(),
-+            $init,
-+        )
-+    };
-+}
-+pub use new_scoped_work;
+Best regards
+Uwe
 
--- 
-2.56.0.212.g129ede20d9-goog
+--ltyb7jaz4sulinat
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmrXZcIACgkQj4D7WH0S
+/k6GSAf/ZIk24DH451oQFcpRIj2PkQd/0y19KVGyJRbxLE9LvsxPZ0+1eE3hJEJo
+jlYTi8hVShMbt8y719+jAapn7t4jiDMFdqZjNf6SJk6UMY7/OQQnN1lx2EVzBr77
+VzzIbCXZvEKKeRWz2YXsjkKOf8q0ZKeXvpE/dePtg3/LM288hLmX5vpAO3Ckpkv+
+xRoPRzUPd3SEd1pvacn8Eul3YMz59OjeI2kgSiQvEli8bC2CColR1kjbIpIOAyIa
+JUBb3v5uGhp4E9dTEZMfuuOoTyauToZwVNTZLd1jLLwO/fL3Zdfr0N3srk/NZmrW
+3WQkqT8ZE03oOjmuXTUZG8+Sc4oIMw==
+=n9X5
+-----END PGP SIGNATURE-----
+
+--ltyb7jaz4sulinat--
