@@ -1,72 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792484931;
-	b=UAdOmMm4bKoKbo2pAaYvTVidNtRKLhB331kYpe/jRfKlAFxBvA2+/wsRnkdRtEEYjIqb
-	 JKpKPPdgYHZUF6/VdyLc99qa7J0S4gn3oW2f+baTgimiPxwMgglSLb/wqF4+vqVp+j1ZL
-	 LCedSeOqCh5kTj1KmXyW/TMyteKEFNCT8Zsw/myZ74i99Lb/gReDSGmsMiTBXFowVI+Lv
-	 qqXSWcl1JZQZvy7hoDwI8gLrxuIRfSCBEB1XAv9ZFc8BlHrOixO2Wct5MfWlu6PLuXiPO
-	 Rdm5qktw3G1d12O/kFElAvAAVSdPuhEL3DLULAJ90Awy0Pobb3mTPM9WxriYfGloytQ==
+	t=1792485237;
+	b=0fSF7m33Deflp8rMJKcOe7LkOaT/o5CVwF9AqydxaY9WcvshxyqKxb/jxfSzVS2RC4y3
+	 9a6CNxMI5wf10n427dwTrTgVoq7NDmrtkjtd/h1losWHWa/8JynVGJnZgPdroW/oYTdmP
+	 2KU46J+leQFvjVwQvj+Y+s3UbbRJkIfByYZauyiquqfDp6vLVDkSwio8jMat4gtqVI2L5
+	 FBU/dMgS3YmpmVdN26J/vz1SmwddhiZVadY1I0EgCeo9I2ps3K6RcCd10CVxgGs6nTwNX
+	 +55z7CHc6q6tYEKybbAO7ri0oNBEZpTk5Q+WpSGCYsiwkbM7fvO0y/f0fTQ+ZDR1h9Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792484931;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792485237;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-B4-Tracking:
-	 X-Change-Id:X-Developer-Key:X-Developer-Signature:X-Mailer:Message-ID:
-	 Subject:From:To:Cc:Content-Type;
-	bh=V2g7pl//bRYOezc7U12uFpcQJT5vXcVW3O60hvJjYx8=;
-	b=GNcIvQyugss6ro62AaDkaTenY9SD60ArKqQG0Ev2x/2PDoW9UKyDv0kXcV6scIOB8JIu
-	 jMZz/tXlDo+pAaKqLdn01H+9p1JUIgIdcsweXPPvu8odGXNFUn/NRkLdDeS3v+IWP6CkX
-	 hCQtqFOQoCVYX3WBxeIlrbLnTQlPIiwuSTjRYhP0jSL7it/C46J/mXZIHU3s43muRzsGp
-	 wjyVMYAoCffOSleDNbZK1CBNdgke7ls/xPPwnTk34vYa2WyuOc+SscCEv4lPG6UUG+Py8
-	 BJaKqF6MvxUpFEijXMhLp5z2gSMXDo+3i89sKZvGn0CstALTlrIOK0nWtwLSTCYnzRw==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=iTKxLK7MUSiAzkn1IgcQvxPJWtCNPLN0//THVXyyz5c=;
+	b=k/Ow5Hvho6pwX/Uoyr34JbCJbpl2P7cQVWOu9bFSIYBq0KR5GWpnd6dYEKAVTa0PsdOX
+	 08wEN4hjhlgNeTqhl8rajlGLT/ZlazjqJf6ZwPW6BeGtRbMonAhg4HmEFTYKr0EL6aoRI
+	 9cYrHv2Gxa85Y9wqir1sm+mvaPFv/A3OEiMTQXa/BdbQ++Lq7Sjg9eE9CFTrOsEs4NaBd
+	 G2/VSt9TO9Tu1qmaMK9ylK4QVn0pgb+m6xawJoWvnG1H/7lp0fKLuvGx0mBziWDBwUw31
+	 bc42ucmuu8+QoPhConLhbAVZpnyHlxlrAghFkHTj75Euw0CtZLQzQrvgFSIVBJktn4g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=aWx7wiq+;
-	arc=none smtp.remote-ip=209.85.218.69
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=N0HCy1of;
+	arc=none smtp.remote-ip=209.85.128.69
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACF0606A31C
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 08:28:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CACF0606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4113606A319
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 08:33:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4113606A319
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=aWx7wiq+
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c449a3223e9so84480766b.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 01:28:50 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=N0HCy1of
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a1e295b702so22281965e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 01:33:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792484929; x=1793089729; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=V2g7pl//bRYOezc7U12uFpcQJT5vXcVW3O60hvJjYx8=;
-        b=aWx7wiq+/DasFoQT5M8519XstD7g7rHGmFqLXXHdq8UD18VN9WqjYyA34BoF3bviQk
-         B4vvUdvpU1nBOVOREmo/lGovnmsq5GOEYTlp0gi0+dCNgmjND/0tELpEXF5B6CaDrOzf
-         6GyOIQnac4Qor8u0mLpD7RGet+FS+RdigYT7YL8G1kXru0m6uwW7tYVoApw+/OUZP23T
-         2YEeef/FlcNPtoqsCNMdJ8DYahu+lJYagijueQiyz3REb+omSUsWSIy1dn2sIZHMIbV6
-         achWG0sNI5isjwq+U6cbpUGIycUIMLysuIq7Nje8co+27sgva0Rmu4jk29uFVT3Fwr+B
-         mk3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792484929; x=1793089729;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1792485235; x=1793090035; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=V2g7pl//bRYOezc7U12uFpcQJT5vXcVW3O60hvJjYx8=;
-        b=wShQbvUuCtVGbf8ygXUtLYoNwwjLzihIPhO/dqiVhUwgM8r1a6FvydnrUtZ9vxhmWi
-         eYkFV9rwGH+ay42dgCUfcchpdYShSv1lvULM7d135NhJiUxyi5FX+FSiBdXO0grOpMWs
-         5dvn1KR5RFFkbRikhnVUxzcVOCdCuIk2ennFSIkD8hZgyOC6MxG5RWuV4DxG1xx0dwoD
-         lAesHicqK0pWA7lKMVHvzVbEx0AnqJLY1qRyObnPjUQtdbTwMxsOQ5VSeo+CMqfuvKgh
-         NHfgeW/jXJhqFiYgpn5669lxyYyy1DpmK9LawoXiHRx8WrNNvalKmJkrpF78h7Rjn3s1
-         etNQ==
-X-Gm-Message-State: AFq9FYL3qvc/UvEUa7kD9vUR68gzhuRujAkRSO2X9BchmW7y/SdAaSW4
-	aJXBhRqE9oIwrivtBXMQmcl4DLo0r6u5jt9rXVQZ+kdlWv3p/PwEgt5kmh5WFnqul/nOziCOMVF
-	q/nZWUh/trxE7gJ3erw==
-X-Received: from edqi6.prod.google.com ([2002:aa7:c706:0:b0:6ae:1861:6a4b])
+        bh=iTKxLK7MUSiAzkn1IgcQvxPJWtCNPLN0//THVXyyz5c=;
+        b=N0HCy1ofPHQT50aRQpXEeE2FKKnFo9xNtMXDh40rrBUAHu+F8qSw+d1kKQDEsC1mMD
+         WU4D7itliauJYaxJhNPs63ybtyJGEAMgrSUw7a8S4Sjlc3V2pF3OwImM6pbJji2kURwT
+         mDQzk8n42Or5WTcHyP9Cf07akuDQN3bMLROlI2MA7tknmNQP+xXY/3/TtZIiofZZaWzi
+         uIH8/hjLp+ftjcTFyIgSm1u+VZrXZqSsduvfEY+eFzysRK3enNttd7CzNkQzAb0uR/7h
+         PqNSm38kksSc4C0TXzAIWx4Wu8uXUz0Qh2FxPT0+R7hGx0U+T6PrKm2dA2QhRA0gdZhH
+         J6Mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792485235; x=1793090035;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iTKxLK7MUSiAzkn1IgcQvxPJWtCNPLN0//THVXyyz5c=;
+        b=pDrKyXtIVINODqa6UM7DOK8dB2G4M31F+fxLgftZWKntgBVUXbcz1GwvW2N/Ee7dzp
+         DkDqNkclLSjaCm5JZ1iWTm1/+E+24gDZLmLe7NODfuK3I5L6BP71dpRW9vniGIZclLZE
+         9IeBxwP8pqMKA8qcH/S+1xp8WHUMRzbuaQTPeVRIPmR4hL4k/32GmPwnHXecKPCuo7dt
+         H0LnTMCEIJckNtay5uZu8BEP0Y95t8hS4zdNdNZSl3FQnNoN6ak2d0fG+ysrKVexlMkm
+         W/9U3+MLjQ7JTR0KnEEnyO8FMFffLCopXk4Y1M/GXqb/lkt4vqx1IU/cIfj9HWnKDS6H
+         M8sA==
+X-Forwarded-Encrypted: i=1; AKwUvBwfwhmSaH/oWEn6y4hcCmDw8Sq6bJRW6ikkiOtwN9u6QXTl11YuqvmjJhszra2rac82TYRb7R0agPyA8mbmjA==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKloD6aDtu9wjLB+J5arYielOAlU8OJx2aX4JK/fAxFEf+h5cRH
+	8E+DTjEGp7NdhTDrD82zo3tATXkK+RZYSQHkw2iaUV0sD5cNWoDSZdJELX7MkGtBD+hBct6oSoq
+	mQmV6n1HCL/BairkSnw==
+X-Received: from wmbb17.prod.google.com ([2002:a05:600c:5891:b0:4a1:e474:4216])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:906:f583:b0:c2e:52d6:1fb7 with SMTP id a640c23a62f3a-c419e63d14fmr694939266b.22.1792484927900;
- Tue, 20 Oct 2026 01:28:47 -0700 (PDT)
-Date: Tue, 20 Oct 2026 08:28:37 +0000
+ 2002:a05:600c:4e11:b0:49f:e701:51c8 with SMTP id 5b1f17b1804b1-4a1d75f24b4mr207613465e9.9.1792485235001;
+ Tue, 20 Oct 2026 01:33:55 -0700 (PDT)
+Date: Tue, 20 Oct 2026 08:33:53 +0000
+In-Reply-To: <atarvxFKYYuHhXGQ@um790>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -76,111 +79,67 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIADQm12oC/x3MMQqAMAxA0auUzAZihQpeRRxKTDUgVVpRQXp3i
- +Mb/n8hS1LJMJgXklyadY8VbWOAVx8XQZ2rwZJ1LVnCcPO5IQdFibzPGhfsqXeOhTx1Hmp4JAn 6/NNxKuUDO8/rdmQAAAA=
-X-Change-Id: 20261020-fwctl-cfi-encoding-70766ce0a03a
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3125; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=Rk+J0lAUscPPohWGJvG/cv0f/YYZw8raSTrEMula37c=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBq1yY6KvWn2YmrQl+P2uToSiXlz+Tw9B8f8Vp2f
- JJ4S+QCG+eJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCatcmOgAKCRAEWL7uWMY5
- RmKpD/9vmUdmYXdWFu4sxnhmjYGpEa/8KUAAPN5eTas3arHAO6iEHKznNk2FbhezzCVJ+g51T1y
- tqavjmoRtuwFxTQiSSsMKuWrS22j9AjOZIrbIGc5whhovmn4ZgSIXl62woNPbtd6xhAzU67u/ag
- TYAa1bgpObC1VJyQfVuPIFKkpF0QyUnGI8pEYvUIWyJnQ6KrfpzK7zTD2rWGIEMQH56IdGWqVjD
- vmS06VZGJ4aLLuNwfxLv81UbJLp/yVDoB0+nvbzRLXwgHAk6n1uaRLPSCrLiEcmVMIM+eYlIy5Z
- MnAbuv+95H4EWHTQuyrADqknsijLkCoaN3Mwaw154jKjxMqZmpI7H8CrpxXgJzfZc3LQatk/Uci
- YXwA7tO/eiWxGGzusDNnL8BAEkmJpat2f/I0OI+YdcKCFgoVtv930Wh2UGT9IY8rDAHUbQLcojW
- JfFbCXJnhA34sq/tInGOpTWYNNdCJiFO/gTbxvEUQyGPfguALE0PIcE2VCct1jBK/rNg9nQphLF
- WIe8S5uSBIVEs5P60gf0ICdy54Y6uFRLF3vuVzD3xIKytasfcvYN7D51cxxoL5gc3bgx2kYgvEU
- jc+eQzDxXXf3ZmkzDW4l3G7vk8ipfZFJWCox2JKuaaGDYWXy1nuVGA/tO4E8aGHThjUSaI74UCl 19zcIugQEmSgilw==
-X-Mailer: b4 0.14.3
-Message-ID: <20261020-fwctl-cfi-encoding-v1-1-ebb30d1500df@google.com>
-Subject: [PATCH] rust: fwctl: declare cfi_encoding for fwctl_rpc_scope
+References: <20261016-b4-dev_query_fixes-v3-0-f8071cda3515@collabora.com>
+ <20261016-b4-dev_query_fixes-v3-2-f8071cda3515@collabora.com>
+ <atXOd-EeFkdA-trn@google.com> <atarvxFKYYuHhXGQ@um790>
+X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
+Message-ID: <20261020083353.1821078-1-aliceryhl@google.com>
+Subject: Re: [PATCH v3 2/2] drm/tyr: allow userspace buffers to be mismatched
 From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
 	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
 	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, Dave Jiang <dave.jiang@intel.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Saeed Mahameed <saeedm@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
-	Jonathan Cameron <jic23@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sami Tolvanen <samitolvanen@google.com>, stable@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
+	"=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 
-Currently, VTable::fw_rpc_callback() takes scope as a u32, whereas C
-calls fwctl_ops::fw_rpc with enum fwctl_rpc_scope. With kCFI enabled,
-enum types are encoded distinctly from integers, causing every fw_rpc
-indirect call into a Rust fwctl driver to trip a CFI failure. Thus,
-generate fwctl_rpc_scope as a newtype with a cfi_encoding attribute and
-use it in fw_rpc_callback().
+On Mon, Oct 19, 2026 at 04:46:07PM -0700, Deborah Brouwer wrote:
+> On Mon, Oct 19, 2026 at 08:01:59AM +0000, Alice Ryhl wrote:
+> > > +    transmute::AsBytes,
+> > 
+> > Usie the trait from zerocopy instead.
+> 
+> If this other series making zerocopy available to Tyr gets merged,
+> then I could rebase this series on it and switch over to IntoBytes:
+> 
+> https://lore.kernel.org/rust-for-linux/20261019-b4-gpu_info_intobytes-v4-0-0bc04df46549@collabora.com/T/#m9a9a24e0cf1ae10451e3fc84955873b405d0da0b
 
-Cc: stable@vger.kernel.org
-Fixes: e052daab94ee ("rust: introduce abstractions for fwctl")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/bindgen_parameters |  2 ++
- rust/kernel/fwctl.rs    | 12 ++++++------
- 2 files changed, 8 insertions(+), 6 deletions(-)
+Rebasing this series on top of that one makes sense to me (you can also
+already send v4 based on it and note the dependency in the cover letter).
+Note that set_uobj will need T: IntoBytes + Immutable and can call
+writer.write_slice_partial(src_obj.as_bytes(), 0)? unless write_truncated()
+is also updated to use zerocopy.
 
-diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-index 8402b0c93545..e4f8c07743a8 100644
---- a/rust/bindgen_parameters
-+++ b/rust/bindgen_parameters
-@@ -27,6 +27,8 @@
- --opaque-type spinlock
- 
- # enums that appear in indirect function calls should specify a cfi type
-+--newtype-enum fwctl_rpc_scope
-+--with-attribute-custom-enum=fwctl_rpc_scope='#[cfi_encoding="15fwctl_rpc_scope"]'
- --newtype-enum lru_status
- --with-attribute-custom-enum=lru_status='#[cfi_encoding="10lru_status"]'
- 
-diff --git a/rust/kernel/fwctl.rs b/rust/kernel/fwctl.rs
-index f29244fb0d1d..b7778e4d5ee0 100644
---- a/rust/kernel/fwctl.rs
-+++ b/rust/kernel/fwctl.rs
-@@ -53,13 +53,13 @@ pub enum DeviceType {
- #[derive(Copy, Clone, Debug, Eq, PartialEq)]
- pub enum RpcScope {
-     /// Read/write access to device configuration.
--    Configuration = bindings::fwctl_rpc_scope_FWCTL_RPC_CONFIGURATION,
-+    Configuration = bindings::fwctl_rpc_scope::FWCTL_RPC_CONFIGURATION.0,
-     /// Read-only access to debug information.
--    DebugReadOnly = bindings::fwctl_rpc_scope_FWCTL_RPC_DEBUG_READ_ONLY,
-+    DebugReadOnly = bindings::fwctl_rpc_scope::FWCTL_RPC_DEBUG_READ_ONLY.0,
-     /// Write access to lockdown-compatible debug information.
--    DebugWrite = bindings::fwctl_rpc_scope_FWCTL_RPC_DEBUG_WRITE,
-+    DebugWrite = bindings::fwctl_rpc_scope::FWCTL_RPC_DEBUG_WRITE.0,
-     /// Full read/write access to all debug information (requires `CAP_SYS_RAWIO`).
--    DebugWriteFull = bindings::fwctl_rpc_scope_FWCTL_RPC_DEBUG_WRITE_FULL,
-+    DebugWriteFull = bindings::fwctl_rpc_scope::FWCTL_RPC_DEBUG_WRITE_FULL.0,
- }
- 
- impl TryFrom<u32> for RpcScope {
-@@ -539,12 +539,12 @@ impl<T: Operations> VTable<T> {
-     /// - `out_len` must be valid for reading and writing an initialised `usize`.
-     unsafe extern "C" fn fw_rpc_callback(
-         uctx: *mut bindings::fwctl_uctx,
--        scope: u32,
-+        scope: bindings::fwctl_rpc_scope,
-         rpc_in: *mut ffi::c_void,
-         in_len: usize,
-         out_len: *mut usize,
-     ) -> *mut ffi::c_void {
--        let scope = match RpcScope::try_from(scope) {
-+        let scope = match RpcScope::try_from(scope.0) {
-             Ok(s) => s,
-             Err(e) => return Error::to_ptr(e),
-         };
+> > > +    let mut writer = UserSlice::new(UserPtr::from_addr(usr_dst as usize), size).writer();
+> > 
+> > On 32-bit this will truncate upper bits. I guess that probably matches
+> > what Panthor does. Is it what we want?
+> 
+> Yes, that's what Panthor does; it uses the "u64_to_user_ptr()" macro to do
+> this deliberately.
+> 
+> Since UserPtr only accepts a usize argument, I have to cast in Tyr,
+> but instead, what do you think if I added another method to UserPtr
+> to accept a u64 address and cast it to usize just like in the C macro.
+> Something like:
+> 
+>     /// Create a `UserPtr` from a u64 userspace address.
+>     ///
+>     /// Deliberately truncate upper bits for 32-bit systems.
+>     #[doc(alias = "u64_to_user_ptr")]
+>     #[inline]
+>     pub fn from_u64(addr: u64) -> Self {
+>         Self::from_addr(addr as usize)
+>     }
 
----
-base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
-change-id: 20261020-fwctl-cfi-encoding-70766ce0a03a
+Adding UserPtr::from_u64() like that sounds good to me! That keeps UserSlice
+construction infallible (matching u64_to_user_ptr(), including when the slice
+length is 0), and we can also use it to replace the existing `as usize` casts
+in drivers/android/binder/thread.rs.
 
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
-
+Alice
