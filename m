@@ -1,75 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792483321;
-	b=PDrglD65UjkBoZVy2bNvhQd74r2otPIZ10ZhxBkVp/LH1es7147LOwnFE2KJ2AnVaMXH
-	 DP2BFvJxZl6k3d/9MbalsDchF84SbooXVV1NmRD3waa2xt7C1+M/6YBrqqmsT5XS8FejL
-	 KvTt4CW5+GK7qT4ML3fXUVw+ATJxlmW76hIi+ve/KxrFPGgL6ErCVO54OkRf1trLfZRqn
-	 6Tun/Hjj/EzzzjtTaZ92vwzUSMWbSFXTSIg5XdvEpChdHRk/8u7Q98dNNFfflMLBMCH3z
-	 fBj9RqDZZNW0ZfGaHkxup7kwaNDwad70ePSxhLAohpiFQPw/NB3TLSUX0ZCMSO4gAoA==
+	t=1792483967;
+	b=ce7YUBWa35qWIKwqoUmiPvCBJ+SmfXsFx7trqZd6jjTJqlHeqXuPt/kWFBimG1e7gAKd
+	 CKLVlJt5xgAw0RjdhX7d3nTOR4LfEzLH5ltoOGetRcNYuKRF1rm0AwQGYqhngbrd0z27o
+	 Q2cjKrpoSRUjRaKI0ejppo6gG81lyuSVkqtsnHx++MRPFdC3uxrPhqOP613eTKd1PKaPq
+	 2HONr0SzS4nW9w1TA8FRVPPz7bF7qEla+E1IpvCVWdOPbCsnHg/V/0SVUyQg+b9cyOrY+
+	 JiuKo8SfxIU41r9gF2vq6/ll9E/dXHaBSRFwEXusZ5RcJ/B4iPh9gSxfStlUGONZ5Lw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792483321;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792483967;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=a5szgawaqFYahDoR6WgawlMOYcIGKmjMs7XIVNwb/WA=;
-	b=eBTIIlAJKDobc6HE7F07d5GOrfi2V/8HJzGt2jBO+JeiQMkLhf023V6hC62rzVuD+2fa
-	 Q3MtjRKhcofGM+/Pv/91DnJLIhGImRXwgB2ZX7tS0tI5tCE/ioH1Mn2rkRxYp+9e1m4bI
-	 DO2nZhHjuq6jPtcY25UrjxcD5keBThAOWBpPRfPJsp6oa9Sd2NeZs0UkRevhIanUf1s5d
-	 JbFfLTmUaAinTQ2KHwGEQPGzD9VXfeW/mQC9SREFRW1ByQ5P8LlQ0vmgV2Xb4a/Box+j7
-	 CHF/LOeT5/dlmZk7nzT4NkQa/jf8psM0mr6udpLsAwwoUSs80mFPINdYYpB/aRdoP3A==
+	bh=k2rmoy9HDSiKDp3Ez25S7rh7RAY7znXw3hMbNjmmj3M=;
+	b=jxppVnwrW5iy1QuwTvqs4hktM1T+DH1a6cExAi6mdhWVjbUMzn50kEwiw7jdJQLU9RFd
+	 kdQeK5FK2h1HgKym0JfhZ1vSj9tUOIMpa2ancZqabdCmuhOoh+0tXRWV8aYoZJLdCC0oS
+	 2vJ7x1oWwh17omSNAoV3qc2Q5Iy0M+60HkoFKnmjzQMb7v7p4RaSvMkquXhXpM1EIyZEj
+	 avTptYgICFabkkf/XgU1Mulbge/JY6vukYI0NaAYsRU+5vZ9HYu+GyGKEJ+mtqpWdCeDg
+	 jKu+PRgNGfPn5UYvwnlDrkvMQqwVIcoZaVi4KyDqW/3t/3p55Z6hQiJWE+Dvrxy6POw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=bTSzKRuQ;
-	arc=none smtp.remote-ip=209.85.128.71
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=BTrWJCfe;
+	arc=none smtp.remote-ip=209.85.208.72
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03876606A31D
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 08:02:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03876606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD4D606A338
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 08:12:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDD4D606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=bTSzKRuQ
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1e3efca9aso22731615e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 01:02:00 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=BTrWJCfe
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6b1bc2e62d5so3381671a12.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 01:12:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792483319; x=1793088119; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1792483965; x=1793088765; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=a5szgawaqFYahDoR6WgawlMOYcIGKmjMs7XIVNwb/WA=;
-        b=bTSzKRuQMaj/nUNDQiFNgbMW7VY0cz1uEsSS9LODUy0rJpJ1NcOHZpuiEdx+Pv7xXw
-         JrElKjWS5h1Lp2Uz3pS/CT+/pMYXJRqTXssYsJ7wjI7R7X+qG5ciwO4xiqCQUSzcglif
-         ydTELKHh+OttyFrwibpJMAdhiLwYxHPYxrOaDQgWDiZIN6J5xE/hMbtGsHcVHfYey0kv
-         ZRep3ZCoqCKoD/5J7rRIsh1Xy66FLIzjyemzZWLRrsQi/OnYXLY5je/W00I2AzK5MvhY
-         l5DRfcCp5zVSKq3pYqc8MEvHQKEgrjnPSD/02FuqoUXaB862DgHjp78dvjw5ER/PTxC6
-         4Nyw==
+        bh=k2rmoy9HDSiKDp3Ez25S7rh7RAY7znXw3hMbNjmmj3M=;
+        b=BTrWJCfe4vtpLX9/tBT8Omu7n5z6WJ7BgaGAwnDcycshXzIGqXU0l/7MavafAWaMhe
+         r+q4tClOg4XlppqbBhJP71NZlm4zqBVvyLmjIS2iBqH7E2hN0d6nU5IzFApXEBF1U1In
+         vjn6cPCDuC50O8t0rv2zKyps6x5AVEO1TBlrh27IcefltwI/ddVxIZr6XJCocDk7IIuG
+         m+p2HTLxYMNv6NoVi29Ti6ebdGJEaPLkycX0dlQrPYeu2v2HuZ0/WB0FU0U9f9gf90MH
+         qpZqTnKI20XCtZNVLp63Z6SXKjlghwmgFRC0ScT1vI2h5OS6xdUap1ZBL5R/K/LhfeB4
+         1Krw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792483319; x=1793088119;
+        d=1e100.net; s=20260707; t=1792483965; x=1793088765;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=a5szgawaqFYahDoR6WgawlMOYcIGKmjMs7XIVNwb/WA=;
-        b=nvTvEQP4B/MUQ9qYOxST9viuf/sy3qDpcDGsvUC7kzP0Te3Ooqtxh24ir3wuLYN5oB
-         MCeqmZ1l26EXZFeCeJt1V6IRpfEBRS3+YsE4CkUddkhKoTF/jn0zsfBEuIq61cADv0II
-         TGBnqbW2yfqqOaIZcqiY0vN7vmks4QlESiUw8E/3HIWN1Kn6uYDNeV+F8o8axgdCrIlM
-         PDhqmFxrMab1EmK2C7yAzUUnOKUUkFO0RMnx9hhsVR2sYlewYf9GW7d5LRAqLt/znI7O
-         jgOj85ZZUNtJuiWjh8xWaVcEYZtzt5aq1mPADcpsgQ5nDsSR8fQfW5DIH843Ov1PlDXu
-         6ItQ==
-X-Forwarded-Encrypted: i=1; AKwUvByqQnUr4DMig4V+IWAwPcFaruSGf0o+8Z9xjLLT65eORg5iqYqv2WDbTUPeDTOZAg/htjgmcFClZLePB6iHRQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKZtOKz213KiCGiCHf5PXJfDQRM2/kmTlQyycrm4es15Lhxyiho
-	uZ+oG5zCrCsoybP3sMJq2zUCS7+9XOVwV1/B4aCI8WQNza6Iaq/EQlYp56hMmRZDAhfjkrRDdjV
-	6zNiUJxQTeQFGIf0ctA==
-X-Received: from wmcu7.prod.google.com ([2002:a7b:c047:0:b0:4a1:f37f:7f0b])
+        bh=k2rmoy9HDSiKDp3Ez25S7rh7RAY7znXw3hMbNjmmj3M=;
+        b=HYYzZxYurhW61mMiWowu7n48J6IjX6Rg/Ua8091QpeCXMbYKaBNj7XYkJ2hY6bV4aA
+         XXkrrmJ5K5DXwuVY+8g+KnWcBhXtPdICtGRDNm+SmcOBR185JpVNEDQ8IbW3B3Z9tpjX
+         L688OgjT0S0qOAadY2oIOx/IR/I0sYoKA6zrAB1kpAdocLYVIUjmDPfteU5lsQDzZEYt
+         gmHw259Hhkn0f/Ajqou16KSa3ZfCJjZzHLbwHM294nNNyw4ROBfnpWes4G4QfMxjmfdv
+         m/lrVTBkThyS9JFWHo69edp2gEUl/IXjNt+xY0FA/gh2EqMoOZ7rd2F1FljfxGv1E/oQ
+         v8wA==
+X-Forwarded-Encrypted: i=1; AKwUvBwha+z84/c7VTTr/tFZpdOgVNFEJ7U9sX8w+gADjo2NKsU1zycb2mDid8Cb6sPyQmVO0US/UASusSYdrTxvhQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYL3VgLgX1nDZahd0TEuU7KXjqfx2YcSSlhjlY2ScHldRkH5tiAP
+	OKVLB8xXDZo1XjvxJrvu0obY5vfzdzaILtKZMaNLFWJBnjXGpwojCikzjfxGM4+nW//PDfRO9CZ
+	wqthkfOamhl6EDRmYJA==
+X-Received: from eduf17.prod.google.com ([2002:a05:6402:51:b0:6ac:c627:c778])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:638e:b0:4a1:e6ad:baa3 with SMTP id 5b1f17b1804b1-4a1e6adbbe4mr113338955e9.15.1792483319125;
- Tue, 20 Oct 2026 01:01:59 -0700 (PDT)
-Date: Tue, 20 Oct 2026 08:01:46 +0000
-In-Reply-To: <20261015-io-access-modes-v1-0-93611b84b5e3@collabora.com>
+ 2002:a05:6402:4344:b0:6b1:8818:1090 with SMTP id 4fb4d7f45d1cf-6b3a815d5admr6666189a12.22.1792483963442;
+ Tue, 20 Oct 2026 01:12:43 -0700 (PDT)
+Date: Tue, 20 Oct 2026 08:12:34 +0000
+In-Reply-To: <20261019-rust-cfi-fixes-v1-1-9503472ba738@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -79,34 +79,44 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261015-io-access-modes-v1-0-93611b84b5e3@collabora.com>
+References: <20261019-rust-cfi-fixes-v1-0-9503472ba738@google.com> <20261019-rust-cfi-fixes-v1-1-9503472ba738@google.com>
 X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-Message-ID: <20261020080147.1743459-1-aliceryhl@google.com>
-Subject: Re: [PATCH 0/7] rust: io: add read-only and write-only views and registers
+Message-ID: <20261020081236.1760816-1-aliceryhl@google.com>
+Subject: Re: [PATCH 1/3] rust: irq: declare cfi_encoding for irqreturn
 From: Alice Ryhl <aliceryhl@google.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	"=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
 	Abdiel Janulgue <abdiel.janulgue@gmail.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, 
-	Bjorn Helgaas <bhelgaas@google.com>, 
-	"=?utf-8?q?Krzysztof_Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, driver-core@lists.linux.dev, 
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org
+	driver-core@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Oct 15, 2026 at 04:19:40PM -0300, Daniel Almeida wrote:
-> This series adds read-only and write-only I/O views, and the #[ro]
-> and #[wo] attributes to register!. An access in the wrong direction
-> then does not compile.
+On Mon, Oct 19, 2026 at 11:34:37PM +0000, Sami Tolvanen wrote:
+> The IRQ callbacks return c_uint. C calls them through irq_handler_t,
+> which returns enum irqreturn. kCFI encodes enum types by name even with
+> integer normalization, so the type ids never match and every call fails
+> the CFI check.
+> 
+> Generate irqreturn as a newtype with a cfi_encoding, as is done for
+> lru_status, and return bindings::irqreturn_t from the callbacks.
+> 
+> Fixes: 0851d34a8cc3 ("rust: irq: add support for non-threaded IRQs and handlers")
+> Fixes: 135d40523244 ("rust: irq: add support for threaded IRQs and handlers")
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+
+Missing
+
+	Cc: stable@vger.kernel.org
+
+otherwise LGTM:
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-I heard a suggestion that it'd be better to drop the Io from these trait
-names so they are just Readable and Writable, because not all
-implementations do IO (i.e. if it's SysMem it's arguably not IO). Not
-super important to me, though.
