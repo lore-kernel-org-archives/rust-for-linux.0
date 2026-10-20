@@ -1,60 +1,127 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792501487;
-	b=19BkDP+pdmRtMMn63aIBWwQEvqi2YT9Hfjw/rD4i6KryyA9o15+ZtmNRA6OgD8ikr+ZH
-	 xGAUQO51s+k7nAVmP5ZBKC/5a6W7i3bKs8vViB23ZNe6RkMq5QgJ5/7RKq3YyB1zzLJY7
-	 /j4YqjfHNopKgNGvGM+Dl8L5N3eBs9vMH+dGsLBk33/O91fYjWAA8xrjRiR+DffFBXtbE
-	 wwijhNP8SrSvcN92vnfrDvkLtUObvOjMhqwqJw9RBIV9f6m5AJMmC2G57SctIGiX0jEnE
-	 bMF4dUy1maSRWsgf7uj1rGgtQSJxAVT54TQ0Ge/DsvlqR/DikaPx+nfur4hQhr27YqA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792501487;
-	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
-	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
-	 References:To:X-Mailer:X-ZohoMailClient;
-	bh=60yzROzme+I8oXG1X8cG4tnHO5f5LLKhunxRbjPCyxw=;
-	b=TRQ24zIvN34nrL+8B6ypFe8dQmr82H1NOZrwnkhiur/gQ3UtAUEhRu7NxIMLlsDyAQu9
-	 uV+vurQjVOY3vj9IFZFy+ri8UEHomadG58FNTgWNYPG9FFDfO1K3qnf5KWqXT2UF1Rww4
-	 5PjJkgT42GplR53WrrDvJdvDGp2ASQuhINx4mRca4tVRPpjO+M4sIP4JrfRDf4cR81tiG
-	 iivMPuXw8QOuvNFLAjTTTseSbP9quwKWnmL4fyvVRhyNYjPoq8MefJl7M+PF3RHPpUARX
-	 +wIqObQCL0CkMXHHmEHxXNcW2trI88ggC0GWR789HD+vZkGh4AtBhtHMWXefH2kbX4A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=daniel.almeida@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=hxzfNk2G;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.147
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792501701;
+	b=CPNajKwDleLkFxUxw+XAmXQ9dHJi5xcWB72wURVB03zVZWKgLNvDaiS3eh5LEofE+BLJ
+	 o0y8qgkwQDz7+B6m4ZyN7tUyhYRY+uo5vjM+rbNBub7o9hME5OYp8CXRkgeimNOWqvc5O
+	 2dI4rGe8EtJTb6iddo+ERJXXTUeEz5qc5L5CqkGvqshwvIIKny6LEKB2gblltAYc0WFpQ
+	 X7larI8+5U+IKsBskylEoNSP+MSEth0JXjf+s9UaNiOc6VgMhdj4zUTTNENGbLKuTerq4
+	 /KeKMVGtkrWc7iNgQB2Vpp6xkU46PQmsJ7938TkwC+N1Z6Rv7FrYi0CIixSgST9tAXQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792501701;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type:Content-Transfer-Encoding;
+	bh=1fcGJc2c43brIG56b/Qs+vdC5upkl+d6pZbJFXhZhs0=;
+	b=tVphQGdMcxVHRIhuYKNuyNqVI62xZeQC+Nh41xDk/B7up9BaBN0wHgF/gz3kXjoYhMDu
+	 RtVbcpGFiuFVUxhEzxQNKfPPdACARDsBz91/B4fh6+AINRkNA4+Z7/B5Oj49KW1rizlvX
+	 N/ElV8vgZm3rc7M46sPIvDdzAIacOBtcXrrXWg/lv2zDK32MEyTqN/2YxT0Erhvrz4PO+
+	 +yvs7ZKQ23M3l/FAvhawp5p2rZq3YbWUSXdjF5FSfu1Ux6rUwM0FvNOi/Oe8pRNqvJnNj
+	 WGLqov+wU3SxX0oFd9mycvrdk4A0yPjQVqPE1dmfyqS0zw2JU1d4+R0FZpz3+8TGZtw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=flapping.org;
+	spf=pass smtp.mailfrom=flapping.org;
+	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=aDarNfvv;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=pabgxph9;
+	arc=none smtp.remote-ip=103.168.172.147
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D509606A319;
-	Tue, 20 Oct 2026 13:04:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D509606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DDC7606A319
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 13:08:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0DDC7606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=daniel.almeida@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=hxzfNk2G
-ARC-Seal: i=1; a=rsa-sha256; t=1792501449; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=fWnXbwa8JLtt61TkI+u2U22uYOVL1FMZfCRinthKZiu2rgwJQWQGmKuptFwrJRhzyRZbBvKOLTY+9I69wSWHPdTBgpwVGOM2uTWbzqInopmDYEg7s/lftjBdO2OYu5MY6BE4zcz9EcN+zMneKPIdzRBqh4edHHCObobh2aE8EjU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1792501449; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=60yzROzme+I8oXG1X8cG4tnHO5f5LLKhunxRbjPCyxw=; 
-	b=Wq+sEjzawdc3he6bhmx2rrIVcwB8VxkKMVkvSR1kzOAQE7ftGy5Vd1ccZq9eM3EY/BVUH+sTq8aIcwXXxTZCHO/Tx9cSEOJ0rjdDfzckDO7uMITAoUTpNjfi8FEfbkRNmzbwOUK7m3uatDdK3aSjU1WMPV6QS+V++OBDpdnntl8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792501449;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=60yzROzme+I8oXG1X8cG4tnHO5f5LLKhunxRbjPCyxw=;
-	b=hxzfNk2G0UJiaJbbgHSfz558NINKje8EcCOdws8+o/pUT1VqCZdd6K2Vnxc9Ei5V
-	yHEZk74LPD2TyLmwpJtK2iwzKLJwsORf92Jx3j9BQEyIJTBLWGobbNOC4lsOjNCBbrd
-	d7sCVu4RCZVFc+J2RWBMK6YAun8kDl1cnQKYwIZg=
-Received: by smtp.zohomail.com with SMTPS id 1792501446453909.1476462693812;
-	Tue, 20 Oct 2026 06:04:06 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=aDarNfvv;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=pabgxph9
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.phl.internal (Postfix) with ESMTP id 4A4C7EC01C9
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 09:08:20 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Tue, 20 Oct 2026 09:08:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1792501700;
+	 x=1792588100; bh=1fcGJc2c43brIG56b/Qs+vdC5upkl+d6pZbJFXhZhs0=; b=
+	aDarNfvvr0kLe/bO0IaSvLGi6OcUKcKNqBtjJBqg0TgAw8HXysbvQm6oZJiqMT3W
+	lol8xoyBNPnnxRArytI7ONk/h76mpXq7cah0TPziusOe4upXTo7Va01Iuco/psLp
+	rmcRfTePJsDg4GnGkGziT3gUXo6xfkhua1etkAUrlIHGKDVb3OBMVpiZ+E7dDNgT
+	+I0KergP2AVyZHwV7Kbnt5080oRBe56/E7mvhQMjzz2MPThU+/f+emVvYuc+ehM9
+	bxkE+J6d3y9WWTBH4FEs54f/68c4jC83L2tPqg2SCZeBJqZXxoYpAsmX3H5t98Ll
+	IHUAWZCL6rKNBbMpyeGzfA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792501700; x=
+	1792588100; bh=1fcGJc2c43brIG56b/Qs+vdC5upkl+d6pZbJFXhZhs0=; b=p
+	abgxph9NaRBzMq3cqxlMUiKldAFoNWK0KudahyDoRSwFVWpD5SZuXViyEqSr1kje
+	R6uFF4M9yK4ojE7xZtFYe1OybW4x85CP4mg96KTVVehtIc3UAvwq6mutvEyLvdhR
+	fAsePZfPQJ3OztNL0ZGCs4NEpZqi6VPKjs3RAN1EThJrZLyFBV3Wu7wLsQTPaY9B
+	sIvpttKSVA9zG31GP376I/bI24wTX5lCFn+vndSAOZ1b9Ep6YERuNm/75eOEW8s2
+	BBUPFTE0eAqCD5YvQ7Z7DHsyk/Ejme5yRT8amwuLLzCXSyup7lRVBNPSyiWfB+7O
+	cw0caPHxjuus3ev6s5EYw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1792501700; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm1:rsa-sha256:Nq0CI2689neHGThJN86/PoaRZ+/Jl9N4Pv7RSTuP7482++D
+	n4Dw4sMPtf6gS+QhUFERoqeHxoviQVhyVk7vZy80rq2giAZVJwqLmx9qZOKfDwkN
+	hYNG6PRJJRO5Gu5IWcI7kMLweBDA6I8K4nqAhuhp8nxqiGVE5du5Ko08bqUtvkIo
+	u2H4D0EIUs21BipZ0JKsjDNJZxgZZmr+8sipGa19ukeCXI0LdST+zKzaNw+r2vDQ
+	0UYEnZXrt/iuZAtD8bDDC8/mMdGqJOThDCGP9JsxNlRpnWiE5ShNspDeqzn8C5rY
+	Ega5JknJNAjiX3oriVlAgsuBoOXriktnukQ5sAw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-08; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:qbAdh8kc4GucgXYVTMAxxYXxDzaYcIzpvoIZQKld124=:bj8Pu1kZXIF8fstaL/ijy72Wbk++onNXXF/YcEfAkj4=;
+X-ME-Sender: <xms:w2fXainD-oSzHvIF4Rqv_BoZw8v1Bw3spMtpNMcRf76vwkUMH0Yntw>
+    <xme:w2fXarOFAsQh7yvp5_bsUiizowUSplmzfQMjHLZV_MN-h_eEKvUcHEe30DKdduPBz
+    osMKxUekgunonjNCobOQY27Za6jwM8SmRZknuLS_DeLvQXGUtVfaNGS>
+X-ME-Received: <xmr:w2fXap5-7M9LPidJFaKJ0rG9l3LIe40frh1CL7x1XlhcaHODdJoBgivANbbn3oGrTKfkhxQ9p8NfZW9aOYBqrFwh>
+X-ME-Proxy-Cause: dmFkZTGNsYCO3d+S2Ruq5JOvFTJ8LPDRWNTJDw9ZkZQnBTLOz8nHQRJ90r1bviczDBcHa2
+    UdJ+HHvT6KFFj4hoNCup6OXiDDHyH5qrgDzlXtDOM7SdsJKyZ7z2tsMZHUCMPbllpkacbr
+    5Uas5qTEy7z5NeVbHthvWrm7iqo8WgBmHuuLR8Z9n9y7HCXb25dVqgeB2SK/qYMwfs/vKO
+    vmYvZQJCG+rPPlL0WmiZVFIPOA7+3vEk2Yb+UeKhIRNSz+Refur063HSbp5NUzhzYuAPuD
+    tElBWQPDmcMhbksp7MjVlr87m8brH0Oi+szAou2/o0RYBEnkByEelDtKhUJK686UnoBwLn
+    kA62GQEhps3EcWzhiQ97ddCDqcojQpdvXYf+Sp61qr0qtqHtBEmcnsnUky5wDAMBQ3rBuh
+    LuIF5EVN46Mb+4Vcz6hXN+DyDCdoJ1QwRKlPiJslER2jxPlHTQBa3oTpZ68jQubA0y/qRs
+    /5NpELOzRf6GXHoc7bdDio8ydgXsnEUS1x75+dKE1DHPHRmVZ1gmhp6osK2UXlugo6AuM/
+    Qeoh/THiGJDUkGXbHyGswMm+hivFGtmPH1G/yM1wW3SYe5T6vA465GnazPOhRoZNOfhuyQ
+    LEYsoiSf/OQbl2kM0AnjKDCz56d/pui6nxGSjm2wfgP3koOBLpq5wKNQspLg
+X-ME-Proxy: <xmx:w2fXau2TEsPo3vPF01z7zqtKobHAPkrhq0YUkY6ywTQqp63cjY77UA>
+    <xmx:w2fXanrz8bkYlFn4pzkgE_Nc5BQa1WSRkJ8J5D4fKqr2TOuDxYPqXg>
+    <xmx:w2fXaomkH-KFVkeLD2MzBcKJCQK8Yc4PUBNXt1R3MDW7LkBo0XmlqA>
+    <xmx:w2fXapR2h-MxItrABHW8aWy7h5v40L0VXi2qSDv3_6ejJ5TyzTOF9A>
+    <xmx:xGfXanwEg4N8vn2NHgtL_P42GzZv_sacNQYWeqP22L4vcKqIzcOFr7cS>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 20 Oct 2026 09:08:15 -0400 (EDT)
+Date: Tue, 20 Oct 2026 22:08:13 +0900 (JST)
+Message-Id: <20261020.220813.1441983911289970850.tomo@flapping.org>
+To: ojeda@kernel.org
+Cc: nathan@kernel.org, boqun@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
+ daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
+ work@onurozkan.dev, rust-for-linux@vger.kernel.org,
+ ndesaulniers@google.com, morbo@google.com, justinstitt@google.com,
+ llvm@lists.linux.dev
+Subject: Re: [PATCH v3 2/2] rust: bug: hint `warn_on!` conditions as
+ unlikely
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <20261016162446.121509-2-ojeda@kernel.org>
+References: <20261016162446.121509-1-ojeda@kernel.org>
+	<20261016162446.121509-2-ojeda@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -63,91 +130,30 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
-Subject: Re: [PATCH v4 0/2] rust: clk: Add ExclusiveClk and use it in
- pwm-th1520
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <atdlfNRiza3gA1iD@monoceros>
-Date: Tue, 20 Oct 2026 10:03:47 -0300
-Cc: Maurice Hieronymus <mhi@mailbox.org>,
- Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Drew Fustini <fustini@kernel.org>,
- Guo Ren <guoren@kernel.org>,
- Fu Wei <wefu@redhat.com>,
- Michal Wilczynski <m.wilczynski@samsung.com>,
- Brian Masney <bmasney@redhat.com>,
- linux-clk@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org,
- linux-pwm@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <8625DA25-1F59-4175-81A6-BAA16C961557@collabora.com>
-References: <20260711-rate-exclusive-get-th1520-v4-0-8244a0666a71@mailbox.org>
- <atdlfNRiza3gA1iD@monoceros>
-To: =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-X-Mailer: Apple Mail (2.3901.100.1.1.11)
-X-ZohoMailClient: External
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
+On Fri, 16 Oct 2026 18:24:46 +0200
+Miguel Ojeda <ojeda@kernel.org> wrote:
 
+> The C side `WARN_ON()` macro hints the compiler that its condition is
+> unlikely to be true, both for the branch that reports the warning and
+> for the value the macro evaluates to, so that callers such as:
+> 
+>     if (WARN_ON(x))
+>         return -EINVAL;
+> 
+> get the warning path laid out of line.
+> 
+> Now that `unlikely()` is available, do the same in `warn_on!`.
+> 
+> Suggested-by: Gary Guo <gary@garyguo.net>
+> Link: https://lore.kernel.org/rust-for-linux/DJUY1ZYYW5K6.39XJ3ZV7DGZQW@garyguo.net/
+> Assisted-by: LLM
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  rust/kernel/bug.rs | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-> On 20 Oct 2026, at 09:59, Uwe Kleine-K=C3=B6nig <ukleinek@kernel.org> =
-wrote:
->=20
-> Hello,
->=20
-> On Sat, Jul 11, 2026 at 12:16:28PM +0200, Maurice Hieronymus wrote:
->> Add a Rust binding for clk_rate_exclusive_get() / =
-clk_rate_exclusive_put()
->> and use it in pwm-th1520, which previously carried a TODO noting the
->> missing binding.
->>=20
->> Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
->> ---
->> [...]
->> ---
->> Maurice Hieronymus (2):
->>      rust: clk: Add `ExclusiveClk` wrapper for =
-`clk_rate_exclusive_get`
->>      pwm: th1520: Lock clock rate with clk_rate_exclusive_get
->>=20
->> drivers/pwm/pwm_th1520.rs | 18 ++++++++-----
->> rust/kernel/clk.rs        | 67 =
-+++++++++++++++++++++++++++++++++++++++++++++++
->> 2 files changed, 79 insertions(+), 6 deletions(-)
->> ---
->> base-commit: 92010229c4b38897f1319d260162d2f96925ed17
->> change-id: 20260526-rate-exclusive-get-th1520-764a949de18e
->> prerequisite-change-id: 20250909-clk-type-state-c01aa7dd551d:v5
->> prerequisite-patch-id: 2d3dc45c241d9062a0d2546ec649eec7970fa50a
->> prerequisite-patch-id: 67ad535fe110207ebc79045ba022ebb7137b0309
->> prerequisite-patch-id: 3d1d8ee5c2a4957edd0807b7a5cb65dabab345b5
->> prerequisite-patch-id: e2659037b8aaf51831da099cc568ad5b3c24a4dd
->=20
-> I didn't track these dependencies, but the change looks fine for me. =
-Who
-> is supposed to merge it? I can take it via pwm, but I guess a rust =
-tree
-> is more appropriate?!
->=20
-> Best regards
-> Uwe
-
-Please no,
-
-See [0] instead, which also includes a newer version of this patch.
-
-[0]: =
-https://lore.kernel.org/rust-for-linux/20261013-clk-type-state-v6-1-a5e997=
-7b3509@collabora.com/
-
+Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
