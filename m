@@ -1,101 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.178
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792539542;
-	b=nZrLIAHwEJNSVUOlCAU3PqN9SpiC57wFrJWrdUSd48ZeW0ILMx+3CHBeRFgwWVAhSZHX
-	 O4aqzYPOV2hamXxNgWXuYP+Ez5G9K6/hdgHAGk3V4p8ebjknbFjKpw8BnAky1DFiyaNh3
-	 wVvNiXceVRihxZqOYZyJP2FF2oYBy6+/mpzNkLbu6FK+pEuUjQNkeR8gXLHlmu4DYjTAX
-	 8kA4ivn+9ImdbozNbfDjgt0RoB2/Kroex67f+QkPmA0zpILMBU9WQNfZXbNYz42doWlt3
-	 z22OCuz7vixa6bVLkadIlNSV7dAessh1TloLtkCUJ9YJhHsx9/dwTkZUDPRg6ZyFEAw==
+	t=1792539549;
+	b=hTNKUP/DUGhkCPn7Z8UfOa60xbBQH1QZXwQ4QIeUxQzytceGFoLffFRahKsDaAVmJKUJ
+	 sTxSjp4FNjT8lavrHxgIlg+UW520XyGiFQMVu1BTA0krTekQYYdbUilXAtEoOKaDQ6Mf5
+	 iUko+eWrBbfL/CxRyWfBTMPd52BFKxl84Gx2dPURmXW1hkrayRgVx+HlLnsW/IeoKKVLk
+	 PCfpySbEmSR4Zub/Gc/R/OwEsU2Wh8KBou8Cfo/8J3y/Kt7+uZPJad7kFtIPgWvrUVFuz
+	 Zuh2OMoupbw0fufFwersPZuwoE2Oz3FwAd26T9ajLV1aCgUI5bJH8mBGE2cBtbwXjqA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792539542;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792539549;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=k877884f6bo0kF5Og+iuIz1jesf5GeJuYHSM9YhWG/o=;
-	b=Jnm1E9bz1M5ARFjXY/kW2YlMki1tosZ/kuiXXemRneGA2lc0snUZhBWzhrUHxgiVuxNO
-	 8P5kaiMl+5arepiPnGxO7eDyKWWyk0WfPiCu8hsgH283MSP/D3niDDnhx8jzvzl5eIvb6
-	 /OidFfT7jCji7YXhmm34udXW55+cuJ94chkJCLuJCju86fYQOUPE/zjWITZcssLeqRqNs
-	 PjB7rFCu21zeZOS1Qqr+1Ngtc/hQjZfYVmpeys8vDGQWpqNXEnY/obDey3Zg73sxpiPkH
-	 IJ51mpRLAJLwfbKu2KZyv72oBStTeFeybwF7nAmjkzhZ+U6jCnXit49M2m1fGXk4TFA==
+	bh=0QsbV+4eS5sDEhfqWeQ1tQuP/vIQExpdlAmYVuAUHhs=;
+	b=KVSy531Uql3KI/FdaOtk72JSYbFdpYX1MnAi1q86D2M72lHE4b9TXe57GPlzl4b0Zt9+
+	 dIk0IbM/O2Azo4A4lW1+Fqyrpt+1RTdYvsrXnVBB4ntmgwj4JMSkUPQU0rGcqCBypewop
+	 n4qG51zzH26tR+hPVe77NvQQleKHG4LfRzM78kuN0+6LbL9drdBnRKJ3FdgUHmdo9USmD
+	 qXTfCAjrsO8e45ZMXtxzHS6ERcfutzGaaTPR4aw3COoYoCCXYMlVcFz4/ju8ORV4fAHV2
+	 N7XFiUpksjM3pqvDvc4QNdZ+FN7LtgVKMbo5h0Zdk4AfeLy1i4ILJ/OtZN/2VUd/RWw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Bgzntr+m;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.172
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hIfeR7ek;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.178
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6503C606A31A
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 23:39:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6503C606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0599606A31B
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 23:39:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0599606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Bgzntr+m
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-3584f70a5aaso11018eec.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 16:39:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792539541; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hIfeR7ek
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-3667e94418bso11172eec.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Oct 2026 16:39:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792539548; cv=none;
         d=google.com; s=arc-20260327;
-        b=eA13JdRCk1bvaO8EhxmlVjpNMrAMCwuPC42iXr9LUS6RiOyZPKrXsDj7mJ1n0lPaFn
-         cLTXhTG/Tj35Sl35yKuEzg2PlSgbwh/R+/Vz/4m7AEWBeILj9zKA5Y/QTyJuiCZG3+Uj
-         MVXI8zyNEjMNVX/HuOF8JlodRKK7QSUWM1uMxezzM01w/WXN9U6EvE+Xufkl4jzcJBKR
-         eFMqVgdlJvP6qp5fTixjYGwDl3DtIE+THCrzqSey2KrHhAG4dZu6bFmVQcaZ1HwWuklK
-         UlvHA2oN7y8wG/bcFzi2DDvFPbOF9y8vG8lQVB8PdZZDSajYuEmMSylvcQHWHFZ8T3FM
-         eI2A==
+        b=kI754kahvX9uUukq1agceeDx0cvG2ZIyoWvvRCjkGz+3VgHb7tdGCyeQpMQieQhjQe
+         eAHgGH2btJI7bTgWVvH05wogqAk1JfdkLOS0adDYW6IhTu8whcNDwIbJ/Z6dwjAl7++/
+         kdyXP6C2UxTo0iADa+yuszlHhY0mPPZsvi8UZOE/wOoAdjvnzWP/qnfNJa02bNyXxBuw
+         /Uc5ISVNvM0qbODGaK6jzwajzehXZr7lmIG3VMEirlrR2wGuxplr/LjnsQ/YVitg5evw
+         5g3V7oG69LtnB276c3T/yjvTqwtxL4qp70FcEuM8bD2h3egg+1ANh0BjJKcPhh7Gay8J
+         jwHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=k877884f6bo0kF5Og+iuIz1jesf5GeJuYHSM9YhWG/o=;
-        fh=2s/jHq2KNAogYfqblMzerz0dwOA0CI9hgk2jf1J/H98=;
-        b=a5XQbgynYr9QEbdVNrPsIj5lNE//lutLBuTsVct7Rk/vPiTWSLMRF65Buc3hAViG0y
-         /M8pvxDQjGTTAOXjF8o1gcm9Ht0ac+ZAfYF2dSLhp4EGIQuPyksgSIBM1SWnd6FxVZQr
-         4FbjgVDQcLJgQz+QOmU1RVurlD/B/bt6qgyxuXNL/cHCP4vfu9wiLgThdu1kc9NBE+83
-         oP2H0fo8+ImCUERn4BBxrpHZ/Y736GwlIlHhCK4Ez1jLMessbr+whWgCqNfO4ymCN6qr
-         7g9UhXqOKY2oKUzRWhownkbMddOQa+8haBSO6xv7Q/MXy9xkSRLH2RdMqOevaHjZ+98F
-         colg==;
+        bh=0QsbV+4eS5sDEhfqWeQ1tQuP/vIQExpdlAmYVuAUHhs=;
+        fh=Pq2V8ZLrO08M9cbG1kQLVafaxBqnIsYMa+5m25G/Qrk=;
+        b=eJ3ltHQIJM/b9e9nSpuAUNLNYLYtZ2/VsNgXi4R+HbgnebK0jpptL2SA/HTQa6pgsB
+         c/VkGTFSYSpncx7tSvpE9QCIKJ83ChJVoZ2fqOhxSjVDnALFkkcgE5zMxf3LlMP6hFHn
+         04n+Sp/JARKVe5Nc0faHJNyxwWDTjKqw/vN89Pvt6toTwxvZ5K8cLIO/llFJN9Ev2iTg
+         qP/sPxRXbosO/Dp4tuHhmPyDhYUbhV3q4tMzdDPnAxQ8QJEA1grsgR6Y8d8w2o9K/AE2
+         fSOQlVchfi+U+yzEYYZPrgLn3v+EIcdn8IxVUj3U88kkklhHGMrb60asJ1nlZqN90dEk
+         wxEA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792539541; x=1793144341; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792539548; x=1793144348; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=k877884f6bo0kF5Og+iuIz1jesf5GeJuYHSM9YhWG/o=;
-        b=Bgzntr+mTq/MYRdA0vDX01hYOFuHOkjfr+4ZTyvXjpCpqA6YQL8OesCpTivlbCO3M5
-         QLrNcPkQuu4f7nSljhd+EfMSskX1pDwzgDgpFbEb3F7gvSqx4xvsqhRAo2d9Z/VUlau+
-         TQWiXzY3jhHLdmwdGYHb2lNYXe9tl5FVQNzlKuQL/RPEWmJDPxNx6Y7EEgecSXzniz5F
-         6SBRogJ4XtbD2CxvQ+AswQLUubKAqNHdzT6OlKsgdzdOYAeiPusiU/XUA4PABalcp1Jd
-         9nwfKUoXOgZdmty5Y3fbNMnj3f74JoMZbWWSmdjfJCvJ5kG5jlw8UguMEGYzTrNiOZRf
-         lrgA==
+        bh=0QsbV+4eS5sDEhfqWeQ1tQuP/vIQExpdlAmYVuAUHhs=;
+        b=hIfeR7eko7mYwPUSSYNG76Jw1jM5Rf5GMf8HvzVDyJDFldyrw/5Q0O0MBXeqNWYcrI
+         NRVNT468KlBZIEwn1GByUSToEzMQgRiSsApmz/sjdu37KaEH7jcjTEj3zntFGiJLY+m2
+         CBePTmAuZ4PqoA9HZqM3ccV/ouerEa9LygyMy4pjYyH7OzJiNHm0b4EfrHrI66rOuVAi
+         soyawgK4BX6PXtzXjARtbd4cF/KRc2KaKFnSHAIkm1fIXMysmGzfOgdyurnjX8JphMIW
+         jw8h95fbE2O/s3CzSXMWavSIFJ/ccuq9hZ/5gc8vaSWxjwiOSK/UIk6tvPiUF0fhgDa6
+         589Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792539541; x=1793144341;
+        d=1e100.net; s=20260707; t=1792539548; x=1793144348;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=k877884f6bo0kF5Og+iuIz1jesf5GeJuYHSM9YhWG/o=;
-        b=a07Vkh013L7APbY/GTHxkAEACUCO0EISCJDiatBfmOtHOcB5C9DsrmjuDGb7Ij86dc
-         PZOdsI6cdEpJFe1UVZ1DqGNFAPockOIqpe6TAj/29QiHhXK9qhnX2QOQtN5p9LeHZlaL
-         GPNpUSgw0Fd3LGkXJBFFPu2cQJFIa3NmTGx9Xg+ddb+fjE6Q+l0TIBFlm6ufyofrR/J1
-         vdURn343Fi2U+8O5HmQJrqhibyyJI3HIxf+iSv+XeJRzMipd9dJg3dZgbEfCFOrk4XIO
-         fjVRfrkf+3NS9VeOuMWUmVTIzcUQhP2FBowBOP551M0imkqC3jzN+2hX1TALKq+We1wg
-         qalQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwDGkdHBifm48XypR0nw/NYRlkAd/YaGoOPR6orSeBLZKONW06r54K+kPlPdcKkCYJYvQDfreivWo41WaxlgA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJxrrSL8uL9c4SIX0TWehGZubjU1c2IJovuJaJq2VFMxqwEDPG3
-	+Y6QyOJ7cRsr5HSwdbfg096+OV5r7oao8s7HpFs5rVhOudv912iUGngSl3iuFKBDsU1AqcPfWu4
-	VN2yvQRB7feyCDRI4irUZ80LV8bI2QQY=
-X-Gm-Gg: AYBFou06DlizFMvfJjY2Zsb1ASjgyLpyS/AbItdQarGKk2iluMFZaxEF6kW5cT0mm2p
-	9EuvwbDxSb5eApF/DVtU9ulSvl0jNzS6LVPD3h2UKXhW7oe2ZxN7vG/vtlbnZcuTc+fgRp8vn6o
-	JBZkVn62Mr9Mb8kpTG83Ia2zyc8qOUwsZ3vEr3lSCB+8tyTifCtlt8qbALg8fnAgJyJ7z/5QhK/
-	ayKj/XR7TdX3xzgo+3k9Di1R1SDPBb06ESVcDxYaVc2bk2QGBkKXLtJPncfbXVCyoxq1+ypWWth
-	VFNce1YFjOmCCzqRHjoNMIrpyz0P0cimP0IvxC1odLUnWTM5nFiT1RdBGcBUA8p/WLB32cxfTqZ
-	V+3JJ16N+TlnrZCLPc6SWgoms9kmFDpW+JeQUqBfkIXEDV+u9w/OhmYvhTWk2BezDRHxLsaaptL
-	NB+Tq0T++j6t/AY20gOtQg7HhrrOXNke0xkUmtBUHVyJKPdK11LuYN+8HLs3Rhpg==
-X-Received: by 2002:a05:7301:6192:20b0:33e:6714:3945 with SMTP id
- 5a478bee46e88-3674c43a7dfmr1490822eec.2.1792539541506; Tue, 20 Oct 2026
- 16:39:01 -0700 (PDT)
+        bh=0QsbV+4eS5sDEhfqWeQ1tQuP/vIQExpdlAmYVuAUHhs=;
+        b=Ipcq9/wIACMM5a/5IvXyZBG4PfIQzFk+mBaXBIM713zQOwc9MS8al3Rd0gwrAdW2zh
+         IGTX1Npsn/15RRti6KqYML0doUuRAiIdricrKEy3lc+FH7rpcfcnyz68c0U5jIo1cQF2
+         203/n80YZjqW86p+66Eq6GlQBv2ezrC8GsTkOVd4IYcMPI4mt+CB4somhthoF1nMk5AL
+         KqVG4BVv/f2/kUDFHTET/B9V9a7KGDgny5UWcULaN4bcxBuTS4l3v8t/IVXx3JKjQjN+
+         PsTyVXOKmBOjwM7nyoAOPyq8/iu+3aRyjntyg22lKL4Q7VHIBlHvCMxUg2aX7kd0RPSB
+         S6Ww==
+X-Forwarded-Encrypted: i=1; AKwUvBxA7+wt0jdPBDh5uf7y+iTZmzkAWm4+sY0bBwUaxqUp7hXCep7me/rUqQxMXzq6zEJgvi1EnWc0C2Rc/zHXJg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYL3xS7WC7WMGnPotLd7Z+XZKK2Z5eBEzdgIMgfgWFupTG+62Ptt
+	icIpxmNR6+5LcfGwHdJaLJP1d6/x9wdFd5jI+3iLboE5nsaJirPEXSYSeo7lnaI1TGwFFgcSzM/
+	mcZWIy+9ecRXRzx21pFCA70WVlEv/Nc0=
+X-Gm-Gg: AYBFou1pNASASmNWRpgfX+d3zjQygADD2updVcHGz0LAHGDm8VH2IWnR6CU4uWS40wS
+	xcu4EnViMMjip7JTGAJHA+3hcuZNmCGiyU9jZmrIn54FJKF8wogDECl09jJZobgcwYKAb85h+HF
+	iEzaBrb/CybN19FWArPQhn3psku42t904rNGwR48Bi0iX8GE7IRXx/3xO3saGC7sZJAqoGdg9Bo
+	c4B1AQxU9wjiienKDTJdWjWqIojumqIV9rIv+zcJW9QTKLd8KjUwRGQzszqFCGPYLD0bax0y/u6
+	KmqD4b/59DijQ99s1lUSLnwcZ6mZpr04NM2pxf7x1jA/8CXMO2HyrN7W3cMcvbQq0+dpBl9gNRQ
+	7Y4BCHANa6JHqreDevn8qJ9yrR4HnY0ZCmHwUsrDxtAuS1CFtjDizdTAa8mL7M3Y9vShvYS7Q4/
+	IWbt/9cPpXVmahE5OwjTFNMBAgYr1rVT3IFJQR8gv+5x74n1ytdMQ=
+X-Received: by 2002:a05:7301:18a5:b0:35c:492b:e310 with SMTP id
+ 5a478bee46e88-3674866f609mr1510231eec.0.1792539547565; Tue, 20 Oct 2026
+ 16:39:07 -0700 (PDT)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -105,57 +105,58 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261014-rust-workqueue-system-fix-v2-1-c018b8f870f9@google.com>
-In-Reply-To: <20261014-rust-workqueue-system-fix-v2-1-c018b8f870f9@google.com>
+References: <20261018131313.59391-1-ojeda@kernel.org>
+In-Reply-To: <20261018131313.59391-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 21 Oct 2026 01:38:47 +0200
-X-Gm-Features: AclHuK9F_7aaAg0X585zfZoDOcg5-Ci0Oo6j4hvWMoH5Rdsf4VtUyCtDgPceqfs
-Message-ID: <CANiq72kACdJ+yaKd81TxnQTfYoc1drNMxv-4pdWMty8dSkwxyw@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: workqueue: replace deprecated system_wq with system_{percpu,dfl}_wq
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+Date: Wed, 21 Oct 2026 01:38:53 +0200
+X-Gm-Features: AclHuK8yYamw4gnf0-K8VwIxz8gbaA14LOonPBIXFXHfecsWiw-2OkqdsYTLYA8
+Message-ID: <CANiq72mJs3=z86wp2kNLJv1iUOiqxWnGt2KDhnwrwOCSkOUY1A@mail.gmail.com>
+Subject: Re: [PATCH] objtool/rust: add one more `noreturn` Rust function for
+ Rust 1.101.0
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Alex Shi <alexs@kernel.org>, 
-	Yanteng Si <si.yanteng@linux.dev>, Dongliang Mu <dzm91@hust.edu.cn>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Marco Crivellari <marco.crivellari@suse.com>, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 14, 2026 at 11:08=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
+On Sun, Oct 18, 2026 at 3:13=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> From: Danilo Krummrich <dakr@kernel.org>
+> Starting with Rust 1.101.0 (expected 2026-12-24), `objtool` may report:
 >
-> system_wq is deprecated and triggers a runtime warning:
+>     rust/kernel.o: warning: objtool: _R..._4core6result13unwrap_failed...=
+()
+>     falls through to next function _R..._4core6result13unwrap_failed...()
 >
->         [    0.857414] workqueue: work func ...WorkItemPointerKy0_E3runB7=
-_ enqueued on deprecated workqueue. Use system_{percpu|dfl}_wq instead.
+> (and others) due to calls to the `noreturn` symbol:
 >
-> Replace system() with system_percpu() and system_dfl(), to match the
-> previous behavior of the deprecated system() and convert doc examples
-> and tests to system_dfl().
+>     core::result::unwrap_failed::unwrap_failed_inner
 >
-> system_unbound_wq is deprecated in the same way, in favor of
-> system_dfl_wq. Since system_unbound() has no users, just remove it as
-> well.
+> Rust introduced this helper when making `unwrap_failed` generic [1]. The
+> existing entry for `unwrap_failed` does not match the new helper.
 >
-> Fixes: 64d8eae3f895 ("workqueue: Add warnings and fallback if system_{unb=
-ound}_wq is used")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Reviewed-by: Boqun Feng <boqun@kernel.org>
-> Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Thus add the mangled one to the list so that `objtool` knows it is
+> actually `noreturn`.
+>
+> See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+> for more details.
+>
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
+n older LTSs).
+> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Assisted-by: LLM
+> Link: https://github.com/rust-lang/rust/pull/164059 [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Applied to `rust-fixes` -- thanks everyone!
+Applied to `rust-fixes` -- tags still welcome!
 
 Cheers,
 Miguel
