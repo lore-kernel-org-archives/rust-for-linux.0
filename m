@@ -1,61 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792501193;
-	b=1Wu/kyI8l5VRAvYhssBUMT+5iKWRH9M1s8iCdj7wLYIjSoTn8TXE61Int0KWxexRVHRq
-	 TEG3Aea6hQn5r7fAI3UKaDHFlnDJPUdM160B3Whiq1PHBtIHfk0L458s5FDO9i6NCQvJW
-	 6Czv7UcJaW5f3fK9fjcryP+TT4YRORfN27LnX4JsY238lFr8INAAYfGBGMJXdPlr4lpgb
-	 lSob+v85i6rRlrPHstwftTWOxt5N9DTQMFiITeeya6LoWAej93Dbgom3EhRPKhiq/YFLF
-	 /Op2oBB514NrdFulbQF5FulixzChEr7yP8Qs6HiXSjsnZ2uyY1HcUNNqw+ucuu7TiEQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792501193;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=k0+4gEKlMvz76fZS5IB16e4OUeVhhk9lshGuR0b8QYw=;
-	b=JvFnxV/Sh+dHFDNlYqqvURwHv6jjtxrtrPqGOZugwLoXpWdoEVzNx36WYTc9Mrylt6Q2
-	 yoIDGlwfIBn0FFv2V0JPoMPJE1g9brWdvmsazkmq9M6MYZ61wrnYTjmJmmlKx3AnLxnVN
-	 LjPMQZfz1vEdnRnZPVk9Y+BFqV+3PaPNhInmhIDccd9EhxjVpE+pt80tK3EkzIOd2kdXk
-	 03t1ENr/wGiay/2omfp3JdwAOdPBYnEmIRkVsU6sXVBBrMgraI4l2hidCmFSpvENCyjIq
-	 5UUVKMOUgNBRVXXPEv/S1R0OAW6gcyrZ+NPlhS6wiqcfxI3rfXPFse8fU687BFxjOPA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kDqzQ90E;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792501487;
+	b=19BkDP+pdmRtMMn63aIBWwQEvqi2YT9Hfjw/rD4i6KryyA9o15+ZtmNRA6OgD8ikr+ZH
+	 xGAUQO51s+k7nAVmP5ZBKC/5a6W7i3bKs8vViB23ZNe6RkMq5QgJ5/7RKq3YyB1zzLJY7
+	 /j4YqjfHNopKgNGvGM+Dl8L5N3eBs9vMH+dGsLBk33/O91fYjWAA8xrjRiR+DffFBXtbE
+	 wwijhNP8SrSvcN92vnfrDvkLtUObvOjMhqwqJw9RBIV9f6m5AJMmC2G57SctIGiX0jEnE
+	 bMF4dUy1maSRWsgf7uj1rGgtQSJxAVT54TQ0Ge/DsvlqR/DikaPx+nfur4hQhr27YqA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792501487;
+	h=DMARC-Filter:DKIM-Signature:Received:Content-Type:Mime-Version:
+	 Subject:From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
+	 References:To:X-Mailer:X-ZohoMailClient;
+	bh=60yzROzme+I8oXG1X8cG4tnHO5f5LLKhunxRbjPCyxw=;
+	b=TRQ24zIvN34nrL+8B6ypFe8dQmr82H1NOZrwnkhiur/gQ3UtAUEhRu7NxIMLlsDyAQu9
+	 uV+vurQjVOY3vj9IFZFy+ri8UEHomadG58FNTgWNYPG9FFDfO1K3qnf5KWqXT2UF1Rww4
+	 5PjJkgT42GplR53WrrDvJdvDGp2ASQuhINx4mRca4tVRPpjO+M4sIP4JrfRDf4cR81tiG
+	 iivMPuXw8QOuvNFLAjTTTseSbP9quwKWnmL4fyvVRhyNYjPoq8MefJl7M+PF3RHPpUARX
+	 +wIqObQCL0CkMXHHmEHxXNcW2trI88ggC0GWR789HD+vZkGh4AtBhtHMWXefH2kbX4A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=daniel.almeida@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=hxzfNk2G;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 08EF8606A31F;
-	Tue, 20 Oct 2026 12:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D509606A319;
+	Tue, 20 Oct 2026 13:04:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D509606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kDqzQ90E
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 1CCBC1F000C4;
-	Tue, 20 Oct 2026 12:59:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792501192;
-	bh=k0+4gEKlMvz76fZS5IB16e4OUeVhhk9lshGuR0b8QYw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kDqzQ90E/2qjc/LA3bApPh8dVKMVfASrKa9PJMx9YGKFySr4hzgPpjrpQokFF4qHL
-	 138dOc+99/D/l8ttbTE/vIbIbB+Fkn4wPl1RUtfvRir2zuGTqdcBnLbIByWFpsDJiy
-	 KMmEGcPGRh2+brvL4UdzD0d7EhrEHTs7jgKDxbxGZL5TaSB1IYtEwM4JNdWnloH2/+
-	 IGDKgZVp0AMZTrGUkMmTDDAjT2UEM6R+rKGk6m4jP0ltp1MuODqfmN6tibAElPAi23
-	 IsWF0zqfl6FFjoA3cZtuGnGLDtKO27KCInu289v0qHAwhv5ejxnpEmi8BrX60t3uzd
-	 mrNxfDGRu4mDg==
-Date: Tue, 20 Oct 2026 14:59:50 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Maurice Hieronymus <mhi@mailbox.org>
-Cc: Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
-	Fu Wei <wefu@redhat.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
-	Brian Masney <bmasney@redhat.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v4 0/2] rust: clk: Add ExclusiveClk and use it in
- pwm-th1520
-Message-ID: <atdlfNRiza3gA1iD@monoceros>
-References: <20260711-rate-exclusive-get-th1520-v4-0-8244a0666a71@mailbox.org>
+	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=daniel.almeida@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=hxzfNk2G
+ARC-Seal: i=1; a=rsa-sha256; t=1792501449; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=fWnXbwa8JLtt61TkI+u2U22uYOVL1FMZfCRinthKZiu2rgwJQWQGmKuptFwrJRhzyRZbBvKOLTY+9I69wSWHPdTBgpwVGOM2uTWbzqInopmDYEg7s/lftjBdO2OYu5MY6BE4zcz9EcN+zMneKPIdzRBqh4edHHCObobh2aE8EjU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1792501449; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=60yzROzme+I8oXG1X8cG4tnHO5f5LLKhunxRbjPCyxw=; 
+	b=Wq+sEjzawdc3he6bhmx2rrIVcwB8VxkKMVkvSR1kzOAQE7ftGy5Vd1ccZq9eM3EY/BVUH+sTq8aIcwXXxTZCHO/Tx9cSEOJ0rjdDfzckDO7uMITAoUTpNjfi8FEfbkRNmzbwOUK7m3uatDdK3aSjU1WMPV6QS+V++OBDpdnntl8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792501449;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
+	bh=60yzROzme+I8oXG1X8cG4tnHO5f5LLKhunxRbjPCyxw=;
+	b=hxzfNk2G0UJiaJbbgHSfz558NINKje8EcCOdws8+o/pUT1VqCZdd6K2Vnxc9Ei5V
+	yHEZk74LPD2TyLmwpJtK2iwzKLJwsORf92Jx3j9BQEyIJTBLWGobbNOC4lsOjNCBbrd
+	d7sCVu4RCZVFc+J2RWBMK6YAun8kDl1cnQKYwIZg=
+Received: by smtp.zohomail.com with SMTPS id 1792501446453909.1476462693812;
+	Tue, 20 Oct 2026 06:04:06 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -64,69 +63,91 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ltyb7jaz4sulinat"
-Content-Disposition: inline
-In-Reply-To: <20260711-rate-exclusive-get-th1520-v4-0-8244a0666a71@mailbox.org>
-
-
---ltyb7jaz4sulinat
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
 Subject: Re: [PATCH v4 0/2] rust: clk: Add ExclusiveClk and use it in
  pwm-th1520
-MIME-Version: 1.0
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <atdlfNRiza3gA1iD@monoceros>
+Date: Tue, 20 Oct 2026 10:03:47 -0300
+Cc: Maurice Hieronymus <mhi@mailbox.org>,
+ Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Drew Fustini <fustini@kernel.org>,
+ Guo Ren <guoren@kernel.org>,
+ Fu Wei <wefu@redhat.com>,
+ Michal Wilczynski <m.wilczynski@samsung.com>,
+ Brian Masney <bmasney@redhat.com>,
+ linux-clk@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org,
+ linux-pwm@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8625DA25-1F59-4175-81A6-BAA16C961557@collabora.com>
+References: <20260711-rate-exclusive-get-th1520-v4-0-8244a0666a71@mailbox.org>
+ <atdlfNRiza3gA1iD@monoceros>
+To: =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.11)
+X-ZohoMailClient: External
 
-Hello,
 
-On Sat, Jul 11, 2026 at 12:16:28PM +0200, Maurice Hieronymus wrote:
-> Add a Rust binding for clk_rate_exclusive_get() / clk_rate_exclusive_put()
-> and use it in pwm-th1520, which previously carried a TODO noting the
-> missing binding.
+
+> On 20 Oct 2026, at 09:59, Uwe Kleine-K=C3=B6nig <ukleinek@kernel.org> =
+wrote:
 >=20
-> Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
-> ---
-> [...]
-> ---
-> Maurice Hieronymus (2):
->       rust: clk: Add `ExclusiveClk` wrapper for `clk_rate_exclusive_get`
->       pwm: th1520: Lock clock rate with clk_rate_exclusive_get
+> Hello,
 >=20
->  drivers/pwm/pwm_th1520.rs | 18 ++++++++-----
->  rust/kernel/clk.rs        | 67 +++++++++++++++++++++++++++++++++++++++++=
-++++++
->  2 files changed, 79 insertions(+), 6 deletions(-)
-> ---
-> base-commit: 92010229c4b38897f1319d260162d2f96925ed17
-> change-id: 20260526-rate-exclusive-get-th1520-764a949de18e
-> prerequisite-change-id: 20250909-clk-type-state-c01aa7dd551d:v5
-> prerequisite-patch-id: 2d3dc45c241d9062a0d2546ec649eec7970fa50a
-> prerequisite-patch-id: 67ad535fe110207ebc79045ba022ebb7137b0309
-> prerequisite-patch-id: 3d1d8ee5c2a4957edd0807b7a5cb65dabab345b5
-> prerequisite-patch-id: e2659037b8aaf51831da099cc568ad5b3c24a4dd
+> On Sat, Jul 11, 2026 at 12:16:28PM +0200, Maurice Hieronymus wrote:
+>> Add a Rust binding for clk_rate_exclusive_get() / =
+clk_rate_exclusive_put()
+>> and use it in pwm-th1520, which previously carried a TODO noting the
+>> missing binding.
+>>=20
+>> Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
+>> ---
+>> [...]
+>> ---
+>> Maurice Hieronymus (2):
+>>      rust: clk: Add `ExclusiveClk` wrapper for =
+`clk_rate_exclusive_get`
+>>      pwm: th1520: Lock clock rate with clk_rate_exclusive_get
+>>=20
+>> drivers/pwm/pwm_th1520.rs | 18 ++++++++-----
+>> rust/kernel/clk.rs        | 67 =
++++++++++++++++++++++++++++++++++++++++++++++++
+>> 2 files changed, 79 insertions(+), 6 deletions(-)
+>> ---
+>> base-commit: 92010229c4b38897f1319d260162d2f96925ed17
+>> change-id: 20260526-rate-exclusive-get-th1520-764a949de18e
+>> prerequisite-change-id: 20250909-clk-type-state-c01aa7dd551d:v5
+>> prerequisite-patch-id: 2d3dc45c241d9062a0d2546ec649eec7970fa50a
+>> prerequisite-patch-id: 67ad535fe110207ebc79045ba022ebb7137b0309
+>> prerequisite-patch-id: 3d1d8ee5c2a4957edd0807b7a5cb65dabab345b5
+>> prerequisite-patch-id: e2659037b8aaf51831da099cc568ad5b3c24a4dd
+>=20
+> I didn't track these dependencies, but the change looks fine for me. =
+Who
+> is supposed to merge it? I can take it via pwm, but I guess a rust =
+tree
+> is more appropriate?!
+>=20
+> Best regards
+> Uwe
 
-I didn't track these dependencies, but the change looks fine for me. Who
-is supposed to merge it? I can take it via pwm, but I guess a rust tree
-is more appropriate?!
+Please no,
 
-Best regards
-Uwe
+See [0] instead, which also includes a newer version of this patch.
 
---ltyb7jaz4sulinat
-Content-Type: application/pgp-signature; name="signature.asc"
+[0]: =
+https://lore.kernel.org/rust-for-linux/20261013-clk-type-state-v6-1-a5e997=
+7b3509@collabora.com/
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmrXZcIACgkQj4D7WH0S
-/k6GSAf/ZIk24DH451oQFcpRIj2PkQd/0y19KVGyJRbxLE9LvsxPZ0+1eE3hJEJo
-jlYTi8hVShMbt8y719+jAapn7t4jiDMFdqZjNf6SJk6UMY7/OQQnN1lx2EVzBr77
-VzzIbCXZvEKKeRWz2YXsjkKOf8q0ZKeXvpE/dePtg3/LM288hLmX5vpAO3Ckpkv+
-xRoPRzUPd3SEd1pvacn8Eul3YMz59OjeI2kgSiQvEli8bC2CColR1kjbIpIOAyIa
-JUBb3v5uGhp4E9dTEZMfuuOoTyauToZwVNTZLd1jLLwO/fL3Zdfr0N3srk/NZmrW
-3WQkqT8ZE03oOjmuXTUZG8+Sc4oIMw==
-=n9X5
------END PGP SIGNATURE-----
-
---ltyb7jaz4sulinat--
