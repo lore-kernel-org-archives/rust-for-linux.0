@@ -1,75 +1,129 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.159
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792572782;
-	b=hHxKooAQmj3f7oP3IanmyzP+WwxGIy3RwdC6HUUx6qh7fHEjeY5658mUxrk7qEKEU2ng
-	 SD1WhHi6FY4Bi4rsjkDhZaeAQwATFrPyV48tXdqgS/+95/LA8toEY+vzENlWe/G47hUzu
-	 McCL6zjHCyqbR6nfHPJuD7tbtiiolIqZ3458XVEz4Ny4Pvyz0Tnv8FhSv6hapGWbTGgr7
-	 0dt+s9cQ7leNvTzWRaloZ/kcF6ib1hYYll5f+ndD6TwjKxYREgMMA3Tk2fm/XGdJzdlRm
-	 EuOv0P6IpnZZPT8oPj/QkPNMos78x1gNLZtcGnVrmYXT43qqMWhfLeiF5n2x7RhQGkw==
+	t=1792574207;
+	b=TALN3RF17eJX2OxP4AjRxtWxmhIXZbv/9UTCkiu3mpNNz2yU0QumkEXsK2bSJ7RA/qyD
+	 3y7I5/T4ZJut6TFBAL3BXTwd5a9+V2Yd6K0QpT1zwSxeqatniGbhUFRPAWSdvUJo3ifw2
+	 YBzKqtqCBHTBumWll4XT/cfwPnfFDRpjNpD+rB17evcMrghZsJ5lO2hLsTkh6O9kyJJXD
+	 5nSaPvpdmD9THyUVtIWbf+eAnC2nVpodvroCWFJxfwfx5se1hyKCm0pLtfus5Uajdll1t
+	 qyaOuhNKuI1Xhj2WcdsMECJe/ZEN4nUeXasl7XcN067Jn9MN2t+EZausPBc4xAazpYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792572782;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=m3J+GsX+WNpN+CNr8o/skDM1rV99zjekIdQOJ3w/ua0=;
-	b=At3uvop59m1IqvETiG2fBm4uhO2UIWjLRcy+FddnNCDtjrZtwgcOihHFInW/yVt1WU2f
-	 uVBtjuUvu5h/kBhIJiP1KatlY/rb1lpb7dN/APOOnGpB2MgJSihAVjZ9cUKIffQYfNzQY
-	 C5DZAUv3wTclFnzm5XPioit+C8JOdW3wTtLhEG4dkQE7ibAMOdAJqEHZWyli9pQqAjtGq
-	 0k1IhLX7/+ncFeS1bwcPAd8MVu4Rb12ldmTeOOLecpMhVMT8Y4K8fw0glQ9SMD4cu2aXe
-	 XwNylrRMyMN2hRdBkzZwyoVlRibMteCvVrn4zkdN/kTLmVsdWylfkFxBfA70SpRLYNQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792574207;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type:Content-Transfer-Encoding;
+	bh=UjhycloSVwN/MsXqslqJcrsVG4Tc+E2r56Jl+uN09fI=;
+	b=PpNBal2lNgxtfKHIM1jTcgFkg31eDKg2UaOHfJGOR9ot9h/H457bxUNz6pNt9d5B0AEN
+	 r0UKzIwRPjJWhABnCi70jhN6XKWs3mvD4UcR6T+6FDdb8RqdBGUPguBV8pgVYgCa0BW9T
+	 5O9z7xiuPqyVG7Y0sqhxkndenX5w7/jhPkVVMzbgmthfPe3qgFmeqvhpdbccYSnYmL7JY
+	 LlYdM/IzCzRVR3cHZbszNevpyQRRicdaZhidTX9L9Xg+WKi7YyI5WSlEvGhPT2bbIW/l8
+	 XYTnrdYy9v4VytLehJUZe5d9Li2Tf4YlYmsB2ry+IYSBmg5qENwZTjwL1B8RmJZjObA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=MNPQzdb7;
-	arc=none smtp.remote-ip=209.85.218.71
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=none header.from=flapping.org;
+	spf=pass smtp.mailfrom=flapping.org;
+	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=sWZ+27OJ;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=xpqD8259;
+	arc=none smtp.remote-ip=103.168.172.159
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6B0606A321
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 08:53:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C6B0606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABD8606A31A
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 09:16:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3ABD8606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=MNPQzdb7
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c43bf48b6f4so20462966b.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 01:53:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792572781; x=1793177581; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=m3J+GsX+WNpN+CNr8o/skDM1rV99zjekIdQOJ3w/ua0=;
-        b=MNPQzdb7P63mm6CKF2vwz6MZWbbjyNcwYGU7Xzd7v0DUgk0fHkOQZX4e911gjbIvj6
-         4qgwYk2bqxZNiBKz51ltd6ivtO1oFJAs1P9S46hiSUD2LeAKhtRZmL7gxwZFoFmSt4/G
-         IBQatVnZI3I/7G6KRni11rbLJVrGdi/OVNCFAlDod3o8BRmHfuGHQn8ttwK681ap+s1L
-         xRlOFy1wFruXgOA8zKzDFORlfHFEjI1vn2p7+BlplHEsVAjnhJu20+GoPS5W04rqX90n
-         rpks1pyUQf9czLA8tL0Wh5wvAIUFA0rvsVaCT+dEj2pQb5lvD3yi/evBXpckn9omjGRS
-         5ojw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792572781; x=1793177581;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=m3J+GsX+WNpN+CNr8o/skDM1rV99zjekIdQOJ3w/ua0=;
-        b=TSEEtJuVnPV89ypwzLj4dY+j1Ib7Law7IzTx5+BLs7AoftKnQs2iDcPnC5zE3Xlt6R
-         KVwwXPIEKwbhnGEfl116EST1mSRONZkaz5Dx2s3EykZ1fn1/WrBCkm20eTK6AwckFdPS
-         jY1CNBGxSJzI38Xr4DNxVXh2z+1H0sfFse4IwuDP1xSRrTW0C0TIpzH7zTmCJ5Jg89l2
-         LW/izb8Up6jWiAyVpd8X0C/tSAYNrH1RmozcD3jn3Iv8VfWLPRqSX2pl6Y+8+/rWBGsv
-         yuDenxiByuFUuIJmx/8Zua30sYUSU56dj60DMMifbA5lfR3IJDlxunBbX4Wt6B3lrGpw
-         rEmA==
-X-Forwarded-Encrypted: i=1; AKwUvBwNdxDLaz6Na70BNkEAFNDSRRkE2rf7e3a6F4Jar9vkpwb4Efr3+mjyYXheDQs/US4bRAzdns1c53wkfbuIAQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJLBsy39/5+71eMyxaHDbDm/F5Ws2LEwgRwkNfsHpvTHMa9cv0L
-	DXJO9VB7BkutKvePIdt1q9lHZSgwUrDU/HjbgO+rQH8WPuhgWDgCNtUar9k6QUyyEU4zu+dFsei
-	Jp+xuqVeKscZp75UaeQ==
-X-Received: from ejei26.prod.google.com ([2002:a17:906:39da:b0:c46:7d04:db16])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:906:4fce:b0:c44:9a32:b27 with SMTP id a640c23a62f3a-c4679682019mr123208266b.25.1792572779086;
- Wed, 21 Oct 2026 01:52:59 -0700 (PDT)
-Date: Wed, 21 Oct 2026 08:52:58 +0000
-In-Reply-To: <20261021033257.1359428-1-cmllamas@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=sWZ+27OJ;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=xpqD8259
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 7060E1400083
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 05:16:45 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Wed, 21 Oct 2026 05:16:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1792574205;
+	 x=1792660605; bh=UjhycloSVwN/MsXqslqJcrsVG4Tc+E2r56Jl+uN09fI=; b=
+	sWZ+27OJD63e/ltTZ0iTd2ZOlpkBeqWZzo0aybnnWxEoLJ7obx+cqIgOI8Zhu4I3
+	J44hEYkOl8QmttT0pnnuY1BFlMv5j/hSp1GMAsWpBogRj/NHWntU60Qoaabn/Ac0
+	3SbloHRTlFGKzMdF8PRMYu27II3wM8XBh4I8KzHQgwnTu0tEwwnEqH0TS6Hf2tGy
+	ZUIiqIuq8VHTHWOQi1V0BS1sPy4xW509asKMMR1yOf4GmFfAXCl5ELN19JrXG7Ls
+	V5kGLlcC61y2bDL0pfcP40esCkXsUGxQ5+dP//2XGqBlItKP/shOamjpeP4Fp4dC
+	oJ9DaxT4xVSqoCZCvRArFg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792574205; x=
+	1792660605; bh=UjhycloSVwN/MsXqslqJcrsVG4Tc+E2r56Jl+uN09fI=; b=x
+	pqD82590tRKDDt49Y1uY3YoHPm1dCRX4MIWDGDOpCdNDckmGMcHlLXMlSwbhvVIU
+	Vi/7qd4VXVcPOYP0sej7jf1JlRUbudilEgpk8IU/10vHwNH3jhjtxx3+jbuWQxI4
+	Ffcqyltw6mcYLJwgRHw6QLACqU4XDfabN4lFR0JrKaViK4INGAHSGVWVhgj+Kl1x
+	i1ayFjOYKqm/o47xeGXE0rX6L4MHwWtkQNjUEhIdpxHVYGXWgOFEHxJ7PkGZF37n
+	5qAz3Deli78Bbiftmu4CUHko7Jh6cr5R/yYx1Y7HUoEWsokUCJcudyqD+hJekNX0
+	KqTieRkf1ib4JUrpqHP0Q==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1792574205; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm1:rsa-sha256:M7vd1ck9BWuygO94ISWrmEGyzGOFIL+OtdKwaR6z5K6iFZB
+	wTuUXua+dV/zxMcES50xB+pUDSWXH8iZyZ/woKv2m0ZznCK01KWftirdeAQaHhtN
+	IJmUwDtVtF0zg4ScZyhxeqnelyvPl6Jo520QWmNm25ZDtHJhBTZnOJoy25kAKOhf
+	H4o+AFuTo7AJL/1x3pgcDTbmDsrkE1AvoJpSKG74zwc7xcZiouCKfNY4R+j2pwaO
+	X/LisK0RvJXpRMGcBP9n/fIRM+Q9cJTg6igeiq+EDfSBfH0r6Ef81neoJhiXqQo3
+	JYYCR+bcJnm8849LbSqlCbkv4nrKtogrZQi9qVA==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:ZwMDi4rAti1uu51xzIBBJztq/4lgEcvp8W3Mckc3dcU=:uXV0Pgga/E/hgbUqGADZ4JQfpuFz3auNsY49xtYlPdQ=;
+X-ME-Sender: <xms:_YLYanXhOjMvwrSy-IJElg6rozn-mdq4dLms4f8c5Jx-GYhF192EjQ>
+    <xme:_YLYarrNewEtcIPZafRTyKwnBGRRgXN3vHWedsEkMr3J4YcyhLkvPa9xXcGQ7it9S
+    _-WNUPn1QcUGOFjsPcDyDvWXt4eYolh9Sl-W8djU9dZ0gJQesOKDxyR>
+X-ME-Received: <xmr:_YLYauupcimTS4D6_md0ZuiifoKwCNdGFXqV_uHC-dUoDAP2DRXu5jBd7bZvI4ANl97JgzlwR0nYMxKpc0bsrSYA>
+X-ME-Proxy-Cause: dmFkZTG0LX2vhbvH7Fb2TvHCFcsQyHPcJmPOPD0Y8sf8J1GVaCtaKhE01c93ZTwa3Uf/QI
+    qc9WxXA5QVYuYFZWPQDnYCX4C0Hwl7L8/WKqhvfOhxH/vA8zYcWgbg4LJamXbPTC+V5iGg
+    r1k3PZ8S6oiIUEChtYSky6D9HZThaAe4T6YG2qUgTjjjV8IXR2BQg9gA/HnkKUBSPfsggi
+    bS5wzFV5oXcSJiuWZE074Js8D3D4YkrE8rSZAv9XqN0gNvZYA35xTVMTFMKgINKtDQhKpw
+    XRsdF+rFgWMsqVUeDW8LD82HG7k7tusdPh52FkvC7oLk5Pre0BXu39FhbvbB2DO2AtCkpA
+    vh4fw0bGMECeNqgZcMQWZBft2aDMD8ZbG3lDwDxMTAptKER2gz8IGvs+p4LDTFM/5LzdSk
+    jA4CzWPGKKoxEJ6PqjJwcD2oo1XIbDmzVc1SI9P7oIYyfUu7td1mzBWOs2w9MxAalmHR+e
+    7FRYSdaQi+zvkRIeEO1xXWqJemVmfnfH9gr5oBUGa1KQVQsmgJ4poEBiJbIc8lfAuEz1Hf
+    qwJUYbJHa7zT80Zxw17S299qjPYBj95JEYzGA72gBltKYn6v0BbvBJn/oP/irHsRoiTj7e
+    /J8P0fmtcH9BAwXDdNimOJkhVmHitLd1zg/jObIO7NhElcZdlZ1hM9vFymUw
+X-ME-Proxy: <xmx:_YLYahTYix0bQqMVnA_pTR8lJrOst0Wlw4JAy4MHclMTOyPyz1JMHA>
+    <xmx:_YLYaqp3_-MlsTdLKbAiReHiAbqVi0vme4yhP6fopYzmoy3ZUOABkQ>
+    <xmx:_YLYakK22Kzu03e63Zwvz1MwlaICd4Xyd9gWzDy_WAEItI4WmsPl5Q>
+    <xmx:_YLYalOdjXS7B0vb5XN6V1gEKS9c4ptSH6q5lHj4JjhruBYvIoKSSw>
+    <xmx:_YLYap5jG1pncBa1nZcBUh-ypRbAu0seXjKI4EvsUcUgMHqFhC5Cy19I>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 21 Oct 2026 05:16:39 -0400 (EDT)
+Date: Wed, 21 Oct 2026 18:16:37 +0900 (JST)
+Message-Id: <20261021.181637.954248793010611824.tomo@flapping.org>
+To: chenhan0017.work@gmail.com
+Cc: rust-for-linux@vger.kernel.org, a.hindborg@kernel.org,
+ boqun@kernel.org, fujita.tomonori@gmail.com, frederic@kernel.org,
+ lyude@redhat.com, tglx@kernel.org, anna-maria@linutronix.de,
+ jstultz@google.com, sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
+ tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev,
+ miguel.ojeda.sandonis@gmail.com, tomo@flapping.org,
+ georgeandrout13@gmail.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] rust: math: add signed division and remainder
+ helpers
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <20261017111134.22546-4-chenhan0017.work@gmail.com>
+References: <20261017111134.22546-1-chenhan0017.work@gmail.com>
+	<20261017111134.22546-4-chenhan0017.work@gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -79,42 +133,27 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <2026101318-stingy-crescent-b47e@gregkh> <20261021033257.1359428-1-cmllamas@google.com>
-X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-Message-ID: <20261021085258.427331-1-aliceryhl@google.com>
-Subject: Re: [PATCH v2] rust_binder: add state_hashed and transactions_hashed files
-From: Alice Ryhl <aliceryhl@google.com>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, kernel-team@android.com, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, 
-	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 21, 2026 at 03:32:57AM +0000, Carlos Llamas wrote:
-> The 'state' and 'transactions' binderfs files print the userspace ptr
-> and cookie of each node as raw values, which leaks the userspace memory
-> layout and forces access to these files to be heavily restricted. Add
-> hashed versions of these files, as done for the C driver in commit
-> 57483a362741 ("binder: Create safe versions of binder log files"), so
-> that access to them can be granted more broadly.
+On Sat, 17 Oct 2026 19:11:34 +0800
+chenhan <chenhan0017.work@gmail.com> wrote:
+
+> Delta's division and remainder implementations operate on integers and
+> do not depend on time units. Move them into a math module to provide a
+> common home for arithmetic helpers, with Delta as the initial user.
 > 
-> Pass a 'hashed' flag down the debug_print() chain and print the ptr and
-> cookie through a new MaybeHashed helper, which either prints the raw
-> value or hashes it like %p does. Everything else in the files remains
-> unchanged:
+> Expose div64_s64() and rem_s64() so driver crates can use these operations
+> without constructing time values. The division helper takes two i64
+> operands; the remainder helper takes an i64 dividend and an i32 divisor
+> and returns an i64. Both keep Rust's signed operator semantics, including
+> the unconditional panic checks, and use the existing C helpers on 32-bit.
 > 
->   $ grep "node 2:" /dev/binderfs/binder_logs/state*
->   state:        node 2: u000000003cf2c740 c0000000000000000 hs true ...
->   state_hashed: node 2: u00000000abab9b6d c0000000000000000 hs true ...
+> Keep the Delta API and its panic documentation unchanged. This is separate
+> from the preceding behavior fix so that introducing the math module is
+> not required for a backport.
 > 
 > Assisted-by: LLM
-> Signed-off-by: Carlos Llamas <cmllamas@google.com>
+> Signed-off-by: chenhan <chenhan0017.work@gmail.com>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
