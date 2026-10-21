@@ -1,76 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.69
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792575498;
-	b=BLdKzYA4OrMT4YCT4+1o1TcnFadbIAfW1C9Xq8bivnLTQAuCkGwP4RIJzqSdmiRYF2FH
-	 TRs26+j7753o343k7uX0Zu+GFOy1r0Zo7cmEG13QYPNI0HqR9KUTzikvOpQmu4ajNZKEP
-	 QqGis9kdDGOaX3meCnNF32HkLazH5bh8LvJJQoGcQ+avmSp5dgS0R7lmvnDCDZ5FheqJ5
-	 F/tzZY2mi6GJvb5E57Pg+7H+MAk0Xi+fW074G/DZ2dvhmtkKt7tvhmLXYaJp2L7jYal9G
-	 Op1tlCo2u9DfJLmC2ULsZa8KpOktg8JaWmoCcMvXI0rermyVa8SElZDXE7DXT+cw4nw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792575498;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.181
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792575889;
+	b=rAicYg4bNy6SF8jUiHp3wq4K33XgwuKOg6cdwT5697U7xzAy0pW906eq9VcbJC5EkUwv
+	 +BepkrS1ddLGO/BBCY7AHjHR2m4bWeFFIYlVmZCZj8cjxxtbZVouSkclYCKa5s98jYvzo
+	 KlCr2XKB9llfoqxGQKrdCfYmEcEwMkEZIPk68es6K57/sW8HzM8oubK6sJYKwOHMjdy2j
+	 mhrQHIBJH+WZyD6woC2DmVwan9PcIhEfVp1ER2By43VGwk1y7A+QBlwLkEUXcAiWXUanr
+	 wGpZQhKimvghnTjv1I3e0LepIQsYAAlcHK4mn56y/B1sS+WDKvERgsCn8HOqx4VYjMg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792575889;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=DMEarNjccdTmA6jkwGLogCoUkmgNrujCfqG0VHqUqZ0=;
-	b=WgCWi/KiogMPu6dZ4SYDluFSC+mMGiRJ86OT+telTmfC/CSwBnJJG5Ap7JuicKmcpOCR
-	 1Rqi26qg/fbM2wWADugmumjboal3e4sWXxhyJsg990/y5YJNW24G5fawGi04G2iDETKlP
-	 9PNc8ADjk/gcZNSH3jUIgHMjKz08IRw6QuP6G6KwAQHT6P5wVrd8NOQMrAoNgCY7GagSa
-	 4hjlneYBH+EYQ32rP5LMwcuIxQDByxxnssAKhDfk+kdUBYCRFeBGSbx7n0rVgBAiSTjNS
-	 dBp7e9MqagxRaWxuuBEK6Q/EhPmINAC4O250dpY0gNc545eDnKMpwHAZwbHCNODlkxw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=fsZgqehe;
-	arc=none smtp.remote-ip=209.85.128.69
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=4wdEo8+3sGqfbZwZCNWKmwnBJlPn4YSxWgWSRHqE+f4=;
+	b=rxzZ6k0t5kbM6dsmDXuk7sCYRe5Q0mRLYZxYoJZKDu5pcRrqD6jikI9rx1YstkYh1H+8
+	 p8jCOPqvYPlJrd/P/A//6vnsxaK4dVKd+Pk9adZzFIaO12s+Bvw0Rj7kuwyyqMCEMkdNR
+	 xMqI4hAW0fBkY67G00osJJtBsAcq+7whcm9zMu+Zo67/QOzU3Bye3Fk5wglMjTlwSfZxZ
+	 0ePuOfnS9EuUDKPNUvr2dOBHyFCFqEgT/St0u8aXzscWoO+PbYKj62A3KGuRTsJY7yCF7
+	 OYFvayNSUq78lw4oo35/ykFNofRoIxR8C44JY3ucRZJNSsTu5yorl0hMQclGOYG2k3Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hBUBamqX;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.181
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BE5606A31B
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 09:38:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 72BE5606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1809606A32A
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 09:44:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F1809606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=fsZgqehe
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a1e672580aso3558485e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 02:38:17 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=hBUBamqX
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-3550dd02c9cso50156eec.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 02:44:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792575888; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Z0vKh17IoCZGNJSEWSB1EpxE4VvytHNfwMnG/0R3wR399qCNstUN56KbI1nZp4UZrg
+         xgc7/ZewtF1CeJz6fe+amUw1EGUqPVx0opZMnr4in4lJeqNQlc+5rWxZVDzC0cZ6Jxug
+         1jjWyjRmpGV5em/0yT4WrncyZXKM8VRsnFfcSr8tzzI5H2zQ4PzRfw1SVZ7eH2tNilJd
+         tDnYO3a/rQ7+QgOT8hd1g0BKZAmawhqd4dclXi19hCHFx7pfJa72ic+jbD4TjKYD6zR2
+         VRP+MYc3MGUY1IJWy/qAGYhrg4s8VfOief6/ehZ/N45NCYdiEEJUGCd6ut2KzgY9L29X
+         ZH7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4wdEo8+3sGqfbZwZCNWKmwnBJlPn4YSxWgWSRHqE+f4=;
+        fh=EMCwy+a0VeYAXJ3Pclyu59uHZujFBRhRxKU3hcdd0Xw=;
+        b=qwy1vffXbP+XSnewfmjLPOzsP2HIvw7kFFgFaPxoC7xmD1IZutc4dd79Y5wV0GnuAn
+         60Ds5JxjLqyzN7mty4QEGF0Hu6BhRwbJoQJXkYFz441LcQLR3Uvnyt/z6iAEXgGr4Oe2
+         Dns40aYHtQwKqZetUsBGOF8HuLefIrADzvRdZmXrJ5j/ZO/X5Oz2fc62oh1UFkI7Td1b
+         kizl6Me7AGLrnVM6JgG/2/byQg3CdlRBKpQSAYCqXffD1YbhGLQj9rHKNZ3r094wTHlv
+         i5+jZKxRVW5PuqnZRcwcSP6hsEtpYpFcD+p5USuj8CGlw/NMJieGlrcjYRWb9KBhPyqz
+         yOjA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792575496; x=1793180296; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=DMEarNjccdTmA6jkwGLogCoUkmgNrujCfqG0VHqUqZ0=;
-        b=fsZgqeheiv0RIdAR84vZtdUXPTLyDINb3a1D8w141uuL0dqh8VGYlH0FqG2+lQ2fHL
-         t56sKssJcbTljcPyBpGjln760D1KYiq+ozTLJS3OZDSIxkvwsuLXyGmx/776ggtSa+r2
-         eE+1UX0B3sZLRMbELxavrXhs9QTKoclD5xgORykE1uNoqj4gCwHol5dJE2Bm14lfmOE6
-         442uChcvZY3RqdZ41GZcORbaliRWtnFDTXn6Pb0i1APjZkvAGpEJCp+f3P5Cr9dGEg1V
-         E8ruupPSbmJn9qYc5RyB5Wlk1vn1JN7LWUz0ZhapMFmpu77UhmGtK60axuJEOqqx17Ye
-         /oUQ==
+        d=gmail.com; s=20251104; t=1792575888; x=1793180688; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4wdEo8+3sGqfbZwZCNWKmwnBJlPn4YSxWgWSRHqE+f4=;
+        b=hBUBamqXA+oWdt5ptEKRaT4hVRRRU3E8B9VaN7HeCDsMa0JJvk1/GJFvem6KOjjNnl
+         X7+5hi6GfgiuAmUjEmReh8JP+zNeLccgjrAHtTQzGruOIGbItqMDvxhhTGlk1Ib2xt3A
+         3j3yEFYPd5CG7jZeBRRTc5Bw7uWtjrkjkPp9sMnb4vi9lHew+RswdQsBmzbcQmjc8dPr
+         NvF+UHp/WostECPHLJ3T2jgAKqTI8sWrUuTgRwXUH7VTDGEPqQ4A7k8T2qAAESMvhOQe
+         mz7c7sPNVfaQpFfMPexPfeNV1ZOUr4NJ61GoqGRxgxHfe87J07Bqo8IrWfiR6qNCd4Y6
+         GQNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792575496; x=1793180296;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
+        d=1e100.net; s=20260707; t=1792575888; x=1793180688;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=DMEarNjccdTmA6jkwGLogCoUkmgNrujCfqG0VHqUqZ0=;
-        b=fNCpVIOdItQlPrGFFqFlMHquq0Kp45/5/+PVkkJGxBsEqGvOopNoy9OCDb5vm7vEsv
-         sdxSc7SDwsOlTIpOcfNHpUblZCQcLt2jcVlSCRX2+zS7qxowgZxf7ektnjJ3F8qmJZQ9
-         MmUhYOjnMufKCliXrIJaIOs4c6On5jRuM4Tw3Qj0v9Bq3v9+4f/uwjxuD1wC4lNH2sd4
-         /J3OgTAGxJOWKw6fc2Ctq2cJyD9YeTxMK4atGzbAtvUITFVVFX5uJ6hlxoic6Q/hkT32
-         v/jjrrOozG3FjEcjslnG3PHhdyxCHPCJBjmlwhrLpnjg6DGcB4B7SmNCumtwcQBUQ7RO
-         JqfQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzL5XsPGuGiyZ4WDFe6QSs3XYzBh7k1CkGp/4f1BWdaPrcEqnWA7+N8l4ebWm6EUfh7x3/CN24iMjyQ4XlZYw==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJH/fzf7Wg4m7AwIhxLYwcF2NsBqOmJ6encbH8JZpkhFHA4FBuT
-	fc5St7Kz7g58sITXIvSPs5qM2L0J6J6UMqWsTZHfLT0punWJT0I7ylb3IrvoewrWm8EnS58fzdi
-	PQ4Go03gt8Wknoo4xDw==
-X-Received: from wmix23-n2.prod.google.com ([2002:a05:600c:e557:20b0:4a1:f553:f96b])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5391:b0:4a1:d537:1c8d with SMTP id 5b1f17b1804b1-4a1fdd23e21mr30007175e9.19.1792575495499;
- Wed, 21 Oct 2026 02:38:15 -0700 (PDT)
-Date: Wed, 21 Oct 2026 09:38:07 +0000
-In-Reply-To: <20260823-tyr-gpu-unplug-b4-v1-2-e99c07d4c785@onurozkan.dev>
+        bh=4wdEo8+3sGqfbZwZCNWKmwnBJlPn4YSxWgWSRHqE+f4=;
+        b=WMmfcaVQx9Mo7Rq9reW8jHefncwOidsZ3N30k5gF/K2SreMkgvlvPuRO+7AQSgcUo3
+         SuDbexLTPZBWKTf03l08PL3W8i70pAfEOUmN3PUswp1jCDrzrtdLL7qkV7B4idTN3P1m
+         IcqnmPJSxeVolfxrz45wK2lVLdYqmUasoD9BPUsQkY6TFE2q8uu0RPRd/uP1JbeBxYA0
+         0EFS41GkuFm2q7nmB2sl9qvGAo9rsnTqUtEJgl1xfJg5GFCEIPDNxx3guhtKizGpjUrp
+         DCmfrB4kkOtblQyWhA/T2N4n04+Eg6z4Pada8C0noyC6BQpL3bwifU8YXWeZxGVbnnPD
+         aJMw==
+X-Forwarded-Encrypted: i=1; AKwUvBzhU8IMGHzIYg9tBaTgIqksbWdkCtcTUnkRY1ABngXDRFwTT0z4xqwU+udCafP39AxIg8++/R0RSamxzxaZjw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYK6EXD8P7aUroOzFLh94rXwvIOXaPXaC8knxVeGNcw7UN41OdKt
+	v1Rh/noMraZ+g+t5Nwltyjglv0vHoblLONJJNuNJSXMjCqcNVW1aNqvHE0MS550SFRBBgWaFi1w
+	/C8LlO9kzcyLNUu4ulKBPdNpejRYhrWk=
+X-Gm-Gg: AYBFou1+9FFNBoQesdUt0+QEDseYoKKNRl5XpjT5SkX1XZ49WqpK9FYY9F7hiSTCb7t
+	LXijuTukKoA7loB0eAgNmUdm9H7T+acik8G1kKUBhy16gCJCMbqLT+Tpkg1mIhnEtCcAOGQHyN9
+	nNvk6SW9B7eEQCMYMjVcYabvZcm+otfEaQAFQPsy4ihbkKop9UdnxaAh9j4SgUoU7mkLqW7rY4O
+	nLgcNTzYRW5gQPqPxxBTIkGXItrbMhsRMrW/yzaNlwZeSlfxDWix7OygxZiexXJCSWIO1/gw5vS
+	OVWrIwvVu+AFa3xbHhIbWZCIAvNbk2C48BDO7YXo0Psefwi4+lPTIykCpNqxRRgqEu09FcjhlbS
+	Buxku8MLwaN6U8pHO8hof38I1CNM2clE0Ov0JxyCgG7jPH5ZSMYWRjMgK0in0Ev18gahI4pXdYz
+	Bcs9Q9dPQfleqG9lQy9o5xY7qzuodASyluSKTgFZNSP9HmU2np0v9kj7CTy42IhajCvXL8mVZ96
+	pQj9JDr10cNfR90XGMeHqM9LBjZh6jbEPsm
+X-Received: by 2002:a05:7301:18a5:b0:35c:492b:e310 with SMTP id
+ 5a478bee46e88-3674866f609mr4077866eec.0.1792575888075; Wed, 21 Oct 2026
+ 02:44:48 -0700 (PDT)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -79,103 +105,39 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20260823-tyr-gpu-unplug-b4-v1-0-e99c07d4c785@onurozkan.dev> <20260823-tyr-gpu-unplug-b4-v1-2-e99c07d4c785@onurozkan.dev>
-X-Mailer: git-send-email 2.56.0.212.g129ede20d9-goog
-Message-ID: <20261021093808.1128449-1-aliceryhl@google.com>
-Subject: Re: [PATCH 2/2] drm/tyr: unplug the GPU when reset fails
-From: Alice Ryhl <aliceryhl@google.com>
-To: "=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>
-Cc: Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	dakr@kernel.org, daniel.almeida@collabora.com, airlied@gmail.com, 
-	simona@ffwll.ch, ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu
+MIME-Version: 1.0
+References: <20261019151243.1595858-1-gprocida@google.com> <CANiq72nqq4oGBWVtSMBhXS6G4H7fYg07ysD7SjnOWWt7R9_ajw@mail.gmail.com>
+ <0736f8a2-4f02-486a-9552-dfec74032fad@suse.com>
+In-Reply-To: <0736f8a2-4f02-486a-9552-dfec74032fad@suse.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 21 Oct 2026 11:44:34 +0200
+X-Gm-Features: AclHuK8amX5EU3v7dgjd5CokhSsYsGgsy-NTiRUBGb12KSwkI1ip79L6KXWAwqg
+Message-ID: <CANiq72n8V9=-Wwz9aQOo+VrO5pMqJ5w5hd-44jGjxJ8kXF-Gkw@mail.gmail.com>
+Subject: Re: [PATCH] rust: exports: emit ___EXPORT_SYMBOL without C declarations
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Giuliano Procida <gprocida@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	linux-modules@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Aaron Tomlin <atomlin@atomlin.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Aug 23, 2026 at 01:50:08PM +0300, Onur =C3=96zkan wrote:
-> @@ -56,7 +57,7 @@ pub(crate) struct TyrPlatformDriverData<'bound> {
->      // ensure the correct drop order.
->      #[pin]
->      _reset: reset::ResetHandle<'bound>,
-> -    _reg: drm::Registration<'bound, TyrDrmDriver>,
-> +    _reg: Arc<Revocable<drm::Registration<'bound, TyrDrmDriver>>>,
->      _device: ARef<TyrDrmDevice>,
->  }
-> =20
-> @@ -161,17 +162,18 @@ fn probe<'bound>(
->                      gpu_info,
->              });
-> =20
-> -            // SAFETY: `reg` is stored in the platform driver data and i=
-s not leaked or
-> -            // forgotten, so it is dropped before the `'bound` registrat=
-ion data can become
-> -            // invalid.
-> +            // SAFETY: `reg` is wrapped in a `Revocable` owned by the pl=
-atform driver
-> +            // data and its reset handle. Neither is leaked or forgotten=
-, so `reg` is
-> +            // dropped before the `'bound` registration data can become =
-invalid.
->              let reg =3D
->                  unsafe { drm::Registration::new_with_lt(pdev.as_ref(), u=
-nreg_dev, reg_data, 0)? };
->              let device =3D reg.device().into();
-> +            let reg =3D Arc::pin_init(Revocable::new(reg), GFP_KERNEL)?;
+On Wed, Oct 21, 2026 at 11:27=E2=80=AFAM Petr Pavlu <petr.pavlu@suse.com> w=
+rote:
+>
+> It should be also ok to move EXPORT_SYMBOL_RUST_GPL() directly into
+> include/linux/export.h.
 
-`drm::Registration::new` requires that the `Registration` is dropped
-before `'bound` expires so that `drm_dev_unplug()` runs and
-`TyrDrmRegistrationData<'bound>` is dropped while `'bound` is still
-valid. Wrapping it in an `Arc` makes this invariant fragile: if any
-`Arc` clone outlives `TyrPlatformDriverData` or is leaked,
-`drm::Registration` will not be dropped on platform unbind and
-`TyrDrmRegistrationData<'bound>` will outlive `'bound`.
+Yeah, that sounds great to me. Probably with a small comment added,
+and removing the one in Nova too (which this patch should do anyway --
+it is going away, but still).
 
-With `pin-init`'s new safe self-referential struct support in `rust-next`
-(see e.g. [1]), you can avoid both `Arc` and raw pointers altogether by
-storing `_reg: Revocable<drm::Registration<'bound, TyrDrmDriver>>`
-directly as a `#[pin]` field of `TyrPlatformDriverData<'bound>` and
-having `_reset` borrow it via field + existential lifetimes:
-
-    #[pin_data]
-    pub(crate) struct TyrPlatformDriverData<'bound> {
-        #[pin]
-        #[uses('_reg: invariant)]
-        _reset: reset::ResetHandle<'_reg>,
-        #[pin]
-        _reg: Revocable<drm::Registration<'bound, TyrDrmDriver>>,
-    }
-
-and in `reset.rs`:
-
-    #[pin_data]
-    struct Controller<'ctrl>
-    where
-        exists<'bound>: 'ctrl,
-    {
-        pdev: &'ctrl platform::Device<Bound>,
-        state: Atomic<ResetState>,
-        hw: Arc<HwGate<'ctrl>>,
-        #[uses('bound: invariant)]
-        registration:
-            Pin<&'ctrl Revocable<drm::Registration<'bound, TyrDrmDriver>>>,
-    }
-
-Then `probe()` simply initializes `_reg` first and passes `_reg` to
-`ResetHandle::new(pdev, hw, _reg)?`, `reset_work()` calls
-`self.with_registration(|reg| reg.revoke())`, and `#[pin_data]`
-statically checks that `_reset` drops before `_reg`.
-
-Also, as a heads-up for rebasing onto `drm-rust-next`:
-`_device: ARef<TyrDrmDevice>` has been removed from
-`TyrPlatformDriverData` (along with the empty `PinnedDrop` impl), and
-`drm::Registration::new()` now returns `impl PinInit<Self, Error>`
-directly without the `flags` argument, so `_reg` can be initialized in
-place via `Revocable::new(unsafe { drm::Registration::new(...) })`.
-
-[1] https://lore.kernel.org/r/20261019133647.1279779-1-gary@kernel.org
-
-Alice
+Cheers,
+Miguel
