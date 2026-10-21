@@ -1,129 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792574207;
-	b=TALN3RF17eJX2OxP4AjRxtWxmhIXZbv/9UTCkiu3mpNNz2yU0QumkEXsK2bSJ7RA/qyD
-	 3y7I5/T4ZJut6TFBAL3BXTwd5a9+V2Yd6K0QpT1zwSxeqatniGbhUFRPAWSdvUJo3ifw2
-	 YBzKqtqCBHTBumWll4XT/cfwPnfFDRpjNpD+rB17evcMrghZsJ5lO2hLsTkh6O9kyJJXD
-	 5nSaPvpdmD9THyUVtIWbf+eAnC2nVpodvroCWFJxfwfx5se1hyKCm0pLtfus5Uajdll1t
-	 qyaOuhNKuI1Xhj2WcdsMECJe/ZEN4nUeXasl7XcN067Jn9MN2t+EZausPBc4xAazpYA==
+	t=1792574836;
+	b=EsJesT24Lfn4/RGDnMG79wzvBpvQE8tJVSPsLuxsDhVVjbF70k2WFwjmzp+W84Wgk2wO
+	 na6oNSEwr3JUfufYbcZQw9hSUYBWFR3YiyP787QY7qsw8qFQ3qFUEU3XqXW3Bgfi2YA/J
+	 FLh7urUItEoT6sF72hSYHRlURQlGCdp3SuBH5oroVsO4weiLzY6N0cJFSY5qcKP9qc+Fl
+	 qTyo+R0hYWDkZPsxHQh0fOPPCHSSSX1PROCyJgDEWxhOpqfx0Bza6+0Kx6sbxJ0C1CiGT
+	 ha9HK2/U7RptljDybtlyil7sQyDVTJaqpVS10zqhclESBmbhia+hW0VcJVSn9AkozkQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792574207;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding;
-	bh=UjhycloSVwN/MsXqslqJcrsVG4Tc+E2r56Jl+uN09fI=;
-	b=PpNBal2lNgxtfKHIM1jTcgFkg31eDKg2UaOHfJGOR9ot9h/H457bxUNz6pNt9d5B0AEN
-	 r0UKzIwRPjJWhABnCi70jhN6XKWs3mvD4UcR6T+6FDdb8RqdBGUPguBV8pgVYgCa0BW9T
-	 5O9z7xiuPqyVG7Y0sqhxkndenX5w7/jhPkVVMzbgmthfPe3qgFmeqvhpdbccYSnYmL7JY
-	 LlYdM/IzCzRVR3cHZbszNevpyQRRicdaZhidTX9L9Xg+WKi7YyI5WSlEvGhPT2bbIW/l8
-	 XYTnrdYy9v4VytLehJUZe5d9Li2Tf4YlYmsB2ry+IYSBmg5qENwZTjwL1B8RmJZjObA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792574836;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=3WktpqJ5RyI3CKZt5Qq1knYJO00EeIPHV/UWKkNJ8JI=;
+	b=Lt5ayibgq5oFy2m25RoVhDrUm+wYv44HsMrT52nYoUo4hG/ehfoPfw1tRWX9DNo/Y6Ka
+	 63R8LeC7ZjPyiRAEhG8UnbPyT0jCUJljsmzFqpzA3vzC2azeUJmzu/LVWwN6L+z8oraBs
+	 OSxtwmxCNCqIzM/Gxc+1KTlDcs4d1kogGoIivFPa0lX9yWCxhRo01FvkQ3qx1hhmCZwuT
+	 ed9vVnMV0hUKlVoFp+uLWgUgFj9WKIEYG4UdhN7ROplHqKP6id+0E2amunyFBc1zZ1CHg
+	 UMAlIUb2ywFr6jhLqKdIN7TdjN+wfpXXzyFOYLl9QQLkHlpxHws1/YmXlTMkhQB7VWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=flapping.org;
-	spf=pass smtp.mailfrom=flapping.org;
-	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=sWZ+27OJ;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=xpqD8259;
-	arc=none smtp.remote-ip=103.168.172.159
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=suse.com;
+	spf=pass smtp.mailfrom=suse.com;
+	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=PX1iIRSZ;
+	arc=none smtp.remote-ip=209.85.221.42
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABD8606A31A
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 09:16:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3ABD8606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B472606A32E
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 09:27:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B472606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=sWZ+27OJ;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=xpqD8259
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 7060E1400083
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 05:16:45 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Wed, 21 Oct 2026 05:16:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1792574205;
-	 x=1792660605; bh=UjhycloSVwN/MsXqslqJcrsVG4Tc+E2r56Jl+uN09fI=; b=
-	sWZ+27OJD63e/ltTZ0iTd2ZOlpkBeqWZzo0aybnnWxEoLJ7obx+cqIgOI8Zhu4I3
-	J44hEYkOl8QmttT0pnnuY1BFlMv5j/hSp1GMAsWpBogRj/NHWntU60Qoaabn/Ac0
-	3SbloHRTlFGKzMdF8PRMYu27II3wM8XBh4I8KzHQgwnTu0tEwwnEqH0TS6Hf2tGy
-	ZUIiqIuq8VHTHWOQi1V0BS1sPy4xW509asKMMR1yOf4GmFfAXCl5ELN19JrXG7Ls
-	V5kGLlcC61y2bDL0pfcP40esCkXsUGxQ5+dP//2XGqBlItKP/shOamjpeP4Fp4dC
-	oJ9DaxT4xVSqoCZCvRArFg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1792574205; x=
-	1792660605; bh=UjhycloSVwN/MsXqslqJcrsVG4Tc+E2r56Jl+uN09fI=; b=x
-	pqD82590tRKDDt49Y1uY3YoHPm1dCRX4MIWDGDOpCdNDckmGMcHlLXMlSwbhvVIU
-	Vi/7qd4VXVcPOYP0sej7jf1JlRUbudilEgpk8IU/10vHwNH3jhjtxx3+jbuWQxI4
-	Ffcqyltw6mcYLJwgRHw6QLACqU4XDfabN4lFR0JrKaViK4INGAHSGVWVhgj+Kl1x
-	i1ayFjOYKqm/o47xeGXE0rX6L4MHwWtkQNjUEhIdpxHVYGXWgOFEHxJ7PkGZF37n
-	5qAz3Deli78Bbiftmu4CUHko7Jh6cr5R/yYx1Y7HUoEWsokUCJcudyqD+hJekNX0
-	KqTieRkf1ib4JUrpqHP0Q==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=sign d=flapping.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1792574205; d=flapping.org;
-	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
-	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
-	s=fm1:rsa-sha256:M7vd1ck9BWuygO94ISWrmEGyzGOFIL+OtdKwaR6z5K6iFZB
-	wTuUXua+dV/zxMcES50xB+pUDSWXH8iZyZ/woKv2m0ZznCK01KWftirdeAQaHhtN
-	IJmUwDtVtF0zg4ScZyhxeqnelyvPl6Jo520QWmNm25ZDtHJhBTZnOJoy25kAKOhf
-	H4o+AFuTo7AJL/1x3pgcDTbmDsrkE1AvoJpSKG74zwc7xcZiouCKfNY4R+j2pwaO
-	X/LisK0RvJXpRMGcBP9n/fIRM+Q9cJTg6igeiq+EDfSBfH0r6Ef81neoJhiXqQo3
-	JYYCR+bcJnm8849LbSqlCbkv4nrKtogrZQi9qVA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
-	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:ZwMDi4rAti1uu51xzIBBJztq/4lgEcvp8W3Mckc3dcU=:uXV0Pgga/E/hgbUqGADZ4JQfpuFz3auNsY49xtYlPdQ=;
-X-ME-Sender: <xms:_YLYanXhOjMvwrSy-IJElg6rozn-mdq4dLms4f8c5Jx-GYhF192EjQ>
-    <xme:_YLYarrNewEtcIPZafRTyKwnBGRRgXN3vHWedsEkMr3J4YcyhLkvPa9xXcGQ7it9S
-    _-WNUPn1QcUGOFjsPcDyDvWXt4eYolh9Sl-W8djU9dZ0gJQesOKDxyR>
-X-ME-Received: <xmr:_YLYauupcimTS4D6_md0ZuiifoKwCNdGFXqV_uHC-dUoDAP2DRXu5jBd7bZvI4ANl97JgzlwR0nYMxKpc0bsrSYA>
-X-ME-Proxy-Cause: dmFkZTG0LX2vhbvH7Fb2TvHCFcsQyHPcJmPOPD0Y8sf8J1GVaCtaKhE01c93ZTwa3Uf/QI
-    qc9WxXA5QVYuYFZWPQDnYCX4C0Hwl7L8/WKqhvfOhxH/vA8zYcWgbg4LJamXbPTC+V5iGg
-    r1k3PZ8S6oiIUEChtYSky6D9HZThaAe4T6YG2qUgTjjjV8IXR2BQg9gA/HnkKUBSPfsggi
-    bS5wzFV5oXcSJiuWZE074Js8D3D4YkrE8rSZAv9XqN0gNvZYA35xTVMTFMKgINKtDQhKpw
-    XRsdF+rFgWMsqVUeDW8LD82HG7k7tusdPh52FkvC7oLk5Pre0BXu39FhbvbB2DO2AtCkpA
-    vh4fw0bGMECeNqgZcMQWZBft2aDMD8ZbG3lDwDxMTAptKER2gz8IGvs+p4LDTFM/5LzdSk
-    jA4CzWPGKKoxEJ6PqjJwcD2oo1XIbDmzVc1SI9P7oIYyfUu7td1mzBWOs2w9MxAalmHR+e
-    7FRYSdaQi+zvkRIeEO1xXWqJemVmfnfH9gr5oBUGa1KQVQsmgJ4poEBiJbIc8lfAuEz1Hf
-    qwJUYbJHa7zT80Zxw17S299qjPYBj95JEYzGA72gBltKYn6v0BbvBJn/oP/irHsRoiTj7e
-    /J8P0fmtcH9BAwXDdNimOJkhVmHitLd1zg/jObIO7NhElcZdlZ1hM9vFymUw
-X-ME-Proxy: <xmx:_YLYahTYix0bQqMVnA_pTR8lJrOst0Wlw4JAy4MHclMTOyPyz1JMHA>
-    <xmx:_YLYaqp3_-MlsTdLKbAiReHiAbqVi0vme4yhP6fopYzmoy3ZUOABkQ>
-    <xmx:_YLYakK22Kzu03e63Zwvz1MwlaICd4Xyd9gWzDy_WAEItI4WmsPl5Q>
-    <xmx:_YLYalOdjXS7B0vb5XN6V1gEKS9c4ptSH6q5lHj4JjhruBYvIoKSSw>
-    <xmx:_YLYap5jG1pncBa1nZcBUh-ypRbAu0seXjKI4EvsUcUgMHqFhC5Cy19I>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 21 Oct 2026 05:16:39 -0400 (EDT)
-Date: Wed, 21 Oct 2026 18:16:37 +0900 (JST)
-Message-Id: <20261021.181637.954248793010611824.tomo@flapping.org>
-To: chenhan0017.work@gmail.com
-Cc: rust-for-linux@vger.kernel.org, a.hindborg@kernel.org,
- boqun@kernel.org, fujita.tomonori@gmail.com, frederic@kernel.org,
- lyude@redhat.com, tglx@kernel.org, anna-maria@linutronix.de,
- jstultz@google.com, sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
- tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev,
- miguel.ojeda.sandonis@gmail.com, tomo@flapping.org,
- georgeandrout13@gmail.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] rust: math: add signed division and remainder
- helpers
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <20261017111134.22546-4-chenhan0017.work@gmail.com>
-References: <20261017111134.22546-1-chenhan0017.work@gmail.com>
-	<20261017111134.22546-4-chenhan0017.work@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=PX1iIRSZ
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48c5358fc28so474084f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 02:27:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1792574835; x=1793179635; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3WktpqJ5RyI3CKZt5Qq1knYJO00EeIPHV/UWKkNJ8JI=;
+        b=PX1iIRSZQXCtB96QC8suLk+nFEe8bodK5DE6nL2TtwDz7P2T7urPdwTpV9WeNwoXqD
+         5fL/SWRAxLQfKr9IAbHmqw2VM1CZv+FvQodjCQrmi6XQpz3RdLeh0XQT71eA1EvI6IhW
+         qr7lTrQmdCrfJKhDFLJsPABBEnNLoU/r2Jx9TCA7/kNqbchIFHqyDy5yzwAoE3zWniok
+         VNzJ6V5ok/BWuhe9xeVqgSL/OaRi5CiP8GfwUNShdLOA4zZciqJYN5Dk65OUJ3j8XMsG
+         aZrtRijXVpCsFLlYO/Hg0rR6NgY0Fim8nKO+PmDJ4kVcvCwxzJmzbuTWtx5M1LrbTJcu
+         ZTDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792574835; x=1793179635;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3WktpqJ5RyI3CKZt5Qq1knYJO00EeIPHV/UWKkNJ8JI=;
+        b=c9EILIUAtKWcuOejMobdeZ4W7EwF2TInkLCl7hNHmoByxuZfLHgCnLKW9lKO401yWh
+         gK6W9lvApRF4oNJrzH4CB6Inrk1fNo9t4Y3PRKuB0Wz04+LyF4YsM8P+aP2tKg9F9dYv
+         hAHRGemPO92nZQe5esTfh1KKT7id1PTLRLi82TAoiwiLHfQLWuvKf+9mTCt0aKD5hLMt
+         ch+p/FjKygzGsx2CCXNis09dFwzBg12BqlnSCo3X7PW+Czc4Co1eo0pOslM3TNNPSZRV
+         MXwOT6DzEdc2PNO1HYxH874IftfANp2BdTplgTWqGYG1q0SQtIQukJT+zq1mQfoObTIV
+         tzUQ==
+X-Forwarded-Encrypted: i=1; AKwUvBymh73JkzRwep9Wl2Yem05YmZQ6UA/lDFajhqL5nqNFJUdP0SyHJNkoeWmeLce/Tr68kNRZ7yAvJgLMP87FjQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKEzFWk/wcqO77tw9C8oB/lkKm9YHk2OsLTfVF+gix9ebJ1IkI3
+	zy4MxMCkbyv5flSejKgRd+7/pY5ksR8C2JU7FR0/faitstmltzjQI4RSuO6w5y1yvT0=
+X-Gm-Gg: AYBFou30Z/KR+/QMrHEE1O/dIHO6jyE/C+JGI0BUJ4oPDj4Ptnf94puncj9Xo0liB8+
+	u00slm+KUtrU94hKh6V4yaj7Soce2+Arm7moO0CtqrYfDfDHo+MhjNLp4oUM3kynKPVxj0PrYag
+	j+V+P1MgoyXeqTvWrPGSLXGxLQjQSudBsTgl8lZ0+lczU85aw/0qh82qrK8eozQcXrgFxGyDDTZ
+	115+aNqtxEHV/t2vKqsDeLPNnd6jMIsAwAkrXPQH7kD+0WnFHUi+8XCZiz0rte4k2rRLAuo89K1
+	MHrFxv4iN80K/WjVH+I+25ivaeWWn00BuIG28ih2ifyGwnPHr5eDcIzuSpdOxTe6KiHQrwYzQFL
+	HJ9fIPXr/Ew0boqwDj432sMxFvchDQqc7pcmx4koI/EnrS//Mn89T5iN27PdSSKLh+mKZx/fJC8
+	vlzGG0Thh/mOmBH+tlv7tFa8hbKRUZ9kSN4UXU0r+VeRL9B7Fkqi5f/ngqTm1BSMcBurSje+3jM
+	DAwYQxZvxzd5uDN//jG8fyPwEifMO6AqQVa0egffgsAuK+8gY6umclHuyWHPEI+dTPsdIFujNDY
+	haNYovt2kci5aQ5B
+X-Received: by 2002:a05:6000:400e:b0:48e:b62:d134 with SMTP id ffacd0b85a97d-48e2642cde6mr3031305f8f.6.1792574834481;
+        Wed, 21 Oct 2026 02:27:14 -0700 (PDT)
+Received: from ?IPV6:2a07:de40:8100:0:89a9:fd0e:583d:4a53? ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e25b04883sm4370211f8f.0.2026.10.21.02.27.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Oct 2026 02:27:14 -0700 (PDT)
+Message-ID: <0736f8a2-4f02-486a-9552-dfec74032fad@suse.com>
+Date: Wed, 21 Oct 2026 11:27:13 +0200
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -132,28 +91,53 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: exports: emit ___EXPORT_SYMBOL without C
+ declarations
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Giuliano Procida <gprocida@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
+ Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ linux-modules@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Aaron Tomlin <atomlin@atomlin.com>
+References: <20261019151243.1595858-1-gprocida@google.com>
+ <CANiq72nqq4oGBWVtSMBhXS6G4H7fYg07ysD7SjnOWWt7R9_ajw@mail.gmail.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <CANiq72nqq4oGBWVtSMBhXS6G4H7fYg07ysD7SjnOWWt7R9_ajw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sat, 17 Oct 2026 19:11:34 +0800
-chenhan <chenhan0017.work@gmail.com> wrote:
+On 10/20/26 9:22 PM, Miguel Ojeda wrote:
+> On Mon, Oct 19, 2026 at 5:13 PM Giuliano Procida <gprocida@google.com> wrote:
+>>
+>> This change defines `EXPORT_SYMBOL_RUST_GPL(sym)` using
+>> `___EXPORT_SYMBOL` directly:
+>>
+>>         asm(__stringify(___EXPORT_SYMBOL(sym, "GPL", "")))
+>>
+>> matching the `__ASSEMBLY__` path in `include/linux/export.h`.
+> 
+> Hmm... It says it matches the `__ASSEMBLY__` path, but it matches the
+> `#else` path, no?
+> 
+> Cc'ing the `RUST` entry and modules too.
+> 
+> In addition, I wonder if we should avoid hardcoding the particular
+> form of that `asm(...` and instead expose it from the C header. That
+> way we avoid repetition and getting it out-of-sync -- that was part of
+> the original reasoning.
 
-> Delta's division and remainder implementations operate on integers and
-> do not depend on time units. Move them into a math module to provide a
-> common home for arithmetic helpers, with Delta as the initial user.
-> 
-> Expose div64_s64() and rem_s64() so driver crates can use these operations
-> without constructing time values. The division helper takes two i64
-> operands; the remainder helper takes an i64 dividend and an i32 divisor
-> and returns an i64. Both keep Rust's signed operator semantics, including
-> the unconditional panic checks, and use the existing C helpers on 32-bit.
-> 
-> Keep the Delta API and its panic documentation unchanged. This is separate
-> from the preceding behavior fix so that introducing the math module is
-> not required for a backport.
-> 
-> Assisted-by: LLM
-> Signed-off-by: chenhan <chenhan0017.work@gmail.com>
+It should be also ok to move EXPORT_SYMBOL_RUST_GPL() directly into
+include/linux/export.h.
 
-Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+-- Petr
