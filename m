@@ -1,69 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.77
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792601980;
-	b=TZEoYDVlAB1Hi9ky3iv40uB84u/gWI1mWx2YcdIt/TV3/JVAb81P2zznqr4bWT3icCYy
-	 i4qkO1RrLcA0URyEast3IG9HUAncVGHk5BEaSw2PWWSB90nwZmdExLvx1bnXW6grX7lDo
-	 blFSNlaoB24kratAhrY6jJoWbOFz0yY6EGPA3SbuduFJuvMx6jRMb3VLUejmAuSrLTovE
-	 0La68Dc5N21YXf7+KoKIWowaTuRqNSfiUkJXZX8kbPhiL2JWODqn1Xk4EeO3YFKjfARxX
-	 zxNltu6WG5WxhpyrQeEqHXCwTXODyKyTh6Z7cZgkVNjyo8dcvRMTLcfR+c5xuE4F5tw==
+	t=1792602443;
+	b=M6SNpUPiAE4S/o4rf3TEBxylPNackPY9cQSfMUWeSZ+WGp1SPWfib9Dd+KS5lC3NKr2C
+	 dFZUM074CzkdhBaboFcNRrpKBCcFmXe5piMb4x03CqUgy14IRam+oAq+I4F055I5k68eB
+	 qruEx7muAkbZkRb6j8uMMPoBc4U/CtKs/0vCaeBcKgpTw1dROyioSpwqFKNnYfSJ8ITU3
+	 q1FqjE5seP3so8NbWm+FG0B7i1yppQpSN1yBLlea4tkoP1CWLHj9DLqSQXTl8lNeFZgaU
+	 DoUbvLfdIwvvwmlqZsuyT18QSzSiQX1tYVqtTZw6P+iPO1aQYaYgIA77DjkpIFtrkOw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792601980;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 MIME-Version;
-	bh=p+CU0uLPlyx2SCbGFn0tLzOAhUz48rH3EvqMuFceNuw=;
-	b=Hg3qeFto8HJbDAGhfrJI6wtqkabnrG+grXL3SwaIaaucHeI7d1EILuc1UPOeifLZV993
-	 IFFtVadJ0UjDO1h7GKTurKmqcprAa/6iMOjOz6dKmugB2SlApCrAVlZonIOQHRH3QqSnk
-	 LMVbymwj41hsbvJdiVxF6zUKqH6o7NMhwxFAS9L0rLk1MHvkPcKl9cBo/qSljTurGB7w/
-	 dh37FwuDmHVdcZ3FNqgEKNp87UZMmCa8Sf1Rg6ORUnIZJFjSgrRCfI88K4ETmXZ8hCCRd
-	 zVehAE8Dwza2S4xJCpNUDqeNQlGFF3KT95KT1qI+IPJYnzVeYoPY/nf3gJfL8USjWHg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792602443;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=e0R5eQQgTdpSlU+oUfRU2hbSIpRyLJ1/Cjf8UXH8R78=;
+	b=cimYRxQac26LV5UxmQOxSgvUgTaB7GCEjX/OaQXbFzMiTN8Mj81F15bEQ5i4xKCJHSD8
+	 GiD0hFxyrOrfWnZNzZggkbm8sU/UowlJlh/016A2U6+gKOJhBKDOJQ5yfUs7+clTZpDmY
+	 oAIsji/QvC/9x7iunDlxhsjvF4qwbkUM3pgEztZZZiIXbk7OoF86MkH6TdGuFUSBjyK0y
+	 CxBEgmqH2KsYTLNsMMPdulY/591cG88EYPxZHBiULItYsDZuidglc7W80/mj7fo6h8Ifp
+	 Cfrc2fft5qxFY/R3uTLllQQ9Y2G31CLhuW5iTFhttpAe6tXhcYmJ//nosD4MuBYaNGA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WqohzBuX;
-	arc=none smtp.remote-ip=95.215.58.77
-Received: from mta1.migadu.com (out-77.mta1.migadu.com [95.215.58.77])
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=F9h0RjGL;
+	arc=none smtp.remote-ip=209.85.160.175
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC383606A332
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 16:59:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BC383606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3992606A31B
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 17:07:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3992606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WqohzBuX
-X-Envelope-To: rust-for-linux@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=N2OoIaXbm1ikGvwpS1JJSDFdorhSOcRL/wya42gaR/o=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792601977; v=1; x=1793206777;
- b=WqohzBuXMER1LmjiCeUCqqT3n8lklluRkRPsxMIjlU1bosfcFkiH5w/GJGYfTwMS7MRRniwW
- R64eJpT1uOdaQPteFt49LBqyJyKoAX/7hmh1cq1dAiDDzX72NdvsXJG/M9S07K6GTAojBCM6oBe
- xJRmKI4T+lMdZXoUDKMiFCzs=
-X-Envelope-To: rust-for-linux@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id de2331398842e179;
-	Wed, 21 Oct 2026 16:59:37 +0000
-X-Mizu-Trace-ID: de2331398842e179
-X-Migadu-Flow: FLOW_OUT
-From: Igor Korotin <igor.korotin@linux.dev>
-To: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>,
- Danilo Krummrich <dakr@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Mark Brown <broonie@kernel.org>,
- Brandon StJohn <branstj@gmail.com>, linux-iio@vger.kernel.org,
- linux-i2c@vger.kernel.org, rust-for-linux@vger.kernel.org,
- driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v6 0/4] iio: position: add Rust driver for ams AS5600
-Date: Wed, 21 Oct 2026 17:59:36 +0100
-Message-ID: <179260197668.3127.18219777718091081046@linux.dev>
-In-Reply-To: <20261016154819.17936-1-muchamadcoirulanwar@gmail.com>
-References: <20261016154819.17936-1-muchamadcoirulanwar@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=F9h0RjGL
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5363316fa0cso11307671cf.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 10:07:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1792602442; x=1793207242; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=e0R5eQQgTdpSlU+oUfRU2hbSIpRyLJ1/Cjf8UXH8R78=;
+        b=F9h0RjGLS0HcXPP8Lzs70DqrmIbMaklOZic6JTfWxOKvcoT80HSKNpl88Y3z4SuFex
+         K0sa3BpTUNKpl1nH387ihAHymr8rCGkE8591JkZxYJkVv5IPpGOa6V6pm7y5aHUnOlwS
+         RzxzvOns3zn7OqUFZijDG3I4WyRyWlKE/VUG7FN+Qcg4gj7QJVVAx2CPJfP3sFcmHWsW
+         BH/NRLuL3cNa6l9chmS+FjCv7BZ9HyxAa+SBaLfVyfbIjBLpUwReKVmvkXYgk5cof3ei
+         Q1/wQMXNF++xOiXBYp3CVn4FKSvq5r//TZyig175cZxg64B61fmrRxj4cgi4jswVaO1Y
+         3M/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792602442; x=1793207242;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=e0R5eQQgTdpSlU+oUfRU2hbSIpRyLJ1/Cjf8UXH8R78=;
+        b=jiFMd0niDMPr51BwjUkyzC0XJsXdy0Sgb0bAzwAnF+ycWda/rkOpfe3P60KMjqrk7X
+         /9HtfWYFFPkRL4xye71/Q1wyb4myX34lXxqMoHAUB95E5TCcxFly54I7OiHjyMAetzz3
+         YkAUX81F3Heegq6rjMdseL8KfAvHybTmTJuT7GW4uTUB3ul54BsOhuqTScd3gbTCoBLv
+         IA1FqwF6Qh03MSflip8ucGnNi3R1y4HUYS95IpT35A8mrL+Zub/R/UOj5RnH018F7Zlj
+         O3jSAwHpYEwxO0dCDbJyIPEIYGXDESA7VKnk6hbGwxXSoOBeTJwzT/91ebvrweFg+TtD
+         urNw==
+X-Forwarded-Encrypted: i=1; AKwUvByKWqt4ECvkmoL2KQQ011ag+3FHhfB1QYpNpv2IfyMoYQhd93C5YBijbMLzipxggU7EP8fo+WwFrIOmDuQymg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYK+jF47XG/OGzeoqw9Xdw3ffvEo5t3j4LR7zG9CBilgezDbS5B8
+	mFYMdlTENACgDsE7J5h7PPl1Lo3E5i/h15q8TM5ANCmme1y+xMR84RJqz52TcVEeMUo=
+X-Gm-Gg: AYBFou1TNu8Tv9Mq0BUNO7WeVLmANjU3lci+ihLE5XG781qP62iC0xxj6n/9rzLjvGi
+	Kkm3Do1/NVaUMmFs9RmiJd+kCmSF9sBPQPe4vZ2TzZKjd2G+8zDCW3lLljYrMZVGwg/IXTDR/0c
+	FKEM9xVN1dCf5PyMQCeCuak0Hi8B5CbInKS9iW8kwzIodj1LBX6LgHxCvzFrpKGhn0yeLMwRV5K
+	hHI8MyqrFOkx44Drz3C0ApApNIanG/1O2pOfy0OhwWODCLS0j2SRadmcLiVL1N9nwUSQ6p3D9Jx
+	aDXnuz1H+8Q/HqP4HgBl6tOL/Na1JWl0/nIB1cnZkdq+7wQH2bOLA/qfR7emCsDWh4kiO7m1cU0
+	OI7xTcEbQ6W5r9QlodL5L6NGGCmAjLfhKJ4R2QwKkfiVnMG134Qh6UaaFumuMKSXyeZ3/xtcneG
+	j5xQ9XPfTvVuVPiFhjyu0LQjSbr9mPe1qmscr15G5jfbUhdVK5kdj03vzbn8f6Jv2l6SWAQf7IF
+	0nEAldEgbpv2wQx2xykdRYySB8Fvrrpyk2HzN2g7WV9WIk+Z9zod0Z9FZZObj0pijSvuf/rFavc
+	MvWDDvKaO6rHZY9nSgC2s2bycGrFuWXpfFiz0oURjlJ+WLfXNZiYgiA81V0=
+X-Received: by 2002:a05:622a:e10b:10b0:536:43d6:2a94 with SMTP id d75a77b69052e-5369b813476mr30068181cf.34.1792602441721;
+        Wed, 21 Oct 2026 10:07:21 -0700 (PDT)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-536ab7624c1sm4234501cf.19.2026.10.21.10.07.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2026 10:07:20 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xJZmZ-0000000E9s9-1fwu;
+	Wed, 21 Oct 2026 14:07:19 -0300
+Date: Wed, 21 Oct 2026 14:07:19 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+	Jonathan Cameron <jic23@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sami Tolvanen <samitolvanen@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] rust: fwctl: declare cfi_encoding for fwctl_rpc_scope
+Message-ID: <20261021170719.GU14213@ziepe.ca>
+References: <20261020-fwctl-cfi-encoding-v1-1-ebb30d1500df@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -73,67 +114,27 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261020-fwctl-cfi-encoding-v1-1-ebb30d1500df@google.com>
 
-Hi Muchamad,
+On Tue, Oct 20, 2026 at 08:28:37AM +0000, Alice Ryhl wrote:
+> Currently, VTable::fw_rpc_callback() takes scope as a u32, whereas C
+> calls fwctl_ops::fw_rpc with enum fwctl_rpc_scope. With kCFI enabled,
+> enum types are encoded distinctly from integers, causing every fw_rpc
+> indirect call into a Rust fwctl driver to trip a CFI failure. Thus,
+> generate fwctl_rpc_scope as a newtype with a cfi_encoding attribute and
+> use it in fw_rpc_callback().
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: e052daab94ee ("rust: introduce abstractions for fwctl")
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/bindgen_parameters |  2 ++
+>  rust/kernel/fwctl.rs    | 12 ++++++------
+>  2 files changed, 8 insertions(+), 6 deletions(-)
 
-Reviewed the lifetime/teardown contracts you asked about. read_raw() has
-a problem: it takes parent: &Device<Bound> and recovers &I2cClient<Bound>
-via TryFrom. That conversion just got removed upstream ("rust: i2c:
-remove TryFrom<&Device> implementation for &I2cClient", use-after-free,
-unrelated thread), so this won't compile anymore. More importantly, Gary
-Guo made the point that needing the conversion at all is the actual
-design issue: a class device shouldn't reach back into a generic parent
-reference during a callback -- whatever bus-specific resource it needs
-should be captured once, at registration time, and handed back via its
-own private data.
+Applied
 
-Concretely, this means dropping devres and letting Data<'bound> carry a
-borrowed reference directly, which it's designed for
-(Driver::Data<'bound>: Send + 'bound):
-
-  pub struct As5600Priv<'a> {
-      client: &'a I2cClient<Bound>,
-      #[pin]
-      io_lock: Mutex<()>,
-  }
-
-  unsafe impl Send for As5600Priv<'_> {}
-  unsafe impl Sync for As5600Priv<'_> {}
-
-  unsafe impl IioDriver for As5600Priv<'_> {
-      fn read_raw(&self, _chan: *const iio_chan_spec, info: IioChanInfo)
-          -> Result<IioVal> {
-          let client = self.client;
-          ...
-      }
-  }
-
-In probe(), capture the client once via deref coercion (Core -> Bound)
-and split the driver struct so the registered IIO device carries the
-same 'bound lifetime:
-
-  struct As5600;
-
-  struct As5600Data<'bound> {
-      _iio_dev: Device<As5600Priv<'bound>, Registered>,
-  }
-
-  impl Driver for As5600 {
-      type Data<'bound> = As5600Data<'bound>;
-      fn probe<'bound>(dev: &'bound I2cClient<Core<'_>>, ...) -> ... {
-          let client: &'bound I2cClient<Bound> = dev;
-          ...
-      }
-  }
-
-register() then just returns Device<T, Registered> directly instead of
-transferring it to parent devres -- that transfer is what forced T:
-'static in the first place, which is what made storing the borrowed
-client impossible and pushed you toward TryFrom.
-
-I built this end to end against current rust-next: compiles clean, zero
-warnings, and zero changes to rust/kernel/i2c.rs. Happy to send the full
-diff if it's useful as a starting point for v7.
-
-Cheers
-Igor
+Thanks,
+Jason
