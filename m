@@ -1,100 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.173
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792592511;
-	b=OcbSsA2iiIH4PkL9kAlYMAM0R8Q3cepLVtVR7DmHKqHayDNln2y8p2Zs7RDgmgvaJ4ry
-	 KgVPRRGL/RDmXQjq8A0QUMGUV9z1crh9GNPxsyhAbjfSs3oK7Y+5nU2gP2Pi03PQ2KpsP
-	 M0ozk1pBl8riIZrPC681XavYZG0otexrgmJjp/DVXzLqWmlT/KaoefRfbBF8x/OiKzCzp
-	 dV9fe/MoL7MlJXWmZzTJsIYMhS6ljAoeZ4vFCuNE5PPjKVTdl6UGigz9UHAljv+CQ1U6U
-	 bPYcsUoh92BBxYLA9bc3CmLeTJl/jdP8MrDnhnjIFhNXEzRtTwcavIJPQDUpGFvqPOw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792592511;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=MU18pqCbstum74MRC3E2tHjDA1YVe+OVt1wpMi/79KY=;
-	b=Nc7EkJ1Nq9RrVIHN3DIJG4OmgtIFy+/WigTlymWsg4uVrwcL7gxaYI30ExPXsoZ16OtE
-	 cQE4wrOkOQv6FVNxCTxou0RXU9QNj+SyG0LaR7EqimNPnq1658fgLwhrRr6lMX9cJTJU8
-	 0+M/E45qbEmWwUnTIg92KvyWYifh5oeHGe2Btv5sTJyRqhFi8RBegMA6b7p3MhL7rxlKJ
-	 7YMheAUekSDV8Zx6isR9RxL9Lv5WcwX4jGqs2OSeMhb5gcu8Sj1p511CO0l3Man6IRIOy
-	 zg9CvQWtHaAtzgGaEtyS8qvuPSVAKF25V5O1zxW5DutP32Iyfy4gJa907VeuaLZVAjw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=l5+o7Utq;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.173
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792595073;
+	b=241u2gN7EX3AaDHJjlmYFYWrYKEYonRVvnVMEcSyeNjrLgRlJlbqVlJwMnKxiMvrR+0Q
+	 mE8MQhEFyh1L18k7yM4hLJGOM4rikfRz8tp/0EeffaYBVaU0p5F0QW6h5IvoDDYsEJYqE
+	 gAMs8AaYwAQs+Ot3Y7rEBQ5I+95ppX1ytPNTksmxoM7K15Vg9cu4TBfNRxrx2QDSp3t2k
+	 IXYmQdcNmg8HvecofYQULQ31FUQ+6MvW7pKXuNg25KpaU5BxdOtaNDbRR6K3/voA+eQ3+
+	 mN6/fMUvZPsgLPo7LLJyL/iWCc3cfBEZ8RLpGZ+3d1c8EvhNRTxJjsSdPmgqB7DoPyQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792595073;
+	h=Received:DKIM-Signature:Received:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Cookie;
+	bh=XO5kU4TA2hsV8P7bI/3a0t4nzK1sUFsih2IqSO0IkMs=;
+	b=fqfuJVJLb/ZAKFyxuPQGK5JKbhELwyiZXViY8T0yNm07fWurVOzH2hF1ffBAKbm+dfcn
+	 7W6iMeyvq1dxiFKfw4lutQJjHihk+zEKqR+7QHMAiVAKlDA/CCMbRQiwvc6gceyEzKPJ3
+	 7jIAX2/1S1mdub5AFAnaeX8tra0J2KJa1t42qDDIYupXnZLP6m3RjLo3oDVuj3nfSdEP6
+	 T+bECh8BrVjWvkjZUZmw+1Qad5c4nkjlbea4Tmwypo+t16zaPJG9Av7GimqCrAZ0YctAy
+	 9+gSDV07NOsHctL6GWBH5HzxWMQqpexjzCF8fhxJbOr2Y0uCg8HktYk7J9i+qscFbAg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mTS2ydON;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617EE606A319
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 14:21:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 617EE606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BE4606A319;
+	Wed, 21 Oct 2026 15:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=l5+o7Utq
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-533202fe429so382561cf.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 07:21:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792592510; cv=none;
-        d=google.com; s=arc-20260327;
-        b=oBldfwYWVy6BqExhp+nGWdQetsBDBKc1vvdzxPQFz0I7kbvHP46YP8PD3n+vRM3sAd
-         CuatEtPcy5t3q2g0hdaErjqo2d34bkqYdAN8yJc1tmpxSnbyoW0fCj8fS7TgmaTwR5So
-         N01RoKepNtfS4Gu1/4r33tE4K452GBDForbQIrOMzv3iaET1bsTwrKjauvV13Yk+yfNo
-         Rus5tsoBW1VaiLyDoRJbfxt0uNICr/r7WbL5LyqS6OlB5dHYM5TgHsAS3LTpWzdQcZuD
-         pp/7JqGNPX63zNwnBIzaSQrfpmg8uMta9SF7GFilvY6TBns+1i3hlNKvYLVOcfR7IyEb
-         mFmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MU18pqCbstum74MRC3E2tHjDA1YVe+OVt1wpMi/79KY=;
-        fh=jrOp+M5GmyzAQbm4NGcjdfOgzTgO9rahqteffdXU5EA=;
-        b=eVtoNq95/EJvlEVBfeui5LnbRShzWmJtGimRDYl/XEhgufViRynsvjUKcKsC4ot5gS
-         czrIS5jjySOacx8//rjbDAxAjosxQs1J42l7Mi/JuWQXn/VA8+oCRi690RxsYcYgPHn0
-         ecBXyzFBjaeVqbHn4jLmbkpYT3I4BqXSEMjP6/P5FLyHRxGL7d0KE+T+5vxI39P1vSA3
-         bsu9CDWlf9Xeft6XC5vCXy0ZrtzzDC+C/DIOlzsiV611bz92O0Kw8k9jDsHg2KQwHpUz
-         iySTnOfTAUaC0tSGZ1Dwd5O3s6/oJ3I3cTS1sTYzrIKasztnZNz/m2lOUNymUATNsSuR
-         T3Xw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792592510; x=1793197310; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MU18pqCbstum74MRC3E2tHjDA1YVe+OVt1wpMi/79KY=;
-        b=l5+o7Utq61mROPIt5HXnx8jgflP/Qv9DkDoMgdY7mgu7+kVqtAbf/ncplBw8fDdWDr
-         uouuxKe9h9OtAthEFkkWMpXcqRefbWtk7l5UGaNB20iQrQjAlJ9yoLkAKPfiL2Ge1fnM
-         Eee/oeU1O781sVFAtxAO4Poiy/jonahaK7BpuVU+MI05oQcnG7T/10SOtWZXADOWHmMm
-         9GbP9ERsqephsYQ1W5sBXcnSj8glmb9Qj19dVN8QRvk3K4mZVdr6iWsOkd5U4NOVJIEv
-         qnfRWETgIbkTvaSTcu525XnSsVe+fqztDkgnPLtJ//xBK3xbw8P5yovkveWzH3nbZw4h
-         uZWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792592510; x=1793197310;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MU18pqCbstum74MRC3E2tHjDA1YVe+OVt1wpMi/79KY=;
-        b=UWIEDW4mc+DF3huNVukj7MGR+2PIJR90f5o49jmFRnPCMH/h/IUoRm7zHjJHTB+jc+
-         v4BEJN1S8o4cTAj7Z5Y37R14/Fja/ymKNJNwJejV10MDjYziOtGxvKPMCJ8nu0UqkRZ7
-         yb9C6xvS1SH/vb9/gF7MYeyW4Jfi6DlHO4+kC/mBR4VWD/Kzupch0LDI/X4A5icD/kS+
-         PQ1Xmxonlc7NclZvGg18J09lzQttrBCg81V963Z08SuXC0wmP1Aqs/p5b12zTkdVUD3u
-         RZOAxUETGHlTSU9oIXVMY6thLf3YbpfT2lgvOq+4IxE4RX5E5/alUjUUKTM7EannGgjh
-         7ZKg==
-X-Forwarded-Encrypted: i=1; AKwUvBwBEZulqUr+xRKWxQ3LtXgZ9qvOt4TVIE3t7gWBEJ7pjhdhNt8IZxGkWcQVqk5hkDF/eNbtBhK4OispwUx7jQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKgpmMVy3NDXWluzGRIecIwNniZcpZR89Ol8bAYLSR5lyLWfx5a
-	bIQkYIksx3kTt3cvIVJEMA1B034twQYfxvqAKiQHQVgGB1IvaKfCsU0l0iPqeZQGMiUyHJg3PQS
-	nvw8GAn3gLPb7FqJgn6Rl94DKj3NGjNAxdNjls3L2
-X-Gm-Gg: AYBFou0vrRSUJtoCwu7mHNaPSOos7j8oSBMlft9X3PfsuK8RFaBAVs6WnWMnqhN3yMS
-	2YQcAODUXAb3IVATQ3KU1xdTnpobraqt9n89Q3rUFXYSc9T5Ew8XmV0IjmIcmPFJsta8yEJ7Jng
-	XrESX8qfaEuiqnZb4NaMbFdOrCwkPrYEoQLgrFLIk4TFKfV+cPOlCksi3UnJxdhiMcVhe/Xe40t
-	S/mChLZjhks/bdn3tG5PeeVH652OUhie9IYf2M2KvONOj/v9u1uESBY288NbI9TEaRMs3g1ppr4
-	KNO0mPh+U+Po8jdzFLzVq/s/XmuuJQnqREKrJPSOthh3xqjmdomqxB+kZwjPpZoeVPk/YzDcvO7
-	taDsmNrIGBcniVPLEG+B4UUJuHWWbYxqvWs4doBvcUyyN+kn9QVWXjQZBMmoghRWgrOVD
-X-Received: by 2002:a05:622a:354:b0:536:78de:775f with SMTP id
- d75a77b69052e-5368b3f333cmr33969951cf.15.1792592508742; Wed, 21 Oct 2026
- 07:21:48 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mTS2ydON
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D031F000C1;
+	Wed, 21 Oct 2026 15:04:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792595073;
+	bh=XO5kU4TA2hsV8P7bI/3a0t4nzK1sUFsih2IqSO0IkMs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mTS2ydONSSO6OigfGcGip2G9X7UcUMUYTgHs9wwKKmV3PQWi5nxkNFMdkNfn5Xuic
+	 M+yDYURU1FgBRYcx2ZXhdzeBO6oUJ+Se/skX1ZdNUdVvzFg7L0zdZTheDuLdQAzhBY
+	 Baj74muZs4Xd6YJDv9Ckcvp8O8prgjV9Blw7KstpuQ0vynKFSEfNqYLgD9l8QtVAX+
+	 d1p7scuPa63YBmoVCFqBcEcacorrqwiD1y1VXldz6Zrt6doVfZllKu4QDli8HZAjWW
+	 YqTt0UgGAC/H86363Yt9y0lm3wLRVII09i8FWL9cEg4kxm2w0Iu1sMt/SpNSc8yZrz
+	 zGf/Ia5geAoOg==
+Received: by traversing.sirena.org.uk (Postfix, from userid 1000)
+	id F3D971CCFA94; Wed, 21 Oct 2026 16:04:30 +0100 (BST)
+Date: Wed, 21 Oct 2026 16:04:30 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Cc: lgirdwood@gmail.com, linux-sound@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: ASoC: Exploring Rust support for codec drivers
+Message-ID: <atjUfiQ2fDkNpLYz@sirena.org.uk>
+References: <CANBuOYrCHc=HSe2z45EKXjfHqPO2Dzh7L7Atwrzboz9d-H=Lmw@mail.gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -104,82 +59,46 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019151243.1595858-1-gprocida@google.com> <CANiq72nqq4oGBWVtSMBhXS6G4H7fYg07ysD7SjnOWWt7R9_ajw@mail.gmail.com>
-In-Reply-To: <CANiq72nqq4oGBWVtSMBhXS6G4H7fYg07ysD7SjnOWWt7R9_ajw@mail.gmail.com>
-From: Giuliano Procida <gprocida@google.com>
-Date: Wed, 21 Oct 2026 15:21:11 +0100
-X-Gm-Features: AclHuK_l_GB8NMqOM7xhy5i6_g75rv7YJWm1OfYD9VBDfvjZnP8GuutQTREMq9c
-Message-ID: <CAGvU0HnBuoVMf2JwEhRCijxRn9MPnrX=yxxbo3YywT+RqCTheg@mail.gmail.com>
-Subject: Re: [PATCH] rust: exports: emit ___EXPORT_SYMBOL without C declarations
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	linux-modules@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="KGdcTBIzfaVoCt5A"
+Content-Disposition: inline
+In-Reply-To: <CANBuOYrCHc=HSe2z45EKXjfHqPO2Dzh7L7Atwrzboz9d-H=Lmw@mail.gmail.com>
+X-Cookie: Whoever dies with the most toys wins.
 
-Hi.
 
-On Tue, 20 Oct 2026 at 20:22, Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Mon, Oct 19, 2026 at 5:13=E2=80=AFPM Giuliano Procida <gprocida@google=
-.com> wrote:
-> >
-> > This change defines `EXPORT_SYMBOL_RUST_GPL(sym)` using
-> > `___EXPORT_SYMBOL` directly:
-> >
-> >         asm(__stringify(___EXPORT_SYMBOL(sym, "GPL", "")))
-> >
-> > matching the `__ASSEMBLY__` path in `include/linux/export.h`.
->
-> Hmm... It says it matches the `__ASSEMBLY__` path, but it matches the
-> `#else` path, no?
+--KGdcTBIzfaVoCt5A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The description was AI generated, but it is accurate. Both paths use the
-triple-underscore three-argument macro alone.
+On Wed, Oct 21, 2026 at 11:31:48AM +0200, Jihed Chaibi wrote:
 
-...
-#elif defined(__ASSEMBLY__)
+> I haven't found any ongoing work on Rust abstractions for ASoC
+> component or DAI drivers, but I may have missed something.
 
-#define __EXPORT_SYMBOL(sym, license, ns) \
-        ___EXPORT_SYMBOL(sym, license, ns)
+> My initial idea would be to investigate the minimal abstractions
+> needed for a Rust codec driver to integrate with the existing ASoC
+> core, starting with component/DAI registration and callbacks, and
+> expanding only where needed.
 
-#else
-...
+> Would you be open to this kind of work in ASoC? And is there a
+> particular approach or existing effort you'd recommend looking at
+> before starting?
 
-> Cc'ing the `RUST` entry and modules too.
->
-> In addition, I wonder if we should avoid hardcoding the particular
-> form of that `asm(...` and instead expose it from the C header. That
-> way we avoid repetition and getting it out-of-sync -- that was part of
-> the original reasoning.
+I'm not aware of anyone else working in this area, I'm certainly open to
+it.  The main issues I see are that most meaningful CODEC drivers use
+lower level abstractions like regmap which don't yet have rust support,
+and the ongoing refactorings that Morimoto-san is doing.  I think the
+CODEC drivers should be fairly stable now, though.
 
-I wondered the same thing, but that would introduce yet another intermediat=
-e
-macro.
+--KGdcTBIzfaVoCt5A
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> By the way, I am right that you noticed this via GCC builds?
+-----BEGIN PGP SIGNATURE-----
 
-No, Android kernels have been built with Clang for years.
+iHUEABYKAB0WIQReagvpf3TrrA7BoYYv73Ows9A4iQUCatjUfgAKCRAv73Ows9A4
+iVUOAQCM1zv3B+5o3wFbwScgAPLDSnMIoWOzTogE57JBHBStCAEAk7EOlbED6oRX
+LS2l0IqwUfXzzLdVq4LsGtByay+wjQE=
+=smTh
+-----END PGP SIGNATURE-----
 
-We post-process DWARF information with STG for ABI purposes and noticed
-this interesting side effect there.
-
-> (Nit: please write the commit message in the imperative form:
-> https://docs.kernel.org/process/submitting-patches.html#describe-your-cha=
-nges)
-
-I will do so in the next version.
-
-> Thanks!
->
-> Cheers,
-> Miguel
+--KGdcTBIzfaVoCt5A--
