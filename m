@@ -1,62 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792541238;
-	b=rBAJCPVZupROdj1GAcz9iWxKIJGEAJcBeCuTNLka85lwJ1yfgjtjZeA1oTE1VQxyXf3W
-	 Uh2APsOankQ4mk0PQz/TYD3veXTrs1e0FKPJZqQitgsydrSCGkfIjBgi/bFmy/Ck8cf+f
-	 uEg9MRtskfj6r1nLA7fvsNuanzsQ4noL0PO+esIK3dxvIOqGZeUvG3hefZ1ILe/5lHafk
-	 ez0Ejjfiijsvs2hF34eBGtfvOZiw57oWjK3ptS1DH1GoleCqXxNnLNCnzj3zk336P7f2e
-	 us8nb4+H/O73mfQXwg1ESH1vTBiYw/pGRwyGECNCxH8p3J0k3EGMxGylCt/ILPZqBpw==
+	t=1792541249;
+	b=2ZaIRsgOaQ0XgZF++R3fKL1C1cFHM42w5F9xAMNqwLK2nKSotAVLyeKOZF9n8nisa20u
+	 kPme5Ks/EH1dnrQWggRnszjYraeWbEZkkyoBCLGWbg+ar9Bthm08gntH1KapY3zPbILMS
+	 7W8zZLyC+eNaqD4DIOtKP4OoDBEl60sJGuufYj6PkhIr7+DCPhUnIhl9Yz0v2Z7a72Cbr
+	 sOvYyvloHQmEnG99A+0XxS8QxrnKH8FFaRkxKNEqwLLdIIBzxDN5Tgr6mNidRe9X4G/o/
+	 C9YTVI2PTkmwzzg1HFTZ23MAMeGiW8l59qOlOKbPvdSv+kvW82eoijrdDZ4sMlaeLBg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792541238;
-	h=DMARC-Filter:DKIM-Signature:Received:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=xvVn8Y8fDCV94jW6KWPstvQM6iscLHTCd7/u3m0LTfs=;
-	b=L//GEI5yQCOGAqZSeVKUnRUN3EsNV999bfxGg+rC9l+rOUDJUrJ9N84a9qYNsfJszvwq
-	 +P+UfVMSz9hs3AiLXgFAD7Wqoq0eRMAp/rk/vYxiEblXpG2+SO6+A+3qAReXfFVuila5a
-	 K1cI74eJssnZ1MVf6bykIwbFjFHhe9T19/VswykRVmGjEH0ZSTynubnTPLSjmAguyrITG
-	 CyHwCmmwAkgjEO/tKF6zAtzcPG/Ehcd+eZgJ70lqHpQU+EBgxC7f3ONlc1nXK6oPeBTt8
-	 IYneh5XPUa3Yg8mwuasVmP6ikta66PVNpGoXJ1+0fAD3qQrdZnzHea1kNFVkT0b9UFg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792541249;
+	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=1zUR5GEK6BA5S7bCITK+tOcim+IiL0R8T8uB3uRypFw=;
+	b=CStFYSXEDWtY2rU8ZRk9Wez+YiXHDFiyAZfD57cRekeSE791XZH4jDGd2Bn04YH/bQwd
+	 sdqbdGLeH0iKEZAg+oeB/LTbo7upAX4gCydFbkYxGs+8SSU7m7i5NV1EJCi6IuGdHYaJU
+	 ZnQkEtQ+xld+STJXGS5UvaKW2zqV0hinITiwlqgnqobbW9c97Dv4E+0wClIkZCQg9Y+y3
+	 5Pi6cTG9CjvVxE93ziWwi+/yJgmW0oGooLJfLY+BJQu5iA5KDPtyJToIM8860Dx17TeNP
+	 evz+8hgIJDMKFjrl11mPnwrRAW+iLMoKgs4/HA+7ZU8uOnwGNwkBxwbMfyQbKTh/P1g==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Kk64iPFI;
+	dkim=pass header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=DBJaNnN0;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
 Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149D7606A319;
-	Wed, 21 Oct 2026 00:07:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 149D7606A319
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E25606A321;
+	Wed, 21 Oct 2026 00:07:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 15E25606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Kk64iPFI
-ARC-Seal: i=1; a=rsa-sha256; t=1792541208; cv=none; 
+	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=DBJaNnN0
+ARC-Seal: i=1; a=rsa-sha256; t=1792541212; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=mDNRmGcFsBoI+QahUVD4rH0GuzFzvfICeQmo8INaC4tWeyisd3SMPm8rCrvjQ29WK0ZCXzoXzxwn4+NRcyIwTMShSNwdlNn7xORA6vyEwUjr7Cgka3IcJ0o4hSsX+VgkBXWVSaAaL5jAlDiigdpbTGplfm5c+eORxYjr3kHTBBs=
+	b=PhBeSy07WAmNjWA4OynPKIL0BawTBtdmvPV3KWlfcOKUzuYA7NJDfz4B5NiHvQTasN8LyHrdsIYsEKdDdFoHFk/Na3DT9Y+OxGSfZ/Ga+DfLJkpUHZ6U9ChmutNMye8Ma79RydzrC7txtpSjwpkPLErtcBRCLKa1V2iACGZC53Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1792541208; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=xvVn8Y8fDCV94jW6KWPstvQM6iscLHTCd7/u3m0LTfs=; 
-	b=OhrWFmGHgLm3q+r73Q31S1Zl6V9ZSbriMBZgpZ2ughJgskXJs6VprkNDxjXjJ7aigMW/AJEBvUDeejvoNjw3OYEXK3QQpVRam+Du2v6wZ9dEaeq9skxaGXnh6tMwM9TRzVCr14aRThdxaFwJQxgS/avnOnRxZ/8c3khk7Ez3wL0=
+	t=1792541212; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=1zUR5GEK6BA5S7bCITK+tOcim+IiL0R8T8uB3uRypFw=; 
+	b=ekfzL4yyN6JVoAJX5jHHmeryjsljDmmFa59sgLsJvzoBtggl+Rat/n5Vpuj4TALUv2HJQe95R6CChLdCnpiRdeii2DHfruOeyjntD047NssLNnGxACrA1nz7nw96N6BoEQi+c+hOoC368NAgFNJGtqsuQddnV+y6uNK8ptVgr08=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792541208;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792541212;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
-	bh=xvVn8Y8fDCV94jW6KWPstvQM6iscLHTCd7/u3m0LTfs=;
-	b=Kk64iPFI+la3xEnrUdP/iMSv4DN3klAcgpqq6/2/+TlCJtHMPHebO7xQSru3T9yo
-	nl8kptpnWtNeFYSQ42Gx7vcAMKQ+9NvwhTWYAtvnKWa70X3raaYLKMt5iNb/uNmMpRe
-	YuXUUJch71o9EA/Omge/4HBzngexmCiudXsqgvoY=
-Received: by smtp.zohomail.com with SMTPS id 1792541206606520.137903256707;
-	Tue, 20 Oct 2026 17:06:46 -0700 (PDT)
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:In-Reply-To:To:To:Cc:Cc:Reply-To;
+	bh=1zUR5GEK6BA5S7bCITK+tOcim+IiL0R8T8uB3uRypFw=;
+	b=DBJaNnN0xwPmmWzktPGNzvjxbQglRv47/8iJ7FWqpBQOw4gHUmy7gIbQJhUU03lk
+	RonFSD4Z1vcxW+YuMkqs2rphAy6U49uknah/CSOTlxyLW/EcTW2B29LRF+y9T/QRaTD
+	jT9QnfSkQJIqo+ysgWF67Po7XGdSa7ilClojNbAE=
+Received: by smtp.zohomail.com with SMTPS id 179254121012077.48844824785681;
+	Tue, 20 Oct 2026 17:06:50 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Subject: [PATCH v4 0/3] drm/tyr: allow mismatched buffers for dev_query
-Date: Tue, 20 Oct 2026 17:06:44 -0700
-Message-Id: <20261020-b4-dev_query_fixes-v4-0-df66b4c98bc6@collabora.com>
+Date: Tue, 20 Oct 2026 17:06:47 -0700
+Subject: [PATCH v4 3/3] drm/tyr: allow userspace buffers to be mismatched
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -68,13 +67,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33QS27DIBAG4KtYrEs1DA8Hr3qPqrJ4jBOkJCTYs
- WpFuXtxsmhURd0g/cB8MHNlI5VEI+uaKys0pzHlYw3qrWFh545b4inWzBDQCBCKe8Ujzf35QmX
- ph/RNI1cEzgMqtMqxWngqdD+odZ9fNe/SOOWy3N+Yxbr7LzcLDtwiKCkAvGrxI+T93vlc3HvIB
- 7aSMz4z+iWDlSFJJqIGDcG/YuQzY14ysjLDBloRopNa6L/M7dFxofOlTm96tP07vK5ZdbAoV31
- 7uvTpOOS6TNkv9TYPGJUe0EodNt2s1wF6NxKv+CFNXSOVbZ0CiUZ5sIp8NMJvfKu1MDpqQ220M
- ci2/uT2A7QKKhTPAQAA
-X-Change-ID: 20261014-b4-dev_query_fixes-4e0ab024294a
+Message-Id: <20261020-b4-dev_query_fixes-v4-3-df66b4c98bc6@collabora.com>
+References: <20261020-b4-dev_query_fixes-v4-0-df66b4c98bc6@collabora.com>
+In-Reply-To: <20261020-b4-dev_query_fixes-v4-0-df66b4c98bc6@collabora.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -90,60 +85,116 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  dri-devel@lists.freedesktop.org, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1980;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3093;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=3mXYYH2Wyp7iMdOVfIyLyhIL3ZJckx+Ml8KpZV29isc=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFk3mERfTo/dHbnGdP7B+5tdf7y8z2Q7r3NNVohomLxKw
- L7vwlmtHaUsDGJcDLJiiixn7Y16xKveG+nO/98MM4eVCWQIAxenAEwkrp2RYe2anoJHPh9UcrpM
- 2DZM9Xf2iJdcd+ubcoQBr0TXDYfLKQy/2ew6i2Pr2/6c5l5am/vvUkpFyrqEtlf9DAsfrtqvfjq
- XGwA=
+ bh=cw/gH4gJ7P+GmpjRc8el+UvRXUZRj4b9UKEbdATligI=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFk3mERnajzZ/E6LRUzhsr5DqkaYW2vLl7d7Vn3/3aBVr
+ 7BbRTSoo5SFQYyLQVZMkeWsvVGPeNV7I935/5th5rAygQxh4OIUgImkBzMyfHR5s5GXZes+8dNe
+ O948t0+dFbpNuejaheo73FVFlmVPtjAyHN3KwRSxYbPw8dUPxX7zFzBLdOZqBqceXNzKf+InV6E
+ JGwA=
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-Panthor UAPI for DRM_IOCTL_PANTHOR_DEV_QUERY allows userspace to provide
-a smaller or larger buffer than the kernel needs. Revise Tyr's
-implementation to match the expected UAPI behaviour.
+Allow userspace to provide a buffer that is smaller or larger than the
+object that the kernel expects to write into it.
+
+Set a minimum buffer size to match those in PANTHOR_UOBJ_MIN_SIZE. If
+userspace provides at least the minimum buffer size, then simply write
+until the buffer is full.
+
+If userspace provides a larger buffer than necessary, then zero out the
+remaining buffer.
+
+This ensures UAPI compatibility with Panthor.
 
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
-This series depends on:
-[PATCH v5 0/2] drm/tyr: safely write GpuInfo to userspace 
-https://lore.kernel.org/rust-for-linux/20261020-b4-gpu_info_intobytes-v5-0-3e0c7c93223c@collabora.com
-
-Changes in v4:
-- add new UserPtr method to accept u64 address
-- replace write_truncated() with write_slice_partial()
-- replace AsBytes with IntoBytes + Immutable in set_uobj
-- replace u32_as_usize with usize::from_safe_cast
-- remove redundant import size_of_val
-- Link to v3: https://lore.kernel.org/r/20261016-b4-dev_query_fixes-v3-0-f8071cda3515@collabora.com
-
-Changes in v3:
-- replace "as" cast with lossless u32_as_usize()
-- Link to v2: https://lore.kernel.org/r/20261015-b4-dev_query_fixes-v2-0-e3e6d25050cb@collabora.com
-
-Changes in v2:
-- Added #[inline] to UserSliceWriter::clear()
-- Link to v1: https://lore.kernel.org/r/20261014-b4-dev_query_fixes-v1-0-92043100b472@collabora.com
-
----
-Deborah Brouwer (3):
-      rust: uaccess: add UserSliceWriter::clear()
-      rust: uaccess: add method to get UserPtr from u64
-      drm/tyr: allow userspace buffers to be mismatched
-
  drivers/gpu/drm/tyr/file.rs | 49 +++++++++++++++++++++++++++++++++++++--------
- rust/helpers/uaccess.c      |  6 ++++++
- rust/kernel/uaccess.rs      | 33 ++++++++++++++++++++++++++++++
- 3 files changed, 80 insertions(+), 8 deletions(-)
----
-base-commit: 3497a403264b094ebd61b8b755165d56e7d9dc37
-change-id: 20261014-b4-dev_query_fixes-4e0ab024294a
-prerequisite-change-id: 20260923-b4-gpu_info_intobytes-c2d45f2935c8:v5
-prerequisite-patch-id: 0ff3c9871f563680d2888d489cc155cc52788048
-prerequisite-patch-id: ecf0aed0bd7e4f8d3bc1bbaabb02976fc8d5fa4d
+ 1 file changed, 41 insertions(+), 8 deletions(-)
 
-Best regards,
+diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+index ceadde976502..bf66238ea4c6 100644
+--- a/drivers/gpu/drm/tyr/file.rs
++++ b/drivers/gpu/drm/tyr/file.rs
+@@ -1,14 +1,18 @@
+ // SPDX-License-Identifier: GPL-2.0 or MIT
+ 
++use core::mem::offset_of;
++
+ use kernel::{
+     drm::{
+         self,
+         Registered, //
+     },
++    num::casts::FromSafeCast,
+     prelude::*,
+     uaccess::UserSlice,
+     uapi, //
+ };
++use zerocopy::Immutable;
+ 
+ use crate::driver::{
+     TyrDrmDevice,
+@@ -16,6 +20,37 @@
+     TyrDrmRegistrationData, //
+ };
+ 
++trait UobjMinSize {
++    fn min_size(&self) -> usize;
++}
++
++impl UobjMinSize for uapi::drm_panthor_gpu_info {
++    fn min_size(&self) -> usize {
++        offset_of!(Self, tiler_present) + size_of_val(&self.tiler_present)
++    }
++}
++
++// If the user buffer is at least the minimum required size, then
++// copy as much of the kernel object as will fit into the user buffer.
++// Don't fail if the user buffer is smaller than the kernel object.
++// If the user buffer is bigger than needed, zero out the remainder.
++fn set_uobj<T: IntoBytes + Immutable>(
++    usr_dst: u64,
++    size: u32,
++    min_size: usize,
++    src_obj: &T,
++) -> Result {
++    let size = usize::from_safe_cast(size);
++    if size < min_size {
++        return Err(EINVAL);
++    }
++
++    let mut writer = UserSlice::new(UserPtr::from_u64(usr_dst), size).writer();
++    writer.write_slice_partial(src_obj.as_bytes(), 0)?;
++    writer.clear()?;
++    Ok(())
++}
++
+ #[pin_data]
+ pub(crate) struct TyrDrmFileData {}
+ 
+@@ -48,14 +83,12 @@ pub(crate) fn dev_query(
+         } else {
+             match devquery.type_ {
+                 uapi::drm_panthor_dev_query_type_DRM_PANTHOR_DEV_QUERY_GPU_INFO => {
+-                    let mut writer = UserSlice::new(
+-                        UserPtr::from_addr(devquery.pointer as usize),
+-                        devquery.size as usize,
+-                    )
+-                    .writer();
+-
+-                    writer.write_slice(reg_data.gpu_info.as_bytes())?;
+-
++                    set_uobj(
++                        devquery.pointer,
++                        devquery.size,
++                        reg_data.gpu_info.min_size(),
++                        &reg_data.gpu_info,
++                    )?;
+                     Ok(0)
+                 }
+                 _ => Err(EINVAL),
+
 -- 
-Deborah Brouwer <deborah.brouwer@collabora.com>
+2.56.0
 
