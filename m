@@ -1,107 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.101.138
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792586650;
-	b=eygm0NFGiA1ilJNGZ5+l9LokiAEuL8i834YIHw8emqZV3l24W+trrXk43SvKWrVhuyjU
-	 hNuT4KovybMaeG1g8aC/SsbDyrDm+h55B+NG3HJZYT4fZCRbjBOzr6WoXvOBhfP0rzHva
-	 KgKK/yCAAnKMEaKVig1DqGpMABBcaRG5tsMldQ7L3RycR4tP0jAw/yzDxOOIbFofFMXJp
-	 qcRPzpJCy2BXhPdPyoX/vnLFLllHSkjBwHPFRlI8hXg5jCv4hgoPvm5VXMaQtAwe7ibOi
-	 68onCZkrONywIq+0p1cCnJxJUm2efUuhAvOcAfvYeWfRNXmYiy6OrVon6wY37FbBAow==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792586650;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:X-Mailer:References:In-Reply-To:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=qiXXR2zEDH8oXnzI633cw8IvrCE4Dfx6RHYptkinm/o=;
-	b=KtpS0sSe3PxIyWYW8QO3h4Kt/sBZyMYpLktO1zKQfaWVDJxsD4Do97FySSvKkhbuyT8X
-	 N3HesN4srDy3acqf1C38cqyBnRm3/FNw5EsaZd/6TJ1DAwYxdZZBBOBzbw4L51Zj8ombr
-	 hxvDJyeySE26dOOCR//c0XzDOGgjOSM45chDy2KuztASkXYWiI27u/NG3M24hUHrA+23Q
-	 bLXDSADfitBOiyXi3fYYe2avCOnMxcgDy0mNA4k8iNLY6Spfm7AKAuG2jOdHgx6BEK6Gc
-	 P1ZoY06qMf4SILSTQ4nj9ZsVSzzEkCgZ51SqoBZsSFmPjML3iA9KjlusfrZAkArPFgg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=garyguo.net;
-	spf=pass smtp.mailfrom=garyguo.net;
-	dkim=pass header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=iU2O1Hvl;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.101.138
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022138.outbound.protection.outlook.com [52.101.101.138])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.241.56.152
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792586991;
+	b=V+ZbeJcjWm5nsWK/tCnQJqaMFCtUX8SPGnR7xfJW7Eq5howFL+ll1KeZxy/hHUBaqYKX
+	 HPU4exOUqmw4m9Qj7cVsSyCrgHpErcCzjNziAWIVgsKc6k+FCxHDZB+m0UZYz/XkSCAL7
+	 E2dL8x3ThKxNWGnD8ne2I9JACDf2agVBE3TZxUMb3spxihbB/6EVzBi+jY04I1X0uzCIU
+	 0LiPFVcs75KMN0avg7rq5NNkwKdXiSmcw0rMusP9YLmTAw+TcRje6tY8YbL/qm2uelmY9
+	 T3nre95wj3e/TcZmSNO7p48SPPaxPTEdMedFAT4tq/dVc1tkSNGY0WPxWV0xlOKKOjA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792586991;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Subject:From:
+	 Reply-To:To:Cc:Date:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version:X-MBO-RS-META:
+	 X-MBO-RS-ID;
+	bh=lfnYZLKIiZVXPHMfsSfYR3WNLa/4FyJKqBCOhOsvSoQ=;
+	b=pXx0E8Hfqpk+H3+BqzFvsf+B0ydC0g2Uyfm/8taiPVz4cjyeEjUL9kttbM67Jk6hZqF6
+	 3VugygtcIoIzy16ljadZHAjzizmEMYRP3JU+O46Kwby/xIfB4VcLq5X6hJVtg7WBo+LW/
+	 VOlwrR1+NishIAQmb/POC6YqTFCYZ7Ppms5EW7qedhxGmUFFSLG1XfwSfCREq/HRdecN8
+	 QxL2Rj2wnME9Slkj2BPMYN6/o+uqzVF/wZn+KFHOqbG61Rppi3KqGgPVZ+kKvhKqwjMYr
+	 MZkZNEMnX4VHaF4BS9cJqm2zgh51uIEW+ERPEesc/1PADQ0U+QQ6hNjYIWuJOfsJ4ow==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=mailbox.org;
+	spf=pass smtp.mailfrom=mailbox.org;
+	dkim=pass header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b="c/2LEONi";
+	arc=none smtp.remote-ip=80.241.56.152
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361AD606A319;
-	Wed, 21 Oct 2026 12:44:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 361AD606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7C3606A319;
+	Wed, 21 Oct 2026 12:49:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0C7C3606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=garyguo.net header.i=@garyguo.net header.a=rsa-sha256 header.s=selector1 header.b=iU2O1Hvl
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DYsODCBxNwY1SNirHGhr3ezv8ZZjZMwyOEOzQ81spGrrT3T40rklSaBb6sb65vJwyzwEulY+PSnx99vigVqF0i4RuvZuaF18PS5FImIMLHBJvssjHDQImfHMRSqLQvardA4BFIY/HvCyDyv7ZDaolbpf3sali9e3WKh9JOsYV02b0IFrna9b+78JUG1LxHoYwPdQVWp/5Wujjy1mg51wx4eD64jsGyXPT0E+E3PQdi/Iny7+jlLzWc2aCNfR6Zi4ooDo1ROQ91HNDCALqq32D3FObBNI6i5Xeeeb1zOP37kHtTT5gpEdOwF12fdDQylTBeYPMh6XDq5J3RMKtwHu+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qiXXR2zEDH8oXnzI633cw8IvrCE4Dfx6RHYptkinm/o=;
- b=XZcekQiEiz2XUBPDP/osz0b3YglHCz6tpK+RQsuoASE2iSAGEvr7cTHTjNkjRT6eFwkse+DJQfxcrhaJlrfyJTeoSXjWZ5l5neHHH9D9VJYK0743Rlzge+2fD/EhpWzA8vC2mvEk8dOMso32HIp9pV9iszlTnuUf76xmDG5FM6bEn4D0Rt9RbCOdZfL9j1dFDgHHNj/slVqXs+M1cacqvSTBBRie+Y89H9FUqQA6xtO4aNIH24SxwvAGYCD6aqf8hNP/yeWyQcQzfBB435WVJd/WSIcYSIUZ4NdtsA2+xuAW275HUNjomyZC1G0wupxjR7A4xBIpkcRHoe02JHHQdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qiXXR2zEDH8oXnzI633cw8IvrCE4Dfx6RHYptkinm/o=;
- b=iU2O1HvlHQc8ZNDMTDVXnoWR++VSiNPQdYUHgB4cU6z6mvGtr/j2SNesHgBzlK0GL9ZbfcoBhF+9a4SHd/uAkbgIO+GM6wvHyhfkJ73vJhx13zrsGTceXKQA/0ZqITrYcD8oFg3yuOEGXi5RzOl3qmoedzeWCP3/Megvtfacvko=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by CWXP265MB3656.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:fe::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Wed, 21 Oct
- 2026 12:44:04 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%6]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
- 12:44:04 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=c/2LEONi
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4j8pyX5smMzKnB7;
+	Wed, 21 Oct 2026 14:49:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1792586980; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lfnYZLKIiZVXPHMfsSfYR3WNLa/4FyJKqBCOhOsvSoQ=;
+	b=c/2LEONi60z6Kz54vZJJL3DkDd/VneNflB8WzwpZzMxF+lm6XWQWwFGN7Y9x7XCdU62lFq
+	iieAL/UWCA9ebw+oXGyYtmBpdvyA4Gw3vMDGCC/nQY9qnEr3dGExjjp2LZ8mhSh1xGaZqu
+	y1wCAH/47Ojer+whhr1G2oEQpBaiYTgE7pSreffhKRRTikTLs1j1ohn+nN06XZWJLPbQhr
+	kZYCPz2D/pUTCXipUsz2RpX6QZAgJo5tfixMCt8Ta7/7HFsH1hlibyOLYt730jj4/eCqWl
+	1GHHpOfDqk7QgH6BMY4+HBMIrDBvkGGBc6Si5etuCYbWXMONtw4p+1VsRkVtFw==
+Message-ID: <320b6e7c75da6f05c015e89df0e2c7d11f20d70a.camel@mailbox.org>
+Subject: Re: [RFC PATCH v2 0/3] Solve dma_fence's problems by locking
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, 
+	phasta@kernel.org, Sumit Semwal <sumit.semwal@linaro.org>, Jani Nikula	
+ <jani.nikula@linux.intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>,  Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,  Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>,  Gary Guo <gary@garyguo.net>,
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  Benno
+ Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Daniel Almeida	
+ <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=
+ <work@onurozkan.dev>, Boris Brezillon	 <boris.brezillon@collabora.com>,
+ Alex Deucher <alexdeucher@gmail.com>
+Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
+	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Date: Wed, 21 Oct 2026 14:49:34 +0200
+In-Reply-To: <d13d1a6e-bba2-4275-984b-145e0252eb0f@amd.com>
+References: <20261020100034.759183-2-phasta@kernel.org>
+	 <3e8bc11d-6f90-47a4-ae63-cf2ff37f1ff6@amd.com>
+	 <ca78cdb7c24a9be9b640db782168cdcc5fe30b60.camel@mailbox.org>
+	 <ed2728bd-1df4-478e-9e6f-a96dfd172b48@amd.com>
+	 <4a7294da65c8744ba6355730e304b5250d0ca351.camel@mailbox.org>
+	 <d13d1a6e-bba2-4275-984b-145e0252eb0f@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 21 Oct 2026 13:44:03 +0100
-Message-Id: <DMAIXJB74Q1O.9A03KK0SSDLH@garyguo.net>
-Cc: "Muchamad Coirul Anwar" <muchamadcoirulanwar@gmail.com>, "Jonathan
- Cameron" <jic23@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- "Alice Ryhl" <aliceryhl@google.com>, "Andreas Hindborg"
- <a.hindborg@kernel.org>, "Benno Lossin" <lossin@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Boqun Feng"
- <boqun@kernel.org>, "Brigham Campbell" <me@brighamcampbell.com>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Gary Guo" <gary@garyguo.net>,
- "Jori Koolstra" <jkoolstra@xs4all.nl>, "Miguel Ojeda" <ojeda@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Shuah Khan"
- <skhan@linuxfoundation.org>, "Tamir Duberstein" <tamird@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel-mentees@lists.linux.dev>
-Subject: Re: [PATCH] rust: i2c: remove TryFrom<&Device> implementation for
- &I2cClient
-From: "Gary Guo" <gary@garyguo.net>
-To: "Igor Korotin" <igor.korotin@linux.dev>, "Danilo Krummrich"
- <dakr@kernel.org>, =?utf-8?q?Nicol=C3=A1s_Antinori?=
- <nico.antinori.7@gmail.com>, "Georgios Androutsopoulos"
- <georgeandrout13@gmail.com>
-X-Mailer: aerc 0.22.0
-References: <20261019152329.620610-1-nico.antinori.7@gmail.com>
- <179258597583.20422.10358976352101642829@linux.dev>
-In-Reply-To: <179258597583.20422.10358976352101642829@linux.dev>
-X-ClientProxiedBy: LO6P123CA0044.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:2fe::20) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -111,132 +96,250 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWXP265MB3656:EE_
-X-MS-Office365-Filtering-Correlation-Id: aed6d023-7557-4d2f-04c5-08df2f70fcfd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|23010399003|7416014|376014|366016|56012099006|4143699003|5023799004|10067099003|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	rB7HpX8hFpojNCjH1fReTIC5eseX14iwKHDHk5ZWF+IprUHbve30P1IQflMJJi1d/xIpCOPdg//sBzCURNchZVjsOYXCXu+2PSoTTe2J7KjUmAZmiMkSuYAnVJSRO658+kmsdtHdfLLAZ8mPN8OsrBTUtJSYfI0efCym+pbP+Qy2nsMemUIrbW85zt9G88mM+jW9MoCeynfTmHYbXVywCj4qKYvSCNtfG7chOiXDyhq3QLNR3OrtR6zSSYQa81loLOKdF/e80+icDh/pK4Mp3/njoNbVnsLUTDqadPAfwe7SjnWgqz3q38IF4ky4eZFVfAqStZH0G5zvKKKpway0xrz/apbQYiN3pdoi2I3zbnwgOjyscesiiGknaImyGlxe4Imae3apeJ5ofZmmT27Uw5wQvpp7PWYamOGiB9HhNyZndnsZlM3nrUUzPCFfQcf2unN3zSB7uZJyDf2khtlXY8L3Um3GzQMwZ0InnxayMotgZa6y8rlH/4xE/AeoVAsb3M/xcUO0yTt81m7R0CG+PvjAfvwrufUrRhiYLH1pOpqQ0xDFzN2h4lcGqzCjIZcVnti8eJWKpxwc39Mq1KVIrmYNvLyGDlxYqb5s/XLMj1XYBkPgqp5qSqa5p/1pBmPs+06scVrzsAR7mmtehDmOXnN3GLFfH6Cr4/rZJ++miqc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(23010399003)(7416014)(376014)(366016)(56012099006)(4143699003)(5023799004)(10067099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d29STDBSMHBHMjlEeHhEbWdjTEZRVGlNaHJycDhrVFBqL0l2YzV6eE9Nc1Ev?=
- =?utf-8?B?eDFOS3lDeEREejlic3k0cUZkSzR3Wlp3cFZqd3k1Q0czYmZOYUo0ZHVZMVpC?=
- =?utf-8?B?K0hING85ZmJtOVpCKzNMZXBHMTlNOEl2TEtXUjR6MVMzL2RlMlNJWm1nYnpn?=
- =?utf-8?B?dzZHUTFySVIvY0RjQlRYZTRJa0hOOGRMelRCbHlUQW5qb2VzMTI5M21pblNT?=
- =?utf-8?B?alhZaFlhV04yK2JzMTBEWHkrT1ZNY0dWMUFZUlYrM0w2LzNnTTZvWlFtamM0?=
- =?utf-8?B?TTRNblhIYnJRaUlaR0sxM3VHNDAxcXZwdnVRbndFVGY0bkIyRTlvSWJkbUFa?=
- =?utf-8?B?T2VteEQzMm42ekJQSFBQWmJQUmtLSU9BeCtSanc5cGRsK2lVUjhYSDFYS1p2?=
- =?utf-8?B?YmpNUG10K3JBSlRKQmtZMklmWDhPQW1KTm5JZmxaZU1JTzNrTGtDTys4NExQ?=
- =?utf-8?B?ZnFhaGV5UFZPaHlnby9KTlFWZ1lVWnZiZ3pGSkl4OXkzRGgwaG9CeXRLcDJ4?=
- =?utf-8?B?Y1VIM0pnNkFualQ3bTBjM2swd2x5a05HOXAzL3JKb2NwWTdDMW1UYWFtdVJt?=
- =?utf-8?B?MFhYTWJUcVdDMzRLYk10Q1A1VUlMMk9rRTV2WkNxcysyTWNpYjE1eEF1anYv?=
- =?utf-8?B?MXlCT0hEZEVVdWZVVEhqWHhMOGJMQlJSUm92aG5pS0Z3aFIzZjhFdFdlbjJD?=
- =?utf-8?B?aHhPZThvTGNEbDZWRmg3RXRrQ3Y0WFFkbldlNmNiMFEyWitaQXFvVXc0WklG?=
- =?utf-8?B?VWQvejVXWkxhYmdDRnk4MHVydGhPNU9TYVl4TjFWQ3RnMFkrakE5QitZblBC?=
- =?utf-8?B?d3grbmtNcWo1UDNxUENEZlNiM1ExaC9VV3NhakxGM3FSeXBJTEFOTlpaWmp2?=
- =?utf-8?B?cndrUWZqQ0I2VVdZNTc0cmRsYis1SjNSdDV6cTk5OTFOWSt6bnVzczVVdkVV?=
- =?utf-8?B?KzNRNGdQOGhPNVc3TzFFQXlIUGc2OHI1MEhUKzhPT0JiRmY4TnI0bG93Z0hu?=
- =?utf-8?B?VGhmaktabGZnNDhVdk5sYkg4SGRBNWlCeERtaDlVMWdmd29sRnhwVzd3bk1w?=
- =?utf-8?B?WXcyNXNmeExJVm5sTUFOMTI4ZXNDbnU5Q2lDZHJIVkFvZkNkNXQxd3RwUnZ5?=
- =?utf-8?B?NTVER0g4cU5YTllwbSt4SCttOFRRaG9NRGxZbmVnb0lpbDVVSFIydy9scXdK?=
- =?utf-8?B?bmx6L0g4MGtTUlBhN08yS3Z1a01YWVYyd2ZQMVJkRTN6SzhNR1J2bkphUmpU?=
- =?utf-8?B?Tmhkc2gzc2RLVzkxanVneFUyaFRZeGVOQUg2bVhUMnVEelo2dWdLK0ZDNHR0?=
- =?utf-8?B?NTNsd2VKanlmeE94SHBQODNKbWlzbjVjUVZtNDNvSURHcGRFanRpZk1OSlh1?=
- =?utf-8?B?VGFOM21oN3R0YWJwT2E4a1NKeUpUenNLemxJMUhHNCtCYnFtZi9YVGN1T3FZ?=
- =?utf-8?B?UnVOSkZYK1NOdG4vTmRrOXhoRS9ZakplcXd2Tzl1cjBQa0UwVk9NSENhN1Zi?=
- =?utf-8?B?NUNma2VxT3FrYVpKalZEOUhWZFRaSnNzeXNGc0Y4OUlJVWNhQ1dpNWZCcW51?=
- =?utf-8?B?QXl1Qzl0a1pwRGdVb3RBRUJLNFBVN2V1cUMyUm93SDFLeHVvU2NxOEFhYXpy?=
- =?utf-8?B?b0dIczQrVGs4RnRwRGRiTXVnUUZia2hPSmhjNTIxNjRvU3NtcmRLUmZEdW9o?=
- =?utf-8?B?eWpKMXU1U0tZcCs1M0xaaTJuU0p1bk5ua1NHbFZIZXg5UHpXMkVoTTYyOE5w?=
- =?utf-8?B?b0ZnbzdoalJlN2Racyt0QjQ2dzFtTHdHZ0VvT1h1QS9KdFdBT2daenVuYlV5?=
- =?utf-8?B?a25VSHBJTnBoVmM1cWdqT2t4dS9XQkxBd2EyUm1hZ1dUc2tyTlFNMzBmaTRY?=
- =?utf-8?B?ek8xZEpGMy9vcXl6WEdnNnhFRlJsYloyT3grcUdobE9CK2F2clBNUlZ3czdU?=
- =?utf-8?B?cit5c3pCd3NHQWlRR0VFS0JBaFI5ekwzV1BjTVlhcWJhL2RNZVNOWnB1WnlL?=
- =?utf-8?B?WWIvb0JZaDdUd05OR1dwL0pjNmVKdElodnAwR3QyditjdnAycVZnVmNZR3J1?=
- =?utf-8?B?VmlrQWUxTDJobWtwSWp0MVV2RTdaVDhtWXZzMEVXREpKZWVBbGR5UXNkc0dM?=
- =?utf-8?B?U05hSzBGcWNFNW9PV1RQa1p0N25HVnJMUzRmTXEyZlRkUE00WXA3a0NqTnJE?=
- =?utf-8?B?L0NuTkg5VFRKdHZ3SmdpeklwQlVlOExST2orRTFLYVdSRGdCaTM2WDRKMGdN?=
- =?utf-8?B?VnhwVGgxVFc0aWlTZURwdGtzQllvNXFvL01zaCt5eXlIL3N2b3V0YkNNbHVh?=
- =?utf-8?B?SUxaRFAwaTd1NXVQaTVOWTRTY243K2JpQmVXVG1NcVhXbjRzbGMzdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: aed6d023-7557-4d2f-04c5-08df2f70fcfd
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 12:44:04.1423
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BElEnEnph2vLz5L22aDyHe0wDKO0/Yt0Q0FmzPJ7f54cIUJsH7pdSL9BcxoVpRohMrC1aaXgRdLxE603cp6aVA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB3656
+X-MBO-RS-META: 3bmg6dk9gyqm43c5y7c8ggghkg156yj5
+X-MBO-RS-ID: 29c0397ed4351857f79
 
-On Wed Oct 21, 2026 at 1:32 PM BST, Igor Korotin wrote:
-> Hi all,
->
-> Want to flag something before this lands -- I gave this an Acked-by
-> already, but while reviewing Muchamad's concurrent AS5600/IIO series
-> (Cc'd) I hit a real conflict with it.
->
-> His IioDriver::read_raw is called by the generic IIO core, which only
-> ever hands the driver a generic &Device<Bound>
+On Wed, 2026-10-21 at 13:53 +0200, Christian K=C3=B6nig wrote:
+> On 10/20/26 17:36, Philipp Stanner wrote:
+> ...
+> > > > > First of all that prevents concurrent execution of the callbacks
+> > > > > which for a lot of use cases is a must have.
+> > > >=20
+> > > > Currently only set_deadline() can execute in parallel.
+> > >=20
+> > > Especially the is_signaling() callback is executed in parallel by ton=
+s of use cases.
+> >=20
+> > ops->signaled() you mean.
+> >=20
+> > Anyways, only one will succeed at having the fence marked as signaled
+> > anyways, and then all other callers of dma_fence_is_signaled() will be
+> > guarded by the fastpath bit-check (which btw is also broken; but we
+> > want to address that in a different patch. For now my series proposes
+> > keeping the fastpath).
+>=20
+> What should be broken here? As far as I know the signaling path works per=
+fectly fine.
+>=20
+> What we have problems with is the lifetime of things.
 
-That'd be a subsystem design issue.
+The signaled bit is set under lock-protection, fully ordered. Reading
+is just racing. See my other patch series, I linked two bugs that could
+have been avoided if it were ordered.
 
-In the latest device driver lifecycle model design, class device must not m=
-ess
-around with parent bus device. It should use its own mechanism to carry aro=
-und
-private data, which is initialized when creating the class device registrat=
-ion.
-
-The callback bridges should simply retrieve that registered data and hand i=
-t to
-the driver callback. The driver can decide to put whatever it needs there, =
-and
-this include a `&Device<Bound>` of the bus device (hint -- you probably don=
-'t
-need it, it should just be a reference to whatever bus device resoruce the
-callback needs).
-
-The need for conversion is a strong indication that it's not aligned with t=
-he
-device driver lifetime design.
-
-Best,
-Gary
-
-> -- it has no way to know
-> the device is I2C specifically. To do SMBus I/O there, the driver needs
-> to recover &I2cClient<Bound> from that generic reference, which is
-> exactly what this TryFrom did.
->
-> I checked whether storing a handle from probe() instead avoids the need
-> -- it doesn't. AlwaysRefCounted is only implemented for I2cClient
-> (Normal context), not I2cClient<Bound>, so there's nothing you can hold
-> onto from probe() that still proves "currently bound" later. And there's
-> no way to get back from Normal to Bound (Deref only goes the other
-> way). As_raw() on both Device and I2cClient is private to kernel::i2c,
-> so a driver can't reimplement the conversion itself either.
->
-> So removing this outright leaves no path for any bus-agnostic subsystem
-> callback (IIO being the concrete case, but this'll recur for SPI, HID,
-> etc.) to ever recover a bus-specific handle after probe. Danilo, you
-> mentioned a fix tying the lifetimes together properly
-> (impl<'a, Ctx> TryFrom<&'a Device<Ctx>> for &'a I2cClient<Ctx>) as an
-> alternative to removal -- given this, I think that's the right call
-> instead of deleting it. It closes the actual soundness hole (output
-> lifetime no longer independent of input) without removing the only way
-> generic callbacks can get back to a specific bus type.
->
-> I haven't pushed Nicol=C3=A1s's patch to rust-i2c-next yet -- holding off
-> until this is settled.
->
-> Cheers
-> Igor
+Anyways, I was just answering your point. These functions' parallelism
+is unchanged.
 
 
+> > > >=20
+
+[=E2=80=A6]
+
+> >=20
+> > Nope, I want to protect shared data, which is the signaled-state. Which
+> > is currently a race-condition worked around with RCU (and sometimes
+> > with manually doing the right thing (locking!)) [1], stemming from the
+> > fact that the fence's spinlock is not used consistently.
+>=20
+> The fence spinlock is consistently used for protecting the fence
+> signaling, in other words it always happens with the spinlock held,
+> same for adding callbacks.
+>=20
+> The only thing which happens without the spinlock held is the fast
+> path checking of the signaled and enable_signaling bits and as far as
+> I can see that is ok as well.
+
+No, it isn't. It makes the API fragile.
+
+	commit c8a5d5ea3ba6 ("nouveau: fix client work fence deletion race")
+	commit 7c703a7d3f2b ("drm/amdgpu: Fix one use-after-free of VM")
+
+There are certainly more related bugs around.
+
+Also think of the various ordering issues between signaled-bit and ops
+pointer that you and I observed.
+
+> The problem here is not about the state of the fence, but if the
+> callbacks are still executed or not. And that is not a good task for
+> a lock, instead what is usually used for that is a barrier and that
+> is exactly what RCU provides.
+
+Locks are for mutual exclusion. Which is what you want here: you want
+to exclude someone from signaling the fence while you are working on
+it.
+
+Tell me one thing:
+If locking is the wrong approach, then how come it was added to
+literally all callbacks except for set_deadline()? Seems to me that it
+must have solved some issues.
+
+
+>=20
+> > > > > Then as I pointed out before the second problem is that this agai=
+n
+> > > > > makes the existing lock inversion between the signaling by pollin=
+g
+> > > > > and signaling by interrupts even worse than it already is.
+> > > >=20
+> > > > We asked for examples in our last discussions, and the only one eve=
+r
+> > > > presented was the list-access requiring the fctx-lock in
+> > > > nouveau_fence_no_signaling(). Nouveau is often not a good example.
+> > > >=20
+> > > > Can you provide examples in the kernel where deadlock would occur?
+> > >=20
+> > > Just exercise the simple example of a driver supporting both pull and=
+ interrupt:
+> > >=20
+> > > Interrupt: Handler takes lock protecting a linked list, finds fence
+> > > and signals it.
+> > >=20
+> > > Polling: is_signaled is called with fence lock held, can't take list
+> > > lock and so needs to work around that somehow.
+> >=20
+> > signaled() neither needs a list lock nor any other lock.
+>=20
+> I don't think we should decide that inside the framework, this is up
+> to the implementation of the dma_fence backend.
+>=20
+> By taking the lock for the callbacks we just move the complexity of
+> handling from the framework into the dma_fence_ops implementations,
+> and that is something I would *really* like to avoid.
+
+Of course the framework needs to specify exactly what the callbacks are
+about and what the driver should do in them. That's btw why many expect
+Rust to result in often better driver design, because by the type
+system you can define how your API can and cannot be used.
+
+> > It needs to read a sequence number from somewhere, so a u64. And then
+> > it returns true or false to the fence_backend.
+> >=20
+> > The u64 can easily be an atomic. Also ioremaped reads should work
+> > locklessly.
+> >=20
+> > No need for any lock.
+>=20
+> It is perfectly possible that you need to take whatever lock you want
+> to cleanup things. E.g. spinlock for list removal, common lock with
+> the interrupt handler etc....
+
+That's like saying it's perfectly possible that someone will want to
+allocate memory in a callback. Yet we say No, you cannot do that.
+
+>=20
+> That's also why I said that the whole approach with the signaling and
+> enable_signaling callback returning a boolean is broken.
+>=20
+> Instead what we should do is to forward the requests to the dma_fence
+> implementation. And that dma_fence implementation calls
+> dma_fence_signaled() as necessary.
+
+dma_fence_signal() you mean?
+
+I don't get your point. What you wish to happen is already the case:
+
+dma_fence_is_signaled(struct dma_fence *fence)
+{
+	const struct dma_fence_ops *ops;
+
+	if (dma_fence_test_signaled_flag(fence))
+		return true;
+
+	rcu_read_lock();
+	ops =3D rcu_dereference(fence->ops);
+	if (ops && ops->signaled && ops->signaled(fence)) {
+		rcu_read_unlock();
+		dma_fence_signal(fence);
+
+
+
+> > >=20
+> >=20
+> > Where does such a driver-lock need to be held while operating on a
+> > fence, opening the deadlock-path?
+>=20
+> In the interrupt handler.
+
+I don't see that either. In the interrupt you will want to do:
+
+driver_lock();
+seqno =3D get_seqno();
+driver_unlock();
+
+signal_fences_up_to(seqno);
+
+>=20
+> > Note that, as I pointed out many times, all callbacks are already
+> > called under lock-protection. Especially enable_signaling(), and
+> > is_signaled() must be lock-resistant, proven by
+> > dma_fence_is_signaled_locked() existing.
+>=20
+> Yes, but we clearly want to get away from that.
+>=20
+> See the calling order in the interrupt signaling path is driver ->
+> framework.
+>=20
+> While in the is_signaled/enable_signaling/set_deadline path it is
+> framework -> driver.
+>=20
+> The dma_fence framework solved this issue by using a shared external
+> driver provided lock, and that lock is then taken before calling into
+> the backend operations. But we want to get away from that and use an
+> inline lock in each dma_fence.
+>=20
+> So the only two possibilities I can see is to either call the backend
+> without holding locks or force the backend operations to use a
+> lockless approach for their internal handling.
+
+Right now, we do both: call callbacks with a lock *and* force all API
+users to do the RCU dance.
+
+So we have the worst of both worlds.
+
+>=20
+> > Regardless, what I propose would only make a potential difference for
+> > *new* users, with inline-lock, who can then cleanly design to avoid
+> > locking problems.
+>=20
+> Yeah, but I'm desperately trying to avoid the complexity of using a
+> lockless approach in the driver implementation.
+>=20
+> Just take a look at amdgpu_fence.c and how complex the RCU handling
+> there becomes because of this issue here.
+
+AFAICS amdgpu only uses ops->enable_signaling(), and there it does
+exactly what I would have expected: register a timer who will see the
+fence gets signaled.
+
+As I said, no reason to do list accesses like nouveau. That's just the
+driver being misdesigned.
+
+Interestingly btw amdgpu's ops->release() does a call_rcu() to free the
+fence.
+
+You do agree with me that our API being usable like this:
+
+dma_fence_signal(f, err);
+dma_fence_put(f);
+
+would be robust and desirable, don't you?
+
+>=20
+
+[=E2=80=A6]
+
+>=20
+> And I still think that this is the simpler and especially more defensive =
+approach.
+>=20
+> The dma_fence framework should not leak it's internal lock anywhere exter=
+nally and that includes calls into the backend operations.
+>=20
+
+Calling a callback while holding a lock is not leaking the lock. It's
+sometimes necessary. All fence callbacks are being called under lock
+protection, for the same reason as I propose here: prevent the fence's
+state from changing while they execute.
+
+
+P.
