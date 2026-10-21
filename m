@@ -1,87 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.175
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792582760;
-	b=15CrTD9g7StRi6/XDhCN09rVPLujA4lSTM/tUC5/BWAnavvN/M6Vlx0zRcLivYAcxHtI
-	 Pfu6MNvXzBkFPVmodRNiJG+00L/Ih2DJGbgtVhgzAimm1hbPY68+aJX+xuLK84GNFnv1z
-	 H9qA7RlwNe2bnRnuWbYLHmY/b14zEQArfTa2QelJtxHqOUpWEzCR8gjwb76m2aiaWt3m2
-	 nDfkNTepboAkdGfSqO8V1B6paoD2C5vsvVNG0ZpSrswVwbBD81vmkAtQjP8+yzldlS7Eg
-	 Nnaiz0zmFaBd26bPXAoXLBgZS2kLNctM6izGslbSfy9Bfx4wTojmy+0potCOFzk5l7A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792582760;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.42
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792583068;
+	b=gGYhZySMlSBnoHN7KS1pYtp1C9LN58rjxQ7W3vCjXaN9aLhGJPRTVsm8nGYit4vaQ8zu
+	 EFVWDaITd5cXW2PWLgTnFeKV29NCJq/5HPUlUosh7rwotxDiiGaddCWysL2KGLL+dEVPq
+	 tf0p4i6T8YxEwML3O2nPcccxVNhVRkqt+FjwtoXxGOFGEL8nlNwVwxOWVemYuLTVDFvyz
+	 NUkyQSB0ruak29o1c8RKZ6G/Ltp40ePYiv7yTndJe657PzsjPGyPOJ1acQXI83kr/SIKf
+	 DFBbHjh47hvbry3zQtPlaRylsjHV7zSuKDtxibkhwE1hVQPOV0o9FtdwojXo2nbLpTw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792583068;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key;
-	bh=+VaxDdm2yeMQ8nyfzutJWB96P5Dynk6cu803aKWGLq8=;
-	b=vdjPWahJQgEpvpznWkG280GoYG9za4dqIFIIFzatD2deSzsu+at0Yc5ojRnbuzihGz7D
-	 tG0mvRUWq+hs+9/V3Qi+O30RYd+bYiPxanf2e7XAodkkY4ejLIk9T2cVLd0TlNgZAmNm3
-	 ovefwTmneSjUYTDp5niK9Dg8tLKrOREDK1AIvz6PWCT8OBNhJ3IZUfJiWVmpANhrrXzT9
-	 QoKQP2O3uca1q/I4aqFXoMtsjRqdHNmtDybUCob0iFynagmghqxPyr+7odwks/uTAswP2
-	 INZXLRFk+sfYCpX2EBptPeIwwx+lBGdipAOj/xwx5jy6QDMwoJlUyjSacDSDX4ynlHQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=beagleboard.org;
-	spf=fail smtp.mailfrom=beagleboard.org;
-	dkim=pass header.d=beagleboard.org header.i=@beagleboard.org header.a=rsa-sha256 header.s=google header.b=Fj2alYtc;
-	arc=none smtp.remote-ip=209.85.215.175
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=ZZYr3eBHIRZzy2m2KZECWH5MwINu9our1XGNLE3fKJc=;
+	b=GNglEfQokFpp379cw4KJdxgi3aSUE4tvvCYY4RWDe12s83aueeuS+f3e9waApzAGCj/M
+	 m/mR1ED7eU+eY8us6asDd5bxljAgvvvx9NpXTKxExpikn3EQXhNkEv4oFiTmjG3S5ZEHl
+	 OeNgQsdB19yuqNm5O35/8du1z2MazXqmx4qaBdmbM4RP6AI/KlxehslGSTn6VOjK7r8o1
+	 eiGj5frRlOp9hQlsJ93jLb0vlsRAsIhK6yl10+fR2SaPunSAnsKY3FCmaKHyHOCDwTGyw
+	 n8r/zkUU2louY0u23bCWRWmSvLuVxVMoudC+svSH01sxcy1s4zhKEvY7eSZ+5O37o0A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=INVRtAOm;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.42
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D3F606A31F
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 11:39:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 99D3F606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108D6606A321
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 11:44:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 108D6606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=beagleboard.org header.i=@beagleboard.org header.a=rsa-sha256 header.s=google header.b=Fj2alYtc
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cd5e2d696e0so302011a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 04:39:19 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=INVRtAOm
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48b060ec084so491161f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 04:44:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792583066; cv=none;
+        d=google.com; s=arc-20260327;
+        b=N66bXSmJ3s3JWV7sGyJs3j1bCtHAjouyGnzi461UAKc+BLrqlIp+Hz85Aga6HUSsKy
+         crO+HviPuVhXsJMYR8WZiT6Z0LAa9GBI8hUa4bxKiT8Qc9FSx7nfMMUBNyxwPo81PVC+
+         9lQyPFQS/nC2a9HNgoaXmzb1dlTkPuyoUpBp0zAq+Imwi8BcTBFkEgNlzPlUf5RRlKSn
+         Fj9N+GPDqsuuC7E3m4tnovF+hpCXbo0g3+ZjITva0lf9liv4fY5EvE12RH06WW4mcW7y
+         S7DvwFlqIYPP/TueKAhcCy3R0BcNq0SYxZTuDJeo44kTQktYJU0tiM33hhw7sbot1ZWu
+         ub8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZZYr3eBHIRZzy2m2KZECWH5MwINu9our1XGNLE3fKJc=;
+        fh=ygWc28yeW5yJ0ZC9dgfGd/HcAALTBranKJU6qNDukY8=;
+        b=hSZcmltiuIOPrMqXCT32jVXlrltSTHvLjVDJypnzy0snkNXPzbCqHtwvLOgF0Nrv2u
+         Su2S/NIi3GcbvPqxiensS+ClPTRppq9yrdBmW2mjWNNEUoMkZZ7wDgtFStmr56MGd+0o
+         8IMGiuTRspaSIE+m8x8aD8a1pv+NOIc0rLnkmaGzFREut66Ld2jbGjKsUr5h60cSlhNT
+         /gnv4arXohPlVAwvpk5dpOD0psyzfFcayfgVGIaPwQhQKdILs0iu116INunjP5h1PNI7
+         kDu4ZqH/ybGPBbyCZF4c6OAQpbMihFfEh0RtIhRtvymZfy1dE+sumDDKO+e4fMsGV9eU
+         tpqg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard.org; s=google; t=1792582759; x=1793187559; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+VaxDdm2yeMQ8nyfzutJWB96P5Dynk6cu803aKWGLq8=;
-        b=Fj2alYtcn4FZXplYC9JMUPZa66i3rvRnXP/LB0cycDQzM2Kod+du5mHlGzYL4VDKoH
-         NVVZSiocLTE08wAovePgsuJdThGaV8nTx3Dfj24Lw0a73jxgXe9p7e7uV/DSiOl8a8tR
-         HVpgpgN54T4XkHMmCxC8Ip/Pw6MeZf86TZ+Kau7gb5ay4Z1TFyc7hxeLdpWwDC7wNL11
-         pMf9JP8OTlcrK+G99wo7TIZ6PzTHXbMQflM6mIVjrwStgdbNGiSTR8paRUEM3qW9G56I
-         4bOTmvIzFFh42ZcPIs+5L/hyniinaUYeMitFWvtCaSFiZ8sd+nHMF8jcfdz4DcnKJf7m
-         BsrA==
+        d=google.com; s=20251104; t=1792583066; x=1793187866; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZZYr3eBHIRZzy2m2KZECWH5MwINu9our1XGNLE3fKJc=;
+        b=INVRtAOmup6poGVaJMWPALiPnITN4b1Vtz/v7mvXJP2BooB6o3I8ISR7sZ58ah0yHp
+         hGI8JjzTXZ0XUDRWN2IHN00kiwZXS6HeXlw3kYbHw3Bi7y9ZZ+9Y6z6z2yiJN+EaPPVy
+         Rq72MAPL/w/QepLaiMke+Om0MpKQZYgh7Bby/7u+LqFrQpOS69PGdgDjePV7F68GbNz4
+         gDaa7XenPle312+fGznkljEuud3wmOgyVm7+DFp8bLzhaJHkcgs7YS9nwPrSQKQoS2eW
+         eocuyEwvdNbBi674feabGjoSPz1meCjP47bGRQMDtdRn978BEKGXO7nwIYQNqSv50JpC
+         qgjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792582759; x=1793187559;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1792583066; x=1793187866;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+VaxDdm2yeMQ8nyfzutJWB96P5Dynk6cu803aKWGLq8=;
-        b=y/wKJCy/ehSihvuXBhb0zeh3AvOfmWIOvVehVqfqoNh0iiZnkQmJSrls+4osGy2Ttn
-         pqqjuF3KLfWRRhXmBaz0MQs2rrXegYP2cFsEDluQUJt4Xmg0T2O3IjqPjvL7wJK/yLHP
-         Z/Yg05MeNONJRlZdaMooBf7xWGIO/g3vB5DomWGhYiNnwrSKac/6qZNKlbfo4tzSrVM8
-         l0CYvVDYFLJnqaGLBnJtDGpMyL9rp07VFW9ZYY6QJFuZUE4tCMFer1fG8ceo90Ox6W6v
-         f489yi6pL54kh+NQ9DEbR03kcLcEDnYVZ+pELtOjMDbsabB5P2OznyW8Bt6Z32xR/m1v
-         rbvQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy34sho9fm7BXmJrlFIVGIp7C39YFs6NvGSxfQFpilFcPkAQbnOWhzPER/qhNQC9dNg+SpkVwv489bOkLsRZA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJhMgLPFhaRVuc06fpugEomIciWAky1ZaHKvyfarXPtT9Yy1q6a
-	TOhigGNSdn8qvd/NYeWbuV47mMs4NlhY0oShrX4t3mLdBCozRdnN3GyCnA0vnYFpYA==
-X-Gm-Gg: AYBFou1GwTjevA/jJCxRsjJLwdkFfPxKDNCPTUs7Wbt4zzMdpxQCaM2glU7N4aAVJCW
-	NxoWcWhlLMLX+0TeocZmpLiHN+RJJXvKyh9fh8HyJZqmhoomwqRC5NM80kVlGbrCo5Obc1YlHml
-	YVPf6swVzJPtMTJ3g+jduEYD+msePnp/2yYvEQ+bkj/ZLORcNCrULnkuDMaljwqxeRsmD3oHxgk
-	QN8Ncj29dhpGE56r1Yo5/5o3XB2X4/UYYwxJs7f5tVnWC58MwZQvgLjVACG6V0hoQHNj2IF/6dT
-	c4XrKhaSg4VxvFsshZ8JncnlAKAtD8FIwy9xA6tdJLcGMQvQaTDg8NZjmBKmUa6XRhfJOWPUu87
-	9gr81K26a8gAf9T1V5TyiDTUcTaXYGXi8bXXWvdOMr7RikFxyX0t+2nagMNv9IDxl3kMD1kSY18
-	mgEI5ROG1QUUsIbB/7H4bEvqGBOQuk1jcOpaubgvg76m78r4PjDmR2myq+xSIX3FiTQplsLrixh
-	raDsfG2E/QIm0XE+coEKwZKyLHAs13QZAyCas/6JVUF6DhAwPhBTdcXbpBRWEZT5+Q=
-X-Received: by 2002:a17:90b:3848:b0:3ab:188b:c5be with SMTP id 98e67ed59e1d1-3ad87084014mr1570077a91.45.1792582758877;
-        Wed, 21 Oct 2026 04:39:18 -0700 (PDT)
-Received: from [192.168.29.54] ([2405:201:4019:32fc:3c55:6b24:5147:322b])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ad813eb9casm4023732a91.15.2026.10.21.04.39.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2026 04:39:18 -0700 (PDT)
-From: Ayush Singh <ayush@beagleboard.org>
-Date: Wed, 21 Oct 2026 17:07:54 +0530
-Subject: [PATCH v4 6/6] greybus: Add Rust UART node driver
+        bh=ZZYr3eBHIRZzy2m2KZECWH5MwINu9our1XGNLE3fKJc=;
+        b=ug43BoaltQaHl9SWRy31/4gt0eIXASZdQjcOeSjLE8J7FzoDf/yb/kcLzlg9mCmBKz
+         txZX+mskiSojDKKy/XUimYP/G2UC8D2kIve0t7iJDxsSrxxzuL8klStJD3MofIJO8QcJ
+         Ru91er04vCM/B7MzVvjXwf50NrykK//oxylwojt70xAJiKmZngUZhVV9WIyG/DzQn00I
+         3Tj9KyDYxE9pqGTBNRipQ4rrRaT70CLlT5T91qlpOytd1lfvVbED6Tm5TfPzJ8xCsQEM
+         jAfbcM+xEJ21dlYGjuRs0/+sfobMT78+NsewSLbMIE6ZJRqLr5VBfRqZTsrfTjq8QT99
+         3DaQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzXZilOV2ILEc6fQE4LLqsO9/IQo5P9Tmvjv8hXEVDdOyTsCoUMaMswkuNfBIXfSTDXySEezK1bYKbll9KqDw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKuOx5h3XxiO9yxZazm3GQWpo5kg89wfd4/wU2y1/Rt8navxQ5i
+	Uh74UFxzCfsN+pmZjGvb50ut9wUKQd6riCJLo4AP3dA2+MeE92EEnbZGzZR5jQzx33cwjbWx/va
+	Yz5H6wMpeUtvd7OCLBvI/F3+OhlrFK8XFHs2HIv60
+X-Gm-Gg: AYBFou2Bfvjg1S6GyYd6Q35dvBfRQ1r1TmppUde2k6+u9+NhoKpWq5f4/4Mch2UXt1p
+	4GEp1RJrFLyM/XkyNxtBu0v9O4OlODdpm9a4C8IZdkEDyXkgJ9Ys+MTIV2QY7hLxtscOHLXBlqe
+	LrnNv5FtlrMvzlQnYditPepOrroqRHTNB+s9b+0ZSMMe14j4qKLTKcTh7P+2XaO7VvpJJsKHeYp
+	o+IG90BUR3VL1zsO/01Qcw/uZFw6z7nT168BKa5qf3ut3jvPHzDxmBjUDkrciYLfSjl2CY7e5pN
+	YYY/nvJPcWs21bypPqUbV1rGrAtKDsRa8irZ2wStTv2ySx5YsV9NjI/KrYJ3j0d6bVYMF4stPOU
+	ds1JwLzOdCInMBqN7j5hit1Mjd4NfFPvqmfMSpt2X80x/H0FFi9du8aqqUCix2mCAWJyrz82bYu
+	xqkfxYYhH18rpllc5636YObUOp+Soek1i95LWjCnWlb2AUEg==
+X-Received: by 2002:a05:6000:4a0f:b0:48b:e50:7159 with SMTP id
+ ffacd0b85a97d-48e264adfafmr3173042f8f.30.1792583065670; Wed, 21 Oct 2026
+ 04:44:25 -0700 (PDT)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -91,412 +105,41 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261021-gb-uart-transport-v4-6-c308ce821d45@beagleboard.org>
-References: <20261021-gb-uart-transport-v4-0-c308ce821d45@beagleboard.org>
-In-Reply-To: <20261021-gb-uart-transport-v4-0-c308ce821d45@beagleboard.org>
-To: Jason Kridner <jkridner@beagleboard.org>, robertcnelson@gmail.com, 
- Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
- Ayush Singh <ayush@beagleboard.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Uladzislau Rezki <urezki@gmail.com>, 
- Markus Probst <markus.probst@posteo.de>
-Cc: greybus-dev@lists.linaro.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-crypto@vger.kernel.org, 
- devicetree@vger.kernel.org, Ayush Singh <ayush@beagleboard.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11876;
- i=ayush@beagleboard.org; h=from:subject:message-id;
- bh=a8QqTGAat63BV9GwbIKilpnLs4ixF9+MdlNnluICNlY=;
- b=owEBbQKS/ZANAwAKAQXO9ceJ5Vp0AcsmYgBq2KQU0rSyFZnLU0rkl3is1ARUQflYsh5UWwRBz
- YOyQ9VfObOJAjMEAAEKAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCatikFAAKCRAFzvXHieVa
- dD0wD/448yTXe/orHFbrDdO5lWc73ZdcB4DyGaStTy/RhyK7QHKC+A7mZh5AIt/TrvryKr/y4qQ
- 3T1BT98NSG6b9Bg9EszSCRCB2jjpmUDTDi2u+RLMOydNiLi7NhYsLZ/OAXZkhTPCJWKamJATyt3
- EdWEwiUkm+9Y0AW0nnroAhcLU7i+I4llqwKedrpOHs2wffzqgBWBPuahQhxavU6TfIr5Gm6K8i8
- dKz4Y5cENblMdkflIF9LYzgGRa8rI1InlPHy/q7d1FfwILhkJ9Y9mNrwc/eQxTl4rLYcdBQjsEi
- f7VccGIGXepNm1N5KaDfnP34c/wV5bs4C/lhXXXe9aA0/w3OmoQiWIPgaytWg+jzXFDK/9MMj3L
- GDtTra3VCXzx88YI6ibes0CJCxAUjxFh65/7DyTJCAbjkHMfEHUbE+VYLycyz2c2Q7JmBQS3oGo
- WBxIOgNm2uAFWx1i1vAy/9GUzsox6rFp3stCnxYHYZgL5HmkxQysD4v4h4VbF/f5HaOPp0Xf6OG
- gV0FCDoJrv+/slT+jc4zFf/XTOHutCYAlirPxHvbmrYgutKQl77F1nPn0D8WHEz1t46nrYSQKr0
- Tn3MBpZU2hL3ISw+flZ1Pz5r35hjGWnR2xPXd0LoKYzKCzXmJoy1W88eW/pUbVvfqZZxJTOC/Ux
- x1wrTkzSTIesX5A==
-X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
- fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
+References: <20261020-b4-gpu_info_intobytes-v5-0-3e0c7c93223c@collabora.com>
+ <20261020-b4-gpu_info_intobytes-v5-1-3e0c7c93223c@collabora.com>
+ <athToIRyTjSB_jVg@google.com> <CANiq72nP1cXVOQp0xciGfBhZZfEfNP5hx8c+1ZPhXwrr=EOUGA@mail.gmail.com>
+In-Reply-To: <CANiq72nP1cXVOQp0xciGfBhZZfEfNP5hx8c+1ZPhXwrr=EOUGA@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 21 Oct 2026 13:44:12 +0200
+X-Gm-Features: AclHuK8jFkj1SdL-sn9s7gZYVhHgWgNf9M81gFX7u1yfFc_Pok1tIoSVJ9rDId8
+Message-ID: <CAH5fLggAuPdmwOFiOMMRUCP+yLPjmdjYGGfBxZJ=7+bkGODJmQ@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] rust: add zerocopy to bindings and uapi
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Deborah Brouwer <deborah.brouwer@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Jesung Yang <y.j3ms.n@gmail.com>, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a driver for Greybus nodes attached over a plain serial port. The
-node is registered with the software SVC (gb-softsvc), which handles the
-SVC protocol on behalf of the AP, so no dedicated coprocessor running
-SVC firmware is needed.
+On Wed, Oct 21, 2026 at 1:37=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Wed, Oct 21, 2026 at 7:54=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+> >
+> > Miguel, is this something we can take through drm-rust-next? Or perhaps
+> > you want to take both through rust-next? Let me know what you prefer.
+>
+> Both sounds reasonable, so whatever it is easier -- do you think there
+> will be lots of movement in the Tyr side?
 
-Greybus messages are carried over HDLC framing on the wire. Each frame
-carries a one-byte address (0x01 for Greybus) and control byte, followed
-by the 16-bit CPort ID and the Greybus message itself.
+If we're able to land JobQueue soon, then yes, otherwise no. But I
+think we've aligned on how to get it merged at LPC, so probably yes.
 
-Port parameters are taken from the firmware node: "baudrate" if
-present, otherwise 115200, with flow control and parity disabled.
-
-Since gb-uart-node imports types from gb-softsvc, Rust to Rust calling
-setup from nova-core [0] is being used.
-
-[0]: https://lore.kernel.org/all/20260622-nova-exports-v5-0-6191773fc977@nvidia.com/
-
-Signed-off-by: Ayush Singh <ayush@beagleboard.org>
----
- MAINTAINERS                     |   1 +
- drivers/greybus/.gitignore      |   1 +
- drivers/greybus/Kconfig         |  15 +++
- drivers/greybus/Makefile        |  10 ++
- drivers/greybus/gb_uart_node.rs | 257 ++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 284 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 521bc6c67979..5bdd500ef63e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11527,6 +11527,7 @@ M:	Ayush Singh <ayush@beagleboard.org>
- L:	greybus-dev@lists.linaro.org (moderated for non-subscribers)
- S:	Maintained
- F:	Documentation/devicetree/bindings/beagle/beagle,beagleconnect-freedom.yaml
-+F:	drivers/greybus/gb_uart_node.rs
- 
- GREYBUS SUBSYSTEM
- M:	Johan Hovold <johan@kernel.org>
-diff --git a/drivers/greybus/.gitignore b/drivers/greybus/.gitignore
-new file mode 100644
-index 000000000000..ff9c4a3539b4
---- /dev/null
-+++ b/drivers/greybus/.gitignore
-@@ -0,0 +1 @@
-+exports_gb_softsvc_generated.h
-diff --git a/drivers/greybus/Kconfig b/drivers/greybus/Kconfig
-index 709563f8c0ad..ce2030161f30 100644
---- a/drivers/greybus/Kconfig
-+++ b/drivers/greybus/Kconfig
-@@ -61,5 +61,20 @@ config GREYBUS_SOFTSVC
- 	  To compile this code as a module, choose M here: the module
- 	  will be called gb-softsvc.ko
- 
-+config GREYBUS_UART_NODE
-+	tristate "Greybus UART node transport"
-+	depends on GREYBUS_SOFTSVC
-+	depends on RUST_SERIAL_DEV_BUS_ABSTRACTIONS
-+	depends on RUST_GREYBUS_ABSTRACTIONS
-+	select RUST_CRC_CCITT_ABSTRACTIONS
-+	help
-+	  Select this option if you have a Greybus node connected over a
-+	  serial port. The node is registered with the software SVC, which
-+	  handles the SVC protocol on behalf of the AP, so no dedicated
-+	  coprocessor running SVC firmware is required.
-+
-+	  To compile this code as a module, choose M here: the module
-+	  will be called gb-uart-node.ko
-+
- endif	# GREYBUS
- 
-diff --git a/drivers/greybus/Makefile b/drivers/greybus/Makefile
-index 0fa802fdf6ca..bf4d08f728fe 100644
---- a/drivers/greybus/Makefile
-+++ b/drivers/greybus/Makefile
-@@ -28,6 +28,12 @@ obj-$(CONFIG_GREYBUS_ES2)	+= gb-es2.o
- obj-$(CONFIG_GREYBUS_SOFTSVC)	+= gb-softsvc.o
- gb-softsvc-y			+= gb_softsvc.o gb_softsvc_exports.o
- 
-+obj-$(CONFIG_GREYBUS_UART_NODE)	+= gb-uart-node.o
-+gb-uart-node-y			+= gb_uart_node.o
-+
-+# Export Rust symbols from gb-softsvc only if gb-uart-node actually references them.
-+gb-softsvc-export-deps := $(if $(CONFIG_GREYBUS_UART_NODE),$(obj)/gb_uart_node.o)
-+
- rust_needed_exports = \
- 	{ $(if $(strip $(2)),$(NM) -u $(2);,) echo "__DEFINED_RUST_SYMBOLS__"; \
- 	  $(NM) -p --defined-only $(1); } | \
-@@ -66,3 +72,7 @@ endif
- # Output gb_softsvc's crate metadata for use by gb_uart_node at compile time.
- RUSTFLAGS_gb_softsvc.o += \
- 	--emit=metadata=$(objtree)/$(obj)/libgb_softsvc.rmeta
-+
-+# Allow nova-drm to import nova-core's types.
-+$(obj)/gb_uart_node.o: $(obj)/gb_softsvc.o
-+RUSTFLAGS_gb_uart_node.o := -L $(objtree)/$(obj) --extern gb_softsvc
-diff --git a/drivers/greybus/gb_uart_node.rs b/drivers/greybus/gb_uart_node.rs
-new file mode 100644
-index 000000000000..f3779737c75e
---- /dev/null
-+++ b/drivers/greybus/gb_uart_node.rs
-@@ -0,0 +1,257 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Greybus UART Node driver
-+
-+use kernel::{
-+    alloc::Flags,
-+    crc_ccitt::crc_ccitt,
-+    device::{
-+        AsBusDevice,
-+        Bound,
-+        Core, //
-+    },
-+    error::code,
-+    new_spinlock,
-+    of, //
-+    prelude::*,
-+    serdev,
-+    sync::{
-+        aref::ARef,
-+        Arc,
-+        SpinLock, //
-+    },
-+};
-+
-+use zerocopy::little_endian;
-+use zerocopy_derive::{FromBytes, Immutable, KnownLayout};
-+
-+/// Most greybus implementations will have a limit on greybus message length. The theoretical limit
-+/// is [`u16::MAX`], but the real limits are much more modest. 256 seems to be the limit I use on
-+/// most of my peers, but let's use 512 to be on safe side in kernel. The only real big request that
-+/// I frequently encounter is manifest_get. However, if camera protocol ends up being supported at
-+/// some point, this might need to be increased.
-+const HDLC_MAX_FRAME_LEN: usize = 512;
-+const HDLC_FRAME_HEADER_LEN: usize =
-+    2 * size_of_val(&HDLC_FRAME) + 2 * size_of::<u16>() + 2 * size_of::<u8>();
-+const HDLC_MAX_MSG_LEN: usize = HDLC_MAX_FRAME_LEN - HDLC_FRAME_HEADER_LEN;
-+
-+const HDLC_FRAME: u8 = 0x7E;
-+const HDLC_ESC: u8 = 0x7D;
-+const HDLC_XOR: u8 = 0x20;
-+const HDLC_EXPECTED_CRC: u16 = 0xf0b8;
-+
-+const ADDRESS_GREYBUS: u8 = 0x01;
-+
-+#[repr(C, packed)]
-+#[derive(FromBytes, Immutable, KnownLayout)]
-+struct GreybusFrame {
-+    cport: little_endian::U16,
-+    msg: [u8],
-+}
-+
-+struct HdlcRx {
-+    rx_buf: KVec<u8>,
-+    rx_in_esc: bool,
-+    rx_overflow: bool,
-+    sdev: ARef<serdev::Device>,
-+    node: gb_softsvc::Module,
-+}
-+
-+impl HdlcRx {
-+    fn new(sdev: ARef<serdev::Device>, node: gb_softsvc::Module) -> Result<Self> {
-+        Ok(Self {
-+            node,
-+            sdev,
-+            rx_buf: KVec::with_capacity(HDLC_MAX_FRAME_LEN, GFP_KERNEL)?,
-+            rx_in_esc: false,
-+            rx_overflow: false,
-+        })
-+    }
-+
-+    fn frame_finish(&self) -> Result<()> {
-+        if self.rx_buf.len() < 4 {
-+            return Err(code::EFAULT);
-+        }
-+
-+        let crc = crc_ccitt(0xffff, &self.rx_buf);
-+        if crc != HDLC_EXPECTED_CRC {
-+            dev_warn!(self.sdev.as_ref(), "CRC failed {}", crc);
-+            return Ok(());
-+        }
-+
-+        let addr = self.rx_buf[0];
-+        let _ctrl = self.rx_buf[1];
-+        let payload = &self.rx_buf[2..self.rx_buf.len() - size_of::<u16>()];
-+
-+        match addr {
-+            ADDRESS_GREYBUS => {
-+                let frame = GreybusFrame::ref_from_bytes(payload).map_err(|_| code::EINVAL)?;
-+                self.node.submit_message(0, frame.cport.into(), &frame.msg)
-+            }
-+            _ => Err(code::EINVAL),
-+        }
-+    }
-+
-+    fn rx(&mut self, data: &[u8]) -> usize {
-+        for i in data.iter() {
-+            match *i {
-+                HDLC_FRAME => {
-+                    if !self.rx_buf.is_empty() {
-+                        if let Err(e) = self.frame_finish() {
-+                            dev_warn!(self.sdev.as_ref(), "bad frame: {e:?}\n");
-+                        }
-+                    }
-+
-+                    self.rx_buf.clear();
-+                    self.rx_in_esc = false;
-+                    self.rx_overflow = false;
-+                }
-+                HDLC_ESC => self.rx_in_esc = true,
-+                // Skip data if buffer has overflown.
-+                _ if self.rx_overflow => {}
-+                _ => {
-+                    let c = if self.rx_in_esc { *i ^ HDLC_XOR } else { *i };
-+                    self.rx_in_esc = false;
-+
-+                    if self.rx_buf.push_within_capacity(c).is_err() {
-+                        dev_warn!(self.sdev.as_ref(), "buffer overflow. Dropping frame");
-+
-+                        self.rx_overflow = true;
-+                        self.rx_buf.clear();
-+                    }
-+                }
-+            }
-+        }
-+
-+        data.len()
-+    }
-+}
-+
-+struct GbNode {
-+    sdev: ARef<serdev::Device>,
-+}
-+
-+impl GbNode {
-+    const fn new(sdev: ARef<serdev::Device>) -> Self {
-+        Self { sdev }
-+    }
-+
-+    fn fill_buf(mut crc: u16, data: &[u8], buf: &mut KVec<u8>) -> Result<u16> {
-+        for i in data {
-+            crc = crc_ccitt(crc, &[*i]);
-+            if *i == HDLC_ESC || *i == HDLC_FRAME {
-+                buf.push_within_capacity(HDLC_ESC)?;
-+                buf.push_within_capacity(i ^ HDLC_XOR)?;
-+            } else {
-+                buf.push_within_capacity(*i)?;
-+            }
-+        }
-+
-+        Ok(crc)
-+    }
-+}
-+
-+impl gb_softsvc::InterfaceOps for GbNode {
-+    fn write(&self, data: &[u8], cport: u16, gfp_mask: Flags) -> Result<()> {
-+        // SAFETY: `GbNode` only exists while its serdev driver is bound, so the device is in the
-+        // `Bound` state for the duration of this call.
-+        let bound: &serdev::Device<Bound> =
-+            unsafe { serdev::Device::from_device(self.sdev.as_ref().as_bound()) };
-+
-+        // Drop messages which are bigger than what is supported.
-+        if data.len() > HDLC_MAX_MSG_LEN {
-+            return Err(code::E2BIG);
-+        }
-+
-+        let mut buf = KVec::with_capacity(HDLC_MAX_FRAME_LEN, gfp_mask)?;
-+
-+        let mut crc = 0xffff;
-+
-+        buf.push_within_capacity(HDLC_FRAME)?;
-+
-+        crc = Self::fill_buf(crc, &[ADDRESS_GREYBUS, 0x03], &mut buf)?;
-+        crc = Self::fill_buf(crc, &cport.to_le_bytes(), &mut buf)?;
-+        crc = Self::fill_buf(crc, data, &mut buf)?;
-+
-+        crc ^= 0xffff;
-+        Self::fill_buf(crc, &crc.to_le_bytes(), &mut buf)?;
-+
-+        buf.push_within_capacity(HDLC_FRAME)?;
-+
-+        bound.write_all(&buf, 0)?;
-+
-+        Ok(())
-+    }
-+}
-+
-+#[pin_data]
-+struct GbUartNode {
-+    #[pin]
-+    rx: SpinLock<HdlcRx>,
-+}
-+
-+impl GbUartNode {
-+    fn init(sdev: &serdev::Device<Core<'_>>) -> Result<HdlcRx> {
-+        if sdev
-+            .set_baudrate(
-+                sdev.as_ref()
-+                    .fwnode()
-+                    .and_then(|fwnode| fwnode.property_read(c"current-speed").optional())
-+                    .unwrap_or(115200),
-+            )
-+            .is_err()
-+        {
-+            return Err(EINVAL);
-+        }
-+        sdev.set_flow_control(false);
-+        sdev.set_parity(serdev::Parity::None)?;
-+
-+        let node = gb_softsvc::Module::new(&[Arc::new(GbNode::new(sdev.into()), GFP_KERNEL)?])?;
-+
-+        HdlcRx::new(sdev.into(), node)
-+    }
-+}
-+
-+kernel::of_device_table!(
-+    OF_TABLE,
-+    <GbUartNode as serdev::Driver>::IdInfo,
-+    [(of::DeviceId::new(c"beagle,beagleconnect-freedom"), ())]
-+);
-+
-+#[vtable]
-+impl serdev::Driver for GbUartNode {
-+    type IdInfo = ();
-+    type Data<'bound> = Self;
-+    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+
-+    fn probe<'bound>(
-+        sdev: &'bound serdev::Device<Core<'_>>,
-+        _info: Option<&'bound Self::IdInfo>,
-+    ) -> impl PinInit<Self, Error> + 'bound {
-+        dev_dbg!(sdev.as_ref(), "Probe gb_uart_node.\n");
-+
-+        try_pin_init!(Self {
-+            rx <- new_spinlock!(Self::init(sdev)?, "gb_uart_node::rx"),
-+        }? Error)
-+    }
-+
-+    fn receive<'bound>(
-+        _sdev: &'bound serdev::Device<Bound>,
-+        this: Pin<&Self>,
-+        data: &[u8],
-+    ) -> usize {
-+        if let Some(mut guard) = this.rx.try_lock() {
-+            return guard.rx(data);
-+        }
-+
-+        0
-+    }
-+}
-+
-+kernel::module_serdev_device_driver! {
-+    type: GbUartNode,
-+    name: "gb_uart_node",
-+    authors: ["Ayush Singh <ayush@beagleboard.org>"],
-+    description: "Greybus node connected over UART",
-+    license: "GPL v2",
-+}
-
--- 
-2.56.0
-
+Alice
