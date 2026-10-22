@@ -1,104 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.46
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792702263;
-	b=CXipXNC4sy3ufpar7xuZh9afo5Bmkt4fS8iWqGinql5qMXHC+KkCGZ0m/wBengEg47sJ
-	 AeAqAoxzCqJyyMxcOFWUwJqPOFIRsoLikENmm6gqYb9KmPEREKwzpaurPRP9/A8Zd9y+8
-	 Qicv0dqRZFRkrzF6XH7FHZdwowD0k2DFfXLUZyTySRGRLfxeTY0J/twR3KtG1AxaQJ4hx
-	 v1b2bwbzqAel5dKI3d1E9sEgUACgjSTPilwPuennzdqIHUbOEzjzybQcaudamsKcMIrS3
-	 TQeiuJAiWYB5KnEDStwjC0ixbVSgtXZsyY5JPKHCHhPhl/mt5xY9+C6HX3P3DS7mnlw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792702263;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=yzKfe/HIkfkdztp3Uz7ZvCiWpLjrHeTj8pQ7u7u4b7g=;
-	b=OTvYXfiIVuiqbWz5nhTrjvdk81GonuouEMc49EP9LDKWHo9jmEDpYZBetG42pWZERcaI
-	 d1B5z/AScl5SDodB3B7LYkygr9GqDSYQ4eMXIDZlvCeucNCleEnXn/R5u+nRCB2TS7jQK
-	 0NxLttuoPj1dXJe94OpkofYSao4GjjVRig48HVfIlG19lbwFYgJM9S8v9Xp9Kl5ytxkfN
-	 /hXKyUxGKG02yg2tnIq45cIjxma6jRPZLYRqr6IreSCQlz66vDIrmsouafQmygX1iEKOu
-	 NXnF3i84/KP7rGGMy5u8CnHtVyEiJvrwp/OFKr6UnPZZC09pS7Zqoix3HvC5vUbC8sg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=omDFPABZ;
-	arc=none smtp.remote-ip=209.85.208.46
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792713272;
+	b=PLJHxkcN2O+wK9/3nkacysnmPhdcLKsAnsVoISQfRa5G61psAiiYpfpL9HwWTmiA/1Md
+	 pH9AQavM0dGdREG0RyzLthn23k8sBjYWLj5MFd7/fAJfSecqVeJx8bg+iYvWdNk2q0KS7
+	 TrWQ7IIzWVi1UQJJc/xqjeXrNtnZhha2W8/pCloNd5ChOBjU6Ns29GkL047yOd5IgbcK4
+	 UvOX9pFFv8f7Eo5UFAoAdWkHQLHww4vgLbymtJj1CSQ4FcQPxslbvkHJJUF9HFX+W+c6E
+	 Cc7DfNiShAdNHA+n7b29Ax/ZMRxIS5EBUvKB1ywAzQa3s+6voN3RtWGskrs0CiAD5Cg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792713272;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Zoho-Virus-Status:X-Zoho-AV-Stamp;
+	bh=XZVFc2cY2YdRXjDiQkdwMYAg1zQFmPzyWnIcVt7gubM=;
+	b=apm4T/a5hNI9RVCFuqfwatIeuqZ6IHE45l6rPM0oQXm0RT4ZLoa4kCaOzRNJIE9o6PPo
+	 IwcLnC+MVXlcjUxMUUKBmbS23EB1oJuZzKOMctOtRghaRzbEUuWINQH4chxBUn8dr5xEv
+	 J+rcDJy2SEjU9o+OK3KItuiXxrWWjya0MdOy8VZHsDTanWwrAtdtfPq6DJDG3G1prpXEJ
+	 pe4cgy7Hup56hzML/7irnPS9W0t60tjN25ukO4ZbOBEqsMBgmTz6ABn1SN8HD/kcW1Y0x
+	 l6oJr+JhK4BaLAlXO+jrYNiuCF2I/BOk742bB5JJP3FNes90oAGtgVi+HueCkXe9aOg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=DlE5AX0E;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2975B60A2601
-	for <rust-for-linux@vger.kernel.org>; Thu, 22 Oct 2026 20:51:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2975B60A2601
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B52E606A319;
+	Thu, 22 Oct 2026 23:54:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B52E606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=omDFPABZ
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6b2232d8ef5so203114a12.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 22 Oct 2026 13:51:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792702261; x=1793307061; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yzKfe/HIkfkdztp3Uz7ZvCiWpLjrHeTj8pQ7u7u4b7g=;
-        b=omDFPABZWukNshfcvKsiAfrd5oEwJzH92xrxWZfyaxZT87hQuuvMlXKLnDRDKgUo68
-         C687Ocg8hgOdeFsVYpvaLK7qc3vT7yod2iXu3Yh8iI1a1pXcb/xaQ2z5ShwQ5elPU59/
-         0cR2ftqTCpoVQKKyg+pjRrIU/UCAx47Ju9Ls1R0yubnoGA90oYnKjGgK5HMBzyVVJNtU
-         o/KKMcLmyZZ4zmrjnL8NQ7AEpYUB8nCkBnrQ/eTB5xNIpIGgBeTxeY5p1doKvmboCNr3
-         o0IiLb/7eTirYlQmUmAn0+nG8dyjyX0IF52mJTmKuEeioyHDw7I/UJXyfxVxKr8cM3B8
-         TeNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792702261; x=1793307061;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yzKfe/HIkfkdztp3Uz7ZvCiWpLjrHeTj8pQ7u7u4b7g=;
-        b=OAyUt6CbB/48OcrniroxEjGlOm31DbntjxGVn0B9SezafR27o/VdE1vDD7xA38xJGO
-         pAmEGEQAKNqV1It9mUG8ydTP23e63TFE0Jl0j2uUhdlV11+gZL7V9GVwI+veWo1PIbq5
-         zlvHSo+3c5epP5iOYzz5G5JSXnp95PV41LDfO7YGl3Q79oFFjGN2QIaYfK9TZynXPFzs
-         opV0ZjF+GxIQJfpmE26TfsaPigxxnRNT1Qi1xQiUKKRGHaKNma0+DYnvJDRJ7PxBWGP0
-         V3wKQmzNl/NvEa7GiWspiOlU9s1RjgiBB886RDmx/qvKDOf82Y2/xtG72ZbciR1WtCXM
-         pCCQ==
-X-Gm-Message-State: AFq9FYIGlI/QAgv3at0P8xaudVYcw/t7a0d0A6D0AClhfhodtE/dINEd
-	V+w0i2PflTuBUvNureOrVgqGS3b8xR7oBOSmUH8ozVXZlzBfn8kIk3GgDFAcGvqSt9bP+w==
-X-Gm-Gg: AYBFou34zTn+Ed/2mYcZmEW5wmeNENdIc91lzgW+EJziZgJ4JXaC56I/Pv/ssWSN+Ut
-	cBnKDV7OD52bHraJAh/KS4acb5PS69iwc4Olyol7hXi8Vhxg7IjfpuE74SiLkriOEm8D7Yy8Wi7
-	jQPuT2RDBSdoN+Qyi9UwdjQC5SzML0tMt88hMEMD1uhLFpt7KoNICnuSLnNNR39ZcKJl7qOnIr/
-	U6y4yAByuzVx7sk5dBmn3PaPHVlEVY48xgzNpDH8qwWsrTTL+h0JSZnLnUEM1b/r74i7xyWlSWi
-	YS4LT/duRPTX5VwxQfYmP6uYMcqFE0XDteJ+8AHWoQNXilfejROWd5IolIU8Lox8DqCqh+lbJzj
-	nn66UXt1zSIvVEXbKTTzqZiEPxDeueHl4L7tPtFa5p2PAde3RBw9AGr6gxmgaW/IE7abL81+WwM
-	FAPq7FeGS76Ox24VtuKr96aR0UqZVXjTjLcphlEIUN7rZp8RQtCjzugj7F6sDImLe05thzvmz7N
-	et14f9PFm9qwocfrYb6m3CHdRF6QPdP7JTHyRZ+/LpFtwmuwICrFFxAudBDRFCADDFTWisDvmyk
-	J5DlSLg7Ldtuq++WV3WBT1qaukwULWxxeWdJxX6uThwqYRlJJZ54qsTzuUmSPvZIN/vhJXT3JLL
-	0gtA6VrINkjuFN5AfHrckf66OmjxNJegJWaeMQUhifFcfJ8OXM4CBDDZG+g==
-X-Received: by 2002:a17:907:3dab:b0:c2e:3b23:1468 with SMTP id a640c23a62f3a-c46a94b7c7amr47733066b.48.1792702261240;
-        Thu, 22 Oct 2026 13:51:01 -0700 (PDT)
-Received: from martin-Virtual-Machine.mshome.net (h-98-128-181-228.NA.cust.bahnhof.se. [98.128.181.228])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46a5c4d518sm28898066b.17.2026.10.22.13.50.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 13:51:00 -0700 (PDT)
-From: Martin Nordholts <enselic@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: Martin Nordholts <enselic@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
+	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=DlE5AX0E
+ARC-Seal: i=1; a=rsa-sha256; t=1792713190; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=USsdMuU5gMmdKZAKLj6NLOnUxRJnM4QSY1B11nzzY4L1EyIng8Vwyn6fHNtwax5k0qXlTIOv5+35ydqbHPlqPxrxi7bsQineaZDPQH9DdT/I0A3I2PKmyMYD9kF/726Pxj487v/KAZFX5ZCJ5tIwUCyETV5tWl+1bdODBVaycHk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1792713190; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=XZVFc2cY2YdRXjDiQkdwMYAg1zQFmPzyWnIcVt7gubM=; 
+	b=MbLhPZWuQeuUjHbNqy673eyDyO+yGb1zmqZcoF/feyV1ZcEI5BP/LbKjQ0VfGae2gn6wwCpD//dw7iIdIJP5MtqiojDvAS6H/Q1ixEQI/AR5nk5pW2SHQN7Qa1sXUuGnckDMRMre+ETbODlIdLg/I27ANEQpJWE8op4qdbjc96k=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792713190;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=XZVFc2cY2YdRXjDiQkdwMYAg1zQFmPzyWnIcVt7gubM=;
+	b=DlE5AX0EJFn4+qNw7TJfzSEARTLOr+0xnH049vabN+TeMo7m+gjRnq+GOfyedonw
+	6jdQcP40bT46n4YNFimPPDK5k7gw91j1nW5O9+88r9/dkxpMGYkjuNOT4MniYXMst7b
+	bHzd0Z/HLqnpV+zwqzsH3arHsPdqA6fHVhM4VEDI=
+Received: by smtp.zohomail.com with SMTPS id 179271318893732.044990374067766;
+	Thu, 22 Oct 2026 16:53:08 -0700 (PDT)
+Date: Thu, 22 Oct 2026 16:53:07 -0700
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Ke Sun <sunke@kylinos.cn>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Nikolai Grlica <nikolai@nikolaigrlica.dev>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: list: Improve `List::remove()` SAFETY comments (and remove TODO)
-Date: Thu, 22 Oct 2026 22:49:23 +0200
-Message-ID: <20261022204924.230453-1-enselic@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org,
+	dri-devel@lists.freedesktop.org, driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
+Subject: Re: [PATCH v4 02/11] rust: mm: add `task_size` helper
+Message-ID: <atqh41vrlC4xVtaj@um790>
+References: <20261020-tyr-ioctls-v4-0-704de77da223@kylinos.cn>
+ <20261020-tyr-ioctls-v4-2-704de77da223@kylinos.cn>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -108,45 +90,59 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261020-tyr-ioctls-v4-2-704de77da223@kylinos.cn>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/292.705.96
 
-See the comments themselves for more details.
+On Tue, Oct 20, 2026 at 04:25:19PM +0800, Ke Sun wrote:
+> From: Alvin Sun <alvin.sun@linux.dev>
 
-Signed-off-by: Martin Nordholts <enselic@gmail.com>
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/351
----
- rust/kernel/list.rs | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+I was testing Tyr's auto allocation for the user va range,
+and was surprised to see that mm.task_size() is always returning 0.
+It seems like it should work since it uses the task_size from
+struct mm_struct, but it doesn't, at least for me. 
 
-diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-index 0f367264ee2e..24f2896feff2 100644
---- a/rust/kernel/list.rs
-+++ b/rust/kernel/list.rs
-@@ -599,11 +599,12 @@ pub fn pop_front(&mut self) -> Option<ListArc<T, ID>> {
-     ///
-     /// `item` must not be in a different linked list (with the same id).
-     pub unsafe fn remove(&mut self, item: &T) -> Option<ListArc<T, ID>> {
--        // SAFETY: TODO.
-+        // SAFETY: The user provided a reference, and references are never dangling. Additionally,
-+        // our pointer will not outlive the lifetime of the reference.
-         let mut item = unsafe { ListLinks::fields(T::view_links(item)) };
--        // SAFETY: The user provided a reference, and reference are never dangling.
-+        // SAFETY: The raw pointer is valid because we just derived it from a reference.
-         //
--        // As for why this is not a data race, there are two cases:
-+        // As for why deferencing is not a data race, there are two cases:
-         //
-         //  * If `item` is not in any list, then these fields are read-only and null.
-         //  * If `item` is in this list, then we have exclusive access to these fields since we
-@@ -628,6 +629,7 @@ pub unsafe fn remove(&mut self, item: &T) -> Option<ListArc<T, ID>> {
- 
-             // SAFETY: We just checked that `item` is in a list, so the caller guarantees that it
-             // is in this list. The pointers are in the right order.
-+            // Mutating `&T` is ok, links are behind `UnsafeCell` (in `Opaque` in `ListLinks`).
-             Some(unsafe { self.remove_internal_inner(item, next, prev) })
-         } else {
-             None
--- 
-2.53.0
+If you look at tyr-dev, I think it would be better to use Sami's approach:
+  428d71932b6f rust: task: add task_size()
 
+Sami creates a task_size() method for CurrentTask which is our equivalent
+to the `current` global and then you can see that task_size becomes much
+more clearly the equivalent of "TASK_SIZE_OF" used by panthor.
+
+This approach also correctly returns a user va range when Tyr has to
+assign it in my tests, so let's switch over.
+
+> 
+> Expose the task's address space size. It is used by the Tyr driver
+> for splitting a VM's GPU address space into user and kernel regions.
+> 
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> ---
+>  rust/kernel/mm.rs | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+> index 4764d7b68f2a7..d2dfbb7d43972 100644
+> --- a/rust/kernel/mm.rs
+> +++ b/rust/kernel/mm.rs
+> @@ -149,6 +149,13 @@ pub fn mmget_not_zero(&self) -> Option<ARef<MmWithUser>> {
+>              None
+>          }
+>      }
+> +
+> +    /// The size of the process virtual address space.
+> +    #[inline]
+> +    pub fn task_size(&self) -> usize {
+> +        // SAFETY: `self.as_raw()` is a valid pointer to an `mm_struct` per the type invariants.
+> +        unsafe { (*self.as_raw()).__bindgen_anon_1.task_size }
+> +    }
+>  }
+>  
+>  // These methods require `mm_users` to be non-zero.
+> 
+> -- 
+> 2.43.0
+> 
