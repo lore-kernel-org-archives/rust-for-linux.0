@@ -1,99 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.177
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792685133;
-	b=ykM0Anv2RV+YJcm4suIj0I5a95fTEOA/GB9CwBTuYYCqDdHWh82deNexwKvtyqddf9OJ
-	 /ii1qv+mhachoqIhcfhUMNcJ48ag4ce5sO9FdxcAcCunKBLpI3TYH5iNENUoULwsH69bf
-	 aVJ6cV5sZQKKG7Yr0gOItyoVf8yWqy2byW6pxYgoLT2RqO1eJ4BYXROjXxlUIEdqpq0MP
-	 osY5+KcsebL9tpTYyjjeqlIaPP/nF4Eige9H39P5uF6j3Wi6v/006p3pPCx+xMu/PF31C
-	 hawJ6v2HAQuRv5lB3Zp14xGdoC8vY2gIuWbjoHHw6fqJMg9QdcQdMuwbaC0QoeXZa2Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792685133;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=mocTbU6QYoGmhL7dstIxBqOB3/wT12OUsHUZqXTiEeg=;
-	b=AFIxojjYbQAw4tnKLiaCXEAkeOACk2CEE2yCuhoPNA1ZrLNCbuvWOw23YjDCqSV2euZt
-	 5coA8/jLyL6/DzSDk286H9INCLskcmUttyOu9dSkDchwPNBmGzqV/sQURiKn/TCcVljFH
-	 hllmgGn9ijTcV7s+rueG6PCC/FSjoUyNIlrtuyxgRQXqtui+cnYAVstaypIjKqTJtm43H
-	 98zuIuYtj5adBL4Fze2qUdYAIlkmq1HYredJ4smnjbWQfODX2RKI444hJIwvxHUNeDRTM
-	 jIN1WfWI+Rz8oTK6xYXkx3rxEHhUsCUnRq2UxNa23mzCIOU2g0WQiiryFNVUlXoR6Gw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=po2Ejtmm;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.177
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792685269;
+	b=AeKqeXnv54M/jBkzP9yNwtI37hAu6n+PpnGCg7aO8smkLH+rIpEWokTaxQz8che//b+0
+	 e2cnRvzbaeOEVafIbUvJBp0YP+t91MdBdNtj3FgtAjTugTCQLJQwFlH6eBMT9+nvGIc5q
+	 42qszLSF0xaUfbuQmQL1uEC0xfpZ7TlLXv+87PnZSbPYsQx09yt8D73XB8hlMycF/U25+
+	 87oPn4283OSN87Mwko6YOEZrRzzTIQYIovfw7qnFU0vm52Z7mxrNd9s1LIPPQPCkJYhB5
+	 W3ICrPNIZ5s84nWQieLLcFyh40rGTEND2aNLzczKOfDWvjLxjbiMYTwcgZcG8VfItpg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792685269;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=kufxQ9hfGaEIw3wUx51SV8DPUjPOJNaniBUUJ1FuB5s=;
+	b=PAd8vV68CJkTdFCF3UyQ6Z95T+QtczO8MPHuLWZei6Hk1WPP2yQXTD5QSz5UI9rhcVB+
+	 Gec1giY5HsVRXJr0GXo9dlI+Yqk3IVgJNpOiFa7R69wFt3CdQJOU8pKmZBVTQ0HyXSsGs
+	 Sdvj1N98soRWIns6DKl33nc7Xy46D3yHhktWz9bzLKyOsmJSwW153ikaI2Q4BdoUgnogp
+	 VLjPlnvunHq9Kpwm8YJYJTIhV+Us+8HhO9dcDU3rSg4eOo1vGX834SXCs6iTo3Q4CdGAI
+	 sWetOK1lkM3nIZ+10ftQR8KpkUGccamlTgA1tw7d9PEzM5qIAnT3DGF/yhBurbDsJ2w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="luYv/TrK";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C28606A31A
-	for <rust-for-linux@vger.kernel.org>; Thu, 22 Oct 2026 16:05:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3C28606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C43606A31E;
+	Thu, 22 Oct 2026 16:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=po2Ejtmm
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3a5a26c8412so21102191fa.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 22 Oct 2026 09:05:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792685131; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lfZ28O44WJN9661lwM10n7WVAlsREsS4qpbn9lKA1JZFSv56Lvf6UXpmQTyyZsBH9U
-         XrX10wyg6c1X+lI64uLkLEN1FkhgTDixNGUxA2ZfvpZOvdB4LCeyRM4V1637KedxWuBC
-         8XuFXZrLsgtIFx5orYvZql9qK7qevw6AbiA7Mv4k1GMYZcHq+Ob41znwGypioJUpeWFf
-         p07tbVXw0GxVwwcCCK7eKMO0mCBMCm57rLyIPNxx79QLvgPMCUZcMtFPxlavWtxEJPxr
-         Q0W31gqavthgT7uYNjAeo/Mmt1M9s6fIirO4c8Wx+VwJPRggcHatqovqb5DAdR/LCBF9
-         fvzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=mocTbU6QYoGmhL7dstIxBqOB3/wT12OUsHUZqXTiEeg=;
-        fh=TfVcpQxNrs0Qo3722wxZ44dlpYpIE8r5jIb7TW/5+OA=;
-        b=GePxRMz612ILRlubZDSWsviKAv23/mK9dEVOxd2sWmMTXQIA71UNcRvjv1rOXg+9yC
-         skV3OpWaaQzK/MZDbuGmd0SoWtDsGGVs7VeJ+n90Yb45Wl53qxxzsjRPOwCSOM58tzfd
-         WvSrGtAL7FA0sqcHx6ZcjJvNScLSi5ZxgjIJQwn1+uvRTUeAqutT/5ymZYYerhqiOYCV
-         ho18vB4xwVSGRk5amzgElV0RKJiUET4TRYP8An24/5iacCeWWGHKd7MBVTwl73P53qf6
-         ET4cA7XlKzqe4JuDggNCaReofFBqtABL0hIlTM+jBseASnsqogp93jr/pfg068ZUIALz
-         xV2A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792685131; x=1793289931; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mocTbU6QYoGmhL7dstIxBqOB3/wT12OUsHUZqXTiEeg=;
-        b=po2EjtmmhjEnBHkbQa505xq9tldXRzLLiYUKajpmJEW6SybEo90CZ0lqMjVa63jsZc
-         hBqO+hVyyfp3yMA3aOmJ/rYRiZTHJeyhNRuTBX5d7el4UNaAUSpUj0iajRk30E1ugAdr
-         2G4T5gLJtkMgJThjAbkjcfdONnuZbru9nEP8pIO/2nmPriJoUBZnQekt5x2y3lec11md
-         bQ7OfvBEGTrDvpc0tQtmEBfFcnEXfoKGYpnbVi8qY5k+7PRNl6d/wifiA0bHvzixl07I
-         pvFROBWdh0rZOyDKhlPSor8xwgaeSIbOVGatbpAHmH/8+VTlGB27UgUCaThtBfsY4u0z
-         WE7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792685131; x=1793289931;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=mocTbU6QYoGmhL7dstIxBqOB3/wT12OUsHUZqXTiEeg=;
-        b=nldQ30/dUYYD4GT1KSWwntKjFTjv/RHeaUTjdGpQt2AC6vgfRmeG2fx0c5PUzpyIgg
-         0ymDWQXOHt+fy5qPXa+5l/2vx077VsI/WUEyKN1pPvgyS3gY/s1nRUifQRZCjNzAO2zs
-         pxyvVaWmeJsVlXMG3wRJSx+WupX36HQZePWbsPnXh2ZyHA3PJph9m4uhv4rNQylederJ
-         0YmZk32vM/IcVig929w7lELSl8cDsiUPdrjPAo+/KAxbrETgQXohqmoYSv5OIEKWInnu
-         kXlpKOM0DDrnur35ufxnAbLehbSZIeZoLaBe8CLWoHTtoXAAsvBALNs3oQXXMglT1YRG
-         hIjg==
-X-Forwarded-Encrypted: i=1; AKwUvByqSGYOewunZGAVirna+Gnav2KekyCXzCYUZwlyzRTIcoqccNJQ07PkRKSg7JtpWGJ2EEWz7fdEu17FSRuhkA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKjJG5/m0fbS3BiorxXnD0aw+XqTLdtrC726t1+W7eYDx+8GVND
-	kXNQc42v5Q8PcDRg0H0Zh6ktMrhoW7eW1HlZmUWMf387PAbIx4teptyopwl/bXtMqlO90X4spj4
-	VG4x6mvbUJv00fZSq4HAcubzzU86uOcM=
-X-Gm-Gg: AYBFou0uXPafi8cpYW6u+sMSQREa8q/dEoigd+b6jdzDmI02xfM9/Jia/cuHe9EtL5B
-	5IqN8arfSJX/N0/f9RTABhvNYaAvLWS3l5xEXymnVMZ5MKpjvwao/yZFjbPziyN6o5bd7n2nfDo
-	UDXr59CcfyI1PoA5DuDo1HAu4V2/tCsQbBOW8BXIl5RvXaBA8Q3ZXn3BD2m2dB+VXjjabId5HIx
-	6CoskzI4dmQ6WMid41gzNp2UfTkHUoJJYQOw9k2U1b9lAUih3vrj1OKnEQGne6hvy6mlNuIDBRH
-	RMNX5oVxX0Bjasr+2fSOYR+8y6THsSCwNiNNaYqGhkUyXWdlUH1FHIKhXLOvZtjcoYnrbCkCydQ
-	QOWf+GfoHd+cBKvbYCBq9L3+LZnKbRqLDSD3YNg==
-X-Received: by 2002:a05:651c:c01b:20b0:3ab:3f1c:c2c0 with SMTP id
- 38308e7fff4ca-3ac441adcf0mr12071131fa.22.1792685130710; Thu, 22 Oct 2026
- 09:05:30 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=luYv/TrK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109C61F01825;
+	Thu, 22 Oct 2026 16:07:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792685268;
+	bh=kufxQ9hfGaEIw3wUx51SV8DPUjPOJNaniBUUJ1FuB5s=;
+	h=From:To:Cc:Subject:Date;
+	b=luYv/TrK/u+jYXYIBZL5sVLifT1r6v75JmUOcT6bGq0DRhAZu23oW8YrtBUbXvjdc
+	 +w9wMTVKbvry/6ve8Baw2S6LabPNuEbMrZxfSNxOJk8BKZSmNUi7u7/d4CQPOjZAil
+	 X4Z79p4ZPT9SJMP6i7fXOvKO0DW0X+1LF0hl8ecgYwPCXSLvy77U++hI54OE33VLLt
+	 E0PJvimc91wpyZkm2t/9Yg/01emeeovUMsl2PtxB/NOASGYHJQKPrBBXAcVZRhjnKz
+	 AipUO/x9U49ZAOO0UcjCQz//4WltIPCq5SuZXeVg++Hvw0mebtxGSB9LJDpPW1Gben
+	 UDZ1zcCn09NtQ==
+From: Philipp Stanner <phasta@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Philipp Stanner <phasta@kernel.org>
+Subject: [PATCH v4] rust: sync: Accept errors for Lock payload data
+Date: Thu, 22 Oct 2026 18:07:26 +0200
+Message-ID: <20261022160725.2215244-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -103,103 +74,108 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261016154819.17936-1-muchamadcoirulanwar@gmail.com> <179260197668.3127.18219777718091081046@linux.dev>
-In-Reply-To: <179260197668.3127.18219777718091081046@linux.dev>
-From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Date: Thu, 22 Oct 2026 23:05:18 +0700
-X-Gm-Features: AclHuK-_6y3CZAcHO0wx7PGRH7qXj55F0nJkQUzx_zuArGiTC_UADw4Zf8xvi5o
-Message-ID: <CAO26r3QK+Q5=JR5TeMzEX-WiLpgYWd8Zn0O1qx11LxTgN96BPg@mail.gmail.com>
-Subject: Re: [RFC PATCH v6 0/4] iio: position: add Rust driver for ams AS5600
-To: Igor Korotin <igor.korotin@linux.dev>
-Cc: Danilo Krummrich <dakr@kernel.org>, Jonathan Cameron <jic23@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Mark Brown <broonie@kernel.org>, Brandon StJohn <branstj@gmail.com>, linux-iio@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Wed, 21 Oct 2026 at 23:59, Igor Korotin <igor.korotin@linux.dev> wrote:
->
-> Hi Muchamad,
->
-> Reviewed the lifetime/teardown contracts you asked about. read_raw() has
-> a problem: it takes parent: &Device<Bound> and recovers &I2cClient<Bound>
-> via TryFrom. That conversion just got removed upstream ("rust: i2c:
-> remove TryFrom<&Device> implementation for &I2cClient", use-after-free,
-> unrelated thread), so this won't compile anymore. More importantly, Gary
-> Guo made the point that needing the conversion at all is the actual
-> design issue: a class device shouldn't reach back into a generic parent
-> reference during a callback -- whatever bus-specific resource it needs
-> should be captured once, at registration time, and handed back via its
-> own private data.
->
-> Concretely, this means dropping devres and letting Data<'bound> carry a
-> borrowed reference directly, which it's designed for
-> (Driver::Data<'bound>: Send + 'bound):
->
->   pub struct As5600Priv<'a> {
->       client: &'a I2cClient<Bound>,
->       #[pin]
->       io_lock: Mutex<()>,
->   }
->
->   unsafe impl Send for As5600Priv<'_> {}
->   unsafe impl Sync for As5600Priv<'_> {}
->
->   unsafe impl IioDriver for As5600Priv<'_> {
->       fn read_raw(&self, _chan: *const iio_chan_spec, info: IioChanInfo)
->           -> Result<IioVal> {
->           let client = self.client;
->           ...
->       }
->   }
->
-> In probe(), capture the client once via deref coercion (Core -> Bound)
-> and split the driver struct so the registered IIO device carries the
-> same 'bound lifetime:
->
->   struct As5600;
->
->   struct As5600Data<'bound> {
->       _iio_dev: Device<As5600Priv<'bound>, Registered>,
->   }
->
->   impl Driver for As5600 {
->       type Data<'bound> = As5600Data<'bound>;
->       fn probe<'bound>(dev: &'bound I2cClient<Core<'_>>, ...) -> ... {
->           let client: &'bound I2cClient<Bound> = dev;
->           ...
->       }
->   }
->
-> register() then just returns Device<T, Registered> directly instead of
-> transferring it to parent devres -- that transfer is what forced T:
-> 'static in the first place, which is what made storing the borrowed
-> client impossible and pushed you toward TryFrom.
->
-> I built this end to end against current rust-next: compiles clean, zero
-> warnings, and zero changes to rust/kernel/i2c.rs. Happy to send the full
-> diff if it's useful as a starting point for v7.
+The `Lock` baseclass currently does not allow for fallible user-data.
+This can cause conflicts when used with other primitives, for example
+when a lock shall be pin-initialized with payload data that is fallible.
 
-Hi Igor,
+Add support for the lock base class so that it works with
+try_pin_init!(). Adjust spinlock and mutex accordingly.
 
-Thanks for working through this and building the changes. I'd be glad
-to use your approach for v7, and I'd appreciate seeing the full diff you
-offered.
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+---
+Changes in v4:
+  - Do imports at appropriate places. (Gary)
+  - Remove unnecessary changes from pin_init to try_pin_init. (Gary)
+  - re-run rustfmt.
 
-I got the lifetime model wrong in v5 by storing an
-`ARef<I2cClient<Bound>>`. I only realized that while fixing the
-documentation for v6. In v6 I stopped storing that `ARef`, but ended up
-relying on `TryFrom` in `read_raw()` instead.
+Changes in v3:
+  - Vertical formatting for imports
 
-Storing the client reference in the IIO private data rather than converting
-the parent back in `read_raw()` makes sense. I'll check the lifetime and
-teardown details as I prepare v7, and I'll acknowledge your contribution.
+Changes in v2:
+  - Don't import prelude in doctests. (Gary)
+  - Keep using pin_init! over try_pin_init! in Lock::new(). (Gary)
+---
+ rust/kernel/sync/lock.rs          | 28 +++++++++++++++++++++-------
+ rust/kernel/sync/lock/spinlock.rs |  5 +----
+ 2 files changed, 22 insertions(+), 11 deletions(-)
 
-Thanks again,
-Coirul
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index 10b6b5e9b024..05a123fff0ae 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -7,11 +7,22 @@
+ 
+ use super::LockClassKey;
+ use crate::{
+-    str::{CStr, CStrExt as _},
++    prelude::*,
++    str::CStr,
+     types::{NotThreadSafe, Opaque, ScopeGuard},
+ };
+-use core::{cell::UnsafeCell, marker::PhantomPinned, pin::Pin};
+-use pin_init::{pin_data, pin_init, PinInit, Wrapper};
++
++use core::{
++    cell::UnsafeCell,
++    convert::Infallible,
++    marker::PhantomPinned,
++    pin::Pin, //
++};
++use pin_init::{
++    pin_data,
++    PinInit,
++    Wrapper, //
++};
+ 
+ pub mod mutex;
+ pub mod spinlock;
+@@ -128,11 +139,14 @@ unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}
+ 
+ impl<T, B: Backend> Lock<T, B> {
+     /// Constructs a new lock initialiser.
+-    pub fn new(
+-        t: impl PinInit<T>,
++    pub fn new<E>(
++        t: impl PinInit<T, E>,
+         name: &'static CStr,
+         key: Pin<&'static LockClassKey>,
+-    ) -> impl PinInit<Self> {
++    ) -> impl PinInit<Self, E>
++    where
++        E: From<Infallible>,
++    {
+         pin_init!(Self {
+             data <- UnsafeCell::pin_init(t),
+             _pin: PhantomPinned,
+@@ -141,7 +155,7 @@ pub fn new(
+             state <- Opaque::ffi_init(|slot| unsafe {
+                 B::init(slot, name.as_char_ptr(), key.as_ptr())
+             }),
+-        })
++        }? E)
+     }
+ }
+ 
+diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
+index 6a71bb3a5c45..b8b7492a99e5 100644
+--- a/rust/kernel/sync/lock/spinlock.rs
++++ b/rust/kernel/sync/lock/spinlock.rs
+@@ -4,10 +4,7 @@
+ //!
+ //! This module allows Rust code to use the kernel's `spinlock_t`.
+ use super::*;
+-use crate::{
+-    interrupt::LocalInterruptDisabled,
+-    prelude::*, //
+-};
++use crate::interrupt::LocalInterruptDisabled;
+ 
+ /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
+ ///
 
+base-commit: 7be4bc52fd9e0e55dc9a2e0232b89427d2c4b614
+-- 
+2.56.0
 
-> Cheers
-> Igor
