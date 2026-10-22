@@ -1,60 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.67.36.66
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792669907;
-	b=qFW72guR7hD8Nfab+XCEegLT/eQSnyga8YDHXX5Ji0FuYIdpIowU4MK4X5sOk7Ag/OH+
-	 ywHmUgrO/50XjXHp10Aj2fpz2XM+O1QcSVQHItFhZ/vFxd+9ufkypJTLdCNli9yBym948
-	 SCgvITEmcUsNgrXmQFA/L1Y2vFZhqdfYy8whabFQ1yMKOQ8kwPc9j7IatL8FYFQZRN0MD
-	 ib6Scpio6Rk2Ca04rIfOfTo1Jqz4gMvhM8F2lSzv3WghjLAFRE91OkINqcMXxCUKGeKLU
-	 SnQm/x1gehSB1NUXik7jfIcYvhPWvkkZv2i8CozJspEYlNRDvWha9p8pSPtlRcsb4EQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792669907;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:From:Date:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 References:In-Reply-To:To:Cc:X-Developer-Signature:X-Developer-Key:
-	 Autocrypt:OpenPGP;
-	bh=UTm4yQVbwMpMizb1S87Kb2YZ7hCkc36LgIfvhH/1KKk=;
-	b=lPu+kZkHrGQ3FsLxii6BFZ2OcH6kbKIYB8QL5Rx0XRVRdtDosGJYm74z05HVZsywTROB
-	 g5Eq7Ka5sPnsAAnxNi+x1tq7qLLjBfJ4aQVmzsGtg5wTHweY8aJwx68VN2kmoQCoO1g8g
-	 XprfdjJibZ8oFjgnnuPgg8GZ6eZbEkVBLd/K7TXk2Q/Y+5bi4x1v9rM4wXujLIxcEwC7O
-	 xG1PQZi2mnL2vBzhYzN+ENSsx/gGTOP7SztNsT/mlrYwYyml2OQ8FE5Kq5qJJwSVtv/RL
-	 MPOFYkdIP2boVfDNjTRxBT62pc2xJ4Ig2TH300V5zIkEZV2Rt5WagPbfJEYum2pvlBw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=posteo.de;
-	spf=pass smtp.mailfrom=posteo.de;
-	dkim=pass header.d=posteo.de header.i=@posteo.de header.a=rsa-sha256 header.s=1984.8680eb header.b=aD+5rUit;
-	arc=none smtp.remote-ip=185.67.36.66
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.179
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792672951;
+	b=u2m9rJq89ZrUjK0OYn6eWFDO/yZB4yCpYfo6cCHTHpIs+Z7lgK7gCwYJMeMvmSdqxmmM
+	 8NRhqJBwKIwteUBXcu/EFp7ZO8KskV/39S2TSY2MFqSAuy+qC7nhK8O/Oh5DQrwKBVIjr
+	 dDmUjIhVGvP1U98bkB6wqQSwvL0PdDfsLR8qiAjO1cO3YMgS5qx7aM/AGYY+JW5c+JWVu
+	 MTmaIKzBNnkToMgEcarlvErExZqqpidn/WQEBSjbWBVGz0SaD43mYavcrlvl4Jia2cOdL
+	 HTEJHJjxUpFXU7fIEvR1sh5G3qZztqJimeAXlUl7APAgvp8N9lVPR19CNZERWaXn7tg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792672951;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=yahNT0bNvxOBrbmk+CPvWSF27fEnpvOdoj99aF3G+Zc=;
+	b=3HSK0F5fm96GuBUwmY5LG5tjevGvfvlG36K9iUVLEzLg0Aa6Vow5vFGjuT7Fl7rNHSZa
+	 Fuv45t6IbSMjerlRqS0Il0GLH7eqP0kop5FoyhGXCFRzCv9mOxG8ptd8QjIGu/S31/VM5
+	 fVvWy3QRcjQX1VGqJZ9Z0/zITI0jg31bQErVeVzTNlYcR4SL9zjwmcSOxf406xZL1BcE/
+	 hzwbeyf7H4btkm5cvYTsN0x+DwvO/bpP3C17ruV8fEESgH7f3ZvA5tYDXYFHBP4znguTr
+	 RxQuMoQfpMk7SqtmwGLXX2WpwGxZL2BADYvo7a7AQUTrL2fDq9M+0iHhtqfOlrPRSIw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Kar541c8;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.179
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07D8606A323
-	for <rust-for-linux@vger.kernel.org>; Thu, 22 Oct 2026 11:51:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A07D8606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D825606A31B
+	for <rust-for-linux@vger.kernel.org>; Thu, 22 Oct 2026 12:42:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D825606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=posteo.de header.i=@posteo.de header.a=rsa-sha256 header.s=1984.8680eb header.b=aD+5rUit
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 0FB83240115
-	for <rust-for-linux@vger.kernel.org>; Thu, 22 Oct 2026 13:51:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1792669899;
-	bh=UTm4yQVbwMpMizb1S87Kb2YZ7hCkc36LgIfvhH/1KKk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=aD+5rUitJ+kcJRbPJXR/UEVG2tx39mYCRYfef+dku6MGaGrP8cDMVupLsDguvtfWS
-	 QPhfPpUtHBwZe29Oicht6cM9jBuG/v+uh/WqbpWXnFA/ohvJ/17N8NIR8HaebpjrDz
-	 zIu60MqCyKXIiQMBpn+/gJ7/4w/y3IBpVLm/6LrcPWQfyG6xoWq++xPJOoUBJ3lUjm
-	 /yQ7MVNHpMfuNZlNnlgxVNVFSHlhpXwJixc3hcUbBc0Ac+fWxgx7AkXnNa/GV8Ri4G
-	 7emJVehFDwS6QUbguRlreailNqoN5A20RIAHYLazpWOujRpqYdNd7Tv9SEzmDZZf4D
-	 l2R9s8erV2gFA==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4j9Pd26RXLz9rxV;
-	Thu, 22 Oct 2026 13:51:34 +0200 (CEST)
-From: Markus Probst <markus.probst@posteo.de>
-Date: Thu, 22 Oct 2026 11:51:37 +0000
-Subject: [PATCH v5 3/4] rust: serdev: Replace `active` mutex with receive
- pause
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Kar541c8
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-33bb5afa736so244459eec.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 22 Oct 2026 05:42:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792672950; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pQ0cW3qhdfTWcjGLBRmPQ/ss6MHKxQRYByU3HpTO9wSbbGJtaxUpgVbjQBdrUckiNz
+         FdiAOAh6KywX18YsAd1J6isBR6vCzuFRAt6mgq8Doj4SbhhQD4ybd5U33h3S4Y8LjXVF
+         dtqE5pv7LegMFabMaS44xV1Hj+3VxzWuUcV8QaXK94wc2drhC2SZfDfm9t4VJ7ilA6EM
+         pPcXGML3CfpPzBhVSTQUGrjSTTA+8huos8khTFKT8yrL3qL73voutaoMeVmH+BsZkAsp
+         xk5CI3xf5ZWt5T2VcnrFJuusj54dwLIgMN0zJSOszDxmW5npnU1q0mgGxK5/DjY3ZHqn
+         BjnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yahNT0bNvxOBrbmk+CPvWSF27fEnpvOdoj99aF3G+Zc=;
+        fh=ttnYLZ2j3Pld1Zz6veBNtVvfDZcTI4Res7XWwD0UE+E=;
+        b=NCe9EBeNCcFOB3nGaIW+5h60GYBDo1I1iCQz1ivJR5U5dKM2Y0Q4LNa+2ZzLZcE5vn
+         8u9k1Un5oLkJFNUToHGMzY4brMSfddgS4wHLs2LLbeGC11MNAcTTZnIRr4HfQ2WRM5cS
+         Lrsz+ZhZR7/3F0bkrT+z0tW0DfnyMMrRUV7PA0NLt1lXNYtLmvQE0x/ag0nKWCs0GaAJ
+         QvyehCg9WH23qQomNxhVHjfwGl5bOgZgNd7jMSPqlmUNSe7Y8RlQSwWab+2GKJhNhdBn
+         r+qj+oNWgbm4kRQKuEwY4tMWjxq6Nazj7a2fgZvpJfdxvVF7ijOsNNvKK+49BuAYuPXv
+         p/TA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792672950; x=1793277750; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yahNT0bNvxOBrbmk+CPvWSF27fEnpvOdoj99aF3G+Zc=;
+        b=Kar541c8ClARwAoaapGMtGG3WzxlDV7TcahPyXsp6XpREWBZjLmOW0slbwmmW7fdKo
+         HC/IaieL1B5xzjjryH7O+iAAUqFxTPw2LPOObNPTZ1HN5ketBkqWd0ifBmzxrfHfvvI/
+         qPF99sbE3qNqBrLYTzGa/lBN9dRlMLGqJz2rN15qqZqCwPBUm3pcLiVgRZbUFVVbY2H+
+         y9g21m+P/Tli0+nqmzVHzbzkxiYQQD74jFOl9nIlCpc4EpN0swIRfpiRq7HtLLdT1VgZ
+         QhsuXlD7nAJBI8+z8gWWyrpAmjZsoIvdtzJb5Leb1Xq/oxbNkCEnmoHwY6yyTx8iOBbo
+         i3Iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792672950; x=1793277750;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yahNT0bNvxOBrbmk+CPvWSF27fEnpvOdoj99aF3G+Zc=;
+        b=euxWKsg8poeoQ2OyXerXxPCol1STgwnIoOmfviUUKdRWin56Pl0jYYixgIWJqKfmA4
+         2H2HMBvSOfusFeJm4U7CNawbwiRo4GAuGZeTH0R4LVOPuB1wBt2TOXlQoV+SY0y2nUTB
+         wShZCWkktXd3g24YtQHA2TyQqG54yIEGxbJI8apC4EJnb8A40jhH4KBgvxoFOuHWXLyp
+         r40oZr4oK97EdqdEKKidwGVZ5Wi7SFTVkU8dqWX1ajW9I6/ygJO7Js3d59RM68u6Agia
+         Dzu50S6IpxvHI8AgZR5Nw7g9EKAXwRhgv5/OIysqL7qxCbDsZ6r26wh7ZOg4hLuNl4Mt
+         e5ig==
+X-Forwarded-Encrypted: i=1; AKwUvBzEcTSuzp8LSY+qwj7BD9+lgenyzZG8PGaAoTZnUUxlmuugofMuuHhXeSuhTarp8nb4HSvNQJ+i8Ha9E+3OOw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYL7niDUwwxl2ex2aYt1C9wbIu6C1p7fRadgc7tUhBvNMU4rl24O
+	//eifkCnsAOwIDkiMbXnzspG0Q2Ry+HwaS0dIWNJJGnYaFyS69BGFpC07NT9OEMShIbnLrrqAH1
+	yvXsU8FJQOS9n+4H1Bt+w/0+g1/yS8JM=
+X-Gm-Gg: AYBFou2K9p649PV7TantOQMm1ZKcKIBbnJusNK5/pVjKL3jknlY8q8DZEoVF8HCTxg/
+	tGJaUDBFiSeKPC5sgXUZqxlu77OJUeJ9lt20TBzuK4AobIEJThNDKyMifIBNg4O0VNgBwKUH3sf
+	gT7UoAwNxEglKHJKW+wNoK0fN6buvRRd+SURiYqIkxagx4Y3sYfMaJhnscbpPPcS8uWY7SrkDBB
+	5AskSX8Qt8jBJEEVjnGqsOLqRXGtSYCME+4JmBr2wqyoD7CiN3I6O7yrKBnPGQM2pdC41+TscVe
+	5oeNN54+eWaKk6JCXOgvjEMRHS9X4ckl2Den0Y1ppQZSdJ0roywOF/8XxMrZDGjop02OuxNofrI
+	45xLRoZ1FJiElKJy5AbDmaeHfa9/1uaoZa/rFo7iY737DVsN3gN3hx7jJ5j5qmyKN6/oTzmGQQs
+	6YPzG9kYE7obT3HH2ghOhj2wCPBV6hwtdwJr5LjqHXm165q1hbjd8Q5X33rtIBIyPLmgOZ3wW6o
+	gy6iVoIAfD3j+t7zA/bego0pX7bOEARE7+p59t/9bejWGoS3qnubSkjiA==
+X-Received: by 2002:a05:7022:f519:b0:14b:edb2:c3bc with SMTP id
+ a92af1059eb24-1909acc857bmr8644920c88.0.1792672950050; Thu, 22 Oct 2026
+ 05:42:30 -0700 (PDT)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -64,238 +106,63 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261022-rust_serdev_probe_refactor-v5-3-a27d862a415a@posteo.de>
-References: <20261022-rust_serdev_probe_refactor-v5-0-a27d862a415a@posteo.de>
-In-Reply-To: <20261022-rust_serdev_probe_refactor-v5-0-a27d862a415a@posteo.de>
-To: Ayush Singh <ayush@beagleboard.org>, Johan Hovold <johan@kernel.org>, 
- Alex Elder <elder@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, 
- Jiri Slaby <jirislaby@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: greybus-dev@lists.linaro.org, linux-serial@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- driver-core@lists.linux.dev, Markus Probst <markus.probst@posteo.de>, 
- Sashiko Bot <sashiko-bot@kernel.org>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6499;
- i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=xmTFRFw7V/HU3JXIe69biF6uXSYP9tKIxk/FBu1sWo0=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBq2fi+fjasiVCEpp6qIdwjd7WUEa0bZpkqfV2tj
- x1Usj+eJnOJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCatn4vhsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9JEUhAAv/voRxAfESLBZvoOyYsTWNp6YcjJ0/Y
- tvebcSV0vbmo4XTIYQkwWljOGOua5MZt60veljH3VV8hEdlDwv0GhN3qOaeXL+WEYDLZslHFDyN
- 5gb/0a2cbOoi9gw4ppwaZ9CnRrW1JriXYAw4UIaMy90zkRvc7QIGqX7y1TA9fNmQn2DbWZJ5A55
- AosA9Cp36t6p7w/ocUezGKemvu7m1aOPo0H1SmU+SmK68bW5EN5LZorTOOSQjr5DZbdrnfFhtZJ
- P3F9ESPQW3KHNzEIHeGRQulMnnvonTyvmoA98EtXsK4osbpRMypgZ5IxYW0QeZpccCWF+Ob2wOt
- U3MYEUK7pYx1fjvSk/7nCeE3vi2h3UC5ahdxieGAgdlv22evbG9+uoqjtU0sZ8CZVfWjaT1zSCm
- QwEZzgqtvTeP5x4zznFwZknbARy7AX41cph04WW44QK+RU0andBw0YOjynJhZl7dgRkkeSN7p+u
- 9imrubBPaWbdK82Dbf6iOEsPnMtE7GTSKWhggVZGFPBgZD4ALiVEgqso/qkXadtziw6D8cDJ4Y6
- oaNaJwuIDPLB/8StYR+Nx/7P9eIKwZ2IteH31Qu8hF0DE9CIGyhnOGyZj2iv+i1E6AdDkhC8N0u
- Ea0iE1tsSnULirElsFDbfl2z9pR5bgu8E7XGvrlISiQEQaMjjc8M=
-X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
- fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
-  keydata=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
-  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+References: <20261019151243.1595858-1-gprocida@google.com> <CANiq72nqq4oGBWVtSMBhXS6G4H7fYg07ysD7SjnOWWt7R9_ajw@mail.gmail.com>
+ <CAGvU0HnBuoVMf2JwEhRCijxRn9MPnrX=yxxbo3YywT+RqCTheg@mail.gmail.com>
+In-Reply-To: <CAGvU0HnBuoVMf2JwEhRCijxRn9MPnrX=yxxbo3YywT+RqCTheg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 22 Oct 2026 14:42:15 +0200
+X-Gm-Features: AclHuK_T88Zy9oQREVqC19uHWElftZvOLaKoRRSb6QAdFImUnbbltGYd7908h9M
+Message-ID: <CANiq72mN9JYVitqgsZ2GkdmPVWqHZpJ-WNMNviiHV6C7gQMUwA@mail.gmail.com>
+Subject: Re: [PATCH] rust: exports: emit ___EXPORT_SYMBOL without C declarations
+To: Giuliano Procida <gprocida@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	linux-modules@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-There are currently 2 race conditions:
-- in probe if `Driver::probe` returns Err
-- in unbind
-. In those cases the driver data will be set to NULL before the serdev
-device was closed. If data is received while the driver data is dropped,
-the `receive_buf_callback` might try to access the `active` mutex on a
-null pointer.
+On Wed, Oct 21, 2026 at 4:21=E2=80=AFPM Giuliano Procida <gprocida@google.c=
+om> wrote:
+>
+> The description was AI generated, but it is accurate. Both paths use the
+> triple-underscore three-argument macro alone.
 
-Removing the need for `receive_buf_callback` to lock the `active` mutex
-fixes these.
+Yeah, I understand that not having the `extern` and so on is what the
+AI wants to emphasize here, instead of the `asm(...` wrapping of the
+`#else` side, but it sounds confusing to me, i.e. it introduces the
+change as if matching the assembly path was important for some reason
+in particular.
 
-Fixes: 99f59aa82341 ("rust: add basic serial device bus abstractions")
-Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/linux-serial/20260905000836.C8FC91F00A3D@smtp.kernel.org/
-Closes: https://lore.kernel.org/linux-serial/20260903222159.70A911F000E9@smtp.kernel.org/
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
----
- rust/kernel/serdev.rs | 60 ++++++++++++---------------------------------------
- 1 file changed, 14 insertions(+), 46 deletions(-)
+> I wondered the same thing, but that would introduce yet another intermedi=
+ate
+> macro.
 
-diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
-index 17ca504b7f8d..c16d6593a8d2 100644
---- a/rust/kernel/serdev.rs
-+++ b/rust/kernel/serdev.rs
-@@ -13,13 +13,9 @@
-         to_result,
-         VTABLE_DEFAULT_ERROR, //
-     },
--    new_mutex,
-     of,
-     prelude::*,
--    sync::{
--        aref::AlwaysRefCounted,
--        Mutex, //
--    },
-+    sync::aref::AlwaysRefCounted,
-     time::Jiffies,
-     types::{
-         Opaque,
-@@ -103,40 +99,11 @@ pub struct PrivateData<'bound, T: Driver> {
-     #[pin]
-     driver: UnsafeCell<MaybeUninit<T::Data<'bound>>>,
-     open: UnsafeCell<bool>,
--    /// Whether `receive_buf_callback` is allowed to call `Driver::receive`.
--    ///
--    /// If locked, the receive_buf_callback will be blocked on data reception.
--    /// This is the case while the driver is being probed or while [`PrivateData`] is being dropped.
--    /// This is necessary, because we need to open the serdev device before the driver has been
--    /// probed in order to allow it to be configured, which allows `receive_buf_callback` to be
--    /// called. Thus we need to block data until probe completes and the driver data becomes
--    /// initialized.
--    ///
--    /// If unlocked and true, the receive_buf_callback will forward the data to
--    /// `Driver::receive`. This is the normal state of operation.
--    ///
--    /// If unlocked and false, the receive_buf_callback will throw away the data.
--    /// This is only the case, if the serdev device is open and
--    /// - the driver returned an error in probe
--    /// or
--    /// - the driver data already has been dropped, because it was unbound.
--    #[pin]
--    active: Mutex<bool>,
- }
- 
- #[pinned_drop]
- impl<T: Driver> PinnedDrop for PrivateData<'_, T> {
-     fn drop(self: Pin<&mut Self>) {
--        let mut active = self.active.lock();
--        if *active {
--            // SAFETY:
--            // - We have exclusive access to `self.driver`.
--            // - `self.driver` is guaranteed to be initialized.
--            unsafe { (*self.driver.get()).assume_init_drop() };
--            *active = false;
--        }
--        drop(active);
--
-         // SAFETY: We have exclusive access to `self.open`.
-         if unsafe { *self.open.get() } {
-             // SAFETY: `self.sdev.as_raw()` is guaranteed to be a pointer to a valid
-@@ -170,7 +137,6 @@ extern "C" fn probe_callback(sdev: *mut bindings::serdev_device) -> kernel::ffi:
-                 sdev: &**sdev,
-                 driver: MaybeUninit::<T::Data<'_>>::zeroed().into(),
-                 open: false.into(),
--                active <- new_mutex!(false),
-             }))?;
-             // SAFETY: We just set drvdata to `PrivateData<'_, T>`.
-             let private_data = unsafe { sdev.as_ref().drvdata_borrow::<PrivateData<'_, T>>() };
-@@ -178,11 +144,12 @@ extern "C" fn probe_callback(sdev: *mut bindings::serdev_device) -> kernel::ffi:
-                 // SAFETY: We just set drvdata to `PrivateData<'_, T>`.
-                 drop(unsafe { sdev.as_ref().drvdata_obtain::<PrivateData<'_, T>>() });
-             });
--            let mut active = private_data.active.lock();
--
-             // SAFETY: `sdev.as_raw()` is guaranteed to be a valid pointer to `serdev_device`.
-             unsafe { bindings::serdev_device_set_client_ops(sdev.as_raw(), Self::OPS) };
- 
-+            // SAFETY: `sdev.as_raw()` is guaranteed to be a valid pointer to `serdev_device`.
-+            unsafe { bindings::serdev_device_pause_rx(sdev.as_raw()) };
-+
-             // SAFETY: The serial device bus only ever calls the probe callback with a valid pointer
-             // to a `serdev_device`.
-             to_result(unsafe { bindings::serdev_device_open(sdev.as_raw()) })?;
-@@ -199,12 +166,12 @@ extern "C" fn probe_callback(sdev: *mut bindings::serdev_device) -> kernel::ffi:
-             // - `private_data.driver` is pinned.
-             let result = unsafe { pin_init::raw_try_init(driver.as_mut_ptr(), data) };
- 
--            *active = result.is_ok();
--
--            drop(active);
--
-             result.map(|()| {
-                 private_data.dismiss();
-+
-+                // SAFETY: `sdev.as_raw()` is guaranteed to be a valid pointer to `serdev_device`.
-+                unsafe { bindings::serdev_device_resume_rx(sdev.as_raw()) };
-+
-                 0
-             })
-         })
-@@ -231,6 +198,12 @@ extern "C" fn remove_callback(sdev: *mut bindings::serdev_device) {
-         let data_pinned = unsafe { Pin::new_unchecked(data.assume_init_ref()) };
- 
-         T::unbind(sdev, data_pinned);
-+
-+        // SAFETY: `sdev.as_raw()` is guaranteed to be a valid pointer to `serdev_device`.
-+        unsafe { bindings::serdev_device_pause_rx(sdev.as_raw()) };
-+
-+        // SAFETY: We already established that `data` is guaranteed to be initialized.
-+        unsafe { data.assume_init_drop() };
-     }
- 
-     extern "C" fn receive_buf_callback(
-@@ -248,11 +221,6 @@ extern "C" fn receive_buf_callback(
-         // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
-         // and stored a `Pin<KBox<PrivateData<'_, T>>>`.
-         let private_data = unsafe { sdev.as_ref().drvdata_borrow::<PrivateData<'_, T>>() };
--        let active = private_data.active.lock();
--
--        if !*active {
--            return length;
--        }
- 
-         // SAFETY: No one has exclusive access to `private_data.driver`.
-         let data = unsafe { &*private_data.driver.get() };
+We are introducing a macro either way -- in fact we have to introduce
+it twice if we don't do it centrally.
 
--- 
-2.55.0
+I guess you mean avoiding the duplication in the C header, but that
+duplication already exists in this version. So if no new intermediate
+macro is preferred, then at least the duplication would be more local
+and thus more obvious when they both need to be updated.
 
+> No, Android kernels have been built with Clang for years.
+>
+> We post-process DWARF information with STG for ABI purposes and noticed
+> this interesting side effect there.
+
+Ah, nevermind, I checked the DWARF emitted by Clang, but without
+gendwarfksyms, my bad (I am aware of Android using Clang, of course;
+it is why it sounded strange and wanted to double-check if it was
+related to GCC somehow).
+
+Thanks!
+
+Cheers,
+Miguel
