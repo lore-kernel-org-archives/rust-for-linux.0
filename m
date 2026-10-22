@@ -1,69 +1,68 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792685269;
-	b=AeKqeXnv54M/jBkzP9yNwtI37hAu6n+PpnGCg7aO8smkLH+rIpEWokTaxQz8che//b+0
-	 e2cnRvzbaeOEVafIbUvJBp0YP+t91MdBdNtj3FgtAjTugTCQLJQwFlH6eBMT9+nvGIc5q
-	 42qszLSF0xaUfbuQmQL1uEC0xfpZ7TlLXv+87PnZSbPYsQx09yt8D73XB8hlMycF/U25+
-	 87oPn4283OSN87Mwko6YOEZrRzzTIQYIovfw7qnFU0vm52Z7mxrNd9s1LIPPQPCkJYhB5
-	 W3ICrPNIZ5s84nWQieLLcFyh40rGTEND2aNLzczKOfDWvjLxjbiMYTwcgZcG8VfItpg==
+	t=1792686096;
+	b=HeAgM2RmqdGDqFvzW3L0LoxOajKNhWrrcMYxeQ9a5JhfyOXJTsK4AOx6FRGzFRHUC3lr
+	 Q1PeaUpy8wWo8kW7FHJ7FDZy3LZIYSpBnZOMCH4TD191sWSnE8UlwtUCr8JCNBLzdo+M6
+	 1sRaBeDpJRIAJqowRPzJCEgtX1Zse97zO2DgD8WGru9GWBFJSeqF5J3x0DUAjlxZsy0OO
+	 6nYQxNbAi8MSk3gqzZSK5AneKyp8mnlS4R33f3Rv7X1KCIRnVPPXPnWjLVc64+A1nDB8Y
+	 WK3suE6Hxq9ChH5lywIAfTU4vp2EHv9xP+LNoDWOtd4NwFuO0VkWNDpjVDRUPA+dgKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792685269;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792686096;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=kufxQ9hfGaEIw3wUx51SV8DPUjPOJNaniBUUJ1FuB5s=;
-	b=PAd8vV68CJkTdFCF3UyQ6Z95T+QtczO8MPHuLWZei6Hk1WPP2yQXTD5QSz5UI9rhcVB+
-	 Gec1giY5HsVRXJr0GXo9dlI+Yqk3IVgJNpOiFa7R69wFt3CdQJOU8pKmZBVTQ0HyXSsGs
-	 Sdvj1N98soRWIns6DKl33nc7Xy46D3yHhktWz9bzLKyOsmJSwW153ikaI2Q4BdoUgnogp
-	 VLjPlnvunHq9Kpwm8YJYJTIhV+Us+8HhO9dcDU3rSg4eOo1vGX834SXCs6iTo3Q4CdGAI
-	 sWetOK1lkM3nIZ+10ftQR8KpkUGccamlTgA1tw7d9PEzM5qIAnT3DGF/yhBurbDsJ2w==
+	bh=4oz5dX4tDBH0WqAQg9PhRE4xJRQGNmthSi52inKF9B0=;
+	b=ycyEW/R7PMZT/3Kn2SNCitDoz0cZ9GOMpLxb51DdN8R4302rKU+oUUyezsFgt/BMHDB+
+	 nnSQ8qgvBjfs2z/TCwTqDuBpLTa2PPp2j9yNkZ/YseQrp5HuvXz2uQ5EKvjWg4Tg8O7tv
+	 gVAQxzo+kBJLpjP1gQsrHJusS8sVoavFplElXNs9AehHeB5L3QQ59+Z2OzcvyFlZWwfOs
+	 oMSOnvkNs4ebDIjdGG36u9qzI8dE1VgAzsr61ZeSTioN4ux+iVktaabUoP+RF2PLmMK2+
+	 7eqFj9G42uDPj4sm/Gwpl9UFqSbZVQPdYQ8ivTyjeoqjdKxeigAEMMueJ6z6/442BIA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="luYv/TrK";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U0+ksbiT;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C43606A31E;
-	Thu, 22 Oct 2026 16:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0628606A319;
+	Thu, 22 Oct 2026 16:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=luYv/TrK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109C61F01825;
-	Thu, 22 Oct 2026 16:07:42 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U0+ksbiT
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C008B1F01828;
+	Thu, 22 Oct 2026 16:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792685268;
-	bh=kufxQ9hfGaEIw3wUx51SV8DPUjPOJNaniBUUJ1FuB5s=;
+	s=k20260515; t=1792686096;
+	bh=4oz5dX4tDBH0WqAQg9PhRE4xJRQGNmthSi52inKF9B0=;
 	h=From:To:Cc:Subject:Date;
-	b=luYv/TrK/u+jYXYIBZL5sVLifT1r6v75JmUOcT6bGq0DRhAZu23oW8YrtBUbXvjdc
-	 +w9wMTVKbvry/6ve8Baw2S6LabPNuEbMrZxfSNxOJk8BKZSmNUi7u7/d4CQPOjZAil
-	 X4Z79p4ZPT9SJMP6i7fXOvKO0DW0X+1LF0hl8ecgYwPCXSLvy77U++hI54OE33VLLt
-	 E0PJvimc91wpyZkm2t/9Yg/01emeeovUMsl2PtxB/NOASGYHJQKPrBBXAcVZRhjnKz
-	 AipUO/x9U49ZAOO0UcjCQz//4WltIPCq5SuZXeVg++Hvw0mebtxGSB9LJDpPW1Gben
-	 UDZ1zcCn09NtQ==
+	b=U0+ksbiTduDU7g2VPa9NcaYlCjoPp3YwKe7qAuewXxTnZ2WM3riuNva02dkZl1mme
+	 viI4fAYuREXSuzk+4O/BmscDrpn5zBD8h1E/h+qJ+YtREgZAi39VIHRZesMchcT138
+	 BTyCAzoA6fsvM/0N2pETw3xQ3/3DKOfNeW/7Cxf9LIDKT5uqckkU5ZC8CAyT53dbWq
+	 1npn+6BSTHY19JKrNLjuQHOTZbQzssdQu5TwICvdvDVA5b7kMFtCa1vmfobRl9vkjN
+	 WqVyerElqLI55a+LMAcv6GB6yGOAYdRp8Mz4BebgLWyi1jyPbqKqTwwRTo+IWlOqEy
+	 mxhJAXXM0kBUA==
 From: Philipp Stanner <phasta@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Gary Guo <gary@garyguo.net>,
+To: Danilo Krummrich <dakr@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Philipp Stanner <phasta@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>
-Cc: linux-kernel@vger.kernel.org,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
-	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH v4] rust: sync: Accept errors for Lock payload data
-Date: Thu, 22 Oct 2026 18:07:26 +0200
-Message-ID: <20261022160725.2215244-2-phasta@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: DmaFence: Implement Deref for FenceContext
+Date: Thu, 22 Oct 2026 18:21:17 +0200
+Message-ID: <20261022162116.2282295-2-phasta@kernel.org>
 X-Mailer: git-send-email 2.56.0
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -76,106 +75,37 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The `Lock` baseclass currently does not allow for fallible user-data.
-This can cause conflicts when used with other primitives, for example
-when a lock shall be pin-initialized with payload data that is fallible.
+A FenceContext carries data, which the user should be able to access.
 
-Add support for the lock base class so that it works with
-try_pin_init!(). Adjust spinlock and mutex accordingly.
+Implement Deref for FenceContext.
 
 Signed-off-by: Philipp Stanner <phasta@kernel.org>
 ---
-Changes in v4:
-  - Do imports at appropriate places. (Gary)
-  - Remove unnecessary changes from pin_init to try_pin_init. (Gary)
-  - re-run rustfmt.
+ rust/kernel/dma_buf/dma_fence.rs | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-Changes in v3:
-  - Vertical formatting for imports
-
-Changes in v2:
-  - Don't import prelude in doctests. (Gary)
-  - Keep using pin_init! over try_pin_init! in Lock::new(). (Gary)
----
- rust/kernel/sync/lock.rs          | 28 +++++++++++++++++++++-------
- rust/kernel/sync/lock/spinlock.rs |  5 +----
- 2 files changed, 22 insertions(+), 11 deletions(-)
-
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 10b6b5e9b024..05a123fff0ae 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -7,11 +7,22 @@
- 
- use super::LockClassKey;
- use crate::{
--    str::{CStr, CStrExt as _},
-+    prelude::*,
-+    str::CStr,
-     types::{NotThreadSafe, Opaque, ScopeGuard},
- };
--use core::{cell::UnsafeCell, marker::PhantomPinned, pin::Pin};
--use pin_init::{pin_data, pin_init, PinInit, Wrapper};
-+
-+use core::{
-+    cell::UnsafeCell,
-+    convert::Infallible,
-+    marker::PhantomPinned,
-+    pin::Pin, //
-+};
-+use pin_init::{
-+    pin_data,
-+    PinInit,
-+    Wrapper, //
-+};
- 
- pub mod mutex;
- pub mod spinlock;
-@@ -128,11 +139,14 @@ unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}
- 
- impl<T, B: Backend> Lock<T, B> {
-     /// Constructs a new lock initialiser.
--    pub fn new(
--        t: impl PinInit<T>,
-+    pub fn new<E>(
-+        t: impl PinInit<T, E>,
-         name: &'static CStr,
-         key: Pin<&'static LockClassKey>,
--    ) -> impl PinInit<Self> {
-+    ) -> impl PinInit<Self, E>
-+    where
-+        E: From<Infallible>,
-+    {
-         pin_init!(Self {
-             data <- UnsafeCell::pin_init(t),
-             _pin: PhantomPinned,
-@@ -141,7 +155,7 @@ pub fn new(
-             state <- Opaque::ffi_init(|slot| unsafe {
-                 B::init(slot, name.as_char_ptr(), key.as_ptr())
-             }),
--        })
-+        }? E)
-     }
+diff --git a/rust/kernel/dma_buf/dma_fence.rs b/rust/kernel/dma_buf/dma_fence.rs
+index a1d851656562..5300448882e7 100644
+--- a/rust/kernel/dma_buf/dma_fence.rs
++++ b/rust/kernel/dma_buf/dma_fence.rs
+@@ -86,6 +86,15 @@ pub struct FenceContext<T: FenceContextOps + Send + Sync> {
+     data: T,
  }
  
-diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index 6a71bb3a5c45..b8b7492a99e5 100644
---- a/rust/kernel/sync/lock/spinlock.rs
-+++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -4,10 +4,7 @@
- //!
- //! This module allows Rust code to use the kernel's `spinlock_t`.
- use super::*;
--use crate::{
--    interrupt::LocalInterruptDisabled,
--    prelude::*, //
--};
-+use crate::interrupt::LocalInterruptDisabled;
- 
- /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
- ///
++impl<T: Send + Sync + FenceContextOps> Deref for FenceContext<T> {
++    type Target = T;
++
++    #[inline]
++    fn deref(&self) -> &Self::Target {
++        &self.data
++    }
++}
++
+ impl<'a, T: Send + Sync + FenceContextOps> FenceContext<T> {
+     // This can later be extended as a vtable in case other parties need support
+     // for the more "exotic" callbacks.
 
-base-commit: 7be4bc52fd9e0e55dc9a2e0232b89427d2c4b614
+base-commit: 3497a403264b094ebd61b8b755165d56e7d9dc37
 -- 
 2.56.0
 
