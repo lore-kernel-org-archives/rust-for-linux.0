@@ -1,102 +1,127 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.179
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792672951;
-	b=u2m9rJq89ZrUjK0OYn6eWFDO/yZB4yCpYfo6cCHTHpIs+Z7lgK7gCwYJMeMvmSdqxmmM
-	 8NRhqJBwKIwteUBXcu/EFp7ZO8KskV/39S2TSY2MFqSAuy+qC7nhK8O/Oh5DQrwKBVIjr
-	 dDmUjIhVGvP1U98bkB6wqQSwvL0PdDfsLR8qiAjO1cO3YMgS5qx7aM/AGYY+JW5c+JWVu
-	 MTmaIKzBNnkToMgEcarlvErExZqqpidn/WQEBSjbWBVGz0SaD43mYavcrlvl4Jia2cOdL
-	 HTEJHJjxUpFXU7fIEvR1sh5G3qZztqJimeAXlUl7APAgvp8N9lVPR19CNZERWaXn7tg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792672951;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=yahNT0bNvxOBrbmk+CPvWSF27fEnpvOdoj99aF3G+Zc=;
-	b=3HSK0F5fm96GuBUwmY5LG5tjevGvfvlG36K9iUVLEzLg0Aa6Vow5vFGjuT7Fl7rNHSZa
-	 Fuv45t6IbSMjerlRqS0Il0GLH7eqP0kop5FoyhGXCFRzCv9mOxG8ptd8QjIGu/S31/VM5
-	 fVvWy3QRcjQX1VGqJZ9Z0/zITI0jg31bQErVeVzTNlYcR4SL9zjwmcSOxf406xZL1BcE/
-	 hzwbeyf7H4btkm5cvYTsN0x+DwvO/bpP3C17ruV8fEESgH7f3ZvA5tYDXYFHBP4znguTr
-	 RxQuMoQfpMk7SqtmwGLXX2WpwGxZL2BADYvo7a7AQUTrL2fDq9M+0iHhtqfOlrPRSIw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Kar541c8;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.179
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.67.36.66
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792673142;
+	b=eWzU6v396A5Chm/UgFy02SaT3u5zSodvO9uxv8Xk6Upn+uWSr8N7fzAzeJX6/aKDLJ3p
+	 /HOZkthYi7rNlCD5AFN+669nCFyFLAPEcorSjeyEpYprI5/HjKDOJmRlgnprw2nDC5xM1
+	 +4gzAZmkq31I7QosqEhD+WCExMoZXDqjF8PcMgbXxVZ0eudgoZsDWwzbhFHXK/14qIU4Q
+	 ZT2GA7Q8mQNLa04YNA3MJIyDqMGNrU3mLsyDctyEZ1uv0FnkOk8l899UkYF4vYLB/1cPE
+	 qxLkva0UgdYSGTAD8hTHbSC8cOjjlPe6yogEktId7kZond/kFxEsmWxSOxBXbYEfS+A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792673142;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Message-ID:Subject:
+	 From:To:Cc:Date:In-Reply-To:References:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP;
+	bh=XGF7pRFJchGOCc/iFyNZJkOvNkfIZAEVyF0cd97Z9Lg=;
+	b=Gmrc8ozUyJ522viJ98R4M84p3VqR51X8cCX8dMsrTNpkGzSp/MIA3xpJrePgn7svJC/V
+	 uQ3849XHnNVyuSf+09ckUWqRQW3Hd98HFFXpjDwuxzXZRHVlsI6Da44FqIS1Un2y0M257
+	 Ff+8aMHIIvZKC0sC/NfrVGqqCStx/hlVnMPijSQqVrI1pUci58KwJeaco3AqSx+dTwIUg
+	 Q/YHYhLRce8y6QCCtyc1eC4gzmljINQkYHUb8C69GANSKTGlRdEW9nywxGYBRKv5wpd9x
+	 IeVqIDpi1Ef3mXKRfX8I1wNJEBSr6nwfpSg9i8Vvl7dTfgRMTR/gUSbAX02IkKQ+xRA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=posteo.de;
+	spf=pass smtp.mailfrom=posteo.de;
+	dkim=pass header.d=posteo.de header.i=@posteo.de header.a=rsa-sha256 header.s=1984.8680eb header.b=ZhNnmXrm;
+	arc=none smtp.remote-ip=185.67.36.66
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D825606A31B
-	for <rust-for-linux@vger.kernel.org>; Thu, 22 Oct 2026 12:42:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D825606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBBC606A31D
+	for <rust-for-linux@vger.kernel.org>; Thu, 22 Oct 2026 12:45:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EBBC606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Kar541c8
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-33bb5afa736so244459eec.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 22 Oct 2026 05:42:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792672950; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pQ0cW3qhdfTWcjGLBRmPQ/ss6MHKxQRYByU3HpTO9wSbbGJtaxUpgVbjQBdrUckiNz
-         FdiAOAh6KywX18YsAd1J6isBR6vCzuFRAt6mgq8Doj4SbhhQD4ybd5U33h3S4Y8LjXVF
-         dtqE5pv7LegMFabMaS44xV1Hj+3VxzWuUcV8QaXK94wc2drhC2SZfDfm9t4VJ7ilA6EM
-         pPcXGML3CfpPzBhVSTQUGrjSTTA+8huos8khTFKT8yrL3qL73voutaoMeVmH+BsZkAsp
-         xk5CI3xf5ZWt5T2VcnrFJuusj54dwLIgMN0zJSOszDxmW5npnU1q0mgGxK5/DjY3ZHqn
-         BjnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yahNT0bNvxOBrbmk+CPvWSF27fEnpvOdoj99aF3G+Zc=;
-        fh=ttnYLZ2j3Pld1Zz6veBNtVvfDZcTI4Res7XWwD0UE+E=;
-        b=NCe9EBeNCcFOB3nGaIW+5h60GYBDo1I1iCQz1ivJR5U5dKM2Y0Q4LNa+2ZzLZcE5vn
-         8u9k1Un5oLkJFNUToHGMzY4brMSfddgS4wHLs2LLbeGC11MNAcTTZnIRr4HfQ2WRM5cS
-         Lrsz+ZhZR7/3F0bkrT+z0tW0DfnyMMrRUV7PA0NLt1lXNYtLmvQE0x/ag0nKWCs0GaAJ
-         QvyehCg9WH23qQomNxhVHjfwGl5bOgZgNd7jMSPqlmUNSe7Y8RlQSwWab+2GKJhNhdBn
-         r+qj+oNWgbm4kRQKuEwY4tMWjxq6Nazj7a2fgZvpJfdxvVF7ijOsNNvKK+49BuAYuPXv
-         p/TA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792672950; x=1793277750; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yahNT0bNvxOBrbmk+CPvWSF27fEnpvOdoj99aF3G+Zc=;
-        b=Kar541c8ClARwAoaapGMtGG3WzxlDV7TcahPyXsp6XpREWBZjLmOW0slbwmmW7fdKo
-         HC/IaieL1B5xzjjryH7O+iAAUqFxTPw2LPOObNPTZ1HN5ketBkqWd0ifBmzxrfHfvvI/
-         qPF99sbE3qNqBrLYTzGa/lBN9dRlMLGqJz2rN15qqZqCwPBUm3pcLiVgRZbUFVVbY2H+
-         y9g21m+P/Tli0+nqmzVHzbzkxiYQQD74jFOl9nIlCpc4EpN0swIRfpiRq7HtLLdT1VgZ
-         QhsuXlD7nAJBI8+z8gWWyrpAmjZsoIvdtzJb5Leb1Xq/oxbNkCEnmoHwY6yyTx8iOBbo
-         i3Iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792672950; x=1793277750;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yahNT0bNvxOBrbmk+CPvWSF27fEnpvOdoj99aF3G+Zc=;
-        b=euxWKsg8poeoQ2OyXerXxPCol1STgwnIoOmfviUUKdRWin56Pl0jYYixgIWJqKfmA4
-         2H2HMBvSOfusFeJm4U7CNawbwiRo4GAuGZeTH0R4LVOPuB1wBt2TOXlQoV+SY0y2nUTB
-         wShZCWkktXd3g24YtQHA2TyQqG54yIEGxbJI8apC4EJnb8A40jhH4KBgvxoFOuHWXLyp
-         r40oZr4oK97EdqdEKKidwGVZ5Wi7SFTVkU8dqWX1ajW9I6/ygJO7Js3d59RM68u6Agia
-         Dzu50S6IpxvHI8AgZR5Nw7g9EKAXwRhgv5/OIysqL7qxCbDsZ6r26wh7ZOg4hLuNl4Mt
-         e5ig==
-X-Forwarded-Encrypted: i=1; AKwUvBzEcTSuzp8LSY+qwj7BD9+lgenyzZG8PGaAoTZnUUxlmuugofMuuHhXeSuhTarp8nb4HSvNQJ+i8Ha9E+3OOw==@vger.kernel.org
-X-Gm-Message-State: AFq9FYL7niDUwwxl2ex2aYt1C9wbIu6C1p7fRadgc7tUhBvNMU4rl24O
-	//eifkCnsAOwIDkiMbXnzspG0Q2Ry+HwaS0dIWNJJGnYaFyS69BGFpC07NT9OEMShIbnLrrqAH1
-	yvXsU8FJQOS9n+4H1Bt+w/0+g1/yS8JM=
-X-Gm-Gg: AYBFou2K9p649PV7TantOQMm1ZKcKIBbnJusNK5/pVjKL3jknlY8q8DZEoVF8HCTxg/
-	tGJaUDBFiSeKPC5sgXUZqxlu77OJUeJ9lt20TBzuK4AobIEJThNDKyMifIBNg4O0VNgBwKUH3sf
-	gT7UoAwNxEglKHJKW+wNoK0fN6buvRRd+SURiYqIkxagx4Y3sYfMaJhnscbpPPcS8uWY7SrkDBB
-	5AskSX8Qt8jBJEEVjnGqsOLqRXGtSYCME+4JmBr2wqyoD7CiN3I6O7yrKBnPGQM2pdC41+TscVe
-	5oeNN54+eWaKk6JCXOgvjEMRHS9X4ckl2Den0Y1ppQZSdJ0roywOF/8XxMrZDGjop02OuxNofrI
-	45xLRoZ1FJiElKJy5AbDmaeHfa9/1uaoZa/rFo7iY737DVsN3gN3hx7jJ5j5qmyKN6/oTzmGQQs
-	6YPzG9kYE7obT3HH2ghOhj2wCPBV6hwtdwJr5LjqHXm165q1hbjd8Q5X33rtIBIyPLmgOZ3wW6o
-	gy6iVoIAfD3j+t7zA/bego0pX7bOEARE7+p59t/9bejWGoS3qnubSkjiA==
-X-Received: by 2002:a05:7022:f519:b0:14b:edb2:c3bc with SMTP id
- a92af1059eb24-1909acc857bmr8644920c88.0.1792672950050; Thu, 22 Oct 2026
- 05:42:30 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=posteo.de header.i=@posteo.de header.a=rsa-sha256 header.s=1984.8680eb header.b=ZhNnmXrm
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id DB49F240104
+	for <rust-for-linux@vger.kernel.org>; Thu, 22 Oct 2026 14:45:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
+	s=1984.8680eb; t=1792673138;
+	bh=XGF7pRFJchGOCc/iFyNZJkOvNkfIZAEVyF0cd97Z9Lg=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=ZhNnmXrmIaw5JPd9E3pb2QsRiVGPq0W+llx7xHu7LIlwJiidSjj1ZJVEotdl0qREV
+	 8AQdQT4YXqysxLVzRyIFef3bgcfGZtCd26GxAX3g9TUVL5M2f+piHLYm/1Xee/YUtJ
+	 gTidHlFKF1fM1rGePQ+4moylDP0lgZzpRencFj7o89QV9mV4nf9FneZatDE/WXJA8A
+	 1+5woHq8EbowAm8jeGc9iQvkHbNUC1SI7CF97oZXwwUJWBDg5lR86P15TPBSQsJFxf
+	 sLd6hg+PeFmv+cgir4dLpXCTtqq/fMIhlDc6p62MsmEZsmGsItaRKCjRLUzjXAsZxk
+	 QVQXsdwCzp1LA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4j9QqL4Rj5z9rxG;
+	Thu, 22 Oct 2026 14:45:34 +0200 (CEST)
+Message-ID: <c7b9e8ccbf41410a5ac13fc4d78104e595a5fbbd.camel@posteo.de>
+Subject: Re: [PATCH v4 1/4] tty: serdev: Add mutex lock
+From: Markus Probst <markus.probst@posteo.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ayush Singh <ayush@beagleboard.org>, Johan Hovold <johan@kernel.org>, 
+ Alex Elder <elder@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
+ <boqun@kernel.org>, Gary Guo	 <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?=
+ Roy Baron	 <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, Daniel Almeida	 <daniel.almeida@collabora.com>, Tamir
+ Duberstein <tamird@kernel.org>,  Alexandre Courbot <acourbot@nvidia.com>,
+ Onur =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>, Eric Biggers	
+ <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Lorenzo Stoakes	
+ <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett"	
+ <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Jiri Slaby	
+ <jirislaby@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	greybus-dev@lists.linaro.org, linux-serial@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	driver-core@lists.linux.dev
+Date: Thu, 22 Oct 2026 12:45:37 +0000
+In-Reply-To: <2026101758-confidant-comprised-e1c0@gregkh>
+References: 
+	<20261016-rust_serdev_probe_refactor-v4-0-46832e034757@posteo.de>
+	 <20261016-rust_serdev_probe_refactor-v4-1-46832e034757@posteo.de>
+	 <2026101758-confidant-comprised-e1c0@gregkh>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-SSwWWVnFuWrg0GMbs44o"
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -106,63 +131,105 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019151243.1595858-1-gprocida@google.com> <CANiq72nqq4oGBWVtSMBhXS6G4H7fYg07ysD7SjnOWWt7R9_ajw@mail.gmail.com>
- <CAGvU0HnBuoVMf2JwEhRCijxRn9MPnrX=yxxbo3YywT+RqCTheg@mail.gmail.com>
-In-Reply-To: <CAGvU0HnBuoVMf2JwEhRCijxRn9MPnrX=yxxbo3YywT+RqCTheg@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 22 Oct 2026 14:42:15 +0200
-X-Gm-Features: AclHuK_T88Zy9oQREVqC19uHWElftZvOLaKoRRSb6QAdFImUnbbltGYd7908h9M
-Message-ID: <CANiq72mN9JYVitqgsZ2GkdmPVWqHZpJ-WNMNviiHV6C7gQMUwA@mail.gmail.com>
-Subject: Re: [PATCH] rust: exports: emit ___EXPORT_SYMBOL without C declarations
-To: Giuliano Procida <gprocida@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	linux-modules@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+
+
+--=-SSwWWVnFuWrg0GMbs44o
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 21, 2026 at 4:21=E2=80=AFPM Giuliano Procida <gprocida@google.c=
-om> wrote:
->
-> The description was AI generated, but it is accurate. Both paths use the
-> triple-underscore three-argument macro alone.
+On Sat, 2026-10-17 at 09:53 +0200, Greg Kroah-Hartman wrote:
+> On Fri, Oct 16, 2026 at 06:00:32PM +0000, Markus Probst wrote:
+> > Besides more predictable behaviour, this allows for several hardened
+> > behaviour changes:
+> >=20
+> > Return -EALREADY in `serdev_device_open` if the device is already open
+> > instead of causing undefined behaviour.
+> >=20
+> > Allow calling `serdev_device_close`, even if the device is already
+> > closed instead of causing a null pointer dereference.
+> >=20
+> > If the device is left open by the driver after remove, close it and war=
+n
+> > instead of leaving it in a invalid state.
+> >=20
+> > Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> > ---
+> >  drivers/tty/serdev/core.c           | 10 +++++---
+> >  drivers/tty/serdev/serdev-ttyport.c | 46 +++++++++++++++++++++++++++++=
+++------
+> >  include/linux/serdev.h              |  2 +-
+> >  3 files changed, 47 insertions(+), 11 deletions(-)
+> >=20
+> > diff --git a/drivers/tty/serdev/core.c b/drivers/tty/serdev/core.c
+> > index 7500efcdfc21..77e8e1d4d2a6 100644
+> > --- a/drivers/tty/serdev/core.c
+> > +++ b/drivers/tty/serdev/core.c
+> > @@ -142,6 +142,11 @@ void serdev_device_remove(struct serdev_device *se=
+rdev)
+> >  	struct serdev_controller *ctrl =3D serdev->ctrl;
+> > =20
+> >  	device_unregister(&serdev->dev);
+> > +
+> > +	/* Warn if driver did not close the serial device. */
+> > +	if (ctrl->ops->close && WARN_ON(ctrl->ops->close(ctrl)))
+>=20
+> I understand the want to give a big "splat" if this happens, but if it
+> does somehow, you just crashed the box due to panic-on-warn, which will
+> result in a CVE being given :)
+>=20
+> So, if this ever can happen, we should recover like you do:
+>=20
+> > +		pm_runtime_put(&ctrl->dev);
+>=20
+> And you can warn about it in the kernel log, but just not with WARN_ON()
+> please.
+To be honest, I forgot about this review and sent v5 without taking it
+into account.
 
-Yeah, I understand that not having the `extern` and so on is what the
-AI wants to emphasize here, instead of the `asm(...` wrapping of the
-`#else` side, but it sounds confusing to me, i.e. it introduces the
-change as if matching the assembly path was important for some reason
-in particular.
 
-> I wondered the same thing, but that would introduce yet another intermedi=
-ate
-> macro.
+Anyway, I looked into documentation.
 
-We are introducing a macro either way -- in fact we have to introduce
-it twice if we don't do it centrally.
+"WARN*() is intended for unexpected, this-should-never-happen
+situations. [...] However, the existence of panic_on_warn users is not
+a valid reason to avoid the judicious use WARN*()." [1]
 
-I guess you mean avoiding the duplication in the C header, but that
-duplication already exists in this version. So if no new intermediate
-macro is preferred, then at least the duplication would be more local
-and thus more obvious when they both need to be updated.
+I think this is a valid case.
 
-> No, Android kernels have been built with Clang for years.
->
-> We post-process DWARF information with STG for ABI purposes and noticed
-> this interesting side effect there.
+It is an event that should never happen, and it might cause a use-
+after-free vulnerability on data reception.
 
-Ah, nevermind, I checked the DWARF emitted by Clang, but without
-gendwarfksyms, my bad (I am aware of Android using Clang, of course;
-it is why it sounded strange and wanted to double-check if it was
-related to GCC somehow).
+Thanks
+- Markus Probst
 
-Thanks!
+[1] https://docs.kernel.org/process/coding-style.html
 
-Cheers,
-Miguel
+
+>=20
+> thanks,
+>=20
+> greg k-h
+
+--=-SSwWWVnFuWrg0GMbs44o
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmraBW4bFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSwncP/iqL6bpaPmb2KVjSz1X8
+p358eOolNLI70BYGrtESeG/h0huOgPn5p8TuhIP5tBKy5n69GkmlbEiF5yKhc8YE
+2GRpyGQ+w8ZjlWrM40hxB+HHTrlduJmUJDSJJgm7c18H/hsqkslQz4348XpyBAjj
+Lg0OBumSzX7CMqwRlfbxzFC3ec/owCuavuNfj246WBij1yUlR7TPAsZOoovEvx27
+aWN+tiQQODux5Fzgi9c2l+FHVJTipUJms1HS1z2Vs4oY6TN85fazkxUHqdvYoj/4
+19+cmqeBcyrNqVk03YKDieYfR55eMpJsOuW+b+Y7aIBhhqJDVwQsCSGjGOBtFJGe
+nycaPLRb1Ex46Lm/1Fydpk042CcLuDwY5AqbP2N6f33cNtIZjmlTDLAG5nXZbqDh
+ulff8KixN4ODX65YGTWVdaT9SvM7UA49fq/Zt9o8ZU6HSHzZF5eWl1CV5yf9Lqm6
+QfbUdNFoClwH6ctJ2w/gU+uwaYvWPLpc5ynUJZA56Y7RpkyMfbn00qLnhf35RkzF
+S7swLkYBcKB9oIe4RjSaJdXkvEDjbGPNXb2Q/kMdq9qM14ZYFtXzJEOU9v8ZYlsz
+NL/GpKAhFFPlpyXuT7z41ae27X06Vjl5VWhjK9Nn/F/Q+VgHQT/rSrXeJVkz6HPF
+W0Zp6OLY3R0kDvrRE457NGNW
+=LcdA
+-----END PGP SIGNATURE-----
+
+--=-SSwWWVnFuWrg0GMbs44o--
