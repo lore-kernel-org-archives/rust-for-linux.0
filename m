@@ -1,86 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.49
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792623646;
-	b=Tw9hGNJOpMnVceUGQUQNy/8fkLmdKK9jjUzf0MnhFnDXy0VzJQoes9AkTexop1MNP+f7
-	 dCeg7YCrwK2C3KTifYgkM00e/qX0XYnxIqZnPMgQHTS7uOZG4Ch+PQTltCnmXAL88e5mn
-	 53dOMGnBCC08Sgdsh/csZ9LR4fiSZJfnN7tgdyNPGsJNwIly1q31CbdxNxFDRXzLZem+X
-	 bxlX05ak1mVucqbg3mDMKZ4UPDbnr1gT9Q5jEy82lSkEHmLHEgaVcd+WfIZ1ipXvw25Y6
-	 MuFvbS0M0JNLYerS5PhpPIPazaq/R9m7vo0OuiYIUVwnqTBiCF1GXX8p7+Se0D9E8CA==
+	t=1792643642;
+	b=fu9oiCdtqn4lbmlFVCCZiX/gdcDGTVEZ+1TTq025AYbyVSvKMrwHt6d024cK4B/yyvWU
+	 YOjvrWg6E0Bwhdf1VIrx1IRqxdGRomQG4gJzed1kcmwewy3R/igMni2x8VmSsx24cOXCY
+	 7Bpg4Eh+VScs9glRo3DzROzSq5IHqeEyHIPHJkb4j5+FqWFyxwxW7cWoPT/cM9gFLJgTa
+	 nck/A2bVqyIoXwjjGLoeiimlsBPzxu4M96YM1Cf4rGzpkaB784QgIDmUDjN6d0d2M6M+l
+	 s9UYskZ+/GTX89DhgS6wXhaZfKMp1aS2/nvwd0PKXyOden70SegAu7p9OuKVMOPgx3A==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792623646;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Zoho-Virus-Status:X-Zoho-AV-Stamp;
-	bh=o0uJl9SaCMTX22dhBn+kimrcYeaap+l2h4VH/HTX/Bw=;
-	b=S3yGJmzQ+XT0hQz3bhC3qwU27ps6KmDZr8HxXhMQOKeo921dn8sPSr9Dz2fpE1e16y9P
-	 ldyxe2KDMnfrGjBXGToRU480MxncyIFJnb+4r1hqQq2Z7gs8CZ2+B1PuIX44W8U1dJSGu
-	 tMb4G7ZGKWsBBTCnBQZgKYpbY4vmBb4KMHBog/bSin0WXj/riKOiUIpS6uf8BStFOFdBc
-	 utpeOO0w2P2y3ghwn66NeAS0F0cdi8brTMvl3kPgqdLWHSPHvo9U2UZMgdnPviV8Mf5Td
-	 F2BXA/3u/PAZCPRpCOlYhHPTQtJIOR8tuJ0VqrOXLmgZk+aqAEVCQVFEr8Ge2FtfHXg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792643642;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=FX6Mu1YeIXFmXkKYuzzN3WwkU16Ko5e6ASCr8EcCtu0=;
+	b=szlpp4srpMzss1WhrLf2o7DxyQvEs4crfJbGoVZpGExEt2qGwMG42BIMl9omExC+tII7
+	 JsToSlyY4ddrj6HTFGKNaFExqFONa4R9XscEjG+ohYwXBdTB9eMEmDb60hGratTqbHE39
+	 Wlz/K7reBHCFN0FXO8xJzKyhxR4q2WDxxjqTRygVTg08av4pYPmg704diE7MRdzDelIcY
+	 FupuYmTr9a+0NztqhBN9mTBWiwwv85IswpIKEnLORzv1LD29PQKcRVfaJe46n7w19PJW7
+	 bwOr26nbcAMintrBXKC5Y/G2r/antbBHm/titjklIc4FkESYdjL5U1jW7O0c/ntaacg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=OfOoJvBW;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=IJa4IgYw;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.49
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD92606A31F;
-	Wed, 21 Oct 2026 23:00:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DD92606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E704606A31D
+	for <rust-for-linux@vger.kernel.org>; Thu, 22 Oct 2026 04:34:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E704606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=OfOoJvBW
-ARC-Seal: i=1; a=rsa-sha256; t=1792623577; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=YxVBf2r3nDwKMI/w4Cfj6wBPEhOJrYrOvgbHQuNF1ywKWQm7TKXl1BxN0MCzVhGnVPMmrOcH6Y7vwHRpSGH/RcyW4o/9bbNlAwDyJXiUXdg5ErkLkwoq1J2TXCQPoltJqCXeE7TykTIHOmTKyvOGdSm6I7BjWVq1/ZLJ0hXuUmw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1792623577; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=o0uJl9SaCMTX22dhBn+kimrcYeaap+l2h4VH/HTX/Bw=; 
-	b=khUxgC7K6Dump7HNsU+T7sITG0K+jmATCHUoast6WPDxWHGGdTDBC0/QIMUIlIBg2Ki/G7lkO1OKQptby+w0tcfAj8SqJX6EGe78xbKaBP5tEaQXn0e3LAwEtnAJ4oJ2vyHWOXNz8bzWJ2c4vg/iUCx6qvZl2sHz8MuJup+spKc=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1792623577;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=o0uJl9SaCMTX22dhBn+kimrcYeaap+l2h4VH/HTX/Bw=;
-	b=OfOoJvBWtQLZeQ1qUOZGpKI9LGZH2kuAFdLAMNQV3geS/kzBnYy8rznRYzbMbVBM
-	HFcT0dwlhYAlcWgqtInVd0oIjVSrKah+jST9FZrq3K24sTSH9+BXxBAmWKElb0bJ6GL
-	HYDwBvjQDUlcmMPboCn0WDmQXXbUEACnRUzHCU1w=
-Received: by smtp.zohomail.com with SMTPS id 1792623575793141.6930617524606;
-	Wed, 21 Oct 2026 15:59:35 -0700 (PDT)
-Date: Wed, 21 Oct 2026 15:59:34 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Ke Sun <sunke@kylinos.cn>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lyude Paul <lyude@redhat.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org,
-	dri-devel@lists.freedesktop.org, driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
-Subject: Re: [PATCH v4 04/11] drm/tyr: add per-file VM pool
-Message-ID: <atlD1jzWqQhKE3w5@um790>
-References: <20261020-tyr-ioctls-v4-0-704de77da223@kylinos.cn>
- <20261020-tyr-ioctls-v4-4-704de77da223@kylinos.cn>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=IJa4IgYw
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6ae305e3bd9so2510691a12.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Oct 2026 21:34:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792643641; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BYzOmhkxa/FGD7PiaRYDBjyMJaPHIN1MECYRArY6a9On3Va4YUCm43cjECSaa1zjdI
+         O8ED0bUR7grTW7yNRvVfwWndmV8HdkS7+gS5bLnHLuaX055Fc6wR4hqc6he8CqDFCVQg
+         s8Ac1GwooEK6XD1TepXYGXJgop3VvbFK6IHNfDYKHWblP3PPUkU3uC7xcKV7jvVgFUvn
+         Zw6fOXZJMIgDXa3YkvhADiL8KtBOggrCkJU068j9dCOp97yWhcNScmgXo19s+27d+/t4
+         Sh5i/pI4hcY4uKz59owyhQmLK5RgBoUHSyk5mOtFO3RNVzpsABh8o5Xyh0eJFyyB0J53
+         lSkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FX6Mu1YeIXFmXkKYuzzN3WwkU16Ko5e6ASCr8EcCtu0=;
+        fh=e1TVWUXPrs33ndoVEeqQF7HV18WivTNhaGlehkIrufg=;
+        b=WPlffne+la9hDvdMvoPNl3ukn1Aq06ifvGD5aNBQevjM+o9QNkZWHVtMAF+fKCFXXf
+         IWxtwjiz+r5bZU1s8t9S+rdvx0pDaR6qFCro9FYUxupva1H3SbenNYOs84jsEDrMkdFI
+         AxbEm4Hepbr8j+wKlAs3dJf+tDD0opz2biA7MLDqlKhnWBfylAnogUiMVEZ3OS6NDnnb
+         2lg9Sjmbc5gb+zRXzTLhMn0b2Ie4igNRxlMTFQqvCQFLADmbSx3sz3GMfhcoHIBFCMY/
+         xuJSIUlyIccYYEzgoheWi7pt5eeEn4RMyITJYnZUauDHniOME0/u5hkGArUQT0sbgrD6
+         H0kQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792643640; x=1793248440; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FX6Mu1YeIXFmXkKYuzzN3WwkU16Ko5e6ASCr8EcCtu0=;
+        b=IJa4IgYwItYvijFw2H8a7jwzDvE0e18S5rbG4YRG6M7D8vlHwdIMtYPC88G+wIBAJX
+         Ljxs3KOlAjgZ71Qnb82PG9Tk8u5NggrPzLuKKSCuQlmFAbN9zqm2rgz7gPi4h3YSqsCg
+         XTm8fbMKIHDFgsiQAV5SMoOc6EAKEYh0IHExSwdqALm8yChkAfb854OHX/rgVRaG7oBJ
+         75tW7A70QBkIzLgO5TBKPCoRRq49X9oGTNsryvwFQJMIz6UqecYZfqfzYZ6kQ8x+9kch
+         xcZ4j6fqDYvyvC0huvTvMehdPiU52hvzjp4IA7nYjTsLoqIjdGmvorZ9YiryEDMSr/0E
+         lA4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792643640; x=1793248440;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FX6Mu1YeIXFmXkKYuzzN3WwkU16Ko5e6ASCr8EcCtu0=;
+        b=1fwqv2pj27uaQ/22idjBTR7nKojdd6uojvabDDu/DhKVryAzAMXC+X13h0pvHYxeqe
+         eAgBbHFjkZ9VBMjYtqxvqhpI2CEh9EVJNdRP6x8dlJQrL8KH8KWvHZcpeuSlsR+UCZDi
+         Iy+31R56pekJ4//pxHE5SHiAy+Bw4ueoZT8ylHEEgBlb6tG4sfQoO8+FJhid4xrrZmvu
+         KE5Z00VXqrF6kSZt9sL8Gc7nVCYGhNbwSZeesCcwu31L2VcLmdR8RVNWSMoZF4JgC5dQ
+         yEwlK5Au43ymd731O7yqPHSbv+2ZwboFNiNolHnkcYrEfrNdAbJ3wRdbxO40C6kjQesl
+         yCeA==
+X-Forwarded-Encrypted: i=1; AKwUvBzSXag3Ib+fquSXWdaP8S7ec7fRKkPxvXAIaeDGZL3r147jIom6crVJ9OlG5yp27y6m0Q+WO6jJUslA7PosGg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJp6e1aRTDfL7GFNCd5O+4EY0j5zeLQ0oo/Xy8ryo3yPeCMBZVQ
+	d1DoxS7wskhLX2uuIPltWLgsAnvC3qc/WNlhEGZF0+p9oNKQbl1c8t2vObl/ZqVyt0k2u+jl6Tb
+	QGEml7rVEqNhKe9F3XbkeBjTcjonn6qbzVQ==
+X-Gm-Gg: AYBFou3UD2w4PLA/XmxkZqXYuLXLT0J+ORSnQP/4QOTVYQb/y799TGWCreRZ2AQGe2V
+	UkcMaDAQt9etl+k4iUCflPpySZymlJSHd03Zc7v+LAoeHQLYLotoQPLRETODHUChP7S6cXZlEP3
+	6XcK71IgFYttXGB4H34FZIzuLAUkFmlH7UyN0jVR5rWWZElUWzR1TSQuiYbxLDgZcCa8QsDO1al
+	SMWmucPwOdTmGBcLj2rxQkFIYdx5tq/BTk+n6dk3hMIIf3CfuCSvioR63a2mtw0yYJufwLpr+0i
+	5vq7fh7jTHD9vIP5vDxNsZwmiblL209uvvmhynYDJtMX1CLyATZqP5En2sAM+W5H4p64WWoEtDE
+	OnNPtET4UF6y1wqwe8xKL8/rk/M7L+kGBdxf/8lRw29HznkleGhndjL/Ys2ioFdYL8OU=
+X-Received: by 2002:a05:6402:28c8:b0:6ac:bd53:d29a with SMTP id
+ 4fb4d7f45d1cf-6b408dcd1femr2989972a12.3.1792643640365; Wed, 21 Oct 2026
+ 21:34:00 -0700 (PDT)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -90,219 +104,116 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261020-tyr-ioctls-v4-4-704de77da223@kylinos.cn>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/292.612.36
+References: <20260928011123.450800-1-alistair.francis@wdc.com>
+ <as_r8n7p_wdbChuQ@google.com> <CAKmqyKOkmwompJqaP2k-oJicmXmqHY4E0wuLcrvkHLx+oauQ2Q@mail.gmail.com>
+ <DM596TT7E841.1U05OKY9N6I6C@nvidia.com>
+In-Reply-To: <DM596TT7E841.1U05OKY9N6I6C@nvidia.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 22 Oct 2026 14:33:34 +1000
+X-Gm-Features: AclHuK9U67i3MHCSs1fpGty_QgfHHhn6FdMHJ0fAOkjnn4XpsrsbQBC3WfRL_pw
+Message-ID: <CAKmqyKMbs_N6C8MAKGUU11DW1y5nJRWPqnUcrVZoyi0SDjsv3g@mail.gmail.com>
+Subject: Re: [PATCH v4 00/22] lib: Rust implementation of SPDM
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, lukas@wunner.de, linux-cxl@vger.kernel.org, 
+	akpm@linux-foundation.org, Jonathan.Cameron@huawei.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	jic23@kernel.org, bhelgaas@google.com, alistair@alistair23.me, 
+	djbw@kernel.org, linux-pci@vger.kernel.org, wilfred.mallawa@wdc.com, 
+	a.hindborg@kernel.org, gregkh@linuxfoundation.org, alex.gaynor@gmail.com, 
+	benno.lossin@proton.me, boqun.feng@gmail.com, bjorn3_gh@protonmail.com, 
+	tmgross@umich.edu, gary@garyguo.net, ojeda@kernel.org, 
+	Alistair Francis <alistair.francis@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 20, 2026 at 04:25:21PM +0800, Ke Sun wrote:
-> From: Alvin Sun <alvin.sun@linux.dev>
-> 
-> Userspace needs multiple independent GPU address spaces per file,
-> addressed by ID through the VM ioctls as in panthor. Store them in an
-> IdPool (capped at 32 for panthor parity) plus an XArray. On a failed
-> insertion the caller tears the VM down through the returned error, so
-> an aborted creation never leaks a VM. The pool kills every VM still
-> stored when the file closes.
-> 
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-> ---
->  drivers/gpu/drm/tyr/vm.rs | 138 +++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 137 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-> index c5e307b1e2416..6935e4db667b9 100644
-> --- a/drivers/gpu/drm/tyr/vm.rs
-> +++ b/drivers/gpu/drm/tyr/vm.rs
-> @@ -33,6 +33,7 @@
->          }, //
->      },
->      fmt,
-> +    id_pool::IdPool,
->      impl_flags,
->      io::PhysAddr,
->      iommu::pgtable::{
-> @@ -53,7 +54,11 @@
->          ArcBorrow,
->          Mutex, //
->      },
-> -    uapi, //
-> +    uapi,
-> +    xarray::{
-> +        AllocKind,
-> +        XArray, //
-> +    }, //
->  };
->  
->  use crate::{
-> @@ -948,3 +953,134 @@ fn pt_unmap(dev: &Device, pt: &IoPageTable<'_, ARM64LPAES1>, range: Range<u64>)
->  
->      Ok(())
->  }
-> +
-> +/// Maximum number of VMs a single file may hold, matching panthor's
-> +/// `PANTHOR_MAX_VMS_PER_FILE`.
-> +const MAX_VMS_PER_FILE: usize = 32;
-> +
-> +/// Per-open-file pool of VMs.
-> +#[pin_data(PinnedDrop)]
-> +pub(crate) struct VmPool<'drm> {
-> +    /// Parent device, for error reporting.
-> +    dev: &'drm Device<Bound>,
-> +    #[pin]
-> +    ids: Mutex<IdPool>,
-> +    #[pin]
-> +    vms: XArray<Arc<Vm<'drm>>>,
-> +}
-> +
-> +/// Error returned when a VM cannot be added to the pool. The caller
-> +/// owns the teardown of the VM in [`AddError::vm`].
-> +pub(crate) struct AddError<'drm> {
-> +    pub(crate) error: Error,
-> +    pub(crate) vm: Arc<Vm<'drm>>,
-> +}
+On Thu, Oct 15, 2026 at 6:02=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
+com> wrote:
+>
+> On Thu Oct 15, 2026 at 2:23 PM JST, Alistair Francis wrote:
+> > On Thu, Oct 15, 2026 at 6:54=E2=80=AFAM Alice Ryhl <aliceryhl@google.co=
+m> wrote:
+> >>
+> >> On Mon, Sep 28, 2026 at 11:11:01AM +1000, alistair23@gmail.com wrote:
+> >> > From: Alistair Francis <alistair.francis@wdc.com>
+> >> >
+> >> > Security Protocols and Data Models (SPDM) [1] is used for authentica=
+tion,
+> >> > attestation and key exchange. SPDM is generally used over a range of
+> >> > transports, such as PCIe, MCTP/SMBus/I3C, ATA, SCSI, NVMe or TCP.
+> >> >
+> >> > From the kernels perspective SPDM is used to authenticate and attest=
+ devices.
+> >> > In this threat model a device is considered untrusted until it can b=
+e verified
+> >> > by the kernel and userspace using SPDM. As such SPDM data is untrust=
+ed data
+> >> > that can be mallicious.
+> >> >
+> >> > The SPDM specification is also complex, with the 1.2.1 spec being al=
+most 200
+> >> > pages and the 1.3.0 spec being almost 250 pages long.
+> >> >
+> >> > As such we have the kernel parsing untrusted responses from a comple=
+x
+> >> > specification, which sounds like a possible exploit vector. This is =
+the type
+> >> > of place where Rust excels!
+> >> >
+> >> > This series implements a SPDM requester in Rust.
+> >>
+> >> So I looked a bit at this, and here are some comments. I will not repe=
+at
+> >> what Alexandre has already said.
+> >>
+> >> First, I'd like to say that it's good to see that all wire-format
+> >> parsing in lib/rspdm/validator.rs is written in completely safe Rust.
+> >> That's exactly what we want to see for parsing in Rust. We want the co=
+de
+> >> to have basically no unsafe code whatsoever so that we really get to
+> >> rely on the bullet-proof guarantees about bugs being caught at compile
+> >> time, or at least at runtime.
+> >>
+> >> Unfortunately it looks like the same cannot be said for the state
+> >> machine in lib/rspdm/state.rs, which has way too much unsafe code in i=
+ts
+> >> interaction with the rest of the kernel. There needs to be more
+> >> intermediate Rust abstractions here. This file should not have *any*
+> >> unsafe code, except maybe 1-2 blocks for using the C transport and
+> >> validate function pointers.
+> >
+> > Yeah, it's the crypto functions. There are currently no bindings, so
+> > it's just directly calling the C functions.
+> >
+> > Without the crypto functions it's just a single unsafe call to
+> > `transport_function()` in `state.rs` and a few in `lib.rs` to handl
+> > the C <-> FFI boundy.
+> >
+> > I was trying to avoid adding crypto and X.509 bindings in this series,
+> > as that's a few more subsystems this ends up touching. We need to add
+> > PQC as well, so crypto bindings are next on the todo list once this is
+> > merged.
+> >
+> > Is this going to stall on adding crypto bindings?
+>
+> So without going all the way to fully-fledged crypto bindings, you will
+> spare yourself and your reviewers quite a bit of pain if you at least
+> implement a safe and lightweight crypto wrapper that is local to SPDM
+> and could eventually grow into official crypto bindings as a future
+> effort. As it is the code is very hard to review: for instance
+> `crypto_free_shash` is always called after `free_desc`, and looks like
+> it could/should be part of it, but that's hard to assess as the crypto
+> code is mixed with the rest and called here and there. I just cannot
+> tell whether all these unsafe blocks are safe of not, which is a problem
+> since the goal of writing this in Rust is to prevent exploits.
+>
+> A self-contained crypto module exposing a safe interface would remove
+> that burden, reduce the number of `unsafe` blocks, and make the series
+> easier to review globally while not necessarily resulting in more code.
+> You just need to store the relevant pointers into a new data structure,
+> enforce the required invariants at construction time, and codify the
+> actions that SPDM is already doing in the form of methods.
 
-When I try to compile just this patch i get an error about
-this being unused so better annotate it with #[expect(dead_code)]
-like the others.
+Oh! That is a great idea. I have added that locally and it's pretty
+nice. I'll tidy it up a bit more and then send a v5
 
-> +
-> +impl<'drm> VmPool<'drm> {
-> +    /// Creates a new [`VmPool`].
-> +    #[expect(dead_code)]
-> +    pub(crate) fn new(dev: &'drm Device<Bound>) -> impl PinInit<Self> {
-> +        let ids = IdPool::new();
-> +        pin_init!(Self {
-> +            dev,
-> +            ids <- new_mutex!(ids),
-> +            vms <- XArray::new(AllocKind::Alloc),
-> +        })
-> +    }
-> +
-> +    /// Stores the VM and returns the allocated ID.
-> +    ///
-> +    /// On failure - ID space exhausted or a store failure - the VM is
-> +    /// returned in an [`AddError`] so the caller owns the teardown.
-> +    // TODO: allocate IDs with the XArray directly (once it grows range
-> +    // allocation, the equivalent of C's `XA_LIMIT`) and drop the IdPool.
-> +    #[expect(dead_code)]
-> +    pub(crate) fn add(&self, vm: Arc<Vm<'drm>>) -> Result<u32, AddError<'drm>> {
-> +        let id = (|| {
-> +            let mut ids = self.ids.lock();
-> +            let unused = ids.find_unused_id(1).ok_or(ENOSPC)?;
-> +            if unused.as_usize() > MAX_VMS_PER_FILE {
-> +                return Err(ENOSPC);
-> +            }
-> +            Ok(unused.acquire())
-> +        })();
-> +        let id = match id {
-> +            Ok(id) => id,
-> +            Err(error) => return Err(AddError { error, vm }),
-> +        };
-> +
-> +        let mut vms = self.vms.lock();
-> +        match vms.store(id, vm, GFP_KERNEL) {
-> +            Ok(prev_vm) => {
-> +                if let Some(prev_vm) = prev_vm {
-> +                    // An existing VM at the freshly allocated slot means the
-> +                    // IdPool and the XArray are out of sync: the stored VM is
-> +                    // a pool entry, so the pool kills it and the caller's VM
-> +                    // is handed back for the caller to kill.
-> +                    let stored = vms.remove(id);
-> +                    drop(vms);
-> +                    prev_vm.kill();
-> +                    self.ids.lock().release_id(id);
-> +                    dev_err!(
-> +                        self.dev,
-> +                        "IdPool/XArray out of sync at VM pool id {id} (stored VM conflict)"
-> +                    );
-> +                    return Err(AddError {
-> +                        error: EBUSY,
-> +                        vm: stored.expect("VM was just stored"),
-
-Since the rust for linux coding guidlines say:
-    panicking should be very rare and used only with a good reason.
-    In almost all cases, a fallible approach should be used, typically returning a Result.
-
-I'm wondering if there is a way to avoid this expect().
-For example, you could store a vm.clone() in the xarray and keep the vm
-that was passed to this function so that it can be returned on error.
-And on success, the vm would just drop so the overall ref count wouldn't
-be incremented.
-
-> +                    });
-> +                }
-> +                Ok(id as u32)
-> +            }
-> +            Err(err) => {
-> +                // Drop the XArray spinlock before acquiring the `ids` mutex.
-> +                drop(vms);
-> +                // Release the pooled id; the VM never entered the pool, so it
-> +                // is returned to the caller for teardown.
-> +                self.ids.lock().release_id(id);
-> +                Err(AddError { error: err.error, vm: err.value })
-
-When i run rustfmt on this patch it reformats this line, can you double
-check you ran rustfmt?
-
-
-> +            }
-> +        }
-> +    }
-> +
-> +    /// Removes and kills the VM with the given ID.
-> +    #[expect(dead_code)]
-> +    pub(crate) fn remove(&self, id: u32) -> Result<()> {
-> +        let mut vms = self.vms.lock();
-> +        let vm = match vms.remove(id as usize) {
-> +            Some(vm) => vm,
-> +            None => return Err(EINVAL),
-> +        };
-> +        // Drop the XArray spinlock before killing, since `kill()` may sleep.
-> +        drop(vms);
-> +        // Kill the VM before handing the id back to the pool, so a VM is
-> +        // never reusable while still alive.
-> +        vm.kill();
-> +        self.ids.lock().release_id(id as usize);
-
-Since i just learned about this myself, I should mention that you can
-now use num::casts::FromSafeCast and then write
-usize::from_safe_cast(id).
-
-> +        Ok(())
-> +    }
-> +
-> +    /// Gets a shared reference to the VM with the given ID.
-> +    #[expect(dead_code)]
-> +    pub(crate) fn get(&self, id: u32) -> Option<Arc<Vm<'drm>>> {
-> +        let vms = self.vms.lock();
-> +        let borrow = vms.get(id as usize)?;
-> +        Some(Arc::from(borrow))
-> +    }
-> +}
-> +
-> +#[pinned_drop]
-> +impl PinnedDrop for VmPool<'_> {
-> +    fn drop(self: Pin<&mut Self>) {
-> +        let this = self.project();
-
-I don't think you need to project the VmPool here because we only
-need a shared ref to the pool, and the vms guard gives us the interior
-mutability we need to modify the xarray anyway.
-
-> +        // Kill every VM left in the pool. The ID range is bounded by
-> +        // `MAX_VMS_PER_FILE`, so this loop is cheap and runs at file close.
-> +        for id in 1..=MAX_VMS_PER_FILE {
-> +            // Release the XArray lock guard before killing: `kill()` may sleep.
-> +            let vm = this.vms.lock().remove(id);
-> +            if let Some(vm) = vm {
-> +                vm.kill();
-> +            }
-> +        }
-> +    }
-> +}
-> 
-> -- 
-> 2.43.0
-> 
+Alistair
