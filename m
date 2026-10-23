@@ -1,79 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792738268;
-	b=k9hqIwCfiH/04itICzYj6K7pmFt9jwEheRZGkIuDDXM52Pi4X0n4GntX6XFzXiHmudZZ
-	 xZ8S5W2jB4P7Opju0V4/zjaB4ptqm1/isutTQ7glZjoxAoTYIRmVdZtRttg3ltmhcX3CF
-	 SxYVBbHFPLWM1gbkH166IpRhLpsTaoZMfU2+miIckop9iKOpF0yfZ+Do6MFGkrZQ7Ggg9
-	 BF6ysjACzuIYYSIKsOQk4gSVcQBY4p6n7fE7qPqgahuybGKD6HZpmXZfhMJVj2QfXVJbE
-	 95bIajphkwzjt9Uno7aWGrXPELeYUW6mUnV/0mqOPWb9ZQMcPLnvQuymUMznM5fXWdw==
+	t=1792744121;
+	b=rI+ElR1pzDCp9wbD7fhNyRflyjhYk9X9M31h8iBzU3vNlynqQvlsotlW0CVkegHsGvsg
+	 8eBO3IWXUU8pJlzLnRQ/ltKqAcdB9UFAOaksEfhP3mDPwu8uxQh7wMUq6Xy6xX3/gACLH
+	 uDQuZzMsgtkftHOks6jk7bXis45QWgZt52pWvk5VlHVni+5gvpnBey6PMBVKvftgsqV9l
+	 eCTQyg3elDleeuvVZjT3eCg9tJkagAGkstTk5FCF0K/fcYhCfpBRZyEhdY0hIHm0t0gMr
+	 Sf+l+Vt/lYcYdBvnMx09qVM2cpOumfkUwgavrfpvwewsBa+hjC81TszEylc3DGQdK8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792738268;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Subject:From:
-	 Reply-To:To:Cc:Date:In-Reply-To:References:Content-Type:
-	 Content-Transfer-Encoding:User-Agent:MIME-Version:X-MBO-RS-META:
-	 X-MBO-RS-ID;
-	bh=5vq8E+jHMyDXl7eoZ57S4Q2ik2oOMkXHS2FXEVqzJ5Q=;
-	b=GyEbf60sIY49YYmPN9haLGI3Yj0ZuCCXM0oZcqoVgJAuymHSYzILQs9QHNTBf7UXrWHX
-	 7yol4QuqjJEpAXblLM+uJNmxO0r03+3eSc8jJjUoPJJCz9hOe240BYDtTs8XV9cCNJn3x
-	 LpqWVLsMD8QEc9xMpAzqOdU0+k+PIQuJLTEk+8ASu2GaZ2Mecj3saKDeYgQSEulpZi9V4
-	 hyUcwbRsiQQLkSKdsAQPOEo2cQk9W3ADft3p2aR/kGEchIaMU1FN/aBepjvJWfg2136OV
-	 HtjbEEN6VyhxO2b6cEIfFE02ME5cwEONglgl5LRFgxnhdsu17rhs52e3bpk4JzoijoQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792744121;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=JZl+HfrWAJtYCbAOILKeb7E857EVkTmoggdAs0Ji4mw=;
+	b=TNcmpqPbyo1Xwbos8zcBnnuaVxsORbO92aeCIUFLmDjLqHJqflWZcDpxzbLixFb4hV99
+	 o+YAcBPFx/BTgUylbuOFRRHWGsXFxtgloQJaSKnTB+EdQHLxJOi4teba/gi1T1yzTWXje
+	 2OXkrk+2p/yeiMIGKnYB4cFLwQ/bZznktYZ0vKjefm3SAt7MMnsYN+NctjSRYO9X0uL7i
+	 rlzfH7rRtoJ/4TfQYOCvRFAasjbTqKRxfOxDScKy+jJ4cG959+9OXUHqul9uqR9ClYSm2
+	 KMZ5UG53rCiU0vLfrbkCX4RsAONW6rSJZPMuTy9fXM0534fq5unnf0fEMDnx7nvghVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=mailbox.org;
-	spf=pass smtp.mailfrom=mailbox.org;
-	dkim=pass header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=rsfA6x9z;
-	arc=none smtp.remote-ip=80.241.56.161
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=mNwxaodE;
+	arc=none smtp.remote-ip=209.85.128.71
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA7C606A31B;
-	Fri, 23 Oct 2026 06:51:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BA7C606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0810B606A31B
+	for <rust-for-linux@vger.kernel.org>; Fri, 23 Oct 2026 08:28:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0810B606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=rsfA6x9z
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4j9tvq5YVdzKnkg;
-	Fri, 23 Oct 2026 08:51:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1792738263; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5vq8E+jHMyDXl7eoZ57S4Q2ik2oOMkXHS2FXEVqzJ5Q=;
-	b=rsfA6x9z5gz9g+eJNQ2b7ucfNKLVP6pYkEfxQrRioI9qekqImCTXzDl1DvOCwwhMUWC2l/
-	l6eC7wX03rSP3dpTBB/KdSKyhtVyCrJgisa4Ghgp5piIyo6YjIiFon14EECCJG571CWy1A
-	UfhCXHLNcgzBfcsfdcmCQd9idoH1rnubsWfOTPsOvTZEczpOT+gcXP2v06Z0SarZUz2eMq
-	TjR3uxJyFNn4XDW26dtaxENxyt81tG17P3mLwzYRRvCSVaJ3DtFAE5jP+4ta8qi64Fl1OO
-	UCDr2+SUbr1uJtKsbshZJArI0+6X+FWU7iMXNYu9E0eLiYMNoLUD3zcBo2Xzww==
-Message-ID: <948cd47aebbd0639492db1fd7bc3852e7e60af91.camel@mailbox.org>
-Subject: Re: [PATCH] rust: DmaFence: Don't drop on signal
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Philipp Stanner <phasta@kernel.org>, Sumit Semwal
- <sumit.semwal@linaro.org>,  Christian =?ISO-8859-1?Q?K=F6nig?=	
- <christian.koenig@amd.com>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl	
- <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng	
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg	 <a.hindborg@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Daniel Almeida	 <daniel.almeida@collabora.com>, Tamir
- Duberstein <tamird@kernel.org>,  Alexandre Courbot <acourbot@nvidia.com>,
- Onur =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 23 Oct 2026 08:51:00 +0200
-In-Reply-To: <20261022162701.2297062-3-phasta@kernel.org>
-References: <20261022162701.2297062-3-phasta@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=mNwxaodE
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a16faefac0so4288785e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 23 Oct 2026 01:28:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792744119; x=1793348919; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JZl+HfrWAJtYCbAOILKeb7E857EVkTmoggdAs0Ji4mw=;
+        b=mNwxaodE9bZuAnhXe+WT9zRnXBtbmwacb2OJOqAkwdefSt8/FPlGrZ3K5na00KrD4U
+         AbwBMxY6CiHA/ZtTI2lrjxMXGbBSpVT3fu4vMQ/OCT2S638fsdtcowjOvZ+D+X5nZsuX
+         mxed/jjllXqKhGN/ebC0BOIvMANBngXH6W/+hB1ug5s0T/O4y76Gj/2CdgxEtvq8VtIy
+         OzLpQb6yK/XM+uwvYXE0QOLkcqTJTRGGqBpN/yNTvrOZCiBX8qF4JUv+3dE3UD8ugYpe
+         UJ9Vo1m0ifEK0mqvfNFNACEl8BmusbsTuBZyMs0PBS6K2qVlMi15Un9X9A4uvjwd8gOs
+         3lkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792744119; x=1793348919;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JZl+HfrWAJtYCbAOILKeb7E857EVkTmoggdAs0Ji4mw=;
+        b=IBy5ElkIjmFndb7Z4kfiwl7O21HyI0L7OSRH2iwv9pgVugazzaJilaaKRtX+8nISSG
+         BIxOdzySmrZ+i1F9DMB0WUlngCdAuYwl33V+cOjYiD+YJ0+f7mAx4np+UUFv7PgxhinQ
+         66VdWU6sDdttFCVP66ExKu5Vazbhxn9onaLwkR0x7t2IzwAOyhBiGaWVGyDDsu/0V8gH
+         0eyGxk6k4fL9TckmjCXa69UJ2s0IIwja1Zj1Q9YGyM/pOMv7RPf9Oo0YdX99VDimDUqK
+         PISoNcqwdvusUY7fGo77BlTIjJ89d2C51hbKh8Tml01YbfbD0oQe/pwXJFmBuad1IPkz
+         KHsg==
+X-Forwarded-Encrypted: i=1; AKwUvBxm7GvktZNpBMCVESv5dQU2w5m2ocahTM+e0V+vIUcSE7V8eKMgsXXKxub1zvVvFTOxo/P8I3mhudiHU12ZNg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKzqBnU6h290ekT92MWx8TwZl9e3xW1crqHSsmLDp/z4imN6Sh1
+	FIeoNQQI2BGTUPaGQM0Z73dgLTwJBQq1f82oFnsHuzAE+6v8bI1ywY9HMZwPwgkTMMvb9nQGFeY
+	p6MFx3TEEFhPAO8frcQ==
+X-Received: from wmc9.prod.google.com ([2002:a05:600c:6009:b0:4a2:d3e:ee4a])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4e8a:b0:4a1:e7ce:10a4 with SMTP id 5b1f17b1804b1-4a211eebdc3mr25679015e9.29.1792744119032;
+ Fri, 23 Oct 2026 01:28:39 -0700 (PDT)
+Date: Fri, 23 Oct 2026 08:28:37 +0000
+In-Reply-To: <DM9O11JY63Q2.1U3PB5GL0JYOQ@garyguo.net>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -82,29 +78,49 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-MBO-RS-META: o977mejxkh8hcuc9iopum4f67tyimxq5
-X-MBO-RS-ID: accedf3891204f28d89
+Mime-Version: 1.0
+References: <20261019-rust-shmem-fixes-v1-1-3f7f6de5b5e7@google.com> <DM9O11JY63Q2.1U3PB5GL0JYOQ@garyguo.net>
+X-Mailer: git-send-email 2.56.0.257.gf7497c7d27-goog
+Message-ID: <20261023082837.1250172-1-aliceryhl@google.com>
+Subject: Re: [PATCH] rust: drm: gem: shmem: do not leak pages when sg_table() fails
+From: Alice Ryhl <aliceryhl@google.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Alice Ryhl <aliceryhl@google.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Danilo Krummrich <dakr@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, Lyude Paul <lyude@redhat.com>, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 2026-10-22 at 18:27 +0200, Philipp Stanner wrote:
-> +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SA=
-FETY: `self.data` is valid because `self` is valid.
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let f=
-ctx =3D unsafe { self.data.as_ref().fctx };
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let _=
- =3D fctx.nr_of_unsignaled_fences.fetch_sub(1, Relaxed);
-> +
+On Tue, Oct 20, 2026 at 01:31:03PM +0100, Gary Guo wrote:
+> On Mon Oct 19, 2026 at 9:21 PM BST, Sami Tolvanen via B4 Relay wrote:
+> > From: Sami Tolvanen <samitolvanen@google.com>
+> >
+> > `SGTableMap::new()` takes a pages reference and maps the table before
+> > `Devres::new()` allocates. If the allocation fails, dropping the map
+> > frees the table but keeps the reference, and the next `sg_table()`
+> > takes another one. `drm_gem_shmem_release()` puts only one, so the
+> > pages leak.
+> 
+> Sorry, could you explain it in more detail?
+> 
+> Creating a SGTableMap and dropping it doesn't restore the state? If so, it
+> sounds like an API design issue.
 
-When I think about it we probably want to address this in a series
-(preparing for JQ upstreaming) where we also have my proposed
-DriverFence::drop(synchronize_rcu). Otherwise this patch would need
-both synchronize_rcu() and rcu_barrier() for formal correctness when
-the FenceContext drops, which is just overkill.
+Yes, there are really two bugs here:
 
-If only we could fully lock the fence, all this would just go away. But
-currently that's what it is.
+1. `SGTableMap::new()` returns `Result<Self, Error>` instead of using
+   `init_scope()`, so `drm_gem_shmem_get_pages_sgt()` runs eagerly before
+   `Devres::new()` allocates.
+2. `SGTableMap::drop()` (`__drm_gem_shmem_free_sgt_locked()`) unmaps and
+   frees `shmem->sgt` without dropping the `pages_use_count` reference
+   taken by `drm_gem_shmem_get_pages_sgt()`.
 
-So forget about this patch. I send sth new soonish.
+I'll go ahead and merge this patch since it fixes the first bug, unless
+I hear any complaints.
 
-P.
+Alice
