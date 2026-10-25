@@ -1,72 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.70.43.171
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.70.43.166
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792927430;
-	b=Eza6kRIrsQGBuPNCMLKuYgeR6mlTzVtOJoIhFRjVhHwc3V5b1mO6vAr95EWM5rDIgZQU
-	 9l4UFino3pH2sMKsQQzGN/PCKnF9Kx+ib9yYU18XiSog9h9xF+4TPL8cr/YINH3psVIqY
-	 xOXYoe5uG5ujY8ua5TQ9WBSJwfACBQWsHC6D3gXzv+kWWfpsZgE7EELrjmEVhwzJefYl8
-	 CwswuKHWwXQkVg9Hlcy57FGj4Ib7+GEc7WbZpkx/cJoa0ElQBZWSlpZog4sV9E8/qJzy8
-	 GTfDjbDJm6leMdCV+o9O9XocQsAB+fFUNoAmrwkSKsr9tVBxnuDd2oXbRtCuWN2W2kw==
+	t=1792928618;
+	b=nGGmp5sVs+RhFHe95OuxNixSjosC5ktv3/cZoV4RJkAk7FS1HiRA0AH/qjerbQ+qyhjr
+	 WwJKuZJhSqlhdaDwsTH8dNnXw/O2W1BiGnvtbwFCFVFGiy4623FWjHbcw8RugP/BF+uZl
+	 20tG3s4JUj9ryr/dGUzfWWPPHjrwt4o3JTMKY115uM+b3FMAn2zlu7PIXrn7dYOOfbOcT
+	 vD6RYgdHkB6TfQWW+br5GmnaZSxJf4Ybr9C5eCfNcMF1hR0JlhZrSUnJX54FQHsERMOKy
+	 8aSuM+zj5/SsorHgLyoQEESxInB6uK0Xwsp4wUIwCooChzdUi6YWeF89BhJVLazflBg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792927430;
-	h=DMARC-Filter:DKIM-Signature:X-Pm-Submission-Id:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=KxRL1DvHM8nURGmu+fIetHUszwkcj8gtkIA0u1SuRI0=;
-	b=tdjNk1n++lDKkIjbJEI9yt9fctS8JbHY/OH+B0QqMcDsCepSxwf3khZcZv6qvo2Iikat
-	 A9qBx6CiKE5EeokSDTrACat8gURaS+ybJmYy9D3lXDUSi1iiaMmqRYGAcDpvLHsQDpxYj
-	 QMkRmo5sgL7FC06V5PiMMiHFY/S+UADV3e+Crf5X+AaTocbdqvSCHG9uoG+LV9PbLZojM
-	 UizbOGEbfLH9vMlgwknmVpYJjRYeCRSOZtqMzitJts8dhX5hYnvDrZvQK6MJg/hvlwcS/
-	 nABScLHSnJ27ysWOG9cKKcOpArsZxD479zyLa9GHutqFLoQdTNWM6t9U74tzaqDH+Jg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792928618;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 Feedback-ID:X-Pm-Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=3tU06HeQH713VNAukSgPmdsvYQlK2TSN1fZM8EM0G7s=;
+	b=zHXDjOlZbo6S9GaHSkcY71F3xr4Vst+xI0c08E47+h7adV8tSdIMS+GKZD8MGJP4xDiR
+	 6b4GcpQ8vj5kG+e5KqsPwB1elQ5gntBo0UFI/hb6JKTZI27mXOka5JvW/pNAxm4nkBEk6
+	 Mg5Q1hNLLSQs6wSXGoWpS/A4dqkgVVVbOUL+qtwSlqG2Ir3uWPRmjJtv7roJG76fg2vGB
+	 3S9noMslrefAtx959jtM8SKRwwCsE+ihNVxYqUJyTgwbRHri/cB2qlYOKxpuOdCM/x8yG
+	 6x9PUHuD7FSx3ZPgbwWu7c7LB5284N8IWB4jL8aQ46Zlyh6JOzMg0JpgcnuD0pPWDfw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=onurozkan.dev;
-	spf=pass smtp.mailfrom=onurozkan.dev;
-	dkim=pass header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b="aF4PWV/O";
-	arc=none smtp.remote-ip=185.70.43.171
-Received: from mail-43171.protonmail.ch (mail-43171.protonmail.ch [185.70.43.171])
+	dmarc=pass header.from=proton.me;
+	spf=pass smtp.mailfrom=proton.me;
+	dkim=pass header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=lxW+44qi;
+	arc=none smtp.remote-ip=185.70.43.166
+Received: from mail-43166.protonmail.ch (mail-43166.protonmail.ch [185.70.43.166])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D119606A31B
-	for <rust-for-linux@vger.kernel.org>; Sun, 25 Oct 2026 11:23:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5D119606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34613606A31B
+	for <rust-for-linux@vger.kernel.org>; Sun, 25 Oct 2026 11:43:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34613606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b=aF4PWV/O
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail2; t=1792927425; x=1793186625;
-	bh=KxRL1DvHM8nURGmu+fIetHUszwkcj8gtkIA0u1SuRI0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=aF4PWV/OqdXm+Gg18Fq0Y+EAJPczVLQ5kNHWD8pQ0zoXaJTfKsPC84dzoelhH/vqx
-	 /8LHTXXqtsHf36qp/9c7pyTbkSZoaoXzTFiI3xlhkEE93DbK6lP2u0ERKdyVxboCFG
-	 9o2QZ+l6cD3HC8O+IWyXfNi3+pZatHm54DqHyR+5wbes6sfW9AVMPaYdDprFh/iUXz
-	 DJodG3SAN32wMSwH/MVUwqvQgPfKd0rXWsTZ65WvS84KJka+JyxKQ3Oeu4vNfv2tQT
-	 XP/2ydefNe5vqR6kDKA9bJ4Izqpk57J1S7PB8e33SvjZopB3VTGMkTUbaF6BQoNUvz
-	 J6qZy00KGHGwg==
-X-Pm-Submission-Id: 4jCDsW0qqfz2ScMt
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu
-Subject: Re: [PATCH 2/2] drm/tyr: unplug the GPU when reset fails
-Date: Sun, 25 Oct 2026 14:23:38 +0300
-Message-ID: <20261025112341.60054-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20261021093808.1128449-1-aliceryhl@google.com>
-References: <20260823-tyr-gpu-unplug-b4-v1-0-e99c07d4c785@onurozkan.dev> <20260823-tyr-gpu-unplug-b4-v1-2-e99c07d4c785@onurozkan.dev> <20261021093808.1128449-1-aliceryhl@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=lxW+44qi
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail2; t=1792928614; x=1793187814;
+	bh=3tU06HeQH713VNAukSgPmdsvYQlK2TSN1fZM8EM0G7s=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=lxW+44qiVhk+AGNEb3glwYMiO3rDauroZl0d27H/Fu8wsaLPfIbKdLVBjy+1SOulw
+	 0WjsRcM2zhDOfH+cQQi29/RiOUpE3EMSnm9u9/6fVEWKEgXOxYrY4e5jVGh9SPvdEJ
+	 5tiFvvEnl094UPdiBfYYh0jULi//7PoW6x776fYrDN8CxodybHip8nkOrI+Bi8WIvn
+	 9BgVvCEYgsaUSWQTIWGEWRI76ZAAIVuk18W6sbXdccmWMXi2R0OwdOARk7U6cxvGNS
+	 +QIxbmCkxlgrxC4C8vXaCNafFmnju6tUD65L9DHgSk4aA+DSHX8yiGHOuSfjqdIvxr
+	 u+W6rf+h1ECuA==
+Date: Sun, 25 Oct 2026 11:43:26 +0000
+To: Miguel Ojeda <ojeda@kernel.org>
+From: Sagar Taunk <sagartaunk@proton.me>
+Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Tejun Heo <tj@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Sagar Taunk <sagartaunk@proton.me>
+Subject: [PATCH v3] rust: workqueue: fix SAFETY comment incorrectly referencing `Arc`
+Message-ID: <20261025114304.16730-1-sagartaunk@proton.me>
+Feedback-ID: 130121444:user:proton
+X-Pm-Message-ID: 51809fdf32bafb28e4adca1eb74d3b14d000bc54
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -76,100 +61,58 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 21 Oct 2026 09:38:07 +0000=0D
-Alice Ryhl <aliceryhl@google.com> wrote:=0D
-=0D
-> On Sun, Aug 23, 2026 at 01:50:08PM +0300, Onur =C3=96zkan wrote:=0D
-> > @@ -56,7 +57,7 @@ pub(crate) struct TyrPlatformDriverData<'bound> {=0D
-> >      // ensure the correct drop order.=0D
-> >      #[pin]=0D
-> >      _reset: reset::ResetHandle<'bound>,=0D
-> > -    _reg: drm::Registration<'bound, TyrDrmDriver>,=0D
-> > +    _reg: Arc<Revocable<drm::Registration<'bound, TyrDrmDriver>>>,=0D
-> >      _device: ARef<TyrDrmDevice>,=0D
-> >  }=0D
-> >  =0D
-> > @@ -161,17 +162,18 @@ fn probe<'bound>(=0D
-> >                      gpu_info,=0D
-> >              });=0D
-> >  =0D
-> > -            // SAFETY: `reg` is stored in the platform driver data and=
- is not leaked or=0D
-> > -            // forgotten, so it is dropped before the `'bound` registr=
-ation data can become=0D
-> > -            // invalid.=0D
-> > +            // SAFETY: `reg` is wrapped in a `Revocable` owned by the =
-platform driver=0D
-> > +            // data and its reset handle. Neither is leaked or forgott=
-en, so `reg` is=0D
-> > +            // dropped before the `'bound` registration data can becom=
-e invalid.=0D
-> >              let reg =3D=0D
-> >                  unsafe { drm::Registration::new_with_lt(pdev.as_ref(),=
- unreg_dev, reg_data, 0)? };=0D
-> >              let device =3D reg.device().into();=0D
-> > +            let reg =3D Arc::pin_init(Revocable::new(reg), GFP_KERNEL)=
-?;=0D
-> =0D
-> `drm::Registration::new` requires that the `Registration` is dropped=0D
-> before `'bound` expires so that `drm_dev_unplug()` runs and=0D
-> `TyrDrmRegistrationData<'bound>` is dropped while `'bound` is still=0D
-> valid. Wrapping it in an `Arc` makes this invariant fragile: if any=0D
-> `Arc` clone outlives `TyrPlatformDriverData` or is leaked,=0D
-> `drm::Registration` will not be dropped on platform unbind and=0D
-> `TyrDrmRegistrationData<'bound>` will outlive `'bound`.=0D
-> =0D
-> With `pin-init`'s new safe self-referential struct support in `rust-next`=
-=0D
-> (see e.g. [1]), you can avoid both `Arc` and raw pointers altogether by=0D
-> storing `_reg: Revocable<drm::Registration<'bound, TyrDrmDriver>>`=0D
-> directly as a `#[pin]` field of `TyrPlatformDriverData<'bound>` and=0D
-> having `_reset` borrow it via field + existential lifetimes:=0D
-> =0D
->     #[pin_data]=0D
->     pub(crate) struct TyrPlatformDriverData<'bound> {=0D
->         #[pin]=0D
->         #[uses('_reg: invariant)]=0D
->         _reset: reset::ResetHandle<'_reg>,=0D
->         #[pin]=0D
->         _reg: Revocable<drm::Registration<'bound, TyrDrmDriver>>,=0D
->     }=0D
-> =0D
-> and in `reset.rs`:=0D
-> =0D
->     #[pin_data]=0D
->     struct Controller<'ctrl>=0D
->     where=0D
->         exists<'bound>: 'ctrl,=0D
->     {=0D
->         pdev: &'ctrl platform::Device<Bound>,=0D
->         state: Atomic<ResetState>,=0D
->         hw: Arc<HwGate<'ctrl>>,=0D
->         #[uses('bound: invariant)]=0D
->         registration:=0D
->             Pin<&'ctrl Revocable<drm::Registration<'bound, TyrDrmDriver>>=
->,=0D
->     }=0D
-> =0D
-> Then `probe()` simply initializes `_reg` first and passes `_reg` to=0D
-> `ResetHandle::new(pdev, hw, _reg)?`, `reset_work()` calls=0D
-> `self.with_registration(|reg| reg.revoke())`, and `#[pin_data]`=0D
-> statically checks that `_reset` drops before `_reg`.=0D
-> =0D
-> Also, as a heads-up for rebasing onto `drm-rust-next`:=0D
-> `_device: ARef<TyrDrmDevice>` has been removed from=0D
-> `TyrPlatformDriverData` (along with the empty `PinnedDrop` impl), and=0D
-> `drm::Registration::new()` now returns `impl PinInit<Self, Error>`=0D
-> directly without the `flags` argument, so `_reg` can be initialized in=0D
-> place via `Revocable::new(unsafe { drm::Registration::new(...) })`.=0D
-> =0D
-> [1] https://lore.kernel.org/r/20261019133647.1279779-1-gary@kernel.org=0D
-> =0D
-> Alice=0D
-=0D
-Any idea when will we push drm-rust-next changes into rust-next?=0D
-=0D
-- Onur=0D
+The `WorkItemPointer` implementation for `Pin<KBox<T>>` incorrectly
+references `Arc::into_raw` when `KBox::into_raw` has been used.
+
+Fixes: 47f0dbe8fdc2 ("rust: workqueue: implement `WorkItemPointer` for poin=
+ter types")
+Reported-by: Onur =C3=96zkan <work@onurozkan.dev>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1233
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Onur =C3=96zkan <work@onurozkan.dev>
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
+---
+I originally sent this patch in April but it was not merged because I messe=
+d up on=20
+the tags. I remembered that I failed to follow up on this while trying to r=
+ead this module.
+
+Changes in v3:=20
+Fix tags.=20
+Link to v2: https://lore.kernel.org/all/20260426175317.10171-1-sagartaunk2@=
+gmail.com/
+Link to v1: https://lore.kernel.org/all/20260425135701.34010-1-sagartaunk2@=
+gmail.com/
+ rust/kernel/workqueue.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 7e253b6f299c..2c07785d446e 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -890,9 +890,9 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for P=
+in<KBox<T>>
+     unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
+         // The `__enqueue` method always uses a `work_struct` stored in a =
+`Work<T, ID>`.
+         let ptr =3D ptr.cast::<Work<T, ID>>();
+-        // SAFETY: This computes the pointer that `__enqueue` got from `Ar=
+c::into_raw`.
++        // SAFETY: This computes the pointer that `__enqueue` got from `KB=
+ox::into_raw`.
+         let ptr =3D unsafe { T::work_container_of(ptr) };
+-        // SAFETY: This pointer comes from `Arc::into_raw` and we've been =
+given back ownership.
++        // SAFETY: This pointer comes from `KBox::into_raw` and we've been=
+ given back ownership.
+         let boxed =3D unsafe { KBox::from_raw(ptr) };
+         // SAFETY: The box was already pinned when it was enqueued.
+         let pinned =3D unsafe { Pin::new_unchecked(boxed) };
+--=20
+2.56.0
+
+
