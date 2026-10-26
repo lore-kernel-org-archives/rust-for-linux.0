@@ -1,72 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.107
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792990512;
-	b=PgAbRPhoisVTInn+vjoBDjwHvVLe2gc3juIV2lNb0rwMzJKGH/IC4xX4lcwqsI/yYoVw
-	 o/LjM/yiGe862U2NPcR70cluuTEsjQefUC2ac9Wt59L9zTGI8LR01n+FiHHFISjp3RaU7
-	 nEZgU/LbqPC3vGvkfCczoMnMT8V1Ijh/612APjoSysWFcwyLt43sQPMCS//UzPXWE5J2g
-	 UlQsTcw7LY+Adnf+7OL7x5GECdu75N3UaFSyfKhr51zXNNXhQGEJx/Re7kytspDTjXSxQ
-	 +xrzMwgk0X1qZb0pZreWStZRWFeniICuLWfqT59IZu+WI5nqkn7C9rr0jnjuRggImKA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792990512;
-	h=DMARC-Filter:DKIM-Signature:X-Pm-Submission-Id:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=bkFoj/p9kuVrOrWL82YWFiYwfoD25GjMBtArR/G/taI=;
-	b=s+toRH1bwIdnB5PyfX1ERXbDih36IritlDFgHvDT/IOGCoh8kjVDzVue40QDZFqFba/l
-	 mCxcxDcx9TK9PqDtIdK2W++JES643EEQY4fV5SgFlYRiXXplBxbe2EF37DkjcNwKlgeOU
-	 +EwcvAi79Sgq8bz/OPR/8RFJfwzOUNREX7uyIowc6WTKPxPUUbS87iwDyt//M9cf8z4+6
-	 D3dZUIN27hMuCf03DYdZpLpYYSFIF6WbASgMsjcBlpJNEEyYkVO938mqPiIVAe+uAA4FV
-	 Q+wW16uXNAZ+aX2HsK89XlgjgLvQ5XLSSksj5qKh5HjXGvHHptLkv5txKkuAkhKvNwg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=onurozkan.dev;
-	spf=pass smtp.mailfrom=onurozkan.dev;
-	dkim=pass header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b=W8ul+5er;
-	arc=none smtp.remote-ip=109.224.244.107
-Received: from mail-244107.protonmail.ch (mail-244107.protonmail.ch [109.224.244.107])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.14
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792990562;
+	b=rU1VVco4yh0ZzRU1sHm4dYmYe0Tf5yMkTg3dI2c68VrEdgTyaoXAu4zwcjUiNd1GYLhE
+	 8G4gmnx89M6CUVN3krX6xP9/UY0XLuZIX5ZwgZNkQjCQ0tYoAp9HzLavCStN7VKfkSMlG
+	 qw88A1Ca+n+wyCQQJPZDlldsSNCPXI/AaRgszQlgvpARejPQz97QN/TeqC2sV+n8rk0VZ
+	 7HZd2NWhG4feGlFV/ILlsosm0jFjUTuQZV3xbobLlt5EG0Z4mAjfrpko1UvU3z8bGZYvj
+	 nkIvAd4xQxAHM9VdXdbtnourxAtqfN/Qh0E5YhwxoIAL9/ISiwBGBPaFMzL8ulklBmg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792990562;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=bON5Ji9d24QRvBIywYZD6r5/ivpnPalfqEfswM6mY08=;
+	b=AfLGyL7OrF5LQj7MijPcBIWyM8Ddy0S7r0FYntEQd2qp3zVgoKcZsuLkDql+E6WQAeRa
+	 hxy401VJfVZc67tfO4whkFP62MYfhpv6qZsk0uBgk+WC/D9YGH/zRQyestEftCNPJqF38
+	 YxreBiYzE4h4KMR3d124R/ksGvLxfSAHRXByRW8BZSRdrczuGJUruvgqI8PfJpU3gXtxF
+	 sHw4DJjnAC9OZvf8DGrhayx9MRLQAdfLDQIvuZUOQJBy2XAubZjiuun/WaWodT1A1stJE
+	 SOaS2UwgzZHLIkdiJfBssZTHiz4GQemRLPcab6S41jsWngOU1OJ9XXjDWEi2v/lwflQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=JmreCsog;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.14
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010014.outbound.protection.outlook.com [52.101.201.14])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F9F606A32E;
-	Mon, 26 Oct 2026 04:55:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4F9F606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8438F606A31A;
+	Mon, 26 Oct 2026 04:56:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8438F606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=onurozkan.dev header.i=@onurozkan.dev header.a=rsa-sha256 header.s=protonmail2 header.b=W8ul+5er
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail2; t=1792990507; x=1793249707;
-	bh=bkFoj/p9kuVrOrWL82YWFiYwfoD25GjMBtArR/G/taI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=W8ul+5erNyhV9loBI+BtaiHwQF+Bi9Stx46ldUUeTa6eIGKNMK+OB/V2iiSSjC9qy
-	 sMDMAzuoEKhlD0DAMNI67tSU4gt3E/7xrhtVneoAPTbZD8Tmnyo6hlWUJXFYa6xLZd
-	 iGQgqYAiAPFNQvPzl9TWrjy+TiYx1YRNw/oSSiwl/eDFIKD7DsSiJ76iUS0Sf2t/FT
-	 QaZUatBr++evYKBSznvtgGGP/ObOtKMq8HGZHKF9cYVeweg+TjsrN55V7ajcVCSi6F
-	 UB5alFfQXRgGrLV0Z9pzv15PFqRFvMNeMYnr76MShxB92NRGWGdsAV/+B+LtKQlsmF
-	 8oFXEULLzLx3w==
-X-Pm-Submission-Id: 4jChBb6pNbz1DFSj
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu
-Subject: Re: [PATCH 2/2] drm/tyr: unplug the GPU when reset fails
-Date: Mon, 26 Oct 2026 07:55:00 +0300
-Message-ID: <20261026045502.43739-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <CAH5fLghQAGskFzEOAQwjO9eDoKU51nG4L0C8EHNOtugWov4hHQ@mail.gmail.com>
-References: <20260823-tyr-gpu-unplug-b4-v1-0-e99c07d4c785@onurozkan.dev> <20260823-tyr-gpu-unplug-b4-v1-2-e99c07d4c785@onurozkan.dev> <20261021093808.1128449-1-aliceryhl@google.com> <20261025112341.60054-1-work@onurozkan.dev> <CAH5fLghQAGskFzEOAQwjO9eDoKU51nG4L0C8EHNOtugWov4hHQ@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=JmreCsog
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nF9elfBrgunHELyANN7rTpc/E0t5J2XtwuHMlLiX9WafVghqV0BdH3UxM7dDPdfDZGQgIpIvX4RFAnVBsVyFN6ivJa7ZwSeN3vcdhl1Zn4HugqSwbsMG3amVKRdQza9G7FvuCo5/yn98h9shKlBPvtmL4AL/k80pN7Nfxp33wpBtCDRgM+NgTVcDrczpoQtQ2m0sJWGvCEC1y98zcI+hXNNhOxcb6FMsVi+yhnLeSX8v8KNFPOj/q2dS3rIFGJXNipw7QZp6Xu5lUrEO7JJenqlVCaBgmDU8bolpgBkYVgSukQI2+QokI01WZ+dFHy/qXWF9a9TUsD1MslcBzFF8xg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bON5Ji9d24QRvBIywYZD6r5/ivpnPalfqEfswM6mY08=;
+ b=qaZkgQztDoM924eLal1Lk8c143p3k6Y32/qAjpMQtyMWaV9SEMlVlgdidA6QL9O17QHvAWlKuntd/x8OASxNgXqyMI4D/HJyTEdyN9k3q39sSmI+mOFNqdxAAcEz9E5RGSe70B8lMzEGoNHUsi+8ZBBSyJOwAurw1NLHQ0AWPnF6FVFOCPbZaX7BzTPd3785OBRrFmJ699pWY4RNFsDe5CWrwYvDwrtUq3CKWm/fQecYF2SNVrlJIi5miWU+XvRK5ipwuVT0QVC9IVCtHRQnqUj3w3ceLy36bXc0beQYzhPIpVoEzv0TUI5ay8adt3gXHw5wv7zRhQ0bWABG0eQiVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bON5Ji9d24QRvBIywYZD6r5/ivpnPalfqEfswM6mY08=;
+ b=JmreCsogx4jeh43zpIK6jDlocYtKXglrXW387MhjfMV3Vn5HGBY+AKCLblCh6oSL0p7qlaSSn7IpJp1jRGstZFJxSIWjben87WrtiYc6BCemdETBPKnUGSXCG7LJHB6c4H0j083gi1NMUNMd80bFr18vIKyN8LVe4GIWKqNIaA1YKqgQvbcgoDmod2PTDjkbpoOiuyfx/rEyhRSihoMKpS5T9zzKW7INIIQhQj3Uf0I9FH8qCXzzdE7ma3rlCvsJMKnnAOfyfovynE15Nby7gr6A/+wjWTO3tBDOCGVPTmmARhrXa25BvZLmUSYOKpCd+kJnof/KW5vL/Ikg6XlRHA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by SN7PR12MB8060.namprd12.prod.outlook.com (2603:10b6:806:343::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
+ 2026 04:55:58 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
+ 04:55:58 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 26 Oct 2026 13:55:54 +0900
+Message-Id: <DMEI3TS04IWZ.17P49EAIOK3G3@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Tamir Duberstein" <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair
+ Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "kernel test robot" <lkp@intel.com>
+Subject: Re: [PATCH] rust: io: fix unused Flags::from_raw warning without
+ CONFIG_PCI
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Eliot Courtney" <ecourtney@nvidia.com>
+References: <20261026-pci-fix-v1-1-a6a69ee584d4@nvidia.com>
+In-Reply-To: <20261026-pci-fix-v1-1-a6a69ee584d4@nvidia.com>
+X-ClientProxiedBy: TY4PR01CA0045.jpnprd01.prod.outlook.com
+ (2603:1096:405:372::16) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -76,123 +106,91 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|SN7PR12MB8060:EE_
+X-MS-Office365-Filtering-Correlation-Id: ebc2fdfa-c5d1-4010-c7d9-08df331d6ca0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|10070799003|376014|56012099006|11063799006|261009223027099003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	X99lVvRm2kRVGaQ2oRfeWkGdcJ0y7CWZfr7ZNt3OOLmh0aFESyxH0gvaBa7RJU8/Nvom4qrjp8De5eDs4lp2cxcvF6YNl6JebhwqIIhR7r2HUTFsifQkOkoA7/STGBxNa2kk5xr8RoxxcJlkhzaGblp81meMjjK+U3XI1PhZglawqgxXmiDppV+ScSSGWp4rbLw4La539j+HuUkAz3N5iKCf5dLPdZR/EzxXpsmjdIkiM8QFRLfC1S8c9DW8z8+aH+XC5YSVTlk5ZG0BfVdbuLpB3p2QStKkHmuLoTRvL5GsBvWnY4oyvjQfnioemxy3/fwfECl9eId4ErEEBUUO9Mk3prXzA1UzlKORFAuySQ85DOzV6cwVD3FrD/4bEV+l0icJWquH77rgFqcSGs012a1ajDwV5+sdbzjr5Isbd/sHX6R+iRAzvmImIwbh0OXlP3Fn+hpbBObTJZO1vSHXp0Mc+XS7662TVniYxKhcE/BgpJc8A/1tmLrXoJ5/ywLE35XMr3qSNMLQX9ngPFAoP1VC67i5KipmrVdHrsusEqE4Q02Fxf8J42XIJGLzZOX118njYOTBViPbtEYb5XmhfnN+BbN93+BumFLlGjN9AdNxiYzz148f7cUx5G6Q6tRDjXaXozwCbEnb/wpeo+EXebA0NfJ4Q7eRePdignSuWfk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(10070799003)(376014)(56012099006)(11063799006)(261009223027099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VVdmcWpHNjQyZnVjQkNqbXI3ZlJKdDF0eFVBOXlOMmRLblJuOFZKUUNQSjhZ?=
+ =?utf-8?B?d3FkU0VtdUNjNCtRb2R6bHNmUHZ4S3U3Qm9SVTRwaEUxeEVrY2E5Q05BRXow?=
+ =?utf-8?B?WG5Tb0F0cmswa1R0T0NGd0YvM3ExKzIyNEtNV1RRc1FobGphbEtMdzRncURY?=
+ =?utf-8?B?NThtcFRJYWw3YnFvN2FrM01UQUY2RjdvanN1c2RFcnUxcXhZOHp0eGFzMjlJ?=
+ =?utf-8?B?b1hXV3ZCQ2hJRXNhUjN1V3BVcTBXYWM4UElnOGRrMTFmNkNjS1o5eVdxZFZU?=
+ =?utf-8?B?L3NwcXRrc3d4czB6RzZCaEphdWJGMVVGSnA3OW9PNXVUcjJZM2p4U0ZicG50?=
+ =?utf-8?B?TTRCTk1SOUY4S3dSZEhQeFEyKzE2VUhDN21VM0x2cGJKOVVBejNiUkxxV3J6?=
+ =?utf-8?B?Lzl0ZzBtWUlDd2QzbnYyaWkrV1k2OXFmcllJby9waWxhMCswc1NDa3VNSmhE?=
+ =?utf-8?B?TkptQ3VHTkExdU1SWlVsMUlzejc2blA0RkVwWDdrQU9ydGNKL2R1T1NqaHVL?=
+ =?utf-8?B?MG9zQ0FZWGhYcEp6RGZSRFhjNkVzWWFMK244eXVIVFJRbXFxeUp5d2xFb2dI?=
+ =?utf-8?B?UWMzNjNUcUU4N2ppU3VhM0IzUm9JYU9HUUF0ZnN4SnJkT3lhaCtkYTBxYW1t?=
+ =?utf-8?B?NWpVY3UxOFM5cWhEdFR4SGIwL2lncktTVjlNRzcvSURVdXlneFhBaFZjZG1m?=
+ =?utf-8?B?RzhsOUI5TFA2SkN5ZytVYzh0aUhhQWo1NGp2d2ErcFdGNjNpeXhEL0dPU2xK?=
+ =?utf-8?B?Y1pSOWxFb1JwOFV3SVFVdTY4Qk92SXluRWtrK1ZYNmZlK2JRamhaNmpnWURJ?=
+ =?utf-8?B?bVBmN01vOXVTbUd3U1dmcHZqbFB3SGFEYWJHN1RuV2s4cEpwZ21SdVBKSHNZ?=
+ =?utf-8?B?MFNCZU1WMm5NTVd6bFZwdHNtV2UzeHBDQ1JCNTRPVDJ2SFR6ekd6NFNMS21a?=
+ =?utf-8?B?U1BwekFSRnA4bFBZVmdEK3VuMm5hMW1vQ2J6UDhJRVhUU1BESHlHYnZXaWU2?=
+ =?utf-8?B?ZFlIa1I2enhQcmk2QjBxZmEwWHBZV2xONndGdjJDa0pOcHdaU3BGTSs4ZEZ5?=
+ =?utf-8?B?YXJXaWhxWkU2VlZKWXpmbnJIbWtCNXJpNjlEUUdWNCtYQm1Eek9vd08wTmZ1?=
+ =?utf-8?B?R2psWlRpRmlTSWkyb1ZWbCt1SjgvNzBHVHllMjZhb2NRU1hraHBXaG5kUzUv?=
+ =?utf-8?B?bkU5aGZta2lnMFBnVWtVNkRhVkkvSlN4MnVjUE1yeGF3OHJlWlRBWjQweDll?=
+ =?utf-8?B?ZmRmeDJGakRFY3R1aHQ4N3c4THlWa1hhaExmWld5cXFSVktTQ0Q5QktXUytS?=
+ =?utf-8?B?a0dtK1MzRGVHbEhDbUZraUtwNVFMQ2F2N3JoM0JVUjd6OHZrN2pNZlVQYUtm?=
+ =?utf-8?B?MmM1THpLWFpFTjM3NENYaS9XeStEMVBPN1NSQWhjN3ZVUFFSL3Fib2thTnFR?=
+ =?utf-8?B?dUFxVG02ZHd5R1NwcHBTNExMRUp1SXNSZHB0U2xVVGVMMnhkanVZWmU2bHFS?=
+ =?utf-8?B?UWFHVHpwMzJYWWt4YTVWY0RIQzF4aUpXUWpZeDdlTnFVVWF4ZmYvYmtPaVQ4?=
+ =?utf-8?B?ektFbzNkUUd6UmRleUx5ak5taWw5bk5XZ0ZuY3YvdGZ4dTFNVDQzV2pueTM3?=
+ =?utf-8?B?WUJsSkMrVVhLbTZzZDlFRllYZWg2c1Nwc2o2dzRYZE1PMEoycHVILzd6U2lk?=
+ =?utf-8?B?MkhGMDRqMmQra3Q4bkd2YWozeTBiQ3NGYkM2N3hHNmpYUlVKb2VOM1VYTWJJ?=
+ =?utf-8?B?dStEdjE2a3hadmZyTXkvVEVKMjJRSzB0YndxK0twSmJxU3pWa1FuWE15dGtG?=
+ =?utf-8?B?NDlkKzliTklQRW9OMk1oak15eG9LM1Zob2dwRDRwSVJLdjB5Um5aVUNSak1l?=
+ =?utf-8?B?L1JFbXlMMEF0dnduVVNaOHR3dmVwcmVaMUZVSVZiM3lITDRkTzlRWEM5OVNP?=
+ =?utf-8?B?TzlEdFEya1pRZlFJS1I1VmZvYkg4eGt1UG9Fc01DanQ1TDNkZWNUa3pWM1Z0?=
+ =?utf-8?B?SnBuOWZIZkhkUjlvcDdNb2JqbGxpU1IwVGhHVVAxNUVVN1AzR1VyTkVSQ0pv?=
+ =?utf-8?B?c05JMEp6cFBwa05ydVVFdHh5b25TL2VlMG5ucmNmMnpRRnd4WVVhNXk4Q2gz?=
+ =?utf-8?B?WGF3dyt1aWx4bktPMEdwWHJNU1hUZjVRSUFRWU1RbUVhSSswYlNsOG1PZUpr?=
+ =?utf-8?B?Rjd0RnlOcTZiOFEybVBFbGdjYlhOL3FTdmRrSmdpVTNESDQ2MFNEVlN4by96?=
+ =?utf-8?B?K2lJM29ScVhoMkRXUnovN0VtS0tiQitnQWhTSHh0bXhTNVk3NXdmMEppemtZ?=
+ =?utf-8?B?OWh1NlpjUnFHcXJ2REF5Vjc2UlQweUs1MTc0ZlNrTUhmdVlMRmlIOE5PM1Yz?=
+ =?utf-8?Q?XmJRUpNHWX6BjCwPkVuM3cqLmNGi4vrdqTwgy4RRGN3DM?=
+X-MS-Exchange-AntiSpam-MessageData-1: ZLHrH6/UP52npw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ebc2fdfa-c5d1-4010-c7d9-08df331d6ca0
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 04:55:58.0738
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Dui9T0uN0Uj3UAwVt/9HCXkA/Rtfz8tHk4VY4g5GiYsrf1vLQQ8SC+bNUUj1x/pjC5+wTJuG3xsDhuvC/4xkTw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8060
 
-On Sun, 25 Oct 2026 13:05:09 +0100=0D
-Alice Ryhl <aliceryhl@google.com> wrote:=0D
-=0D
-> On Sun, Oct 25, 2026 at 12:23=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.=
-dev> wrote:=0D
-> >=0D
-> > On Wed, 21 Oct 2026 09:38:07 +0000=0D
-> > Alice Ryhl <aliceryhl@google.com> wrote:=0D
-> >=0D
-> > > On Sun, Aug 23, 2026 at 01:50:08PM +0300, Onur =C3=96zkan wrote:=0D
-> > > > @@ -56,7 +57,7 @@ pub(crate) struct TyrPlatformDriverData<'bound> {=
-=0D
-> > > >      // ensure the correct drop order.=0D
-> > > >      #[pin]=0D
-> > > >      _reset: reset::ResetHandle<'bound>,=0D
-> > > > -    _reg: drm::Registration<'bound, TyrDrmDriver>,=0D
-> > > > +    _reg: Arc<Revocable<drm::Registration<'bound, TyrDrmDriver>>>,=
-=0D
-> > > >      _device: ARef<TyrDrmDevice>,=0D
-> > > >  }=0D
-> > > >=0D
-> > > > @@ -161,17 +162,18 @@ fn probe<'bound>(=0D
-> > > >                      gpu_info,=0D
-> > > >              });=0D
-> > > >=0D
-> > > > -            // SAFETY: `reg` is stored in the platform driver data=
- and is not leaked or=0D
-> > > > -            // forgotten, so it is dropped before the `'bound` reg=
-istration data can become=0D
-> > > > -            // invalid.=0D
-> > > > +            // SAFETY: `reg` is wrapped in a `Revocable` owned by =
-the platform driver=0D
-> > > > +            // data and its reset handle. Neither is leaked or for=
-gotten, so `reg` is=0D
-> > > > +            // dropped before the `'bound` registration data can b=
-ecome invalid.=0D
-> > > >              let reg =3D=0D
-> > > >                  unsafe { drm::Registration::new_with_lt(pdev.as_re=
-f(), unreg_dev, reg_data, 0)? };=0D
-> > > >              let device =3D reg.device().into();=0D
-> > > > +            let reg =3D Arc::pin_init(Revocable::new(reg), GFP_KER=
-NEL)?;=0D
-> > >=0D
-> > > `drm::Registration::new` requires that the `Registration` is dropped=
-=0D
-> > > before `'bound` expires so that `drm_dev_unplug()` runs and=0D
-> > > `TyrDrmRegistrationData<'bound>` is dropped while `'bound` is still=0D
-> > > valid. Wrapping it in an `Arc` makes this invariant fragile: if any=0D
-> > > `Arc` clone outlives `TyrPlatformDriverData` or is leaked,=0D
-> > > `drm::Registration` will not be dropped on platform unbind and=0D
-> > > `TyrDrmRegistrationData<'bound>` will outlive `'bound`.=0D
-> > >=0D
-> > > With `pin-init`'s new safe self-referential struct support in `rust-n=
-ext`=0D
-> > > (see e.g. [1]), you can avoid both `Arc` and raw pointers altogether =
-by=0D
-> > > storing `_reg: Revocable<drm::Registration<'bound, TyrDrmDriver>>`=0D
-> > > directly as a `#[pin]` field of `TyrPlatformDriverData<'bound>` and=0D
-> > > having `_reset` borrow it via field + existential lifetimes:=0D
-> > >=0D
-> > >     #[pin_data]=0D
-> > >     pub(crate) struct TyrPlatformDriverData<'bound> {=0D
-> > >         #[pin]=0D
-> > >         #[uses('_reg: invariant)]=0D
-> > >         _reset: reset::ResetHandle<'_reg>,=0D
-> > >         #[pin]=0D
-> > >         _reg: Revocable<drm::Registration<'bound, TyrDrmDriver>>,=0D
-> > >     }=0D
-> > >=0D
-> > > and in `reset.rs`:=0D
-> > >=0D
-> > >     #[pin_data]=0D
-> > >     struct Controller<'ctrl>=0D
-> > >     where=0D
-> > >         exists<'bound>: 'ctrl,=0D
-> > >     {=0D
-> > >         pdev: &'ctrl platform::Device<Bound>,=0D
-> > >         state: Atomic<ResetState>,=0D
-> > >         hw: Arc<HwGate<'ctrl>>,=0D
-> > >         #[uses('bound: invariant)]=0D
-> > >         registration:=0D
-> > >             Pin<&'ctrl Revocable<drm::Registration<'bound, TyrDrmDriv=
-er>>>,=0D
-> > >     }=0D
-> > >=0D
-> > > Then `probe()` simply initializes `_reg` first and passes `_reg` to=0D
-> > > `ResetHandle::new(pdev, hw, _reg)?`, `reset_work()` calls=0D
-> > > `self.with_registration(|reg| reg.revoke())`, and `#[pin_data]`=0D
-> > > statically checks that `_reset` drops before `_reg`.=0D
-> > >=0D
-> > > Also, as a heads-up for rebasing onto `drm-rust-next`:=0D
-> > > `_device: ARef<TyrDrmDevice>` has been removed from=0D
-> > > `TyrPlatformDriverData` (along with the empty `PinnedDrop` impl), and=
-=0D
-> > > `drm::Registration::new()` now returns `impl PinInit<Self, Error>`=0D
-> > > directly without the `flags` argument, so `_reg` can be initialized i=
-n=0D
-> > > place via `Revocable::new(unsafe { drm::Registration::new(...) })`.=0D
-> > >=0D
-> > > [1] https://lore.kernel.org/r/20261019133647.1279779-1-gary@kernel.or=
-g=0D
-> > >=0D
-> > > Alice=0D
-> >=0D
-> > Any idea when will we push drm-rust-next changes into rust-next?=0D
-> =0D
-> We are currently in the merge window, so drm-rust-next and rust-next=0D
-> are both being pushed into Linus's tree. Once the merge window is=0D
-> over, drm-rust-next will have everything that was pushed to Linus's=0D
-> tree available.=0D
-> =0D
-> Alice=0D
-=0D
-Cool, I will wait for that and send new versions for this and the reset ser=
-ies.=0D
-=0D
-- Onur=0D
+On Mon Oct 26, 2026 at 12:53 PM JST, Eliot Courtney wrote:
+> Currently, `Flags::from_raw()` is only used by
+> `pci::Device::resource_flags()`, so rustc errors (with CONFIG_WERROR)
+> saying that it is never used when `CONFIG_PCI` is disabled.
+>
+>     error: associated function `from_raw` is never used
+>        --> rust/kernel/io/resource.rs:240:25
+>
+> `Resource::flags()` also converts the raw `flags` field to `Flags` and is
+> built in every config, so the easiest way to get rid of this error is
+> to just use it there too.
+>
+> Fixes: 3f1e12fce16f ("rust: pci: add resource_flags accessor")
+> Reported-by: Miguel Ojeda <ojeda@kernel.org>
+> Closes: https://lore.kernel.org/all/20261023154005.95904-1-ojeda@kernel.o=
+rg/
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202610241133.L9VWoFcD-lkp@i=
+ntel.com/
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
