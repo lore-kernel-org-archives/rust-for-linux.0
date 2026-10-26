@@ -1,108 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793030446;
-	b=neuOHwIxs9S/JmUwrulM95AfTLDiwnzfmg4YWMSXUsEhViNFy+nGHlyr1PHgf+bEol5x
-	 9P4CoOTyoHC6xTygFTTr+nnzq7WCgJOlONE/5pl+QonF2XslANdjHksq7MgiKDYw5bFIB
-	 qE9+WAz+bPxkka6h6Lt9PZTSig9IamWPt9XlNr56Ir7RI3YBxqr+XsUELfJ1EeAyNshkW
-	 LC1uG9j1GuHa+DW/YicUOhFnoxEPKxFTjX1c+/GJmdMUiDltwF08E6GnUEibYFRni4nlW
-	 i9ge4EYjjcU7nSjuatX4IQsStaLjziuwUcOAK1AQJbrk2nx0uAsVK4mXqT86sHFyGkA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793030446;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:In-Reply-To:X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:
-	 X-Mimecast-Originator:Content-Type:Content-Disposition;
-	bh=gdGEMgfJnyh5c7TJH0CYOcTTMHllOethu7h0lyRTWF4=;
-	b=YENIom0jQj36z/yuimvOGEWAW6OI3irU4bY3kRxM6GhnzjRIYpeUeOwnahHwCgGc3qGD
-	 1gf4Pi73E1r0RYaOtVasnUO8jHdNtGXxnWOruxLxsZhbiWV3crLgA1f7iYoRoA0ON7tmI
-	 xBkD6xB/SAJVTNha2f2BycVNtDGmFGmY5+sKl6/w+YJdpOySp5s9baAxdzJMAruBXT0Pe
-	 3lUSlOoJSAg5C5f4vAoGKYuWGUaJ29/86tuZAPDgXaXKH2EOoG7BAeYCjbfh/52aoObMm
-	 f4BTvY1CJNcbUJ12jXuowixwC/5eQpjvlk0SsGhQtAcrJhaX1tZnEwqpnG8Rp0NEUKQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ibk3sMPt;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793032875;
+	b=YQyjIUnSU6DF3BvqZjN4GdL2mm+P8Bv8CZOBPfrjBcNVEm88YbrXt0Rzp0xrA6G4ahTF
+	 Ln50Z8SJyRf5qAR/rL6ZZR6uBgDfsYxSHGPQnKbUAE41IOjSZUsbwtR1AKoI9e0WNKBA1
+	 OYyCmVTUgOcmEhBL5WOysQ8Q9N7k7pdy8LACHFXKEWJm0vPF78qy95blx8otlKTEdiKy1
+	 ga3GeHuw/cEioCVLkxMfItG+sJzDdkqOnzfPMxf/TZ2xQO/wnmJ3lqFd1a0PBHkRc9zwE
+	 y/gTOkBnNzop3W5bsNW/uJzq6HYAVnqnxxEHOv1MyOVtgz/RxtTOqUGF2YMjiok+RTA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793032875;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=UI0duaktdJo75orpWto+5YzczDf1eOZrJ5Vk4N9gpg4=;
+	b=0X/uAm8f/ZFAUt+UP21m8HsfOK2f1teEhvt/ywtjOLNBYjcnGqiMlZp9I/JOYSBzfEUN
+	 VI4rRdMBxcWRqjBOY1sy87+fokZ9L1leCSjHZTYHmRGAhcSKoaV4xqiZwod6HGfE53uTo
+	 Zz149liSvZx0EBCYzCAt2TMZebCTsVsnXNXtRjYZk0yJfIEXwAnGeHNSZWnQqXPcL1xNT
+	 vaaepBLZtWUi1HdtRlA0GPNoHbq7eLRsYfNMAolbzcf5fFYMEUYz/E9C0vNi0VisaODKU
+	 /84WzXNcVwE7MaGmsvx5wFtj3jzN7qIDHVxYfDGr6OHyvUb2X5XY4xEIq973dEvjjnw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YfHTVTAf;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB16606A323;
+	Mon, 26 Oct 2026 16:41:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YfHTVTAf
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793032874;
+	b=2ARuB3ykTtHlUTH/jZ95Rlt4OigXEQlSkglNeKyNi2CmudsKqsO0N8RPSMTD9now4Man
+	 qxuDHMpTkZvPNI2POv0StzLG7y8mX/P/JohtxKBHkUgWtckOvmlypbMfwQatiIZhuvdbw
+	 +vnE2Qs/2T3GJnmH+Lau3BIXi6TF1sbczXyeX8pFxiyjjy/3DuzyOKZFK5Ng3RcWg9kYh
+	 kw0GxV67/qb2qoUcgJ6L22zfkfJtgZoNeATyaSe6HPTkHgyF0X6Z+yDB/VSr7g94dVkaK
+	 G2PpFdWfO+vkE75o6GEVe26rDQyoExKeFr9i4veRdDv8FvnJj2HpVMkSh7eLqpamlcg==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793032874;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=UI0duaktdJo75orpWto+5YzczDf1eOZrJ5Vk4N9gpg4=;
+	b=sNCPlOLsxNL9Jndk2o9HjhObbvIEzCvz/KdG9qHhIazXIEGH6A8jTMfQc1pUF5giIyQ4
+	 nnW1HMGokEX5pXSUXOWkeRe8UTsvEINazOukUstglMysmizLogEaw42KmVkysspLV4EvL
+	 IImeUJqY/AQzMj7NS95ZiGs0CU304FYeztfIaebIKxv6m3QyrYZYHfaKYqALDCr6ZdHH2
+	 IyafhqNkNqVvYo1GFmU7w038fp919Qyx5J3cWPQw+K6QoYbBXwWtVrC8+HlQT0JdNGN2Q
+	 OoT/L0Hl17ymh2Bb1gbVqHbBZUoRwALxwhjht3SeTagc3BVkXSJ/9pr8ABAlAomTvkQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441D0606A31A
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 Oct 2026 16:00:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 441D0606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ibk3sMPt
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793030445;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gdGEMgfJnyh5c7TJH0CYOcTTMHllOethu7h0lyRTWF4=;
-	b=ibk3sMPt8DljIW5kR0Yiq0+RsEK4aJLxodhN4zDfPkdKO34DSbrAnihBCZ490HNLgPqIaa
-	HQ68gv6RcBPsa2Pc0TK7CfWe1GF/9BDy6IlNR3poNXu6F+6c7o9l+wtN3J5r6+BOeUoIER
-	6ed/Suqep1rwWvSH7RxyBUqB0Va12Q0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-279--2ebddn4NOydzHpFJQP3fQ-1; Mon, 26 Oct 2026 12:00:43 -0400
-X-MC-Unique: -2ebddn4NOydzHpFJQP3fQ-1
-X-Mimecast-MFC-AGG-ID: -2ebddn4NOydzHpFJQP3fQ_1793030443
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48c415561aaso2087247f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Oct 2026 09:00:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793030442; x=1793635242;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gdGEMgfJnyh5c7TJH0CYOcTTMHllOethu7h0lyRTWF4=;
-        b=jJavQP/r77rJjrBe2+XQFElHodWqh9KpsryoCppQObhmX9OrETyid1zOz8YxN9wpTN
-         vLfz3lZOzSwAVHaCYTPp/Sd9DtB0wkv+psxXQc2vFQX4a0EvupKPByNsCUMQH/RZHkGQ
-         1F9lxbXA29QlRWmgJ8AihdZdtffO0QLK4k9FUxC91ZXyNiapnGta9sGBcABLlwhjx6tp
-         W5vxvsgDeBjyue8cErCwJSmNvG8vxf/ol+xiUJHmu64MSCZfrNMVsiQQR2EzBihkQiFL
-         itgB4AGReUfp3UCkELekFm6gR4LElpy/uAhDxPl8NgZeswFUPCglEF/po6ZJVwQsYaut
-         31yg==
-X-Forwarded-Encrypted: i=1; AKwUvByvvb1IG9Q507pxEPuEIiohgyu/oT6zzFokPck7nAGVWQKoSNJSGzEQ4Kj7afBnw0nkgNHFcd0TxssAdClDpQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKNBVT3ja78IfQw1ESy4aIo2pe5BQT79DC+u6CZTqACXEIMlDZJ
-	z3/sJ+MyxbZE5q0VGvbEITmJKNRvOKoEbh+3ir/kVkiWUQaZ+uNeezdy5nscd2sbHTR+Hy/D780
-	vRduJcMHPB218ZQ1lZjxH1UjabIrdbxoQUjxOIP+NCAiDiE8t763nNP8XwQ3gtDHPcv+d
-X-Gm-Gg: AYBFou3/7kXzlXHRH7Q1y2CRN5/klxZV0bexZ6rY9Nhp6RUkXKsaGmsKgubTOyod/a8
-	oar+9FUJiMIB/LXbpGtCgrC+iGduTw0+jL0nkXcjsfNLnz0nXhFJyVvrqXK9HI4H1EjNXfAH8F7
-	am/lBRvv23hMlZ36T1eRycNqjasXM2TVplRmMuNk3DBMoA6mmxDq0Anc4aOIKRXB9blILx6tENl
-	mlWVrMnVCXG6LieGt9hp54DMIur43vFrt/UcEjz4UNYF/C3RhlQClbGuQJuArjOn0W59svStyDx
-	fXuAG8oSAJQAC7cNojgoJgwqSyIGLatK1q1et9YFMQVPoj9F8Bs9r/9XXBGrMpZkMV8=
-X-Received: by 2002:a05:6000:160d:b0:48e:35d4:55b5 with SMTP id ffacd0b85a97d-48e545bcbe7mr1461295f8f.52.1793030442384;
-        Mon, 26 Oct 2026 09:00:42 -0700 (PDT)
-X-Received: by 2002:a05:6000:160d:b0:48e:35d4:55b5 with SMTP id ffacd0b85a97d-48e545bcbe7mr1461218f8f.52.1793030441486;
-        Mon, 26 Oct 2026 09:00:41 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ebcb958sm17511497f8f.21.2026.10.26.09.00.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 09:00:40 -0700 (PDT)
-Date: Mon, 26 Oct 2026 12:00:37 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	virtualization@lists.linux.dev, Ruben Hakobyan <hruben@meta.com>,
-	David Hildenbrand <david@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/2] virtio_balloon: submit reported pages as individual
- buffers
-Message-ID: <20261026120022-mutt-send-email-mst@kernel.org>
-References: <ad6a530f49c4a0e182112a73789e31b5e91f3bb7.1793026707.git.mst@redhat.com>
- <6668d51dbda117d05d2eddd47db6ad69baab8b0c.1793026707.git.mst@redhat.com>
+	by smtp.kernel.org (Postfix) with ESMTPS id E434C1F031E1;
+	Mon, 26 Oct 2026 16:41:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793032874;
+	bh=UI0duaktdJo75orpWto+5YzczDf1eOZrJ5Vk4N9gpg4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=YfHTVTAfyuBGJH0k2Zi1L51+QfxQAY8t8azxjew24b92XaZP3TAA/QmA4WBRmQYS9
+	 YZHgiNaBOZuWukmNeyVvKoMCO18OhKbKBJgJrzuGEx4G14CLTK0xtEZ5QxYXebdhPk
+	 WXm4n56Ah4W8adGIP4vjjB44N0rlw/aWAPj3+NnukNnv8xrNYCTr28E1/DFG82Swyw
+	 1mduV0y6SHU7Z0iwWESam0KeLf9sfhPvuIO30SOFAbOR885DEiLaLgZM+0Zc/rY4xI
+	 BPf2pPVCD3yXWE2rkYFOwezjavSTnUtC5GhMd0pwVXGskZyQW4bU6VwDoM4hhtccBy
+	 GE7vieL6xDhMQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 6C74444DD1;
+	Mon, 26 Oct 2026 16:41:12 +0000 (UTC)
+From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
+Date: Tue, 27 Oct 2026 00:40:57 +0800
+Subject: [PATCH v5 04/11] drm/tyr: add per-file VM pool
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -112,115 +82,227 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <6668d51dbda117d05d2eddd47db6ad69baab8b0c.1793026707.git.mst@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: dSwh3mRDBiHY2GJFJirJxWm_1ZfFhSStIS1WCWRdvDw_1793030443
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261027-tyr-ioctls-v5-4-59dfe98cb003@kylinos.cn>
+References: <20261027-tyr-ioctls-v5-0-59dfe98cb003@kylinos.cn>
+In-Reply-To: <20261027-tyr-ioctls-v5-0-59dfe98cb003@kylinos.cn>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, driver-core@lists.linux.dev, 
+ Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793032870; l=6351;
+ i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
+ bh=6e0UJyCzBHvcs8/1Mg3KbNqFll8FkJW8X5qsZig8y6E=;
+ b=FX8sQqJrJdCqFTSIzfdDwBF6kM5toCLSNdMQMskpp+WEv5Pq//bLLAdHGrbzCeF8osd8hxza4
+ d1c2l7F2hs5BQByQMv8xecddU2U41lQ2TCrGykG8SPT1MN+a9FtFZ7L
+X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
+ pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
+X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
+ auth_id=950
+X-Original-From: Ke Sun <sunke@kylinos.cn>
+Reply-To: sunke@kylinos.cn
 
-On Mon, Oct 26, 2026 at 11:09:59AM -0400, Michael S. Tsirkin wrote:
-> The virtio_balloon driver reports a scatter-gather list of free pages
-> to the VMM so it may discard unused pages.
-> 
-> For an arm64 kernel with 64 KiB pages, the default reporting and
-> allocation orders allow entries ranging from 2 MiB to 512 MiB. If the
-> report contains a sufficient number of large entries, we will end up
-> with a descriptor chain that represents over 4 GiB of memory. This
-> violates virtio spec, which says:
-> 	Drivers MUST NOT add a descriptor chain longer than $2^{32}$ bytes in total;
-> 
-> Specifically, submitting $2^{32}$ or more breaks Rust-VMM.
-> 
-> Submit each reported page as a separate virtqueue buffer instead of one
-> buffer with an sg list of all pages.  This also avoids indirect
-> descriptor allocation (kmalloc in the reporting path).
-> 
-> To avoid multiple buffers causing interrupt storms, keep callbacks
-> disabled while we wait for an event.
-> 
-> Note: if the virtqueue is broken, wait_event on
-> virtqueue_get_buf hangs.  This is a pre-existing issue:
-> the old single-buffer code had the same hang.
-> 
-> Reported-by: Ruben Hakobyan <hruben@meta.com>
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+From: Alvin Sun <alvin.sun@linux.dev>
 
-brown paperbag post,forgot to commit.
+Userspace needs multiple independent GPU address spaces per file,
+addressed by ID through the VM ioctls as in panthor. Store them in an
+IdPool (capped at 32 for panthor parity) plus an XArray. On failure
+the caller receives the VM for teardown through the returned error,
+whether the un-stored clone or the original on an ID conflict, so an
+aborted creation never leaks a VM. The pool kills every VM still
+stored when the file closes.
 
-> ---
-> 
-> Lightly tested. Ruben, could you pls help test?
-> 
->  drivers/virtio/virtio_balloon.c | 48 ++++++++++++++++++++++++---------
->  1 file changed, 35 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-> index f6c2dff33f8a..363519fa890d 100644
-> --- a/drivers/virtio/virtio_balloon.c
-> +++ b/drivers/virtio/virtio_balloon.c
-> @@ -202,25 +202,47 @@ static int virtballoon_free_page_report(struct page_reporting_dev_info *pr_dev_i
->  	struct virtio_balloon *vb =
->  		container_of(pr_dev_info, struct virtio_balloon, pr_dev_info);
->  	struct virtqueue *vq = vb->reporting_vq;
-> -	unsigned int unused, err;
-> +	unsigned int i, err = 0;
->  
->  	/* We should always be able to add these buffers to an empty queue. */
-> -	err = virtqueue_add_inbuf(vq, sg, nents, vb, GFP_NOWAIT);
-> +	for (i = 0; i < nents; i++) {
-> +		struct scatterlist one;
->  
-> -	/*
-> -	 * In the extremely unlikely case that something has occurred and we
-> -	 * are able to trigger an error we will simply display a warning
-> -	 * and exit without actually processing the pages.
-> -	 */
-> -	if (WARN_ON_ONCE(err))
-> -		return err;
-> +		sg_init_table(&one, 1);
-> +		sg_set_page(&one, sg_page(&sg[i]), sg[i].length,
-> +			    sg[i].offset);
-> +		err = virtqueue_add_inbuf(vq, &one, 1, &sg[i], GFP_NOWAIT);
->  
-> -	virtqueue_kick(vq);
-> +		/*
-> +		 * In the extremely unlikely case that something has occurred
-> +		 * and we are able to trigger an error we will simply display
-> +		 * a warning and exit without actually processing the pages.
-> +		 */
-> +		if (WARN_ON_ONCE(err)) {
-> +			nents = i;
-> +			break;
-> +		}
-> +	}
->  
-> -	/* When host has read buffer, this completes via balloon_ack */
-> -	wait_event(vb->acked, virtqueue_get_buf(vq, &unused));
-> +	if (nents) {
-> +		virtqueue_kick(vq);
->  
-> -	return 0;
-> +		/* When host has read buffer, this completes via balloon_ack.
-> +		 * We report pages as individual buffers, so arm the callback
-> +		 * to only interrupt once all the queued buffers have been
-> +		 * used: otherwise we would get one interrupt per page.
-> +		 */
-> +		for (i = 0; i < nents; i++) {
-> +			unsigned int unused;
-> +
-> +			virtqueue_enable_cb_delayed_max(vq);
-> +			wait_event(vb->acked,
-> +				   virtqueue_get_buf(vq, &unused));
-> +			virtqueue_disable_cb(vq);
-> +		}
-> +	}
-> +
-> +	return err;
->  }
->  
->  static void set_page_pfns(struct virtio_balloon *vb,
-> -- 
-> MST
-> 
+Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+---
+ drivers/gpu/drm/tyr/vm.rs | 140 +++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 139 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
+index c5e307b1e2416..69b092a130883 100644
+--- a/drivers/gpu/drm/tyr/vm.rs
++++ b/drivers/gpu/drm/tyr/vm.rs
+@@ -33,6 +33,7 @@
+         }, //
+     },
+     fmt,
++    id_pool::IdPool,
+     impl_flags,
+     io::PhysAddr,
+     iommu::pgtable::{
+@@ -41,6 +42,7 @@
+         ARM64LPAES1, //
+     },
+     new_mutex,
++    num::casts::FromSafeCast,
+     prelude::*,
+     sizes::{
+         SZ_1G,
+@@ -53,7 +55,11 @@
+         ArcBorrow,
+         Mutex, //
+     },
+-    uapi, //
++    uapi,
++    xarray::{
++        AllocKind,
++        XArray, //
++    }, //
+ };
+ 
+ use crate::{
+@@ -948,3 +954,135 @@ fn pt_unmap(dev: &Device, pt: &IoPageTable<'_, ARM64LPAES1>, range: Range<u64>)
+ 
+     Ok(())
+ }
++
++/// Maximum number of VMs a single file may hold, matching panthor's
++/// `PANTHOR_MAX_VMS_PER_FILE`.
++const MAX_VMS_PER_FILE: usize = 32;
++
++/// Per-open-file pool of VMs.
++#[pin_data(PinnedDrop)]
++pub(crate) struct VmPool<'drm> {
++    /// Parent device, for error reporting.
++    dev: &'drm Device<Bound>,
++    #[pin]
++    ids: Mutex<IdPool>,
++    #[pin]
++    vms: XArray<Arc<Vm<'drm>>>,
++}
++
++/// Error returned when a VM cannot be added to the pool. The caller
++/// owns the teardown of the VM in [`AddError::vm`].
++pub(crate) struct AddError<'drm> {
++    #[expect(dead_code)]
++    pub(crate) error: Error,
++    #[expect(dead_code)]
++    pub(crate) vm: Arc<Vm<'drm>>,
++}
++
++impl<'drm> VmPool<'drm> {
++    /// Creates a new [`VmPool`].
++    #[expect(dead_code)]
++    pub(crate) fn new(dev: &'drm Device<Bound>) -> impl PinInit<Self> {
++        let ids = IdPool::new();
++        pin_init!(Self {
++            dev,
++            ids <- new_mutex!(ids),
++            vms <- XArray::new(AllocKind::Alloc),
++        })
++    }
++
++    /// Stores the VM and returns the allocated ID.
++    ///
++    /// On failure - ID space exhausted or a store failure - the VM is
++    /// returned in an [`AddError`] so the caller owns the teardown.
++    // TODO: allocate IDs with the XArray directly (once it grows range
++    // allocation, the equivalent of C's `XA_LIMIT`) and drop the IdPool.
++    #[expect(dead_code)]
++    pub(crate) fn add(&self, vm: Arc<Vm<'drm>>) -> Result<u32, AddError<'drm>> {
++        let id = (|| {
++            let mut ids = self.ids.lock();
++            let unused = ids.find_unused_id(1).ok_or(ENOSPC)?;
++            if unused.as_usize() > MAX_VMS_PER_FILE {
++                return Err(ENOSPC);
++            }
++            Ok(unused.acquire())
++        })();
++        let id = match id {
++            Ok(id) => id,
++            Err(error) => return Err(AddError { error, vm }),
++        };
++
++        let mut vms = self.vms.lock();
++        match vms.store(id, vm.clone(), GFP_KERNEL) {
++            Ok(prev_vm) => {
++                if let Some(prev_vm) = prev_vm {
++                    // An existing VM at the freshly allocated slot means the
++                    // IdPool and the XArray are out of sync: the stored VM is
++                    // a pool entry, so the pool kills it and the caller's VM
++                    // is returned for teardown.
++                    drop(vms.remove(id));
++                    drop(vms);
++                    prev_vm.kill();
++                    self.ids.lock().release_id(id);
++                    dev_err!(
++                        self.dev,
++                        "IdPool/XArray out of sync at VM pool id {id} (stored VM conflict)"
++                    );
++                    return Err(AddError { error: EBUSY, vm });
++                }
++                Ok(id as u32)
++            }
++            Err(err) => {
++                // Drop the XArray spinlock before acquiring the `ids` mutex.
++                drop(vms);
++                // Release the pooled id; the VM never entered the pool, so it
++                // is returned to the caller for teardown.
++                self.ids.lock().release_id(id);
++                Err(AddError {
++                    error: err.error,
++                    vm: err.value,
++                })
++            }
++        }
++    }
++
++    /// Removes and kills the VM with the given ID.
++    #[expect(dead_code)]
++    pub(crate) fn remove(&self, id: u32) -> Result<()> {
++        let mut vms = self.vms.lock();
++        let vm = match vms.remove(usize::from_safe_cast(id)) {
++            Some(vm) => vm,
++            None => return Err(EINVAL),
++        };
++        // Drop the XArray spinlock before killing, since `kill()` may sleep.
++        drop(vms);
++        // Kill the VM before handing the id back to the pool, so a VM is
++        // never reusable while still alive.
++        vm.kill();
++        self.ids.lock().release_id(usize::from_safe_cast(id));
++        Ok(())
++    }
++
++    /// Gets a shared reference to the VM with the given ID.
++    #[expect(dead_code)]
++    pub(crate) fn get(&self, id: u32) -> Option<Arc<Vm<'drm>>> {
++        let vms = self.vms.lock();
++        let borrow = vms.get(usize::from_safe_cast(id))?;
++        Some(Arc::from(borrow))
++    }
++}
++
++#[pinned_drop]
++impl PinnedDrop for VmPool<'_> {
++    fn drop(self: Pin<&mut Self>) {
++        // Kill every VM left in the pool. The ID range is bounded by
++        // `MAX_VMS_PER_FILE`, so this loop is cheap and runs at file close.
++        for id in 1..=MAX_VMS_PER_FILE {
++            // Release the XArray lock guard before killing: `kill()` may sleep.
++            let vm = self.vms.lock().remove(id);
++            if let Some(vm) = vm {
++                vm.kill();
++            }
++        }
++    }
++}
+
+-- 
+2.43.0
+
 
