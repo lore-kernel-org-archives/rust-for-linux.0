@@ -1,48 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793014823;
-	b=z/FPZFQVLl7BwZNb/laWanGkTbc0wlEHrUpdTbt4+PNEWb3dvHVZsYNEayatMVMDJVHj
-	 fcqb/DhLQlMkUvXgBDupSTdOhBH8hWfVSoUIhkeuzQZz6BEOAzR6BgmmxtO+2UEz0Tux9
-	 RyCOVS7s17UuAz+GMQWM2tUQmDZL3WGZ1x3sM0x4BHUuQ+mZ5QYhKYQRIt+ERC6XfVOHI
-	 5stWOB7pcsFZW92H8jUv3wZj9zlbuNuwGsgcxH9SywgchPNsHK44WehbxcfyzOYVOcTvl
-	 4tZw1QCgYdWW7QFG3rRoZY67lATHuQMNqLXZiW/ik4EOxwk7s8wnOBSmH9+3DoubaRw==
+	t=1793016341;
+	b=DVFu7MPYYgsqZDSgqe+EdIeYGNpry9E/JYRINV8Ur1QJj9pWIF906PCMbTphwUmx4Mgk
+	 kKXidg06fDY/xpGXrGIxD8m7MC2LfNAR+aYx9WmZQ2EzB5f8YX2y6IqUIOZj00d7LbKAz
+	 wYo9kBzDwJXp8lEDYqxq0gezTKPN6HuBC9Lnhfc4Uc9K+aezgbUrYqvC76ykAOaoHgCt9
+	 kHjChgsmlknapaR1I4fKDwDaCDgtaDO9fuENeYQX4bQ8H6TzixCLGDuZCO/+3D495NMuq
+	 8BI4BAP0QCCbeMq7QtFjMNYvqwv+SZ16KkEEHKb1QOQtkl9T6deCmGoIiEP1J2KA/fg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793014823;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=0yefSR5LAq+yRlKgrM9IRhvf+GXzpYxLxjuPWbHRJwg=;
-	b=VEbrVTd+R/VMiHoLK7oAeKZ6W29PVAkc0w4qlUmbE0vif6weqAF91Lu7lS5P7J9O8U7c
-	 YlQ4YlbDygK986Mxpv87XvI3uwiZXWSFxSBBBiiFzxmRcG6qSt3Y/IW90zq+iSU4jwB8f
-	 WVRuCFTMrLeyBlNe2IiHAx0C2L6QW4cATLOL3y479MkVJdFzYzFZCyetpWsMuWxCUqMdC
-	 9Kh7vUeosC5eGhDZgkNisny5pEWeZv7XrnAXHGDNfnqlVloojtMGWkT0q+1+hFPk0nJ3R
-	 HnC8RCc8r5HfeXLxvwCSOSJm6+Idq0ez+evcJe3/Xg42xBUmkjEQRRlOKoUPdvQQM1Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793016341;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=G8xQcDH2otxxYZLzgFmvvHPotcztln45z2AqQl3MVAo=;
+	b=dFXhDHd2cB/H0roL4N097K+0wXpHL3rTvKzwY3vr0Ol2443N9E9vmLIVQYVpaSyBR6wI
+	 +vSSaoLYb+D8UFv9msY3JOzY2HY0f9DhgZ49Jhqgi6QuHypX3Q+CcJVKcWzcrz5vOD9it
+	 tH+GyUiFTQeTeJQ+UC3rhiED7rqJMalQRTndNAJ9hJ4lZLlZABPK9eHzazbSgQZZGBE/M
+	 +2udr2Oyt3Qo+hmlyASPPC2fqHY8r+5EOjDjxjUIBWsFI1zMNDxaYmz8/3JGXYX6BphF/
+	 T2YbIlvEDqOq3GR8h1Cjg71jKPn6ppjjMg8td4YO3y8pAR2jTb/+Kdq3EGGeT14zNAQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XWY2p8JR;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E66606A31E;
-	Mon, 26 Oct 2026 11:40:22 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="Jk1aM/mn";
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A805606A31B;
+	Mon, 26 Oct 2026 12:05:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A805606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XWY2p8JR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB4F1F01825;
-	Mon, 26 Oct 2026 11:40:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793014822;
-	bh=0yefSR5LAq+yRlKgrM9IRhvf+GXzpYxLxjuPWbHRJwg=;
-	h=From:Date:Subject:To:Cc;
-	b=XWY2p8JREhrMm3Veyl+xOwFb8pzbv8J45pDcJUC4wfkSceA2tFWJ9ovSJqXmlRww6
-	 z9D40B3w7RH5F9lngxcA8NDIvJG3oT5e0OeB9McpiXOtpz/lcTErNWWZeZe/iyhp0c
-	 UBhK09FlLaVps2ouwFbVx87zEOoqkeZqE0tvJ4glocH1K+lqZ48HTtSeSHW1ney72O
-	 G1xU9+FCVczMnWGw9KyHb4dT5WYedDlAuI37Knkrim1/LZyBj18mHSazwzBDNrvkKI
-	 SBuoXLd37XQTSUF2SIrJnZjhvPoAGwvINYDI7RYP2MJ0fYzaTUbjWxD2PYuLn2AGsU
-	 3U2kGyblTPSKQ==
-From: Konrad Dybcio <konradybcio@kernel.org>
-Date: Mon, 26 Oct 2026 12:40:02 +0100
-Subject: [PATCH RFC] drm/msm: move VM_BIND op validation to Rust
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Jk1aM/mn
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 80EA625DF;
+	Mon, 26 Oct 2026 05:05:35 -0700 (PDT)
+Received: from e143943.arm.com (unknown [10.57.58.20])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 887763F7B4;
+	Mon, 26 Oct 2026 05:05:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1793016338; bh=i2qQHLE0grhenajYcjIhJMoYmoqCSUyZD0j5cnUvM9o=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Jk1aM/mnt1Pe23JjbNq2gRO2dsDvKlhOfJEhN/fqWNUXEnQSNzF41N9jQGv+XFq7Z
+	 cNcF/qFkqddifchTwP+VOAdy1qmNhRrPnktoRE4N5Fy1ucpx6QgwmmgtqeeqEG4t3e
+	 BPUXAjsMD7c9gDFJ7jtLFb3JVFwykzDcsxJk6Guc=
+From: Beata Michalska <beata.michalska@arm.com>
+To: ojeda@kernel.org,
+	dakr@kernel.org,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	aliceryhl@google.com
+Cc: boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	daniel.almeida@collabora.com,
+	boris.brezillon@collabora.com,
+	work@onurozkan.dev,
+	samitolvanen@google.com,
+	acourbot@nvidia.com,
+	rust-for-linux@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Subject: Request::put_noidleFrom 43bd77ceaa3d6a9f61ae8074be13824a94fa76c1 Mon Sep 17 00:00:00 2001
+Date: Mon, 26 Oct 2026 13:05:05 +0100
+Message-ID: <20261026120523.526942-1-beata.michalska@arm.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -52,424 +75,115 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261026-topic-vm_bind_rs-v1-1-6581465f2428@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ5AMBCF4avIrDVRVHAVEdEajERJB5GIuysWb
- /Et3n8BoyNkKIMLHB7EtFgPGQZgxtYOKKjzhjiKM+kntmUlI4650WS7xrFQSkmdRzJNigz8bXX
- Y0/klq/o373pCs70duO8HXTFKhHQAAAA=
-X-Change-ID: 20261026-topic-vm_bind_rs-5551b8014396
-To: Rob Clark <robin.clark@oss.qualcomm.com>, 
- Dmitry Baryshkov <lumag@kernel.org>, 
- Abhinav Kumar <abhinav.kumar@linux.dev>, 
- Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
- rust-for-linux@vger.kernel.org, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793014814; l=11657;
- i=konrad.dybcio@oss.qualcomm.com; s=20230215; h=from:subject:message-id;
- bh=D/O2iXmm9rxUdCpJtmhtCsReFTSUEdBCS3Uim6S7Idc=;
- b=WJhzXB9MO+758KRkCbzgMTjiG8fGYOv7mmD20cf9yvLXggsb13kMH6GoAHhsdZvvq51btR9lG
- k5VMZo1/zR4ATttUOyktiBhL/NUevh8Ee6D9xkKVMqrbB09UNbnAn1o
-X-Developer-Key: i=konrad.dybcio@oss.qualcomm.com; a=ed25519;
- pk=iclgkYvtl2w05SSXO5EjjSYlhFKsJ+5OSZBjOkQuEms=
+Content-Transfer-Encoding: 8bit
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Hi All,
 
-Much of the VM handling code is a headache to read and maintain.
-There's a soup of mixed-signedness/size types which need to be compared
-and added and getting that wrong in C is very easy.
+This series adds initial Rust support for Linux runtime PM.
 
-The "(range + obj_offset) > obj->size" check could wrap for a large
-obj_offset, which let an out-of-range map be accepted and then mapped
-as nothing. Oxidize it and use checked_add() to fix that.
+The concept for Rust abstraction gets introduced in the first patch.
+It provides callback registration, PM callback dispatch through PMOps trait,
+scoped request helpers for common runtime PM operations and configuration
+helpers.
 
-This commit is a "get the foot in the door" type change to make sure
-that folks building kernels for Qualcomm SoCs have their Rust setup
-ready. It may/should be extended to the wider mm code once the
-appropriate abstractions are finalized.
+The abstraction intends to keep the request semantics aligned with
+the C runtime PM core.
 
-Worth noting, the C UERR() macro expands to dev_dbg() and the Rust
-implementation for that currently doesn't support dynamic_debug.
+Second patch integrates dev_pm_ops into the Rust platform driver abstraction,
+enabling drivers to register PM callbacks with the core.
 
-The DRM_BRIDGE dependency is dropped because including RUST exposed
-some spaghetti dependencies ending at DEBUGFS and it's enabled anyway.
+The last in the series is provided for demonstrative purposes
+(not intended to be an actual merge material).
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
----
-(if this is rejected we may just patch the C code).
+This has been lightly tested with the Tyr driver.
 
-Notably, this will regress some ancient configurations:
--- arch/arm/Kconfig
-    select HAVE_RUST if CPU_LITTLE_ENDIAN && CPU_32v7 && !KASAN
-
-Smoke-tested on Glymur
----
- drivers/gpu/drm/msm/Kconfig        |   2 +-
- drivers/gpu/drm/msm/Makefile       |   1 +
- drivers/gpu/drm/msm/msm_gem_vma.c  |  66 +++------------
- drivers/gpu/drm/msm/msm_vm_bind.h  |  16 ++++
- drivers/gpu/drm/msm/msm_vm_bind.rs | 160 +++++++++++++++++++++++++++++++++++++
- rust/uapi/uapi_helper.h            |   1 +
- 6 files changed, 188 insertions(+), 58 deletions(-)
-
-diff --git a/drivers/gpu/drm/msm/Kconfig b/drivers/gpu/drm/msm/Kconfig
-index ed1c4775d1e9..f5c4749f8e95 100644
---- a/drivers/gpu/drm/msm/Kconfig
-+++ b/drivers/gpu/drm/msm/Kconfig
-@@ -3,6 +3,7 @@
- config DRM_MSM
- 	tristate "MSM DRM"
- 	depends on DRM
-+	depends on RUST
- 	depends on ARCH_QCOM || SOC_IMX5 || COMPILE_TEST
- 	depends on COMMON_CLK
- 	depends on IOMMU_SUPPORT
-@@ -63,7 +64,6 @@ config DRM_MSM_VALIDATE_XML
- config DRM_MSM_KMS
- 	def_bool n
- 	depends on DRM_MSM
--	select DRM_BRIDGE
- 	select DRM_BRIDGE_CONNECTOR
- 	select DRM_CLIENT_SELECTION
- 	select DRM_DISPLAY_HELPER
-diff --git a/drivers/gpu/drm/msm/Makefile b/drivers/gpu/drm/msm/Makefile
-index 1e246616f83f..826759a820a0 100644
---- a/drivers/gpu/drm/msm/Makefile
-+++ b/drivers/gpu/drm/msm/Makefile
-@@ -129,6 +129,7 @@ msm-y += \
- 	msm_ringbuffer.o \
- 	msm_submitqueue.o \
- 	msm_syncobj.o \
-+	msm_vm_bind.o \
- 	msm_gpu_tracepoints.o \
- 
- msm-$(CONFIG_DRM_MSM_KMS) += \
-diff --git a/drivers/gpu/drm/msm/msm_gem_vma.c b/drivers/gpu/drm/msm/msm_gem_vma.c
-index f687a629629d..3c453b034e8f 100644
---- a/drivers/gpu/drm/msm/msm_gem_vma.c
-+++ b/drivers/gpu/drm/msm/msm_gem_vma.c
-@@ -14,6 +14,7 @@
- #include "msm_gpu.h"
- #include "msm_mmu.h"
- #include "msm_syncobj.h"
-+#include "msm_vm_bind.h"
- 
- #define vm_dbg(fmt, ...) pr_debug("%s:%d: "fmt"\n", __func__, __LINE__, ##__VA_ARGS__)
- 
-@@ -981,23 +982,12 @@ vm_bind_job_create(struct drm_device *dev, struct drm_file *file, struct drm_gpu
- 	return job;
- }
- 
--static bool invalid_alignment(uint64_t addr)
--{
--	/*
--	 * Technically this is about GPU alignment, not CPU alignment.  But
--	 * I've not seen any qcom SoC where the SMMU does not support the
--	 * CPU's smallest page size.
--	 */
--	return !PAGE_ALIGNED(addr);
--}
--
- static int
- lookup_op(struct msm_vm_bind_job *job, const struct drm_msm_vm_bind_op *op)
- {
- 	struct drm_device *dev = job->vm->drm;
- 	struct msm_drm_private *priv = dev->dev_private;
- 	int i = job->nr_ops++;
--	int ret = 0;
- 
- 	job->ops[i].op = op->op;
- 	job->ops[i].handle = op->handle;
-@@ -1006,48 +996,11 @@ lookup_op(struct msm_vm_bind_job *job, const struct drm_msm_vm_bind_op *op)
- 	job->ops[i].range = op->range;
- 	job->ops[i].flags = op->flags;
- 
--	if (op->flags & ~MSM_VM_BIND_OP_FLAGS)
--		ret = UERR(EINVAL, dev, "invalid flags: %x\n", op->flags);
--
--	if (invalid_alignment(op->iova))
--		ret = UERR(EINVAL, dev, "invalid address: %016llx\n", op->iova);
--
--	if (invalid_alignment(op->obj_offset))
--		ret = UERR(EINVAL, dev, "invalid bo_offset: %016llx\n", op->obj_offset);
--
--	if (invalid_alignment(op->range))
--		ret = UERR(EINVAL, dev, "invalid range: %016llx\n", op->range);
--
--	if (!drm_gpuvm_range_valid(job->vm, op->iova, op->range))
--		ret = UERR(EINVAL, dev, "invalid range: %016llx, %016llx\n", op->iova, op->range);
--
--	/*
--	 * MAP must specify a valid handle.  But the handle MBZ for
--	 * UNMAP or MAP_NULL.
--	 */
--	if (op->op == MSM_VM_BIND_OP_MAP) {
--		if (!op->handle)
--			ret = UERR(EINVAL, dev, "invalid handle\n");
--	} else if (op->handle) {
--		ret = UERR(EINVAL, dev, "handle must be zero\n");
--	}
--
--	switch (op->op) {
--	case MSM_VM_BIND_OP_MAP:
--	case MSM_VM_BIND_OP_MAP_NULL:
--	case MSM_VM_BIND_OP_UNMAP:
--		break;
--	default:
--		ret = UERR(EINVAL, dev, "invalid op: %u\n", op->op);
--		break;
--	}
--
--	if ((op->op == MSM_VM_BIND_OP_MAP_NULL) &&
--	    !adreno_smmu_has_prr(priv->gpu)) {
--		ret = UERR(EINVAL, dev, "PRR not supported\n");
--	}
--
--	return ret;
-+	return msm_vm_bind_check_op(dev->dev, op->op, op->handle, op->obj_offset,
-+				    op->iova, op->range, op->flags, PAGE_SIZE,
-+				    drm_gpuvm_range_valid(job->vm, op->iova, op->range),
-+				    op->op == MSM_VM_BIND_OP_MAP_NULL &&
-+				    adreno_smmu_has_prr(priv->gpu));
- }
- 
- /*
-@@ -1118,11 +1071,10 @@ vm_bind_job_lookup_ops(struct msm_vm_bind_job *job, struct drm_msm_vm_bind *args
- 		op->obj = obj;
- 		cnt++;
- 
--		if ((op->range + op->obj_offset) > obj->size) {
--			ret = UERR(EINVAL, dev, "invalid range: %016llx + %016llx > %016zx\n",
--				   op->range, op->obj_offset, obj->size);
-+		ret = msm_vm_bind_check_bo_range(dev->dev, op->obj_offset, op->range,
-+						 obj->size);
-+		if (ret)
- 			goto out_unlock;
--		}
- 	}
- 
- 	*nr_bos = cnt;
-diff --git a/drivers/gpu/drm/msm/msm_vm_bind.h b/drivers/gpu/drm/msm/msm_vm_bind.h
-new file mode 100644
-index 000000000000..e8aa6adb9181
---- /dev/null
-+++ b/drivers/gpu/drm/msm/msm_vm_bind.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+#ifndef __MSM_VM_BIND_H__
-+#define __MSM_VM_BIND_H__
-+
-+#include <linux/types.h>
-+
-+struct device;
-+
-+int msm_vm_bind_check_op(struct device *dev, u32 op, u32 handle,
-+			 u64 obj_offset, u64 iova, u64 range, u32 flags,
-+			 u64 page_size, bool range_valid, bool prr_supported);
-+int msm_vm_bind_check_bo_range(struct device *dev, u64 obj_offset, u64 range,
-+			       u64 obj_size);
-+
-+#endif /* __MSM_VM_BIND_H__ */
-diff --git a/drivers/gpu/drm/msm/msm_vm_bind.rs b/drivers/gpu/drm/msm/msm_vm_bind.rs
-new file mode 100644
-index 000000000000..164208e0a1b4
---- /dev/null
-+++ b/drivers/gpu/drm/msm/msm_vm_bind.rs
-@@ -0,0 +1,160 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+//! VM_BIND operation validation for the MSM driver.
-+
-+use kernel::{
-+    bindings,
-+    device::Device,
-+    error::code::EINVAL,
-+    prelude::*,
-+    uapi, //
-+};
-+
-+/// Validates a single VM_BIND operation.
-+///
-+/// Returns 0 if the operation is valid. Otherwise logs the reason and returns
-+/// `-EINVAL`.
-+///
-+/// `page_size` is the granularity that `iova`, `obj_offset` and `range` must be
-+/// aligned to. It is the GPU's alignment rather than the CPU's, but no known qcom
-+/// SMMU lacks support for the CPU's smallest page size.
-+/// `range_valid` is the result of `drm_gpuvm_range_valid()` for this operation.
-+/// `prr_supported` is only consulted for `MSM_VM_BIND_OP_MAP_NULL`.
-+///
-+/// # Safety
-+///
-+/// `dev` must point to a live `struct device`.
-+#[no_mangle]
-+pub unsafe extern "C" fn msm_vm_bind_check_op(
-+    dev: *mut bindings::device,
-+    op: u32,
-+    handle: u32,
-+    obj_offset: u64,
-+    iova: u64,
-+    range: u64,
-+    flags: u32,
-+    page_size: u64,
-+    range_valid: bool,
-+    prr_supported: bool,
-+) -> c_int {
-+    // SAFETY: The caller guarantees that `dev` is a live `struct device`.
-+    let dev: &Device = unsafe { Device::from_raw(dev) };
-+
-+    match check_op(
-+        dev,
-+        op,
-+        handle,
-+        obj_offset,
-+        iova,
-+        range,
-+        flags,
-+        page_size,
-+        range_valid,
-+        prr_supported,
-+    ) {
-+        Ok(()) => 0,
-+        Err(e) => e.to_errno(),
-+    }
-+}
-+
-+fn check_op(
-+    dev: &Device,
-+    op: u32,
-+    handle: u32,
-+    obj_offset: u64,
-+    iova: u64,
-+    range: u64,
-+    flags: u32,
-+    page_size: u64,
-+    range_valid: bool,
-+    prr_supported: bool,
-+) -> Result {
-+    let aligned = |addr: u64| page_size.is_power_of_two() && (addr & (page_size - 1)) == 0;
-+
-+    if flags & !uapi::MSM_VM_BIND_OP_FLAGS != 0 {
-+        dev_dbg!(dev, "invalid flags: {:x}\n", flags);
-+        return Err(EINVAL);
-+    }
-+
-+    if !aligned(iova) {
-+        dev_dbg!(dev, "invalid address: {:016x}\n", iova);
-+        return Err(EINVAL);
-+    }
-+
-+    if !aligned(obj_offset) {
-+        dev_dbg!(dev, "invalid bo_offset: {:016x}\n", obj_offset);
-+        return Err(EINVAL);
-+    }
-+
-+    if !aligned(range) {
-+        dev_dbg!(dev, "invalid range: {:016x}\n", range);
-+        return Err(EINVAL);
-+    }
-+
-+    if !range_valid {
-+        dev_dbg!(dev, "invalid range: {:016x}, {:016x}\n", iova, range);
-+        return Err(EINVAL);
-+    }
-+
-+    // MAP must name a handle; UNMAP and MAP_NULL must not.
-+    match op {
-+        uapi::MSM_VM_BIND_OP_MAP => {
-+            if handle == 0 {
-+                dev_dbg!(dev, "invalid handle\n");
-+                return Err(EINVAL);
-+            }
-+        }
-+        uapi::MSM_VM_BIND_OP_UNMAP | uapi::MSM_VM_BIND_OP_MAP_NULL => {
-+            if handle != 0 {
-+                dev_dbg!(dev, "handle must be zero\n");
-+                return Err(EINVAL);
-+            }
-+        }
-+        _ => {
-+            dev_dbg!(dev, "invalid op: {}\n", op);
-+            return Err(EINVAL);
-+        }
-+    }
-+
-+    if op == uapi::MSM_VM_BIND_OP_MAP_NULL && !prr_supported {
-+        dev_dbg!(dev, "PRR not supported\n");
-+        return Err(EINVAL);
-+    }
-+
-+    Ok(())
-+}
-+
-+/// Checks that `[obj_offset, obj_offset + range)` lies within an object of
-+/// `obj_size` bytes.
-+///
-+/// Returns 0 if it does. Otherwise logs the reason and returns `-EINVAL`.
-+///
-+/// # Safety
-+///
-+/// `dev` must point to a live `struct device`.
-+#[no_mangle]
-+pub unsafe extern "C" fn msm_vm_bind_check_bo_range(
-+    dev: *mut bindings::device,
-+    obj_offset: u64,
-+    range: u64,
-+    obj_size: u64,
-+) -> c_int {
-+    // SAFETY: The caller guarantees that `dev` is a live `struct device`.
-+    let dev: &Device = unsafe { Device::from_raw(dev) };
-+
-+    let fits = obj_offset
-+        .checked_add(range)
-+        .is_some_and(|end| end <= obj_size);
-+
-+    if fits {
-+        return 0;
-+    }
-+
-+    dev_dbg!(
-+        dev,
-+        "invalid range: {:016x} + {:016x} > {:016x}\n",
-+        range,
-+        obj_offset,
-+        obj_size
-+    );
-+    EINVAL.to_errno()
-+}
-diff --git a/rust/uapi/uapi_helper.h b/rust/uapi/uapi_helper.h
-index 489748ef642c..38741220270a 100644
---- a/rust/uapi/uapi_helper.h
-+++ b/rust/uapi/uapi_helper.h
-@@ -7,6 +7,7 @@
-  */
- 
- #include <uapi/drm/drm.h>
-+#include <uapi/drm/msm_drm.h>
- #include <uapi/drm/nova_drm.h>
- #include <uapi/drm/panthor_drm.h>
- #include <uapi/linux/android/binder.h>
+Based on drm-next.
 
 ---
-base-commit: 20a33c6b6cbe7e4805dfb6cd68816937443aa148
-change-id: 20261026-topic-vm_bind_rs-5551b8014396
+v5:
+- Added doc comment for `rust_private`
+- Dropped the `RuntimePMState::Unknown` as that was no longer needed
+- Dropped masking the RPM mode in `ResumeScope::release_inner` as that is not
+  necessary and brings in only confusion
+- Fixed the behaviour of `AwakeScope::new` when the `Request::resume` returns
+  `EINPROGRESS`.
+- Note on `RetainScope`: the pairing of:
+  `Request::get_noresume` ->`Request::put_noidle`
+  is intentional to avoid mixing the expected behaviour of `Scope`s
+- Cleaned up all the CONFIG_PM guards
+- Switched the `PMPayload` to use `ManuallyDrop<>` instead of `Option<>`
+- Apply the `PMConfig` only after successfully marking the devices devices PM
+  state
+- Dropped `#[pin_data]` for `RegistrationData`
+- `Registration::new()` is now usafe to with the safety requirement that the
+  `Registration` cannot be mem::forgotten
+- Overall cleanup for attributes and formatting
+- The `platform::Driver` trait is now sized to enable making the DevPMOps an
+  associated constant.
 
-Best regards,
---  
-Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+v4:
+- Simplified the PMOps/DevPMOps type model by making the bus adapter an
+  associated type of PMOps, so DevPMOps is now parameterized only by the
+  driver PM implementation type.
+- Added DevPMOpsRef to pass typed, adapter-scoped dev_pm_ops references through
+  bus registration code.
+- Made DevPMOps own the generated dev_pm_ops table and require a static
+  DevPMOps instance for Registration::new().
+- Made the runtime PM payload mandatory.
+- Replaced the PMContext enabled flag with an explicit Disabled/Enabled/Dead
+  state machine to prevent re-enabling through stale PMContext clones during
+  teardown.
+- Updated with_get() to reject NOWAIT profiles in addition to ASYNC profiles.
+- Changed AutoSuspendDelay to i32 to match the C runtime PM API.
+- Renamed RuntimePMState variants to Rust-style names.
+- Dropped the local EINPROGRESS error addition: already available
+- Updated the platform PM wiring and Tyr example to the new DevPMOpsRef/static
+  DevPMOps model.
+- Cleaned up comments, docs, and minor typos.
+
+v3:
+- Dropped macros in favour of plain encoding of the PM callbacks
+- Moved Mode to use kernel::impl_flags
+- Generated PM callbacks, the stored payload, and the device cast
+  are all monomorphized for the same (Adapter<T>, T) pair,
+  with the registration sealing the contract by validating installed dev_pm_ops
+- Platform PM wiring should be type-safe now
+- Tracking runtime enable/disable state
+- Few fixes for issues pointed out by Sami Tolvanen (samitolvanen@google.com),
+  like making the registration teardown respecting the CONFIG_PM settings or
+  fixing AwakeScope for async/no wait calls; Sami is also the person behind
+  adding get_if_active variant (much appreciated)
+- Changed base branch
+v2:
+- Moving away from the old PMContext<T, Dormant/Active> type-state design
+- Introducing an explicit Registration<'a, T> object.
+- PMContext now carries a lifetime and is derived from the registration
+- Callback data is no longer recovered through driver data
+- Simplified PMOps
+- Runtime payload handling change
+- Request helpers slightly extended
+
+
+*** BLURB HERE ***
+
+Beata Michalska (3):
+  rust: add runtime PM support
+  rust: platform: wire runtime PM callbacks
+  drm/tyr: enable runtime PM
+
+ drivers/base/base.h             |    4 +
+ drivers/gpu/drm/tyr/driver.rs   |  110 ++-
+ drivers/gpu/drm/tyr/file.rs     |    3 +
+ rust/bindings/bindings_helper.h |    1 +
+ rust/helpers/helpers.c          |    1 +
+ rust/helpers/pm_runtime.c       |   89 +++
+ rust/kernel/lib.rs              |    1 +
+ rust/kernel/platform.rs         |   32 +-
+ rust/kernel/pm.rs               | 1106 +++++++++++++++++++++++++++++++
+ 9 files changed, 1326 insertions(+), 21 deletions(-)
+ create mode 100644 rust/helpers/pm_runtime.c
+ create mode 100644 rust/kernel/pm.rs
+
+-- 
+2.43.0
 
