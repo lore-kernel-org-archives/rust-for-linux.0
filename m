@@ -1,100 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793039202;
-	b=gcv7ZNNeOXZwnE4WDzdi29qapWtXnMyvw+5UfWpChzaVIR1iJWGEyryP8zK1y9/LFR60
-	 DlRFxZLQFH9+KmmAOWuOkEOErgTUVXE/hb3aN/kfTuq2jJgZLhEfEomUDP0eWS55cBX9U
-	 xdTeVGRjpSy9MNiY1QOm/CT2//YK0h1r95kpyMdqawYHBhC90O3gVnDltdchucwtRalBo
-	 respQ0JM+IBeIlVl3cmcfQ+EoAFBw0FUPlWI1b4HiBwAtcgfJceqtvjmgDWfh8+wGath0
-	 KI/z1VoxD+wvBOXpvrw73FinJB1PlnIVCOsyNz/2U5wHui8XTMlMOj2fbVjFwyY6sXw==
+	t=1793039397;
+	b=3KtSxMrgOW1oDVi3Jx6PI2O6vWBCjocolU4VWHImAbk2y+hjulzZDrg9I3UwPSXA2fxx
+	 1b1sxSS1KH/YXx918mLlK0WTt9hwB+UemJXuLLvjstyoxa9djkTH1NUx4SlY6Ws2BgZig
+	 I+NKLu/whA8mDKyS/U/nFAcWnByW94c96lO6F6cG4HrMiKfz66DpeVXxKDc3iz5B6M//H
+	 8qtvJYtKFBpTpfugP5rAKuI0f3TPi5uMzLwDOXbHYrC2gPvMmNbnE5ICSLLSPElpkVcUh
+	 1iKoUcVBEDN5QelY9yTP9vcDAKsYavuI6SFmBOz4X8zH5S2lDEjsgWUA4bOFRNuV36g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793039202;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793039397;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=nY/Dg58kDlhRREyLtFBek1i7zB95DzfSYinza+ky90U=;
-	b=oRUHLgx0MNaNJy6QZHZ1DcAjLXRaGmu4tpYu4LuCDzBK3DFTGPPaXOODPgH4MJmmFbEZ
-	 Xir1YJxmetKNsvQlp3iDryGURKpJueMk8WpypH6RQqVVzit01Ft5lQbv4OpueOdOFdPz7
-	 CnY7jEkSnCBkbmxQO3XjfnA8nd+6eheHPGasgiVhuSBR2kaMsPM3LlNdOxmPTlQhR8HjY
-	 GzsGqilVnh0G6i79Ghkw73ay7rOmdxJ4dSl/ecRITyMlnsTXpj8R72EZfCSEZc9WjfGiu
-	 Erau2AWFVU7rmyZ05hHX2DXoRzZFq/s6mysE3oEsZVVPv6hmpG/yTeJt2b6SGYxPdDw==
+	bh=U5JtE0ulgMYWAoqxAW4isRu9FUjprsEaC64rQ+byKtk=;
+	b=J2XiHh3cM5LMCVZdLBPZamiScPAX0fD7AAnVF0SR6vdXdBjwHr7dhSR+h4JCbELmYuKd
+	 8pjsz5thKt5tGE4YVTSmCeuzPBRuNkjHQoul3WATsL1V7C7bHicHlxaqUJy5a0r6zOjYO
+	 1prjsHfxdZKmGe9dcPEWItmJtVPbNO/sk5iCDGQxuADdMdtRIkj5cjdnD6Cl3QgLluGUQ
+	 7UC730Tg59qDB4yobIx0DvwKPcWZoi6EQK5YiZol5xLhVB8zfZLGqHejlWmh47IC9Ky1C
+	 /h7xBSetvfqGWfNG9gj5ZcwAAALz/nVgUc/iNNECzaiqFClqAZu2KG7iikgyd47bsoA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=uci.edu;
 	spf=pass smtp.mailfrom=uci.edu;
-	dkim=pass header.d=uci.edu header.i=@uci.edu header.a=rsa-sha256 header.s=google header.b=MdaQFEyh;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.177
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	dkim=pass header.d=uci.edu header.i=@uci.edu header.a=rsa-sha256 header.s=google header.b=F5FLdh7p;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03647606A31A
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 Oct 2026 18:26:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03647606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C1C606A320
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 Oct 2026 18:29:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5C1C606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=uci.edu header.i=@uci.edu header.a=rsa-sha256 header.s=google header.b=MdaQFEyh
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-53665358476so35670231cf.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Oct 2026 11:26:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793039201; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=uci.edu header.i=@uci.edu header.a=rsa-sha256 header.s=google header.b=F5FLdh7p
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6ae14eecc64so4437466a12.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Oct 2026 11:29:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793039395; cv=none;
         d=google.com; s=arc-20260327;
-        b=Aupj8kDZhWky/6t9PZLoVpcLW99Ux114g7R0EcPJueYOVGZqm7pZjvRMdlqtQ1Hso7
-         HzamIChlF2wPk89yzNCVBKLA9M+C/eTI4Xp7ihInWTM7DIyuynRkY/g5OOXYogkFCm7S
-         8I34iyWcMY+B0Zc5f/ONUFoGphC/70a9bwcjbinQaqmEcy0kTbZRG4jsMjz8bRc9QqxK
-         wCzMoPKetVMByt8K2SX+VGrA2lTsk0SQgDTSvRpSRqYzcTWFwPtRxr2TzM9FblTa3aGF
-         M6wEapb3d1nPyPOggeu6hEmDjMBZ6b14H9nUUvef1GbicfRdO6zig9uwRG+tcuag0a2s
-         TE+Q==
+        b=amyjX5lSID6Lsj+iDEwFVmFi+zYZmIMgUNh/EMYCMgSe5jhd95a4t/L3tUzd8Y51kM
+         krWyZQOlbMavJZ+gUf/g2LL8X/IxyCj7G2lnjWmbGjFOqyh4SLqyu/hkDyBj2+vbhYPI
+         /EuuWe5+KK/7DA10vNmd0rviS3Q75cb1hyFf8/SxJRfu9gI61LGdfxEte7EgyVNnT4G0
+         7Tc1fDCqcnSeXp5/ODPPHAf/gg8ctH6xaeTzyO3/MuiqEK38cvA+FHNc+Cr2RI06M2+s
+         EmFfAU8t+oVo9DDtutl15N34PYGSyrUX92mJKGoTmi6uXl0lYPo1gxAz/lTawPKVk+Pj
+         p9Ew==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=nY/Dg58kDlhRREyLtFBek1i7zB95DzfSYinza+ky90U=;
-        fh=1oQWabvvYVXLU2bmohlbHO9gkgXZxPmzT1ofvCeRylM=;
-        b=axcP4zjMWoZvIWCO2vLtS1K2WPuThqZWjVLMBkvv5z9GxszKcQfBEIHYlUE5PjDT6L
-         G4e4nl8C6iEM7qypadqGEej5kQGzbyQktWVsni7ouVNc3uxPwmCwk6Yyekkh+PFCoePj
-         gqmoDk7nZ/1MId8UQUHI63cXe45vEW0YvpiaHTJy9c+9/cBAcuXNNPiGV0UpnYpN0h4D
-         GiY1JCdH4IRi2nHX+m/XkH4PcsnJwakvuLucR/HcA9OGyLJAckE1SD2V97P4k65W/FUA
-         5XclI7TH+jaNv0BvIJr/wWYQCbSjhYvHEh62tQ8LrvXy4qu4oW/QkgiJt2sXOXmlGfxM
-         OhFQ==;
+        bh=U5JtE0ulgMYWAoqxAW4isRu9FUjprsEaC64rQ+byKtk=;
+        fh=ybpbi8ctzcqcwG6fd3b5FAyeQyxB/Aj2WDgmlSjZFG8=;
+        b=sMwhSQXZyHaEvoblVArNxU/JZiFeBnytwcCJwJbIMjvTyruqMqfX2TNqEIzMTwmDp8
+         QFl7A4OiNy5Ol/gjMFpmr2lLhsgo+mQcrUpP03JLVdHCSbQWq2vfTIRF93IjhGWh/w+T
+         7iSKhyeVbjHDokWRDF7pZRJUOLgPOXLAeqL8bUVLuFKQJEAsoU7Khs6HjZWHa5wkAsUI
+         gpIGZcA8uh7tfAlDxy3Uajjgl0ptQ4nlT6tZpgyPdo82T0gs8WiefV1BQDASLgWUS9SZ
+         /VjqRUpL0x3dIvhrJBtMtRbFy3z0G/FgzcyjhSnZEqfBJdmJZ8Hm2jbN7NTQarfs9HbS
+         +iUQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=uci.edu; s=google; t=1793039201; x=1793644001; darn=vger.kernel.org;
+        d=uci.edu; s=google; t=1793039395; x=1793644195; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=nY/Dg58kDlhRREyLtFBek1i7zB95DzfSYinza+ky90U=;
-        b=MdaQFEyhrHiKlVA5e9cpLrvo1eX3Zu1r3VMlYWlcabdn6ZMaZ2xc/+PQHLz7nLBjDG
-         YbVKvD+9Jq+50riuQRBZV48a4ja7NKsD0gki9lRVYvANDpnUFDZACmK/dPgP7ZbcmoOl
-         7J9+MZCdG9cd5wm0PckeB2Br7J47WouDNfmHygALN744r9w3g/4B6aJ9iWwE+iP9BThN
-         Hxo6pNej6p+f8OXxdhh2/X3UbuHpuGe0dQQG+FKj/pGzHCFIiaIEtT7+KssJk3y/nCY8
-         rJZV8xrDhOqMAa32tx7RnHjdul4GSwsCIwmNXQ5BZj/sGeKyfoouSrMcmwNYD3FZX74P
-         rPKg==
+        bh=U5JtE0ulgMYWAoqxAW4isRu9FUjprsEaC64rQ+byKtk=;
+        b=F5FLdh7p34fCWskzFCe/IjF8in08GE5Azyx5nXtDUbUuVLeSLTkib27cS+47BmE/wF
+         A5m0VE9Sysy7TPEDxTyktbnnoHth4J1avxX3bPWBWlWnALOnL3bkkLLjsc5MW7cZRn80
+         TobWosF4jp+FPkC0WRM/zzMSU6LavEbFrcz/8P+4QOX8wxnz10X6hoACTVGHDHkvNMfG
+         mUGqfjP4mFT1pmF6f819Echr9ASzytH3ykNH+v/1KvOzUAupeXCGYvHyioRVgHsQQN5H
+         y+czqSHUYpJO+piYQY9qM1essBvKnBBqj+p/Wuf+H1upszl6l1YOmAwuRWnkbCrK9Iba
+         iDlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793039201; x=1793644001;
+        d=1e100.net; s=20260707; t=1793039395; x=1793644195;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nY/Dg58kDlhRREyLtFBek1i7zB95DzfSYinza+ky90U=;
-        b=BA95ktdWJhJSXW8JGQ8+d2CJRnH/waw63zSjLX6zBIN0h+5O2C98ltCVHFpQDwPjMh
-         JlGbm/PZmVwEw4S0amro+ob1ZwJKlojlHYY325JMvsA/p/i5KtAVxQd7LPVMu0ufptde
-         aLYFQaCQcWLQqNoVGFqAocmV2Vb+Frx0iKX/LhjNRQfpw5HnuZJQVh2kFM7ozfAIIO90
-         6cucWDZR2x1M0L9n99lKyHYzp06q+YG8nNPqnFZA6mT/oyGw6yaW5PNArTDbVypYJJwf
-         i17r94Pg+/VSv/QffGjNIKoOAg8YcFHmYJ+sFc8vMcs7Qpmu/1QulaEuwRGna+E25NqE
-         zN+Q==
-X-Forwarded-Encrypted: i=1; AKwUvByawIL+Zt69tAm0G+U6cDSY2WiHB3MGaBFjuIp0VH/DmjiHtQbb7xDAerSbrRr44goDmdsrVK9BytYLfFQHrw==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJGn57ShoCA5WMV80VkxAQGJZ14nTbUpATCAMeguSyaN7ywI0xT
-	3IPrMwUnguOLIpJkMWRvFdXoUr5dyOal7UQIddkUyjfsMAo/Sf695X74+85SN9oalHpLr82bP1Y
-	vWxX+WytpCgfYnk0hQ0MtrTT2FnvyCJuAICfTzuV8Zg==
-X-Gm-Gg: AYBFou1OTDo+DNYmafdX3uZZtlut7nJou8GZAyNJSxd8JRe60xj75l4aw6dOdrGO6o5
-	24SPuDQXLxE9f18jNfF2rW7Cd7ZFSQyeSD3uv2WyQwJU1R8aVScjJdODiwDIC0Z6YOi6YAlaBxK
-	R6MS0oML+0py/+oObSaU+HJ4ArT7aISoAYFRn/ZZwasU10HLItpgWQ9jujFI5Qtsfqz+oWDCtme
-	ul/ZwClQDvOA11ibRkXx8TJgEvjC29RLMzLW6j4XA629KcR/UTZWxkuN33ECWZ7xcRSAf9Az0FB
-	ipIYSIOzDZZpGZJBlDaVmcrZGQ49B3cJLyxeuc2QFxtc3L1CtHCv+XIFjw2F6gNVYXZ1fNcQ0q1
-	lQ2+EDDCq870BT0dCjrqVDybcdDv7ToN7H4NwiYDw8x7+/qca9TxVIDzwY7/i0qUB33zh
-X-Received: by 2002:a05:622a:5d3:b0:536:2fd8:a4d8 with SMTP id
- d75a77b69052e-5383b4afebbmr117637481cf.15.1793039200775; Mon, 26 Oct 2026
- 11:26:40 -0700 (PDT)
+        bh=U5JtE0ulgMYWAoqxAW4isRu9FUjprsEaC64rQ+byKtk=;
+        b=EKVg/bAJbdWIANDTRgZ4ONzrSYQeQRNsNsLJgGrhlXU/GC45A0PU2tfNXoJLRDOkyl
+         /e9MJw/nj/1GeXr/JgTTdKe1ueN0VcJ4vl3F/KTsJkiOT899n7akqAQWlnoIjBSfKWSn
+         ZpUg34qgvknb6TT3K12kQBynm/9oUEzZmGos0By7FSbHKtAENk9EGE7oLf2QfJeHzbti
+         aSqiZgu12+xWRZDu+LoJbpVgmaKL9gVlnQ6WHa6CC7EHIg2fQZvbf7rp+R2IO/mewBuw
+         G8HKUU3ATSIdJtTNOAvT+D5BSzp1f3MC/sM/agYSxTirIdVMkxA8xqZ1OG97PrIcfuXa
+         ebCQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwdeZdo8m3McUkL1Ks2CugL2W2sNKZH6bUIVnDFfwh/YQIJnJOnL5cNocQeZMq5tgEt54LIWVxCrfVQWyX/Qg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJgacaDtfvOaN9KhFgorkd0r1sIBdPsgcdg4OJH/0IS+/jAj6sT
+	5aPOTraff4S+AEtOi/b9KzoogLze852O3oJgJNK7bdE3VnjN2197YesFR1ZXRHmJg59+NTtL/2U
+	BR6Yg6y7OAbU6gfrnxWs3ZUqRkQ1ao9DNR++jrJWZrQ==
+X-Gm-Gg: AYBFou0ucvsj+PwjV3vXPeEG7JMkxEeEFwB7Ks4mvq98f8KX9H0p44eya2XU+kYX7uT
+	KAKva6T07889WU28s6t/g/PwaD2dkiCowNIVwXl4hJXALYSvaV3NS6pTyqOG662U0nnegXh0QUs
+	xly/OZZ1iHglE6IiQViaz5kHnAGyi27Gs78D195qwiNgKoT0cNqP5Btjk1332UCoedxsdFsrzgx
+	HGauqV8twpwoPuVnJmKo9dZJO2C69s0XdmwwvIDa6uQ0Zqr+eK603C4XH+KbrcuPBJ3LlBhRuVR
+	z4Umdl2u0sv/d1fa4LVYhnuS/WfHpmOdhgdzjXMOcj4ruyTumbYnQ64wcVJkQ6gXw6//05Skh0s
+	IzX6ENzbUOjF05fELu05Eq/YE+RLBK3lXc6BGBtJ+g4BFAfNkQXoY4H4VFCuvnk11qBKXMOVqb4
+	9EwTY8MfkOVl01qg==
+X-Received: by 2002:a05:6402:56:b0:6b1:fe71:dd4f with SMTP id
+ 4fb4d7f45d1cf-6b443000260mr6204675a12.24.1793039395011; Mon, 26 Oct 2026
+ 11:29:55 -0700 (PDT)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -104,72 +105,68 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261015-b4-configfs_kzalloc-v1-1-17c1ba6db062@debian.org> <87cxt5dg1x.fsf@kernel.org>
-In-Reply-To: <87cxt5dg1x.fsf@kernel.org>
+References: <cover.1790981219.git.pgovind2@uci.edu> <687438f7767b2c65d9782d92a6e96387e63adc99.1791501243.git.pgovind2@uci.edu>
+ <87ecdcocy7.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87ecdcocy7.fsf@t14s.mail-host-address-is-not-set>
 From: Priya Bala Govindasamy <pgovind2@uci.edu>
-Date: Mon, 26 Oct 2026 11:26:29 -0700
-X-Gm-Features: AclHuK-HM7aWQnakYxF5bvOichqFt63lfe2rUOIlRJ_L7_Z_ycOyZaPy5TNVqAs
-Message-ID: <CAPPBnEZz_oGkK8PQ=U3Tv67oDp+OaH0qzdv_m7u_fB7fePvYMg@mail.gmail.com>
-Subject: Re: [PATCH] configfs: zero the write buffer on allocation
+Date: Mon, 26 Oct 2026 11:29:42 -0700
+X-Gm-Features: AclHuK_NWDW06AJkV9bsXUlF6KhQq98hFLfASvmX1C8GfbOpkPuGw2SjJywrX8Q
+Message-ID: <CAPPBnEZVOyjPM3ucycLAEeymR3v=_B0uuF6ufVqXCykYx5BzDA@mail.gmail.com>
+Subject: Re: [PATCH] rust: configfs: Fix reference creation from uninitialized
+ data in `Attribute::show`
 To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Breno Leitao <leitao@debian.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Gary Guo <gary@garyguo.net>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com, 
+	tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, 
+	rust-for-linux@vger.kernel.org, ardalan@uci.edu, zhiyunq@cs.ucr.edu, 
+	dzueck@uci.edu
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 19, 2026 at 5:35=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
+On Mon, Oct 26, 2026 at 5:37=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
 .org> wrote:
 >
-> Breno Leitao <leitao@debian.org> writes:
+> Hi Priya,
 >
-> > fill_write_buffer() allocates the per-open buffer page with kmalloc()
-> > and initializes only the bytes copied from userspace plus the
-> > terminating NUL. fill_read_buffer() reuses that page if it is already
-> > allocated.
-> >
-> > After a write, a read on the same file descriptor therefore passes
-> > ->show() a page that still holds stale heap data. A ->show() that
-> > returns only what it wrote never notices, but one that returns a length
-> > covering bytes it did not write leaks that data to userspace.
-> >
-> > The Rust bindings are exposed more directly: ->show() receives the page
-> > as an &mut [u8; PAGE_SIZE], so a driver can read the uninitialized
-> > bytes.
-> >
-> > fill_read_buffer() already allocates the same page with kzalloc(). Do
-> > the same here, so the page is initialized whichever path allocates it.
-> > The cost is zeroing one page the first time a file is written.
-> >
-> > Link: https://urldefense.com/v3/__https://lore.kernel.org/r/cover.17909=
-81219.git.pgovind2@uci.edu__;!!CzAuKJ42GuquVTTmVmPViYEvSg!MzBh-OGC90bot_58m=
-ikAXuNn-ZOko4X3HdO1al7Y_kCFHVAaLPKpyhKVLgRpDkWqziXPzvRGlJPkvD9e-ZWTkA$
-> > Suggested-by: Andreas Hindborg <a.hindborg@kernel.org>
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
+> Priya Bala Govindasamy <pgovind2@uci.edu> writes:
 >
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> > When a configfs attribute is written and then read through the
+> > same open file, the read reuses the buffer allocated for the write.
+> > This buffer is not zero-initialized. Writes to the attribute go
+> > through `fill_write_buffer()`, which allocates
+> > the buffer with `kmalloc`, and initializes only the input bytes
+> > and a trailing NUL byte.
+> > The read in `Attribute::show` callback creates an `&mut [u8; PAGE_SIZE]=
+`
+> > to the buffer. This is unsound because the reference may include
+> > uninitialized bytes.
+> >
+> > Fix this by initializing the contents of the buffer to 0 in the
+> > `Attribute::show` callback before creating a
+> > reference to it.
+> >
+> > Fixes: 446cafc295bf ("rust: configfs: introduce rust support for config=
+fs")
+> > Reported-by: Dylan Zueck <dzueck@uci.edu>
+> > Assisted-by: LLM
+> > Signed-off-by: Priya Bala Govindasamy <pgovind2@uci.edu>
 >
+> Please check if this patch would solve the issue:
+> https://urldefense.com/v3/__https://lore.kernel.org/r/20261015-b4-configf=
+s_kzalloc-v1-1-17c1ba6db062@debian.org__;!!CzAuKJ42GuquVTTmVmPViYEvSg!Mr3TT=
+m5smb01RdTG7L3SdTttRentAHlDvhoVd07Igksga0mKNkfwYMBBSv6-UDsbT8Ek2qAiRYdRvcBR=
+33Ya8Q$
 >
 > Best regards,
-> Andreas Hindborg
+> Andreas
 >
->
 
-I tested this patch on v7.3-rc5 against the PoC I provided earlier [1]
-and it works correctly.
-Without the patch, the PoC shows that the first 8 bytes observed by
-`show()` were:
-  [78, 0, fb, 4f, 83, 88, ff, ff]
-With the patch applied, the same bytes were:
-  [78, 0, 0, 0, 0, 0, 0, 0]
-so the reference is no longer created from uninitialized memory. I did
-not see any new warnings in dmesg.
+I've tested this patch and it fixes the issue, so I'm happy to go with
+this one. Results are here:
+https://lore.kernel.org/all/CAPPBnEZz_oGkK8PQ=3DU3Tv67oDp+OaH0qzdv_m7u_fB7f=
+ePvYMg@mail.gmail.com/
+Thanks.
 
-Tested-by: Priya Bala Govindasamy <pgovind2@uci.edu>
-
-[1] https://lore.kernel.org/all/cover.1790981219.git.pgovind2@uci.edu/
+Best regards,
+Priya
