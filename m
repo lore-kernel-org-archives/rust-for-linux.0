@@ -1,78 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793032874;
-	b=EwJKd4kZ7EpQ7pJbnciVhPBqhu7FfEmr0KjCZR3vfIL7lfBJDhloq0+03VtzobRaARik
-	 FcJrtLS3pPg8TtEb1YiKD8rg7cWD1jKsxdhMZthbx6I734De5tQ0F+VYL1udr4O+04Zqn
-	 v1zN3+ldiS3S57ykqnnWWE2GC5DJxCudwop4rB/Wd71FxmZUSMumDCja2p3j5yLT2fe52
-	 EmhOL9HCFwxieYylaDUdVqITQjhOT6faYFnI6mS4wFRPQPKSjeFgmKip1xxntcoAmGcOy
-	 utePoHMY4a7QJgFGYts5hIwsXddlP5yxT/+3r7b82gGZtBEKCHEnjNOkPKL/leYoaCQ==
+	t=1793032877;
+	b=3pLXWQvSmnDffRmX/7nK4NNHWpSB4uMIpuajr4id2AqFFyhawr39/iaCMPmbTpZ28Aq2
+	 bPRNDn8/76XIuJMb66lHH2613b9MKbYANxdumUr/fSbUWhfgW0ySFgJbZVS3jjEMXQX5W
+	 lxCRsqbqDouvEtR8HpGgdmVIIlEFI2QjLai3l3XFfzim6zV9I2693XJDKVEQPR9jhdd01
+	 vM7U0Qccy9R0RdpxfmmeQNo6LTqWmaVhpKbIISUHF9fvNK/RctmvjwWCSWT7WyqsrdXgQ
+	 ZQkAIIJyXT9FNtG/lyz7PRBmgGjqNe+lYc/SHMrZ7WsvrXmDBsxU7eHEZ6PA7orE+/g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793032874;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793032877;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
 	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=jKnS8OcReTjLaHrdFjGjVJmk8r0TI5DsvNMEnm3UFOw=;
-	b=Qg9rQIAGG01XBhcXohh+GBf0BbumqO6wP/zag4p8wxLD2/yc6jZ4v0QHp6VeVjcLOd62
-	 /ve27eE1hbmTD4Z/qA0dy9UtfAassaq/SqxnXsT7AMcrawAfmPCIyJl5zaSxmoPmwC1rV
-	 k/Fbac8qssiv6/1IRQe3d3RaNLiyuSlEJS95nhq8BG9kb2lXhM7SAZs9vVjsVAPAWmN9R
-	 wyWyBvD/3nnoTesSaZWytWUlKXlcllPnR0Fxkj4wE6J3xk4RkOH7oNlV4LgieKvdO3RwL
-	 qGQ9Yv2r6e3RRr/hDKKer6KiyQKkb/P4ZwdyxLsyJJL3vz3+4CpDLzuBqw0C59IsddQ==
+	bh=KqRn1n5iORX+7EiqCp1P4Y8MwIEiz+RAzWKAWH8qI0I=;
+	b=45kHUJ4j5wYN/1iGbyxDeyKs7saZHcU8hF1y9rN4GaXHT97npSgnDYsp+7UoBTZEDf1w
+	 zDABGuPq02rMfI9LZT6TBYxPfBR6WuUN/EJsNW0VmWPEbF0rPFv+qc8pI5wLYLsQjrlqX
+	 5I6MKCkoJiX0XaKC1HEev+d2MiLImekQlbJaNF7P07hHgQZYJlR5z9ENpACE9bFJ8ZpJz
+	 u3I1RfNwsy8+cndeJv0Hqwx1Sbi1wFp+vr8Inv7L1UDvDOKq7skMO3Wrb7FsR8C/4w0sY
+	 SSvgXJtR4Kxa9gOPivT3Nrnq+CQo/wQ9SV/h63sW0zDfUA1H7zOEKVRS+PusQ6upQyg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XOwOZ94p;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mq+DBAuF;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F36F606A31A;
-	Mon, 26 Oct 2026 16:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0929260A2608;
+	Mon, 26 Oct 2026 16:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XOwOZ94p
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mq+DBAuF
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793032873;
-	b=AZ6pj6yzqPZoYlCabPtgMuR9hHq8PVrrRP92PKNnWeh/0CddjAPeNiOGAtuhAnj9B8ji
-	 lQ2fXoL9Gft/VQYnVqfUdUMzUWZ/Du/+74KIi1Io92ThGRB3cDPXYuaNv//QXJ2riXt9T
-	 svLl9Kwc5XzBhUCDUhY7vpYG9okR5kdl/BgQ9DkkWRqrY9r2Opn6m59NEZyG0zTbScv3B
-	 wLPzhgh7nBu0DEt9GROOdeleWrCeVx3eDKTSRg1YXgMtwVVDEOgLCYnHonxejp90wrl5Y
-	 0Q1mfHqhaQit12ul1T0B6HRmnBLMzu0YpDmTfyoqZqN/U1mrycPx8IDY0VEh1hIzOfQ==
+	t=1793032876;
+	b=hNDFmPyfkFnN7eIg9JeaidAw98h2LbJrEDZoX1grXPJeqzKf0FCf/qvSU/8Ilt8tJNLJ
+	 K7f3HXcbuhsV5SK8Qh6FX07jmhh2yDGGy55ifGV3Tj1SW7z8H675ElU6VBQCUDySanz+W
+	 URaVchl198zjB7lfKKHl6/S7Xq+zRkpmIk9M4dBwdubdcdhrtEx5OdpWazJE1EpPWOyl7
+	 nZfu9FprQDssyRE5XEpUsNXStOWpwAsjn6agxIEQYLETej9gboamB7wrw7rJ7j8vKWrw0
+	 y+3aOVm2jHCi4yLXFd5BqBrUhXZAu6uEOVNfQm5mTVqdEJG45/dSAE0+PEKF5Wxbh7w==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793032873;
+	c=relaxed/relaxed; t=1793032876;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To;
-	bh=jKnS8OcReTjLaHrdFjGjVJmk8r0TI5DsvNMEnm3UFOw=;
-	b=rX57m7GBS7qVBoCMdc9XBAzgD7N5njDC8mOjVom54xJq8yfNYqBzBARQVStc8uf9iwgX
-	 S8JFsQTwewV016V7hD2LBlCa49z7umpPyUzRSE0rvg1ZLOHSimm088E7VLKWYaabHv711
-	 hAynFHqmYs4QNsQ7koljC1ayyhV27DicgX5RhWoylgO7k+SAz/n/g5sMcatFxaLEISnRD
-	 9NhqzmfssCFFxRx+qp42jrnJ7s8SA6ofF6ptqhQsNzALC/DAmmSKdeC2nI/R9N5o5HOmt
-	 cp/w7DnKs4rzwsY4GWxkaBlJcSuuLJw+BIVH2/iXkHf5mbw2jxF5v+feHhEV6BqTrCg==
+	bh=KqRn1n5iORX+7EiqCp1P4Y8MwIEiz+RAzWKAWH8qI0I=;
+	b=bgbtFepVEDqyUxIlf9MFePc2fai/v4PkBZnG4bRkE1Oc8HTKAOdtPUOALTqnCLJdPqJb
+	 fAjPRy9l41NAFcKOA6e/nKDVSwYk9r8SqOAlRadBHRZrlEqGrFtovO6sOxAT3p6OvGr24
+	 bd6oG8DwgsXv17XBDFgjJL8+lQ5lP0EP2gKnIO0sFTvo6lNtG+yhv8Jj2tNDOLYkI6JZ2
+	 JYZSJwsu5u/D/Vp5C0mcrqSJifSftNgQUPHdse1GA1LUOFuP22V5ZGz+h7c6s6MplMISi
+	 Pq3BGVxXEeX9PEMzVRkDlN74V2cBB/SD3iX7uR6nX6bMwmC+mFnR5d6jNLS5yjIZd6A==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id CF5E81F01828;
-	Mon, 26 Oct 2026 16:41:12 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 89F7F1F01829;
+	Mon, 26 Oct 2026 16:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793032873;
-	bh=jKnS8OcReTjLaHrdFjGjVJmk8r0TI5DsvNMEnm3UFOw=;
+	s=k20260515; t=1793032876;
+	bh=KqRn1n5iORX+7EiqCp1P4Y8MwIEiz+RAzWKAWH8qI0I=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=XOwOZ94p3hqqwbbEMBwsKIVaRn6u10aeoRkV2zsg7+SGVaOFaR6/Sigj8nlY8+dTm
-	 J9WX3Q/Ex4m5Ud5/8mu1gVnijfwj3Rh5bsM2kEcEIqurJ9rMn2MRVJXvb2tKD74H48
-	 rInzElIcGgqxdcZvD2rUbS1HqR/0AzKTKsnzmKdrJbb5qJ2b2QxtRwfbgpESjphO9p
-	 sI66sYhobgHpUR8uiK9K0petqWVJ+hf8xuxTN3wrr8ZV/pEiP4VhBREAM4d7JbBq4v
-	 bTavMsrlmiuu4KLe9UPFV9MCQWWjjvOhvWCKVVJD07sz4vqjXk7s7LQuxoCR8J670Z
-	 C/BDaiWb0TbvA==
+	b=Mq+DBAuFHC2movOX44cyDWnxKYHE6nuk08H8k3tkI/S/zty/bolDieWFCGCFkJLR+
+	 2TAYTsJo9/hhYXjR2qCb0gfT6E6/00tYTqTnYtOYKSDRLLuIF4weZ9AVEDcu+5gJ1s
+	 JSu0eLRgy8tUaiZ2elwu9/ZiO0JE0o4CXOOjZrP6eE2mQdamfATu6PcfmjCGRnzD8m
+	 qeRj6HjRUW8Rs+JGcU3Wy1A3EVjw59qILFZWMT5MFcZ3ycQO9ue2m0Q47OwYCU8bzK
+	 /Nf+Rb+myxoHcFm6uq5c+/yz9M9mifRW/u+YtH/XG+Yqgc9unCUczzJcEAetW1W4jv
+	 gXb9sTetcKqNA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 5709D44DC9;
+	by lkml.kernel.org (Postfix) with ESMTP id 9804F44DE1;
 	Mon, 26 Oct 2026 16:41:12 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Tue, 27 Oct 2026 00:40:55 +0800
-Subject: [PATCH v5 02/11] rust: task: add task_size()
+Date: Tue, 27 Oct 2026 00:41:01 +0800
+Subject: [PATCH v5 08/11] drm/tyr: add BO-related ioctls
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -84,7 +84,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-tyr-ioctls-v5-2-59dfe98cb003@kylinos.cn>
+Message-Id: <20261027-tyr-ioctls-v5-8-59dfe98cb003@kylinos.cn>
 References: <20261027-tyr-ioctls-v5-0-59dfe98cb003@kylinos.cn>
 In-Reply-To: <20261027-tyr-ioctls-v5-0-59dfe98cb003@kylinos.cn>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -105,11 +105,11 @@ Cc: Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org,
  dri-devel@lists.freedesktop.org, driver-core@lists.linux.dev, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793032870; l=2517;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793032870; l=5835;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=SVTHAw+MuGYh/fZMg5wDC3wPSM8rseGtAWNOgWBu2T4=;
- b=3nn7okpFbPdhHXxttuKyB0Km40JaGCKzmRceOClh+jDnb/88sWg7q6AXsMGBUBq+egZW8SeTn
- vMs/n+Fsgf4DiI1Vrs2EHX6dcZqnmz/+dqb6s6hSPM76dX8spYsRdoS
+ bh=pPJLhN0cYhR6VLbdNYY1nEjJlXnDPH5ZSxoTT9flAXo=;
+ b=YyVN2+IIBdNWjG/nZnmPFIvV4QLm8ezDTgls0lXe89K2tuvDrlu7EXFoUO30IIZo0s51QdNDG
+ CGRmA4Uicr9Ag57AwWRM6OyyUzTn5M/FYURrxvocBEeKwCm5sx6aLpT
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -117,74 +117,167 @@ X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
 
-From: Sami Tolvanen <samitolvanen@google.com>
+From: Alvin Sun <alvin.sun@linux.dev>
 
-A DRM driver that lets userspace pick GPU virtual addresses needs the
-address space size of the calling task, so it can offer a GPU range
-that the CPU can map at the same addresses. TASK_SIZE_OF() is a macro,
-so reading it from Rust needs a helper.
+Implement BO_CREATE and BO_MMAP_OFFSET so userspace can allocate GPU
+buffers and obtain a DRM mmap offset for the generic mmap path.
+BO_CREATE page-aligns the requested size; BO_MMAP_OFFSET rejects
+NO_MMAP objects, which must never be CPU-mapped.
 
-Add CurrentTask::task_size(). It is bound to the current task because
-TASK_SIZE_OF() falls back to TASK_SIZE on architectures that do not
-define it, and TASK_SIZE describes current.
-
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-[ Add the <linux/mm.h> include, needed where TASK_SIZE is defined in
-  <asm/pgtable.h> (e.g. riscv). - Alvin ]
-Co-developed-by: Alvin Sun <alvin.sun@linux.dev>
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- rust/helpers/task.c |  6 ++++++
- rust/kernel/task.rs | 12 ++++++++++++
- 2 files changed, 18 insertions(+)
+ drivers/gpu/drm/tyr/driver.rs |  2 ++
+ drivers/gpu/drm/tyr/file.rs   | 73 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/tyr/gem.rs    | 18 +++++++++--
+ 3 files changed, 90 insertions(+), 3 deletions(-)
 
-diff --git a/rust/helpers/task.c b/rust/helpers/task.c
-index b46b1433a67e8..b49bd40027154 100644
---- a/rust/helpers/task.c
-+++ b/rust/helpers/task.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include <linux/kernel.h>
-+#include <linux/mm.h>
- #include <linux/sched/task.h>
- 
- __rust_helper void rust_helper_might_resched(void)
-@@ -13,6 +14,11 @@ __rust_helper struct task_struct *rust_helper_get_current(void)
- 	return current;
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index c0f17bc4ce2c9..f4f31b24180b4 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -227,6 +227,8 @@ impl drm::Driver for TyrDrmDriver {
+         (PANTHOR_VM_DESTROY, drm_panthor_vm_destroy, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_destroy),
+         (PANTHOR_VM_BIND, drm_panthor_vm_bind, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_bind),
+         (PANTHOR_VM_GET_STATE, drm_panthor_vm_get_state, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_get_state),
++        (PANTHOR_BO_CREATE, drm_panthor_bo_create, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_create),
++        (PANTHOR_BO_MMAP_OFFSET, drm_panthor_bo_mmap_offset, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_mmap_offset),
+     }
  }
  
-+__rust_helper unsigned long rust_helper_current_task_size(void)
-+{
-+	return TASK_SIZE_OF(current);
-+}
-+
- __rust_helper void rust_helper_get_task_struct(struct task_struct *t)
- {
- 	get_task_struct(t);
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index eaa0031416a98..e60a0f0727889 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -314,6 +314,18 @@ pub fn mm(&self) -> Option<&MmWithUser> {
-         Some(unsafe { MmWithUser::from_raw(mm) })
+diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+index 22a74b4abf3de..9ffb42f0d8851 100644
+--- a/drivers/gpu/drm/tyr/file.rs
++++ b/drivers/gpu/drm/tyr/file.rs
+@@ -250,6 +250,79 @@ pub(crate) fn vm_get_state(
+             Ok(0)
+         })
      }
- 
-+    /// Returns the size of the userspace address space of the current task.
-+    ///
-+    /// This is the first address above the userspace range, so it is smaller
-+    /// for a task running in compat mode than for a native one. See
-+    /// `TASK_SIZE_OF()` in [`include/linux/sched.h`](srctree/include/linux/sched.h).
-+    #[doc(alias = "TASK_SIZE_OF")]
-+    #[inline]
-+    pub fn task_size(&self) -> usize {
-+        // SAFETY: FFI call without preconditions, valid in any context.
-+        unsafe { bindings::current_task_size() as usize }
++
++    pub(crate) fn bo_create(
++        ddev: &TyrDrmDevice<Registered>,
++        _reg_data: &TyrDrmRegistrationData<'_>,
++        bocreate: &mut uapi::drm_panthor_bo_create,
++        file: &TyrDrmFile,
++    ) -> Result<u32> {
++        if bocreate.size == 0
++            || bocreate.pad != 0
++            || bocreate.flags & !uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0
++        {
++            dev_dbg!(
++                ddev.as_ref(),
++                "Invalid BO_CREATE params: size={}, pad={}, flags={:#x}\n",
++                bocreate.size,
++                bocreate.pad,
++                bocreate.flags
++            );
++            return Err(EINVAL);
++        }
++
++        if bocreate.exclusive_vm_id != 0 {
++            dev_dbg!(ddev.as_ref(), "BO_CREATE: exclusive_vm_id not supported\n");
++            return Err(EINVAL);
++        }
++
++        let size = usize::try_from(bocreate.size).map_err(|_| {
++            dev_dbg!(
++                ddev.as_ref(),
++                "BO_CREATE size {:#x} too large\n",
++                bocreate.size
++            );
++            EINVAL
++        })?;
++        let bo = crate::gem::new_object(ddev, size, bocreate.flags)?;
++        bocreate.handle = bo.create_handle(file)?;
++        bocreate.size = bo.size() as u64;
++
++        Ok(0)
 +    }
 +
-     /// Access the pid namespace of the current task.
-     ///
-     /// This function does not touch the refcount of the namespace or use RCU protection.
++    pub(crate) fn bo_mmap_offset(
++        ddev: &TyrDrmDevice<Registered>,
++        _reg_data: &TyrDrmRegistrationData<'_>,
++        bommap: &mut uapi::drm_panthor_bo_mmap_offset,
++        file: &TyrDrmFile,
++    ) -> Result<u32> {
++        if bommap.pad != 0 {
++            dev_dbg!(
++                ddev.as_ref(),
++                "BO mmap offset pad not zero: {}\n",
++                bommap.pad
++            );
++            return Err(EINVAL);
++        }
++
++        let bo = crate::gem::lookup_handle(file, bommap.handle).inspect_err(|_| {
++            dev_dbg!(ddev.as_ref(), "Invalid BO mmap handle: {}\n", bommap.handle);
++        })?;
++        if bo.flags() & uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0 {
++            dev_dbg!(ddev.as_ref(), "BO mmap offset on NO_MMAP object\n");
++            return Err(EPERM);
++        }
++        bommap.offset = bo.create_mmap_offset().inspect_err(|_| {
++            dev_err!(
++                ddev.as_ref(),
++                "Failed to create mmap offset for handle {}\n",
++                bommap.handle
++            );
++        })?;
++
++        Ok(0)
++    }
+ }
+ 
+ fn vm_bind_exec_op(vm: &Vm<'_>, file: &TyrDrmFile, op: &VmBindOp) -> Result {
+diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+index 60f6363995a5a..14f3e182b98e2 100644
+--- a/drivers/gpu/drm/tyr/gem.rs
++++ b/drivers/gpu/drm/tyr/gem.rs
+@@ -38,6 +38,13 @@ pub(crate) struct BoData {
+     flags: u32,
+ }
+ 
++impl BoData {
++    /// Returns the flags the BO was created with.
++    pub(crate) fn flags(&self) -> u32 {
++        self.flags
++    }
++}
++
+ /// Provides a way to pass arguments when creating BoData
+ /// as required by the gem::DriverObject trait.
+ pub(crate) struct BoCreateArgs {
+@@ -57,7 +64,6 @@ fn new(_dev: &TyrDrmDevice, _size: usize, args: BoCreateArgs) -> impl PinInit<Se
+ pub(crate) type Bo = gem::shmem::Object<BoData>;
+ 
+ /// Create a new GEM buffer object.
+-#[expect(dead_code)]
+ pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result<ARef<Bo>> {
+     if size == 0 {
+         return Err(EINVAL);
+@@ -65,7 +71,7 @@ pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result
+ 
+     let aligned_size = size.checked_next_multiple_of(PAGE_SIZE).ok_or(EINVAL)?;
+ 
+-    Bo::new(
++    let bo = Bo::new(
+         ddev,
+         aligned_size,
+         shmem::ObjectConfig {
+@@ -73,7 +79,13 @@ pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result
+             parent_resv_obj: None,
+         },
+         BoCreateArgs { flags },
+-    )
++    )?;
++
++    // SAFETY: `ddev` is bound for the duration of this call.
++    let dev = unsafe { ddev.as_ref().as_ref().as_bound() };
++    bo.sg_table(dev)?;
++
++    Ok(bo)
+ }
+ 
+ /// Look up a GEM object by handle for a DRM file.
 
 -- 
 2.43.0
