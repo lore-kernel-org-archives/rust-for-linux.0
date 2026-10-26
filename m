@@ -1,106 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.20
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792997166;
-	b=weAgvW8PQqN3zfmR799FJ0EWeN6aKHnuKZw2Yo1r0BDLJcObqwIc0i9/8z9Y8H9BPHwA
-	 YNLxXu9WSz72JhlaeybeLUkTiXkU2RXZzKNcbHbSqGLNBi64hZBYImqIlpfOBPVETso+Y
-	 h6kcBFJXx9cimo4Los5IZA32RVwcrJCkxUoRCV90prv09DDUs2k3M9h9GbzM6O6qUfGn4
-	 POh/QE4n8KVHxyN/9FZTeKAFhM8vN0I/E2v9oXVkDE+AT0YWp++nvl2+W/d+4IrhcH+8T
-	 UUOrs6jDwLUO3ChsRoky+L3kr6F4IhYhi0nJiUSsW8S/OQp0bbB67A9HGxpibLQs4Mg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792997166;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
-	 From:To:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=gScKGLauzqGEz27PQt5r4mP7krYePINnm+Ke1uP/ANc=;
-	b=dJBA3lEyuNyJxRBtkfP+DPHJxgVAND1nzt/EQzOBU9Lb+R2RXCB3YL+ufxzshJGYhZeM
-	 1Gqxv2W2vxMbf4eBKuF+RCJsZDMJx3b8Msj16rF7mWkCzOJNYKNHP703fCBOPRa8qvH8x
-	 lRWCP+uqENu6jB5B0lT0S+m1cdW9AXqv8DWzFspmqF77VdqC8Wa5Rf5X4i+Lo5ojbFJWJ
-	 1ZTvb34U/KY7mLQrlwOzF15fHz562ofu+1MZxXdCqZt8q9yHqt5+l9ETGMY/m4YkL1juE
-	 o2x+nzEmqXnS8SzmCBXdqZfx4KOiDkzcIGfx9oaqD1a5SdtEKWLd3Ass46qQLL4nX9g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=bYIzSwcw;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.20
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010020.outbound.protection.outlook.com [52.101.61.20])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.71
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793005721;
+	b=EWQfxUMlUga33U3ohW51Rgk/74nb0V03Lq+O637pzLEe636jjPpQvVI2efeeAeuWrBls
+	 8ysObzO8hNacWZ1WDSIohhlJTG9DHtZO3PEozUjdisBUXQ/IKZJMpM/xw+86yIjSUZhqq
+	 sUJYJcF9Zvvho8Z8YJWbomsoqg8P9p+Qb4ml+9mKUYYtMjwctNdDneY5eYkZ5m7PWPpfT
+	 1KNL3Ek+AxMtx0mnXtfcZDPOWzlaroSPe+OXBalurZ5xdiIdwUiYM73MahN7MJJwXpxkD
+	 aZp3T68s8/a18Fwq79tivanls81jItvmiDlc3s3C19QZFURV9JVqbo5Rqwt/PhD+KsA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793005721;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=6xeXvSy4w9o/b7yWR4xuzrTkC32fzIISOboFKZOljJg=;
+	b=E92HRJt+FHG6HnKyS9Dnrlg5KmusGzb3DB4X8/Gs1cpzPPj3SSVpKx/9xvjgMBoQvROV
+	 n6DtFSLg2Wy545EorKMngnVlYaxh2lrgJ66f/K3+atL2uqKgOvUWWkbIouMfVFHKe/K9+
+	 QjfuRJWt5KI/fkJm0fcGdrkxL/j/Y69J8XZUc1/0wF9TmxLdd+aT+tNAPszbk3jxoS5om
+	 Uz85/LmQt3Jd9EbR6aNFPS3P5ZUMaeQUAsjlFNrDvc//5Dm/Cjq+L7fOV0m4nag8wYONp
+	 b7HrdTmHW4VU6w4GPUDVYRkrJftDVJKqvAXAC2Cw1pJcqBGXDdE7fMVtVHeInNHzrwQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=E2nChXtY;
+	arc=none smtp.remote-ip=209.85.128.71
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B72606A31A;
-	Mon, 26 Oct 2026 06:46:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D9B72606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58104606A329
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 Oct 2026 09:08:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58104606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=bYIzSwcw
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WBa2lKBbTUyxzFIKFA2/KadRHsCOomdlQNiMcRTopM/E3sD3yro9DkXWVd/VW8lUH6t4QOY/PX6v7EUGiaH2fVXrcmBvmC0K3kaiDdRnP+7NTkG0eQjxtuLiThg3x906LC+6Uyy1Fk+iNRQOSs5XIrc57ms8tQJrzc/Sh2EMpOsNTQf5B04Va52HJGJLdmaefy0KbiyGDS71szyLN5kQpr+iOzPitjYITseFta7vJpxsfqdfFlREqU14AT0BHZZDlncTQHJg45VpoXuIZs66stZSpGLAsUKQzAT9prR11qHlACRfEht6w5EGRU4Rg0vQIDzwm8qvooqiusDBuOw74w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gScKGLauzqGEz27PQt5r4mP7krYePINnm+Ke1uP/ANc=;
- b=E2uG7vYOKU1MknPnm3F6QB7F+ucArhFHdLOfXbZ2+w2ysK5lRjiaGp4MHrN0E1BaozDJ2aAN0Ukg57OdTz1n35wIf/p05qEh3504UMutTF0rRk8ivCdhO1qR3fyK9rsDRe3R+Af2oth8/2dtRVqm0NIX8vmjOfWkF2/yYDEnQN1eb4fJ+zQoI/9YXeXF9mdp8FA8+MRKpcU+pc6Zz8GnkcLFPuCZyCte4CsiHQniHoPUignGhDnYEpk1DD8163sX/KJeT92tD4mdoKIP6O+XRwLsPnCbCkQ3f/PRSGVfpGkRzpz8J4Q/5oX5BV1nLusWiK1uFAax5pg8KpEW5yg6yQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gScKGLauzqGEz27PQt5r4mP7krYePINnm+Ke1uP/ANc=;
- b=bYIzSwcwFC4nSzjjeXYFt1HwmYDOmjZkwNDKsu6RoziN20j3UQQYIUKJusBkOXOHiWK4jpFddWdkpBd8VcUJgP5D5yNdrqgpuk7U9mqrSpgkbYKvWdMnbXJIS+c+sYnjOTwH1WEiimzx4MN0JZjDtWqZ40L3+EhbOFtsgGX5J2CL0fju1y9x82RjIF+boGIKC9hvW9BYBoEfHA9cJjYH47ZxfAxz/xB4X5VWBbEDQ2SRWr9mEaSZGPsQUlihOvFKB8vKI6UGUr6Pu/rYpbEqK0qXC2LrPSkX265D9G7PgBU6PZmYU+SQ9McafWxy1b6xOrOC42DjZVzqfR7HRoF2kQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by CY1PR12MB9604.namprd12.prod.outlook.com (2603:10b6:930:108::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 06:45:57 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
- 06:45:56 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 26 Oct 2026 15:45:53 +0900
-Message-Id: <DMEKG15PB803.2T4JUPAN0HAH@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Lorenzo Stoakes"
- <ljs@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
- <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v4 5/7] gpu: nova-core: add NVKV typed encoding
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Eliot Courtney" <ecourtney@nvidia.com>
-References: <20261016-b4-nvkv-v4-0-e8b92b91aa5b@nvidia.com>
- <20261016-b4-nvkv-v4-5-e8b92b91aa5b@nvidia.com>
-In-Reply-To: <20261016-b4-nvkv-v4-5-e8b92b91aa5b@nvidia.com>
-X-ClientProxiedBy: TYCPR01CA0196.jpnprd01.prod.outlook.com
- (2603:1096:405:7a::20) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20251104 header.b=E2nChXtY
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4994d67d0e3so21041735e9.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Oct 2026 02:08:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1793005720; x=1793610520; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6xeXvSy4w9o/b7yWR4xuzrTkC32fzIISOboFKZOljJg=;
+        b=E2nChXtYMbQzknLcmsGLItmLC33Vcbz7TbExnMP+FecCooTiWq8lJ493eTYmIPi2PX
+         bZj1RRLB5LqOIVxzeci4CNxwdFZRQW8jAToRqp0ufyGK6ilTTLvlllNRfZpnpK4VreSj
+         9bkldAP250R8LDLN6wNj6MurdUwCQ2ckDlZx84loRK9c0FKIZODfLLBF7McNytU5JgBo
+         f3BnzHEJ7YzXEOatj79J/D6nULRTV+0+3L56I7IzA7FHKTSx9+bXzR+tyS9fKGkIyvbZ
+         goY5gmTvWP6XltVnvDup8uu2RSWRksFpCxGoeNAi0HVXCDBSDveY9BkfVUn+qu+9TMa+
+         EOJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793005720; x=1793610520;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6xeXvSy4w9o/b7yWR4xuzrTkC32fzIISOboFKZOljJg=;
+        b=Kv87X08UGvq67657pGY3LYM4qF5iuLo/HTFuS+6Pod3cQXGQrQbEToHJsXisOuLUT3
+         N0GIPzUt+moieyZ0vHUv2R3xCwA2YOvrZVL5O0hke6jt0AtFWDULX/UThFAYrKSlNHEz
+         MjXD6Lp6iWj+B0+qJPJwcrKF9ZL1zcIi8zcydAAIHMSCa4YmcXshW5ULpvdNOLUs+MMv
+         O9rRwDNJglddQQ0oJgcqxW1KvvmvakjIlRrFUr8k9GT1bPdIoV9oCOOX9i6iyhpuR16q
+         mFAF3d7GRaz9Cx3X2GcXF9JnKPHAdEtEw40YDl7KSxclTtxlMdpQQXKmOlUNBNwAAnZV
+         z3sA==
+X-Forwarded-Encrypted: i=1; AKwUvByvdigXxp4N7B5IAYmxi4ijvOEollghQ5Fhc8aNcNaErY4Wc4lwgSeFYqyQS/nyAVQFDbYxWYcaY7TzH/LwSQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKtqk3ASH9rqKU3DrNJANnsfTcXm6IpL9tEQqrJwfmVD7+GpvBL
+	3URV8Nrt4JlO2F6fK6oGBVBgFMNiCQ4wXwFSvXyZFY4eVhP93NJHcYCd6LmFRscv0UOp0oRzo2k
+	S9C+0ZHf55n8UcuGaig==
+X-Received: from wrvd13.prod.google.com ([2002:a5d:538d:0:b0:48a:fe63:7751])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:34c9:b0:4a1:f625:2108 with SMTP id 5b1f17b1804b1-4a35acebc28mr107940825e9.33.1793005719194;
+ Mon, 26 Oct 2026 02:08:39 -0700 (PDT)
+Date: Mon, 26 Oct 2026 09:08:36 +0000
+In-Reply-To: <20261005134010.302208-1-laura.nao@collabora.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -109,83 +77,137 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|CY1PR12MB9604:EE_
-X-MS-Office365-Filtering-Correlation-Id: cdb3c29b-f762-4848-d8d4-08df332cc9b5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|376014|7416014|366016|1800799024|23010399003|11063799006|4143699003|56012099006|261021121427099003|261022105027099003|261022075727099003|10067099003|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	UkGFS3iDpLYD0dyqxUiRjKIpWqj/kExOY3LK0Lp+HhKWGJ89+obZ+q4vjGK7gOVj6zLBRBLohl3QyjbsknYj5LIoAXAm6t+YT/+yicqyPxroTPI6BGLQxolVk8dXzWCRu2hZRmb1S5EUbsi+8nuwt5Cqe7NtbHg9HU6WGezwmwD2vuwmZAW5Rlf9eaKPsphZ+N3kD7JCcgiSBzVoba2ILMWKzXirUdNLe53CwuMgibpu41X/3yeBa0nWCCDuCygxTfmXJPl4zKkr+UAZyqCTUtGRhdswYV6EIZpoJSQuK3yV63cXcj9Q6JHJvQOcsilN7y3xPYuOel3t/fpKQUQFv1IqetOiVZaE16wthT3VLbCAJuHWX1zVsqYO6eYdp6Gg2iIyjR1/bCUewFaU1MeIAf3BerOArj3a1rMh4kM8j5Jqx4xrInZrFRZtyauJBjxZeJkMEAGT2amGgqbbYjoBzrlGXnn/oubfGsPHv52DgQ8zZLKzPtRSI8a0x0ELWCIfLqG6Wvm5DsXWinSBo7ILT55r+ubMLown6nerK7uJizq0ObusmnmL+T05Cq7TGV9bda7sYMbfVbrS3SVEJhON6732drw3t+itd3LnmeWSjwF69ZH2x2cyvHm+RjAIHhbfDAedQEr9hL9e0YAmo5quNgbns5ZGEpkb0+6cTMYsxhY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(366016)(1800799024)(23010399003)(11063799006)(4143699003)(56012099006)(261021121427099003)(261022105027099003)(261022075727099003)(10067099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aWZXS0VxUW5EcytKVDV5U2FqL2U3WVdlZlh3aTh6WjkvWXI0SVgzN1hZWHVu?=
- =?utf-8?B?RkN4bXViSUR2YXRYVFh3UngvRzUyWlY0R3NmM0lmZ0hoTlQwaFNOYnh2TDEy?=
- =?utf-8?B?d0toWmR2UkpDSFVCaERvamdqQWExRzIwSjBPTnlGTVUyQ2dSSVdSdVd2RXZ4?=
- =?utf-8?B?Z0hoeVFYN1cxYUpXaU04a1JxMDk3VW9OSk9tSVR0QnBCSExhZlpzR0RrT1Nv?=
- =?utf-8?B?eEZ1ZlNKVzdweldQL015WTd6L3dpQlJ4cE1FMUZZN3NrS01NeFN6SlVOZXQr?=
- =?utf-8?B?NzAxcjlaUGF1MHN0QndJemQ0RWNqb0VOdWpYYkdIREpqdEFXSUpZKzVVUW1z?=
- =?utf-8?B?OEFKMm5qcVk0ODByL3hGQys5SFlnR2VtVDZYdVJOU3hCUGJ4eE93TEtjTXd1?=
- =?utf-8?B?NGJWZkowWEdodGRJZEh2RkhDWkJZbDN1eGk3OEtjaUtZYWljdWttcEZZUEQ1?=
- =?utf-8?B?NWJSM09ocXptb0h5aTFOUng1ZGZmQUpYemxRcm0vQ0YyTndjZklKTVhLS014?=
- =?utf-8?B?ekhZeU9xZkNvenN5TE9tZlkzTUwyM3RjZnd3RUtPM0o5dGhaZVYvRkdEemxz?=
- =?utf-8?B?S0VJVGF5WEU1QkVpTFY4K2k1enBTcmExL284NlpxaVlwSldqbjlmcmF2TE1T?=
- =?utf-8?B?Rzc0dStRcW1YQ3R5T0NxYmh6Z0MwUUowSjhNOEZkVmlTTlJiMXVud0pCWjdB?=
- =?utf-8?B?SDlBallSWVEvc1Izd2pycEtIMms4dzhDK3dKTllCVWN3UTNCcEZ4Tjh3ZS9K?=
- =?utf-8?B?bit0TVVzWHNwWVp5TWQ2QzA0aWI0MjJCZFlWcng0SkpiZzFCZUMwSE1BbG0z?=
- =?utf-8?B?UXRrc0ZHY0pQQ3g1b25IdnU4a1lrTmVzMUJQRmR2N05YUUhPNWZ5eWVNcW5a?=
- =?utf-8?B?RHppcUtneXpsTFJ2djRzeGJMcW9TMlU3cU52YWQycWdyaHVSVTZSQmtKbnhu?=
- =?utf-8?B?ak95SGl6RWNhZFFYQSsraXBBaG5NOTluRGpCcjNDdWU1ck5pTktGa1p2Vk9p?=
- =?utf-8?B?d3NCQXNHcEg2TjhqNkttUmI3a3hiOVJVVlpDOVcyWEhGM2l6K0FKUE9HRjFW?=
- =?utf-8?B?ekhpdGw0S3RKR1hMUHFmaWJkQ1Y5YjNra2huTnFIdXBlL09ESytQcWRFcjha?=
- =?utf-8?B?VlB6S3JPT3Q2RDRLTysyeGZNQjY2UWozVHB6NTFKTXh5YlZycjVhay9sMC85?=
- =?utf-8?B?SEkrKzBtSWdoRDA0OWZTcG85aXVnajNPcjU3RXlpZjlNK1dkYmNXZlNYcXIz?=
- =?utf-8?B?U0JVai9SNk9ZS09Qelp6S1dkYlVZTFFaVlVNYTYvWTJpRjA0R1JFOEl4Uzlm?=
- =?utf-8?B?c01xZTNvM3lCdVMybXNmUjMxVG42aUR4Vnp2Q2ZYZFhyVmk4YktQLzdyZEpW?=
- =?utf-8?B?Q0I0VlJzYitZY01kckI2YVJnUE1kTnlvSlJYcXV1U1pKbTEyL05IRVNLdHRi?=
- =?utf-8?B?RFlmcGxLVzNjUlpYSmxqeWI1QmcvZGxRdERkeXBzdld3Uk8za1hHYzJMSCtO?=
- =?utf-8?B?TGZlbzdvaWhLcE15MzdTS3FmUU9hUEtmN3Z0MDByaUNDZDhhK0RaSjhpOEtZ?=
- =?utf-8?B?YUlleUd0MXhIZ1hjUDdtNDJQM1dTcXN6SUYzbmdHTTFYT2t3Ry95MFU4NFkz?=
- =?utf-8?B?a1BFenZjdHYwNzBiVzMyUzQ0bjBxQWEyMEx1N05SeXNWLy9nQk5QWW42M3lL?=
- =?utf-8?B?ZTZseFhZL3dHNnA3dWNKd2t5bnc2cm84V1pSZUhhVWF6ekI0MlZUQmtGZ216?=
- =?utf-8?B?RlFSVytZRzE5UzF1UjBQak91RVJsVXJSTGhPMlEzbXRtNERDL3Y2eG9LUWFU?=
- =?utf-8?B?ZnlMQVZnaWtremRqOGh6RzJzdzZBUG1qL3JqazZzR25XU1Mvemh6QWtGdno1?=
- =?utf-8?B?TWtoanZyM0lyMlBwYTF0cnRTcEZ6S09BKzV2QUZUWnliZWdyaVlxaXpjVjIw?=
- =?utf-8?B?dHpnNk9yWWUyNG9JWXovVi9FMjBhWm9pMVBjSVdGUkhuZTl4TVg3VlJ0eTV2?=
- =?utf-8?B?VGdxR21jU0JLUXhSbk9CRnpsU1dtOFFxcnluL3RvWVd0bTdxM3laUEJuMlo2?=
- =?utf-8?B?ZFN6RDFxT1RKRzVQc3FtYkVsVFpVOHFLUjBRZUpWV1AxM1NQT01ydEZ0cnZB?=
- =?utf-8?B?UktXclZhUW9EUU04dkJDRVBwNWdXbFV6YmZWYWlnU0I2NDVud1g2VW0zVnhl?=
- =?utf-8?B?QXhuZjFZUW5lNzgzdkc3MStRWmpTcU4rSjlqR3BLdmwwSUc4bFVSVG1jWmxm?=
- =?utf-8?B?WUpqancxZ21sdGhoS053dW1KVTgrc2w0UHN0N2JZdnBXOXN1bms4dFIzcHpF?=
- =?utf-8?B?dkhRN2xuWnBYdWpqcWVoeDM5eHhsUE90b3NjVDFENUF1UnZtUVVndUNOWEdU?=
- =?utf-8?Q?Q8jMwSwi1SSXYy4kJsXPeNo/lOUV8JhEjGszzskH4IMxL?=
-X-MS-Exchange-AntiSpam-MessageData-1: zxE0SQTCLu++Kw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cdb3c29b-f762-4848-d8d4-08df332cc9b5
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 06:45:56.6946
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: e+CStYt2/y+B0WSkJemdHWLbbmFEHNrfl0JeE9uETlUYKfWriIrJdG3EHj03P80QwqqZ9cAR6rZ+LnSYcsgZpw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR12MB9604
+Mime-Version: 1.0
+References: <arOP5iuLuj1aTiLl@google.com> <20261005134010.302208-1-laura.nao@collabora.com>
+Message-ID: <at8YlKUJOWc_X-JV@google.com>
+Subject: Re: [PATCH v6 2/2] drm/tyr: add Job IRQ handling
+From: Alice Ryhl <aliceryhl@google.com>
+To: Laura Nao <laura.nao@collabora.com>
+Cc: a.hindborg@kernel.org, acourbot@nvidia.com, airlied@gmail.com, 
+	bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org, 
+	daniel.almeida@collabora.com, deborah.brouwer@collabora.com, 
+	dri-devel@lists.freedesktop.org, gary@garyguo.net, kernel@collabora.com, 
+	linux-kernel@vger.kernel.org, lossin@kernel.org, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, simona@ffwll.ch, tamird@kernel.org, 
+	tmgross@umich.edu, work@onurozkan.dev
+Content-Type: text/plain; charset="utf-8"
 
-On Fri Oct 16, 2026 at 10:53 AM JST, Eliot Courtney wrote:
-> For struct-like GMCAPI messages encoding field by field manually is
-> noisy. Add some type machinery and a macro to automate encoding of
-> struct-like messages. The `Encodable` trait can be implemented by any
-> type to say that it can be encoded into an NVKV `Encoder`. Add a simple
-> `nvkv_encode!` macro that works on structs and encodes each field in
-> order. Provide some base types, such as `Key` which statically
-> associates an NVKV key with some value, to avoid having to make a lot of
-> newtypes and implement `Encodable` on them.
->
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+On Mon, Oct 05, 2026 at 03:40:10PM +0200, Laura Nao wrote:
+> Hi Alice,
+> 
+> On 9/23/26 10:37, Alice Ryhl wrote:
+> > I agree with sashiko's review here.
+> >
+> > This needs to happen after the free_irq() call in the destructor of
+> > TyrIrq.
+> 
+> Thanks for the feedback.
+> 
+> In v5, I was masking the interrupts in TyrIrq's PinnedDrop impl which
+> resulted in clear_mask() being called after free_irq(). However, sashiko
+> warned the device could then assert irqs after free_irq() completes
+> but before clear_mask() runs, potentially leading to an IRQ storm that
+> could result in the shared line being permanently disabled. 
+> 
+> So calling clear_mask() before free_irq() should avoid this, but we
+> still have to deal with threaded handlers potentially re-enabling the
+> mask after clear_mask() has run (as per sashiko's review on this current
+> revision). Adding the atomic state should help with that though, as you
+> suggested:
+> 
+> > And most likely, we need an atomic along the lines of ACTIVE /
+> > PROCESSING / SUSPENDING in panthor_irq.
+> >
+> 
+> So I'm thinking something like this for the state:
+> 
+> #[derive(Clone, Copy, PartialEq, Eq)]
+> #[repr(i32)]
+> enum IrqState {
+>     Active = 0,
+>     Processing,
+>     Unregistering,
+> }
+> 
+> unsafe impl AtomicType for IrqState {
+>     type Repr = i32;
+> }
+> 
+> This could then be stored in TyrIrq:
+> 
+> #[pin_data]
+> pub(crate) struct TyrIrq<T: TyrIrqTrait> {
+>     irq: T,
+>     state: Arc<Atomic<IrqState>>,
+>     #[pin]
+>     _pin: PhantomPinned,
+> }
+> 
+> Then TyrIrq::handle() proceeds only when the state is active and
+> TyrIrq::handle_threaded() re-enables the mask only if the state is not
+> `Unregistering`.
+> 
+> Does this make sense to you?
+> 
+> As for masking before free_irq() runs, I'm thinking of possible
+> alternatives to JobIrqMaskGuard and its ordering convention (i.e. must
+> be stored in a field declared before the corresponding
+> `ThreadedRegistration` in the struct that owns both). Would it make
+> sense to define a TyrIrqRegistration struct that wraps
+> ThreadedRegistration instead? and then clear the mask in
+> TyrIrqRegistration's drop impl.
+> 
+> Something like:
+> 
+> #[pin_data(PinnedDrop)]
+> pub(crate) struct TyrIrqRegistration<'a, T: TyrIrqTrait> {
+>     #[pin]
+>     registration: ThreadedRegistration<'a, TyrIrq<T>>,
+> }
+> 
+> #[pinned_drop]
+> impl<T: TyrIrqTrait> PinnedDrop for TyrIrqRegistration<'_, T> {
+>     fn drop(self: Pin<&mut Self>) {
+>         let handler = self.registration.handler();
+>         handler.state.store(IrqState::Unregistering, Release);
+>         handler.irq.clear_mask();
+>     }
+> }
+> 
+> This should make sure teardown order is still respected without relying
+> on the user correctly putting the guard before `ThreadedRegistration`.
+> 
+> Any thoughts on this approach? In case it helps as a reference, I've
+> drafted both IrqState and TyrIrqRegistration in [1].
+> 
+> [1] https://gitlab.freedesktop.org/laura.nao/linux/-/commit/c78e296690e643b790fb3195660f1229e3cdb5ca
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+I believe there is still a race. In this code:
+
+        if self
+            .state
+            .cmpxchg(IrqState::Processing, IrqState::Active, Full)
+            .is_ok()
+        {
+	    // <--- thread is preempted here
+            self.irq.reenable_mask();
+        }
+
+If the above code performs the cmpxchg, but then gets preempted before
+it runs the reenable_mask() call, then another thread can come along and
+execute:
+
+        handler.state.store(IrqState::Unregistering, Release);
+        handler.irq.clear_mask();
+
+clearing the mask. Once the original code starts running again, it calls
+reenable_mask() even though the state is now Unregistering.
+
+This incorrectly leaves the irq enabled even though the
+TyrIrqRegistration has been dropped.
+
+Adding a lock around these critical regions would solve this, because
+it would make preemption between `state = Active` and `reenable_mask()`
+impossible.
+
+Alice
