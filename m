@@ -1,58 +1,63 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793018244;
-	b=5mXhUMZzy6C+gCSxDicmM7jRqLoceM+FYOKhZBBon7uzssNJUTCf45E1KQx9IZTGgF/9
-	 Yl60NvZnBVLCkb59GFR9YMkEDl3FOD7lErN0xpbhU7uP9YUyrRqzdD94RkBWEUvZTR7Xy
-	 oBL2YPiAgiNOcI/pcY77xHJ8X3kxzpO2SAn4phxba03zsK9acPlKcYUr7tRRP9DJ8lWgN
-	 yh/3w2ctAaCRiRHpgbuKCSn5QZft65955lMf8L0+zfY2WrtRMh2XJBcWiOVnFKzWYcu4z
-	 UeLXTMh8dHOZftKujnAHx0N05WGT9RKcBPPvgc+L4Tc9VGE0lqCtqN0l4tLcIEj48Dw==
+	t=1793019529;
+	b=unPYiICgwyQqw18IqwbigY0l8Ps4gprzwE81SX5AcH6J+ZsKwQkDGhMpzE6XSghpnDsk
+	 O0Kc7Qt5pVqgQl0M5tipw39Kz2XIXtntHqmMPZdVCAqwprJeJ6BgsfbjmXmpZ8rucWF8c
+	 lddKMrNPqsxqmgblD7qEKc9a7XlKWoBedwPle/VbmAKytV+mqXppNzCq8T70c5B5XOtHB
+	 QgslxVHJFyvOKqGaDAvVGTtYdDqS8VPZptqR3DRQpXzxp9reGsq6j5LNA2ZqyaYv9lIPg
+	 vUb47eYSLYmOq1rlqs2XcjEyNjO94SJe7ou/TSXjIKCBumVO3Km0GV0NA0Im8mkLp0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793018244;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793019529;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
 	 Date:Message-ID:MIME-Version:Content-Type;
-	bh=fZqCPTLTRWjDgsjvFjAIcVWHHfMJtrtuvz6U2uvn448=;
-	b=2ud79hKJiDZPMTLnf8HdJrkNFaSHufMu+N+lYMa4ywxxOeYV/OJrzgLxdZd4VNoPvnqd
-	 vFBRV+pyKtkwrE1TyE7ses98uxnVpJZY0Uh+QCCi0MCkLp/MKq031EZ8iDFSzPFXVVDTv
-	 NplSRmGSodtM8c6toHk4vGQ234Rnjpz+54z1e74gjRZ/gNi9ES0daEgrCTiksMJ0O8qJ3
-	 X5DgDFGiuvsebGnw15wydlZqKoBjyJfI+RQ8+VuiMbO8XUTW255KEa95XkfGB5b3U3cIy
-	 ghTgDICsc70Y7AX4gCrG346U+hy7YZ6QlGweLDjKueNEvIbhjivsi72P+ih0vIooz+w==
+	bh=1AcPxe8YD9t4RV8npHRzFGvkXCba4Ptv/GRveQw64xk=;
+	b=pS+MgC9padNT58N5croSHIgsCkd7prNyaL078zSVPVoaCzK6wZ23o7PPgdd8QeJsd8hS
+	 j3Xm0vb7KW96hYK6qDcDDoH4Hns4RFzFU6urJ3QhlWP8V/m1Tf08HXSE5ZolPRNCF76GP
+	 nUriWzBW/2xJfCKkwDsxsf21ehqepERrms+wamr4OuoVdo4239pNOXzg94p878RDQjGwB
+	 Nu2DAjanqdCVAzOQjkdcfq+LTdyxDErWJnFzFpX+1FxEO/E5LP6XUFI/8fnA2E3W4d62G
+	 R6sD/yCk2bDRqUfpDp5XhnLj21Zv24A40pr3wfhuex9UG1bkmHgJsiHxXs3fZLm3dOA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="exiUM/qC";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SkYTrHBt;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E96F606A31B
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 Oct 2026 12:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D69D606A326;
+	Mon, 26 Oct 2026 12:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=exiUM/qC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC231F01828;
-	Mon, 26 Oct 2026 12:37:19 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SkYTrHBt
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24AB31F01825;
+	Mon, 26 Oct 2026 12:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793018243;
-	bh=fZqCPTLTRWjDgsjvFjAIcVWHHfMJtrtuvz6U2uvn448=;
+	s=k20260515; t=1793019529;
+	bh=1AcPxe8YD9t4RV8npHRzFGvkXCba4Ptv/GRveQw64xk=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=exiUM/qCojYpk3ZB+rkytfMWewmEIaRXLWBtyNz9FwJi+gJu+w8daqxDqi10CkUP/
-	 JkroqqUOdq4ZwckNl6MhrycdpwrF7D4N/56gh4T09VVdFbjGHjrsdiGh3U0ihplpEy
-	 zXVsraUeX1wsxeQYe2i/eEDhj8X+4ARbHXAib6kfK+99VhHSmgRe8OXrY+u7rxQ0fm
-	 ondPGOUObjRHsVEHdQwIKx0KM5WvviD8q81enSVV3iJ7bnYH0WvgVPoQSVnl1ATCbs
-	 HZf4SaPa52aM0qf2wdwrCDUQ1O2Gu6b7YZqVGq/0IAQwtWW6uYuO+U23nPUZtZasaB
-	 RsLd2P17BJz1w==
+	b=SkYTrHBtnhMCcCk9oA3UT22C+yXYFPA5MynIsZMPLs5t0UYLyg3NmXqSWG2RCi+Bx
+	 ZDWPwev7WT+akDxc63PkPECOilkNVeyJQZvq9/1GJyDP1jXEG8mMZRw08JX6J+llbB
+	 SLFAN0XOb0Oi3N3ForFsU//0MHKDW4DUxdIdjcVQVb5pd05ajDav8EersdxLDkQqC1
+	 icJTZFLoOTD73TkZv03usW0NCTPHG05p+418aE48/XRuaWaPMZxGiKNYeqmEPR58Io
+	 0ba3Nx7Xc3xteumaaLaj/pKiG3t68eUbmwBT9IZUUgM5uhfn1bkUBmBwM/rRoB6YAD
+	 l/duhPOFI7HIg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Priya Bala Govindasamy <pgovind2@uci.edu>, ojeda@kernel.org
-Cc: boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org,
- acourbot@nvidia.com, work@onurozkan.dev, rust-for-linux@vger.kernel.org,
- ardalan@uci.edu, zhiyunq@cs.ucr.edu, dzueck@uci.edu, pgovind2@uci.edu
-Subject: Re: [PATCH] rust: configfs: Fix reference creation from
- uninitialized data in `Attribute::show`
-In-Reply-To: <687438f7767b2c65d9782d92a6e96387e63adc99.1791501243.git.pgovind2@uci.edu>
-References: <cover.1790981219.git.pgovind2@uci.edu>
- <687438f7767b2c65d9782d92a6e96387e63adc99.1791501243.git.pgovind2@uci.edu>
-Date: Mon, 26 Oct 2026 13:37:04 +0100
-Message-ID: <87ecdcocy7.fsf@t14s.mail-host-address-is-not-set>
+To: chenhan <chenhan0017.work@gmail.com>, rust-for-linux@vger.kernel.org
+Cc: boqun@kernel.org, fujita.tomonori@gmail.com, frederic@kernel.org,
+ lyude@redhat.com, tglx@kernel.org, anna-maria@linutronix.de,
+ jstultz@google.com, sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
+ tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev,
+ miguel.ojeda.sandonis@gmail.com, tomo@flapping.org,
+ georgeandrout13@gmail.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v4 2/3] rust: time: make Delta division and remainder
+ fail consistently
+In-Reply-To: <20261023130413.178487-3-chenhan0017.work@gmail.com>
+References: <20261023130413.178487-1-chenhan0017.work@gmail.com>
+ <om4kxbW6RonEr7EJOnn5nizbkBZi1B662AdSPv_iWS7XNJXuPCDAsOeWG0SMSeK7XqoTrwOPzwMC1jS2nKknXQ==@protonmail.internalid>
+ <20261023130413.178487-3-chenhan0017.work@gmail.com>
+Date: Mon, 26 Oct 2026 13:53:26 +0100
+Message-ID: <87bj8goc6x.fsf@t14s.mail-host-address-is-not-set>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -64,32 +69,109 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Hi Priya,
+"chenhan" <chenhan0017.work@gmail.com> writes:
 
-Priya Bala Govindasamy <pgovind2@uci.edu> writes:
-
-> When a configfs attribute is written and then read through the
-> same open file, the read reuses the buffer allocated for the write.
-> This buffer is not zero-initialized. Writes to the attribute go
-> through `fill_write_buffer()`, which allocates
-> the buffer with `kmalloc`, and initializes only the input bytes
-> and a trailing NUL byte.
-> The read in `Attribute::show` callback creates an `&mut [u8; PAGE_SIZE]`
-> to the buffer. This is unsound because the reference may include
-> uninitialized bytes.
+> Delta's division and rem_nanos() use Rust operators on 64-bit and C
+> helpers on 32-bit. The report shows that rem_nanos(0) can return 10 for
+> a 10 ns dividend on ARMv7, while the same call panics on x86-64. The
+> i64::MIN / -1 case also differs, and neither API documents these inputs.
 >
-> Fix this by initializing the contents of the buffer to 0 in the
-> `Attribute::show` callback before creating a
-> reference to it.
+> Check for zero divisors and i64::MIN with -1 before the architecture-
+> specific code, and document the panic conditions on each method. This
+> matches Rust's signed division and remainder operators, including when
+> overflow checks are disabled. Valid-input results and API signatures
+> are unchanged; invalid inputs now panic on 32-bit too.
 >
-> Fixes: 446cafc295bf ("rust: configfs: introduce rust support for configfs")
-> Reported-by: Dylan Zueck <dzueck@uci.edu>
+> No in-tree calls to either API were found at the base commit. The checks
+> stay in the existing methods so the fix does not depend on introducing
+> a math module.
+>
+> Fixes: 4521438fb076 ("rust: time: Implement basic arithmetic operations for Delta")
+> Reported-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1254
+> Cc: stable@vger.kernel.org
 > Assisted-by: LLM
-> Signed-off-by: Priya Bala Govindasamy <pgovind2@uci.edu>
+> Signed-off-by: chenhan <chenhan0017.work@gmail.com>
+> ---
+> Changes since v3: none.
+>
+>  rust/kernel/time.rs | 30 ++++++++++++++++++++++++++++--
+>  1 file changed, 28 insertions(+), 2 deletions(-)
+>
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index 16b44e82d2ac..4415e91a5227 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -412,8 +412,20 @@ fn mul_assign(&mut self, rhs: i64) {
+>  impl ops::Div for Delta {
+>      type Output = i64;
+>
+> +    /// # Panics
+> +    ///
+> +    /// Panics if `rhs` is zero, or if `self` represents [`i64::MIN`] nanoseconds
+> +    /// and `rhs` represents `-1` nanosecond.
+>      #[inline]
+>      fn div(self, rhs: Self) -> Self::Output {
+> +        if rhs.value == 0 {
+> +            panic!("attempt to divide by zero");
+> +        }
+> +
+> +        if self.value == i64::MIN && rhs.value == -1 {
+> +            panic!("attempt to divide with overflow");
+> +        }
+> +
+>          #[cfg(CONFIG_64BIT)]
+>          {
+>              self.value / rhs.value
+> @@ -421,7 +433,7 @@ fn div(self, rhs: Self) -> Self::Output {
+>
+>          #[cfg(not(CONFIG_64BIT))]
+>          {
+> -            // SAFETY: This function is always safe to call regardless of the input values
+> +            // SAFETY: The checks above exclude a zero divisor and `i64::MIN / -1`.
 
-Please check if this patch would solve the issue:
-https://lore.kernel.org/r/20261015-b4-configfs_kzalloc-v1-1-17c1ba6db062@debian.org
+Why change the safety comment here? If the function is always safe to
+call, the exclusion is not relevant. Was the old comment wrong?
+
+>              unsafe { bindings::div64_s64(self.value, rhs.value) }
+>          }
+>      }
+> @@ -615,8 +627,21 @@ pub fn to_jiffies_timeout(self) -> Delta<Jiffy> {
+>      }
+>
+>      /// Return `self % divisor` where `divisor` is in nanoseconds.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if `divisor` is zero, or if `self` represents [`i64::MIN`]
+> +    /// nanoseconds and `divisor` is `-1`.
+>      #[inline]
+>      pub fn rem_nanos(self, divisor: i32) -> Self {
+> +        if divisor == 0 {
+> +            panic!("attempt to calculate the remainder with a divisor of zero");
+> +        }
+> +
+> +        if self.value == i64::MIN && divisor == -1 {
+> +            panic!("attempt to calculate the remainder with overflow");
+> +        }
+> +
+>          #[cfg(CONFIG_64BIT)]
+>          {
+>              Self {
+> @@ -628,7 +653,8 @@ pub fn rem_nanos(self, divisor: i32) -> Self {
+>          {
+>              let mut rem = 0;
+>
+> -            // SAFETY: `rem` is in the stack, so we can always provide a valid pointer to it.
+> +            // SAFETY: The checks above exclude a zero divisor and `i64::MIN / -1`.
+> +            // `&mut rem` provides a valid, aligned, writable pointer for this call.
+
+Again, was the old safety comment wrong?
+
+Once kunit supports the `#[should_panic]` attribute, we can assert the
+behavior on all platforms.
 
 Best regards,
-Andreas
+Andreas Hindborg
+
 
