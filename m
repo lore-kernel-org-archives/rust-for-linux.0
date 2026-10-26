@@ -1,45 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793018032;
-	b=fvkZ+5kGxlyuMK4v1TRErrtLijmrm70+GtgL9P1TDzBqtjmGeeDFtkZ5pThIwc9IbF1Q
-	 JMMkk+7Vqv+xvq2MRA/ljMAPDn2GA2qdiKSqk9+0JYJhO1Pv0gYHBq66fwhY4OOmz2ZwH
-	 Bu8QZoPChSntkWOCu2RN5gHIJq4L03rdjKsS0F0zN7s0YicNrXh29gGSGGJ9/TYj9uDNi
-	 96qMI6T0NOcSitjr+f194q/6BSQXE2bR1paYVKMnhBNq6K232G9UU4h+fVTVHp67rQUbZ
-	 D2ESYPqOamba+YcMghwRLZz/q0/3ZjPAafIgt5THLp5n+TmxuctVATEMpzb50frbxHw==
+	t=1793018244;
+	b=5mXhUMZzy6C+gCSxDicmM7jRqLoceM+FYOKhZBBon7uzssNJUTCf45E1KQx9IZTGgF/9
+	 Yl60NvZnBVLCkb59GFR9YMkEDl3FOD7lErN0xpbhU7uP9YUyrRqzdD94RkBWEUvZTR7Xy
+	 oBL2YPiAgiNOcI/pcY77xHJ8X3kxzpO2SAn4phxba03zsK9acPlKcYUr7tRRP9DJ8lWgN
+	 yh/3w2ctAaCRiRHpgbuKCSn5QZft65955lMf8L0+zfY2WrtRMh2XJBcWiOVnFKzWYcu4z
+	 UeLXTMh8dHOZftKujnAHx0N05WGT9RKcBPPvgc+L4Tc9VGE0lqCtqN0l4tLcIEj48Dw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793018032;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:Cc:To:From:Subject:References:
-	 In-Reply-To;
-	bh=TFPuilWXCXfwg8PUB55ZTfR6U0KsGixzyEBhZTSwGeQ=;
-	b=wTW8OG2Cm2104p8OLQdwAz8IdMtyLdRYyXnt6cn5xet8rr6LOutm3bzSPW5qWvTQlqTt
-	 NPgG9O4wc04+iUpG7fn+LFxb2A2wBcdWTpVo5UhAzG7o5gU280/vgUfMVhsdIx4PmWVyN
-	 SU6JYtBLKqEGf8GOzPC98Fas0RWtWfVT84gsDRXImUjQpJibpS48OYwgIQMGLVkuv+v+f
-	 8loMQgCMSmSY/bLExvljYcbe2I92FohfF2/PpGo3mX0vkP+QnHekfHRwJOzpQH3LfJ6UP
-	 IhdAz1yMdxe5J4RUW+1c8oFw9NwfIxNa8S4gku+nEX+TgWNDiR7D7eIUdcz0vD3O/zQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793018244;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:MIME-Version:Content-Type;
+	bh=fZqCPTLTRWjDgsjvFjAIcVWHHfMJtrtuvz6U2uvn448=;
+	b=2ud79hKJiDZPMTLnf8HdJrkNFaSHufMu+N+lYMa4ywxxOeYV/OJrzgLxdZd4VNoPvnqd
+	 vFBRV+pyKtkwrE1TyE7ses98uxnVpJZY0Uh+QCCi0MCkLp/MKq031EZ8iDFSzPFXVVDTv
+	 NplSRmGSodtM8c6toHk4vGQ234Rnjpz+54z1e74gjRZ/gNi9ES0daEgrCTiksMJ0O8qJ3
+	 X5DgDFGiuvsebGnw15wydlZqKoBjyJfI+RQ8+VuiMbO8XUTW255KEa95XkfGB5b3U3cIy
+	 ghTgDICsc70Y7AX4gCrG346U+hy7YZ6QlGweLDjKueNEvIbhjivsi72P+ih0vIooz+w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LaAOD35E;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="exiUM/qC";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBFE606A31A;
-	Mon, 26 Oct 2026 12:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E96F606A31B
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 Oct 2026 12:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LaAOD35E
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 159161F01825;
-	Mon, 26 Oct 2026 12:33:49 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=exiUM/qC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC231F01828;
+	Mon, 26 Oct 2026 12:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793018032;
-	bh=TFPuilWXCXfwg8PUB55ZTfR6U0KsGixzyEBhZTSwGeQ=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=LaAOD35EOJqJ4/PiCPhJSiggVxHHw9TGsC8KDmXDDHOVhyg0eCTWiHy5UiC7bNNj9
-	 9YWY5x5blQh1qKrYR9c4BK9Cb246ve7D8tcPvk91ETzxSvul8As2C6vnYCkD3X9e2W
-	 o91erdDeGSEI1TZwtSOiKyHaweTl6skyRWFBhFSnz26ZWikoJxGE/PJdJmryJEZjSn
-	 WQ1niuevvqgleJgsppmZx18jGdm9MZMOF3gj3peyVwuv/Q2K84Ih/FFqD7Q7n+4KiP
-	 YhrwkRI97ixaemKh7IqUC/JFXDluEEZeYn0trJRepve2jQYJUQ/Qqt1PCqlGAi8PBG
-	 o+60uNsI5Mh5A==
+	s=k20260515; t=1793018243;
+	bh=fZqCPTLTRWjDgsjvFjAIcVWHHfMJtrtuvz6U2uvn448=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=exiUM/qCojYpk3ZB+rkytfMWewmEIaRXLWBtyNz9FwJi+gJu+w8daqxDqi10CkUP/
+	 JkroqqUOdq4ZwckNl6MhrycdpwrF7D4N/56gh4T09VVdFbjGHjrsdiGh3U0ihplpEy
+	 zXVsraUeX1wsxeQYe2i/eEDhj8X+4ARbHXAib6kfK+99VhHSmgRe8OXrY+u7rxQ0fm
+	 ondPGOUObjRHsVEHdQwIKx0KM5WvviD8q81enSVV3iJ7bnYH0WvgVPoQSVnl1ATCbs
+	 HZf4SaPa52aM0qf2wdwrCDUQ1O2Gu6b7YZqVGq/0IAQwtWW6uYuO+U23nPUZtZasaB
+	 RsLd2P17BJz1w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Priya Bala Govindasamy <pgovind2@uci.edu>, ojeda@kernel.org
+Cc: boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ dakr@kernel.org, daniel.almeida@collabora.com, tamird@kernel.org,
+ acourbot@nvidia.com, work@onurozkan.dev, rust-for-linux@vger.kernel.org,
+ ardalan@uci.edu, zhiyunq@cs.ucr.edu, dzueck@uci.edu, pgovind2@uci.edu
+Subject: Re: [PATCH] rust: configfs: Fix reference creation from
+ uninitialized data in `Attribute::show`
+In-Reply-To: <687438f7767b2c65d9782d92a6e96387e63adc99.1791501243.git.pgovind2@uci.edu>
+References: <cover.1790981219.git.pgovind2@uci.edu>
+ <687438f7767b2c65d9782d92a6e96387e63adc99.1791501243.git.pgovind2@uci.edu>
+Date: Mon, 26 Oct 2026 13:37:04 +0100
+Message-ID: <87ecdcocy7.fsf@t14s.mail-host-address-is-not-set>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -48,127 +61,35 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 26 Oct 2026 13:33:48 +0100
-Message-Id: <DMERUEZT5R3O.2K65JB1FXYVR4@kernel.org>
-Cc: <airlied@redhat.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
- "Lyude Paul" <lyude@redhat.com>, "Gary Guo" <gary@garyguo.net>, "Alexandre
- Courbot" <acourbot@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>
-To: "Dave Airlie via B4 Relay" <devnull+airlied.redhat.com@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 2/2] gpu: nova-core: add support for GPU timer block.
-References: <20261026-drm-rust-next-v1-0-14a4ae469175@redhat.com>
- <20261026-drm-rust-next-v1-2-14a4ae469175@redhat.com>
-In-Reply-To: <20261026-drm-rust-next-v1-2-14a4ae469175@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Mon Oct 26, 2026 at 3:56 AM CET, Dave Airlie via B4 Relay wrote:
-> diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.r=
-s
-> index 88662da634dc..d5c67625b561 100644
-> --- a/drivers/gpu/nova-core/regs.rs
-> +++ b/drivers/gpu/nova-core/regs.rs
-> @@ -419,6 +419,24 @@ pub(crate) fn mem_scrubbing_done(self) -> bool {
->      }
->  }
-> =20
-> +// PTIMER
-> +
-> +register! {
-> +    base: NovaRegisters;
-> +
-> +    pub(crate) NV_PTIMER_TIME_PRIV_LEVEL_MASK(u32) @ 0x00009430 {
-> +        4:4 level0 =3D> bool;
-> +    }
-> +
-> +    pub(crate) NV_PTIMER_TIME_0(u32) @ 0x00009400 {
-> +        31:5 nsec;
-> +    }
-> +
-> +    pub(crate) NV_PTIMER_TIME_1(u32) @ 0x00009410 {
-> +        28:0 nsec;
-> +    }
-> +}
-> +
->  // The modules below provide registers that are not identical on all sup=
-ported chips. They should
->  // only be used in HAL modules.
-> =20
-> @@ -520,6 +538,28 @@ pub(crate) mod gh100 {
->              31:0    fsp_boot_complete;
->          }
->      }
-> +
-> +    // PGC6/TIMER
-> +    register! {
-> +        base: NovaRegisters;
-> +
-> +        pub(crate) NV_PGC6_SCI_SEC_TIMER_TIME_0(u32) @ 0x00118f54 {
-> +            31:5 nsec;
-> +        }
-> +
-> +        pub(crate) NV_PGC6_SCI_SEC_TIMER_TIME_1(u32) @ 0x00118f58 {
-> +            28:0 nsec;
-> +        }
-> +
-> +        pub(crate) NV_PGC6_SCI_SYS_TIMER_OFFSET_0(u32) @ 0x00118df4 {
-> +            0:0 update;
-> +            31:5 nsec;
-> +        }
-> +
-> +        pub(crate) NV_PGC6_SCI_SYS_TIMER_OFFSET_1(u32) @ 0x00118df8 {
-> +            28:0 nsec;
-> +        }
-> +    }
->  }
+Hi Priya,
 
-Timer specific register definitions should go into the timer module.
+Priya Bala Govindasamy <pgovind2@uci.edu> writes:
 
-> +#[pin_data]
+> When a configfs attribute is written and then read through the
+> same open file, the read reuses the buffer allocated for the write.
+> This buffer is not zero-initialized. Writes to the attribute go
+> through `fill_write_buffer()`, which allocates
+> the buffer with `kmalloc`, and initializes only the input bytes
+> and a trailing NUL byte.
+> The read in `Attribute::show` callback creates an `&mut [u8; PAGE_SIZE]`
+> to the buffer. This is unsound because the reference may include
+> uninitialized bytes.
+>
+> Fix this by initializing the contents of the buffer to 0 in the
+> `Attribute::show` callback before creating a
+> reference to it.
+>
+> Fixes: 446cafc295bf ("rust: configfs: introduce rust support for configfs")
+> Reported-by: Dylan Zueck <dzueck@uci.edu>
+> Assisted-by: LLM
+> Signed-off-by: Priya Bala Govindasamy <pgovind2@uci.edu>
 
-Why is this #[pin_data]?
+Please check if this patch would solve the issue:
+https://lore.kernel.org/r/20261015-b4-configfs_kzalloc-v1-1-17c1ba6db062@debian.org
 
-> +pub(crate) struct Timer {
-> +    chipset: Chipset,
+Best regards,
+Andreas
 
-Why does this carry the Chipset?
-
-> +    sys_timer_offset_ns: i64,
-> +}
-
-More generally, what's the purpose of this struct? What does it represent?
-
-Nothing seems to tie this object to a particular GPU or prevents constructi=
-ng
-multiple instances for the same GPU.
-
-It also doesn't seem to provide any access to the underlying HAL's function=
-s?
-
-> +impl Timer {
-> +    pub(crate) fn new(bar: Bar0<'_>, chipset: Chipset) -> Result<Self> {
-> +        Ok(Self {
-> +            chipset,
-> +            sys_timer_offset_ns: hal::timer_hal(chipset).init(chipset, b=
-ar)?,
-> +        })
-> +    }
-> +
-> +    #[expect(dead_code)]
-> +    pub(crate) fn sys_timer_offset_ns(&self) -> i64 {
-> +        self.sys_timer_offset_ns
-> +    }
-
-What do we need this method for?
-
-> +}
-> +
-> +pub(crate) fn get_cpu_time_ns() -> i64 {
-> +    Instant::<Monotonic>::now().as_nanos()
-> +}
-
-I don't think this helper adds much value, let's just make users call
-Instant::<Monotonic>::now().as_nanos() themselves.
