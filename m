@@ -1,80 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.58.211
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.145
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793009878;
-	b=EjSNmL9SQRjJbiWyyg7QHykq3GYku+DvnoE0+isuDk3zfOfntfGNwk4ujDiVL8qWOr9a
-	 ZvjmSwk+O3ggP6z2Vf/mGwhIA6tFUYFagi99a6KrP0xYqOjjPJwsSsiJ9iqbTuV+167yQ
-	 F6U69Hl6PUEyKrAA33CF1iGP1Q1XP6ad9oa8Qclkxex1A5SuZtXvt7OwEhKfNfw6j+byw
-	 con6NnWvFeoYNF3U+AjqhVeEyBvQ1XeB6pZh8K1ZJOyto2LJ6y1JqivJnSq8EnLW0kOxy
-	 9SHm3d3IKlSWkhlHgYVcllvRnTYg3ebSJW+l4doOi/Xuau8DBosmZ2EvwFZDA2Jb08Q==
+	t=1793013386;
+	b=1gIIkbO8To/tdOUHVsitJ5IZxB5yuXyfyFPgyH1EEgWwZH2FpV/sWVSGWKXbJ0MYQLfU
+	 9DCBNHHhEDMscQmty85j1mzyolidaO5NWtFOmpePjTtvi7VoIfOBpoKjZjLLKLD0kdkpm
+	 6hXhh6M1av6WGwKzp6IU8VS0Cq0eRZ7QIldK1DL1cxCRtCObju1+wccabDkW7ERDvn31q
+	 xyyxUGkUDquxoJ1ToytE1sYaVMktrVoP6CWHsi7SeHOfy2q0Lc10EPAYuJRXIn/jpqn/5
+	 DPEn4DVTi4r/KJngDFWX0+GM1ElB/erbwU6pscd7E6lBOsX3H9MCismU6pCsw7VJ1lw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793009878;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=nIdwAIsQM59LO76nrCGAWzZXk8En7EoY7C0IHrefwTE=;
-	b=DOpzGhHX4Lj6X59VxsVrlM8dlpzzlCWakm+sk9NZUEDhWr0uQKAINbgsqcjRBZaacUvG
-	 dalimvTxRdNDLViZOwL3C4EWodIx5y9p0igk4NVjvVR52vFmUNs10RzPJEa5+N4tEyr7G
-	 1HkkILhKY0G0E5IFmv5hhEVsyc1OwEHENb626pUcLzEMcWKFd9dKhJ3jpboykZYorQCbp
-	 UAHKE47Z/in1QQWSoblgOo4HbiGDYF79ndcdahGJEE82pXuCSx+BLIfDxC88j+UFUJ0f1
-	 BpX6qZ63KB8yQChGsyuomtSVf2UtbVI+ZQO2tvtwjsaJOhjIiwQ5OmqtfQJjWjfF+fg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793013386;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=DXYVe7CNLIz7yJ9VzKjWYgPWAbLU1uMBEbXYftb1oMU=;
+	b=uUoBAdt/k/fBL1EE6iIu/vmsap08WuCoRsf5gQcYMi1DlUQT3cRiVOFeWHIaS5vT2nEp
+	 K16E1TCqvyZnWLk/m4N/iV/vGt01+4FVHcRtwYkYHOFYpVpIMIPZTfzdNVLNhkVYYLWdX
+	 Uzervvh5R6Xn4yHx0w90vmeWDJCgxZOIll5CAPKLxCRX//km1YYAn1qy/PBjc73ojUUzU
+	 dSSA+1rG1+g/iLLezbdRgUsIo3P2XFLh/CHtDwhGh0WR2z6YE1klT8AIoLjqoZlUVUP2S
+	 9CyS3DsG8R0U1gIwRhbMn05GN3VcbFj4wuEPaZfJGcclYcdVIUSEn8vU+6AMOkGQa/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=BWwdRF4l;
-	arc=none smtp.remote-ip=162.62.58.211
-Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=none header.from=jannau.net;
+	spf=pass smtp.mailfrom=jannau.net;
+	dkim=pass header.d=jannau.net header.i=@jannau.net header.a=rsa-sha256 header.s=fm1 header.b=evLfp9jz;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=QxHLfqly;
+	arc=none smtp.remote-ip=103.168.172.145
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BB3606A31D;
-	Mon, 26 Oct 2026 10:17:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63BB3606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D5D606A921
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 Oct 2026 11:16:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D9D5D606A921
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=BWwdRF4l
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1793009871; bh=nIdwAIsQM59LO76nrCGAWzZXk8En7EoY7C0IHrefwTE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BWwdRF4lkuc2Law2XRnE9yy2PpidXifbZep8M4VpiSnS76T+FJRQ6CsvFdbpSnNyh
-	 XstipOxTz7HZ2SJ0NrNzFIR3xpADYCCP7rMxmdNUVEuC3yJnJObELMZJfXMTAsX6JV
-	 GK8Rdq2BujHAJdWSXndqBlXWO+rVTPPINWHF03n0=
-Received: from shuai-VMware-Virtual-Platform.. ([117.158.156.199])
-	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
-	id 46F8F47C; Mon, 26 Oct 2026 18:17:47 +0800
-X-QQ-mid: xmsmtpt1793009869tc08rj5jk
-Message-ID: <tencent_B38CD8E484847BAF740ACB8E7C5613002E06@qq.com>
-X-QQ-XMAILINFO: NRA0BSos0T8khA8ICPBIjwbFkcndRvstyu8419qAvg5VhbU2kmBLx+/CXagEqi
-	 6A3tXTuQJahjjs1mEJJduWKI3uuJhGN6aHHRyTLorSRiaWWJMGdnOgJGSh2zEB4LEBS0PZj+MuNN
-	 HrrLfZamizZABMP0hoiLfUS7yVTccH5CPrTWu6aed2CvJp94QXBcchqwcAfiqB1UxPXJUAheMAO8
-	 i507Q5BTHf/IP0CaYlKrKOmOBHGRCgIe267qIYmKf4uyvHcS7Kv2TOxJbOPqwf4G5YSiDs6PJuYQ
-	 9rEmWuH92xo1nLB8nqA+Sserg8TloKy9m+nXjrHZpJMZ96Rvs3WczVHnpQu+tuiHlzqe+UCIBhYd
-	 fhC6KdqCZV+Yrl+Ed61U99gc6YgVldjj1yHWITQmxijwnVBPGK345ybIVBhXRsTuFSiWXoAT8Lr2
-	 KlrMn8DqoYIeRSMcw2CxV60ofsZZ2FtBCue+k+Be0u5VHTQFV8lxzeEqTdeMav9ELV14YH1+riTC
-	 2XtSYcAMPN57yizPNOfrxvkrLksOi5ESyPXQTcw/DNH92kT/xHL6K6ctJlt8uxvaWMLiNOkJSXXH
-	 QzhvdyGFotLGMk1H39yLJsVA/a8KSlzPkNbXqo8pMV7TJ4c5YIvt101U7KlrlEKLMgw9npSt+9XE
-	 fC932+YrMHSPJHfFCRv4Nm22NVT3A90WqPsPuhEWZpBu0h7WYd1zzommEfqd3FtFE3v6S+ROBs22
-	 layxcsO0MV38VSnHiBc8V2IWRC9oParCt05vfyeVEWu96AUqH3gyxE87gfSThDC+6gMk3VctKmJo
-	 uGGcyr8BZwXoTgp7XmcHirky/OR8xeD2eCKpiGctY69A4r5jlH/BS1pogyQfmXd08vZp2i7Hscfp
-	 KHxUtb1PkEPK5khCZaX4zFmqchxgItpXj3YMpyVMWUsY3lFpRAVxdDkUzK7F/taUaX1J+qd5o252
-	 Byeg22daL9kPFJizWqeaRyfCd7ZSgoTJtcvZe6HG3ucoRsqw6WIO/VeN0GJF/IncPfQPYFrZ4kUR
-	 2hUHUF4dxQknAFDFvDSxoK+AyTdFuFNy5WvHSvGii/9RjoLJKo3K9QjnB2doxVpxyBSYcb2JMB/w
-	 mptCyAEw1S4bnXhaiQnu5mZJhcX56WIHIzK8TJvycNuGevoPuHtvSnjJvy5Q==
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-From: Shuai Liu <847807867@qq.com>
-To: linux-spi@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: broonie@kernel.org,
-	ojeda@kernel.org,
-	dakr@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Shuai Liu <847807867@qq.com>
-Subject: [PATCH v2 1/3] rust: helpers: add SPI helpers
-Date: Mon, 26 Oct 2026 18:17:45 +0800
-X-OQ-MSGID: <20261026101747.126903-2-847807867@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261026101747.126903-1-847807867@qq.com>
-References: <20261026101747.126903-1-847807867@qq.com>
+	dkim=pass (2048-bit key, unprotected) header.d=jannau.net header.i=@jannau.net header.a=rsa-sha256 header.s=fm1 header.b=evLfp9jz;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=QxHLfqly
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.phl.internal (Postfix) with ESMTP id A0F3FEC0390
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 Oct 2026 07:14:26 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Mon, 26 Oct 2026 07:14:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1793013266;
+	 x=1793099666; bh=DXYVe7CNLIz7yJ9VzKjWYgPWAbLU1uMBEbXYftb1oMU=; b=
+	evLfp9jzLV4IDOdyesGVYhsJiwSxzDYhlsMG9KOlbI4/BIyeF0XOtn/jq+k4XtWC
+	KQeSBG/Y7yjxcQawhLcrvuQ9y0vIQzvsj6KB2zuqRQ6qpaSFbJN86+cukPmimp1H
+	LCETV/F+XRO+lcNiz+MiNJmn8NjFRX80faveqjWoaCSus+q68xbtWSkhTeEo4hoo
+	L2QNh2Q7Qh0zVCeOc3d6b4fdCmhONHbVILTbjZu33fOCckzM33z4UKyx4CjDgdJJ
+	dCgeohdZ8qvLhLtAgVLsXw/k5JzUsu804GnTWg/TTPc1TM31OwHWeIIaNsA9ZdnM
+	ZQrfq5y0XXNbaQO4XihK8w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793013266; x=
+	1793099666; bh=DXYVe7CNLIz7yJ9VzKjWYgPWAbLU1uMBEbXYftb1oMU=; b=Q
+	xHLfqlyOW61irSWhdgOeP4B5TzzEJEANY31WjFuzhTLXZz8GHFJ0iSJ4J/Pvyx8K
+	Nt2CP9lCKMtEcf0UlMKFtl9UkDtnY63bGxmUOmcnMOyQuo/z5ovjEpI2MBGN4T4D
+	JOtu94e7sezy9jXYbbzVa64ffItxNEEJIxxZOvyBRsl7WuSNYjMki1FQHrm8Mld0
+	xbHTst51FdeIFYlg0pBXMdlHEqMxy2OYgP4dS4YZeCKlQ0VIlnl2ycffXIJEgo6d
+	YpD4eNmq172FxOacFZvXFRRs6qRRW0Xm38+OjQuFsKN6lzWJXH3RNVYcwDDIDMk/
+	Kus+leByN13WB8ZY/Pcvg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=sign d=jannau.net a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793013266; d=jannau.net;
+	mf=PGpAamFubmF1Lm5ldD4=;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm1:rsa-sha256:WMdJRHygm/5vfczU5RNOFuLDvs5eAyGqUQCkSRXQ985BXEn
+	iFnOZKG1tpMKOnQq5qOUIIjKLEWmOF+XhXjee6PiEjKywGMLHO/BDT3wWGrlOE4s
+	YOAJO5cCueMpj5/+Y9zkk3mufOxe7vUsZSWXiHJqKbxH/+L0x4lMGCr5h0SQmfIF
+	kO9W+F/oURN5ywME2XdJosz/ZmqdqRZWzY6E8WuBuqQE+bUqsfpNYzaqzN4XwpeP
+	NQN5iSkjwQQ3fDqFkHHjQstnAH3ACGxEHKaGPbIx5mCSFNCOZaYYDLEr4U7GE1v1
+	4Xd5QQLJhl7CZ1gjACxDkA/7BG6JkO9tBqKC3QQ==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-07;
+	repo=github.com/dkim2wg/interop; date=2026-10-18; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:RYSLW73I78j0EtqWI3hr1NOeLZj2Zc7tUlgixISG9Z4=:xGEkm1UVWNmD/CcCSf5Ky60m67kbjzi3LJ1BFgNgNPQ=;
+X-ME-Sender: <xms:EjbfamEcMROzPCt7DV5Z7KBa16LLySd-vtW-upGe6RTfEs-iCAVf2g>
+    <xme:Ejbfai7i5VhoWhQl54JGpM-ajuqMfRsuGnOTd81SUoi-MCN6iNOLuXdpNnpPisNHK
+    ebBu5q1H3g0KcUjFfC2jt7WJkPneVoBgmSfgGBJa8WN1mS8Bw8D9ddX>
+X-ME-Received: <xmr:EjbfagI-eZcsIT6KZsrAWASPSiUxgjOJiVnPxjp3OYpQcnrAVjkrKkNc7do0rtBCXqtU5Z6AKum0ncAX9RwhcHMEP1ynpzD92-4>
+X-ME-Proxy-Cause: dmFkZTFmWKNzxilsosn2AiOSTQBzQCKqijXuWDtuYcyNU5PT2LnXjQH9TggnkIPYYOofzf
+    5x1dpL92mqjacmPimklyXzPWwipYY6x+66VZu8Tv2NIJi/xjXE/dGg+P6gmCFOEPnAANMa
+    GWbcVZCeOd+6glMcPbe9sptsseTQLY/yMD/T8XDQ6zPyiAetAAobPNHg+7Fo1kWYVo3y4/
+    tJY7yjWdLCspccv2sVZ5tHGBaie7ZnUdej3ckQvzSCkHM28HfPYg1x/4QXp7MPPyN/oD0f
+    GXJxq3QMGIawVafsXBanxMlWFrsqrdL5PuIhs/OPluzLTCG5ZaD+HgOPfzieAHmkSzApDG
+    dUS7W9fWwNttwaIA1dA+pImrkBR/3h4GGIlu4fp4mQdzTZzodD69aDUoqGprDAjqE92Umm
+    HIXnO7yzSB9zvumuLffk1bR13Pcw2PylOdS3v2xKhZ0/hQfEFOTh69EaHkVzqaGKK66LRB
+    AqYAhO6JzyCfpuWnXGU+eE0ijYqpGIJ1cXWlvAYNxA6a1Moks0oaZ72SeTKyoJRYc+1dXT
+    vpkwdYn/YimgwbB3z72QU3OVGsaS+xCdyQsL5SKOmHGQJLYoYaGkrD144teXYlMcVTIkjG
+    AZ7E0WgasHyrpjfN+ZfjQM8wrVcvy8B+DQNi/N51eH6ydkjEihp6zDzuPJVQ
+X-ME-Proxy: <xmx:EjbfalAmflRK5VMw3HSlqyi-oge-d5cz46RcIbmPab_RgHFim6LTnQ>
+    <xmx:EjbfauRADlpgarBtCPtVcBu1D5NHlr7tv5mT2L2glbkZyLI3lyTt_A>
+    <xmx:EjbfavdIMb1swThSv9OECX9ncitpCOPHmJsy_ciFJ7WGRISDIpDKpQ>
+    <xmx:EjbfamhUhuduAZ-SeNLxpHgPdOQmiOwPFuhnOdBr6Rzy8rShrZmQlg>
+    <xmx:EjbfasDJ1osCpQeIa4Rh372S8YxD2aD_wpSu-hEnZcQSIdDEbubOewXu>
+Feedback-ID: i47b949f6:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 26 Oct 2026 07:14:25 -0400 (EDT)
+From: Janne Grunau <j@jannau.net>
+Date: Mon, 26 Oct 2026 12:14:09 +0100
+Subject: [PATCH 2/3] rust: drm: gem: add an is_imported() accessor
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -84,81 +119,88 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261026-rust-drm-gem-shmem-imported-sgt-v1-2-36f15ace04b1@jannau.net>
+References: <20261026-rust-drm-gem-shmem-imported-sgt-v1-0-36f15ace04b1@jannau.net>
+In-Reply-To: <20261026-rust-drm-gem-shmem-imported-sgt-v1-0-36f15ace04b1@jannau.net>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Janne Grunau <j@jananu.net>, Sami Tolvanen <samitolvanen@google.com>, 
+ Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev, 
+ Janne Grunau <j@jannau.net>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1695; i=j@jannau.net;
+ s=yk2025; h=from:subject:message-id;
+ bh=QM7q0FfDYp8A00L/ZX7AriznaohL6TlI/fH0ot/ZaOc=;
+ b=owGbwMvMwCW2UNrmdq9+ahrjabUkhqz7Zlwz0hhaH+Qc7y/ffjXG6ffajVZHHjs+Srway7NuX
+ uWLplaZjlIWBjEuBlkxRZYk7ZcdDKtrFGNqH4TBzGFlAhnCwMUpABM5oc/IcLy+T0Sh5N7u3/6a
+ kSzppx9xrNU8UbHnzbEQ1XM7boszv2D47200qe8dm3DNvjCFmvr/fxKVixZJXEjJfNKnf+aatLE
+ +EwA=
+X-Developer-Key: i=j@jannau.net; a=openpgp;
+ fpr=8B336A6BE4E5695E89B8532B81E806F586338419
 
-Add C helpers for the SPI functions that are `static inline` in C and
-therefore cannot be accessed from Rust directly: spi_unregister_driver(),
-spi_write() and spi_read().
+From: Sami Tolvanen <samitolvanen@google.com>
 
-The helpers are guarded by CONFIG_SPI, since the SPI core functions they
-call are not available when SPI support is disabled.
+Drivers need to check whether a GEM object is PRIME-imported.
 
-Also include <linux/spi/spi.h> in the bindgen bindings helper, so that
-the Rust side can access the SPI data types.
+Add BaseObject::is_imported(), wrapping drm_gem_is_imported() through a
+C helper shim.
 
-Signed-off-by: Shuai Liu <847807867@qq.com>
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Janne Grunau <j@jannau.net>
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/helpers/helpers.c          |  1 +
- rust/helpers/spi.c              | 25 +++++++++++++++++++++++++
- 3 files changed, 27 insertions(+)
- create mode 100644 rust/helpers/spi.c
+ rust/helpers/drm.c         | 6 ++++++
+ rust/kernel/drm/gem/mod.rs | 7 +++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index c706dda5b5ca..c9062aae959a 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -88,6 +88,7 @@
- #include <linux/security.h>
- #include <linux/serdev.h>
- #include <linux/slab.h>
-+#include <linux/spi/spi.h>
- #include <linux/sys_soc.h>
- #include <linux/task_work.h>
- #include <linux/tracepoint.h>
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 9bb850294a2f..6b0f50c12f9c 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -96,6 +96,7 @@
- #include "serdev.c"
- #include "signal.c"
- #include "slab.c"
-+#include "spi.c"
- #include "spinlock.c"
- #include "string.c"
- #include "srcu.c"
-diff --git a/rust/helpers/spi.c b/rust/helpers/spi.c
-new file mode 100644
-index 000000000000..8609d54962c0
---- /dev/null
-+++ b/rust/helpers/spi.c
-@@ -0,0 +1,25 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/spi/spi.h>
-+
-+#ifdef CONFIG_SPI
-+
-+__rust_helper
-+void rust_helper_spi_unregister_driver(struct spi_driver *sdrv)
+diff --git a/rust/helpers/drm.c b/rust/helpers/drm.c
+index 65f3f22b0e1d..8cf3ca7aeeb2 100644
+--- a/rust/helpers/drm.c
++++ b/rust/helpers/drm.c
+@@ -16,6 +16,12 @@ __rust_helper void rust_helper_drm_gem_object_put(struct drm_gem_object *obj)
+ 	drm_gem_object_put(obj);
+ }
+ 
++__rust_helper bool
++rust_helper_drm_gem_is_imported(const struct drm_gem_object *obj)
 +{
-+	spi_unregister_driver(sdrv);
++	return drm_gem_is_imported(obj);
 +}
 +
-+__rust_helper
-+int rust_helper_spi_write(struct spi_device *spi, const void *buf, size_t len)
-+{
-+	return spi_write(spi, buf, len);
-+}
+ __rust_helper __u64
+ rust_helper_drm_vma_node_offset_addr(struct drm_vma_offset_node *node)
+ {
+diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+index e01b8311dd89..5da8627275a2 100644
+--- a/rust/kernel/drm/gem/mod.rs
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -187,6 +187,13 @@ fn size(&self) -> usize {
+         unsafe { (*self.as_raw()).size }
+     }
+ 
++    /// Returns whether the object's backing buffer is imported from another
++    /// driver.
++    fn is_imported(&self) -> bool {
++        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `struct drm_gem_object`.
++        unsafe { bindings::drm_gem_is_imported(self.as_raw()) }
++    }
 +
-+__rust_helper
-+int rust_helper_spi_read(struct spi_device *spi, void *buf, size_t len)
-+{
-+	return spi_read(spi, buf, len);
-+}
-+
-+#endif
+     /// Creates a new handle for the object associated with a given `File`
+     /// (or returns an existing one).
+     fn create_handle<D, F>(&self, file: &drm::File<F>) -> Result<u32>
+
 -- 
-2.43.0
+2.56.0
 
