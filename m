@@ -1,78 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1793032874;
-	b=uYAXUEW3VRy7HkRQxcjJ+5C2zThqrIITxqGn6JrTLr9Qi2DltnNWKW2a7rhSbdny/HMZ
-	 i2J12svaaieh4nmOKgfru4QFs+iZwlT+QUubEkdnlyGmCvl0jJdLBMqXovimXJfoPZJYU
-	 bNa/sok1t5v1BZQzuVMGHohPO/w8DDxkTsiynItORzjjcp8/Z/3xBx3Rvtrc3IqeOviBC
-	 Rl36C6YlTgcjpzmLVwMjDT2aa7aiJh3F//6sMSOrXxo/f6E2zPIOq1x4jYUkbBKdB7jgL
-	 HmAmsFczZ8Sgq4GcczPO8ypXGiD5nfJEkGCo1KImv6vwn6W7wf3Pg5/nBH2eb+ZQpVA==
+	b=EwJKd4kZ7EpQ7pJbnciVhPBqhu7FfEmr0KjCZR3vfIL7lfBJDhloq0+03VtzobRaARik
+	 FcJrtLS3pPg8TtEb1YiKD8rg7cWD1jKsxdhMZthbx6I734De5tQ0F+VYL1udr4O+04Zqn
+	 v1zN3+ldiS3S57ykqnnWWE2GC5DJxCudwop4rB/Wd71FxmZUSMumDCja2p3j5yLT2fe52
+	 EmhOL9HCFwxieYylaDUdVqITQjhOT6faYFnI6mS4wFRPQPKSjeFgmKip1xxntcoAmGcOy
+	 utePoHMY4a7QJgFGYts5hIwsXddlP5yxT/+3r7b82gGZtBEKCHEnjNOkPKL/leYoaCQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793032874;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
 	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=8M0oh2AqgxAI6ZpQRJJhghp96GjY8sQQ1ghn1+UQZnU=;
-	b=3uUsw5B5njril/3KeCmHnXcuf5ViC1DF8OEtzoGXPwxdiLETBGGXjHwSQY4xn5qGc0K/
-	 KHcex4cbGZ5qkskyaSqnn8d9EQ50AHhCpLCi7FvNOSGVnNcEA6mB7E3l1gXUPmeZpH9nv
-	 69XHKz7GLy3+/xTHsOiq91X75l7LGc6AQ4tjaAY7LjBdTdEgrrnsEhTqVwx3YgJ6x0nXm
-	 TUSI2eUTB0N/4c6F5Y7nXlUD8l1TW5YYasVw1DRXNCvdTzma7qKYSOV/AbzPPodEPrypQ
-	 fPhDW8joq29tW1KYjr1GXsesZ45QMiVcIDIjksgOB1f+h1uAFDXjO2FgVGoPvHSEK6w==
+	bh=jKnS8OcReTjLaHrdFjGjVJmk8r0TI5DsvNMEnm3UFOw=;
+	b=Qg9rQIAGG01XBhcXohh+GBf0BbumqO6wP/zag4p8wxLD2/yc6jZ4v0QHp6VeVjcLOd62
+	 /ve27eE1hbmTD4Z/qA0dy9UtfAassaq/SqxnXsT7AMcrawAfmPCIyJl5zaSxmoPmwC1rV
+	 k/Fbac8qssiv6/1IRQe3d3RaNLiyuSlEJS95nhq8BG9kb2lXhM7SAZs9vVjsVAPAWmN9R
+	 wyWyBvD/3nnoTesSaZWytWUlKXlcllPnR0Fxkj4wE6J3xk4RkOH7oNlV4LgieKvdO3RwL
+	 qGQ9Yv2r6e3RRr/hDKKer6KiyQKkb/P4ZwdyxLsyJJL3vz3+4CpDLzuBqw0C59IsddQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xs1HTniV;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XOwOZ94p;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E73606A31D;
-	Mon, 26 Oct 2026 16:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F36F606A31A;
+	Mon, 26 Oct 2026 16:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xs1HTniV
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XOwOZ94p
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1793032873;
-	b=cArWtRwHhB15EMkjHJNjqh3f3H2IQPZ+UM6RrSa8YQlU4/ybDvhEh4JaivUQU2udfI48
-	 jHMKSFngBbaHel9RZTHG7cksuo/+DeSC4R/Qj3Q2SjtJ9tlma5P/7xu/sltYnpKVfnhdh
-	 LjxZ//YsRcWrkdKgCeFM5JayXY+56B/7s1FhgkVcvWVJRWdgTbtd/5b7KSHFubiDgzVM5
-	 LQ3yn4Zquxdrmt810U/ByhNzUQ6ZvXzcExNidIRxsNKwU5HTishhzMUCX7rms7xm2Wnzi
-	 XUkcIaGukbQx+FWqdPYzn/ykHiPIRLGjF7BSVrHmE//gOmfLXngBAjUHKXuTqracJjw==
+	b=AZ6pj6yzqPZoYlCabPtgMuR9hHq8PVrrRP92PKNnWeh/0CddjAPeNiOGAtuhAnj9B8ji
+	 lQ2fXoL9Gft/VQYnVqfUdUMzUWZ/Du/+74KIi1Io92ThGRB3cDPXYuaNv//QXJ2riXt9T
+	 svLl9Kwc5XzBhUCDUhY7vpYG9okR5kdl/BgQ9DkkWRqrY9r2Opn6m59NEZyG0zTbScv3B
+	 wLPzhgh7nBu0DEt9GROOdeleWrCeVx3eDKTSRg1YXgMtwVVDEOgLCYnHonxejp90wrl5Y
+	 0Q1mfHqhaQit12ul1T0B6HRmnBLMzu0YpDmTfyoqZqN/U1mrycPx8IDY0VEh1hIzOfQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1793032873;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To;
-	bh=8M0oh2AqgxAI6ZpQRJJhghp96GjY8sQQ1ghn1+UQZnU=;
-	b=Q/Z29Idh4d0TmZVBoNrRV1/TSqY6SHK7orn88Trq0797VSMWT9WQG3T/4P7C3cK4qWNO
-	 EJ9fqPjkcPcGaxzgO4SzM0e8p38sVreb/jfTNGGR8lx6z8Mijj8d9pik65GCBlfebS+44
-	 8ZPaDSNa4fiJPt0eQFx4doUlsCFF3bgWM5pTKmLKHkApYix5zAIjQiRIsADimzczLIuKc
-	 CUfQeVrBkB6nfYwifQJFiH9ZmZO/oYsgRB1wg2ehbAgNx6IiPQ45DriUCGBi9zDQ4aJrC
-	 qEFIkG6Bn1h+UXwZL9oCz63XVntNaw2gh+kpfF9t51RK/+innPuijZGscrLFnRGVpLg==
+	bh=jKnS8OcReTjLaHrdFjGjVJmk8r0TI5DsvNMEnm3UFOw=;
+	b=rX57m7GBS7qVBoCMdc9XBAzgD7N5njDC8mOjVom54xJq8yfNYqBzBARQVStc8uf9iwgX
+	 S8JFsQTwewV016V7hD2LBlCa49z7umpPyUzRSE0rvg1ZLOHSimm088E7VLKWYaabHv711
+	 hAynFHqmYs4QNsQ7koljC1ayyhV27DicgX5RhWoylgO7k+SAz/n/g5sMcatFxaLEISnRD
+	 9NhqzmfssCFFxRx+qp42jrnJ7s8SA6ofF6ptqhQsNzALC/DAmmSKdeC2nI/R9N5o5HOmt
+	 cp/w7DnKs4rzwsY4GWxkaBlJcSuuLJw+BIVH2/iXkHf5mbw2jxF5v+feHhEV6BqTrCg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id CF6A91F01829;
+	by smtp.kernel.org (Postfix) with ESMTPS id CF5E81F01828;
 	Mon, 26 Oct 2026 16:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1793032873;
-	bh=8M0oh2AqgxAI6ZpQRJJhghp96GjY8sQQ1ghn1+UQZnU=;
+	bh=jKnS8OcReTjLaHrdFjGjVJmk8r0TI5DsvNMEnm3UFOw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=Xs1HTniVmSXsyDaRDI4h9R/EilRgZDTNyw0A5n+Njl2o8cx4B3ngK6UMwIxaHOmzh
-	 HOMZfoN+HQvp7JLFpTkWQavaBgh1iOFhZCVc7UxrBGknvod2aoiuTvjBMe9MNElLyt
-	 flEzrCVSW+SUqY/scmy9EpLKU56TkojfVElosALZhLCCe3xQsXHslelySSo3+f1skd
-	 q05+2lccY2ELUU7f+G4XzMdyarZgoqKcRw6weZv8EMr/doOwEzx0UAMje3ZYpCv686
-	 sTapBr2/q/hHY6/1+HgznMakkWIQTRDDO4x2bMxu+Vl2rZYYqOCXd4HF5s8Pn6UdcZ
-	 o3Ki+S5I518tg==
+	b=XOwOZ94p3hqqwbbEMBwsKIVaRn6u10aeoRkV2zsg7+SGVaOFaR6/Sigj8nlY8+dTm
+	 J9WX3Q/Ex4m5Ud5/8mu1gVnijfwj3Rh5bsM2kEcEIqurJ9rMn2MRVJXvb2tKD74H48
+	 rInzElIcGgqxdcZvD2rUbS1HqR/0AzKTKsnzmKdrJbb5qJ2b2QxtRwfbgpESjphO9p
+	 sI66sYhobgHpUR8uiK9K0petqWVJ+hf8xuxTN3wrr8ZV/pEiP4VhBREAM4d7JbBq4v
+	 bTavMsrlmiuu4KLe9UPFV9MCQWWjjvOhvWCKVVJD07sz4vqjXk7s7LQuxoCR8J670Z
+	 C/BDaiWb0TbvA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 4CD6F44DC6;
+	by lkml.kernel.org (Postfix) with ESMTP id 5709D44DC9;
 	Mon, 26 Oct 2026 16:41:12 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Tue, 27 Oct 2026 00:40:54 +0800
-Subject: [PATCH v5 01/11] rust: sizes: add SZ_4G constant
+Date: Tue, 27 Oct 2026 00:40:55 +0800
+Subject: [PATCH v5 02/11] rust: task: add task_size()
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -83,8 +83,8 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261027-tyr-ioctls-v5-1-59dfe98cb003@kylinos.cn>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261027-tyr-ioctls-v5-2-59dfe98cb003@kylinos.cn>
 References: <20261027-tyr-ioctls-v5-0-59dfe98cb003@kylinos.cn>
 In-Reply-To: <20261027-tyr-ioctls-v5-0-59dfe98cb003@kylinos.cn>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -105,11 +105,11 @@ Cc: Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org,
  dri-devel@lists.freedesktop.org, driver-core@lists.linux.dev, 
  Ke Sun <sunke@kylinos.cn>, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793032870; l=1808;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793032870; l=2517;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=5K5ZDtbb0No9pS3iRwCaB/ZkoyNuv4RA97gE66KsHmQ=;
- b=3xbf/Ui9pjN4/qzsbUlA392NPtGKkMDXcuaouEQqRyRyagAyDKTbCKWEjzhrj8CcnYpOpMqNs
- Q5cwKjb1MULCcgOqn1keN7x8FTAVjwijV21to9361zXabag+zsWjG0t
+ bh=SVTHAw+MuGYh/fZMg5wDC3wPSM8rseGtAWNOgWBu2T4=;
+ b=3nn7okpFbPdhHXxttuKyB0Km40JaGCKzmRceOClh+jDnb/88sWg7q6AXsMGBUBq+egZW8SeTn
+ vMs/n+Fsgf4DiI1Vrs2EHX6dcZqnmz/+dqb6s6hSPM76dX8spYsRdoS
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
@@ -117,53 +117,74 @@ X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
 
-From: Alvin Sun <alvin.sun@linux.dev>
+From: Sami Tolvanen <samitolvanen@google.com>
 
-SZ_4G is used by Tyr when splitting the GPU VA range into
-user and kernel regions. Add a LargeSizeConstants trait, implemented
-for u64 since SizeConstants only covers sizes that fit in a u32.
+A DRM driver that lets userspace pick GPU virtual addresses needs the
+address space size of the calling task, so it can offer a GPU range
+that the CPU can map at the same addresses. TASK_SIZE_OF() is a macro,
+so reading it from Rust needs a helper.
 
+Add CurrentTask::task_size(). It is bound to the current task because
+TASK_SIZE_OF() falls back to TASK_SIZE on architectures that do not
+define it, and TASK_SIZE describes current.
+
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+[ Add the <linux/mm.h> include, needed where TASK_SIZE is defined in
+  <asm/pgtable.h> (e.g. riscv). - Alvin ]
+Co-developed-by: Alvin Sun <alvin.sun@linux.dev>
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/sizes.rs            | 12 ++++++++++++
- 2 files changed, 13 insertions(+)
+ rust/helpers/task.c |  6 ++++++
+ rust/kernel/task.rs | 12 ++++++++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 930e63290cdd4..ee99f470ae5f4 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -116,6 +116,7 @@ const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
- const size_t RUST_CONST_HELPER_ARCH_KMALLOC_MINALIGN = ARCH_KMALLOC_MINALIGN;
- const size_t RUST_CONST_HELPER_PAGE_SIZE = PAGE_SIZE;
- const size_t RUST_CONST_HELPER_GENLMSG_DEFAULT_SIZE = GENLMSG_DEFAULT_SIZE;
-+const unsigned long long RUST_CONST_HELPER_SZ_4G = SZ_4G;
- const gfp_t RUST_CONST_HELPER_GFP_ATOMIC = GFP_ATOMIC;
- const gfp_t RUST_CONST_HELPER_GFP_KERNEL = GFP_KERNEL;
- const gfp_t RUST_CONST_HELPER_GFP_KERNEL_ACCOUNT = GFP_KERNEL_ACCOUNT;
-diff --git a/rust/kernel/sizes.rs b/rust/kernel/sizes.rs
-index 521b2b38bfe77..0acc8733d2368 100644
---- a/rust/kernel/sizes.rs
-+++ b/rust/kernel/sizes.rs
-@@ -132,3 +132,15 @@ impl SizeConstants for $first {
+diff --git a/rust/helpers/task.c b/rust/helpers/task.c
+index b46b1433a67e8..b49bd40027154 100644
+--- a/rust/helpers/task.c
++++ b/rust/helpers/task.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+ #include <linux/kernel.h>
++#include <linux/mm.h>
+ #include <linux/sched/task.h>
+ 
+ __rust_helper void rust_helper_might_resched(void)
+@@ -13,6 +14,11 @@ __rust_helper struct task_struct *rust_helper_get_current(void)
+ 	return current;
  }
  
- define_sizes!(u32, u64, usize);
-+
-+/// Large size constants (≥ 4 GiB).
-+///
-+/// Only implemented for [`u64`].
-+pub trait LargeSizeConstants {
-+    /// `0x1_0000_0000`.
-+    const SZ_4G: Self;
++__rust_helper unsigned long rust_helper_current_task_size(void)
++{
++	return TASK_SIZE_OF(current);
 +}
 +
-+impl LargeSizeConstants for u64 {
-+    const SZ_4G: Self = bindings::SZ_4G;
-+}
+ __rust_helper void rust_helper_get_task_struct(struct task_struct *t)
+ {
+ 	get_task_struct(t);
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index eaa0031416a98..e60a0f0727889 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -314,6 +314,18 @@ pub fn mm(&self) -> Option<&MmWithUser> {
+         Some(unsafe { MmWithUser::from_raw(mm) })
+     }
+ 
++    /// Returns the size of the userspace address space of the current task.
++    ///
++    /// This is the first address above the userspace range, so it is smaller
++    /// for a task running in compat mode than for a native one. See
++    /// `TASK_SIZE_OF()` in [`include/linux/sched.h`](srctree/include/linux/sched.h).
++    #[doc(alias = "TASK_SIZE_OF")]
++    #[inline]
++    pub fn task_size(&self) -> usize {
++        // SAFETY: FFI call without preconditions, valid in any context.
++        unsafe { bindings::current_task_size() as usize }
++    }
++
+     /// Access the pid namespace of the current task.
+     ///
+     /// This function does not touch the refcount of the namespace or use RCU protection.
 
 -- 
 2.43.0
