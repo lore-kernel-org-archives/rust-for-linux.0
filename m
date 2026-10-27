@@ -1,79 +1,80 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793103005;
-	b=fnxd+ES/mrhHDBryMVTue9unR0VgMXWxs34nBqvwD5/b6QfmBBcPRLq5yOTNeR6p4tJV
-	 AZMJHZX4z5tYzfu4bUaxqFnUKHaIvLB8UqkrtcvkkQm8U25DLbNednhYyMr0FqNO/Zgg3
-	 3CRIn21N+gI25BSBWNZzkoUjglra32xiUvVV16PuNYWqmaU7N+Fd0W+KmRZbyShi5aZ4N
-	 4DOpUzf9ZBDLFij6iYgolVbSa9JebGzrcj1jMzR5XWs9mCoznAbOUKNIun6FIkMqLFRYJ
-	 jUj+gD6EJ/nUHvPBgmCt12gzWj591MjnokOd98YPGZzuEpnzwYLNrDYPFw4lGM2uXKg==
+	t=1793103004;
+	b=3uSF7nTiZB81ahQgE2gfv3UKIanyX+ISTo7QLIjR+9UlAXFxu6zLVvqJezmV6vcJo80n
+	 Q7q7QBc4QBfa8fz1IO6FS1DZVvHZO6L55H2FqmJNhCMA5m9sSAuqUDRP4QOw6dZOKZl7B
+	 Mfb9D2AnctMZUa5fPcCeooCYBUdFubPQKWwMTKb3XIExK4Ga8YTcKVAEUMnPNIlpGZDIV
+	 PrN9E8Zx9YvYJCWl7tV8GxeULE42U+ko4ceLF4vY09HGhWxqCtAUv2e9++sQK1OFHzpWs
+	 8OCcE4Z+fVWgca5OEiITFd5w6AU1UWu4v158ouILlQybPT9fB6ZSB8dVLNwHJA7+Z9w==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793103005;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=tMiwFLFDG8BJthOZhEySwJu04jCsjfEmp/bff8mveSc=;
-	b=Me1me40L6L18OXpmHAyrvWiOsiHgVBQT9pXx1tWY1YDbfundO8TVEmRiokPnncGuGUci
-	 7gxHC7GKuyL0DqvO46zPszLq9hBWiZVhtPPnUmk5RQDFGEcaAh37y7HZb3vZ0SdNxbdwq
-	 lFCzLWnhcBNJ6n8Snf+DctRpoRel9bQ1O1wu7uR80/+ur3VL6LzGTqNEulsX0QlvT+G0C
-	 eaxaNmXD2EezT2JKGDufLfju1VQzpL4BZqKGi6V/aijU/FrgoXUMCzko8GV2y1CNwYLl1
-	 I2UBHKNI2NWZsARmj0vRFmVb3/904kZl2MRazSo5yiH+h+6BiaudRgLgHfILHEsblMg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793103004;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=+/yUZDWJm+dq+R2m+4C3amtipZZf0zBQmyOqVt98Leg=;
+	b=gXxP5MwceMeSpEpm/3fRmIJYgldcSIm+tF1Jcpdiq0k8nX0GaXLi+pM1VrWpAe3VDvW6
+	 2VioNAmx0XiYFgPzEBgM607hIS3UYz4y8FNOCng+YqB3SUSSK4JduQ61sruhxamNnehvG
+	 SJxSiGLawkhmxP2Ah5PV94G1D4lC0Yry1nTe5nroGCb0THybciAxrjAmWn3SHhdXouRg+
+	 vqVj+A74ppCVylRHra9wcWtTZujN9JIdzxPCbDWnY+bKotG4+wzDezIZAn6aomFynzvzd
+	 4UKFWnxxZ9Q7aO6z+achT3D4ji4F03RxSrhIo1rUg1nh3yIIHCeGTfeihJiDB9Ai67g==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="lQIrwwp/";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eAqrNaSS;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0530606A31B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5FE606A330;
 	Tue, 27 Oct 2026 12:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lQIrwwp/
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eAqrNaSS
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1793103004;
-	b=qkaFn8hPxv4IfPUGQaDRryPAGD1XqEldmo700MsAS8adq5gpqO1Sdvy7Miv/4VYVF/29
-	 4+yUHLWG7NpHNhJA92MRZaRHUOwpr6GbohHkkTT0IoNa/it7TjZPxR+PvNOcLCLp9Goi5
-	 vesbeolbqmVjLcgglA/l86GM0robpkgZ+DufnLiwsl1ofTjtBwBXdvvXEk9KTypmXmGsv
-	 eZAhyP30IfwKJyZREBe5cZB/1iZWb65etU6I68ti5lYaVFxtdZJqEyp/bvId4ioJnNaAp
-	 pcuVCfwFD+gTv6Sw2Sm3enFKlzl6Bt+na1rYFX/aHmEsrl6j2HISgHO3ccMJg7tY8KA==
+	b=wP4jA7BFsqOe3Ti5ln4WLEjI0EI0U7YXABSB7rabGBMt4apxTi+KrqIgPCPrf/ar+DaB
+	 WsPCEfG+A5JYErD4HpmQtTofdctns60olsH8H1LytOKXBp9ieiWnuAwwF0Un00lsIwfCn
+	 GO3tNJmhCHX/QzaNKE19PWaw5zK8gGoQ4F0+mMY3Isot2oVG0JlgZ+meD3tUq6lUl9e4u
+	 NQuOp86pk94AHNG29a9Ad7Bi15pZ4u08LpXakgKb5ItZqOPdYn8eFUazXzRsskHTaXFEC
+	 vCYUNGh15Hd1tY5LaBoRr4Gb8GCI6M2qBVgNe1bDuLWivNzT5Q8EpZXIVXV25YJTwzg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1793103004;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=tMiwFLFDG8BJthOZhEySwJu04jCsjfEmp/bff8mveSc=;
-	b=EQNR3PVP9etkEc4kiRiNi5zLskFxn7rjy1oE5RpYjpn7ufXMT9vnXHCaeW0LiXGtyL7O
-	 B9e0p5oM1yLABD5LnVjbjPi+8v6qVezMjlW70XRHNZUzApIHy945+1RyISWwgZiV3TydB
-	 CG3KFGcp7eJzEBssjSWxqyVNt5TmTjyX32uV61lJjUXdTWN10f/FvgRcROZTNU1ESc30N
-	 //JHNCVtEcjCAFPvY/ZmuRGRtLbI8j3z/RsSy9k02wzswpRys5HhprSLonW0a/k7Iolpj
-	 1o0IjK5D6UQpk6MzNzkbAzL2bTSJ1oDAfWkooYQjYUxfkr1Xy74gdOit87DeHxf7Jmg==
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=+/yUZDWJm+dq+R2m+4C3amtipZZf0zBQmyOqVt98Leg=;
+	b=GuyRQz69K7kBqu4sJiu+s6BaM5PEE0b5Tg4j7vczNeqnahlxZyElHpYIgZZsV/las37F
+	 RDrZPP1PVA0OZ68fMRWJZNgP25ylgjfd53FIh7Es2/sguZxkeLul4skffQx74HO0/0mAm
+	 Cng0yiip646RRrCdKWAH1ZYQD8k1DOdvA1DFQX9AtYiEr4W0Ay+hAU9W03WCmpBsvDIGX
+	 JIU2+3ZpPSe9z+VWVCgoN/1+yCu2+ZQytzcEH1SqiDyzxl4+Wl9fBPeSr31YYt7YDeI6h
+	 zSuVfkMm3sPqY2qFU+llly9ZOOeBPGW+cTJC0tEvva4YS/e8rzzHsdiZHBfX/nYOtsQ==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id A7BAD1F031E0;
+	by smtp.kernel.org (Postfix) with ESMTPS id A8F591F031E2;
 	Tue, 27 Oct 2026 12:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1793103004;
-	bh=tMiwFLFDG8BJthOZhEySwJu04jCsjfEmp/bff8mveSc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=lQIrwwp/yn8nGiY7b2cUM0MHtXoUNdQ77nmQjeJ8wCUYLFnbENaqmHguaJzexKZtv
-	 QyVVYPb4a/OkRBhP0WI+aLsEObABBl1r0A68V3Xj0wvKSi8VA6QH6egtyPn4xoEyVk
-	 HotGNblPjhme6OZCU8tmHEmTpJr6M2FtbC0DYet5r6K7M2N10qf6txQmUd/UlJuKUa
-	 ddvIe4n30ADPhOYHy65g9HTYIpDedij3exHGbf8VIxq9YE72QyeZGLdARJZS09jZU8
-	 wsLX+jB4ZkvMTRIfS2i1IhDGexluRRKWb5gsUj/wEvV+nIcBOLOWMRIqINZibcYUZ1
-	 2Fey7ku949AdA==
+	bh=+/yUZDWJm+dq+R2m+4C3amtipZZf0zBQmyOqVt98Leg=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=eAqrNaSSP5CIymbIQq+H3skueKHnOLG68mrH/u2dO83QquC+j2RKIPtws4kmvG1G1
+	 CxfLGgvf5GivCa6i2XP03ICJFWb+VVqSq4HdThJuEkyfPkJezAeDASik3eYna44Igb
+	 aS0y6ZLPO9n4FNktlA4TvV3GNcuBpIxS57gCGVngBYfKnU5AmyNLLkQ2WwGYMA4aAi
+	 d2tim6JvpKW0o5KMdEzOmCVeb1Mi69cyvF5wuyC2Rsc350qn9Dyizm9ZqArWDrMnZj
+	 p5HdMy2zsTts3uxY3ReycbaSCkK2DS3zgZ4OR62BZ4JczQAPUd0koyt59kEfFehzxi
+	 NR2bR97rCzZZw==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 124FC450C8;
-	Tue, 27 Oct 2026 12:10:03 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id F3219450CB;
+	Tue, 27 Oct 2026 12:10:02 +0000 (UTC)
 From: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
-Date: Tue, 27 Oct 2026 13:10:03 +0100
-Subject: [PATCH 1/2] rust: str: parse_int: only accept a sign before the
- radix prefix
+Subject: [PATCH 0/2] rust: str: parse_int: match kstrtol() sign and newline
+ handling
+Date: Tue, 27 Oct 2026 13:10:02 +0100
+Message-Id: <20261027-b4-parse-int-sign-v1-0-7f386318a4b7@younes.io>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -84,9 +85,11 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261027-b4-parse-int-sign-v1-1-7f386318a4b7@younes.io>
-References: <20261027-b4-parse-int-sign-v1-0-7f386318a4b7@younes.io>
-In-Reply-To: <20261027-b4-parse-int-sign-v1-0-7f386318a4b7@younes.io>
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMyw5AMBCF4VeRWZuEatxeRSyoKWNR0kEk4t0Vy
+ +8k579AyDMJ1NEFng4WXlxAGkdgps6NhDwEg0pUniaqwF7j2nkJu9tQeHSY5VRWlTXa6gzCb/V
+ k+fyaTftb9n4ms70huO8H0BnwUXUAAAA=
+X-Change-ID: 20261027-b4-parse-int-sign-36e899fc4f43
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -102,115 +105,54 @@ To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Younes Akhouayri <git@younes.io>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793103002; l=4111;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793103002; l=1463;
  i=git@younes.io; s=20261027; h=from:subject:message-id;
- bh=ZIMsYyaNWv66eaanjb2Is4SXAQQRcP2OLUu3EkB/df0=;
- b=mlQf2QJycNef9ASMfrzkl+aJBB+Mrq+9E7pfi2AKiK/7S3w9T/+GIFZWxIdeZ8ElOkectyvvW
- JvzbqAUNjePCSeRUI2WcaXvBI4ECCo+j+JDLP3QPlju07N2lrNntnxt
+ bh=zTt8DAHZuMHakgutZ0swbdOulHE2DnMp45ikzS7giQQ=;
+ b=O0yOTqyIwfn1XZyXWmC1vlbvSbtpaVkcyFqc37vTG2uQ8ocxhZBOzF+G1Hi+yvNd+CVPuitZR
+ KSOBAGipiB1C1O3AneAeEB4OegJ6XnCs81SLFSJTArXuDyoU94lDe7f
 X-Developer-Key: i=git@younes.io; a=ed25519;
  pk=TavwxGPDBjl4XGNQyFLKEW7PKSY4qOWusc7yf6hjV0c=
 X-Endpoint-Received: by B4 Relay for git@younes.io/20261027 with
  auth_id=1332
 X-Original-From: Younes Akhouayri <git@younes.io>
 Reply-To: git@younes.io
-Content-Transfer-Encoding: 7bit
 
-From: Younes Akhouayri <git@younes.io>
+The documentation of `ParseInt` says that any string parsed by
+`kstrtol()` or `kstrtoul()` is also parsed by `from_str()`. That does
+not hold today, and `from_str()` also accepts strings that `kstrtol()`
+rejects:
 
-`ParseInt::from_str()` strips an optional `-` and a radix prefix, then
-hands the remaining digits to `from_str_radix()` from `core`. That
-function accepts a leading `+`, and also `-` for signed types, so a
-sign placed after the prefix, or a second sign, is parsed too:
+    input     kstrtoint()   i32::from_str()
+    "0x-5"    -EINVAL       Ok(-5)
+    "0x+5"    -EINVAL       Ok(5)
+    "-+5"     -EINVAL       Ok(-5)
+    "+0x5"    5             Err(EINVAL)
+    "5\n"     5             Err(EINVAL)
 
-    i32::from_str("0x-5")  == Ok(-5)
-    i32::from_str("0x+5")  == Ok(5)
-    i32::from_str("-+5")   == Ok(-5)
-    i32::from_str("-0x+5") == Ok(-5)
+Patch 1 accepts a sign only before the radix prefix. Patch 2 accepts a
+single trailing newline, as `kstrtol()` does. The `0o` and `0b`
+prefixes are Rust extensions and are left as they are.
 
-`kstrtoint()` rejects all of these with -EINVAL. On the other hand,
-`kstrtoint()` accepts "+0x5" as 5, but `from_str()` rejects it, because
-it does not strip a leading `+` before looking for the prefix. Since
-the documentation says that any string parsed by `kstrtol()` is also
-parsed by `from_str()`, this is a bug.
+Tested on UML with the Rust KUnit suite, plus a temporary KUnit test
+(not part of this series) that compares `i32::from_str()` with
+`kstrtoint()` on 12 inputs; all of them now agree. Also booted the
+`rust_minimal` sample: `test_parameter=0x-5` is now rejected and
+`test_parameter=+0x5` gives 5.
 
-Integer module parameters are parsed with `from_str()`, so this is
-visible from the kernel command line. Booting with
-`rust_minimal.test_parameter=0x-5` makes the `rust_minimal` sample
-print `test_parameter: -5`.
-
-Fix it by accepting a single `+` or `-` before the radix prefix only,
-and by making `strip_radix()` reject digits that start with a sign.
-Add doctests for these cases.
-
-Fixes: 51d9ee90ea90 ("rust: str: add radix prefixed integer parsing functions")
 Signed-off-by: Younes Akhouayri <git@younes.io>
 ---
- rust/kernel/str/parse_int.rs | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+Younes Akhouayri (2):
+      rust: str: parse_int: only accept a sign before the radix prefix
+      rust: str: parse_int: accept a trailing newline like kstrtol()
 
-diff --git a/rust/kernel/str/parse_int.rs b/rust/kernel/str/parse_int.rs
-index 48eb4c202984..07e1fbd7be8f 100644
---- a/rust/kernel/str/parse_int.rs
-+++ b/rust/kernel/str/parse_int.rs
-@@ -28,8 +28,11 @@ pub trait FromStrRadix: Sized {
- 
- /// Extract the radix from an integer literal optionally prefixed with
- /// one of `0x`, `0X`, `0o`, `0O`, `0b`, `0B`, `0`.
--fn strip_radix(src: &BStr) -> (u32, &BStr) {
--    match src.deref() {
-+///
-+/// Returns [`EINVAL`] if the digits start with a sign, which
-+/// `from_str_radix()` would otherwise accept.
-+fn strip_radix(src: &BStr) -> Result<(u32, &BStr)> {
-+    let (radix, digits) = match src.deref() {
-         [b'0', b'x' | b'X', rest @ ..] => (16, rest.as_ref()),
-         [b'0', b'o' | b'O', rest @ ..] => (8, rest.as_ref()),
-         [b'0', b'b' | b'B', rest @ ..] => (2, rest.as_ref()),
-@@ -38,6 +41,11 @@ fn strip_radix(src: &BStr) -> (u32, &BStr) {
-         // not be able to parse `0`.
-         [b'0', ..] => (8, src),
-         _ => (10, src),
-+    };
-+
-+    match digits.deref() {
-+        [b'+' | b'-', ..] => Err(EINVAL),
-+        _ => Ok((radix, digits)),
-     }
- }
- 
-@@ -75,13 +83,18 @@ fn strip_radix(src: &BStr) -> (u32, &BStr) {
- /// assert!(i8::from_str(b_str!("-129")).is_err());
- /// assert_eq!(Ok(255u8), u8::from_str(b_str!("255")));
- /// assert!(u8::from_str(b_str!("256")).is_err());
-+///
-+/// assert_eq!(Ok(0x5i32), i32::from_str(b_str!("+0x5")));
-+/// assert!(i32::from_str(b_str!("0x-5")).is_err());
-+/// assert!(i32::from_str(b_str!("0x+5")).is_err());
-+/// assert!(i32::from_str(b_str!("-+5")).is_err());
- /// ```
- pub trait ParseInt: private::FromStrRadix + TryFrom<u64> {
-     /// Parse a string according to the description in [`Self`].
-     fn from_str(src: &BStr) -> Result<Self> {
-         match src.deref() {
-             [b'-', rest @ ..] => {
--                let (radix, digits) = strip_radix(rest.as_ref());
-+                let (radix, digits) = strip_radix(rest.as_ref())?;
-                 // 2's complement values range from -2^(b-1) to 2^(b-1)-1.
-                 // So if we want to parse negative numbers as positive and
-                 // later multiply by -1, we have to parse into a larger
-@@ -94,8 +107,8 @@ fn from_str(src: &BStr) -> Result<Self> {
-                         .map_err(|_| EINVAL)?;
-                 Self::from_u64_negated(val)
-             }
--            _ => {
--                let (radix, digits) = strip_radix(src);
-+            [b'+', rest @ ..] | rest => {
-+                let (radix, digits) = strip_radix(rest.as_ref())?;
-                 Self::from_str_radix(digits, radix).map_err(|_| EINVAL)
-             }
-         }
+ rust/kernel/str/parse_int.rs | 33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
+---
+base-commit: 7d109178cd644268326cd31702ed46c7ac8bb300
+change-id: 20261027-b4-parse-int-sign-36e899fc4f43
 
--- 
-2.56.0
+Best regards,
+--  
+Younes Akhouayri <git@younes.io>
 
 
