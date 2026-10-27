@@ -1,80 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793103004;
-	b=3uSF7nTiZB81ahQgE2gfv3UKIanyX+ISTo7QLIjR+9UlAXFxu6zLVvqJezmV6vcJo80n
-	 Q7q7QBc4QBfa8fz1IO6FS1DZVvHZO6L55H2FqmJNhCMA5m9sSAuqUDRP4QOw6dZOKZl7B
-	 Mfb9D2AnctMZUa5fPcCeooCYBUdFubPQKWwMTKb3XIExK4Ga8YTcKVAEUMnPNIlpGZDIV
-	 PrN9E8Zx9YvYJCWl7tV8GxeULE42U+ko4ceLF4vY09HGhWxqCtAUv2e9++sQK1OFHzpWs
-	 8OCcE4Z+fVWgca5OEiITFd5w6AU1UWu4v158ouILlQybPT9fB6ZSB8dVLNwHJA7+Z9w==
+	t=1793103005;
+	b=mCT5FLFbRHgLT5ByOG8H/ZQMsYBgATZ3kBWPDDXAC8RszTG34U/6isU51jUWV5G4u1Z7
+	 AnZ2UV5h5TqK5r01aB61DKUEXZKZRr5fbW1I9gS2kXwLll+/igSn7DmtWIKwxAigOut3c
+	 e+zfrmQboNtAoKOGkmqTX0sBH0TKybsuL68nIi0g1WiCewHdGcA8lv87hjPdXK1uSKi6+
+	 X0w9I+YNbwYBK7IhoWQOhcV2kcr/MYjEPdCybk2QqQe+Ybw0z9lPpxXsr8CtmajvVK3Ej
+	 Jif68NYEabv+c2ykME/7lbBbTquvq9f8tY8AK58J+sC+y8fqeBhCeIYiu8JkQas/tmw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793103004;
-	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=+/yUZDWJm+dq+R2m+4C3amtipZZf0zBQmyOqVt98Leg=;
-	b=gXxP5MwceMeSpEpm/3fRmIJYgldcSIm+tF1Jcpdiq0k8nX0GaXLi+pM1VrWpAe3VDvW6
-	 2VioNAmx0XiYFgPzEBgM607hIS3UYz4y8FNOCng+YqB3SUSSK4JduQ61sruhxamNnehvG
-	 SJxSiGLawkhmxP2Ah5PV94G1D4lC0Yry1nTe5nroGCb0THybciAxrjAmWn3SHhdXouRg+
-	 vqVj+A74ppCVylRHra9wcWtTZujN9JIdzxPCbDWnY+bKotG4+wzDezIZAn6aomFynzvzd
-	 4UKFWnxxZ9Q7aO6z+achT3D4ji4F03RxSrhIo1rUg1nh3yIIHCeGTfeihJiDB9Ai67g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793103005;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=yYOtM4BuIpTWTRwQ03uCapSzz1aSA0caW59ytvuj3Q8=;
+	b=G4/oebIeY99Y3O7f5FLlr0lrbO+QMhwkkGSZBw/E/HJxenrIirWsLSYmySJ9ZAkXSIE9
+	 J+Tftb4Z5LZIBguWZK5TixjIR9AgatcLWzjTslQXnAYQlAiH8y8S/E4GOm78W+oTMFEPS
+	 PwrHXJO8KznNOGrIsd4ZgzyBQ7ArN/la2oX/HvsCyslQ+wU7lG1Nlt1d0GVZrja1HwdWF
+	 2OyK6T2QS5Zmjzf01Rb30LkLmL4Gav0IY5E9rKsIbyMh80H/W9yp901pxNqJdbk/6WkbK
+	 B4fPdlX5twHWwxBABfG5hMb9m4fQ4Qlk4OdxNAVPeTwUz8tLjL4xfFNJHrSxVapZNoA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eAqrNaSS;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nmK9hhVE;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5FE606A330;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17D8606A333;
 	Tue, 27 Oct 2026 12:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eAqrNaSS
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nmK9hhVE
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1793103004;
-	b=wP4jA7BFsqOe3Ti5ln4WLEjI0EI0U7YXABSB7rabGBMt4apxTi+KrqIgPCPrf/ar+DaB
-	 WsPCEfG+A5JYErD4HpmQtTofdctns60olsH8H1LytOKXBp9ieiWnuAwwF0Un00lsIwfCn
-	 GO3tNJmhCHX/QzaNKE19PWaw5zK8gGoQ4F0+mMY3Isot2oVG0JlgZ+meD3tUq6lUl9e4u
-	 NQuOp86pk94AHNG29a9Ad7Bi15pZ4u08LpXakgKb5ItZqOPdYn8eFUazXzRsskHTaXFEC
-	 vCYUNGh15Hd1tY5LaBoRr4Gb8GCI6M2qBVgNe1bDuLWivNzT5Q8EpZXIVXV25YJTwzg==
+	b=DKHn1y+2DoJ8ioqNcnlnBjzhGjdPnLF8KuiMLmTn3fVCpoVmBuRo/Q/ozSjfKySpkq98
+	 2BQdo2BhiQq+YZTUqG+weNqlyPulKg1pXcrr71769uGGnUQKkqx8Ln2A53G1rKeWbqoeC
+	 inSsMKB9+jKoyQQLQw/HhLnGXm0QnS6YxFRl2dTjjgw2dm8lImxIseMCHfvVpnlYp/CoA
+	 +MNidSx0YyqZiU+fwbqCK2Tr1pMp35GAyAMC6SRuKzZWTtt/KBL1fezKxBK1vY/Z5WyhH
+	 X/nCD1AbOfti7YxwirBaIBKLev+W00wPAhoo9prGm2zwL8PDzic3XcIwEetS1Hp77wg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1793103004;
-	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=+/yUZDWJm+dq+R2m+4C3amtipZZf0zBQmyOqVt98Leg=;
-	b=GuyRQz69K7kBqu4sJiu+s6BaM5PEE0b5Tg4j7vczNeqnahlxZyElHpYIgZZsV/las37F
-	 RDrZPP1PVA0OZ68fMRWJZNgP25ylgjfd53FIh7Es2/sguZxkeLul4skffQx74HO0/0mAm
-	 Cng0yiip646RRrCdKWAH1ZYQD8k1DOdvA1DFQX9AtYiEr4W0Ay+hAU9W03WCmpBsvDIGX
-	 JIU2+3ZpPSe9z+VWVCgoN/1+yCu2+ZQytzcEH1SqiDyzxl4+Wl9fBPeSr31YYt7YDeI6h
-	 zSuVfkMm3sPqY2qFU+llly9ZOOeBPGW+cTJC0tEvva4YS/e8rzzHsdiZHBfX/nYOtsQ==
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=yYOtM4BuIpTWTRwQ03uCapSzz1aSA0caW59ytvuj3Q8=;
+	b=gbC9qFSV3CSiR6aHlJ8dbQXjmFUEns6W0+6pT7EzARfEl2NeQmfgScdljksDzIGxMv8P
+	 xNIXAJC6mr/SPu4qqqg8Q44PoLdVtbGumru9JOtzL+KCqUUlt8gszeJ0G67fjq16wEjZR
+	 ePPHX7agjSgsNoOqh+mwvyYUoqHgIiSfSY74kGGbj1f3s0IZAl71vmPgbt9T9/oRmjPBL
+	 r1Kuc5FyQmnMUIfG2OHI8Hp4KIIOsvREcCkjixBje8rJ5XYZz+ZZpgCbBcQMTXdy0Y96u
+	 QK+Fkpo1WJ1x8ClinqjgZX6SHVL+kGcrGfKs0CQqtmKLoNW91FqRcnYempQKNvWW/AA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id A8F591F031E2;
+	by smtp.kernel.org (Postfix) with ESMTPS id AA0511F031E3;
 	Tue, 27 Oct 2026 12:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1793103004;
-	bh=+/yUZDWJm+dq+R2m+4C3amtipZZf0zBQmyOqVt98Leg=;
-	h=From:Subject:Date:To:Cc:Reply-To;
-	b=eAqrNaSSP5CIymbIQq+H3skueKHnOLG68mrH/u2dO83QquC+j2RKIPtws4kmvG1G1
-	 CxfLGgvf5GivCa6i2XP03ICJFWb+VVqSq4HdThJuEkyfPkJezAeDASik3eYna44Igb
-	 aS0y6ZLPO9n4FNktlA4TvV3GNcuBpIxS57gCGVngBYfKnU5AmyNLLkQ2WwGYMA4aAi
-	 d2tim6JvpKW0o5KMdEzOmCVeb1Mi69cyvF5wuyC2Rsc350qn9Dyizm9ZqArWDrMnZj
-	 p5HdMy2zsTts3uxY3ReycbaSCkK2DS3zgZ4OR62BZ4JczQAPUd0koyt59kEfFehzxi
-	 NR2bR97rCzZZw==
+	bh=yYOtM4BuIpTWTRwQ03uCapSzz1aSA0caW59ytvuj3Q8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=nmK9hhVElg07pmr2dBYNsCje5Mj0ts8wsdhrAw9NXdqeNgGuHU0bcwMQ+RQXhFcBQ
+	 vdPwUcjlt/fChAvWLOyh8j/nMx90zI08R6nSWU45qUwL+AGjs4CyuYABidtrjoeISh
+	 v/dVdW0IhqKhVInu7gQTQZ+hPEZtXncTLWxXnROJAlapjIxE+k+NDJqLQ8Bh1c7FR+
+	 QmwIoR2Y8uJX5K6eAVaBlwziEOdO9bgh9xI6wwSPhLccQyu7ZGtQjDefXZ08Gsk35g
+	 LTUOVlrKqOB19foAJIFdWLgDcUgwJ0voA7jtwtW/mN+DdhQvst6dbjxMFcPqGafteo
+	 ACS+IwnFHfkiA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id F3219450CB;
-	Tue, 27 Oct 2026 12:10:02 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 23B3D450CF;
+	Tue, 27 Oct 2026 12:10:03 +0000 (UTC)
 From: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
-Subject: [PATCH 0/2] rust: str: parse_int: match kstrtol() sign and newline
- handling
-Date: Tue, 27 Oct 2026 13:10:02 +0100
-Message-Id: <20261027-b4-parse-int-sign-v1-0-7f386318a4b7@younes.io>
+Date: Tue, 27 Oct 2026 13:10:04 +0100
+Subject: [PATCH 2/2] rust: str: parse_int: accept a trailing newline like
+ kstrtol()
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -85,11 +84,9 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMyw5AMBCF4VeRWZuEatxeRSyoKWNR0kEk4t0Vy
- +8k579AyDMJ1NEFng4WXlxAGkdgps6NhDwEg0pUniaqwF7j2nkJu9tQeHSY5VRWlTXa6gzCb/V
- k+fyaTftb9n4ms70huO8H0BnwUXUAAAA=
-X-Change-ID: 20261027-b4-parse-int-sign-36e899fc4f43
+Message-Id: <20261027-b4-parse-int-sign-v1-2-7f386318a4b7@younes.io>
+References: <20261027-b4-parse-int-sign-v1-0-7f386318a4b7@younes.io>
+In-Reply-To: <20261027-b4-parse-int-sign-v1-0-7f386318a4b7@younes.io>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -105,54 +102,75 @@ To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Younes Akhouayri <git@younes.io>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793103002; l=1463;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793103002; l=2519;
  i=git@younes.io; s=20261027; h=from:subject:message-id;
- bh=zTt8DAHZuMHakgutZ0swbdOulHE2DnMp45ikzS7giQQ=;
- b=O0yOTqyIwfn1XZyXWmC1vlbvSbtpaVkcyFqc37vTG2uQ8ocxhZBOzF+G1Hi+yvNd+CVPuitZR
- KSOBAGipiB1C1O3AneAeEB4OegJ6XnCs81SLFSJTArXuDyoU94lDe7f
+ bh=NMDljLHIBCr2SpOAfotlmJ6JzudvatDgarIHJ0F0q5Y=;
+ b=NsX5K2E5gXlHF/QnhEjEST4ehx1nHzafURb/JCD+VMl/i63Qu3CsUzpQc0rNxSVoDpKCYRVbA
+ sMRZsNMOTnKAw2lEZp1WTMCHE/eozMyDo1wb/6gPJjVovxrFiJn7mta
 X-Developer-Key: i=git@younes.io; a=ed25519;
  pk=TavwxGPDBjl4XGNQyFLKEW7PKSY4qOWusc7yf6hjV0c=
 X-Endpoint-Received: by B4 Relay for git@younes.io/20261027 with
  auth_id=1332
 X-Original-From: Younes Akhouayri <git@younes.io>
 Reply-To: git@younes.io
+Content-Transfer-Encoding: 7bit
+
+From: Younes Akhouayri <git@younes.io>
 
 The documentation of `ParseInt` says that any string parsed by
-`kstrtol()` or `kstrtoul()` is also parsed by `from_str()`. That does
-not hold today, and `from_str()` also accepts strings that `kstrtol()`
-rejects:
+`kstrtol()` or `kstrtoul()` is also parsed by `from_str()`. However,
+those functions accept a single trailing newline, and `from_str()` does
+not:
 
-    input     kstrtoint()   i32::from_str()
-    "0x-5"    -EINVAL       Ok(-5)
-    "0x+5"    -EINVAL       Ok(5)
-    "-+5"     -EINVAL       Ok(-5)
-    "+0x5"    5             Err(EINVAL)
-    "5\n"     5             Err(EINVAL)
+    kstrtoint("5\n", 0, &v) == 0, v == 5
+    i32::from_str("5\n")    == Err(EINVAL)
 
-Patch 1 accepts a sign only before the radix prefix. Patch 2 accepts a
-single trailing newline, as `kstrtol()` does. The `0o` and `0b`
-prefixes are Rust extensions and are left as they are.
+A trailing newline is common when the string comes from user space, for
+example when a value is written to a sysfs file with `echo`.
 
-Tested on UML with the Rust KUnit suite, plus a temporary KUnit test
-(not part of this series) that compares `i32::from_str()` with
-`kstrtoint()` on 12 inputs; all of them now agree. Also booted the
-`rust_minimal` sample: `test_parameter=0x-5` is now rejected and
-`test_parameter=+0x5` gives 5.
+Fix it by removing a single trailing newline before parsing, and add
+doctests for it.
 
+Fixes: 51d9ee90ea90 ("rust: str: add radix prefixed integer parsing functions")
 Signed-off-by: Younes Akhouayri <git@younes.io>
 ---
-Younes Akhouayri (2):
-      rust: str: parse_int: only accept a sign before the radix prefix
-      rust: str: parse_int: accept a trailing newline like kstrtol()
+ rust/kernel/str/parse_int.rs | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
- rust/kernel/str/parse_int.rs | 33 +++++++++++++++++++++++++--------
- 1 file changed, 25 insertions(+), 8 deletions(-)
----
-base-commit: 7d109178cd644268326cd31702ed46c7ac8bb300
-change-id: 20261027-b4-parse-int-sign-36e899fc4f43
+diff --git a/rust/kernel/str/parse_int.rs b/rust/kernel/str/parse_int.rs
+index 07e1fbd7be8f..ada355306fc5 100644
+--- a/rust/kernel/str/parse_int.rs
++++ b/rust/kernel/str/parse_int.rs
+@@ -54,8 +54,8 @@ fn strip_radix(src: &BStr) -> Result<(u32, &BStr)> {
+ /// Strings beginning with `0x`, `0o`, or `0b` are parsed as hex, octal, or
+ /// binary respectively. Strings beginning with `0` otherwise are parsed as
+ /// octal. Anything else is parsed as decimal. A leading `+` or `-` is also
+-/// permitted. Any string parsed by [`kstrtol()`] or [`kstrtoul()`] will be
+-/// successfully parsed.
++/// permitted, as is a single trailing newline. Any string parsed by
++/// [`kstrtol()`] or [`kstrtoul()`] will be successfully parsed.
+ ///
+ /// [`kstrtol()`]: https://docs.kernel.org/core-api/kernel-api.html#c.kstrtol
+ /// [`kstrtoul()`]: https://docs.kernel.org/core-api/kernel-api.html#c.kstrtoul
+@@ -88,11 +88,15 @@ fn strip_radix(src: &BStr) -> Result<(u32, &BStr)> {
+ /// assert!(i32::from_str(b_str!("0x-5")).is_err());
+ /// assert!(i32::from_str(b_str!("0x+5")).is_err());
+ /// assert!(i32::from_str(b_str!("-+5")).is_err());
++///
++/// assert_eq!(Ok(5u8), u8::from_str(b_str!("5\n")));
++/// assert!(u8::from_str(b_str!("5\n\n")).is_err());
+ /// ```
+ pub trait ParseInt: private::FromStrRadix + TryFrom<u64> {
+     /// Parse a string according to the description in [`Self`].
+     fn from_str(src: &BStr) -> Result<Self> {
+-        match src.deref() {
++        let src = src.strip_suffix(b"\n").unwrap_or(src);
++        match src {
+             [b'-', rest @ ..] => {
+                 let (radix, digits) = strip_radix(rest.as_ref())?;
+                 // 2's complement values range from -2^(b-1) to 2^(b-1)-1.
 
-Best regards,
---  
-Younes Akhouayri <git@younes.io>
+-- 
+2.56.0
 
 
