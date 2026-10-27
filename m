@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793078754;
-	b=K7S8F6eYODIhDA7fL6sGLEdVCpA3DZgpOos+gFdDyBdMLZuhAD4Yuz0JAuejBE8RtDp+
-	 UdkK22LQ5gaIfhMu5XugDcFaDP0aFmF+FD8iYPklxpI2YFsVkC8JLmTEkw9NGuH8Y/gGs
-	 SEssQFJpOHAUGfGtFYDEuzypBAhetAfOyj+vHL3mbMspc6puWmytkV5LDx0CeaqH9hAYc
-	 Mzo/8N8/tPoWhI8oDldvU86UobnvG37a3Zaz7RiOd8ItXBi5zT5wD4xZZNUNlqUTXFCps
-	 kLrxlNkx2isbZef9bpVus9abPkM5sGpqC4jHRJ3jiFL03OHytskX/8CKPjy29ObpoEg==
+	t=1793078762;
+	b=ZKnoHWATCD3SKbxR6tywbG+gMcPhGMm9KnihNd0m644c62BmbxapVWpp+iSCdVCs2dRN
+	 ZMonQWesuIApcRcaurtkWpy9TKi5R7i6z405BLc4mcECaDFyc1+MU7uQPObJFnSabUuN8
+	 /KYALSNuyHJ7QXgMGK4d3qgCfe5l0SsCctFljh8EOY0+/XiPuHDic5bgn8JUArUYJYgmn
+	 2HBozED8tdcPdOqUz9fjIsCZ8qKVgSyadmtHm0WiD6XeOO3dBsoR7sI+75Ul0cYR79EyT
+	 cKvEF9Evx2PTdz7SY8wzJRZ/Gln6V9AStcRxiTP7DiiCrRsHTLUJuAsKZ6zxhwYB49w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793078754;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793078762;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=/PPCRJzYX/gkAYasFGf9AE1kvXx6TkVJOW81o94WTfA=;
-	b=V+kONi1OH2ANvcXTj8rF3ee57P6q+YzzuAv3sk/NGMiN/owDDY181ZunC92fwwPa+Sre
-	 pUSBs8aCWal0/e6Jxxrhz6QYjF4bxogvAvjDstVjrZEfZXsZhPzIFKP0ESPFLOKpqH+W6
-	 Ox9Ng8O5oc/c1Uf4EPb7NucW1AVMQU7WhLlcNBYT4aonazjGDY/mmPT19zvz0BoKXVG2y
-	 4wAz5M8+cfhE/1XEFusUod9Kg8MKiCoMsylPw+7CCp7p1dj0riAvMxZ/1yMX62sMqve+X
-	 1tjsRZkPd+oAbciwJ/zjwucyI4hqE7mu2GEVjHtOSP9jRGkllmdfeUqept8nNGRCyIw==
+	bh=V3MhTwMZ6Q2SenAScnAgXH8rYKIfU3CHRZax1o7/L+E=;
+	b=teQzWgDPUo4x1JZ1EbJBel1c5eEYNix3JJREg5EjZlOdC2yg57aufoNlGyp49FnGOC7g
+	 kfZAUHt2X1uA2bZAdauIhBAgFPuA2a3Mail78F6rpVElgd6pRKv1DWnREqsna0xuG213o
+	 oVXGiNBMNs9WzgwSxmZxk1RlI9HWE7wU8f6WRVNlf/V7dt6bqMehRmJG1IIONeo7aNR7C
+	 MGPzn1A3R1QMN+00Cp9SAZEKd+livww3LfdprYGkagx2q7w2qWjVfafMRTwp1o6JJGgID
+	 f+SZCgxgOfCMvJ1zNwma5w0xw8X0GZ+FvjhBVcl5L3enoZcpX6OI0sLhMca9bpn9s0A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Cz2btDR8;
-	arc=none smtp.remote-ip=209.85.214.180
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YwK0xbVg;
+	arc=none smtp.remote-ip=209.85.214.174
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618F1606A31F
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 Oct 2026 05:25:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 618F1606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E60606A330
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Oct 2026 05:26:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 94E60606A330
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Cz2btDR8
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2e8f2c3ad6bso24313145ad.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Oct 2026 22:25:54 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=YwK0xbVg
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e98798cbddso14725535ad.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Oct 2026 22:26:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793078754; x=1793683554; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1793078761; x=1793683561; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/PPCRJzYX/gkAYasFGf9AE1kvXx6TkVJOW81o94WTfA=;
-        b=Cz2btDR8XV2eezXzWRlq7mbSvagoFv+4MtQfyrcCn7L4Haf3pdebXhwFFcMA+fiAoI
-         nNym5bMFgAm6rEppUfIigN//XpHC9ruj35Ed6Ve+0Q0JhUswR98+bZorurlfG2FazHVi
-         ziQibUSnNZzwIsS8pgeY8ZpwnqSMKD0Fcv13o317DItLWyEaK3e7sEHJEKlyNMENKuu8
-         27AWXQByvboKoYM5r93nHfR9FwfezhgVBEPVE4oDs+ozM0O4fg8OYBmOHKwH4R8DrNka
-         0zLj8jAwl/gpVw7mSunoRfESjwWHrwvwtm9EETHzkkT3Gi6N4St+LRscwDcyxk8bepH0
-         un9g==
+        bh=V3MhTwMZ6Q2SenAScnAgXH8rYKIfU3CHRZax1o7/L+E=;
+        b=YwK0xbVgVGoc1KouW0ErgcJgF/kS4NGBKPQCHdvOe5ZTiU+mWTo/Glw6soeVpTeP46
+         of+watNb0nSDtu6XF1jl2CwOmU1K7dw3vaQOapVOKOo23kxAH4ZYKx5gbxn3EWf95XSl
+         QAlTbEwfDjwpOlG23axmJq+q6bmtwpNEXhJtgsg+WNGY4yCvwiKyScXeY1n3rsuXRqYk
+         BQwKZND3vY+vcHU5YqM8r6pEfQE3rgibAlN5M8iWUEKvTC9T9Q+LihUDS/pBK630xoMI
+         VFQTRrBv3y20zGCUA81DSJC06ddEcfuVkHw4nLxkwBOZMXIsJ9um6tpmGhD5yt3bA2b7
+         kL/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793078754; x=1793683554;
+        d=1e100.net; s=20260707; t=1793078761; x=1793683561;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/PPCRJzYX/gkAYasFGf9AE1kvXx6TkVJOW81o94WTfA=;
-        b=opqpjeEt08ysUqyfMzZUst6bqukhpb2FgjOfqye01uLLiCBYhFk42ENWM7PRRfXWer
-         vaSTzYq2yDJIhlfxsXOrsHVsfFhgkmPOTj/05uP2fDI5RDt8MJy9DgJztbu4T7mHbxrp
-         50kzPQ+imdeYBVspE5Gw/tSZqayNMnOYVhClNZ5yLVMD5NvwKUqB5uFrTEQQPzUC2+lG
-         7tPj0RADmZgNbXKJUIB3BgLRTnga4INQOnga8fr96CuVhac22CiM/PiGlxk2ZvuDv6ZE
-         JqitgmzTgi8ZVe3Ne5qPW/axyDYKUWKdltWIDXvnySIW+CDzvK0JB0SWUiB4F4zPBxwF
-         D5XA==
-X-Forwarded-Encrypted: i=1; AKwUvByI2nFrJ1urX1wYHNlH7XbSGF9S6ECDrfIzNjtglRT233QQOVg8kd7/QZwqOTwCzVUA85q7FHpuABy2z7iWSA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJQiasyjsXZLnoi3f17Cht50vBoatTZM0okjgff+PP39cnUAn6p
-	S/ufuKTu5Uq05XuLoxnPr1pTXSVU7oMHSqr12lKHJum6nqZVeN0ElVCB
-X-Gm-Gg: AYBFou2bFvIcNpATrLIZzSebiSYOS6Mp2SfBXMqqqEDSpbArKgyltSKHqjfbQ/2zp4t
-	w8gR3eKPLGYV049rTbPqRJ86bNQLSnwwyuYNJVB8xFOGr9/KrU0Icyv/tuyz5guIYoreJLmMrXm
-	NBwUFQV2mh8WuklpqwA2wlC9V/XyzAqcye67hZJNgbK2YI1Gn1KLV+4qbK8tZ5k4x3/edCZ7r7u
-	AmeN1yhfnMlPUrIYhcp0oliBn1vU/+s43rU2Yj/M9m/0HK75J89XQM56wU7sA/OZtDGAW2xYKkj
-	zlsJALGVRj1g194c6gx7vKXn4HMINK6RBKvqDXeTeSDAZT9gKLit0gmqDKRKm5JvzxuTIDY0Tuh
-	eP4G4zf1Zg+LvjzrCiosyRmC8bc8D/AYLXZFigEJAHmiJ+nqTjGpDWLNGk0HZhI9+7CPt3O0gk0
-	TvlWk5r3zMplwgVLdJ3wZkeu9A09wSMbKqA1I/94pPBljZz1A3GZFXK7EcQHROBwdWxR5X6TRIS
-	yEPxEpy8VGuLJvBpeCmtmY9115SOM9L5ttDWTzz75rdUTnDR4kIY7jQ8ta8yRqKyf5BRQgJtQ==
-X-Received: by 2002:a17:902:da85:b0:2ea:71a7:7f21 with SMTP id d9443c01a7336-2ea9c6c245fmr69254805ad.13.1793078753628;
-        Mon, 26 Oct 2026 22:25:53 -0700 (PDT)
+        bh=V3MhTwMZ6Q2SenAScnAgXH8rYKIfU3CHRZax1o7/L+E=;
+        b=VSLhW+VGCMY6vIfyDJkVeA+9iNbL3fu1eQEOnwmQlv+km05Wpxf7kfV920YaSLb/ll
+         Rma3oQpf9AvGvSycHOQFTjX/0HJeBm0qVND39NKINn3TrrspqnZe1JM7WcqYHLZ4rMXf
+         DtHYU85Q2L9G1In+POztM+jlYRH0lTQzoDRRj6YaYR8j7GLWU81xgm0km40KOQqbT4eu
+         sLEu1iDBShbgR8OJ8hJ7K16I60zk70Ijk45T67RBv9NUlJcbMoHGdDonMFuuAXSjSprO
+         qQTnok34xOvAnjJjE5tlzzXlpiTbX/s4/SJdtewqf7nPi4ijzWxv8gl1OWLoholXSnWc
+         PVUw==
+X-Forwarded-Encrypted: i=1; AKwUvByMFBvdah+NrNrLxUII0LRAF0As9Pbkz0AI5eTh0fAOkHBVInTQLNQ/PauCoMn80onHe4VSAVyNpaJ/076a2Q==@vger.kernel.org
+X-Gm-Message-State: AFq9FYIMgQfE1CWVgW2hqhVCuHbWBxuf85IRKPxEb8rRRjKE/PeYQTW2
+	IpjArkTckOqcZEIEt31BwsHiAzC58m4SkIXhZlEh/LhD5isQt2i9nPDZ
+X-Gm-Gg: AYBFou3My6OPHhxmblrvUbrGQIhe8ppO2naSTMsJN+c+5brSuR+cgJFxR/ElhlX9bxR
+	6/XLj8znp2WhNRwuEAsHwzXwNmCIUL+a9TWHDcuiA5snjMNcjeKAb2f2Sb056SfeN0K6XNEvmGi
+	MGDB6DRtOsqnQJG0lAkKgAp0S56CmZ3vojsh7BSnV/BmEo18XCOZYAdyh5Hz0g565Gg87m8H/0P
+	Z7zONrzQ6ATvAOAjzAi7XnxeHgDgiDqxZhJntpqt+n5n3DfCkdSkLg5w2fDJXjEKiplrxfIwnAE
+	HXGd52ogd1olxX/EkV31QTWM3jYhtS5dl1Apcd3waX11yG48xUCMvTTm1iKVucUSwx62HFBaj9o
+	PnWy4+4nh41idyIOMhMaHKPEPZlgruGsm2Wu14oeoP4QxIOQuMaiFRcK9UvddQw7975xA++0nr0
+	H3neWcFOqFME/ZIomuyp+76u9vG5acdGOrKlushfNrgYvRIQ/Q7s0Fggdf9dvJPWAu+lTs45zyh
+	5j1+lOkzM0lsX/bELXbAsHAn8YQKIXNqWSBVDkuWdgq4AAKqCQwi6WZplVueT4PHXrTO5ZRwQ==
+X-Received: by 2002:a17:902:ce0d:b0:2e9:851a:7188 with SMTP id d9443c01a7336-2ea9c7f6e25mr73027335ad.23.1793078760839;
+        Mon, 26 Oct 2026 22:26:00 -0700 (PDT)
 Received: from toolbx.alistair23.me ([2403:581e:fdf9:0:13b2:851f:d9cb:44c5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6c9757bsm3307715ad.58.2026.10.26.22.25.46
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6c9757bsm3307715ad.58.2026.10.26.22.25.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2026 22:25:53 -0700 (PDT)
+        Mon, 26 Oct 2026 22:26:00 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: akpm@linux-foundation.org,
@@ -101,9 +101,9 @@ Cc: ojeda@kernel.org,
 	tmgross@umich.edu,
 	alex.gaynor@gmail.com,
 	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v5 01/23] virt: coco: change tsm_register() to use a const struct
-Date: Tue, 27 Oct 2026 15:25:14 +1000
-Message-ID: <20261027052536.1722081-2-alistair.francis@wdc.com>
+Subject: [PATCH v5 02/23] rust: create basic untrusted data API
+Date: Tue, 27 Oct 2026 15:25:15 +1000
+Message-ID: <20261027052536.1722081-3-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261027052536.1722081-1-alistair.francis@wdc.com>
 References: <20261027052536.1722081-1-alistair.francis@wdc.com>
@@ -118,67 +118,238 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alistair Francis <alistair.francis@wdc.com>
+From: Benno Lossin <benno.lossin@proton.me>
 
-The tsm_register() function takes a struct pci_tsm_ops *ops argument.
-This eventually is stored in struct tsm_dev as a const, so we should
-just change the tsm_register() register function argument to be a const.
+When the kernel receives external data (e.g. from userspace), it usually
+is a very bad idea to directly use the data for logic decision in the
+kernel. For this reason, such data should be explicitly marked and
+validated before making decision based on its value.
 
+The `Untrusted<T>` wrapper type marks a value of type `T` as untrusted.
+The particular meaning of "untrusted" highly depends on the type `T`.
+For example `T = u8` ensures that the value of the byte cannot be
+retrieved. However, `T = [u8]` still allows to access the length of the
+slice. Similarly, `T = KVec<U>` allows modifications.
+
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+Message-ID: <20250814124424.516191-3-lossin@kernel.org>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- drivers/crypto/ccp/sev-dev-tsm.c | 2 +-
- drivers/virt/coco/tsm-core.c     | 4 ++--
- include/linux/tsm.h              | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ rust/kernel/lib.rs      |   1 +
+ rust/kernel/validate.rs | 192 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 193 insertions(+)
+ create mode 100644 rust/kernel/validate.rs
 
-diff --git a/drivers/crypto/ccp/sev-dev-tsm.c b/drivers/crypto/ccp/sev-dev-tsm.c
-index 46f2539d2d5ab..48df8c579c74d 100644
---- a/drivers/crypto/ccp/sev-dev-tsm.c
-+++ b/drivers/crypto/ccp/sev-dev-tsm.c
-@@ -339,7 +339,7 @@ static void dsm_disconnect(struct pci_dev *pdev)
- 	streams_teardown(dev_data->ide);
- }
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 1ab41129d557a..a3c54971e9dea 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -147,6 +147,7 @@
+ pub mod uaccess;
+ #[cfg(CONFIG_USB = "y")]
+ pub mod usb;
++pub mod validate;
+ pub mod workqueue;
+ pub mod xarray;
  
--static struct pci_tsm_ops sev_tsm_ops = {
-+static const struct pci_tsm_ops sev_tsm_ops = {
- 	.probe = dsm_probe,
- 	.remove = dsm_remove,
- 	.connect = dsm_connect,
-diff --git a/drivers/virt/coco/tsm-core.c b/drivers/virt/coco/tsm-core.c
-index e784993353d8f..6b735ac2a814e 100644
---- a/drivers/virt/coco/tsm-core.c
-+++ b/drivers/virt/coco/tsm-core.c
-@@ -57,7 +57,7 @@ static struct tsm_dev *alloc_tsm_dev(struct device *parent)
- }
- 
- static struct tsm_dev *tsm_register_pci_or_reset(struct tsm_dev *tsm_dev,
--						 struct pci_tsm_ops *pci_ops)
-+						 const struct pci_tsm_ops *pci_ops)
- {
- 	int rc;
- 
-@@ -78,7 +78,7 @@ static struct tsm_dev *tsm_register_pci_or_reset(struct tsm_dev *tsm_dev,
- 	return tsm_dev;
- }
- 
--struct tsm_dev *tsm_register(struct device *parent, struct pci_tsm_ops *pci_ops)
-+struct tsm_dev *tsm_register(struct device *parent, const struct pci_tsm_ops *pci_ops)
- {
- 	struct tsm_dev *tsm_dev __free(put_tsm_dev) = alloc_tsm_dev(parent);
- 	struct device *dev;
-diff --git a/include/linux/tsm.h b/include/linux/tsm.h
-index 381c53244c835..6ac12de8c4d36 100644
---- a/include/linux/tsm.h
-+++ b/include/linux/tsm.h
-@@ -120,7 +120,7 @@ DEFINE_FREE(put_tsm_dev, struct tsm_dev *,
- 
- int tsm_report_register(const struct tsm_report_ops *ops, void *priv);
- int tsm_report_unregister(const struct tsm_report_ops *ops);
--struct tsm_dev *tsm_register(struct device *parent, struct pci_tsm_ops *ops);
-+struct tsm_dev *tsm_register(struct device *parent, const struct pci_tsm_ops *ops);
- void tsm_unregister(struct tsm_dev *tsm_dev);
- struct tsm_dev *find_tsm_dev(int id);
- #endif /* __TSM_H */
+diff --git a/rust/kernel/validate.rs b/rust/kernel/validate.rs
+new file mode 100644
+index 0000000000000..3c1fe37624573
+--- /dev/null
++++ b/rust/kernel/validate.rs
+@@ -0,0 +1,192 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Untrusted data API.
++//!
++//! # Overview
++//!
++//! Untrusted data is marked using the [`Untrusted<T>`] type. See [Rationale](#rationale) for the
++//! reasons to mark untrusted data throughout the kernel. It is a totally opaque wrapper, it is not
++//! possible to read the data inside.
++//!
++//! APIs that write back into userspace usually allow writing untrusted bytes directly, allowing
++//! direct copying of untrusted user data back into userspace without validation.
++//!
++//! # Rationale
++//!
++//! When reading data from an untrusted source, it must be validated before it can be used for
++//! **logic**. For example, this is a very bad idea:
++//!
++//! ```
++//! # fn read_bytes_from_network() -> KBox<[u8]> {
++//! #     Box::new([1, 0], kernel::alloc::flags::GFP_KERNEL).unwrap()
++//! # }
++//! let bytes: KBox<[u8]> = read_bytes_from_network();
++//! let data_index = bytes[0];
++//! let data = bytes[usize::from(data_index)];
++//! ```
++//!
++//! While this will not lead to a memory violation (because the array index checks the bounds), it
++//! might result in a kernel panic. For this reason, all untrusted data must be wrapped in
++//! [`Untrusted<T>`]. This type only allows validating the data or passing it along, since copying
++//! data from userspace back into userspace is allowed for untrusted data.
++
++use core::{
++    ops::{
++        Deref,
++        DerefMut, //
++    },
++    ptr::{
++        from_mut,
++        from_ref, //
++    },
++    slice, //
++};
++
++use crate::alloc::{
++    Allocator,
++    Vec, //
++};
++
++/// Untrusted data of type `T`.
++///
++/// Data coming from userspace is considered untrusted and should be marked by this type.
++///
++/// The particular meaning of [`Untrusted<T>`] depends heavily on the type `T`. For example,
++/// `&Untrusted<[u8]>` is a reference to an untrusted slice. But the length is not considered
++/// untrusted, as it would otherwise violate normal Rust rules. For this reason, one can easily
++/// convert that reference to `&[Untrusted<u8>]`. Another such example is `Untrusted<KVec<T>>`, it
++/// derefs to `[Untrusted<T>]`. Raw bytes however do not behave in this way, `Untrusted<u8>` is
++/// totally opaque.
++///
++/// # Usage in API Design
++///
++/// The exact location where to put [`Untrusted`] depends on the kind of API. When asking for an
++/// untrusted input value, or buffer to write to, always move the [`Untrusted`] wrapper as far
++/// inwards as possible:
++///
++/// ```ignore
++/// // use this
++/// pub fn read_from_userspace(buf: &mut [Untrusted<u8>]) { todo!() }
++///
++/// // and not this
++/// pub fn read_from_userspace(buf: &mut Untrusted<[u8]>) { todo!() }
++/// ```
++///
++/// The reason for this is that `&mut Untrusted<[u8]>` can be converted into `&mut [Untrusted<u8>]`
++/// very easily, but the converse is not possible.
++///
++/// For the same reason, when returning untrusted data by-value, one should move the [`Untrusted`]
++/// wrapper as far outward as possible:
++///
++/// ```ignore
++/// // use this
++/// pub fn read_all_from_userspace() -> Untrusted<KVec<u8>> { todo!() }
++///
++/// // and not this
++/// pub fn read_all_from_userspace() -> KVec<Untrusted<u8>> { todo!() }
++/// ```
++///
++/// Here too the reason is that `KVec<Untrusted<u8>>` is more restrictive compared to
++/// `Untrusted<KVec<u8>>`.
++#[repr(transparent)]
++pub struct Untrusted<T: ?Sized>(T);
++
++impl<T> From<T> for Untrusted<T> {
++    #[inline]
++    fn from(value: T) -> Self {
++        Self(value)
++    }
++}
++
++impl<T: ?Sized> Untrusted<T> {
++    /// Marks the given value as untrusted.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::validate::Untrusted;
++    ///
++    /// # mod bindings { pub(crate) unsafe fn read_foo_info() -> [u8; 4] { todo!() } };
++    /// fn read_foo_info() -> Untrusted<[u8; 4]> {
++    ///     // SAFETY: just an FFI call without preconditions.
++    ///     Untrusted::new(unsafe { bindings::read_foo_info() })
++    /// }
++    /// ```
++    #[inline]
++    pub fn new(value: T) -> Self
++    where
++        T: Sized,
++    {
++        Self::from(value)
++    }
++}
++
++impl<T> Untrusted<T> {
++    /// Marks the data behind the given reference as untrusted.
++    ///
++    /// Unlike [`Untrusted::new`], this does not require moving the value.
++    #[inline]
++    pub const fn from_ref(value: &T) -> &Self {
++        // SAFETY: `Untrusted<T>` transparently wraps `T`. The cast
++        // does not introduce interior mutability, as `Untrusted<T>`
++        // has interior mutability if and only if `T` has.
++        unsafe { &*from_ref(value).cast::<Self>() }
++    }
++
++    /// Marks the data behind the given mutable reference as untrusted.
++    ///
++    /// Unlike [`Untrusted::new`], this does not require moving the value.
++    #[inline]
++    pub const fn from_mut(value: &mut T) -> &mut Self {
++        // SAFETY: Same reasoning as `from_ref()`.
++        unsafe { &mut *from_mut(value).cast::<Self>() }
++    }
++
++    /// Marks the given slice of data as untrusted.
++    #[inline]
++    pub const fn from_slice(value: &[T]) -> &[Self] {
++        // SAFETY: `Untrusted<T>` transparently wraps `T`. The cast
++        // does not introduce interior mutability either, as `Untrusted<T>`
++        // has interior mutability if and only if `T` has.
++        unsafe { slice::from_raw_parts(value.as_ptr().cast::<Self>(), value.len()) }
++    }
++
++    /// Marks the given mutable slice of data as untrusted.
++    #[inline]
++    pub const fn from_mut_slice(value: &mut [T]) -> &mut [Self] {
++        // SAFETY: Same reasoning as `from_slice()`.
++        unsafe { slice::from_raw_parts_mut(value.as_mut_ptr().cast::<Self>(), value.len()) }
++    }
++}
++
++impl<T> Deref for Untrusted<[T]> {
++    type Target = [Untrusted<T>];
++
++    #[inline]
++    fn deref(&self) -> &Self::Target {
++        Untrusted::from_slice(&self.0)
++    }
++}
++
++impl<T> DerefMut for Untrusted<[T]> {
++    #[inline]
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        Untrusted::from_mut_slice(&mut self.0)
++    }
++}
++
++impl<T, A: Allocator> Deref for Untrusted<Vec<T, A>> {
++    type Target = [Untrusted<T>];
++
++    #[inline]
++    fn deref(&self) -> &Self::Target {
++        Untrusted::from_slice(self.0.as_slice())
++    }
++}
++
++impl<T, A: Allocator> DerefMut for Untrusted<Vec<T, A>> {
++    #[inline]
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        Untrusted::from_mut_slice(self.0.as_mut_slice())
++    }
++}
 -- 
 2.56.0
 
