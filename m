@@ -1,89 +1,116 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793112040;
-	b=PY+TtklIDHujgIHbzFqmdLAvJ4FzxWCoXxyeFznyAbNrwkEl99Wg/X7MohQldmMbrp/o
-	 HK6RbF6feXtp/DDt3N4wbOe/dJAr903vv9Twdakvxta1uuy+7WV75KFHwiwmaWhW+TbXq
-	 Pp/5cnipKoc17+1MS2+ZErcFTycsePg0ettamHOGCTBvNKV3YSn4RCnf+aAy1uoUQjDDN
-	 qg+nlCYjZ8SXj94N/DS7vEb1PuKNu1QKv76h6srpVmcbTLI+U2bXJl5mM1PfNclN3437/
-	 Anep2MycaRHp1QqDlg+37Fx8lRDX4If/lXf49dPKZSkXXdzQRQpDfV4N1ZqvsZ/jDCQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793112040;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:CC:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Virus-Version;
-	bh=oij5R9u5jwh4/DBYefjYkHwJnTbmfc7uF771cLDBnu4=;
-	b=mzUQlMF217T4TSxD9xIZUUG5OjW/Oe4rvmHCS0TSh7CJ8iCZ1IQkTL3F8o/wDB+jjEi5
-	 8x2P5qSTIOpQztd/HStu1GqwZw6oIA5rnq2kZ8KK3EOEatimFuDNwVc9svJhcrhAxTVn5
-	 LRzVDc48vWrkhtHUBR9jjv2/coDWVlnMoIjx1tbjuONUiIyOtDH8WZPFfdCqZ6rOKwGtZ
-	 3paOMN2hi7rM6EXfs1TEXKoFUT5yI7Tclau48wf5CVjn0N16z8l8iIUFWuUtlJXBuxYNh
-	 L14kLdMijHaHCdKi0ZJj4Q1qVoQy/aqGe/MTphzEZs7cR9ffxDh0RNQAw4v6SAz5myA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=a0yTAHFU;
-	arc=none smtp.remote-ip=67.231.145.42
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.55
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793113200;
+	b=NQZZXEw27vDlxFerjQe9kli+a29iUolmZQvoyw+JmgbrM+WOsOrckZtvtm7VStlNy+GT
+	 QaCxqfcQDIwW23fp7SHU7w0aO+OJBeN2J4I0AS/9x144tetDT3UVQ5tRutkmv5z5YyX1W
+	 DkpVVmBQXNT6W1zLDZlk5ydy+YQvSVzfFrfB7BWzAhPfZTSLBK9ILBsBDLMpSaJZcy5Hc
+	 79a4z3d0iE/NEyBGgxU2SNaSdbm+AusgDzEfNr7+LjBVydvM+8qe7p6+qvFKlNNn2jKHb
+	 Ir32wQ0MJ75LoIsCNqm/V2J3iGhG0WbG09yJjzDiZtZWEeJlAWLfY+GIgch1fUvDJkA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793113200;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=pABlS6hjZixmx7DLsVt+Gh3/D2QR7yvzOR3o2BqpkiI=;
+	b=f6lWguxfmZ0WQ35Ef9rJGAMuXGp3OyQjGlRGFHDImwVCCa5jb2zwkyABNWJP0SPr4iGS
+	 duarDggC/GQhw08oZaETfd62T1a/RXP3zj/QXgxzgtpmcWZRZ6LTYzgLkhOzp2OdfOVIQ
+	 GOIjvkzc5HDqO1u3vMbHVV6dEM4edMud452iVPZAfpAtX8fSJlWQd+/k1cVa6QuEFEZ8d
+	 tSa8Q9uqSp6ftJWTUDKUAI6pF62WtLNub9b8ouOUY87o1UE+FKdS9pIgImMZ6KmOrZdWW
+	 a/QEAjlg2xn78h3H5uWrGMs5x4S2TBvqIAVxLFyD0PZVlubdgJ+9NuqX3PyvFGN//fw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=N79ZeVuX;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.55
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012055.outbound.protection.outlook.com [52.101.48.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B4C606A31A;
-	Tue, 27 Oct 2026 14:40:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8B4C606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D88B606A31D;
+	Tue, 27 Oct 2026 14:59:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D88B606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=a0yTAHFU
-Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69RDn3T82963327;
-	Tue, 27 Oct 2026 07:40:05 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=oij5R9u5jwh4/DBYefjYkHwJnTbmfc7uF771c
-	LDBnu4=; b=a0yTAHFU2WIeU4w0eMtmQlZGWCQZ0NDOsvBhYVi399UhhDULN3U9r
-	FYTBjDqdvzoKpC12IomKzon0D8mzqJNQQo1H+JLYFFkGpqQF8n/LNlQd0faTfGlR
-	+Yb3gl25aAONMIuwL8NnjXOeOXfweNlQ9AKY08fZuLqucBWe33W+W16/4TeUsXuJ
-	K2GSVNFv/cMn84f6IdQY2loTlF4PI1VJdIGKyYaWcqu/S2wrYHsFCRcA54lciY3u
-	1z/olW8Oo7tYuRNqbmuZOeaJLVdIh6E3DpkUPdwAuAIFjq4Puz1y+YxCCKaa0jbu
-	m7tiU0aRwIB3BQJu27qwXwUKmZEz7VKFg==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hjs1fhuf0-20
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 27 Oct 2026 07:40:05 -0700 (PDT)
-Received: from localhost (2620:10d:c0a8:1b::8e35) by mail.thefacebook.com
- (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Tue, 27 Oct
- 2026 14:40:04 +0000
-From: Ruben Hakobyan <hruben@meta.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>
-CC: Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-        <virtualization@lists.linux.dev>,
-        Alexander Duyck
-	<alexander.h.duyck@linux.intel.com>,
-        David Hildenbrand <david@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-        Boqun Feng <boqun@kernel.org>, Gary Guo
-	<gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=
-	<bjorn3_gh@protonmail.com>,
-        Benno Lossin <lossin@kernel.org>,
-        Andreas
- Hindborg <a.hindborg@kernel.org>,
-        Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>,
-        Danilo Krummrich <dakr@kernel.org>,
-        Andrew Morton
-	<akpm@linux-foundation.org>,
-        <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] virtio_balloon: submit reported pages as individual buffers
-Date: Tue, 27 Oct 2026 07:39:57 -0700
-Message-ID: <20261027143957.630549-1-hruben@meta.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261027083627-mutt-send-email-mst@kernel.org>
-References: <20261027083627-mutt-send-email-mst@kernel.org>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=N79ZeVuX
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oVNiXEyTzDIrBLWDPN10HICUvUJdh7LwKVzVTc/o0H+0959j/8c3iYruwFjcvKjXeUPI2GvyL3WZzDEWKEu2XwfdiNWI1NVSw9kHs58cIuOWxcTPlt1UpdJIWBb0zeaI+utDRD++2uCnL+p5BVfU6ADC5B6f225P2xshlAqhDznNQ/LiUtmh5MwDjkCIX7E6606BCOEvn9oYhyXRajzG0jAVXUtE0Hk8Xu6hJTlUufRGuSG9iIphODKt1ivZloRZBTiMhlMuPPag93/XTCSbctcTMOdYXt5hA+d/oZvBKnW2GMtZer8R2NOKUF2FI7WBlvN56JetqCt07ZhmgfZrCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pABlS6hjZixmx7DLsVt+Gh3/D2QR7yvzOR3o2BqpkiI=;
+ b=xNif/K4Iy/OPNQymS7Pi+E65P76FhZFXzoWtaOUvYHmT4BkqVSQJJQ1YwcaghPimoCZjBs82w65Shs0B+gtjyhnEYIAXCqHBWeE0aB4x+3LwzPvo10xULJEflERlkn9m/KKn3ISOKH9JLbJ/X/01VfmBJqT1VvKmlBQMDw/cr+rtc9dmgCZ2etYfaUKmafyWnyRZhRb29d82KDQKwFs6sidZATyvX5nFHBKOOfbw79PgNTKn65qpov6XaY7Hy0G8qEQbIE346/Px+XAFD42xSkqEk5pJ4qzVnXPFsSJFiYIt3fXLxKu1JwCbDErIDiEkUXzbi+SC8VwZJV0TcgrZVg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pABlS6hjZixmx7DLsVt+Gh3/D2QR7yvzOR3o2BqpkiI=;
+ b=N79ZeVuX4XEkoF0V+UavXEDLEJnueV6t55DC0hN+3WXLy0Ak5Gnb8XjjRNpQmysMacIgiaSwaeyKtCJH55y2z4RLUUrbTzu84yFmG5+Z0WC9plgBVs0bJ7UN3LojnxUIWT0jChOHeiQIWsOIRwgstiHBiaqDYM+XnK3xdytQhrA=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by CYYPR12MB8872.namprd12.prod.outlook.com (2603:10b6:930:c8::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
+ 2026 14:59:56 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0546.021; Tue, 27 Oct 2026
+ 14:59:54 +0000
+Message-ID: <22d66945-8854-442f-a69d-fe02726eccda@amd.com>
+Date: Tue, 27 Oct 2026 15:59:45 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 0/3] Solve dma_fence's problems by locking
+To: phasta@kernel.org, Sumit Semwal <sumit.semwal@linaro.org>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Alex Deucher <alexdeucher@gmail.com>
+Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20261020100034.759183-2-phasta@kernel.org>
+ <3e8bc11d-6f90-47a4-ae63-cf2ff37f1ff6@amd.com>
+ <ca78cdb7c24a9be9b640db782168cdcc5fe30b60.camel@mailbox.org>
+ <ed2728bd-1df4-478e-9e6f-a96dfd172b48@amd.com>
+ <4a7294da65c8744ba6355730e304b5250d0ca351.camel@mailbox.org>
+ <d13d1a6e-bba2-4275-984b-145e0252eb0f@amd.com>
+ <320b6e7c75da6f05c015e89df0e2c7d11f20d70a.camel@mailbox.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <320b6e7c75da6f05c015e89df0e2c7d11f20d70a.camel@mailbox.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0222.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e4::8) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -93,160 +120,139 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI3MDA1OCBTYWx0ZWRfXy11384covHi8
- or6arLng9iheIEjyQYhhphMe4iHnefCyQjy1zi4g1Gm+wxP4pPDw2RQb1TjgmwW8rxE9pzsG2Ht
- tKilFpwrzrc/bxmrcx4mnyGODY2VwEf6Qyj1QhhW8isKJHhTLn2IxyNSOqPBbH0UzJgD1xze/r6
- 9C45yIMxHbyCwy6+GsDtx8XIelW5amVz3O+DKRF9t89oLlaDQ8I8YqSRt/BDF0isUEXFSxWxban
- nl3sgn0/iZVo580yfPR2fBu72/ToGBXMz+g8r5uSOgt/O2V/dEF8OZNVL7+YtMefuBlUzeN0B9H
- UuXcCjO50kuTRcAuBPXjtAmUolkrweugEw3WO2fG5cODIbuy3k5EBs1GJ2oZ+ndZCc/8S+MRlKa
- QfOhxbRQfcBvs7WCTqebTBoQTcgoSXoLjcV/FStBgePr+T6qe/16HJgpJK3Dc6fCfpvL2jrFl5E
- jSJI+DYKkqcPX5WgnQQ==
-X-Proofpoint-GUID: 8eGS3lxKv7CyX1l3giyNomw5nlk8hF2I
-X-Proofpoint-ORIG-GUID: 8eGS3lxKv7CyX1l3giyNomw5nlk8hF2I
-X-Authority-Analysis: v=2.4 cv=LJzz05W9 c=1 sm=1 tr=0 ts=6ae0b7c5 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=tpM8CJlwf7uhpglF1g9U:22 a=20KFwNOVAAAA:8 a=VabnemYjAAAA:8 a=QyXUC8HyAAAA:8
- a=nzaXTY8-YBXO8wDHTwIA:9 a=zY0JdQc1-4EAyPf5TuXT:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI3MDA1OCBTYWx0ZWRfX8iJJWI4MREEk
- DsNjOoQl2iD0gzYmsAM34/ZZuuBpRNOBYgz1nGnCsR+Yi2gRGiTf/71SKB2FsGJ8IvAARCiuDrF
- CxaxTO14cL9dTuc3sjTPhc8z12Z2lAE=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-27_03,2026-10-21_02,2025-10-01_01
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|CYYPR12MB8872:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8c7c9e24-0f89-4390-63ee-08df343af5a6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|18002099003|6133799003|22082099003|261026140227099003|921020|56012099006|11063799006|4143699003|261021121427099003|261021123027099003|10067099003|261022105027099003|261026121527099003;
+X-Microsoft-Antispam-Message-Info:
+	Fxfcg+0D0A+KVfPGIf9Vtz+6OXu1nDn0niuTgbNlAjhcOmnuQUuQs0bU/9CJWe95T1AJ6Jy9+buFSGZaQime+JmHPGPpUi719NPS7LQNX75LseVr/7KM+ILufyB34ma3zz9Uqd61CmcRUhiVUQDc/yNy72wTNlWuSKcjdzhT92E75Y23YflrP14dURLte20RzMT9TB7G8YVolPQ3VztMq4e/ojqCmzInZq8LYxpIp9M5Jg9wjKRUR0sJvbBxIg6a43PHe+SmulConnmtAZhjWm1SbXUyaiIhwlIDYQ0+EV6TWVhP0sn/EKD+7dDrlzuf1P32bKYndiG9swCQR8vOFTaOmbJefHfLcQL4fukkMkoFI2kSwlMcEGWxBhWIGp2ux/syZW7g0AqKBUI2HVV1fTxeS7LoklulddoZKE2XSkvBetz+Voo+GnwQGTPP/Ljhafzwb6hPRFZKU2NmoDgAPr9YujGIA4cZMY+iR8Fjtvx6o0d3uU99MgkQJdSqiyo0sUmiLCVU1HvQfnqZfFhy3LZRRNvZZpIM6E+BLuHljNjPj7on7es56SQM3PhKSW/VMUZZ8iNSQ/ARiItCckyqi3YmadWrRKFLfDp+gDzVxO1K8crlBVnUeir4WnPd9973CMGXDHeWOy3O0xSf959WAIvFDoJiVHKfHze7WCotFGPSPfV2Asj9WZL5cwBAgL9oOqfEZYEHFZe36JSLwfhgUQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(18002099003)(6133799003)(22082099003)(261026140227099003)(921020)(56012099006)(11063799006)(4143699003)(261021121427099003)(261021123027099003)(10067099003)(261022105027099003)(261026121527099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dVljTGgwZDN0VHdHRDI4TzRxbHBqTjIyRWNHVWhOTjZTdmUyOFVVTytmR0NC?=
+ =?utf-8?B?SFJaRU5wTTVXNlFOSHEvVUJ2eFFUZXJjdWkzV1BBeUlJT3UvYUFMcjJERHRV?=
+ =?utf-8?B?cWdUZms0MEVGaWpPRWFtYlc4Uk51bXVuZWJBS0Nad3NCOGhwOG9CeFd6Q0ly?=
+ =?utf-8?B?SkpQTnI5a3Z2VldqbHl5M2VxTnRvblAvOE1MRUZzMnU2SDl5Q3llR1F6NVVa?=
+ =?utf-8?B?NVFLR3I2UTE4cEVoaW9MRFhqYURXNzhUWmdoRTQyNlcyenRYN0lqbW0rUDBp?=
+ =?utf-8?B?RTBsV1NSSG1xQXFKSExVNkFoQWVCYUkvc1k0WkFhaS93dm5GVXMyU0xDWXpR?=
+ =?utf-8?B?ZFJ2V3JKUy9FekVWdHE3QUZFOHl3TE1RNWxYZUpiNU85c0xDaHVyeU1CdnVz?=
+ =?utf-8?B?SnpPNU9Vb2ROM2lRV2JYMHRPM0ZpZlQxWDhBc243Z2dsNFNIWG4zMHh1YlhN?=
+ =?utf-8?B?SDVRcEdRemxMLytRR0pOVnI1MWFNUUFjV0ZMR28zejdRWW1FV1dhQWVHNHBv?=
+ =?utf-8?B?Y3ZtUmJEZjVOODlqak9NVnVld1VUdzg1ZWN0cVVVbVF6ZzNaRzB1Q1VFTlR0?=
+ =?utf-8?B?ZTlVYU9yNVBMUzJvcm56NVpJQ085OHBMRTZnK281U3B0cTdVK1krOXhub3ZU?=
+ =?utf-8?B?eHJIR2lIeFo3TnNWdkR6OE5HbEt0UGFLZlJSM3VvUUwyek1rUkdHS1FGVW4v?=
+ =?utf-8?B?SWlWdS9lQXN3QXNQRXkvSG9OYlpYb2FiTEVoUjNxNUxrUFhDbnppV0NsSEtN?=
+ =?utf-8?B?QlVYaGxRSWxIb2J1MndEZEpXcW5kUjliMEtCN2VpdFBSNmJ1R2llU3NYdmps?=
+ =?utf-8?B?VjhEamlwM1NLS3FIYm0wd2ExWk1jUFc4YVdKN2JTVmNtTmU4N0RrSktTeDIz?=
+ =?utf-8?B?SVFKelpvMTBmTHN2MVVqdzFrTFliemZCRHJwSThkdS9jeGRuOGxLdFdoSnd6?=
+ =?utf-8?B?OXQySW5LQ05uOVNMWEtsZU1MTUQ5SXp3U2lLa3VpMklDMEp5dkV5OS92L3ha?=
+ =?utf-8?B?SmUrSVpzUWZCL1Y5dkNpTVVva2IzbllCMDJTcHNOcjRQaGkzNk5Db3ZRdWE4?=
+ =?utf-8?B?S0NHcnJ1MW93ZUJrRHoxS0dlTXRRWW1KTXNOS0wrMVRrN01GVnVueU5Ic1VX?=
+ =?utf-8?B?ZDUxUjlzV053Q1ltVlRSdjB3bk9lMEN1RDl1Z3ZxblAyY1VkRTE0c3pRTXM4?=
+ =?utf-8?B?a1NGNWxuWW5DdVNLSzFHMDdGT2hjRnJHazZ6TWJDQlFTeXZ4S2I2TFhNWUtS?=
+ =?utf-8?B?M1NUMzMvQ01OUUU1TFNMM2FUMFYzRFdPTG41TE90Ykd3NlNrV0F6N093MDNX?=
+ =?utf-8?B?ZE1kQzVZU0lEejNTOFBjeXZwSUs3TU5aYmgzOWFKQ2ZTQ1FqdmpFb251VUxm?=
+ =?utf-8?B?RlRxQ05qMDRuc3ZFdms1U2paRTdYeXV5aWlhZTZVcGZRK0o3NEZwVTNuUW9G?=
+ =?utf-8?B?Y2t2cmlOa2o4bWZYdlkzUGJjUGpudjJFb21HSWVSa2o1QmZjclJ6K0tUdUhz?=
+ =?utf-8?B?ZVR5L1QwazdiR3YvTkovYk5kZ3VNRitCQ3lkb1NlbTg1VEVHVHBBSmpqVVVk?=
+ =?utf-8?B?Tmw3YWh5cWhpQ1owMzB4TTBUb1pnaVJSNXg3b1BUQkxxL0pzaE0vcGJHOWZT?=
+ =?utf-8?B?RVlmVWlmQ0pKdXNlSnBiYnFQdHNCNEpLR0JiWlFhZzJqQkdMQVFvbUVoZnlB?=
+ =?utf-8?B?bkdxUzZDb1ZkbmhjR29WU21MR3RHUVBvbzl0V2dpQXMwa1BOMkdsMlM1Z3hi?=
+ =?utf-8?B?ODRPd1RDbHd3UDN3dncyY1ZsZHYxaTlaYUN6V2pXaW9qbFZQeW9ZNW5WTW5n?=
+ =?utf-8?B?MzZMNFRjK3VLeWt0V1d4ZS9oUWhpSm5SYld1OEdNc1gxWHVabUVnRDgwQkJL?=
+ =?utf-8?B?NUpnQWQzcWdvT2xUTE14NDRUbWJLMG0xaGRqaDd0cThIakxQWWlTMzMrUXMz?=
+ =?utf-8?B?RkZHaytkOXowWEdQVnJ6OWJhN1UyRXo0MEI3MnpEZ000TENTRWkxeHkrWG9r?=
+ =?utf-8?B?d3h4cjh6SmluQTNzY1FiY1hIdXhYTXd5UVNvTm5HY29yVmhOQlUycnZrSUR0?=
+ =?utf-8?B?OVhUam8yZmp4NVZkTk1STVdqZC9vbFJhVUV4Z1dxU1VwSmI2NjZnbk1pMUdy?=
+ =?utf-8?B?RXBvc1dDQ2dvM1I2dTMyTFIvTmVxRWFRY2FreVhLeCtzMWNyWHozTVFyT3Bv?=
+ =?utf-8?B?QjNseDlOZlFUTlkxUkEwSVVMZkhraVNXMVAxdDhNK1c4ZEpROHVIeVcxWTZ3?=
+ =?utf-8?B?QnNNWEQ1OU1GeW9Uck1wRUU3OVNZRS93SkhyVkt3WnZUZndEWGpRRm5VRG16?=
+ =?utf-8?Q?AlxWSjYoir99RHEoRa?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c7c9e24-0f89-4390-63ee-08df343af5a6
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 14:59:54.5350
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zzN4NHXMBMwd/TaEYD1LAcuT2hA2pFwCV5H4b1GVjV8/F2/Fmk5IHQHy1RoJffq3
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8872
 
-On Tue, Oct 27, 2026 at 12:40 PM Michael S. Tsirkin <mst@redhat.com> wrote:
-> On Tue, Oct 27, 2026 at 05:32:04AM -0700, Ruben Hakobyan wrote:
-> > On Tue, Oct 27, 2026 at 10:35 AM Michael S. Tsirkin <mst@redhat.com> wrote:
-> > > On Tue, Oct 27, 2026 at 02:26:33AM -0700, Ruben Hakobyan wrote:
-> > > > On Mon, Oct 26, 2026 at 11:53 PM Michael S. Tsirkin <mst@redhat.com> wrote:
-> > > > > The virtio_balloon driver reports a scatter-gather list of free pages
-> > > > > to the VMM so it may discard unused pages.
-> > > > >
-> > > > > For an arm64 kernel with 64 KiB pages, the default reporting and
-> > > > > allocation orders allow entries ranging from 2 MiB to 512 MiB. If the
-> > > > > report contains a sufficient number of large entries, we will end up
-> > > > > with a descriptor chain that represents over 4 GiB of memory. This
-> > > > > violates virtio spec, which says:
-> > > > >         Drivers MUST NOT add a descriptor chain longer than $2^{32}$ bytes in total;
-> > > > >
-> > > > > Specifically, submitting $2^{32}$ or more breaks Rust-VMM.
-> > > > >
-> > > > > Submit each reported page as a separate virtqueue buffer instead of one
-> > > > > buffer with an sg list of all pages.  This also avoids indirect
-> > > > > descriptor allocation (kmalloc in the reporting path).
-> > > > >
-> > > > > To avoid multiple buffers causing interrupt storms, keep callbacks
-> > > > > disabled while we wait for an event.
-> > > > >
-> > > > > TODO: as an alternative, keep using virtqueue_enable_cb_delayed
-> > > > > but add buffers after there's space in the ring.
-> > > > >
-> > > > > Note: if the virtqueue is broken, wait_event on
-> > > > > virtqueue_get_buf hangs.  This is a pre-existing issue:
-> > > > > the old single-buffer code had the same hang.
-> > > > >
-> > > > > Reported-by: Ruben Hakobyan <hruben@meta.com>
-> > > > > Cc: Ruben Hakobyan <hruben@meta.com>
-> > > > > Fixes: b0c504f15471 ("virtio-balloon: add support for providing free page reports to host")
-> > > > > Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
-> > > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > > > > ---
-> > > > >
-> > > > > Notes (changelog):
-> > > > >     changes since v1:
-> > > > >         keep callbacks disabled while draining: get_buf re-arms the used
-> > > > >         event for the next buffer, reintroducing an interrupt per page.
-> > > > >         Disable the reporting vq callbacks at probe, and only arm the
-> > > > >         delayed callback to wait.
-> > > > >
-> > > >
-> > > > Thanks for the patches! I think sashiko-bot found some issues on broken
-> > > > queues in the first patch that are worth looking into for correctness.
-> > >
-> > > Surprise removal of the balloon? Nope, it's a pre-existing issue that
-> > > it's broken.  Besides it's not really practical, no one removes
-> > > the balloon - no need.
-> >
-> > Fair point about that. But I meant the broken queue check.
-> > In virtqueue_enable_cb_delayed() there is:
-> > ```
-> > /*
-> >  * When the device is broken there is no point in polling used->idx,
-> >  * the backend will never update it. Return true to let callers
-> >  * exit their cleanup loops instead of spinning forever.
-> >  */
-> > if (unlikely(vq->broken))
-> >     return true;
-> > ```
-> >
-> > But virtqueue_enable_cb_delayed_max() doesn't have this. So I was just
-> > thinking the same reasoning should apply here?
->
-> It's broken there, too.  E.g. what is the "cleanup loop" in balloon?
+On 10/21/26 14:49, Philipp Stanner wrote:
+> On Wed, 2026-10-21 at 13:53 +0200, Christian König wrote:
+>> On 10/20/26 17:36, Philipp Stanner wrote:
+> […]
+> 
+>>>
+>>> Nope, I want to protect shared data, which is the signaled-state. Which
+>>> is currently a race-condition worked around with RCU (and sometimes
+>>> with manually doing the right thing (locking!)) [1], stemming from the
+>>> fact that the fence's spinlock is not used consistently.
+>>
+>> The fence spinlock is consistently used for protecting the fence
+>> signaling, in other words it always happens with the spinlock held,
+>> same for adding callbacks.
+>>
+>> The only thing which happens without the spinlock held is the fast
+>> path checking of the signaled and enable_signaling bits and as far as
+>> I can see that is ok as well.
+> 
+> No, it isn't. It makes the API fragile.
+> 
+> 	commit c8a5d5ea3ba6 ("nouveau: fix client work fence deletion race")
 
-The loop in virtballoon_free_page_report():
-```
-wait_event(vb->acked, ({
-    for (;;) {
-        virtqueue_disable_cb(vq);
-        while (virtqueue_get_buf(vq, &unused))
-            i++;
+This bug is exactly what I'm trying to prevent here.
 
-        /* Stop waiting if device used all that we added. */
-        if (i >= nents)
-            break;
+This problem only exists because we call the backend operations with the lock held!
 
-        if (virtqueue_enable_cb_delayed_max(vq))
-            break;
-    }
-    i >= nents;
-}));
-```
+What nouveau does is to delegate the cleanup since it can't do that in the signaling handler because of the lock inversion.
 
-For a broken queue, you could exit the for loop early and avoid busy looping.
-It still hangs, but I think it can sleep rather than busy loop?
+This problem doesn't happen any more if you just completely drop the approach of calling the backend operations with the fence lock held and then re-structure the cleanup handling in Nouveau.
 
-Anyway, I'm not sure how practical a broken queue is, so I don't have a
-strong opinion.
+> 	commit 7c703a7d3f2b ("drm/amdgpu: Fix one use-after-free of VM")
 
->
-> > >
-> > > > Other than that, I tested the "normal path" on QEMU and Cloud Hypervisor,
-> > > > both on 4 KiB and 64 KiB guests, and this works correctly.
-> > >
-> > > Thanks a lot! Can you pls confirm whether the performance is about the
-> > > same/better/worse?
-> >
-> > >From my tests on QEMU, CPU time was about the same as my original patch
-> > and unmodified Linux.
-> >
-> > To bring a concrete example, with these patches it took ~437 ms of CPU to
-> > reclaim a whole 8 GiB with 4 KiB pages (vs ~434 ms on unmodified Linux).
->
-> OK so that's just noise, there's no difference.
->
-> >
-> > With 64 KiB pages, it averaged 121 ms CPU (vs ~112 ms with my original
-> > patch).
->
-> Is this measurable, or also noise?
->
-> >
-> > (I tested this on Nvidia Grace)
->
->
-> Thanks!
+I already discussed that with Simona back then. Simona actually explicitly rejected my approach to take the spinlock to check for signaling. Pointing out that amdgpu is using the API in a wrong way.
 
-Thanks, yeah I agree and my point was that performance looks on par.
-I just wanted to share some concrete numbers of what I've tested.
+The problem is that amdgpu doesn't track the callback structure and so can't remove the callback. It's on my TODO list every since to fix that miss use of the API.
+> There are certainly more related bugs around.
+> 
+> Also think of the various ordering issues between signaled-bit and ops
+> pointer that you and I observed.
 
->
-> > >
-> > > --
-> > > MST
-> > >
->
+It's just that we changed the behavior so that we drop the ops pointer and are missing places where that pointer is used.
+
+I wouldn't really call that ordering issues, but rather something we have overlooked.
+
+>> The problem here is not about the state of the fence, but if the
+>> callbacks are still executed or not. And that is not a good task for
+>> a lock, instead what is usually used for that is a barrier and that
+>> is exactly what RCU provides.
+> 
+> Locks are for mutual exclusion. Which is what you want here: you want
+> to exclude someone from signaling the fence while you are working on
+> it.
+> 
+> Tell me one thing:
+> If locking is the wrong approach, then how come it was added to
+> literally all callbacks except for set_deadline()? Seems to me that it
+> must have solved some issues.
+
+Well, it's because concerns with the lock inversion brought up by Alex and me was ignored and the patches merged anyway.
+
+This is just another one of those DMA-buf design problems which would have been fully preventable if I would have clearly NAKed that stuff from the very beginning.
+
+Back then I made the mistake to believe the argumentation you come up here as well and so I don't explicitly rejected that approach, but by now we have strong evidence that this was a mistake and I'm trying to fix that mistake ever since.
+
+We should have never taken the lock for the callbacks in the first place, this just made the implementation much more complicated and caused way more problems than the few raised by putting the ops pointer under RCU.
+
+So even if it is possible to implement the backend with those locks being held I will keep pushing hard for removing that.
+
+Regards,
+Christian.
 
