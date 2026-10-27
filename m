@@ -1,67 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.209
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.236
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793067226;
-	b=mzrR0CO8KmUT/tusS1yK+PHCCR58EUfIRDqGFwOsdD+8MYx5GA+/Y4pcGZqAWF9MsezI
-	 63Z6afTCci9Wy5LPlVXHGmU2BTr0ewzm60svntBqKgvqffcbXbaK9kUqJo2D8pFaAlEcO
-	 BYk86NEkU4UNB5cBFNLwsPkKURM6opYymKSD5J0VNRFeqM3jOwbxp1z2kcH5tsOGUm/Tu
-	 U3iFNcgN5TOIIA2pIXBKh491oPZWMEvelNGm/cKae3JAY4rhKO7/+J+zhPotux814cq7y
-	 CUZXIRJx1kHYREVBwkb2BJWn7DRBB+2S59iZ1KZRLHaGF59XjCxdlqif5bl2bYR68QQ==
+	t=1793070246;
+	b=dQemRWupSXD6u1HsszM0ce2Dty+y2vxe+3g5SbRM059SwqXxDikPbfVpl6ALC1m/juPt
+	 b8EDK3EgNkl9JyF+vTasvN6ABnXlkfzPzd+BrlqL5/nQadqQO8ThJUp2e71LuyiF5quet
+	 Rjb8s1iV4X31lu6aiIxvHheeJmjtBqQWUfBd93b7U35+JTOpTia5RAOg/ciobzkQ+kVEp
+	 oXCGbQgxhr9VjKsMj46uw30Y3/jA+w0FbQpsu941bThGyKjTM5eeTyFnpnTjN9FA21Vy9
+	 evNTGhs35JM+jRad61T8Zvjbsp/mL1KYXlosxNxXR/kQP3p6SAeNuMwZotIWPPXh7nQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793067226;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793070246;
 	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
 	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=q0mVsby8bBRdtNv6ShrDApVS6yOF0/5rsD+14rKI4Ak=;
-	b=TobJhonQ7zS6oUem9TV/piK5cc6tIWgZzNTk7YPGLgpkpSbVF21wfnV8t9v2i0rQ7X5K
-	 oTa/CwAM/8pdg93tpU4QrR8cxJKHlDoWsRYJ7VWxkgaOkx+nU+v/FmVQflPQBDm0zaCO6
-	 4h/qHdx3ArEz/XkIGjd2Jw+/tfnMEXo6RKKKU2/aTDR4EhhJUEuxQNJYvNAwnzDculhc8
-	 KpwoeTeY2jZHoOx0PQVU55mzpGwFX/czt0VYl3OB6Rz2WBH4MjlC3MAP9FOx1nPIh3eDA
-	 IPe3YLZTwuzF9qGGDYGSAeHEN+Dbx/XCdkVd2VYl2NX5lYCE2Uro1PURgKdSXJKrqIw==
+	bh=3YitmjyyGYwg9+ruCrgZIJozcKZ/jbbm9BPfMGJnZCk=;
+	b=shIYLvd7Ru2dkXFnjLnw4HhwS8vTyAGA/CKpuScDyPgK7J+9pT3V3lHBs4a3XS2bcUGW
+	 OcWKTmzaOO6eqWgiJAqRoAEH4/sUhz4ax31YJwsUN7eGpsLz7n7BR2uZ3JkgWh43DN6wU
+	 s6mwLHCHkQWGPcrxpxZIr0xGZsGeeq1ooOel0sHL3J2JYMOBaEBK0WeZigV2wOEBWsG09
+	 GHHanxe4sM2CclyUA2Z1pX36iiiuU/AthrC2wAOK5nlia4tAehF0HD5xx49VkJKtXymNp
+	 i4nfgT+qhLjWTbrnFFPekeb5aLvkAIaQZmRIYH3HWUBv0mnh+PkU8VoYMix/u8PeVSQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=qq.com;
 	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=MDO7l1fA;
-	arc=none smtp.remote-ip=203.205.221.209
-Received: from out203-205-221-209.mail.qq.com (out203-205-221-209.mail.qq.com [203.205.221.209])
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=gTu3C0eq;
+	arc=none smtp.remote-ip=203.205.221.236
+Received: from out203-205-221-236.mail.qq.com (out203-205-221-236.mail.qq.com [203.205.221.236])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74DE606A31A;
-	Tue, 27 Oct 2026 02:13:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C74DE606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0BD606A31B;
+	Tue, 27 Oct 2026 03:04:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA0BD606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=MDO7l1fA
+	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=gTu3C0eq
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1793067217; bh=q0mVsby8bBRdtNv6ShrDApVS6yOF0/5rsD+14rKI4Ak=;
+	t=1793070237; bh=3YitmjyyGYwg9+ruCrgZIJozcKZ/jbbm9BPfMGJnZCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MDO7l1fAFfBP+UP17WZf+f4wVHMbxuCyyNA+Koo7B13HE23oxxK9IsSSiS3oS5Uri
-	 7Atsa4Luq+UwARY89R34vheKNe6aTFdUS66IDTwRJC9vbAPJGOZM8a0ADLSsr6lh55
-	 HEPwm8IRfXAZJvCAGQgc89v8EE+IC3CgjiJxRSAU=
-Received: from shuai-VMware-Virtual-Platform.. ([117.158.156.198])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id 360172E7; Tue, 27 Oct 2026 10:13:32 +0800
-X-QQ-mid: xmsmtpt1793067214tfvy16wpw
-Message-ID: <tencent_1AD2CA2CB4F26F4D36B8B1625313F7EE6D08@qq.com>
-X-QQ-XMAILINFO: Mdj+JNnRVXRTpaihHc9y+Zl6IT6ddHcnSUjmdvu3d8xR26IPQPXH1MO5e1S+as
-	 VJlJMmEBZvfQbC930DYayNQudgxq5SH/U8AUWmt27ol8Lwa3a2kQvP9JLRXxDzlIvCwNUOBnCw3a
-	 Rj7G56S19FQeK4dW6V4lQl1788ofB8htSppRT9XTfUX178sq0aKdSuU16tBjgfoovhqq3U2L4uHG
-	 0M1Cf1etzt2Cn0DkulPGYCAoOMT1eL0+CAxl+Qw3KtpDEz0GaBXSeZ/8tHzyQ1e+wSzEjtyVLTi9
-	 vbps/lURq7jJHdUkmXPjl/bADFqUNNdM+ob/d1fer+O2kmbR0rG5bHI8WPa2AlqG+b0HazW0rWND
-	 5k20207y57tUjnfUdnOafgreL6fmkLtBjN9L8fMFPM3xJMfM+BydziVYUsPTRfzlH+wPrz+j45aG
-	 0hRyyOyqffb/U1cPqecbfVrYGpyungW+EXkC0YOsC4QqjxNBSeDYtaDC/uwOs3VllfYIobyFZwr3
-	 QjOgQ1aHDMxDJXLYfpGAvocZSZ3/lmpAciv7jASz/LenE3G9zBObq0dOush+1D02ciU1u+JKjov4
-	 etL6vnZiqPGPvvfGxamPEt/FSlbZ44vSJBFnG+hpPFS4u7pCrss1inH5808rjzJYivuNMrxma7If
-	 5DcfrD9OS1ATdZ+hs0IJLkA56yxuD1s04uNM5lAYfwa6R/rYAnZG+EQWc6AfO7gjFxrxHw9udYj5
-	 VIp7qMYa8HpaQDNi9qJjN7H3dm74um6TEDNZDqELqyGHIuedIcsnirYX7nVac4Ffz1JeWFgm6ttd
-	 NuxB9Q/jAlBZhNI1q8d70MsLy+QuHE0f/YV5SGeEMVvt5NDNCO0ly+9ZjFOXn1T9vztLLyDWo6iJ
-	 9F+7eRw3ZuoMBJ85WCii2jZe6J+QnF1aZBUTjU1hUISujCF5ylKo+qM3/BgcfAegBjZhtaLuFTNL
-	 65eq/pjVJ8ORLPfSDUABJIK0JY+T8wAcpBnfpyXPXGIfWwIwgFnXwELkM7vbXnjwmDWNYoCh2csh
-	 CBpew7LRT8OZ6OInXROVnDNC7oM9kvM96YTSNJrJbKW+XJ7oJoDL+G7utYOlnIx2zdM712ocNYug
-	 6bVqzVukW5saryYAwotwN34djtwGu1yNDIzs2x6BSN39AjLgthHW8JRePc1z7/3srgWwSDfXjtjY
-	 IoI8fmW00Gy9G+0TU/PXBtKw/5
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+	b=gTu3C0eqKVxnGEUnz3F5EDSlQDkhJuNhXlZZUwucg8w02pGIvfpvo2UA2idubcLgb
+	 tXfvacn1whS1VaJY+KvowHdN8g6NGhdW4KblQt4sGP6/9MANzQ8DsOfQQwommaGP97
+	 PprXzRnpS3ULnOlVj5NK1qY5VaVwQi9TBfM89DbM=
+Received: from shuai-VMware-Virtual-Platform.. ([117.158.156.199])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id F43C6C8; Tue, 27 Oct 2026 11:03:52 +0800
+X-QQ-mid: xmsmtpt1793070235tnfw2g77u
+Message-ID: <tencent_66EE264CDD33A4355946E42D9ACA7019C409@qq.com>
+X-QQ-XMAILINFO: Nvb7z5mI5731EKflDbxB2V5ES5nxrJ+8pwsiq7dhAF4QxltFjUGTV7IRtyZsES
+	 Ds9gdyAAG++2Ox6FKqidqHZ3lbZxLPvOyiIeTx+0pGOfXTXzAG+cOrSU/zr9Id0A3zhb05RAIueu
+	 bqh03aO9pLPF83l10bXKRCdAWPoK53+d05qGU8DR2H2hEZioyOOUblI9Jr7SbDgqJ1DXR6Jjvs6V
+	 TSzkmZ4LM+vKv4JX0iZ5W365MUHCz6uLJcdOTEmAlikuvIPO/0OoZ0tK9lpyJ/PsQgWQEreH8bTE
+	 +dU+NzdfSScG1BL+1hK42aF+FIilJdyp7+yn3F4SEcwiXDCDozR8iAdGkpHRIElu7PhHb3MTuGOV
+	 NlTSXvUvTC6sUeawVLwzuAKqIL6gOGxVTSxaJnkdTeOejFgcNufpqiA/i1/BkQn9It7fu5HhdZf2
+	 e2S/N+k71T8ZL1/AfBpcxX1pax1ZCKjCGXZRkdFNH8OYqsqcGjAjv5/K4ANxO+CZYxJUFaebX5Ij
+	 nEGLTB6pU0NfZc09BwKfLzTgjYvLxa5wsfOiqIgbS6sh/Cg/xsxf3L5C7j4B4odtVHALifdyJxRt
+	 lErNw4m4bSYw64LYlupJUywzF6MbXtrkMQd5u0Bh4fBqZr7lD6zSv/0MzSjz6J8dR77j9b68LA3q
+	 JCIrzB0/JIfO27sjMP57+loi8GxMpV2V7HVVhZkr9GmP2Q8Nu7kjnyxVEBksd6P0MTAkgJ4eKvWx
+	 70xtX+IRxICQCMrifs9XyZa7hUe4xvdYqqwnySa6cV8d0T4veWPVf2VhV6QyaTonH9aMuvwXmLxr
+	 UivbBC3lHgb/w84ChjHSrMqieaouoJzHRJGoXppkcU/ehmBgppSNGJiAXdidOurPF5fKaTEsa1/+
+	 P/TpDBT9M6I6rFR/2VYep8/3i8wbZim3hzW/uU9vEQnqngojH6gd42Lgl1OZ8d0T5+Io/TYTrKL3
+	 YACpuocPQiCxOejM1CNs0/E1bFBGnDxXVG8Kj1tIeuOgllIDe9YG2uvbgy5rfwjIgM8DrTv0irYd
+	 7bP79K568ImWMziJL8VR75+IQw80GiFjiKfNSV3kxVgDQ4kIQ9sd5QpAL+1yfOgBGLwojpU7Icwq
+	 W0pcfef3F1xVG62fc=
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
 From: Shuai Liu <847807867@qq.com>
 To: linux-spi@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
@@ -70,12 +69,12 @@ Cc: broonie@kernel.org,
 	dakr@kernel.org,
 	linux-kernel@vger.kernel.org,
 	Shuai Liu <847807867@qq.com>
-Subject: [PATCH v4 2/3] rust: spi: add SPI driver abstractions
-Date: Tue, 27 Oct 2026 10:13:31 +0800
-X-OQ-MSGID: <20261027021332.440224-3-847807867@qq.com>
+Subject: [PATCH v5 2/3] rust: spi: add SPI driver abstractions
+Date: Tue, 27 Oct 2026 11:03:51 +0800
+X-OQ-MSGID: <20261027030352.615926-3-847807867@qq.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261027021332.440224-1-847807867@qq.com>
-References: <20261027021332.440224-1-847807867@qq.com>
+In-Reply-To: <20261027030352.615926-1-847807867@qq.com>
+References: <20261027030352.615926-1-847807867@qq.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -97,19 +96,23 @@ This adds the following abstractions:
 - `spi::Driver`: the trait that SPI drivers implement, with `probe()`,
   `shutdown()` and `unbind()` callbacks.
 - `spi::SpiDevice`: a representation of `struct spi_device`, providing
-  device configuration accessors, and the `write()`, `read()` and
+  device configuration accessors and the `write()`, `read()` and
   `write_then_read()` I/O operations on bound devices.
 - `module_spi_driver!` and `spi_device_table!` macros.
 
 The module is only built when CONFIG_SPI is enabled, since the SPI core
 functions it uses are not available otherwise.
 
-The I/O operations are only available on `SpiDevice<Bound>`: an
-`ARef<SpiDevice>` may outlive the driver's unbind and the device's or
-controller's unregistration, and the SPI core's transfer path does not
-check the registration state, so performing I/O on an unbound device is
-not sound. Driver callbacks receive a `SpiDevice<Core>`, which
-dereferences to `SpiDevice<Bound>`.
+The device configuration accessors and the I/O operations are only
+available on `SpiDevice<Bound>`: an `ARef<SpiDevice>` may outlive the
+driver's unbind and the device's or controller's unregistration, and the
+SPI core's transfer path does not check the registration state, so
+performing I/O on an unbound device is not sound. Moreover, once the
+device is unbound, another driver may bind to the same
+`struct spi_device` and mutate the device configuration with plain,
+non-atomic writes (e.g. via `spi_setup()`), so reading the configuration
+would be a data race. Driver callbacks receive a `SpiDevice<Core>`,
+which dereferences to `SpiDevice<Bound>`.
 
 The `write()` and `read()` methods copy the data into DMA-safe bounce
 buffers before transferring, as the SPI core requires transfer buffers
@@ -127,8 +130,8 @@ Signed-off-by: Shuai Liu <847807867@qq.com>
 ---
  rust/kernel/Kconfig.test |  11 +
  rust/kernel/lib.rs       |   2 +
- rust/kernel/spi.rs       | 559 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 572 insertions(+)
+ rust/kernel/spi.rs       | 563 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 576 insertions(+)
  create mode 100644 rust/kernel/spi.rs
 
 diff --git a/rust/kernel/Kconfig.test b/rust/kernel/Kconfig.test
@@ -168,10 +171,10 @@ index a4747f75b163..cbe5a4ed825d 100644
  pub mod str;
 diff --git a/rust/kernel/spi.rs b/rust/kernel/spi.rs
 new file mode 100644
-index 000000000000..fbbc58f083b3
+index 000000000000..b33144bd68da
 --- /dev/null
 +++ b/rust/kernel/spi.rs
-@@ -0,0 +1,559 @@
+@@ -0,0 +1,563 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
 +//! SPI Driver subsystem
@@ -548,7 +551,21 @@ index 000000000000..fbbc58f083b3
 +    fn as_raw(&self) -> *mut bindings::spi_device {
 +        self.0.get()
 +    }
++}
 +
++/// Device configuration accessors and I/O operations, restricted to bound devices.
++///
++/// An `ARef<SpiDevice>` (i.e. a `SpiDevice<Normal>`) may outlive the driver's unbind and the
++/// device's or controller's unregistration. The SPI core's transfer path does not check the
++/// registration state, and the controller driver's resources (e.g. `spi->controller_state` or
++/// MMIO mappings) may already have been released, so performing I/O on an unbound device is not
++/// sound. Likewise, once the device is unbound, another driver may bind to the same
++/// `struct spi_device` and mutate the device configuration with plain, non-atomic writes (e.g.
++/// via `spi_setup()`), so reading the configuration accessors on an unbound device would be a
++/// data race. Restricting these operations to [`SpiDevice<Bound>`] guarantees that the device is
++/// still bound to a driver; driver callbacks receive a `SpiDevice<Core>`, which dereferences to
++/// `SpiDevice<Bound>`.
++impl SpiDevice<device::Bound> {
 +    /// Returns the maximum speed of the SPI device.
 +    #[inline]
 +    pub fn max_speed_hz(&self) -> u32 {
@@ -572,18 +589,7 @@ index 000000000000..fbbc58f083b3
 +        // `struct spi_device`.
 +        unsafe { (*self.as_raw()).mode }
 +    }
-+}
 +
-+/// I/O operations, restricted to bound devices.
-+///
-+/// An `ARef<SpiDevice>` (i.e. a `SpiDevice<Normal>`) may outlive the driver's unbind and the
-+/// device's or controller's unregistration. The SPI core's transfer path does not check the
-+/// registration state, and the controller driver's resources (e.g. `spi->controller_state` or
-+/// MMIO mappings) may already have been released, so performing I/O on an unbound device is not
-+/// sound. Restricting I/O to [`SpiDevice<Bound>`] guarantees that the device is still bound to a
-+/// driver; driver callbacks receive a `SpiDevice<Core>`, which dereferences to
-+/// `SpiDevice<Bound>`.
-+impl SpiDevice<device::Bound> {
 +    /// Writes the data from `buf` to the SPI device.
 +    ///
 +    /// The data is copied into a DMA-safe bounce buffer before the transfer, since the
@@ -686,8 +692,9 @@ index 000000000000..fbbc58f083b3
 +// SAFETY: A `SpiDevice` is always reference-counted and can be released from any thread.
 +unsafe impl Send for SpiDevice {}
 +
-+// SAFETY: `SpiDevice` can be shared among threads because all methods of `SpiDevice`
-+// (i.e. `SpiDevice<Normal>) are thread safe.
++// SAFETY: `SpiDevice` can be shared among threads because `SpiDevice<Normal>` has no methods
++// that could mutate the device state or race with the C core (the configuration accessors and
++// I/O operations are restricted to `SpiDevice<Bound>`).
 +unsafe impl Sync for SpiDevice {}
 +
 +// SAFETY: Same as `SpiDevice<Normal>` -- the underlying `struct spi_device` is the same;
