@@ -1,79 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793103005;
-	b=mCT5FLFbRHgLT5ByOG8H/ZQMsYBgATZ3kBWPDDXAC8RszTG34U/6isU51jUWV5G4u1Z7
-	 AnZ2UV5h5TqK5r01aB61DKUEXZKZRr5fbW1I9gS2kXwLll+/igSn7DmtWIKwxAigOut3c
-	 e+zfrmQboNtAoKOGkmqTX0sBH0TKybsuL68nIi0g1WiCewHdGcA8lv87hjPdXK1uSKi6+
-	 X0w9I+YNbwYBK7IhoWQOhcV2kcr/MYjEPdCybk2QqQe+Ybw0z9lPpxXsr8CtmajvVK3Ej
-	 Jif68NYEabv+c2ykME/7lbBbTquvq9f8tY8AK58J+sC+y8fqeBhCeIYiu8JkQas/tmw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793103005;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=yYOtM4BuIpTWTRwQ03uCapSzz1aSA0caW59ytvuj3Q8=;
-	b=G4/oebIeY99Y3O7f5FLlr0lrbO+QMhwkkGSZBw/E/HJxenrIirWsLSYmySJ9ZAkXSIE9
-	 J+Tftb4Z5LZIBguWZK5TixjIR9AgatcLWzjTslQXnAYQlAiH8y8S/E4GOm78W+oTMFEPS
-	 PwrHXJO8KznNOGrIsd4ZgzyBQ7ArN/la2oX/HvsCyslQ+wU7lG1Nlt1d0GVZrja1HwdWF
-	 2OyK6T2QS5Zmjzf01Rb30LkLmL4Gav0IY5E9rKsIbyMh80H/W9yp901pxNqJdbk/6WkbK
-	 B4fPdlX5twHWwxBABfG5hMb9m4fQ4Qlk4OdxNAVPeTwUz8tLjL4xfFNJHrSxVapZNoA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nmK9hhVE;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17D8606A333;
-	Tue, 27 Oct 2026 12:10:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nmK9hhVE
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793103004;
-	b=DKHn1y+2DoJ8ioqNcnlnBjzhGjdPnLF8KuiMLmTn3fVCpoVmBuRo/Q/ozSjfKySpkq98
-	 2BQdo2BhiQq+YZTUqG+weNqlyPulKg1pXcrr71769uGGnUQKkqx8Ln2A53G1rKeWbqoeC
-	 inSsMKB9+jKoyQQLQw/HhLnGXm0QnS6YxFRl2dTjjgw2dm8lImxIseMCHfvVpnlYp/CoA
-	 +MNidSx0YyqZiU+fwbqCK2Tr1pMp35GAyAMC6SRuKzZWTtt/KBL1fezKxBK1vY/Z5WyhH
-	 X/nCD1AbOfti7YxwirBaIBKLev+W00wPAhoo9prGm2zwL8PDzic3XcIwEetS1Hp77wg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793103004;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=yYOtM4BuIpTWTRwQ03uCapSzz1aSA0caW59ytvuj3Q8=;
-	b=gbC9qFSV3CSiR6aHlJ8dbQXjmFUEns6W0+6pT7EzARfEl2NeQmfgScdljksDzIGxMv8P
-	 xNIXAJC6mr/SPu4qqqg8Q44PoLdVtbGumru9JOtzL+KCqUUlt8gszeJ0G67fjq16wEjZR
-	 ePPHX7agjSgsNoOqh+mwvyYUoqHgIiSfSY74kGGbj1f3s0IZAl71vmPgbt9T9/oRmjPBL
-	 r1Kuc5FyQmnMUIfG2OHI8Hp4KIIOsvREcCkjixBje8rJ5XYZz+ZZpgCbBcQMTXdy0Y96u
-	 QK+Fkpo1WJ1x8ClinqjgZX6SHVL+kGcrGfKs0CQqtmKLoNW91FqRcnYempQKNvWW/AA==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793104406;
+	b=u3D1ISN1sEeA12dkzPFF4DMXWLDVT5WPPoI3zKP3lXNQPRJcTKi/05fAE7glgFQQbV1Z
+	 9s1U679cImwjONke2QD4bWKl+BGAcPhr5zEMtCE4n6ojDtaH+DZFMxXJJiNFCgkaWKGtD
+	 GC2HU0tOkW9Gs4pvoM2uWGGCSBU2LA2mSH+8WRZeDLwq0LqTxD0h5FwuvK1tXucayMz3O
+	 uMx/EDKlv+QeduJ2SNGbC8zjhEjjtA00ccmfus4MQwAWx2a4LmeMTBJ5ebXuE3Xj5vj0G
+	 eHwegjCNuym1HBuNUrk/bwdh1r+lrepVRZmumo+T8MsFsIfJV3qaZ6Un/1o1mhh2bsQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793104406;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:CC:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Virus-Version;
+	bh=cpvnpqyqWElW+pe7rciAPazzagEVJT2rta85kTwUfmM=;
+	b=nT/hc6HuRJX4wCTS4ekVDGOXacN0uO55dG2neUN923AhaAb8t162POLouFjZiVKg8eYq
+	 2WgyyqPcPc7CR1HdacYaKIz1+eJMfPeTgNV5DCArbI5iuH6Lmohi4B5Bvk+0PUOouHtdz
+	 8d/uF5RtkWVOmnOIGFDvUVgxd7QI1VBpMP+lkSFAoENO20pceHLaHyn2BC1X9GpLzLbJU
+	 Y4hG6JkhOmmx3H1bgmCeWJPUZNjIQlIXIYeKAiO+hib1DHfFuUg7ZHMu8x/GCU+1+zVcV
+	 RieuQujNF4x5nw9wIoPiN5AV5wLBJyzSjqx5s5gP630MCMobAmRkgy8n7kinSJqhfGA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=meta.com;
+	spf=pass smtp.mailfrom=meta.com;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=ghY3ujiJ;
+	arc=none smtp.remote-ip=67.231.145.42
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id AA0511F031E3;
-	Tue, 27 Oct 2026 12:10:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793103004;
-	bh=yYOtM4BuIpTWTRwQ03uCapSzz1aSA0caW59ytvuj3Q8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=nmK9hhVElg07pmr2dBYNsCje5Mj0ts8wsdhrAw9NXdqeNgGuHU0bcwMQ+RQXhFcBQ
-	 vdPwUcjlt/fChAvWLOyh8j/nMx90zI08R6nSWU45qUwL+AGjs4CyuYABidtrjoeISh
-	 v/dVdW0IhqKhVInu7gQTQZ+hPEZtXncTLWxXnROJAlapjIxE+k+NDJqLQ8Bh1c7FR+
-	 QmwIoR2Y8uJX5K6eAVaBlwziEOdO9bgh9xI6wwSPhLccQyu7ZGtQjDefXZ08Gsk35g
-	 LTUOVlrKqOB19foAJIFdWLgDcUgwJ0voA7jtwtW/mN+DdhQvst6dbjxMFcPqGafteo
-	 ACS+IwnFHfkiA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 23B3D450CF;
-	Tue, 27 Oct 2026 12:10:03 +0000 (UTC)
-From: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
-Date: Tue, 27 Oct 2026 13:10:04 +0100
-Subject: [PATCH 2/2] rust: str: parse_int: accept a trailing newline like
- kstrtol()
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC192606A321;
+	Tue, 27 Oct 2026 12:33:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC192606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=ghY3ujiJ
+Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69R97FVm2395709;
+	Tue, 27 Oct 2026 05:32:53 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=cpvnpqyqWElW+pe7rciAPazzagEVJT2rta85k
+	TwUfmM=; b=ghY3ujiJrCaCpoDlLItJuX81X94pueDAUzUAr1wjWxHzzhB3bz6jf
+	okyyabXRHMZ/SfC9pmefOoRTi9pUiEBm1eh2rnST/FvfAJrKpal84iic0L57/Y4Z
+	lJWMAR3gHLdqGOV5sO4HiAgr/CD00cCIsSN48CKQayYxKvAeWgXvQN4/jzsVoJWP
+	VGzOLqa88XQe5uxQ50zEnTLEINhDfB1lkGQ1wxnyAV0R3CH0gNvLcI8WlQn4Bsmc
+	m6ia5W5+hoMZuwWfxHrCox0zWf8im1PiUS6aBJUmf2NRRWO8fOa8hh7e3AgEqtqe
+	lhMRnP73gMqDUvlcXKILVFdkHnlRim9EQ==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hjs1fgyta-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Tue, 27 Oct 2026 05:32:53 -0700 (PDT)
+Received: from localhost (2620:10d:c0a8:1c::11) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Tue, 27 Oct
+ 2026 12:32:53 +0000
+From: Ruben Hakobyan <hruben@meta.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>
+CC: Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+        <virtualization@lists.linux.dev>,
+        Alexander Duyck
+	<alexander.h.duyck@linux.intel.com>,
+        David Hildenbrand <david@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+        Boqun Feng <boqun@kernel.org>, Gary Guo
+	<gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=
+	<bjorn3_gh@protonmail.com>,
+        Benno Lossin <lossin@kernel.org>,
+        Andreas
+ Hindborg <a.hindborg@kernel.org>,
+        Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>,
+        Danilo Krummrich <dakr@kernel.org>,
+        Andrew Morton
+	<akpm@linux-foundation.org>,
+        <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2 2/2] virtio_balloon: submit reported pages as individual buffers
+Date: Tue, 27 Oct 2026 05:32:04 -0700
+Message-ID: <20261027123204.2671561-1-hruben@meta.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261027063247-mutt-send-email-mst@kernel.org>
+References: <20261027063247-mutt-send-email-mst@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -83,94 +93,116 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261027-b4-parse-int-sign-v1-2-7f386318a4b7@younes.io>
-References: <20261027-b4-parse-int-sign-v1-0-7f386318a4b7@younes.io>
-In-Reply-To: <20261027-b4-parse-int-sign-v1-0-7f386318a4b7@younes.io>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Daniel Gomez <da.gomez@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Younes Akhouayri <git@younes.io>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793103002; l=2519;
- i=git@younes.io; s=20261027; h=from:subject:message-id;
- bh=NMDljLHIBCr2SpOAfotlmJ6JzudvatDgarIHJ0F0q5Y=;
- b=NsX5K2E5gXlHF/QnhEjEST4ehx1nHzafURb/JCD+VMl/i63Qu3CsUzpQc0rNxSVoDpKCYRVbA
- sMRZsNMOTnKAw2lEZp1WTMCHE/eozMyDo1wb/6gPJjVovxrFiJn7mta
-X-Developer-Key: i=git@younes.io; a=ed25519;
- pk=TavwxGPDBjl4XGNQyFLKEW7PKSY4qOWusc7yf6hjV0c=
-X-Endpoint-Received: by B4 Relay for git@younes.io/20261027 with
- auth_id=1332
-X-Original-From: Younes Akhouayri <git@younes.io>
-Reply-To: git@younes.io
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI3MDA0OSBTYWx0ZWRfX6tGjoFZHoaPi
+ Hs6GtVGcptmpDYZQueo1ZXM/XKtWzoBf4Dl72QrgavsdjME2Som8fBIrtgcmuGkMiWBqyl+Q7el
+ aanA2fb+gh5IxtjLV6Qc6o8vQCzN9hpQeDTmwFFv6vopNyFYfxDtPT9SNwGghfHzMLCmysYMPVq
+ xgaYBmNYDDydCJlg1HRQI9ysziwmj4WDMWBr9Tzt5WWmY8kPgonrbQ6XFEzlDJkQT3NRxORxnaX
+ 0W0+7thNmYGo6gnKyXLcikKuD3Ykl/ehCy9RFuZURGod+j9g1Ri2SGXrNCLvkDSJIwcgpV8a2No
+ FbSU+QF8b4FKM5KIf+rBJ4nVL4Rc/s2P554B62hZ5Q0fviMIYzSZSCl+JgQAc2x6N5bqo66A37O
+ ArOOGYDxsGPIgPcz4auBqpZ8vKDB/2Jq+o53wo2M01IaiRPNHJPC5Okpa74vo3xmigfL+6E8Ncr
+ fxPNSm9wp//rX1+Wd5A==
+X-Proofpoint-GUID: DFY0SqyqjgnoUS4yXiTYVjlXGdWqz5Ie
+X-Proofpoint-ORIG-GUID: DFY0SqyqjgnoUS4yXiTYVjlXGdWqz5Ie
+X-Authority-Analysis: v=2.4 cv=LJzz05W9 c=1 sm=1 tr=0 ts=6ae099f5 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=tpM8CJlwf7uhpglF1g9U:22 a=20KFwNOVAAAA:8 a=VabnemYjAAAA:8 a=QyXUC8HyAAAA:8
+ a=URxAJj9iRMZYw-DfRNEA:9 a=zY0JdQc1-4EAyPf5TuXT:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI3MDA0OSBTYWx0ZWRfX3DsCFrgzN+gx
+ kFMiXG0WBN7iw4wooJlhpiyuHl7M+wOyMFhYYDXccwkI5hrVlJxqhMk5bo+jjm+CapWMs2XuEC+
+ LZjnkQ5g2htqoNna8u1d5cjnGhIxXUI=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-27_02,2026-10-21_02,2025-10-01_01
 
-From: Younes Akhouayri <git@younes.io>
+On Tue, Oct 27, 2026 at 10:35 AM Michael S. Tsirkin <mst@redhat.com> wrote:
+> On Tue, Oct 27, 2026 at 02:26:33AM -0700, Ruben Hakobyan wrote:
+> > On Mon, Oct 26, 2026 at 11:53 PM Michael S. Tsirkin <mst@redhat.com> wrote:
+> > > The virtio_balloon driver reports a scatter-gather list of free pages
+> > > to the VMM so it may discard unused pages.
+> > >
+> > > For an arm64 kernel with 64 KiB pages, the default reporting and
+> > > allocation orders allow entries ranging from 2 MiB to 512 MiB. If the
+> > > report contains a sufficient number of large entries, we will end up
+> > > with a descriptor chain that represents over 4 GiB of memory. This
+> > > violates virtio spec, which says:
+> > >         Drivers MUST NOT add a descriptor chain longer than $2^{32}$ bytes in total;
+> > >
+> > > Specifically, submitting $2^{32}$ or more breaks Rust-VMM.
+> > >
+> > > Submit each reported page as a separate virtqueue buffer instead of one
+> > > buffer with an sg list of all pages.  This also avoids indirect
+> > > descriptor allocation (kmalloc in the reporting path).
+> > >
+> > > To avoid multiple buffers causing interrupt storms, keep callbacks
+> > > disabled while we wait for an event.
+> > >
+> > > TODO: as an alternative, keep using virtqueue_enable_cb_delayed
+> > > but add buffers after there's space in the ring.
+> > >
+> > > Note: if the virtqueue is broken, wait_event on
+> > > virtqueue_get_buf hangs.  This is a pre-existing issue:
+> > > the old single-buffer code had the same hang.
+> > >
+> > > Reported-by: Ruben Hakobyan <hruben@meta.com>
+> > > Cc: Ruben Hakobyan <hruben@meta.com>
+> > > Fixes: b0c504f15471 ("virtio-balloon: add support for providing free page reports to host")
+> > > Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
+> > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > > ---
+> > >
+> > > Notes (changelog):
+> > >     changes since v1:
+> > >         keep callbacks disabled while draining: get_buf re-arms the used
+> > >         event for the next buffer, reintroducing an interrupt per page.
+> > >         Disable the reporting vq callbacks at probe, and only arm the
+> > >         delayed callback to wait.
+> > >
+> >
+> > Thanks for the patches! I think sashiko-bot found some issues on broken
+> > queues in the first patch that are worth looking into for correctness.
+>
+> Surprise removal of the balloon? Nope, it's a pre-existing issue that
+> it's broken.  Besides it's not really practical, no one removes
+> the balloon - no need.
 
-The documentation of `ParseInt` says that any string parsed by
-`kstrtol()` or `kstrtoul()` is also parsed by `from_str()`. However,
-those functions accept a single trailing newline, and `from_str()` does
-not:
+Fair point about that. But I meant the broken queue check.
+In virtqueue_enable_cb_delayed() there is:
+```
+/*
+ * When the device is broken there is no point in polling used->idx,
+ * the backend will never update it. Return true to let callers
+ * exit their cleanup loops instead of spinning forever.
+ */
+if (unlikely(vq->broken))
+    return true;
+```
 
-    kstrtoint("5\n", 0, &v) == 0, v == 5
-    i32::from_str("5\n")    == Err(EINVAL)
+But virtqueue_enable_cb_delayed_max() doesn't have this. So I was just
+thinking the same reasoning should apply here?
 
-A trailing newline is common when the string comes from user space, for
-example when a value is written to a sysfs file with `echo`.
+>
+> > Other than that, I tested the "normal path" on QEMU and Cloud Hypervisor,
+> > both on 4 KiB and 64 KiB guests, and this works correctly.
+>
+> Thanks a lot! Can you pls confirm whether the performance is about the
+> same/better/worse?
 
-Fix it by removing a single trailing newline before parsing, and add
-doctests for it.
+From my tests on QEMU, CPU time was about the same as my original patch
+and unmodified Linux.
 
-Fixes: 51d9ee90ea90 ("rust: str: add radix prefixed integer parsing functions")
-Signed-off-by: Younes Akhouayri <git@younes.io>
----
- rust/kernel/str/parse_int.rs | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+To bring a concrete example, with these patches it took ~437 ms of CPU to
+reclaim a whole 8 GiB with 4 KiB pages (vs ~434 ms on unmodified Linux).
 
-diff --git a/rust/kernel/str/parse_int.rs b/rust/kernel/str/parse_int.rs
-index 07e1fbd7be8f..ada355306fc5 100644
---- a/rust/kernel/str/parse_int.rs
-+++ b/rust/kernel/str/parse_int.rs
-@@ -54,8 +54,8 @@ fn strip_radix(src: &BStr) -> Result<(u32, &BStr)> {
- /// Strings beginning with `0x`, `0o`, or `0b` are parsed as hex, octal, or
- /// binary respectively. Strings beginning with `0` otherwise are parsed as
- /// octal. Anything else is parsed as decimal. A leading `+` or `-` is also
--/// permitted. Any string parsed by [`kstrtol()`] or [`kstrtoul()`] will be
--/// successfully parsed.
-+/// permitted, as is a single trailing newline. Any string parsed by
-+/// [`kstrtol()`] or [`kstrtoul()`] will be successfully parsed.
- ///
- /// [`kstrtol()`]: https://docs.kernel.org/core-api/kernel-api.html#c.kstrtol
- /// [`kstrtoul()`]: https://docs.kernel.org/core-api/kernel-api.html#c.kstrtoul
-@@ -88,11 +88,15 @@ fn strip_radix(src: &BStr) -> Result<(u32, &BStr)> {
- /// assert!(i32::from_str(b_str!("0x-5")).is_err());
- /// assert!(i32::from_str(b_str!("0x+5")).is_err());
- /// assert!(i32::from_str(b_str!("-+5")).is_err());
-+///
-+/// assert_eq!(Ok(5u8), u8::from_str(b_str!("5\n")));
-+/// assert!(u8::from_str(b_str!("5\n\n")).is_err());
- /// ```
- pub trait ParseInt: private::FromStrRadix + TryFrom<u64> {
-     /// Parse a string according to the description in [`Self`].
-     fn from_str(src: &BStr) -> Result<Self> {
--        match src.deref() {
-+        let src = src.strip_suffix(b"\n").unwrap_or(src);
-+        match src {
-             [b'-', rest @ ..] => {
-                 let (radix, digits) = strip_radix(rest.as_ref())?;
-                 // 2's complement values range from -2^(b-1) to 2^(b-1)-1.
+With 64 KiB pages, it averaged 121 ms CPU (vs ~112 ms with my original
+patch).
 
--- 
-2.56.0
+(I tested this on Nvidia Grace)
 
+>
+> --
+> MST
+>
 
