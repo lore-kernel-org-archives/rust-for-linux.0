@@ -1,112 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793123302;
-	b=dKuMZs51G/ifuqz4d76i7jx5SNZk88I0BdP4BmlaSGUSXST1lZFBOA+R9MHrqQMr+2No
-	 Dl12JnF1i+QtX6B36PTyGvBYKayW0PzeXamvc7KqjWwEhe6E3786nVKLtHjUWlL4HErkO
-	 ewIINg/GcA0/+qkuSkhKg+GBnSEWeoOfhj0N1oaz1ioiDUJ5V9FtbUApChVklx06KzTkv
-	 bV1PG3U3AMIWDIHsEwFfSvAlKexXhREDO/q2Q+FfMCasbME8mm4AuwcCVY4gGuqFcMWfO
-	 Vpw6NmhbPB/mAUFhvgd4l4V5RqzGsUQXcaK+hgV8pdd/IUepHgevGpaemAg5E66l0fQ==
+	t=1793128665;
+	b=rZe4aex6LkbbnQbQX7RY4k30kiKnA1QTGoURVJ0XbNYvF5DLRDlYgJyZ367Hp/R2jt97
+	 VhXUSmNpFH3qxI+Vp2cyDgf8DlOp2w+GrJRuRnb54n90EoFdRSAe3U0SSXsGmIyZF00jk
+	 +77F7lVtcvEqvVx6b6BRao3HS/8A/PgcdYuf1OHlyXeo8VTuo67eH8SnCgUmpyRuAA5QH
+	 sR+quDZVM+GIhrGCA/vpjgDCl7QYUUuYb/uFfc1JyEBFi8PuTdQsGCO2MkcastUMczm6H
+	 iy48VlCDmgO5mKMu7qvMRjd5wS1EnDasHCp+1/vlTiiPOQZlUIz4YUVl38wp/Jrxb5A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793123302;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=coF5c02vssZCkeB6rjzbpbOB68XCpWmc7Y8D46czGV8=;
-	b=B/A2Y1NqzlQ5zXLJZkVMDK8IenwF4E8fH3WgroX439Zydxq4ukvUgKYmabumPmfYM9y/
-	 xzxspYwo9HbThQLXDSi0ofaxBEuLEmKMQ9kiu91NbaEtv25jO6PlqEWio1HBDdsUDdCqb
-	 WNFb/tvp2u/BSTDY4LNSsNPLLFxFEp/y9mqBqz95xWv1EUnHXC6YYp5YgToYIQgeg9GyJ
-	 VljdzzMOezLh2a8jV5p033uHjCLgx34ty9Fw02wRMQY2wx3gxzdukou55WKknBZBgc59x
-	 mSgpp4cN4TXGRintEvVBkU+PqgfIOQvm9uStTkyfe1vyxV3RMbFGs76j+0aGjQloQNQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793128665;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:In-Reply-To:X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:
+	 X-Mimecast-Originator:Content-Type:Content-Disposition;
+	bh=FlYN2KKQqWlT82Z9Z0NBRecFoRzdbkuctfLJfLHCCSg=;
+	b=YzqtCaZ6G3UfhtsnGNq9Y0jwLwLy88vmKGUCifmTxNSaT2LEogH/YJoOrWlkCbHSucF6
+	 0qHegfB5nGIxstT5c8YKqYBtJiOgyfWrHbGfZucbWvpa2Qw+izuu0WcD5xkgyzTHQW6Yh
+	 Ca+OMuWxAQ6GLQ8UAq2DJZS71ruRidK1mHHhnNhwsF+VepjmYLISKsHTjuq0dAllOxPRp
+	 ZmG4E4hhlFLWOZAhor5aFUz2ox9gfY/bNcW8qPqJlut8XyFVYB5AXdYiBZKW2pa5vLA04
+	 9RHqxlEDKXoSH7E6yc7g6uQvwfKmzcMOqqYkljsn3WO7zcoyd7vikf346rq3uX+l4CQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=uci.edu;
-	spf=pass smtp.mailfrom=uci.edu;
-	dkim=pass header.d=uci.edu header.i=@uci.edu header.a=rsa-sha256 header.s=google header.b=lP8wCUsI;
-	arc=none smtp.remote-ip=74.125.82.46
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cPNak21m;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6719606A31D
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 Oct 2026 17:48:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6719606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88755606A31E
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Oct 2026 19:17:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88755606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=uci.edu header.i=@uci.edu header.a=rsa-sha256 header.s=google header.b=lP8wCUsI
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-185fd3a4ca3so100034c88.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 Oct 2026 10:48:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=uci.edu; s=google; t=1793123301; x=1793728101; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=coF5c02vssZCkeB6rjzbpbOB68XCpWmc7Y8D46czGV8=;
-        b=lP8wCUsIWhx5fqJS9oomwy93MlNLeqmr8+SybpK+ExxIx9NplsZURaEu+DEdrFZeMT
-         JmiNvL7cjR5In3/7rZqrlBDPOsZ6vjljzxFsAvTt2SYnkSNIwl7S6gjDOGdhmAgGCEMm
-         WvefG2453Exs3zqIRUVxS+rT7RbxKhEU+I/gD9t3JNzjYcKHYHRiODwdsxRUKNOB6YUa
-         qCKJmVlhnLH5Kh5rN5FwGmSHJ70nyYf8CHHi8U4QkIf8nV8fu7ISPgX+Ox7lw2SZrm82
-         uEpDXaYWvti2ZUI7lvBqOIasNbAkFbyy6nAIA3vYNFOkrSJI8U7qQOWQYtur1qsAdtB7
-         1G3Q==
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cPNak21m
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793128663;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FlYN2KKQqWlT82Z9Z0NBRecFoRzdbkuctfLJfLHCCSg=;
+	b=cPNak21mTAWm/6+xxcUCsdlGnyH22YV0stT+dAjFpe4pYwwMQmSaa3ctgip5fw7kzJuWfd
+	cv80HElUvR/qU+mi+WtJKk5tnIJVN8rs3WZNKbWkRc0p8QDJUABO57Rq6QLvROPMwnAlk5
+	2+GDEKzAEEovEcJ2DYIeMuP1sR8MZfs=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-253-ekfdyFslOIitkxHKs9-9Og-1; Tue, 27 Oct 2026 15:17:36 -0400
+X-MC-Unique: ekfdyFslOIitkxHKs9-9Og-1
+X-Mimecast-MFC-AGG-ID: ekfdyFslOIitkxHKs9-9Og_1793128655
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a2001e85c8so1125885e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Oct 2026 12:17:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793123301; x=1793728101;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=coF5c02vssZCkeB6rjzbpbOB68XCpWmc7Y8D46czGV8=;
-        b=Bd5+4tDu7aM6jkH2P5mndZAeSHDzH3+0C72An8625ou9bHkDo6M48XGXSVn+OtDgIJ
-         89RXY0j5UMJSSfrH38oglvDYHqc5Q9Oe8GFjnipKanz9EJxiJ/a3+wiB7LF2TCOgZN9J
-         fo/6CXNA4pKPhQt8bxukPcvabOpSdDhjTjZCNPK9RZP72zQ1L9eSx9YeZDyXDRCfDjoP
-         cZYNzfZOrFRMhpXQWevEoFJPUgOtd80DuX9HnUwXerh3wk58oh4P8gV6N/1+p2pwu59i
-         5kryvWqIc24G2Ylx68ke/2zLODvpBkjfWFA1g1vVVS5GCJO0bnOd6/DIPXdZ2hd/PAn3
-         7FTg==
-X-Forwarded-Encrypted: i=1; AKwUvBzCbdUioEG5PtSzJdj/CrB4h/Eqf6dmYrrsSCtb9T6q55ZJzemTb3dvr5oeW1CyOkF2Yx67YzigD4BcSxrLbQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYIRra71wzSN+w24GKyIdYjd5qWxTS81q35O1as1gg6tQdkbCxoY
-	NCgOu9K3V6JvuJp0QYvWXCQkOuzhYOZ9j6XrH51QYPAKnhyWEoucbGh6KgcnB4JbJPA=
-X-Gm-Gg: AYBFou3lCZ/FuOct+vjqyJoXlZr5D1179e2GBbO5+cppj88jclaMYN08mxMjyVZjuTQ
-	qYZwoyNF/uhdGX1F+FHzEF8Zhl9o/TgFEamKIkSPGRgqh5fQAu0w86qzjtCkUO4gK/0POLDYYhD
-	M4Z1ZTK+yVmqR0YgcFs9/aEHdxemGl4zKBErVvrd0xMWs42b8pVxzhSBPF2T+xDfo3A7FpCmGN8
-	lbtLiOekxE8IelJyO78pxi3twns7Ff6tSyMimO1Ub6VYzVMp+xLivE14dZ2q/mlmA33e27wmfzz
-	kXdUxKCUzDpo/GOSzDXVJu11qtoT0VOA1TvKuRWiKsin1AIaZHcKfGO7frYW65frihjlcliXC8r
-	2GPIx/Aujf+YTW5QDSznWcdLX3dPx9Pi2KKUorU76AYZTN4hvWNWke6kesenacUgZOxgVdoAIIZ
-	PjI/ZvEwhSEzfMFze98jURDq5ALD5IW+P8DN74ZkFvshNzP30xRZKSvgukotXe4uW1prvuHOF0l
-	YyN0haXHMxGKTa5mGA/rdkNU8Wt8AZesD+yAF1d27Y0uqoqqD7rpPqMBsln/3wOiE3GedrWk6j7
-	GemhLQ9K8rj3d42u
-X-Received: by 2002:a05:7022:3b8b:b0:169:9f67:a91b with SMTP id a92af1059eb24-1993505df87mr17730994c88.12.1793123300700;
-        Tue, 27 Oct 2026 10:48:20 -0700 (PDT)
-Received: from guest1.. (charm.ics.uci.edu. [128.195.4.118])
-        by smtp.googlemail.com with ESMTPSA id a92af1059eb24-198a1bfaf25sm35486813c88.14.2026.10.27.10.48.13
+        d=1e100.net; s=20260707; t=1793128655; x=1793733455;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FlYN2KKQqWlT82Z9Z0NBRecFoRzdbkuctfLJfLHCCSg=;
+        b=oPBXL/JNnYSMfDRFRzkBfWuy/jZ3h3fSFY7omThPVN9jUQBNYyKWoMoOJFkuKPAqxM
+         FvK+Bo6T8lEJSNX40zQX7+paHATjs64qHs9ymEkEFUfntCVsxYQOgADXo5MS9EfupbaJ
+         5Po20Mw6WCW97yYGxrm7hBX7hQnRorRwjIlcY9SZlb7s8CXepmGDm6HdB6rWg9lZoDNn
+         UOCq3FYvjuOU6CKqlKxseYpDMJqqFugGmE1yhFiwwPewbT2F+35Ow/Hv8+gE6K7O5aGU
+         rtzF2OPpAWMx6tulsbj+pX5sL/v+Mc4MNz7DYuNODd9uyUI/lZ1FgC1sOoFkc3mT4GXq
+         Dixg==
+X-Forwarded-Encrypted: i=1; AKwUvBwm+UdbmSdnhvlKMwj/PFYyyGDGMQOqYSP6AMudBYdABjFmrivvu6qOQFnameLCVXk34e2KoNi+Tp3IqmkBkQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYIqLoNHORF7Wzv9IKXV3XTIskAW3WXxdklcyczM0ZSiZ+ZCTipX
+	rJm9jfRle+cnmz73oi8aFxCfyN9u7bWUFdmJbeCYmt1rCBqpV5B75WrmFfi/ScTKZNwxW+BsiOb
+	l8l6jmDZM+H1geAMde45CYxKwJ3b+cW2DMQ0VZB+/hxW0xzyAlqMgMf0teAWQkz3wO080
+X-Gm-Gg: AYBFou0gqDIQ/sByiVftavtGiAEPBeD5U2HWlt2Hza+8edsuCgLFGe2TrW3yZYGpqGb
+	paAhsqv55kI6QJ0f6Q6jvKA31jEHz3CGG55iwfVRE+vqJqCmVA4UTJtjIfhoZCy0PNoHBaWizk/
+	4EYF822kW8FSjT/DCNH5YB0Xb6/ddxYGWrXOGZpU2wVKmfWpSETGAC83FInPe6/JBlakxJmhUFn
+	2KdUPHSIeqhzUDE824oZvVjtDtI+L+VHursTnmTNMgBPMi9r1UYh5oOmOqT7yMXdsOwxM0XhH3t
+	IccmXqGcJ1Wlq8Ti7svXNh7E1bSxgrK+fH03W/mO8vPH57/LPZTc2UGN/pT7L77W7u8=
+X-Received: by 2002:a05:600c:3b19:b0:4a1:d087:f6ab with SMTP id 5b1f17b1804b1-4a35acc7696mr216145485e9.18.1793128654656;
+        Tue, 27 Oct 2026 12:17:34 -0700 (PDT)
+X-Received: by 2002:a05:600c:3b19:b0:4a1:d087:f6ab with SMTP id 5b1f17b1804b1-4a35acc7696mr216144975e9.18.1793128654110;
+        Tue, 27 Oct 2026 12:17:34 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a930e469b9sm5742605e9.1.2026.10.27.12.17.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 10:48:19 -0700 (PDT)
-From: Priya Bala Govindasamy <pgovind2@uci.edu>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	dakr@kernel.org,
-	ojeda@kernel.org
-Cc: boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	mmaurer@google.com,
-	driver-core@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	ardalan@uci.edu,
-	zhiyunq@cs.ucr.edu,
-	dzueck@uci.edu,
-	pgovind2@uci.edu
-Subject: [PATCH 1/1] rust: soc: avoid dangling attributes when SoC bus is unavailable
-Date: Tue, 27 Oct 2026 17:48:10 +0000
-Message-Id: <b527648762a76e485b8302835daf3fe26a232e60.1792628232.git.pgovind2@uci.edu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1792628232.git.pgovind2@uci.edu>
-References: <cover.1792628232.git.pgovind2@uci.edu>
+        Tue, 27 Oct 2026 12:17:31 -0700 (PDT)
+Date: Tue, 27 Oct 2026 15:17:27 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Ruben Hakobyan <hruben@meta.com>
+Cc: Jason Wang <jasowangio@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	virtualization@lists.linux.dev,
+	Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] virtio_balloon: submit reported pages as
+ individual buffers
+Message-ID: <20261027151329-mutt-send-email-mst@kernel.org>
+References: <20261027083627-mutt-send-email-mst@kernel.org>
+ <20261027143957.630549-1-hruben@meta.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -116,140 +115,156 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261027143957.630549-1-hruben@meta.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: TXXSxIrPEmBcWFlEN5A93rBFW9xPfZJwF4HhESpCftA_1793128655
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-`Registration::new()` calls the C function `soc_device_register()` 
-to register a SoC device with the SoC core. It passes a pointer to the 
-`soc_device_attribute` object of its pinned `BuiltAttributes` object. 
-In `soc_device_register()`, if the SoC bus is not registered, this pointer 
-argument is saved in a global variable `early_soc_dev_attr` for deferred 
-registration and NULL is returned.
+On Tue, Oct 27, 2026 at 07:39:57AM -0700, Ruben Hakobyan wrote:
+> On Tue, Oct 27, 2026 at 12:40 PM Michael S. Tsirkin <mst@redhat.com> wrote:
+> > On Tue, Oct 27, 2026 at 05:32:04AM -0700, Ruben Hakobyan wrote:
+> > > On Tue, Oct 27, 2026 at 10:35 AM Michael S. Tsirkin <mst@redhat.com> wrote:
+> > > > On Tue, Oct 27, 2026 at 02:26:33AM -0700, Ruben Hakobyan wrote:
+> > > > > On Mon, Oct 26, 2026 at 11:53 PM Michael S. Tsirkin <mst@redhat.com> wrote:
+> > > > > > The virtio_balloon driver reports a scatter-gather list of free pages
+> > > > > > to the VMM so it may discard unused pages.
+> > > > > >
+> > > > > > For an arm64 kernel with 64 KiB pages, the default reporting and
+> > > > > > allocation orders allow entries ranging from 2 MiB to 512 MiB. If the
+> > > > > > report contains a sufficient number of large entries, we will end up
+> > > > > > with a descriptor chain that represents over 4 GiB of memory. This
+> > > > > > violates virtio spec, which says:
+> > > > > >         Drivers MUST NOT add a descriptor chain longer than $2^{32}$ bytes in total;
+> > > > > >
+> > > > > > Specifically, submitting $2^{32}$ or more breaks Rust-VMM.
+> > > > > >
+> > > > > > Submit each reported page as a separate virtqueue buffer instead of one
+> > > > > > buffer with an sg list of all pages.  This also avoids indirect
+> > > > > > descriptor allocation (kmalloc in the reporting path).
+> > > > > >
+> > > > > > To avoid multiple buffers causing interrupt storms, keep callbacks
+> > > > > > disabled while we wait for an event.
+> > > > > >
+> > > > > > TODO: as an alternative, keep using virtqueue_enable_cb_delayed
+> > > > > > but add buffers after there's space in the ring.
+> > > > > >
+> > > > > > Note: if the virtqueue is broken, wait_event on
+> > > > > > virtqueue_get_buf hangs.  This is a pre-existing issue:
+> > > > > > the old single-buffer code had the same hang.
+> > > > > >
+> > > > > > Reported-by: Ruben Hakobyan <hruben@meta.com>
+> > > > > > Cc: Ruben Hakobyan <hruben@meta.com>
+> > > > > > Fixes: b0c504f15471 ("virtio-balloon: add support for providing free page reports to host")
+> > > > > > Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
+> > > > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > > > > > ---
+> > > > > >
+> > > > > > Notes (changelog):
+> > > > > >     changes since v1:
+> > > > > >         keep callbacks disabled while draining: get_buf re-arms the used
+> > > > > >         event for the next buffer, reintroducing an interrupt per page.
+> > > > > >         Disable the reporting vq callbacks at probe, and only arm the
+> > > > > >         delayed callback to wait.
+> > > > > >
+> > > > >
+> > > > > Thanks for the patches! I think sashiko-bot found some issues on broken
+> > > > > queues in the first patch that are worth looking into for correctness.
+> > > >
+> > > > Surprise removal of the balloon? Nope, it's a pre-existing issue that
+> > > > it's broken.  Besides it's not really practical, no one removes
+> > > > the balloon - no need.
+> > >
+> > > Fair point about that. But I meant the broken queue check.
+> > > In virtqueue_enable_cb_delayed() there is:
+> > > ```
+> > > /*
+> > >  * When the device is broken there is no point in polling used->idx,
+> > >  * the backend will never update it. Return true to let callers
+> > >  * exit their cleanup loops instead of spinning forever.
+> > >  */
+> > > if (unlikely(vq->broken))
+> > >     return true;
+> > > ```
+> > >
+> > > But virtqueue_enable_cb_delayed_max() doesn't have this. So I was just
+> > > thinking the same reasoning should apply here?
+> >
+> > It's broken there, too.  E.g. what is the "cleanup loop" in balloon?
+> 
+> The loop in virtballoon_free_page_report():
+> ```
+> wait_event(vb->acked, ({
+>     for (;;) {
+>         virtqueue_disable_cb(vq);
+>         while (virtqueue_get_buf(vq, &unused))
+>             i++;
+> 
+>         /* Stop waiting if device used all that we added. */
+>         if (i >= nents)
+>             break;
+> 
+>         if (virtqueue_enable_cb_delayed_max(vq))
+>             break;
+>     }
+>     i >= nents;
+> }));
+> ```
+> 
+> For a broken queue, you could exit the for loop early and avoid busy looping.
+> It still hangs, but I think it can sleep rather than busy loop?
+> 
+> Anyway, I'm not sure how practical a broken queue is, so I don't have a
+> strong opinion.
 
-If `Registration::new()` receives a NULL pointer, it produces `EINVAL`, 
-causing the `BuiltAttributes` object to be dropped. This frees the memory 
-containing the attribute data, which is still referenced by 
-`early_soc_dev_attr`. A later call to `soc_device_match()` will dereference
-this dangling pointer, resulting in a use-after-free bug.
+Maybe add the broken queue check explicitly then, then it does
+not need to hang:
 
-The SoC bus is normally registered by a core initcall before loadable 
-modules run, but the condition is reachable if that initcall fails or 
-is skipped, as demonstrated using initcall_blacklist=soc_bus_register 
-kernel command line argument.
+if (virtqueue_is_broken(vq))
+	i = nents;
 
-Fix this by adding a new function `soc_device_register_nodefer` which 
-never returns NULL. When the SoC bus is not registered,
-it returns `ERR_PTR(-EPROBE_DEFER)` and does not retain a pointer 
-to the attribute data.
-Make the Rust interface in `Registration::new()` call this new function.
-The interface remains unchanged for other users of the existing 
-`soc_device_register` function.
 
-Fixes: 057d44b05775 ("rust: Add soc_device support")
-Reported-by: Dylan Zueck <dzueck@uci.edu>
-Assisted-by: LLM
-Signed-off-by: Priya Bala Govindasamy <pgovind2@uci.edu>
----
- drivers/base/soc.c      | 19 ++++++++++++++++++-
- include/linux/sys_soc.h | 18 ++++++++++++++++++
- rust/kernel/soc.rs      |  7 ++++---
- 3 files changed, 40 insertions(+), 4 deletions(-)
+but the issue is what if queue gets broken while we are waiting.
 
-diff --git a/drivers/base/soc.c b/drivers/base/soc.c
-index af7d71393774..dc9072281427 100644
---- a/drivers/base/soc.c
-+++ b/drivers/base/soc.c
-@@ -122,12 +122,17 @@ EXPORT_SYMBOL_GPL(soc_attr_read_machine);
- 
- static struct soc_device_attribute *early_soc_dev_attr;
- 
--struct soc_device *soc_device_register(struct soc_device_attribute *soc_dev_attr)
-+static struct soc_device *
-+__soc_device_register(struct soc_device_attribute *soc_dev_attr,
-+		      bool allow_defer)
- {
- 	struct soc_device *soc_dev;
- 	const struct attribute_group **soc_attr_groups;
- 	int ret;
- 
-+	if (!soc_bus_registered && !allow_defer)
-+		return ERR_PTR(-EPROBE_DEFER);
-+
- 	soc_attr_read_machine(soc_dev_attr);
- 
- 	if (!soc_bus_registered) {
-@@ -179,8 +184,20 @@ struct soc_device *soc_device_register(struct soc_device_attribute *soc_dev_attr
- out1:
- 	return ERR_PTR(ret);
- }
-+
-+struct soc_device *soc_device_register(struct soc_device_attribute *soc_dev_attr)
-+{
-+	return __soc_device_register(soc_dev_attr, true);
-+}
- EXPORT_SYMBOL_GPL(soc_device_register);
- 
-+struct soc_device *
-+soc_device_register_nodefer(struct soc_device_attribute *soc_dev_attr)
-+{
-+	return __soc_device_register(soc_dev_attr, false);
-+}
-+EXPORT_SYMBOL_GPL(soc_device_register_nodefer);
-+
- /* Ensure soc_dev->attr is freed after calling soc_device_unregister. */
- void soc_device_unregister(struct soc_device *soc_dev)
- {
-diff --git a/include/linux/sys_soc.h b/include/linux/sys_soc.h
-index cedabf177f47..4bd9ee43be74 100644
---- a/include/linux/sys_soc.h
-+++ b/include/linux/sys_soc.h
-@@ -26,10 +26,28 @@ struct soc_device_attribute {
-  * - %NULL if the SoC bus is not yet registered;
-  * - on success, the newly allocated &struct soc_device pointer;
-  * - on failure, a negative error code as an ERR_PTR().
-+ *
-+ * If this function returns %NULL, it retains @soc_plat_dev_attr for deferred
-+ * registration. The caller must keep it and all data it points to valid.
-  */
- struct soc_device *soc_device_register(
- 	struct soc_device_attribute *soc_plat_dev_attr);
- 
-+/**
-+ * soc_device_register_nodefer - register SoC as a device without deferring
-+ * @soc_plat_dev_attr: Attributes passed from platform to be attributed to a SoC
-+ *
-+ * Unlike soc_device_register(), this function never returns %NULL. It retains
-+ * @soc_plat_dev_attr only when it returns a valid &struct soc_device pointer.
-+ *
-+ * Returns:
-+ * - on success, the newly allocated &struct soc_device pointer;
-+ * - if the SoC bus is unavailable, ERR_PTR(-EPROBE_DEFER);
-+ * - on other failures, a negative error code as an ERR_PTR().
-+ */
-+struct soc_device *soc_device_register_nodefer(
-+	struct soc_device_attribute *soc_plat_dev_attr);
-+
- /**
-  * soc_device_unregister - unregister SoC device
-  * @soc_dev: SoC device to be unregistered
-diff --git a/rust/kernel/soc.rs b/rust/kernel/soc.rs
-index 0d6a36c83cb6..39659dbd31f8 100644
---- a/rust/kernel/soc.rs
-+++ b/rust/kernel/soc.rs
-@@ -122,10 +122,11 @@ pub fn new(attr: Attributes) -> impl PinInit<Self, Error> {
-                 // * The struct provided through attr is backed by pinned data next to it,
-                 //   so as long as attr lives, the strings pointed to by the struct will too.
-                 // * `attr` is pinned, so the pinned data won't move.
--                // * If it returns a device, and so others may try to read this data, by
--                //   caller invariant, `attr` won't be released until the device is.
-+                // * `soc_device_register_nodefer` only retains the attribute pointer when it
-+                //   returns a device. By caller invariant, `attr` won't be released until that
-+                //   device is unregistered.
-                 let raw_soc = error::from_err_ptr(unsafe {
--                    bindings::soc_device_register(attr.as_mut_ptr())
-+                    bindings::soc_device_register_nodefer(attr.as_mut_ptr())
-                 })?;
- 
-                 NonNull::new(raw_soc).ok_or(EINVAL)?
--- 
-2.34.1
+
+> >
+> > > >
+> > > > > Other than that, I tested the "normal path" on QEMU and Cloud Hypervisor,
+> > > > > both on 4 KiB and 64 KiB guests, and this works correctly.
+> > > >
+> > > > Thanks a lot! Can you pls confirm whether the performance is about the
+> > > > same/better/worse?
+> > >
+> > > >From my tests on QEMU, CPU time was about the same as my original patch
+> > > and unmodified Linux.
+> > >
+> > > To bring a concrete example, with these patches it took ~437 ms of CPU to
+> > > reclaim a whole 8 GiB with 4 KiB pages (vs ~434 ms on unmodified Linux).
+> >
+> > OK so that's just noise, there's no difference.
+> >
+> > >
+> > > With 64 KiB pages, it averaged 121 ms CPU (vs ~112 ms with my original
+> > > patch).
+> >
+> > Is this measurable, or also noise?
+> >
+> > >
+> > > (I tested this on Nvidia Grace)
+> >
+> >
+> > Thanks!
+> 
+> Thanks, yeah I agree and my point was that performance looks on par.
+> I just wanted to share some concrete numbers of what I've tested.
+
+Thanks a lot!
+
+> >
+> > > >
+> > > > --
+> > > > MST
+> > > >
+> >
 
