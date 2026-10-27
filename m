@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.14
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.7
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793086575;
-	b=Bfuo4z3zuzxct/mvnueCa824lUAJyJPherkjKdGBGzACsztjrrrhVrExiuzqod0nkYbs
-	 V++msaQGzJubH4+ckL6x2d1IymTchGwh6Fst5ETO5+tZeNGWD2DrDTTR08Lgo3CrrkZ10
-	 VCg1trRTRoVkPyaS/PPCHek0fpYWQCp7/zhG+XL5DNe8feUy5p+HuKnlW6Whg1UILybhe
-	 cXlJMSZI7mD4HTHbKBmhz8Lz+Ilr9BYKYIRBJ80g7qkrxW1K4CGFnFrJ1RnYUz5kZSkyG
-	 T85td7jG7DefGmVG6FCCZM9F53KW7/ukOrJ1/CKjguf2Un7I6w0c7gBm9yJYXGZni0w==
+	t=1793086584;
+	b=nUbRKKTxYejitYepFNeUGGYL0ZHesQ0CV11ItojIn7QDYbomgDPOVWCcHdIv9AoHs1Pt
+	 D976DQwCNYRys3V46ATF8X6rRMw5kDRanF/hFIbbrNpUmHcRnQjvQ+Zo+lVbsdOg3iVbg
+	 ihf5feRjmcsiXo967eEBItpow/3ZXU79s5JhPTY355ISRg36elIrNDb6dk6Hy5gvhXLrP
+	 tRUHkX1EZSOkE6fMA+HYH0Eia/28qljqBLhMetE2uuNNfkivbVyyzUuBiieIk5Fnumffv
+	 nO71vzqAJhnQjjMFUCYfpe2CrbBLAkD+4WSPLClvxVKvVvGzSkXPPlid3SRidJUoZ9w==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793086575;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793086584;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Date:Subject:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-ClientProxiedBy:MIME-Version:
@@ -25,61 +25,61 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=cv0Ch1LppCYiv3p0gJ36zBRbMRSGsiA4S/0fELGP9rk=;
-	b=owf+BzK1CV/6OMMHQu4csMPLE2d2uBrQV946hUeuvLVNyyWQK62ZW+rL07CJxV5HifPP
-	 1RvSh1GM1HOnmNw1fKo0KUFIkINVMzaVIZq8IW8qcF9cgJXx9UUMQPeGZnP6Sfw4lgECi
-	 5AvM5Mgqb7TtngXi44e0bzQm/C46ZHszkj7l1D/gv8TmK+a5OwWuKjkyFOTLVX/+fXQRV
-	 2btb2gFVUWPiwbtsa20SgMW5YiP32uYpODQNWuS38aVCuAE+EAXyla037C6YBhEwXZ8rL
-	 p1AWyiWjNs82dICm8l+6xQthr25iS9uxX17MTrYutDNaODD6w7FAODaDdO8p4Yb14yQ==
+	bh=cJgiY2XhD7WkCfY/76dSK5i67HEfv28Y57lViEqkopg=;
+	b=cT+ou8NwDUrFWduoO0QMJ8TPlgBCSDYTWM62tvAZtHBHlo1inXwoqfKjUqeF+ByVU0M3
+	 iseO/pvw/+3cPHMVycgHhwOy2rAklqyeWgpeNisjO4oCyGuCqvQENva/tFt3FAAFVy9ad
+	 9SPlHrUpNBMKMxKgNRzbHcZ0Ge4/odoviEpBKczcK5fGvzyUractkwANBmvLdKAwr3q9F
+	 biF9MXNcySpbfFpv3FlotuI13XR5cuKTOgTOlBhTmrQk+zj+B4zqaEJbcvULFVWobVyCG
+	 s4JUdZzSp5hU2vJKRi2WT6G8JgmFSkg1waqrYaeQiean6fQAyqNS/3bL5UA+eROlu6Q==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nvidia.com;
 	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=idW0dpXs;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.14
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012014.outbound.protection.outlook.com [40.93.195.14])
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=PLOxvOee;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.7
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013007.outbound.protection.outlook.com [40.107.201.7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF15F60A2612;
-	Tue, 27 Oct 2026 07:36:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DF15F60A2612
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C110060A5BC3;
+	Tue, 27 Oct 2026 07:36:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C110060A5BC3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=idW0dpXs
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=PLOxvOee
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kZMr0ZDpEzkdDrt+qIpObv/pLXRLL58t6wzKoFwSTyuMAn2RgSLp6w93BUdZvMaa6QUqBFhy5hyo81sblfXr+ezAT1jj1dJa091UpuxRI6NxeNaRuJ8xfkQupkwYBSx3vyie6Ep9XfeSVOtE8FXePA4HOfO+b4JfwTVdDh+l3wE1nRcN5McK/EMTUM9+mZ3y/udlMtR/TP8WD9JwPKViE5fr1mmgCt07HVptOSvQH7sIwVJOTZJIEbRy54jqDhPxSbMmcdE2C4+ZfoXiI7gYaVRjs3pDYQityRdW+kgOR02GwkSi39q4QYPpDLIkMCIRhsi3MoRL2Bpiq6kJuJvpNg==
+ b=YmmL+49YBWj2QdME2ly2ZyGhEd+3Yaog0bycHzY5KZlNHEm8q8RmlqwC4oTal1hh7WUpBXa+DNNByR3L46PQh6ETESDWgoNu7eIrKVBiNAFEq2kzHYZmL9zRj4D9eqC4LXVPsQvLbvbXOhTLPZVxlBpRFpUI2zhziyGxbBQgbFQeu5uebbBTOplMCFxVsayCu4yJ8r5yTdCQ70K9NW9RQn3GrP9jqBwted79LrUdP2mFVsxSuqmcK0T0iFyCsEW8MtrhFnw7OSldgCF2qeDmM1mjoZ4g2RJXfR/8RMOTWtSyJKHZNhrWD42+lyWPjBexeV0OViQ45X4g44xYRtO2IQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cv0Ch1LppCYiv3p0gJ36zBRbMRSGsiA4S/0fELGP9rk=;
- b=U5s5VpabyJBaFikG8YlPuGjoWRoXiefQKpmZwSHxrjA8VpHBf1ywsSeT805CQI+Yry3pBmmK+fQK+hxJghlpHm7BYctLHOuqYXi56ZbVc8o/Fj65gmmhcypljzNb8uF4aT1xTmREiMhDekr9TFBnI6jFVC/xQEkucr005GhQ+4b3jgNbeKa0zkvnVgtKWOkD5g3kVXwYF6CSnujHKZhUX4B1LvIRHWpH0bAQNSrgk+Lwy8gfBpTL2R/l8fHUTZKc5PNcjyq8S/Q6La5+v3GuN7bWs/6FAF50YQOCdTEmrB2/erObgAd5lq2fNAX9AYUEAVKcUeigmnQBdJP4Kfc8PQ==
+ bh=cJgiY2XhD7WkCfY/76dSK5i67HEfv28Y57lViEqkopg=;
+ b=aiQh8zSkGQK3B7ok2H0c/v7LdjQIvrYhBg+4uOqDlErJJVV9V2V/JLtrz4uPSBYwzyYbbfYdP6ErQu8DbTHR0f6jcVKXJ/5HuvP0kw0TQcAryqjCDaG4kC425vHyhhNSSTcOZY2EnQ+SQHsc5IxmdLli3m4aW83LdmMrmJiJ3E6omCAdWTWrlNON2viMmaFE8G23gW4+XFMO08XVp6BVsV6ku6qT86xJvlgA1fNl2+1Qj09zF4kwtpIHuI07y+AiJdRJcDRKrPwjggsJqersxic8wjScmYdqZb9m54W+4jIeh3/tRI5I3KQjptjewN5vRoQKksFxozg7d9vk/gUgGQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cv0Ch1LppCYiv3p0gJ36zBRbMRSGsiA4S/0fELGP9rk=;
- b=idW0dpXstYKIGzKUEvrYzkR8dHWlmd5Gu4r9SG4CWBxMJPHoVbOUlZmYDBSpRX1eKzTmUvqpGPl2X+bXZC6ZHayCn7dZa0zz14Kk8OXXvj8hKNI52gRW+rk578sZuyMyxEduaZ88hhXS2IRISBpHRWLTd+t2u5XkVcrWSDrXZm5KJKI6s9M3w12JOG7JrjcuoaJi9Y9usMoKinjvYbUynZIdZpoZtJMe6wOzVYEVkV/Gtp8W9jUKOQwhaQ0B9FXmDxPIih4GeV/YDA0XMoPzjmAH5DzfzoMMATvx54w3QzSe8JzOjyL0Y9+QGiAvsglgzL4hHoi7a/KW+py9uB7Rhw==
+ bh=cJgiY2XhD7WkCfY/76dSK5i67HEfv28Y57lViEqkopg=;
+ b=PLOxvOeelxccfD6ZzbqGKhb/dX0dbCClsGyE4dJ74YNM8ll5JKoY/wIrWI951TUWWaPcqW+2ZJWgd6jFC+jIbD3E1ZxYVSjlrlnVt+3MJy2LyJ0q5ekzYIwX6Z9pXGr3BlJZdhtx3/oQKUyOlSbrujh1po32KbZGWmv19RV693EIFtl/FbRlUF2qEzCB/8ph0LcHIOsycXxsNt6V1U6c3f1eU4t4t484VzzHUmaiSxt3RGBJ7SUnJMBoEqu7Mdw0k4O0ZkH0vMWcExGlDMyJfvGppcJPFh38G3kM0pwe11I77I0RpvWJ7ggwkPeQpERDoWuIMnomTrNDIUL5B2mcAQ==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
  by DM4PR12MB8451.namprd12.prod.outlook.com (2603:10b6:8:182::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Tue, 27 Oct
- 2026 07:36:11 +0000
+ 2026 07:36:19 +0000
 Received: from MW4PR12MB6873.namprd12.prod.outlook.com
  ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
  ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0546.021; Tue, 27 Oct 2026
- 07:36:10 +0000
+ 07:36:19 +0000
 From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Tue, 27 Oct 2026 16:35:50 +0900
-Subject: [PATCH v6 07/15] gpu: nova-core: gsp: cmdq: split RPC parsing part
- of the receive path
+Date: Tue, 27 Oct 2026 16:35:52 +0900
+Subject: [PATCH v6 09/15] gpu: nova-core: gsp: cmdq: split the transport
+ part of the receive path
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261027-cmdq-rpc-v6-7-bed9669724ba@nvidia.com>
+Message-Id: <20261027-cmdq-rpc-v6-9-bed9669724ba@nvidia.com>
 References: <20261027-cmdq-rpc-v6-0-bed9669724ba@nvidia.com>
 In-Reply-To: <20261027-cmdq-rpc-v6-0-bed9669724ba@nvidia.com>
 To: John Hubbard <jhubbard@nvidia.com>, Danilo Krummrich <dakr@kernel.org>, 
@@ -92,8 +92,8 @@ Cc: Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
  linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Alexandre Courbot <acourbot@nvidia.com>
 X-Mailer: b4 0.15.2
-X-ClientProxiedBy: TY4PR01CA0065.jpnprd01.prod.outlook.com
- (2603:1096:405:370::19) To MW4PR12MB6873.namprd12.prod.outlook.com
+X-ClientProxiedBy: TY4PR01CA0038.jpnprd01.prod.outlook.com
+ (2603:1096:405:2bd::11) To MW4PR12MB6873.namprd12.prod.outlook.com
  (2603:10b6:303:20c::17)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -106,244 +106,253 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|DM4PR12MB8451:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4bc63bce-dd20-4318-f9ea-08df33fcf8b0
+X-MS-Office365-Filtering-Correlation-Id: daeadf5a-4fff-4c20-9e1f-08df33fcfd0e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|10070799003|261026121527099003|261021123027099003|56012099006|11063799006|261021135927099003|261022105027099003|261009223027099003|261022075727099003|261021121427099003|10067099003|22082099003|18002099003|261026140227099003|3023799007;
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|10070799003|261026121527099003|260925021311599003|260925022911599003|261021123027099003|56012099006|11063799006|261021135927099003|261022105027099003|261009223027099003|261022075727099003|261021121427099003|10067099003|260925021911599003|22082099003|18002099003|261026140227099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	1nqeL1TTooJb0fDIiElex8f3z37DDpeZQeYUGF/2lyzeRyD6QhpC3x/y7y2WVh44nqhr2KDSK0mfW63Rv7k9Pi30YXLPd/Qwkqn+kIIzlcd/L+8+iuiP1m/n6QxTBGr/36t8qp9yU1pB99Qz3RP4CNWNMyW59CyoJb9balNWADemnNK6BeNGWErhB2aKftZT4A5Ed3fzfuYYh8X485ED6EJDqt9Bzay0ll0LFxSrkBMpGzeuZUpM7BQw4C/hOQepqgl3n5T+EjfQMDro3yqfv+FwfIU6zo76Fty0N2L2NIRUzbaldZhXEWSSgbLaWNTrVn4UzLEdeiPYRWc+XNiSMn+mTMqPOEg1yuip3si/qCd0G5DRwv4kFsRCS6ZseXylO7LG5/bvXSQZ3IOLIBko1sS6HgyUvjtiUu9xjGid/TuZjTGpl0l6tTPmf7Sk92f/8qnoLfTQDudr0WLVDcttORNluPPhYP/hNaT0kxiiefRByOuJDfLqB2bdjT1tujDn4mDlXzubY3wbpvDAc9lyNdGhnzw6ZW4tE+zBmrquJBx2ZFtFyI4ZzOCtZ1BeD3uLd0Luf6SouKegLFOG0nbScb5D03gHkOakl/CGCuS3LuLKbMonWbPbj5IvHy2FHWnXxMW9XwmtTTArUvjAbIWa9Htw1Q/+zInALL3i3q3IYuY=
+	e3Mh+6wHLjoSEq0r8nGMkjrLn9jKBrdMc/gCXybZgwGeayct/lu7sNWlzso8x8CzFGh52C53f4+2br3ZvtcjauD1FxU42yTRXOXbiVxgexu/qQO40dkmfcTScYDsZNAP6upCG2N+ASePxVQC3kg/RXXhNB5NCp7nJrE09o67Bw4vWeQ92C+ZePLJTafJRHBLUceKzqDtB1mlhlDQDpT8fZoRx/cJY7130v3Vyhy1k/ESrWMF18NJF2SVdCA/3jhisVTUVTtBbm+oCx7iMpPO1COWiHzyDQQ0D6okPtDMpLfvIei9SJuYgIPH/ArP5JXapI2tmHBAHe508tL0Dfc4fv+f+9L7cmEVY0/dfen3DF6ONX/YLaTCDoYYXWpjG3f+fguX8OH7YPUh94bJUxBAcPej56WkUBpAeT1C8BhVHVQ3dFsN69U/vkpNW+6mI2g2DZ60++X2mL12igcFR92NsRLxBJU3Y1iZsREb0oRYYXATzDFc/5yzjREY/QAbw9O5RKVC3nxPpVjKJdg27tZ18kAYbz3hIWaUF0MK3mc55laFmWhte7hTA2rje6p41Bq9NQHhUPhd1h5zy9SUfY5glBA267z4/oGA2nu8Cp05jIdZqFeDhau6Es/vfWPwATIxGn9zlbNpm8SNIBZgQjauFkWQ8BvihV2F1/c+0Y+lEzI=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(10070799003)(261026121527099003)(261021123027099003)(56012099006)(11063799006)(261021135927099003)(261022105027099003)(261009223027099003)(261022075727099003)(261021121427099003)(10067099003)(22082099003)(18002099003)(261026140227099003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(10070799003)(261026121527099003)(260925021311599003)(260925022911599003)(261021123027099003)(56012099006)(11063799006)(261021135927099003)(261022105027099003)(261009223027099003)(261022075727099003)(261021121427099003)(10067099003)(260925021911599003)(22082099003)(18002099003)(261026140227099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SWZwVDJ5YWg3RmdDVUhWUFlWckdKRGdIKzZxSDdqeDhseHAzTUh3cGpDdTc3?=
- =?utf-8?B?TWMvQ0wvVVVzZTB2RkFHRUt5WUtDbU1zUXRERTN2QkRtVCthZXZjT3p0WFVy?=
- =?utf-8?B?VnJlSjNwYm5SVTBLQnVucTU0dlZwdXRWeVFqV0xiellBTkVVb1RUc0pIbm9M?=
- =?utf-8?B?c25pTTcxWk84REFOdkNoS3R5TVR2ZkNNdElqalV0VUpJTXR5WFd5NE8vVzVy?=
- =?utf-8?B?dU1iT1hpQkFqVlE2ZUo4dWUrc0Zmb1p5NU1Vb2YzTUl2am14clVVYTBGenlq?=
- =?utf-8?B?NUZFa051RUo1b1FTNUloQVNkYnJyQzZRcWNmajQxR0h4N2oyNUl1RWNyYlNS?=
- =?utf-8?B?a2ZuYXlpdEMvY1VUZ25taHp1aTZLaU94U1ppQklRU2JWRzZHdWcxcEFvSFY5?=
- =?utf-8?B?THI4RWZLTFZKSFBOMkFMZTFTTWNyRlNsS2lmM1Y2QnJaUkR5QWNLeWVteDlU?=
- =?utf-8?B?UkJrdlQvekZORWZ2cThTNXJwNjZtMEhVOE1NVmsrRlovTzFKMFBDS1AveUQw?=
- =?utf-8?B?SVFHR2Q2ajdYZjBvV3c3cTJrenlIS0k2Z3B1SFRJblV0OWgrQjNKNU9QOS9P?=
- =?utf-8?B?MDQ1SGNlQ1lqRXc3Unc5UlMrTmFoWXllb3BLNm10c0tMSzArR295MnpwK0pZ?=
- =?utf-8?B?dk9xUk5vU09mS1pRRlZndmVyN3BWcUJuODZtam9NeTUxcGovK0owVU41UEY3?=
- =?utf-8?B?WHVwekRnMS94M0xobjZxYmwvcnNXVnFscHVHSmxMTWN1dnJMYlpyU2RqZzRR?=
- =?utf-8?B?M1ZnVkZHaGxEd1d0NUNsRldzL2VUZU9aSmNWT1F5alh4UjYwWkhrWlNVUy9S?=
- =?utf-8?B?a09oNTFBL2Q1cWtWS3Vwb055bXZqNVpVTi9VQ2UrbXZyYnNGVUg4SjhOVlBt?=
- =?utf-8?B?d0wyZE50TGduOHhYUTdldWhCOGFsRE9JSnhmaEJjYTg2a1FDbCs1V2lGcFhY?=
- =?utf-8?B?Nmg0VkJIY0EyeDNRLzN1dHIyZTV6bE0zR1ExT3o2ZzNFNCtYTUpSUWNwbU9T?=
- =?utf-8?B?Q3QxMDdFbnF4WFQ1ZS9obTlweWZ1bnVTOVI1MzVpSEl3NlA5Zm9VTldBRmJh?=
- =?utf-8?B?RlRleldMTm1jNyt4bTJLRENJTmlNNUZVbXJmMXVCd21rVm5pU2hvdTFFWlFQ?=
- =?utf-8?B?Z0hac3luS0MyRENnZTd3S2lMOVArSjVlRHdxdkR5ajkvZ0puZEZJZ1lBNTRM?=
- =?utf-8?B?OWlaZlBtMjdCd3QvcXdMci84MXMxL0Jsb050Y0tjQll4dVNrSWdHeUFWZ0Q1?=
- =?utf-8?B?cGhyN08vYTBFQ1d6NG93WHYxY2FpYWlKS25BeHczeWxGS3FSS0ZyT0x3NUhE?=
- =?utf-8?B?OHpTcHdIUTlJYWlpZW5pZkd5TmVLTzFlTFc1djF3RzBTTzhQUVdwQW5VTmxN?=
- =?utf-8?B?U3JTRmZmdXVTWUNzVTJBZDlHU2dzYUxoSlFJeThydkxVRExtd3pLak5sSk0r?=
- =?utf-8?B?azB5bmVjYWlNekZzb1FkWURtT2h3TDNLMTNUK1hzdDVqZzk1WWtIZUxRT1Zv?=
- =?utf-8?B?anJoSUVnNUcxV0tPR3UzdVJPem5vYjFYdWFBRFcyR0ZaOHBFdUV0VnZUb1Rk?=
- =?utf-8?B?SHUrTHRzNkhWRVVtdXBtWFBnQlhUZWZVL3AvK2VrSGh3T2R4M3ArUWJFcmFt?=
- =?utf-8?B?aXBXay9WeFFLcU5YQ0twV2o4ZEgvd0g3NlRjYkdvRk1WYkpNRlNiWTkzV2g2?=
- =?utf-8?B?M29sWGFpUzNnbmEyNlpuZHV0WmdYQ1IvZGg4ZmdPTEVLYzFYOVZ1SzRkZ3Qw?=
- =?utf-8?B?M0NWREY4dmI4eFZNaFp2bVQ4bCtRRHRIOEJnTHA2R1RJSlNOZmlJS2lKUVFR?=
- =?utf-8?B?V0prQXgyNkV3Q3N2dDNkZmJzUHJwSG1uaVBYVytVVm1QdUk1YnUrU0VQYnlk?=
- =?utf-8?B?bEdwODNWQ2I3OEcwU0hDMTl5RDE4STJTK1FiMGVqamEwTzFoZ0g5OUF1T1Zu?=
- =?utf-8?B?NFBtVDJXeGlhQjRMOHNUU3hrSk10WU0xYURLWlBUMk15RnpVN2xhRExHWmpX?=
- =?utf-8?B?OU5ZUStrMFFGUnpqU2NmZ05wekttQ0FCV2dDUS9NT0prbUs5TW52UWp2R0hh?=
- =?utf-8?B?bDV3RTFpeUtzL0cyc3p2WWVpd1dLalRWdVpRVWppRFVDbVdacnp4aEd1UmxM?=
- =?utf-8?B?TTJZdFRoOVc0RjdqSVRHbUxZM2ZPcCthRXI0NkN2bjMxL2w1MjFmUFRDWXZZ?=
- =?utf-8?B?Rjh5YW43ZE5Ob0RaanRTRHRCV2FKa1FRVFVUdTlnM283Qlpta2tPTlk3WEZo?=
- =?utf-8?B?VVFzR0VEdGx1ckdvcVZQTzFTWi9LWEFQaXhETm4xNkdoYVI4c2VIRGxkTkM3?=
- =?utf-8?B?Q2VoNU5Vc0hZLy8zWTRaOVdtcFFMN1RLMjRQYlpsekNjMHgwY2Vxc1AwZGU1?=
- =?utf-8?Q?LFW/oXOV9seNirkOYrbt0kGDs3nTX/BhcUu6SvWmY3vxq?=
-X-MS-Exchange-AntiSpam-MessageData-1: vizOz7Cwq2s7yQ==
+	=?utf-8?B?NG5aYytzRXBNMldHZnBTM3NTdEg3cGtMeGVabmo5aU5sNTRzOGl0TkEyMUxr?=
+ =?utf-8?B?UGE4TGV2dFhtL2Z6SjRoSmRGR2JXbSs0K05MZWdjR3VUSTI2ZDRrTytIME9h?=
+ =?utf-8?B?cFVXazlVOFQwVFNhekp3cTVqMnlOa0RvSUF1aGFaa1lUWTZMT3pMaWlRNGk1?=
+ =?utf-8?B?Ukk4S210S2pFMnp5ZjlCam9odE5lUkJ1b0FBejE2RGJENmV5M1kwa2JuUW1C?=
+ =?utf-8?B?eTNmd3dKN1M5UndFeVVRVEFvMGprS2ViTkZPaEdUb2YzM0ZrdXIxUk8wRVUy?=
+ =?utf-8?B?a3lUbGhITkxLMmZUV2Mwd1hUZ3JUKzB4Vk5KdHA4dzZQaysrcENXZlhlL3k2?=
+ =?utf-8?B?dVQ1OEh1UlNIQlpFQ3RhZmpiOEtGUXR1d0JIUVNJVVVIUzg1WU5aZHNDUjdC?=
+ =?utf-8?B?NlMwS2VmMXhGdzd3SHJvUlNLZDdlbE5KK2gxQlJLS3BrN0FaanZyVjRRS1Vl?=
+ =?utf-8?B?VVBLMmdEbWRtTFdLMmNCVGRNckU0cFZyRml1RDROekZscUtJZFhMaEQrbGhu?=
+ =?utf-8?B?QmRTZFlwMG1RYVZKbW1GbU9IY1QrSWJGU1JQN1BvdFdsQWFqZlZRS3ZyMXN6?=
+ =?utf-8?B?M0ZoWUlXcGhBdk5IQjNuVmFuMitxK1lBY1QvOG1UT0JBNWtlRlVxVHUvQjhy?=
+ =?utf-8?B?MWhjUGE3V2ZLQ0VuWnl4aDBtRkwwRzljZzRHaWZHWkFsV2x4bTAwdDFKdDgv?=
+ =?utf-8?B?UnBmZlFwWHhnNDNxMUEzbDhHTGR1UzNhNm5Wa3pFaE5Fdm5ZVFJVZkMzZTA4?=
+ =?utf-8?B?Y0xSOHhOWHhWdVVxMjcyalFOMnNhWFM2UlpDUDNqV0k1bk5IRFFFcDRUbitk?=
+ =?utf-8?B?dmtObGNCNjZmZUczVUlGTW4vcnBsZTlZdTJJT1lLcVBNeXhrS0MyaThNZnFi?=
+ =?utf-8?B?VWg1WDBqZE9CaHBXUk5KNHkyb05LbWdocnVBQTlNUjFiTUJJZ3YxN3lPSHZ0?=
+ =?utf-8?B?b1FLNGFHWWpSdkIrY0JFZGhrK1VTTXZQWHlvU3VQL1pvZGNWL2t2QWUrNWJL?=
+ =?utf-8?B?SHRXQnZRbDlGTW5ONGlZaFRrWTNlbXY2c3hXNDAwRWVUNXhvSXN0WnV3c1BD?=
+ =?utf-8?B?SkhLY0I0MkdITk1NRVVQQkh4MlFBcDBaMUJiTStsRDNYdk9PUG90cU9jQ0Ew?=
+ =?utf-8?B?Y3Y4OWk5MkZ1UWs4R1hXei8wOWxuQTE4OG9LUUFjaVVMZWtMWnB0Q3NmSGph?=
+ =?utf-8?B?bkdWMXc4UEtEYXgzaU5hV1RkaVlFU0VLQWtJOVRWSEh5dU4zbHdVNy9hdm5o?=
+ =?utf-8?B?SDkwcGxQZjBySGhqRUNxdnhLWWt5alFiWXRZSTViRWpBOGR6ZVBwZWpteVBq?=
+ =?utf-8?B?ejVBdVFZYm9LR2pYQUJJZklCdU9FTklZeEdac2c4TmNhdFlUajJ4SlljM3NN?=
+ =?utf-8?B?TG9mQ1VOSVVFNFFDeGpGNWVXc29PM3ZsZEVZRkVlRU5zTmpjeVIwWjI2WUlm?=
+ =?utf-8?B?TWY5Nk8vUHlXdWhkNDJPeVhLazF0R1M1K1k0RUZwTnFQNGNNWlg4TTVERzRn?=
+ =?utf-8?B?S2p1RHlhVGM5Mm1JeFZkSG1aNzB0RDM4Um9aSDYzaXpkOFdvcExWZ1AyZmIr?=
+ =?utf-8?B?TkllYVA1TGZNd3YwQkd4dGVZVi9DRGNUalV6aW94QlF1eTlIeGNETXJWRXdx?=
+ =?utf-8?B?b1BqSForcHN3RkhLb0h2Q1MxUXBQYUVITjIrMzZNcDBBeFhlT0tZVFpvWllB?=
+ =?utf-8?B?Y2NEcFQ3STVBZkh6bGtMSjJrbVlJTHE1N1dTa1JqYUtybzQvUWkrSUFyclV4?=
+ =?utf-8?B?UjhwUk41T1U2OVlrYXNCZXdJeUtkVXJwS1dPenE3L0R4cGdPSGFZcmtvMEN5?=
+ =?utf-8?B?RWdyc09kaUs4M3dHYm1tMm90ZU1MN3QvaGR0WTRjbzVQdTJEcHNXbkVZdUpH?=
+ =?utf-8?B?SUpETm9jYXRQbmoxS1VwZ1pqd3NwSzZ6NWdhNkViN3B5K0d4Z09MY2ZzTEVD?=
+ =?utf-8?B?L0JyaVF2R2lwZUVQK3RLamtZVGUyOExTaVpKTHI1L085STZhMEdHVytmWkVx?=
+ =?utf-8?B?Q2FhYk9OQ1VZTDMxREhwU25scHFEalBmWEcxMVNSSXI2QzNyc0xWbFF3d3Jo?=
+ =?utf-8?B?MjhmQkZrN3libTNrNFdIS2V4ekVzK1dkVTJwV2JvbERzRno5L3VPZXg0cWhx?=
+ =?utf-8?B?S1NtRXRsTmNibzh6eXk0M1NIeGFEUUUweEZVQU0zaXRxaEpMSVhMN3FjS3V2?=
+ =?utf-8?B?TTVsRHVxVFRmOWFVSDRGb2NNeFYyUVJWQ1BBOSt4NGxQNWNHekx5em5ubHor?=
+ =?utf-8?B?OUFLaldCZzZ0M2VqWVkxZnlENHczZmVicldvOUtpSU9hL0xnVjVicUIwazM4?=
+ =?utf-8?B?OGlwamdWcWltZVIxc053SXFzYUdLdnJGTzlUNUxncjVQUkZxU0QyQnRMSCts?=
+ =?utf-8?Q?xa4tTSeGTCcanJheUFg8JFsl/IthiUZ4It+v6S3v87Uiu?=
+X-MS-Exchange-AntiSpam-MessageData-1: L+hayEJOWrpEJA==
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4bc63bce-dd20-4318-f9ea-08df33fcf8b0
+X-MS-Exchange-CrossTenant-Network-Message-Id: daeadf5a-4fff-4c20-9e1f-08df33fcfd0e
 X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 07:36:10.8336
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2026 07:36:18.1567
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vtrNpoDoajikN5chPB62E1sdzdcwtLKMih/YPTV4Q49lweVqZL9Xld+Z7JJPvaOK3G6sbDtTZZr7AacNq3+GGw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: ieH56cHlJnbUj5pz87tCL/KJ6Ggc8ehImMEJxvf1biVxAW0+Jjux3ggqwjt9PCst49n/1yVpEOdYbjr3Mlr7LQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8451
 
-The RPC parsing should not be done in the same method as the transport
-header parsing. Split it out and introduce a `RpcMessage` type to
-indicate messages that have been successfully parsed as RPC. This makes
-the code easier to move around into its new destination.
+`receive_msg` currently handles both the transport and RPC layers.
+Retire it and split its logic between the new `consume_element`, a
+transport-level method which passes the parsed message contents to a
+closure before advancing the CPU read pointer past it, and the
+already-existing `await_msg`, which calls `consume_element` with a
+closure matching the RPC message.
+
+This introduces a small behavioral change: a matched RPC message that is
+too short to contain the message component itself no longer stalls the
+queue. This behavior is justified because it fixes an inconsistency:
+unmatched RPC messages were always skipped, whereas matched RPC messages
+could block the queue if they were too short. While a misconstructed RPC
+message is a problem, it is not a fatal queue error as long as the
+transport framing and checksum are valid.
 
 Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
 ---
- drivers/gpu/nova-core/gsp/cmdq.rs | 112 ++++++++++++++++++++++++--------------
- 1 file changed, 70 insertions(+), 42 deletions(-)
+ Documentation/gpu/nova/core/interrupts.rst |  7 +--
+ drivers/gpu/nova-core/gsp/cmdq.rs          | 96 +++++++++++++++++-------------
+ 2 files changed, 59 insertions(+), 44 deletions(-)
 
+diff --git a/Documentation/gpu/nova/core/interrupts.rst b/Documentation/gpu/nova/core/interrupts.rst
+index e42286915711..13a087b960c0 100644
+--- a/Documentation/gpu/nova/core/interrupts.rst
++++ b/Documentation/gpu/nova/core/interrupts.rst
+@@ -583,13 +583,12 @@ the command's sequence number on every reply. On r570 the reply to
+ ``UnloadingGuestDriver`` carries sequence 0.
+ 
+ The read pointer advances past every message that passes framing and checksum
+-validation, whether it matched or was an event. A matched message that is too
+-short to decode is the exception, and it stays at the queue head.
++validation, whether it matched or was an event.
+ 
+ A message's length is inside the region that the checksum covers, so once the
+ framing or the checksum fails there is no trustworthy length with which to skip
+-the message. Such a message also stays at the queue head, and every later
+-receive fails on it with ``EIO`` until the device is reset.
++the message. Such a message stays at the queue head, and every later receive
++fails on it with ``EIO`` until the device is reset.
+ 
+ The polling path and the IRQ thread both read the queue under the command-queue
+ mutex. Replies and events share one queue and one read pointer, so one lock is
 diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
-index ef59f541f7e6..18861400c3be 100644
+index 4efc96eba4dd..6075868638ec 100644
 --- a/drivers/gpu/nova-core/gsp/cmdq.rs
 +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
-@@ -554,11 +554,69 @@ struct GspCommand<'a> {
- struct GspMessage<'a> {
-     // Reference to the header of the message.
-     header: &'a GspMsgElement,
--    // Slices to the contents of the message. The second slice is zero unless the message loops
-+    // Slices to the contents of the message. The second slice is empty unless the message loops
-     // over the message queue.
-     contents: (&'a [u8], &'a [u8]),
+@@ -645,6 +645,12 @@ fn log(&self, dev: &device::Device) {
+     }
  }
  
-+/// A RPC message ready to be processed from the message queue.
-+struct RpcMessage<'a> {
-+    // Reference to the RPC header of the message.
-+    header: &'a RpcMessageHeader,
-+    // Slices to the contents of the message. The second slice is empty unless the message loops
-+    // over the message queue.
-+    contents: (&'a [u8], &'a [u8]),
-+}
-+
-+impl<'a> RpcMessage<'a> {
-+    /// Validate the RPC layer of `element` and returns its RPC header and its contents trimmed down
-+    /// to the RPC payload.
-+    ///
-+    /// # Errors
-+    ///
-+    /// - `EIO` if the element is shorter than the payload length advertised by the RPC header.
-+    fn parse(dev: &device::Device, element: GspMessage<'a>) -> Result<RpcMessage<'a>> {
-+        let GspMessage {
-+            header,
-+            contents: (slice_1, slice_2),
-+        } = element;
-+
-+        let rpc_header = header.rpc_header();
-+        let payload_length = rpc_header.rpc_length();
-+
-+        dev_dbg!(
-+            dev,
-+            "GSP RPC: receive: seq# {}, function={:?}, length=0x{:x}\n",
-+            rpc_header.sequence(),
-+            rpc_header.function(),
-+            payload_length,
-+        );
-+
-+        // Check that the driver read area is large enough for the message.
-+        if slice_1.len() + slice_2.len() < payload_length {
-+            return Err(EIO);
-+        }
-+
-+        // Cut the message slices down to the actual length of the message.
-+        let (slice_1, slice_2) = if slice_1.len() > payload_length {
-+            // PANIC: we checked above that `slice_1` is at least as long as `payload_length`.
-+            (slice_1.split_at(payload_length).0, &slice_2[0..0])
-+        } else {
-+            (
-+                slice_1,
-+                // PANIC: we checked above that `slice_1.len() + slice_2.len()` is at least as
-+                // large as `payload_length`.
-+                slice_2.split_at(payload_length - slice_1.len()).0,
-+            )
-+        };
-+
-+        Ok(RpcMessage {
-+            header: rpc_header,
-+            contents: (slice_1, slice_2),
-+        })
-+    }
++/// A message whose protocol layer has been parsed and validated.
++enum GspParsedMessage<'a> {
++    /// A [RPC message](RpcMessage).
++    Rpc(RpcMessage<'a>),
 +}
 +
  /// GSP command queue.
  ///
  /// Provides the ability to send commands and receive messages from the GSP using a shared memory
-@@ -838,35 +896,6 @@ fn wait_for_msg(&self, timeout: Delta) -> Result<GspMessage<'_>> {
-             return Err(EIO);
-         }
+@@ -930,57 +936,42 @@ fn wait_for_msg(&self, timeout: Delta) -> Result<GspMessage<'_>> {
+         })
+     }
  
--        let rpc_header = header.rpc_header();
--        let payload_length = rpc_header.rpc_length();
--
--        dev_dbg!(
--            &self.dev,
--            "GSP RPC: receive: seq# {}, function={:?}, length=0x{:x}\n",
--            rpc_header.sequence(),
--            rpc_header.function(),
--            payload_length,
--        );
--
--        // Check that the driver read area is large enough for the message.
--        if slice_1.len() + slice_2.len() < payload_length {
--            return Err(EIO);
--        }
--
--        // Cut the message slices down to the actual length of the message.
--        let (slice_1, slice_2) = if slice_1.len() > payload_length {
--            // PANIC: we checked above that `slice_1` is at least as long as `payload_length`.
--            (slice_1.split_at(payload_length).0, &slice_2[0..0])
--        } else {
--            (
--                slice_1,
--                // PANIC: we checked above that `slice_1.len() + slice_2.len()` is at least as
--                // large as `payload_length`.
--                slice_2.split_at(payload_length - slice_1.len()).0,
--            )
--        };
--
-         Ok(GspMessage {
-             header,
-             contents: (slice_1, slice_2),
-@@ -893,14 +922,15 @@ fn receive_msg<M: MessageFromGsp>(&mut self, timeout: Delta) -> Result<M>
-         Error: From<M::InitError>,
-     {
+-    /// Receive a message from the GSP.
++    /// Wait for the next element on the message queue, pass it to `f`, advance the read pointer
++    /// past the message, and return the result of `f`.
+     ///
+-    /// A message whose function code is `M::FUNCTION` is decoded and returned. Any other message
+-    /// is logged as an event.
+-    ///
+-    /// The read pointer is always advanced past the message, regardless of whether it matched.
++    /// The read pointer advances regardless of whether `f` succeeds or not.
+     ///
+     /// # Errors
+     ///
+     /// - `ETIMEDOUT` if `timeout` has elapsed before any message becomes available.
+-    /// - `EIO` if a message fails framing or checksum validation.
+-    /// - `ENOMSG` if the message was not the awaited reply.
++    /// - `EIO` if a message fails framing or checksum validation. In this case, the read pointer
++    ///   does not advance and the queue is stalled. This is a fatal error.
+     ///
+-    /// Error codes returned by [`MessageFromGsp::read`] are propagated as-is.
+-    fn receive_msg<M: MessageFromGsp>(&mut self, timeout: Delta) -> Result<M>
+-    where
+-        // This allows all error types, including `Infallible`, to be used for `M::InitError`.
+-        Error: From<M::InitError>,
+-    {
++    /// If an error is returned, then `f` has not been called.
++    ///
++    /// Note that `R` may itself be a [`Result`]. In this case, the above only applies to the outer
++    /// [`Result`] returned by this method.
++    fn consume_element<R>(
++        &mut self,
++        timeout: Delta,
++        f: impl FnOnce(GspParsedMessage<'_>) -> R,
++    ) -> Result<R> {
          let message = self.wait_for_msg(timeout)?;
--        let rpc_header = message.header.rpc_header();
--        let function = rpc_header.function();
--        let seq = rpc_header.sequence();
-+        let elem_count = u32::try_from(message.header.msg_length().div_ceil(GSP_PAGE_SIZE))?;
-+        let rpc_message = RpcMessage::parse(self.dev, message)?;
-+        let function = rpc_message.header.function();
+-        let elem_count = u32::try_from(message.header.msg_length().div_ceil(GSP_PAGE_SIZE))?;
+-        let rpc_message = RpcMessage::parse(self.dev, message)?;
+-        let function = rpc_message.header.function();
++        let elem_count = u32::try_from(message.header.msg_length().div_ceil(GSP_PAGE_SIZE))
++            .map_err(|_| {
++                dev_err!(&self.dev, "GSP receive: message length overflow\n");
++                EIO
++            })?;
  
-         // An early return here would leave the read pointer on this message.
-         let result = if matches!(function, Ok(f) if f == M::FUNCTION) {
--            let (cmd, contents_1) = M::Message::from_bytes_prefix(message.contents.0).ok_or(EIO)?;
--            let mut sbuffer = SBufferIter::new_reader([contents_1, message.contents.1]);
-+            let (cmd, contents_1) =
-+                M::Message::from_bytes_prefix(rpc_message.contents.0).ok_or(EIO)?;
-+            let mut sbuffer = SBufferIter::new_reader([contents_1, rpc_message.contents.1]);
+-        // An early return here would leave the read pointer on this message.
+-        let result = if matches!(function, Ok(f) if f == M::FUNCTION) {
+-            let (cmd, contents_1) =
+-                M::Message::from_bytes_prefix(rpc_message.contents.0).ok_or(EIO)?;
+-            let mut sbuffer = SBufferIter::new_reader([contents_1, rpc_message.contents.1]);
++        // RPC is the only type of message supported for now.
++        let message = GspParsedMessage::Rpc(RpcMessage::parse(self.dev, message)?);
  
-             M::read(cmd, &mut sbuffer)
-                 .map_err(|e| e.into())
-@@ -914,15 +944,13 @@ fn receive_msg<M: MessageFromGsp>(&mut self, timeout: Delta) -> Result<M>
-                     }
-                 })
-         } else {
--            self.log_event(function, seq);
-+            self.log_event(function, rpc_message.header.sequence());
- 
-             Err(ENOMSG)
-         };
+-            M::read(cmd, &mut sbuffer)
+-                .map_err(|e| e.into())
+-                .inspect(|_| {
+-                    if !sbuffer.is_empty() {
+-                        dev_warn!(
+-                            &self.dev,
+-                            "GSP message {:?} has unprocessed data\n",
+-                            M::FUNCTION
+-                        );
+-                    }
+-                })
+-        } else {
+-            rpc_message.log(self.dev);
+-
+-            Err(ENOMSG)
+-        };
++        let res = f(message);
  
          // Advance the read pointer past this message.
--        self.gsp_mem.advance_cpu_read_ptr(u32::try_from(
--            message.header.msg_length().div_ceil(GSP_PAGE_SIZE),
--        )?);
-+        self.gsp_mem.advance_cpu_read_ptr(elem_count);
+         self.gsp_mem.advance_cpu_read_ptr(elem_count);
  
-         result
+-        result
++        Ok(res)
      }
-@@ -1004,9 +1032,9 @@ fn drain(&mut self) -> Result {
-                     dev_err!(&self.dev, "GSP drain: message length overflow\n");
-                     EIO
-                 })?;
--            let rpc_header = msg.header.rpc_header();
--            let function = rpc_header.function();
--            let seq = rpc_header.sequence();
-+            let rpc_msg = RpcMessage::parse(self.dev, msg)?;
-+            let function = rpc_msg.header.function();
-+            let seq = rpc_msg.header.sequence();
  
-             self.gsp_mem.advance_cpu_read_ptr(pages);
-             self.log_event(function, seq);
+     /// Receives a message of type `M`, waiting up to [`Cmdq::RECEIVE_TIMEOUT`] from the call.
+@@ -1000,14 +991,39 @@ fn await_msg<M: MessageFromGsp>(&mut self) -> Result<M>
+         // This allows all error types, including `Infallible`, to be used for `M::InitError`.
+         Error: From<M::InitError>,
+     {
++        let f = |message: GspParsedMessage<'_>| {
++            let GspParsedMessage::Rpc(rpc_message) = message;
++            let function = rpc_message.header.function();
++            if matches!(function, Ok(f) if f == M::FUNCTION) {
++                let (cmd, contents_1) =
++                    M::Message::from_bytes_prefix(rpc_message.contents.0).ok_or(EIO)?;
++                let mut sbuffer = SBufferIter::new_reader([contents_1, rpc_message.contents.1]);
++
++                M::read(cmd, &mut sbuffer)
++                    .map_err(|e| e.into())
++                    .inspect(|_| {
++                        if !sbuffer.is_empty() {
++                            dev_warn!(
++                                self.dev,
++                                "GSP message {:?} has unprocessed data\n",
++                                M::FUNCTION
++                            );
++                        }
++                    })
++            } else {
++                rpc_message.log(self.dev);
++
++                Err(ENOMSG)
++            }
++        };
+         let deadline = Instant::<Monotonic>::now() + Cmdq::RECEIVE_TIMEOUT;
+         loop {
+             let remaining = deadline - Instant::<Monotonic>::now();
+             if remaining.is_negative() {
+                 break Err(ETIMEDOUT);
+             }
+-            match self.receive_msg::<M>(remaining) {
+-                Ok(msg) => break Ok(msg),
++            match self.consume_element(remaining, f)? {
++                Ok(m) => break Ok(m),
+                 Err(ENOMSG) => continue,
+                 Err(e) => break Err(e),
+             }
 
 -- 
 2.56.0
