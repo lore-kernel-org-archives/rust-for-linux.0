@@ -1,89 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793200001;
-	b=XSk0shgCOnSQ/x3nzLIAbwHtzntE69Ul+wDWlUylv0OOAMT2Ivcfng9MCT8/7rF1mKkw
-	 UrENJ0HggittvNfttWcLxEJGNONcHnFeshNldR/nsexHcH2KD3iS+oQZ5ftuhoeTig4qG
-	 wk+7GSz0lCT69Z7Rl3vVGiirLgCRFxhlDaQLnNmG+/HmY4WKAU1z+TQ6SkqAjnANQJ7tO
-	 TBKflkSwwpS7WCf4NQNX65shJkGFrNrEaJBsY8oqf0MOQmPfHQAU5YBW3l0C6JEbmGDlC
-	 eWnXzUypZCgI+6DOTZXMeSTD2RpjcFvOjMcCGfAjTjtslGkdpvJ0tjGyce2on/3sEBg==
+	t=1793202620;
+	b=BeejePnvjx3RIc4sq0qFZ1qedNq0NSOM4TGvZAAKRSl9qvfWAPcuHG0Z5iAUHiJbxg6B
+	 sm57WOdJN1pYat+elXA7hFwHiR6AzIXO4VMNGFsvCSf0Kj2b6epyOQsivgeZn3sHnEJf9
+	 AJ6muBHPjnolvwmeZbAdKUHHiWTxWC7D8KKEQcgdftBeNmEd5JwIh20sdBwJlODr2DT4z
+	 gnHnD3hIW5IQMA8kjoKJhpQqYjP01SDq1AvMez80zq7/UvfKiaWfm5QaW3tESBPrrMhoi
+	 7Uvv4gSaEoaLYvMBTjmio/ChrUB6lgKR5O/UjEnPOEprzByrMXpZSirOsgrhJDxOamg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793200001;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:CC:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version;
-	bh=n/akRagARDR+fJNDGCNVlhTugTuQn/VjpXfX2Yd9MwA=;
-	b=NItmCV7OfhpcyuEVGKUfTfoNmK0lt30vkmtmwxuDL0URT1GHypfq3mLsAsY1I2HPMq2R
-	 Jjg2YbXst3nqEzKCIL/WfF1/2jlS1zaIv9SGMWFv1kEl0z4Xi0cCX1K6UUUhCTJo2QgnT
-	 Ow4wUrtwxvkwhyfvvGZVHHiw4HzXUPJo6lpj8nEV58dTs2bZYXgoV5ogOqlH3tnfJYgd+
-	 4KoYJMD9m6mTw9mBq9jndcg0f4+isHitLFsnLh5gCG9I2StGFaesX1mKGPRhKwt9lRipU
-	 Y+/QxqOn3glmce2vfusLEqh3IMgHkRSAN3zGiToBuMOOOT7nUupv8g66tKiDP4jwIow==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793202620;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=Wj4LX9xOsHpuGRygOr/nDK8i03h77TPrsXBsHHo2CzE=;
+	b=hbPvI1rkgSO7qljj6Fvowpfo8mWwwKTM2M6Xnu/oqyBVZ4D2Psg+YTDVzU35cs8MeaRw
+	 CqzB0iZpivKRKcBzSGWJVEtE7AvWkkF6e9pU4xKMvJhZc6xDh0RzmlmmqgZ4lSPZW5o4G
+	 z9BpwmLqaF0njNpNZSLEu5hcJwxWTMoabNPwx4osioxO82Qo8ARjLw1tvpc/1ySk1ptk7
+	 JE222H2XeQSi43e88uwuF87TlycPM1+yTTQqomnCJEo8v/MW+h3Np2XxQOOQHACSECLle
+	 8J+DM+KWKoN6ihEOne6yf/avFeXpPporxGd+fjUh8u/DPlpXdCFBqHvx9/dsTAIEUtw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=VdMneMI8;
-	arc=none smtp.remote-ip=67.231.145.42
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=L3gP8nyH;
+	arc=none smtp.remote-ip=209.85.167.50
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDE9606A32E;
-	Wed, 28 Oct 2026 15:06:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5CDE9606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FEE606A323
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 Oct 2026 15:50:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06FEE606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=VdMneMI8
-Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69SBdEXx271934;
-	Wed, 28 Oct 2026 08:06:15 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=n/akRagARDR+fJNDGCNVlhTugTuQn/VjpXfX2
-	Yd9MwA=; b=VdMneMI8O6wlNE0BYQWv2NoN0sywdAR3S3qF8UBQ8uoKgjLfzXI36
-	RMZoTPIpxHlgSe6OFVIofncfkaP6dZg/yjYK+MHsXD9WsedwgWQsgbiUgX/Fx8PR
-	qLZHqFn8ZseF9U+0o/daa6VpHQbi6IRGKq00BWh8A0tlTUGbn0arN/jSorQdkR4e
-	yyNWRof6oFLsVTSYAOG9elDCeBd2Mu2fsBvPhQbT24uswO4mzB+LjIZMOBHtWJFX
-	aPIw7LPrE/wCSUg4UEXrkJNKyLCqxM7GTBVm2z8UJTrCOEzqzZjhohl43rFyap+B
-	vBTE/TFyyrgyySC4gpZbsk2RDm8SU0WYw==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hjtuxtajc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 28 Oct 2026 08:06:14 -0700 (PDT)
-Received: from localhost (2620:10d:c085:208::7cb7) by mail.thefacebook.com
- (2620:10d:c08b:78::c78f) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Wed, 28 Oct
- 2026 15:06:13 +0000
-From: Ruben Hakobyan <hruben@meta.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>
-CC: Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-        <virtualization@lists.linux.dev>,
-        Alexander Duyck
-	<alexander.h.duyck@linux.intel.com>,
-        David Hildenbrand <david@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-        Boqun Feng <boqun@kernel.org>, Gary Guo
-	<gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=
-	<bjorn3_gh@protonmail.com>,
-        Benno Lossin <lossin@kernel.org>,
-        Andreas
- Hindborg <a.hindborg@kernel.org>,
-        Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>,
-        Danilo Krummrich <dakr@kernel.org>,
-        Andrew Morton
-	<akpm@linux-foundation.org>,
-        <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] virtio_balloon: submit reported pages as individual buffers
-Date: Wed, 28 Oct 2026 08:06:04 -0700
-Message-ID: <20261028150604.201665-1-hruben@meta.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261027151329-mutt-send-email-mst@kernel.org>
-References: <20261027151329-mutt-send-email-mst@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=L3gP8nyH
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5be3ea5a7adso1229005e87.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Oct 2026 08:50:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793202618; x=1793807418; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Wj4LX9xOsHpuGRygOr/nDK8i03h77TPrsXBsHHo2CzE=;
+        b=L3gP8nyHEpt7c0+mIxQ4RE0XFyRCO1UWhX6RArQV5e67OLxg471Fdc/XET1Yu1ILQT
+         Q6iKZ1OgUaRmQtlh4i2mKr7l/f2l602LAkSGYOvjK9vDRVLOmbqZLS3xOij4o2srjPFq
+         PU/wglL8p4fQxbbWhbxRERoDprueyz0T4yBdcAgG7VUDSie4QeGTlyqISmaB3bUix0eJ
+         4yE7ohInOuyfj8YnxkW4OaOd7FaZiI/tl/oLRnw2uLfNbrHYfSsEaphe5v+017JWijzi
+         TNtEUKG2nCH39y44cB5F5TZ/M2K8TvBGllYGJVjWSUxD9D8GsPoDOUMAVX8JYgpKiP9g
+         V7gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793202618; x=1793807418;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Wj4LX9xOsHpuGRygOr/nDK8i03h77TPrsXBsHHo2CzE=;
+        b=TsFEGYcdLkBQG6kLdhQlVrvX3YB6z2tvFFYDjqBSPTCdpUmFchugFNjB09pGu0+9ol
+         bcVuedZ+88s2TeZVOr5HnFeoklb2jAJczHSsg30cGm5Q9DDINXjevvopEUbVmvLwvXtD
+         LIA5bRGcjDbYQg6LbhOYmrrUmTU9qdk7b8SZGACPyq65KrdQvGFGWNBpIQww9yzuYtta
+         n4OJ+0t60cjSV+x1tOOfOYmc/AFr1WLHeqw8OrDbK+OsWdAGutxEuE4RXR3QkAItpyxk
+         RD05OsPuC+xjv0qhGLKCEZPC6+YIGaNwRP3SE2FMttyhgyU0acFl30tEo4HKVlfSx6om
+         a36g==
+X-Forwarded-Encrypted: i=1; AKwUvByHW6Zh92xvDxcF8oa5euvivxBgpAkEaV9XtmgOEehjfVEVWIMWjQZ7dPjegJaAnefYiscv/TW9B3R+wyQIxg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYIvC0Wo/F/DXwZ/ul5QqGTDDdFCRA2zRlzXCEQgAdJILETRjuRq
+	YGD6XHoFxNv06mmKyJFW4/NJwXJh+uXffcYpV44MG4WKq62RZOk8x6QI
+X-Gm-Gg: AYBFou3o4E1gtk9ocNfTBB6BSQniAayXGrQADRkMna80Pi1j6Vu0VsK/z4Xaqcv0zb/
+	JXOianWPnT776H1tqUORR+evhSm/UCevys2dZAK29tpHbTHfngpfhwkILcKf6ssslWviI7HzTWr
+	QOKHDNzP64MsRjzURYzE9KgTCzjdsdJyaHLRBuR/EGJYwre1xdy2DGOMU4622+ETNFN9N2ujKbq
+	VnjFDha/fdSFQcjEuZ9c2sbvT7Y97L2ph0BSOT5tCYfcsWtrupGAuF9vOBs+8TRNJq/HAYHt6VE
+	DmmQsIOLmPS7fitVLSp8tRiCKOkbhsO5abZUsPlWY4+n3DcQY3OujoPnDNzZ5XzHhSxIqUSewk9
+	lYV6VP0e1vl3sQMasRbJFWQjQKlNHcnoQhU+QGmkbdqHyUyLa9WmZMg9hSZsHa3rBP6RQO3Q8lF
+	gEyss551RfmsNm4l10LvUXxMaxdGTZCoRnTkPaQ+tKhvI3RZXbg4msNuiGmicW5ewzXqw/cffFQ
+	ELmufb60uL7kRhYI15GK8FEIXfO2Uyq+4U42cgBLgFduoc8trZZDbTLYe4OsAeIrhvJ6mW/0Grz
+	QMQ1Ig0GXmQTtbwbLc6UpaEAglUT2sDRwcmF5A==
+X-Received: by 2002:a05:6512:a83:b0:5bf:b93d:a85b with SMTP id 2adb3069b0e04-5bfcad893eamr1077228e87.25.1793202618007;
+        Wed, 28 Oct 2026 08:50:18 -0700 (PDT)
+Received: from archlinux ([194.28.181.64])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfca5c6ffasm694002e87.80.2026.10.28.08.50.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 08:50:17 -0700 (PDT)
+From: Ivan Tverdohleb <mbkchelofficialdev@gmail.com>
+To: Luis Chamberlain <mcgrof@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ivan Tverdohleb <mbkchelofficialdev@gmail.com>
+Subject: [PATCH] rust: macros: document emit_base in ModInfoBuilder
+Date: Wed, 28 Oct 2026 17:50:05 +0200
+Message-ID: <20261028155005.174417-1-mbkchelofficialdev@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -94,182 +101,38 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: ZfxisLPKC3cRY4cfMcbSSv6NtTSdYeJP
-X-Proofpoint-ORIG-GUID: ZfxisLPKC3cRY4cfMcbSSv6NtTSdYeJP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI4MDA2MCBTYWx0ZWRfX3uw6g7EPuwTM
- DibcRf8vVekPYTCzK4F1FwprinlUAm2GvLCsElTH9/XLSPG76R1GpMh9dqJMzeKzG13H734fbyK
- cdgB5LvW5bK3FGvBO7w1K+oDLVN64AnUFIydsatNvMejfQn89d6vFGdCWFE5g4ibvNnwzSBRx+s
- 4rihRJuV5LVx21l+s+z/w8dDR4vPznXi5VyrZmbWBEnD6FRFtN/K3sBZHdqSpRu1JdWgDoIl7Rn
- gB8rJg7ZMM0EwHJ6X08zQmvftSozabHDdCfdy0b2jD97rWVQGfIXrQFQjnhXyjWMIVns7i9Rixa
- YC/URyFdURSsyrY/2XsShIEF2npHlQB8vLiT3jQpuDsu3ZwNZT9gd8URJsD14ejifRJk3C8K4Hd
- KT7kIVJQQzB43NAjWK2n+oIQz0M7WC61UNDDLCQkbnAoOeZv5czGcu9BEtoRVq/GbNrP4oTfx7l
- UlkmkQaACkJQuuh+Zeg==
-X-Authority-Analysis: v=2.4 cv=V/XoQuni c=1 sm=1 tr=0 ts=6ae20f66 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=8elwO82fXORLTBIkMd32:22 a=20KFwNOVAAAA:8 a=VabnemYjAAAA:8 a=QyXUC8HyAAAA:8
- a=phoES-eJUOR2wqcIftMA:9 a=zY0JdQc1-4EAyPf5TuXT:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI4MDA2MCBTYWx0ZWRfX2yMZgPBxzOCj
- mzZQH+ps0TPtroxNBzRJXHfpA529N1imxSDKw8IIWlYm8hu0fgoGAaSevkp9noOq9P8X+jxaP2A
- eYzBB2S6JV1g34zNFsbiVhxf3LlXoxM=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-28_04,2026-10-21_02,2025-10-01_01
 
-On Tue, Oct 27, 2026 at 7:17 PM Michael S. Tsirkin <mst@redhat.com> wrote:
-> On Tue, Oct 27, 2026 at 07:39:57AM -0700, Ruben Hakobyan wrote:
-> > On Tue, Oct 27, 2026 at 12:40 PM Michael S. Tsirkin <mst@redhat.com> wrote:
-> > > On Tue, Oct 27, 2026 at 05:32:04AM -0700, Ruben Hakobyan wrote:
-> > > > On Tue, Oct 27, 2026 at 10:35 AM Michael S. Tsirkin <mst@redhat.com> wrote:
-> > > > > On Tue, Oct 27, 2026 at 02:26:33AM -0700, Ruben Hakobyan wrote:
-> > > > > > On Mon, Oct 26, 2026 at 11:53 PM Michael S. Tsirkin <mst@redhat.com> wrote:
-> > > > > > > The virtio_balloon driver reports a scatter-gather list of free pages
-> > > > > > > to the VMM so it may discard unused pages.
-> > > > > > >
-> > > > > > > For an arm64 kernel with 64 KiB pages, the default reporting and
-> > > > > > > allocation orders allow entries ranging from 2 MiB to 512 MiB. If the
-> > > > > > > report contains a sufficient number of large entries, we will end up
-> > > > > > > with a descriptor chain that represents over 4 GiB of memory. This
-> > > > > > > violates virtio spec, which says:
-> > > > > > >         Drivers MUST NOT add a descriptor chain longer than $2^{32}$ bytes in total;
-> > > > > > >
-> > > > > > > Specifically, submitting $2^{32}$ or more breaks Rust-VMM.
-> > > > > > >
-> > > > > > > Submit each reported page as a separate virtqueue buffer instead of one
-> > > > > > > buffer with an sg list of all pages.  This also avoids indirect
-> > > > > > > descriptor allocation (kmalloc in the reporting path).
-> > > > > > >
-> > > > > > > To avoid multiple buffers causing interrupt storms, keep callbacks
-> > > > > > > disabled while we wait for an event.
-> > > > > > >
-> > > > > > > TODO: as an alternative, keep using virtqueue_enable_cb_delayed
-> > > > > > > but add buffers after there's space in the ring.
-> > > > > > >
-> > > > > > > Note: if the virtqueue is broken, wait_event on
-> > > > > > > virtqueue_get_buf hangs.  This is a pre-existing issue:
-> > > > > > > the old single-buffer code had the same hang.
-> > > > > > >
-> > > > > > > Reported-by: Ruben Hakobyan <hruben@meta.com>
-> > > > > > > Cc: Ruben Hakobyan <hruben@meta.com>
-> > > > > > > Fixes: b0c504f15471 ("virtio-balloon: add support for providing free page reports to host")
-> > > > > > > Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
-> > > > > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > > > > > > ---
-> > > > > > >
-> > > > > > > Notes (changelog):
-> > > > > > >     changes since v1:
-> > > > > > >         keep callbacks disabled while draining: get_buf re-arms the used
-> > > > > > >         event for the next buffer, reintroducing an interrupt per page.
-> > > > > > >         Disable the reporting vq callbacks at probe, and only arm the
-> > > > > > >         delayed callback to wait.
-> > > > > > >
-> > > > > >
-> > > > > > Thanks for the patches! I think sashiko-bot found some issues on broken
-> > > > > > queues in the first patch that are worth looking into for correctness.
-> > > > >
-> > > > > Surprise removal of the balloon? Nope, it's a pre-existing issue that
-> > > > > it's broken.  Besides it's not really practical, no one removes
-> > > > > the balloon - no need.
-> > > >
-> > > > Fair point about that. But I meant the broken queue check.
-> > > > In virtqueue_enable_cb_delayed() there is:
-> > > > ```
-> > > > /*
-> > > >  * When the device is broken there is no point in polling used->idx,
-> > > >  * the backend will never update it. Return true to let callers
-> > > >  * exit their cleanup loops instead of spinning forever.
-> > > >  */
-> > > > if (unlikely(vq->broken))
-> > > >     return true;
-> > > > ```
-> > > >
-> > > > But virtqueue_enable_cb_delayed_max() doesn't have this. So I was just
-> > > > thinking the same reasoning should apply here?
-> > >
-> > > It's broken there, too.  E.g. what is the "cleanup loop" in balloon?
-> >
-> > The loop in virtballoon_free_page_report():
-> > ```
-> > wait_event(vb->acked, ({
-> >     for (;;) {
-> >         virtqueue_disable_cb(vq);
-> >         while (virtqueue_get_buf(vq, &unused))
-> >             i++;
-> >
-> >         /* Stop waiting if device used all that we added. */
-> >         if (i >= nents)
-> >             break;
-> >
-> >         if (virtqueue_enable_cb_delayed_max(vq))
-> >             break;
-> >     }
-> >     i >= nents;
-> > }));
-> > ```
-> >
-> > For a broken queue, you could exit the for loop early and avoid busy looping.
-> > It still hangs, but I think it can sleep rather than busy loop?
-> >
-> > Anyway, I'm not sure how practical a broken queue is, so I don't have a
-> > strong opinion.
->
-> Maybe add the broken queue check explicitly then, then it does
-> not need to hang:
->
-> if (virtqueue_is_broken(vq))
->         i = nents;
->
+Add documentation for the emit_base method within the ModInfoBuilder
+struct. Explain its role in formatting metadata strings, handling the
+differentiation between built-in and loadable modules, and managing
+linker sections and conditional compilation.
 
-Ah yeah, indeed that would avoid the hang on the broken queue.
+Signed-off-by: Ivan Tverdohleb <mbkchelofficialdev@gmail.com>
+---
+ rust/macros/module.rs | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
->
-> but the issue is what if queue gets broken while we are waiting.
->
-
-Hmm, yeah I see. I guess that's already outside of scope here.
-
->
-> > >
-> > > > >
-> > > > > > Other than that, I tested the "normal path" on QEMU and Cloud Hypervisor,
-> > > > > > both on 4 KiB and 64 KiB guests, and this works correctly.
-> > > > >
-> > > > > Thanks a lot! Can you pls confirm whether the performance is about the
-> > > > > same/better/worse?
-> > > >
-> > > > >From my tests on QEMU, CPU time was about the same as my original patch
-> > > > and unmodified Linux.
-> > > >
-> > > > To bring a concrete example, with these patches it took ~437 ms of CPU to
-> > > > reclaim a whole 8 GiB with 4 KiB pages (vs ~434 ms on unmodified Linux).
-> > >
-> > > OK so that's just noise, there's no difference.
-> > >
-> > > >
-> > > > With 64 KiB pages, it averaged 121 ms CPU (vs ~112 ms with my original
-> > > > patch).
-> > >
-> > > Is this measurable, or also noise?
-> > >
-> > > >
-> > > > (I tested this on Nvidia Grace)
-> > >
-> > >
-> > > Thanks!
-> >
-> > Thanks, yeah I agree and my point was that performance looks on par.
-> > I just wanted to share some concrete numbers of what I've tested.
->
-> Thanks a lot!
-
-Thanks again for the patches and for looking into this!
-
->
-> > >
-> > > > >
-> > > > > --
-> > > > > MST
-> > > > >
-> > >
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index 0a7b9e24c..6f361013f 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -49,6 +49,16 @@ fn new(module: &'a str) -> Self {
+         }
+     }
+ 
++    /// Emits a single metadata entry into the module information table.
++    ///
++    /// This method formats a `field=content\0` byte string and places it into the
++    /// `.modinfo` linker section. For built-in modules (`builtin == true`), the string
++    /// is prefixed with the module name (`module.field=content\0`) to avoid naming
++    /// collisions in the final monolithic kernel binary.
++    ///
++    /// It automatically generates a unique static identifier using an internal counter
++    /// and applies appropriate conditional compilation attributes (`#[cfg(MODULE)]` or
++    /// `#[cfg(not(MODULE))]`) based on the target type.
+     fn emit_base(&mut self, field: &str, content: &str, builtin: bool, param: bool) {
+         let string = if builtin {
+             // Built-in modules prefix their modinfo strings by `module.`.
+-- 
+2.56.0
 
