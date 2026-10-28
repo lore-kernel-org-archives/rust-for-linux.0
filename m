@@ -1,73 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.241.56.152
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793180818;
-	b=JC9oJfLE6Z+sfDiEkUjqESMo/W8Nn+ysP1XExiuhrlvCden0LT6nVVaJvv80dpEDg1uv
-	 yxlPEISA4FRadMOLnLFuAT5GneM515kds9YzGcqtwWgyxU53p2WBROg5PUWWKeWCWyH8t
-	 rn82eAR4Bq6qi+DKIrfPGIkRhfVtBvBsF3NGQ890MO87pwGJLgoQ/2VMi5W3Ji3NRuPte
-	 969NM8Vp9EcGH3JAA2kHH2yH7jBmABBwHmqG1/Rgxft8M6Y1XKdiXDL/4uWMvkhJ0YZ3h
-	 oe70/QM7ARO6b1ipFvNSA6fKefBcmP4NP+w35g5T94+4dTiOGcvJDjggOmV94HrUYfw==
+	t=1793180850;
+	b=HW+7uNvJAkIFzxP1XxMWDYkLXyuRFWUKtyA0M40DpM2+hld4XoShipa+NRXBzx8DmLxF
+	 aXI1qIlzUSwCpl2KZIsCes5zS6siFTYpnY3E10nUrzzhva1mUsRuoA88sdojTS+mDH7vc
+	 j+0FtFMbNb4LNWaHuom2CaBBrUosek6PV4YcizL3PL4bhyzom6f0Sj9XU0gszON7t5bLV
+	 3rqNieJy69aSkcZhmVyd5OHdu9pomXiu2Lqm14PdiTVMOkZITzHPtAcyYMjH0mJw8rqPa
+	 STGqcGu5yigRSLvJese0jugXy89oSpbaPzMcr4RVGAGpsqQgv3jfsyACKzWxYXH6yvw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793180818;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-B4-Tracking:X-Change-Id:X-Developer-Key:X-Developer-Signature:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=qc9QNDM7x+nu+pbyI3Fb4dwfjZ18Z0ovze28f0XG1NE=;
-	b=t2eKZ5UZbtL0Do5h1SgzAR2Es77MRQS8IVgI/XWhRQKpKgl/zKrPk2d0AvGOjN1NWn/W
-	 tZr7YL+Zlb03DSFvBKmWRAzjNaewffPtfB4E70mAgxI5StdvhyzYK+UeV+39LkxSGKiFn
-	 j02vp+0qyesOBbX/Z4PceGZL84d3dE7IACKW/pWCif1a+ZIlk3aUvG+xX95cjIlpqHcY8
-	 pUg/7y+dJ1213bTkLHMbs7+Yopvn8TVCfAWRdJycEzp0Wr8YZcvyktTY3C0VGNH/Tjey/
-	 Y1wDDGLzoLuCynDhDTyyF0UntdpmU/2PoChKcj2ZiBOpo/nFxWx/tTvOpjg8DEd+MRg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793180850;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Subject:From:
+	 Reply-To:To:Cc:Date:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version:X-MBO-RS-ID:
+	 X-MBO-RS-META;
+	bh=nKYFxQRH1vuVIe7/MLAy4kkLQU+A9Me4O9WKmx61f9U=;
+	b=OzdztJsnyFDv23c7OYM1Raqway8UBJONqD6R1XmlpEeQd4/iA7sAcWcfFftKEiAXalar
+	 o9pZBrk4YbSyM8PhoQO11Tk5z5KMmBBKzKz7Go3zUGaWqFm09V3PjFhmPF/bsdqwDJ/LX
+	 XrjcSIh3fFXQObCBwHHbzQHGcpiVRbNR3moECAh/igH2VUtkP5D3v9PKzsO6Q0qgY7y1d
+	 hrgNDoULJhlLk/+Yo2BLmpsjTkOBL9WmTab5qBjpTIFlUcGJiqvltEy6KXrdf7lHX8kxu
+	 Lf5u2UDjTimkGnx7Pg/Pk6YxwpnIpYG6WSLq/t9r22x1+jKoobjTmRANRlveEVtdjcQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hZtv7ih7;
-	arc=none smtp.remote-ip=209.85.128.71
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=mailbox.org;
+	spf=pass smtp.mailfrom=mailbox.org;
+	dkim=pass header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=wxh7nxPZ;
+	arc=none smtp.remote-ip=80.241.56.152
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A286606A31C
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Oct 2026 09:46:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A286606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9030E606A31C;
+	Wed, 28 Oct 2026 09:47:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9030E606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hZtv7ih7
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1d1f26a63so7021435e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Oct 2026 02:46:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793180816; x=1793785616; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qc9QNDM7x+nu+pbyI3Fb4dwfjZ18Z0ovze28f0XG1NE=;
-        b=hZtv7ih7RNGMRPSgtb8dlLDoJiKVkqYtG45M1ZwpO2tZOMaQZXLTR5aFwgCudP1LRb
-         KgxW3CKawRD6tCKkHfTpeGsUBnp6Mgg5LaDO0ZHRV7i8NWIm8ve3Lrwcj2J1FrGQBUo1
-         LNh6RweppZEzRTj6LElcOqAEODV3XZJihb2i06yfpRNVjXSRYVRBdOaAI63BGh+dU6wj
-         XoNlE2JfrkGJ2V04hTzcntFXJZVA7TfSrPe3v5oFDyS2I7i67F21JiC+eelXSIMiyVAT
-         QXoHQXAwOc8lElnA25NttV9FpodJc7FFkal3i7Coq2uafNNNGBsYQbnoysmybZn2Wuho
-         GoBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793180816; x=1793785616;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qc9QNDM7x+nu+pbyI3Fb4dwfjZ18Z0ovze28f0XG1NE=;
-        b=VYj/45Z+j7NwvDzjKpHCvXNpFfIAsE/Yw+RzeF4B8niavaQT51SeUcOQRr9YOseu08
-         tOg6Ks91e0Nnk9ZG4OjvLYBl1Y2NVMXXU2M0jSRmYGYXatDeayWbcDRb8FH3RE42PjR5
-         IGh5BfC+4F4ujQvnQGfvXUtjl05IWvO2zBzfa1EtZaybxW6D0EOK9N+GNmkS5Y0oNPL6
-         HRjEiOXtiwAvhfRzeHgnyG0jyMTSzwGlKbWWblNwzeYBviOCdMgcnPMonSvIB/UwJX/o
-         q/h4IpeWIwCSNAScINEwC7UVLXBOv8J9z4v7n9iDqhBUWLAfKfL/wBm6c0yiDqoYSFim
-         kLSQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzRoP5JIIeNGGJB0w8FZoEBYydAUwvfX0zNsBGiAJBBl+EtmYNOUpewsZfLlXE/K/q0gy6+GJt2aE/710xkyA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYLUveEN3WC6MEwlfrqC3SIeT6xXdzmBbcH312rt633GNFR1TeAP
-	yQGdvQhxaPzBVZQwcN2KaQ8ksUo7Nf6Zrc7jpkglmC2pRBt/CFE4j3JayS2OlAsNNJft0svVwnw
-	I7R4gFCik3vj9Kka9eA==
-X-Received: from wmbjr24.prod.google.com ([2002:a05:600c:5618:b0:4a2:677:24c])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1909:b0:4a2:1e1:d55 with SMTP id 5b1f17b1804b1-4a9675dc5cfmr32574775e9.28.1793180815855;
- Wed, 28 Oct 2026 02:46:55 -0700 (PDT)
-Date: Wed, 28 Oct 2026 09:46:45 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=wxh7nxPZ
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4jF2b05FVDzKnB8;
+	Wed, 28 Oct 2026 10:47:24 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1793180844; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nKYFxQRH1vuVIe7/MLAy4kkLQU+A9Me4O9WKmx61f9U=;
+	b=wxh7nxPZ3iBUYyzqOmx2XDE76ZphfykyCRuAosYPWP47z0Pzf1bVpl04m5X6WPVpxqDb76
+	C9IMwFNXAO0Bc/rF0AAjmptGHmYtscrD+MmJRaj/SMYdBhD9TAhIG4oNy7QPVoISU0+tSj
+	562hrglSu9820+OAFhoF3wrPOV73urXb1ouVgfb5bJhZdcOcsMoyOXcAKr1+nU1H2xdUCj
+	ukuSIDc2A/mpXaPld+JwbzLD3X9yYXpOQPYSOTLZX1z3YZZv6pKWrKVn0s2f0PVZWxFC96
+	6SS7e7Jgkb/AWiKJedqhGOu5sXW+OwHfal+83mB+gJZ1DHVXpTo7rR+UsLY3ow==
+Message-ID: <f9a47d563f896e0789fffa72df5847e2878cbe5e.camel@mailbox.org>
+Subject: Re: [RFC PATCH v2 0/3] Solve dma_fence's problems by locking
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, 
+	phasta@kernel.org, Sumit Semwal <sumit.semwal@linaro.org>, Jani Nikula	
+ <jani.nikula@linux.intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>,  Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,  Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>,  Gary Guo <gary@garyguo.net>,
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  Benno
+ Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Daniel Almeida	
+ <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=
+ <work@onurozkan.dev>, Boris Brezillon	 <boris.brezillon@collabora.com>,
+ Alex Deucher <alexdeucher@gmail.com>
+Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org, 
+	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Date: Wed, 28 Oct 2026 10:47:18 +0100
+In-Reply-To: <22d66945-8854-442f-a69d-fe02726eccda@amd.com>
+References: <20261020100034.759183-2-phasta@kernel.org>
+	 <3e8bc11d-6f90-47a4-ae63-cf2ff37f1ff6@amd.com>
+	 <ca78cdb7c24a9be9b640db782168cdcc5fe30b60.camel@mailbox.org>
+	 <ed2728bd-1df4-478e-9e6f-a96dfd172b48@amd.com>
+	 <4a7294da65c8744ba6355730e304b5250d0ca351.camel@mailbox.org>
+	 <d13d1a6e-bba2-4275-984b-145e0252eb0f@amd.com>
+	 <320b6e7c75da6f05c015e89df0e2c7d11f20d70a.camel@mailbox.org>
+	 <22d66945-8854-442f-a69d-fe02726eccda@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -76,150 +97,191 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAITE4WoC/x3MQQqEMAxG4atI1gZsFo71KuJC7d8xIFVSEAfx7
- pZZfov3bsowRaa+uslwatY9Fbi6omWd0hesoZikkdY10vGsKcDYcGw/jpNu/BHvfAQE3lHpDkP U6/8cxud5AQli0r5jAAAA
-X-Change-Id: 20261028-binder-reply-fail-72919fee2e91
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5146; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=RUZByvUcjyzeqZHggXsmkTssVcxmp2+6pk7Hv3i2Eyc=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBq4cSJODrtqV0yAebXWylM6jXo/Q6HF0dovNdpl
- bo0zkGjwhOJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCauHEiQAKCRAEWL7uWMY5
- RgZ2EACBV/V1ON06gGEbZ9FGpAYO6YUrXOYrCsaLVvjEvkLzMgG8ZX6bDwjHvDB+HS2SdBvqVKm
- gcJCEPPGoRlOS+kUng4hUWKunyxxvYCL8W8pwPdnItuZaaTY8A3XAddPTwDM5lIn4ArTThx2jmK
- XVwvICSF7HXsOOrZVbUz+KUEU4ge9vIWm7oN9ixRKZOol5bcGS94RTFnP9r7cb2QpMgZBK0o49h
- wIuwk6RFbVY4vs+cAxi5J9GiY1n7lypOU9/cvXB3Nyf3HKzDncBxOs5IVJlZB90NBI+peyjo2pf
- naKlJf+oAtWjyuv5cYLPrZKZ9qEghjkDxW6viwuetHyXLc9KzBTdHNO7IjfbXLLnr/aLE6MSzHJ
- nU7HSoK5qyRXGb8TFVG3ymBJJ1FszdR0C6/LklwPhNl3cFDLDmTXCroMfHglpRevUcZi40hIYMN
- YDhDBtYTmujy/E4v5Z3DLqtsLR5Ik1T6k6IYKUVpn1ZVr+EBES3S13t0u1I3KOhLNd9JhaekOCG
- Gc/KAeKNcLlrnd3w0URy0G7X4JvWnb6o7GEVyG/du5aY8oT7evzm+f1YQUCTPkJuxrfM0roe5Zo
- gZxeiNdsRKKMqapZD8s83Ttwu2BocWcfDvH77OSEwpT2COP3L91uBZIKkfCfGPAC6g9dBmKk7SL E3Ty7XkpBn2vCTg==
-X-Mailer: b4 0.14.3
-Message-ID: <20261028-binder-reply-fail-v1-1-8b71d4daaf1d@google.com>
-Subject: [PATCH] rust_binder: push BR_TRANSACTION_COMPLETE before BR_FAILED_REPLY
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MBO-RS-ID: 16b7de5af4c5b86025a
+X-MBO-RS-META: rb53xxngg1k75mcmbijsukd3yebomd1t
 
-When building a reply fails in Thread::reply_inner(), BR_FAILED_REPLY is
-delivered to the caller before BR_TRANSACTION_COMPLETE is pushed to the
-replying thread's work list.
+On Tue, 2026-10-27 at 15:59 +0100, Christian K=C3=B6nig wrote:
+> On 10/21/26 14:49, Philipp Stanner wrote:
+> > On Wed, 2026-10-21 at 13:53 +0200, Christian K=C3=B6nig wrote:
+> > > On 10/20/26 17:36, Philipp Stanner wrote:
+> > [=E2=80=A6]
+> >=20
+> > > >=20
+> > > > Nope, I want to protect shared data, which is the signaled-state. W=
+hich
+> > > > is currently a race-condition worked around with RCU (and sometimes
+> > > > with manually doing the right thing (locking!)) [1], stemming from =
+the
+> > > > fact that the fence's spinlock is not used consistently.
+> > >=20
+> > > The fence spinlock is consistently used for protecting the fence
+> > > signaling, in other words it always happens with the spinlock held,
+> > > same for adding callbacks.
+> > >=20
+> > > The only thing which happens without the spinlock held is the fast
+> > > path checking of the signaled and enable_signaling bits and as far as
+> > > I can see that is ok as well.
+> >=20
+> > No, it isn't. It makes the API fragile.
+> >=20
+> > 	commit c8a5d5ea3ba6 ("nouveau: fix client work fence deletion race")
+>=20
+> This bug is exactly what I'm trying to prevent here.
 
-In a nested transaction, the caller can wake up upon receiving
-BR_FAILED_REPLY and send an outer reply to the replying thread before
-BR_TRANSACTION_COMPLETE is queued. This causes the outer BR_REPLY to
-arrive ahead of BR_TRANSACTION_COMPLETE, which is not legal. This leads
-to userspace tripping on an assertion.
+What is your proposed strategy for preventing it?
 
-Thus, push BR_TRANSACTION_COMPLETE in Thread::reply_inner() before
-delivering BR_FAILED_REPLY to the caller.
+>=20
+> This problem only exists because we call the backend operations with
+> the lock held!
 
-As a nice side effect, this lets us remove the now-unused
-BR_TRANSACTION_COMPLETE error path in Thread::transaction().
+Nope, this particular bug exists because Nouveau thought that it can
+drop its reference when dma_fence_is_signaled() returns true, which is
+not the case, because the fence backend has a race condition there.
 
-Cc: stable@vger.kernel.org
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/error.rs  |  1 -
- drivers/android/binder/thread.rs | 33 +++++++++++++--------------------
- 2 files changed, 13 insertions(+), 21 deletions(-)
+A race condition that was allowed for performance reasons.
 
-diff --git a/drivers/android/binder/error.rs b/drivers/android/binder/error.rs
-index 89077c5baeaf..acf0aa09c555 100644
---- a/drivers/android/binder/error.rs
-+++ b/drivers/android/binder/error.rs
-@@ -114,7 +114,6 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-             BR_DEAD_REPLY => f.pad("BR_DEAD_REPLY"),
-             BR_FROZEN_REPLY => f.pad("BR_FROZEN_REPLY"),
-             BR_TRANSACTION_PENDING_FROZEN => f.pad("BR_TRANSACTION_PENDING_FROZEN"),
--            BR_TRANSACTION_COMPLETE => f.pad("BR_TRANSACTION_COMPLETE"),
-             _ => match self.source.as_ref() {
-                 Some(source) => source.fmt(f),
-                 None => self.reply.fmt(f),
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index f5965e838a96..4ce6fc533203 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -1332,20 +1332,16 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
-             self.transaction_inner(&mut info)
-         };
- 
--        // This runs when return work is passed to the caller. This is not
--        // always the same as the transaction failing, as reply errors are
--        // delivered to the remote process.
-+        // This runs when a transaction fails with an error returned to the caller.
-         if let Err(err) = ret {
-             self.push_return_work(err.reply);
--            if err.reply != BR_TRANSACTION_COMPLETE {
--                info.reply = err.reply;
--                info.error_line = Some(err.line);
--                if let Some(source) = err.source {
--                    info.errno = Some(source);
--
--                    self.inner.lock().extended_error =
--                        ExtendedError::new(info.debug_id as u32, err.reply, source.to_errno());
--                }
-+            info.reply = err.reply;
-+            info.error_line = Some(err.line);
-+            if let Some(source) = err.source {
-+                info.errno = Some(source);
-+
-+                self.inner.lock().extended_error =
-+                    ExtendedError::new(info.debug_id as u32, err.reply, source.to_errno());
-             }
-         }
- 
-@@ -1450,7 +1446,7 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
-         info.to_pid = orig.from.process.task.pid();
- 
-         // We need to complete the transaction even if we cannot complete building the reply.
--        let out = (|| -> BinderResult<_> {
-+        if let Err(err) = (|| -> BinderResult<_> {
-             let completion = DTRWrap::arc_try_new(DeliverCode::new(
-                 BR_TRANSACTION_COMPLETE,
-                 self.process.task.pid(),
-@@ -1471,11 +1467,10 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
-             }
-             orig.from.deliver_reply(Ok(reply), &orig, None);
-             Ok(())
--        })()
--        .map_err(|mut err| {
-+        })() {
-             // At this point we only return `BR_TRANSACTION_COMPLETE` to the caller, and we must let
-             // the sender know that the transaction has completed (with an error in this case).
--
-+            self.push_return_work(BR_TRANSACTION_COMPLETE);
-             let param = err.source.as_ref().map_or(0, |e| e.to_errno());
-             let ee = ExtendedError::new(info.debug_id as u32, err.reply, param);
-             orig.from
-@@ -1483,11 +1478,9 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
-             info.reply = BR_FAILED_REPLY;
-             info.errno = err.source;
-             info.error_line = Some(err.line);
--            err.reply = BR_TRANSACTION_COMPLETE;
--            err
--        });
-+        }
- 
--        out
-+        Ok(())
-     }
- 
-     fn oneway_transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
 
----
-base-commit: 65ba8f34ec886ec72b2c07ddc8cf3d815c32869d
-change-id: 20261028-binder-reply-fail-72919fee2e91
+> What nouveau does is to delegate the cleanup since it can't do that
+> in the signaling handler because of the lock inversion.
 
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+What signaling handler are you referring to?
 
+>=20
+> This problem doesn't happen any more if you just completely drop the
+> approach of calling the backend operations with the fence lock held
+> and then re-structure the cleanup handling in Nouveau.
+
+ops->signaled() is typically not called with the lock held. You might
+be referring to ops->enable_signaling(), which is consistently locked.
+
+>=20
+> > 	commit 7c703a7d3f2b ("drm/amdgpu: Fix one use-after-free
+> > of VM")
+>=20
+> I already discussed that with Simona back then. Simona actually
+> explicitly rejected my approach to take the spinlock to check for
+> signaling. Pointing out that amdgpu is using the API in a wrong way.
+>=20
+> The problem is that amdgpu doesn't track the callback structure and
+> so can't remove the callback. It's on my TODO list every since to fix
+> that miss use of the API.
+
+You mean the issue is that amdgpu cannot deregister callbacks?
+
+I don't see how that's related. The lock-unlock-cycle clearly ensures
+that amdgpu cannot continue while the fence is signaling.
+
+To clarify: our conversation circles around two partially independent
+topics:
+
+a) the signaled-bit is read without lock-protection as a fast path in
+dma_fence_is_signaled() and
+
+b) the ops are not consistently called with the lock held.
+
+>=20
+> > Tell me one thing:
+> > If locking is the wrong approach, then how come it was added to
+> > literally all callbacks except for set_deadline()? Seems to me that it
+> > must have solved some issues.
+>=20
+> Well, it's because concerns with the lock inversion brought up by
+> Alex and me was ignored and the patches merged anyway.
+>=20
+> This is just another one of those DMA-buf design problems which would
+> have been fully preventable if I would have clearly NAKed that stuff
+> from the very beginning.
+
+My impression was more that central design criteria for dma_fence (like
+module unload of the driver who issued your fence, which is designed to
+live arbitrarily long) were ignored, there was no clear guidance for
+drivers how they should use what callback, and then driver problems
+were solved in dma_fence, for instance with this shared lock. So same
+story as with drm_sched.
+
+If *everything* would have been locked from the get-go, that would have
+forced drivers to design their locking correctly, and decide wisely
+what tasks they want to perform where.
+
+>=20
+> Back then I made the mistake to believe the argumentation you come up
+> here as well and so I don't explicitly rejected that approach, but by
+> now we have strong evidence that this was a mistake and I'm trying to
+> fix that mistake ever since.
+
+Well, I am a different person with my own background that informs my
+thinking. Please keep that in mind.
+
+The "strong evidence" you claim to exist has still not been shown to
+me. I show you concrete bugs that we could have prevented, but the only
+piece of code you ever showed me where something would break is the
+list_del() in nouveau.
+
+>=20
+> We should have never taken the lock for the callbacks in the first
+> place, this just made the implementation much more complicated and
+> caused way more problems than the few raised by putting the ops
+> pointer under RCU.
+
+Lock-inversions are not being solved by just not taking the lock, they
+are addressed by having good lock design. We recently solved exactly
+that in the Rust JobQueue, where drivers also reported lock-inversions,
+but we could eliminate them with just a few discussions, discovering
+that the driver does not need these locks when interacting with the
+JobQueue.
+
+Often enough btw the only object the driver really needs is the
+sequence number anyways, which can trivially be passed and shared
+around.
+
+Now with dma_fence, I strongly suspect that the problem came to be
+because of no clear guidance by dma_fence as to what the driver must
+and must not do in its ops implementation.
+
+The only evidence I have ever seen is the fence-list-lock, and it's
+just not clear at all why any callback would need access to that.
+
+
+Let's walk it through together, shall we?
+
+ops->release() and ->wait(): deprecated
+
+ops->get_XXX_name() -> never needs driver locks
+
+ops->signaled(): "Driver, here you read an atomic integer, the sequence
+number, and tell the fence backend whether this fence shall be regarded
+as completed"
+No need for any driver lock.
+If this particular driver also signals fences through an interrupt
+handler, it can take a list lock, then signal the fence. The ops must
+not do that.
+Why would a driver need both modes, sw *and* hw signaling? And why then
+is it supposedly the case that both paths need to keep a list updated?
+
+
+ops->enable_signaling(): "Make sure that this fence will get signaled.
+Register an interrupt or schedule a work item". These locks also don't
+interfere with the fence-lock.
+
+ops->set_deadline(): clock up the CPU frequency. The only implementor
+trivially does that through a work item, too =E2=80=93 after voluntarily ta=
+king
+the fence lock over the entire section.
+
+
+As you saw from our recent amdgpu discussions, the confusion of what a
+ops is even good for caused drivers to mess around with the fence
+directly in their callbacks, checking for the signaled state etc.
+
+It was too much freedom that has caused the trouble. There are no
+canonical solutions now.
+
+
+So except for updating the linked list in ops, can you show me any code
+example where a lock inversion would occur? I'm quite confident that it
+will turn out that the driver has no good justification for performing
+the related acts in the ops in the first place.
+
+
+P.
