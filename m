@@ -1,102 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.177
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793172657;
-	b=QGRo/jf2VekLqCBaQqEZRF6euNsZHk35k33NUMx5E+I9LEDR6Dzl9j8iAfGvAW49AVKJ
-	 KkQe3QZ5xQf7klHTmuRblsStSJPoAMNXiPVjbTuSdfzefdHWCPwtJcK0i9pPhinVulmrt
-	 8U4yzNNNxQr4o0iF8jB1YqSTWnMHXdNasienrCnMLRV8MyTLvCJmK5kbClpGTgkx5fMg6
-	 KyGCa91UHgGxGyzFPLQHttuWgP/riGHZbZGeawGdIaRnJlhtyAdLb6tmkip6nmmsXynLe
-	 y4a7X3pndwaSYXacygRta9U0CZQC1pp+zequjBqVJMW9z2PPYK44G6xZ5rXWwAOpY8g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793172657;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.71
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793180818;
+	b=JC9oJfLE6Z+sfDiEkUjqESMo/W8Nn+ysP1XExiuhrlvCden0LT6nVVaJvv80dpEDg1uv
+	 yxlPEISA4FRadMOLnLFuAT5GneM515kds9YzGcqtwWgyxU53p2WBROg5PUWWKeWCWyH8t
+	 rn82eAR4Bq6qi+DKIrfPGIkRhfVtBvBsF3NGQ890MO87pwGJLgoQ/2VMi5W3Ji3NRuPte
+	 969NM8Vp9EcGH3JAA2kHH2yH7jBmABBwHmqG1/Rgxft8M6Y1XKdiXDL/4uWMvkhJ0YZ3h
+	 oe70/QM7ARO6b1ipFvNSA6fKefBcmP4NP+w35g5T94+4dTiOGcvJDjggOmV94HrUYfw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793180818;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=4gvBxf1fqNFjM1GSlcwJUneHyiK6lU7SdqO+7rEXKHc=;
-	b=Yn5Es3JWSo2LEXmL6IzPHuAKQTcVnE0eP7GKcesElUPXltH5nAxUZ+L/LItkwdo1DC0G
-	 9gPOv7HI38/7zMKMKwUPR9skY2v1nNsx2f9M/OA9dz6aCcbSnMmhD5oIFKBY5t6omlTc8
-	 cRH3fcMyjsy0Hy3LcFvaXQ9U8XNGiokJyqwEjp3dDaUKWVIgG/Aa9DG3NJ9iV4pROniEc
-	 gqjCq27XspjCpMTZujjK8yQUdnpCVduEGXbOOgPmLILhyljnBnr3vYGIQiU1ljiMtlTc+
-	 hThZaxA5HpJA0kbWSQvHjGlW9E0WbpmBUr21otCq3LxpFdTs8uUyznDc/nWXXGbyzKA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bJneuDjS;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.177
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-B4-Tracking:X-Change-Id:X-Developer-Key:X-Developer-Signature:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=qc9QNDM7x+nu+pbyI3Fb4dwfjZ18Z0ovze28f0XG1NE=;
+	b=t2eKZ5UZbtL0Do5h1SgzAR2Es77MRQS8IVgI/XWhRQKpKgl/zKrPk2d0AvGOjN1NWn/W
+	 tZr7YL+Zlb03DSFvBKmWRAzjNaewffPtfB4E70mAgxI5StdvhyzYK+UeV+39LkxSGKiFn
+	 j02vp+0qyesOBbX/Z4PceGZL84d3dE7IACKW/pWCif1a+ZIlk3aUvG+xX95cjIlpqHcY8
+	 pUg/7y+dJ1213bTkLHMbs7+Yopvn8TVCfAWRdJycEzp0Wr8YZcvyktTY3C0VGNH/Tjey/
+	 Y1wDDGLzoLuCynDhDTyyF0UntdpmU/2PoChKcj2ZiBOpo/nFxWx/tTvOpjg8DEd+MRg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hZtv7ih7;
+	arc=none smtp.remote-ip=209.85.128.71
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0561606A331
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Oct 2026 07:30:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0561606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A286606A31C
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 Oct 2026 09:46:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A286606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bJneuDjS
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-3646e6de3e8so54938eec.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Oct 2026 00:30:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793172656; cv=none;
-        d=google.com; s=arc-20260327;
-        b=NRkrYqLwJU0IdpZuIAj+1OCLeKrqw4tT0wU4a0C3Yd6Uf4CYTTZGXmDkJwVRTN4dzx
-         QVbnO+5+y/iKAuy6NZkWHS4xpae768OJBOVHQxWCiy8XG7Vam/DzQapsQyZbh41aE/Lw
-         dhsHy0y9JmBEEReJ6j8Htg2xPA3QNngBp8p/KYnciRtMhSfzsuW2/Om2360X+hvG4bAK
-         V61mMgj2pmnPpJo6fHsnV0i36FmIX8pBOG3EQ5WKlIUFJpiGstRhcS2cH/pOLTm2uAAj
-         /oOv6BN5w4uqs1GYhfPKpVOzWFvHBdbbEynT1JNJY2cldjKI/NjzEzDo7iSf2A2LAqMZ
-         Gg4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4gvBxf1fqNFjM1GSlcwJUneHyiK6lU7SdqO+7rEXKHc=;
-        fh=Pl3t5AyEvSumttBf5tC4BNbX1clnkFD9Lmt8oCc+yTI=;
-        b=Xe2Eg2IxhGhSxcS+O/V+3qvXvVp2JtawUA6i2ySpKM39Q95W9aZH1aB2heCEWX8sn1
-         9b6sCCFc2xhU9AQTmDqhBOchZ+wi4gU1Y7TtVam2v7kzoq4GXlfdPwfxwQ+08+L3NJam
-         Kb2JNT/TV5ZRK9DGPcr6/EYZt1wHm+oCBx6v7DMsViY9eMq4fHwIo5jjt9YotHIH2INX
-         7kpRZX9IDg6+8Fn96TNIIxVyf6PoPRebfW2366HbnZZZ+uNaO3tQhaBvx5QsrSwreMRq
-         MpFk2NqsCAtfRXdnBvwcclhDz/o1xzS8JWugGnIwsuT/QfzJgojc2h77oBzPuXsHnXGo
-         VIrg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hZtv7ih7
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1d1f26a63so7021435e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Oct 2026 02:46:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793172656; x=1793777456; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4gvBxf1fqNFjM1GSlcwJUneHyiK6lU7SdqO+7rEXKHc=;
-        b=bJneuDjSTeRtWYs9gLUzq94HuHAoFwhslEwQvNPXvw2Kkf8nTMJss5fQjjqL7AIBYP
-         +OLGCb5rb4t0f94npzyFIsA8YRFRRJS3NojxyKYSJTYGqAzzTiwFflm66sPuzX630Esq
-         U3/+A+SZl/zdO6wdtAg06Qbmn6YgjeW2B6plLyI6ziP7QOs+2JwIjoD1srOxCaS71ena
-         TKSUL9xnCv0poX1LRcRkjNt+bemTiXtpAY0bB9PdvqM4zrtzXJpw/6xakmmH+zxEYgF2
-         WcH453cXL0XYU6lfAeJTOF3hdMG5zjiZiLe9LTDgWXEcq5DT8WaKE6FbUYWhu1/eoXtr
-         FKJA==
+        d=google.com; s=20260707; t=1793180816; x=1793785616; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qc9QNDM7x+nu+pbyI3Fb4dwfjZ18Z0ovze28f0XG1NE=;
+        b=hZtv7ih7RNGMRPSgtb8dlLDoJiKVkqYtG45M1ZwpO2tZOMaQZXLTR5aFwgCudP1LRb
+         KgxW3CKawRD6tCKkHfTpeGsUBnp6Mgg5LaDO0ZHRV7i8NWIm8ve3Lrwcj2J1FrGQBUo1
+         LNh6RweppZEzRTj6LElcOqAEODV3XZJihb2i06yfpRNVjXSRYVRBdOaAI63BGh+dU6wj
+         XoNlE2JfrkGJ2V04hTzcntFXJZVA7TfSrPe3v5oFDyS2I7i67F21JiC+eelXSIMiyVAT
+         QXoHQXAwOc8lElnA25NttV9FpodJc7FFkal3i7Coq2uafNNNGBsYQbnoysmybZn2Wuho
+         GoBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793172656; x=1793777456;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793180816; x=1793785616;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4gvBxf1fqNFjM1GSlcwJUneHyiK6lU7SdqO+7rEXKHc=;
-        b=QmBKc5T8IwdOOxJCATzkBnZe1B7BtWteKyWGrQ1YqhGJw4utkFeSHpu/l6cj+BelZJ
-         AMYYKGqTcPCKWmxPl2aoKwsIrqSjNgdGdP91rJcQ+/1kleVqFrdQHvAQuqgl9Psazku9
-         d+Q3RkHwLSmnb0uEXgcBYSgvT85DqCGxILMOq2el0SVlwWNsoQm5p0vFqsTA5+ZSl5sN
-         yYhkiqDx+e5S6sTjO0hskyyGV29F3fM9B6GISXrGVK69H1uNKlWoIVxQ7epJKFq6hrfC
-         XKMh1biyEwDaOhTco0dzDcE6tuLcfw5Mcs6e980RHC9iwj0Z+xO6+wbRloi2uJKB/KmD
-         VMIw==
-X-Forwarded-Encrypted: i=1; AKwUvBzePudH941HfTHGKoubGcUS3Om+jM6kVhtxekLPeJ3SwE16Vp1Di7SfovLJNCsQA/1J9ZgTyVBWylS0ztVpjw==@vger.kernel.org
-X-Gm-Message-State: AFq9FYLVvFSPGHlLu7nMQ/DA6yMYaCaoVi/4UxkbO54VvZCiF/Od0B6c
-	QV2QeWc994Cn+rmGXWpE4ewG7InLAnpth9w357ZyIJndkKVuLDwfpPqRhiwRoTlw0yDP8dmwOas
-	0Q4upOHt/socKpB/vno0O1Io2epQ+dEo=
-X-Gm-Gg: AYBFou3THIYkFDWD+gcaKp0drARx9snxJDUS8AFTcZPEuzhs5DzjBAvNJuPVF6iUevF
-	u3s4nNcsp8zAI1t9Dw8gEJFfOUehCLP663PusFHjppkpea5OTt5oIcLUzEE+7AwLg+PZcXVg4M6
-	8o5cxPH+Zwd7g8rEpmlbsUS4eAfSIYaRMVmDliwnx52qN7+SHbHRdSBR+8okOL5pXnFAVhlxKkm
-	XNqqYfLdnE3mBIP1ltV67BeXDOCuerqRLy6anENj5sFl+7XglDUV5fbXPZ9HxgZ1oX8/F5/KLXz
-	+VmTjMT71eb6OQ89c66wRYcMIS2dzNO5uwS0YJF7Mtf9QJqHN3pCtJY4iQyHnCojJGAIeaE2UGM
-	kxyEbQxxLGZewH5bTRE98+Byjczoj/g1fhzkbn0F64dP4FAQdBhnnWKR3ZDipcTMmPbq7ADCfr4
-	G4ou5lBXZ4ZWs5rul5uqhVpr9ecPb9AiHC0K6aTctmU2usXucvYuJM5BBrXvq+KDgv1SKULYem1
-	I/I3A3ndSdx4fDDiUK5jABVB29LgzviWtt8
-X-Received: by 2002:a05:7300:f484:b0:351:7883:bf47 with SMTP id
- 5a478bee46e88-36a1fca875dmr3770812eec.0.1793172655949; Wed, 28 Oct 2026
- 00:30:55 -0700 (PDT)
+        bh=qc9QNDM7x+nu+pbyI3Fb4dwfjZ18Z0ovze28f0XG1NE=;
+        b=VYj/45Z+j7NwvDzjKpHCvXNpFfIAsE/Yw+RzeF4B8niavaQT51SeUcOQRr9YOseu08
+         tOg6Ks91e0Nnk9ZG4OjvLYBl1Y2NVMXXU2M0jSRmYGYXatDeayWbcDRb8FH3RE42PjR5
+         IGh5BfC+4F4ujQvnQGfvXUtjl05IWvO2zBzfa1EtZaybxW6D0EOK9N+GNmkS5Y0oNPL6
+         HRjEiOXtiwAvhfRzeHgnyG0jyMTSzwGlKbWWblNwzeYBviOCdMgcnPMonSvIB/UwJX/o
+         q/h4IpeWIwCSNAScINEwC7UVLXBOv8J9z4v7n9iDqhBUWLAfKfL/wBm6c0yiDqoYSFim
+         kLSQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzRoP5JIIeNGGJB0w8FZoEBYydAUwvfX0zNsBGiAJBBl+EtmYNOUpewsZfLlXE/K/q0gy6+GJt2aE/710xkyA==@vger.kernel.org
+X-Gm-Message-State: AFq9FYLUveEN3WC6MEwlfrqC3SIeT6xXdzmBbcH312rt633GNFR1TeAP
+	yQGdvQhxaPzBVZQwcN2KaQ8ksUo7Nf6Zrc7jpkglmC2pRBt/CFE4j3JayS2OlAsNNJft0svVwnw
+	I7R4gFCik3vj9Kka9eA==
+X-Received: from wmbjr24.prod.google.com ([2002:a05:600c:5618:b0:4a2:677:24c])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1909:b0:4a2:1e1:d55 with SMTP id 5b1f17b1804b1-4a9675dc5cfmr32574775e9.28.1793180815855;
+ Wed, 28 Oct 2026 02:46:55 -0700 (PDT)
+Date: Wed, 28 Oct 2026 09:46:45 +0000
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -105,47 +76,150 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261027-rust-doctest-line-fix-v1-1-0c13185a58b6@younes.io>
-In-Reply-To: <20261027-rust-doctest-line-fix-v1-1-0c13185a58b6@younes.io>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 28 Oct 2026 08:30:43 +0100
-X-Gm-Features: AclHuK_uiWS-PXbCJG5cbGuuSSYIZS7YP8Echn-C46nxtbCkTjeTMaSgo2vlD0w
-Message-ID: <CANiq72ntn6ThPz9Q6+BxU6w-x2jUQ50xpiy1_gCRi6o0peHi8w@mail.gmail.com>
-Subject: Re: [PATCH] rust: doctest: fix line numbers after crate-level attributes
-To: git@younes.io
-Cc: Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, 
-	Rae Moar <raemoar63@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Shuah Khan <skhan@linuxfoundation.org>, rust-for-linux@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAITE4WoC/x3MQQqEMAxG4atI1gZsFo71KuJC7d8xIFVSEAfx7
+ pZZfov3bsowRaa+uslwatY9Fbi6omWd0hesoZikkdY10vGsKcDYcGw/jpNu/BHvfAQE3lHpDkP U6/8cxud5AQli0r5jAAAA
+X-Change-Id: 20261028-binder-reply-fail-72919fee2e91
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5146; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=RUZByvUcjyzeqZHggXsmkTssVcxmp2+6pk7Hv3i2Eyc=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBq4cSJODrtqV0yAebXWylM6jXo/Q6HF0dovNdpl
+ bo0zkGjwhOJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCauHEiQAKCRAEWL7uWMY5
+ RgZ2EACBV/V1ON06gGEbZ9FGpAYO6YUrXOYrCsaLVvjEvkLzMgG8ZX6bDwjHvDB+HS2SdBvqVKm
+ gcJCEPPGoRlOS+kUng4hUWKunyxxvYCL8W8pwPdnItuZaaTY8A3XAddPTwDM5lIn4ArTThx2jmK
+ XVwvICSF7HXsOOrZVbUz+KUEU4ge9vIWm7oN9ixRKZOol5bcGS94RTFnP9r7cb2QpMgZBK0o49h
+ wIuwk6RFbVY4vs+cAxi5J9GiY1n7lypOU9/cvXB3Nyf3HKzDncBxOs5IVJlZB90NBI+peyjo2pf
+ naKlJf+oAtWjyuv5cYLPrZKZ9qEghjkDxW6viwuetHyXLc9KzBTdHNO7IjfbXLLnr/aLE6MSzHJ
+ nU7HSoK5qyRXGb8TFVG3ymBJJ1FszdR0C6/LklwPhNl3cFDLDmTXCroMfHglpRevUcZi40hIYMN
+ YDhDBtYTmujy/E4v5Z3DLqtsLR5Ik1T6k6IYKUVpn1ZVr+EBES3S13t0u1I3KOhLNd9JhaekOCG
+ Gc/KAeKNcLlrnd3w0URy0G7X4JvWnb6o7GEVyG/du5aY8oT7evzm+f1YQUCTPkJuxrfM0roe5Zo
+ gZxeiNdsRKKMqapZD8s83Ttwu2BocWcfDvH77OSEwpT2COP3L91uBZIKkfCfGPAC6g9dBmKk7SL E3Ty7XkpBn2vCTg==
+X-Mailer: b4 0.14.3
+Message-ID: <20261028-binder-reply-fail-v1-1-8b71d4daaf1d@google.com>
+Subject: [PATCH] rust_binder: push BR_TRANSACTION_COMPLETE before BR_FAILED_REPLY
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Oct 27, 2026 at 7:32=E2=80=AFAM Younes Akhouayri via B4 Relay
-<devnull+git.younes.io@kernel.org> wrote:
->
-> Twelve in-tree doctests start like this, e.g. in `bits.rs`, `devres.rs`,
-> `init.rs` and `std_vendor.rs`.
+When building a reply fails in Thread::reply_inner(), BR_FAILED_REPLY is
+delivered to the caller before BR_TRANSACTION_COMPLETE is pushed to the
+replying thread's work list.
 
-This looks OK, and I think it fixes all the cases we have currently,
-but it doesn't cover every case one may write (like a multi-line
-attribute), i.e. I was wondering whether the complexity of this is
-worth it or not (especially if later on we try to support every case).
-But it may be that never happens, or happens way less often than even
-this case that we may not even care.
+In a nested transaction, the caller can wake up upon receiving
+BR_FAILED_REPLY and send an outer reply to the replying thread before
+BR_TRANSACTION_COMPLETE is queued. This causes the outer BR_REPLY to
+arrive ahead of BR_TRANSACTION_COMPLETE, which is not legal. This leads
+to userspace tripping on an assertion.
 
-By the way, why `saturating_sub` in particular? I guess because of
-underflow, but can that happen? And if it can (perhaps in a future
-compiler version), wouldn't we want to notice?
+Thus, push BR_TRANSACTION_COMPLETE in Thread::reply_inner() before
+delivering BR_FAILED_REPLY to the caller.
 
-Thanks!
+As a nice side effect, this lets us remove the now-unused
+BR_TRANSACTION_COMPLETE error path in Thread::transaction().
 
-Cheers,
-Miguel
+Cc: stable@vger.kernel.org
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ drivers/android/binder/error.rs  |  1 -
+ drivers/android/binder/thread.rs | 33 +++++++++++++--------------------
+ 2 files changed, 13 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/android/binder/error.rs b/drivers/android/binder/error.rs
+index 89077c5baeaf..acf0aa09c555 100644
+--- a/drivers/android/binder/error.rs
++++ b/drivers/android/binder/error.rs
+@@ -114,7 +114,6 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+             BR_DEAD_REPLY => f.pad("BR_DEAD_REPLY"),
+             BR_FROZEN_REPLY => f.pad("BR_FROZEN_REPLY"),
+             BR_TRANSACTION_PENDING_FROZEN => f.pad("BR_TRANSACTION_PENDING_FROZEN"),
+-            BR_TRANSACTION_COMPLETE => f.pad("BR_TRANSACTION_COMPLETE"),
+             _ => match self.source.as_ref() {
+                 Some(source) => source.fmt(f),
+                 None => self.reply.fmt(f),
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index f5965e838a96..4ce6fc533203 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -1332,20 +1332,16 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
+             self.transaction_inner(&mut info)
+         };
+ 
+-        // This runs when return work is passed to the caller. This is not
+-        // always the same as the transaction failing, as reply errors are
+-        // delivered to the remote process.
++        // This runs when a transaction fails with an error returned to the caller.
+         if let Err(err) = ret {
+             self.push_return_work(err.reply);
+-            if err.reply != BR_TRANSACTION_COMPLETE {
+-                info.reply = err.reply;
+-                info.error_line = Some(err.line);
+-                if let Some(source) = err.source {
+-                    info.errno = Some(source);
+-
+-                    self.inner.lock().extended_error =
+-                        ExtendedError::new(info.debug_id as u32, err.reply, source.to_errno());
+-                }
++            info.reply = err.reply;
++            info.error_line = Some(err.line);
++            if let Some(source) = err.source {
++                info.errno = Some(source);
++
++                self.inner.lock().extended_error =
++                    ExtendedError::new(info.debug_id as u32, err.reply, source.to_errno());
+             }
+         }
+ 
+@@ -1450,7 +1446,7 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
+         info.to_pid = orig.from.process.task.pid();
+ 
+         // We need to complete the transaction even if we cannot complete building the reply.
+-        let out = (|| -> BinderResult<_> {
++        if let Err(err) = (|| -> BinderResult<_> {
+             let completion = DTRWrap::arc_try_new(DeliverCode::new(
+                 BR_TRANSACTION_COMPLETE,
+                 self.process.task.pid(),
+@@ -1471,11 +1467,10 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
+             }
+             orig.from.deliver_reply(Ok(reply), &orig, None);
+             Ok(())
+-        })()
+-        .map_err(|mut err| {
++        })() {
+             // At this point we only return `BR_TRANSACTION_COMPLETE` to the caller, and we must let
+             // the sender know that the transaction has completed (with an error in this case).
+-
++            self.push_return_work(BR_TRANSACTION_COMPLETE);
+             let param = err.source.as_ref().map_or(0, |e| e.to_errno());
+             let ee = ExtendedError::new(info.debug_id as u32, err.reply, param);
+             orig.from
+@@ -1483,11 +1478,9 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
+             info.reply = BR_FAILED_REPLY;
+             info.errno = err.source;
+             info.error_line = Some(err.line);
+-            err.reply = BR_TRANSACTION_COMPLETE;
+-            err
+-        });
++        }
+ 
+-        out
++        Ok(())
+     }
+ 
+     fn oneway_transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
+
+---
+base-commit: 65ba8f34ec886ec72b2c07ddc8cf3d815c32869d
+change-id: 20261028-binder-reply-fail-72919fee2e91
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
