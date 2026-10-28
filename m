@@ -1,83 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793147042;
-	b=SMTP+6MBr/Geo+6XtYO9zknylpzX7KXD5n60f6uqWHqbgE4aMRBwql7iq3zO8G0ezHcN
-	 eK/QcOsKI6MviR2oNb7fg2IXw4Lgm2oeqn7Rrrz177UFnhdyrKeU5b/LhHv0rdLW/GZ4n
-	 Br+0Rg0J78U4wTpsThysYS963TK0weq1xCL/Y6GKqGvVnx1F63c75rsfo+oqDhx8ZqGpA
-	 MOBVFbNlTtWBZOewBqKKKEeUGoz7AUZpRxTmyQ8RPhnO7Rh+qQKglvfbkHRINhF79YBQN
-	 b2HCsja+ylw+xoYdVByYY3rNYvfy1PRyGc1FpfhXrh1Q4Ac9Q5S84fiGYhGsCXPX7Og==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793147042;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Zoho-Virus-Status:X-Zoho-AV-Stamp;
-	bh=G87NbfcKNeQRzbkIa3d0PCr/P11QVVco9Q0gAw67V8o=;
-	b=foh61r+7fr7jUaxgIF7U0g7WXgc/G8QiPpwBmmGscO4ChUMYBJFvfGIbpAvTlLCsNw8a
-	 2186SjZvBAwcZYkb0ckspPscOn9WzoV9wt1NPqxcL0eGQg0Jcl3nQQ/6A5xJSPzpHUSSp
-	 rpU/fpEK1yv7tQUzA/NTEj21F0rIB3HpFa663GXDvx7mWfUDs5HfNLEA0Wqos8oJ59A3h
-	 AYhtMBo/rvOVFb4pVr+nhSllFgK/0UYYzNZn75ggCWcPeG9aFcrY/ntG9b14n7YfCyJoy
-	 hkdJ3imOigCLFXPGqbrezf6Q2p90ZlnAqZJ1M1kqsYwCTH4vj1UEg3GnYd60t7/0urA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=gcGkZi72;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.54
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793152885;
+	b=Q5oLU3Y7DL7V8A7Z80FySuvPHsoPRuAJqyV6+/VFIyz68QsXv1/UWNR/OTf3kCrKdiHc
+	 WyY9RqxdrEQi1KuPwmoid6ok7VJmF+katTlK64Rt3UFn31Mqhtxpi/ZaxwfpRE6BCVewg
+	 7H0BYGx14P/MM0QE1TCngmOEEfr04DciLP0NUTnG9cPZL4ExrM36v9kg1jFBKHqOdXcRL
+	 wC1cyp6re7q4rYIca7+JeiMXfbKScuZyEBVLnYkKDcn36LKdQO4XOJ+vdfXVPRjcbKXIl
+	 GjExunzqUdcJNYqGop0pwOkPcRceBVznB2+6zh7cPiPf7zMJN59UMHBTtBaJoQ5u51g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793152885;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
+	bh=G75y1YLNoCtbZmx1sascr2IuvagtUn76+vozuZ2IkZQ=;
+	b=q1clPXNaoTk1G/mIVZyPdxX3zNrUY1B6OIDPwrGDLPRlpKuTog05Zty+5wgnXPWAY9sD
+	 iWWEl8UL6P2wJNdKtu9YhLpKmZDnWbDQreXyfkHrK1kNMEoK8aeVoQoqGXQwhUL3GNgGy
+	 UDEIafMoGYRFMHokTRWjXeviKhdqqrb6faVvpuiM0UfHaL/Uf921DGn3aXNkR2+AoO+aN
+	 R7FchTe+j4K9jExYsiugo9TTokcIqzEUG50a4P2Os+LiznIOworRPkgN9jXKoJB3ErWAd
+	 dq384oiffP9M9/nS++DBYViCjVGOuHrFnxbnFNl59MED2f8mclGtbKcEHrgVs4ujKqA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lCIFldmf;
+	arc=none smtp.remote-ip=209.85.216.54
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2960F606A31A
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Oct 2026 00:24:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2960F606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC332606A31A
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 Oct 2026 02:01:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC332606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=gcGkZi72
-ARC-Seal: i=1; a=rsa-sha256; t=1793146990; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=X0B7Xl0LMMgR21Z7drvYafvTmTLkaqCaluNyUSjLkeJ3MtK07HrCeCdZ5KweNpm9My9yP2c/PpXolGe3n6Q61wt74UMtwqrNTEdUloTaC1ZAkwNYG9P92slzRW5oGf346Uu2u5oFzGlAytPdywpdHy5BdvcMul54RzD+gPX3W2s=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1793146990; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=G87NbfcKNeQRzbkIa3d0PCr/P11QVVco9Q0gAw67V8o=; 
-	b=c8aijzgu6zlB+VWbmyWO/ln6K0Xm3x7pihy2PLoMOMO5fLDZQ0KOEm7Oda28ziMg9QgBiUqwVjvay7lG+8qn+7U0jRkAP3OujbSjJG8LKUbYxa5F/GwH6ViTDc2Pgz7k07OMprIIh4dl7rP0gf39vOxLBxq2RB1n3QfNfgsUCoU=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1793146989;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=G87NbfcKNeQRzbkIa3d0PCr/P11QVVco9Q0gAw67V8o=;
-	b=gcGkZi72n4iXSeDR1JzWMMk6u+hqZWtnXe7ihStj+/6649qJF0Dw72ATWDgr/7B/
-	qqjqM7ZgOO9SAblZUjze5RGxhv21qssVcWHNzLpkko36+JZkf6Qaorvs8ER0kkD8aAk
-	q4jAukYLhxGxhWPRWvGFpKFFpzm4hAQ12eEDQonc=
-Received: by smtp.zohomail.com with SMTPS id 1793146988395337.5007495887817;
-	Tue, 27 Oct 2026 17:23:08 -0700 (PDT)
-Date: Tue, 27 Oct 2026 17:23:06 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Ke Sun <sunke@kylinos.cn>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	driver-core@lists.linux.dev, Alvin Sun <alvin.sun@linux.dev>
-Subject: Re: [PATCH v5 05/11] drm/tyr: add user and MCU VM specifications
-Message-ID: <auFAas_sCjDQkRmM@um790>
-References: <20261027-tyr-ioctls-v5-0-59dfe98cb003@kylinos.cn>
- <20261027-tyr-ioctls-v5-5-59dfe98cb003@kylinos.cn>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lCIFldmf
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3ac451e128cso358238a91.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Oct 2026 19:01:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793152884; x=1793757684; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=G75y1YLNoCtbZmx1sascr2IuvagtUn76+vozuZ2IkZQ=;
+        b=lCIFldmfP54RPVAjjtNc9qiWIwAu96Ler5NV3AdyWKulpIjTPxzytOZEb8rGpsMO/y
+         ron+8M/MtQ1TRSJNpf9BC3HGCjebHu5rf/O6Q8pmDiZgJ71/Bryi9rW9gg14yYEXBzrQ
+         Fsx7IXsJpIY1Fe2WxM+PCgfBR5ksQVVA2vz2TmGCb1hOrB6fPDJ9bEkdxW8RuUz7bhyF
+         0fjymOQPJ72FD/EphsmdofcfiJlgiHbrxOBoeEqLYHinlzeiB8CkXWZ5NGvDz8DjliWm
+         RV82mrK/0O3I1geD36XwqCdU0MWFH8YJKyiYT7qV87inCrZMbY5XttjnettMDtOEPaP2
+         tsyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793152884; x=1793757684;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=G75y1YLNoCtbZmx1sascr2IuvagtUn76+vozuZ2IkZQ=;
+        b=IXnfFe3N9uAWvplMGuIlSXvGNZIN+9p0bR90jbxMNEHLnFn7IB3o1TF/BOEAg5ErV1
+         cy3mJ9X0gBMDalKsCsVVgfp4VP+uxtHmuR4JHYq9CK8Y0DzGemWKjO1bJMKtZMiB/MXm
+         98ZfbY8+KSyljuLlDfkpWzcvmaRtWyWjVZthFT77vaCZvlnwvpXdKGbwP7LFS+QCiFZ3
+         ogfpLg+MSudroy4xkDCrDguDghi1RWz9/n+oIil7UM4dFRbJ1Ploy6rgBMcwbRPDgBbe
+         QmFB/PykmYZSheORKtsqccJICFDsXkgYJfV2//uvzN/t4TATsydojR4mhi0LuZZqoEUC
+         lNag==
+X-Forwarded-Encrypted: i=1; AKwUvBwSycsT34DhT1/jUE2GM3xDDd3RuRWYSiG/FZrfC/Hm993vP1imy/vNj1xt9HoHaQZGD3bcVdVWXiIQ0xnzGA==@vger.kernel.org
+X-Gm-Message-State: AFq9FYI7cmLLtoQ8I592dhJyYMVwzxMx8CpXSd3ANHkRmwByir/FIUsd
+	8plmpewjOb/hjezFc/XptnM2QtCm7tH60AIG8DfwrNxcffrGKPv4l57E
+X-Gm-Gg: AYBFou1eQTlbcfL//vbZNQ5OgURQLpc4t9ExYg1qF9gTGFJ/6dnD3aRDlSmsIQ236tK
+	WvvdGOPjBYRubnJH3zFngca3aOEJDjLQPTTa5hvFCk5xLilUNwAZuUHucG44kgdq5s/55xE+nR8
+	k6L7eoxb4MqMhsst++rkuN1cJJzSgr+25oaUi9lmIpOhFYj8vlDIqQ1g+Qm07uXBiPUhicXgcMd
+	/1ESEeEUWLCJYWsbZMESnTrTGpCoVRu1KrUJ45U9lTUxm0dRpPD/PYxgh/BTB1TDAJ+0iqpcI0y
+	9Zo0ptdaO85fkTExO5YDrq9RBGWfSwdvFEu2YnW+T9msuFP8zxQ+4U1oTLkzV1v+AesFLvEp256
+	bNdXhBmTslwLFGuj0CrA+GxPotJ9jjN/Wccy452tNBkJyoRUYRwrBQIQczde4zTQTCuIgtnxqpd
+	Mfh6e/ywAcWY8Ef7wWbDCOXTf1Np4shOEDune3J1+e1NqQw3qa865BKrNDb+EhsyBzS58FUmZ62
+	geyQ5pX6h4zUXzWQ8+G3XBgsrvvu7H2Q+tq0zsSgyL0s2qvHKzdYM4=
+X-Received: by 2002:a17:90a:d603:b0:3ad:818f:3da2 with SMTP id 98e67ed59e1d1-3ae5823f4eemr499438a91.63.1793152883883;
+        Tue, 27 Oct 2026 19:01:23 -0700 (PDT)
+Received: from [127.0.1.1] ([169.211.140.146])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae55d5efe2sm659155a91.1.2026.10.27.19.01.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2026 19:01:22 -0700 (PDT)
+From: Kwanghoon Son <asdfkwang@gmail.com>
+Date: Tue, 27 Oct 2026 22:00:48 -0400
+Subject: [PATCH] rust: io: mem: Fix exclusive MMIO region requests
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -87,328 +89,102 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261027-tyr-ioctls-v5-5-59dfe98cb003@kylinos.cn>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/293.134.36
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261027-b4-rust-iomem-origin-master-fix-v1-1-16215ae197af@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAE9X4WoC/x2NuwrDMAwAfyVorsA2zoP8SungpLKjwXaR0hII+
+ feYjnfD3QlKwqQwdycI/Vi5lgb20cG6hZII+d0YnHGDNW7ExaN8dUeumTJW4cQFc9CdBCMfOE1
+ 9tBSc93GBVvkINf0/PF/XdQNf69Q/cQAAAA==
+X-Change-ID: 20261027-b4-rust-iomem-origin-master-fix-885f1ea244fb
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Kwanghoon Son <asdfkwang@gmail.com>
+X-Mailer: b4 0.14.2
 
-On Tue, Oct 27, 2026 at 12:40:58AM +0800, Ke Sun wrote:
-> From: Alvin Sun <alvin.sun@linux.dev>
-> 
-> The MCU and user VMs need different VA layouts. Give each a dedicated
-> constructor: new_for_fw() builds the kernel-only 4G layout, while
-> new_for_user() splits the address space by task_size or a user-provided
-> size, rejecting oversized requests rather than clamping. The resulting
-> user range is what VM_CREATE reports back as user_va_range.
-> 
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-> ---
->  drivers/gpu/drm/tyr/fw.rs |  19 +++---
->  drivers/gpu/drm/tyr/vm.rs | 157 +++++++++++++++++++++++++++++++++++++++++-----
->  2 files changed, 151 insertions(+), 25 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
-> index aea151ff1f934..81e8103368bc2 100644
-> --- a/drivers/gpu/drm/tyr/fw.rs
-> +++ b/drivers/gpu/drm/tyr/fw.rs
-> @@ -51,7 +51,6 @@
->          KernelBoVaAlloc, //
->      },
->      gpu::GpuInfo,
-> -
->      mmu::Mmu,
->      regs::{
->          gpu_control::{
-> @@ -219,10 +218,10 @@ pub(crate) fn new(
->          mmu: ArcBorrow<'_, Mmu<'drm>>,
->          gpu_info: &GpuInfo,
->      ) -> Result<Firmware<'drm>> {
-> -        let vm = Vm::new(dev, ddev, mmu, gpu_info)?;
-> +        let vm = Vm::new_for_fw(dev, ddev, mmu, gpu_info)?;
->          vm.activate()?;
->  
-> -        let result = (|| {
-> +        let sections = (|| -> Result<KVec<Section<'drm>>> {
->              let (fw, parsed_sections) = Self::load(dev, ddev, gpu_info)?;
->              let mut sections = KVec::new();
->              for parsed in parsed_sections {
-> @@ -252,18 +251,18 @@ pub(crate) fn new(
->                  sections.push(Section { data, mem }, GFP_KERNEL)?;
->              }
->  
-> -            Ok(Firmware {
-> -                iomem,
-> -                vm: vm.clone(),
-> -                sections,
-> -            })
-> +            Ok(sections)
->          })();
->  
-> -        if result.is_err() {
-> +        if sections.is_err() {
->              vm.kill();
->          }
->  
-> -        result
-> +        Ok(Firmware {
-> +            iomem,
-> +            vm,
-> +            sections: sections?,
-> +        })
->      }
+C's request_mem_region() reserves MMIO in the global resource tree.
+Rust's ExclusiveIoMem reserves it under the device's resource instead,
+so the global tree may not see the reservation.
 
-This refactoring of the closure is unrelated to the patch subject so
-could you either just drop it from this series and save it for later or
-put it into its own patch with an explanation of why it is helpful.
+Request the region from iomem_resource, matching request_mem_region()
+and the existing release_mem_region() call.
 
->  
->      pub(crate) fn boot(&self) -> Result {
-> diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-> index 69b092a130883..b2fcda1e61073 100644
-> --- a/drivers/gpu/drm/tyr/vm.rs
-> +++ b/drivers/gpu/drm/tyr/vm.rs
-> @@ -8,6 +8,7 @@
->  //! mapped into hardware address space (AS) slots for GPU execution.
->  
->  use core::marker::PhantomData;
-> +use core::num::NonZeroU64;
->  use core::ops::Range;
->  
->  use kernel::{
-> @@ -45,6 +46,8 @@
->      num::casts::FromSafeCast,
->      prelude::*,
->      sizes::{
-> +        LargeSizeConstants,
-> +        SizeConstants,
->          SZ_1G,
->          SZ_2M,
->          SZ_4K, //
-> @@ -160,6 +163,90 @@ fn try_from(value: u32) -> Result<Self, Self::Error> {
->      }
->  }
->  
-> +/// User VA size request for a user VM.
-> +pub(crate) enum UserVaRequest {
-> +    /// Split based on `task_size()` and the GPU VA range.
-> +    Auto,
-> +    /// Caller-specified size; construction guarantees `> 0`.
-> +    Fixed(NonZeroU64),
-> +}
-> +
-> +impl UserVaRequest {
-> +    /// UAPI boundary normalization: `0` -> [`Auto`](Self::Auto).
-> +    #[expect(dead_code)]
-> +    pub(crate) fn from_uapi(v: u64) -> Self {
-> +        match NonZeroU64::new(v) {
-> +            Some(size) => Self::Fixed(size),
-> +            None => Self::Auto,
-> +        }
-> +    }
-> +}
-> +
-> +/// Final user/kernel VA layout for a VM.
-> +pub(crate) struct VmLayout {
-> +    /// Full GPU VA range covered by this VM.
-> +    pub(crate) full: Range<u64>,
-> +    /// User-accessible VA range. Empty for MCU VMs.
-> +    pub(crate) user: Range<u64>,
-> +}
-> +
-> +impl VmLayout {
-> +    /// Kernel VA range, reserved for future kernel object allocation.
-> +    #[expect(dead_code)]
-> +    pub(crate) fn kernel(&self) -> Range<u64> {
-> +        self.user.end..self.full.end
-> +    }
-> +
-> +    /// Compute a user/kernel split for a user VM from the full GPU VA range and
-> +    /// a user request.
-> +    pub(crate) fn compute(full: Range<u64>, req: UserVaRequest) -> Result<Self> {
-> +        // Minimum VA space reserved for kernel objects (heaps, ring buffers, ...).
-> +        const MIN_KERNEL_VA: u64 = u64::SZ_256M;
-> +
-> +        if full.end <= MIN_KERNEL_VA {
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let user_max = full.end - MIN_KERNEL_VA;
-> +
-> +        let user_end = match req {
-> +            UserVaRequest::Fixed(v) => {
-> +                let user_size = v.get();
-> +                if user_size > user_max {
-> +                    return Err(EINVAL);
-> +                }
-> +                user_size
-> +            }
-> +            UserVaRequest::Auto => {
-> +                let task_size = current!().task_size() as u64;
-> +                let candidate = if task_size < full.end {
-> +                    task_size
-> +                } else {
-> +                    // If the range exceeds 4G, split it in two so CPU and
-> +                    // GPU share the same addresses (SVM).
-> +                    if full.end > u64::SZ_4G {
-> +                        full.end / 2
-> +                    } else {
-> +                        user_max
-> +                    }
-> +                };
-> +                candidate.min(user_max)
-> +            }
-> +        };
-> +
-> +        let delta = full.end - user_end;
-> +        // Pick a kernel VA range that's a power of two, to have a clear split.
-> +        let kernel_va_range = 1u64 << delta.ilog2();
-> +        let kernel_va_start = full.end - kernel_va_range;
-> +        let full_start = full.start;
-> +
-> +        Ok(Self {
-> +            full,
-> +            user: full_start..kernel_va_start,
-> +        })
-> +    }
-> +}
-> +
->  /// Arguments for a virtual memory map operation.
->  struct VmMapArgs<'drm> {
->      /// Access permissions and caching behavior for the mapping.
-> @@ -335,26 +422,64 @@ pub(crate) struct Vm<'drm> {
->      /// Non-core part of the GPUVM. Can be used for stuff that doesn't modify the
->      /// internal mapping tree, like GpuVm::obtain()
->      gpuvm: ARef<GpuVm<GpuVmData<'drm>>>,
-> -    /// VA range for this VM.
-> -    va_range: Range<u64>,
-> +    /// VA layout for this VM.
-> +    pub(crate) layout: VmLayout,
->  }
->  
->  impl<'drm> Vm<'drm> {
-> -    /// Creates a new GPU virtual address space.
-> +    /// Creates the MCU/firmware VM.
->      ///
-> -    /// The VM is initialized with a page table configured according to the GPU's
-> -    /// address translation capabilities and registered with the GPUVM framework.
-> -    pub(crate) fn new(
-> +    /// The MCU VM is entirely kernel-managed: it has no user-accessible range.
-> +    pub(crate) fn new_for_fw(
-> +        dev: &'drm Device<Bound>,
-> +        ddev: &TyrDrmDevice,
-> +        mmu: ArcBorrow<'_, Mmu<'drm>>,
-> +        gpu_info: &GpuInfo,
-> +    ) -> Result<Arc<Vm<'drm>>> {
-> +        // As in panthor: the CSF MCU is a Cortex-M7 and can only address 4G.
-> +        let layout = VmLayout {
-> +            full: 0..u64::SZ_4G,
-> +            user: 0..0u64,
-> +        };
-> +        Self::new_internal(dev, ddev, mmu, gpu_info, layout)
-> +    }
-> +
-> +    /// Creates a user VM, splitting the GPU VA range per `user_va`.
-> +    #[expect(dead_code)]
-> +    pub(crate) fn new_for_user(
->          dev: &'drm Device<Bound>,
->          ddev: &TyrDrmDevice,
->          mmu: ArcBorrow<'_, Mmu<'drm>>,
->          gpu_info: &GpuInfo,
-> +        user_va: UserVaRequest,
-> +    ) -> Result<Arc<Vm<'drm>>> {
-> +        let mmu_features = MMU_FEATURES::from_raw(gpu_info.mmu_features);
-> +        let va_bits = mmu_features.va_bits().get();
-> +        let range = 0..(1u64 << va_bits);
-> +
-> +        let layout = VmLayout::compute(range.clone(), user_va).inspect_err(|_| {
-> +            dev_dbg!(
-> +                dev,
-> +                "Failed to split GPU VA range {:#x}..{:#x} into user and kernel regions\n",
-> +                range.start,
-> +                range.end
-> +            );
-> +        })?;
-> +        Self::new_internal(dev, ddev, mmu, gpu_info, layout)
-> +    }
-> +
-> +    /// Initializes a VM with the given layout.
-> +    fn new_internal(
-> +        dev: &'drm Device<Bound>,
-> +        ddev: &TyrDrmDevice,
-> +        mmu: ArcBorrow<'_, Mmu<'drm>>,
-> +        gpu_info: &GpuInfo,
-> +        layout: VmLayout,
->      ) -> Result<Arc<Vm<'drm>>> {
->          let mmu_features = MMU_FEATURES::from_raw(gpu_info.mmu_features);
->          let va_bits = mmu_features.va_bits().get();
->          let pa_bits = mmu_features.pa_bits().get();
->  
-> -        let range = 0..(1u64 << va_bits);
->          let reserve_range = 0..0u64;
->  
->          // dummy_obj is used to initialize the GPUVM tree.
-> @@ -366,7 +491,7 @@ pub(crate) fn new(
->              c"Tyr::GpuVm",
->              ddev,
->              &*dummy_obj,
-> -            range.clone(),
-> +            layout.full.clone(),
->              reserve_range,
->              GpuVmData::<'drm> {
->                  _phantom: PhantomData::<&()>,
-> @@ -386,7 +511,7 @@ pub(crate) fn new(
->                  mmu: mmu.into(),
->                  gpuvm,
->                  gpuvm_unique <- new_mutex!(gpuvm_unique),
-> -                va_range: range,
-> +                layout,
->              }),
->              GFP_KERNEL,
->          )?;
-> @@ -417,10 +542,12 @@ fn deactivate(&self) -> Result {
->  
->      /// Kills the VM by deactivating it and unmapping all regions.
->      pub(crate) fn kill(&self) {
-> -        // TODO: Turn the VM into a state where it can't be used.
->          let _ = self.deactivate();
->          let _ = self
-> -            .unmap_range(self.va_range.start, self.va_range.end - self.va_range.start)
-> +            .unmap_range(
-> +                self.layout.full.start,
-> +                self.layout.full.end - self.layout.full.start,
-> +            )
->              .inspect_err(|e| {
->                  dev_err!(self.dev, "Failed to unmap range during deactivate: {:?}", e);
->              });
-> @@ -557,14 +684,14 @@ pub(crate) fn unmap_range(&self, va: u64, size: u64) -> Result {
->  
->          let end = va.checked_add(size).ok_or(EINVAL)?;
->  
-> -        if va < self.va_range.start || end > self.va_range.end {
-> +        if va < self.layout.full.start || end > self.layout.full.end {
->              dev_err!(
->                  self.dev,
->                  "Unmap range {:#x}..{:#x} exceeds VM range {:#x}..{:#x}",
->                  va,
->                  end,
-> -                self.va_range.start,
-> -                self.va_range.end
-> +                self.layout.full.start,
-> +                self.layout.full.end
->              );
->              return Err(EINVAL);
->          }
-> @@ -574,7 +701,7 @@ pub(crate) fn unmap_range(&self, va: u64, size: u64) -> Result {
->              region: va..end,
->          };
->  
-> -        let full_vm = va == self.va_range.start && end == self.va_range.end;
-> +        let full_vm = va == self.layout.full.start && end == self.layout.full.end;
->  
->          let mut resources = VmOpResources {
->              preallocated_gpuvas: if full_vm {
-> 
-> -- 
-> 2.43.0
-> 
+Fixes: 1d0d4b28513b ("rust: io: mem: add a generic iomem abstraction")
+
+Signed-off-by: Kwanghoon Son <asdfkwang@gmail.com>
+---
+The bug can be reproduced with QEMU arm64 virt's existing DT node
+(CONFIG_FW_CFG_SYSFS=n):
+
+    fw-cfg@9020000 {
+        compatible = "qemu,fw-cfg-mmio";
+        reg = <0 0x09020000 0 0x18>;
+    };
+
+A small Rust platform driver matches this node. Its probe maps the
+resource and returns the mapping as driver data (excerpt):
+
+    let io = pdev.io_request_by_index(0).ok_or(ENODEV)?
+        .iomap_exclusive()?
+        .into_devres()?;
+
+Unbind and bind that driver again:
+
+    cd /sys/bus/platform/drivers/mmio_repro
+    echo 9020000.fw-cfg > unbind
+    echo 9020000.fw-cfg > bind
+
+Before the fix, unbind prints "Trying to free nonexistent resource"
+and bind fails with EBUSY. With the fix, 100 cycles pass. This was
+repeated in three fresh guests for each kernel.
+---
+ rust/kernel/io/mem.rs      | 2 +-
+ rust/kernel/io/resource.rs | 6 ++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
+index 32a919099dcda79bc4b795a8a1c5f553c989b9b7..80da665821c036257900c6ea45b9419cb573c187 100644
+--- a/rust/kernel/io/mem.rs
++++ b/rust/kernel/io/mem.rs
+@@ -196,7 +196,7 @@ fn ioremap(dev: &'a Device<Bound>, resource: &Resource) -> Result<Self> {
+         let size = resource.size();
+         let name = resource.name().unwrap_or_default();
+ 
+-        let region = resource
++        let region = Resource::iomem()
+             .request_region(
+                 start,
+                 size,
+diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
+index 758ce62b3cce33c14e1e4c56a793af0e00657aa6..c99a2530186fc56bdc3405adc15d0801b98eae08 100644
+--- a/rust/kernel/io/resource.rs
++++ b/rust/kernel/io/resource.rs
+@@ -79,6 +79,12 @@ unsafe impl Sync for Region {}
+ pub struct Resource(Opaque<bindings::resource>);
+ 
+ impl Resource {
++    /// Returns the global I/O memory resource root.
++    pub(crate) fn iomem() -> &'static Self {
++        // SAFETY: iomem_resource is permanent; C serializes resource-tree updates.
++        unsafe { Self::from_raw(&raw mut bindings::iomem_resource) }
++    }
++
+     /// Creates a reference to a [`Resource`] from a valid pointer.
+     ///
+     /// # Safety
+
+---
+base-commit: 8a36f53fd5ec3eff01f1b637d42cbdc3821d0493
+change-id: 20261027-b4-rust-iomem-origin-master-fix-885f1ea244fb
+
+Best regards,
+-- 
+Kwanghoon Son <asdfkwang@gmail.com>
+
