@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.31
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.14
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793154115;
-	b=xCQngofFaO5d4Diz3/fW10Nt6rbMUTmFToGP6hLPztKYCJ689YnMrj+6Ado7s76n6Iaj
-	 igU6gxWc0cZp+q05kfGRYczxX8+pY2c7lZC+fKVljOFCrCiXSyYu/VPDc+Vd4gKPvzGIa
-	 pP4z3zhnReaVu5WK5fcdtqpHrS7jZIXVQ5d2kYVtmt6SXkeHYnlExqn2Ut3dqVQvuNZ/f
-	 mPAozOtrXqPkIk5Q7MIkohzlhNr/FYVAnVXuCPEy2fqQiJEMyMzOxcc9jHDagc3RXFzVT
-	 fql4ytWSrL5HwBL/4s86BROaI8BO0RMpQ0UjnDgIT6oKhonO2Sp/LRLxHJGpjKOv+wg==
+	t=1793154121;
+	b=RQGtmp7PjV7NVqJtfzlxes+BKxFK0I7pbbCF9VD706SBv3M6eYlRDKZBf7occiCBEpYb
+	 UuYSXr4URgJ1OQ+1/u5dUlxHG91pw8Ki8eeiBzq4YwlZNEEHdAc9f59F9DIgrXBD/rIeo
+	 /l73e5j8EEh1roYaBHXNInRzVw8T3vaWghQsNoPvyqplzZ9NyWagx+xDVmGMzwhdt/BGy
+	 Ad6J5tFfd3/Go/BC0QtosP0ByHV4NNCKFvyLUoYteRUcgowtyFHo176vy6rnH2rUNPLOv
+	 qikzqrKIbAiWxQD/y5if0zWHhS5wTtVCpSMsaOYZzGLyCE0qRoR/ebYknWgUv1e0zYQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793154115;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793154121;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Date:Subject:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-ClientProxiedBy:MIME-Version:
@@ -25,59 +25,59 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=UIJiwXRzioP/OeSdvygpUVqAIU+ViY45TopPnN0D+EQ=;
-	b=LWUM7fkjQmrqCuiuD8P36d8p8NbS5+ohDa/8PTBMJDulwZadSTYN5kE6MoZQ0o5iE8jd
-	 vlmkPhBj1Aytn5CHsyanLiE2WBsXvYaR4pjhOTWZXH4U73kfbZNphAxT8Uf4ggiZ+HXpx
-	 hQ9k/qSX4jXod13VgQc9NvdKy/vYQmSF6PtmRaPZuM/cxLwJ2Hnmo2Q4bO1pSqH1+hjW+
-	 D0uUJlIXGfTkfsZFpk0tez8xvUWSZ+zet88QauGNgA8K60BJZCJ9oxVcI9kLrQ/PXPLtX
-	 NQe1z9ohVZeq8el7yZoqr5ZvoPcxkqXWuKde1HBtQnZ5CfeQ9SFkUHxBiekHksmZA7g==
+	bh=Sntd752Xs11+M2I6rapl1x/z3pYKLZs1wPXEPdxiFq4=;
+	b=gRS12xX+yKOImk1qillS03wY2ej4ayTEJoc6FicgYS85qUB8/A8X8n4ufmdvikSG/yAB
+	 +0a9vE3OYWKoWGOMOW2OxVQnVqGwEpy+t8zMd3Hr99mvgO/qiKsBYa+GtO/EVZR7BfA1X
+	 bwll4JENjF2kWL9EZaMY4LKkHOAIdyg9Ia+ns/fklD8Bk2gqZ8qokCgLXNu8hLSyzU5rQ
+	 6D84JK7i5qs7fagNg/uhA+xsFu0k7CIglXrVEnFgU3WH+KKH4/OTwzzmESMgn5nU1wZZL
+	 zPN7E7OhA0XhBIYZdXn8weh6euX6rppJvSR3eFaQhcuSlBL2FheKwAtlbygw8D27BcA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=nvidia.com;
 	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=R53rI5SE;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.31
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011031.outbound.protection.outlook.com [40.107.208.31])
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=hszvgDcU;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.14
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012014.outbound.protection.outlook.com [40.93.195.14])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5D6606A32A;
-	Wed, 28 Oct 2026 02:21:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A5D6606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E999606A31D;
+	Wed, 28 Oct 2026 02:22:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4E999606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=R53rI5SE
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=hszvgDcU
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GkgPE97gCfc3hJueLuLdFJHUIgLW5nSFEbS+jniuGP6mOHvQ6ptWiMSvAw4n26pcvJg3jA3pjV5ekCZAA9lAxLbWcVbo9kcqhZv6TX9n6bN7v1iB0pIbm8xeyucIAGlkOCUNaCGXBts9mqtUdQ4Ex2tWrgse6W/9TbO6inWA3hvEQW4eDZuENeHqs1GRRGT77xXk87SPNfgSA1DlHJR7bjWv3wOHBIlJwsuY9OxE3OZVQSAFY9OJGqO288hWZ5yVl86LCoZzbvutp0Foqfm0QfVCbTwX5I4J9mdCCX1vNHM0bBAY/WljE9VCZqDY/CzQht4x1+m4gMhF1hy+NRlmqQ==
+ b=TP9wU85g4nN0t+qdQKLTC9vEbEB3eq2scjNnMJ5chYdq7Qt4D2rTOdba4jRleaKJEr8bOLufx24HwWEupFHWvFPCxqCpTkZ/7tdx3Ro3XDjXj8twFqw4eD99MTfYrCCxpUujimCc34i73EsUHWRDuZ5OrrUz/mjQVb+x/K7xramk82WH9ImFUagOJlGBw1jOzzELmopTUGb+kab+E5skyAwgduXG41iAL6yZWvXOjrI6et5MjMbvbL4N81w3JHOyY59p9iwVd52THT3RYuWDBT+/SvM9TIBbRMiChf0M6c/8hixpPNf7a+mKOzE3+9jDJvMw+8pQ8Ee/Tolu5MxmIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UIJiwXRzioP/OeSdvygpUVqAIU+ViY45TopPnN0D+EQ=;
- b=v4Ok2yCfZDjUAnA8OC2KJlUp4389dgzVr4bfh8f3gv3QtFqTBGmj+TkrkpGX9eguaUKp8QixFu186dyD8wtRk0wRf0w8PpVLZd2U0q5ySnHj3FHIa2RGuaqzdJm3nJZUoE6DbPOX4tRuXbt+QtdG0wTlXLn4/uUQlXLBrjgm3koSxiEB0us5q9EChQAZNRdC6SZcjQeBg/CHxOXiY9LU784CIycKsftW9RUiopcMCTnebb6dE3bUK/5o/ttNcTK+jjG6Y7tFzCiaZQZ/28SnQYkz26n5q9itunQWZsf1AhoEVdxe7lax2Olra4qYLXEvQa/9k1GLiNeZ5pMm6Cmqmg==
+ bh=Sntd752Xs11+M2I6rapl1x/z3pYKLZs1wPXEPdxiFq4=;
+ b=m/egy2xIoCWYQ5+XKtCUxoBPoShAxO8OH7xFRdEPb+KlrvvtxPBW2Qqqk1QUN0tl1BVYxpn5LTPo7gm1oEAdd1ScPTVtQ1J2NoOZaGyfEJlCT3E/jogJf5RGCm7aJoM2aIS1h+D89pLodYZiy/GvZTjPGbWeYRhBUfUkS+i9Gh050LuYo8rIV/g1qsY3wYAO09Hhlcmqz6cbDedaZg6cXkufu3JJY4qqb/kw0lDQfjuXYXRB3SXzhXUp1YF6QgfHO8slMPySaAfQdpF6IHDWTz+CskrKQHYCGcdofMXb/+YVsOK63Znin+tMsreWeF2ENbIl8Ygpbi7r+uuqJngvpw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UIJiwXRzioP/OeSdvygpUVqAIU+ViY45TopPnN0D+EQ=;
- b=R53rI5SE/wHxqnIOHgvRgBpPknajpbiRU6bZZuF3dAk9zIVlycKdCjQ4zRDUAVcGt8BEmsF43+kH8TTeGiidVBGA0BclJ7KJ1i6DRiwgGGB7MGX123L5U5qJRdNEsB9HMH2Z6sFePwdYzbjqvhfTU9YXM0ABpCTV80tOYMNBKsjpDxV0MubyS36jG9J897kAYJqMTEtG0CjUZX5YUVSrgweVx1KQ5cVPZl51si3XmFOST0M5y3PdLj6921f2jsyMTcoSHebx6k6R/nRbze4wQyEFo5IQnllf8d4wQzTPLQbZpl8AwrSrO6sPyGNtkUNZCYWrzKM/48rkrROJUC+NRQ==
+ bh=Sntd752Xs11+M2I6rapl1x/z3pYKLZs1wPXEPdxiFq4=;
+ b=hszvgDcUL/Awl4/AHfcJIoegGZ4OdT3+sJCdrzIljODj0ICW0/d3S61XIyfb5kMea/TsatOb3WZknEVDAqFdOBrX/q9ILKI0nzu2ta6wOXATsqs6IJNv92jeYRMClLdkgcz40qQOPvjwYdsT2qMeYLwZZMb4uydD6Z8e8SKBZUMMhU3L68xNHq8uuKs0FYO0lkBrSNFHxXeQOj7aAB24iom6LG71KzleMi7iB/zqA5X3v/Lf58d9xZpwBBfmN9VPq7sbjyd+/JjeAmX+5SI+XQifjKRDCm/LMYuxU+DwEHmkuV5KMc5PErNIi6ndAprgLi7sThpTqaIOv4MAZ9zx5w==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) by
- CH2PR12MB4086.namprd12.prod.outlook.com (2603:10b6:610:7c::19) with Microsoft
+ DS7PR12MB6045.namprd12.prod.outlook.com (2603:10b6:8:86::18) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.546.22; Wed, 28 Oct 2026 02:21:44 +0000
+ 15.21.546.22; Wed, 28 Oct 2026 02:21:51 +0000
 Received: from DS0PR12MB6413.namprd12.prod.outlook.com
  ([fe80::e82a:6673:4142:37fa]) by DS0PR12MB6413.namprd12.prod.outlook.com
  ([fe80::e82a:6673:4142:37fa%5]) with mapi id 15.21.0546.016; Wed, 28 Oct 2026
- 02:21:44 +0000
+ 02:21:51 +0000
 From: Eliot Courtney <ecourtney@nvidia.com>
-Date: Wed, 28 Oct 2026 11:21:03 +0900
-Subject: [PATCH v5 4/7] gpu: nova-core: add NVKV decoder
+Date: Wed, 28 Oct 2026 11:21:05 +0900
+Subject: [PATCH v5 6/7] gpu: nova-core: add NVKV typed decoding
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261028-b4-nvkv-v5-4-ef78909b513e@nvidia.com>
+Message-Id: <20261028-b4-nvkv-v5-6-ef78909b513e@nvidia.com>
 References: <20261028-b4-nvkv-v5-0-ef78909b513e@nvidia.com>
 In-Reply-To: <20261028-b4-nvkv-v5-0-ef78909b513e@nvidia.com>
 To: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
@@ -98,8 +98,8 @@ Cc: John Hubbard <jhubbard@nvidia.com>,
  nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
  Eliot Courtney <ecourtney@nvidia.com>
 X-Mailer: b4 0.15.2
-X-ClientProxiedBy: TY6PR01CA0031.jpnprd01.prod.outlook.com
- (2603:1096:405:3bd::13) To DS0PR12MB6413.namprd12.prod.outlook.com
+X-ClientProxiedBy: TY4PR01CA0057.jpnprd01.prod.outlook.com
+ (2603:1096:405:372::9) To DS0PR12MB6413.namprd12.prod.outlook.com
  (2603:10b6:8:ce::10)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -111,612 +111,857 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|CH2PR12MB4086:EE_
-X-MS-Office365-Filtering-Correlation-Id: 85ad1eb6-3380-460c-19df-08df349a354d
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6413:EE_|DS7PR12MB6045:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0ee99877-fc61-412c-354a-08df349a39d3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|10070799003|366016|23010399003|921020|11063799006|5023799004|56012099006|261022113327099003|261009223027099003|261022105027099003|261021135927099003|261022075727099003|261026121527099003|261021121427099003|261026140227099003|10067099003|22082099003|18002099003|6133799003|3023799007;
+	BCL:0;ARA:13230040|366016|10070799003|7416014|1800799024|376014|23010399003|921020|261026140227099003|5023799004|11063799006|56012099006|261026121527099003|261021123027099003|261022075727099003|261022105027099003|261009223027099003|261021121427099003|10067099003|18002099003|22082099003|3023799007|10063799003;
 X-Microsoft-Antispam-Message-Info:
-	7dPYX92ZzQiw1IpQ4laagLsoZhLijvPgmg6pndXGebDom2R8JPnIGEemQIbXaNrWx35gjk3ng9ZzjMp7aSURNYM5TmMMqjvhhuiDfQ7o0C3UDTft0/RomRYb5EP3AkwMQNKlaMWcdDthtCSsw/WXnCe1KvuXlp6fz5OErdXzMC5hBjsGlkewMfKEqc01yz9/zTo6lf5pxi8XL36b3EDCTYiJWHCnEOJ+l8uxUNLXPR4q+/Zy6VvV4xwflfui4HZ2MtJyWoSMfeGkBtncZnu96aH4dOCMWWYGKwBNbNKwsesk1Na1Vr7daTwyvM4ZMR2V/jzIurruUNRx9jO/8n9NxjZwC7UVFh35gJKzYJdDQV2yw0xzj85pmLGWfov2E1oXnip0oYuIBFl3w5B1RWmitjcHN9UaZIdajPMITTfJqGKAT8IIqe2yHCgV/0rwfSiw1agEVqb7GVhBhbQNDTGDhy/CISpKrCChHiXCqYcowZaQLb/ZRs/Of6dYhicdys7epF8cJDnJ1EF+uFliHAG8fuzJwnjw8lJs6Z91VuHeDlDooJqtXFzb6+dCzkUQfokIJlYhq+HzhLxu2x3JshQVjGPxhULQnaz7nIQHxmII29Yzz1Wvg6HSaRTgAquRawNBJIMCYRhwelyf7qRW639wOJmzptA8fwIZzl4ofOUvnebKi4c1D/VXTGlC4qhD83j9G9LeuoPuzdK9GbpH/wJY0A==
+	jvYWUQ976t21/NA2/Q/3N6t2V0rP+1J1BJrZ3yRstbPBXZJ478NtdLBrfD+NsMoD9yoqrsP+iSHPkAwM8kg7OLg8l/KFqIWtRiVy+yuXqm16CaSF6+SRbx7wuIhTieU6xsYdEU4wqLqUbnc6FnsKz+6Pa2/tc4UKxNInEfN9bJuwdg/pBsua43s1UISBsEdOx1tJapkskQuydQWR0MnqdIPga3wbv8l4vn5+TZB8tCkO5UvPDD3mr2ntbMFUJewp4fIvm8lcxRjW3NyMt+TXEbIuS1pxSpupgLzVfIqssWMfm7jzVWJlHjjPlIUlaZP7LhZ+hTQ4RcYJ0nPYo9QJ5neZ92UOmGxPgAFQPaG+5Se+V3tWx3p/jmM9qxzGcBgHn7A+SVSjVtbZepnHCXIhbALwSnSBOiKdDR1/HS6yy0D6IgohdUSLv7rk1JopctiGr39jK5MLUBrN+ehar3FcM0QeX4tFtUweTAEjTNMbsFE8ai2EDCDmk8Ggjx5X8yGCrlFRCZplYUJrk952l26QfVjHnI+Br/C+x3Wlk4EFrNFTo1kND4vpwQrtUYKOimNHV76W/RaoD7tW0MgWU6F+uVwv5mfO4j1PlYg5cueDA+72hZ5kCe+64BFVu9CocJHvhFUqD7OtrRmr5wMe+3kH+rzZnXMonYWwRkV30bnGb+VzMeQee/rM3TT/MNlVsOpzg1EHU9TKGG8BwkriCjieZQ==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(10070799003)(366016)(23010399003)(921020)(11063799006)(5023799004)(56012099006)(261022113327099003)(261009223027099003)(261022105027099003)(261021135927099003)(261022075727099003)(261026121527099003)(261021121427099003)(261026140227099003)(10067099003)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6413.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(7416014)(1800799024)(376014)(23010399003)(921020)(261026140227099003)(5023799004)(11063799006)(56012099006)(261026121527099003)(261021123027099003)(261022075727099003)(261022105027099003)(261009223027099003)(261021121427099003)(10067099003)(18002099003)(22082099003)(3023799007)(10063799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SjZscEdFZmxFdGtjS2xCNHFhU3pqUUdpQ0JianMvVitZK0dKbmNVSnZiaDU1?=
- =?utf-8?B?LzRBRUdrMTkxRStsVks1Q0xYVlVyT3JBNFoyTnNQcU5OTytVaU1KdjlOZzYz?=
- =?utf-8?B?QmgwTHpQMXNRc2NtL2JFOFE2L3FJMzZjQmxmeUJjQS9xaVdyK0Z5VUpoY3Y1?=
- =?utf-8?B?MmZDRWl2Um9oeGpBWnZDMm9zRVdiQXNsSXRURFJjK1c2WFY4eWRoSFV3OXRR?=
- =?utf-8?B?WnJRWWR5S01idWpZZVFsM1R0TUpQWTFCRTdVcCsrMm1UQm9HU0RoZUY4d201?=
- =?utf-8?B?NE5sbXg4c1VOTHdvUWxRa3VmUS9ob3k2TFVDVHR1WHlLWUdSWjZXd1lkWXkx?=
- =?utf-8?B?RnFSVVFMZld4RVNQSnBTV0YrR1hPM3hXN1NLUndieDVKVlN5Qk1IdU1zMFgy?=
- =?utf-8?B?QzVvMDBWYkhVYmZuMkpWUHV5VkY2Q1Q3U0gzRldmSjVSMHI2ZnlVekhvbU9V?=
- =?utf-8?B?K0dXejdYSDFIZFFPb0VTWFJucUt3L3VuSzNqSEt1ZHdrMFlvMVBXem5PS3Iy?=
- =?utf-8?B?T3BnNjJ6QmhuYXlHWGxvY1dmSW1la3F2bUtuTlpzNmhVbEdmTjJrZlRxVVRZ?=
- =?utf-8?B?clEwdnJhS2s2V3VMR2NyeEdhd3JSa29nTkM0bnc2VDB0czNCSGk4OGRVUHBF?=
- =?utf-8?B?Y0swbzEzZ2orTEFHQzRZNGlMVFF1QjhoN3NtRkZ6UEdvN2wrMkp0M1Q2a0Mr?=
- =?utf-8?B?WkczcUpmaURaQnlHUnphNElqRDBpbVRrS09GWFVlbUhyU2xCUHBZeGdzT3Ew?=
- =?utf-8?B?cFdORVdlbTRTZFlTNG9zeHUwQUJtQW9kbi8xQWRId28wUnlCaW5kaGkyM1N2?=
- =?utf-8?B?aTRqMmphQUZ5eFQ0QW15aFJ4VWZzYndYbWtjR3doaTgwcXl0Vk4vUHJVTE1r?=
- =?utf-8?B?cDgxeGJKdHFtN3Btc24vZkVmNHcxUnNBOXVVakVad0dCUlhHa2JJQ0VLazZJ?=
- =?utf-8?B?N0VMbno2YVZrK25iOFVhMHBpeFNQZzFjeVFLYTJiWmlSSHRhRTBYYWFUUGQ1?=
- =?utf-8?B?dWE2Z1ViTmI5bVJKYTFmWFB3V1BLaWI4WmcxTVE0Ym5RVFpoanl1dXppVllL?=
- =?utf-8?B?K1k3aXdhL2FSRGxUUW9wajJRaE5tamM4YWRKd0tFVVk5VFl3QndPRGY5NytC?=
- =?utf-8?B?WDJVS3hzK0lBMCtqbmMzTWE1Mk5rY2NYWDduaTZXNFJFZTB5OVdSUzloR1hx?=
- =?utf-8?B?WWJDZUZGVjd1VW00QUNtNVR2QWdpTXZ3UHg4b2JEY0FkZ3Fhd0w0U2pFS3Mx?=
- =?utf-8?B?UFRnT3pVbUppUm1tb1Y0VFVDd1VCZjdiYUJGRHdMa1NMRFdTQlkvbkx4a1M1?=
- =?utf-8?B?aWlqTlBaMXZFSStBeFZBQlRsL1VCWjBpMzhGbXh6a1VobVdQL2luanR4RWlu?=
- =?utf-8?B?S2sxK2U1d01kTWxSS1E5Z2ZmYzV2a1JQREFzTFhUZGNFTXVPTG1zMzBJQWpv?=
- =?utf-8?B?cUVkSHRPaytJT2owRFFXeTJpcWlYQ0Vla3lmb0JPaTR0SXVCaVhiQi9qNnRy?=
- =?utf-8?B?bFJmMHptdm40cXYrWEZERTNhdUpRSit3Rkg1bXByalltRy9VdmtzZWx1eUVV?=
- =?utf-8?B?K2dCWEJKZldrRTc3djdvcG5teFIxU3FaNWpiYW8xK2pMd1d2NkVlUTU2UEQr?=
- =?utf-8?B?M2VCMjUyRWN6WWF4K2ZZTjYxNEtzVXhrdFJTY3VBU0RyTHY0d2dhWjhscnhy?=
- =?utf-8?B?QVBreUx2RzIzK2NXZ0dOTGs3T3dKT2lhUUlnTUI1S2RZYWN0MHA3RVlOeG5a?=
- =?utf-8?B?cE5Zell4blM2V0FmTkZ4aWpmci9YdGJ0RWx3MFRFNU1COENBMmw0STRmbGFC?=
- =?utf-8?B?R0wrVkZCc0lkUUw1TzlhUU9Uc2VDWGhrbUtvc3o2SUVkMlZjOEZiR2tGbGJv?=
- =?utf-8?B?L0tBQmlPYmRjelMyQ1lBYkdZVk5HVDFRT3J6TTVjS3JIKy9VYTVGK29FZTZL?=
- =?utf-8?B?M1RqT3RZNzdXV2MrTFhqQ2hYa2g5R2d0WlpqOFhzNDNwZlBSOHNnTGQyclli?=
- =?utf-8?B?THdWekxUamRSMHZBbmxUdnk0VjJma1FnU0kySGdoS0tQTmFjcDlFMXdyVnE3?=
- =?utf-8?B?bFdQUUFjOEpmNFJJMWdGcjFPY2tJdUFrWmQxQVk0akJPVEl6YU1KaC9vVEdp?=
- =?utf-8?B?NkgzM2dWbHFpQ0NKNHVpWVVwREhaZHA1MjgxRXpyWkRPMTZ0YXFpekR4MjM2?=
- =?utf-8?B?YjhaTU9wYisrRTNzOFpWRE1ueGo2clRwTUZMNXVKU1ZpZFNwS2p1dVZETURJ?=
- =?utf-8?B?S3Q2Z2Y0ZjJ0eFFrVzlpY2ZSSVZ4TDVTZ1pzN1RaMGlVeXQxQUFIOWd3YXE3?=
- =?utf-8?B?c1hRRnFqWUdwbGhyYncvU08rVXd2dkhuRGVxamJzQUN1WWdmdmN5THFFOU8v?=
- =?utf-8?Q?n4X1Gpa4I6+Z1mAQpYGy3S199TIpgfda5RXCQc0qc1aWx?=
-X-MS-Exchange-AntiSpam-MessageData-1: 6Jj8WfrePEkhHA==
+	=?utf-8?B?WURZRkhOUExYM3NHb1BBbWdDeDV1MWNuWTFZUmRTTEM0S09YNEQ3SmkxR0ZL?=
+ =?utf-8?B?K3B5SDhtaEM3WG1LRUdNNHFVL0NtbEhmUXVlTWxaM2RFUmJ0NmZPL041UkZ0?=
+ =?utf-8?B?Wlh1dStYTnFnODJCemFhK01JTXh5RXRwWTBadi9GN3NVMHFPNUtoa0FEVmpp?=
+ =?utf-8?B?VUZZcTJIZW1qZkRaU3k1cVMzRjRRNEIwVEd2eWxFa3BqQWtuS0NISUZLSlVB?=
+ =?utf-8?B?aWI3WEhEZGJVSjVUNXJ1MGtXZ1V1RjNTYXhKc0Q0ZHZQVTNWMWliWkhYVUFN?=
+ =?utf-8?B?RjRrNGxuZ3JwMVhmMGFFQXRyenVRbVBxakErOUxjNklrbUk4K0dxWWRpVG53?=
+ =?utf-8?B?TWhCdmF3b1gvTGZWdTJKZTFTTFJ2aDFZaDBqMkhFZUpDbjNnb0pZS2ErTVR3?=
+ =?utf-8?B?N2dMMnhtUWRGMmY1SnJLU2ZkRGF2eUtqQ043dGtnY2pVTEdKbXZJNnFkMFNI?=
+ =?utf-8?B?Ti9Oa0R4M2lVSjIzcHg3dDJkVHYrZ0FaYWV3S0twVXhuVzExMDZSdUNJUU85?=
+ =?utf-8?B?N0xTM3VrZlF2UVZySk8zdGN2ek04YW1QZi8wRjBaTkVadTFLTTU3VmZvb08z?=
+ =?utf-8?B?VFNzMkNudE8xZXlUM2lwSkhEaFY5L2M4cE8zTEJpZDhQQU91SzZRcGNFdEdy?=
+ =?utf-8?B?VzB2bm8rVjNja3NTUElLVUFpN0xwUnBKUytFTmZBS3NUenpweGFjZDNZWVNO?=
+ =?utf-8?B?MEVwbXZFS05yQVBkZDRESkEvOW5yeEhqYWZFWUhqelZ4UEluVDdqTXRsOC8z?=
+ =?utf-8?B?RTVESjJsVU96ajF1TUdWQ09Pc3l3K1U2d2xtTzFjTk9oNC9DZ2Zqb0J5dnpw?=
+ =?utf-8?B?YWh3N2YwbFpTSFJEeHJESDhXRFVTNkdqYzhSYzBxNU80aXhlVUtQR2F1MEpN?=
+ =?utf-8?B?dW01TDB0NklJWVhNUFhpa0RHQWROeEdUTEVmMiszZHQ3amJXYzBuaGxYVmo1?=
+ =?utf-8?B?OXozUUVEUm54WjltSnVJVXpyckV4Z3hRUW5tS1J0TVlYMUxzQW9maXZwakU3?=
+ =?utf-8?B?bWk3TTRYczVaQ2UzeHJjNXhMN0ZXZSttR2xWakxYK1RmQkRvK1VoK1NZWUx5?=
+ =?utf-8?B?aG1LYzhKc05rTkVJeGlhVmhSV2d5T3R0YUxxVmhYWTNuMjF6NlE1VGZXckRp?=
+ =?utf-8?B?TWsxNm1yT0pmVmFLeUpraHZVTFpIQmRmaDF5SndrSGNEajlVYVVjSjdNczZs?=
+ =?utf-8?B?RGVLbExabHJ5NmZJV3FCd0ZodFlMNEdycEpnMWFVV1YyV1p1YnoySnQ4M0lT?=
+ =?utf-8?B?NEN2QjEwVjl5b1F6ejhZS1RMRXg0MTBpdTZ3MjVVc2xLWTY0V3JIbXUwdXc0?=
+ =?utf-8?B?d1RWUnVxaFJmSUFNdnM5UUtVUmoyZCt0RnN6b3dib2N0TGY2WHJWZFBXWFFi?=
+ =?utf-8?B?WlVwU2hvVDBra3NrN2VKVTlJNitEVWMycXpYdUtNR0svT3dFa1lFRE9kaDR2?=
+ =?utf-8?B?cEt4S0Z0UUtyNXV6K1VZVUo3ZnBqUXJ1TzlUaitEZUFLdk5ESjRBTmNSOVdI?=
+ =?utf-8?B?cyt5ODFQd0FHUTR2RVRKQ2xaelUrdTdsYy90bEpnTCs3YnJJd215b3poeGVQ?=
+ =?utf-8?B?RzlHT3czZ2RmNEUrNFFSQnhkejRuNXVXMmRWbkUwcjZ1cll4dktaR0hpbVIw?=
+ =?utf-8?B?M3YzNlBoNWw3YjJlRTZzaHFkUWxweTBlRC9GMmdFYmRqVUVOa2U5WGluYnRx?=
+ =?utf-8?B?cnJoQmtYWUhRbE54OVltUWFXcmR6blBkdVJaTkhmWmx0Zk5yT3UrcnFWQTVG?=
+ =?utf-8?B?Y0J0UE9lZEhQTmFRY2ZJaVA1THJJekpNeHZkTlU1VmtpcTdpR0Jyb0ZLNGk5?=
+ =?utf-8?B?czRVdXZtcDhJcTBDalFuQUtudUxTcjlwcXE4dzlVUW9XNmg2UWlyWkJJdjZo?=
+ =?utf-8?B?VUhHeGhYZmlmUDNmZjZnS2FlODRCcVQrT2ptQ0M4bFZva2ZiSS9nMEcyNlg2?=
+ =?utf-8?B?MkdRcXBSWXkxMjNCcThjUkhYVURDQ1ZmZUlKYVpqdUl6ZDV5U281NGF5QVBi?=
+ =?utf-8?B?Vm00NWUrd21lc3dHTTRMOXdaT1lZMDBzaFJ2ODRVSzFhTFV6VkVDYWxnWGMy?=
+ =?utf-8?B?cU9NQXpCQ2YvNVQzdWh4K3VDVzZoMjY3a0M0c1JxaXNaM2RUb2p4MHR0dzFC?=
+ =?utf-8?B?eTZPZnI1V2NqREl6Rm5CZ2VZR1lzd05heWxCNlZiQ3FOTHBZQVZkV1NxNjBU?=
+ =?utf-8?B?ZzFLMFdzWnZ3UlFSRDR1OVlIMmNPRlRoZGprOUdsNm5CYTBjcElvYTVudFNN?=
+ =?utf-8?B?dVBOeTQ0d3daZTF4cUVIODU4NDI5Q3pyTWhxdjRnME1WR3JFd1loSngyT1hM?=
+ =?utf-8?B?dVVacnYxdnNxRVVLR0VaRUFkT0tIYVRsUWJFTm9qSGNZOHp0amVWZWNFcnZ3?=
+ =?utf-8?Q?mhRIzXTS6GYvzwp06UAikoVa6680Hp02x0RSEtDciEuEX?=
+X-MS-Exchange-AntiSpam-MessageData-1: 9WG26s7pgpoNEQ==
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 85ad1eb6-3380-460c-19df-08df349a354d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0ee99877-fc61-412c-354a-08df349a39d3
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6413.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2026 02:21:43.5141
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2026 02:21:51.2090
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3CFVSfbBsNgCtPHJXjOqrSx9VY8LyZUXftaj63e2RM1hHNJWqO62IlKxnNYpbL6fNtOv2KtMNnAvZaAE8pbtkQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4086
+X-MS-Exchange-CrossTenant-UserPrincipalName: +XQHqYdoRyg+Lq0Tkt5chryNZSx76btZJo0PEcMHIj9MHP2fE+tMaVsPx4cnNy9bPlNN0zRUTapHTLP0jz7Ruw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6045
 
-Add a decoder for NVKV. This is for receiving messages from GSP for
-GMCAPI calls. The NVKV format essentially encodes a sequence of function
-calls f(key, index, value). This decoder reads an encoded stream and
-invokes a type implementing the new `Schema` and `Visit` trait. The
-`Visit` trait can either consume the value or not, which is useful for
-composing schemas. If a (key, index, value) is not consumed, error out
-depending on `UnknownKeyPolicy`. Whether ignoring unknown keys is ok or
-not is per each GMCAPI call.
-
-Add kunit tests for the decoder.
+Similar to the typed encoding layer, add some decoding type machinery.
+Add a simple macro `nvkv_decode!` which implements `Schema` for a struct
+by composing visit calls to each member. Add some common `Schema` kinds,
+such as `Array` which collects an array value into a fixed maximum size
+array, and `Required` which fails a decode if the value is not sent.
 
 Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
 Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
 ---
- drivers/gpu/nova-core/gsp/nvkv.rs        |   3 +
- drivers/gpu/nova-core/gsp/nvkv/decode.rs | 503 +++++++++++++++++++++++++++++++
- 2 files changed, 506 insertions(+)
+ drivers/gpu/nova-core/gsp/nvkv.rs        |   8 +-
+ drivers/gpu/nova-core/gsp/nvkv/decode.rs | 706 ++++++++++++++++++++++++++++++-
+ 2 files changed, 712 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/nova-core/gsp/nvkv.rs b/drivers/gpu/nova-core/gsp/nvkv.rs
-index f1e63e6c4927..98c5c31c3717 100644
+index 9d89e09e02f5..143746daf782 100644
 --- a/drivers/gpu/nova-core/gsp/nvkv.rs
 +++ b/drivers/gpu/nova-core/gsp/nvkv.rs
-@@ -21,6 +21,9 @@
- mod encode;
- pub(crate) use encode::*;
+@@ -9,7 +9,7 @@
+ //! speaking, the function calls will map to some struct - for example, f(GPU_NAME_STRING_KEY, 0,
+ //! b"some gpu") naturally maps to storing a &str with the GPU name.
  
-+mod decode;
-+pub(crate) use decode::*;
-+
- /// The identifier of an NVKV key.
- pub(crate) type KeyId = u16;
+-#![expect(unused_imports)]
++#![cfg_attr(not(CONFIG_KUNIT = "y"), expect(unused_imports))]
  
-diff --git a/drivers/gpu/nova-core/gsp/nvkv/decode.rs b/drivers/gpu/nova-core/gsp/nvkv/decode.rs
-new file mode 100644
-index 000000000000..6496fab1c0c6
---- /dev/null
-+++ b/drivers/gpu/nova-core/gsp/nvkv/decode.rs
-@@ -0,0 +1,503 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
-+
-+#![cfg_attr(not(CONFIG_KUNIT = "y"), expect(dead_code))]
-+
-+use kernel::prelude::*;
-+
-+use crate::{
-+    gsp::nvkv::{
-+        Index,
-+        KeyId,
-+        Op,
-+        Opcode, //
-+    },
-+    num::IntoSafeCast, //
-+};
-+
-+/// A decoded NVKV value.
-+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
-+pub(crate) enum DecoderValue<'a> {
-+    Scalar32(u32),
-+    Scalar64(u64),
-+    Array8(&'a [u8]),
-+    Array32(&'a [u32]),
-+    Array64(&'a [u64]),
+ use core::{
+     marker::PhantomData,
+@@ -20,6 +20,7 @@
+ };
+ 
+ use kernel::{
++    alloc::ArrayVec,
+     bitfield,
+     num::Bounded, //
+ };
+@@ -98,6 +99,11 @@ pub(crate) fn new(index: Index, value: T) -> Self {
+     }
+ }
+ 
++/// A schema field for an array value under the NVKV key `KEY_ID`.
++pub(crate) struct Array<T, const N: usize, const KEY_ID: KeyId> {
++    vec: ArrayVec<T, N>,
 +}
 +
-+/// Implements [`TryFrom`] from the given [`DecoderValue`] variant to the given type.
-+///
-+/// [`TryFrom`] is used by the [`Schema`] implementations in this file to convert from the
-+/// [`DecoderValue`]s into the types to store. Provide the implementations for basic types here.
-+macro_rules! impl_try_from_decoder_value {
-+    ($ty:ty, $variant:ident) => {
-+        impl<'a> TryFrom<DecoderValue<'a>> for $ty {
-+            type Error = Error;
+ bitfield! {
+     /// The op word that starts each NVKV operation.
+     struct Op(u64) {
+diff --git a/drivers/gpu/nova-core/gsp/nvkv/decode.rs b/drivers/gpu/nova-core/gsp/nvkv/decode.rs
+index 6496fab1c0c6..534056b97708 100644
+--- a/drivers/gpu/nova-core/gsp/nvkv/decode.rs
++++ b/drivers/gpu/nova-core/gsp/nvkv/decode.rs
+@@ -3,11 +3,22 @@
+ 
+ #![cfg_attr(not(CONFIG_KUNIT = "y"), expect(dead_code))]
+ 
+-use kernel::prelude::*;
++use core::marker::PhantomData;
 +
-+            fn try_from(value: DecoderValue<'a>) -> Result<Self> {
-+                if let DecoderValue::$variant(v) = value {
-+                    Ok(v)
-+                } else {
-+                    Err(EINVAL)
-+                }
++use kernel::{
++    alloc::ArrayVec,
++    prelude::*, //
++};
++use pin_init::{
++    init_array_from_fn,
++    stack_try_pin_init, //
++};
+ 
+ use crate::{
+     gsp::nvkv::{
++        Array,
+         Index,
++        Key,
+         KeyId,
+         Op,
+         Opcode, //
+@@ -15,6 +26,446 @@
+     num::IntoSafeCast, //
+ };
+ 
++/// Defines a schema struct together with its [`Schema`] and [`Visit`] implementations that decode
++/// into `$target`.
++///
++/// Each member of the struct should implement [`Schema`] and [`Visit`]. For every
++/// `(key, index, value)` triple decoded from the NVKV stream, the generated parent [`Visit`]
++/// implementation will call each member in declaration order with that triple. If a member consumes
++/// that triple, it will stop there. Otherwise it will keep going until all members are tried.
++///
++/// The schema struct holds the state required by the schema implementation to do the decode. It's
++/// recommended to use one of the existing [`Schema`] kinds ([`Required`], [`Optional`],
++/// [`Accumulated`], [`Key`], [`Array`], [`TruncatingArray`], [`Indexed`]) for each member.
++///
++/// Use a lifetime on the schema struct if you want to borrow data directly from the encoded stream,
++/// for example, `Key<&'d [u8], KEY>`.
++///
++/// # Examples
++///
++/// ```
++/// nvkv_decode! {
++///     struct RequestSchema => Request {
++///         id: Required<Key<u32, 0x0001>>,
++///         name: Array<u8, 64, 0x0002>,
++///     }
++/// }
++///
++/// nvkv_decode! {
++///     struct NameSchema<'d> => Name<'d> {
++///         name: Key<&'d [u8], 0x0002>,
++///     }
++/// }
++/// ```
++#[cfg_attr(not(CONFIG_KUNIT = "y"), expect(unused_macros))]
++macro_rules! nvkv_decode {
++    // A schema which doesn't borrow from the stream. The macro uses a generic lifetime for the
++    // [`Visit`] implementation but not for the struct itself. This allows omitting the unused
++    // lifetime on the struct.
++    (
++        $(#[$attr:meta])*
++        $vis:vis struct $name:ident => $target:ty { $($fields:tt)* }
++    ) => {
++        $crate::gsp::nvkv::nvkv_decode!(
++            @impl ['data] [] $(#[$attr])* $vis struct $name => $target { $($fields)* }
++        );
++    };
++    // A schema which borrows from the stream for lifetime `$datalt`. The macro connects the
++    // [`Visit`] lifetime with the struct lifetime.
++    (
++        $(#[$attr:meta])*
++        $vis:vis struct $name:ident<$datalt:lifetime> => $target:ty { $($fields:tt)* }
++    ) => {
++        $crate::gsp::nvkv::nvkv_decode!(
++            @impl [$datalt] [<$datalt>] $(#[$attr])* $vis struct $name => $target { $($fields)* }
++        );
++    };
++    (@impl [$datalt:lifetime] [$($generics:tt)*]
++        $(#[$attr:meta])*
++        $vis:vis struct $name:ident => $target:ty {
++            $(
++                $(#[$field_attr:meta])*
++                $field_vis:vis $field:ident : $ty:ty
++            ),* $(,)?
++        }
++    ) => {
++        $(#[$attr])*
++        $vis struct $name $($generics)* {
++            $(
++                $(#[$field_attr])*
++                $field_vis $field: $ty,
++            )*
++        }
++
++        impl $($generics)* $crate::gsp::nvkv::Schema for $name $($generics)* {
++            type Target = $target;
++
++            fn init() -> impl ::kernel::prelude::Init<Self> {
++                ::pin_init::init!(Self {
++                    $( $field <- <$ty as $crate::gsp::nvkv::Schema>::init(), )*
++                })
++            }
++
++            fn finish(
++                &mut self,
++            ) -> impl ::kernel::prelude::Init<Self::Target, ::kernel::error::Error> + '_ {
++                let Self { $($field,)* } = self;
++                ::kernel::try_init!(Self::Target {
++                    $( $field <- $crate::gsp::nvkv::Schema::finish($field), )*
++                }? ::kernel::error::Error)
++            }
++        }
++
++        impl<$datalt> $crate::gsp::nvkv::Visit<$datalt> for $name $($generics)* {
++            fn visit(
++                &mut self,
++                key: $crate::gsp::nvkv::KeyId,
++                index: $crate::gsp::nvkv::Index,
++                value: $crate::gsp::nvkv::DecoderValue<$datalt>,
++            ) -> ::kernel::error::Result<bool> {
++                // TODO: This performs worst-case O(#fields) visit calls. Consider optimising this
++                // if it becomes a problem.
++                Ok(false
++                    $( || $crate::gsp::nvkv::Visit::visit(&mut self.$field, key, index, value)? )*)
 +            }
 +        }
 +    };
 +}
++pub(crate) use nvkv_decode;
 +
-+impl_try_from_decoder_value!(u32, Scalar32);
-+impl_try_from_decoder_value!(u64, Scalar64);
-+impl_try_from_decoder_value!(&'a [u8], Array8);
-+impl_try_from_decoder_value!(&'a [u32], Array32);
-+impl_try_from_decoder_value!(&'a [u64], Array64);
++impl<T: Default, const KEY_ID: KeyId, As> Schema for Key<T, KEY_ID, As> {
++    type Target = T;
 +
-+/// The state of one NVKV decode operation which produces a target value [`Target`](Schema::Target).
-+///
-+/// The decoded values are passed to the state through [`Visit`], which is a separate trait so
-+/// that only [`Visit`] has the lifetime of the stream as a parameter. Structs whose [`Schema`]
-+/// fields don't borrow from the stream then don't need a lifetime parameter.
-+pub(crate) trait Schema {
-+    type Target;
-+
-+    /// Returns an initializer that creates an empty schema in place.
-+    ///
-+    /// Use [`KBox::init`] for the heap or [`stack_pin_init!`](pin_init::stack_pin_init) for the
-+    /// stack (if sure that the value is small enough to fit).
-+    fn init() -> impl Init<Self>;
-+
-+    /// Returns an initializer that makes the decoded [`Target`](Schema::Target).
-+    ///
-+    /// After the returned initializer runs successfully, the schema must be empty again. Taking
-+    /// `self` instead of `&mut self` would avoid this contract, but it forces a copy of the schema
-+    /// onto the stack.
-+    fn finish(&mut self) -> impl Init<Self::Target, Error> + '_;
-+}
-+
-+/// Trait for types that visit the decoded key, index, and value tuple of an NVKV stream.
-+///
-+/// A schema that doesn't need to borrow data from the stream can implement this for all `'data`
-+/// lifetimes, avoiding having to carry the lifetime parameter. A schema that borrows from the
-+/// stream directly should implement it for its own lifetime only.
-+pub(crate) trait Visit<'data> {
-+    /// Visits one decoded tuple. Returns `Ok(true)` if the schema consumed it.
-+    fn visit(&mut self, key: KeyId, index: Index, value: DecoderValue<'data>) -> Result<bool>;
-+}
-+
-+/// A read position in an NVKV stream.
-+struct Cursor<'a> {
-+    data: &'a [u64],
-+}
-+
-+impl<'a> Cursor<'a> {
-+    /// Creates a cursor at the start of `data`.
-+    fn new(data: &'a [u64]) -> Self {
-+        Self { data }
++    fn init() -> impl Init<Self> {
++        Self::default()
 +    }
 +
-+    /// Returns `true` if no `u64` values remain.
-+    fn is_empty(&self) -> bool {
-+        self.data.is_empty()
-+    }
++    fn finish(&mut self) -> impl Init<Self::Target, Error> + '_ {
++        const_assert!(
++            size_of::<T>() <= Self::MAX_STACK_SIZE,
++            "`Key` here would materialize too large a value on the stack"
++        );
 +
-+    /// Takes the next `u64`.
-+    fn take_u64(&mut self) -> Result<u64> {
-+        // PANIC: `take_u64s(1)` returns exactly one element on success.
-+        Ok(self.take_u64s(1)?[0])
-+    }
-+
-+    /// Takes `count` bytes. If `count` is not a multiple of 8 (`u64` size), bytes are discarded up
-+    /// to the next multiple.
-+    fn take_u8s(&mut self, count: usize) -> Result<&'a [u8]> {
-+        let values = self.take_u64s(count.div_ceil(size_of::<u64>()))?;
-+        values.as_bytes().get(..count).ok_or(EINVAL)
-+    }
-+
-+    /// Takes `count` 32-bit values. If `count` is not a multiple of 2 (`u32` values per `u64`),
-+    /// bytes are discarded up to the next multiple.
-+    fn take_u32s(&mut self, count: usize) -> Result<&'a [u32]> {
-+        let values = self.take_u64s(count.div_ceil(size_of::<u64>() / size_of::<u32>()))?;
-+        <[u32]>::ref_from_prefix_with_elems(values.as_bytes(), count)
-+            .map(|(elems, _)| elems)
-+            .map_err(|_| EINVAL)
-+    }
-+
-+    /// Takes `count` `u64` values, or fails with [`EINVAL`] if fewer remain.
-+    fn take_u64s(&mut self, count: usize) -> Result<&'a [u64]> {
-+        let (prefix, suffix) = self.data.split_at_checked(count).ok_or(EINVAL)?;
-+        self.data = suffix;
-+        Ok(prefix)
++        Ok(core::mem::take(&mut self.0))
 +    }
 +}
 +
-+/// A decoder for an NVKV stream.
-+pub(crate) struct Decoder<'a> {
-+    data: &'a [u64],
-+    policy: UnknownKeyPolicy,
-+}
-+
-+impl<'a> Decoder<'a> {
-+    /// Creates a decoder for `data` that handles unknown keys per `policy`.
-+    pub(crate) fn new(data: &'a [u64], policy: UnknownKeyPolicy) -> Self {
-+        Self { data, policy }
-+    }
-+
-+    /// Passes a decoded value to `schema` and applies the [`UnknownKeyPolicy`] if not consumed.
-+    fn visit<S: Visit<'a>>(
-+        &self,
-+        schema: &mut S,
-+        key: KeyId,
-+        index: Index,
-+        value: DecoderValue<'a>,
-+    ) -> Result {
-+        let consumed = schema.visit(key, index, value)?;
-+        if !consumed && self.policy == UnknownKeyPolicy::Error {
++impl<'data, T, const KEY_ID: KeyId, As> Visit<'data> for Key<T, KEY_ID, As>
++where
++    As: TryFrom<DecoderValue<'data>, Error = Error>,
++    T: TryFrom<As>,
++    Error: From<<T as TryFrom<As>>::Error>,
++{
++    fn visit(&mut self, key: KeyId, index: Index, value: DecoderValue<'data>) -> Result<bool> {
++        if key != KEY_ID {
++            Ok(false)
++        } else if index != Index::new::<0>() {
++            // Single values being set must be at index 0.
 +            Err(EINVAL)
 +        } else {
-+            Ok(())
-+        }
-+    }
-+
-+    /// Computes the key to use with a `SEQ` operation, or errors if it doesn't
-+    /// make a valid key (overflow).
-+    fn seq_key(base: KeyId, offset: usize) -> Result<KeyId> {
-+        base.checked_add(KeyId::try_from(offset)?).ok_or(EINVAL)
-+    }
-+
-+    /// Decodes every pair into `schema` and returns the result of [`Schema::finish`].
-+    pub(crate) fn decode<'s, S: Schema + Visit<'a>>(
-+        &self,
-+        schema: &'s mut S,
-+    ) -> Result<impl Init<S::Target, Error> + 's> {
-+        let mut cursor = Cursor::new(self.data);
-+        while !cursor.is_empty() {
-+            let op: Op = cursor.take_u64()?.into();
-+
-+            let key = op.key();
-+            let index = op.index();
-+            let op_value = op.value();
-+            match op.opcode()? {
-+                Opcode::Imm32 => {
-+                    self.visit(schema, key, index, DecoderValue::Scalar32(op_value))?;
-+                }
-+                Opcode::Seq32 => {
-+                    let values = cursor.take_u32s(op_value.into_safe_cast())?;
-+                    for (i, &value) in values.iter().enumerate() {
-+                        let key = Self::seq_key(key, i)?;
-+                        self.visit(schema, key, index, DecoderValue::Scalar32(value))?;
-+                    }
-+                }
-+                Opcode::Seq64 => {
-+                    let values = cursor.take_u64s(op_value.into_safe_cast())?;
-+                    for (i, &value) in values.iter().enumerate() {
-+                        let key = Self::seq_key(key, i)?;
-+                        self.visit(schema, key, index, DecoderValue::Scalar64(value))?;
-+                    }
-+                }
-+                Opcode::Array8 => {
-+                    let value = cursor.take_u8s(op_value.into_safe_cast())?;
-+                    self.visit(schema, key, index, DecoderValue::Array8(value))?;
-+                }
-+                Opcode::Array32 => {
-+                    let value = cursor.take_u32s(op_value.into_safe_cast())?;
-+                    self.visit(schema, key, index, DecoderValue::Array32(value))?;
-+                }
-+                Opcode::Array64 => {
-+                    let value = cursor.take_u64s(op_value.into_safe_cast())?;
-+                    self.visit(schema, key, index, DecoderValue::Array64(value))?;
-+                }
-+            };
-+        }
-+        Ok(schema.finish())
-+    }
-+}
-+
-+/// This is defined per call.
-+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+pub(crate) enum UnknownKeyPolicy {
-+    /// Decoding skips values that the schema does not consume.
-+    Ignore,
-+    /// Decoding fails with [`EINVAL`] on the first value that the schema does not consume.
-+    Error,
-+}
-+
-+#[kunit_tests(nova_core_nvkv_decode)]
-+mod tests {
-+    use super::*;
-+
-+    use crate::gsp::nvkv::Encoder;
-+
-+    /// The output type of the hand written [`Schema`].
-+    ///
-+    /// In this case, we can have it also implement [`Schema`] on itself rather than having a
-+    /// separate carrier type, since the [`Schema`] implementation is completely stateless.
-+    #[derive(Default)]
-+    struct RawSchema {
-+        scalar32: u32,
-+        scalar64: u64,
-+    }
-+
-+    impl RawSchema {
-+        const SCALAR32_KEY: KeyId = 0x1001;
-+        const SCALAR64_KEY: KeyId = 0x1002;
-+    }
-+
-+    impl Schema for RawSchema {
-+        type Target = Self;
-+
-+        fn init() -> impl Init<Self> {
-+            Self::default()
-+        }
-+
-+        fn finish(&mut self) -> impl Init<Self::Target, Error> + '_ {
-+            Ok(core::mem::take(self))
-+        }
-+    }
-+
-+    impl<'d> Visit<'d> for RawSchema {
-+        fn visit(&mut self, key: KeyId, index: Index, value: DecoderValue<'d>) -> Result<bool> {
-+            if index != Index::new::<0>() {
-+                return Err(EINVAL);
-+            }
-+            match key {
-+                Self::SCALAR32_KEY => self.scalar32 = value.try_into()?,
-+                Self::SCALAR64_KEY => self.scalar64 = value.try_into()?,
-+                _ => return Ok(false),
-+            }
++            // Overwrite and take the latest value here.
++            self.0 = T::try_from(As::try_from(value)?)?;
 +            Ok(true)
 +        }
 +    }
++}
 +
-+    // Tests that basic decoding into a manually implemented `Schema` works correctly.
++impl<T: Copy, const N: usize, const KEY_ID: KeyId> Array<T, N, KEY_ID> {
++    /// Replaces the elements with `elems`.
++    ///
++    /// Takes the [`Result`] for `elems` because this may be e.g. for an unrelated key.
++    fn set(&mut self, key: KeyId, index: Index, elems: Result<&[T]>) -> Result<bool> {
++        if key != KEY_ID {
++            return Ok(false);
++        }
++        // Require to be at index 0
++        if index != Index::new::<0>() {
++            return Err(EINVAL);
++        }
++        // Reject oversized and take the latest value.
++        self.vec.clear();
++        self.vec.extend_from_slice(elems?)?;
++        Ok(true)
++    }
++}
++
++impl<T: Copy, const N: usize, const KEY_ID: KeyId> Schema for Array<T, N, KEY_ID> {
++    type Target = ArrayVec<T, N>;
++
++    fn init() -> impl Init<Self> {
++        init!(Self {
++            vec <- ArrayVec::init_empty(),
++        })
++    }
++
++    fn finish(&mut self) -> impl Init<Self::Target, Error> + '_ {
++        ArrayVec::init_with(move |dst| {
++            dst.extend_from_slice(&self.vec)?;
++            self.vec.clear();
++            Ok(())
++        })
++    }
++}
++
++impl<'data, T: Copy + 'data, const N: usize, const KEY_ID: KeyId> Visit<'data>
++    for Array<T, N, KEY_ID>
++where
++    &'data [T]: TryFrom<DecoderValue<'data>, Error = Error>,
++{
++    fn visit(&mut self, key: KeyId, index: Index, value: DecoderValue<'data>) -> Result<bool> {
++        self.set(key, index, value.try_into())
++    }
++}
++
++/// A schema field for an array value under the NVKV key `KEY_ID` that keeps at most `N` elements.
++///
++/// Unlike [`Array`], a longer value is truncated to its first `N` elements instead of failing the
++/// decode.
++pub(crate) struct TruncatingArray<T, const N: usize, const KEY_ID: KeyId> {
++    array: Array<T, N, KEY_ID>,
++}
++
++impl<T: Copy, const N: usize, const KEY_ID: KeyId> Schema for TruncatingArray<T, N, KEY_ID> {
++    type Target = ArrayVec<T, N>;
++
++    fn init() -> impl Init<Self> {
++        init!(Self {
++            array <- Array::init(),
++        })
++    }
++
++    fn finish(&mut self) -> impl Init<Self::Target, Error> + '_ {
++        self.array.finish()
++    }
++}
++
++impl<'data, T: Copy + 'data, const N: usize, const KEY_ID: KeyId> Visit<'data>
++    for TruncatingArray<T, N, KEY_ID>
++where
++    &'data [T]: TryFrom<DecoderValue<'data>, Error = Error>,
++{
++    fn visit(&mut self, key: KeyId, index: Index, value: DecoderValue<'data>) -> Result<bool> {
++        let elems = <&[T]>::try_from(value).map(|elems| elems.get(..N).unwrap_or(elems));
++        self.array.set(key, index, elems)
++    }
++}
++
++/// A schema field that marks a child [`Schema`] as required.
++///
++/// `finish` fails with [`EINVAL`] if the child consumed no value.
++pub(crate) struct Required<S> {
++    inner: S,
++    parsed: bool,
++}
++
++impl<S: Schema> Schema for Required<S> {
++    type Target = S::Target;
++
++    fn init() -> impl Init<Self> {
++        init!(Self {
++            inner <- S::init(),
++            parsed: false,
++        })
++    }
++
++    fn finish(&mut self) -> impl Init<Self::Target, Error> + '_ {
++        let parsed = core::mem::take(&mut self.parsed);
++        self.inner
++            .finish()
++            .chain(move |_| if parsed { Ok(()) } else { Err(EINVAL) })
++    }
++}
++
++impl<'data, S: Visit<'data>> Visit<'data> for Required<S> {
++    fn visit(&mut self, key: KeyId, index: Index, value: DecoderValue<'data>) -> Result<bool> {
++        let consumed = self.inner.visit(key, index, value)?;
++        self.parsed |= consumed;
++        Ok(consumed)
++    }
++}
++
++/// A schema field which marks a child [`Schema`] as optional.
++pub(crate) struct Optional<S> {
++    inner: S,
++    parsed: bool,
++}
++
++impl<S> Optional<S> {
++    /// The maximum size in bytes we allow to materialize on the stack for the
++    /// [`Target`](Schema::Target) of an [`Optional`]. This is checked at compile
++    /// time.
++    const MAX_STACK_SIZE: usize = 512;
++}
++
++impl<S: Schema> Schema for Optional<S>
++where
++    S::Target: Default + Unpin,
++{
++    type Target = Option<S::Target>;
++
++    fn init() -> impl Init<Self> {
++        init!(Self {
++            inner <- S::init(),
++            parsed: false,
++        })
++    }
++
++    fn finish(&mut self) -> impl Init<Self::Target, Error> + '_ {
++        const_assert!(
++            size_of::<Self::Target>() <= Self::MAX_STACK_SIZE,
++            "`Optional` here would materialize too large a value on the stack"
++        );
++
++        if !core::mem::take(&mut self.parsed) {
++            return Ok(None);
++        }
++        stack_try_pin_init!(let value: S::Target =? self.inner.finish());
++        Ok(Some(core::mem::take(value.get_mut())))
++    }
++}
++
++impl<'data, S: Visit<'data>> Visit<'data> for Optional<S> {
++    fn visit(&mut self, key: KeyId, index: Index, value: DecoderValue<'data>) -> Result<bool> {
++        let consumed = self.inner.visit(key, index, value)?;
++        self.parsed |= consumed;
++        Ok(consumed)
++    }
++}
++
++/// Expects objects specified sequentially with index starting from zero.
++///
++/// This stores two [`Schema`]s which are initially empty. A [`Schema`] is expected to be complete
++/// when we get the next index.
++pub(crate) struct Accumulated<S: Schema> {
++    // Tracks the current index (starting from 0). When this advances, the schema `current` must be
++    // finished.
++    current_index: Index,
++
++    // The current `Schema` being constructed now.
++    current: S,
++
++    // Tracks empty schemas (one that has never consumed a key via `visit`), so we don't call
++    // `finish` on them.
++    current_started: bool,
++
++    // The next `Schema` to be constructed. This is required because we must consume a key intended
++    // for this Schema from the next index to know we can try calling `finish` on `current`.
++    next: S,
++
++    // The set of results generated by the completed schemas so far.
++    accumulated: KVVec<S::Target>,
++}
++
++impl<S: Schema> Schema for Accumulated<S> {
++    type Target = KVVec<S::Target>;
++
++    fn init() -> impl Init<Self> {
++        init!(Self {
++            current_index: Index::new::<0>(),
++            current <- S::init(),
++            current_started: false,
++            next <- S::init(),
++            accumulated: KVVec::new(),
++        })
++    }
++
++    fn finish(&mut self) -> impl Init<Self::Target, Error> + '_ {
++        if self.current_started {
++            self.accumulated
++                .try_push_init(self.current.finish(), GFP_KERNEL)?;
++            self.current_started = false;
++        }
++        self.current_index = Index::new::<0>();
++        Ok(core::mem::take(&mut self.accumulated))
++    }
++}
++
++impl<'data, S: Schema + Visit<'data>> Visit<'data> for Accumulated<S> {
++    fn visit(&mut self, key: KeyId, index: Index, value: DecoderValue<'data>) -> Result<bool> {
++        if index != self.current_index {
++            if !self.next.visit(key, Index::new::<0>(), value)? {
++                // Unrelated key to us.
++                return Ok(false);
++            }
++
++            // Require that objects at index k have all their keys sent before the k + 1 th object
++            // can be completed. Require that objects are sent contiguously in order from index 0.
++            if !self.current_started || index != self.current_index + 1 {
++                return Err(EINVAL);
++            }
++
++            // The current value must be finished. Push it and swap in `next`.
++            self.accumulated
++                .try_push_init(self.current.finish(), GFP_KERNEL)?;
++            core::mem::swap(&mut self.current, &mut self.next);
++            self.current_started = true;
++            self.current_index = index;
++            Ok(true)
++        } else {
++            let consumed = self.current.visit(key, Index::new::<0>(), value)?;
++            self.current_started |= consumed;
++            Ok(consumed)
++        }
++    }
++}
++
++/// A schema field that scatters indexed values into an array of `N` slots.
++///
++/// Values are decoded from the encoded stream using the type `As`, but then converted into `T` with
++/// [`From`], like the `As` parameter of [`Key`].
++pub(crate) struct Indexed<T, const N: usize, const KEY_ID: KeyId, As = T> {
++    slots: [T; N],
++    _as: PhantomData<As>,
++}
++
++/// Copies `elems`, converted to `T`, into `slots` at `start`.
++///
++/// Fails with [`EINVAL`] if the window does not fit in `slots`.
++fn scatter_window<T: From<As>, As: Copy>(slots: &mut [T], start: usize, elems: &[As]) -> Result {
++    let end = start.checked_add(elems.len()).ok_or(EINVAL)?;
++    // Reject indices outside of the declared array size.
++    let dst = slots.get_mut(start..end).ok_or(EINVAL)?;
++    for (d, &e) in dst.iter_mut().zip(elems) {
++        *d = T::from(e);
++    }
++    Ok(())
++}
++
++impl<T: Default, const N: usize, const KEY_ID: KeyId, As> Schema for Indexed<T, N, KEY_ID, As> {
++    type Target = [T; N];
++
++    fn init() -> impl Init<Self> {
++        init!(Self {
++            slots <- init_array_from_fn(|_| T::default()),
++            _as: PhantomData,
++        })
++    }
++
++    fn finish(&mut self) -> impl Init<Self::Target, Error> + '_ {
++        init_array_from_fn(|i| Ok::<_, Error>(core::mem::take(&mut self.slots[i])))
++    }
++}
++
++impl<'data, T, const N: usize, const KEY_ID: KeyId, As> Visit<'data> for Indexed<T, N, KEY_ID, As>
++where
++    T: From<As>,
++    As: Copy + TryFrom<DecoderValue<'data>, Error = Error> + 'data,
++    &'data [As]: TryFrom<DecoderValue<'data>, Error = Error>,
++{
++    fn visit(&mut self, key: KeyId, index: Index, value: DecoderValue<'data>) -> Result<bool> {
++        if key != KEY_ID {
++            return Ok(false);
++        }
++        let start = index.cast::<usize>().get();
++        // Accept both scalar vs scattered array setting for flexibility.
++        match <&[As]>::try_from(value) {
++            Ok(elems) => scatter_window(&mut self.slots, start, elems)?,
++            Err(_) => scatter_window(&mut self.slots, start, &[As::try_from(value)?])?,
++        }
++        Ok(true)
++    }
++}
++
+ /// A decoded NVKV value.
+ #[derive(Copy, Clone, Debug, PartialEq, Eq)]
+ pub(crate) enum DecoderValue<'a> {
+@@ -312,6 +763,133 @@ fn decode_unknown_key() -> Result {
+         Ok(())
+     }
+ 
++    // Tests that decoding via the `nvkv_decode!` macro works correctly.
 +    #[test]
-+    fn decode_raw_schema() -> Result {
-+        // Decodes an IMM32 pair and a SEQ64 pair (the encoder emits a u64 as a single-element
-+        // SEQ64) with a hand written `Schema`. Keys and value constants chosen to distinguish e.g.
-+        // saving the wrong value to the wrong location.
-+        const SCALAR32_VALUE: u32 = 0x1111_2222;
-+        const SCALAR64_VALUE: u64 = 0x3333_4444_5555_6666;
++    fn decode_typed_struct() -> Result {
++        const SCALAR32_KEY: KeyId = 0x1234;
++        const SCALAR64_KEY: KeyId = 0x1235;
++        const ARRAY8_KEY: KeyId = 0x1236;
++        const ARRAY32_KEY: KeyId = 0x1237;
++        const ARRAY64_KEY: KeyId = 0x1238;
++        const OPT_PRESENT_KEY: KeyId = 0x1239;
++        const OPT_ABSENT_KEY: KeyId = 0x123a;
++        const OPT_ARRAY_KEY: KeyId = 0x123b;
++        const TRUNCATED_KEY: KeyId = 0x123c;
++        const CONVERTED_KEY: KeyId = 0x123d;
++        const X_KEY: KeyId = 0x0100;
++        const Y_KEY: KeyId = 0x0101;
++        const SLOT_KEY: KeyId = 0x0200;
 +
++        const SCALAR32_VALUE: u32 = 0x89ab_cdef;
++        const SCALAR64_VALUE: u64 = 0x0123_4567_89ab_cdef;
++        const ARRAY8_VALUE: &[u8] = &[0x12, 0x34, 0x56];
++        const ARRAY32_VALUE: &[u32] = &[0x0123_4567, 0x89ab_cdef];
++        const ARRAY64_VALUE: &[u64] = &[0x0123_4567_89ab_cdef, 0xfedc_ba98_7654_3210];
++        const OPT_PRESENT_VALUE: u32 = 0x55;
++        const OPT_ARRAY_VALUE: &[u8] = &[0x77, 0x88];
++        const TRUNCATED_VALUE: &[u8] = &[0x9a, 0xbc, 0xde];
++        const CONVERTED_VALUE: u32 = 0x66;
++
++        // A value that is decoded from the `u32` it converts from.
++        #[derive(Default)]
++        struct Converted(u32);
++
++        impl From<u32> for Converted {
++            fn from(value: u32) -> Self {
++                Self(value)
++            }
++        }
++
++        nvkv_decode! {
++            struct PairSchema => Pair {
++                x: Required<Key<u32, X_KEY>>,
++                y: Required<Key<u32, Y_KEY>>,
++            }
++        }
++
++        struct Pair {
++            x: u32,
++            y: u32,
++        }
++
++        nvkv_decode! {
++            struct TestSchema => TestDecodable {
++                scalar32: Required<Key<u32, SCALAR32_KEY>>,
++                scalar64: Required<Key<u64, SCALAR64_KEY>>,
++                array8: Array<u8, 64, ARRAY8_KEY>,
++                array32: Array<u32, 64, ARRAY32_KEY>,
++                array64: Array<u64, 32, ARRAY64_KEY>,
++                opt_present: Optional<Key<u32, OPT_PRESENT_KEY>>,
++                opt_absent: Optional<Key<u32, OPT_ABSENT_KEY>>,
++                opt_array: Optional<Array<u8, 4, OPT_ARRAY_KEY>>,
++                truncated: TruncatingArray<u8, 2, TRUNCATED_KEY>,
++                converted: Key<Converted, CONVERTED_KEY, u32>,
++                pairs: Accumulated<PairSchema>,
++                slots: Indexed<u32, 4, SLOT_KEY>,
++            }
++        }
++
++        struct TestDecodable {
++            scalar32: u32,
++            scalar64: u64,
++            array8: ArrayVec<u8, 64>,
++            array32: ArrayVec<u32, 64>,
++            array64: ArrayVec<u64, 32>,
++            opt_present: Option<u32>,
++            opt_absent: Option<u32>,
++            opt_array: Option<ArrayVec<u8, 4>>,
++            truncated: ArrayVec<u8, 2>,
++            converted: Converted,
++            pairs: KVVec<Pair>,
++            slots: [u32; 4],
++        }
++
++        let index0 = Index::new::<0>();
++        let index1 = Index::new::<1>();
++        let index2 = Index::new::<2>();
 +        let mut encoder = Encoder::new();
-+        encoder.encode_u32(RawSchema::SCALAR32_KEY, Index::new::<0>(), SCALAR32_VALUE)?;
-+        encoder.encode_u64(RawSchema::SCALAR64_KEY, Index::new::<0>(), SCALAR64_VALUE)?;
++        encoder.encode_u32(SCALAR32_KEY, index0, SCALAR32_VALUE)?;
++        encoder.encode_u64(SCALAR64_KEY, index0, SCALAR64_VALUE)?;
++        encoder.encode_array8(ARRAY8_KEY, index0, ARRAY8_VALUE)?;
++        encoder.encode_array32(ARRAY32_KEY, index0, ARRAY32_VALUE)?;
++        encoder.encode_array64(ARRAY64_KEY, index0, ARRAY64_VALUE)?;
++        encoder.encode_u32(OPT_PRESENT_KEY, index0, OPT_PRESENT_VALUE)?;
++        encoder.encode_array8(OPT_ARRAY_KEY, index0, OPT_ARRAY_VALUE)?;
++        encoder.encode_array8(TRUNCATED_KEY, index0, TRUNCATED_VALUE)?;
++        encoder.encode_u32(CONVERTED_KEY, index0, CONVERTED_VALUE)?;
++        encoder.encode_u32(X_KEY, index0, 1)?;
++        encoder.encode_u32(Y_KEY, index0, 2)?;
++        encoder.encode_u32(SLOT_KEY, index1, 20)?;
++        encoder.encode_u32(X_KEY, index1, 3)?;
++        encoder.encode_u32(Y_KEY, index1, 4)?;
++        encoder.encode_u32(SLOT_KEY, index0, 10)?;
++        encoder.encode_array32(SLOT_KEY, index2, &[30, 40])?;
 +        let serialized = encoder.finish();
 +
 +        let decoder = Decoder::new(&serialized, UnknownKeyPolicy::Error);
-+        let mut schema = KBox::init(RawSchema::init(), GFP_KERNEL)?;
++        let mut schema = KBox::init(TestSchema::init(), GFP_KERNEL)?;
 +        let decoded = KBox::try_init(decoder.decode(&mut *schema)?, GFP_KERNEL)?;
 +
 +        assert_eq!(decoded.scalar32, SCALAR32_VALUE);
 +        assert_eq!(decoded.scalar64, SCALAR64_VALUE);
++        assert_eq!(*decoded.array8, *ARRAY8_VALUE);
++        assert_eq!(*decoded.array32, *ARRAY32_VALUE);
++        assert_eq!(*decoded.array64, *ARRAY64_VALUE);
++        assert_eq!(decoded.opt_present, Some(OPT_PRESENT_VALUE));
++        assert_eq!(decoded.opt_absent, None);
++        assert_eq!(decoded.opt_array.as_deref(), Some(OPT_ARRAY_VALUE));
++        assert_eq!(*decoded.truncated, TRUNCATED_VALUE[..2]);
++        assert_eq!(decoded.converted.0, CONVERTED_VALUE);
++        assert_eq!(decoded.pairs.len(), 2);
++        assert_eq!(decoded.pairs[0].x, 1);
++        assert_eq!(decoded.pairs[0].y, 2);
++        assert_eq!(decoded.pairs[1].x, 3);
++        assert_eq!(decoded.pairs[1].y, 4);
++        assert_eq!(decoded.slots, [10, 20, 30, 40]);
 +
 +        Ok(())
 +    }
 +
-+    // Tests that an unknown key fails the decode under `UnknownKeyPolicy::Error` and is skipped
-+    // under `UnknownKeyPolicy::Ignore`.
+     /// Records each visit as `(key, index, value)`, for tests on hand-built streams.
+     #[derive(Default)]
+     struct Recorder<'d> {
+@@ -500,4 +1078,130 @@ fn decode_raw_words_malformed() -> Result {
+ 
+         Ok(())
+     }
++
++    // Tests the error paths of the schema kinds.
 +    #[test]
-+    fn decode_unknown_key() -> Result {
-+        const UNKNOWN_KEY: KeyId = 0x2001;
++    fn decode_typed_struct_errors() -> Result {
++        const VALUE_KEY: KeyId = 0x2200;
++        const SLOT_KEY: KeyId = 0x2201;
++        const BLOB_KEY: KeyId = 0x2202;
++        const X_KEY: KeyId = 0x2203;
++        const Y_KEY: KeyId = 0x2204;
 +
++        let index0 = Index::new::<0>();
++        let index1 = Index::new::<1>();
++        let index2 = Index::new::<2>();
++
++        nvkv_decode! {
++            struct ValueSchema => Value {
++                value: Key<u32, VALUE_KEY>,
++            }
++        }
++
++        struct Value {
++            value: u32,
++        }
++
++        // A single value at a non-zero index.
 +        let mut encoder = Encoder::new();
-+        encoder.encode_u32(UNKNOWN_KEY, Index::new::<0>(), 1)?;
++        encoder.encode_u32(VALUE_KEY, index1, 1)?;
 +        let serialized = encoder.finish();
-+
 +        let decoder = Decoder::new(&serialized, UnknownKeyPolicy::Error);
-+        let mut schema = KBox::init(RawSchema::init(), GFP_KERNEL)?;
++        let mut schema = KBox::init(ValueSchema::init(), GFP_KERNEL)?;
 +        assert!(decoder.decode(&mut *schema).is_err());
 +
-+        let decoder = Decoder::new(&serialized, UnknownKeyPolicy::Ignore);
-+        let mut schema = KBox::init(RawSchema::init(), GFP_KERNEL)?;
-+        assert!(decoder.decode(&mut *schema).is_ok());
++        // A 64-bit value for a 32-bit key.
++        let mut encoder = Encoder::new();
++        encoder.encode_u64(VALUE_KEY, index0, 1)?;
++        let serialized = encoder.finish();
++        let decoder = Decoder::new(&serialized, UnknownKeyPolicy::Error);
++        let mut schema = KBox::init(ValueSchema::init(), GFP_KERNEL)?;
++        assert!(decoder.decode(&mut *schema).is_err());
++
++        nvkv_decode! {
++            struct SlotsSchema => Slots {
++                slots: Indexed<u32, 2, SLOT_KEY>,
++            }
++        }
++
++        struct Slots {
++            slots: [u32; 2],
++        }
++
++        // An index past the declared slots.
++        let mut encoder = Encoder::new();
++        encoder.encode_u32(SLOT_KEY, index2, 1)?;
++        let serialized = encoder.finish();
++        let decoder = Decoder::new(&serialized, UnknownKeyPolicy::Error);
++        let mut schema = KBox::init(SlotsSchema::init(), GFP_KERNEL)?;
++        assert!(decoder.decode(&mut *schema).is_err());
++
++        nvkv_decode! {
++            struct BlobSchema => Blob {
++                blob: Array<u8, 4, BLOB_KEY>,
++            }
++        }
++
++        struct Blob {
++            blob: ArrayVec<u8, 4>,
++        }
++
++        // An array longer than the declared capacity.
++        let mut encoder = Encoder::new();
++        encoder.encode_array8(BLOB_KEY, index0, &[0; 5])?;
++        let serialized = encoder.finish();
++        let decoder = Decoder::new(&serialized, UnknownKeyPolicy::Error);
++        let mut schema = KBox::init(BlobSchema::init(), GFP_KERNEL)?;
++        assert!(decoder.decode(&mut *schema).is_err());
++
++        nvkv_decode! {
++            struct PairSchema => Pair {
++                x: Required<Key<u32, X_KEY>>,
++                y: Required<Key<u32, Y_KEY>>,
++            }
++        }
++
++        struct Pair {
++            x: u32,
++            y: u32,
++        }
++
++        // Required keys that are missing are an error.
++        let mut encoder = Encoder::new();
++        encoder.encode_u32(X_KEY, index0, 1)?;
++        let serialized = encoder.finish();
++        let decoder = Decoder::new(&serialized, UnknownKeyPolicy::Error);
++        let mut schema = KBox::init(PairSchema::init(), GFP_KERNEL)?;
++        let init = decoder.decode(&mut *schema)?;
++        assert!(KBox::try_init(init, GFP_KERNEL).is_err());
++
++        nvkv_decode! {
++            struct PairsSchema => Pairs {
++                pairs: Accumulated<PairSchema>,
++            }
++        }
++
++        struct Pairs {
++            pairs: KVVec<Pair>,
++        }
++
++        // Accumulated objects must start at index 0.
++        let mut encoder = Encoder::new();
++        encoder.encode_u32(X_KEY, index1, 1)?;
++        let serialized = encoder.finish();
++        let decoder = Decoder::new(&serialized, UnknownKeyPolicy::Error);
++        let mut schema = KBox::init(PairsSchema::init(), GFP_KERNEL)?;
++        assert!(decoder.decode(&mut *schema).is_err());
++
++        // Accumulated objects must be complete before the next one starts.
++        let mut encoder = Encoder::new();
++        encoder.encode_u32(X_KEY, index0, 1)?;
++        encoder.encode_u32(X_KEY, index1, 2)?;
++        let serialized = encoder.finish();
++        let decoder = Decoder::new(&serialized, UnknownKeyPolicy::Error);
++        let mut schema = KBox::init(PairsSchema::init(), GFP_KERNEL)?;
++        assert!(decoder.decode(&mut *schema).is_err());
 +
 +        Ok(())
 +    }
-+
-+    /// Records each visit as `(key, index, value)`, for tests on hand-built streams.
-+    #[derive(Default)]
-+    struct Recorder<'d> {
-+        visits: KVVec<(KeyId, u64, DecoderValue<'d>)>,
-+    }
-+
-+    impl<'d> Schema for Recorder<'d> {
-+        type Target = KVVec<(KeyId, u64, DecoderValue<'d>)>;
-+
-+        fn init() -> impl Init<Self> {
-+            Self::default()
-+        }
-+
-+        fn finish(&mut self) -> impl Init<Self::Target, Error> + '_ {
-+            Ok(core::mem::take(&mut self.visits))
-+        }
-+    }
-+
-+    impl<'d> Visit<'d> for Recorder<'d> {
-+        fn visit(&mut self, key: KeyId, index: Index, value: DecoderValue<'d>) -> Result<bool> {
-+            self.visits.push((key, index.get(), value), GFP_KERNEL)?;
-+            Ok(true)
-+        }
-+    }
-+
-+    // Tests the decoder on hand-built `u64` values that the encoder does not produce: SEQ32,
-+    // multi-value SEQ64, zero counts, a non-zero index and padded arrays.
-+    #[test]
-+    fn decode_raw_u64s() -> Result {
-+        const SEQ32_KEY: KeyId = 0x2000;
-+        const SEQ64_KEY: KeyId = 0x2010;
-+        const EMPTY_SEQ64_KEY: KeyId = 0x2020;
-+        const EMPTY_SEQ32_KEY: KeyId = 0x2021;
-+        const EMPTY_ARRAY8_KEY: KeyId = 0x2030;
-+        const EMPTY_ARRAY32_KEY: KeyId = 0x2031;
-+        const EMPTY_ARRAY64_KEY: KeyId = 0x2032;
-+        const ARRAY8_KEY: KeyId = 0x2040;
-+        const ARRAY32_KEY: KeyId = 0x2041;
-+
-+        let data = [
-+            // SEQ32 with three values for three consecutive keys, packed two per `u64`.
-+            Op::zeroed()
-+                .with_key(SEQ32_KEY)
-+                .with_opcode(Opcode::Seq32)
-+                .with_value(3)
-+                .into_raw(),
-+            0x0000_0002_0000_0001,
-+            0x0000_0000_0000_0003,
-+            // SEQ64 with two values at a non-zero index.
-+            Op::zeroed()
-+                .with_key(SEQ64_KEY)
-+                .with_index(Index::new::<3>())
-+                .with_opcode(Opcode::Seq64)
-+                .with_value(2)
-+                .into_raw(),
-+            0x1111_1111_1111_1111,
-+            0x2222_2222_2222_2222,
-+            // A zero-count sequence has no keys and is skipped, as in NVIDIA's decoder.
-+            Op::zeroed()
-+                .with_key(EMPTY_SEQ64_KEY)
-+                .with_opcode(Opcode::Seq64)
-+                .with_value(0)
-+                .into_raw(),
-+            Op::zeroed()
-+                .with_key(EMPTY_SEQ32_KEY)
-+                .with_opcode(Opcode::Seq32)
-+                .with_value(0)
-+                .into_raw(),
-+            // A zero-length array is visited with an empty slice.
-+            Op::zeroed()
-+                .with_key(EMPTY_ARRAY8_KEY)
-+                .with_opcode(Opcode::Array8)
-+                .with_value(0)
-+                .into_raw(),
-+            Op::zeroed()
-+                .with_key(EMPTY_ARRAY32_KEY)
-+                .with_opcode(Opcode::Array32)
-+                .with_value(0)
-+                .into_raw(),
-+            Op::zeroed()
-+                .with_key(EMPTY_ARRAY64_KEY)
-+                .with_opcode(Opcode::Array64)
-+                .with_value(0)
-+                .into_raw(),
-+            // Three bytes padded to one `u64`, then three 32-bit values padded to two `u64` values.
-+            Op::zeroed()
-+                .with_key(ARRAY8_KEY)
-+                .with_opcode(Opcode::Array8)
-+                .with_value(3)
-+                .into_raw(),
-+            0x0000_0000_00cc_bbaa,
-+            Op::zeroed()
-+                .with_key(ARRAY32_KEY)
-+                .with_opcode(Opcode::Array32)
-+                .with_value(3)
-+                .into_raw(),
-+            0x0000_0002_0000_0001,
-+            0x0000_0000_0000_0003,
-+        ];
-+
-+        let decoder = Decoder::new(&data, UnknownKeyPolicy::Error);
-+        let mut schema = KBox::init(Recorder::init(), GFP_KERNEL)?;
-+        let visits = KBox::try_init(decoder.decode(&mut *schema)?, GFP_KERNEL)?;
-+
-+        assert_eq!(
-+            visits.as_slice(),
-+            &[
-+                (SEQ32_KEY, 0, DecoderValue::Scalar32(1)),
-+                (SEQ32_KEY + 1, 0, DecoderValue::Scalar32(2)),
-+                (SEQ32_KEY + 2, 0, DecoderValue::Scalar32(3)),
-+                (SEQ64_KEY, 3, DecoderValue::Scalar64(0x1111_1111_1111_1111)),
-+                (
-+                    SEQ64_KEY + 1,
-+                    3,
-+                    DecoderValue::Scalar64(0x2222_2222_2222_2222)
-+                ),
-+                (EMPTY_ARRAY8_KEY, 0, DecoderValue::Array8(&[])),
-+                (EMPTY_ARRAY32_KEY, 0, DecoderValue::Array32(&[])),
-+                (EMPTY_ARRAY64_KEY, 0, DecoderValue::Array64(&[])),
-+                (ARRAY8_KEY, 0, DecoderValue::Array8(&[0xaa, 0xbb, 0xcc])),
-+                (ARRAY32_KEY, 0, DecoderValue::Array32(&[1, 2, 3])),
-+            ]
-+        );
-+
-+        Ok(())
-+    }
-+
-+    // Tests that decoding a malformed stream fails instead of reading past the payload.
-+    #[test]
-+    fn decode_raw_words_malformed() -> Result {
-+        const KEY: KeyId = 0x2100;
-+
-+        // An `Op` with the reserved opcode 6.
-+        let bad_opcode = Op::zeroed().with_key(KEY).into_raw() | (6u64 << Op::OPCODE_SHIFT);
-+        let streams: [&[u64]; 6] = [
-+            // 100 bytes need 13 `u64` values, only one follows.
-+            &[
-+                Op::zeroed()
-+                    .with_key(KEY)
-+                    .with_opcode(Opcode::Array8)
-+                    .with_value(100)
-+                    .into_raw(),
-+                0,
-+            ],
-+            // Two 64-bit values, only one follows.
-+            &[
-+                Op::zeroed()
-+                    .with_key(KEY)
-+                    .with_opcode(Opcode::Seq64)
-+                    .with_value(2)
-+                    .into_raw(),
-+                0,
-+            ],
-+            // Three 32-bit values need two `u64` values, only one follows.
-+            &[
-+                Op::zeroed()
-+                    .with_key(KEY)
-+                    .with_opcode(Opcode::Array32)
-+                    .with_value(3)
-+                    .into_raw(),
-+                0,
-+            ],
-+            // A value count with no payload.
-+            &[Op::zeroed()
-+                .with_key(KEY)
-+                .with_opcode(Opcode::Seq32)
-+                .with_value(1)
-+                .into_raw()],
-+            &[bad_opcode],
-+            // Consecutive keys that overflow `KeyId`.
-+            &[
-+                Op::zeroed()
-+                    .with_key(KeyId::MAX)
-+                    .with_opcode(Opcode::Seq32)
-+                    .with_value(2)
-+                    .into_raw(),
-+                0,
-+            ],
-+        ];
-+
-+        for stream in streams {
-+            let decoder = Decoder::new(stream, UnknownKeyPolicy::Ignore);
-+            let mut schema = KBox::init(Recorder::init(), GFP_KERNEL)?;
-+            assert!(decoder.decode(&mut *schema).is_err());
-+        }
-+
-+        Ok(())
-+    }
-+}
+ }
 
 -- 
 2.56.0
