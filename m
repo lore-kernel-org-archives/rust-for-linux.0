@@ -1,66 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793198177;
-	b=wbIRxHTWvx5VVP1xHE8iT8g/fehTRfZkSSAJ39G0P0ONiVdNx3dx/gxaDlHuWVy7muww
-	 rwHvd8ER+Yx45GGzAkEK650/936dysOrYSw0LSGuVCYcqZQr4PVNAPEE7FHF4sEuiiX4e
-	 vfPazgXeri7or1z5HRxD759mUQNOjPWFTXrQp5GUembZeq+tyCoPIpuUXa0czAIp1+17+
-	 1GqARsNiBxdVQJmHQN0gQq+s9OFkr/30Mnyk1i6isLq2p2s+zYCscf26JGac9UokDiVnr
-	 y+2FqvYdw62v0uiQnsp7KE8VGYEIWg9oM6W13QPievopoVEf+ZshhS90bpCf3FQ3/Jg==
+	t=1793200001;
+	b=XSk0shgCOnSQ/x3nzLIAbwHtzntE69Ul+wDWlUylv0OOAMT2Ivcfng9MCT8/7rF1mKkw
+	 UrENJ0HggittvNfttWcLxEJGNONcHnFeshNldR/nsexHcH2KD3iS+oQZ5ftuhoeTig4qG
+	 wk+7GSz0lCT69Z7Rl3vVGiirLgCRFxhlDaQLnNmG+/HmY4WKAU1z+TQ6SkqAjnANQJ7tO
+	 TBKflkSwwpS7WCf4NQNX65shJkGFrNrEaJBsY8oqf0MOQmPfHQAU5YBW3l0C6JEbmGDlC
+	 eWnXzUypZCgI+6DOTZXMeSTD2RpjcFvOjMcCGfAjTjtslGkdpvJ0tjGyce2on/3sEBg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793198177;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:MIME-Version:Content-Type;
-	bh=M1Ry+UQHTd+cvMSHTcIN1u2SNdFt3NGJJUT4FPQVL7w=;
-	b=2jmYmHSuLl1YRfqUWgta44zx52RJ4esMvcXfL7mFk9OHNkKAyzku8O58R3tvdj01HeS2
-	 k1cuWd+AuuTk/faje4fnBqwS7c1M/NGHNWH8EjAbBZVwZ4UXLku1DPrrUlZnkSuQjrthv
-	 476SDAsufdpi9cXCXyePRew6aw/Ybtp/SPsD5pod4MFJTApNFOVy3nK6k4Snhen5s1uiW
-	 +KUdfW7Q/bK1ebwg60K/okY1o7dyYiK9ZoOadLY6fOyCJC4YdPZM75DwlI/ij/0gATsVs
-	 WMfaFcFJbfed7dJBKh6IUcoJ+dUzxaOriX2DtrF1kIp5ro6MUP/9JCHeAwxM0w4efGA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793200001;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:CC:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version;
+	bh=n/akRagARDR+fJNDGCNVlhTugTuQn/VjpXfX2Yd9MwA=;
+	b=NItmCV7OfhpcyuEVGKUfTfoNmK0lt30vkmtmwxuDL0URT1GHypfq3mLsAsY1I2HPMq2R
+	 Jjg2YbXst3nqEzKCIL/WfF1/2jlS1zaIv9SGMWFv1kEl0z4Xi0cCX1K6UUUhCTJo2QgnT
+	 Ow4wUrtwxvkwhyfvvGZVHHiw4HzXUPJo6lpj8nEV58dTs2bZYXgoV5ogOqlH3tnfJYgd+
+	 4KoYJMD9m6mTw9mBq9jndcg0f4+isHitLFsnLh5gCG9I2StGFaesX1mKGPRhKwt9lRipU
+	 Y+/QxqOn3glmce2vfusLEqh3IMgHkRSAN3zGiToBuMOOOT7nUupv8g66tKiDP4jwIow==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XuS7zG9b;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=meta.com;
+	spf=pass smtp.mailfrom=meta.com;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=VdMneMI8;
+	arc=none smtp.remote-ip=67.231.145.42
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78463606A320;
-	Wed, 28 Oct 2026 14:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDE9606A32E;
+	Wed, 28 Oct 2026 15:06:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5CDE9606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XuS7zG9b
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D921F01829;
-	Wed, 28 Oct 2026 14:36:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793198177;
-	bh=M1Ry+UQHTd+cvMSHTcIN1u2SNdFt3NGJJUT4FPQVL7w=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=XuS7zG9bwDDzf6eW+qpcN4OUszqtmlUkME+JsnbCzvetndxSL/X40cpjy0+HgXLmO
-	 +hSz5xgQyCdoFMBqvu0ozp4GsnRs7LdR8ZXJbLvL5Bkb7lhppG2J5affy/zDUCpRdP
-	 anRW3chWrfWZOwmJ3al0QP8NpEMQlO2uytOxzp44mvQV/vB3sVqcicIOikmra4wvxx
-	 CIxI6gu1a+7Bm5nq7PrDn4wyTRp1D/77b7jBo5TAQm2otn62Y+b3tcAaB5L0Ex2vuA
-	 yyWYpo6Jwrb/InbcmMy/zIy1Z2GxzkKgINqSNNNLjlcZkKahfwqkjefPIoT6edUDkX
-	 Zy4mMVjoMxu8Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
- Thomas Gleixner
- <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Lorenzo Stoakes
- <ljs@kernel.org>, Vlastimil
- Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] rust: alloc: move `NumaNode` to the `numa` module
-In-Reply-To: <DLSQY2IKU5IO.3BFLXTCTJ5I6U@garyguo.net>
-References: <20260929-cpu-helpers-v3-0-e968ce5ee613@kernel.org>
- <20260929-cpu-helpers-v3-3-e968ce5ee613@kernel.org>
- <DLSQY2IKU5IO.3BFLXTCTJ5I6U@garyguo.net>
-Date: Wed, 28 Oct 2026 15:36:05 +0100
-Message-ID: <878q3hopt6.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=VdMneMI8
+Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69SBdEXx271934;
+	Wed, 28 Oct 2026 08:06:15 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=n/akRagARDR+fJNDGCNVlhTugTuQn/VjpXfX2
+	Yd9MwA=; b=VdMneMI8O6wlNE0BYQWv2NoN0sywdAR3S3qF8UBQ8uoKgjLfzXI36
+	RMZoTPIpxHlgSe6OFVIofncfkaP6dZg/yjYK+MHsXD9WsedwgWQsgbiUgX/Fx8PR
+	qLZHqFn8ZseF9U+0o/daa6VpHQbi6IRGKq00BWh8A0tlTUGbn0arN/jSorQdkR4e
+	yyNWRof6oFLsVTSYAOG9elDCeBd2Mu2fsBvPhQbT24uswO4mzB+LjIZMOBHtWJFX
+	aPIw7LPrE/wCSUg4UEXrkJNKyLCqxM7GTBVm2z8UJTrCOEzqzZjhohl43rFyap+B
+	vBTE/TFyyrgyySC4gpZbsk2RDm8SU0WYw==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hjtuxtajc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Wed, 28 Oct 2026 08:06:14 -0700 (PDT)
+Received: from localhost (2620:10d:c085:208::7cb7) by mail.thefacebook.com
+ (2620:10d:c08b:78::c78f) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Wed, 28 Oct
+ 2026 15:06:13 +0000
+From: Ruben Hakobyan <hruben@meta.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>
+CC: Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+        <virtualization@lists.linux.dev>,
+        Alexander Duyck
+	<alexander.h.duyck@linux.intel.com>,
+        David Hildenbrand <david@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+        Boqun Feng <boqun@kernel.org>, Gary Guo
+	<gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=
+	<bjorn3_gh@protonmail.com>,
+        Benno Lossin <lossin@kernel.org>,
+        Andreas
+ Hindborg <a.hindborg@kernel.org>,
+        Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>,
+        Danilo Krummrich <dakr@kernel.org>,
+        Andrew Morton
+	<akpm@linux-foundation.org>,
+        <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2 2/2] virtio_balloon: submit reported pages as individual buffers
+Date: Wed, 28 Oct 2026 08:06:04 -0700
+Message-ID: <20261028150604.201665-1-hruben@meta.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261027151329-mutt-send-email-mst@kernel.org>
+References: <20261027151329-mutt-send-email-mst@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -70,190 +93,183 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-Proofpoint-GUID: ZfxisLPKC3cRY4cfMcbSSv6NtTSdYeJP
+X-Proofpoint-ORIG-GUID: ZfxisLPKC3cRY4cfMcbSSv6NtTSdYeJP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI4MDA2MCBTYWx0ZWRfX3uw6g7EPuwTM
+ DibcRf8vVekPYTCzK4F1FwprinlUAm2GvLCsElTH9/XLSPG76R1GpMh9dqJMzeKzG13H734fbyK
+ cdgB5LvW5bK3FGvBO7w1K+oDLVN64AnUFIydsatNvMejfQn89d6vFGdCWFE5g4ibvNnwzSBRx+s
+ 4rihRJuV5LVx21l+s+z/w8dDR4vPznXi5VyrZmbWBEnD6FRFtN/K3sBZHdqSpRu1JdWgDoIl7Rn
+ gB8rJg7ZMM0EwHJ6X08zQmvftSozabHDdCfdy0b2jD97rWVQGfIXrQFQjnhXyjWMIVns7i9Rixa
+ YC/URyFdURSsyrY/2XsShIEF2npHlQB8vLiT3jQpuDsu3ZwNZT9gd8URJsD14ejifRJk3C8K4Hd
+ KT7kIVJQQzB43NAjWK2n+oIQz0M7WC61UNDDLCQkbnAoOeZv5czGcu9BEtoRVq/GbNrP4oTfx7l
+ UlkmkQaACkJQuuh+Zeg==
+X-Authority-Analysis: v=2.4 cv=V/XoQuni c=1 sm=1 tr=0 ts=6ae20f66 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=8elwO82fXORLTBIkMd32:22 a=20KFwNOVAAAA:8 a=VabnemYjAAAA:8 a=QyXUC8HyAAAA:8
+ a=phoES-eJUOR2wqcIftMA:9 a=zY0JdQc1-4EAyPf5TuXT:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI4MDA2MCBTYWx0ZWRfX2yMZgPBxzOCj
+ mzZQH+ps0TPtroxNBzRJXHfpA529N1imxSDKw8IIWlYm8hu0fgoGAaSevkp9noOq9P8X+jxaP2A
+ eYzBB2S6JV1g34zNFsbiVhxf3LlXoxM=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-28_04,2026-10-21_02,2025-10-01_01
 
-"Gary Guo" <gary@garyguo.net> writes:
-
-> On Tue Sep 29, 2026 at 6:56 PM BST, Andreas Hindborg wrote:
->> `NumaNode` identifies a NUMA node and is not specific to the allocator API.
->> Move it from the `alloc` module to the `numa` module so that NUMA related
->> items live together.
->>
->> No functional change.
->>
->> Suggested-by: Alice Ryhl <aliceryhl@google.com>
->> Link: https://lore.kernel.org/all/aiZvKPFCkqJUsP0a@google.com/
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->>  rust/kernel/alloc.rs           | 30 ++++--------------------------
->>  rust/kernel/alloc/allocator.rs |  6 +++---
->>  rust/kernel/alloc/kbox.rs      |  4 ++--
->>  rust/kernel/alloc/kvec.rs      |  4 ++--
->>  rust/kernel/numa.rs            | 35 ++++++++++++++++++++++++++++++++++-
->>  5 files changed, 45 insertions(+), 34 deletions(-)
->>
->> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
->> index 21067bde6860..9daddf540e7d 100644
->> --- a/rust/kernel/alloc.rs
->> +++ b/rust/kernel/alloc.rs
->> @@ -22,7 +22,10 @@
->>  #[derive(Copy, Clone, PartialEq, Eq, Debug)]
->>  pub struct AllocError;
->>  
->> -use crate::prelude::*;
->> +use crate::{
->> +    numa::NumaNode,
->> +    prelude::*, //
->> +};
->>  
->>  use core::{
->>      alloc::Layout,
->> @@ -114,31 +117,6 @@ pub mod flags {
->>      pub const __GFP_NOWARN: Flags = Flags(bindings::__GFP_NOWARN);
->>  }
->>  
->> -/// Non Uniform Memory Access (NUMA) node identifier.
->> -#[derive(Clone, Copy, PartialEq)]
->> -pub struct NumaNode(i32);
->> -
->> -impl NumaNode {
->> -    /// Create a new NUMA node identifier (non-negative integer).
->> -    ///
->> -    /// Returns [`EINVAL`] if a negative id or an id exceeding [`bindings::MAX_NUMNODES`] is
->> -    /// specified.
->> -    pub fn new(node: i32) -> Result<Self> {
->> -        // MAX_NUMNODES never exceeds 2**10 because NODES_SHIFT is 0..10.
->> -        if node < 0 || node >= bindings::MAX_NUMNODES as i32 {
->> -            return Err(EINVAL);
->> -        }
->> -        Ok(Self(node))
->> -    }
->> -}
->> -
->> -/// Specify necessary constant to pass the information to Allocator that the caller doesn't care
->> -/// about the NUMA node to allocate memory from.
->> -impl NumaNode {
->> -    /// No node preference.
->> -    pub const NO_NODE: NumaNode = NumaNode(bindings::NUMA_NO_NODE);
->> -}
->> -
->>  /// The kernel's [`Allocator`] trait.
->>  ///
->>  /// An implementation of [`Allocator`] can allocate, re-allocate and free memory buffers described
->> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
->> index cd4203f27aed..4af50e20933b 100644
->> --- a/rust/kernel/alloc/allocator.rs
->> +++ b/rust/kernel/alloc/allocator.rs
->> @@ -11,12 +11,12 @@
->>  use super::{
->>      AllocError,
->>      Allocator,
->> -    Flags,
->> -    NumaNode, //
->> +    Flags, //
->>  };
->>  
->>  use crate::{
->>      bindings,
->> +    numa::NumaNode,
->>      page, //
->>  };
->>  
->> @@ -122,7 +122,7 @@ unsafe fn call(
->>          // - Those functions provide the guarantees of this function.
->>          let raw_ptr = unsafe {
->>              // If `size == 0` and `ptr != NULL` the memory behind the pointer is freed.
->> -            self.0(ptr.cast(), size, layout.align(), flags.0, nid.0).cast()
->> +            self.0(ptr.cast(), size, layout.align(), flags.0, nid.as_raw()).cast()
->>          };
->>  
->>          let ptr = if size == 0 {
->> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
->> index c63d6acdbb6f..0fa736c81287 100644
->> --- a/rust/kernel/alloc/kbox.rs
->> +++ b/rust/kernel/alloc/kbox.rs
->> @@ -13,12 +13,12 @@
->>  use super::{
->>      AllocError,
->>      Allocator,
->> -    Flags,
->> -    NumaNode, //
->> +    Flags, //
->>  };
->>  
->>  use crate::{
->>      fmt,
->> +    numa::NumaNode,
->>      page::AsPageIter,
->>      prelude::*,
->>      types::ForeignOwnable, //
->> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
->> index c7546b9da4fa..b669ca10b3f7 100644
->> --- a/rust/kernel/alloc/kvec.rs
->> +++ b/rust/kernel/alloc/kvec.rs
->> @@ -14,12 +14,12 @@
->>      AllocError,
->>      Allocator,
->>      Box,
->> -    Flags,
->> -    NumaNode, //
->> +    Flags, //
->>  };
->>  
->>  use crate::{
->>      fmt,
->> +    numa::NumaNode,
->>      page::{
->>          AsPageIter,
->>          PAGE_SIZE, //
->> diff --git a/rust/kernel/numa.rs b/rust/kernel/numa.rs
->> index 164e622d325f..4a3a880308f3 100644
->> --- a/rust/kernel/numa.rs
->> +++ b/rust/kernel/numa.rs
->> @@ -4,12 +4,15 @@
->>  //!
->>  //! C header: [`include/linux/nodemask.h`](srctree/include/linux/nodemask.h)
->>  
->> -use crate::bindings;
->>  #[cfg(CONFIG_NUMA)]
->>  use crate::sync::atomic::{
->>      Atomic,
->>      Relaxed, //
->>  };
->> +use crate::{
->> +    bindings,
->> +    prelude::*, //
->> +};
->>  
->>  /// Returns the number of online NUMA nodes.
->>  #[inline]
->> @@ -27,3 +30,33 @@ pub fn num_online_nodes() -> u32 {
->>          bindings::nr_online_nodes
->>      }
->>  }
->> +
->> +/// Non Uniform Memory Access (NUMA) node identifier.
->> +#[derive(Clone, Copy, PartialEq)]
->> +pub struct NumaNode(i32);
+On Tue, Oct 27, 2026 at 7:17 PM Michael S. Tsirkin <mst@redhat.com> wrote:
+> On Tue, Oct 27, 2026 at 07:39:57AM -0700, Ruben Hakobyan wrote:
+> > On Tue, Oct 27, 2026 at 12:40 PM Michael S. Tsirkin <mst@redhat.com> wrote:
+> > > On Tue, Oct 27, 2026 at 05:32:04AM -0700, Ruben Hakobyan wrote:
+> > > > On Tue, Oct 27, 2026 at 10:35 AM Michael S. Tsirkin <mst@redhat.com> wrote:
+> > > > > On Tue, Oct 27, 2026 at 02:26:33AM -0700, Ruben Hakobyan wrote:
+> > > > > > On Mon, Oct 26, 2026 at 11:53 PM Michael S. Tsirkin <mst@redhat.com> wrote:
+> > > > > > > The virtio_balloon driver reports a scatter-gather list of free pages
+> > > > > > > to the VMM so it may discard unused pages.
+> > > > > > >
+> > > > > > > For an arm64 kernel with 64 KiB pages, the default reporting and
+> > > > > > > allocation orders allow entries ranging from 2 MiB to 512 MiB. If the
+> > > > > > > report contains a sufficient number of large entries, we will end up
+> > > > > > > with a descriptor chain that represents over 4 GiB of memory. This
+> > > > > > > violates virtio spec, which says:
+> > > > > > >         Drivers MUST NOT add a descriptor chain longer than $2^{32}$ bytes in total;
+> > > > > > >
+> > > > > > > Specifically, submitting $2^{32}$ or more breaks Rust-VMM.
+> > > > > > >
+> > > > > > > Submit each reported page as a separate virtqueue buffer instead of one
+> > > > > > > buffer with an sg list of all pages.  This also avoids indirect
+> > > > > > > descriptor allocation (kmalloc in the reporting path).
+> > > > > > >
+> > > > > > > To avoid multiple buffers causing interrupt storms, keep callbacks
+> > > > > > > disabled while we wait for an event.
+> > > > > > >
+> > > > > > > TODO: as an alternative, keep using virtqueue_enable_cb_delayed
+> > > > > > > but add buffers after there's space in the ring.
+> > > > > > >
+> > > > > > > Note: if the virtqueue is broken, wait_event on
+> > > > > > > virtqueue_get_buf hangs.  This is a pre-existing issue:
+> > > > > > > the old single-buffer code had the same hang.
+> > > > > > >
+> > > > > > > Reported-by: Ruben Hakobyan <hruben@meta.com>
+> > > > > > > Cc: Ruben Hakobyan <hruben@meta.com>
+> > > > > > > Fixes: b0c504f15471 ("virtio-balloon: add support for providing free page reports to host")
+> > > > > > > Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
+> > > > > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > > > > > > ---
+> > > > > > >
+> > > > > > > Notes (changelog):
+> > > > > > >     changes since v1:
+> > > > > > >         keep callbacks disabled while draining: get_buf re-arms the used
+> > > > > > >         event for the next buffer, reintroducing an interrupt per page.
+> > > > > > >         Disable the reporting vq callbacks at probe, and only arm the
+> > > > > > >         delayed callback to wait.
+> > > > > > >
+> > > > > >
+> > > > > > Thanks for the patches! I think sashiko-bot found some issues on broken
+> > > > > > queues in the first patch that are worth looking into for correctness.
+> > > > >
+> > > > > Surprise removal of the balloon? Nope, it's a pre-existing issue that
+> > > > > it's broken.  Besides it's not really practical, no one removes
+> > > > > the balloon - no need.
+> > > >
+> > > > Fair point about that. But I meant the broken queue check.
+> > > > In virtqueue_enable_cb_delayed() there is:
+> > > > ```
+> > > > /*
+> > > >  * When the device is broken there is no point in polling used->idx,
+> > > >  * the backend will never update it. Return true to let callers
+> > > >  * exit their cleanup loops instead of spinning forever.
+> > > >  */
+> > > > if (unlikely(vq->broken))
+> > > >     return true;
+> > > > ```
+> > > >
+> > > > But virtqueue_enable_cb_delayed_max() doesn't have this. So I was just
+> > > > thinking the same reasoning should apply here?
+> > >
+> > > It's broken there, too.  E.g. what is the "cleanup loop" in balloon?
+> >
+> > The loop in virtballoon_free_page_report():
+> > ```
+> > wait_event(vb->acked, ({
+> >     for (;;) {
+> >         virtqueue_disable_cb(vq);
+> >         while (virtqueue_get_buf(vq, &unused))
+> >             i++;
+> >
+> >         /* Stop waiting if device used all that we added. */
+> >         if (i >= nents)
+> >             break;
+> >
+> >         if (virtqueue_enable_cb_delayed_max(vq))
+> >             break;
+> >     }
+> >     i >= nents;
+> > }));
+> > ```
+> >
+> > For a broken queue, you could exit the for loop early and avoid busy looping.
+> > It still hangs, but I think it can sleep rather than busy loop?
+> >
+> > Anyway, I'm not sure how practical a broken queue is, so I don't have a
+> > strong opinion.
 >
-> FWIW the C type is nodemask_t and this should have mask in the name too. It is
-> not an identifier. That said, this is an existing issue, so shouldn't block the
-> move.
+> Maybe add the broken queue check explicitly then, then it does
+> not need to hang:
+>
+> if (virtqueue_is_broken(vq))
+>         i = nents;
+>
 
-What makes you say this? This is not a mask, it is a numa node id, which
-is represented as i32. `NUMA_NO_NODE` is a valid id.
+Ah yeah, indeed that would avoid the hang on the broken queue.
 
-I am using this to specify domain for block mq queues. If you take a
-look at the allocation path:
+>
+> but the issue is what if queue gets broken while we are waiting.
+>
 
-  blk_mq_alloc_queue
-  blk_alloc_queue
-  slab_alloc_node
+Hmm, yeah I see. I guess that's already outside of scope here.
 
-It's an id, named `numa_node`, `node_id`, `node`. Not a mask. Unless I
-missed something?
+>
+> > >
+> > > > >
+> > > > > > Other than that, I tested the "normal path" on QEMU and Cloud Hypervisor,
+> > > > > > both on 4 KiB and 64 KiB guests, and this works correctly.
+> > > > >
+> > > > > Thanks a lot! Can you pls confirm whether the performance is about the
+> > > > > same/better/worse?
+> > > >
+> > > > >From my tests on QEMU, CPU time was about the same as my original patch
+> > > > and unmodified Linux.
+> > > >
+> > > > To bring a concrete example, with these patches it took ~437 ms of CPU to
+> > > > reclaim a whole 8 GiB with 4 KiB pages (vs ~434 ms on unmodified Linux).
+> > >
+> > > OK so that's just noise, there's no difference.
+> > >
+> > > >
+> > > > With 64 KiB pages, it averaged 121 ms CPU (vs ~112 ms with my original
+> > > > patch).
+> > >
+> > > Is this measurable, or also noise?
+> > >
+> > > >
+> > > > (I tested this on Nvidia Grace)
+> > >
+> > >
+> > > Thanks!
+> >
+> > Thanks, yeah I agree and my point was that performance looks on par.
+> > I just wanted to share some concrete numbers of what I've tested.
+>
+> Thanks a lot!
 
-Best regards,
-Andreas Hindborg
+Thanks again for the patches and for looking into this!
 
+>
+> > >
+> > > > >
+> > > > > --
+> > > > > MST
+> > > > >
+> > >
 
