@@ -1,101 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.176
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793282773;
-	b=4ybLJguMRR+IA4JeB083B7t5GlkD334zZhi2Zoye4iKUu327QYz+0kYdVvry9IfS4dCT
-	 dyvfNbTbfwCcPXUf0UGqKEwGbDyfdTLZTldt9t52CH7Ic7tYduegkZjAmC8nlDo2OwROH
-	 IrXI/vAF71Ey7cdwjlrSxVaxlqhT1g+dEUGr5GMc2QbTtIntjL9RXvTDUkduUeBXgKcHL
-	 ClH/q+Rp85q9P/MdmaQTgggEsvpJ2Q9v7u2YKpkDX6MswJ6K0Ax0K063n8gKnTsp4ddrS
-	 Isw5hbQDEupyYe0wXJz5mpPUlffrKqGt7hPPBFrZx4wnxs6+5WjRRsxyRNr+IrRs5Aw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793282773;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.48
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793286125;
+	b=lKBAJFSKTkSoVzHPP7A3NEwKfneZglwfOQRn9cz5o399qmgkYCThtAkFsqLMsaughn8x
+	 psC4P5VWDqdz8QHMKc2nhR21U8sY7GSJ+rOerEoPyZ5q69apClLwowax4zrdLkfy94jXR
+	 CAkN9ANakuEaBMFnDEaIuLaBivRVJTrk9rYhHZrWhYkxrsJ7I8bOnq9ePFDgQD3W6v4aA
+	 qiLDjGgZHuvuI9ulGnrNIiYs9CLDah85KDzIx6bnrQIS6xmAtM43Er6TX4+oLvvsenTuH
+	 5CMscoMup0eR/mokf8oYCoKTMypmrp8ekunkjcpK55rRbyHDeLliP2NDzEO7Hm8sIYw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793286125;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=5AFMA62x81Eod9qLhy82JE4hw8ngyRnLnh0416nT1Yg=;
-	b=KpSznWA/MZZ9RKfJfFEksZCY5Op1iwpZHdUK/NN68/M/Zq2nBx5g0yJhmgzsf1A19QZZ
-	 FK05apxwit22qKPJW9yzeyoOHjqQYiMPPzSElft+2A5MhxEt1e51PZoOjitgs0t0CYolj
-	 dvMLnaTyOJg4K1cNQ9FCeL8bLLcrMImEx/3yHbBBXptB09vLgODz3ntTxANyXxU9NgrfV
-	 kleT3RUQioaayOddL/6gsDWCxP1kJz/V+jO91ddPKR+LyQTU5VVF1EUsg3cfyaSIKVHli
-	 Cv6iVkUcG0uYN2Y4F1NRv2eyKY6XkefJCyxRpVHpJrVs7tHrMpNJEYt487fRqtKgZqA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PUMIvSwQ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.176
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=2dzY1VlFFnKOfznTWW/4WF7kG0zTG9oXRoGUydpsGfY=;
+	b=N0Jrx7j5Z9Aj294OnwetyEAKGZ8UpGWGPsxLiKqy5dEvPXQkNO9xGZMC6OqsikFZ8Zjc
+	 qxGA3QMZOaVwJyxutYXRocdeG8u7xgq+SiAwhcoBulDSmYfR3/PeYwJZAom8YjMlpE414
+	 cUZxKIzOLxKUKxwpoD3zsjnz3iIQ2S68PG4xv4NiXkQmz/z8aizwhMFS3wr2dEC4gJHRx
+	 oerXW7JI0P/nkX2TRhxpuxpZOC1r2XQppP4NnnKHFm3xfnHfwBKouSRaz0qaCEimBfUoc
+	 9DDiPSD1hC4j84tVJSZ1TzL+xxplTdFU2Ojml8NzuogzuW60Z32krnnjShu8xrKGnpA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eqMw4KqB;
+	arc=none smtp.remote-ip=209.85.167.48
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CD5606A31C
-	for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 14:06:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D9CD5606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BC8606A31F
+	for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 15:02:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37BC8606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PUMIvSwQ
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-353804b591eso3341990eec.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 07:06:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793282772; cv=none;
-        d=google.com; s=arc-20260327;
-        b=s3cW4Y/UHRrmLU/RWitjgOLeo6T02CJhfm/KA9+ISS8XYJNm2GUPI5O1eXc7r+Y9EL
-         D9gk7iXQR3+9tUec2nfhmEg3bi6FFXFbhawXz2RxNBn72SPlkrlOcL3o0BhHOizVZYv0
-         w8n+OLAvl6EmWvD29npb+asiDZKO5NcUiTEoTL+oN+tb4WwUjiwAYkdLSraSpAChNiKG
-         jYJtXm1aoUEWgk381orFqMMIZnqVZLTJUtC+cQKEkdXdQp6tD8bkuqCY1BN7ngsYHyCF
-         Yj485QizJNZgs03h/2zs7LOo05cO1k5KB0Ld09zQ5JFckY36Hwy38fRH/CU7Liz9QL9U
-         970Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5AFMA62x81Eod9qLhy82JE4hw8ngyRnLnh0416nT1Yg=;
-        fh=RAeS8p37pum5zup+kMSqUv1yxrzrkfC87oTcywNoWl4=;
-        b=c4lB77CJ9awbybDRfWjzGS+4tsx7y7UZWOzxVkcSMnh9J1kMXw3G6xB2736Kh97nWB
-         aV4pQnFBHbWMfjJ43FuKhBr9TmrIHYFyxGavCRrog4djNiFUl9IH13twYCue4pXqrtlC
-         zNSKBRmGNVvCthlf7JNB4ap9oXbtDln0+yK2jUpyJEdzkLBIcO3eNqGsh3ltEy+bg6+L
-         Yoy6LHc/jRSgCksDH+vLO+sCL9wuXe5bj7JfS5Cbi2qfsFAnkczEa4iqF2e3hSEl71S4
-         fGHMTqI8YEDuGUEvqj+oMRpU6EHW2DnT91GRfQMoB7QC5SOVZmawaDjVUZXPbe7eyXbP
-         B0mA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eqMw4KqB
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5ba3b1199f6so2352218e87.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 08:02:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793282772; x=1793887572; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5AFMA62x81Eod9qLhy82JE4hw8ngyRnLnh0416nT1Yg=;
-        b=PUMIvSwQU+R4CLSlB5Lx/jStEGM2g7fWdLaGdT88RoWpXvqMpGBFUnGMn2je4Drajj
-         zKzZ/hcw+7aDkUlZ/mLyWEAepcg+lcT2wAP9YwRBYWCHSm1fGMKyYQHabWrLx0tfNecl
-         ZgT/Fr+HfZJcaDm5h0++hm+hv05vSxLNZmr+n+rexbNQKK/oTL0E1qhRj9DnN9pa1IzP
-         59zS2mtCLGf6oE8pmIY0NttEBy+BRG6jCoqzuUu0RbrqveTk5tPtZCo6/mlPDaA5gbhR
-         OBhC58I/7yWrg1nDGhyv0T5mjPl9FUGXaGN49B6cE6vUwOWF4pqrp6UArrajWppcGDSx
-         gKGg==
+        d=gmail.com; s=20260707; t=1793286122; x=1793890922; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2dzY1VlFFnKOfznTWW/4WF7kG0zTG9oXRoGUydpsGfY=;
+        b=eqMw4KqBocIxMJmGei4723yesql9KLte9N+AZ5pOiWjjIoGut3mKmKnbPvGwi22AkV
+         UAn/zbJKsOcsfwdI7CFbvJJFVxzDV6kdFq8JZHXhaXb/CUicufWgb4qScQdW0gJ56or8
+         1/RyvFydhPtEwlYa6eBroZSDoPDOc1PtkJ8URie8mM6GBHZ6GK6e1zsw3hZuav8evHc5
+         0hkqcU+SHvQ4BeTuyTy4Fm9/hmbG/hK6NuhuKvH6tPhUjAuztA7AmtM2ZbAdYN42uXkQ
+         Iwzc9Eh6l3piRuonxFgDcVe/4aiWSOO/rbaP1Rdpa/6VwaFvs2mCH/XiXnXUTOQx5eNx
+         MdHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793282772; x=1793887572;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5AFMA62x81Eod9qLhy82JE4hw8ngyRnLnh0416nT1Yg=;
-        b=sLjgmhjCDMPHmw0WR8wR6yQPhCvB91rctVA28deGXOWWhjXF9D6JWFB9VevWdUpvJ8
-         tZ23PV4FDiIJ0GD2kY0xtKxq1Ad557c4HaXfYsJHfI9O/LjTZtEzH8BEsdjIHB6ibOE5
-         p7k0GOORPozIvCDHEX8Td5xliAgSQenJxLvoSCU6oIu46AKSOaIwTWxDnyav5xA66exc
-         EhHKGI77acLH+bPbntJxMe1DvIg/htEz599EqDvZ/6SuUj9FDINLM/Y5kEpqn6LDaqSE
-         u/M2kfhWaaNFAOaC9uIqOHOky+fCO70wzEOMAaf2fImL39WwTQRD3A9I91GftxawK6by
-         G/QQ==
-X-Forwarded-Encrypted: i=1; AKwUvByeSnS9PSjFmnz7sIefiXOfj2EAUWuURnBonru9wlIZGNVo+W2r2fG7CJ/m3600/RUT/c638M9Mz5nOTkY9GQ==@vger.kernel.org
-X-Gm-Message-State: AFq9FYLipoyMBuwlqXQ6TCxkNtxc6q08r13/BYpcovRcGSAjTTAljGpT
-	vxBkHMn0vMxrLRjFK8U/aqiNcRmPHADNvkR0VpSBZMnDtDEjfF/AZ151hF0Ijo6sJSxwC43db2T
-	Fo9NlNgHyxt2oYiJnAsgDXBXzCUD5r5330AVpJweH
-X-Gm-Gg: AYBFou2OYpvYT/0JdOr9aSTccQEHC3wbhnxuAib2QWzLBj2qYb6ilMO8dvtoCb7+Se/
-	0GZYkJYRU6IJ2C3dUuSWGeg/kFtR+sL/Pdev3cIZ2AJCIXYl1Mlsyb5O2xnOQ0b8zl5y4ANQlzq
-	njfvVhtASMWlrLnXgE5S1w72LWWWvamqs+G0lSqfTeLPbuQSnBaTu0uW8w3jI7diPPBQBzBWpEh
-	w7OQ8QWe/HZK+kL6GROoVXkz97qIzuEzGe7d+5aBZvolqlRCErvliIhAL83dyeQzKEnZ4IovE9h
-	4f9hg39BM69258uyoBqal77jSCGJgSaG0mXsB66BuX/tjQG8LXWqFNEGq6Ai0Dn398WOfMtMXa5
-	bcAmHguqtPiqeTetZsgkUl4KssXeSx8sqyDBaQsv9lHHBjeWS3xtEKUMTr5hMBPkJapilopzzrD
-	JvI0Z64CYbaNLZ60cqRqlCTsG51rbYe7YC2tTZTX0MwiYBiwz/gNTFpaeJ+rBD5bUx
-X-Received: by 2002:a05:693c:87d0:20b0:369:daea:812a with SMTP id
- 5a478bee46e88-36a203e04ebmr7980604eec.30.1793282771027; Thu, 29 Oct 2026
- 07:06:11 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1793286122; x=1793890922;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2dzY1VlFFnKOfznTWW/4WF7kG0zTG9oXRoGUydpsGfY=;
+        b=zrsloXgVo3fDp6hIsogv+NncHsUGkXmMvxqS5ElXxeHReZr5ezL+LvzgfGk/5NG5w8
+         nDzh4OhlFdi0YxXSne6alMgIksdhd3id2A7sogxq2SlZ7gwflsEtgtny4UKE8c/d5cf2
+         uyKPfkUZWExfIu0rDMmpse18Tx9bkxgy2z0KLI1NOLC8OS57RlR8RkMDXwSQk3KTVVgc
+         oher09y6TfnSUnII5u8A+3dj4pN5+t637AAduG9/PACx0ycEjJWOm1SL4tmal7Vcgacr
+         TR0ByCkkDqkispWG02OLFwsQhVHNlF1aMlHDD+7KOgJv3Hsb0DuNfZuVFdjpJJcfPVuA
+         8TNQ==
+X-Gm-Message-State: AFq9FYKtiD4ac7qwAmtlOzG/BCzKRY+D00zytOK+EXNpTF07JM2rpOpL
+	oSVQ7CQDa1I35IdF+iSaMv4N4maMrvkGF5Mkmn9NhUz3S2PvcGMIT7ww
+X-Gm-Gg: AYBFou1V6truuXw5XNrVnHYqBxtpRJeX5l9Jni6YacO0xJpPzWkApMTEjFmQYG/7ZcV
+	eC0a1NSJscMDQeJCB6dFaEATRLtbBQBK16PaODrUW7IabJ0EkRDpKoY9fSNi8FQyXh53r8zLgDZ
+	mKDv51ejVb3ubxaLjeW146VIj2ANdALjz6VKEEH6rMwXmxo/LzLyZytn4EaQ5++hW4e8M2gBF3M
+	QpYP9A/4pYayj2PnA267oZIaPScgMKt5qg0ri0yzTPZ3XSB3dTR/ALOeZbcIR7KUjVHTtom30nv
+	A+2PSAdgKl2HaQ21A0sGhLgUKOmhJFw1wiQoF0BRMpz1kXACegz1EbZ8fdxBDc75VniWrsU9Lfl
+	QMMkgiwzTvoZJrf+p05+PzfnZfLltNVQ+NWLg4eBaeqA9TzGDpEjlMDdsyZH9rkIsjoSrI8O/Kc
+	d14Aj9mrCfdr8ZGBb5NA4yhIzKFqY4B0EQQyEFT+VGg2+YDCjferAWvdctJAI/UZDDjEQC62K4G
+	hOfD3aauBHbs5DyYQPDVcYiHOpP2zlkwfJyVGC2OEvCYj5xK+Dun4ESqpSuYecqqD1stx9Iimr4
+	E6ywmPwySUQ3uyy8wmP3/kaUwnW/26PeBpGGb5I=
+X-Received: by 2002:a05:6512:3a93:b0:5bf:a193:7a5b with SMTP id 2adb3069b0e04-5bfcad4618bmr2446673e87.34.1793286122095;
+        Thu, 29 Oct 2026 08:02:02 -0700 (PDT)
+Received: from archlinux ([194.28.181.64])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfca5a485csm1306117e87.57.2026.10.29.08.01.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 08:01:59 -0700 (PDT)
+From: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
+Subject: [PATCH] rust: macros: add descriptive doc-comment to internal fmt function
+Date: Thu, 29 Oct 2026 17:01:47 +0200
+Message-ID: <20261029150147.11989-1-mbkchelofficialdev@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -105,34 +93,33 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261022162116.2282295-2-phasta@kernel.org>
-In-Reply-To: <20261022162116.2282295-2-phasta@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 29 Oct 2026 15:05:53 +0100
-X-Gm-Features: AclHuK_SoizvoU1-Dr6Iy33-0wETUO3c6OG-X77GiKNsKuJD9voK4ASEhNNET7I
-Message-ID: <CAH5fLgiDRJuid2usngucBVNd4tP3R6Xavx-WWoKpN7xMQqv+zQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: DmaFence: Implement Deref for FenceContext
-To: Philipp Stanner <phasta@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 22, 2026 at 6:21=E2=80=AFPM Philipp Stanner <phasta@kernel.org>=
- wrote:
->
-> A FenceContext carries data, which the user should be able to access.
->
-> Implement Deref for FenceContext.
->
-> Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Add descriptive documentation comments to the internal formatting function,
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+explaining its role in parsing format strings and wrapping arguments into
+
+the Adapter helper.
+
+Signed-off-by: Ivan Tverdokhleb <mbkchelofficialdev@gmail.com>
+---
+ rust/macros/fmt.rs | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/rust/macros/fmt.rs b/rust/macros/fmt.rs
+index ce6c72493..676156dc9 100644
+--- a/rust/macros/fmt.rs
++++ b/rust/macros/fmt.rs
+@@ -6,6 +6,9 @@
+ use quote::quote_spanned;
+ 
+ /// Please see [`crate::fmt`] for documentation.
++///
++/// This function parses the format string, extracts named arguments from curly braces,
++/// and wraps arguments into the `Adapter` helper.
+ pub(crate) fn fmt(input: TokenStream) -> TokenStream {
+     let mut input = input.into_iter();
+ 
+-- 
+2.56.0
+
