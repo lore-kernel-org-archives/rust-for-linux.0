@@ -1,116 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.175
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793226527;
-	b=KzCZ7e+lxm97rEJ3zAbHDFxDPzR+7TcSP61Z7Lp1qyb+pKXY3Hnk1jCisjB/nnDBEbbd
-	 Jc77OWRHuzP2ErSaXjq4aAVsusRoQ0FV18Nh9na9a9KbS3EkCjVSsE5c419UDRk9HLKEl
-	 bbxvxX/TzssR9/PLyXHfXoGUTHoycssG/cqNmzZ0VTE7ZNF+Lt6P/j+J9x0CE2QU2A+7p
-	 CET9dbYkoqZRJ6bkM5g1P/DZaDKmqcVGlyndTN10MGayx2g4MpYR7p0Lf7SRJT25N9LMS
-	 8sk9GODhfXdlS3eUR9JuAux2Kn4zTgi87RDtPnEW+OQFQRijitO//TW00hcHOMqoI9g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793226527;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=YEhgac1kjYxn03aKruXlSpkZnrbKOWoEKZtLlFnXf7Q=;
-	b=zyFHSTa9hOqyBOh43hI1GMEnzjN+5TZGzSMKuZJaJgBF3Oi7ImHFHSQwfcj2BGaEpGJ+
-	 b5irBBDAAkoS23Kaz2QBoq8dSkblRwlDpd6MHkCw15KaYhU/w3itedVmomAVYCy0eDas3
-	 +UC+QxyL+d4Z+WAvCZH99wFeB30q3km+WrStPZreNqAOzPgjQN6PXpKsarXlPwornLQnU
-	 9jDSdLCBXZN8zSqSJLGnGeV+omgO+NKPk/ZhSNcCL9B8qsvaJ+GE0XwsbCubQAEJ8jl2u
-	 SqTIvR6ZI37SRNv+Mvaj8JZDKuOulGRpU5dHizggi7gpM7rVWL9Y4ALvjiAKnBeUDDg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=uci.edu;
-	spf=pass smtp.mailfrom=uci.edu;
-	dkim=pass header.d=uci.edu header.i=@uci.edu header.a=rsa-sha256 header.s=google header.b=E0YblXM9;
-	arc=none smtp.remote-ip=74.125.82.175
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793233815;
+	b=YU9hOiztrT9g3u6qBXd9807dL+izwht764FxxeubCK3gbakZsgJQu83AeRVUGvwdVhOv
+	 34IUb2L/SMcLhqQ+MKSG6igNZGkA3GnjtBr6r0TO1kjqXAFquUUXWNCvnf6zYS9kId9nj
+	 7XXb9pXRkine9ZVO3ngxLrVPv3Gkq8pthYK9Gl/5EbwMaj/rvB/djBVM0W2MJafN2WCsS
+	 0mArJjsx6z5/JJ7qQ1Hd++CuEdMWI4kHCxWFZ0hJobFbrt6slUn6v6Je3PcY+iUM4Wcbp
+	 exLCF1gEx7GWDr6O/NJ6od5yXNcFzfsQQu0ENdlUOWUFKOyunnlUuIzOx+O0J9N3xTQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793233815;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Zoho-Virus-Status:X-Zoho-AV-Stamp;
+	bh=82Fl5XL0Alh9oEPvleelufgLIqSNB3ppICWOUTYak/o=;
+	b=GeZb8W7+LcnbgTvUAFF1YtR9x719MGVSGoY7OOYoyXNP4X/i+Js7BkRFKiORo0bYsswZ
+	 C/ZihzZqefUc5OvD5vS+WZ7pjn9D7S/UOB3L4jTHCvbuNFo1kGpm7X7FPjN+11npf9V5W
+	 poimBO4CgobqZVpvhDKF/kFvTVoxrcNNZP1YHVZYLY8vAOgUHvf/oc0uIyi9iph/ua7cr
+	 qYMJu9HG69laZyb9uG34Ne6fqLAL1VanMSuYoA2sgRlRFjMaLllhkHt7FXgbvV5pbScUI
+	 6oxVRLsBd7jIb33yPGvYUgAfVB2za8mz/SoFif3YUk4uCp7XZwaI5KwarzRBVvWliGQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Qm+uZYVG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696E1606A329
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Oct 2026 22:28:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 696E1606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAE6606A326
+	for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 00:30:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BAE6606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=uci.edu header.i=@uci.edu header.a=rsa-sha256 header.s=google header.b=E0YblXM9
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-36a0f27c9f4so2283990eec.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Oct 2026 15:28:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=uci.edu; s=google; t=1793226526; x=1793831326; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YEhgac1kjYxn03aKruXlSpkZnrbKOWoEKZtLlFnXf7Q=;
-        b=E0YblXM9f9mV5jpfmkxxC7RjWPxa6FawetgZmb3NqYlUmf0tzMP5dq/MLJL5bpuf0H
-         qEn4s51z0dBEorE0dpigOysm84cvOkFnF3OQCbePDRO6yp294sOCsugkhKNnqVkGNoVo
-         oZgGCQvb95Ti8cA3Z0fGSGOtJH6Ib3ZY+ZGU7fttLIJ7t1gbJKswZpsFvxAXY6JPqzhj
-         0dP21c95E4wGN3C708D+7ctZ2p/CnDooHriLorVByIV244M4dli/F7MT7+LQvJwkvFTf
-         fMK2IrWhtNehhe59bjtMmEOw7zWvJAuKjnNNv68XRcAZEYLiCRDvgQFvLUJ4gU9AT8d1
-         7mrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793226526; x=1793831326;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YEhgac1kjYxn03aKruXlSpkZnrbKOWoEKZtLlFnXf7Q=;
-        b=twZ/v4dODpA4N9BeRqIh7wjI5QoiLbs1otGC4Je06rnBLVVRXElOVmQGA0Yb0f/aWm
-         czAiJz4oqeTBie8GPLnGWdp3Kof56Q4HM/VHVny8lTypjgrT1OHYs1KsATovjG7GqoOq
-         PQ+Ea96XtcV7iA/rkjZTNN7ezomkoWy6NJC9pejB3Bg1cjyqaturwbNe4nJc9fraG57u
-         hdZ+t/vOeSr0tfj/m/8nNmHURdmi2k1TI2fymiMzXcXKfgB0Ox8fslrl+vf5lWoWLIdq
-         yzHsLlh+VSHnPEDllz6B5erhJbLjjNRbZ/5ltO+gpuWttYopF/ScHFAy5bfwk+zyBEvY
-         spMQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz1t7qCRVSPxB/OC1OIUSRQCGhtFZD+CT1vCAI+nQT8eRmMpnGeQBhLzZskuC+QLWQcFFjhFKd9b2OKJFEVGA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYL94x5ZsFx7N18NF0FWDGC1Yh36lxWvZ5sCw2EXidq/UbAPSYM/
-	KHhwckRsLlA6/yh5WAVpu3nf9+qNrnIs1v2MZcC9o0qOemOuCkUSSg/mbw9A27Wh8HU=
-X-Gm-Gg: AYBFou07JexyC0OsRONcrlZ4CNfgoXTp+CKEaDeM86LANBAQQvdIz6RdhTCOiGgUPoI
-	fPwBBrScJcx6zFpJeSdI5nyFKJOBv6wyJluF7p+mgajC9tgZeEEY702LjV3YmjxS+E/14TOzKRc
-	j1jDFzOlv49UXn2Z9woyqg5Is+p8ueevMoUCgq9B7mYjcd0PHu21pElHvHTR4lRDyu8XH+8brLh
-	QClo8nB18xSVHFFgWW5BkAtayrIfRwmNTTgDn9ERvJfY3R31QjfU2os/IaJHmNJi2nm0hYmgn3y
-	6oYfD6UavdukMvNNQbgi9j6oQg4H3SAHb8jjBgfqiymqPHwZbzdACfl280tUdcBa+r6MAX8guQD
-	GVjW79Ww+N4MFKKHUYTuttkV+rk7GvbDfwIG3DADdSWntQ1Nx+oU1TsjQQa3VS6uPbMA0Ov+0Ws
-	1iwbofOvL/rNjlyfSajxzXLrgmaOeZPC/sQclFOpSAjzIDiaAMmfcDUP/4p6y43s/8TlaFkbO6n
-	0y950+ZpQgFAZvsGDKjb5XM3GX4M15kxWEnLg6Z+azFjj6rg3ezexIs3NyB04odX6mo4mHczW2l
-	N2lF4bMPM+EgfeHS27ReAOlUbFxeHLZKb1IS+CirwIVe6O8Vuh480pW7s/NxQROJRA==
-X-Received: by 2002:a05:693c:83da:10b0:36a:1f:9b74 with SMTP id 5a478bee46e88-36a203bce76mr5398946eec.27.1793226525305;
-        Wed, 28 Oct 2026 15:28:45 -0700 (PDT)
-Received: from guest1.. (charm.ics.uci.edu. [128.195.4.118])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-36a2390929asm12301773eec.12.2026.10.28.15.28.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 15:28:44 -0700 (PDT)
-From: Priya Bala Govindasamy <pgovind2@uci.edu>
-To: m.wilczynski@samsung.com,
-	fustini@kernel.org,
-	guoren@kernel.org,
-	wefu@redhat.com,
-	ukleinek@kernel.org
-Cc: ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	elle@weathered-steel.dev,
-	linux-riscv@lists.infradead.org,
-	linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	ardalan@uci.edu,
-	zhiyunq@cs.ucr.edu,
-	dzueck@uci.edu,
-	pgovind2@uci.edu
-Subject: [PATCH 1/1] rust: pwm: track the owner module when registering `Chip`
-Date: Wed, 28 Oct 2026 22:28:40 +0000
-Message-Id: <f9cf8f0d897f22888134b2b17f1b0f86bcda311a.1793150685.git.pgovind2@uci.edu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1793150685.git.pgovind2@uci.edu>
-References: <cover.1793150685.git.pgovind2@uci.edu>
+	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Qm+uZYVG
+ARC-Seal: i=1; a=rsa-sha256; t=1793233772; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=PSVl4ML4i8t3oZIL1edXjrUCG1kk0osHQfShSCc3OO6/8jLsvioosgtfC4EZRt6k/rsUQBk5z0+Q013ZFLRf8VmMJCl40Z/+cKnvDQXsAMMfn6uSBjJ/tCP7z/0NJFyLeL1k+EcG+bSDnpQ6uP+rs45ffERnOPJXJ7JP3UEi104=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1793233772; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=82Fl5XL0Alh9oEPvleelufgLIqSNB3ppICWOUTYak/o=; 
+	b=KRruWBhNJXj2cDAc/kEUyaRbf7ktXyMPzUh78ahRVCON8+tEfcBorWt/Z0etynm/IA7JG9afcmLL0xerhhlWABtOO2IA9xB/gDkpGJTo6Cbe/2y2MJUdc/6VTsSSq70DpdvWhiEs1dtTTjSQ1xxi9W/CKMapYkN3vWaq/fn1j08=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=Qm+uZYVGNL74+sHGWCUawEfskCTGJlvcK1tnxysj3tclOl8DgqWRaaaYGVZ41obAR3mvIvVgCoIbr3K70xHxPLJN0h4r6ld9GHnpd4fj9r0nwkM8UAZOBWFK+ZEtEqIyb3ja4QSBxxTfYlmHby3pkvRiq3tpSlcuQ4rqDvOa+YY=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=82Fl5XL0Alh9oEPvleelufgLIqSNB3ppICWOUTYak/o=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1793233771016711.8689994925045;
+	Wed, 28 Oct 2026 17:29:31 -0700 (PDT)
+Date: Wed, 28 Oct 2026 17:29:29 -0700
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Ke Sun <sunke@kylinos.cn>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>, Lyude Paul <lyude@redhat.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	driver-core@lists.linux.dev, Alvin Sun <alvin.sun@linux.dev>
+Subject: Re: [PATCH v5 08/11] drm/tyr: add BO-related ioctls
+Message-ID: <auKTafNV9hQGh6We@um790>
+References: <20261027-tyr-ioctls-v5-0-59dfe98cb003@kylinos.cn>
+ <20261027-tyr-ioctls-v5-8-59dfe98cb003@kylinos.cn>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -120,82 +81,207 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261027-tyr-ioctls-v5-8-59dfe98cb003@kylinos.cn>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/293.227.96
 
-`UnregisteredChip::register` calls the C function `__pwmchip_add`
-to register a PWM chip with the PWM core.
-`__pwmchip_add` documents that its `owner` argument is supposed to
-be `THIS_MODULE`, but `UnregisteredChip::register` passes
-`core::ptr::null_mut()`. This is acceptable for built-in drivers.
+On Tue, Oct 27, 2026 at 12:41:01AM +0800, Ke Sun wrote:
+> From: Alvin Sun <alvin.sun@linux.dev>
+> 
+> Implement BO_CREATE and BO_MMAP_OFFSET so userspace can allocate GPU
+> buffers and obtain a DRM mmap offset for the generic mmap path.
+> BO_CREATE page-aligns the requested size; BO_MMAP_OFFSET rejects
+> NO_MMAP objects, which must never be CPU-mapped.
+> 
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+> ---
+>  drivers/gpu/drm/tyr/driver.rs |  2 ++
+>  drivers/gpu/drm/tyr/file.rs   | 73 +++++++++++++++++++++++++++++++++++++++++++
+>  drivers/gpu/drm/tyr/gem.rs    | 18 +++++++++--
+>  3 files changed, 90 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+> index c0f17bc4ce2c9..f4f31b24180b4 100644
+> --- a/drivers/gpu/drm/tyr/driver.rs
+> +++ b/drivers/gpu/drm/tyr/driver.rs
+> @@ -227,6 +227,8 @@ impl drm::Driver for TyrDrmDriver {
+>          (PANTHOR_VM_DESTROY, drm_panthor_vm_destroy, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_destroy),
+>          (PANTHOR_VM_BIND, drm_panthor_vm_bind, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_bind),
+>          (PANTHOR_VM_GET_STATE, drm_panthor_vm_get_state, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_get_state),
+> +        (PANTHOR_BO_CREATE, drm_panthor_bo_create, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_create),
+> +        (PANTHOR_BO_MMAP_OFFSET, drm_panthor_bo_mmap_offset, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_mmap_offset),
+>      }
+>  }
+>  
+> diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+> index 22a74b4abf3de..9ffb42f0d8851 100644
+> --- a/drivers/gpu/drm/tyr/file.rs
+> +++ b/drivers/gpu/drm/tyr/file.rs
+> @@ -250,6 +250,79 @@ pub(crate) fn vm_get_state(
+>              Ok(0)
+>          })
+>      }
+> +
+> +    pub(crate) fn bo_create(
+> +        ddev: &TyrDrmDevice<Registered>,
+> +        _reg_data: &TyrDrmRegistrationData<'_>,
+> +        bocreate: &mut uapi::drm_panthor_bo_create,
+> +        file: &TyrDrmFile,
+> +    ) -> Result<u32> {
+> +        if bocreate.size == 0
+> +            || bocreate.pad != 0
+> +            || bocreate.flags & !uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0
+> +        {
+> +            dev_dbg!(
+> +                ddev.as_ref(),
+> +                "Invalid BO_CREATE params: size={}, pad={}, flags={:#x}\n",
+> +                bocreate.size,
+> +                bocreate.pad,
+> +                bocreate.flags
+> +            );
+> +            return Err(EINVAL);
+> +        }
 
-However, for loadable drivers, registering the chip with a null owner
-prevents the PWM core from taking a reference to the owner module when
-a PWM is requested or its character device is opened.
-This means that the owner module can be unloaded while references to the
-chip remain. This can lead to use-after-free and
-kernel panic.
+Panthor checks that both BO_WB_MMAP and BO_NO_MMAP are not
+set at the same time, should we do the same here?
 
-Fix this by marking PwmOps as a `#[vtable]` trait so each implementation
-exposes its actual OwnerModule, then pass that to `__pwmchip_add()`.
+Also if only BO_WB_MMAP is set, shouldn't we return EOPNOTSUPP?
 
-Fixes: d8046cd50879 ("rust: pwm: Add complete abstraction layer")
-Reported-by: Dylan Zueck <dzueck@uci.edu>
-Assisted-by: LLM
-Signed-off-by: Priya Bala Govindasamy <pgovind2@uci.edu>
----
- drivers/pwm/pwm_th1520.rs |  1 +
- rust/kernel/pwm.rs        | 11 +++++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
-index 728993998446..6a1f4219d6fa 100644
---- a/drivers/pwm/pwm_th1520.rs
-+++ b/drivers/pwm/pwm_th1520.rs
-@@ -94,6 +94,7 @@ struct Th1520PwmDriverData {
-     clk: Clk,
- }
- 
-+#[vtable]
- impl pwm::PwmOps for Th1520PwmDriverData {
-     type WfHw = Th1520WfHw;
- 
-diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
-index 8aa47304bec3..ae7b449d67e4 100644
---- a/rust/kernel/pwm.rs
-+++ b/rust/kernel/pwm.rs
-@@ -12,6 +12,7 @@
-     device::{self, Bound},
-     devres,
-     error::{self, to_result},
-+    module::this_module,
-     prelude::*,
-     sync::aref::{ARef, AlwaysRefCounted},
-     types::Opaque, //
-@@ -175,6 +176,7 @@ pub struct RoundedWaveform<WfHw> {
- }
- 
- /// Trait defining the operations for a PWM driver.
-+#[vtable]
- pub trait PwmOps: 'static + Send + Sync + Sized {
-     /// The driver-specific hardware representation of a waveform.
-     ///
-@@ -673,9 +675,14 @@ impl<T: PwmOps> UnregisteredChip<'_, T> {
-     pub fn register(self) -> Result<ARef<Chip<T>>> {
-         let c_chip_ptr = self.chip.as_raw();
- 
--        // SAFETY: `c_chip_ptr` points to a valid chip with its ops initialized.
-+        let owner = this_module::<T::OwnerModule>().as_ptr();
-+
-+        // SAFETY:
-+        // - `c_chip_ptr` points to a valid chip with its ops initialized.
-+        // - `owner` is the module implementing `PwmOps`. It is null for a built-in
-+        //   implementation or a valid module pointer for a loadable implementation.
-         // `__pwmchip_add` is the C function to register the chip with the PWM core.
--        to_result(unsafe { bindings::__pwmchip_add(c_chip_ptr, core::ptr::null_mut()) })?;
-+        to_result(unsafe { bindings::__pwmchip_add(c_chip_ptr, owner) })?;
- 
-         let registration = Registration {
-             chip: ARef::clone(&self.chip),
--- 
-2.34.1
+> +
+> +        if bocreate.exclusive_vm_id != 0 {
+> +            dev_dbg!(ddev.as_ref(), "BO_CREATE: exclusive_vm_id not supported\n");
+> +            return Err(EINVAL);
 
+Return EOPNOTSUPP because it's a valid request we just don't support it.
+
+> +        }
+> +
+> +        let size = usize::try_from(bocreate.size).map_err(|_| {
+> +            dev_dbg!(
+> +                ddev.as_ref(),
+> +                "BO_CREATE size {:#x} too large\n",
+> +                bocreate.size
+> +            );
+> +            EINVAL
+> +        })?;
+> +        let bo = crate::gem::new_object(ddev, size, bocreate.flags)?;
+
+Use file.inner_with() to access the platform device with the bound
+lifetime and then pass it to the new_object so that you can
+avoid accessing it later with an unsafe block. Something like:
+
+ let bo = file.inner_with(|pfile| {
+    crate::gem::new_object(
+        ddev,
+        pfile.reg.pdev.as_ref(),
+        size,
+        bocreate.flags,
+    )
+ })?;
+
+> +        bocreate.handle = bo.create_handle(file)?;
+> +        bocreate.size = bo.size() as u64;
+
+use u64::from_safe_cast(bo.size())
+
+
+> +
+> +        Ok(0)
+> +    }
+> +
+> +    pub(crate) fn bo_mmap_offset(
+> +        ddev: &TyrDrmDevice<Registered>,
+> +        _reg_data: &TyrDrmRegistrationData<'_>,
+> +        bommap: &mut uapi::drm_panthor_bo_mmap_offset,
+> +        file: &TyrDrmFile,
+> +    ) -> Result<u32> {
+> +        if bommap.pad != 0 {
+> +            dev_dbg!(
+> +                ddev.as_ref(),
+> +                "BO mmap offset pad not zero: {}\n",
+> +                bommap.pad
+> +            );
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        let bo = crate::gem::lookup_handle(file, bommap.handle).inspect_err(|_| {
+> +            dev_dbg!(ddev.as_ref(), "Invalid BO mmap handle: {}\n", bommap.handle);
+> +        })?;
+> +        if bo.flags() & uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0 {
+> +            dev_dbg!(ddev.as_ref(), "BO mmap offset on NO_MMAP object\n");
+> +            return Err(EPERM);
+> +        }
+> +        bommap.offset = bo.create_mmap_offset().inspect_err(|_| {
+> +            dev_err!(
+> +                ddev.as_ref(),
+> +                "Failed to create mmap offset for handle {}\n",
+> +                bommap.handle
+> +            );
+> +        })?;
+> +
+> +        Ok(0)
+> +    }
+>  }
+>  
+>  fn vm_bind_exec_op(vm: &Vm<'_>, file: &TyrDrmFile, op: &VmBindOp) -> Result {
+> diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+> index 60f6363995a5a..14f3e182b98e2 100644
+> --- a/drivers/gpu/drm/tyr/gem.rs
+> +++ b/drivers/gpu/drm/tyr/gem.rs
+> @@ -38,6 +38,13 @@ pub(crate) struct BoData {
+>      flags: u32,
+>  }
+>  
+> +impl BoData {
+> +    /// Returns the flags the BO was created with.
+> +    pub(crate) fn flags(&self) -> u32 {
+> +        self.flags
+> +    }
+> +}
+> +
+>  /// Provides a way to pass arguments when creating BoData
+>  /// as required by the gem::DriverObject trait.
+>  pub(crate) struct BoCreateArgs {
+> @@ -57,7 +64,6 @@ fn new(_dev: &TyrDrmDevice, _size: usize, args: BoCreateArgs) -> impl PinInit<Se
+>  pub(crate) type Bo = gem::shmem::Object<BoData>;
+>  
+>  /// Create a new GEM buffer object.
+> -#[expect(dead_code)]
+>  pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result<ARef<Bo>> {
+>      if size == 0 {
+>          return Err(EINVAL);
+> @@ -65,7 +71,7 @@ pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result
+>  
+>      let aligned_size = size.checked_next_multiple_of(PAGE_SIZE).ok_or(EINVAL)?;
+>  
+> -    Bo::new(
+> +    let bo = Bo::new(
+>          ddev,
+>          aligned_size,
+>          shmem::ObjectConfig {
+> @@ -73,7 +79,13 @@ pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result
+>              parent_resv_obj: None,
+>          },
+>          BoCreateArgs { flags },
+> -    )
+> +    )?;
+> +
+> +    // SAFETY: `ddev` is bound for the duration of this call.
+> +    let dev = unsafe { ddev.as_ref().as_ref().as_bound() };
+
+You can remove this unsafe block by accessing the bound device through
+file.inner_with()
+
+> +    bo.sg_table(dev)?;
+> +
+> +    Ok(bo)
+>  }
+>  
+>  /// Look up a GEM object by handle for a DRM file.
+> 
+> -- 
+> 2.43.0
+> 
