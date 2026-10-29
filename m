@@ -1,100 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.177
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793298232;
-	b=SpeuNN3ozTaqd5j9ET/g6gi785kJZOFhyegEiMR7QxafqBg+gH+V+2dEaoFAItnGELIz
-	 ZBWf9jJGccilXbTtrRlF03udVeRxXm6WrcAduaQ4MhBTM6JusI6mxgGikwUdmX6PwXAWJ
-	 WCeA/+I9LT9dLOxt4xiW8pl5/O6UApata9RShk7gcvou8rqjZiJ/MjlqcMhDvKHIp/qPQ
-	 sYDJ8XrKHSOSlaYTLe5WlJ8on8DAbJ4lpseQcbqV+oDk6Z+lcfL0UQQPIRegaAeNbXtEE
-	 GOeulc7ArtHHrYt5I4getn/+EJ1PtEa8gXzpx98vpZDYu67k0TZ1/R4nnCED/WD4TQw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793298232;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=0kPogFiW6B5fuv9DVpnabZaqR2Qn/IyW3R9/wzN8wTc=;
-	b=eNkV5rY+Sqs0y6CR6CkwLxkpAhXHcf2uGwR/VAcffuuGbEnfLq4p6KcI0r82NIHHjhup
-	 0EfK478RCM2jIMww6t+3DUmiy69P5JrK3UbOhdNpxv9ih6CoMcgD63ENVJk75/y8LOFWT
-	 ZJm2Uen84Jnu5+Qta4oWHK5NXgsYdJ6lqfp90okqsTP3Le35P8YsqYXPpD/ueiZg0WNTD
-	 /rMZmaL2FRFpzMs5f/FZHqGBHXFexzBSLQsdcfHpOQllYPO5ljQ5RZwI0I5T3ITH4fStW
-	 KV5df53pPcNhaMFh9o01hijLJMFt/27yy0SjYSduA9B8RDhdKBis71LaXoWbN1gV1Wg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DxY9NYue;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.177
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793299944;
+	b=R/T2KU/oqh129tsgeksdjSYWTNTTVUDQyuOgVPWzdOjE1GzbvSuAKbJqPE9O8KPvFMaj
+	 RkwqaqlKH8YYdq9RcfKLXAXKWs+Nq5Yncl0yTRsvw4tuouSa4k3wN/rRMtpRwDpmPjP/w
+	 vXpzIq2ek8XI2nclUlSgLbNF1cDzDo9REqNhI+Na+v0m2hExaftzo0xBd+lO/69MetmoW
+	 1uR0Mob+wQxz4KnNwvX6RuoYgUrGXqwodVzxAk/z6ZcUjr88XZ0qhpVH5EbmFkUzZszXw
+	 zsGvMBsGPM67cGCLUq6ElF17MwJJYgA8AA6ERs5Ig+k41uyYGBrZGgHBMptEgxjbrHA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793299944;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=XWPYBGnM5MkiXHmVnaCPpYcOP6fueC/bukxMlPBkAzU=;
+	b=1AW2pn4J3fXHJvMmuyBE1AFG3LgaPRJmq6J8KEZTi+WeP27NhBSDN+vXzR8xiRwVie0V
+	 Ic9lDw0nqDSWRv1Fqaja0VzdDPDYpPr0Chsy+MgdHrTHLP3LLey+/7ss61U5KZVThACE0
+	 8ljaoSnQor1BoviXqYs7f3UIzhJj/lo5sLCLigtOD/rjMeydsNxAti9yyCmmrMaXtXcof
+	 TboVynaWSBBPrWcE6oskYQi3IrZZ5tEkBMpQXbMA8AK+L2u9jz9SzZWFm5bJsaWWSsfDr
+	 UitHn+QDTD5uuWODopjQ0Gjie5HirukSRiSlgx4GXllCAJnJfNR37bR5+flXE0DY1eg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DGEcPwfk;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6768C606A31E
-	for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 18:23:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6768C606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBF8606A31C;
+	Thu, 29 Oct 2026 18:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DxY9NYue
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-533202fe429so46201cf.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 11:23:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793298231; cv=none;
-        d=google.com; s=arc-20260327;
-        b=jRtOw8f8jL3adfscmPh21bFlHidEySHlGzVRSIItNLhf4YTJafCf6130VNkzmpBKL/
-         PXhB4/E2PsVBNpkr2V524gkA1TIMYm9svXrehBiQZh3mD+lI0Y7LabjfIdb3KlANCEva
-         539+JsYYgA6J9ASaC/e6JHPGnNMITfrjoaACyM0sNskPtXv6FGGjoNY1W9d0xGkbmbSI
-         3+NEB2TPPzJIbMPcNhfP7X/0/AafpiXDAdnS/Tstmty0p7SB0PthPqYhrxMc5C39v9vD
-         5L0JokvG1yqHRN/jhXH4N4meG1tHrfI9K6E/fafMG1MaNWfUHjevbkEGTfGYcaT/2R9e
-         WlTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0kPogFiW6B5fuv9DVpnabZaqR2Qn/IyW3R9/wzN8wTc=;
-        fh=GkiVNPCqkRCA7YTYK+OdMYFNFgZnlv1DEm0kQdPMw6I=;
-        b=I8lCQ77vGAYGmoRJlk42NMdODMYXMYCeKhiymNgd/FW4FJjRKE4/tBY/HzVZnvtEOh
-         EjYZ6/ogENTyIm5bdelZlYwlyqIQDDyAuqnLiE6igIfxlAKPVdoJvIhXNbv6FIjoBxtA
-         r7dTwssfW89nfogKHusfXQ5r8+eICAjIZVjFLykLiuRzDd03+wOYdfaJAVayxV6EI2pJ
-         sA3vT33hLIEtTMGGGQt8skZjSfMTV9aPz48V6vLmFuowTgiN/WlWGLv48xUSLNVVC+fk
-         mWuB4mrEUdryVqzbQAwINeQlomNg9tXm7IV7kpbyCmfrnkd8B6osJApvys897FKqj3JN
-         01tw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793298231; x=1793903031; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0kPogFiW6B5fuv9DVpnabZaqR2Qn/IyW3R9/wzN8wTc=;
-        b=DxY9NYueYpPUw54/1LuKABfDp60AROnzubbbXy7OzS6fWMrILGyAPx+k/TBUzTDoQf
-         0+estVcf3DGr+NqskgZltpKjiTwBj0vHxfiZlAv1hdCBqEV+qUGB+fKraqRqaZGJI9Ad
-         aHuqa1XDAyOvsrzYt4e2fwVCkmevUnXplUQksj+fp6M1ZkXl+zkUCRvmoFsMOA3v0kwz
-         Qz991YYvpNKWfDlgqHmAUX1bJTSVeq5mbReuEAT3YssNt+yd0jN+OmcLTEbZqe3twO31
-         DfUU2J0jeNSxbzemGGGlU75TQqjY6sTlc87Wxa++VyWhSCCSHud20YoCA1co6FakOgHn
-         lsdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793298231; x=1793903031;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0kPogFiW6B5fuv9DVpnabZaqR2Qn/IyW3R9/wzN8wTc=;
-        b=B6iAh6iT72VK92SLjDOX1SsAMJAqtuFzzzMD7YtYWXVH49zl1AjHoi2S+B2SWWqglk
-         5yKzFDfdqr5D1UhcSWB204X0eBVwERfV9x9dhVWzz/PvHrLoRoQjTcA34tlHWwkbB7I1
-         m72xFGhAxeilBXhIUDd+SPAxQSrm6zw09C7N5ZzaV8S8SRgrH7z+y/NoNZrBYz/xtBi9
-         mTxmkeiCOAFMA2OEtb9klUl2dtA6sCXexcVtGwm54h4XNFqvEIhTzNQ2KNKmGfJt0sEX
-         Z7ugiaMbE+L49LgjZiCt1eamS44PBskA2EaCfiD2OnRdIDc23qvplv81XfohXY3g+Oow
-         oVuw==
-X-Forwarded-Encrypted: i=1; AKwUvBxWcPaPzMbsd2g+7xncPtkAg7sUpXmsVfFhH3nCsyD8tYXTc9s53+JZNsvJL6c2FkMqrOgyrViLeOBCqW+HzA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYLZu+RBWUNlxsnPnFF0eHYer0h3ltQmnILIgFi4XG4eyOK41hen
-	h4kNXrr7ngT4F6PyRnLHPGgxb1FCG2oqayKy9HH/58lw6Od2oD3BLju3tgCOH5qiTpqfNwsgOEi
-	Him2hM89eoOU+U5JXNsekhiVl3wtHslnMR6p1vTul
-X-Gm-Gg: AYBFou3MOxl5uH8bm2ikP1sOEUEheyYrggLAjniEU9+S6P07BdAbDn+JGWmRn9a4Chm
-	9bHHxd85wKXXUzAzTVULfGfCGAF3DbyurYmUyrWB1d6V/Tlcqxos4TGpcKyDfeMsYCN3enCW1C/
-	14qe/6V487uqJejNiPHeW1A6+Xj3gShuNO4L8HQ9P6w2esQlTD1HTUVe6c3CI/LXe8Qti/RFX1X
-	z9GEGjXze9yHFnaTJrAQFeGZFEi1HGgie7oWftmffkqQH+I/3blctR/Dfc37vui8bJB4laScTBQ
-	9MuPhVNH39OsI9XYL8YUK1JtgyOJiJzkChWwDOx8I+SOg1Iktedq3qBuxQglCsw5ldeWporyHPO
-	7WT01VgFSZXVELiHQG5sDnksaez8J9dzRXPXoBiNHqzPTLX9G+az1/bxpSLVvu0nDxA==
-X-Received: by 2002:a05:622a:2b45:b0:532:eff8:3491 with SMTP id
- d75a77b69052e-5414ebdf590mr23748491cf.14.1793298230692; Thu, 29 Oct 2026
- 11:23:50 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DGEcPwfk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D24D1F01816;
+	Thu, 29 Oct 2026 18:52:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793299943;
+	bh=XWPYBGnM5MkiXHmVnaCPpYcOP6fueC/bukxMlPBkAzU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DGEcPwfkatxrQKJzpfcKlaBXAYxwYS49Sx49GlL2tG4+fEjjG+zm6qvMbCMMYfHvO
+	 FmkChSx1ug7A45iUKCoLTkCs2hUmp/rXY3a5HMPnYGsRdPbwVrjDXBr2nH/Rj/m4M4
+	 GPmXaLEFAkS8TvMO+WxjjjClYw0trZrfJ7YYF86rd6AHtbpFxJMU6wb6ImaZwp/TmX
+	 Nq1BmQNrEcKWR0y26EPbOHfOnALPQylDPhy245z/6HNsio9GsDq4sbzvNgKSOPiIvZ
+	 PN9+GPzhF1NTFZBCuwbfwtErfnGWBqgZ2w+UPstL+wEs5I2SGQpM5zxeaoXqYY88/Q
+	 YuNj/sWF4ri/Q==
+Date: Thu, 29 Oct 2026 18:52:15 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Kwanghoon Son <asdfkwang@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>,
+	Paul Walmsley <pjw@kernel.org>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Anup Patel <anup@brainfault.org>, Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	linux-riscv@lists.infradead.org, linux-serial@vger.kernel.org
+Subject: Re: [PATCH RFC 01/12] dt-bindings: vendor-prefixes: Add Bouffalo Lab
+Message-ID: <20261029-unpaired-viper-830e55436015@spud>
+References: <20261029-rust-bl808-console-v1-0-b736ee920078@gmail.com>
+ <20261029-rust-bl808-console-v1-1-b736ee920078@gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -104,88 +79,63 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261029162958.3224280-1-irogers@google.com> <CANiq72nrhqK0NP5q8_G=936++gZR3=zrES+cK96T95-ThVTpbg@mail.gmail.com>
-In-Reply-To: <CANiq72nrhqK0NP5q8_G=936++gZR3=zrES+cK96T95-ThVTpbg@mail.gmail.com>
-From: Ian Rogers <irogers@google.com>
-Date: Thu, 29 Oct 2026 11:23:39 -0700
-X-Gm-Features: AclHuK8I2R6ZBL0M8gpXX54gY1Y2jQq5EjXVV3xSH1Vs5_u0FZ2MTRQeP10WsJs
-Message-ID: <CAP-5=fU8K4as51_Vi2vKAC-kGMVEFn1LDjCg1WvP8R0Y=8SbcQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 0/3] tools: Add Rust library build infrastructure
- and prefer zlib-rs
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Quentin Monnet <qmo@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-perf-users@vger.kernel.org, 
-	bpf@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rHCtu9GAzIbs5mdw"
+Content-Disposition: inline
+In-Reply-To: <20261029-rust-bl808-console-v1-1-b736ee920078@gmail.com>
+
+--rHCtu9GAzIbs5mdw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 29, 2026 at 10:32=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Thu, Oct 29, 2026 at 5:30=E2=80=AFPM Ian Rogers <irogers@google.com> w=
-rote:
-> >
-> > 1. **tools build: Add Rust library build infrastructure and zlib-rs fea=
-ture test**:
-> >    - Adds `tools/build/Makefile.rust` with helpers to locate Cargo crat=
-e
-> >      sources in distro (`/usr/share/cargo/registry`) or local Cargo
-> >      registries (`CARGO_HOME` / `~/.cargo`), map `.rlib` prerequisites =
-to
->
-> When we were discussing whether to vendor crates for the normal build
-> or whether to fetch them locally from the registry a couple years ago,
-> we discussed approaches like this one, i.e. picking a version from the
-> registry by folder name etc.
->
-> But that doesn't work too well. For instance, the graph of
-> dependencies may change, there may be several versions available (and
-> the highest may not be the proper one to pick), there may be different
-> major versions available (i.e. not backwards compatible), they may
-> change the build scripts, etc. Even picking the highest major wouldn't
-> always be correct, from what I recall.
->
-> I also asked a few distributions how they felt about it, and they
-> indeed said that it wasn't a great idea without querying properly the
-> registry.
->
-> So one should really ask Cargo for the right information about the
-> local registry (i.e. offline). It has been a while, so Cargo (or maybe
-> `pkg-config` or whatever) may have better support for querying it
-> nowadays too -- I would suggest checking that first (e.g. `cargo
-> metadata`).
->
-> I think depending on Cargo for this, especially nowadays and for
-> `tools/`, should be fine (we were considering even back then and for
-> the normal build).
->
-> By the way, checking Cargo's cache sounds very strange to me: that
-> means the version that gets picked is even more "uncontrolled".
->
-> I hope that helps!
->
-> [ In the end, for normal kernel crates, we decided to vendor for other
-> reasons, e.g. we wanted to pin the versions, to customize sometimes,
-> and most importantly to avoid any possible user misconfiguration that
-> could lead to a subtly incorrect kernel. But for `tools/` it makes way
-> more sense, of course. ]
+On Thu, Oct 29, 2026 at 01:05:42AM -0400, Kwanghoon Son wrote:
+> Register bflb for Bouffalo Lab Technology (Nanjing) Co., Ltd. Reuse the
+> prefix already deployed by Zephyr, including its bflb,uart binding.
+>=20
+> Link: https://docs.zephyrproject.org/latest/build/dts/api/bindings/serial=
+/bflb,uart.html
+>=20
+> Signed-off-by: Kwanghoon Son <asdfkwang@gmail.com>
 
-Hi Miguel,
+Worth noting that last time this came up, we agreed on "bouffalolab"
+because that matched the domain used by the vendor - which is what we
+use as the source for compatible strings.
 
-This is great feedback, and it's why I thought this was an RFC series,
-rather than a full blown series intended for immediate merging. I
-think the other obvious point of contention is preferring zlib-rs over
-zlib. I'll incorporate your feedback into v2 along with addressing the
-large amount of feedback Sashiko has given, which may become
-irrelevant if we trust in Cargo more.
+https://lore.kernel.org/all/20230607195027.GA3894404-robh@kernel.org/
+> ---
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Doc=
+umentation/devicetree/bindings/vendor-prefixes.yaml
+> index 5471a06f93f1012f08e26f7f105ad846ab3629ac..24c670ff75b6f482ede1bda3b=
+59c70ed9116042f 100644
+> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> @@ -249,6 +249,8 @@ patternProperties:
+>      description: Shanghai Belling Co., Ltd.
+>    "^bestar,.*":
+>      description: Shenzhen Bestar Electronic Technology Co., Ltd.
+> +  "^bflb,.*":
+> +    description: Bouffalo Lab Technology (Nanjing) Co., Ltd.
+>    "^bhf,.*":
+>      description: Beckhoff Automation GmbH & Co. KG
+>    "^bigtreetech,.*":
+>=20
+> --=20
+> 2.47.3
+>=20
 
-Thanks,
-Ian
+--rHCtu9GAzIbs5mdw
+Content-Type: application/pgp-signature; name=signature.asc
 
-> Cheers,
-> Miguel
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCauOV3wAKCRB4tDGHoIJi
+0mtFAQC91Kvt02oSw6bmF5jkMTfZvkF2KHf55Yk+76p/7FQUZAD8Dz2UZOSHhRNH
+/FY6RKawJXTzMCT7gGeHa+1gFxncYQU=
+=6vqi
+-----END PGP SIGNATURE-----
+
+--rHCtu9GAzIbs5mdw--
