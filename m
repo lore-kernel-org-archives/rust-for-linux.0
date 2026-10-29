@@ -1,87 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793250432;
-	b=AN8wYbCKqN0DDpjL00ks1ekRbK8n3QGydUkZ2RlP+8XRWEd69IQEOeeJe+/zGOj5hBqp
-	 8qf+N8JwbPXJj6L/3kMtp13No51l13mOTI6ZpK6/CExBBZQueTpqGaF0PlQaOEyUTiekF
-	 EMYFbKDT73E8Izi5FqbgP3dmIQopPzs7RI2VHe6pr+0zvZy6sb/fUyElWAz45KS9haZ+y
-	 rlrEupjg/CzpAIjSCwiE35fqmdoM2V89hAzU3zn/kdbIlHTzEHLG3QgiHbGBbj7jQA0uq
-	 nDNP/CIbrUUkBP41JNlFK5RYAyS2vp60AJTX1/fi/pKTpeF6m6Ap3C9i2Fmjt564Spg==
+	t=1793250440;
+	b=saZL/AMEJ7rUmf9XmA1Qwc03NXK87jfpX/XSF0R05r3KGWsui2RbAfu2IBRS0+gVGMWZ
+	 WeF86x9iOLFqCIPvgZ6WJkSbCJ4vvLj4afB+19uqR6qON64JfXP8d0L8a2q3F+gDjSr7b
+	 du5qPj4xdh95nP9OO9Sueh3dk5ulVpH7yG8ie53DviUgb8WzuDONTwQvE0qb9UrfEPf2f
+	 RwkyKtxPvR29hpqN5s/WUhnkfSNFlzk5wy4mfpZEQwjuvC4XYgFc/6XLMPy7vpU4kqerE
+	 O7j/5EM542lB0ZUNzCqYqb7/juy28T+TMWdAYV4udf8ySjRzRT/H/sSVIYdmB2uLyfQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793250432;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793250440;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
-	bh=rjNfMp/WtzafGcb6uGtU9HJkhzqRTyKQwukVNkTGdko=;
-	b=hr16AJb+FLslAEydFBvmhxYoAFJ7Q1hUgMhN+p7kTSyOHQfZ5G4QK+B0JA+PhVUG1mne
-	 cAeC7lopSD0L1u/rlv+VQsW/RDEUTtKfXIMpyoWAAsDJnswwst1xE8XnWT2Or6df50K0I
-	 oMPI7fjbcNoM0bG9460MNAuAbWqUpacrgOUehjxqA7bxLnDaCNgO6j+BSg+2oQsC2xlCE
-	 rihAnM75o0agIiDBk9kPZHAbNoBNCjO+JQFpg09ng4O/Qktu2QdsNGa1BUTchOf+jsHLZ
-	 2Yxm/BuX2P6yh3AcyjGN5pzaqmhgDFG4/PwK06U3n9aTnry6bi50Eis3orHKLMtLKdQ==
+	bh=zGV4hq0i8RZtAPVqoljw/C8+Ety28xxbkClqaDK3k9U=;
+	b=olhw7TtIiQid9pJNHwKZiIhFl0P6AU/M7Z+q7kEbauUGcUr2K434VD2xBdvxgfLhk55m
+	 4LaC0xQo5v0lPlkz88nV9AAsjmZ6cyW/vvQY3n9IWNmFW4GeAicWs0R23DgieXi6/8Kfz
+	 dwhgFmziuQKY4cI0zttwoPsSfRCLK1pAEmONASxmNLOY3s79yKJQOWhX7eyGaztjSk4n5
+	 XJfiq3jIi5pNje3OaYhoXacHFJYCfFkURjdunybDsOESvqsQBxmHDjTaCf937FMZCEXWX
+	 nEWA/K0PvcIingw/BgTba+tUY1myPvemPh6ps6d5SGvOyVFo7JK1Zro1WXBh2ZG8Bjw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gxXBWzOI;
-	arc=none smtp.remote-ip=209.85.214.173
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EhB6xBKV;
+	arc=none smtp.remote-ip=209.85.214.174
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46326606A31D
-	for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 05:07:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 46326606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D374606A31F
+	for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 05:07:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D374606A31F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gxXBWzOI
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e9cf928dc9so1626665ad.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Oct 2026 22:07:12 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EhB6xBKV
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e946155442so13512675ad.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Oct 2026 22:07:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793250431; x=1793855231; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793250439; x=1793855239; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rjNfMp/WtzafGcb6uGtU9HJkhzqRTyKQwukVNkTGdko=;
-        b=gxXBWzOIzzYbbu6ef6LGYmLO8fWD6f0eljqy64TeJkzZMhV0XUHIcnw9LU4bReY77a
-         naHCdoXxYHI4UkY49em4x42TiVquywCZf3why4XjZ9wmk3fkxQ0BQJoFBznNDeuQivh+
-         g5V6u5REf8JcdbMq4jiXBNa1vOFFVpdzX/SRPF1GpdD2iQFsDXpdc96DPh77RJdl+Fvu
-         7f+acoURMStFLIeC0rnxbsQq32wMFfFekoojVjAPRDV1SGiYdrto7tiBORSbnisc954A
-         4dLySoYXUWBh3yV4B7TXljbtbC4/s8NlPS4c5j0j4/AofIkRLy+J7axNwsC8bSudtHiB
-         TBFA==
+        bh=zGV4hq0i8RZtAPVqoljw/C8+Ety28xxbkClqaDK3k9U=;
+        b=EhB6xBKVd8era6ux3/LVclIs7SKXgBN68W0ZZxrCBjQ0dGTX2HkS91euvItz1VGzt0
+         MpXWwxp00nvVOBAMLdVa+1d5fRvYIL3B5/2yQBd4YZYyICj2XuplDz7sFlMs+Sa8sfND
+         phbZETaoYJtpXb9Z3nGC50NJsGfOLSLZBuojKXxhIOO1UJ64wHfAbXBRCXOX+Y5gh4/M
+         uxMyZV+k/gpy8xevIGYJpgTXtNRLlavO1+A7ipbV1tfoFjhTE7WBOKI/qKcCM5SJymko
+         m43lpO8xVMInTm/nrIMZIkkbd0v0YdizalBby4Gc0xAFQgEOWBLw3qP5dao/stPJsClA
+         SSAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793250431; x=1793855231;
+        d=1e100.net; s=20260707; t=1793250439; x=1793855239;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=rjNfMp/WtzafGcb6uGtU9HJkhzqRTyKQwukVNkTGdko=;
-        b=SE9SkEPm8h0sM3dy1CRhQEkd67r/L2y1+sWxAHCR1uyPXqvU+8enIub1/Z/8l/o1UJ
-         LUvFkeRb5ZPYhRNDpokNDDnGwFgINNcAqbE9As5lQp10W1PVY/U94OfIV4+qlBLujCBd
-         R2Zs9CVD0CLcDr27yRk5iQ0ajPNfaUVSBni/2qisTRPCSDWScnvH8LjpbMx+S+S2UO8v
-         69KWCcd08OUYwjajQoK5lNCjGeZZHTFHd0IXZf+sVvnpITF9jq/5/P7qgII8qoYJvXeL
-         Vr1GVhuh3uCMLWmtG31C9y4iSXgtzEDE8Yi2IqcF0FprL6nV433D2RCTUw8OkTGubkF9
-         IJTQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxgrSoJnQuSQiW+zn8KYE8Pq79laxnciFhvr+IZX43MqmUBSb4H4Oy5+248hJIYjKbZbC8ARjHB+HQyGe54fg==@vger.kernel.org
-X-Gm-Message-State: AFq9FYI9ZCyY1ZHJpfaD3ZBnbT/hZ+QizKUbmFmt2D5oayZclOADEIzb
-	1vtLRp9NKKAZ3L6Dj9EhVEiAVB1421lIXsQq5Rlr6W0XC0BTh1UPH/3V
-X-Gm-Gg: AYBFou3X0HfgIavr8FD6s+h4uD83SE0+2sYf3EDtnxvUl8yNuauRJoEE4ZWH2b7Kdej
-	QXsE9n/LnfeU7nImYAtg22TJ6T7tqSelmm28Kb1HaJH3J9cz1zFH5VteIUcXiGiz2Ja6obwKRI3
-	6byymFwsXDiwxfvDTf8Q0TC967axQjd88zKe59kb1Lqukow7HU8ZubhkhjYyY78vQfllR8BLsAt
-	ytcSSRl8xzZxCwyXgRIuxV7PFqK5icEkZ0KXYftwLr4EFI5jTdGiPLyxVs8SlmUCcb+cRPvQNyW
-	yIoSiFZcVEjLzEYfEGWvqgOtif6FSitjuXOA+cOgZmz4Vg7SY1E6vZJwlAspHBTgBtAIwuqnuf4
-	JYjXOThlVxTyWoCUjgCWKlIcI3cm1nzUS+qHug/Cs53Bqr6EXGRc/C+Xc3K1wmFtz4C8HRpOo+s
-	8eBXtlp0c2McbfDFInisUAE6VGopLwm74EgttuPJvnYeH/PYCcDWsL52AKJVoKrUt6skgoi8SX2
-	BjamzuGKiBAKrG2DCrRpR4qT2K/LmcdeD3gQTUA+IdV5a+BdI4CEfcsfoIHaMs8fGrnnU/NauoA
-	GOPXOBti8cysDHK7nfO6VkvahXl5
-X-Received: by 2002:a17:903:11d1:b0:2e6:f3ed:a551 with SMTP id d9443c01a7336-2eb1aab257bmr10272905ad.8.1793250431325;
-        Wed, 28 Oct 2026 22:07:11 -0700 (PDT)
+        bh=zGV4hq0i8RZtAPVqoljw/C8+Ety28xxbkClqaDK3k9U=;
+        b=tu0iIywuvBuJV/2Chck631r122pDKf8VDIPBXa2cqYlhE2gFeREkY90PQGn4zz2sYY
+         XTp8yZOB27CTCBPrEypEcB383ySyDUFk7s4E+i3VEJ3P0H5N85BE8Gu0T7EWd0vtEcv0
+         Tcq276The4biuS0tOke+VAPXpB035ikqQxKb5geWs/++7M34Hbtlt8onjDGs+XHcFVjH
+         sTsYDa20PXxr82cfHUd2K/OHL5YoGbmylcSTbDE0qm86EmfgURiT7cOAI9/u3m0KTc6q
+         wHUUdLI3AtKJrQ0/tgo1fcLLD8vpv+Z+IP7wPa0vegmMmzjuWlTNiP8D5mQPeq5xEpaU
+         gXxQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw4WDv8do/1hMnKC6JeO7sEqmOp1AC2T+Tf202JUV4jpKRqRgy/8wwZ7GghhXLEUYNJYn+z3guSaCO3KKLUdg==@vger.kernel.org
+X-Gm-Message-State: AFq9FYK//xA/8G34RCaI8n1jD02rze2qw/1oQF+0eGhGS2qqa8iVCopW
+	DxmbHlPThDlWlfnAxCluniW0181GuPN1hkJ9Rrb847gnbK0K00VhRlzB
+X-Gm-Gg: AYBFou1Fry/G2q88CZIjmhMt5/iLf4JDxD25sM4v4syiJN8QyuSdMMAxu8lP11HLsS4
+	HkWrimggAnZ/yu2bHKjUdMtlUbbFVNQ+hqemeUrE47FJVOjSUixCFuJWPxXMDE4OnBPb8DVjeiI
+	KnXUocuSJZMPadPq0gEFVX15yHQFKT1h21kQJ/N+O2N168KMEIHE/VoGRNj74k8Xx7n/9zUBhQS
+	eQTkk8B0cWwswgXr7+FpzjeC0g3SjXy0iLM7bxW40Gwpb2aTEJki/VlsPj4R3Ip7h3WNOdJ8dkG
+	rZBCEXqkOBROTdeoU3dUritzbcnO59tUCB+D2MZGcto5MuOQAqAdLMHz4YEoMMd/veYeH+EB5F0
+	Dp7HyKd14lF6n2FFgCHaoKy4i5lTGcsdh13zYEtcegOwTPDDpP2yEYEBxYaisjvxFt6T6t/XC5k
+	LeqE6L0gkpPgGyAW4LuJ3hQPdUoMEANA/aRM+fhgldibeYA7n2fxQxHhWxqD6+DDnZt1u7DmHhE
+	97juh9entHXsJlm2ttw2wAB/mt5vg57wMnXjJqwaljo7k3kOn7iLQ8pFTHo/B8STt7blOupiyz3
+	01LkNE/+NTNgkP9pgfhUHZ0zUWRdUQ==
+X-Received: by 2002:a17:902:da8d:b0:2e9:69b1:1b9b with SMTP id d9443c01a7336-2eb0012c7f1mr38007225ad.8.1793250439420;
+        Wed, 28 Oct 2026 22:07:19 -0700 (PDT)
 Received: from [127.0.1.1] ([169.211.140.146])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6c9d2cesm28159685ad.65.2026.10.28.22.07.02
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6c9d2cesm28159685ad.65.2026.10.28.22.07.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 22:07:10 -0700 (PDT)
+        Wed, 28 Oct 2026 22:07:18 -0700 (PDT)
 From: Kwanghoon Son <asdfkwang@gmail.com>
-Date: Thu, 29 Oct 2026 01:05:50 -0400
-Subject: [PATCH RFC 09/12] riscv: dts: bouffalolab: Add BL808 SoC
+Date: Thu, 29 Oct 2026 01:05:51 -0400
+Subject: [PATCH RFC 10/12] riscv: dts: bouffalolab: Add Sipeed M1s Dock
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -93,7 +93,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-rust-bl808-console-v1-9-b736ee920078@gmail.com>
+Message-Id: <20261029-rust-bl808-console-v1-10-b736ee920078@gmail.com>
 References: <20261029-rust-bl808-console-v1-0-b736ee920078@gmail.com>
 In-Reply-To: <20261029-rust-bl808-console-v1-0-b736ee920078@gmail.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -120,90 +120,95 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-riscv@lists.infradead.org, linux-serial@vger.kernel.org
 X-Mailer: b4 0.14.2
 
-Add the BL808 D0 CPU, PLIC, CLINT and UART3. Leave UART3 disabled for
-boards to enable. UART3 connects directly to PLIC source 20; firmware
-sets up UART clocks and pins.
+Add the M1s SoM memory and 40 MHz crystal, and enable UART3 on the Dock
+with a direct stdout path and 115200 8N1 settings.
+
+Boot firmware initializes PSRAM, UART pads and shared PLLs. The tested
+firmware configures D0 TIME at 320 MHz / 380, represented as 842105 Hz.
+Firmware using another timer configuration must fix up timebase-
+frequency. The declared 64 MiB PSRAM range must retain firmware
+reservations or be narrowed by firmware when memory is assigned to
+another core.
+
+The stdout path selects the native polling printk console; userspace TTY
+I/O is deferred.
 
 Signed-off-by: Kwanghoon Son <asdfkwang@gmail.com>
 ---
- arch/riscv/boot/dts/bouffalolab/bl808.dtsi | 70 ++++++++++++++++++++++++++++++
- 1 file changed, 70 insertions(+)
+ arch/riscv/boot/dts/Makefile                          |  1 +
+ arch/riscv/boot/dts/bouffalolab/Makefile              |  2 ++
+ .../boot/dts/bouffalolab/bl808-sipeed-m1s-dock.dts    | 18 ++++++++++++++++++
+ arch/riscv/boot/dts/bouffalolab/bl808-sipeed-m1s.dtsi | 19 +++++++++++++++++++
+ 4 files changed, 40 insertions(+)
 
-diff --git a/arch/riscv/boot/dts/bouffalolab/bl808.dtsi b/arch/riscv/boot/dts/bouffalolab/bl808.dtsi
+diff --git a/arch/riscv/boot/dts/Makefile b/arch/riscv/boot/dts/Makefile
+index 69d8751fb17c803f0efb8003e111ee24144c222b..294f9c119f8f1d608c878ca1f95891843301f07e 100644
+--- a/arch/riscv/boot/dts/Makefile
++++ b/arch/riscv/boot/dts/Makefile
+@@ -2,6 +2,7 @@
+ subdir-y += allwinner
+ subdir-y += andes
+ subdir-y += anlogic
++subdir-y += bouffalolab
+ subdir-y += canaan
+ subdir-y += eswin
+ subdir-y += microchip
+diff --git a/arch/riscv/boot/dts/bouffalolab/Makefile b/arch/riscv/boot/dts/bouffalolab/Makefile
 new file mode 100644
-index 0000000000000000000000000000000000000000..c739c77960c4578b87fcf2bc096ef7c8cda089bd
+index 0000000000000000000000000000000000000000..4d63365edc095fbe9df31c4b12e29c4b624cbd1f
 --- /dev/null
-+++ b/arch/riscv/boot/dts/bouffalolab/bl808.dtsi
-@@ -0,0 +1,70 @@
++++ b/arch/riscv/boot/dts/bouffalolab/Makefile
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0
++dtb-$(CONFIG_ARCH_BOUFFALOLAB) += bl808-sipeed-m1s-dock.dtb
+diff --git a/arch/riscv/boot/dts/bouffalolab/bl808-sipeed-m1s-dock.dts b/arch/riscv/boot/dts/bouffalolab/bl808-sipeed-m1s-dock.dts
+new file mode 100644
+index 0000000000000000000000000000000000000000..c719a53c6e2de45f3718b48ba2116e99c70e559b
+--- /dev/null
++++ b/arch/riscv/boot/dts/bouffalolab/bl808-sipeed-m1s-dock.dts
+@@ -0,0 +1,18 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +
-+#include <dt-bindings/interrupt-controller/irq.h>
++/dts-v1/;
++
++#include "bl808-sipeed-m1s.dtsi"
 +
 +/ {
-+	compatible = "bflb,bl808";
-+	#address-cells = <1>;
-+	#size-cells = <1>;
++	model = "Sipeed M1s Dock";
++	compatible = "sipeed,m1s-dock", "sipeed,m1s", "bflb,bl808";
++
++	chosen {
++		stdout-path = "/soc/serial@30002000:115200n8";
++	};
++};
++
++&uart3 {
++	status = "okay";
++};
+diff --git a/arch/riscv/boot/dts/bouffalolab/bl808-sipeed-m1s.dtsi b/arch/riscv/boot/dts/bouffalolab/bl808-sipeed-m1s.dtsi
+new file mode 100644
+index 0000000000000000000000000000000000000000..ae54e6e301ed2c5a1448d52c530c5074515ee38c
+--- /dev/null
++++ b/arch/riscv/boot/dts/bouffalolab/bl808-sipeed-m1s.dtsi
+@@ -0,0 +1,19 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++
++#include "bl808.dtsi"
++
++/ {
++	compatible = "sipeed,m1s", "bflb,bl808";
++	memory@50000000 {
++		device_type = "memory";
++		reg = <0x50000000 0x04000000>;
++	};
 +
 +	cpus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		cpu0: cpu@0 {
-+			compatible = "thead,c906", "riscv";
-+			device_type = "cpu";
-+			reg = <0>;
-+			mmu-type = "riscv,sv39";
-+			riscv,isa = "rv64imafdc";
-+			riscv,isa-base = "rv64i";
-+			riscv,isa-extensions = "i", "m", "a", "f", "d", "c",
-+					       "zicsr", "zifencei", "zicntr", "zihpm";
-+
-+			cpu0_intc: interrupt-controller {
-+				compatible = "riscv,cpu-intc";
-+				interrupt-controller;
-+				#interrupt-cells = <1>;
-+			};
-+		};
++		timebase-frequency = <842105>;
 +	};
++};
 +
-+	xtal: clock-xtal {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+	};
-+
-+	soc {
-+		compatible = "simple-bus";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
-+		interrupt-parent = <&plic>;
-+		dma-noncoherent;
-+
-+		uart3: serial@30002000 {
-+			compatible = "bflb,uart";
-+			reg = <0x30002000 0x1000>;
-+			interrupts = <20 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&xtal>;
-+			clock-names = "baud";
-+			status = "disabled";
-+		};
-+
-+		plic: interrupt-controller@e0000000 {
-+			compatible = "bflb,bl808-plic", "thead,c900-plic";
-+			reg = <0xe0000000 0x04000000>;
-+			interrupts-extended = <&cpu0_intc 11>, <&cpu0_intc 9>;
-+			interrupt-controller;
-+			#address-cells = <0>;
-+			#interrupt-cells = <2>;
-+			riscv,ndev = <82>;
-+		};
-+
-+		timer@e4000000 {
-+			compatible = "bflb,bl808-clint", "thead,c900-clint";
-+			reg = <0xe4000000 0xc000>;
-+			interrupts-extended = <&cpu0_intc 3>, <&cpu0_intc 7>;
-+		};
-+	};
++&xtal {
++	clock-frequency = <40000000>;
 +};
 
 -- 
