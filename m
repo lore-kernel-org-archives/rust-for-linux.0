@@ -1,76 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793288212;
-	b=1wdduNu16wdBxLt/FRnDgReX+4ZL03L6CCGsDl2Ppkp0uGOR662a0nuK2PcKT9+HJ063
-	 12HRCse3dLDJvATQiDS0gtYSJhcOjumRISy433qeLgODDMT5e0Roe5dk6Pi9zAolvzDp8
-	 RheGIe/nJ6U4YpKk/VpNoWEDbecxRdugvqlR0odeqHvAyq1TxF1HJWqQkiBrlWR+6kvft
-	 AWQ2YkSpAcogf3yglRXrR/bBmfHWcB53sc/C61c1MJCwNBuJWw4KQQ76NxJYObVZal4PC
-	 3PDLz0zExRJpMtbBeyFm3u2LdTX7rIDsFzhW73NX4LWTs8iFBBxYSU/4KJI9fUPq9wQ==
+	t=1793291409;
+	b=SxvbT0YR22LPnlZR4qM5vA1Qhg7ISA/ee91sV1VV6iVq+TUYQcwq955IuIOEMlKuB21M
+	 bsAmYcDSfAFQhzjUG9d5HaMKnV6TtNmQC940eXu2TWfOm645GdVq6nOvvukFHWlOvVyzl
+	 6Hg9WkcofTf0/F6ATj0HZ133kqdpDmFkVn/Tu58w1JpwA/SDv6XMEkDapPiPGoSvjwWEI
+	 ukxVtm4taCbX7ssu3NkyAybIwW3Bn45EA79gnBOgjEurPr68eDXDnBJfI5L+6cN9vnA61
+	 pINWozsI11SnFjagWq7FUrsQg8XNqDVet09m62JtbYtfqiPQ+JesJ+hJydCeOC7qFcA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793288212;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793291409;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=D6UUa2xNPRVirPhujwvkv6IdDdVKe4P8N23+MP1pK9Y=;
-	b=Fjd7lw50aLk3Gajih+GmrWd/k4NvDIxREdmteSbCSllj4LS+9MrLIV+YNVEG1zi9iKwo
-	 HSXJa9PpxdUEyDsTjT+F6cAFOAoiiLT53m6vCeUOzev1NPjEDwK9e4CpNH+Yc2Iep8HT8
-	 XiEbVTriMA+Hy0SUhcgntVYaN1wtfkJB609r7XTLdlgAX3G4IYK4uI8XL0r7UsBBD1Dre
-	 sB3A4qYWhZjpBg0douYKwT/VcbRch3ln6CnDNk6EMYQYWaFdFvBrmFdcVxqZZ4cILo0jv
-	 30Y7T6K5UX53ZJrTEjHQO2L1N2BLcptu8xkMV8vi8AeKFFYdHGytJPXawUVETDWk41w==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=1tQISsVXH4MuUL5EvY+YfKzRDahSJ0kOI6iHukWqnAw=;
+	b=PoFCupO22mXqaKwAFvTvxekH/vvBrBWEd7BZO4sfOeNlNyyNn2PUTRXiqDhsqnuKX44B
+	 50pqf9lSkTmjVAONCqQcUEV54HEu80S5ubV0yrsOt00kKZDyCX4YlFMBGzaEjTCYnoNZV
+	 26enpa5H3ZKf06aZe9bH7IjI73bWuG3E8iPSUQFfcwg6ddoJoFTJjm3knYkpH2CjgSvkd
+	 MG1IDq/gdxfNpvkhK/q5vUVXHwNNu4HJw8GjtTIO68cB5g46sZPNObm7+wT+rmhcqHz5D
+	 oBoJ5D7xqF27//N8f4QA387+R3suJCkcRX2P+kP1EQVYcgpSV5H2Yqaae1NT4Q2aAfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WL0ETLTn;
-	arc=none smtp.remote-ip=209.85.128.71
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	spf=pass smtp.mailfrom=flex--irogers.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=czCLSThh;
+	arc=none smtp.remote-ip=74.125.82.71
+Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com [74.125.82.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F83606A31C
-	for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 15:36:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18F83606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8E8606A326
+	for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 16:30:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA8E8606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=WL0ETLTn
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a204ac318aso12885675e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 08:36:51 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=czCLSThh
+Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-1383723dfddso3833880c88.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 09:30:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793288210; x=1793893010; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=D6UUa2xNPRVirPhujwvkv6IdDdVKe4P8N23+MP1pK9Y=;
-        b=WL0ETLTnu+RzZ+rWl3gTcAoUIOf0QlWu+j8j8nR25Or4M20qZI8CSdNaSCMsp1Ys63
-         Gsvfb0Ni1QbqZoSa9Zr9aHEXCtSRuwI+/IPSLi+CVBRongaCz9fH41a2rDGtFRkn+NiN
-         JNP64rLiHGkJXNN2IaJ+6FFbnoQEwGz16NMaZDJxRcmIMIOmA6n0JDzTIJISwHbCe/Cz
-         wgBnnW3c2lihE6wBFIDZMfRcu2tfZVk/85JjS1bn7MMLhwHqU5Uuq7+eivbJn3DijFRa
-         IVga8pYchEeSis42dqRNBZDmCe7zCDVDTDXTALoIFpCmnvzzsoLJ/NaCKGBbcBDnnvUj
-         wbMA==
+        d=google.com; s=20260707; t=1793291408; x=1793896208; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1tQISsVXH4MuUL5EvY+YfKzRDahSJ0kOI6iHukWqnAw=;
+        b=czCLSThhIDCywQeLmh/kVNL/gnPzvxIfDx3CfVfnUPYHpebo1Qsjc6ipuHZMSdpl7i
+         GqNnoO3rfV/USNuFL6DOlEvo3x875BYiP7sb2R/yO2V30snu2oUDUncTGUbautoK7Ooy
+         QCuqlU3QrkteclxcPGsCPWE7sSzaUNoqZI+K2QjB7IlzFeuaZbVi8wg485cCwBLE2jFv
+         0w3xHyCj/2p8+ht+GIvK8n+82iHIm5mEkuzAfLqoYgt3l1U35j4Y513WYXUQhOxFIblm
+         Fv/Q+7I9+1pXMHeuotg4GbcCeP2uvDtydj6s/XVAdt0/5RNxkkx50HRs6wlBWGjsAPDQ
+         B6aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793288210; x=1793893010;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
+        d=1e100.net; s=20260707; t=1793291408; x=1793896208;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=D6UUa2xNPRVirPhujwvkv6IdDdVKe4P8N23+MP1pK9Y=;
-        b=jF0Hp0mw4bmikZjQI9XYxYyvIf43wmM8IjYH2NrblQ0U5VBjz3OBVRmG+vc4yP21cd
-         km/a/+ui6QC5dh9SreljllKFmqPh3Mon4jmmWaSjcft6XNZwjDF3fWgtbRzglG736tBW
-         +hFYxAW+xhqH3j2xNBDyoXebAmeYnc92f1qIDEnPYEvgg95znJ2NC80dC3+Z5PwqAbdT
-         eTni/KO/gNm3ef4rVDr80YWB85eprYyU7m5dUmbSxEX9/kZvuaTekwrybRUgOrPRgDBR
-         VY+BxBqfwDRXppvyCZ9qQ8rdwUojHybawhWQOr+Az3JG1fdcqx4JY+1m8prnVAz61VGH
-         sIvw==
-X-Forwarded-Encrypted: i=1; AKwUvBzjX3LlgzXTm62rNJs+S2DpUyrbQtCpAz+BwNMl9w8Xs3W721Mx/bH/VFy7wo74mCp5LNCtnUgsqBlHXwpqHg==@vger.kernel.org
-X-Gm-Message-State: AFq9FYLKlHpLmGGXL8p5HSGUD6kLvB6AVretJpnCSrjKh4YicM+O/KL4
-	EyqFLWmET473h2YvT3G3LvOMOiHwFTPCayDtq8B6DycTl5d2rQ3+ZyMtslQTVKn1tLrmCopoY+C
-	yveH+6ud4+2gpp45bTQ==
-X-Received: from wmap17.prod.google.com ([2002:a7b:cc91:0:b0:4a5:9877:cd58])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:474f:b0:4a1:cd83:b23e with SMTP id 5b1f17b1804b1-4a97452869cmr133905495e9.0.1793288203757;
- Thu, 29 Oct 2026 08:36:43 -0700 (PDT)
-Date: Thu, 29 Oct 2026 15:36:42 +0000
-In-Reply-To: <CAH5fLggAuPdmwOFiOMMRUCP+yLPjmdjYGGfBxZJ=7+bkGODJmQ@mail.gmail.com>
+        bh=1tQISsVXH4MuUL5EvY+YfKzRDahSJ0kOI6iHukWqnAw=;
+        b=xYbHlI627WtvzIwZdNVUxyCBzib9KGC1HkRQoL2t+9ichM6YgCehpOeF6ORuHp6tVC
+         z7eSGmHkiQx363HgLj8GLcNtAcWqquGacs7W8Obz6G7cwiCemwKjKM8hODKi5elrcGQ6
+         AwWXhVh0102wiy2BJG5kTUqm7Rug93c2atwCfL7ZOisyfwjoGJ9mrj7x8jFUwXm35yB/
+         cC1pYxQVRuTz4sY4MI6YKtkbKvK8IKyhPWtBkRkpgP1P34gXkWfCAoAoyh0WYUGlDzel
+         EzDwV0h4zKecuMyvkb3TJNeJiCE8o90jUXJTKInAE7QjuS0Rr3HWPOSZFBRNM1U/lwZC
+         2csg==
+X-Forwarded-Encrypted: i=1; AKwUvBwS433EqVJWfltSHsEuUJSIie6JBo5EbpwgqCGimaSBnZLZFPsypav00ljad8i7uYRrkLR/px6xsIi4gae/SA==@vger.kernel.org
+X-Gm-Message-State: AFq9FYKQCBGqxPWdTm8Ni0lXWBBHyn39IS4UiPi6a5QTWwAlia7HmDG7
+	Id0DCHoB9Gwaj8WawI5mkI0Ko/He6Ic9pOulgT2+EB6B37WsJmRj2002Uxj35mTifd5zw0wBd8x
+	uLR/iKhHPHg==
+X-Received: from dlbsv1.prod.google.com ([2002:a05:7022:3a01:b0:1a1:3ce6:560b])
+ (user=irogers job=prod-delivery.src-stubby-dispatcher) by 2002:a05:701b:4513:10b0:147:8a40:cdf3
+ with SMTP id a92af1059eb24-1a6ce209ce7mr7204887c88.24.1793291407265; Thu, 29
+ Oct 2026 09:30:07 -0700 (PDT)
+Date: Thu, 29 Oct 2026 09:29:55 -0700
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -80,45 +76,121 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261020-b4-gpu_info_intobytes-v5-0-3e0c7c93223c@collabora.com>
- <20261020-b4-gpu_info_intobytes-v5-1-3e0c7c93223c@collabora.com>
- <athToIRyTjSB_jVg@google.com> <CANiq72nP1cXVOQp0xciGfBhZZfEfNP5hx8c+1ZPhXwrr=EOUGA@mail.gmail.com>
- <CAH5fLggAuPdmwOFiOMMRUCP+yLPjmdjYGGfBxZJ=7+bkGODJmQ@mail.gmail.com>
-Message-ID: <auNoCpPLYfr6hBu8@google.com>
-Subject: Re: [PATCH v5 1/2] rust: add zerocopy to bindings and uapi
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Deborah Brouwer <deborah.brouwer@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, Jesung Yang <y.j3ms.n@gmail.com>, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
+Message-ID: <20261029162958.3224280-1-irogers@google.com>
+Subject: [RFC PATCH v1 0/3] tools: Add Rust library build infrastructure and
+ prefer zlib-rs
+From: Ian Rogers <irogers@google.com>
+To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>, 
+	Quentin Monnet <qmo@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nsc@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
+Cc: linux-perf-users@vger.kernel.org, bpf@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Oct 21, 2026 at 01:44:12PM +0200, Alice Ryhl wrote:
-> On Wed, Oct 21, 2026 at 1:37=E2=80=AFPM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
-> >
-> > On Wed, Oct 21, 2026 at 7:54=E2=80=AFAM Alice Ryhl <aliceryhl@google.co=
-m> wrote:
-> > >
-> > > Miguel, is this something we can take through drm-rust-next? Or perha=
-ps
-> > > you want to take both through rust-next? Let me know what you prefer.
-> >
-> > Both sounds reasonable, so whatever it is easier -- do you think there
-> > will be lots of movement in the Tyr side?
->=20
-> If we're able to land JobQueue soon, then yes, otherwise no. But I
-> think we've aligned on how to get it merged at LPC, so probably yes.
+The zlib-rs project (https://github.com/trifectatechfoundation/zlib-rs)
+provides a memory-safe, high-performance Rust implementation of the zlib
+compression specification along with a C ABI layer (libz-rs-sys) that is a
+drop-in replacement for the standard C zlib library.
 
-It sounds like Deborah does have other changes that depend on this that
-she'd like to land as well, so it'd be great if we could find a way to
-land both once the merge window is over.
+On many Linux distributions (such as Debian and Ubuntu), Rust crates like
+zlib-rs and libz-rs-sys are packaged as Cargo registry sources under
+/usr/share/cargo/registry/ (e.g. librust-libz-rs-sys-dev) rather than as
+prebuilt C shared libraries, while other environments may install prebuilt
+libz_rs libraries via pkg-config or a custom prefix (LIBZ_RS_DIR).
 
-Alice
+This RFC series lays the groundwork for building and linking Rust crate
+libraries in tools/ (without requiring network access or invoking cargo) and
+integrates zlib-rs support into perf and bpftool, preferring zlib-rs over C
+zlib when available:
+
+1. **tools build: Add Rust library build infrastructure and zlib-rs feature test**:
+   - Adds `tools/build/Makefile.rust` with helpers to locate Cargo crate
+     sources in distro (`/usr/share/cargo/registry`) or local Cargo
+     registries (`CARGO_HOME` / `~/.cargo`), map `.rlib` prerequisites to
+     explicit `--extern <crate>=<path>` flags, and compile `.rlib` and `.a`
+     targets directly with `rustc`.
+   - Resolves `zlib-rs` compiler and linker flags via `LIBZ_RS_DIR`,
+     `pkg-config` (`libz-rs-sys-cdylib`, `zlib-rs`, `z_rs`), or compiling
+     `liblibc.rlib`, `libzlib_rs.rlib`, and `libz_rs.a` (with the
+     `export-symbols`, `c-allocator`, `std`, and `gz` features) into
+     `$(OUTPUT)libz_rs/`.
+   - Adds `tools/build/feature/test-zlib-rs.c` checking
+     `ZLIB_VER_SUBREVISION == 15` (`0xf`, which distinguishes
+     `libz-rs-sys`'s `zlib.h` from standard C `zlib.h`) and linking against
+     `inflateInit()`.
+   - Extends `tools/build/Build.include`, `tools/build/Makefile.build`,
+     `tools/scripts/Makefile.arch`, and `tools/scripts/Makefile.include`
+     with reusable Rust build rules, cross-compilation target triples
+     (`RUST_TARGET_FLAGS_<arch>`), and the `feature_rust_lib` macro.
+
+2. **perf build: Prefer zlib-rs over zlib when available**:
+   - Moves Rust detection ahead of zlib detection in
+     `tools/perf/Makefile.config` and prefers `zlib-rs` over C `zlib` unless
+     `NO_ZLIB_RS=1` (or `NO_ZLIB=1` / `NO_RUST=1`) is set.
+   - Defines both `HAVE_ZLIB_SUPPORT` and `HAVE_ZLIB_RS_SUPPORT` when
+     `zlib-rs` is used so existing zlib call sites in `perf` work unchanged
+     while `perf version --build-options` and `perf check feature zlib-rs`
+     report whether `zlib-rs` is active.
+   - Shares `$(OUTPUT)libz_rs/` with the host bootstrap `bpftool` build in
+     `tools/perf/bpf_skel.mak` and adds `NO_ZLIB` / `NO_ZLIB_RS` tests to
+     `tools/perf/tests/make`.
+
+3. **bpftool: Prefer zlib-rs over zlib when available**:
+   - Adds `zlib-rs` and `zlib` to `FEATURE_TESTS` and `FEATURE_DISPLAY` in
+     `tools/bpf/bpftool/Makefile` and configures `ZLIB_CFLAGS` and
+     `ZLIB_LIBS` via `feature_rust_lib` when `zlib-rs` is detected.
+
+AI Assistance Disclosure (per Documentation/process/coding-assistants.rst
+and Documentation/process/generated-content.rst):
+- Tools used: Antigravity coding assistant and Sashiko automated patch
+  review using Gemini 4 LLMs.
+- Summary of prompts and assistance: Interactive pair-programming session to
+  identify distro packaging for zlib-rs/libz-rs-sys, implement the zlib-rs
+  feature test and Makefile.rust crate build rules, integrate zlib-rs
+  detection into perf and bpftool, separate Rust library outputs into
+  $(OUTPUT)libz_rs/, and address automated review feedback on crate version
+  sorting, cross-compilation flags, and libbpf EXTRA_CFLAGS handling.
+- Testing performed: Built and tested perf and bpftool with zlib-rs
+  (default), NO_ZLIB_RS=1 (fallback to C zlib), NO_ZLIB=1, and MINIMAL=1;
+  verified `perf version --build-options`, `perf check feature`, and the
+  `make_no_zlib` / `make_no_zlib_rs` tests in `tools/perf/tests/make`; and
+  checked all commits with `scripts/checkpatch.pl`.
+
+Assisted-by: Antigravity:gemini-4
+
+Ian Rogers (3):
+  tools build: Add Rust library build infrastructure and zlib-rs feature
+    test
+  perf build: Prefer zlib-rs over zlib when available
+  bpftool: Prefer zlib-rs over zlib when available
+
+ tools/bpf/bpftool/.gitignore             |   1 +
+ tools/bpf/bpftool/Makefile               |  56 ++++++++-
+ tools/build/Build.include                |  14 ++-
+ tools/build/Makefile.build               |  13 +-
+ tools/build/Makefile.feature             |   9 +-
+ tools/build/Makefile.rust                | 149 +++++++++++++++++++++++
+ tools/build/feature/.gitignore           |   1 +
+ tools/build/feature/Makefile             |   9 +-
+ tools/build/feature/test-zlib-rs.c       |  19 +++
+ tools/perf/.gitignore                    |   1 +
+ tools/perf/Documentation/perf-check.txt  |   1 +
+ tools/perf/Makefile.config               |  89 ++++++++------
+ tools/perf/Makefile.perf                 |  32 ++++-
+ tools/perf/bpf_skel.mak                  |   8 +-
+ tools/perf/builtin-check.c               |   1 +
+ tools/perf/scripts/install-build-deps.sh |   6 +
+ tools/perf/tests/make                    |   9 ++
+ tools/scripts/Makefile.arch              |  14 +++
+ tools/scripts/Makefile.include           |  10 ++
+ 19 files changed, 385 insertions(+), 57 deletions(-)
+ create mode 100644 tools/build/Makefile.rust
+ create mode 100644 tools/build/feature/test-zlib-rs.c
+
+-- 
+2.56.0.313.g2479322e68-goog
+
