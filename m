@@ -1,75 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.198
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793291417;
-	b=FD3X/UMZ7wrJzGRMgr6ZUnn0DDr/aNg7Lw3FRT36+Bu5M91oU7mUKmPpub/kuiKC5V1T
-	 6WwtDaeWI7IwCbHpctjrkBbSXr7CSKpYXY2Kkr0d+4eCYJhoCXj/WS00deca/OIcTgJFV
-	 z0/ACIUKAIxLLDJSApUhbDqES20mdp+BfjNOPhBaGJtL2UiTDelaihTj7tt1jwJAiCqvG
-	 Ffd53EtJ036MiwXS2Xtf3CNXWThY8rXdkLPUbqIVaK7A1Zbd1JM0hGeRzTilXwY6b00v1
-	 LsbkxaWrlIfeCdp73CrtHfAVCqueFi+Jikz1OpIaWOTCgiu0MQLGGghvNN/crsaWx3g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793291417;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=RTCYXgZDAP7kL0c73EPxbRM/Qq3+2h7CL6Elx37qtM4=;
-	b=z25LXSRGuxwwOdAvEr+9DQT6M+fTyXIEOoaYtrIb3nePXFRiRfL97rnx4bCY9K/QV4zK
-	 QBpd5yxXBelc6DeCTbo8aZp+brkO1KZdJ8smDOdXEVwuQwEB901PN78TQz8IeRlGpvg73
-	 y0C2Mh0Pze986jDlq7G0+ex2m9VazuPIoV73O63IZZJDpr1OdxA/PIRgVaauWfZ48A9tW
-	 LWyIjlYn0kwseu7BM1w0tv8ye8P0662kEit5ML6nJ2R3slbIljV0/clQxz7S9XrMi0WgA
-	 g0K5iD6IpRTIXYLkWDw2GmTSdrjcEzADAoFPZ3GMsSByCoi/15Y1uARDyTDM+dK7Okg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--irogers.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Cz3zvFoG;
-	arc=none smtp.remote-ip=74.125.82.198
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793293193;
+	b=sNR4mj5kz4BM7LdLHOtUtXvk+dx+uLpD4RWpgQ0qM5RVQH6m4BveOODkgO+Go1oWImJX
+	 H4jdnppgwSr1dqVDnfg52y1lySMXTQbNRTIKk4sSbzu48bsGk7b5N9St+yRooAENrfqnS
+	 vsYsHUlfUiQtQjtJubqV1mSHNao8UUx1dlXzUUWK9bj3pnqyh1HKviK++RgkHKjnIagCd
+	 oH01pQ3CcIuaZieQnuamjr7Hu1V0tbwOPr0ef/ZidVcUkZfpp2AR6ctBKRi6aUMzKq3MQ
+	 1rVFtKDgG5QrsDkWn1YaERCrX5IJYCQRsUEolcPJr+Xkl1ubWR8verY/9QL4Cwa47mQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793293193;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=QcHkXM7CY5zEWSkFQQtVHfgUOaI4B/5h1BoKNthPEmM=;
+	b=OmlkPB0vpgfT5YgmUasfaQmPaKlqXuPkQTyrucVODcnbTN6vWiDp/ggVVNATWxe3wOOC
+	 wMaSRqKU+1b+wkwqHANRfZDgsYoXJYE0ji+MN8AJnJiFdP8yRxyR+QDzk8teq78gmm5HL
+	 sjBzCstJSWGdW0/Y7PheMgVwgomu3mM/8Ph7FBYNKihgdwCRSSUo1KdM3NoxrIupJGCbR
+	 CA6G2mRA/MollBMC2o2vDZ78MXKpPY4iCnT/xSn5zJQ82Z+ZrWYp2ftmmjVleUPJoayTD
+	 rhbbxSWvIBZPJ5JKHTtG7f/RczLaL9b96Xt9yC+7y+KYAkj07SAKsn9JI2qlx0ROEUA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DMVvEsbk;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BA4606A324;
+	Thu, 29 Oct 2026 16:59:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DMVvEsbk
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793293192;
+	b=cRaFksPpkYnr5xBKsswJCgw/R6PPLcv5cWR90eDwX5If2LwSm0wF/7fqqVY1aXaMy88R
+	 ExOs/+EMfKjBkJhXQdRIL+ZZJEDehoMERGknKxG/n+cWanj8Gpfp5R0Qu3WaRYPl0JFok
+	 +hxVf2G8+/jNTKLKzrne4JUUsZNlYXvPHQgDmTXmDAO+zFoJpsgOQEyZP51wNTh4RzVMR
+	 cFVLpZ0plq9n1GlOjTNLjIfOyAl0L7lR3NYD8qzWT6Z6k0scJGp3NXAS6RDdaqXkrAc1k
+	 BtAwH4Tu8+f+zXDG3OxZhOEBjX4b53Qlla3rZPS+VX2fAYdrt+hy3RLXUFPkC326lNA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793293192;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=QcHkXM7CY5zEWSkFQQtVHfgUOaI4B/5h1BoKNthPEmM=;
+	b=mlC4QDNSqnw6RqWBx8+YfayBhMCD+buus6Pdl9m93oiioe7Ass1c2yERnOzaKofaG5QF
+	 GOUG3yeTPNPvrPcxXK3N7nKSxvWUlKCwXfxsEO5FrpKlRUkKJsxWPflssKSJSE6+ZkqyB
+	 NfBJdqo0XSsjvXsSUjwtZXiAusRVTGWpKcPPHnbG+eRm2Yi0gyQ/XNWmy30gVM3YBTMUe
+	 Vq78ihWXNZQzKvY220WK/nM0JCSneK3QEWKFW/lZcSzy+AOyAOd+GpKe2KQ2ppRta1zIv
+	 +dsYd3w0lf838l/P0vuXrU/THdFT5rDkUB/lad7FwwLZKgp+perfwooab5kBv8zJgMQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E816D606A322
-	for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 16:30:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E816D606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Cz3zvFoG
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-30c0d568830so4513505eec.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 09:30:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793291416; x=1793896216; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RTCYXgZDAP7kL0c73EPxbRM/Qq3+2h7CL6Elx37qtM4=;
-        b=Cz3zvFoGVxx+n4/1NGNRzbUOxTZxjZnueWzXnAt7fVTlP/+2Vyw+iRO5at6NM2LS4Z
-         hpK36ZWQ5MEZPXaBNnRNZTuETMeQgL5BSdRv/b06Os2eNr29CWiUV3UZkOBxQc14vTt1
-         9bYUgxKysN7hDzUb6U27ZKX5wdtk/wK3TO0Apv8WHYxnVYu4I/emkA7S7X0l50VOxtbe
-         PhNeUfIBDf/0fRMY5Ogqy3O5pG4kl1YsVnnF1AcmsWflJ5oYOYSHY3BadTTgl59yUcPv
-         Bx40bF5FE/TRE08DMXq6xjOAdKmJRLO1vww+6WohrtcHR2/ZelJT+VIrX9p/eDhqe46b
-         pqHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793291416; x=1793896216;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RTCYXgZDAP7kL0c73EPxbRM/Qq3+2h7CL6Elx37qtM4=;
-        b=Y9qZrlRa49a57YRiPcQLIOFTBb08hie1uELRW58nRRHIJWJ/53qQf2hqS3qs9ue3y4
-         B9hnm7MXUEp3zO7FvhEa9vBNolYKdIOEnZ7KmK4Gv0/N6KxUfF7cJLBmZo887nsWiHm6
-         AvgLuFjaxnrbqgGaWcyWQtQQxq8gJTijKwiPigc/F6Oc1HHfvQisGyPfBbo21xfaqXRF
-         K9i3tp8aZOP9Wj4pHM6EBJPJtGB3HxuKUcxV59IGxYTf1C5LhBcKUN0ExRcaYb+48cPG
-         nOqKmIKngscHEyup5PcekDh1g9jX7/N3YF/+vdvHp7WNSQZ9xbe/XKH7m1wfd8mvyRnJ
-         mDDg==
-X-Forwarded-Encrypted: i=1; AKwUvBxusVM1WHpBcWHq/1cKSjw45LJlgM+Q1Gf8t/Wm/QZNleLYQ7MqMtV6lrb3+RVph1Wd5poo4KbHRqhIUvHZeA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYI0VtOjCwAyYrtISwRl/BIe7vzyeVe0AqfQvReVNz8n40Lpsj3W
-	3K/3X5cMtBZEHkA0yh1VT8/Q+sc/Tb6QwQiG8HzL9zLo5Jo5ezIGiohqkmy8V0iB8XHGJFuqJHI
-	+xwP3GHCw7Q==
-X-Received: from dldyr26-n2.prod.google.com ([2002:a05:701b:451a:20b0:195:cde8:ab41])
- (user=irogers job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:ed0a:b0:168:3243:c907
- with SMTP id a92af1059eb24-1a6ced8f68emr7862817c88.24.1793291415705; Thu, 29
- Oct 2026 09:30:15 -0700 (PDT)
-Date: Thu, 29 Oct 2026 09:29:58 -0700
-In-Reply-To: <20261029162958.3224280-1-irogers@google.com>
+	by smtp.kernel.org (Postfix) with ESMTPS id B8CA01F031E3;
+	Thu, 29 Oct 2026 16:59:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793293192;
+	bh=QcHkXM7CY5zEWSkFQQtVHfgUOaI4B/5h1BoKNthPEmM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=DMVvEsbkyBmNhxdcNo/0+oJuvivPjx1M1r8SOiRdzyaBsMPvGmlZDM0KuqaAEotgF
+	 KtGO9VOau/KixpQVbH+xIgDKSku3vQ1LopgCVPNibhjgTxtJ1nbGBNqmdfl718WoNA
+	 5XRhPEEXMfG5uUQllj/RMTiZ+T3Cy+d4JlFqM0RW4GNzEj9dq9Fi6D/Qnp8Q+ICQPy
+	 PHzEwc8AyeX9n4v/HNA+ownoCIjOXHi5yXZjCnBMA2M0cOPEggHmDBCHsVe4ZY7mpA
+	 Cngamu2KxyLfI7qgdS29nMmqQ9vR+xlRCcsPy/LKp8NAyPnpj8UAZzRQ4+4tqwqb5E
+	 qsunliIP8iaMQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 3ADB745911;
+	Thu, 29 Oct 2026 16:59:51 +0000 (UTC)
+From: =?utf-8?q?Nicol=C3=A1s_Antinori_via_B4_Relay?= <devnull+nico.antinori.7.gmail.com@kernel.org>
+Date: Thu, 29 Oct 2026 13:59:03 -0300
+Subject: [PATCH v2 3/3] rust: bitmap: kunit: uncomment
+ owned_bitmap_out_of_bounds panic case
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,166 +82,96 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261029162958.3224280-1-irogers@google.com>
-X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261029162958.3224280-4-irogers@google.com>
-Subject: [RFC PATCH v1 3/3] bpftool: Prefer zlib-rs over zlib when available
-From: Ian Rogers <irogers@google.com>
-To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Quentin Monnet <qmo@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nsc@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
-Cc: linux-perf-users@vger.kernel.org, bpf@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261029-rust_kunit_v6_send-v2-3-5ce551efc48e@gmail.com>
+References: <20261029-rust_kunit_v6_send-v2-0-5ce551efc48e@gmail.com>
+In-Reply-To: <20261029-rust_kunit_v6_send-v2-0-5ce551efc48e@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>, Benno Lossin <lossin@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Danilo Krummrich <dakr@kernel.org>, David Gow <david@davidgow.net>, 
+ Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Burak Emir <burak.emir@gmail.com>, Rae Moar <raemoar63@gmail.com>, 
+ Tamir Duberstein <tamird@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+ Yury Norov <yury.norov@gmail.com>, kunit-dev@googlegroups.com, 
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, 
+ =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1706;
+ i=nico.antinori.7@gmail.com; h=from:subject:message-id;
+ bh=iW+hZzmPpgHRkmWIVOTZYWfmFaZ6Ey/DgBI3aRQTyEA=;
+ b=owGbwMvMwCV2QdXfwqNJ1YjxtFoSQ9bj6hbHjPKMLy90TIL5mWVTEuyrU/R92/XEhQuYmiRPf
+ p4jGNtRysIgxsUgK6bIMpfz/WdjW/OKculNQTBzWJlAhjBwcQrAROYFMfxTi4qPPL91z/1oJeGE
+ E9JezTy8bqWyIjt2Kvn6yxcWL3jB8E9/wsRvqVPdLYKF97V+z5nEVLX18qw/3d/WczBfsmxsE2A
+ DAA==
+X-Developer-Key: i=nico.antinori.7@gmail.com; a=openpgp;
+ fpr=9D09EFF3333D3778771BB252D0254F3848822532
+X-Endpoint-Received: by B4 Relay for nico.antinori.7@gmail.com/default with
+ auth_id=1086
+X-Original-From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
+Reply-To: nico.antinori.7@gmail.com
+Content-Transfer-Encoding: 8bit
 
-Add zlib-rs and zlib to FEATURE_TESTS and FEATURE_DISPLAY in
-tools/bpf/bpftool/Makefile and use feature_rust_lib to configure
-ZLIB_CFLAGS and ZLIB_LIBS when zlib-rs is detected, falling back to -lz.
+From: Nicolás Antinori <nico.antinori.7@gmail.com>
 
-Signed-off-by: Ian Rogers <irogers@google.com>
+Rust KUnit tests now support `#[should_panic]` attribute. Uncomment the
+test so it can be run when CONFIG_RUST_BITMAP_HARDENED=y.
+
+Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
 ---
- tools/bpf/bpftool/.gitignore |  1 +
- tools/bpf/bpftool/Makefile   | 56 ++++++++++++++++++++++++++++++++----
- 2 files changed, 51 insertions(+), 6 deletions(-)
+ rust/kernel/bitmap.rs | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/tools/bpf/bpftool/.gitignore b/tools/bpf/bpftool/.gitignore
-index a736f64dc5dc..ea2222373634 100644
---- a/tools/bpf/bpftool/.gitignore
-+++ b/tools/bpf/bpftool/.gitignore
-@@ -6,5 +6,6 @@ bpftool*.8
- FEATURE-DUMP.bpftool
- feature
- libbpf
-+libz_rs
- /*.skel.h
- /vmlinux.h
-diff --git a/tools/bpf/bpftool/Makefile b/tools/bpf/bpftool/Makefile
-index b0f7168e7943..a193cf89a034 100644
---- a/tools/bpf/bpftool/Makefile
-+++ b/tools/bpf/bpftool/Makefile
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
- include ../../scripts/Makefile.include
-+include ../../scripts/Makefile.arch
+diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
+index 610d565535ccfba6af8f2ca4ac4028fa027a9644..8eecd669096713fc7f21431188959a921a1d5ca0 100644
+--- a/rust/kernel/bitmap.rs
++++ b/rust/kernel/bitmap.rs
+@@ -762,11 +762,10 @@ fn bitmap_set_clear_find() -> Result<(), AllocError> {
+         Ok(())
+     }
  
- ifeq ($(srctree),)
- srctree := $(patsubst %/,%,$(dir $(CURDIR)))
-@@ -16,6 +17,8 @@ else
- endif
- BOOTSTRAP_OUTPUT := $(_OUTPUT)bootstrap/
+-    #[test]
+     #[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
++    #[test]
+     fn owned_bitmap_out_of_bounds() -> Result<(), AllocError> {
+         let mut b = BitmapVec::new(128, GFP_KERNEL)?;
+-
+         b.set_bit(2048);
+         b.set_bit_atomic(2048);
+         b.clear_bit(2048);
+@@ -777,15 +776,15 @@ fn owned_bitmap_out_of_bounds() -> Result<(), AllocError> {
+         Ok(())
+     }
  
-+LIBZ_RS_OUTPUT := $(_OUTPUT)libz_rs/
+-    // TODO: uncomment once kunit supports `#[should_panic]`.
+-    // #[cfg(CONFIG_RUST_BITMAP_HARDENED)]
+-    // #[test]
+-    // #[should_panic]
+-    // fn owned_bitmap_out_of_bounds() -> Result<(), AllocError> {
+-    //     let mut b = BitmapVec::new(128, GFP_KERNEL)?;
+-    //
+-    //     b.set_bit(2048);
+-    // }
++    #[cfg(CONFIG_RUST_BITMAP_HARDENED)]
++    #[test]
++    #[should_panic]
++    fn owned_bitmap_out_of_bounds() -> Result<(), AllocError> {
++        let mut b = BitmapVec::new(128, GFP_KERNEL)?;
 +
- LIBBPF_OUTPUT := $(_OUTPUT)libbpf/
- LIBBPF_DESTDIR := $(LIBBPF_OUTPUT)
- LIBBPF_INCLUDE := $(LIBBPF_DESTDIR)include
-@@ -38,7 +41,9 @@ $(LIBBPF_OUTPUT) $(BOOTSTRAP_OUTPUT) $(LIBBPF_BOOTSTRAP_OUTPUT) $(LIBBPF_HDRS_DI
++        b.set_bit(2048);
++        Ok(())
++    }
  
- $(LIBBPF): $(wildcard $(BPF_DIR)/*.[ch] $(BPF_DIR)/Makefile) | $(LIBBPF_OUTPUT)
- 	$(Q)$(MAKE) -C $(BPF_DIR) OUTPUT=$(LIBBPF_OUTPUT) \
--		DESTDIR=$(LIBBPF_DESTDIR:/=) prefix= $(LIBBPF) install_headers
-+		DESTDIR=$(LIBBPF_DESTDIR:/=) prefix= \
-+		$(if $(ZLIB_CFLAGS),EXTRA_CFLAGS="$(or $(EXTRA_CFLAGS),-g -O2) $(ZLIB_CFLAGS)") \
-+		$(LIBBPF) install_headers
- 
- $(LIBBPF_INTERNAL_HDRS): $(LIBBPF_HDRS_DIR)/%.h: $(BPF_DIR)/%.h | $(LIBBPF_HDRS_DIR)
- 	$(call QUIET_INSTALL, $@)
-@@ -115,8 +120,20 @@ ifneq ($(SKIP_CRYPTO),1)
-   CRYPTO_LIBS := -lcrypto
- endif
- 
-+ifneq ($(CROSS_COMPILE),)
-+  ifneq ($(MAKECMDGOALS),bootstrap)
-+    ifneq ($(RUST_TARGET_FLAGS_$(ARCH)),)
-+      RUST_FLAGS += --target=$(RUST_TARGET_FLAGS_$(ARCH))
-+    else
-+      NO_ZLIB_RS := 1
-+    endif
-+  else
-+    NO_ZLIB_RS := 1
-+  endif
-+endif
-+
- ifeq ($(MAKECMDGOALS),bootstrap)
--FEATURE_TESTS := libelf-zstd
-+FEATURE_TESTS := libelf-zstd $(if $(NO_ZLIB_RS),,zlib-rs) zlib
- FEATURE_DISPLAY :=
- else
- FEATURE_TESTS := clang-bpf-co-re
-@@ -128,6 +145,10 @@ FEATURE_TESTS += libbfd-liberty-z
- FEATURE_TESTS += disassembler-four-args
- FEATURE_TESTS += disassembler-init-styled
- FEATURE_TESTS += libelf-zstd
-+ifeq ($(NO_ZLIB_RS),)
-+FEATURE_TESTS += zlib-rs
-+endif
-+FEATURE_TESTS += zlib
- 
- FEATURE_DISPLAY := clang-bpf-co-re
- FEATURE_DISPLAY += llvm
-@@ -135,6 +156,10 @@ FEATURE_DISPLAY += libcap
- FEATURE_DISPLAY += libbfd
- FEATURE_DISPLAY += libbfd-liberty
- FEATURE_DISPLAY += libbfd-liberty-z
-+ifeq ($(NO_ZLIB_RS),)
-+FEATURE_DISPLAY += zlib-rs
-+endif
-+FEATURE_DISPLAY += zlib
- endif
- 
- check_feat := 1
-@@ -153,8 +178,27 @@ include $(FEATURES_DUMP)
- endif
- endif
- 
--LIBS = $(LIBBPF) -lelf $(CRYPTO_LIBS) -lz
--LIBS_BOOTSTRAP = $(LIBBPF_BOOTSTRAP) -lelf $(CRYPTO_LIBS) -lz
-+# Prefer zlib-rs over C zlib when detected. When cross-compiling, the host
-+# bootstrap bpftool still links against the host's -lz.
-+ifeq ($(feature-zlib-rs),1)
-+  $(call feature_rust_lib,zlib-rs)
-+  ZLIB_CFLAGS := $(FEATURE_CFLAGS-zlib-rs)
-+  ZLIB_LIBS := $(FEATURE_LIBS-zlib-rs)
-+  CFLAGS += $(ZLIB_CFLAGS)
-+  ifeq ($(CROSS_COMPILE),)
-+    HOST_CFLAGS += $(ZLIB_CFLAGS)
-+    LIBBPF_BOOTSTRAP_CFLAGS += $(ZLIB_CFLAGS)
-+    ZLIB_BOOTSTRAP_LIBS := $(ZLIB_LIBS)
-+  else
-+    ZLIB_BOOTSTRAP_LIBS := -lz
-+  endif
-+else
-+  ZLIB_LIBS := -lz
-+  ZLIB_BOOTSTRAP_LIBS := -lz
-+endif
-+
-+LIBS = $(LIBBPF) -lelf $(CRYPTO_LIBS) $(ZLIB_LIBS)
-+LIBS_BOOTSTRAP = $(LIBBPF_BOOTSTRAP) -lelf $(CRYPTO_LIBS) $(ZLIB_BOOTSTRAP_LIBS)
- 
- ifeq ($(feature-libelf-zstd),1)
- LIBS += -lzstd
-@@ -200,7 +244,7 @@ else
-   else ifeq ($(feature-libbfd-liberty),1)
-     LIBS += -lbfd -ldl -lopcodes -liberty
-   else ifeq ($(feature-libbfd-liberty-z),1)
--    LIBS += -lbfd -ldl -lopcodes -liberty -lz
-+    LIBS += -lbfd -ldl -lopcodes -liberty $(ZLIB_LIBS)
-   endif
- 
-   # If one of the above feature combinations is set, we support libbfd
-@@ -304,7 +348,7 @@ clean: $(LIBBPF)-clean $(LIBBPF_BOOTSTRAP)-clean feature-detect-clean
- 	$(call QUIET_CLEAN, bpftool)
- 	$(Q)$(RM) -- $(OUTPUT)bpftool $(OUTPUT)*.o $(OUTPUT)*.d
- 	$(Q)$(RM) -- $(OUTPUT)*.skel.h $(OUTPUT)vmlinux.h
--	$(Q)$(RM) -r -- $(LIBBPF_OUTPUT) $(BOOTSTRAP_OUTPUT)
-+	$(Q)$(RM) -r -- $(LIBBPF_OUTPUT) $(BOOTSTRAP_OUTPUT) $(LIBZ_RS_OUTPUT)
- 	$(call QUIET_CLEAN, core-gen)
- 	$(Q)$(RM) -- $(OUTPUT)FEATURE-DUMP.bpftool
- 	$(Q)$(RM) -r -- $(OUTPUT)feature/
+     #[test]
+     fn bitmap_copy_and_extend() -> Result<(), AllocError> {
+
 -- 
-2.56.0.313.g2479322e68-goog
+2.47.3
+
 
