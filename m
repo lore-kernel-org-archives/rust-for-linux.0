@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793301526;
-	b=Nuw4pjkHvk0ZlAS6K+x5REBDEZW6lQm98BuGTIb0ZBi9vxTxFOmj3yzr+PBg2QDZh+JV
-	 q5PF3aBFtqgUaQy8b/S/Mr+14aOPh4fk5hBB08+Uo15lxAwWalhrSZR5s+bn8A02pIcUU
-	 fZKSiF0KqePm+ALyHs5+arQy7JuoMPoLShfVN5UGlu7d4e5AoLwhMKur/B+eMQpwyoRzf
-	 4MwfoUCmeEuUiZ9XU+4/ORbtfKvUgDjUB6BBuGkOkhiuUgP6gCdnHtyy2X12c25XUNXqL
-	 tPMKnq3mNebirIfBtMR220yZkfnIhU8aUDYIcxkMAVFg7dP5MVQ+8RPtXqwpLKGtpog==
+	t=1793301657;
+	b=nX0fb7qPxQTDQIoUvsw7ufDcWnsDFioXMgRLqcZtM48SR1M7gq2n+U0TPkbR7PsUCq+K
+	 6Tl2B0M74XSPrCys/KrB2b9Tf4N3fUBLlL1Y3qjGGR5EEtXRKBjkdXJNQpg+TVxAjGtiq
+	 S/EVZxKobc8Dd0Ug83bm9/J+r/Ezav+avSXpBZvEntt4MJBMaR6PlHSUu8qEK1uuuh5y1
+	 L1YTHuh6mBhz6BpYEihDvqez5mizlCZyZtmhpFKEeKLWKbb8JjSH+divuYZPrlefM3m+3
+	 ofTR2OFMJaL6WNqAHrOkjjlhjOe08dA8+kmQLI4ptiHlh8yADxBSJNM14mphdF33XdQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793301526;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793301657;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=ph8C1jmnpdrdeev4LCocOpai7bmb4a/dXqzWxHzIVz0=;
-	b=YQidcfAhBYhT7Clwm6yE4pB5E8IaCBOAIK3V6/zdanVGv0/KH/izqsUTF1jREwXWLo1/
-	 9fMeJk8fqxTM7e3WDXTZTBUsAIXpMmQuku8fs3/Jy2ogjPczAeelBPUiiYJXnfDosv9je
-	 qsf7qTJHSMTGcJICU64sTos+ElCwXKE/ujjm7jLLCBAnpYiGvH5DQbpmXesGOHfm5Suai
-	 w1xfDfiIkbdstZT7/qUWJnNOJuhtSwAnn4P8p/3G88yU1iucF9hLESW6GcBlFLewjR7bP
-	 oxtY2XvrG3mWGo2nN1aol6utQy43DuY1SRzlL936EVAXWu26FxhLDYqNUBiB7ICtqPg==
+	bh=6cRbs5oqkT6KWm1ocQa4weQvb7ZtTfs7ITLdAIDLxX8=;
+	b=u2r0Ew+hA73hKXg7i0Jn/5jJ2IJ/C0m1ltvglTvC/kMekyG6GDAmkVqWHR4IVPJurJIR
+	 D7lf++8JBeFqPvZkTt7t7dkjtW0fGNmVzRDpm6i8NPIEPA0aBuiRtF8X4XprDW+X/WZwv
+	 VJYvNJhswbFVCmDldjTfUPDhlfcCmS7FP9rio70BEE9l22zzUNAVE3VYKcHLlHQDH6N6D
+	 s5aqmY6dxVNnO+jml8XPoD23FXJqVR6noei5jVrw1MiioDKw52SNISuKqjlwf35jmZGYd
+	 zw3nOFFFD6J+r0DhMqq3mPnnExJzYBBmwfDNnlWB5azPsTZS5KqpIfRopu5DPGYQjJw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gf3rGWJU;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dn26AmIH;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69140606A31A;
-	Thu, 29 Oct 2026 19:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778ED606A33C;
+	Thu, 29 Oct 2026 19:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gf3rGWJU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A11C1F01824;
-	Thu, 29 Oct 2026 19:18:39 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dn26AmIH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A211F01824;
+	Thu, 29 Oct 2026 19:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793301526;
-	bh=ph8C1jmnpdrdeev4LCocOpai7bmb4a/dXqzWxHzIVz0=;
+	s=k20260515; t=1793301649;
+	bh=6cRbs5oqkT6KWm1ocQa4weQvb7ZtTfs7ITLdAIDLxX8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gf3rGWJU5hbTZOexRbTZOJDmxHULJI5KXdcRKAlnfLmHqVHp9ZGY+dEmN25dhzEAl
-	 3DEuSOE0mIwV8CyctydR6aiUqxOr9XHMH7VyF2VXTSZmFsNkHwUiEGyo/Vk8brWuD7
-	 2HH1Utj+X9rzkIQtOPZBqQWXqugxM1exuPJRbHt8SycgJ74axOP/RiOmdoJGeWe+zF
-	 hBIh2PFr8Jf+U/lG0ANzGDoHDUwPpZlQwjc22JnLMWY+Q1O4rTuJQaKOUWodAKpVeo
-	 UUQI8rgTznnArkRPRZgSdHJT0tshbP3lJkbuHTHgwK4CqTVhjsO0omZdPWqpGjFea1
-	 IsrJQJpFIHaeQ==
-Date: Thu, 29 Oct 2026 19:18:38 +0000
+	b=Dn26AmIHNql4k0vIhoTKyGSjVJ4cgpmGwE2pX2CE4VKQsm6Aexk95CuLDLOIYVU0F
+	 dG8fIXm2p+2PJFCUzbUmZr5GOw8cxUaUmNM23yD2hphNspemteyEWIW/MC4Sy9KDE3
+	 SexvEyi1ceDvbO+PdJ1eiePZ1xsHiGMc3+rH8c5x3NB5CXsBj4+KT3cHsM8+QqvFWn
+	 n1l65j/tMmv2hvUkghE7K8NY9edNcBbAz9AnLDeq0cEXSWI3z5TwslHlT+sQbbJ4K8
+	 nWprPv/+kXp+D0rD60DtBZxyT3Bp70dJ+EK7ZFm7SF0RNJbQintERb8KV5No3StC9G
+	 1vSTaxHQy7IMQ==
+Date: Thu, 29 Oct 2026 19:20:41 +0000
 From: Conor Dooley <conor@kernel.org>
 To: Kwanghoon Son <asdfkwang@gmail.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -66,11 +66,11 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	Paul Walmsley <paul.walmsley@sifive.com>,
 	linux-riscv@lists.infradead.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH RFC 05/12] dt-bindings: serial: Add BL808 UART
-Message-ID: <20261029-sequester-countable-6a7b597c2551@spud>
+Subject: Re: [PATCH RFC 12/12] MAINTAINERS: Add Bouffalo Lab BL808 support
+Message-ID: <20261029-amuser-savior-6a6ab062f471@spud>
 References: <20261029-rust-bl808-console-v1-0-b736ee920078@gmail.com>
- <20261029-rust-bl808-console-v1-5-b736ee920078@gmail.com>
- <20261029-pouch-enunciate-e74cf84e42a7@spud>
+ <20261029-rust-bl808-console-v1-12-b736ee920078@gmail.com>
+ <20261029-spyglass-evasion-772697094cb9@spud>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -81,109 +81,66 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Oo1FlmzmZPb07xbS"
+	protocol="application/pgp-signature"; boundary="FP9ChwAHSeteGPVI"
 Content-Disposition: inline
-In-Reply-To: <20261029-pouch-enunciate-e74cf84e42a7@spud>
+In-Reply-To: <20261029-spyglass-evasion-772697094cb9@spud>
 
---Oo1FlmzmZPb07xbS
+--FP9ChwAHSeteGPVI
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 29, 2026 at 06:54:49PM +0000, Conor Dooley wrote:
-> On Thu, Oct 29, 2026 at 01:05:46AM -0400, Kwanghoon Son wrote:
-> > Describe the UART register range, interrupt and baud clock input.
-> > Initial Linux support targets the BL808 32-byte FIFO and reuses
-> > Zephyr's bflb,uart compatible. UART3 is D0 PLIC source 20.
-> >=20
-> > Link: https://docs.zephyrproject.org/latest/build/dts/api/bindings/seri=
-al/bflb,uart.html
+On Thu, Oct 29, 2026 at 07:08:56PM +0000, Conor Dooley wrote:
+> On Thu, Oct 29, 2026 at 01:05:53AM -0400, Kwanghoon Son wrote:
+> > Add a MAINTAINERS entry for the Bouffalo Lab BL808 platform, device tre=
+es
+> > and Rust serial driver and abstractions.
 > >=20
 > > Signed-off-by: Kwanghoon Son <asdfkwang@gmail.com>
 > > ---
-> >  .../devicetree/bindings/serial/bflb,uart.yaml      | 57 ++++++++++++++=
-++++++++
-> >  1 file changed, 57 insertions(+)
+> >  MAINTAINERS | 13 +++++++++++++
+> >  1 file changed, 13 insertions(+)
 > >=20
-> > diff --git a/Documentation/devicetree/bindings/serial/bflb,uart.yaml b/=
-Documentation/devicetree/bindings/serial/bflb,uart.yaml
-> > new file mode 100644
-> > index 0000000000000000000000000000000000000000..df29d258f0a1c6d7bb283cf=
-19c4157436991b64b
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/serial/bflb,uart.yaml
-> > @@ -0,0 +1,57 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/serial/bflb,uart.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Bouffalo Lab UART Controller
-> > +
-> > +description: |
-> > +  UART IP used by Bouffalo Lab SoCs. Initial Linux support covers the
-> > +  BL808 controller with a 32-byte FIFO. The compatible follows Zephyr.
-> > +
-> > +maintainers:
-> > +  - Kwanghoon Son <asdfkwang@gmail.com>
-> > +
-> > +allOf:
-> > +  - $ref: serial.yaml#
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: bflb,uart
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 801f964899ba790a8f71fe61f9b3777a494dabd5..b76d3e168468bf6139c958a=
+81b626c73b422c0d4 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -4926,6 +4926,19 @@ S:	Maintained
+> >  F:	Documentation/devicetree/bindings/iio/imu/bosch,bmi323.yaml
+> >  F:	drivers/iio/imu/bmi323/
+> > =20
+> > +BOUFFALO LAB BL808 SUPPORT
+> > +M:	Kwanghoon Son <asdfkwang@gmail.com>
+> > +L:	linux-riscv@lists.infradead.org
+> > +L:	linux-serial@vger.kernel.org
+> > +S:	Maintained
 >=20
-> This needs to be a device-specific compatible - please just use the
-> binding already reviewed and agreed upon in Jisheng's 2023 series.
->=20
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +
-> > +  clocks:
-> > +    items:
-> > +      - description: Baud rate generator clock
-> > +
-> > +  clock-names:
-> > +    items:
-> > +      - const: baud
->=20
-> Drop this clock name, with only one clock there's no more need for it
-> than the interrupt-names or reg-names that you do not use either.
+> Missing git tree, unless you're expecting me to apply patches for the
+> platform for you?
 
-And additionally, I see no value in picking something to suit zephyr,
-when zephyr uses things like "bflb,clock-controller" or "bflb,pwm-1" and
-"bflb,pwm2" and so on. Make a clean break and do things correctly rather
-than try (and fail) to be compatible with the zephyr dts.
+Additionally, are you actually going to add wider scale support for this
+device? Like a clock-controller driver and the various other
+peripherals, or is this really just a vehicle to support your rust
+serial driver work?
 
 >=20
+> > +F:	Documentation/devicetree/bindings/riscv/bflb.yaml
+> > +F:	Documentation/devicetree/bindings/serial/bflb,uart.yaml
+> > +F:	arch/riscv/boot/dts/bouffalolab/
+> > +F:	drivers/tty/serial/bflb_uart.rs
+>=20
+> > +F:	rust/helpers/serial.c
+> > +F:	rust/kernel/serial.rs
+> > +F:	rust/kernel/serial/
+>=20
+> These should probably not be maintained under the arch support since
+> they're not platform specific.
+>=20
 > > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - interrupts
-> > +  - clocks
-> > +  - clock-names
-> > +
-> > +unevaluatedProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > +
-> > +    uart3: serial@30002000 {
-> > +        compatible =3D "bflb,uart";
-> > +        reg =3D <0x30002000 0x1000>;
-> > +        interrupts =3D <20 IRQ_TYPE_LEVEL_HIGH>;
-> > +        clocks =3D <&uart_baud>;
-> > +        clock-names =3D "baud";
-> > +    };
-> > +...
+> >  BPF JIT for ARC
+> >  M:	Shahab Vahedi <list+bpf@vahedi.org>
+> >  L:	bpf@vger.kernel.org
 > >=20
 > > --=20
 > > 2.47.3
@@ -191,15 +148,15 @@ than try (and fail) to be compatible with the zephyr dts.
 
 
 
---Oo1FlmzmZPb07xbS
+--FP9ChwAHSeteGPVI
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCauOcDQAKCRB4tDGHoIJi
-0vgpAP0Ykz6jLYW3pZLrj+OXAuKEfEQ7s4+gO6k+C0dlr9qAfwD/Rk+Q3480s7KS
-h4SKrbAvl0+aogP6ibLD6PeZLk0/vAc=
-=kFab
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCauOciQAKCRB4tDGHoIJi
+0kaYAQDe/U5aSNMnBN+gfEYMXHcowI6WsE/iqPlFmGa663zB1gEA7nC4tnTPdBIy
+gnEMK9pC2q6MB8djjcDHvekkukxybgc=
+=vdAX
 -----END PGP SIGNATURE-----
 
---Oo1FlmzmZPb07xbS--
+--FP9ChwAHSeteGPVI--
