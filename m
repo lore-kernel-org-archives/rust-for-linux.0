@@ -1,77 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793233815;
-	b=YU9hOiztrT9g3u6qBXd9807dL+izwht764FxxeubCK3gbakZsgJQu83AeRVUGvwdVhOv
-	 34IUb2L/SMcLhqQ+MKSG6igNZGkA3GnjtBr6r0TO1kjqXAFquUUXWNCvnf6zYS9kId9nj
-	 7XXb9pXRkine9ZVO3ngxLrVPv3Gkq8pthYK9Gl/5EbwMaj/rvB/djBVM0W2MJafN2WCsS
-	 0mArJjsx6z5/JJ7qQ1Hd++CuEdMWI4kHCxWFZ0hJobFbrt6slUn6v6Je3PcY+iUM4Wcbp
-	 exLCF1gEx7GWDr6O/NJ6od5yXNcFzfsQQu0ENdlUOWUFKOyunnlUuIzOx+O0J9N3xTQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793233815;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Zoho-Virus-Status:X-Zoho-AV-Stamp;
-	bh=82Fl5XL0Alh9oEPvleelufgLIqSNB3ppICWOUTYak/o=;
-	b=GeZb8W7+LcnbgTvUAFF1YtR9x719MGVSGoY7OOYoyXNP4X/i+Js7BkRFKiORo0bYsswZ
-	 C/ZihzZqefUc5OvD5vS+WZ7pjn9D7S/UOB3L4jTHCvbuNFo1kGpm7X7FPjN+11npf9V5W
-	 poimBO4CgobqZVpvhDKF/kFvTVoxrcNNZP1YHVZYLY8vAOgUHvf/oc0uIyi9iph/ua7cr
-	 qYMJu9HG69laZyb9uG34Ne6fqLAL1VanMSuYoA2sgRlRFjMaLllhkHt7FXgbvV5pbScUI
-	 6oxVRLsBd7jIb33yPGvYUgAfVB2za8mz/SoFif3YUk4uCp7XZwaI5KwarzRBVvWliGQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Qm+uZYVG;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
-Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.136
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793250356;
+	b=tooiyR2UH8FEx11fSbwoUKQgz+DJpKlsqDWFt4dqAdw9erPkZkV4t2tLXf//4cCbEpA4
+	 qDiRgFviz78TQ4FXQo8UmkRGuMI9CVUZx/FEBnidDL7lQ6QkFfzkn6as3LXIsJY56gjZI
+	 u/hs5upCTv99JFM/QBAwZfANU/5LWBYyeYtG1G9Yxe5ZOITEsQh4s5N3K2kSMWlDV96D+
+	 USs6K+u2MdYQGZu1hNaMvs3hHsS1j/iUYkK18/paLvxNEC6jP1Jva7hlJixMluYf47uq2
+	 B51cbDysC0vziPVjar8ewqDlcffo5Y3Wl4u9jpmM165PA1isLWXFqOxbUQy/I6l4vRw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793250356;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
+	bh=qzyK/sep4k0pgE8m3Kj8rFxd4gj+fEVyhh5FmlJnLT4=;
+	b=aSUSzLPV3Wg7/CJ0W70IGCI53qiUdUs7NQK0I5lZ7zPFTj13CSr2HI5V8PnpvAfeE0wq
+	 LYtNMwvb2i18+ZYzjMY6QMDKxcCY5Kchg5aqRxiHuCbwRFyXuFYu4J+uvZv77VIulfSpE
+	 HnV2p8yHjfcfin5waMZzbuqvdQahF7MDX94p846Hs0yUnjwyiBmFV5r3pBBwM4TvQr+5s
+	 VLMjRChV6zVkTHGHG3xGbm5cZz/FABtD8eg/26qGEzBAGkRSP3YfTORoTm8P3geQNYYeT
+	 0fzZi6ePwbqZMiaLzMMJEvuP1RNLooYJBmX2J8wV0WXDdBj6lAec5aoWLR+fE4xeXoA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=If3Xgjta;
+	arc=none smtp.remote-ip=74.125.227.136
+Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAE6606A326
-	for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 00:30:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BAE6606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61411606A31E
+	for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 05:05:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61411606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Qm+uZYVG
-ARC-Seal: i=1; a=rsa-sha256; t=1793233772; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=PSVl4ML4i8t3oZIL1edXjrUCG1kk0osHQfShSCc3OO6/8jLsvioosgtfC4EZRt6k/rsUQBk5z0+Q013ZFLRf8VmMJCl40Z/+cKnvDQXsAMMfn6uSBjJ/tCP7z/0NJFyLeL1k+EcG+bSDnpQ6uP+rs45ffERnOPJXJ7JP3UEi104=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1793233772; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=82Fl5XL0Alh9oEPvleelufgLIqSNB3ppICWOUTYak/o=; 
-	b=KRruWBhNJXj2cDAc/kEUyaRbf7ktXyMPzUh78ahRVCON8+tEfcBorWt/Z0etynm/IA7JG9afcmLL0xerhhlWABtOO2IA9xB/gDkpGJTo6Cbe/2y2MJUdc/6VTsSSq70DpdvWhiEs1dtTTjSQ1xxi9W/CKMapYkN3vWaq/fn1j08=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=Qm+uZYVGNL74+sHGWCUawEfskCTGJlvcK1tnxysj3tclOl8DgqWRaaaYGVZ41obAR3mvIvVgCoIbr3K70xHxPLJN0h4r6ld9GHnpd4fj9r0nwkM8UAZOBWFK+ZEtEqIyb3ja4QSBxxTfYlmHby3pkvRiq3tpSlcuQ4rqDvOa+YY=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=82Fl5XL0Alh9oEPvleelufgLIqSNB3ppICWOUTYak/o=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1793233771016711.8689994925045;
-	Wed, 28 Oct 2026 17:29:31 -0700 (PDT)
-Date: Wed, 28 Oct 2026 17:29:29 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Ke Sun <sunke@kylinos.cn>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	driver-core@lists.linux.dev, Alvin Sun <alvin.sun@linux.dev>
-Subject: Re: [PATCH v5 08/11] drm/tyr: add BO-related ioctls
-Message-ID: <auKTafNV9hQGh6We@um790>
-References: <20261027-tyr-ioctls-v5-0-59dfe98cb003@kylinos.cn>
- <20261027-tyr-ioctls-v5-8-59dfe98cb003@kylinos.cn>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=If3Xgjta
+Received: by mail-pj2-f8.google.com with SMTP id 98e67ed59e1d1-3ac6fe4aff0so1665462a91.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Oct 2026 22:05:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793250355; x=1793855155; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=qzyK/sep4k0pgE8m3Kj8rFxd4gj+fEVyhh5FmlJnLT4=;
+        b=If3XgjtaRu0jjJanap+LIdclkOSsGDozBMQjUhhi0DZKT6XoadeXOYBixTQ3hbQRIL
+         NBNjcTU09Jc102qL/PavE3OOkzvpbnFyFWhMRb68Es6+JMpgmJc4/izTGUTq90BcXTR3
+         MKd6bgSoe6osDyeEYSwYPa4F3DwL2LHNFW+1vsTfwU8engZ8qtf5sC3tdJyp8e751DM1
+         eesZ7OM6Afhm8vqNxrhRkC8muaarybhUX8uQsOoFIo4PE8H/xzAw8pBJkYCyX7Hz2Zo4
+         p1I3P4zwd0Ysq1u35IdcewQBFN/0NUZtaNzyjy42mRVVKaooyKdiM41Mz7BocsBZlfjd
+         3Oew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793250355; x=1793855155;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=qzyK/sep4k0pgE8m3Kj8rFxd4gj+fEVyhh5FmlJnLT4=;
+        b=hiWRkQ4iFNqavZtThRqjrQhTqgcZB4HXIlXEA9reN8sVHkDiWJ78KTpqH8N8xTkuXk
+         Aag1gNTjyhivc3kh3Dth5JALo5FFA63p/JYnrlDNqaPVwqBQ72HEE93gT5NEmfTXOigC
+         ZBWLUTJ6WV5/TY5rGgkJTMPcbMz1wxhwVJV+rzixZ/hkFXUQm46wrqcp5wfd2PDxOFVx
+         9dqHRp1Y8SOY8Lsd5nUrGUadvgpjZEy08ZvM/c7NHlgidcbB8HFxu8Tw6LeIXaHjQOyW
+         ItA5Yb2l8VlDzhSh64grJPzl2NFl9g8/T5MGFm3Ku1Yu/GVSU4Cg7O46VAf2Y+sHW4pS
+         1CmQ==
+X-Forwarded-Encrypted: i=1; AKwUvByoHuaanQD0zHPUyYFG+4WPXDDTFohZkzvi0GS1XlFxG2eaE+8YrKpF8APKgfVSETamTA9hjw/zEASuJur0Og==@vger.kernel.org
+X-Gm-Message-State: AFq9FYLwLYaMxUBH8P/+wB+fGWPv8MnOmQnFxE1ZN4ZCpbu2GZOjxnca
+	5tDANwbW6t1jcRw78NFyyRdOYm5rpW+Fh9AnXlpk/kbt5p498k+oGjpB
+X-Gm-Gg: AYBFou2Bnrmp90xqhYCmi5wrynlY0UjeusXBuq4+rJxb/tcZnFNNMjiw/D9DJCi4uW+
+	aaAH/YwAFaXM9tcLZOFPd3G0FUk9zhsnXeftr/lAGcYZw1kf2Td9M6nHRXP3JSR8WcUxTVqtaoJ
+	1WkaJwMwWWCD/Z+Ds4R/3j2lBewQZ1N7kO05HTn9VODDAjM1QPySMQ2BzqIzw+yi52FIO/aBNV3
+	Mudjy8ITOMVoJGNlCRUhAbgYCPiPUE1mpwUnPpV44pW00yXvBPN22A4ToVwqTvCWN5Ca6EnX4NE
+	k3VgCN1e1oQCPzQGE+HQTOUYSf90KyCiDj/d5YIivyuZfWJ0M2RGJmHAeORXsgAHeeFZ5Hqwn9l
+	rqfNEkUyDrOkEZTtkH27rrIyYkTzSp+Oty4sQiKccssSVn7OcKXtA9VsDYcFgCJJeoPzhw7ySe8
+	2DyTJv5QnvhjI11UgBVmOQ2TNxjR1+aeRQXZ8pzMYGd3ciIoRK3SxQ61u0znteyba/0QtSBbaxA
+	NB84Do7zoNlwlx6TQIdlhkaRVZrIWH/W2Z9VPa2dkadD6xQNjqRjP3SQXwN2ZTATgjun90B1lpZ
+	yJ7Bv+Hb/x2apihPnXtrRkg3FArU
+X-Received: by 2002:a17:90b:562e:b0:3ac:9176:e81c with SMTP id 98e67ed59e1d1-3ae580dd6d0mr3805262a91.46.1793250354465;
+        Wed, 28 Oct 2026 22:05:54 -0700 (PDT)
+Received: from [127.0.1.1] ([169.211.140.146])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6c9d2cesm28159685ad.65.2026.10.28.22.05.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 22:05:53 -0700 (PDT)
+From: Kwanghoon Son <asdfkwang@gmail.com>
+Subject: [PATCH RFC 00/12] Add BL808 UART3 support with a Rust serial-core
+ polling console
+Date: Thu, 29 Oct 2026 01:05:41 -0400
+Message-Id: <20261029-rust-bl808-console-v1-0-b736ee920078@gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -81,207 +92,115 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261027-tyr-ioctls-v5-8-59dfe98cb003@kylinos.cn>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/293.227.96
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACXU4moC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDAyNT3aLS4hLdpBwLAwvd5Py84vycVF3DtKRUw8Q0YxNjkxQloMaCotS
+ 0zAqwodFKQW7OSrG1tQDtuKqpaQAAAA==
+X-Change-ID: 20261025-rust-bl808-console-1fbe1af3434d
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>, 
+ Paul Walmsley <pjw@kernel.org>, Samuel Holland <samuel.holland@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, 
+ Daniel Lezcano <daniel.lezcano@kernel.org>, 
+ Anup Patel <anup@brainfault.org>, Kwanghoon Son <asdfkwang@gmail.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, 
+ linux-riscv@lists.infradead.org, linux-serial@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-On Tue, Oct 27, 2026 at 12:41:01AM +0800, Ke Sun wrote:
-> From: Alvin Sun <alvin.sun@linux.dev>
-> 
-> Implement BO_CREATE and BO_MMAP_OFFSET so userspace can allocate GPU
-> buffers and obtain a DRM mmap offset for the generic mmap path.
-> BO_CREATE page-aligns the requested size; BO_MMAP_OFFSET rejects
-> NO_MMAP objects, which must never be CPU-mapped.
-> 
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-> ---
->  drivers/gpu/drm/tyr/driver.rs |  2 ++
->  drivers/gpu/drm/tyr/file.rs   | 73 +++++++++++++++++++++++++++++++++++++++++++
->  drivers/gpu/drm/tyr/gem.rs    | 18 +++++++++--
->  3 files changed, 90 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-> index c0f17bc4ce2c9..f4f31b24180b4 100644
-> --- a/drivers/gpu/drm/tyr/driver.rs
-> +++ b/drivers/gpu/drm/tyr/driver.rs
-> @@ -227,6 +227,8 @@ impl drm::Driver for TyrDrmDriver {
->          (PANTHOR_VM_DESTROY, drm_panthor_vm_destroy, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_destroy),
->          (PANTHOR_VM_BIND, drm_panthor_vm_bind, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_bind),
->          (PANTHOR_VM_GET_STATE, drm_panthor_vm_get_state, ioctl::RENDER_ALLOW, TyrDrmFileData::vm_get_state),
-> +        (PANTHOR_BO_CREATE, drm_panthor_bo_create, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_create),
-> +        (PANTHOR_BO_MMAP_OFFSET, drm_panthor_bo_mmap_offset, ioctl::RENDER_ALLOW, TyrDrmFileData::bo_mmap_offset),
->      }
->  }
->  
-> diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
-> index 22a74b4abf3de..9ffb42f0d8851 100644
-> --- a/drivers/gpu/drm/tyr/file.rs
-> +++ b/drivers/gpu/drm/tyr/file.rs
-> @@ -250,6 +250,79 @@ pub(crate) fn vm_get_state(
->              Ok(0)
->          })
->      }
-> +
-> +    pub(crate) fn bo_create(
-> +        ddev: &TyrDrmDevice<Registered>,
-> +        _reg_data: &TyrDrmRegistrationData<'_>,
-> +        bocreate: &mut uapi::drm_panthor_bo_create,
-> +        file: &TyrDrmFile,
-> +    ) -> Result<u32> {
-> +        if bocreate.size == 0
-> +            || bocreate.pad != 0
-> +            || bocreate.flags & !uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0
-> +        {
-> +            dev_dbg!(
-> +                ddev.as_ref(),
-> +                "Invalid BO_CREATE params: size={}, pad={}, flags={:#x}\n",
-> +                bocreate.size,
-> +                bocreate.pad,
-> +                bocreate.flags
-> +            );
-> +            return Err(EINVAL);
-> +        }
+Introduce minimal Rust serial-core abstractions and a single UART3 polling
+printk console for the BL808 D0 and Sipeed M1s Dock.
 
-Panthor checks that both BO_WB_MMAP and BO_NO_MMAP are not
-set at the same time, should we do the same here?
+The BL808 is a RISC-V SoC used in boards such as the Sipeed M1s Dock
+and PINE64 Ox64 [1].
 
-Also if only BO_WB_MMAP is set, shouldn't we return EOPNOTSUPP?
+The serial abstractions and their BL808 consumer are adjacent patches.
+Port registration is owned and device-managed. The adapters provide UART
+locking for termios changes and normal console writes. Userspace TTY I/O,
+RX, interrupt-driven transfers and DMA are not included.
 
+I kept the driver limited to polling console output for now, so the
+initial driver and Rust abstractions stay small. Does this seem like a
+reasonable starting point?
 
-> +
-> +        if bocreate.exclusive_vm_id != 0 {
-> +            dev_dbg!(ddev.as_ref(), "BO_CREATE: exclusive_vm_id not supported\n");
-> +            return Err(EINVAL);
+The Rust abstractions cover only what this driver needs. Is there
+anything missing that should be addressed at this stage? I'd especially
+appreciate feedback on the port ownership and locking interfaces.
 
-Return EOPNOTSUPP because it's a valid request we just don't support it.
+UART3 is registered as ttyBFLB0, using line 0 of a one-port driver. The
+board selects it through a full stdout-path at 115200 8N1 without aliases.
+Firmware initializes clock routing, gates, reset and pinmux; the board
+provides the existing 40 MHz fixed baud clock.
 
-> +        }
-> +
-> +        let size = usize::try_from(bocreate.size).map_err(|_| {
-> +            dev_dbg!(
-> +                ddev.as_ref(),
-> +                "BO_CREATE size {:#x} too large\n",
-> +                bocreate.size
-> +            );
-> +            EINVAL
-> +        })?;
-> +        let bo = crate::gem::new_object(ddev, size, bocreate.flags)?;
+Jisheng Zhang previously submitted BL808 platform support with a C UART
+driver in 2023 [2]. The UART compatible, bflb,uart, is reused from
+Zephyr [3].
 
-Use file.inner_with() to access the platform device with the bound
-lifetime and then pass it to the new_object so that you can
-avoid accessing it later with an unsafe block. Something like:
+This series depends on the exclusive MMIO reservation fix posted at [4].
 
- let bo = file.inner_with(|pfile| {
-    crate::gem::new_object(
-        ddev,
-        pfile.reg.pdev.as_ref(),
-        size,
-        bocreate.flags,
-    )
- })?;
+[1] https://pine64.org/devices/ox64/
+[2] https://lore.kernel.org/r/20230518152244.2178-5-jszhang@kernel.org/
+[3] https://docs.zephyrproject.org/latest/build/dts/api/bindings/serial/bflb,uart.html
+[4] https://lore.kernel.org/rust-for-linux/20261027-b4-rust-iomem-origin-master-fix-v1-1-16215ae197af@gmail.com/T/#u
 
-> +        bocreate.handle = bo.create_handle(file)?;
-> +        bocreate.size = bo.size() as u64;
+---
+Kwanghoon Son (12):
+      dt-bindings: vendor-prefixes: Add Bouffalo Lab
+      dt-bindings: interrupt-controller: Add BL808 PLIC
+      dt-bindings: timer: Add BL808 CLINT
+      dt-bindings: riscv: Add Bouffalo Lab BL808
+      dt-bindings: serial: Add BL808 UART
+      rust: serial: Add minimal serial-core polling console support
+      serial: bflb: Add Rust BL808 polling console
+      riscv: Add Bouffalo Lab SoC selection
+      riscv: dts: bouffalolab: Add BL808 SoC
+      riscv: dts: bouffalolab: Add Sipeed M1s Dock
+      riscv: defconfig: Enable Bouffalo Lab SoCs
+      MAINTAINERS: Add Bouffalo Lab BL808 support
 
-use u64::from_safe_cast(bo.size())
+ .../interrupt-controller/sifive,plic-1.0.0.yaml    |   1 +
+ Documentation/devicetree/bindings/riscv/bflb.yaml  |  21 +
+ .../devicetree/bindings/serial/bflb,uart.yaml      |  57 +++
+ .../devicetree/bindings/timer/sifive,clint.yaml    |   1 +
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ MAINTAINERS                                        |  13 +
+ arch/riscv/Kconfig.socs                            |   8 +
+ arch/riscv/boot/dts/Makefile                       |   1 +
+ arch/riscv/boot/dts/bouffalolab/Makefile           |   2 +
+ .../boot/dts/bouffalolab/bl808-sipeed-m1s-dock.dts |  18 +
+ .../boot/dts/bouffalolab/bl808-sipeed-m1s.dtsi     |  19 +
+ arch/riscv/boot/dts/bouffalolab/bl808.dtsi         |  70 +++
+ arch/riscv/configs/defconfig                       |   1 +
+ drivers/tty/serial/Kconfig                         |  16 +
+ drivers/tty/serial/Makefile                        |   2 +
+ drivers/tty/serial/bflb_uart.rs                    | 334 ++++++++++++++
+ rust/bindings/bindings_helper.h                    |   2 +
+ rust/helpers/helpers.c                             |   3 +
+ rust/helpers/serial.c                              |  33 ++
+ rust/kernel/lib.rs                                 |   2 +
+ rust/kernel/serial.rs                              | 505 +++++++++++++++++++++
+ rust/kernel/serial/console.rs                      | 107 +++++
+ rust/kernel/serial/termios.rs                      | 104 +++++
+ 23 files changed, 1322 insertions(+)
+---
+base-commit: b7ac81a9d691d0af65a5e1d3e16ef03d5dc8f2b4
+change-id: 20261025-rust-bl808-console-1fbe1af3434d
 
+Best regards,
+-- 
+Kwanghoon Son <asdfkwang@gmail.com>
 
-> +
-> +        Ok(0)
-> +    }
-> +
-> +    pub(crate) fn bo_mmap_offset(
-> +        ddev: &TyrDrmDevice<Registered>,
-> +        _reg_data: &TyrDrmRegistrationData<'_>,
-> +        bommap: &mut uapi::drm_panthor_bo_mmap_offset,
-> +        file: &TyrDrmFile,
-> +    ) -> Result<u32> {
-> +        if bommap.pad != 0 {
-> +            dev_dbg!(
-> +                ddev.as_ref(),
-> +                "BO mmap offset pad not zero: {}\n",
-> +                bommap.pad
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let bo = crate::gem::lookup_handle(file, bommap.handle).inspect_err(|_| {
-> +            dev_dbg!(ddev.as_ref(), "Invalid BO mmap handle: {}\n", bommap.handle);
-> +        })?;
-> +        if bo.flags() & uapi::drm_panthor_bo_flags_DRM_PANTHOR_BO_NO_MMAP != 0 {
-> +            dev_dbg!(ddev.as_ref(), "BO mmap offset on NO_MMAP object\n");
-> +            return Err(EPERM);
-> +        }
-> +        bommap.offset = bo.create_mmap_offset().inspect_err(|_| {
-> +            dev_err!(
-> +                ddev.as_ref(),
-> +                "Failed to create mmap offset for handle {}\n",
-> +                bommap.handle
-> +            );
-> +        })?;
-> +
-> +        Ok(0)
-> +    }
->  }
->  
->  fn vm_bind_exec_op(vm: &Vm<'_>, file: &TyrDrmFile, op: &VmBindOp) -> Result {
-> diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-> index 60f6363995a5a..14f3e182b98e2 100644
-> --- a/drivers/gpu/drm/tyr/gem.rs
-> +++ b/drivers/gpu/drm/tyr/gem.rs
-> @@ -38,6 +38,13 @@ pub(crate) struct BoData {
->      flags: u32,
->  }
->  
-> +impl BoData {
-> +    /// Returns the flags the BO was created with.
-> +    pub(crate) fn flags(&self) -> u32 {
-> +        self.flags
-> +    }
-> +}
-> +
->  /// Provides a way to pass arguments when creating BoData
->  /// as required by the gem::DriverObject trait.
->  pub(crate) struct BoCreateArgs {
-> @@ -57,7 +64,6 @@ fn new(_dev: &TyrDrmDevice, _size: usize, args: BoCreateArgs) -> impl PinInit<Se
->  pub(crate) type Bo = gem::shmem::Object<BoData>;
->  
->  /// Create a new GEM buffer object.
-> -#[expect(dead_code)]
->  pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result<ARef<Bo>> {
->      if size == 0 {
->          return Err(EINVAL);
-> @@ -65,7 +71,7 @@ pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result
->  
->      let aligned_size = size.checked_next_multiple_of(PAGE_SIZE).ok_or(EINVAL)?;
->  
-> -    Bo::new(
-> +    let bo = Bo::new(
->          ddev,
->          aligned_size,
->          shmem::ObjectConfig {
-> @@ -73,7 +79,13 @@ pub(crate) fn new_object(ddev: &TyrDrmDevice, size: usize, flags: u32) -> Result
->              parent_resv_obj: None,
->          },
->          BoCreateArgs { flags },
-> -    )
-> +    )?;
-> +
-> +    // SAFETY: `ddev` is bound for the duration of this call.
-> +    let dev = unsafe { ddev.as_ref().as_ref().as_bound() };
-
-You can remove this unsafe block by accessing the bound device through
-file.inner_with()
-
-> +    bo.sg_table(dev)?;
-> +
-> +    Ok(bo)
->  }
->  
->  /// Look up a GEM object by handle for a DRM file.
-> 
-> -- 
-> 2.43.0
-> 
