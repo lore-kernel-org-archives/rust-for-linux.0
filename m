@@ -1,48 +1,122 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793376527;
-	b=JIR52x0ZD4A9on//f7TnsAyyi0Y7jDMwLoed4OWtekeO3jZ/JzCnTZbv2Trz7/CUwY18
-	 qEIwImzt04C8g2FI4XB5seFYvtW1gcduxUCBVJ2wtM8/XZwvO/Bw3npgXbOr/f9FHjy1q
-	 0o9JmI23kwLfOd+3EWEQVQRob1DZ9jFoLOCuB6JGrWq77Hmec56Zr4puXfcPz3oPSW9uM
-	 elq0VwqJwj07K85EYGdG+q15hyFQIFwxZ/DuKr3JHczmwKN3payy9Rr7i1tSL71vX67X2
-	 sthWaxny5BG9J/AdbQYi3BbhwpWHwl+P2SQXAgM3qpKnwyJ1R7Lzhd4fZbduhOd+5ew==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793376527;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=TEoBzydLhAWoxE6JUj9FRAegtYtzr4vhwwBHbq7ZyAE=;
-	b=y0HFHpCPEFIvO8ZUham91rR5foWYGYf0SiuAI+2kB2Iry5EXcNCp2yOacbO1amCdZ/n+
-	 mjd7PeT94QkDP6fYBawRHWpMzkgoQGKx9X/IKcBkG4gGgSrdIFQpEYkRVZf2RUDl4mAx9
-	 VF/CWU1FHg/n4XA7sLqaiNpUVrCg3d6RVQyeUgpTNmyjPVJaMtCf6mzHtqnLjAIk91Fib
-	 Qk2Sgyqr1COhySNo0Ds/6g/kHwOxMDKPkSzZv9v3nFZRXcacgT9Qs1cOG0ITTZVml+qcB
-	 yJ0768lHagBu7ruE0REYeEW6qTYEzsDowGlsO1NEauIzm4dzkbtC7FNfslvziy7WwoQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VQ6E2J5f;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.62
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793380398;
+	b=0b/b1YBT4r1G9HwbHDG+10OyL43vbzXNg6RfNvbquhNhZhrxvbGkDkBim71duy+16I6G
+	 tFtd79k3pvDd8Ni9blXneyqoda0l8dm2Uef9sMz7CAXpK9sZVJlHdIWOT6C33ntxWCI0D
+	 l0YozYoEKSd1R6nEHtfQk+TLEqlJ2mCVJAbD8l2cYupD3hg43SSltkEybRpq3kbb/oqfo
+	 Xh2neno06aYGg/TdUngQ+HsmfjuvRCA3TePLOsEdW7sGe88nqXINA0Dn7Kn/PMN6UHWdm
+	 HM9oFbNN8iO147dnRsj9wZdsaFKMInkRPN70L+/zIBztIKNoTLaT4WgPpeT2aH88GkQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793380398;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:Content-Type:
+	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=bSUJV0DC77OeY6fcyxiVfCIVjH8R4KusIzPWMFAfs/U=;
+	b=0CZfqvqkGW8s2tITGC2ydGeisTRakBPN9nd9/eCn7IxngHq6eX08vpOsGDPBr3mq6h/R
+	 SDLbPpLEiWl7gB6KGtBWfxcqp7s3is9YcZvlUqRmX2jpTqwrPKXPYIo/bJWbGFE6ZjkSr
+	 DtmhFFk86gc5RJKD2hyJE4/YZtnb3Yv15mv8pMG6AshsxmWIfJwVuB3E32OXo2eaO6Ifq
+	 gvuus+yR26KZswGbWNBk5n1KjxyQbZz72VIvmMI0tkesxXRlH2T/lu4H4rcWQLeM0Xlwu
+	 E8vIV4+T3+N6gmTXgxXXgqfjVT4SaM14kj+1yE+8XHrytH0326MO3qd9AcfsXvRM5Cw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ITxyyNeF;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.62
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013062.outbound.protection.outlook.com [40.93.201.62])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D6B606A31A;
-	Fri, 30 Oct 2026 16:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A26606A322;
+	Fri, 30 Oct 2026 17:13:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 50A26606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VQ6E2J5f
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB351F000C1;
-	Fri, 30 Oct 2026 16:08:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793376526;
-	bh=TEoBzydLhAWoxE6JUj9FRAegtYtzr4vhwwBHbq7ZyAE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=VQ6E2J5fBcqUMJHxr8bO2dxN+Z6ipPSNZ1LTkwq93t2gL6/Ss1zV/pML5gZ1p/xGH
-	 /F71hx+C9CatqSuSX6XljhY149R/J3O3+fxmjH0ofwLm0VShVa//08Vrhm2TIMfyW9
-	 r6Q/g6XeRy5V+Q4sPQfDtoYvZhE494nMf68RYJE2KjDS5SAOG2WD6ozflKRpf4aUBY
-	 GrWAL2xSHifCdxRGRlhiSRKxlBZByNFTMxbtzvgnwqmc79T4gct648fUoxl4D/UGnM
-	 r3YNg1whPEbGuF741QJE20+uYX1tAkd/HcLZYeU5wNZ55DV0gsaQhfmpuvhbAEDqmi
-	 B3QHX2KMmr9cw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 30 Oct 2026 17:08:04 +0100
-Subject: [PATCH v4 2/2] rust: alloc: move `NumaNode` to the `numa` module
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ITxyyNeF
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iA/xM/0T5nWXGQ6PeRuC9eU7rkRaH5P/LbtDYdV64zlhZOsZmcZhPDXRl1kMwYJoEUCMdk6YepnveChohBfow4LWPs9PsVIztiIgSTusdw58eqb8SrRlHP0TxjnuCpooNL2LtdjCEMU5NiqkUYZGshHp2Am4CkiqEy4tp6ZxGLBi0YzMqIPqsqkfBSNk1WlK1TdPquBa35gEhlxZstPfnxtULki1PtwkL9VNDgm2a4fy067ii9Wob+rgPdNVv9mPKOwEmizaUC4U6tXzgXHcFaA6tcP2lP9zbhD9+K7/Ta3JMRFJ/CkHib5r4+g70dq+xc7cH4Ndu3+jVdUQ7YgH/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bSUJV0DC77OeY6fcyxiVfCIVjH8R4KusIzPWMFAfs/U=;
+ b=IxaQYSr7Ru31hOWxnVSb07gkGwsPIQAqPPIQDS5sO5lG1ezT/hvcRgslinPYms7UUiNC/MR5Pqp//UNENWqqMfSXc25SxznT+3bAz51ACxX1PPW//76eqtMjUZurx4nAoQyGUbUL4IlPEyTfuvHEhA8EZjq6Bjvckq9ATgsJzwCj070Usyw1ExUz8PS9kJc+XZJz1kFux5HbVgJz4qPS1qfx4d1p08TOQSr6ZHGzR7+r0aApPYld/k8oWSVRAe0PfGMH0y5iOO0eQwfa0/6kRt0eL4rU0FfLOK73eSC9kWsYlYa50Sx5OPOSTeHT73ZOhtZrBtIqxhLhHJvm1m8xsw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bSUJV0DC77OeY6fcyxiVfCIVjH8R4KusIzPWMFAfs/U=;
+ b=ITxyyNeF8dFqiSMktnOJJ7MMYLBACw/5VISboP3jmlXwIPEb6bNKx+GzHwHlNAXXRha19SWmupUgB9i8nUuZ4B3NHxpEmKgRsrl+MyMJWx40tv6lh5bmTp68sWHc0UTaqNRUt88luh51sFD5aJsstRbx9J01zNJ2aborA6skopldDfSLhRG5Rg+XyBBP9M0Vwkksir+KKYpe1jImFCZKkGC6y6c2sbXr36TfuVJV1w6Glm/eOavsvtKJmxIzT4dlm/FnqPwxfZ8TcwJkxeDkvVTDemATkQgrdWw0sYZGqGffGNG9jqEea5OO0nsL1jyQW64UUBRLMSpp01RfSa5QLw==
+Received: from DM6PR05CA0056.namprd05.prod.outlook.com (2603:10b6:5:335::25)
+ by DS8PR12MB315725.namprd12.prod.outlook.com (2603:10b6:8:447::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Fri, 30 Oct
+ 2026 17:13:11 +0000
+Received: from DS2PEPF00006E21.namprd05.prod.outlook.com
+ (2603:10b6:5:335:cafe::3b) by DM6PR05CA0056.outlook.office365.com
+ (2603:10b6:5:335::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.5 via Frontend Transport; Fri, 30
+ Oct 2026 17:13:11 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ DS2PEPF00006E21.mail.protection.outlook.com (10.167.23.214) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.592.5 via Frontend Transport; Fri, 30 Oct 2026 17:13:11 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Fri, 30 Oct
+ 2026 10:12:50 -0700
+Received: from xinmengs-dev-vm-linux.nvidia.com (10.126.231.37) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Fri, 30 Oct 2026 10:12:47 -0700
+From: Simon Song <xinmengs@nvidia.com>
+To: <dakr@kernel.org>, <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
+	<rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+	<linux-pci@vger.kernel.org>
+CC: <alex@shazbot.org>, <jgg@nvidia.com>, <yishaih@nvidia.com>,
+	<skolothumtho@nvidia.com>, <kevin.tian@intel.com>, <airlied@gmail.com>,
+	<simona@ffwll.ch>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+	<boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+	<lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+	<tmgross@umich.edu>, <markus.probst@posteo.de>, <jhubbard@nvidia.com>,
+	<apopple@nvidia.com>, <joelagnelf@nvidia.com>, <ecourtney@nvidia.com>,
+	<cjia@nvidia.com>, <smitra@nvidia.com>, <kjaju@nvidia.com>,
+	<alkumar@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
+	<kwankhede@nvidia.com>, <targupta@nvidia.com>,
+	<linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
+	<boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
+	<work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
+	<kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
+	<peter@colberg.org>, <xinmengs@nvidia.com>
+Subject: [PATCH v5 1/9] rust: pci: add internal SR-IOV enable and disable helpers
+Date: Fri, 30 Oct 2026 10:12:19 -0700
+Message-ID: <20261030171230.196717-2-xinmengs@nvidia.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20261030171230.196717-1-xinmengs@nvidia.com>
+References: <20261030171230.196717-1-xinmengs@nvidia.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -52,240 +126,121 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-cpu-helpers-v4-2-a8d840d34837@kernel.org>
-References: <20261030-cpu-helpers-v4-0-a8d840d34837@kernel.org>
-In-Reply-To: <20261030-cpu-helpers-v4-0-a8d840d34837@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, 
- Yury Norov <yury.norov@gmail.com>, Yury Norov <ynorov@nvidia.com>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Brendan Jackman <brendan.jackman@linux.dev>, 
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-mm@kvack.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5583; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=KD3jiA8PB7u+cdp08Fd6vVtn/2TqMtouWbVeRQ7Vg3Q=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq5MDpZs0vTnnYLx/gSJ6gNp2Z5/kihDzco/3AH
- H7LzPck3/yJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCauTA6QAKCRD6UCkIqsW9
- 0EAUD/4sMjw4PzHpnAuc4FATQY6yu73zk/YNKMGSTcHPxj7Ig1CgvbIIr/BtJl17FArToJmj0gx
- RGZ6nQJlLLYAEXnhDsAflpz1uXJVfITVHS9L47v8ZG05FWp7DmmhXhZiCtC2Lq45qLyfV1GvpYs
- u47MbYRCg+immljxU+oetszPZETxHz+yqB+swIL+uWMqKXW/QRK0/CF1JjENuTs/SC7UvKKdK4l
- +/7KC40Ay4pL98ZFLVve5Vm8vLMijK/cvGVGAAkdeLZb1l78GlI+JxDV+TIPxy5SghCgch6XWqY
- 636YxVXAtLs7JopP+TRcVNpAC0bt7nLrLL883RyA/6bhxeoTxbnO5ZGbIqnz1gnjunFYviQXikP
- CoyZ39qmA9de/hhE3oDHgGmuSv55ehaNQO7XFz7R8Kj8o92aJ7SS8FtHuqgW73mFDWolynKMhm6
- hXfuHWlv58iyENUujO11gKKp2iGe4CAA2D+77Ny8T7N/85IHHRFfLbqkQ8OXDyVdOwWIMepJtu4
- DVIBtIuDKahUxCZMhACJ7M38bj5Zj9m2i8gNem9UQJLWxMy+Px3ULOTxrIFOEVnZSeM5R++vvNH
- 1r86L2nn91tKhIne5ZWFB96ZMRI5DDXIPHX+ACGLp7IoF5R4JeV/OdhcCJEwsoGe1DhqV7a1GFN
- SFDg///KM0lXZ1A==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF00006E21:EE_|DS8PR12MB315725:EE_
+X-MS-Office365-Filtering-Correlation-Id: d84ac46c-8c3f-46a7-30a0-08df36a9138f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|7416014|376014|23010399003|1800799024|6133799003|18002099003|22082099003|56012099006|11063799006|261022115727099003|261022105027099003|261022113327099003|261022075727099003|10067099003|261021123027099003|261021121427099003|261009223027099003|261028144727099003|261026140227099003|261021130227099003|261026121527099003;
+X-Microsoft-Antispam-Message-Info:
+	NUyIJrbR/lCTplPq01HSbWktis9/HKvKjrmwQJw8Od4HpysBdNpZK5dhek14Jj/6z3puv0Vlb+qmMZJUsSzGkGxTrFjWFt3uNzCnJ7331zxwJPZanYqH1gtV3SU7HHUBuFSnls58b4E3NrJnd9LOLbaFhqa5rqCAQcHzygSTMAmQDDReNT1HUi7/VTBJGCmkHQOelxdYbtOKmoeOEHv+R8BiLqt4Qep8boWnOXfHz/zx6mbi9dI5k/+Kye833KxjlcnavhIa4eG8rLviXhzaxQVsRVAuuzsuTjTuDjqcerZiTIvznY9yJ7pmnIGynY9AiLetyvddxchNtRfkVfbidFHSJpYDuz+A4TCcUa9zxzyHzn9nvhChm78/M9RL7blPlHdLP7pe/XqHYzQSz3pAp1iFHENY4gYii9q8Kf2vsvfnecWtbL81cal5pR3oVe2971Zry9vSDVNWFofrWk+CwZvqBcf3XU8XHRh5l/yN+iV8jdu2JsRvUt73rfY44fPXDdxElrR6kRjkPaaVgvnmHQFFIVW4NGUYznOgrvLmXle/zlyB8YXS4WXPZwy3Uge+cSlhhZ+L2JODElY3HKeazyrZqXFoGCueSmu/2XcT67+AqOx0YrAtewH0q/+lm1k9OIfybDdi/BKXWnZOAfRcVMf5m4DXbT4Ge6f+fA4R1PTlwMBWnEpwL6j5pYBJqAYQkI6rDvnEz0BblzV9Nqk1SQ==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(7416014)(376014)(23010399003)(1800799024)(6133799003)(18002099003)(22082099003)(56012099006)(11063799006)(261022115727099003)(261022105027099003)(261022113327099003)(261022075727099003)(10067099003)(261021123027099003)(261021121427099003)(261009223027099003)(261028144727099003)(261026140227099003)(261021130227099003)(261026121527099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	peeAUf0NF8lNpCaYiI8B0vktsxs1zq0p4EMAqZlOhcZcOL673qhL0UxOunseviqkgAAWdkdV80zrDcgw/IoVuumyNTmwlZlw/bZb6PnJ4GxYK9zfee/jB19f8z6nfuG4Kl9frTc0baVgS1P9juLuFJ+8sUI0KmkJb4/ungv+lqlpcYGNyhc41dt8nz93RGGmOJPTAOWuflumWJwGW5ipFZh8/9jRYCvKzXu8R5pZXDFs0jwrlAD5Mz3zlBjehuQha2nyxR6QH8AiqBhw3hMYSIxkKp1qgDbA+96vh+K+kzzvFJjzD2NIlNN6CYcoTJTIvoPq0nY/JqyRWk/oLGggAUH6TTj6qnUmuBYXQCfqNoPN8zgmtu/Qp/ADVGP+kInE1Jm9ArFQvjKW4E/PhloWZ0cr4EJlyeyXGZy4cEUTPdLnas1GMlrv4tSp9a93xehS
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 17:13:11.4479
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d84ac46c-8c3f-46a7-30a0-08df36a9138f
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS2PEPF00006E21.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS8PR12MB315725
 
-`NumaNode` identifies a NUMA node and is not specific to the allocator API.
-Move it from the `alloc` module to the `numa` module so that NUMA related
-items live together.
+From: Peter Colberg <peter@colberg.org>
 
-No functional change.
+Wrap pci_enable_sriov() and pci_disable_sriov() on Device<CoreInternal>
+for use by the SR-IOV callback tokens and their rollback guard.
+Keep these operations internal so drivers can only enable or disable
+VFs through the callback-scoped API introduced later in this series.
 
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/all/aiZvKPFCkqJUsP0a@google.com/
-Reviewed-by: Yury Norov <ynorov@nvidia.com>
-Assisted-by: LLM
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+Suggested-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Peter Colberg <peter@colberg.org>
+Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+Signed-off-by: Simon Song <xinmengs@nvidia.com>
 ---
- rust/kernel/alloc.rs           | 30 ++++--------------------------
- rust/kernel/alloc/allocator.rs |  6 +++---
- rust/kernel/alloc/kbox.rs      |  4 ++--
- rust/kernel/alloc/kvec.rs      |  4 ++--
- rust/kernel/numa.rs            | 35 ++++++++++++++++++++++++++++++++++-
- 5 files changed, 45 insertions(+), 34 deletions(-)
+ rust/kernel/pci.rs     |  2 ++
+ rust/kernel/pci/iov.rs | 48 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 50 insertions(+)
+ create mode 100644 rust/kernel/pci/iov.rs
 
-diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-index 21067bde6860..9daddf540e7d 100644
---- a/rust/kernel/alloc.rs
-+++ b/rust/kernel/alloc.rs
-@@ -22,7 +22,10 @@
- #[derive(Copy, Clone, PartialEq, Eq, Debug)]
- pub struct AllocError;
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index f47974d3e76..e522fdddc34 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -36,6 +36,8 @@
+ mod cap;
+ mod id;
+ mod io;
++#[cfg(CONFIG_PCI_IOV)]
++mod iov;
+ mod irq;
  
--use crate::prelude::*;
-+use crate::{
-+    numa::NumaNode,
-+    prelude::*, //
-+};
- 
- use core::{
-     alloc::Layout,
-@@ -114,31 +117,6 @@ pub mod flags {
-     pub const __GFP_NOWARN: Flags = Flags(bindings::__GFP_NOWARN);
- }
- 
--/// Non Uniform Memory Access (NUMA) node identifier.
--#[derive(Clone, Copy, PartialEq)]
--pub struct NumaNode(i32);
--
--impl NumaNode {
--    /// Create a new NUMA node identifier (non-negative integer).
--    ///
--    /// Returns [`EINVAL`] if a negative id or an id exceeding [`bindings::MAX_NUMNODES`] is
--    /// specified.
--    pub fn new(node: i32) -> Result<Self> {
--        // MAX_NUMNODES never exceeds 2**10 because NODES_SHIFT is 0..10.
--        if node < 0 || node >= bindings::MAX_NUMNODES as i32 {
--            return Err(EINVAL);
--        }
--        Ok(Self(node))
--    }
--}
--
--/// Specify necessary constant to pass the information to Allocator that the caller doesn't care
--/// about the NUMA node to allocate memory from.
--impl NumaNode {
--    /// No node preference.
--    pub const NO_NODE: NumaNode = NumaNode(bindings::NUMA_NO_NODE);
--}
--
- /// The kernel's [`Allocator`] trait.
- ///
- /// An implementation of [`Allocator`] can allocate, re-allocate and free memory buffers described
-diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-index cd4203f27aed..4af50e20933b 100644
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -11,12 +11,12 @@
- use super::{
-     AllocError,
-     Allocator,
--    Flags,
--    NumaNode, //
-+    Flags, //
- };
- 
- use crate::{
-     bindings,
-+    numa::NumaNode,
-     page, //
- };
- 
-@@ -122,7 +122,7 @@ unsafe fn call(
-         // - Those functions provide the guarantees of this function.
-         let raw_ptr = unsafe {
-             // If `size == 0` and `ptr != NULL` the memory behind the pointer is freed.
--            self.0(ptr.cast(), size, layout.align(), flags.0, nid.0).cast()
-+            self.0(ptr.cast(), size, layout.align(), flags.0, nid.as_raw()).cast()
-         };
- 
-         let ptr = if size == 0 {
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index c63d6acdbb6f..0fa736c81287 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -13,12 +13,12 @@
- use super::{
-     AllocError,
-     Allocator,
--    Flags,
--    NumaNode, //
-+    Flags, //
- };
- 
- use crate::{
-     fmt,
-+    numa::NumaNode,
-     page::AsPageIter,
-     prelude::*,
-     types::ForeignOwnable, //
-diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-index c7546b9da4fa..b669ca10b3f7 100644
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -14,12 +14,12 @@
-     AllocError,
-     Allocator,
-     Box,
--    Flags,
--    NumaNode, //
-+    Flags, //
- };
- 
- use crate::{
-     fmt,
-+    numa::NumaNode,
-     page::{
-         AsPageIter,
-         PAGE_SIZE, //
-diff --git a/rust/kernel/numa.rs b/rust/kernel/numa.rs
-index 164e622d325f..4a3a880308f3 100644
---- a/rust/kernel/numa.rs
-+++ b/rust/kernel/numa.rs
-@@ -4,12 +4,15 @@
- //!
- //! C header: [`include/linux/nodemask.h`](srctree/include/linux/nodemask.h)
- 
--use crate::bindings;
- #[cfg(CONFIG_NUMA)]
- use crate::sync::atomic::{
-     Atomic,
-     Relaxed, //
- };
+ pub use self::cap::{
+diff --git a/rust/kernel/pci/iov.rs b/rust/kernel/pci/iov.rs
+new file mode 100644
+index 00000000000..6f8f95ed618
+--- /dev/null
++++ b/rust/kernel/pci/iov.rs
+@@ -0,0 +1,48 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Abstractions for PCI Single Root I/O Virtualization (SR-IOV) drivers.
++
++use super::Device;
++
 +use crate::{
 +    bindings,
++    device,
++    error::to_result,
 +    prelude::*, //
 +};
- 
- /// Returns the number of online NUMA nodes.
- #[inline]
-@@ -27,3 +30,33 @@ pub fn num_online_nodes() -> u32 {
-         bindings::nr_online_nodes
-     }
- }
 +
-+/// Non Uniform Memory Access (NUMA) node identifier.
-+#[derive(Clone, Copy, PartialEq)]
-+pub struct NumaNode(i32);
-+
-+impl NumaNode {
-+    /// Create a new NUMA node identifier (non-negative integer).
-+    ///
-+    /// Returns [`EINVAL`] if a negative id or an id exceeding [`bindings::MAX_NUMNODES`] is
-+    /// specified.
-+    pub fn new(node: i32) -> Result<Self> {
-+        // MAX_NUMNODES never exceeds 2**10 because NODES_SHIFT is 0..10.
-+        if node < 0 || node >= bindings::MAX_NUMNODES as i32 {
-+            return Err(EINVAL);
-+        }
-+        Ok(Self(node))
++impl Device<device::CoreInternal<'_>> {
++    /// Enable the Single Root I/O Virtualization (SR-IOV) capability for this device,
++    /// where `nr_virtfn` is number of Virtual Functions (VF) to enable.
++    #[inline]
++    #[expect(dead_code)]
++    pub(crate) fn enable_sriov(&self, nr_virtfn: u16) -> Result {
++        // SAFETY:
++        // - `self.as_raw` returns a valid pointer to a `struct pci_dev`.
++        //
++        // - `pci_enable_sriov()` checks that the enable operation is valid:
++        //   - the device is a Physical Function (PF),
++        //   - SR-IOV is currently disabled, and
++        //   - `nr_virtfn` does not exceed the total number of supported VFs.
++        //
++        // - The [`CoreInternal`] device context inherits from the [`Bound`] device context,
++        //   which guarantees that the PF device is bound to a driver.
++        to_result(unsafe { bindings::pci_enable_sriov(self.as_raw(), nr_virtfn.into()) })
 +    }
 +
-+    /// Get the raw representation of this node identifier.
-+    pub(crate) fn as_raw(self) -> i32 {
-+        self.0
++    /// Disable the Single Root I/O Virtualization (SR-IOV) capability for this device.
++    #[inline]
++    #[expect(dead_code)]
++    pub(crate) fn disable_sriov(&self) {
++        // SAFETY:
++        // - `self.as_raw` returns a valid pointer to a `struct pci_dev`.
++        //
++        // - `pci_disable_sriov()` checks that the disable operation is valid:
++        //   - the device is a Physical Function (PF), and
++        //   - SR-IOV is currently enabled.
++        //
++        // - The [`CoreInternal`] device context inherits from the [`Bound`] device context,
++        //   which guarantees that the PF device is bound to a driver.
++        unsafe { bindings::pci_disable_sriov(self.as_raw()) };
 +    }
 +}
-+
-+/// Specify necessary constant to pass the information to Allocator that the caller doesn't care
-+/// about the NUMA node to allocate memory from.
-+impl NumaNode {
-+    /// No node preference.
-+    pub const NO_NODE: NumaNode = NumaNode(bindings::NUMA_NO_NODE);
-+}
-
 -- 
-2.54.0
-
+2.43.7
 
