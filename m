@@ -1,85 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.136
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793338994;
-	b=MHmmpvC5XMXxioIlOGlVch1QBWr9LyWXf2dD7ZTOI58Uaj3jLV1P6UUtmVfuJxLQ9yNs
-	 ngON4i4zeQmW3Q2TlpoygivyLWMm0z5PPhJA8/Fq7jk1kZ39fIzPjySeZMOzxJkt/u12Y
-	 Zwej4DKBD0vLlq+HwL9Mkt2+cPURe43jwcCdA+K0uFuxxPo+26Q7A53HW1/MOJPBD/NGk
-	 efG5fGYONP8yZ41sFuCgW0mBf2LS15mliTdcRsLhOnOiXqx1z3n1gU3A35zmkCLRy8uff
-	 0K2b/nNHiinZX8M3brFzwUWdRd5YR1K8FBeylq+AQzHpDnVRUN+RAy7EY0dyhfG8olg==
+	t=1793339786;
+	b=4OJYG2u49CfoN6fxyis8NDiQZWISAfd8E9rEi6jh+pe2IeU+t/gsDzjU9/zhQ6zz++Tb
+	 f8mWcPG+JouU2XAdZ0vHXUVqXp7PaZtexCecLufCr/F1WWuTldZznXsOYBouGX1dTi39p
+	 jO0wdsqdEBXx/FCrkAjWhkQ/8UzJMNNYEsAwMdrOhjpTC0sJtxADV7FwZATG2DlGz+WFF
+	 r62v+/xv0sleBFsQ9TFtQ1ykO22cZ6NpfsGLvDZ+oE7YcLnoFKAb64Cz26DzD76kg+FAc
+	 QHXelBfFR7RZ0ug1YrTFRYmuTL+rsDY+RUu/opG+XO3tF28Y+VGHgx6Bt/cPKHFrNqw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793338994;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793339786;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=bCWYMiBYjhAym3CK4+93yurIeQTmlbS6kD3ZxpQIRR4=;
-	b=0vGFobBnyAuqtw4yyq1+mBSuTx3eRPnQJlb8Oi5UODxLQwvSCDfkRsRtsxW1PDIkdyLS
-	 abrSy2YAd0i0pUt/NxmQ1+3PJjoKhQZfyYMiaGfcx+tY9w61Xj23GpW1WGtoI/Vl4KA5W
-	 9Azgd8oFq34IuG6/iH2cimDU4itgAN8bbFIM6CpEu0lzt3eKauzDKjYVE4rN7zap2UgLu
-	 10aHSMvUU52YeBRdlSdj7z6BCqmhqGeSOwtP7jxfHBXcIYQRLI+YEVL/OV1eXjncsRs8I
-	 6echd1XpgK/pyLDeloUnBJaG+fQ4QGDTMDdQvH1sP8YKxRks/m2GbXK+7pDxvjprYng==
+	bh=1anniFrPD+gJ2zvk7tqiNGRs4XaU4IBzFvazZsvzhO0=;
+	b=CO5+CRfNyVvFCCzjymzyQySdTmE5Pbx4GilRtcwQwXgcIgus8WBCXKcM//UIoRbGQWo/
+	 LVXkNwqynVXOrCtlkbzi0Zk8pHETcGtdUCNcZeq+KDeUovAWvdh9z1t3QDq8sCyEPN0B8
+	 acuFW7JKW6DEF2w8kGP3R3KhVbEOWKvr7hKD17MZ3FlYKHW9WAfLzUA8ttaZPrbZdLdj+
+	 AsFWSTgBiXb4XFoE+YOm/+lLHPLp9UrwDjyCD5OO0jVqZGeYMZq3WT5HKbFF6wzAocGnn
+	 ZsszH3nlHh2hFXZK2TxiNnUW438qQJrmVGNO5/mvjcY0iouv/SHjO8uw0w+I8tYowYg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="AQTXK/7n";
-	arc=none smtp.remote-ip=74.125.227.139
-Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fKl8poaN;
+	arc=none smtp.remote-ip=74.125.227.136
+Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A229606A31C
-	for <rust-for-linux@vger.kernel.org>; Fri, 30 Oct 2026 05:43:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A229606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25042606A31E
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Oct 2026 05:56:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25042606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AQTXK/7n
-Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-3ae1dca6bc0so150635a91.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 22:43:13 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fKl8poaN
+Received: by mail-pj2-f8.google.com with SMTP id 98e67ed59e1d1-3ac6fe4aff0so304490a91.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 29 Oct 2026 22:56:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793338993; x=1793943793; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793339785; x=1793944585; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=bCWYMiBYjhAym3CK4+93yurIeQTmlbS6kD3ZxpQIRR4=;
-        b=AQTXK/7nV7AtiXcnztdcwiTjjJrOqKxtXmR0kgdEh3k7rNpZox8Rr6/D12TY2CulD0
-         1WfqOLcvFVmzKbTwxhQnWcyxSBQGbB1XTlv34xNCGfAgrNMW1dUmw58H7RBELO7BIR+l
-         LUUl7odHPoXUMXr0CKwN9+WERWYMTHJhKLsM2TZL6f4y+E/9O2JmpqLhtAzgLPHgTIAT
-         wbNHZGVIAyrBxenfjBNIcydy52ZAFAIcLXf/VDwRJWHt8UM/amk0XQi5rhjkFXHTZKav
-         LfaZyRgtqNVumd0bSWt3fnHlCWEJ85bKglDw9Z1GOPHSPToWPvShBIRShlQmkgMw3KE1
-         hTPA==
+        bh=1anniFrPD+gJ2zvk7tqiNGRs4XaU4IBzFvazZsvzhO0=;
+        b=fKl8poaNCXBEsyf/0TeOYoZMv/2E/sAsxAaTA9idn5zsncnfapu7bD/PQdeQW90Mzn
+         mCzONwoZQBnHk4TvJHXmIuspzXUn2H9t0CUzKLY1wjQUoPQ/WFGjC1kyGeWOVUfAH7gn
+         GGYPK34LxFAT6RfKoRFzuiMs300X7QNHK52ld/T6rNpRC10GIZTZAaR38cwWwa+pmqT5
+         xNgxif723swRBNrxKbd869GrkaKNVdZpoP+PWOZhlwDvb9cJbQyMqi3Wk+fWZiTUYEyX
+         DcD6QyYsXGvI0CVsu9lwhMgY6tQGm8IllX03u0UwLGi6Az2Gg87e7aQzoHzlusCMUJEt
+         DEzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793338993; x=1793943793;
+        d=1e100.net; s=20260707; t=1793339785; x=1793944585;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bCWYMiBYjhAym3CK4+93yurIeQTmlbS6kD3ZxpQIRR4=;
-        b=RO++DoPMH4TKrVeQ3HlcVZQ6rEVeJ/nSDMnntgdV62js45c8jrZSTnIWOhoQbCKN9f
-         87ktJjsbbIsORD+khH+hptGSX2hd4uZ0OzmmzC1HOX94kP5iI3P4ykpXS8KeZsuUhJgX
-         pmT/oleTzjfG+ocC3vJ1W/lRXVYNN2UnSzCJBAQedb605x0vNhmsje9MIvalaOS2sJd/
-         UGqaGx+fFBhlp8lMHeQ62Zs6HoOHdQnMJUXru/bm4lhTlfbfq0j6KoLXP2TW39vUebYJ
-         KNkmdBhCQABKABvrWrKdFK6tn5jcbEX07NCqLrEcwRvYza8iVEVtTQbTfhwmLuokkZsO
-         2VZg==
-X-Forwarded-Encrypted: i=1; AKwUvByhsCzKjm2k6Ev1n8xv3c4LB0alEKioixBtidJclHn80HAGK4HoOGmQuzf7VUZuyhIjbJXUpzhHjb9grmvEKA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYI63PwTbq/g1iXCny51aZU+erosQkDp4EAXfjre8Zd/9xR40WKZ
-	b/898/Q7r7ySNgo7+M8Gn8v/F2aqzv69ZPHzKBHFUXX3yxhC69a7F9Ly
-X-Gm-Gg: AYBFou3hvzowSjYUtj6SVC702EGahBuM8GKZhX4XSApd7N1jC0xfhksT830+l2BsLVT
-	ZDQyYlUCYftoUVIoR7lNEii9ovqX6m/owHvEv+EeT8XDQ/odz/FifVtzpv3EIwaRIS9wyoEO1IC
-	3PqfW64bPZG9mmFJFlCfTsoahejRyRRyTqQ7Mb92lcJswd+61/uch51w1OMZ3LMcZs67AAx6IZ+
-	AXVBa1xmrBI9U8qG4uGQK6+pD50EBGjpK6a4Dq6kBS1YvNNJ0LeuEmOS+Tpu+Kw7VFHvjvqTZJT
-	XAYie+nxcW+buVrbuoAL5W7tSaY6qaLRUmIbHh8lQpG1qX6biEFIEfonQYvsZruwNC26WaQkijb
-	qBw+CwqSJIO4LPoKsBl8vzboJw7jrxji1IcKhJwCTKz6LDTKD06/ETMcZ/hyjCEcD9R+vFF6gIY
-	qeQJBNnYQPxi0U8e6SpOWgqeVjg7Zukr89rnlqGXk5IuYWXBjGfmYqli7mZo8iShUnuSxW3LA4+
-	KMsiGmbIW+oHX229LCC2o9YA7YO4Tns4cVVK6C9ffyWfDpeZHXJ3VY5WhQip7jtQ4cW3tmsIVRR
-	60UhWYBw4NwPqXfANwtVgw==
-X-Received: by 2002:a17:90b:17c5:b0:3ab:413:49b1 with SMTP id 98e67ed59e1d1-3ae897c0a0dmr1047677a91.48.1793338992989;
-        Thu, 29 Oct 2026 22:43:12 -0700 (PDT)
+        bh=1anniFrPD+gJ2zvk7tqiNGRs4XaU4IBzFvazZsvzhO0=;
+        b=adZlOClalIE4HZQke25iIhAYSCpdftcGwsCKRE9yIIJ4FycVf7uBUmw3FYB8H1jB7f
+         oiIeGn4bCvUb8bow9ZGOtFstTwlUvHoEmUS/UCH6K+Xy1csWcAA73Ti1sjxBPlOctEE6
+         Pq4q1Nj9VCFhH14EZvTshyx9nXZzUo73wwIURgy4ynpWMFktNVTnkjLuk9I7B0dq++fa
+         f1Han8fdXUlR7oFIw1xj8k3LGkRSp9tAJRb+duOqHajoByHz+YPOsQRtn9Kd2ZYT3hka
+         /ATvDpAyJsXhkuajlya9X4V9EQjaJL47bC1QFWnBmL2+w9n0I5dafLCtEWJFwca5cHjO
+         DQ7A==
+X-Forwarded-Encrypted: i=1; AKwUvBzKKad4X8rs2bgcsbgLJDxNmwHSe+AdSpniWIsje2g6vwos9DBW9OUnHpM3wWuOEA9kxQRULBuAgXfmLpvtnA==@vger.kernel.org
+X-Gm-Message-State: AFq9FYL9QCHGMsHLWbzgKP6/pA4pWh/A39s96xgWhoQ4EU3+1pF+mjEC
+	rrr4ElbRdkLgUdZO4cGnuG5P9tylqwb63bk1lSm0JzYglTS0kcEXHpDP
+X-Gm-Gg: AYBFou2y957b53vZI4sShO6S7Q0m2xNHETLuhqP6ifap7U12JOnUAMvMu7fCyFFVIeo
+	+Sv0qeKVIdo+U4dzc2KDCSeSZMOnDzfkmkKIbAN+bidAG1F3DHcCBnBTT5BhtOJmRz8iwLJ8uLT
+	YTVYMB9FWMPKAsNl4zPQRX2kKxXgJMhKTRVH94jfNye+i3V4DStJDSN64OXNDCn4gvXELKA8pc7
+	GJ7qqkRCal882e17itZ/y738zC6RVIGtg3AKAtRmygjT/3nTfBI9aDrGfmadqxU1cn8opWl0jbu
+	+AQHPhvLwqdvLjDhUqiCGkUjJYWPXVvh6mdJ0loXOp93UjudAuMZWYfO0ytBZIS9DwcUGpt7MN4
+	glmpH/cGLeyueCVvBjRlVyzlzeKa9E1GwjM8Podu0Vx+L1kuIHqvfyuJPem7rDq6XiKxVScSjZS
+	nTqUfiw7XLFnpClbZBAhMNIWCjHEw0cniYZsqWlYOOp55d497bZfCK5GTANV+vXROg4u3CLf4BF
+	XbYwVIQnecCCqdEff0mmymBf/UfiCO5GiuM9+9aAKWNnwUCnNlayDsSqnyW6LepgR59ReKIIM5N
+	tTOZOmfDu1H/UjQlzQKyEA==
+X-Received: by 2002:a17:90b:3142:b0:3ab:4f1:4f7e with SMTP id 98e67ed59e1d1-3ae897f3919mr1033345a91.28.1793339785483;
+        Thu, 29 Oct 2026 22:56:25 -0700 (PDT)
 Received: from debian ([169.211.140.146])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e2a703esm7084621a91.0.2026.10.29.22.43.05
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae8454327esm2520564a91.4.2026.10.29.22.56.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 22:43:12 -0700 (PDT)
-Date: Fri, 30 Oct 2026 01:42:56 -0400
+        Thu, 29 Oct 2026 22:56:24 -0700 (PDT)
+Date: Fri, 30 Oct 2026 01:56:15 -0400
 From: Kwanghoon Son <asdfkwang@gmail.com>
 To: Conor Dooley <conor@kernel.org>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -106,11 +106,12 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	Paul Walmsley <paul.walmsley@sifive.com>,
 	linux-riscv@lists.infradead.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH RFC 01/12] dt-bindings: vendor-prefixes: Add Bouffalo Lab
-Message-ID: <auQuYJqQNv4LMDP8@debian>
+Subject: Re: [PATCH RFC 05/12] dt-bindings: serial: Add BL808 UART
+Message-ID: <auQxfw7NgnfnVi2G@debian>
 References: <20261029-rust-bl808-console-v1-0-b736ee920078@gmail.com>
- <20261029-rust-bl808-console-v1-1-b736ee920078@gmail.com>
- <20261029-unpaired-viper-830e55436015@spud>
+ <20261029-rust-bl808-console-v1-5-b736ee920078@gmail.com>
+ <20261029-pouch-enunciate-e74cf84e42a7@spud>
+ <20261029-sequester-countable-6a7b597c2551@spud>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -122,47 +123,116 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261029-unpaired-viper-830e55436015@spud>
+In-Reply-To: <20261029-sequester-countable-6a7b597c2551@spud>
 
-On Thu, Oct 29, 2026 at 06:52:15PM +0000, Conor Dooley wrote:
-> On Thu, Oct 29, 2026 at 01:05:42AM -0400, Kwanghoon Son wrote:
-> > Register bflb for Bouffalo Lab Technology (Nanjing) Co., Ltd. Reuse the
-> > prefix already deployed by Zephyr, including its bflb,uart binding.
+On Thu, Oct 29, 2026 at 07:18:38PM +0000, Conor Dooley wrote:
+> On Thu, Oct 29, 2026 at 06:54:49PM +0000, Conor Dooley wrote:
+> > On Thu, Oct 29, 2026 at 01:05:46AM -0400, Kwanghoon Son wrote:
+> > > Describe the UART register range, interrupt and baud clock input.
+> > > Initial Linux support targets the BL808 32-byte FIFO and reuses
+> > > Zephyr's bflb,uart compatible. UART3 is D0 PLIC source 20.
+> > > 
+> > > Link: https://docs.zephyrproject.org/latest/build/dts/api/bindings/serial/bflb,uart.html
+> > > 
+> > > Signed-off-by: Kwanghoon Son <asdfkwang@gmail.com>
+> > > ---
+> > >  .../devicetree/bindings/serial/bflb,uart.yaml      | 57 ++++++++++++++++++++++
+> > >  1 file changed, 57 insertions(+)
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/serial/bflb,uart.yaml b/Documentation/devicetree/bindings/serial/bflb,uart.yaml
+> > > new file mode 100644
+> > > index 0000000000000000000000000000000000000000..df29d258f0a1c6d7bb283cf19c4157436991b64b
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/serial/bflb,uart.yaml
+> > > @@ -0,0 +1,57 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/serial/bflb,uart.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Bouffalo Lab UART Controller
+> > > +
+> > > +description: |
+> > > +  UART IP used by Bouffalo Lab SoCs. Initial Linux support covers the
+> > > +  BL808 controller with a 32-byte FIFO. The compatible follows Zephyr.
+> > > +
+> > > +maintainers:
+> > > +  - Kwanghoon Son <asdfkwang@gmail.com>
+> > > +
+> > > +allOf:
+> > > +  - $ref: serial.yaml#
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    const: bflb,uart
 > > 
-> > Link: https://docs.zephyrproject.org/latest/build/dts/api/bindings/serial/bflb,uart.html
+> > This needs to be a device-specific compatible - please just use the
+> > binding already reviewed and agreed upon in Jisheng's 2023 series.
+
+Again. I'll base this on Jisheng's reviewed binding which is
+"bouffalolab,bl808-uart".
+
 > > 
-> > Signed-off-by: Kwanghoon Son <asdfkwang@gmail.com>
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
+> > > +  interrupts:
+> > > +    maxItems: 1
+> > > +
+> > > +  clocks:
+> > > +    items:
+> > > +      - description: Baud rate generator clock
+> > > +
+> > > +  clock-names:
+> > > +    items:
+> > > +      - const: baud
+> > 
+> > Drop this clock name, with only one clock there's no more need for it
+> > than the interrupt-names or reg-names that you do not use either.
+
+I'll remove clock-names from the binding, driver will look up the single
+clock without a name.
+
 > 
-> Worth noting that last time this came up, we agreed on "bouffalolab"
-> because that matched the domain used by the vendor - which is what we
-> use as the source for compatible strings.
+> And additionally, I see no value in picking something to suit zephyr,
+> when zephyr uses things like "bflb,clock-controller" or "bflb,pwm-1" and
+> "bflb,pwm2" and so on. Make a clean break and do things correctly rather
+> than try (and fail) to be compatible with the zephyr dts.
 > 
 
-Right. I'll use "bouffalolab".
-I'll also remove the justification based on Zephyr's naming from the
-commit message and cover letter. (I thought it matters..)
+I'll describe the hardware rather than compatiblity reusing the Zephyr
+name.
 
-> https://lore.kernel.org/all/20230607195027.GA3894404-robh@kernel.org/
-> > ---
-> >  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
-> >  1 file changed, 2 insertions(+)
 > > 
-> > diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> > index 5471a06f93f1012f08e26f7f105ad846ab3629ac..24c670ff75b6f482ede1bda3b59c70ed9116042f 100644
-> > --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> > +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> > @@ -249,6 +249,8 @@ patternProperties:
-> >      description: Shanghai Belling Co., Ltd.
-> >    "^bestar,.*":
-> >      description: Shenzhen Bestar Electronic Technology Co., Ltd.
-> > +  "^bflb,.*":
-> > +    description: Bouffalo Lab Technology (Nanjing) Co., Ltd.
-> >    "^bhf,.*":
-> >      description: Beckhoff Automation GmbH & Co. KG
-> >    "^bigtreetech,.*":
-> > 
-> > -- 
-> > 2.47.3
-> > 
+> > > +
+> > > +required:
+> > > +  - compatible
+> > > +  - reg
+> > > +  - interrupts
+> > > +  - clocks
+> > > +  - clock-names
+> > > +
+> > > +unevaluatedProperties: false
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    #include <dt-bindings/interrupt-controller/irq.h>
+> > > +
+> > > +    uart3: serial@30002000 {
+> > > +        compatible = "bflb,uart";
+> > > +        reg = <0x30002000 0x1000>;
+> > > +        interrupts = <20 IRQ_TYPE_LEVEL_HIGH>;
+> > > +        clocks = <&uart_baud>;
+> > > +        clock-names = "baud";
+> > > +    };
+> > > +...
+> > > 
+> > > -- 
+> > > 2.47.3
+> > > 
+> 
+> 
 
 
