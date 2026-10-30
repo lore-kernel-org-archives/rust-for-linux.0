@@ -1,99 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.39
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793385180;
-	b=MU/oswvfxGqFwxCTUkC1XnsCZ8U8ST+WRTCIa17tTJG3SM2yeWfr2TEDD3dLT16j32PQ
-	 iFKXgZ3jfXKSSjCDBfxpZnCpmuC6qofVM8+FIyCkSeyEY/QtvvjWJdf61mH4eJ7H31ETi
-	 EceqSXUIRrubp8y8wOlc6oqE4/tN87gbO5klo8HKcmvJD7gut/elGzMkuDT2elTRl4wpk
-	 Txd0ja+DeLYbBZytBXc3/aOGaPCEN+UtLFGn+LZ+QHB7zrU2V0cj4ZQrRUnD6PqedF+U4
-	 YKL36ZSj+YTXoVMJz95p1oOr0POXzTKwP7MCqlOxStOpk1l6vcXchie7wJ9irQGnWqg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793385180;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=GMqqwvtse6xWMOh6S1JwmmiPWU61bqTUoo4i9UheRG8=;
-	b=hKFRbWJIpcseo0qClPgLi/hgikYMGFSXSkSkin73mbEWqlqtazaffljjUjFIFuxD1zBz
-	 Y8T9lmbCQx1jvxAk3zOFIda1lO2BVoa54rNH8FSeu7L2RqKJF4b3D95BGbiiQ2GThF5mB
-	 pxu4EM3xSS3dYim8r0njAL/c5tsVr2CCFv7SxlbhSx1vKkOrQdb8KXTi8um2U6J2ayl65
-	 tlpK1uFN8/dz/aUQFFsmDBsK24YMCHEmWMYjrW5XRQO3uRPJ0LbZUmmS7WPPTeEFF5n4E
-	 mG/JPJzXbx8Z58VrGuuUlTUaDQXUIhAxdgJU/JwifUL07O30Z7CiwI9OqAn08DEB9NQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=JPL3EGMh;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.43.39
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012039.outbound.protection.outlook.com [52.101.43.39])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793386132;
+	b=lP2OELtdziPHX1H9k5HHaKtyPTZesF9wbFv3K/t3tyNTRSVE9tUQEviwxtA5N+iizxQr
+	 oIL4arpArcDBfRKop/lK+N3skkHwTDLEDvElFwVGSrARhFmg0epT82Qjvz+mUSqghRbcJ
+	 t4OS/qYcxubxOYHeO0ZTp1owIEejgfj1O05KAm7sBvVBg9TDFaqdNu9AhM9UbM4eXnc4N
+	 OIwN+MP3s+WWUhMUzE0SqJKGjCr1k3gMG5KOAkStF0oeWmEI3FVs4DYm/n4qeUoOf+ZW8
+	 sCRqNKRT+PbXSXFc+CfqWQ+wzi5ia5l2+Mjz+VXG9jfs/PleXVlsG/mIdcxhc1YVmrQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793386132;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=R/eIeqkBzYBk/a7bk6HBVW5bw90Y01K8kHpJhRb/ZEw=;
+	b=heos3C4IpxacHAQvwfQyC4hn6Zwkq00j6nw+DnuiKhD+Wh4dg0QHPbAOYzu4CRQKZ04I
+	 d29ACVzpmIxBu2SveLJG1pVDoDk7LKrX88nx9GGxFN/obEJUtGcaG5lOcLI4aow+1L8Tr
+	 DRAXTN72D1MRRYfaEQHYv+3KsN8gzVG99BLjC5qjwL2+YaNS+iv4/05C4EzasMEDQVykW
+	 l00B4tZM3tNoJEtz3xPGdqmNgK+BnaUTN2ojmZ5cXRlxa+q2crRJ5B5A45wwaHWf6b+JB
+	 HqMajz9TazbxyCAhs7F1E8nE4Bq7iYj0LjmnNUHMDMb5kx5GuYMp60pbr+48fkhhYAQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="dne/oRkf";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E76B606A31C;
-	Fri, 30 Oct 2026 18:32:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9E76B606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980DD606A31A;
+	Fri, 30 Oct 2026 18:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=JPL3EGMh
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sbUVOoVGj9EXHc91Sa94vsd3Tf3qkJNncX6PstLXSzwnJXZPZD5GezJQ4/7w7JD4tGngoflGoWuNNbm6NkioxWTl+YwQhAzDMr0SIt/LzWJ4+DLbRYbdTazXIlfxA2p6Nv/ODXQwg/iWdgr0hxenynzFEinULbuVqfnz/xkQry3yodhfCegoFp9pGQPHgYN7Hjfdiq9iw37tX/pONupAk/v1Y3ysR8/xtwwhbTx6Z6Uvlvq1gvgbEMOIWvMKY1xF4ygVi/2KeHfAmZi7Xh6sZSK2ySnHgrPBTtZunGjqssB3NMqe7o3fGPEhndxVv1BaHxCbUp3NtbAdzRkB36WYUw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GMqqwvtse6xWMOh6S1JwmmiPWU61bqTUoo4i9UheRG8=;
- b=IptwW16uhdu/3eKhcxhqFolUGqLJAdkOakk+PsR4QEbGe41nqvJVpl7NXERFAvzJ97Ls3JgAotXmFBLoF1Lx2D5RQbNWNTq5ZLqs7urDT+VlH29Moe0GeMx1vZiwNxA1D5eCwnMLL7/y8qC5uzx4BaoXQV7f9O09yEAgSDmJrb/wpg+YwtpZpHJmwmYLTlBlRLWJLZ9j5go4KRPBBOBy4YXu4PJrRDDt76MQcPV5nVbLULz/q5BOtJpZRiRdPPpHIUXmUTzE9lPXrZqF1Lh9+sdm9oZTY09DbigXSlwVt63xpbR9E/D1kjJUl5ldwQk+wlugwR/JkQfp4c+9XNn55A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GMqqwvtse6xWMOh6S1JwmmiPWU61bqTUoo4i9UheRG8=;
- b=JPL3EGMhogFdxhksGQjMT16SJ2jNXc142PO8osX97FisQSaStdO0t8gdZtH4OkVvMSBlD+dXfW/ECJ1JBxJM8rI9KgOYuDdtZOS2NxnhIqddnqDAM93dLMen/8sZPYQOqZNf3mAsIiJn04yiTNvOdqZDs/8Z/BgJAij3J3mNUF5ufJSt6BC6m1tAHAu2uWPWV9VEkFQYILdGJJTl3f2aJ0HceKrxzGPsYl6RxE81kD9X7KO8C8Rzb4YcivkNLQs608xWqDHlQ0cGBGFjlTpSLyqutp203nxPVoEs03q+Xqi7fXd5qkXS9DHJZRPDOIfmmQpMHMSRa8mEg3NjKu5hzg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA1PR12MB5614.namprd12.prod.outlook.com (2603:10b6:806:228::7)
- by MW4PR12MB6973.namprd12.prod.outlook.com (2603:10b6:303:20a::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Fri, 30 Oct
- 2026 18:32:54 +0000
-Received: from SA1PR12MB5614.namprd12.prod.outlook.com
- ([fe80::1a0c:e9e8:f3a5:d9d6]) by SA1PR12MB5614.namprd12.prod.outlook.com
- ([fe80::1a0c:e9e8:f3a5:d9d6%6]) with mapi id 15.21.0569.009; Fri, 30 Oct 2026
- 18:32:54 +0000
-Message-ID: <a3bc3e20-4a95-43e1-bda5-cea92d6e6fdc@nvidia.com>
-Date: Fri, 30 Oct 2026 11:32:53 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] gpu: nova-core: gsp: cmdq: do not sleep in wait_for_msg
-To: Alexandre Courbot <acourbot@nvidia.com>,
- Eliot Courtney <ecourtney@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Zhi Wang <zhiw@nvidia.com>, nova-gpu@lists.linux.dev,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20261030-cmdq_wait_msg_timeout-v1-1-a1e628d2732c@nvidia.com>
- <DMHW4DNFAF18.1N88RMWYD4TRY@nvidia.com>
- <DMHX5VRNFYLQ.11FZIS5422ZS6@nvidia.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <DMHX5VRNFYLQ.11FZIS5422ZS6@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0119.namprd03.prod.outlook.com
- (2603:10b6:a03:333::34) To SA1PR12MB5614.namprd12.prod.outlook.com
- (2603:10b6:806:228::7)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dne/oRkf
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A2C1F000C1;
+	Fri, 30 Oct 2026 18:48:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793386131;
+	bh=R/eIeqkBzYBk/a7bk6HBVW5bw90Y01K8kHpJhRb/ZEw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dne/oRkfLYri4BFiKeyLkAjOPPkE4/MjbAS5xLOIkxVFiO5Tz3S2GwZy5vqztJS+S
+	 SlH+BLaXRWJjUvYldSciyH5tr9fj5GWB0DP21dSZHUny+9haPdib/8Z30pmXR7tkAS
+	 y3oj2gFInLggMWmmTMengisGONlGd/GwvWkGpGeeZCP6JMUvOlmta8IJO9XKXxR2tT
+	 3+Wqci9W9kMknmBQor273A8rkAUmN7ziVLIDMzDZ+Ke+Rgh/IxRyj/0AQMxGdIZjdB
+	 EaBnqu3AgerPufv67HsyfTChzJu9jO9qgHDrHbPI8ofwt5Ru/5fWgEPGUcOBPW1QYk
+	 XyBu0HOERGGYw==
+Date: Fri, 30 Oct 2026 18:48:42 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Kwanghoon Son <asdfkwang@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>,
+	Paul Walmsley <pjw@kernel.org>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Anup Patel <anup@brainfault.org>, Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	linux-riscv@lists.infradead.org, linux-serial@vger.kernel.org
+Subject: Re: [PATCH RFC 12/12] MAINTAINERS: Add Bouffalo Lab BL808 support
+Message-ID: <20261030-slider-finished-360b10521e0b@spud>
+References: <20261029-rust-bl808-console-v1-0-b736ee920078@gmail.com>
+ <20261029-rust-bl808-console-v1-12-b736ee920078@gmail.com>
+ <20261029-spyglass-evasion-772697094cb9@spud>
+ <20261029-amuser-savior-6a6ab062f471@spud>
+ <auSDJH9V31wmbrYv@debian>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -103,89 +82,112 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB5614:EE_|MW4PR12MB6973:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4da0446f-aad0-449f-7a42-08df36b43675
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|18002099003|22082099003|56012099006|4143699003|11063799006|261028144727099003|261021123027099003|261026140227099003|10067099003|261021135927099003|261021121427099003|261022105027099003|261022075727099003;
-X-Microsoft-Antispam-Message-Info:
-	FZS48QmzhOq2ONE9NfR0Y+Dr9dBNva0cdRTf7oJOCd1f7SkWLhNbYPEF9z5TM1d1OWYVsV8sX2oEGpxzziyTSQEWL5YPvqn9Ui09y2CcMfhPkAF+KktuEmKvtmp3B4ZigMvfznTRVtqm4DHe2x0m7N6gPUtC5A/wP4A/EH+3R1dWDON8tqnmzdgfRaJuZdqwahla3A53dn2zEyJs+4qhh+SgDuUY7V7uLbUHfsV8cC4IwOt6nE1lBhTVmSXQcVNXYke5FQKjMWq3IUhtJpbZSayzAMknbNogFYdi8XKHIIRS59PDu++CpgZVPq909Y8JikBHULok+bnfpIK+Ip6LAZGhhnJyFVu6H5P4h5W0V9/eVTXqr6Xy5ZVzAu6gxM/uQhCVZFPNse9GxeOUKx93IyP6OHt9HGG+6wa+OuAJOGHXKAPNkAyCm2gdN/z9HEwJFSBS3Crz2u+POm5XqKyEjbXxopG5QRalmKFcmwhHRDBc/a1sS1fncuSHIg9gt/Z8KR+JJ9MzYIAy1vvU1styMz5tQG6IXMDyWZLQYcBQTlXr2TD7WOD1x9hsDFpSNoxmu5NOfcq7HXC/UOILpyMGA7mBz4qZGYZJM8NqJDRugISuBFaQHlSWFsSXRF39eEEoZV9iFKvbjRU4RtPOT3KVZXPw8zVIXueiLnORDdJpPc0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB5614.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006)(261028144727099003)(261021123027099003)(261026140227099003)(10067099003)(261021135927099003)(261021121427099003)(261022105027099003)(261022075727099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?KzUvWTNLMHpvZkx0SnBOUzMxNlRmVVZkS2VPWWJRV0RzVlViQ1RMYm5QUUh3?=
- =?utf-8?B?bklBajVPVkx4ZmZEVDlZeDJ6aDNZckszbEpxWUdNVUN0eDlqbnRvTDU3VnNY?=
- =?utf-8?B?dEV0bHptd0k0SGFtWEZUazR2TmhvM2JTZ1pkdnZxWWtrbFVJV1VQdndoZXFQ?=
- =?utf-8?B?amdIVmZQMk5ob3lvME9reCt6WmMwbUJtMUVGcEpEYVBFdlpZWUswMWNjQ25T?=
- =?utf-8?B?VWZ4UHh5dXowanNyRm8wdC9BdWZLbUFrRkI0NVkxY3JRZU55L3k2YnJFbUJn?=
- =?utf-8?B?ZDZYd1N2ejcwZVJHMTk4a2w3U1VUZXRLb1hCaXdjaURFUTBLUVZucEhxdHhp?=
- =?utf-8?B?bDVNM3l0aGpObFJ4MURGZDA5TkhtMGJBMkJZSGQxdFRIOUQ3RkRJcHRTcUZU?=
- =?utf-8?B?ZmJ6NWE2UDd3T2VYeVp3YmtmZ2hIYUQybXVaYUFiOVNSZDhCL2pGZ1F4OFVo?=
- =?utf-8?B?akROMHRJRzdxbW05dHVrRXNHMGpTVyt0QUJvRU9yS0xtWi9DTitEM20rL09M?=
- =?utf-8?B?UU0vYmlIenJ5MnA2MnhIYmpYckpIOCtYT21XUFR6WDUrdzA2cGR5MmkxUFJX?=
- =?utf-8?B?bzBzRllQdlBINDBmMEJEQ3JuTCs1YmFaUHg2cWNVRHM1dWRjay9NUGU2VzE4?=
- =?utf-8?B?bzlrOWRUM01rYUlvY2hnYVQyR2MyZERrQkpFK1hCc2NwNVJaU1hNTEJTUjlB?=
- =?utf-8?B?bXZleC9KdWxtQS94Q2hSa1lDR0c3Q1Bvd0JjMmI1NFBnOFpNTnJRZ1ZBWVRE?=
- =?utf-8?B?azhNWm9EbFBPd3lZV2ttU1ZwQzd5aDZWemVJZndyZGZjMnlZMTNwMmZpT1NU?=
- =?utf-8?B?MDNhdDBLOTRkd1MybnZzWFhxaVl4WkFnR3MyamZadU1vVnhuL3JyamRwSnkz?=
- =?utf-8?B?VEF4UWhhc0t1NGQ1VVlndmoxZ1krY2tZWDM2ZGN6cklrcEhmbTlvZURoblNv?=
- =?utf-8?B?bERmZHRoM0VXQ3d2MDJFTTJNTnRKa2p3R2htVDd2Yk5mckhKRG9UelhEWVp5?=
- =?utf-8?B?TCt5azkwWFpTRUFmQVEyQXM1RmtEcCtrdGhwaVFxYVdJV3E0Z1paaURGV0pO?=
- =?utf-8?B?Y2NINmcrMHpwK1VKNDM4K2lIaFUxU2xtdW8yTjk2NXRLNlRuZkJ2V25WaXZq?=
- =?utf-8?B?bUVOdjdYeGtwT1R1YnRZRkpINmY4a1V6OWFNRFh3Z0IzTStpMGY0ZXF5K1FZ?=
- =?utf-8?B?UzVXZkJsbHZKZUlNY3RYTU5vNit1N3g0ZnBHMnBsRTlMaTlrc24xNEQwOWhY?=
- =?utf-8?B?QnJiaEJ4RXYxaVZNMGxxYXRhcU90eFRXRFRzY1d1VHk4b2hMcmpRR0lDQVlZ?=
- =?utf-8?B?NGdNK0pOK3M3UC9PWWNyeFNVakN5N09DWEJ5bStMOXl1Q0cybmI2MjJ0MjB2?=
- =?utf-8?B?Rm4yK3JHajc2TkoxSm9BR2NiZVFTR3RnV0ZxcTZnYmx1Qmk3MEduczJURGJp?=
- =?utf-8?B?aG54U010VVhRRm81T01EdmhjTktTejZYeG43WTFOSDQ2RFptUTFEZGJOMU5Y?=
- =?utf-8?B?cUdiMGFSeFk0SGNVbzZZcTlUMU43UlNhY3QvaXlQVDZTb2k5WUQzT3ZHQjlJ?=
- =?utf-8?B?dXdPdW1PbU9yN3Y1RGNDQ0VlUVNGYVdRQU9VOGJteFFZOWdTejVhcFJ2akRj?=
- =?utf-8?B?enFBbW1wU2ZDdVdCUnVPa1IzVUMvOFBzWGJUT1Y0MXMzWVN0WVRHYkRyVHlO?=
- =?utf-8?B?V2lNaGtpeDFBaXMyT2tuUkJwRWo1RndpdytMemFEZVFnT2MzRUhyL1BmRUFo?=
- =?utf-8?B?N09GeFFvUXVLN1lLN0JGb09UOCt2QTc4N2FpYWQrZEVLcWdwWUljbVlXRmpE?=
- =?utf-8?B?MmlkY093TUpRUTY2dE1hSEszdUhTVE5nSnZJWm13d0RnS1NyOVJ3bStFa2s2?=
- =?utf-8?B?NGl2amdOUnZJcW1Ma1d3QWRoMnFhR0o4ZVRiU1BrZ09qeWQwNUVIVjd0UmRu?=
- =?utf-8?B?cG5MdXpKbEdqWGxKVDkwaTZHMUI0S0lLcG5MbktwaDhXa0M2ZWl0UHNVZS9o?=
- =?utf-8?B?bTNYbEFOVVYwQnlmdys3SElVbWhqRkIwbXNmTGdBd1JaOEVja3JjeUFvQ2tK?=
- =?utf-8?B?aUg0clUzSHVuUjhsZGtxTFlMbDBic0xBMHlSb0JncHdtbE5sNnVRT1ppMUNr?=
- =?utf-8?B?S2taOFBFSFJTbElSRVJEdjQ3UUdEV1RaR2JNeTN0dVJMeVlaMkNMTTNjNGxI?=
- =?utf-8?B?ZUFSVmMwaTdndU9CaHpNalJrMkhJaWR6cDJTczNUamVjMkJ2ZkY0bjhSbFY1?=
- =?utf-8?B?VDdENFNMVEFLbjc3Y21STWcvQnVDUDVqM3dobHh0SXpkZmsvdkZzSUExeC9K?=
- =?utf-8?B?a3JYbVJFZlpyTFVmTDlLZlVZZVVGdXhyRFFyaGRIcnBQdjFYaFM5Zz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4da0446f-aad0-449f-7a42-08df36b43675
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB5614.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 18:32:54.7507
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XUQJPPQT0iej/J/Uk8dSakbuq/xJwChxQirBnNxW9WJtittc3DHglau3QDSNwNpjwzolFbBIPYYqhuuj7S5P5g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6973
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="z09qSibq+nPgici6"
+Content-Disposition: inline
+In-Reply-To: <auSDJH9V31wmbrYv@debian>
 
-On 10/29/26 10:21 PM, Alexandre Courbot wrote:
-> On Fri Oct 30, 2026 at 1:32 PM JST, Eliot Courtney wrote:
->> On Fri Oct 30, 2026 at 12:21 PM JST, Alexandre Courbot wrote:
-...
->> Previously we had a discussion about Delta::ZERO waits [1] and Danilo
->> had some concerns about creating unnecessary contention by reading
->> coherent memory extremely often. Also, AFAICT `fsleep`'s busy wait is a
->> bit nicer than just spinning. WDYT? I think switching this to
+--z09qSibq+nPgici6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Yes.
+On Fri, Oct 30, 2026 at 07:44:36AM -0400, Kwanghoon Son wrote:
+> On Thu, Oct 29, 2026 at 07:20:41PM +0000, Conor Dooley wrote:
+> > On Thu, Oct 29, 2026 at 07:08:56PM +0000, Conor Dooley wrote:
+> > > On Thu, Oct 29, 2026 at 01:05:53AM -0400, Kwanghoon Son wrote:
+> > > > Add a MAINTAINERS entry for the Bouffalo Lab BL808 platform, device=
+ trees
+> > > > and Rust serial driver and abstractions.
+> > > >=20
+> > > > Signed-off-by: Kwanghoon Son <asdfkwang@gmail.com>
+> > > > ---
+> > > >  MAINTAINERS | 13 +++++++++++++
+> > > >  1 file changed, 13 insertions(+)
+> > > >=20
+> > > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > > index 801f964899ba790a8f71fe61f9b3777a494dabd5..b76d3e168468bf6139c=
+958a81b626c73b422c0d4 100644
+> > > > --- a/MAINTAINERS
+> > > > +++ b/MAINTAINERS
+> > > > @@ -4926,6 +4926,19 @@ S:	Maintained
+> > > >  F:	Documentation/devicetree/bindings/iio/imu/bosch,bmi323.yaml
+> > > >  F:	drivers/iio/imu/bmi323/
+> > > > =20
+> > > > +BOUFFALO LAB BL808 SUPPORT
+> > > > +M:	Kwanghoon Son <asdfkwang@gmail.com>
+> > > > +L:	linux-riscv@lists.infradead.org
+> > > > +L:	linux-serial@vger.kernel.org
+> > > > +S:	Maintained
+> > >=20
+> > > Missing git tree, unless you're expecting me to apply patches for the
+> > > platform for you?
+>=20
+> I added this entry after seeing checkpatch's MAINTAINERS warning,
+> but made its scope too broad. I'll separate the BL808 platform support
+> from the generic Rust serial abstractions in MAINTAINERS.
 
->> Delta::from_micros(1) is probably better.
-> 
-> Anything works for me as long as we reduce the spinning-induced latency
-> to something reasonable. I'll resping with `from_micros(1)`.
+Okay, that's good - but that's more of a response to my comment down
+below about splitting the entry, not a response to what I was asking
+here about the lack of a git tree. Are you going to send the SoC
+maintainers PRs for this platform or were you expecting someone else to
+apply the patches for this platform (IOW, me).
 
-That's good.
+>=20
+> >=20
+> > Additionally, are you actually going to add wider scale support for this
+> > device? Like a clock-controller driver and the various other
+> > peripherals, or is this really just a vehicle to support your rust
+> > serial driver work?
+> >=20
+>=20
+> Yes, I'd like to extend BL808 support beyond serial. I have local work
+> on peripheral clock/reset support, pinctrl/GPIO, SPI and PWM, including
+> an SPI display on the M1s Dock.
+>=20
+> I'd like to bring those pieces upstream incrementally as they are ready!
 
-thanks,
--- 
-John Hubbard
+Cool!
 
+>=20
+> > >=20
+> > > > +F:	Documentation/devicetree/bindings/riscv/bflb.yaml
+> > > > +F:	Documentation/devicetree/bindings/serial/bflb,uart.yaml
+> > > > +F:	arch/riscv/boot/dts/bouffalolab/
+> > > > +F:	drivers/tty/serial/bflb_uart.rs
+> > >=20
+> > > > +F:	rust/helpers/serial.c
+> > > > +F:	rust/kernel/serial.rs
+> > > > +F:	rust/kernel/serial/
+> > >=20
+> > > These should probably not be maintained under the arch support since
+> > > they're not platform specific.
+> > >=20
+> > > > +
+> > > >  BPF JIT for ARC
+> > > >  M:	Shahab Vahedi <list+bpf@vahedi.org>
+> > > >  L:	bpf@vger.kernel.org
+> > > >=20
+> > > > --=20
+> > > > 2.47.3
+> > > >=20
+> >=20
+> >=20
+>=20
+> Thanks for review!
+>=20
+> Best regards,
+> Kwang.
+
+--z09qSibq+nPgici6
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCauTmigAKCRB4tDGHoIJi
+0kS/AQD87LyZbjxV+0reytTO2JJdLqp7qGXF8E+JLF1EVO2SNwD+PJ0smcHb0yyh
+KcwNJW06vgZpnTnI5RXuUEIPuE3QcQs=
+=UI1l
+-----END PGP SIGNATURE-----
+
+--z09qSibq+nPgici6--
