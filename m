@@ -1,99 +1,122 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.85.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793330504;
-	b=OV+wQhClowayv8FY1dfdsFmcklAcj8+b7pLVUSdboSmt7OVdTlN2NxMLDApZuA4iaFux
-	 fSPVLPR0pKXC66X7totaizNznpu5ZGvD3X6RTJTdlhveyiDZOgv/cdlHV9GjZFlTq25Mj
-	 7i2MbCGbZYcpQYdLUp4kk+2HTDJ57ZwBJJ6D/0XKaMul6L5lsGypkuz/uJ8YSkjElZNQm
-	 B+g7ywLQKI+8rDdJ5PZiCyt8OpdA0ErF12XCrCoDJIXUQx0w6TNCtCn5U2V3xKfsJerrU
-	 F5YyOO5ZRZcyGtmIPcmcZEf5iRAVFuNLWBGP/K+Q+gV8glGMg3g/6B3VqMbQ/CV1w9w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793330504;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Date:Subject:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=OoXCWfv1sud738r+0Ax5IJBOTy8xHixMfBlNRBzB8Wo=;
-	b=CbBmuQqt5V+Bg/s1omUq/5Wi9/IdCUdT6I8CxCYVFFXAoXsNf52EaGkWOCD0iNWv4lF6
-	 e2slsy+ULMpqyUKQeyujM6szZhGJWECN+BREF5igjh1QlTCe6N2hngTsQyI0xde+kvmsL
-	 YNs77gZXTUIQTMSZhU73mA6PjH6E5yh5Y/DVc0VIMkb3Jp3u8U4s3Z7fxoDKnCVRyfBs5
-	 b9RGuax7c4a+WFXrQ+hQ6n+fH/hSzQmpNXC1YXHinhP+RLchVw4Z2kG+K7nJo7UonkdNI
-	 IT30db53yEWxw92FWq0MKkd6ECLLTFYMQRjGhCDr9QrdThK0+hZGw1tdT/AbA+HPU3A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=l3KUg1GJ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.85.50
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010050.outbound.protection.outlook.com [52.101.85.50])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.156
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793333955;
+	b=YY//UbhaDDo0ZPZi+MuExgWiuVKOn8kUDDxj4nPCrifblSpFkDRL+FjqrNcpIyVWgjSI
+	 uzTsWCZJCBxXG0Sg/9UjEz2pmpFpxqVWEmSOqQNC4M4u/VYTX0MmikSa1pbO2R8sCcla+
+	 eIwLP+66Ayj2XaqHJsbELMJKh441f7yNHu9BR2kbRYm4Y5Kd3N/ue9IamljjpQQqf0nwa
+	 185B02ln3Thc3Kb7bEJWfGc8L1uHPUFtODVKj0YkoD1cOVM4VSp9mVdZ5E7csGOShrqLi
+	 LviuuBmxW3RTnRSP4KUYN5bWvJjR6taEaoJL2DhjhHf/+FprsrnLoa1mZ8xoC3HbhFw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793333955;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type:Content-Transfer-Encoding;
+	bh=E4pSiRAu9Ou3pAqCbSFq8M6jT8nbGmza86zBxZokFYk=;
+	b=dKlhjQoAoRoob50bGNVZMpscfs7PzqmSLoHswddpGbaeqbd3hygZmWOcLamlwZFj8ohv
+	 7YzjS15AegG6GLEgQTWJ/Ns26Fw954QaL2FlbIVJ1tF6anBagycUFg3tA98lLBVUDeP6K
+	 noOO8NZrTZTd4u0musvbDiHcT+VnPg9CJ+7/iCTOG0XwJTIge7T+JnU89bgDNiq8fEcBk
+	 9QkV5UhSVk/efgCkfw5251Nf/gPFwhaPmITP6GALmqyV6YPUJt1AOwatTmETjNk0goGLL
+	 80I4Ix0IdRHWBPU8V10RFoh7iMcAAFye6t5pxB2MWoSQ7XW72GnI8AC2744fNt9SpqQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=flapping.org;
+	spf=pass smtp.mailfrom=flapping.org;
+	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=PCaoAMxY;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=awOPlPxu;
+	arc=none smtp.remote-ip=103.168.172.156
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A63B606A31C;
-	Fri, 30 Oct 2026 03:21:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4A63B606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7E1606A31C
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Oct 2026 04:19:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA7E1606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=l3KUg1GJ
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L5jEmCCVr5TvL8X5Yai5/aW1p4VZSeYGv6JFyHC+5031168lH6JK2djpu9GKrYVD33tRVcokq0gRwdLDTjHgIF279b5zImUQwj/K7I/EIMVETrom8BlWZg50XW+g7lBmI4UCLWMUoSObJsBsbcZbQdjdHNA/jfqwqOtap1Ak9v9eg8w6ntNH2xMJ0stk8GL3PmjguN+1dBLlswz5cldiv4FQ2vTtni6xNR0cvNk9Sejl3Cqq3L3TzdyY/2nFCaaK5w1GaF7q+orfvQoDXIY8gktUJKXcAGLGiCkh8EBsezkM0zAKUXRq/U8ihp2K+RpyNnPtKIhNr6sn+1tc5sGRvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OoXCWfv1sud738r+0Ax5IJBOTy8xHixMfBlNRBzB8Wo=;
- b=LW9t8ov926u7qVimck8zH7VvOX+imKKQMtTxuK1CrtEGCKa9h/yL5BJUTZUpLwLwnsKnnJjV0fEn3k+mic/5UxULVCbQsIgpNZoNXV4dufqoJeSM/zw/lq48MqfaWfnUa96XLrdsK0jTpjYXizAqV2nuhIUo29kc1mnATzdLa3sQwUvdnLDgaILPKP/i7QGezOtY7vWN2g62bH/WxEG2YvgR5opkhd5gCjyFWGSaoHszGrFIuodp4bcEXZ/Lx7AD5jpvRqSP1co4TvGp5JqTzc1eoZHYrcAeI7kjeFJ5gCuSSSb5tB/pk2ETd98c8TZ9rJp/GMlziMFUeGRrSjQImA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OoXCWfv1sud738r+0Ax5IJBOTy8xHixMfBlNRBzB8Wo=;
- b=l3KUg1GJSiwXlDarzew7GLnP3ehEPHi7hUoLHoDfyigS9zRpHOxNupvmbxCCCqkJ7BKGRsPwYi5YuJzITL7G6k16cmEeu0HJ9yLi9idaleXF6pauW87BFL49LxiL6b6ldTuqqJ4EsdbhNAyoK6Nq5JnQVtNri98e8yMUljnzK3XAmKXJd8ukm2pjHJ+79NEIo3psf1he+mzQJdZzupleFPAHUO5+9Q/dJhdXeSKpcChfZAl0NDfltFVxY7DquDARi11wzbCtC0vLkw4qFL89/aambAU80AMyU9Dx0pn0Wr+avzc82Sda2ACJGX35Za9GrOh0gCljZaTDu5vJJE8Ehg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
- by MW4PR12MB5642.namprd12.prod.outlook.com (2603:10b6:303:187::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Fri, 30 Oct
- 2026 03:21:41 +0000
-Received: from MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
- ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0569.008; Fri, 30 Oct 2026
- 03:21:41 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Fri, 30 Oct 2026 12:21:34 +0900
-Subject: [PATCH] gpu: nova-core: gsp: cmdq: do not sleep in wait_for_msg
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-cmdq_wait_msg_timeout-v1-1-a1e628d2732c@nvidia.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMTQqDMBBA4avIrBvIRHHRqxQJmox2ClGbiT8g3
- t3YLr/FewcIRSaBZ3FApJWFpzEDHwW4dzsOpNhng9GmRl1q5YL/2q3lZIMMNnGgaUnK1L5HNGX
- lUUNu50g977/vq/lblu5DLt0zOM8L9wE0ZHkAAAA=
-X-Change-ID: 20261030-cmdq_wait_msg_timeout-26df11234d10
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: John Hubbard <jhubbard@nvidia.com>, 
- Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
- Eliot Courtney <ecourtney@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
- nova-gpu@lists.linux.dev, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: OS7PR01CA0195.jpnprd01.prod.outlook.com
- (2603:1096:604:250::6) To MW4PR12MB6873.namprd12.prod.outlook.com
- (2603:10b6:303:20c::17)
+	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=PCaoAMxY;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=awOPlPxu
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 1644C140017D
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Oct 2026 00:19:14 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Fri, 30 Oct 2026 00:19:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1793333953;
+	 x=1793420353; bh=E4pSiRAu9Ou3pAqCbSFq8M6jT8nbGmza86zBxZokFYk=; b=
+	PCaoAMxYv0ozIAMEv/kstIsdm/W5s41Y1g9zz78RaiFfUyQo8przst4zQwATkQfr
+	hGGTHLvI609kf2gRz6TvftnZFjddwaqmqiCtoiFc/bOJNOld6bO37q7ziaVEN4Jh
+	kXSrctzVMeRvHWwlSKWfXbg2ltLdVYt9D2AAhTA77WX5Jaxb8sSIuoSRFTHQxpdO
+	OcV5K3Mk9ULFHONWhAgQgHAIutmqGiN2vyKz3Zz53Phcbr4k74iTLCuAcXyurfGf
+	k0LfYMrmJ/CmDnJq81jIrEh90k8myBJUkFXMt//K2fZWndCqp+tIkpFZgBYmOxw1
+	auYAlk5qeidu0GlIyVbtqw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793333953; x=
+	1793420353; bh=E4pSiRAu9Ou3pAqCbSFq8M6jT8nbGmza86zBxZokFYk=; b=a
+	wOPlPxuyDmbqxVtM+Qy8muhOKqaAMAQrDb9W4zWf52No0TxotyUY4aE9bdQ5bh56
+	M2BJVbGY2xMFLer9Y19gnwHL4QlIiyvhFJBX+7wRV92ISOgHpMrFJr7HerV75ZZY
+	zA9v1YrjjAeuYy6nFaP3uJl60YdsUgEm1o/smVblnP6Wnvwdqu6hs3yUWm2oI6ku
+	Ikh/87VPCRlT4rPWheNc9X0okRFxuRakc/X9n5p5r5RzqG/ChZcARx/6IF0P8iA2
+	wTePIpZSFcSSGJmSHtp09gKDqtgRWJCq/XZd9ncb9DBCa07akSs4zlXDB3ZVCKSh
+	NgXWyqR2GSkAeqOS4t4nQ==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793333953; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm1:rsa-sha256:VH53ubLFXqPw69flSzhnY66Ipah+lu/rZ+MtK809LHwnJeN
+	xVl8gJuMkpomjXrxQQha2ePLxogprxjKOrm1g8E6kzYT57Umd8AJeoOP8/xZlCuX
+	9jXdZXo25HBJRgO9IQskhDkqwbsIC2C+hxRyBaOvDV+AqN2zcc+dALZrc8EDu5eN
+	c0DeDAmV65hOqOKMUf0t5PFeMaeMLSsYdKNuxbAwZrtOGEUVWO6O03Lk61YXx/36
+	b4UeKYkiqe7Xypa83Qvp4FKGVeoHA8FPxQuOM5uOoB1TkuURYi3UEOTLRviya8nn
+	41D0NtYU+CZxljgKKzg3/5xZmzFmEKK+aDbq6Rg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:PaHWp1Wrv8SNFgtksUGoOMmFqy1eYa3xxu14MqM3zMo=:tafdg5QerDSImo5lHgeuaLHHXaWcv1npO7fSBfcIltc=;
+X-ME-Sender: <xms:wRrkakMEHCG3oghu--KJQ-4UcCClE-zJP8uCPaqTVkWENMmeTVfscQ>
+    <xme:wRrkam3VakMO1lK8xG1Tto2eNy7TnbjIDhG3cZbncgbAUX8UiS7FfAf_evSkZG2o4
+    C9JQZIfHKw6Sdff4CLuhU5CMTDK_9aVwgwwpA5GvKdJ_GUwveMlL7I_>
+X-ME-Received: <xmr:wRrkaoTog8YLAmL-hWoDitnAVNVNd8VTDzIq3p9Rd6xJR8oAdYLDxzQ69xq3PU2eKATRui6ZgKiL6T8KqOQPOpOQ>
+X-ME-Proxy-Cause: dmFkZTEmEOPEJSH1eql5JUGO2SfLBegnxYOd1zhp43BYp6/Nes1GbOqxSCKIIhnf84kKwB
+    ej7FBnGClcjrXk7EbABnroUWOR+n7VXou4F/kJXUHShu9fJ71dv1WZG7TC7kqBogPfMQ7Y
+    Oaphsawk30sHfdWya6Jbou3lNgLmKVNOrs6fFx5Scb6OdpxHgpjvDro6QhTtnZ9YrfhyOc
+    mMY2CZANN7kwy+oSR9UxYlXZ7N9SVuK64+FWXcOHP+uwjommaULHkReR6DFsP8Un6gbYza
+    neAT4XaH1VyHqu4GRBGgYY1IO/0g1BcT8UPIwn7MldriqMaPJXqTYh/N4z1FvTJgU6nukz
+    9snX+/QewxeIY+6A6Ld5lME55Lj7mEVKh4J39Rm+kk7wr5TbXv8ys+V131RMmsI3VATViq
+    iCqRgfntYpFWCdLig8DlfIX8uYlsFmcK1x2J5GmZg16Gfy0pPcS1NNtzfg9fZ00f3PKh0t
+    9utk8DuR0+BSftgDNBbFZVub00EzBkFhYGDA5t9ZYEiKGrQIv4NCVP4jknScQQTDoUghQF
+    2xX+pWCQhcjmSq0pRDUP+dZ+5WGFmb59a35nVYRXteOqgCJFwtXh21Pxum+choTc+2Dkri
+    oQirBIWgPAN2eY+moZEsexX7aTHiMS7pmT+t7wXs8F3YQm66Ws4mgv1nANxg
+X-ME-Proxy: <xmx:wRrkahkD8pcSWpYFIlceTdkAzWTlWspu7fA6cKNRpONgI3huYToHMQ>
+    <xmx:wRrkahMBMXL6drpHeihDIf1Ut7I-3nD0vv82oBkEoMi9XJihvljDzQ>
+    <xmx:wRrkaljEBlDDegb2H2u4JtIegvqe0p0jJUMqV751gHRFlyE_ECwEWg>
+    <xmx:wRrkavg_8779pZzyvpsI3E1zNioxsJUmZ2dhu7ADmMlY5qlZZrDpdg>
+    <xmx:wRrkakTFROSAFr95pWnJTOhH8gQfUBgZWfaqjst6tl6GzTdR0ccUi5p->
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 30 Oct 2026 00:19:11 -0400 (EDT)
+Date: Fri, 30 Oct 2026 13:19:08 +0900 (JST)
+Message-Id: <20261030.131908.2044279482126434618.tomo@flapping.org>
+To: airlied@redhat.com, devnull+airlied.redhat.com@kernel.org
+Cc: a.hindborg@kernel.org, boqun@kernel.org, fujita.tomonori@gmail.com,
+ lyude@redhat.com, gary@garyguo.net, dakr@kernel.org, acourbot@nvidia.com,
+ rust-for-linux@vger.kernel.org, nova-gpu@lists.linux.dev
+Subject: Re: [PATCH 1/2] rust/timer: expose as_nanos for clock sources.
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <20261026-drm-rust-next-v1-1-14a4ae469175@redhat.com>
+References: <20261026-drm-rust-next-v1-0-14a4ae469175@redhat.com>
+	<20261026-drm-rust-next-v1-1-14a4ae469175@redhat.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -102,123 +125,40 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|MW4PR12MB5642:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0dab8209-324d-44fd-0960-08df3634ea7e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|10070799003|261026121527099003|261009223027099003|11063799006|56012099006|261022105027099003|261022115727099003|10067099003|261021121427099003|261021123027099003|18002099003|3023799007|261026140227099003|261028144727099003;
-X-Microsoft-Antispam-Message-Info:
-	CB9guY8OfsgSnlPYTDMmONAUh+DmfgY8jpiHVLmeXwAyCLZu816bPn18Iu2YM643GMOXsFzuRoT2Hd7QYHz4T99WIcLSud8lxpbiIzPI3a5/X4EJWsXKkqqDHbRNObEjUNjcpdBNQiCddOxQM576gUbpJ3qw3wdM6yuRKenA0Kr4XmBbggy1DB4hrRkXC8Z+fhSxXoN77VgIKGhX52+stUzqwhLadhk/TsSi/54ZnHOROInYss7p2EqHpsBPCIIl37EZ4kB1BLCJItFknsS6VJoZ7co0cYJ9FUtm4igX/fdc+mzS8MnU+OG16we3XbWR1qr1UrHJ1qY4kzD8DKSWEwpH3O+2r+g+4Hkgji1tO1QhWepU7kPpZVDqh41uCOaHyLfARyt+Z6CdpflqJ3//uvIxLvCs64azXxe42phh5Vu+zrzjcE4+CxZtI1pGT6rGbL263cE+V4lCHwT6XX2Ec0ze/VmyCLLMFa6mI3sR6M1+cWJls5TPpno85I75QCKQBDSKSz05ebDRtwmLZEOYmACT7y6k/1ixdHQpI5XAJCGUaAtMnW7sBrYw5SfiyQ3sM6WejSlegTgO4YaOGuM5vsyMymXcr7dHvpwvB/ebEpe707UqMF7xbrB3FIPv+f2ValH0JY9UgJW3uxT5yEWm622XtB1NruHvqzfFSUHOhmI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(10070799003)(261026121527099003)(261009223027099003)(11063799006)(56012099006)(261022105027099003)(261022115727099003)(10067099003)(261021121427099003)(261021123027099003)(18002099003)(3023799007)(261026140227099003)(261028144727099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SXFkZG1sUERuUnZQTmJwWmFQaDhZaXZOZXVubmxPekxPc1JOa1RDRzlmRVRO?=
- =?utf-8?B?L1ZEQkZsSVY4TVZ5MWJkRmx2QWZrOWZsZWhUZEFLRFZFU05PVG8xMGNtVzRW?=
- =?utf-8?B?eG9rT0oxSUhQUXpTQ0t2RGQycGt4eG56Njk1VEI5NXZ0NzRKSDZ3MlFNVlRC?=
- =?utf-8?B?S002b3R0ZzlVWlBiNE5nSi9uMC9sZ1FoYlpPM2IyNWoxVnJWNzZvVXF3aHFQ?=
- =?utf-8?B?akJTUU03RDd5aW54OS9TWjEvVWhZTlU0bW5ObTFnOUt6blZUbE5yOHhIZTRF?=
- =?utf-8?B?SER1ZDUrUng0bGNnRCtBR2gxbkNYNzVYZVJIT1JyVUdCNFJ0SGRaTnFlYlgx?=
- =?utf-8?B?MThTaDRUQ3h0alpRKzdQZ1Q1QW9NUHVNUTZIYjNtNG9HUUVMWHFzMEREOWw3?=
- =?utf-8?B?Ui9ETkpnZlB1cUQzc1d6QlpjazMvcEhhVG1sd2ptR1VOUmFLV1BVWEhKcE05?=
- =?utf-8?B?MVhtYkZIK1lxcUhtSVhNWnY2YUJmU1pWUXZXS2ZUU3BNQmg0SGkrc05yOW5C?=
- =?utf-8?B?MkxUZWhlNUVrM29NbnZtdE9weVNNWjF3aDRqYUoyVm0xMlU3R0FsazZEMlVK?=
- =?utf-8?B?S2tyK3NOQWhXcUQ1azFYc01SSWtNUjJ4M3d3ZlkyN3JSMklkSUpXbGdyd2oz?=
- =?utf-8?B?U29IaGZMZ0R4Z3JkU2duUEpIbmlLZ3VPTkpRaTFCV1BkTy8vT2lCLzdLc2ZN?=
- =?utf-8?B?cGZ6Uk9vOGhEeEF2NjlxNkpXWmpiZlB6ZWpiWmFzKzg1MEdZbG4raGp1Ykxl?=
- =?utf-8?B?RC9CWGdwRDRmOXpwaGxvYmJkUytpczFobWE3NUJEc3RSanoxL3V2djltVisz?=
- =?utf-8?B?V0J6VE5ibzRlanhHWnF5L3g5amlFOHhpQmRGWkxyRUsvRy9TWnk1R0t6ZmJY?=
- =?utf-8?B?T0tmZ3RxKytDakZUdmxCdTNNMmxQQjNLV1VXRGZHblJ3N2t0b04xSEltZmpa?=
- =?utf-8?B?V0FGaEIyVjJvTUtiL05vd0tkZk12NWRqenlqM0k0a1p6WVJNWlo5R2JQL21G?=
- =?utf-8?B?aGNscHdWbEZpVng3UEVIell1K05MancwODNlcXY2M1pnMEN6dWZLNWFUUmMz?=
- =?utf-8?B?a252aDFVRktsYnpZbFBIVmNwa2F2cWpFb2FRdmU1RUpJd2Q3bSt4blJ3Ny91?=
- =?utf-8?B?K21YSmVtdWhSZm05anp6YWxhOFJxVUVBUytseCszODlaVEsydDh5d3IxN3ZE?=
- =?utf-8?B?WitwVW83elNCOTNXV05OSkZlM3k5bmh1cXVVK2ZUNXFlZVRBYXhVTFZXdGhR?=
- =?utf-8?B?QTBnNXV3aEMvSEFYUURlbFQxaVgzaXNNSkZueXV3bkxZVzJIblBtRGhVbisx?=
- =?utf-8?B?RWZHSnA3YmFua0J6VllQUGxtS2ZKSExzd2grdGNDQ2QyQno4L0xuVGNqbGdO?=
- =?utf-8?B?Nm5qeDZRYTE0ZWZvNk9HM2dpYkp1dUQ5L09PaXhKVmJ2QVpDVXZjYnY3WkdN?=
- =?utf-8?B?YUVJOWl0VEZyTlJveHE4SVVnWnU0bVk0SXhvRDVLL0ZZbVRKZEpQYUU5bndk?=
- =?utf-8?B?VFdnVjBSdXBtdGpnRzZzbUROczd3bVJiV2R6QjZoWm9uaFFmTjlnRGJCbEdO?=
- =?utf-8?B?OG56SHlrV2JCalVHQ0lqWGxyM0dhd1B6S21oQWNzN1dvbFYrRlI2VEFKWHc1?=
- =?utf-8?B?L3B4M0pya3cwemlCWWV6Yko1VmtoeHFreUwrdytlNWUwWm5KZFhjU0x5VjVR?=
- =?utf-8?B?ek5LL09HeHlja0ZQcWI5SFZhZnBERkpBd0hmYnJZN3VDNkJVWmdkdGpsTU9Z?=
- =?utf-8?B?b09HdXZKdmJkUEZoTVpZdldJRUtlOVhMNEJldXF3d2lxeWJDS25nTXkzRkps?=
- =?utf-8?B?bVYvdzdPK2tvYVBkN2RnL0pyYm9VY2lIdzNjcGJDc3g4SXBqVExDenpib2t5?=
- =?utf-8?B?b1VvVk5HZmN5ZjNIMXpzekpwWVh2eEw2b09jSk5tc1VaSTM2ZDVzT2VOZ20w?=
- =?utf-8?B?Q0VONnpJRFVTRmVxWUVyREdBUGFqeUY4UzhPckowN0U1Q0dTdnNrQW91SDk0?=
- =?utf-8?B?NjBMVENJRHhyWTZPZG95dE16N0FwU2JjSXp0aHhtanp6NGRLZUJRRnZoOVFH?=
- =?utf-8?B?RlBtT0RjMnp1SmZRZ3NtOFlpN2JhQS9kWUx1OHRNSWdrcEtEMEozMEhqemV2?=
- =?utf-8?B?VlhYdWZZS3BwR2l0My9DVDFyYURnZGZuTVBiMEk5TXhJWUdkWFJrbnRLUVQw?=
- =?utf-8?B?Wjg5SElBbTJ4clJkcUtnQVc0UStqMi9jaytaRURVZVN1Ri9vaW4vb0pSaUpp?=
- =?utf-8?B?UXJuZUkxR1dmSE1YNWdic3FralBVcU1mYmw1MVNzOG9ZRXhZSUkxenoyQmFG?=
- =?utf-8?B?MlJ4WmVvTVBTVkIxeDhVMVY1Qm1JRDNmdlhsM2xNbU84d05YQmxidzIwNXlP?=
- =?utf-8?Q?zHRA/j+0mny5KGTFjfM7XcBzyxF+xqcbn7RrVpRnqk5bu?=
-X-MS-Exchange-AntiSpam-MessageData-1: ueu/U/eRix2EBA==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0dab8209-324d-44fd-0960-08df3634ea7e
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 03:21:41.2450
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VmDfVHSUCq7HcW7OQ/RC9+qAXEFSYwpnv3rmh3D8XB+8hRPgb4v0Y1+EYqSvkmKwO9VAJ4OlXYvmy6QTCWz7vw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5642
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-If a message is not immediately available on the queue, `wait_for_msg`
-sleeps for 1 millisecond before checking again. This is 3 orders of
-magnitude more than Nouveau (which sleeps for 1 microsecond) or OpenRM
-(which does not sleep at all and busy-polls) and is way too much, as GSP
-commands are expected to be processed much faster than that.
+On Mon, 26 Oct 2026 12:56:48 +1000
+Dave Airlie via B4 Relay <devnull+airlied.redhat.com@kernel.org> wrote:
 
-Set the sleep time to `Delta::ZERO` to mirror OpenRM's behavior. This
-makes the CPU busy-loop with a call to `cpu_relax` at each iteration,
-keeping latency to a minimum.
+> From: Dave Airlie <airlied@redhat.com>
+> 
+> The nouveau C driver does ktime_to_ns(ktime_get()) to program
+> the cpu ns into some hw/fw, so allow this method for rust drivers.
+> 
+> Signed-off-by: Dave Airlie <airlied@redhat.com>
+> ---
+>  rust/kernel/time.rs | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index 6c0a5e8090d0..7fc366842901 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -211,8 +211,9 @@ pub fn elapsed(&self) -> Delta {
+>          Self::now() - *self
+>      }
+>  
+> +    /// Return the raw nanonseconds values from the clock source.
 
-Slightly higher values like 2us were also considered, but with such low
-values `fsleep` also busy-waits, and would thus only add latency for no
-benefit.
+Typo: nanoseconds. How about:
 
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
----
- drivers/gpu/nova-core/gsp/cmdq.rs | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+    /// Return the number of nanoseconds since the epoch of the clock `C`.
 
-diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
-index e6d9a97130ea..d8c00df012bf 100644
---- a/drivers/gpu/nova-core/gsp/cmdq.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq.rs
-@@ -590,9 +590,8 @@ fn send_command_element<E: CommandElement>(&mut self, command: E) -> Result {
-     fn wait_for_msg(&self, timeout: Delta) -> Result<GspMessage<'_>> {
-         // Wait for a message to arrive from the GSP.
-         let (slice_1, slice_2) = if timeout == Delta::ZERO {
--            // If `timeout == Delta::ZERO`, check the message queue once as `read_poll_timeout` can
--            // potentially sleep if the clock hasn't moved forward while the condition was being
--            // checked.
-+            // If `timeout == Delta::ZERO`, check the message queue exactly once instead of calling
-+            // `read_poll_timeout`, which would keep polling until the clock moves forward.
-             let slices = self.gsp_mem.driver_read_area();
-             if !slices.0.is_empty() {
-                 Ok(slices)
-@@ -603,7 +602,7 @@ fn wait_for_msg(&self, timeout: Delta) -> Result<GspMessage<'_>> {
-             read_poll_timeout(
-                 || Ok(self.gsp_mem.driver_read_area()),
-                 |driver_area| !driver_area.0.is_empty(),
--                Delta::from_millis(1),
-+                Delta::ZERO,
-                 timeout,
-             )
-         }
+Nit: the subject prefix for this file has been "rust: time:", not
+"rust/timer:".
 
----
-base-commit: 9b840ed71d34ff545e3ada8be2ad5daaae542b50
-change-id: 20261030-cmdq_wait_msg_timeout-26df11234d10
+With those fixed:
 
-Best regards,
---  
-Alexandre Courbot <acourbot@nvidia.com>
-
+Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
