@@ -1,80 +1,126 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.210
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.159
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793353711;
-	b=39XkljJUT2SzVJkjaCzLZNV2C3Oi6Er/F3M22ZuV8KYeyesno3shn10REy/JsDWVknGh
-	 8/P1jqx7fqJD20KGyQmjzTSNldvdypLTNlmCWoism6a89i+z2GmBcAvameddrvzxrhi2r
-	 AAtGq4Xho/zjHJDj4zrZJKGrd/sNglpXJRBagfaDlTRqbs9Y+7T2feHJQtG3yzar4my+t
-	 QDRRILId4SWZvEcWC0GT5sYkNsb8mf0Hqy4pLq8Z5AylDDgaZefjFalZhlmif8g48xJCa
-	 M3ygc5k0+jreBMPuDhuc2aPtkaZMyIvAfcAv/n0B29wgB/PpgyIol3blOdgJjJJi0sA==
+	t=1793354716;
+	b=APjlyK3dOQNbnOid6wyC0+lIYeJQnKaft+Np8sAQNHUqqxLVwjCFYC43VNO6ifGG6CVN
+	 9F3e88AlurZF6z250/dOa+CtpKODHkKIAZE2h2qx1EoGQKTCCjCViR5uJqDpmGSnNCCPO
+	 CNHjTA0nI2QcQRxpItXzaAyWvTuRQFSdX6VWGQq1huKFMDL4UzqJNXED1GPJvgJhxNm07
+	 o7WCf0d+cO0TUQFcnFkSMIB44UJax+fKhHK0rgFQXUPwioNZ193XTrULZdf5jRUbAXAW6
+	 AXfbEBuINuD8IZVwr+3dqSZaGxNtwWZfrZ3+KTAkPiOJptum7tvCdrz0B6J4OgFtyyg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793353711;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=e53rf/H4WymerCr1S2SACB31JRHUBytOz6/yCvy7EOY=;
-	b=YPjmxUMnupf8/kRUj7tcQ+bFQuLcB8w6GqbkZ/cIMvUmjazu1oknv1nvS9i5LsX3ItkB
-	 uABlWjDYpIU6UAlBoVjgdKLnc2AGZpbXLXMdhi4v3lE+RbfMXa96a19CAlfXyfWXS3w1O
-	 YlAR4C2eOWwsrdC+eZzLiW87bZubBKkDNabj/TjLNh9E9UxDxEbCn1pxJsVpKUsLY1gMd
-	 huy8ocIfkq77uQxbGBQgNDwcEJtvdhkHmJBLudC9tnxFTMCBEB+gahuXt79ZaV5s3uqV0
-	 /zd96HUdSgchuIXjjmdFHd44FE3ZZ3iizAjEhhv3kgmHjpa7V1C1cb1vDCGrVaqCaLg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793354716;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type:Content-Transfer-Encoding;
+	bh=CYmf7zEV7N2JO5e7QjNKth9sPECuxuSbTlZTcxut18k=;
+	b=DJjFd3KZRN/Ib3WNgBgvvsel/FqG3Yd3BsY26RA//8qEyriacGYn1KKhe7VxJDWVdnS1
+	 +dD6oApns9GmtGojRCvFhw8xpJpH8Mf8RmQNZOiC+j3BmJWIR5gVXcaBx5VxjsGIh1hXT
+	 QSUo45Wfpbfb3UsDZhD+ybS9KbS5U8ak3nVy7h0dILtr5mMBOs3wdgICYojzZ5aURLfmO
+	 EzJqpBHEXF75z6z8JJyMuwPrxiOii/zDunzmX7mDYeY46hhpEyjA0qPj25Zt7x+I2w5zR
+	 tLF+UhWL1R0kQAIHP6q08T7iIikdWk+sQv6/1okbRLNiGEriGSFJhFvSZ1Bj2DEo6RQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=vs6RCKCq;
-	arc=none smtp.remote-ip=162.62.57.210
-Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=none header.from=flapping.org;
+	spf=pass smtp.mailfrom=flapping.org;
+	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=LTTrns7S;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=QxcaxBot;
+	arc=none smtp.remote-ip=103.168.172.159
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3FC606A31C;
-	Fri, 30 Oct 2026 09:48:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A3FC606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB0760A2616
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Oct 2026 10:05:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CEB0760A2616
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=vs6RCKCq
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1793353692; bh=e53rf/H4WymerCr1S2SACB31JRHUBytOz6/yCvy7EOY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vs6RCKCqdjE8RF9jZOWygjnfTNtvcWjwV/ok0oO6TjEXuVkPkXBv7T2X5t1vbtkbZ
-	 3EsQCk/byeQ8ppEAqODRePlvvJa1x9ltD6ht863fpgPQdoRhL97YApT2reysuWGR5X
-	 8FLu+GCLnB2mIkGq4M9+8jUiTPFzPKFkO8tdNZNA=
-Received: from shuai-VMware-Virtual-Platform.. ([171.8.225.58])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id C09892B0; Fri, 30 Oct 2026 17:48:09 +0800
-X-QQ-mid: xmsmtpt1793353689twqw5wxio
-Message-ID: <tencent_87090B7774E9681639F99FA67B5C3A31C007@qq.com>
-X-QQ-XMAILINFO: MeukCuWaRbQlPGhU/iY3QiAeN1c0E42oDo+pM3GduSoMd8lPMBG2yemsBHiuSo
-	 McVMuLxPMyrZ874zvtvLwBywneUxkrlQ+jzcE4U4+XDShLhUhNNklHB4qlAwGN79wdUXurvJq7sk
-	 p31gQHkH7unG8RV4JNXeBxSFHpqAJaumPjNdeFSbONn2jQYz9/EZ1sRK7AvrxOUlmdMRo08GQ+R9
-	 XYniAOQR6OhwoBCb/KhIGSjAmHNxEcJfdUpEU+UmJy0Bba62h9M5f+uSU/7w0pqMxgaSnGe6KcvT
-	 NkB/MW/HTuJsheBvVZkwq+xdZgib//ChQMr4lhIoG2Z1pLud6lx/NS2c1u6Doybmmy0kF5q9kvsr
-	 ZIH3S7RHcrx4OteiKAj+eR1A5zg1HFCB5R6jdsvF9JS1+U0KpzsAaUMk+o6thdilPPoONc6yPwJd
-	 v9180VwpHNYFF/LOJo8hdh1AT89FSF601cDh8rnVxeX213u/uq+AyAccMTNHYVkymlcZGJrHE5/U
-	 yxtSSzqRp0etQUCDCLJ0nhJImnTDCA07G4OBvcn1VbnvO7hj+vBncZGJSNTdTIpza+mmXF1J4gTJ
-	 qra5QCg1Im1/R7jUioaXRt94GRcN3TEwt5VGq0GF7l41O2tPLy6/jySc7zcfprbm9IIsEKHfU7QC
-	 cbEQar17ovvEn1QKWLwGTkWnNX+racGWn19esd6QcE0723UwrbNn59/DLZ1+UUyTGZP/VtWsBgOf
-	 eKX5QqOgc8kZuMJZDAfDrS94ba5KcaftxrWN3c4x4guXZLTQuB7Lh8QXogohVV79qe4e0bX/AeTr
-	 aSvBvy1Apr0sH6rpe0JZj/8OEpGDSAt0KTSmzcjj2z5KpTfpvDivXPNSKJXwkPq2FeK1VSu3trWn
-	 yvYshfh/B1G/BYB+5qwFE+YtKDeamMm++ki/MiI7Vx5t8w88NfCsQU5p0ihg5nWT8y3Azs60qMy7
-	 KqMtL1tLrh3Ep/xhafrI9qeJ02vpNFHohLwmXx7JELft58rN90mkE+NaGqgFfnPH+m0Z7hY3CX1F
-	 Z+IKg76iUGfmhQBzUqSAtTCWquveaUwupQjf6dQ2vqlydxqj4JsT/vFFTrupuoHxfpIxtEuFc4yV
-	 CVFtQkQNI/dbKXFo/aRXz+RL52xZg+qlC2YYda
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-From: Shuai Liu <847807867@qq.com>
-To: Mike Lothian <mike@fireburn.co.uk>
-Cc: dakr@kernel.org,
-	gregkh@linuxfoundation.org,
-	colinbrauncl@gmail.com,
-	rust-for-linux@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/5] rust: usb: host-side abstractions for a bulk-endpoint driver
-Date: Fri, 30 Oct 2026 17:48:08 +0800
-X-OQ-MSGID: <20261030094808.3877985-1-847807867@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261030075758.356879-1-mike@fireburn.co.uk>
-References: <20261030075758.356879-1-mike@fireburn.co.uk>
+	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=LTTrns7S;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=QxcaxBot
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 00E121400187
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Oct 2026 06:05:10 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Fri, 30 Oct 2026 06:05:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1793354709;
+	 x=1793441109; bh=CYmf7zEV7N2JO5e7QjNKth9sPECuxuSbTlZTcxut18k=; b=
+	LTTrns7SPkdtU3OnExJh8ofe/pEAmAjNZGD90lWxuwO4JF6dwgwbW0Tz114EHBmx
+	dwQUn1s9tIP/21OsyLnDIYHZ2/F6tFz4TFIOjqQs6g8UoqjyhHZLH/Id6GObTVI0
+	yrSJkuRusXuRkDUVXEQ9ysHDydgS8PpsQ13Lw7xlJALKNo432I2wJEMi3sld0QmQ
+	1ihDjlZM7bZLw6vFp0QvYknoTodJKnBqIdVjbpoXZqyttmiLRvf1TjVwnLAq9CzO
+	IJZnYUpGHvxHB2Ubaymwh+AcuZF+jyiONEb9N+DH79hG+KqKyNS2gMOj6PrvCpwu
+	QkrY+HquqfSW4tRdxGYeog==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793354709; x=
+	1793441109; bh=CYmf7zEV7N2JO5e7QjNKth9sPECuxuSbTlZTcxut18k=; b=Q
+	xcaxBotJveEQIpMKup3A4QP9vpRlUifEg8zao0R0iUqSZH+FWrhXsCvl3g7ecH0s
+	RKI6LCmxPPpjzxRRnCtURhsygiuxGsgL+3pCnUwbx1QHaPW7XJ7I2EqkRm5cMTzP
+	cYin9/nzVHcGTRbocs0PF3G5UaL6tBpUjnpl9+XbuWeJe+v4f2TkEcwZUnnF2psw
+	1WhfsILBuH/jSZMXMpKsN6MNCiEytumAq2i2G2W+LxkdOEcNUogDgKDzxaB8nK7S
+	PhVCx8ZX+jGa3kX+mxySM2PgKF51tDidv0FLlZ0zsPKG/AsLqlGcy5aZ0Emy0+dn
+	yEjLJ1AYDktjkF/kDovCA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793354709; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm1:rsa-sha256:a1HuufBTOos68miiVJCDa0JZ2EGJ8U0Xn60NoL6w3aR+mvi
+	Pa+r1+DYR+6jHdNS7ruk1dZvfxUWiKvnvMwFNM+l9r0+t+JHUctA911Na3FfYSVh
+	InKLFwCzT869khwTwyz+ttdaa0RIkeFDFgjyeJx8cJrLPRdGIlzHIyoMlHNge1HN
+	HWol+vw18kNt4HO/uA6eDGSyTt6MXtL0e8sSpBuzKM3B0/NxFSSLEai5fIUb7R+3
+	sULuh9zgrsLytkaqOV8eSsfiXiAd6dvvgD2Hw6cBoGIZ+sUTR0w6wY+jb4d1s+TE
+	43xWLhoMHaOOeMjb9rVGNRH8v87HmYmxb74uIcA==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:O+zVubfLIZG+YDdFFy25xWSpDtgbXwlawSh8FXN1sXE=:cbcMN57HhtchPL+P79PrPbn9la13DG4pgSMEvOD0+F4=;
+X-ME-Sender: <xms:1Wvkahoh3Xt12nODHNFXTlOmCWpPqXRhk-VNbBnp5eU97df0sHpzcA>
+    <xme:1Wvkarkq03wrrRcFsgWwo1-hbi-k89rYzXY4d6pDwQAjWNo9AlO3iTP2uzBTgiZpS
+    PQM-uSFi1-W4x4L0kc2bCNwyN0crKUx8LC7N7U1ahOz7s7UilFeUI8t>
+X-ME-Received: <xmr:1WvkalZwfcSGTQXTL4SsKGsUdzI8XupzxhjQc5akpcNNIvxUkct8T7MXOaU0SguBvGG1NJsEc8rBzhMdIgos6qMa>
+X-ME-Proxy-Cause: dmFkZTF3XHbGwWOzLbWHktg+P4vPkKHpnO7jkRsVw+n74zppSuF93Bwys9kdl7GCDyRcTW
+    gtTlKmdCUd6M21ElAe05m2OjkCo4/i2B6SZeq1DcJYCDFG0o64qhESJhf1AJPt/MfJk4OX
+    igGM+6D+CLS6LtruurHqOOdOsaeaZk0qIyZlp5WZBYvS95+DEabdSSk+gUd+TBsLkJ2zcb
+    SbxIFoFm3C5JWamieI9BGJ/j9n9QamNiMCbGcFxS/0qLrwuT3paqYIJDhwy9UCUe8BZo2Q
+    WAgMFTVYky66yHBQnzGOM/IzUi2mSPflAo6q4/vLjHp6G+NxaUJ4HXedhoSgGgmaiH6MBr
+    pz0Frbabu0eXzJxlYrgotW0ugMy3XXL82q6VsMOxLwf2e2+nThVgP+dRik8V+FLcFmtgbq
+    r+t/9Skl8V8Ox7SL65CAbUDhSDNNs198fDWQL3vHR+HNK+l0yzz15HCzdzyymi5jnx1j5L
+    9DqWIZ54fNY7LJ3YH2igsx0SSfSGvyrB4UQTVUpSFKnMu4Ae0Vpfy9fDvJ5X4IvmWebPgT
+    ppVl7IT1s2l7gyet7Yc50+QU38mehBpUeQ3YFgdfHAqwK8hW7+0OAsrhoNJUhRotOs1wUh
+    rOAM0ePvoplpVJDPDgs62aKrUFTYifE6M0NCNSfAOyR0mUFG8NEnRT7vGh5g
+X-ME-Proxy: <xmx:1WvkajV2gZR1ikP9r-2VTE1Bed7CIJAntSKpjg0bDbjNviS3eCWdKw>
+    <xmx:1WvkatBEHizfm52NwNNpiRR27TR4byDYOtEV_-mTUnTV5-maOQbeAQ>
+    <xmx:1WvkaqxkLO9iVMQFlqx1PD01ripjEbC46GAkKkUe_ieWUfNw174TLg>
+    <xmx:1WvkarZZSMlqKCViXdIwVhqMRuYYRyaWMhZhi1Yb-ncdVOcD1O1WHg>
+    <xmx:1Wvkamb3k7q6fSz964NokTD-7GIE3uIzL0BWt6KuxQIODgV7ByoSIhQP>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 30 Oct 2026 06:05:05 -0400 (EDT)
+Date: Fri, 30 Oct 2026 19:05:02 +0900 (JST)
+Message-Id: <20261030.190502.1711453613571853758.tomo@flapping.org>
+To: mike@fireburn.co.uk
+Cc: tomo@flapping.org, a.hindborg@kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
+ frederic@kernel.org, tglx@kernel.org, anna-maria@linutronix.de,
+ jstultz@google.com, sboyd@kernel.org
+Subject: Re: [PATCH 9/9] rust: time: add ktime_get_real_seconds
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <20261030075750.356854-1-mike@fireburn.co.uk>
+References: <87h5jzx5gj.fsf@t14s.mail-host-address-is-not-set>
+	<20261030075750.356854-1-mike@fireburn.co.uk>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -83,65 +129,20 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Hi Mike,
+On Fri, 30 Oct 2026 07:57:50 +0000
+Mike Lothian <mike@fireburn.co.uk> wrote:
 
-Glad both findings were real. Here is a shape for the Altsetting token,
-along with why I think the strict borrow-based draining version cannot
-work in this design.
+> So it's the case you described, Tomonori: the format is fixed outside
+> the kernel, by the dock's firmware, and what the caller wants is an i64
+> of seconds since the epoch.  It never gets subtracted from anything, so a
+> seconds based Instant would only be there to be converted straight back
 
-Why a &mut-based draining shape cannot work here:
-
-- The window is shared by design. The adapter holds it on one side
-  (close() during suspend/reset/disconnect) and the driver receives an
-  Arc<IoWindow> on the other. There is no &mut IoWindow to take:
-  Arc::get_mut() needs refcount == 1, and Arc::make_mut() would clone
-  the window out from under the draining protocol.
-- The drain itself is a cross-owner runtime protocol: the adapter
-  blocks until every outstanding Io token has been dropped. A
-  compile-time guarantee would require the compiler to see across that
-  ownership boundary, which it cannot.
-
-Since the open/closed state is already checked at runtime, the setting
-validity can ride the same mechanism while keeping the token-shaped
-lookup API you asked about:
-
-    impl IoWindow {
-        /// ENODEV once the window is closed or the device unconfigured.
-        pub fn altsetting(&self) -> Result<Altsetting<'_>>;
-    }
-
-    impl Altsetting<'_> {
-        /// Validates the endpoint's bmAttributes against the active
-        /// alternate setting. The result is a plain value.
-        pub fn endpoint<K: EndpointKind>(&self, addr: u8) -> Option<Endpoint<K>>;
-    }
-
-Endpoint stays Copy so queues can keep storing it, but it carries the
-setting generation it was born in:
-
-    pub struct Endpoint<K: EndpointKind> {
-        addr: u8,
-        born: SettingGen,
-        _kind: PhantomData<K>,
-    }
-
-set_alternate_setting() keeps your v4 behaviour (EBUSY while a queue is
-registered, cancellation in the queue's Drop) and additionally bumps
-the window's generation on success. Every transfer entry point checks
-`ep.born == window.generation` before submitting and returns EINVAL for
-a stale proof. That turns "Endpoints obtained earlier must be looked up
-again after a switch" from a doc line into a rule the transfer path
-actually enforces, at the cost of one integer compare per transfer.
-
-This also mirrors the window's own open/active machinery: revocation is
-runtime, the proof is just cheaper to validate than the window state.
-A debug_assert on the same condition in the unsafe C call sites would
-catch missing checks in development without costing anything in
-production.
-
-Best regards,
-Shuai Liu
-
+Right, you only need an i64 of seconds since the epoch and do no
+arithmetic or comparison on it. A type is useful when it guards those
+operations, and there are none here. So the plain function is fine
+with me. If a caller that needs them shows up later, we can add a type
+then.
