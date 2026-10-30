@@ -1,55 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.65.109.163
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793363188;
-	b=4+B8UxQfm6HKJlevql129BZkZ9Qp/GUNGwe8PzOg9G9/JEothjrf6t/QTjPOH/7u5Zao
-	 zUjnk9Jg96ITL1RUILxkfeHUV2ni3RMjfHV3rlRvPCPJ6IaLQAgTfYHvvh1TkV2muxoyb
-	 6eMTGXC3IiT30umGZD57gs3wAlO+BKGtO6p4GQvVMNLwdeyX8cD7kK9dAkkWW6tPn5Pp5
-	 au7p1652hIJmEXrxWHgqhhU4uQOeTlyY+Z72ZPpIa8UGH8ixWvOgANWyglQr9SxhjMXy4
-	 aGh+nyDNxUNbj2RCLVcISIS+LfiPZYhJhzQFhv4cTgbENQwt3lna6YFuSauqRjKxDrg==
+	t=1793367104;
+	b=AyT83XDb4Axq6K6JWF8bLkyZmbdPigithlv546hBxaJjSrNZrPny4unCUaO6paMSEEZ6
+	 WtxEXQUoJdGLuhIeNDoUrWw88Ge4SqrDCtIGMtKL2S8uWMpxXUgDBaZb+g0JwBs5OPBlI
+	 4zsde0dxKsXRTkKgpJqSWJ8E0WU/wp02Ldz497YQMySYtq08bRdYI9SBf/QYxKbGQg4iu
+	 IuODsjcxmKLcS39uNl+WDJojb4JsV3x7hI8w8mAZrNK+zuVVifnqeZzWUo671CLvTQ2Es
+	 N5B8Ub7d6Q5UL+O7DIicxoae5aw9B2cfWiqcmysKXxLc7abjEv6YACQcYsbbmtdr/5w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793363188;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-Cookie;
-	bh=ww4hxT+DO/r5Zqh+aXlvOPoLHkrtotsPxdbejagtKQA=;
-	b=LJFBFpBQeiXAt7bcXDpCqj9eDvTU1j98K1diYzLTgGtcCEvSYXg0RLRFgVAFFAzxW09k
-	 ZHsw+ggSxn6//QCisLPiBp/2HMYmH44TEiyi4hms5E66LgBsjjLerEkCd0nxFZU/+bYSl
-	 UUyjGAhk64Y/pWQ/0in2s/I6hFGIOfzvaSB2yrUCuZLMqHzNP3WyzMOCbp+EUS5HbYQ7y
-	 +sGVIk+j7uCvLLNY7TRiMRbYuKqnZ2j/9l6x8JQ2H+4A6U2AQeBimQ7ZCnOc3JjDW1VOI
-	 8YxTxNktN2urqGbGevRuhqC0I+ZtH7LzW8lWnWSPnpphEoC+BuA71W7gXhoBFyEvEgg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793367104;
+	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To:Jabber-ID;
+	bh=tlEiADi4+8g0idHc+u87QI/42EGWWf/uchgiFaBfvoE=;
+	b=QQw/4plT/GntTUhDujWpG8LS0tb1fOTTi13zZB0djGlsfYowFiJL0b/Qsnt+EEIiaENl
+	 kztIlhMWTv6ar0hYwGCLTA02m/1kvIUHitea22+GSQCyzthG9l4EdE2TQejJo/VzhhUho
+	 og0sPN2iqvhCBfHKpf1TePgoL8YzkkDfGtHVIVo3yynXwphdwfJ9iwgp89htdQ52RyLWk
+	 nsSIk3lcy92/ZXT6JdOF7ANpdUCKjBWFmIerBUAbfbgZCASyiWiZhFJOkK0Hf1grkKO2I
+	 PvseZk6fr5oGN3jfjnQTQxnEwGbjXLMLxwApAhn4/iXqHzlG6jzVu7X4L3L1ClBvOpw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ZJKc1G/m";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=linkmauve.fr;
+	spf=pass smtp.mailfrom=linkmauve.fr;
+	arc=none smtp.remote-ip=82.65.109.163
+Received: from linkmauve.fr (linkmauve.fr [82.65.109.163])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2E1606A31A;
-	Fri, 30 Oct 2026 12:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZJKc1G/m
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD091F000C1;
-	Fri, 30 Oct 2026 12:26:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793363187;
-	bh=ww4hxT+DO/r5Zqh+aXlvOPoLHkrtotsPxdbejagtKQA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZJKc1G/mQupjhQJygc+z+JNzbL+D3IAjfUTh2GBSHHViZ0YvXPCOM9qducl2cBZ69
-	 WMHLwhTj9RO5RcxGvZz5K5qEwHMtBoeVeF2ZxdUn21FoUzailMlq3Ts2MUY9K1WKug
-	 cnLcYr67xldWqsXTxUFcpGc7krUJ7STA362g9c17rbQD3sNCsAO+lv6QnrbV5ksGP0
-	 kKImrPbeqfxKXkg+FjEXVxT2xAUmXcT002oV0S+YYEZLTNimVFxSJp/2GAGWTg2y5I
-	 AhBIM/QUtSKA1T3g7MDqKXhDwyInARdZN07c1pOIoAv4NuMYtoOpsietsORh63Y5Df
-	 6ZaS+o/8GzH9Q==
-Date: Fri, 30 Oct 2026 12:26:23 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Daniel Gomez <da.gomez@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCC2606A32E;
+	Fri, 30 Oct 2026 13:31:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBCC2606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
+Received: by linkmauve.fr (Postfix, from userid 1000)
+	id 91F417229E1B; Fri, 30 Oct 2026 14:31:40 +0100 (CET)
+Date: Fri, 30 Oct 2026 14:31:40 +0100
+From: Link Mauve <linkmauve@linkmauve.fr>
+To: Konrad Dybcio <konradybcio@kernel.org>
+Cc: Rob Clark <robin.clark@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>, linux-next@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: Please add the rxarray tree to linux-next
-Message-ID: <a692c537-cf5a-432c-81b4-372a6bfed69c@sirena.org.uk>
-References: <f2df460b-bce2-47f5-97cf-d70773876019@kernel.org>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH RFC] drm/msm: move VM_BIND op validation to Rust
+Message-ID: <auScPBpT79XKnBph@desktop>
+References: <20261026-topic-vm_bind_rs-v1-1-6581465f2428@oss.qualcomm.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -59,45 +68,232 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="4bHUU/ZlB7d0teFx"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <f2df460b-bce2-47f5-97cf-d70773876019@kernel.org>
-X-Cookie: Orders subject to approval.
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261026-topic-vm_bind_rs-v1-1-6581465f2428@oss.qualcomm.com>
+Jabber-ID: linkmauve@linkmauve.fr
 
+Hi,
 
---4bHUU/ZlB7d0teFx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Mon, Oct 26, 2026 at 12:40:02PM +0100, Konrad Dybcio wrote:
+> From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> 
+> Much of the VM handling code is a headache to read and maintain.
+> There's a soup of mixed-signedness/size types which need to be compared
+> and added and getting that wrong in C is very easy.
+> 
+> The "(range + obj_offset) > obj->size" check could wrap for a large
+> obj_offset, which let an out-of-range map be accepted and then mapped
+> as nothing. Oxidize it and use checked_add() to fix that.
+> 
+> This commit is a "get the foot in the door" type change to make sure
+> that folks building kernels for Qualcomm SoCs have their Rust setup
+> ready. It may/should be extended to the wider mm code once the
+> appropriate abstractions are finalized.
+> 
+> Worth noting, the C UERR() macro expands to dev_dbg() and the Rust
+> implementation for that currently doesn't support dynamic_debug.
+> 
+> The DRM_BRIDGE dependency is dropped because including RUST exposed
+> some spaghetti dependencies ending at DEBUGFS and it's enabled anyway.
+> 
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> ---
+> (if this is rejected we may just patch the C code).
+> 
+> Notably, this will regress some ancient configurations:
+> -- arch/arm/Kconfig
+>     select HAVE_RUST if CPU_LITTLE_ENDIAN && CPU_32v7 && !KASAN
+> 
+> Smoke-tested on Glymur
+> ---
+>  drivers/gpu/drm/msm/Kconfig        |   2 +-
+>  drivers/gpu/drm/msm/Makefile       |   1 +
+>  drivers/gpu/drm/msm/msm_gem_vma.c  |  66 +++------------
+>  drivers/gpu/drm/msm/msm_vm_bind.h  |  16 ++++
+>  drivers/gpu/drm/msm/msm_vm_bind.rs | 160 +++++++++++++++++++++++++++++++++++++
+>  rust/uapi/uapi_helper.h            |   1 +
+>  6 files changed, 188 insertions(+), 58 deletions(-)
+> 
+[…]
+> diff --git a/drivers/gpu/drm/msm/msm_vm_bind.rs b/drivers/gpu/drm/msm/msm_vm_bind.rs
+> new file mode 100644
+> index 000000000000..164208e0a1b4
+> --- /dev/null
+> +++ b/drivers/gpu/drm/msm/msm_vm_bind.rs
+> @@ -0,0 +1,160 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +//! VM_BIND operation validation for the MSM driver.
+> +
+> +use kernel::{
+> +    bindings,
+> +    device::Device,
+> +    error::code::EINVAL,
+> +    prelude::*,
+> +    uapi, //
+> +};
+> +
+> +/// Validates a single VM_BIND operation.
+> +///
+> +/// Returns 0 if the operation is valid. Otherwise logs the reason and returns
+> +/// `-EINVAL`.
+> +///
+> +/// `page_size` is the granularity that `iova`, `obj_offset` and `range` must be
+> +/// aligned to. It is the GPU's alignment rather than the CPU's, but no known qcom
+> +/// SMMU lacks support for the CPU's smallest page size.
+> +/// `range_valid` is the result of `drm_gpuvm_range_valid()` for this operation.
+> +/// `prr_supported` is only consulted for `MSM_VM_BIND_OP_MAP_NULL`.
+> +///
+> +/// # Safety
+> +///
+> +/// `dev` must point to a live `struct device`.
+> +#[no_mangle]
+> +pub unsafe extern "C" fn msm_vm_bind_check_op(
+> +    dev: *mut bindings::device,
+> +    op: u32,
+> +    handle: u32,
+> +    obj_offset: u64,
+> +    iova: u64,
+> +    range: u64,
+> +    flags: u32,
+> +    page_size: u64,
+> +    range_valid: bool,
+> +    prr_supported: bool,
+> +) -> c_int {
+> +    // SAFETY: The caller guarantees that `dev` is a live `struct device`.
+> +    let dev: &Device = unsafe { Device::from_raw(dev) };
+> +
+> +    match check_op(
+> +        dev,
+> +        op,
+> +        handle,
+> +        obj_offset,
+> +        iova,
+> +        range,
+> +        flags,
+> +        page_size,
+> +        range_valid,
+> +        prr_supported,
+> +    ) {
+> +        Ok(()) => 0,
+> +        Err(e) => e.to_errno(),
+> +    }
 
-On Fri, Oct 30, 2026 at 10:22:49AM +0100, Daniel Gomez wrote:
+I think we usually use kernel::error::from_result() instead of a match
+block in this situation.
 
-> Could you please add this tree and branch to linux-next?
+> +}
+> +
+> +fn check_op(
+> +    dev: &Device,
+> +    op: u32,
+> +    handle: u32,
+> +    obj_offset: u64,
+> +    iova: u64,
+> +    range: u64,
+> +    flags: u32,
+> +    page_size: u64,
+> +    range_valid: bool,
+> +    prr_supported: bool,
+> +) -> Result {
+> +    let aligned = |addr: u64| page_size.is_power_of_two() && (addr & (page_size - 1)) == 0;
+> +
+> +    if flags & !uapi::MSM_VM_BIND_OP_FLAGS != 0 {
+> +        dev_dbg!(dev, "invalid flags: {:x}\n", flags);
+> +        return Err(EINVAL);
+> +    }
+> +
+> +    if !aligned(iova) {
+> +        dev_dbg!(dev, "invalid address: {:016x}\n", iova);
+> +        return Err(EINVAL);
+> +    }
+> +
+> +    if !aligned(obj_offset) {
+> +        dev_dbg!(dev, "invalid bo_offset: {:016x}\n", obj_offset);
+> +        return Err(EINVAL);
+> +    }
+> +
+> +    if !aligned(range) {
+> +        dev_dbg!(dev, "invalid range: {:016x}\n", range);
+> +        return Err(EINVAL);
+> +    }
+> +
+> +    if !range_valid {
+> +        dev_dbg!(dev, "invalid range: {:016x}, {:016x}\n", iova, range);
+> +        return Err(EINVAL);
+> +    }
+> +
+> +    // MAP must name a handle; UNMAP and MAP_NULL must not.
+> +    match op {
+> +        uapi::MSM_VM_BIND_OP_MAP => {
+> +            if handle == 0 {
+> +                dev_dbg!(dev, "invalid handle\n");
+> +                return Err(EINVAL);
+> +            }
+> +        }
+> +        uapi::MSM_VM_BIND_OP_UNMAP | uapi::MSM_VM_BIND_OP_MAP_NULL => {
+> +            if handle != 0 {
+> +                dev_dbg!(dev, "handle must be zero\n");
+> +                return Err(EINVAL);
+> +            }
+> +        }
+> +        _ => {
+> +            dev_dbg!(dev, "invalid op: {}\n", op);
+> +            return Err(EINVAL);
+> +        }
+> +    }
+> +
+> +    if op == uapi::MSM_VM_BIND_OP_MAP_NULL && !prr_supported {
+> +        dev_dbg!(dev, "PRR not supported\n");
+> +        return Err(EINVAL);
+> +    }
+> +
+> +    Ok(())
+> +}
+> +
+> +/// Checks that `[obj_offset, obj_offset + range)` lies within an object of
+> +/// `obj_size` bytes.
+> +///
+> +/// Returns 0 if it does. Otherwise logs the reason and returns `-EINVAL`.
+> +///
+> +/// # Safety
+> +///
+> +/// `dev` must point to a live `struct device`.
+> +#[no_mangle]
+> +pub unsafe extern "C" fn msm_vm_bind_check_bo_range(
+> +    dev: *mut bindings::device,
+> +    obj_offset: u64,
+> +    range: u64,
+> +    obj_size: u64,
+> +) -> c_int {
+> +    // SAFETY: The caller guarantees that `dev` is a live `struct device`.
+> +    let dev: &Device = unsafe { Device::from_raw(dev) };
+> +
+> +    let fits = obj_offset
+> +        .checked_add(range)
+> +        .is_some_and(|end| end <= obj_size);
+> +
+> +    if fits {
+> +        return 0;
+> +    }
+> +
+> +    dev_dbg!(
+> +        dev,
+> +        "invalid range: {:016x} + {:016x} > {:016x}\n",
+> +        range,
+> +        obj_offset,
+> +        obj_size
+> +    );
+> +    EINVAL.to_errno()
 
->   https://git.kernel.org/pub/scm/linux/kernel/git/da.gomez/linux.git rxarray-next
+Same here, the whole content of this function could be wrapped in a
+from_result().
 
-> It's for the Rust XArray (rust/kernel/rxarray.rs), a Rust reference
-> implementation of lib/xarray.c [1][2]. PRs will go to Matthew.
+> +}
+[…]
 
-How does this relate to the existing rust-xarray tree:
+Thanks,
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/Rust-for-Linux/linux.git xarray-next
-
-Should that be dropped and replaced with this one?
-
---4bHUU/ZlB7d0teFx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrkjO4ACgkQJNaLcl1U
-h9AyzAf+NcVnmFUvj8SMQYkpvELk766PYBteyLsL7vrX4jocsXOCCFOfFKnY/i//
-5FV3vhctsckcuzdm+lb23tW7Kuglv02t32cTyJey3Z3+Wr+6w+amMV+Mt2OH/pK0
-4uCJzBb7g8jHk9T0RoNu3fWP/AOXv7QpLxCrg9+qmbPA2FpIs+8J8wtd+3oo8Xq6
-WRRPizodaUnyWKOJxu3TbqvroCQUQ8dBTU2lLVHMAnGvQf6EeneNYen43x8SqcIG
-WqIG2hrSdQtA4zDg1/RQUjBmhLaWkoigLm6pS4TNFkEQ3AG1YlcabhXN4j2QLEvy
-gWxk+8EMZ2WLsOsK6D/2IlDnYhqp4Q==
-=OeF/
------END PGP SIGNATURE-----
-
---4bHUU/ZlB7d0teFx--
+-- 
+Link Mauve
