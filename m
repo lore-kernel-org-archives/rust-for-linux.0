@@ -1,84 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.65.109.163
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793368888;
-	b=GJJkdrLJDTg8i/7Z7MocS8hGk0XZx/O63z3KX2QB5DOKEEgDdhK+cxPPexb1tyfFAi8c
-	 hhZwe0EFC5ZRwxn7sbuM55trSJNZsgzDxWKbdwf5hpVsop7SNsie+qlXYID2CxUDZpJTJ
-	 YLp7ypCj7kcH+1S341HNtydCbLDYBL6nR39GHcmgTzPT8Oq+besJLoTVgloqWNcVSaxdH
-	 OE0ikSLseTpNsco70OX8W5hvTSpX+rwwdfc3u2WB5fo5nru61kEZVh9XH+6D+KF/E9EL3
-	 aT+08xhUIVblJSaaCkPdumNtVNC27ghnEH79ia9ZR5OuxEKTFoUeyNlX91p4Zddq1UQ==
+	t=1793374296;
+	b=zKBgizhVO+mcy0W3sK+6fXR442Mo9yWGQtxIv1Uus/QtV/+bQg2Rak7/4e+Fph1LVarI
+	 wZ1UFDfK+v5367KFUcPbRlEKWeei04sN4/qaSf10EWIkvpNRkhcNOj2mzby2TXKDFcbP5
+	 kC3atrAPvE45nUF5cYBYTzm1/rnfA3wu0Wh9cEalwY2UxsrWCdNgo5G06LdZtzmuFhxSk
+	 AiDJca8cICAS1KzbkgIxH4RbXmgTYqmUTqj12gX+dUuffqe+P3AUlE/N5v0RwiNcRuTET
+	 rhYftvPeqndDSbpE1e+n2mW4ul93XHGbNLQzyREzI3cQ1m3OYxgN4/GVaWsSct20nTQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793368888;
-	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:Jabber-ID;
-	bh=r2Lam0T+BA/HujRcsyvJC9BL9O4RDGTnvemyk2p/XQo=;
-	b=giEEtax9osaPakewC5jEUbsZV34lWAjZLcid9JKG09YgipZZs808tXm2rG8/U5Oml7OU
-	 UDEEQc8DdorCiXuOaKUdf7R2I/Ke00Pu75kNGZIyIHwAGa3O9V5SxsOBNeffST9zAjRhU
-	 cQ8N8e0xdYZk16RWnDeLgCsXmioY6Oj8pXIlDcPO1kSDHxecyTqHZy5tlcelV7+Inr6JZ
-	 cOBFEOytu9QNOxSJozgrw4Y+dcoucTuzWDTbpS8l3W37gh7zGV5ytjGQT8VeRAVDXFX8X
-	 NSHFl9p8Ny0tDD2onmkXID0i0Y2EGgqiGmA/svPwLQ3gN3D3bZEXOK9uUKzCYIFhANA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793374296;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:MIME-Version:Content-Type;
+	bh=GJhKVMRP3nLdXr/seYaUvr3XBjJFlywTfuPoM1+IcBI=;
+	b=uMr3U0eDA8J7l2nTxaJl1xM4Bq0y3O0e+aiPYIEXDoSAJvxW04/CuCGrKruKJkkg94dO
+	 GKcqMCZ9U2yNq0x9CROou81cu31CsAOvttoSdBYwW+w4V4nTj2b44UibiFshLzcFs7N4f
+	 G0tVi5X+HbcVhDZfbuX/5PLsJQo9EXmcpTcBi6c8IvRtkiIPNO/fVQVv/9que2V6zXhZB
+	 5aCdNeV5J8cZSkT4J8ZOUQ2dOx76bj3sfXsce/yU5TYxXFyvCDQ0omOwsAR+D3wwTXJCV
+	 k4xApAs5uGi1/zibISAw467MwnwLrnwzvhq5+e/KM4ALRMEclTk9LKstwjH6Zvoi1OQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=linkmauve.fr;
-	spf=pass smtp.mailfrom=linkmauve.fr;
-	arc=none smtp.remote-ip=82.65.109.163
-Received: from linkmauve.fr (linkmauve.fr [82.65.109.163])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ajqra+aQ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109F0606A31A;
-	Fri, 30 Oct 2026 14:01:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 109F0606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
-Received: by linkmauve.fr (Postfix, from userid 1000)
-	id 68C167229E5E; Fri, 30 Oct 2026 15:01:25 +0100 (CET)
-Date: Fri, 30 Oct 2026 15:01:25 +0100
-From: Link Mauve <linkmauve@linkmauve.fr>
-To: Link Mauve <linkmauve@linkmauve.fr>
-Cc: Srinivas Kandagatla <srini@kernel.org>,
-	Sasha Finkelstein <k@chaosmail.tech>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
-	Neal Gompa <neal@gompa.dev>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Kalyani Akula <kalyani.akula@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Johan Hovold <johan@kernel.org>,
-	Ronald Claveau <linux-kernel-dev@aliel.fr>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev, imx@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v7 0/3] nvmem: migrate to const void * in reg_write
-Message-ID: <auSjNcZpaWzqY3on@desktop>
-References: <20261012195213.875403-1-linkmauve@linkmauve.fr>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6312606A31A
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Oct 2026 15:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ajqra+aQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB381F000C1;
+	Fri, 30 Oct 2026 15:31:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793374296;
+	bh=GJhKVMRP3nLdXr/seYaUvr3XBjJFlywTfuPoM1+IcBI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Ajqra+aQzW7x27kzT8A5W3FjdbNbsJ38qYAabj0FtDmeqw86csOoBjja0ZCEN6kb/
+	 mpedafMr2klM4ZwceD5JNb5zUTBq8awlAn+V7clWO7Ec/548WdTZdkTLrH5gdkrYZW
+	 +ftnVv4l3bGIynlNw+Kx6M3gCfA093uv/tTTBFySjSP/jVUkLiM8ejZsWI9GJdA9ex
+	 bBbRdfy6Fav5IIcBsJNPeg04MvOFHMSvlVS0+PbqM/t9ewLFHGM9AWbllDzazun8RI
+	 Y5Wny2RP7Rd75ygMeIH1Y5T9Ii9P73RbK7g8XtmYyOyCVq1BmJj+OJ93jjfRBTGBMq
+	 w4APQkvya1sog==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: FUJITA Tomonori <tomo@flapping.org>, ojeda@kernel.org
+Cc: acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
+ daniel.almeida@collabora.com, frederic@kernel.org, gary@garyguo.net,
+ jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org,
+ tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH v1] rust: time: remove leftover "clock source" wording
+ from doc comments
+In-Reply-To: <20261030044803.3863267-1-tomo@flapping.org>
+References: <70lCMDfO9RKOmQM0cJWbGH-Xb2obLme9j31nmGPFgVtxFjpGGolzh6OVOtVaPwvM8dMHEIJSl8UOb9vq3abM_w==@protonmail.internalid>
+ <20261030044803.3863267-1-tomo@flapping.org>
+Date: Fri, 30 Oct 2026 13:41:56 +0100
+Message-ID: <875wyjnywb.fsf@t14s.mail-host-address-is-not-set>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -88,28 +64,29 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261012195213.875403-1-linkmauve@linkmauve.fr>
-Jabber-ID: linkmauve@linkmauve.fr
+Content-Type: text/plain
 
-Hi,
+"FUJITA Tomonori" <tomo@flapping.org> writes:
 
-On Mon, Oct 12, 2026 at 09:52:07PM +0200, Link Mauve wrote:
-> This callback used to take a mutable void * for no reason, which causes
-> the compiler to be unaware that the val buffer should never be modified
-> by the callback.
-> 
-> This was found while drafting the nvmem-provider Rust abstraction.
-> 
-> Thanks to the guidance of Andy Shevchenko, this now introduces a new
-> callback and deprecates the existing one, with the goal of renaming the
-> new one into the old one once no user remains in the kernel.
-[…]
+> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>
+> Commit 6a8e2c63f2fe ("rust: time: rename ClockSource trait to ClockId")
+> renamed the trait because it represents a `clockid_t`, not the C
+> `struct clocksource`. Two doc comments still say "clock source".
+>
+> Replace them with "clock". This matches the `ClockId` doc ("Get the
+> current time from the clock") and the C hrtimer_setup() kerneldoc
+> ("@clock_id: the clock to be used").
+>
+> No functional change.
+>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-How could we proceed to merge this series in time for 7.4?  I’d really
-like to get done with it and move back to the Rust abstractions.
 
--- 
-Link Mauve
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+
+Best regards,
+Andreas Hindborg
+
+
+
