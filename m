@@ -1,88 +1,105 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793386768;
-	b=ve23j56miYeNKOTHhJW0ZyYgmxrY3dzh/Y0PJT8UYC2R0Fn+KhG+X0RNHFiBAbsTp7L2
-	 q5pd2Fj929IMH53YJxfcli7pzvBpQbbqiL0/BUnDWkuVDg9tbE1OTgh9pvyT2enJjNvU8
-	 E0nEgHgmCkLmDxiI4NX7NI3a3kicOd4/ifU0LeqGEPu3lKO+6WPiutxNubOpX9D1Qa/oG
-	 MFRUPqCB4HZr3IZAaTxFBavH4rTiknOztDKvKdO3snYsQpKoFp52fTQCEZ1uejxwubveW
-	 dRbfHodE15+52RZaHOim+F8DHgsJXSL4ANwQ//I2Eng5G60li1hJcFfciPr+v9HUTgQ==
+	t=1793387001;
+	b=EwLD7hGEyuKIE9IAhfkWXF9w7MWIW67yCGzA13Xf9qWwqGIVV+cunexewrZ9zvXx505Q
+	 0QODqja69BgtxoRcQUnOenLpHEvwtwwPDj5pTgrLs1ZT49LNZHbihP8Ssw7+BcE1C18ax
+	 EbFV1dOmTQeGB7Cgmga6CYBCyGgjLTUBPwJ0FFpP2mcEg0ZqjrsGRe3D5iy8sV/O1Uka7
+	 vg9ffgjVd3zYkRdEVRlIArJLd4ubO0FxceUYbWlYe6CfiGSTu5HmXW5rI3Y7mMW9WLgO0
+	 YqLGRNtJjU9vWg5S4F7s8ROR3No+0YzRmJpSSB4g2o+lFozUgSNn/TaNLfNjP5X/7xg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793386768;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793387001;
 	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
 	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=hPoGYDC/EcX64TLH24GIzKak03OQbDgbY40101dK4cw=;
-	b=NUmBqH+G3gT56PykZXGDDannCw4OAUr0zFwD+Sbv+/VmRMQfg1pF0pgtYZjtlAp67EqY
-	 +De/63mSNn+4RX1TyDSrbNEoJDXvHC0VW1CK38cWzHJH/2rZClcT/ztptNDnqSKR3i8Og
-	 XpEGDNEO/wPJwSXGn5wHhAGfTPS6C0ylM6IFJJdoP8bWK+HQEl7ouQeQcs3CFc7GjBaXB
-	 yf2YdYLDvmLYPkt/xNyi0TiN2kzrzxf6b2g0j8qM3W2FT6AgJQYAIGMeoMUnbML/+4DqP
-	 iI80iKDDCuCCYTS/pR0pYB8G3weugSpAuC885cWpCFuE88zG26DIIrEVaScUUZ7EbQA==
+	bh=Ez6NwxCX3bhjDqnSlRsdUj2bvOIZ+33wXUFtZScIV1g=;
+	b=eFexuT+7m9zMoih6UFQB+fhUbfwPJJJgomxXID3J9Gsh4wYgY04/boBIrr5rpcSlzqW0
+	 /gRtaey/MeizbPsATud+z1cCCegmZqtQb1OIeYngOVmWpmTmJalCITgcWfZGrdBn2WYep
+	 y8iUyXfWYpOtXfUHEqTSX9Ua4670s4e9ej5jITuqYqmpLSxbimtFJa5Pdkx3tILaEdiop
+	 CvnI3yNnHA2+XxDIlualh4B0JRMF8UN9dATmd2osqZX9ziwr/Ag+FLH/FzWB4x6sD430X
+	 TTcxCDU+oMH3mKklONKcCVNUDr15PCzGjceqJQ/A80+4mXlYFwRrwbBi39hPCiT8YvQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FWlEiL3x;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jR83Kb9q;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E94606A31C
-	for <rust-for-linux@vger.kernel.org>; Fri, 30 Oct 2026 18:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C764606A324
+	for <rust-for-linux@vger.kernel.org>; Fri, 30 Oct 2026 19:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FWlEiL3x
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B7571F00A02;
-	Fri, 30 Oct 2026 18:59:27 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jR83Kb9q
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B801F0093A;
+	Fri, 30 Oct 2026 19:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793386767;
-	bh=hPoGYDC/EcX64TLH24GIzKak03OQbDgbY40101dK4cw=;
+	s=k20260515; t=1793387000;
+	bh=Ez6NwxCX3bhjDqnSlRsdUj2bvOIZ+33wXUFtZScIV1g=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FWlEiL3xtBUIIRLtNg2ILrHuSsKjcjtZznUVcjbHA0NAITdeGRerd/ADUbbvjAdfH
-	 WG/ISury1MVYPRwmmWxhOdpK2Zqy6ghUpE9X6n6EMBb5rMn0xh7pNZjy4Dq3jwQXnl
-	 /OKrkYgpWJUG3KFXNa8gy3QKlNFMHEBjKq9ZAOvTfH3utP43TBvEFZ/0orA0rAA5Dt
-	 N87mYuFe6AaV5gYVEyDazCJ1LjG1xsEEJcLTDpIILI4uZ4ymTycV+SPGis5MwEKm15
-	 iBWhlZ/yTXklldNiRg7/n488w5TVnzDX2rnMBe/jWQoxTdB+wgAUVQu3OwOU92sHFm
-	 FdtCtdqPy4Njg==
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5B4EEF40069;
-	Fri, 30 Oct 2026 14:59:26 -0400 (EDT)
+	b=jR83Kb9qrDLc0R4usVOoKB7Wfomia0GqfF81Td+WbSHwwVFRLIPdKI0/vKgHbGgWb
+	 P1USucvboR+nddAxF/OZRMK0Ew55gkfE1rvvVBGUVExEc2cV8sn1eu2xRsK9P1spXk
+	 yJ9adP/RhRcn4iySwKESga8MO710jC2KbtLMkP6FIVF8zKe1ggfp4QqKW4fMKAsQA/
+	 Yv4GQKGycK1FLwZ7Iwocu8SdRhjktGPMiUryhwcZkZ+QdtHDmj2WqfBmBfEn7klP5i
+	 qUl34fTmuMFxpxGecnNqx2fq5PohsF6Onpef8NtsZOeWT9wJuU8MwdIbKZyq/QQpIj
+	 KkXBSPPmT9bDw==
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfauth.phl.internal (Postfix) with ESMTP id B9037F40068;
+	Fri, 30 Oct 2026 15:03:18 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Fri, 30 Oct 2026 14:59:26 -0400
-X-ME-Sender: <xms:DunkalMziSZyqZv2aEGvjKSI1ua6ASEBXTFFisW-QC1Sdzd6c3ZYjA>
-    <xme:Dunkav4iAvvw23r73dFrEnnHBqparfd1s0gGcJzIQdluXj4vVdAtVgXEOzTno39Li
-    GfSTBwAuO9SfVFaQFsFrrCo6ZOYMtoRh2GJdHDbZnkPUg6qtyheIA>
-X-ME-Received: <xmr:DunkarcjJ2dqccRnB5kr7LrCme0Ty69_loYeRwMESile4x3YZAnD3pvFxk6J-JZvY84JD-F1aZ3y9mPaqJ9gf5_MbxVNKgh0>
-X-ME-Proxy-Cause: dmFkZTEANoIokc/FPSwXY9/jcV5fn+Rbv8Dm0sEF6nfTJ5IhU7IzQKAelVIMlJy2Whd5p1
-    +hpDoJtmjPRRUclaaP+vGZOk2hO9ReAhYqrPb7zaL2MGoc55s4oCRLML0mMFPuEOnPKxjN
-    6Nf+SSmbUrFTTpgsi4TdhkylvIl8vGCX00rawu8/u0FoTXj2FTJMhqOU9rVult+lUvbh09
-    6aGM86atILr6fCyGSmKIHWlVsz+GOVqFHF9mH+qY14MHLbtp0frUdw+70WHHhOyYJNHXLj
-    zCp/IHfH1pckC7H/m5YUZb8GPabpYBmCWWgYDVwgOEBdsYOjStj8RviUjBxewrIZDe7lUj
-    rbfWTgXa7soj0wqi8NuFssXiLBV1diMM94VJiw7Xc+jCUwp+oEP5tTjK38ZS/DyYDyIf7Q
-    q5jymcyScI6UL8mS/QOnHH1deT5g9CAhh1dbUNxB6sRs2yLWXZ09q9o41WCxdBZslulB36
-    Fka3rP2TcL4RbdxUgwhSA/lNpsbsbZCvkqHX7HDVWNDPrsdBxCptdA7FetTK48LSNo0UgE
-    3BMHLxUBFq0aMPLqlzYUahoibVwI2eaf9FV+2Chzl9MhWzJOg99fvher1RY9AN3dzIdiKS
-    LNRc8G8Iahx1DLD99ujRYFP4xxUacCoGISQIBMN+5IKZegrAGNApJMDBFI7g
-X-ME-Proxy: <xmx:DunkaoL8V8l7BCzzk3dqwV859F7dDPLkQruSG3VSM9AQZmiVSzFIrg>
-    <xmx:DunkapmhGv00KZKYz1BB-uaoLLZU0GJqw1IeIR-QtYQdvwuxPyKcGw>
-    <xmx:DunkakF8SH0T_mEHFt6yCTS57-cIT17q_AbcB3bOPf8HZd4qd4F8YQ>
-    <xmx:DunkaidCynvDGfs-LtwBCUlPDGGH8yWbBxgsLw5PbswhiEzLVvppHg>
-    <xmx:DunkahEMU7d8dVG2aenP5RKkvhuWSoykmTRuO3CGYf7DWJyfjE0QRFPy>
+  by phl-compute-08.internal (MEProxy); Fri, 30 Oct 2026 15:03:18 -0400
+X-ME-Sender: <xms:9unkaooeMLGQ8g__Yi_Sp3XCPOy2OpomnXvZRNPjlr1ULv5uB9nIzA>
+    <xme:9unkaheo5QsXe81j1maoi8DP5KLFJLNFlATKcO2b6F5oDTLY5AKD_UwxA0fv8yZiJ
+    nWfUMVF9DG1EdD1UDuhoyLj0zuzqe0PCqIkY6fOJnUJwIgNMMq44w0>
+X-ME-Received: <xmr:9unkav9EdI6EqdoQ0dmgg7l9dskWNX_tVFTPW2QAk-RQhGKOZs0ekdyqVd854PweoGpCjv46HP3pkUa0-qj3WXFlo9js3z3b>
+X-ME-Proxy-Cause: dmFkZTFGOr8QamtD/idwG8XBnzFAf/Ml7EAwCH31rnH8844AjLaVjcYoNBFy7nItSr7/1R
+    lKLHkptekXrYmhAKtgQ1Z+R7VAqLBCvvhIKid69nwHnmkXXVXREiZZ8oE4ml2ZXua7p2aW
+    mQmAcy/zMr6ozkc6UBBgKuOc54G/Nq6wmDswdE2iZ0oNX0nyv77LixT1rJuAK86uLRkCrb
+    zpq8drx/483k+MkNQIfPcPZt8SIm44QxOvs9tyx1C5HtY485ysmDgaVxenlJAEBQO1QXf2
+    BQP+bfx7YLCr4UXJwZyyw6DeHKCAymUkdVUdgSFkV8FTLEwqfnvsgNQ/CBKWOkZyfPJpAO
+    Al4yqBIi7gDBRnRpWOZHTMHspW3NbHnz3tfkJ3uE049XnujAFSjZJFrNTUoDrSiUfhUocU
+    kbq/qJbDFNqTeqiE6KWjoGMgjRVFA6SGNk/kf8Q+8QqSShsOA6RZdm4Dq19laUOOpJLUel
+    nldBdI3ybTOTjroLAAHFHhnIR4AdGLgsir3ATgNlzUnP2589vKropgG7sOAuRtGqomh9XH
+    E9AlB5DHJFs34LLa/aIuFUBU71dMXYbEzW3vHDtoFyV4WEL1UiyAwRUUUELS6S/jP3YuB/
+    cnPbmCCSGKyWLaYixZ+A7AgPcyZ9Wej6qrDumo8qHFJv74joRgAvSZRQfiNg
+X-ME-Proxy: <xmx:9unkajaqVwjO98a_kB8ukEVY-GkrneZIY2guhFSvWSHT8m8DQihEnQ>
+    <xmx:9unkai2TplNQ0-PjlG0U0l6N92k42R7ab6SMaKsynSZLjwjJEH8tjA>
+    <xmx:9unkas1addTZKN7Pb3QzqxS_p4Mo4__0BoaiggYCFODftputQTsSAw>
+    <xmx:9unkav5Gm7dSWC8H-tw447T8lU9EBQh6SLVRNXAvrj7gB9nroVFb4g>
+    <xmx:9unkar0o4mYr0XXO4IoznNFiFH31Ue39lsZ465Szl1SAs7-NHZB5_p2S>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 30 Oct 2026 14:59:25 -0400 (EDT)
-Date: Fri, 30 Oct 2026 11:59:24 -0700
+ 30 Oct 2026 15:03:17 -0400 (EDT)
+Date: Fri, 30 Oct 2026 12:03:16 -0700
 From: Boqun Feng <boqun@kernel.org>
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: mike@fireburn.co.uk, a.hindborg@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ojeda@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dakr@kernel.org, daniel.almeida@collabora.com, frederic@kernel.org,
-	tglx@kernel.org, anna-maria@linutronix.de, jstultz@google.com,
-	sboyd@kernel.org
-Subject: Re: [PATCH 9/9] rust: time: add ktime_get_real_seconds
-Message-ID: <auTpDD4GRiD00jP2@tardis.local>
-References: <87h5jzx5gj.fsf@t14s.mail-host-address-is-not-set>
- <20261030075750.356854-1-mike@fireburn.co.uk>
- <20261030.190502.1711453613571853758.tomo@flapping.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Yury Norov <yury.norov@gmail.com>, Yury Norov <ynorov@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v4 1/2] rust: add a wrapper for the `nr_online_nodes` C
+ function
+Message-ID: <auTp9HYxHde2IONT@tardis.local>
+References: <20261030-cpu-helpers-v4-0-a8d840d34837@kernel.org>
+ <20261030-cpu-helpers-v4-1-a8d840d34837@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -94,44 +111,85 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261030.190502.1711453613571853758.tomo@flapping.org>
+In-Reply-To: <20261030-cpu-helpers-v4-1-a8d840d34837@kernel.org>
 
-On Fri, Oct 30, 2026 at 07:05:02PM +0900, FUJITA Tomonori wrote:
-> On Fri, 30 Oct 2026 07:57:50 +0000
-> Mike Lothian <mike@fireburn.co.uk> wrote:
+On Fri, Oct 30, 2026 at 05:08:03PM +0100, Andreas Hindborg wrote:
+> This function returns the number of online NUMA nodes.
 > 
-> > So it's the case you described, Tomonori: the format is fixed outside
-> > the kernel, by the dock's firmware, and what the caller wants is an i64
-> > of seconds since the epoch.  It never gets subtracted from anything, so a
-> > seconds based Instant would only be there to be converted straight back
-
-Even that, I think Instant<Sec> would still be more clear than returning
-an i64. Also regarding Tomo's concern:
-
-| So a seconds based `Instant` has to define what `Instant - Instant`
-| returns, and `Delta<Sec>` would have no consumer.
-
-We can probably only impl ops::Sub for Instant<C, NSec>, then we don't
-have to deal with `Delta<Sec>` until there is a user. (We probably want
-to avoid a from_ktime() for Instant<Sec> as well, so separate impl
-blocks make sense).
-
+> The wrapper is needed by the Rust null block driver.
 > 
-> Right, you only need an i64 of seconds since the epoch and do no
-> arithmetic or comparison on it. A type is useful when it guards those
-> operations, and there are none here. So the plain function is fine
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Reviewed-by: Yury Norov <ynorov@nvidia.com>
+> Assisted-by: LLM
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  rust/kernel/lib.rs  |  1 +
+>  rust/kernel/numa.rs | 29 +++++++++++++++++++++++++++++
+>  2 files changed, 30 insertions(+)
+> 
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 4d5c96ddc49c..a7b1c9cf454f 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -105,6 +105,7 @@
+>  #[cfg(CONFIG_NET)]
+>  pub mod net;
+>  pub mod num;
+> +pub mod numa;
+>  pub mod of;
+>  #[cfg(CONFIG_PM_OPP)]
+>  pub mod opp;
+> diff --git a/rust/kernel/numa.rs b/rust/kernel/numa.rs
+> new file mode 100644
+> index 000000000000..164e622d325f
+> --- /dev/null
+> +++ b/rust/kernel/numa.rs
+> @@ -0,0 +1,29 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! NUMA topology utilities.
+> +//!
+> +//! C header: [`include/linux/nodemask.h`](srctree/include/linux/nodemask.h)
+> +
+> +use crate::bindings;
+> +#[cfg(CONFIG_NUMA)]
+> +use crate::sync::atomic::{
+> +    Atomic,
+> +    Relaxed, //
+> +};
+> +
+> +/// Returns the number of online NUMA nodes.
+> +#[inline]
+> +pub fn num_online_nodes() -> u32 {
+> +    #[cfg(CONFIG_NUMA)]
+> +    {
+> +        // SAFETY: `nr_online_nodes` is a global variable that is valid for the lifetime of the
+> +        // kernel. The C side updates it with plain writes during node hotplug and reads it with
+> +        // plain reads. A relaxed load is the Rust equivalent of `READ_ONCE()`, which is the best
+> +        // we can do on the reader side.
+> +        unsafe { Atomic::from_ptr(&raw mut bindings::nr_online_nodes) }.load(Relaxed)
 
-The way I see it is from kernel::time perspective, we still want to make
-sure the APIs are still in the same abstraction layer, a
-ktime_get_real_seconds() co-exists with Instant::now() as the public
-interface layer breaks that in my opinion. And the generic type
-parameter should be flexible enough to avoid introduce anything we don't
-have a user yet.
+Just so you know you can use `atomic_load()`[1]:
 
-Thoughts?
+	unsafe { atomic_load(&raw mut bindings::nr_online_nodes, Relaxed) }
+
+With or without this:
+
+Reviewed-by: Boqun Feng <boqun@kernel.org>
+
+[1]: https://rust.docs.kernel.org/kernel/sync/atomic/fn.atomic_load.html
 
 Regards,
 Boqun
 
-> with me. If a caller that needs them shows up later, we can add a type
-> then.
+> +    }
+> +    #[cfg(not(CONFIG_NUMA))]
+> +    {
+> +        bindings::nr_online_nodes
+> +    }
+> +}
+> 
+> -- 
+> 2.54.0
+> 
+> 
