@@ -1,78 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.231
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793327651;
-	b=xvwU7sXNZqXaxXzNJPRneVB7Bj4hI3x1B/BJvubteT9KlHif4Hlgf4Og8oFf6FZ5nE7W
-	 jMbUr72bftiy+cx8FFAfmdq6RrI33Fv26cudsZC3lV6RvYWUnoio9JbKHAEBStHoAJCGw
-	 mSTjN8jDmlUgHuocRSE/4vpxt/kHIcn0dDxbuCCVqfIqIO5PMqT51fyb8vG/e2c1I047R
-	 vG1GkQXX6b+qa1SlkCWz1vNK5ExvkYXDy4ehTj8V/oMymuxDtNN6i6RnwNzZLtAjQ4pCC
-	 hcifr+16O+Bj239ourWHHOmKU4jadj4Gs2RX3D7DK58NG8HzzK8P3SknR+nmboN0rZQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793327651;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=yI38pTAxWIJdHS1u48CX7hR1jFdneroKUtAyhW5uxuM=;
-	b=phnyKoRPtr8FiURfwIwxXdsM1IdVxG2o+2UWq3qppcFydto7da2XNBacBQBWzJSpSfwh
-	 oM4pVBh12IAhX20BUOQXWdQb5g/qVs4RZ30l9GlqAvIhx6YA3wBkLweeH4FIwePD/OUoa
-	 XterSVI5TBMncjtm3hUHJeyfNQ/Av4GusVGPRt7TArNaiztZE7RP7pfIG5PQOnMPP4ryS
-	 lctQ6SGLywjpd4mqbuQwzwjHO8Mn4gRKWvMM7DlXAC+E1gcN37bPHWqsB3x6I8nsgP3q0
-	 Ja4GCNtKo63h+k67G2WYsebW1/7A8ClL2oR8nOugQLsrHfrJJd2d0mWeVZdwzwKBJOg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=kJfXCyRe;
-	arc=none smtp.remote-ip=203.205.221.231
-Received: from out203-205-221-231.mail.qq.com (out203-205-221-231.mail.qq.com [203.205.221.231])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.49
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793328181;
+	b=A9PEPvp0uOuTLlsK5qHd/wpJpO8M3oWgcXnyvvp6zCOhmF/LIkeumcqGgq8ItVCr8CSK
+	 p46B1uX4cYh8usmiitGTL4dAheIlX5/XMh1WS5c4le3nBk4qR9Q2r9dpzGediZyAEgX0Y
+	 47l9RrpOS3cxtyyNfXESkPlWY6oQBN0HJUrnMMVZovQQqsM2dD1H4wVK7ERIZJD0d3wEe
+	 NqtbkjSUD6rbMmF8HGExrHx0Yed4q1LTdxvedSQk02kTX3Cippa2Fgrw4MDeM+NTEAoVp
+	 5/ydh/NF68GA3caYpEzKDIAxqDyWcvXxh3Ub9BDWuAWRvTjiUz/ioBvOMEfBY27djbA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793328181;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Subject:From:
+	 To:Cc:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=qgcidXzasZXGmyCOcxrxXktzlpWjfMP81OF7oFSKqho=;
+	b=axh/L9dw+oDZ7YW+X+/449ap3F7Rku5kFg7Zy7pXKTP+emM+Z3YuZF7J7pRL/vqPTXCM
+	 1mTISp3sxQRgRwc8ckGl40IKFYB6/Ke1I4UAkjcCcBVBYwUj9mPfORiYDPwgHHXfPPPP8
+	 EtO1mA6HwAXLXuF8mBcvFff5lZDM6m0JECJPWrUlEHyJKxHQ+h4Z9YgkiBupM4cVpjzOz
+	 jTh+3V6mo4OHgxkG4yV4jSCBkggLNfTonCHmaG55U707nSFmFraGMdk37i6dsOMe43St6
+	 tT8cGyEgN9ie3JLeavv1OqE4xmntW1bG0csx2dXyYdGWMlYnzm9wB8xbslhT7raR1Tg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=p0tz7N7h;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.49
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011049.outbound.protection.outlook.com [40.107.208.49])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90BA606A31A;
-	Fri, 30 Oct 2026 02:34:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C90BA606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E044606A31D;
+	Fri, 30 Oct 2026 02:43:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E044606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=kJfXCyRe
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1793327642; bh=yI38pTAxWIJdHS1u48CX7hR1jFdneroKUtAyhW5uxuM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kJfXCyReReLjxEgcRDtBGz05NGmtT3sNGUINfEZTiLA4Jcs/I9qWQIPDkDYiFlqvX
-	 jN36TG5j72py8+GUziVB/ICQB182RGeXHfDVJcbaDEsBP3sW4NlyKV7r+dqax2+vLk
-	 aeK1Lk4qylPjPVMA8Ztw9CIC1O8aOO+aaDLYWoF8=
-Received: from shuai-VMware-Virtual-Platform.. ([218.206.237.125])
-	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
-	id 8803A8CC; Fri, 30 Oct 2026 10:34:00 +0800
-X-QQ-mid: xmsmtpt1793327640t8grxmk6j
-Message-ID: <tencent_A0D3062EB058E244877B87B4324B8DFC4406@qq.com>
-X-QQ-XMAILINFO: M1ZCvr9KyDXtaCJcnF47S6R5I3mq0IV7kiidH4/XzxN5PLrN7Fu8PsfGr+ka98
-	 ubiqSNUdCT4zCufn3DQKkOjLb7yGNZuLMh1y9ltnrfuWvgMF03A9GbDRY0GzF2969BCWySg4Iz+B
-	 hN9vAQq79uCukI6ETF0ZxT+HZ/mOm2rS8ojT/s//xwJBcIbhDvfFTtsSPvIhD3VYYYq3lmarP1F8
-	 b0ObgRdNiADEeBeHRaRr8vUMli+Kl2xypBPVDBAtD9+uuZzynN6Prz5oN2jWvhTPSJKclDDCNvK0
-	 T5kiPNKZCQ4vHW959PlUvPuWrEvLnmR5reDhWuMqaSTMxmAJbbV1/Q0dMOBr8B156RwUxhMiaxes
-	 BRHOqi88H+cR9GoDNu6MNV3zl9w7R4A4daYmD9qrhffM2EASkDUlaat70g1FWYA+6HrfxRKNOBT2
-	 aRdU3oc/NLZB9mDIrmjJSDOj8sas+cb6AKgH74yPqU1E8u3QHy1SGXEG1lWITj0pykMWikcZ10C3
-	 W/SC29o5sSlbNPDQPrBOmsSHSYHOclHvQyBVpjZnhV/UOJC1jvRKd1m7PKOs6fyPzCbmIZQmz5Ea
-	 4G9sWsnrpMddsVTJDfB4n9y7tiy5Tq288dYnHKcrvuy4560ReiJPFL+wv669Mj/cY+qQ/CCwIIWO
-	 +0BkKh5du0UoXeL/eN7lqkJyFMMZopDKThAgszEtAnPE4skFfM87FsZStIciOD+p4lPKHJCbPUoW
-	 0p3yw9rNL9dYmX0uphH0+Lg0Scxf22pLOtfMParg6+PNnx/ECiw9QsV3wGVLjngnA96AcWOFF4jl
-	 N2GCd3leWt7iH9qjomUcCHKmohOD7fMIcKg/VK1cA8H0lCG0IhAGTZPSyoYLCZEH0sLNu8PVdaIH
-	 SHoiN8hrYWDeaxLz17qN4AiLc/aDKJl2nCSsClrC/F/u5f93mcvrqItEQ/gl9eKhxHpqbqhZSUPS
-	 R0ojgaCVtfoupJvRrqwxE5urXV5QnitZZ6dkldPYJboAyjxIkxxgIOL8GqIEbt7MvaUjcQLubGw1
-	 KEPxfM64Yjv2a+tJ2Way5QjI17QMaF3DgLH0k1ixj/NuAB2B++L4DiF2cAUAU3P8USfneifbFRiU
-	 EeCVmvjnUyCty0//A=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
-From: Shuai Liu <847807867@qq.com>
-To: Mike Lothian <mike@fireburn.co.uk>
-Cc: Oliver Neukum <oneukum@suse.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/5] rust: usb: host-side abstractions for a bulk-endpoint driver
-Date: Fri, 30 Oct 2026 10:34:00 +0800
-X-OQ-MSGID: <20261030023400.3849731-1-847807867@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260826163101.4168-1-mike@fireburn.co.uk>
-References: <20260826163101.4168-1-mike@fireburn.co.uk>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=p0tz7N7h
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h5t6+Q2iFWFT/bjJ9vh0jSQhdcCwXFdNYRhlvz5wqDkUgT30dvI4JHJg/zYTKgvTf3qQHBWXPAPsCWNOZavi5MnmBBTdhhkbMO5lbXo1OsyRQrfE9tLSItzf1pTaUpuZ9EY/ZrTSXHT3od0ykAAO9q7/L2V4GpnridMV28ajsNReY2xKTM5gI7r6TGUoemne9b2nnoBuhBhLd4xP7U22dQknxgQLQrqktpxWPkE+HiJujdymnepKKBk8WzxR9AEEmNMljDXjTLwaVmmqPTz0biezEO5U2JwdmfonBqBx28b8RopAuBDV/qfPr/xkrXgSxITxs5TaTOHtkDV3V1WLQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qgcidXzasZXGmyCOcxrxXktzlpWjfMP81OF7oFSKqho=;
+ b=Pxt0WmLSy4Kj56AQe5X8w7mBp1sYjHAidhyCKKYCjcOAmoFQixcWNKOLt/I5OVI/YPBbtW80mKn0o+XVPWny220WbPquU4zr+pOeGIswyOFqfe5v+u8haRFSkFIpXLWKWc5p2RxnToG6xJbPBUwhjDlqig02kmtpOxFHLUZ/JjjaQf6izqSEUSkPYO1qwBsvfCa1Kg4JOqDaMri5Lqtp3GgD0V9ewaTkqkG+rZ/nwo9+qfDGEm9PSKvVMwQNoTWfwSUYPeKgQQ8SmM1Wu+KdJ1PDlj7Uyp0RiXlMmDZxeCeI0yfHDINz5Vsy5If8/uewhMlRHgzWzX1fsKATwNyKrg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qgcidXzasZXGmyCOcxrxXktzlpWjfMP81OF7oFSKqho=;
+ b=p0tz7N7hNa3M1cI2nj3EOHiBjTHNnYCq4U++E4vKsbkxN+phh4CMcjPgoGFB2Ht+zrKin5PeH+NNsl28uQ/rXUdmtxNNMtmFpIwRjBk+BMYvOpxuypeyb5iKelQLU2HsNgqhyfXCZVWjb76LNuxb/stX5HFoUf2qctFKh7VTWOm866WMLiV5g7E3tfkWHCPDHpB002ATx24aIeK0n/VkdXLc9ZpNjVn6aV/3uct8QpnVcLEDgnvEzIeEScuBpoo/20ZVf8JDPZRHNqhN8geD40M1at3QC7VgzlXuw5KANDxMBl79G8gF3WptbHbnwl/m/IbjyqJKxZZv3n62dkeT7A==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by MW6PR12MB8834.namprd12.prod.outlook.com (2603:10b6:303:23c::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.20; Fri, 30 Oct
+ 2026 02:42:58 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0569.008; Fri, 30 Oct 2026
+ 02:42:56 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 30 Oct 2026 11:42:54 +0900
+Message-Id: <DMHTS639LVGB.376844ZI0GD05@nvidia.com>
+Subject: Re: [PATCH v6 00/15] gpu: nova-core: gsp: prepare the command queue
+ for r000 dual-message types
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "John Hubbard" <jhubbard@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Benno Lossin"
+ <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>
+Cc: "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>
+References: <20261027-cmdq-rpc-v6-0-bed9669724ba@nvidia.com>
+In-Reply-To: <20261027-cmdq-rpc-v6-0-bed9669724ba@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0314.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:38b::18) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -82,64 +103,93 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|MW6PR12MB8834:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4db13631-8513-46b7-6ee5-08df362f8101
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|10070799003|376014|1800799024|366016|23010399003|261026121527099003|261022105027099003|56012099006|11063799006|261021121427099003|261022075727099003|18002099003|22082099003|10067099003|261026140227099003|3023799007|261028144727099003;
+X-Microsoft-Antispam-Message-Info:
+	beiuLRSsOHQtiLmYSM8XJ1cknB8BKxEpgjdLf3hSd0r1/Wdbhk0EysWPvIovbUFPAt51nYmCrdo10zoKVbELlTNtQH2NSYOJlo4XUWRKDX+O2Pa7YJlXo2A1Fl2BXXln+bFel0t4dbro14qGcKiJFc3FCYDVnWtNs1DdQoBTT6vZK9KItKMCqDQRy2LD9J6j3QWPO6LCLVDI0qdQAjg7/hv/+iHWT0u1nTCnBSzLnz1TZo+CGFkNEFBM+Jhl0lkPOXuKrqUolm2g+VV5eTgFuxgRQ3dFqh4EcSKj9mkPFtDroHdmnE13FdEnujHJq1FmjwDOJY/jIfG9463ateWa5DlEe1Vgt6yjkbSszP1ZwdZSuI3LdTvjXAVZ55GDbAuTwdFi2r/g5nCtvR6AqG04AOp17tLnXEFTONXjNGcIYSWLxsJYj8w60VYlgo0zdz+XZsbzU8RCbktvbQhGaLjAKXz6yza8aTJKbo5ffd3w7TRwosu/s20QBYC4wBP37F0gTMlN1q1FCNEeJLCOQZvIsHYL649z1JiOU3oejho0je9SPwxi8eZiTe/s8Dj1h3ni4nOcg7klT9WcCCfB1+kM7MqAUK3/DIPP8ekrfVCee5VRwBOVWcaWwuEcl1pykl0mHw9wwIVWLlzli9GtVUOI2EZgvrR7x1sSW5vvGmZi2Ok=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(10070799003)(376014)(1800799024)(366016)(23010399003)(261026121527099003)(261022105027099003)(56012099006)(11063799006)(261021121427099003)(261022075727099003)(18002099003)(22082099003)(10067099003)(261026140227099003)(3023799007)(261028144727099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Rnd5WFR5QUdUZktPbzRPeEtOY2RqRG9ySzcwVlpQR0VYSEtPMThjcVZHSmNN?=
+ =?utf-8?B?WWJCcjI3aUJkbDN0WE5iTElqY3pKSXErUnBzS1RyK3JJcTdwRGJYODVzc3Qy?=
+ =?utf-8?B?cHVJNHJROHVaNFhwL3hoeDVySk9TWnY1RmhEL1phTW9lMnp0NWZWb2RCWXRv?=
+ =?utf-8?B?SXR5YlcrMUo5ZnNoTXM1bjJZN01IdllIYkxMVWVBbm5Ud3FJK0Z1U1Ztd3ZC?=
+ =?utf-8?B?N2xxVTRxR1Y3MGlrTm0vSGRDT3F5SFRhWEd2UnNSejkvZ3RaOGNYOHc5YUQ4?=
+ =?utf-8?B?dXRkRldvejNPQlQ0TzhIa0wvNTA1TXFUNjhXMFFJbStNdUt0S2c2eC9iQnNX?=
+ =?utf-8?B?TW00QVZkSWVBV3dRQ3NBVmxacitJUXlwZFlrMDRYMEV4dmpvdGxoaDFIUVcv?=
+ =?utf-8?B?OTh1S1Fwa3diV3pRZkVRN09KZ0JlT0VNSENqVnRNMUpxTWJpeEY4MUhxaGxD?=
+ =?utf-8?B?Um5URnR3SlhWVDdVR3FNMkZ0WjZNYWpRL3VjWlBVelFPTnE1dWhYc3VPWGRC?=
+ =?utf-8?B?Skt0aFlGVWozZm5UYjZMWU02RSswOFRjY1FRN1BoM0JEMktCSFE0QTY5dVdJ?=
+ =?utf-8?B?SE0xc1RlbjBkejNvT0tlMVg1WWdOanFYK2czbFVnUkVSQWliemJTY1pIVkND?=
+ =?utf-8?B?VSszUkt2enRGblN3dmJ1TlNRMk9BYWRtSnRaYjZ1V0VYNHFjZGFHMmdzZ0xj?=
+ =?utf-8?B?KzEyR2NoT0gyT2RWa1k5dHVEWjdYaDVLblIyWitzblE1WFVOSm5mMUt1OXBS?=
+ =?utf-8?B?S2ZBNHpaT3Y0ZVlFRHNVNE9UUnA3ZzRNdnJiQ3JkOTJ0UGFYcWtlWElLTElW?=
+ =?utf-8?B?ZjdISlJUU2ZiSWpWWCt6bHBTNnVwL09xZElQSEhmQ0pJUEdkbmUrRWJQaXVV?=
+ =?utf-8?B?VG5lL0YxcE9aTDJCc3MyNHpWSHZTNmY2dEpBbnZ1dDZubVJwL21IQXBySTJm?=
+ =?utf-8?B?VUVhTXhydkpiZnI3T0I4clkvZ3F1VnJDQ1VsdklDOEFBR09SVHJGL1MvVkFF?=
+ =?utf-8?B?UHM0c1dRRDNpNVhMa1pwd0tOT0NtU0tZeGlsRjVMeGZlQzdiMHU1dDlHeHdP?=
+ =?utf-8?B?OGlkZUlPSnhVR3djQWVOdnE2Ym5rU1JYTlhBbVBIZEJXYldZY3Z4UHpoMGp3?=
+ =?utf-8?B?bVg4SXdrTStpLzBDZS9KL3ppQklQODBxQW0vR1FlYndTY1grWithSzZJYlFM?=
+ =?utf-8?B?TGxxTzRqTlh1ajMxR2JaZUlVdEZld0NZbEpnSUgyWEsxNGdhOG9CTS9EbUh1?=
+ =?utf-8?B?TGpXdHZRQXhQUHZudnJ5NnBJYThVMUVIbm8rRDFWcW1KZytuU2MyQ0xwSDJJ?=
+ =?utf-8?B?ZnVydXlBTnhUZzJ4S0l0VmNRTGpoYmdVbXVxY3VmMGpuV3hQcyttK3RYaDhX?=
+ =?utf-8?B?L3pLUUEzWmZNT29jQUl6ekZPZDU1VHRLbUwyK3VTZERtN1p4UFlKRFZaampK?=
+ =?utf-8?B?L3JETEJxeElWWHpMWUwvSzB4NWh0NmlZTy8zQUFvMGpUTlNGTXdLWnhnSmVj?=
+ =?utf-8?B?ckJvMEs4QjZjSk82ZDB4d2dESGVEdm41bVpQN2g2NWlsUEFjdTFULzJ4ZGlk?=
+ =?utf-8?B?Yk95L1RnU3I1V0J3ek5ZUFREampra0V3N3N1MjBJa2EwNVU1T2ZjVlp0QUEr?=
+ =?utf-8?B?NXFjbGlQdk1CYWxENE5QSUdHRTAyWFlLYnA4MU9lODArZHdEN1Jsdzhud3By?=
+ =?utf-8?B?Tnd6bVphTkRUamZrcXZMdjlxVkdPZ0NyU1NDNEg5TTZaZXdXVS8yKzFONzVs?=
+ =?utf-8?B?azI0Ukl6R292cFdQY2RaNDZobldhMTJlNTV5dVkwbCtDYWtPRFJzY1RRZDBz?=
+ =?utf-8?B?ODg5VWVpem85YW8rRCsySUx3UWIxZ2pyNW9CTk42NUZremFVcHlvaG16OG1Y?=
+ =?utf-8?B?Q0hkWDU4Q2FaZnRyYXNERis1SHMrQXFDbUNYYm4wWVJOS1BpOXNHdUN1QzRs?=
+ =?utf-8?B?ajhxV3dNUWErWmFOQ3k4eTBvNXdOQS9uN3F4SDJ5Q3BUT09tQ0pBbEJPSkJk?=
+ =?utf-8?B?T25RbG9paFJpcTI1SXg4Zk0ralZlNEVwUm1PaHd0dXpleXpXUHR5cUt5Zyt5?=
+ =?utf-8?B?cGNNNmVQR2NFRlU0dFRsd3VjOVZIMGZWVlowYUNpamNWL0M2eHJacTlxblh1?=
+ =?utf-8?B?MWIyUGgwbHhnbGZsMGlzNFJTMjZscGFwUXJpUVZ6WE1ERzBCc1YzRUVmUThI?=
+ =?utf-8?B?LzVXNnQrM3EyaVkzaCtacENJREp6bU1OWTJqeFVEZkxBVEZGWXNSUk85M1VF?=
+ =?utf-8?B?S0J5L3ZQU1dQUEl2dmUyY0lIdzI1Vyt3Uy9ablpmTXVYdDJJbmNoK0FWOXN4?=
+ =?utf-8?B?TDhUMi9mZEo5cHVlYVdoN1p3SWxlODRCYjVUWVR1cDA4TUl5eUJ0c1plYTJN?=
+ =?utf-8?Q?hhDW9unBmOK2e5b40IeX8ew2VnFkNdoY0RabvVfY0uzCa?=
+X-MS-Exchange-AntiSpam-MessageData-1: vlmHpOn7lgXKVA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4db13631-8513-46b7-6ee5-08df362f8101
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 02:42:56.7526
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fPRAbzPVwYgheAUD0ugjpf6KTE1PU0ahBh/MCB1NZfrMDD5cGqt0j6AqkFsQfquRyZD/vJE0RKH0Fzk5VdI8Jg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8834
 
-Hi Mike,
+On Tue Oct 27, 2026 at 4:35 PM JST, Alexandre Courbot wrote:
+> Alexandre Courbot (15):
+>       gpu: nova-core: gsp: cmdq: remove stale comment
+>       gpu: nova-core: gsp: cmdq: simplify framing error description
+>       gpu: nova-core: gsp: cmdq: validate checksum earlier on receive
+>       gpu: nova-core: gsp: introduce and use proper RpcMessageHeader type
+>       gpu: nova-core: gsp: cmdq: group the RPC-specific part of send_sing=
+le_command
+>       gpu: nova-core: gsp: cmdq: split the transport part of the send pat=
+h
+>       gpu: nova-core: gsp: cmdq: split RPC parsing part of the receive pa=
+th
+>       gpu: nova-core: gsp: cmdq: move RPC message logging to RpcMessage
+>       gpu: nova-core: gsp: cmdq: split the transport part of the receive =
+path
+>       gpu: nova-core: gsp: cmdq: extract await_msg_with from await_msg
+>       gpu: nova-core: gsp: cmdq: do not sleep when waiting for a message =
+with timeout 0
+>       gpu: nova-core: gsp: cmdq: use consume_element to implement drain
+>       gpu: nova-core: gsp: cmdq: move the RPC code into a sub-module
+>       gpu: nova-core: gsp: move the RPC commands into a sub-module
+>       gpu: nova-core: gsp: add `rpc` to RPC message send/receive methods
 
-I read through the v3 diff (patches 1 and 2 in detail). I could not
-apply the series locally because the 8-month-old base no longer matches
-current usb.rs, so this review is from the diff, not a build. Two
-findings, both around alternate settings:
-
-1. set_alternate_setting() invalidates Endpoint<K> without the type
-   system noticing
-
-Endpoint<K>'s invariants say the address names an endpoint of the
-interface's *active* alternate setting, with the transfer type and
-direction of K. That proof is only valid for one altsetting: after
-
-    interface.set_alternate_setting(1)?
-
-every previously obtained &Endpoint<BulkOut> is still usable, but the
-same address in the new setting may name an interrupt endpoint or a
-different direction. A transfer method will then happily build a pipe
-for an endpoint that no longer matches the tag. C drivers get this
-right by re-fetching endpoints after usb_set_interface(); the Rust
-abstraction currently lets a driver keep stale proofs across the
-switch.
-
-Something that binds the proof to the setting would close it, e.g. an
-Endpoint borrowed from an Altsetting token (making it unusable after a
-switch), or a generation stamp checked at transfer time. At minimum the
-doc comment on set_alternate_setting() and on Endpoint should state
-that all previously obtained Endpoint values must be discarded across a
-call.
-
-2. set_alternate_setting() with transfers in flight is undefined
-
-usb_set_interface() tears down and reallocates the interface's
-endpoints, which unlinks and kills any URBs submitted on them. A
-persistent BulkInQueue/BulkOutQueue built in patch 2 therefore loses
-its URBs out from under the Rust slot state machine: the queue thinks
-a slot is in flight while the C core has killed the URB, and nothing
-ever wakes the waiter. The documentation of set_alternate_setting()
-does not warn about this.
-
-Either the method should require an empty window (e.g. take &mut self,
-or refuse when the window has registered URBs), or it should document
-that the driver must drain and drop its queues before switching, with
-the queue Drop doing the cancellation.
-
-Two smaller notes:
-
-- queue_reset_device(): I checked hub.c; the "may be called from any
-  context, deferred to the core workqueue" documentation matches
-  usb_queue_reset_device().
-
-- EndpointKind being sealed with BulkIn/BulkOut/InterruptIn is a nice
-  fit; control endpoint 0 going through Pipe instead of Endpoint avoids
-  pretending it takes part in the altsetting lifecycle.
-
-Best regards,
-Shuai Liu
-
+Merged into drm-rust-next, thanks!
