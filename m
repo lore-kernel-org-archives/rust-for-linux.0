@@ -1,94 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793361523;
-	b=aGaxrJPNFv9pu/ceaVVMnlW8CjE9QV/y6SY2j5hIoA7xZn9STwTUSA46QyEvE+7yHyCp
-	 o8wjYKIJTYZUPHqI08A4GV1nuh485dwMSnsmupsK58WhEWCjrdWwq/Lw0EM55Etf8lXC1
-	 u7cNGous1JcSPdDw8yfxjTMpz9/aE5+R8GmlHeowGOnYiClGtN3pfSTIqljBQjMsHIi9M
-	 5hIAZH97HipmElGzqNH0syaLHX9v8zl8Ti8HsRIODmP7uNp2WvuJYGOQpH6o70W1RDboc
-	 MVgJwXOaripsBD8ScyvFULA63N18OsDJPyA9gYnop9GaUffhV8FgHqIZxXrKeMn3DkA==
+	t=1793363188;
+	b=4+B8UxQfm6HKJlevql129BZkZ9Qp/GUNGwe8PzOg9G9/JEothjrf6t/QTjPOH/7u5Zao
+	 zUjnk9Jg96ITL1RUILxkfeHUV2ni3RMjfHV3rlRvPCPJ6IaLQAgTfYHvvh1TkV2muxoyb
+	 6eMTGXC3IiT30umGZD57gs3wAlO+BKGtO6p4GQvVMNLwdeyX8cD7kK9dAkkWW6tPn5Pp5
+	 au7p1652hIJmEXrxWHgqhhU4uQOeTlyY+Z72ZPpIa8UGH8ixWvOgANWyglQr9SxhjMXy4
+	 aGh+nyDNxUNbj2RCLVcISIS+LfiPZYhJhzQFhv4cTgbENQwt3lna6YFuSauqRjKxDrg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793361523;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=5Nr1WKgza+AgQYQHg2wjswGtM7GwVueFVekAPuAhG4g=;
-	b=2Z9EFfUaYH6zdkWvtJ8tRPD+qPWREd696VcFv7a6XEWfsEQbD1v3dkOAafzUWB5v2Iyn
-	 L8no/Z67nLtgJMJPcj3ZJiXT4goZ6Ug6/Nvozv0DYtMcU7AEDy41VO64+NSm1eFevefb6
-	 9kJbnTki/K85L403XKVDCjsd/X+fyvXBEhFs/rJRgAHmlKaOc39OCRFYkNSNwbTRdaK3z
-	 jCOHx93jv73MYeKPIjNnf/lv7olEcXPtTVEP+2ZCSIBEY9cFoKNALCGzlQGFMj3IX7jp1
-	 R9K1d8ioqcbEzAq23HUsNSb5WtkNfQuVpwX+0NLPoBGtKH9cXw8hILws5FgJgVdyfvQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793363188;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Cookie;
+	bh=ww4hxT+DO/r5Zqh+aXlvOPoLHkrtotsPxdbejagtKQA=;
+	b=LJFBFpBQeiXAt7bcXDpCqj9eDvTU1j98K1diYzLTgGtcCEvSYXg0RLRFgVAFFAzxW09k
+	 ZHsw+ggSxn6//QCisLPiBp/2HMYmH44TEiyi4hms5E66LgBsjjLerEkCd0nxFZU/+bYSl
+	 UUyjGAhk64Y/pWQ/0in2s/I6hFGIOfzvaSB2yrUCuZLMqHzNP3WyzMOCbp+EUS5HbYQ7y
+	 +sGVIk+j7uCvLLNY7TRiMRbYuKqnZ2j/9l6x8JQ2H+4A6U2AQeBimQ7ZCnOc3JjDW1VOI
+	 8YxTxNktN2urqGbGevRuhqC0I+ZtH7LzW8lWnWSPnpphEoC+BuA71W7gXhoBFyEvEgg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EzQjvSxP;
-	arc=none smtp.remote-ip=209.85.214.177
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ZJKc1G/m";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26D2606A31A
-	for <rust-for-linux@vger.kernel.org>; Fri, 30 Oct 2026 11:58:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F26D2606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2E1606A31A;
+	Fri, 30 Oct 2026 12:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EzQjvSxP
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2e9e53d011eso5502955ad.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 30 Oct 2026 04:58:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793361522; x=1793966322; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5Nr1WKgza+AgQYQHg2wjswGtM7GwVueFVekAPuAhG4g=;
-        b=EzQjvSxPLHZXl/YZUNvhgfWaApbPxlLlU6lJhGVAvNMA4rNTgQOpyqeOVoJV7wz/Kb
-         l+ASFxCoumgSCUkrwzDw/RTdHWAmjwsjPtBu1godxRU2UACayyhZ3c9SHHf+PL2nudni
-         MgAdtl861Otv8vDOWivq5XgCEzu7N2L3YtUQy94Z9r6BbIkwFej5Lch0JH4K3e9Pt0xI
-         Br6B/q66ATElm15E0KXrqo4kKSW6Sue1etWi6ajgVNCHT+CT/oIGbvZCr5nqA8EdS7Xe
-         hMMFuDkmIt+MxFsy3eGgMo34KC5dVpGH3kccckKUqEnGTECHpddHz89LseuJkB/45Yhk
-         04UQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793361522; x=1793966322;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5Nr1WKgza+AgQYQHg2wjswGtM7GwVueFVekAPuAhG4g=;
-        b=fXcIiJrFjGZAagDG1SOAENoJlXXmSfwUCQ0njDYBjhNuPJcye7QjvFKmiosgeigaJ5
-         4ETzVR7KnXVRt6Y794eBjSYiFiSDAFZIX9zZsaBAlMh0fzouFWzOj+hKcN7EFTYoNUY4
-         4OrRANDVEq1mRtHi18aLCbrxt8mP+HTcjQd5HMlngAQ8+VwXp2iz+aDusHujQ3zkVJuH
-         SPch4BXOPPhTD5hU08LMRNbRYa6uaoHBKsQqPR1IA2rSCV6lZST7AFdws/77CrFJHIhK
-         A/UHg2DNpDLibNyfl9kRIoVWOZf80lDD2EDsS1KEE7X0gywlUYtVpXErLGFyAreoMeJs
-         6PYw==
-X-Forwarded-Encrypted: i=1; AKwUvByvWBu+7yLLObfkQJotvz+yeY+yAAUeYWK94dMQwFrauQrlKpCUu1uI6unvt/AOlcUxzhUhz5eo4zef1yl98Q==@vger.kernel.org
-X-Gm-Message-State: AFq9FYIX3jHrYqXK7N+sGio91M0oZ7/UHU4T0SLJkHv0Ntf39M7P9W47
-	8MsGffjkFO9CtyJTx88XjrkY/VhPUCeiGXDOMfJK/ODLP6FJnre0UNOOa3M41Q==
-X-Gm-Gg: AYBFou05rtTk2/WX+ekhri+QZ0F4kwB+JXQXqH3IOKv/pF8rV9kJYO37Y7i087vV5rz
-	ay1P8W1dvO/vUvutfkKmlDpRHP9cY7/SW9hpnRzIwfk/NitVe6yZcUc4T8M5D6/G6iDgM0Fg/sq
-	cOZuYmq4/kKNQfanM4+n5X4F22caTa1q1vXCc6/qXBjY7DjphVviWqgunK3JdgMOP9bJDVKXuBD
-	2S7AZ9FPsEvwKfE/hTAQk96byu7dp69ltmI8KDvGDFS6QYAgEPbSzOyvGtdhZCcpn662guYY6xo
-	tD8XIx89ENv3/qmMrfSZSckeKinREgGodEMx1z+9USLCJruHhqDGiHr9xWn7fMPPRu6rcJbNl5K
-	Fo2ZDLt7wxqz0anskCT5MT+EtGaUp6oxAEUTkc6p0H86aMtFB9retrhaNFxPuuN1Ljqp9Ov8J1v
-	2rV7za/hMDvnT40gXV3yw3mNzvi7IuDi9yHb7+nnMTwVwF8SEF2IBETuO/Fg0wsT9QMk93ZMmv/
-	1gVDz3KuqEZ4qCPX2Fp+i3LqH3b1u88DoXApazBsQqCmOCJGS3kpJ1WJbzaZwVuR7DXX0UWKHPs
-	3g6Rn+Wv1HbzZu7P7dxMOA==
-X-Received: by 2002:a17:903:230d:b0:2e9:6788:9372 with SMTP id d9443c01a7336-2eb36515de8mr22854405ad.62.1793361522377;
-        Fri, 30 Oct 2026 04:58:42 -0700 (PDT)
-Received: from debian ([169.211.140.146])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb3924c93fsm6175585ad.34.2026.10.30.04.58.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 04:58:41 -0700 (PDT)
-Date: Fri, 30 Oct 2026 07:58:38 -0400
-From: Kwanghoon Son <asdfkwang@gmail.com>
-To: Shuai Liu <847807867@qq.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC 06/12] rust: serial: Add minimal serial-core polling
- console support
-Message-ID: <auSGbrP19XfI3S5N@debian>
-References: <20261029-rust-bl808-console-v1-6-b736ee920078@gmail.com>
- <tencent_12B82162741365EE49D2A22CCDF2A04D6908@qq.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZJKc1G/m
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD091F000C1;
+	Fri, 30 Oct 2026 12:26:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793363187;
+	bh=ww4hxT+DO/r5Zqh+aXlvOPoLHkrtotsPxdbejagtKQA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZJKc1G/mQupjhQJygc+z+JNzbL+D3IAjfUTh2GBSHHViZ0YvXPCOM9qducl2cBZ69
+	 WMHLwhTj9RO5RcxGvZz5K5qEwHMtBoeVeF2ZxdUn21FoUzailMlq3Ts2MUY9K1WKug
+	 cnLcYr67xldWqsXTxUFcpGc7krUJ7STA362g9c17rbQD3sNCsAO+lv6QnrbV5ksGP0
+	 kKImrPbeqfxKXkg+FjEXVxT2xAUmXcT002oV0S+YYEZLTNimVFxSJp/2GAGWTg2y5I
+	 AhBIM/QUtSKA1T3g7MDqKXhDwyInARdZN07c1pOIoAv4NuMYtoOpsietsORh63Y5Df
+	 6ZaS+o/8GzH9Q==
+Date: Fri, 30 Oct 2026 12:26:23 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Daniel Gomez <da.gomez@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, linux-next@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: Please add the rxarray tree to linux-next
+Message-ID: <a692c537-cf5a-432c-81b4-372a6bfed69c@sirena.org.uk>
+References: <f2df460b-bce2-47f5-97cf-d70773876019@kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -98,58 +59,45 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="4bHUU/ZlB7d0teFx"
+Content-Disposition: inline
+In-Reply-To: <f2df460b-bce2-47f5-97cf-d70773876019@kernel.org>
+X-Cookie: Orders subject to approval.
+
+
+--4bHUU/ZlB7d0teFx
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <tencent_12B82162741365EE49D2A22CCDF2A04D6908@qq.com>
 
-On Fri, Oct 30, 2026 at 10:16:11AM +0800, Shuai Liu wrote:
-> Hi Kwanghoon,
-> 
-> I reviewed the Rust side of this series (the serial abstractions in
-> 06/12) and did not find any soundness issues. In particular I verified:
-> 
-> - uart_port.lock is initialized by the serial core in
->   uart_add_one_port(), so zeroing the Opaque port storage and relying
->   on the core to initialize the lock is safe.
-> 
-> - The set_termios() adapter unconditionally taking the UART lock is
->   correct: the serial core callers (uart_change_line_settings(),
->   uart_set_options() and the console resume path) do not hold the port
->   lock when invoking the port->set_termios() callback.
-> 
-> - The console callback accesses to driver->state are protected by the
->   ownership chain: the port holds an Arc<Driver>, the console is
->   unregistered before the serial state is freed, and removal drains
->   the console readers via SRCU.
-> 
+On Fri, Oct 30, 2026 at 10:22:49AM +0100, Daniel Gomez wrote:
 
-Thanks for review.
+> Could you please add this tree and branch to linux-next?
 
-> One thing to consider: SERIAL_BFLB_RUST depends on COMMON_CLK, which
-> cannot be enabled on x86, so neither the driver nor the abstractions
-> get build coverage from the Rust CI (allmodconfig on x86). Something
+>   https://git.kernel.org/pub/scm/linux/kernel/git/da.gomez/linux.git rxarray-next
 
-I don't understand for now, COMMON_CLK not possible on x86?
-or you mean CI not supported?
+> It's for the Rust XArray (rust/kernel/rxarray.rs), a Rust reference
+> implementation of lib/xarray.c [1][2]. PRs will go to Matthew.
 
-> like "depends on RISCV || COMPILE_TEST" (with the clk dependency
-> handled for the COMPILE_TEST case), or splitting the abstraction
-> Kconfig entry from the driver entry, might make it easier to
-> build-test.
+How does this relate to the existing rust-xarray tree:
 
-> 
-> While reviewing I also wrote KUnit tests for the pure-logic paths that
-> can be exercised without hardware. The patch is attached; results with
-> kunit.py under QEMU on arm64:
-> 
->   rust_kernel_serial: pass:8 fail:0 skip:0 total:8
-> 
-> and CLIPPY=1 is clean. Feel free to squash it into 06/12 or keep it on
-> top of the series.
-> 
-> Best regards,
-> Shuai Liu
-> 
+  https://git.kernel.org/pub/scm/linux/kernel/git/Rust-for-Linux/linux.git xarray-next
 
-Best regards,
-Kwang.
+Should that be dropped and replaced with this one?
+
+--4bHUU/ZlB7d0teFx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrkjO4ACgkQJNaLcl1U
+h9AyzAf+NcVnmFUvj8SMQYkpvELk766PYBteyLsL7vrX4jocsXOCCFOfFKnY/i//
+5FV3vhctsckcuzdm+lb23tW7Kuglv02t32cTyJey3Z3+Wr+6w+amMV+Mt2OH/pK0
+4uCJzBb7g8jHk9T0RoNu3fWP/AOXv7QpLxCrg9+qmbPA2FpIs+8J8wtd+3oo8Xq6
+WRRPizodaUnyWKOJxu3TbqvroCQUQ8dBTU2lLVHMAnGvQf6EeneNYen43x8SqcIG
+WqIG2hrSdQtA4zDg1/RQUjBmhLaWkoigLm6pS4TNFkEQ3AG1YlcabhXN4j2QLEvy
+gWxk+8EMZ2WLsOsK6D/2IlDnYhqp4Q==
+=OeF/
+-----END PGP SIGNATURE-----
+
+--4bHUU/ZlB7d0teFx--
