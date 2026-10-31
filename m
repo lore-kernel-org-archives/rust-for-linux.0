@@ -1,56 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793399828;
-	b=xSytSVuKn8iMCwXUyM3Qg+DZC1Zsxoc733Uy4nfAfCwDKL8LGcd0kofWqfBhDh8GAGr/
-	 ItGg6dVvR0Z54QMlbWAm1bfjl14MUvj8Y8+Gy0cKa8WicdoEbzEaQ0CgymVepVrM4k5fw
-	 fkekL5lHu5kIzXIvJ8xj8RgSvGdJcOBkwW8gEqoAIuFi2jYWmOdVt4ucn/eQKxrr9UiCP
-	 PkduxaSufJ3tRTIy9Cg+JMc2kmITZ8mboXXSNQlS7R02YtubFPo6ebRKMcO07ofaoBfV6
-	 8TXlhdM7cK83kYlGl6Rq9qNn+Qfuj6IZnfinIgDG3ITB6bGhkHvn38/2Gk7pM6FIPEw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793399828;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=RkoYuIpO5ZyNXzjyfSBwMyetr5alXERaPYaFe+X3yZs=;
-	b=xiTtYdRj4cCsYsmqrYtSjuuWm1LDwh0p05hywmQv43jbL9inhbW8oAlrr89HD4HJGnfW
-	 iLm5Rb6igNwHhoZ4NL+Ux3EArHuC85VPPr0jlMvHTTxUSytUEQ5Wz8DL6rA0SCCjSnxwj
-	 3DGHtj3tlXEu9Da3A/KlAOo+qT4/QWpkDQQ9bW61pMvwllayNR9IZc/9prhSxSWAV4zjT
-	 SWApgPchZ7KcmvpSlb7/NszLu8e6bDWHJpE0rGUPtdfq7+06tqICJ+qKO9Ye/Gilt1RYG
-	 I2jCrdjeZA0hlerjDHX/YdDk2XLeV94+Ri+1a5Zfx9ZFevq+A4rIyFR+aG5zgXt8XTg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H427OIZe;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793405151;
+	b=m+VUc4arVH7m1CUPDd2oKwr++Fu3hn/6pZYPcQ7PaiTaO6zORqfv2iroknyBHfMMCFBg
+	 xuI156M75cFKRL3bmVg3+yXioU6b9pNKT0DeBnVOzl1DvE34jnHzkAd+r/Wr3yuaNLSse
+	 EDWbxXnAL7S8AOOqQU6Bb/g1fhMD2DLfnc7mZl5VHInovC8DTsdMG6oJkyK6eAPYrCaeF
+	 SXega+oOwtfRYshs1euAaprw7998Z4bMoObRfNe99r2jYx8F5MWieR8BsBaA/lC4zrS5n
+	 tNdcUrRNpZqezVfq6/GhzIsYv1CVAaeZGiqNHXuwlLq+MRdAiUBu6OF3xNBxfw5p/aw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793405151;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Zoho-Virus-Status:X-Zoho-AV-Stamp;
+	bh=f9yLN0RkK2Stc/zltKXQAqZKvxbRR8oE2ZWmMs+DjYY=;
+	b=YuWP0qLTjz0khMVEtMqiOK5wKHAFvTRsVrbrqWUVb1vuNTIJQi5cecZACoD1ePw5qEx0
+	 +ZLdVHqUnMjUeBxC1jf+VBIZxPRfr9EKJeb5qvEGWb5K3kfBBFAp+1NIB0L0+25uI4wWZ
+	 Q+RRS3qVLbm81TAHlHVmaCz/lnRsbyeC8dljdNzyqDVbx3bl1THX60nFWGVfXBEgX9ukl
+	 rUrwLrZLjquawKiAGW728w86Ih2sdHOvlVBck16EYzQ486t8q4o6SSFocRPlE917Fauil
+	 ox60DpJDtagYrLgwV+cwtb0vCmsZRvOC1cl4Xn8J4zkzPGe/kLK+xtXXfJrVZMJkV1g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b="hr/cVHWZ";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.11
+Received: from sender5-op-o11.zoho.com (sender5-op-o11.zoho.com [165.173.182.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6DB606A32A;
-	Fri, 30 Oct 2026 22:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528BB606A31A
+	for <rust-for-linux@vger.kernel.org>; Sat, 31 Oct 2026 00:05:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 528BB606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H427OIZe
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1171F00A25;
-	Fri, 30 Oct 2026 22:37:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793399827;
-	bh=RkoYuIpO5ZyNXzjyfSBwMyetr5alXERaPYaFe+X3yZs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=H427OIZeJwhZTrU4SfeqfFv8tCK6FRRFbogROiDXifnMPtQ4GvDgzKOsYUhMb8Ydy
-	 p6VZpmiTJ+IBAjDZyJe0YcHMB4bLiKhCmzbLQT+fmcY9748PFEKv8x4+57dPDaFlf2
-	 Ap5f9jEp+V8eZb/nnNwkdeUat9X5sMP1a3T3K8dDog67cHqVICouBjj2KzcM+ZV1zB
-	 zacSwJ7ZwndiUXqfKXDhG8KVTazEGM1Wu4525TsVzFDm09PgfyYzT+qFjid5co7Fdn
-	 xnfwWJQaVujhf4k1e9g/BF6MvTiwFfzugCto1Lfbhgy3F3gqWntxvWBLQggKWdW7He
-	 YRHWjuvGsAbFg==
-Date: Fri, 30 Oct 2026 15:37:02 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Jens Axboe <axboe@kernel.dk>, Andreas Hindborg <a.hindborg@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Gary Guo <gary@garyguo.net>
-Cc: linux-block@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 36/98] blk-mq: quiesce a queue that joins a quiesced tag
- set
-Message-ID: <20261030223702.GA1673281@ax162>
-References: <20261028164415.1262013-1-axboe@kernel.dk>
- <20261028164415.1262013-37-axboe@kernel.dk>
+	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=hr/cVHWZ
+ARC-Seal: i=1; a=rsa-sha256; t=1793405100; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=bZnuB2JRIAo5BQbq0eqVFPpyTHolRV6/OKsdm6eLSklINLhpeygWJ2q8RytLnTllVesDo4eYdbNcLLZ8Shu6ArppdRZhqfVYkOe89TNDG8OkvjEstUGdSG3A/MnQC4gblemQSwO9pEveQWCPVElYqIShEgdSLG2l9yr+hLSi7/Y=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1793405100; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=f9yLN0RkK2Stc/zltKXQAqZKvxbRR8oE2ZWmMs+DjYY=; 
+	b=UV6+97th1ByaATcIIiz8w3uuQ649atGFFaH19Othp5jTvHQeoUxSGZKORBUWJTHKAm5VeOCa3z3z5wRgISMDBMVprkvhQK605ZiJnCCdTb/IEEyggR1Hu0riXlZSXInz4zZ5XA6zyIgSfvwIS2e9lJZJAk29d59ct6N6OJXEL/0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=hr/cVHWZ3xZpO9zKcwmtmOY1N5jRHw8tunxASI99mON3or5AjFWCRzzQoktxiMN2d9GhzB4BggAqsFTCfnJCtTYPDK5ft/ZflZMtmj1bKJVcoMrCVhuv8HVJ7IIGj532XDY6iXMuXRszWn1E93s0jkjRejGkCsAry+hq1O2x1wE=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=f9yLN0RkK2Stc/zltKXQAqZKvxbRR8oE2ZWmMs+DjYY=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1793405097674331.3192838468908;
+	Fri, 30 Oct 2026 17:04:57 -0700 (PDT)
+Date: Fri, 30 Oct 2026 17:04:56 -0700
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Ke Sun <sunke@kylinos.cn>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>, Lyude Paul <lyude@redhat.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	driver-core@lists.linux.dev, Alvin Sun <alvin.sun@linux.dev>
+Subject: Re: [PATCH v5 09/11] rust: device: expose the device DMA attribute
+Message-ID: <auUwqGMOw_OtrWn3@um790>
+References: <20261027-tyr-ioctls-v5-0-59dfe98cb003@kylinos.cn>
+ <20261027-tyr-ioctls-v5-9-59dfe98cb003@kylinos.cn>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -62,173 +83,83 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261028164415.1262013-37-axboe@kernel.dk>
+In-Reply-To: <20261027-tyr-ioctls-v5-9-59dfe98cb003@kylinos.cn>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/293.393.56
 
-Hi Rust for Linux folks,
-
-I only added a small subset of you plus the mailing list, if I missed
-anybody, please bring them in as necessary.
-
-On Wed, Oct 28, 2026 at 10:41:39AM -0600, Jens Axboe wrote:
-> From: Josef Bacik <josef@toxicpanda.com>
+On Tue, Oct 27, 2026 at 12:41:02AM +0800, Ke Sun wrote:
+> From: Sami Tolvanen <samitolvanen@google.com>
 > 
-> blk_mq_quiesce_tagset() only quiesces the queues on the list at that
-> moment. A queue added before blk_mq_unquiesce_tagset() runs unquiesced,
-> and then gets unquiesced without ever having been quiesced, which trips
-> the warning in blk_mq_unquiesce_queue(). NVMe gets there when a
-> controller fails while its namespaces are being scanned.
+> A driver may need to know whether its device is DMA-coherent, but
+> rust/kernel exposes no accessor for the attribute today.
 > 
-> Count the quiesce calls in the tag set and quiesce a joining queue that
-> many times, under a spinlock that also serializes the two functions. It
-> can't be tag_list_lock, see commit 59e25ef2b413.
+> Add a transparent DmaAttr wrapper around device_get_dma_attr(), so all
+> three attribute values (unset, non-coherent, coherent) are covered, and
+> an is_coherent() accessor for the boolean case.
 > 
-> Fixes: 414dd48e882c ("blk-mq: add tagset quiesce interface")
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-
-After this patch landed in -next as commit 71ec3c7d6db8 ("blk-mq:
-quiesce a queue that joins a quiesced tag set"), I am seeing the
-following build error:
-
-  $ make -skj"$(nproc)" ARCH=x86_64 LLVM=1 mrproper allmodconfig rust/kernel.o
-  error[E0277]: the trait bound `bindings::__BindgenOpaqueArray8<[u8; 72]>: pin_init::Zeroable` is not satisfied
-      --> rust/kernel/block/mq/tag_set.rs:41:49
-       |
-    41 |         let tag_set: bindings::blk_mq_tag_set = pin_init::zeroed();
-       |                                                 ^^^^^^^^^^^^^^^^^^ the trait `pin_init::Zeroable` is not implemented for `bindings::__BindgenOpaqueArray8<[u8; 72]>`
-       |
-       = help: the following other types implement trait `pin_init::Zeroable`:
-                 ()
-                 (A, B, C, D, E, F, G, H, I, J)
-                 (B, C, D, E, F, G, H, I, J)
-                 (C, D, E, F, G, H, I, J)
-                 (D, E, F, G, H, I, J)
-                 (E, F, G, H, I, J)
-                 (F, G, H, I, J)
-                 (G, H, I, J)
-               and 6359 others
-       = note: required for `bindings::spinlock` to implement `pin_init::Zeroable`
-       = note: 1 redundant requirement hidden
-       = note: required for `blk_mq_tag_set` to implement `pin_init::Zeroable`
-  note: required by a bound in `pin_init::zeroed`
-      --> rust/pin-init/src/lib.rs:1688:24
-       |
-  1688 | pub const fn zeroed<T: Zeroable>() -> T {
-       |                        ^^^^^^^^ required by this bound in `zeroed`
-
-  error: aborting due to 1 previous error
-
-  For more information about this error, try `rustc --explain E0277`.
-  make[4]: *** [rust/Makefile:799: rust/kernel.o] Error 1
-  ...
-
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> [ Replace dma_coherent() with a DmaAttr wrapper covering all three
+>   attribute values. - Alvin ]
+> Co-developed-by: Alvin Sun <alvin.sun@linux.dev>
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 > ---
->  block/blk-mq.c         | 22 ++++++++++++++++++++++
->  include/linux/blk-mq.h |  6 ++++++
->  2 files changed, 28 insertions(+)
+>  rust/kernel/device.rs | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
 > 
-> diff --git a/block/blk-mq.c b/block/blk-mq.c
-> index 6d3ea97f9a00..0e8449424c9a 100644
-> --- a/block/blk-mq.c
-> +++ b/block/blk-mq.c
-> @@ -336,12 +336,15 @@ void blk_mq_quiesce_tagset(struct blk_mq_tag_set *set)
->  {
->  	struct request_queue *q;
->  
-> +	spin_lock(&set->quiesce_lock);
-> +	set->quiesce_depth++;
->  	rcu_read_lock();
->  	list_for_each_entry_rcu(q, &set->tag_list, tag_set_list) {
->  		if (!blk_queue_skip_tagset_quiesce(q))
->  			blk_mq_quiesce_queue_nowait(q);
->  	}
->  	rcu_read_unlock();
-> +	spin_unlock(&set->quiesce_lock);
->  
->  	blk_mq_wait_quiesce_done(set);
+> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> index 2291d85b6849e..d5bbebdf620df 100644
+> --- a/rust/kernel/device.rs
+> +++ b/rust/kernel/device.rs
+> @@ -260,6 +260,30 @@ pub unsafe fn drvdata_borrow<T>(&self) -> Pin<&T> {
+>      }
 >  }
-> @@ -351,12 +354,16 @@ void blk_mq_unquiesce_tagset(struct blk_mq_tag_set *set)
->  {
->  	struct request_queue *q;
 >  
-> +	spin_lock(&set->quiesce_lock);
-> +	if (set->quiesce_depth)
-> +		set->quiesce_depth--;
->  	rcu_read_lock();
->  	list_for_each_entry_rcu(q, &set->tag_list, tag_set_list) {
->  		if (!blk_queue_skip_tagset_quiesce(q))
->  			blk_mq_unquiesce_queue(q);
->  	}
->  	rcu_read_unlock();
-> +	spin_unlock(&set->quiesce_lock);
->  }
->  EXPORT_SYMBOL_GPL(blk_mq_unquiesce_tagset);
->  
-> @@ -4346,6 +4353,8 @@ static void blk_mq_del_queue_tag_set(struct request_queue *q)
->  static void blk_mq_add_queue_tag_set(struct blk_mq_tag_set *set,
->  				     struct request_queue *q)
->  {
-> +	unsigned int i;
+> +/// The DMA attribute of a device, as reported by firmware. A transparent
+> +/// wrapper around the kernel's `enum dev_dma_attr`, covering all its states.
+> +#[repr(transparent)]
+> +pub struct DmaAttr(bindings::dev_dma_attr);
 > +
->  	mutex_lock(&set->tag_list_lock);
->  
->  	/*
-> @@ -4359,7 +4368,18 @@ static void blk_mq_add_queue_tag_set(struct blk_mq_tag_set *set,
->  	}
->  	if (set->flags & BLK_MQ_F_TAG_QUEUE_SHARED)
->  		queue_set_hctx_shared(q, true);
-> +
-> +	/*
-> +	 * A queue that joins a quiesced tag set is quiesced like the others,
-> +	 * and blk_mq_unquiesce_tagset() finds what it is going to undo.
-> +	 */
-> +	spin_lock(&set->quiesce_lock);
->  	list_add_tail_rcu(&q->tag_set_list, &set->tag_list);
-> +	if (!blk_queue_skip_tagset_quiesce(q)) {
-> +		for (i = 0; i < set->quiesce_depth; i++)
-> +			blk_mq_quiesce_queue_nowait(q);
-> +	}
-> +	spin_unlock(&set->quiesce_lock);
->  
->  	mutex_unlock(&set->tag_list_lock);
->  }
-> @@ -4928,6 +4948,8 @@ int blk_mq_alloc_tag_set(struct blk_mq_tag_set *set)
->  
->  	mutex_init(&set->tag_list_lock);
->  	INIT_LIST_HEAD(&set->tag_list);
-> +	spin_lock_init(&set->quiesce_lock);
-> +	set->quiesce_depth = 0;
->  
->  	return 0;
->  
-> diff --git a/include/linux/blk-mq.h b/include/linux/blk-mq.h
-> index 5e130b282b42..aa3b35405edc 100644
-> --- a/include/linux/blk-mq.h
-> +++ b/include/linux/blk-mq.h
-> @@ -523,6 +523,10 @@ enum hctx_type {
->   * @tag_list_lock: Serializes tag_list accesses.
->   * @tag_list:	   List of the request queues that use this tag set. See also
->   *		   request_queue.tag_set_list.
-> + * @quiesce_lock:  Serializes blk_mq_[un]quiesce_tagset() against each other
-> + *		   and against a request queue being added to @tag_list.
-> + * @quiesce_depth: How often blk_mq_quiesce_tagset() has been called without
-> + *		   blk_mq_unquiesce_tagset().
->   * @srcu:	   Use as lock when type of the request queue is blocking
->   *		   (BLK_MQ_F_BLOCKING).
->   * @update_nr_hwq_lock:
-> @@ -548,6 +552,8 @@ struct blk_mq_tag_set {
->  
->  	struct mutex		tag_list_lock;
->  	struct list_head	tag_list;
-> +	spinlock_t		quiesce_lock;
-> +	unsigned int		quiesce_depth;
->  	struct srcu_struct	*srcu;
->  
->  	struct rw_semaphore	update_nr_hwq_lock;
-> -- 
-> 2.56.0
-> 
+> +impl DmaAttr {
+> +    /// This wraps `device_get_dma_attr()` and only returns `true` for the
+> +    /// `DEV_DMA_COHERENT` attribute; no attribute or `DEV_DMA_NON_COHERENT` is non-coherent.
+> +    #[inline]
+> +    pub fn is_coherent(&self) -> bool {
+> +        self.0 == bindings::dev_dma_attr_DEV_DMA_COHERENT
+> +    }
 
--- 
-Cheers,
-Nathan
+I think Danilo was suggesting in the last version that all three enum
+variants be exposed to the caller. You could remove this is_coherent() helper
+and just provide something like this:
+
+     /// The device has no reported DMA attributes.
+     pub const NOT_SUPPORTED: Self = Self(bindings::dev_dma_attr_DEV_DMA_NOT_SUPPORTED);
+     /// The device is not DMA-coherent.
+     pub const NON_COHERENT: Self = Self(bindings::dev_dma_attr_DEV_DMA_NON_COHERENT);
+     /// The device is DMA-coherent.
+     pub const COHERENT: Self = Self(bindings::dev_dma_attr_DEV_DMA_COHERENT);
+
+Then as long as you annotate struct DmaAttr with:
+#[derive(Clone, Copy, PartialEq, Eq)]
+
+Tyr can later do its own check like this:
+  let coherent = pdev.as_ref().dma_attr() == DmaAttr::COHERENT;
+
+> +}
+> +
+> +impl Device<Bound> {
+> +    /// Returns the DMA attribute of the device as reported by firmware.
+> +    #[inline]
+> +    pub fn dma_attr(&self) -> DmaAttr {
+> +        // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer
+> +        // to a `struct device`.
+> +        unsafe { DmaAttr(bindings::device_get_dma_attr(self.as_raw())) }
+> +    }
+> +}
+> +
+>  impl<Ctx: DeviceContext> Device<Ctx> {
+>      /// Obtain the raw `struct device *`.
+>      pub(crate) fn as_raw(&self) -> *mut bindings::device {
+> 
+> -- 
+> 2.43.0
+> 
