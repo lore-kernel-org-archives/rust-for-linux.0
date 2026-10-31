@@ -1,101 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793463483;
-	b=2zLSUrFLdYP0ttDlClumixIUOdIZ7EvWITtIvgLvxrIqYE0hj+S8VW6A+VwzT4OPOCDa
-	 QYyx4hTolp0kICLmwpIXrT3XYmCUGkdzEDFZyMLbztWvaq4PSHT/eX9t/HIb+NCKfJ47H
-	 1tFPdKG+Dqjt8wXEdeajv3I3Ck3CVcI/ZRFDzYwAO7/N4FeXWidDhGMCkGdr+XBb1z3um
-	 1Ctw/uSS5e+gjfFiKVJMYbnULMj52CkswyTwAc1KjFwO9k1HHu1+lIBfDCDIAzzBLJQjA
-	 UWGccCih8e/hGrwiC0mKxas5C/hMyh4igz+ew3ySMN7b2S893ZQJdSoI5JatnCkzl4g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793463483;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=B1bwDfWXqtdtKzMUXXL8Xhn7s+stBQep1iI2lQ9nd7Y=;
-	b=x/+4ueFyu6G8FhexMNIOlkn8lCmsp9dF37pEeS/l72PCKKk62kneycpQtgUVUHb0h1Uh
-	 mr2zqgkzlL9Wu7FuvyVK9Gsa1YYcwUKYkhuY/8kJpgxFc2ogL/enFe5q1d5PCw0WlGgJG
-	 BFyjaDgwkqVG+s/NgvDGpqSTxYHl6dYyuz6BwgVeed0b/+i54d3pd/DBhVf9ztpprB0sq
-	 btYpWJpWPaybrRgNXJXpzlgqp8Khm1C7LtxWaemxVw67o2/kjqPqj6B0ofGL6RXwwGcSc
-	 syBGL1SI7Epc7lV1EPUDpJvwfivbp8ncVi5ewd2xPzYuBFlv3rJoq19BIzUizjqDdCg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fsyXfqZA;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.50
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793464175;
+	b=zQIh9YGrfnXoLGVa2rLYIA3dDvNEoHwzJIn/xoj/qPjLT3IsNMtu66eJNTSQ88R8A6JB
+	 cGq1gSnC37wc0Xx7V9vF32yhaycLA9GVv0YBT3GZj44Dk+ESuR+R/s7sZFcTgIvj5DdBU
+	 9umIVaVBly2e50mSKnODnZ4JIqmy7qnsE93GfXHos6dj+Nx/zkBCvH6oBXzpRLO2iR8oO
+	 l8WJaCa7MAef2VxXpZ5Ym+2A4bbJ2ruRVxivPqi+qbZzSWLMo/975sWIzm68Sgbi+4Uxz
+	 nTskdtGmdsbpD/o8JVYnbtJyc65URgbfKFyOTbjMBp7Cls721DYcsXx2sYM504tkbkA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793464175;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=9zgZOaH/pTrBga2uIvgJ+J3Jf4YGUIVSNOYm7+FX/ow=;
+	b=OQE0sHCg2+09WJf1l+6MO/TMXkQQsSkhtltzMIXJOFM1QSJZr1SE7P4ybps9ISBJnkDU
+	 PS5ZhWgVURqbS2Su6WfZ4cASPjKnYl1CjHu9p4zJ+uLUI8f+s7d+m6OUqCIqYIskkBmPO
+	 /Mbasm3TPYUXGNGQHENOJtKOUfFix4SAhIxIONuTHSwb/ee5h6EQ5x8pmPmDUNR1RyQqK
+	 felOEdmEpUxHZoHyi5g6jsFWwUAhsAB02qG0KtIYk1XnI+qepb7ynDs3OUmhcLPlU0hgJ
+	 saaQm34fZf1zoUO6lTwKJ/FymUw9t2WBec94EGsLtqn5ZohS/xyWcNViAVoDspFCaBg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fzm+pKMH;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7CD606A31A
-	for <rust-for-linux@vger.kernel.org>; Sat, 31 Oct 2026 16:18:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B7CD606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BF7606A31D;
+	Sat, 31 Oct 2026 16:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fsyXfqZA
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48e0d885929so1362041f8f.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 31 Oct 2026 09:18:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793463480; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hfl1kTMh0OE0x6SpIJ2ywdhPHvHSQhLsGzgrp487sW5MK8InYwvl+iXCKUJLJDE2mg
-         Y/0gKfIZ4Pu9573eRs5j2dGW7VBQDHwNMuyuhkDfPJ0CP9CTGxfdRQa6NuEbheSmVOFK
-         gqXywJFlUzdsT3J/0I2oUUI1MX3l33do5bBw218TniQfhM0APaYtaOoC67Rp3nFbnH6S
-         mK7Fk2aG9HErkbn7s8XW8RrA2AH2FuYkp+yHxjSpmwpOtkrBUPADWj72ilBGTe/DkuTp
-         Z73HRPjoFdWWAYOd/aYAqI9fKxgEkhBsajbeUDTSy3XPw0hszKoB3rmy2rlpJHvSZeVY
-         bIzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=B1bwDfWXqtdtKzMUXXL8Xhn7s+stBQep1iI2lQ9nd7Y=;
-        fh=sTf4YoXQzwuXWOErrkd2BgPnO31pYcyXEHM/QSkyxC4=;
-        b=h4D0QbJeRK6iPSjrTPpSaS45DxHjeUWOKyJTrNhx0A/mE6MJdPGnSLT2BgVnqGz3q2
-         jsYg7pviEM3G9jiqM9r5pUvPRqxf7U1PdlOllIOrprcUltCZpfwSa/O/CMbLQKpLzqj7
-         X1Nrh2E8Ftt0oU2xGfE3Ul7Lh15BYkBQc2sXAOv5mYCBmKgA32Ws5AU2XF9ZRXN4Q2Ez
-         Mb5cbA/UunEQlkn43R6lXyfjRXRjMvPGkOEKCvAs5CpyHTKV55gpC17kj77zO1lNpcdu
-         XA3Dta6yqKOgMFJj9T3dNPZeFMl+e1smEr0D8OMwDjun3hB2DmNK/SyuCOQ+YfvKlsEw
-         xzlw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793463480; x=1794068280; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=B1bwDfWXqtdtKzMUXXL8Xhn7s+stBQep1iI2lQ9nd7Y=;
-        b=fsyXfqZAOV3CRH/Mk9W5qKH+QAuXRoVHQiFPt8VfTL/X/gLTEeSd1Qb6sMYxW/PGcj
-         ABk+PV3TePzv/Oo7TcVxy/UrGmGXeTr+i3GA1OyofX0ufwDoBTn0a1Er4zpusI7iL/CF
-         X70Hdx0DwSaRWKi9TR5ApQ0aK4fdqlaKgfQI5rHW+g/TwtDXUknu6BjSpM9IskBEJ+Ah
-         7sySD6zZjlZevdA1iTi7bupNo2z7aFxGZytmH6JXu1Kw5UNetlKYpuoMLmeA+gqyZeyA
-         BQ3fLoh6ru6sZxD51rFSuxz3JuwYFzeTlqJ4KHxeB8GjMh2UWFSGy3BLrGRT/BWEVItT
-         dqhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793463480; x=1794068280;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=B1bwDfWXqtdtKzMUXXL8Xhn7s+stBQep1iI2lQ9nd7Y=;
-        b=wb/ZN6OyqQlULL+ixdGoqabW+noFNjFXW/iYmd0bF8O1bnz3SdtkQcFCK+tOgnLg8e
-         TIHPk1obHHJRwmQ5ZdbDWUvrM3BkTWECsjl0/f+k6s9CReYpOSBXlWTKg2Uw5twSgLN3
-         vZFA6w/BtnaBQFixxuBG20LkK6DvYs7qjrHeUIuTilriPIEciP6dtekyuc5g1glq9bKx
-         9WYs274vHwduBrHVNL2rIQ1TUKUziWVlyp8k3riZ8BTo/iOnVmy5kizS9jkSPL2WkNsX
-         1q/zFMbq8hSV+i4vJhaftc7kx7sfQiAXeUkKxhVqxbx5IqA4aqTrqvSdf6ToqaodqIvp
-         2Okw==
-X-Forwarded-Encrypted: i=1; AKwUvBxcz4NvkeMDQ6NQZEdAxzJXZ7Z3TNlc8cZP/+MbOdmVW93k73gBFl0Zk6ROabNCuUkIn6EIl1TgAOQuMrTF1Q==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKhBnNPW2Ofu37kgQXbV1D9fv4g8Me3Ikp/KLrmvM7p9lMlJpXI
-	6J8aozVnWpy6QRcGZUZLpuRJjylTBuDKubkADviVDwuGjBZsnPiEW4bOvfUN2YzAfq+84VYc+nY
-	Os5O4yEsbKAoBsZmAP+8V8xi+J1jwgmnio3+UfYEu
-X-Gm-Gg: AYBFou0wD/oHXt0zdEhABcnxMNJwJZP4XOLzNftLmx4UuWflJm6pvSn/5SEhL9VMzhA
-	lse2Rb69CafXUFzjL9YOSc/6ndpWYe491UqVDywjECtQIuqrMS90/iWFU3Wa9L34ryjNATHzqKT
-	d6UD7MGwD0XkYuNgPcAxWK3ocmrtdnRIc8km8YHWOge129PlOr0js5t22A5X1qkVXwhpJGXLbLe
-	wSVS+UmWwUPaQ5rYUkesRKU+uOePaOwHK4lejGncDjvQI8be5lCjCXJKvzsayeyV7DTslyqHBTU
-	ZIwBSiro3c6jC5k93wKX7+J3orWYG6UVJWzZnxjuYLrC6lVn0NHp651TW1NxAaTUZ3yR7sefgWp
-	cEFgv6wHnPwD1dHCBvaDyBOe9xMo+dJ6WSRXsKEXOfybIeFK1aPcaex6AAjMmJjYmwVyonKn7CX
-	JOj3XgRNH5kdP1RI1thenA8HvxkEA81/ALB/1A
-X-Received: by 2002:a05:6000:4026:b0:48b:4a2:8175 with SMTP id
- ffacd0b85a97d-48e6e501911mr12571791f8f.43.1793463480123; Sat, 31 Oct 2026
- 09:18:00 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fzm+pKMH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277081F000C1;
+	Sat, 31 Oct 2026 16:29:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793464174;
+	bh=9zgZOaH/pTrBga2uIvgJ+J3Jf4YGUIVSNOYm7+FX/ow=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=fzm+pKMHA1jaM18c4ND1UjKuZfxRb4bPpgPqB8XcO3wLDNySsaGQJMp6Ec3jObCMl
+	 5n5V/Rgrk1QMpOxj2tshy14MN8hhoCx9cPHJT503nY9pN2Tv0tvltifKiJBm1LNSTg
+	 0eLR9MYc1gy21MkTh7aka5kx1Gwdhbbr+9kIbG5Ye61VPhk8JhbBMstknYNSYgpdi9
+	 MdYEOQipsoBD2MMjVuTwdRZ6h0d03j3xGBa0dES4aplajt2KoK/QQVeY0Zi2sXGWcL
+	 WCaksiE2bspJ9pkMs/8sGpVIhZHS+RDg3m4zBlPclmNSzHcJvKtqOXS4qqw1b1wOag
+	 VxQZk+r9CJz5g==
+From: Sasha Levin <sashal@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: bindings: derive Zeroable for bindgen's opaque array wrappers
+Date: Sat, 31 Oct 2026 12:29:31 -0400
+Message-ID: <20261031162931.792607-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <CAH5fLgiSOae48jr65rv6ynLWUhT7xVCjjCEK=9oKXvSxKpdq6g@mail.gmail.com>
+References: <27b58e47-723b-4d67-a1f0-ccb8b0ae66a9@kernel.dk> <20261031152846.746656-1-sashal@kernel.org> <CAH5fLgiSOae48jr65rv6ynLWUhT7xVCjjCEK=9oKXvSxKpdq6g@mail.gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -105,62 +71,33 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <27b58e47-723b-4d67-a1f0-ccb8b0ae66a9@kernel.dk> <20261031152846.746656-1-sashal@kernel.org>
-In-Reply-To: <20261031152846.746656-1-sashal@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Sat, 31 Oct 2026 17:17:46 +0100
-X-Gm-Features: AclHuK9l18-NBetzRhpu2rSGbrBFqOZ1yvwZnbwEAmvoiR_gPddFIoalS6dNMJQ
-Message-ID: <CAH5fLgiSOae48jr65rv6ynLWUhT7xVCjjCEK=9oKXvSxKpdq6g@mail.gmail.com>
-Subject: Re: [PATCH] rust: bindings: derive Zeroable for bindgen's opaque
- array wrappers
-To: Sasha Levin <sashal@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Josef Bacik <josef@toxicpanda.com>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 31, 2026 at 4:28=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
-te:
+On Sat, Oct 31, 2026 at 05:17:46PM +0100, Alice Ryhl wrote:
+>Is it possible to instead fix this by adding the impl of Zeroable in
+>rust/bindings/lib.rs, similar to this piece of code that we already
+>have:
 >
-> bindgen 0.73 emits the blob of some opaque types, such as ones aligned
-> to more than 4 bytes, as a `__BindgenOpaqueArray` or
-> `__BindgenOpaqueArray<align>` newtype instead of a plain array. The
-> newtype only derives `PartialEq`, `Eq`, `Copy`, `Clone`, `Debug` and
-> `Hash`, and the `MaybeZeroable` custom derive does not reach it, so a
-> struct that embeds such an opaque type is no longer `Zeroable`.
->
-> `spinlock` is opaque (see rust/bindgen_parameters), and with lockdep its
-> blob becomes a `__BindgenOpaqueArray8<[u8; 72]>`. Commit 71ec3c7d6db8
-> ("blk-mq: quiesce a queue that joins a quiesced tag set") added a
-> `spinlock_t` to `struct blk_mq_tag_set`, so an allmodconfig build with
-> bindgen 0.73 now fails:
->
->   error[E0277]: the trait bound `bindings::__BindgenOpaqueArray8<[u8; 72]=
->: pin_init::Zeroable` is not satisfied
->     --> rust/kernel/block/mq/tag_set.rs:41:49
->
-> Which wrappers exist depends on the bindgen version and on the opaque
-> types of the configuration, so they cannot be covered by unconditional
-> impls in rust/bindings/lib.rs like `__BindgenBitfieldUnit` is. Derive
-> `Zeroable` for each wrapper in the generated bindings instead. The
-> pattern allows for the spacing of bindgen's output when rustfmt is not
-> available.
->
-> Fixes: 71ec3c7d6db8 ("blk-mq: quiesce a queue that joins a quiesced tag s=
-et")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>unsafe impl<Storage> Zeroable for __BindgenBitfieldUnit<Storage> where
+>Storage: Zeroable {}
 
-Is it possible to instead fix this by adding the impl of Zeroable in
-rust/bindings/lib.rs, similar to this piece of code that we already
-have:
+I looked at doing it that way, but the wrapper types don't always exist,
+so a fixed impl in lib.rs won't build everywhere:
 
-unsafe impl<Storage> Zeroable for __BindgenBitfieldUnit<Storage> where
-Storage: Zeroable {}
+ - bindgen 0.71 and 0.72 (we still support 0.71.1) don't generate them
+   at all, the blob is a plain array there.
 
-Alice
+ - 0.73 only emits the alignments a config actually needs. On x86_64,
+   allmodconfig gets __BindgenOpaqueArray, __BindgenOpaqueArray8,
+   __BindgenOpaqueArray64 and __BindgenOpaqueArray4096, but defconfig
+   with Rust enabled has no __BindgenOpaqueArray4096, so an impl for it
+   would break the build there.
+
+__BindgenBitfieldUnit works because it's always generated. We could do it
+in lib.rs with a Kconfig symbol for the bindgen version plus some way to
+know which alignments a config ends up with, but tagging the wrappers
+right after bindgen runs seemed simpler.
+
+--
+Thanks,
+Sasha
