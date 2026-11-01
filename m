@@ -1,75 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793474027;
-	b=NZ0LuJnFuHIKmOXn4w8BWx9HuIqFxB88XQXivoIlUSnGGjgtFnPAjus9LWCczi2yUVbM
-	 opmQZ7xkFWUQn5aKPo4zXfwZKIVNxJq5gVlMJkqkug/KXNU3zaxsqjN4rk4yJriueF5HU
-	 VILcrcyCNq72X3R0WjcPjjfYNs8M3mdJbkiFSx+Je2LdNh+KlIxaXcNZ2mRFiuSymJlhk
-	 2OKhew0OlQgLQjAm7JFLKIECj/nDpUex8GVEj0dKX+FnHbru4ttu5OBf2iEzs0YRu91Zr
-	 YffisOuvWfwbL2tMBvxpBKe3CoddvXDG/Ewlo5Hdxt01zOaOILo9LhgHhySE/u1ckCw==
+	t=1793492766;
+	b=4zb3SSiolmZvAsEnyRQ3QB+ykiBBmmuk2zZ8gXIjanOJP9PGVAkax9TdZjaOEVg4NMnc
+	 mMKJU0HLD4qkeae8MCwacXW4afX1s1ljSSgoGMDXQMbTj2/OdT3qDuV4qd7peUFvu1Bja
+	 tJIKpnzaV92AmhhX/0XJ0F2zh95rQZOhBtch3dCkw6j6wRsZTiaIPOnLwwzZ2AvjU0Jk2
+	 w1FFj1UuURpUSVtGZLimqdx3c6e/O6YuJaRstyf6+NopEKJxy2l26Pp6chW7M7/dEX0Y+
+	 2rSOQEJaxfAVKt8fr8FT1aM9eiFco1BiNPLlAED1ZQsY1PhoHun2xfoqG1TRNnMikMw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793474027;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=nJBv0GgW2v5Ry5/NUsW0hqijVCknn5LFKWAu/3Zahsw=;
-	b=cjV9jMcPSBBS9vQ6zSSv8rTp8m0mhSLG3IRTkDc7hVg576iNW0I+79z7sIkAwrgshat5
-	 L+znunOes+5RLtaLuGq+1RRCz2Di9oeGxK/e+Ek2MBj96VRoWnul4ClbsiJbuPIm7G5/9
-	 11Ouuev+DEVlYEbx54jB9hmgtr/oKE7nXQpQhA5eQtTiz779pq9gxc/uWEStLpjlKMKbI
-	 gtkp1jJR7uVzf0XLYYYYAA97sbOFT6x88Ir80YSnEDtDPuVoEFL45aF038DC3fPCmyVcr
-	 6MRcJp/3OYrBwqaCDQeZkEq/SWoGiZsJoVo8pdX4rDOhNNorzc21ZdV9rfacCPP1BWg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793492766;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=ZTxLH/Jv5PE3QbDmOL5+wvTdcO4ZN8shYf7rQSNl+Gg=;
+	b=iR6ylxt0y+vhb08zR1cLao3lZ7ASJwqbkOu1DQOx4kQJHop4jON/EtV24fUEtpMNLv93
+	 IQHBqC9NowudqSH2Di5ehWtxkTQnGK2XM6IZoMotl7g62+1m1C6vlvUps+jx6Ky6IcppJ
+	 rS1NMVmAU760KCtV8OguU6ZpgdQM52wq+h8tjWZDM/CGNaAWzfZXhFHY0RY5xg9pEtJm6
+	 wft9aRrqN9rkvgOOeJ2NWwZQ9NWzbK9HvqNSYsV93DIS+Jp1cvhTkYzKZmnIRO+q9EAHG
+	 il3Cq4KBtvP7ELqhRvV0MpoNkZ78rtpnb77fZPcctNC7NABtArX81qMGIqAN1bNcL4w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=V0uWqi8B;
-	arc=none smtp.remote-ip=209.85.128.70
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YhUkAg8g;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD4B606A31A
-	for <rust-for-linux@vger.kernel.org>; Sat, 31 Oct 2026 19:13:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3CD4B606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AA4606A31A;
+	Sun,  1 Nov 2026 00:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=V0uWqi8B
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a214a5f8a1so16439275e9.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 31 Oct 2026 12:13:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793474026; x=1794078826; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nJBv0GgW2v5Ry5/NUsW0hqijVCknn5LFKWAu/3Zahsw=;
-        b=V0uWqi8B7GwgqIHzrE1bRswy9+KlfjTqf31ihGHlqT0zNVj8T16xGnm6OEIffSkW7j
-         yyZP6dlXtLjJks1TX63RQNSRdIAKhNoELH34vnEkjeHApzAEZjbxDPu87CEdi+2AF+9l
-         1Iz19fD7H3/7zQ215YAZAsIJ2MyDbLD3SnOKFszATJoHhuKiR7ydA6LPx3abH5DzHQdw
-         EaaEQM7puBPZgpydvqnV0scM8XlRQWp9whAl4pGyBxl/JQJS7TQoPNMRJS61C3XXu5Ga
-         HnltfeuFgKZJhGfnPvKOXN5cVHz97iJibdtruLRQEy76vXaRlj0CBUyvDTaVR8IUiWrW
-         hVJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793474026; x=1794078826;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nJBv0GgW2v5Ry5/NUsW0hqijVCknn5LFKWAu/3Zahsw=;
-        b=I+sfz1Szm6K0zO+3oGB8dD1WhgLGgFKKUC0NkULgayf143/DkA5BbCq0zYPyfM7n4o
-         NPxSCsW64jiKkz2FqvvsuHKC+n0zQgVFLyMeaNvhgsTAaOHFYA106AAyQeF8/tri4hlG
-         6QAF4jUbm/NXtvgfbcoI+VvLIaVCMyGlqYgpr4lSlQdOlbdXRikW4ZxzJu93y1BrVN+9
-         c4pgWfhjrf/2iVDcgEZ7ZbSCc+KPdEHjcJf16pYvvtWkY0oyTJyN/eid6ugZr9yd7X40
-         +o1bz+pDpkq9y2vPvlVIkOweGdMfqF1I8O/MO70V0RMKxuzvyEF+bx3zMIfRFctYPGTY
-         C4zg==
-X-Forwarded-Encrypted: i=1; AKwUvBw1AZX8XmAO2yKoL017kz25PZmcuviaI095OJKAxeHSlvALtFH7dydObcxlU+Ynhgu1A1HORiFOqIdgnKrlzA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYK/OTG9fUvQ2/E+VsxnNPiH0LtSOiCtVj51SwahIP6pv1gJbjA3
-	Xcc2IEZ0jz0PKfvtuNc/w6R5nZRiGXb3QwB+BUx831VIFyrQGW/LPDCFijPg2/NGf7m49Cj3s2Z
-	lWSBQSkeDkopsDxwa7g==
-X-Received: from wmxa5-n2.prod.google.com ([2002:a05:600d:6445:20b0:4a2:18:cfee])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4e8c:b0:4a1:dade:f049 with SMTP id 5b1f17b1804b1-4ac1793ff26mr134595615e9.15.1793474025531;
- Sat, 31 Oct 2026 12:13:45 -0700 (PDT)
-Date: Sat, 31 Oct 2026 19:13:44 +0000
-In-Reply-To: <20261022160725.2215244-2-phasta@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YhUkAg8g
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EECE1F00919;
+	Sun,  1 Nov 2026 00:26:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793492765;
+	bh=ZTxLH/Jv5PE3QbDmOL5+wvTdcO4ZN8shYf7rQSNl+Gg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YhUkAg8gq4+Z+IOMQdJNRbwn4aGJN5TuF1WxFf6E5C7maZwg6mRv/bR1wiAeMXoD+
+	 9AULeNGycFkeenjeqpYts4WAdQ3D2wf6dAfpV9qlNFw6rzo/3HhNH+Bn8MabDui3Qu
+	 4tnL2FbuHd4R1AntZNRJO2YPiK4UEcjLNFZYkwXKxP2rX4zgOXFMfR7j7RcWwZ7gKn
+	 NM+Dav0g4IwuJpQPiqmOT+uBolhcVhcfFDdYmnYhg27KyS2yn1bBlsvAFESw5vzK62
+	 bObd0fbWiY+yZZMLgdTfB0AaK2daGUn3z+rZMurD1aCSM/cdC2Sejr4OhHSVn3CzMy
+	 WSAoVnpeZGQhQ==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 475FDF40066;
+	Sat, 31 Oct 2026 20:26:04 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Sat, 31 Oct 2026 20:26:04 -0400
+X-ME-Sender: <xms:HIfmaiE8QTnvaYsTx6wGB1aweEeeBfu7RS-Ab4bZgG_JufVJtyyj7A>
+    <xme:HIfmahsqq1wsofYfLE5Afs-KLn5T4uw1d69MaNm_DRCMsuIGnmqL8zq73UbfkHV0D
+    mO9Nr17Ql1HdYQHks5KgMyKMRfPFLROry4rtI0d0ozPbyiwLz0dmQ>
+X-ME-Received: <xmr:HIfmaoLoBPOv2yEv3N3aPIo1rqDZTEZVfH5nkdIhMLSqK_LmKTUPsU52ERntEgOuGvhsIS51v4p3OofmCMP23aBkitrKBRxu>
+X-ME-Proxy-Cause: dmFkZTGFcRsnq5CozJj+s6dHqAcfqpKsZpe8KYvLtP31zGx4RGgZ57uSlT50gepXDrJuTQ
+    8A9B1z9vQGVs6LklPJEJFXKxPM1t+3Uc65ubU5Rs89q1Xm7WvkcgOKUN9wJs81oI8ymp7D
+    vIFP9MqTitH2T3eBQAHtOribawiA6YxULHKa5zpv5Tb5fXh8LbUATjVmF12F9dCmB6Otmp
+    WWVvRxlVObkXhA+2TL55oSlr8iVpr7tLnsIXAcysRWq7wZGyyZwPcP5TRd66wOMETFtssK
+    uEMqotOuT3FARnYoCcaQ/XCMB7mZqo4KaTcKBPmkQxbk5eGUdqxkrUFtRN9jeVfhDuSkfF
+    QYjeCMN0gS/x4LY+aWyfVW9pr4YpjgEZHGuP8yVLQvtVFKi0vbcxyAz5okiGTBZupyD+97
+    tu74nO5XGMGL1BzqR+HyZagaB3LAPUI3ZC0lS3BACBukWucMw9fF0y/yfz792AuS7sneka
+    9QCtRmYIsq0UEc8oKlSLDNQkTpgFSqrdLP6jgZhaQog70I0pIo/shEduuiMrTq/XAg7JpY
+    wcftukz51TeBGSMXm8nreBA/paoAPuWa3/bMDJk4B5rYxKkQqlflR6UXaOKom6ajVSy2Nh
+    F9CAIlgYJ8quEajR0yuEqbK8+DS1bFMHVT/Ev4vbAJ9J5lMKGNzrXtAtDZ6A
+X-ME-Proxy: <xmx:HIfmavNhL7Z_b8mzgVx7GbtfAqVfxAiGMxxIIslI9UgvCRbOHiMn_w>
+    <xmx:HIfmagYo-zOLKTcb8_wZSem9CBj5HQmzXHBMpNx6Kx0i1PwgX8DQxg>
+    <xmx:HIfmarwifKvLSRllwOF0MW7TUrl8YmTZ90ghv6L8wosGJFDwAfukJg>
+    <xmx:HIfmasG_GRfh8S5qK0S3-5u_9bAwmlCf_Fq0KsUHA7nxWCcirNfRew>
+    <xmx:HIfmamq8-7mvjWAshYCfxuqr-A-fzpHrNwetqBVF_N8MeDtFHITWesTm>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 31 Oct 2026 20:26:03 -0400 (EDT)
+Date: Sat, 31 Oct 2026 17:26:02 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Philipp Stanner <phasta@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
+	Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4] rust: sync: Accept errors for Lock payload data
+Message-ID: <auaHGpX2jG_PNcmm@tardis.local>
+References: <20261022160725.2215244-2-phasta@kernel.org>
+ <20261031191344.2913779-1-aliceryhl@google.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,36 +99,29 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261022160725.2215244-2-phasta@kernel.org>
-X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261031191344.2913779-1-aliceryhl@google.com>
-Subject: Re: [PATCH v4] rust: sync: Accept errors for Lock payload data
-From: Alice Ryhl <aliceryhl@google.com>
-To: Philipp Stanner <phasta@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>, Lyude Paul <lyude@redhat.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, 
-	"=?UTF-8?q?Onur=20=C3=96zkan?=" <work@onurozkan.dev>, Miguel Ojeda <ojeda@kernel.org>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261031191344.2913779-1-aliceryhl@google.com>
 
-On Thu, Oct 22, 2026 at 06:07:26PM +0200, Philipp Stanner wrote:
-> The `Lock` baseclass currently does not allow for fallible user-data.
-> This can cause conflicts when used with other primitives, for example
-> when a lock shall be pin-initialized with payload data that is fallible.
+On Sat, Oct 31, 2026 at 07:13:44PM +0000, Alice Ryhl wrote:
+> On Thu, Oct 22, 2026 at 06:07:26PM +0200, Philipp Stanner wrote:
+> > The `Lock` baseclass currently does not allow for fallible user-data.
+> > This can cause conflicts when used with other primitives, for example
+> > when a lock shall be pin-initialized with payload data that is fallible.
+> > 
+> > Add support for the lock base class so that it works with
+> > try_pin_init!(). Adjust spinlock and mutex accordingly.
+> > 
+> > Signed-off-by: Philipp Stanner <phasta@kernel.org>
 > 
-> Add support for the lock base class so that it works with
-> try_pin_init!(). Adjust spinlock and mutex accordingly.
+> Boqun, are you ok with merging this through drm-rust-next for JobQueue, once
+> we get Gary's reviewed-by?
 > 
-> Signed-off-by: Philipp Stanner <phasta@kernel.org>
 
-Boqun, are you ok with merging this through drm-rust-next for JobQueue, once
-we get Gary's reviewed-by?
+Yes ;-)
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Regards,
+Boqun
+
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
