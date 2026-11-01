@@ -1,79 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793548047;
-	b=hgfmQfrb/6/IFZ5ng/m+DdskoftscE8RuvCqlXAeGyurppNRrQH6PInhnBZ2FMbl2WFS
-	 mIBzi/NkwpmW/KjG0mrXiRrJaFJQ7CLvgw0md6t/KjkQ3p4ayob6g9RAIur4/coDM2SoL
-	 xx0Esv1u1O5/d/rUicTgP7QywzQEaswLsezH8GRKFdum3rqOnJ2wX3GsZFMiEal+4g1RV
-	 KzdAP/0np0A4qBihqa+jP5zajSB/dVwOXOKVjayaYgOFmr+g5Midosh1CsYB5JIKAAVyI
-	 syqrCpAAOtWA5wUX6DA184AfRD9oCWVx8G3J867yXWRFh+isYW4fZtaPgrQvJNuNeOQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793548047;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=mpjdYnTHxH/nbdf2Vk4AbwQAMZLWaQdbJltgY6MJR3Q=;
-	b=SdUaHSNjFvdSulIRcm50DMQkh014BNZeXz5jXfmahm7K2yrjK9SmagDl8e2IzrERZ/RK
-	 IkpSgliW8lfMmj3XruaSQu2/zUz4La64jCLuzm0N9pkhJaNOAKSSNmWMBrrXNd1QB96qi
-	 RpAqmNwS06TSCcE7JcgsjJ8XJAhYtlomzGHuAqXKLr5VQO4AnJiJjf6gnQiVZdr3nUs96
-	 CyljOd4n5+joB5Qxah4kac9uC59C2Y8gJ+6fHeRqOSaRKRsQVHsF8e4T35iwx29tguOi1
-	 O+wtkgRiuzJCsHqpbmTV0h7/jtnk1Mco7EaQyj5RyrsSlXsfm8uxAlWM0bQxeNmvZ/Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mneqkfEb;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793571362;
+	b=wBpL0o2qBEvZPND2iRs5ecw0ka+hhZozI1NFC5KMsomclDHgmC4vpEITK+VPq8Hl8GzV
+	 /sHE0pHdd13sZZ5X/F8sFdHBjAiKgDHztZhGeHfNM2DTTREnYieaVMAQz2Fs9UaQTOp9d
+	 HyNpfGiHb5+dFDLlhlOotGvDEcFJ3bLdFGr0Y8Jm8UhWCtbSrihRIUHdqMuwfQ9s4G3HG
+	 2BytculgquSPL52/LR0pM+CchqKOZLtKSrZYwyY4SpprQ4blz94rxGLyXwLZpECQBWMBy
+	 AkrI5qHeNk37qZ/Hg8fu4NazzaJnut0dCLiLhXa2UvCafHL3DfCtqSjUSjeUVWVmfuw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793571362;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=/L1K5/K20Lylg3Y8uBVzdGE1hVGy8dUc9P/IZwg+EOY=;
+	b=u2HCXs+16XpuuA3VXdArIAmTlnuUvxzOijtNOb5NV94OT6ehklPDFPQMjI6mGD7CLs9t
+	 1ED8N2DY2ra0hk8iwcttxyDcHCGp9fw3TpHWtdj4f2YT4AIH+IrIyfeHW2x26qZa+vvHE
+	 jUAW/PkoNZuVD4X5La2hkE1kVNYKAMXDkBrsx9Jgg/h9eVgxCaWvbSKIEdTyiNdtpyedT
+	 GnCHLZS5sI6iAyKU8dYIzoc2B75ppxkDDpp0CMCgtly53cyzRgMsyY4sD59clnPsPkNvb
+	 zP7h5IV2P3BXd0Px8lQdH4Q/DvAcSHRvEVoibf/hrgnBI0bvdBgv6H6ulrZMRAg8APw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aQ9aTFbN;
+	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DCE606A327;
-	Sun,  1 Nov 2026 15:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3709B60A2628;
+	Sun,  1 Nov 2026 22:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mneqkfEb
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793548046;
-	b=Wwyw9TIkT8ASO2MlDlaP5V1KjUoj3ZqL8W1xwBGxeJhkjZGxzR3uypvFG7KnjOfFrTfx
-	 Ck1bSZEyNqHgQgOFpA79ZWC9dh0GWZTWpF5wnurf6LkC+k3gaXJPb2wJ47l5VlC3tVHa+
-	 adRrIFgGU1aAUq3W10edrnUUB2cBipDsKvolWT/HlIUHIkeTo9FNhVFPrCGcRtL4cghoH
-	 ZVZnWPjC6jQFMavcxTHnzefXP05yQEuJVb1dADolcNcyFw8OyLOy4lQ0ltSevA3B4b3k5
-	 dAcbNZUKpiUym7IzJzumpbri7eTvgKTsCwg0QDyUsEa6pXj8UJ4gRj/u3E8wmEgaQmg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793548046;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=mpjdYnTHxH/nbdf2Vk4AbwQAMZLWaQdbJltgY6MJR3Q=;
-	b=q+nSka6uLhF9qBqthYPuoWCcCJQKLLb/kO8cef23aLHQS66bFIv9uUCtwfKaT2VhN+cm
-	 sYGeNcBa95agyo2g3waWp36UKXwLXRHi7Dnp600ooglmpjbkGdkJrQv+IX6UrSzjWmCvD
-	 MxDdt40WEOiA6+kHRJqQiC570g5bP4O+7d1b4B5knISsT4bKpbdK1zQ/cK+vdlMBsxjUg
-	 FBcbx/QOhwGw1VBylhH7J+cqrS9Q09OPDQ2weFkNtjCzSdYxKwF4k5NAnEtpbUeuC2WPX
-	 Csw7xyxMmdXkzOgEsjq9hdsteUFIBknGNdn13Q3qug1h6B02AGOZzek4+ivk0P+Cnzw==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id A45781F0093A;
-	Sun,  1 Nov 2026 15:47:25 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aQ9aTFbN
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178411F00A15;
+	Sun,  1 Nov 2026 22:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793548046;
-	bh=mpjdYnTHxH/nbdf2Vk4AbwQAMZLWaQdbJltgY6MJR3Q=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=mneqkfEbQ4uk1fIJdyQfHXGAex0JIjqDha1nNSq/QWJpEbEeBBREVhCCgZ3o12LMv
-	 nLJD9smh7924QHdAdXGFw5pheIdsh99Mxqx6TXrLdVQWd5DFA8Tcc8eqe6NPTQ2htQ
-	 Y+V4o03qxLP5rVrtkRvv1Y6KrtvGTjrNjU6tbv+aNxCNh/csehJb0/sIfk3xBRlo2l
-	 OcNFHR29J4hjNRWebzb6kTufptbEniOU3k01M7ifDpFz8XPsMUE5nYdOE9QxlFsOmT
-	 3+ZPjFwCR9tNOnFwsGS1LXgloq0DCxBPn4yORSC2MvPWMyswPGUk/4mclbAlBmrKIa
-	 VhJxyOA0244aA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 147B0461D6;
-	Sun,  1 Nov 2026 15:47:25 +0000 (UTC)
-From: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
-Date: Sun, 01 Nov 2026 16:47:25 +0100
-Subject: [PATCH v2 1/2] rust: str: parse_int: only accept a sign before the
- radix prefix
+	s=k20260515; t=1793571362;
+	bh=/L1K5/K20Lylg3Y8uBVzdGE1hVGy8dUc9P/IZwg+EOY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=aQ9aTFbN6x7ouscVsLZNxTXAO5E8ItcKZ9dPsJi9yvOWb/a0tVFSzFxK6HBHwvwkR
+	 qnGRH5hE04iqB7Hbx0soOLs60ndhW9fPRu1docmwvHJCPZ1sGH3aXo+aMYOMYvfS/m
+	 gLRk+lBuqCl595dJR/qDiLKaO5xzK3h4Qld2hh9aTq14S9IhqhLCn8gScipgdXhxZ4
+	 yz+eYaG3uHp5cGLm2P5HKV4lVfGfqkmRrBkNdAW5mFqV2BM1XB5v27eb8KPzOhQwgY
+	 8+dN6TuAxSwtlFieAsFFjpYJH+0D2okoO4dGm6PQ3yCoJG1GIK5OBjtH+j2NcShuR6
+	 6ScWRzm3UZjKQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 031C838003B8;
+	Sun,  1 Nov 2026 22:16:02 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -83,137 +53,101 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261101-b4-parse-int-sign-v2-1-0fd827f52070@younes.io>
-References: <20261101-b4-parse-int-sign-v2-0-0fd827f52070@younes.io>
-In-Reply-To: <20261101-b4-parse-int-sign-v2-0-0fd827f52070@younes.io>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Daniel Gomez <da.gomez@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Younes Akhouayri <git@younes.io>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793548044; l=4337;
- i=git@younes.io; s=20261027; h=from:subject:message-id;
- bh=D+H9FI9ogCTq+jwzCZO0KaYdhnIJsuMSbe0CnAgFU7I=;
- b=HjtJgBFDWRWgjnt/fR07zn0bCCT2DVNgadPEMGVBR7mmnpkoUPReCXsOal6rV/6eEhNsGUJbg
- Mb0aGsEshVgAA66pqjAJ8w0XAy+6sPy2cndKHvzZSXzKbtuZzU3D19x
-X-Developer-Key: i=git@younes.io; a=ed25519;
- pk=TavwxGPDBjl4XGNQyFLKEW7PKSY4qOWusc7yf6hjV0c=
-X-Endpoint-Received: by B4 Relay for git@younes.io/20261027 with
- auth_id=1332
-X-Original-From: Younes Akhouayri <git@younes.io>
-Reply-To: git@younes.io
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v4 00/22] kbuild: significantly speed up kernel builds
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <179357136054.2624073.6980997342883603672.git-patchwork-notify@kernel.org>
+Date: Sun, 01 Nov 2026 22:16:00 +0000
+References: <20260923-build-speedup-v4-0-73128809a4a4@kernel.org>
+In-Reply-To: <20260923-build-speedup-v4-0-73128809a4a4@kernel.org>
+To: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Cc: linux-riscv@lists.infradead.org, torvalds@linux-foundation.org,
+ nathan@kernel.org, nsc@kernel.org, ndesaulniers@google.com, morbo@google.com,
+ justinstitt@google.com, masahiroy@kernel.org, legion@kernel.org,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+ x86@kernel.org, hpa@zytor.com, pjw@kernel.org, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, alex@ghiti.fr, arnd@arndb.de, catalin.marinas@arm.com,
+ will@kernel.org, mark.rutland@arm.com, ardb@kernel.org,
+ ilias.apalodimas@linaro.org, jpoimboe@kernel.org, peterz@infradead.org,
+ ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
+ daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
+ work@onurozkan.dev, corbet@lwn.net, rdunlap@infradead.org, kees@kernel.org,
+ gustavoars@kernel.org, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+ linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-efi@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org, axboe@kernel.dk, linux-hardening@vger.kernel.org,
+ petr.pavlu@suse.com, n.schier@fritz.com, manuelebnerli@mailbox.org
 
-From: Younes Akhouayri <git@younes.io>
+Hello:
 
-`ParseInt::from_str()` strips an optional `-` and a radix prefix, then
-hands the remaining digits to `from_str_radix()` from `core`. That
-function accepts a leading `+`, and also `-` for signed types, so a
-sign placed after the prefix, or a second sign, is parsed too:
+This series was applied to riscv/linux.git (fixes)
+by Nathan Chancellor <nathan@kernel.org>:
 
-    i32::from_str("0x-5")  == Ok(-5)
-    i32::from_str("0x+5")  == Ok(5)
-    i32::from_str("-+5")   == Ok(-5)
-    i32::from_str("-0x+5") == Ok(-5)
+On Wed, 23 Sep 2026 18:17:49 +0100 you wrote:
+> A typical kernel build consists of a frustratingly large amount of time
+> spent stuck in single-threaded bottlenecks.
+> 
+> It turns out that there's a lot we can do about this and doing so
+> significantly impacts kernel build times.
+> 
+> This series makes allmodconfig builds up to 36% faster, incremental builds
+> up to ~70% faster, and noop builds up to ~90% faster.
+> 
+> [...]
 
-`kstrtol()` rejects all of these with -EINVAL. On the other hand,
-`kstrtol()` accepts "+0x5" as 5, but `from_str()` rejects it, because
-it does not strip a leading `+` before looking for the prefix. Since
-the documentation says that any string parsed by `kstrtol()` is also
-parsed by `from_str()`, this is a bug.
+Here is the summary with links:
+  - [v4,01/22] kbuild: do not allocate .modinfo in vmlinux
+    https://git.kernel.org/riscv/c/5fe4dd596641
+  - [v4,02/22] kallsyms: index symbols by token to speed up table compression
+    https://git.kernel.org/riscv/c/6f014bf46faf
+  - [v4,03/22] kallsyms: output binary data to speed output and kallsyms assembly
+    https://git.kernel.org/riscv/c/83da9f3197e5
+  - [v4,04/22] sorttable: parse nm output correctly
+    https://git.kernel.org/riscv/c/4719513c0fa2
+  - [v4,05/22] kbuild: do not sort nm output where the order is irrelevant
+    https://git.kernel.org/riscv/c/c2970d8b52d1
+  - [v4,06/22] kbuild: only emit vmlinux relocations when required
+    https://git.kernel.org/riscv/c/8050568e0a46
+  - [v4,07/22] elf-parse: add section flags, symbol binding and mapping helpers
+    https://git.kernel.org/riscv/c/5005f8043c09
+  - [v4,08/22] kallsyms: reimplement mksysmap in C
+    https://git.kernel.org/riscv/c/531980b4b17e
+  - [v4,09/22] kbuild: calculate list, composite object state per object
+    (no matching commit)
+  - [v4,10/22] kbuild: implement and use depcheck to check dependency timestamps
+    (no matching commit)
+  - [v4,11/22] kbuild: move the toolchain checks into scripts/Kconfig.toolchain
+    https://git.kernel.org/riscv/c/f85147b291e3
+  - [v4,12/22] kbuild: avoid re-running compiler and linker probes
+    https://git.kernel.org/riscv/c/454e00cf8ee5
+  - [v4,13/22] modpost: cache section relocation mismatch state
+    (no matching commit)
+  - [v4,14/22] modpost: emit module descriptors as assembly
+    (no matching commit)
+  - [v4,15/22] kbuild: batch module finalisation
+    (no matching commit)
+  - [v4,16/22] objtool: do not hash DWARF relocations
+    (no matching commit)
+  - [v4,17/22] objtool: cache relocations, do less work, eliminate relocation hash
+    (no matching commit)
+  - [v4,18/22] objtool: size the instruction hash to the text
+    (no matching commit)
+  - [v4,19/22] objtool: decode instructions and resolve branch targets in parallel
+    (no matching commit)
+  - [v4,20/22] rust: make exports.o depend on the headers generated for it
+    (no matching commit)
+  - [v4,21/22] kbuild: build rust crates in parallel with the rest of the build
+    (no matching commit)
+  - [v4,22/22] kbuild: compress the kernel with pigz if available
+    https://git.kernel.org/riscv/c/48ebe1cbbeb5
 
-Integer module parameters are parsed with `from_str()`, so this is
-visible from the kernel command line. Booting with
-`rust_minimal.test_parameter=0x-5` makes the `rust_minimal` sample
-print `test_parameter: -5`.
-
-Fix it by accepting a single `+` or `-` before the radix prefix only,
-and by making `strip_radix()` reject digits that start with a sign.
-Add doctests for these cases.
-
-Fixes: 51d9ee90ea90 ("rust: str: add radix prefixed integer parsing functions")
-Signed-off-by: Younes Akhouayri <git@younes.io>
----
- rust/kernel/str/parse_int.rs | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
-
-diff --git a/rust/kernel/str/parse_int.rs b/rust/kernel/str/parse_int.rs
-index 48eb4c202984..66f590251ffc 100644
---- a/rust/kernel/str/parse_int.rs
-+++ b/rust/kernel/str/parse_int.rs
-@@ -28,8 +28,13 @@ pub trait FromStrRadix: Sized {
- 
- /// Extract the radix from an integer literal optionally prefixed with
- /// one of `0x`, `0X`, `0o`, `0O`, `0b`, `0B`, `0`.
--fn strip_radix(src: &BStr) -> (u32, &BStr) {
--    match src.deref() {
-+///
-+/// Returns [`EINVAL`] if the remaining digits start with a sign. The
-+/// caller passes them to the `from_str_radix()` functions of the
-+/// primitive integer types in `core`, which accept a leading `+` or `-`
-+/// of their own, so a sign here would make `0x-5` or `-+5` parse.
-+fn strip_radix(src: &BStr) -> Result<(u32, &BStr)> {
-+    let (radix, digits) = match src.deref() {
-         [b'0', b'x' | b'X', rest @ ..] => (16, rest.as_ref()),
-         [b'0', b'o' | b'O', rest @ ..] => (8, rest.as_ref()),
-         [b'0', b'b' | b'B', rest @ ..] => (2, rest.as_ref()),
-@@ -38,6 +43,11 @@ fn strip_radix(src: &BStr) -> (u32, &BStr) {
-         // not be able to parse `0`.
-         [b'0', ..] => (8, src),
-         _ => (10, src),
-+    };
-+
-+    match digits.deref() {
-+        [b'+' | b'-', ..] => Err(EINVAL),
-+        _ => Ok((radix, digits)),
-     }
- }
- 
-@@ -75,13 +85,19 @@ fn strip_radix(src: &BStr) -> (u32, &BStr) {
- /// assert!(i8::from_str(b_str!("-129")).is_err());
- /// assert_eq!(Ok(255u8), u8::from_str(b_str!("255")));
- /// assert!(u8::from_str(b_str!("256")).is_err());
-+///
-+/// assert_eq!(Ok(0x5i32), i32::from_str(b_str!("+0x5")));
-+/// assert!(i32::from_str(b_str!("0x-5")).is_err());
-+/// assert!(i32::from_str(b_str!("0x+5")).is_err());
-+/// assert!(i32::from_str(b_str!("-+5")).is_err());
-+/// assert!(i32::from_str(b_str!("-0x+5")).is_err());
- /// ```
- pub trait ParseInt: private::FromStrRadix + TryFrom<u64> {
-     /// Parse a string according to the description in [`Self`].
-     fn from_str(src: &BStr) -> Result<Self> {
-         match src.deref() {
-             [b'-', rest @ ..] => {
--                let (radix, digits) = strip_radix(rest.as_ref());
-+                let (radix, digits) = strip_radix(rest.as_ref())?;
-                 // 2's complement values range from -2^(b-1) to 2^(b-1)-1.
-                 // So if we want to parse negative numbers as positive and
-                 // later multiply by -1, we have to parse into a larger
-@@ -94,8 +110,8 @@ fn from_str(src: &BStr) -> Result<Self> {
-                         .map_err(|_| EINVAL)?;
-                 Self::from_u64_negated(val)
-             }
--            _ => {
--                let (radix, digits) = strip_radix(src);
-+            [b'+', rest @ ..] | rest => {
-+                let (radix, digits) = strip_radix(rest.as_ref())?;
-                 Self::from_str_radix(digits, radix).map_err(|_| EINVAL)
-             }
-         }
-
+You are awesome, thank you!
 -- 
-2.56.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
