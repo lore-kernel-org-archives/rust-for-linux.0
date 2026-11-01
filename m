@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1793548047;
-	b=i2r+rkZAafwSz6eiNOtCGXbGTVK9fIPd5dbyqp94ricy7+DtIiFG3qn84oRUgVztfJ+f
-	 KyZFBmOlWavJn/UAvloy61wGTwem82/ia9JGhr+/gLu1VYYKyHUGTsbEtAPlZQA/ip45h
-	 IlQyc4S1cc+tHpxw6WGtjldv0HlTf2lVc8Ffn6/GPn1ZwteHH3Ahu0lUaM5mAmlatWYm+
-	 NpUFjnD1tQ2ZT8DDUc/yKnZ7SZ/EKfD/SSfg3I3v5XHpghA4AYkDokpyiudQDNoNGvLJe
-	 nnAd5wQRDhRRBnf6MLFrABJAEzZxaenOpfdcozAwy3piM7ZNuOqHLdLeYTTWZn5Y8RA==
+	b=hgfmQfrb/6/IFZ5ng/m+DdskoftscE8RuvCqlXAeGyurppNRrQH6PInhnBZ2FMbl2WFS
+	 mIBzi/NkwpmW/KjG0mrXiRrJaFJQ7CLvgw0md6t/KjkQ3p4ayob6g9RAIur4/coDM2SoL
+	 xx0Esv1u1O5/d/rUicTgP7QywzQEaswLsezH8GRKFdum3rqOnJ2wX3GsZFMiEal+4g1RV
+	 KzdAP/0np0A4qBihqa+jP5zajSB/dVwOXOKVjayaYgOFmr+g5Midosh1CsYB5JIKAAVyI
+	 syqrCpAAOtWA5wUX6DA184AfRD9oCWVx8G3J867yXWRFh+isYW4fZtaPgrQvJNuNeOQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793548047;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=9QABjkMJ3O/5a2PpmlQ85Jb7mwt60E8ZqBMhhs8NGaM=;
-	b=x6fxURhVEXMOtEnmBbQvHjFePQ2/oAtr2BsZSmVuXVRggE524h7jFdR0FCqZ7eOOavtS
-	 ytrhNKQHqcPAByL4CjNTiJT1F1ndzv0KKSA/lggArjGLz+FQdxi9DyaQnBhDMzIHHk+J7
-	 SZ/VFnn4KHQN7CZBC+noVdN4TiCTkxE90EqmBF2zkcLnevXkTLpphbg8rV4HovXEl31UI
-	 pFQ6gtInYQfWoRAuTUhdZbYHxjLitwnXhKbf6oDsRaZudr56B7mym4cmFQKLHPvysRVFi
-	 MvPUtePRaiDBcVGsKCMtreHCSnSoneUusH1BmryV6E6LexbTt5IAqgRf17lUFLgt3Kg==
+	bh=mpjdYnTHxH/nbdf2Vk4AbwQAMZLWaQdbJltgY6MJR3Q=;
+	b=SdUaHSNjFvdSulIRcm50DMQkh014BNZeXz5jXfmahm7K2yrjK9SmagDl8e2IzrERZ/RK
+	 IkpSgliW8lfMmj3XruaSQu2/zUz4La64jCLuzm0N9pkhJaNOAKSSNmWMBrrXNd1QB96qi
+	 RpAqmNwS06TSCcE7JcgsjJ8XJAhYtlomzGHuAqXKLr5VQO4AnJiJjf6gnQiVZdr3nUs96
+	 CyljOd4n5+joB5Qxah4kac9uC59C2Y8gJ+6fHeRqOSaRKRsQVHsF8e4T35iwx29tguOi1
+	 O+wtkgRiuzJCsHqpbmTV0h7/jtnk1Mco7EaQyj5RyrsSlXsfm8uxAlWM0bQxeNmvZ/Q==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OZSfdaz+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mneqkfEb;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CFD606A326;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DCE606A327;
 	Sun,  1 Nov 2026 15:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OZSfdaz+
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mneqkfEb
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1793548046;
-	b=SDqPm5dYlYvj5MHWegBqtfRrX3XuiU41TQj+BCz31/xOUsXbDb2ftrmyefFp/GYKTUnd
-	 LA9SlR1pj7+k5k/lfSCQ2K0x2jGovhXTh9WgvhK9q57O4t8mXj21Glwdq4frCu+8NI5bd
-	 UI/lsQcHmY7u/PJdYsQas3NqMQLKcM6uY0nfpNtzs+1cZOSvySBqLgh8l0YLk+8UtxMtm
-	 cxG+liXh//GVT+z09oqPMePVPd57QobI79aiGU1eoF2JTPeHDynNdEsLFeHI5tODe6Sf2
-	 LiyVOFLDpNEzV0+4LxM14gZeiqFGU2WmRa7WvQnoSLhOhF36hVmOG46QMN6cfnbzVZw==
+	b=Wwyw9TIkT8ASO2MlDlaP5V1KjUoj3ZqL8W1xwBGxeJhkjZGxzR3uypvFG7KnjOfFrTfx
+	 Ck1bSZEyNqHgQgOFpA79ZWC9dh0GWZTWpF5wnurf6LkC+k3gaXJPb2wJ47l5VlC3tVHa+
+	 adRrIFgGU1aAUq3W10edrnUUB2cBipDsKvolWT/HlIUHIkeTo9FNhVFPrCGcRtL4cghoH
+	 ZVZnWPjC6jQFMavcxTHnzefXP05yQEuJVb1dADolcNcyFw8OyLOy4lQ0ltSevA3B4b3k5
+	 dAcbNZUKpiUym7IzJzumpbri7eTvgKTsCwg0QDyUsEa6pXj8UJ4gRj/u3E8wmEgaQmg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1793548046;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=9QABjkMJ3O/5a2PpmlQ85Jb7mwt60E8ZqBMhhs8NGaM=;
-	b=CIk0LYh9AtcBc5Cf9khKdhYt97It9C7vXRmrvSlvu4OBvRHdV6g1y5JKvySx7W+WToOH
-	 jZiF6vJyF3M0n7CP/tOmqU1rtLMI28nS5hkWCOnWi+ORRArCm2He23bKrbl8TasZBM19S
-	 H4fkaA9HEjaiyG6gcE5fKJlAyP672gxvI1Ybn/4Y2/YqXq5uyD1Qn4kFRHp+ktXbZdlpv
-	 7m1jJoGVxF/NbisN/kQ7pCeYXdGy0sDJh0T0F9cB+lTE6D6oZBr0wje6uT800IvJ89pnt
-	 AJNWtmazmC10MeFoKELo8nDJKVb0uKP0n70TCs7orgweZyf0w/rAGEbqqjeCE/8f87g==
+	bh=mpjdYnTHxH/nbdf2Vk4AbwQAMZLWaQdbJltgY6MJR3Q=;
+	b=q+nSka6uLhF9qBqthYPuoWCcCJQKLLb/kO8cef23aLHQS66bFIv9uUCtwfKaT2VhN+cm
+	 sYGeNcBa95agyo2g3waWp36UKXwLXRHi7Dnp600ooglmpjbkGdkJrQv+IX6UrSzjWmCvD
+	 MxDdt40WEOiA6+kHRJqQiC570g5bP4O+7d1b4B5knISsT4bKpbdK1zQ/cK+vdlMBsxjUg
+	 FBcbx/QOhwGw1VBylhH7J+cqrS9Q09OPDQ2weFkNtjCzSdYxKwF4k5NAnEtpbUeuC2WPX
+	 Csw7xyxMmdXkzOgEsjq9hdsteUFIBknGNdn13Q3qug1h6B02AGOZzek4+ivk0P+Cnzw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id A44811F00919;
+	by smtp.kernel.org (Postfix) with ESMTPS id A45781F0093A;
 	Sun,  1 Nov 2026 15:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1793548046;
-	bh=9QABjkMJ3O/5a2PpmlQ85Jb7mwt60E8ZqBMhhs8NGaM=;
+	bh=mpjdYnTHxH/nbdf2Vk4AbwQAMZLWaQdbJltgY6MJR3Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=OZSfdaz+lt42TYzs+prbm/6HU+eoV0pBOr/rrMfAV6T/16P3wHPGi4Yvqxs4vPcs9
-	 anxQgVTduqagQQRvEHLNZwPGa0TWYZOxPKJB35gH4i/bZc9kG0AnQh09t1b0zlGZ1l
-	 Xf/32ETx3BkXEIOkgGL7VFxIVRVOn7F/6yir1e12ImuemmJHUM8512WBBLuvqvWWkI
-	 BJDujsps0Igm3lc7okDRv29f4Y23xWRA6CMYAea2UkLU7P4n/WeJsydxxiK5H0NVpi
-	 Dph1b0Aik1JgD7O1zlA+GHJGoP3yOZvQyWjBGb1vegTH0BTp9sqsz3sr78FxKmbkBL
-	 7w8vHlLjQ1C7Q==
+	b=mneqkfEbQ4uk1fIJdyQfHXGAex0JIjqDha1nNSq/QWJpEbEeBBREVhCCgZ3o12LMv
+	 nLJD9smh7924QHdAdXGFw5pheIdsh99Mxqx6TXrLdVQWd5DFA8Tcc8eqe6NPTQ2htQ
+	 Y+V4o03qxLP5rVrtkRvv1Y6KrtvGTjrNjU6tbv+aNxCNh/csehJb0/sIfk3xBRlo2l
+	 OcNFHR29J4hjNRWebzb6kTufptbEniOU3k01M7ifDpFz8XPsMUE5nYdOE9QxlFsOmT
+	 3+ZPjFwCR9tNOnFwsGS1LXgloq0DCxBPn4yORSC2MvPWMyswPGUk/4mclbAlBmrKIa
+	 VhJxyOA0244aA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 2049A461E2;
+	by lkml.kernel.org (Postfix) with ESMTP id 147B0461D6;
 	Sun,  1 Nov 2026 15:47:25 +0000 (UTC)
 From: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
-Date: Sun, 01 Nov 2026 16:47:26 +0100
-Subject: [PATCH v2 2/2] rust: str: parse_int: accept a trailing newline
- like kstrtol()
+Date: Sun, 01 Nov 2026 16:47:25 +0100
+Subject: [PATCH v2 1/2] rust: str: parse_int: only accept a sign before the
+ radix prefix
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261101-b4-parse-int-sign-v2-2-0fd827f52070@younes.io>
+Message-Id: <20261101-b4-parse-int-sign-v2-1-0fd827f52070@younes.io>
 References: <20261101-b4-parse-int-sign-v2-0-0fd827f52070@younes.io>
 In-Reply-To: <20261101-b4-parse-int-sign-v2-0-0fd827f52070@younes.io>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -102,11 +102,11 @@ To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Younes Akhouayri <git@younes.io>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793548044; l=2520;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793548044; l=4337;
  i=git@younes.io; s=20261027; h=from:subject:message-id;
- bh=2XAMHgQke384/ZeGsO0Ek8ydrF0x8h0HbMzNATiMv70=;
- b=/JzwAtCUZYRO37zUxBiYebEVCS7f7iTMMUXgrDVwVyKuPYZ1d1BdokO8avHBEk+bmKTgpK1Kx
- KxUPayNyhSnB02Svvm5n85yMpf7TXY0eKTr1jpT1YJ/hZ8xwJHxz55K
+ bh=D+H9FI9ogCTq+jwzCZO0KaYdhnIJsuMSbe0CnAgFU7I=;
+ b=HjtJgBFDWRWgjnt/fR07zn0bCCT2DVNgadPEMGVBR7mmnpkoUPReCXsOal6rV/6eEhNsGUJbg
+ Mb0aGsEshVgAA66pqjAJ8w0XAy+6sPy2cndKHvzZSXzKbtuZzU3D19x
 X-Developer-Key: i=git@younes.io; a=ed25519;
  pk=TavwxGPDBjl4XGNQyFLKEW7PKSY4qOWusc7yf6hjV0c=
 X-Endpoint-Received: by B4 Relay for git@younes.io/20261027 with
@@ -117,58 +117,101 @@ Content-Transfer-Encoding: 7bit
 
 From: Younes Akhouayri <git@younes.io>
 
-The documentation of `ParseInt` says that any string parsed by
-`kstrtol()` or `kstrtoul()` is also parsed by `from_str()`. However,
-those functions accept a single trailing newline, and `from_str()` does
-not:
+`ParseInt::from_str()` strips an optional `-` and a radix prefix, then
+hands the remaining digits to `from_str_radix()` from `core`. That
+function accepts a leading `+`, and also `-` for signed types, so a
+sign placed after the prefix, or a second sign, is parsed too:
 
-    kstrtol("5\n", 0, &v)   == 0, v == 5
-    i32::from_str("5\n")    == Err(EINVAL)
+    i32::from_str("0x-5")  == Ok(-5)
+    i32::from_str("0x+5")  == Ok(5)
+    i32::from_str("-+5")   == Ok(-5)
+    i32::from_str("-0x+5") == Ok(-5)
 
-A trailing newline is common when the string comes from user space, for
-example when a value is written to a sysfs file with `echo`.
+`kstrtol()` rejects all of these with -EINVAL. On the other hand,
+`kstrtol()` accepts "+0x5" as 5, but `from_str()` rejects it, because
+it does not strip a leading `+` before looking for the prefix. Since
+the documentation says that any string parsed by `kstrtol()` is also
+parsed by `from_str()`, this is a bug.
 
-Fix it by removing a single trailing newline before parsing, and add
-doctests for it.
+Integer module parameters are parsed with `from_str()`, so this is
+visible from the kernel command line. Booting with
+`rust_minimal.test_parameter=0x-5` makes the `rust_minimal` sample
+print `test_parameter: -5`.
+
+Fix it by accepting a single `+` or `-` before the radix prefix only,
+and by making `strip_radix()` reject digits that start with a sign.
+Add doctests for these cases.
 
 Fixes: 51d9ee90ea90 ("rust: str: add radix prefixed integer parsing functions")
 Signed-off-by: Younes Akhouayri <git@younes.io>
 ---
- rust/kernel/str/parse_int.rs | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ rust/kernel/str/parse_int.rs | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
 diff --git a/rust/kernel/str/parse_int.rs b/rust/kernel/str/parse_int.rs
-index 66f590251ffc..5b13925c328e 100644
+index 48eb4c202984..66f590251ffc 100644
 --- a/rust/kernel/str/parse_int.rs
 +++ b/rust/kernel/str/parse_int.rs
-@@ -56,8 +56,8 @@ fn strip_radix(src: &BStr) -> Result<(u32, &BStr)> {
- /// Strings beginning with `0x`, `0o`, or `0b` are parsed as hex, octal, or
- /// binary respectively. Strings beginning with `0` otherwise are parsed as
- /// octal. Anything else is parsed as decimal. A leading `+` or `-` is also
--/// permitted. Any string parsed by [`kstrtol()`] or [`kstrtoul()`] will be
--/// successfully parsed.
-+/// permitted, as is a single trailing newline. Any string parsed by
-+/// [`kstrtol()`] or [`kstrtoul()`] will be successfully parsed.
- ///
- /// [`kstrtol()`]: https://docs.kernel.org/core-api/kernel-api.html#c.kstrtol
- /// [`kstrtoul()`]: https://docs.kernel.org/core-api/kernel-api.html#c.kstrtoul
-@@ -91,11 +91,15 @@ fn strip_radix(src: &BStr) -> Result<(u32, &BStr)> {
- /// assert!(i32::from_str(b_str!("0x+5")).is_err());
- /// assert!(i32::from_str(b_str!("-+5")).is_err());
- /// assert!(i32::from_str(b_str!("-0x+5")).is_err());
+@@ -28,8 +28,13 @@ pub trait FromStrRadix: Sized {
+ 
+ /// Extract the radix from an integer literal optionally prefixed with
+ /// one of `0x`, `0X`, `0o`, `0O`, `0b`, `0B`, `0`.
+-fn strip_radix(src: &BStr) -> (u32, &BStr) {
+-    match src.deref() {
 +///
-+/// assert_eq!(Ok(5u8), u8::from_str(b_str!("5\n")));
-+/// assert!(u8::from_str(b_str!("5\n\n")).is_err());
++/// Returns [`EINVAL`] if the remaining digits start with a sign. The
++/// caller passes them to the `from_str_radix()` functions of the
++/// primitive integer types in `core`, which accept a leading `+` or `-`
++/// of their own, so a sign here would make `0x-5` or `-+5` parse.
++fn strip_radix(src: &BStr) -> Result<(u32, &BStr)> {
++    let (radix, digits) = match src.deref() {
+         [b'0', b'x' | b'X', rest @ ..] => (16, rest.as_ref()),
+         [b'0', b'o' | b'O', rest @ ..] => (8, rest.as_ref()),
+         [b'0', b'b' | b'B', rest @ ..] => (2, rest.as_ref()),
+@@ -38,6 +43,11 @@ fn strip_radix(src: &BStr) -> (u32, &BStr) {
+         // not be able to parse `0`.
+         [b'0', ..] => (8, src),
+         _ => (10, src),
++    };
++
++    match digits.deref() {
++        [b'+' | b'-', ..] => Err(EINVAL),
++        _ => Ok((radix, digits)),
+     }
+ }
+ 
+@@ -75,13 +85,19 @@ fn strip_radix(src: &BStr) -> (u32, &BStr) {
+ /// assert!(i8::from_str(b_str!("-129")).is_err());
+ /// assert_eq!(Ok(255u8), u8::from_str(b_str!("255")));
+ /// assert!(u8::from_str(b_str!("256")).is_err());
++///
++/// assert_eq!(Ok(0x5i32), i32::from_str(b_str!("+0x5")));
++/// assert!(i32::from_str(b_str!("0x-5")).is_err());
++/// assert!(i32::from_str(b_str!("0x+5")).is_err());
++/// assert!(i32::from_str(b_str!("-+5")).is_err());
++/// assert!(i32::from_str(b_str!("-0x+5")).is_err());
  /// ```
  pub trait ParseInt: private::FromStrRadix + TryFrom<u64> {
      /// Parse a string according to the description in [`Self`].
      fn from_str(src: &BStr) -> Result<Self> {
--        match src.deref() {
-+        let src = src.strip_suffix(b"\n").unwrap_or(src);
-+        match src {
+         match src.deref() {
              [b'-', rest @ ..] => {
-                 let (radix, digits) = strip_radix(rest.as_ref())?;
+-                let (radix, digits) = strip_radix(rest.as_ref());
++                let (radix, digits) = strip_radix(rest.as_ref())?;
                  // 2's complement values range from -2^(b-1) to 2^(b-1)-1.
+                 // So if we want to parse negative numbers as positive and
+                 // later multiply by -1, we have to parse into a larger
+@@ -94,8 +110,8 @@ fn from_str(src: &BStr) -> Result<Self> {
+                         .map_err(|_| EINVAL)?;
+                 Self::from_u64_negated(val)
+             }
+-            _ => {
+-                let (radix, digits) = strip_radix(src);
++            [b'+', rest @ ..] | rest => {
++                let (radix, digits) = strip_radix(rest.as_ref())?;
+                 Self::from_str_radix(digits, radix).map_err(|_| EINVAL)
+             }
+         }
 
 -- 
 2.56.0
