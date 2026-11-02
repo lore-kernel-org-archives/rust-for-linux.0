@@ -1,47 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=34.202.193.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793636446;
-	b=319J75mxZ5jipGZl13RE0zB7ngNHDEoLkGQwnhive2tCiJ2qYmj9ysN/bXbL1PmFrjmw
-	 fB0yaOPiH05AV2fdIZkhT2Uo6Qi5g+QKeJsgE/eMtpUEa53jA+G0DyrD32ocmIcQv8V+/
-	 S6w+AEijnjz5HChvuxNeomWKPp8Hcp8mpJLEo1maL6Y5foLzvrKxdqrtgPLfLsfDYV9+1
-	 09KjV25K5z8W4Uhtw4Gt0K76hnkOm+ipmAgHWEwunHh2fbfe0T4pmsY3sQtEelybkZQ2l
-	 VufQ15OijN3ktYnPleI/LQLotvEgbuo3faJH2VkS3DgfQGlG20qoHPkF61Lsy74sb2Q==
+	t=1793643533;
+	b=eKc3j10BfO/KXoyzTIm/fCOtrygFOKxh721oXTA+o/BicwkmhglqGBCmF8uZRxxmn84u
+	 +xX6n/6fjIZ25oXQg87YKOxQjKTSk/YPEWNjdKcEWvGxXsgpzIxmwSRenRVOMG6li7Ibc
+	 U/3VScgi/Fq/d1im7nyWYUrmD01LIiAlxj7+BVeAHNW8qMWJujj/fyDg4n8anpD4277vv
+	 4JXrq92NDrIxnxWkhDAeketY/xZwtvpdikz3C+xqQj9P3jwGUk8rvR1dsA+hhg42zQQKA
+	 07FJWtOaEH3V0QoLkjcgSzqaWy2klzLyKLN4RWhOyWMzEAzcWTF8hADTP2S4RgqmsTw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793636446;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=+JNoTlSwRmyB40Pne6BVDBz4S/O3EIyiOba9uuaE8eg=;
-	b=WgNZ62hx6kZeXyW5pcxybht+c4xUqa8r3Nf3stLv/6Fj945TJYxa0Z6uGVvvO9l6pwKE
-	 GVvVyRlY/g8qTNzSowQX6w3S/WS1v2wmNUSFvDFyXK6d92mls18dfwIGHQWIwja1RVDkz
-	 Wb0XZIvhJFJZQiNAaXMDKHUi4BhIfeUcD2MOLtrI49u5IKKkf7LVPUtmW8ICkUHyP2r8p
-	 GjsVvow59jYjZ94NZQa+w9YvKorbJytBYXvCBiYUh9Cazn2ke5e1wuve7ETZsOB0/2pB+
-	 w0/pA/XEI4AhqCz+Mc2TmNrQC+3c91khcTUSO5KkS9clDWJgC1DvEDVmRy5zhlv6bsw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793643533;
+	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:Feedback-ID:
+	 X-Pm-Original-To:Received:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=o4fnmGuYE2qLagLLz4EmxxYZ3imDPsAHaJFgN5jWSiE=;
+	b=WKkNq5DAmvIWQrBJBNiw5WBFuTduJo4zfIyoUHDdH8vHqft7lL+qe+u07JEamL0VOrKO
+	 ntOUouKygFQAo/BsJao43xaetzxcyJ6FW9GYGgRbiGErikmVIMIoG2Wk2MQJ8zf3Bm/Ur
+	 CZMZXVbyCjqZgrxoDQ6zsR6gL6XeMlMrxEc9q+1fvWDyviF1FQKNQhyvaoEo199Gc6UXv
+	 aU/AhkN7VGZq6VdV+bFVMLn1zLRIU1aZwQD7TUQ42H0mJkj8usqlQDNtnA02NAo01Csma
+	 hZsTAUv/LGbagFJCBz6MzxFUeEY4uwF8wuiU417Y4T+FDCb9fhz9VmusBwT3+ouFBfQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="BuqU/xlQ";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=younes.io;
+	spf=pass smtp.mailfrom=younes.io;
+	dkim=pass header.d=younes.io header.i=@younes.io header.a=rsa-sha256 header.s=purelymail2 header.b=IfF1ease;
+	dkim=pass header.d=purelymail.com header.i=@purelymail.com header.a=rsa-sha256 header.s=purelymail2 header.b=vYWSPGJ+;
+	arc=none smtp.remote-ip=34.202.193.197
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB6B6083637;
-	Mon,  2 Nov 2026 16:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D44F606A324
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 18:18:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D44F606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=younes.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=younes.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BuqU/xlQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA231F00A1A;
-	Mon,  2 Nov 2026 16:20:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793636445;
-	bh=+JNoTlSwRmyB40Pne6BVDBz4S/O3EIyiOba9uuaE8eg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BuqU/xlQqdjOdE9xy4RoKknDtjJCSLBNlyN7yRFZsW3JrejOCr+6Tam0LF7FDzivQ
-	 MT+3IY9FX5W3FF4Gv6oVx5UxLrmqmIH9/sbacwEk6RCrdXUXwA1bBz+iYTDWKmhshv
-	 AnjtoBC9S4/e/wBp84/5XlRAWodC1LlKrqqhFwHxtqXs9DQVGyVr0+3to1FpO1u+EO
-	 3JJ21l2KS6jiUmgMtxbdkPnxAiVstTHqVU2G7Nk5goJ22/y/fwVV0wWd5FVhnsExm6
-	 PXGlU0b9Wl/ysC2IO5zl8P80MqWJmxxo1PvXF1mT6J2Vx+R3CIEia1JIBCsGcWA183
-	 0rgiT9B2mpzlQ==
-Message-ID: <25216bda-7e36-4bad-ba7c-1984dbb9dfda@kernel.org>
-Date: Mon, 2 Nov 2026 17:20:40 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=younes.io header.i=@younes.io header.a=rsa-sha256 header.s=purelymail2 header.b=IfF1ease;
+	dkim=pass (2048-bit key, unprotected) header.d=purelymail.com header.i=@purelymail.com header.a=rsa-sha256 header.s=purelymail2 header.b=vYWSPGJ+
+DKIM-Signature: a=rsa-sha256; b=IfF1easev/Ee2YVPBiTxxFyUeVOpwPyg7AtV5wA9t1zybRzNu74YDPlVCqmhnuiMOlxU/618TmPjvTF2zWcgqe4AQw1PvYSy2GiQDgPgcdy0P6PIoDYOrQgLow5HZnwWkw5zQeWix0cv2eaTz1iGlvizsUzWTjYRNUeGQXPDoVbNtBqkI5bror6WXto0D87a0PTz52TpDarLTXwN7tbISiutVWyPBd3NpYVTayArJ7urvKg51D8f4AMR6IcsJ3itAYz25LTAvzvnVD7Z5wrGlgo2//75w23EniYyEcFD+R4Oa9Jl1gUIZtgtqQSqiL6lqFpr4yWOLgZW4qra0rDddw==; s=purelymail2; d=younes.io; v=1; bh=o4fnmGuYE2qLagLLz4EmxxYZ3imDPsAHaJFgN5jWSiE=; h=Received:From:To:Subject:Date;
+DKIM-Signature: a=rsa-sha256; b=vYWSPGJ+XF++FZqXhv68N8DXNOgOur1+ajGn94jx2GrOw6jqMZD+b1NeP2E1pMkWLK9IB1StvUhHRRsrJeZ3lhBOV4PHHrPABwZ6/9pahde8WFVZEa5bpX3NJkzaUX3T8nSkeDQuYUtuEe1dY47VvqzZBHmPksbB02BkubEO9+RZ7eAg+145wat8+B7BoS9leuALbiJX7kOx4ROBgB3DZwGrKqIP7g8072yiBCm/YyhZ8zRURP9r4VkvlGdm7u3KLIvp+aBLl+50Gsi9uw1BAAu+RHO//dUgcZ7I3MlASOtvLltu9YCHpWcO3WzJdRL05PDDcf1ShhJgv3RGrqByZQ==; s=purelymail2; d=purelymail.com; v=1; bh=o4fnmGuYE2qLagLLz4EmxxYZ3imDPsAHaJFgN5jWSiE=; h=Feedback-ID:Received:From:To:Subject:Date;
+Feedback-ID: 1578161:62319:null:purelymail
+X-Pm-Original-To: rust-for-linux@vger.kernel.org
+Authentication-Results: purelymail.com; auth=pass
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -1704967885;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Mon, 02 Nov 2026 18:18:12 +0000 (UTC)
+From: Younes Akhouayri <git@younes.io>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>,
+ David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Shuah Khan <skhan@linuxfoundation.org>, rust-for-linux@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: doctest: fix line numbers after crate-level attributes
+Date: Mon, 2 Nov 2026 18:18:12 +0000
+Message-ID: <kw-1793643492.088831861-665782-0@younes.io>
+In-Reply-To: <CANiq72k=Ru3QsiUjrXOtFqVuA-D+w8fJ2fUOTAL2cKFS0EhLDQ@mail.gmail.com>
+References: <20261027-rust-doctest-line-fix-v1-1-0c13185a58b6@younes.io>
+ <CANiq72ntn6ThPz9Q6+BxU6w-x2jUQ50xpiy1_gCRi6o0peHi8w@mail.gmail.com>
+ <kw-1793624159.027890950-307523-1@younes.io>
+ <CANiq72k=Ru3QsiUjrXOtFqVuA-D+w8fJ2fUOTAL2cKFS0EhLDQ@mail.gmail.com>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -51,102 +78,33 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 3/3] bpftool: Prefer zlib-rs over zlib when
- available
-To: Ian Rogers <irogers@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
- Adrian Hunter <adrian.hunter@intel.com>, Miguel Ojeda <ojeda@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- linux-perf-users@vger.kernel.org, bpf@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
- llvm@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20261030202710.3863806-1-irogers@google.com>
- <20261030202710.3863806-4-irogers@google.com>
-From: Quentin Monnet <qmo@kernel.org>
-Content-Language: en-GB
-In-Reply-To: <20261030202710.3863806-4-irogers@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Ian, thanks for the v2,
+On Mon, 2 Nov 2026 15:26:29 +0100, Miguel Ojeda wrote:
+> If what we want is for people to simply notice, then I was thinking of
+> just `unwrap()`ping like others we have around there.
+>
+> Having said that, it can be annoying and confusing if someone writes a
+> doctest and has to figure out what to change in these scripts (scripts
+> that they may not even know they exist...).
+>
+> Ideally, I think we would have a "warning" somehow, i.e. something
+> that doesn't stop people from working but that will get noticed.
 
+Makes sense.
 
-2026-10-30 13:27 UTC-0700 ~ Ian Rogers <irogers@google.com>
-> Add zlib-rs and zlib to FEATURE_TESTS and FEATURE_DISPLAY in
-> tools/bpf/bpftool/Makefile and use feature_rust_lib to configure
-> ZLIB_CFLAGS and ZLIB_LIBS when zlib-rs is detected (unless disabled with
-> NO_ZLIB_RS=1), falling back to -lz.
-> 
-> Decompression of kernel configuration (/proc/config.gz) and compressed
-> ELF/BTF sections (via libbpf, libelf, and libbfd) processes data that
+Note that a doctest author cannot really trigger this check: it only
+looks at the first line of rustdoc's output, which rustdoc writes
+itself, so in practice only a toolchain change would hit it.
 
-
-Is there any mechanism in place that prevents libbpf, libelf, and libbfd
-to link to different versions of zlib (zlib vs zlib-rs, I mean)? I
-imagine you could have bpftool linking against zlib-rs, but the libs
-installed on the system linking against zlib? Also I think the static
-build with the LLVM disassembler [0] passes -lz -lzstd in LIBS and I'm
-not sure how it would combine with the change, I need to take a closer look.
-
-
-> benefits from a memory-safe implementation. Preferring zlib-rs over C
-> zlib provides memory safety and improved decompression performance while
-> keeping bpftool aligned with tools/perf (including sharing libz_rs.a
-> when building bootstrap bpftool for perf BPF skeletons).
-> 
-> Signed-off-by: Ian Rogers <irogers@google.com>
-
-Recalling our discussion from v1:
-
->> Hi Ian, bpftool doesn't make an intensive use of zlib (mostly, it's a
->> requirement from other dependencies; we may also use it to unzip the
->> kernel config on the host if necessary for probing BPF features on the
->> system, but only on some distributions). So I'm struggling to understand
->> the motivation for your proposal, what do we gain by switching to
->> zlib-rs when available? I understand this implementation is in Rust, but
->> I'm not sure the added complexity and feature probing in the build
->> system is worth it.
-> 
-> Hi Quentin,
-> 
-> At my workplace, we are transitioning from zlib to zlib-rs for both
-> security and performance reasons. I'd like to keep upstream tools
-> aligned but they don't have to be, it just seems nice. I agree zlib is
-> of a lower priority to users than, say, zstd. For attackers, like with
-> brotli, it is probably an area of interest. Knowing the implementation
-> is memory safe is at least something in favor of zlib-rs. I sent this
-> series out as an RFC because I obviously have no way to mandate what
-> upstream should or shouldn't be doing. There are things that can make
-> life a little nicer and easier, and this patch series, for me, is one
-> of them.
-I understand you're transitioning to zlib-rs, but the current patch is
-not a full transition, in the sense that it doesn't replace zlib with
-zlib-rs but allows any of the two options; and I don't see support for
-the standard zlib being removed from bpftool anytime soon, which means
-that in practice, we've got to maintain compatibility with the two
-versions going forward. Others may want to chime in, but I'm still not
-convinced this is worth the burden.
-
-You also mention zstd, do you plan to add support for a zstd alternative
-as well in perf and bpftool in the future?
-
-(By the way, if you allow me a short digression, you had a patch related
-to the zstd probing for perf and bpftool [0] and I don't see in the
-tree, do you know if it was ever merged?)
+The generator's stderr already ends up in the build log (only rustdoc's
+stdout is sent to /dev/null in rust/Makefile), so for v2 I'll do: if the
+output starts with `#![allow(unused)]`, subtract the moved lines with a
+plain `- 1`; otherwise print a single warning naming the test and the
+script, and apply no adjustment, so things keep working as today with
+possibly wrong line numbers. I'll also note in the comment that only
+single-line attributes are handled.
 
 Best regards,
-Quentin
-
-
-[0]
-https://github.com/libbpf/bpftool/blob/main/.github/workflows/static-build.yaml
-[1] https://lore.kernel.org/all/20260909204122.1993010-4-irogers@google.com/
+Younes
