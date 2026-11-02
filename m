@@ -1,88 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793634692;
-	b=b7yKFYciv7el2Ax7GPYYBvhm+HpqiUigesw1PhAHeDzLUzOozWvPoqsRU1UBWWgzGfza
-	 q7mUswuZBohMcDjwKCI2Qxx3XDb/nF8aj9N1Wnoi/wJ2wNmDNiXcw6mHE2w95fKSjrjNa
-	 80vm2++PTL/0YhGc4zqXi6SAXFbXwpUxJ8xLh9oV5iqGaGizI+PTKLnLs0PQb11Ra9GoZ
-	 z5vukpUH8dS/n0AZ/gGK+Kjap9IvKEDatCbNeeO5Hkrmvej+0AEh8FMVA6M2EhAzAJzoF
-	 1hhbqr0M85eDet+NgoGdlWMAR3vU42vQfcQcVHacrZ4+puiZG3pRtH3tt12Tz+2+3Tg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793634692;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=qlIPZi0u6yOauO+OPLsKraWQniSptmtMhVHra/xvkjY=;
-	b=5X7j4KoClNi2+0/0IaFXbCsLKuk/SPuLR7Lc8rvNM2aftLYGMplT0o3MpRigZokVwrJJ
-	 SJUIWCoov00KMeQO3uFhRC7iipQENa64qwdO+iYxOILdcnXzrYyuJpoCp3ZseAiuV/+Wy
-	 kr5Fijit9wJo1npb6jxlHR3AWgQrMc3uuS1+NhP5JI/wIFVQ6i39jsaPsnGoIMiwp5u5x
-	 w6jj22xP10H30UNdS6wLH8yg079hpmmrAfAHHYqTPImIUjktGbS5f7r5/uQfcO82JjqlD
-	 7q9A4XtypXAAMOGv/Prb+uucU8rS40e4lCOjME3PzIdcxk6kmv3MFQE5O4JICdogP2A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oaV42w8u;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=74.125.82.182
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793634688;
+	b=KWaF5NO0FZOIG4v7dgXWfexG9fhWo177zFy7D8JLtigj2zte6Vo0mfjGSqSd65mDxbQT
+	 gEp5NyJsLXU7BtrOCxq9AEY+QJY6kNM5os380pytAKNmt6ZoeWddT4BRXZy8PiGcL4VfV
+	 AVlQuHxlQpTV66rITsc1+gszmipm13/pycKcqjT3nFovQKvN7SQscFvIbqCSU4I9Vfrfk
+	 tAHi42QJLvCFkoNeg1u8tHghCT4vD4oSTVMJXwWczAPe8kU/csY9G7SZQ4/aMk+fwVYkz
+	 Ayx3a17pWVu9h/41djfaOk/k0BN9pJ+QPdhkfqvV3sAdosKjRC+3TLeP8zoqlHpRUSg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793634688;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=O9bLsEQRWNF4YGtfobNRSVu8qcWy7PwQIpehlaoR3VI=;
+	b=B5nahWn95ejUq3uJIDkejYtape6bhonr1xmEfPXpsRIcEJ1tb2f8nfiXzB8YT6qZNjPv
+	 0JbxdkLRP3CWBPlASr408y6uk+uXNc0DTo///mYo7tkY4GAUKoDJaQ+fW4kHjD2vXrvcf
+	 8ndLWE4B81i40qNcet6ni1XZToN9pcY32M7pCD6210P1hTd2LJwjeYl3+ealD4kKJfqLA
+	 ffRrKaenP1yLtiMKhzgF0/DktuqCVSSf1yKH9Tuu8U4Dg1xGAMMYV7svFwUBUl5zyKtXR
+	 97dMcpvjNRQjpzgVUNHwG/MjIZt2OF77/IGgpLiSF8juFHIpSSMQDtHnklAw3jR+1OA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Jx5hjpdj;
+	arc=fail smtp.remote-ip=74.125.82.182
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BBC606E033
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 15:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A04A607992D
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 15:51:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A04A607992D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oaV42w8u
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D481D1F00A16;
-	Mon,  2 Nov 2026 15:51:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793634692;
-	bh=qlIPZi0u6yOauO+OPLsKraWQniSptmtMhVHra/xvkjY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oaV42w8uo1sPUH0uJqUgHmeUWPjlqyH+H9/UOrctIRT+8j8Sp6L1/cbcdRuPPd/aj
-	 99wR3mqm1g8dBal4Qonra8gd3oyhrZVLZJD7R2/3ny4TaTuHOagU05Cv6EhSjcY2cB
-	 vC/hckZM/pBiwOD6isgtlC29xf01BA1fklqpNYsEJztH9P3pML89iZm8oAmXBnMNiS
-	 F2T9mLWqk/e6Bwc7C9ZvSQrYCrvHi5QjPkVVSmSOqyp9uPFhPxcECfETNzUTgUcurM
-	 QLNrWX1z4sJOqayN6A1uprAojof+9ytEB4h7q5D+hpmQeJNYPh7eXAEpijGqOTvb+a
-	 dfGciQK96hHVg==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1E568F40066;
-	Mon,  2 Nov 2026 10:51:31 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Mon, 02 Nov 2026 10:51:31 -0500
-X-ME-Sender: <xms:g7Hoahnctsw8SgU_adZrAL4B_J8KgBjswnRfud30gcrmGuTngjRHvg>
-    <xme:g7HoaqCD3h6lnF5Zai4PJ7tNbuqEgyZ07K6bKkV1FQQYl9lZ9BVcbP0wzVjp-1PxJ
-    ZysLIYghl-gvZQyCifz5vKU77FvdEUc9tTfdjcdIRGJDDgZ4u_sj80>
-X-ME-Received: <xmr:g7HoasJDNx6GWUfnQPxERUfr-Iumwzf2u5C2MeQ_1cx60OTR_x1xR23nFJdEWlpDqykAMWaQgYx39vy64ZI6Ev9eJp0ARCvp>
-X-ME-Proxy-Cause: dmFkZTF3LJKH0twQ0mqWxh7leXrMsIR+Jv5n/COwjK6/6F0101Pqf1aNy5hcgS9tLeUTOM
-    jpncM6+0k0uy6U2d940TgH3C0Hnv5Ppy3QBEfFvivMTwK6YnWgzGEGv3h5g3LnxKehcNA5
-    sKfpLqsOsMQ1BIqDT75c60k45roxMsHoLYqRvKYhRCUX49seDzopPAKYFeriAGRNngF4UD
-    3May1dvwgLG45ax58w4iG31jKlcHQxtajETEijOQjI3taR2y7gkg17LsuKkpcVrqJ9ESBo
-    UqoafHIsCWDibf2ZNL/Dz3mYaMgJKC3G86W/8s/pQfx596ZCU1M5DTDq4Pzip41aBFaXCJ
-    L1H15uiFyMV640uUbJ0a6hPRzLfhcY/QD1/h7VxG8xHDse/HfjTwX32QYu6bs6GzmB0MVz
-    9cMDQVR1rbQNkZkbJsU5HMAEDFKFQg6unH9rOLJo5DXH3lvsiO9JbC90WpLpUIPZvQHzUm
-    X+GlKQ2FXz1Cs303dNEtTw3xrlIJJ8XanvU4qI2HKONtGROBuhqWXUyThPqER12fnHIMo1
-    L3E7/093RSurR2RZwgC791EJQGw5PHgiHB4uRyTzWl2FGf0VBVWdJK3e3xEWPjDdVQ5WD/
-    ZEvq1nkPt2UbbbfzLmZX9ED2V3GXg8AFNot8dvXQmXQIAA6jp+nf+7/xH35A
-X-ME-Proxy: <xmx:g7HoatwsCU2Z3q-_4wHs0PGKI32f258wE52kWqExZEnQQQDd7jRuUQ>
-    <xmx:g7Hoagynx5QA9LJryZ4fNNbaOXBbpCX-Q5o2WzklQNAD6Gypudgv9Q>
-    <xmx:g7Hoav2OOOa-fmpKVHOzTugkwLywnb-ZFRphWXp2K4QkilrLd-R1rg>
-    <xmx:g7HoaiXMwtvAl9eW46_mDQr7gGLCOFWQaSePRn5QIVrEALHDaLV9Hw>
-    <xmx:g7Hoajcdx9-Rv5Xy8MWKCy6PrZgBE0YO_bhpnSrdoAjwlymdDVPvSKpC>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 2 Nov 2026 10:51:30 -0500 (EST)
-Date: Mon, 2 Nov 2026 07:51:29 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: aliceryhl@google.com, arve@android.com, brauner@kernel.org,
-	cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org,
-	ojeda@kernel.org, tkjos@android.com, a.hindborg@kernel.org,
-	acourbot@nvidia.com, bjorn3_gh@protonmail.com, dakr@kernel.org,
-	daniel.almeida@collabora.com, lossin@kernel.org, lyude@redhat.com,
-	tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: Re: [PATCH v9] rust: sync: condvar: use Delta<Jiffy> for timeout and
- result
-Message-ID: <auixgbeSSfBWwVS9@tardis.local>
-References: <20261102035934.711973-1-tomo@flapping.org>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Jx5hjpdj
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-3646e6de3e8so227093eec.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Nov 2026 07:51:22 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793634682; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Vz9WzssPGgfF6TAnFyyHDafWBTDB3dMBXhtnt+XaOx2FW/qtz9HK2f9K8H+MypS0Mg
+         V9PihXnxPtAMw992sjBD7wJsOQ1UXgfj4C9XNePjA+25Vpf5Oak+Xz0EK1Ix1+2VpxrJ
+         WIeSPauIL0nvTlEhbG2IyqSt7CYashsdixKHJ0fItZJe3DvsK306fQRHx99JU41WKuRV
+         OL3K+duEh1nxMVvhuFzPLSj9+vDyXz7qhLEfmq0gjeaqypKTsiteDqXHyBM9MFatA40U
+         xwRcKNHCm2+o7jlT9jd5Oy9WpIOvx04R5zqZv5s62+XPyHI8W/OSE6OunrPPzrX+oEO3
+         QyIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=O9bLsEQRWNF4YGtfobNRSVu8qcWy7PwQIpehlaoR3VI=;
+        fh=0v/AhSLtQu1IiSui4OUkJ0XAbz4E+Gk2AIuWJKIpIzc=;
+        b=aJG/am3twI9Al7o0AHtsTBzeAKNXYUE14Hf/6M7ywzNCodf6Z53CAwdHSLL151fPzC
+         WXAVLNn62bRAfFzwjrdrnR5F62ZVfkRub2tDyal/oKTsBPAadHbIjJyxkMIiA/frZ5H2
+         11xhpQhKe9x/Cry48kjOPep1d96BlHWh7EvWCopN/5yE3Xkg07n8sOPJU+iKe39ym4kq
+         g9tZf3N0NTFpYDtkIcwDvshAGI7EbQEYebvZj8uqdFQlQA4BhWOH5NZEvaAqKKvROdRP
+         7CCCgV0Ls/V9+GlPmHyy+H4zJDTYtOkWvQzUR+znq9obeD1bjNOKjg3D5oGciSY1duxu
+         1CYA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793634682; x=1794239482; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=O9bLsEQRWNF4YGtfobNRSVu8qcWy7PwQIpehlaoR3VI=;
+        b=Jx5hjpdjjlBsO+DGmDLrmel8TNZ68ZGcN+mrdu/XdnLZ3su7Qt+mo5I3Wn4KkNM0RG
+         pEpZJirbWbDM2osWmn7EKh5faQSGmGgExI5B1X/4680rFZmaCbJKKxBmzl/T4N/69kYG
+         iqs5LLBESRVpZObsQgILvEGVNjPjK35NtXFnUy60hwgDQTNUfkbqspJbsxeXWz9IvNC9
+         OHix8ncaHVl/1Xk5w2THLiQ8UoC9ybR8pBsJynLjfB58/ROOImgsNoyOgaPa9aW1Jrar
+         3UHkyfTuhfGgcLQDz/LQvCMeJT/xtikdtIUB2DvhmztgXDZ/Mbi1p8cvrIUuQGTutLX5
+         ZztA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793634682; x=1794239482;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=O9bLsEQRWNF4YGtfobNRSVu8qcWy7PwQIpehlaoR3VI=;
+        b=2U3WA6sBXyXHSlNDhVZ4xd5tyqOkaNeKaM7mWjQ5ZSey529LJQCfud+zfeZj38nvxq
+         +Rv9Jvi2PFXtgHeYkwsjNtDkNrV/zqPFN24+atHp28Fnd1zdTE+7NTj3OOZW2Lf5iCTl
+         IwgBEreA8Mqo+XKSBq3QCQPx5caPNY1IJk/FoDDyzZun+b+gVqMWEy0y9XkYEbxHrDLs
+         T1hkltKyH9zvm6E2DcTjk01P6+E2zpC7EXb03dkNV5PMTmWOpvqJ6Qm5BSQ+o38JAzMj
+         tmu2zsQ5Cr8kMpQdFXp0nx/RQeMpBDILG9+U2xKKwjNOJg31dPFrXkROQk2KqVEDurB/
+         he3g==
+X-Forwarded-Encrypted: i=1; AKwUvByB6fg+rwm4vTSC5gWlBmSnd54RgPyw5ILUNVpOmDHJ0LP4nF+edeYTcLLEAeLtoNDMlbXJ6AC6ZA4VRmrcCg==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/0uGqW6QyJY8a06S75lwTsRu/5HX8hQtng0R9xyunVG9V+bmLc
+	pTWKR4I7/l4LcymAftG5VKAz62LTvBPLxK/dXoUDA0H1e3qzQaTLjAq9Hd17DOii7xsyh3p1jKX
+	T6Vkq1vq6Ysow15f/+CmrLzt0JPGs1xw=
+X-Gm-Gg: AYBFou1IsRyFTu5iH0kZPrEa0TGs0Fdf16MHga6wmRwQ8cT0R0vyg32zNZ5UMS1C6l1
+	WgF7ZLP+zC9FenJMchXIImTDf2dwDjeA5CD7AkDa42gUJSdzBmvrKp6g4Jpw3Ws24tXw/m6q8MK
+	ByNQyX2aPxazccUYdbbWiYFRfKFTSe+wdtct5TNiWkFsvWcMaWGkswBjBMZYAIKKsTCi9V+uWCd
+	GEsuJd5B1xoZfctdWDz0aTwbt6SejNkdfv7R/efNnH1vAhxzAgixDzaR+JdfHN/EOStaBMzNkrt
+	nr3ik/Azhd3pgaVWpq3nHCJMQwQ8Ua2zHxQWZ7BYP9eoGYVIKdD+nozbM3tnLwMzkO5fADcy5Ag
+	afQb2OpjDGapy8DQrNPd5QFo+vMZ2exn3SxnTXexvw6MdfbSsBT/2A0MiL6F+Yp4BxH14uES4cn
+	nPBTtP9LY0sCFa9FreHpWdWF50HcV8FbRvJF/EeIv7h0dAgj7X+e8+aJlOjK+fxF4D1TU2igd6q
+	n/nJLMyMjDcs3lUyPjfTkLpxcePFdzgQfTNdWrai/I4cBI6gCnRRw4bHg==
+X-Received: by 2002:a05:7301:144b:b0:35e:d21c:f33e with SMTP id
+ 5a478bee46e88-36a4220aab3mr23175401eec.1.1793634681766; Mon, 02 Nov 2026
+ 07:51:21 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -92,175 +106,45 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102035934.711973-1-tomo@flapping.org>
+References: <20261029-rust_kunit_v6_send-v2-0-5ce551efc48e@gmail.com>
+ <20261029-rust_kunit_v6_send-v2-1-5ce551efc48e@gmail.com> <DMKTARY7GF4B.27HUM6XMDTQNV@gmail.com>
+In-Reply-To: <DMKTARY7GF4B.27HUM6XMDTQNV@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 2 Nov 2026 16:51:07 +0100
+X-Gm-Features: AclHuK-Fy3prM0NkytCqnZerg0IISmU7H9eN5VZP0wCcLTYRYHd1nA0RhfMUSSk
+Message-ID: <CANiq72n3YfMpWndR06B0s1Mj_PjAR8MJ+0nP4XXPkaFh3zX7pA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] rust: kunit: add #[should_panic] support
+To: =?UTF-8?Q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Benno Lossin <lossin@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
+	David Gow <david@davidgow.net>, Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Burak Emir <burak.emir@gmail.com>, Rae Moar <raemoar63@gmail.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Trevor Gross <tmgross@umich.edu>, Yury Norov <yury.norov@gmail.com>, 
+	kunit-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 02, 2026 at 12:59:34PM +0900, FUJITA Tomonori wrote:
-> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> 
-> wait_interruptible_timeout() takes the timeout as a raw Jiffies, and
-> CondVarTimeoutResult reports the remaining time as a raw Jiffies. The
-> type does not show the unit.
-> 
-> Switch the parameter and the result fields to Delta<Jiffy>.
-> 
-> Delta<Jiffy> is signed, but schedule_timeout() prints an error and a
-> stack dump for a negative timeout. Clamp a negative timeout to zero, so
-> it means an immediate timeout.
-> 
-> Update the only user, binder. It now converts the freeze timeout with
-> Delta::to_jiffies_timeout() instead of msecs_to_jiffies(). Both round
-> up, so a short timeout does not become zero. They differ only for a
-> very long timeout. msecs_to_jiffies() returns MAX_JIFFY_OFFSET for
-> 2^31 ms (about 24.9 days) or more, which means an infinite
-> timeout. to_jiffies_timeout() has no such special case. It converts
-> such a value to the matching number of jiffies, so the wait is long
-> but finite.
-> 
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Mon, Nov 2, 2026 at 3:58=E2=80=AFPM Nicol=C3=A1s Antinori
+<nico.antinori.7@gmail.com> wrote:
+>
+> To solve this I created a new config "RUST_KUNIT_SHOULD_PANIC_ATTRIBUTE"
+> that depends on !UML && !PANIC_ON_OOPS && BUG. If the test is annotated
+> with `#[should_panic]` and CONFIG_RUST_KUNIT_SHOULD_PANIC_ATTRIBUTE=3Dn,
+> the test won't run and won't show up in the summary.
 
-Thanks. Alice, any concern regarding the change in binder?
+I was wondering if we needed the flexibility, i.e. if we could just
+simply disable them when the conditions are not satisfied, but I guess
+given `CONFIG_KUNIT_FAULT_TEST`'s existing description, it may make
+sense to have a new Kconfig symbol -- do the ones added here look
+similar in the kernel log to those fault ones?
 
-I have some naming suggestion, please see below:
+(And I was wondering because, in general, adding Kconfig symbols has a
+price: users may get confused etc.).
 
-> ---
-> v9:
-> - Send as a single patch. Patches 1/4 and 2/4 of v8 are in v7.4-rc1,
->   and the workqueue patch will be sent separately
-> - Rebase on v7.4-rc1
-> - Drop the comparison with enqueue_delayed() from the commit message
-> v8: https://lore.kernel.org/rust-for-linux/20261002050428.2746277-1-tomo@flapping.org/
-> ---
->  drivers/android/binder/process.rs |  7 ++++---
->  rust/kernel/sync/condvar.rs       | 31 ++++++++++++++++++++++---------
->  2 files changed, 26 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-> index 1f4cb43f1de6..edde0ea35687 100644
-> --- a/drivers/android/binder/process.rs
-> +++ b/drivers/android/binder/process.rs
-> @@ -35,6 +35,7 @@
->          Arc, ArcBorrow, CondVar, CondVarTimeoutResult, SetOnce, SpinLock, UniqueArc,
->      },
->      task::{Pid, Task},
-> +    time::Delta,
->      uaccess::{UserSlice, UserSliceReader},
->      uapi,
->      workqueue::{self, Work},
-> @@ -1552,8 +1553,8 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
->          inner.is_frozen = IsFrozen::InProgress;
->  
->          if info.timeout_ms > 0 {
-> -            let mut jiffies = kernel::time::msecs_to_jiffies(info.timeout_ms);
-> -            while jiffies > 0 {
-> +            let mut jiffies = Delta::from_millis(info.timeout_ms.into()).to_jiffies_timeout();
-
-I would rename this variable to `timeout`, i.e.
-
-	let timeout = Delta::from_millis(info.timeout_ms.into()).to_jiffies_timeout();
-
-Thoughts?
-
-> +            while jiffies.as_jiffies() > 0 {
->                  if inner.outstanding_txns == 0 {
->                      break;
->                  }
-> @@ -1570,7 +1571,7 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
->                          jiffies = remaining;
->                      }
->                      CondVarTimeoutResult::Timeout => {
-> -                        jiffies = 0;
-> +                        jiffies = Delta::ZERO;
->                      }
->                  }
->              }
-> diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-> index 69d58dfbad7b..ae70e91eca94 100644
-> --- a/rust/kernel/sync/condvar.rs
-> +++ b/rust/kernel/sync/condvar.rs
-> @@ -12,7 +12,10 @@
->      task::{
->          MAX_SCHEDULE_TIMEOUT, TASK_FREEZABLE, TASK_INTERRUPTIBLE, TASK_NORMAL, TASK_UNINTERRUPTIBLE,
->      },
-> -    time::Jiffies,
-> +    time::{
-> +        Delta,
-> +        Jiffy, //
-> +    },
->      types::Opaque,
->  };
->  use core::{marker::PhantomPinned, pin::Pin, ptr};
-> @@ -182,19 +185,29 @@ pub fn wait_interruptible_freezable<T: ?Sized, B: Backend>(
->      /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
->      /// thread to sleep. It wakes up when notified by [`CondVar::notify_one`] or
->      /// [`CondVar::notify_all`], or when a timeout occurs, or when the thread receives a signal.
-> +    ///
-> +    /// A negative timeout is treated as zero.
->      #[must_use = "wait_interruptible_timeout returns if a signal is pending, so the caller must check the return value"]
->      pub fn wait_interruptible_timeout<T: ?Sized, B: Backend>(
->          &self,
->          guard: &mut Guard<'_, T, B>,
-> -        jiffies: Jiffies,
-> +        delta: Delta<Jiffy>,
-
-s/delta/timeout as well.
-
->      ) -> CondVarTimeoutResult {
-> -        let jiffies = jiffies.try_into().unwrap_or(MAX_SCHEDULE_TIMEOUT);
-> -        let res = self.wait_internal(TASK_INTERRUPTIBLE, guard, jiffies);
-> +        let jiffies = delta.as_jiffies();
-> +        let res = self.wait_internal(
-> +            TASK_INTERRUPTIBLE,
-> +            guard,
-> +            jiffies.clamp(0, MAX_SCHEDULE_TIMEOUT),
-> +        );
->  
-> -        match (res as Jiffies, crate::current!().signal_pending()) {
-> -            (jiffies, true) => CondVarTimeoutResult::Signal { jiffies },
-> +        match (res, crate::current!().signal_pending()) {
-> +            (jiffies, true) => CondVarTimeoutResult::Signal {
-
-s/jiffies/remainder
-
-> +                jiffies: Delta::from_jiffies(jiffies),
-> +            },
->              (0, false) => CondVarTimeoutResult::Timeout,
-> -            (jiffies, false) => CondVarTimeoutResult::Woken { jiffies },
-> +            (jiffies, false) => CondVarTimeoutResult::Woken {
-
-s/jiffies/remainder
-
-> +                jiffies: Delta::from_jiffies(jiffies),
-> +            },
->          }
->      }
->  
-> @@ -248,11 +261,11 @@ pub enum CondVarTimeoutResult {
->      /// Somebody woke us up.
->      Woken {
->          /// Remaining sleep duration.
-> -        jiffies: Jiffies,
-> +        jiffies: Delta<Jiffy>,
->      },
->      /// A signal occurred.
->      Signal {
->          /// Remaining sleep duration.
-> -        jiffies: Jiffies,
-> +        jiffies: Delta<Jiffy>,
-
-Similar for these two: s/jiffies/remainder
-
-Thoughts?
-
-Regards,
-Boqun
-
->      },
->  }
-> 
-> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-> -- 
-> 2.43.0
-> 
+Cheers,
+Miguel
