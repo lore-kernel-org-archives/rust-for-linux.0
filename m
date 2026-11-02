@@ -1,63 +1,80 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793644458;
-	b=5TJA0raFJmLm5L15BhWnqDWmvNUep8X0ZiAAtXFnq/SJdhg7KoV1C0yMv2clztlXE7p2
-	 T2x9IaAI04f3GfFtF7x4OcLFfjf0faVLUYXaT4Tw8yWquWvmnJYR3oefxUgsJew3egan+
-	 GGfUZwENwIop3fA00JhROAJKIkMW1hmA2IWMRcxEr45zftRFcYNJemGaRRvE4I8FpHcgi
-	 oQiloGUhwv1Tg0sn/d/u/FJxMfzvEEb3Y7dfDozZtmlHTZWCMAexYvEcg0G1E/LLN3LAJ
-	 LsS2xTcZ3Q941TL5LyqphweRWRQf/iVz9rYLdjY+J+wOOJoLl9/laz1a+hSp8xz+4TA==
+	t=1793649791;
+	b=Auaol19gjm9FpdlFXg0qaKCpp1bxC4oNXcoIk3tOexwasaiTQ9oQ/NXP/liaYb8qEtWd
+	 EdKFN5Izary3Di5+RHiCbDHBICiZKrBvKzdqGaeJdxETKYbMRvDOndXMlhryJHf272qcs
+	 bUCMkuIpa5rvZPCZKeeyuDiLbFIIyX2ELhMMPznr7BYEtL3TKuI+gkRjPKjDtR2WI7KV8
+	 qK1CuK2cB+u+71mV5SMl70sWcrG9lKKRqmcwBJIQcS7QBDRNBhItn8pS/7ynBjzysCDvg
+	 c8UKFQahz3KM9wkAN+xialdUdhzuTp7e1ofKCHFprQ2mc4BhKHh8M92Cjd05ch7t+wA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793644458;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=U/3/29WSUKxrOY4mnCHMtPID/fYIxnT4GI0/OkWPknI=;
-	b=mYuFOXZmzAe6J9zoAMO76gXtgWAVRUPuw75r6lyrYvSw2RR4ULkESdjfDt0pHg05giij
-	 G9jrWxhy2iGgg8v2U4w0fd3ua3v0xrjoFKlDtARXHDEPQopzJ7ruMVidUrCEDvctIHyoT
-	 ylQI7ZFAgCY9kvfOHnT0maLIaLR/6LaOoDVuovTshm/T1JRmd8haQ29HDf+4lvJPqTuxo
-	 ULziEhbjTCZvPXjpr9EWhj62stGvnNHgzeB5ikExM3VKVrcTPusXIEC2pKFRhrLtXiKs1
-	 1w61/1n0bkm9fhRXZ8RfkOMgFV6Je/HSkTdl7Zsk0EZDay7PZQ9wD8Cpi/ohpid/VGQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793649791;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=8f53qSaOUew/yduHzYAT33Sw2UKphgT8s54cwVuq9zg=;
+	b=z3aTaQGFDCQAcLXAnceNQ9n50rCKWBf7BzP42gnK9SAm+rqtsB1UcyI1s9yTdf2Rbv2g
+	 +4FRcd6HROyOJH9JhCvN54PbNQfvGhtcf6reicim9O5h9aaQMsZPJ8VEPlsr50DFtfS3I
+	 jXzR4DG4MTNXctTAp/UHCQMJwIb8Q/agLhsQD1QCOV94/tAbQUgClIKrwkKwImF//AK9L
+	 g9EmZxyqaK3zF1INLv6cSrjK1PNYfbWxQZA76qnlI1jKLRgTSlfCiOOnXFcqHClpkTKLZ
+	 +TTXUJ86098w2iNM1JPJXwMGWJTEYicsCgm8bfU80KwBy51VImglqvqRdB1Ws7m2PjA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="D/EUpFwD";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C6Hdo+hz;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346F5606A324
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 18:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8444606A324;
+	Mon,  2 Nov 2026 20:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D/EUpFwD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66781F00A16;
-	Mon,  2 Nov 2026 18:34:13 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C6Hdo+hz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BAD1F00A16;
+	Mon,  2 Nov 2026 20:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793644458;
-	bh=U/3/29WSUKxrOY4mnCHMtPID/fYIxnT4GI0/OkWPknI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=D/EUpFwDdAyfARorxnXdd90a1wHZ2RCN0uO4OV7piNMhg7Tzgp6ftCyJxTfWtddDW
-	 gnspk9C2cqQjBSdO/f7DoFslkyOZ1VddRgfKrNiCfbY/HdyaSa5zPStqOPjW0AQEEB
-	 +1PSv7Xc+OzWeVN8cuAlCOqdAllXoJ2cwHa0RNNmoRPXn4Ljr7y/vyFpCm+WI1dmrc
-	 vz/vIxHqT172iEJ7ZflwhysLwzJadpVQ64fyM45igTQwhElLGbcpRQzOMaBFV5RBxf
-	 jEl/N2pUkBEulN6NbCHZsreXIO3ZP4vW4eqjFPxfV6BIy5d25GKa4+swiSyVs68eW1
-	 syXaZHBRPFyPQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: FUJITA Tomonori <tomo@flapping.org>, boqun@kernel.org, ojeda@kernel.org,
- acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com, dakr@kernel.org, daniel.almeida@collabora.com,
- frederic@kernel.org, gary@garyguo.net, jstultz@google.com,
- lossin@kernel.org, lyude@redhat.com, mike@fireburn.co.uk,
- sboyd@kernel.org, tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu,
- work@onurozkan.dev, rust-for-linux@vger.kernel.org, FUJITA Tomonori
- <fujita.tomonori@gmail.com>
-Subject: Re: [PATCH v1 0/2] rust: time: seconds based Instant
-In-Reply-To: <CANiq72mjFLQbgfW_f7vAJ+M-95d5s54sBTRfMGYekcRmm7xTAg@mail.gmail.com>
-References: <8yvpSoQ7ihtTj508nQU_nAlk2eMmGH5zK6H5pow6z5cTYGO3yL_DvqwbFMwqzhtbL-52eMYXpT5Cyg0g7fUN7w==@protonmail.internalid>
- <20261031003334.4161188-1-tomo@flapping.org>
- <87h5hzmfui.fsf@t14s.mail-host-address-is-not-set>
- <-ovJnxcOvJAiKzPtfo11BN1FAx0pLVrkWbeFGFEQEPR4rxdbT819-RaUD_zMHLXqn-9oyUoPJFT2YexekcZMKw==@protonmail.internalid>
- <CANiq72mjFLQbgfW_f7vAJ+M-95d5s54sBTRfMGYekcRmm7xTAg@mail.gmail.com>
-Date: Mon, 02 Nov 2026 19:34:07 +0100
-Message-ID: <87ecd3m6ao.fsf@t14s.mail-host-address-is-not-set>
+	s=k20260515; t=1793649790;
+	bh=8f53qSaOUew/yduHzYAT33Sw2UKphgT8s54cwVuq9zg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=C6Hdo+hzAM2aCE2yQ8wCZI1E6GJUxrrbCQEknhiE/gjw6+GJfM09ra7ImVB1dXmv1
+	 X3nGRPBTQJVmzPrSs/z91HwdgBceJXITyLZ3R1hHYACecmOBgd3tygryGmNZpglEzM
+	 mp5JNuk23aI58tr5io/JBr6I7Nxs9Elc4SGO+NE1H3KhSmnynlwEP4/CFTP1tFTlmJ
+	 xfc83r9QPWcZUhsjIGLxPH7dnrQvoFsew+Kfv2OdzzuuyvR/oNBjCCZDKE5tT/ckTB
+	 0zPhV8w7eEbQo7m4CPyA0QZhqc5JWCPsJhDQyIEOnSE6974xmUcMk1l5P5B1yhiDpf
+	 Gx8L+kVhNHtqQ==
+Date: Mon, 2 Nov 2026 20:03:02 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Kwanghoon Son <asdfkwang@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>,
+	Paul Walmsley <pjw@kernel.org>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Anup Patel <anup@brainfault.org>, Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	linux-riscv@lists.infradead.org, linux-serial@vger.kernel.org
+Subject: Re: [PATCH RFC 12/12] MAINTAINERS: Add Bouffalo Lab BL808 support
+Message-ID: <20261102-throng-botanical-b244058ecc37@spud>
+References: <20261029-rust-bl808-console-v1-0-b736ee920078@gmail.com>
+ <20261029-rust-bl808-console-v1-12-b736ee920078@gmail.com>
+ <20261029-spyglass-evasion-772697094cb9@spud>
+ <20261029-amuser-savior-6a6ab062f471@spud>
+ <auSDJH9V31wmbrYv@debian>
+ <20261030-slider-finished-360b10521e0b@spud>
+ <auXQaY25XfYzxEb1@debian>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -67,34 +84,48 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="VKJ1YVFC0pQdfxF2"
+Content-Disposition: inline
+In-Reply-To: <auXQaY25XfYzxEb1@debian>
+
+--VKJ1YVFC0pQdfxF2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+On Sat, Oct 31, 2026 at 07:26:33AM -0400, Kwanghoon Son wrote:
+> =20
+> > Okay, that's good - but that's more of a response to my comment down
+> > below about splitting the entry, not a response to what I was asking
+> > here about the lack of a git tree. Are you going to send the SoC
+> > maintainers PRs for this platform or were you expecting someone else to
+> > apply the patches for this platform (IOW, me).
+>=20
+> Thanks for clarifying.
+>=20
+> Could you take the BL808 platform patches through your tree once they
+> are ready? (If that you okay with this way)
 
-> On Mon, Nov 2, 2026 at 4:08=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
-l.org> wrote:
->>
->> Orthogonal, but I dislike the shorthand `Sec` and `Nsec`. I would much
->> prefer `Seconds` and `NanoSeconds`. Opinions?
->
-> I guess it matches things like `NSEC_PER_USEC`? i.e. C.
->
-> (Personally, I don't mind longer identifiers and I tend to prefer them
-> where reasonable, but sometimes there are other factors to take into
-> account.)
->
-> Another point is whether we should align also our methods too (e.g.
-> "nanos", which comes from upstream Rust), i.e. with your suggestion,
-> we would have all `NSEC`, `nanos` and `NanoSeconds`.
+I'd rather not really. I shouldn't be the maintainer for platforms I do
+not care about, but I will do it if you're unwilling to - in part
+because I expect that the volume for the platform will be pretty low.
 
-In general I prefer that we match std on naming in general, which is
-also why we have `as_nanos`. However, chrono is using spelled out names,
-and I do prefer that to the short hand used in std. Worth a discussion I
-think.
+Please read through Documentation/process/maintainer-soc.rst to see what
+the expectations for a platform maintainer are.
 
-Best regards,
-Andreas Hindborg
+Cheers,
+Conor.
 
+--VKJ1YVFC0pQdfxF2
+Content-Type: application/pgp-signature; name=signature.asc
 
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaujsdgAKCRB4tDGHoIJi
+0rvXAQCHO96kr3fe760sxHNQfps8aidw4ByhVix9gyeGS+Q7WwD/XoV2kQ70wj6S
+Ayz1b9AlQkWnpQ7NCsg4w9US5ybLXgQ=
+=TfLH
+-----END PGP SIGNATURE-----
+
+--VKJ1YVFC0pQdfxF2--
