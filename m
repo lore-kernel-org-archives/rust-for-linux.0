@@ -1,74 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793643533;
-	b=eKc3j10BfO/KXoyzTIm/fCOtrygFOKxh721oXTA+o/BicwkmhglqGBCmF8uZRxxmn84u
-	 +xX6n/6fjIZ25oXQg87YKOxQjKTSk/YPEWNjdKcEWvGxXsgpzIxmwSRenRVOMG6li7Ibc
-	 U/3VScgi/Fq/d1im7nyWYUrmD01LIiAlxj7+BVeAHNW8qMWJujj/fyDg4n8anpD4277vv
-	 4JXrq92NDrIxnxWkhDAeketY/xZwtvpdikz3C+xqQj9P3jwGUk8rvR1dsA+hhg42zQQKA
-	 07FJWtOaEH3V0QoLkjcgSzqaWy2klzLyKLN4RWhOyWMzEAzcWTF8hADTP2S4RgqmsTw==
+	t=1793644458;
+	b=5TJA0raFJmLm5L15BhWnqDWmvNUep8X0ZiAAtXFnq/SJdhg7KoV1C0yMv2clztlXE7p2
+	 T2x9IaAI04f3GfFtF7x4OcLFfjf0faVLUYXaT4Tw8yWquWvmnJYR3oefxUgsJew3egan+
+	 GGfUZwENwIop3fA00JhROAJKIkMW1hmA2IWMRcxEr45zftRFcYNJemGaRRvE4I8FpHcgi
+	 oQiloGUhwv1Tg0sn/d/u/FJxMfzvEEb3Y7dfDozZtmlHTZWCMAexYvEcg0G1E/LLN3LAJ
+	 LsS2xTcZ3Q941TL5LyqphweRWRQf/iVz9rYLdjY+J+wOOJoLl9/laz1a+hSp8xz+4TA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793643533;
-	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:Feedback-ID:
-	 X-Pm-Original-To:Received:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=o4fnmGuYE2qLagLLz4EmxxYZ3imDPsAHaJFgN5jWSiE=;
-	b=WKkNq5DAmvIWQrBJBNiw5WBFuTduJo4zfIyoUHDdH8vHqft7lL+qe+u07JEamL0VOrKO
-	 ntOUouKygFQAo/BsJao43xaetzxcyJ6FW9GYGgRbiGErikmVIMIoG2Wk2MQJ8zf3Bm/Ur
-	 CZMZXVbyCjqZgrxoDQ6zsR6gL6XeMlMrxEc9q+1fvWDyviF1FQKNQhyvaoEo199Gc6UXv
-	 aU/AhkN7VGZq6VdV+bFVMLn1zLRIU1aZwQD7TUQ42H0mJkj8usqlQDNtnA02NAo01Csma
-	 hZsTAUv/LGbagFJCBz6MzxFUeEY4uwF8wuiU417Y4T+FDCb9fhz9VmusBwT3+ouFBfQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793644458;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=U/3/29WSUKxrOY4mnCHMtPID/fYIxnT4GI0/OkWPknI=;
+	b=mYuFOXZmzAe6J9zoAMO76gXtgWAVRUPuw75r6lyrYvSw2RR4ULkESdjfDt0pHg05giij
+	 G9jrWxhy2iGgg8v2U4w0fd3ua3v0xrjoFKlDtARXHDEPQopzJ7ruMVidUrCEDvctIHyoT
+	 ylQI7ZFAgCY9kvfOHnT0maLIaLR/6LaOoDVuovTshm/T1JRmd8haQ29HDf+4lvJPqTuxo
+	 ULziEhbjTCZvPXjpr9EWhj62stGvnNHgzeB5ikExM3VKVrcTPusXIEC2pKFRhrLtXiKs1
+	 1w61/1n0bkm9fhRXZ8RfkOMgFV6Je/HSkTdl7Zsk0EZDay7PZQ9wD8Cpi/ohpid/VGQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=younes.io;
-	spf=pass smtp.mailfrom=younes.io;
-	dkim=pass header.d=younes.io header.i=@younes.io header.a=rsa-sha256 header.s=purelymail2 header.b=IfF1ease;
-	dkim=pass header.d=purelymail.com header.i=@purelymail.com header.a=rsa-sha256 header.s=purelymail2 header.b=vYWSPGJ+;
-	arc=none smtp.remote-ip=34.202.193.197
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="D/EUpFwD";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D44F606A324
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 18:18:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D44F606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=younes.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=younes.io
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346F5606A324
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 18:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=younes.io header.i=@younes.io header.a=rsa-sha256 header.s=purelymail2 header.b=IfF1ease;
-	dkim=pass (2048-bit key, unprotected) header.d=purelymail.com header.i=@purelymail.com header.a=rsa-sha256 header.s=purelymail2 header.b=vYWSPGJ+
-DKIM-Signature: a=rsa-sha256; b=IfF1easev/Ee2YVPBiTxxFyUeVOpwPyg7AtV5wA9t1zybRzNu74YDPlVCqmhnuiMOlxU/618TmPjvTF2zWcgqe4AQw1PvYSy2GiQDgPgcdy0P6PIoDYOrQgLow5HZnwWkw5zQeWix0cv2eaTz1iGlvizsUzWTjYRNUeGQXPDoVbNtBqkI5bror6WXto0D87a0PTz52TpDarLTXwN7tbISiutVWyPBd3NpYVTayArJ7urvKg51D8f4AMR6IcsJ3itAYz25LTAvzvnVD7Z5wrGlgo2//75w23EniYyEcFD+R4Oa9Jl1gUIZtgtqQSqiL6lqFpr4yWOLgZW4qra0rDddw==; s=purelymail2; d=younes.io; v=1; bh=o4fnmGuYE2qLagLLz4EmxxYZ3imDPsAHaJFgN5jWSiE=; h=Received:From:To:Subject:Date;
-DKIM-Signature: a=rsa-sha256; b=vYWSPGJ+XF++FZqXhv68N8DXNOgOur1+ajGn94jx2GrOw6jqMZD+b1NeP2E1pMkWLK9IB1StvUhHRRsrJeZ3lhBOV4PHHrPABwZ6/9pahde8WFVZEa5bpX3NJkzaUX3T8nSkeDQuYUtuEe1dY47VvqzZBHmPksbB02BkubEO9+RZ7eAg+145wat8+B7BoS9leuALbiJX7kOx4ROBgB3DZwGrKqIP7g8072yiBCm/YyhZ8zRURP9r4VkvlGdm7u3KLIvp+aBLl+50Gsi9uw1BAAu+RHO//dUgcZ7I3MlASOtvLltu9YCHpWcO3WzJdRL05PDDcf1ShhJgv3RGrqByZQ==; s=purelymail2; d=purelymail.com; v=1; bh=o4fnmGuYE2qLagLLz4EmxxYZ3imDPsAHaJFgN5jWSiE=; h=Feedback-ID:Received:From:To:Subject:Date;
-Feedback-ID: 1578161:62319:null:purelymail
-X-Pm-Original-To: rust-for-linux@vger.kernel.org
-Authentication-Results: purelymail.com; auth=pass
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -1704967885;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Mon, 02 Nov 2026 18:18:12 +0000 (UTC)
-From: Younes Akhouayri <git@younes.io>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D/EUpFwD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66781F00A16;
+	Mon,  2 Nov 2026 18:34:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793644458;
+	bh=U/3/29WSUKxrOY4mnCHMtPID/fYIxnT4GI0/OkWPknI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=D/EUpFwDdAyfARorxnXdd90a1wHZ2RCN0uO4OV7piNMhg7Tzgp6ftCyJxTfWtddDW
+	 gnspk9C2cqQjBSdO/f7DoFslkyOZ1VddRgfKrNiCfbY/HdyaSa5zPStqOPjW0AQEEB
+	 +1PSv7Xc+OzWeVN8cuAlCOqdAllXoJ2cwHa0RNNmoRPXn4Ljr7y/vyFpCm+WI1dmrc
+	 vz/vIxHqT172iEJ7ZflwhysLwzJadpVQ64fyM45igTQwhElLGbcpRQzOMaBFV5RBxf
+	 jEl/N2pUkBEulN6NbCHZsreXIO3ZP4vW4eqjFPxfV6BIy5d25GKa4+swiSyVs68eW1
+	 syXaZHBRPFyPQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>,
- David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Shuah Khan <skhan@linuxfoundation.org>, rust-for-linux@vger.kernel.org,
- linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: doctest: fix line numbers after crate-level attributes
-Date: Mon, 2 Nov 2026 18:18:12 +0000
-Message-ID: <kw-1793643492.088831861-665782-0@younes.io>
-In-Reply-To: <CANiq72k=Ru3QsiUjrXOtFqVuA-D+w8fJ2fUOTAL2cKFS0EhLDQ@mail.gmail.com>
-References: <20261027-rust-doctest-line-fix-v1-1-0c13185a58b6@younes.io>
- <CANiq72ntn6ThPz9Q6+BxU6w-x2jUQ50xpiy1_gCRi6o0peHi8w@mail.gmail.com>
- <kw-1793624159.027890950-307523-1@younes.io>
- <CANiq72k=Ru3QsiUjrXOtFqVuA-D+w8fJ2fUOTAL2cKFS0EhLDQ@mail.gmail.com>
+Cc: FUJITA Tomonori <tomo@flapping.org>, boqun@kernel.org, ojeda@kernel.org,
+ acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com, dakr@kernel.org, daniel.almeida@collabora.com,
+ frederic@kernel.org, gary@garyguo.net, jstultz@google.com,
+ lossin@kernel.org, lyude@redhat.com, mike@fireburn.co.uk,
+ sboyd@kernel.org, tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu,
+ work@onurozkan.dev, rust-for-linux@vger.kernel.org, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH v1 0/2] rust: time: seconds based Instant
+In-Reply-To: <CANiq72mjFLQbgfW_f7vAJ+M-95d5s54sBTRfMGYekcRmm7xTAg@mail.gmail.com>
+References: <8yvpSoQ7ihtTj508nQU_nAlk2eMmGH5zK6H5pow6z5cTYGO3yL_DvqwbFMwqzhtbL-52eMYXpT5Cyg0g7fUN7w==@protonmail.internalid>
+ <20261031003334.4161188-1-tomo@flapping.org>
+ <87h5hzmfui.fsf@t14s.mail-host-address-is-not-set>
+ <-ovJnxcOvJAiKzPtfo11BN1FAx0pLVrkWbeFGFEQEPR4rxdbT819-RaUD_zMHLXqn-9oyUoPJFT2YexekcZMKw==@protonmail.internalid>
+ <CANiq72mjFLQbgfW_f7vAJ+M-95d5s54sBTRfMGYekcRmm7xTAg@mail.gmail.com>
+Date: Mon, 02 Nov 2026 19:34:07 +0100
+Message-ID: <87ecd3m6ao.fsf@t14s.mail-host-address-is-not-set>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -78,33 +67,34 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2 Nov 2026 15:26:29 +0100, Miguel Ojeda wrote:
-> If what we want is for people to simply notice, then I was thinking of
-> just `unwrap()`ping like others we have around there.
+"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+
+> On Mon, Nov 2, 2026 at 4:08=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
+l.org> wrote:
+>>
+>> Orthogonal, but I dislike the shorthand `Sec` and `Nsec`. I would much
+>> prefer `Seconds` and `NanoSeconds`. Opinions?
 >
-> Having said that, it can be annoying and confusing if someone writes a
-> doctest and has to figure out what to change in these scripts (scripts
-> that they may not even know they exist...).
+> I guess it matches things like `NSEC_PER_USEC`? i.e. C.
 >
-> Ideally, I think we would have a "warning" somehow, i.e. something
-> that doesn't stop people from working but that will get noticed.
+> (Personally, I don't mind longer identifiers and I tend to prefer them
+> where reasonable, but sometimes there are other factors to take into
+> account.)
+>
+> Another point is whether we should align also our methods too (e.g.
+> "nanos", which comes from upstream Rust), i.e. with your suggestion,
+> we would have all `NSEC`, `nanos` and `NanoSeconds`.
 
-Makes sense.
-
-Note that a doctest author cannot really trigger this check: it only
-looks at the first line of rustdoc's output, which rustdoc writes
-itself, so in practice only a toolchain change would hit it.
-
-The generator's stderr already ends up in the build log (only rustdoc's
-stdout is sent to /dev/null in rust/Makefile), so for v2 I'll do: if the
-output starts with `#![allow(unused)]`, subtract the moved lines with a
-plain `- 1`; otherwise print a single warning naming the test and the
-script, and apply no adjustment, so things keep working as today with
-possibly wrong line numbers. I'll also note in the comment that only
-single-line attributes are handled.
+In general I prefer that we match std on naming in general, which is
+also why we have `as_nanos`. However, chrono is using spelled out names,
+and I do prefer that to the short hand used in std. Worth a discussion I
+think.
 
 Best regards,
-Younes
+Andreas Hindborg
+
+
+
