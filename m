@@ -1,113 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793630497;
-	b=BZtlPCVWPbzIWx31Wf02AHcI7QCpwlWnICLQ0a+vM2vxp4bVkSKSdKfO9LJLof62L35u
-	 ewk6dDjV6UjyVoFtS/ikqlf9nzxur+aaH7AeHx5PGmyPu5E6O/DfZREpnXs/8W9eoTW1U
-	 t+IwNqnJkGkqn53DJww8fKckRSFiMNohly6ENhE/yJcYPSoc0Z0d+/F/nroA/O7Gqc2E0
-	 JtdXbgoYjCui0jl+NrSrhSh6jGWtZwxge01oHieFfLya214Y4VxnAI2QCG7Z9NdZqwtVq
-	 LEw4m0y/Wt8mshihKSR5EQQ0EzgnNfE35PkVDv1mMZMlB5jiPa2qQaTXTWYfwHiBzJg==
+	t=1793631360;
+	b=N7CqZYlV09NZnUpVbxov6pORYL/4ituuf+P/M+qoGnpQtzkeTzjewbWWsv66C4W2P8Oy
+	 ku5+tEYkia8LIsCG3pee9bErSaqbTZAce3NFYT3nI7ZBonpTvUvN+K/g6NqGPHWWCXKSz
+	 q4iNrMnTobQzmcuREGUJufobm16qgv1IYk33j3dKK1EIGuVvhC0GFD0GKCVVKqCj6f1NX
+	 uSM7Hxfx2DvXgSs7KOwHXkl0fHr8E0wxtIuN9+DolgqyeCVu/SZTs7Uu8Bgpwy9ZKkDCN
+	 DBAw/ORVOmxkH4GXzm/hhuTUf6gXWLjIUJzNHThfTRuoWBd/FMs2zlAfjgVhyOlBtYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793630497;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Message-ID:Subject:
-	 From:To:Cc:Date:In-Reply-To:References:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP;
-	bh=q4BbyPlA55uLGnnEP+ZkozszDrg8T06NCY0tEGU3zIg=;
-	b=BeDB09LpCcCwtehChZWx9zU6jthXfDNEJJ/PMvKPJicQ6QjSnCELFfM0Um8M+8qOsv8C
-	 gAGX1OvVxPiGmh2k+/5xy+cyA7MSMsKDJhwdjhAkgu8kw80+gPMaPHPLqsURULktFWBGB
-	 Wsi+lUt8OtRLKU2SjbtZedZwJ+734NRDaUf3Iferwj3/3TFc0tCLbL4Rbi+34NBP/fJxu
-	 atFCEhN1+YAwh0J1Ai0zOb5vKYgyVcuxvrFXxRytXfXyq+FuimsP1iqfw48Kta5A9U0bu
-	 wjebR5nTmdMce0JhinYOeCSY0mqX9mIBzjZdDeLnzDFEp6VJnAge04gzORUt2HD1nuw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793631360;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:MIME-Version:Content-Type;
+	bh=MPec9+oZOl3NUF/zdJzqxPG2IuL/zAra5tVbTfu2gTI=;
+	b=m/xyMpruqfMaMsUxqd4wA2q7/BBqhkASt127c4CuNTYWOOruF2O//84H178K0foHFI3M
+	 0HukK7HCGAjQdJxPyHgtOTw04vwEcUqzW1dTwiTqHK5WxGTLQgoVe7B1XmcAd9U40LWza
+	 bnGjqfnEBr8kO/91n2xe9xSGAERK+Wmw0YirpebZQ0SxBolzRmzo0+ouQ280hZHJKbCAP
+	 sgMbaHt3lDGHtIZTJBjWbyRZ1XAbcHj7ZiXgucPj1uMxCE0z98sfLVcVA8XXkGjaRtpbU
+	 0m6GybE5VGQV9gbzqs8YAhfvjvRFq6EJHorCvMSFHuTH6BMVqeyKpHLaIilgQ2Vxx0Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=posteo.de;
-	spf=pass smtp.mailfrom=posteo.de;
-	dkim=pass header.d=posteo.de header.i=@posteo.de header.a=rsa-sha256 header.s=1984.8680eb header.b=AwkrSabK;
-	arc=none smtp.remote-ip=185.67.36.66
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="iNz6/pKc";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721AF606F21D
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 14:41:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 721AF606F21D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BC4606F3C6;
+	Mon,  2 Nov 2026 14:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=posteo.de header.i=@posteo.de header.a=rsa-sha256 header.s=1984.8680eb header.b=AwkrSabK
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id CD49E240107
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 15:41:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1793630488;
-	bh=q4BbyPlA55uLGnnEP+ZkozszDrg8T06NCY0tEGU3zIg=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=AwkrSabKQuUSkna6dwyQaLrGtGXERdyICgo/2n/zLu3Jych1/MZ7U3VRsX0WyhJSa
-	 /xgBXFm/8cDAiMVp9YEtBDlOrXxOubLegoOkyOCBNWr/UMHF4TsWoGhjy28jR3/2jF
-	 bIBR8VUcivi2mZYQdFyy6DJ2/Mtu+2ZnIA68hdH/qXfUDlX+belscUGTCnntuMk0C8
-	 w38+B3/niM6pV1m6bt0LCSLJ97BBakCnlic5pb/03DyE1P6x5xENCu/XoBLTKWX1wO
-	 gz5wA13sXttJkchOxjFbslr3F3Fx3r67cRcNR7pPFf7yO5jBxg1eMXMr4egjm+9QBn
-	 t3ScTD+jYDaFw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4jJDsx5RLjz9rxQ;
-	Mon,  2 Nov 2026 15:41:25 +0100 (CET)
-Message-ID: <30511bdb7f197c632ee9baa7e8c5d730faad3b1f.camel@posteo.de>
-Subject: Re: [PATCH v2] rust: serdev: use Delta<Jiffy> for timeouts
-From: Markus Probst <markus.probst@posteo.de>
-To: FUJITA Tomonori <tomo@flapping.org>, dakr@kernel.org, ojeda@kernel.org
-Cc: a.hindborg@kernel.org, acourbot@nvidia.com, aliceryhl@google.com, 
-	bjorn3_gh@protonmail.com, boqun@kernel.org, daniel.almeida@collabora.com, 
-	gary@garyguo.net, lossin@kernel.org, tamird@kernel.org, tmgross@umich.edu, 
-	work@onurozkan.dev, linux-serial@vger.kernel.org,
- rust-for-linux@vger.kernel.org,  FUJITA Tomonori <fujita.tomonori@gmail.com>
-Date: Mon, 02 Nov 2026 14:41:27 +0000
-In-Reply-To: <20261102005125.626125-1-tomo@flapping.org>
-References: <20261102005125.626125-1-tomo@flapping.org>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-VItmpj0V2gWLosbtRcYy"
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iNz6/pKc
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5968D1F00A17;
+	Mon,  2 Nov 2026 14:55:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793631360;
+	bh=MPec9+oZOl3NUF/zdJzqxPG2IuL/zAra5tVbTfu2gTI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=iNz6/pKcCyOMBU4Z5dqXpPGbVTXupCPKYHhA8n+/Kxpl0xPSfrnruRurU5XYB1ME5
+	 1Ayzi7TURQnw9xYp42q/NjQeosQT8GGFuk+ViWSHCLTzgrYjp1hvbdSklbBz2OiGH2
+	 slrT02oWUX6NSSe30gsWc0CDYU/YaSpBgSJHGWM6fXFzzsfc88bEgMOBw7VGashcao
+	 kt8v3WICcuUB7WQ5iqCK5ShHZJusZ10BZCJlDou3x/hwR6vP2kPAilOQU2BZIcRbKj
+	 PXJp+EGgxFrhiCr4zsFlXEjGiWRmLG7VhsksfhKYclYhG/ifzfPlmnWJK+1jG/U0X0
+	 AdffInxJpZ04w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: chenhan <chenhan0017.work@gmail.com>, rust-for-linux@vger.kernel.org
+Cc: boqun@kernel.org, fujita.tomonori@gmail.com, frederic@kernel.org,
+ lyude@redhat.com, tglx@kernel.org, anna-maria@linutronix.de,
+ jstultz@google.com, sboyd@kernel.org, ojeda@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
+ tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev,
+ miguel.ojeda.sandonis@gmail.com, tomo@flapping.org,
+ georgeandrout13@gmail.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v5 2/3] rust: time: make Delta division and remainder
+ fail consistently
+In-Reply-To: <20261031103206.24051-3-chenhan0017.work@gmail.com>
+References: <20261031103206.24051-1-chenhan0017.work@gmail.com>
+ <9rgWozT8EB7LL-tasC5IweVXppzvHxYie6ulSGjv_GuH2l4kNHHLFucqa0f9BtPX9RmZg2tUxBp2EljFlxokEA==@protonmail.internalid>
+ <20261031103206.24051-3-chenhan0017.work@gmail.com>
+Date: Mon, 02 Nov 2026 15:51:45 +0100
+Message-ID: <87mrrrmgla.fsf@t14s.mail-host-address-is-not-set>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -117,182 +67,113 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Content-Type: text/plain
 
+"chenhan" <chenhan0017.work@gmail.com> writes:
 
---=-VItmpj0V2gWLosbtRcYy
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, 2026-11-02 at 09:51 +0900, FUJITA Tomonori wrote:
-> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
->=20
-> write_all() and wait_until_sent() take the timeout as a raw Jiffies,
-> which is a c_ulong alias. The type does not show the unit.
->=20
-> Take the timeout as Delta<Jiffy> instead.
->=20
-> The C side treats a timeout of 0 as "wait indefinitely". The Rust API
-> does not keep that meaning. A timeout of 0 or negative is rounded up
-> to one jiffy. A caller that wants to wait indefinitely passes
-> Delta::from_jiffies(isize::MAX). That value is MAX_SCHEDULE_TIMEOUT.
-> The C side replaces 0 with MAX_SCHEDULE_TIMEOUT before it waits, so
-> this gives the same wait as a timeout of 0 did before.
->=20
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Delta's division and rem_nanos() use Rust operators on 64-bit and C
+> helpers on 32-bit. The report shows that rem_nanos(0) can return 10 for
+> a 10 ns dividend on ARMv7, while the same call panics on x86-64. The
+> i64::MIN / -1 case also differs, and neither API documents these inputs.
+>
+> Check for zero divisors and i64::MIN with -1 before the architecture-
+> specific code, and document the panic conditions on each method. This
+> matches Rust's signed division and remainder operators, including when
+> overflow checks are disabled. Valid-input results and API signatures
+> are unchanged; invalid inputs now panic on 32-bit too.
+>
+> No in-tree calls to either API were found at the base commit. The checks
+> stay in the existing methods so the fix does not depend on introducing
+> a math module.
+>
+> Fixes: 4521438fb076 ("rust: time: Implement basic arithmetic operations for Delta")
+> Reported-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1254
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: chenhan <chenhan0017.work@gmail.com>
 > ---
-> v2:
-> - Round a timeout of 0 or negative up to one jiffy instead of passing 0,
->   which the C side treats as "wait indefinitely" (Gary)
-> - Document Delta::from_jiffies(isize::MAX) for an indefinite wait
-> v1: https://lore.kernel.org/rust-for-linux/20260930041339.1551129-1-tomo@=
-flapping.org/
-> ---
->  rust/kernel/serdev.rs | 43 ++++++++++++++++++++++++++-----------------
->  1 file changed, 26 insertions(+), 17 deletions(-)
->=20
-> diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
-> index 17ca504b7f8d..656598602d7a 100644
-> --- a/rust/kernel/serdev.rs
-> +++ b/rust/kernel/serdev.rs
-> @@ -20,7 +20,10 @@
->          aref::AlwaysRefCounted,
->          Mutex, //
->      },
-> -    time::Jiffies,
-> +    time::{
-> +        Delta,
-> +        Jiffy, //
-> +    },
->      types::{
->          Opaque,
->          ScopeGuard, //
-> @@ -433,6 +436,16 @@ fn as_raw(&self) -> *mut bindings::serdev_device {
->      }
->  }
-> =20
-> +/// Convert a timeout to the `long` the C side takes.
-> +///
-> +/// The C side treats a timeout of 0 as "wait indefinitely", so a timeou=
-t of 0 or negative is
-> +/// rounded up to one jiffy. `isize::MAX` is `MAX_SCHEDULE_TIMEOUT`, so =
-it is passed through
-> +/// unchanged and the C side waits indefinitely.
-> +#[inline]
-> +fn timeout_jiffies(timeout: Delta<Jiffy>) -> isize {
-> +    isize::max(timeout.as_jiffies(), 1)
-> +}
-> +
->  impl Device<device::Bound> {
->      /// Set the baudrate in bits per second.
->      ///
-> @@ -475,28 +488,26 @@ pub fn set_parity(&self, parity: Parity) -> Result =
-{
->      /// [`Device::wait_until_sent`] to make sure the controller write bu=
-ffer has actually been
->      /// emptied.
->      ///
-> -    /// Use a timeout of 0 to wait indefinitely.
-> +    /// A `timeout` of 0 or negative is rounded up to one jiffy. Pass
-> +    /// `Delta::from_jiffies(isize::MAX)` to wait indefinitely.
->      ///
->      /// Returns the number of bytes written (less than `data.len()` if i=
-nterrupted).
->      /// [`kernel::error::code::ETIMEDOUT`] or [`kernel::error::code::ERE=
-STARTSYS`] if interrupted
->      /// before any bytes were written. [`kernel::error::code::EINVAL`] i=
-f `data.len() > i32::MAX`.
+> Changes since v4:
+> - Explain that the preceding zero-divisor check establishes the C call
+>   precondition; keep MIN/-1 checks for Rust panic semantics.
+> - Retain the output-pointer validity explanation for the remainder call.
+>
+>  rust/kernel/time.rs | 30 ++++++++++++++++++++++++++++--
+>  1 file changed, 28 insertions(+), 2 deletions(-)
+>
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index 16b44e82d2ac..c9a2dc50ff4c 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -412,8 +412,20 @@ fn mul_assign(&mut self, rhs: i64) {
+>  impl ops::Div for Delta {
+>      type Output = i64;
+>
+> +    /// # Panics
+> +    ///
+> +    /// Panics if `rhs` is zero, or if `self` represents [`i64::MIN`] nanoseconds
+> +    /// and `rhs` represents `-1` nanosecond.
 >      #[inline]
-> -    pub fn write_all(&self, data: &[u8], timeout: Jiffies) -> Result<usi=
-ze> {
-> +    pub fn write_all(&self, data: &[u8], timeout: Delta<Jiffy>) -> Resul=
-t<usize> {
->          if data.len() > i32::MAX as usize {
->              return Err(EINVAL);
+>      fn div(self, rhs: Self) -> Self::Output {
+> +        if rhs.value == 0 {
+> +            panic!("attempt to divide by zero");
+> +        }
+> +
+> +        if self.value == i64::MIN && rhs.value == -1 {
+> +            panic!("attempt to divide with overflow");
+> +        }
+> +
+>          #[cfg(CONFIG_64BIT)]
+>          {
+>              self.value / rhs.value
+> @@ -421,7 +433,7 @@ fn div(self, rhs: Self) -> Self::Output {
+>
+>          #[cfg(not(CONFIG_64BIT))]
+>          {
+> -            // SAFETY: This function is always safe to call regardless of the input values
+> +            // SAFETY: `rhs.value` is non-zero due to the check above.
+
+Please add to the commit message that this safety requirement was wrong,
+and the commit fixes it.
+
+>              unsafe { bindings::div64_s64(self.value, rhs.value) }
 >          }
-> =20
-> +        let timeout =3D timeout_jiffies(timeout);
-> +
->          // SAFETY:
->          // - `self.as_raw()` is guaranteed to be a pointer to a valid `s=
-erdev_device`.
->          // - `data.as_ptr()` is guaranteed to be a valid array pointer w=
-ith the size of
->          //   `data.len()`.
->          let ret =3D unsafe {
-> -            bindings::serdev_device_write(
-> -                self.as_raw(),
-> -                data.as_ptr(),
-> -                data.len(),
-> -                isize::try_from(timeout).unwrap_or_default(),
-> -            )
-> +            bindings::serdev_device_write(self.as_raw(), data.as_ptr(), =
-data.len(), timeout)
->          };
->          // CAST: negative return values are guaranteed to be between `-M=
-AX_ERRNO` and `-1`,
->          // which always fit into a `i32`.
-> @@ -545,16 +556,14 @@ pub fn write_flush(&self) {
->      /// After this function, the write buffer of the controller should b=
-e empty or the timeout
->      /// elapsed.
->      ///
-> -    /// Use a timeout of 0 to wait indefinitely.
-> +    /// A `timeout` of 0 or negative is rounded up to one jiffy. Pass
-> +    /// `Delta::from_jiffies(isize::MAX)` to wait indefinitely.
->      #[inline]
-> -    pub fn wait_until_sent(&self, timeout: Jiffies) {
-> +    pub fn wait_until_sent(&self, timeout: Delta<Jiffy>) {
-> +        let timeout =3D timeout_jiffies(timeout);
-> +
->          // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a va=
-lid `serdev_device`.
-> -        unsafe {
-> -            bindings::serdev_device_wait_until_sent(
-> -                self.as_raw(),
-> -                isize::try_from(timeout).unwrap_or_default(),
-> -            )
-> -        };
-> +        unsafe { bindings::serdev_device_wait_until_sent(self.as_raw(), =
-timeout) };
 >      }
->  }
-> =20
->=20
-> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+> @@ -615,8 +627,21 @@ pub fn to_jiffies_timeout(self) -> Delta<Jiffy> {
+>      }
+>
+>      /// Return `self % divisor` where `divisor` is in nanoseconds.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if `divisor` is zero, or if `self` represents [`i64::MIN`]
+> +    /// nanoseconds and `divisor` is `-1`.
+>      #[inline]
+>      pub fn rem_nanos(self, divisor: i32) -> Self {
+> +        if divisor == 0 {
+> +            panic!("attempt to calculate the remainder with a divisor of zero");
+> +        }
+> +
+> +        if self.value == i64::MIN && divisor == -1 {
+> +            panic!("attempt to calculate the remainder with overflow");
+> +        }
+> +
+>          #[cfg(CONFIG_64BIT)]
+>          {
+>              Self {
+> @@ -628,7 +653,8 @@ pub fn rem_nanos(self, divisor: i32) -> Self {
+>          {
+>              let mut rem = 0;
+>
+> -            // SAFETY: `rem` is in the stack, so we can always provide a valid pointer to it.
+> +            // SAFETY: `divisor` is non-zero due to the check above.
+> +            // `&mut rem` provides a valid, aligned, writable pointer for this call.
 
-I would have preferred something like `Delta::MAX_TIMEOUT`, but thats
-outside the scope of serdev.
+Same.
 
-The rustdoc example above `serdev::Driver` needs to be fixed.
+Why did you change the wording of the original line?
 
-With that resolved,
+Best regards,
+Andreas Hindborg
 
-Reviewed-by: Markus Probst <markus.probst@posteo.de>
 
-Thanks
-- Markus Probst
-
---=-VItmpj0V2gWLosbtRcYy
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmrooRUbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPS5fgP/jd/ISeiVOjQsWXLBo3E
-jCKQl/TL+zem3Zfmu69+fCiuNbLqsYhhywvcBcYRyoWem839Sma3i4qI/YcxdFCc
-pIaiqSbXWHnMPZJ+T0cmswwsuoWrzJ7MG5YfcMO0pDxcX2oV2w0auIB5DoeS7lQa
-BMz9A+nIOjZGyHmoeJS/xGzIWTEuciU23NTkpPuD3H7KKHK1CRuRZaeCTMza36fn
-gBaF7S06jWSWeKG5NGmmyUtyOukcLkvoWaTLgpKtGsHpZ7ta7mdehBw8qz/UtSqx
-bpdKU5bxhPqYu2ATu31q60kAg9CeItWLSqod8EcG8xpmQanJK5I/VuCmL/SWgfSg
-CKkc/PeYaYLNA8G3MKl1PSBhGgTv6K4wwWOK+F8Gd6q/4Dpje/1UVoN8rpIzJr7b
-jkisPNUcUjn8HGmRU/WKpWOyMH/EuPY70B0EN4G4IukIeds0444nlkpthcjHwMcX
-2FxAwnKuJAetu/+9FlTuVWkgRd2mV2mQLpXTKAl9tmmj1CleKyTsuB++VSePHz1W
-XsrECQhmHiyXzAr2IabNjRl59ABSHrKLX1xRhO90apkdjBWZ9mXxpLe5FDrRJQrM
-lC5M7GSgMWPTeGYIg54W2igvUk5t0l/AOGMQXv2TxoTB99c9ulug0Fuodn7G4Kgd
-CGsQxKTsrJmv5L/lmxRVbjvC
-=ysKJ
------END PGP SIGNATURE-----
-
---=-VItmpj0V2gWLosbtRcYy--
