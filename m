@@ -1,102 +1,131 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.169
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793580400;
-	b=Lks2exIdouIGAXAi+Hv8eFNaHIqn+FR/2lxSFh1GFmLpBBjFVT/h/C8wXzKfVfT9rKuL
-	 f/qpJHNDX2DIIYpuICvwY0QABVCgE7x4CVJg6Ln+FmRXtgAOEHA52cfP2Ze8YkhbLZC6f
-	 03J+BS7w3B7LENDhwSrsRQJxf6pDKfHWjbxqjRex2VYWMuCDVHpwKhF1iMpvAsiI+ZEIQ
-	 2WCIQfeglDahLc9tO7t1OLgyDBUbJVqO8ppxYMvvby15rL3Ll7cqW5hOU+fUjL13ecdm9
-	 xCCI1kuNx6NI/9os2w9lmfPxRtrfPo+DmY6FA+LLhErU7MZV5O5DWBDE2fbODIsPGRg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793580400;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=vjEmmX6EzGgRBfyBSvZnMWKCis3KJq0Gi1UrMn51jSQ=;
-	b=H4OD01rpR7QIdBs9Q2kT+Dq5iGjFp3omJN4UyUNyz3H2JHqELwujdIGykdi8pxqJgcGU
-	 9JG81yMTm7QsJV1qyGuDHvNsjlMAHhkPP8q0IbocCB831/Ay9gVKBfrv92oAWJAhvVcki
-	 AMe7X7T28Tg8gANSKhdRlmq/WN8dl61rtWwr/cyd8MqlE31vCCmvupzm+pU5gt9jzMhk4
-	 oL+SkROy2KgDjfOHMDhLl3hMmfcuUCKTbOan14Q9pS5Xmq18AnQUOjGC1tTC1mb7qaRnV
-	 Jrp0+xGfPINL5pGzBwhdW58DJBnosTvFwAre04PRgcmIgMCpBYf5kJOfhcjoa4b0Ehg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=o67+VfI7;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.169
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.154
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793580740;
+	b=BDBElsArCMnh/3tpAifuS/C58sN4XoRifzPmpvOF9exwCVfw8PUDAkeHFpyIvUdU7GM1
+	 xTlVbf4fwf4xgy55hladx0TyuwiBp8irtzQ45djVhpnn0tz9BXrdp8ZP4hf5SB4RrfzlI
+	 oWcFIl2RxTEd96VVbofE84io07PXFhBWPQZNPIzOQB/FGhpj9X85Be5NeTde60j9pdo9A
+	 C1RfR2TfOhbT9W8TFxe6mE5NAszOjZMXCgbphnLZzOE9T6u+BpS6OrsRbmiDRXbDiNmRP
+	 AtGmmt18Hh1T78IAz+r8XU4Vu6hTyo0nX1c7BNGVCYoKqRjDVpE4HN9fsTQo3YcACMw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793580740;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=/tNBJjhxqZtBE2PNxTczNqzfiXqB3O+K85CqGOnS27s=;
+	b=a5RJ5ZkEqOghdBMjrntVb2NZI8bd4/P0X0cnUGnubv2UIVdAKQhrdTjfovTOn6A+0Up6
+	 qXlOKmDIf5+d6BsbnsqEzfoj3veMbzmt53QIhr3yW9WoIc+mwlrlh1fc1zHdbNut6Mjnh
+	 YnuR6P05blNFJB3fecbDUmZTXXmyppgBQvDsd+mZRX0wLG3Cvc7ckLVbB1B5digbNzUVQ
+	 7V63gzqcG8nlhmIzYRh0ue7pS889tbJdNzlLR0s8CZDOcr3RaW8dziMrJQ8pk0Vp59tPc
+	 0mSdepNbhPCE9cJQnO7/xyZQqxjJStDmhZZaIigWaLxyzYR7nl6YbCi3FjSD6+PF8tA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=flapping.org;
+	spf=pass smtp.mailfrom=flapping.org;
+	dkim=pass header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=qWWnx325;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Cnv3jiLQ;
+	arc=none smtp.remote-ip=103.168.172.154
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B05606A324
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 00:46:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 49B05606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5021C606A324
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 00:52:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5021C606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=o67+VfI7
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-36a0eecf73fso417668eec.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 01 Nov 2026 16:46:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793580399; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EPHeCXnJPJqcESKaputsodMNrTsGD+NNWu0Je4Jv7Coatx3gMQ/lfhNBRw2qFk/qUD
-         Xm8DEH1J3v+EMVX25o0vJZM3pdkOKcr7XTmli1louq+8IbOgYWy0wuX0d48guIn6zdVn
-         ovJgWqanQz2+cpONGzodUpWulhiT2hirWJwlJ3XJAX99iDK5QydBF5jztoDci3jo0hQ2
-         WyTGw4Ho1fbg7sxczXDhyNMCaX1XbaT2qRU7zWUiERaQMIVXOtqyyWPPOf7lNO978aH7
-         anzDuqMjgdhg/G7gzUS7v00qKQDjP3OOFetQpf1ayqqKOtKL6Rfm4BeNnsB0Ls5CTz+i
-         nmYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vjEmmX6EzGgRBfyBSvZnMWKCis3KJq0Gi1UrMn51jSQ=;
-        fh=HVDjJjs1N1VOgR2hnyFZ1fz8lhdN17hQKO2+czI3I1w=;
-        b=iJWeLeKJT9vT5ZYrhmrjD7kWC1FxSXYByxMhBNXzKNxrSmIFsekonLGC3TzBIoEJYX
-         3O03ut/dY5aKLe23DEX8v+SE0HRr60/NpUUcMm1YqFuASQ3qnXIZ5tUGffsF4/De/FHJ
-         zlKPk7GqSR8YdCco37dt7A7KtD0XAIuEjCq9/vwmsA2qvh7TobALuQMXCiXXmocBYO9X
-         M3AJCN9sSyr+FKEMdedKo2LurlY2IwKgV6yL4UozHZpTJlxvIfLeqWfRx35wB2oYyyJC
-         H2UiKd6nA1dmuiulqkojI4oCq/xACzMXSwwt1XjFAIAlW0B02YzvnkmaY8Xtzn0odAgt
-         T3aw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793580399; x=1794185199; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vjEmmX6EzGgRBfyBSvZnMWKCis3KJq0Gi1UrMn51jSQ=;
-        b=o67+VfI7TGlXSNgSkpFsughn7q+9+yYECnzFIFfY0Y1sMOBq4tdMupuBlGXNqGKPop
-         9egfqYW8M48YFL4DHaV2vblg+EEhDOCNzZonx49S27LBpQJWMiWtW+OScff8t5EmN3Qw
-         kQFfIoLLQzTymHK895yYeKg00pGNNQ4kWz7Kx0LvxJW1dV8MaXD+pqvoAtC9UYRy5IQx
-         sp9+hoAv7LlGyDwRBpQ76cqB/VOHGMJ+vEbqNehCzHsiXNS9zVcfbtWvWPc9kQHe8gyC
-         wf1lBhoLuzyl5C+qB0brSJJ42k0SRBBe7OStcRaFX9MGUjrGly92crJOXDcd6gYXDZCA
-         jJTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793580399; x=1794185199;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vjEmmX6EzGgRBfyBSvZnMWKCis3KJq0Gi1UrMn51jSQ=;
-        b=zKlN4qvbLK96GnCeLLBWSE8Axqf4DtSP/bgYSPw+E6nM9Bo8n5cWCku7hT60ZBQDan
-         E9sbpKIwvCAymK8PfDzEnTGOFAe3VmF5cz9QV3pQHzsYOYpxLRTpvZ4HDnVaCWQaOXLp
-         wi2Hgn5zB+7yU7atosnrKi4zcSSSduPxKn5xIjuitqoH+SuzoptG8zUsAX28Ye+pxNnS
-         29LuAq9zyj1cYR6m3TStmbtmBq/IVBVH5IHt6Fo1C6rDnknkBbAwi3ZI573GLHaC0r8m
-         2yS7fbVmI2Wrs1wFHkuY+hbR5AyPhluG9zFOsvZrQQvK+DCeVuw7+uaN6x5hD7994ZOw
-         xOzw==
-X-Forwarded-Encrypted: i=1; AKwUvBxTXXuhxHkMtn4pYRBkK2r39MGf65dJ9KjBS2zeYmJ7NBKyhmJt/UoT5b02l9NPOrTSxwJZ9Em8yhQwDXXmyQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z81JQntivP4xC+YjQWR5ez5jHefsCDtWfdILD3O6p2AqDdGgJtd
-	p1p8o/Oudcg6DQGclynfcYBlAI4LkuRo5FAZ6tvSIbYzoykMlyN+ubj74lL7pGQzZzSMFb0QPh/
-	jxwYqxy1IyfqSpGsc6IFCQM4GRxLABNg=
-X-Gm-Gg: AYBFou1Kz3SWhP5Ap924utj6giQfiQeHq2uJ0lQIYsh/zbE1WcVx+01YyAIs1Mopl2Q
-	xxBTza/TYeTD12NVNdUi5ctWhuw0vCOSrFFeu1g5jBdG7x+taUfKLoMMfQuvyJe3A9XXl+TCylp
-	8BlWzzebf/c+2Vqw8RCIjIK55rh8D/uaVYXo8t12XnC8jIP9xxNAEeZ0bOzFYhOLERHPYFSpoCZ
-	H74RBNKxUodhl+FSPsoo+d5luqJ6v1oc6z/YeU5PJq89ilAZOiW9R3r/IIZLHq9n4qENS3zmM+D
-	zV9WJ4i3T9SUn5ZSO5/tA9jCfoOZvTVm/ZUiU9oDgAjEz2uzf23V5/+UCHhGpTleZAVc3VSX2Lw
-	dmU6kVvU7hHO5tphpiEm1N/9FEqceLcJWekDYFIK8AmW9BQVKGzhv1oAWWB0ehFXWyrT6ZXrsSJ
-	Z1lDq4CQNrd7H5GAyHxvKDTb71wTXcozXvuQ8QmvfxAfdfQFoQkSL+GTrB3w4eOQQ9hpfSszOJZ
-	yA9RQTssLdJ6uaZ8ww9ZtBSy5omhSTa4cZ7rDYYbsYKUAZHF+SLh9AhJg==
-X-Received: by 2002:a05:7300:d082:b0:369:ffc5:6767 with SMTP id
- 5a478bee46e88-36a4236a643mr17666091eec.2.1793580399370; Sun, 01 Nov 2026
- 16:46:39 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=flapping.org header.i=@flapping.org header.a=rsa-sha256 header.s=fm1 header.b=qWWnx325;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Cnv3jiLQ
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 97FE914001BF
+	for <rust-for-linux@vger.kernel.org>; Sun,  1 Nov 2026 19:52:18 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Sun, 01 Nov 2026 19:52:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm1; t=1793580738; x=1793667138; bh=/tNBJjhxqZtBE2PNxTczN
+	qzfiXqB3O+K85CqGOnS27s=; b=qWWnx325/vYih5r8tLD5b6EO5oHhKMoGtDoxV
+	tAqXALDWag9MGlZUCbEzhnOUA9U4/jS3tjY9dsyOq+8MREpDLzOo7eN0SVbQdK6d
+	kQh98xrjJWea8ZBf212YS0Cz9XKvmKhqfNxUvL9PADX5pg3SfdABvETW61t2XGHk
+	33IAJ4YEcR8eDnDEHJ+KS8LYr9DRveYiFUDJtkqPvENqDBtZhy8VZjrZsMG1FWPQ
+	rPmgbB80ILH+lsQ/Nih11fJsBrqNJqYNm7/Zy4dcFneIEejCFLiXr51rjwTjo8Cv
+	Kyr38l/uyKeIWNv/geuO1Ph3ZEqKYwGTkebgK+OuGLRNzb6Ug==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1793580738; x=1793667138; bh=/tNBJjhxqZtBE2PNxTczNqzfiXqB3O+K85C
+	qGOnS27s=; b=Cnv3jiLQQ/qmv6RKp+hTBfpkqfS5Ge5+BBu+cjrAl6h0pEm9I8T
+	h1b5HcEnjIybVyTKAWNMl9TQuN02Z+x1BJyp2hQT+iz4kBZfhk35ncWAW3Sar4fX
+	usJTnUt3HyPKw8TRBWuP6X10wbhuSSn2I9NGs2+wMS9zgl7y7qiOpTZmQkSiRyEO
+	dmLmbKN37BVU1qvkMilK6X0QxBaQkwOiaT97WOOwHV5wAZ6yA4Nrh7xw+vqcjqEh
+	GfHyR0zEn+KxziCQthvNlADHEs/Mg7LPsvZDSy1NC5m0ZMG990egEV/j/T2HzoOu
+	hKKidWfmzMZGHAw/NYCmRWKPAAX5OSxku9Q==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=sign d=flapping.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793580738; d=flapping.org;
+	mf=PHRvbW9AZmxhcHBpbmcub3JnPg==;
+	rt=PHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVsLm9yZz4=;
+	s=fm1:rsa-sha256:YZ2MKi9pI5QMG8o7c57qcM5V5Dzp5wt3p32YQbMniDM4A6H
+	FM9BIfsyJN89N1kBjLwiPOtHglihUjqkLviK6dSQCOWWRcvBBEbUGABS/Mf4FfJ4
+	Rcxa1sVzs9I9pR7cbpiKNvdlm1gxskmWXr5Ao5H0i2MeOggaxb2jg6sNlnL83cgl
+	3uGnQkIOxW7s/5eQTbuKqCxGmSfjSQJ+RupAfQoznP49CYfJXRXlpqkVmPTq8iMz
+	6zW0X+QpI0Y+5kllhWUn6xtn1y/4iVqFkucSyK11+ZARC6z3H9jDEC0SIHPPQVgO
+	IOIlbJfbOBJLZog/PSseNDPKRhYKsPUbPwz2eVg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=mi-m=1; hc=9;
+	hn=cc,content-transfer-encoding,date,feedback-id,from,
+	message-id,mime-version,subject,to;
+Message-Instance: m=1; h=sha256:JJrmzy7bujF50mtKMQemATtCWI2Kee6IZ9qIPXB23/Q=:yy15yJnylfMxYd4DjApGHB2o8DS8feXDXnSepQAu6zg=;
+X-ME-Sender: <xms:wd7narlEoRXlXfbJSLpG2qmJMD86kSLVYE0FQleBpKMNU7A4wIB0fQ>
+    <xme:wd7naoPEWrP4QBPe93DGB9jX5CDr1bzUwh666iuQvAWdmyg12yGh6yCBxhB7ZgMtN
+    7e4UWG-2Z9cCR1iOmGObPmPRKoPi7U9BmTJjaQ9BlgVBGNT2CF177lyLw>
+X-ME-Received: <xmr:wd7naqKb9nzNp5W1QSjTAA10_CZcji9pRdQvbcQvSL7Z0AakcLgr2ytAuyxVkltzO21j0WVKSc0UboYAvg8>
+X-ME-Proxy-Cause: dmFkZTFDwNUF972Wxm72PrAPg3CB/Z2c+S/BN5f0rWH71EHmO8BIImRYAxTOy5uY3o0sG4
+    H9MquJpdvrcPAeBHfgDYQ5E7oS9eajdlD0Ej52V2kvkRZb7bCnZrFxkTOsY01FmxWKh83W
+    OeDQVH/YG8JrM1alHmpWCZoqNNv6rQQtjw/Ypnw8cnWva1g0fM2tuFp7wKEGiKd9bzHiRr
+    qHOWSsnjIr9a/WHkiD/i7AL6BhpOtgxqPwerOFuA4/QPzAA8yVEtz3g/ujnvTqBTuU+4XR
+    +09u1hdDQF091bsqpQ56QgMc+QP5jboQUVKvwbmrhbELw7Z1QUFieU9660ZID4xiM6mhin
+    7Mw/32SkQDL1Q/foOSzL6hcWlk1SFf6MKYMnCDI75MYURGb+Y2uDf2TY1JM8+906huPyMX
+    6Syb0RKU0GAj48K8+0yXpt39AFzem1g0PT9YAOiDHIg68dnS8UgIRCKy8is83kj/Av7GHK
+    UHhk5a2M9oT4xdu1JnwdCv+6jJ8AuLB88ZvglTMC95OdLiITKxogyzjQQRU9FM9rC1SI2Q
+    BMJXOBW3oSTFfLasmVk+mkWR06n9Fsljey6JzcA4rmjgjubeuaBnCb/a1JXSRC8izAueib
+    DHVKe/dhW9YCudyCXcfJJ3AD3bcf1y/lPnX8RjI3T/Mw/IoPAPKbbVs/jAyg
+X-ME-Proxy: <xmx:wd7najFOZPaf_9SaYChWqo_RqenXPc3h_8AcOby9U2G51-88qrcdJA>
+    <xmx:wd7narBWznjjSnnaKRCxEmtLyh2p4FJtaOO9Ewmw0ALyCHHQiiJbRQ>
+    <xmx:wd7nat3SfgkCzxQ3mDOc7Lvr668IEWxH5C1mA8FqdREoaZxk3jgc_g>
+    <xmx:wd7naoP4I8DjDj_xzyNjq3KbD_lo2ZFWqNTQrSaGT3JDTkNhvB4PtQ>
+    <xmx:wt7narA-YLRwgoJPvv500oy2IbeaxeY9aUrRkYPblcDsuZnL2wyzJZN2>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 1 Nov 2026 19:52:13 -0500 (EST)
+From: FUJITA Tomonori <tomo@flapping.org>
+To: dakr@kernel.org,
+	markus.probst@posteo.de,
+	ojeda@kernel.org
+Cc: a.hindborg@kernel.org,
+	acourbot@nvidia.com,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	daniel.almeida@collabora.com,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	tamird@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev,
+	linux-serial@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v2] rust: serdev: use Delta<Jiffy> for timeouts
+Date: Mon,  2 Nov 2026 09:51:25 +0900
+Message-ID: <20261102005125.626125-1-tomo@flapping.org>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -106,57 +135,126 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261018163719.81691-1-ojeda@kernel.org>
-In-Reply-To: <20261018163719.81691-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 2 Nov 2026 01:46:26 +0100
-X-Gm-Features: AclHuK-4MjIXg8YJnYcWupgszDUMapc507LicBlOsBTb2wracrfxL9hXutBBGhQ
-Message-ID: <CANiq72=JMDa882tQPLUSTYhkfKmxxZH-gjp=sTD-Eq5KDt-F-g@mail.gmail.com>
-Subject: Re: [PATCH] rust: cpufreq: fix `undocumented_unsafe_blocks` in `PolicyCpu::from_cpu()`
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-On Sun, Oct 18, 2026 at 6:37=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> For Rust <=3D 1.86, Clippy triggers after commit 02c5d7bfa872 ("rust:
-> cpufreq: reject NULL from cpufreq_cpu_get()"):
->
->     warning: unsafe block missing a safety comment
->        --> rust/kernel/cpufreq.rs:700:26
->         |
->     700 |             NonNull::new(unsafe { bindings::cpufreq_cpu_get(u32=
-::from(cpu)) }).ok_or(ENODEV)?;
->         |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
-^^^^^^^^^^^^^^
->         |
->         =3D help: consider adding a safety comment on the preceding line
->         =3D help: for further information visit https://rust-lang.github.=
-io/rust-clippy/master/index.html#undocumented_unsafe_blocks
->         =3D note: requested on the command line with `-W clippy::undocume=
-nted-unsafe-blocks`
->
-> Thus clean it up.
->
-> Fixes: 02c5d7bfa872 ("rust: cpufreq: reject NULL from cpufreq_cpu_get()")
-> Assisted-by: LLM
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Applied to `rust-fixes` -- thanks everyone!
+write_all() and wait_until_sent() take the timeout as a raw Jiffies,
+which is a c_ulong alias. The type does not show the unit.
 
-I added Cc: stable@ -- while this one is not a big deal, we are
-backporting 02c5d7bfa872 (i.e. the one this one fixes), and thus we
-can take the chance to keep it aligned to mainline and clean.
+Take the timeout as Delta<Jiffy> instead.
 
-Cheers,
-Miguel
+The C side treats a timeout of 0 as "wait indefinitely". The Rust API
+does not keep that meaning. A timeout of 0 or negative is rounded up
+to one jiffy. A caller that wants to wait indefinitely passes
+Delta::from_jiffies(isize::MAX). That value is MAX_SCHEDULE_TIMEOUT.
+The C side replaces 0 with MAX_SCHEDULE_TIMEOUT before it waits, so
+this gives the same wait as a timeout of 0 did before.
+
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+v2:
+- Round a timeout of 0 or negative up to one jiffy instead of passing 0,
+  which the C side treats as "wait indefinitely" (Gary)
+- Document Delta::from_jiffies(isize::MAX) for an indefinite wait
+v1: https://lore.kernel.org/rust-for-linux/20260930041339.1551129-1-tomo@flapping.org/
+---
+ rust/kernel/serdev.rs | 43 ++++++++++++++++++++++++++-----------------
+ 1 file changed, 26 insertions(+), 17 deletions(-)
+
+diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
+index 17ca504b7f8d..656598602d7a 100644
+--- a/rust/kernel/serdev.rs
++++ b/rust/kernel/serdev.rs
+@@ -20,7 +20,10 @@
+         aref::AlwaysRefCounted,
+         Mutex, //
+     },
+-    time::Jiffies,
++    time::{
++        Delta,
++        Jiffy, //
++    },
+     types::{
+         Opaque,
+         ScopeGuard, //
+@@ -433,6 +436,16 @@ fn as_raw(&self) -> *mut bindings::serdev_device {
+     }
+ }
+ 
++/// Convert a timeout to the `long` the C side takes.
++///
++/// The C side treats a timeout of 0 as "wait indefinitely", so a timeout of 0 or negative is
++/// rounded up to one jiffy. `isize::MAX` is `MAX_SCHEDULE_TIMEOUT`, so it is passed through
++/// unchanged and the C side waits indefinitely.
++#[inline]
++fn timeout_jiffies(timeout: Delta<Jiffy>) -> isize {
++    isize::max(timeout.as_jiffies(), 1)
++}
++
+ impl Device<device::Bound> {
+     /// Set the baudrate in bits per second.
+     ///
+@@ -475,28 +488,26 @@ pub fn set_parity(&self, parity: Parity) -> Result {
+     /// [`Device::wait_until_sent`] to make sure the controller write buffer has actually been
+     /// emptied.
+     ///
+-    /// Use a timeout of 0 to wait indefinitely.
++    /// A `timeout` of 0 or negative is rounded up to one jiffy. Pass
++    /// `Delta::from_jiffies(isize::MAX)` to wait indefinitely.
+     ///
+     /// Returns the number of bytes written (less than `data.len()` if interrupted).
+     /// [`kernel::error::code::ETIMEDOUT`] or [`kernel::error::code::ERESTARTSYS`] if interrupted
+     /// before any bytes were written. [`kernel::error::code::EINVAL`] if `data.len() > i32::MAX`.
+     #[inline]
+-    pub fn write_all(&self, data: &[u8], timeout: Jiffies) -> Result<usize> {
++    pub fn write_all(&self, data: &[u8], timeout: Delta<Jiffy>) -> Result<usize> {
+         if data.len() > i32::MAX as usize {
+             return Err(EINVAL);
+         }
+ 
++        let timeout = timeout_jiffies(timeout);
++
+         // SAFETY:
+         // - `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
+         // - `data.as_ptr()` is guaranteed to be a valid array pointer with the size of
+         //   `data.len()`.
+         let ret = unsafe {
+-            bindings::serdev_device_write(
+-                self.as_raw(),
+-                data.as_ptr(),
+-                data.len(),
+-                isize::try_from(timeout).unwrap_or_default(),
+-            )
++            bindings::serdev_device_write(self.as_raw(), data.as_ptr(), data.len(), timeout)
+         };
+         // CAST: negative return values are guaranteed to be between `-MAX_ERRNO` and `-1`,
+         // which always fit into a `i32`.
+@@ -545,16 +556,14 @@ pub fn write_flush(&self) {
+     /// After this function, the write buffer of the controller should be empty or the timeout
+     /// elapsed.
+     ///
+-    /// Use a timeout of 0 to wait indefinitely.
++    /// A `timeout` of 0 or negative is rounded up to one jiffy. Pass
++    /// `Delta::from_jiffies(isize::MAX)` to wait indefinitely.
+     #[inline]
+-    pub fn wait_until_sent(&self, timeout: Jiffies) {
++    pub fn wait_until_sent(&self, timeout: Delta<Jiffy>) {
++        let timeout = timeout_jiffies(timeout);
++
+         // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
+-        unsafe {
+-            bindings::serdev_device_wait_until_sent(
+-                self.as_raw(),
+-                isize::try_from(timeout).unwrap_or_default(),
+-            )
+-        };
++        unsafe { bindings::serdev_device_wait_until_sent(self.as_raw(), timeout) };
+     }
+ }
+ 
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+-- 
+2.43.0
+
