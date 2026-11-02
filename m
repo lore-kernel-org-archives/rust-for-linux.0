@@ -1,71 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793632091;
-	b=hE3xfAOnHQPTodZ2O/gfbRy5vqPtUNFbeMLFT6H1MxM0ubrtc/WCCc3IkCk7cRqH6V/2
-	 aZTfHedUOWM0PpeSF2nXgPS9BbO3z4+jNTfysHIkqiqDR7hySp/jBEOyUcrFHScLWjmLz
-	 NcKsoQYMDoFTJtAtvJJT/vHmwdmgfqSI8zIEshwEgFYH/o8pDzdrWXGVB1jHMnSc84iiJ
-	 sgG447w8c549YHHmyJHlsEjse748ztJnggBygSGKswFj02Rxb17l688PfQvfbhSw6bLk6
-	 jqy15cKGWq9YByC/k7XfAicFpDnJlGdQ26O31myC5lciA0nutqEP5aCU3Ho3un/lcVQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793632091;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=nrM/uUf4HdTSRJMfQyJdPJ//6muAeY8Jt8qA4ElcX4M=;
-	b=REuQnvKqC4J8+Ubfl2FcQ//qXiry7ozu3CiY7BzWgKOFy5ZU6HPK/p2Gq+GcPOlwg1E9
-	 ov9xSrzGD4H5NAV3/ew1KvQ7YvH7CekoVhPefXg3CDpeNt1XwYTA/cqKT092mVN4Fi/vq
-	 SkmuQG6wq+1aagFjywZ8ej3aG1aqQAUOnb1bn31Bw6eD80fz56ecM7wPx6jSaCU40ktUa
-	 aH3FsNcsayEBBz/b5MSsba7oDKLKI3Y9xm6G/VxXjcL9//m1OscH3yNXHRoF0J8d/nN54
-	 5DVlrTz3phHPwHQMrBp+MuJ5fj1HbTPLA5vsLHrx/vK04nEHVvNtMvTsX7QdC/Y2BDw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oBRRGcw8;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.178
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793633628;
+	b=nE9fzkuRc+VL3skIzXdDhCk4mmwtkRk639iy9szDlrILjauoK8mIUkG3fMNNZym9wCUK
+	 8ZnvaLDDOIyspvYW3IbW1qVDSFJc4WW+PxorDJuBGX58JV2aUgGRYFceV3MYxAwcRhwhN
+	 xkA46X7FdoePsDQrJNq4DYrnV4DfsXugAE7MNUXxt2j4jjWQIDwNHafPbdUAU+xx95C0L
+	 7NJzQX/SRoimGkjvL2BUhvFlFqBuBni+cqPJIJSmcvKxh0zXZOUwxJciuyEX58mC4X2fL
+	 Yc6lnNw4V1Hif+UVZl352R/jLYzDajUO4tIW3tkr9tVxNM8eN7u/KzjdIYKGulTbueg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793633628;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=fyou/fJqjaTqJGYGz9GXKCyYm3nQLAoQbUXl4Lxg+kM=;
+	b=Qd+uPkT9XTR2rO9zDK3MU99fr14tAipeL+LG6/TetHG6rJi06EndRzF3ufIbOkSeZw0l
+	 9dudf+luvEjB1hBolHcM9mnHOxVnkYKAL+1k65//9rwIY9td0STfykCJkcfAhWPg8DSNE
+	 7fEct7xCdAu7DqY04TG1B3kv2F9ymseAOj1f/9CHhyY5tV941Y2D3CVhhojKvSS7BJRna
+	 KGI+IoWeuEXCd5IZNm3lmIzOcpYHxouBXJAY8OnDrmAq6KexO1QGwfNdo4JUaKmP1nTZH
+	 8r5O7fRmdK4FUL5YsnQMtikRiaa+LKWBn/pcL40EKy/fRZ65aJiFsPjcAAFgJgRwKqg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DDZQkbY3;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.178
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B78C60A44ED;
-	Mon,  2 Nov 2026 15:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61D4609FDA2
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 15:33:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E61D4609FDA2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oBRRGcw8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B30B1F00A18;
-	Mon,  2 Nov 2026 15:08:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632091;
-	bh=nrM/uUf4HdTSRJMfQyJdPJ//6muAeY8Jt8qA4ElcX4M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oBRRGcw8ROwqhrET8KcqKuAjekSVKjxNq9Q0Q751SFL+LSUrJpxsC913yy5VOwUXi
-	 bdKiVpK9mZxauiFIwdUcDRbZIFP9OvJ9dyjD+Tglv5N2t5iGLI29Ay1L/Bq3DHVs5o
-	 XAvycYvaGF8N5poqs68eHyLCLfiztRIU+ndpeFQT8WjtDdDrNMieh9PNCRgnjXrwVI
-	 F++7JSqENNOsj+IuiSaWxFDvRby3VhBmPllhcuRHbt7Vun0AJi+JeLtjQyObSl7Iz4
-	 9OTpDV3EeUJErTLY6313UhvMhpXmtLKHpq04j3nyRdu4kbeeEo1viU0hwy9Akmn/VK
-	 iWKHKet3HOhkA==
-From: Philipp Stanner <phasta@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Cc: linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] rust: DmaFence: Replace call_rcu() with synchronize_rcu()
-Date: Mon,  2 Nov 2026 16:06:18 +0100
-Message-ID: <20261102150617.527772-4-phasta@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261102150617.527772-2-phasta@kernel.org>
-References: <20261102150617.527772-2-phasta@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DDZQkbY3
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-3ab3fc6e388so6188351fa.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Nov 2026 07:33:47 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793633626; cv=none;
+        d=google.com; s=arc-20260327;
+        b=T+T1fy1B1v53lYYnAyZCyUIODsDNjVnpZ2HUgXrnm95/u9EEJo6xoyNxdEIAMLmszm
+         utuQWBcOUDeDL3Ekdq6ZJKif0RlfWfm4t1Mga9BDEvqIBnyScLP8LDjE7aa6J/6vpQ3O
+         kTZ4YK3DiYzvnwiOpsbtm8SX6xYQ9rmbGuELzq5Q/vFJE/Wo73wirpnDVboD71Z4Ab0K
+         NYkkDQAx6tMrMoIS9MJ0wOsT8tOz+YzeqmGZGv+z9f1xDigSLODm2VYAZ06X9rRi2V43
+         xe6sbQhv2TB9MW6o6eZr2UZOTfXa+lyd+3cqD3tGeQq1Vh0g1bBBfW+UKLjHwGO4TG/k
+         bnog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fyou/fJqjaTqJGYGz9GXKCyYm3nQLAoQbUXl4Lxg+kM=;
+        fh=Ex1s5EaGC3rBUN8TOdW8FtAbVyoElUoQxoJGc8T68T0=;
+        b=pY2G8oQSSPJR0Kt1E1Mf4C41Y7GZ5MKPjnlH5ti2cKXvXF9Q4q+hxS1Vhtj5KCQ9eb
+         JlgGULkT6LcRrJgXY1QP73Mb9T+vEkm9IgBF3sEOtdlw41d17uM6ndWPDlyRokjQhofF
+         AS/uLLMV/5dswMczfCijQBHrZy/CY+AvsVw2aI5lW9j56AJTxeDVpz514cJIsjBB4KKI
+         nlJInF76VDFrq38hsbyhmY3id1HSmPujZs0LInRD6GJ9+NMmgh1Xcv/ovsDWnkuSoUk4
+         ArF0eU9B06DglsAwF6Wq0MlROj0IPZp4GLtxCTNMS1/LRCIEIEPr+r2SRjnToyf4v8Em
+         CTkA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793633626; x=1794238426; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fyou/fJqjaTqJGYGz9GXKCyYm3nQLAoQbUXl4Lxg+kM=;
+        b=DDZQkbY3f/MS7LqQ0eEKNUiWx6CVonZ2Kwc4mwu5fay0NKxUREQsf/QCavCwwaqxKs
+         72aHo38RiClj34EZjfLwZxaMl29OG/b2i5qRN4DVhANz/cpkhnLU7SVBMphMMjDrIziV
+         8CJ8AF8B/p3+ihnEAT9XWCSOOmIhp/54uPHWZKHYPmI6uLYM1q8sc+925svmjisK8vVj
+         jTcFmnRP6xUYge4HiWNjriTY0rYyBS5LB4fjg+Di0A+sHvQArgZwDsjIQyyTW6rJDv5m
+         28PS0fHHZDbJWEFydUV0+/CwGDkEAnyqBiosi/QrT6RQJ7GQvIpMymE3hLwUawfMobmV
+         Fjlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793633626; x=1794238426;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fyou/fJqjaTqJGYGz9GXKCyYm3nQLAoQbUXl4Lxg+kM=;
+        b=WC7VBMEL+pSMSkxvU+o03+Ko1Q8UM8TyrDnQlQ7fXvwexVNnq1NmXH59zBF1mUcZwf
+         c3h2NYlBMMGUHZTTmETL3NMQuDUYBNOnJfNHZ/vFEpNA1BtV+zkzk0Tds0rqdFIzUQXG
+         gQoo49GgewQ1qIMPmlQErfOAK8+iYxIRAQ/ENbpFQRdfTfQzZWnDXJw/udtJW/1c3iSz
+         EEA/9s462x/iydf2N9DXBKJvboA9A4G7VbxQr+zkLLD/n2knK7UbBlOKcfwr4Lgs4+sC
+         5vLPKDTcSiuopINQd3PcLe9nWuAQJpKp3BORZzJnRnMGtcK8DMbaOH9gEOjuYX+wNYko
+         /lIg==
+X-Forwarded-Encrypted: i=1; AKwUvBzjd/tcKUnFilAsWxDEDWMmhxuVboLXw0EdV00oFqv1WgDtgLVdOmz1F9+eOPAcG48V9fDoYbAnOH3uU3aWvQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/HPwRZ32MMx0Wf4YBm2MUpPvSoA3QjTP1U7RL3OpBLNK2E9SS3
+	ncuZGabqilPc5wkye+awx11ncvR/+B1Rfyt5gzobksH/1Y72AYOdxA7JNVHbO+KWnjX3319JLoC
+	6X3jbTUsfIjUA5nmRj04PwxRULyB+PjQ=
+X-Gm-Gg: AYBFou1mOTPRmkkYV4j4a4UUIN7Wt1hnBnLmelqEGHsY1n5+LACvMpdGQXgVvMIqATH
+	Nh4sz2g6X6BauGDHRBHwGqUOuoNuWVB14hEe3SgyfP0ZOXjyeu3NA1Vr/hOr/WAvJRdeNckoyjO
+	MdxoeLlUD3TRLOA7vyAAIRG8VmvSxYfYqgTbu3QZkcwwaonhZzGhnaVZlAlTXBZwIiWQV9d/vTe
+	R0LdlaWBhC1N7zWF2lM57rFmY8UgOKXJSw+5LfSEb6hkdz7N4EpPaPVc5DS3o9EJIMhG12WkqcW
+	yOaOeRgeDMy/T7AegANm6yI9wsHKs0Gqwd949i79DexDgc424PmIvXvL9fyF7eN3Dt6IswKix/m
+	FrJZMXQnuvfyficA6BOrOOucNX+JqdiYiketmOH7yZOH9ip6r0e3ufCjYuwbRa+kkaOohERZSfI
+	XmR6I9+neJLJwcKZjRrMPFbkEPYZ8aQEU2+hF/5DE8SbIlfcyZ8JBV/SExNPZkuE2F786mXXPEE
+	wpEMEIpoFHpFrXZy2l6m+iggSzI0fcyq9FW
+X-Received: by 2002:a05:6512:4041:b0:5bf:a48b:7807 with SMTP id
+ 2adb3069b0e04-5bfd952024bmr3541751e87.1.1793633626006; Mon, 02 Nov 2026
+ 07:33:46 -0800 (PST)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -75,186 +106,40 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <8yvpSoQ7ihtTj508nQU_nAlk2eMmGH5zK6H5pow6z5cTYGO3yL_DvqwbFMwqzhtbL-52eMYXpT5Cyg0g7fUN7w==@protonmail.internalid>
+ <20261031003334.4161188-1-tomo@flapping.org> <87h5hzmfui.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87h5hzmfui.fsf@t14s.mail-host-address-is-not-set>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 2 Nov 2026 16:33:26 +0100
+X-Gm-Features: AclHuK8-KbB94fn8EBdbNfyJoSwQYIWyY5n1m1PL_m5ogGvNtA1ZGSAK02W1_3c
+Message-ID: <CANiq72mjFLQbgfW_f7vAJ+M-95d5s54sBTRfMGYekcRmm7xTAg@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] rust: time: seconds based Instant
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: FUJITA Tomonori <tomo@flapping.org>, boqun@kernel.org, ojeda@kernel.org, 
+	acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de, 
+	bjorn3_gh@protonmail.com, dakr@kernel.org, daniel.almeida@collabora.com, 
+	frederic@kernel.org, gary@garyguo.net, jstultz@google.com, lossin@kernel.org, 
+	lyude@redhat.com, mike@fireburn.co.uk, sboyd@kernel.org, tamird@kernel.org, 
+	tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
+	rust-for-linux@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The C dma_fence contract demands that a fence's data disappears no
-earlier than 1 RCU grace period after the DriverFence was signaled.
+On Mon, Nov 2, 2026 at 4:08=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
+org> wrote:
+>
+> Orthogonal, but I dislike the shorthand `Sec` and `Nsec`. I would much
+> prefer `Seconds` and `NanoSeconds`. Opinions?
 
-So far, we achieved this with dropping the DriverFence's data in a
-deferred manner with a manual, raw binding call to call_rcu().
+I guess it matches things like `NSEC_PER_USEC`? i.e. C.
 
-However, this call_rcu() does not solve one problem: It is conceivable
-that some driver data must not drop in atomic context; but call_rcu()'s
-payload *can* be executed in atomic context.
+(Personally, I don't mind longer identifiers and I tend to prefer them
+where reasonable, but sometimes there are other factors to take into
+account.)
 
-Moreover, the current developments in drm::JobQueue, where a DriverFence
-is always coupled 1:1 with a Job, allows for dropping job and fence
-through a work item.
+Another point is whether we should align also our methods too (e.g.
+"nanos", which comes from upstream Rust), i.e. with your suggestion,
+we would have all `NSEC`, `nanos` and `NanoSeconds`.
 
-The undesirable blocking behavior of synchronize_rcu() would, thus, not
-be annoying any thread anymore. The direct users of DmaFence could
-achieve the same by dropping their DriverFences through work items.
-
-The only conceivable other solution, queue_rcu_work(), would, for many
-users, schedule a work_item from another work_item, which seems
-undesirable.
-
-Additionally, using the existing synchronize_rcu() abstraction has the
-advantage of us getting rid of a raw bindings call.
-
-Replace DriverFence::drop()'s call_rcu() with synchronize_rcu().
-
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
----
- rust/kernel/dma_buf/dma_fence.rs | 89 ++++++++++----------------------
- 1 file changed, 26 insertions(+), 63 deletions(-)
-
-diff --git a/rust/kernel/dma_buf/dma_fence.rs b/rust/kernel/dma_buf/dma_fence.rs
-index 3022bdb5f7c3..ad9cebf8428c 100644
---- a/rust/kernel/dma_buf/dma_fence.rs
-+++ b/rust/kernel/dma_buf/dma_fence.rs
-@@ -42,7 +42,10 @@
-             Atomic,
-             Relaxed, //
-         },
--        rcu::rcu_barrier, //
-+        rcu::{
-+            rcu_barrier,
-+            synchronize_rcu, //
-+        }, //
-     }, //
- };
- 
-@@ -65,7 +68,7 @@ pub struct FenceContext<T: FenceContextOps + Send + Sync> {
-     /// The sequence number for the next fence created.
-     seqno: Atomic<u64>,
-     // The name parameters can be accessed by the dma_fence backend_ops. UAF
--    // errors are prevented by the `call_rcu()` in `drop_driver_fence_data()`.
-+    // errors are prevented by the `synchronize_rcu()` in `drop_driver_fence_data()`.
-     /// The name of the driver this FenceContext's fences belong to.
-     driver_name: CString,
-     /// The name of the timeline this FenceContext's fences belong to.
-@@ -142,7 +145,6 @@ pub fn new_fence_allocation(
-         data: T::FenceDataType,
-     ) -> Result<DriverFenceAllocation<'_, T>> {
-         let fence_data = DriverFenceData {
--            rcu_head: Default::default(),
-             // `inner` remains uninitialized until a `DriverFence` takes over.
-             inner: Fence {
-                 inner: Opaque::uninit(),
-@@ -600,8 +602,6 @@ struct DriverFenceData<'a, T: Send + Sync + FenceContextOps> {
-     // necessary so that the C backend can free the allocation (coming from our
-     // Rust code) with kfree_rcu().
-     inner: Fence,
--    /// Callback head for dropping this in a deferred manner through RCU.
--    rcu_head: bindings::callback_head,
-     /// Reference to access the FenceContext.
-     fctx: &'a FenceContext<T>,
-     /// The API user's data. It is essential that the data only performs
-@@ -644,6 +644,10 @@ struct DriverFenceData<'a, T: Send + Sync + FenceContextOps> {
- ///
- /// In the unlikely case of such violations, a panic is thrown.
- ///
-+/// For requirements imposed by the C backend, a [`DriverFence`] might perform
-+/// a call to [`rcu::synchronize_rcu`] when it drops. Thus, avoid dropping a
-+/// [`DriverFence`] in atomic context.
-+///
- /// # Examples
- ///
- /// ```
-@@ -940,15 +944,15 @@ fn drop(&mut self) {
-         // dma_fence_is_signaled_locked() because the C backend wants to get rid
-         // of the latter.
- 
--        // SAFETY: `guard` is valid until the `call_rcu()` below.
-+        // SAFETY: `guard` is valid.
-         let signaled: bool = unsafe { bindings::dma_fence_test_signaled_flag(guard.as_raw()) };
-         if !signaled {
-             pr_err!("DriverFence drops unsignaled. Danger of memory corruption!\n");
--            // SAFETY: `guard` is valid until the `call_rcu()` below. The fence
--            // must not have been signaled yet, which we check directly above.
-+            // SAFETY: `guard` is valid. The fence must not have been signaled
-+            // yet, which we check directly above.
-             unsafe { bindings::dma_fence_set_error(guard.as_raw(), ECANCELED.to_errno()) };
--            // SAFETY: `guard` is valid until the `call_rcu()` below. The lock
--            // must be held, which we acquired above.
-+            // SAFETY: `guard` is valid. The lock must be held, which we
-+            // acquired above.
-             unsafe { bindings::dma_fence_signal_locked(guard.as_raw()) };
- 
-             // SAFETY: `self.data` is valid because `self` is valid.
-@@ -973,59 +977,18 @@ fn drop(&mut self) {
-             return;
-         }
- 
--        // SAFETY: Valid because `self` is valid.
--        let rcu_head_ptr = unsafe { &raw mut (*self.data.as_ptr()).rcu_head };
-+        // Make sure none of the fence backend_ops can access data anymore.
-+        //
-+        // TODO:
-+        // This would not be necessary if the C dma_fence backend were using a
-+        // spinlock to properly synchronize its signaled state. Fix it in C and
-+        // then remove synchronize_rcu().
-+        synchronize_rcu();
- 
--        // SAFETY: `call_rcu()` is always safe to be called. `rcu_head_ptr` was
--        // created validly above. The module must perform a `synchronize_rcu()`
--        // or `rcu_barrier()` call to guard against module unload.
--        unsafe { bindings::call_rcu(rcu_head_ptr, Some(drop_driver_fence_data::<T>)) };
-+        // SAFETY: Valid because `self` is valid.
-+        unsafe { drop_in_place(&raw mut self.data) };
-+
-+        // SAFETY: The `synchronize_rcu()` above ensures all accessors are gone.
-+        unsafe { bindings::dma_fence_put(self.as_raw()) };
-     }
- }
--
--// TODO:
--// The entire call_rcu() mechanism in the drop above and the code below would be
--// unnecessary if C's dma_fence_signal() could be reworked in a way that after it
--// ran, the caller knows that no fence_ops callbacks can be running anymore.
--// In other words, if the dma_fence backend would use its spinlock for full
--// synchronization.
--//
--// Then we could move the drop_in_place() and dma_fence_put() upwards into the
--// drop() implementation and call it a day.
--
--/// Finally really drop this `DriverFence<T>`
--///
--/// # Safety
--///
--/// `head` references the `rcu_head` field of an `DriverFenceData<T>`. All
--/// accessors to that `DriverFenceData<T>` must be gone by now. This must be
--/// ensured by signalling the associated `DriverFence<T>` and then waiting
--/// for a grace period until calling this function here.
--unsafe extern "C" fn drop_driver_fence_data<T: Send + Sync + FenceContextOps>(
--    head: *mut bindings::callback_head,
--) {
--    // SAFETY: Caller provides a pointer to the `rcu_head` field of a `DriverFenceData<C>`.
--    let fence_data = unsafe { container_of!(head, DriverFenceData<'_, T>, rcu_head) };
--
--    // SAFETY: `fence_data` was created validly above. All the fence's data will
--    // only drop below, but the raw pointer to the raw C `dma_fence` remains
--    // valid because the reference count is only decremented at the end of the
--    // function.
--    let fence = unsafe { (*fence_data).inner.inner.get() };
--
--    // SAFETY: `fence_data` was created validly above. The user has already
--    // dropped the only conventional accessor to the user data, the `DriverFence`,
--    // one grace period ago. All accessors are gone now.
--    unsafe { drop_in_place(&raw mut (*fence_data).data) };
--
--    // The inner `Fence` explicitly does not get dropped because there may be
--    // many more users / consumers, each holding their own reference.
--
--    // SAFETY: Once a `DriverFence` is initialized, the inner `fence` is valid
--    // and initialized. It is valid until the refcount drops to 0, which can
--    // earliest happen once we drop the `DriverFence`'s reference here.
--    unsafe { bindings::dma_fence_put(fence) };
--
--    // The actual memory the data associated with a `DriverFence` lives in
--    // gets freed by the C dma_fence backend once the fence's refcount reaches 0.
--}
--- 
-2.56.0
-
+Cheers,
+Miguel
