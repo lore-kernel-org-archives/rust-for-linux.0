@@ -1,102 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.178
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793633628;
-	b=nE9fzkuRc+VL3skIzXdDhCk4mmwtkRk639iy9szDlrILjauoK8mIUkG3fMNNZym9wCUK
-	 8ZnvaLDDOIyspvYW3IbW1qVDSFJc4WW+PxorDJuBGX58JV2aUgGRYFceV3MYxAwcRhwhN
-	 xkA46X7FdoePsDQrJNq4DYrnV4DfsXugAE7MNUXxt2j4jjWQIDwNHafPbdUAU+xx95C0L
-	 7NJzQX/SRoimGkjvL2BUhvFlFqBuBni+cqPJIJSmcvKxh0zXZOUwxJciuyEX58mC4X2fL
-	 Yc6lnNw4V1Hif+UVZl352R/jLYzDajUO4tIW3tkr9tVxNM8eN7u/KzjdIYKGulTbueg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793633628;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=fyou/fJqjaTqJGYGz9GXKCyYm3nQLAoQbUXl4Lxg+kM=;
-	b=Qd+uPkT9XTR2rO9zDK3MU99fr14tAipeL+LG6/TetHG6rJi06EndRzF3ufIbOkSeZw0l
-	 9dudf+luvEjB1hBolHcM9mnHOxVnkYKAL+1k65//9rwIY9td0STfykCJkcfAhWPg8DSNE
-	 7fEct7xCdAu7DqY04TG1B3kv2F9ymseAOj1f/9CHhyY5tV941Y2D3CVhhojKvSS7BJRna
-	 KGI+IoWeuEXCd5IZNm3lmIzOcpYHxouBXJAY8OnDrmAq6KexO1QGwfNdo4JUaKmP1nTZH
-	 8r5O7fRmdK4FUL5YsnQMtikRiaa+LKWBn/pcL40EKy/fRZ65aJiFsPjcAAFgJgRwKqg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DDZQkbY3;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.178
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793634692;
+	b=b7yKFYciv7el2Ax7GPYYBvhm+HpqiUigesw1PhAHeDzLUzOozWvPoqsRU1UBWWgzGfza
+	 q7mUswuZBohMcDjwKCI2Qxx3XDb/nF8aj9N1Wnoi/wJ2wNmDNiXcw6mHE2w95fKSjrjNa
+	 80vm2++PTL/0YhGc4zqXi6SAXFbXwpUxJ8xLh9oV5iqGaGizI+PTKLnLs0PQb11Ra9GoZ
+	 z5vukpUH8dS/n0AZ/gGK+Kjap9IvKEDatCbNeeO5Hkrmvej+0AEh8FMVA6M2EhAzAJzoF
+	 1hhbqr0M85eDet+NgoGdlWMAR3vU42vQfcQcVHacrZ4+puiZG3pRtH3tt12Tz+2+3Tg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793634692;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:X-ME-Received:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=qlIPZi0u6yOauO+OPLsKraWQniSptmtMhVHra/xvkjY=;
+	b=5X7j4KoClNi2+0/0IaFXbCsLKuk/SPuLR7Lc8rvNM2aftLYGMplT0o3MpRigZokVwrJJ
+	 SJUIWCoov00KMeQO3uFhRC7iipQENa64qwdO+iYxOILdcnXzrYyuJpoCp3ZseAiuV/+Wy
+	 kr5Fijit9wJo1npb6jxlHR3AWgQrMc3uuS1+NhP5JI/wIFVQ6i39jsaPsnGoIMiwp5u5x
+	 w6jj22xP10H30UNdS6wLH8yg079hpmmrAfAHHYqTPImIUjktGbS5f7r5/uQfcO82JjqlD
+	 7q9A4XtypXAAMOGv/Prb+uucU8rS40e4lCOjME3PzIdcxk6kmv3MFQE5O4JICdogP2A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oaV42w8u;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61D4609FDA2
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 15:33:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E61D4609FDA2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BBC606E033
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Nov 2026 15:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DDZQkbY3
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-3ab3fc6e388so6188351fa.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Nov 2026 07:33:47 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793633626; cv=none;
-        d=google.com; s=arc-20260327;
-        b=T+T1fy1B1v53lYYnAyZCyUIODsDNjVnpZ2HUgXrnm95/u9EEJo6xoyNxdEIAMLmszm
-         utuQWBcOUDeDL3Ekdq6ZJKif0RlfWfm4t1Mga9BDEvqIBnyScLP8LDjE7aa6J/6vpQ3O
-         kTZ4YK3DiYzvnwiOpsbtm8SX6xYQ9rmbGuELzq5Q/vFJE/Wo73wirpnDVboD71Z4Ab0K
-         NYkkDQAx6tMrMoIS9MJ0wOsT8tOz+YzeqmGZGv+z9f1xDigSLODm2VYAZ06X9rRi2V43
-         xe6sbQhv2TB9MW6o6eZr2UZOTfXa+lyd+3cqD3tGeQq1Vh0g1bBBfW+UKLjHwGO4TG/k
-         bnog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fyou/fJqjaTqJGYGz9GXKCyYm3nQLAoQbUXl4Lxg+kM=;
-        fh=Ex1s5EaGC3rBUN8TOdW8FtAbVyoElUoQxoJGc8T68T0=;
-        b=pY2G8oQSSPJR0Kt1E1Mf4C41Y7GZ5MKPjnlH5ti2cKXvXF9Q4q+hxS1Vhtj5KCQ9eb
-         JlgGULkT6LcRrJgXY1QP73Mb9T+vEkm9IgBF3sEOtdlw41d17uM6ndWPDlyRokjQhofF
-         AS/uLLMV/5dswMczfCijQBHrZy/CY+AvsVw2aI5lW9j56AJTxeDVpz514cJIsjBB4KKI
-         nlJInF76VDFrq38hsbyhmY3id1HSmPujZs0LInRD6GJ9+NMmgh1Xcv/ovsDWnkuSoUk4
-         ArF0eU9B06DglsAwF6Wq0MlROj0IPZp4GLtxCTNMS1/LRCIEIEPr+r2SRjnToyf4v8Em
-         CTkA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793633626; x=1794238426; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fyou/fJqjaTqJGYGz9GXKCyYm3nQLAoQbUXl4Lxg+kM=;
-        b=DDZQkbY3f/MS7LqQ0eEKNUiWx6CVonZ2Kwc4mwu5fay0NKxUREQsf/QCavCwwaqxKs
-         72aHo38RiClj34EZjfLwZxaMl29OG/b2i5qRN4DVhANz/cpkhnLU7SVBMphMMjDrIziV
-         8CJ8AF8B/p3+ihnEAT9XWCSOOmIhp/54uPHWZKHYPmI6uLYM1q8sc+925svmjisK8vVj
-         jTcFmnRP6xUYge4HiWNjriTY0rYyBS5LB4fjg+Di0A+sHvQArgZwDsjIQyyTW6rJDv5m
-         28PS0fHHZDbJWEFydUV0+/CwGDkEAnyqBiosi/QrT6RQJ7GQvIpMymE3hLwUawfMobmV
-         Fjlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793633626; x=1794238426;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fyou/fJqjaTqJGYGz9GXKCyYm3nQLAoQbUXl4Lxg+kM=;
-        b=WC7VBMEL+pSMSkxvU+o03+Ko1Q8UM8TyrDnQlQ7fXvwexVNnq1NmXH59zBF1mUcZwf
-         c3h2NYlBMMGUHZTTmETL3NMQuDUYBNOnJfNHZ/vFEpNA1BtV+zkzk0Tds0rqdFIzUQXG
-         gQoo49GgewQ1qIMPmlQErfOAK8+iYxIRAQ/ENbpFQRdfTfQzZWnDXJw/udtJW/1c3iSz
-         EEA/9s462x/iydf2N9DXBKJvboA9A4G7VbxQr+zkLLD/n2knK7UbBlOKcfwr4Lgs4+sC
-         5vLPKDTcSiuopINQd3PcLe9nWuAQJpKp3BORZzJnRnMGtcK8DMbaOH9gEOjuYX+wNYko
-         /lIg==
-X-Forwarded-Encrypted: i=1; AKwUvBzjd/tcKUnFilAsWxDEDWMmhxuVboLXw0EdV00oFqv1WgDtgLVdOmz1F9+eOPAcG48V9fDoYbAnOH3uU3aWvQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/HPwRZ32MMx0Wf4YBm2MUpPvSoA3QjTP1U7RL3OpBLNK2E9SS3
-	ncuZGabqilPc5wkye+awx11ncvR/+B1Rfyt5gzobksH/1Y72AYOdxA7JNVHbO+KWnjX3319JLoC
-	6X3jbTUsfIjUA5nmRj04PwxRULyB+PjQ=
-X-Gm-Gg: AYBFou1mOTPRmkkYV4j4a4UUIN7Wt1hnBnLmelqEGHsY1n5+LACvMpdGQXgVvMIqATH
-	Nh4sz2g6X6BauGDHRBHwGqUOuoNuWVB14hEe3SgyfP0ZOXjyeu3NA1Vr/hOr/WAvJRdeNckoyjO
-	MdxoeLlUD3TRLOA7vyAAIRG8VmvSxYfYqgTbu3QZkcwwaonhZzGhnaVZlAlTXBZwIiWQV9d/vTe
-	R0LdlaWBhC1N7zWF2lM57rFmY8UgOKXJSw+5LfSEb6hkdz7N4EpPaPVc5DS3o9EJIMhG12WkqcW
-	yOaOeRgeDMy/T7AegANm6yI9wsHKs0Gqwd949i79DexDgc424PmIvXvL9fyF7eN3Dt6IswKix/m
-	FrJZMXQnuvfyficA6BOrOOucNX+JqdiYiketmOH7yZOH9ip6r0e3ufCjYuwbRa+kkaOohERZSfI
-	XmR6I9+neJLJwcKZjRrMPFbkEPYZ8aQEU2+hF/5DE8SbIlfcyZ8JBV/SExNPZkuE2F786mXXPEE
-	wpEMEIpoFHpFrXZy2l6m+iggSzI0fcyq9FW
-X-Received: by 2002:a05:6512:4041:b0:5bf:a48b:7807 with SMTP id
- 2adb3069b0e04-5bfd952024bmr3541751e87.1.1793633626006; Mon, 02 Nov 2026
- 07:33:46 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oaV42w8u
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D481D1F00A16;
+	Mon,  2 Nov 2026 15:51:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793634692;
+	bh=qlIPZi0u6yOauO+OPLsKraWQniSptmtMhVHra/xvkjY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oaV42w8uo1sPUH0uJqUgHmeUWPjlqyH+H9/UOrctIRT+8j8Sp6L1/cbcdRuPPd/aj
+	 99wR3mqm1g8dBal4Qonra8gd3oyhrZVLZJD7R2/3ny4TaTuHOagU05Cv6EhSjcY2cB
+	 vC/hckZM/pBiwOD6isgtlC29xf01BA1fklqpNYsEJztH9P3pML89iZm8oAmXBnMNiS
+	 F2T9mLWqk/e6Bwc7C9ZvSQrYCrvHi5QjPkVVSmSOqyp9uPFhPxcECfETNzUTgUcurM
+	 QLNrWX1z4sJOqayN6A1uprAojof+9ytEB4h7q5D+hpmQeJNYPh7eXAEpijGqOTvb+a
+	 dfGciQK96hHVg==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 1E568F40066;
+	Mon,  2 Nov 2026 10:51:31 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Mon, 02 Nov 2026 10:51:31 -0500
+X-ME-Sender: <xms:g7Hoahnctsw8SgU_adZrAL4B_J8KgBjswnRfud30gcrmGuTngjRHvg>
+    <xme:g7HoaqCD3h6lnF5Zai4PJ7tNbuqEgyZ07K6bKkV1FQQYl9lZ9BVcbP0wzVjp-1PxJ
+    ZysLIYghl-gvZQyCifz5vKU77FvdEUc9tTfdjcdIRGJDDgZ4u_sj80>
+X-ME-Received: <xmr:g7HoasJDNx6GWUfnQPxERUfr-Iumwzf2u5C2MeQ_1cx60OTR_x1xR23nFJdEWlpDqykAMWaQgYx39vy64ZI6Ev9eJp0ARCvp>
+X-ME-Proxy-Cause: dmFkZTF3LJKH0twQ0mqWxh7leXrMsIR+Jv5n/COwjK6/6F0101Pqf1aNy5hcgS9tLeUTOM
+    jpncM6+0k0uy6U2d940TgH3C0Hnv5Ppy3QBEfFvivMTwK6YnWgzGEGv3h5g3LnxKehcNA5
+    sKfpLqsOsMQ1BIqDT75c60k45roxMsHoLYqRvKYhRCUX49seDzopPAKYFeriAGRNngF4UD
+    3May1dvwgLG45ax58w4iG31jKlcHQxtajETEijOQjI3taR2y7gkg17LsuKkpcVrqJ9ESBo
+    UqoafHIsCWDibf2ZNL/Dz3mYaMgJKC3G86W/8s/pQfx596ZCU1M5DTDq4Pzip41aBFaXCJ
+    L1H15uiFyMV640uUbJ0a6hPRzLfhcY/QD1/h7VxG8xHDse/HfjTwX32QYu6bs6GzmB0MVz
+    9cMDQVR1rbQNkZkbJsU5HMAEDFKFQg6unH9rOLJo5DXH3lvsiO9JbC90WpLpUIPZvQHzUm
+    X+GlKQ2FXz1Cs303dNEtTw3xrlIJJ8XanvU4qI2HKONtGROBuhqWXUyThPqER12fnHIMo1
+    L3E7/093RSurR2RZwgC791EJQGw5PHgiHB4uRyTzWl2FGf0VBVWdJK3e3xEWPjDdVQ5WD/
+    ZEvq1nkPt2UbbbfzLmZX9ED2V3GXg8AFNot8dvXQmXQIAA6jp+nf+7/xH35A
+X-ME-Proxy: <xmx:g7HoatwsCU2Z3q-_4wHs0PGKI32f258wE52kWqExZEnQQQDd7jRuUQ>
+    <xmx:g7Hoagynx5QA9LJryZ4fNNbaOXBbpCX-Q5o2WzklQNAD6Gypudgv9Q>
+    <xmx:g7Hoav2OOOa-fmpKVHOzTugkwLywnb-ZFRphWXp2K4QkilrLd-R1rg>
+    <xmx:g7HoaiXMwtvAl9eW46_mDQr7gGLCOFWQaSePRn5QIVrEALHDaLV9Hw>
+    <xmx:g7Hoajcdx9-Rv5Xy8MWKCy6PrZgBE0YO_bhpnSrdoAjwlymdDVPvSKpC>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 2 Nov 2026 10:51:30 -0500 (EST)
+Date: Mon, 2 Nov 2026 07:51:29 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: FUJITA Tomonori <tomo@flapping.org>
+Cc: aliceryhl@google.com, arve@android.com, brauner@kernel.org,
+	cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org,
+	ojeda@kernel.org, tkjos@android.com, a.hindborg@kernel.org,
+	acourbot@nvidia.com, bjorn3_gh@protonmail.com, dakr@kernel.org,
+	daniel.almeida@collabora.com, lossin@kernel.org, lyude@redhat.com,
+	tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH v9] rust: sync: condvar: use Delta<Jiffy> for timeout and
+ result
+Message-ID: <auixgbeSSfBWwVS9@tardis.local>
+References: <20261102035934.711973-1-tomo@flapping.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -106,40 +92,175 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <8yvpSoQ7ihtTj508nQU_nAlk2eMmGH5zK6H5pow6z5cTYGO3yL_DvqwbFMwqzhtbL-52eMYXpT5Cyg0g7fUN7w==@protonmail.internalid>
- <20261031003334.4161188-1-tomo@flapping.org> <87h5hzmfui.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <87h5hzmfui.fsf@t14s.mail-host-address-is-not-set>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 2 Nov 2026 16:33:26 +0100
-X-Gm-Features: AclHuK8-KbB94fn8EBdbNfyJoSwQYIWyY5n1m1PL_m5ogGvNtA1ZGSAK02W1_3c
-Message-ID: <CANiq72mjFLQbgfW_f7vAJ+M-95d5s54sBTRfMGYekcRmm7xTAg@mail.gmail.com>
-Subject: Re: [PATCH v1 0/2] rust: time: seconds based Instant
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: FUJITA Tomonori <tomo@flapping.org>, boqun@kernel.org, ojeda@kernel.org, 
-	acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de, 
-	bjorn3_gh@protonmail.com, dakr@kernel.org, daniel.almeida@collabora.com, 
-	frederic@kernel.org, gary@garyguo.net, jstultz@google.com, lossin@kernel.org, 
-	lyude@redhat.com, mike@fireburn.co.uk, sboyd@kernel.org, tamird@kernel.org, 
-	tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
-	rust-for-linux@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102035934.711973-1-tomo@flapping.org>
 
-On Mon, Nov 2, 2026 at 4:08=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
-org> wrote:
->
-> Orthogonal, but I dislike the shorthand `Sec` and `Nsec`. I would much
-> prefer `Seconds` and `NanoSeconds`. Opinions?
+On Mon, Nov 02, 2026 at 12:59:34PM +0900, FUJITA Tomonori wrote:
+> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> 
+> wait_interruptible_timeout() takes the timeout as a raw Jiffies, and
+> CondVarTimeoutResult reports the remaining time as a raw Jiffies. The
+> type does not show the unit.
+> 
+> Switch the parameter and the result fields to Delta<Jiffy>.
+> 
+> Delta<Jiffy> is signed, but schedule_timeout() prints an error and a
+> stack dump for a negative timeout. Clamp a negative timeout to zero, so
+> it means an immediate timeout.
+> 
+> Update the only user, binder. It now converts the freeze timeout with
+> Delta::to_jiffies_timeout() instead of msecs_to_jiffies(). Both round
+> up, so a short timeout does not become zero. They differ only for a
+> very long timeout. msecs_to_jiffies() returns MAX_JIFFY_OFFSET for
+> 2^31 ms (about 24.9 days) or more, which means an infinite
+> timeout. to_jiffies_timeout() has no such special case. It converts
+> such a value to the matching number of jiffies, so the wait is long
+> but finite.
+> 
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-I guess it matches things like `NSEC_PER_USEC`? i.e. C.
+Thanks. Alice, any concern regarding the change in binder?
 
-(Personally, I don't mind longer identifiers and I tend to prefer them
-where reasonable, but sometimes there are other factors to take into
-account.)
+I have some naming suggestion, please see below:
 
-Another point is whether we should align also our methods too (e.g.
-"nanos", which comes from upstream Rust), i.e. with your suggestion,
-we would have all `NSEC`, `nanos` and `NanoSeconds`.
+> ---
+> v9:
+> - Send as a single patch. Patches 1/4 and 2/4 of v8 are in v7.4-rc1,
+>   and the workqueue patch will be sent separately
+> - Rebase on v7.4-rc1
+> - Drop the comparison with enqueue_delayed() from the commit message
+> v8: https://lore.kernel.org/rust-for-linux/20261002050428.2746277-1-tomo@flapping.org/
+> ---
+>  drivers/android/binder/process.rs |  7 ++++---
+>  rust/kernel/sync/condvar.rs       | 31 ++++++++++++++++++++++---------
+>  2 files changed, 26 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+> index 1f4cb43f1de6..edde0ea35687 100644
+> --- a/drivers/android/binder/process.rs
+> +++ b/drivers/android/binder/process.rs
+> @@ -35,6 +35,7 @@
+>          Arc, ArcBorrow, CondVar, CondVarTimeoutResult, SetOnce, SpinLock, UniqueArc,
+>      },
+>      task::{Pid, Task},
+> +    time::Delta,
+>      uaccess::{UserSlice, UserSliceReader},
+>      uapi,
+>      workqueue::{self, Work},
+> @@ -1552,8 +1553,8 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
+>          inner.is_frozen = IsFrozen::InProgress;
+>  
+>          if info.timeout_ms > 0 {
+> -            let mut jiffies = kernel::time::msecs_to_jiffies(info.timeout_ms);
+> -            while jiffies > 0 {
+> +            let mut jiffies = Delta::from_millis(info.timeout_ms.into()).to_jiffies_timeout();
 
-Cheers,
-Miguel
+I would rename this variable to `timeout`, i.e.
+
+	let timeout = Delta::from_millis(info.timeout_ms.into()).to_jiffies_timeout();
+
+Thoughts?
+
+> +            while jiffies.as_jiffies() > 0 {
+>                  if inner.outstanding_txns == 0 {
+>                      break;
+>                  }
+> @@ -1570,7 +1571,7 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
+>                          jiffies = remaining;
+>                      }
+>                      CondVarTimeoutResult::Timeout => {
+> -                        jiffies = 0;
+> +                        jiffies = Delta::ZERO;
+>                      }
+>                  }
+>              }
+> diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
+> index 69d58dfbad7b..ae70e91eca94 100644
+> --- a/rust/kernel/sync/condvar.rs
+> +++ b/rust/kernel/sync/condvar.rs
+> @@ -12,7 +12,10 @@
+>      task::{
+>          MAX_SCHEDULE_TIMEOUT, TASK_FREEZABLE, TASK_INTERRUPTIBLE, TASK_NORMAL, TASK_UNINTERRUPTIBLE,
+>      },
+> -    time::Jiffies,
+> +    time::{
+> +        Delta,
+> +        Jiffy, //
+> +    },
+>      types::Opaque,
+>  };
+>  use core::{marker::PhantomPinned, pin::Pin, ptr};
+> @@ -182,19 +185,29 @@ pub fn wait_interruptible_freezable<T: ?Sized, B: Backend>(
+>      /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
+>      /// thread to sleep. It wakes up when notified by [`CondVar::notify_one`] or
+>      /// [`CondVar::notify_all`], or when a timeout occurs, or when the thread receives a signal.
+> +    ///
+> +    /// A negative timeout is treated as zero.
+>      #[must_use = "wait_interruptible_timeout returns if a signal is pending, so the caller must check the return value"]
+>      pub fn wait_interruptible_timeout<T: ?Sized, B: Backend>(
+>          &self,
+>          guard: &mut Guard<'_, T, B>,
+> -        jiffies: Jiffies,
+> +        delta: Delta<Jiffy>,
+
+s/delta/timeout as well.
+
+>      ) -> CondVarTimeoutResult {
+> -        let jiffies = jiffies.try_into().unwrap_or(MAX_SCHEDULE_TIMEOUT);
+> -        let res = self.wait_internal(TASK_INTERRUPTIBLE, guard, jiffies);
+> +        let jiffies = delta.as_jiffies();
+> +        let res = self.wait_internal(
+> +            TASK_INTERRUPTIBLE,
+> +            guard,
+> +            jiffies.clamp(0, MAX_SCHEDULE_TIMEOUT),
+> +        );
+>  
+> -        match (res as Jiffies, crate::current!().signal_pending()) {
+> -            (jiffies, true) => CondVarTimeoutResult::Signal { jiffies },
+> +        match (res, crate::current!().signal_pending()) {
+> +            (jiffies, true) => CondVarTimeoutResult::Signal {
+
+s/jiffies/remainder
+
+> +                jiffies: Delta::from_jiffies(jiffies),
+> +            },
+>              (0, false) => CondVarTimeoutResult::Timeout,
+> -            (jiffies, false) => CondVarTimeoutResult::Woken { jiffies },
+> +            (jiffies, false) => CondVarTimeoutResult::Woken {
+
+s/jiffies/remainder
+
+> +                jiffies: Delta::from_jiffies(jiffies),
+> +            },
+>          }
+>      }
+>  
+> @@ -248,11 +261,11 @@ pub enum CondVarTimeoutResult {
+>      /// Somebody woke us up.
+>      Woken {
+>          /// Remaining sleep duration.
+> -        jiffies: Jiffies,
+> +        jiffies: Delta<Jiffy>,
+>      },
+>      /// A signal occurred.
+>      Signal {
+>          /// Remaining sleep duration.
+> -        jiffies: Jiffies,
+> +        jiffies: Delta<Jiffy>,
+
+Similar for these two: s/jiffies/remainder
+
+Thoughts?
+
+Regards,
+Boqun
+
+>      },
+>  }
+> 
+> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+> -- 
+> 2.43.0
+> 
