@@ -1,22 +1,23 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.6
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.48
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793616368;
-	b=M5QEHt2pxOpypb6KGO11DvQf+UU6Vori91pBkzgtKvlb1ag39beefyWE3X8xFZ6XLv7A
-	 sOt9MqaHSnggdKFi7tlf0xUo2YrGKRL8fpL56vOek+sIfZj8fWDCytG7q/GRuJ/qOEogz
-	 KND7Q95fU2NZs3OpE0ZO/n3P7zc2noibNyYhu0DbJrUNN4b3lH/GbBtuSBre03IBjNC92
-	 oxOAXtqUtffOfEUgnXBwIEm7X/XBaimkaefQGA7LQeY/46Y41yU60PJa+t20oWMq4fNQt
-	 EKD5NyGminJDgIN+HsWD0xbzBhWp+rT9beC9KJkkYl4TZXmT5qDGoink9f3f+n017og==
+	t=1793620535;
+	b=P9M+K9UXJnXLGDdR96aTaGV67sbg96+8lZYu+/FdNPXQibPt/drpiyuhwqwjk92V4BHL
+	 pNRL5LA+6ipibEKf05mfIwgTGtW1OkwAmk7Ei6PBsD7UgXgBi1JoJj8iXlm9/AhzsIP2O
+	 EDHj01VXW0pQJpXnS5Mxt84JTnPMgS+CJsBvCRxZ7FnxfECGNjrvWDQheE9ZV76g2AR5z
+	 O/Pq8QJJLJ4cBThaJMGnnZU2oanqVqIq6qtHTDx07PNaFnh8ldkCo0rE7ATa8GjCA9EGx
+	 F9D9FDj9GLwWtUZXg0gn8khLuOMSX0ddS44Cw5v3INPb8VU9fohBiKfn8PfyeHpUKdQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793616368;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793620535;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:References:In-Reply-To:X-ClientProxiedBy:MIME-Version:
 	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
 	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
 	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
 	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
@@ -24,97 +25,76 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=eYhKLsJCXbY3Viq9xoCBiDnByextfZ3CPyp+K6Xi8/E=;
-	b=XC1dAxXNj2jxsnUpXEpBRjtvM+I/4w0L/hnoC2o2x0M3fiVsvncnBz7O/ppYRMtEOQj/
-	 sBEL3ZhV+ZwMlRI69FqSj3Qw8jNKcFZ6UNcxSJW/DsJS6JOCwDt2EYDH4ZFGKZ1fUcg3Q
-	 80wJ0Az+CGyzQUpnCqUOW/KUnJvlhVp+3d8wXSDAqsJ5/gHr5gdYdvfXtXomqE2hE8iX4
-	 B21IacWotXNuRuHu/s9jgz+ei/Us2qnb7EsogET2mElDDZmGRQ5vE/4LIb7XdwlfRfFxZ
-	 MaRhzJ1+ee08eF1Q+P0ol5YNjgjpEyl7XuEJ3bVwRwTC0JXHs6utj/4zstHbuoISyBQ==
+	bh=xlqJOxUwZeQIz5DZP/FTRDk4DkOH4po6pdpWqn1sDKU=;
+	b=WkWcq2bTQB2OnvTd/CnjKJlcrCsvEH6YL/4fs75XWitO0yQGHniZJG/W9IGBdGYbDOCk
+	 ORXL6DVMOyuiwukTDh/apIlu9HSv6wsPgn0E4Pco1DTfuNwapMWyAuUZTByib7hqU3bFs
+	 dPzcbMUUAJBnCqVkGD5FbmAU/WBURcG+1DY3eWM764WlarhS4akwJ0oXgzCzrX2aEp3oH
+	 kqW0oZoGJSd3R58A5tZB+kBniBTqzmhKttBAW03ePe+1h4Jw/B0uGVwE14VGWAY8bzPBH
+	 XdxBUydjQSHUa9vox4RTEc/LPym1XbeOc2CbmMu6hi3vYNROv0TzBPGDud6GZkVYiKg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b="PLArGcC/";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.6
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011006.outbound.protection.outlook.com [40.93.194.6])
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=nQEsEpMV;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.48
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012048.outbound.protection.outlook.com [52.101.53.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285B8606A324;
-	Mon,  2 Nov 2026 10:46:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 285B8606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322A6606A324;
+	Mon,  2 Nov 2026 11:55:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 322A6606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=PLArGcC/
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=nQEsEpMV
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iDqsYta+sD2q5o8p0DPh7y6Wrcz5zoiHh2zaQ0PwrqkdOIG55q6EzUTS/pnz0c6tHkqdLoek/qRHeah6DRJcts0bUsdIVgQSYmSmhvOGhjVop8ufE7YjF8UYdIDm/RG0jUvVIrB+gL6Ip+Yw4m9zXqqwSjgckoz+Z1hZ4NNkGGHd8sepWpurTfQB7SsWvJa5TjaV4ok/AOP5wb/K7XQgFfN4L/S2/6XjukBkDKRBvaf73/g1BRVkaI4yx7kECcxx59KxpMN4ZYvWziEolStObq7VolQzhhZ/95LPwazwxDpGRHmviS+HBBDeg4q7X97IdSXT0Yx9FBMeNRMCrLPrGQ==
+ b=nNprL5WjW9CheH1QkQSOUG5ejLvpvI7qHNCRwoqNC22kX2vl+DdwCCsdj+RuDABbTBE4t42a8Px3rBtcU0eM+h2AvHJd4GagCjV4O0JZhIXty8VNCTn33aYYxv9b3wrhMpOrDhU+7dw43tKkIjHsx/3x2Xp1+aNCT6FJ177t3pvBqBknjJGWdYAfcoA2L5egP0D1Qs7bhKP42lP1lsTYNSYU5rIfl+kNBDWCf3AGKQiHr5CQNnxTzoiG147BZFHlXxpInZoMoNP1XLORwhuSIorUBv8rnVYQQdn/sSAnxUUijChY0EESHNMUi1MSHtwqadAXudmCZWVcETqXhzs5jg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eYhKLsJCXbY3Viq9xoCBiDnByextfZ3CPyp+K6Xi8/E=;
- b=wKRIDzUscgmgoo+nV7k4CSdO6IISoGJb+WFgrFslNEi5U0sNSPyufX7PFUWNC5LubL+7Z3ZprBB5C6sMGETQsrLNiFm5x1B8H7CogXViVR4ue+GY4f8mp/tzZpefLOacBFNSBpliSlZ8HEsNXXr4ZafnDpj7SSyZ510V0sdCMCiglGJ36n16q7Yq+hCT4qA6iV1BNMkM5R9qdDmwjUkJosK2fp5y/kfpg1b9prlS7KOTKz/QrYiZVfQvLXO7sQf0s+7aJ0dF97N/NymPeOGUtaz8/oHA7FA48UC3OQGQfuqatcnvMLKYm3eOfBrAGmoIGv7hVht2qANxdY17MPWFHg==
+ bh=xlqJOxUwZeQIz5DZP/FTRDk4DkOH4po6pdpWqn1sDKU=;
+ b=K27uVh2Gg5t+eLnTkyLmH70xjhbneDmJk0P3Va7qaFnb6KXvDCh13tbtStg4xTlKpZiPTJKqrxafw4FPkS9Wyjok0QcjuWb2Dg1z+XvtPeM64c2iEeGspvf8y6P+tAiE7+YIB5tpJFlo45qskijrSD/bwAS+1Eu8w5oU3Yrf3289gmpLH2n/9WG6xLfU4OW1sKR0Qdw4FKlphgG/c6Zo2oDsxoHf16xP4aSIadkNwydNYksej9xgsV+j2r08XdHBEuKumpjqVr252Mj9jsAFOiS/mlgY5WRFUxjvAAPjuBlIjorht4x2kPsRFNOlfw95fBON+KlGDzWOAITkt3+Ejg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eYhKLsJCXbY3Viq9xoCBiDnByextfZ3CPyp+K6Xi8/E=;
- b=PLArGcC/jKWZNkDPdyiL4+fJhQXEGQtmieDEqX7CzN6E61DIOcph2VInPrmD6EHN3n7MOGPs9xAI7VXuGHMxY79uDZuS321RvkkNfEe/1pjA+ioDcaWmstTVqgRe2M23YdC/mr0nsEqBNxGUq7wI8VIQE1pAMxa6D/XCEbBat4I=
+ bh=xlqJOxUwZeQIz5DZP/FTRDk4DkOH4po6pdpWqn1sDKU=;
+ b=nQEsEpMV7rxkbLyL0uOOv9cJRrqKXkjIgfPFcmNedX47zx4gxVfuwqHGMyA6Zvh1cW+CMq+m3HW0RFlfhdYIyBritWz3VIQZG6WDSuK18Hp8hd1FrCp+rjc9X999r1UalfSQOGzwfPHXdZ8x5UGjBoc/Z872W7em63F/OG1enmb/no1tF+0Fw76Mg7WUg00gV9uDJgaFUA0+JeIBOqHjLz7R3YRwErQf6fN2f1xBFCAahFD2bM544DZ/+aeH7PuIuBcueclOuVmDF4VqFDCdUHQbXmA20dCmKUY+MXwWES4Dxt5iXFG/5FbLUcYX/X+Izsz5ZcUE9XJXbdVn2McW4g==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by MW3PR12MB4491.namprd12.prod.outlook.com (2603:10b6:303:5c::18) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com (2603:10b6:303:20c::17)
+ by DS6PR12MB786665.namprd12.prod.outlook.com (2603:10b6:8:4c1::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 10:46:05 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
- 10:46:05 +0000
-Message-ID: <5e643ba4-0573-4d1b-9439-25f05e58a8cf@amd.com>
-Date: Mon, 2 Nov 2026 11:45:57 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 0/3] Solve dma_fence's problems by locking
-To: phasta@kernel.org, Sumit Semwal <sumit.semwal@linaro.org>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Alex Deucher <alexdeucher@gmail.com>
-Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20261020100034.759183-2-phasta@kernel.org>
- <3e8bc11d-6f90-47a4-ae63-cf2ff37f1ff6@amd.com>
- <ca78cdb7c24a9be9b640db782168cdcc5fe30b60.camel@mailbox.org>
- <ed2728bd-1df4-478e-9e6f-a96dfd172b48@amd.com>
- <4a7294da65c8744ba6355730e304b5250d0ca351.camel@mailbox.org>
- <d13d1a6e-bba2-4275-984b-145e0252eb0f@amd.com>
- <320b6e7c75da6f05c015e89df0e2c7d11f20d70a.camel@mailbox.org>
- <22d66945-8854-442f-a69d-fe02726eccda@amd.com>
- <f9a47d563f896e0789fffa72df5847e2878cbe5e.camel@mailbox.org>
- <5d15d668-7191-4e96-922c-82982787b50c@amd.com>
- <3a81450158fe5a46d76257c5018eaf5592168f18.camel@mailbox.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <3a81450158fe5a46d76257c5018eaf5592168f18.camel@mailbox.org>
+ 2026 11:55:30 +0000
+Received: from MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1]) by MW4PR12MB6873.namprd12.prod.outlook.com
+ ([fe80::a338:bd2c:3a38:ece1%5]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
+ 11:55:30 +0000
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BL1P223CA0024.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:208:2c4::29) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+Date: Mon, 02 Nov 2026 20:55:27 +0900
+Message-Id: <DMKPEV6F91IU.2Q769BRJO6ECJ@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Benno Lossin" <lossin@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, <nova-gpu@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 4/4] gpu: nova-core: gsp: cmdq: compute the queue
+ regions from a count and a slot
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Eliot Courtney" <ecourtney@nvidia.com>
+References: <20261030-r000-cmdq-prep-v1-0-f2befbcd8ba9@nvidia.com>
+ <20261030-r000-cmdq-prep-v1-4-f2befbcd8ba9@nvidia.com>
+ <DMKHKKRR2UIY.1FIJ7GS9VV4B8@nvidia.com>
+In-Reply-To: <DMKHKKRR2UIY.1FIJ7GS9VV4B8@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0262.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:455::9) To MW4PR12MB6873.namprd12.prod.outlook.com
+ (2603:10b6:303:20c::17)
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Post: <mailto:rust-for-linux@vger.kernel.org>
@@ -125,330 +105,263 @@ List-Owner: <mailto:rust-for-linux+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|MW3PR12MB4491:EE_
-X-MS-Office365-Filtering-Correlation-Id: 86b3b191-a3a6-4abb-804f-08df38ce7eaf
+X-MS-TrafficTypeDiagnostic: MW4PR12MB6873:EE_|DS6PR12MB786665:EE_
+X-MS-Office365-Filtering-Correlation-Id: 19af0183-35cb-416e-b7db-08df38d8319b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|921020|261021123027099003|11063799006|5023799004|4143699003|56012099006|261009223027099003|261028144727099003|261022075727099003|261021121427099003|261026121527099003|261026140227099003|261022105027099003|10067099003|18002099003|22082099003|6133799003;
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|10070799003|261021135927099003|261021123027099003|11063799006|5023799004|4143699003|56012099006|261009223027099003|261028144727099003|261022075727099003|261021121427099003|261026121527099003|261026140227099003|261022105027099003|10067099003|18002099003|22082099003|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	FQ7cRKwTLvk5FaY+OYg3vJJJEroWhCsS7zbKjNzChmGFuUbKjrrcl65ZMAEm+iTbzYQFQ/xVLWSoP2+YvmBJ8B7yPC8VENAJ6dVF1KarTu51h92i9bGiCX3iyDsiXMPhTNt9e8nMmNkn1Sfd2OCK3kPmbW+JDL1/cQvzWy/sn30bLn1RAPWMPrEaAei3bXJt07DpUioH3dcjUSh+SSDbLjm4jkbqHqPI17MBay4OLsdzOi0s51UP5e7G3pX3CIIZwK78R5uspCu8tpuVJK8/xn/C6X3gKveBaok6OmiB6q0bB4+wlptCxzfy1iEy31aQN7n/133wiBfnnT5mQWCLe3qgxDlXH9mTz3WKi+ZiN2Pl7uCs5D+V1JYbXd1Fb7hS27dvDFpCQF73CD6dkj4hx3og2vomL+kK4qc5/K0cKQX7IVfJdEkGiu5L8m44sdyg/6+CiWbBM/kl68K89dtmKuP4Fz9jAyWLUy9pwCaaiZvFYToBKYRK4x25cJL66Zc52UWFeLIkb2ok4tQheh5GDsKUNuCTabxogTtRHMSFiWebOZPMGA/ViZNJG1utfrfUnfG/gBtGxAiS1K+Qa/2C2ekWPw8bWV+Wwc3T4R8n9AUbZoW9EZl3vh8zaHjq3iL3fjrZcyU4DpVYILBXPniZbzKhoubaET65yz3CoNj+mHr3Hlzx8/+FTfbWuPVbLuKi1InN4bappzIeuO9p61Spcg==
+	HYw8ecifwum+3r6c1X5C9w5vaJzAgCCqUIIgx/FiyjSUoo79aI4li3JOmivnZNCdxq5qWduOf4mjGmS71jnAeVlnHGwWpNW8q6IrWDbF7FULWcK0VvRIQ5Xsx74RZ8oytW/29jtKXn9rKWj2o3qiW/l89KvOZnFR3c+IyTKo6JWAwtcO6Pm3s/LQnZX8wTauLi5rxrVGkpL+N59DIWOryTOIUOOkzINmZ1TiMFS+VUr3nJjxUw1DFEHU2vAAnffXu9HsajBUiQDF6dihiskOqY3yDazpEK54fgiWxeFpRlryDtmpayRNfSJBg1dpqQ7s7O6+pdysJkjyMDhN+TZXnDHUc9OyR6pPW136GQj1A8DmNy/TlvSFeb8DAkUv88IOPG5KCaiSQf90UuWQsJUbZZniYXtv9sIT0QSREpOJtLz4nNyCZkjMT0m6M94VUK/r61gfwUhyFVgcLCUyd+gg6uJTuW18rlBArrUB6drho9SxwNa87k/x6NPzLX+0Z25VYfs7PXjXXT0GkF61cAJjoRu3Vz16Ryw2Z/6qaaUjZ434Q0b0JNUmu5HneneCEK9BR73V5gKhduVvtX38VVdEgqb+h3pP9p15b6S35J8rpAAYK7x/NiGdWN++qFDIILgfXyQI1di1/BeMIlvZkL+Kp93NVRvcmDKJKSgSMnKFHKc=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(921020)(261021123027099003)(11063799006)(5023799004)(4143699003)(56012099006)(261009223027099003)(261028144727099003)(261022075727099003)(261021121427099003)(261026121527099003)(261026140227099003)(261022105027099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6873.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(10070799003)(261021135927099003)(261021123027099003)(11063799006)(5023799004)(4143699003)(56012099006)(261009223027099003)(261028144727099003)(261022075727099003)(261021121427099003)(261026121527099003)(261026140227099003)(261022105027099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZHlUazZ0SmRVOWhoYWtBVklqL1p5aExOMDczSVZMaEc5MFBDSjY5V2NtOEVQ?=
- =?utf-8?B?YkZid0hXeCsxVjRBa0JJU01qTnJmUWNLQjlCTVJaN2VmT2p2WDBBWWo1QXNJ?=
- =?utf-8?B?Z3g2Y1JWZVEvcGQyajlUa2lrWFdmUnEvSlNuNEJXcE1ReERiazg0UFE0ckx0?=
- =?utf-8?B?SmFOMG9VM1pOMHdjUHk0eGt5TGVHQ0dObTRSbno3bWIvdGc1dXlwSmJWaDEw?=
- =?utf-8?B?SFpobHBseDJmRjNCbmx0MEpESTFXN2xjNTJUc1I2SXZzMHBhdVByVmpIN1VW?=
- =?utf-8?B?U2plMDVoSEgxa05pSzJKdXVnTEU1ZUhZNHRKWWY4bEY2MFZ6SmV5cmZjVUda?=
- =?utf-8?B?bGk5cktLQlQrRUg4VitnMkh0TndPeHg3Um5HSytzSUVyUGkweVpaSHZLeUps?=
- =?utf-8?B?eGswQ2hWN1NaTFRzOVc4aU1CMWN4SFM0WGJleHR2akxkbktBWElLcWNXWUYx?=
- =?utf-8?B?UGhjdjZBNVNIano0KzI5ZzhZSmZsSmtGcWJiZ0t3TzNCTEUrbWRrTThXSXJJ?=
- =?utf-8?B?RmJQdGZCNmltMnRKQ1RMNVdYelVGelpUY0ZsclBja3A2dFhLS3ZmMzJUY2JX?=
- =?utf-8?B?K3VXUkNxS1FsbTZaN0E4RUgxS3hpVnBUZWtQRjRoM0l2T3pyVVlIWXl3K3cx?=
- =?utf-8?B?Um9nVWVaWEdYMHFhbjRTV0FiYVZzamNNTk40dy9rVlJvd2dCbDdiQ3VTb0NY?=
- =?utf-8?B?bzhsMkRHNVlTK0hlWkg1TkNJVFRHLzV3Ykppc0xCUkxtTUJ2SytDNEpTaG1z?=
- =?utf-8?B?SFg4a0NtbXk1MHpjS0pNWEdrUXJBMmxuOHhXZHdFNGE5dHpNVnZsYlZ0WVdw?=
- =?utf-8?B?VjE2eml6WkIvTlNWUStLSWMxb0NHWFR0NjRHRjRqQUViTk5EelAwTVR1V2Z4?=
- =?utf-8?B?aEtOYnd4a2lLVzBGVkJ4ZjE0TlZkUEJ1WVNTU3k4YkdhdWhjbXpydVZxT2NW?=
- =?utf-8?B?dUdzNDMwQk8zRnZFbUxYQmZYZ0RYYTJTc21SOEhSTFdDV3hJN1hudm1nSlQv?=
- =?utf-8?B?VzlIVzFXWkRZeGlKM2xmRVFQbU4ycWJweGlJOE9FK2M5ZUcwL2pMZkQ5Tlc1?=
- =?utf-8?B?VVJuWldmN0lqVncyMW8xTEpsOVJrM2lZZ3FDMEdjY3lPbitTeXQ2V2hNdS8x?=
- =?utf-8?B?amlDRTE1ekg0dEhEUUxTd2hOQmQ2NlE1b1FrSThxRkI3c2Erb29qZTdtWmVX?=
- =?utf-8?B?UjVIcHdsSHlTK05qUHpibjY1MENmYUpVdTNsVS8xRGNaRWJHZ1NHRmdkb2lN?=
- =?utf-8?B?d3hncE5LVUJLeloyWHM3OXJ3SGcvWWFxdG9OS0lKamhYejdYSUxDYmNSNU1z?=
- =?utf-8?B?enhQQ210Y1F4ZlBJSkFxK2dFVjdFb0xKUVBFTmtmMDBJaFlTUm11Sk5taU01?=
- =?utf-8?B?THozK2ZmdFovSlZHY0VJS3BBNGVRMUJBZkRjenQzTmNGYnVvVlRnbEg1WHZR?=
- =?utf-8?B?US9vRWE4ellmR24vV2NMUHlienNjSUlYMWdyd2lRRWZnODV4Y3ZuWVJyM2VC?=
- =?utf-8?B?cXdmTFMyQXpmbiszcVhwQVhFOUdQUlMvaE9rWmc4MjF6UTg3RHZxb3F6engz?=
- =?utf-8?B?YjFjNWpodWg2UHdzS01wdTczYzFDaTU5WGtVMHRvN2xQTVpKd2JNSGQ2TW1M?=
- =?utf-8?B?UnRmTG5xUUlicXBERGFRdGhuU0NVRU9RRWliaUJXTWRteE9halNTT2hDUzJD?=
- =?utf-8?B?YnpUTTdxcys2V0pRUmtwVTBCdlAweUhuVndKMTFsZkZqNTUxYXBCWmUxOTk2?=
- =?utf-8?B?bTREN2phQVhnd2ExZ0lxdm50YUoxTTI4YVpKMDliNEJUbmxrWGM4RG5aZi9M?=
- =?utf-8?B?MHFlaEhRK0NTR00yOUxGdk13di9saldvK0s4VmJtUnNSbTJSRkpBK0VQQjFH?=
- =?utf-8?B?MlZ4c2I1ZklXWDRJSVBSSTJSbWNCeWtXRjNidzlURDk2bVY5RHlQTjNnajRy?=
- =?utf-8?B?dHYycEY3dE5RenpvUDJreVFJY1Rta0lMQXA4S01YMHRzRWU1NXpYd1A3S2g4?=
- =?utf-8?B?STgrWkR1T05JdTBHOC9lbHc2NUF4eHpXMy9CQnl5VHpvdFoyZlYvSVV5KzFn?=
- =?utf-8?B?ZlQ3WDBqUHMxbjFkTHpCSXZrczFsS05Cdm4ydVVSWkpMczdKVmdjcjVzSGFY?=
- =?utf-8?B?dWJRakZ3MFYzQ2ovYms5R2RuTy8rUzIrL20rcENtc0ExYTBLZER4UHloS1I4?=
- =?utf-8?B?Y0pXMEIxc0xGengvd1h6R3hzalJkR0xnVms0b2FDT0FhSkI1RXdmVjE5TkxU?=
- =?utf-8?B?WGNRc3FJMUVMN0dMU1BLMVlEMnVTMzJRV0wrT1F6YWRNcTE0VGlvQ3ZjeFNC?=
- =?utf-8?Q?MrgAvaup8s2wWf0FMW?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86b3b191-a3a6-4abb-804f-08df38ce7eaf
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+	=?utf-8?B?WDI3STgxYVFRKzBZOC8rUjg4ZVBuUnJkYWttUGE4VlZGd2NETS9ia1ovWFht?=
+ =?utf-8?B?YmtYcXlYd3lTaFdnVWV6bngvMVVvMHUrT2dVaTFxQ2ljcitqZnZLRHNGMVFl?=
+ =?utf-8?B?L050V0ZPdldLL0crM2Z1ZThDTWZLY3JYTDYvaFc0dlliN21CeEpKK1dITDVF?=
+ =?utf-8?B?dk9UekljY0Q5MWhmMlFMME1EajFhSllwRVFaMlpBWFJzM2dseUJna0s1clZx?=
+ =?utf-8?B?cjFsck91S3BaVml3RGdpbWFxQ21lcHUxZzBiYWxTdTZQVERHRjdkN0RORDFS?=
+ =?utf-8?B?bGFHTXVEWVNxVFJ5dXFtMlptaVgzM1NDOXJnLzZFcmpBKzBlU0FRWkNMQ1d3?=
+ =?utf-8?B?T1JzSHRaZmEzMmNSRC9rcW9oQUJLS04zaWJMS01Ua2ppVW1yVG1PL1ZCbDZY?=
+ =?utf-8?B?My96MkJzeTVrR3pldUJadzIzS0RUeEZFaHBJSmlUb0ZoM0FOandKSk9jY2NU?=
+ =?utf-8?B?dmdMOFkyS3JhRzN5cTl6YzYwUEVHNFRySEQrcU1YNGRlb3FnbUtUUjV2T0xU?=
+ =?utf-8?B?UkdrTWdkN1pKWExwcWFVNTQ4ajlHVXMxS3U2WDFDZ3BoMEhvdGhiWENncFh2?=
+ =?utf-8?B?dHk5TmRhTm9ka01UM3A5cDhGN1A1K1BQYVFmcitBODUxcHgxRFM3LzRmU2RP?=
+ =?utf-8?B?cWJkVUlwUWlsUXdydy9rVVFPbnlqSVNNQ25kbU5ndjh6RWlCS0d1Y3RENXM4?=
+ =?utf-8?B?THpvZ2hCVW8yNmwydk1lem4yaWlLSFExeThSSVNRbVd6TVpndkI5b2FBVU9Q?=
+ =?utf-8?B?dVRpUk11eHJ1aXJJYjluYkQzZGl5UGZ0VGNpOHV4cVlRSFBPUmdKNWRZOTk5?=
+ =?utf-8?B?ZjhXZUhSRnFKMVo5bnFiQUEvMXhiRGRJVTVJMjgvczhja0VhTEhvSEloYzFv?=
+ =?utf-8?B?cTJqcU1sRkI4MUtsN2JURFRWbFVUblJyM3BEbjhVN0pzQU1ycjh4Z25xZko0?=
+ =?utf-8?B?clFIaFlERXY5ejlzcUVXY3FWM3BPWXd2TkNzZ3I2TVA4aTc2QjB0NmFwUnd4?=
+ =?utf-8?B?VHhnSDJRZG5XeXA2WjRLcERkbUtzSFA3L091MGh3T09vU3NsWVhGMmhjN2Ny?=
+ =?utf-8?B?WjdabTdXd3U5a29iWitodG9rK2JxMjFXQzJjdjlkMzhLOGl3UTBnWENsVTE0?=
+ =?utf-8?B?SjY2Y3dFZ3NFMVd5M25KVnpOYVk0Tm81UXRoZWQ5amd3YlBkNzcxREU2VkdQ?=
+ =?utf-8?B?c1J3K0tkbENmRVMzRzBRMG4yVk5LOUd1c3FtS2NKMXNyU2gxVWxPL3F1VXNx?=
+ =?utf-8?B?VlJEeUp6UDRJS2FyZUVpalR4U3ZWUVdnSzlCdEVPTXJsM3g1Q2JLMzFIdnkz?=
+ =?utf-8?B?NHZEK29ORXgyNUkyUWQydUNpMU5ST1MvVGxra2RUcFNXa2h1NFY4N2ZtbG5m?=
+ =?utf-8?B?VmsyTXNkRk55YVpUSzlQVlVxcVBVb21JVEcvMERRbjNiNktvQ0U0d2Z1SURT?=
+ =?utf-8?B?Y0ZYRHgxa2dEQkh4MzB6N2hta0FNVG5UNUZ5Sm9JelJwMEhBL2xjTFJyYmFN?=
+ =?utf-8?B?QnZ3a1hveUFHRC95elAxUHZFRzg2Zy9RakxSb29NM0M2a0dIR3Foa1huTEZs?=
+ =?utf-8?B?TUVJQ2hmVEw3NlFtTUJYOHJ1cHZYRjdzbEtSd3cvM1U5bDYraU02UjdRUmN0?=
+ =?utf-8?B?ek5WSlZoZm1yT2xqSmZlaldpc0crUitSbFRWN3JlUEkzM0hRK2pGaEZYOWJj?=
+ =?utf-8?B?WXNPZWlObkVQeVNDZi9vNzZvZlIvdElldmlCcENiUUtVdG5ubXpLcXNzT2lm?=
+ =?utf-8?B?dFNPUE56VVVNeVlONVlPTXY2d3JLeG9DSG15Qis3SlRJcU13bnRyWm4yYkZN?=
+ =?utf-8?B?OTJaNXhmNE9hKytOMk1GZDZXWVhjekplQU9VR2xjdmF5U3ZsU1VNMURqNHJi?=
+ =?utf-8?B?dUVEaE1tczlhYnRnaW9XbFNQSUVnUXFaRXQ3YStsWHhER3pHVXAwRHpaZjk2?=
+ =?utf-8?B?WHB4R0xycktWNEpPNVE3Z1IrZjUwS3hhUTZlRlNWK1VLbFJzSTJkVUx1VUZa?=
+ =?utf-8?B?L2xnM0RrSm5KaHI2YjVadmtic0lZRzFhWjNpeDlqMDdrNGNkRlV4ekVvWEgr?=
+ =?utf-8?B?Vkp6R0tXOWNnWXhLUmlrdnZ4eXZHRk1MN1RIT0ZSZXVSOERVNXdxdTdhMWFI?=
+ =?utf-8?B?Rm1ORWsrMlNiMTVhM2VkVWwyWkVaUXdvTGxhcXNkNS8wQlQ1V1l2TXRoLzlq?=
+ =?utf-8?B?b3djZWIweS9CeTNjRjlnWStqdlo5TGJLNjI1ZmljUFFMZkFCVmVyK1RCRTc1?=
+ =?utf-8?B?TXlkblkzWkpRU2Vhdk8yQTlGUjNYYmVyMGE3ZnRjVlBEMCtkZ2NrUExzZmVS?=
+ =?utf-8?B?dno5SlJPRFRTRUxwcmhxbGl0ejR3NmhLc01yQWZldmxORmR3cmRpYnB4Q0JD?=
+ =?utf-8?Q?GrjnEs5GEs4dM0NhyvsLRs9Ol6TMRrkhMCaRoFU9iQ4nj?=
+X-MS-Exchange-AntiSpam-MessageData-1: 7m+IcpAWGZ8zBw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19af0183-35cb-416e-b7db-08df38d8319b
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6873.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 10:46:05.1295
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 11:55:30.7424
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ORHRPEd9tyMaLudUpbSW2qe4zm9JAME0+K0yw+iyIWsXRY5W8oP5TWk4FrZB1N+C
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4491
+X-MS-Exchange-CrossTenant-UserPrincipalName: XvZr/X9DBn5Zlj3jlfzsfo5bK2kRDY2o0nfd8iGqFLxuLYVnpgbXDsYC4rH6plTZL/2Xye8bEmMxApRAxPrtdA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR12MB786665
 
-On 11/2/26 10:35, Philipp Stanner wrote:
-> On Wed, 2026-10-28 at 14:38 +0100, Christian König wrote:
->> On 10/28/26 10:47, Philipp Stanner wrote:
->>>>> 	commit c8a5d5ea3ba6 ("nouveau: fix client work fence deletion race")
->>>>
->>>> This bug is exactly what I'm trying to prevent here.
->>>
->>> What is your proposed strategy for preventing it?
+On Mon Nov 2, 2026 at 2:46 PM JST, Eliot Courtney wrote:
+> On Fri Oct 30, 2026 at 4:41 PM JST, Alexandre Courbot wrote:
+>> From: John Hubbard <jhubbard@nvidia.com>
 >>
->> nouveau_fence_signal() is consistently used by all signaling path to
->> both signal and cleanup a fence.
-> 
-> No, you miss the point. Look at the bug. It exists because nouveau
-> thinks it can drop a reference now because the fence is signaled.
-> 
-> I grant the point, though, that this is actually a refcounting issue.
-> The path that is signaling does not have its own extra reference.
-
-Well yes and no.
-
-It's true that the path which needs the extra reference should have one and drop it as soon as it doesn't need it any more. But the real question is why does that path exists in the first place?
-
-What nouveau seems to do here is to install a callback on it's own fence to do some cleanup when the fence signals.
-
-But that is nouveaus own fence, why doesn't it do the cleanup after it has explicitly called dma_fence_signal_*()?
->> When we stop calling callbacks with locks held and signaling fences
->> from dma_fence_is_signaled() and dma_fence_enable_signaling() nouveau
->> can call nouveau_fence_signal() consistently from all cleanup paths
->> with the proper handling.
+>> The r000 firmware uses msgq v2, the queue layout that keeps the queue
+>> pointers in BAR0 registers as counts that do not wrap at the ring size.
+>> The r570 firmware's layout keeps the pointers in shared memory as
+>> indices into the ring. The two layouts differ in where a pointer is
+>> read and in how the size of the region that the driver may write, and
+>> of the region that it may read, follows from a queue's write pointer
+>> and read pointer. Splitting a region across the end of the ring is the
+>> same in both, and whether a region wraps follows from the order of the
+>> two pointers.
 >>
->> This makes it completely unecessary to have those cleanup hacks as
->> well as the nouveau_fence_release() callback.
+>> The functions for the writable region and for the readable region each
+>> branched on the order of the write pointer and the read pointer. Each
+>> branch chose where the two slices ended, and the function then built
+>> the slices with open-coded pointer arithmetic. The SAFETY comments
+>> argued the slice bounds branch by branch, so the switch to msgq v2
+>> would have had to rewrite the branches and the argument along with the
+>> pointer rules.
 >>
->> Background is that you can then put the fence context directly after
->> the fence is signaled 
+>> Compute the number of slots in a region and its start slot once. The
+>> first slice ends at the end of the region or at the end of the ring,
+>> whichever comes first, and the second slice carries the rest.
 >>
->>>> This problem only exists because we call the backend operations with
->>>> the lock held!
->>>
->>> Nope, this particular bug exists because Nouveau thought that it can
->>> drop its reference when dma_fence_is_signaled() returns true, which is
->>> not the case, because the fence backend has a race condition there.
+>> The number of slots comes from one helper per queue, which are the only
+>> two places the msgq v2 switch needs to change. The two slices are built
+>> with separate from_raw_parts calls over the slots the driver currently
+>> owns, rather than by splitting a slice over the whole ring: a reference
+>> spanning slots the GSP may be accessing would break the contract of
+>> Coherent.
 >>
->> No it doesn't, the fence backend works exactly like intended.
-> 
-> You mean the lockless checking of a bit that is set under lock-
-> protection works as intended?
-
-Yes, exactly that and it is not even a performance improvement in the sense that it makes things execute faster.
-
-In other words we have use cases where the latency needs to be as low as possible and the state change that a fence has signaled visible to other CPU cores *before* the callbacks have finished executing.
-
-Take the "gang submit" use case as an example, here we have two submissions to two different HW engines which depend on each other. After filling the common ring buffer submission A busy waits on submission B to start and drain the ring buffer again. This busy waiting inside the HW consumes power and so drivers try to avoid it as much as possible.
-
-Another example is scheduling dependent page flips etc...
->> I agree that we made tons of mistakes here but that is actually one
->> of the few things which we got right on dma_fences from the very
->> beginning.
->>> A race condition that was allowed for performance reasons.
+>> No functional changes.
 >>
->> Well it is at least partially for correctness as well.
+>> Assisted-by: LLM
+>> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+>> Co-developed-by: Alexandre Courbot <acourbot@nvidia.com>
+>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>> ---
+>
+> Do you reckon you could tighten up/rewrite this commit message a bit?
+> For me it's a bit hard to follow.
+
+Absolutely. And I'll also simplify a couple of others as well.
+
+>
+>>  drivers/gpu/nova-core/gsp/cmdq.rs | 96 +++++++++++++++++++-------------=
+-------
+>>  1 file changed, 47 insertions(+), 49 deletions(-)
 >>
->> It is mandatory for quite a number of use cases that the signaling
->> status becomes visible before the callbacks finish because otherwise
->> you run into race conditions with the callbacks again.
-> 
-> That's not what I mean. There are two things here:
-> 
-> a) signaled-bit is read without lock-protection
-> b) signaled-bit is set before callbacks execute
-> 
-> fixing a) makes b) irrelevant.
+>> diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/g=
+sp/cmdq.rs
+>> index a271114fb54c..7350074a9f96 100644
+>> --- a/drivers/gpu/nova-core/gsp/cmdq.rs
+>> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+>> @@ -186,60 +186,64 @@ fn new(dev: &'a device::Device<device::Bound>, bar=
+: Bar0<'a>) -> Result<Self> {
+>>      /// As the message queue is a circular buffer, the region may be di=
+scontiguous in memory. In
+>>      /// that case the second slice will have a non-zero length.
+>>      fn driver_write_area(&mut self) -> (&mut [[u8; GSP_PAGE_SIZE]], &mu=
+t [[u8; GSP_PAGE_SIZE]]) {
+>> -        let tx =3D self.cpu_write_ptr();
+>> -        let rx =3D self.gsp_read_ptr();
+>> +        let avail =3D self.cpuq_free_slots();
+>> +        let w_slot =3D self.cpu_write_ptr();
+>> =20
+>>          // Pointer to the first entry of the CPU message queue.
+>>          let data =3D ptr::project!(mut self.mem.as_mut_ptr(), .cpuq.msg=
+q.data[build: 0]);
+>> =20
+>> -        let (tail_end, wrap_end) =3D if rx =3D=3D 0 {
+>> -            // The write area is non-wrapping, and stops at the second-=
+to-last entry of the command
+>> -            // queue (to leave the last one empty).
+>> -            (MSGQ_NUM_PAGES - 1, 0)
+>> -        } else if rx <=3D tx {
+>> -            // The write area wraps and continues until `rx - 1`.
+>> -            (MSGQ_NUM_PAGES, rx - 1)
+>> -        } else {
+>> -            // The write area doesn't wrap and stops at `rx - 1`.
+>> -            (rx - 1, 0)
+>> -        };
+>> +        // `w_slot` is below `MSGQ_NUM_PAGES` per the invariant of `cpu=
+_write_ptr`, so the
+>> +        // subtraction cannot underflow.
+>> +        let in_after =3D avail.min(MSGQ_NUM_PAGES - w_slot);
+>> +        let in_before =3D avail - in_after;
+>> =20
+>>          // SAFETY:
+>> -        // - `data` was created from a valid pointer, and `rx` and `tx`=
+ are in the
+>> -        //   `0..MSGQ_NUM_PAGES` range per the invariants of `cpu_write=
+_ptr` and `gsp_read_ptr`,
+>> -        //   thus the created slices are valid.
+>> -        // - The area starting at `tx` and ending at `rx - 2` modulo `M=
+SGQ_NUM_PAGES`,
+>> -        //   inclusive, belongs to the driver for writing and is not ac=
+cessed concurrently by
+>> -        //   the GSP.
+>> +        // - `data` was created from a valid pointer to `MSGQ_NUM_PAGES=
+` entries.
+>> +        // - The `in_after` entries starting at `w_slot` belong to the =
+`avail` entries that the
+>> +        //   driver is currently allowed to write, and so do the `in_be=
+fore` first entries.
+>>          // - The caller holds a reference to `self` for as long as the =
+returned slices are live,
+>>          //   meaning the CPU write pointer cannot be advanced and thus =
+that the returned area
+>>          //   remains exclusive to the CPU for the duration of the slice=
+s.
+>> -        // - The created slices point to non-overlapping sub-ranges of =
+`data` in all
+>> -        //   branches (in the `rx <=3D tx` case, the second slice ends =
+at `rx - 1` which is strictly
+>> -        //   less than `tx` where the first slice starts; in the other =
+cases the second slice is
+>> -        //   empty), so creating two `&mut` references from them does n=
+ot violate aliasing rules.
+>> +        // - The slices do not overlap: `avail` is at most `MSGQ_NUM_PA=
+GES - 1`, so `in_before`
+>> +        //   is strictly less than `w_slot` whenever it is non-zero.
+>>          unsafe {
+>>              (
+>>                  core::slice::from_raw_parts_mut(
+>> -                    data.add(num::u32_as_usize(tx)),
+>> -                    num::u32_as_usize(tail_end - tx),
+>> +                    data.add(num::u32_as_usize(w_slot)),
+>> +                    num::u32_as_usize(in_after),
+>>                  ),
+>> -                core::slice::from_raw_parts_mut(data, num::u32_as_usize=
+(wrap_end)),
+>> +                core::slice::from_raw_parts_mut(data, num::u32_as_usize=
+(in_before)),
+>
+> Can we use io_project here? then unsafe as_mut() because they are disjoin=
+t
+> e.g.
+> ```
+> let after =3D io_project!(self.mem, .cpuq.msgq.data[panic: w_slot..w_slot=
+ + in_after]);
+> let before =3D io_project!(self.mem, .cpuq.msgq.data[panic: ..in_before])=
+;
+> unsafe { (after.as_mut(), before.as_mut()) }
+> ```
+>
+> Same for the other spot. Gary also suggested this on v3 [1].
+>
+> [1]: https://lore.kernel.org/all/DLMUKFL5CAZ5.2ICMKG94JXP52@garyguo.net/
 
-Not it doesn't. It prevents intentional execution of multiple things in parallel.
+Yup, I had forgotten about that. Done, thanks for the reminder.
 
-> But that's not even my point in this mail.
-> 
-> 
-> I'm still interested btw in who is busy-polling on a fence, waiting
-> until the signaled-bit gets true (that would be the "performance"
-> argument).
+>
+>>              )
+>>          }
+>>      }
+>> =20
+>> -    /// Returns the size of the region of the CPU message queue that th=
+e driver is currently allowed
+>> -    /// to write to, in bytes.
+>> -    fn driver_write_area_size(&self) -> usize {
+>> +    /// Returns the number of slots of the CPU message queue that the d=
+river is currently allowed
+>> +    /// to write to.
+>> +    fn cpuq_free_slots(&self) -> u32 {
+>>          let tx =3D self.cpu_write_ptr();
+>>          let rx =3D self.gsp_read_ptr();
+>> =20
+>>          // `rx` and `tx` are both in `0..MSGQ_NUM_PAGES` per the invari=
+ants of `gsp_read_ptr` and
+>>          // `cpu_write_ptr`. The minimum value case is where `rx =3D=3D =
+0` and `tx =3D=3D MSGQ_NUM_PAGES -
+>>          // 1`, which gives `0 + MSGQ_NUM_PAGES - (MSGQ_NUM_PAGES - 1) -=
+ 1 =3D=3D 0`.
+>> -        let slots =3D (rx + MSGQ_NUM_PAGES - tx - 1) % MSGQ_NUM_PAGES;
+>> -        num::u32_as_usize(slots) * GSP_PAGE_SIZE
+>> +        (rx + MSGQ_NUM_PAGES - tx - 1) % MSGQ_NUM_PAGES
+>> +    }
+>
+> optional nit: it may be nicer (for r000 as well) to have the helper e.g.
+> cpuq_free_slots return (u32, u32) with the starting slots and the # of
+> slots.
 
-Well that is the point I'm trying to explain. Nobody is busy polling the signaled bit! That is not why we do that.
-> If you want to know when a fence changes from unsignaled to signaled,
-> use this function:
-> 
-> dma_fence_add_callback()
-> 
-> problem solved.
+Do you mean by merging e.g. `cpu_write_ptr` and `cpuq_free_slots` into a
+single method? These two are called in separate contexts as well, so in
+these contexts we would have to ignore half of the returned value (that
+we might have performed I/O to obtain). So I'm not sure that it would
+really help make the code more readable here.
 
-That would enable interrupts.
+> Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
 
->>> What signaling handler are you referring to?
->>
->> Take a look at the hack nouveau_fence_is_signaled() does for example.
->> The cleanup part the other signaling call path do is completely
->> missing here because the function can't take the fctx->lock.
-> 
-> Again, ops->signaled() merely has to read an atomic64_t and return a
-> bool. Driver locks are not required here.
-
-Yes they are. Take a look why nouveau installs the callback.
-
->>
->> Yes, but if we want to get away from the external lock concept in
->> dma_fence we must allow drivers to take their own fctx->lock inside
->> the enable_signaling callback.
->>
->> Just take a look at what nouveau_fence_enable_signaling() does, that
->> is only possible because the dma_fence framework has grabbed fctx-
->>> lock before calling this function.
->>
->> The alternative is forcing drivers to use lockless approaches for
->> their internal handling, and that is much much worse than that a
->> dma_fence signaling status is visible without taking the lock.
-> 
-> […]
-> 
->> Just take nouveau_fence_enable_signaling() as an example, if we don't
->> use fctx->lock as external dma_fence lock then the whole approach
->> used here doesn't work any more.
-> 
-> My entire point is that the driver does not need any driver-lock
-> conflicting with the fence-lock-order at all.
-
-And that is what I strongly disagree on.
-> I tried to point this out several times, but you keep iterating back to
-> "this is what nouveau does".
-> 
-> That nouveau does it does not proof that it's necessary. It just proofs
-> that nouveau does it.
-
-But nouveau is a really really good example because it never installed the same workaround to the problem modern drivers amdgpu or XE have.
-
-Yes it is possible to work around the problem in drivers, it's just not a good idea because you are moving the problem from the framework into the drivers.
-
->>>>
->>> My impression was more that central design criteria for dma_fence (like
->>> module unload of the driver who issued your fence, which is designed to
->>> live arbitrarily long) were ignored, there was no clear guidance for
->>> drivers how they should use what callback, and then driver problems
->>> were solved in dma_fence, for instance with this shared lock. So same
->>> story as with drm_sched.
->>
->> Yes, exactly that.
-> 
-> Good!
-> 
-> So we agree that the dma_fence backend should give clear guidance about
-> what a driver must, must not and should do in its backend_ops
-> implementations.
-> 
-> Right?
-
-Correct, I completely agree on that.
-
-> Because so far the conversation sounded to me like "the driver must be
-> able to do whatever it wants and therefore needs to be able to grab
-> whatever locks".
-
-Yes, because that is something drivers should be able to do. Not allowing drivers that is a bad guidance from the framework.
-
-It pushes the drivers into the wrong direction of using fragile approaches.
-
-The much better guidance would be to have a single signaling path in which drivers call dma_fence_signal_*() so that drivers can start to cleanup after doing so.
-
-It is still possible that drivers mess things up with both approaches, it's just that I think it is less likely with that one.
->> And that is strong evidence. Nouveau is actually the perfect example
->> of why this approach causes so much trouble for driver
->> implementations.
-> 
-> Calling Nouveau a "perfect example" is like calling Ronald McDonald a
-> role model in dietary choices.
-
-Oh that is a good one. Thanks for brightening up my day :D
-
-> Nova is being written right now, for reasons.
-
-My point is that nouveau is a good example just because it is so broken.
-
-Take a look at amdgpu, it does the whole interrupt signaling with RCU protection and doesn't even implement the is_signaled callback for the same reason nouveau has bugs regarding the fence signaling.
->> And such guidance should not exist in the first place.
->>
->> It is up to the driver if they want to use locks for their internal
->> state protection and the dma_fence framework should absolutely not
->> enforce anything it doesn't need to deal with.
->>
->> That the dma_fence lock should protect the state of the dma_fence is
->> something I can perfectly agree on, but that does not include the ops
->> call chain because that isn't dma_fence state in the first place.
->>
->>> The only evidence I have ever seen is the fence-list-lock, and it's
->>> just not clear at all why any callback would need access to that.
->>
->> Because they need to clean things up after signaling.
->>
->>> Let's walk it through together, shall we?
->>>
->>> ops->release() and ->wait(): deprecated
->>>
->>> ops->get_XXX_name() -> never needs driver locks
->>>
->>> ops->signaled(): "Driver, here you read an atomic integer, the sequence
->>> number, and tell the fence backend whether this fence shall be regarded
->>> as completed"
->>> No need for any driver lock.
->>
->> Incorrect, you can only work without driver locks here when you delegate the cleanup.
->>
->> In other words either to a worker or the ->release callback, both are things we try to avoid.
->>
->> Again see nouveau as a perfect example of the problem.
->>
->>> If this particular driver also signals fences through an interrupt
->>> handler, it can take a list lock, then signal the fence. The ops must
->>> not do that.
->>> Why would a driver need both modes, sw *and* hw signaling? And why then
->>> is it supposedly the case that both paths need to keep a list updated?
->>
->> Because the signaling through the interrupt is mandatory for correct,
->> the signaling through the is_signaled callback is then on top for
->> performance optimizations.
-> 
-> is_signaled() never conflicts with any lock, see my list above.
-> 
-> I think at this point you and I should really first get in sync
-> regarding what the backend_ops are supposed to do, because we seem to
-> turn in circles a bit in our discussion.
-> 
-> And the only ops that seems to be controversial and that informs the
-> nouveau argument is ops->enable_signaling()
-> 
-> What should enable_signaling() do, in your mind? What should we tell
-> the driver to do in there?
-
-The enable_signaling callback let's the backend know that some code depends on the fence to signal.
-
-The backend can do different things to enable that, e.g. enabling HW interrupts, start a worker to suspend HW queues, or start a worker to poll the status in certain intervals etc...
-
-The point is the framework doesn't know what the backend needs to do and it also shouldn't limit what the backend can do here.
-
-What the framework needs to do is to give the right guidance, e.g. check if enabled signaling is called multiple times and only forward the first one to the driver, check if the fence is already signaled, check if the backend is even still around...
-> And why does nouveau even implement it, when its interrupt handler will
-> ultimately signal the fence anyways. Since, as usual, nothing is
-> documented, and one enable_signaling function carries literally the
-> name "no_signaling", I don't give it the benefit of the doubt and just
-> assume that this is broken, bad design.
-> 
-> 
-> My impression is that ops->enable_signaling() and having an interrupt
-> handler signaling fences is mutually exclusive design-wise.
-
-Well if a backend wants to implement both use cases then it is necessary for it to enable/disable interrupts based on calls to enable_signaling.
-
-And when you have only one interrupt control for multiple fences then you need to common lock to protect that one interrupt control.
-
-Regards,
-Christian.
-
-> 
-> 
-> P.
->>
-
+I won't take it this round as the next revision will change
+substantively, but thanks for the review!
